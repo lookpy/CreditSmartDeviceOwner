@@ -1,0 +1,447 @@
+Construir um app Android (Kotlin) para clientes do CDC Credit Smart que:
+
+opera como Device Owner (Android Enterprise) com políticas para impedir remoção/bypass;
+
+integra com as rotas do servidor CDC (JWT, escopos, idempotência, pinagem TLS);
+
+executa o fluxo de validação: QR (via PDV) → atestação → bind contrato/IMEI → biometria facial (com liveness) → assinatura (android-signaturepad) → sincronização;
+
+exibe parcelas, aceita pagamento (PIX/Boleto), envia push e aplica bloqueios graduais até overlay total se houver inadimplência;
+
+possui banco offline (Room), fila de sync (WorkManager), atualização silenciosa (Device Owner);
+
+segue tema escuro com os tons laranja/acinzentado do CDC.
+
+1) Arquitetura & Tech Stack
+
+Linguagem: Kotlin (minSdk 26+).
+
+Arquitetura: Clean + MVVM.
+
+Módulos:
+
+app (UI/DI),
+
+data (Room, Repos),
+
+network (OkHttp/Retrofit),
+
+domain (use-cases),
+
+device (políticas Device Owner, attestation, overlay, updates),
+
+payments (PIX/Boleto),
+
+biometry (câmera + SDK liveness; se SDK externo, criar façade).
+
+DI: Hilt.
+
+Concorrência: Coroutines + Flow.
+
+Persistência: Room + EncryptedSharedPreferences para segredos.
+
+Jobs: WorkManager (retries + backoff).
+
+Networking: Retrofit + OkHttp com certificate pinning e (se possível) mTLS.
+
+Push: Firebase Cloud Messaging (FCM).
+
+Assinatura: https://github.com/gcacace/android-signaturepad
+
+Ofuscação: R8/ProGuard agressivo; remover símbolos, desabilitar logs em release.
+
+2) Cores e UI
+
+Tema escuro com destaques em laranja (#F47C2C / #FF7A1A) e cinzas.
+
+Navegação: bottom bar (Home, Parcelas, Pagamentos, Suporte, Perfil).
+
+Telas:
+
+Boas-vindas (animação leve).
+
+Vincular contrato (ler QR ou inserir código/IMEI).
+
+Validação facial (pré-view câmera + status).
+
+Assinatura (signaturepad) + termos.
+
+Dashboard (status do contrato, parcelas, próxima cobrança).
+
+Parcelas (lista + detalhes).
+
+Pagamento (PIX: copiar/QR; Boleto: PDF/link).
+
+Suporte (FAQ, abrir chamado, WhatsApp/telefone).
+
+Bloqueio (overlay de restrição, mensagens dinâmicas).
+
+Atualizações (somente logs; instalação é silenciosa).
+
+Configurações (diagnóstico, versão, política aplicada).
+
+3) Permissões & Device Owner (políticas)
+
+Provisionamento: via QR Code Android Enterprise (PDV). Ao instalar como Device Owner:
+
+DevicePolicyManager.setLockTaskPackages() e Lock Task Mode para telas críticas.
+
+Desabilitar desinstalação do app (Device Owner não removível pelo usuário).
+
+addUserRestriction():
+
+UserManager.DISALLOW_FACTORY_RESET
+
+DISALLOW_ADD_USER
+
+DISALLOW_USB_FILE_TRANSFER
+
+DISALLOW_DEBUGGING_FEATURES
+
+DISALLOW_INSTALL_UNKNOWN_SOURCES
+
+setStatusBarDisabled(true) onde suportado.
+
+setPackagesSuspended() para apps específicos em caso de atraso/risco.
+
+setSystemUpdatePolicy() (ex.: janelas de update).
+
+Grant runtime permissions programaticamente (setPermissionGrantState).
+
+Overlay de bloqueio:
+
+Fullscreen Activity em TYPE_APPLICATION_OVERLAY ou (preferível) Activity normal em lock task que captura foco, oculta sistema e intercepta back/home (Device Owner pode).
+
+Mensagem dinâmica (ex.: “Pagamento atrasado. Regularize para liberar o aparelho.”).
+
+Botões de “Pagar agora” (abre tela de pagamento dentro do app) e “Contato suporte”.
+
+Detecções anti-tamper:
+
+Root/emulador/debugger/Frida check.
+
+Play Integrity / Key Attestation obrigatória no boot e periodicamente.
+
+4) Segurança (endurecimento)
+
+TLS 1.3 + certificate pinning (OkHttp CertificatePinner).
+
+(Opcional, recomendável) mTLS para rotas críticas: attestation, biometry, contract/sign/sync.
+
+JWT curto (≤15 min) com escopos: device:bind, biometry:verify, contract:sync, device:update.
+
+Refresh Token rotativo (armazenado criptografado, bound a chaves do Keystore).
+
+Assinatura de requisição:
+
+Header X-Device-Signature: base64( ECDSA_sign(SHA256(body)) ) com chave do Keystore.
+
+Idempotency-Key (UUID) em todo POST crítico.
+
+Rate limiting lato servidor; cliente respeita backoff exponencial + jitter.
+
+Logs somente no nível mínimo; PII nunca em logs.
+
+LGPD: consentimento explícito, finalidades, retenção, opt-out; exibir versão & hash dos termos aceitos.
+
+5) Banco Offline (Room)
+
+Tabelas:
+
+DeviceBinding(id, contractCode, attestedDeviceId, devicePubKeyFp, status, updatedAt)
+
+Installment(id, contractId, number, dueDate, amount, status, lastSyncAt)
+
+Payment(id, installmentId, method, amount, txId, createdAt, status)
+
+BiometrySession(id, status, livenessScore, resultId, createdAt)
+
+SignatureSession(id, termsVersion, termsHash, receiptId, createdAt)
+
+SyncQueue(id, type, payloadJson, idempotencyKey, retries, nextRunAt, status)
+
+AuditLog(id, event, metaJson, createdAt)
+
+Updates(version, checksum, url, downloadedAt, installedAt, status)
+
+Terms(version, hash, text, fetchedAt)
+
+Flags( key, value, updatedAt ) (feature flags/políticas)
+
+Estratégia:
+
+Tudo primeiro grava offline (ACID) → WorkManager envia.
+
+Replays são idempotentes usando Idempotency-Key.
+
+Conflitos resolvidos por updatedAt no servidor.
+
+6) Integração com APIs (rotas + headers)
+
+Usar baseUrl https://cdccreditsmart.com. Todas as rotas com JSON.
+Headers padrão:
+
+Authorization: Bearer <JWT>
+X-Idempotency-Key: <UUID>
+X-Device-Signature: base64(ECDSA_sign(SHA256(body)))
+Content-SHA256: <hex>
+
+6.1 Rotas novas /v1 (recomendadas para o app)
+
+Attestation
+POST /v1/device/attest → recebe attestedDeviceId + JWT (device:bind).
+
+Bind contrato–device
+POST /v1/device/bind → envia contractCode | imeiPDV, imeiDigitado, attestedDeviceId, devicePubKeyFingerprint.
+Responde biometrySessionId + JWT (biometry:verify).
+
+Biometria (face + liveness)
+POST /v1/biometry/face/verify → APPROVED|REVIEW|DENIED, biometryResultId, signatureSessionId?.
+
+Termos
+GET /v1/contract/terms?version=latest → version, hash, text.
+
+Assinatura (android-signaturepad)
+POST /v1/contract/sign → envia imagem base64 + termsHash + vectorsHash → retorna signatureReceiptId + JWT (contract:sync).
+
+Sincronização final
+POST /v1/contract/sync → consolida (OK, contractId, auditRef).
+Servidor envia webhook ao PDV.
+
+Atualizações
+GET /api/android/updates/check (com JWT device:update)
+GET /api/android/updates/download (tokenizado)
+GET /api/apk/active (metadados, minSupportedVersion, checksum)
+
+Parcelas
+GET /api/apk/device/installments (JWT do device).
+
+Pagamento
+POST /api/apk/device/{serial}/pay/{installmentId}
+Body: { "paymentMethod": "pix"|"boleto", "amount": 150.00, "transactionId": "pix_..." }
+
+Obs.: Preferir nova rota /v1/payments/pay com contractId|serial no body (evita enumeração por path).
+
+Telemetria
+POST /api/apk/device/heartbeat (geo, bateria, rede).
+POST /api/apk/device/{fingerprint}/sync → migrar p/ /v1/device/sync autenticado, sem fingerprint no path.
+
+Status do device
+GET /api/apk/device/status (autenticado).
+
+Descontinuar: GET /api/apk/device/{serialOrFingerprint}/status público.
+
+7) Fluxos Principais (app)
+7.1 Onboarding (após QR do PDV)
+
+Tela Boas-vindas → Lê QR do PDV → obtém contractCode | imeiPDV.
+
+Attestation (/v1/device/attest): gera device_keypair no Keystore; envia payload do Play Integrity/Key Attestation; salva attestedDeviceId.
+
+Bind (/v1/device/bind): solicita IMEI digitado; compara com imeiPDV e imei_real (se disponível via DO). Se erro → bloqueia.
+
+Biometria: câmera + liveness on-device; envia embedding para /v1/biometry/face/verify.
+
+APPROVED → prossegue
+
+REVIEW/DENIED → mostra motivo e encerra.
+
+Termos & Assinatura: baixa termos (version/hash), mostra, captura assinatura com android-signaturepad, envia /v1/contract/sign.
+
+Sync final: /v1/contract/sync → OK → Dashboard.
+
+7.2 Pagamentos
+
+Parcelas: GET /api/apk/device/installments.
+
+PIX: gerar payload/QR (via servidor) ou receber pixCopiaECola. Exibir status em tempo real via WebSocket ou polling.
+
+Boleto: baixar PDF/link (salvar em Downloads/CDC/).
+
+Confirmação: POST /.../pay/{installmentId} (ou /v1/payments/pay).
+
+Regras de bloqueio:
+
+D-1: push lembrete.
+
+D+1: suspender apps de entretenimento (Device Owner).
+
+D+3: overlay parcial (interrompível por “Pagar agora”).
+
+D+7: overlay total (lock task + sem back).
+
+7.3 Atualizações silenciosas
+
+Job diário (WorkManager): GET /api/android/updates/check.
+
+Se houver update:
+
+download com checksum,
+
+instalar silenciosamente via APIs de Device Owner (PackageInstaller + installExistingPackage/manage app ops; se ambiente exigir Managed Google Play, usar private channel),
+
+relatar sucesso ao servidor (/v1/device/update-report – criar se necessário).
+
+7.4 Telemetria & Saúde
+
+heartbeat a cada 6h (geo/bateria/rede).
+
+Resync de fila pendente quando online.
+
+Attestation periódico (ex.: 1x/dia) para comprovar integridade.
+
+8) WorkManager – Tarefas
+
+AttestationWorker (boot e periódico).
+
+SyncQueueWorker (reenvia POSTs com Idempotency-Key).
+
+HeartbeatWorker.
+
+UpdatesWorker.
+
+BlockPolicyWorker (aplica/suspende pacotes conforme política servidor).
+
+PaymentsPollWorker (se houver webhook indisponível, fazer polling de status de pagamento).
+
+9) Anti-engenharia reversa
+
+Ofuscação R8, remover classes de debug e logs.
+
+Split de segredos: nenhum segredo em texto; derivar chaves em runtime; usar Keystore StrongBox/TEE.
+
+Play Integrity (MEETS_BASIC_INTEGRITY + DEVICE_INTEGRITY).
+
+Detecção de:
+
+isDebuggerConnected, TracerPid, ro.hardware, QEmu/emulador,
+
+Frida/Ghidra hooks (ver libs conhecidas).
+
+Asset tamper: verificação de assinatura do APK e hash dos assets no boot.
+
+10) Mensageria (Push)
+
+FCM: tópicos (contract:{id}, store:{id}) + tokens por device.
+
+Tipos:
+
+REMINDER_PAYMENT (D-n),
+
+OVERDUE_WARNING,
+
+BLOCK_POLICY_UPDATE,
+
+UPDATE_AVAILABLE,
+
+SUPPORT_REPLY.
+
+Ao receber push de bloqueio, aplicar política imediatamente e abrir tela de pagamento.
+
+11) Erros & Códigos (app deve tratar)
+
+AUTH_401, AUTH_403 (token inválido/escopo errado).
+
+BIND_409 (mismatch IMEI/contrato).
+
+BIO_422 (liveness baixo), BIO_409 (rosto duplicado).
+
+SIGN_422 (hash de termos divergente).
+
+SYNC_409 (etapas fora de ordem).
+
+RATE_429 (respeitar backoff).
+
+Sempre mostrar requestId e oferecer tentar novamente.
+
+12) Gradle (dependências principais – referência)
+implementation("androidx.core:core-ktx:1.13.1")
+implementation("androidx.appcompat:appcompat:1.7.0")
+implementation("com.google.android.material:material:1.12.0")
+implementation("androidx.activity:activity-ktx:1.9.2")
+implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.8.3")
+implementation("androidx.navigation:navigation-fragment-ktx:2.7.7")
+implementation("androidx.navigation:navigation-ui-ktx:2.7.7")
+implementation("androidx.room:room-ktx:2.6.1")
+kapt("androidx.room:room-compiler:2.6.1")
+implementation("com.squareup.retrofit2:retrofit:2.11.0")
+implementation("com.squareup.retrofit2:converter-moshi:2.11.0")
+implementation("com.squareup.okhttp3:okhttp:4.12.0")
+implementation("com.squareup.okhttp3:logging-interceptor:4.12.0")
+implementation("com.google.dagger:hilt-android:2.52")
+kapt("com.google.dagger:hilt-compiler:2.52")
+implementation("androidx.work:work-runtime-ktx:2.9.1")
+implementation("com.google.firebase:firebase-messaging-ktx:24.0.0")
+implementation("com.github.gcacace:signature-pad:1.3.1")
+
+13) Pseudo-códigos essenciais
+13.1 OkHttp pinning
+val pinner = CertificatePinner.Builder()
+  .add("cdccreditsmart.com", "sha256/BASE64_PIN==")
+  .build()
+val ok = OkHttpClient.Builder()
+  .certificatePinner(pinner)
+  .addInterceptor(AuthInterceptor(tokens))
+  .build()
+
+13.2 Assinatura de requisição
+fun signBody(body: ByteArray): String {
+  val key = keystorePrivateKey()
+  val sig = Signature.getInstance("SHA256withECDSA")
+  sig.initSign(key); sig.update(body)
+  return Base64.encodeToString(sig.sign(), Base64.NO_WRAP)
+}
+
+13.3 Overlay de bloqueio (simplificado)
+class LockActivity: AppCompatActivity() {
+  override fun onCreate(...) {
+    super.onCreate(...)
+    // Fullscreen + keep in foreground:
+    startLockTask()
+    window.addFlags(
+      WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON or
+      WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD
+    )
+    // UI com CTA "Pagar agora"
+  }
+  override fun onBackPressed() { /* no-op */ }
+}
+
+14) Testes & QA (resumo do roteiro)
+
+Happy Path completo.
+
+Fraude (rosto duplicado / liveness baixo).
+
+IMEI divergente.
+
+Tokens vencidos / escopos errados.
+
+Requisições duplicadas (Idempotency-Key).
+
+Perda de rede (retry/backoff).
+
+Webhook PDV (reentrega).
+
+Carga (1000 binds/min, 500 biometrias concorrentes).
+
+15) Entregáveis
+
+Projeto Android completo (Gradle + módulos).
+
+Arquivo de cores/temas com paleta CDC.
+
+OpenAPI consumida (interfaces Retrofit geradas).
+
+Scripts de provisionamento DO via QR.
+
+Documentação de políticas DO aplicadas.
+
+Play Integrity/Key Attestation implementada.
+
+Plano de atualização silenciosa (PackageInstaller/Managed Play).
+
+Manual de suporte (como desbloquear após pagamento).
+
+Observação final
+Onde rotas legadas forem necessárias (ex.: /api/apk/device/installments, /api/android/updates/check), consumir como estão. Para novos fluxos (attest/bind/biometry/sign/sync), usar /v1. Manter headers de segurança, escopos corretos e idempotência em todos os POSTs.
