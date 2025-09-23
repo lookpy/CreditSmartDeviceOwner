@@ -1,2 +1,30 @@
+modules = ["java"]
 [agent]
 expertMode = true
+
+[workflows]
+runButton = "Project"
+
+[[workflows.workflow]]
+name = "Project"
+mode = "parallel"
+author = "agent"
+
+[[workflows.workflow.tasks]]
+task = "workflow.run"
+args = "Android Build"
+
+[[workflows.workflow]]
+name = "Android Build"
+author = "agent"
+
+[workflows.workflow.metadata]
+outputType = "console"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "export JAVA_HOME=/nix/store/xad649j61kwkh0id5wvyiab5rliprp4d-openjdk-17.0.15+6 && export ANDROID_HOME=/home/runner/workspace/android-sdk && ./gradlew assembleDebug --no-daemon --stacktrace"
+
+[nix]
+channel = "stable-25_05"
+packages = ["openjdk17", "android-tools"]

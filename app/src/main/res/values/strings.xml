@@ -1,0 +1,47 @@
+<resources>
+    <string name="app_name">CDC Credit Smart</string>
+    
+    <!-- Navigation -->
+    <string name="title_home">Início</string>
+    <string name="title_installments">Parcelas</string>
+    <string name="title_payments">Pagamentos</string>
+    <string name="title_support">Suporte</string>
+    <string name="title_profile">Perfil</string>
+    
+    <!-- Common -->
+    <string name="loading">Carregando...</string>
+    <string name="error_generic">Ocorreu um erro. Tente novamente.</string>
+    <string name="retry">Tentar novamente</string>
+    <string name="cancel">Cancelar</string>
+    <string name="ok">OK</string>
+    <string name="continue_text">Continuar</string>
+    <string name="back">Voltar</string>
+    
+    <!-- Home -->
+    <string name="welcome_title">Bem-vindo ao CDC Credit Smart</string>
+    <string name="contract_status">Status do Contrato</string>
+    <string name="next_payment">Próximo Pagamento</string>
+    
+    <!-- Payments -->
+    <string name="payment_method_pix">PIX</string>
+    <string name="payment_method_boleto">Boleto</string>
+    <string name="payment_amount">Valor: R$ %.2f</string>
+    <string name="payment_due_date">Vencimento: %s</string>
+    <string name="pay_now">Pagar Agora</string>
+    
+    <!-- Installments -->
+    <string name="installment_number">Parcela %d</string>
+    <string name="installment_paid">Pago</string>
+    <string name="installment_pending">Pendente</string>
+    <string name="installment_overdue">Em atraso</string>
+    
+    <!-- Support -->
+    <string name="contact_support">Entre em Contato</string>
+    <string name="faq">Perguntas Frequentes</string>
+    
+    <!-- Lock screen -->
+    <string name="device_locked_title">Aparelho Bloqueado</string>
+    <string name="device_locked_message">Regularize seu pagamento para liberar o aparelho</string>
+    <string name="unlock_payment">Pagar Agora</string>
+    <string name="contact_support_lock">Contatar Suporte</string>
+</resources>

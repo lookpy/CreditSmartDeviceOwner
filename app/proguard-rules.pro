@@ -1,0 +1,79 @@
+# Add project specific ProGuard rules here.
+# You can control the set of applied configuration files using the
+# proguardFiles setting in build.gradle.
+
+# If your project uses WebView with JS, uncomment the following
+# and specify the fully qualified class name to the JavaScript interface
+# class:
+#-keepclassmembers class fqcn.of.javascript.interface.for.webview {
+#   public *;
+#}
+
+# Uncomment this to preserve the line number information for
+# debugging stack traces.
+#-keepattributes SourceFile,LineNumberTable
+
+# If you keep the line number information, uncomment this to
+# hide the original source file name.
+#-renamesourcefileattribute SourceFile
+
+# Keep data binding and view binding classes
+-keep class androidx.databinding.** { *; }
+-keep class * extends androidx.databinding.ViewDataBinding { *; }
+
+# Keep Hilt generated classes
+-keep class dagger.hilt.** { *; }
+-keep class * extends dagger.hilt.android.internal.lifecycle.HiltViewModelMap$KeySet { *; }
+-keep @dagger.hilt.android.lifecycle.HiltViewModel class * { *; }
+
+# Keep Room entities and DAOs
+-keep class * extends androidx.room.RoomDatabase { *; }
+-keep @androidx.room.Entity class * { *; }
+-keep @androidx.room.Dao class * { *; }
+
+# Keep Retrofit service interfaces
+-keep interface * {
+    @retrofit2.http.* <methods>;
+}
+
+# Keep model classes used by Moshi/Gson
+-keep class com.cdccreditsmart.data.remote.dto.** { *; }
+-keep class com.cdccreditsmart.domain.model.** { *; }
+
+# Keep security-sensitive classes
+-keep class com.cdccreditsmart.device.security.** { *; }
+-keep class com.cdccreditsmart.device.attestation.** { *; }
+
+# Keep signature pad classes
+-keep class com.github.gcacace.signaturepad.** { *; }
+
+# Remove debug logs in release builds
+-assumenosideeffects class android.util.Log {
+    public static *** d(...);
+    public static *** v(...);
+    public static *** isLoggable(...);
+}
+
+# Aggressive optimization
+-optimizationpasses 5
+-dontusemixedcaseclassnames
+-dontskipnonpubliclibraryclasses
+-dontskipnonpubliclibraryclassmembers
+-dontpreverify
+-verbose
+-optimizations !code/simplification/arithmetic,!field/*,!class/merging/*,!code/allocation/variable
+
+# Keep native method names
+-keepclasseswithmembernames class * {
+    native <methods>;
+}
+
+# Keep enum classes
+-keepclassmembers enum * {
+    public static **[] values();
+    public static ** valueOf(java.lang.String);
+}
+
+# Firebase Messaging
+-keep class com.google.firebase.messaging.** { *; }
+-keep class com.google.android.gms.** { *; }
