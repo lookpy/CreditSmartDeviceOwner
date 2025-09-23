@@ -4,24 +4,7 @@
             "outputFile": "com.cdccreditsmart.app-mergeDebugResources-45:/values-it/values-it.xml",
             "map": [
                 {
-                    "source": "/home/runner/.gradle/caches/transforms-3/72262323f55c70fb3543997da97875fe/transformed/navigation-ui-2.7.7/res/values-it/values-it.xml",
-                    "from": {
-                        "startLines": "2,3",
-                        "startColumns": "4,4",
-                        "startOffsets": "55,164",
-                        "endColumns": "108,122",
-                        "endOffsets": "159,282"
-                    },
-                    "to": {
-                        "startLines": "111,112",
-                        "startColumns": "4,4",
-                        "startOffsets": "9603,9712",
-                        "endColumns": "108,122",
-                        "endOffsets": "9707,9830"
-                    }
-                },
-                {
-                    "source": "/home/runner/.gradle/caches/transforms-3/0d35b11ed21721bc125315bbdec092e6/transformed/material-1.12.0/res/values-it/values-it.xml",
+                    "source": "/home/runner/.gradle/caches/transforms-3/c22543a6f25befc8c18520e684ea48f9/transformed/material-1.12.0/res/values-it/values-it.xml",
                     "from": {
                         "startLines": "2,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80",
                         "startColumns": "4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4",
@@ -40,7 +23,7 @@
                     }
                 },
                 {
-                    "source": "/home/runner/.gradle/caches/transforms-3/4ca8b2b2c7f6630b277542ddc5ce7760/transformed/core-1.13.1/res/values-it/values-it.xml",
+                    "source": "/home/runner/.gradle/caches/transforms-3/1832afeb063a2fad12eb9699046c0a1c/transformed/core-1.13.1/res/values-it/values-it.xml",
                     "from": {
                         "startLines": "2,3,4,5,6,7,8,9",
                         "startColumns": "4,4,4,4,4,4,4,4",
@@ -57,7 +40,24 @@
                     }
                 },
                 {
-                    "source": "/home/runner/.gradle/caches/transforms-3/b7b9cd3905a55541609568e48cc62af0/transformed/appcompat-1.7.0/res/values-it/values-it.xml",
+                    "source": "/home/runner/.gradle/caches/transforms-3/6aa267da0f261ead3c9d9f55ba1e2915/transformed/navigation-ui-2.7.7/res/values-it/values-it.xml",
+                    "from": {
+                        "startLines": "2,3",
+                        "startColumns": "4,4",
+                        "startOffsets": "55,164",
+                        "endColumns": "108,122",
+                        "endOffsets": "159,282"
+                    },
+                    "to": {
+                        "startLines": "111,112",
+                        "startColumns": "4,4",
+                        "startOffsets": "9603,9712",
+                        "endColumns": "108,122",
+                        "endOffsets": "9707,9830"
+                    }
+                },
+                {
+                    "source": "/home/runner/.gradle/caches/transforms-3/1fa620de0b58564cd3b4b0d274b83045/transformed/appcompat-1.7.0/res/values-it/values-it.xml",
                     "from": {
                         "startLines": "2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29",
                         "startColumns": "4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4",
