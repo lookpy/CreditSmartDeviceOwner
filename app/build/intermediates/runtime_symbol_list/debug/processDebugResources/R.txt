@@ -7373,4 +7373,5 @@ int styleable include_constraintSet 0
 int xml backup_rules 0x7f140000
 int xml data_extraction_rules 0x7f140001
 int xml device_admin 0x7f140002
-int xml file_paths 0x7f140003
+int xml device_admin_policies 0x7f140003
+int xml file_paths 0x7f140004

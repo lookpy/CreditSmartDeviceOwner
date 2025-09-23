@@ -16,3 +16,9 @@ dependencyResolutionManagement {
 
 rootProject.name = "CDC Credit Smart"
 include(":app")
+include(":device")
+include(":domain")
+include(":data")
+include(":network")
+include(":payments")
+include(":biometry")

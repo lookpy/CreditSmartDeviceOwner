@@ -6,6 +6,14 @@ plugins {
     id("com.google.dagger.hilt.android") version "2.54" apply false
 }
 
+allprojects {
+    repositories {
+        google()
+        mavenCentral()
+        maven { url = uri("https://jitpack.io") }
+    }
+}
+
 tasks.register("clean", Delete::class) {
     delete(layout.buildDirectory)
 }

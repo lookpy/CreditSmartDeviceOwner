@@ -5392,4 +5392,5 @@ styleable include constraintSet
 xml backup_rules
 xml data_extraction_rules
 xml device_admin
+xml device_admin_policies
 xml file_paths

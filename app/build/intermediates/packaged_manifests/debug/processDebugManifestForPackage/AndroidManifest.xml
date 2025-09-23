@@ -45,6 +45,43 @@
     <!-- Firebase Messaging -->
     <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
 
+    <!-- Manufacturer-specific permissions -->
+    <!-- Samsung Knox permissions -->
+    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_ADMIN" />
+    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_CONTAINER" />
+    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_VPN" />
+    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_SECURITY" />
+
+    <!-- MIUI (Xiaomi) permissions -->
+    <uses-permission android:name="miui.permission.USE_INTERNAL_GENERAL_API" />
+    <uses-permission android:name="android.permission.WRITE_SECURE_SETTINGS" />
+
+    <!-- ColorOS (Realme/OPPO) permissions -->
+    <uses-permission android:name="com.coloros.safe.permission.SECURITY_SCAN" />
+    <uses-permission android:name="com.oppo.launcher.permission.READ_SETTINGS" />
+
+    <!-- Device Owner and enterprise permissions -->
+    <uses-permission android:name="android.permission.MANAGE_DEVICE_ADMINS" />
+    <uses-permission android:name="android.permission.MANAGE_PROFILE_AND_DEVICE_OWNERS" />
+    <uses-permission android:name="android.permission.MANAGE_USERS" />
+    <uses-permission android:name="android.permission.INTERACT_ACROSS_USERS" />
+    <uses-permission android:name="android.permission.MANAGE_ACTIVITY_STACKS" />
+
+    <!-- Network and VPN management -->
+    <uses-permission android:name="android.permission.CONTROL_VPN" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <uses-permission android:name="android.permission.OVERRIDE_WIFI_CONFIG" />
+
+    <!-- App management -->
+    <uses-permission android:name="android.permission.INSTALL_PACKAGES" />
+    <uses-permission android:name="android.permission.DELETE_PACKAGES" />
+    <uses-permission android:name="android.permission.CLEAR_APP_USER_DATA" />
+    <uses-permission android:name="android.permission.FORCE_STOP_PACKAGES" />
+
+    <!-- Security and attestation -->
+    <uses-permission android:name="android.permission.MANAGE_CA_CERTIFICATES" />
+    <uses-permission android:name="android.permission.MANAGE_KEYGUARD" />
+
     <permission
         android:name="com.cdccreditsmart.app.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION"
         android:protectionLevel="signature" />
@@ -80,6 +117,23 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
+
+        <!-- Device Admin Receiver -->
+        <receiver
+            android:name="com.cdccreditsmart.device.CDCDeviceAdminReceiver"
+            android:exported="true"
+            android:permission="android.permission.BIND_DEVICE_ADMIN" >
+            <meta-data
+                android:name="android.app.device_admin"
+                android:resource="@xml/device_admin_policies" />
+
+            <intent-filter>
+                <action android:name="android.app.action.DEVICE_ADMIN_ENABLED" />
+                <action android:name="android.app.action.DEVICE_ADMIN_DISABLED" />
+                <action android:name="android.app.action.DEVICE_ADMIN_DISABLE_REQUESTED" />
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
 
         <!-- File provider for sharing documents -->
         <provider

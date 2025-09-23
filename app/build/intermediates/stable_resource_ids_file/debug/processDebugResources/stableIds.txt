@@ -1,4 +1,5 @@
-com.cdccreditsmart.app:xml/file_paths = 0x7f140003
+com.cdccreditsmart.app:xml/file_paths = 0x7f140004
+com.cdccreditsmart.app:xml/device_admin_policies = 0x7f140003
 com.cdccreditsmart.app:xml/device_admin = 0x7f140002
 com.cdccreditsmart.app:xml/backup_rules = 0x7f140000
 com.cdccreditsmart.app:styleable/include = 0x7f1300a8
