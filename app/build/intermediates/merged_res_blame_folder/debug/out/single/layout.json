@@ -1,0 +1,26 @@
+[
+    {
+        "merged": "com.cdccreditsmart.app-mergeDebugResources-46:/layout/fragment_profile.xml",
+        "source": "com.cdccreditsmart.app-main-49:/layout/fragment_profile.xml"
+    },
+    {
+        "merged": "com.cdccreditsmart.app-mergeDebugResources-46:/layout/fragment_home.xml",
+        "source": "com.cdccreditsmart.app-main-49:/layout/fragment_home.xml"
+    },
+    {
+        "merged": "com.cdccreditsmart.app-mergeDebugResources-46:/layout/fragment_installments.xml",
+        "source": "com.cdccreditsmart.app-main-49:/layout/fragment_installments.xml"
+    },
+    {
+        "merged": "com.cdccreditsmart.app-mergeDebugResources-46:/layout/fragment_support.xml",
+        "source": "com.cdccreditsmart.app-main-49:/layout/fragment_support.xml"
+    },
+    {
+        "merged": "com.cdccreditsmart.app-mergeDebugResources-46:/layout/fragment_payments.xml",
+        "source": "com.cdccreditsmart.app-main-49:/layout/fragment_payments.xml"
+    },
+    {
+        "merged": "com.cdccreditsmart.app-mergeDebugResources-46:/layout/activity_main.xml",
+        "source": "com.cdccreditsmart.app-main-49:/layout/activity_main.xml"
+    }
+]

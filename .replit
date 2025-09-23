@@ -27,4 +27,4 @@ args = "export JAVA_HOME=/nix/store/xad649j61kwkh0id5wvyiab5rliprp4d-openjdk-17.
 
 [nix]
 channel = "stable-25_05"
-packages = ["openjdk17", "android-tools"]
+packages = ["openjdk17", "android-tools", "wget", "curl", "unzip"]

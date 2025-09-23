@@ -5,12 +5,12 @@ plugins {
 
 android {
     namespace = "com.cdccreditsmart.app"
-    compileSdk = 31
+    compileSdk = 34
 
     defaultConfig {
         applicationId = "com.cdccreditsmart.app"
         minSdk = 26
-        targetSdk = 31
+        targetSdk = 34
         versionCode = 1
         versionName = "1.0.0"
 
