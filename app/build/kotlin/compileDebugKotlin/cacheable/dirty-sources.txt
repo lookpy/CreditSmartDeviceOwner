@@ -1,0 +1,11 @@
+/home/runner/workspace/app/src/main/java/com/cdccreditsmart/app/presentation/profile/ProfileFragment.kt
+/home/runner/workspace/app/src/main/java/com/cdccreditsmart/app/presentation/MainActivity.kt
+/home/runner/workspace/app/src/main/java/com/cdccreditsmart/app/presentation/payments/PaymentsFragment.kt
+/home/runner/workspace/app/src/main/java/com/cdccreditsmart/app/CDCWorkerFactory.kt
+/home/runner/workspace/app/src/main/java/com/cdccreditsmart/app/presentation/home/HomeFragment.kt
+/home/runner/workspace/app/src/main/java/com/cdccreditsmart/app/SecurityManager.kt
+/home/runner/workspace/app/src/main/java/com/cdccreditsmart/app/presentation/home/HomeViewModel.kt
+/home/runner/workspace/app/src/main/java/com/cdccreditsmart/app/presentation/installments/InstallmentsFragment.kt
+/home/runner/workspace/app/src/main/java/com/cdccreditsmart/app/CDCApplication.kt
+/home/runner/workspace/app/src/main/java/com/cdccreditsmart/app/presentation/support/SupportFragment.kt
+/home/runner/workspace/app/src/main/java/com/cdccreditsmart/app/DeviceIntegrityChecker.kt
