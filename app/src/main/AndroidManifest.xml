@@ -42,6 +42,54 @@
     <uses-permission android:name="com.samsung.android.knox.permission.KNOX_VPN" />
     <uses-permission android:name="com.samsung.android.knox.permission.KNOX_SECURITY" />
     
+    <!-- Knox SDK v3.12+ Enterprise permissions -->
+    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_APPLICATION" />
+    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_RESTRICTION" />
+    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_DEVICE_CONFIGURATION" />
+    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_KEYSTORE" />
+    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_CERTIFICATE" />
+    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_BLUETOOTH" />
+    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_LOCATION" />
+    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_EMAIL" />
+    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_BROWSER" />
+    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_PHONE_RESTRICTION" />
+    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_WIFI" />
+    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_KIOSK_MODE" />
+    
+    <!-- Knox Platform Enterprise (KPE) permissions -->
+    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_LICENSE" />
+    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_APP_MGMT" />
+    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_ENTERPRISE_DEVICE_ADMIN" />
+    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_MULTI_USER_MGMT" />
+    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_SEAMS_MGMT" />
+    
+    <!-- Knox Attestation and Hardware Security -->
+    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_ATTESTATION" />
+    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_HARDWARE_CONTROL" />
+    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_DUALDAR" />
+    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_UCM_ESE_MGMT" />
+    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_UCM_MGMT" />
+    
+    <!-- Knox Container Advanced permissions -->
+    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_CONTAINER_VPN" />
+    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_CONTAINER_RCP" />
+    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_SECURE_FOLDER" />
+    
+    <!-- Knox Advanced Security policies -->
+    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_ADVANCED_SECURITY" />
+    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_TIMA_KEYSTORE" />
+    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_CUSTOM_SETTING" />
+    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_CUSTOM_SYSTEM" />
+    
+    <!-- Knox E-FOTA and Remote Management -->
+    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_EFOTA" />
+    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_REMOTE_CONTROL" />
+    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_SDP" />
+    
+    <!-- Knox Android 15+ specific permissions -->
+    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_ENHANCED_ATTESTATION" />
+    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_WORKSPACE_MGMT" />
+    
     <!-- MIUI (Xiaomi) permissions -->
     <uses-permission android:name="miui.permission.USE_INTERNAL_GENERAL_API" />
     <uses-permission android:name="android.permission.WRITE_SECURE_SETTINGS" />
