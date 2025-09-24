@@ -2,13 +2,14 @@ package com.cdccreditsmart.data.repository
 
 import com.cdccreditsmart.data.local.dao.ContractDao
 import com.cdccreditsmart.data.local.entity.ContractTermsEntity
-import com.cdccreditsmart.data.local.entity.toDomain
-import com.cdccreditsmart.data.local.entity.toEntity
+import com.cdccreditsmart.data.local.entity.toDomain as entityToDomain
+import com.cdccreditsmart.data.local.entity.toEntity as toEntityModel
+import com.cdccreditsmart.data.mapper.toDomain as networkToDomain
 import com.cdccreditsmart.domain.model.*
 import com.cdccreditsmart.domain.repository.*
 import com.cdccreditsmart.network.api.*
 import com.cdccreditsmart.network.error.NetworkErrorMapper
-import com.cdccreditsmart.network.error.Resource
+import com.cdccreditsmart.domain.common.Resource
 import kotlinx.coroutines.flow.Flow
 import retrofit2.Response
 import kotlinx.coroutines.flow.flow
@@ -29,7 +30,7 @@ class ContractRepositoryImpl @Inject constructor(
         version: String?,
         forceRefresh: Boolean
     ): Flow<Resource<Terms>> = flow {
-        emit(Resource.loading())
+        emit(Resource.Loading())
         
         // First try to get from cache (offline-first)
         if (!forceRefresh) {
@@ -47,7 +48,7 @@ class ContractRepositoryImpl @Inject constructor(
                     effectiveDate = LocalDateTime.ofEpochSecond(cachedTerms.effectiveDate, 0, java.time.ZoneOffset.UTC),
                     fetchedAt = LocalDateTime.ofEpochSecond(cachedTerms.fetchedAt, 0, java.time.ZoneOffset.UTC)
                 )
-                emit(Resource.success(terms))
+                emit(Resource.Success(terms))
             }
         }
         
@@ -75,18 +76,18 @@ class ContractRepositoryImpl @Inject constructor(
                 )
                 contractDao.insertTerms(entity)
                 
-                emit(Resource.success(terms))
+                emit(Resource.Success(terms))
             } else {
                 val exception = networkErrorMapper.mapToCdcException(
                     RuntimeException("Failed to get contract terms: ${response.code()}")
                 )
-                emit(Resource.error(exception))
+                emit(Resource.Error(exception))
             }
         } catch (e: Exception) {
             val exception = networkErrorMapper.mapToCdcException(e)
-            emit(Resource.error(exception))
+            emit(Resource.Error(exception))
         }
-    }.onStart { emit(Resource.loading()) }
+    }.onStart { emit(Resource.Loading()) }
 
     override suspend fun signContract(
         contractId: String?,
@@ -98,7 +99,7 @@ class ContractRepositoryImpl @Inject constructor(
         signatureVectorsHash: String,
         ipAddress: String?
     ): Flow<Resource<SignatureSession>> = flow {
-        emit(Resource.loading())
+        emit(Resource.Loading())
         
         try {
             val request = ContractSignRequest(
@@ -134,16 +135,16 @@ class ContractRepositoryImpl @Inject constructor(
                     completedAt = LocalDateTime.ofEpochSecond(responseBody.signedAt, 0, java.time.ZoneOffset.UTC)
                 )
                 
-                emit(Resource.success(signatureSession))
+                emit(Resource.Success(signatureSession))
             } else {
                 val exception = networkErrorMapper.mapToCdcException(
                     RuntimeException("Failed to sign contract: ${response.code()}")
                 )
-                emit(Resource.error(exception))
+                emit(Resource.Error(exception))
             }
         } catch (e: Exception) {
             val exception = networkErrorMapper.mapToCdcException(e)
-            emit(Resource.error(exception))
+            emit(Resource.Error(exception))
         }
     }
 
@@ -153,7 +154,7 @@ class ContractRepositoryImpl @Inject constructor(
         lastSyncTimestamp: Long?,
         localHash: String?
     ): Flow<Resource<ContractSyncResult>> = flow {
-        emit(Resource.loading())
+        emit(Resource.Loading())
         
         try {
             val request = ContractSyncRequest(
@@ -184,26 +185,26 @@ class ContractRepositoryImpl @Inject constructor(
                     }
                 )
                 
-                emit(Resource.success(syncResult))
+                emit(Resource.Success(syncResult))
             } else {
                 val exception = networkErrorMapper.mapToCdcException(
                     RuntimeException("Failed to sync contract: ${response.code()}")
                 )
-                emit(Resource.error(exception))
+                emit(Resource.Error(exception))
             }
         } catch (e: Exception) {
             val exception = networkErrorMapper.mapToCdcException(e)
-            emit(Resource.error(exception))
+            emit(Resource.Error(exception))
         }
     }
 
     override fun getContract(contractId: String): Flow<Resource<Contract>> = flow {
-        emit(Resource.loading())
+        emit(Resource.Loading())
         
         // First try to get from cache
         val cachedContract = contractDao.getContractById(contractId)
         if (cachedContract != null) {
-            emit(Resource.success(cachedContract.toDomain()))
+            emit(Resource.Success(cachedContract.entityToDomain()))
         }
         
         // Then try to refresh from network
@@ -237,29 +238,29 @@ class ContractRepositoryImpl @Inject constructor(
                 )
                 
                 // Update cache
-                contractDao.insertContract(contract.toEntity())
+                contractDao.insertContract(contract.toEntityModel())
                 
-                emit(Resource.success(contract))
+                emit(Resource.Success(contract))
             } else if (cachedContract == null) {
                 val exception = networkErrorMapper.mapToCdcException(
                     RuntimeException("Contract not found: ${response.code()}")
                 )
-                emit(Resource.error(exception))
+                emit(Resource.Error(exception))
             }
         } catch (e: Exception) {
             if (cachedContract == null) {
                 val exception = networkErrorMapper.mapToCdcException(e)
-                emit(Resource.error(exception))
+                emit(Resource.Error(exception))
             }
             // If we have cached data, we already emitted it above
         }
-    }.onStart { emit(Resource.loading()) }
+    }.onStart { emit(Resource.Loading()) }
 
     override fun getContractSignatures(
         contractId: String,
         forceRefresh: Boolean
     ): Flow<Resource<List<ContractSignature>>> = flow {
-        emit(Resource.loading())
+        emit(Resource.Loading())
         
         try {
             val response = contractApiService.getContractSignatures(contractId)
@@ -279,40 +280,40 @@ class ContractRepositoryImpl @Inject constructor(
                     )
                 }
                 
-                emit(Resource.success(signatures))
+                emit(Resource.Success(signatures))
             } else {
                 val exception = networkErrorMapper.mapToCdcException(
                     RuntimeException("Failed to get contract signatures: ${response.code()}")
                 )
-                emit(Resource.error(exception))
+                emit(Resource.Error(exception))
             }
         } catch (e: Exception) {
             val exception = networkErrorMapper.mapToCdcException(e)
-            emit(Resource.error(exception))
+            emit(Resource.Error(exception))
         }
     }
 
     override fun getContractByCode(contractCode: String): Flow<Contract?> {
         return contractDao.getContractByCode(contractCode).map { entity ->
-            entity?.toDomain()
+            entity?.entityToDomain()
         }
     }
 
     override fun getContractsByCustomer(customerId: String): Flow<List<Contract>> {
         return contractDao.getContractsByCustomer(customerId).map { entities ->
-            entities.map { it.toDomain() }
+            entities.map { it.entityToDomain() }
         }
     }
 
     override fun getContractsByStatus(status: String): Flow<List<Contract>> {
         return contractDao.getContractsByStatus(status).map { entities ->
-            entities.map { it.toDomain() }
+            entities.map { it.entityToDomain() }
         }
     }
 
     override fun getAllContracts(): Flow<List<Contract>> {
         return contractDao.getAllContracts().map { entities ->
-            entities.map { it.toDomain() }
+            entities.map { it.entityToDomain() }
         }
     }
 
@@ -333,15 +334,15 @@ class ContractRepositoryImpl @Inject constructor(
     }
 
     override suspend fun syncAllContractData(): Flow<Resource<Unit>> = flow {
-        emit(Resource.loading())
+        emit(Resource.Loading())
         
         try {
             // This would implement a more sophisticated sync strategy
             // For now, just mark as successful
-            emit(Resource.success(Unit))
+            emit(Resource.Success(Unit))
         } catch (e: Exception) {
             val exception = networkErrorMapper.mapToCdcException(e)
-            emit(Resource.error(exception))
+            emit(Resource.Error(exception))
         }
     }
 }

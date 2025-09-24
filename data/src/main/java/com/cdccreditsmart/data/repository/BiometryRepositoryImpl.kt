@@ -1,14 +1,15 @@
 package com.cdccreditsmart.data.repository
 
 import com.cdccreditsmart.data.local.dao.BiometrySessionDao
-import com.cdccreditsmart.data.local.entity.toDomain
-import com.cdccreditsmart.data.local.entity.toEntity
+import com.cdccreditsmart.data.local.entity.toDomain as entityToDomain
+import com.cdccreditsmart.data.local.entity.toEntity as toEntityModel
+import com.cdccreditsmart.data.mapper.toDomain as networkToDomain
 import com.cdccreditsmart.domain.model.BiometrySession
 import com.cdccreditsmart.domain.model.BiometryResult
 import com.cdccreditsmart.domain.model.BiometryStatus
 import com.cdccreditsmart.domain.repository.BiometryRepository
 import com.cdccreditsmart.network.error.NetworkErrorMapper
-import com.cdccreditsmart.network.error.Resource
+import com.cdccreditsmart.domain.common.Resource
 import com.cdccreditsmart.network.api.*
 import kotlinx.coroutines.flow.Flow
 import retrofit2.Response
@@ -32,7 +33,7 @@ class BiometryRepositoryImpl @Inject constructor(
         contractId: String,
         verificationType: String
     ): Flow<Resource<BiometrySession>> = flow {
-        emit(Resource.loading())
+        emit(Resource.Loading())
         
         try {
             val request = CreateBiometrySessionRequest(
@@ -44,26 +45,21 @@ class BiometryRepositoryImpl @Inject constructor(
             val response = biometryApiService.createBiometrySession(request)
             
             if (response.isSuccessful && response.body() != null) {
-                val responseBody = response.body()!!
-                val session = BiometrySession(
-                    sessionId = responseBody.sessionId,
-                    status = BiometryStatus.PENDING,
-                    createdAt = LocalDateTime.now()
-                )
+                val session = response.body()!!.networkToDomain()
                 
                 // Cache the session
-                biometrySessionDao.insertSession(session.toEntity())
+                biometrySessionDao.insertSession(session.toEntityModel())
                 
-                emit(Resource.success(session))
+                emit(Resource.Success(session))
             } else {
                 val exception = networkErrorMapper.mapToCdcException(
-                    RuntimeException("Failed to create biometry session: ${response.code}")
+                    RuntimeException("Failed to create biometry session: ${response.code()}")
                 )
-                emit(Resource.error(exception))
+                emit(Resource.Error(exception))
             }
         } catch (e: Exception) {
             val exception = networkErrorMapper.mapToCdcException(e)
-            emit(Resource.error(exception))
+            emit(Resource.Error(exception))
         }
     }
 
@@ -74,7 +70,7 @@ class BiometryRepositoryImpl @Inject constructor(
         qualityScore: Double,
         faceImage: String?
     ): Flow<Resource<BiometryResult>> = flow {
-        emit(Resource.loading())
+        emit(Resource.Loading())
         
         try {
             val request = FaceBiometryRequest(
@@ -92,47 +88,34 @@ class BiometryRepositoryImpl @Inject constructor(
             val response = biometryApiService.verifyFacialBiometry(request)
             
             if (response.isSuccessful && response.body() != null) {
-                val responseBody = response.body()!!
-                val result = BiometryResult(
-                    success = responseBody.status == "approved",
-                    status = when (responseBody.status) {
-                        "approved" -> BiometryStatus.APPROVED
-                        "denied" -> BiometryStatus.DENIED
-                        "review" -> BiometryStatus.REVIEW
-                        "error" -> BiometryStatus.ERROR
-                        else -> BiometryStatus.PROCESSING
-                    },
-                    livenessScore = responseBody.confidence.toFloat(),
-                    sessionId = responseBody.sessionId,
-                    errorMessage = responseBody.message
-                )
+                val result = response.body()!!.networkToDomain()
                 
                 // Update session in cache
-                val status = result.status.name
-                val completedAt = if (result.status != BiometryStatus.PROCESSING) 
+                val status = result.finalStatus.name
+                val completedAt = if (result.finalStatus != BiometryStatus.PROCESSING) 
                     System.currentTimeMillis() else null
                 biometrySessionDao.updateSessionStatus(sessionId, status, completedAt)
                 
-                emit(Resource.success(result))
+                emit(Resource.Success(result))
             } else {
                 val exception = networkErrorMapper.mapToCdcException(
-                    RuntimeException("Failed to verify biometry: ${response.code}")
+                    RuntimeException("Failed to verify biometry: ${response.code()}")
                 )
-                emit(Resource.error(exception))
+                emit(Resource.Error(exception))
             }
         } catch (e: Exception) {
             val exception = networkErrorMapper.mapToCdcException(e)
-            emit(Resource.error(exception))
+            emit(Resource.Error(exception))
         }
     }
 
     override fun getBiometrySessionStatus(sessionId: String): Flow<Resource<BiometrySession>> = flow {
-        emit(Resource.loading())
+        emit(Resource.Loading())
         
         // First try to get from cache
         val cachedSession = biometrySessionDao.getSessionById(sessionId)
         if (cachedSession != null) {
-            emit(Resource.success(cachedSession.toDomain()))
+            emit(Resource.Success(cachedSession.entityToDomain()))
         }
         
         // Then try to refresh from network
@@ -140,50 +123,29 @@ class BiometryRepositoryImpl @Inject constructor(
             val response = biometryApiService.getBiometrySessionStatus(sessionId)
             
             if (response.isSuccessful && response.body() != null) {
-                val responseBody = response.body()!!
-                val session = BiometrySession(
-                    id = sessionId,
-                    sessionId = responseBody.sessionId,
-                    status = when (responseBody.status) {
-                        "pending" -> BiometryStatus.PENDING
-                        "processing" -> BiometryStatus.PROCESSING
-                        "approved" -> BiometryStatus.APPROVED
-                        "denied" -> BiometryStatus.DENIED
-                        "review" -> BiometryStatus.REVIEW
-                        "error" -> BiometryStatus.ERROR
-                        "timeout" -> BiometryStatus.TIMEOUT
-                        else -> BiometryStatus.PENDING
-                    },
-                    livenessScore = responseBody.result?.confidence?.toFloat(),
-                    resultId = responseBody.result?.resultId,
-                    errorMessage = responseBody.result?.message,
-                    createdAt = LocalDateTime.ofEpochSecond(responseBody.createdAt, 0, java.time.ZoneOffset.UTC),
-                    completedAt = responseBody.lastAttemptAt?.let { 
-                        LocalDateTime.ofEpochSecond(it, 0, java.time.ZoneOffset.UTC) 
-                    }
-                )
+                val session = response.body()!!.networkToDomain()
                 
                 // Update cache
-                biometrySessionDao.insertSession(session.toEntity())
+                biometrySessionDao.insertSession(session.toEntityModel())
                 
-                emit(Resource.success(session))
+                emit(Resource.Success(session))
             } else if (cachedSession == null) {
                 val exception = networkErrorMapper.mapToCdcException(
-                    RuntimeException("Session not found: ${response.code}")
+                    RuntimeException("Session not found: ${response.code()}")
                 )
-                emit(Resource.error(exception))
+                emit(Resource.Error(exception))
             }
         } catch (e: Exception) {
             if (cachedSession == null) {
                 val exception = networkErrorMapper.mapToCdcException(e)
-                emit(Resource.error(exception))
+                emit(Resource.Error(exception))
             }
             // If we have cached data, we already emitted it above
         }
-    }.onStart { emit(Resource.loading()) }
+    }.onStart { emit(Resource.Loading()) }
 
     override suspend fun cancelBiometrySession(sessionId: String): Flow<Resource<Unit>> = flow {
-        emit(Resource.loading())
+        emit(Resource.Loading())
         
         try {
             val response = biometryApiService.cancelBiometrySession(sessionId)
@@ -196,16 +158,16 @@ class BiometryRepositoryImpl @Inject constructor(
                     System.currentTimeMillis()
                 )
                 
-                emit(Resource.success(Unit))
+                emit(Resource.Success(Unit))
             } else {
                 val exception = networkErrorMapper.mapToCdcException(
-                    RuntimeException("Failed to cancel session: ${response.code}")
+                    RuntimeException("Failed to cancel session: ${response.code()}")
                 )
-                emit(Resource.error(exception))
+                emit(Resource.Error(exception))
             }
         } catch (e: Exception) {
             val exception = networkErrorMapper.mapToCdcException(e)
-            emit(Resource.error(exception))
+            emit(Resource.Error(exception))
         }
     }
 
@@ -214,14 +176,14 @@ class BiometryRepositoryImpl @Inject constructor(
         limit: Int,
         forceRefresh: Boolean
     ): Flow<Resource<List<BiometrySession>>> = flow {
-        emit(Resource.loading())
+        emit(Resource.Loading())
         
         // Always emit cached data first (offline-first)
         if (!forceRefresh) {
             val cachedSessions = biometrySessionDao.getRecentSessions(limit)
             cachedSessions.collect { sessions ->
                 if (sessions.isNotEmpty()) {
-                    emit(Resource.success(sessions.map { it.toDomain() }))
+                    emit(Resource.Success(sessions.map { it.entityToDomain() }))
                 }
             }
         }
@@ -232,58 +194,41 @@ class BiometryRepositoryImpl @Inject constructor(
             
             if (response.isSuccessful && response.body() != null) {
                 val responseBody = response.body()!!
-                val sessions = responseBody.sessions.map { historySession ->
-                    BiometrySession(
-                        id = historySession.sessionId,
-                        sessionId = historySession.sessionId,
-                        status = when (historySession.status) {
-                            "pending" -> BiometryStatus.PENDING
-                            "processing" -> BiometryStatus.PROCESSING
-                            "approved" -> BiometryStatus.APPROVED
-                            "denied" -> BiometryStatus.DENIED
-                            "review" -> BiometryStatus.REVIEW
-                            "error" -> BiometryStatus.ERROR
-                            "timeout" -> BiometryStatus.TIMEOUT
-                            else -> BiometryStatus.PENDING
-                        },
-                        livenessScore = historySession.confidence?.toFloat(),
-                        createdAt = LocalDateTime.ofEpochSecond(historySession.createdAt, 0, java.time.ZoneOffset.UTC)
-                    )
-                }
+                val sessions = responseBody.sessions.map { it.networkToDomain() }
                 
                 // Update cache
-                biometrySessionDao.insertSessions(sessions.map { it.toEntity() })
+                biometrySessionDao.insertSessions(sessions.map { it.toEntityModel() })
                 
-                emit(Resource.success(sessions))
+                emit(Resource.Success(sessions))
             }
         } catch (e: Exception) {
             val exception = networkErrorMapper.mapToCdcException(e)
-            emit(Resource.error(exception))
+            emit(Resource.Error(exception))
         }
-    }.onStart { emit(Resource.loading()) }
+    }.onStart { emit(Resource.Loading()) }
 
     override fun getRecentSessions(limit: Int): Flow<List<BiometrySession>> {
         return biometrySessionDao.getRecentSessions(limit).map { entities ->
-            entities.map { it.toDomain() }
+            entities.map { it.entityToDomain() }
         }
     }
 
     override fun getActiveSessions(): Flow<List<BiometrySession>> {
         return biometrySessionDao.getActiveSessions().map { entities ->
-            entities.map { it.toDomain() }
+            entities.map { it.entityToDomain() }
         }
     }
 
     override suspend fun syncBiometryData(): Flow<Resource<Unit>> = flow {
-        emit(Resource.loading())
+        emit(Resource.Loading())
         
         try {
             // This would implement a more sophisticated sync strategy
             // For now, just mark as successful
-            emit(Resource.success(Unit))
+            emit(Resource.Success(Unit))
         } catch (e: Exception) {
             val exception = networkErrorMapper.mapToCdcException(e)
-            emit(Resource.error(exception))
+            emit(Resource.Error(exception))
         }
     }
 }

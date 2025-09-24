@@ -4,12 +4,13 @@ import com.cdccreditsmart.data.local.dao.DeviceBindingDao
 import com.cdccreditsmart.data.local.dao.DeviceStatusDao
 import com.cdccreditsmart.data.local.dao.InstallmentDao
 import com.cdccreditsmart.data.local.entity.DeviceStatusEntity
+import com.cdccreditsmart.data.mapper.toDomain as networkToDomain
 import com.cdccreditsmart.domain.model.DeviceBinding
 import com.cdccreditsmart.domain.model.Installment
 import com.cdccreditsmart.domain.repository.*
 import com.cdccreditsmart.network.api.*
 import com.cdccreditsmart.network.error.NetworkErrorMapper
-import com.cdccreditsmart.network.error.Resource
+import com.cdccreditsmart.domain.common.Resource
 import kotlinx.coroutines.flow.Flow
 import retrofit2.Response
 import kotlinx.coroutines.flow.flow
@@ -35,7 +36,7 @@ class DeviceRepositoryImpl @Inject constructor(
         attestationToken: String,
         deviceInfo: DeviceInfo
     ): Flow<Resource<DeviceAttestationResult>> = flow {
-        emit(Resource.loading())
+        emit(Resource.Loading())
         
         try {
             val request = DeviceAttestRequest(
@@ -62,16 +63,16 @@ class DeviceRepositoryImpl @Inject constructor(
                     status = responseBody.status
                 )
                 
-                emit(Resource.success(result))
+                emit(Resource.Success(result))
             } else {
                 val exception = networkErrorMapper.mapToCdcException(
-                    RuntimeException("Failed to attest device: ${response.code}")
+                    RuntimeException("Failed to attest device: ${response.code()}")
                 )
-                emit(Resource.error(exception))
+                emit(Resource.Error(exception))
             }
         } catch (e: Exception) {
             val exception = networkErrorMapper.mapToCdcException(e)
-            emit(Resource.error(exception))
+            emit(Resource.Error(exception))
         }
     }
 
@@ -81,7 +82,7 @@ class DeviceRepositoryImpl @Inject constructor(
         imeiDigitado: String,
         attestedDeviceId: String
     ): Flow<Resource<DeviceBinding>> = flow {
-        emit(Resource.loading())
+        emit(Resource.Loading())
         
         try {
             val request = DeviceBindRequest(
@@ -94,20 +95,10 @@ class DeviceRepositoryImpl @Inject constructor(
             val response = deviceApiService.bindDevice(request)
             
             if (response.isSuccessful && response.body() != null) {
-                val responseBody = response.body()!!
-                val binding = DeviceBinding(
-                    id = responseBody.bindingId,
+                val binding = response.body()!!.networkToDomain(
                     contractCode = contractCode,
                     attestedDeviceId = attestedDeviceId,
-                    devicePubKeyFingerprint = "", // Would come from previous attestation
-                    status = when (responseBody.status) {
-                        "active" -> com.cdccreditsmart.domain.model.BindingStatus.ACTIVE
-                        "blocked" -> com.cdccreditsmart.domain.model.BindingStatus.BLOCKED
-                        "pending" -> com.cdccreditsmart.domain.model.BindingStatus.PENDING
-                        "expired" -> com.cdccreditsmart.domain.model.BindingStatus.EXPIRED
-                        "revoked" -> com.cdccreditsmart.domain.model.BindingStatus.REVOKED
-                        else -> com.cdccreditsmart.domain.model.BindingStatus.PENDING
-                    }
+                    devicePubKeyFingerprint = "" // Would come from previous attestation
                 )
                 
                 // Cache the binding
@@ -123,26 +114,26 @@ class DeviceRepositoryImpl @Inject constructor(
                     )
                 )
                 
-                emit(Resource.success(binding))
+                emit(Resource.Success(binding))
             } else {
                 val exception = networkErrorMapper.mapToCdcException(
-                    RuntimeException("Failed to bind device: ${response.code}")
+                    RuntimeException("Failed to bind device: ${response.code()}")
                 )
-                emit(Resource.error(exception))
+                emit(Resource.Error(exception))
             }
         } catch (e: Exception) {
             val exception = networkErrorMapper.mapToCdcException(e)
-            emit(Resource.error(exception))
+            emit(Resource.Error(exception))
         }
     }
 
     override fun getDeviceStatus(deviceId: String): Flow<Resource<DeviceStatus>> = flow {
-        emit(Resource.loading())
+        emit(Resource.Loading())
         
         // First try to get from cache
         val cachedStatus = deviceStatusDao.getDeviceStatus(deviceId)
         if (cachedStatus != null) {
-            emit(Resource.success(mapEntityToDomainStatus(cachedStatus)))
+            emit(Resource.Success(mapEntityToDomainStatus(cachedStatus)))
         }
         
         // Then try to refresh from network
@@ -150,38 +141,22 @@ class DeviceRepositoryImpl @Inject constructor(
             val response = deviceApiService.getDeviceStatus(deviceId)
             
             if (response.isSuccessful && response.body() != null) {
-                val responseBody = response.body()!!
-                val deviceStatus = DeviceStatus(
-                    deviceId = responseBody.deviceId,
-                    status = responseBody.status,
-                    contractId = responseBody.contractId,
-                    blockingLevel = responseBody.blockingPolicy?.level,
-                    blockingReason = responseBody.blockingPolicy?.reason,
-                    allowedActions = responseBody.blockingPolicy?.allowedActions ?: emptyList(),
-                    blockedPackages = responseBody.blockingPolicy?.blockedPackages ?: emptyList(),
-                    lastHeartbeat = responseBody.lastHeartbeat,
-                    configuration = DeviceConfiguration(
-                        updateCheckInterval = responseBody.configuration.updateCheckInterval,
-                        heartbeatInterval = responseBody.configuration.heartbeatInterval,
-                        logLevel = responseBody.configuration.logLevel,
-                        featureFlags = responseBody.configuration.featureFlags
-                    )
-                )
+                val deviceStatus = response.body()!!.networkToDomain()
                 
-                // Update cache
+                // Update cache with proper entity mapping
                 val entity = DeviceStatusEntity(
                     deviceId = deviceStatus.deviceId,
                     status = deviceStatus.status,
                     contractId = deviceStatus.contractId,
-                    blockingLevel = deviceStatus.blockingLevel,
-                    blockingReason = deviceStatus.blockingReason,
+                    blockingLevel = deviceStatus.blockingPolicy?.level?.name,
+                    blockingReason = deviceStatus.blockingPolicy?.reason,
                     allowedActions = moshi.adapter<List<String>>(
                         Types.newParameterizedType(List::class.java, String::class.java)
-                    ).toJson(deviceStatus.allowedActions),
+                    ).toJson(deviceStatus.blockingPolicy?.allowedActions ?: emptyList()),
                     blockedPackages = moshi.adapter<List<String>>(
                         Types.newParameterizedType(List::class.java, String::class.java)
-                    ).toJson(deviceStatus.blockedPackages),
-                    lastHeartbeat = deviceStatus.lastHeartbeat,
+                    ).toJson(deviceStatus.blockingPolicy?.blockedPackages ?: emptyList()),
+                    lastHeartbeat = deviceStatus.lastHeartbeat?.toEpochMilli(),
                     updateCheckInterval = deviceStatus.configuration.updateCheckInterval,
                     heartbeatInterval = deviceStatus.configuration.heartbeatInterval,
                     logLevel = deviceStatus.configuration.logLevel,
@@ -193,28 +168,28 @@ class DeviceRepositoryImpl @Inject constructor(
                 
                 deviceStatusDao.insertDeviceStatus(entity)
                 
-                emit(Resource.success(deviceStatus))
+                emit(Resource.Success(deviceStatus))
             } else if (cachedStatus == null) {
                 val exception = networkErrorMapper.mapToCdcException(
-                    RuntimeException("Device status not found: ${response.code}")
+                    RuntimeException("Device status not found: ${response.code()}")
                 )
-                emit(Resource.error(exception))
+                emit(Resource.Error(exception))
             }
         } catch (e: Exception) {
             if (cachedStatus == null) {
                 val exception = networkErrorMapper.mapToCdcException(e)
-                emit(Resource.error(exception))
+                emit(Resource.Error(exception))
             }
             // If we have cached data, we already emitted it above
         }
-    }.onStart { emit(Resource.loading()) }
+    }.onStart { emit(Resource.Loading()) }
 
     override suspend fun sendHeartbeat(
         deviceId: String,
         batteryLevel: Int?,
         location: DeviceLocation?
     ): Flow<Resource<Unit>> = flow {
-        emit(Resource.loading())
+        emit(Resource.Loading())
         
         try {
             val request = HeartbeatRequest(
@@ -240,16 +215,16 @@ class DeviceRepositoryImpl @Inject constructor(
                     lastHeartbeat = System.currentTimeMillis()
                 )
                 
-                emit(Resource.success(Unit))
+                emit(Resource.Success(Unit))
             } else {
                 val exception = networkErrorMapper.mapToCdcException(
-                    RuntimeException("Failed to send heartbeat: ${response.code}")
+                    RuntimeException("Failed to send heartbeat: ${response.code()}")
                 )
-                emit(Resource.error(exception))
+                emit(Resource.Error(exception))
             }
         } catch (e: Exception) {
             val exception = networkErrorMapper.mapToCdcException(e)
-            emit(Resource.error(exception))
+            emit(Resource.Error(exception))
         }
     }
 
@@ -257,14 +232,14 @@ class DeviceRepositoryImpl @Inject constructor(
         deviceId: String,
         forceRefresh: Boolean
     ): Flow<Resource<List<Installment>>> = flow {
-        emit(Resource.loading())
+        emit(Resource.Loading())
         
         // Always emit cached data first (offline-first)
         if (!forceRefresh) {
             val cachedInstallments = installmentDao.getInstallmentsByDeviceId()
             cachedInstallments.collect { installments ->
                 if (installments.isNotEmpty()) {
-                    emit(Resource.success(installments.map { it.toDomain() }))
+                    emit(Resource.Success(installments.map { it.entityToDomain() }))
                 }
             }
         }
@@ -274,33 +249,18 @@ class DeviceRepositoryImpl @Inject constructor(
             val response = deviceApiService.getInstallments(deviceId)
             
             if (response.isSuccessful && response.body() != null) {
-                val responseBody = response.body()!!
-                val installments = responseBody.installments.map { installmentInfo ->
-                    Installment(
-                        id = installmentInfo.id,
-                        number = installmentInfo.number,
-                        dueDate = java.time.LocalDate.parse(installmentInfo.dueDate),
-                        amount = java.math.BigDecimal.valueOf(installmentInfo.amount),
-                        status = when (installmentInfo.status) {
-                            "paid" -> com.cdccreditsmart.domain.model.InstallmentStatus.PAID
-                            "pending" -> com.cdccreditsmart.domain.model.InstallmentStatus.PENDING
-                            "overdue" -> com.cdccreditsmart.domain.model.InstallmentStatus.OVERDUE
-                            else -> com.cdccreditsmart.domain.model.InstallmentStatus.PENDING
-                        },
-                        contractId = responseBody.contractId
-                    )
-                }
+                val installments = response.body()!!.networkToDomain()
                 
                 // Update cache
-                installmentDao.insertInstallments(installments.map { it.toEntity() })
+                installmentDao.insertInstallments(installments.map { it.toEntityModel() })
                 
-                emit(Resource.success(installments))
+                emit(Resource.Success(installments))
             }
         } catch (e: Exception) {
             val exception = networkErrorMapper.mapToCdcException(e)
-            emit(Resource.error(exception))
+            emit(Resource.Error(exception))
         }
-    }.onStart { emit(Resource.loading()) }
+    }.onStart { emit(Resource.Loading()) }
 
     override suspend fun reportUpdateStatus(
         deviceId: String,
@@ -308,7 +268,7 @@ class DeviceRepositoryImpl @Inject constructor(
         updateStatus: String,
         errorMessage: String?
     ): Flow<Resource<Unit>> = flow {
-        emit(Resource.loading())
+        emit(Resource.Loading())
         
         try {
             val request = UpdateReportRequest(
@@ -322,16 +282,16 @@ class DeviceRepositoryImpl @Inject constructor(
             val response = deviceApiService.reportUpdateStatus(request)
             
             if (response.isSuccessful) {
-                emit(Resource.success(Unit))
+                emit(Resource.Success(Unit))
             } else {
                 val exception = networkErrorMapper.mapToCdcException(
-                    RuntimeException("Failed to report update status: ${response.code}")
+                    RuntimeException("Failed to report update status: ${response.code()}")
                 )
-                emit(Resource.error(exception))
+                emit(Resource.Error(exception))
             }
         } catch (e: Exception) {
             val exception = networkErrorMapper.mapToCdcException(e)
-            emit(Resource.error(exception))
+            emit(Resource.Error(exception))
         }
     }
 
@@ -368,15 +328,15 @@ class DeviceRepositoryImpl @Inject constructor(
     }
 
     override suspend fun syncDeviceData(deviceId: String): Flow<Resource<Unit>> = flow {
-        emit(Resource.loading())
+        emit(Resource.Loading())
         
         try {
             // This would implement a more sophisticated sync strategy
             // For now, just mark as successful
-            emit(Resource.success(Unit))
+            emit(Resource.Success(Unit))
         } catch (e: Exception) {
             val exception = networkErrorMapper.mapToCdcException(e)
-            emit(Resource.error(exception))
+            emit(Resource.Error(exception))
         }
     }
 

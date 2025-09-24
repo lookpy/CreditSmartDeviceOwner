@@ -1,13 +1,15 @@
 package com.cdccreditsmart.data.repository
 
 import com.cdccreditsmart.data.local.dao.PaymentDao
-import com.cdccreditsmart.data.local.entity.toDomain
-import com.cdccreditsmart.data.local.entity.toEntity
+import com.cdccreditsmart.data.local.entity.toDomain as entityToDomain
+import com.cdccreditsmart.data.local.entity.toEntity as toEntityModel
+import com.cdccreditsmart.data.mapper.toDomain as networkToDomain
+import com.cdccreditsmart.data.mapper.toPayment
 import com.cdccreditsmart.domain.model.*
 import com.cdccreditsmart.domain.repository.PaymentsRepository
 import com.cdccreditsmart.network.api.*
 import com.cdccreditsmart.network.error.NetworkErrorMapper
-import com.cdccreditsmart.network.error.Resource
+import com.cdccreditsmart.domain.common.Resource
 import kotlinx.coroutines.flow.Flow
 import retrofit2.Response
 import kotlinx.coroutines.flow.flow
@@ -32,7 +34,7 @@ class PaymentsRepositoryImpl @Inject constructor(
         amount: BigDecimal,
         description: String?
     ): Flow<Resource<PixPayment>> = flow {
-        emit(Resource.loading())
+        emit(Resource.Loading())
         
         try {
             val request = CreatePixPaymentRequest(
@@ -47,37 +49,23 @@ class PaymentsRepositoryImpl @Inject constructor(
             if (response.isSuccessful && response.body() != null) {
                 val responseBody = response.body()!!
                 
-                // Create domain PIX payment
-                val pixPayment = PixPayment(
-                    pixCode = responseBody.pixCopyPaste,
-                    qrCodeImage = responseBody.qrCode,
-                    expirationTime = LocalDateTime.ofEpochSecond(responseBody.expiresAt, 0, java.time.ZoneOffset.UTC),
-                    amount = BigDecimal.valueOf(responseBody.amount)
-                )
+                // Create domain PIX payment using mapper
+                val pixPayment = responseBody.networkToDomain()
                 
-                // Cache payment entity
-                val payment = Payment(
-                    id = responseBody.paymentId,
-                    installmentId = installmentId,
-                    method = PaymentMethod.PIX,
-                    amount = amount,
-                    pixCode = responseBody.pixCopyPaste,
-                    status = PaymentStatus.valueOf(responseBody.status.uppercase()),
-                    createdAt = LocalDateTime.now()
-                )
+                // Cache payment entity using mapper
+                val payment = responseBody.toPayment(installmentId)
+                paymentDao.insertPayment(payment.toEntityModel())
                 
-                paymentDao.insertPayment(payment.toEntity())
-                
-                emit(Resource.success(pixPayment))
+                emit(Resource.Success(pixPayment))
             } else {
                 val exception = networkErrorMapper.mapToCdcException(
                     RuntimeException("Failed to create PIX payment: ${response.code()}")
                 )
-                emit(Resource.error(exception))
+                emit(Resource.Error(exception))
             }
         } catch (e: Exception) {
             val exception = networkErrorMapper.mapToCdcException(e)
-            emit(Resource.error(exception))
+            emit(Resource.Error(exception))
         }
     }
 
@@ -88,7 +76,7 @@ class PaymentsRepositoryImpl @Inject constructor(
         dueDate: String,
         description: String?
     ): Flow<Resource<BoletoPayment>> = flow {
-        emit(Resource.loading())
+        emit(Resource.Loading())
         
         try {
             val request = CreateBoletoPaymentRequest(
@@ -104,47 +92,33 @@ class PaymentsRepositoryImpl @Inject constructor(
             if (response.isSuccessful && response.body() != null) {
                 val responseBody = response.body()!!
                 
-                // Create domain Boleto payment
-                val boletoPayment = BoletoPayment(
-                    boletoCode = responseBody.boletoCode,
-                    boletoUrl = responseBody.boletoUrl,
-                    dueDate = LocalDateTime.parse(responseBody.dueDate + "T00:00:00"),
-                    amount = BigDecimal.valueOf(responseBody.amount)
-                )
+                // Create domain Boleto payment using mapper
+                val boletoPayment = responseBody.networkToDomain()
                 
-                // Cache payment entity
-                val payment = Payment(
-                    id = responseBody.paymentId,
-                    installmentId = installmentId,
-                    method = PaymentMethod.BOLETO,
-                    amount = amount,
-                    boletoUrl = responseBody.boletoUrl,
-                    status = PaymentStatus.valueOf(responseBody.status.uppercase()),
-                    createdAt = LocalDateTime.now()
-                )
+                // Cache payment entity using mapper
+                val payment = responseBody.toPayment(installmentId)
+                paymentDao.insertPayment(payment.toEntityModel())
                 
-                paymentDao.insertPayment(payment.toEntity())
-                
-                emit(Resource.success(boletoPayment))
+                emit(Resource.Success(boletoPayment))
             } else {
                 val exception = networkErrorMapper.mapToCdcException(
                     RuntimeException("Failed to create Boleto payment: ${response.code()}")
                 )
-                emit(Resource.error(exception))
+                emit(Resource.Error(exception))
             }
         } catch (e: Exception) {
             val exception = networkErrorMapper.mapToCdcException(e)
-            emit(Resource.error(exception))
+            emit(Resource.Error(exception))
         }
     }
 
     override fun getPaymentStatus(paymentId: String): Flow<Resource<Payment>> = flow {
-        emit(Resource.loading())
+        emit(Resource.Loading())
         
         // First try to get from cache
         val cachedPayment = paymentDao.getPaymentById(paymentId)
         if (cachedPayment != null) {
-            emit(Resource.success(cachedPayment.toDomain()))
+            emit(Resource.Success(cachedPayment.entityToDomain()))
         }
         
         // Then try to refresh from network
@@ -152,38 +126,26 @@ class PaymentsRepositoryImpl @Inject constructor(
             val response = paymentsApiService.getPaymentStatus(paymentId)
             
             if (response.isSuccessful && response.body() != null) {
-                val responseBody = response.body()!!
-                val payment = Payment(
-                    id = responseBody.paymentId,
-                    installmentId = responseBody.installmentId,
-                    method = PaymentMethod.valueOf(responseBody.paymentMethod.uppercase()),
-                    amount = BigDecimal.valueOf(responseBody.amount),
-                    transactionId = responseBody.transactionId,
-                    status = PaymentStatus.valueOf(responseBody.status.uppercase()),
-                    createdAt = LocalDateTime.ofEpochSecond(responseBody.createdAt, 0, java.time.ZoneOffset.UTC),
-                    confirmedAt = responseBody.processedAt?.let { 
-                        LocalDateTime.ofEpochSecond(it, 0, java.time.ZoneOffset.UTC) 
-                    }
-                )
+                val payment = response.body()!!.networkToDomain()
                 
                 // Update cache
-                paymentDao.insertPayment(payment.toEntity())
+                paymentDao.insertPayment(payment.toEntityModel())
                 
-                emit(Resource.success(payment))
+                emit(Resource.Success(payment))
             } else if (cachedPayment == null) {
                 val exception = networkErrorMapper.mapToCdcException(
                     RuntimeException("Payment not found: ${response.code()}")
                 )
-                emit(Resource.error(exception))
+                emit(Resource.Error(exception))
             }
         } catch (e: Exception) {
             if (cachedPayment == null) {
                 val exception = networkErrorMapper.mapToCdcException(e)
-                emit(Resource.error(exception))
+                emit(Resource.Error(exception))
             }
             // If we have cached data, we already emitted it above
         }
-    }.onStart { emit(Resource.loading()) }
+    }.onStart { emit(Resource.Loading()) }
 
     override suspend fun confirmPayment(
         paymentId: String,
@@ -191,7 +153,7 @@ class PaymentsRepositoryImpl @Inject constructor(
         paidAmount: BigDecimal,
         paymentProof: String?
     ): Flow<Resource<Payment>> = flow {
-        emit(Resource.loading())
+        emit(Resource.Loading())
         
         try {
             val request = PaymentConfirmationRequest(
@@ -217,22 +179,22 @@ class PaymentsRepositoryImpl @Inject constructor(
                 // Get updated payment from cache
                 val updatedPayment = paymentDao.getPaymentById(paymentId)
                 if (updatedPayment != null) {
-                    emit(Resource.success(updatedPayment.toDomain()))
+                    emit(Resource.Success(updatedPayment.entityToDomain()))
                 } else {
                     val exception = networkErrorMapper.mapToCdcException(
                         RuntimeException("Failed to retrieve updated payment")
                     )
-                    emit(Resource.error(exception))
+                    emit(Resource.Error(exception))
                 }
             } else {
                 val exception = networkErrorMapper.mapToCdcException(
                     RuntimeException("Failed to confirm payment: ${response.code()}")
                 )
-                emit(Resource.error(exception))
+                emit(Resource.Error(exception))
             }
         } catch (e: Exception) {
             val exception = networkErrorMapper.mapToCdcException(e)
-            emit(Resource.error(exception))
+            emit(Resource.Error(exception))
         }
     }
 
@@ -241,7 +203,7 @@ class PaymentsRepositoryImpl @Inject constructor(
         reason: String,
         cancelledBy: String
     ): Flow<Resource<Unit>> = flow {
-        emit(Resource.loading())
+        emit(Resource.Loading())
         
         try {
             val request = CancelPaymentRequest(
@@ -260,16 +222,16 @@ class PaymentsRepositoryImpl @Inject constructor(
                     transactionId = null
                 )
                 
-                emit(Resource.success(Unit))
+                emit(Resource.Success(Unit))
             } else {
                 val exception = networkErrorMapper.mapToCdcException(
                     RuntimeException("Failed to cancel payment: ${response.code()}")
                 )
-                emit(Resource.error(exception))
+                emit(Resource.Error(exception))
             }
         } catch (e: Exception) {
             val exception = networkErrorMapper.mapToCdcException(e)
-            emit(Resource.error(exception))
+            emit(Resource.Error(exception))
         }
     }
 
@@ -279,14 +241,14 @@ class PaymentsRepositoryImpl @Inject constructor(
         limit: Int,
         forceRefresh: Boolean
     ): Flow<Resource<List<Payment>>> = flow {
-        emit(Resource.loading())
+        emit(Resource.Loading())
         
         // Always emit cached data first (offline-first)
         if (!forceRefresh) {
             val cachedPayments = paymentDao.getRecentPayments(limit)
             cachedPayments.collect { payments ->
                 if (payments.isNotEmpty()) {
-                    emit(Resource.success(payments.map { it.toDomain() }))
+                    emit(Resource.Success(payments.map { it.entityToDomain() }))
                 }
             }
         }
@@ -296,67 +258,53 @@ class PaymentsRepositoryImpl @Inject constructor(
             val response = paymentsApiService.getPaymentHistory(deviceId, contractId, limit)
             
             if (response.isSuccessful && response.body() != null) {
-                val responseBody = response.body()!!
-                val payments = responseBody.payments.map { historyItem ->
-                    Payment(
-                        id = historyItem.paymentId,
-                        installmentId = historyItem.installmentId,
-                        method = PaymentMethod.valueOf(historyItem.paymentMethod.uppercase()),
-                        amount = BigDecimal.valueOf(historyItem.amount),
-                        transactionId = historyItem.transactionId,
-                        status = PaymentStatus.valueOf(historyItem.status.uppercase()),
-                        createdAt = LocalDateTime.ofEpochSecond(historyItem.createdAt, 0, java.time.ZoneOffset.UTC),
-                        confirmedAt = historyItem.processedAt?.let { 
-                            LocalDateTime.ofEpochSecond(it, 0, java.time.ZoneOffset.UTC) 
-                        }
-                    )
-                }
+                val payments = response.body()!!.networkToDomain()
                 
                 // Update cache
-                paymentDao.insertPayments(payments.map { it.toEntity() })
+                paymentDao.insertPayments(payments.map { it.toEntityModel() })
                 
-                emit(Resource.success(payments))
+                emit(Resource.Success(payments))
             }
         } catch (e: Exception) {
             val exception = networkErrorMapper.mapToCdcException(e)
-            emit(Resource.error(exception))
+            emit(Resource.Error(exception))
         }
-    }.onStart { emit(Resource.loading()) }
+    }.onStart { emit(Resource.Loading()) }
 
     override fun getPaymentsByInstallment(installmentId: String): Flow<List<Payment>> {
         return paymentDao.getPaymentsByInstallment(installmentId).map { entities ->
-            entities.map { it.toDomain() }
+            entities.map { it.entityToDomain() }
         }
     }
 
     override fun getPaymentsByMethod(method: PaymentMethod, limit: Int): Flow<List<Payment>> {
         return paymentDao.getPaymentsByMethod(method.name, limit).map { entities ->
-            entities.map { it.toDomain() }
+            entities.map { it.entityToDomain() }
         }
     }
 
     override fun getPendingPayments(): Flow<List<Payment>> {
         return paymentDao.getPendingPayments().map { entities ->
-            entities.map { it.toDomain() }
+            entities.map { it.entityToDomain() }
         }
     }
 
     override fun getRecentPayments(limit: Int): Flow<List<Payment>> {
         return paymentDao.getRecentPayments(limit).map { entities ->
-            entities.map { it.toDomain() }
+            entities.map { it.entityToDomain() }
         }
     }
 
     override suspend fun syncPaymentData(): Flow<Resource<Unit>> = flow {
-        emit(Resource.loading())
+        emit(Resource.Loading())
         
         try {
             // This would implement a more sophisticated sync strategy
             // For now, just mark as successful
-            emit(Resource.success(Unit))
+            emit(Resource.Success(Unit))
         } catch (e: Exception) {
             val exception = networkErrorMapper.mapToCdcException(e)
-            emit(Resource.error(exception))
+            emit(Resource.Error(exception))
         }
     }
 }
