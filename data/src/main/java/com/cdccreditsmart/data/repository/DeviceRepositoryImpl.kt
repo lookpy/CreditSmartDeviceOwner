@@ -128,9 +128,9 @@ class DeviceRepositoryImpl @Inject constructor(
                         contractCode = binding.contractCode,
                         attestedDeviceId = binding.attestedDeviceId,
                         devicePubKeyFp = binding.devicePubKeyFingerprint,
-                        status = binding.status.name,
-                        createdAt = System.currentTimeMillis(),
-                        updatedAt = System.currentTimeMillis()
+                        status = binding.status,
+                        createdAt = binding.createdAt ?: LocalDateTime.now(),
+                        updatedAt = binding.updatedAt ?: LocalDateTime.now()
                     )
                 )
                 
@@ -323,9 +323,9 @@ class DeviceRepositoryImpl @Inject constructor(
                     contractCode = it.contractCode,
                     attestedDeviceId = it.attestedDeviceId,
                     devicePubKeyFingerprint = it.devicePubKeyFp,
-                    status = BindingStatus.valueOf(it.status),
-                    createdAt = LocalDateTime.ofEpochSecond(it.createdAt, 0, ZoneOffset.UTC),
-                    updatedAt = LocalDateTime.ofEpochSecond(it.updatedAt, 0, ZoneOffset.UTC)
+                    status = it.status,
+                    createdAt = it.createdAt,
+                    updatedAt = it.updatedAt
                 )
             }
         }
@@ -339,9 +339,9 @@ class DeviceRepositoryImpl @Inject constructor(
                     contractCode = entity.contractCode,
                     attestedDeviceId = entity.attestedDeviceId,
                     devicePubKeyFingerprint = entity.devicePubKeyFp,
-                    status = BindingStatus.valueOf(entity.status),
-                    createdAt = LocalDateTime.ofEpochSecond(entity.createdAt, 0, ZoneOffset.UTC),
-                    updatedAt = LocalDateTime.ofEpochSecond(entity.updatedAt, 0, ZoneOffset.UTC)
+                    status = entity.status,
+                    createdAt = entity.createdAt,
+                    updatedAt = entity.updatedAt
                 )
             }
         }

@@ -24,6 +24,7 @@ import com.cdccreditsmart.network.api.ContractSignRequest
 import com.cdccreditsmart.network.api.ContractSyncRequest
 import com.cdccreditsmart.network.error.NetworkErrorMapper
 import com.cdccreditsmart.domain.common.Resource
+import com.cdccreditsmart.data.mapper.toLocalDateTime
 import kotlinx.coroutines.flow.Flow
 import retrofit2.Response
 import kotlinx.coroutines.flow.flow
@@ -87,7 +88,7 @@ class ContractRepositoryImpl @Inject constructor(
                     hash = terms.hash,
                     text = terms.text,
                     effectiveDate = terms.effectiveDate.toEpochSecond(ZoneOffset.UTC),
-                    fetchedAt = terms.fetchedAt.toEpochSecond(ZoneOffset.UTC)
+                    fetchedAt = terms.fetchedAt?.toEpochSecond(ZoneOffset.UTC) ?: System.currentTimeMillis() / 1000
                 )
                 contractDao.insertTerms(entity)
                 
@@ -186,18 +187,19 @@ class ContractRepositoryImpl @Inject constructor(
                 val syncResult = ContractSyncResult(
                     contractId = responseBody.contractId,
                     status = responseBody.status,
-                    syncTimestamp = responseBody.syncTimestamp,
+                    syncTimestamp = responseBody.syncTimestamp?.toLocalDateTime(),
                     dataHash = responseBody.dataHash,
                     requiresResync = responseBody.requiresResync,
+                    success = responseBody.status != "error" && !responseBody.requiresResync,
                     updates = responseBody.updates?.map { update ->
                         ContractUpdate(
                             field = update.field,
                             oldValue = update.oldValue,
                             newValue = update.newValue,
-                            timestamp = update.timestamp,
+                            timestamp = update.timestamp?.toLocalDateTime(),
                             reason = update.reason
                         )
-                    }
+                    } ?: emptyList()
                 )
                 
                 emit(Resource.Success(syncResult))

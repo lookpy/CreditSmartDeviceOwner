@@ -49,10 +49,10 @@ class BiometryRepositoryImpl @Inject constructor(
             val response = biometryApiService.createBiometrySession(request)
             
             if (response.isSuccessful && response.body() != null) {
-                val session = response.body()!!.networkToDomain()
+                val session = response.body()!!.toDomain()
                 
                 // Cache the session
-                biometrySessionDao.insertSession(session.toEntityModel())
+                biometrySessionDao.insertSession(session.toEntity())
                 
                 emit(Resource.Success(session))
             } else {
@@ -92,7 +92,7 @@ class BiometryRepositoryImpl @Inject constructor(
             val response = biometryApiService.verifyFacialBiometry(request)
             
             if (response.isSuccessful && response.body() != null) {
-                val result = response.body()!!.networkToDomain()
+                val result = response.body()!!.toDomain()
                 
                 // Update session in cache
                 val status = result.finalStatus.name
@@ -127,10 +127,10 @@ class BiometryRepositoryImpl @Inject constructor(
             val response = biometryApiService.getBiometrySessionStatus(sessionId)
             
             if (response.isSuccessful && response.body() != null) {
-                val session = response.body()!!.networkToDomain()
+                val session = response.body()!!.toDomain()
                 
                 // Update cache
-                biometrySessionDao.insertSession(session.toEntityModel())
+                biometrySessionDao.insertSession(session.toEntity())
                 
                 emit(Resource.Success(session))
             } else if (cachedSession == null) {
@@ -198,10 +198,10 @@ class BiometryRepositoryImpl @Inject constructor(
             
             if (response.isSuccessful && response.body() != null) {
                 val responseBody = response.body()!!
-                val sessions = responseBody.sessions.map { it.networkToDomain() }
+                val sessions = responseBody.sessions.map { it.toDomain() }
                 
                 // Update cache
-                biometrySessionDao.insertSessions(sessions.map { it.toEntityModel() })
+                biometrySessionDao.insertSessions(sessions.map { it.toEntity() })
                 
                 emit(Resource.Success(sessions))
             }
