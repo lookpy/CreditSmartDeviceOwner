@@ -1,38 +1,34 @@
 [
     {
-        "merged": "/home/runner/.gradle/daemon/8.13/com.cdccreditsmart.app-mergeDebugResources-47:/layout/fragment_support.xml",
-        "source": "/home/runner/.gradle/daemon/8.13/com.cdccreditsmart.app-main-50:/layout/fragment_support.xml"
+        "merged": "com.cdccreditsmart.app-mergeDebugResources-47:/layout/fragment_support.xml",
+        "source": "com.cdccreditsmart.app-main-50:/layout/fragment_support.xml"
     },
     {
-        "merged": "/home/runner/.gradle/daemon/8.13/com.cdccreditsmart.app-mergeDebugResources-47:/layout/fragment_pdv.xml",
-        "source": "/home/runner/.gradle/daemon/8.13/com.cdccreditsmart.app-main-50:/layout/fragment_pdv.xml"
+        "merged": "com.cdccreditsmart.app-mergeDebugResources-47:/layout/fragment_installments.xml",
+        "source": "com.cdccreditsmart.app-main-50:/layout/fragment_installments.xml"
     },
     {
-        "merged": "/home/runner/.gradle/daemon/8.13/com.cdccreditsmart.app-mergeDebugResources-47:/layout/activity_main.xml",
-        "source": "/home/runner/.gradle/daemon/8.13/com.cdccreditsmart.app-main-50:/layout/activity_main.xml"
+        "merged": "com.cdccreditsmart.app-mergeDebugResources-47:/layout/navigation_drawer.xml",
+        "source": "com.cdccreditsmart.app-main-50:/layout/navigation_drawer.xml"
     },
     {
-        "merged": "/home/runner/.gradle/daemon/8.13/com.cdccreditsmart.app-mergeDebugResources-47:/layout/fragment_profile.xml",
-        "source": "/home/runner/.gradle/daemon/8.13/com.cdccreditsmart.app-main-50:/layout/fragment_profile.xml"
+        "merged": "com.cdccreditsmart.app-mergeDebugResources-47:/layout/fragment_home.xml",
+        "source": "com.cdccreditsmart.app-main-50:/layout/fragment_home.xml"
     },
     {
-        "merged": "/home/runner/.gradle/daemon/8.13/com.cdccreditsmart.app-mergeDebugResources-47:/layout/fragment_home.xml",
-        "source": "/home/runner/.gradle/daemon/8.13/com.cdccreditsmart.app-main-50:/layout/fragment_home.xml"
-    },
-    {
-        "merged": "/home/runner/.gradle/daemon/8.13/com.cdccreditsmart.app-mergeDebugResources-47:/layout/fragment_payments.xml",
-        "source": "/home/runner/.gradle/daemon/8.13/com.cdccreditsmart.app-main-50:/layout/fragment_payments.xml"
-    },
-    {
-        "merged": "/home/runner/.gradle/daemon/8.13/com.cdccreditsmart.app-mergeDebugResources-47:/layout/fragment_installments.xml",
-        "source": "/home/runner/.gradle/daemon/8.13/com.cdccreditsmart.app-main-50:/layout/fragment_installments.xml"
+        "merged": "com.cdccreditsmart.app-mergeDebugResources-47:/layout/fragment_payments.xml",
+        "source": "com.cdccreditsmart.app-main-50:/layout/fragment_payments.xml"
     },
     {
         "merged": "com.cdccreditsmart.app-mergeDebugResources-47:/layout/fragment_pdv.xml",
         "source": "com.cdccreditsmart.app-main-50:/layout/fragment_pdv.xml"
     },
     {
-        "merged": "/home/runner/.gradle/daemon/8.13/com.cdccreditsmart.app-mergeDebugResources-47:/layout/navigation_drawer.xml",
-        "source": "/home/runner/.gradle/daemon/8.13/com.cdccreditsmart.app-main-50:/layout/navigation_drawer.xml"
+        "merged": "com.cdccreditsmart.app-mergeDebugResources-47:/layout/activity_main.xml",
+        "source": "com.cdccreditsmart.app-main-50:/layout/activity_main.xml"
+    },
+    {
+        "merged": "com.cdccreditsmart.app-mergeDebugResources-47:/layout/fragment_profile.xml",
+        "source": "com.cdccreditsmart.app-main-50:/layout/fragment_profile.xml"
     }
 ]
