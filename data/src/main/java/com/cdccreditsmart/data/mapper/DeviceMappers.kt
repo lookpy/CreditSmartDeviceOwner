@@ -1,7 +1,24 @@
 package com.cdccreditsmart.data.mapper
 
-import com.cdccreditsmart.domain.model.*
-import com.cdccreditsmart.network.api.*
+// Domain model imports
+import com.cdccreditsmart.domain.model.DeviceStatus
+import com.cdccreditsmart.domain.model.DeviceConfiguration as DomainDeviceConfiguration
+import com.cdccreditsmart.domain.model.BlockingPolicy as DomainBlockingPolicy
+import com.cdccreditsmart.domain.model.BlockingLevel
+import com.cdccreditsmart.domain.model.Installment
+import com.cdccreditsmart.domain.model.InstallmentSummary
+import com.cdccreditsmart.domain.model.InstallmentStatus
+import com.cdccreditsmart.domain.model.DeviceBinding
+import com.cdccreditsmart.domain.model.BindingStatus
+
+// Network API imports with aliases to resolve conflicts
+import com.cdccreditsmart.network.api.DeviceStatusResponse
+import com.cdccreditsmart.network.api.DeviceConfiguration as NetworkDeviceConfiguration
+import com.cdccreditsmart.network.api.BlockingPolicy as NetworkBlockingPolicy
+import com.cdccreditsmart.network.api.InstallmentInfo
+import com.cdccreditsmart.network.api.InstallmentsResponse
+import com.cdccreditsmart.network.api.PaymentSummary
+import com.cdccreditsmart.network.api.DeviceBindResponse
 import java.time.LocalDateTime
 import java.util.UUID
 
@@ -51,15 +68,15 @@ fun DeviceStatusResponse.toDomain(): DeviceStatus = try {
  * Converts network DeviceConfiguration to domain DeviceConfiguration.
  * Maps device configuration settings with proper type conversions.
  */
-fun com.cdccreditsmart.network.api.DeviceConfiguration.toDomain(): DeviceConfiguration = try {
-    DeviceConfiguration(
+fun NetworkDeviceConfiguration.toDomain(): DomainDeviceConfiguration = try {
+    DomainDeviceConfiguration(
         updateCheckInterval = this.updateCheckInterval,
         heartbeatInterval = this.heartbeatInterval,
         logLevel = this.logLevel.safeString(),
         featureFlags = this.featureFlags.toMap() // Ensure mutable map
     )
 } catch (e: Exception) {
-    DeviceConfiguration(
+    DomainDeviceConfiguration(
         updateCheckInterval = 3600000L,
         heartbeatInterval = 300000L,
         logLevel = "ERROR",
@@ -71,21 +88,21 @@ fun com.cdccreditsmart.network.api.DeviceConfiguration.toDomain(): DeviceConfigu
  * Converts BlockingPolicy to domain model.
  * Maps blocking policy information with proper validation.
  */
-fun BlockingPolicy.toDomain(): com.cdccreditsmart.domain.model.BlockingPolicy = try {
-    com.cdccreditsmart.domain.model.BlockingPolicy(
+fun NetworkBlockingPolicy.toDomain(): DomainBlockingPolicy = try {
+    DomainBlockingPolicy(
         level = when (this.level.lowercase()) {
-            "none" -> com.cdccreditsmart.domain.model.BlockingLevel.NONE
-            "partial" -> com.cdccreditsmart.domain.model.BlockingLevel.PARTIAL
-            "full" -> com.cdccreditsmart.domain.model.BlockingLevel.FULL
-            else -> com.cdccreditsmart.domain.model.BlockingLevel.NONE
+            "none" -> BlockingLevel.NONE
+            "partial" -> BlockingLevel.PARTIAL
+            "full" -> BlockingLevel.FULL
+            else -> BlockingLevel.NONE
         },
         reason = this.reason.safeString(),
         allowedActions = this.allowedActions.toList(),
         blockedPackages = this.blockedPackages.toList()
     )
 } catch (e: Exception) {
-    com.cdccreditsmart.domain.model.BlockingPolicy(
-        level = com.cdccreditsmart.domain.model.BlockingLevel.NONE,
+    DomainBlockingPolicy(
+        level = BlockingLevel.NONE,
         reason = "Error mapping blocking policy",
         allowedActions = emptyList(),
         blockedPackages = emptyList()

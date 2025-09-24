@@ -10,7 +10,11 @@ import com.cdccreditsmart.domain.model.BiometryStatus
 import com.cdccreditsmart.domain.repository.BiometryRepository
 import com.cdccreditsmart.network.error.NetworkErrorMapper
 import com.cdccreditsmart.domain.common.Resource
-import com.cdccreditsmart.network.api.*
+// Network API imports
+import com.cdccreditsmart.network.api.BiometryApiService
+import com.cdccreditsmart.network.api.CreateBiometrySessionRequest
+import com.cdccreditsmart.network.api.FaceBiometryRequest
+import com.cdccreditsmart.network.api.BiometryMetadata
 import kotlinx.coroutines.flow.Flow
 import retrofit2.Response
 import kotlinx.coroutines.flow.flow

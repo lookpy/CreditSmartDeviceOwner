@@ -1,7 +1,24 @@
 package com.cdccreditsmart.data.mapper
 
-import com.cdccreditsmart.domain.model.*
-import com.cdccreditsmart.network.api.*
+// Domain model imports with aliases to resolve conflicts
+import com.cdccreditsmart.domain.model.Contract
+import com.cdccreditsmart.domain.model.Terms
+import com.cdccreditsmart.domain.model.SignatureSession
+import com.cdccreditsmart.domain.model.ContractSyncResult
+import com.cdccreditsmart.domain.model.Customer
+import com.cdccreditsmart.domain.model.ContractStatus
+import com.cdccreditsmart.domain.model.SignatureStatus
+import com.cdccreditsmart.domain.model.ContractUpdate as DomainContractUpdate
+import com.cdccreditsmart.domain.model.Address as DomainAddress
+
+// Network API imports with aliases to resolve conflicts
+import com.cdccreditsmart.network.api.ContractResponse
+import com.cdccreditsmart.network.api.ContractTermsResponse
+import com.cdccreditsmart.network.api.ContractSignResponse
+import com.cdccreditsmart.network.api.ContractSyncResponse
+import com.cdccreditsmart.network.api.CustomerInfo
+import com.cdccreditsmart.network.api.ContractUpdate as NetworkContractUpdate
+import com.cdccreditsmart.network.api.Address as NetworkAddress
 import java.time.LocalDateTime
 import java.util.UUID
 
@@ -139,8 +156,8 @@ fun ContractSyncResponse.toDomain(): ContractSyncResult = try {
  * Converts ContractUpdate to domain model.
  * Maps individual contract update information.
  */
-fun ContractUpdate.toDomain(): com.cdccreditsmart.domain.model.ContractUpdate = try {
-    com.cdccreditsmart.domain.model.ContractUpdate(
+fun NetworkContractUpdate.toDomain(): DomainContractUpdate = try {
+    DomainContractUpdate(
         field = this.field.safeString(),
         oldValue = this.oldValue.safeString(),
         newValue = this.newValue.safeString(),
@@ -148,7 +165,7 @@ fun ContractUpdate.toDomain(): com.cdccreditsmart.domain.model.ContractUpdate = 
         reason = this.reason.safeString()
     )
 } catch (e: Exception) {
-    com.cdccreditsmart.domain.model.ContractUpdate(
+    DomainContractUpdate(
         field = this.field ?: "unknown",
         oldValue = this.oldValue ?: "",
         newValue = this.newValue ?: "",
@@ -193,8 +210,8 @@ fun CustomerInfo.toDomain(): Customer = try {
  * Converts Address to domain model.
  * Maps address information with proper field mapping.
  */
-fun Address.toDomain(): com.cdccreditsmart.domain.model.Address = try {
-    com.cdccreditsmart.domain.model.Address(
+fun NetworkAddress.toDomain(): DomainAddress = try {
+    DomainAddress(
         street = this.street.safeString(),
         number = this.number.safeString(),
         complement = this.complement.safeString(),
@@ -205,7 +222,7 @@ fun Address.toDomain(): com.cdccreditsmart.domain.model.Address = try {
         country = this.country ?: "Brasil"
     )
 } catch (e: Exception) {
-    com.cdccreditsmart.domain.model.Address(
+    DomainAddress(
         street = "",
         number = "",
         complement = "",

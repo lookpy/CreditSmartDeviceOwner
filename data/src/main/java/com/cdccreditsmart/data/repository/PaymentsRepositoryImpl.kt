@@ -5,9 +5,17 @@ import com.cdccreditsmart.data.local.entity.toDomain as entityToDomain
 import com.cdccreditsmart.data.local.entity.toEntity as toEntityModel
 import com.cdccreditsmart.data.mapper.toDomain as networkToDomain
 import com.cdccreditsmart.data.mapper.toPayment
-import com.cdccreditsmart.domain.model.*
+import com.cdccreditsmart.domain.model.Payment
+import com.cdccreditsmart.domain.model.PixPayment
+import com.cdccreditsmart.domain.model.BoletoPayment
+import com.cdccreditsmart.domain.model.PaymentMethod
+import com.cdccreditsmart.domain.model.PaymentStatus
 import com.cdccreditsmart.domain.repository.PaymentsRepository
-import com.cdccreditsmart.network.api.*
+import com.cdccreditsmart.network.api.PaymentsApiService
+import com.cdccreditsmart.network.api.CreatePixPaymentRequest
+import com.cdccreditsmart.network.api.CreateBoletoPaymentRequest
+import com.cdccreditsmart.network.api.PaymentConfirmationRequest
+import com.cdccreditsmart.network.api.CancelPaymentRequest
 import com.cdccreditsmart.network.error.NetworkErrorMapper
 import com.cdccreditsmart.domain.common.Resource
 import kotlinx.coroutines.flow.Flow

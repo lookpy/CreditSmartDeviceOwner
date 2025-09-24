@@ -2,6 +2,10 @@ package com.cdccreditsmart.domain.repository
 
 import com.cdccreditsmart.domain.model.DeviceBinding
 import com.cdccreditsmart.domain.model.Installment
+import com.cdccreditsmart.domain.model.DeviceInfo
+import com.cdccreditsmart.domain.model.DeviceLocation
+import com.cdccreditsmart.domain.model.DeviceAttestationResult
+import com.cdccreditsmart.domain.model.DeviceStatus
 import com.cdccreditsmart.domain.common.Resource
 import kotlinx.coroutines.flow.Flow
 
@@ -74,43 +78,3 @@ interface DeviceRepository {
     suspend fun syncDeviceData(deviceId: String): Flow<Resource<Unit>>
 }
 
-data class DeviceInfo(
-    val manufacturer: String,
-    val model: String,
-    val androidVersion: String,
-    val apiLevel: Int,
-    val imei: String? = null,
-    val serialNumber: String? = null
-)
-
-data class DeviceLocation(
-    val latitude: Double,
-    val longitude: Double,
-    val accuracy: Float? = null
-)
-
-data class DeviceAttestationResult(
-    val attestedDeviceId: String,
-    val devicePubKeyFingerprint: String,
-    val jwtToken: String,
-    val status: String
-)
-
-data class DeviceStatus(
-    val deviceId: String,
-    val status: String,
-    val contractId: String?,
-    val blockingLevel: String?,
-    val blockingReason: String?,
-    val allowedActions: List<String>,
-    val blockedPackages: List<String>,
-    val lastHeartbeat: Long,
-    val configuration: DeviceConfiguration
-)
-
-data class DeviceConfiguration(
-    val updateCheckInterval: Long,
-    val heartbeatInterval: Long,
-    val logLevel: String,
-    val featureFlags: Map<String, Boolean>
-)

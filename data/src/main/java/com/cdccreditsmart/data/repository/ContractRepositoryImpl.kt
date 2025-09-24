@@ -5,9 +5,23 @@ import com.cdccreditsmart.data.local.entity.ContractTermsEntity
 import com.cdccreditsmart.data.local.entity.toDomain as entityToDomain
 import com.cdccreditsmart.data.local.entity.toEntity as toEntityModel
 import com.cdccreditsmart.data.mapper.toDomain as networkToDomain
-import com.cdccreditsmart.domain.model.*
-import com.cdccreditsmart.domain.repository.*
-import com.cdccreditsmart.network.api.*
+// Domain model imports
+import com.cdccreditsmart.domain.model.Terms
+import com.cdccreditsmart.domain.model.SignatureSession
+import com.cdccreditsmart.domain.model.ContractSyncResult
+import com.cdccreditsmart.domain.model.Contract
+import com.cdccreditsmart.domain.model.ContractSignature
+import com.cdccreditsmart.domain.model.ContractStatus
+import com.cdccreditsmart.domain.model.SignatureStatus
+import com.cdccreditsmart.domain.model.ContractUpdate as DomainContractUpdate
+
+// Domain repository imports
+import com.cdccreditsmart.domain.repository.ContractRepository
+
+// Network API imports
+import com.cdccreditsmart.network.api.ContractApiService
+import com.cdccreditsmart.network.api.ContractSignRequest
+import com.cdccreditsmart.network.api.ContractSyncRequest
 import com.cdccreditsmart.network.error.NetworkErrorMapper
 import com.cdccreditsmart.domain.common.Resource
 import kotlinx.coroutines.flow.Flow

@@ -1,7 +1,18 @@
 package com.cdccreditsmart.data.mapper
 
-import com.cdccreditsmart.domain.model.*
-import com.cdccreditsmart.network.api.*
+// Domain model imports
+import com.cdccreditsmart.domain.model.PixPayment
+import com.cdccreditsmart.domain.model.BoletoPayment
+import com.cdccreditsmart.domain.model.Payment
+import com.cdccreditsmart.domain.model.PaymentMethod
+import com.cdccreditsmart.domain.model.PaymentStatus
+
+// Network API imports
+import com.cdccreditsmart.network.api.PixPaymentResponse
+import com.cdccreditsmart.network.api.BoletoPaymentResponse
+import com.cdccreditsmart.network.api.PaymentStatusResponse
+import com.cdccreditsmart.network.api.PaymentHistoryItem
+import com.cdccreditsmart.network.api.PaymentHistoryResponse
 import java.time.LocalDateTime
 import java.util.UUID
 

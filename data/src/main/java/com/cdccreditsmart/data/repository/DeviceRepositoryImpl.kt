@@ -4,11 +4,29 @@ import com.cdccreditsmart.data.local.dao.DeviceBindingDao
 import com.cdccreditsmart.data.local.dao.DeviceStatusDao
 import com.cdccreditsmart.data.local.dao.InstallmentDao
 import com.cdccreditsmart.data.local.entity.DeviceStatusEntity
-import com.cdccreditsmart.data.mapper.toDomain as networkToDomain
+import com.cdccreditsmart.data.local.entity.toDomain as entityToDomain
+import com.cdccreditsmart.data.local.entity.toEntity
+import com.cdccreditsmart.data.mapper.toDomain
 import com.cdccreditsmart.domain.model.DeviceBinding
 import com.cdccreditsmart.domain.model.Installment
-import com.cdccreditsmart.domain.repository.*
-import com.cdccreditsmart.network.api.*
+import com.cdccreditsmart.domain.model.BindingStatus
+
+// Domain imports with single source of truth from domain.model.*
+import com.cdccreditsmart.domain.repository.DeviceRepository
+import com.cdccreditsmart.domain.model.DeviceInfo
+import com.cdccreditsmart.domain.model.DeviceLocation
+import com.cdccreditsmart.domain.model.DeviceAttestationResult
+import com.cdccreditsmart.domain.model.DeviceStatus
+import com.cdccreditsmart.domain.model.DeviceConfiguration
+
+// Network API imports with specific classes to avoid conflicts
+import com.cdccreditsmart.network.api.DeviceApiService
+import com.cdccreditsmart.network.api.DeviceAttestRequest
+import com.cdccreditsmart.network.api.DeviceBindRequest
+import com.cdccreditsmart.network.api.HeartbeatRequest
+import com.cdccreditsmart.network.api.UpdateReportRequest
+import com.cdccreditsmart.network.api.DeviceInfo as NetworkDeviceInfo
+import com.cdccreditsmart.network.api.Location
 import com.cdccreditsmart.network.error.NetworkErrorMapper
 import com.cdccreditsmart.domain.common.Resource
 import kotlinx.coroutines.flow.Flow
@@ -20,6 +38,7 @@ import javax.inject.Inject
 import javax.inject.Singleton
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.Types
+import java.time.LocalDateTime
 
 @Singleton
 class DeviceRepositoryImpl @Inject constructor(
@@ -42,7 +61,7 @@ class DeviceRepositoryImpl @Inject constructor(
             val request = DeviceAttestRequest(
                 devicePublicKey = devicePublicKey,
                 attestationToken = attestationToken,
-                deviceInfo = com.cdccreditsmart.network.api.DeviceInfo(
+                deviceInfo = NetworkDeviceInfo(
                     manufacturer = deviceInfo.manufacturer,
                     model = deviceInfo.model,
                     androidVersion = deviceInfo.androidVersion,
@@ -95,7 +114,7 @@ class DeviceRepositoryImpl @Inject constructor(
             val response = deviceApiService.bindDevice(request)
             
             if (response.isSuccessful && response.body() != null) {
-                val binding = response.body()!!.networkToDomain(
+                val binding = response.body()!!.toDomain(
                     contractCode = contractCode,
                     attestedDeviceId = attestedDeviceId,
                     devicePubKeyFingerprint = "" // Would come from previous attestation
@@ -108,9 +127,9 @@ class DeviceRepositoryImpl @Inject constructor(
                         contractCode = binding.contractCode,
                         attestedDeviceId = binding.attestedDeviceId,
                         devicePubKeyFp = binding.devicePubKeyFingerprint,
-                        status = binding.status,
-                        createdAt = java.time.LocalDateTime.now(),
-                        updatedAt = java.time.LocalDateTime.now()
+                        status = binding.status.name,
+                        createdAt = System.currentTimeMillis(),
+                        updatedAt = System.currentTimeMillis()
                     )
                 )
                 
@@ -141,22 +160,22 @@ class DeviceRepositoryImpl @Inject constructor(
             val response = deviceApiService.getDeviceStatus(deviceId)
             
             if (response.isSuccessful && response.body() != null) {
-                val deviceStatus = response.body()!!.networkToDomain()
+                val deviceStatus = response.body()!!.toDomain()
                 
                 // Update cache with proper entity mapping
                 val entity = DeviceStatusEntity(
                     deviceId = deviceStatus.deviceId,
                     status = deviceStatus.status,
                     contractId = deviceStatus.contractId,
-                    blockingLevel = deviceStatus.blockingPolicy?.level?.name,
-                    blockingReason = deviceStatus.blockingPolicy?.reason,
+                    blockingLevel = deviceStatus.blockingLevel,
+                    blockingReason = deviceStatus.blockingReason,
                     allowedActions = moshi.adapter<List<String>>(
                         Types.newParameterizedType(List::class.java, String::class.java)
-                    ).toJson(deviceStatus.blockingPolicy?.allowedActions ?: emptyList()),
+                    ).toJson(deviceStatus.allowedActions),
                     blockedPackages = moshi.adapter<List<String>>(
                         Types.newParameterizedType(List::class.java, String::class.java)
-                    ).toJson(deviceStatus.blockingPolicy?.blockedPackages ?: emptyList()),
-                    lastHeartbeat = deviceStatus.lastHeartbeat?.toEpochMilli(),
+                    ).toJson(deviceStatus.blockedPackages),
+                    lastHeartbeat = deviceStatus.lastHeartbeat,
                     updateCheckInterval = deviceStatus.configuration.updateCheckInterval,
                     heartbeatInterval = deviceStatus.configuration.heartbeatInterval,
                     logLevel = deviceStatus.configuration.logLevel,
@@ -236,10 +255,10 @@ class DeviceRepositoryImpl @Inject constructor(
         
         // Always emit cached data first (offline-first)
         if (!forceRefresh) {
-            val cachedInstallments = installmentDao.getInstallmentsByDeviceId()
+            val cachedInstallments = installmentDao.getInstallmentsByDeviceId(deviceId)
             cachedInstallments.collect { installments ->
                 if (installments.isNotEmpty()) {
-                    emit(Resource.Success(installments.map { it.entityToDomain() }))
+                    emit(Resource.Success(installments.map { it.toDomain() }))
                 }
             }
         }
@@ -249,10 +268,10 @@ class DeviceRepositoryImpl @Inject constructor(
             val response = deviceApiService.getInstallments(deviceId)
             
             if (response.isSuccessful && response.body() != null) {
-                val installments = response.body()!!.networkToDomain()
+                val installments = response.body()!!.toDomain()
                 
                 // Update cache
-                installmentDao.insertInstallments(installments.map { it.toEntityModel() })
+                installmentDao.insertInstallments(installments.map { it.toEntity() })
                 
                 emit(Resource.Success(installments))
             }
@@ -302,10 +321,10 @@ class DeviceRepositoryImpl @Inject constructor(
                     id = it.id,
                     contractCode = it.contractCode,
                     attestedDeviceId = it.attestedDeviceId,
-                    devicePubKeyFingerprint = it.devicePubKeyFingerprint,
-                    status = com.cdccreditsmart.domain.model.BindingStatus.valueOf(it.status),
-                    createdAt = java.time.LocalDateTime.ofEpochSecond(it.createdAt, 0, java.time.ZoneOffset.UTC),
-                    updatedAt = java.time.LocalDateTime.ofEpochSecond(it.updatedAt, 0, java.time.ZoneOffset.UTC)
+                    devicePubKeyFingerprint = it.devicePubKeyFp,
+                    status = BindingStatus.valueOf(it.status),
+                    createdAt = LocalDateTime.ofEpochSecond(it.createdAt, 0, java.time.ZoneOffset.UTC),
+                    updatedAt = LocalDateTime.ofEpochSecond(it.updatedAt, 0, java.time.ZoneOffset.UTC)
                 )
             }
         }
@@ -318,10 +337,10 @@ class DeviceRepositoryImpl @Inject constructor(
                     id = entity.id,
                     contractCode = entity.contractCode,
                     attestedDeviceId = entity.attestedDeviceId,
-                    devicePubKeyFingerprint = entity.devicePubKeyFingerprint,
-                    status = com.cdccreditsmart.domain.model.BindingStatus.valueOf(entity.status),
-                    createdAt = java.time.LocalDateTime.ofEpochSecond(entity.createdAt, 0, java.time.ZoneOffset.UTC),
-                    updatedAt = java.time.LocalDateTime.ofEpochSecond(entity.updatedAt, 0, java.time.ZoneOffset.UTC)
+                    devicePubKeyFingerprint = entity.devicePubKeyFp,
+                    status = BindingStatus.valueOf(entity.status),
+                    createdAt = LocalDateTime.ofEpochSecond(entity.createdAt, 0, java.time.ZoneOffset.UTC),
+                    updatedAt = LocalDateTime.ofEpochSecond(entity.updatedAt, 0, java.time.ZoneOffset.UTC)
                 )
             }
         }
@@ -359,7 +378,7 @@ class DeviceRepositoryImpl @Inject constructor(
             blockingReason = entity.blockingReason,
             allowedActions = entity.allowedActions?.let { allowedActionsAdapter.fromJson(it) } ?: emptyList(),
             blockedPackages = entity.blockedPackages?.let { blockedPackagesAdapter.fromJson(it) } ?: emptyList(),
-            lastHeartbeat = entity.lastHeartbeat,
+            lastHeartbeat = entity.lastHeartbeat ?: 0L,
             configuration = DeviceConfiguration(
                 updateCheckInterval = entity.updateCheckInterval,
                 heartbeatInterval = entity.heartbeatInterval,
