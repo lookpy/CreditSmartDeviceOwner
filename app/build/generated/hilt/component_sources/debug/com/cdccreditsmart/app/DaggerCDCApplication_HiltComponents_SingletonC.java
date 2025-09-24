@@ -8,16 +8,10 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.SavedStateHandle;
 import androidx.lifecycle.ViewModel;
 import com.cdccreditsmart.app.presentation.MainActivity;
-import com.cdccreditsmart.app.presentation.home.HomeFragment;
 import com.cdccreditsmart.app.presentation.home.HomeViewModel;
 import com.cdccreditsmart.app.presentation.home.HomeViewModel_HiltModules;
 import com.cdccreditsmart.app.presentation.home.HomeViewModel_HiltModules_BindsModule_Binds_LazyMapKey;
 import com.cdccreditsmart.app.presentation.home.HomeViewModel_HiltModules_KeyModule_Provide_LazyMapKey;
-import com.cdccreditsmart.app.presentation.installments.InstallmentsFragment;
-import com.cdccreditsmart.app.presentation.payments.PaymentsFragment;
-import com.cdccreditsmart.app.presentation.pdv.PdvFragment;
-import com.cdccreditsmart.app.presentation.profile.ProfileFragment;
-import com.cdccreditsmart.app.presentation.support.SupportFragment;
 import dagger.hilt.android.ActivityRetainedLifecycle;
 import dagger.hilt.android.ViewModelLifecycle;
 import dagger.hilt.android.internal.builders.ActivityComponentBuilder;
@@ -318,30 +312,6 @@ public final class DaggerCDCApplication_HiltComponents_SingletonC {
       this.activityCImpl = activityCImpl;
 
 
-    }
-
-    @Override
-    public void injectHomeFragment(HomeFragment arg0) {
-    }
-
-    @Override
-    public void injectInstallmentsFragment(InstallmentsFragment arg0) {
-    }
-
-    @Override
-    public void injectPaymentsFragment(PaymentsFragment arg0) {
-    }
-
-    @Override
-    public void injectPdvFragment(PdvFragment arg0) {
-    }
-
-    @Override
-    public void injectProfileFragment(ProfileFragment arg0) {
-    }
-
-    @Override
-    public void injectSupportFragment(SupportFragment arg0) {
     }
 
     @Override

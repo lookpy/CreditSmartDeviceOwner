@@ -16,6 +16,7 @@ import com.cdccreditsmart.app.presentation.screens.installments.InstallmentsScre
 import com.cdccreditsmart.app.presentation.screens.payment.PaymentScreen
 import com.cdccreditsmart.app.presentation.screens.support.SupportScreen
 import com.cdccreditsmart.app.presentation.screens.profile.ProfileScreen
+import com.cdccreditsmart.app.presentation.screens.lock.LockOverlayScreen
 
 object Routes {
     const val ONBOARDING_WELCOME = "onboarding/welcome"
@@ -131,6 +132,17 @@ fun CDCNavigation(
         composable(Routes.PROFILE) {
             ProfileScreen(
                 onNavigateBack = { navController.popBackStack() }
+            )
+        }
+        
+        // Lock Overlay Screen - Device Owner functionality
+        composable(Routes.LOCK_OVERLAY) {
+            LockOverlayScreen(
+                onPayNow = { 
+                    navController.navigate(Routes.INSTALLMENTS) {
+                        popUpTo(Routes.LOCK_OVERLAY) { inclusive = true }
+                    }
+                }
             )
         }
     }

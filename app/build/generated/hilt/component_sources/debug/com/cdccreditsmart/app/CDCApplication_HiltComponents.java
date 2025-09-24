@@ -1,13 +1,7 @@
 package com.cdccreditsmart.app;
 
 import com.cdccreditsmart.app.presentation.MainActivity_GeneratedInjector;
-import com.cdccreditsmart.app.presentation.home.HomeFragment_GeneratedInjector;
 import com.cdccreditsmart.app.presentation.home.HomeViewModel_HiltModules;
-import com.cdccreditsmart.app.presentation.installments.InstallmentsFragment_GeneratedInjector;
-import com.cdccreditsmart.app.presentation.payments.PaymentsFragment_GeneratedInjector;
-import com.cdccreditsmart.app.presentation.pdv.PdvFragment_GeneratedInjector;
-import com.cdccreditsmart.app.presentation.profile.ProfileFragment_GeneratedInjector;
-import com.cdccreditsmart.app.presentation.support.SupportFragment_GeneratedInjector;
 import dagger.Binds;
 import dagger.Component;
 import dagger.Module;
@@ -215,13 +209,7 @@ public final class CDCApplication_HiltComponents {
       modules = ViewWithFragmentCBuilderModule.class
   )
   @FragmentScoped
-  public abstract static class FragmentC implements HomeFragment_GeneratedInjector,
-      InstallmentsFragment_GeneratedInjector,
-      PaymentsFragment_GeneratedInjector,
-      PdvFragment_GeneratedInjector,
-      ProfileFragment_GeneratedInjector,
-      SupportFragment_GeneratedInjector,
-      FragmentComponent,
+  public abstract static class FragmentC implements FragmentComponent,
       DefaultViewModelFactories.FragmentEntryPoint,
       ViewComponentManager.ViewWithFragmentComponentBuilderEntryPoint,
       GeneratedComponent {
