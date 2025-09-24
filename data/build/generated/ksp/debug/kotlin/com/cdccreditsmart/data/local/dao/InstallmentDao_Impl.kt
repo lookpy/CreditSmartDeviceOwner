@@ -231,6 +231,100 @@ public class InstallmentDao_Impl(
     }
   }
 
+  public override fun getInstallmentsByDeviceId(): Flow<List<InstallmentEntity>> {
+    val _sql: String = "SELECT * FROM installments ORDER BY dueDate DESC LIMIT 10"
+    return createFlow(__db, false, arrayOf("installments")) { _connection ->
+      val _stmt: SQLiteStatement = _connection.prepare(_sql)
+      try {
+        val _columnIndexOfId: Int = getColumnIndexOrThrow(_stmt, "id")
+        val _columnIndexOfContractId: Int = getColumnIndexOrThrow(_stmt, "contractId")
+        val _columnIndexOfNumber: Int = getColumnIndexOrThrow(_stmt, "number")
+        val _columnIndexOfDueDate: Int = getColumnIndexOrThrow(_stmt, "dueDate")
+        val _columnIndexOfAmount: Int = getColumnIndexOrThrow(_stmt, "amount")
+        val _columnIndexOfStatus: Int = getColumnIndexOrThrow(_stmt, "status")
+        val _columnIndexOfPaymentId: Int = getColumnIndexOrThrow(_stmt, "paymentId")
+        val _columnIndexOfCreatedAt: Int = getColumnIndexOrThrow(_stmt, "createdAt")
+        val _columnIndexOfLastSyncAt: Int = getColumnIndexOrThrow(_stmt, "lastSyncAt")
+        val _result: MutableList<InstallmentEntity> = mutableListOf()
+        while (_stmt.step()) {
+          val _item: InstallmentEntity
+          val _tmpId: String
+          _tmpId = _stmt.getText(_columnIndexOfId)
+          val _tmpContractId: String
+          _tmpContractId = _stmt.getText(_columnIndexOfContractId)
+          val _tmpNumber: Int
+          _tmpNumber = _stmt.getLong(_columnIndexOfNumber).toInt()
+          val _tmpDueDate: LocalDate
+          val _tmp: String?
+          if (_stmt.isNull(_columnIndexOfDueDate)) {
+            _tmp = null
+          } else {
+            _tmp = _stmt.getText(_columnIndexOfDueDate)
+          }
+          val _tmp_1: LocalDate? = __converters.toLocalDate(_tmp)
+          if (_tmp_1 == null) {
+            error("Expected NON-NULL 'java.time.LocalDate', but it was NULL.")
+          } else {
+            _tmpDueDate = _tmp_1
+          }
+          val _tmpAmount: BigDecimal
+          val _tmp_2: String?
+          if (_stmt.isNull(_columnIndexOfAmount)) {
+            _tmp_2 = null
+          } else {
+            _tmp_2 = _stmt.getText(_columnIndexOfAmount)
+          }
+          val _tmp_3: BigDecimal? = __converters.toBigDecimal(_tmp_2)
+          if (_tmp_3 == null) {
+            error("Expected NON-NULL 'java.math.BigDecimal', but it was NULL.")
+          } else {
+            _tmpAmount = _tmp_3
+          }
+          val _tmpStatus: InstallmentStatus
+          _tmpStatus = __InstallmentStatus_stringToEnum(_stmt.getText(_columnIndexOfStatus))
+          val _tmpPaymentId: String?
+          if (_stmt.isNull(_columnIndexOfPaymentId)) {
+            _tmpPaymentId = null
+          } else {
+            _tmpPaymentId = _stmt.getText(_columnIndexOfPaymentId)
+          }
+          val _tmpCreatedAt: LocalDateTime
+          val _tmp_4: String?
+          if (_stmt.isNull(_columnIndexOfCreatedAt)) {
+            _tmp_4 = null
+          } else {
+            _tmp_4 = _stmt.getText(_columnIndexOfCreatedAt)
+          }
+          val _tmp_5: LocalDateTime? = __converters.toLocalDateTime(_tmp_4)
+          if (_tmp_5 == null) {
+            error("Expected NON-NULL 'java.time.LocalDateTime', but it was NULL.")
+          } else {
+            _tmpCreatedAt = _tmp_5
+          }
+          val _tmpLastSyncAt: LocalDateTime
+          val _tmp_6: String?
+          if (_stmt.isNull(_columnIndexOfLastSyncAt)) {
+            _tmp_6 = null
+          } else {
+            _tmp_6 = _stmt.getText(_columnIndexOfLastSyncAt)
+          }
+          val _tmp_7: LocalDateTime? = __converters.toLocalDateTime(_tmp_6)
+          if (_tmp_7 == null) {
+            error("Expected NON-NULL 'java.time.LocalDateTime', but it was NULL.")
+          } else {
+            _tmpLastSyncAt = _tmp_7
+          }
+          _item =
+              InstallmentEntity(_tmpId,_tmpContractId,_tmpNumber,_tmpDueDate,_tmpAmount,_tmpStatus,_tmpPaymentId,_tmpCreatedAt,_tmpLastSyncAt)
+          _result.add(_item)
+        }
+        _result
+      } finally {
+        _stmt.close()
+      }
+    }
+  }
+
   public override fun getInstallmentsByStatus(statuses: List<InstallmentStatus>):
       Flow<List<InstallmentEntity>> {
     val _stringBuilder: StringBuilder = StringBuilder()

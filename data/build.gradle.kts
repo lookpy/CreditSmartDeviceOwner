@@ -36,6 +36,7 @@ android {
 
 dependencies {
     implementation(project(":domain"))
+    implementation(project(":network"))
     
     // Core Android
     implementation("androidx.core:core-ktx:1.13.1")

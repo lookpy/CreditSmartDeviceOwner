@@ -12,6 +12,9 @@ interface InstallmentDao {
     @Query("SELECT * FROM installments WHERE contractId = :contractId ORDER BY number ASC")
     fun getInstallmentsByContract(contractId: String): Flow<List<InstallmentEntity>>
     
+    @Query("SELECT * FROM installments ORDER BY dueDate DESC LIMIT 10")
+    fun getInstallmentsByDeviceId(): Flow<List<InstallmentEntity>>
+    
     @Query("SELECT * FROM installments WHERE status IN (:statuses) ORDER BY dueDate ASC")
     fun getInstallmentsByStatus(statuses: List<InstallmentStatus>): Flow<List<InstallmentEntity>>
     
