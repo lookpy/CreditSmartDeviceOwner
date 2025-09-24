@@ -1,0 +1,200 @@
+package com.cdccreditsmart.data.mapper
+
+import com.cdccreditsmart.domain.model.*
+import com.cdccreditsmart.network.api.*
+import java.time.LocalDateTime
+import java.util.UUID
+
+/**
+ * DTO-to-Domain mappers for Device-related classes.
+ * Handles conversion from network API responses to domain models with proper type conversions.
+ */
+
+// =============================================================================
+// DEVICE STATUS MAPPERS
+// =============================================================================
+
+/**
+ * Converts DeviceStatusResponse to DeviceStatus domain model.
+ * Maps device status information from API response to domain model.
+ */
+fun DeviceStatusResponse.toDomain(): DeviceStatus = try {
+    DeviceStatus(
+        deviceId = this.deviceId.safeString(),
+        status = this.status.safeString(),
+        contractId = this.contractId.safeString(),
+        lastHeartbeat = this.lastHeartbeat.toLocalDateTime(),
+        configuration = this.configuration.toDomain(),
+        blockingPolicy = this.blockingPolicy?.toDomain(),
+        isBlocked = this.blockingPolicy?.level != "none",
+        lastSyncAt = null // Server doesn't provide last sync timestamp
+    )
+} catch (e: Exception) {
+    DeviceStatus(
+        deviceId = this.deviceId ?: "unknown",
+        status = "error",
+        contractId = null,
+        lastHeartbeat = LocalDateTime.now(),
+        configuration = DeviceConfiguration(
+            updateCheckInterval = 3600000L, // 1 hour default
+            heartbeatInterval = 300000L, // 5 minutes default
+            logLevel = "ERROR",
+            featureFlags = emptyMap()
+        ),
+        blockingPolicy = null,
+        isBlocked = false,
+        lastSyncAt = null
+    )
+}
+
+/**
+ * Converts network DeviceConfiguration to domain DeviceConfiguration.
+ * Maps device configuration settings with proper type conversions.
+ */
+fun com.cdccreditsmart.network.api.DeviceConfiguration.toDomain(): DeviceConfiguration = try {
+    DeviceConfiguration(
+        updateCheckInterval = this.updateCheckInterval,
+        heartbeatInterval = this.heartbeatInterval,
+        logLevel = this.logLevel.safeString(),
+        featureFlags = this.featureFlags.toMap() // Ensure mutable map
+    )
+} catch (e: Exception) {
+    DeviceConfiguration(
+        updateCheckInterval = 3600000L,
+        heartbeatInterval = 300000L,
+        logLevel = "ERROR",
+        featureFlags = emptyMap()
+    )
+}
+
+/**
+ * Converts BlockingPolicy to domain model.
+ * Maps blocking policy information with proper validation.
+ */
+fun BlockingPolicy.toDomain(): com.cdccreditsmart.domain.model.BlockingPolicy = try {
+    com.cdccreditsmart.domain.model.BlockingPolicy(
+        level = when (this.level.lowercase()) {
+            "none" -> com.cdccreditsmart.domain.model.BlockingLevel.NONE
+            "partial" -> com.cdccreditsmart.domain.model.BlockingLevel.PARTIAL
+            "full" -> com.cdccreditsmart.domain.model.BlockingLevel.FULL
+            else -> com.cdccreditsmart.domain.model.BlockingLevel.NONE
+        },
+        reason = this.reason.safeString(),
+        allowedActions = this.allowedActions.toList(),
+        blockedPackages = this.blockedPackages.toList()
+    )
+} catch (e: Exception) {
+    com.cdccreditsmart.domain.model.BlockingPolicy(
+        level = com.cdccreditsmart.domain.model.BlockingLevel.NONE,
+        reason = "Error mapping blocking policy",
+        allowedActions = emptyList(),
+        blockedPackages = emptyList()
+    )
+}
+
+// =============================================================================
+// INSTALLMENT MAPPERS
+// =============================================================================
+
+/**
+ * Converts InstallmentInfo to Installment domain model.
+ * Maps installment information with proper date and amount conversions.
+ */
+fun InstallmentInfo.toDomain(): Installment = try {
+    Installment(
+        id = this.id.safeString(),
+        contractId = "", // Will be set by caller
+        number = this.number.safeInt(1),
+        dueDate = this.dueDate.toLocalDate(), // Convert String to LocalDate
+        amount = this.amount.toBigDecimal(), // Convert Double to BigDecimal
+        status = this.status.toInstallmentStatus(), // Convert String to enum
+        paymentId = this.transactionId.safeString(),
+        createdAt = null, // Server doesn't provide creation timestamp
+        lastSyncAt = null // Server doesn't provide sync timestamp
+    )
+} catch (e: Exception) {
+    Installment(
+        id = this.id ?: "unknown",
+        contractId = "",
+        number = 1,
+        dueDate = LocalDateTime.now().toLocalDate(),
+        amount = java.math.BigDecimal.ZERO,
+        status = InstallmentStatus.PENDING,
+        createdAt = null,
+        lastSyncAt = null
+    )
+}
+
+/**
+ * Converts InstallmentsResponse to list of Installment domain models.
+ * Maps complete installments response including contract association.
+ */
+fun InstallmentsResponse.toDomain(): List<Installment> = try {
+    this.installments.map { installmentInfo ->
+        installmentInfo.toDomain().copy(
+            contractId = this.contractId.safeString()
+        )
+    }
+} catch (e: Exception) {
+    emptyList()
+}
+
+/**
+ * Converts PaymentSummary to InstallmentSummary domain model.
+ * Maps payment summary information with proper type conversions.
+ */
+fun PaymentSummary.toDomain(): InstallmentSummary = try {
+    InstallmentSummary(
+        totalInstallments = 0, // Not available in payment summary
+        paidInstallments = 0, // Calculated based on paid amount vs total
+        overdueInstallments = if (this.overdueAmount.toBigDecimal() > java.math.BigDecimal.ZERO) 1 else 0,
+        nextDueDate = this.nextDueDate?.toLocalDate(),
+        nextAmount = this.remainingAmount.toBigDecimal(),
+        totalOutstanding = this.remainingAmount.toBigDecimal()
+    )
+} catch (e: Exception) {
+    InstallmentSummary(
+        totalInstallments = 0,
+        paidInstallments = 0,
+        overdueInstallments = 0,
+        nextDueDate = null,
+        nextAmount = null,
+        totalOutstanding = java.math.BigDecimal.ZERO
+    )
+}
+
+// =============================================================================
+// DEVICE BINDING MAPPERS
+// =============================================================================
+
+/**
+ * Converts DeviceBindResponse to DeviceBinding domain model.
+ * Maps device binding response to domain model with proper status conversion.
+ */
+fun DeviceBindResponse.toDomain(
+    contractCode: String,
+    attestedDeviceId: String,
+    devicePubKeyFingerprint: String
+): DeviceBinding = try {
+    DeviceBinding(
+        id = this.bindingId.safeString(),
+        contractCode = contractCode,
+        attestedDeviceId = attestedDeviceId,
+        devicePubKeyFingerprint = devicePubKeyFingerprint,
+        status = this.status.toBindingStatus(),
+        createdAt = null, // Server doesn't provide creation timestamp
+        updatedAt = null // Server doesn't provide update timestamp
+    )
+} catch (e: Exception) {
+    DeviceBinding(
+        id = "unknown",
+        contractCode = contractCode,
+        attestedDeviceId = attestedDeviceId,
+        devicePubKeyFingerprint = devicePubKeyFingerprint,
+        status = BindingStatus.PENDING,
+        createdAt = null,
+        updatedAt = null
+    )
+}
+
+// Note: DeviceStatus, DeviceConfiguration, and BlockingPolicy domain models should be defined in domain module

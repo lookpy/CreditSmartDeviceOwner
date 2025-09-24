@@ -23,10 +23,3 @@ enum class BiometryStatus {
     TIMEOUT
 }
 
-data class BiometryResult(
-    val success: Boolean,
-    val status: BiometryStatus,
-    val livenessScore: Float?,
-    val sessionId: String?,
-    val errorMessage: String?
-)
