@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "com.cdccreditsmart.app-mergeDebugResources-45:/values-uk/values-uk.xml",
+            "outputFile": "com.cdccreditsmart.app-mergeDebugResources-46:/values-uk/values-uk.xml",
             "map": [
                 {
                     "source": "/home/runner/.gradle/caches/8.13/transforms/943449cbb6b64cd3bce3a88936bc0290/transformed/navigation-ui-2.7.7/res/values-uk/values-uk.xml",
@@ -54,6 +54,23 @@
                         "startOffsets": "424,533,635,743,829,934,1052,1135,1217,1308,1401,1496,1590,1690,1783,1878,1973,2064,2155,2254,2360,2466,2564,2671,2778,2883,3053,9927",
                         "endColumns": "108,101,107,85,104,117,82,81,90,92,94,93,99,92,94,94,90,90,98,105,105,97,106,106,104,169,99,81",
                         "endOffsets": "528,630,738,824,929,1047,1130,1212,1303,1396,1491,1585,1685,1778,1873,1968,2059,2150,2249,2355,2461,2559,2666,2773,2878,3048,3148,10004"
+                    }
+                },
+                {
+                    "source": "/home/runner/.gradle/caches/8.13/transforms/4a3dc853d2d76945875bc11e803b9673/transformed/zxing-android-embedded-4.3.0/res/values-uk/values-uk.xml",
+                    "from": {
+                        "startLines": "2,3,4,5",
+                        "startColumns": "4,4,4,4",
+                        "startOffsets": "55,117,164,306",
+                        "endColumns": "61,46,141,121",
+                        "endOffsets": "112,159,301,423"
+                    },
+                    "to": {
+                        "startLines": "121,122,123,124",
+                        "startColumns": "4,4,4,4",
+                        "startOffsets": "10348,10410,10457,10599",
+                        "endColumns": "61,46,141,121",
+                        "endOffsets": "10405,10452,10594,10716"
                     }
                 },
                 {

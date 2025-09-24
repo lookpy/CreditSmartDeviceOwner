@@ -44,4 +44,30 @@
     <string name="device_locked_message">Regularize seu pagamento para liberar o aparelho</string>
     <string name="unlock_payment">Pagar Agora</string>
     <string name="contact_support_lock">Contatar Suporte</string>
+    
+    <!-- PDV -->
+    <string name="pdv_title">PDV - Ponto de Venda</string>
+    <string name="pdv_subtitle">Análise de crédito e vendas de dispositivos</string>
+    <string name="new_sale">Nova Venda</string>
+    <string name="finish_sale">Finalizar Venda</string>
+    <string name="configure_device">Configurar Dispositivo</string>
+    <string name="device_imei">IMEI do Dispositivo</string>
+    <string name="imei_validated">✓ IMEI validado com sucesso!</string>
+    <string name="scan_with_device">Escaneie com o dispositivo</string>
+    <string name="android_enterprise">📱 Android Enterprise</string>
+    <string name="app_available">📱 App Disponível</string>
+    <string name="device_owner_config">⚙️ Configuração Device Owner</string>
+    <string name="step_search_client">1 Buscar Cliente</string>
+    <string name="step_finalize">2 Finalizar</string>
+    <string name="step_qr_code">3 QR Code</string>
+    <string name="step_sync_apk">4 Sync APK</string>
+    <string name="step_completed">5 Concluído</string>
+    
+    <!-- Navigation -->
+    <string name="nav_dashboard">Dashboard</string>
+    <string name="nav_pdv">PDV</string>
+    <string name="nav_devices">Aparelhos da Loja</string>
+    <string name="nav_clients">Clientes</string>
+    <string name="nav_contracts">Contratos</string>
+    <string name="nav_reports">Relatórios</string>
 </resources>

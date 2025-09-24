@@ -1,8 +1,25 @@
 {
     "logs": [
         {
-            "outputFile": "com.cdccreditsmart.app-mergeDebugResources-45:/values-fi/values-fi.xml",
+            "outputFile": "com.cdccreditsmart.app-mergeDebugResources-46:/values-fi/values-fi.xml",
             "map": [
+                {
+                    "source": "/home/runner/.gradle/caches/8.13/transforms/4a3dc853d2d76945875bc11e803b9673/transformed/zxing-android-embedded-4.3.0/res/values-fi/values-fi.xml",
+                    "from": {
+                        "startLines": "2,3,4,5",
+                        "startColumns": "4,4,4,4",
+                        "startOffsets": "55,114,161,321",
+                        "endColumns": "58,46,159,103",
+                        "endOffsets": "109,156,316,420"
+                    },
+                    "to": {
+                        "startLines": "119,120,121,122",
+                        "startColumns": "4,4,4,4",
+                        "startOffsets": "10078,10137,10184,10344",
+                        "endColumns": "58,46,159,103",
+                        "endOffsets": "10132,10179,10339,10443"
+                    }
+                },
                 {
                     "source": "/home/runner/.gradle/caches/8.13/transforms/9ae64fe8f97c834f414441323949b5ec/transformed/appcompat-1.7.0/res/values-fi/values-fi.xml",
                     "from": {

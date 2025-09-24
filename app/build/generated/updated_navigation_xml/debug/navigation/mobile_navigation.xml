@@ -3,7 +3,7 @@ xmlns:android="http://schemas.android.com/apk/res/android"
 xmlns:app="http://schemas.android.com/apk/res-auto"
 xmlns:tools="http://schemas.android.com/tools"
 android:id="@+id/mobile_navigation"
-app:startDestination="@+id/navigation_home" >
+app:startDestination="@+id/navigation_pdv" >
 <fragment
     android:id="@+id/navigation_home"
     android:name="com.cdccreditsmart.app.presentation.home.HomeFragment"
@@ -29,4 +29,9 @@ app:startDestination="@+id/navigation_home" >
     android:name="com.cdccreditsmart.app.presentation.profile.ProfileFragment"
     android:label="@string/title_profile"
     tools:layout="@layout/fragment_profile" />
+<fragment
+    android:id="@+id/navigation_pdv"
+    android:name="com.cdccreditsmart.app.presentation.pdv.PdvFragment"
+    android:label="@string/nav_pdv"
+    tools:layout="@layout/fragment_pdv" />
 </navigation>

@@ -15,6 +15,7 @@ import com.cdccreditsmart.app.presentation.home.HomeViewModel_HiltModules_BindsM
 import com.cdccreditsmart.app.presentation.home.HomeViewModel_HiltModules_KeyModule_Provide_LazyMapKey;
 import com.cdccreditsmart.app.presentation.installments.InstallmentsFragment;
 import com.cdccreditsmart.app.presentation.payments.PaymentsFragment;
+import com.cdccreditsmart.app.presentation.pdv.PdvFragment;
 import com.cdccreditsmart.app.presentation.profile.ProfileFragment;
 import com.cdccreditsmart.app.presentation.support.SupportFragment;
 import dagger.hilt.android.ActivityRetainedLifecycle;
@@ -332,6 +333,10 @@ public final class DaggerCDCApplication_HiltComponents_SingletonC {
     }
 
     @Override
+    public void injectPdvFragment(PdvFragment arg0) {
+    }
+
+    @Override
     public void injectProfileFragment(ProfileFragment arg0) {
     }
 
@@ -557,7 +562,7 @@ public final class DaggerCDCApplication_HiltComponents_SingletonC {
     }
 
     @Override
-    public void injectCDCApplication(CDCApplication arg0) {
+    public void injectCDCApplication(CDCApplication cDCApplication) {
     }
 
     @Override
