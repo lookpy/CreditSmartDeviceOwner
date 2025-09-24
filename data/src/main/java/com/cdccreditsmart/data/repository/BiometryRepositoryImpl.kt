@@ -52,7 +52,7 @@ class BiometryRepositoryImpl @Inject constructor(
                 val session = response.body()!!.networkToDomain()
                 
                 // Cache the session
-                biometrySessionDao.insertSession(session.toEntity())
+                biometrySessionDao.insertSession(session.toEntityModel())
                 
                 emit(Resource.Success(session))
             } else {
@@ -130,7 +130,7 @@ class BiometryRepositoryImpl @Inject constructor(
                 val session = response.body()!!.networkToDomain()
                 
                 // Update cache
-                biometrySessionDao.insertSession(session.toEntity())
+                biometrySessionDao.insertSession(session.toEntityModel())
                 
                 emit(Resource.Success(session))
             } else if (cachedSession == null) {
@@ -201,7 +201,7 @@ class BiometryRepositoryImpl @Inject constructor(
                 val sessions = responseBody.sessions.map { it.networkToDomain() }
                 
                 // Update cache
-                biometrySessionDao.insertSessions(sessions.map { it.toEntity() })
+                biometrySessionDao.insertSessions(sessions.map { it.toEntityModel() })
                 
                 emit(Resource.Success(sessions))
             }
