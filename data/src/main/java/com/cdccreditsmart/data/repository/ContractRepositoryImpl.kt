@@ -13,7 +13,7 @@ import com.cdccreditsmart.domain.model.Contract
 import com.cdccreditsmart.domain.model.ContractSignature
 import com.cdccreditsmart.domain.model.ContractStatus
 import com.cdccreditsmart.domain.model.SignatureStatus
-import com.cdccreditsmart.domain.model.ContractUpdate as DomainContractUpdate
+import com.cdccreditsmart.domain.model.ContractUpdate
 
 // Domain repository imports
 import com.cdccreditsmart.domain.repository.ContractRepository
@@ -30,6 +30,7 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onStart
 import java.time.LocalDateTime
+import java.time.ZoneOffset
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -59,8 +60,8 @@ class ContractRepositoryImpl @Inject constructor(
                     version = cachedTerms.version,
                     hash = cachedTerms.hash,
                     text = cachedTerms.text,
-                    effectiveDate = LocalDateTime.ofEpochSecond(cachedTerms.effectiveDate, 0, java.time.ZoneOffset.UTC),
-                    fetchedAt = LocalDateTime.ofEpochSecond(cachedTerms.fetchedAt, 0, java.time.ZoneOffset.UTC)
+                    effectiveDate = LocalDateTime.ofEpochSecond(cachedTerms.effectiveDate, 0, ZoneOffset.UTC),
+                    fetchedAt = LocalDateTime.ofEpochSecond(cachedTerms.fetchedAt, 0, ZoneOffset.UTC)
                 )
                 emit(Resource.Success(terms))
             }
@@ -85,8 +86,8 @@ class ContractRepositoryImpl @Inject constructor(
                     version = terms.version,
                     hash = terms.hash,
                     text = terms.text,
-                    effectiveDate = terms.effectiveDate.toEpochSecond(java.time.ZoneOffset.UTC),
-                    fetchedAt = terms.fetchedAt.toEpochSecond(java.time.ZoneOffset.UTC)
+                    effectiveDate = terms.effectiveDate.toEpochSecond(ZoneOffset.UTC),
+                    fetchedAt = terms.fetchedAt.toEpochSecond(ZoneOffset.UTC)
                 )
                 contractDao.insertTerms(entity)
                 
@@ -146,7 +147,7 @@ class ContractRepositoryImpl @Inject constructor(
                         else -> SignatureStatus.PENDING
                     },
                     createdAt = LocalDateTime.now(),
-                    completedAt = LocalDateTime.ofEpochSecond(responseBody.signedAt, 0, java.time.ZoneOffset.UTC)
+                    completedAt = LocalDateTime.ofEpochSecond(responseBody.signedAt, 0, ZoneOffset.UTC)
                 )
                 
                 emit(Resource.Success(signatureSession))
@@ -244,10 +245,10 @@ class ContractRepositoryImpl @Inject constructor(
                         else -> ContractStatus.DRAFT
                     },
                     signedAt = responseBody.signedAt?.let { 
-                        LocalDateTime.ofEpochSecond(it, 0, java.time.ZoneOffset.UTC) 
+                        LocalDateTime.ofEpochSecond(it, 0, ZoneOffset.UTC) 
                     },
                     createdAt = responseBody.activatedAt?.let { 
-                        LocalDateTime.ofEpochSecond(it, 0, java.time.ZoneOffset.UTC) 
+                        LocalDateTime.ofEpochSecond(it, 0, ZoneOffset.UTC) 
                     } ?: LocalDateTime.now()
                 )
                 
@@ -338,8 +339,8 @@ class ContractRepositoryImpl @Inject constructor(
                 version = cachedTerms.version,
                 hash = cachedTerms.hash,
                 text = cachedTerms.text,
-                effectiveDate = LocalDateTime.ofEpochSecond(cachedTerms.effectiveDate, 0, java.time.ZoneOffset.UTC),
-                fetchedAt = LocalDateTime.ofEpochSecond(cachedTerms.fetchedAt, 0, java.time.ZoneOffset.UTC)
+                effectiveDate = LocalDateTime.ofEpochSecond(cachedTerms.effectiveDate, 0, ZoneOffset.UTC),
+                fetchedAt = LocalDateTime.ofEpochSecond(cachedTerms.fetchedAt, 0, ZoneOffset.UTC)
             )
             emit(terms)
         } else {

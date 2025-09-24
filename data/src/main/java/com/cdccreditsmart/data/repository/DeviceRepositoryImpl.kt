@@ -39,6 +39,7 @@ import javax.inject.Singleton
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.Types
 import java.time.LocalDateTime
+import java.time.ZoneOffset
 
 @Singleton
 class DeviceRepositoryImpl @Inject constructor(
@@ -255,7 +256,7 @@ class DeviceRepositoryImpl @Inject constructor(
         
         // Always emit cached data first (offline-first)
         if (!forceRefresh) {
-            val cachedInstallments = installmentDao.getInstallmentsByDeviceId(deviceId)
+            val cachedInstallments = installmentDao.getInstallmentsByDeviceId()
             cachedInstallments.collect { installments ->
                 if (installments.isNotEmpty()) {
                     emit(Resource.Success(installments.map { it.toDomain() }))
@@ -323,8 +324,8 @@ class DeviceRepositoryImpl @Inject constructor(
                     attestedDeviceId = it.attestedDeviceId,
                     devicePubKeyFingerprint = it.devicePubKeyFp,
                     status = BindingStatus.valueOf(it.status),
-                    createdAt = LocalDateTime.ofEpochSecond(it.createdAt, 0, java.time.ZoneOffset.UTC),
-                    updatedAt = LocalDateTime.ofEpochSecond(it.updatedAt, 0, java.time.ZoneOffset.UTC)
+                    createdAt = LocalDateTime.ofEpochSecond(it.createdAt, 0, ZoneOffset.UTC),
+                    updatedAt = LocalDateTime.ofEpochSecond(it.updatedAt, 0, ZoneOffset.UTC)
                 )
             }
         }
@@ -339,8 +340,8 @@ class DeviceRepositoryImpl @Inject constructor(
                     attestedDeviceId = entity.attestedDeviceId,
                     devicePubKeyFingerprint = entity.devicePubKeyFp,
                     status = BindingStatus.valueOf(entity.status),
-                    createdAt = LocalDateTime.ofEpochSecond(entity.createdAt, 0, java.time.ZoneOffset.UTC),
-                    updatedAt = LocalDateTime.ofEpochSecond(entity.updatedAt, 0, java.time.ZoneOffset.UTC)
+                    createdAt = LocalDateTime.ofEpochSecond(entity.createdAt, 0, ZoneOffset.UTC),
+                    updatedAt = LocalDateTime.ofEpochSecond(entity.updatedAt, 0, ZoneOffset.UTC)
                 )
             }
         }
