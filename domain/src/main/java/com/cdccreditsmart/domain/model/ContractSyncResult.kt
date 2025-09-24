@@ -16,17 +16,6 @@ data class ContractSyncResult(
     val success: Boolean
 )
 
-/**
- * Domain model for individual contract updates.
- * Represents a specific change made to a contract during synchronization.
- */
-data class ContractUpdate(
-    val field: String,
-    val oldValue: String?,
-    val newValue: String?,
-    val timestamp: LocalDateTime?,
-    val reason: String?
-)
 
 /**
  * Domain model for customer information.

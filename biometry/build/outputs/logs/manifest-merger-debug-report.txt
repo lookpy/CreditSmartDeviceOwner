@@ -1,16 +1,16 @@
 -- Merging decision tree log ---
 manifest
-ADDED from /home/runner/workspace/biometry/build/intermediates/tmp/ProcessLibraryManifest/debug/tempAndroidManifest9137533803735931519.xml:2:13-83
-INJECTED from /home/runner/workspace/biometry/build/intermediates/tmp/ProcessLibraryManifest/debug/tempAndroidManifest9137533803735931519.xml:2:13-83
+ADDED from /home/runner/workspace/biometry/build/intermediates/tmp/ProcessLibraryManifest/debug/tempAndroidManifest16442919170898012438.xml:2:13-83
+INJECTED from /home/runner/workspace/biometry/build/intermediates/tmp/ProcessLibraryManifest/debug/tempAndroidManifest16442919170898012438.xml:2:13-83
 	package
-		INJECTED from /home/runner/workspace/biometry/build/intermediates/tmp/ProcessLibraryManifest/debug/tempAndroidManifest9137533803735931519.xml
+		INJECTED from /home/runner/workspace/biometry/build/intermediates/tmp/ProcessLibraryManifest/debug/tempAndroidManifest16442919170898012438.xml
 	xmlns:android
-		ADDED from /home/runner/workspace/biometry/build/intermediates/tmp/ProcessLibraryManifest/debug/tempAndroidManifest9137533803735931519.xml:2:23-81
+		ADDED from /home/runner/workspace/biometry/build/intermediates/tmp/ProcessLibraryManifest/debug/tempAndroidManifest16442919170898012438.xml:2:23-81
 uses-sdk
-INJECTED from /home/runner/workspace/biometry/build/intermediates/tmp/ProcessLibraryManifest/debug/tempAndroidManifest9137533803735931519.xml reason: use-sdk injection requested
-INJECTED from /home/runner/workspace/biometry/build/intermediates/tmp/ProcessLibraryManifest/debug/tempAndroidManifest9137533803735931519.xml
-INJECTED from /home/runner/workspace/biometry/build/intermediates/tmp/ProcessLibraryManifest/debug/tempAndroidManifest9137533803735931519.xml
+INJECTED from /home/runner/workspace/biometry/build/intermediates/tmp/ProcessLibraryManifest/debug/tempAndroidManifest16442919170898012438.xml reason: use-sdk injection requested
+INJECTED from /home/runner/workspace/biometry/build/intermediates/tmp/ProcessLibraryManifest/debug/tempAndroidManifest16442919170898012438.xml
+INJECTED from /home/runner/workspace/biometry/build/intermediates/tmp/ProcessLibraryManifest/debug/tempAndroidManifest16442919170898012438.xml
 	android:targetSdkVersion
-		INJECTED from /home/runner/workspace/biometry/build/intermediates/tmp/ProcessLibraryManifest/debug/tempAndroidManifest9137533803735931519.xml
+		INJECTED from /home/runner/workspace/biometry/build/intermediates/tmp/ProcessLibraryManifest/debug/tempAndroidManifest16442919170898012438.xml
 	android:minSdkVersion
-		INJECTED from /home/runner/workspace/biometry/build/intermediates/tmp/ProcessLibraryManifest/debug/tempAndroidManifest9137533803735931519.xml
+		INJECTED from /home/runner/workspace/biometry/build/intermediates/tmp/ProcessLibraryManifest/debug/tempAndroidManifest16442919170898012438.xml
