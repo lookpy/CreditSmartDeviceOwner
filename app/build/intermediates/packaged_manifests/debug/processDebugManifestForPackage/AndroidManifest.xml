@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.cdccreditsmart.app"
+    package="com.cdccreditsmart.app.debug"
     android:versionCode="1"
-    android:versionName="1.0.0" >
+    android:versionName="1.0.0-debug" >
 
     <uses-sdk
         android:minSdkVersion="26"
@@ -131,10 +131,10 @@
     <uses-permission android:name="android.permission.MANAGE_KEYGUARD" />
 
     <permission
-        android:name="com.cdccreditsmart.app.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION"
+        android:name="com.cdccreditsmart.app.debug.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION"
         android:protectionLevel="signature" />
 
-    <uses-permission android:name="com.cdccreditsmart.app.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION" /> <!-- TODO replace above two with next line after Android 4.2 -->
+    <uses-permission android:name="com.cdccreditsmart.app.debug.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION" /> <!-- TODO replace above two with next line after Android 4.2 -->
     <!-- <uses-feature android:name="android.hardware.camera.any"/> -->
     <uses-feature
         android:name="android.hardware.camera.autofocus"
@@ -199,7 +199,7 @@
         <!-- File provider for sharing documents -->
         <provider
             android:name="androidx.core.content.FileProvider"
-            android:authorities="com.cdccreditsmart.app.fileprovider"
+            android:authorities="com.cdccreditsmart.app.debug.fileprovider"
             android:exported="false"
             android:grantUriPermissions="true" >
             <meta-data
@@ -216,7 +216,7 @@
 
         <provider
             android:name="androidx.startup.InitializationProvider"
-            android:authorities="com.cdccreditsmart.app.androidx-startup"
+            android:authorities="com.cdccreditsmart.app.debug.androidx-startup"
             android:exported="false" >
             <meta-data
                 android:name="androidx.emoji2.text.EmojiCompatInitializer"
