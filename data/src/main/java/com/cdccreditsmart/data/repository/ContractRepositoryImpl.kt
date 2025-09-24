@@ -78,7 +78,7 @@ class ContractRepositoryImpl @Inject constructor(
                 emit(Resource.success(terms))
             } else {
                 val exception = networkErrorMapper.mapToCdcException(
-                    RuntimeException("Failed to get contract terms: ${response.code}")
+                    RuntimeException("Failed to get contract terms: ${response.code()}")
                 )
                 emit(Resource.error(exception))
             }
@@ -137,7 +137,7 @@ class ContractRepositoryImpl @Inject constructor(
                 emit(Resource.success(signatureSession))
             } else {
                 val exception = networkErrorMapper.mapToCdcException(
-                    RuntimeException("Failed to sign contract: ${response.code}")
+                    RuntimeException("Failed to sign contract: ${response.code()}")
                 )
                 emit(Resource.error(exception))
             }
@@ -187,7 +187,7 @@ class ContractRepositoryImpl @Inject constructor(
                 emit(Resource.success(syncResult))
             } else {
                 val exception = networkErrorMapper.mapToCdcException(
-                    RuntimeException("Failed to sync contract: ${response.code}")
+                    RuntimeException("Failed to sync contract: ${response.code()}")
                 )
                 emit(Resource.error(exception))
             }
@@ -242,7 +242,7 @@ class ContractRepositoryImpl @Inject constructor(
                 emit(Resource.success(contract))
             } else if (cachedContract == null) {
                 val exception = networkErrorMapper.mapToCdcException(
-                    RuntimeException("Contract not found: ${response.code}")
+                    RuntimeException("Contract not found: ${response.code()}")
                 )
                 emit(Resource.error(exception))
             }
@@ -282,7 +282,7 @@ class ContractRepositoryImpl @Inject constructor(
                 emit(Resource.success(signatures))
             } else {
                 val exception = networkErrorMapper.mapToCdcException(
-                    RuntimeException("Failed to get contract signatures: ${response.code}")
+                    RuntimeException("Failed to get contract signatures: ${response.code()}")
                 )
                 emit(Resource.error(exception))
             }
