@@ -71,7 +71,7 @@
     <string name="title_support">Suporte</string>
     <string name="unlock_payment">Pagar Agora</string>
     <string name="welcome_title">Bem-vindo ao CDC Credit Smart</string>
-    <style name="CDCButtonPrimary" parent="Widget.Material3.Button">
+    <style name="CDCButtonPrimary" parent="Widget.MaterialComponents.Button">
         <item name="backgroundTint">@color/cdc_orange_primary</item>
         <item name="android:textColor">@color/white</item>
         <item name="android:textAllCaps">false</item>
@@ -79,14 +79,14 @@
         <item name="android:textStyle">bold</item>
         <item name="cornerRadius">8dp</item>
     </style>
-    <style name="CDCButtonSecondary" parent="Widget.Material3.Button.OutlinedButton">
+    <style name="CDCButtonSecondary" parent="Widget.MaterialComponents.Button.OutlinedButton">
         <item name="strokeColor">@color/cdc_orange_primary</item>
         <item name="android:textColor">@color/cdc_orange_primary</item>
         <item name="android:textAllCaps">false</item>
         <item name="android:textSize">16sp</item>
         <item name="cornerRadius">8dp</item>
     </style>
-    <style name="Theme.CDCCreditSmart" parent="Theme.Material3.DayNight">
+    <style name="Theme.CDCCreditSmart" parent="Theme.MaterialComponents.DayNight">
         
         <item name="colorPrimary">@color/cdc_orange_primary</item>
         <item name="colorPrimaryVariant">@color/cdc_orange_variant</item>

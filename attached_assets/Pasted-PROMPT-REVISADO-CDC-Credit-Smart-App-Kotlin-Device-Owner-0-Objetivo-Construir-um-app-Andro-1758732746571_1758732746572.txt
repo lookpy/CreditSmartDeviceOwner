@@ -1,0 +1,174 @@
+PROMPT REVISADO – “CDC Credit Smart – App Kotlin (Device Owner)”
+0) Objetivo
+
+Construir um app Android (Kotlin) para clientes do CDC Credit Smart que:
+
+Opera como Device Owner (Android Enterprise) — a instalação via QR Code é feita pelo Android nativo e não pelo app.
+
+Após o provisionamento, o app inicia com privilégios de DevicePolicyManager para aplicar as políticas necessárias.
+
+Implementa o fluxo de validação do cliente (atestado, biometria, assinatura, sincronização).
+
+Permite o cliente acompanhar parcelas, efetuar pagamentos (PIX, boleto), receber push de cobrança, e aplica bloqueios graduais até overlay total em caso de inadimplência.
+
+Possui banco de dados offline (Room), fila de sincronização (WorkManager), atualizações silenciosas (Device Owner).
+
+Segue tema visual CDC Credit Smart (dark + laranja).
+
+É fluido, seguro, anti-tamper e resistente a engenharia reversa.
+
+1) Arquitetura & Tech Stack
+
+Linguagem: Kotlin (minSdk 26+).
+
+UI: Jetpack Compose + Material 3.
+
+Arquitetura: Clean + MVVM.
+
+Persistência: Room + EncryptedSharedPreferences.
+
+Networking: Retrofit + OkHttp (TLS 1.3 + Certificate Pinning).
+
+Jobs: WorkManager (retries + backoff).
+
+Push: Firebase Cloud Messaging.
+
+Assinatura: https://github.com/gcacace/android-signaturepad
+ (via ViewInterop no Compose).
+
+Ofuscação: R8/ProGuard + checks anti-tamper.
+
+2) Cores e UI
+
+Background: #121212
+
+Cards: #1E1E1E
+
+Primária (CDC Laranja): #FF7A1A
+
+Secundária: #F47C2C
+
+Texto: Branco (#FFFFFF) e cinza claro (#CFCFCF)
+
+Sucesso: Verde (#4CAF50)
+
+Erro: Vermelho (#E53935)
+
+3) Fluxo Ajustado do App
+Importante: Não implementar QR Code no app.
+
+O Android nativo faz o provisionamento via QR → instala o app → define-o como Device Owner.
+
+O app começa a rodar após essa instalação.
+
+Fluxo dentro do app:
+
+Tela Boas-vindas → animação CDC → “Configurar Dispositivo”.
+
+Atestado (/v1/device/attest) → valida IMEI digitado × IMEI real.
+
+Bind contrato–dispositivo (/v1/device/bind).
+
+Biometria facial + liveness (/v1/biometry/face/verify).
+
+Assinatura digital (SignaturePad + /v1/contract/sign).
+
+Sincronização final (/v1/contract/sync).
+
+Dashboard: parcelas, pagamentos, status do contrato.
+
+Parcelas/Pagamento: PIX (gera QR copia e cola) / Boleto (PDF/link).
+
+Perfil: dados pessoais + informações do dispositivo + contrato.
+
+Suporte: FAQ, WhatsApp, abertura de chamado.
+
+Bloqueio (overlay): bloqueio parcial ou total conforme atraso.
+
+Atualizações silenciosas: baixadas e instaladas via APIs de Device Owner.
+
+4) Device Owner – Políticas
+
+Quem define Device Owner é o Android, não o app.
+
+O app só consome APIs do DevicePolicyManager:
+
+Bloqueio de apps (setPackagesSuspended).
+
+Lock task mode (setLockTaskPackages).
+
+Restrições: DISALLOW_FACTORY_RESET, DISALLOW_USB_FILE_TRANSFER, DISALLOW_DEBUGGING_FEATURES.
+
+Atualizações silenciosas (installPackage).
+
+Overlay de bloqueio em tela cheia (Activity lock task).
+
+5) Banco Offline (Room)
+
+Installments, Payments, DeviceBinding, BiometrySessions, SyncQueue, AuditLog, Terms, Flags.
+
+Estratégia: grava local → envia via WorkManager → reprocessa se falhar.
+
+6) APIs – Integração
+
+Rotas usadas pelo app (pós-provisionamento):
+
+/v1/device/attest
+
+/v1/device/bind
+
+/v1/biometry/face/verify
+
+/v1/contract/terms
+
+/v1/contract/sign
+
+/v1/contract/sync
+
+/api/apk/device/installments
+
+/api/apk/device/{serial}/pay/{installmentId}
+
+/api/apk/device/heartbeat
+
+/api/android/updates/check
+
+/api/android/updates/download
+
+7) Segurança
+
+JWT curto (15 min) com escopos.
+
+Refresh Token rotativo no Keystore.
+
+Assinatura de requisição (X-Device-Signature).
+
+Idempotency-Key em POSTs.
+
+Verificação Play Integrity / Key Attestation diária.
+
+Root / emulador / debugger detection.
+
+8) UX
+
+Jetpack Compose com stepper visual (Atestado → Biometria → Assinatura → Concluído).
+
+Feedback imediato em cada etapa (spinner → check verde → erro em vermelho).
+
+Offline-first: sempre mostra status local, sincroniza quando possível.
+
+Overlay de bloqueio com botão “Pagar agora” direto para tela de pagamento.
+
+9) O que NÃO implementar
+
+QR Code de provisionamento.
+
+Esse fluxo pertence ao Android Enterprise e ocorre fora do app.
+
+O app não cria, lê ou processa QR.
+
+Ele apenas assume papel de Device Owner depois que o Android instala via QR.
+
+👉 Resumindo para a IA:
+
+“Implemente o app Kotlin como Device Owner, mas não desenvolva nada de QR Code dentro dele. O QR Code é do Android nativo no provisionamento. O app só começa a atuar após o provisionamento, cuidando do fluxo de validação, pagamentos, parcelas, suporte e bloqueio.”

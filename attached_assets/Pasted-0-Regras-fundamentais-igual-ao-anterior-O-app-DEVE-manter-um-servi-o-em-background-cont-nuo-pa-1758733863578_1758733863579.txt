@@ -1,0 +1,84 @@
+0) Regras fundamentais
+
+[igual ao anterior…]
+
+O app DEVE manter um serviço em background contínuo para estabilidade, bloqueios e sincronização.
+
+6) Jobs (WorkManager) + Serviço Persistente
+
+Além dos workers já definidos, criar um serviço residente, obrigatório para Device Owner:
+
+6.1 Serviço Foreground/Persistente
+
+Criar CoreDeviceService : LifecycleService, inicializado no boot.
+
+Deve rodar em Foreground com NotificationChannel discreto (pode ser oculto via categoria “Service”).
+
+Registra listeners para:
+
+Conectividade (rede ligada/desligada)
+
+Bateria (carga crítica)
+
+Eventos de bloqueio/atraso (recebidos por push ou fila local)
+
+Tentativas de kill do processo (restart automático)
+
+6.2 Auto-Restart (imparável)
+
+Implementar BroadcastReceiver para ACTION_BOOT_COMPLETED, ACTION_MY_PACKAGE_REPLACED, ACTION_USER_PRESENT.
+
+Se o app for encerrado, AlarmManager/WorkManager reiniciam CoreDeviceService.
+
+Device Owner → pode usar Lock Task Mode e setLockTaskPackages para impedir o usuário de forçar encerramento.
+
+Política DPM: DISALLOW_UNINSTALL_APPS para o próprio pacote.
+
+6.3 Funções do Serviço
+
+Monitorar status de parcelas e aplicar bloqueios em tempo real.
+
+Heartbeat periódico para /api/apk/device/heartbeat.
+
+Sincronizar fila (SyncQueueWorker).
+
+Escutar FCM → aplicar comandos imediatos (ex: bloqueio remoto).
+
+Ativar Overlay em caso de atraso (iniciar LockActivity).
+
+Checar updates silenciosas e disparar instalação.
+
+6.4 Resiliência
+
+startForegroundService() sempre que reiniciar.
+
+setForegroundServiceBehavior(FOREGROUND_SERVICE_IMMEDIATE) no Android 14+.
+
+Usar PARTIAL_WAKE_LOCK quando processar filas críticas.
+
+Revalidar attestation (Play Integrity) de tempos em tempos, sempre pelo serviço.
+
+8) Segurança (complemento)
+
+CoreDeviceService deve verificar se está rodando; caso parado, BroadcastReceiver reativa.
+
+Para evitar bypass, bloquear acesso ao menu de desenvolvedor via DevicePolicyManager (DISALLOW_DEBUGGING_FEATURES).
+
+Impedir desligar o serviço: mesmo se o usuário tentar forçar parada, Device Owner pode reativar em boot ou push imediato.
+
+12) Entregáveis (complemento)
+
+CoreDeviceService com:
+
+Boot auto-start.
+
+ForegroundService persistente.
+
+Auto-restart via Alarm/WorkManager.
+
+Monitoramento contínuo.
+
+Integração com bloqueios e overlay.
+
+📌 Em resumo:
+O CDC Credit Smart APK deve ser imparável, rodando em segundo plano 24/7, protegido por Device Owner, com serviço foreground persistente + auto-restart, mantendo a sincronização, monitorando pagamentos e aplicando bloqueios.

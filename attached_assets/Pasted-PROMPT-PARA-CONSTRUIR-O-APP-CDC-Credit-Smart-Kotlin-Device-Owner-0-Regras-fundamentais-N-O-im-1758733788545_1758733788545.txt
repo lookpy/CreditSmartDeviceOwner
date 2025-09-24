@@ -1,0 +1,384 @@
+PROMPT PARA CONSTRUIR O APP “CDC Credit Smart” (Kotlin, Device Owner)
+0) Regras fundamentais
+
+NÃO implementar QR dentro do app. O QR de Device Owner é do Android nativo (provisionamento). O app inicia já como Device Owner.
+
+Padrão visual igual às telas enviadas: tema dark + laranja CDC, stepper, cards, tipografia forte, feedback claro.
+
+Fluxo: Atestado → Biometria → Assinatura → Concluído → Dashboard → Parcelas/Pagamentos → Suporte → Perfil → Overlay (quando devido).
+
+Segurança: TLS1.3 + Certificate Pinning, JWT com escopos e exp curto, Idempotency-Key em POSTs, assinatura da requisição X-Device-Signature com chave do Android Keystore, Play Integrity/Key Attestation, anti-debug/anti-root/anti-emulador.
+
+1) Stack e arquitetura
+
+Kotlin, minSdk 26+.
+
+Jetpack Compose + Material 3 (sem Dynamic Color; usar paleta fixa CDC).
+
+Clean + MVVM, módulos:
+
+app (UI/NAV/DI/Theme)
+
+domain (use cases)
+
+data (Room + DAOs + Repos)
+
+network (Retrofit/OkHttp + segurança)
+
+device (DevicePolicyManager, attestation, lock task, overlay, updates)
+
+payments (PIX/Boleto)
+
+biometry (facade do SDK de liveness; se não houver SDK, mock do fluxo)
+
+Hilt para DI; Coroutines/Flow; WorkManager para jobs; Room (com Migrations); EncryptedSharedPreferences para segredos; FCM para push.
+
+2) Tema CDC (igual seus exemplos)
+
+Background: #121212
+
+Card: #1E1E1E
+
+Primary: #FF7A1A
+
+Secondary: #F47C2C
+
+TextPrimary: #FFFFFF
+
+TextSecondary: #CFCFCF
+
+Success: #4CAF50
+
+Error: #E53935
+
+Warning: #FFC107
+
+Radius: 16–20px; elevation suave; ícones simples (Material Symbols Filled).
+
+3) Navegação (Compose)
+
+Rotas:
+
+/onboarding/welcome
+
+/flow/attested
+
+/flow/biometry
+
+/flow/sign
+
+/flow/done
+
+/home
+
+/installments
+
+/payment/{installmentId}
+
+/support
+
+/profile
+
+/lock/overlay (Activity separada, lock task)
+
+Stepper (componente): estados NOT_STARTED | IN_PROGRESS | DONE | ERROR.
+
+4) Telas (iguais às imagens que você mandou)
+4.1 Atestado do dispositivo
+
+Título: “Atestado do Dispositivo”
+
+Stepper: Atestado (ativo) → Biometria → Assinatura → Concluído
+
+Card “Aguardando atestado…”
+
+Card sucesso: IMEI digitado × IMEI real (laranja)
+
+CTA: Continuar
+
+Ações:
+
+Chamar /v1/device/attest (Play Integrity/Key Attestation + devicePublicKey)
+
+Salvar attestedDeviceId, fingerprint da pubkey, emitir JWT device:bind
+
+Em seguida /v1/device/bind com contractCode|imeiPDV, imeiDigitado, attestedDeviceId
+
+4.2 Biometria facial (liveness)
+
+Título: “Validação Facial”
+
+Preview da câmera; status “Capturando… / Validando… / Aprovado / Revisão / Negado”
+
+Exibir mensagem verde ao aprovar
+
+CTA: Avançar para Assinatura
+
+Ação: /v1/biometry/face/verify com biometrySessionId, faceEmbedding, livenessScore, documentHash, storeId
+
+4.3 Assinatura + Termos
+
+Título: “Assinatura do Contrato”
+
+Card termos (hash/versão); scroll obrigatório
+
+SignaturePad (via ViewInterop) + botão “Limpar”
+
+CTA: Confirmar Assinatura
+
+Ações:
+
+GET /v1/contract/terms?version=latest
+
+POST /v1/contract/sign (imagem base64 + termsHash + signatureVectorsHash)
+
+Receber signatureReceiptId + JWT contract:sync
+
+4.4 Concluído
+
+“Contrato validado com sucesso”
+
+Mostrar contractId, auditRef
+
+CTA: Ir para Início
+
+4.5 Home (Dashboard)
+
+Cards: Próxima parcela, Status do contrato, Atrasos
+
+Botões: Ver Parcelas, Pagar agora, Suporte
+
+Banner informativo quando há atraso (amarelo/vermelho)
+
+4.6 Parcelas
+
+Lista: nº, vencimento, valor, status (Pago / Em aberto / Atrasado)
+
+CTA item: Pagar → /payment/{installmentId}
+
+4.7 Pagamento (PIX/Boleto)
+
+PIX: exibir QR + “Copiar PIX Copia & Cola”; status de confirmação (polling ou WS)
+
+Boleto: link/PDF (salvar em Downloads/CDC/), botão “Compartilhar”
+
+Após confirmação, atualizar Room e UI
+
+4.8 Suporte
+
+FAQ, WhatsApp, telefone, abrir chamado (POST suporte)
+
+Mostrar protocolo
+
+4.9 Perfil
+
+Informações pessoais (nome/CPF/telefone/email) – placeholders até sincronizar
+
+Informações do dispositivo (modelo, IMEIs, data da compra)
+
+Informações do pagamento (valor total, nº de parcelas)
+
+4.10 Overlay (bloqueio)
+
+Activity fullscreen em Lock Task Mode
+
+Mensagem: “Pagamento atrasado. Regularize para liberar.”
+
+Ações: Pagar agora (abre /installments//payment)
+
+Home/back desabilitados; sair somente por política do servidor (ou pagamento)
+
+5) Banco local (Room)
+
+Entities/DAO (resumo):
+
+DeviceBinding(id, contractCode, attestedDeviceId, devicePubKeyFp, status, updatedAt)
+
+Installment(id, contractId, number, dueDate, amount, status, txId?, lastSyncAt)
+
+Payment(id, installmentId, method, amount, txId, createdAt, status)
+
+BiometrySession(id, status, livenessScore?, resultId?, createdAt)
+
+SignatureSession(id, termsVersion, termsHash, receiptId?, createdAt)
+
+SyncQueue(id, type, payloadJson, idempotencyKey, retries, nextRunAt, status)
+
+Terms(version, hash, text, fetchedAt)
+
+AuditLog(id, event, metaJson, createdAt)
+
+Flags(key, value, updatedAt)
+Regras:
+
+Primeiro grava local → WorkManager envia → idempotência por Idempotency-Key.
+
+Conflito: servidor decide pelo updatedAt.
+
+6) Jobs (WorkManager)
+
+AttestationWorker (boot + diário)
+
+HeartbeatWorker (POST /api/apk/device/heartbeat, 6/6h)
+
+SyncQueueWorker (envio robusto com backoff e retry)
+
+PaymentsPollWorker (se não houver webhook)
+
+UpdatesWorker (check & download; instalar silencioso via DO)
+
+BlockPolicyWorker (aplica/suspende pacotes, mostra overlay conforme política servidor)
+
+7) Integração com APIs (headers e rotas)
+
+Headers padrão:
+
+Authorization: Bearer <JWT>
+X-Idempotency-Key: <UUID>
+X-Device-Signature: base64(ECDSA_sign(SHA256(body)))
+Content-SHA256: <hex>
+
+
+Novas rotas /v1 (uso principal no app):
+
+POST /v1/device/attest
+
+POST /v1/device/bind
+
+POST /v1/biometry/face/verify
+
+GET /v1/contract/terms?version=latest
+
+POST /v1/contract/sign
+
+POST /v1/contract/sync
+
+Legado ainda utilizado:
+
+GET /api/apk/device/installments
+
+POST /api/apk/device/{serial}/pay/{installmentId} (ideal migrar p/ /v1/payments/pay com body)
+
+POST /api/apk/device/heartbeat
+
+GET /api/android/updates/check
+
+GET /api/android/updates/download
+
+GET /api/apk/active (metadados+checksum)
+
+Códigos de erro a tratar no app:
+AUTH_401/403, BIND_409, BIO_422/409, SIGN_422, SYNC_409, RATE_429 (backoff).
+
+8) Segurança (implementação)
+
+OkHttp Certificate Pinning
+
+(Opcional/ideal) mTLS nas rotas críticas
+
+JWT ≤ 15min + Refresh rotativo (salvar em Keystore)
+
+Play Integrity / Key Attestation (boot + diário)
+
+Assinatura de requisição (Keystore ECDSA)
+
+Anti-tamper: R8 agressivo, anti-debug/Frida/emulador/root; verificação de assinatura do APK + hash de assets
+
+Lock Task + DPM:
+
+DISALLOW_FACTORY_RESET
+
+DISALLOW_USB_FILE_TRANSFER
+
+DISALLOW_DEBUGGING_FEATURES
+
+DISALLOW_INSTALL_UNKNOWN_SOURCES
+
+setLockTaskPackages, setPackagesSuspended (bloqueio de apps)
+
+LGPD: consentimento dos termos, versionamento/hash, retenção, acesso do titular
+
+9) Pseudocódigo essencial (resumo)
+
+Pinning:
+
+val pinner = CertificatePinner.Builder()
+  .add("cdccreditsmart.com", "sha256/AAAA...=")
+  .build()
+val ok = OkHttpClient.Builder()
+  .certificatePinner(pinner)
+  .addInterceptor(AuthInterceptor(tokensRepo))
+  .build()
+
+
+Assinatura:
+
+fun xDeviceSignature(body: ByteArray): String {
+  val key = loadKeystorePrivateKey()
+  val sig = Signature.getInstance("SHA256withECDSA")
+  sig.initSign(key); sig.update(body)
+  return Base64.encodeToString(sig.sign(), Base64.NO_WRAP)
+}
+
+
+Overlay (lock task):
+
+class LockActivity : ComponentActivity() {
+  override fun onCreate(savedInstanceState: Bundle?) {
+    super.onCreate(savedInstanceState)
+    startLockTask()
+    setContent { OverlayScreen(onPayNow = { navTo("/installments") }) }
+  }
+  override fun onBackPressed() {} // no-op
+}
+
+
+SignaturePad (Compose):
+
+AndroidView(factory = { ctx ->
+  SignaturePad(ctx, null).apply {
+    setOnSignedListener(object : OnSignedListener { /* salva bitmap/base64 */ })
+  }
+})
+
+10) Atualizações silenciosas
+
+UpdatesWorker: GET /api/android/updates/check → baixa com checksum → instala via PackageInstaller + DPM (ou Managed Play privado).
+
+Reportar sucesso/falha (criar /v1/device/update-report se necessário).
+
+11) Testes (resumo)
+
+Happy path completo
+
+Rosto duplicado (DENIED/REVIEW)
+
+IMEI divergente (BIND_409)
+
+JWT expirado/escopo errado
+
+Idempotência (mesma Idempotency-Key)
+
+Rede intermitente (retry + backoff)
+
+Regras de bloqueio por atraso (suspensão → overlay parcial → overlay total)
+
+Update silenciosa (download/instalação/rollback)
+
+12) Entregáveis
+
+Projeto Android completo em módulos, com Hilt/Room/WorkManager/Compose.
+
+Theming CDC (cores, tipografia, componentes Stepper/Timeline/StatusChip).
+
+Implementação das telas iguais às imagens (layout, ícones, cores, microtextos).
+
+Clients Retrofit das rotas acima + interceptors de segurança.
+
+Banco offline + filas de sync + jobs.
+
+Políticas Device Owner aplicadas (sem QR dentro do app).
+
+Scripts de build (prod/dev), proguard-rules.pro endurecido.
+
+README com requisitos de provisionamento (Android Enterprise QR) e passos de QA.

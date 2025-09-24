@@ -1,0 +1,149 @@
+seguindo o mesmo padrão visual do CDC Credit Smart:
+
+Tema dark (preto + cinza carvão).
+
+Destaques em laranja CDC (#F47C2C / #FF7A1A).
+
+Ícones simples e legíveis.
+
+Cards com bordas arredondadas e contraste claro.
+
+Stepper de etapas (QR → Atestado → Biometria → Assinatura → Concluído).
+
+Layout responsivo, limpo e fluido.
+
+📐 Diretrizes para o App (Kotlin)
+1. Tecnologia de layout
+
+Jetpack Compose (última geração de UI no Android).
+
+Uso de Material 3 (M3) com Dynamic Color desativado → sempre usar paleta CDC.
+
+Navigation Compose para navegação fluida.
+
+Scaffold + BottomNavigation para telas principais (Início, Parcelas, Perfil, Suporte).
+
+Stepper + Timeline como componentes Compose customizados (para feedback em tempo real).
+
+2. Paleta CDC Credit Smart
+
+Background: #121212 (preto grafite).
+
+Cards: #1E1E1E (cinza carvão).
+
+Primária: #FF7A1A (laranja CDC).
+
+Secundária: #F47C2C (laranja suave).
+
+Texto primário: #FFFFFF (branco).
+
+Texto secundário: #CFCFCF (cinza claro).
+
+Sucesso: #4CAF50 (verde).
+
+Erro: #E53935 (vermelho).
+
+Aviso: #FFC107 (amarelo).
+
+3. Fluxo Ajustado (App Cliente)
+
+Boas-vindas animada
+
+Logo CDC + animação leve.
+
+Botão “Configurar Dispositivo”.
+
+Configuração via QR
+
+Lê QR gerado no PDV.
+
+Exibe “Atestando dispositivo…” (stepper).
+
+Atestado
+
+Mostra IMEI digitado × IMEI real.
+
+Feedback visual (✅ ou ❌).
+
+Biometria
+
+Câmera frontal → validação facial + liveness.
+
+Tela com preview da face e status em tempo real.
+
+Assinatura
+
+Exibe Termos (scroll obrigatório).
+
+Campo de assinatura (SignaturePad integrado ao Compose via ViewInterop).
+
+Botão “Confirmar Assinatura”.
+
+Sincronização final
+
+Tela “Contrato validado com sucesso”.
+
+ID do contrato + botão “Ir para Home”.
+
+Dashboard (Home)
+
+Cards com parcelas ativas, pagamento em atraso e status do contrato.
+
+Parcelas
+
+Lista com parcelas (valor, vencimento, status).
+
+Botões: “Pagar via PIX” (gera QR/Copy-paste) e “Pagar via Boleto” (abre PDF).
+
+Perfil
+
+Dados pessoais (nome, CPF, telefone, e-mail).
+
+Dados do dispositivo (modelo, IMEI, data da compra).
+
+Informações do contrato (valor total, número de parcelas).
+
+Suporte
+
+FAQ rápido.
+
+Chat/WhatsApp.
+
+Opção “Abrir Chamado”.
+
+Bloqueio (Overlay)
+
+Se atraso → overlay escuro em tela cheia.
+
+Mensagem dinâmica:
+
+1º atraso: aviso + push.
+
+2º atraso: bloqueio parcial (suspende apps).
+
+3º atraso: overlay total (apenas botão “Pagar agora”).
+
+4. Experiência do Usuário
+
+Transições animadas entre telas (Compose Navigation Anim).
+
+Feedback imediato em cada etapa (spinner, check verde, erro em vermelho).
+
+Status persistente → se app fechar, ao abrir mostra em qual etapa parou.
+
+Offline-first → Room guarda todas as interações; WorkManager faz sync automático.
+
+5. Segurança (UI e UX)
+
+Device Owner → instalação só pelo QR do PDV.
+
+Permissões → wizard como na sua imagem (“0 de 5 concluídos”) até liberar o app.
+
+Proteção contra bypass: overlay em lock task, não fecha com back/home.
+
+Sessão JWT → refresh automático e mensagens claras em caso de erro.
+
+Push notifications → lembretes de pagamento sempre destacados.
+
+📌 Resumindo:
+Seu app deve ser feito em Kotlin + Jetpack Compose + Material 3, com tema CDC aplicado globalmente, fluxo guiado por stepper, UI responsiva, feedback visual em tempo real e políticas Device Owner aplicadas pelo Android.
