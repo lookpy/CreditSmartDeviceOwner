@@ -1,0 +1,149 @@
+Executing tasks: [:app:assembleDebug] in project C:\Users\sabre\AndroidStudioProjects\CreditSmartDeviceOwner
+
+
+> Configure project :
+Build was configured to prefer settings repositories over project repositories but repository 'Google' was added by build file 'build.gradle.kts'
+Build was configured to prefer settings repositories over project repositories but repository 'MavenRepo' was added by build file 'build.gradle.kts'
+Build was configured to prefer settings repositories over project repositories but repository 'maven' was added by build file 'build.gradle.kts'
+Build was configured to prefer settings repositories over project repositories but repository 'Google' was added by build file 'build.gradle.kts'
+Build was configured to prefer settings repositories over project repositories but repository 'MavenRepo' was added by build file 'build.gradle.kts'
+Build was configured to prefer settings repositories over project repositories but repository 'maven' was added by build file 'build.gradle.kts'
+Build was configured to prefer settings repositories over project repositories but repository 'Google' was added by build file 'build.gradle.kts'
+Build was configured to prefer settings repositories over project repositories but repository 'MavenRepo' was added by build file 'build.gradle.kts'
+Build was configured to prefer settings repositories over project repositories but repository 'maven' was added by build file 'build.gradle.kts'
+Build was configured to prefer settings repositories over project repositories but repository 'Google' was added by build file 'build.gradle.kts'
+Build was configured to prefer settings repositories over project repositories but repository 'MavenRepo' was added by build file 'build.gradle.kts'
+Build was configured to prefer settings repositories over project repositories but repository 'maven' was added by build file 'build.gradle.kts'
+Build was configured to prefer settings repositories over project repositories but repository 'Google' was added by build file 'build.gradle.kts'
+Build was configured to prefer settings repositories over project repositories but repository 'MavenRepo' was added by build file 'build.gradle.kts'
+Build was configured to prefer settings repositories over project repositories but repository 'maven' was added by build file 'build.gradle.kts'
+Build was configured to prefer settings repositories over project repositories but repository 'Google' was added by build file 'build.gradle.kts'
+Build was configured to prefer settings repositories over project repositories but repository 'MavenRepo' was added by build file 'build.gradle.kts'
+Build was configured to prefer settings repositories over project repositories but repository 'maven' was added by build file 'build.gradle.kts'
+Build was configured to prefer settings repositories over project repositories but repository 'Google' was added by build file 'build.gradle.kts'
+Build was configured to prefer settings repositories over project repositories but repository 'MavenRepo' was added by build file 'build.gradle.kts'
+Build was configured to prefer settings repositories over project repositories but repository 'maven' was added by build file 'build.gradle.kts'
+Build was configured to prefer settings repositories over project repositories but repository 'Google' was added by build file 'build.gradle.kts'
+Build was configured to prefer settings repositories over project repositories but repository 'MavenRepo' was added by build file 'build.gradle.kts'
+Build was configured to prefer settings repositories over project repositories but repository 'maven' was added by build file 'build.gradle.kts'
+
+> Task :app:preBuild UP-TO-DATE
+> Task :app:preDebugBuild UP-TO-DATE
+> Task :app:mergeDebugNativeDebugMetadata NO-SOURCE
+> Task :app:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :app:checkDebugAarMetadata
+> Task :app:processDebugNavigationResources
+> Task :app:generateDebugResValues
+> Task :app:compileDebugNavigationResources
+> Task :app:mapDebugSourceSetPaths
+> Task :app:generateDebugResources
+> Task :app:packageDebugResources
+> Task :app:createDebugCompatibleScreenManifests
+> Task :app:extractDeepLinksDebug
+> Task :app:parseDebugLocalResources
+> Task :app:mergeDebugResources
+> Task :app:processDebugMainManifest
+> Task :app:processDebugManifest
+Download https://repo.maven.apache.org/maven2/com/google/dagger/hilt-android-compiler/2.54/hilt-android-compiler-2.54.pom, took 31 ms
+Download https://repo.maven.apache.org/maven2/com/google/dagger/dagger-compiler/2.54/dagger-compiler-2.54.pom, took 16 ms
+Download https://repo.maven.apache.org/maven2/com/google/guava/guava/33.0.0-jre/guava-33.0.0-jre.pom, took 9 ms
+Download https://repo.maven.apache.org/maven2/com/google/devtools/ksp/symbol-processing-api/2.0.21-1.0.28/symbol-processing-api-2.0.21-1.0.28.pom, took 25 ms
+Download https://repo.maven.apache.org/maven2/com/google/dagger/dagger-spi/2.54/dagger-spi-2.54.pom, took 20 ms
+Download https://repo.maven.apache.org/maven2/net/ltgt/gradle/incap/incap/0.2/incap-0.2.pom, took 24 ms
+Download https://repo.maven.apache.org/maven2/com/google/devtools/ksp/symbol-processing-api/2.0.21-1.0.28/symbol-processing-api-2.0.21-1.0.28.module, took 12 ms
+Download https://repo.maven.apache.org/maven2/com/google/guava/guava-parent/33.0.0-jre/guava-parent-33.0.0-jre.pom, took 9 ms
+Download https://repo.maven.apache.org/maven2/com/google/guava/guava/33.0.0-jre/guava-33.0.0-jre.module, took 11 ms
+Download https://repo.maven.apache.org/maven2/com/google/googlejavaformat/google-java-format/1.5/google-java-format-1.5.pom, took 16 ms
+Download https://repo.maven.apache.org/maven2/org/checkerframework/checker-compat-qual/2.5.5/checker-compat-qual-2.5.5.pom, took 8 ms
+Download https://repo.maven.apache.org/maven2/com/squareup/kotlinpoet/1.11.0/kotlinpoet-1.11.0.pom, took 9 ms
+Download https://repo.maven.apache.org/maven2/com/squareup/kotlinpoet/1.11.0/kotlinpoet-1.11.0.module, took 11 ms
+Download https://repo.maven.apache.org/maven2/com/google/googlejavaformat/google-java-format-parent/1.5/google-java-format-parent-1.5.pom, took 8 ms
+Download https://repo.maven.apache.org/maven2/com/google/errorprone/error_prone_annotations/2.23.0/error_prone_annotations-2.23.0.pom, took 7 ms
+Download https://repo.maven.apache.org/maven2/com/google/errorprone/error_prone_parent/2.23.0/error_prone_parent-2.23.0.pom, took 6 ms
+Download https://repo.maven.apache.org/maven2/com/google/errorprone/javac-shaded/9-dev-r4023-3/javac-shaded-9-dev-r4023-3.pom, took 8 ms
+Download https://repo.maven.apache.org/maven2/net/ltgt/gradle/incap/incap/0.2/incap-0.2.jar, took 79 ms
+Download https://repo.maven.apache.org/maven2/org/checkerframework/checker-compat-qual/2.5.5/checker-compat-qual-2.5.5.jar, took 82 ms
+Download https://repo.maven.apache.org/maven2/com/google/errorprone/error_prone_annotations/2.23.0/error_prone_annotations-2.23.0.jar, took 83 ms
+Download https://repo.maven.apache.org/maven2/com/google/devtools/ksp/symbol-processing-api/2.0.21-1.0.28/symbol-processing-api-2.0.21-1.0.28.jar, took 185 ms
+Download https://repo.maven.apache.org/maven2/com/squareup/kotlinpoet/1.11.0/kotlinpoet-1.11.0.jar, took 209 ms
+Download https://repo.maven.apache.org/maven2/com/google/googlejavaformat/google-java-format/1.5/google-java-format-1.5.jar, took 206 ms
+Download https://repo.maven.apache.org/maven2/com/google/dagger/hilt-android-compiler/2.54/hilt-android-compiler-2.54.jar, took 224 ms
+Download https://repo.maven.apache.org/maven2/com/google/dagger/dagger-compiler/2.54/dagger-compiler-2.54.jar, took 343 ms
+Download https://repo.maven.apache.org/maven2/com/google/guava/guava/33.0.0-jre/guava-33.0.0-jre.jar, took 644 ms
+Download https://repo.maven.apache.org/maven2/com/google/errorprone/javac-shaded/9-dev-r4023-3/javac-shaded-9-dev-r4023-3.jar, took 720 ms
+Download https://repo.maven.apache.org/maven2/com/google/dagger/dagger-spi/2.54/dagger-spi-2.54.jar, took 795 ms
+> Task :app:javaPreCompileDebug
+> Task :app:mergeDebugShaders
+> Task :app:compileDebugShaders NO-SOURCE
+> Task :app:generateDebugAssets UP-TO-DATE
+> Task :app:mergeDebugAssets
+> Task :app:compressDebugAssets
+> Task :app:desugarDebugFileDependencies
+> Task :app:mergeDebugJniLibFolders
+> Task :app:checkDebugDuplicateClasses
+> Task :app:mergeDebugNativeLibs NO-SOURCE
+> Task :app:processDebugManifestForPackage
+> Task :app:mergeExtDexDebug
+> Task :app:stripDebugDebugSymbols NO-SOURCE
+> Task :app:mergeLibDexDebug
+> Task :app:validateSigningDebug
+> Task :app:writeDebugAppMetadata
+> Task :app:writeDebugSigningConfigVersions
+> Task :app:processDebugResources
+Download https://repo.maven.apache.org/maven2/com/google/devtools/ksp/symbol-processing-aa-embeddable/2.2.20-2.0.3/symbol-processing-aa-embeddable-2.2.20-2.0.3.pom, took 48 ms
+Download https://repo.maven.apache.org/maven2/com/google/devtools/ksp/symbol-processing-aa-embeddable/2.2.20-2.0.3/symbol-processing-aa-embeddable-2.2.20-2.0.3.jar, took 2 s 16 ms
+> Task :app:kspDebugKotlin
+Download https://repo.maven.apache.org/maven2/org/jetbrains/kotlin/kotlin-build-tools-impl/2.2.20/kotlin-build-tools-impl-2.2.20.jar, took 40 ms
+Download https://repo.maven.apache.org/maven2/org/jetbrains/kotlin/kotlin-daemon-embeddable/2.2.20/kotlin-daemon-embeddable-2.2.20.jar, took 138 ms
+Download https://repo.maven.apache.org/maven2/org/jetbrains/kotlin/kotlin-compiler-embeddable/2.2.20/kotlin-compiler-embeddable-2.2.20.jar, took 1 s 485 ms
+
+> Task :app:compileDebugKotlin
+w: file:///C:/Users/sabre/AndroidStudioProjects/CreditSmartDeviceOwner/app/src/main/java/com/cdccreditsmart/app/presentation/screens/home/HomeScreen.kt:245:17 'fun LinearProgressIndicator(progress: Float, modifier: Modifier = ..., color: Color = ..., trackColor: Color = ..., strokeCap: StrokeCap = ...): Unit' is deprecated. Use the overload that takes `progress` as a lambda.
+w: file:///C:/Users/sabre/AndroidStudioProjects/CreditSmartDeviceOwner/app/src/main/java/com/cdccreditsmart/app/presentation/screens/installments/InstallmentsScreen.kt:52:40 'val Icons.Filled.ArrowBack: ImageVector' is deprecated. Use the AutoMirrored version at Icons.AutoMirrored.Filled.ArrowBack.
+w: file:///C:/Users/sabre/AndroidStudioProjects/CreditSmartDeviceOwner/app/src/main/java/com/cdccreditsmart/app/presentation/screens/payment/PaymentScreen.kt:43:40 'val Icons.Filled.ArrowBack: ImageVector' is deprecated. Use the AutoMirrored version at Icons.AutoMirrored.Filled.ArrowBack.
+w: file:///C:/Users/sabre/AndroidStudioProjects/CreditSmartDeviceOwner/app/src/main/java/com/cdccreditsmart/app/presentation/screens/profile/ProfileScreen.kt:25:40 'val Icons.Filled.ArrowBack: ImageVector' is deprecated. Use the AutoMirrored version at Icons.AutoMirrored.Filled.ArrowBack.
+w: file:///C:/Users/sabre/AndroidStudioProjects/CreditSmartDeviceOwner/app/src/main/java/com/cdccreditsmart/app/presentation/screens/profile/ProfileScreen.kt:97:38 'val Icons.Filled.ExitToApp: ImageVector' is deprecated. Use the AutoMirrored version at Icons.AutoMirrored.Filled.ExitToApp.
+w: file:///C:/Users/sabre/AndroidStudioProjects/CreditSmartDeviceOwner/app/src/main/java/com/cdccreditsmart/app/presentation/screens/support/SupportScreen.kt:25:40 'val Icons.Filled.ArrowBack: ImageVector' is deprecated. Use the AutoMirrored version at Icons.AutoMirrored.Filled.ArrowBack.
+w: file:///C:/Users/sabre/AndroidStudioProjects/CreditSmartDeviceOwner/app/src/main/java/com/cdccreditsmart/app/presentation/screens/support/SupportScreen.kt:57:38 'val Icons.Filled.Chat: ImageVector' is deprecated. Use the AutoMirrored version at Icons.AutoMirrored.Filled.Chat.
+w: file:///C:/Users/sabre/AndroidStudioProjects/CreditSmartDeviceOwner/app/src/main/java/com/cdccreditsmart/app/presentation/screens/support/SupportScreen.kt:64:38 'val Icons.Filled.Help: ImageVector' is deprecated. Use the AutoMirrored version at Icons.AutoMirrored.Filled.Help.
+
+> Task :app:compileDebugJavaWithJavac
+Java compiler version 21 has deprecated support for compiling with source/target version 8.
+Try one of the following options:
+    1. [Recommended] Use Java toolchain with a lower language version
+    2. Set a higher source/target version
+    3. Use a lower version of the JDK running the build (if you're not using Java toolchain)
+For more details on how to configure these settings, see https://developer.android.com/build/jdks.
+To suppress this warning, set android.javaCompile.suppressSourceTargetDeprecationWarning=true in gradle.properties.
+warning: [options] source value 8 is obsolete and will be removed in a future release
+warning: [options] target value 8 is obsolete and will be removed in a future release
+warning: [options] To suppress warnings about obsolete options, use -Xlint:-options.
+3 warnings
+
+> Task :app:hiltAggregateDepsDebug
+Download https://repo.maven.apache.org/maven2/com/google/dagger/hilt-compiler/2.54/hilt-compiler-2.54.pom, took 146 ms
+Download https://repo.maven.apache.org/maven2/com/google/dagger/hilt-compiler/2.54/hilt-compiler-2.54.jar, took 56 ms
+
+> Task :app:hiltJavaCompileDebug
+warning: [options] source value 8 is obsolete and will be removed in a future release
+warning: [options] target value 8 is obsolete and will be removed in a future release
+warning: [options] To suppress warnings about obsolete options, use -Xlint:-options.
+Note: C:\Users\sabre\AndroidStudioProjects\CreditSmartDeviceOwner\app\build\generated\hilt\component_sources\debug\com\cdccreditsmart\app\Hilt_CDCApplication.java uses or overrides a deprecated API.
+Note: Recompile with -Xlint:deprecation for details.
+3 warnings
+
+> Task :app:processDebugJavaRes
+> Task :app:transformDebugClassesWithAsm
+> Task :app:mergeDebugJavaResource
+> Task :app:dexBuilderDebug
+> Task :app:mergeProjectDexDebug
+> Task :app:packageDebug
+> Task :app:createDebugApkListingFileRedirect
+> Task :app:assembleDebug
+
+[Incubating] Problems report is available at: file:///C:/Users/sabre/AndroidStudioProjects/CreditSmartDeviceOwner/build/reports/problems/problems-report.html
+
+BUILD SUCCESSFUL in 1m 53s
+39 actionable tasks: 39 executed
+
+Build Analyzer results available
