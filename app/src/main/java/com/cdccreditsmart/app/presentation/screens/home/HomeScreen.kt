@@ -243,7 +243,7 @@ fun HomeScreen(
                 Spacer(modifier = Modifier.height(8.dp))
                 
                 LinearProgressIndicator(
-                    progress = 0.46f,
+                    progress = { 0.46f },
                     modifier = Modifier.fillMaxWidth(),
                     color = MaterialTheme.colorScheme.primary
                 )
