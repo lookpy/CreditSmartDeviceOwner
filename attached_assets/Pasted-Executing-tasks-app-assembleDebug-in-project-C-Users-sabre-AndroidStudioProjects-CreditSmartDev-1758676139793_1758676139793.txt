@@ -1,0 +1,115 @@
+Executing tasks: [:app:assembleDebug] in project C:\Users\sabre\AndroidStudioProjects\CreditSmartDeviceOwner88
+
+Starting Gradle Daemon...
+Gradle Daemon started in 1 s 710 ms
+> Task :app:preBuild UP-TO-DATE
+> Task :app:preDebugBuild UP-TO-DATE
+> Task :app:mergeDebugNativeDebugMetadata NO-SOURCE
+> Task :app:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :app:generateDebugResValues
+> Task :app:dataBindingMergeDependencyArtifactsDebug
+> Task :app:generateDebugResources
+> Task :app:packageDebugResources
+> Task :app:processDebugNavigationResources
+> Task :app:parseDebugLocalResources
+> Task :app:checkDebugAarMetadata
+> Task :app:mergeDebugResources
+Download https://dl.google.com/dl/android/maven2/com/android/tools/build/aapt2/8.13.0-13719691/aapt2-8.13.0-13719691.pom, took 775 ms
+Download https://dl.google.com/dl/android/maven2/com/android/tools/build/aapt2/8.13.0-13719691/aapt2-8.13.0-13719691-windows.jar, took 292 ms
+> Task :app:compileDebugNavigationResources
+> Task :app:dataBindingGenBaseClassesDebug
+> Task :app:mapDebugSourceSetPaths
+> Task :app:createDebugCompatibleScreenManifests
+> Task :app:extractDeepLinksDebug
+> Task :app:processDebugMainManifest
+> Task :app:processDebugManifest
+Download https://repo.maven.apache.org/maven2/com/google/dagger/hilt-android-compiler/2.54/hilt-android-compiler-2.54.pom, took 179 ms
+Download https://repo.maven.apache.org/maven2/com/google/guava/guava/33.0.0-jre/guava-33.0.0-jre.pom, took 36 ms
+Download https://repo.maven.apache.org/maven2/com/google/dagger/dagger-compiler/2.54/dagger-compiler-2.54.pom, took 33 ms
+Download https://repo.maven.apache.org/maven2/com/google/dagger/dagger-spi/2.54/dagger-spi-2.54.pom, took 15 ms
+Download https://repo.maven.apache.org/maven2/com/google/devtools/ksp/symbol-processing-api/2.0.21-1.0.28/symbol-processing-api-2.0.21-1.0.28.pom, took 22 ms
+Download https://repo.maven.apache.org/maven2/com/google/devtools/ksp/symbol-processing-api/2.0.21-1.0.28/symbol-processing-api-2.0.21-1.0.28.module, took 15 ms
+Download https://repo.maven.apache.org/maven2/com/google/guava/guava-parent/33.0.0-jre/guava-parent-33.0.0-jre.pom, took 12 ms
+Download https://repo.maven.apache.org/maven2/com/google/guava/guava/33.0.0-jre/guava-33.0.0-jre.module, took 20 ms
+Download https://repo.maven.apache.org/maven2/com/google/errorprone/error_prone_annotations/2.23.0/error_prone_annotations-2.23.0.pom, took 10 ms
+Download https://repo.maven.apache.org/maven2/com/google/errorprone/error_prone_parent/2.23.0/error_prone_parent-2.23.0.pom, took 10 ms
+Download https://repo.maven.apache.org/maven2/org/jetbrains/kotlin/kotlin-stdlib-jdk8/1.8.0/kotlin-stdlib-jdk8-1.8.0.pom, took 13 ms
+Download https://repo.maven.apache.org/maven2/org/jetbrains/kotlin/kotlin-stdlib-jdk7/1.8.0/kotlin-stdlib-jdk7-1.8.0.pom, took 11 ms
+Download https://repo.maven.apache.org/maven2/com/google/errorprone/error_prone_annotations/2.23.0/error_prone_annotations-2.23.0.jar, took 62 ms
+Download https://repo.maven.apache.org/maven2/com/google/devtools/ksp/symbol-processing-api/2.0.21-1.0.28/symbol-processing-api-2.0.21-1.0.28.jar, took 90 ms
+Download https://repo.maven.apache.org/maven2/com/google/dagger/hilt-android-compiler/2.54/hilt-android-compiler-2.54.jar, took 91 ms
+Download https://repo.maven.apache.org/maven2/com/google/dagger/dagger-compiler/2.54/dagger-compiler-2.54.jar, took 367 ms
+Download https://repo.maven.apache.org/maven2/com/google/guava/guava/33.0.0-jre/guava-33.0.0-jre.jar, took 446 ms
+Download https://repo.maven.apache.org/maven2/com/google/dagger/dagger-spi/2.54/dagger-spi-2.54.jar, took 471 ms
+> Task :app:javaPreCompileDebug
+> Task :app:mergeDebugShaders
+> Task :app:compileDebugShaders NO-SOURCE
+> Task :app:generateDebugAssets UP-TO-DATE
+> Task :app:mergeDebugAssets
+> Task :app:compressDebugAssets
+> Task :app:desugarDebugFileDependencies
+> Task :app:mergeDebugJniLibFolders
+> Task :app:checkDebugDuplicateClasses
+> Task :app:mergeDebugNativeLibs NO-SOURCE
+> Task :app:stripDebugDebugSymbols NO-SOURCE
+> Task :app:mergeLibDexDebug
+> Task :app:validateSigningDebug
+> Task :app:writeDebugAppMetadata
+> Task :app:writeDebugSigningConfigVersions
+> Task :app:processDebugManifestForPackage
+> Task :app:mergeExtDexDebug
+> Task :app:processDebugResources
+Download https://repo.maven.apache.org/maven2/com/google/devtools/ksp/symbol-processing-aa-embeddable/2.2.20-2.0.3/symbol-processing-aa-embeddable-2.2.20-2.0.3.pom, took 64 ms
+Download https://repo.maven.apache.org/maven2/com/google/devtools/ksp/symbol-processing-aa-embeddable/2.2.20-2.0.3/symbol-processing-aa-embeddable-2.2.20-2.0.3.jar, took 4 s 867 ms
+> Task :app:kspDebugKotlin
+Download https://repo.maven.apache.org/maven2/org/jetbrains/kotlin/kotlin-build-tools-impl/2.2.20/kotlin-build-tools-impl-2.2.20.jar, took 50 ms
+Download https://repo.maven.apache.org/maven2/org/jetbrains/kotlin/kotlin-script-runtime/2.2.20/kotlin-script-runtime-2.2.20.jar, took 89 ms
+Download https://repo.maven.apache.org/maven2/org/jetbrains/kotlin/kotlin-scripting-jvm/2.2.20/kotlin-scripting-jvm-2.2.20.jar, took 119 ms
+Download https://repo.maven.apache.org/maven2/org/jetbrains/kotlin/kotlin-scripting-common/2.2.20/kotlin-scripting-common-2.2.20.jar, took 141 ms
+Download https://repo.maven.apache.org/maven2/org/jetbrains/kotlin/kotlin-scripting-compiler-impl-embeddable/2.2.20/kotlin-scripting-compiler-impl-embeddable-2.2.20.jar, took 159 ms
+Download https://repo.maven.apache.org/maven2/org/jetbrains/kotlin/kotlin-daemon-embeddable/2.2.20/kotlin-daemon-embeddable-2.2.20.jar, took 175 ms
+Download https://repo.maven.apache.org/maven2/org/jetbrains/kotlin/kotlin-scripting-compiler-embeddable/2.2.20/kotlin-scripting-compiler-embeddable-2.2.20.jar, took 253 ms
+Download https://repo.maven.apache.org/maven2/org/jetbrains/kotlinx/kotlinx-coroutines-core-jvm/1.8.0/kotlinx-coroutines-core-jvm-1.8.0.jar, took 315 ms
+Download https://repo.maven.apache.org/maven2/org/jetbrains/kotlin/kotlin-compiler-embeddable/2.2.20/kotlin-compiler-embeddable-2.2.20.jar, took 3 s 705 ms
+> Task :app:compileDebugKotlin
+
+> Task :app:compileDebugJavaWithJavac
+Java compiler version 21 has deprecated support for compiling with source/target version 8.
+Try one of the following options:
+    1. [Recommended] Use Java toolchain with a lower language version
+    2. Set a higher source/target version
+    3. Use a lower version of the JDK running the build (if you're not using Java toolchain)
+For more details on how to configure these settings, see https://developer.android.com/build/jdks.
+To suppress this warning, set android.javaCompile.suppressSourceTargetDeprecationWarning=true in gradle.properties.
+warning: [options] source value 8 is obsolete and will be removed in a future release
+warning: [options] target value 8 is obsolete and will be removed in a future release
+warning: [options] To suppress warnings about obsolete options, use -Xlint:-options.
+3 warnings
+
+> Task :app:hiltAggregateDepsDebug
+Download https://repo.maven.apache.org/maven2/com/google/dagger/hilt-compiler/2.54/hilt-compiler-2.54.pom, took 31 ms
+Download https://repo.maven.apache.org/maven2/com/google/dagger/hilt-compiler/2.54/hilt-compiler-2.54.jar, took 45 ms
+
+> Task :app:hiltJavaCompileDebug
+warning: [options] source value 8 is obsolete and will be removed in a future release
+warning: [options] target value 8 is obsolete and will be removed in a future release
+warning: [options] To suppress warnings about obsolete options, use -Xlint:-options.
+Note: C:\Users\sabre\AndroidStudioProjects\CreditSmartDeviceOwner88\app\build\generated\hilt\component_sources\debug\com\cdccreditsmart\app\Hilt_CDCApplication.java uses or overrides a deprecated API.
+Note: Recompile with -Xlint:deprecation for details.
+3 warnings
+
+> Task :app:processDebugJavaRes
+> Task :app:transformDebugClassesWithAsm
+> Task :app:mergeDebugJavaResource
+> Task :app:dexBuilderDebug
+> Task :app:mergeProjectDexDebug
+> Task :app:packageDebug
+> Task :app:createDebugApkListingFileRedirect
+> Task :app:assembleDebug
+
+[Incubating] Problems report is available at: file:///C:/Users/sabre/AndroidStudioProjects/CreditSmartDeviceOwner88/build/reports/problems/problems-report.html
+
+BUILD SUCCESSFUL in 1m 32s
+41 actionable tasks: 41 executed
+
+Build Analyzer results available
