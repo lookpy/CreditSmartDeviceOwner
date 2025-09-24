@@ -12,8 +12,8 @@ data class Installment(
     val amount: BigDecimal,
     val status: InstallmentStatus,
     val paymentId: String? = null,
-    val createdAt: LocalDateTime = LocalDateTime.now(),
-    val lastSyncAt: LocalDateTime = LocalDateTime.now()
+    val createdAt: LocalDateTime? = null,
+    val lastSyncAt: LocalDateTime? = null
 )
 
 enum class InstallmentStatus {

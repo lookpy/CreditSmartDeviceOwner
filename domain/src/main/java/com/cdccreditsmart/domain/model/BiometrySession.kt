@@ -9,7 +9,7 @@ data class BiometrySession(
     val livenessScore: Float? = null,
     val resultId: String? = null,
     val errorMessage: String? = null,
-    val createdAt: LocalDateTime = LocalDateTime.now(),
+    val createdAt: LocalDateTime? = null,
     val completedAt: LocalDateTime? = null
 )
 

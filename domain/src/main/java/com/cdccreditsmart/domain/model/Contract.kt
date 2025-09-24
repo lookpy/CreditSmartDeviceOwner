@@ -13,7 +13,7 @@ data class Contract(
     val monthlyAmount: BigDecimal,
     val status: ContractStatus,
     val signedAt: LocalDateTime? = null,
-    val createdAt: LocalDateTime = LocalDateTime.now()
+    val createdAt: LocalDateTime? = null
 )
 
 enum class ContractStatus {
@@ -30,7 +30,7 @@ data class Terms(
     val hash: String,
     val text: String,
     val effectiveDate: LocalDateTime,
-    val fetchedAt: LocalDateTime = LocalDateTime.now()
+    val fetchedAt: LocalDateTime? = null
 )
 
 data class SignatureSession(
@@ -40,7 +40,7 @@ data class SignatureSession(
     val signatureData: String? = null,
     val receiptId: String? = null,
     val status: SignatureStatus,
-    val createdAt: LocalDateTime = LocalDateTime.now(),
+    val createdAt: LocalDateTime? = null,
     val completedAt: LocalDateTime? = null
 )
 

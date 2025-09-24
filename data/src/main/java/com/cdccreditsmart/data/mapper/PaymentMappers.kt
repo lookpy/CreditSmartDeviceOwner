@@ -29,7 +29,7 @@ fun PixPaymentResponse.toDomain(): PixPayment = try {
     PixPayment(
         pixCode = "",
         qrCodeImage = "",
-        expirationTime = LocalDateTime.now().plusHours(1), // Default 1 hour expiration
+        expirationTime = LocalDateTime.of(2024, 12, 31, 23, 59), // Fixed fallback expiration
         amount = java.math.BigDecimal.ZERO
     )
 }
@@ -81,7 +81,7 @@ fun BoletoPaymentResponse.toDomain(): BoletoPayment = try {
     BoletoPayment(
         boletoCode = "",
         boletoUrl = "",
-        dueDate = LocalDateTime.now().plusDays(7), // Default 7 days due date
+        dueDate = LocalDateTime.of(2024, 12, 31, 23, 59), // Fixed fallback due date
         amount = java.math.BigDecimal.ZERO
     )
 }

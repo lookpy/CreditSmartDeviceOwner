@@ -117,7 +117,7 @@ fun ContractSyncResponse.toDomain(): ContractSyncResult = try {
     ContractSyncResult(
         contractId = this.contractId.safeString(),
         status = this.status.safeString(),
-        syncTimestamp = this.syncTimestamp?.toLocalDateTime() ?: LocalDateTime.now().minusMinutes(1), // Fallback only for sync timestamp
+        syncTimestamp = this.syncTimestamp?.toLocalDateTime() ?: LocalDateTime.of(2024, 1, 1, 0, 0), // Use fixed fallback, not current time
         dataHash = this.dataHash.safeString(),
         updates = this.updates?.map { it.toDomain() } ?: emptyList(),
         requiresResync = this.requiresResync,
@@ -127,7 +127,7 @@ fun ContractSyncResponse.toDomain(): ContractSyncResult = try {
     ContractSyncResult(
         contractId = this.contractId ?: "unknown",
         status = "error",
-        syncTimestamp = LocalDateTime.now().minusMinutes(1), // Fallback for sync operations
+        syncTimestamp = LocalDateTime.of(2024, 1, 1, 0, 0), // Use fixed fallback, not current time
         dataHash = "",
         updates = emptyList(),
         requiresResync = true,
@@ -144,7 +144,7 @@ fun ContractUpdate.toDomain(): com.cdccreditsmart.domain.model.ContractUpdate = 
         field = this.field.safeString(),
         oldValue = this.oldValue.safeString(),
         newValue = this.newValue.safeString(),
-        timestamp = this.timestamp?.toLocalDateTime() ?: LocalDateTime.now().minusMinutes(1), // Fallback for update timestamp
+        timestamp = this.timestamp?.toLocalDateTime() ?: LocalDateTime.of(2024, 1, 1, 0, 0), // Use fixed fallback, not current time
         reason = this.reason.safeString()
     )
 } catch (e: Exception) {
@@ -152,7 +152,7 @@ fun ContractUpdate.toDomain(): com.cdccreditsmart.domain.model.ContractUpdate = 
         field = this.field ?: "unknown",
         oldValue = this.oldValue ?: "",
         newValue = this.newValue ?: "",
-        timestamp = LocalDateTime.now().minusMinutes(1), // Fallback for update operations
+        timestamp = LocalDateTime.of(2024, 1, 1, 0, 0), // Use fixed fallback, not current time
         reason = this.reason ?: "Error mapping update"
     )
 }

@@ -8,8 +8,8 @@ data class DeviceBinding(
     val attestedDeviceId: String,
     val devicePubKeyFingerprint: String,
     val status: BindingStatus,
-    val createdAt: LocalDateTime = LocalDateTime.now(),
-    val updatedAt: LocalDateTime = LocalDateTime.now()
+    val createdAt: LocalDateTime? = null,
+    val updatedAt: LocalDateTime? = null
 )
 
 enum class BindingStatus {

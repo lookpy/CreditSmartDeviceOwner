@@ -12,7 +12,7 @@ data class Payment(
     val pixCode: String? = null,
     val boletoUrl: String? = null,
     val status: PaymentStatus,
-    val createdAt: LocalDateTime = LocalDateTime.now(),
+    val createdAt: LocalDateTime? = null,
     val confirmedAt: LocalDateTime? = null
 )
 

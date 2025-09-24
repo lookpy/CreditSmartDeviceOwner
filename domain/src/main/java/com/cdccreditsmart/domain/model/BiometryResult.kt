@@ -14,5 +14,5 @@ data class BiometryResult(
     val resultId: String? = null,
     val errorMessage: String? = null,
     val errorCode: String? = null,
-    val verificationTimestamp: LocalDateTime = LocalDateTime.now()
+    val verificationTimestamp: LocalDateTime? = null
 )

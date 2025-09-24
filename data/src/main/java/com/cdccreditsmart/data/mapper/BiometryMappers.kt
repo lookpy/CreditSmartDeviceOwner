@@ -59,7 +59,8 @@ fun BiometryVerificationResponse.toDomain(): BiometryResult = try {
                 com.cdccreditsmart.domain.model.BiometryStatus.DENIED
             )
         },
-        errorCode = this.errorCode.safeString()
+        errorCode = this.errorCode.safeString(),
+        verificationTimestamp = null // Server does not provide verification timestamp in BiometryVerificationResponse
     )
 } catch (e: Exception) {
     BiometryResult(
@@ -67,7 +68,8 @@ fun BiometryVerificationResponse.toDomain(): BiometryResult = try {
         success = false,
         finalStatus = com.cdccreditsmart.domain.model.BiometryStatus.ERROR,
         confidenceScore = 0f,
-        errorMessage = "Failed to map verification response: ${e.message}"
+        errorMessage = "Failed to map verification response: ${e.message}",
+        verificationTimestamp = null
     )
 }
 
