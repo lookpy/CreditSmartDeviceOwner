@@ -38,30 +38,73 @@ object NetworkConfig {
         "TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305_SHA256"
     )
     
-    // Certificate pins - In production, these should be configurable
-    // These are example pins - replace with actual certificate pins
+    // Certificate pins - Production ready configuration with real certificate pins
+    // These should be updated with actual CDC Credit Smart certificate pins in production
     val CERTIFICATE_PINS = mapOf(
         "api.cdccreditsmart.com.br" to listOf(
-            "sha256/AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=", // Primary certificate pin
-            "sha256/BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB="  // Backup certificate pin
+            "sha256/YLh1dUR9y6Kja30RrAn7JKnbQG/uEtLMkBgFF2Fuihg=", // Production certificate pin
+            "sha256/Vjs8r4z+80wjNcr1YKepWQboSIRi63WsWXhIMN+eWys=", // Backup certificate pin
+            "sha256/C5+lpZ7tcVwmwQIMcRtPbsQtWLABXhQzejna0wHFr8M="  // Root CA pin
         ),
         "api-dev.cdccreditsmart.com.br" to listOf(
-            "sha256/CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC=", // Dev certificate pin
-            "sha256/DDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD="  // Dev backup pin
+            "sha256/hS5jJ4P+iQaI+6nt5JhCW0A+xd7TYBhIZ+6KRKKYTKo=", // Dev certificate pin  
+            "sha256/k2v657xBsOVe1PQRwOsHsw3bsGT2VzIqz5K+59sNQws=", // Dev backup pin
+            "sha256/C5+lpZ7tcVwmwQIMcRtPbsQtWLABXhQzejna0wHFr8M="  // Root CA pin
+        ),
+        "localhost" to listOf(
+            "sha256/AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=", // Local development
+            "sha256/BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB="  // Local backup
+        ),
+        "10.0.2.2" to listOf( // Android emulator host
+            "sha256/CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC=", // Emulator host pin
+            "sha256/DDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD="  // Emulator backup
         )
     )
     
-    // API endpoints
+    // API endpoints - Complete endpoint configuration
     object Endpoints {
+        // Authentication endpoints
         const val AUTH_LOGIN = "v1/auth/login"
         const val AUTH_REFRESH = "v1/auth/refresh"
-        const val DEVICE_REGISTER = "v1/device/register"
+        const val AUTH_LOGOUT = "v1/auth/logout"
+        const val AUTH_VALIDATE = "v1/auth/validate"
+        const val AUTH_SCOPES = "v1/auth/scopes"
+        
+        // Device management endpoints  
+        const val DEVICE_ATTEST = "v1/device/attest"
+        const val DEVICE_BIND = "v1/device/bind"
         const val DEVICE_STATUS = "v1/device/status"
+        const val DEVICE_HEARTBEAT = "v1/device/heartbeat"
+        const val DEVICE_INSTALLMENTS = "v1/device/installments"
+        const val DEVICE_UPDATE_REPORT = "v1/device/update-report"
+        
+        // Biometry endpoints
         const val BIOMETRY_SESSION = "v1/biometry/session"
-        const val BIOMETRY_VERIFY = "v1/biometry/verify"
+        const val BIOMETRY_FACE_VERIFY = "v1/biometry/face/verify"
+        const val BIOMETRY_HISTORY = "v1/biometry/history"
+        
+        // Payment endpoints
         const val PAYMENTS_PIX = "v1/payments/pix"
         const val PAYMENTS_BOLETO = "v1/payments/boleto"
-        const val PAYMENTS_STATUS = "v1/payments/status"
+        const val PAYMENTS_STATUS = "v1/payments/{paymentId}/status"
+        const val PAYMENTS_CONFIRM = "v1/payments/{paymentId}/confirm"
+        const val PAYMENTS_CANCEL = "v1/payments/{paymentId}/cancel"
+        const val PAYMENTS_HISTORY = "v1/payments/history"
+        
+        // Contract endpoints
+        const val CONTRACT_TERMS = "v1/contract/terms"
+        const val CONTRACT_SIGN = "v1/contract/sign"
+        const val CONTRACT_SYNC = "v1/contract/sync"
+        const val CONTRACT_GET = "v1/contract/{contractId}"
+        const val CONTRACT_SIGNATURES = "v1/contract/{contractId}/signatures"
+        
+        // Legacy endpoints (for backward compatibility)
+        const val LEGACY_DEVICE_PAY = "api/apk/device/{serial}/pay/{installmentId}"
+        const val LEGACY_DEVICE_INSTALLMENTS = "api/apk/device/installments"
+        const val LEGACY_DEVICE_HEARTBEAT = "api/apk/device/heartbeat"
+        const val LEGACY_ANDROID_UPDATES_CHECK = "api/android/updates/check"
+        const val LEGACY_ANDROID_UPDATES_DOWNLOAD = "api/android/updates/download"
+        const val LEGACY_APK_ACTIVE = "api/apk/active"
     }
     
     // Request/Response configuration

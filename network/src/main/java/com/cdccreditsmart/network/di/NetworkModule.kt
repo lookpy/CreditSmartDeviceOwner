@@ -12,6 +12,9 @@ import com.cdccreditsmart.network.interceptors.CommonHeadersInterceptor
 import com.cdccreditsmart.network.interceptors.DeviceSignatureInterceptor
 import com.cdccreditsmart.network.interceptors.IdempotencyKeyInterceptor
 import com.cdccreditsmart.network.interceptors.JwtInterceptor
+import com.cdccreditsmart.network.security.EncryptionHelper
+import com.cdccreditsmart.network.security.AntiTamperingDetector
+import com.cdccreditsmart.network.api.*
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -107,8 +110,10 @@ object NetworkModule {
      */
     @Provides
     @Singleton
-    fun provideDeviceSignatureInterceptor(): DeviceSignatureInterceptor {
-        return DeviceSignatureInterceptor()
+    fun provideDeviceSignatureInterceptor(
+        @ApplicationContext context: Context
+    ): DeviceSignatureInterceptor {
+        return DeviceSignatureInterceptor(context)
     }
     
     /**
@@ -178,5 +183,84 @@ object NetworkModule {
     ): Retrofit {
         val baseUrl = NetworkConfig.BASE_URL // In production, use BuildConfig.BASE_URL
         return retrofitFactory.createBasicRetrofit(baseUrl)
+    }
+    
+    // Security Components
+    
+    /**
+     * Provides encryption helper for request/response encryption
+     */
+    @Provides
+    @Singleton
+    fun provideEncryptionHelper(): EncryptionHelper {
+        return EncryptionHelper()
+    }
+    
+    /**
+     * Provides anti-tampering detector for security validation
+     */
+    @Provides
+    @Singleton
+    fun provideAntiTamperingDetector(
+        @ApplicationContext context: Context
+    ): AntiTamperingDetector {
+        return AntiTamperingDetector(context)
+    }
+    
+    // API Service Interfaces
+    
+    /**
+     * Provides Device API service for device-related operations
+     */
+    @Provides
+    @Singleton
+    fun provideDeviceApiService(
+        @SecureRetrofit retrofit: Retrofit
+    ): DeviceApiService {
+        return retrofit.create(DeviceApiService::class.java)
+    }
+    
+    /**
+     * Provides Biometry API service for facial recognition operations
+     */
+    @Provides
+    @Singleton
+    fun provideBiometryApiService(
+        @SecureRetrofit retrofit: Retrofit
+    ): BiometryApiService {
+        return retrofit.create(BiometryApiService::class.java)
+    }
+    
+    /**
+     * Provides Payments API service for payment operations
+     */
+    @Provides
+    @Singleton
+    fun providePaymentsApiService(
+        @SecureRetrofit retrofit: Retrofit
+    ): PaymentsApiService {
+        return retrofit.create(PaymentsApiService::class.java)
+    }
+    
+    /**
+     * Provides Contract API service for contract operations
+     */
+    @Provides
+    @Singleton
+    fun provideContractApiService(
+        @SecureRetrofit retrofit: Retrofit
+    ): ContractApiService {
+        return retrofit.create(ContractApiService::class.java)
+    }
+    
+    /**
+     * Provides Auth API service for authentication operations
+     */
+    @Provides
+    @Singleton
+    fun provideAuthApiService(
+        @BasicRetrofit retrofit: Retrofit // Auth uses basic client to avoid circular dependency
+    ): AuthApiService {
+        return retrofit.create(AuthApiService::class.java)
     }
 }

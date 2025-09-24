@@ -4,7 +4,7 @@ import android.content.Context
 import android.os.Build
 import okhttp3.Interceptor
 import okhttp3.Response
-import com.cdccreditsmart.network.BuildConfig
+// import com.cdccreditsmart.network.BuildConfig // Not available in library modules
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 import javax.inject.Singleton

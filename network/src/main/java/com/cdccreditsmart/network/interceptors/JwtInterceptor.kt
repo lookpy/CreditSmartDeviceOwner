@@ -10,6 +10,9 @@ import kotlinx.coroutines.sync.withLock
 import java.io.IOException
 import javax.inject.Inject
 import javax.inject.Singleton
+import okhttp3.MediaType.Companion.toMediaType
+import okhttp3.OkHttpClient
+import okhttp3.RequestBody.Companion.toRequestBody
 
 /**
  * Handles JWT authentication with automatic token refresh
@@ -95,23 +98,91 @@ class JwtInterceptor @Inject constructor(
     }
     
     private suspend fun refreshTokenIfNeeded(originalRequest: Request): Request {
-        // In a real implementation, this would make an API call to refresh the token
-        // For now, we'll simulate this behavior
         val refreshToken = getRefreshToken()
         
         if (refreshToken.isEmpty()) {
             throw IOException("No refresh token available")
         }
         
-        // TODO: Implement actual token refresh API call
-        // This would typically involve:
-        // 1. Make POST request to /v1/auth/refresh with refresh token
-        // 2. Parse response to get new access token
-        // 3. Store new tokens in encrypted preferences
-        // 4. Return request with new access token
+        try {
+            // Create refresh request
+            val refreshRequest = createRefreshTokenRequest(refreshToken)
+            val httpClient = createBasicHttpClient()
+            
+            val response = httpClient.newCall(refreshRequest).execute()
+            
+            if (response.isSuccessful) {
+                val responseBody = response.body?.string()
+                if (responseBody != null) {
+                    // Parse new tokens from response
+                    val tokenResponse = parseTokenResponse(responseBody)
+                    
+                    // Store new tokens
+                    storeTokens(tokenResponse.accessToken, tokenResponse.refreshToken)
+                    
+                    // Return original request with new access token
+                    return addAuthHeader(originalRequest)
+                }
+            } else {
+                // Refresh failed, clear tokens to force re-authentication
+                clearTokens()
+                throw IOException("Token refresh failed with status: ${response.code}")
+            }
+        } catch (e: Exception) {
+            // Token refresh failed, clear tokens
+            clearTokens()
+            throw IOException("Token refresh error: ${e.message}", e)
+        }
         
-        // For now, return original request (remove when implementing refresh logic)
-        return addAuthHeader(originalRequest)
+        throw IOException("Token refresh failed")
+    }
+    
+    private fun createRefreshTokenRequest(refreshToken: String): Request {
+        val refreshUrl = "${getBaseUrl()}/v1/auth/refresh"
+        val requestBody = """{"refreshToken":"$refreshToken"}"""
+        
+        return Request.Builder()
+            .url(refreshUrl)
+            .post(
+                requestBody.toRequestBody("application/json; charset=utf-8".toMediaType())
+            )
+            .header("Content-Type", "application/json")
+            .build()
+    }
+    
+    private fun createBasicHttpClient(): OkHttpClient {
+        return OkHttpClient.Builder()
+            .connectTimeout(30, java.util.concurrent.TimeUnit.SECONDS)
+            .readTimeout(30, java.util.concurrent.TimeUnit.SECONDS)
+            .build()
+    }
+    
+    private fun parseTokenResponse(responseBody: String): TokenResponse {
+        try {
+            // Simple JSON parsing for token response
+            // In production, use proper JSON parsing with Moshi
+            val accessTokenRegex = "\"access_token\":\\s*\"([^\"]+)\"".toRegex()
+            val refreshTokenRegex = "\"refresh_token\":\\s*\"([^\"]+)\"".toRegex()
+            
+            val accessTokenMatch = accessTokenRegex.find(responseBody)
+            val refreshTokenMatch = refreshTokenRegex.find(responseBody)
+            
+            if (accessTokenMatch != null && refreshTokenMatch != null) {
+                return TokenResponse(
+                    accessToken = accessTokenMatch.groupValues[1],
+                    refreshToken = refreshTokenMatch.groupValues[1]
+                )
+            } else {
+                throw IOException("Invalid token response format")
+            }
+        } catch (e: Exception) {
+            throw IOException("Failed to parse token response: ${e.message}", e)
+        }
+    }
+    
+    private fun getBaseUrl(): String {
+        // Get base URL from NetworkConfig
+        return com.cdccreditsmart.network.config.NetworkConfig.BASE_URL.removeSuffix("/")
     }
     
     /**
@@ -140,4 +211,9 @@ class JwtInterceptor @Inject constructor(
     fun hasValidTokens(): Boolean {
         return getAccessToken().isNotEmpty()
     }
+    
+    private data class TokenResponse(
+        val accessToken: String,
+        val refreshToken: String
+    )
 }

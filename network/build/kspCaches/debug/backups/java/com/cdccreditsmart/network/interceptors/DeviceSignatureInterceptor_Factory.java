@@ -1,13 +1,16 @@
 package com.cdccreditsmart.network.interceptors;
 
+import android.content.Context;
 import dagger.internal.DaggerGenerated;
 import dagger.internal.Factory;
+import dagger.internal.Provider;
+import dagger.internal.Providers;
 import dagger.internal.QualifierMetadata;
 import dagger.internal.ScopeMetadata;
 import javax.annotation.processing.Generated;
 
 @ScopeMetadata("javax.inject.Singleton")
-@QualifierMetadata
+@QualifierMetadata("dagger.hilt.android.qualifiers.ApplicationContext")
 @DaggerGenerated
 @Generated(
     value = "dagger.internal.codegen.ComponentProcessor",
@@ -23,20 +26,27 @@ import javax.annotation.processing.Generated;
     "nullness:initialization.field.uninitialized"
 })
 public final class DeviceSignatureInterceptor_Factory implements Factory<DeviceSignatureInterceptor> {
+  private final Provider<Context> contextProvider;
+
+  public DeviceSignatureInterceptor_Factory(Provider<Context> contextProvider) {
+    this.contextProvider = contextProvider;
+  }
+
   @Override
   public DeviceSignatureInterceptor get() {
-    return newInstance();
+    return newInstance(contextProvider.get());
   }
 
-  public static DeviceSignatureInterceptor_Factory create() {
-    return InstanceHolder.INSTANCE;
+  public static DeviceSignatureInterceptor_Factory create(
+      javax.inject.Provider<Context> contextProvider) {
+    return new DeviceSignatureInterceptor_Factory(Providers.asDaggerProvider(contextProvider));
   }
 
-  public static DeviceSignatureInterceptor newInstance() {
-    return new DeviceSignatureInterceptor();
+  public static DeviceSignatureInterceptor_Factory create(Provider<Context> contextProvider) {
+    return new DeviceSignatureInterceptor_Factory(contextProvider);
   }
 
-  private static final class InstanceHolder {
-    static final DeviceSignatureInterceptor_Factory INSTANCE = new DeviceSignatureInterceptor_Factory();
+  public static DeviceSignatureInterceptor newInstance(Context context) {
+    return new DeviceSignatureInterceptor(context);
   }
 }

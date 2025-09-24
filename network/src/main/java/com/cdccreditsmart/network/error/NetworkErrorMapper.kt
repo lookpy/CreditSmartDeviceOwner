@@ -57,9 +57,9 @@ class NetworkErrorMapper {
             )
             
             // Unknown errors
-            else -> CdcApiException(
-                throwable.message ?: "Unknown network error",
-                throwable
+            else -> ClientException(
+                statusCode = 0,
+                message = throwable.message ?: "Unknown network error"
             )
         }
     }

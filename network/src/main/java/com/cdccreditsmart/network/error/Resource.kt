@@ -13,7 +13,7 @@ sealed class Resource<out T> {
         val message: String = exception.message ?: "Unknown error"
     ) : Resource<Nothing>()
     
-    val isLoading: Boolean
+    val isLoadingState: Boolean
         get() = this is Loading
     
     val isSuccess: Boolean

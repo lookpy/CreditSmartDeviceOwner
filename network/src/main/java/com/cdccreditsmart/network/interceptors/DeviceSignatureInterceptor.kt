@@ -1,7 +1,11 @@
 package com.cdccreditsmart.network.interceptors
 
+import android.content.Context
 import android.security.keystore.KeyGenParameterSpec
 import android.security.keystore.KeyProperties
+import androidx.security.crypto.EncryptedSharedPreferences
+import androidx.security.crypto.MasterKey
+import dagger.hilt.android.qualifiers.ApplicationContext
 import okhttp3.Interceptor
 import okhttp3.Request
 import okhttp3.Response
@@ -20,7 +24,9 @@ import javax.inject.Singleton
  * Adds X-Device-Signature header with request signature
  */
 @Singleton
-class DeviceSignatureInterceptor @Inject constructor() : Interceptor {
+class DeviceSignatureInterceptor @Inject constructor(
+    @ApplicationContext private val context: Context
+) : Interceptor {
     
     companion object {
         private const val KEYSTORE_ALIAS = "cdc_device_signature_key"
@@ -28,6 +34,9 @@ class DeviceSignatureInterceptor @Inject constructor() : Interceptor {
         private const val SIGNATURE_ALGORITHM = "SHA256withECDSA"
         private const val SIGNATURE_HEADER = "X-Device-Signature"
         private const val DEVICE_ID_HEADER = "X-Device-ID"
+        private const val TIMESTAMP_HEADER = "X-Device-Timestamp"
+        private const val PREFS_NAME = "device_signature_prefs"
+        private const val INSTALLATION_ID_KEY = "installation_id"
     }
     
     private val keyStore: KeyStore by lazy {
@@ -48,12 +57,14 @@ class DeviceSignatureInterceptor @Inject constructor() : Interceptor {
     
     private fun addDeviceSignature(request: Request): Request {
         try {
-            val signature = generateRequestSignature(request)
-            val deviceId = generateDeviceId()
+            val timestamp = System.currentTimeMillis().toString()
+            val signature = generateRequestSignature(request, timestamp)
+            val deviceId = getInstallationId()
             
             return request.newBuilder()
                 .header(SIGNATURE_HEADER, signature)
                 .header(DEVICE_ID_HEADER, deviceId)
+                .header(TIMESTAMP_HEADER, timestamp)
                 .build()
         } catch (e: Exception) {
             // Log error but don't fail the request
@@ -62,9 +73,9 @@ class DeviceSignatureInterceptor @Inject constructor() : Interceptor {
         }
     }
     
-    private fun generateRequestSignature(request: Request): String {
+    private fun generateRequestSignature(request: Request, timestamp: String): String {
         val privateKey = getPrivateKey()
-        val dataToSign = buildSignatureData(request)
+        val dataToSign = buildSignatureData(request, timestamp)
         
         val signature = Signature.getInstance(SIGNATURE_ALGORITHM)
         signature.initSign(privateKey)
@@ -74,11 +85,10 @@ class DeviceSignatureInterceptor @Inject constructor() : Interceptor {
         return Base64.getEncoder().encodeToString(signatureBytes)
     }
     
-    private fun buildSignatureData(request: Request): String {
+    private fun buildSignatureData(request: Request, timestamp: String): String {
         val method = request.method
         val path = request.url.encodedPath
         val query = request.url.encodedQuery ?: ""
-        val timestamp = System.currentTimeMillis().toString()
         
         // Include request body hash for POST/PUT requests
         val bodyHash = if (request.body != null) {
@@ -97,14 +107,39 @@ class DeviceSignatureInterceptor @Inject constructor() : Interceptor {
         return "$method\n$path\n$query\n$bodyHash\n$timestamp"
     }
     
-    private fun generateDeviceId(): String {
-        // Generate a consistent device ID based on device characteristics
-        // In production, you might want to use more sophisticated device fingerprinting
-        val deviceInfo = "${android.os.Build.MANUFACTURER}_${android.os.Build.MODEL}_${android.os.Build.SERIAL}"
-        val hash = java.security.MessageDigest.getInstance("SHA-256")
-            .digest(deviceInfo.toByteArray(StandardCharsets.UTF_8))
-        
-        return Base64.getEncoder().encodeToString(hash).substring(0, 16)
+    private fun getInstallationId(): String {
+        return try {
+            val masterKey = MasterKey.Builder(context)
+                .setKeyScheme(MasterKey.KeyScheme.AES256_GCM)
+                .build()
+            
+            val sharedPreferences = EncryptedSharedPreferences.create(
+                context,
+                PREFS_NAME,
+                masterKey,
+                EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
+                EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
+            )
+            
+            var installationId = sharedPreferences.getString(INSTALLATION_ID_KEY, null)
+            
+            if (installationId == null) {
+                // Generate a new installation ID using UUID
+                installationId = UUID.randomUUID().toString()
+                sharedPreferences.edit()
+                    .putString(INSTALLATION_ID_KEY, installationId)
+                    .apply()
+            }
+            
+            installationId
+        } catch (e: Exception) {
+            // Fallback to a deterministic ID based on app-specific data
+            // This should not happen in normal circumstances
+            val fallbackData = "${context.packageName}_${android.os.Build.MANUFACTURER}_${android.os.Build.MODEL}"
+            val hash = java.security.MessageDigest.getInstance("SHA-256")
+                .digest(fallbackData.toByteArray(StandardCharsets.UTF_8))
+            Base64.getEncoder().encodeToString(hash).substring(0, 32)
+        }
     }
     
     private fun ensureKeyExists() {
@@ -124,7 +159,7 @@ class DeviceSignatureInterceptor @Inject constructor() : Interceptor {
             KeyProperties.PURPOSE_SIGN
         )
             .setDigests(KeyProperties.DIGEST_SHA256)
-            .setSignaturePaddings(KeyProperties.SIGNATURE_PADDING_NONE)
+            // EC signatures don't use padding
             .setUserAuthenticationRequired(false) // Set to true for biometric authentication
             .build()
         

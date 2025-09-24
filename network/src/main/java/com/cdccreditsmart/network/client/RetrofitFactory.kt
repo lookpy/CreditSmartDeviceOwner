@@ -54,7 +54,7 @@ class RetrofitFactory @Inject constructor(
     /**
      * Gets the configured Moshi instance for manual JSON operations
      */
-    fun getMoshi(): Moshi = moshi
+    fun getMoshiInstance(): Moshi = moshi
     
     /**
      * Gets the network error mapper for consistent error handling

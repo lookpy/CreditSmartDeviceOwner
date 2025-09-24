@@ -26,8 +26,6 @@ class NetworkClient @Inject constructor(
     ): Resource<T> {
         return withContext(Dispatchers.IO) {
             try {
-                Resource.loading()
-                
                 val response = apiCall()
                 
                 if (response.isSuccessful) {
@@ -63,8 +61,6 @@ class NetworkClient @Inject constructor(
     ): Resource<Unit> {
         return withContext(Dispatchers.IO) {
             try {
-                Resource.loading()
-                
                 val response = apiCall()
                 
                 if (response.isSuccessful) {
@@ -91,8 +87,6 @@ class NetworkClient @Inject constructor(
     ): Resource<Pair<T1, T2>> {
         return withContext(Dispatchers.IO) {
             try {
-                Resource.loading()
-                
                 val response1 = apiCall1()
                 val response2 = apiCall2()
                 
