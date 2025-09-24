@@ -29,7 +29,7 @@ fun PixPaymentResponse.toDomain(): PixPayment = try {
     PixPayment(
         pixCode = "",
         qrCodeImage = "",
-        expirationTime = LocalDateTime.of(2024, 12, 31, 23, 59), // Fixed fallback expiration
+        expirationTime = null, // null when error occurs
         amount = java.math.BigDecimal.ZERO
     )
 }
@@ -81,7 +81,7 @@ fun BoletoPaymentResponse.toDomain(): BoletoPayment = try {
     BoletoPayment(
         boletoCode = "",
         boletoUrl = "",
-        dueDate = LocalDateTime.of(2024, 12, 31, 23, 59), // Fixed fallback due date
+        dueDate = null, // null when error occurs
         amount = java.math.BigDecimal.ZERO
     )
 }

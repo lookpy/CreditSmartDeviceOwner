@@ -9,7 +9,7 @@ import java.time.LocalDateTime
 data class ContractSyncResult(
     val contractId: String,
     val status: String,
-    val syncTimestamp: LocalDateTime,
+    val syncTimestamp: LocalDateTime?,
     val dataHash: String,
     val updates: List<ContractUpdate>,
     val requiresResync: Boolean,
@@ -24,7 +24,7 @@ data class ContractUpdate(
     val field: String,
     val oldValue: String?,
     val newValue: String?,
-    val timestamp: LocalDateTime,
+    val timestamp: LocalDateTime?,
     val reason: String?
 )
 
@@ -40,8 +40,8 @@ data class Customer(
     val phone: String,
     val birthDate: java.time.LocalDate? = null,
     val address: Address? = null,
-    val createdAt: LocalDateTime,
-    val lastUpdatedAt: LocalDateTime
+    val createdAt: LocalDateTime?,
+    val lastUpdatedAt: LocalDateTime?
 )
 
 /**

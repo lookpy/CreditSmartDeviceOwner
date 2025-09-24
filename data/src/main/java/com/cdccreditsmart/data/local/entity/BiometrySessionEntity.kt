@@ -41,7 +41,7 @@ fun BiometrySession.toEntity(): BiometrySessionEntity {
         livenessScore = livenessScore,
         resultId = resultId,
         errorMessage = errorMessage,
-        createdAt = createdAt.toEpochSecond(java.time.ZoneOffset.UTC),
+        createdAt = createdAt?.toEpochSecond(java.time.ZoneOffset.UTC) ?: 0L,
         completedAt = completedAt?.toEpochSecond(java.time.ZoneOffset.UTC),
         lastSyncAt = System.currentTimeMillis()
     )

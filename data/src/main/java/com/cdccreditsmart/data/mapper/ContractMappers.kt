@@ -117,7 +117,7 @@ fun ContractSyncResponse.toDomain(): ContractSyncResult = try {
     ContractSyncResult(
         contractId = this.contractId.safeString(),
         status = this.status.safeString(),
-        syncTimestamp = this.syncTimestamp?.toLocalDateTime() ?: LocalDateTime.of(2024, 1, 1, 0, 0), // Use fixed fallback, not current time
+        syncTimestamp = this.syncTimestamp?.toLocalDateTime(), // null if missing from server
         dataHash = this.dataHash.safeString(),
         updates = this.updates?.map { it.toDomain() } ?: emptyList(),
         requiresResync = this.requiresResync,
@@ -127,7 +127,7 @@ fun ContractSyncResponse.toDomain(): ContractSyncResult = try {
     ContractSyncResult(
         contractId = this.contractId ?: "unknown",
         status = "error",
-        syncTimestamp = LocalDateTime.of(2024, 1, 1, 0, 0), // Use fixed fallback, not current time
+        syncTimestamp = null, // null when error occurs
         dataHash = "",
         updates = emptyList(),
         requiresResync = true,
@@ -144,7 +144,7 @@ fun ContractUpdate.toDomain(): com.cdccreditsmart.domain.model.ContractUpdate = 
         field = this.field.safeString(),
         oldValue = this.oldValue.safeString(),
         newValue = this.newValue.safeString(),
-        timestamp = this.timestamp?.toLocalDateTime() ?: LocalDateTime.of(2024, 1, 1, 0, 0), // Use fixed fallback, not current time
+        timestamp = this.timestamp?.toLocalDateTime(), // null if missing from server
         reason = this.reason.safeString()
     )
 } catch (e: Exception) {
@@ -152,7 +152,7 @@ fun ContractUpdate.toDomain(): com.cdccreditsmart.domain.model.ContractUpdate = 
         field = this.field ?: "unknown",
         oldValue = this.oldValue ?: "",
         newValue = this.newValue ?: "",
-        timestamp = LocalDateTime.of(2024, 1, 1, 0, 0), // Use fixed fallback, not current time
+        timestamp = null, // null when error occurs
         reason = this.reason ?: "Error mapping update"
     )
 }

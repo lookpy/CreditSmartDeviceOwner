@@ -10,11 +10,11 @@ data class DeviceStatus(
     val deviceId: String,
     val status: String,
     val contractId: String?,
-    val lastHeartbeat: LocalDateTime,
+    val lastHeartbeat: LocalDateTime?,
     val configuration: DeviceConfiguration,
     val blockingPolicy: BlockingPolicy?,
     val isBlocked: Boolean,
-    val lastSyncAt: LocalDateTime
+    val lastSyncAt: LocalDateTime?
 )
 
 /**

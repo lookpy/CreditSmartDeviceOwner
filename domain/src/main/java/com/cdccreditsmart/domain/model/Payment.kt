@@ -33,13 +33,13 @@ enum class PaymentStatus {
 data class PixPayment(
     val pixCode: String,
     val qrCodeImage: String,
-    val expirationTime: LocalDateTime,
+    val expirationTime: LocalDateTime?,
     val amount: BigDecimal
 )
 
 data class BoletoPayment(
     val boletoCode: String,
     val boletoUrl: String,
-    val dueDate: LocalDateTime,
+    val dueDate: LocalDateTime?,
     val amount: BigDecimal
 )

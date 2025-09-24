@@ -59,7 +59,7 @@ fun Contract.toEntity(): ContractEntity {
         monthlyAmount = monthlyAmount.toString(),
         status = status.name,
         signedAt = signedAt?.toEpochSecond(java.time.ZoneOffset.UTC),
-        createdAt = createdAt.toEpochSecond(java.time.ZoneOffset.UTC),
+        createdAt = createdAt?.toEpochSecond(java.time.ZoneOffset.UTC) ?: 0L,
         lastSyncAt = System.currentTimeMillis()
     )
 }

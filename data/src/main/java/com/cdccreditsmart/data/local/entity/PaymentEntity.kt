@@ -49,7 +49,7 @@ fun Payment.toEntity(): PaymentEntity {
         pixCode = pixCode,
         boletoUrl = boletoUrl,
         status = status.name,
-        createdAt = createdAt.toEpochSecond(java.time.ZoneOffset.UTC),
+        createdAt = createdAt?.toEpochSecond(java.time.ZoneOffset.UTC) ?: 0L,
         confirmedAt = confirmedAt?.toEpochSecond(java.time.ZoneOffset.UTC),
         lastSyncAt = System.currentTimeMillis()
     )
