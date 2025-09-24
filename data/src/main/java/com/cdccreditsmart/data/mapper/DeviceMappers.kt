@@ -17,6 +17,7 @@ import com.cdccreditsmart.network.api.InstallmentsResponse
 import com.cdccreditsmart.network.api.PaymentSummary
 import com.cdccreditsmart.network.api.DeviceBindResponse
 import java.time.LocalDateTime
+import java.time.LocalDate
 import java.util.UUID
 
 /**

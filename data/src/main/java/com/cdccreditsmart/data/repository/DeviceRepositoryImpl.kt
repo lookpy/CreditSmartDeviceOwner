@@ -5,8 +5,11 @@ import com.cdccreditsmart.data.local.dao.DeviceStatusDao
 import com.cdccreditsmart.data.local.dao.InstallmentDao
 import com.cdccreditsmart.data.local.entity.DeviceStatusEntity
 import com.cdccreditsmart.data.local.entity.toDomain as entityToDomain
-import com.cdccreditsmart.data.local.entity.toEntity
+import com.cdccreditsmart.data.local.entity.toEntity as toEntityModel
 import com.cdccreditsmart.data.mapper.toDomain
+import com.cdccreditsmart.data.local.entity.InstallmentEntity
+import com.cdccreditsmart.data.local.entity.toDomain
+import com.cdccreditsmart.data.local.entity.toEntity
 import com.cdccreditsmart.domain.model.DeviceBinding
 import com.cdccreditsmart.domain.model.Installment
 import com.cdccreditsmart.domain.model.BindingStatus

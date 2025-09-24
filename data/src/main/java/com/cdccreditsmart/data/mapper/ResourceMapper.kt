@@ -3,6 +3,8 @@ package com.cdccreditsmart.data.mapper
 import com.cdccreditsmart.domain.common.Resource as DomainResource
 import com.cdccreditsmart.network.error.Resource as NetworkResource
 import com.cdccreditsmart.network.error.CdcApiException
+import com.cdccreditsmart.network.error.NetworkErrorMapper
+import com.cdccreditsmart.network.error.ClientException
 
 /**
  * Maps network Resource to domain Resource
@@ -22,11 +24,15 @@ fun <T> DomainResource<T>.toNetwork(): NetworkResource<T> {
     return when (this) {
         is DomainResource.Loading -> NetworkResource.loading()
         is DomainResource.Success -> NetworkResource.success(this.data)
-        is DomainResource.Error -> NetworkResource.error(
-            if (this.exception is CdcApiException) this.exception else CdcApiException(this.exception.message ?: "Unknown error")
-        )
+        is DomainResource.Error -> {
+            val exception = this.exception
+            if (exception is CdcApiException) {
+                NetworkResource.error(exception)
+            } else {
+                NetworkResource.error(exception.message ?: "Unknown error")
+            }
+        }
     }
 }
 
-// Define CdcApiException in case it's needed
-open class CdcApiException(message: String, cause: Throwable? = null) : Exception(message, cause)
+// Remove local CdcApiException definition since it exists in network module

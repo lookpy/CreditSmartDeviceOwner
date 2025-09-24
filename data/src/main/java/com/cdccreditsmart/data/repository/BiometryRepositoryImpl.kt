@@ -4,6 +4,8 @@ import com.cdccreditsmart.data.local.dao.BiometrySessionDao
 import com.cdccreditsmart.data.local.entity.toDomain as entityToDomain
 import com.cdccreditsmart.data.local.entity.toEntity as toEntityModel
 import com.cdccreditsmart.data.mapper.toDomain as networkToDomain
+import com.cdccreditsmart.data.mapper.toEntity
+import com.cdccreditsmart.data.mapper.toDomain
 import com.cdccreditsmart.domain.model.BiometrySession
 import com.cdccreditsmart.domain.model.BiometryResult
 import com.cdccreditsmart.domain.model.BiometryStatus

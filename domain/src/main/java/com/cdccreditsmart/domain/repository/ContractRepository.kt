@@ -3,6 +3,8 @@ package com.cdccreditsmart.domain.repository
 import com.cdccreditsmart.domain.model.Contract
 import com.cdccreditsmart.domain.model.Terms
 import com.cdccreditsmart.domain.model.SignatureSession
+import com.cdccreditsmart.domain.model.ContractSyncResult
+import com.cdccreditsmart.domain.model.ContractSignature
 import com.cdccreditsmart.domain.common.Resource
 import kotlinx.coroutines.flow.Flow
 

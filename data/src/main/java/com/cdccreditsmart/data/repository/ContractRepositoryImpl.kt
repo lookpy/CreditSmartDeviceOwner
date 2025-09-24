@@ -310,10 +310,9 @@ class ContractRepositoryImpl @Inject constructor(
         }
     }
 
-    override fun getContractByCode(contractCode: String): Flow<Contract?> {
-        return contractDao.getContractByCode(contractCode).map { entity ->
-            entity?.entityToDomain()
-        }
+    override fun getContractByCode(contractCode: String): Flow<Contract?> = flow {
+        val entity = contractDao.getContractByCode(contractCode)
+        emit(entity?.entityToDomain())
     }
 
     override fun getContractsByCustomer(customerId: String): Flow<List<Contract>> {

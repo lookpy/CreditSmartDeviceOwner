@@ -5,7 +5,10 @@ import com.cdccreditsmart.domain.model.BiometryResult
 import com.cdccreditsmart.network.api.BiometrySessionResponse
 import com.cdccreditsmart.network.api.BiometryVerificationResponse
 import com.cdccreditsmart.network.api.BiometrySessionStatusResponse
+import com.cdccreditsmart.network.api.BiometryHistorySession
+import com.cdccreditsmart.data.local.entity.BiometrySessionEntity
 import java.time.LocalDateTime
+import java.time.ZoneOffset
 import java.util.UUID
 
 /**
@@ -134,6 +137,57 @@ fun BiometrySession.updateWithVerificationResult(
         status = com.cdccreditsmart.domain.model.BiometryStatus.ERROR,
         errorMessage = "Failed to update with verification result: ${e.message}",
         completedAt = null
+    )
+}
+
+/**
+ * Converts BiometryHistorySession to BiometrySession domain model.
+ * Maps history session from network response to domain model.
+ */
+fun BiometryHistorySession.toDomain(): BiometrySession = try {
+    BiometrySession(
+        id = this.sessionId.safeString(),
+        sessionId = this.sessionId.safeString(),
+        status = this.status.toBiometryStatus(),
+        livenessScore = this.confidence?.toFloat(),
+        resultId = this.result.safeString(),
+        errorMessage = null, // History doesn't include error messages
+        createdAt = this.createdAt.toLocalDateTime(),
+        completedAt = null // History doesn't include completion timestamp
+    )
+} catch (e: Exception) {
+    BiometrySession(
+        id = this.sessionId ?: "unknown",
+        sessionId = this.sessionId ?: "unknown",
+        status = com.cdccreditsmart.domain.model.BiometryStatus.ERROR,
+        errorMessage = "Failed to map history session: ${e.message}",
+        createdAt = null
+    )
+}
+
+/**
+ * Converts BiometrySession domain model to BiometrySessionEntity.
+ * Maps domain model to database entity with proper type conversions.
+ */
+fun BiometrySession.toEntity(): BiometrySessionEntity = try {
+    BiometrySessionEntity(
+        id = this.id,
+        sessionId = this.sessionId,
+        status = this.status.name,
+        livenessScore = this.livenessScore,
+        resultId = this.resultId,
+        errorMessage = this.errorMessage,
+        createdAt = this.createdAt?.atZone(ZoneOffset.UTC)?.toInstant()?.toEpochMilli() ?: System.currentTimeMillis(),
+        completedAt = this.completedAt?.atZone(ZoneOffset.UTC)?.toInstant()?.toEpochMilli(),
+        lastSyncAt = System.currentTimeMillis()
+    )
+} catch (e: Exception) {
+    BiometrySessionEntity(
+        id = this.id,
+        sessionId = this.sessionId,
+        status = "ERROR",
+        errorMessage = "Failed to convert to entity: ${e.message}",
+        createdAt = System.currentTimeMillis()
     )
 }
 
