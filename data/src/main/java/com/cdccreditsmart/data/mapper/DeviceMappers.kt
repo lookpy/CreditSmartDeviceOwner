@@ -3,8 +3,6 @@ package com.cdccreditsmart.data.mapper
 // Domain model imports
 import com.cdccreditsmart.domain.model.DeviceStatus
 import com.cdccreditsmart.domain.model.DeviceConfiguration as DomainDeviceConfiguration
-import com.cdccreditsmart.domain.model.BlockingPolicy as DomainBlockingPolicy
-import com.cdccreditsmart.domain.model.BlockingLevel
 import com.cdccreditsmart.domain.model.Installment
 import com.cdccreditsmart.domain.model.InstallmentSummary
 import com.cdccreditsmart.domain.model.InstallmentStatus
@@ -14,7 +12,6 @@ import com.cdccreditsmart.domain.model.BindingStatus
 // Network API imports with aliases to resolve conflicts
 import com.cdccreditsmart.network.api.DeviceStatusResponse
 import com.cdccreditsmart.network.api.DeviceConfiguration as NetworkDeviceConfiguration
-import com.cdccreditsmart.network.api.BlockingPolicy as NetworkBlockingPolicy
 import com.cdccreditsmart.network.api.InstallmentInfo
 import com.cdccreditsmart.network.api.InstallmentsResponse
 import com.cdccreditsmart.network.api.PaymentSummary
@@ -39,28 +36,30 @@ fun DeviceStatusResponse.toDomain(): DeviceStatus = try {
     DeviceStatus(
         deviceId = this.deviceId.safeString(),
         status = this.status.safeString(),
-        contractId = this.contractId.safeString(),
-        lastHeartbeat = this.lastHeartbeat?.toLocalDateTime(),
-        configuration = this.configuration.toDomain(),
-        blockingPolicy = this.blockingPolicy?.toDomain(),
-        isBlocked = this.blockingPolicy?.level != "none",
-        lastSyncAt = null // Server doesn't provide last sync timestamp
+        contractId = this.contractId?.safeString(),
+        blockingLevel = this.blockingLevel?.safeString(),
+        blockingReason = this.blockingReason?.safeString(),
+        allowedActions = this.allowedActions ?: emptyList(),
+        blockedPackages = this.blockedPackages ?: emptyList(),
+        lastHeartbeat = this.lastHeartbeat ?: 0L,
+        configuration = this.configuration.toDomain()
     )
 } catch (e: Exception) {
     DeviceStatus(
         deviceId = this.deviceId ?: "unknown",
         status = "error",
         contractId = null,
-        lastHeartbeat = null, // null when error occurs
+        blockingLevel = null,
+        blockingReason = "Error mapping device status",
+        allowedActions = emptyList(),
+        blockedPackages = emptyList(),
+        lastHeartbeat = 0L,
         configuration = DomainDeviceConfiguration(
             updateCheckInterval = 3600000L, // 1 hour default
             heartbeatInterval = 300000L, // 5 minutes default
             logLevel = "ERROR",
             featureFlags = emptyMap()
-        ),
-        blockingPolicy = null,
-        isBlocked = false,
-        lastSyncAt = null
+        )
     )
 }
 
@@ -84,30 +83,6 @@ fun NetworkDeviceConfiguration.toDomain(): DomainDeviceConfiguration = try {
     )
 }
 
-/**
- * Converts BlockingPolicy to domain model.
- * Maps blocking policy information with proper validation.
- */
-fun NetworkBlockingPolicy.toDomain(): DomainBlockingPolicy = try {
-    DomainBlockingPolicy(
-        level = when (this.level.lowercase()) {
-            "none" -> BlockingLevel.NONE
-            "partial" -> BlockingLevel.PARTIAL
-            "full" -> BlockingLevel.FULL
-            else -> BlockingLevel.NONE
-        },
-        reason = this.reason.safeString(),
-        allowedActions = this.allowedActions.toList(),
-        blockedPackages = this.blockedPackages.toList()
-    )
-} catch (e: Exception) {
-    DomainBlockingPolicy(
-        level = BlockingLevel.NONE,
-        reason = "Error mapping blocking policy",
-        allowedActions = emptyList(),
-        blockedPackages = emptyList()
-    )
-}
 
 // =============================================================================
 // INSTALLMENT MAPPERS
