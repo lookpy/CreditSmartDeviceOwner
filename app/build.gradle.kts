@@ -38,13 +38,15 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
+        isCoreLibraryDesugaringEnabled = true
     }
 
     kotlin {
+        jvmToolchain(17)
         compilerOptions {
-            jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_1_8)
+            jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_17)
         }
     }
     
@@ -61,6 +63,12 @@ android {
     
     composeOptions {
         kotlinCompilerExtensionVersion = "1.5.14"
+    }
+}
+
+java {
+    toolchain {
+        languageVersion.set(JavaLanguageVersion.of(17))
     }
 }
 
@@ -97,6 +105,9 @@ dependencies {
     
     // Material Design Components (for XML themes compatibility)
     implementation("com.google.android.material:material:1.12.0")
+    
+    // Core library desugaring for Java 8+ language features
+    coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.1.3")
     
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.2.1")
