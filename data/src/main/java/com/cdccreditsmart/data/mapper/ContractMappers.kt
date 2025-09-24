@@ -39,11 +39,11 @@ fun ContractResponse.toDomain(): Contract = try {
     Contract(
         id = this.contractId.safeString(),
         contractCode = this.contractId.safeString(), // Using contractId as contractCode
-        customerId = this.contractData.customerInfo.id.safeString(),
-        customerName = this.contractData.customerInfo.fullName.safeString(),
+        customerId = this.contractData.customerInfo.cpf.safeString(), // Use CPF as customer ID
+        customerName = this.contractData.customerInfo.name.safeString(),
         totalAmount = this.contractData.financingTerms.totalAmount.toBigDecimal(),
         installmentCount = this.contractData.financingTerms.installmentCount.safeInt(1),
-        monthlyAmount = this.contractData.financingTerms.monthlyPayment.toBigDecimal(),
+        monthlyAmount = this.contractData.financingTerms.installmentAmount.toBigDecimal(),
         status = this.status.toContractStatus(),
         signedAt = this.signedAt?.toLocalDateTime(),
         createdAt = this.activatedAt?.toLocalDateTime() // Use server activation timestamp
@@ -75,7 +75,7 @@ fun ContractTermsResponse.toDomain(): Terms = try {
         version = this.version.safeString(),
         hash = this.hash.safeString(),
         text = this.text.safeString(),
-        effectiveDate = this.effectiveDate?.toLocalDateTime(),
+        effectiveDate = this.effectiveDate?.toLocalDateTime() ?: LocalDateTime.now(),
         fetchedAt = null // Server doesn't provide fetch timestamp
     )
 } catch (e: Exception) {
@@ -83,7 +83,7 @@ fun ContractTermsResponse.toDomain(): Terms = try {
         version = this.version ?: "1.0",
         hash = this.hash ?: "",
         text = this.text ?: "",
-        effectiveDate = null,
+        effectiveDate = LocalDateTime.now(),
         fetchedAt = null
     )
 }
@@ -184,20 +184,20 @@ fun NetworkContractUpdate.toDomain(): DomainContractUpdate = try {
  */
 fun CustomerInfo.toDomain(): Customer = try {
     Customer(
-        id = this.id.safeString(),
-        fullName = this.fullName.safeString(),
+        id = this.cpf.safeString(), // Use CPF as ID since network model has no separate id
+        fullName = this.name.safeString(),
         cpf = this.cpf.safeString(),
         email = this.email.safeString(),
         phone = this.phone.safeString(),
-        birthDate = this.birthDate?.toLocalDate(),
+        birthDate = null, // Network CustomerInfo doesn't provide birthDate
         address = this.address?.toDomain(),
         createdAt = null, // Server doesn't provide customer creation timestamp
         lastUpdatedAt = null // Server doesn't provide customer update timestamp
     )
 } catch (e: Exception) {
     Customer(
-        id = this.id ?: "unknown",
-        fullName = this.fullName ?: "Unknown",
+        id = this.cpf ?: "unknown",
+        fullName = this.name ?: "Unknown",
         cpf = this.cpf ?: "",
         email = this.email ?: "",
         phone = this.phone ?: "",
@@ -219,7 +219,7 @@ fun NetworkAddress.toDomain(): DomainAddress = try {
         city = this.city.safeString(),
         state = this.state.safeString(),
         zipCode = this.zipCode.safeString(),
-        country = this.country ?: "Brasil"
+        country = "Brasil" // Network Address doesn't include country field
     )
 } catch (e: Exception) {
     DomainAddress(

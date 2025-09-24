@@ -325,3 +325,17 @@ fun String?.safeDouble(default: Double = 0.0): Double = try {
 } catch (e: Exception) {
     default
 }
+
+/**
+ * Safe float conversion from Double with default fallback.
+ */
+fun Double?.safeFloat(default: Float = 0f): Float = try {
+    this?.toFloat() ?: default
+} catch (e: Exception) {
+    default
+}
+
+/**
+ * Safe int conversion from Int with default fallback.
+ */
+fun Int?.safeInt(default: Int = 0): Int = this ?: default

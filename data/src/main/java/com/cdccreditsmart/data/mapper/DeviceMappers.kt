@@ -40,7 +40,7 @@ fun DeviceStatusResponse.toDomain(): DeviceStatus = try {
         deviceId = this.deviceId.safeString(),
         status = this.status.safeString(),
         contractId = this.contractId.safeString(),
-        lastHeartbeat = this.lastHeartbeat.toLocalDateTime(),
+        lastHeartbeat = this.lastHeartbeat?.toLocalDateTime(),
         configuration = this.configuration.toDomain(),
         blockingPolicy = this.blockingPolicy?.toDomain(),
         isBlocked = this.blockingPolicy?.level != "none",
@@ -52,7 +52,7 @@ fun DeviceStatusResponse.toDomain(): DeviceStatus = try {
         status = "error",
         contractId = null,
         lastHeartbeat = null, // null when error occurs
-        configuration = DeviceConfiguration(
+        configuration = DomainDeviceConfiguration(
             updateCheckInterval = 3600000L, // 1 hour default
             heartbeatInterval = 300000L, // 5 minutes default
             logLevel = "ERROR",
@@ -73,7 +73,7 @@ fun NetworkDeviceConfiguration.toDomain(): DomainDeviceConfiguration = try {
         updateCheckInterval = this.updateCheckInterval,
         heartbeatInterval = this.heartbeatInterval,
         logLevel = this.logLevel.safeString(),
-        featureFlags = this.featureFlags.toMap() // Ensure mutable map
+        featureFlags = this.featureFlags ?: emptyMap() // Handle null featureFlags
     )
 } catch (e: Exception) {
     DomainDeviceConfiguration(
