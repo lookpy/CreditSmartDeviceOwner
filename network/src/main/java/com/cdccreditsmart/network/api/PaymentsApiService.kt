@@ -1,5 +1,6 @@
 package com.cdccreditsmart.network.api
 
+import com.squareup.moshi.JsonClass
 import retrofit2.Response
 import retrofit2.http.*
 
@@ -72,6 +73,7 @@ interface PaymentsApiService {
 }
 
 // Request/Response Data Classes
+@JsonClass(generateAdapter = true)
 data class CreatePixPaymentRequest(
     val installmentId: String,
     val deviceId: String,
@@ -79,6 +81,7 @@ data class CreatePixPaymentRequest(
     val description: String? = null
 )
 
+@JsonClass(generateAdapter = true)
 data class PixPaymentResponse(
     val paymentId: String,
     val pixKey: String,
@@ -89,6 +92,7 @@ data class PixPaymentResponse(
     val status: String
 )
 
+@JsonClass(generateAdapter = true)
 data class CreateBoletoPaymentRequest(
     val installmentId: String,
     val deviceId: String,
@@ -97,6 +101,7 @@ data class CreateBoletoPaymentRequest(
     val description: String? = null
 )
 
+@JsonClass(generateAdapter = true)
 data class BoletoPaymentResponse(
     val paymentId: String,
     val boletoCode: String,
@@ -107,6 +112,7 @@ data class BoletoPaymentResponse(
     val status: String
 )
 
+@JsonClass(generateAdapter = true)
 data class PaymentStatusResponse(
     val paymentId: String,
     val installmentId: String,
@@ -119,6 +125,7 @@ data class PaymentStatusResponse(
     val failureReason: String? = null
 )
 
+@JsonClass(generateAdapter = true)
 data class PaymentConfirmationRequest(
     val transactionId: String,
     val paymentProof: String? = null, // Base64 encoded proof of payment
@@ -126,6 +133,7 @@ data class PaymentConfirmationRequest(
     val paidAt: Long
 )
 
+@JsonClass(generateAdapter = true)
 data class PaymentConfirmationResponse(
     val paymentId: String,
     val status: String,
@@ -133,11 +141,13 @@ data class PaymentConfirmationResponse(
     val message: String?
 )
 
+@JsonClass(generateAdapter = true)
 data class CancelPaymentRequest(
     val reason: String,
     val cancelledBy: String? = "user"
 )
 
+@JsonClass(generateAdapter = true)
 data class PaymentHistoryResponse(
     val deviceId: String?,
     val contractId: String?,
@@ -145,6 +155,7 @@ data class PaymentHistoryResponse(
     val totalCount: Int
 )
 
+@JsonClass(generateAdapter = true)
 data class PaymentHistoryItem(
     val paymentId: String,
     val installmentId: String,
@@ -158,14 +169,20 @@ data class PaymentHistoryItem(
 )
 
 // Legacy support
+@JsonClass(generateAdapter = true)
 data class LegacyPaymentRequest(
     val paymentMethod: String, // "pix" or "boleto"
     val amount: Double
 )
 
+@JsonClass(generateAdapter = true)
 data class LegacyPaymentResponse(
     val success: Boolean,
     val paymentId: String?,
     val paymentData: Map<String, Any>?,
     val message: String?
 )
+
+// Type aliases to match task requirements
+typealias PixPaymentRequest = CreatePixPaymentRequest
+typealias BoletoPaymentRequest = CreateBoletoPaymentRequest

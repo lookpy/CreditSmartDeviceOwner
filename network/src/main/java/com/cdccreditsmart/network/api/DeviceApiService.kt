@@ -1,5 +1,6 @@
 package com.cdccreditsmart.network.api
 
+import com.squareup.moshi.JsonClass
 import retrofit2.Response
 import retrofit2.http.*
 
@@ -58,12 +59,14 @@ interface DeviceApiService {
 }
 
 // Request/Response Data Classes
+@JsonClass(generateAdapter = true)
 data class DeviceAttestRequest(
     val devicePublicKey: String,
     val attestationToken: String,
     val deviceInfo: DeviceInfo
 )
 
+@JsonClass(generateAdapter = true)
 data class DeviceInfo(
     val manufacturer: String,
     val model: String,
@@ -73,6 +76,7 @@ data class DeviceInfo(
     val serialNumber: String? = null
 )
 
+@JsonClass(generateAdapter = true)
 data class DeviceAttestResponse(
     val attestedDeviceId: String,
     val devicePubKeyFingerprint: String,
@@ -80,6 +84,7 @@ data class DeviceAttestResponse(
     val status: String
 )
 
+@JsonClass(generateAdapter = true)
 data class DeviceBindRequest(
     val contractCode: String,
     val imeiPDV: String?,
@@ -87,6 +92,7 @@ data class DeviceBindRequest(
     val attestedDeviceId: String
 )
 
+@JsonClass(generateAdapter = true)
 data class DeviceBindResponse(
     val bindingId: String,
     val status: String,
@@ -94,6 +100,7 @@ data class DeviceBindResponse(
     val message: String?
 )
 
+@JsonClass(generateAdapter = true)
 data class HeartbeatRequest(
     val deviceId: String,
     val timestamp: Long,
@@ -102,12 +109,14 @@ data class HeartbeatRequest(
     val location: Location? = null
 )
 
+@JsonClass(generateAdapter = true)
 data class Location(
     val latitude: Double,
     val longitude: Double,
     val accuracy: Float? = null
 )
 
+@JsonClass(generateAdapter = true)
 data class DeviceStatusResponse(
     val deviceId: String,
     val status: String,
@@ -117,6 +126,7 @@ data class DeviceStatusResponse(
     val configuration: DeviceConfiguration
 )
 
+@JsonClass(generateAdapter = true)
 data class BlockingPolicy(
     val level: String, // "none", "partial", "full"
     val reason: String?,
@@ -124,6 +134,7 @@ data class BlockingPolicy(
     val blockedPackages: List<String>
 )
 
+@JsonClass(generateAdapter = true)
 data class DeviceConfiguration(
     val updateCheckInterval: Long,
     val heartbeatInterval: Long,
@@ -131,12 +142,14 @@ data class DeviceConfiguration(
     val featureFlags: Map<String, Boolean>
 )
 
+@JsonClass(generateAdapter = true)
 data class InstallmentsResponse(
     val contractId: String,
     val installments: List<InstallmentInfo>,
     val summary: PaymentSummary
 )
 
+@JsonClass(generateAdapter = true)
 data class InstallmentInfo(
     val id: String,
     val number: Int,
@@ -148,6 +161,7 @@ data class InstallmentInfo(
     val transactionId: String? = null
 )
 
+@JsonClass(generateAdapter = true)
 data class PaymentSummary(
     val totalAmount: Double,
     val paidAmount: Double,
@@ -156,6 +170,7 @@ data class PaymentSummary(
     val nextDueDate: String?
 )
 
+@JsonClass(generateAdapter = true)
 data class UpdateReportRequest(
     val deviceId: String,
     val updateVersion: String,
@@ -163,3 +178,7 @@ data class UpdateReportRequest(
     val errorMessage: String? = null,
     val timestamp: Long
 )
+
+// Type aliases to match task requirements
+typealias DeviceAttestationRequest = DeviceAttestRequest
+typealias DeviceAttestationResponse = DeviceAttestResponse
