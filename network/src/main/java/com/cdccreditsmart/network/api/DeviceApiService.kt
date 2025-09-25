@@ -193,6 +193,7 @@ data class BlockingPolicy(
     val blockedPackages: List<String>
 )
 
+@JsonClass(generateAdapter = true)
 data class DeviceConfiguration(
     val updateCheckInterval: Long,
     val heartbeatInterval: Long,
@@ -351,9 +352,10 @@ data class CdcDeviceSyncResponse(
     val actions: List<CdcDeviceActionDetail>? = null
 )
 
+@JsonClass(generateAdapter = true)
 data class CdcDeviceActionDetail(
     val type: String, // "update", "block", "notify", "collect_data"
-    val parameters: Map<String, Any>? = null,
+    val parameters: Map<String, String>? = null,
     val priority: String = "normal", // "low", "normal", "high", "urgent"
     val expiresAt: Long? = null
 )

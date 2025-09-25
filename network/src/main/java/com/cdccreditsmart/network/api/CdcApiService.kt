@@ -248,7 +248,7 @@ data class DeviceSyncResponse(
 @JsonClass(generateAdapter = true)
 data class CdcDeviceAction(
     val type: String, // "update", "block", "notify", "collect_data"
-    val parameters: Map<String, Any>? = null,
+    val parameters: Map<String, String>? = null,
     val priority: String = "normal", // "low", "normal", "high", "urgent"
     val expiresAt: Long? = null
 )
