@@ -54,6 +54,18 @@ interface DeviceApiService {
         @Header("Authorization") authorization: String? = null
     ): Response<CdcProvisioningQrResponse>
     
+    /**
+     * Auto-Uninstall Request endpoint - CDC Credit Smart specific
+     * POST /api/apk/device/{serialNumber}/request-uninstall
+     * Request permission for self-uninstallation when all installments are paid
+     */
+    @POST("api/apk/device/{serialNumber}/request-uninstall")
+    suspend fun requestUninstall(
+        @Path("serialNumber") serialNumber: String,
+        @Body request: UninstallRequest,
+        @Header("Authorization") authorization: String? = null
+    ): Response<UninstallResponse>
+    
     // Legacy v1 device endpoints (for backward compatibility)
     
     /**
@@ -365,6 +377,58 @@ data class CdcProvisioningQrResponse(
     val qrData: String? = null, // Raw QR code data
     val expiresAt: Long? = null,
     val provisioningUrl: String? = null
+)
+
+// Uninstall Request/Response DTOs
+@JsonClass(generateAdapter = true)
+data class UninstallRequest(
+    val reason: String
+)
+
+@JsonClass(generateAdapter = true)
+data class UninstallResponse(
+    val success: Boolean,
+    val message: String,
+    val serialNumber: String? = null,
+    val deviceId: String? = null,
+    val reason: String? = null,
+    val paymentInfo: UninstallPaymentInfo? = null,
+    val approved: Boolean? = null,
+    val selfRequested: Boolean? = null
+)
+
+@JsonClass(generateAdapter = true)
+data class UninstallPaymentInfo(
+    val totalInstallments: Int,
+    val paidInstallments: Int,
+    val remainingInstallments: Int? = null,
+    val allPaid: Boolean
+)
+
+// CDC Device Status Response
+@JsonClass(generateAdapter = true)
+data class CdcDeviceStatusResponse(
+    val serialNumber: String,
+    val deviceId: String,
+    val isBlocked: Boolean,
+    val status: String,
+    val hasBlockReason: Boolean,
+    val customerInfo: CdcCustomerInfo? = null,
+    val paymentInfo: CdcPaymentInfo? = null
+)
+
+@JsonClass(generateAdapter = true)
+data class CdcCustomerInfo(
+    val name: String? = null,
+    val hasCustomer: Boolean
+)
+
+@JsonClass(generateAdapter = true)
+data class CdcPaymentInfo(
+    val totalInstallments: Int,
+    val paidInstallments: Int,
+    val remainingInstallments: Int,
+    val paymentStatus: String
 )
 
 // Type aliases to match task requirements

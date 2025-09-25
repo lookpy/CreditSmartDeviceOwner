@@ -15,6 +15,11 @@ import com.cdccreditsmart.network.interceptors.JwtInterceptor
 import com.cdccreditsmart.network.security.EncryptionHelper
 import com.cdccreditsmart.network.security.AntiTamperingDetector
 import com.cdccreditsmart.network.api.*
+import com.cdccreditsmart.network.websocket.FlowStatusWebSocketService
+import com.cdccreditsmart.network.websocket.DeviceCommandWebSocketService
+import com.squareup.moshi.Moshi
+import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
+import okhttp3.OkHttpClient
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -287,5 +292,53 @@ object NetworkModule {
         @BasicRetrofit retrofit: Retrofit // Auth uses basic client to avoid circular dependency
     ): AuthApiService {
         return retrofit.create(AuthApiService::class.java)
+    }
+    
+    // WebSocket Services
+    
+    /**
+     * Provides Moshi for JSON parsing
+     */
+    @Provides
+    @Singleton
+    fun provideMoshi(): Moshi {
+        return Moshi.Builder()
+            .add(KotlinJsonAdapterFactory())
+            .build()
+    }
+    
+    /**
+     * Provides OkHttpClient for WebSocket connections
+     */
+    @Provides
+    @Singleton
+    fun provideWebSocketOkHttpClient(
+        okHttpClientFactory: OkHttpClientFactory
+    ): OkHttpClient {
+        return okHttpClientFactory.createSecureClient(true)
+    }
+    
+    /**
+     * Provides FlowStatusWebSocketService for flow status monitoring
+     */
+    @Provides
+    @Singleton
+    fun provideFlowStatusWebSocketService(
+        okHttpClient: OkHttpClient,
+        moshi: Moshi
+    ): FlowStatusWebSocketService {
+        return FlowStatusWebSocketService(okHttpClient, moshi)
+    }
+    
+    /**
+     * Provides DeviceCommandWebSocketService for device command monitoring
+     */
+    @Provides
+    @Singleton
+    fun provideDeviceCommandWebSocketService(
+        okHttpClient: OkHttpClient,
+        moshi: Moshi
+    ): DeviceCommandWebSocketService {
+        return DeviceCommandWebSocketService(okHttpClient, moshi)
     }
 }
