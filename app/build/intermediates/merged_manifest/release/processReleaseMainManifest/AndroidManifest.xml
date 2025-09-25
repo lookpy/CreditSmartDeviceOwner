@@ -1,0 +1,369 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.cdccreditsmart.app"
+    android:versionCode="1"
+    android:versionName="1.0.0" >
+
+    <uses-sdk
+        android:minSdkVersion="26"
+        android:targetSdkVersion="34" />
+
+    <!-- Network permissions -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+
+    <!-- Device permissions -->
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+
+    <!-- Camera for biometry -->
+    <uses-permission android:name="android.permission.CAMERA" />
+
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="true" />
+    <uses-feature
+        android:name="android.hardware.camera.front"
+        android:required="true" />
+
+    <!-- Storage for downloads -->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
+    <!-- Device Owner permissions -->
+    <uses-permission android:name="android.permission.BIND_DEVICE_ADMIN" />
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+    <uses-permission android:name="android.permission.DISABLE_KEYGUARD" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+
+    <!-- Background processing -->
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+
+    <!-- Firebase Messaging -->
+    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
+
+    <!-- Manufacturer-specific permissions -->
+    <!-- Samsung Knox permissions -->
+    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_ADMIN" />
+    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_CONTAINER" />
+    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_VPN" />
+    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_SECURITY" />
+
+    <!-- Knox SDK v3.12+ Enterprise permissions -->
+    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_APPLICATION" />
+    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_RESTRICTION" />
+    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_DEVICE_CONFIGURATION" />
+    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_KEYSTORE" />
+    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_CERTIFICATE" />
+    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_BLUETOOTH" />
+    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_LOCATION" />
+    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_EMAIL" />
+    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_BROWSER" />
+    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_PHONE_RESTRICTION" />
+    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_WIFI" />
+    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_KIOSK_MODE" />
+
+    <!-- Knox Platform Enterprise (KPE) permissions -->
+    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_LICENSE" />
+    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_APP_MGMT" />
+    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_ENTERPRISE_DEVICE_ADMIN" />
+    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_MULTI_USER_MGMT" />
+    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_SEAMS_MGMT" />
+
+    <!-- Knox Attestation and Hardware Security -->
+    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_ATTESTATION" />
+    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_HARDWARE_CONTROL" />
+    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_DUALDAR" />
+    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_UCM_ESE_MGMT" />
+    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_UCM_MGMT" />
+
+    <!-- Knox Container Advanced permissions -->
+    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_CONTAINER_VPN" />
+    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_CONTAINER_RCP" />
+    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_SECURE_FOLDER" />
+
+    <!-- Knox Advanced Security policies -->
+    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_ADVANCED_SECURITY" />
+    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_TIMA_KEYSTORE" />
+    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_CUSTOM_SETTING" />
+    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_CUSTOM_SYSTEM" />
+
+    <!-- Knox E-FOTA and Remote Management -->
+    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_EFOTA" />
+    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_REMOTE_CONTROL" />
+    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_SDP" />
+
+    <!-- Knox Android 15+ specific permissions -->
+    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_ENHANCED_ATTESTATION" />
+    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_WORKSPACE_MGMT" />
+
+    <!-- MIUI (Xiaomi) permissions -->
+    <uses-permission android:name="miui.permission.USE_INTERNAL_GENERAL_API" />
+    <uses-permission android:name="android.permission.WRITE_SECURE_SETTINGS" />
+
+    <!-- ColorOS (Realme/OPPO) permissions -->
+    <uses-permission android:name="com.coloros.safe.permission.SECURITY_SCAN" />
+    <uses-permission android:name="com.oppo.launcher.permission.READ_SETTINGS" />
+
+    <!-- Device Owner and enterprise permissions -->
+    <uses-permission android:name="android.permission.MANAGE_DEVICE_ADMINS" />
+    <uses-permission android:name="android.permission.MANAGE_PROFILE_AND_DEVICE_OWNERS" />
+    <uses-permission android:name="android.permission.MANAGE_USERS" />
+    <uses-permission android:name="android.permission.INTERACT_ACROSS_USERS" />
+    <uses-permission android:name="android.permission.MANAGE_ACTIVITY_STACKS" />
+
+    <!-- Network and VPN management -->
+    <uses-permission android:name="android.permission.CONTROL_VPN" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <uses-permission android:name="android.permission.OVERRIDE_WIFI_CONFIG" />
+
+    <!-- App management -->
+    <uses-permission android:name="android.permission.INSTALL_PACKAGES" />
+    <uses-permission android:name="android.permission.DELETE_PACKAGES" />
+    <uses-permission android:name="android.permission.CLEAR_APP_USER_DATA" />
+    <uses-permission android:name="android.permission.FORCE_STOP_PACKAGES" />
+
+    <!-- Security and attestation -->
+    <uses-permission android:name="android.permission.MANAGE_CA_CERTIFICATES" />
+    <uses-permission android:name="android.permission.MANAGE_KEYGUARD" />
+    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_CONTAINER_POLICY" /> <!-- Knox Hardware Control -->
+    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_HW_CONTROL" />
+    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_NETWORK" />
+    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_LICENSE_LOG" />
+    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_WORKSPACE" /> <!-- Knox DualDAR (Dual Data-At-Rest) -->
+    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_DUAL_DAR" /> <!-- Knox UCM (Universal Credential Management) -->
+    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_UCM" />
+    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_CCM_KEYSTORE" />
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.WRITE_SETTINGS" />
+    <uses-permission android:name="android.permission.USE_BIOMETRIC" /> <!-- suppress DeprecatedClassUsageInspection -->
+    <uses-permission android:name="android.permission.USE_FINGERPRINT" />
+
+    <permission
+        android:name="com.cdccreditsmart.app.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION"
+        android:protectionLevel="signature" />
+
+    <uses-permission android:name="com.cdccreditsmart.app.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION" />
+
+    <application
+        android:name="com.cdccreditsmart.app.CDCApplication"
+        android:allowBackup="false"
+        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:debuggable="true"
+        android:extractNativeLibs="false"
+        android:fullBackupContent="@xml/backup_rules"
+        android:hardwareAccelerated="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:largeHeap="true"
+        android:theme="@style/Theme.CDCCreditSmart" >
+
+        <!-- Main Activity -->
+        <activity
+            android:name="com.cdccreditsmart.app.presentation.MainActivity"
+            android:exported="true"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.CDCCreditSmart.Splash" >
+            <intent-filter android:priority="1000" >
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+                <category android:name="android.intent.category.HOME" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <!-- Device Admin Receiver -->
+        <receiver
+            android:name="com.cdccreditsmart.device.CDCDeviceAdminReceiver"
+            android:exported="true"
+            android:permission="android.permission.BIND_DEVICE_ADMIN" >
+            <meta-data
+                android:name="android.app.device_admin"
+                android:resource="@xml/device_admin_policies" />
+
+            <intent-filter>
+                <action android:name="android.app.action.DEVICE_ADMIN_ENABLED" />
+                <action android:name="android.app.action.DEVICE_ADMIN_DISABLED" />
+                <action android:name="android.app.action.DEVICE_ADMIN_DISABLE_REQUESTED" />
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
+
+        <!-- File provider for sharing documents -->
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="com.cdccreditsmart.app.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true" >
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
+
+        <!-- Knox SDK Selective Permissions -->
+        <meta-data
+            android:name="com.samsung.knoxlicense.permissions"
+            android:value="true" /> <!-- Knox SDK Version Compatibility -->
+        <meta-data
+            android:name="com.samsung.knox.sdk.version"
+            android:value="3.12" /> <!-- Knox Container Support -->
+        <meta-data
+            android:name="com.samsung.knox.container.support"
+            android:value="true" /> <!-- Knox Attestation Support -->
+        <meta-data
+            android:name="com.samsung.knox.attestation.support"
+            android:value="true" />
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
+
+        <provider
+            android:name="androidx.startup.InitializationProvider"
+            android:authorities="com.cdccreditsmart.app.androidx-startup"
+            android:exported="false" >
+            <meta-data
+                android:name="androidx.emoji2.text.EmojiCompatInitializer"
+                android:value="androidx.startup" />
+            <meta-data
+                android:name="androidx.work.WorkManagerInitializer"
+                android:value="androidx.startup" />
+            <meta-data
+                android:name="androidx.lifecycle.ProcessLifecycleInitializer"
+                android:value="androidx.startup" />
+            <meta-data
+                android:name="androidx.profileinstaller.ProfileInstallerInitializer"
+                android:value="androidx.startup" />
+        </provider>
+
+        <service
+            android:name="androidx.work.impl.background.systemalarm.SystemAlarmService"
+            android:directBootAware="false"
+            android:enabled="@bool/enable_system_alarm_service_default"
+            android:exported="false" />
+        <service
+            android:name="androidx.work.impl.background.systemjob.SystemJobService"
+            android:directBootAware="false"
+            android:enabled="@bool/enable_system_job_service_default"
+            android:exported="true"
+            android:permission="android.permission.BIND_JOB_SERVICE" />
+        <service
+            android:name="androidx.work.impl.foreground.SystemForegroundService"
+            android:directBootAware="false"
+            android:enabled="@bool/enable_system_foreground_service_default"
+            android:exported="false" />
+
+        <receiver
+            android:name="androidx.work.impl.utils.ForceStopRunnable$BroadcastReceiver"
+            android:directBootAware="false"
+            android:enabled="true"
+            android:exported="false" />
+        <receiver
+            android:name="androidx.work.impl.background.systemalarm.ConstraintProxy$BatteryChargingProxy"
+            android:directBootAware="false"
+            android:enabled="false"
+            android:exported="false" >
+            <intent-filter>
+                <action android:name="android.intent.action.ACTION_POWER_CONNECTED" />
+                <action android:name="android.intent.action.ACTION_POWER_DISCONNECTED" />
+            </intent-filter>
+        </receiver>
+        <receiver
+            android:name="androidx.work.impl.background.systemalarm.ConstraintProxy$BatteryNotLowProxy"
+            android:directBootAware="false"
+            android:enabled="false"
+            android:exported="false" >
+            <intent-filter>
+                <action android:name="android.intent.action.BATTERY_OKAY" />
+                <action android:name="android.intent.action.BATTERY_LOW" />
+            </intent-filter>
+        </receiver>
+        <receiver
+            android:name="androidx.work.impl.background.systemalarm.ConstraintProxy$StorageNotLowProxy"
+            android:directBootAware="false"
+            android:enabled="false"
+            android:exported="false" >
+            <intent-filter>
+                <action android:name="android.intent.action.DEVICE_STORAGE_LOW" />
+                <action android:name="android.intent.action.DEVICE_STORAGE_OK" />
+            </intent-filter>
+        </receiver>
+        <receiver
+            android:name="androidx.work.impl.background.systemalarm.ConstraintProxy$NetworkStateProxy"
+            android:directBootAware="false"
+            android:enabled="false"
+            android:exported="false" >
+            <intent-filter>
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+            </intent-filter>
+        </receiver>
+        <receiver
+            android:name="androidx.work.impl.background.systemalarm.RescheduleReceiver"
+            android:directBootAware="false"
+            android:enabled="false"
+            android:exported="false" >
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.TIME_SET" />
+                <action android:name="android.intent.action.TIMEZONE_CHANGED" />
+            </intent-filter>
+        </receiver>
+        <receiver
+            android:name="androidx.work.impl.background.systemalarm.ConstraintProxyUpdateReceiver"
+            android:directBootAware="false"
+            android:enabled="@bool/enable_system_alarm_service_default"
+            android:exported="false" >
+            <intent-filter>
+                <action android:name="androidx.work.impl.background.systemalarm.UpdateProxies" />
+            </intent-filter>
+        </receiver>
+        <receiver
+            android:name="androidx.work.impl.diagnostics.DiagnosticsReceiver"
+            android:directBootAware="false"
+            android:enabled="true"
+            android:exported="true"
+            android:permission="android.permission.DUMP" >
+            <intent-filter>
+                <action android:name="androidx.work.diagnostics.REQUEST_DIAGNOSTICS" />
+            </intent-filter>
+        </receiver>
+
+        <service
+            android:name="androidx.room.MultiInstanceInvalidationService"
+            android:directBootAware="true"
+            android:exported="false" />
+
+        <receiver
+            android:name="androidx.profileinstaller.ProfileInstallReceiver"
+            android:directBootAware="false"
+            android:enabled="true"
+            android:exported="true"
+            android:permission="android.permission.DUMP" >
+            <intent-filter>
+                <action android:name="androidx.profileinstaller.action.INSTALL_PROFILE" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="androidx.profileinstaller.action.SKIP_FILE" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="androidx.profileinstaller.action.SAVE_PROFILE" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="androidx.profileinstaller.action.BENCHMARK_OPERATION" />
+            </intent-filter>
+        </receiver> <!-- The activities will be merged into the manifest of the hosting app. -->
+        <activity
+            android:name="com.google.android.play.core.common.PlayCoreDialogWrapperActivity"
+            android:exported="false"
+            android:stateNotNeeded="true"
+            android:theme="@style/Theme.PlayCore.Transparent" />
+    </application>
+
+</manifest>

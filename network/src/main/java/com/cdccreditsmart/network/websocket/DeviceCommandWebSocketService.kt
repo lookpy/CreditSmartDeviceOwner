@@ -25,7 +25,7 @@ class DeviceCommandWebSocketService @Inject constructor(
     companion object {
         private const val TAG = "DeviceCommandWebSocket"
         private const val BASE_WSS_URL = "wss://cdccreditsmart.com/ws/device-updates"
-        private const val BASE_WS_URL = "ws://localhost:5000/ws/device-updates" // For development
+        private const val BASE_WS_URL_DEV = "wss://api-dev.cdccreditsmart.com.br/ws/device-updates" // For development
     }
 
     private var webSocket: WebSocket? = null
@@ -64,13 +64,13 @@ class DeviceCommandWebSocketService @Inject constructor(
     fun connect(
         deviceToken: String,
         deviceSerial: String,
-        useProduction: Boolean = false
+        useProduction: Boolean = true
     ) {
         if (isConnected) {
             disconnect()
         }
 
-        val baseUrl = if (useProduction) BASE_WSS_URL else BASE_WS_URL
+        val baseUrl = if (useProduction) BASE_WSS_URL else BASE_WS_URL_DEV
         val url = "$baseUrl?token=$deviceToken&serial=$deviceSerial"
         
         Log.d(TAG, "Connecting to WebSocket: $url")

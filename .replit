@@ -15,10 +15,6 @@ author = "agent"
 task = "workflow.run"
 args = "Android Build"
 
-[[workflows.workflow.tasks]]
-task = "workflow.run"
-args = "MDM Server"
-
 [[workflows.workflow]]
 name = "Android Build"
 author = "agent"
@@ -28,19 +24,7 @@ outputType = "console"
 
 [[workflows.workflow.tasks]]
 task = "shell.exec"
-args = "export JAVA_HOME=/nix/store/xad649j61kwkh0id5wvyiab5rliprp4d-openjdk-17.0.15+6 && export ANDROID_HOME=/home/runner/workspace/android-sdk && ./gradlew assembleDebug --no-daemon --stacktrace"
-
-[[workflows.workflow]]
-name = "MDM Server"
-author = "agent"
-
-[workflows.workflow.metadata]
-outputType = "console"
-
-[[workflows.workflow.tasks]]
-task = "shell.exec"
-args = "cd server && npm run dev"
-waitForPort = 3001
+args = "export JAVA_HOME=/nix/store/xad649j61kwkh0id5wvyiab5rliprp4d-openjdk-17.0.15+6 && export ANDROID_HOME=/home/runner/workspace/android-sdk && ./gradlew assembleRelease --no-daemon"
 
 [nix]
 channel = "stable-25_05"
@@ -53,7 +37,3 @@ externalPort = 3001
 [[ports]]
 localPort = 5000
 externalPort = 80
-
-[[ports]]
-localPort = 40837
-externalPort = 3000
