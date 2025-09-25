@@ -96,6 +96,15 @@ dependencies {
     // JSON handling for Knox policies and configuration
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.3")
     
+    // Moshi for JSON processing in BackupDataManager
+    implementation("com.squareup.moshi:moshi:1.15.0")
+    implementation("com.squareup.moshi:moshi-kotlin:1.15.0")
+    
+    // Room database dependencies for SecurityPolicyRepository
+    implementation("androidx.room:room-runtime:2.6.1")
+    implementation("androidx.room:room-ktx:2.6.1")
+    ksp("androidx.room:room-compiler:2.6.1")
+    
     // Network for Knox license activation
     implementation("com.squareup.okhttp3:okhttp:4.12.0")
     implementation("com.squareup.retrofit2:retrofit:2.9.0")

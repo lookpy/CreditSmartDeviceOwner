@@ -125,11 +125,11 @@ class BlockingPolicyExecutor @Inject constructor(
 
             // Remover restrições de usuário
             val removeRestrictionsResult = deviceOwnerManager.configureDeviceRestrictions(
-                mapOf(
-                    android.app.admin.DevicePolicyManager.DISALLOW_INSTALL_APPS to false,
-                    android.app.admin.DevicePolicyManager.DISALLOW_UNINSTALL_APPS to false,
-                    android.app.admin.DevicePolicyManager.DISALLOW_USB_FILE_TRANSFER to false,
-                    android.app.admin.DevicePolicyManager.DISALLOW_DEBUGGING_FEATURES to false
+                mapOf<String, Boolean>(
+                    "DISALLOW_INSTALL_APPS" to false,
+                    "DISALLOW_UNINSTALL_APPS" to false,
+                    "DISALLOW_USB_FILE_TRANSFER" to false,
+                    "DISALLOW_DEBUGGING_FEATURES" to false
                 )
             )
 
@@ -194,9 +194,9 @@ class BlockingPolicyExecutor @Inject constructor(
             val appliedRestrictions = mutableListOf<String>()
 
             // Aplicar restrições moderadas
-            val restrictions = mapOf(
-                android.app.admin.DevicePolicyManager.DISALLOW_INSTALL_APPS to true,
-                android.app.admin.DevicePolicyManager.DISALLOW_USB_FILE_TRANSFER to true
+            val restrictions = mapOf<String, Boolean>(
+                "DISALLOW_INSTALL_APPS" to true,
+                "DISALLOW_USB_FILE_TRANSFER" to true
             )
 
             val restrictionsResult = deviceOwnerManager.configureDeviceRestrictions(restrictions)
@@ -236,12 +236,12 @@ class BlockingPolicyExecutor @Inject constructor(
             val appliedRestrictions = mutableListOf<String>()
 
             // Aplicar todas as restrições
-            val restrictions = mapOf(
-                android.app.admin.DevicePolicyManager.DISALLOW_INSTALL_APPS to true,
-                android.app.admin.DevicePolicyManager.DISALLOW_UNINSTALL_APPS to true,
-                android.app.admin.DevicePolicyManager.DISALLOW_USB_FILE_TRANSFER to true,
-                android.app.admin.DevicePolicyManager.DISALLOW_DEBUGGING_FEATURES to true,
-                android.app.admin.DevicePolicyManager.DISALLOW_FACTORY_RESET to true
+            val restrictions = mapOf<String, Boolean>(
+                "DISALLOW_INSTALL_APPS" to true,
+                "DISALLOW_UNINSTALL_APPS" to true,
+                "DISALLOW_USB_FILE_TRANSFER" to true,
+                "DISALLOW_DEBUGGING_FEATURES" to true,
+                "DISALLOW_FACTORY_RESET" to true
             )
 
             val restrictionsResult = deviceOwnerManager.configureDeviceRestrictions(restrictions)

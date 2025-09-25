@@ -2,7 +2,7 @@ package com.cdccreditsmart.device.security
 
 import android.content.Context
 import android.util.Log
-import androidx.room.Room
+// import androidx.room.Room // Not needed in repository
 import com.cdccreditsmart.device.security.model.*
 import com.cdccreditsmart.data.local.entity.*
 import com.cdccreditsmart.data.local.CDCDatabase

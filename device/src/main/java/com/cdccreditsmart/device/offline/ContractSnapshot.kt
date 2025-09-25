@@ -25,7 +25,7 @@ class ContractSnapshot @Inject constructor(
 ) {
 
     companion object {
-        private const TAG = "ContractSnapshot"
+        private const val TAG = "ContractSnapshot"
     }
 
     private val snapshotCache = mutableMapOf<String, ContractSnapshotData>()

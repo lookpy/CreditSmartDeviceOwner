@@ -120,6 +120,31 @@ class DeviceOwnerManager @Inject constructor(
             }
         }
 
+    /**
+     * Verifica se o dispositivo tem suporte Knox
+     */
+    suspend fun hasKnoxSupport(): Boolean = withContext(Dispatchers.IO) {
+        try {
+            val adapter = manufacturerCompatibilityService.getAdapter()
+            adapter != null && adapter.javaClass.simpleName.contains("Samsung")
+        } catch (e: Exception) {
+            Log.e(TAG, "Error checking Knox support", e)
+            false
+        }
+    }
+
+    /**
+     * Obtém o fabricante do dispositivo
+     */
+    suspend fun getManufacturer(): String = withContext(Dispatchers.IO) {
+        try {
+            android.os.Build.MANUFACTURER
+        } catch (e: Exception) {
+            Log.e(TAG, "Error getting manufacturer", e)
+            "Unknown"
+        }
+    }
+
     // Implementações padrão para dispositivos sem adaptador específico
     private fun checkStandardDeviceOwner(): Boolean {
         return devicePolicyManager.isDeviceOwnerApp(context.packageName)

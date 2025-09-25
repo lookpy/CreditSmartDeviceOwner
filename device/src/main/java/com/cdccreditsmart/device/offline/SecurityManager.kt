@@ -168,9 +168,12 @@ class SecurityManager @Inject constructor(
 
             val file = File(backupDir, fileName)
             
-            EncryptedFile.Builder(context, file, masterKey)
-                .setEncryptedFileDataSource(EncryptedFile.FileEncryptionScheme.AES256_GCM_HKDF_4KB)
-                .build()
+            EncryptedFile.Builder(
+                context,
+                file, 
+                masterKey,
+                EncryptedFile.FileEncryptionScheme.AES256_GCM_HKDF_4KB
+            ).build()
 
         } catch (e: Exception) {
             Log.e(TAG, "Error creating encrypted file: $fileName", e)

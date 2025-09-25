@@ -198,7 +198,7 @@ class PolicyExecutionService @Inject constructor(
                     
                     // Políticas Knox
                     PolicyType.KNOX_CONTAINER -> {
-                        if (manufacturerCompatibilityService.getAdapter()?.hasKnoxSupport() == true) {
+                        if (deviceOwnerManager.hasKnoxSupport()) {
                             results.add(executeKnoxContainer(parameters, executionStart))
                         } else {
                             results.add(createSkippedResult(policyType, "Knox not available", executionStart))
@@ -245,12 +245,12 @@ class PolicyExecutionService @Inject constructor(
                     try {
                         if (isAppInstalled(packageName)) {
                             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                                val success = devicePolicyManager.setPackagesSuspended(
+                                val successArray = devicePolicyManager.setPackagesSuspended(
                                     adminComponent, 
                                     arrayOf(packageName), 
                                     true
                                 )
-                                if (success) {
+                                if (successArray.isEmpty()) {
                                     blockedApps.add(packageName)
                                 } else {
                                     failedApps.add(packageName)
@@ -472,7 +472,7 @@ class PolicyExecutionService @Inject constructor(
         try {
             val adapter = manufacturerCompatibilityService.getAdapter()
             
-            if (adapter?.hasKnoxSupport() == true) {
+            if (deviceOwnerManager.hasKnoxSupport()) {
                 // Implementar políticas Knox específicas
                 Log.d(TAG, "Executing Knox container policies: $parameters")
                 

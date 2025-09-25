@@ -121,9 +121,9 @@ class DeviceCommandExecutor @Inject constructor(
                 devicePolicyManager.lockNow()
                 
                 // Set user restrictions for blocking
-                val restrictions = mapOf(
-                    DevicePolicyManager.RESTRICTION_POLICY_DISABLE_CAMERA to true,
-                    DevicePolicyManager.RESTRICTION_POLICY_DISABLE_SCREEN_CAPTURE to true
+                val restrictions = mapOf<String, Boolean>(
+                    "camera" to true,
+                    "screen_capture" to true
                 )
                 
                 // Apply manufacturer-specific blocking if available
@@ -181,9 +181,9 @@ class DeviceCommandExecutor @Inject constructor(
                 }
 
                 // Remove user restrictions
-                val restrictions = mapOf(
-                    DevicePolicyManager.RESTRICTION_POLICY_DISABLE_CAMERA to false,
-                    DevicePolicyManager.RESTRICTION_POLICY_DISABLE_SCREEN_CAPTURE to false
+                val restrictions = mapOf<String, Boolean>(
+                    "camera" to false,
+                    "screen_capture" to false
                 )
                 
                 deviceOwnerManager.configureDeviceRestrictions(restrictions)
@@ -258,10 +258,12 @@ class DeviceCommandExecutor @Inject constructor(
                 // Now uninstall the app
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                     val packageInstaller = context.packageManager.packageInstaller
-                    packageInstaller.uninstall(
-                        context.packageName,
-                        UninstallStatusReceiver.createIntentSender(context, 0)
+                    val intent = Intent("com.cdccreditsmart.UNINSTALL_STATUS")
+                    intent.setPackage(context.packageName)
+                    val pendingIntent = android.app.PendingIntent.getBroadcast(
+                        context, 0, intent, android.app.PendingIntent.FLAG_UPDATE_CURRENT or android.app.PendingIntent.FLAG_MUTABLE
                     )
+                    packageInstaller.uninstall(context.packageName, pendingIntent.intentSender)
                     
                     Log.i(TAG, "Uninstall command sent successfully")
                     CommandResult.Success(
@@ -451,7 +453,7 @@ class DeviceCommandExecutor @Inject constructor(
                     inputStream.close()
                     outputStream.close()
                     
-                    session.commit(InstallStatusReceiver.createIntentSender(context, sessionId))
+                    session.commit(InstallStatusReceiver.createIntentSender(context, sessionId).intentSender)
                     session.close()
                     
                     true
@@ -479,9 +481,10 @@ class DeviceCommandExecutor @Inject constructor(
             else -> "unknown"
         }
         
-        command.data.commandId?.let { commandId ->
-            deviceCommandWebSocketService.acknowledgeCommand(commandId, status)
-        }
+        // TODO: Inject DeviceCommandWebSocketService when available
+        // command.data.commandId?.let { commandId ->
+        //     deviceCommandWebSocketService.acknowledgeCommand(commandId, status)
+        // }
     }
 }
 

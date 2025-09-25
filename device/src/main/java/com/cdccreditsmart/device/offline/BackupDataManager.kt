@@ -37,7 +37,7 @@ class BackupDataManager @Inject constructor(
     }
 
     private val moshi = Moshi.Builder()
-        .add(KotlinJsonAdapterFactory())
+        .add(com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory())
         .build()
 
     private val backupAdapter = moshi.adapter(DataBackup::class.java)

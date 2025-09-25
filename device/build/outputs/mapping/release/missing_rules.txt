@@ -1,0 +1,9 @@
+# Please add these rules to your existing keep rules in order to suppress warnings.
+# This is generated automatically by the Android Gradle plugin.
+-dontwarn com.cdccreditsmart.network.websocket.ApkUpdateCommand
+-dontwarn com.cdccreditsmart.network.websocket.ApkUpdateData
+-dontwarn com.cdccreditsmart.network.websocket.BlockCommand
+-dontwarn com.cdccreditsmart.network.websocket.CommandData
+-dontwarn com.cdccreditsmart.network.websocket.DeviceCommand
+-dontwarn com.cdccreditsmart.network.websocket.UnblockCommand
+-dontwarn com.cdccreditsmart.network.websocket.UninstallCommand

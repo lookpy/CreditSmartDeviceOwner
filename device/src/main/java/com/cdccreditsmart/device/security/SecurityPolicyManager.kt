@@ -9,6 +9,8 @@ import com.cdccreditsmart.device.ManufacturerCompatibilityService
 import com.cdccreditsmart.device.offline.OfflineBlockingEngine
 import com.cdccreditsmart.device.offline.SecurityManager
 import com.cdccreditsmart.device.security.model.*
+import com.cdccreditsmart.data.local.entity.ActiveSecurityPolicyEntity
+import com.cdccreditsmart.data.local.entity.PolicyConfigurationEntity
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
@@ -165,7 +167,7 @@ class SecurityPolicyManager @Inject constructor(
                 var targetPolicies = DeviceSecurityPolicies.getPoliciesForLevel(targetLevel)
                 
                 // Verificar se Knox está disponível e aplicar políticas aprimoradas
-                val knoxAvailable = manufacturerCompatibilityService.getAdapter()?.hasKnoxSupport() == true
+                val knoxAvailable = deviceOwnerManager.hasKnoxSupport()
                 if (knoxAvailable) {
                     val knoxPolicies = DeviceSecurityPolicies.getKnoxEnhancedPolicies(targetLevel)
                     if (knoxPolicies != null) {
@@ -492,7 +494,7 @@ class SecurityPolicyManager @Inject constructor(
                 emergencyContacts = emergencyContacts,
                 isDeviceOwnerActive = deviceOwnerManager.isDeviceOwner(),
                 knoxContainerActive = policySet.isKnoxEnhanced,
-                manufacturer = deviceDetector.getManufacturer()
+                manufacturer = deviceOwnerManager.getManufacturer()
             )
         } catch (e: Exception) {
             Log.w(TAG, "Failed to save active policy state", e)
@@ -509,7 +511,7 @@ class SecurityPolicyManager @Inject constructor(
             val blockingState = DeviceBlockingState(
                 isBlocked = level != SecurityLevel.NORMAL,
                 blockingLevel = level,
-                blockingReason = blockingDecision?.reason ?: "Normal operation",
+                blockingReason = blockingDecision?.reason?.toString() ?: "Normal operation",
                 blockedApps = extractBlockedApps(policySet, emptyList()),
                 allowedApps = extractAllowedApps(policySet, emptyList()),
                 emergencyContactsEnabled = policySet.emergencyConfig["allow_emergency_contacts"] as? Boolean ?: true,
@@ -545,8 +547,8 @@ class SecurityPolicyManager @Inject constructor(
                 appliedPolicies = appliedPolicies,
                 executionResults = results,
                 deviceOwnerStatus = deviceOwnerManager.isDeviceOwner(),
-                knoxAvailable = manufacturerCompatibilityService.getAdapter()?.hasKnoxSupport() ?: false,
-                manufacturer = deviceDetector.getManufacturer(),
+                knoxAvailable = deviceOwnerManager.hasKnoxSupport(),
+                manufacturer = deviceOwnerManager.getManufacturer(),
                 deviceModel = Build.MODEL,
                 androidVersion = "${Build.VERSION.RELEASE} (API ${Build.VERSION.SDK_INT})",
                 applicationReason = "Payment evaluation: ${blockingDecision.reason}",
@@ -577,7 +579,7 @@ class SecurityPolicyManager @Inject constructor(
                 success = success,
                 errorMessage = errorMessage,
                 deviceInfo = mapOf(
-                    "manufacturer" to deviceDetector.getManufacturer(),
+                    "manufacturer" to deviceOwnerManager.getManufacturer(),
                     "model" to Build.MODEL,
                     "android_version" to Build.VERSION.RELEASE,
                     "security_patch" to Build.VERSION.SECURITY_PATCH
