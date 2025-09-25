@@ -11,6 +11,7 @@ import com.cdccreditsmart.`data`.local.Converters
 import com.cdccreditsmart.`data`.local.entity.DeviceBindingEntity
 import com.cdccreditsmart.domain.model.BindingStatus
 import java.time.LocalDateTime
+import javax.`annotation`.processing.Generated
 import kotlin.IllegalArgumentException
 import kotlin.Int
 import kotlin.String
@@ -22,6 +23,7 @@ import kotlin.collections.mutableListOf
 import kotlin.reflect.KClass
 import kotlinx.coroutines.flow.Flow
 
+@Generated(value = ["androidx.room.RoomProcessor"])
 @Suppress(names = ["UNCHECKED_CAST", "DEPRECATION", "REDUNDANT_PROJECTION", "REMOVAL"])
 public class DeviceBindingDao_Impl(
   __db: RoomDatabase,

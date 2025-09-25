@@ -21,6 +21,7 @@ import com.cdccreditsmart.`data`.local.dao.InstallmentDao
 import com.cdccreditsmart.`data`.local.dao.InstallmentDao_Impl
 import com.cdccreditsmart.`data`.local.dao.PaymentDao
 import com.cdccreditsmart.`data`.local.dao.PaymentDao_Impl
+import javax.`annotation`.processing.Generated
 import kotlin.Lazy
 import kotlin.String
 import kotlin.Suppress
@@ -35,6 +36,7 @@ import kotlin.collections.mutableMapOf
 import kotlin.collections.mutableSetOf
 import kotlin.reflect.KClass
 
+@Generated(value = ["androidx.room.RoomProcessor"])
 @Suppress(names = ["UNCHECKED_CAST", "DEPRECATION", "REDUNDANT_PROJECTION", "REMOVAL"])
 public class CDCDatabase_Impl : CDCDatabase() {
   private val _deviceBindingDao: Lazy<DeviceBindingDao> = lazy {

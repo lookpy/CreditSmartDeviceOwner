@@ -14,6 +14,7 @@ import com.cdccreditsmart.domain.model.InstallmentStatus
 import java.math.BigDecimal
 import java.time.LocalDate
 import java.time.LocalDateTime
+import javax.`annotation`.processing.Generated
 import kotlin.IllegalArgumentException
 import kotlin.Int
 import kotlin.String
@@ -26,6 +27,7 @@ import kotlin.reflect.KClass
 import kotlin.text.StringBuilder
 import kotlinx.coroutines.flow.Flow
 
+@Generated(value = ["androidx.room.RoomProcessor"])
 @Suppress(names = ["UNCHECKED_CAST", "DEPRECATION", "REDUNDANT_PROJECTION", "REMOVAL"])
 public class InstallmentDao_Impl(
   __db: RoomDatabase,

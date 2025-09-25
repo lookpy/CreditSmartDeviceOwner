@@ -8,6 +8,7 @@ import androidx.room.util.getColumnIndexOrThrow
 import androidx.room.util.performSuspending
 import androidx.sqlite.SQLiteStatement
 import com.cdccreditsmart.`data`.local.entity.PaymentEntity
+import javax.`annotation`.processing.Generated
 import kotlin.Int
 import kotlin.Long
 import kotlin.String
@@ -19,6 +20,7 @@ import kotlin.collections.mutableListOf
 import kotlin.reflect.KClass
 import kotlinx.coroutines.flow.Flow
 
+@Generated(value = ["androidx.room.RoomProcessor"])
 @Suppress(names = ["UNCHECKED_CAST", "DEPRECATION", "REDUNDANT_PROJECTION", "REMOVAL"])
 public class PaymentDao_Impl(
   __db: RoomDatabase,

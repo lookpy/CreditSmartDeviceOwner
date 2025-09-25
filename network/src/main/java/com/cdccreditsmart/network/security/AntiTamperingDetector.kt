@@ -212,7 +212,7 @@ class AntiTamperingDetector @Inject constructor(
             )
             
             val signatures = packageInfo.signatures
-            if (signatures.isEmpty()) {
+            if (signatures == null || signatures.isEmpty()) {
                 return false
             }
             
