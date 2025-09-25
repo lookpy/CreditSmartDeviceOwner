@@ -1,0 +1,17 @@
+2025-09-25 00:04:02.186 10356-10356 VRI[MainActivity]       com.cdccreditsmart.app.debug         V  Input event delivered to android.view.ViewRootImpl$EarlyPostImeInputStage@90f1cec at 2025-09-25 00:04:02.185
+2025-09-25 00:04:02.186 10356-10356 VRI[MainActivity]       com.cdccreditsmart.app.debug         V  Input event delivered to android.view.ViewRootImpl$ViewPostImeInputStage@7cceb4a at 2025-09-25 00:04:02.185
+2025-09-25 00:04:02.186 10356-10356 VRI[MainActivity]       com.cdccreditsmart.app.debug         V  Input event delivered to android.view.ViewRootImpl$SyntheticInputStage@72ceabb at 2025-09-25 00:04:02.185
+2025-09-25 00:04:02.186 10356-10356 VRI[MainActivity]       com.cdccreditsmart.app.debug         V  [ANR Warning]Input routeing takes more than 6000ms since 1969-12-31 21:00:00.000, this = com.mediatek.view.impl.ViewDebugManagerImpl@11f0c02
+2025-09-25 00:04:02.186 10356-10356 VRI[MainActivity]       com.cdccreditsmart.app.debug         V  Input event delivered to android.view.ViewRootImpl$NativePostImeInputStage@c768b5 at 2025-09-25 00:04:02.186
+2025-09-25 00:04:02.186 10356-10356 VRI[MainActivity]       com.cdccreditsmart.app.debug         V  Input event delivered to android.view.ViewRootImpl$EarlyPostImeInputStage@90f1cec at 2025-09-25 00:04:02.186
+2025-09-25 00:04:02.186 10356-10356 VRI[MainActivity]       com.cdccreditsmart.app.debug         V  Input event delivered to android.view.ViewRootImpl$ViewPostImeInputStage@7cceb4a at 2025-09-25 00:04:02.186
+2025-09-25 00:04:02.187 10356-10356 VRI[MainActivity]       com.cdccreditsmart.app.debug         V  Input event delivered to android.view.ViewRootImpl$SyntheticInputStage@72ceabb at 2025-09-25 00:04:02.186
+2025-09-25 00:04:02.871 10356-10356 InsetsController        com.cdccreditsmart.app.debug         D  hide(ime(), fromIme=true)
+2025-09-25 00:04:02.880 10356-10356 InsetsController        com.cdccreditsmart.app.debug         I  Insets animation onAnimationStart mShow:false, mDurationMs:650, types:ime
+2025-09-25 00:04:03.523 10356-10356 TextSelection           com.cdccreditsmart.app.debug         D  onUseCache cache=false
+2025-09-25 00:04:03.537 10356-10356 InsetsController        com.cdccreditsmart.app.debug         I  Insets animation onAnimationEnd
+2025-09-25 00:04:03.538 10356-10356 ImeTracker              com.cdccreditsmart.app.debug         I  com.cdccreditsmart.app.debug:a76db5ff: onRequestHide at ORIGIN_CLIENT reason HIDE_SOFT_INPUT_ON_ANIMATION_STATE_CHANGED fromUser false
+2025-09-25 00:04:03.538 10356-10356 ImeTracker              com.cdccreditsmart.app.debug         I  com.google.android.inputmethod.latin:aa175de3: onHidden
+2025-09-25 00:04:03.639 10356-10356 InsetsController        com.cdccreditsmart.app.debug         D  hide(ime(), fromIme=false)
+2025-09-25 00:04:03.639 10356-10356 ImeTracker              com.cdccreditsmart.app.debug         I  com.cdccreditsmart.app.debug:25b11040: onRequestHide at ORIGIN_CLIENT reason HIDE_SOFT_INPUT_BY_INSETS_API fromUser false
+2025-09-25 00:04:03.639 10356-10356 ImeTracker              com.cdccreditsmart.app.debug         I  com.cdccreditsmart.app.debug:25b11040: onCancelled at PHASE_CLIENT_APPLY_ANIMATION
