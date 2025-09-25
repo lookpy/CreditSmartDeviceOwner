@@ -40,14 +40,14 @@ class FlowStatusWebSocketService @Inject constructor(
     val flowStatusUpdates: SharedFlow<FlowStatusUpdate> = _flowStatusUpdates.asSharedFlow()
     
     // Error events
-    private val _errors = MutableSharedFlow<WebSocketError>(
+    private val _errors = MutableSharedFlow<FlowStatusWebSocketError>(
         replay = 1,
         onBufferOverflow = BufferOverflow.DROP_OLDEST
     )
-    val errors: SharedFlow<WebSocketError> = _errors.asSharedFlow()
+    val errors: SharedFlow<FlowStatusWebSocketError> = _errors.asSharedFlow()
 
     private val flowStatusAdapter = moshi.adapter(FlowStatusUpdate::class.java)
-    private val webSocketErrorAdapter = moshi.adapter(WebSocketError::class.java)
+    private val webSocketErrorAdapter = moshi.adapter(FlowStatusWebSocketError::class.java)
 
     /**
      * Connect to the CDC Credit Smart flow status WebSocket
@@ -164,7 +164,7 @@ class FlowStatusWebSocketService @Inject constructor(
                 
                 // Unknown message format
                 _errors.tryEmit(
-                    WebSocketError(
+                    FlowStatusWebSocketError(
                         code = "UNKNOWN_MESSAGE_FORMAT",
                         message = "Received unknown message format",
                         details = text
@@ -172,7 +172,7 @@ class FlowStatusWebSocketService @Inject constructor(
                 )
             } catch (e: Exception) {
                 _errors.tryEmit(
-                    WebSocketError(
+                    FlowStatusWebSocketError(
                         code = "PARSE_ERROR",
                         message = "Failed to parse WebSocket message: ${e.message}",
                         details = text
@@ -200,7 +200,7 @@ class FlowStatusWebSocketService @Inject constructor(
             isConnected = false
             _connectionStatus.tryEmit(WebSocketConnectionStatus.ERROR)
             _errors.tryEmit(
-                WebSocketError(
+                FlowStatusWebSocketError(
                     code = "CONNECTION_ERROR",
                     message = "WebSocket connection failed: ${t.message}",
                     details = response?.toString()
@@ -239,7 +239,7 @@ data class FlowProgressUpdate(
 )
 
 @JsonClass(generateAdapter = true)
-data class WebSocketError(
+data class FlowStatusWebSocketError(
     val code: String,
     val message: String,
     val details: String? = null,
@@ -247,10 +247,3 @@ data class WebSocketError(
     val retryable: Boolean = true
 )
 
-enum class WebSocketConnectionStatus {
-    DISCONNECTED,
-    CONNECTING,
-    CONNECTED,
-    DISCONNECTING,
-    ERROR
-}

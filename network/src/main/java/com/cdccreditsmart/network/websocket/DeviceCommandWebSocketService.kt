@@ -370,25 +370,3 @@ data class CommandAcknowledgment(
     val error: String? = null
 )
 
-/**
- * WebSocket error
- */
-@JsonClass(generateAdapter = true)
-data class WebSocketError(
-    val code: String,
-    val message: String,
-    val details: String? = null,
-    val timestamp: Long = System.currentTimeMillis(),
-    val retryable: Boolean = true
-)
-
-/**
- * WebSocket connection status
- */
-enum class WebSocketConnectionStatus {
-    DISCONNECTED,
-    CONNECTING,
-    CONNECTED,
-    DISCONNECTING,
-    ERROR
-}
