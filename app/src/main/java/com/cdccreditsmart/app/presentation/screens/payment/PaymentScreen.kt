@@ -219,7 +219,7 @@ fun PaymentScreen(
                             label = { 
                                 Row(verticalAlignment = Alignment.CenterVertically) {
                                     Text(paymentMethod.name)
-                                    if (uiState.selectedPaymentMethod?.id == paymentMethod.id) {
+                                    if (uiState.selectedPaymentMethod == paymentMethod) {
                                         Spacer(modifier = Modifier.width(4.dp))
                                         Icon(
                                             imageVector = Icons.Default.CheckCircle,
@@ -229,7 +229,7 @@ fun PaymentScreen(
                                     }
                                 }
                             },
-                            selected = uiState.selectedPaymentMethod?.id == paymentMethod.id,
+                            selected = uiState.selectedPaymentMethod == paymentMethod,
                             modifier = Modifier.weight(1f)
                         )
                     }

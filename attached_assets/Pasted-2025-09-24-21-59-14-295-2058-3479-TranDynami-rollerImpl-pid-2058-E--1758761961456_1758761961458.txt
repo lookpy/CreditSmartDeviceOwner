@@ -1,0 +1,62 @@
+2025-09-24 21:59:14.295  2058-3479  TranDynami...rollerImpl pid-2058                             E  TranDynamicBarAnimControllerImpl setSimplifyAnimByLauncherType pkgName:com.cdccreditsmart.app.debug
+2025-09-24 21:59:14.295  2058-3479  TranDynami...rollerImpl pid-2058                             E  end setSimplifyAnimByLauncherType mSimplifyAnimOpenPkgName:com.cdccreditsmart.app.debug simplifyAnimByLauncherType:0
+---------------------------- PROCESS STARTED (29634) for package com.cdccreditsmart.app.debug ----------------------------
+2025-09-24 21:59:14.613 29634-29634 TranClassInfo           com.cdccreditsmart.app.debug         D  instance successfully. com.transsion.hubcore.graphics.TranGraphicImpl@97bbc37 from com.transsion.hubcore.graphics.ITranGraphic
+2025-09-24 21:59:14.613 29634-29634 os.SingleLiceFactory    com.cdccreditsmart.app.debug         D  instance successfully. com.transsion.typeface.v1.TypefaceLice@3ca255b from android.graphics.IGraphicLice
+2025-09-24 21:59:14.613 29634-29634 os.LiceInfo             com.cdccreditsmart.app.debug         D  instance successfully. com.transsion.graphics.GraphicLice@69215a4 from android.graphics.IGraphicLice
+2025-09-24 21:59:14.632 29634-29634 nativeloader            com.cdccreditsmart.app.debug         D  Configuring clns-7 for other apk /data/app/~~NaIM8Hr7IUM8TG3wJpyLdA==/com.cdccreditsmart.app.debug-bc5zvBPhY3yrwKU8ZULqSw==/base.apk. target_sdk_version=34, uses_libraries=, library_path=/data/app/~~NaIM8Hr7IUM8TG3wJpyLdA==/com.cdccreditsmart.app.debug-bc5zvBPhY3yrwKU8ZULqSw==/lib/arm64, permitted_path=/data:/mnt/expand:/data/user/0/com.cdccreditsmart.app.debug
+2025-09-24 21:59:14.645 29634-29634 GraphicsEnvironment     com.cdccreditsmart.app.debug         V  Currently set values for:
+2025-09-24 21:59:14.646 29634-29634 GraphicsEnvironment     com.cdccreditsmart.app.debug         V    angle_gl_driver_selection_pkgs=[]
+2025-09-24 21:59:14.646 29634-29634 GraphicsEnvironment     com.cdccreditsmart.app.debug         V    angle_gl_driver_selection_values=[]
+2025-09-24 21:59:14.646 29634-29634 GraphicsEnvironment     com.cdccreditsmart.app.debug         V  Global.Settings values are invalid: number of packages: 0, number of values: 0
+2025-09-24 21:59:14.646 29634-29634 GraphicsEnvironment     com.cdccreditsmart.app.debug         V  Neither updatable production driver nor prerelease driver is supported.
+2025-09-24 21:59:14.650 29634-29634 LoadedApk               com.cdccreditsmart.app.debug         I  No resource references to update in package com.transsion.theme.icon
+2025-09-24 21:59:14.658 29634-29634 os.SingleLiceFactory    com.cdccreditsmart.app.debug         D  using android.app.IActivityThreadLice$DefaultImpl@3d5d1f8 instead of com.transsion.activityembedding.ActivityEmbeddingLiceFactory  from android.app.IActivityThreadLice
+2025-09-24 21:59:14.668 29634-29634 MbrainDebugManagerImpl  com.cdccreditsmart.app.debug         D  getService failed
+2025-09-24 21:59:14.705 29634-29634 nativeloader            com.cdccreditsmart.app.debug         D  Load libpowerhalwrap_jni.so using system ns (caller=/system_ext/framework/mediatek-framework.jar): ok
+2025-09-24 21:59:14.706 29634-29634 PowerHalWrapper         com.cdccreditsmart.app.debug         I  PowerHalWrapper.getInstance 
+2025-09-24 21:59:14.706 29634-29634 M-ProMotion             com.cdccreditsmart.app.debug         I  M-ProMotion is disabled
+2025-09-24 21:59:14.709 29634-29634 TranVersion             com.cdccreditsmart.app.debug         I  TranVersion static initializer: default = 35.3.9.1
+                                                                                                     debug = false, debug_version = 35.3.9.1
+2025-09-24 21:59:14.712 29634-29634 AndroidRuntime          com.cdccreditsmart.app.debug         D  Shutting down VM
+2025-09-24 21:59:14.716 29634-29634 AndroidRuntime          com.cdccreditsmart.app.debug         E  FATAL EXCEPTION: main
+                                                                                                    Process: com.cdccreditsmart.app.debug, PID: 29634
+                                                                                                    java.lang.RuntimeException: Unable to instantiate receiver com.cdccreditsmart.device.CDCDeviceAdminReceiver: java.lang.ClassNotFoundException: Didn't find class "com.cdccreditsmart.device.CDCDeviceAdminReceiver" on path: DexPathList[[zip file "/data/app/~~NaIM8Hr7IUM8TG3wJpyLdA==/com.cdccreditsmart.app.debug-bc5zvBPhY3yrwKU8ZULqSw==/base.apk"],nativeLibraryDirectories=[/data/app/~~NaIM8Hr7IUM8TG3wJpyLdA==/com.cdccreditsmart.app.debug-bc5zvBPhY3yrwKU8ZULqSw==/lib/arm64, /system/lib64, /system_ext/lib64]]
+                                                                                                    	at android.app.ActivityThread.handleReceiver(ActivityThread.java:5031)
+                                                                                                    	at android.app.ActivityThread.-$$Nest$mhandleReceiver(Unknown Source:0)
+                                                                                                    	at android.app.ActivityThread$H.handleMessage(ActivityThread.java:2586)
+                                                                                                    	at android.os.Handler.dispatchMessage(Handler.java:107)
+                                                                                                    	at android.os.Looper.loopOnce(Looper.java:311)
+                                                                                                    	at android.os.Looper.loop(Looper.java:408)
+                                                                                                    	at android.app.ActivityThread.main(ActivityThread.java:9119)
+                                                                                                    	at java.lang.reflect.Method.invoke(Native Method)
+                                                                                                    	at com.android.internal.os.RuntimeInit$MethodAndArgsCaller.run(RuntimeInit.java:627)
+                                                                                                    	at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:970)
+                                                                                                    Caused by: java.lang.ClassNotFoundException: Didn't find class "com.cdccreditsmart.device.CDCDeviceAdminReceiver" on path: DexPathList[[zip file "/data/app/~~NaIM8Hr7IUM8TG3wJpyLdA==/com.cdccreditsmart.app.debug-bc5zvBPhY3yrwKU8ZULqSw==/base.apk"],nativeLibraryDirectories=[/data/app/~~NaIM8Hr7IUM8TG3wJpyLdA==/com.cdccreditsmart.app.debug-bc5zvBPhY3yrwKU8ZULqSw==/lib/arm64, /system/lib64, /system_ext/lib64]]
+                                                                                                    	at dalvik.system.BaseDexClassLoader.findClass(BaseDexClassLoader.java:259)
+                                                                                                    	at java.lang.ClassLoader.loadClass(ClassLoader.java:637)
+                                                                                                    	at java.lang.ClassLoader.loadClass(ClassLoader.java:573)
+                                                                                                    	at android.app.AppComponentFactory.instantiateReceiver(AppComponentFactory.java:110)
+                                                                                                    	at androidx.core.app.CoreComponentFactory.instantiateReceiver(CoreComponentFactory.java:59)
+                                                                                                    	at android.app.ActivityThread.handleReceiver(ActivityThread.java:5024)
+                                                                                                    	at android.app.ActivityThread.-$$Nest$mhandleReceiver(Unknown Source:0) 
+                                                                                                    	at android.app.ActivityThread$H.handleMessage(ActivityThread.java:2586) 
+                                                                                                    	at android.os.Handler.dispatchMessage(Handler.java:107) 
+                                                                                                    	at android.os.Looper.loopOnce(Looper.java:311) 
+                                                                                                    	at android.os.Looper.loop(Looper.java:408) 
+                                                                                                    	at android.app.ActivityThread.main(ActivityThread.java:9119) 
+                                                                                                    	at java.lang.reflect.Method.invoke(Native Method) 
+                                                                                                    	at com.android.internal.os.RuntimeInit$MethodAndArgsCaller.run(RuntimeInit.java:627) 
+                                                                                                    	at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:970) 
+2025-09-24 21:59:14.716 29634-29634 ExceptionHandle         com.cdccreditsmart.app.debug         I  at android.app.ActivityThread.handleReceiver(ActivityThread.java:5031)
+2025-09-24 21:59:14.716 29634-29634 ExceptionHandle         com.cdccreditsmart.app.debug         I  at android.app.ActivityThread.-$$Nest$mhandleReceiver(Unknown Source:0)
+2025-09-24 21:59:14.716 29634-29634 ExceptionHandle         com.cdccreditsmart.app.debug         I  at android.app.ActivityThread$H.handleMessage(ActivityThread.java:2586)
+2025-09-24 21:59:14.716 29634-29634 ExceptionHandle         com.cdccreditsmart.app.debug         I  at android.os.Handler.dispatchMessage(Handler.java:107)
+2025-09-24 21:59:14.716 29634-29634 ExceptionHandle         com.cdccreditsmart.app.debug         I  at android.os.Looper.loopOnce(Looper.java:311)
+2025-09-24 21:59:14.716 29634-29634 ExceptionHandle         com.cdccreditsmart.app.debug         I  at android.os.Looper.loop(Looper.java:408)
+2025-09-24 21:59:14.716 29634-29634 ExceptionHandle         com.cdccreditsmart.app.debug         I  at android.app.ActivityThread.main(ActivityThread.java:9119)
+2025-09-24 21:59:14.716 29634-29634 ExceptionHandle         com.cdccreditsmart.app.debug         I  at java.lang.reflect.Method.invoke(Native Method)
+2025-09-24 21:59:14.716 29634-29634 ExceptionHandle         com.cdccreditsmart.app.debug         I  at com.android.internal.os.RuntimeInit$MethodAndArgsCaller.run(RuntimeInit.java:627)
+2025-09-24 21:59:14.716 29634-29634 ExceptionHandle         com.cdccreditsmart.app.debug         I  at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:970)
+2025-09-24 21:59:14.777 29634-29634 Process                 com.cdccreditsmart.app.debug         I  Sending signal. PID: 29634 SIG: 9
+---------------------------- PROCESS ENDED (29634) for package com.cdccreditsmart.app.debug ----------------------------

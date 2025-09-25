@@ -33,13 +33,15 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11 // Updated for Android 15+
-        targetCompatibility = JavaVersion.VERSION_11
+        sourceCompatibility = JavaVersion.VERSION_17 // Match app module Java 17
+        targetCompatibility = JavaVersion.VERSION_17
+        isCoreLibraryDesugaringEnabled = true
     }
 
     kotlin {
+        jvmToolchain(17)
         compilerOptions {
-            jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_11)
+            jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_17)
         }
     }
 
@@ -106,6 +108,9 @@ dependencies {
     
     // Logging for Knox operations
     implementation("com.jakewharton.timber:timber:5.0.1")
+    
+    // Core library desugaring for Java 8+ language features
+    coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.1.3")
     
     // Testing
     testImplementation("junit:junit:4.13.2")

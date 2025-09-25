@@ -39,7 +39,7 @@ fun CDCCreditSmartApp() {
     ) { innerPadding ->
         CDCNavigation(
             navController = navController,
-            startDestination = Routes.HOME
+            startDestination = Routes.AUTH_IMEI
         )
     }
 }
