@@ -1,0 +1,16 @@
+#Thu Sep 25 23:05:20 GMT 2025
+path.4=classes4.dex
+path.3=classes3.dex
+path.2=classes2.dex
+path.1=classes.dex
+path.0=classes.dex
+base.4=/home/runner/workspace/app/build/intermediates/dex/release/mergeDexRelease/classes4.dex
+base.3=/home/runner/workspace/app/build/intermediates/dex/release/mergeDexRelease/classes3.dex
+base.2=/home/runner/workspace/app/build/intermediates/dex/release/mergeDexRelease/classes2.dex
+base.1=/home/runner/workspace/app/build/intermediates/global_synthetics_dex/release/mergeReleaseGlobalSynthetics/classes.dex
+base.0=/home/runner/workspace/app/build/intermediates/dex/release/mergeDexRelease/classes.dex
+renamed.3=classes4.dex
+renamed.2=classes3.dex
+renamed.1=classes2.dex
+renamed.0=classes.dex
+renamed.4=classes5.dex

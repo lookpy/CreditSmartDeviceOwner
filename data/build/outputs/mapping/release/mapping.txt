@@ -2,9 +2,9 @@
 # compiler_version: 8.13.6
 # common_typos_disable
 # {"id":"com.android.tools.r8.mapping","version":"2.2"}
-# pg_map_id: e9956ac67d5a54b390a9ae7fecfcf59f378b69be055cf8a104e720289aa98ea0
-# pg_map_hash: SHA-256 e9956ac67d5a54b390a9ae7fecfcf59f378b69be055cf8a104e720289aa98ea0
-com.cdccreditsmart.data.converters.MapConverter -> a.a:
+# pg_map_id: 4bc797701058d065d0acde6f5ec110aecf43ba1c4df7698b31b6a37eab8bfb06
+# pg_map_hash: SHA-256 4bc797701058d065d0acde6f5ec110aecf43ba1c4df7698b31b6a37eab8bfb06
+com.cdccreditsmart.data.converters.MapConverter -> a.j:
 # {"id":"sourceFile","fileName":"MapConverter.kt"}
     com.squareup.moshi.Moshi moshi -> a
     1:5:void <init>():11:15 -> <init>
@@ -19,20 +19,19 @@ com.cdccreditsmart.data.converters.MapConverter -> a.a:
 com.cdccreditsmart.data.di.DataModule -> com.cdccreditsmart.data.di.DataModule:
 # {"id":"sourceFile","fileName":"DataModule.kt"}
     1:1:void <init>():24:24 -> <init>
-    1:1:com.cdccreditsmart.domain.repository.AuthenticationRepository provideAuthenticationRepository(android.content.SharedPreferences):159:159 -> provideAuthenticationRepository
+    1:1:com.cdccreditsmart.domain.repository.AuthenticationRepository provideAuthenticationRepository(android.content.SharedPreferences):153:153 -> provideAuthenticationRepository
     1:1:com.cdccreditsmart.domain.repository.BiometryRepository provideBiometryRepository(com.cdccreditsmart.network.api.BiometryApiService,com.cdccreditsmart.data.local.dao.BiometrySessionDao,com.cdccreditsmart.network.error.NetworkErrorMapper):77:77 -> provideBiometryRepository
     1:1:com.cdccreditsmart.data.local.dao.BiometrySessionDao provideBiometrySessionDao(com.cdccreditsmart.data.local.CDCDatabase):42:42 -> provideBiometrySessionDao
     1:1:com.cdccreditsmart.data.local.CDCDatabase provideCDCDatabase(android.content.Context):32:32 -> provideCDCDatabase
     2:8:com.cdccreditsmart.data.local.CDCDatabase provideCDCDatabase(android.content.Context):31:37 -> provideCDCDatabase
     1:1:com.cdccreditsmart.data.local.dao.ContractDao provideContractDao(com.cdccreditsmart.data.local.CDCDatabase):52:52 -> provideContractDao
-    1:1:com.cdccreditsmart.domain.repository.ContractRepository provideContractRepository(com.cdccreditsmart.network.api.ContractApiService,com.cdccreditsmart.data.local.dao.ContractDao,com.cdccreditsmart.network.error.NetworkErrorMapper):133:133 -> provideContractRepository
+    1:1:com.cdccreditsmart.domain.repository.ContractRepository provideContractRepository(com.cdccreditsmart.network.api.ContractApiService,com.cdccreditsmart.data.local.dao.ContractDao,com.cdccreditsmart.network.error.NetworkErrorMapper):127:127 -> provideContractRepository
     1:1:com.cdccreditsmart.data.local.dao.DeviceBindingDao provideDeviceBindingDao(com.cdccreditsmart.data.local.CDCDatabase):62:62 -> provideDeviceBindingDao
-    1:1:com.cdccreditsmart.domain.repository.DeviceRepository provideDeviceRepository(com.cdccreditsmart.network.api.DeviceApiService,com.cdccreditsmart.data.local.dao.DeviceBindingDao,com.cdccreditsmart.data.local.dao.DeviceStatusDao,com.cdccreditsmart.data.local.dao.InstallmentDao,com.cdccreditsmart.network.error.NetworkErrorMapper,com.squareup.moshi.Moshi):116:116 -> provideDeviceRepository
+    1:1:com.cdccreditsmart.domain.repository.DeviceRepository provideDeviceRepository(com.cdccreditsmart.network.api.DeviceApiService,com.cdccreditsmart.data.local.dao.DeviceBindingDao,com.cdccreditsmart.data.local.dao.DeviceStatusDao,com.cdccreditsmart.data.local.dao.InstallmentDao,com.cdccreditsmart.network.error.NetworkErrorMapper,com.squareup.moshi.Moshi):110:110 -> provideDeviceRepository
     1:1:com.cdccreditsmart.data.local.dao.DeviceStatusDao provideDeviceStatusDao(com.cdccreditsmart.data.local.CDCDatabase):57:57 -> provideDeviceStatusDao
-    1:7:android.content.SharedPreferences provideEncryptedSharedPreferences(android.content.Context):144:150 -> provideEncryptedSharedPreferences
-    8:8:android.content.SharedPreferences provideEncryptedSharedPreferences(android.content.Context):145:145 -> provideEncryptedSharedPreferences
+    1:7:android.content.SharedPreferences provideEncryptedSharedPreferences(android.content.Context):138:144 -> provideEncryptedSharedPreferences
+    8:8:android.content.SharedPreferences provideEncryptedSharedPreferences(android.content.Context):139:139 -> provideEncryptedSharedPreferences
     1:1:com.cdccreditsmart.data.local.dao.InstallmentDao provideInstallmentDao(com.cdccreditsmart.data.local.CDCDatabase):67:67 -> provideInstallmentDao
-    1:3:com.squareup.moshi.Moshi provideMoshi():101:103 -> provideMoshi
     1:1:com.cdccreditsmart.data.local.dao.PaymentDao providePaymentDao(com.cdccreditsmart.data.local.CDCDatabase):47:47 -> providePaymentDao
     1:1:com.cdccreditsmart.domain.repository.PaymentsRepository providePaymentsRepository(com.cdccreditsmart.network.api.PaymentsApiService,com.cdccreditsmart.data.local.dao.PaymentDao,com.cdccreditsmart.network.error.NetworkErrorMapper):91:91 -> providePaymentsRepository
 com.cdccreditsmart.data.di.DataModule_ProvideAuthenticationRepositoryFactory -> com.cdccreditsmart.data.di.DataModule_ProvideAuthenticationRepositoryFactory:
@@ -123,17 +122,6 @@ com.cdccreditsmart.data.di.DataModule_ProvideInstallmentDaoFactory -> com.cdccre
     1:1:java.lang.Object get():14:14 -> get
     2:2:com.cdccreditsmart.data.local.dao.InstallmentDao get():39:39 -> get
     1:1:com.cdccreditsmart.data.local.dao.InstallmentDao provideInstallmentDao(com.cdccreditsmart.data.local.CDCDatabase):53:53 -> provideInstallmentDao
-com.cdccreditsmart.data.di.DataModule_ProvideMoshiFactory -> com.cdccreditsmart.data.di.DataModule_ProvideMoshiFactory:
-# {"id":"sourceFile","fileName":"DataModule_ProvideMoshiFactory.java"}
-    1:1:void <init>():27:27 -> <init>
-    1:1:com.cdccreditsmart.data.di.DataModule_ProvideMoshiFactory create():34:34 -> create
-    1:1:java.lang.Object get():11:11 -> get
-    2:2:com.squareup.moshi.Moshi get():30:30 -> get
-    1:1:com.squareup.moshi.Moshi provideMoshi():38:38 -> provideMoshi
-com.cdccreditsmart.data.di.DataModule_ProvideMoshiFactory$InstanceHolder -> com.cdccreditsmart.data.di.DataModule_ProvideMoshiFactory$InstanceHolder:
-# {"id":"sourceFile","fileName":"DataModule_ProvideMoshiFactory.java"}
-    1:1:void <clinit>():42:42 -> <clinit>
-    1:1:void <init>():41:41 -> <init>
 com.cdccreditsmart.data.di.DataModule_ProvidePaymentDaoFactory -> com.cdccreditsmart.data.di.DataModule_ProvidePaymentDaoFactory:
 # {"id":"sourceFile","fileName":"DataModule_ProvidePaymentDaoFactory.java"}
     1:2:void <init>(dagger.internal.Provider):33:34 -> <init>
@@ -851,10 +839,10 @@ com.cdccreditsmart.data.local.dao.SecurityPolicyDao$DefaultImpls -> com.cdccredi
 com.cdccreditsmart.data.local.dao.SecurityPolicyDao_Impl -> com.cdccreditsmart.data.local.dao.SecurityPolicyDao_Impl:
 # {"id":"sourceFile","fileName":"SecurityPolicyDao_Impl.kt"}
     com.cdccreditsmart.data.converters.MapConverter __mapConverter -> __mapConverter
-      # {"id":"com.android.tools.r8.residualsignature","signature":"La/a;"}
+      # {"id":"com.android.tools.r8.residualsignature","signature":"La/j;"}
     1:99:void <init>(androidx.room.RoomDatabase):28:126 -> <init>
     1:1:com.cdccreditsmart.data.converters.MapConverter access$get__mapConverter$p(com.cdccreditsmart.data.local.dao.SecurityPolicyDao_Impl):28:28 -> access$get__mapConverter$p
-      # {"id":"com.android.tools.r8.residualsignature","signature":"(Lcom/cdccreditsmart/data/local/dao/SecurityPolicyDao_Impl;)La/a;"}
+      # {"id":"com.android.tools.r8.residualsignature","signature":"(Lcom/cdccreditsmart/data/local/dao/SecurityPolicyDao_Impl;)La/j;"}
     1:1:java.lang.Object deactivatePolicyConfiguration(java.lang.String,kotlin.coroutines.Continuation):1233:1233 -> deactivatePolicyConfiguration
     1:9:kotlin.Unit deactivatePolicyConfiguration$lambda$0(java.lang.String,java.lang.String,androidx.sqlite.SQLiteConnection):1234:1242 -> deactivatePolicyConfiguration$lambda$0
     10:10:kotlin.Unit deactivatePolicyConfiguration$lambda$0(java.lang.String,java.lang.String,androidx.sqlite.SQLiteConnection):1240:1240 -> deactivatePolicyConfiguration$lambda$0

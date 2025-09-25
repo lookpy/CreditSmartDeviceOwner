@@ -95,13 +95,7 @@ object DataModule {
         )
     }
 
-    @Provides
-    @Singleton
-    fun provideMoshi(): Moshi {
-        return Moshi.Builder()
-            .add(KotlinJsonAdapterFactory())
-            .build()
-    }
+    // Moshi provider removed - using the one from NetworkModule to avoid duplicate bindings
 
     @Provides
     @Singleton

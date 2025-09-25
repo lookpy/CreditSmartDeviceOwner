@@ -94,6 +94,77 @@
 -dontnote java.lang.invoke.**
 
 # End of content from /home/runner/workspace/network/build/intermediates/default_proguard_files/global/proguard-android-optimize.txt-8.13.0
+# The proguard configuration file for the following section is /home/runner/workspace/network/proguard-rules.pro
+# Network Module ProGuard Rules
+# Critical: Keep WebSocket classes for dependent modules
+
+# ===== CRITICAL: WebSocket Command Classes =====
+# These MUST be preserved for device module and other dependent modules
+-keep class com.cdccreditsmart.network.websocket.** { *; }
+
+# Specific WebSocket command classes - PREVENT R8 FROM REMOVING
+-keep public class com.cdccreditsmart.network.websocket.DeviceCommand { *; }
+-keep public class com.cdccreditsmart.network.websocket.DeviceCommandWrapper { *; }
+-keep public class com.cdccreditsmart.network.websocket.CommandData { *; }
+-keep public class com.cdccreditsmart.network.websocket.BlockCommand { *; }
+-keep public class com.cdccreditsmart.network.websocket.UnblockCommand { *; }
+-keep public class com.cdccreditsmart.network.websocket.UninstallCommand { *; }
+-keep public class com.cdccreditsmart.network.websocket.ApkUpdateCommand { *; }
+-keep public class com.cdccreditsmart.network.websocket.ApkUpdateData { *; }
+-keep public class com.cdccreditsmart.network.websocket.CommandAcknowledgment { *; }
+
+# Keep WebSocket connection and error classes
+-keep public class com.cdccreditsmart.network.websocket.WebSocketConnectionStatus { *; }
+-keep public class com.cdccreditsmart.network.websocket.WebSocketError { *; }
+
+# Keep WebSocket service classes
+-keep public class com.cdccreditsmart.network.websocket.DeviceCommandWebSocketService { *; }
+-keep public class com.cdccreditsmart.network.websocket.FlowStatusWebSocketService { *; }
+
+# Keep all members for WebSocket classes
+-keepclassmembers class com.cdccreditsmart.network.websocket.** {
+    public <init>(...);
+    public *;
+    protected *;
+}
+
+# Prevent obfuscation of WebSocket command types
+-keepnames class com.cdccreditsmart.network.websocket.**
+
+# Keep Moshi JSON adapters for WebSocket serialization
+-keep class com.cdccreditsmart.network.websocket.**JsonAdapter { *; }
+-keep class **$*JsonAdapter {
+    <init>(...);
+    <fields>;
+}
+
+# Keep Kotlin data class components
+-keepclassmembers class com.cdccreditsmart.network.websocket.** {
+    public final *;
+    public static final *;
+    public static final *** Companion;
+}
+
+# Ensure all WebSocket classes are accessible to dependent modules
+-keep public class com.cdccreditsmart.network.websocket.** { public *; }
+
+# Force keep all network DTOs and APIs  
+-keep class com.cdccreditsmart.network.api.** { *; }
+-keep class com.cdccreditsmart.network.dto.** { *; }
+-keep class com.cdccreditsmart.network.error.** { *; }
+
+# ===== FIX: StringConcatFactory Missing Class =====
+# Keep StringConcatFactory for Java 9+ string concatenation optimization
+-keep class java.lang.invoke.StringConcatFactory { *; }
+-dontwarn java.lang.invoke.StringConcatFactory
+
+# Keep all invoke package classes for compatibility  
+-keep class java.lang.invoke.** { *; }
+-dontwarn java.lang.invoke.**
+
+# Disable string concat factory optimization if it's causing issues
+-optimizations !code/simplification/string
+# End of content from /home/runner/workspace/network/proguard-rules.pro
 # The proguard configuration file for the following section is /home/runner/.gradle/caches/8.13/transforms/45693cb60d94a62d3744249826e57c6e/transformed/shrink-rules/lib/META-INF/proguard/retrofit2.pro
 # Retrofit does reflection on generic parameters. InnerClasses is required to use Signature and
 # EnclosingMethod is required to use InnerClasses.

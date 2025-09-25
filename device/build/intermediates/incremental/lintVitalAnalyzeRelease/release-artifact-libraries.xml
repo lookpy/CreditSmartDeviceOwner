@@ -5,9 +5,9 @@
       resolved="::"/>
   <library
       name=":@@:data::release"
-      jars="/home/runner/.gradle/caches/8.13/transforms/1f8aa00b101e67762aed3a7e2c376f18/transformed/out/jars/classes.jar:/home/runner/.gradle/caches/8.13/transforms/1f8aa00b101e67762aed3a7e2c376f18/transformed/out/jars/libs/R.jar"
+      jars="/home/runner/.gradle/caches/8.13/transforms/d06b352aeefc342e58391dda1dd4459f/transformed/out/jars/classes.jar:/home/runner/.gradle/caches/8.13/transforms/d06b352aeefc342e58391dda1dd4459f/transformed/out/jars/libs/R.jar"
       resolved="CDC Credit Smart:data:unspecified"
-      folder="/home/runner/.gradle/caches/8.13/transforms/1f8aa00b101e67762aed3a7e2c376f18/transformed/out"
+      folder="/home/runner/.gradle/caches/8.13/transforms/d06b352aeefc342e58391dda1dd4459f/transformed/out"
       manifest="AndroidManifest.xml"
       resFolder="res"
       assetsFolder="assets"
@@ -18,9 +18,9 @@
       proguardRules="proguard.txt"/>
   <library
       name=":@@:network::release"
-      jars="/home/runner/.gradle/caches/8.13/transforms/10ff631dbafbd76d5e16ab0fe7beb07a/transformed/out/jars/classes.jar:/home/runner/.gradle/caches/8.13/transforms/10ff631dbafbd76d5e16ab0fe7beb07a/transformed/out/jars/libs/R.jar"
+      jars="/home/runner/.gradle/caches/8.13/transforms/fd910110f0653a874208593a69bb1e0f/transformed/out/jars/classes.jar:/home/runner/.gradle/caches/8.13/transforms/fd910110f0653a874208593a69bb1e0f/transformed/out/jars/libs/R.jar"
       resolved="CDC Credit Smart:network:unspecified"
-      folder="/home/runner/.gradle/caches/8.13/transforms/10ff631dbafbd76d5e16ab0fe7beb07a/transformed/out"
+      folder="/home/runner/.gradle/caches/8.13/transforms/fd910110f0653a874208593a69bb1e0f/transformed/out"
       manifest="AndroidManifest.xml"
       resFolder="res"
       assetsFolder="assets"
