@@ -6,10 +6,8 @@ import com.cdccreditsmart.data.local.dao.InstallmentDao
 import com.cdccreditsmart.data.local.entity.DeviceStatusEntity
 import com.cdccreditsmart.data.local.entity.toDomain as entityToDomain
 import com.cdccreditsmart.data.local.entity.toEntity as toEntityModel
-import com.cdccreditsmart.data.mapper.toDomain
+import com.cdccreditsmart.data.mapper.toDomain as networkToDomain
 import com.cdccreditsmart.data.local.entity.InstallmentEntity
-import com.cdccreditsmart.data.local.entity.toDomain
-import com.cdccreditsmart.data.local.entity.toEntity
 import com.cdccreditsmart.domain.model.DeviceBinding
 import com.cdccreditsmart.domain.model.Installment
 import com.cdccreditsmart.domain.model.BindingStatus
@@ -118,7 +116,7 @@ class DeviceRepositoryImpl @Inject constructor(
             val response = deviceApiService.bindDevice(request)
             
             if (response.isSuccessful && response.body() != null) {
-                val binding = response.body()!!.toDomain(
+                val binding = response.body()!!.networkToDomain(
                     contractCode = contractCode,
                     attestedDeviceId = attestedDeviceId,
                     devicePubKeyFingerprint = "" // Would come from previous attestation
@@ -164,7 +162,7 @@ class DeviceRepositoryImpl @Inject constructor(
             val response = deviceApiService.getDeviceStatus(deviceId)
             
             if (response.isSuccessful && response.body() != null) {
-                val deviceStatus = response.body()!!.toDomain()
+                val deviceStatus = response.body()!!.networkToDomain()
                 
                 // Update cache with proper entity mapping
                 val entity = DeviceStatusEntity(
@@ -262,7 +260,7 @@ class DeviceRepositoryImpl @Inject constructor(
             val cachedInstallments = installmentDao.getInstallmentsByDeviceId()
             cachedInstallments.collect { installments ->
                 if (installments.isNotEmpty()) {
-                    emit(Resource.Success(installments.map { it.toDomain() }))
+                    emit(Resource.Success(installments.map { it.entityToDomain() }))
                 }
             }
         }
@@ -272,10 +270,10 @@ class DeviceRepositoryImpl @Inject constructor(
             val response = deviceApiService.getInstallments(deviceId)
             
             if (response.isSuccessful && response.body() != null) {
-                val installments = response.body()!!.toDomain()
+                val installments = response.body()!!.networkToDomain()
                 
                 // Update cache
-                installmentDao.insertInstallments(installments.map { it.toEntity() })
+                installmentDao.insertInstallments(installments.map { it.toEntityModel() })
                 
                 emit(Resource.Success(installments))
             }

@@ -2,6 +2,7 @@ package com.cdccreditsmart.app.presentation.screens.support
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.*
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
@@ -22,7 +23,7 @@ fun SupportScreen(
             title = { Text("Suporte") },
             navigationIcon = {
                 IconButton(onClick = onNavigateBack) {
-                    Icon(Icons.Default.ArrowBack, contentDescription = "Voltar")
+                    Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Voltar")
                 }
             }
         )
@@ -54,14 +55,14 @@ fun SupportScreen(
             )
             
             SupportOptionCard(
-                icon = Icons.Default.Chat,
+                icon = Icons.AutoMirrored.Filled.Chat,
                 title = "Chat Online",
                 description = "Converse conosco em tempo real",
                 action = "Iniciar Chat"
             )
             
             SupportOptionCard(
-                icon = Icons.Default.Help,
+                icon = Icons.AutoMirrored.Filled.Help,
                 title = "FAQ",
                 description = "Perguntas frequentes",
                 action = "Ver perguntas"

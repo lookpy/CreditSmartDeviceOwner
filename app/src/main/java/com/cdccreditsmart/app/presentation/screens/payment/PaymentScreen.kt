@@ -7,6 +7,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.*
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -17,16 +18,27 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import com.cdccreditsmart.app.presentation.payment.PaymentViewModel
 import com.cdccreditsmart.app.ui.components.*
+import com.cdccreditsmart.domain.model.PaymentMethod
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PaymentScreen(
     installmentId: String,
     onNavigateBack: () -> Unit,
-    onPaymentComplete: () -> Unit
+    onPaymentComplete: () -> Unit,
+    viewModel: PaymentViewModel = hiltViewModel()
 ) {
-    var selectedPaymentMethod by remember { mutableStateOf("PIX") }
+    val uiState by viewModel.uiState
+    
+    // Handle payment success
+    LaunchedEffect(uiState.paymentSuccessful) {
+        if (uiState.paymentSuccessful) {
+            onPaymentComplete()
+        }
+    }
     
     Column(
         modifier = Modifier.fillMaxSize()
@@ -34,13 +46,13 @@ fun PaymentScreen(
         TopAppBar(
             title = { 
                 Text(
-                    "Pagamento - Parcela $installmentId",
+                    "Pagamento${uiState.installment?.let { " - Parcela ${it.number}" } ?: ""}",
                     fontWeight = FontWeight.Bold
                 ) 
             },
             navigationIcon = {
                 IconButton(onClick = onNavigateBack) {
-                    Icon(Icons.Default.ArrowBack, contentDescription = "Voltar")
+                    Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Voltar")
                 }
             },
             colors = TopAppBarDefaults.topAppBarColors(
@@ -48,6 +60,64 @@ fun PaymentScreen(
                 titleContentColor = MaterialTheme.colorScheme.onSurface
             )
         )
+
+        // Handle loading and error states
+        if (uiState.isLoading) {
+            Box(
+                modifier = Modifier.fillMaxSize(),
+                contentAlignment = Alignment.Center
+            ) {
+                CircularProgressIndicator()
+            }
+            return@Column
+        }
+
+        if (uiState.errorMessage != null) {
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(16.dp),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center
+            ) {
+                Icon(
+                    imageVector = Icons.Default.Error,
+                    contentDescription = "Error",
+                    modifier = Modifier.size(48.dp),
+                    tint = MaterialTheme.colorScheme.error
+                )
+                
+                Spacer(modifier = Modifier.height(16.dp))
+                
+                Text(
+                    text = uiState.errorMessage!!,
+                    style = MaterialTheme.typography.bodyMedium,
+                    textAlign = TextAlign.Center,
+                    color = MaterialTheme.colorScheme.error
+                )
+                
+                Spacer(modifier = Modifier.height(16.dp))
+                
+                Button(onClick = viewModel::refreshData) {
+                    Text("Try Again")
+                }
+            }
+            return@Column
+        }
+
+        if (uiState.installment == null) {
+            Box(
+                modifier = Modifier.fillMaxSize(),
+                contentAlignment = Alignment.Center
+            ) {
+                Text(
+                    text = "Installment not found",
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.error
+                )
+            }
+            return@Column
+        }
         
         Column(
             modifier = Modifier
@@ -95,7 +165,20 @@ fun PaymentScreen(
                                 color = MaterialTheme.colorScheme.onSurfaceVariant
                             )
                             Text(
-                                text = "Nº $installmentId",
+                                text = "Nº ${uiState.installment!!.number}",
+                                style = MaterialTheme.typography.bodyMedium,
+                                fontWeight = FontWeight.Medium
+                            )
+                        }
+                        
+                        Column {
+                            Text(
+                                text = "Vencimento",
+                                style = MaterialTheme.typography.bodySmall,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant
+                            )
+                            Text(
+                                text = viewModel.getFormattedDueDate(uiState.installment!!),
                                 style = MaterialTheme.typography.bodyMedium,
                                 fontWeight = FontWeight.Medium
                             )
@@ -108,7 +191,7 @@ fun PaymentScreen(
                                 color = MaterialTheme.colorScheme.onSurfaceVariant
                             )
                             Text(
-                                text = "R$ 450,00",
+                                text = viewModel.getFormattedAmount(uiState.installment!!),
                                 style = MaterialTheme.typography.titleMedium,
                                 fontWeight = FontWeight.Bold,
                                 color = MaterialTheme.colorScheme.primary
@@ -125,67 +208,85 @@ fun PaymentScreen(
             )
             
             // Payment Method Selection
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.spacedBy(12.dp)
-            ) {
-                FilterChip(
-                    onClick = { selectedPaymentMethod = "PIX" },
-                    label = { 
-                        Row(verticalAlignment = Alignment.CenterVertically) {
-                            Text("PIX")
-                            if (selectedPaymentMethod == "PIX") {
-                                Spacer(modifier = Modifier.width(4.dp))
-                                Icon(
-                                    imageVector = Icons.Default.CheckCircle,
-                                    contentDescription = null,
-                                    modifier = Modifier.size(16.dp)
-                                )
+            if (uiState.availablePaymentMethods.isNotEmpty()) {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.spacedBy(12.dp)
+                ) {
+                    uiState.availablePaymentMethods.forEach { paymentMethod ->
+                        FilterChip(
+                            onClick = { viewModel.selectPaymentMethod(paymentMethod) },
+                            label = { 
+                                Row(verticalAlignment = Alignment.CenterVertically) {
+                                    Text(paymentMethod.name)
+                                    if (uiState.selectedPaymentMethod?.id == paymentMethod.id) {
+                                        Spacer(modifier = Modifier.width(4.dp))
+                                        Icon(
+                                            imageVector = Icons.Default.CheckCircle,
+                                            contentDescription = null,
+                                            modifier = Modifier.size(16.dp)
+                                        )
+                                    }
+                                }
+                            },
+                            selected = uiState.selectedPaymentMethod?.id == paymentMethod.id,
+                            modifier = Modifier.weight(1f)
+                        )
+                    }
+                }
+                
+                // Show selected payment method details
+                uiState.selectedPaymentMethod?.let { selectedMethod ->
+                    when (selectedMethod.name.uppercase()) {
+                        "PIX" -> EnhancedPixPaymentCard(uiState.installment!!, viewModel)
+                        "BOLETO" -> EnhancedBoletoPaymentCard(uiState.installment!!, viewModel)
+                        else -> {
+                            CDCCard(modifier = Modifier.fillMaxWidth()) {
+                                Column(modifier = Modifier.padding(16.dp)) {
+                                    Text(
+                                        text = "Método: ${selectedMethod.name}",
+                                        style = MaterialTheme.typography.titleMedium,
+                                        fontWeight = FontWeight.SemiBold
+                                    )
+                                    Text(
+                                        text = "Valor: ${viewModel.getFormattedAmount(uiState.installment!!)}",
+                                        style = MaterialTheme.typography.bodyMedium
+                                    )
+                                }
                             }
                         }
-                    },
-                    selected = selectedPaymentMethod == "PIX",
-                    modifier = Modifier.weight(1f)
+                    }
+                }
+            } else {
+                Text(
+                    text = "Carregando métodos de pagamento...",
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
-                FilterChip(
-                    onClick = { selectedPaymentMethod = "Boleto" },
-                    label = { 
-                        Row(verticalAlignment = Alignment.CenterVertically) {
-                            Text("Boleto")
-                            if (selectedPaymentMethod == "Boleto") {
-                                Spacer(modifier = Modifier.width(4.dp))
-                                Icon(
-                                    imageVector = Icons.Default.CheckCircle,
-                                    contentDescription = null,
-                                    modifier = Modifier.size(16.dp)
-                                )
-                            }
-                        }
-                    },
-                    selected = selectedPaymentMethod == "Boleto",
-                    modifier = Modifier.weight(1f)
-                )
-            }
-            
-            when (selectedPaymentMethod) {
-                "PIX" -> EnhancedPixPaymentCard()
-                "Boleto" -> EnhancedBoletoPaymentCard()
             }
             
             Spacer(modifier = Modifier.height(8.dp))
             
             Button(
-                onClick = onPaymentComplete,
+                onClick = { viewModel.processPayment() },
                 modifier = Modifier.fillMaxWidth(),
-                contentPadding = PaddingValues(16.dp)
+                contentPadding = PaddingValues(16.dp),
+                enabled = viewModel.canProcessPayment()
             ) {
-                Icon(
-                    imageVector = Icons.Default.CheckCircle,
-                    contentDescription = null
-                )
+                if (uiState.isProcessingPayment) {
+                    CircularProgressIndicator(
+                        modifier = Modifier.size(20.dp),
+                        color = MaterialTheme.colorScheme.onPrimary
+                    )
+                } else {
+                    Icon(
+                        imageVector = Icons.Default.CheckCircle,
+                        contentDescription = null
+                    )
+                }
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(
-                    text = "Confirmar Pagamento",
+                    text = if (uiState.isProcessingPayment) "Processando..." else "Confirmar Pagamento",
                     style = MaterialTheme.typography.titleMedium
                 )
             }
@@ -194,7 +295,10 @@ fun PaymentScreen(
 }
 
 @Composable
-fun EnhancedPixPaymentCard() {
+fun EnhancedPixPaymentCard(
+    installment: com.cdccreditsmart.domain.model.Installment,
+    viewModel: PaymentViewModel
+) {
     CDCCard(
         modifier = Modifier.fillMaxWidth()
     ) {
@@ -250,7 +354,7 @@ fun EnhancedPixPaymentCard() {
                         textAlign = TextAlign.Center
                     )
                     Text(
-                        text = "R$ 450,00",
+                        text = viewModel.getFormattedAmount(installment),
                         style = MaterialTheme.typography.titleMedium,
                         fontWeight = FontWeight.Bold,
                         color = Color.Black
@@ -294,7 +398,10 @@ fun EnhancedPixPaymentCard() {
 }
 
 @Composable
-fun EnhancedBoletoPaymentCard() {
+fun EnhancedBoletoPaymentCard(
+    installment: com.cdccreditsmart.domain.model.Installment,
+    viewModel: PaymentViewModel
+) {
     CDCCard(
         modifier = Modifier.fillMaxWidth()
     ) {

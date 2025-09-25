@@ -4,8 +4,7 @@ import com.cdccreditsmart.data.local.dao.BiometrySessionDao
 import com.cdccreditsmart.data.local.entity.toDomain as entityToDomain
 import com.cdccreditsmart.data.local.entity.toEntity as toEntityModel
 import com.cdccreditsmart.data.mapper.toDomain as networkToDomain
-import com.cdccreditsmart.data.mapper.toEntity
-import com.cdccreditsmart.data.mapper.toDomain
+import com.cdccreditsmart.data.mapper.toEntity as networkToEntity
 import com.cdccreditsmart.domain.model.BiometrySession
 import com.cdccreditsmart.domain.model.BiometryResult
 import com.cdccreditsmart.domain.model.BiometryStatus
@@ -51,10 +50,10 @@ class BiometryRepositoryImpl @Inject constructor(
             val response = biometryApiService.createBiometrySession(request)
             
             if (response.isSuccessful && response.body() != null) {
-                val session = response.body()!!.toDomain()
+                val session = response.body()!!.networkToDomain()
                 
                 // Cache the session
-                biometrySessionDao.insertSession(session.toEntity())
+                biometrySessionDao.insertSession(session.toEntityModel())
                 
                 emit(Resource.Success(session))
             } else {
@@ -94,7 +93,7 @@ class BiometryRepositoryImpl @Inject constructor(
             val response = biometryApiService.verifyFacialBiometry(request)
             
             if (response.isSuccessful && response.body() != null) {
-                val result = response.body()!!.toDomain()
+                val result = response.body()!!.networkToDomain()
                 
                 // Update session in cache
                 val status = result.finalStatus.name
@@ -129,10 +128,10 @@ class BiometryRepositoryImpl @Inject constructor(
             val response = biometryApiService.getBiometrySessionStatus(sessionId)
             
             if (response.isSuccessful && response.body() != null) {
-                val session = response.body()!!.toDomain()
+                val session = response.body()!!.networkToDomain()
                 
                 // Update cache
-                biometrySessionDao.insertSession(session.toEntity())
+                biometrySessionDao.insertSession(session.toEntityModel())
                 
                 emit(Resource.Success(session))
             } else if (cachedSession == null) {
@@ -200,10 +199,10 @@ class BiometryRepositoryImpl @Inject constructor(
             
             if (response.isSuccessful && response.body() != null) {
                 val responseBody = response.body()!!
-                val sessions = responseBody.sessions.map { it.toDomain() }
+                val sessions = responseBody.sessions.map { it.networkToDomain() }
                 
                 // Update cache
-                biometrySessionDao.insertSessions(sessions.map { it.toEntity() })
+                biometrySessionDao.insertSessions(sessions.map { it.toEntityModel() })
                 
                 emit(Resource.Success(sessions))
             }

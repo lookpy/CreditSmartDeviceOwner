@@ -49,12 +49,42 @@
     <string name="clear_text_end_icon_content_description">Notīrīt tekstu</string>
     <string msgid="406453423630273620" name="close_drawer">"Aizvērt navigācijas izvēlni"</string>
     <string msgid="7573152094250666567" name="close_sheet">"Aizvērt izklājlapu"</string>
+    <string msgid="2523291102206661146" name="common_google_play_services_enable_button">Iespējot</string>
+    <string msgid="227660514972886228" name="common_google_play_services_enable_text">Lai lietotne %1$s darbotos, ir jāiespējo Google Play pakalpojumi.</string>
+    <string msgid="5122002158466380389" name="common_google_play_services_enable_title">Google Play pakalpojumu iespējošana</string>
+    <string msgid="7153882981874058840" name="common_google_play_services_install_button">Instalēt</string>
+    <string name="common_google_play_services_install_text">Lai lietotne %1$s darbotos, ierīcē ir jāinstalē Google Play pakalpojumi.</string>
+    <string msgid="7215213145546190223" name="common_google_play_services_install_title">Google Play pakalpojumu iegūšana</string>
+    <string name="common_google_play_services_notification_channel_name">Google Play pakalpojumu pieejamība</string>
+    <string name="common_google_play_services_notification_ticker">Google Play pakalpojumu kļūda</string>
+    <string name="common_google_play_services_unknown_issue">Lietotnē %1$s ir radusies problēma ar Google Play pakalpojumu darbību. Lūdzu, mēģiniet vēlreiz.</string>
+    <string name="common_google_play_services_unsupported_text">Lai lietotne %1$s darbotos, ir nepieciešami Google Play pakalpojumi, taču jūsu ierīce tos neatbalsta.</string>
+    <string msgid="6556509956452265614" name="common_google_play_services_update_button">Atjaunināt</string>
+    <string msgid="9053896323427875356" name="common_google_play_services_update_text">Lai lietotne %1$s darbotos, jums ir jāatjaunina Google Play pakalpojumi.</string>
+    <string msgid="6006316683626838685" name="common_google_play_services_update_title">Google Play pakalpojumu atjaunināšana</string>
+    <string name="common_google_play_services_updating_text">Lai lietotne %1$s darbotos, ir jāinstalē Google Play pakalpojumi. Pašlaik notiek to atjaunināšana.</string>
+    <string name="common_google_play_services_wear_update_text">Ir nepieciešama jauna Google Play pakalpojumu versija. Drīzumā tā tiks instalēta.</string>
+    <string name="common_open_on_phone">Atvērt tālrunī</string>
+    <string name="common_signin_button_text">Pierakstīties</string>
+    <string name="common_signin_button_text_long">Pierakstīties ar Google kontu</string>
+    <string msgid="5912733858573823945" name="confirm_device_credential_password">"Izmantot paroli"</string>
     <string msgid="8038256446254964252" name="default_error_message">"Nederīga ievade"</string>
+    <string msgid="4776854077120974966" name="default_error_msg">"Nezināma kļūda"</string>
     <string msgid="6312721426453364202" name="default_popup_window_title">"Uznirstošais logs"</string>
     <string msgid="1890207353314751437" name="dropdown_menu">"Nolaižamā izvēlne"</string>
     <string name="error_a11y_label">Kļūda: nederīga</string>
     <string name="error_icon_content_description">Kļūda</string>
     <string name="exposed_dropdown_menu_content_description">Rādīt nolaižamo izvēlni</string>
+    <string msgid="1072308044213194243" name="fingerprint_dialog_touch_sensor">"Pieskarieties pirksta nospieduma sensoram"</string>
+    <string msgid="8216738333501875566" name="fingerprint_error_hw_not_available">"Pirksta nospieduma aparatūra nav pieejama."</string>
+    <string msgid="6306988885793029438" name="fingerprint_error_hw_not_present">"Šajā ierīcē nav pirksta nospieduma sensora"</string>
+    <string msgid="7291787166416782245" name="fingerprint_error_lockout">"Pārāk daudz mēģinājumu. Lūdzu, vēlāk mēģiniet vēlreiz."</string>
+    <string msgid="7520712796891883488" name="fingerprint_error_no_fingerprints">"Nav reģistrēts neviens pirksta nospiedums."</string>
+    <string msgid="7627716295344353987" name="fingerprint_error_user_canceled">"Lietotājs atcēla pirksta nospieduma darbību."</string>
+    <string msgid="3873359464293253009" name="fingerprint_not_recognized">"Nav atpazīts"</string>
+    <string msgid="3791785319221634505" name="generic_error_no_device_credential">"Nav iestatīts PIN, kombinācija vai parole."</string>
+    <string msgid="1807436368654974044" name="generic_error_no_keyguard">"Šajā ierīcē netiek atbalstīta autentifikācija ar PIN, kombināciju vai paroli."</string>
+    <string msgid="7309881387583143581" name="generic_error_user_canceled">"Lietotājs atcēla autentificēšanu."</string>
     <string name="icon_content_description">Dialoglodziņa ikona</string>
     <string msgid="6827826412747255547" name="in_progress">"Notiek apstrāde"</string>
     <string msgid="7933458017204019916" name="indeterminate">"Daļēji atzīmēta"</string>

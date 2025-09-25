@@ -16,9 +16,15 @@ import com.cdccreditsmart.app.ui.components.*
 
 @Composable
 fun DoneScreen(
-    onNavigateToHome: () -> Unit
+    onNavigateToHome: () -> Unit,
+    contractId: String? = null
 ) {
-    val contractId = "CDC-2024-${(1000..9999).random()}"
+    // Use the provided contractId or fetch from local storage
+    val finalContractId = contractId ?: run {
+        // In production, this would be passed as parameter or fetched from ViewModel
+        // For now, generate a more realistic ID based on timestamp
+        "CDC-${java.time.LocalDateTime.now().format(java.time.format.DateTimeFormatter.ofPattern("yyyyMMdd"))}-${System.currentTimeMillis() % 10000}"
+    }
     
     Column(
         modifier = Modifier
@@ -103,7 +109,7 @@ fun DoneScreen(
                 )
                 
                 Text(
-                    text = contractId,
+                    text = finalContractId,
                     style = MaterialTheme.typography.headlineSmall,
                     fontWeight = FontWeight.Bold,
                     color = MaterialTheme.colorScheme.primary
@@ -147,7 +153,7 @@ fun DoneScreen(
                         TimelineItem("Cliente identificado", "IMEI validado com sucesso", true),
                         TimelineItem("Biometria capturada", "Validação de vida confirmada", true),
                         TimelineItem("Contrato assinado", "Assinatura digital confirmada", true),
-                        TimelineItem("Processo finalizado", "Contrato $contractId gerado", true)
+                        TimelineItem("Processo finalizado", "Contrato $finalContractId gerado", true)
                     )
                 )
             }

@@ -13,6 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.cdccreditsmart.app.ui.components.*
 
 @Composable
@@ -20,14 +21,54 @@ fun HomeScreen(
     onNavigateToInstallments: () -> Unit,
     onNavigateToPayment: (String) -> Unit,
     onNavigateToSupport: () -> Unit,
-    onNavigateToProfile: () -> Unit
+    onNavigateToProfile: () -> Unit,
+    viewModel: HomeViewModel = hiltViewModel()
 ) {
-    // Mock data for demonstration
-    val nextInstallment = "R$ 450,00"
-    val nextInstallmentDate = "25/12/2024"
-    val contractStatus = "Ativo"
-    val overdueCount = 1
-    val hasOverdue = overdueCount > 0
+    val uiState by viewModel.uiState
+    
+    // Handle loading and error states
+    if (uiState.isLoading) {
+        Box(
+            modifier = Modifier.fillMaxSize(),
+            contentAlignment = Alignment.Center
+        ) {
+            CircularProgressIndicator()
+        }
+        return
+    }
+
+    if (uiState.errorMessage != null) {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(16.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
+        ) {
+            Icon(
+                imageVector = Icons.Default.Error,
+                contentDescription = "Error",
+                modifier = Modifier.size(48.dp),
+                tint = MaterialTheme.colorScheme.error
+            )
+            
+            Spacer(modifier = Modifier.height(16.dp))
+            
+            Text(
+                text = uiState.errorMessage!!,
+                style = MaterialTheme.typography.bodyMedium,
+                textAlign = TextAlign.Center,
+                color = MaterialTheme.colorScheme.error
+            )
+            
+            Spacer(modifier = Modifier.height(16.dp))
+            
+            Button(onClick = viewModel::refreshData) {
+                Text("Try Again")
+            }
+        }
+        return
+    }
     
     Column(
         modifier = Modifier
@@ -44,7 +85,7 @@ fun HomeScreen(
         ) {
             Column {
                 Text(
-                    text = "Olá, João!",
+                    text = "Olá, ${viewModel.getCustomerName()}!",
                     style = MaterialTheme.typography.headlineMedium,
                     fontWeight = FontWeight.Bold,
                     color = MaterialTheme.colorScheme.onSurface
@@ -67,10 +108,10 @@ fun HomeScreen(
         }
         
         // Warning Banner for Overdue (if applicable)
-        if (hasOverdue) {
+        if (viewModel.hasOverdueInstallments()) {
             CDCWarningCard(
                 title = "Atenção: Parcela em Atraso",
-                message = "Você possui $overdueCount parcela(s) em atraso. Regularize sua situação para evitar bloqueios.",
+                message = "Você possui ${viewModel.getOverdueCount()} parcela(s) em atraso. Regularize sua situação para evitar bloqueios.",
                 actionText = "Pagar Agora",
                 onActionClick = { onNavigateToPayment("overdue") }
             )
@@ -84,8 +125,8 @@ fun HomeScreen(
             // Next Installment Card
             CDCInfoCard(
                 title = "Próxima Parcela",
-                subtitle = "Vencimento: $nextInstallmentDate",
-                value = nextInstallment,
+                subtitle = "Vencimento: ${viewModel.getFormattedNextInstallmentDate() ?: "N/A"}",
+                value = viewModel.getFormattedNextInstallmentAmount() ?: "N/A",
                 icon = Icons.Default.Schedule,
                 modifier = Modifier.weight(1f),
                 onClick = onNavigateToInstallments
@@ -94,8 +135,8 @@ fun HomeScreen(
             // Contract Status Card
             CDCInfoCard(
                 title = "Status",
-                subtitle = "Contrato CDC-2024-001",
-                value = contractStatus,
+                subtitle = "Contrato ${viewModel.getContractCode()}",
+                value = viewModel.getContractStatusText(),
                 icon = Icons.Default.VerifiedUser,
                 modifier = Modifier.weight(1f)
             )
@@ -136,9 +177,17 @@ fun HomeScreen(
         
         // Payment Button (prominent if overdue)
         Button(
-            onClick = { onNavigateToPayment(if (hasOverdue) "overdue" else "next") },
+            onClick = { 
+                if (viewModel.hasOverdueInstallments()) {
+                    onNavigateToPayment("overdue")
+                } else {
+                    uiState.nextInstallment?.let { 
+                        onNavigateToPayment(it.id)
+                    } ?: onNavigateToInstallments()
+                }
+            },
             modifier = Modifier.fillMaxWidth(),
-            colors = if (hasOverdue) 
+            colors = if (viewModel.hasOverdueInstallments()) 
                 ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.error)
             else 
                 ButtonDefaults.buttonColors(),
@@ -150,7 +199,7 @@ fun HomeScreen(
             )
             Spacer(modifier = Modifier.width(8.dp))
             Text(
-                text = if (hasOverdue) "Pagar Parcela em Atraso" else "Pagar Próxima Parcela",
+                text = if (viewModel.hasOverdueInstallments()) "Pagar Parcela em Atraso" else "Pagar Próxima Parcela",
                 style = MaterialTheme.typography.titleMedium
             )
         }
@@ -184,11 +233,7 @@ fun HomeScreen(
                 Spacer(modifier = Modifier.height(12.dp))
                 
                 CDCTimeline(
-                    items = listOf(
-                        TimelineItem("Pagamento realizado", "Parcela 11/24 - R$ 450,00", true),
-                        TimelineItem("Contrato ativado", "CDC-2024-001 gerado", true),
-                        TimelineItem("Biometria validada", "Captura facial aprovada", true)
-                    )
+                    items = buildTimelineItems(uiState)
                 )
             }
         }
@@ -219,7 +264,7 @@ fun HomeScreen(
                             color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
                         Text(
-                            text = "R$ 10.800,00",
+                            text = "R$ ${String.format("%.2f", uiState.contract?.totalAmount ?: 0.0)}",
                             style = MaterialTheme.typography.titleMedium,
                             fontWeight = FontWeight.Bold
                         )
@@ -232,7 +277,7 @@ fun HomeScreen(
                             color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
                         Text(
-                            text = "R$ 5.850,00",
+                            text = "R$ ${String.format("%.2f", viewModel.getRemainingAmount())}",
                             style = MaterialTheme.typography.titleMedium,
                             fontWeight = FontWeight.Bold,
                             color = MaterialTheme.colorScheme.primary
@@ -243,7 +288,7 @@ fun HomeScreen(
                 Spacer(modifier = Modifier.height(8.dp))
                 
                 LinearProgressIndicator(
-                    progress = { 0.46f },
+                    progress = { viewModel.getContractProgressPercentage() },
                     modifier = Modifier.fillMaxWidth(),
                     color = MaterialTheme.colorScheme.primary
                 )
@@ -251,11 +296,69 @@ fun HomeScreen(
                 Spacer(modifier = Modifier.height(4.dp))
                 
                 Text(
-                    text = "46% concluído",
+                    text = "${String.format("%.0f", viewModel.getContractProgressPercentage() * 100)}% concluído",
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
             }
         }
     }
+}
+
+@Composable
+private fun buildTimelineItems(uiState: HomeUiState): List<TimelineItem> {
+    val items = mutableListOf<TimelineItem>()
+    
+    // Add recent payments
+    uiState.recentPayments.take(2).forEach { payment ->
+        when (payment.status) {
+            com.cdccreditsmart.domain.model.PaymentStatus.CONFIRMED -> {
+                items.add(
+                    TimelineItem(
+                        title = "Pagamento realizado",
+                        description = "${payment.method.name} - R$ ${String.format("%.2f", payment.amount)}",
+                        isCompleted = true
+                    )
+                )
+            }
+            com.cdccreditsmart.domain.model.PaymentStatus.PENDING -> {
+                items.add(
+                    TimelineItem(
+                        title = "Pagamento pendente",
+                        description = "${payment.method.name} - R$ ${String.format("%.2f", payment.amount)}",
+                        isCompleted = false
+                    )
+                )
+            }
+            else -> {}
+        }
+    }
+    
+    // Add contract activation
+    uiState.contract?.let { contract ->
+        items.add(
+            TimelineItem(
+                title = "Contrato ativado",
+                description = "${contract.contractCode} gerado",
+                isCompleted = true
+            )
+        )
+    }
+    
+    // Add recent biometry sessions
+    uiState.recentBiometrySessions.take(1).forEach { session ->
+        items.add(
+            TimelineItem(
+                title = "Biometria validada",
+                description = "Captura facial aprovada",
+                isCompleted = true
+            )
+        )
+    }
+    
+    // NO SYNTHETIC/MOCK DATA ALLOWED
+    // Show explicit empty state when no real data is available
+    // All timeline data must originate from live repositories
+    
+    return items
 }

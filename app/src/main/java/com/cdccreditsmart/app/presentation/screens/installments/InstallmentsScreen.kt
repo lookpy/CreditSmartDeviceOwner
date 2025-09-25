@@ -4,38 +4,29 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.*
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import com.cdccreditsmart.app.presentation.installments.InstallmentsViewModel
 import com.cdccreditsmart.app.ui.components.*
-
-data class InstallmentItem(
-    val id: String,
-    val number: Int,
-    val dueDate: String,
-    val amount: String,
-    val status: String
-)
+import com.cdccreditsmart.domain.model.Installment
+import com.cdccreditsmart.domain.model.InstallmentStatus
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun InstallmentsScreen(
     onNavigateToPayment: (String) -> Unit,
-    onNavigateBack: () -> Unit
+    onNavigateBack: () -> Unit,
+    viewModel: InstallmentsViewModel = hiltViewModel()
 ) {
-    val installments = listOf(
-        InstallmentItem("1", 1, "15/11/2024", "R$ 450,00", "Pago"),
-        InstallmentItem("2", 2, "15/12/2024", "R$ 450,00", "Atrasado"),
-        InstallmentItem("3", 3, "15/01/2025", "R$ 450,00", "Em aberto"),
-        InstallmentItem("4", 4, "15/02/2025", "R$ 450,00", "Em aberto"),
-        InstallmentItem("5", 5, "15/03/2025", "R$ 450,00", "Em aberto"),
-        InstallmentItem("6", 6, "15/04/2025", "R$ 450,00", "Em aberto")
-    )
+    val uiState by viewModel.uiState
     
     Column(
         modifier = Modifier.fillMaxSize()
@@ -49,7 +40,7 @@ fun InstallmentsScreen(
             },
             navigationIcon = {
                 IconButton(onClick = onNavigateBack) {
-                    Icon(Icons.Default.ArrowBack, contentDescription = "Voltar")
+                    Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Voltar")
                 }
             },
             colors = TopAppBarDefaults.topAppBarColors(
@@ -58,6 +49,50 @@ fun InstallmentsScreen(
                 navigationIconContentColor = MaterialTheme.colorScheme.onSurface
             )
         )
+
+        // Handle loading and error states
+        if (uiState.isLoading) {
+            Box(
+                modifier = Modifier.fillMaxSize(),
+                contentAlignment = Alignment.Center
+            ) {
+                CircularProgressIndicator()
+            }
+            return@Column
+        }
+
+        if (uiState.errorMessage != null) {
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(16.dp),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center
+            ) {
+                Icon(
+                    imageVector = Icons.Default.Error,
+                    contentDescription = "Error",
+                    modifier = Modifier.size(48.dp),
+                    tint = MaterialTheme.colorScheme.error
+                )
+                
+                Spacer(modifier = Modifier.height(16.dp))
+                
+                Text(
+                    text = uiState.errorMessage!!,
+                    style = MaterialTheme.typography.bodyMedium,
+                    textAlign = TextAlign.Center,
+                    color = MaterialTheme.colorScheme.error
+                )
+                
+                Spacer(modifier = Modifier.height(16.dp))
+                
+                Button(onClick = viewModel::refreshData) {
+                    Text("Try Again")
+                }
+            }
+            return@Column
+        }
         
         LazyColumn(
             modifier = Modifier
@@ -100,7 +135,7 @@ fun InstallmentsScreen(
                         ) {
                             Column(horizontalAlignment = Alignment.CenterHorizontally) {
                                 Text(
-                                    text = "${installments.count { it.status == "Pago" }}",
+                                    text = "${viewModel.getPaidInstallmentsCount()}",
                                     style = MaterialTheme.typography.headlineSmall,
                                     fontWeight = FontWeight.Bold,
                                     color = MaterialTheme.colorScheme.primary
@@ -114,7 +149,7 @@ fun InstallmentsScreen(
                             
                             Column(horizontalAlignment = Alignment.CenterHorizontally) {
                                 Text(
-                                    text = "${installments.count { it.status == "Em aberto" }}",
+                                    text = "${viewModel.getPendingInstallmentsCount()}",
                                     style = MaterialTheme.typography.headlineSmall,
                                     fontWeight = FontWeight.Bold,
                                     color = MaterialTheme.colorScheme.tertiary
@@ -128,7 +163,7 @@ fun InstallmentsScreen(
                             
                             Column(horizontalAlignment = Alignment.CenterHorizontally) {
                                 Text(
-                                    text = "${installments.count { it.status == "Atrasado" }}",
+                                    text = "${viewModel.getOverdueInstallmentsCount()}",
                                     style = MaterialTheme.typography.headlineSmall,
                                     fontWeight = FontWeight.Bold,
                                     color = MaterialTheme.colorScheme.error
@@ -145,9 +180,10 @@ fun InstallmentsScreen(
             }
             
             // Installments List
-            items(installments) { installment ->
+            items(uiState.installments) { installment ->
                 EnhancedInstallmentCard(
                     installment = installment,
+                    viewModel = viewModel,
                     onPayClick = { onNavigateToPayment(installment.id) }
                 )
             }
@@ -157,12 +193,13 @@ fun InstallmentsScreen(
 
 @Composable
 fun EnhancedInstallmentCard(
-    installment: InstallmentItem,
+    installment: Installment,
+    viewModel: InstallmentsViewModel,
     onPayClick: () -> Unit
 ) {
     CDCCard(
         modifier = Modifier.fillMaxWidth(),
-        onClick = if (installment.status != "Pago") onPayClick else null
+        onClick = if (installment.status != InstallmentStatus.PAID) onPayClick else null
     ) {
         Column(
             modifier = Modifier.padding(16.dp)
@@ -178,14 +215,14 @@ fun EnhancedInstallmentCard(
                 ) {
                     Icon(
                         imageVector = when (installment.status) {
-                            "Pago" -> Icons.Default.CheckCircle
-                            "Atrasado" -> Icons.Default.Error
+                            InstallmentStatus.PAID -> Icons.Default.CheckCircle
+                            InstallmentStatus.OVERDUE -> Icons.Default.Error
                             else -> Icons.Default.Schedule
                         },
                         contentDescription = null,
                         tint = when (installment.status) {
-                            "Pago" -> MaterialTheme.colorScheme.primary
-                            "Atrasado" -> MaterialTheme.colorScheme.error
+                            InstallmentStatus.PAID -> MaterialTheme.colorScheme.primary
+                            InstallmentStatus.OVERDUE -> MaterialTheme.colorScheme.error
                             else -> MaterialTheme.colorScheme.tertiary
                         },
                         modifier = Modifier.size(20.dp)
@@ -201,7 +238,7 @@ fun EnhancedInstallmentCard(
                 }
                 
                 InstallmentStatusChip(
-                    status = installment.status
+                    status = viewModel.getStatusText(installment.status)
                 )
             }
             
@@ -219,7 +256,7 @@ fun EnhancedInstallmentCard(
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                     Text(
-                        text = installment.dueDate,
+                        text = viewModel.getFormattedDueDate(installment),
                         style = MaterialTheme.typography.bodyMedium,
                         fontWeight = FontWeight.Medium
                     )
@@ -232,12 +269,12 @@ fun EnhancedInstallmentCard(
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                     Text(
-                        text = installment.amount,
+                        text = viewModel.getFormattedAmount(installment),
                         style = MaterialTheme.typography.bodyMedium,
                         fontWeight = FontWeight.Bold,
                         color = when (installment.status) {
-                            "Pago" -> MaterialTheme.colorScheme.primary
-                            "Atrasado" -> MaterialTheme.colorScheme.error
+                            InstallmentStatus.PAID -> MaterialTheme.colorScheme.primary
+                            InstallmentStatus.OVERDUE -> MaterialTheme.colorScheme.error
                             else -> MaterialTheme.colorScheme.onSurface
                         }
                     )
@@ -245,13 +282,13 @@ fun EnhancedInstallmentCard(
             }
             
             // Action Button for non-paid installments
-            if (installment.status != "Pago") {
+            if (installment.status != InstallmentStatus.PAID) {
                 Spacer(modifier = Modifier.height(12.dp))
                 
                 Button(
                     onClick = onPayClick,
                     modifier = Modifier.fillMaxWidth(),
-                    colors = if (installment.status == "Atrasado")
+                    colors = if (installment.status == InstallmentStatus.OVERDUE)
                         ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.error)
                     else
                         ButtonDefaults.buttonColors()
@@ -262,7 +299,7 @@ fun EnhancedInstallmentCard(
                     )
                     Spacer(modifier = Modifier.width(8.dp))
                     Text(
-                        text = if (installment.status == "Atrasado") "Pagar Agora" else "Pagar",
+                        text = if (installment.status == InstallmentStatus.OVERDUE) "Pagar Agora" else "Pagar",
                         fontWeight = FontWeight.Medium
                     )
                 }

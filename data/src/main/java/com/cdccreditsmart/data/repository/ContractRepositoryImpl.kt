@@ -30,6 +30,7 @@ import retrofit2.Response
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onStart
+import kotlinx.coroutines.flow.first
 import java.time.LocalDateTime
 import java.time.ZoneOffset
 import javax.inject.Inject
@@ -184,6 +185,16 @@ class ContractRepositoryImpl @Inject constructor(
             
             if (response.isSuccessful && response.body() != null) {
                 val responseBody = response.body()!!
+                val updates = responseBody.updates?.map { update ->
+                    ContractUpdate(
+                        field = update.field,
+                        oldValue = update.oldValue,
+                        newValue = update.newValue,
+                        timestamp = update.timestamp?.toLocalDateTime(),
+                        reason = update.reason
+                    )
+                } ?: emptyList()
+                
                 val syncResult = ContractSyncResult(
                     contractId = responseBody.contractId,
                     status = responseBody.status,
@@ -191,16 +202,56 @@ class ContractRepositoryImpl @Inject constructor(
                     dataHash = responseBody.dataHash,
                     requiresResync = responseBody.requiresResync,
                     success = responseBody.status != "error" && !responseBody.requiresResync,
-                    updates = responseBody.updates?.map { update ->
-                        ContractUpdate(
-                            field = update.field,
-                            oldValue = update.oldValue,
-                            newValue = update.newValue,
-                            timestamp = update.timestamp?.toLocalDateTime(),
-                            reason = update.reason
-                        )
-                    } ?: emptyList()
+                    updates = updates
                 )
+                
+                // Process the updates if sync was successful
+                if (syncResult.success && updates.isNotEmpty()) {
+                    try {
+                        processSyncUpdates(contractId, updates)
+                    } catch (e: Exception) {
+                        // Log error but don't fail the sync - data will be retried next time
+                        android.util.Log.w("ContractSync", "Failed to apply some sync updates: ${e.message}")
+                    }
+                }
+                
+                // If full resync is required, fetch the complete contract data
+                if (responseBody.requiresResync) {
+                    try {
+                        val fullContractResponse = contractApiService.getContract(contractId)
+                        if (fullContractResponse.isSuccessful && fullContractResponse.body() != null) {
+                            val fullContract = fullContractResponse.body()!!.let { contractResponse ->
+                                Contract(
+                                    id = contractResponse.contractId,
+                                    contractCode = "CONTRACT_${contractResponse.contractId}",
+                                    customerId = contractResponse.contractData.customerInfo.cpf,
+                                    customerName = contractResponse.contractData.customerInfo.name,
+                                    totalAmount = java.math.BigDecimal.valueOf(contractResponse.contractData.financingTerms.totalAmount),
+                                    installmentCount = contractResponse.contractData.financingTerms.installmentCount,
+                                    monthlyAmount = java.math.BigDecimal.valueOf(contractResponse.contractData.financingTerms.installmentAmount),
+                                    status = when (contractResponse.status) {
+                                        "draft" -> ContractStatus.DRAFT
+                                        "signed" -> ContractStatus.PENDING_SIGNATURE
+                                        "active" -> ContractStatus.ACTIVE
+                                        "suspended" -> ContractStatus.DEFAULTED
+                                        "terminated" -> ContractStatus.CANCELLED
+                                        else -> ContractStatus.DRAFT
+                                    },
+                                    signedAt = contractResponse.signedAt?.let { 
+                                        LocalDateTime.ofEpochSecond(it, 0, ZoneOffset.UTC) 
+                                    },
+                                    createdAt = contractResponse.activatedAt?.let { 
+                                        LocalDateTime.ofEpochSecond(it, 0, ZoneOffset.UTC) 
+                                    } ?: LocalDateTime.now()
+                                )
+                            }
+                            // Update cached contract with fresh data
+                            contractDao.insertContract(fullContract.toEntityModel())
+                        }
+                    } catch (e: Exception) {
+                        android.util.Log.w("ContractSync", "Failed to perform full resync: ${e.message}")
+                    }
+                }
                 
                 emit(Resource.Success(syncResult))
             } else {
@@ -353,12 +404,83 @@ class ContractRepositoryImpl @Inject constructor(
         emit(Resource.Loading())
         
         try {
-            // This would implement a more sophisticated sync strategy
-            // For now, just mark as successful
+            // Get all cached contracts and sync each one
+            val allContracts = contractDao.getAllContracts().first()
+            
+            for (contractEntity in allContracts) {
+                try {
+                    syncContract(
+                        contractId = contractEntity.id,
+                        deviceId = "unknown", // In production, get from device context
+                        lastSyncTimestamp = contractEntity.lastSyncAt,
+                        localHash = null
+                    ).collect { syncResource ->
+                        when (syncResource) {
+                            is Resource.Success -> {
+                                // Sync completed for this contract
+                                android.util.Log.d("ContractSync", "Synced contract: ${contractEntity.id}")
+                            }
+                            is Resource.Error -> {
+                                // Log error but continue with other contracts
+                                android.util.Log.w("ContractSync", "Failed to sync contract ${contractEntity.id}: ${syncResource.exception.message}")
+                            }
+                            else -> {} // Loading state
+                        }
+                    }
+                } catch (e: Exception) {
+                    android.util.Log.w("ContractSync", "Error syncing contract ${contractEntity.id}: ${e.message}")
+                }
+            }
+            
             emit(Resource.Success(Unit))
         } catch (e: Exception) {
             val exception = networkErrorMapper.mapToCdcException(e)
             emit(Resource.Error(exception))
+        }
+    }
+    
+    private suspend fun processSyncUpdates(contractId: String, updates: List<ContractUpdate>) {
+        val currentContract = contractDao.getContractById(contractId)
+        if (currentContract != null) {
+            var updatedContract = currentContract.entityToDomain()
+            
+            // Apply each update to the contract
+            for (update in updates) {
+                updatedContract = when (update.field) {
+                    "customer_name" -> updatedContract.copy(customerName = update.newValue ?: updatedContract.customerName)
+                    "customer_id" -> updatedContract.copy(customerId = update.newValue ?: updatedContract.customerId)
+                    "total_amount" -> {
+                        val newAmount = update.newValue?.toBigDecimalOrNull()
+                        if (newAmount != null) updatedContract.copy(totalAmount = newAmount) else updatedContract
+                    }
+                    "monthly_amount" -> {
+                        val newAmount = update.newValue?.toBigDecimalOrNull()
+                        if (newAmount != null) updatedContract.copy(monthlyAmount = newAmount) else updatedContract
+                    }
+                    "installment_count" -> {
+                        val newCount = update.newValue?.toIntOrNull()
+                        if (newCount != null) updatedContract.copy(installmentCount = newCount) else updatedContract
+                    }
+                    "status" -> {
+                        val newStatus = when (update.newValue) {
+                            "draft" -> ContractStatus.DRAFT
+                            "signed" -> ContractStatus.PENDING_SIGNATURE
+                            "active" -> ContractStatus.ACTIVE
+                            "suspended" -> ContractStatus.DEFAULTED
+                            "terminated" -> ContractStatus.CANCELLED
+                            else -> updatedContract.status
+                        }
+                        updatedContract.copy(status = newStatus)
+                    }
+                    else -> {
+                        android.util.Log.w("ContractSync", "Unknown field for update: ${update.field}")
+                        updatedContract
+                    }
+                }
+            }
+            
+            // Save the updated contract
+            contractDao.insertContract(updatedContract.toEntityModel())
         }
     }
 }

@@ -8,7 +8,7 @@ plugins {
 
 android {
     namespace = "com.cdccreditsmart.app"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "com.cdccreditsmart.app"
@@ -73,6 +73,14 @@ java {
 }
 
 dependencies {
+    // Project module dependencies
+    implementation(project(":domain"))
+    implementation(project(":data"))
+    implementation(project(":network"))
+    implementation(project(":biometry"))
+    implementation(project(":device"))
+    implementation(project(":payments"))
+    
     implementation("androidx.core:core-ktx:1.13.1")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.8.4")
     implementation("androidx.activity:activity-compose:1.9.1")

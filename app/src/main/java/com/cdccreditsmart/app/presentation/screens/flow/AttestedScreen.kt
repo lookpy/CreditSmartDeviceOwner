@@ -16,9 +16,11 @@ import com.cdccreditsmart.app.ui.components.*
 @Composable
 fun AttestedScreen(
     onNavigateToNext: () -> Unit,
-    onNavigateBack: () -> Unit
+    onNavigateBack: () -> Unit,
+    deviceImei: String? = null
 ) {
-    var imeiText by remember { mutableStateOf("353104903560533") }
+    // Use the provided device IMEI or start with empty state
+    var imeiText by remember { mutableStateOf(deviceImei ?: "") }
     val isImeiValid = imeiText.length == 15 && imeiText.all { it.isDigit() }
     
     Column(

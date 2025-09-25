@@ -6,6 +6,7 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
+import com.cdccreditsmart.app.presentation.auth.IMEIAuthScreen
 import com.cdccreditsmart.app.presentation.screens.onboarding.WelcomeScreen
 import com.cdccreditsmart.app.presentation.screens.flow.AttestedScreen
 import com.cdccreditsmart.app.presentation.screens.flow.BiometryScreen
@@ -19,6 +20,7 @@ import com.cdccreditsmart.app.presentation.screens.profile.ProfileScreen
 import com.cdccreditsmart.app.presentation.screens.lock.LockOverlayScreen
 
 object Routes {
+    const val AUTH_IMEI = "auth/imei"
     const val ONBOARDING_WELCOME = "onboarding/welcome"
     const val FLOW_ATTESTED = "flow/attested"
     const val FLOW_BIOMETRY = "flow/biometry"
@@ -37,13 +39,24 @@ object Routes {
 @Composable
 fun CDCNavigation(
     navController: NavHostController,
-    startDestination: String = Routes.HOME
+    startDestination: String = Routes.AUTH_IMEI
 ) {
     NavHost(
         navController = navController,
         startDestination = startDestination
     ) {
-        // Onboarding
+        // IMEI Authentication - App Entry Point
+        composable(Routes.AUTH_IMEI) {
+            IMEIAuthScreen(
+                onAuthenticationSuccess = {
+                    navController.navigate(Routes.HOME) {
+                        popUpTo(Routes.AUTH_IMEI) { inclusive = true }
+                    }
+                }
+            )
+        }
+        
+        // Onboarding (legacy - kept for potential use)
         composable(Routes.ONBOARDING_WELCOME) {
             WelcomeScreen(
                 onNavigateToHome = {
