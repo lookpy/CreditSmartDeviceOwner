@@ -5,9 +5,9 @@ package com.cdccreditsmart.network.config
  */
 object NetworkConfig {
     
-    // Base URLs - should be configurable via BuildConfig
-    const val BASE_URL = "https://api.cdccreditsmart.com.br/"
-    const val BASE_URL_DEBUG = "https://api-dev.cdccreditsmart.com.br/"
+    // Base URLs - Updated for CDC Credit Smart real backend
+    const val BASE_URL = "https://cdccreditsmart.com/"
+    const val BASE_URL_DEBUG = "https://cdccreditsmart.com/"
     
     // Timeout configurations (in milliseconds)
     const val CONNECT_TIMEOUT = 30_000L
@@ -38,17 +38,12 @@ object NetworkConfig {
         "TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305_SHA256"
     )
     
-    // Certificate pins - Production ready configuration with real certificate pins
-    // These should be updated with actual CDC Credit Smart certificate pins in production
+    // Certificate pins - Updated for CDC Credit Smart real backend
+    // These will be updated with actual CDC Credit Smart certificate pins in production
     val CERTIFICATE_PINS = mapOf(
-        "api.cdccreditsmart.com.br" to listOf(
+        "cdccreditsmart.com" to listOf(
             "sha256/YLh1dUR9y6Kja30RrAn7JKnbQG/uEtLMkBgFF2Fuihg=", // Production certificate pin
             "sha256/Vjs8r4z+80wjNcr1YKepWQboSIRi63WsWXhIMN+eWys=", // Backup certificate pin
-            "sha256/C5+lpZ7tcVwmwQIMcRtPbsQtWLABXhQzejna0wHFr8M="  // Root CA pin
-        ),
-        "api-dev.cdccreditsmart.com.br" to listOf(
-            "sha256/hS5jJ4P+iQaI+6nt5JhCW0A+xd7TYBhIZ+6KRKKYTKo=", // Dev certificate pin  
-            "sha256/k2v657xBsOVe1PQRwOsHsw3bsGT2VzIqz5K+59sNQws=", // Dev backup pin
             "sha256/C5+lpZ7tcVwmwQIMcRtPbsQtWLABXhQzejna0wHFr8M="  // Root CA pin
         ),
         "localhost" to listOf(
@@ -61,19 +56,36 @@ object NetworkConfig {
         )
     )
     
-    // API endpoints - Complete endpoint configuration
+    // API endpoints - Complete endpoint configuration for CDC Credit Smart
     object Endpoints {
-        // Authentication endpoints
+        // CDC Credit Smart specific endpoints
+        const val APK_AUTH = "api/apk/auth"
+        const val VALIDATE_IMEI = "api/validate-imei"
+        const val DEVICE_STATUS = "api/apk/device/{serial}/status"
+        const val DEVICE_SYNC = "api/apk/device/{fingerprint}/sync"
+        const val DEVICE_REGISTER_INFO = "api/apk/device/{fingerprint}/register-info"
+        const val PROVISIONING_QR = "api/apk/provisioning-qr"
+        
+        // Flow Events endpoints
+        const val FLOW_DEVICE_ATTESTATION_START = "api/flow/device-attestation-start"
+        const val FLOW_DEVICE_ATTESTATION_COMPLETE = "api/flow/device-attestation-complete"
+        const val FLOW_IMEI_VALIDATION_START = "api/flow/imei-validation-start"
+        const val FLOW_IMEI_VALIDATION_COMPLETE = "api/flow/imei-validation-complete"
+        const val FLOW_DEVICE_BINDING_START = "api/flow/device-binding-start"
+        const val FLOW_DEVICE_BINDING_COMPLETE = "api/flow/device-binding-complete"
+        
+        // WebSocket endpoint
+        const val WS_FLOW_STATUS = "ws/flow-status"
+        
+        // Legacy v1 endpoints (for backward compatibility)
         const val AUTH_LOGIN = "v1/auth/login"
         const val AUTH_REFRESH = "v1/auth/refresh"
         const val AUTH_LOGOUT = "v1/auth/logout"
         const val AUTH_VALIDATE = "v1/auth/validate"
         const val AUTH_SCOPES = "v1/auth/scopes"
         
-        // Device management endpoints  
         const val DEVICE_ATTEST = "v1/device/attest"
         const val DEVICE_BIND = "v1/device/bind"
-        const val DEVICE_STATUS = "v1/device/status"
         const val DEVICE_HEARTBEAT = "v1/device/heartbeat"
         const val DEVICE_INSTALLMENTS = "v1/device/installments"
         const val DEVICE_UPDATE_REPORT = "v1/device/update-report"

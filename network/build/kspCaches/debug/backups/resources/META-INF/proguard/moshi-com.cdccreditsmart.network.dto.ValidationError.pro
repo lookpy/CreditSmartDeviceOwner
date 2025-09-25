@@ -8,5 +8,5 @@
 -keepnames class kotlin.jvm.internal.DefaultConstructorMarker
 -if class com.cdccreditsmart.network.dto.ValidationError
 -keepclassmembers class com.cdccreditsmart.network.dto.ValidationError {
-    public synthetic <init>(java.lang.String,java.lang.String,java.lang.String,java.lang.Object,int,kotlin.jvm.internal.DefaultConstructorMarker);
+    public synthetic <init>(java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,kotlin.jvm.internal.DefaultConstructorMarker);
 }

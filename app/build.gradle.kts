@@ -33,12 +33,20 @@ android {
             versionNameSuffix = "-debug"
             // Disable R8 completely for debug builds
             proguardFiles()
+            
+            // Debug network configuration
+            buildConfigField("String", "BASE_URL", "\"https://api-dev.cdccreditsmart.com.br/\"")
+            buildConfigField("boolean", "ENABLE_NETWORK_LOGGING", "true")
         }
         
         release {
             isDebuggable = false
             isMinifyEnabled = false
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+            
+            // Production network configuration
+            buildConfigField("String", "BASE_URL", "\"https://api.cdccreditsmart.com.br/\"")
+            buildConfigField("boolean", "ENABLE_NETWORK_LOGGING", "false")
         }
     }
 
@@ -67,6 +75,7 @@ android {
 
     buildFeatures {
         compose = true
+        buildConfig = true
     }
     
     composeOptions {

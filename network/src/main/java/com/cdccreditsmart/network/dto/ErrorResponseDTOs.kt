@@ -37,7 +37,7 @@ data class ValidationError(
     val field: String,
     val code: String,
     val message: String,
-    val rejectedValue: Any? = null
+    val rejectedValue: String? = null
 )
 
 /**

@@ -12,7 +12,6 @@ import com.squareup.moshi.Moshi
 import com.squareup.moshi.`internal`.Util
 import java.lang.NullPointerException
 import java.lang.reflect.Constructor
-import kotlin.Any
 import kotlin.Int
 import kotlin.String
 import kotlin.Suppress
@@ -30,8 +29,8 @@ public class ValidationErrorJsonAdapter(
   private val stringAdapter: JsonAdapter<String> = moshi.adapter(String::class.java, emptySet(),
       "field")
 
-  private val nullableAnyAdapter: JsonAdapter<Any?> = moshi.adapter(Any::class.java, emptySet(),
-      "rejectedValue")
+  private val nullableStringAdapter: JsonAdapter<String?> = moshi.adapter(String::class.java,
+      emptySet(), "rejectedValue")
 
   @Volatile
   private var constructorRef: Constructor<ValidationError>? = null
@@ -43,7 +42,7 @@ public class ValidationErrorJsonAdapter(
     var field_: String? = null
     var code: String? = null
     var message: String? = null
-    var rejectedValue: Any? = null
+    var rejectedValue: String? = null
     var mask0 = -1
     reader.beginObject()
     while (reader.hasNext()) {
@@ -55,7 +54,7 @@ public class ValidationErrorJsonAdapter(
         2 -> message = stringAdapter.fromJson(reader) ?: throw Util.unexpectedNull("message",
             "message", reader)
         3 -> {
-          rejectedValue = nullableAnyAdapter.fromJson(reader)
+          rejectedValue = nullableStringAdapter.fromJson(reader)
           // $mask = $mask and (1 shl 3).inv()
           mask0 = mask0 and 0xfffffff7.toInt()
         }
@@ -80,7 +79,7 @@ public class ValidationErrorJsonAdapter(
       @Suppress("UNCHECKED_CAST")
       val localConstructor: Constructor<ValidationError> = this.constructorRef ?:
           ValidationError::class.java.getDeclaredConstructor(String::class.java, String::class.java,
-          String::class.java, Any::class.java, Int::class.javaPrimitiveType,
+          String::class.java, String::class.java, Int::class.javaPrimitiveType,
           Util.DEFAULT_CONSTRUCTOR_MARKER).also { this.constructorRef = it }
       return localConstructor.newInstance(
           field_ ?: throw Util.missingProperty("field_", "field", reader),
@@ -105,7 +104,7 @@ public class ValidationErrorJsonAdapter(
     writer.name("message")
     stringAdapter.toJson(writer, value_.message)
     writer.name("rejectedValue")
-    nullableAnyAdapter.toJson(writer, value_.rejectedValue)
+    nullableStringAdapter.toJson(writer, value_.rejectedValue)
     writer.endObject()
   }
 }

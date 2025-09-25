@@ -5,9 +5,56 @@ import retrofit2.Response
 import retrofit2.http.*
 
 /**
- * Device-related API endpoints for attestation, registration, and device management
+ * Device-related API endpoints for attestation, registration, device management, and CDC Credit Smart integration
  */
 interface DeviceApiService {
+    
+    // CDC Credit Smart specific device endpoints
+    
+    /**
+     * Device Status endpoint - CDC Credit Smart specific
+     * GET /api/apk/device/{serial}/status
+     */
+    @GET("api/apk/device/{serial}/status")
+    suspend fun getCdcDeviceStatus(
+        @Path("serial") serial: String,
+        @Header("Authorization") authorization: String? = null
+    ): Response<CdcDeviceStatusResponse>
+    
+    /**
+     * Device Heartbeat/Sync endpoint - CDC Credit Smart specific
+     * POST /api/apk/device/{fingerprint}/sync
+     */
+    @POST("api/apk/device/{fingerprint}/sync")
+    suspend fun syncCdcDevice(
+        @Path("fingerprint") fingerprint: String,
+        @Body request: CdcDeviceSyncRequest,
+        @Header("Authorization") authorization: String? = null
+    ): Response<CdcDeviceSyncResponse>
+    
+    /**
+     * Device Registration Info endpoint - CDC Credit Smart specific
+     * POST /api/apk/device/{fingerprint}/register-info
+     */
+    @POST("api/apk/device/{fingerprint}/register-info")
+    suspend fun registerCdcDeviceInfo(
+        @Path("fingerprint") fingerprint: String,
+        @Body request: CdcDeviceRegisterInfoRequest,
+        @Header("Authorization") authorization: String? = null
+    ): Response<CdcDeviceRegisterInfoResponse>
+    
+    /**
+     * QR Provisioning endpoint - CDC Credit Smart specific
+     * GET /api/apk/provisioning-qr
+     */
+    @GET("api/apk/provisioning-qr")
+    suspend fun getCdcProvisioningQr(
+        @Query("deviceId") deviceId: String? = null,
+        @Query("contractCode") contractCode: String? = null,
+        @Header("Authorization") authorization: String? = null
+    ): Response<CdcProvisioningQrResponse>
+    
+    // Legacy v1 device endpoints (for backward compatibility)
     
     /**
      * Attests the device using Play Integrity/Key Attestation
@@ -134,7 +181,6 @@ data class BlockingPolicy(
     val blockedPackages: List<String>
 )
 
-@JsonClass(generateAdapter = true)
 data class DeviceConfiguration(
     val updateCheckInterval: Long,
     val heartbeatInterval: Long,
@@ -177,6 +223,148 @@ data class UpdateReportRequest(
     val updateStatus: String, // "success", "failed", "cancelled"
     val errorMessage: String? = null,
     val timestamp: Long
+)
+
+// CDC Credit Smart device DTOs
+@JsonClass(generateAdapter = true)
+data class CdcDeviceSyncRequest(
+    val timestamp: Long,
+    val batteryLevel: Int? = null,
+    val locationData: CdcLocationData? = null,
+    val appStatus: String = "active",
+    val installedApps: List<String>? = null,
+    val systemInfo: CdcSystemInfo? = null
+)
+
+@JsonClass(generateAdapter = true)
+data class CdcLocationData(
+    val latitude: Double,
+    val longitude: Double,
+    val accuracy: Float? = null,
+    val timestamp: Long
+)
+
+@JsonClass(generateAdapter = true)
+data class CdcSystemInfo(
+    val totalMemory: Long? = null,
+    val availableMemory: Long? = null,
+    val totalStorage: Long? = null,
+    val availableStorage: Long? = null,
+    val cpuUsage: Float? = null,
+    val networkType: String? = null
+)
+
+@JsonClass(generateAdapter = true)
+data class CdcDeviceRegisterInfoRequest(
+    val deviceInfo: CdcDeviceInfoDetail,
+    val userInfo: CdcUserInfoDetail? = null,
+    val contractInfo: CdcContractInfoDetail? = null,
+    val attestationData: CdcAttestationDataDetail? = null
+)
+
+@JsonClass(generateAdapter = true)
+data class CdcDeviceInfoDetail(
+    val manufacturer: String,
+    val model: String,
+    val androidVersion: String,
+    val apiLevel: Int,
+    val buildNumber: String,
+    val serialNumber: String? = null,
+    val imei: String? = null,
+    val screenResolution: String? = null,
+    val ramSize: Long? = null,
+    val storageSize: Long? = null
+)
+
+@JsonClass(generateAdapter = true)
+data class CdcUserInfoDetail(
+    val userId: String? = null,
+    val name: String? = null,
+    val email: String? = null,
+    val phoneNumber: String? = null,
+    val documentNumber: String? = null
+)
+
+@JsonClass(generateAdapter = true)
+data class CdcContractInfoDetail(
+    val contractCode: String,
+    val contractType: String? = null,
+    val startDate: String? = null,
+    val endDate: String? = null,
+    val status: String? = null
+)
+
+@JsonClass(generateAdapter = true)
+data class CdcAttestationDataDetail(
+    val attestationToken: String? = null,
+    val publicKey: String? = null,
+    val nonce: String? = null,
+    val signature: String? = null
+)
+
+
+@JsonClass(generateAdapter = true)
+data class CdcBlockingPolicyDetail(
+    val level: String, // "none", "partial", "full"
+    val reason: String? = null,
+    val allowedActions: List<String>? = null,
+    val blockedPackages: List<String>? = null,
+    val expiresAt: Long? = null
+)
+
+@JsonClass(generateAdapter = true)
+data class CdcDeviceConfigurationDetail(
+    val syncInterval: Long = 300000, // 5 minutes default
+    val locationTracking: Boolean = false,
+    val appMonitoring: Boolean = false,
+    val biometryRequired: Boolean = false,
+    val maxIdleTime: Long? = null,
+    val allowedTimeRange: CdcTimeRange? = null
+)
+
+@JsonClass(generateAdapter = true)
+data class CdcTimeRange(
+    val startHour: Int,
+    val endHour: Int,
+    val timezone: String? = null
+)
+
+@JsonClass(generateAdapter = true)
+data class CdcDeviceSyncResponse(
+    val success: Boolean,
+    val message: String? = null,
+    val serverTimestamp: Long,
+    val nextSyncIn: Long? = null,
+    val configuration: CdcDeviceConfigurationDetail? = null,
+    val actions: List<CdcDeviceActionDetail>? = null
+)
+
+data class CdcDeviceActionDetail(
+    val type: String, // "update", "block", "notify", "collect_data"
+    val parameters: Map<String, Any>? = null,
+    val priority: String = "normal", // "low", "normal", "high", "urgent"
+    val expiresAt: Long? = null
+)
+
+@JsonClass(generateAdapter = true)
+data class CdcDeviceRegisterInfoResponse(
+    val success: Boolean,
+    val message: String? = null,
+    val registrationId: String? = null,
+    val status: String, // "registered", "pending", "failed"
+    val deviceFingerprint: String? = null,
+    val assignedContract: String? = null,
+    val nextSteps: List<String>? = null
+)
+
+@JsonClass(generateAdapter = true)
+data class CdcProvisioningQrResponse(
+    val success: Boolean,
+    val message: String? = null,
+    val qrCode: String? = null, // Base64 encoded QR code image
+    val qrData: String? = null, // Raw QR code data
+    val expiresAt: Long? = null,
+    val provisioningUrl: String? = null
 )
 
 // Type aliases to match task requirements

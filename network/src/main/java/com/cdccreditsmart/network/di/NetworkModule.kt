@@ -167,8 +167,25 @@ object NetworkModule {
     fun provideSecureRetrofit(
         retrofitFactory: RetrofitFactory
     ): Retrofit {
-        val baseUrl = NetworkConfig.BASE_URL // In production, use BuildConfig.BASE_URL
-        val isDebugMode = true // In production, use BuildConfig.DEBUG
+        // Use proper BuildConfig for environment-specific configuration
+        val baseUrl = try {
+            // Try to get BASE_URL from app BuildConfig
+            val buildConfigClass = Class.forName("com.cdccreditsmart.app.BuildConfig")
+            val baseUrlField = buildConfigClass.getField("BASE_URL")
+            baseUrlField.get(null) as String
+        } catch (e: Exception) {
+            // Fallback to NetworkConfig if BuildConfig is not available
+            NetworkConfig.BASE_URL_DEBUG // Use debug URL as safe fallback
+        }
+        
+        val isDebugMode = try {
+            val buildConfigClass = Class.forName("com.cdccreditsmart.app.BuildConfig")
+            val debugField = buildConfigClass.getField("DEBUG")
+            debugField.getBoolean(null)
+        } catch (e: Exception) {
+            true // Safe fallback to debug mode
+        }
+        
         return retrofitFactory.createSecureRetrofit(baseUrl, isDebugMode)
     }
     
@@ -181,7 +198,15 @@ object NetworkModule {
     fun provideBasicRetrofit(
         retrofitFactory: RetrofitFactory
     ): Retrofit {
-        val baseUrl = NetworkConfig.BASE_URL // In production, use BuildConfig.BASE_URL
+        // Use proper BuildConfig for environment-specific configuration
+        val baseUrl = try {
+            val buildConfigClass = Class.forName("com.cdccreditsmart.app.BuildConfig")
+            val baseUrlField = buildConfigClass.getField("BASE_URL")
+            baseUrlField.get(null) as String
+        } catch (e: Exception) {
+            NetworkConfig.BASE_URL_DEBUG // Use debug URL as safe fallback
+        }
+        
         return retrofitFactory.createBasicRetrofit(baseUrl)
     }
     
