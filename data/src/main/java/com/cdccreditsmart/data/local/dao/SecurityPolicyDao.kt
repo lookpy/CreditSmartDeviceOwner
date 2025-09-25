@@ -2,9 +2,9 @@ package com.cdccreditsmart.data.local.dao
 
 import androidx.room.*
 import androidx.room.Query
-import com.cdccreditsmart.device.security.model.ActiveSecurityPolicyEntity
-import com.cdccreditsmart.device.security.model.SecurityPolicyHistoryEntity
-import com.cdccreditsmart.device.security.model.PolicyConfigurationEntity
+import com.cdccreditsmart.data.local.entity.ActiveSecurityPolicyEntity
+import com.cdccreditsmart.data.local.entity.SecurityPolicyHistoryEntity
+import com.cdccreditsmart.data.local.entity.PolicyConfigurationEntity
 import kotlinx.coroutines.flow.Flow
 
 /**
@@ -98,7 +98,7 @@ interface SecurityPolicyDao {
         WHERE contractId = :contractId 
         GROUP BY securityLevel
     """)
-    suspend fun getPolicyLevelUsageStats(contractId: String): Map<Int, Int>
+    suspend fun getPolicyLevelUsageStats(contractId: String): List<PolicyLevelStats>
 
     @Query("""
         SELECT * FROM security_policy_history 
@@ -122,3 +122,11 @@ interface SecurityPolicyDao {
     """)
     suspend fun updateNextEvaluationTime(contractId: String, nextTime: Long)
 }
+
+/**
+ * Data class para estatísticas de nível de política
+ */
+data class PolicyLevelStats(
+    val securityLevel: Int,
+    val count: Int
+)

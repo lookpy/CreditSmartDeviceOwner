@@ -7,6 +7,7 @@ import com.cdccreditsmart.data.local.entity.DeviceStatusEntity
 import com.cdccreditsmart.data.local.entity.toDomain as entityToDomain
 import com.cdccreditsmart.data.local.entity.toEntity as toEntityModel
 import com.cdccreditsmart.data.mapper.toDomain as networkToDomain
+import com.cdccreditsmart.data.mapper.toDomain
 import com.cdccreditsmart.data.local.entity.InstallmentEntity
 import com.cdccreditsmart.domain.model.DeviceBinding
 import com.cdccreditsmart.domain.model.Installment
@@ -159,10 +160,10 @@ class DeviceRepositoryImpl @Inject constructor(
         
         // Then try to refresh from network
         try {
-            val response = deviceApiService.getDeviceStatus(deviceId)
+            val response = deviceApiService.getDeviceStatusBySerial(deviceId)
             
             if (response.isSuccessful && response.body() != null) {
-                val deviceStatus = response.body()!!.networkToDomain()
+                val deviceStatus = response.body()!!.toDomain()
                 
                 // Update cache with proper entity mapping
                 val entity = DeviceStatusEntity(

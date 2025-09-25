@@ -7,7 +7,6 @@ import androidx.room.TypeConverters
 import android.content.Context
 import com.cdccreditsmart.data.local.entity.*
 import com.cdccreditsmart.data.local.dao.*
-import com.cdccreditsmart.device.security.model.*
 
 @Database(
     entities = [

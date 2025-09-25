@@ -11,6 +11,7 @@ import com.cdccreditsmart.domain.model.BindingStatus
 
 // Network API imports with aliases to resolve conflicts
 import com.cdccreditsmart.network.api.DeviceStatusResponse
+import com.cdccreditsmart.network.api.CdcDeviceStatusResponse
 import com.cdccreditsmart.network.api.DeviceConfiguration as NetworkDeviceConfiguration
 import com.cdccreditsmart.network.api.InstallmentInfo
 import com.cdccreditsmart.network.api.InstallmentsResponse
@@ -58,6 +59,46 @@ fun DeviceStatusResponse.toDomain(): DeviceStatus = try {
         configuration = DomainDeviceConfiguration(
             updateCheckInterval = 3600000L, // 1 hour default
             heartbeatInterval = 300000L, // 5 minutes default
+            logLevel = "ERROR",
+            featureFlags = emptyMap()
+        )
+    )
+}
+
+/**
+ * Converts CdcDeviceStatusResponse to DeviceStatus domain model.
+ * Maps CDC device status information from API response to domain model.
+ */
+fun CdcDeviceStatusResponse.toDomain(): DeviceStatus = try {
+    DeviceStatus(
+        deviceId = this.deviceId.safeString(),
+        status = this.status.safeString(),
+        contractId = null, // CDC API doesn't provide contractId in this response
+        blockingLevel = if (this.isBlocked) "full" else "none",
+        blockingReason = if (this.hasBlockReason) "Payment overdue" else null,
+        allowedActions = if (this.isBlocked) emptyList() else listOf("all"),
+        blockedPackages = if (this.isBlocked) listOf("*") else emptyList(),
+        lastHeartbeat = System.currentTimeMillis(), // CDC API doesn't provide this, use current time
+        configuration = DomainDeviceConfiguration(
+            updateCheckInterval = 3600000L, // 1 hour default
+            heartbeatInterval = 300000L, // 5 minutes default
+            logLevel = "INFO",
+            featureFlags = emptyMap()
+        )
+    )
+} catch (e: Exception) {
+    DeviceStatus(
+        deviceId = this.deviceId ?: "unknown",
+        status = "error",
+        contractId = null,
+        blockingLevel = null,
+        blockingReason = "Error mapping CDC device status",
+        allowedActions = emptyList(),
+        blockedPackages = emptyList(),
+        lastHeartbeat = 0L,
+        configuration = DomainDeviceConfiguration(
+            updateCheckInterval = 3600000L,
+            heartbeatInterval = 300000L,
             logLevel = "ERROR",
             featureFlags = emptyMap()
         )

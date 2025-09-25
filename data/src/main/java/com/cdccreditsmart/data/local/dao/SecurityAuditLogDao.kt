@@ -2,7 +2,7 @@ package com.cdccreditsmart.data.local.dao
 
 import androidx.room.*
 import androidx.room.Query
-import com.cdccreditsmart.device.security.model.SecurityAuditLogEntity
+import com.cdccreditsmart.data.local.entity.SecurityAuditLogEntity
 import kotlinx.coroutines.flow.Flow
 
 /**
@@ -106,7 +106,7 @@ interface SecurityAuditLogDao {
         GROUP BY eventType 
         ORDER BY count DESC
     """)
-    suspend fun getEventTypeStatistics(contractId: String, startTime: Long): Map<String, Int>
+    suspend fun getEventTypeStatistics(contractId: String, startTime: Long): List<EventTypeStats>
 
     @Query("""
         SELECT eventCategory, COUNT(*) as count 
@@ -115,7 +115,7 @@ interface SecurityAuditLogDao {
         GROUP BY eventCategory 
         ORDER BY count DESC
     """)
-    suspend fun getEventCategoryStatistics(contractId: String): Map<String, Int>
+    suspend fun getEventCategoryStatistics(contractId: String): List<EventCategoryStats>
 
     @Query("""
         SELECT COUNT(*) as total,
@@ -163,3 +163,19 @@ data class AuditStats(
     val successRate: Double
         get() = if (total > 0) (successful.toDouble() / total) * 100 else 0.0
 }
+
+/**
+ * Data class para estatísticas de tipo de evento
+ */
+data class EventTypeStats(
+    val eventType: String,
+    val count: Int
+)
+
+/**
+ * Data class para estatísticas de categoria de evento
+ */
+data class EventCategoryStats(
+    val eventCategory: String,
+    val count: Int
+)

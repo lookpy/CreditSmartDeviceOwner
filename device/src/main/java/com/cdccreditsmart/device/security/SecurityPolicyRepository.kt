@@ -4,7 +4,8 @@ import android.content.Context
 import android.util.Log
 import androidx.room.Room
 import com.cdccreditsmart.device.security.model.*
-import com.cdccreditsmart.data.database.CDCDatabase
+import com.cdccreditsmart.data.local.entity.*
+import com.cdccreditsmart.data.local.CDCDatabase
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
