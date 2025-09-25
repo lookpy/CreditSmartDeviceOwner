@@ -58,6 +58,7 @@ android {
 
 dependencies {
     implementation(project(":domain"))
+    implementation(project(":network")) // Required for DeviceCommandWebSocketService injection
     
     // Core Android
     implementation("androidx.core:core-ktx:1.15.0")
