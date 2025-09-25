@@ -1,0 +1,290 @@
+2025-09-25 03:55:16.541  1387-1441  libPerfCtl              pid-1387                             I  xgfGetFPS pid:12094 fps:-1
+2025-09-25 03:55:16.542  1387-1441  AppThermalMode          pid-1387                             I  [perfNotifyThermalState] hdl:0
+2025-09-25 03:55:16.542  1387-1441  AppThermalMode          pid-1387                             I  [findAppThermalIdx] Fail: appThermalModeEnable: 0,currentFPS: -1,fg->pid:12094
+2025-09-25 03:55:16.542  1387-1441  AppThermalMode          pid-1387                             I  [perfNotifyThermalState] appThermalIdx -1:
+2025-09-25 03:55:16.829  2130-2139  [BIP]                   pid-2130                             I   [BIP NL] event newaddr match dev 0
+2025-09-25 03:55:16.829  2130-2139  [BIP]                   pid-2130                             I   [BIP NL] IPv6: *:*:*:*:*:*:*:*
+2025-09-25 03:55:16.829  2130-2139  [BIP]                   pid-2130                             I   [BIP NL] addr state is 3, ipv4=*.*.*.*, ipv6=*:*:*:*:*:*:*:*
+2025-09-25 03:55:16.829  2130-2139  [BIP]                   pid-2130                             I   [BIP NL] event newaddr match dev 0
+2025-09-25 03:55:16.829  2130-2139  [BIP]                   pid-2130                             I   [BIP NL] IPv6: *:*:*:*:*:*:*:*
+2025-09-25 03:55:16.829  2130-2139  [BIP]                   pid-2130                             I   [BIP NL] addr state is 3, ipv4=*.*.*.*, ipv6=*:*:*:*:*:*:*:*
+2025-09-25 03:55:16.833  3431-30363 AlarmManager            pid-3431                             W  Unrecognized alarm listener com.android.networkstack.android.net.ip.IpClientLinkObserver$Dhcp6PdPreferredPrefixAlarmListener@c4894ed
+2025-09-25 03:55:17.048  2058-2545  EventHub                pid-2058                             D  getevents BTN_TOUCH DOWN
+2025-09-25 03:55:17.050  1387-1413  AppFlingMode            pid-1387                             D  [CheckAppFlingHint] 25 com.cdccreditsmart.app.debug -1
+2025-09-25 03:55:17.052  1387-1442  libPowerHal             pid-1387                             E  [getCPUFreq] error cid:2, nClusterNum:2
+2025-09-25 03:55:17.053 12094-12094 TextSelection           com.cdccreditsmart.app.debug         D  onUseCache cache=false
+2025-09-25 03:55:17.053  5960-5960  TouchSliderConsumer     pid-5960                             D  onInputEvent : ACTION_DOWN
+2025-09-25 03:55:17.054  5960-5960  TouchSliderConsumer     pid-5960                             D  consumeTouchEvent : 484.0 1798.75 RectF(1035.0, 294.0, 1083.0, 660.0) 
+2025-09-25 03:55:17.055  2058-2544  WindowManager           pid-2058                             D  onUserActivity: mGestureSleepRunnable remove
+2025-09-25 03:55:17.055  1746-1767  uas-service             pid-1746                             D  set scene=0x10 success
+2025-09-25 03:55:17.056  1387-1459  libPowerHal             pid-1387                             I  [setClusterFreq] mtkpower@1.0-se: sysfs_freq set cpu freq: 1800000 -1 2000000 -1 
+2025-09-25 03:55:17.060  2058-2088  DisplayDeviceRepository pid-2058                             I  Display device changed render timings: "Tela integrada", renderFrameRate=60.000004, presentationDeadlineNanos=28600000, appVsyncOffsetNanos=2400001
+2025-09-25 03:55:17.062  2058-2088  Griffin/DeviceState     pid-2058                             I  virtualDisplayPackageName :{}
+2025-09-25 03:55:17.062  2058-2088  DisplayManagerService   pid-2058                             D  Ignore redundant display event 0/2 to 10333/2877
+2025-09-25 03:55:17.063  2058-2096  Magellan                pid-2058                             D  fallbackReportThrottlingIfNeeded return. 
+2025-09-25 03:55:17.063  2058-2088  DisplayManagerService   pid-2058                             D  Ignore redundant display event 0/2 to 10350/8872
+2025-09-25 03:55:17.063  2058-2088  DisplayManagerService   pid-2058                             D  Ignore redundant display event 0/2 to 10248/11135
+2025-09-25 03:55:17.063  2058-2088  DisplayManagerService   pid-2058                             D  Ignore redundant display event 0/2 to 10182/11525
+2025-09-25 03:55:17.063  2058-2088  DisplayManagerService   pid-2058                             D  Ignore redundant display event 0/2 to 10356/12230
+2025-09-25 03:55:17.063  2058-2088  DisplayManagerService   pid-2058                             D  Ignore redundant display event 0/2 to 10317/12249
+2025-09-25 03:55:17.063  2058-3019  AudioSystem             pid-2058                             D  +setParameters(): screen_state=on 
+2025-09-25 03:55:17.064  2058-2088  DisplayManagerService   pid-2058                             D  Ignore redundant display event 0/2 to 10351/18175
+2025-09-25 03:55:17.064  2058-2088  DisplayManagerService   pid-2058                             D  Ignore redundant display event 0/2 to 10258/26311
+2025-09-25 03:55:17.064  2058-2088  DisplayManagerService   pid-2058                             D  Ignore redundant display event 0/2 to 10148/27371
+2025-09-25 03:55:17.064  2058-2088  DisplayManagerService   pid-2058                             D  Ignore redundant display event 0/2 to 10177/28987
+2025-09-25 03:55:17.064  2058-2088  DisplayManagerService   pid-2058                             D  Ignore redundant display event 0/2 to 10107/29340
+2025-09-25 03:55:17.065  5960-5960  SmartPanelService       pid-5960                             I  mDisplayListener onDisplayChanged
+2025-09-25 03:55:17.065  1431-432   AudioFlinger            pid-1431                             I  setParameters: filtered keyvalue screen_state=on
+2025-09-25 03:55:17.065  1431-432   AudioFlinger            pid-1431                             I  +mAudioHwDevs(primary)->setParameters(): screen_state=on
+2025-09-25 03:55:17.065  3533-3533  TQRS_Plugin             pid-3533                             D  screenState on 
+2025-09-25 03:55:17.066  1357-3763  AudioALSAHardware       pid-1357                             D  +setParameters(): screen_state=on
+2025-09-25 03:55:17.066  1357-3763  AudioALSAStreamOut      pid-1357                             D  +setScreenState(), flag 2, mode 1
+2025-09-25 03:55:17.066  1357-3763  AudioALSAStreamOut      pid-1357                             D  +setScreenState(), flag 8, mode 1
+2025-09-25 03:55:17.066  1357-3763  AudioALSAStreamOut      pid-1357                             D  +setScreenState(), flag 4, mode 1
+2025-09-25 03:55:17.066  1357-3763  AudioALSAStreamOut      pid-1357                             D  +setScreenState(), flag 32768, mode 1
+2025-09-25 03:55:17.066  1357-3763  AudioALSAStreamOut      pid-1357                             D  +setScreenState(), flag 65536, mode 1
+2025-09-25 03:55:17.066  1357-3763  AudioALSAHardware       pid-1357                             D  -setParameters(): screen_state=on
+2025-09-25 03:55:17.067  1431-432   AudioFlinger            pid-1431                             I  -mAudioHwDevs(primary)->setParameters(): screen_state=on
+2025-09-25 03:55:17.067  1431-432   AudioFlinger            pid-1431                             I  +mAudioHwDevs(bluetooth)->setParameters(): screen_state=on
+2025-09-25 03:55:17.067  1431-432   AudioFlinger            pid-1431                             I  -mAudioHwDevs(bluetooth)->setParameters(): screen_state=on
+2025-09-25 03:55:17.068  1431-432   AudioFlinger            pid-1431                             I  +mAudioHwDevs(usb)->setParameters(): screen_state=on
+2025-09-25 03:55:17.068  1431-432   AudioFlinger            pid-1431                             I  -mAudioHwDevs(usb)->setParameters(): screen_state=on
+2025-09-25 03:55:17.069  1431-432   AudioFlinger            pid-1431                             I  +mAudioHwDevs(r_submix)->setParameters(): screen_state=on
+2025-09-25 03:55:17.069  1431-432   AudioFlinger            pid-1431                             I  -mAudioHwDevs(r_submix)->setParameters(): screen_state=on
+2025-09-25 03:55:17.069  1431-432   TranFlinger             pid-1431                             E  setPareters is is 0
+2025-09-25 03:55:17.087  1451-1451  DisplayModeController   pid-1451                             D  setDesiredMode 0 {mode={fps=120.00 Hz, modePtr={id=0, vsyncRate=120.00 Hz, peakRefreshRate=120.00 Hz}}, emitEvent=true, force=false}
+2025-09-25 03:55:17.087  1451-1451  Scheduler               pid-1451                             D  MtkOverrideDuration: update vsync 120
+2025-09-25 03:55:17.087  1451-1451  SurfaceFlinger          pid-1451                             E  MtkDuration override mode is disabled
+2025-09-25 03:55:17.087  1451-1451  Scheduler               pid-1451                             D  MtkOverrideDuration: reset override duration
+2025-09-25 03:55:17.087  1451-1451  PowerHalWrapper         pid-1451                             I  updateFps(): 120
+2025-09-25 03:55:17.088  1366-1366  hwcomposer              pid-1366                             I  [HWC] (0) displaySetActiveConfig config:0  
+2025-09-25 03:55:17.089  2058-2088  DisplayDeviceRepository pid-2058                             I  Display device changed: DisplayDeviceInfo{"Tela integrada": uniqueId="local:0", 1080 x 2436, modeId 2, renderFrameRate 60.000004, defaultModeId 1, userPreferredModeId -1, supportedModes [{id=1, width=1080, height=2436, fps=120.00001, vsync=120.00001, synthetic=false, alternativeRefreshRates=[60.0], supportedHdrTypes=[]}, {id=2, width=1080, height=2436, fps=60.0, vsync=60.0, synthetic=false, alternativeRefreshRates=[120.00001], supportedHdrTypes=[]}], colorMode 0, supportedColorModes [0, 7, 9], hdrCapabilities HdrCapabilities{mSupportedHdrTypes=[], mMaxLuminance=500.0, mMaxAverageLuminance=500.0, mMinLuminance=0.0}, allmSupported false, gameContentTypeSupported false, density 440, 392.783 x 392.828 dpi, appVsyncOff 2400001, presDeadline 28600000, cutout DisplayCutout{insets=Rect(0, 99 - 0, 0) waterfall=Insets{left=0, top=0, right=0, bottom=0} boundingRect={Bounds=[Rect(0, 0 - 0, 0), Rect(474, 0 - 606, 99), Rect(0, 0 - 0, 0), Rect(0, 0 - 0, 0)]} cutoutPathParserInfo={CutoutPathParserInfo{displayWidth=1080 displayHeight=2436 physicalDisplayWidth=1080 physicalDisplayHeight=2436 density={2.75} cutoutSpec={M -24,0 L -24,36 L 24,36 L 24,0 Z @dp} rotation={0} scale={1.0} physicalPixelDisplaySizeRatio={1.0}}} sideOverrides={}}, touch INTERNAL, rotation 0, type INTERNAL, address {port=0}, deviceProductInfo null, state ON, committedState ON, frameRateOverride {uid=1000 frameRateHz=60.000004} {uid=10153 frameRateHz=120.00001} {uid=10382 frameRateHz=120.00001} , brightnessMinimum 0.0, brightnessMaximum 1.0, brightnessDefault 0.2, hdrSdrRatio NaN, FLAG_ALLOWED_TO_BE_DEFAULT_DISPLAY, FLAG_ROTATES_WITH_CONTENT, FLAG_SECURE, FLAG_SUPPORTS_PROTECTED_BUFFERS, FLAG_TRUSTED, installOrientation 0, displayShape DisplayShape{ spec=596679847 displayWidth=1080 displayHeight=2436 physicalPixelDisplaySizeRatio=1.0 rotation=0 offsetX=0 offsetY=0 scale=1.0}}
+2025-09-25 03:55:17.090  1366-1366  hwcomposer              pid-1366                             I  [HWCDisplay] [Display_0 (type:1)] fps:0.208570,dur:4794.56,max:4794.56,min:4794.56  
+2025-09-25 03:55:17.091  2058-2088  Griffin/DeviceState     pid-2058                             I  virtualDisplayPackageName :{}
+2025-09-25 03:55:17.102  1451-1451  PowerHalWrapper         pid-1451                             I  updateFps(): 120
+2025-09-25 03:55:17.103  2058-2088  DisplayDeviceRepository pid-2058                             I  Display device changed render timings: "Tela integrada", renderFrameRate=120.00001, presentationDeadlineNanos=11933334, appVsyncOffsetNanos=2399998
+2025-09-25 03:55:17.103  1451-1451  PowerHalWrapper         pid-1451                             I  updateFps(): 120
+2025-09-25 03:55:17.104  2058-2088  Griffin/DeviceState     pid-2058                             I  virtualDisplayPackageName :{}
+2025-09-25 03:55:17.105  2058-2088  DisplayManagerService   pid-2058                             D  Ignore redundant display event 0/2 to 10333/2877
+2025-09-25 03:55:17.105  2058-3019  AudioSystem             pid-2058                             D  +setParameters(): screen_state=on 
+2025-09-25 03:55:17.105  2058-2096  Magellan                pid-2058                             D  fallbackReportThrottlingIfNeeded return. 
+2025-09-25 03:55:17.105  2058-2088  DisplayManagerService   pid-2058                             D  Ignore redundant display event 0/2 to 10350/8872
+2025-09-25 03:55:17.105  2058-2088  DisplayManagerService   pid-2058                             D  Ignore redundant display event 0/2 to 10248/11135
+2025-09-25 03:55:17.105  2058-2088  DisplayManagerService   pid-2058                             D  Ignore redundant display event 0/2 to 10182/11525
+2025-09-25 03:55:17.106  2058-2088  DisplayManagerService   pid-2058                             D  Ignore redundant display event 0/2 to 10356/12230
+2025-09-25 03:55:17.106  2058-2088  DisplayManagerService   pid-2058                             D  Ignore redundant display event 0/2 to 10317/12249
+2025-09-25 03:55:17.106  1431-432   AudioFlinger            pid-1431                             I  setParameters: filtered keyvalue screen_state=on
+2025-09-25 03:55:17.106  1431-432   AudioFlinger            pid-1431                             I  +mAudioHwDevs(primary)->setParameters(): screen_state=on
+2025-09-25 03:55:17.106  2058-2088  DisplayManagerService   pid-2058                             D  Ignore redundant display event 0/2 to 10351/18175
+2025-09-25 03:55:17.106  2058-2088  DisplayManagerService   pid-2058                             D  Ignore redundant display event 0/2 to 10258/26311
+2025-09-25 03:55:17.106  2058-2088  DisplayManagerService   pid-2058                             D  Ignore redundant display event 0/2 to 10148/27371
+2025-09-25 03:55:17.106  2058-2088  DisplayManagerService   pid-2058                             D  Ignore redundant display event 0/2 to 10177/28987
+2025-09-25 03:55:17.106  2058-2088  DisplayManagerService   pid-2058                             D  Ignore redundant display event 0/2 to 10107/29340
+2025-09-25 03:55:17.106  1357-1409  AudioALSAHardware       pid-1357                             D  +setParameters(): screen_state=on
+2025-09-25 03:55:17.106  5960-5960  SmartPanelService       pid-5960                             I  mDisplayListener onDisplayChanged
+2025-09-25 03:55:17.107  1357-1409  AudioALSAStreamOut      pid-1357                             D  +setScreenState(), flag 2, mode 1
+2025-09-25 03:55:17.107  1357-1409  AudioALSAStreamOut      pid-1357                             D  +setScreenState(), flag 8, mode 1
+2025-09-25 03:55:17.107  1357-1409  AudioALSAStreamOut      pid-1357                             D  +setScreenState(), flag 4, mode 1
+2025-09-25 03:55:17.107  1357-1409  AudioALSAStreamOut      pid-1357                             D  +setScreenState(), flag 32768, mode 1
+2025-09-25 03:55:17.107  1357-1409  AudioALSAStreamOut      pid-1357                             D  +setScreenState(), flag 65536, mode 1
+2025-09-25 03:55:17.107  1357-1409  AudioALSAHardware       pid-1357                             D  -setParameters(): screen_state=on
+2025-09-25 03:55:17.107  1431-432   AudioFlinger            pid-1431                             I  -mAudioHwDevs(primary)->setParameters(): screen_state=on
+2025-09-25 03:55:17.107  1431-432   AudioFlinger            pid-1431                             I  +mAudioHwDevs(bluetooth)->setParameters(): screen_state=on
+2025-09-25 03:55:17.108  1431-432   AudioFlinger            pid-1431                             I  -mAudioHwDevs(bluetooth)->setParameters(): screen_state=on
+2025-09-25 03:55:17.108  1431-432   AudioFlinger            pid-1431                             I  +mAudioHwDevs(usb)->setParameters(): screen_state=on
+2025-09-25 03:55:17.109  1431-432   AudioFlinger            pid-1431                             I  -mAudioHwDevs(usb)->setParameters(): screen_state=on
+2025-09-25 03:55:17.109  1431-432   AudioFlinger            pid-1431                             I  +mAudioHwDevs(r_submix)->setParameters(): screen_state=on
+2025-09-25 03:55:17.109  1431-432   AudioFlinger            pid-1431                             I  -mAudioHwDevs(r_submix)->setParameters(): screen_state=on
+2025-09-25 03:55:17.109  1431-432   TranFlinger             pid-1431                             E  setPareters is is 0
+2025-09-25 03:55:17.111  3533-3533  TQRS_Plugin             pid-3533                             D  screenState on 
+2025-09-25 03:55:17.119  1387-1459  libPowerHal             pid-1387                             I  [PD] MTKPOWER_HINT_APP_TOUCH update cmd:3408b00 param:0
+2025-09-25 03:55:17.120  1746-1767  uas-service             pid-1746                             D  set scene=0x80000010 success
+2025-09-25 03:55:17.119  7557-8171  ScreenTouchCollector    pid-7557                             I  resetTouchPara:reason= InputEvent ACTION_UP or ACTION_CANCEL
+2025-09-25 03:55:17.120  5802-30359 ScreenTouchCollector    pid-5802                             I  resetTouchPara:reason= InputEvent ACTION_UP or ACTION_CANCEL
+2025-09-25 03:55:17.164  1832-1937  HfLooper                pid-1832                             I  hal step counter = 4983
+2025-09-25 03:55:17.164  5802-5802  Kolun_AI                pid-5802                             I  StepCount:fuseSteps() currentHour: 3, fuseSteps: 0, sensorSteps: 0, mSensorSteps[3]: 0, currentHourSteps: 0, mTodayTotalCount: 0
+2025-09-25 03:55:17.165  5802-5802  Kolun_AI                pid-5802                             I  StepCount:fuseSteps() currentHour: 3, fuseSteps: 0, sensorSteps: 0, mSensorSteps[3]: 0, currentHourSteps: 0, mTodayTotalCount: 0
+2025-09-25 03:55:17.165  5802-5802  Kolun_AI                pid-5802                             I  StepCount:checkAchieveGoal() weight: 60.0, steps: 0, mSportCalories: 0, stepGoal: 4000, calories: 0, mCaloriesGoal: 300, mSportDuration: 0, mDurationGoal: 30, isAllDateChange: true
+2025-09-25 03:55:17.165  5802-5802  Kolun_AI                pid-5802                             I  StepCount:checkAchieveGoal() isStepGoal: false, isStepDateChange: true
+2025-09-25 03:55:17.165  5802-5802  Kolun_AI                pid-5802                             I  StepCount:checkAchieveGoal() isCaloriesGoal: false, isCaloriesDateChange: true
+2025-09-25 03:55:17.165  5802-5802  Kolun_AI                pid-5802                             I  StepCount:checkAchieveGoal() isDurationGoal: false, isDurationDateChange: true
+2025-09-25 03:55:17.236  1451-1451  BufferQueueProducer     pid-1451                             I  [com.cdccreditsmart.app.debug/com.cdccreditsmart.app.presentation.MainActivity#27657](this:0xb4000075e448a7d8,id:-1,api:0,p:-1,c:1451) queueBuffer: fps=0.25 dur=8118.33 max=8109.81 min=8.52
+2025-09-25 03:55:17.257  1387-1459  mtkpower@impl           pid-1387                             I  [powerd_req] TIMER_MSG_PERF_LOCK_TIMEOUT hdl:43992
+2025-09-25 03:55:17.258  1387-1459  libPowerHal             pid-1387                             I  [setClusterFreq] mtkpower@1.0-se: sysfs_freq set cpu freq: -1 -1 -1 -1 
+2025-09-25 03:55:17.258  1387-1459  libPowerHal             pid-1387                             I  [PD] mtkpower@1.0-se update cmd:1408300 param:0
+2025-09-25 03:55:17.269  1474-1489  ccci_mdinit             pid-1474                             D  (1):monitor_time_update_thread round:40479 ########
+2025-09-25 03:55:17.528  2058-2996  TranWifiSm...Controller pid-2058                             I  start current network monitor 
+2025-09-25 03:55:17.529  2058-2996  TranWifiSm...Controller pid-2058                             I  userIgnored :false isScoredCurrentNetwork :true
+2025-09-25 03:55:17.529  2058-2996  TranWifiSm...Controller pid-2058                             I  mCurrentNetwork :244 SSID :"Casa Darlan"
+2025-09-25 03:55:17.533  2058-2996  WifiNetworkQuality      pid-2058                             I  current rssi is sufficient
+2025-09-25 03:55:17.533  2058-2996  TranWifiSm...Controller pid-2058                             I  mNoCandidateCount : -1
+2025-09-25 03:55:17.533  2058-2996  TranWifiSm...Controller pid-2058                             I  ====>>rssi :-42
+2025-09-25 03:55:17.542  1387-1441  libPerfCtl              pid-1387                             I  xgfGetFPS pid:12094 fps:-1
+2025-09-25 03:55:17.542  1387-1441  AppThermalMode          pid-1387                             I  [perfNotifyThermalState] hdl:0
+2025-09-25 03:55:17.542  1387-1441  AppThermalMode          pid-1387                             I  [findAppThermalIdx] Fail: appThermalModeEnable: 0,currentFPS: -1,fg->pid:12094
+2025-09-25 03:55:17.542  1387-1441  AppThermalMode          pid-1387                             I  [perfNotifyThermalState] appThermalIdx -1:
+2025-09-25 03:55:17.581  2058-2545  EventHub                pid-2058                             D  getevents BTN_TOUCH DOWN
+2025-09-25 03:55:17.582  1387-1413  AppFlingMode            pid-1387                             D  [CheckAppFlingHint] 25 com.cdccreditsmart.app.debug -1
+2025-09-25 03:55:17.584  1387-1442  libPowerHal             pid-1387                             E  [getCPUFreq] error cid:2, nClusterNum:2
+2025-09-25 03:55:17.585 12094-12094 TextSelection           com.cdccreditsmart.app.debug         D  onUseCache cache=false
+2025-09-25 03:55:17.586  5960-5960  TouchSliderConsumer     pid-5960                             D  onInputEvent : ACTION_DOWN
+2025-09-25 03:55:17.586  5960-5960  TouchSliderConsumer     pid-5960                             D  consumeTouchEvent : 479.25 1763.75 RectF(1035.0, 294.0, 1083.0, 660.0) 
+2025-09-25 03:55:17.587  2058-2544  WindowManager           pid-2058                             D  onUserActivity: mGestureSleepRunnable remove
+2025-09-25 03:55:17.588  1746-1767  uas-service             pid-1746                             D  set scene=0x10 success
+2025-09-25 03:55:17.589  1387-1459  libPowerHal             pid-1387                             I  [setClusterFreq] mtkpower@1.0-se: sysfs_freq set cpu freq: 1800000 -1 2000000 -1 
+2025-09-25 03:55:17.654  1387-1459  libPowerHal             pid-1387                             I  [PD] MTKPOWER_HINT_APP_TOUCH update cmd:3408b00 param:0
+2025-09-25 03:55:17.654  1746-1767  uas-service             pid-1746                             D  set scene=0x80000010 success
+2025-09-25 03:55:17.654  5802-30359 ScreenTouchCollector    pid-5802                             I  resetTouchPara:reason= InputEvent ACTION_UP or ACTION_CANCEL
+2025-09-25 03:55:17.655  7557-8171  ScreenTouchCollector    pid-7557                             I  resetTouchPara:reason= InputEvent ACTION_UP or ACTION_CANCEL
+2025-09-25 03:55:17.790  1387-1459  mtkpower@impl           pid-1387                             I  [powerd_req] TIMER_MSG_PERF_LOCK_TIMEOUT hdl:43994
+2025-09-25 03:55:17.791  1387-1459  libPowerHal             pid-1387                             I  [setClusterFreq] mtkpower@1.0-se: sysfs_freq set cpu freq: -1 -1 -1 -1 
+2025-09-25 03:55:17.791  1387-1459  libPowerHal             pid-1387                             I  [PD] mtkpower@1.0-se update cmd:1408300 param:0
+2025-09-25 03:55:18.149  2058-2545  EventHub                pid-2058                             D  getevents BTN_TOUCH DOWN
+2025-09-25 03:55:18.150  1387-1413  AppFlingMode            pid-1387                             D  [CheckAppFlingHint] 25 com.cdccreditsmart.app.debug -1
+2025-09-25 03:55:18.152  1387-1442  libPowerHal             pid-1387                             E  [getCPUFreq] error cid:2, nClusterNum:2
+2025-09-25 03:55:18.153 12094-12094 TextSelection           com.cdccreditsmart.app.debug         D  onUseCache cache=false
+2025-09-25 03:55:18.154  5960-5960  TouchSliderConsumer     pid-5960                             D  onInputEvent : ACTION_DOWN
+2025-09-25 03:55:18.154  5960-5960  TouchSliderConsumer     pid-5960                             D  consumeTouchEvent : 471.0 1768.25 RectF(1035.0, 294.0, 1083.0, 660.0) 
+2025-09-25 03:55:18.155  2058-2544  WindowManager           pid-2058                             D  onUserActivity: mGestureSleepRunnable remove
+2025-09-25 03:55:18.156  1746-1767  uas-service             pid-1746                             D  set scene=0x10 success
+2025-09-25 03:55:18.157  1387-1459  libPowerHal             pid-1387                             I  [setClusterFreq] mtkpower@1.0-se: sysfs_freq set cpu freq: 1800000 -1 2000000 -1 
+2025-09-25 03:55:18.229  1387-1459  libPowerHal             pid-1387                             I  [PD] MTKPOWER_HINT_APP_TOUCH update cmd:3408b00 param:0
+2025-09-25 03:55:18.229  7557-8171  ScreenTouchCollector    pid-7557                             I  resetTouchPara:reason= InputEvent ACTION_UP or ACTION_CANCEL
+2025-09-25 03:55:18.229  1746-1767  uas-service             pid-1746                             D  set scene=0x80000010 success
+2025-09-25 03:55:18.229  5802-30359 ScreenTouchCollector    pid-5802                             I  resetTouchPara:reason= InputEvent ACTION_UP or ACTION_CANCEL
+2025-09-25 03:55:18.338  1451-1451  BufferQueueProducer     pid-1451                             I  [com.cdccreditsmart.app.debug/com.cdccreditsmart.app.presentation.MainActivity#27657](this:0xb4000075e448a7d8,id:-1,api:0,p:-1,c:1451) queueBuffer: fps=3.63 dur=1102.07 max=617.37 min=8.57
+2025-09-25 03:55:18.339  1366-1366  hwcomposer              pid-1366                             I  [HWCDisplay] [Display_0 (type:1)] fps:4.803585,dur:1249.07,max:617.00,min:9.09  
+2025-09-25 03:55:18.358  1387-1459  mtkpower@impl           pid-1387                             I  [powerd_req] TIMER_MSG_PERF_LOCK_TIMEOUT hdl:43996
+2025-09-25 03:55:18.359  1387-1459  libPowerHal             pid-1387                             I  [setClusterFreq] mtkpower@1.0-se: sysfs_freq set cpu freq: -1 -1 -1 -1 
+2025-09-25 03:55:18.359  1387-1459  libPowerHal             pid-1387                             I  [PD] mtkpower@1.0-se update cmd:1408300 param:0
+2025-09-25 03:55:18.531  2058-4929  LocationManagerService  pid-2058                             D  network provider added registration from 1000/com.transsion.kolun.aiservice/F4A71A9D -> Request[@+5s0ms BALANCED, WorkSource{1000 com.transsion.kolun.aiservice}] permissionLevel: 2 permitted: true
+2025-09-25 03:55:18.539  2058-4929  LocationManagerService  pid-2058                             D  onProviderEnabledChanged name: network enabled: false
+2025-09-25 03:55:18.542  1387-1441  libPerfCtl              pid-1387                             I  xgfGetFPS pid:12094 fps:-1
+2025-09-25 03:55:18.542  1387-1441  AppThermalMode          pid-1387                             I  [perfNotifyThermalState] hdl:0
+2025-09-25 03:55:18.542  1387-1441  AppThermalMode          pid-1387                             I  [findAppThermalIdx] Fail: appThermalModeEnable: 0,currentFPS: -1,fg->pid:12094
+2025-09-25 03:55:18.542  1387-1441  AppThermalMode          pid-1387                             I  [perfNotifyThermalState] appThermalIdx -1:
+2025-09-25 03:55:18.656  2058-2545  EventHub                pid-2058                             D  getevents BTN_TOUCH DOWN
+2025-09-25 03:55:18.658  1387-1413  AppFlingMode            pid-1387                             D  [CheckAppFlingHint] 25 com.cdccreditsmart.app.debug -1
+2025-09-25 03:55:18.659  1387-1442  libPowerHal             pid-1387                             E  [getCPUFreq] error cid:2, nClusterNum:2
+2025-09-25 03:55:18.660 12094-12094 TextSelection           com.cdccreditsmart.app.debug         D  onUseCache cache=false
+2025-09-25 03:55:18.661  5960-5960  TouchSliderConsumer     pid-5960                             D  onInputEvent : ACTION_DOWN
+2025-09-25 03:55:18.661  5960-5960  TouchSliderConsumer     pid-5960                             D  consumeTouchEvent : 476.75 1756.75 RectF(1035.0, 294.0, 1083.0, 660.0) 
+2025-09-25 03:55:18.662  2058-2544  WindowManager           pid-2058                             D  onUserActivity: mGestureSleepRunnable remove
+2025-09-25 03:55:18.662  1387-1459  libPowerHal             pid-1387                             I  [setClusterFreq] mtkpower@1.0-se: sysfs_freq set cpu freq: 1800000 -1 2000000 -1 
+2025-09-25 03:55:18.664  1746-1767  uas-service             pid-1746                             D  set scene=0x10 success
+2025-09-25 03:55:18.733  1372-1372  android.ha...ervice.mtk pid-1372                             I  fill_temperatures filterType1 name: SKIN type: SKIN throttlingStatus: NONE value: 26.428 ret_temps size 0
+2025-09-25 03:55:18.735  2058-2096  SettingsProvider        pid-2058                             V  name : tran_board_temperature appId : 1000
+2025-09-25 03:55:18.736  1387-1459  libPowerHal             pid-1387                             I  [PD] MTKPOWER_HINT_APP_TOUCH update cmd:3408b00 param:0
+2025-09-25 03:55:18.737  1746-1767  uas-service             pid-1746                             D  set scene=0x80000010 success
+2025-09-25 03:55:18.737  7557-8171  ScreenTouchCollector    pid-7557                             I  resetTouchPara:reason= InputEvent ACTION_UP or ACTION_CANCEL
+2025-09-25 03:55:18.737  5802-30359 ScreenTouchCollector    pid-5802                             I  resetTouchPara:reason= InputEvent ACTION_UP or ACTION_CANCEL
+2025-09-25 03:55:18.864  1387-1459  mtkpower@impl           pid-1387                             I  [powerd_req] TIMER_MSG_PERF_LOCK_TIMEOUT hdl:43998
+2025-09-25 03:55:18.865  1387-1459  libPowerHal             pid-1387                             I  [setClusterFreq] mtkpower@1.0-se: sysfs_freq set cpu freq: -1 -1 -1 -1 
+2025-09-25 03:55:18.865  1387-1459  libPowerHal             pid-1387                             I  [PD] mtkpower@1.0-se update cmd:1408300 param:0
+2025-09-25 03:55:19.398  1451-1658  DisplayModeController   pid-1451                             D  setDesiredMode 0 {mode={fps=60.00 Hz, modePtr={id=1, vsyncRate=60.00 Hz, peakRefreshRate=60.00 Hz}}, emitEvent=false, force=false}
+2025-09-25 03:55:19.399  1451-1658  Scheduler               pid-1451                             D  MtkOverrideDuration: update vsync 60
+2025-09-25 03:55:19.399  1451-1658  SurfaceFlinger          pid-1451                             E  MtkDuration override mode is disabled
+2025-09-25 03:55:19.399  1451-1658  Scheduler               pid-1451                             D  MtkOverrideDuration: reset override duration
+2025-09-25 03:55:19.399  1451-1658  PowerHalWrapper         pid-1451                             I  updateFps(): 60
+2025-09-25 03:55:19.406  1366-1366  hwcomposer              pid-1366                             I  [HWC] (0) displaySetActiveConfig config:1  
+2025-09-25 03:55:19.410  1366-1366  hwcomposer              pid-1366                             I  [HWCDisplay] [Display_0 (type:1)] fps:3.734665,dur:1071.05,max:602.73,min:8.76  
+2025-09-25 03:55:19.413  1451-1451  PowerHalWrapper         pid-1451                             I  updateFps(): 60
+2025-09-25 03:55:19.415  1451-1451  PowerHalWrapper         pid-1451                             I  updateFps(): 60
+2025-09-25 03:55:19.542  1387-1441  libPerfCtl              pid-1387                             I  xgfGetFPS pid:12094 fps:-1
+2025-09-25 03:55:19.542  1387-1441  AppThermalMode          pid-1387                             I  [perfNotifyThermalState] hdl:0
+2025-09-25 03:55:19.542  1387-1441  AppThermalMode          pid-1387                             I  [findAppThermalIdx] Fail: appThermalModeEnable: 0,currentFPS: -1,fg->pid:12094
+2025-09-25 03:55:19.542  1387-1441  AppThermalMode          pid-1387                             I  [perfNotifyThermalState] appThermalIdx -1:
+2025-09-25 03:55:19.872  3248-3248  WifiViewModel           pid-3248                             D  reInitCount: 0
+2025-09-25 03:55:19.909  1451-1658  DisplayModeController   pid-1451                             D  setDesiredMode 0 {mode={fps=120.00 Hz, modePtr={id=0, vsyncRate=120.00 Hz, peakRefreshRate=120.00 Hz}}, emitEvent=true, force=false}
+2025-09-25 03:55:19.910  1451-1658  Scheduler               pid-1451                             D  MtkOverrideDuration: update vsync 120
+2025-09-25 03:55:19.910  1451-1658  SurfaceFlinger          pid-1451                             E  MtkDuration override mode is disabled
+2025-09-25 03:55:19.910  1451-1658  Scheduler               pid-1451                             D  MtkOverrideDuration: reset override duration
+2025-09-25 03:55:19.910  1451-1658  PowerHalWrapper         pid-1451                             I  updateFps(): 120
+2025-09-25 03:55:19.925  1451-1451  BufferQueueProducer     pid-1451                             I  [StatusBar#77](this:0xb4000075e43875a8,id:-1,api:0,p:-1,c:1451) queueBuffer: fps=0.11 dur=9086.06 max=9086.06 min=9086.06
+2025-09-25 03:55:19.927  1366-1366  hwcomposer              pid-1366                             I  [HWC] (0) displaySetActiveConfig config:0  
+2025-09-25 03:55:19.941  1451-1451  PowerHalWrapper         pid-1451                             I  updateFps(): 120
+2025-09-25 03:55:19.943  1451-1451  PowerHalWrapper         pid-1451                             I  updateFps(): 120
+2025-09-25 03:55:20.511  1451-1658  DisplayModeController   pid-1451                             D  setDesiredMode 0 {mode={fps=60.00 Hz, modePtr={id=1, vsyncRate=60.00 Hz, peakRefreshRate=60.00 Hz}}, emitEvent=false, force=false}
+2025-09-25 03:55:20.515  1451-1658  Scheduler               pid-1451                             D  MtkOverrideDuration: update vsync 60
+2025-09-25 03:55:20.515  1451-1658  SurfaceFlinger          pid-1451                             E  MtkDuration override mode is disabled
+2025-09-25 03:55:20.515  1451-1658  Scheduler               pid-1451                             D  MtkOverrideDuration: reset override duration
+2025-09-25 03:55:20.515  1451-1658  PowerHalWrapper         pid-1451                             I  updateFps(): 60
+2025-09-25 03:55:20.519  1366-1366  hwcomposer              pid-1366                             I  [HWC] (0) displaySetActiveConfig config:1  
+2025-09-25 03:55:20.524  1366-1366  hwcomposer              pid-1366                             I  [HWCDisplay] [Display_0 (type:1)] fps:3.592003,dur:1113.58,max:579.64,min:5.89  
+2025-09-25 03:55:20.526  1451-1451  PowerHalWrapper         pid-1451                             I  updateFps(): 60
+2025-09-25 03:55:20.527  1451-1451  PowerHalWrapper         pid-1451                             I  updateFps(): 60
+2025-09-25 03:55:20.537  2058-2996  TranWifiSm...Controller pid-2058                             I  start current network monitor 
+2025-09-25 03:55:20.539  2058-2996  TranWifiSm...Controller pid-2058                             I  userIgnored :false isScoredCurrentNetwork :true
+2025-09-25 03:55:20.539  2058-2996  TranWifiSm...Controller pid-2058                             I  mCurrentNetwork :244 SSID :"Casa Darlan"
+2025-09-25 03:55:20.542  1387-1441  libPerfCtl              pid-1387                             I  xgfGetFPS pid:3248 fps:-1
+2025-09-25 03:55:20.543  1387-1441  AppThermalMode          pid-1387                             I  [perfNotifyThermalState] hdl:0
+2025-09-25 03:55:20.543  1387-1441  AppThermalMode          pid-1387                             I  [findAppThermalIdx] Fail: appThermalModeEnable: 0,currentFPS: -1,fg->pid:12094
+2025-09-25 03:55:20.543  1387-1441  AppThermalMode          pid-1387                             I  [perfNotifyThermalState] appThermalIdx -1:
+2025-09-25 03:55:20.543  1387-1441  libPerfCtl              pid-1387                             I  xgfGetFPS pid:12094 fps:-1
+2025-09-25 03:55:20.543  1387-1441  AppThermalMode          pid-1387                             I  [perfNotifyThermalState] hdl:0
+2025-09-25 03:55:20.543  1387-1441  AppThermalMode          pid-1387                             I  [findAppThermalIdx] Fail: appThermalModeEnable: 0,currentFPS: -1,fg->pid:12094
+2025-09-25 03:55:20.543  1387-1441  AppThermalMode          pid-1387                             I  [perfNotifyThermalState] appThermalIdx -1:
+2025-09-25 03:55:20.546  2058-2996  WifiNetworkQuality      pid-2058                             I  current rssi is sufficient
+2025-09-25 03:55:20.546  2058-2996  TranWifiSm...Controller pid-2058                             I  mNoCandidateCount : -1
+2025-09-25 03:55:20.546  2058-2996  TranWifiSm...Controller pid-2058                             I  ====>>rssi :-43
+2025-09-25 03:55:20.976  3821-3821  WM-DelayedWorkTracker   pid-3821                             D  Scheduling work c547330f-d2fa-4224-b023-c579f46bab7a
+2025-09-25 03:55:20.977  3821-3821  WM-GreedyScheduler      pid-3821                             D  Starting tracking for c547330f-d2fa-4224-b023-c579f46bab7a
+2025-09-25 03:55:20.980  2058-3223  Hiber/stateManager      pid-2058                             I  unfreeze uid: 10323 com.whatsapp.w4b pids:[3821]  reason:packet   cpninfo:TRANSACTION_-1 costTime=5ms ,last freeze 8s ago
+2025-09-25 03:55:20.980  2058-3221  Hiber/appStateMachine   pid-2058                             I  uid=10323, pkg=com.whatsapp.w4b, transition from Frozen to Running, reason=packet
+2025-09-25 03:55:20.981  2058-3221  Hiber/appStateMachine   pid-2058                             I  uid:10323 exit FrozenState
+2025-09-25 03:55:20.981  2058-3222  Hiber/proxyManager      pid-2058                             I  up_service: 10323
+2025-09-25 03:55:20.981  2058-3222  Hiber/proxyManager      pid-2058                             I  un_job: 10323
+2025-09-25 03:55:20.981  2058-3804  Hiber/proxyWakeLock     pid-2058                             D  remove uid: 10323 wiht all pids from wakelockUidInfo list
+2025-09-25 03:55:20.981  2058-3222  Hiber/JobExtImpl        pid-2058                             D  un_job=JobStatus{da4d479 androidx.work.systemjobscheduler:u0a323/6544 @androidx.work.systemjobscheduler@com.whatsapp.w4b/androidx.work.impl.background.systemjob.SystemJobService u=0 s=10323 TIME=+1h52m40s936ms:none satisfied:0x3600000 unsatisfied:0x80000000}for uid=10323
+2025-09-25 03:55:20.981  2058-3222  Hiber/JobExtImpl        pid-2058                             D  un_job=JobStatus{8509a17 androidx.work.systemjobscheduler:u0a323/6423 @androidx.work.systemjobscheduler@com.whatsapp.w4b/androidx.work.impl.background.systemjob.SystemJobService u=0 s=10323 TIME=+11h9m48s123ms:none NET satisfied:0x13600000 unsatisfied:0x80000000}for uid=10323
+2025-09-25 03:55:20.982  2058-3222  Hiber/JobExtImpl        pid-2058                             D  un_job=JobStatus{3b978cb androidx.work.systemjobscheduler:u0a323/6823 @androidx.work.systemjobscheduler@com.whatsapp.w4b/androidx.work.impl.background.systemjob.SystemJobService u=0 s=10323 TIME=+59m22s755ms:none satisfied:0x3600000 unsatisfied:0x80000000}for uid=10323
+2025-09-25 03:55:20.982  2058-3222  Hiber/JobExtImpl        pid-2058                             D  un_job=JobStatus{1c001b6 androidx.work.systemjobscheduler:u0a323/6825 @androidx.work.systemjobscheduler@com.whatsapp.w4b/androidx.work.impl.background.systemjob.SystemJobService u=0 s=10323 TIME=-6s963ms:none NET satisfied:0x13600000 unsatisfied:0x80000000}for uid=10323
+2025-09-25 03:55:20.983  2058-3222  Hiber/JobExtImpl        pid-2058                             D  unProxyJobs leave, uid=10323 discard=false
+2025-09-25 03:55:20.983  2058-3222  Hiber/alar...iceExtImpl pid-2058                             D  unproxyAlarms, alarm=Alarm{8fae713 type 3 origWhen 555287307 whenElapsed 555287307 com.whatsapp.w4b}
+2025-09-25 03:55:20.983  2058-3222  Hiber/alar...iceExtImpl pid-2058                             D  unproxyAlarms, alarm=Alarm{96a90d5 type 2 origWhen 555621603 whenElapsed 555621603 com.whatsapp.w4b}
+2025-09-25 03:55:20.983  2058-3222  Hiber/alar...iceExtImpl pid-2058                             D  unproxyAlarms, alarm=Alarm{d210178 type 3 origWhen 556979780 whenElapsed 556979780 com.whatsapp.w4b}
+2025-09-25 03:55:20.983  2058-3222  Hiber/alar...iceExtImpl pid-2058                             D  unproxyAlarms, alarm=Alarm{3d27526 type 3 origWhen 581743208 whenElapsed 581743208 com.whatsapp.w4b}
+2025-09-25 03:55:20.983  2058-3222  Hiber/alar...iceExtImpl pid-2058                             D  unproxyAlarms, alarm=Alarm{1b1a567 type 2 origWhen 583676874 whenElapsed 583676874 com.whatsapp.w4b}
+2025-09-25 03:55:20.983  2058-3222  Hiber/alar...iceExtImpl pid-2058                             D  unproxyAlarms, alarm=Alarm{78014c4 type 0 origWhen 1758855604000 whenElapsed 627340521 com.whatsapp.w4b}
+2025-09-25 03:55:20.983  2058-3222  Hiber/alar...iceExtImpl pid-2058                             D  unproxyAlarms, alarm=Alarm{db2ff14 type 2 origWhen 1901920087 whenElapsed 1901920087 com.whatsapp.w4b}
+2025-09-25 03:55:20.983  2058-3222  Hiber/alar...iceExtImpl pid-2058                             D  unproxyAlarms leave, uid=10323, packageName=null
+2025-09-25 03:55:20.983  2058-3222  Hiber/proxyManager      pid-2058                             I  up_sensor: uid=10323, pkgName=com.whatsapp.w4b
+2025-09-25 03:55:20.983  3821-5571  WM-ConstraintTracker    pid-3821                             D  Gy1: initial state = NetworkState(isConnected=true, isValidated=true, isMetered=false, isNotRoaming=true)
+2025-09-25 03:55:20.983  3821-5571  WM-NetworkStateTracker  pid-3821                             D  Registering network callback
+2025-09-25 03:55:20.986  2058-4929  ConnectivityService     pid-2058                             D  requestNetwork for uid/pid:10323/3821 activeRequest: null callbackRequest: 11254 [NetworkRequest [ REQUEST id=11255, [ Capabilities: INTERNET&NOT_RESTRICTED&TRUSTED&NOT_VCN_MANAGED&NOT_BANDWIDTH_CONSTRAINED Uid: 10323 RequestorUid: 10323 RequestorPkg: com.whatsapp.w4b UnderlyingNetworks: Null] ]] callback flags: 0 order: 2147483647 isUidTracked: false declaredMethods: AVAIL|LOST|NC
+2025-09-25 03:55:20.988  3821-5565  WM-GreedyScheduler      pid-3821                             D  Constraints met: Scheduling work ID WorkGenerationalId(workSpecId=c547330f-d2fa-4224-b023-c579f46bab7a, generation=0)
+2025-09-25 03:55:20.991  3821-5591  WM-NetworkStateTracker  pid-3821                             D  Network capabilities changed: [ Transports: WIFI Capabilities: NOT_METERED&INTERNET&NOT_RESTRICTED&TRUSTED&NOT_VPN&VALIDATED&NOT_ROAMING&FOREGROUND&NOT_CONGESTED&NOT_SUSPENDED&NOT_VCN_MANAGED&NOT_BANDWIDTH_CONSTRAINED LinkUpBandwidth>=12000Kbps LinkDnBandwidth>=60000Kbps TransportInfo: <SSID: <unknown ssid>, BSSID: 02:00:00:00:00:00, MAC: 02:00:00:00:00:00, IP: /192.168.15.47, Security type: 2, Supplicant state: COMPLETED, Wi-Fi standard: 11ac, RSSI: -49, Link speed: 292Mbps, Tx Link speed: 292Mbps, Max Supported Tx Link speed: 433Mbps, Rx Link speed: 433Mbps, Max Supported Rx Link speed: 433Mbps, Frequency: 5220MHz, Net ID: -1, Metered hint: false, score: 60, isUsable: true, CarrierMerged: false, SubscriptionId: -1, IsPrimary: -1, Trusted: true, Restricted: false, Ephemeral: false, OEM paid: false, OEM private: false, OSU AP: false, FQDN: <none>, Provider friendly name: <none>, Requesting package name: <none><none>MLO Information: , Is TID-To-Link negotiation supported by the AP: false, AP MLD Address: <none>, AP MLO Link Id: <none>, AP MLO Affiliated links: <none>, Vendor Data: <none>> SignalStrength: -49 UnderlyingNetworks: Null]
+2025-09-25 03:55:20.992  3821-5565  WM-Processor            pid-3821                             D  GwC: processing WorkGenerationalId(workSpecId=c547330f-d2fa-4224-b023-c579f46bab7a, generation=0)
+2025-09-25 03:55:20.995  2058-2989  WifiNetworkFactory      pid-2058                             D  got request NetworkRequest [ REQUEST id=11255, [ Capabilities: INTERNET&NOT_RESTRICTED&TRUSTED&NOT_VCN_MANAGED&NOT_BANDWIDTH_CONSTRAINED Uid: 10323 RequestorUid: 10323 RequestorPkg: com.whatsapp.w4b UnderlyingNetworks: Null] ]
+2025-09-25 03:55:20.995  2058-2989  UntrustedW...orkFactory pid-2058                             D  got request NetworkRequest [ REQUEST id=11255, [ Capabilities: INTERNET&NOT_RESTRICTED&TRUSTED&NOT_VCN_MANAGED&NOT_BANDWIDTH_CONSTRAINED Uid: 10323 RequestorUid: 10323 RequestorPkg: com.whatsapp.w4b UnderlyingNetworks: Null] ]
+2025-09-25 03:55:20.997  2058-2989  OemPaidWif...orkFactory pid-2058                             D  got request NetworkRequest [ REQUEST id=11255, [ Capabilities: INTERNET&NOT_RESTRICTED&TRUSTED&NOT_VCN_MANAGED&NOT_BANDWIDTH_CONSTRAINED Uid: 10323 RequestorUid: 10323 RequestorPkg: com.whatsapp.w4b UnderlyingNetworks: Null] ]
+2025-09-25 03:55:20.997  2058-2989  MultiInter...orkFactory pid-2058                             D  got request NetworkRequest [ REQUEST id=11255, [ Capabilities: INTERNET&NOT_RESTRICTED&TRUSTED&NOT_VCN_MANAGED&NOT_BANDWIDTH_CONSTRAINED Uid: 10323 RequestorUid: 10323 RequestorPkg: com.whatsapp.w4b UnderlyingNetworks: Null] ]
+2025-09-25 03:55:20.998  2058-3000  ConnectivityService     pid-2058                             D  NetReassign [11255 : null → 244] [c 1] [a 2] [i 8]
+2025-09-25 03:55:21.001  3821-3821  WM-WorkerWrapper        pid-3821                             D  Starting work for com.whatsapp.messaging.xmpp.XmppLifecycleWorker
+2025-09-25 03:55:21.386  2058-2091  AES                     pid-2058                             D  AEEIOCTL_GET/SET_SF_STATE IOCTL,cmd= 1074294797, lParam=0. 
+2025-09-25 03:55:21.387  2058-2091  AES                     pid-2058                             D  AEEIOCTL_RT_MON_Kick IOCTL,cmd= 2147774474, lParam=300. 
+2025-09-25 03:55:21.543  1387-1441  libPerfCtl              pid-1387                             I  xgfGetFPS pid:3248 fps:-1
+2025-09-25 03:55:21.543  1387-1441  AppThermalMode          pid-1387                             I  [perfNotifyThermalState] hdl:0
+2025-09-25 03:55:21.543  1387-1441  AppThermalMode          pid-1387                             I  [findAppThermalIdx] Fail: appThermalModeEnable: 0,currentFPS: -1,fg->pid:12094
+2025-09-25 03:55:21.543  1387-1441  AppThermalMode          pid-1387                             I  [perfNotifyThermalState] appThermalIdx -1:
+2025-09-25 03:55:21.543  1387-1441  libPerfCtl              pid-1387                             I  xgfGetFPS pid:12094 fps:-1
+2025-09-25 03:55:21.543  1387-1441  AppThermalMode          pid-1387                             I  [perfNotifyThermalState] hdl:0
+2025-09-25 03:55:21.543  1387-1441  AppThermalMode          pid-1387                             I  [findAppThermalIdx] Fail: appThermalModeEnable: 0,currentFPS: -1,fg->pid:12094
+2025-09-25 03:55:21.543  1387-1441  AppThermalMode          pid-1387                             I  [perfNotifyThermalState] appThermalIdx -1:
+2025-09-25 03:55:21.601  1451-1658  DisplayModeController   pid-1451                             D  setDesiredMode 0 {mode={fps=120.00 Hz, modePtr={id=0, vsyncRate=120.00 Hz, peakRefreshRate=120.00 Hz}}, emitEvent=true, force=false}
+2025-09-25 03:55:21.602  1451-1658  Scheduler               pid-1451                             D  MtkOverrideDuration: update vsync 120
+2025-09-25 03:55:21.602  1451-1658  SurfaceFlinger          pid-1451                             E  MtkDuration override mode is disabled
+2025-09-25 03:55:21.602  1451-1658  Scheduler               pid-1451                             D  MtkOverrideDuration: reset override duration
+2025-09-25 03:55:21.602  1451-1658  PowerHalWrapper         pid-1451                             I  updateFps(): 120
+2025-09-25 03:55:21.613  1451-1451  BufferQueueProducer     pid-1451                             I  [StatusBar#77](this:0xb4000075e43875a8,id:-1,api:0,p:-1,c:1451) queueBuffer: fps=0.59 dur=1688.44 max=1688.44 min=1688.44
+2025-09-25 03:55:21.615  1366-1366  hwcomposer              pid-1366                             I  [HWC] (0) displaySetActiveConfig config:0  
+2025-09-25 03:55:21.619  1366-1366  hwcomposer              pid-1366                             I  [HWCDisplay] [Display_0 (type:1)] fps:1.825561,dur:1095.55,max:1091.09,min:4.47  
+2025-09-25 03:55:21.629  1451-1451  PowerHalWrapper         pid-1451                             I  updateFps(): 120
+2025-09-25 03:55:21.631  1451-1451  PowerHalWrapper         pid-1451                             I  updateFps(): 120
+2025-09-25 03:55:21.958  1451-1451  DisplayModeController   pid-1451                             D  setDesiredMode 0 {mode={fps=60.00 Hz, modePtr={id=1, vsyncRate=60.00 Hz, peakRefreshRate=60.00 Hz}}, emitEvent=true, force=false}
+2025-09-25 03:55:21.958  1451-1451  Scheduler               pid-1451                             D  MtkOverrideDuration: update vsync 60
+2025-09-25 03:55:21.958  1451-1451  SurfaceFlinger          pid-1451                             E  MtkDuration override mode is disabled
+2025-09-25 03:55:21.958  1451-1451  Scheduler               pid-1451                             D  MtkOverrideDuration: reset override duration
+2025-09-25 03:55:21.958  1451-1451  PowerHalWrapper         pid-1451                             I  updateFps(): 60
+2025-09-25 03:55:21.959  1366-1366  hwcomposer              pid-1366                             I  [HWC] (0) displaySetActiveConfig config:1  
+2025-09-25 03:55:21.962  2058-2088  DisplayDeviceRepository pid-2058                             I  Display device changed: DisplayDeviceInfo{"Tela integrada": uniqueId="local:0", 1080 x 2436, modeId 1, renderFrameRate 120.00001, defaultModeId 1, userPreferredModeId -1, supportedModes [{id=1, width=1080, height=2436, fps=120.00001, vsync=120.00001, synthetic=false, alternativeRefreshRates=[60.0], supportedHdrTypes=[]}, {id=2, width=1080, height=2436, fps=60.0, vsync=60.0, synthetic=false, alternativeRefreshRates=[120.00001], supportedHdrTypes=[]}], colorMode 0, supportedColorModes [0, 7, 9], hdrCapabilities HdrCapabilities{mSupportedHdrTypes=[], mMaxLuminance=500.0, mMaxAverageLuminance=500.0, mMinLuminance=0.0}, allmSupported false, gameContentTypeSupported false, density 440, 392.783 x 392.828 dpi, appVsyncOff 2399998, presDeadline 11933334, cutout DisplayCutout{insets=Rect(0, 99 - 0, 0) waterfall=Insets{left=0, top=0, right=0, bottom=0} boundingRect={Bounds=[Rect(0, 0 - 0, 0), Rect(474, 0 - 606, 99), Rect(0, 0 - 0, 0), Rect(0, 0 - 0, 0)]} cutoutPathParserInfo={CutoutPathParserInfo{displayWidth=1080 displayHeight=2436 physicalDisplayWidth=1080 physicalDisplayHeight=2436 density={2.75} cutoutSpec={M -24,0 L -24,36 L 24,36 L 24,0 Z @dp} rotation={0} scale={1.0} physicalPixelDisplaySizeRatio={1.0}}} sideOverrides={}}, touch INTERNAL, rotation 0, type INTERNAL, address {port=0}, deviceProductInfo null, state ON, committedState ON, frameRateOverride {uid=1000 frameRateHz=60.000004} {uid=10153 frameRateHz=60.000004} {uid=10382 frameRateHz=60.000004} , brightnessMinimum 0.0, brightnessMaximum 1.0, brightnessDefault 0.2, hdrSdrRatio NaN, FLAG_ALLOWED_TO_BE_DEFAULT_DISPLAY, FLAG_ROTATES_WITH_CONTENT, FLAG_SECURE, FLAG_SUPPORTS_PROTECTED_BUFFERS, FLAG_TRUSTED, installOrientation 0, displayShape DisplayShape{ spec=596679847 displayWidth=1080 displayHeight=2436 physicalPixelDisplaySizeRatio=1.0 rotation=0 offsetX=0 offsetY=0 scale=1.0}}
