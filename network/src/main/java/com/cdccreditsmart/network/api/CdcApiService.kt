@@ -36,7 +36,7 @@ interface CdcApiService {
     suspend fun getDeviceStatus(
         @Path("serial") serial: String,
         @Header("Authorization") authorization: String? = null
-    ): Response<CdcDeviceStatusResponse>
+    ): Response<CdcDeviceSyncStatusResponse>
     
     /**
      * Device Heartbeat/Sync endpoint
@@ -198,7 +198,7 @@ data class CdcImeiValidationResponse(
 )
 
 @JsonClass(generateAdapter = true)
-data class CdcDeviceStatusResponse(
+data class CdcDeviceSyncStatusResponse(
     val deviceId: String,
     val status: String, // "active", "inactive", "blocked", "suspended"
     val lastSync: Long,

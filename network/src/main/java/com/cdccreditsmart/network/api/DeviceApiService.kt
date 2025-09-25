@@ -3,6 +3,7 @@ package com.cdccreditsmart.network.api
 import com.squareup.moshi.JsonClass
 import retrofit2.Response
 import retrofit2.http.*
+import com.cdccreditsmart.network.dto.cdc.*
 
 /**
  * Device-related API endpoints for attestation, registration, device management, and CDC Credit Smart integration
@@ -55,6 +56,96 @@ interface DeviceApiService {
     ): Response<CdcProvisioningQrResponse>
     
     /**
+     * Authenticated device status endpoint - CDC Credit Smart specific
+     * GET /api/apk/device/status
+     */
+    @GET("api/apk/device/status")
+    suspend fun getDeviceStatus(
+        @Header("Authorization") authorization: String? = null
+    ): Response<CdcDeviceStatusResponse>
+    
+    /**
+     * Device status by serial number - CDC Credit Smart specific
+     * GET /api/apk/device/{serialNumber}/status
+     */
+    @GET("api/apk/device/{serialNumber}/status")
+    suspend fun getDeviceStatusBySerial(
+        @Path("serialNumber") serialNumber: String,
+        @Header("Authorization") authorization: String? = null
+    ): Response<CdcDeviceStatusResponse>
+    
+    /**
+     * Device heartbeat endpoint - CDC Credit Smart specific
+     * POST /api/apk/device/heartbeat
+     */
+    @POST("api/apk/device/heartbeat")
+    suspend fun sendDeviceHeartbeat(
+        @Body request: CdcHeartbeatRequest,
+        @Header("Authorization") authorization: String? = null
+    ): Response<CdcHeartbeatResponse>
+    
+    /**
+     * List device installments - CDC Credit Smart specific
+     * GET /api/apk/device/installments
+     */
+    @GET("api/apk/device/installments")
+    suspend fun getDeviceInstallments(
+        @Header("Authorization") authorization: String? = null
+    ): Response<CdcInstallmentsResponse>
+    
+    /**
+     * Check device permissions - CDC Credit Smart specific
+     * POST /api/apk/device/permissions
+     */
+    @POST("api/apk/device/permissions")
+    suspend fun checkDevicePermissions(
+        @Body request: CdcPermissionsRequest,
+        @Header("Authorization") authorization: String? = null
+    ): Response<CdcPermissionsResponse>
+    
+    /**
+     * Get pending device commands - CDC Credit Smart specific
+     * GET /api/apk/device/{serialNumber}/commands
+     */
+    @GET("api/apk/device/{serialNumber}/commands")
+    suspend fun getPendingCommands(
+        @Path("serialNumber") serialNumber: String,
+        @Header("Authorization") authorization: String? = null
+    ): Response<CdcCommandsResponse>
+    
+    /**
+     * Confirm command execution - CDC Credit Smart specific
+     * POST /api/apk/device/{serialNumber}/command-response
+     */
+    @POST("api/apk/device/{serialNumber}/command-response")
+    suspend fun confirmCommandExecution(
+        @Path("serialNumber") serialNumber: String,
+        @Body request: CdcCommandResponseRequest,
+        @Header("Authorization") authorization: String? = null
+    ): Response<CdcCommandResponseResponse>
+    
+    /**
+     * Get pending decisions - CDC Credit Smart specific
+     * GET /api/apk/device/{serialNumber}/pending-decisions
+     */
+    @GET("api/apk/device/{serialNumber}/pending-decisions")
+    suspend fun getPendingDecisions(
+        @Path("serialNumber") serialNumber: String,
+        @Header("Authorization") authorization: String? = null
+    ): Response<CdcPendingDecisionsResponse>
+    
+    /**
+     * Unblock device - CDC Credit Smart specific
+     * POST /api/apk/device/{serialNumber}/unblock
+     */
+    @POST("api/apk/device/{serialNumber}/unblock")
+    suspend fun unblockDevice(
+        @Path("serialNumber") serialNumber: String,
+        @Body request: CdcUnblockRequest,
+        @Header("Authorization") authorization: String? = null
+    ): Response<CdcUnblockResponse>
+    
+    /**
      * Auto-Uninstall Request endpoint - CDC Credit Smart specific
      * POST /api/apk/device/{serialNumber}/request-uninstall
      * Request permission for self-uninstallation when all installments are paid
@@ -85,10 +176,10 @@ interface DeviceApiService {
     ): Response<DeviceBindResponse>
     
     /**
-     * Gets current device status and configuration
+     * Gets current device status and configuration (Legacy v1)
      */
     @GET("v1/device/status")
-    suspend fun getDeviceStatus(
+    suspend fun getLegacyDeviceStatus(
         @Query("deviceId") deviceId: String
     ): Response<DeviceStatusResponse>
     
@@ -431,6 +522,150 @@ data class CdcPaymentInfo(
     val paidInstallments: Int,
     val remainingInstallments: Int,
     val paymentStatus: String
+)
+
+// CDC Credit Smart specific DTOs according to documentation
+
+// Heartbeat DTOs
+@JsonClass(generateAdapter = true)
+data class CdcHeartbeatRequest(
+    val timestamp: Long,
+    val batteryLevel: Int? = null,
+    val locationData: CdcLocationData? = null,
+    val systemHealth: CdcSystemHealth? = null
+)
+
+@JsonClass(generateAdapter = true)
+data class CdcHeartbeatResponse(
+    val success: Boolean,
+    val serverTimestamp: Long,
+    val nextHeartbeatIn: Long? = null,
+    val actions: List<String>? = null,
+    val message: String? = null
+)
+
+@JsonClass(generateAdapter = true)
+data class CdcSystemHealth(
+    val cpuUsage: Float? = null,
+    val memoryUsage: Float? = null,
+    val diskUsage: Float? = null,
+    val networkType: String? = null
+)
+
+// Installments DTOs
+@JsonClass(generateAdapter = true)
+data class CdcInstallmentsResponse(
+    val success: Boolean,
+    val installments: List<CdcInstallmentInfo>,
+    val summary: CdcPaymentSummary? = null,
+    val totalCount: Int
+)
+
+@JsonClass(generateAdapter = true)
+data class CdcInstallmentInfo(
+    val id: String,
+    val number: Int,
+    val dueDate: String,
+    val amount: Double,
+    val status: String, // "paid", "pending", "overdue"
+    val paymentMethod: String? = null,
+    val paymentDate: String? = null,
+    val description: String? = null
+)
+
+@JsonClass(generateAdapter = true)
+data class CdcPaymentSummary(
+    val totalAmount: Double,
+    val paidAmount: Double,
+    val remainingAmount: Double,
+    val overdueAmount: Double,
+    val nextDueDate: String? = null,
+    val remainingInstallments: Int
+)
+
+// Permissions DTOs
+@JsonClass(generateAdapter = true)
+data class CdcPermissionsRequest(
+    val requiredPermissions: List<String>
+)
+
+@JsonClass(generateAdapter = true)
+data class CdcPermissionsResponse(
+    val success: Boolean,
+    val permissions: Map<String, Boolean>,
+    val missingPermissions: List<String>,
+    val criticalMissing: Boolean
+)
+
+// Commands DTOs
+@JsonClass(generateAdapter = true)
+data class CdcCommandsResponse(
+    val success: Boolean,
+    val commands: List<CdcCommandInfo>,
+    val totalCount: Int
+)
+
+@JsonClass(generateAdapter = true)
+data class CdcCommandInfo(
+    val id: String,
+    val type: String, // "LOCK_DEVICE", "WIPE_DEVICE", "INSTALL_APP", etc.
+    val parameters: Map<String, String>? = null,
+    val priority: String = "normal",
+    val createdAt: Long,
+    val expiresAt: Long? = null,
+    val status: String = "pending"
+)
+
+// Command Response DTOs
+@JsonClass(generateAdapter = true)
+data class CdcCommandResponseRequest(
+    val commandId: String,
+    val status: String, // "completed", "failed", "in_progress"
+    val result: String? = null,
+    val errorMessage: String? = null,
+    val timestamp: Long
+)
+
+@JsonClass(generateAdapter = true)
+data class CdcCommandResponseResponse(
+    val success: Boolean,
+    val acknowledged: Boolean,
+    val message: String? = null
+)
+
+// Pending Decisions DTOs
+@JsonClass(generateAdapter = true)
+data class CdcPendingDecisionsResponse(
+    val success: Boolean,
+    val decisions: List<CdcDecisionInfo>,
+    val totalCount: Int
+)
+
+@JsonClass(generateAdapter = true)
+data class CdcDecisionInfo(
+    val id: String,
+    val type: String,
+    val title: String,
+    val description: String,
+    val options: List<String>,
+    val defaultOption: String? = null,
+    val createdAt: Long,
+    val expiresAt: Long? = null
+)
+
+// Unblock DTOs
+@JsonClass(generateAdapter = true)
+data class CdcUnblockRequest(
+    val reason: String,
+    val requestedBy: String? = null
+)
+
+@JsonClass(generateAdapter = true)
+data class CdcUnblockResponse(
+    val success: Boolean,
+    val unblocked: Boolean,
+    val message: String? = null,
+    val nextAction: String? = null
 )
 
 // Type aliases to match task requirements

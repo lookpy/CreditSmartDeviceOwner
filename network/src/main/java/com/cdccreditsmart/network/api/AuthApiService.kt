@@ -3,6 +3,10 @@ package com.cdccreditsmart.network.api
 import com.squareup.moshi.JsonClass
 import retrofit2.Response
 import retrofit2.http.*
+import com.cdccreditsmart.network.dto.cdc.DeviceRegistrationRequest
+import com.cdccreditsmart.network.dto.cdc.DeviceRegistrationResponse
+import com.cdccreditsmart.network.dto.cdc.AutoSyncRequest
+import com.cdccreditsmart.network.dto.cdc.AutoSyncResponse
 
 /**
  * Authentication API endpoints for login, token refresh, session management, and CDC Credit Smart integration
@@ -28,6 +32,24 @@ interface AuthApiService {
     suspend fun validateImei(
         @Body request: ImeiValidationRequest
     ): Response<ImeiValidationResponse>
+    
+    /**
+     * Main device registration endpoint - CDC Credit Smart specific
+     * POST /api/apk/register
+     */
+    @POST("api/apk/register")
+    suspend fun registerDevice(
+        @Body request: DeviceRegistrationRequest
+    ): Response<DeviceRegistrationResponse>
+    
+    /**
+     * Auto-sync by IMEI endpoint - CDC Credit Smart specific
+     * POST /api/apk/auto-sync
+     */
+    @POST("api/apk/auto-sync")
+    suspend fun autoSyncDevice(
+        @Body request: AutoSyncRequest
+    ): Response<AutoSyncResponse>
     
     // Legacy v1 authentication endpoints (for backward compatibility)
     
@@ -199,6 +221,48 @@ data class ImeiValidationResponse(
     val bindingRequired: Boolean = false,
     val validationTimestamp: Long,
     val errorCode: String? = null
+)
+
+// CDC Credit Smart main registration DTOs according to documentation
+@JsonClass(generateAdapter = true)
+data class DeviceRegistrationRequest(
+    val imei: String,
+    val deviceFingerprint: String,
+    val hardwareSignature: String,
+    val model: String,
+    val brand: String,
+    val androidVersion: String
+)
+
+@JsonClass(generateAdapter = true)
+data class DeviceRegistrationResponse(
+    val success: Boolean,
+    val registered: Boolean,
+    val authenticated: Boolean,
+    val authToken: String? = null,
+    val fingerprint: String? = null,
+    val serverTimestamp: Long,
+    val message: String? = null,
+    val errorCode: String? = null
+)
+
+// Auto-sync DTOs
+@JsonClass(generateAdapter = true)
+data class AutoSyncRequest(
+    val imei: String,
+    val deviceFingerprint: String? = null
+)
+
+@JsonClass(generateAdapter = true)
+data class AutoSyncResponse(
+    val success: Boolean,
+    val synced: Boolean,
+    val authToken: String? = null,
+    val deviceId: String? = null,
+    val contractId: String? = null,
+    val message: String? = null,
+    val serverTimestamp: Long,
+    val lastSyncTimestamp: Long? = null
 )
 
 // Type aliases to match task requirements

@@ -5,10 +5,14 @@ package com.cdccreditsmart.network.config
  */
 object NetworkConfig {
     
-    // Base URLs - Updated for CDC Credit Smart real backend
-    // Note: These should match the URLs in app/build.gradle.kts BuildConfig
-    const val BASE_URL = "https://api.cdccreditsmart.com.br/"
-    const val BASE_URL_DEBUG = "https://api-dev.cdccreditsmart.com.br/"
+    // Base URLs - Updated for CDC Credit Smart according to documentation
+    // Production URLs as specified in the official documentation
+    const val BASE_URL = "https://cdccreditsmart.com/"
+    const val BASE_URL_DEBUG = "http://localhost:5000/"
+    
+    // WebSocket URLs for real-time communication
+    const val WS_BASE_URL = "wss://cdccreditsmart.com/ws"
+    const val WS_BASE_URL_DEBUG = "ws://localhost:5000/ws"
     
     // Timeout configurations (in milliseconds)
     const val CONNECT_TIMEOUT = 30_000L
@@ -53,14 +57,34 @@ object NetworkConfig {
         )
     )
     
-    // API endpoints - Complete endpoint configuration for CDC Credit Smart
+    // API endpoints - Complete endpoint configuration for CDC Credit Smart according to documentation
     object Endpoints {
-        // CDC Credit Smart specific endpoints
+        // CDC Credit Smart specific authentication and registration endpoints
+        const val APK_REGISTER = "api/apk/register"  // Main registration endpoint
+        const val APK_AUTO_SYNC = "api/apk/auto-sync" // Auto-sync by IMEI
         const val APK_AUTH = "api/apk/auth"
         const val VALIDATE_IMEI = "api/validate-imei"
-        const val DEVICE_STATUS = "api/apk/device/{serial}/status"
+        
+        // Device management endpoints  
+        const val DEVICE_STATUS = "api/apk/device/status" // Authenticated device status
+        const val DEVICE_STATUS_BY_SERIAL = "api/apk/device/{serialNumber}/status" // Status by serial
         const val DEVICE_SYNC = "api/apk/device/{fingerprint}/sync"
         const val DEVICE_REGISTER_INFO = "api/apk/device/{fingerprint}/register-info"
+        const val DEVICE_HEARTBEAT = "api/apk/device/heartbeat" // Heartbeat endpoint
+        const val DEVICE_INSTALLMENTS = "api/apk/device/installments" // List installments
+        const val DEVICE_PERMISSIONS = "api/apk/device/permissions" // Check permissions
+        
+        // Device control endpoints
+        const val DEVICE_REQUEST_UNINSTALL = "api/apk/device/{serialNumber}/request-uninstall"
+        const val DEVICE_UNBLOCK = "api/apk/device/{serialNumber}/unblock"
+        const val DEVICE_COMMANDS = "api/apk/device/{serialNumber}/commands" // Get pending commands
+        const val DEVICE_COMMAND_RESPONSE = "api/apk/device/{serialNumber}/command-response" // Confirm execution
+        const val DEVICE_PENDING_DECISIONS = "api/apk/device/{serialNumber}/pending-decisions"
+        
+        // Payment endpoints with installment ID support
+        const val PAYMENTS_PIX_INSTALLMENT = "api/payments/pix/{installmentId}" // Create PIX payment
+        const val PAYMENTS_BOLETO_INSTALLMENT = "api/payments/boleto/{installmentId}" // Create Boleto payment
+        
         const val PROVISIONING_QR = "api/apk/provisioning-qr"
         
         // Flow Events endpoints
@@ -83,8 +107,8 @@ object NetworkConfig {
         
         const val DEVICE_ATTEST = "v1/device/attest"
         const val DEVICE_BIND = "v1/device/bind"
-        const val DEVICE_HEARTBEAT = "v1/device/heartbeat"
-        const val DEVICE_INSTALLMENTS = "v1/device/installments"
+        const val DEVICE_HEARTBEAT_V1 = "v1/device/heartbeat"
+        const val DEVICE_INSTALLMENTS_V1 = "v1/device/installments"
         const val DEVICE_UPDATE_REPORT = "v1/device/update-report"
         
         // Biometry endpoints
@@ -107,10 +131,8 @@ object NetworkConfig {
         const val CONTRACT_GET = "v1/contract/{contractId}"
         const val CONTRACT_SIGNATURES = "v1/contract/{contractId}/signatures"
         
-        // Legacy endpoints (for backward compatibility)
+        // Legacy endpoints (for backward compatibility)  
         const val LEGACY_DEVICE_PAY = "api/apk/device/{serial}/pay/{installmentId}"
-        const val LEGACY_DEVICE_INSTALLMENTS = "api/apk/device/installments"
-        const val LEGACY_DEVICE_HEARTBEAT = "api/apk/device/heartbeat"
         const val LEGACY_ANDROID_UPDATES_CHECK = "api/android/updates/check"
         const val LEGACY_ANDROID_UPDATES_DOWNLOAD = "api/android/updates/download"
         const val LEGACY_APK_ACTIVE = "api/apk/active"

@@ -307,8 +307,8 @@ sealed class DeviceCommand {
 open class CommandData(
     val reason: String? = null,
     val message: String? = null,
-    val timestamp: String? = null,
-    val commandId: String? = null
+    open val timestamp: String? = null,
+    open val commandId: String? = null
 )
 
 /**
@@ -346,8 +346,8 @@ data class ApkUpdateData(
     val componentName: String? = null,
     val checksum: String? = null,
     val forceUpdate: Boolean = false,
-    val commandId: String? = null,
-    val timestamp: String? = null
+    override val commandId: String? = null,
+    override val timestamp: String? = null
 ) : CommandData()
 
 /**

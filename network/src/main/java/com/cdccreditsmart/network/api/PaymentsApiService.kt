@@ -62,6 +62,28 @@ interface PaymentsApiService {
     ): Response<PaymentHistoryResponse>
     
     /**
+     * Creates a PIX payment for a specific installment - CDC Credit Smart specific
+     * POST /api/payments/pix/{installmentId}
+     */
+    @POST("api/payments/pix/{installmentId}")
+    suspend fun createPixPaymentForInstallment(
+        @Path("installmentId") installmentId: String,
+        @Body request: CdcPixPaymentRequest,
+        @Header("Authorization") authorization: String? = null
+    ): Response<CdcPixPaymentResponse>
+    
+    /**
+     * Creates a Boleto payment for a specific installment - CDC Credit Smart specific
+     * POST /api/payments/boleto/{installmentId}
+     */
+    @POST("api/payments/boleto/{installmentId}")
+    suspend fun createBoletoPaymentForInstallment(
+        @Path("installmentId") installmentId: String,
+        @Body request: CdcBoletoPaymentRequest,
+        @Header("Authorization") authorization: String? = null
+    ): Response<CdcBoletoPaymentResponse>
+    
+    /**
      * Legacy endpoint support - pay installment by serial and installment ID
      */
     @POST("api/apk/device/{serial}/pay/{installmentId}")
@@ -181,6 +203,47 @@ data class LegacyPaymentResponse(
     val paymentId: String?,
     val paymentData: Map<String, Any>?,
     val message: String?
+)
+
+// CDC Credit Smart specific payment DTOs according to documentation
+
+// PIX Payment DTOs for installment-specific payments
+@JsonClass(generateAdapter = true)
+data class CdcPixPaymentRequest(
+    val amount: Double? = null, // Optional, can use installment amount
+    val description: String? = null
+)
+
+@JsonClass(generateAdapter = true)
+data class CdcPixPaymentResponse(
+    val success: Boolean,
+    val paymentId: String? = null,
+    val pixKey: String? = null,
+    val qrCode: String? = null, // Base64 QR code image
+    val pixCopyPaste: String? = null, // PIX copy-paste code
+    val amount: Double,
+    val expiresAt: Long? = null,
+    val message: String? = null
+)
+
+// Boleto Payment DTOs for installment-specific payments
+@JsonClass(generateAdapter = true)
+data class CdcBoletoPaymentRequest(
+    val amount: Double? = null, // Optional, can use installment amount
+    val dueDate: String? = null, // ISO date, optional
+    val description: String? = null
+)
+
+@JsonClass(generateAdapter = true)
+data class CdcBoletoPaymentResponse(
+    val success: Boolean,
+    val paymentId: String? = null,
+    val boletoCode: String? = null,
+    val barCode: String? = null,
+    val boletoUrl: String? = null, // URL to PDF
+    val amount: Double,
+    val dueDate: String? = null,
+    val message: String? = null
 )
 
 // Type aliases to match task requirements

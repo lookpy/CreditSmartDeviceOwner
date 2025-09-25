@@ -315,7 +315,24 @@ object NetworkModule {
     fun provideWebSocketOkHttpClient(
         okHttpClientFactory: OkHttpClientFactory
     ): OkHttpClient {
-        return okHttpClientFactory.createSecureClient(true)
+        // Use proper BuildConfig for environment-specific configuration
+        val baseUrl = try {
+            val buildConfigClass = Class.forName("com.cdccreditsmart.app.BuildConfig")
+            val baseUrlField = buildConfigClass.getField("BASE_URL")
+            baseUrlField.get(null) as String
+        } catch (e: Exception) {
+            NetworkConfig.BASE_URL_DEBUG // Use debug URL as safe fallback
+        }
+        
+        val isDebugMode = try {
+            val buildConfigClass = Class.forName("com.cdccreditsmart.app.BuildConfig")
+            val debugField = buildConfigClass.getField("DEBUG")
+            debugField.getBoolean(null)
+        } catch (e: Exception) {
+            true // Safe fallback to debug mode
+        }
+        
+        return okHttpClientFactory.createSecureClient(baseUrl, isDebugMode)
     }
     
     /**
