@@ -114,6 +114,9 @@ dependencies {
     // Material Design Components (for XML themes compatibility)
     implementation("com.google.android.material:material:1.12.0")
     
+    // Encrypted SharedPreferences for secure storage
+    implementation("androidx.security:security-crypto:1.1.0-alpha06")
+    
     // Core library desugaring for Java 8+ language features
     coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.1.3")
     

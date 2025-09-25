@@ -1,7 +1,10 @@
 package com.cdccreditsmart.data.di
 
 import android.content.Context
+import android.content.SharedPreferences
 import androidx.room.Room
+import androidx.security.crypto.EncryptedSharedPreferences
+import androidx.security.crypto.MasterKeys
 import com.cdccreditsmart.data.local.CDCDatabase
 import com.cdccreditsmart.data.local.dao.*
 import com.cdccreditsmart.data.repository.*
@@ -9,11 +12,13 @@ import com.cdccreditsmart.domain.repository.*
 import com.cdccreditsmart.network.api.*
 import com.cdccreditsmart.network.error.NetworkErrorMapper
 import com.squareup.moshi.Moshi
+import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import javax.inject.Named
 import javax.inject.Singleton
 
 @Module
@@ -92,6 +97,14 @@ object DataModule {
 
     @Provides
     @Singleton
+    fun provideMoshi(): Moshi {
+        return Moshi.Builder()
+            .add(KotlinJsonAdapterFactory())
+            .build()
+    }
+
+    @Provides
+    @Singleton
     fun provideDeviceRepository(
         deviceApiService: DeviceApiService,
         deviceBindingDao: DeviceBindingDao,
@@ -122,5 +135,27 @@ object DataModule {
             contractDao,
             networkErrorMapper
         )
+    }
+
+    @Provides
+    @Singleton
+    @Named("encrypted_prefs")
+    fun provideEncryptedSharedPreferences(@ApplicationContext context: Context): SharedPreferences {
+        val masterKeyAlias = MasterKeys.getOrCreate(MasterKeys.AES256_GCM_SPEC)
+        return EncryptedSharedPreferences.create(
+            "cdc_auth_prefs",
+            masterKeyAlias,
+            context,
+            EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
+            EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
+        )
+    }
+
+    @Provides
+    @Singleton
+    fun provideAuthenticationRepository(
+        @Named("encrypted_prefs") encryptedPrefs: SharedPreferences
+    ): AuthenticationRepository {
+        return AuthenticationRepositoryImpl(encryptedPrefs)
     }
 }

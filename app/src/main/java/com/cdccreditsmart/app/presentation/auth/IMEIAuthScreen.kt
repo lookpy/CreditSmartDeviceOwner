@@ -25,6 +25,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.compose.ui.text.input.VisualTransformation
+import androidx.compose.ui.text.input.TransformedText
+import androidx.compose.ui.text.input.OffsetMapping
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.withStyle

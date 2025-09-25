@@ -1,6 +1,6 @@
 package com.cdccreditsmart.app.presentation.home;
 
-import com.cdccreditsmart.app.presentation.auth.AuthViewModel;
+import com.cdccreditsmart.domain.repository.AuthenticationRepository;
 import com.cdccreditsmart.domain.repository.BiometryRepository;
 import com.cdccreditsmart.domain.repository.ContractRepository;
 import com.cdccreditsmart.domain.repository.DeviceRepository;
@@ -38,23 +38,23 @@ public final class HomeViewModel_Factory implements Factory<HomeViewModel> {
 
   private final Provider<BiometryRepository> biometryRepositoryProvider;
 
-  private final Provider<AuthViewModel> authViewModelProvider;
+  private final Provider<AuthenticationRepository> authRepositoryProvider;
 
   public HomeViewModel_Factory(Provider<ContractRepository> contractRepositoryProvider,
       Provider<DeviceRepository> deviceRepositoryProvider,
       Provider<PaymentsRepository> paymentsRepositoryProvider,
       Provider<BiometryRepository> biometryRepositoryProvider,
-      Provider<AuthViewModel> authViewModelProvider) {
+      Provider<AuthenticationRepository> authRepositoryProvider) {
     this.contractRepositoryProvider = contractRepositoryProvider;
     this.deviceRepositoryProvider = deviceRepositoryProvider;
     this.paymentsRepositoryProvider = paymentsRepositoryProvider;
     this.biometryRepositoryProvider = biometryRepositoryProvider;
-    this.authViewModelProvider = authViewModelProvider;
+    this.authRepositoryProvider = authRepositoryProvider;
   }
 
   @Override
   public HomeViewModel get() {
-    return newInstance(contractRepositoryProvider.get(), deviceRepositoryProvider.get(), paymentsRepositoryProvider.get(), biometryRepositoryProvider.get(), authViewModelProvider.get());
+    return newInstance(contractRepositoryProvider.get(), deviceRepositoryProvider.get(), paymentsRepositoryProvider.get(), biometryRepositoryProvider.get(), authRepositoryProvider.get());
   }
 
   public static HomeViewModel_Factory create(
@@ -62,8 +62,8 @@ public final class HomeViewModel_Factory implements Factory<HomeViewModel> {
       javax.inject.Provider<DeviceRepository> deviceRepositoryProvider,
       javax.inject.Provider<PaymentsRepository> paymentsRepositoryProvider,
       javax.inject.Provider<BiometryRepository> biometryRepositoryProvider,
-      javax.inject.Provider<AuthViewModel> authViewModelProvider) {
-    return new HomeViewModel_Factory(Providers.asDaggerProvider(contractRepositoryProvider), Providers.asDaggerProvider(deviceRepositoryProvider), Providers.asDaggerProvider(paymentsRepositoryProvider), Providers.asDaggerProvider(biometryRepositoryProvider), Providers.asDaggerProvider(authViewModelProvider));
+      javax.inject.Provider<AuthenticationRepository> authRepositoryProvider) {
+    return new HomeViewModel_Factory(Providers.asDaggerProvider(contractRepositoryProvider), Providers.asDaggerProvider(deviceRepositoryProvider), Providers.asDaggerProvider(paymentsRepositoryProvider), Providers.asDaggerProvider(biometryRepositoryProvider), Providers.asDaggerProvider(authRepositoryProvider));
   }
 
   public static HomeViewModel_Factory create(
@@ -71,13 +71,13 @@ public final class HomeViewModel_Factory implements Factory<HomeViewModel> {
       Provider<DeviceRepository> deviceRepositoryProvider,
       Provider<PaymentsRepository> paymentsRepositoryProvider,
       Provider<BiometryRepository> biometryRepositoryProvider,
-      Provider<AuthViewModel> authViewModelProvider) {
-    return new HomeViewModel_Factory(contractRepositoryProvider, deviceRepositoryProvider, paymentsRepositoryProvider, biometryRepositoryProvider, authViewModelProvider);
+      Provider<AuthenticationRepository> authRepositoryProvider) {
+    return new HomeViewModel_Factory(contractRepositoryProvider, deviceRepositoryProvider, paymentsRepositoryProvider, biometryRepositoryProvider, authRepositoryProvider);
   }
 
   public static HomeViewModel newInstance(ContractRepository contractRepository,
       DeviceRepository deviceRepository, PaymentsRepository paymentsRepository,
-      BiometryRepository biometryRepository, AuthViewModel authViewModel) {
-    return new HomeViewModel(contractRepository, deviceRepository, paymentsRepository, biometryRepository, authViewModel);
+      BiometryRepository biometryRepository, AuthenticationRepository authRepository) {
+    return new HomeViewModel(contractRepository, deviceRepository, paymentsRepository, biometryRepository, authRepository);
   }
 }

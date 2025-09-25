@@ -11,6 +11,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKeys
 import com.cdccreditsmart.domain.repository.DeviceRepository
+import com.cdccreditsmart.domain.repository.AuthenticationRepository
 import com.cdccreditsmart.domain.common.Resource
 import com.cdccreditsmart.domain.model.DeviceInfo
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -46,7 +47,8 @@ enum class AuthStatus {
 @HiltViewModel
 class AuthViewModel @Inject constructor(
     @ApplicationContext private val context: Context,
-    private val deviceRepository: DeviceRepository
+    private val deviceRepository: DeviceRepository,
+    private val authRepository: AuthenticationRepository
 ) : ViewModel() {
 
     private val _authState = mutableStateOf(AuthState())
@@ -276,53 +278,61 @@ class AuthViewModel @Inject constructor(
                             // Get contract code from device status or use default
                             getContractCodeForDevice(attestationResult.attestedDeviceId) { contractCode ->
                                 if (contractCode != null) {
-                                    // Now bind the device
-                                    deviceRepository.bindDevice(
-                                        contractCode = contractCode,
-                                        imeiPDV = null, // PDV might be null for new devices
-                                        imeiDigitado = userImei,
-                                        attestedDeviceId = attestationResult.attestedDeviceId
-                                    ).collectLatest { bindResource ->
-                                when (bindResource) {
-                                    is Resource.Loading -> {
-                                        // Keep loading state
-                                    }
-                                    is Resource.Success -> {
-                                        // Authentication successful
-                                        val binding = bindResource.data
-                                        
-                                        // Store authentication data securely
-                                        storeAuthData(
-                                            verifiedImei = deviceImei,
-                                            attestedDeviceId = attestationResult.attestedDeviceId,
-                                            jwtToken = attestationResult.jwtToken
-                                        )
-                                        
-                                        _authState.value = _authState.value.copy(
-                                            currentState = AuthStatus.Authenticated,
-                                            isAuthenticated = true,
-                                            isLoading = false,
-                                            attestedDeviceId = attestationResult.attestedDeviceId,
-                                            jwtToken = attestationResult.jwtToken,
-                                            failedAttempts = 0,
-                                            isLockedOut = false
-                                        )
-                                        
-                                        clearFailedAttempts()
-                                        logSecurityEvent("IMEI authentication successful")
-                                    }
-                                    is Resource.Error -> {
-                                        handleFailedAttempt("Device binding failed: ${bindResource.exception.message}")
+                                    // Now bind the device - wrap in viewModelScope.launch for coroutine context
+                                    viewModelScope.launch {
+                                        deviceRepository.bindDevice(
+                                            contractCode = contractCode,
+                                            imeiPDV = null, // PDV might be null for new devices
+                                            imeiDigitado = userImei,
+                                            attestedDeviceId = attestationResult.attestedDeviceId
+                                        ).collectLatest { bindResource ->
+                                            when (bindResource) {
+                                                is Resource.Loading -> {
+                                                    // Keep loading state
+                                                }
+                                                is Resource.Success -> {
+                                                    // Authentication successful
+                                                    val binding = bindResource.data
+                                                    
+                                                    // Store authentication data securely
+                                                    storeAuthData(
+                                                        verifiedImei = deviceImei,
+                                                        attestedDeviceId = attestationResult.attestedDeviceId,
+                                                        jwtToken = attestationResult.jwtToken
+                                                    )
+                                                    
+                                                    _authState.value = _authState.value.copy(
+                                                        currentState = AuthStatus.Authenticated,
+                                                        isAuthenticated = true,
+                                                        isLoading = false,
+                                                        attestedDeviceId = attestationResult.attestedDeviceId,
+                                                        jwtToken = attestationResult.jwtToken,
+                                                        failedAttempts = 0,
+                                                        isLockedOut = false
+                                                    )
+                                                    
+                                                    clearFailedAttempts()
+                                                    logSecurityEvent("IMEI authentication successful")
+                                                }
+                                                is Resource.Error -> {
+                                                    viewModelScope.launch {
+                                                        handleFailedAttempt("Device binding failed: ${bindResource.exception.message}")
+                                                    }
+                                                }
+                                            }
+                                        }
                                     }
                                 } else {
-                                    handleFailedAttempt("Unable to determine contract code for this device")
+                                    viewModelScope.launch {
+                                        handleFailedAttempt("Unable to determine contract code for this device")
+                                    }
                                 }
                             }
                         }
-                    }
-                        }
                         is Resource.Error -> {
-                            handleFailedAttempt("Device attestation failed: ${resource.exception.message}")
+                            viewModelScope.launch {
+                                handleFailedAttempt("Device attestation failed: ${resource.exception.message}")
+                            }
                         }
                     }
                 }
@@ -522,7 +532,30 @@ class AuthViewModel @Inject constructor(
     }
 
     fun getStoredAttestedDeviceId(): String? {
-        return encryptedPrefs?.getString(KEY_ATTESTED_DEVICE_ID, null)
+        return try {
+            // Use the repository for consistency, but fallback to local prefs if needed
+            // This is a bridge method during the transition
+            encryptedPrefs?.getString(KEY_ATTESTED_DEVICE_ID, null)
+        } catch (e: Exception) {
+            logSecurityEvent("Failed to get stored attested device ID: ${e.message}")
+            null
+        }
+    }
+
+    fun logout() {
+        viewModelScope.launch {
+            try {
+                // Use repository to handle logout
+                authRepository.logout()
+                _authState.value = AuthState()
+                logSecurityEvent("User logged out via AuthViewModel")
+            } catch (e: Exception) {
+                logSecurityEvent("Error during logout: ${e.message}")
+                // Fallback to direct clearing if repository fails
+                clearAuthData()
+                _authState.value = AuthState()
+            }
+        }
     }
 
     fun getStoredJwtToken(): String? {

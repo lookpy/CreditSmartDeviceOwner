@@ -89,4 +89,18 @@ interface PaymentsRepository {
      * Synchronizes local payment data with remote server
      */
     suspend fun syncPaymentData(): Flow<Resource<Unit>>
+    
+    /**
+     * Gets available payment methods for an installment
+     */
+    suspend fun getAvailablePaymentMethods(): Flow<Resource<List<PaymentMethod>>>
+    
+    /**
+     * Processes a payment for an installment
+     */
+    suspend fun processPayment(
+        installmentId: String,
+        paymentMethodId: String,
+        amount: BigDecimal
+    ): Flow<Resource<Payment>>
 }

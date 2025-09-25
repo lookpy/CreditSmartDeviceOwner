@@ -16,9 +16,9 @@ data class Payment(
     val confirmedAt: LocalDateTime? = null
 )
 
-enum class PaymentMethod {
-    PIX,
-    BOLETO
+enum class PaymentMethod(val id: String) {
+    PIX("pix"),
+    BOLETO("boleto")
 }
 
 enum class PaymentStatus {

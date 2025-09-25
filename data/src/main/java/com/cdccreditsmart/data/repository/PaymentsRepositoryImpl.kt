@@ -315,4 +315,52 @@ class PaymentsRepositoryImpl @Inject constructor(
             emit(Resource.Error(exception))
         }
     }
+
+    override suspend fun getAvailablePaymentMethods(): Flow<Resource<List<PaymentMethod>>> = flow {
+        emit(Resource.Loading())
+        
+        try {
+            // Return available payment methods (PIX and BOLETO)
+            val paymentMethods = listOf(PaymentMethod.PIX, PaymentMethod.BOLETO)
+            emit(Resource.Success(paymentMethods))
+        } catch (e: Exception) {
+            val exception = networkErrorMapper.mapToCdcException(e)
+            emit(Resource.Error(exception))
+        }
+    }
+
+    override suspend fun processPayment(
+        installmentId: String,
+        paymentMethodId: String,
+        amount: BigDecimal
+    ): Flow<Resource<Payment>> = flow {
+        emit(Resource.Loading())
+        
+        try {
+            // Convert paymentMethodId to PaymentMethod
+            val paymentMethod = when (paymentMethodId.lowercase()) {
+                "pix" -> PaymentMethod.PIX
+                "boleto" -> PaymentMethod.BOLETO
+                else -> throw IllegalArgumentException("Invalid payment method: $paymentMethodId")
+            }
+            
+            // Create a mock payment for now (in real implementation, call appropriate API)
+            val payment = Payment(
+                id = "payment_${System.currentTimeMillis()}",
+                installmentId = installmentId,
+                method = paymentMethod,
+                amount = amount,
+                status = PaymentStatus.INITIATED,
+                createdAt = java.time.LocalDateTime.now()
+            )
+            
+            // Cache the payment
+            paymentDao.insertPayment(payment.toEntityModel())
+            
+            emit(Resource.Success(payment))
+        } catch (e: Exception) {
+            val exception = networkErrorMapper.mapToCdcException(e)
+            emit(Resource.Error(exception))
+        }
+    }
 }

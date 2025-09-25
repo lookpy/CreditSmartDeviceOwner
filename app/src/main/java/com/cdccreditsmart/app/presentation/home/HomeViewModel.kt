@@ -4,7 +4,7 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.cdccreditsmart.app.presentation.auth.AuthViewModel
+import com.cdccreditsmart.domain.repository.AuthenticationRepository
 import com.cdccreditsmart.domain.repository.ContractRepository
 import com.cdccreditsmart.domain.repository.DeviceRepository
 import com.cdccreditsmart.domain.repository.PaymentsRepository
@@ -40,7 +40,7 @@ class HomeViewModel @Inject constructor(
     private val deviceRepository: DeviceRepository,
     private val paymentsRepository: PaymentsRepository,
     private val biometryRepository: BiometryRepository,
-    private val authViewModel: AuthViewModel
+    private val authRepository: AuthenticationRepository
 ) : ViewModel() {
     
     private val _uiState = mutableStateOf(HomeUiState())
@@ -56,7 +56,7 @@ class HomeViewModel @Inject constructor(
         viewModelScope.launch {
             _uiState.value = _uiState.value.copy(isLoading = true, errorMessage = null)
             
-            val deviceId = authViewModel.getStoredAttestedDeviceId()
+            val deviceId = authRepository.getStoredAttestedDeviceId()
             if (deviceId == null) {
                 _uiState.value = _uiState.value.copy(
                     isLoading = false,

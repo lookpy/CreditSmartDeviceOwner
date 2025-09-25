@@ -1,6 +1,6 @@
 package com.cdccreditsmart.app.presentation.installments;
 
-import com.cdccreditsmart.app.presentation.auth.AuthViewModel;
+import com.cdccreditsmart.domain.repository.AuthenticationRepository;
 import com.cdccreditsmart.domain.repository.DeviceRepository;
 import dagger.internal.DaggerGenerated;
 import dagger.internal.Factory;
@@ -29,33 +29,33 @@ import javax.annotation.processing.Generated;
 public final class InstallmentsViewModel_Factory implements Factory<InstallmentsViewModel> {
   private final Provider<DeviceRepository> deviceRepositoryProvider;
 
-  private final Provider<AuthViewModel> authViewModelProvider;
+  private final Provider<AuthenticationRepository> authRepositoryProvider;
 
   public InstallmentsViewModel_Factory(Provider<DeviceRepository> deviceRepositoryProvider,
-      Provider<AuthViewModel> authViewModelProvider) {
+      Provider<AuthenticationRepository> authRepositoryProvider) {
     this.deviceRepositoryProvider = deviceRepositoryProvider;
-    this.authViewModelProvider = authViewModelProvider;
+    this.authRepositoryProvider = authRepositoryProvider;
   }
 
   @Override
   public InstallmentsViewModel get() {
-    return newInstance(deviceRepositoryProvider.get(), authViewModelProvider.get());
+    return newInstance(deviceRepositoryProvider.get(), authRepositoryProvider.get());
   }
 
   public static InstallmentsViewModel_Factory create(
       javax.inject.Provider<DeviceRepository> deviceRepositoryProvider,
-      javax.inject.Provider<AuthViewModel> authViewModelProvider) {
-    return new InstallmentsViewModel_Factory(Providers.asDaggerProvider(deviceRepositoryProvider), Providers.asDaggerProvider(authViewModelProvider));
+      javax.inject.Provider<AuthenticationRepository> authRepositoryProvider) {
+    return new InstallmentsViewModel_Factory(Providers.asDaggerProvider(deviceRepositoryProvider), Providers.asDaggerProvider(authRepositoryProvider));
   }
 
   public static InstallmentsViewModel_Factory create(
       Provider<DeviceRepository> deviceRepositoryProvider,
-      Provider<AuthViewModel> authViewModelProvider) {
-    return new InstallmentsViewModel_Factory(deviceRepositoryProvider, authViewModelProvider);
+      Provider<AuthenticationRepository> authRepositoryProvider) {
+    return new InstallmentsViewModel_Factory(deviceRepositoryProvider, authRepositoryProvider);
   }
 
   public static InstallmentsViewModel newInstance(DeviceRepository deviceRepository,
-      AuthViewModel authViewModel) {
-    return new InstallmentsViewModel(deviceRepository, authViewModel);
+      AuthenticationRepository authRepository) {
+    return new InstallmentsViewModel(deviceRepository, authRepository);
   }
 }

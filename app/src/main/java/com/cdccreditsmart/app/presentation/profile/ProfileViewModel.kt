@@ -4,7 +4,7 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.cdccreditsmart.app.presentation.auth.AuthViewModel
+import com.cdccreditsmart.domain.repository.AuthenticationRepository
 import com.cdccreditsmart.domain.repository.DeviceRepository
 import com.cdccreditsmart.domain.repository.ContractRepository
 import com.cdccreditsmart.domain.model.Contract
@@ -27,7 +27,7 @@ data class ProfileUiState(
 class ProfileViewModel @Inject constructor(
     private val deviceRepository: DeviceRepository,
     private val contractRepository: ContractRepository,
-    private val authViewModel: AuthViewModel
+    private val authRepository: AuthenticationRepository
 ) : ViewModel() {
     
     private val _uiState = mutableStateOf(ProfileUiState())
@@ -41,7 +41,7 @@ class ProfileViewModel @Inject constructor(
         viewModelScope.launch {
             _uiState.value = _uiState.value.copy(isLoading = true, errorMessage = null)
             
-            val deviceId = authViewModel.getStoredAttestedDeviceId()
+            val deviceId = authRepository.getStoredAttestedDeviceId()
             if (deviceId == null) {
                 _uiState.value = _uiState.value.copy(
                     isLoading = false,
@@ -50,66 +50,38 @@ class ProfileViewModel @Inject constructor(
                 return@launch
             }
 
-            // Load contract to get user information
-            deviceRepository.getBoundContracts(deviceId).collectLatest { resource ->
-                when (resource) {
-                    is Resource.Loading -> {
-                        _uiState.value = _uiState.value.copy(isLoading = true)
-                    }
-                    is Resource.Success -> {
-                        val contracts = resource.data
-                        if (contracts.isNotEmpty()) {
-                            val firstContract = contracts.first()
-                            loadContractDetails(firstContract.id)
-                        } else {
-                            // No contracts found - this might be a new user or error state
-                            _uiState.value = _uiState.value.copy(
-                                isLoading = false,
-                                errorMessage = "Nenhum contrato encontrado para este dispositivo. Verifique se o dispositivo está corretamente vinculado."
-                            )
-                        }
-                    }
-                    is Resource.Error -> {
-                        _uiState.value = _uiState.value.copy(
-                            isLoading = false,
-                            errorMessage = "Failed to load user profile: ${resource.exception.message}"
-                        )
-                    }
+            // Load device binding to get contract information
+            deviceRepository.getDeviceBinding(deviceId).collectLatest { deviceBinding ->
+                if (deviceBinding != null) {
+                    // Load contract details using the contract code
+                    loadContractDetails(deviceBinding.contractCode)
+                } else {
+                    _uiState.value = _uiState.value.copy(
+                        isLoading = false,
+                        errorMessage = "Dispositivo não vinculado a nenhum contrato. Verifique se o dispositivo está corretamente configurado."
+                    )
                 }
             }
         }
     }
 
-    private fun loadContractDetails(contractId: String) {
+    private fun loadContractDetails(contractCode: String) {
         viewModelScope.launch {
-            contractRepository.getContract(contractId).collectLatest { resource ->
-                when (resource) {
-                    is Resource.Loading -> {}
-                    is Resource.Success -> {
-                        val contract = resource.data
-                        // Validate that we have essential customer data
-                        if (contract.customerName.isNullOrBlank() || contract.customerCpf.isNullOrBlank()) {
-                            _uiState.value = _uiState.value.copy(
-                                isLoading = false,
-                                errorMessage = "Dados do cliente incompletos. Por favor, sincronize os dados do contrato."
-                            )
-                        } else {
-                            _uiState.value = _uiState.value.copy(
-                                isLoading = false,
-                                contract = contract,
-                                userName = contract.customerName!!,
-                                userEmail = contract.customerEmail ?: "Email não informado",
-                                userCpf = contract.customerCpf!!,
-                                errorMessage = null
-                            )
-                        }
-                    }
-                    is Resource.Error -> {
-                        _uiState.value = _uiState.value.copy(
-                            isLoading = false,
-                            errorMessage = "Failed to load contract details: ${resource.exception.message}"
-                        )
-                    }
+            contractRepository.getContractByCode(contractCode).collectLatest { contract ->
+                if (contract != null) {
+                    _uiState.value = _uiState.value.copy(
+                        isLoading = false,
+                        contract = contract,
+                        userName = contract.customerName,
+                        userEmail = "Email não disponível", // Contract model doesn't have email
+                        userCpf = "CPF não disponível", // Contract model doesn't have CPF
+                        errorMessage = null
+                    )
+                } else {
+                    _uiState.value = _uiState.value.copy(
+                        isLoading = false,
+                        errorMessage = "Contrato não encontrado no cache local. Tente sincronizar os dados."
+                    )
                 }
             }
         }
@@ -125,7 +97,7 @@ class ProfileViewModel @Inject constructor(
 
     fun logout() {
         viewModelScope.launch {
-            authViewModel.logout()
+            authRepository.logout()
         }
     }
 
@@ -153,18 +125,21 @@ class ProfileViewModel @Inject constructor(
     
     fun syncCustomerData() {
         viewModelScope.launch {
-            val deviceId = authViewModel.getStoredAttestedDeviceId()
+            val deviceId = authRepository.getStoredAttestedDeviceId()
             if (deviceId != null) {
-                // Trigger a forced refresh of device bindings to get latest contract data
-                deviceRepository.getBoundContracts(deviceId).collectLatest { resource ->
+                // Refresh device binding data
+                deviceRepository.syncDeviceData(deviceId).collectLatest { resource ->
                     when (resource) {
                         is Resource.Success -> {
-                            if (resource.data.isNotEmpty()) {
-                                val contractId = resource.data.first().id
-                                loadContractDetails(contractId)
-                            }
+                            // After sync, reload the profile
+                            loadUserProfile()
                         }
-                        else -> {} // Error handling already done in loadUserProfile
+                        is Resource.Error -> {
+                            _uiState.value = _uiState.value.copy(
+                                errorMessage = "Falha ao sincronizar dados: ${resource.exception.message}"
+                            )
+                        }
+                        else -> {}
                     }
                 }
             }

@@ -14,6 +14,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.cdccreditsmart.app.presentation.home.HomeViewModel
+import com.cdccreditsmart.app.presentation.home.HomeUiState
+import com.cdccreditsmart.domain.model.BiometrySession
 import com.cdccreditsmart.app.ui.components.*
 
 @Composable
@@ -346,7 +349,7 @@ private fun buildTimelineItems(uiState: HomeUiState): List<TimelineItem> {
     }
     
     // Add recent biometry sessions
-    uiState.recentBiometrySessions.take(1).forEach { session ->
+    uiState.recentBiometrySessions.take(1).forEach { session: BiometrySession ->
         items.add(
             TimelineItem(
                 title = "Biometria validada",
