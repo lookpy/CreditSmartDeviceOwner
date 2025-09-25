@@ -12,7 +12,7 @@ Comprehensive Android application in Kotlin for CDC Credit Smart clients that op
 ## Recent Changes (September 25, 2025)
 - 🎉 **16KB PAGE SIZE COMPATIBILITY ACHIEVED** - APK agora é compatível com dispositivos Android 15+ (obrigatório Nov 1, 2025)
 - ✅ **NATIVE LIBRARIES REMOVED** - Eliminadas todas as bibliotecas .so problemáticas (libimage_processing_util_jni.so, libbarhopper_v3.so)
-- ✅ **QR CODE SCANNING TEMPORARY SOLUTION** - ZXing e ML Kit removidos temporariamente até versões 16KB-compatíveis
+- ✅ **QR CODE SCANNING REMOVED** - Bibliotecas removidas pois app busca boletos diretamente da API Asaas no backend
 - ✅ **CAMERAX UPDATED** - Atualizado para v1.4.0+ com suporte nativo a 16KB page size
 - 🎉 **ANDROID BUILD SUCCESSFUL** - App agora compila e funciona completamente (BUILD SUCCESSFUL in 3m 43s)
 - ✅ **CRITICAL HILT ARCHITECTURE FIX** - AuthenticationRepository criado para resolver violação de injeção ViewModel→ViewModel
