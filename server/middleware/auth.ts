@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
-import jwt from 'jsonwebtoken';
+import * as jwt from 'jsonwebtoken';
 import crypto from 'crypto';
+import type { StringValue } from 'ms';
 import { AuthenticationError, AuthorizationError, AuthToken } from '../types';
 import { databaseService } from '../services/database';
 import { logger } from '../utils/logger';
@@ -17,8 +18,8 @@ declare global {
   }
 }
 
-const JWT_SECRET = process.env.JWT_SECRET || 'cdc-creditsmart-mdm-secret-key-change-in-production';
-const JWT_EXPIRATION = process.env.JWT_EXPIRATION || '24h';
+const JWT_SECRET: string = process.env.JWT_SECRET || 'cdc-creditsmart-mdm-secret-key-change-in-production';
+const JWT_EXPIRATION: string = process.env.JWT_EXPIRATION || '24h';
 
 // Generate JWT token for device
 export function generateDeviceToken(
@@ -33,7 +34,7 @@ export function generateDeviceToken(
     permissions
   };
 
-  return jwt.sign(payload as any, JWT_SECRET, { expiresIn: JWT_EXPIRATION });
+  return jwt.sign(payload, JWT_SECRET, { expiresIn: JWT_EXPIRATION as StringValue });
 }
 
 // Verify JWT token

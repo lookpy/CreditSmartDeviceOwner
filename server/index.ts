@@ -16,13 +16,10 @@ import { sanitizeInput } from './middleware/validation';
 import { databaseService } from './services/database';
 import { logger } from './utils/logger';
 
-// Import routes
-import apkRoutes from './routes/apk';
-import qrcodeRoutes from './routes/qrcode';
+// Import routes - Only keeping essential debug routes
+// Removed: apkRoutes, qrcodeRoutes, policyRoutes, commandRoutes, fileServerRoutes
+// Reason: APK/QR handled by CDC Credit Smart backend, not MDM server
 import deviceRoutes from './routes/devices';
-import policyRoutes from './routes/policies';
-import commandRoutes from './routes/commands';
-import fileServerRoutes from './routes/fileServer';
 
 // Import WebSocket service
 import { webSocketService } from './services/websocket';
@@ -56,18 +53,6 @@ const globalLimiter = rateLimit({
   }
 });
 
-// Strict rate limiting for APK uploads
-const apkUploadLimiter = rateLimit({
-  windowMs: 60 * 60 * 1000, // 1 hour
-  max: 10, // limit each IP to 10 APK uploads per hour
-  message: {
-    success: false,
-    error: 'APK_UPLOAD_LIMIT_EXCEEDED',
-    message: 'Too many APK uploads, please try again later',
-    statusCode: 429,
-    timestamp: new Date().toISOString()
-  }
-});
 
 // Initialize Express app
 async function initializeApp(): Promise<void> {
@@ -96,7 +81,7 @@ async function initializeApp(): Promise<void> {
     }));
 
     app.use(cors({
-      origin: process.env.ALLOWED_ORIGINS?.split(',') || ['http://localhost:3000', 'https://cdccreditsmart.com'],
+      origin: process.env.ALLOWED_ORIGINS?.split(',') || ['http://localhost:3000', 'https://api.cdccreditsmart.com.br', 'https://api-dev.cdccreditsmart.com.br'],
       credentials: true,
       methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
       allowedHeaders: [
@@ -124,51 +109,12 @@ async function initializeApp(): Promise<void> {
 
     // Apply rate limiting
     app.use(globalLimiter);
-    app.use('/api/apk/upload', apkUploadLimiter);
 
     // Trust proxy for accurate IP addresses
     app.set('trust proxy', true);
 
-    // API Routes
-    app.use('/api/apk', (req, res) => {
-      res.json({
-        success: false,
-        message: 'APK routes not yet implemented',
-        timestamp: new Date().toISOString()
-      });
-    });
-
-    app.use('/api/qr-code', (req, res) => {
-      res.json({
-        success: false,
-        message: 'QR code routes not yet implemented',
-        timestamp: new Date().toISOString()
-      });
-    });
-
-    app.use('/api/devices', (req, res) => {
-      res.json({
-        success: false,
-        message: 'Device routes not yet implemented',
-        timestamp: new Date().toISOString()
-      });
-    });
-
-    app.use('/api/policies', (req, res) => {
-      res.json({
-        success: false,
-        message: 'Policy routes not yet implemented',
-        timestamp: new Date().toISOString()
-      });
-    });
-
-    app.use('/api/commands', (req, res) => {
-      res.json({
-        success: false,
-        message: 'Command routes not yet implemented',
-        timestamp: new Date().toISOString()
-      });
-    });
+    // API Routes - Only essential routes for device management and health monitoring
+    app.use('/api/devices', deviceRoutes);
 
     // Root endpoint
     app.get('/', (req, res) => {
@@ -178,11 +124,7 @@ async function initializeApp(): Promise<void> {
         version: '1.0.0',
         timestamp: new Date().toISOString(),
         endpoints: {
-          apk: '/api/apk/*',
-          qrCode: '/api/qr-code/*',
           devices: '/api/devices/*',
-          policies: '/api/policies/*',
-          commands: '/api/commands/*',
           websocket: '/ws/device-updates/:deviceId',
           health: '/health',
           status: '/status'
@@ -198,19 +140,11 @@ async function initializeApp(): Promise<void> {
         message: 'CDC Credit Smart MDM API',
         version: '1.0.0',
         endpoints: {
-          'POST /api/apk/upload': 'Upload APK file',
-          'GET /api/apk/download/latest': 'Download latest APK',
-          'GET /api/apk/download/:filename': 'Download specific APK',
-          'POST /api/qr-code/generate': 'Generate device provisioning QR code',
           'POST /api/devices/register': 'Register new device',
           'GET /api/devices': 'List all devices',
           'GET /api/devices/:deviceId': 'Get device details',
           'PUT /api/devices/:deviceId': 'Update device',
           'DELETE /api/devices/:deviceId': 'Remove device',
-          'POST /api/policies/apply': 'Apply policy to devices',
-          'GET /api/policies/:deviceId': 'Get device policies',
-          'POST /api/commands/send': 'Send command to device',
-          'GET /api/commands/:deviceId': 'Get device command history',
           'WebSocket /ws/device-updates/:deviceId': 'Real-time device communication'
         },
         authentication: 'Bearer token or device fingerprint',

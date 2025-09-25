@@ -6,8 +6,9 @@ package com.cdccreditsmart.network.config
 object NetworkConfig {
     
     // Base URLs - Updated for CDC Credit Smart real backend
-    const val BASE_URL = "https://cdccreditsmart.com/"
-    const val BASE_URL_DEBUG = "https://cdccreditsmart.com/"
+    // Note: These should match the URLs in app/build.gradle.kts BuildConfig
+    const val BASE_URL = "https://api.cdccreditsmart.com.br/"
+    const val BASE_URL_DEBUG = "https://api-dev.cdccreditsmart.com.br/"
     
     // Timeout configurations (in milliseconds)
     const val CONNECT_TIMEOUT = 30_000L
