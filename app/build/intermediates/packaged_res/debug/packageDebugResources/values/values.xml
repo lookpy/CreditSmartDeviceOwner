@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#000000</color>
+    <color name="cdc_background">#121212</color>
+    <color name="cdc_error">#F44336</color>
+    <color name="cdc_gray_dark">#404040</color>
+    <color name="cdc_gray_light">#B8B8B8</color>
+    <color name="cdc_gray_medium">#808080</color>
+    <color name="cdc_orange_primary">#F47C2C</color>
+    <color name="cdc_orange_secondary">#FF7A1A</color>
+    <color name="cdc_orange_variant">#E66B1F</color>
+    <color name="cdc_success">#4CAF50</color>
+    <color name="cdc_surface">#1E1E1E</color>
+    <color name="cdc_surface_variant">#2C2C2C</color>
+    <color name="cdc_text_disabled">#666666</color>
+    <color name="cdc_text_primary">#FFFFFF</color>
+    <color name="cdc_text_secondary">#B8B8B8</color>
+    <color name="cdc_warning">#FF9800</color>
+    <color name="transparent">#00000000</color>
+    <color name="white">#FFFFFF</color>
+    <string name="android_enterprise">📱 Android Enterprise</string>
+    <string name="app_available">📱 App Disponível</string>
+    <string name="app_name">CDC Credit Smart</string>
+    <string name="back">Voltar</string>
+    <string name="cancel">Cancelar</string>
+    <string name="configure_device">Configurar Dispositivo</string>
+    <string name="contact_support">Entre em Contato</string>
+    <string name="contact_support_lock">Contatar Suporte</string>
+    <string name="continue_text">Continuar</string>
+    <string name="contract_status">Status do Contrato</string>
+    <string name="device_imei">IMEI do Dispositivo</string>
+    <string name="device_locked_message">Regularize seu pagamento para liberar o aparelho</string>
+    <string name="device_locked_title">Aparelho Bloqueado</string>
+    <string name="device_owner_config">⚙️ Configuração Device Owner</string>
+    <string name="error_generic">Ocorreu um erro. Tente novamente.</string>
+    <string name="faq">Perguntas Frequentes</string>
+    <string name="finish_sale">Finalizar Venda</string>
+    <string name="imei_validated">✓ IMEI validado com sucesso!</string>
+    <string name="installment_number">Parcela %d</string>
+    <string name="installment_overdue">Em atraso</string>
+    <string name="installment_paid">Pago</string>
+    <string name="installment_pending">Pendente</string>
+    <string name="loading">Carregando...</string>
+    <string name="nav_clients">Clientes</string>
+    <string name="nav_contracts">Contratos</string>
+    <string name="nav_dashboard">Dashboard</string>
+    <string name="nav_devices">Aparelhos da Loja</string>
+    <string name="nav_pdv">PDV</string>
+    <string name="nav_reports">Relatórios</string>
+    <string name="new_sale">Nova Venda</string>
+    <string name="next_payment">Próximo Pagamento</string>
+    <string name="ok">OK</string>
+    <string name="pay_now">Pagar Agora</string>
+    <string name="payment_amount">Valor: R$ %.2f</string>
+    <string name="payment_due_date">Vencimento: %s</string>
+    <string name="payment_method_boleto">Boleto</string>
+    <string name="payment_method_pix">PIX</string>
+    <string name="pdv_subtitle">Análise de crédito e vendas de dispositivos</string>
+    <string name="pdv_title">PDV - Ponto de Venda</string>
+    <string name="retry">Tentar novamente</string>
+    <string name="scan_with_device">Escaneie com o dispositivo</string>
+    <string name="step_completed">5 Concluído</string>
+    <string name="step_finalize">2 Finalizar</string>
+    <string name="step_qr_code">3 QR Code</string>
+    <string name="step_search_client">1 Buscar Cliente</string>
+    <string name="step_sync_apk">4 Sync APK</string>
+    <string name="title_home">Início</string>
+    <string name="title_installments">Parcelas</string>
+    <string name="title_payments">Pagamentos</string>
+    <string name="title_profile">Perfil</string>
+    <string name="title_support">Suporte</string>
+    <string name="unlock_payment">Pagar Agora</string>
+    <string name="welcome_title">Bem-vindo ao CDC Credit Smart</string>
+    <style name="CDCButtonPrimary" parent="Widget.MaterialComponents.Button">
+        <item name="backgroundTint">@color/cdc_orange_primary</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="cornerRadius">8dp</item>
+    </style>
+    <style name="CDCButtonSecondary" parent="Widget.MaterialComponents.Button.OutlinedButton">
+        <item name="strokeColor">@color/cdc_orange_primary</item>
+        <item name="android:textColor">@color/cdc_orange_primary</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:textSize">16sp</item>
+        <item name="cornerRadius">8dp</item>
+    </style>
+    <style name="Theme.CDCCreditSmart" parent="Theme.MaterialComponents.DayNight">
+        
+        <item name="colorPrimary">@color/cdc_orange_primary</item>
+        <item name="colorPrimaryVariant">@color/cdc_orange_variant</item>
+        <item name="colorOnPrimary">@color/white</item>
+
+        
+        <item name="colorSecondary">@color/cdc_orange_secondary</item>
+        <item name="colorSecondaryVariant">@color/cdc_orange_variant</item>
+        <item name="colorOnSecondary">@color/white</item>
+
+        
+        <item name="android:colorBackground">@color/cdc_background</item>
+        <item name="colorOnBackground">@color/cdc_text_primary</item>
+
+        
+        <item name="colorSurface">@color/cdc_surface</item>
+        <item name="colorOnSurface">@color/cdc_text_primary</item>
+        <item name="colorSurfaceVariant">@color/cdc_surface_variant</item>
+
+        
+        <item name="android:statusBarColor">@color/cdc_background</item>
+        <item name="android:navigationBarColor">@color/cdc_background</item>
+        <item name="android:windowLightStatusBar">false</item>
+        
+        
+        <item name="colorError">@color/cdc_error</item>
+        <item name="colorOnError">@color/white</item>
+
+        
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowActionBar">false</item>
+    </style>
+    <style name="Theme.CDCCreditSmart.Lock" parent="Theme.CDCCreditSmart">
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowActionBar">false</item>
+        <item name="android:windowBackground">@color/cdc_background</item>
+    </style>
+    <style name="Theme.CDCCreditSmart.Splash" parent="Theme.CDCCreditSmart">
+        <item name="android:windowBackground">@drawable/splash_background</item>
+        <item name="android:windowFullscreen">true</item>
+    </style>
+</resources>

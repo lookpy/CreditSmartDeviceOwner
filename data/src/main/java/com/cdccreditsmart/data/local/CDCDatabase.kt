@@ -7,6 +7,7 @@ import androidx.room.TypeConverters
 import android.content.Context
 import com.cdccreditsmart.data.local.entity.*
 import com.cdccreditsmart.data.local.dao.*
+import com.cdccreditsmart.device.security.model.*
 
 @Database(
     entities = [
@@ -16,12 +17,16 @@ import com.cdccreditsmart.data.local.dao.*
         PaymentEntity::class,
         ContractEntity::class,
         ContractTermsEntity::class,
-        DeviceStatusEntity::class
+        DeviceStatusEntity::class,
+        ActiveSecurityPolicyEntity::class,
+        SecurityPolicyHistoryEntity::class,
+        PolicyConfigurationEntity::class,
+        SecurityAuditLogEntity::class
     ],
-    version = 2,
+    version = 3,
     exportSchema = false
 )
-@TypeConverters(Converters::class)
+@TypeConverters(Converters::class, com.cdccreditsmart.data.converters.MapConverter::class)
 abstract class CDCDatabase : RoomDatabase() {
     
     abstract fun deviceBindingDao(): DeviceBindingDao
@@ -30,6 +35,8 @@ abstract class CDCDatabase : RoomDatabase() {
     abstract fun paymentDao(): PaymentDao
     abstract fun contractDao(): ContractDao
     abstract fun deviceStatusDao(): DeviceStatusDao
+    abstract fun securityPolicyDao(): SecurityPolicyDao
+    abstract fun securityAuditLogDao(): SecurityAuditLogDao
     
     companion object {
         const val DATABASE_NAME = "cdc_database"

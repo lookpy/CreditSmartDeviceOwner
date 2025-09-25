@@ -32,8 +32,7 @@ import javax.inject.Singleton
 @Singleton
 class DeviceCommandExecutor @Inject constructor(
     @ApplicationContext private val context: Context,
-    private val deviceOwnerManager: DeviceOwnerManager,
-    private val deviceCommandWebSocketService: DeviceCommandWebSocketService
+    private val deviceOwnerManager: DeviceOwnerManager
 ) {
 
     companion object {
