@@ -45,14 +45,19 @@ dependencies {
     implementation("androidx.core:core-ktx:1.13.1")
     implementation("androidx.appcompat:appcompat:1.7.0")
     
-    // Camera
-    implementation("androidx.camera:camera-core:1.3.4")
-    implementation("androidx.camera:camera-camera2:1.3.4")
-    implementation("androidx.camera:camera-lifecycle:1.3.4")
-    implementation("androidx.camera:camera-view:1.3.4")
+    // Camera - TEMPORARY REMOVAL due to 16KB page size incompatibility
+    // CameraX contains native libraries (libimage_processing_util_jni.so) not aligned for 16KB pages  
+    // Will be restored when confirmed 16KB-compatible versions are available
+    // implementation("androidx.camera:camera-core:1.4.0")
+    // implementation("androidx.camera:camera-camera2:1.4.0")
+    // implementation("androidx.camera:camera-lifecycle:1.4.0")
+    // implementation("androidx.camera:camera-view:1.4.0")
     
-    // ML Kit Face Detection (for liveness)
-    implementation("com.google.mlkit:face-detection:16.1.6")
+    // Alternative: Use Camera2 API directly or Intent-based camera for now
+    
+    // Temporary: Remove ML Kit Face Detection due to 16KB incompatibility
+    // Will be replaced with custom face detection when ML Kit releases compatible version
+    // implementation("com.google.mlkit:face-detection:16.1.6")
     
     // Dependency Injection
     implementation("com.google.dagger:hilt-android:2.54")

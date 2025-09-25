@@ -18,6 +18,11 @@ android {
         versionName = "1.0.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        
+        // Enable 16 KB page size support
+        ndk {
+            abiFilters += listOf("arm64-v8a", "x86_64")
+        }
     }
 
     buildTypes {
@@ -54,6 +59,9 @@ android {
     packaging {
         resources {
             excludes.add("/META-INF/{AL2.0,LGPL2.1}")
+        }
+        jniLibs {
+            useLegacyPackaging = false
         }
     }
 
@@ -104,9 +112,14 @@ dependencies {
     implementation("androidx.hilt:hilt-navigation-compose:1.2.0")
     ksp("com.google.dagger:hilt-android-compiler:2.54")
     
-    // QR Code library (for Payment QR codes)
-    implementation("com.journeyapps:zxing-android-embedded:4.3.0")
-    implementation("com.google.zxing:core:3.5.3")
+    // QR Code libraries - TEMPORARY REMOVAL due to 16KB page size incompatibility
+    // Both ZXing and ML Kit contain native libraries not yet aligned for 16KB pages
+    // Will be restored when 16KB-compatible versions are released (after Nov 1, 2025)
+    // implementation("com.journeyapps:zxing-android-embedded:4.3.0")
+    // implementation("com.google.zxing:core:3.5.3")
+    // implementation("com.google.mlkit:barcode-scanning:17.3.0")
+    
+    // Alternative: Use Intent-based QR scanning or web-based solutions for now
     
     // Icons Extended (for Material 3 icons)
     implementation("androidx.compose.material:material-icons-extended")

@@ -148,20 +148,7 @@
         android:name="com.cdccreditsmart.app.debug.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION"
         android:protectionLevel="signature" />
 
-    <uses-permission android:name="com.cdccreditsmart.app.debug.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION" /> <!-- TODO replace above two with next line after Android 4.2 -->
-    <!-- <uses-feature android:name="android.hardware.camera.any"/> -->
-    <uses-feature
-        android:name="android.hardware.camera.autofocus"
-        android:required="false" />
-    <uses-feature
-        android:name="android.hardware.camera.flash"
-        android:required="false" />
-    <uses-feature
-        android:name="android.hardware.screen.landscape"
-        android:required="false" />
-    <uses-feature
-        android:name="android.hardware.wifi"
-        android:required="false" />
+    <uses-permission android:name="com.cdccreditsmart.app.debug.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION" />
 
     <application
         android:name="com.cdccreditsmart.app.CDCApplication"
@@ -242,24 +229,19 @@
             android:name="androidx.activity.ComponentActivity"
             android:exported="true" />
 
-        <service
-            android:name="androidx.camera.core.impl.MetadataHolderService"
-            android:enabled="false"
-            android:exported="false" >
-            <meta-data
-                android:name="androidx.camera.core.impl.MetadataHolderService.DEFAULT_CONFIG_PROVIDER"
-                android:value="androidx.camera.camera2.Camera2Config$DefaultProvider" />
-        </service>
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
 
         <provider
             android:name="androidx.startup.InitializationProvider"
             android:authorities="com.cdccreditsmart.app.debug.androidx-startup"
             android:exported="false" >
             <meta-data
-                android:name="androidx.work.WorkManagerInitializer"
+                android:name="androidx.emoji2.text.EmojiCompatInitializer"
                 android:value="androidx.startup" />
             <meta-data
-                android:name="androidx.emoji2.text.EmojiCompatInitializer"
+                android:name="androidx.work.WorkManagerInitializer"
                 android:value="androidx.startup" />
             <meta-data
                 android:name="androidx.lifecycle.ProcessLifecycleInitializer"
@@ -362,36 +344,6 @@
         </receiver>
 
         <service
-            android:name="com.google.mlkit.common.internal.MlKitComponentDiscoveryService"
-            android:directBootAware="true"
-            android:exported="false" >
-            <meta-data
-                android:name="com.google.firebase.components:com.google.mlkit.vision.face.internal.FaceRegistrar"
-                android:value="com.google.firebase.components.ComponentRegistrar" />
-            <meta-data
-                android:name="com.google.firebase.components:com.google.mlkit.vision.common.internal.VisionCommonRegistrar"
-                android:value="com.google.firebase.components.ComponentRegistrar" />
-            <meta-data
-                android:name="com.google.firebase.components:com.google.mlkit.common.internal.CommonComponentRegistrar"
-                android:value="com.google.firebase.components.ComponentRegistrar" />
-        </service>
-
-        <provider
-            android:name="com.google.mlkit.common.internal.MlKitInitProvider"
-            android:authorities="com.cdccreditsmart.app.debug.mlkitinitprovider"
-            android:exported="false"
-            android:initOrder="99" />
-
-        <activity
-            android:name="com.google.android.gms.common.api.GoogleApiActivity"
-            android:exported="false"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
-
-        <meta-data
-            android:name="com.google.android.gms.version"
-            android:value="@integer/google_play_services_version" />
-
-        <service
             android:name="androidx.room.MultiInstanceInvalidationService"
             android:directBootAware="true"
             android:exported="false" />
@@ -414,32 +366,7 @@
             <intent-filter>
                 <action android:name="androidx.profileinstaller.action.BENCHMARK_OPERATION" />
             </intent-filter>
-        </receiver>
-
-        <service
-            android:name="com.google.android.datatransport.runtime.backends.TransportBackendDiscovery"
-            android:exported="false" >
-            <meta-data
-                android:name="backend:com.google.android.datatransport.cct.CctBackendFactory"
-                android:value="cct" />
-        </service>
-        <service
-            android:name="com.google.android.datatransport.runtime.scheduling.jobscheduling.JobInfoSchedulerService"
-            android:exported="false"
-            android:permission="android.permission.BIND_JOB_SERVICE" >
-        </service>
-
-        <receiver
-            android:name="com.google.android.datatransport.runtime.scheduling.jobscheduling.AlarmManagerSchedulerBroadcastReceiver"
-            android:exported="false" />
-
-        <activity
-            android:name="com.journeyapps.barcodescanner.CaptureActivity"
-            android:clearTaskOnLaunch="true"
-            android:screenOrientation="sensorLandscape"
-            android:stateNotNeeded="true"
-            android:theme="@style/zxing_CaptureTheme"
-            android:windowSoftInputMode="stateAlwaysHidden" /> <!-- The activities will be merged into the manifest of the hosting app. -->
+        </receiver> <!-- The activities will be merged into the manifest of the hosting app. -->
         <activity
             android:name="com.google.android.play.core.common.PlayCoreDialogWrapperActivity"
             android:exported="false"
