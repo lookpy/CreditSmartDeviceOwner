@@ -1,0 +1,281 @@
+Executing tasks: [:app:assembleDebug, :app:assembleDebugUnitTest, :app:assembleDebugAndroidTest] in project C:\Users\sabre\AndroidStudioProjects\CreditSmartDeviceOwner88
+
+
+> Configure project :
+Build was configured to prefer settings repositories over project repositories but repository 'Google' was added by build file 'build.gradle.kts'
+Build was configured to prefer settings repositories over project repositories but repository 'MavenRepo' was added by build file 'build.gradle.kts'
+Build was configured to prefer settings repositories over project repositories but repository 'maven' was added by build file 'build.gradle.kts'
+Build was configured to prefer settings repositories over project repositories but repository 'Google' was added by build file 'build.gradle.kts'
+Build was configured to prefer settings repositories over project repositories but repository 'MavenRepo' was added by build file 'build.gradle.kts'
+Build was configured to prefer settings repositories over project repositories but repository 'maven' was added by build file 'build.gradle.kts'
+Build was configured to prefer settings repositories over project repositories but repository 'Google' was added by build file 'build.gradle.kts'
+Build was configured to prefer settings repositories over project repositories but repository 'MavenRepo' was added by build file 'build.gradle.kts'
+Build was configured to prefer settings repositories over project repositories but repository 'maven' was added by build file 'build.gradle.kts'
+Build was configured to prefer settings repositories over project repositories but repository 'Google' was added by build file 'build.gradle.kts'
+Build was configured to prefer settings repositories over project repositories but repository 'MavenRepo' was added by build file 'build.gradle.kts'
+Build was configured to prefer settings repositories over project repositories but repository 'maven' was added by build file 'build.gradle.kts'
+Build was configured to prefer settings repositories over project repositories but repository 'Google' was added by build file 'build.gradle.kts'
+Build was configured to prefer settings repositories over project repositories but repository 'MavenRepo' was added by build file 'build.gradle.kts'
+Build was configured to prefer settings repositories over project repositories but repository 'maven' was added by build file 'build.gradle.kts'
+Build was configured to prefer settings repositories over project repositories but repository 'Google' was added by build file 'build.gradle.kts'
+Build was configured to prefer settings repositories over project repositories but repository 'MavenRepo' was added by build file 'build.gradle.kts'
+Build was configured to prefer settings repositories over project repositories but repository 'maven' was added by build file 'build.gradle.kts'
+Build was configured to prefer settings repositories over project repositories but repository 'Google' was added by build file 'build.gradle.kts'
+Build was configured to prefer settings repositories over project repositories but repository 'MavenRepo' was added by build file 'build.gradle.kts'
+Build was configured to prefer settings repositories over project repositories but repository 'maven' was added by build file 'build.gradle.kts'
+Build was configured to prefer settings repositories over project repositories but repository 'Google' was added by build file 'build.gradle.kts'
+Build was configured to prefer settings repositories over project repositories but repository 'MavenRepo' was added by build file 'build.gradle.kts'
+Build was configured to prefer settings repositories over project repositories but repository 'maven' was added by build file 'build.gradle.kts'
+
+> Task :data:preBuild UP-TO-DATE
+> Task :biometry:preBuild UP-TO-DATE
+> Task :network:preBuild UP-TO-DATE
+> Task :payments:preBuild UP-TO-DATE
+> Task :device:preBuild UP-TO-DATE
+> Task :biometry:preDebugBuild UP-TO-DATE
+> Task :data:preDebugBuild UP-TO-DATE
+> Task :network:preDebugBuild UP-TO-DATE
+> Task :payments:preDebugBuild UP-TO-DATE
+> Task :domain:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :device:preDebugBuild UP-TO-DATE
+> Task :app:preBuild UP-TO-DATE
+> Task :app:preDebugBuild UP-TO-DATE
+> Task :app:mergeDebugNativeDebugMetadata NO-SOURCE
+> Task :app:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :payments:writeDebugAarMetadata
+> Task :device:writeDebugAarMetadata
+> Task :network:writeDebugAarMetadata
+> Task :biometry:writeDebugAarMetadata
+> Task :data:writeDebugAarMetadata
+> Task :app:generateDebugBuildConfig
+> Task :payments:processDebugNavigationResources
+> Task :device:processDebugNavigationResources
+> Task :data:processDebugNavigationResources
+> Task :biometry:processDebugNavigationResources
+> Task :network:processDebugNavigationResources
+> Task :network:generateDebugResValues
+> Task :device:generateDebugResValues
+> Task :data:generateDebugResValues
+> Task :payments:generateDebugResValues
+> Task :biometry:generateDebugResValues
+> Task :app:generateDebugResValues
+> Task :network:generateDebugResources
+> Task :data:generateDebugResources
+> Task :payments:generateDebugResources
+> Task :device:generateDebugResources
+> Task :biometry:generateDebugResources
+> Task :data:packageDebugResources
+> Task :device:packageDebugResources
+> Task :network:packageDebugResources
+> Task :payments:packageDebugResources
+> Task :biometry:packageDebugResources
+> Task :payments:extractDeepLinksDebug
+> Task :biometry:extractDeepLinksDebug
+> Task :network:extractDeepLinksDebug
+> Task :data:extractDeepLinksDebug
+> Task :device:extractDeepLinksDebug
+> Task :domain:processResources NO-SOURCE
+> Task :biometry:compileDebugLibraryResources
+> Task :device:compileDebugLibraryResources
+> Task :payments:compileDebugLibraryResources
+> Task :data:compileDebugLibraryResources
+> Task :network:compileDebugLibraryResources
+> Task :app:checkDebugAarMetadata
+> Task :data:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :biometry:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :network:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :device:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :payments:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :device:generateDebugBuildConfig
+> Task :payments:processDebugManifest
+> Task :network:processDebugManifest
+> Task :data:processDebugManifest
+
+> Task :device:processDebugManifest
+package="com.cdccreditsmart.device" found in source AndroidManifest.xml: C:\Users\sabre\AndroidStudioProjects\CreditSmartDeviceOwner88\device\src\main\AndroidManifest.xml.
+Setting the namespace via the package attribute in the source AndroidManifest.xml is no longer supported, and the value is ignored.
+Recommendation: remove package="com.cdccreditsmart.device" from the source AndroidManifest.xml: C:\Users\sabre\AndroidStudioProjects\CreditSmartDeviceOwner88\device\src\main\AndroidManifest.xml.
+
+> Task :biometry:processDebugManifest
+> Task :app:processDebugNavigationResources
+> Task :biometry:parseDebugLocalResources
+> Task :network:parseDebugLocalResources
+> Task :data:parseDebugLocalResources
+> Task :device:parseDebugLocalResources
+> Task :payments:parseDebugLocalResources
+> Task :app:mapDebugSourceSetPaths
+> Task :app:generateDebugResources
+> Task :biometry:dataBindingMergeDependencyArtifactsDebug
+> Task :network:javaPreCompileDebug
+> Task :payments:javaPreCompileDebug
+> Task :device:mergeDebugShaders
+> Task :network:mergeDebugShaders
+> Task :payments:mergeDebugShaders
+> Task :device:compileDebugShaders NO-SOURCE
+> Task :payments:compileDebugShaders NO-SOURCE
+> Task :device:generateDebugAssets UP-TO-DATE
+> Task :payments:generateDebugAssets UP-TO-DATE
+> Task :network:compileDebugShaders NO-SOURCE
+> Task :network:generateDebugAssets UP-TO-DATE
+> Task :data:generateDebugRFile
+> Task :device:javaPreCompileDebug
+> Task :data:mergeDebugShaders
+> Task :device:generateDebugRFile
+> Task :device:mergeDebugAssets
+> Task :biometry:generateDebugRFile
+> Task :network:generateDebugRFile
+> Task :payments:mergeDebugAssets
+> Task :payments:generateDebugRFile
+> Task :network:mergeDebugAssets
+> Task :data:compileDebugShaders NO-SOURCE
+> Task :data:generateDebugAssets UP-TO-DATE
+> Task :data:javaPreCompileDebug
+> Task :payments:mergeDebugJniLibFolders
+> Task :app:compileDebugNavigationResources
+> Task :payments:mergeDebugNativeLibs NO-SOURCE
+> Task :network:mergeDebugJniLibFolders
+> Task :network:mergeDebugNativeLibs NO-SOURCE
+> Task :data:mergeDebugAssets
+> Task :device:mergeDebugJniLibFolders
+> Task :device:mergeDebugNativeLibs NO-SOURCE
+> Task :data:mergeDebugJniLibFolders
+> Task :data:mergeDebugNativeLibs NO-SOURCE
+> Task :device:copyDebugJniLibsProjectOnly
+> Task :network:copyDebugJniLibsProjectOnly
+> Task :payments:copyDebugJniLibsProjectOnly
+> Task :data:copyDebugJniLibsProjectOnly
+> Task :biometry:dataBindingGenBaseClassesDebug
+> Task :biometry:mergeDebugShaders
+> Task :biometry:compileDebugShaders NO-SOURCE
+> Task :biometry:generateDebugAssets UP-TO-DATE
+> Task :biometry:javaPreCompileDebug
+> Task :biometry:mergeDebugAssets
+> Task :biometry:mergeDebugJniLibFolders
+> Task :biometry:mergeDebugNativeLibs NO-SOURCE
+> Task :biometry:copyDebugJniLibsProjectOnly
+> Task :app:packageDebugResources
+> Task :app:createDebugCompatibleScreenManifests
+> Task :app:extractDeepLinksDebug
+> Task :app:parseDebugLocalResources
+> Task :app:processDebugMainManifest
+> Task :app:mergeDebugResources
+> Task :app:processDebugManifest
+> Task :app:javaPreCompileDebug
+> Task :app:mergeDebugShaders
+> Task :app:compileDebugShaders NO-SOURCE
+> Task :app:generateDebugAssets UP-TO-DATE
+> Task :app:mergeDebugAssets
+> Task :app:compressDebugAssets
+> Task :app:processDebugManifestForPackage
+> Task :app:desugarDebugFileDependencies
+> Task :app:mergeDebugJniLibFolders
+> Task :app:validateSigningDebug
+> Task :app:writeDebugAppMetadata
+> Task :app:writeDebugSigningConfigVersions
+> Task :app:preDebugUnitTestBuild UP-TO-DATE
+> Task :app:preDebugAndroidTestBuild SKIPPED
+> Task :app:javaPreCompileDebugUnitTest
+> Task :app:checkDebugDuplicateClasses
+> Task :app:processDebugAndroidTestManifest
+> Task :app:generateDebugAndroidTestBuildConfig
+> Task :app:checkDebugAndroidTestAarMetadata
+> Task :app:processDebugAndroidTestNavigationResources
+> Task :app:compileDebugAndroidTestNavigationResources
+> Task :app:generateDebugAndroidTestResValues
+> Task :app:mapDebugAndroidTestSourceSetPaths
+> Task :app:generateDebugAndroidTestResources
+> Task :app:javaPreCompileDebugAndroidTest
+> Task :app:mergeDebugAndroidTestShaders
+> Task :app:compileDebugAndroidTestShaders NO-SOURCE
+> Task :app:generateDebugAndroidTestAssets UP-TO-DATE
+> Task :app:mergeDebugAndroidTestAssets
+> Task :app:compressDebugAndroidTestAssets
+> Task :app:desugarDebugAndroidTestFileDependencies
+> Task :app:checkDebugAndroidTestDuplicateClasses
+> Task :app:mergeDebugAndroidTestJniLibFolders
+> Task :app:validateSigningDebugAndroidTest
+> Task :app:mergeDebugAndroidTestResources
+> Task :app:writeDebugAndroidTestSigningConfigVersions
+> Task :app:processDebugAndroidTestResources
+> Task :app:processDebugResources
+> Task :app:mergeExtDexDebugAndroidTest
+> Task :app:l8DexDesugarLibDebug
+> Task :domain:compileKotlin
+> Task :domain:compileJava NO-SOURCE
+> Task :domain:classes UP-TO-DATE
+> Task :domain:jar
+> Task :biometry:kspDebugKotlin NO-SOURCE
+> Task :payments:kspDebugKotlin NO-SOURCE
+> Task :biometry:compileDebugKotlin NO-SOURCE
+> Task :payments:compileDebugKotlin NO-SOURCE
+> Task :biometry:compileDebugJavaWithJavac NO-SOURCE
+> Task :payments:compileDebugJavaWithJavac NO-SOURCE
+> Task :app:mergeDebugNativeLibs NO-SOURCE
+> Task :app:stripDebugDebugSymbols NO-SOURCE
+> Task :app:mergeDebugAndroidTestNativeLibs NO-SOURCE
+> Task :app:stripDebugAndroidTestDebugSymbols NO-SOURCE
+> Task :payments:processDebugJavaRes NO-SOURCE
+> Task :biometry:processDebugJavaRes NO-SOURCE
+> Task :payments:transformDebugClassesWithAsm
+> Task :biometry:transformDebugClassesWithAsm
+> Task :biometry:bundleLibRuntimeToDirDebug
+> Task :payments:bundleLibRuntimeToDirDebug
+> Task :payments:bundleLibRuntimeToJarDebug
+> Task :biometry:bundleLibRuntimeToJarDebug
+> Task :biometry:bundleLibCompileToJarDebug
+> Task :payments:bundleLibCompileToJarDebug
+> Task :app:mergeExtDexDebug
+> Task :network:kspDebugKotlin
+> Task :network:compileDebugKotlin
+w: file:///C:/Users/sabre/AndroidStudioProjects/CreditSmartDeviceOwner88/network/src/main/java/com/cdccreditsmart/network/interceptors/CommonHeadersInterceptor.kt:18:5 This annotation is currently applied to the value parameter only, but in the future it will also be applied to field.
+- To opt in to applying to both value parameter and field, add '-Xannotation-default-target=param-property' to your compiler arguments.
+- To keep applying to the value parameter only, use the '@param:' annotation target.
+
+See https://youtrack.jetbrains.com/issue/KT-73255 for more details.
+w: file:///C:/Users/sabre/AndroidStudioProjects/CreditSmartDeviceOwner88/network/src/main/java/com/cdccreditsmart/network/interceptors/DeviceSignatureInterceptor.kt:28:5 This annotation is currently applied to the value parameter only, but in the future it will also be applied to field.
+- To opt in to applying to both value parameter and field, add '-Xannotation-default-target=param-property' to your compiler arguments.
+- To keep applying to the value parameter only, use the '@param:' annotation target.
+
+See https://youtrack.jetbrains.com/issue/KT-73255 for more details.
+w: file:///C:/Users/sabre/AndroidStudioProjects/CreditSmartDeviceOwner88/network/src/main/java/com/cdccreditsmart/network/interceptors/DeviceSignatureInterceptor.kt:179:55 Condition is always 'true'.
+w: file:///C:/Users/sabre/AndroidStudioProjects/CreditSmartDeviceOwner88/network/src/main/java/com/cdccreditsmart/network/security/AntiTamperingDetector.kt:19:5 This annotation is currently applied to the value parameter only, but in the future it will also be applied to field.
+- To opt in to applying to both value parameter and field, add '-Xannotation-default-target=param-property' to your compiler arguments.
+- To keep applying to the value parameter only, use the '@param:' annotation target.
+
+See https://youtrack.jetbrains.com/issue/KT-73255 for more details.
+w: file:///C:/Users/sabre/AndroidStudioProjects/CreditSmartDeviceOwner88/network/src/main/java/com/cdccreditsmart/network/security/AntiTamperingDetector.kt:211:32 'static field GET_SIGNATURES: Int' is deprecated. Deprecated in Java.
+w: file:///C:/Users/sabre/AndroidStudioProjects/CreditSmartDeviceOwner88/network/src/main/java/com/cdccreditsmart/network/security/AntiTamperingDetector.kt:214:42 'field signatures: Array<(out) Signature!>?' is deprecated. Deprecated in Java.
+w: file:///C:/Users/sabre/AndroidStudioProjects/CreditSmartDeviceOwner88/network/src/main/java/com/cdccreditsmart/network/security/EncryptionHelper.kt:169:61 Condition is always 'true'.
+
+> Task :network:compileDebugJavaWithJavac
+> Task :network:processDebugJavaRes
+> Task :network:transformDebugClassesWithAsm
+> Task :network:bundleLibCompileToJarDebug
+> Task :network:bundleLibRuntimeToJarDebug
+> Task :network:bundleLibRuntimeToDirDebug
+> Task :data:kspDebugKotlin
+
+> Task :data:compileDebugKotlin
+w: file:///C:/Users/sabre/AndroidStudioProjects/CreditSmartDeviceOwner88/data/src/main/java/com/cdccreditsmart/data/di/DataModule.kt:7:8 'class MasterKeys : Any' is deprecated. Deprecated in Java.
+w: file:///C:/Users/sabre/AndroidStudioProjects/CreditSmartDeviceOwner88/data/src/main/java/com/cdccreditsmart/data/di/DataModule.kt:36:10 'fun fallbackToDestructiveMigration(): RoomDatabase.Builder<CDCDatabase>' is deprecated. Replace by overloaded version with parameter to indicate if all tables should be dropped or not.
+w: file:///C:/Users/sabre/AndroidStudioProjects/CreditSmartDeviceOwner88/data/src/main/java/com/cdccreditsmart/data/di/DataModule.kt:138:30 'class MasterKeys : Any' is deprecated. Deprecated in Java.
+w: file:///C:/Users/sabre/AndroidStudioProjects/CreditSmartDeviceOwner88/data/src/main/java/com/cdccreditsmart/data/di/DataModule.kt:138:53 'class MasterKeys : Any' is deprecated. Deprecated in Java.
+w: file:///C:/Users/sabre/AndroidStudioProjects/CreditSmartDeviceOwner88/data/src/main/java/com/cdccreditsmart/data/di/DataModule.kt:139:43 'static fun create(p0: String, p1: String, p2: Context, p3: EncryptedSharedPreferences.PrefKeyEncryptionScheme, p4: EncryptedSharedPreferences.PrefValueEncryptionScheme): SharedPreferences' is deprecated. Deprecated in Java.
+w: file:///C:/Users/sabre/AndroidStudioProjects/CreditSmartDeviceOwner88/data/src/main/java/com/cdccreditsmart/data/local/CDCDatabase.kt:49:14 'fun fallbackToDestructiveMigration(): RoomDatabase.Builder<CDCDatabase>' is deprecated. Replace by overloaded version with parameter to indicate if all tables should be dropped or not.
+w: file:///C:/Users/sabre/AndroidStudioProjects/CreditSmartDeviceOwner88/data/src/main/java/com/cdccreditsmart/data/repository/AuthenticationRepositoryImpl.kt:12:5 This annotation is currently applied to the value parameter only, but in the future it will also be applied to property.
+- To opt in to applying to both value parameter and property, add '-Xannotation-default-target=param-property' to your compiler arguments.
+- To keep applying to the value parameter only, use the '@param:' annotation target.
+
+See https://youtrack.jetbrains.com/issue/KT-73255 for more details.
+w: file:///C:/Users/sabre/AndroidStudioProjects/CreditSmartDeviceOwner88/data/src/main/java/com/cdccreditsmart/data/repository/CdcAuthenticationRepositoryImpl.kt:23:5 This annotation is currently applied to the value parameter only, but in the future it will also be applied to property.
+- To opt in to applying to both value parameter and property, add '-Xannotation-default-target=param-property' to your compiler arguments.
+- To keep applying to the value parameter only, use the '@param:' annotation target.
+
+See https://youtrack.jetbrains.com/issue/KT-73255 for more details.
+
+> Task :data:compileDebugJavaWithJavac
+> Task :data:processDebugJavaRes
+> Task :data:transformDebugClassesWithAsm
+> Task :data:bundleLibCompileToJarDebug
+> Task :data:bundleLibRuntimeToJarDebug
+> Task :data:bundleLibRuntimeToDirDebug
