@@ -1,20 +1,20 @@
 -- Merging decision tree log ---
 provider#androidx.core.content.FileProvider
-INJECTED from /home/runner/workspace/app/src/main/AndroidManifest.xml:168:9-176:20
+INJECTED from /home/runner/workspace/app/src/main/AndroidManifest.xml:189:9-197:20
 	android:grantUriPermissions
-		ADDED from /home/runner/workspace/app/src/main/AndroidManifest.xml:172:13-47
+		ADDED from /home/runner/workspace/app/src/main/AndroidManifest.xml:193:13-47
 	android:authorities
 		INJECTED from /home/runner/workspace/app/src/main/AndroidManifest.xml
-		ADDED from /home/runner/workspace/app/src/main/AndroidManifest.xml:170:13-64
+		ADDED from /home/runner/workspace/app/src/main/AndroidManifest.xml:191:13-64
 	android:exported
-		ADDED from /home/runner/workspace/app/src/main/AndroidManifest.xml:171:13-37
+		ADDED from /home/runner/workspace/app/src/main/AndroidManifest.xml:192:13-37
 	android:name
-		ADDED from /home/runner/workspace/app/src/main/AndroidManifest.xml:169:13-62
+		ADDED from /home/runner/workspace/app/src/main/AndroidManifest.xml:190:13-62
 manifest
-ADDED from /home/runner/workspace/app/src/main/AndroidManifest.xml:2:1-180:12
-INJECTED from /home/runner/workspace/app/src/main/AndroidManifest.xml:2:1-180:12
-INJECTED from /home/runner/workspace/app/src/main/AndroidManifest.xml:2:1-180:12
-INJECTED from /home/runner/workspace/app/src/main/AndroidManifest.xml:2:1-180:12
+ADDED from /home/runner/workspace/app/src/main/AndroidManifest.xml:2:1-201:12
+INJECTED from /home/runner/workspace/app/src/main/AndroidManifest.xml:2:1-201:12
+INJECTED from /home/runner/workspace/app/src/main/AndroidManifest.xml:2:1-201:12
+INJECTED from /home/runner/workspace/app/src/main/AndroidManifest.xml:2:1-201:12
 MERGED from [:device] /home/runner/workspace/device/build/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml:2:1-98:12
 MERGED from [:data] /home/runner/workspace/data/build/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml:2:1-7:12
 MERGED from [:network] /home/runner/workspace/network/build/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml:2:1-10:12
@@ -490,8 +490,8 @@ ADDED from /home/runner/workspace/app/src/main/AndroidManifest.xml:121:5-74
 	android:name
 		ADDED from /home/runner/workspace/app/src/main/AndroidManifest.xml:121:22-71
 application
-ADDED from /home/runner/workspace/app/src/main/AndroidManifest.xml:123:5-178:19
-INJECTED from /home/runner/workspace/app/src/main/AndroidManifest.xml:123:5-178:19
+ADDED from /home/runner/workspace/app/src/main/AndroidManifest.xml:123:5-199:19
+INJECTED from /home/runner/workspace/app/src/main/AndroidManifest.xml:123:5-199:19
 MERGED from [:device] /home/runner/workspace/device/build/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml:75:5-96:19
 MERGED from [:device] /home/runner/workspace/device/build/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml:75:5-96:19
 MERGED from [com.google.android.material:material:1.12.0] /home/runner/.gradle/caches/8.13/transforms/93e0d4577c41e7b885d67b3adfca01c1/transformed/material-1.12.0/AndroidManifest.xml:22:5-20
@@ -612,12 +612,40 @@ action#android.intent.action.BOOT_COMPLETED
 ADDED from /home/runner/workspace/app/src/main/AndroidManifest.xml:163:17-79
 	android:name
 		ADDED from /home/runner/workspace/app/src/main/AndroidManifest.xml:163:25-76
-meta-data#android.support.FILE_PROVIDER_PATHS
-ADDED from /home/runner/workspace/app/src/main/AndroidManifest.xml:173:13-175:54
-	android:resource
-		ADDED from /home/runner/workspace/app/src/main/AndroidManifest.xml:175:17-51
+activity#com.cdccreditsmart.app.presentation.admin.ProvisioningModeActivity
+ADDED from /home/runner/workspace/app/src/main/AndroidManifest.xml:168:9-176:20
+	android:exported
+		ADDED from /home/runner/workspace/app/src/main/AndroidManifest.xml:170:13-36
+	android:permission
+		ADDED from /home/runner/workspace/app/src/main/AndroidManifest.xml:171:13-70
 	android:name
-		ADDED from /home/runner/workspace/app/src/main/AndroidManifest.xml:174:17-67
+		ADDED from /home/runner/workspace/app/src/main/AndroidManifest.xml:169:13-72
+intent-filter#action:name:android.app.action.GET_PROVISIONING_MODE+category:name:android.intent.category.DEFAULT
+ADDED from /home/runner/workspace/app/src/main/AndroidManifest.xml:172:13-175:29
+action#android.app.action.GET_PROVISIONING_MODE
+ADDED from /home/runner/workspace/app/src/main/AndroidManifest.xml:173:17-83
+	android:name
+		ADDED from /home/runner/workspace/app/src/main/AndroidManifest.xml:173:25-80
+activity#com.cdccreditsmart.app.presentation.admin.AdminPolicyComplianceActivity
+ADDED from /home/runner/workspace/app/src/main/AndroidManifest.xml:178:9-186:20
+	android:exported
+		ADDED from /home/runner/workspace/app/src/main/AndroidManifest.xml:180:13-36
+	android:permission
+		ADDED from /home/runner/workspace/app/src/main/AndroidManifest.xml:181:13-70
+	android:name
+		ADDED from /home/runner/workspace/app/src/main/AndroidManifest.xml:179:13-77
+intent-filter#action:name:android.app.action.ADMIN_POLICY_COMPLIANCE+category:name:android.intent.category.DEFAULT
+ADDED from /home/runner/workspace/app/src/main/AndroidManifest.xml:182:13-185:29
+action#android.app.action.ADMIN_POLICY_COMPLIANCE
+ADDED from /home/runner/workspace/app/src/main/AndroidManifest.xml:183:17-85
+	android:name
+		ADDED from /home/runner/workspace/app/src/main/AndroidManifest.xml:183:25-82
+meta-data#android.support.FILE_PROVIDER_PATHS
+ADDED from /home/runner/workspace/app/src/main/AndroidManifest.xml:194:13-196:54
+	android:resource
+		ADDED from /home/runner/workspace/app/src/main/AndroidManifest.xml:196:17-51
+	android:name
+		ADDED from /home/runner/workspace/app/src/main/AndroidManifest.xml:195:17-67
 uses-sdk
 INJECTED from /home/runner/workspace/app/src/main/AndroidManifest.xml reason: use-sdk injection requested
 INJECTED from /home/runner/workspace/app/src/main/AndroidManifest.xml
