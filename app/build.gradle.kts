@@ -25,6 +25,17 @@ android {
         }
     }
 
+    signingConfigs {
+        create("release") {
+            // Para production, use arquivos de keystore reais
+            // Por enquanto, usando debug keystore para testes
+            storeFile = file("../debug.keystore")
+            storePassword = "android"
+            keyAlias = "androiddebugkey"
+            keyPassword = "android"
+        }
+    }
+
     buildTypes {
         debug {
             isDebuggable = true
@@ -42,6 +53,7 @@ android {
         release {
             isDebuggable = false
             isMinifyEnabled = false
+            signingConfig = signingConfigs.getByName("release")
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
             
             // Production network configuration
