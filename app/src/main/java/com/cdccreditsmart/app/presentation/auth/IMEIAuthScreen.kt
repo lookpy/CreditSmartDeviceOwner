@@ -42,6 +42,11 @@ fun IMEIAuthScreen(
     val authState by viewModel.authState
     val context = LocalContext.current
     
+    // Initialize auth when screen is ready (avoid network calls during Device Owner provisioning)
+    LaunchedEffect(Unit) {
+        viewModel.initializeAuth()
+    }
+    
     // Permission launcher
     val permissionLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.RequestPermission()

@@ -49,6 +49,11 @@ class HomeViewModel @Inject constructor(
     private val dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
 
     init {
+        // Defer data loading to avoid network calls during Device Owner provisioning
+        // loadDashboardData() will be called when UI is ready
+    }
+
+    fun initializeHome() {
         loadDashboardData()
     }
 

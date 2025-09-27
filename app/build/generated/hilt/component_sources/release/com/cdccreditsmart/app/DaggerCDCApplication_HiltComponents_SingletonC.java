@@ -728,7 +728,7 @@ public final class DaggerCDCApplication_HiltComponents_SingletonC {
     }
 
     @Override
-    public void injectCDCApplication(CDCApplication arg0) {
+    public void injectCDCApplication(CDCApplication cDCApplication) {
     }
 
     @Override

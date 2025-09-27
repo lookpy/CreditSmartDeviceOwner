@@ -29,6 +29,11 @@ fun HomeScreen(
 ) {
     val uiState by viewModel.uiState
     
+    // Initialize home data when screen is ready (avoid network calls during Device Owner provisioning)
+    LaunchedEffect(Unit) {
+        viewModel.initializeHome()
+    }
+    
     // Handle loading and error states
     if (uiState.isLoading) {
         Box(

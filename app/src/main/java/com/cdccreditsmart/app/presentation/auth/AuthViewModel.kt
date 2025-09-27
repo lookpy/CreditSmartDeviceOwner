@@ -72,6 +72,11 @@ class AuthViewModel @Inject constructor(
 
     init {
         initializeEncryptedPrefs()
+        // Defer authentication check to avoid network calls during Device Owner provisioning
+        // checkExistingAuthentication() will be called when UI is ready
+    }
+
+    fun initializeAuth() {
         checkExistingAuthentication()
     }
 
