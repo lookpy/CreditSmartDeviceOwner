@@ -17,16 +17,25 @@ class AdminPolicyComplianceActivity : Activity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        Log.i(TAG, "AdminPolicyComplianceActivity onCreate")
+        Log.i(TAG, "AdminPolicyComplianceActivity onCreate - Intent: ${intent?.action}")
+        
+        // Check if this is the correct intent
+        if (intent?.action != "android.app.action.ADMIN_POLICY_COMPLIANCE") {
+            Log.w(TAG, "Unexpected intent action: ${intent?.action}")
+            setResult(RESULT_CANCELED)
+            finish()
+            return
+        }
 
         try {
             // Indicate that our device admin app is compliant with policies
             val result = Intent()
             
-            Log.i(TAG, "Confirming admin policy compliance")
+            Log.i(TAG, "✅ Confirming admin policy compliance")
             setResult(RESULT_OK, result)
+            
         } catch (e: Exception) {
-            Log.e(TAG, "Error confirming admin policy compliance", e)
+            Log.e(TAG, "❌ Error confirming admin policy compliance", e)
             setResult(RESULT_CANCELED)
         } finally {
             finish()
