@@ -184,7 +184,7 @@ class CDCDeviceAdminReceiver : DeviceAdminReceiver() {
     /**
      * Get Device Admin component
      */
-    private fun getWho(context: Context): android.content.ComponentName {
+    override fun getWho(context: Context): android.content.ComponentName {
         return android.content.ComponentName(context, CDCDeviceAdminReceiver::class.java)
     }
 }

@@ -2,35 +2,40 @@
 # compiler_version: 8.13.6
 # common_typos_disable
 # {"id":"com.android.tools.r8.mapping","version":"2.2"}
-# pg_map_id: 857e7c76c1013ca1a30718074da402ffb36ec2eefd41db9eb043e0eb9f791b72
-# pg_map_hash: SHA-256 857e7c76c1013ca1a30718074da402ffb36ec2eefd41db9eb043e0eb9f791b72
+# pg_map_id: 443e746414a696d0849af4f3a6d1f0c196a7eff948865141c487a26d5b26b570
+# pg_map_hash: SHA-256 443e746414a696d0849af4f3a6d1f0c196a7eff948865141c487a26d5b26b570
 com.cdccreditsmart.device.BuildConfig -> com.cdccreditsmart.device.BuildConfig:
 # {"id":"sourceFile","fileName":"BuildConfig.java"}
     1:1:void <init>():6:6 -> <init>
 com.cdccreditsmart.device.CDCDeviceAdminReceiver -> com.cdccreditsmart.device.CDCDeviceAdminReceiver:
 # {"id":"sourceFile","fileName":"CDCDeviceAdminReceiver.kt"}
-    1:1:void <init>():12:12 -> <init>
-    1:2:void onBugreportFailed(android.content.Context,android.content.Intent,int):99:100 -> onBugreportFailed
-    1:2:void onBugreportShared(android.content.Context,android.content.Intent,java.lang.String):94:95 -> onBugreportShared
-    1:1:void onBugreportSharingDeclined(android.content.Context,android.content.Intent):89:89 -> onBugreportSharingDeclined
-    1:1:void onDisabled(android.content.Context,android.content.Intent):24:24 -> onDisabled
-    1:1:void onEnabled(android.content.Context,android.content.Intent):19:19 -> onEnabled
-    1:2:void onLockTaskModeEntering(android.content.Context,android.content.Intent,java.lang.String):44:45 -> onLockTaskModeEntering
-    1:1:void onLockTaskModeExiting(android.content.Context,android.content.Intent):49:49 -> onLockTaskModeExiting
-    1:2:void onNetworkLogsAvailable(android.content.Context,android.content.Intent,long,int):54:55 -> onNetworkLogsAvailable
-    1:2:void onPasswordChanged(android.content.Context,android.content.Intent,android.os.UserHandle):29:30 -> onPasswordChanged
-    1:2:void onPasswordFailed(android.content.Context,android.content.Intent,android.os.UserHandle):34:35 -> onPasswordFailed
-    1:2:void onPasswordSucceeded(android.content.Context,android.content.Intent,android.os.UserHandle):39:40 -> onPasswordSucceeded
-    1:1:void onSecurityLogsAvailable(android.content.Context,android.content.Intent):84:84 -> onSecurityLogsAvailable
-    1:2:void onUserAdded(android.content.Context,android.content.Intent,android.os.UserHandle):59:60 -> onUserAdded
-    1:2:void onUserRemoved(android.content.Context,android.content.Intent,android.os.UserHandle):64:65 -> onUserRemoved
-    1:2:void onUserStarted(android.content.Context,android.content.Intent,android.os.UserHandle):69:70 -> onUserStarted
-    1:2:void onUserStopped(android.content.Context,android.content.Intent,android.os.UserHandle):74:75 -> onUserStopped
-    1:2:void onUserSwitched(android.content.Context,android.content.Intent,android.os.UserHandle):79:80 -> onUserSwitched
+    1:1:void <init>():14:14 -> <init>
+    1:1:android.content.ComponentName getWho(android.content.Context):188:188 -> getWho
+    1:4:void launchMainApp(android.content.Context):171:174 -> launchMainApp
+    1:2:void onBugreportFailed(android.content.Context,android.content.Intent,int):101:102 -> onBugreportFailed
+    1:2:void onBugreportShared(android.content.Context,android.content.Intent,java.lang.String):96:97 -> onBugreportShared
+    1:1:void onBugreportSharingDeclined(android.content.Context,android.content.Intent):91:91 -> onBugreportSharingDeclined
+    1:1:void onDisabled(android.content.Context,android.content.Intent):26:26 -> onDisabled
+    1:1:void onEnabled(android.content.Context,android.content.Intent):21:21 -> onEnabled
+    1:2:void onLockTaskModeEntering(android.content.Context,android.content.Intent,java.lang.String):46:47 -> onLockTaskModeEntering
+    1:1:void onLockTaskModeExiting(android.content.Context,android.content.Intent):51:51 -> onLockTaskModeExiting
+    1:2:void onNetworkLogsAvailable(android.content.Context,android.content.Intent,long,int):56:57 -> onNetworkLogsAvailable
+    1:2:void onPasswordChanged(android.content.Context,android.content.Intent,android.os.UserHandle):31:32 -> onPasswordChanged
+    1:2:void onPasswordFailed(android.content.Context,android.content.Intent,android.os.UserHandle):36:37 -> onPasswordFailed
+    1:2:void onPasswordSucceeded(android.content.Context,android.content.Intent,android.os.UserHandle):41:42 -> onPasswordSucceeded
+    1:17:void onProfileProvisioningComplete(android.content.Context,android.content.Intent):110:126 -> onProfileProvisioningComplete
+    1:1:void onReadyForUserInitialization(android.content.Context,android.content.Intent):141:141 -> onReadyForUserInitialization
+    1:1:void onSecurityLogsAvailable(android.content.Context,android.content.Intent):86:86 -> onSecurityLogsAvailable
+    1:2:void onUserAdded(android.content.Context,android.content.Intent,android.os.UserHandle):61:62 -> onUserAdded
+    1:2:void onUserRemoved(android.content.Context,android.content.Intent,android.os.UserHandle):66:67 -> onUserRemoved
+    1:2:void onUserStarted(android.content.Context,android.content.Intent,android.os.UserHandle):71:72 -> onUserStarted
+    1:2:void onUserStopped(android.content.Context,android.content.Intent,android.os.UserHandle):76:77 -> onUserStopped
+    1:2:void onUserSwitched(android.content.Context,android.content.Intent,android.os.UserHandle):81:82 -> onUserSwitched
+    1:5:void setupBasicPolicies(android.content.Context,android.app.admin.DevicePolicyManager,android.content.ComponentName):153:157 -> setupBasicPolicies
 com.cdccreditsmart.device.CDCDeviceAdminReceiver$Companion -> com.cdccreditsmart.device.CDCDeviceAdminReceiver$Companion:
 # {"id":"sourceFile","fileName":"CDCDeviceAdminReceiver.kt"}
     1:1:void <init>(kotlin.jvm.internal.DefaultConstructorMarker):0:0 -> <init>
-    2:2:void <init>():14:14 -> <init>
+    2:2:void <init>():16:16 -> <init>
 com.cdccreditsmart.device.CommandExecutionStatus -> com.cdccreditsmart.device.CommandExecutionStatus:
 # {"id":"sourceFile","fileName":"DeviceCommandExecutor.kt"}
     1:1:void <init>(kotlin.jvm.internal.DefaultConstructorMarker):0:0 -> <init>
