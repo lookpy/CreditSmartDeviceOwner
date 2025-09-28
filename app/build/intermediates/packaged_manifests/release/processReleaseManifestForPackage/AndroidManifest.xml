@@ -171,7 +171,7 @@
 
         <!-- Critical ProvisioningActivity for Device Owner QR code provisioning -->
         <activity
-            android:name="com.cdccreditsmart.app.app.presentation.admin.ProvisioningActivity"
+            android:name="com.cdccreditsmart.app.presentation.admin.ProvisioningActivity"
             android:exported="true"
             android:permission="android.permission.BIND_DEVICE_ADMIN" >
             <intent-filter android:priority="1000" >

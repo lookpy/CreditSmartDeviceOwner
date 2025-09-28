@@ -1,0 +1,15 @@
+{
+  "android.app.extra.PROVISIONING_DEVICE_ADMIN_COMPONENT_NAME": "com.cdccreditsmart.app/com.cdccreditsmart.device.CDCDeviceAdminReceiver",
+  "android.app.extra.PROVISIONING_DEVICE_ADMIN_CERTIFICATE_CHECKSUMS": [
+    "ZS7QLGMNZdWEpWKOWta5r9JX1MKV3jRBnRU4Ecc9QF0"
+  ],
+  "android.app.extra.PROVISIONING_DEVICE_ADMIN_PACKAGE_DOWNLOAD_LOCATION": "https://cdccreditsmart.com/enrollment/apk/app-release.apk",
+  "android.app.extra.PROVISIONING_LEAVE_ALL_SYSTEM_APPS_ENABLED": true,
+  "android.app.extra.PROVISIONING_SKIP_ENCRYPTION": true,
+  "android.app.extra.PROVISIONING_SKIP_EDUCATION_SCREENS": true,
+  "android.app.extra.PROVISIONING_ADMIN_EXTRAS_BUNDLE": {
+    "debug_mode": true,
+    "provisioning_timestamp": "1759080415",
+    "apk_size": 16964124
+  }
+}

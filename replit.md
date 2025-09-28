@@ -20,7 +20,7 @@ Comprehensive Android application in Kotlin for CDC Credit Smart clients that op
 - ✅ **INTENT FILTERS CORRECTED** - Movidos de ProvisioningDebugReceiver para ProvisioningActivity (Android consegue encontrar Activity)
 - ✅ **MANAGED PROVISIONING COMPATIBLE** - Activity exportada com PROVISION_MANAGED_DEVICE/PROFILE intent filters
 - ✅ **APK CHECKSUM UPDATED** - Novo package checksum: KG7O3Bus4fcYgrY1pjZalMOi25INjyUIRa6faTo9zDM
-- ✅ **QR JSON FINAL** - device_owner_qr_CORRECTED.json com todas correções aplicadas
+- ✅ **QR JSON FINAL** - device_owner_qr_FINAL.json com Android 13+ CERTIFICATE_CHECKSUMS e domínio cdccreditsmart.com
 - 🎯 **ROOT CAUSE RESOLVED** - Android não encontrava Activity para lançar durante QR provisioning (agora resolvido)
 
 ### FINAL BREAKTHROUGH (September 25, 2025) - BUILD SUCCESSFUL in 35s

@@ -101,21 +101,38 @@ class ProvisioningDebugReceiver : BroadcastReceiver() {
         
         val extras = intent.extras ?: return
         
-        // Verifica se temos todos os extras necessários
-        val requiredExtras = listOf(
+        // Verifica se temos todos os extras necessários (Android 13+ usa CERTIFICATE_CHECKSUMS)
+        val modernRequiredExtras = listOf(
             "android.app.extra.PROVISIONING_DEVICE_ADMIN_COMPONENT_NAME",
-            "android.app.extra.PROVISIONING_DEVICE_ADMIN_PACKAGE_CHECKSUM",
-            "android.app.extra.PROVISIONING_DEVICE_ADMIN_SIGNATURE_CHECKSUM",
+            "android.app.extra.PROVISIONING_DEVICE_ADMIN_CERTIFICATE_CHECKSUMS",
             "android.app.extra.PROVISIONING_DEVICE_ADMIN_PACKAGE_DOWNLOAD_LOCATION"
         )
         
-        Log.i(TAG, "🔍 Checking required provisioning extras:")
-        for (extra in requiredExtras) {
-            val value = extras.getString(extra)
+        val legacyExtras = listOf(
+            "android.app.extra.PROVISIONING_DEVICE_ADMIN_PACKAGE_CHECKSUM",
+            "android.app.extra.PROVISIONING_DEVICE_ADMIN_SIGNATURE_CHECKSUM"
+        )
+        
+        Log.i(TAG, "🔍 Checking MODERN (Android 13+) provisioning extras:")
+        for (extra in modernRequiredExtras) {
+            val value = extras.get(extra)
             if (value != null) {
-                Log.i(TAG, "   ✅ $extra = $value")
+                when (value) {
+                    is Array<*> -> Log.i(TAG, "   ✅ $extra = ${value.contentToString()}")
+                    else -> Log.i(TAG, "   ✅ $extra = $value")
+                }
             } else {
                 Log.e(TAG, "   ❌ MISSING: $extra")
+            }
+        }
+        
+        Log.i(TAG, "🔍 Checking LEGACY (deprecated) provisioning extras:")
+        for (extra in legacyExtras) {
+            val value = extras.getString(extra)
+            if (value != null) {
+                Log.w(TAG, "   ⚠️ DEPRECATED: $extra = $value")
+            } else {
+                Log.i(TAG, "   ℹ️ Not present: $extra")
             }
         }
     }

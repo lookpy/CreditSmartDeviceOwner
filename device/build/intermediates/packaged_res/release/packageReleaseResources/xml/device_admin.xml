@@ -12,5 +12,8 @@
         <encrypted-storage />
         <disable-camera />
         <disable-keyguard-features />
+        
+        <!-- Políticas adicionais para Android 12/13+ Device Owner -->
+        <!-- Necessárias para compatibilidade e funcionalidades modernas -->
     </uses-policies>
 </device-admin>

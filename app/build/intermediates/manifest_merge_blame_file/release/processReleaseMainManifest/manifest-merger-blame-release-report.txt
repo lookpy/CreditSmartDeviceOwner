@@ -358,8 +358,8 @@
 172        <!-- Critical ProvisioningActivity for Device Owner QR code provisioning -->
 173        <activity
 173-->/home/runner/workspace/app/src/main/AndroidManifest.xml:112:9-122:20
-174            android:name="com.cdccreditsmart.app.app.presentation.admin.ProvisioningActivity"
-174-->/home/runner/workspace/app/src/main/AndroidManifest.xml:113:13-72
+174            android:name="com.cdccreditsmart.app.presentation.admin.ProvisioningActivity"
+174-->/home/runner/workspace/app/src/main/AndroidManifest.xml:113:13-68
 175            android:exported="true"
 175-->/home/runner/workspace/app/src/main/AndroidManifest.xml:114:13-36
 176            android:permission="android.permission.BIND_DEVICE_ADMIN" >

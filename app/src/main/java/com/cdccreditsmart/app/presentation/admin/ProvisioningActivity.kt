@@ -28,9 +28,41 @@ class ProvisioningActivity : Activity() {
         super.onCreate(savedInstanceState)
         
         val action = intent.action
-        Log.i(TAG, "🚀 ProvisioningActivity started with action: $action")
+        Log.i(TAG, "🚀 ==================== PROVISIONING ACTIVITY DEBUG ====================")
+        Log.i(TAG, "📱 ProvisioningActivity started with action: $action")
+        Log.i(TAG, "⏰ Timestamp: ${System.currentTimeMillis()}")
         Log.i(TAG, "📱 Intent data: ${intent.data}")
-        Log.i(TAG, "📦 Intent extras: ${intent.extras}")
+        Log.i(TAG, "🔗 Intent dataString: ${intent.dataString}")
+        Log.i(TAG, "📦 Intent type: ${intent.type}")
+        Log.i(TAG, "🎯 Intent scheme: ${intent.scheme}")
+        
+        // Log ALL intent extras in detail
+        val extras = intent.extras
+        if (extras != null) {
+            Log.i(TAG, "📦 Intent extras (${extras.size()} items):")
+            for (key in extras.keySet()) {
+                try {
+                    val value = extras.get(key)
+                    when (value) {
+                        is String -> Log.i(TAG, "   🔑 $key = \"$value\"")
+                        is Boolean -> Log.i(TAG, "   🔑 $key = $value")
+                        is Int -> Log.i(TAG, "   🔑 $key = $value")
+                        is Array<*> -> Log.i(TAG, "   🔑 $key = ${value.contentToString()}")
+                        is Bundle -> {
+                            Log.i(TAG, "   🔑 $key = Bundle with ${value.size()} items:")
+                            for (bundleKey in value.keySet()) {
+                                Log.i(TAG, "      📎 $bundleKey = ${value.get(bundleKey)}")
+                            }
+                        }
+                        else -> Log.i(TAG, "   🔑 $key = $value (${value?.javaClass?.simpleName})")
+                    }
+                } catch (e: Exception) {
+                    Log.w(TAG, "   ⚠️ Error reading extra $key: ${e.message}")
+                }
+            }
+        } else {
+            Log.i(TAG, "📦 No intent extras found")
+        }
         
         when (action) {
             DevicePolicyManager.ACTION_PROVISION_MANAGED_DEVICE -> {
@@ -43,7 +75,12 @@ class ProvisioningActivity : Activity() {
                 handleProvisioningStateChanged()
             }
             else -> {
-                Log.w(TAG, "⚠️ Unknown action: $action")
+                Log.w(TAG, "⚠️ UNKNOWN ACTION RECEIVED: $action")
+                Log.w(TAG, "⚠️ Expected actions:")
+                Log.w(TAG, "   - ${DevicePolicyManager.ACTION_PROVISION_MANAGED_DEVICE}")
+                Log.w(TAG, "   - ${DevicePolicyManager.ACTION_PROVISION_MANAGED_PROFILE}")
+                Log.w(TAG, "   - android.app.action.PROVISIONING_STATE_CHANGED")
+                Log.w(TAG, "⚠️ This might indicate a configuration problem in AndroidManifest.xml")
                 setResult(RESULT_CANCELED)
                 finish()
             }
@@ -51,28 +88,72 @@ class ProvisioningActivity : Activity() {
     }
 
     private fun handleProvisionManagedDevice() {
-        Log.i(TAG, "🔧 Handling PROVISION_MANAGED_DEVICE")
+        Log.i(TAG, "🔧 =============== PROVISION_MANAGED_DEVICE HANDLER ===============")
+        Log.i(TAG, "🔧 Starting Device Owner provisioning setup...")
+        
+        // Check for device state
+        try {
+            val packageManager = packageManager
+            val devicePolicyManager = getSystemService(DevicePolicyManager::class.java)
+            
+            Log.i(TAG, "🔍 Device state checks:")
+            Log.i(TAG, "   📱 Package name: $packageName")
+            Log.i(TAG, "   🏭 Is device owner app: ${devicePolicyManager?.isDeviceOwnerApp(packageName) ?: "unknown"}")
+            Log.i(TAG, "   👤 Current user: ${android.os.Process.myUserHandle()}")
+            Log.i(TAG, "   🔒 Is profile owner: ${devicePolicyManager?.isProfileOwnerApp(packageName) ?: "unknown"}")
+            
+        } catch (e: Exception) {
+            Log.e(TAG, "❌ Error checking device state", e)
+        }
         
         try {
             // Set up the admin component
             val adminComponent = ComponentName(this, CDCDeviceAdminReceiver::class.java)
-            Log.i(TAG, "📋 Admin component: $adminComponent")
+            Log.i(TAG, "📋 Setting up admin component: $adminComponent")
+            Log.i(TAG, "📋 Component package: ${adminComponent.packageName}")
+            Log.i(TAG, "📋 Component class: ${adminComponent.className}")
+            
+            // Verify the component exists
+            try {
+                val receiverInfo = packageManager.getReceiverInfo(adminComponent, 0)
+                Log.i(TAG, "✅ Admin receiver found: ${receiverInfo.name}")
+                Log.i(TAG, "   🔐 Permissions: ${receiverInfo.permission}")
+                Log.i(TAG, "   📱 Enabled: ${receiverInfo.enabled}")
+                Log.i(TAG, "   🌐 Exported: ${receiverInfo.exported}")
+            } catch (e: Exception) {
+                Log.e(TAG, "❌ CRITICAL: Admin receiver not found or invalid!", e)
+            }
             
             // Create result intent with admin component
             val resultData = Intent()
             resultData.putExtra(DevicePolicyManager.EXTRA_DEVICE_ADMIN, adminComponent)
             
-            // Optional: Add any additional provisioning extras
-            // resultData.putExtra(DevicePolicyManager.EXTRA_PROVISIONING_DEVICE_ADMIN_SIGNATURE_CHECKSUM, "...")
-            // resultData.putExtra(DevicePolicyManager.EXTRA_PROVISIONING_DEVICE_ADMIN_PACKAGE_CHECKSUM, "...")
+            // Log the result data
+            Log.i(TAG, "📤 Result intent extras:")
+            val resultExtras = resultData.extras
+            if (resultExtras != null) {
+                for (key in resultExtras.keySet()) {
+                    Log.i(TAG, "   📋 $key = ${resultExtras.get(key)}")
+                }
+            }
             
-            Log.i(TAG, "✅ PROVISION_MANAGED_DEVICE setup complete")
+            Log.i(TAG, "✅ PROVISION_MANAGED_DEVICE setup completed successfully")
             setResult(RESULT_OK, resultData)
             
         } catch (e: Exception) {
-            Log.e(TAG, "❌ Error during PROVISION_MANAGED_DEVICE", e)
-            setResult(RESULT_CANCELED)
+            Log.e(TAG, "❌ CRITICAL ERROR during PROVISION_MANAGED_DEVICE", e)
+            Log.e(TAG, "❌ Exception type: ${e.javaClass.simpleName}")
+            Log.e(TAG, "❌ Exception message: ${e.message}")
+            Log.e(TAG, "❌ Stack trace: ${e.stackTraceToString()}")
+            
+            // Create error result with details
+            val errorResult = Intent()
+            errorResult.putExtra("error_message", e.message)
+            errorResult.putExtra("error_type", e.javaClass.simpleName)
+            setResult(RESULT_CANCELED, errorResult)
         } finally {
+            Log.i(TAG, "🏁 PROVISION_MANAGED_DEVICE handler finished")
+            Log.i(TAG, "🔧 ============================================================")
             finish()
         }
     }

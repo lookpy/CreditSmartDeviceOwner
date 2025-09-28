@@ -376,14 +376,14 @@ action#android.app.action.ADMIN_POLICY_COMPLIANCE
 ADDED from /home/runner/workspace/app/src/main/AndroidManifest.xml:106:17-85
 	android:name
 		ADDED from /home/runner/workspace/app/src/main/AndroidManifest.xml:106:25-82
-activity#com.cdccreditsmart.app.app.presentation.admin.ProvisioningActivity
+activity#com.cdccreditsmart.app.presentation.admin.ProvisioningActivity
 ADDED from /home/runner/workspace/app/src/main/AndroidManifest.xml:112:9-122:20
 	android:exported
 		ADDED from /home/runner/workspace/app/src/main/AndroidManifest.xml:114:13-36
 	android:permission
 		ADDED from /home/runner/workspace/app/src/main/AndroidManifest.xml:115:13-70
 	android:name
-		ADDED from /home/runner/workspace/app/src/main/AndroidManifest.xml:113:13-72
+		ADDED from /home/runner/workspace/app/src/main/AndroidManifest.xml:113:13-68
 intent-filter#action:name:android.app.action.PROVISIONING_STATE_CHANGED+action:name:android.app.action.PROVISION_MANAGED_DEVICE+action:name:android.app.action.PROVISION_MANAGED_PROFILE+category:name:android.intent.category.DEFAULT
 ADDED from /home/runner/workspace/app/src/main/AndroidManifest.xml:116:13-121:29
 	android:priority

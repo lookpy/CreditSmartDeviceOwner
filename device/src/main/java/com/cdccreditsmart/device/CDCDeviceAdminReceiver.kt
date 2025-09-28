@@ -19,12 +19,34 @@ class CDCDeviceAdminReceiver : DeviceAdminReceiver() {
 
     override fun onEnabled(context: Context, intent: Intent) {
         super.onEnabled(context, intent)
-        Log.i(TAG, "Device Admin enabled")
+        Log.i(TAG, "🔑 ==================== DEVICE ADMIN ENABLED ====================")
+        Log.i(TAG, "✅ Device Admin enabled successfully")
+        Log.i(TAG, "⏰ Timestamp: ${System.currentTimeMillis()}")
+        
+        // Log device admin enablement details
+        try {
+            val devicePolicyManager = context.getSystemService(Context.DEVICE_POLICY_SERVICE) as DevicePolicyManager
+            val adminComponent = getWho(context)
+            
+            Log.i(TAG, "📋 Admin component: $adminComponent")
+            Log.i(TAG, "🔒 Admin active: ${devicePolicyManager.isAdminActive(adminComponent)}")
+            Log.i(TAG, "🏭 Device owner: ${devicePolicyManager.isDeviceOwnerApp(context.packageName)}")
+            Log.i(TAG, "📋 Profile owner: ${devicePolicyManager.isProfileOwnerApp(context.packageName)}")
+            
+        } catch (e: Exception) {
+            Log.w(TAG, "⚠️ Could not retrieve detailed admin info", e)
+        }
+        
+        Log.i(TAG, "🔑 =================================================================")
     }
 
     override fun onDisabled(context: Context, intent: Intent) {
         super.onDisabled(context, intent)
-        Log.i(TAG, "Device Admin disabled")
+        Log.w(TAG, "❌ ==================== DEVICE ADMIN DISABLED ====================")
+        Log.w(TAG, "❌ Device Admin has been disabled")
+        Log.w(TAG, "⏰ Timestamp: ${System.currentTimeMillis()}")
+        Log.w(TAG, "⚠️ This should not happen during normal provisioning!")
+        Log.w(TAG, "❌ =================================================================")
     }
 
     override fun onPasswordChanged(context: Context, intent: Intent, user: android.os.UserHandle) {
@@ -108,16 +130,50 @@ class CDCDeviceAdminReceiver : DeviceAdminReceiver() {
      */
     override fun onProfileProvisioningComplete(context: Context, intent: Intent) {
         super.onProfileProvisioningComplete(context, intent)
+        Log.i(TAG, "🎉 ==================== DEVICE OWNER PROVISIONING COMPLETED ====================")
         Log.i(TAG, "✅ Device Owner provisioning completed successfully!")
+        Log.i(TAG, "⏰ Timestamp: ${System.currentTimeMillis()}")
+        Log.i(TAG, "📱 Context: ${context.javaClass.simpleName}")
+        
+        // Log intent details
+        val extras = intent.extras
+        if (extras != null) {
+            Log.i(TAG, "📦 Provisioning completion extras (${extras.size()} items):")
+            for (key in extras.keySet()) {
+                try {
+                    val value = extras.get(key)
+                    Log.i(TAG, "   🔑 $key = $value (${value?.javaClass?.simpleName})")
+                } catch (e: Exception) {
+                    Log.w(TAG, "   ⚠️ Error reading extra $key: ${e.message}")
+                }
+            }
+        } else {
+            Log.i(TAG, "📦 No provisioning completion extras")
+        }
         
         try {
+            Log.i(TAG, "🔍 Starting post-provisioning setup...")
+            
             // Get Device Policy Manager
             val devicePolicyManager = context.getSystemService(Context.DEVICE_POLICY_SERVICE) as DevicePolicyManager
             val adminComponent = getWho(context)
             
-            // Verify we are Device Owner
-            if (devicePolicyManager.isDeviceOwnerApp(context.packageName)) {
-                Log.i(TAG, "✅ Confirmed as Device Owner")
+            Log.i(TAG, "📋 Admin component: $adminComponent")
+            Log.i(TAG, "📱 Package name: ${context.packageName}")
+            Log.i(TAG, "👤 User handle: ${android.os.Process.myUserHandle()}")
+            
+            // Comprehensive Device Owner verification
+            val isDeviceOwner = devicePolicyManager.isDeviceOwnerApp(context.packageName)
+            val isProfileOwner = devicePolicyManager.isProfileOwnerApp(context.packageName)
+            val isAdminActive = devicePolicyManager.isAdminActive(adminComponent)
+            
+            Log.i(TAG, "🔒 Device ownership status:")
+            Log.i(TAG, "   🏭 Is Device Owner: $isDeviceOwner")
+            Log.i(TAG, "   📋 Is Profile Owner: $isProfileOwner")
+            Log.i(TAG, "   🔑 Is Admin Active: $isAdminActive")
+            
+            if (isDeviceOwner) {
+                Log.i(TAG, "✅ Successfully confirmed as Device Owner!")
                 
                 // Set basic policies
                 setupBasicPolicies(context, devicePolicyManager, adminComponent)
@@ -130,7 +186,23 @@ class CDCDeviceAdminReceiver : DeviceAdminReceiver() {
             }
             
         } catch (e: Exception) {
-            Log.e(TAG, "❌ Error during provisioning completion", e)
+            Log.e(TAG, "❌ CRITICAL ERROR during provisioning completion", e)
+            Log.e(TAG, "❌ Exception type: ${e.javaClass.simpleName}")
+            Log.e(TAG, "❌ Exception message: ${e.message}")
+            Log.e(TAG, "❌ Stack trace details:")
+            e.stackTrace.take(10).forEach { stackElement ->
+                Log.e(TAG, "   🔍 $stackElement")
+            }
+            
+            // Try to provide recovery suggestions
+            when (e) {
+                is SecurityException -> Log.e(TAG, "⚠️ Recovery: Check device admin permissions and component registration")
+                is IllegalStateException -> Log.e(TAG, "⚠️ Recovery: Device might not be properly provisioned")
+                else -> Log.e(TAG, "⚠️ Recovery: Check device logs and provisioning state")
+            }
+        } finally {
+            Log.i(TAG, "🏁 Provisioning completion handler finished")
+            Log.i(TAG, "🎉 ============================================================================")
         }
     }
 
@@ -139,7 +211,11 @@ class CDCDeviceAdminReceiver : DeviceAdminReceiver() {
      */
     override fun onReadyForUserInitialization(context: Context, intent: Intent) {
         super.onReadyForUserInitialization(context, intent)
+        Log.i(TAG, "📦 ==================== READY FOR USER INITIALIZATION ====================")
         Log.i(TAG, "✅ Device ready for user initialization")
+        Log.i(TAG, "⏰ Timestamp: ${System.currentTimeMillis()}")
+        Log.i(TAG, "👤 This callback indicates the device is ready for the main app to start")
+        Log.i(TAG, "📦 =========================================================================")
     }
 
     /**
