@@ -47,10 +47,10 @@
       proguardRules="proguard.txt"/>
   <library
       name=":@@:device::release"
-      jars="/home/runner/.gradle/caches/8.13/transforms/60123f8a06c5a5049cc391da9e17fc6a/transformed/out/jars/classes.jar:/home/runner/.gradle/caches/8.13/transforms/60123f8a06c5a5049cc391da9e17fc6a/transformed/out/jars/libs/R.jar"
+      jars="/home/runner/.gradle/caches/8.13/transforms/04912daae03f74bd0eb7d7d80c56244b/transformed/out/jars/classes.jar:/home/runner/.gradle/caches/8.13/transforms/04912daae03f74bd0eb7d7d80c56244b/transformed/out/jars/libs/R.jar"
       resolved="CDC Credit Smart:device:unspecified"
       partialResultsDir="/home/runner/workspace/device/build/intermediates/lint_vital_partial_results/release/lintVitalAnalyzeRelease/out"
-      folder="/home/runner/.gradle/caches/8.13/transforms/60123f8a06c5a5049cc391da9e17fc6a/transformed/out"
+      folder="/home/runner/.gradle/caches/8.13/transforms/04912daae03f74bd0eb7d7d80c56244b/transformed/out"
       manifest="AndroidManifest.xml"
       resFolder="res"
       assetsFolder="assets"
