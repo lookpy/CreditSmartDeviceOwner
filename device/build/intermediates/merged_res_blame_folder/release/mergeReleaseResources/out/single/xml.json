@@ -2,9 +2,5 @@
     {
         "merged": "com.cdccreditsmart.device-release-38:/xml/device_admin.xml",
         "source": "com.cdccreditsmart.device-main-39:/xml/device_admin.xml"
-    },
-    {
-        "merged": "/home/runner/.gradle/daemon/8.13/com.cdccreditsmart.device-release-38:/xml/device_admin.xml",
-        "source": "/home/runner/.gradle/daemon/8.13/com.cdccreditsmart.device-main-39:/xml/device_admin.xml"
     }
 ]
