@@ -3,10 +3,18 @@ package com.cdccreditsmart.app.presentation.admin
 import android.app.Activity
 import android.app.admin.DevicePolicyManager
 import android.content.ComponentName
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
+import android.os.UserManager
+import android.provider.Settings
 import android.util.Log
 import com.cdccreditsmart.device.CDCDeviceAdminReceiver
+import java.text.SimpleDateFormat
+import java.util.*
 
 /**
  * Critical Activity for Device Owner provisioning via QR code.
@@ -22,10 +30,36 @@ class ProvisioningActivity : Activity() {
 
     companion object {
         private const val TAG = "ProvisioningActivity"
+        private const val ACTIVE_TIMEOUT_TAG = "CDC_ACTIVE_TIMEOUT"
+        private const val MONITOR_INTERVAL_MS = 30000L // 30 seconds
+        private const val TOTAL_TIMEOUT_MS = 300000L // 5 minutes total timeout
+        private const val HANG_DETECTION_THRESHOLD_MS = 120000L // 2 minutes without progress
+        
+        private val dateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS", Locale.getDefault())
+        
+        // SharedPreferences keys for cross-component communication
+        private const val PREFS_NAME = "cdc_active_timeout"
+        private const val KEY_MONITORING_ACTIVE = "monitoring_active"
+        private const val KEY_START_TIME = "start_time"
+        private const val KEY_SUCCESS_DETECTED = "success_detected"
     }
+
+    // Active timeout monitoring system
+    private var activeTimeoutHandler: Handler? = null
+    private var monitoringRunnable: Runnable? = null
+    private var monitoringStartTime: Long = 0
+    private var monitoringActive = false
+    private var lastStateChangeTime: Long = 0
+    private var previousUserSetupComplete = false
+    private var previousDeviceProvisioned = false
+    private var timeoutCheckCount = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        
+        // CRITICAL: Start active timeout monitoring IMMEDIATELY
+        // This runs independently of DeviceAdminReceiver callbacks
+        startActiveTimeoutMonitoring()
         
         val action = intent.action
         Log.i(TAG, "🚀 ==================== PROVISIONING ACTIVITY DEBUG ====================")
@@ -155,6 +189,401 @@ class ProvisioningActivity : Activity() {
             Log.i(TAG, "🏁 PROVISION_MANAGED_DEVICE handler finished")
             Log.i(TAG, "🔧 ============================================================")
             finish()
+        }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        stopActiveTimeoutMonitoring()
+    }
+
+    /**
+     * CRITICAL: Start active timeout monitoring that works independently of DeviceAdminReceiver callbacks.
+     * This solves the critical issue where hangs during "Preparando para a configuração de trabalho" 
+     * are never detected because no callbacks are fired.
+     */
+    private fun startActiveTimeoutMonitoring() {
+        try {
+            monitoringStartTime = System.currentTimeMillis()
+            lastStateChangeTime = monitoringStartTime
+            monitoringActive = true
+            timeoutCheckCount = 0
+            
+            logDetailed("I", ACTIVE_TIMEOUT_TAG, "🚨 ==================== ACTIVE TIMEOUT MONITORING STARTED ====================")
+            logDetailed("I", ACTIVE_TIMEOUT_TAG, "🚨 CRITICAL: Starting ACTIVE timeout detection - works WITHOUT callbacks!")
+            logDetailed("I", ACTIVE_TIMEOUT_TAG, "🚨 This will detect hangs in 'Preparando para a configuração de trabalho' phase")
+            logDetailed("I", ACTIVE_TIMEOUT_TAG, "⏰ Start time: ${dateFormat.format(Date(monitoringStartTime))}")
+            logDetailed("I", ACTIVE_TIMEOUT_TAG, "⏱️ Monitor interval: ${MONITOR_INTERVAL_MS}ms (${MONITOR_INTERVAL_MS/1000}s)")
+            logDetailed("I", ACTIVE_TIMEOUT_TAG, "⏳ Total timeout: ${TOTAL_TIMEOUT_MS}ms (${TOTAL_TIMEOUT_MS/1000/60}min)")
+            logDetailed("I", ACTIVE_TIMEOUT_TAG, "🚨 Hang threshold: ${HANG_DETECTION_THRESHOLD_MS}ms (${HANG_DETECTION_THRESHOLD_MS/1000}s)")
+            
+            // Save state to SharedPreferences for cross-component communication
+            val prefs = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+            prefs.edit()
+                .putBoolean(KEY_MONITORING_ACTIVE, true)
+                .putLong(KEY_START_TIME, monitoringStartTime)
+                .putBoolean(KEY_SUCCESS_DETECTED, false)
+                .apply()
+            
+            // Initialize Handler and start monitoring
+            activeTimeoutHandler = Handler(Looper.getMainLooper())
+            startPeriodicMonitoring()
+            
+            // Initial system state capture
+            logCurrentSystemState("INITIAL")
+            
+            logDetailed("I", ACTIVE_TIMEOUT_TAG, "✅ Active timeout monitoring initialized successfully")
+            logDetailed("I", ACTIVE_TIMEOUT_TAG, "🚨 =================================================================================")
+            
+        } catch (e: Exception) {
+            logDetailed("E", ACTIVE_TIMEOUT_TAG, "❌ CRITICAL ERROR: Failed to start active timeout monitoring!", e)
+            logDetailed("E", ACTIVE_TIMEOUT_TAG, "❌ This means hangs will NOT be detected - major issue!")
+        }
+    }
+
+    /**
+     * Start the periodic monitoring runnable
+     */
+    private fun startPeriodicMonitoring() {
+        monitoringRunnable = object : Runnable {
+            override fun run() {
+                if (monitoringActive && !isFinishing) {
+                    performActiveTimeoutCheck()
+                    activeTimeoutHandler?.postDelayed(this, MONITOR_INTERVAL_MS)
+                } else {
+                    logDetailed("I", ACTIVE_TIMEOUT_TAG, "⏹️ Periodic monitoring stopped (active=$monitoringActive, finishing=$isFinishing)")
+                }
+            }
+        }
+        
+        activeTimeoutHandler?.post(monitoringRunnable!!)
+        logDetailed("I", ACTIVE_TIMEOUT_TAG, "▶️ Periodic monitoring runnable started")
+    }
+
+    /**
+     * CRITICAL: Perform active timeout check - runs every 30 seconds regardless of callbacks.
+     * This is the core function that detects hangs even when no DeviceAdminReceiver callbacks occur.
+     */
+    private fun performActiveTimeoutCheck() {
+        try {
+            val currentTime = System.currentTimeMillis()
+            val totalElapsed = currentTime - monitoringStartTime
+            val timeSinceLastChange = currentTime - lastStateChangeTime
+            timeoutCheckCount++
+            
+            val formattedTime = dateFormat.format(Date(currentTime))
+            
+            logDetailed("I", ACTIVE_TIMEOUT_TAG, "🔍 ================ ACTIVE TIMEOUT CHECK #$timeoutCheckCount =================")
+            logDetailed("I", ACTIVE_TIMEOUT_TAG, "🔍 Current time: $formattedTime")
+            logDetailed("I", ACTIVE_TIMEOUT_TAG, "⏰ Total elapsed: ${totalElapsed}ms (${totalElapsed/1000}s)")
+            logDetailed("I", ACTIVE_TIMEOUT_TAG, "⏳ Since last change: ${timeSinceLastChange}ms (${timeSinceLastChange/1000}s)")
+            
+            // Check for success first (this stops monitoring)
+            if (checkForSuccessConditions()) {
+                logDetailed("I", ACTIVE_TIMEOUT_TAG, "🎉 SUCCESS DETECTED: Stopping active timeout monitoring")
+                stopActiveTimeoutMonitoring()
+                return
+            }
+            
+            // Check for total timeout
+            if (totalElapsed > TOTAL_TIMEOUT_MS) {
+                logDetailed("E", ACTIVE_TIMEOUT_TAG, "🚨 ========== CRITICAL: TOTAL TIMEOUT EXCEEDED! ==========")
+                logDetailed("E", ACTIVE_TIMEOUT_TAG, "🚨 TOTAL TIMEOUT: Provisioning has been running for ${totalElapsed}ms (${totalElapsed/1000/60}min)!")
+                logDetailed("E", ACTIVE_TIMEOUT_TAG, "🚨 MAXIMUM ALLOWED: ${TOTAL_TIMEOUT_MS}ms (${TOTAL_TIMEOUT_MS/1000/60}min)")
+                logDetailed("E", ACTIVE_TIMEOUT_TAG, "🚨 DIAGNOSIS: Work profile provisioning has COMPLETELY FAILED!")
+                logCurrentSystemState("TOTAL_TIMEOUT")
+                generateTimeoutAnalysis("TOTAL_TIMEOUT", totalElapsed)
+            }
+            
+            // Check for hang without progress
+            if (timeSinceLastChange > HANG_DETECTION_THRESHOLD_MS) {
+                logDetailed("E", ACTIVE_TIMEOUT_TAG, "🚨 ========== WARNING: HANG DETECTED WITHOUT PROGRESS! ==========")
+                logDetailed("E", ACTIVE_TIMEOUT_TAG, "🚨 HANG TIMEOUT: No progress for ${timeSinceLastChange}ms (${timeSinceLastChange/1000}s)!")
+                logDetailed("E", ACTIVE_TIMEOUT_TAG, "🚨 THRESHOLD: ${HANG_DETECTION_THRESHOLD_MS}ms (${HANG_DETECTION_THRESHOLD_MS/1000}s)")
+                logDetailed("E", ACTIVE_TIMEOUT_TAG, "🚨 LIKELY CAUSE: Stuck in 'Preparando para a configuração de trabalho' phase!")
+                logCurrentSystemState("HANG_DETECTED")
+                generateTimeoutAnalysis("HANG_DETECTED", timeSinceLastChange)
+            }
+            
+            // Regular monitoring - log current state
+            logCurrentSystemState("PERIODIC_CHECK")
+            
+            // Check if system state has changed (this resets hang timer)
+            if (checkForSystemStateChanges()) {
+                lastStateChangeTime = currentTime
+                logDetailed("I", ACTIVE_TIMEOUT_TAG, "📈 PROGRESS DETECTED: System state changed, resetting hang timer")
+            }
+            
+            logDetailed("I", ACTIVE_TIMEOUT_TAG, "🔍 ================================================================")
+            
+        } catch (e: Exception) {
+            logDetailed("E", ACTIVE_TIMEOUT_TAG, "❌ ERROR during active timeout check", e)
+        }
+    }
+
+    /**
+     * Check for success conditions that should stop monitoring
+     */
+    private fun checkForSuccessConditions(): Boolean {
+        return try {
+            // Check SharedPreferences for success signal from DeviceAdminReceiver
+            val prefs = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+            val successDetected = prefs.getBoolean(KEY_SUCCESS_DETECTED, false)
+            
+            if (successDetected) {
+                logDetailed("I", ACTIVE_TIMEOUT_TAG, "✅ Success detected via SharedPreferences")
+                return true
+            }
+            
+            // Check system state for completion indicators
+            val devicePolicyManager = getSystemService(DevicePolicyManager::class.java)
+            val isDeviceOwner = devicePolicyManager?.isDeviceOwnerApp(packageName) ?: false
+            val isProfileOwner = devicePolicyManager?.isProfileOwnerApp(packageName) ?: false
+            
+            if (isDeviceOwner || isProfileOwner) {
+                logDetailed("I", ACTIVE_TIMEOUT_TAG, "✅ Success detected: Device/Profile owner established")
+                return true
+            }
+            
+            false
+        } catch (e: Exception) {
+            logDetailed("W", ACTIVE_TIMEOUT_TAG, "⚠️ Error checking success conditions", e)
+            false
+        }
+    }
+
+    /**
+     * Check if system state has changed since last check (indicates progress)
+     */
+    private fun checkForSystemStateChanges(): Boolean {
+        return try {
+            var stateChanged = false
+            
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+                val currentUserSetupComplete = Settings.Secure.getInt(
+                    contentResolver,
+                    "user_setup_complete",
+                    0
+                ) == 1
+                
+                val currentDeviceProvisioned = Settings.Global.getInt(
+                    contentResolver,
+                    Settings.Global.DEVICE_PROVISIONED,
+                    0
+                ) == 1
+                
+                if (currentUserSetupComplete != previousUserSetupComplete) {
+                    logDetailed("I", ACTIVE_TIMEOUT_TAG, "📈 STATE CHANGE: user_setup_complete changed from $previousUserSetupComplete to $currentUserSetupComplete")
+                    previousUserSetupComplete = currentUserSetupComplete
+                    stateChanged = true
+                }
+                
+                if (currentDeviceProvisioned != previousDeviceProvisioned) {
+                    logDetailed("I", ACTIVE_TIMEOUT_TAG, "📈 STATE CHANGE: device_provisioned changed from $previousDeviceProvisioned to $currentDeviceProvisioned")
+                    previousDeviceProvisioned = currentDeviceProvisioned
+                    stateChanged = true
+                }
+            }
+            
+            stateChanged
+        } catch (e: Exception) {
+            logDetailed("W", ACTIVE_TIMEOUT_TAG, "⚠️ Error checking system state changes", e)
+            false
+        }
+    }
+
+    /**
+     * Log current system state for debugging work profile hangs
+     */
+    private fun logCurrentSystemState(context: String) {
+        try {
+            logDetailed("I", ACTIVE_TIMEOUT_TAG, "📊 ========== SYSTEM STATE DUMP ($context) ==========")
+            
+            // Basic system info
+            logDetailed("I", ACTIVE_TIMEOUT_TAG, "📱 Package: $packageName")
+            logDetailed("I", ACTIVE_TIMEOUT_TAG, "👤 User: ${android.os.Process.myUserHandle()}")
+            logDetailed("I", ACTIVE_TIMEOUT_TAG, "🏭 Process PID: ${android.os.Process.myPid()}")
+            logDetailed("I", ACTIVE_TIMEOUT_TAG, "🧵 Thread: ${Thread.currentThread().name} (${Thread.currentThread().id})")
+            
+            // Device Policy Manager state
+            val devicePolicyManager = getSystemService(DevicePolicyManager::class.java)
+            if (devicePolicyManager != null) {
+                val isDeviceOwner = devicePolicyManager.isDeviceOwnerApp(packageName)
+                val isProfileOwner = devicePolicyManager.isProfileOwnerApp(packageName)
+                val adminComponent = ComponentName(this, CDCDeviceAdminReceiver::class.java)
+                val isAdminActive = devicePolicyManager.isAdminActive(adminComponent)
+                
+                logDetailed("I", ACTIVE_TIMEOUT_TAG, "🏭 Device Owner: $isDeviceOwner")
+                logDetailed("I", ACTIVE_TIMEOUT_TAG, "📋 Profile Owner: $isProfileOwner")
+                logDetailed("I", ACTIVE_TIMEOUT_TAG, "🔑 Admin Active: $isAdminActive")
+                
+                if (!isDeviceOwner && !isProfileOwner && !isAdminActive) {
+                    logDetailed("E", ACTIVE_TIMEOUT_TAG, "🚨 CRITICAL: No admin privileges established - this explains the hang!")
+                }
+            } else {
+                logDetailed("E", ACTIVE_TIMEOUT_TAG, "❌ DevicePolicyManager is null!")
+            }
+            
+            // User Manager state
+            val userManager = getSystemService(UserManager::class.java)
+            if (userManager != null) {
+                val isManagedProfile = userManager.isManagedProfile
+                val isSystemUser = userManager.isSystemUser
+                val isUserUnlocked = userManager.isUserUnlocked
+                
+                logDetailed("I", ACTIVE_TIMEOUT_TAG, "👤 User Manager state:")
+                logDetailed("I", ACTIVE_TIMEOUT_TAG, "   📋 Managed Profile: $isManagedProfile")
+                logDetailed("I", ACTIVE_TIMEOUT_TAG, "   🔧 System User: $isSystemUser")
+                logDetailed("I", ACTIVE_TIMEOUT_TAG, "   🔓 User Unlocked: $isUserUnlocked")
+                
+                if (!isUserUnlocked) {
+                    logDetailed("W", ACTIVE_TIMEOUT_TAG, "⚠️ User not unlocked - possible cause of hang")
+                }
+            }
+            
+            // Critical provisioning settings
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+                val deviceProvisioned = Settings.Global.getInt(
+                    contentResolver,
+                    Settings.Global.DEVICE_PROVISIONED,
+                    0
+                ) == 1
+                
+                val userSetupComplete = Settings.Secure.getInt(
+                    contentResolver,
+                    "user_setup_complete",
+                    0
+                ) == 1
+                
+                logDetailed("I", ACTIVE_TIMEOUT_TAG, "📱 Provisioning State:")
+                logDetailed("I", ACTIVE_TIMEOUT_TAG, "   📱 Device Provisioned: $deviceProvisioned")
+                logDetailed("I", ACTIVE_TIMEOUT_TAG, "   👤 User Setup Complete: $userSetupComplete")
+                
+                // This is the key indicator for "Preparando para a configuração de trabalho" hang
+                if (!userSetupComplete) {
+                    logDetailed("W", ACTIVE_TIMEOUT_TAG, "🎯 HANG INDICATOR: User setup not complete - likely stuck in work profile preparation!")
+                }
+                
+                if (!deviceProvisioned) {
+                    logDetailed("W", ACTIVE_TIMEOUT_TAG, "🎯 HANG INDICATOR: Device not provisioned - provisioning process not progressing!")
+                }
+            }
+            
+            logDetailed("I", ACTIVE_TIMEOUT_TAG, "📊 =====================================================")
+            
+        } catch (e: Exception) {
+            logDetailed("E", ACTIVE_TIMEOUT_TAG, "❌ Error during system state dump", e)
+        }
+    }
+
+    /**
+     * Generate detailed timeout analysis for debugging
+     */
+    private fun generateTimeoutAnalysis(timeoutType: String, elapsedTime: Long) {
+        try {
+            logDetailed("E", ACTIVE_TIMEOUT_TAG, "🔍 ========== TIMEOUT ANALYSIS ($timeoutType) ==========")
+            logDetailed("E", ACTIVE_TIMEOUT_TAG, "⏱️ Elapsed time: ${elapsedTime}ms (${elapsedTime/1000}s, ${elapsedTime/1000/60}min)")
+            logDetailed("E", ACTIVE_TIMEOUT_TAG, "🔢 Total checks performed: $timeoutCheckCount")
+            logDetailed("E", ACTIVE_TIMEOUT_TAG, "📈 Average check interval: ${if(timeoutCheckCount > 0) elapsedTime/timeoutCheckCount else 0}ms")
+            
+            // Analyze likely causes
+            logDetailed("E", ACTIVE_TIMEOUT_TAG, "🔬 LIKELY CAUSES ANALYSIS:")
+            
+            when (timeoutType) {
+                "TOTAL_TIMEOUT" -> {
+                    logDetailed("E", ACTIVE_TIMEOUT_TAG, "   🚨 Complete provisioning failure - system unable to proceed")
+                    logDetailed("E", ACTIVE_TIMEOUT_TAG, "   🚨 Check if QR code contains correct provisioning parameters")
+                    logDetailed("E", ACTIVE_TIMEOUT_TAG, "   🚨 Verify device is factory reset and ready for provisioning")
+                    logDetailed("E", ACTIVE_TIMEOUT_TAG, "   🚨 Check internet connectivity during provisioning")
+                }
+                "HANG_DETECTED" -> {
+                    logDetailed("E", ACTIVE_TIMEOUT_TAG, "   ⚠️ Stuck in 'Preparando para a configuração de trabalho' phase")
+                    logDetailed("E", ACTIVE_TIMEOUT_TAG, "   ⚠️ Work profile creation not progressing")
+                    logDetailed("E", ACTIVE_TIMEOUT_TAG, "   ⚠️ DeviceAdminReceiver callbacks may never be called")
+                    logDetailed("E", ACTIVE_TIMEOUT_TAG, "   ⚠️ This is exactly why ACTIVE monitoring was needed!")
+                }
+            }
+            
+            // Recovery suggestions
+            logDetailed("E", ACTIVE_TIMEOUT_TAG, "💡 RECOVERY SUGGESTIONS:")
+            logDetailed("E", ACTIVE_TIMEOUT_TAG, "   1. Restart device and try provisioning again")
+            logDetailed("E", ACTIVE_TIMEOUT_TAG, "   2. Verify QR code is generated correctly")
+            logDetailed("E", ACTIVE_TIMEOUT_TAG, "   3. Check if device supports work profiles")
+            logDetailed("E", ACTIVE_TIMEOUT_TAG, "   4. Ensure device is not already provisioned")
+            logDetailed("E", ACTIVE_TIMEOUT_TAG, "   5. Try manual DPC identifier input instead of QR")
+            
+            logDetailed("E", ACTIVE_TIMEOUT_TAG, "🔍 ====================================================")
+            
+        } catch (e: Exception) {
+            logDetailed("E", ACTIVE_TIMEOUT_TAG, "❌ Error during timeout analysis", e)
+        }
+    }
+
+    /**
+     * Stop active timeout monitoring
+     */
+    private fun stopActiveTimeoutMonitoring() {
+        try {
+            if (monitoringActive) {
+                monitoringActive = false
+                
+                logDetailed("I", ACTIVE_TIMEOUT_TAG, "⏹️ ================ STOPPING ACTIVE TIMEOUT MONITORING ================")
+                logDetailed("I", ACTIVE_TIMEOUT_TAG, "⏹️ Total monitoring time: ${System.currentTimeMillis() - monitoringStartTime}ms")
+                logDetailed("I", ACTIVE_TIMEOUT_TAG, "⏹️ Total checks performed: $timeoutCheckCount")
+                
+                // Clean up Handler and Runnable
+                monitoringRunnable?.let { runnable ->
+                    activeTimeoutHandler?.removeCallbacks(runnable)
+                }
+                activeTimeoutHandler = null
+                monitoringRunnable = null
+                
+                // Update SharedPreferences
+                val prefs = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+                prefs.edit()
+                    .putBoolean(KEY_MONITORING_ACTIVE, false)
+                    .apply()
+                
+                logDetailed("I", ACTIVE_TIMEOUT_TAG, "✅ Active timeout monitoring stopped successfully")
+                logDetailed("I", ACTIVE_TIMEOUT_TAG, "⏹️ =======================================================================")
+            }
+        } catch (e: Exception) {
+            logDetailed("E", ACTIVE_TIMEOUT_TAG, "❌ Error stopping active timeout monitoring", e)
+        }
+    }
+
+    /**
+     * Enhanced logging with detailed formatting
+     */
+    private fun logDetailed(level: String, tag: String, message: String, throwable: Throwable? = null) {
+        val timestamp = dateFormat.format(Date())
+        val threadName = Thread.currentThread().name
+        val threadId = Thread.currentThread().id
+        val processId = android.os.Process.myPid()
+        
+        val enhancedMessage = "[$timestamp] [PID:$processId] [TID:$threadId|$threadName] $message"
+        
+        when (level.uppercase()) {
+            "I", "INFO" -> {
+                Log.i(tag, enhancedMessage)
+                if (throwable != null) Log.i(tag, "Exception details:", throwable)
+            }
+            "W", "WARN" -> {
+                Log.w(tag, enhancedMessage)
+                if (throwable != null) Log.w(tag, "Exception details:", throwable)
+            }
+            "E", "ERROR" -> {
+                Log.e(tag, enhancedMessage)
+                if (throwable != null) Log.e(tag, "Exception details:", throwable)
+            }
+            "D", "DEBUG" -> {
+                Log.d(tag, enhancedMessage)
+                if (throwable != null) Log.d(tag, "Exception details:", throwable)
+            }
+            else -> {
+                Log.v(tag, enhancedMessage)
+                if (throwable != null) Log.v(tag, "Exception details:", throwable)
+            }
         }
     }
 

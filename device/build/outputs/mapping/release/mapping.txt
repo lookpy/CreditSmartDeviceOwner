@@ -2,45 +2,101 @@
 # compiler_version: 8.13.6
 # common_typos_disable
 # {"id":"com.android.tools.r8.mapping","version":"2.2"}
-# pg_map_id: ff2b9a3dc175493890147a7a4ad24780e14083e90fc2109f9a644dad5d1c5edd
-# pg_map_hash: SHA-256 ff2b9a3dc175493890147a7a4ad24780e14083e90fc2109f9a644dad5d1c5edd
+# pg_map_id: 46dea0895889073f2c0e822b3be9d97f09a0471c3da81e74c8c0d6940536eda0
+# pg_map_hash: SHA-256 46dea0895889073f2c0e822b3be9d97f09a0471c3da81e74c8c0d6940536eda0
 com.cdccreditsmart.device.BuildConfig -> com.cdccreditsmart.device.BuildConfig:
 # {"id":"sourceFile","fileName":"BuildConfig.java"}
     1:1:void <init>():6:6 -> <init>
 com.cdccreditsmart.device.CDCDeviceAdminReceiver -> com.cdccreditsmart.device.CDCDeviceAdminReceiver:
 # {"id":"sourceFile","fileName":"CDCDeviceAdminReceiver.kt"}
-    1:1:void <init>():14:14 -> <init>
-    1:1:android.content.ComponentName getWho(android.content.Context):296:296 -> getWho
-    1:1:boolean isAppInstalled(android.content.Context,java.lang.String):267:267 -> isAppInstalled
-    1:4:void launchMainApp(android.content.Context):279:282 -> launchMainApp
-    1:2:void onBugreportFailed(android.content.Context,android.content.Intent,int):123:124 -> onBugreportFailed
-    1:2:void onBugreportShared(android.content.Context,android.content.Intent,java.lang.String):118:119 -> onBugreportShared
-    1:1:void onBugreportSharingDeclined(android.content.Context,android.content.Intent):113:113 -> onBugreportSharingDeclined
-    1:4:void onDisabled(android.content.Context,android.content.Intent):44:47 -> onDisabled
-    1:14:void onEnabled(android.content.Context,android.content.Intent):21:34 -> onEnabled
-    1:2:void onLockTaskModeEntering(android.content.Context,android.content.Intent,java.lang.String):68:69 -> onLockTaskModeEntering
-    1:1:void onLockTaskModeExiting(android.content.Context,android.content.Intent):73:73 -> onLockTaskModeExiting
-    1:2:void onNetworkLogsAvailable(android.content.Context,android.content.Intent,long,int):78:79 -> onNetworkLogsAvailable
-    1:2:void onPasswordChanged(android.content.Context,android.content.Intent,android.os.UserHandle):53:54 -> onPasswordChanged
-    1:2:void onPasswordFailed(android.content.Context,android.content.Intent,android.os.UserHandle):58:59 -> onPasswordFailed
-    1:2:void onPasswordSucceeded(android.content.Context,android.content.Intent,android.os.UserHandle):63:64 -> onPasswordSucceeded
-    1:14:void onProfileProvisioningComplete(android.content.Context,android.content.Intent):132:145 -> onProfileProvisioningComplete
-    15:75:void onProfileProvisioningComplete(android.content.Context,android.content.Intent):145:205 -> onProfileProvisioningComplete
-    76:185:void onProfileProvisioningComplete(android.content.Context,android.content.Intent):190:299 -> onProfileProvisioningComplete
-    186:186:void onProfileProvisioningComplete(android.content.Context,android.content.Intent):194:194 -> onProfileProvisioningComplete
-    1:4:void onReadyForUserInitialization(android.content.Context,android.content.Intent):213:216 -> onReadyForUserInitialization
-    1:1:void onSecurityLogsAvailable(android.content.Context,android.content.Intent):108:108 -> onSecurityLogsAvailable
-    1:2:void onUserAdded(android.content.Context,android.content.Intent,android.os.UserHandle):83:84 -> onUserAdded
-    1:2:void onUserRemoved(android.content.Context,android.content.Intent,android.os.UserHandle):88:89 -> onUserRemoved
-    1:2:void onUserStarted(android.content.Context,android.content.Intent,android.os.UserHandle):93:94 -> onUserStarted
-    1:2:void onUserStopped(android.content.Context,android.content.Intent,android.os.UserHandle):98:99 -> onUserStopped
-    1:2:void onUserSwitched(android.content.Context,android.content.Intent,android.os.UserHandle):103:104 -> onUserSwitched
-    1:10:void setupBasicPolicies(android.content.Context,android.app.admin.DevicePolicyManager,android.content.ComponentName):230:239 -> setupBasicPolicies
-    11:25:void setupBasicPolicies(android.content.Context,android.app.admin.DevicePolicyManager,android.content.ComponentName):237:251 -> setupBasicPolicies
+    1:12:void <clinit>():25:36 -> <clinit>
+    13:13:void <clinit>():33:33 -> <clinit>
+    1:1:void <init>():20:20 -> <init>
+    1:1:java.util.List access$getCallbackSequence$cp():20:20 -> access$getCallbackSequence$cp
+    1:1:java.util.Map access$getCallbackTimestamps$cp():20:20 -> access$getCallbackTimestamps$cp
+    1:1:java.text.SimpleDateFormat access$getDateFormat$cp():20:20 -> access$getDateFormat$cp
+    1:1:java.util.List access$getExpectedCallbacks$cp():20:20 -> access$getExpectedCallbacks$cp
+    1:1:long access$getLastCallbackTime$cp():20:20 -> access$getLastCallbackTime$cp
+    1:1:long access$getProvisioningStartTime$cp():20:20 -> access$getProvisioningStartTime$cp
+    1:1:boolean access$isProvisioningInProgress$cp():20:20 -> access$isProvisioningInProgress$cp
+    1:1:void access$setLastCallbackTime$cp(long):20:20 -> access$setLastCallbackTime$cp
+    1:1:void access$setProvisioningInProgress$cp(boolean):20:20 -> access$setProvisioningInProgress$cp
+    1:1:void access$setProvisioningStartTime$cp(long):20:20 -> access$setProvisioningStartTime$cp
+    1:1:android.content.ComponentName getWho(android.content.Context):939:939 -> getWho
+    1:11:boolean isAppInstalled(android.content.Context,java.lang.String):876:886 -> isAppInstalled
+    12:12:boolean isAppInstalled(android.content.Context,java.lang.String):883:883 -> isAppInstalled
+    13:13:boolean isAppInstalled(android.content.Context,java.lang.String):880:880 -> isAppInstalled
+    1:36:void launchMainApp(android.content.Context):896:931 -> launchMainApp
+    37:37:void launchMainApp(android.content.Context):929:929 -> launchMainApp
+    38:38:void launchMainApp(android.content.Context):927:927 -> launchMainApp
+    1:9:void logDeviceCapabilities(android.app.admin.DevicePolicyManager,android.content.ComponentName):752:760 -> logDeviceCapabilities
+    10:40:void logDeviceCapabilities(android.app.admin.DevicePolicyManager,android.content.ComponentName):757:787 -> logDeviceCapabilities
+    1:2:void onBugreportFailed(android.content.Context,android.content.Intent,int):501:502 -> onBugreportFailed
+    1:2:void onBugreportShared(android.content.Context,android.content.Intent,java.lang.String):496:497 -> onBugreportShared
+    1:1:void onBugreportSharingDeclined(android.content.Context,android.content.Intent):491:491 -> onBugreportSharingDeclined
+    1:4:void onDisabled(android.content.Context,android.content.Intent):422:425 -> onDisabled
+    1:49:void onEnabled(android.content.Context,android.content.Intent):305:353 -> onEnabled
+    50:59:void onEnabled(android.content.Context,android.content.Intent):351:360 -> onEnabled
+    60:119:void onEnabled(android.content.Context,android.content.Intent):358:417 -> onEnabled
+    120:141:void onEnabled(android.content.Context,android.content.Intent):396:417 -> onEnabled
+    142:143:void onEnabled(android.content.Context,android.content.Intent):416:417 -> onEnabled
+    1:2:void onLockTaskModeEntering(android.content.Context,android.content.Intent,java.lang.String):446:447 -> onLockTaskModeEntering
+    1:1:void onLockTaskModeExiting(android.content.Context,android.content.Intent):451:451 -> onLockTaskModeExiting
+    1:2:void onNetworkLogsAvailable(android.content.Context,android.content.Intent,long,int):456:457 -> onNetworkLogsAvailable
+    1:2:void onPasswordChanged(android.content.Context,android.content.Intent,android.os.UserHandle):431:432 -> onPasswordChanged
+    1:2:void onPasswordFailed(android.content.Context,android.content.Intent,android.os.UserHandle):436:437 -> onPasswordFailed
+    1:2:void onPasswordSucceeded(android.content.Context,android.content.Intent,android.os.UserHandle):441:442 -> onPasswordSucceeded
+    1:31:void onProfileProvisioningComplete(android.content.Context,android.content.Intent):510:540 -> onProfileProvisioningComplete
+    32:76:void onProfileProvisioningComplete(android.content.Context,android.content.Intent):540:584 -> onProfileProvisioningComplete
+    77:105:void onProfileProvisioningComplete(android.content.Context,android.content.Intent):582:610 -> onProfileProvisioningComplete
+    106:146:void onProfileProvisioningComplete(android.content.Context,android.content.Intent):602:642 -> onProfileProvisioningComplete
+    147:169:void onProfileProvisioningComplete(android.content.Context,android.content.Intent):620:642 -> onProfileProvisioningComplete
+    170:171:void onProfileProvisioningComplete(android.content.Context,android.content.Intent):641:642 -> onProfileProvisioningComplete
+    1:31:void onReadyForUserInitialization(android.content.Context,android.content.Intent):650:680 -> onReadyForUserInitialization
+    32:97:void onReadyForUserInitialization(android.content.Context,android.content.Intent):678:743 -> onReadyForUserInitialization
+    98:106:void onReadyForUserInitialization(android.content.Context,android.content.Intent):735:743 -> onReadyForUserInitialization
+    107:111:void onReadyForUserInitialization(android.content.Context,android.content.Intent):739:743 -> onReadyForUserInitialization
+    1:1:void onSecurityLogsAvailable(android.content.Context,android.content.Intent):486:486 -> onSecurityLogsAvailable
+    1:2:void onUserAdded(android.content.Context,android.content.Intent,android.os.UserHandle):461:462 -> onUserAdded
+    1:2:void onUserRemoved(android.content.Context,android.content.Intent,android.os.UserHandle):466:467 -> onUserRemoved
+    1:2:void onUserStarted(android.content.Context,android.content.Intent,android.os.UserHandle):471:472 -> onUserStarted
+    1:2:void onUserStopped(android.content.Context,android.content.Intent,android.os.UserHandle):476:477 -> onUserStopped
+    1:2:void onUserSwitched(android.content.Context,android.content.Intent,android.os.UserHandle):481:482 -> onUserSwitched
+    1:12:void setupBasicPolicies(android.content.Context,android.app.admin.DevicePolicyManager,android.content.ComponentName):796:807 -> setupBasicPolicies
+    13:13:void setupBasicPolicies(android.content.Context,android.app.admin.DevicePolicyManager,android.content.ComponentName):805:805 -> setupBasicPolicies
+    14:25:void setupBasicPolicies(android.content.Context,android.app.admin.DevicePolicyManager,android.content.ComponentName):803:814 -> setupBasicPolicies
+    26:45:void setupBasicPolicies(android.content.Context,android.app.admin.DevicePolicyManager,android.content.ComponentName):811:830 -> setupBasicPolicies
+    46:46:void setupBasicPolicies(android.content.Context,android.app.admin.DevicePolicyManager,android.content.ComponentName):828:828 -> setupBasicPolicies
+    47:86:void setupBasicPolicies(android.content.Context,android.app.admin.DevicePolicyManager,android.content.ComponentName):826:865 -> setupBasicPolicies
 com.cdccreditsmart.device.CDCDeviceAdminReceiver$Companion -> com.cdccreditsmart.device.CDCDeviceAdminReceiver$Companion:
 # {"id":"sourceFile","fileName":"CDCDeviceAdminReceiver.kt"}
     1:1:void <init>(kotlin.jvm.internal.DefaultConstructorMarker):0:0 -> <init>
-    2:2:void <init>():16:16 -> <init>
+    2:2:void access$signalSuccessToActiveMonitoring(com.cdccreditsmart.device.CDCDeviceAdminReceiver$Companion,android.content.Context,java.lang.String):22:22 -> <init>
+    2:2:void <init>():22 -> <init>
+    1:1:void access$signalSuccessToActiveMonitoring(com.cdccreditsmart.device.CDCDeviceAdminReceiver$Companion,android.content.Context,java.lang.String):22:22 -> access$addToCallbackSequence
+    1:1:void access$addToCallbackSequence(com.cdccreditsmart.device.CDCDeviceAdminReceiver$Companion,java.lang.String):22 -> access$addToCallbackSequence
+    1:1:void access$signalSuccessToActiveMonitoring(com.cdccreditsmart.device.CDCDeviceAdminReceiver$Companion,android.content.Context,java.lang.String):22:22 -> access$detectWorkProfileHang
+    1:1:void access$detectWorkProfileHang(com.cdccreditsmart.device.CDCDeviceAdminReceiver$Companion,android.content.Context):22 -> access$detectWorkProfileHang
+    1:1:void access$signalSuccessToActiveMonitoring(com.cdccreditsmart.device.CDCDeviceAdminReceiver$Companion,android.content.Context,java.lang.String):22:22 -> access$logCallbackSequence
+    1:1:void access$logCallbackSequence(com.cdccreditsmart.device.CDCDeviceAdminReceiver$Companion):22 -> access$logCallbackSequence
+    1:1:void access$signalSuccessToActiveMonitoring(com.cdccreditsmart.device.CDCDeviceAdminReceiver$Companion,android.content.Context,java.lang.String):22:22 -> access$logDetailed
+    1:1:void access$logDetailed(com.cdccreditsmart.device.CDCDeviceAdminReceiver$Companion,java.lang.String,java.lang.String,java.lang.String,java.lang.Throwable):22 -> access$logDetailed
+    1:1:void access$signalSuccessToActiveMonitoring(com.cdccreditsmart.device.CDCDeviceAdminReceiver$Companion,android.content.Context,java.lang.String):22:22 -> access$signalSuccessToActiveMonitoring
+    1:42:void addToCallbackSequence(java.lang.String):121:162 -> addToCallbackSequence
+    1:774:void checkForMissingCallbacks(java.lang.String):170:943 -> checkForMissingCallbacks
+    775:1535:void checkForMissingCallbacks(java.lang.String):183:943 -> checkForMissingCallbacks
+    1536:2298:void checkForMissingCallbacks(java.lang.String):184:946 -> checkForMissingCallbacks
+    2299:3058:void checkForMissingCallbacks(java.lang.String):187:946 -> checkForMissingCallbacks
+    3059:3064:void checkForMissingCallbacks(java.lang.String):188:193 -> checkForMissingCallbacks
+    1:27:void detectWorkProfileHang(android.content.Context):202:228 -> detectWorkProfileHang
+    1:653:void logCallbackSequence():297:949 -> logCallbackSequence
+    654:654:void logCallbackSequence():299:299 -> logCallbackSequence
+    1:8:void logDetailed(java.lang.String,java.lang.String,java.lang.String,java.lang.Throwable):86:93 -> logDetailed
+    1:1:void logDetailed$default(com.cdccreditsmart.device.CDCDeviceAdminReceiver$Companion,java.lang.String,java.lang.String,java.lang.String,java.lang.Throwable,int,java.lang.Object):85:85 -> logDetailed$default
+    1:7:void logSystemStateForHangAnalysis(android.content.Context):237:243 -> logSystemStateForHangAnalysis
+    8:16:void logSystemStateForHangAnalysis(android.content.Context):241:249 -> logSystemStateForHangAnalysis
+    17:62:void logSystemStateForHangAnalysis(android.content.Context):247:292 -> logSystemStateForHangAnalysis
+    1:24:void signalSuccessToActiveMonitoring(android.content.Context,java.lang.String):55:78 -> signalSuccessToActiveMonitoring
 com.cdccreditsmart.device.CommandExecutionStatus -> com.cdccreditsmart.device.CommandExecutionStatus:
 # {"id":"sourceFile","fileName":"DeviceCommandExecutor.kt"}
     1:1:void <init>(kotlin.jvm.internal.DefaultConstructorMarker):0:0 -> <init>

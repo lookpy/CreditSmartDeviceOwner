@@ -4,8 +4,14 @@ import android.app.admin.DeviceAdminReceiver
 import android.app.admin.DevicePolicyManager
 import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.PersistableBundle
+import android.os.UserManager
 import android.util.Log
+import android.app.ActivityManager
+import android.content.pm.PackageManager
+import java.text.SimpleDateFormat
+import java.util.*
 
 /**
  * Device Admin Receiver para CDC Credit Smart.
@@ -15,29 +21,401 @@ class CDCDeviceAdminReceiver : DeviceAdminReceiver() {
 
     companion object {
         private const val TAG = "CDCDeviceAdminReceiver"
+        private const val DEBUG_TAG = "CDC_PROVISIONING_DEBUG"
+        private val dateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS", Locale.getDefault())
+        
+        // CRITICAL: Advanced callback debugging for work profile hang detection
+        private var callbackSequence = mutableListOf<String>()
+        private var callbackTimestamps = mutableMapOf<String, Long>()
+        private var lastCallbackTime = 0L
+        private var provisioningStartTime = 0L
+        private var isProvisioningInProgress = false
+        private var expectedCallbacks = listOf(
+            "onEnabled", 
+            "onProfileProvisioningComplete", 
+            "onReadyForUserInitialization"
+        )
+        
+        // Timeout detection for work profile hangs
+        private const val CALLBACK_TIMEOUT_MS = 30000L // 30 seconds
+        private const val PROVISIONING_TIMEOUT_MS = 120000L // 2 minutes
+        
+        // SharedPreferences keys for cross-component communication with ProvisioningActivity
+        private const val PREFS_NAME = "cdc_active_timeout"
+        private const val KEY_MONITORING_ACTIVE = "monitoring_active"
+        private const val KEY_START_TIME = "start_time"
+        private const val KEY_SUCCESS_DETECTED = "success_detected"
+        
+        /**
+         * CRITICAL: Signal success to active timeout monitoring system
+         * This stops the active monitoring when DeviceAdminReceiver callbacks succeed
+         */
+        private fun signalSuccessToActiveMonitoring(context: Context, successType: String) {
+            try {
+                logDetailed("I", DEBUG_TAG, "📡 SIGNALING SUCCESS to active timeout monitoring system")
+                logDetailed("I", DEBUG_TAG, "📡 Success type: $successType")
+                
+                val prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+                val isMonitoringActive = prefs.getBoolean(KEY_MONITORING_ACTIVE, false)
+                
+                logDetailed("I", DEBUG_TAG, "📡 Active monitoring status: $isMonitoringActive")
+                
+                if (isMonitoringActive) {
+                    prefs.edit()
+                        .putBoolean(KEY_SUCCESS_DETECTED, true)
+                        .putString("success_type", successType)
+                        .putLong("success_time", System.currentTimeMillis())
+                        .apply()
+                    
+                    logDetailed("I", DEBUG_TAG, "✅ SUCCESS SIGNAL SENT: Active timeout monitoring will stop")
+                    logDetailed("I", DEBUG_TAG, "✅ This prevents false timeout alerts after successful provisioning")
+                } else {
+                    logDetailed("W", DEBUG_TAG, "⚠️ Active monitoring not active - signal not needed")
+                }
+                
+            } catch (e: Exception) {
+                logDetailed("E", DEBUG_TAG, "❌ CRITICAL: Failed to signal success to active monitoring!", e)
+                logDetailed("E", DEBUG_TAG, "❌ This may cause false timeout alerts even after successful provisioning")
+            }
+        }
+        
+        /**
+         * Enhanced logging with thread info, formatted timestamp, and system state
+         */
+        private fun logDetailed(level: String, tag: String, message: String, throwable: Throwable? = null) {
+            val timestamp = dateFormat.format(Date())
+            val threadName = Thread.currentThread().name
+            val threadId = Thread.currentThread().id
+            val processId = android.os.Process.myPid()
+            
+            val enhancedMessage = "[$timestamp] [PID:$processId] [TID:$threadId|$threadName] $message"
+            
+            when (level.uppercase()) {
+                "I", "INFO" -> {
+                    Log.i(tag, enhancedMessage)
+                    if (throwable != null) Log.i(tag, "Exception details:", throwable)
+                }
+                "W", "WARN" -> {
+                    Log.w(tag, enhancedMessage)
+                    if (throwable != null) Log.w(tag, "Exception details:", throwable)
+                }
+                "E", "ERROR" -> {
+                    Log.e(tag, enhancedMessage)
+                    if (throwable != null) Log.e(tag, "Exception details:", throwable)
+                }
+                "D", "DEBUG" -> {
+                    Log.d(tag, enhancedMessage)
+                    if (throwable != null) Log.d(tag, "Exception details:", throwable)
+                }
+                else -> {
+                    Log.v(tag, enhancedMessage)
+                    if (throwable != null) Log.v(tag, "Exception details:", throwable)
+                }
+            }
+        }
+        
+        /**
+         * CRITICAL: Advanced callback tracking for work profile hang detection
+         */
+        private fun addToCallbackSequence(callback: String) {
+            val currentTime = System.currentTimeMillis()
+            val formattedTime = dateFormat.format(Date())
+            
+            callbackSequence.add("$formattedTime - $callback")
+            callbackTimestamps[callback] = currentTime
+            
+            // CRITICAL: Detect callback timeouts that indicate work profile hangs
+            if (lastCallbackTime > 0) {
+                val timeSinceLastCallback = currentTime - lastCallbackTime
+                if (timeSinceLastCallback > CALLBACK_TIMEOUT_MS) {
+                    logDetailed("E", DEBUG_TAG, "⚠️ TIMEOUT DETECTED: ${timeSinceLastCallback}ms since last callback!")
+                    logDetailed("E", DEBUG_TAG, "⚠️ This timeout might indicate work profile preparation hang!")
+                }
+            }
+            
+            lastCallbackTime = currentTime
+            
+            // Start provisioning timer on first callback
+            if (callback == "onEnabled" && provisioningStartTime == 0L) {
+                provisioningStartTime = currentTime
+                isProvisioningInProgress = true
+                logDetailed("I", DEBUG_TAG, "🏁 PROVISIONING STARTED: Timer started for hang detection")
+            }
+            
+            // Check for provisioning completion
+            if (callback == "onReadyForUserInitialization" && isProvisioningInProgress) {
+                val totalProvisioningTime = currentTime - provisioningStartTime
+                isProvisioningInProgress = false
+                logDetailed("I", DEBUG_TAG, "✅ PROVISIONING COMPLETED: Total time ${totalProvisioningTime}ms")
+                
+                if (totalProvisioningTime > PROVISIONING_TIMEOUT_MS) {
+                    logDetailed("W", DEBUG_TAG, "⚠️ SLOW PROVISIONING: Took longer than expected (${PROVISIONING_TIMEOUT_MS}ms)")
+                }
+            }
+            
+            // Keep only last 20 callbacks to avoid memory issues
+            if (callbackSequence.size > 20) {
+                callbackSequence.removeAt(0)
+            }
+            
+            // Check if we're missing expected callbacks
+            checkForMissingCallbacks(callback)
+        }
+        
+        /**
+         * Detect missing callbacks that could indicate work profile hangs
+         */
+        private fun checkForMissingCallbacks(currentCallback: String) {
+            try {
+                val currentIndex = expectedCallbacks.indexOf(currentCallback)
+                if (currentIndex > 0) {
+                    // Check if previous callbacks were received
+                    for (i in 0 until currentIndex) {
+                        val expectedCallback = expectedCallbacks[i]
+                        if (!callbackTimestamps.containsKey(expectedCallback)) {
+                            logDetailed("E", DEBUG_TAG, "❌ MISSING CALLBACK: $expectedCallback was expected before $currentCallback")
+                            logDetailed("E", DEBUG_TAG, "❌ This could indicate work profile preparation failure!")
+                        }
+                    }
+                }
+                
+                // Log callback progress
+                val completedCallbacks = expectedCallbacks.filter { callbackTimestamps.containsKey(it) }
+                logDetailed("I", DEBUG_TAG, "📈 CALLBACK PROGRESS: ${completedCallbacks.size}/${expectedCallbacks.size} completed")
+                logDetailed("I", DEBUG_TAG, "📈 Completed: ${completedCallbacks.joinToString(", ")}")
+                
+                val remainingCallbacks = expectedCallbacks.filter { !callbackTimestamps.containsKey(it) }
+                if (remainingCallbacks.isNotEmpty()) {
+                    logDetailed("I", DEBUG_TAG, "⏳ Remaining: ${remainingCallbacks.joinToString(", ")}")
+                }
+                
+            } catch (e: Exception) {
+                logDetailed("E", DEBUG_TAG, "❌ Error checking missing callbacks", e)
+            }
+        }
+        
+        /**
+         * Enhanced detection of work profile preparation hangs
+         */
+        private fun detectWorkProfileHang(context: Context) {
+            try {
+                if (!isProvisioningInProgress) return
+                
+                val currentTime = System.currentTimeMillis()
+                val timeSinceStart = currentTime - provisioningStartTime
+                val timeSinceLastCallback = currentTime - lastCallbackTime
+                
+                logDetailed("I", DEBUG_TAG, "🔍 HANG DETECTION CHECK:")
+                logDetailed("I", DEBUG_TAG, "   ⏱️ Time since provisioning start: ${timeSinceStart}ms")
+                logDetailed("I", DEBUG_TAG, "   ⏱️ Time since last callback: ${timeSinceLastCallback}ms")
+                
+                // Check for total provisioning timeout
+                if (timeSinceStart > PROVISIONING_TIMEOUT_MS) {
+                    logDetailed("E", DEBUG_TAG, "🚨 PROVISIONING TIMEOUT: Exceeded ${PROVISIONING_TIMEOUT_MS}ms limit!")
+                    logDetailed("E", DEBUG_TAG, "🚨 Work profile preparation appears to be HANGING!")
+                    
+                    // Try to get current system state for debugging
+                    logSystemStateForHangAnalysis(context)
+                }
+                
+                // Check for callback timeout
+                if (timeSinceLastCallback > CALLBACK_TIMEOUT_MS) {
+                    logDetailed("E", DEBUG_TAG, "🚨 CALLBACK TIMEOUT: No callbacks for ${timeSinceLastCallback}ms!")
+                    logDetailed("E", DEBUG_TAG, "🚨 System may be stuck in work profile preparation!")
+                }
+                
+            } catch (e: Exception) {
+                logDetailed("E", DEBUG_TAG, "❌ Error during hang detection", e)
+            }
+        }
+        
+        /**
+         * Log system state when hang is detected
+         */
+        private fun logSystemStateForHangAnalysis(context: Context) {
+            try {
+                logDetailed("E", DEBUG_TAG, "🔍 SYSTEM STATE ANALYSIS (Hang detected):")
+                
+                // Check provisioning settings
+                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+                    val deviceProvisioned = android.provider.Settings.Global.getInt(
+                        context.contentResolver,
+                        android.provider.Settings.Global.DEVICE_PROVISIONED,
+                        0
+                    ) == 1
+                    
+                    val userSetupComplete = android.provider.Settings.Secure.getInt(
+                        context.contentResolver,
+                        "user_setup_complete",
+                        0
+                    ) == 1
+                    
+                    logDetailed("E", DEBUG_TAG, "   📱 Device provisioned: $deviceProvisioned")
+                    logDetailed("E", DEBUG_TAG, "   👤 User setup complete: $userSetupComplete")
+                    
+                    if (!deviceProvisioned) {
+                        logDetailed("E", DEBUG_TAG, "   🚨 ROOT CAUSE: Device not marked as provisioned!")
+                    }
+                    if (!userSetupComplete) {
+                        logDetailed("E", DEBUG_TAG, "   🚨 LIKELY CAUSE: User setup incomplete - work profile preparation stuck!")
+                    }
+                }
+                
+                // Check device policy manager state
+                val devicePolicyManager = context.getSystemService(Context.DEVICE_POLICY_SERVICE) as? DevicePolicyManager
+                if (devicePolicyManager != null) {
+                    val isDeviceOwner = devicePolicyManager.isDeviceOwnerApp(context.packageName)
+                    val isProfileOwner = devicePolicyManager.isProfileOwnerApp(context.packageName)
+                    
+                    logDetailed("E", DEBUG_TAG, "   🏭 Is device owner: $isDeviceOwner")
+                    logDetailed("E", DEBUG_TAG, "   📋 Is profile owner: $isProfileOwner")
+                    
+                    if (!isDeviceOwner && !isProfileOwner) {
+                        logDetailed("E", DEBUG_TAG, "   🚨 CRITICAL: No ownership established - this explains the hang!")
+                    }
+                }
+                
+                // Check user manager state
+                val userManager = context.getSystemService(Context.USER_SERVICE) as? UserManager
+                if (userManager != null) {
+                    val isManagedProfile = userManager.isManagedProfile
+                    val isSystemUser = userManager.isSystemUser
+                    val isUserUnlocked = userManager.isUserUnlocked
+                    
+                    logDetailed("E", DEBUG_TAG, "   👤 User state:")
+                    logDetailed("E", DEBUG_TAG, "     📋 Managed profile: $isManagedProfile")
+                    logDetailed("E", DEBUG_TAG, "     🔧 System user: $isSystemUser")
+                    logDetailed("E", DEBUG_TAG, "     🔓 User unlocked: $isUserUnlocked")
+                }
+                
+            } catch (e: Exception) {
+                logDetailed("E", DEBUG_TAG, "❌ Error during system state analysis", e)
+            }
+        }
+        
+        private fun logCallbackSequence() {
+            logDetailed("I", DEBUG_TAG, "📋 CALLBACK SEQUENCE (${callbackSequence.size} callbacks):")
+            callbackSequence.forEachIndexed { index, callback ->
+                logDetailed("I", DEBUG_TAG, "   ${index + 1}. $callback")
+            }
+        }
     }
 
     override fun onEnabled(context: Context, intent: Intent) {
         super.onEnabled(context, intent)
-        Log.i(TAG, "🔑 ==================== DEVICE ADMIN ENABLED ====================")
-        Log.i(TAG, "✅ Device Admin enabled successfully")
-        Log.i(TAG, "⏰ Timestamp: ${System.currentTimeMillis()}")
+        addToCallbackSequence("onEnabled")
         
-        // Log device admin enablement details
+        logDetailed("I", TAG, "🔑 ==================== DEVICE ADMIN ENABLED ====================")
+        logDetailed("I", TAG, "✅ Device Admin enabled successfully - CRITICAL CALLBACK FOR WORK PROFILE PREPARATION")
+        logDetailed("I", TAG, "⏰ Raw timestamp: ${System.currentTimeMillis()}")
+        
+        // CRITICAL: This callback is essential for work profile setup on Android 12/13+
         try {
+            logDetailed("I", TAG, "🔍 Starting comprehensive admin enablement verification...")
+            
             val devicePolicyManager = context.getSystemService(Context.DEVICE_POLICY_SERVICE) as DevicePolicyManager
+            val userManager = context.getSystemService(Context.USER_SERVICE) as UserManager
             val adminComponent = getWho(context)
             
-            Log.i(TAG, "📋 Admin component: $adminComponent")
-            Log.i(TAG, "🔒 Admin active: ${devicePolicyManager.isAdminActive(adminComponent)}")
-            Log.i(TAG, "🏭 Device owner: ${devicePolicyManager.isDeviceOwnerApp(context.packageName)}")
-            Log.i(TAG, "📋 Profile owner: ${devicePolicyManager.isProfileOwnerApp(context.packageName)}")
+            // Log system information critical for work profile preparation
+            logDetailed("I", TAG, "📋 Admin component: $adminComponent")
+            logDetailed("I", TAG, "📱 Package name: ${context.packageName}")
+            logDetailed("I", TAG, "👤 Current user: ${android.os.Process.myUserHandle()}")
+            logDetailed("I", TAG, "🎯 Current user handle: ${android.os.Process.myUserHandle()}")
+            
+            // Check admin status
+            val isAdminActive = devicePolicyManager.isAdminActive(adminComponent)
+            val isDeviceOwner = devicePolicyManager.isDeviceOwnerApp(context.packageName)
+            val isProfileOwner = devicePolicyManager.isProfileOwnerApp(context.packageName)
+            
+            logDetailed("I", TAG, "🔒 Device administration status:")
+            logDetailed("I", TAG, "   🔑 Admin active: $isAdminActive")
+            logDetailed("I", TAG, "   🏭 Device owner: $isDeviceOwner")
+            logDetailed("I", TAG, "   📋 Profile owner: $isProfileOwner")
+            
+            // WORK PROFILE SPECIFIC CHECKS - Critical for Android 12/13+
+            try {
+                // Check if we're in a managed profile context
+                val isManagedProfile = userManager.isManagedProfile
+                val isSystemUser = userManager.isSystemUser
+                val isUserUnlocked = userManager.isUserUnlocked
+                
+                logDetailed("I", TAG, "🏢 Work Profile status (CRITICAL FOR PREPARATION):")
+                logDetailed("I", TAG, "   🏢 Is managed profile: $isManagedProfile")
+                logDetailed("I", TAG, "   🔧 Is system user: $isSystemUser")
+                logDetailed("I", TAG, "   🔓 Is user unlocked: $isUserUnlocked")
+                
+                // Check if this is during device provisioning
+                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+                    try {
+                        val isDeviceProvisioned = android.provider.Settings.Global.getInt(
+                            context.contentResolver,
+                            android.provider.Settings.Global.DEVICE_PROVISIONED,
+                            0
+                        ) == 1
+                        logDetailed("I", TAG, "   📱 Device provisioned: $isDeviceProvisioned")
+                        
+                        val userSetupComplete = android.provider.Settings.Secure.getInt(
+                            context.contentResolver,
+                            "user_setup_complete",
+                            0
+                        ) == 1
+                        logDetailed("I", TAG, "   👤 User setup complete: $userSetupComplete")
+                        
+                        // This is where the "Preparing for work profile configuration" happens!
+                        if (!userSetupComplete && isAdminActive) {
+                            logDetailed("I", TAG, "🎯 DETECTED: Currently in work profile preparation phase!")
+                            logDetailed("I", TAG, "🎯 This is likely where the hang occurs - monitoring closely...")
+                        }
+                        
+                    } catch (e: Exception) {
+                        logDetailed("W", TAG, "⚠️ Could not check provisioning settings", e)
+                    }
+                }
+                
+                // Log available device policies to verify work profile support
+                if (isAdminActive) {
+                    logDeviceCapabilities(devicePolicyManager, adminComponent)
+                }
+                
+            } catch (e: Exception) {
+                logDetailed("E", TAG, "❌ CRITICAL: Error during work profile status checks", e)
+                // This error could be the cause of the hang!
+                logDetailed("E", TAG, "❌ This error might be causing the work profile preparation to hang!")
+            }
+            
+            // Log callback sequence so far
+            logCallbackSequence()
+            
+            // Perform hang detection check
+            detectWorkProfileHang(context)
+            
+            logDetailed("I", TAG, "✅ Admin enablement verification completed successfully")
             
         } catch (e: Exception) {
-            Log.w(TAG, "⚠️ Could not retrieve detailed admin info", e)
+            logDetailed("E", TAG, "❌ CRITICAL ERROR during admin enablement verification", e)
+            logDetailed("E", TAG, "❌ This could be the root cause of work profile preparation hanging!")
+            
+            // Try to provide specific recovery guidance
+            when (e) {
+                is SecurityException -> {
+                    logDetailed("E", TAG, "⚠️ Security exception - check device admin permissions in manifest")
+                    logDetailed("E", TAG, "⚠️ Verify device_admin.xml has all required policies for work profile")
+                }
+                is IllegalStateException -> {
+                    logDetailed("E", TAG, "⚠️ Illegal state - device might not be in correct provisioning state")
+                }
+                is NullPointerException -> {
+                    logDetailed("E", TAG, "⚠️ NPE - critical system service might be unavailable")
+                }
+                else -> {
+                    logDetailed("E", TAG, "⚠️ Unknown error type - check full stack trace")
+                }
+            }
+        } finally {
+            logDetailed("I", TAG, "🏁 onEnabled callback completed - work profile preparation should continue")
+            logDetailed("I", TAG, "🔑 =================================================================")
         }
-        
-        Log.i(TAG, "🔑 =================================================================")
     }
 
     override fun onDisabled(context: Context, intent: Intent) {
@@ -130,79 +508,138 @@ class CDCDeviceAdminReceiver : DeviceAdminReceiver() {
      */
     override fun onProfileProvisioningComplete(context: Context, intent: Intent) {
         super.onProfileProvisioningComplete(context, intent)
-        Log.i(TAG, "🎉 ==================== DEVICE OWNER PROVISIONING COMPLETED ====================")
-        Log.i(TAG, "✅ Device Owner provisioning completed successfully!")
-        Log.i(TAG, "⏰ Timestamp: ${System.currentTimeMillis()}")
-        Log.i(TAG, "📱 Context: ${context.javaClass.simpleName}")
+        addToCallbackSequence("onProfileProvisioningComplete")
         
-        // Log intent details
+        logDetailed("I", TAG, "🎉 ==================== DEVICE OWNER PROVISIONING COMPLETED ====================")
+        logDetailed("I", TAG, "✅ CRITICAL: Device Owner provisioning completed - Work profile should be ready!")
+        logDetailed("I", TAG, "⏰ Raw timestamp: ${System.currentTimeMillis()}")
+        logDetailed("I", TAG, "📱 Context: ${context.javaClass.simpleName}")
+        logDetailed("I", TAG, "💬 Intent action: ${intent.action}")
+        
+        // CRITICAL: Log ALL intent details - this contains work profile setup information
         val extras = intent.extras
         if (extras != null) {
-            Log.i(TAG, "📦 Provisioning completion extras (${extras.size()} items):")
+            logDetailed("I", TAG, "📦 CRITICAL: Provisioning completion extras (${extras.size()} items):")
             for (key in extras.keySet()) {
                 try {
                     val value = extras.get(key)
-                    Log.i(TAG, "   🔑 $key = $value (${value?.javaClass?.simpleName})")
+                    when (value) {
+                        is String -> logDetailed("I", TAG, "   🔑 $key = \"$value\"")
+                        is Boolean -> logDetailed("I", TAG, "   🔑 $key = $value")
+                        is Int -> logDetailed("I", TAG, "   🔑 $key = $value")
+                        is PersistableBundle -> {
+                            logDetailed("I", TAG, "   🔑 $key = PersistableBundle:")
+                            try {
+                                for (bundleKey in value.keySet()) {
+                                    logDetailed("I", TAG, "      📎 $bundleKey = ${value.get(bundleKey)}")
+                                }
+                            } catch (be: Exception) {
+                                logDetailed("W", TAG, "   ⚠️ Error reading PersistableBundle: ${be.message}")
+                            }
+                        }
+                        else -> logDetailed("I", TAG, "   🔑 $key = $value (${value?.javaClass?.simpleName})")
+                    }
                 } catch (e: Exception) {
-                    Log.w(TAG, "   ⚠️ Error reading extra $key: ${e.message}")
+                    logDetailed("W", TAG, "   ⚠️ Error reading extra $key", e)
                 }
             }
         } else {
-            Log.i(TAG, "📦 No provisioning completion extras")
+            logDetailed("W", TAG, "📦 WARNING: No provisioning completion extras found")
         }
         
         try {
-            Log.i(TAG, "🔍 Starting post-provisioning setup...")
+            logDetailed("I", TAG, "🔍 Starting comprehensive post-provisioning setup...")
             
-            // Get Device Policy Manager
+            // Get all critical system services
             val devicePolicyManager = context.getSystemService(Context.DEVICE_POLICY_SERVICE) as DevicePolicyManager
+            val userManager = context.getSystemService(Context.USER_SERVICE) as UserManager
             val adminComponent = getWho(context)
             
-            Log.i(TAG, "📋 Admin component: $adminComponent")
-            Log.i(TAG, "📱 Package name: ${context.packageName}")
-            Log.i(TAG, "👤 User handle: ${android.os.Process.myUserHandle()}")
+            logDetailed("I", TAG, "📋 Admin component: $adminComponent")
+            logDetailed("I", TAG, "📱 Package name: ${context.packageName}")
+            logDetailed("I", TAG, "👤 User handle: ${android.os.Process.myUserHandle()}")
             
-            // Comprehensive Device Owner verification
+            // CRITICAL: Comprehensive verification of provisioning state
             val isDeviceOwner = devicePolicyManager.isDeviceOwnerApp(context.packageName)
             val isProfileOwner = devicePolicyManager.isProfileOwnerApp(context.packageName)
             val isAdminActive = devicePolicyManager.isAdminActive(adminComponent)
             
-            Log.i(TAG, "🔒 Device ownership status:")
-            Log.i(TAG, "   🏭 Is Device Owner: $isDeviceOwner")
-            Log.i(TAG, "   📋 Is Profile Owner: $isProfileOwner")
-            Log.i(TAG, "   🔑 Is Admin Active: $isAdminActive")
+            logDetailed("I", TAG, "🔒 CRITICAL: Device ownership verification:")
+            logDetailed("I", TAG, "   🏭 Is Device Owner: $isDeviceOwner")
+            logDetailed("I", TAG, "   📋 Is Profile Owner: $isProfileOwner")
+            logDetailed("I", TAG, "   🔑 Is Admin Active: $isAdminActive")
             
-            if (isDeviceOwner) {
-                Log.i(TAG, "✅ Successfully confirmed as Device Owner!")
+            // WORK PROFILE SPECIFIC: Verify managed profile status after provisioning
+            try {
+                val isManagedProfile = userManager.isManagedProfile
+                val isSystemUser = userManager.isSystemUser
+                logDetailed("I", TAG, "🏢 Post-provisioning work profile status:")
+                logDetailed("I", TAG, "   🏢 Is managed profile: $isManagedProfile")
+                logDetailed("I", TAG, "   🔧 Is system user: $isSystemUser")
                 
-                // Set basic policies
+                // Check if work profile setup is actually complete
+                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+                    val userSetupComplete = android.provider.Settings.Secure.getInt(
+                        context.contentResolver,
+                        "user_setup_complete",
+                        0
+                    ) == 1
+                    
+                    logDetailed("I", TAG, "   👤 User setup complete: $userSetupComplete")
+                    
+                    if (userSetupComplete) {
+                        logDetailed("I", TAG, "✅ SUCCESS: Work profile preparation completed successfully!")
+                    } else {
+                        logDetailed("W", TAG, "⚠️ WARNING: User setup not complete - work profile may still be preparing")
+                    }
+                }
+                
+            } catch (e: Exception) {
+                logDetailed("E", TAG, "❌ Error checking work profile status after provisioning", e)
+            }
+            
+            if (isDeviceOwner || isProfileOwner) {
+                logDetailed("I", TAG, "✅ Successfully confirmed device management capabilities!")
+                
+                // Set up policies and launch app
                 setupBasicPolicies(context, devicePolicyManager, adminComponent)
-                
-                // Launch main app after provisioning
                 launchMainApp(context)
                 
             } else {
-                Log.e(TAG, "❌ Failed to become Device Owner")
+                logDetailed("E", TAG, "❌ CRITICAL: Failed to become Device Owner or Profile Owner!")
+                logDetailed("E", TAG, "❌ This indicates a fundamental provisioning failure")
             }
+            
+            // Log callback sequence to understand the flow
+            logCallbackSequence()
+            
+            // Perform hang detection check during provisioning
+            detectWorkProfileHang(context)
             
         } catch (e: Exception) {
-            Log.e(TAG, "❌ CRITICAL ERROR during provisioning completion", e)
-            Log.e(TAG, "❌ Exception type: ${e.javaClass.simpleName}")
-            Log.e(TAG, "❌ Exception message: ${e.message}")
-            Log.e(TAG, "❌ Stack trace details:")
-            e.stackTrace.take(10).forEach { stackElement ->
-                Log.e(TAG, "   🔍 $stackElement")
-            }
+            logDetailed("E", TAG, "❌ CRITICAL ERROR during provisioning completion", e)
             
-            // Try to provide recovery suggestions
+            // Enhanced error analysis for work profile issues
             when (e) {
-                is SecurityException -> Log.e(TAG, "⚠️ Recovery: Check device admin permissions and component registration")
-                is IllegalStateException -> Log.e(TAG, "⚠️ Recovery: Device might not be properly provisioned")
-                else -> Log.e(TAG, "⚠️ Recovery: Check device logs and provisioning state")
+                is SecurityException -> {
+                    logDetailed("E", TAG, "⚠️ SECURITY ERROR: Device admin permissions insufficient for work profile")
+                    logDetailed("E", TAG, "⚠️ Check device_admin.xml has required policies for managed profiles")
+                }
+                is IllegalStateException -> {
+                    logDetailed("E", TAG, "⚠️ ILLEGAL STATE: Work profile might not be in correct state")
+                    logDetailed("E", TAG, "⚠️ This could indicate provisioning didn't complete properly")
+                }
+                is NullPointerException -> {
+                    logDetailed("E", TAG, "⚠️ NULL POINTER: Critical system service unavailable")
+                    logDetailed("E", TAG, "⚠️ Work profile services might not be ready yet")
+                }
+                else -> {
+                    logDetailed("E", TAG, "⚠️ UNKNOWN ERROR: ${e.javaClass.simpleName} - ${e.message}")
+                }
             }
         } finally {
-            Log.i(TAG, "🏁 Provisioning completion handler finished")
-            Log.i(TAG, "🎉 ============================================================================")
+            logDetailed("I", TAG, "🏁 onProfileProvisioningComplete finished - work profile should be functional")
+            logDetailed("I", TAG, "🎉 ============================================================================")
         }
     }
 
@@ -211,11 +648,144 @@ class CDCDeviceAdminReceiver : DeviceAdminReceiver() {
      */
     override fun onReadyForUserInitialization(context: Context, intent: Intent) {
         super.onReadyForUserInitialization(context, intent)
-        Log.i(TAG, "📦 ==================== READY FOR USER INITIALIZATION ====================")
-        Log.i(TAG, "✅ Device ready for user initialization")
-        Log.i(TAG, "⏰ Timestamp: ${System.currentTimeMillis()}")
-        Log.i(TAG, "👤 This callback indicates the device is ready for the main app to start")
-        Log.i(TAG, "📦 =========================================================================")
+        addToCallbackSequence("onReadyForUserInitialization")
+        
+        logDetailed("I", TAG, "📦 ==================== READY FOR USER INITIALIZATION ====================")
+        logDetailed("I", TAG, "✅ CRITICAL: Device ready for user initialization - Work profile preparation SHOULD be complete!")
+        logDetailed("I", TAG, "⏰ Raw timestamp: ${System.currentTimeMillis()}")
+        logDetailed("I", TAG, "💬 Intent action: ${intent.action}")
+        
+        try {
+            // CRITICAL: This callback should indicate work profile is ready
+            val devicePolicyManager = context.getSystemService(Context.DEVICE_POLICY_SERVICE) as DevicePolicyManager
+            val userManager = context.getSystemService(Context.USER_SERVICE) as UserManager
+            
+            // Verify work profile is actually ready
+            logDetailed("I", TAG, "🔍 Verifying work profile readiness...")
+            
+            val isSystemUser = userManager.isSystemUser
+            val isUserUnlocked = userManager.isUserUnlocked
+            val isManagedProfile = userManager.isManagedProfile
+            
+            logDetailed("I", TAG, "🏢 Work profile readiness check:")
+            logDetailed("I", TAG, "   🔧 System user: $isSystemUser")
+            logDetailed("I", TAG, "   🔓 User unlocked: $isUserUnlocked")
+            logDetailed("I", TAG, "   🏢 Managed profile: $isManagedProfile")
+            
+            // Check if this resolves the "Preparing for work profile configuration" hang
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+                try {
+                    val userSetupComplete = android.provider.Settings.Secure.getInt(
+                        context.contentResolver,
+                        "user_setup_complete",
+                        0
+                    ) == 1
+                    
+                    logDetailed("I", TAG, "   👤 User setup complete: $userSetupComplete")
+                    
+                    if (userSetupComplete) {
+                        logDetailed("I", TAG, "✅ BREAKTHROUGH: User setup completed - work profile preparation phase finished!")
+                        logDetailed("I", TAG, "✅ The hang in 'Preparing for work profile configuration' should be resolved")
+                    } else {
+                        logDetailed("W", TAG, "⚠️ CONCERN: User setup not complete despite onReadyForUserInitialization")
+                        logDetailed("W", TAG, "⚠️ Work profile might still be in preparation phase")
+                    }
+                } catch (e: Exception) {
+                    logDetailed("E", TAG, "❌ Could not verify user setup completion", e)
+                }
+            }
+            
+            // Log detailed device state for troubleshooting
+            val adminComponent = getWho(context)
+            val isAdminActive = devicePolicyManager.isAdminActive(adminComponent)
+            val isDeviceOwner = devicePolicyManager.isDeviceOwnerApp(context.packageName)
+            val isProfileOwner = devicePolicyManager.isProfileOwnerApp(context.packageName)
+            
+            logDetailed("I", TAG, "🔒 Final device state verification:")
+            logDetailed("I", TAG, "   🔑 Admin active: $isAdminActive")
+            logDetailed("I", TAG, "   🏭 Device owner: $isDeviceOwner")
+            logDetailed("I", TAG, "   📋 Profile owner: $isProfileOwner")
+            
+            // If we reach this point, work profile should be ready
+            if (isAdminActive && (isDeviceOwner || isProfileOwner)) {
+                logDetailed("I", TAG, "🎆 SUCCESS: All conditions met - work profile ready for main app!")
+                
+                // Signal that we're ready to proceed
+                try {
+                    // Optionally trigger app launch if not done already
+                    context.sendBroadcast(Intent("com.cdccreditsmart.WORK_PROFILE_READY"))
+                    logDetailed("I", TAG, "✅ Sent work profile ready broadcast")
+                } catch (e: Exception) {
+                    logDetailed("W", TAG, "⚠️ Could not send ready broadcast (non-critical)", e)
+                }
+            } else {
+                logDetailed("E", TAG, "❌ PROBLEM: Device not properly configured despite user initialization ready")
+            }
+            
+            // Log full callback sequence for analysis
+            logCallbackSequence()
+            
+            // Final verification - no hang detection needed here as this is completion
+            if (isProvisioningInProgress) {
+                logDetailed("I", DEBUG_TAG, "✅ FINAL SUCCESS: Work profile preparation completed without hanging!")
+                isProvisioningInProgress = false
+            }
+            
+        } catch (e: Exception) {
+            logDetailed("E", TAG, "❌ Error during user initialization readiness check", e)
+        } finally {
+            // CRITICAL: Signal success to active timeout monitoring system
+            // This stops the active timeout monitoring that was started by ProvisioningActivity
+            signalSuccessToActiveMonitoring(context, "onReadyForUserInitialization")
+            
+            logDetailed("I", TAG, "🏁 onReadyForUserInitialization completed")
+            logDetailed("I", TAG, "👤 If work profile was hanging, it should now proceed to main app")
+            logDetailed("I", TAG, "📦 =========================================================================")
+        }
+    }
+
+    /**
+     * Log available device capabilities for work profile debugging
+     */
+    private fun logDeviceCapabilities(dpm: DevicePolicyManager, admin: android.content.ComponentName) {
+        try {
+            logDetailed("I", TAG, "🔍 DEVICE CAPABILITIES ANALYSIS (Critical for work profile):")
+            
+            // Check what permissions/policies are available
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+                try {
+                    val permissionGrantState = dpm.getPermissionGrantState(
+                        admin, 
+                        "com.cdccreditsmart.app", 
+                        android.Manifest.permission.CAMERA
+                    )
+                    logDetailed("I", TAG, "   📷 Camera permission grant state: $permissionGrantState")
+                } catch (e: Exception) {
+                    logDetailed("W", TAG, "   📷 Could not check camera permission state", e)
+                }
+            }
+            
+            // Check lock task capabilities (important for kiosk mode)
+            try {
+                val lockTaskPackages = dpm.getLockTaskPackages(admin)
+                logDetailed("I", TAG, "   🔒 Lock task packages: ${lockTaskPackages.contentToString()}")
+            } catch (e: Exception) {
+                logDetailed("W", TAG, "   🔒 Could not check lock task packages", e)
+            }
+            
+            // Check if device encryption is required
+            try {
+                val storageEncryption = dpm.getStorageEncryption(admin)
+                logDetailed("I", TAG, "   💾 Storage encryption status: $storageEncryption")
+            } catch (e: Exception) {
+                logDetailed("W", TAG, "   💾 Could not check storage encryption", e)
+            }
+            
+            logDetailed("I", TAG, "✅ Device capabilities analysis completed")
+            
+        } catch (e: Exception) {
+            logDetailed("E", TAG, "❌ Error during device capabilities analysis", e)
+        }
     }
 
     /**
@@ -223,69 +793,142 @@ class CDCDeviceAdminReceiver : DeviceAdminReceiver() {
      */
     private fun setupBasicPolicies(context: Context, dpm: DevicePolicyManager, admin: android.content.ComponentName) {
         try {
-            Log.i(TAG, "Setting up basic Device Owner policies...")
+            logDetailed("I", TAG, "🔧 Setting up basic Device Owner policies with defensive error handling...")
             
-            // Allow CDC Credit Smart app to be uninstalled by Device Owner
+            // DEFENSIVE: Allow CDC Credit Smart app to be uninstalled by Device Owner
             try {
                 dpm.setUninstallBlocked(admin, context.packageName, false)
-                Log.i(TAG, "✅ Uninstall policy configured")
+                logDetailed("I", TAG, "✅ Uninstall policy configured successfully")
+            } catch (e: SecurityException) {
+                logDetailed("E", TAG, "❌ Security error setting uninstall policy - insufficient permissions", e)
+            } catch (e: IllegalArgumentException) {
+                logDetailed("E", TAG, "❌ Invalid argument for uninstall policy", e)
             } catch (e: Exception) {
-                Log.w(TAG, "Failed to set uninstall policy (non-critical)", e)
+                logDetailed("W", TAG, "Failed to set uninstall policy (non-critical)", e)
             }
             
-            // Enable system apps that might be disabled (defensive approach)
+            // DEFENSIVE: Enable critical system apps for work profile functionality
             val systemAppsToEnable = listOf(
                 "com.android.settings",
-                "com.android.systemui"
+                "com.android.systemui",
+                "com.android.managedprovisioning"
             )
             
             for (packageName in systemAppsToEnable) {
                 try {
                     if (isAppInstalled(context, packageName)) {
                         dpm.enableSystemApp(admin, packageName)
-                        Log.i(TAG, "✅ Enabled system app: $packageName")
+                        logDetailed("I", TAG, "✅ Enabled system app: $packageName")
                     } else {
-                        Log.i(TAG, "System app not found (skipping): $packageName")
+                        logDetailed("I", TAG, "System app not found (skipping): $packageName")
                     }
+                } catch (e: SecurityException) {
+                    logDetailed("E", TAG, "❌ Security error enabling $packageName - check admin permissions", e)
+                } catch (e: IllegalArgumentException) {
+                    logDetailed("E", TAG, "❌ Invalid package name: $packageName", e)
                 } catch (e: Exception) {
-                    Log.w(TAG, "Failed to enable system app $packageName (non-critical)", e)
+                    logDetailed("W", TAG, "Failed to enable system app $packageName (non-critical)", e)
                 }
             }
             
-            Log.i(TAG, "✅ Basic policies setup completed")
+            // DEFENSIVE: Set additional work profile policies if possible
+            try {
+                // Try to set basic security policies that help with work profile stability
+                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+                    // These calls help establish proper work profile environment
+                    logDetailed("I", TAG, "🔒 Attempting to configure work profile security policies...")
+                    
+                    // Note: Many work profile policies can only be set via DevicePolicyManager API
+                    // after the profile is fully established, not during preparation phase
+                }
+            } catch (e: Exception) {
+                logDetailed("W", TAG, "Could not set additional work profile policies (may be normal during preparation)", e)
+            }
+            
+            logDetailed("I", TAG, "✅ Basic policies setup completed successfully")
             
         } catch (e: Exception) {
-            Log.e(TAG, "❌ Error setting up policies", e)
+            logDetailed("E", TAG, "❌ CRITICAL ERROR during policy setup", e)
+            
+            // Enhanced error analysis
+            when (e) {
+                is SecurityException -> {
+                    logDetailed("E", TAG, "⚠️ Security exception - check device admin permissions and device_admin.xml")
+                }
+                is IllegalStateException -> {
+                    logDetailed("E", TAG, "⚠️ Illegal state - device might not be ready for policy setup")
+                }
+                is NullPointerException -> {
+                    logDetailed("E", TAG, "⚠️ Null pointer - critical service unavailable")
+                }
+                else -> {
+                    logDetailed("E", TAG, "⚠️ Unknown error during policy setup: ${e.javaClass.simpleName}")
+                }
+            }
         }
     }
     
     /**
-     * Check if an app is installed on the system
+     * Check if an app is installed on the system with defensive error handling
      */
     private fun isAppInstalled(context: Context, packageName: String): Boolean {
         return try {
             context.packageManager.getPackageInfo(packageName, 0)
+            logDetailed("D", TAG, "✅ App found: $packageName")
             true
+        } catch (e: PackageManager.NameNotFoundException) {
+            logDetailed("D", TAG, "❌ App not found: $packageName")
+            false
+        } catch (e: SecurityException) {
+            logDetailed("W", TAG, "Security error checking app $packageName", e)
+            false
         } catch (e: Exception) {
+            logDetailed("W", TAG, "Error checking app installation for $packageName", e)
             false
         }
     }
 
     /**
-     * Launch main app after successful provisioning
+     * Launch main app after successful provisioning with enhanced error handling
      */
     private fun launchMainApp(context: Context) {
         try {
+            logDetailed("I", TAG, "🚀 Attempting to launch main app after provisioning completion...")
+            
             val launchIntent = context.packageManager.getLaunchIntentForPackage(context.packageName)
             if (launchIntent != null) {
                 launchIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                
+                logDetailed("I", TAG, "Launch intent details:")
+                logDetailed("I", TAG, "   🎯 Action: ${launchIntent.action}")
+                logDetailed("I", TAG, "   📦 Package: ${launchIntent.`package`}")
+                logDetailed("I", TAG, "   📋 Component: ${launchIntent.component}")
+                
                 context.startActivity(launchIntent)
-                Log.i(TAG, "✅ Main app launched")
+                logDetailed("I", TAG, "✅ Main app launched successfully")
+                
             } else {
-                Log.e(TAG, "❌ Could not find launch intent for main app")
+                logDetailed("E", TAG, "❌ CRITICAL: Could not find launch intent for main app")
+                logDetailed("E", TAG, "❌ Package name: ${context.packageName}")
+                
+                // Try alternative launch method
+                try {
+                    val alternativeIntent = Intent()
+                    alternativeIntent.setClassName(context.packageName, "${context.packageName}.MainActivity")
+                    alternativeIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                    context.startActivity(alternativeIntent)
+                    logDetailed("I", TAG, "✅ Main app launched using alternative method")
+                } catch (ae: Exception) {
+                    logDetailed("E", TAG, "❌ Alternative launch method also failed", ae)
+                }
             }
+            
+        } catch (e: SecurityException) {
+            logDetailed("E", TAG, "❌ Security error launching main app - check permissions", e)
+        } catch (e: android.content.ActivityNotFoundException) {
+            logDetailed("E", TAG, "❌ Activity not found - main activity might not be properly registered", e)
         } catch (e: Exception) {
-            Log.e(TAG, "❌ Error launching main app", e)
+            logDetailed("E", TAG, "❌ Unknown error launching main app", e)
         }
     }
 
