@@ -34,8 +34,15 @@ class ProvisioningDebugReceiver : BroadcastReceiver() {
         if (extras != null) {
             Log.i(TAG, "📦 Intent extras:")
             for (key in extras.keySet()) {
-                val value = extras.get(key)
-                Log.i(TAG, "   🔑 $key = $value (${value?.javaClass?.simpleName})")
+                val value = when {
+                    extras.containsKey(key) -> when {
+                        extras.getString(key) != null -> extras.getString(key)
+                        extras.getStringArray(key) != null -> extras.getStringArray(key)?.contentToString()
+                        else -> "Unknown type"
+                    }
+                    else -> null
+                }
+                Log.i(TAG, "   🔑 $key = $value")
             }
         } else {
             Log.i(TAG, "📦 No intent extras")
