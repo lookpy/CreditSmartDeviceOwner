@@ -1,1 +1,2 @@
 com.cdccreditsmart.device
+xml device_admin
