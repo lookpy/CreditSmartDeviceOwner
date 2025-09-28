@@ -1,0 +1,2762 @@
+# Network module consumer ProGuard rules
+# Add any consumer-specific ProGuard rules here
+
+# Keep all network DTOs for JSON serialization
+-keep class com.cdccreditsmart.network.api.** { *; }
+-keep class com.cdccreditsmart.network.dto.** { *; }
+
+# Keep Resource class
+-keep class com.cdccreditsmart.network.error.Resource { *; }
+
+# Keep exception classes
+-keep class com.cdccreditsmart.network.error.** extends java.lang.Exception { *; }
+
+# ===== CRITICAL: WebSocket Command Classes for Device Module =====
+# These classes MUST be preserved for dependent modules (device module)
+-keep class com.cdccreditsmart.network.websocket.** { *; }
+
+# Specific WebSocket command classes that device module requires
+-keep public class com.cdccreditsmart.network.websocket.DeviceCommand { *; }
+-keep public class com.cdccreditsmart.network.websocket.DeviceCommandWrapper { *; }
+-keep public class com.cdccreditsmart.network.websocket.CommandData { *; }
+-keep public class com.cdccreditsmart.network.websocket.BlockCommand { *; }
+-keep public class com.cdccreditsmart.network.websocket.UnblockCommand { *; }
+-keep public class com.cdccreditsmart.network.websocket.UninstallCommand { *; }
+-keep public class com.cdccreditsmart.network.websocket.ApkUpdateCommand { *; }
+-keep public class com.cdccreditsmart.network.websocket.ApkUpdateData { *; }
+-keep public class com.cdccreditsmart.network.websocket.CommandAcknowledgment { *; }
+
+# Keep WebSocket connection and error classes
+-keep public class com.cdccreditsmart.network.websocket.WebSocketConnectionStatus { *; }
+-keep public class com.cdccreditsmart.network.websocket.WebSocketError { *; }
+
+# Keep WebSocket service classes
+-keep public class com.cdccreditsmart.network.websocket.DeviceCommandWebSocketService { *; }
+-keep public class com.cdccreditsmart.network.websocket.FlowStatusWebSocketService { *; }
+
+# Keep sealed class members and inheritance
+-keepclassmembers class com.cdccreditsmart.network.websocket.DeviceCommand {
+    public *;
+    protected *;
+}
+
+# Keep constructors and public members for data classes
+-keepclassmembers class com.cdccreditsmart.network.websocket.CommandData {
+    public <init>(...);
+    public *;
+    protected *;
+}
+
+-keepclassmembers class com.cdccreditsmart.network.websocket.ApkUpdateData {
+    public <init>(...);
+    public *;
+    protected *;
+}
+
+# Keep Moshi JSON adapters for WebSocket serialization
+-keep class com.cdccreditsmart.network.websocket.**JsonAdapter { *; }
+-keep class **$*JsonAdapter {
+    <init>(...);
+    <fields>;
+}
+
+# Prevent obfuscation of WebSocket command type names
+-keepnames class com.cdccreditsmart.network.websocket.DeviceCommand
+-keepnames class com.cdccreditsmart.network.websocket.BlockCommand
+-keepnames class com.cdccreditsmart.network.websocket.UnblockCommand
+-keepnames class com.cdccreditsmart.network.websocket.UninstallCommand
+-keepnames class com.cdccreditsmart.network.websocket.ApkUpdateCommand
+-keepnames class com.cdccreditsmart.network.websocket.CommandData
+-keepnames class com.cdccreditsmart.network.websocket.ApkUpdateData
+-keepnames class com.cdccreditsmart.network.websocket.DeviceCommandWrapper
+-keepnames class com.cdccreditsmart.network.websocket.CommandAcknowledgment
+
+# Keep Kotlin data class components for dependent modules
+-keepclassmembers class com.cdccreditsmart.network.websocket.** {
+    public final *;
+    public static final *;
+    public static final *** Companion;
+}
+
+# Ensure public access for dependent modules
+-keep public class com.cdccreditsmart.network.websocket.** { public *; }
+-if class com.cdccreditsmart.network.api.Address
+-keepnames class com.cdccreditsmart.network.api.Address
+-if class com.cdccreditsmart.network.api.Address
+-keep class com.cdccreditsmart.network.api.AddressJsonAdapter {
+    public <init>(com.squareup.moshi.Moshi);
+}
+
+-if class com.cdccreditsmart.network.api.ApkAuthRequest
+-keepnames class com.cdccreditsmart.network.api.ApkAuthRequest
+-if class com.cdccreditsmart.network.api.ApkAuthRequest
+-keep class com.cdccreditsmart.network.api.ApkAuthRequestJsonAdapter {
+    public <init>(com.squareup.moshi.Moshi);
+}
+-if class com.cdccreditsmart.network.api.ApkAuthRequest
+-keepnames class kotlin.jvm.internal.DefaultConstructorMarker
+-if class com.cdccreditsmart.network.api.ApkAuthRequest
+-keepclassmembers class com.cdccreditsmart.network.api.ApkAuthRequest {
+    public synthetic <init>(java.lang.String,int,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,kotlin.jvm.internal.DefaultConstructorMarker);
+}
+
+-if class com.cdccreditsmart.network.api.ApkAuthResponse
+-keepnames class com.cdccreditsmart.network.api.ApkAuthResponse
+-if class com.cdccreditsmart.network.api.ApkAuthResponse
+-keep class com.cdccreditsmart.network.api.ApkAuthResponseJsonAdapter {
+    public <init>(com.squareup.moshi.Moshi);
+}
+-if class com.cdccreditsmart.network.api.ApkAuthResponse
+-keepnames class kotlin.jvm.internal.DefaultConstructorMarker
+-if class com.cdccreditsmart.network.api.ApkAuthResponse
+-keepclassmembers class com.cdccreditsmart.network.api.ApkAuthResponse {
+    public synthetic <init>(boolean,java.lang.String,java.lang.String,java.lang.Long,java.lang.String,java.util.List,long,java.util.List,int,kotlin.jvm.internal.DefaultConstructorMarker);
+}
+
+-if class com.cdccreditsmart.network.api.AuthResponse
+-keepnames class com.cdccreditsmart.network.api.AuthResponse
+-if class com.cdccreditsmart.network.api.AuthResponse
+-keep class com.cdccreditsmart.network.api.AuthResponseJsonAdapter {
+    public <init>(com.squareup.moshi.Moshi);
+}
+-if class com.cdccreditsmart.network.api.AuthResponse
+-keepnames class kotlin.jvm.internal.DefaultConstructorMarker
+-if class com.cdccreditsmart.network.api.AuthResponse
+-keepclassmembers class com.cdccreditsmart.network.api.AuthResponse {
+    public synthetic <init>(java.lang.String,java.lang.String,java.lang.String,long,java.lang.String,java.lang.String,java.lang.String,com.cdccreditsmart.network.api.UserInfo,int,kotlin.jvm.internal.DefaultConstructorMarker);
+}
+
+-if class com.cdccreditsmart.network.api.AuthScope
+-keepnames class com.cdccreditsmart.network.api.AuthScope
+-if class com.cdccreditsmart.network.api.AuthScope
+-keep class com.cdccreditsmart.network.api.AuthScopeJsonAdapter {
+    public <init>(com.squareup.moshi.Moshi);
+}
+-if class com.cdccreditsmart.network.api.AuthScope
+-keepnames class kotlin.jvm.internal.DefaultConstructorMarker
+-if class com.cdccreditsmart.network.api.AuthScope
+-keepclassmembers class com.cdccreditsmart.network.api.AuthScope {
+    public synthetic <init>(java.lang.String,java.lang.String,java.util.List,boolean,java.lang.Long,int,kotlin.jvm.internal.DefaultConstructorMarker);
+}
+
+-if class com.cdccreditsmart.network.api.AuthScopesResponse
+-keepnames class com.cdccreditsmart.network.api.AuthScopesResponse
+-if class com.cdccreditsmart.network.api.AuthScopesResponse
+-keep class com.cdccreditsmart.network.api.AuthScopesResponseJsonAdapter {
+    public <init>(com.squareup.moshi.Moshi);
+}
+
+-if class com.cdccreditsmart.network.api.AutoSyncRequest
+-keepnames class com.cdccreditsmart.network.api.AutoSyncRequest
+-if class com.cdccreditsmart.network.api.AutoSyncRequest
+-keep class com.cdccreditsmart.network.api.AutoSyncRequestJsonAdapter {
+    public <init>(com.squareup.moshi.Moshi);
+}
+-if class com.cdccreditsmart.network.api.AutoSyncRequest
+-keepnames class kotlin.jvm.internal.DefaultConstructorMarker
+-if class com.cdccreditsmart.network.api.AutoSyncRequest
+-keepclassmembers class com.cdccreditsmart.network.api.AutoSyncRequest {
+    public synthetic <init>(java.lang.String,java.lang.String,int,kotlin.jvm.internal.DefaultConstructorMarker);
+}
+
+-if class com.cdccreditsmart.network.api.AutoSyncResponse
+-keepnames class com.cdccreditsmart.network.api.AutoSyncResponse
+-if class com.cdccreditsmart.network.api.AutoSyncResponse
+-keep class com.cdccreditsmart.network.api.AutoSyncResponseJsonAdapter {
+    public <init>(com.squareup.moshi.Moshi);
+}
+-if class com.cdccreditsmart.network.api.AutoSyncResponse
+-keepnames class kotlin.jvm.internal.DefaultConstructorMarker
+-if class com.cdccreditsmart.network.api.AutoSyncResponse
+-keepclassmembers class com.cdccreditsmart.network.api.AutoSyncResponse {
+    public synthetic <init>(boolean,boolean,java.lang.String,java.lang.String,java.lang.String,java.lang.String,long,java.lang.Long,int,kotlin.jvm.internal.DefaultConstructorMarker);
+}
+
+-if class com.cdccreditsmart.network.api.BiometryConfiguration
+-keepnames class com.cdccreditsmart.network.api.BiometryConfiguration
+-if class com.cdccreditsmart.network.api.BiometryConfiguration
+-keep class com.cdccreditsmart.network.api.BiometryConfigurationJsonAdapter {
+    public <init>(com.squareup.moshi.Moshi);
+}
+
+-if class com.cdccreditsmart.network.api.BiometryHistoryResponse
+-keepnames class com.cdccreditsmart.network.api.BiometryHistoryResponse
+-if class com.cdccreditsmart.network.api.BiometryHistoryResponse
+-keep class com.cdccreditsmart.network.api.BiometryHistoryResponseJsonAdapter {
+    public <init>(com.squareup.moshi.Moshi);
+}
+
+-if class com.cdccreditsmart.network.api.BiometryHistorySession
+-keepnames class com.cdccreditsmart.network.api.BiometryHistorySession
+-if class com.cdccreditsmart.network.api.BiometryHistorySession
+-keep class com.cdccreditsmart.network.api.BiometryHistorySessionJsonAdapter {
+    public <init>(com.squareup.moshi.Moshi);
+}
+
+-if class com.cdccreditsmart.network.api.BiometryMetadata
+-keepnames class com.cdccreditsmart.network.api.BiometryMetadata
+-if class com.cdccreditsmart.network.api.BiometryMetadata
+-keep class com.cdccreditsmart.network.api.BiometryMetadataJsonAdapter {
+    public <init>(com.squareup.moshi.Moshi);
+}
+-if class com.cdccreditsmart.network.api.BiometryMetadata
+-keepnames class kotlin.jvm.internal.DefaultConstructorMarker
+-if class com.cdccreditsmart.network.api.BiometryMetadata
+-keepclassmembers class com.cdccreditsmart.network.api.BiometryMetadata {
+    public synthetic <init>(com.cdccreditsmart.network.api.CameraInfo,com.cdccreditsmart.network.api.EnvironmentInfo,long,int,int,kotlin.jvm.internal.DefaultConstructorMarker);
+}
+
+-if class com.cdccreditsmart.network.api.BiometrySessionResponse
+-keepnames class com.cdccreditsmart.network.api.BiometrySessionResponse
+-if class com.cdccreditsmart.network.api.BiometrySessionResponse
+-keep class com.cdccreditsmart.network.api.BiometrySessionResponseJsonAdapter {
+    public <init>(com.squareup.moshi.Moshi);
+}
+
+-if class com.cdccreditsmart.network.api.BiometrySessionStatusResponse
+-keepnames class com.cdccreditsmart.network.api.BiometrySessionStatusResponse
+-if class com.cdccreditsmart.network.api.BiometrySessionStatusResponse
+-keep class com.cdccreditsmart.network.api.BiometrySessionStatusResponseJsonAdapter {
+    public <init>(com.squareup.moshi.Moshi);
+}
+
+-if class com.cdccreditsmart.network.api.BiometryVerificationResponse
+-keepnames class com.cdccreditsmart.network.api.BiometryVerificationResponse
+-if class com.cdccreditsmart.network.api.BiometryVerificationResponse
+-keep class com.cdccreditsmart.network.api.BiometryVerificationResponseJsonAdapter {
+    public <init>(com.squareup.moshi.Moshi);
+}
+-if class com.cdccreditsmart.network.api.BiometryVerificationResponse
+-keepnames class kotlin.jvm.internal.DefaultConstructorMarker
+-if class com.cdccreditsmart.network.api.BiometryVerificationResponse
+-keepclassmembers class com.cdccreditsmart.network.api.BiometryVerificationResponse {
+    public synthetic <init>(java.lang.String,java.lang.String,double,java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,kotlin.jvm.internal.DefaultConstructorMarker);
+}
+
+-if class com.cdccreditsmart.network.api.BlockingPolicy
+-keepnames class com.cdccreditsmart.network.api.BlockingPolicy
+-if class com.cdccreditsmart.network.api.BlockingPolicy
+-keep class com.cdccreditsmart.network.api.BlockingPolicyJsonAdapter {
+    public <init>(com.squareup.moshi.Moshi);
+}
+
+-if class com.cdccreditsmart.network.api.BoletoPaymentResponse
+-keepnames class com.cdccreditsmart.network.api.BoletoPaymentResponse
+-if class com.cdccreditsmart.network.api.BoletoPaymentResponse
+-keep class com.cdccreditsmart.network.api.BoletoPaymentResponseJsonAdapter {
+    public <init>(com.squareup.moshi.Moshi);
+}
+
+-if class com.cdccreditsmart.network.api.CameraInfo
+-keepnames class com.cdccreditsmart.network.api.CameraInfo
+-if class com.cdccreditsmart.network.api.CameraInfo
+-keep class com.cdccreditsmart.network.api.CameraInfoJsonAdapter {
+    public <init>(com.squareup.moshi.Moshi);
+}
+
+-if class com.cdccreditsmart.network.api.CancelPaymentRequest
+-keepnames class com.cdccreditsmart.network.api.CancelPaymentRequest
+-if class com.cdccreditsmart.network.api.CancelPaymentRequest
+-keep class com.cdccreditsmart.network.api.CancelPaymentRequestJsonAdapter {
+    public <init>(com.squareup.moshi.Moshi);
+}
+-if class com.cdccreditsmart.network.api.CancelPaymentRequest
+-keepnames class kotlin.jvm.internal.DefaultConstructorMarker
+-if class com.cdccreditsmart.network.api.CancelPaymentRequest
+-keepclassmembers class com.cdccreditsmart.network.api.CancelPaymentRequest {
+    public synthetic <init>(java.lang.String,java.lang.String,int,kotlin.jvm.internal.DefaultConstructorMarker);
+}
+
+-if class com.cdccreditsmart.network.api.CdcApkAuthRequest
+-keepnames class com.cdccreditsmart.network.api.CdcApkAuthRequest
+-if class com.cdccreditsmart.network.api.CdcApkAuthRequest
+-keep class com.cdccreditsmart.network.api.CdcApkAuthRequestJsonAdapter {
+    public <init>(com.squareup.moshi.Moshi);
+}
+-if class com.cdccreditsmart.network.api.CdcApkAuthRequest
+-keepnames class kotlin.jvm.internal.DefaultConstructorMarker
+-if class com.cdccreditsmart.network.api.CdcApkAuthRequest
+-keepclassmembers class com.cdccreditsmart.network.api.CdcApkAuthRequest {
+    public synthetic <init>(java.lang.String,int,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,kotlin.jvm.internal.DefaultConstructorMarker);
+}
+
+-if class com.cdccreditsmart.network.api.CdcApkAuthResponse
+-keepnames class com.cdccreditsmart.network.api.CdcApkAuthResponse
+-if class com.cdccreditsmart.network.api.CdcApkAuthResponse
+-keep class com.cdccreditsmart.network.api.CdcApkAuthResponseJsonAdapter {
+    public <init>(com.squareup.moshi.Moshi);
+}
+-if class com.cdccreditsmart.network.api.CdcApkAuthResponse
+-keepnames class kotlin.jvm.internal.DefaultConstructorMarker
+-if class com.cdccreditsmart.network.api.CdcApkAuthResponse
+-keepclassmembers class com.cdccreditsmart.network.api.CdcApkAuthResponse {
+    public synthetic <init>(boolean,java.lang.String,java.lang.String,java.lang.Long,java.lang.String,java.util.List,long,java.util.List,int,kotlin.jvm.internal.DefaultConstructorMarker);
+}
+
+-if class com.cdccreditsmart.network.api.CdcAttestationData
+-keepnames class com.cdccreditsmart.network.api.CdcAttestationData
+-if class com.cdccreditsmart.network.api.CdcAttestationData
+-keep class com.cdccreditsmart.network.api.CdcAttestationDataJsonAdapter {
+    public <init>(com.squareup.moshi.Moshi);
+}
+-if class com.cdccreditsmart.network.api.CdcAttestationData
+-keepnames class kotlin.jvm.internal.DefaultConstructorMarker
+-if class com.cdccreditsmart.network.api.CdcAttestationData
+-keepclassmembers class com.cdccreditsmart.network.api.CdcAttestationData {
+    public synthetic <init>(java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,kotlin.jvm.internal.DefaultConstructorMarker);
+}
+
+-if class com.cdccreditsmart.network.api.CdcAttestationDataDetail
+-keepnames class com.cdccreditsmart.network.api.CdcAttestationDataDetail
+-if class com.cdccreditsmart.network.api.CdcAttestationDataDetail
+-keep class com.cdccreditsmart.network.api.CdcAttestationDataDetailJsonAdapter {
+    public <init>(com.squareup.moshi.Moshi);
+}
+-if class com.cdccreditsmart.network.api.CdcAttestationDataDetail
+-keepnames class kotlin.jvm.internal.DefaultConstructorMarker
+-if class com.cdccreditsmart.network.api.CdcAttestationDataDetail
+-keepclassmembers class com.cdccreditsmart.network.api.CdcAttestationDataDetail {
+    public synthetic <init>(java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,kotlin.jvm.internal.DefaultConstructorMarker);
+}
+
+-if class com.cdccreditsmart.network.api.CdcBlockingPolicy
+-keepnames class com.cdccreditsmart.network.api.CdcBlockingPolicy
+-if class com.cdccreditsmart.network.api.CdcBlockingPolicy
+-keep class com.cdccreditsmart.network.api.CdcBlockingPolicyJsonAdapter {
+    public <init>(com.squareup.moshi.Moshi);
+}
+-if class com.cdccreditsmart.network.api.CdcBlockingPolicy
+-keepnames class kotlin.jvm.internal.DefaultConstructorMarker
+-if class com.cdccreditsmart.network.api.CdcBlockingPolicy
+-keepclassmembers class com.cdccreditsmart.network.api.CdcBlockingPolicy {
+    public synthetic <init>(java.lang.String,java.lang.String,java.util.List,java.util.List,java.lang.Long,int,kotlin.jvm.internal.DefaultConstructorMarker);
+}
+
+-if class com.cdccreditsmart.network.api.CdcBlockingPolicyDetail
+-keepnames class com.cdccreditsmart.network.api.CdcBlockingPolicyDetail
+-if class com.cdccreditsmart.network.api.CdcBlockingPolicyDetail
+-keep class com.cdccreditsmart.network.api.CdcBlockingPolicyDetailJsonAdapter {
+    public <init>(com.squareup.moshi.Moshi);
+}
+-if class com.cdccreditsmart.network.api.CdcBlockingPolicyDetail
+-keepnames class kotlin.jvm.internal.DefaultConstructorMarker
+-if class com.cdccreditsmart.network.api.CdcBlockingPolicyDetail
+-keepclassmembers class com.cdccreditsmart.network.api.CdcBlockingPolicyDetail {
+    public synthetic <init>(java.lang.String,java.lang.String,java.util.List,java.util.List,java.lang.Long,int,kotlin.jvm.internal.DefaultConstructorMarker);
+}
+
+-if class com.cdccreditsmart.network.api.CdcBoletoPaymentRequest
+-keepnames class com.cdccreditsmart.network.api.CdcBoletoPaymentRequest
+-if class com.cdccreditsmart.network.api.CdcBoletoPaymentRequest
+-keep class com.cdccreditsmart.network.api.CdcBoletoPaymentRequestJsonAdapter {
+    public <init>(com.squareup.moshi.Moshi);
+}
+-if class com.cdccreditsmart.network.api.CdcBoletoPaymentRequest
+-keepnames class kotlin.jvm.internal.DefaultConstructorMarker
+-if class com.cdccreditsmart.network.api.CdcBoletoPaymentRequest
+-keepclassmembers class com.cdccreditsmart.network.api.CdcBoletoPaymentRequest {
+    public synthetic <init>(java.lang.Double,java.lang.String,java.lang.String,int,kotlin.jvm.internal.DefaultConstructorMarker);
+}
+
+-if class com.cdccreditsmart.network.api.CdcBoletoPaymentResponse
+-keepnames class com.cdccreditsmart.network.api.CdcBoletoPaymentResponse
+-if class com.cdccreditsmart.network.api.CdcBoletoPaymentResponse
+-keep class com.cdccreditsmart.network.api.CdcBoletoPaymentResponseJsonAdapter {
+    public <init>(com.squareup.moshi.Moshi);
+}
+-if class com.cdccreditsmart.network.api.CdcBoletoPaymentResponse
+-keepnames class kotlin.jvm.internal.DefaultConstructorMarker
+-if class com.cdccreditsmart.network.api.CdcBoletoPaymentResponse
+-keepclassmembers class com.cdccreditsmart.network.api.CdcBoletoPaymentResponse {
+    public synthetic <init>(boolean,java.lang.String,java.lang.String,java.lang.String,java.lang.String,double,java.lang.String,java.lang.String,int,kotlin.jvm.internal.DefaultConstructorMarker);
+}
+
+-if class com.cdccreditsmart.network.api.CdcCommandInfo
+-keepnames class com.cdccreditsmart.network.api.CdcCommandInfo
+-if class com.cdccreditsmart.network.api.CdcCommandInfo
+-keep class com.cdccreditsmart.network.api.CdcCommandInfoJsonAdapter {
+    public <init>(com.squareup.moshi.Moshi);
+}
+-if class com.cdccreditsmart.network.api.CdcCommandInfo
+-keepnames class kotlin.jvm.internal.DefaultConstructorMarker
+-if class com.cdccreditsmart.network.api.CdcCommandInfo
+-keepclassmembers class com.cdccreditsmart.network.api.CdcCommandInfo {
+    public synthetic <init>(java.lang.String,java.lang.String,java.util.Map,java.lang.String,long,java.lang.Long,java.lang.String,int,kotlin.jvm.internal.DefaultConstructorMarker);
+}
+
+-if class com.cdccreditsmart.network.api.CdcCommandResponseRequest
+-keepnames class com.cdccreditsmart.network.api.CdcCommandResponseRequest
+-if class com.cdccreditsmart.network.api.CdcCommandResponseRequest
+-keep class com.cdccreditsmart.network.api.CdcCommandResponseRequestJsonAdapter {
+    public <init>(com.squareup.moshi.Moshi);
+}
+-if class com.cdccreditsmart.network.api.CdcCommandResponseRequest
+-keepnames class kotlin.jvm.internal.DefaultConstructorMarker
+-if class com.cdccreditsmart.network.api.CdcCommandResponseRequest
+-keepclassmembers class com.cdccreditsmart.network.api.CdcCommandResponseRequest {
+    public synthetic <init>(java.lang.String,java.lang.String,java.lang.String,java.lang.String,long,int,kotlin.jvm.internal.DefaultConstructorMarker);
+}
+
+-if class com.cdccreditsmart.network.api.CdcCommandResponseResponse
+-keepnames class com.cdccreditsmart.network.api.CdcCommandResponseResponse
+-if class com.cdccreditsmart.network.api.CdcCommandResponseResponse
+-keep class com.cdccreditsmart.network.api.CdcCommandResponseResponseJsonAdapter {
+    public <init>(com.squareup.moshi.Moshi);
+}
+-if class com.cdccreditsmart.network.api.CdcCommandResponseResponse
+-keepnames class kotlin.jvm.internal.DefaultConstructorMarker
+-if class com.cdccreditsmart.network.api.CdcCommandResponseResponse
+-keepclassmembers class com.cdccreditsmart.network.api.CdcCommandResponseResponse {
+    public synthetic <init>(boolean,boolean,java.lang.String,int,kotlin.jvm.internal.DefaultConstructorMarker);
+}
+
+-if class com.cdccreditsmart.network.api.CdcCommandsResponse
+-keepnames class com.cdccreditsmart.network.api.CdcCommandsResponse
+-if class com.cdccreditsmart.network.api.CdcCommandsResponse
+-keep class com.cdccreditsmart.network.api.CdcCommandsResponseJsonAdapter {
+    public <init>(com.squareup.moshi.Moshi);
+}
+
+-if class com.cdccreditsmart.network.api.CdcContractInfo
+-keepnames class com.cdccreditsmart.network.api.CdcContractInfo
+-if class com.cdccreditsmart.network.api.CdcContractInfo
+-keep class com.cdccreditsmart.network.api.CdcContractInfoJsonAdapter {
+    public <init>(com.squareup.moshi.Moshi);
+}
+-if class com.cdccreditsmart.network.api.CdcContractInfo
+-keepnames class kotlin.jvm.internal.DefaultConstructorMarker
+-if class com.cdccreditsmart.network.api.CdcContractInfo
+-keepclassmembers class com.cdccreditsmart.network.api.CdcContractInfo {
+    public synthetic <init>(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,kotlin.jvm.internal.DefaultConstructorMarker);
+}
+
+-if class com.cdccreditsmart.network.api.CdcContractInfoDetail
+-keepnames class com.cdccreditsmart.network.api.CdcContractInfoDetail
+-if class com.cdccreditsmart.network.api.CdcContractInfoDetail
+-keep class com.cdccreditsmart.network.api.CdcContractInfoDetailJsonAdapter {
+    public <init>(com.squareup.moshi.Moshi);
+}
+-if class com.cdccreditsmart.network.api.CdcContractInfoDetail
+-keepnames class kotlin.jvm.internal.DefaultConstructorMarker
+-if class com.cdccreditsmart.network.api.CdcContractInfoDetail
+-keepclassmembers class com.cdccreditsmart.network.api.CdcContractInfoDetail {
+    public synthetic <init>(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,kotlin.jvm.internal.DefaultConstructorMarker);
+}
+
+-if class com.cdccreditsmart.network.api.CdcCustomerInfo
+-keepnames class com.cdccreditsmart.network.api.CdcCustomerInfo
+-if class com.cdccreditsmart.network.api.CdcCustomerInfo
+-keep class com.cdccreditsmart.network.api.CdcCustomerInfoJsonAdapter {
+    public <init>(com.squareup.moshi.Moshi);
+}
+-if class com.cdccreditsmart.network.api.CdcCustomerInfo
+-keepnames class kotlin.jvm.internal.DefaultConstructorMarker
+-if class com.cdccreditsmart.network.api.CdcCustomerInfo
+-keepclassmembers class com.cdccreditsmart.network.api.CdcCustomerInfo {
+    public synthetic <init>(java.lang.String,boolean,int,kotlin.jvm.internal.DefaultConstructorMarker);
+}
+
+-if class com.cdccreditsmart.network.api.CdcDecisionInfo
+-keepnames class com.cdccreditsmart.network.api.CdcDecisionInfo
+-if class com.cdccreditsmart.network.api.CdcDecisionInfo
+-keep class com.cdccreditsmart.network.api.CdcDecisionInfoJsonAdapter {
+    public <init>(com.squareup.moshi.Moshi);
+}
+-if class com.cdccreditsmart.network.api.CdcDecisionInfo
+-keepnames class kotlin.jvm.internal.DefaultConstructorMarker
+-if class com.cdccreditsmart.network.api.CdcDecisionInfo
+-keepclassmembers class com.cdccreditsmart.network.api.CdcDecisionInfo {
+    public synthetic <init>(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.List,java.lang.String,long,java.lang.Long,int,kotlin.jvm.internal.DefaultConstructorMarker);
+}
+
+-if class com.cdccreditsmart.network.api.CdcDeviceAction
+-keepnames class com.cdccreditsmart.network.api.CdcDeviceAction
+-if class com.cdccreditsmart.network.api.CdcDeviceAction
+-keep class com.cdccreditsmart.network.api.CdcDeviceActionJsonAdapter {
+    public <init>(com.squareup.moshi.Moshi);
+}
+-if class com.cdccreditsmart.network.api.CdcDeviceAction
+-keepnames class kotlin.jvm.internal.DefaultConstructorMarker
+-if class com.cdccreditsmart.network.api.CdcDeviceAction
+-keepclassmembers class com.cdccreditsmart.network.api.CdcDeviceAction {
+    public synthetic <init>(java.lang.String,java.util.Map,java.lang.String,java.lang.Long,int,kotlin.jvm.internal.DefaultConstructorMarker);
+}
+
+-if class com.cdccreditsmart.network.api.CdcDeviceActionDetail
+-keepnames class com.cdccreditsmart.network.api.CdcDeviceActionDetail
+-if class com.cdccreditsmart.network.api.CdcDeviceActionDetail
+-keep class com.cdccreditsmart.network.api.CdcDeviceActionDetailJsonAdapter {
+    public <init>(com.squareup.moshi.Moshi);
+}
+-if class com.cdccreditsmart.network.api.CdcDeviceActionDetail
+-keepnames class kotlin.jvm.internal.DefaultConstructorMarker
+-if class com.cdccreditsmart.network.api.CdcDeviceActionDetail
+-keepclassmembers class com.cdccreditsmart.network.api.CdcDeviceActionDetail {
+    public synthetic <init>(java.lang.String,java.util.Map,java.lang.String,java.lang.Long,int,kotlin.jvm.internal.DefaultConstructorMarker);
+}
+
+-if class com.cdccreditsmart.network.api.CdcDeviceConfiguration
+-keepnames class com.cdccreditsmart.network.api.CdcDeviceConfiguration
+-if class com.cdccreditsmart.network.api.CdcDeviceConfiguration
+-keep class com.cdccreditsmart.network.api.CdcDeviceConfigurationJsonAdapter {
+    public <init>(com.squareup.moshi.Moshi);
+}
+-if class com.cdccreditsmart.network.api.CdcDeviceConfiguration
+-keepnames class kotlin.jvm.internal.DefaultConstructorMarker
+-if class com.cdccreditsmart.network.api.CdcDeviceConfiguration
+-keepclassmembers class com.cdccreditsmart.network.api.CdcDeviceConfiguration {
+    public synthetic <init>(long,boolean,boolean,boolean,java.lang.Long,com.cdccreditsmart.network.api.TimeRange,int,kotlin.jvm.internal.DefaultConstructorMarker);
+}
+
+-if class com.cdccreditsmart.network.api.CdcDeviceConfigurationDetail
+-keepnames class com.cdccreditsmart.network.api.CdcDeviceConfigurationDetail
+-if class com.cdccreditsmart.network.api.CdcDeviceConfigurationDetail
+-keep class com.cdccreditsmart.network.api.CdcDeviceConfigurationDetailJsonAdapter {
+    public <init>(com.squareup.moshi.Moshi);
+}
+-if class com.cdccreditsmart.network.api.CdcDeviceConfigurationDetail
+-keepnames class kotlin.jvm.internal.DefaultConstructorMarker
+-if class com.cdccreditsmart.network.api.CdcDeviceConfigurationDetail
+-keepclassmembers class com.cdccreditsmart.network.api.CdcDeviceConfigurationDetail {
+    public synthetic <init>(long,boolean,boolean,boolean,java.lang.Long,com.cdccreditsmart.network.api.CdcTimeRange,int,kotlin.jvm.internal.DefaultConstructorMarker);
+}
+
+-if class com.cdccreditsmart.network.api.CdcDeviceInfo
+-keepnames class com.cdccreditsmart.network.api.CdcDeviceInfo
+-if class com.cdccreditsmart.network.api.CdcDeviceInfo
+-keep class com.cdccreditsmart.network.api.CdcDeviceInfoJsonAdapter {
+    public <init>(com.squareup.moshi.Moshi);
+}
+-if class com.cdccreditsmart.network.api.CdcDeviceInfo
+-keepnames class kotlin.jvm.internal.DefaultConstructorMarker
+-if class com.cdccreditsmart.network.api.CdcDeviceInfo
+-keepclassmembers class com.cdccreditsmart.network.api.CdcDeviceInfo {
+    public synthetic <init>(java.lang.String,java.lang.String,java.lang.String,int,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.Long,java.lang.Long,int,kotlin.jvm.internal.DefaultConstructorMarker);
+}
+
+-if class com.cdccreditsmart.network.api.CdcDeviceInfoDetail
+-keepnames class com.cdccreditsmart.network.api.CdcDeviceInfoDetail
+-if class com.cdccreditsmart.network.api.CdcDeviceInfoDetail
+-keep class com.cdccreditsmart.network.api.CdcDeviceInfoDetailJsonAdapter {
+    public <init>(com.squareup.moshi.Moshi);
+}
+-if class com.cdccreditsmart.network.api.CdcDeviceInfoDetail
+-keepnames class kotlin.jvm.internal.DefaultConstructorMarker
+-if class com.cdccreditsmart.network.api.CdcDeviceInfoDetail
+-keepclassmembers class com.cdccreditsmart.network.api.CdcDeviceInfoDetail {
+    public synthetic <init>(java.lang.String,java.lang.String,java.lang.String,int,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.Long,java.lang.Long,int,kotlin.jvm.internal.DefaultConstructorMarker);
+}
+
+-if class com.cdccreditsmart.network.api.CdcDeviceRegisterInfoRequest
+-keepnames class com.cdccreditsmart.network.api.CdcDeviceRegisterInfoRequest
+-if class com.cdccreditsmart.network.api.CdcDeviceRegisterInfoRequest
+-keep class com.cdccreditsmart.network.api.CdcDeviceRegisterInfoRequestJsonAdapter {
+    public <init>(com.squareup.moshi.Moshi);
+}
+-if class com.cdccreditsmart.network.api.CdcDeviceRegisterInfoRequest
+-keepnames class kotlin.jvm.internal.DefaultConstructorMarker
+-if class com.cdccreditsmart.network.api.CdcDeviceRegisterInfoRequest
+-keepclassmembers class com.cdccreditsmart.network.api.CdcDeviceRegisterInfoRequest {
+    public synthetic <init>(com.cdccreditsmart.network.api.CdcDeviceInfoDetail,com.cdccreditsmart.network.api.CdcUserInfoDetail,com.cdccreditsmart.network.api.CdcContractInfoDetail,com.cdccreditsmart.network.api.CdcAttestationDataDetail,int,kotlin.jvm.internal.DefaultConstructorMarker);
+}
+
+-if class com.cdccreditsmart.network.api.CdcDeviceRegisterInfoResponse
+-keepnames class com.cdccreditsmart.network.api.CdcDeviceRegisterInfoResponse
+-if class com.cdccreditsmart.network.api.CdcDeviceRegisterInfoResponse
+-keep class com.cdccreditsmart.network.api.CdcDeviceRegisterInfoResponseJsonAdapter {
+    public <init>(com.squareup.moshi.Moshi);
+}
+-if class com.cdccreditsmart.network.api.CdcDeviceRegisterInfoResponse
+-keepnames class kotlin.jvm.internal.DefaultConstructorMarker
+-if class com.cdccreditsmart.network.api.CdcDeviceRegisterInfoResponse
+-keepclassmembers class com.cdccreditsmart.network.api.CdcDeviceRegisterInfoResponse {
+    public synthetic <init>(boolean,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.List,int,kotlin.jvm.internal.DefaultConstructorMarker);
+}
+
+-if class com.cdccreditsmart.network.api.CdcDeviceStatusResponse
+-keepnames class com.cdccreditsmart.network.api.CdcDeviceStatusResponse
+-if class com.cdccreditsmart.network.api.CdcDeviceStatusResponse
+-keep class com.cdccreditsmart.network.api.CdcDeviceStatusResponseJsonAdapter {
+    public <init>(com.squareup.moshi.Moshi);
+}
+-if class com.cdccreditsmart.network.api.CdcDeviceStatusResponse
+-keepnames class kotlin.jvm.internal.DefaultConstructorMarker
+-if class com.cdccreditsmart.network.api.CdcDeviceStatusResponse
+-keepclassmembers class com.cdccreditsmart.network.api.CdcDeviceStatusResponse {
+    public synthetic <init>(java.lang.String,java.lang.String,boolean,java.lang.String,boolean,com.cdccreditsmart.network.api.CdcCustomerInfo,com.cdccreditsmart.network.api.CdcPaymentInfo,int,kotlin.jvm.internal.DefaultConstructorMarker);
+}
+
+-if class com.cdccreditsmart.network.api.CdcDeviceSyncRequest
+-keepnames class com.cdccreditsmart.network.api.CdcDeviceSyncRequest
+-if class com.cdccreditsmart.network.api.CdcDeviceSyncRequest
+-keep class com.cdccreditsmart.network.api.CdcDeviceSyncRequestJsonAdapter {
+    public <init>(com.squareup.moshi.Moshi);
+}
+-if class com.cdccreditsmart.network.api.CdcDeviceSyncRequest
+-keepnames class kotlin.jvm.internal.DefaultConstructorMarker
+-if class com.cdccreditsmart.network.api.CdcDeviceSyncRequest
+-keepclassmembers class com.cdccreditsmart.network.api.CdcDeviceSyncRequest {
+    public synthetic <init>(long,java.lang.Integer,com.cdccreditsmart.network.api.CdcLocationData,java.lang.String,java.util.List,com.cdccreditsmart.network.api.CdcSystemInfo,int,kotlin.jvm.internal.DefaultConstructorMarker);
+}
+
+-if class com.cdccreditsmart.network.api.CdcDeviceSyncResponse
+-keepnames class com.cdccreditsmart.network.api.CdcDeviceSyncResponse
+-if class com.cdccreditsmart.network.api.CdcDeviceSyncResponse
+-keep class com.cdccreditsmart.network.api.CdcDeviceSyncResponseJsonAdapter {
+    public <init>(com.squareup.moshi.Moshi);
+}
+-if class com.cdccreditsmart.network.api.CdcDeviceSyncResponse
+-keepnames class kotlin.jvm.internal.DefaultConstructorMarker
+-if class com.cdccreditsmart.network.api.CdcDeviceSyncResponse
+-keepclassmembers class com.cdccreditsmart.network.api.CdcDeviceSyncResponse {
+    public synthetic <init>(boolean,java.lang.String,long,java.lang.Long,com.cdccreditsmart.network.api.CdcDeviceConfigurationDetail,java.util.List,int,kotlin.jvm.internal.DefaultConstructorMarker);
+}
+
+-if class com.cdccreditsmart.network.api.CdcDeviceSyncStatusResponse
+-keepnames class com.cdccreditsmart.network.api.CdcDeviceSyncStatusResponse
+-if class com.cdccreditsmart.network.api.CdcDeviceSyncStatusResponse
+-keep class com.cdccreditsmart.network.api.CdcDeviceSyncStatusResponseJsonAdapter {
+    public <init>(com.squareup.moshi.Moshi);
+}
+-if class com.cdccreditsmart.network.api.CdcDeviceSyncStatusResponse
+-keepnames class kotlin.jvm.internal.DefaultConstructorMarker
+-if class com.cdccreditsmart.network.api.CdcDeviceSyncStatusResponse
+-keepclassmembers class com.cdccreditsmart.network.api.CdcDeviceSyncStatusResponse {
+    public synthetic <init>(java.lang.String,java.lang.String,long,java.lang.String,java.lang.String,com.cdccreditsmart.network.api.CdcBlockingPolicy,com.cdccreditsmart.network.api.CdcDeviceConfiguration,java.util.List,int,kotlin.jvm.internal.DefaultConstructorMarker);
+}
+
+-if class com.cdccreditsmart.network.api.CdcHeartbeatRequest
+-keepnames class com.cdccreditsmart.network.api.CdcHeartbeatRequest
+-if class com.cdccreditsmart.network.api.CdcHeartbeatRequest
+-keep class com.cdccreditsmart.network.api.CdcHeartbeatRequestJsonAdapter {
+    public <init>(com.squareup.moshi.Moshi);
+}
+-if class com.cdccreditsmart.network.api.CdcHeartbeatRequest
+-keepnames class kotlin.jvm.internal.DefaultConstructorMarker
+-if class com.cdccreditsmart.network.api.CdcHeartbeatRequest
+-keepclassmembers class com.cdccreditsmart.network.api.CdcHeartbeatRequest {
+    public synthetic <init>(long,java.lang.Integer,com.cdccreditsmart.network.api.CdcLocationData,com.cdccreditsmart.network.api.CdcSystemHealth,int,kotlin.jvm.internal.DefaultConstructorMarker);
+}
+
+-if class com.cdccreditsmart.network.api.CdcHeartbeatResponse
+-keepnames class com.cdccreditsmart.network.api.CdcHeartbeatResponse
+-if class com.cdccreditsmart.network.api.CdcHeartbeatResponse
+-keep class com.cdccreditsmart.network.api.CdcHeartbeatResponseJsonAdapter {
+    public <init>(com.squareup.moshi.Moshi);
+}
+-if class com.cdccreditsmart.network.api.CdcHeartbeatResponse
+-keepnames class kotlin.jvm.internal.DefaultConstructorMarker
+-if class com.cdccreditsmart.network.api.CdcHeartbeatResponse
+-keepclassmembers class com.cdccreditsmart.network.api.CdcHeartbeatResponse {
+    public synthetic <init>(boolean,long,java.lang.Long,java.util.List,java.lang.String,int,kotlin.jvm.internal.DefaultConstructorMarker);
+}
+
+-if class com.cdccreditsmart.network.api.CdcImeiValidationRequest
+-keepnames class com.cdccreditsmart.network.api.CdcImeiValidationRequest
+-if class com.cdccreditsmart.network.api.CdcImeiValidationRequest
+-keep class com.cdccreditsmart.network.api.CdcImeiValidationRequestJsonAdapter {
+    public <init>(com.squareup.moshi.Moshi);
+}
+-if class com.cdccreditsmart.network.api.CdcImeiValidationRequest
+-keepnames class kotlin.jvm.internal.DefaultConstructorMarker
+-if class com.cdccreditsmart.network.api.CdcImeiValidationRequest
+-keepclassmembers class com.cdccreditsmart.network.api.CdcImeiValidationRequest {
+    public synthetic <init>(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,kotlin.jvm.internal.DefaultConstructorMarker);
+}
+
+-if class com.cdccreditsmart.network.api.CdcImeiValidationResponse
+-keepnames class com.cdccreditsmart.network.api.CdcImeiValidationResponse
+-if class com.cdccreditsmart.network.api.CdcImeiValidationResponse
+-keep class com.cdccreditsmart.network.api.CdcImeiValidationResponseJsonAdapter {
+    public <init>(com.squareup.moshi.Moshi);
+}
+-if class com.cdccreditsmart.network.api.CdcImeiValidationResponse
+-keepnames class kotlin.jvm.internal.DefaultConstructorMarker
+-if class com.cdccreditsmart.network.api.CdcImeiValidationResponse
+-keepclassmembers class com.cdccreditsmart.network.api.CdcImeiValidationResponse {
+    public synthetic <init>(boolean,java.lang.String,boolean,java.lang.String,java.lang.String,java.lang.String,boolean,long,java.lang.String,int,kotlin.jvm.internal.DefaultConstructorMarker);
+}
+
+-if class com.cdccreditsmart.network.api.CdcInstallmentInfo
+-keepnames class com.cdccreditsmart.network.api.CdcInstallmentInfo
+-if class com.cdccreditsmart.network.api.CdcInstallmentInfo
+-keep class com.cdccreditsmart.network.api.CdcInstallmentInfoJsonAdapter {
+    public <init>(com.squareup.moshi.Moshi);
+}
+-if class com.cdccreditsmart.network.api.CdcInstallmentInfo
+-keepnames class kotlin.jvm.internal.DefaultConstructorMarker
+-if class com.cdccreditsmart.network.api.CdcInstallmentInfo
+-keepclassmembers class com.cdccreditsmart.network.api.CdcInstallmentInfo {
+    public synthetic <init>(java.lang.String,int,java.lang.String,double,java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,kotlin.jvm.internal.DefaultConstructorMarker);
+}
+
+-if class com.cdccreditsmart.network.api.CdcInstallmentsResponse
+-keepnames class com.cdccreditsmart.network.api.CdcInstallmentsResponse
+-if class com.cdccreditsmart.network.api.CdcInstallmentsResponse
+-keep class com.cdccreditsmart.network.api.CdcInstallmentsResponseJsonAdapter {
+    public <init>(com.squareup.moshi.Moshi);
+}
+-if class com.cdccreditsmart.network.api.CdcInstallmentsResponse
+-keepnames class kotlin.jvm.internal.DefaultConstructorMarker
+-if class com.cdccreditsmart.network.api.CdcInstallmentsResponse
+-keepclassmembers class com.cdccreditsmart.network.api.CdcInstallmentsResponse {
+    public synthetic <init>(boolean,java.util.List,com.cdccreditsmart.network.api.CdcPaymentSummary,int,int,kotlin.jvm.internal.DefaultConstructorMarker);
+}
+
+-if class com.cdccreditsmart.network.api.CdcLocationData
+-keepnames class com.cdccreditsmart.network.api.CdcLocationData
+-if class com.cdccreditsmart.network.api.CdcLocationData
+-keep class com.cdccreditsmart.network.api.CdcLocationDataJsonAdapter {
+    public <init>(com.squareup.moshi.Moshi);
+}
+-if class com.cdccreditsmart.network.api.CdcLocationData
+-keepnames class kotlin.jvm.internal.DefaultConstructorMarker
+-if class com.cdccreditsmart.network.api.CdcLocationData
+-keepclassmembers class com.cdccreditsmart.network.api.CdcLocationData {
+    public synthetic <init>(double,double,java.lang.Float,long,int,kotlin.jvm.internal.DefaultConstructorMarker);
+}
+
+-if class com.cdccreditsmart.network.api.CdcPaymentInfo
+-keepnames class com.cdccreditsmart.network.api.CdcPaymentInfo
+-if class com.cdccreditsmart.network.api.CdcPaymentInfo
+-keep class com.cdccreditsmart.network.api.CdcPaymentInfoJsonAdapter {
+    public <init>(com.squareup.moshi.Moshi);
+}
+
+-if class com.cdccreditsmart.network.api.CdcPaymentSummary
+-keepnames class com.cdccreditsmart.network.api.CdcPaymentSummary
+-if class com.cdccreditsmart.network.api.CdcPaymentSummary
+-keep class com.cdccreditsmart.network.api.CdcPaymentSummaryJsonAdapter {
+    public <init>(com.squareup.moshi.Moshi);
+}
+-if class com.cdccreditsmart.network.api.CdcPaymentSummary
+-keepnames class kotlin.jvm.internal.DefaultConstructorMarker
+-if class com.cdccreditsmart.network.api.CdcPaymentSummary
+-keepclassmembers class com.cdccreditsmart.network.api.CdcPaymentSummary {
+    public synthetic <init>(double,double,double,double,java.lang.String,int,int,kotlin.jvm.internal.DefaultConstructorMarker);
+}
+
+-if class com.cdccreditsmart.network.api.CdcPendingDecisionsResponse
+-keepnames class com.cdccreditsmart.network.api.CdcPendingDecisionsResponse
+-if class com.cdccreditsmart.network.api.CdcPendingDecisionsResponse
+-keep class com.cdccreditsmart.network.api.CdcPendingDecisionsResponseJsonAdapter {
+    public <init>(com.squareup.moshi.Moshi);
+}
+
+-if class com.cdccreditsmart.network.api.CdcPermissionsRequest
+-keepnames class com.cdccreditsmart.network.api.CdcPermissionsRequest
+-if class com.cdccreditsmart.network.api.CdcPermissionsRequest
+-keep class com.cdccreditsmart.network.api.CdcPermissionsRequestJsonAdapter {
+    public <init>(com.squareup.moshi.Moshi);
+}
+
+-if class com.cdccreditsmart.network.api.CdcPermissionsResponse
+-keepnames class com.cdccreditsmart.network.api.CdcPermissionsResponse
+-if class com.cdccreditsmart.network.api.CdcPermissionsResponse
+-keep class com.cdccreditsmart.network.api.CdcPermissionsResponseJsonAdapter {
+    public <init>(com.squareup.moshi.Moshi);
+}
+
+-if class com.cdccreditsmart.network.api.CdcPixPaymentRequest
+-keepnames class com.cdccreditsmart.network.api.CdcPixPaymentRequest
+-if class com.cdccreditsmart.network.api.CdcPixPaymentRequest
+-keep class com.cdccreditsmart.network.api.CdcPixPaymentRequestJsonAdapter {
+    public <init>(com.squareup.moshi.Moshi);
+}
+-if class com.cdccreditsmart.network.api.CdcPixPaymentRequest
+-keepnames class kotlin.jvm.internal.DefaultConstructorMarker
+-if class com.cdccreditsmart.network.api.CdcPixPaymentRequest
+-keepclassmembers class com.cdccreditsmart.network.api.CdcPixPaymentRequest {
+    public synthetic <init>(java.lang.Double,java.lang.String,int,kotlin.jvm.internal.DefaultConstructorMarker);
+}
+
+-if class com.cdccreditsmart.network.api.CdcPixPaymentResponse
+-keepnames class com.cdccreditsmart.network.api.CdcPixPaymentResponse
+-if class com.cdccreditsmart.network.api.CdcPixPaymentResponse
+-keep class com.cdccreditsmart.network.api.CdcPixPaymentResponseJsonAdapter {
+    public <init>(com.squareup.moshi.Moshi);
+}
+-if class com.cdccreditsmart.network.api.CdcPixPaymentResponse
+-keepnames class kotlin.jvm.internal.DefaultConstructorMarker
+-if class com.cdccreditsmart.network.api.CdcPixPaymentResponse
+-keepclassmembers class com.cdccreditsmart.network.api.CdcPixPaymentResponse {
+    public synthetic <init>(boolean,java.lang.String,java.lang.String,java.lang.String,java.lang.String,double,java.lang.Long,java.lang.String,int,kotlin.jvm.internal.DefaultConstructorMarker);
+}
+
+-if class com.cdccreditsmart.network.api.CdcProvisioningQrResponse
+-keepnames class com.cdccreditsmart.network.api.CdcProvisioningQrResponse
+-if class com.cdccreditsmart.network.api.CdcProvisioningQrResponse
+-keep class com.cdccreditsmart.network.api.CdcProvisioningQrResponseJsonAdapter {
+    public <init>(com.squareup.moshi.Moshi);
+}
+-if class com.cdccreditsmart.network.api.CdcProvisioningQrResponse
+-keepnames class kotlin.jvm.internal.DefaultConstructorMarker
+-if class com.cdccreditsmart.network.api.CdcProvisioningQrResponse
+-keepclassmembers class com.cdccreditsmart.network.api.CdcProvisioningQrResponse {
+    public synthetic <init>(boolean,java.lang.String,java.lang.String,java.lang.String,java.lang.Long,java.lang.String,int,kotlin.jvm.internal.DefaultConstructorMarker);
+}
+
+-if class com.cdccreditsmart.network.api.CdcSystemHealth
+-keepnames class com.cdccreditsmart.network.api.CdcSystemHealth
+-if class com.cdccreditsmart.network.api.CdcSystemHealth
+-keep class com.cdccreditsmart.network.api.CdcSystemHealthJsonAdapter {
+    public <init>(com.squareup.moshi.Moshi);
+}
+-if class com.cdccreditsmart.network.api.CdcSystemHealth
+-keepnames class kotlin.jvm.internal.DefaultConstructorMarker
+-if class com.cdccreditsmart.network.api.CdcSystemHealth
+-keepclassmembers class com.cdccreditsmart.network.api.CdcSystemHealth {
+    public synthetic <init>(java.lang.Float,java.lang.Float,java.lang.Float,java.lang.String,int,kotlin.jvm.internal.DefaultConstructorMarker);
+}
+
+-if class com.cdccreditsmart.network.api.CdcSystemInfo
+-keepnames class com.cdccreditsmart.network.api.CdcSystemInfo
+-if class com.cdccreditsmart.network.api.CdcSystemInfo
+-keep class com.cdccreditsmart.network.api.CdcSystemInfoJsonAdapter {
+    public <init>(com.squareup.moshi.Moshi);
+}
+-if class com.cdccreditsmart.network.api.CdcSystemInfo
+-keepnames class kotlin.jvm.internal.DefaultConstructorMarker
+-if class com.cdccreditsmart.network.api.CdcSystemInfo
+-keepclassmembers class com.cdccreditsmart.network.api.CdcSystemInfo {
+    public synthetic <init>(java.lang.Long,java.lang.Long,java.lang.Long,java.lang.Long,java.lang.Float,java.lang.String,int,kotlin.jvm.internal.DefaultConstructorMarker);
+}
+
+-if class com.cdccreditsmart.network.api.CdcTimeRange
+-keepnames class com.cdccreditsmart.network.api.CdcTimeRange
+-if class com.cdccreditsmart.network.api.CdcTimeRange
+-keep class com.cdccreditsmart.network.api.CdcTimeRangeJsonAdapter {
+    public <init>(com.squareup.moshi.Moshi);
+}
+-if class com.cdccreditsmart.network.api.CdcTimeRange
+-keepnames class kotlin.jvm.internal.DefaultConstructorMarker
+-if class com.cdccreditsmart.network.api.CdcTimeRange
+-keepclassmembers class com.cdccreditsmart.network.api.CdcTimeRange {
+    public synthetic <init>(int,int,java.lang.String,int,kotlin.jvm.internal.DefaultConstructorMarker);
+}
+
+-if class com.cdccreditsmart.network.api.CdcUnblockRequest
+-keepnames class com.cdccreditsmart.network.api.CdcUnblockRequest
+-if class com.cdccreditsmart.network.api.CdcUnblockRequest
+-keep class com.cdccreditsmart.network.api.CdcUnblockRequestJsonAdapter {
+    public <init>(com.squareup.moshi.Moshi);
+}
+-if class com.cdccreditsmart.network.api.CdcUnblockRequest
+-keepnames class kotlin.jvm.internal.DefaultConstructorMarker
+-if class com.cdccreditsmart.network.api.CdcUnblockRequest
+-keepclassmembers class com.cdccreditsmart.network.api.CdcUnblockRequest {
+    public synthetic <init>(java.lang.String,java.lang.String,int,kotlin.jvm.internal.DefaultConstructorMarker);
+}
+
+-if class com.cdccreditsmart.network.api.CdcUnblockResponse
+-keepnames class com.cdccreditsmart.network.api.CdcUnblockResponse
+-if class com.cdccreditsmart.network.api.CdcUnblockResponse
+-keep class com.cdccreditsmart.network.api.CdcUnblockResponseJsonAdapter {
+    public <init>(com.squareup.moshi.Moshi);
+}
+-if class com.cdccreditsmart.network.api.CdcUnblockResponse
+-keepnames class kotlin.jvm.internal.DefaultConstructorMarker
+-if class com.cdccreditsmart.network.api.CdcUnblockResponse
+-keepclassmembers class com.cdccreditsmart.network.api.CdcUnblockResponse {
+    public synthetic <init>(boolean,boolean,java.lang.String,java.lang.String,int,kotlin.jvm.internal.DefaultConstructorMarker);
+}
+
+-if class com.cdccreditsmart.network.api.CdcUserInfo
+-keepnames class com.cdccreditsmart.network.api.CdcUserInfo
+-if class com.cdccreditsmart.network.api.CdcUserInfo
+-keep class com.cdccreditsmart.network.api.CdcUserInfoJsonAdapter {
+    public <init>(com.squareup.moshi.Moshi);
+}
+-if class com.cdccreditsmart.network.api.CdcUserInfo
+-keepnames class kotlin.jvm.internal.DefaultConstructorMarker
+-if class com.cdccreditsmart.network.api.CdcUserInfo
+-keepclassmembers class com.cdccreditsmart.network.api.CdcUserInfo {
+    public synthetic <init>(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,kotlin.jvm.internal.DefaultConstructorMarker);
+}
+
+-if class com.cdccreditsmart.network.api.CdcUserInfoDetail
+-keepnames class com.cdccreditsmart.network.api.CdcUserInfoDetail
+-if class com.cdccreditsmart.network.api.CdcUserInfoDetail
+-keep class com.cdccreditsmart.network.api.CdcUserInfoDetailJsonAdapter {
+    public <init>(com.squareup.moshi.Moshi);
+}
+-if class com.cdccreditsmart.network.api.CdcUserInfoDetail
+-keepnames class kotlin.jvm.internal.DefaultConstructorMarker
+-if class com.cdccreditsmart.network.api.CdcUserInfoDetail
+-keepclassmembers class com.cdccreditsmart.network.api.CdcUserInfoDetail {
+    public synthetic <init>(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,kotlin.jvm.internal.DefaultConstructorMarker);
+}
+
+-if class com.cdccreditsmart.network.api.ContractData
+-keepnames class com.cdccreditsmart.network.api.ContractData
+-if class com.cdccreditsmart.network.api.ContractData
+-keep class com.cdccreditsmart.network.api.ContractDataJsonAdapter {
+    public <init>(com.squareup.moshi.Moshi);
+}
+
+-if class com.cdccreditsmart.network.api.ContractDeviceInfo
+-keepnames class com.cdccreditsmart.network.api.ContractDeviceInfo
+-if class com.cdccreditsmart.network.api.ContractDeviceInfo
+-keep class com.cdccreditsmart.network.api.ContractDeviceInfoJsonAdapter {
+    public <init>(com.squareup.moshi.Moshi);
+}
+
+-if class com.cdccreditsmart.network.api.ContractResponse
+-keepnames class com.cdccreditsmart.network.api.ContractResponse
+-if class com.cdccreditsmart.network.api.ContractResponse
+-keep class com.cdccreditsmart.network.api.ContractResponseJsonAdapter {
+    public <init>(com.squareup.moshi.Moshi);
+}
+
+-if class com.cdccreditsmart.network.api.ContractSection
+-keepnames class com.cdccreditsmart.network.api.ContractSection
+-if class com.cdccreditsmart.network.api.ContractSection
+-keep class com.cdccreditsmart.network.api.ContractSectionJsonAdapter {
+    public <init>(com.squareup.moshi.Moshi);
+}
+
+-if class com.cdccreditsmart.network.api.ContractSignRequest
+-keepnames class com.cdccreditsmart.network.api.ContractSignRequest
+-if class com.cdccreditsmart.network.api.ContractSignRequest
+-keep class com.cdccreditsmart.network.api.ContractSignRequestJsonAdapter {
+    public <init>(com.squareup.moshi.Moshi);
+}
+-if class com.cdccreditsmart.network.api.ContractSignRequest
+-keepnames class kotlin.jvm.internal.DefaultConstructorMarker
+-if class com.cdccreditsmart.network.api.ContractSignRequest
+-keepclassmembers class com.cdccreditsmart.network.api.ContractSignRequest {
+    public synthetic <init>(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,long,java.lang.String,int,kotlin.jvm.internal.DefaultConstructorMarker);
+}
+
+-if class com.cdccreditsmart.network.api.ContractSignResponse
+-keepnames class com.cdccreditsmart.network.api.ContractSignResponse
+-if class com.cdccreditsmart.network.api.ContractSignResponse
+-keep class com.cdccreditsmart.network.api.ContractSignResponseJsonAdapter {
+    public <init>(com.squareup.moshi.Moshi);
+}
+
+-if class com.cdccreditsmart.network.api.ContractSignature
+-keepnames class com.cdccreditsmart.network.api.ContractSignature
+-if class com.cdccreditsmart.network.api.ContractSignature
+-keep class com.cdccreditsmart.network.api.ContractSignatureJsonAdapter {
+    public <init>(com.squareup.moshi.Moshi);
+}
+
+-if class com.cdccreditsmart.network.api.ContractSignaturesResponse
+-keepnames class com.cdccreditsmart.network.api.ContractSignaturesResponse
+-if class com.cdccreditsmart.network.api.ContractSignaturesResponse
+-keep class com.cdccreditsmart.network.api.ContractSignaturesResponseJsonAdapter {
+    public <init>(com.squareup.moshi.Moshi);
+}
+
+-if class com.cdccreditsmart.network.api.ContractSyncRequest
+-keepnames class com.cdccreditsmart.network.api.ContractSyncRequest
+-if class com.cdccreditsmart.network.api.ContractSyncRequest
+-keep class com.cdccreditsmart.network.api.ContractSyncRequestJsonAdapter {
+    public <init>(com.squareup.moshi.Moshi);
+}
+-if class com.cdccreditsmart.network.api.ContractSyncRequest
+-keepnames class kotlin.jvm.internal.DefaultConstructorMarker
+-if class com.cdccreditsmart.network.api.ContractSyncRequest
+-keepclassmembers class com.cdccreditsmart.network.api.ContractSyncRequest {
+    public synthetic <init>(java.lang.String,java.lang.String,java.lang.Long,java.lang.String,int,kotlin.jvm.internal.DefaultConstructorMarker);
+}
+
+-if class com.cdccreditsmart.network.api.ContractSyncResponse
+-keepnames class com.cdccreditsmart.network.api.ContractSyncResponse
+-if class com.cdccreditsmart.network.api.ContractSyncResponse
+-keep class com.cdccreditsmart.network.api.ContractSyncResponseJsonAdapter {
+    public <init>(com.squareup.moshi.Moshi);
+}
+
+-if class com.cdccreditsmart.network.api.ContractTermsResponse
+-keepnames class com.cdccreditsmart.network.api.ContractTermsResponse
+-if class com.cdccreditsmart.network.api.ContractTermsResponse
+-keep class com.cdccreditsmart.network.api.ContractTermsResponseJsonAdapter {
+    public <init>(com.squareup.moshi.Moshi);
+}
+-if class com.cdccreditsmart.network.api.ContractTermsResponse
+-keepnames class kotlin.jvm.internal.DefaultConstructorMarker
+-if class com.cdccreditsmart.network.api.ContractTermsResponse
+-keepclassmembers class com.cdccreditsmart.network.api.ContractTermsResponse {
+    public synthetic <init>(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.List,int,kotlin.jvm.internal.DefaultConstructorMarker);
+}
+
+-if class com.cdccreditsmart.network.api.ContractUpdate
+-keepnames class com.cdccreditsmart.network.api.ContractUpdate
+-if class com.cdccreditsmart.network.api.ContractUpdate
+-keep class com.cdccreditsmart.network.api.ContractUpdateJsonAdapter {
+    public <init>(com.squareup.moshi.Moshi);
+}
+
+-if class com.cdccreditsmart.network.api.CreateBiometrySessionRequest
+-keepnames class com.cdccreditsmart.network.api.CreateBiometrySessionRequest
+-if class com.cdccreditsmart.network.api.CreateBiometrySessionRequest
+-keep class com.cdccreditsmart.network.api.CreateBiometrySessionRequestJsonAdapter {
+    public <init>(com.squareup.moshi.Moshi);
+}
+-if class com.cdccreditsmart.network.api.CreateBiometrySessionRequest
+-keepnames class kotlin.jvm.internal.DefaultConstructorMarker
+-if class com.cdccreditsmart.network.api.CreateBiometrySessionRequest
+-keepclassmembers class com.cdccreditsmart.network.api.CreateBiometrySessionRequest {
+    public synthetic <init>(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,kotlin.jvm.internal.DefaultConstructorMarker);
+}
+
+-if class com.cdccreditsmart.network.api.CreateBoletoPaymentRequest
+-keepnames class com.cdccreditsmart.network.api.CreateBoletoPaymentRequest
+-if class com.cdccreditsmart.network.api.CreateBoletoPaymentRequest
+-keep class com.cdccreditsmart.network.api.CreateBoletoPaymentRequestJsonAdapter {
+    public <init>(com.squareup.moshi.Moshi);
+}
+-if class com.cdccreditsmart.network.api.CreateBoletoPaymentRequest
+-keepnames class kotlin.jvm.internal.DefaultConstructorMarker
+-if class com.cdccreditsmart.network.api.CreateBoletoPaymentRequest
+-keepclassmembers class com.cdccreditsmart.network.api.CreateBoletoPaymentRequest {
+    public synthetic <init>(java.lang.String,java.lang.String,double,java.lang.String,java.lang.String,int,kotlin.jvm.internal.DefaultConstructorMarker);
+}
+
+-if class com.cdccreditsmart.network.api.CreatePixPaymentRequest
+-keepnames class com.cdccreditsmart.network.api.CreatePixPaymentRequest
+-if class com.cdccreditsmart.network.api.CreatePixPaymentRequest
+-keep class com.cdccreditsmart.network.api.CreatePixPaymentRequestJsonAdapter {
+    public <init>(com.squareup.moshi.Moshi);
+}
+-if class com.cdccreditsmart.network.api.CreatePixPaymentRequest
+-keepnames class kotlin.jvm.internal.DefaultConstructorMarker
+-if class com.cdccreditsmart.network.api.CreatePixPaymentRequest
+-keepclassmembers class com.cdccreditsmart.network.api.CreatePixPaymentRequest {
+    public synthetic <init>(java.lang.String,java.lang.String,double,java.lang.String,int,kotlin.jvm.internal.DefaultConstructorMarker);
+}
+
+-if class com.cdccreditsmart.network.api.CustomerInfo
+-keepnames class com.cdccreditsmart.network.api.CustomerInfo
+-if class com.cdccreditsmart.network.api.CustomerInfo
+-keep class com.cdccreditsmart.network.api.CustomerInfoJsonAdapter {
+    public <init>(com.squareup.moshi.Moshi);
+}
+
+-if class com.cdccreditsmart.network.api.DeviceAttestRequest
+-keepnames class com.cdccreditsmart.network.api.DeviceAttestRequest
+-if class com.cdccreditsmart.network.api.DeviceAttestRequest
+-keep class com.cdccreditsmart.network.api.DeviceAttestRequestJsonAdapter {
+    public <init>(com.squareup.moshi.Moshi);
+}
+
+-if class com.cdccreditsmart.network.api.DeviceAttestResponse
+-keepnames class com.cdccreditsmart.network.api.DeviceAttestResponse
+-if class com.cdccreditsmart.network.api.DeviceAttestResponse
+-keep class com.cdccreditsmart.network.api.DeviceAttestResponseJsonAdapter {
+    public <init>(com.squareup.moshi.Moshi);
+}
+
+-if class com.cdccreditsmart.network.api.DeviceAttestation
+-keepnames class com.cdccreditsmart.network.api.DeviceAttestation
+-if class com.cdccreditsmart.network.api.DeviceAttestation
+-keep class com.cdccreditsmart.network.api.DeviceAttestationJsonAdapter {
+    public <init>(com.squareup.moshi.Moshi);
+}
+
+-if class com.cdccreditsmart.network.api.DeviceAttestationStartRequest
+-keepnames class com.cdccreditsmart.network.api.DeviceAttestationStartRequest
+-if class com.cdccreditsmart.network.api.DeviceAttestationStartRequest
+-keep class com.cdccreditsmart.network.api.DeviceAttestationStartRequestJsonAdapter {
+    public <init>(com.squareup.moshi.Moshi);
+}
+-if class com.cdccreditsmart.network.api.DeviceAttestationStartRequest
+-keepnames class kotlin.jvm.internal.DefaultConstructorMarker
+-if class com.cdccreditsmart.network.api.DeviceAttestationStartRequest
+-keepclassmembers class com.cdccreditsmart.network.api.DeviceAttestationStartRequest {
+    public synthetic <init>(java.lang.String,java.lang.String,int,java.lang.String,java.lang.String,com.cdccreditsmart.network.api.FlowMetadata,int,kotlin.jvm.internal.DefaultConstructorMarker);
+}
+
+-if class com.cdccreditsmart.network.api.DeviceBindRequest
+-keepnames class com.cdccreditsmart.network.api.DeviceBindRequest
+-if class com.cdccreditsmart.network.api.DeviceBindRequest
+-keep class com.cdccreditsmart.network.api.DeviceBindRequestJsonAdapter {
+    public <init>(com.squareup.moshi.Moshi);
+}
+
+-if class com.cdccreditsmart.network.api.DeviceBindResponse
+-keepnames class com.cdccreditsmart.network.api.DeviceBindResponse
+-if class com.cdccreditsmart.network.api.DeviceBindResponse
+-keep class com.cdccreditsmart.network.api.DeviceBindResponseJsonAdapter {
+    public <init>(com.squareup.moshi.Moshi);
+}
+
+-if class com.cdccreditsmart.network.api.DeviceConfiguration
+-keepnames class com.cdccreditsmart.network.api.DeviceConfiguration
+-if class com.cdccreditsmart.network.api.DeviceConfiguration
+-keep class com.cdccreditsmart.network.api.DeviceConfigurationJsonAdapter {
+    public <init>(com.squareup.moshi.Moshi);
+}
+
+-if class com.cdccreditsmart.network.api.DeviceInfo
+-keepnames class com.cdccreditsmart.network.api.DeviceInfo
+-if class com.cdccreditsmart.network.api.DeviceInfo
+-keep class com.cdccreditsmart.network.api.DeviceInfoJsonAdapter {
+    public <init>(com.squareup.moshi.Moshi);
+}
+-if class com.cdccreditsmart.network.api.DeviceInfo
+-keepnames class kotlin.jvm.internal.DefaultConstructorMarker
+-if class com.cdccreditsmart.network.api.DeviceInfo
+-keepclassmembers class com.cdccreditsmart.network.api.DeviceInfo {
+    public synthetic <init>(java.lang.String,java.lang.String,java.lang.String,int,java.lang.String,java.lang.String,int,kotlin.jvm.internal.DefaultConstructorMarker);
+}
+
+-if class com.cdccreditsmart.network.api.DeviceRegisterInfoRequest
+-keepnames class com.cdccreditsmart.network.api.DeviceRegisterInfoRequest
+-if class com.cdccreditsmart.network.api.DeviceRegisterInfoRequest
+-keep class com.cdccreditsmart.network.api.DeviceRegisterInfoRequestJsonAdapter {
+    public <init>(com.squareup.moshi.Moshi);
+}
+-if class com.cdccreditsmart.network.api.DeviceRegisterInfoRequest
+-keepnames class kotlin.jvm.internal.DefaultConstructorMarker
+-if class com.cdccreditsmart.network.api.DeviceRegisterInfoRequest
+-keepclassmembers class com.cdccreditsmart.network.api.DeviceRegisterInfoRequest {
+    public synthetic <init>(com.cdccreditsmart.network.api.CdcDeviceInfo,com.cdccreditsmart.network.api.CdcUserInfo,com.cdccreditsmart.network.api.CdcContractInfo,com.cdccreditsmart.network.api.CdcAttestationData,int,kotlin.jvm.internal.DefaultConstructorMarker);
+}
+
+-if class com.cdccreditsmart.network.api.DeviceRegisterInfoResponse
+-keepnames class com.cdccreditsmart.network.api.DeviceRegisterInfoResponse
+-if class com.cdccreditsmart.network.api.DeviceRegisterInfoResponse
+-keep class com.cdccreditsmart.network.api.DeviceRegisterInfoResponseJsonAdapter {
+    public <init>(com.squareup.moshi.Moshi);
+}
+-if class com.cdccreditsmart.network.api.DeviceRegisterInfoResponse
+-keepnames class kotlin.jvm.internal.DefaultConstructorMarker
+-if class com.cdccreditsmart.network.api.DeviceRegisterInfoResponse
+-keepclassmembers class com.cdccreditsmart.network.api.DeviceRegisterInfoResponse {
+    public synthetic <init>(boolean,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.List,int,kotlin.jvm.internal.DefaultConstructorMarker);
+}
+
+-if class com.cdccreditsmart.network.api.DeviceRegistrationRequest
+-keepnames class com.cdccreditsmart.network.api.DeviceRegistrationRequest
+-if class com.cdccreditsmart.network.api.DeviceRegistrationRequest
+-keep class com.cdccreditsmart.network.api.DeviceRegistrationRequestJsonAdapter {
+    public <init>(com.squareup.moshi.Moshi);
+}
+
+-if class com.cdccreditsmart.network.api.DeviceRegistrationResponse
+-keepnames class com.cdccreditsmart.network.api.DeviceRegistrationResponse
+-if class com.cdccreditsmart.network.api.DeviceRegistrationResponse
+-keep class com.cdccreditsmart.network.api.DeviceRegistrationResponseJsonAdapter {
+    public <init>(com.squareup.moshi.Moshi);
+}
+-if class com.cdccreditsmart.network.api.DeviceRegistrationResponse
+-keepnames class kotlin.jvm.internal.DefaultConstructorMarker
+-if class com.cdccreditsmart.network.api.DeviceRegistrationResponse
+-keepclassmembers class com.cdccreditsmart.network.api.DeviceRegistrationResponse {
+    public synthetic <init>(boolean,boolean,boolean,java.lang.String,java.lang.String,long,java.lang.String,java.lang.String,int,kotlin.jvm.internal.DefaultConstructorMarker);
+}
+
+-if class com.cdccreditsmart.network.api.DeviceStatusResponse
+-keepnames class com.cdccreditsmart.network.api.DeviceStatusResponse
+-if class com.cdccreditsmart.network.api.DeviceStatusResponse
+-keep class com.cdccreditsmart.network.api.DeviceStatusResponseJsonAdapter {
+    public <init>(com.squareup.moshi.Moshi);
+}
+
+-if class com.cdccreditsmart.network.api.DeviceSyncRequest
+-keepnames class com.cdccreditsmart.network.api.DeviceSyncRequest
+-if class com.cdccreditsmart.network.api.DeviceSyncRequest
+-keep class com.cdccreditsmart.network.api.DeviceSyncRequestJsonAdapter {
+    public <init>(com.squareup.moshi.Moshi);
+}
+-if class com.cdccreditsmart.network.api.DeviceSyncRequest
+-keepnames class kotlin.jvm.internal.DefaultConstructorMarker
+-if class com.cdccreditsmart.network.api.DeviceSyncRequest
+-keepclassmembers class com.cdccreditsmart.network.api.DeviceSyncRequest {
+    public synthetic <init>(long,java.lang.Integer,com.cdccreditsmart.network.api.LocationData,java.lang.String,java.util.List,com.cdccreditsmart.network.api.SystemInfo,int,kotlin.jvm.internal.DefaultConstructorMarker);
+}
+
+-if class com.cdccreditsmart.network.api.DeviceSyncResponse
+-keepnames class com.cdccreditsmart.network.api.DeviceSyncResponse
+-if class com.cdccreditsmart.network.api.DeviceSyncResponse
+-keep class com.cdccreditsmart.network.api.DeviceSyncResponseJsonAdapter {
+    public <init>(com.squareup.moshi.Moshi);
+}
+-if class com.cdccreditsmart.network.api.DeviceSyncResponse
+-keepnames class kotlin.jvm.internal.DefaultConstructorMarker
+-if class com.cdccreditsmart.network.api.DeviceSyncResponse
+-keepclassmembers class com.cdccreditsmart.network.api.DeviceSyncResponse {
+    public synthetic <init>(boolean,java.lang.String,long,java.lang.Long,com.cdccreditsmart.network.api.CdcDeviceConfiguration,java.util.List,int,kotlin.jvm.internal.DefaultConstructorMarker);
+}
+
+-if class com.cdccreditsmart.network.api.EnvironmentInfo
+-keepnames class com.cdccreditsmart.network.api.EnvironmentInfo
+-if class com.cdccreditsmart.network.api.EnvironmentInfo
+-keep class com.cdccreditsmart.network.api.EnvironmentInfoJsonAdapter {
+    public <init>(com.squareup.moshi.Moshi);
+}
+
+-if class com.cdccreditsmart.network.api.FaceBiometryRequest
+-keepnames class com.cdccreditsmart.network.api.FaceBiometryRequest
+-if class com.cdccreditsmart.network.api.FaceBiometryRequest
+-keep class com.cdccreditsmart.network.api.FaceBiometryRequestJsonAdapter {
+    public <init>(com.squareup.moshi.Moshi);
+}
+-if class com.cdccreditsmart.network.api.FaceBiometryRequest
+-keepnames class kotlin.jvm.internal.DefaultConstructorMarker
+-if class com.cdccreditsmart.network.api.FaceBiometryRequest
+-keepclassmembers class com.cdccreditsmart.network.api.FaceBiometryRequest {
+    public synthetic <init>(java.lang.String,java.lang.String,java.lang.String,double,double,java.lang.String,java.lang.String,com.cdccreditsmart.network.api.BiometryMetadata,int,kotlin.jvm.internal.DefaultConstructorMarker);
+}
+
+-if class com.cdccreditsmart.network.api.FinancingTerms
+-keepnames class com.cdccreditsmart.network.api.FinancingTerms
+-if class com.cdccreditsmart.network.api.FinancingTerms
+-keep class com.cdccreditsmart.network.api.FinancingTermsJsonAdapter {
+    public <init>(com.squareup.moshi.Moshi);
+}
+
+-if class com.cdccreditsmart.network.api.FlowError
+-keepnames class com.cdccreditsmart.network.api.FlowError
+-if class com.cdccreditsmart.network.api.FlowError
+-keep class com.cdccreditsmart.network.api.FlowErrorJsonAdapter {
+    public <init>(com.squareup.moshi.Moshi);
+}
+-if class com.cdccreditsmart.network.api.FlowError
+-keepnames class kotlin.jvm.internal.DefaultConstructorMarker
+-if class com.cdccreditsmart.network.api.FlowError
+-keepclassmembers class com.cdccreditsmart.network.api.FlowError {
+    public synthetic <init>(java.lang.String,java.lang.String,java.lang.String,boolean,java.lang.Long,boolean,int,kotlin.jvm.internal.DefaultConstructorMarker);
+}
+
+-if class com.cdccreditsmart.network.api.FlowEventResponse
+-keepnames class com.cdccreditsmart.network.api.FlowEventResponse
+-if class com.cdccreditsmart.network.api.FlowEventResponse
+-keep class com.cdccreditsmart.network.api.FlowEventResponseJsonAdapter {
+    public <init>(com.squareup.moshi.Moshi);
+}
+-if class com.cdccreditsmart.network.api.FlowEventResponse
+-keepnames class kotlin.jvm.internal.DefaultConstructorMarker
+-if class com.cdccreditsmart.network.api.FlowEventResponse
+-keepclassmembers class com.cdccreditsmart.network.api.FlowEventResponse {
+    public synthetic <init>(boolean,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.Long,java.util.Map,java.lang.String,boolean,int,kotlin.jvm.internal.DefaultConstructorMarker);
+}
+
+-if class com.cdccreditsmart.network.api.FlowProgress
+-keepnames class com.cdccreditsmart.network.api.FlowProgress
+-if class com.cdccreditsmart.network.api.FlowProgress
+-keep class com.cdccreditsmart.network.api.FlowProgressJsonAdapter {
+    public <init>(com.squareup.moshi.Moshi);
+}
+-if class com.cdccreditsmart.network.api.FlowProgress
+-keepnames class kotlin.jvm.internal.DefaultConstructorMarker
+-if class com.cdccreditsmart.network.api.FlowProgress
+-keepclassmembers class com.cdccreditsmart.network.api.FlowProgress {
+    public synthetic <init>(int,int,int,java.lang.Long,int,kotlin.jvm.internal.DefaultConstructorMarker);
+}
+
+-if class com.cdccreditsmart.network.api.FlowResult
+-keepnames class com.cdccreditsmart.network.api.FlowResult
+-if class com.cdccreditsmart.network.api.FlowResult
+-keep class com.cdccreditsmart.network.api.FlowResultJsonAdapter {
+    public <init>(com.squareup.moshi.Moshi);
+}
+-if class com.cdccreditsmart.network.api.FlowResult
+-keepnames class kotlin.jvm.internal.DefaultConstructorMarker
+-if class com.cdccreditsmart.network.api.FlowResult
+-keepclassmembers class com.cdccreditsmart.network.api.FlowResult {
+    public synthetic <init>(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,com.cdccreditsmart.network.api.FlowTokens,java.util.List,int,kotlin.jvm.internal.DefaultConstructorMarker);
+}
+
+-if class com.cdccreditsmart.network.api.FlowStatusResponse
+-keepnames class com.cdccreditsmart.network.api.FlowStatusResponse
+-if class com.cdccreditsmart.network.api.FlowStatusResponse
+-keep class com.cdccreditsmart.network.api.FlowStatusResponseJsonAdapter {
+    public <init>(com.squareup.moshi.Moshi);
+}
+-if class com.cdccreditsmart.network.api.FlowStatusResponse
+-keepnames class kotlin.jvm.internal.DefaultConstructorMarker
+-if class com.cdccreditsmart.network.api.FlowStatusResponse
+-keepclassmembers class com.cdccreditsmart.network.api.FlowStatusResponse {
+    public synthetic <init>(java.lang.String,java.lang.String,java.lang.String,com.cdccreditsmart.network.api.FlowProgress,long,long,java.lang.Long,java.util.List,com.cdccreditsmart.network.api.FlowResult,com.cdccreditsmart.network.api.FlowError,int,kotlin.jvm.internal.DefaultConstructorMarker);
+}
+
+-if class com.cdccreditsmart.network.api.FlowStep
+-keepnames class com.cdccreditsmart.network.api.FlowStep
+-if class com.cdccreditsmart.network.api.FlowStep
+-keep class com.cdccreditsmart.network.api.FlowStepJsonAdapter {
+    public <init>(com.squareup.moshi.Moshi);
+}
+-if class com.cdccreditsmart.network.api.FlowStep
+-keepnames class kotlin.jvm.internal.DefaultConstructorMarker
+-if class com.cdccreditsmart.network.api.FlowStep
+-keepclassmembers class com.cdccreditsmart.network.api.FlowStep {
+    public synthetic <init>(java.lang.String,java.lang.String,java.lang.String,java.lang.Long,java.lang.Long,java.util.Map,java.lang.String,int,kotlin.jvm.internal.DefaultConstructorMarker);
+}
+
+-if class com.cdccreditsmart.network.api.FlowTokens
+-keepnames class com.cdccreditsmart.network.api.FlowTokens
+-if class com.cdccreditsmart.network.api.FlowTokens
+-keep class com.cdccreditsmart.network.api.FlowTokensJsonAdapter {
+    public <init>(com.squareup.moshi.Moshi);
+}
+-if class com.cdccreditsmart.network.api.FlowTokens
+-keepnames class kotlin.jvm.internal.DefaultConstructorMarker
+-if class com.cdccreditsmart.network.api.FlowTokens
+-keepclassmembers class com.cdccreditsmart.network.api.FlowTokens {
+    public synthetic <init>(java.lang.String,java.lang.String,java.lang.String,java.lang.Long,int,kotlin.jvm.internal.DefaultConstructorMarker);
+}
+
+-if class com.cdccreditsmart.network.api.HeartbeatRequest
+-keepnames class com.cdccreditsmart.network.api.HeartbeatRequest
+-if class com.cdccreditsmart.network.api.HeartbeatRequest
+-keep class com.cdccreditsmart.network.api.HeartbeatRequestJsonAdapter {
+    public <init>(com.squareup.moshi.Moshi);
+}
+-if class com.cdccreditsmart.network.api.HeartbeatRequest
+-keepnames class kotlin.jvm.internal.DefaultConstructorMarker
+-if class com.cdccreditsmart.network.api.HeartbeatRequest
+-keepclassmembers class com.cdccreditsmart.network.api.HeartbeatRequest {
+    public synthetic <init>(java.lang.String,long,java.lang.String,java.lang.Integer,com.cdccreditsmart.network.api.Location,int,kotlin.jvm.internal.DefaultConstructorMarker);
+}
+
+-if class com.cdccreditsmart.network.api.ImeiValidationRequest
+-keepnames class com.cdccreditsmart.network.api.ImeiValidationRequest
+-if class com.cdccreditsmart.network.api.ImeiValidationRequest
+-keep class com.cdccreditsmart.network.api.ImeiValidationRequestJsonAdapter {
+    public <init>(com.squareup.moshi.Moshi);
+}
+-if class com.cdccreditsmart.network.api.ImeiValidationRequest
+-keepnames class kotlin.jvm.internal.DefaultConstructorMarker
+-if class com.cdccreditsmart.network.api.ImeiValidationRequest
+-keepclassmembers class com.cdccreditsmart.network.api.ImeiValidationRequest {
+    public synthetic <init>(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,kotlin.jvm.internal.DefaultConstructorMarker);
+}
+
+-if class com.cdccreditsmart.network.api.ImeiValidationResponse
+-keepnames class com.cdccreditsmart.network.api.ImeiValidationResponse
+-if class com.cdccreditsmart.network.api.ImeiValidationResponse
+-keep class com.cdccreditsmart.network.api.ImeiValidationResponseJsonAdapter {
+    public <init>(com.squareup.moshi.Moshi);
+}
+-if class com.cdccreditsmart.network.api.ImeiValidationResponse
+-keepnames class kotlin.jvm.internal.DefaultConstructorMarker
+-if class com.cdccreditsmart.network.api.ImeiValidationResponse
+-keepclassmembers class com.cdccreditsmart.network.api.ImeiValidationResponse {
+    public synthetic <init>(boolean,java.lang.String,boolean,java.lang.String,java.lang.String,java.lang.String,boolean,long,java.lang.String,int,kotlin.jvm.internal.DefaultConstructorMarker);
+}
+
+-if class com.cdccreditsmart.network.api.InstallmentInfo
+-keepnames class com.cdccreditsmart.network.api.InstallmentInfo
+-if class com.cdccreditsmart.network.api.InstallmentInfo
+-keep class com.cdccreditsmart.network.api.InstallmentInfoJsonAdapter {
+    public <init>(com.squareup.moshi.Moshi);
+}
+-if class com.cdccreditsmart.network.api.InstallmentInfo
+-keepnames class kotlin.jvm.internal.DefaultConstructorMarker
+-if class com.cdccreditsmart.network.api.InstallmentInfo
+-keepclassmembers class com.cdccreditsmart.network.api.InstallmentInfo {
+    public synthetic <init>(java.lang.String,int,java.lang.String,double,java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,kotlin.jvm.internal.DefaultConstructorMarker);
+}
+
+-if class com.cdccreditsmart.network.api.InstallmentsResponse
+-keepnames class com.cdccreditsmart.network.api.InstallmentsResponse
+-if class com.cdccreditsmart.network.api.InstallmentsResponse
+-keep class com.cdccreditsmart.network.api.InstallmentsResponseJsonAdapter {
+    public <init>(com.squareup.moshi.Moshi);
+}
+
+-if class com.cdccreditsmart.network.api.LegacyPaymentRequest
+-keepnames class com.cdccreditsmart.network.api.LegacyPaymentRequest
+-if class com.cdccreditsmart.network.api.LegacyPaymentRequest
+-keep class com.cdccreditsmart.network.api.LegacyPaymentRequestJsonAdapter {
+    public <init>(com.squareup.moshi.Moshi);
+}
+
+-if class com.cdccreditsmart.network.api.LegacyPaymentResponse
+-keepnames class com.cdccreditsmart.network.api.LegacyPaymentResponse
+-if class com.cdccreditsmart.network.api.LegacyPaymentResponse
+-keep class com.cdccreditsmart.network.api.LegacyPaymentResponseJsonAdapter {
+    public <init>(com.squareup.moshi.Moshi);
+}
+
+-if class com.cdccreditsmart.network.api.Location
+-keepnames class com.cdccreditsmart.network.api.Location
+-if class com.cdccreditsmart.network.api.Location
+-keep class com.cdccreditsmart.network.api.LocationJsonAdapter {
+    public <init>(com.squareup.moshi.Moshi);
+}
+-if class com.cdccreditsmart.network.api.Location
+-keepnames class kotlin.jvm.internal.DefaultConstructorMarker
+-if class com.cdccreditsmart.network.api.Location
+-keepclassmembers class com.cdccreditsmart.network.api.Location {
+    public synthetic <init>(double,double,java.lang.Float,int,kotlin.jvm.internal.DefaultConstructorMarker);
+}
+
+-if class com.cdccreditsmart.network.api.LocationData
+-keepnames class com.cdccreditsmart.network.api.LocationData
+-if class com.cdccreditsmart.network.api.LocationData
+-keep class com.cdccreditsmart.network.api.LocationDataJsonAdapter {
+    public <init>(com.squareup.moshi.Moshi);
+}
+-if class com.cdccreditsmart.network.api.LocationData
+-keepnames class kotlin.jvm.internal.DefaultConstructorMarker
+-if class com.cdccreditsmart.network.api.LocationData
+-keepclassmembers class com.cdccreditsmart.network.api.LocationData {
+    public synthetic <init>(double,double,java.lang.Float,long,int,kotlin.jvm.internal.DefaultConstructorMarker);
+}
+
+-if class com.cdccreditsmart.network.api.LoginCredentials
+-keepnames class com.cdccreditsmart.network.api.LoginCredentials
+-if class com.cdccreditsmart.network.api.LoginCredentials
+-keep class com.cdccreditsmart.network.api.LoginCredentialsJsonAdapter {
+    public <init>(com.squareup.moshi.Moshi);
+}
+-if class com.cdccreditsmart.network.api.LoginCredentials
+-keepnames class kotlin.jvm.internal.DefaultConstructorMarker
+-if class com.cdccreditsmart.network.api.LoginCredentials
+-keepclassmembers class com.cdccreditsmart.network.api.LoginCredentials {
+    public synthetic <init>(java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,kotlin.jvm.internal.DefaultConstructorMarker);
+}
+
+-if class com.cdccreditsmart.network.api.LoginRequest
+-keepnames class com.cdccreditsmart.network.api.LoginRequest
+-if class com.cdccreditsmart.network.api.LoginRequest
+-keep class com.cdccreditsmart.network.api.LoginRequestJsonAdapter {
+    public <init>(com.squareup.moshi.Moshi);
+}
+-if class com.cdccreditsmart.network.api.LoginRequest
+-keepnames class kotlin.jvm.internal.DefaultConstructorMarker
+-if class com.cdccreditsmart.network.api.LoginRequest
+-keepclassmembers class com.cdccreditsmart.network.api.LoginRequest {
+    public synthetic <init>(java.lang.String,java.lang.String,java.lang.String,com.cdccreditsmart.network.api.DeviceAttestation,com.cdccreditsmart.network.api.LoginCredentials,int,kotlin.jvm.internal.DefaultConstructorMarker);
+}
+
+-if class com.cdccreditsmart.network.api.LogoutRequest
+-keepnames class com.cdccreditsmart.network.api.LogoutRequest
+-if class com.cdccreditsmart.network.api.LogoutRequest
+-keep class com.cdccreditsmart.network.api.LogoutRequestJsonAdapter {
+    public <init>(com.squareup.moshi.Moshi);
+}
+-if class com.cdccreditsmart.network.api.LogoutRequest
+-keepnames class kotlin.jvm.internal.DefaultConstructorMarker
+-if class com.cdccreditsmart.network.api.LogoutRequest
+-keepclassmembers class com.cdccreditsmart.network.api.LogoutRequest {
+    public synthetic <init>(java.lang.String,boolean,int,kotlin.jvm.internal.DefaultConstructorMarker);
+}
+
+-if class com.cdccreditsmart.network.api.PaymentConfirmationRequest
+-keepnames class com.cdccreditsmart.network.api.PaymentConfirmationRequest
+-if class com.cdccreditsmart.network.api.PaymentConfirmationRequest
+-keep class com.cdccreditsmart.network.api.PaymentConfirmationRequestJsonAdapter {
+    public <init>(com.squareup.moshi.Moshi);
+}
+-if class com.cdccreditsmart.network.api.PaymentConfirmationRequest
+-keepnames class kotlin.jvm.internal.DefaultConstructorMarker
+-if class com.cdccreditsmart.network.api.PaymentConfirmationRequest
+-keepclassmembers class com.cdccreditsmart.network.api.PaymentConfirmationRequest {
+    public synthetic <init>(java.lang.String,java.lang.String,double,long,int,kotlin.jvm.internal.DefaultConstructorMarker);
+}
+
+-if class com.cdccreditsmart.network.api.PaymentConfirmationResponse
+-keepnames class com.cdccreditsmart.network.api.PaymentConfirmationResponse
+-if class com.cdccreditsmart.network.api.PaymentConfirmationResponse
+-keep class com.cdccreditsmart.network.api.PaymentConfirmationResponseJsonAdapter {
+    public <init>(com.squareup.moshi.Moshi);
+}
+
+-if class com.cdccreditsmart.network.api.PaymentHistoryItem
+-keepnames class com.cdccreditsmart.network.api.PaymentHistoryItem
+-if class com.cdccreditsmart.network.api.PaymentHistoryItem
+-keep class com.cdccreditsmart.network.api.PaymentHistoryItemJsonAdapter {
+    public <init>(com.squareup.moshi.Moshi);
+}
+
+-if class com.cdccreditsmart.network.api.PaymentHistoryResponse
+-keepnames class com.cdccreditsmart.network.api.PaymentHistoryResponse
+-if class com.cdccreditsmart.network.api.PaymentHistoryResponse
+-keep class com.cdccreditsmart.network.api.PaymentHistoryResponseJsonAdapter {
+    public <init>(com.squareup.moshi.Moshi);
+}
+
+-if class com.cdccreditsmart.network.api.PaymentScheduleItem
+-keepnames class com.cdccreditsmart.network.api.PaymentScheduleItem
+-if class com.cdccreditsmart.network.api.PaymentScheduleItem
+-keep class com.cdccreditsmart.network.api.PaymentScheduleItemJsonAdapter {
+    public <init>(com.squareup.moshi.Moshi);
+}
+
+-if class com.cdccreditsmart.network.api.PaymentStatusResponse
+-keepnames class com.cdccreditsmart.network.api.PaymentStatusResponse
+-if class com.cdccreditsmart.network.api.PaymentStatusResponse
+-keep class com.cdccreditsmart.network.api.PaymentStatusResponseJsonAdapter {
+    public <init>(com.squareup.moshi.Moshi);
+}
+-if class com.cdccreditsmart.network.api.PaymentStatusResponse
+-keepnames class kotlin.jvm.internal.DefaultConstructorMarker
+-if class com.cdccreditsmart.network.api.PaymentStatusResponse
+-keepclassmembers class com.cdccreditsmart.network.api.PaymentStatusResponse {
+    public synthetic <init>(java.lang.String,java.lang.String,java.lang.String,double,java.lang.String,long,java.lang.Long,java.lang.String,java.lang.String,int,kotlin.jvm.internal.DefaultConstructorMarker);
+}
+
+-if class com.cdccreditsmart.network.api.PaymentSummary
+-keepnames class com.cdccreditsmart.network.api.PaymentSummary
+-if class com.cdccreditsmart.network.api.PaymentSummary
+-keep class com.cdccreditsmart.network.api.PaymentSummaryJsonAdapter {
+    public <init>(com.squareup.moshi.Moshi);
+}
+
+-if class com.cdccreditsmart.network.api.PixPaymentResponse
+-keepnames class com.cdccreditsmart.network.api.PixPaymentResponse
+-if class com.cdccreditsmart.network.api.PixPaymentResponse
+-keep class com.cdccreditsmart.network.api.PixPaymentResponseJsonAdapter {
+    public <init>(com.squareup.moshi.Moshi);
+}
+
+-if class com.cdccreditsmart.network.api.ProvisioningQrResponse
+-keepnames class com.cdccreditsmart.network.api.ProvisioningQrResponse
+-if class com.cdccreditsmart.network.api.ProvisioningQrResponse
+-keep class com.cdccreditsmart.network.api.ProvisioningQrResponseJsonAdapter {
+    public <init>(com.squareup.moshi.Moshi);
+}
+-if class com.cdccreditsmart.network.api.ProvisioningQrResponse
+-keepnames class kotlin.jvm.internal.DefaultConstructorMarker
+-if class com.cdccreditsmart.network.api.ProvisioningQrResponse
+-keepclassmembers class com.cdccreditsmart.network.api.ProvisioningQrResponse {
+    public synthetic <init>(boolean,java.lang.String,java.lang.String,java.lang.String,java.lang.Long,java.lang.String,int,kotlin.jvm.internal.DefaultConstructorMarker);
+}
+
+-if class com.cdccreditsmart.network.api.RefreshTokenRequest
+-keepnames class com.cdccreditsmart.network.api.RefreshTokenRequest
+-if class com.cdccreditsmart.network.api.RefreshTokenRequest
+-keep class com.cdccreditsmart.network.api.RefreshTokenRequestJsonAdapter {
+    public <init>(com.squareup.moshi.Moshi);
+}
+
+-if class com.cdccreditsmart.network.api.SystemInfo
+-keepnames class com.cdccreditsmart.network.api.SystemInfo
+-if class com.cdccreditsmart.network.api.SystemInfo
+-keep class com.cdccreditsmart.network.api.SystemInfoJsonAdapter {
+    public <init>(com.squareup.moshi.Moshi);
+}
+-if class com.cdccreditsmart.network.api.SystemInfo
+-keepnames class kotlin.jvm.internal.DefaultConstructorMarker
+-if class com.cdccreditsmart.network.api.SystemInfo
+-keepclassmembers class com.cdccreditsmart.network.api.SystemInfo {
+    public synthetic <init>(java.lang.Long,java.lang.Long,java.lang.Long,java.lang.Long,java.lang.Float,java.lang.String,int,kotlin.jvm.internal.DefaultConstructorMarker);
+}
+
+-if class com.cdccreditsmart.network.api.TimeRange
+-keepnames class com.cdccreditsmart.network.api.TimeRange
+-if class com.cdccreditsmart.network.api.TimeRange
+-keep class com.cdccreditsmart.network.api.TimeRangeJsonAdapter {
+    public <init>(com.squareup.moshi.Moshi);
+}
+-if class com.cdccreditsmart.network.api.TimeRange
+-keepnames class kotlin.jvm.internal.DefaultConstructorMarker
+-if class com.cdccreditsmart.network.api.TimeRange
+-keepclassmembers class com.cdccreditsmart.network.api.TimeRange {
+    public synthetic <init>(int,int,java.lang.String,int,kotlin.jvm.internal.DefaultConstructorMarker);
+}
+
+-if class com.cdccreditsmart.network.api.TokenValidationResponse
+-keepnames class com.cdccreditsmart.network.api.TokenValidationResponse
+-if class com.cdccreditsmart.network.api.TokenValidationResponse
+-keep class com.cdccreditsmart.network.api.TokenValidationResponseJsonAdapter {
+    public <init>(com.squareup.moshi.Moshi);
+}
+-if class com.cdccreditsmart.network.api.TokenValidationResponse
+-keepnames class kotlin.jvm.internal.DefaultConstructorMarker
+-if class com.cdccreditsmart.network.api.TokenValidationResponse
+-keepclassmembers class com.cdccreditsmart.network.api.TokenValidationResponse {
+    public synthetic <init>(boolean,java.lang.String,java.lang.String,java.lang.String,long,com.cdccreditsmart.network.api.UserInfo,int,kotlin.jvm.internal.DefaultConstructorMarker);
+}
+
+-if class com.cdccreditsmart.network.api.UninstallPaymentInfo
+-keepnames class com.cdccreditsmart.network.api.UninstallPaymentInfo
+-if class com.cdccreditsmart.network.api.UninstallPaymentInfo
+-keep class com.cdccreditsmart.network.api.UninstallPaymentInfoJsonAdapter {
+    public <init>(com.squareup.moshi.Moshi);
+}
+-if class com.cdccreditsmart.network.api.UninstallPaymentInfo
+-keepnames class kotlin.jvm.internal.DefaultConstructorMarker
+-if class com.cdccreditsmart.network.api.UninstallPaymentInfo
+-keepclassmembers class com.cdccreditsmart.network.api.UninstallPaymentInfo {
+    public synthetic <init>(int,int,java.lang.Integer,boolean,int,kotlin.jvm.internal.DefaultConstructorMarker);
+}
+
+-if class com.cdccreditsmart.network.api.UninstallRequest
+-keepnames class com.cdccreditsmart.network.api.UninstallRequest
+-if class com.cdccreditsmart.network.api.UninstallRequest
+-keep class com.cdccreditsmart.network.api.UninstallRequestJsonAdapter {
+    public <init>(com.squareup.moshi.Moshi);
+}
+
+-if class com.cdccreditsmart.network.api.UninstallResponse
+-keepnames class com.cdccreditsmart.network.api.UninstallResponse
+-if class com.cdccreditsmart.network.api.UninstallResponse
+-keep class com.cdccreditsmart.network.api.UninstallResponseJsonAdapter {
+    public <init>(com.squareup.moshi.Moshi);
+}
+-if class com.cdccreditsmart.network.api.UninstallResponse
+-keepnames class kotlin.jvm.internal.DefaultConstructorMarker
+-if class com.cdccreditsmart.network.api.UninstallResponse
+-keepclassmembers class com.cdccreditsmart.network.api.UninstallResponse {
+    public synthetic <init>(boolean,java.lang.String,java.lang.String,java.lang.String,java.lang.String,com.cdccreditsmart.network.api.UninstallPaymentInfo,java.lang.Boolean,java.lang.Boolean,int,kotlin.jvm.internal.DefaultConstructorMarker);
+}
+
+-if class com.cdccreditsmart.network.api.UpdateReportRequest
+-keepnames class com.cdccreditsmart.network.api.UpdateReportRequest
+-if class com.cdccreditsmart.network.api.UpdateReportRequest
+-keep class com.cdccreditsmart.network.api.UpdateReportRequestJsonAdapter {
+    public <init>(com.squareup.moshi.Moshi);
+}
+-if class com.cdccreditsmart.network.api.UpdateReportRequest
+-keepnames class kotlin.jvm.internal.DefaultConstructorMarker
+-if class com.cdccreditsmart.network.api.UpdateReportRequest
+-keepclassmembers class com.cdccreditsmart.network.api.UpdateReportRequest {
+    public synthetic <init>(java.lang.String,java.lang.String,java.lang.String,java.lang.String,long,int,kotlin.jvm.internal.DefaultConstructorMarker);
+}
+
+-if class com.cdccreditsmart.network.api.UserInfo
+-keepnames class com.cdccreditsmart.network.api.UserInfo
+-if class com.cdccreditsmart.network.api.UserInfo
+-keep class com.cdccreditsmart.network.api.UserInfoJsonAdapter {
+    public <init>(com.squareup.moshi.Moshi);
+}
+
+-if class com.cdccreditsmart.network.dto.AuthErrorResponse
+-keepnames class com.cdccreditsmart.network.dto.AuthErrorResponse
+-if class com.cdccreditsmart.network.dto.AuthErrorResponse
+-keep class com.cdccreditsmart.network.dto.AuthErrorResponseJsonAdapter {
+    public <init>(com.squareup.moshi.Moshi);
+}
+-if class com.cdccreditsmart.network.dto.AuthErrorResponse
+-keepnames class kotlin.jvm.internal.DefaultConstructorMarker
+-if class com.cdccreditsmart.network.dto.AuthErrorResponse
+-keepclassmembers class com.cdccreditsmart.network.dto.AuthErrorResponse {
+    public synthetic <init>(java.lang.String,java.lang.String,java.lang.Integer,boolean,long,int,kotlin.jvm.internal.DefaultConstructorMarker);
+}
+
+-if class com.cdccreditsmart.network.dto.CdcError
+-keepnames class com.cdccreditsmart.network.dto.CdcError
+-if class com.cdccreditsmart.network.dto.CdcError
+-keep class com.cdccreditsmart.network.dto.CdcErrorJsonAdapter {
+    public <init>(com.squareup.moshi.Moshi);
+}
+-if class com.cdccreditsmart.network.dto.CdcError
+-keepnames class kotlin.jvm.internal.DefaultConstructorMarker
+-if class com.cdccreditsmart.network.dto.CdcError
+-keepclassmembers class com.cdccreditsmart.network.dto.CdcError {
+    public synthetic <init>(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.List,int,kotlin.jvm.internal.DefaultConstructorMarker);
+}
+
+-if class com.cdccreditsmart.network.dto.CdcErrorResponse
+-keepnames class com.cdccreditsmart.network.dto.CdcErrorResponse
+-if class com.cdccreditsmart.network.dto.CdcErrorResponse
+-keep class com.cdccreditsmart.network.dto.CdcErrorResponseJsonAdapter {
+    public <init>(com.squareup.moshi.Moshi);
+}
+-if class com.cdccreditsmart.network.dto.CdcErrorResponse
+-keepnames class kotlin.jvm.internal.DefaultConstructorMarker
+-if class com.cdccreditsmart.network.dto.CdcErrorResponse
+-keepclassmembers class com.cdccreditsmart.network.dto.CdcErrorResponse {
+    public synthetic <init>(com.cdccreditsmart.network.dto.CdcError,long,java.lang.String,java.lang.String,int,kotlin.jvm.internal.DefaultConstructorMarker);
+}
+
+-if class com.cdccreditsmart.network.dto.MaintenanceErrorResponse
+-keepnames class com.cdccreditsmart.network.dto.MaintenanceErrorResponse
+-if class com.cdccreditsmart.network.dto.MaintenanceErrorResponse
+-keep class com.cdccreditsmart.network.dto.MaintenanceErrorResponseJsonAdapter {
+    public <init>(com.squareup.moshi.Moshi);
+}
+-if class com.cdccreditsmart.network.dto.MaintenanceErrorResponse
+-keepnames class kotlin.jvm.internal.DefaultConstructorMarker
+-if class com.cdccreditsmart.network.dto.MaintenanceErrorResponse
+-keepclassmembers class com.cdccreditsmart.network.dto.MaintenanceErrorResponse {
+    public synthetic <init>(java.lang.String,java.lang.String,com.cdccreditsmart.network.dto.MaintenanceWindow,long,int,kotlin.jvm.internal.DefaultConstructorMarker);
+}
+
+-if class com.cdccreditsmart.network.dto.MaintenanceWindow
+-keepnames class com.cdccreditsmart.network.dto.MaintenanceWindow
+-if class com.cdccreditsmart.network.dto.MaintenanceWindow
+-keep class com.cdccreditsmart.network.dto.MaintenanceWindowJsonAdapter {
+    public <init>(com.squareup.moshi.Moshi);
+}
+
+-if class com.cdccreditsmart.network.dto.NetworkErrorResponse
+-keepnames class com.cdccreditsmart.network.dto.NetworkErrorResponse
+-if class com.cdccreditsmart.network.dto.NetworkErrorResponse
+-keep class com.cdccreditsmart.network.dto.NetworkErrorResponseJsonAdapter {
+    public <init>(com.squareup.moshi.Moshi);
+}
+-if class com.cdccreditsmart.network.dto.NetworkErrorResponse
+-keepnames class kotlin.jvm.internal.DefaultConstructorMarker
+-if class com.cdccreditsmart.network.dto.NetworkErrorResponse
+-keepclassmembers class com.cdccreditsmart.network.dto.NetworkErrorResponse {
+    public synthetic <init>(java.lang.String,java.lang.String,boolean,java.lang.Long,long,int,kotlin.jvm.internal.DefaultConstructorMarker);
+}
+
+-if class com.cdccreditsmart.network.dto.RateLimitErrorResponse
+-keepnames class com.cdccreditsmart.network.dto.RateLimitErrorResponse
+-if class com.cdccreditsmart.network.dto.RateLimitErrorResponse
+-keep class com.cdccreditsmart.network.dto.RateLimitErrorResponseJsonAdapter {
+    public <init>(com.squareup.moshi.Moshi);
+}
+-if class com.cdccreditsmart.network.dto.RateLimitErrorResponse
+-keepnames class kotlin.jvm.internal.DefaultConstructorMarker
+-if class com.cdccreditsmart.network.dto.RateLimitErrorResponse
+-keepclassmembers class com.cdccreditsmart.network.dto.RateLimitErrorResponse {
+    public synthetic <init>(java.lang.String,java.lang.String,long,int,int,long,long,int,kotlin.jvm.internal.DefaultConstructorMarker);
+}
+
+-if class com.cdccreditsmart.network.dto.SecurityBlockingPolicy
+-keepnames class com.cdccreditsmart.network.dto.SecurityBlockingPolicy
+-if class com.cdccreditsmart.network.dto.SecurityBlockingPolicy
+-keep class com.cdccreditsmart.network.dto.SecurityBlockingPolicyJsonAdapter {
+    public <init>(com.squareup.moshi.Moshi);
+}
+-if class com.cdccreditsmart.network.dto.SecurityBlockingPolicy
+-keepnames class kotlin.jvm.internal.DefaultConstructorMarker
+-if class com.cdccreditsmart.network.dto.SecurityBlockingPolicy
+-keepclassmembers class com.cdccreditsmart.network.dto.SecurityBlockingPolicy {
+    public synthetic <init>(java.lang.String,java.lang.String,java.util.List,java.util.List,java.lang.Long,int,kotlin.jvm.internal.DefaultConstructorMarker);
+}
+
+-if class com.cdccreditsmart.network.dto.SecurityErrorResponse
+-keepnames class com.cdccreditsmart.network.dto.SecurityErrorResponse
+-if class com.cdccreditsmart.network.dto.SecurityErrorResponse
+-keep class com.cdccreditsmart.network.dto.SecurityErrorResponseJsonAdapter {
+    public <init>(com.squareup.moshi.Moshi);
+}
+-if class com.cdccreditsmart.network.dto.SecurityErrorResponse
+-keepnames class kotlin.jvm.internal.DefaultConstructorMarker
+-if class com.cdccreditsmart.network.dto.SecurityErrorResponse
+-keepclassmembers class com.cdccreditsmart.network.dto.SecurityErrorResponse {
+    public synthetic <init>(java.lang.String,java.lang.String,java.util.List,com.cdccreditsmart.network.dto.SecurityBlockingPolicy,long,int,kotlin.jvm.internal.DefaultConstructorMarker);
+}
+
+-if class com.cdccreditsmart.network.dto.ValidationError
+-keepnames class com.cdccreditsmart.network.dto.ValidationError
+-if class com.cdccreditsmart.network.dto.ValidationError
+-keep class com.cdccreditsmart.network.dto.ValidationErrorJsonAdapter {
+    public <init>(com.squareup.moshi.Moshi);
+}
+-if class com.cdccreditsmart.network.dto.ValidationError
+-keepnames class kotlin.jvm.internal.DefaultConstructorMarker
+-if class com.cdccreditsmart.network.dto.ValidationError
+-keepclassmembers class com.cdccreditsmart.network.dto.ValidationError {
+    public synthetic <init>(java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,kotlin.jvm.internal.DefaultConstructorMarker);
+}
+
+-if class com.cdccreditsmart.network.dto.cdc.AddressInfo
+-keepnames class com.cdccreditsmart.network.dto.cdc.AddressInfo
+-if class com.cdccreditsmart.network.dto.cdc.AddressInfo
+-keep class com.cdccreditsmart.network.dto.cdc.AddressInfoJsonAdapter {
+    public <init>(com.squareup.moshi.Moshi);
+}
+-if class com.cdccreditsmart.network.dto.cdc.AddressInfo
+-keepnames class kotlin.jvm.internal.DefaultConstructorMarker
+-if class com.cdccreditsmart.network.dto.cdc.AddressInfo
+-keepclassmembers class com.cdccreditsmart.network.dto.cdc.AddressInfo {
+    public synthetic <init>(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,kotlin.jvm.internal.DefaultConstructorMarker);
+}
+
+-if class com.cdccreditsmart.network.dto.cdc.AppInfo
+-keepnames class com.cdccreditsmart.network.dto.cdc.AppInfo
+-if class com.cdccreditsmart.network.dto.cdc.AppInfo
+-keep class com.cdccreditsmart.network.dto.cdc.AppInfoJsonAdapter {
+    public <init>(com.squareup.moshi.Moshi);
+}
+
+-if class com.cdccreditsmart.network.dto.cdc.AppMetricsInfo
+-keepnames class com.cdccreditsmart.network.dto.cdc.AppMetricsInfo
+-if class com.cdccreditsmart.network.dto.cdc.AppMetricsInfo
+-keep class com.cdccreditsmart.network.dto.cdc.AppMetricsInfoJsonAdapter {
+    public <init>(com.squareup.moshi.Moshi);
+}
+-if class com.cdccreditsmart.network.dto.cdc.AppMetricsInfo
+-keepnames class kotlin.jvm.internal.DefaultConstructorMarker
+-if class com.cdccreditsmart.network.dto.cdc.AppMetricsInfo
+-keepclassmembers class com.cdccreditsmart.network.dto.cdc.AppMetricsInfo {
+    public synthetic <init>(java.lang.String,int,int,int,java.lang.Long,com.cdccreditsmart.network.dto.cdc.PerformanceMetrics,int,kotlin.jvm.internal.DefaultConstructorMarker);
+}
+
+-if class com.cdccreditsmart.network.dto.cdc.AutoSyncRequest
+-keepnames class com.cdccreditsmart.network.dto.cdc.AutoSyncRequest
+-if class com.cdccreditsmart.network.dto.cdc.AutoSyncRequest
+-keep class com.cdccreditsmart.network.dto.cdc.AutoSyncRequestJsonAdapter {
+    public <init>(com.squareup.moshi.Moshi);
+}
+-if class com.cdccreditsmart.network.dto.cdc.AutoSyncRequest
+-keepnames class kotlin.jvm.internal.DefaultConstructorMarker
+-if class com.cdccreditsmart.network.dto.cdc.AutoSyncRequest
+-keepclassmembers class com.cdccreditsmart.network.dto.cdc.AutoSyncRequest {
+    public synthetic <init>(java.lang.String,java.lang.String,int,kotlin.jvm.internal.DefaultConstructorMarker);
+}
+
+-if class com.cdccreditsmart.network.dto.cdc.AutoSyncResponse
+-keepnames class com.cdccreditsmart.network.dto.cdc.AutoSyncResponse
+-if class com.cdccreditsmart.network.dto.cdc.AutoSyncResponse
+-keep class com.cdccreditsmart.network.dto.cdc.AutoSyncResponseJsonAdapter {
+    public <init>(com.squareup.moshi.Moshi);
+}
+-if class com.cdccreditsmart.network.dto.cdc.AutoSyncResponse
+-keepnames class kotlin.jvm.internal.DefaultConstructorMarker
+-if class com.cdccreditsmart.network.dto.cdc.AutoSyncResponse
+-keepclassmembers class com.cdccreditsmart.network.dto.cdc.AutoSyncResponse {
+    public synthetic <init>(boolean,boolean,java.lang.String,java.lang.String,java.lang.String,java.lang.String,long,java.lang.Long,int,kotlin.jvm.internal.DefaultConstructorMarker);
+}
+
+-if class com.cdccreditsmart.network.dto.cdc.BlockingStatus
+-keepnames class com.cdccreditsmart.network.dto.cdc.BlockingStatus
+-if class com.cdccreditsmart.network.dto.cdc.BlockingStatus
+-keep class com.cdccreditsmart.network.dto.cdc.BlockingStatusJsonAdapter {
+    public <init>(com.squareup.moshi.Moshi);
+}
+-if class com.cdccreditsmart.network.dto.cdc.BlockingStatus
+-keepnames class kotlin.jvm.internal.DefaultConstructorMarker
+-if class com.cdccreditsmart.network.dto.cdc.BlockingStatus
+-keepclassmembers class com.cdccreditsmart.network.dto.cdc.BlockingStatus {
+    public synthetic <init>(boolean,java.lang.String,java.lang.String,java.lang.Long,java.util.List,java.util.List,java.util.List,int,kotlin.jvm.internal.DefaultConstructorMarker);
+}
+
+-if class com.cdccreditsmart.network.dto.cdc.BoletoBank
+-keepnames class com.cdccreditsmart.network.dto.cdc.BoletoBank
+-if class com.cdccreditsmart.network.dto.cdc.BoletoBank
+-keep class com.cdccreditsmart.network.dto.cdc.BoletoBankJsonAdapter {
+    public <init>(com.squareup.moshi.Moshi);
+}
+-if class com.cdccreditsmart.network.dto.cdc.BoletoBank
+-keepnames class kotlin.jvm.internal.DefaultConstructorMarker
+-if class com.cdccreditsmart.network.dto.cdc.BoletoBank
+-keepclassmembers class com.cdccreditsmart.network.dto.cdc.BoletoBank {
+    public synthetic <init>(java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,kotlin.jvm.internal.DefaultConstructorMarker);
+}
+
+-if class com.cdccreditsmart.network.dto.cdc.CdcBoletoPaymentRequest
+-keepnames class com.cdccreditsmart.network.dto.cdc.CdcBoletoPaymentRequest
+-if class com.cdccreditsmart.network.dto.cdc.CdcBoletoPaymentRequest
+-keep class com.cdccreditsmart.network.dto.cdc.CdcBoletoPaymentRequestJsonAdapter {
+    public <init>(com.squareup.moshi.Moshi);
+}
+-if class com.cdccreditsmart.network.dto.cdc.CdcBoletoPaymentRequest
+-keepnames class kotlin.jvm.internal.DefaultConstructorMarker
+-if class com.cdccreditsmart.network.dto.cdc.CdcBoletoPaymentRequest
+-keepclassmembers class com.cdccreditsmart.network.dto.cdc.CdcBoletoPaymentRequest {
+    public synthetic <init>(java.lang.Double,java.lang.String,java.lang.String,java.util.List,int,kotlin.jvm.internal.DefaultConstructorMarker);
+}
+
+-if class com.cdccreditsmart.network.dto.cdc.CdcBoletoPaymentResponse
+-keepnames class com.cdccreditsmart.network.dto.cdc.CdcBoletoPaymentResponse
+-if class com.cdccreditsmart.network.dto.cdc.CdcBoletoPaymentResponse
+-keep class com.cdccreditsmart.network.dto.cdc.CdcBoletoPaymentResponseJsonAdapter {
+    public <init>(com.squareup.moshi.Moshi);
+}
+-if class com.cdccreditsmart.network.dto.cdc.CdcBoletoPaymentResponse
+-keepnames class kotlin.jvm.internal.DefaultConstructorMarker
+-if class com.cdccreditsmart.network.dto.cdc.CdcBoletoPaymentResponse
+-keepclassmembers class com.cdccreditsmart.network.dto.cdc.CdcBoletoPaymentResponse {
+    public synthetic <init>(boolean,java.lang.String,java.lang.String,java.lang.String,java.lang.String,double,java.lang.String,java.lang.String,com.cdccreditsmart.network.dto.cdc.BoletoBank,java.lang.String,long,int,kotlin.jvm.internal.DefaultConstructorMarker);
+}
+
+-if class com.cdccreditsmart.network.dto.cdc.CdcCommandResponseRequest
+-keepnames class com.cdccreditsmart.network.dto.cdc.CdcCommandResponseRequest
+-if class com.cdccreditsmart.network.dto.cdc.CdcCommandResponseRequest
+-keep class com.cdccreditsmart.network.dto.cdc.CdcCommandResponseRequestJsonAdapter {
+    public <init>(com.squareup.moshi.Moshi);
+}
+-if class com.cdccreditsmart.network.dto.cdc.CdcCommandResponseRequest
+-keepnames class kotlin.jvm.internal.DefaultConstructorMarker
+-if class com.cdccreditsmart.network.dto.cdc.CdcCommandResponseRequest
+-keepclassmembers class com.cdccreditsmart.network.dto.cdc.CdcCommandResponseRequest {
+    public synthetic <init>(java.lang.String,java.lang.String,com.cdccreditsmart.network.dto.cdc.CommandResult,long,com.cdccreditsmart.network.dto.cdc.ErrorDetails,int,kotlin.jvm.internal.DefaultConstructorMarker);
+}
+
+-if class com.cdccreditsmart.network.dto.cdc.CdcCommandResponseResponse
+-keepnames class com.cdccreditsmart.network.dto.cdc.CdcCommandResponseResponse
+-if class com.cdccreditsmart.network.dto.cdc.CdcCommandResponseResponse
+-keep class com.cdccreditsmart.network.dto.cdc.CdcCommandResponseResponseJsonAdapter {
+    public <init>(com.squareup.moshi.Moshi);
+}
+-if class com.cdccreditsmart.network.dto.cdc.CdcCommandResponseResponse
+-keepnames class kotlin.jvm.internal.DefaultConstructorMarker
+-if class com.cdccreditsmart.network.dto.cdc.CdcCommandResponseResponse
+-keepclassmembers class com.cdccreditsmart.network.dto.cdc.CdcCommandResponseResponse {
+    public synthetic <init>(boolean,boolean,java.lang.String,com.cdccreditsmart.network.dto.cdc.DeviceCommand,java.lang.String,long,int,kotlin.jvm.internal.DefaultConstructorMarker);
+}
+
+-if class com.cdccreditsmart.network.dto.cdc.CdcCommandsResponse
+-keepnames class com.cdccreditsmart.network.dto.cdc.CdcCommandsResponse
+-if class com.cdccreditsmart.network.dto.cdc.CdcCommandsResponse
+-keep class com.cdccreditsmart.network.dto.cdc.CdcCommandsResponseJsonAdapter {
+    public <init>(com.squareup.moshi.Moshi);
+}
+-if class com.cdccreditsmart.network.dto.cdc.CdcCommandsResponse
+-keepnames class kotlin.jvm.internal.DefaultConstructorMarker
+-if class com.cdccreditsmart.network.dto.cdc.CdcCommandsResponse
+-keepclassmembers class com.cdccreditsmart.network.dto.cdc.CdcCommandsResponse {
+    public synthetic <init>(boolean,java.util.List,int,java.lang.String,java.lang.String,long,java.lang.String,int,kotlin.jvm.internal.DefaultConstructorMarker);
+}
+
+-if class com.cdccreditsmart.network.dto.cdc.CdcDeviceRegisterInfoRequest
+-keepnames class com.cdccreditsmart.network.dto.cdc.CdcDeviceRegisterInfoRequest
+-if class com.cdccreditsmart.network.dto.cdc.CdcDeviceRegisterInfoRequest
+-keep class com.cdccreditsmart.network.dto.cdc.CdcDeviceRegisterInfoRequestJsonAdapter {
+    public <init>(com.squareup.moshi.Moshi);
+}
+
+-if class com.cdccreditsmart.network.dto.cdc.CdcDeviceRegisterInfoResponse
+-keepnames class com.cdccreditsmart.network.dto.cdc.CdcDeviceRegisterInfoResponse
+-if class com.cdccreditsmart.network.dto.cdc.CdcDeviceRegisterInfoResponse
+-keep class com.cdccreditsmart.network.dto.cdc.CdcDeviceRegisterInfoResponseJsonAdapter {
+    public <init>(com.squareup.moshi.Moshi);
+}
+-if class com.cdccreditsmart.network.dto.cdc.CdcDeviceRegisterInfoResponse
+-keepnames class kotlin.jvm.internal.DefaultConstructorMarker
+-if class com.cdccreditsmart.network.dto.cdc.CdcDeviceRegisterInfoResponse
+-keepclassmembers class com.cdccreditsmart.network.dto.cdc.CdcDeviceRegisterInfoResponse {
+    public synthetic <init>(boolean,boolean,java.lang.String,java.lang.String,java.lang.String,long,int,kotlin.jvm.internal.DefaultConstructorMarker);
+}
+
+-if class com.cdccreditsmart.network.dto.cdc.CdcDeviceStatusResponse
+-keepnames class com.cdccreditsmart.network.dto.cdc.CdcDeviceStatusResponse
+-if class com.cdccreditsmart.network.dto.cdc.CdcDeviceStatusResponse
+-keep class com.cdccreditsmart.network.dto.cdc.CdcDeviceStatusResponseJsonAdapter {
+    public <init>(com.squareup.moshi.Moshi);
+}
+-if class com.cdccreditsmart.network.dto.cdc.CdcDeviceStatusResponse
+-keepnames class kotlin.jvm.internal.DefaultConstructorMarker
+-if class com.cdccreditsmart.network.dto.cdc.CdcDeviceStatusResponse
+-keepclassmembers class com.cdccreditsmart.network.dto.cdc.CdcDeviceStatusResponse {
+    public synthetic <init>(boolean,com.cdccreditsmart.network.dto.cdc.DeviceInfo,com.cdccreditsmart.network.dto.cdc.ContractInfo,com.cdccreditsmart.network.dto.cdc.BlockingStatus,long,long,java.lang.String,int,kotlin.jvm.internal.DefaultConstructorMarker);
+}
+
+-if class com.cdccreditsmart.network.dto.cdc.CdcDeviceSyncRequest
+-keepnames class com.cdccreditsmart.network.dto.cdc.CdcDeviceSyncRequest
+-if class com.cdccreditsmart.network.dto.cdc.CdcDeviceSyncRequest
+-keep class com.cdccreditsmart.network.dto.cdc.CdcDeviceSyncRequestJsonAdapter {
+    public <init>(com.squareup.moshi.Moshi);
+}
+-if class com.cdccreditsmart.network.dto.cdc.CdcDeviceSyncRequest
+-keepnames class kotlin.jvm.internal.DefaultConstructorMarker
+-if class com.cdccreditsmart.network.dto.cdc.CdcDeviceSyncRequest
+-keepclassmembers class com.cdccreditsmart.network.dto.cdc.CdcDeviceSyncRequest {
+    public synthetic <init>(long,boolean,java.util.List,int,kotlin.jvm.internal.DefaultConstructorMarker);
+}
+
+-if class com.cdccreditsmart.network.dto.cdc.CdcDeviceSyncResponse
+-keepnames class com.cdccreditsmart.network.dto.cdc.CdcDeviceSyncResponse
+-if class com.cdccreditsmart.network.dto.cdc.CdcDeviceSyncResponse
+-keep class com.cdccreditsmart.network.dto.cdc.CdcDeviceSyncResponseJsonAdapter {
+    public <init>(com.squareup.moshi.Moshi);
+}
+-if class com.cdccreditsmart.network.dto.cdc.CdcDeviceSyncResponse
+-keepnames class kotlin.jvm.internal.DefaultConstructorMarker
+-if class com.cdccreditsmart.network.dto.cdc.CdcDeviceSyncResponse
+-keepclassmembers class com.cdccreditsmart.network.dto.cdc.CdcDeviceSyncResponse {
+    public synthetic <init>(boolean,boolean,long,java.util.Map,java.lang.String,int,kotlin.jvm.internal.DefaultConstructorMarker);
+}
+
+-if class com.cdccreditsmart.network.dto.cdc.CdcHeartbeatRequest
+-keepnames class com.cdccreditsmart.network.dto.cdc.CdcHeartbeatRequest
+-if class com.cdccreditsmart.network.dto.cdc.CdcHeartbeatRequest
+-keep class com.cdccreditsmart.network.dto.cdc.CdcHeartbeatRequestJsonAdapter {
+    public <init>(com.squareup.moshi.Moshi);
+}
+-if class com.cdccreditsmart.network.dto.cdc.CdcHeartbeatRequest
+-keepnames class kotlin.jvm.internal.DefaultConstructorMarker
+-if class com.cdccreditsmart.network.dto.cdc.CdcHeartbeatRequest
+-keepclassmembers class com.cdccreditsmart.network.dto.cdc.CdcHeartbeatRequest {
+    public synthetic <init>(long,java.lang.String,java.lang.Integer,com.cdccreditsmart.network.dto.cdc.LocationInfo,com.cdccreditsmart.network.dto.cdc.DeviceHealthInfo,com.cdccreditsmart.network.dto.cdc.AppMetricsInfo,int,kotlin.jvm.internal.DefaultConstructorMarker);
+}
+
+-if class com.cdccreditsmart.network.dto.cdc.CdcHeartbeatResponse
+-keepnames class com.cdccreditsmart.network.dto.cdc.CdcHeartbeatResponse
+-if class com.cdccreditsmart.network.dto.cdc.CdcHeartbeatResponse
+-keep class com.cdccreditsmart.network.dto.cdc.CdcHeartbeatResponseJsonAdapter {
+    public <init>(com.squareup.moshi.Moshi);
+}
+-if class com.cdccreditsmart.network.dto.cdc.CdcHeartbeatResponse
+-keepnames class kotlin.jvm.internal.DefaultConstructorMarker
+-if class com.cdccreditsmart.network.dto.cdc.CdcHeartbeatResponse
+-keepclassmembers class com.cdccreditsmart.network.dto.cdc.CdcHeartbeatResponse {
+    public synthetic <init>(boolean,java.lang.String,long,java.lang.Long,java.util.List,java.util.List,java.util.Map,int,kotlin.jvm.internal.DefaultConstructorMarker);
+}
+
+-if class com.cdccreditsmart.network.dto.cdc.CdcInstallmentsResponse
+-keepnames class com.cdccreditsmart.network.dto.cdc.CdcInstallmentsResponse
+-if class com.cdccreditsmart.network.dto.cdc.CdcInstallmentsResponse
+-keep class com.cdccreditsmart.network.dto.cdc.CdcInstallmentsResponseJsonAdapter {
+    public <init>(com.squareup.moshi.Moshi);
+}
+-if class com.cdccreditsmart.network.dto.cdc.CdcInstallmentsResponse
+-keepnames class kotlin.jvm.internal.DefaultConstructorMarker
+-if class com.cdccreditsmart.network.dto.cdc.CdcInstallmentsResponse
+-keepclassmembers class com.cdccreditsmart.network.dto.cdc.CdcInstallmentsResponse {
+    public synthetic <init>(boolean,java.util.List,com.cdccreditsmart.network.dto.cdc.PaymentSummary,com.cdccreditsmart.network.dto.cdc.ContractSummary,java.util.List,long,java.lang.String,int,kotlin.jvm.internal.DefaultConstructorMarker);
+}
+
+-if class com.cdccreditsmart.network.dto.cdc.CdcPendingDecisionsResponse
+-keepnames class com.cdccreditsmart.network.dto.cdc.CdcPendingDecisionsResponse
+-if class com.cdccreditsmart.network.dto.cdc.CdcPendingDecisionsResponse
+-keep class com.cdccreditsmart.network.dto.cdc.CdcPendingDecisionsResponseJsonAdapter {
+    public <init>(com.squareup.moshi.Moshi);
+}
+-if class com.cdccreditsmart.network.dto.cdc.CdcPendingDecisionsResponse
+-keepnames class kotlin.jvm.internal.DefaultConstructorMarker
+-if class com.cdccreditsmart.network.dto.cdc.CdcPendingDecisionsResponse
+-keepclassmembers class com.cdccreditsmart.network.dto.cdc.CdcPendingDecisionsResponse {
+    public synthetic <init>(boolean,java.util.List,int,com.cdccreditsmart.network.dto.cdc.PendingDecision,long,java.lang.String,int,kotlin.jvm.internal.DefaultConstructorMarker);
+}
+
+-if class com.cdccreditsmart.network.dto.cdc.CdcPermissionsRequest
+-keepnames class com.cdccreditsmart.network.dto.cdc.CdcPermissionsRequest
+-if class com.cdccreditsmart.network.dto.cdc.CdcPermissionsRequest
+-keep class com.cdccreditsmart.network.dto.cdc.CdcPermissionsRequestJsonAdapter {
+    public <init>(com.squareup.moshi.Moshi);
+}
+-if class com.cdccreditsmart.network.dto.cdc.CdcPermissionsRequest
+-keepnames class kotlin.jvm.internal.DefaultConstructorMarker
+-if class com.cdccreditsmart.network.dto.cdc.CdcPermissionsRequest
+-keepclassmembers class com.cdccreditsmart.network.dto.cdc.CdcPermissionsRequest {
+    public synthetic <init>(java.util.List,java.lang.String,java.lang.String,int,kotlin.jvm.internal.DefaultConstructorMarker);
+}
+
+-if class com.cdccreditsmart.network.dto.cdc.CdcPermissionsResponse
+-keepnames class com.cdccreditsmart.network.dto.cdc.CdcPermissionsResponse
+-if class com.cdccreditsmart.network.dto.cdc.CdcPermissionsResponse
+-keep class com.cdccreditsmart.network.dto.cdc.CdcPermissionsResponseJsonAdapter {
+    public <init>(com.squareup.moshi.Moshi);
+}
+-if class com.cdccreditsmart.network.dto.cdc.CdcPermissionsResponse
+-keepnames class kotlin.jvm.internal.DefaultConstructorMarker
+-if class com.cdccreditsmart.network.dto.cdc.CdcPermissionsResponse
+-keepclassmembers class com.cdccreditsmart.network.dto.cdc.CdcPermissionsResponse {
+    public synthetic <init>(boolean,java.util.List,java.util.List,java.lang.String,long,int,kotlin.jvm.internal.DefaultConstructorMarker);
+}
+
+-if class com.cdccreditsmart.network.dto.cdc.CdcPixPaymentRequest
+-keepnames class com.cdccreditsmart.network.dto.cdc.CdcPixPaymentRequest
+-if class com.cdccreditsmart.network.dto.cdc.CdcPixPaymentRequest
+-keep class com.cdccreditsmart.network.dto.cdc.CdcPixPaymentRequestJsonAdapter {
+    public <init>(com.squareup.moshi.Moshi);
+}
+-if class com.cdccreditsmart.network.dto.cdc.CdcPixPaymentRequest
+-keepnames class kotlin.jvm.internal.DefaultConstructorMarker
+-if class com.cdccreditsmart.network.dto.cdc.CdcPixPaymentRequest
+-keepclassmembers class com.cdccreditsmart.network.dto.cdc.CdcPixPaymentRequest {
+    public synthetic <init>(java.lang.Double,java.lang.String,int,int,kotlin.jvm.internal.DefaultConstructorMarker);
+}
+
+-if class com.cdccreditsmart.network.dto.cdc.CdcPixPaymentResponse
+-keepnames class com.cdccreditsmart.network.dto.cdc.CdcPixPaymentResponse
+-if class com.cdccreditsmart.network.dto.cdc.CdcPixPaymentResponse
+-keep class com.cdccreditsmart.network.dto.cdc.CdcPixPaymentResponseJsonAdapter {
+    public <init>(com.squareup.moshi.Moshi);
+}
+-if class com.cdccreditsmart.network.dto.cdc.CdcPixPaymentResponse
+-keepnames class kotlin.jvm.internal.DefaultConstructorMarker
+-if class com.cdccreditsmart.network.dto.cdc.CdcPixPaymentResponse
+-keepclassmembers class com.cdccreditsmart.network.dto.cdc.CdcPixPaymentResponse {
+    public synthetic <init>(boolean,java.lang.String,java.lang.String,java.lang.String,java.lang.String,double,java.lang.Long,java.lang.String,java.lang.String,java.lang.String,long,int,kotlin.jvm.internal.DefaultConstructorMarker);
+}
+
+-if class com.cdccreditsmart.network.dto.cdc.CdcProvisioningQrResponse
+-keepnames class com.cdccreditsmart.network.dto.cdc.CdcProvisioningQrResponse
+-if class com.cdccreditsmart.network.dto.cdc.CdcProvisioningQrResponse
+-keep class com.cdccreditsmart.network.dto.cdc.CdcProvisioningQrResponseJsonAdapter {
+    public <init>(com.squareup.moshi.Moshi);
+}
+-if class com.cdccreditsmart.network.dto.cdc.CdcProvisioningQrResponse
+-keepnames class kotlin.jvm.internal.DefaultConstructorMarker
+-if class com.cdccreditsmart.network.dto.cdc.CdcProvisioningQrResponse
+-keepclassmembers class com.cdccreditsmart.network.dto.cdc.CdcProvisioningQrResponse {
+    public synthetic <init>(boolean,java.lang.String,java.lang.String,java.lang.Long,java.lang.String,int,kotlin.jvm.internal.DefaultConstructorMarker);
+}
+
+-if class com.cdccreditsmart.network.dto.cdc.CdcUnblockRequest
+-keepnames class com.cdccreditsmart.network.dto.cdc.CdcUnblockRequest
+-if class com.cdccreditsmart.network.dto.cdc.CdcUnblockRequest
+-keep class com.cdccreditsmart.network.dto.cdc.CdcUnblockRequestJsonAdapter {
+    public <init>(com.squareup.moshi.Moshi);
+}
+-if class com.cdccreditsmart.network.dto.cdc.CdcUnblockRequest
+-keepnames class kotlin.jvm.internal.DefaultConstructorMarker
+-if class com.cdccreditsmart.network.dto.cdc.CdcUnblockRequest
+-keepclassmembers class com.cdccreditsmart.network.dto.cdc.CdcUnblockRequest {
+    public synthetic <init>(java.lang.String,java.lang.String,java.util.List,java.lang.Long,java.lang.String,com.cdccreditsmart.network.dto.cdc.PaymentProof,int,kotlin.jvm.internal.DefaultConstructorMarker);
+}
+
+-if class com.cdccreditsmart.network.dto.cdc.CdcUnblockResponse
+-keepnames class com.cdccreditsmart.network.dto.cdc.CdcUnblockResponse
+-if class com.cdccreditsmart.network.dto.cdc.CdcUnblockResponse
+-keep class com.cdccreditsmart.network.dto.cdc.CdcUnblockResponseJsonAdapter {
+    public <init>(com.squareup.moshi.Moshi);
+}
+-if class com.cdccreditsmart.network.dto.cdc.CdcUnblockResponse
+-keepnames class kotlin.jvm.internal.DefaultConstructorMarker
+-if class com.cdccreditsmart.network.dto.cdc.CdcUnblockResponse
+-keepclassmembers class com.cdccreditsmart.network.dto.cdc.CdcUnblockResponse {
+    public synthetic <init>(boolean,boolean,java.lang.String,java.lang.Long,java.util.List,com.cdccreditsmart.network.dto.cdc.PartialUnblockInfo,java.lang.String,long,int,kotlin.jvm.internal.DefaultConstructorMarker);
+}
+
+-if class com.cdccreditsmart.network.dto.cdc.CommandMetrics
+-keepnames class com.cdccreditsmart.network.dto.cdc.CommandMetrics
+-if class com.cdccreditsmart.network.dto.cdc.CommandMetrics
+-keep class com.cdccreditsmart.network.dto.cdc.CommandMetricsJsonAdapter {
+    public <init>(com.squareup.moshi.Moshi);
+}
+-if class com.cdccreditsmart.network.dto.cdc.CommandMetrics
+-keepnames class kotlin.jvm.internal.DefaultConstructorMarker
+-if class com.cdccreditsmart.network.dto.cdc.CommandMetrics
+-keepclassmembers class com.cdccreditsmart.network.dto.cdc.CommandMetrics {
+    public synthetic <init>(long,com.cdccreditsmart.network.dto.cdc.ResourceUsage,java.util.List,int,kotlin.jvm.internal.DefaultConstructorMarker);
+}
+
+-if class com.cdccreditsmart.network.dto.cdc.CommandResult
+-keepnames class com.cdccreditsmart.network.dto.cdc.CommandResult
+-if class com.cdccreditsmart.network.dto.cdc.CommandResult
+-keep class com.cdccreditsmart.network.dto.cdc.CommandResultJsonAdapter {
+    public <init>(com.squareup.moshi.Moshi);
+}
+-if class com.cdccreditsmart.network.dto.cdc.CommandResult
+-keepnames class kotlin.jvm.internal.DefaultConstructorMarker
+-if class com.cdccreditsmart.network.dto.cdc.CommandResult
+-keepclassmembers class com.cdccreditsmart.network.dto.cdc.CommandResult {
+    public synthetic <init>(boolean,java.util.Map,java.lang.String,java.util.List,com.cdccreditsmart.network.dto.cdc.CommandMetrics,int,kotlin.jvm.internal.DefaultConstructorMarker);
+}
+
+-if class com.cdccreditsmart.network.dto.cdc.Consequence
+-keepnames class com.cdccreditsmart.network.dto.cdc.Consequence
+-if class com.cdccreditsmart.network.dto.cdc.Consequence
+-keep class com.cdccreditsmart.network.dto.cdc.ConsequenceJsonAdapter {
+    public <init>(com.squareup.moshi.Moshi);
+}
+-if class com.cdccreditsmart.network.dto.cdc.Consequence
+-keepnames class kotlin.jvm.internal.DefaultConstructorMarker
+-if class com.cdccreditsmart.network.dto.cdc.Consequence
+-keepclassmembers class com.cdccreditsmart.network.dto.cdc.Consequence {
+    public synthetic <init>(java.lang.String,java.lang.String,java.lang.String,boolean,int,kotlin.jvm.internal.DefaultConstructorMarker);
+}
+
+-if class com.cdccreditsmart.network.dto.cdc.ContractInfo
+-keepnames class com.cdccreditsmart.network.dto.cdc.ContractInfo
+-if class com.cdccreditsmart.network.dto.cdc.ContractInfo
+-keep class com.cdccreditsmart.network.dto.cdc.ContractInfoJsonAdapter {
+    public <init>(com.squareup.moshi.Moshi);
+}
+-if class com.cdccreditsmart.network.dto.cdc.ContractInfo
+-keepnames class kotlin.jvm.internal.DefaultConstructorMarker
+-if class com.cdccreditsmart.network.dto.cdc.ContractInfo
+-keepclassmembers class com.cdccreditsmart.network.dto.cdc.ContractInfo {
+    public synthetic <init>(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,double,double,java.util.List,int,kotlin.jvm.internal.DefaultConstructorMarker);
+}
+
+-if class com.cdccreditsmart.network.dto.cdc.ContractSummary
+-keepnames class com.cdccreditsmart.network.dto.cdc.ContractSummary
+-if class com.cdccreditsmart.network.dto.cdc.ContractSummary
+-keep class com.cdccreditsmart.network.dto.cdc.ContractSummaryJsonAdapter {
+    public <init>(com.squareup.moshi.Moshi);
+}
+
+-if class com.cdccreditsmart.network.dto.cdc.CustomerInfo
+-keepnames class com.cdccreditsmart.network.dto.cdc.CustomerInfo
+-if class com.cdccreditsmart.network.dto.cdc.CustomerInfo
+-keep class com.cdccreditsmart.network.dto.cdc.CustomerInfoJsonAdapter {
+    public <init>(com.squareup.moshi.Moshi);
+}
+-if class com.cdccreditsmart.network.dto.cdc.CustomerInfo
+-keepnames class kotlin.jvm.internal.DefaultConstructorMarker
+-if class com.cdccreditsmart.network.dto.cdc.CustomerInfo
+-keepclassmembers class com.cdccreditsmart.network.dto.cdc.CustomerInfo {
+    public synthetic <init>(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,com.cdccreditsmart.network.dto.cdc.AddressInfo,java.lang.String,java.lang.String,int,kotlin.jvm.internal.DefaultConstructorMarker);
+}
+
+-if class com.cdccreditsmart.network.dto.cdc.DecisionContext
+-keepnames class com.cdccreditsmart.network.dto.cdc.DecisionContext
+-if class com.cdccreditsmart.network.dto.cdc.DecisionContext
+-keep class com.cdccreditsmart.network.dto.cdc.DecisionContextJsonAdapter {
+    public <init>(com.squareup.moshi.Moshi);
+}
+-if class com.cdccreditsmart.network.dto.cdc.DecisionContext
+-keepnames class kotlin.jvm.internal.DefaultConstructorMarker
+-if class com.cdccreditsmart.network.dto.cdc.DecisionContext
+-keepclassmembers class com.cdccreditsmart.network.dto.cdc.DecisionContext {
+    public synthetic <init>(java.lang.String,java.lang.String,java.lang.Double,java.lang.Double,java.lang.Integer,java.util.List,java.util.Map,int,kotlin.jvm.internal.DefaultConstructorMarker);
+}
+
+-if class com.cdccreditsmart.network.dto.cdc.DecisionOption
+-keepnames class com.cdccreditsmart.network.dto.cdc.DecisionOption
+-if class com.cdccreditsmart.network.dto.cdc.DecisionOption
+-keep class com.cdccreditsmart.network.dto.cdc.DecisionOptionJsonAdapter {
+    public <init>(com.squareup.moshi.Moshi);
+}
+-if class com.cdccreditsmart.network.dto.cdc.DecisionOption
+-keepnames class kotlin.jvm.internal.DefaultConstructorMarker
+-if class com.cdccreditsmart.network.dto.cdc.DecisionOption
+-keepclassmembers class com.cdccreditsmart.network.dto.cdc.DecisionOption {
+    public synthetic <init>(java.lang.String,java.lang.String,java.lang.String,java.util.List,boolean,boolean,int,kotlin.jvm.internal.DefaultConstructorMarker);
+}
+
+-if class com.cdccreditsmart.network.dto.cdc.DeviceCommand
+-keepnames class com.cdccreditsmart.network.dto.cdc.DeviceCommand
+-if class com.cdccreditsmart.network.dto.cdc.DeviceCommand
+-keep class com.cdccreditsmart.network.dto.cdc.DeviceCommandJsonAdapter {
+    public <init>(com.squareup.moshi.Moshi);
+}
+-if class com.cdccreditsmart.network.dto.cdc.DeviceCommand
+-keepnames class kotlin.jvm.internal.DefaultConstructorMarker
+-if class com.cdccreditsmart.network.dto.cdc.DeviceCommand
+-keepclassmembers class com.cdccreditsmart.network.dto.cdc.DeviceCommand {
+    public synthetic <init>(java.lang.String,java.lang.String,java.util.Map,java.lang.String,java.lang.Long,long,java.lang.Long,int,kotlin.jvm.internal.DefaultConstructorMarker);
+}
+
+-if class com.cdccreditsmart.network.dto.cdc.DeviceCondition
+-keepnames class com.cdccreditsmart.network.dto.cdc.DeviceCondition
+-if class com.cdccreditsmart.network.dto.cdc.DeviceCondition
+-keep class com.cdccreditsmart.network.dto.cdc.DeviceConditionJsonAdapter {
+    public <init>(com.squareup.moshi.Moshi);
+}
+-if class com.cdccreditsmart.network.dto.cdc.DeviceCondition
+-keepnames class kotlin.jvm.internal.DefaultConstructorMarker
+-if class com.cdccreditsmart.network.dto.cdc.DeviceCondition
+-keepclassmembers class com.cdccreditsmart.network.dto.cdc.DeviceCondition {
+    public synthetic <init>(boolean,boolean,java.lang.String,java.lang.String,java.lang.String,int,kotlin.jvm.internal.DefaultConstructorMarker);
+}
+
+-if class com.cdccreditsmart.network.dto.cdc.DeviceHealthInfo
+-keepnames class com.cdccreditsmart.network.dto.cdc.DeviceHealthInfo
+-if class com.cdccreditsmart.network.dto.cdc.DeviceHealthInfo
+-keep class com.cdccreditsmart.network.dto.cdc.DeviceHealthInfoJsonAdapter {
+    public <init>(com.squareup.moshi.Moshi);
+}
+-if class com.cdccreditsmart.network.dto.cdc.DeviceHealthInfo
+-keepnames class kotlin.jvm.internal.DefaultConstructorMarker
+-if class com.cdccreditsmart.network.dto.cdc.DeviceHealthInfo
+-keepclassmembers class com.cdccreditsmart.network.dto.cdc.DeviceHealthInfo {
+    public synthetic <init>(int,java.lang.String,long,double,java.lang.Double,java.lang.Float,java.lang.String,int,kotlin.jvm.internal.DefaultConstructorMarker);
+}
+
+-if class com.cdccreditsmart.network.dto.cdc.DeviceInfo
+-keepnames class com.cdccreditsmart.network.dto.cdc.DeviceInfo
+-if class com.cdccreditsmart.network.dto.cdc.DeviceInfo
+-keep class com.cdccreditsmart.network.dto.cdc.DeviceInfoJsonAdapter {
+    public <init>(com.squareup.moshi.Moshi);
+}
+-if class com.cdccreditsmart.network.dto.cdc.DeviceInfo
+-keepnames class kotlin.jvm.internal.DefaultConstructorMarker
+-if class com.cdccreditsmart.network.dto.cdc.DeviceInfo
+-keepclassmembers class com.cdccreditsmart.network.dto.cdc.DeviceInfo {
+    public synthetic <init>(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,kotlin.jvm.internal.DefaultConstructorMarker);
+}
+
+-if class com.cdccreditsmart.network.dto.cdc.DeviceRegistrationRequest
+-keepnames class com.cdccreditsmart.network.dto.cdc.DeviceRegistrationRequest
+-if class com.cdccreditsmart.network.dto.cdc.DeviceRegistrationRequest
+-keep class com.cdccreditsmart.network.dto.cdc.DeviceRegistrationRequestJsonAdapter {
+    public <init>(com.squareup.moshi.Moshi);
+}
+
+-if class com.cdccreditsmart.network.dto.cdc.DeviceRegistrationResponse
+-keepnames class com.cdccreditsmart.network.dto.cdc.DeviceRegistrationResponse
+-if class com.cdccreditsmart.network.dto.cdc.DeviceRegistrationResponse
+-keep class com.cdccreditsmart.network.dto.cdc.DeviceRegistrationResponseJsonAdapter {
+    public <init>(com.squareup.moshi.Moshi);
+}
+-if class com.cdccreditsmart.network.dto.cdc.DeviceRegistrationResponse
+-keepnames class kotlin.jvm.internal.DefaultConstructorMarker
+-if class com.cdccreditsmart.network.dto.cdc.DeviceRegistrationResponse
+-keepclassmembers class com.cdccreditsmart.network.dto.cdc.DeviceRegistrationResponse {
+    public synthetic <init>(boolean,boolean,boolean,java.lang.String,java.lang.String,java.lang.String,java.lang.Long,java.lang.String,com.cdccreditsmart.network.dto.cdc.DeviceInfo,com.cdccreditsmart.network.dto.cdc.CustomerInfo,com.cdccreditsmart.network.dto.cdc.StoreInfo,com.cdccreditsmart.network.dto.cdc.PaymentSummary,com.cdccreditsmart.network.dto.cdc.SecurityInfo,long,java.lang.String,java.lang.String,int,kotlin.jvm.internal.DefaultConstructorMarker);
+}
+
+-if class com.cdccreditsmart.network.dto.cdc.ErrorDetails
+-keepnames class com.cdccreditsmart.network.dto.cdc.ErrorDetails
+-if class com.cdccreditsmart.network.dto.cdc.ErrorDetails
+-keep class com.cdccreditsmart.network.dto.cdc.ErrorDetailsJsonAdapter {
+    public <init>(com.squareup.moshi.Moshi);
+}
+-if class com.cdccreditsmart.network.dto.cdc.ErrorDetails
+-keepnames class kotlin.jvm.internal.DefaultConstructorMarker
+-if class com.cdccreditsmart.network.dto.cdc.ErrorDetails
+-keepclassmembers class com.cdccreditsmart.network.dto.cdc.ErrorDetails {
+    public synthetic <init>(java.lang.String,java.lang.String,java.lang.String,boolean,java.lang.String,int,kotlin.jvm.internal.DefaultConstructorMarker);
+}
+
+-if class com.cdccreditsmart.network.dto.cdc.ExtendedDeviceInfo
+-keepnames class com.cdccreditsmart.network.dto.cdc.ExtendedDeviceInfo
+-if class com.cdccreditsmart.network.dto.cdc.ExtendedDeviceInfo
+-keep class com.cdccreditsmart.network.dto.cdc.ExtendedDeviceInfoJsonAdapter {
+    public <init>(com.squareup.moshi.Moshi);
+}
+-if class com.cdccreditsmart.network.dto.cdc.ExtendedDeviceInfo
+-keepnames class kotlin.jvm.internal.DefaultConstructorMarker
+-if class com.cdccreditsmart.network.dto.cdc.ExtendedDeviceInfo
+-keepclassmembers class com.cdccreditsmart.network.dto.cdc.ExtendedDeviceInfo {
+    public synthetic <init>(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,kotlin.jvm.internal.DefaultConstructorMarker);
+}
+
+-if class com.cdccreditsmart.network.dto.cdc.FeeDetail
+-keepnames class com.cdccreditsmart.network.dto.cdc.FeeDetail
+-if class com.cdccreditsmart.network.dto.cdc.FeeDetail
+-keep class com.cdccreditsmart.network.dto.cdc.FeeDetailJsonAdapter {
+    public <init>(com.squareup.moshi.Moshi);
+}
+-if class com.cdccreditsmart.network.dto.cdc.FeeDetail
+-keepnames class kotlin.jvm.internal.DefaultConstructorMarker
+-if class com.cdccreditsmart.network.dto.cdc.FeeDetail
+-keepclassmembers class com.cdccreditsmart.network.dto.cdc.FeeDetail {
+    public synthetic <init>(java.lang.String,double,java.lang.String,java.lang.String,int,kotlin.jvm.internal.DefaultConstructorMarker);
+}
+
+-if class com.cdccreditsmart.network.dto.cdc.FeeInfo
+-keepnames class com.cdccreditsmart.network.dto.cdc.FeeInfo
+-if class com.cdccreditsmart.network.dto.cdc.FeeInfo
+-keep class com.cdccreditsmart.network.dto.cdc.FeeInfoJsonAdapter {
+    public <init>(com.squareup.moshi.Moshi);
+}
+-if class com.cdccreditsmart.network.dto.cdc.FeeInfo
+-keepnames class kotlin.jvm.internal.DefaultConstructorMarker
+-if class com.cdccreditsmart.network.dto.cdc.FeeInfo
+-keepclassmembers class com.cdccreditsmart.network.dto.cdc.FeeInfo {
+    public synthetic <init>(double,double,double,double,java.util.List,int,kotlin.jvm.internal.DefaultConstructorMarker);
+}
+
+-if class com.cdccreditsmart.network.dto.cdc.InstallmentDetail
+-keepnames class com.cdccreditsmart.network.dto.cdc.InstallmentDetail
+-if class com.cdccreditsmart.network.dto.cdc.InstallmentDetail
+-keep class com.cdccreditsmart.network.dto.cdc.InstallmentDetailJsonAdapter {
+    public <init>(com.squareup.moshi.Moshi);
+}
+-if class com.cdccreditsmart.network.dto.cdc.InstallmentDetail
+-keepnames class kotlin.jvm.internal.DefaultConstructorMarker
+-if class com.cdccreditsmart.network.dto.cdc.InstallmentDetail
+-keepclassmembers class com.cdccreditsmart.network.dto.cdc.InstallmentDetail {
+    public synthetic <init>(java.lang.String,int,double,double,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,com.cdccreditsmart.network.dto.cdc.FeeInfo,java.util.List,int,kotlin.jvm.internal.DefaultConstructorMarker);
+}
+
+-if class com.cdccreditsmart.network.dto.cdc.InstallmentInfo
+-keepnames class com.cdccreditsmart.network.dto.cdc.InstallmentInfo
+-if class com.cdccreditsmart.network.dto.cdc.InstallmentInfo
+-keep class com.cdccreditsmart.network.dto.cdc.InstallmentInfoJsonAdapter {
+    public <init>(com.squareup.moshi.Moshi);
+}
+-if class com.cdccreditsmart.network.dto.cdc.InstallmentInfo
+-keepnames class kotlin.jvm.internal.DefaultConstructorMarker
+-if class com.cdccreditsmart.network.dto.cdc.InstallmentInfo
+-keepclassmembers class com.cdccreditsmart.network.dto.cdc.InstallmentInfo {
+    public synthetic <init>(java.lang.String,int,double,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,kotlin.jvm.internal.DefaultConstructorMarker);
+}
+
+-if class com.cdccreditsmart.network.dto.cdc.LocationInfo
+-keepnames class com.cdccreditsmart.network.dto.cdc.LocationInfo
+-if class com.cdccreditsmart.network.dto.cdc.LocationInfo
+-keep class com.cdccreditsmart.network.dto.cdc.LocationInfoJsonAdapter {
+    public <init>(com.squareup.moshi.Moshi);
+}
+-if class com.cdccreditsmart.network.dto.cdc.LocationInfo
+-keepnames class kotlin.jvm.internal.DefaultConstructorMarker
+-if class com.cdccreditsmart.network.dto.cdc.LocationInfo
+-keepclassmembers class com.cdccreditsmart.network.dto.cdc.LocationInfo {
+    public synthetic <init>(double,double,java.lang.Float,java.lang.Double,long,java.lang.String,int,kotlin.jvm.internal.DefaultConstructorMarker);
+}
+
+-if class com.cdccreditsmart.network.dto.cdc.PaginationInfo
+-keepnames class com.cdccreditsmart.network.dto.cdc.PaginationInfo
+-if class com.cdccreditsmart.network.dto.cdc.PaginationInfo
+-keep class com.cdccreditsmart.network.dto.cdc.PaginationInfoJsonAdapter {
+    public <init>(com.squareup.moshi.Moshi);
+}
+
+-if class com.cdccreditsmart.network.dto.cdc.PartialUnblockInfo
+-keepnames class com.cdccreditsmart.network.dto.cdc.PartialUnblockInfo
+-if class com.cdccreditsmart.network.dto.cdc.PartialUnblockInfo
+-keep class com.cdccreditsmart.network.dto.cdc.PartialUnblockInfoJsonAdapter {
+    public <init>(com.squareup.moshi.Moshi);
+}
+-if class com.cdccreditsmart.network.dto.cdc.PartialUnblockInfo
+-keepnames class kotlin.jvm.internal.DefaultConstructorMarker
+-if class com.cdccreditsmart.network.dto.cdc.PartialUnblockInfo
+-keepclassmembers class com.cdccreditsmart.network.dto.cdc.PartialUnblockInfo {
+    public synthetic <init>(java.util.List,java.util.List,java.util.List,java.util.List,java.util.List,int,kotlin.jvm.internal.DefaultConstructorMarker);
+}
+
+-if class com.cdccreditsmart.network.dto.cdc.PaymentConfirmation
+-keepnames class com.cdccreditsmart.network.dto.cdc.PaymentConfirmation
+-if class com.cdccreditsmart.network.dto.cdc.PaymentConfirmation
+-keep class com.cdccreditsmart.network.dto.cdc.PaymentConfirmationJsonAdapter {
+    public <init>(com.squareup.moshi.Moshi);
+}
+-if class com.cdccreditsmart.network.dto.cdc.PaymentConfirmation
+-keepnames class kotlin.jvm.internal.DefaultConstructorMarker
+-if class com.cdccreditsmart.network.dto.cdc.PaymentConfirmation
+-keepclassmembers class com.cdccreditsmart.network.dto.cdc.PaymentConfirmation {
+    public synthetic <init>(java.lang.String,java.lang.String,double,java.lang.String,java.lang.String,java.lang.String,java.lang.String,com.cdccreditsmart.network.dto.cdc.PaymentReceipt,int,kotlin.jvm.internal.DefaultConstructorMarker);
+}
+
+-if class com.cdccreditsmart.network.dto.cdc.PaymentHistoryItem
+-keepnames class com.cdccreditsmart.network.dto.cdc.PaymentHistoryItem
+-if class com.cdccreditsmart.network.dto.cdc.PaymentHistoryItem
+-keep class com.cdccreditsmart.network.dto.cdc.PaymentHistoryItemJsonAdapter {
+    public <init>(com.squareup.moshi.Moshi);
+}
+-if class com.cdccreditsmart.network.dto.cdc.PaymentHistoryItem
+-keepnames class kotlin.jvm.internal.DefaultConstructorMarker
+-if class com.cdccreditsmart.network.dto.cdc.PaymentHistoryItem
+-keepclassmembers class com.cdccreditsmart.network.dto.cdc.PaymentHistoryItem {
+    public synthetic <init>(java.lang.String,java.lang.String,int,double,java.lang.String,java.lang.String,java.lang.String,java.lang.String,com.cdccreditsmart.network.dto.cdc.PaymentReceipt,com.cdccreditsmart.network.dto.cdc.FeeInfo,int,kotlin.jvm.internal.DefaultConstructorMarker);
+}
+
+-if class com.cdccreditsmart.network.dto.cdc.PaymentHistoryResponse
+-keepnames class com.cdccreditsmart.network.dto.cdc.PaymentHistoryResponse
+-if class com.cdccreditsmart.network.dto.cdc.PaymentHistoryResponse
+-keep class com.cdccreditsmart.network.dto.cdc.PaymentHistoryResponseJsonAdapter {
+    public <init>(com.squareup.moshi.Moshi);
+}
+
+-if class com.cdccreditsmart.network.dto.cdc.PaymentHistorySummary
+-keepnames class com.cdccreditsmart.network.dto.cdc.PaymentHistorySummary
+-if class com.cdccreditsmart.network.dto.cdc.PaymentHistorySummary
+-keep class com.cdccreditsmart.network.dto.cdc.PaymentHistorySummaryJsonAdapter {
+    public <init>(com.squareup.moshi.Moshi);
+}
+
+-if class com.cdccreditsmart.network.dto.cdc.PaymentMethodInfo
+-keepnames class com.cdccreditsmart.network.dto.cdc.PaymentMethodInfo
+-if class com.cdccreditsmart.network.dto.cdc.PaymentMethodInfo
+-keep class com.cdccreditsmart.network.dto.cdc.PaymentMethodInfoJsonAdapter {
+    public <init>(com.squareup.moshi.Moshi);
+}
+-if class com.cdccreditsmart.network.dto.cdc.PaymentMethodInfo
+-keepnames class kotlin.jvm.internal.DefaultConstructorMarker
+-if class com.cdccreditsmart.network.dto.cdc.PaymentMethodInfo
+-keepclassmembers class com.cdccreditsmart.network.dto.cdc.PaymentMethodInfo {
+    public synthetic <init>(java.lang.String,java.lang.String,boolean,double,java.lang.Double,java.lang.Double,java.lang.String,java.lang.String,int,kotlin.jvm.internal.DefaultConstructorMarker);
+}
+
+-if class com.cdccreditsmart.network.dto.cdc.PaymentOption
+-keepnames class com.cdccreditsmart.network.dto.cdc.PaymentOption
+-if class com.cdccreditsmart.network.dto.cdc.PaymentOption
+-keep class com.cdccreditsmart.network.dto.cdc.PaymentOptionJsonAdapter {
+    public <init>(com.squareup.moshi.Moshi);
+}
+-if class com.cdccreditsmart.network.dto.cdc.PaymentOption
+-keepnames class kotlin.jvm.internal.DefaultConstructorMarker
+-if class com.cdccreditsmart.network.dto.cdc.PaymentOption
+-keepclassmembers class com.cdccreditsmart.network.dto.cdc.PaymentOption {
+    public synthetic <init>(java.lang.String,boolean,double,java.lang.String,java.lang.String,int,kotlin.jvm.internal.DefaultConstructorMarker);
+}
+
+-if class com.cdccreditsmart.network.dto.cdc.PaymentProof
+-keepnames class com.cdccreditsmart.network.dto.cdc.PaymentProof
+-if class com.cdccreditsmart.network.dto.cdc.PaymentProof
+-keep class com.cdccreditsmart.network.dto.cdc.PaymentProofJsonAdapter {
+    public <init>(com.squareup.moshi.Moshi);
+}
+-if class com.cdccreditsmart.network.dto.cdc.PaymentProof
+-keepnames class kotlin.jvm.internal.DefaultConstructorMarker
+-if class com.cdccreditsmart.network.dto.cdc.PaymentProof
+-keepclassmembers class com.cdccreditsmart.network.dto.cdc.PaymentProof {
+    public synthetic <init>(java.lang.String,java.lang.String,double,java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,kotlin.jvm.internal.DefaultConstructorMarker);
+}
+
+-if class com.cdccreditsmart.network.dto.cdc.PaymentReceipt
+-keepnames class com.cdccreditsmart.network.dto.cdc.PaymentReceipt
+-if class com.cdccreditsmart.network.dto.cdc.PaymentReceipt
+-keep class com.cdccreditsmart.network.dto.cdc.PaymentReceiptJsonAdapter {
+    public <init>(com.squareup.moshi.Moshi);
+}
+-if class com.cdccreditsmart.network.dto.cdc.PaymentReceipt
+-keepnames class kotlin.jvm.internal.DefaultConstructorMarker
+-if class com.cdccreditsmart.network.dto.cdc.PaymentReceipt
+-keepclassmembers class com.cdccreditsmart.network.dto.cdc.PaymentReceipt {
+    public synthetic <init>(java.lang.String,java.lang.String,java.lang.String,long,int,kotlin.jvm.internal.DefaultConstructorMarker);
+}
+
+-if class com.cdccreditsmart.network.dto.cdc.PaymentSummary
+-keepnames class com.cdccreditsmart.network.dto.cdc.PaymentSummary
+-if class com.cdccreditsmart.network.dto.cdc.PaymentSummary
+-keep class com.cdccreditsmart.network.dto.cdc.PaymentSummaryJsonAdapter {
+    public <init>(com.squareup.moshi.Moshi);
+}
+
+-if class com.cdccreditsmart.network.dto.cdc.PendingDecision
+-keepnames class com.cdccreditsmart.network.dto.cdc.PendingDecision
+-if class com.cdccreditsmart.network.dto.cdc.PendingDecision
+-keep class com.cdccreditsmart.network.dto.cdc.PendingDecisionJsonAdapter {
+    public <init>(com.squareup.moshi.Moshi);
+}
+-if class com.cdccreditsmart.network.dto.cdc.PendingDecision
+-keepnames class kotlin.jvm.internal.DefaultConstructorMarker
+-if class com.cdccreditsmart.network.dto.cdc.PendingDecision
+-keepclassmembers class com.cdccreditsmart.network.dto.cdc.PendingDecision {
+    public synthetic <init>(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.List,java.lang.Long,com.cdccreditsmart.network.dto.cdc.DecisionContext,long,int,int,kotlin.jvm.internal.DefaultConstructorMarker);
+}
+
+-if class com.cdccreditsmart.network.dto.cdc.PerformanceMetrics
+-keepnames class com.cdccreditsmart.network.dto.cdc.PerformanceMetrics
+-if class com.cdccreditsmart.network.dto.cdc.PerformanceMetrics
+-keep class com.cdccreditsmart.network.dto.cdc.PerformanceMetricsJsonAdapter {
+    public <init>(com.squareup.moshi.Moshi);
+}
+-if class com.cdccreditsmart.network.dto.cdc.PerformanceMetrics
+-keepnames class kotlin.jvm.internal.DefaultConstructorMarker
+-if class com.cdccreditsmart.network.dto.cdc.PerformanceMetrics
+-keepclassmembers class com.cdccreditsmart.network.dto.cdc.PerformanceMetrics {
+    public synthetic <init>(double,int,int,java.lang.Double,int,kotlin.jvm.internal.DefaultConstructorMarker);
+}
+
+-if class com.cdccreditsmart.network.dto.cdc.PermissionDenial
+-keepnames class com.cdccreditsmart.network.dto.cdc.PermissionDenial
+-if class com.cdccreditsmart.network.dto.cdc.PermissionDenial
+-keep class com.cdccreditsmart.network.dto.cdc.PermissionDenialJsonAdapter {
+    public <init>(com.squareup.moshi.Moshi);
+}
+-if class com.cdccreditsmart.network.dto.cdc.PermissionDenial
+-keepnames class kotlin.jvm.internal.DefaultConstructorMarker
+-if class com.cdccreditsmart.network.dto.cdc.PermissionDenial
+-keepclassmembers class com.cdccreditsmart.network.dto.cdc.PermissionDenial {
+    public synthetic <init>(java.lang.String,java.lang.String,boolean,java.lang.Long,int,kotlin.jvm.internal.DefaultConstructorMarker);
+}
+
+-if class com.cdccreditsmart.network.dto.cdc.PermissionGrant
+-keepnames class com.cdccreditsmart.network.dto.cdc.PermissionGrant
+-if class com.cdccreditsmart.network.dto.cdc.PermissionGrant
+-keep class com.cdccreditsmart.network.dto.cdc.PermissionGrantJsonAdapter {
+    public <init>(com.squareup.moshi.Moshi);
+}
+-if class com.cdccreditsmart.network.dto.cdc.PermissionGrant
+-keepnames class kotlin.jvm.internal.DefaultConstructorMarker
+-if class com.cdccreditsmart.network.dto.cdc.PermissionGrant
+-keepclassmembers class com.cdccreditsmart.network.dto.cdc.PermissionGrant {
+    public synthetic <init>(java.lang.String,boolean,long,java.lang.Long,java.lang.String,java.util.List,int,kotlin.jvm.internal.DefaultConstructorMarker);
+}
+
+-if class com.cdccreditsmart.network.dto.cdc.PermissionRequest
+-keepnames class com.cdccreditsmart.network.dto.cdc.PermissionRequest
+-if class com.cdccreditsmart.network.dto.cdc.PermissionRequest
+-keep class com.cdccreditsmart.network.dto.cdc.PermissionRequestJsonAdapter {
+    public <init>(com.squareup.moshi.Moshi);
+}
+-if class com.cdccreditsmart.network.dto.cdc.PermissionRequest
+-keepnames class kotlin.jvm.internal.DefaultConstructorMarker
+-if class com.cdccreditsmart.network.dto.cdc.PermissionRequest
+-keepclassmembers class com.cdccreditsmart.network.dto.cdc.PermissionRequest {
+    public synthetic <init>(java.lang.String,boolean,java.lang.String,java.lang.String,int,kotlin.jvm.internal.DefaultConstructorMarker);
+}
+
+-if class com.cdccreditsmart.network.dto.cdc.ResourceUsage
+-keepnames class com.cdccreditsmart.network.dto.cdc.ResourceUsage
+-if class com.cdccreditsmart.network.dto.cdc.ResourceUsage
+-keep class com.cdccreditsmart.network.dto.cdc.ResourceUsageJsonAdapter {
+    public <init>(com.squareup.moshi.Moshi);
+}
+-if class com.cdccreditsmart.network.dto.cdc.ResourceUsage
+-keepnames class kotlin.jvm.internal.DefaultConstructorMarker
+-if class com.cdccreditsmart.network.dto.cdc.ResourceUsage
+-keepclassmembers class com.cdccreditsmart.network.dto.cdc.ResourceUsage {
+    public synthetic <init>(java.lang.Double,java.lang.Long,java.lang.Long,java.lang.Long,int,kotlin.jvm.internal.DefaultConstructorMarker);
+}
+
+-if class com.cdccreditsmart.network.dto.cdc.Restriction
+-keepnames class com.cdccreditsmart.network.dto.cdc.Restriction
+-if class com.cdccreditsmart.network.dto.cdc.Restriction
+-keep class com.cdccreditsmart.network.dto.cdc.RestrictionJsonAdapter {
+    public <init>(com.squareup.moshi.Moshi);
+}
+-if class com.cdccreditsmart.network.dto.cdc.Restriction
+-keepnames class kotlin.jvm.internal.DefaultConstructorMarker
+-if class com.cdccreditsmart.network.dto.cdc.Restriction
+-keepclassmembers class com.cdccreditsmart.network.dto.cdc.Restriction {
+    public synthetic <init>(java.lang.String,java.lang.String,java.util.Map,boolean,int,kotlin.jvm.internal.DefaultConstructorMarker);
+}
+
+-if class com.cdccreditsmart.network.dto.cdc.SecurityInfo
+-keepnames class com.cdccreditsmart.network.dto.cdc.SecurityInfo
+-if class com.cdccreditsmart.network.dto.cdc.SecurityInfo
+-keep class com.cdccreditsmart.network.dto.cdc.SecurityInfoJsonAdapter {
+    public <init>(com.squareup.moshi.Moshi);
+}
+-if class com.cdccreditsmart.network.dto.cdc.SecurityInfo
+-keepnames class kotlin.jvm.internal.DefaultConstructorMarker
+-if class com.cdccreditsmart.network.dto.cdc.SecurityInfo
+-keepclassmembers class com.cdccreditsmart.network.dto.cdc.SecurityInfo {
+    public synthetic <init>(java.lang.String,java.util.List,long,java.lang.String,java.util.List,int,kotlin.jvm.internal.DefaultConstructorMarker);
+}
+
+-if class com.cdccreditsmart.network.dto.cdc.SecurityPolicy
+-keepnames class com.cdccreditsmart.network.dto.cdc.SecurityPolicy
+-if class com.cdccreditsmart.network.dto.cdc.SecurityPolicy
+-keep class com.cdccreditsmart.network.dto.cdc.SecurityPolicyJsonAdapter {
+    public <init>(com.squareup.moshi.Moshi);
+}
+-if class com.cdccreditsmart.network.dto.cdc.SecurityPolicy
+-keepnames class kotlin.jvm.internal.DefaultConstructorMarker
+-if class com.cdccreditsmart.network.dto.cdc.SecurityPolicy
+-keepclassmembers class com.cdccreditsmart.network.dto.cdc.SecurityPolicy {
+    public synthetic <init>(java.lang.String,boolean,java.util.Map,java.lang.String,int,kotlin.jvm.internal.DefaultConstructorMarker);
+}
+
+-if class com.cdccreditsmart.network.dto.cdc.StoreInfo
+-keepnames class com.cdccreditsmart.network.dto.cdc.StoreInfo
+-if class com.cdccreditsmart.network.dto.cdc.StoreInfo
+-keep class com.cdccreditsmart.network.dto.cdc.StoreInfoJsonAdapter {
+    public <init>(com.squareup.moshi.Moshi);
+}
+-if class com.cdccreditsmart.network.dto.cdc.StoreInfo
+-keepnames class kotlin.jvm.internal.DefaultConstructorMarker
+-if class com.cdccreditsmart.network.dto.cdc.StoreInfo
+-keepclassmembers class com.cdccreditsmart.network.dto.cdc.StoreInfo {
+    public synthetic <init>(java.lang.String,java.lang.String,java.lang.String,java.lang.String,com.cdccreditsmart.network.dto.cdc.AddressInfo,java.lang.String,int,kotlin.jvm.internal.DefaultConstructorMarker);
+}
+
+-if class com.cdccreditsmart.network.dto.cdc.SystemInfo
+-keepnames class com.cdccreditsmart.network.dto.cdc.SystemInfo
+-if class com.cdccreditsmart.network.dto.cdc.SystemInfo
+-keep class com.cdccreditsmart.network.dto.cdc.SystemInfoJsonAdapter {
+    public <init>(com.squareup.moshi.Moshi);
+}
+-if class com.cdccreditsmart.network.dto.cdc.SystemInfo
+-keepnames class kotlin.jvm.internal.DefaultConstructorMarker
+-if class com.cdccreditsmart.network.dto.cdc.SystemInfo
+-keepclassmembers class com.cdccreditsmart.network.dto.cdc.SystemInfo {
+    public synthetic <init>(long,long,long,long,java.lang.String,int,java.lang.String,boolean,java.lang.String,java.lang.String,int,kotlin.jvm.internal.DefaultConstructorMarker);
+}
+
+-if class com.cdccreditsmart.network.dto.cdc.UnblockCondition
+-keepnames class com.cdccreditsmart.network.dto.cdc.UnblockCondition
+-if class com.cdccreditsmart.network.dto.cdc.UnblockCondition
+-keep class com.cdccreditsmart.network.dto.cdc.UnblockConditionJsonAdapter {
+    public <init>(com.squareup.moshi.Moshi);
+}
+-if class com.cdccreditsmart.network.dto.cdc.UnblockCondition
+-keepnames class kotlin.jvm.internal.DefaultConstructorMarker
+-if class com.cdccreditsmart.network.dto.cdc.UnblockCondition
+-keepclassmembers class com.cdccreditsmart.network.dto.cdc.UnblockCondition {
+    public synthetic <init>(java.lang.String,java.lang.String,boolean,java.lang.String,java.lang.String,int,kotlin.jvm.internal.DefaultConstructorMarker);
+}
+
+-if class com.cdccreditsmart.network.dto.cdc.UninstallRequest
+-keepnames class com.cdccreditsmart.network.dto.cdc.UninstallRequest
+-if class com.cdccreditsmart.network.dto.cdc.UninstallRequest
+-keep class com.cdccreditsmart.network.dto.cdc.UninstallRequestJsonAdapter {
+    public <init>(com.squareup.moshi.Moshi);
+}
+-if class com.cdccreditsmart.network.dto.cdc.UninstallRequest
+-keepnames class kotlin.jvm.internal.DefaultConstructorMarker
+-if class com.cdccreditsmart.network.dto.cdc.UninstallRequest
+-keepclassmembers class com.cdccreditsmart.network.dto.cdc.UninstallRequest {
+    public synthetic <init>(java.lang.String,java.lang.String,com.cdccreditsmart.network.dto.cdc.PaymentProof,com.cdccreditsmart.network.dto.cdc.DeviceCondition,int,kotlin.jvm.internal.DefaultConstructorMarker);
+}
+
+-if class com.cdccreditsmart.network.dto.cdc.UninstallRequirement
+-keepnames class com.cdccreditsmart.network.dto.cdc.UninstallRequirement
+-if class com.cdccreditsmart.network.dto.cdc.UninstallRequirement
+-keep class com.cdccreditsmart.network.dto.cdc.UninstallRequirementJsonAdapter {
+    public <init>(com.squareup.moshi.Moshi);
+}
+-if class com.cdccreditsmart.network.dto.cdc.UninstallRequirement
+-keepnames class kotlin.jvm.internal.DefaultConstructorMarker
+-if class com.cdccreditsmart.network.dto.cdc.UninstallRequirement
+-keepclassmembers class com.cdccreditsmart.network.dto.cdc.UninstallRequirement {
+    public synthetic <init>(java.lang.String,java.lang.String,boolean,java.lang.String,int,int,kotlin.jvm.internal.DefaultConstructorMarker);
+}
+
+-if class com.cdccreditsmart.network.dto.cdc.UninstallResponse
+-keepnames class com.cdccreditsmart.network.dto.cdc.UninstallResponse
+-if class com.cdccreditsmart.network.dto.cdc.UninstallResponse
+-keep class com.cdccreditsmart.network.dto.cdc.UninstallResponseJsonAdapter {
+    public <init>(com.squareup.moshi.Moshi);
+}
+-if class com.cdccreditsmart.network.dto.cdc.UninstallResponse
+-keepnames class kotlin.jvm.internal.DefaultConstructorMarker
+-if class com.cdccreditsmart.network.dto.cdc.UninstallResponse
+-keepclassmembers class com.cdccreditsmart.network.dto.cdc.UninstallResponse {
+    public synthetic <init>(boolean,boolean,java.lang.String,java.lang.String,java.lang.Long,java.util.List,java.lang.String,long,int,kotlin.jvm.internal.DefaultConstructorMarker);
+}
+
+-if class com.cdccreditsmart.network.websocket.ApkUpdateData
+-keepnames class com.cdccreditsmart.network.websocket.ApkUpdateData
+-if class com.cdccreditsmart.network.websocket.ApkUpdateData
+-keep class com.cdccreditsmart.network.websocket.ApkUpdateDataJsonAdapter {
+    public <init>(com.squareup.moshi.Moshi);
+}
+-if class com.cdccreditsmart.network.websocket.ApkUpdateData
+-keepnames class kotlin.jvm.internal.DefaultConstructorMarker
+-if class com.cdccreditsmart.network.websocket.ApkUpdateData
+-keepclassmembers class com.cdccreditsmart.network.websocket.ApkUpdateData {
+    public synthetic <init>(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,java.lang.String,java.lang.String,int,kotlin.jvm.internal.DefaultConstructorMarker);
+}
+
+-if class com.cdccreditsmart.network.websocket.CommandAcknowledgment
+-keepnames class com.cdccreditsmart.network.websocket.CommandAcknowledgment
+-if class com.cdccreditsmart.network.websocket.CommandAcknowledgment
+-keep class com.cdccreditsmart.network.websocket.CommandAcknowledgmentJsonAdapter {
+    public <init>(com.squareup.moshi.Moshi);
+}
+-if class com.cdccreditsmart.network.websocket.CommandAcknowledgment
+-keepnames class kotlin.jvm.internal.DefaultConstructorMarker
+-if class com.cdccreditsmart.network.websocket.CommandAcknowledgment
+-keepclassmembers class com.cdccreditsmart.network.websocket.CommandAcknowledgment {
+    public synthetic <init>(java.lang.String,java.lang.String,java.lang.String,long,java.lang.String,int,kotlin.jvm.internal.DefaultConstructorMarker);
+}
+
+-if class com.cdccreditsmart.network.websocket.CommandData
+-keepnames class com.cdccreditsmart.network.websocket.CommandData
+-if class com.cdccreditsmart.network.websocket.CommandData
+-keep class com.cdccreditsmart.network.websocket.CommandDataJsonAdapter {
+    public <init>(com.squareup.moshi.Moshi);
+}
+-if class com.cdccreditsmart.network.websocket.CommandData
+-keepnames class kotlin.jvm.internal.DefaultConstructorMarker
+-if class com.cdccreditsmart.network.websocket.CommandData
+-keepclassmembers class com.cdccreditsmart.network.websocket.CommandData {
+    public synthetic <init>(java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,kotlin.jvm.internal.DefaultConstructorMarker);
+}
+
+-if class com.cdccreditsmart.network.websocket.DeviceCommandWrapper
+-keepnames class com.cdccreditsmart.network.websocket.DeviceCommandWrapper
+-if class com.cdccreditsmart.network.websocket.DeviceCommandWrapper
+-keep class com.cdccreditsmart.network.websocket.DeviceCommandWrapperJsonAdapter {
+    public <init>(com.squareup.moshi.Moshi);
+}
+
+-if class com.cdccreditsmart.network.websocket.FlowProgressUpdate
+-keepnames class com.cdccreditsmart.network.websocket.FlowProgressUpdate
+-if class com.cdccreditsmart.network.websocket.FlowProgressUpdate
+-keep class com.cdccreditsmart.network.websocket.FlowProgressUpdateJsonAdapter {
+    public <init>(com.squareup.moshi.Moshi);
+}
+-if class com.cdccreditsmart.network.websocket.FlowProgressUpdate
+-keepnames class kotlin.jvm.internal.DefaultConstructorMarker
+-if class com.cdccreditsmart.network.websocket.FlowProgressUpdate
+-keepclassmembers class com.cdccreditsmart.network.websocket.FlowProgressUpdate {
+    public synthetic <init>(int,int,int,java.lang.Long,java.lang.String,int,kotlin.jvm.internal.DefaultConstructorMarker);
+}
+
+-if class com.cdccreditsmart.network.websocket.FlowStatusWebSocketError
+-keepnames class com.cdccreditsmart.network.websocket.FlowStatusWebSocketError
+-if class com.cdccreditsmart.network.websocket.FlowStatusWebSocketError
+-keep class com.cdccreditsmart.network.websocket.FlowStatusWebSocketErrorJsonAdapter {
+    public <init>(com.squareup.moshi.Moshi);
+}
+-if class com.cdccreditsmart.network.websocket.FlowStatusWebSocketError
+-keepnames class kotlin.jvm.internal.DefaultConstructorMarker
+-if class com.cdccreditsmart.network.websocket.FlowStatusWebSocketError
+-keepclassmembers class com.cdccreditsmart.network.websocket.FlowStatusWebSocketError {
+    public synthetic <init>(java.lang.String,java.lang.String,java.lang.String,long,boolean,int,kotlin.jvm.internal.DefaultConstructorMarker);
+}
+
+-if class com.cdccreditsmart.network.websocket.FlowSubscriptionMessage
+-keepnames class com.cdccreditsmart.network.websocket.FlowSubscriptionMessage
+-if class com.cdccreditsmart.network.websocket.FlowSubscriptionMessage
+-keep class com.cdccreditsmart.network.websocket.FlowSubscriptionMessageJsonAdapter {
+    public <init>(com.squareup.moshi.Moshi);
+}
+
+-if class com.cdccreditsmart.network.websocket.WebSocketError
+-keepnames class com.cdccreditsmart.network.websocket.WebSocketError
+-if class com.cdccreditsmart.network.websocket.WebSocketError
+-keep class com.cdccreditsmart.network.websocket.WebSocketErrorJsonAdapter {
+    public <init>(com.squareup.moshi.Moshi);
+}
+-if class com.cdccreditsmart.network.websocket.WebSocketError
+-keepnames class kotlin.jvm.internal.DefaultConstructorMarker
+-if class com.cdccreditsmart.network.websocket.WebSocketError
+-keepclassmembers class com.cdccreditsmart.network.websocket.WebSocketError {
+    public synthetic <init>(java.lang.String,java.lang.String,java.lang.String,long,boolean,int,kotlin.jvm.internal.DefaultConstructorMarker);
+}

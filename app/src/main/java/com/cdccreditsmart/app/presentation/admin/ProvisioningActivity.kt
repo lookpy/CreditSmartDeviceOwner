@@ -57,9 +57,6 @@ class ProvisioningActivity : Activity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         
-        // AUTO DEVICE OWNER DETECTION AND SETUP
-        checkAndSetupDeviceOwnerAutomatically()
-        
         // CRITICAL: Start active timeout monitoring IMMEDIATELY
         // This runs independently of DeviceAdminReceiver callbacks
         startActiveTimeoutMonitoring()
@@ -121,71 +118,6 @@ class ProvisioningActivity : Activity() {
                 setResult(RESULT_CANCELED)
                 finish()
             }
-        }
-    }
-
-    /**
-     * AUTO DEVICE OWNER SETUP
-     * Automatically configures the app as Device Owner when launched
-     */
-    private fun checkAndSetupDeviceOwnerAutomatically() {
-        Log.i(TAG, "🤖 AUTO DEVICE OWNER CHECK STARTED")
-        
-        try {
-            val devicePolicyManager = getSystemService(Context.DEVICE_POLICY_SERVICE) as DevicePolicyManager
-            val adminComponent = ComponentName(this, CDCDeviceAdminReceiver::class.java)
-            
-            // Check if already device owner
-            if (devicePolicyManager.isDeviceOwnerApp(packageName)) {
-                Log.i(TAG, "✅ Already configured as Device Owner")
-                Log.i(TAG, "👑 Device Owner component: $adminComponent")
-                return
-            }
-            
-            Log.i(TAG, "🔄 Not Device Owner yet - attempting auto-configuration...")
-            
-            // Check if device supports Device Owner
-            val userManager = getSystemService(Context.USER_SERVICE) as UserManager
-            
-            // Check if this is a managed profile or has multiple users
-            val isSystemUser = userManager.isSystemUser
-            val hasUserRestriction = userManager.hasUserRestriction(UserManager.DISALLOW_ADD_USER)
-            
-            Log.i(TAG, "👥 Device user status:")
-            Log.i(TAG, "   🏠 Is system user: $isSystemUser")
-            Log.i(TAG, "   🚫 Has user restriction: $hasUserRestriction")
-            
-            // Device Owner can only be set on primary user without restrictions
-            if (!isSystemUser) {
-                Log.w(TAG, "⚠️  Not primary user - Device Owner setup blocked")
-                Log.i(TAG, "💡 AUTO-SETUP SUGGESTION:")
-                Log.i(TAG, "   1. Execute factory reset on device")
-                Log.i(TAG, "   2. Use script: ./install_device_owner.sh")
-                Log.i(TAG, "   3. Or use: python3 auto_install_as_device_owner.py")
-                return
-            }
-            
-            // Check if device is already managed
-            if (devicePolicyManager.isAdminActive(adminComponent)) {
-                Log.i(TAG, "✅ Device admin already active")
-                
-                // Try to upgrade to Device Owner (this usually requires system privileges)
-                Log.i(TAG, "🔄 Attempting to upgrade to Device Owner...")
-                Log.i(TAG, "💡 NOTE: This requires system-level privileges")
-                Log.i(TAG, "💡 For automatic setup, use installation scripts instead")
-            } else {
-                Log.i(TAG, "🔄 Device admin not active - activation required")
-                Log.i(TAG, "💡 AUTOMATIC SETUP INSTRUCTIONS:")
-                Log.i(TAG, "   • For complete automatic setup, use one of these methods:")
-                Log.i(TAG, "   • Script 1: ./install_device_owner.sh")
-                Log.i(TAG, "   • Script 2: python3 auto_install_as_device_owner.py")
-                Log.i(TAG, "   • Both scripts handle factory reset + Device Owner setup")
-            }
-            
-        } catch (e: Exception) {
-            Log.e(TAG, "💥 Error in auto Device Owner setup: ${e.message}")
-            Log.e(TAG, "📱 Stack trace:", e)
-            Log.i(TAG, "💡 FALLBACK: Use installation scripts for guaranteed setup")
         }
     }
 

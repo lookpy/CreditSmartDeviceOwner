@@ -1,16 +1,15 @@
 plugins {
     id("java-library")
-    id("org.jetbrains.kotlin.jvm") version "2.1.0"  // Explicit version to avoid conflicts
+    id("org.jetbrains.kotlin.jvm")
 }
 
-// ULTRA-SIMPLIFIED CONFIGURATION - No toolchain at all
 java {
     sourceCompatibility = JavaVersion.VERSION_17
     targetCompatibility = JavaVersion.VERSION_17
 }
 
-// NO KOTLIN TOOLCHAIN - Just basic compiler options
 kotlin {
+    jvmToolchain(17)
     compilerOptions {
         jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_17)
     }

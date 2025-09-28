@@ -1,0 +1,52 @@
+package com.cdccreditsmart.network.security;
+
+import android.content.Context;
+import dagger.internal.DaggerGenerated;
+import dagger.internal.Factory;
+import dagger.internal.Provider;
+import dagger.internal.Providers;
+import dagger.internal.QualifierMetadata;
+import dagger.internal.ScopeMetadata;
+import javax.annotation.processing.Generated;
+
+@ScopeMetadata("javax.inject.Singleton")
+@QualifierMetadata("dagger.hilt.android.qualifiers.ApplicationContext")
+@DaggerGenerated
+@Generated(
+    value = "dagger.internal.codegen.ComponentProcessor",
+    comments = "https://dagger.dev"
+)
+@SuppressWarnings({
+    "unchecked",
+    "rawtypes",
+    "KotlinInternal",
+    "KotlinInternalInJava",
+    "cast",
+    "deprecation",
+    "nullness:initialization.field.uninitialized"
+})
+public final class AntiTamperingDetector_Factory implements Factory<AntiTamperingDetector> {
+  private final Provider<Context> contextProvider;
+
+  public AntiTamperingDetector_Factory(Provider<Context> contextProvider) {
+    this.contextProvider = contextProvider;
+  }
+
+  @Override
+  public AntiTamperingDetector get() {
+    return newInstance(contextProvider.get());
+  }
+
+  public static AntiTamperingDetector_Factory create(
+      javax.inject.Provider<Context> contextProvider) {
+    return new AntiTamperingDetector_Factory(Providers.asDaggerProvider(contextProvider));
+  }
+
+  public static AntiTamperingDetector_Factory create(Provider<Context> contextProvider) {
+    return new AntiTamperingDetector_Factory(contextProvider);
+  }
+
+  public static AntiTamperingDetector newInstance(Context context) {
+    return new AntiTamperingDetector(context);
+  }
+}

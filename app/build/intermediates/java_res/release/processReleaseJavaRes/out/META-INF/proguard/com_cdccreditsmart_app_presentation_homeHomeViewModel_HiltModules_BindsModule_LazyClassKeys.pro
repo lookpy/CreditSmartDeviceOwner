@@ -1,0 +1,1 @@
+-keep,allowobfuscation,allowshrinking class com.cdccreditsmart.app.presentation.home.HomeViewModel
