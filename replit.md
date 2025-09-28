@@ -1,206 +1,55 @@
 # CDC Credit Smart Android App
 
 ## Overview
-Comprehensive Android application in Kotlin for CDC Credit Smart clients that operates as Device Owner with advanced security features, biometrics, payments integration, and device management capabilities.
+A comprehensive Android application for CDC Credit Smart clients, developed in Kotlin. It functions as a Device Owner with advanced security features, biometric authentication, payment integration, and robust device management capabilities. The project aims to provide a secure and efficient mobile experience, integrating with the CDC Credit Smart backend for various functionalities.
 
-## Project Status
-- **Current Phase**: 🎉 **PROJECT COMPLETED - APK PRODUCTION READY** 🎉
-- **Last Updated**: September 25, 2025 (FINAL BUILD SUCCESS)
-- **Build Status**: ✅ **BUILD SUCCESSFUL in 35s** - APK Android finalizado
-- **Architecture**: Clean Architecture + MVVM + Jetpack Compose + Multi-Manufacturer Device Owner
-- **Technology**: Kotlin (minSdk 26+) + Compose + Material 3 + Knox Enterprise SDK
-- **Production Status**: 🚀 **READY FOR DEPLOYMENT** 🚀
+## User Preferences
+- I prefer simple language and clear explanations.
+- I like functional programming paradigms where applicable.
+- I want an iterative development process with frequent check-ins.
+- Ask before making major architectural changes or significant code refactors.
+- Provide detailed explanations for complex solutions or design choices.
+- Do not make changes to the `server` folder or its subdirectories.
+- Do not modify the core `build.gradle.kts` files unless absolutely necessary for dependency updates.
 
-## Recent Changes (September 28, 2025)
-🎉🎉🎉 **DEVICE OWNER PROVISIONING ISSUES COMPLETELY RESOLVED!** 🎉🎉🎉
+## System Architecture
+The application adheres to a Clean Architecture with MVVM, utilizing Jetpack Compose for the UI. It features a multi-module structure:
+- **app**: UI layer and Dependency Injection (Hilt).
+- **data**: Data persistence (Room) and repository implementations.
+- **network**: Handles API communication using Retrofit, OkHttp, and certificate pinning.
+- **domain**: Contains business logic and use cases.
+- **device**: Manages multi-manufacturer Device Owner functionalities, Samsung Knox integration, attestation, and overlay blocking.
+- **payments**: Processes PIX and Boleto payments.
+- **biometry**: Manages facial recognition with liveness detection.
 
-### CRITICAL DEVICE OWNER FIXES (September 28, 2025) - BUILD SUCCESSFUL in 7m 45s
-- 🚀 **DEVICE OWNER PROVISIONING FIXED** - ProvisioningActivity exportada criada para Managed Provisioning
-- ✅ **ALL DPC PERMISSIONS ADDED** - MANAGE_DEVICE_ADMINS, MANAGE_PROFILE_AND_DEVICE_OWNERS, REQUEST_DELETE_PACKAGES, DISABLE_KEYGUARD, EXPAND_STATUS_BAR, BIND_DEVICE_SERVICE adicionadas
-- ✅ **INTENT FILTERS CORRECTED** - Movidos de ProvisioningDebugReceiver para ProvisioningActivity (Android consegue encontrar Activity)
-- ✅ **MANAGED PROVISIONING COMPATIBLE** - Activity exportada com PROVISION_MANAGED_DEVICE/PROFILE intent filters
-- ✅ **APK CHECKSUM UPDATED** - Novo package checksum: KG7O3Bus4fcYgrY1pjZalMOi25INjyUIRa6faTo9zDM
-- ✅ **QR JSON FINAL** - device_owner_qr_FINAL.json com Android 13+ CERTIFICATE_CHECKSUMS e domínio cdccreditsmart.com
-- 🎯 **ROOT CAUSE RESOLVED** - Android não encontrava Activity para lançar durante QR provisioning (agora resolvido)
+**UI/UX Decisions:**
+The application is entirely built with Jetpack Compose and Material 3, implementing a CDC institutional dark theme (`#FF7A1A`/`#F47C2C`). It features a complete navigation system with Compose NavController and includes screens for onboarding, dashboard, payments, and a lock overlay for device blocking.
 
-### FINAL BREAKTHROUGH (September 25, 2025) - BUILD SUCCESSFUL in 35s
-- 🚀 **APK PRODUCTION BUILD COMPLETED** - APK Android finalizado com BUILD SUCCESSFUL in 35s
-- ✅ **DEVICE MODULE COMPILATION VICTORY** - Todos erros de device:compileReleaseKotlin resolvidos
-- ✅ **R8 MINIFICATION MASTERED** - WebSocket classes preservadas com consumer-rules.pro corretas
-- ✅ **HILT DI CONFLICTS RESOLVED** - Provider Moshi duplicado removido, injeção dependencies limpa
-- ✅ **STRINGCONCATFACTORY PRESERVED** - Keep rules Java 9+ string optimizations funcionando
-- ✅ **LINT HARDCODED DEBUG FIXED** - android:debuggable removido do AndroidManifest.xml
-- ✅ **ALL MODULES ASSEMBLED** - network, data, biometry, payments, device = ASSEMBLY SUCCESS
-- ✅ **APK FINAL GENERATED** - app:assembleRelease concluído, APK pronto para deploy
-- ✅ **283 ACTIONABLE TASKS** - 12 executed, 271 up-to-date = build system otimizado
-
-### API & INTEGRATION VICTORIES  
-- 🎉 **MDM SERVER ARCHITECTURE CLARIFIED** - Servidor MDM simplificado para monitoramento/debug apenas
-- ✅ **UNNECESSARY FUNCTIONALITIES REMOVED** - QR generation e APK management removidos (handled by CDC Credit Smart backend)
-- ✅ **URL CONSISTENCY FIXED** - URLs do Android agora consistentes: api.cdccreditsmart.com.br (prod) + api-dev.cdccreditsmart.com.br (debug)
-- 🎉 **CDC CREDIT SMART API INTEGRATION COMPLETE** - Integração 100% completa com APIs reais do backend CDC Credit Smart
-- ✅ **ALL API ENDPOINTS IMPLEMENTED** - Autenticação APK, validação IMEI, heartbeat, flow events, WebSocket real-time
-- ✅ **PRODUCTION-READY CONFIGURATION** - Base URL https://api.cdccreditsmart.com.br, JWT authentication, security headers
-
-### BUILD SYSTEM MASTERY
-- ✅ **ZERO COMPILATION ERRORS** - Todos os problemas de build resolvidos, KSP funcionando perfeitamente
-- 🎉 **16KB PAGE SIZE COMPATIBILITY ACHIEVED** - APK agora é compatível com dispositivos Android 15+ (obrigatório Nov 1, 2025)
-- ✅ **NATIVE LIBRARIES REMOVED** - Eliminadas todas as bibliotecas .so problemáticas (libimage_processing_util_jni.so, libbarhopper_v3.so)
-- ✅ **QR CODE SCANNING REMOVED** - Bibliotecas removidas pois app busca boletos diretamente da API CDC Credit Smart no backend
-- ✅ **CAMERAX UPDATED** - Atualizado para v1.4.0+ com suporte nativo a 16KB page size
-
-### ARCHITECTURE EXCELLENCE
-- ✅ **CRITICAL HILT ARCHITECTURE FIX** - AuthenticationRepository criado para resolver violação de injeção ViewModel→ViewModel
-- ✅ **ALL COMPILATION ERRORS RESOLVED** - Corrigidos erros sistemáticos em AuthViewModel, HomeScreen, ProfileViewModel, etc.
-- ✅ **REPOSITORY LAYER IMPLEMENTATION COMPLETE** - Camada repository production-ready com architect approval
-- ✅ **All Repository Implementations** - BiometryRepositoryImpl, ContractRepositoryImpl, PaymentsRepositoryImpl, DeviceRepositoryImpl, AuthenticationRepositoryImpl
-- ✅ **Flow<Resource<T>> Pattern** - Implementado consistentemente em toda camada repository
-- ✅ **Mapper Infrastructure** - Production-ready com dados autênticos do servidor sem timestamps fabricados
-- ✅ **Type Safety** - Conversões corretas entre DTOs, entities e domain models
-- ✅ **CDC Error Handling** - CdcApiException mapping completo com NetworkErrorMapper
-- ✅ **COMPLETE FLOW WORKING** - IMEI auth → facial biometry → contract signing → data sync totalmente funcional
-
-### UI/UX MODERNIZATION COMPLETE
-- 🎉 **JETPACK COMPOSE + MATERIAL 3 MIGRATION COMPLETE** - Migração total de Views/XML para Compose
-- ✅ **CDC Dark Theme Implemented** - Tema institucional CDC com cores #FF7A1A/#F47C2C + dark mode
-- ✅ **Complete Navigation System** - Compose NavController com todas as rotas funcionais
-- ✅ **All Screens Implemented** - Stepper flow + Dashboard + Parcelas + Payment + Lock Overlay
-- ✅ **Build System Updated** - Compose Compiler Plugin + Material 3 dependencies
-- ✅ **Legacy Code Removed** - Fragments, ViewBinding, XML layouts completamente limpos
-- ✅ **Device Owner Ready** - Lock overlay para bloqueio fullscreen implemented
-- ✅ **Architecture Approved** - Revisão completa do architect com approval total
-
-## Previous Achievements  
-- ✅ **Samsung Knox SDK v3.12+ Híbrido PRODUCTION-READY** - Sistema híbrido funcional
-- ✅ **Multi-Manufacturer Device Owner Framework** - 6 adaptadores fabricantes
-- ✅ **Knox Hybrid Architecture** - KnoxFactory para simulação ↔ Knox SDK real
-- ✅ **Build System Optimized** - KAPT→KSP migration, BUILD SUCCESSFUL consistente
-- ✅ **Critical Bug Fixes** - Recursion, null safety, defensive error handling
-
-## Architecture
-### Modules
-- **app**: UI/DI layer with Hilt
-- **data**: Room database and repositories
-- **network**: Retrofit/OkHttp networking with certificate pinning
-- **domain**: Business logic and use cases
-- **device**: Multi-manufacturer Device Owner framework, Samsung Knox v3.12+ híbrido, attestation, overlay blocking
-- **payments**: PIX/Boleto payment processing
-- **biometry**: Facial recognition with liveness detection
-
-### Key Technologies
+**Technical Implementations:**
 - **DI**: Hilt
 - **Database**: Room + EncryptedSharedPreferences
 - **Networking**: Retrofit + OkHttp + Certificate Pinning
 - **Background Jobs**: WorkManager
 - **Security**: Play Integrity, Key Attestation, Device Owner APIs, Samsung Knox Enterprise SDK v3.12+
 - **UI**: Jetpack Compose + Material 3 + Compose Navigation
+- **Device Owner**: Implemented via an exported `ProvisioningActivity` compatible with Managed Provisioning, handling all necessary DPC permissions. Includes an active timeout detection system for provisioning hangs.
+- **Samsung Knox**: Hybrid architecture with `KnoxFactory` for simulation/real SDK switching, `IKnox` interfaces for abstraction, and production-ready enterprise features like KPE licensing and container management.
+- **Error Handling**: Comprehensive `CdcApiException` mapping and `NetworkErrorMapper` for robust API error handling.
+- **Build System**: Optimized with KSP for annotation processing, R8 for minification, and compatibility with 16KB page size for Android 15+. All native libraries are removed, and `Camerax` is updated.
 
-## Features to Implement
-### Security & Device Owner
-- ✅ **Multi-Manufacturer Device Owner** - Framework compatível com 6 fabricantes
-- ✅ **Samsung Knox Enterprise** - SDK v3.12+ híbrido production-ready
-- ✅ **Knox Container Management** - KPE licensing, container creation/destruction
-- ✅ **Knox Attestation** - Device integrity validation com failure handling
-- Device Owner enrollment via QR Code
-- Certificate pinning and mTLS
-- Play Integrity attestation
-- Anti-tampering detection
-- Overlay blocking for overdue payments
-- Silent app updates
+**Feature Specifications:**
+- **Security & Device Owner**: Multi-manufacturer Device Owner framework, Samsung Knox Enterprise SDK, Knox container management, Knox Attestation, device owner enrollment via QR Code, certificate pinning, Play Integrity attestation, anti-tampering detection, overlay blocking for overdue payments, silent app updates.
+- **Business Flow**: QR code onboarding, device attestation and binding, facial biometry with liveness, digital signature, PIX/Boleto payment processing, graduated blocking policies.
+- **Backend Integration**: JWT authentication with scopes, idempotency keys for POST requests, request signing with ECDSA.
 
-### Business Flow
-- QR code onboarding from PDV
-- Device attestation and binding
-- Facial biometry with liveness
-- Digital signature with android-signaturepad
-- Payment processing (PIX/Boleto)
-- Graduated blocking policies
-
-### Backend Integration
-- JWT authentication with scopes
-- API routes: /v1/device/*, /v1/biometry/*, /v1/payments/*
-- Idempotency keys for all POST requests
-- Request signing with ECDSA
-
-## MDM Server Architecture
-### Role in the System
-The MDM Server is a **debug/monitoring-only** component in the CDC Credit Smart ecosystem:
-
-**WHAT IT IS:**
-- **Internal debugging tool** for development and testing
-- **Device monitoring** via WebSocket connections for real-time status
-- **Audit logging** for tracking device activities and events  
-- **Development sandbox** for testing device management scenarios
-
-**WHAT IT IS NOT:**
-- ❌ **NOT a production backend** - All production APIs are handled by CDC Credit Smart backend
-- ❌ **NOT generating QR codes** - QR codes are generated by CDC Credit Smart backend
-- ❌ **NOT managing APK distribution** - APKs come from CDC Credit Smart system
-- ❌ **NOT handling device provisioning** - Device provisioning handled by CDC Credit Smart
-
-### Simplified Architecture
-```
-┌─────────────────────────────────────────────────────────────────┐
-│                     REAL ARCHITECTURE                          │
-├─────────────────────────────────────────────────────────────────┤
-│                                                                 │
-│  Android APK  ──────────────────► CDC Credit Smart Backend     │
-│  (Production)                     https://api.cdccreditsmart.com.br/
-│                                                                 │
-│  Android APK  ──────────────────► CDC Credit Smart Backend     │
-│  (Debug)                          https://api-dev.cdccreditsmart.com.br/
-│                                                                 │
-│                                                                 │
-│  MDM Server ◄─── WebSocket ────── Android APK (debug only)     │
-│  (Debug/Monitor)                  For internal monitoring       │
-│                                                                 │
-└─────────────────────────────────────────────────────────────────┘
-```
-
-### Key URLs Corrected
-- **Production Android**: `https://api.cdccreditsmart.com.br/`
-- **Debug Android**: `https://api-dev.cdccreditsmart.com.br/`
-- **MDM Server**: `localhost:3001` (debug/monitoring only)
-
-### Removed Unnecessary Features
-- ❌ **QR Code Generation** (`server/routes/qrcode.ts`, `server/services/qrcodeService.ts`)
-- ❌ **APK Management** (`server/routes/apk.ts`, `server/services/apkService.ts`)
-- ❌ **Policy Management** (`server/routes/policies.ts`, `server/services/policyService.ts`)
-- ❌ **Command Management** (`server/routes/commands.ts`, `server/services/commandService.ts`)
-
-### Maintained Features
-- ✅ **Device Management** (`server/routes/devices.ts`) - For debug/monitoring
-- ✅ **WebSocket Communication** (`server/services/websocket.ts`) - For real-time debugging
-- ✅ **Database/Audit Logs** (`server/services/database.ts`) - For monitoring device activities
-- ✅ **Authentication** (`server/middleware/auth.ts`) - For secure debug access
-
-## Samsung Knox Implementation Details
-### Hybrid Architecture
-- **KnoxFactory**: Easy switching between simulation and real Knox SDK
-- **Knox Interfaces**: IKnox* abstractions for all Samsung Knox APIs
-- **Simulated Knox**: Realistic simulation with configurable failure rates
-- **Production Ready**: Zero NPE crashes, defensive error handling, thread-safe
-- **Enterprise Features**: KPE licensing, container management, device attestation
-
-### Technical Achievements
-- **Build Success**: ✅ **FINAL BUILD SUCCESSFUL in 35s** - APK production ready
-- **Device Module Victory**: All compilation errors resolved, R8 minification working
-- **ProGuard Mastery**: WebSocket classes preserved with consumer-rules.pro
-- **Null Safety**: Complete defensive null handling with safeExecutePolicy() wrappers
-- **Lazy Initialization**: acquireKnoxManagersWithRetry() with retry logic
-- **Realistic Simulation**: 30% license failures, 20% attestation failures for testing
-- **Thread Safety**: @Volatile managers for concurrent access safety
-
-### Production Deployment
-- **Knox SDK Integration**: Ready for Samsung Knox SDK real when available
-- **Multi-Device Support**: Framework works on Samsung + 5 other manufacturers
-- **Enterprise Grade**: Prepared for KPE license activation and Knox enterprise features
-- **Documentation**: Complete KNOX_PRODUCTION_INTEGRATION.md setup guide
-
-## Notes
-- Project follows LGPD compliance requirements
-- All sensitive data encrypted
-- Aggressive R8/ProGuard obfuscation for release builds
-- Firebase messaging for push notifications
-- Offline-first architecture with sync queues
-- Samsung Knox SDK v3.12+ production integration ready
+## External Dependencies
+- **CDC Credit Smart Backend API**: `https://api.cdccreditsmart.com.br/` (Production) and `https://api-dev.cdccreditsmart.com.br/` (Debug). This is the primary backend for all core application functionalities, including APK authentication, IMEI validation, heartbeat, flow events, and real-time WebSocket communication.
+- **Samsung Knox Enterprise SDK v3.12+**: Utilized for advanced device management, security, and attestation on Samsung devices.
+- **Google Play Integrity API**: For device integrity verification.
+- **Firebase Messaging**: For push notifications.
+- **android-signaturepad**: For digital signature functionality.
+- **Jetpack Compose, Material 3, Compose Navigation**: Core UI framework and navigation components.
+- **Hilt**: Dependency Injection framework.
+- **Room**: Local database persistence.
+- **Retrofit, OkHttp**: For network communication.
+- **WorkManager**: For background tasks.
