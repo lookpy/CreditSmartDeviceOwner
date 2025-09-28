@@ -150,16 +150,48 @@ class CDCDeviceAdminReceiver : DeviceAdminReceiver() {
             Log.i(TAG, "Setting up basic Device Owner policies...")
             
             // Allow CDC Credit Smart app to be uninstalled by Device Owner
-            dpm.setUninstallBlocked(admin, context.packageName, false)
+            try {
+                dpm.setUninstallBlocked(admin, context.packageName, false)
+                Log.i(TAG, "✅ Uninstall policy configured")
+            } catch (e: Exception) {
+                Log.w(TAG, "Failed to set uninstall policy (non-critical)", e)
+            }
             
-            // Enable system apps that might be disabled
-            dpm.enableSystemApp(admin, "com.android.settings")
-            dpm.enableSystemApp(admin, "com.android.systemui")
+            // Enable system apps that might be disabled (defensive approach)
+            val systemAppsToEnable = listOf(
+                "com.android.settings",
+                "com.android.systemui"
+            )
             
-            Log.i(TAG, "✅ Basic policies configured")
+            for (packageName in systemAppsToEnable) {
+                try {
+                    if (isAppInstalled(context, packageName)) {
+                        dpm.enableSystemApp(admin, packageName)
+                        Log.i(TAG, "✅ Enabled system app: $packageName")
+                    } else {
+                        Log.i(TAG, "System app not found (skipping): $packageName")
+                    }
+                } catch (e: Exception) {
+                    Log.w(TAG, "Failed to enable system app $packageName (non-critical)", e)
+                }
+            }
+            
+            Log.i(TAG, "✅ Basic policies setup completed")
             
         } catch (e: Exception) {
             Log.e(TAG, "❌ Error setting up policies", e)
+        }
+    }
+    
+    /**
+     * Check if an app is installed on the system
+     */
+    private fun isAppInstalled(context: Context, packageName: String): Boolean {
+        return try {
+            context.packageManager.getPackageInfo(packageName, 0)
+            true
+        } catch (e: Exception) {
+            false
         }
     }
 

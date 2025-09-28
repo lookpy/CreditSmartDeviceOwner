@@ -2,16 +2,17 @@
 # compiler_version: 8.13.6
 # common_typos_disable
 # {"id":"com.android.tools.r8.mapping","version":"2.2"}
-# pg_map_id: 443e746414a696d0849af4f3a6d1f0c196a7eff948865141c487a26d5b26b570
-# pg_map_hash: SHA-256 443e746414a696d0849af4f3a6d1f0c196a7eff948865141c487a26d5b26b570
+# pg_map_id: 9e7e9fff2650932732d82523898682720919f0559fb7f8deb182868e5f98ee5b
+# pg_map_hash: SHA-256 9e7e9fff2650932732d82523898682720919f0559fb7f8deb182868e5f98ee5b
 com.cdccreditsmart.device.BuildConfig -> com.cdccreditsmart.device.BuildConfig:
 # {"id":"sourceFile","fileName":"BuildConfig.java"}
     1:1:void <init>():6:6 -> <init>
 com.cdccreditsmart.device.CDCDeviceAdminReceiver -> com.cdccreditsmart.device.CDCDeviceAdminReceiver:
 # {"id":"sourceFile","fileName":"CDCDeviceAdminReceiver.kt"}
     1:1:void <init>():14:14 -> <init>
-    1:1:android.content.ComponentName getWho(android.content.Context):188:188 -> getWho
-    1:4:void launchMainApp(android.content.Context):171:174 -> launchMainApp
+    1:1:android.content.ComponentName getWho(android.content.Context):220:220 -> getWho
+    1:1:boolean isAppInstalled(android.content.Context,java.lang.String):191:191 -> isAppInstalled
+    1:4:void launchMainApp(android.content.Context):203:206 -> launchMainApp
     1:2:void onBugreportFailed(android.content.Context,android.content.Intent,int):101:102 -> onBugreportFailed
     1:2:void onBugreportShared(android.content.Context,android.content.Intent,java.lang.String):96:97 -> onBugreportShared
     1:1:void onBugreportSharingDeclined(android.content.Context,android.content.Intent):91:91 -> onBugreportSharingDeclined
@@ -31,7 +32,8 @@ com.cdccreditsmart.device.CDCDeviceAdminReceiver -> com.cdccreditsmart.device.CD
     1:2:void onUserStarted(android.content.Context,android.content.Intent,android.os.UserHandle):71:72 -> onUserStarted
     1:2:void onUserStopped(android.content.Context,android.content.Intent,android.os.UserHandle):76:77 -> onUserStopped
     1:2:void onUserSwitched(android.content.Context,android.content.Intent,android.os.UserHandle):81:82 -> onUserSwitched
-    1:5:void setupBasicPolicies(android.content.Context,android.app.admin.DevicePolicyManager,android.content.ComponentName):153:157 -> setupBasicPolicies
+    1:10:void setupBasicPolicies(android.content.Context,android.app.admin.DevicePolicyManager,android.content.ComponentName):154:163 -> setupBasicPolicies
+    11:25:void setupBasicPolicies(android.content.Context,android.app.admin.DevicePolicyManager,android.content.ComponentName):161:175 -> setupBasicPolicies
 com.cdccreditsmart.device.CDCDeviceAdminReceiver$Companion -> com.cdccreditsmart.device.CDCDeviceAdminReceiver$Companion:
 # {"id":"sourceFile","fileName":"CDCDeviceAdminReceiver.kt"}
     1:1:void <init>(kotlin.jvm.internal.DefaultConstructorMarker):0:0 -> <init>
