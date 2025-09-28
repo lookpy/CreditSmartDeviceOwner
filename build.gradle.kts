@@ -6,13 +6,7 @@ plugins {
     id("com.google.dagger.hilt.android") version "2.54" apply false
 }
 
-allprojects {
-    repositories {
-        google()
-        mavenCentral()
-        maven { url = uri("https://jitpack.io") }
-    }
-}
+// Remove allprojects repositories to avoid conflicts with settings.gradle.kts
 
 tasks.register("clean", Delete::class) {
     delete(layout.buildDirectory)
