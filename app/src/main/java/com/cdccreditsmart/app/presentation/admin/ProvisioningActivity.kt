@@ -146,16 +146,18 @@ class ProvisioningActivity : Activity() {
             
             // Check if device supports Device Owner
             val userManager = getSystemService(Context.USER_SERVICE) as UserManager
-            val users = userManager.users
             
-            Log.i(TAG, "👥 Users on device: ${users?.size ?: 0}")
-            users?.forEach { user ->
-                Log.i(TAG, "   👤 User: ${user.name} (id=${user.id}, primary=${user.isPrimary})")
-            }
+            // Check if this is a managed profile or has multiple users
+            val isSystemUser = userManager.isSystemUser
+            val hasUserRestriction = userManager.hasUserRestriction(UserManager.DISALLOW_ADD_USER)
             
-            // Device Owner can only be set on devices with single user
-            if (users != null && users.size > 1) {
-                Log.w(TAG, "⚠️  Multiple users detected - Device Owner setup blocked")
+            Log.i(TAG, "👥 Device user status:")
+            Log.i(TAG, "   🏠 Is system user: $isSystemUser")
+            Log.i(TAG, "   🚫 Has user restriction: $hasUserRestriction")
+            
+            // Device Owner can only be set on primary user without restrictions
+            if (!isSystemUser) {
+                Log.w(TAG, "⚠️  Not primary user - Device Owner setup blocked")
                 Log.i(TAG, "💡 AUTO-SETUP SUGGESTION:")
                 Log.i(TAG, "   1. Execute factory reset on device")
                 Log.i(TAG, "   2. Use script: ./install_device_owner.sh")

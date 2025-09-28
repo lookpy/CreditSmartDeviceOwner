@@ -134,7 +134,7 @@ class DeviceOwnerInstaller:
             result = self.run_adb_command(f"adb shell dpm set-device-owner {self.device_admin_component}")
         
         # Verify success
-        if "Success" in result or "success" in result.lower() or result == "":
+        if result is not None and ("Success" in result or "success" in result.lower()) or result == "":
             print("✅ Device Owner configurado com sucesso")
             return True
         else:
