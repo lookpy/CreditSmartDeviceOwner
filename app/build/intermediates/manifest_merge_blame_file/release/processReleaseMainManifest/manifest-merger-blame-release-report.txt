@@ -8,780 +8,659 @@
 8        android:minSdkVersion="26"
 9        android:targetSdkVersion="34" />
 10
-11    <!-- Network permissions -->
+11    <!-- Essential network permissions -->
 12    <uses-permission android:name="android.permission.INTERNET" />
 12-->/home/runner/workspace/app/src/main/AndroidManifest.xml:6:5-67
 12-->/home/runner/workspace/app/src/main/AndroidManifest.xml:6:22-64
 13    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 13-->/home/runner/workspace/app/src/main/AndroidManifest.xml:7:5-79
 13-->/home/runner/workspace/app/src/main/AndroidManifest.xml:7:22-76
-14    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-14-->/home/runner/workspace/app/src/main/AndroidManifest.xml:8:5-76
-14-->/home/runner/workspace/app/src/main/AndroidManifest.xml:8:22-73
-15
-16    <!-- Device permissions -->
-17    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
-17-->/home/runner/workspace/app/src/main/AndroidManifest.xml:11:5-75
-17-->/home/runner/workspace/app/src/main/AndroidManifest.xml:11:22-72
-18    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-18-->/home/runner/workspace/app/src/main/AndroidManifest.xml:12:5-79
-18-->/home/runner/workspace/app/src/main/AndroidManifest.xml:12:22-76
-19    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-19-->/home/runner/workspace/app/src/main/AndroidManifest.xml:13:5-81
-19-->/home/runner/workspace/app/src/main/AndroidManifest.xml:13:22-78
-20
-21    <!-- Camera for biometry -->
-22    <uses-permission android:name="android.permission.CAMERA" />
-22-->/home/runner/workspace/app/src/main/AndroidManifest.xml:16:5-65
-22-->/home/runner/workspace/app/src/main/AndroidManifest.xml:16:22-62
-23
-24    <uses-feature
-24-->/home/runner/workspace/app/src/main/AndroidManifest.xml:17:5-84
-25        android:name="android.hardware.camera"
-25-->/home/runner/workspace/app/src/main/AndroidManifest.xml:17:19-57
-26        android:required="true" />
-26-->/home/runner/workspace/app/src/main/AndroidManifest.xml:17:58-81
-27    <uses-feature
-27-->/home/runner/workspace/app/src/main/AndroidManifest.xml:18:5-90
-28        android:name="android.hardware.camera.front"
-28-->/home/runner/workspace/app/src/main/AndroidManifest.xml:18:19-63
-29        android:required="true" />
-29-->/home/runner/workspace/app/src/main/AndroidManifest.xml:18:64-87
-30
-31    <!-- Storage for downloads -->
-32    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-32-->/home/runner/workspace/app/src/main/AndroidManifest.xml:21:5-22:40
-32-->/home/runner/workspace/app/src/main/AndroidManifest.xml:21:22-78
-33    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-33-->/home/runner/workspace/app/src/main/AndroidManifest.xml:23:5-80
-33-->/home/runner/workspace/app/src/main/AndroidManifest.xml:23:22-77
+14
+15    <!-- Essential Device Owner permissions -->
+16    <uses-permission android:name="android.permission.BIND_DEVICE_ADMIN" />
+16-->/home/runner/workspace/app/src/main/AndroidManifest.xml:10:5-76
+16-->/home/runner/workspace/app/src/main/AndroidManifest.xml:10:22-73
+17    <uses-permission android:name="android.permission.WAKE_LOCK" />
+17-->/home/runner/workspace/app/src/main/AndroidManifest.xml:11:5-68
+17-->/home/runner/workspace/app/src/main/AndroidManifest.xml:11:22-65
+18
+19    <!-- Background processing -->
+20    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+20-->/home/runner/workspace/app/src/main/AndroidManifest.xml:14:5-77
+20-->/home/runner/workspace/app/src/main/AndroidManifest.xml:14:22-74
+21    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+21-->/home/runner/workspace/app/src/main/AndroidManifest.xml:15:5-81
+21-->/home/runner/workspace/app/src/main/AndroidManifest.xml:15:22-78
+22
+23    <!-- Biometry permissions -->
+24    <uses-permission android:name="android.permission.CAMERA" />
+24-->/home/runner/workspace/app/src/main/AndroidManifest.xml:18:5-65
+24-->/home/runner/workspace/app/src/main/AndroidManifest.xml:18:22-62
+25    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+25-->/home/runner/workspace/app/src/main/AndroidManifest.xml:19:5-71
+25-->/home/runner/workspace/app/src/main/AndroidManifest.xml:19:22-68
+26
+27    <!-- Camera hardware features -->
+28    <uses-feature
+28-->/home/runner/workspace/app/src/main/AndroidManifest.xml:22:5-84
+29        android:name="android.hardware.camera"
+29-->/home/runner/workspace/app/src/main/AndroidManifest.xml:22:19-57
+30        android:required="true" />
+30-->/home/runner/workspace/app/src/main/AndroidManifest.xml:22:58-81
+31    <uses-feature
+31-->/home/runner/workspace/app/src/main/AndroidManifest.xml:23:5-90
+32        android:name="android.hardware.camera.front"
+32-->/home/runner/workspace/app/src/main/AndroidManifest.xml:23:19-63
+33        android:required="true" />
+33-->/home/runner/workspace/app/src/main/AndroidManifest.xml:23:64-87
 34
-35    <!-- Device Owner permissions -->
-36    <uses-permission android:name="android.permission.BIND_DEVICE_ADMIN" />
-36-->/home/runner/workspace/app/src/main/AndroidManifest.xml:26:5-76
-36-->/home/runner/workspace/app/src/main/AndroidManifest.xml:26:22-73
-37    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
-37-->/home/runner/workspace/app/src/main/AndroidManifest.xml:27:5-78
-37-->/home/runner/workspace/app/src/main/AndroidManifest.xml:27:22-75
-38    <uses-permission android:name="android.permission.DISABLE_KEYGUARD" />
-38-->/home/runner/workspace/app/src/main/AndroidManifest.xml:28:5-75
-38-->/home/runner/workspace/app/src/main/AndroidManifest.xml:28:22-72
-39    <uses-permission android:name="android.permission.WAKE_LOCK" />
-39-->/home/runner/workspace/app/src/main/AndroidManifest.xml:29:5-68
-39-->/home/runner/workspace/app/src/main/AndroidManifest.xml:29:22-65
-40
-41    <!-- Background processing -->
-42    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
-42-->/home/runner/workspace/app/src/main/AndroidManifest.xml:32:5-77
-42-->/home/runner/workspace/app/src/main/AndroidManifest.xml:32:22-74
-43    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
-43-->/home/runner/workspace/app/src/main/AndroidManifest.xml:33:5-81
-43-->/home/runner/workspace/app/src/main/AndroidManifest.xml:33:22-78
-44
-45    <!-- Firebase Messaging -->
-46    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
-46-->/home/runner/workspace/app/src/main/AndroidManifest.xml:36:5-82
-46-->/home/runner/workspace/app/src/main/AndroidManifest.xml:36:22-79
-47
-48    <!-- Manufacturer-specific permissions -->
-49    <!-- Samsung Knox permissions -->
-50    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_ADMIN" />
-50-->/home/runner/workspace/app/src/main/AndroidManifest.xml:40:5-86
-50-->/home/runner/workspace/app/src/main/AndroidManifest.xml:40:22-83
-51    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_CONTAINER" />
-51-->/home/runner/workspace/app/src/main/AndroidManifest.xml:41:5-90
-51-->/home/runner/workspace/app/src/main/AndroidManifest.xml:41:22-87
+35    <!-- Firebase Messaging -->
+36    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
+36-->/home/runner/workspace/app/src/main/AndroidManifest.xml:26:5-82
+36-->/home/runner/workspace/app/src/main/AndroidManifest.xml:26:22-79
+37
+38    <!-- Samsung Knox SDK v3.12+ Required Permissions -->
+39    <!-- Core Knox Permissions -->
+40    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_ADMIN" />
+40-->[:device] /home/runner/workspace/device/build/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml:11:5-86
+40-->[:device] /home/runner/workspace/device/build/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml:11:22-83
+41    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_ENTERPRISE_DEVICE_ADMIN" />
+41-->[:device] /home/runner/workspace/device/build/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml:12:5-104
+41-->[:device] /home/runner/workspace/device/build/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml:12:22-101
+42    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_DEVICE_CONFIGURATION" /> <!-- Knox Container Permissions -->
+42-->[:device] /home/runner/workspace/device/build/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml:13:5-101
+42-->[:device] /home/runner/workspace/device/build/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml:13:22-98
+43    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_CONTAINER" />
+43-->[:device] /home/runner/workspace/device/build/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml:16:5-90
+43-->[:device] /home/runner/workspace/device/build/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml:16:22-87
+44    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_CONTAINER_POLICY" /> <!-- Knox Application Management -->
+44-->[:device] /home/runner/workspace/device/build/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml:17:5-97
+44-->[:device] /home/runner/workspace/device/build/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml:17:22-94
+45    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_APPLICATION" />
+45-->[:device] /home/runner/workspace/device/build/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml:20:5-92
+45-->[:device] /home/runner/workspace/device/build/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml:20:22-89
+46    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_APP_MGMT" /> <!-- Knox Security and Restriction Policies -->
+46-->[:device] /home/runner/workspace/device/build/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml:21:5-89
+46-->[:device] /home/runner/workspace/device/build/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml:21:22-86
+47    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_SECURITY" />
+47-->[:device] /home/runner/workspace/device/build/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml:24:5-89
+47-->[:device] /home/runner/workspace/device/build/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml:24:22-86
+48    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_RESTRICTION" />
+48-->[:device] /home/runner/workspace/device/build/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml:25:5-92
+48-->[:device] /home/runner/workspace/device/build/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml:25:22-89
+49    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_ADVANCED_SECURITY" /> <!-- Knox Hardware Control -->
+49-->[:device] /home/runner/workspace/device/build/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml:26:5-98
+49-->[:device] /home/runner/workspace/device/build/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml:26:22-95
+50    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_HW_CONTROL" />
+50-->[:device] /home/runner/workspace/device/build/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml:29:5-91
+50-->[:device] /home/runner/workspace/device/build/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml:29:22-88
+51    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_HARDWARE_CONTROL" /> <!-- Knox VPN and Network -->
+51-->[:device] /home/runner/workspace/device/build/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml:30:5-97
+51-->[:device] /home/runner/workspace/device/build/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml:30:22-94
 52    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_VPN" />
-52-->/home/runner/workspace/app/src/main/AndroidManifest.xml:42:5-84
-52-->/home/runner/workspace/app/src/main/AndroidManifest.xml:42:22-81
-53    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_SECURITY" />
-53-->/home/runner/workspace/app/src/main/AndroidManifest.xml:43:5-89
-53-->/home/runner/workspace/app/src/main/AndroidManifest.xml:43:22-86
-54
-55    <!-- Knox SDK v3.12+ Enterprise permissions -->
-56    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_APPLICATION" />
-56-->/home/runner/workspace/app/src/main/AndroidManifest.xml:46:5-92
-56-->/home/runner/workspace/app/src/main/AndroidManifest.xml:46:22-89
-57    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_RESTRICTION" />
-57-->/home/runner/workspace/app/src/main/AndroidManifest.xml:47:5-92
-57-->/home/runner/workspace/app/src/main/AndroidManifest.xml:47:22-89
-58    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_DEVICE_CONFIGURATION" />
-58-->/home/runner/workspace/app/src/main/AndroidManifest.xml:48:5-101
-58-->/home/runner/workspace/app/src/main/AndroidManifest.xml:48:22-98
-59    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_KEYSTORE" />
-59-->/home/runner/workspace/app/src/main/AndroidManifest.xml:49:5-89
-59-->/home/runner/workspace/app/src/main/AndroidManifest.xml:49:22-86
-60    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_CERTIFICATE" />
-60-->/home/runner/workspace/app/src/main/AndroidManifest.xml:50:5-92
-60-->/home/runner/workspace/app/src/main/AndroidManifest.xml:50:22-89
-61    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_BLUETOOTH" />
-61-->/home/runner/workspace/app/src/main/AndroidManifest.xml:51:5-90
-61-->/home/runner/workspace/app/src/main/AndroidManifest.xml:51:22-87
-62    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_LOCATION" />
-62-->/home/runner/workspace/app/src/main/AndroidManifest.xml:52:5-89
-62-->/home/runner/workspace/app/src/main/AndroidManifest.xml:52:22-86
-63    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_EMAIL" />
-63-->/home/runner/workspace/app/src/main/AndroidManifest.xml:53:5-86
-63-->/home/runner/workspace/app/src/main/AndroidManifest.xml:53:22-83
-64    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_BROWSER" />
-64-->/home/runner/workspace/app/src/main/AndroidManifest.xml:54:5-88
-64-->/home/runner/workspace/app/src/main/AndroidManifest.xml:54:22-85
-65    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_PHONE_RESTRICTION" />
-65-->/home/runner/workspace/app/src/main/AndroidManifest.xml:55:5-98
-65-->/home/runner/workspace/app/src/main/AndroidManifest.xml:55:22-95
-66    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_WIFI" />
-66-->/home/runner/workspace/app/src/main/AndroidManifest.xml:56:5-85
-66-->/home/runner/workspace/app/src/main/AndroidManifest.xml:56:22-82
-67    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_KIOSK_MODE" />
-67-->/home/runner/workspace/app/src/main/AndroidManifest.xml:57:5-91
-67-->/home/runner/workspace/app/src/main/AndroidManifest.xml:57:22-88
-68
-69    <!-- Knox Platform Enterprise (KPE) permissions -->
-70    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_LICENSE" />
-70-->/home/runner/workspace/app/src/main/AndroidManifest.xml:60:5-88
-70-->/home/runner/workspace/app/src/main/AndroidManifest.xml:60:22-85
-71    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_APP_MGMT" />
-71-->/home/runner/workspace/app/src/main/AndroidManifest.xml:61:5-89
-71-->/home/runner/workspace/app/src/main/AndroidManifest.xml:61:22-86
-72    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_ENTERPRISE_DEVICE_ADMIN" />
-72-->/home/runner/workspace/app/src/main/AndroidManifest.xml:62:5-104
-72-->/home/runner/workspace/app/src/main/AndroidManifest.xml:62:22-101
-73    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_MULTI_USER_MGMT" />
-73-->/home/runner/workspace/app/src/main/AndroidManifest.xml:63:5-96
-73-->/home/runner/workspace/app/src/main/AndroidManifest.xml:63:22-93
-74    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_SEAMS_MGMT" />
-74-->/home/runner/workspace/app/src/main/AndroidManifest.xml:64:5-91
-74-->/home/runner/workspace/app/src/main/AndroidManifest.xml:64:22-88
-75
-76    <!-- Knox Attestation and Hardware Security -->
-77    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_ATTESTATION" />
-77-->/home/runner/workspace/app/src/main/AndroidManifest.xml:67:5-92
-77-->/home/runner/workspace/app/src/main/AndroidManifest.xml:67:22-89
-78    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_HARDWARE_CONTROL" />
-78-->/home/runner/workspace/app/src/main/AndroidManifest.xml:68:5-97
-78-->/home/runner/workspace/app/src/main/AndroidManifest.xml:68:22-94
-79    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_DUALDAR" />
-79-->/home/runner/workspace/app/src/main/AndroidManifest.xml:69:5-88
-79-->/home/runner/workspace/app/src/main/AndroidManifest.xml:69:22-85
-80    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_UCM_ESE_MGMT" />
-80-->/home/runner/workspace/app/src/main/AndroidManifest.xml:70:5-93
-80-->/home/runner/workspace/app/src/main/AndroidManifest.xml:70:22-90
-81    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_UCM_MGMT" />
-81-->/home/runner/workspace/app/src/main/AndroidManifest.xml:71:5-89
-81-->/home/runner/workspace/app/src/main/AndroidManifest.xml:71:22-86
+52-->[:device] /home/runner/workspace/device/build/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml:33:5-84
+52-->[:device] /home/runner/workspace/device/build/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml:33:22-81
+53    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_NETWORK" /> <!-- Knox License Management -->
+53-->[:device] /home/runner/workspace/device/build/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml:34:5-88
+53-->[:device] /home/runner/workspace/device/build/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml:34:22-85
+54    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_LICENSE" />
+54-->[:device] /home/runner/workspace/device/build/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml:37:5-88
+54-->[:device] /home/runner/workspace/device/build/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml:37:22-85
+55    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_LICENSE_LOG" /> <!-- Knox Attestation and Keystore -->
+55-->[:device] /home/runner/workspace/device/build/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml:38:5-92
+55-->[:device] /home/runner/workspace/device/build/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml:38:22-89
+56    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_ATTESTATION" />
+56-->[:device] /home/runner/workspace/device/build/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml:41:5-92
+56-->[:device] /home/runner/workspace/device/build/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml:41:22-89
+57    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_TIMA_KEYSTORE" />
+57-->[:device] /home/runner/workspace/device/build/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml:42:5-94
+57-->[:device] /home/runner/workspace/device/build/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml:42:22-91
+58    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_KEYSTORE" /> <!-- Knox Custom Settings -->
+58-->[:device] /home/runner/workspace/device/build/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml:43:5-89
+58-->[:device] /home/runner/workspace/device/build/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml:43:22-86
+59    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_CUSTOM_SETTING" />
+59-->[:device] /home/runner/workspace/device/build/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml:46:5-95
+59-->[:device] /home/runner/workspace/device/build/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml:46:22-92
+60    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_CUSTOM_SYSTEM" /> <!-- Knox Multi-User and Workspace -->
+60-->[:device] /home/runner/workspace/device/build/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml:47:5-94
+60-->[:device] /home/runner/workspace/device/build/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml:47:22-91
+61    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_MULTI_USER_MGMT" />
+61-->[:device] /home/runner/workspace/device/build/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml:50:5-96
+61-->[:device] /home/runner/workspace/device/build/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml:50:22-93
+62    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_WORKSPACE" /> <!-- Knox DualDAR (Dual Data-At-Rest) -->
+62-->[:device] /home/runner/workspace/device/build/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml:51:5-90
+62-->[:device] /home/runner/workspace/device/build/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml:51:22-87
+63    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_DUAL_DAR" /> <!-- Knox UCM (Universal Credential Management) -->
+63-->[:device] /home/runner/workspace/device/build/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml:54:5-89
+63-->[:device] /home/runner/workspace/device/build/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml:54:22-86
+64    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_UCM" />
+64-->[:device] /home/runner/workspace/device/build/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml:57:5-84
+64-->[:device] /home/runner/workspace/device/build/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml:57:22-81
+65    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_CCM_KEYSTORE" /> <!-- Standard Android Permissions required by Knox -->
+65-->[:device] /home/runner/workspace/device/build/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml:58:5-93
+65-->[:device] /home/runner/workspace/device/build/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml:58:22-90
+66    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+66-->[:device] /home/runner/workspace/device/build/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml:61:5-76
+66-->[:device] /home/runner/workspace/device/build/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml:61:22-73
+67    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+67-->[:device] /home/runner/workspace/device/build/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml:62:5-76
+67-->[:device] /home/runner/workspace/device/build/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml:62:22-73
+68    <uses-permission android:name="android.permission.BLUETOOTH" />
+68-->[:device] /home/runner/workspace/device/build/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml:63:5-68
+68-->[:device] /home/runner/workspace/device/build/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml:63:22-65
+69    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+69-->[:device] /home/runner/workspace/device/build/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml:64:5-74
+69-->[:device] /home/runner/workspace/device/build/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml:64:22-71
+70    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
+70-->[:device] /home/runner/workspace/device/build/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml:66:5-79
+70-->[:device] /home/runner/workspace/device/build/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml:66:22-76
+71    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+71-->[:device] /home/runner/workspace/device/build/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml:67:5-81
+71-->[:device] /home/runner/workspace/device/build/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml:67:22-78
+72    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+72-->[:device] /home/runner/workspace/device/build/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml:68:5-75
+72-->[:device] /home/runner/workspace/device/build/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml:68:22-72
+73    <uses-permission android:name="android.permission.WRITE_SETTINGS" />
+73-->[:device] /home/runner/workspace/device/build/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml:69:5-73
+73-->[:device] /home/runner/workspace/device/build/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml:69:22-70
+74    <uses-permission android:name="android.permission.WRITE_SECURE_SETTINGS" />
+74-->[:device] /home/runner/workspace/device/build/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml:70:5-80
+74-->[:device] /home/runner/workspace/device/build/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml:70:22-77
+75    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+76    <uses-permission android:name="android.permission.USE_BIOMETRIC" /> <!-- suppress DeprecatedClassUsageInspection -->
+76-->[androidx.biometric:biometric:1.1.0] /home/runner/.gradle/caches/8.13/transforms/809a357bc590c410de4c9eacb74cf666/transformed/biometric-1.1.0/AndroidManifest.xml:24:5-72
+76-->[androidx.biometric:biometric:1.1.0] /home/runner/.gradle/caches/8.13/transforms/809a357bc590c410de4c9eacb74cf666/transformed/biometric-1.1.0/AndroidManifest.xml:24:22-69
+77    <uses-permission android:name="android.permission.USE_FINGERPRINT" />
+77-->[androidx.biometric:biometric:1.1.0] /home/runner/.gradle/caches/8.13/transforms/809a357bc590c410de4c9eacb74cf666/transformed/biometric-1.1.0/AndroidManifest.xml:27:5-74
+77-->[androidx.biometric:biometric:1.1.0] /home/runner/.gradle/caches/8.13/transforms/809a357bc590c410de4c9eacb74cf666/transformed/biometric-1.1.0/AndroidManifest.xml:27:22-71
+78
+79    <permission
+79-->[androidx.core:core:1.15.0] /home/runner/.gradle/caches/8.13/transforms/d9bb17406da8a7fabee807a352dfd098/transformed/core-1.15.0/AndroidManifest.xml:22:5-24:47
+80        android:name="com.cdccreditsmart.app.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION"
+80-->[androidx.core:core:1.15.0] /home/runner/.gradle/caches/8.13/transforms/d9bb17406da8a7fabee807a352dfd098/transformed/core-1.15.0/AndroidManifest.xml:23:9-81
+81        android:protectionLevel="signature" />
+81-->[androidx.core:core:1.15.0] /home/runner/.gradle/caches/8.13/transforms/d9bb17406da8a7fabee807a352dfd098/transformed/core-1.15.0/AndroidManifest.xml:24:9-44
 82
-83    <!-- Knox Container Advanced permissions -->
-84    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_CONTAINER_VPN" />
-84-->/home/runner/workspace/app/src/main/AndroidManifest.xml:74:5-94
-84-->/home/runner/workspace/app/src/main/AndroidManifest.xml:74:22-91
-85    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_CONTAINER_RCP" />
-85-->/home/runner/workspace/app/src/main/AndroidManifest.xml:75:5-94
-85-->/home/runner/workspace/app/src/main/AndroidManifest.xml:75:22-91
-86    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_SECURE_FOLDER" />
-86-->/home/runner/workspace/app/src/main/AndroidManifest.xml:76:5-94
-86-->/home/runner/workspace/app/src/main/AndroidManifest.xml:76:22-91
-87
-88    <!-- Knox Advanced Security policies -->
-89    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_ADVANCED_SECURITY" />
-89-->/home/runner/workspace/app/src/main/AndroidManifest.xml:79:5-98
-89-->/home/runner/workspace/app/src/main/AndroidManifest.xml:79:22-95
-90    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_TIMA_KEYSTORE" />
-90-->/home/runner/workspace/app/src/main/AndroidManifest.xml:80:5-94
-90-->/home/runner/workspace/app/src/main/AndroidManifest.xml:80:22-91
-91    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_CUSTOM_SETTING" />
-91-->/home/runner/workspace/app/src/main/AndroidManifest.xml:81:5-95
-91-->/home/runner/workspace/app/src/main/AndroidManifest.xml:81:22-92
-92    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_CUSTOM_SYSTEM" />
-92-->/home/runner/workspace/app/src/main/AndroidManifest.xml:82:5-94
-92-->/home/runner/workspace/app/src/main/AndroidManifest.xml:82:22-91
-93
-94    <!-- Knox E-FOTA and Remote Management -->
-95    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_EFOTA" />
-95-->/home/runner/workspace/app/src/main/AndroidManifest.xml:85:5-86
-95-->/home/runner/workspace/app/src/main/AndroidManifest.xml:85:22-83
-96    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_REMOTE_CONTROL" />
-96-->/home/runner/workspace/app/src/main/AndroidManifest.xml:86:5-95
-96-->/home/runner/workspace/app/src/main/AndroidManifest.xml:86:22-92
-97    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_SDP" />
-97-->/home/runner/workspace/app/src/main/AndroidManifest.xml:87:5-84
-97-->/home/runner/workspace/app/src/main/AndroidManifest.xml:87:22-81
-98
-99    <!-- Knox Android 15+ specific permissions -->
-100    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_ENHANCED_ATTESTATION" />
-100-->/home/runner/workspace/app/src/main/AndroidManifest.xml:90:5-101
-100-->/home/runner/workspace/app/src/main/AndroidManifest.xml:90:22-98
-101    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_WORKSPACE_MGMT" />
-101-->/home/runner/workspace/app/src/main/AndroidManifest.xml:91:5-95
-101-->/home/runner/workspace/app/src/main/AndroidManifest.xml:91:22-92
-102
-103    <!-- MIUI (Xiaomi) permissions -->
-104    <uses-permission android:name="miui.permission.USE_INTERNAL_GENERAL_API" />
-104-->/home/runner/workspace/app/src/main/AndroidManifest.xml:94:5-80
-104-->/home/runner/workspace/app/src/main/AndroidManifest.xml:94:22-77
-105    <uses-permission android:name="android.permission.WRITE_SECURE_SETTINGS" />
-105-->/home/runner/workspace/app/src/main/AndroidManifest.xml:95:5-80
-105-->/home/runner/workspace/app/src/main/AndroidManifest.xml:95:22-77
-106
-107    <!-- ColorOS (Realme/OPPO) permissions -->
-108    <uses-permission android:name="com.coloros.safe.permission.SECURITY_SCAN" />
-108-->/home/runner/workspace/app/src/main/AndroidManifest.xml:98:5-81
-108-->/home/runner/workspace/app/src/main/AndroidManifest.xml:98:22-78
-109    <uses-permission android:name="com.oppo.launcher.permission.READ_SETTINGS" />
-109-->/home/runner/workspace/app/src/main/AndroidManifest.xml:99:5-82
-109-->/home/runner/workspace/app/src/main/AndroidManifest.xml:99:22-79
-110
-111    <!-- Device Owner and enterprise permissions -->
-112    <uses-permission android:name="android.permission.MANAGE_DEVICE_ADMINS" />
-112-->/home/runner/workspace/app/src/main/AndroidManifest.xml:102:5-79
-112-->/home/runner/workspace/app/src/main/AndroidManifest.xml:102:22-76
-113    <uses-permission android:name="android.permission.MANAGE_PROFILE_AND_DEVICE_OWNERS" />
-113-->/home/runner/workspace/app/src/main/AndroidManifest.xml:103:5-91
-113-->/home/runner/workspace/app/src/main/AndroidManifest.xml:103:22-88
-114    <uses-permission android:name="android.permission.MANAGE_USERS" />
-114-->/home/runner/workspace/app/src/main/AndroidManifest.xml:104:5-71
-114-->/home/runner/workspace/app/src/main/AndroidManifest.xml:104:22-68
-115    <uses-permission android:name="android.permission.INTERACT_ACROSS_USERS" />
-115-->/home/runner/workspace/app/src/main/AndroidManifest.xml:105:5-80
-115-->/home/runner/workspace/app/src/main/AndroidManifest.xml:105:22-77
-116    <uses-permission android:name="android.permission.MANAGE_ACTIVITY_STACKS" />
-116-->/home/runner/workspace/app/src/main/AndroidManifest.xml:106:5-81
-116-->/home/runner/workspace/app/src/main/AndroidManifest.xml:106:22-78
-117
-118    <!-- Network and VPN management -->
-119    <uses-permission android:name="android.permission.CONTROL_VPN" />
-119-->/home/runner/workspace/app/src/main/AndroidManifest.xml:109:5-70
-119-->/home/runner/workspace/app/src/main/AndroidManifest.xml:109:22-67
-120    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
-120-->/home/runner/workspace/app/src/main/AndroidManifest.xml:110:5-76
-120-->/home/runner/workspace/app/src/main/AndroidManifest.xml:110:22-73
-121    <uses-permission android:name="android.permission.OVERRIDE_WIFI_CONFIG" />
-121-->/home/runner/workspace/app/src/main/AndroidManifest.xml:111:5-79
-121-->/home/runner/workspace/app/src/main/AndroidManifest.xml:111:22-76
+83    <uses-permission android:name="com.cdccreditsmart.app.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION" />
+83-->[androidx.core:core:1.15.0] /home/runner/.gradle/caches/8.13/transforms/d9bb17406da8a7fabee807a352dfd098/transformed/core-1.15.0/AndroidManifest.xml:26:5-97
+83-->[androidx.core:core:1.15.0] /home/runner/.gradle/caches/8.13/transforms/d9bb17406da8a7fabee807a352dfd098/transformed/core-1.15.0/AndroidManifest.xml:26:22-94
+84
+85    <application
+85-->/home/runner/workspace/app/src/main/AndroidManifest.xml:28:5-116:19
+86        android:name="com.cdccreditsmart.app.CDCApplication"
+86-->/home/runner/workspace/app/src/main/AndroidManifest.xml:29:9-39
+87        android:allowBackup="false"
+87-->/home/runner/workspace/app/src/main/AndroidManifest.xml:30:9-36
+88        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
+88-->[androidx.core:core:1.15.0] /home/runner/.gradle/caches/8.13/transforms/d9bb17406da8a7fabee807a352dfd098/transformed/core-1.15.0/AndroidManifest.xml:28:18-86
+89        android:dataExtractionRules="@xml/data_extraction_rules"
+89-->/home/runner/workspace/app/src/main/AndroidManifest.xml:31:9-65
+90        android:extractNativeLibs="false"
+91        android:fullBackupContent="@xml/backup_rules"
+91-->/home/runner/workspace/app/src/main/AndroidManifest.xml:32:9-54
+92        android:hardwareAccelerated="true"
+92-->/home/runner/workspace/app/src/main/AndroidManifest.xml:36:9-43
+93        android:icon="@mipmap/ic_launcher"
+93-->/home/runner/workspace/app/src/main/AndroidManifest.xml:33:9-43
+94        android:label="@string/app_name"
+94-->/home/runner/workspace/app/src/main/AndroidManifest.xml:34:9-41
+95        android:largeHeap="true"
+95-->/home/runner/workspace/app/src/main/AndroidManifest.xml:37:9-33
+96        android:theme="@style/Theme.CDCCreditSmart" >
+96-->/home/runner/workspace/app/src/main/AndroidManifest.xml:35:9-52
+97
+98        <!-- Main Activity -->
+99        <activity
+99-->/home/runner/workspace/app/src/main/AndroidManifest.xml:41:9-53:20
+100            android:name="com.cdccreditsmart.app.presentation.MainActivity"
+100-->/home/runner/workspace/app/src/main/AndroidManifest.xml:42:13-54
+101            android:exported="true"
+101-->/home/runner/workspace/app/src/main/AndroidManifest.xml:43:13-36
+102            android:launchMode="singleTask"
+102-->/home/runner/workspace/app/src/main/AndroidManifest.xml:44:13-44
+103            android:screenOrientation="portrait"
+103-->/home/runner/workspace/app/src/main/AndroidManifest.xml:45:13-49
+104            android:theme="@style/Theme.CDCCreditSmart.Splash" >
+104-->/home/runner/workspace/app/src/main/AndroidManifest.xml:46:13-63
+105            <intent-filter android:priority="1000" >
+105-->/home/runner/workspace/app/src/main/AndroidManifest.xml:47:13-52:29
+105-->/home/runner/workspace/app/src/main/AndroidManifest.xml:47:28-51
+106                <action android:name="android.intent.action.MAIN" />
+106-->/home/runner/workspace/app/src/main/AndroidManifest.xml:48:17-69
+106-->/home/runner/workspace/app/src/main/AndroidManifest.xml:48:25-66
+107
+108                <category android:name="android.intent.category.LAUNCHER" />
+108-->/home/runner/workspace/app/src/main/AndroidManifest.xml:49:17-77
+108-->/home/runner/workspace/app/src/main/AndroidManifest.xml:49:27-74
+109                <category android:name="android.intent.category.HOME" />
+109-->/home/runner/workspace/app/src/main/AndroidManifest.xml:50:17-73
+109-->/home/runner/workspace/app/src/main/AndroidManifest.xml:50:27-70
+110                <category android:name="android.intent.category.DEFAULT" />
+110-->/home/runner/workspace/app/src/main/AndroidManifest.xml:51:17-76
+110-->/home/runner/workspace/app/src/main/AndroidManifest.xml:51:27-73
+111            </intent-filter>
+112        </activity>
+113
+114        <!-- Device Admin Receiver -->
+115        <receiver
+115-->/home/runner/workspace/app/src/main/AndroidManifest.xml:56:9-69:20
+116            android:name="com.cdccreditsmart.device.CDCDeviceAdminReceiver"
+116-->/home/runner/workspace/app/src/main/AndroidManifest.xml:57:13-76
+117            android:exported="true"
+117-->/home/runner/workspace/app/src/main/AndroidManifest.xml:58:13-36
+118            android:permission="android.permission.BIND_DEVICE_ADMIN" >
+118-->/home/runner/workspace/app/src/main/AndroidManifest.xml:59:13-70
+119            <meta-data
+119-->/home/runner/workspace/app/src/main/AndroidManifest.xml:60:13-62:56
+120                android:name="android.app.device_admin"
+120-->/home/runner/workspace/app/src/main/AndroidManifest.xml:61:17-56
+121                android:resource="@xml/device_admin" />
+121-->/home/runner/workspace/app/src/main/AndroidManifest.xml:62:17-53
 122
-123    <!-- App management -->
-124    <uses-permission android:name="android.permission.INSTALL_PACKAGES" />
-124-->/home/runner/workspace/app/src/main/AndroidManifest.xml:114:5-75
-124-->/home/runner/workspace/app/src/main/AndroidManifest.xml:114:22-72
-125    <uses-permission android:name="android.permission.DELETE_PACKAGES" />
-125-->/home/runner/workspace/app/src/main/AndroidManifest.xml:115:5-74
-125-->/home/runner/workspace/app/src/main/AndroidManifest.xml:115:22-71
-126    <uses-permission android:name="android.permission.CLEAR_APP_USER_DATA" />
-126-->/home/runner/workspace/app/src/main/AndroidManifest.xml:116:5-78
-126-->/home/runner/workspace/app/src/main/AndroidManifest.xml:116:22-75
-127    <uses-permission android:name="android.permission.FORCE_STOP_PACKAGES" />
-127-->/home/runner/workspace/app/src/main/AndroidManifest.xml:117:5-78
-127-->/home/runner/workspace/app/src/main/AndroidManifest.xml:117:22-75
-128
-129    <!-- Security and attestation -->
-130    <uses-permission android:name="android.permission.MANAGE_CA_CERTIFICATES" />
-130-->/home/runner/workspace/app/src/main/AndroidManifest.xml:120:5-81
-130-->/home/runner/workspace/app/src/main/AndroidManifest.xml:120:22-78
-131    <uses-permission android:name="android.permission.MANAGE_KEYGUARD" />
-131-->/home/runner/workspace/app/src/main/AndroidManifest.xml:121:5-74
-131-->/home/runner/workspace/app/src/main/AndroidManifest.xml:121:22-71
-132    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_CONTAINER_POLICY" /> <!-- Knox Hardware Control -->
-132-->[:device] /home/runner/workspace/device/build/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml:17:5-97
-132-->[:device] /home/runner/workspace/device/build/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml:17:22-94
-133    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_HW_CONTROL" />
-133-->[:device] /home/runner/workspace/device/build/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml:29:5-91
-133-->[:device] /home/runner/workspace/device/build/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml:29:22-88
-134    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_NETWORK" />
-134-->[:device] /home/runner/workspace/device/build/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml:34:5-88
-134-->[:device] /home/runner/workspace/device/build/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml:34:22-85
-135    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_LICENSE_LOG" />
-135-->[:device] /home/runner/workspace/device/build/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml:38:5-92
-135-->[:device] /home/runner/workspace/device/build/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml:38:22-89
-136    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_WORKSPACE" /> <!-- Knox DualDAR (Dual Data-At-Rest) -->
-136-->[:device] /home/runner/workspace/device/build/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml:51:5-90
-136-->[:device] /home/runner/workspace/device/build/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml:51:22-87
-137    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_DUAL_DAR" /> <!-- Knox UCM (Universal Credential Management) -->
-137-->[:device] /home/runner/workspace/device/build/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml:54:5-89
-137-->[:device] /home/runner/workspace/device/build/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml:54:22-86
-138    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_UCM" />
-138-->[:device] /home/runner/workspace/device/build/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml:57:5-84
-138-->[:device] /home/runner/workspace/device/build/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml:57:22-81
-139    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_CCM_KEYSTORE" />
-139-->[:device] /home/runner/workspace/device/build/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml:58:5-93
-139-->[:device] /home/runner/workspace/device/build/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml:58:22-90
-140    <uses-permission android:name="android.permission.BLUETOOTH" />
-140-->[:device] /home/runner/workspace/device/build/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml:63:5-68
-140-->[:device] /home/runner/workspace/device/build/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml:63:22-65
-141    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
-141-->[:device] /home/runner/workspace/device/build/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml:64:5-74
-141-->[:device] /home/runner/workspace/device/build/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml:64:22-71
-142    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
-142-->[:device] /home/runner/workspace/device/build/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml:66:5-79
-142-->[:device] /home/runner/workspace/device/build/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml:66:22-76
-143    <uses-permission android:name="android.permission.WRITE_SETTINGS" />
-143-->[:device] /home/runner/workspace/device/build/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml:69:5-73
-143-->[:device] /home/runner/workspace/device/build/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml:69:22-70
-144    <uses-permission android:name="android.permission.USE_BIOMETRIC" /> <!-- suppress DeprecatedClassUsageInspection -->
-144-->[androidx.biometric:biometric:1.1.0] /home/runner/.gradle/caches/8.13/transforms/809a357bc590c410de4c9eacb74cf666/transformed/biometric-1.1.0/AndroidManifest.xml:24:5-72
-144-->[androidx.biometric:biometric:1.1.0] /home/runner/.gradle/caches/8.13/transforms/809a357bc590c410de4c9eacb74cf666/transformed/biometric-1.1.0/AndroidManifest.xml:24:22-69
-145    <uses-permission android:name="android.permission.USE_FINGERPRINT" />
-145-->[androidx.biometric:biometric:1.1.0] /home/runner/.gradle/caches/8.13/transforms/809a357bc590c410de4c9eacb74cf666/transformed/biometric-1.1.0/AndroidManifest.xml:27:5-74
-145-->[androidx.biometric:biometric:1.1.0] /home/runner/.gradle/caches/8.13/transforms/809a357bc590c410de4c9eacb74cf666/transformed/biometric-1.1.0/AndroidManifest.xml:27:22-71
-146
-147    <permission
-147-->[androidx.core:core:1.15.0] /home/runner/.gradle/caches/8.13/transforms/d9bb17406da8a7fabee807a352dfd098/transformed/core-1.15.0/AndroidManifest.xml:22:5-24:47
-148        android:name="com.cdccreditsmart.app.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION"
-148-->[androidx.core:core:1.15.0] /home/runner/.gradle/caches/8.13/transforms/d9bb17406da8a7fabee807a352dfd098/transformed/core-1.15.0/AndroidManifest.xml:23:9-81
-149        android:protectionLevel="signature" />
-149-->[androidx.core:core:1.15.0] /home/runner/.gradle/caches/8.13/transforms/d9bb17406da8a7fabee807a352dfd098/transformed/core-1.15.0/AndroidManifest.xml:24:9-44
-150
-151    <uses-permission android:name="com.cdccreditsmart.app.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION" />
-151-->[androidx.core:core:1.15.0] /home/runner/.gradle/caches/8.13/transforms/d9bb17406da8a7fabee807a352dfd098/transformed/core-1.15.0/AndroidManifest.xml:26:5-97
-151-->[androidx.core:core:1.15.0] /home/runner/.gradle/caches/8.13/transforms/d9bb17406da8a7fabee807a352dfd098/transformed/core-1.15.0/AndroidManifest.xml:26:22-94
-152
-153    <application
-153-->/home/runner/workspace/app/src/main/AndroidManifest.xml:123:5-199:19
-154        android:name="com.cdccreditsmart.app.CDCApplication"
-154-->/home/runner/workspace/app/src/main/AndroidManifest.xml:124:9-39
-155        android:allowBackup="false"
-155-->/home/runner/workspace/app/src/main/AndroidManifest.xml:125:9-36
-156        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
-156-->[androidx.core:core:1.15.0] /home/runner/.gradle/caches/8.13/transforms/d9bb17406da8a7fabee807a352dfd098/transformed/core-1.15.0/AndroidManifest.xml:28:18-86
-157        android:dataExtractionRules="@xml/data_extraction_rules"
-157-->/home/runner/workspace/app/src/main/AndroidManifest.xml:126:9-65
-158        android:extractNativeLibs="false"
-159        android:fullBackupContent="@xml/backup_rules"
-159-->/home/runner/workspace/app/src/main/AndroidManifest.xml:127:9-54
-160        android:hardwareAccelerated="true"
-160-->/home/runner/workspace/app/src/main/AndroidManifest.xml:131:9-43
-161        android:icon="@mipmap/ic_launcher"
-161-->/home/runner/workspace/app/src/main/AndroidManifest.xml:128:9-43
-162        android:label="@string/app_name"
-162-->/home/runner/workspace/app/src/main/AndroidManifest.xml:129:9-41
-163        android:largeHeap="true"
-163-->/home/runner/workspace/app/src/main/AndroidManifest.xml:132:9-33
-164        android:theme="@style/Theme.CDCCreditSmart" >
-164-->/home/runner/workspace/app/src/main/AndroidManifest.xml:130:9-52
+123            <intent-filter>
+123-->/home/runner/workspace/app/src/main/AndroidManifest.xml:63:13-68:29
+124                <action android:name="android.app.action.DEVICE_ADMIN_ENABLED" />
+124-->/home/runner/workspace/app/src/main/AndroidManifest.xml:64:17-82
+124-->/home/runner/workspace/app/src/main/AndroidManifest.xml:64:25-79
+125                <action android:name="android.app.action.DEVICE_ADMIN_DISABLED" />
+125-->/home/runner/workspace/app/src/main/AndroidManifest.xml:65:17-83
+125-->/home/runner/workspace/app/src/main/AndroidManifest.xml:65:25-80
+126                <action android:name="android.app.action.DEVICE_ADMIN_DISABLE_REQUESTED" />
+126-->/home/runner/workspace/app/src/main/AndroidManifest.xml:66:17-92
+126-->/home/runner/workspace/app/src/main/AndroidManifest.xml:66:25-89
+127                <action android:name="android.intent.action.BOOT_COMPLETED" />
+127-->/home/runner/workspace/app/src/main/AndroidManifest.xml:67:17-79
+127-->/home/runner/workspace/app/src/main/AndroidManifest.xml:67:25-76
+128            </intent-filter>
+129        </receiver>
+130
+131        <!-- DEBUG: Provisioning Debug Receiver (remove in production) -->
+132        <receiver
+132-->/home/runner/workspace/app/src/main/AndroidManifest.xml:72:9-82:20
+133            android:name="com.cdccreditsmart.device.ProvisioningDebugReceiver"
+133-->/home/runner/workspace/app/src/main/AndroidManifest.xml:73:13-79
+134            android:enabled="true"
+134-->/home/runner/workspace/app/src/main/AndroidManifest.xml:75:13-35
+135            android:exported="true" >
+135-->/home/runner/workspace/app/src/main/AndroidManifest.xml:74:13-36
+136            <intent-filter android:priority="1000" >
+136-->/home/runner/workspace/app/src/main/AndroidManifest.xml:76:13-81:29
+136-->/home/runner/workspace/app/src/main/AndroidManifest.xml:76:28-51
+137                <action android:name="android.app.action.PROVISIONING_STATE_CHANGED" />
+137-->/home/runner/workspace/app/src/main/AndroidManifest.xml:77:17-88
+137-->/home/runner/workspace/app/src/main/AndroidManifest.xml:77:25-85
+138                <action android:name="android.app.action.PROVISION_MANAGED_DEVICE" />
+138-->/home/runner/workspace/app/src/main/AndroidManifest.xml:78:17-86
+138-->/home/runner/workspace/app/src/main/AndroidManifest.xml:78:25-83
+139                <action android:name="android.app.action.DEVICE_ADMIN_ENABLED" />
+139-->/home/runner/workspace/app/src/main/AndroidManifest.xml:64:17-82
+139-->/home/runner/workspace/app/src/main/AndroidManifest.xml:64:25-79
+140                <action android:name="android.app.action.DEVICE_ADMIN_DISABLED" />
+140-->/home/runner/workspace/app/src/main/AndroidManifest.xml:65:17-83
+140-->/home/runner/workspace/app/src/main/AndroidManifest.xml:65:25-80
+141            </intent-filter>
+142        </receiver>
+143
+144        <!-- Android 12+ Required Activities for Device Owner Provisioning -->
+145        <activity
+145-->/home/runner/workspace/app/src/main/AndroidManifest.xml:85:9-93:20
+146            android:name="com.cdccreditsmart.app.presentation.admin.ProvisioningModeActivity"
+146-->/home/runner/workspace/app/src/main/AndroidManifest.xml:86:13-72
+147            android:exported="true"
+147-->/home/runner/workspace/app/src/main/AndroidManifest.xml:87:13-36
+148            android:permission="android.permission.BIND_DEVICE_ADMIN" >
+148-->/home/runner/workspace/app/src/main/AndroidManifest.xml:88:13-70
+149            <intent-filter>
+149-->/home/runner/workspace/app/src/main/AndroidManifest.xml:89:13-92:29
+150                <action android:name="android.app.action.GET_PROVISIONING_MODE" />
+150-->/home/runner/workspace/app/src/main/AndroidManifest.xml:90:17-83
+150-->/home/runner/workspace/app/src/main/AndroidManifest.xml:90:25-80
+151
+152                <category android:name="android.intent.category.DEFAULT" />
+152-->/home/runner/workspace/app/src/main/AndroidManifest.xml:51:17-76
+152-->/home/runner/workspace/app/src/main/AndroidManifest.xml:51:27-73
+153            </intent-filter>
+154        </activity>
+155        <activity
+155-->/home/runner/workspace/app/src/main/AndroidManifest.xml:95:9-103:20
+156            android:name="com.cdccreditsmart.app.presentation.admin.AdminPolicyComplianceActivity"
+156-->/home/runner/workspace/app/src/main/AndroidManifest.xml:96:13-77
+157            android:exported="true"
+157-->/home/runner/workspace/app/src/main/AndroidManifest.xml:97:13-36
+158            android:permission="android.permission.BIND_DEVICE_ADMIN" >
+158-->/home/runner/workspace/app/src/main/AndroidManifest.xml:98:13-70
+159            <intent-filter>
+159-->/home/runner/workspace/app/src/main/AndroidManifest.xml:99:13-102:29
+160                <action android:name="android.app.action.ADMIN_POLICY_COMPLIANCE" />
+160-->/home/runner/workspace/app/src/main/AndroidManifest.xml:100:17-85
+160-->/home/runner/workspace/app/src/main/AndroidManifest.xml:100:25-82
+161
+162                <category android:name="android.intent.category.DEFAULT" />
+162-->/home/runner/workspace/app/src/main/AndroidManifest.xml:51:17-76
+162-->/home/runner/workspace/app/src/main/AndroidManifest.xml:51:27-73
+163            </intent-filter>
+164        </activity>
 165
-166        <!-- Main Activity -->
-167        <activity
-167-->/home/runner/workspace/app/src/main/AndroidManifest.xml:136:9-148:20
-168            android:name="com.cdccreditsmart.app.presentation.MainActivity"
-168-->/home/runner/workspace/app/src/main/AndroidManifest.xml:137:13-54
-169            android:exported="true"
-169-->/home/runner/workspace/app/src/main/AndroidManifest.xml:138:13-36
-170            android:launchMode="singleTask"
-170-->/home/runner/workspace/app/src/main/AndroidManifest.xml:139:13-44
-171            android:screenOrientation="portrait"
-171-->/home/runner/workspace/app/src/main/AndroidManifest.xml:140:13-49
-172            android:theme="@style/Theme.CDCCreditSmart.Splash" >
-172-->/home/runner/workspace/app/src/main/AndroidManifest.xml:141:13-63
-173            <intent-filter android:priority="1000" >
-173-->/home/runner/workspace/app/src/main/AndroidManifest.xml:142:13-147:29
-173-->/home/runner/workspace/app/src/main/AndroidManifest.xml:142:28-51
-174                <action android:name="android.intent.action.MAIN" />
-174-->/home/runner/workspace/app/src/main/AndroidManifest.xml:143:17-69
-174-->/home/runner/workspace/app/src/main/AndroidManifest.xml:143:25-66
-175
-176                <category android:name="android.intent.category.LAUNCHER" />
-176-->/home/runner/workspace/app/src/main/AndroidManifest.xml:144:17-77
-176-->/home/runner/workspace/app/src/main/AndroidManifest.xml:144:27-74
-177                <category android:name="android.intent.category.HOME" />
-177-->/home/runner/workspace/app/src/main/AndroidManifest.xml:145:17-73
-177-->/home/runner/workspace/app/src/main/AndroidManifest.xml:145:27-70
-178                <category android:name="android.intent.category.DEFAULT" />
-178-->/home/runner/workspace/app/src/main/AndroidManifest.xml:146:17-76
-178-->/home/runner/workspace/app/src/main/AndroidManifest.xml:146:27-73
-179            </intent-filter>
-180        </activity>
-181
-182        <!-- Device Admin Receiver -->
-183        <receiver
-183-->/home/runner/workspace/app/src/main/AndroidManifest.xml:152:9-165:20
-184            android:name="com.cdccreditsmart.device.CDCDeviceAdminReceiver"
-184-->/home/runner/workspace/app/src/main/AndroidManifest.xml:153:13-76
-185            android:exported="true"
-185-->/home/runner/workspace/app/src/main/AndroidManifest.xml:154:13-36
-186            android:permission="android.permission.BIND_DEVICE_ADMIN" >
-186-->/home/runner/workspace/app/src/main/AndroidManifest.xml:155:13-70
-187            <meta-data
-187-->/home/runner/workspace/app/src/main/AndroidManifest.xml:156:13-158:56
-188                android:name="android.app.device_admin"
-188-->/home/runner/workspace/app/src/main/AndroidManifest.xml:157:17-56
-189                android:resource="@xml/device_admin" />
-189-->/home/runner/workspace/app/src/main/AndroidManifest.xml:158:17-53
-190
-191            <intent-filter>
-191-->/home/runner/workspace/app/src/main/AndroidManifest.xml:159:13-164:29
-192                <action android:name="android.app.action.DEVICE_ADMIN_ENABLED" />
-192-->/home/runner/workspace/app/src/main/AndroidManifest.xml:160:17-82
-192-->/home/runner/workspace/app/src/main/AndroidManifest.xml:160:25-79
-193                <action android:name="android.app.action.DEVICE_ADMIN_DISABLED" />
-193-->/home/runner/workspace/app/src/main/AndroidManifest.xml:161:17-83
-193-->/home/runner/workspace/app/src/main/AndroidManifest.xml:161:25-80
-194                <action android:name="android.app.action.DEVICE_ADMIN_DISABLE_REQUESTED" />
-194-->/home/runner/workspace/app/src/main/AndroidManifest.xml:162:17-92
-194-->/home/runner/workspace/app/src/main/AndroidManifest.xml:162:25-89
-195                <action android:name="android.intent.action.BOOT_COMPLETED" />
-195-->/home/runner/workspace/app/src/main/AndroidManifest.xml:163:17-79
-195-->/home/runner/workspace/app/src/main/AndroidManifest.xml:163:25-76
-196            </intent-filter>
-197        </receiver>
-198
-199        <!-- Android 12+ Required Activities for Device Owner Provisioning -->
-200        <activity
-200-->/home/runner/workspace/app/src/main/AndroidManifest.xml:168:9-176:20
-201            android:name="com.cdccreditsmart.app.presentation.admin.ProvisioningModeActivity"
-201-->/home/runner/workspace/app/src/main/AndroidManifest.xml:169:13-72
-202            android:exported="true"
-202-->/home/runner/workspace/app/src/main/AndroidManifest.xml:170:13-36
-203            android:permission="android.permission.BIND_DEVICE_ADMIN" >
-203-->/home/runner/workspace/app/src/main/AndroidManifest.xml:171:13-70
-204            <intent-filter>
-204-->/home/runner/workspace/app/src/main/AndroidManifest.xml:172:13-175:29
-205                <action android:name="android.app.action.GET_PROVISIONING_MODE" />
-205-->/home/runner/workspace/app/src/main/AndroidManifest.xml:173:17-83
-205-->/home/runner/workspace/app/src/main/AndroidManifest.xml:173:25-80
-206
-207                <category android:name="android.intent.category.DEFAULT" />
-207-->/home/runner/workspace/app/src/main/AndroidManifest.xml:146:17-76
-207-->/home/runner/workspace/app/src/main/AndroidManifest.xml:146:27-73
-208            </intent-filter>
-209        </activity>
-210        <activity
-210-->/home/runner/workspace/app/src/main/AndroidManifest.xml:178:9-186:20
-211            android:name="com.cdccreditsmart.app.presentation.admin.AdminPolicyComplianceActivity"
-211-->/home/runner/workspace/app/src/main/AndroidManifest.xml:179:13-77
-212            android:exported="true"
-212-->/home/runner/workspace/app/src/main/AndroidManifest.xml:180:13-36
-213            android:permission="android.permission.BIND_DEVICE_ADMIN" >
-213-->/home/runner/workspace/app/src/main/AndroidManifest.xml:181:13-70
-214            <intent-filter>
-214-->/home/runner/workspace/app/src/main/AndroidManifest.xml:182:13-185:29
-215                <action android:name="android.app.action.ADMIN_POLICY_COMPLIANCE" />
-215-->/home/runner/workspace/app/src/main/AndroidManifest.xml:183:17-85
-215-->/home/runner/workspace/app/src/main/AndroidManifest.xml:183:25-82
-216
-217                <category android:name="android.intent.category.DEFAULT" />
-217-->/home/runner/workspace/app/src/main/AndroidManifest.xml:146:17-76
-217-->/home/runner/workspace/app/src/main/AndroidManifest.xml:146:27-73
-218            </intent-filter>
-219        </activity>
-220
-221        <!-- File provider for sharing documents -->
-222        <provider
-223            android:name="androidx.core.content.FileProvider"
-223-->/home/runner/workspace/app/src/main/AndroidManifest.xml:190:13-62
-224            android:authorities="com.cdccreditsmart.app.fileprovider"
-224-->/home/runner/workspace/app/src/main/AndroidManifest.xml:191:13-64
-225            android:exported="false"
-225-->/home/runner/workspace/app/src/main/AndroidManifest.xml:192:13-37
-226            android:grantUriPermissions="true" >
-226-->/home/runner/workspace/app/src/main/AndroidManifest.xml:193:13-47
-227            <meta-data
-227-->/home/runner/workspace/app/src/main/AndroidManifest.xml:194:13-196:54
-228                android:name="android.support.FILE_PROVIDER_PATHS"
-228-->/home/runner/workspace/app/src/main/AndroidManifest.xml:195:17-67
-229                android:resource="@xml/file_paths" />
-229-->/home/runner/workspace/app/src/main/AndroidManifest.xml:196:17-51
-230        </provider>
-231
-232        <!-- Knox SDK Selective Permissions -->
-233        <meta-data
-233-->[:device] /home/runner/workspace/device/build/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml:78:9-80:36
-234            android:name="com.samsung.knoxlicense.permissions"
-234-->[:device] /home/runner/workspace/device/build/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml:79:13-63
-235            android:value="true" /> <!-- Knox SDK Version Compatibility -->
-235-->[:device] /home/runner/workspace/device/build/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml:80:13-33
-236        <meta-data
-236-->[:device] /home/runner/workspace/device/build/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml:83:9-85:36
-237            android:name="com.samsung.knox.sdk.version"
-237-->[:device] /home/runner/workspace/device/build/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml:84:13-56
-238            android:value="3.12" /> <!-- Knox Container Support -->
-238-->[:device] /home/runner/workspace/device/build/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml:85:13-33
-239        <meta-data
-239-->[:device] /home/runner/workspace/device/build/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml:88:9-90:36
-240            android:name="com.samsung.knox.container.support"
-240-->[:device] /home/runner/workspace/device/build/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml:89:13-62
-241            android:value="true" /> <!-- Knox Attestation Support -->
-241-->[:device] /home/runner/workspace/device/build/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml:90:13-33
-242        <meta-data
-242-->[:device] /home/runner/workspace/device/build/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml:93:9-95:36
-243            android:name="com.samsung.knox.attestation.support"
-243-->[:device] /home/runner/workspace/device/build/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml:94:13-64
-244            android:value="true" />
-244-->[:device] /home/runner/workspace/device/build/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml:95:13-33
-245        <meta-data
-245-->[com.google.android.gms:play-services-basement:18.4.0] /home/runner/.gradle/caches/8.13/transforms/731aa70a8839d374d48bbb1c660b3cbc/transformed/play-services-basement-18.4.0/AndroidManifest.xml:6:9-122
-246            android:name="com.google.android.gms.version"
-246-->[com.google.android.gms:play-services-basement:18.4.0] /home/runner/.gradle/caches/8.13/transforms/731aa70a8839d374d48bbb1c660b3cbc/transformed/play-services-basement-18.4.0/AndroidManifest.xml:6:20-65
-247            android:value="@integer/google_play_services_version" />
-247-->[com.google.android.gms:play-services-basement:18.4.0] /home/runner/.gradle/caches/8.13/transforms/731aa70a8839d374d48bbb1c660b3cbc/transformed/play-services-basement-18.4.0/AndroidManifest.xml:6:66-119
-248
-249        <provider
-249-->[androidx.emoji2:emoji2:1.3.0] /home/runner/.gradle/caches/8.13/transforms/bf307a596df8b477e07ba8deb239c630/transformed/emoji2-1.3.0/AndroidManifest.xml:24:9-32:20
-250            android:name="androidx.startup.InitializationProvider"
-250-->[androidx.emoji2:emoji2:1.3.0] /home/runner/.gradle/caches/8.13/transforms/bf307a596df8b477e07ba8deb239c630/transformed/emoji2-1.3.0/AndroidManifest.xml:25:13-67
-251            android:authorities="com.cdccreditsmart.app.androidx-startup"
-251-->[androidx.emoji2:emoji2:1.3.0] /home/runner/.gradle/caches/8.13/transforms/bf307a596df8b477e07ba8deb239c630/transformed/emoji2-1.3.0/AndroidManifest.xml:26:13-68
-252            android:exported="false" >
-252-->[androidx.emoji2:emoji2:1.3.0] /home/runner/.gradle/caches/8.13/transforms/bf307a596df8b477e07ba8deb239c630/transformed/emoji2-1.3.0/AndroidManifest.xml:27:13-37
-253            <meta-data
-253-->[androidx.emoji2:emoji2:1.3.0] /home/runner/.gradle/caches/8.13/transforms/bf307a596df8b477e07ba8deb239c630/transformed/emoji2-1.3.0/AndroidManifest.xml:29:13-31:52
-254                android:name="androidx.emoji2.text.EmojiCompatInitializer"
-254-->[androidx.emoji2:emoji2:1.3.0] /home/runner/.gradle/caches/8.13/transforms/bf307a596df8b477e07ba8deb239c630/transformed/emoji2-1.3.0/AndroidManifest.xml:30:17-75
-255                android:value="androidx.startup" />
-255-->[androidx.emoji2:emoji2:1.3.0] /home/runner/.gradle/caches/8.13/transforms/bf307a596df8b477e07ba8deb239c630/transformed/emoji2-1.3.0/AndroidManifest.xml:31:17-49
-256            <meta-data
-256-->[androidx.work:work-runtime:2.9.1] /home/runner/.gradle/caches/8.13/transforms/6e10cb0db923d35705d667c22d63e299/transformed/work-runtime-2.9.1/AndroidManifest.xml:34:13-36:52
-257                android:name="androidx.work.WorkManagerInitializer"
-257-->[androidx.work:work-runtime:2.9.1] /home/runner/.gradle/caches/8.13/transforms/6e10cb0db923d35705d667c22d63e299/transformed/work-runtime-2.9.1/AndroidManifest.xml:35:17-68
-258                android:value="androidx.startup" />
-258-->[androidx.work:work-runtime:2.9.1] /home/runner/.gradle/caches/8.13/transforms/6e10cb0db923d35705d667c22d63e299/transformed/work-runtime-2.9.1/AndroidManifest.xml:36:17-49
-259            <meta-data
-259-->[androidx.lifecycle:lifecycle-process:2.8.7] /home/runner/.gradle/caches/8.13/transforms/6e6878fff40eb05112fe177ee67a238f/transformed/lifecycle-process-2.8.7/AndroidManifest.xml:29:13-31:52
-260                android:name="androidx.lifecycle.ProcessLifecycleInitializer"
-260-->[androidx.lifecycle:lifecycle-process:2.8.7] /home/runner/.gradle/caches/8.13/transforms/6e6878fff40eb05112fe177ee67a238f/transformed/lifecycle-process-2.8.7/AndroidManifest.xml:30:17-78
-261                android:value="androidx.startup" />
-261-->[androidx.lifecycle:lifecycle-process:2.8.7] /home/runner/.gradle/caches/8.13/transforms/6e6878fff40eb05112fe177ee67a238f/transformed/lifecycle-process-2.8.7/AndroidManifest.xml:31:17-49
-262            <meta-data
-262-->[androidx.profileinstaller:profileinstaller:1.3.1] /home/runner/.gradle/caches/8.13/transforms/8f1ce9102b6841595e5db92579216d35/transformed/profileinstaller-1.3.1/AndroidManifest.xml:29:13-31:52
-263                android:name="androidx.profileinstaller.ProfileInstallerInitializer"
-263-->[androidx.profileinstaller:profileinstaller:1.3.1] /home/runner/.gradle/caches/8.13/transforms/8f1ce9102b6841595e5db92579216d35/transformed/profileinstaller-1.3.1/AndroidManifest.xml:30:17-85
-264                android:value="androidx.startup" />
-264-->[androidx.profileinstaller:profileinstaller:1.3.1] /home/runner/.gradle/caches/8.13/transforms/8f1ce9102b6841595e5db92579216d35/transformed/profileinstaller-1.3.1/AndroidManifest.xml:31:17-49
-265        </provider>
-266
-267        <service
-267-->[androidx.work:work-runtime:2.9.1] /home/runner/.gradle/caches/8.13/transforms/6e10cb0db923d35705d667c22d63e299/transformed/work-runtime-2.9.1/AndroidManifest.xml:39:9-45:35
-268            android:name="androidx.work.impl.background.systemalarm.SystemAlarmService"
-268-->[androidx.work:work-runtime:2.9.1] /home/runner/.gradle/caches/8.13/transforms/6e10cb0db923d35705d667c22d63e299/transformed/work-runtime-2.9.1/AndroidManifest.xml:40:13-88
-269            android:directBootAware="false"
-269-->[androidx.work:work-runtime:2.9.1] /home/runner/.gradle/caches/8.13/transforms/6e10cb0db923d35705d667c22d63e299/transformed/work-runtime-2.9.1/AndroidManifest.xml:41:13-44
-270            android:enabled="@bool/enable_system_alarm_service_default"
-270-->[androidx.work:work-runtime:2.9.1] /home/runner/.gradle/caches/8.13/transforms/6e10cb0db923d35705d667c22d63e299/transformed/work-runtime-2.9.1/AndroidManifest.xml:42:13-72
-271            android:exported="false" />
-271-->[androidx.work:work-runtime:2.9.1] /home/runner/.gradle/caches/8.13/transforms/6e10cb0db923d35705d667c22d63e299/transformed/work-runtime-2.9.1/AndroidManifest.xml:43:13-37
-272        <service
-272-->[androidx.work:work-runtime:2.9.1] /home/runner/.gradle/caches/8.13/transforms/6e10cb0db923d35705d667c22d63e299/transformed/work-runtime-2.9.1/AndroidManifest.xml:46:9-52:35
-273            android:name="androidx.work.impl.background.systemjob.SystemJobService"
-273-->[androidx.work:work-runtime:2.9.1] /home/runner/.gradle/caches/8.13/transforms/6e10cb0db923d35705d667c22d63e299/transformed/work-runtime-2.9.1/AndroidManifest.xml:47:13-84
-274            android:directBootAware="false"
-274-->[androidx.work:work-runtime:2.9.1] /home/runner/.gradle/caches/8.13/transforms/6e10cb0db923d35705d667c22d63e299/transformed/work-runtime-2.9.1/AndroidManifest.xml:48:13-44
-275            android:enabled="@bool/enable_system_job_service_default"
-275-->[androidx.work:work-runtime:2.9.1] /home/runner/.gradle/caches/8.13/transforms/6e10cb0db923d35705d667c22d63e299/transformed/work-runtime-2.9.1/AndroidManifest.xml:49:13-70
-276            android:exported="true"
-276-->[androidx.work:work-runtime:2.9.1] /home/runner/.gradle/caches/8.13/transforms/6e10cb0db923d35705d667c22d63e299/transformed/work-runtime-2.9.1/AndroidManifest.xml:50:13-36
-277            android:permission="android.permission.BIND_JOB_SERVICE" />
-277-->[androidx.work:work-runtime:2.9.1] /home/runner/.gradle/caches/8.13/transforms/6e10cb0db923d35705d667c22d63e299/transformed/work-runtime-2.9.1/AndroidManifest.xml:51:13-69
-278        <service
-278-->[androidx.work:work-runtime:2.9.1] /home/runner/.gradle/caches/8.13/transforms/6e10cb0db923d35705d667c22d63e299/transformed/work-runtime-2.9.1/AndroidManifest.xml:53:9-59:35
-279            android:name="androidx.work.impl.foreground.SystemForegroundService"
-279-->[androidx.work:work-runtime:2.9.1] /home/runner/.gradle/caches/8.13/transforms/6e10cb0db923d35705d667c22d63e299/transformed/work-runtime-2.9.1/AndroidManifest.xml:54:13-81
-280            android:directBootAware="false"
-280-->[androidx.work:work-runtime:2.9.1] /home/runner/.gradle/caches/8.13/transforms/6e10cb0db923d35705d667c22d63e299/transformed/work-runtime-2.9.1/AndroidManifest.xml:55:13-44
-281            android:enabled="@bool/enable_system_foreground_service_default"
-281-->[androidx.work:work-runtime:2.9.1] /home/runner/.gradle/caches/8.13/transforms/6e10cb0db923d35705d667c22d63e299/transformed/work-runtime-2.9.1/AndroidManifest.xml:56:13-77
-282            android:exported="false" />
-282-->[androidx.work:work-runtime:2.9.1] /home/runner/.gradle/caches/8.13/transforms/6e10cb0db923d35705d667c22d63e299/transformed/work-runtime-2.9.1/AndroidManifest.xml:57:13-37
-283
+166        <!-- File provider for sharing documents -->
+167        <provider
+168            android:name="androidx.core.content.FileProvider"
+168-->/home/runner/workspace/app/src/main/AndroidManifest.xml:107:13-62
+169            android:authorities="com.cdccreditsmart.app.fileprovider"
+169-->/home/runner/workspace/app/src/main/AndroidManifest.xml:108:13-64
+170            android:exported="false"
+170-->/home/runner/workspace/app/src/main/AndroidManifest.xml:109:13-37
+171            android:grantUriPermissions="true" >
+171-->/home/runner/workspace/app/src/main/AndroidManifest.xml:110:13-47
+172            <meta-data
+172-->/home/runner/workspace/app/src/main/AndroidManifest.xml:111:13-113:54
+173                android:name="android.support.FILE_PROVIDER_PATHS"
+173-->/home/runner/workspace/app/src/main/AndroidManifest.xml:112:17-67
+174                android:resource="@xml/file_paths" />
+174-->/home/runner/workspace/app/src/main/AndroidManifest.xml:113:17-51
+175        </provider>
+176
+177        <!-- Knox SDK Selective Permissions -->
+178        <meta-data
+178-->[:device] /home/runner/workspace/device/build/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml:78:9-80:36
+179            android:name="com.samsung.knoxlicense.permissions"
+179-->[:device] /home/runner/workspace/device/build/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml:79:13-63
+180            android:value="true" /> <!-- Knox SDK Version Compatibility -->
+180-->[:device] /home/runner/workspace/device/build/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml:80:13-33
+181        <meta-data
+181-->[:device] /home/runner/workspace/device/build/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml:83:9-85:36
+182            android:name="com.samsung.knox.sdk.version"
+182-->[:device] /home/runner/workspace/device/build/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml:84:13-56
+183            android:value="3.12" /> <!-- Knox Container Support -->
+183-->[:device] /home/runner/workspace/device/build/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml:85:13-33
+184        <meta-data
+184-->[:device] /home/runner/workspace/device/build/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml:88:9-90:36
+185            android:name="com.samsung.knox.container.support"
+185-->[:device] /home/runner/workspace/device/build/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml:89:13-62
+186            android:value="true" /> <!-- Knox Attestation Support -->
+186-->[:device] /home/runner/workspace/device/build/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml:90:13-33
+187        <meta-data
+187-->[:device] /home/runner/workspace/device/build/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml:93:9-95:36
+188            android:name="com.samsung.knox.attestation.support"
+188-->[:device] /home/runner/workspace/device/build/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml:94:13-64
+189            android:value="true" />
+189-->[:device] /home/runner/workspace/device/build/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml:95:13-33
+190        <meta-data
+190-->[com.google.android.gms:play-services-basement:18.4.0] /home/runner/.gradle/caches/8.13/transforms/731aa70a8839d374d48bbb1c660b3cbc/transformed/play-services-basement-18.4.0/AndroidManifest.xml:6:9-122
+191            android:name="com.google.android.gms.version"
+191-->[com.google.android.gms:play-services-basement:18.4.0] /home/runner/.gradle/caches/8.13/transforms/731aa70a8839d374d48bbb1c660b3cbc/transformed/play-services-basement-18.4.0/AndroidManifest.xml:6:20-65
+192            android:value="@integer/google_play_services_version" />
+192-->[com.google.android.gms:play-services-basement:18.4.0] /home/runner/.gradle/caches/8.13/transforms/731aa70a8839d374d48bbb1c660b3cbc/transformed/play-services-basement-18.4.0/AndroidManifest.xml:6:66-119
+193
+194        <provider
+194-->[androidx.emoji2:emoji2:1.3.0] /home/runner/.gradle/caches/8.13/transforms/bf307a596df8b477e07ba8deb239c630/transformed/emoji2-1.3.0/AndroidManifest.xml:24:9-32:20
+195            android:name="androidx.startup.InitializationProvider"
+195-->[androidx.emoji2:emoji2:1.3.0] /home/runner/.gradle/caches/8.13/transforms/bf307a596df8b477e07ba8deb239c630/transformed/emoji2-1.3.0/AndroidManifest.xml:25:13-67
+196            android:authorities="com.cdccreditsmart.app.androidx-startup"
+196-->[androidx.emoji2:emoji2:1.3.0] /home/runner/.gradle/caches/8.13/transforms/bf307a596df8b477e07ba8deb239c630/transformed/emoji2-1.3.0/AndroidManifest.xml:26:13-68
+197            android:exported="false" >
+197-->[androidx.emoji2:emoji2:1.3.0] /home/runner/.gradle/caches/8.13/transforms/bf307a596df8b477e07ba8deb239c630/transformed/emoji2-1.3.0/AndroidManifest.xml:27:13-37
+198            <meta-data
+198-->[androidx.emoji2:emoji2:1.3.0] /home/runner/.gradle/caches/8.13/transforms/bf307a596df8b477e07ba8deb239c630/transformed/emoji2-1.3.0/AndroidManifest.xml:29:13-31:52
+199                android:name="androidx.emoji2.text.EmojiCompatInitializer"
+199-->[androidx.emoji2:emoji2:1.3.0] /home/runner/.gradle/caches/8.13/transforms/bf307a596df8b477e07ba8deb239c630/transformed/emoji2-1.3.0/AndroidManifest.xml:30:17-75
+200                android:value="androidx.startup" />
+200-->[androidx.emoji2:emoji2:1.3.0] /home/runner/.gradle/caches/8.13/transforms/bf307a596df8b477e07ba8deb239c630/transformed/emoji2-1.3.0/AndroidManifest.xml:31:17-49
+201            <meta-data
+201-->[androidx.work:work-runtime:2.9.1] /home/runner/.gradle/caches/8.13/transforms/6e10cb0db923d35705d667c22d63e299/transformed/work-runtime-2.9.1/AndroidManifest.xml:34:13-36:52
+202                android:name="androidx.work.WorkManagerInitializer"
+202-->[androidx.work:work-runtime:2.9.1] /home/runner/.gradle/caches/8.13/transforms/6e10cb0db923d35705d667c22d63e299/transformed/work-runtime-2.9.1/AndroidManifest.xml:35:17-68
+203                android:value="androidx.startup" />
+203-->[androidx.work:work-runtime:2.9.1] /home/runner/.gradle/caches/8.13/transforms/6e10cb0db923d35705d667c22d63e299/transformed/work-runtime-2.9.1/AndroidManifest.xml:36:17-49
+204            <meta-data
+204-->[androidx.lifecycle:lifecycle-process:2.8.7] /home/runner/.gradle/caches/8.13/transforms/6e6878fff40eb05112fe177ee67a238f/transformed/lifecycle-process-2.8.7/AndroidManifest.xml:29:13-31:52
+205                android:name="androidx.lifecycle.ProcessLifecycleInitializer"
+205-->[androidx.lifecycle:lifecycle-process:2.8.7] /home/runner/.gradle/caches/8.13/transforms/6e6878fff40eb05112fe177ee67a238f/transformed/lifecycle-process-2.8.7/AndroidManifest.xml:30:17-78
+206                android:value="androidx.startup" />
+206-->[androidx.lifecycle:lifecycle-process:2.8.7] /home/runner/.gradle/caches/8.13/transforms/6e6878fff40eb05112fe177ee67a238f/transformed/lifecycle-process-2.8.7/AndroidManifest.xml:31:17-49
+207            <meta-data
+207-->[androidx.profileinstaller:profileinstaller:1.3.1] /home/runner/.gradle/caches/8.13/transforms/8f1ce9102b6841595e5db92579216d35/transformed/profileinstaller-1.3.1/AndroidManifest.xml:29:13-31:52
+208                android:name="androidx.profileinstaller.ProfileInstallerInitializer"
+208-->[androidx.profileinstaller:profileinstaller:1.3.1] /home/runner/.gradle/caches/8.13/transforms/8f1ce9102b6841595e5db92579216d35/transformed/profileinstaller-1.3.1/AndroidManifest.xml:30:17-85
+209                android:value="androidx.startup" />
+209-->[androidx.profileinstaller:profileinstaller:1.3.1] /home/runner/.gradle/caches/8.13/transforms/8f1ce9102b6841595e5db92579216d35/transformed/profileinstaller-1.3.1/AndroidManifest.xml:31:17-49
+210        </provider>
+211
+212        <service
+212-->[androidx.work:work-runtime:2.9.1] /home/runner/.gradle/caches/8.13/transforms/6e10cb0db923d35705d667c22d63e299/transformed/work-runtime-2.9.1/AndroidManifest.xml:39:9-45:35
+213            android:name="androidx.work.impl.background.systemalarm.SystemAlarmService"
+213-->[androidx.work:work-runtime:2.9.1] /home/runner/.gradle/caches/8.13/transforms/6e10cb0db923d35705d667c22d63e299/transformed/work-runtime-2.9.1/AndroidManifest.xml:40:13-88
+214            android:directBootAware="false"
+214-->[androidx.work:work-runtime:2.9.1] /home/runner/.gradle/caches/8.13/transforms/6e10cb0db923d35705d667c22d63e299/transformed/work-runtime-2.9.1/AndroidManifest.xml:41:13-44
+215            android:enabled="@bool/enable_system_alarm_service_default"
+215-->[androidx.work:work-runtime:2.9.1] /home/runner/.gradle/caches/8.13/transforms/6e10cb0db923d35705d667c22d63e299/transformed/work-runtime-2.9.1/AndroidManifest.xml:42:13-72
+216            android:exported="false" />
+216-->[androidx.work:work-runtime:2.9.1] /home/runner/.gradle/caches/8.13/transforms/6e10cb0db923d35705d667c22d63e299/transformed/work-runtime-2.9.1/AndroidManifest.xml:43:13-37
+217        <service
+217-->[androidx.work:work-runtime:2.9.1] /home/runner/.gradle/caches/8.13/transforms/6e10cb0db923d35705d667c22d63e299/transformed/work-runtime-2.9.1/AndroidManifest.xml:46:9-52:35
+218            android:name="androidx.work.impl.background.systemjob.SystemJobService"
+218-->[androidx.work:work-runtime:2.9.1] /home/runner/.gradle/caches/8.13/transforms/6e10cb0db923d35705d667c22d63e299/transformed/work-runtime-2.9.1/AndroidManifest.xml:47:13-84
+219            android:directBootAware="false"
+219-->[androidx.work:work-runtime:2.9.1] /home/runner/.gradle/caches/8.13/transforms/6e10cb0db923d35705d667c22d63e299/transformed/work-runtime-2.9.1/AndroidManifest.xml:48:13-44
+220            android:enabled="@bool/enable_system_job_service_default"
+220-->[androidx.work:work-runtime:2.9.1] /home/runner/.gradle/caches/8.13/transforms/6e10cb0db923d35705d667c22d63e299/transformed/work-runtime-2.9.1/AndroidManifest.xml:49:13-70
+221            android:exported="true"
+221-->[androidx.work:work-runtime:2.9.1] /home/runner/.gradle/caches/8.13/transforms/6e10cb0db923d35705d667c22d63e299/transformed/work-runtime-2.9.1/AndroidManifest.xml:50:13-36
+222            android:permission="android.permission.BIND_JOB_SERVICE" />
+222-->[androidx.work:work-runtime:2.9.1] /home/runner/.gradle/caches/8.13/transforms/6e10cb0db923d35705d667c22d63e299/transformed/work-runtime-2.9.1/AndroidManifest.xml:51:13-69
+223        <service
+223-->[androidx.work:work-runtime:2.9.1] /home/runner/.gradle/caches/8.13/transforms/6e10cb0db923d35705d667c22d63e299/transformed/work-runtime-2.9.1/AndroidManifest.xml:53:9-59:35
+224            android:name="androidx.work.impl.foreground.SystemForegroundService"
+224-->[androidx.work:work-runtime:2.9.1] /home/runner/.gradle/caches/8.13/transforms/6e10cb0db923d35705d667c22d63e299/transformed/work-runtime-2.9.1/AndroidManifest.xml:54:13-81
+225            android:directBootAware="false"
+225-->[androidx.work:work-runtime:2.9.1] /home/runner/.gradle/caches/8.13/transforms/6e10cb0db923d35705d667c22d63e299/transformed/work-runtime-2.9.1/AndroidManifest.xml:55:13-44
+226            android:enabled="@bool/enable_system_foreground_service_default"
+226-->[androidx.work:work-runtime:2.9.1] /home/runner/.gradle/caches/8.13/transforms/6e10cb0db923d35705d667c22d63e299/transformed/work-runtime-2.9.1/AndroidManifest.xml:56:13-77
+227            android:exported="false" />
+227-->[androidx.work:work-runtime:2.9.1] /home/runner/.gradle/caches/8.13/transforms/6e10cb0db923d35705d667c22d63e299/transformed/work-runtime-2.9.1/AndroidManifest.xml:57:13-37
+228
+229        <receiver
+229-->[androidx.work:work-runtime:2.9.1] /home/runner/.gradle/caches/8.13/transforms/6e10cb0db923d35705d667c22d63e299/transformed/work-runtime-2.9.1/AndroidManifest.xml:61:9-66:35
+230            android:name="androidx.work.impl.utils.ForceStopRunnable$BroadcastReceiver"
+230-->[androidx.work:work-runtime:2.9.1] /home/runner/.gradle/caches/8.13/transforms/6e10cb0db923d35705d667c22d63e299/transformed/work-runtime-2.9.1/AndroidManifest.xml:62:13-88
+231            android:directBootAware="false"
+231-->[androidx.work:work-runtime:2.9.1] /home/runner/.gradle/caches/8.13/transforms/6e10cb0db923d35705d667c22d63e299/transformed/work-runtime-2.9.1/AndroidManifest.xml:63:13-44
+232            android:enabled="true"
+232-->[androidx.work:work-runtime:2.9.1] /home/runner/.gradle/caches/8.13/transforms/6e10cb0db923d35705d667c22d63e299/transformed/work-runtime-2.9.1/AndroidManifest.xml:64:13-35
+233            android:exported="false" />
+233-->[androidx.work:work-runtime:2.9.1] /home/runner/.gradle/caches/8.13/transforms/6e10cb0db923d35705d667c22d63e299/transformed/work-runtime-2.9.1/AndroidManifest.xml:65:13-37
+234        <receiver
+234-->[androidx.work:work-runtime:2.9.1] /home/runner/.gradle/caches/8.13/transforms/6e10cb0db923d35705d667c22d63e299/transformed/work-runtime-2.9.1/AndroidManifest.xml:67:9-77:20
+235            android:name="androidx.work.impl.background.systemalarm.ConstraintProxy$BatteryChargingProxy"
+235-->[androidx.work:work-runtime:2.9.1] /home/runner/.gradle/caches/8.13/transforms/6e10cb0db923d35705d667c22d63e299/transformed/work-runtime-2.9.1/AndroidManifest.xml:68:13-106
+236            android:directBootAware="false"
+236-->[androidx.work:work-runtime:2.9.1] /home/runner/.gradle/caches/8.13/transforms/6e10cb0db923d35705d667c22d63e299/transformed/work-runtime-2.9.1/AndroidManifest.xml:69:13-44
+237            android:enabled="false"
+237-->[androidx.work:work-runtime:2.9.1] /home/runner/.gradle/caches/8.13/transforms/6e10cb0db923d35705d667c22d63e299/transformed/work-runtime-2.9.1/AndroidManifest.xml:70:13-36
+238            android:exported="false" >
+238-->[androidx.work:work-runtime:2.9.1] /home/runner/.gradle/caches/8.13/transforms/6e10cb0db923d35705d667c22d63e299/transformed/work-runtime-2.9.1/AndroidManifest.xml:71:13-37
+239            <intent-filter>
+239-->[androidx.work:work-runtime:2.9.1] /home/runner/.gradle/caches/8.13/transforms/6e10cb0db923d35705d667c22d63e299/transformed/work-runtime-2.9.1/AndroidManifest.xml:73:13-76:29
+240                <action android:name="android.intent.action.ACTION_POWER_CONNECTED" />
+240-->[androidx.work:work-runtime:2.9.1] /home/runner/.gradle/caches/8.13/transforms/6e10cb0db923d35705d667c22d63e299/transformed/work-runtime-2.9.1/AndroidManifest.xml:74:17-87
+240-->[androidx.work:work-runtime:2.9.1] /home/runner/.gradle/caches/8.13/transforms/6e10cb0db923d35705d667c22d63e299/transformed/work-runtime-2.9.1/AndroidManifest.xml:74:25-84
+241                <action android:name="android.intent.action.ACTION_POWER_DISCONNECTED" />
+241-->[androidx.work:work-runtime:2.9.1] /home/runner/.gradle/caches/8.13/transforms/6e10cb0db923d35705d667c22d63e299/transformed/work-runtime-2.9.1/AndroidManifest.xml:75:17-90
+241-->[androidx.work:work-runtime:2.9.1] /home/runner/.gradle/caches/8.13/transforms/6e10cb0db923d35705d667c22d63e299/transformed/work-runtime-2.9.1/AndroidManifest.xml:75:25-87
+242            </intent-filter>
+243        </receiver>
+244        <receiver
+244-->[androidx.work:work-runtime:2.9.1] /home/runner/.gradle/caches/8.13/transforms/6e10cb0db923d35705d667c22d63e299/transformed/work-runtime-2.9.1/AndroidManifest.xml:78:9-88:20
+245            android:name="androidx.work.impl.background.systemalarm.ConstraintProxy$BatteryNotLowProxy"
+245-->[androidx.work:work-runtime:2.9.1] /home/runner/.gradle/caches/8.13/transforms/6e10cb0db923d35705d667c22d63e299/transformed/work-runtime-2.9.1/AndroidManifest.xml:79:13-104
+246            android:directBootAware="false"
+246-->[androidx.work:work-runtime:2.9.1] /home/runner/.gradle/caches/8.13/transforms/6e10cb0db923d35705d667c22d63e299/transformed/work-runtime-2.9.1/AndroidManifest.xml:80:13-44
+247            android:enabled="false"
+247-->[androidx.work:work-runtime:2.9.1] /home/runner/.gradle/caches/8.13/transforms/6e10cb0db923d35705d667c22d63e299/transformed/work-runtime-2.9.1/AndroidManifest.xml:81:13-36
+248            android:exported="false" >
+248-->[androidx.work:work-runtime:2.9.1] /home/runner/.gradle/caches/8.13/transforms/6e10cb0db923d35705d667c22d63e299/transformed/work-runtime-2.9.1/AndroidManifest.xml:82:13-37
+249            <intent-filter>
+249-->[androidx.work:work-runtime:2.9.1] /home/runner/.gradle/caches/8.13/transforms/6e10cb0db923d35705d667c22d63e299/transformed/work-runtime-2.9.1/AndroidManifest.xml:84:13-87:29
+250                <action android:name="android.intent.action.BATTERY_OKAY" />
+250-->[androidx.work:work-runtime:2.9.1] /home/runner/.gradle/caches/8.13/transforms/6e10cb0db923d35705d667c22d63e299/transformed/work-runtime-2.9.1/AndroidManifest.xml:85:17-77
+250-->[androidx.work:work-runtime:2.9.1] /home/runner/.gradle/caches/8.13/transforms/6e10cb0db923d35705d667c22d63e299/transformed/work-runtime-2.9.1/AndroidManifest.xml:85:25-74
+251                <action android:name="android.intent.action.BATTERY_LOW" />
+251-->[androidx.work:work-runtime:2.9.1] /home/runner/.gradle/caches/8.13/transforms/6e10cb0db923d35705d667c22d63e299/transformed/work-runtime-2.9.1/AndroidManifest.xml:86:17-76
+251-->[androidx.work:work-runtime:2.9.1] /home/runner/.gradle/caches/8.13/transforms/6e10cb0db923d35705d667c22d63e299/transformed/work-runtime-2.9.1/AndroidManifest.xml:86:25-73
+252            </intent-filter>
+253        </receiver>
+254        <receiver
+254-->[androidx.work:work-runtime:2.9.1] /home/runner/.gradle/caches/8.13/transforms/6e10cb0db923d35705d667c22d63e299/transformed/work-runtime-2.9.1/AndroidManifest.xml:89:9-99:20
+255            android:name="androidx.work.impl.background.systemalarm.ConstraintProxy$StorageNotLowProxy"
+255-->[androidx.work:work-runtime:2.9.1] /home/runner/.gradle/caches/8.13/transforms/6e10cb0db923d35705d667c22d63e299/transformed/work-runtime-2.9.1/AndroidManifest.xml:90:13-104
+256            android:directBootAware="false"
+256-->[androidx.work:work-runtime:2.9.1] /home/runner/.gradle/caches/8.13/transforms/6e10cb0db923d35705d667c22d63e299/transformed/work-runtime-2.9.1/AndroidManifest.xml:91:13-44
+257            android:enabled="false"
+257-->[androidx.work:work-runtime:2.9.1] /home/runner/.gradle/caches/8.13/transforms/6e10cb0db923d35705d667c22d63e299/transformed/work-runtime-2.9.1/AndroidManifest.xml:92:13-36
+258            android:exported="false" >
+258-->[androidx.work:work-runtime:2.9.1] /home/runner/.gradle/caches/8.13/transforms/6e10cb0db923d35705d667c22d63e299/transformed/work-runtime-2.9.1/AndroidManifest.xml:93:13-37
+259            <intent-filter>
+259-->[androidx.work:work-runtime:2.9.1] /home/runner/.gradle/caches/8.13/transforms/6e10cb0db923d35705d667c22d63e299/transformed/work-runtime-2.9.1/AndroidManifest.xml:95:13-98:29
+260                <action android:name="android.intent.action.DEVICE_STORAGE_LOW" />
+260-->[androidx.work:work-runtime:2.9.1] /home/runner/.gradle/caches/8.13/transforms/6e10cb0db923d35705d667c22d63e299/transformed/work-runtime-2.9.1/AndroidManifest.xml:96:17-83
+260-->[androidx.work:work-runtime:2.9.1] /home/runner/.gradle/caches/8.13/transforms/6e10cb0db923d35705d667c22d63e299/transformed/work-runtime-2.9.1/AndroidManifest.xml:96:25-80
+261                <action android:name="android.intent.action.DEVICE_STORAGE_OK" />
+261-->[androidx.work:work-runtime:2.9.1] /home/runner/.gradle/caches/8.13/transforms/6e10cb0db923d35705d667c22d63e299/transformed/work-runtime-2.9.1/AndroidManifest.xml:97:17-82
+261-->[androidx.work:work-runtime:2.9.1] /home/runner/.gradle/caches/8.13/transforms/6e10cb0db923d35705d667c22d63e299/transformed/work-runtime-2.9.1/AndroidManifest.xml:97:25-79
+262            </intent-filter>
+263        </receiver>
+264        <receiver
+264-->[androidx.work:work-runtime:2.9.1] /home/runner/.gradle/caches/8.13/transforms/6e10cb0db923d35705d667c22d63e299/transformed/work-runtime-2.9.1/AndroidManifest.xml:100:9-109:20
+265            android:name="androidx.work.impl.background.systemalarm.ConstraintProxy$NetworkStateProxy"
+265-->[androidx.work:work-runtime:2.9.1] /home/runner/.gradle/caches/8.13/transforms/6e10cb0db923d35705d667c22d63e299/transformed/work-runtime-2.9.1/AndroidManifest.xml:101:13-103
+266            android:directBootAware="false"
+266-->[androidx.work:work-runtime:2.9.1] /home/runner/.gradle/caches/8.13/transforms/6e10cb0db923d35705d667c22d63e299/transformed/work-runtime-2.9.1/AndroidManifest.xml:102:13-44
+267            android:enabled="false"
+267-->[androidx.work:work-runtime:2.9.1] /home/runner/.gradle/caches/8.13/transforms/6e10cb0db923d35705d667c22d63e299/transformed/work-runtime-2.9.1/AndroidManifest.xml:103:13-36
+268            android:exported="false" >
+268-->[androidx.work:work-runtime:2.9.1] /home/runner/.gradle/caches/8.13/transforms/6e10cb0db923d35705d667c22d63e299/transformed/work-runtime-2.9.1/AndroidManifest.xml:104:13-37
+269            <intent-filter>
+269-->[androidx.work:work-runtime:2.9.1] /home/runner/.gradle/caches/8.13/transforms/6e10cb0db923d35705d667c22d63e299/transformed/work-runtime-2.9.1/AndroidManifest.xml:106:13-108:29
+270                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+270-->[androidx.work:work-runtime:2.9.1] /home/runner/.gradle/caches/8.13/transforms/6e10cb0db923d35705d667c22d63e299/transformed/work-runtime-2.9.1/AndroidManifest.xml:107:17-79
+270-->[androidx.work:work-runtime:2.9.1] /home/runner/.gradle/caches/8.13/transforms/6e10cb0db923d35705d667c22d63e299/transformed/work-runtime-2.9.1/AndroidManifest.xml:107:25-76
+271            </intent-filter>
+272        </receiver>
+273        <receiver
+273-->[androidx.work:work-runtime:2.9.1] /home/runner/.gradle/caches/8.13/transforms/6e10cb0db923d35705d667c22d63e299/transformed/work-runtime-2.9.1/AndroidManifest.xml:110:9-121:20
+274            android:name="androidx.work.impl.background.systemalarm.RescheduleReceiver"
+274-->[androidx.work:work-runtime:2.9.1] /home/runner/.gradle/caches/8.13/transforms/6e10cb0db923d35705d667c22d63e299/transformed/work-runtime-2.9.1/AndroidManifest.xml:111:13-88
+275            android:directBootAware="false"
+275-->[androidx.work:work-runtime:2.9.1] /home/runner/.gradle/caches/8.13/transforms/6e10cb0db923d35705d667c22d63e299/transformed/work-runtime-2.9.1/AndroidManifest.xml:112:13-44
+276            android:enabled="false"
+276-->[androidx.work:work-runtime:2.9.1] /home/runner/.gradle/caches/8.13/transforms/6e10cb0db923d35705d667c22d63e299/transformed/work-runtime-2.9.1/AndroidManifest.xml:113:13-36
+277            android:exported="false" >
+277-->[androidx.work:work-runtime:2.9.1] /home/runner/.gradle/caches/8.13/transforms/6e10cb0db923d35705d667c22d63e299/transformed/work-runtime-2.9.1/AndroidManifest.xml:114:13-37
+278            <intent-filter>
+278-->[androidx.work:work-runtime:2.9.1] /home/runner/.gradle/caches/8.13/transforms/6e10cb0db923d35705d667c22d63e299/transformed/work-runtime-2.9.1/AndroidManifest.xml:116:13-120:29
+279                <action android:name="android.intent.action.BOOT_COMPLETED" />
+279-->/home/runner/workspace/app/src/main/AndroidManifest.xml:67:17-79
+279-->/home/runner/workspace/app/src/main/AndroidManifest.xml:67:25-76
+280                <action android:name="android.intent.action.TIME_SET" />
+280-->[androidx.work:work-runtime:2.9.1] /home/runner/.gradle/caches/8.13/transforms/6e10cb0db923d35705d667c22d63e299/transformed/work-runtime-2.9.1/AndroidManifest.xml:118:17-73
+280-->[androidx.work:work-runtime:2.9.1] /home/runner/.gradle/caches/8.13/transforms/6e10cb0db923d35705d667c22d63e299/transformed/work-runtime-2.9.1/AndroidManifest.xml:118:25-70
+281                <action android:name="android.intent.action.TIMEZONE_CHANGED" />
+281-->[androidx.work:work-runtime:2.9.1] /home/runner/.gradle/caches/8.13/transforms/6e10cb0db923d35705d667c22d63e299/transformed/work-runtime-2.9.1/AndroidManifest.xml:119:17-81
+281-->[androidx.work:work-runtime:2.9.1] /home/runner/.gradle/caches/8.13/transforms/6e10cb0db923d35705d667c22d63e299/transformed/work-runtime-2.9.1/AndroidManifest.xml:119:25-78
+282            </intent-filter>
+283        </receiver>
 284        <receiver
-284-->[androidx.work:work-runtime:2.9.1] /home/runner/.gradle/caches/8.13/transforms/6e10cb0db923d35705d667c22d63e299/transformed/work-runtime-2.9.1/AndroidManifest.xml:61:9-66:35
-285            android:name="androidx.work.impl.utils.ForceStopRunnable$BroadcastReceiver"
-285-->[androidx.work:work-runtime:2.9.1] /home/runner/.gradle/caches/8.13/transforms/6e10cb0db923d35705d667c22d63e299/transformed/work-runtime-2.9.1/AndroidManifest.xml:62:13-88
+284-->[androidx.work:work-runtime:2.9.1] /home/runner/.gradle/caches/8.13/transforms/6e10cb0db923d35705d667c22d63e299/transformed/work-runtime-2.9.1/AndroidManifest.xml:122:9-131:20
+285            android:name="androidx.work.impl.background.systemalarm.ConstraintProxyUpdateReceiver"
+285-->[androidx.work:work-runtime:2.9.1] /home/runner/.gradle/caches/8.13/transforms/6e10cb0db923d35705d667c22d63e299/transformed/work-runtime-2.9.1/AndroidManifest.xml:123:13-99
 286            android:directBootAware="false"
-286-->[androidx.work:work-runtime:2.9.1] /home/runner/.gradle/caches/8.13/transforms/6e10cb0db923d35705d667c22d63e299/transformed/work-runtime-2.9.1/AndroidManifest.xml:63:13-44
-287            android:enabled="true"
-287-->[androidx.work:work-runtime:2.9.1] /home/runner/.gradle/caches/8.13/transforms/6e10cb0db923d35705d667c22d63e299/transformed/work-runtime-2.9.1/AndroidManifest.xml:64:13-35
-288            android:exported="false" />
-288-->[androidx.work:work-runtime:2.9.1] /home/runner/.gradle/caches/8.13/transforms/6e10cb0db923d35705d667c22d63e299/transformed/work-runtime-2.9.1/AndroidManifest.xml:65:13-37
-289        <receiver
-289-->[androidx.work:work-runtime:2.9.1] /home/runner/.gradle/caches/8.13/transforms/6e10cb0db923d35705d667c22d63e299/transformed/work-runtime-2.9.1/AndroidManifest.xml:67:9-77:20
-290            android:name="androidx.work.impl.background.systemalarm.ConstraintProxy$BatteryChargingProxy"
-290-->[androidx.work:work-runtime:2.9.1] /home/runner/.gradle/caches/8.13/transforms/6e10cb0db923d35705d667c22d63e299/transformed/work-runtime-2.9.1/AndroidManifest.xml:68:13-106
-291            android:directBootAware="false"
-291-->[androidx.work:work-runtime:2.9.1] /home/runner/.gradle/caches/8.13/transforms/6e10cb0db923d35705d667c22d63e299/transformed/work-runtime-2.9.1/AndroidManifest.xml:69:13-44
-292            android:enabled="false"
-292-->[androidx.work:work-runtime:2.9.1] /home/runner/.gradle/caches/8.13/transforms/6e10cb0db923d35705d667c22d63e299/transformed/work-runtime-2.9.1/AndroidManifest.xml:70:13-36
-293            android:exported="false" >
-293-->[androidx.work:work-runtime:2.9.1] /home/runner/.gradle/caches/8.13/transforms/6e10cb0db923d35705d667c22d63e299/transformed/work-runtime-2.9.1/AndroidManifest.xml:71:13-37
-294            <intent-filter>
-294-->[androidx.work:work-runtime:2.9.1] /home/runner/.gradle/caches/8.13/transforms/6e10cb0db923d35705d667c22d63e299/transformed/work-runtime-2.9.1/AndroidManifest.xml:73:13-76:29
-295                <action android:name="android.intent.action.ACTION_POWER_CONNECTED" />
-295-->[androidx.work:work-runtime:2.9.1] /home/runner/.gradle/caches/8.13/transforms/6e10cb0db923d35705d667c22d63e299/transformed/work-runtime-2.9.1/AndroidManifest.xml:74:17-87
-295-->[androidx.work:work-runtime:2.9.1] /home/runner/.gradle/caches/8.13/transforms/6e10cb0db923d35705d667c22d63e299/transformed/work-runtime-2.9.1/AndroidManifest.xml:74:25-84
-296                <action android:name="android.intent.action.ACTION_POWER_DISCONNECTED" />
-296-->[androidx.work:work-runtime:2.9.1] /home/runner/.gradle/caches/8.13/transforms/6e10cb0db923d35705d667c22d63e299/transformed/work-runtime-2.9.1/AndroidManifest.xml:75:17-90
-296-->[androidx.work:work-runtime:2.9.1] /home/runner/.gradle/caches/8.13/transforms/6e10cb0db923d35705d667c22d63e299/transformed/work-runtime-2.9.1/AndroidManifest.xml:75:25-87
-297            </intent-filter>
-298        </receiver>
-299        <receiver
-299-->[androidx.work:work-runtime:2.9.1] /home/runner/.gradle/caches/8.13/transforms/6e10cb0db923d35705d667c22d63e299/transformed/work-runtime-2.9.1/AndroidManifest.xml:78:9-88:20
-300            android:name="androidx.work.impl.background.systemalarm.ConstraintProxy$BatteryNotLowProxy"
-300-->[androidx.work:work-runtime:2.9.1] /home/runner/.gradle/caches/8.13/transforms/6e10cb0db923d35705d667c22d63e299/transformed/work-runtime-2.9.1/AndroidManifest.xml:79:13-104
-301            android:directBootAware="false"
-301-->[androidx.work:work-runtime:2.9.1] /home/runner/.gradle/caches/8.13/transforms/6e10cb0db923d35705d667c22d63e299/transformed/work-runtime-2.9.1/AndroidManifest.xml:80:13-44
-302            android:enabled="false"
-302-->[androidx.work:work-runtime:2.9.1] /home/runner/.gradle/caches/8.13/transforms/6e10cb0db923d35705d667c22d63e299/transformed/work-runtime-2.9.1/AndroidManifest.xml:81:13-36
-303            android:exported="false" >
-303-->[androidx.work:work-runtime:2.9.1] /home/runner/.gradle/caches/8.13/transforms/6e10cb0db923d35705d667c22d63e299/transformed/work-runtime-2.9.1/AndroidManifest.xml:82:13-37
-304            <intent-filter>
-304-->[androidx.work:work-runtime:2.9.1] /home/runner/.gradle/caches/8.13/transforms/6e10cb0db923d35705d667c22d63e299/transformed/work-runtime-2.9.1/AndroidManifest.xml:84:13-87:29
-305                <action android:name="android.intent.action.BATTERY_OKAY" />
-305-->[androidx.work:work-runtime:2.9.1] /home/runner/.gradle/caches/8.13/transforms/6e10cb0db923d35705d667c22d63e299/transformed/work-runtime-2.9.1/AndroidManifest.xml:85:17-77
-305-->[androidx.work:work-runtime:2.9.1] /home/runner/.gradle/caches/8.13/transforms/6e10cb0db923d35705d667c22d63e299/transformed/work-runtime-2.9.1/AndroidManifest.xml:85:25-74
-306                <action android:name="android.intent.action.BATTERY_LOW" />
-306-->[androidx.work:work-runtime:2.9.1] /home/runner/.gradle/caches/8.13/transforms/6e10cb0db923d35705d667c22d63e299/transformed/work-runtime-2.9.1/AndroidManifest.xml:86:17-76
-306-->[androidx.work:work-runtime:2.9.1] /home/runner/.gradle/caches/8.13/transforms/6e10cb0db923d35705d667c22d63e299/transformed/work-runtime-2.9.1/AndroidManifest.xml:86:25-73
-307            </intent-filter>
-308        </receiver>
+286-->[androidx.work:work-runtime:2.9.1] /home/runner/.gradle/caches/8.13/transforms/6e10cb0db923d35705d667c22d63e299/transformed/work-runtime-2.9.1/AndroidManifest.xml:124:13-44
+287            android:enabled="@bool/enable_system_alarm_service_default"
+287-->[androidx.work:work-runtime:2.9.1] /home/runner/.gradle/caches/8.13/transforms/6e10cb0db923d35705d667c22d63e299/transformed/work-runtime-2.9.1/AndroidManifest.xml:125:13-72
+288            android:exported="false" >
+288-->[androidx.work:work-runtime:2.9.1] /home/runner/.gradle/caches/8.13/transforms/6e10cb0db923d35705d667c22d63e299/transformed/work-runtime-2.9.1/AndroidManifest.xml:126:13-37
+289            <intent-filter>
+289-->[androidx.work:work-runtime:2.9.1] /home/runner/.gradle/caches/8.13/transforms/6e10cb0db923d35705d667c22d63e299/transformed/work-runtime-2.9.1/AndroidManifest.xml:128:13-130:29
+290                <action android:name="androidx.work.impl.background.systemalarm.UpdateProxies" />
+290-->[androidx.work:work-runtime:2.9.1] /home/runner/.gradle/caches/8.13/transforms/6e10cb0db923d35705d667c22d63e299/transformed/work-runtime-2.9.1/AndroidManifest.xml:129:17-98
+290-->[androidx.work:work-runtime:2.9.1] /home/runner/.gradle/caches/8.13/transforms/6e10cb0db923d35705d667c22d63e299/transformed/work-runtime-2.9.1/AndroidManifest.xml:129:25-95
+291            </intent-filter>
+292        </receiver>
+293        <receiver
+293-->[androidx.work:work-runtime:2.9.1] /home/runner/.gradle/caches/8.13/transforms/6e10cb0db923d35705d667c22d63e299/transformed/work-runtime-2.9.1/AndroidManifest.xml:132:9-142:20
+294            android:name="androidx.work.impl.diagnostics.DiagnosticsReceiver"
+294-->[androidx.work:work-runtime:2.9.1] /home/runner/.gradle/caches/8.13/transforms/6e10cb0db923d35705d667c22d63e299/transformed/work-runtime-2.9.1/AndroidManifest.xml:133:13-78
+295            android:directBootAware="false"
+295-->[androidx.work:work-runtime:2.9.1] /home/runner/.gradle/caches/8.13/transforms/6e10cb0db923d35705d667c22d63e299/transformed/work-runtime-2.9.1/AndroidManifest.xml:134:13-44
+296            android:enabled="true"
+296-->[androidx.work:work-runtime:2.9.1] /home/runner/.gradle/caches/8.13/transforms/6e10cb0db923d35705d667c22d63e299/transformed/work-runtime-2.9.1/AndroidManifest.xml:135:13-35
+297            android:exported="true"
+297-->[androidx.work:work-runtime:2.9.1] /home/runner/.gradle/caches/8.13/transforms/6e10cb0db923d35705d667c22d63e299/transformed/work-runtime-2.9.1/AndroidManifest.xml:136:13-36
+298            android:permission="android.permission.DUMP" >
+298-->[androidx.work:work-runtime:2.9.1] /home/runner/.gradle/caches/8.13/transforms/6e10cb0db923d35705d667c22d63e299/transformed/work-runtime-2.9.1/AndroidManifest.xml:137:13-57
+299            <intent-filter>
+299-->[androidx.work:work-runtime:2.9.1] /home/runner/.gradle/caches/8.13/transforms/6e10cb0db923d35705d667c22d63e299/transformed/work-runtime-2.9.1/AndroidManifest.xml:139:13-141:29
+300                <action android:name="androidx.work.diagnostics.REQUEST_DIAGNOSTICS" />
+300-->[androidx.work:work-runtime:2.9.1] /home/runner/.gradle/caches/8.13/transforms/6e10cb0db923d35705d667c22d63e299/transformed/work-runtime-2.9.1/AndroidManifest.xml:140:17-88
+300-->[androidx.work:work-runtime:2.9.1] /home/runner/.gradle/caches/8.13/transforms/6e10cb0db923d35705d667c22d63e299/transformed/work-runtime-2.9.1/AndroidManifest.xml:140:25-85
+301            </intent-filter>
+302        </receiver>
+303
+304        <service
+304-->[androidx.room:room-runtime-android:2.7.0] /home/runner/.gradle/caches/8.13/transforms/921e0436c94781ba84e008a2364aa48e/transformed/room-runtime-release/AndroidManifest.xml:24:9-28:63
+305            android:name="androidx.room.MultiInstanceInvalidationService"
+305-->[androidx.room:room-runtime-android:2.7.0] /home/runner/.gradle/caches/8.13/transforms/921e0436c94781ba84e008a2364aa48e/transformed/room-runtime-release/AndroidManifest.xml:25:13-74
+306            android:directBootAware="true"
+306-->[androidx.room:room-runtime-android:2.7.0] /home/runner/.gradle/caches/8.13/transforms/921e0436c94781ba84e008a2364aa48e/transformed/room-runtime-release/AndroidManifest.xml:26:13-43
+307            android:exported="false" />
+307-->[androidx.room:room-runtime-android:2.7.0] /home/runner/.gradle/caches/8.13/transforms/921e0436c94781ba84e008a2364aa48e/transformed/room-runtime-release/AndroidManifest.xml:27:13-37
+308
 309        <receiver
-309-->[androidx.work:work-runtime:2.9.1] /home/runner/.gradle/caches/8.13/transforms/6e10cb0db923d35705d667c22d63e299/transformed/work-runtime-2.9.1/AndroidManifest.xml:89:9-99:20
-310            android:name="androidx.work.impl.background.systemalarm.ConstraintProxy$StorageNotLowProxy"
-310-->[androidx.work:work-runtime:2.9.1] /home/runner/.gradle/caches/8.13/transforms/6e10cb0db923d35705d667c22d63e299/transformed/work-runtime-2.9.1/AndroidManifest.xml:90:13-104
+309-->[androidx.profileinstaller:profileinstaller:1.3.1] /home/runner/.gradle/caches/8.13/transforms/8f1ce9102b6841595e5db92579216d35/transformed/profileinstaller-1.3.1/AndroidManifest.xml:34:9-52:20
+310            android:name="androidx.profileinstaller.ProfileInstallReceiver"
+310-->[androidx.profileinstaller:profileinstaller:1.3.1] /home/runner/.gradle/caches/8.13/transforms/8f1ce9102b6841595e5db92579216d35/transformed/profileinstaller-1.3.1/AndroidManifest.xml:35:13-76
 311            android:directBootAware="false"
-311-->[androidx.work:work-runtime:2.9.1] /home/runner/.gradle/caches/8.13/transforms/6e10cb0db923d35705d667c22d63e299/transformed/work-runtime-2.9.1/AndroidManifest.xml:91:13-44
-312            android:enabled="false"
-312-->[androidx.work:work-runtime:2.9.1] /home/runner/.gradle/caches/8.13/transforms/6e10cb0db923d35705d667c22d63e299/transformed/work-runtime-2.9.1/AndroidManifest.xml:92:13-36
-313            android:exported="false" >
-313-->[androidx.work:work-runtime:2.9.1] /home/runner/.gradle/caches/8.13/transforms/6e10cb0db923d35705d667c22d63e299/transformed/work-runtime-2.9.1/AndroidManifest.xml:93:13-37
-314            <intent-filter>
-314-->[androidx.work:work-runtime:2.9.1] /home/runner/.gradle/caches/8.13/transforms/6e10cb0db923d35705d667c22d63e299/transformed/work-runtime-2.9.1/AndroidManifest.xml:95:13-98:29
-315                <action android:name="android.intent.action.DEVICE_STORAGE_LOW" />
-315-->[androidx.work:work-runtime:2.9.1] /home/runner/.gradle/caches/8.13/transforms/6e10cb0db923d35705d667c22d63e299/transformed/work-runtime-2.9.1/AndroidManifest.xml:96:17-83
-315-->[androidx.work:work-runtime:2.9.1] /home/runner/.gradle/caches/8.13/transforms/6e10cb0db923d35705d667c22d63e299/transformed/work-runtime-2.9.1/AndroidManifest.xml:96:25-80
-316                <action android:name="android.intent.action.DEVICE_STORAGE_OK" />
-316-->[androidx.work:work-runtime:2.9.1] /home/runner/.gradle/caches/8.13/transforms/6e10cb0db923d35705d667c22d63e299/transformed/work-runtime-2.9.1/AndroidManifest.xml:97:17-82
-316-->[androidx.work:work-runtime:2.9.1] /home/runner/.gradle/caches/8.13/transforms/6e10cb0db923d35705d667c22d63e299/transformed/work-runtime-2.9.1/AndroidManifest.xml:97:25-79
+311-->[androidx.profileinstaller:profileinstaller:1.3.1] /home/runner/.gradle/caches/8.13/transforms/8f1ce9102b6841595e5db92579216d35/transformed/profileinstaller-1.3.1/AndroidManifest.xml:36:13-44
+312            android:enabled="true"
+312-->[androidx.profileinstaller:profileinstaller:1.3.1] /home/runner/.gradle/caches/8.13/transforms/8f1ce9102b6841595e5db92579216d35/transformed/profileinstaller-1.3.1/AndroidManifest.xml:37:13-35
+313            android:exported="true"
+313-->[androidx.profileinstaller:profileinstaller:1.3.1] /home/runner/.gradle/caches/8.13/transforms/8f1ce9102b6841595e5db92579216d35/transformed/profileinstaller-1.3.1/AndroidManifest.xml:38:13-36
+314            android:permission="android.permission.DUMP" >
+314-->[androidx.profileinstaller:profileinstaller:1.3.1] /home/runner/.gradle/caches/8.13/transforms/8f1ce9102b6841595e5db92579216d35/transformed/profileinstaller-1.3.1/AndroidManifest.xml:39:13-57
+315            <intent-filter>
+315-->[androidx.profileinstaller:profileinstaller:1.3.1] /home/runner/.gradle/caches/8.13/transforms/8f1ce9102b6841595e5db92579216d35/transformed/profileinstaller-1.3.1/AndroidManifest.xml:40:13-42:29
+316                <action android:name="androidx.profileinstaller.action.INSTALL_PROFILE" />
+316-->[androidx.profileinstaller:profileinstaller:1.3.1] /home/runner/.gradle/caches/8.13/transforms/8f1ce9102b6841595e5db92579216d35/transformed/profileinstaller-1.3.1/AndroidManifest.xml:41:17-91
+316-->[androidx.profileinstaller:profileinstaller:1.3.1] /home/runner/.gradle/caches/8.13/transforms/8f1ce9102b6841595e5db92579216d35/transformed/profileinstaller-1.3.1/AndroidManifest.xml:41:25-88
 317            </intent-filter>
-318        </receiver>
-319        <receiver
-319-->[androidx.work:work-runtime:2.9.1] /home/runner/.gradle/caches/8.13/transforms/6e10cb0db923d35705d667c22d63e299/transformed/work-runtime-2.9.1/AndroidManifest.xml:100:9-109:20
-320            android:name="androidx.work.impl.background.systemalarm.ConstraintProxy$NetworkStateProxy"
-320-->[androidx.work:work-runtime:2.9.1] /home/runner/.gradle/caches/8.13/transforms/6e10cb0db923d35705d667c22d63e299/transformed/work-runtime-2.9.1/AndroidManifest.xml:101:13-103
-321            android:directBootAware="false"
-321-->[androidx.work:work-runtime:2.9.1] /home/runner/.gradle/caches/8.13/transforms/6e10cb0db923d35705d667c22d63e299/transformed/work-runtime-2.9.1/AndroidManifest.xml:102:13-44
-322            android:enabled="false"
-322-->[androidx.work:work-runtime:2.9.1] /home/runner/.gradle/caches/8.13/transforms/6e10cb0db923d35705d667c22d63e299/transformed/work-runtime-2.9.1/AndroidManifest.xml:103:13-36
-323            android:exported="false" >
-323-->[androidx.work:work-runtime:2.9.1] /home/runner/.gradle/caches/8.13/transforms/6e10cb0db923d35705d667c22d63e299/transformed/work-runtime-2.9.1/AndroidManifest.xml:104:13-37
+318            <intent-filter>
+318-->[androidx.profileinstaller:profileinstaller:1.3.1] /home/runner/.gradle/caches/8.13/transforms/8f1ce9102b6841595e5db92579216d35/transformed/profileinstaller-1.3.1/AndroidManifest.xml:43:13-45:29
+319                <action android:name="androidx.profileinstaller.action.SKIP_FILE" />
+319-->[androidx.profileinstaller:profileinstaller:1.3.1] /home/runner/.gradle/caches/8.13/transforms/8f1ce9102b6841595e5db92579216d35/transformed/profileinstaller-1.3.1/AndroidManifest.xml:44:17-85
+319-->[androidx.profileinstaller:profileinstaller:1.3.1] /home/runner/.gradle/caches/8.13/transforms/8f1ce9102b6841595e5db92579216d35/transformed/profileinstaller-1.3.1/AndroidManifest.xml:44:25-82
+320            </intent-filter>
+321            <intent-filter>
+321-->[androidx.profileinstaller:profileinstaller:1.3.1] /home/runner/.gradle/caches/8.13/transforms/8f1ce9102b6841595e5db92579216d35/transformed/profileinstaller-1.3.1/AndroidManifest.xml:46:13-48:29
+322                <action android:name="androidx.profileinstaller.action.SAVE_PROFILE" />
+322-->[androidx.profileinstaller:profileinstaller:1.3.1] /home/runner/.gradle/caches/8.13/transforms/8f1ce9102b6841595e5db92579216d35/transformed/profileinstaller-1.3.1/AndroidManifest.xml:47:17-88
+322-->[androidx.profileinstaller:profileinstaller:1.3.1] /home/runner/.gradle/caches/8.13/transforms/8f1ce9102b6841595e5db92579216d35/transformed/profileinstaller-1.3.1/AndroidManifest.xml:47:25-85
+323            </intent-filter>
 324            <intent-filter>
-324-->[androidx.work:work-runtime:2.9.1] /home/runner/.gradle/caches/8.13/transforms/6e10cb0db923d35705d667c22d63e299/transformed/work-runtime-2.9.1/AndroidManifest.xml:106:13-108:29
-325                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
-325-->[androidx.work:work-runtime:2.9.1] /home/runner/.gradle/caches/8.13/transforms/6e10cb0db923d35705d667c22d63e299/transformed/work-runtime-2.9.1/AndroidManifest.xml:107:17-79
-325-->[androidx.work:work-runtime:2.9.1] /home/runner/.gradle/caches/8.13/transforms/6e10cb0db923d35705d667c22d63e299/transformed/work-runtime-2.9.1/AndroidManifest.xml:107:25-76
+324-->[androidx.profileinstaller:profileinstaller:1.3.1] /home/runner/.gradle/caches/8.13/transforms/8f1ce9102b6841595e5db92579216d35/transformed/profileinstaller-1.3.1/AndroidManifest.xml:49:13-51:29
+325                <action android:name="androidx.profileinstaller.action.BENCHMARK_OPERATION" />
+325-->[androidx.profileinstaller:profileinstaller:1.3.1] /home/runner/.gradle/caches/8.13/transforms/8f1ce9102b6841595e5db92579216d35/transformed/profileinstaller-1.3.1/AndroidManifest.xml:50:17-95
+325-->[androidx.profileinstaller:profileinstaller:1.3.1] /home/runner/.gradle/caches/8.13/transforms/8f1ce9102b6841595e5db92579216d35/transformed/profileinstaller-1.3.1/AndroidManifest.xml:50:25-92
 326            </intent-filter>
-327        </receiver>
-328        <receiver
-328-->[androidx.work:work-runtime:2.9.1] /home/runner/.gradle/caches/8.13/transforms/6e10cb0db923d35705d667c22d63e299/transformed/work-runtime-2.9.1/AndroidManifest.xml:110:9-121:20
-329            android:name="androidx.work.impl.background.systemalarm.RescheduleReceiver"
-329-->[androidx.work:work-runtime:2.9.1] /home/runner/.gradle/caches/8.13/transforms/6e10cb0db923d35705d667c22d63e299/transformed/work-runtime-2.9.1/AndroidManifest.xml:111:13-88
-330            android:directBootAware="false"
-330-->[androidx.work:work-runtime:2.9.1] /home/runner/.gradle/caches/8.13/transforms/6e10cb0db923d35705d667c22d63e299/transformed/work-runtime-2.9.1/AndroidManifest.xml:112:13-44
-331            android:enabled="false"
-331-->[androidx.work:work-runtime:2.9.1] /home/runner/.gradle/caches/8.13/transforms/6e10cb0db923d35705d667c22d63e299/transformed/work-runtime-2.9.1/AndroidManifest.xml:113:13-36
-332            android:exported="false" >
-332-->[androidx.work:work-runtime:2.9.1] /home/runner/.gradle/caches/8.13/transforms/6e10cb0db923d35705d667c22d63e299/transformed/work-runtime-2.9.1/AndroidManifest.xml:114:13-37
-333            <intent-filter>
-333-->[androidx.work:work-runtime:2.9.1] /home/runner/.gradle/caches/8.13/transforms/6e10cb0db923d35705d667c22d63e299/transformed/work-runtime-2.9.1/AndroidManifest.xml:116:13-120:29
-334                <action android:name="android.intent.action.BOOT_COMPLETED" />
-334-->/home/runner/workspace/app/src/main/AndroidManifest.xml:163:17-79
-334-->/home/runner/workspace/app/src/main/AndroidManifest.xml:163:25-76
-335                <action android:name="android.intent.action.TIME_SET" />
-335-->[androidx.work:work-runtime:2.9.1] /home/runner/.gradle/caches/8.13/transforms/6e10cb0db923d35705d667c22d63e299/transformed/work-runtime-2.9.1/AndroidManifest.xml:118:17-73
-335-->[androidx.work:work-runtime:2.9.1] /home/runner/.gradle/caches/8.13/transforms/6e10cb0db923d35705d667c22d63e299/transformed/work-runtime-2.9.1/AndroidManifest.xml:118:25-70
-336                <action android:name="android.intent.action.TIMEZONE_CHANGED" />
-336-->[androidx.work:work-runtime:2.9.1] /home/runner/.gradle/caches/8.13/transforms/6e10cb0db923d35705d667c22d63e299/transformed/work-runtime-2.9.1/AndroidManifest.xml:119:17-81
-336-->[androidx.work:work-runtime:2.9.1] /home/runner/.gradle/caches/8.13/transforms/6e10cb0db923d35705d667c22d63e299/transformed/work-runtime-2.9.1/AndroidManifest.xml:119:25-78
-337            </intent-filter>
-338        </receiver>
-339        <receiver
-339-->[androidx.work:work-runtime:2.9.1] /home/runner/.gradle/caches/8.13/transforms/6e10cb0db923d35705d667c22d63e299/transformed/work-runtime-2.9.1/AndroidManifest.xml:122:9-131:20
-340            android:name="androidx.work.impl.background.systemalarm.ConstraintProxyUpdateReceiver"
-340-->[androidx.work:work-runtime:2.9.1] /home/runner/.gradle/caches/8.13/transforms/6e10cb0db923d35705d667c22d63e299/transformed/work-runtime-2.9.1/AndroidManifest.xml:123:13-99
-341            android:directBootAware="false"
-341-->[androidx.work:work-runtime:2.9.1] /home/runner/.gradle/caches/8.13/transforms/6e10cb0db923d35705d667c22d63e299/transformed/work-runtime-2.9.1/AndroidManifest.xml:124:13-44
-342            android:enabled="@bool/enable_system_alarm_service_default"
-342-->[androidx.work:work-runtime:2.9.1] /home/runner/.gradle/caches/8.13/transforms/6e10cb0db923d35705d667c22d63e299/transformed/work-runtime-2.9.1/AndroidManifest.xml:125:13-72
-343            android:exported="false" >
-343-->[androidx.work:work-runtime:2.9.1] /home/runner/.gradle/caches/8.13/transforms/6e10cb0db923d35705d667c22d63e299/transformed/work-runtime-2.9.1/AndroidManifest.xml:126:13-37
-344            <intent-filter>
-344-->[androidx.work:work-runtime:2.9.1] /home/runner/.gradle/caches/8.13/transforms/6e10cb0db923d35705d667c22d63e299/transformed/work-runtime-2.9.1/AndroidManifest.xml:128:13-130:29
-345                <action android:name="androidx.work.impl.background.systemalarm.UpdateProxies" />
-345-->[androidx.work:work-runtime:2.9.1] /home/runner/.gradle/caches/8.13/transforms/6e10cb0db923d35705d667c22d63e299/transformed/work-runtime-2.9.1/AndroidManifest.xml:129:17-98
-345-->[androidx.work:work-runtime:2.9.1] /home/runner/.gradle/caches/8.13/transforms/6e10cb0db923d35705d667c22d63e299/transformed/work-runtime-2.9.1/AndroidManifest.xml:129:25-95
-346            </intent-filter>
-347        </receiver>
-348        <receiver
-348-->[androidx.work:work-runtime:2.9.1] /home/runner/.gradle/caches/8.13/transforms/6e10cb0db923d35705d667c22d63e299/transformed/work-runtime-2.9.1/AndroidManifest.xml:132:9-142:20
-349            android:name="androidx.work.impl.diagnostics.DiagnosticsReceiver"
-349-->[androidx.work:work-runtime:2.9.1] /home/runner/.gradle/caches/8.13/transforms/6e10cb0db923d35705d667c22d63e299/transformed/work-runtime-2.9.1/AndroidManifest.xml:133:13-78
-350            android:directBootAware="false"
-350-->[androidx.work:work-runtime:2.9.1] /home/runner/.gradle/caches/8.13/transforms/6e10cb0db923d35705d667c22d63e299/transformed/work-runtime-2.9.1/AndroidManifest.xml:134:13-44
-351            android:enabled="true"
-351-->[androidx.work:work-runtime:2.9.1] /home/runner/.gradle/caches/8.13/transforms/6e10cb0db923d35705d667c22d63e299/transformed/work-runtime-2.9.1/AndroidManifest.xml:135:13-35
-352            android:exported="true"
-352-->[androidx.work:work-runtime:2.9.1] /home/runner/.gradle/caches/8.13/transforms/6e10cb0db923d35705d667c22d63e299/transformed/work-runtime-2.9.1/AndroidManifest.xml:136:13-36
-353            android:permission="android.permission.DUMP" >
-353-->[androidx.work:work-runtime:2.9.1] /home/runner/.gradle/caches/8.13/transforms/6e10cb0db923d35705d667c22d63e299/transformed/work-runtime-2.9.1/AndroidManifest.xml:137:13-57
-354            <intent-filter>
-354-->[androidx.work:work-runtime:2.9.1] /home/runner/.gradle/caches/8.13/transforms/6e10cb0db923d35705d667c22d63e299/transformed/work-runtime-2.9.1/AndroidManifest.xml:139:13-141:29
-355                <action android:name="androidx.work.diagnostics.REQUEST_DIAGNOSTICS" />
-355-->[androidx.work:work-runtime:2.9.1] /home/runner/.gradle/caches/8.13/transforms/6e10cb0db923d35705d667c22d63e299/transformed/work-runtime-2.9.1/AndroidManifest.xml:140:17-88
-355-->[androidx.work:work-runtime:2.9.1] /home/runner/.gradle/caches/8.13/transforms/6e10cb0db923d35705d667c22d63e299/transformed/work-runtime-2.9.1/AndroidManifest.xml:140:25-85
-356            </intent-filter>
-357        </receiver>
-358
-359        <service
-359-->[androidx.room:room-runtime-android:2.7.0] /home/runner/.gradle/caches/8.13/transforms/921e0436c94781ba84e008a2364aa48e/transformed/room-runtime-release/AndroidManifest.xml:24:9-28:63
-360            android:name="androidx.room.MultiInstanceInvalidationService"
-360-->[androidx.room:room-runtime-android:2.7.0] /home/runner/.gradle/caches/8.13/transforms/921e0436c94781ba84e008a2364aa48e/transformed/room-runtime-release/AndroidManifest.xml:25:13-74
-361            android:directBootAware="true"
-361-->[androidx.room:room-runtime-android:2.7.0] /home/runner/.gradle/caches/8.13/transforms/921e0436c94781ba84e008a2364aa48e/transformed/room-runtime-release/AndroidManifest.xml:26:13-43
-362            android:exported="false" />
-362-->[androidx.room:room-runtime-android:2.7.0] /home/runner/.gradle/caches/8.13/transforms/921e0436c94781ba84e008a2364aa48e/transformed/room-runtime-release/AndroidManifest.xml:27:13-37
-363
-364        <receiver
-364-->[androidx.profileinstaller:profileinstaller:1.3.1] /home/runner/.gradle/caches/8.13/transforms/8f1ce9102b6841595e5db92579216d35/transformed/profileinstaller-1.3.1/AndroidManifest.xml:34:9-52:20
-365            android:name="androidx.profileinstaller.ProfileInstallReceiver"
-365-->[androidx.profileinstaller:profileinstaller:1.3.1] /home/runner/.gradle/caches/8.13/transforms/8f1ce9102b6841595e5db92579216d35/transformed/profileinstaller-1.3.1/AndroidManifest.xml:35:13-76
-366            android:directBootAware="false"
-366-->[androidx.profileinstaller:profileinstaller:1.3.1] /home/runner/.gradle/caches/8.13/transforms/8f1ce9102b6841595e5db92579216d35/transformed/profileinstaller-1.3.1/AndroidManifest.xml:36:13-44
-367            android:enabled="true"
-367-->[androidx.profileinstaller:profileinstaller:1.3.1] /home/runner/.gradle/caches/8.13/transforms/8f1ce9102b6841595e5db92579216d35/transformed/profileinstaller-1.3.1/AndroidManifest.xml:37:13-35
-368            android:exported="true"
-368-->[androidx.profileinstaller:profileinstaller:1.3.1] /home/runner/.gradle/caches/8.13/transforms/8f1ce9102b6841595e5db92579216d35/transformed/profileinstaller-1.3.1/AndroidManifest.xml:38:13-36
-369            android:permission="android.permission.DUMP" >
-369-->[androidx.profileinstaller:profileinstaller:1.3.1] /home/runner/.gradle/caches/8.13/transforms/8f1ce9102b6841595e5db92579216d35/transformed/profileinstaller-1.3.1/AndroidManifest.xml:39:13-57
-370            <intent-filter>
-370-->[androidx.profileinstaller:profileinstaller:1.3.1] /home/runner/.gradle/caches/8.13/transforms/8f1ce9102b6841595e5db92579216d35/transformed/profileinstaller-1.3.1/AndroidManifest.xml:40:13-42:29
-371                <action android:name="androidx.profileinstaller.action.INSTALL_PROFILE" />
-371-->[androidx.profileinstaller:profileinstaller:1.3.1] /home/runner/.gradle/caches/8.13/transforms/8f1ce9102b6841595e5db92579216d35/transformed/profileinstaller-1.3.1/AndroidManifest.xml:41:17-91
-371-->[androidx.profileinstaller:profileinstaller:1.3.1] /home/runner/.gradle/caches/8.13/transforms/8f1ce9102b6841595e5db92579216d35/transformed/profileinstaller-1.3.1/AndroidManifest.xml:41:25-88
-372            </intent-filter>
-373            <intent-filter>
-373-->[androidx.profileinstaller:profileinstaller:1.3.1] /home/runner/.gradle/caches/8.13/transforms/8f1ce9102b6841595e5db92579216d35/transformed/profileinstaller-1.3.1/AndroidManifest.xml:43:13-45:29
-374                <action android:name="androidx.profileinstaller.action.SKIP_FILE" />
-374-->[androidx.profileinstaller:profileinstaller:1.3.1] /home/runner/.gradle/caches/8.13/transforms/8f1ce9102b6841595e5db92579216d35/transformed/profileinstaller-1.3.1/AndroidManifest.xml:44:17-85
-374-->[androidx.profileinstaller:profileinstaller:1.3.1] /home/runner/.gradle/caches/8.13/transforms/8f1ce9102b6841595e5db92579216d35/transformed/profileinstaller-1.3.1/AndroidManifest.xml:44:25-82
-375            </intent-filter>
-376            <intent-filter>
-376-->[androidx.profileinstaller:profileinstaller:1.3.1] /home/runner/.gradle/caches/8.13/transforms/8f1ce9102b6841595e5db92579216d35/transformed/profileinstaller-1.3.1/AndroidManifest.xml:46:13-48:29
-377                <action android:name="androidx.profileinstaller.action.SAVE_PROFILE" />
-377-->[androidx.profileinstaller:profileinstaller:1.3.1] /home/runner/.gradle/caches/8.13/transforms/8f1ce9102b6841595e5db92579216d35/transformed/profileinstaller-1.3.1/AndroidManifest.xml:47:17-88
-377-->[androidx.profileinstaller:profileinstaller:1.3.1] /home/runner/.gradle/caches/8.13/transforms/8f1ce9102b6841595e5db92579216d35/transformed/profileinstaller-1.3.1/AndroidManifest.xml:47:25-85
-378            </intent-filter>
-379            <intent-filter>
-379-->[androidx.profileinstaller:profileinstaller:1.3.1] /home/runner/.gradle/caches/8.13/transforms/8f1ce9102b6841595e5db92579216d35/transformed/profileinstaller-1.3.1/AndroidManifest.xml:49:13-51:29
-380                <action android:name="androidx.profileinstaller.action.BENCHMARK_OPERATION" />
-380-->[androidx.profileinstaller:profileinstaller:1.3.1] /home/runner/.gradle/caches/8.13/transforms/8f1ce9102b6841595e5db92579216d35/transformed/profileinstaller-1.3.1/AndroidManifest.xml:50:17-95
-380-->[androidx.profileinstaller:profileinstaller:1.3.1] /home/runner/.gradle/caches/8.13/transforms/8f1ce9102b6841595e5db92579216d35/transformed/profileinstaller-1.3.1/AndroidManifest.xml:50:25-92
-381            </intent-filter>
-382        </receiver> <!-- The activities will be merged into the manifest of the hosting app. -->
-383        <activity
-383-->[com.google.android.play:core-common:2.0.4] /home/runner/.gradle/caches/8.13/transforms/c946763ab6847d660a8ee73da8d15967/transformed/core-common-2.0.4/AndroidManifest.xml:14:9-18:65
-384            android:name="com.google.android.play.core.common.PlayCoreDialogWrapperActivity"
-384-->[com.google.android.play:core-common:2.0.4] /home/runner/.gradle/caches/8.13/transforms/c946763ab6847d660a8ee73da8d15967/transformed/core-common-2.0.4/AndroidManifest.xml:15:13-93
-385            android:exported="false"
-385-->[com.google.android.play:core-common:2.0.4] /home/runner/.gradle/caches/8.13/transforms/c946763ab6847d660a8ee73da8d15967/transformed/core-common-2.0.4/AndroidManifest.xml:16:13-37
-386            android:stateNotNeeded="true"
-386-->[com.google.android.play:core-common:2.0.4] /home/runner/.gradle/caches/8.13/transforms/c946763ab6847d660a8ee73da8d15967/transformed/core-common-2.0.4/AndroidManifest.xml:17:13-42
-387            android:theme="@style/Theme.PlayCore.Transparent" />
-387-->[com.google.android.play:core-common:2.0.4] /home/runner/.gradle/caches/8.13/transforms/c946763ab6847d660a8ee73da8d15967/transformed/core-common-2.0.4/AndroidManifest.xml:18:13-62
-388    </application>
-389
-390</manifest>
+327        </receiver> <!-- The activities will be merged into the manifest of the hosting app. -->
+328        <activity
+328-->[com.google.android.play:core-common:2.0.4] /home/runner/.gradle/caches/8.13/transforms/c946763ab6847d660a8ee73da8d15967/transformed/core-common-2.0.4/AndroidManifest.xml:14:9-18:65
+329            android:name="com.google.android.play.core.common.PlayCoreDialogWrapperActivity"
+329-->[com.google.android.play:core-common:2.0.4] /home/runner/.gradle/caches/8.13/transforms/c946763ab6847d660a8ee73da8d15967/transformed/core-common-2.0.4/AndroidManifest.xml:15:13-93
+330            android:exported="false"
+330-->[com.google.android.play:core-common:2.0.4] /home/runner/.gradle/caches/8.13/transforms/c946763ab6847d660a8ee73da8d15967/transformed/core-common-2.0.4/AndroidManifest.xml:16:13-37
+331            android:stateNotNeeded="true"
+331-->[com.google.android.play:core-common:2.0.4] /home/runner/.gradle/caches/8.13/transforms/c946763ab6847d660a8ee73da8d15967/transformed/core-common-2.0.4/AndroidManifest.xml:17:13-42
+332            android:theme="@style/Theme.PlayCore.Transparent" />
+332-->[com.google.android.play:core-common:2.0.4] /home/runner/.gradle/caches/8.13/transforms/c946763ab6847d660a8ee73da8d15967/transformed/core-common-2.0.4/AndroidManifest.xml:18:13-62
+333    </application>
+334
+335</manifest>

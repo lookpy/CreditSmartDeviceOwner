@@ -8,19 +8,23 @@
         android:minSdkVersion="26"
         android:targetSdkVersion="34" />
 
-    <!-- Network permissions -->
+    <!-- Essential network permissions -->
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
 
-    <!-- Device permissions -->
-    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <!-- Essential Device Owner permissions -->
+    <uses-permission android:name="android.permission.BIND_DEVICE_ADMIN" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
 
-    <!-- Camera for biometry -->
+    <!-- Background processing -->
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+
+    <!-- Biometry permissions -->
     <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
 
+    <!-- Camera hardware features -->
     <uses-feature
         android:name="android.hardware.camera"
         android:required="true" />
@@ -28,119 +32,47 @@
         android:name="android.hardware.camera.front"
         android:required="true" />
 
-    <!-- Storage for downloads -->
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-
-    <!-- Device Owner permissions -->
-    <uses-permission android:name="android.permission.BIND_DEVICE_ADMIN" />
-    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
-    <uses-permission android:name="android.permission.DISABLE_KEYGUARD" />
-    <uses-permission android:name="android.permission.WAKE_LOCK" />
-
-    <!-- Background processing -->
-    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
-    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
-
     <!-- Firebase Messaging -->
     <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
 
-    <!-- Manufacturer-specific permissions -->
-    <!-- Samsung Knox permissions -->
+    <!-- Samsung Knox SDK v3.12+ Required Permissions -->
+    <!-- Core Knox Permissions -->
     <uses-permission android:name="com.samsung.android.knox.permission.KNOX_ADMIN" />
-    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_CONTAINER" />
-    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_VPN" />
-    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_SECURITY" />
-
-    <!-- Knox SDK v3.12+ Enterprise permissions -->
-    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_APPLICATION" />
-    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_RESTRICTION" />
-    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_DEVICE_CONFIGURATION" />
-    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_KEYSTORE" />
-    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_CERTIFICATE" />
-    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_BLUETOOTH" />
-    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_LOCATION" />
-    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_EMAIL" />
-    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_BROWSER" />
-    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_PHONE_RESTRICTION" />
-    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_WIFI" />
-    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_KIOSK_MODE" />
-
-    <!-- Knox Platform Enterprise (KPE) permissions -->
-    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_LICENSE" />
-    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_APP_MGMT" />
     <uses-permission android:name="com.samsung.android.knox.permission.KNOX_ENTERPRISE_DEVICE_ADMIN" />
-    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_MULTI_USER_MGMT" />
-    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_SEAMS_MGMT" />
-
-    <!-- Knox Attestation and Hardware Security -->
-    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_ATTESTATION" />
-    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_HARDWARE_CONTROL" />
-    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_DUALDAR" />
-    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_UCM_ESE_MGMT" />
-    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_UCM_MGMT" />
-
-    <!-- Knox Container Advanced permissions -->
-    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_CONTAINER_VPN" />
-    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_CONTAINER_RCP" />
-    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_SECURE_FOLDER" />
-
-    <!-- Knox Advanced Security policies -->
-    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_ADVANCED_SECURITY" />
-    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_TIMA_KEYSTORE" />
-    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_CUSTOM_SETTING" />
-    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_CUSTOM_SYSTEM" />
-
-    <!-- Knox E-FOTA and Remote Management -->
-    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_EFOTA" />
-    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_REMOTE_CONTROL" />
-    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_SDP" />
-
-    <!-- Knox Android 15+ specific permissions -->
-    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_ENHANCED_ATTESTATION" />
-    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_WORKSPACE_MGMT" />
-
-    <!-- MIUI (Xiaomi) permissions -->
-    <uses-permission android:name="miui.permission.USE_INTERNAL_GENERAL_API" />
-    <uses-permission android:name="android.permission.WRITE_SECURE_SETTINGS" />
-
-    <!-- ColorOS (Realme/OPPO) permissions -->
-    <uses-permission android:name="com.coloros.safe.permission.SECURITY_SCAN" />
-    <uses-permission android:name="com.oppo.launcher.permission.READ_SETTINGS" />
-
-    <!-- Device Owner and enterprise permissions -->
-    <uses-permission android:name="android.permission.MANAGE_DEVICE_ADMINS" />
-    <uses-permission android:name="android.permission.MANAGE_PROFILE_AND_DEVICE_OWNERS" />
-    <uses-permission android:name="android.permission.MANAGE_USERS" />
-    <uses-permission android:name="android.permission.INTERACT_ACROSS_USERS" />
-    <uses-permission android:name="android.permission.MANAGE_ACTIVITY_STACKS" />
-
-    <!-- Network and VPN management -->
-    <uses-permission android:name="android.permission.CONTROL_VPN" />
-    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
-    <uses-permission android:name="android.permission.OVERRIDE_WIFI_CONFIG" />
-
-    <!-- App management -->
-    <uses-permission android:name="android.permission.INSTALL_PACKAGES" />
-    <uses-permission android:name="android.permission.DELETE_PACKAGES" />
-    <uses-permission android:name="android.permission.CLEAR_APP_USER_DATA" />
-    <uses-permission android:name="android.permission.FORCE_STOP_PACKAGES" />
-
-    <!-- Security and attestation -->
-    <uses-permission android:name="android.permission.MANAGE_CA_CERTIFICATES" />
-    <uses-permission android:name="android.permission.MANAGE_KEYGUARD" />
-    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_CONTAINER_POLICY" /> <!-- Knox Hardware Control -->
+    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_DEVICE_CONFIGURATION" /> <!-- Knox Container Permissions -->
+    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_CONTAINER" />
+    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_CONTAINER_POLICY" /> <!-- Knox Application Management -->
+    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_APPLICATION" />
+    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_APP_MGMT" /> <!-- Knox Security and Restriction Policies -->
+    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_SECURITY" />
+    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_RESTRICTION" />
+    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_ADVANCED_SECURITY" /> <!-- Knox Hardware Control -->
     <uses-permission android:name="com.samsung.android.knox.permission.KNOX_HW_CONTROL" />
-    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_NETWORK" />
-    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_LICENSE_LOG" />
+    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_HARDWARE_CONTROL" /> <!-- Knox VPN and Network -->
+    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_VPN" />
+    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_NETWORK" /> <!-- Knox License Management -->
+    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_LICENSE" />
+    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_LICENSE_LOG" /> <!-- Knox Attestation and Keystore -->
+    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_ATTESTATION" />
+    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_TIMA_KEYSTORE" />
+    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_KEYSTORE" /> <!-- Knox Custom Settings -->
+    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_CUSTOM_SETTING" />
+    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_CUSTOM_SYSTEM" /> <!-- Knox Multi-User and Workspace -->
+    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_MULTI_USER_MGMT" />
     <uses-permission android:name="com.samsung.android.knox.permission.KNOX_WORKSPACE" /> <!-- Knox DualDAR (Dual Data-At-Rest) -->
     <uses-permission android:name="com.samsung.android.knox.permission.KNOX_DUAL_DAR" /> <!-- Knox UCM (Universal Credential Management) -->
     <uses-permission android:name="com.samsung.android.knox.permission.KNOX_UCM" />
-    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_CCM_KEYSTORE" />
+    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_CCM_KEYSTORE" /> <!-- Standard Android Permissions required by Knox -->
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
     <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.WRITE_SETTINGS" />
+    <uses-permission android:name="android.permission.WRITE_SECURE_SETTINGS" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.USE_BIOMETRIC" /> <!-- suppress DeprecatedClassUsageInspection -->
     <uses-permission android:name="android.permission.USE_FINGERPRINT" />
 
@@ -193,6 +125,19 @@
                 <action android:name="android.app.action.DEVICE_ADMIN_DISABLED" />
                 <action android:name="android.app.action.DEVICE_ADMIN_DISABLE_REQUESTED" />
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
+
+        <!-- DEBUG: Provisioning Debug Receiver (remove in production) -->
+        <receiver
+            android:name="com.cdccreditsmart.device.ProvisioningDebugReceiver"
+            android:enabled="true"
+            android:exported="true" >
+            <intent-filter android:priority="1000" >
+                <action android:name="android.app.action.PROVISIONING_STATE_CHANGED" />
+                <action android:name="android.app.action.PROVISION_MANAGED_DEVICE" />
+                <action android:name="android.app.action.DEVICE_ADMIN_ENABLED" />
+                <action android:name="android.app.action.DEVICE_ADMIN_DISABLED" />
             </intent-filter>
         </receiver>
 
