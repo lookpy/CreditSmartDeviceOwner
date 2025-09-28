@@ -3,20 +3,14 @@ plugins {
     id("org.jetbrains.kotlin.jvm")
 }
 
+// Alternative approach - disable toolchain and use direct version
 java {
     sourceCompatibility = JavaVersion.VERSION_17
     targetCompatibility = JavaVersion.VERSION_17
-    
-    // Configure Java toolchain explicitly
-    toolchain {
-        languageVersion.set(JavaLanguageVersion.of(17))
-    }
 }
 
+// Minimal Kotlin configuration without toolchain
 kotlin {
-    jvmToolchain {
-        languageVersion.set(JavaLanguageVersion.of(17))
-    }
     compilerOptions {
         jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_17)
     }
