@@ -399,11 +399,11 @@
 186            android:permission="android.permission.BIND_DEVICE_ADMIN" >
 186-->/home/runner/workspace/app/src/main/AndroidManifest.xml:155:13-70
 187            <meta-data
-187-->/home/runner/workspace/app/src/main/AndroidManifest.xml:156:13-158:65
+187-->/home/runner/workspace/app/src/main/AndroidManifest.xml:156:13-158:56
 188                android:name="android.app.device_admin"
 188-->/home/runner/workspace/app/src/main/AndroidManifest.xml:157:17-56
-189                android:resource="@xml/device_admin_policies" />
-189-->/home/runner/workspace/app/src/main/AndroidManifest.xml:158:17-62
+189                android:resource="@xml/device_admin" />
+189-->/home/runner/workspace/app/src/main/AndroidManifest.xml:158:17-53
 190
 191            <intent-filter>
 191-->/home/runner/workspace/app/src/main/AndroidManifest.xml:159:13-164:29

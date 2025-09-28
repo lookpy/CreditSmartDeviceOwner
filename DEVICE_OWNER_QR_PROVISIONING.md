@@ -33,7 +33,7 @@ https://api.cdccreditsmart.com.br/enrollment/apk/app-release.apk
 
 ### APK Checksum Atual
 ```
-BWk-jVt_HmtmlSRq5ftfEWEtWgj8nfUzw-Z3pvy6zr8
+bEcvjFD3KpxXQgoV8AsIF6LwCT0z2uUS3zodjff1ez4
 ```
 > ⚠️ **IMPORTANTE**: Este checksum muda a cada novo build do APK!
 
@@ -43,7 +43,7 @@ BWk-jVt_HmtmlSRq5ftfEWEtWgj8nfUzw-Z3pvy6zr8
 ```json
 {
   "android.app.extra.PROVISIONING_DEVICE_ADMIN_COMPONENT_NAME": "com.cdccreditsmart.app/com.cdccreditsmart.device.CDCDeviceAdminReceiver",
-  "android.app.extra.PROVISIONING_DEVICE_ADMIN_SIGNATURE_CHECKSUM": "BWk-jVt_HmtmlSRq5ftfEWEtWgj8nfUzw-Z3pvy6zr8",
+  "android.app.extra.PROVISIONING_DEVICE_ADMIN_SIGNATURE_CHECKSUM": "bEcvjFD3KpxXQgoV8AsIF6LwCT0z2uUS3zodjff1ez4",
   "android.app.extra.PROVISIONING_DEVICE_ADMIN_PACKAGE_DOWNLOAD_LOCATION": "https://api.cdccreditsmart.com.br/enrollment/apk/app-release.apk"
 }
 ```
@@ -52,7 +52,7 @@ BWk-jVt_HmtmlSRq5ftfEWEtWgj8nfUzw-Z3pvy6zr8
 ```json
 {
   "android.app.extra.PROVISIONING_DEVICE_ADMIN_COMPONENT_NAME": "com.cdccreditsmart.app/com.cdccreditsmart.device.CDCDeviceAdminReceiver",
-  "android.app.extra.PROVISIONING_DEVICE_ADMIN_SIGNATURE_CHECKSUM": "BWk-jVt_HmtmlSRq5ftfEWEtWgj8nfUzw-Z3pvy6zr8",
+  "android.app.extra.PROVISIONING_DEVICE_ADMIN_SIGNATURE_CHECKSUM": "bEcvjFD3KpxXQgoV8AsIF6LwCT0z2uUS3zodjff1ez4",
   "android.app.extra.PROVISIONING_DEVICE_ADMIN_PACKAGE_DOWNLOAD_LOCATION": "https://api.cdccreditsmart.com.br/enrollment/apk/app-release.apk",
   "android.app.extra.PROVISIONING_SKIP_ENCRYPTION": false,
   "android.app.extra.PROVISIONING_LEAVE_ALL_SYSTEM_APPS_ENABLED": true,
