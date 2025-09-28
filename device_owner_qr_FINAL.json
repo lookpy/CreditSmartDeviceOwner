@@ -2,7 +2,7 @@
   "android.app.extra.PROVISIONING_DEVICE_ADMIN_COMPONENT_NAME": "com.cdccreditsmart.app/com.cdccreditsmart.device.CDCDeviceAdminReceiver",
   "android.app.extra.PROVISIONING_DEVICE_ADMIN_PACKAGE_CHECKSUM": "kd5GnWsBZfjIEYurOX7O96zX4TWDmCwqcDGw6dXkP9A",
   "android.app.extra.PROVISIONING_DEVICE_ADMIN_SIGNATURE_CHECKSUM": "kd5GnWsBZfjIEYurOX7O96zX4TWDmCwqcDGw6dXkP9A",
-  "android.app.extra.PROVISIONING_DEVICE_ADMIN_PACKAGE_DOWNLOAD_LOCATION": "https://cdccreditsmart.com.br/enrollment/apk/app-release.apk",
+  "android.app.extra.PROVISIONING_DEVICE_ADMIN_PACKAGE_DOWNLOAD_LOCATION": "https://cdccreditsmart.com/enrollment/apk/app-release.apk",
   "android.app.extra.PROVISIONING_ALLOWED_PROVISIONING_MODES": [
     "android.app.extra.PROVISIONING_MODE_FULLY_MANAGED_DEVICE"
   ],
