@@ -31,15 +31,39 @@ com.cdccreditsmart.app/com.cdccreditsmart.device.CDCDeviceAdminReceiver
 https://api.cdccreditsmart.com.br/enrollment/apk/app-release.apk
 ```
 
-### APK Checksum Atual
+### 🔐 Certificado SHA-256 (Android Enterprise)
+```
+yrqGlF2hJeulFsPxwTqrejVJzUcEx6tFXX3YHvyUFeU
+```
+**SHA-256 Fingerprint Original:**
+```
+CA:B8:86:94:5D:A1:25:EB:A5:16:C3:F1:C1:3A:AB:7A:35:49:CD:47:04:C7:AB:45:5D:7D:D8:1E:FC:94:15:E5
+```
+
+### ❌ Checksum APK Depreciado (NÃO USAR)
 ```
 our2XsiUEWlU4PsL6DbCjRrbMFK6FVF0NEict-xzr-Q
 ```
-> ⚠️ **IMPORTANTE**: Este checksum muda a cada novo build do APK!
+> ⚠️ **IMPORTANTE**: Este formato foi depreciado no Android 13+!
 
 ## 📄 Estrutura do JSON para QR Code
 
-### JSON Básico (Obrigatório)
+### 🚨 **CORREÇÃO CRÍTICA - JSON ATUALIZADO (Android 13+)**
+
+O campo `PROVISIONING_DEVICE_ADMIN_SIGNATURE_CHECKSUM` foi **DEPRECIADO no Android 13+**!
+
+### JSON CORRETO (Android Enterprise 2024+)
+```json
+{
+  "android.app.extra.PROVISIONING_DEVICE_ADMIN_COMPONENT_NAME": "com.cdccreditsmart.app/com.cdccreditsmart.device.CDCDeviceAdminReceiver",
+  "android.app.extra.PROVISIONING_DEVICE_ADMIN_CERTIFICATE_CHECKSUMS": ["yrqGlF2hJeulFsPxwTqrejVJzUcEx6tFXX3YHvyUFeU"],
+  "android.app.extra.PROVISIONING_DEVICE_ADMIN_PACKAGE_DOWNLOAD_LOCATION": "https://api.cdccreditsmart.com.br/enrollment/apk/app-release.apk",
+  "android.app.extra.PROVISIONING_SKIP_ENCRYPTION": false,
+  "android.app.extra.PROVISIONING_LEAVE_ALL_SYSTEM_APPS_ENABLED": true
+}
+```
+
+### ❌ JSON ANTIGO (DEPRECIADO - NÃO USAR)
 ```json
 {
   "android.app.extra.PROVISIONING_DEVICE_ADMIN_COMPONENT_NAME": "com.cdccreditsmart.app/com.cdccreditsmart.device.CDCDeviceAdminReceiver",
@@ -48,11 +72,28 @@ our2XsiUEWlU4PsL6DbCjRrbMFK6FVF0NEict-xzr-Q
 }
 ```
 
+### 📋 Certificado Release Extraído via Gradle
+```bash
+./gradlew signingReport
+
+# Output:
+# SHA-256: CA:B8:86:94:5D:A1:25:EB:A5:16:C3:F1:C1:3A:AB:7A:35:49:CD:47:04:C7:AB:45:5D:7D:D8:1E:FC:94:15:E5
+```
+
+### 🔄 Conversão para Base64URL (Android Enterprise)
+```python
+import base64
+sha256_hex = 'CA:B8:86:94:5D:A1:25:EB:A5:16:C3:F1:C1:3A:AB:7A:35:49:CD:47:04:C7:AB:45:5D:7D:D8:1E:FC:94:15:E5'
+hex_bytes = bytes.fromhex(sha256_hex.replace(':', ''))
+base64url = base64.b64encode(hex_bytes).decode('utf-8').replace('+', '-').replace('/', '_').rstrip('=')
+# Result: yrqGlF2hJeulFsPxwTqrejVJzUcEx6tFXX3YHvyUFeU
+```
+
 ### JSON Completo (Com Configurações Avançadas)
 ```json
 {
   "android.app.extra.PROVISIONING_DEVICE_ADMIN_COMPONENT_NAME": "com.cdccreditsmart.app/com.cdccreditsmart.device.CDCDeviceAdminReceiver",
-  "android.app.extra.PROVISIONING_DEVICE_ADMIN_SIGNATURE_CHECKSUM": "our2XsiUEWlU4PsL6DbCjRrbMFK6FVF0NEict-xzr-Q",
+  "android.app.extra.PROVISIONING_DEVICE_ADMIN_CERTIFICATE_CHECKSUMS": ["yrqGlF2hJeulFsPxwTqrejVJzUcEx6tFXX3YHvyUFeU"],
   "android.app.extra.PROVISIONING_DEVICE_ADMIN_PACKAGE_DOWNLOAD_LOCATION": "https://api.cdccreditsmart.com.br/enrollment/apk/app-release.apk",
   "android.app.extra.PROVISIONING_SKIP_ENCRYPTION": false,
   "android.app.extra.PROVISIONING_LEAVE_ALL_SYSTEM_APPS_ENABLED": true,
