@@ -121,6 +121,14 @@ fun IMEIAuthScreen(
                     }
                 )
             }
+            AuthStatus.AwaitingManualInput -> {
+                ManualIMEIInputContent(
+                    userEnteredImei = authState.userEnteredImei,
+                    onImeiChanged = viewModel::onImeiInputChanged,
+                    onVerifyClick = viewModel::verifyManualImei,
+                    errorMessage = authState.errorMessage
+                )
+            }
             AuthStatus.Verifying -> {
                 VerifyingContent(message = "Reading device IMEI and searching for sale...")
             }
@@ -278,6 +286,116 @@ private fun PermissionRequestContent(
                     text = "For security, pairing will be locked after 3 failed attempts",
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onErrorContainer
+                )
+            }
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun ManualIMEIInputContent(
+    userEnteredImei: String,
+    onImeiChanged: (String) -> Unit,
+    onVerifyClick: () -> Unit,
+    errorMessage: String?
+) {
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Icon(
+            imageVector = Icons.Default.Warning,
+            contentDescription = "Manual Input Required",
+            modifier = Modifier.size(48.dp),
+            tint = MaterialTheme.colorScheme.secondary
+        )
+        
+        Spacer(modifier = Modifier.height(16.dp))
+        
+        Text(
+            text = "Manual IMEI Required",
+            style = MaterialTheme.typography.headlineSmall,
+            fontWeight = FontWeight.Bold
+        )
+        
+        Spacer(modifier = Modifier.height(8.dp))
+        
+        Card(
+            colors = CardDefaults.cardColors(
+                containerColor = MaterialTheme.colorScheme.secondaryContainer
+            )
+        ) {
+            Column(
+                modifier = Modifier.padding(16.dp)
+            ) {
+                Text(
+                    text = "Could not read IMEI automatically",
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onSecondaryContainer,
+                    textAlign = TextAlign.Center
+                )
+                Spacer(modifier = Modifier.height(8.dp))
+                Text(
+                    text = "Please enter the IMEI from your sales receipt manually",
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSecondaryContainer,
+                    textAlign = TextAlign.Center
+                )
+            }
+        }
+        
+        Spacer(modifier = Modifier.height(24.dp))
+        
+        OutlinedTextField(
+            value = userEnteredImei,
+            onValueChange = onImeiChanged,
+            label = { Text("Enter IMEI") },
+            placeholder = { Text("15 digits from receipt") },
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+            visualTransformation = ImeiVisualTransformation(),
+            isError = errorMessage != null,
+            modifier = Modifier.fillMaxWidth(),
+            supportingText = if (errorMessage != null) {
+                { Text(errorMessage, color = MaterialTheme.colorScheme.error) }
+            } else {
+                { Text("${userEnteredImei.length}/15 digits") }
+            }
+        )
+        
+        Spacer(modifier = Modifier.height(24.dp))
+        
+        Button(
+            onClick = onVerifyClick,
+            enabled = userEnteredImei.length == 15,
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Text("Pair Device")
+        }
+        
+        Spacer(modifier = Modifier.height(16.dp))
+        
+        Card(
+            colors = CardDefaults.cardColors(
+                containerColor = MaterialTheme.colorScheme.tertiaryContainer
+            )
+        ) {
+            Row(
+                modifier = Modifier.padding(12.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Icon(
+                    imageVector = Icons.Default.Info,
+                    contentDescription = "Info",
+                    tint = MaterialTheme.colorScheme.onTertiaryContainer,
+                    modifier = Modifier.size(16.dp)
+                )
+                
+                Spacer(modifier = Modifier.width(8.dp))
+                
+                Text(
+                    text = "The IMEI is printed on your sales receipt. Enter all 15 digits without spaces.",
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onTertiaryContainer
                 )
             }
         }

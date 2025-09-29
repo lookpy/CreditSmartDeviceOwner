@@ -55,12 +55,14 @@ The application is entirely built with Jetpack Compose and Material 3, implement
 - ✅ **IMMUTABLE TOKEN** - Token JWT imutável gerado após reivindicação bem-sucedida
 - ✅ **BUILD SUCCESSFUL** - APK 48MB compilado e disponível (checksum: f60ee65f9f7a123c97087ebac6099b0b)
 
-### AUTOMATIC PAIRING FLOW (Handshake de Pareamento)
+### AUTOMATIC PAIRING FLOW WITH MANUAL FALLBACK
 - 🎯 **PASSO 1 - PDV**: Vendedor finaliza venda → Sistema cria registro pendente com janela de 24h
 - 🎯 **PASSO 2 - APK Solicita Permissão**: App solicita READ_PHONE_STATE para ler IMEI do hardware
-- 🎯 **PASSO 3 - APK Lê IMEI**: App lê IMEI AUTOMATICAMENTE do hardware via TelephonyManager
-- 🎯 **PASSO 4 - APK Busca**: App busca venda pendente automaticamente via GET `/api/device/claim-sale?imei=XXX`
-- 🎯 **PASSO 5 - APK Reivindica**: App gera fingerprint e reivindica venda automaticamente via POST `/api/device/claim-sale`
+- 🎯 **PASSO 3 - APK Tenta Leitura Automática**: App tenta ler IMEI do hardware via TelephonyManager
+  - ✅ **Se sucesso**: Continua automaticamente para passo 4
+  - ⚠️ **Se falha**: Solicita input manual de IMEI do recibo de venda
+- 🎯 **PASSO 4 - APK Busca**: App busca venda pendente via GET `/api/device/claim-sale?imei=XXX`
+- 🎯 **PASSO 5 - APK Reivindica**: App gera fingerprint e reivindica venda via POST `/api/device/claim-sale`
 - 🎯 **PASSO 6 - Validação**: Backend valida IMEI, vincula fingerprint, gera token imutável, marca venda como ATIVA
 
 ### API ENDPOINTS IMPLEMENTED
@@ -78,10 +80,11 @@ The application is entirely built with Jetpack Compose and Material 3, implement
 ### CRITICAL IMPLEMENTATION DETAILS
 - ✅ **Backend URL** - Domínio correto `https://cdccreditsmart.com/`
 - ✅ **Automatic IMEI Reading** - DeviceUtils.kt com TelephonyManager para ler IMEI do hardware
+- ✅ **Manual Fallback** - Se leitura automática falhar, solicita input manual de IMEI do recibo
 - ✅ **Permission Handling** - UI solicita READ_PHONE_STATE com explicação clara ao usuário
-- ✅ **No Manual Input** - Removido completamente input manual de IMEI (100% automático)
 - ✅ **Claim-Sale Flow** - GET /api/device/claim-sale?imei=XXX → POST /api/device/claim-sale
 - ✅ **Token Persistence** - immutableToken salvo em SharedPreferences após pareamento
+- ✅ **Robust Flow** - Funciona em todos os casos (automático ou manual)
 
 ### MAJOR BREAKTHROUGH: SIMPLIFIED ARCHITECTURE WORKING (September 29, 2025) - ✅ CONCLUÍDO!
 - 🚀 **BUILD SUCCESSFUL ACHIEVED** - Removido Hilt completamente, implementação simplificada funcionando

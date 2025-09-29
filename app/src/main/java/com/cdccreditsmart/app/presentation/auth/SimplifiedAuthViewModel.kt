@@ -19,15 +19,18 @@ data class SimplifiedAuthState(
     val deviceId: String? = null,
     val registrationStatus: String? = null,
     val hardwareImei: String? = null,
+    val userEnteredImei: String = "",
     val failedAttempts: Int = 0,
     val isLockedOut: Boolean = false,
     val lockoutEndTime: Long? = null,
-    val hasPhoneStatePermission: Boolean = false
+    val hasPhoneStatePermission: Boolean = false,
+    val useManualInput: Boolean = false
 )
 
 enum class AuthStatus {
     Initializing,
     AwaitingPermission,
+    AwaitingManualInput,
     Verifying,
     Registering,
     Error,
@@ -250,6 +253,7 @@ class SimplifiedAuthViewModel(
     /**
      * Start automatic pairing using hardware IMEI
      * Reads IMEI from device and automatically searches for pending sale
+     * Falls back to manual input if automatic reading fails
      */
     private fun startAutomaticPairing() {
         Log.d(TAG, "Starting automatic pairing flow")
@@ -260,11 +264,12 @@ class SimplifiedAuthViewModel(
                 val hardwareImei = DeviceUtils.getDeviceImei(context)
                 
                 if (hardwareImei == null) {
-                    Log.e(TAG, "Failed to read IMEI from device")
+                    Log.w(TAG, "Failed to read IMEI automatically, falling back to manual input")
                     _authState.value = _authState.value.copy(
-                        currentState = AuthStatus.Error,
+                        currentState = AuthStatus.AwaitingManualInput,
                         isLoading = false,
-                        errorMessage = "Could not read device IMEI. Please ensure READ_PHONE_STATE permission is granted."
+                        useManualInput = true,
+                        errorMessage = null
                     )
                     return@launch
                 }
@@ -280,98 +285,8 @@ class SimplifiedAuthViewModel(
                     errorMessage = null
                 )
                 
-                // STEP 1: Search for pending sale by IMEI
-                Log.d(TAG, "Searching for pending sale with IMEI: $normalizedImei")
-                val searchResult = deviceRegistrationManager.searchPendingSale(normalizedImei)
-                
-                searchResult.fold(
-                    onSuccess = { queryResponse ->
-                        if (queryResponse == null || !queryResponse.found) {
-                            Log.w(TAG, "No pending sale found for this IMEI")
-                            val newFailedAttempts = _authState.value.failedAttempts + 1
-                            
-                            if (newFailedAttempts >= 3) {
-                                val lockoutEndTime = System.currentTimeMillis() + (30 * 60 * 1000L)
-                                _authState.value = _authState.value.copy(
-                                    currentState = AuthStatus.Error,
-                                    errorMessage = "Too many failed attempts. No pending sale found for this IMEI. Device locked for 30 minutes.",
-                                    failedAttempts = newFailedAttempts,
-                                    isLockedOut = true,
-                                    lockoutEndTime = lockoutEndTime,
-                                    isLoading = false
-                                )
-                            } else {
-                                _authState.value = _authState.value.copy(
-                                    currentState = AuthStatus.Error,
-                                    isLoading = false,
-                                    errorMessage = "No pending sale found for this device IMEI. Please contact support or verify the device was properly registered in the sales system. ${3 - newFailedAttempts} attempts remaining.",
-                                    failedAttempts = newFailedAttempts
-                                )
-                            }
-                            return@launch
-                        }
-                        
-                        // Sale found! Log details
-                        Log.d(TAG, "Pending sale found!")
-                        Log.d(TAG, "Sale ID: ${queryResponse.saleId}")
-                        Log.d(TAG, "Validation ID: ${queryResponse.validationId}")
-                        Log.d(TAG, "Customer: ${queryResponse.customerName}")
-                        Log.d(TAG, "Device Model: ${queryResponse.deviceModel}")
-                        Log.d(TAG, "Expires in: ${queryResponse.expiresIn}s")
-                        
-                        // STEP 2: Claim the sale with device fingerprint
-                        _authState.value = _authState.value.copy(
-                            currentState = AuthStatus.Registering,
-                            registrationStatus = "Claiming sale and registering device..."
-                        )
-                        
-                        Log.d(TAG, "Claiming sale and pairing device...")
-                        val fingerprint = deviceRegistrationManager.generateFingerprint()
-                        Log.d(TAG, "Generated device fingerprint: $fingerprint")
-                        
-                        val claimResult = deviceRegistrationManager.claimSale(
-                            validationId = queryResponse.validationId!!,
-                            hardwareImei = normalizedImei,
-                            fingerprint = fingerprint
-                        )
-                        
-                        claimResult.fold(
-                            onSuccess = { claimResponse ->
-                                Log.d(TAG, "Sale claimed successfully!")
-                                Log.d(TAG, "Device ID: ${claimResponse.deviceId}")
-                                Log.d(TAG, "Sale ID: ${claimResponse.saleId}")
-                                Log.d(TAG, "Message: ${claimResponse.message}")
-                                
-                                _authState.value = _authState.value.copy(
-                                    currentState = AuthStatus.Authenticated,
-                                    isAuthenticated = true,
-                                    isLoading = false,
-                                    deviceId = claimResponse.deviceId,
-                                    registrationStatus = "Device paired successfully",
-                                    failedAttempts = 0,
-                                    errorMessage = null
-                                )
-                            },
-                            onFailure = { exception ->
-                                Log.e(TAG, "Failed to claim sale", exception)
-                                _authState.value = _authState.value.copy(
-                                    currentState = AuthStatus.Error,
-                                    isLoading = false,
-                                    errorMessage = "Failed to pair device: ${exception.message}",
-                                    isAuthenticated = false
-                                )
-                            }
-                        )
-                    },
-                    onFailure = { exception ->
-                        Log.e(TAG, "Failed to search for pending sale", exception)
-                        _authState.value = _authState.value.copy(
-                            currentState = AuthStatus.Error,
-                            isLoading = false,
-                            errorMessage = "Error searching for sale: ${exception.message}"
-                        )
-                    }
-                )
+                // Perform pairing with hardware IMEI
+                performPairingWithImei(normalizedImei)
                 
             } catch (e: Exception) {
                 Log.e(TAG, "Exception during sale claim flow", e)
@@ -384,6 +299,168 @@ class SimplifiedAuthViewModel(
         }
     }
     
+
+    /**
+     * Handle IMEI input change (for manual input fallback)
+     */
+    fun onImeiInputChanged(imei: String) {
+        // Only allow digits and limit to 15 characters
+        val filteredImei = imei.filter { it.isDigit() }.take(15)
+        _authState.value = _authState.value.copy(
+            userEnteredImei = filteredImei,
+            errorMessage = null
+        )
+    }
+
+    /**
+     * Verify manually entered IMEI and start pairing
+     */
+    fun verifyManualImei() {
+        val userImei = _authState.value.userEnteredImei
+        
+        Log.d(TAG, "Starting pairing with manually entered IMEI: ${userImei.length} digits")
+        
+        if (userImei.length != 15) {
+            _authState.value = _authState.value.copy(
+                errorMessage = "IMEI must be exactly 15 digits"
+            )
+            return
+        }
+        
+        // Start verification process with manual IMEI
+        _authState.value = _authState.value.copy(
+            currentState = AuthStatus.Verifying,
+            isLoading = true,
+            errorMessage = null
+        )
+        
+        viewModelScope.launch {
+            performPairingWithImei(normalizeImei(userImei))
+        }
+    }
+
+    /**
+     * Perform pairing flow with given IMEI
+     * This is used by both automatic (hardware) and manual input flows
+     */
+    private suspend fun performPairingWithImei(normalizedImei: String) {
+        try {
+            Log.d(TAG, "Performing pairing with IMEI: ${normalizedImei.take(4)}***")
+            
+            // STEP 1: Search for pending sale by IMEI
+            Log.d(TAG, "Searching for pending sale with IMEI: $normalizedImei")
+            val searchResult = deviceRegistrationManager.searchPendingSale(normalizedImei)
+            
+            searchResult.fold(
+                onSuccess = { queryResponse ->
+                    if (queryResponse == null || !queryResponse.found) {
+                        Log.w(TAG, "No pending sale found for this IMEI")
+                        val newFailedAttempts = _authState.value.failedAttempts + 1
+                        
+                        if (newFailedAttempts >= 3) {
+                            val lockoutEndTime = System.currentTimeMillis() + (30 * 60 * 1000L)
+                            _authState.value = _authState.value.copy(
+                                currentState = AuthStatus.Error,
+                                errorMessage = "Too many failed attempts. No pending sale found for this IMEI. Device locked for 30 minutes.",
+                                failedAttempts = newFailedAttempts,
+                                isLockedOut = true,
+                                lockoutEndTime = lockoutEndTime,
+                                isLoading = false
+                            )
+                        } else {
+                            val errorMsg = if (_authState.value.useManualInput) {
+                                "No pending sale found for this IMEI. Please verify the IMEI from the sales receipt. ${3 - newFailedAttempts} attempts remaining."
+                            } else {
+                                "No pending sale found for this device IMEI. Please contact support or verify the device was properly registered in the sales system. ${3 - newFailedAttempts} attempts remaining."
+                            }
+                            
+                            val newState = if (_authState.value.useManualInput) {
+                                AuthStatus.AwaitingManualInput
+                            } else {
+                                AuthStatus.Error
+                            }
+                            
+                            _authState.value = _authState.value.copy(
+                                currentState = newState,
+                                isLoading = false,
+                                errorMessage = errorMsg,
+                                failedAttempts = newFailedAttempts
+                            )
+                        }
+                        return
+                    }
+                    
+                    // Sale found! Log details
+                    Log.d(TAG, "Pending sale found!")
+                    Log.d(TAG, "Sale ID: ${queryResponse.saleId}")
+                    Log.d(TAG, "Validation ID: ${queryResponse.validationId}")
+                    Log.d(TAG, "Customer: ${queryResponse.customerName}")
+                    Log.d(TAG, "Device Model: ${queryResponse.deviceModel}")
+                    Log.d(TAG, "Expires in: ${queryResponse.expiresIn}s")
+                    
+                    // STEP 2: Claim the sale with device fingerprint
+                    _authState.value = _authState.value.copy(
+                        currentState = AuthStatus.Registering,
+                        registrationStatus = "Claiming sale and registering device..."
+                    )
+                    
+                    Log.d(TAG, "Claiming sale and pairing device...")
+                    val fingerprint = deviceRegistrationManager.generateFingerprint()
+                    Log.d(TAG, "Generated device fingerprint: $fingerprint")
+                    
+                    val claimResult = deviceRegistrationManager.claimSale(
+                        validationId = queryResponse.validationId!!,
+                        hardwareImei = normalizedImei,
+                        fingerprint = fingerprint
+                    )
+                    
+                    claimResult.fold(
+                        onSuccess = { claimResponse ->
+                            Log.d(TAG, "Sale claimed successfully!")
+                            Log.d(TAG, "Device ID: ${claimResponse.deviceId}")
+                            Log.d(TAG, "Sale ID: ${claimResponse.saleId}")
+                            Log.d(TAG, "Message: ${claimResponse.message}")
+                            
+                            _authState.value = _authState.value.copy(
+                                currentState = AuthStatus.Authenticated,
+                                isAuthenticated = true,
+                                isLoading = false,
+                                deviceId = claimResponse.deviceId,
+                                registrationStatus = "Device paired successfully",
+                                failedAttempts = 0,
+                                errorMessage = null
+                            )
+                        },
+                        onFailure = { exception ->
+                            Log.e(TAG, "Failed to claim sale", exception)
+                            _authState.value = _authState.value.copy(
+                                currentState = AuthStatus.Error,
+                                isLoading = false,
+                                errorMessage = "Failed to pair device: ${exception.message}",
+                                isAuthenticated = false
+                            )
+                        }
+                    )
+                },
+                onFailure = { exception ->
+                    Log.e(TAG, "Failed to search for pending sale", exception)
+                    _authState.value = _authState.value.copy(
+                        currentState = AuthStatus.Error,
+                        isLoading = false,
+                        errorMessage = "Error searching for sale: ${exception.message}"
+                    )
+                }
+            )
+            
+        } catch (e: Exception) {
+            Log.e(TAG, "Exception during sale claim flow", e)
+            _authState.value = _authState.value.copy(
+                currentState = AuthStatus.Error,
+                isLoading = false,
+                errorMessage = "Error processing sale claim: ${e.message}"
+            )
+        }
+    }
 
     /**
      * Retry authentication (reset state and start over)
