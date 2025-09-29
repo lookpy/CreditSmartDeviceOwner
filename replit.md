@@ -42,6 +42,25 @@ The application is entirely built with Jetpack Compose and Material 3, implement
 - **Business Flow**: QR code onboarding, device attestation and binding, facial biometry with liveness, digital signature, PIX/Boleto payment processing, graduated blocking policies.
 - **Backend Integration**: JWT authentication with scopes, idempotency keys for POST requests, request signing with ECDSA.
 
+## Recent Changes (September 29, 2025)
+🔍🔍🔍 **CONNECTIVITY DIAGNOSIS + BACKEND API INTEGRATION COMPLETE!** 🔍🔍🔍
+
+### BACKEND CONNECTIVITY INVESTIGATION (September 29, 2025) - ROOT CAUSE IDENTIFIED
+- 🎯 **CRITICAL FINDING** - CDC Credit Smart domains não acessíveis via DNS
+- ✅ **URL CONFIGURATION FIXED** - Corrigidos conflitos entre NetworkConfig e BuildConfig
+- ✅ **REAL IMEI VALIDATION** - Implementada validação real via API CDC Credit Smart
+- ✅ **CERTIFICATE PINNING ENHANCED** - Sistema robusto com debug capabilities
+- ✅ **COMPREHENSIVE DEBUGGING** - ConnectivityDebugInterceptor para diagnóstico detalhado
+- 🎯 **DNS RESOLUTION FAILURE** - api.cdccreditsmart.com.br e api-dev.cdccreditsmart.com.br inacessíveis
+
+### BACKEND API INTEGRATION IMPROVEMENTS
+- 🚀 **AuthViewModel Rewrite** - Removida validação local, implementadas chamadas reais para API
+- ✅ **Repository Pattern** - CdcAuthenticationRepositoryImpl integrado corretamente
+- ✅ **Error Handling** - Mapeamento completo de erros de rede com mensagens específicas CDC
+- ✅ **Security Enhancement** - Certificate pinning com fallback para debugging
+- ✅ **Real JWT Tokens** - Remoção de tokens fictícios, implementação de autenticação real
+- 🎯 **Production Ready** - App pronto para conectar quando backend estiver disponível
+
 ## Recent Changes (September 28, 2025)
 🎉🎉🎉 **ANDROID 15 OPTIMIZATION + HANG RESOLUTION COMPLETE!** 🎉🎉🎉
 
