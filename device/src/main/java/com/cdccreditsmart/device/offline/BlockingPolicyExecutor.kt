@@ -7,20 +7,20 @@ import com.cdccreditsmart.device.offline.model.BlockingDecision
 import com.cdccreditsmart.device.offline.model.BlockingLevel
 import com.cdccreditsmart.device.offline.model.BlockingExecution
 import com.cdccreditsmart.device.offline.model.BlockingExecutionResult
-import dagger.hilt.android.qualifiers.ApplicationContext
+// import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.time.LocalDateTime
-import javax.inject.Inject
-import javax.inject.Singleton
+// import javax.inject.Inject
+// import javax.inject.Singleton
 
 /**
  * Executor de políticas de bloqueio integrado com DeviceOwnerManager
  * Implementa níveis de bloqueio progressivo com comandos idempotentes
  */
-@Singleton
-class BlockingPolicyExecutor @Inject constructor(
-    @ApplicationContext private val context: Context,
+// @Singleton
+class BlockingPolicyExecutor /* @Inject */ constructor(
+    /* @ApplicationContext */ private val context: Context,
     private val deviceOwnerManager: DeviceOwnerManager,
     private val securityManager: SecurityManager
 ) {

@@ -16,13 +16,13 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.delay
 import java.util.*
-import javax.inject.Singleton
+// import javax.inject.Singleton
 
 /**
  * DeviceRegistrationService for CDC Credit Smart
  * Handles automatic device registration and token management
  */
-@Singleton
+// @Singleton
 class DeviceRegistrationService(
     private val context: Context,
     private val tokenManager: TokenManager,

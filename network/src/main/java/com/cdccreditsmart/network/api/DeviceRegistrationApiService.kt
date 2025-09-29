@@ -121,7 +121,7 @@ interface DeviceRegistrationApiService {
     @GET("api/device/validate-token")
     suspend fun validateDeviceToken(
         @Header("Authorization") authorization: String
-    ): Response<TokenValidationResponse>
+    ): Response<DeviceTokenValidationResponse>
 
     /**
      * Revoke device token (logout)
@@ -153,7 +153,7 @@ interface DeviceRegistrationApiService {
 
 // Additional DTOs for utility endpoints
 ////@JsonClass(generateAdapter = true) // Temporarily disabled to fix build // Temporarily disabled to fix KSP build issue
-data class TokenValidationResponse(
+data class DeviceTokenValidationResponse(
     val success: Boolean,
     val message: String? = null,
     val valid: Boolean,

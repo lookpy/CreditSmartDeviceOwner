@@ -6,13 +6,13 @@ import com.cdccreditsmart.domain.common.Resource
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
 import java.time.LocalDateTime
-import javax.inject.Inject
-import javax.inject.Named
-import javax.inject.Singleton
+// import javax.inject.Inject
+// import javax.inject.Named
+// import javax.inject.Singleton
 
-@Singleton
-class AuthenticationRepositoryImpl @Inject constructor(
-    @Named("encrypted_prefs") private val encryptedPrefs: SharedPreferences
+// @Singleton
+class AuthenticationRepositoryImpl constructor(
+    /* @Named("encrypted_prefs") */ private val encryptedPrefs: SharedPreferences
 ) : AuthenticationRepository {
 
     // Security constants - keeping same as AuthViewModel

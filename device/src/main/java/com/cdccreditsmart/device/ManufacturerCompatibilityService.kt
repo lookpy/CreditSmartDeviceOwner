@@ -3,17 +3,17 @@ package com.cdccreditsmart.device
 import android.content.Context
 import android.util.Log
 import com.cdccreditsmart.device.manufacturer.*
-import dagger.hilt.android.qualifiers.ApplicationContext
-import javax.inject.Inject
-import javax.inject.Singleton
+// import dagger.hilt.android.qualifiers.ApplicationContext
+// import javax.inject.Inject
+// import javax.inject.Singleton
 
 /**
  * Serviço responsável por fornecer adaptadores específicos para cada fabricante.
  * Implementa o padrão Factory para criação de adaptadores compatíveis.
  */
-@Singleton
-class ManufacturerCompatibilityService @Inject constructor(
-    @ApplicationContext private val context: Context,
+// @Singleton
+class ManufacturerCompatibilityService /* @Inject */ constructor(
+    /* @ApplicationContext */ private val context: Context,
     private val deviceDetector: DeviceManufacturerDetector
 ) {
 

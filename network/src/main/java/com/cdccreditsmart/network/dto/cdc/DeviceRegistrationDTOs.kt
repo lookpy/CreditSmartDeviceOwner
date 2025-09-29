@@ -100,13 +100,13 @@ data class PendingDecisionsResponse(
     val success: Boolean,
     val message: String? = null,
     val imei: String,
-    val pendingDecisions: List<PendingDecision>,
+    val pendingDecisions: List<DevicePendingDecision>,
     val totalCount: Int,
     val serverTimestamp: Long
 )
 
 //@JsonClass(generateAdapter = true) // Temporarily disabled to fix build
-data class PendingDecision(
+data class DevicePendingDecision(
     val decisionId: String,
     val type: String, // "payment", "installment", "contract", "unblock"
     val description: String,

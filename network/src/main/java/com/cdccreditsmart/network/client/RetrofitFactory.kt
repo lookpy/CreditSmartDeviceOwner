@@ -6,14 +6,15 @@ import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import com.cdccreditsmart.network.error.NetworkErrorMapper
-import javax.inject.Inject
-import javax.inject.Singleton
+// HILT REMOVED
+// import javax.inject.Inject
+// import javax.inject.Singleton
 
 /**
  * Factory for creating Retrofit instances with proper configuration
  */
-@Singleton
-class RetrofitFactory @Inject constructor(
+// HILT REMOVED - @Singleton
+class RetrofitFactory /* @Inject */ constructor(
     private val okHttpClientFactory: OkHttpClientFactory,
     private val networkErrorMapper: NetworkErrorMapper
 ) {

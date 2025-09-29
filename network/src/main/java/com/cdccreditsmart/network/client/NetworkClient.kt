@@ -6,14 +6,15 @@ import com.cdccreditsmart.network.error.Resource
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import retrofit2.Response
-import javax.inject.Inject
-import javax.inject.Singleton
+// HILT REMOVED
+// import javax.inject.Inject
+// import javax.inject.Singleton
 
 /**
  * Main network client providing safe API call methods with error handling
  */
-@Singleton
-class NetworkClient @Inject constructor(
+// HILT REMOVED - @Singleton
+class NetworkClient /* @Inject */ constructor(
     private val networkErrorMapper: NetworkErrorMapper
 ) {
     

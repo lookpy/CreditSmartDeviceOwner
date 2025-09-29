@@ -13,7 +13,7 @@ import android.os.Build
 import android.os.Environment
 import android.util.Log
 import com.cdccreditsmart.network.websocket.*
-import dagger.hilt.android.qualifiers.ApplicationContext
+// import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -22,16 +22,16 @@ import kotlinx.coroutines.withContext
 import java.io.File
 import java.io.FileInputStream
 import java.security.MessageDigest
-import javax.inject.Inject
-import javax.inject.Singleton
+// import javax.inject.Inject
+// import javax.inject.Singleton
 
 /**
  * Executor for device commands received via WebSocket
  * Integrates with DeviceOwnerManager to perform privileged operations
  */
-@Singleton
-class DeviceCommandExecutor @Inject constructor(
-    @ApplicationContext private val context: Context,
+// @Singleton
+class DeviceCommandExecutor /* @Inject */ constructor(
+    /* @ApplicationContext */ private val context: Context,
     private val deviceOwnerManager: DeviceOwnerManager
 ) {
 

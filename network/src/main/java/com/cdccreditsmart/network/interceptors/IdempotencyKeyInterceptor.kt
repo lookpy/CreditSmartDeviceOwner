@@ -3,15 +3,16 @@ package com.cdccreditsmart.network.interceptors
 import okhttp3.Interceptor
 import okhttp3.Response
 import java.util.*
-import javax.inject.Inject
-import javax.inject.Singleton
+// HILT REMOVED
+// import javax.inject.Inject
+// import javax.inject.Singleton
 
 /**
  * Adds idempotency keys to POST requests to prevent duplicate operations
  * Uses UUID for unique request identification
  */
-@Singleton
-class IdempotencyKeyInterceptor @Inject constructor() : Interceptor {
+// HILT REMOVED - @Singleton
+class IdempotencyKeyInterceptor /* @Inject */ constructor() : Interceptor {
     
     companion object {
         private const val IDEMPOTENCY_KEY_HEADER = "Idempotency-Key"

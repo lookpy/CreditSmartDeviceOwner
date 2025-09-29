@@ -5,7 +5,8 @@ import android.security.keystore.KeyGenParameterSpec
 import android.security.keystore.KeyProperties
 import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKey
-import dagger.hilt.android.qualifiers.ApplicationContext
+// HILT REMOVED
+// import dagger.hilt.android.qualifiers.ApplicationContext
 import okhttp3.Interceptor
 import okhttp3.Request
 import okhttp3.Response
@@ -16,16 +17,17 @@ import java.security.KeyStore
 import java.security.PrivateKey
 import java.security.Signature
 import java.util.*
-import javax.inject.Inject
-import javax.inject.Singleton
+// HILT REMOVED
+// import javax.inject.Inject
+// import javax.inject.Singleton
 
 /**
  * Signs HTTP requests using ECDSA with Android Keystore
  * Adds X-Device-Signature header with request signature
  */
-@Singleton
-class DeviceSignatureInterceptor @Inject constructor(
-    @ApplicationContext private val context: Context
+// HILT REMOVED - @Singleton
+class DeviceSignatureInterceptor /* @Inject */ constructor(
+    /* @ApplicationContext */ private val context: Context
 ) : Interceptor {
     
     companion object {

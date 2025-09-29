@@ -1,7 +1,8 @@
 package com.cdccreditsmart.network.interceptors
 
 import androidx.security.crypto.EncryptedSharedPreferences
-import com.cdccreditsmart.network.di.NetworkModule
+// HILT REMOVED
+// import com.cdccreditsmart.network.di.NetworkModule
 import okhttp3.Interceptor
 import okhttp3.Request
 import okhttp3.Response

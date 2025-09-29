@@ -3,18 +3,18 @@ package com.cdccreditsmart.device.security
 import android.content.Context
 import android.util.Log
 import com.cdccreditsmart.device.DeviceOwnerManager
-import dagger.hilt.android.qualifiers.ApplicationContext
+// import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.*
-import javax.inject.Inject
-import javax.inject.Singleton
+// import javax.inject.Inject
+// import javax.inject.Singleton
 
 /**
  * Inicializador do sistema de políticas de segurança
  * Responsável por configurar e inicializar todos os componentes necessários
  */
-@Singleton
-class SecurityPolicyInitializer @Inject constructor(
-    @ApplicationContext private val context: Context,
+// @Singleton
+class SecurityPolicyInitializer /* @Inject */ constructor(
+    /* @ApplicationContext */ private val context: Context,
     private val deviceOwnerManager: DeviceOwnerManager,
     private val securityPolicyManager: SecurityPolicyManager,
     private val offlineBlockingEngineIntegration: OfflineBlockingEngineIntegration

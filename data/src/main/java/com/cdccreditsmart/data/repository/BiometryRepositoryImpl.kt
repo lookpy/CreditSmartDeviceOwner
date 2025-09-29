@@ -22,12 +22,12 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.onStart
-import javax.inject.Inject
-import javax.inject.Singleton
+// import javax.inject.Inject
+// import javax.inject.Singleton
 import java.time.LocalDateTime
 
-@Singleton
-class BiometryRepositoryImpl @Inject constructor(
+// @Singleton
+class BiometryRepositoryImpl constructor(
     private val biometryApiService: BiometryApiService,
     private val biometrySessionDao: BiometrySessionDao,
     private val networkErrorMapper: NetworkErrorMapper

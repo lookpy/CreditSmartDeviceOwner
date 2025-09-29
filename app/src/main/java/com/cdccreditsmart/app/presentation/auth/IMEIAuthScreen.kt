@@ -33,7 +33,7 @@ import androidx.compose.ui.text.SpanStyle
 fun IMEIAuthScreen(
     onAuthenticationSuccess: () -> Unit,
     modifier: Modifier = Modifier,
-    viewModel: SimplifiedAuthViewModel = SimplifiedAuthViewModel(LocalContext.current)
+    viewModel: SimplifiedAuthViewModel = remember { SimplifiedAuthViewModel(LocalContext.current) }
 ) {
     val authState by viewModel.authState
     val context = LocalContext.current

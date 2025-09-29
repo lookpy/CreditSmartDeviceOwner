@@ -8,15 +8,15 @@ import com.cdccreditsmart.device.security.model.SecurityLevel
 import com.cdccreditsmart.device.security.model.PolicyComplianceReport
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import javax.inject.Inject
-import javax.inject.Singleton
+// import javax.inject.Inject
+// import javax.inject.Singleton
 
 /**
  * Integração entre sistema de políticas de segurança e motor de bloqueio offline
  * Converte decisões de bloqueio em aplicação de políticas de segurança
  */
-@Singleton
-class OfflineBlockingEngineIntegration @Inject constructor(
+// @Singleton
+class OfflineBlockingEngineIntegration /* @Inject */ constructor(
     private val offlineBlockingEngine: OfflineBlockingEngine,
     private val securityPolicyManager: SecurityPolicyManager
 ) {

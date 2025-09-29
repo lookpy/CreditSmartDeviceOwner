@@ -115,15 +115,15 @@ data class ErrorDetails(
 //@JsonClass(generateAdapter = true) // Temporarily disabled to fix build
 data class CdcPendingDecisionsResponse(
     val success: Boolean,
-    val decisions: List<PendingDecision>,
+    val decisions: List<CdcPendingDecision>,
     val totalCount: Int,
-    val priorityDecision: PendingDecision? = null,
+    val priorityDecision: CdcPendingDecision? = null,
     val serverTimestamp: Long,
     val message: String? = null
 )
 
 //@JsonClass(generateAdapter = true) // Temporarily disabled to fix build
-data class PendingDecision(
+data class CdcPendingDecision(
     val decisionId: String,
     val type: String, // "payment_overdue", "device_lost", "contract_violation", "security_breach"
     val title: String,

@@ -5,17 +5,19 @@ import android.os.Build
 import okhttp3.Interceptor
 import okhttp3.Response
 // import com.cdccreditsmart.network.BuildConfig // Not available in library modules
-import dagger.hilt.android.qualifiers.ApplicationContext
-import javax.inject.Inject
-import javax.inject.Singleton
+// HILT REMOVED
+// import dagger.hilt.android.qualifiers.ApplicationContext
+// HILT REMOVED
+// import javax.inject.Inject
+// import javax.inject.Singleton
 
 /**
  * Adds common headers to all HTTP requests
  * Includes User-Agent, API version, platform info, and app version
  */
-@Singleton
-class CommonHeadersInterceptor @Inject constructor(
-    @ApplicationContext private val context: Context
+// HILT REMOVED - @Singleton
+class CommonHeadersInterceptor /* @Inject */ constructor(
+    /* @ApplicationContext */ private val context: Context
 ) : Interceptor {
     
     companion object {

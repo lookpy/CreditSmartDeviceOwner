@@ -5,7 +5,7 @@ import android.util.Log
 import com.cdccreditsmart.device.offline.model.BlockingDecision
 import com.cdccreditsmart.device.offline.model.BlockingExecutionResult
 import com.cdccreditsmart.device.offline.model.SystemHealthStatus
-import dagger.hilt.android.qualifiers.ApplicationContext
+// import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -14,17 +14,17 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import javax.inject.Inject
-import javax.inject.Singleton
+// import javax.inject.Inject
+// import javax.inject.Singleton
 
 /**
  * Gerenciador principal do sistema offline
  * Coordena todos os componentes: OfflineBlockingEngine, PaymentCalculationService,
  * SecurityManager, BackupDataManager, BlockingPolicyExecutor, ContractSnapshot
  */
-@Singleton
-class OfflineSystemManager @Inject constructor(
-    @ApplicationContext private val context: Context,
+// @Singleton
+class OfflineSystemManager /* @Inject */ constructor(
+    /* @ApplicationContext */ private val context: Context,
     private val offlineBlockingEngine: OfflineBlockingEngine,
     private val paymentCalculationService: PaymentCalculationService,
     private val securityManager: SecurityManager,

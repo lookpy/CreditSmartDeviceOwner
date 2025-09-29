@@ -11,15 +11,15 @@ import kotlinx.coroutines.withContext
 import java.math.BigDecimal
 import java.time.LocalDate
 import java.time.temporal.ChronoUnit
-import javax.inject.Inject
-import javax.inject.Singleton
+// import javax.inject.Inject
+// import javax.inject.Singleton
 
 /**
  * Serviço para cálculo de pagamentos usando dados locais do Room database
  * Calcula dias de inadimplência e valores em atraso baseado em InstallmentEntity/PaymentEntity
  */
-@Singleton
-class PaymentCalculationService @Inject constructor(
+// @Singleton
+class PaymentCalculationService /* @Inject */ constructor(
     private val offlineDataRepository: OfflineDataRepository
 ) {
 

@@ -3,8 +3,9 @@ package com.cdccreditsmart.network.config
 import android.util.Log
 import okhttp3.CertificatePinner
 import java.net.URL
-import javax.inject.Inject
-import javax.inject.Singleton
+// HILT REMOVED
+// import javax.inject.Inject
+// import javax.inject.Singleton
 
 /**
  * Manages certificate pinning configuration for enhanced security
@@ -12,8 +13,8 @@ import javax.inject.Singleton
  * Note: Current certificate pins are placeholder values since CDC Credit Smart domains
  * are not accessible. In production, these should be replaced with actual certificate pins.
  */
-@Singleton
-class CertificatePinningManager @Inject constructor() {
+// HILT REMOVED - @Singleton
+class CertificatePinningManager /* @Inject */ constructor() {
     
     companion object {
         private const val TAG = "CertificatePinningManager"

@@ -8,16 +8,17 @@ import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import okhttp3.*
 import okio.ByteString
-import javax.inject.Inject
-import javax.inject.Singleton
+// HILT REMOVED
+// import javax.inject.Inject
+// import javax.inject.Singleton
 import java.util.concurrent.TimeUnit
 
 /**
  * WebSocket service for CDC Credit Smart flow status monitoring
  * WebSocket URL: wss://cdccreditsmart.com/ws/flow-status
  */
-@Singleton
-class FlowStatusWebSocketService @Inject constructor(
+// HILT REMOVED - @Singleton
+class FlowStatusWebSocketService /* @Inject */ constructor(
     private val okHttpClient: OkHttpClient,
     private val moshi: Moshi
 ) {

@@ -7,13 +7,13 @@ import androidx.security.crypto.MasterKeys
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import java.security.MessageDigest
-import javax.inject.Singleton
+// import javax.inject.Singleton
 
 /**
  * TokenManager for CDC Credit Smart Device Token System
  * Handles secure storage, validation, and refresh of unique device tokens
  */
-@Singleton
+// @Singleton
 class TokenManager(
     private val context: Context
 ) {

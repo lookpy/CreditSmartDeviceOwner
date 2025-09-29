@@ -5,19 +5,19 @@ import android.content.ComponentName
 import android.content.Context
 import android.util.Log
 import com.cdccreditsmart.device.manufacturer.ManufacturerAdapter
-import dagger.hilt.android.qualifiers.ApplicationContext
+// import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import javax.inject.Inject
-import javax.inject.Singleton
+// import javax.inject.Inject
+// import javax.inject.Singleton
 
 /**
  * Interface unificada para gerenciamento de Device Owner em diferentes fabricantes.
  * Implementa um padrão de adaptador para compatibilidade multi-fabricante.
  */
-@Singleton
-class DeviceOwnerManager @Inject constructor(
-    @ApplicationContext private val context: Context,
+// @Singleton
+class DeviceOwnerManager /* @Inject */ constructor(
+    /* @ApplicationContext */ private val context: Context,
     private val deviceDetector: DeviceManufacturerDetector,
     private val manufacturerCompatibilityService: ManufacturerCompatibilityService
 ) {

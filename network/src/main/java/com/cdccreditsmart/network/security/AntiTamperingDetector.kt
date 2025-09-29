@@ -4,19 +4,21 @@ import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Debug
-import dagger.hilt.android.qualifiers.ApplicationContext
+// HILT REMOVED
+// import dagger.hilt.android.qualifiers.ApplicationContext
 import java.io.File
 import java.security.MessageDigest
-import javax.inject.Inject
-import javax.inject.Singleton
+// HILT REMOVED
+// import javax.inject.Inject
+// import javax.inject.Singleton
 
 /**
  * Detects tampering attempts and security violations
  * Implements various anti-debugging and anti-modification checks
  */
-@Singleton
-class AntiTamperingDetector @Inject constructor(
-    @ApplicationContext private val context: Context
+// HILT REMOVED - @Singleton
+class AntiTamperingDetector /* @Inject */ constructor(
+    /* @ApplicationContext */ private val context: Context
 ) {
     
     companion object {

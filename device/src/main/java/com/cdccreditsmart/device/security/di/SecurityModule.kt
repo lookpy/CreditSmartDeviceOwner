@@ -7,41 +7,41 @@ import com.cdccreditsmart.device.ManufacturerCompatibilityService
 import com.cdccreditsmart.device.offline.OfflineBlockingEngine
 import com.cdccreditsmart.device.offline.SecurityManager
 import com.cdccreditsmart.device.security.*
-import dagger.Module
-import dagger.Provides
-import dagger.hilt.InstallIn
-import dagger.hilt.android.qualifiers.ApplicationContext
-import dagger.hilt.components.SingletonComponent
+// import dagger.Module
+// import dagger.Provides
+// import dagger.hilt.InstallIn
+// import dagger.hilt.android.qualifiers.ApplicationContext
+// import dagger.hilt.components.SingletonComponent
 import kotlinx.serialization.json.Json
-import javax.inject.Singleton
+// import javax.inject.Singleton
 
 /**
  * Módulo Dagger Hilt para injeção de dependências do sistema de segurança
  */
-@Module
-@InstallIn(SingletonComponent::class)
+// @Module
+// @InstallIn(SingletonComponent::class)
 object SecurityModule {
 
-    @Provides
-    @Singleton
+    // @Provides
+    // @Singleton
     fun provideJson(): Json = Json {
         ignoreUnknownKeys = true
         encodeDefaults = true
         prettyPrint = false
     }
 
-    @Provides
-    @Singleton
+    // @Provides
+    // @Singleton
     fun provideSecurityPolicyRepository(
-        @ApplicationContext context: Context,
+        /* @ApplicationContext */ context: Context,
         database: CDCDatabase,
         json: Json
     ): SecurityPolicyRepository = SecurityPolicyRepository(context, database, json)
 
-    @Provides
-    @Singleton
+    // @Provides
+    // @Singleton
     fun providePolicyExecutionService(
-        @ApplicationContext context: Context,
+        /* @ApplicationContext */ context: Context,
         deviceOwnerManager: DeviceOwnerManager,
         manufacturerCompatibilityService: ManufacturerCompatibilityService,
         securityPolicyRepository: SecurityPolicyRepository
@@ -52,10 +52,10 @@ object SecurityModule {
         securityPolicyRepository
     )
 
-    @Provides
-    @Singleton
+    // @Provides
+    // @Singleton
     fun provideSecurityPolicyManager(
-        @ApplicationContext context: Context,
+        /* @ApplicationContext */ context: Context,
         deviceOwnerManager: DeviceOwnerManager,
         policyExecutionService: PolicyExecutionService,
         securityPolicyRepository: SecurityPolicyRepository,
@@ -74,8 +74,8 @@ object SecurityModule {
         manufacturerCompatibilityService
     )
 
-    @Provides
-    @Singleton
+    // @Provides
+    // @Singleton
     fun provideOfflineBlockingEngineIntegration(
         offlineBlockingEngine: OfflineBlockingEngine,
         securityPolicyManager: SecurityPolicyManager

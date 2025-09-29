@@ -24,14 +24,15 @@ import com.cdccreditsmart.network.websocket.DeviceCommandWebSocketService
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import okhttp3.OkHttpClient
-import dagger.Module
-import dagger.Provides
-import dagger.hilt.InstallIn
-import dagger.hilt.android.qualifiers.ApplicationContext
-import dagger.hilt.components.SingletonComponent
+// HILT REMOVED
+// import dagger.Module
+// import dagger.Provides
+// import dagger.hilt.InstallIn
+// import dagger.hilt.android.qualifiers.ApplicationContext
+// import dagger.hilt.components.SingletonComponent
 import retrofit2.Retrofit
-import javax.inject.Qualifier
-import javax.inject.Singleton
+// import javax.inject.Qualifier
+// import javax.inject.Singleton
 
 /**
  * Hilt module providing network-related dependencies
@@ -41,15 +42,15 @@ import javax.inject.Singleton
 //@InstallIn(SingletonComponent::class)
 object NetworkModule_DISABLED {
     
-    @Qualifier
+    // HILT REMOVED - @Qualifier
     @Retention(AnnotationRetention.BINARY)
     annotation class SecureRetrofit
     
-    @Qualifier
+    // HILT REMOVED - @Qualifier
     @Retention(AnnotationRetention.BINARY)
     annotation class BasicRetrofit
     
-    @Qualifier
+    // HILT REMOVED - @Qualifier
     @Retention(AnnotationRetention.BINARY)
     annotation class NetworkEncryptedPrefs
     
@@ -60,7 +61,7 @@ object NetworkModule_DISABLED {
     //@Provides
     //@Singleton
     fun provideNetworkEncryptedSharedPreferences(
-        @ApplicationContext context: Context
+        /* @ApplicationContext */ context: Context
     ): EncryptedSharedPreferences {
         val masterKey = MasterKey.Builder(context)
             .setKeyScheme(MasterKey.KeyScheme.AES256_GCM)
@@ -99,7 +100,7 @@ object NetworkModule_DISABLED {
     //@Provides
     //@Singleton
     fun provideCommonHeadersInterceptor(
-        @ApplicationContext context: Context
+        /* @ApplicationContext */ context: Context
     ): CommonHeadersInterceptor {
         return CommonHeadersInterceptor(context)
     }
@@ -132,7 +133,7 @@ object NetworkModule_DISABLED {
     //@Provides
     //@Singleton
     fun provideDeviceSignatureInterceptor(
-        @ApplicationContext context: Context
+        /* @ApplicationContext */ context: Context
     ): DeviceSignatureInterceptor {
         return DeviceSignatureInterceptor(context)
     }
@@ -263,7 +264,7 @@ object NetworkModule_DISABLED {
     //@Provides
     //@Singleton
     fun provideAntiTamperingDetector(
-        @ApplicationContext context: Context
+        /* @ApplicationContext */ context: Context
     ): AntiTamperingDetector {
         return AntiTamperingDetector(context)
     }

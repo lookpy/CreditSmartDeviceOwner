@@ -6,19 +6,19 @@ import android.content.Context
 import android.util.Log
 import com.cdccreditsmart.device.DeviceOwnerResult
 import com.cdccreditsmart.device.DeviceOwnerCapabilities
-import dagger.hilt.android.qualifiers.ApplicationContext
+// import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import javax.inject.Inject
-import javax.inject.Singleton
+// import javax.inject.Inject
+// import javax.inject.Singleton
 
 /**
  * Sistema de fallback para funcionalidades não suportadas por fabricantes específicos.
  * Fornece implementações básicas quando adaptadores específicos não estão disponíveis.
  */
-@Singleton
-class FallbackDeviceManager @Inject constructor(
-    @ApplicationContext private val context: Context
+// @Singleton
+class FallbackDeviceManager /* @Inject */ constructor(
+    /* @ApplicationContext */ private val context: Context
 ) {
 
     companion object {

@@ -5,15 +5,15 @@ import com.cdccreditsmart.data.local.entity.*
 import com.cdccreditsmart.device.offline.model.DataBackup
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import javax.inject.Inject
-import javax.inject.Singleton
+// import javax.inject.Inject
+// import javax.inject.Singleton
 
 /**
  * Repositório para acesso aos dados offline
  * Interface simplificada para acesso aos dados do Room database
  */
-@Singleton
-class OfflineDataRepository @Inject constructor(
+// @Singleton
+class OfflineDataRepository /* @Inject */ constructor(
     // Injetar os DAOs do Room quando estiverem disponíveis
     // private val contractDao: ContractDao,
     // private val installmentDao: InstallmentDao,

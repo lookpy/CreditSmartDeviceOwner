@@ -11,21 +11,21 @@ import com.cdccreditsmart.device.offline.SecurityManager
 import com.cdccreditsmart.device.security.model.*
 import com.cdccreditsmart.data.local.entity.ActiveSecurityPolicyEntity
 import com.cdccreditsmart.data.local.entity.PolicyConfigurationEntity
-import dagger.hilt.android.qualifiers.ApplicationContext
+// import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
 import java.time.LocalDateTime
 import java.util.UUID
-import javax.inject.Inject
-import javax.inject.Singleton
+// import javax.inject.Inject
+// import javax.inject.Singleton
 
 /**
  * Gerenciador principal de políticas de segurança Device Owner
  * Coordena aplicação automática de políticas baseada em inadimplência e status Device Owner
  */
-@Singleton
-class SecurityPolicyManager @Inject constructor(
-    @ApplicationContext private val context: Context,
+// @Singleton
+class SecurityPolicyManager /* @Inject */ constructor(
+    /* @ApplicationContext */ private val context: Context,
     private val deviceOwnerManager: DeviceOwnerManager,
     private val policyExecutionService: PolicyExecutionService,
     private val securityPolicyRepository: SecurityPolicyRepository,

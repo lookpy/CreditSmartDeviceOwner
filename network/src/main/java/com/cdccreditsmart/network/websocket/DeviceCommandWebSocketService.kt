@@ -8,8 +8,9 @@ import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import okhttp3.*
 import okio.ByteString
-import javax.inject.Inject
-import javax.inject.Singleton
+// HILT REMOVED
+// import javax.inject.Inject
+// import javax.inject.Singleton
 import java.util.concurrent.TimeUnit
 import android.util.Log
 
@@ -17,8 +18,8 @@ import android.util.Log
  * WebSocket service for CDC Credit Smart device command monitoring
  * WebSocket URL: wss://cdccreditsmart.com/ws/device-updates
  */
-@Singleton
-class DeviceCommandWebSocketService @Inject constructor(
+// HILT REMOVED - @Singleton
+class DeviceCommandWebSocketService /* @Inject */ constructor(
     private val okHttpClient: OkHttpClient,
     private val moshi: Moshi
 ) {

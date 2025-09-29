@@ -9,15 +9,16 @@ import javax.crypto.Cipher
 import javax.crypto.KeyGenerator
 import javax.crypto.SecretKey
 import javax.crypto.spec.GCMParameterSpec
-import javax.inject.Inject
-import javax.inject.Singleton
+// HILT REMOVED
+// import javax.inject.Inject
+// import javax.inject.Singleton
 
 /**
  * Provides encryption/decryption capabilities for request/response data
  * Uses AES-GCM with Android Keystore for key management
  */
-@Singleton
-class EncryptionHelper @Inject constructor() {
+// HILT REMOVED - @Singleton
+class EncryptionHelper /* @Inject */ constructor() {
     
     companion object {
         private const val ENCRYPTION_KEY_ALIAS = "cdc_network_encryption_key"

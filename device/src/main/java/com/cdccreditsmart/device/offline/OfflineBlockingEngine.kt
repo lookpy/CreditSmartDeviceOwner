@@ -5,22 +5,22 @@ import com.cdccreditsmart.device.DeviceOwnerManager
 import com.cdccreditsmart.device.offline.model.BlockingDecision
 import com.cdccreditsmart.device.offline.model.BlockingLevel
 import com.cdccreditsmart.device.offline.model.BlockingReason
-import dagger.hilt.android.qualifiers.ApplicationContext
+// import dagger.hilt.android.qualifiers.ApplicationContext
 import android.content.Context
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.time.LocalDate
 import java.time.temporal.ChronoUnit
-import javax.inject.Inject
-import javax.inject.Singleton
+// import javax.inject.Inject
+// import javax.inject.Singleton
 
 /**
  * Motor de decisão offline para bloqueios do dispositivo
  * Avalia status de pagamento offline e determina níveis de bloqueio baseado em regras
  */
-@Singleton
-class OfflineBlockingEngine @Inject constructor(
-    @ApplicationContext private val context: Context,
+// @Singleton
+class OfflineBlockingEngine /* @Inject */ constructor(
+    /* @ApplicationContext */ private val context: Context,
     private val paymentCalculationService: PaymentCalculationService,
     private val contractSnapshotService: ContractSnapshot,
     private val securityManager: SecurityManager,

@@ -33,11 +33,11 @@ import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.first
 import java.time.LocalDateTime
 import java.time.ZoneOffset
-import javax.inject.Inject
-import javax.inject.Singleton
+// import javax.inject.Inject
+// import javax.inject.Singleton
 
-@Singleton
-class ContractRepositoryImpl @Inject constructor(
+// @Singleton
+class ContractRepositoryImpl constructor(
     private val contractApiService: ContractApiService,
     private val contractDao: ContractDao,
     private val networkErrorMapper: NetworkErrorMapper

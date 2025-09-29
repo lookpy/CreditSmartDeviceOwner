@@ -18,27 +18,27 @@ import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
-import dagger.Module
-import dagger.Provides
-import dagger.hilt.InstallIn
-import dagger.hilt.android.qualifiers.ApplicationContext
-import dagger.hilt.components.SingletonComponent
-import javax.inject.Named
-import javax.inject.Qualifier
-import javax.inject.Singleton
+// import dagger.Module
+// import dagger.Provides
+// import dagger.hilt.InstallIn
+// import dagger.hilt.android.qualifiers.ApplicationContext
+// import dagger.hilt.components.SingletonComponent
+// import javax.inject.Named
+// import javax.inject.Qualifier
+// import javax.inject.Singleton
 
 // TEMPORARILY DISABLED - Using SimplifiedDataModule to fix build issues
 //@Module
 //@InstallIn(SingletonComponent::class)
 object DataModule_DISABLED {
     
-    @Qualifier
-    @Retention(AnnotationRetention.BINARY)
+    // @Qualifier
+    // @Retention(AnnotationRetention.BINARY)
     annotation class DeviceTokenClient
 
-    @Provides
-    @Singleton
-    fun provideCDCDatabase(@ApplicationContext context: Context): CDCDatabase {
+    // @Provides
+    // @Singleton
+    fun provideCDCDatabase(/* @ApplicationContext */ context: Context): CDCDatabase {
         return Room.databaseBuilder(
             context.applicationContext,
             CDCDatabase::class.java,
@@ -48,38 +48,38 @@ object DataModule_DISABLED {
         .build()
     }
 
-    @Provides
+    // @Provides
     fun provideBiometrySessionDao(database: CDCDatabase): BiometrySessionDao {
         return database.biometrySessionDao()
     }
 
-    @Provides
+    // @Provides
     fun providePaymentDao(database: CDCDatabase): PaymentDao {
         return database.paymentDao()
     }
 
-    @Provides
+    // @Provides
     fun provideContractDao(database: CDCDatabase): ContractDao {
         return database.contractDao()
     }
 
-    @Provides
+    // @Provides
     fun provideDeviceStatusDao(database: CDCDatabase): DeviceStatusDao {
         return database.deviceStatusDao()
     }
 
-    @Provides
+    // @Provides
     fun provideDeviceBindingDao(database: CDCDatabase): DeviceBindingDao {
         return database.deviceBindingDao()
     }
 
-    @Provides
+    // @Provides
     fun provideInstallmentDao(database: CDCDatabase): InstallmentDao {
         return database.installmentDao()
     }
 
-    @Provides
-    @Singleton
+    // @Provides
+    // @Singleton
     fun provideBiometryRepository(
         biometryApiService: BiometryApiService,
         biometrySessionDao: BiometrySessionDao,
@@ -92,8 +92,8 @@ object DataModule_DISABLED {
         )
     }
 
-    @Provides
-    @Singleton
+    // @Provides
+    // @Singleton
     fun providePaymentsRepository(
         paymentsApiService: PaymentsApiService,
         paymentDao: PaymentDao,
@@ -108,8 +108,8 @@ object DataModule_DISABLED {
 
     // Moshi provider removed - using the one from NetworkModule to avoid duplicate bindings
 
-    @Provides
-    @Singleton
+    // @Provides
+    // @Singleton
     fun provideDeviceRepository(
         deviceApiService: DeviceApiService,
         deviceBindingDao: DeviceBindingDao,
@@ -131,10 +131,10 @@ object DataModule_DISABLED {
     /**
      * Provides TokenManager for secure device token storage
      */
-    @Provides
-    @Singleton
+    // @Provides
+    // @Singleton
     fun provideTokenManager(
-        @ApplicationContext context: Context
+        /* @ApplicationContext */ context: Context
     ): com.cdccreditsmart.data.token.TokenManager {
         return com.cdccreditsmart.data.token.TokenManager(context)
     }
@@ -142,10 +142,10 @@ object DataModule_DISABLED {
     /**
      * Provides DeviceRegistrationService for automatic device registration
      */
-    @Provides
-    @Singleton
+    // @Provides
+    // @Singleton
     fun provideDeviceRegistrationService(
-        @ApplicationContext context: Context,
+        /* @ApplicationContext */ context: Context,
         tokenManager: com.cdccreditsmart.data.token.TokenManager,
         deviceRegistrationApi: com.cdccreditsmart.network.api.DeviceRegistrationApiService,
         networkErrorMapper: NetworkErrorMapper
@@ -162,8 +162,8 @@ object DataModule_DISABLED {
      * Provides DeviceTokenInterceptor for automatic token management
      * Located in DataModule to avoid circular dependency between network and data layers
      */
-    @Provides
-    @Singleton
+    // @Provides
+    // @Singleton
     fun provideDeviceTokenInterceptor(
         tokenManager: com.cdccreditsmart.data.token.TokenManager,
         deviceRegistrationService: com.cdccreditsmart.data.device.DeviceRegistrationService
@@ -175,8 +175,8 @@ object DataModule_DISABLED {
      * Provides an OkHttpClient configured with DeviceTokenInterceptor for device token authentication
      */
     @DeviceTokenClient
-    @Provides
-    @Singleton
+    // @Provides
+    // @Singleton
     fun provideDeviceTokenOkHttpClient(
         okHttpClientFactory: OkHttpClientFactory,
         deviceTokenInterceptor: com.cdccreditsmart.data.interceptors.DeviceTokenInterceptor
@@ -205,8 +205,8 @@ object DataModule_DISABLED {
             .build()
     }
 
-    @Provides
-    @Singleton
+    // @Provides
+    // @Singleton
     fun provideContractRepository(
         contractApiService: ContractApiService,
         contractDao: ContractDao,
@@ -219,10 +219,10 @@ object DataModule_DISABLED {
         )
     }
 
-    @Provides
-    @Singleton
-    @Named("encrypted_prefs")
-    fun provideEncryptedSharedPreferences(@ApplicationContext context: Context): SharedPreferences {
+    // @Provides
+    // @Singleton
+    // @Named("encrypted_prefs")
+    fun provideEncryptedSharedPreferences(/* @ApplicationContext */ context: Context): SharedPreferences {
         val masterKeyAlias = MasterKeys.getOrCreate(MasterKeys.AES256_GCM_SPEC)
         return EncryptedSharedPreferences.create(
             "cdc_auth_prefs",
@@ -233,10 +233,11 @@ object DataModule_DISABLED {
         )
     }
 
-    @Provides
-    @Singleton
+    /*
+    // @Provides
+    // @Singleton
     fun provideAuthenticationRepository(
-        @Named("encrypted_prefs") encryptedPrefs: SharedPreferences,
+        /* @Named("encrypted_prefs") */ encryptedPrefs: SharedPreferences,
         authApiService: AuthApiService,
         flowEventsApiService: FlowEventsApiService,
         networkErrorMapper: NetworkErrorMapper
@@ -248,4 +249,5 @@ object DataModule_DISABLED {
             networkErrorMapper
         )
     }
+    */
 }

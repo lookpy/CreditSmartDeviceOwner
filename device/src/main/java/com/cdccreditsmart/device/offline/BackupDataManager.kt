@@ -7,22 +7,22 @@ import com.cdccreditsmart.device.offline.model.BackupStatus
 import com.cdccreditsmart.device.offline.model.DataBackup
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
-import dagger.hilt.android.qualifiers.ApplicationContext
+// import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.io.File
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
-import javax.inject.Inject
-import javax.inject.Singleton
+// import javax.inject.Inject
+// import javax.inject.Singleton
 
 /**
  * Gerenciador de backup de dados persistente e seguro
  * Backup secundário encriptado resistente a limpeza de cache
  */
-@Singleton
-class BackupDataManager @Inject constructor(
-    @ApplicationContext private val context: Context,
+// @Singleton
+class BackupDataManager /* @Inject */ constructor(
+    /* @ApplicationContext */ private val context: Context,
     private val securityManager: SecurityManager,
     private val offlineDataRepository: OfflineDataRepository
 ) {

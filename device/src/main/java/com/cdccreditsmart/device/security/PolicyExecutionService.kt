@@ -11,19 +11,19 @@ import com.cdccreditsmart.device.CDCDeviceAdminReceiver
 import com.cdccreditsmart.device.DeviceOwnerManager
 import com.cdccreditsmart.device.ManufacturerCompatibilityService
 import com.cdccreditsmart.device.security.model.*
-import dagger.hilt.android.qualifiers.ApplicationContext
+// import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import javax.inject.Inject
-import javax.inject.Singleton
+// import javax.inject.Inject
+// import javax.inject.Singleton
 
 /**
  * Serviço responsável pela execução das políticas de segurança
  * Aplica restrições de usuário, controla apps e configura políticas do dispositivo
  */
-@Singleton
-class PolicyExecutionService @Inject constructor(
-    @ApplicationContext private val context: Context,
+// @Singleton
+class PolicyExecutionService /* @Inject */ constructor(
+    /* @ApplicationContext */ private val context: Context,
     private val deviceOwnerManager: DeviceOwnerManager,
     private val manufacturerCompatibilityService: ManufacturerCompatibilityService,
     private val securityPolicyRepository: SecurityPolicyRepository

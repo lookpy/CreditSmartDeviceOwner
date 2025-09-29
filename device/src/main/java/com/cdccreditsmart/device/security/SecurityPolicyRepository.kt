@@ -6,7 +6,7 @@ import android.util.Log
 import com.cdccreditsmart.device.security.model.*
 import com.cdccreditsmart.data.local.entity.*
 import com.cdccreditsmart.data.local.CDCDatabase
-import dagger.hilt.android.qualifiers.ApplicationContext
+// import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
@@ -16,16 +16,16 @@ import kotlinx.serialization.json.Json
 import java.time.LocalDateTime
 import java.time.ZoneOffset
 import java.util.UUID
-import javax.inject.Inject
-import javax.inject.Singleton
+// import javax.inject.Inject
+// import javax.inject.Singleton
 
 /**
  * Repositório para persistência e cache de políticas de segurança aplicadas
  * Responsável por salvar histórico, configurações ativas e logs de auditoria
  */
-@Singleton
-class SecurityPolicyRepository @Inject constructor(
-    @ApplicationContext private val context: Context,
+// @Singleton
+class SecurityPolicyRepository /* @Inject */ constructor(
+    /* @ApplicationContext */ private val context: Context,
     private val database: CDCDatabase,
     private val json: Json
 ) {

@@ -26,11 +26,11 @@ import kotlinx.coroutines.flow.onStart
 import java.math.BigDecimal
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
-import javax.inject.Inject
-import javax.inject.Singleton
+// import javax.inject.Inject
+// import javax.inject.Singleton
 
-@Singleton
-class PaymentsRepositoryImpl @Inject constructor(
+// @Singleton
+class PaymentsRepositoryImpl constructor(
     private val paymentsApiService: PaymentsApiService,
     private val paymentDao: PaymentDao,
     private val networkErrorMapper: NetworkErrorMapper

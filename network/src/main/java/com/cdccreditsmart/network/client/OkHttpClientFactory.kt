@@ -14,8 +14,9 @@ import com.cdccreditsmart.network.interceptors.IdempotencyKeyInterceptor
 import com.cdccreditsmart.network.interceptors.JwtInterceptor
 import com.cdccreditsmart.network.interceptors.XClientAuthInterceptor
 import java.util.concurrent.TimeUnit
-import javax.inject.Inject
-import javax.inject.Singleton
+// HILT REMOVED
+// import javax.inject.Inject
+// import javax.inject.Singleton
 import javax.net.ssl.SSLSocketFactory
 import javax.net.ssl.TrustManagerFactory
 import javax.net.ssl.X509TrustManager
@@ -24,8 +25,8 @@ import java.security.cert.X509Certificate
 /**
  * Factory for creating configured OkHttpClient instances with security features
  */
-@Singleton
-class OkHttpClientFactory @Inject constructor(
+// HILT REMOVED - @Singleton
+class OkHttpClientFactory /* @Inject */ constructor(
     private val commonHeadersInterceptor: CommonHeadersInterceptor,
     private val connectivityDebugInterceptor: ConnectivityDebugInterceptor,
     private val jwtInterceptor: JwtInterceptor,

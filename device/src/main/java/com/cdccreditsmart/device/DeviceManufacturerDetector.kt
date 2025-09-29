@@ -2,15 +2,15 @@ package com.cdccreditsmart.device
 
 import android.os.Build
 import android.util.Log
-import javax.inject.Inject
-import javax.inject.Singleton
+// import javax.inject.Inject
+// import javax.inject.Singleton
 
 /**
  * Detector de fabricante e modelo do dispositivo com compatibilidade específica
  * para cada fabricante suportado pelo CDC Credit Smart.
  */
-@Singleton
-class DeviceManufacturerDetector @Inject constructor() {
+// @Singleton
+class DeviceManufacturerDetector /* @Inject */ constructor() {
 
     companion object {
         private const val TAG = "DeviceManufacturerDetector"

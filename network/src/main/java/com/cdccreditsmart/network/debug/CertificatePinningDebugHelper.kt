@@ -4,8 +4,9 @@ import android.util.Log
 import com.cdccreditsmart.network.client.OkHttpClientFactory
 import com.cdccreditsmart.network.config.CertificatePinningManager
 import com.cdccreditsmart.network.config.NetworkConfig
-import javax.inject.Inject
-import javax.inject.Singleton
+// HILT REMOVED
+// import javax.inject.Inject
+// import javax.inject.Singleton
 
 /**
  * Debug utility for testing and troubleshooting certificate pinning configuration
@@ -13,8 +14,8 @@ import javax.inject.Singleton
  * WARNING: This class contains methods that disable security features.
  * Only use for development and debugging purposes!
  */
-@Singleton
-class CertificatePinningDebugHelper @Inject constructor(
+// HILT REMOVED - @Singleton
+class CertificatePinningDebugHelper /* @Inject */ constructor(
     private val certificatePinningManager: CertificatePinningManager,
     private val okHttpClientFactory: OkHttpClientFactory
 ) {

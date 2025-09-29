@@ -36,15 +36,15 @@ import retrofit2.Response
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onStart
-import javax.inject.Inject
-import javax.inject.Singleton
+// import javax.inject.Inject
+// import javax.inject.Singleton
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.Types
 import java.time.LocalDateTime
 import java.time.ZoneOffset
 
-@Singleton
-class DeviceRepositoryImpl @Inject constructor(
+// @Singleton
+class DeviceRepositoryImpl constructor(
     private val deviceApiService: DeviceApiService,
     private val deviceBindingDao: DeviceBindingDao,
     private val deviceStatusDao: DeviceStatusDao,

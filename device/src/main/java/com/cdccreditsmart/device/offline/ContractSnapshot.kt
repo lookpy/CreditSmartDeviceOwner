@@ -11,15 +11,15 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.math.BigDecimal
 import java.time.LocalDate
-import javax.inject.Inject
-import javax.inject.Singleton
+// import javax.inject.Inject
+// import javax.inject.Singleton
 
 /**
  * Agregador de dados que combina contract + installments + payments + device status
  * Fornece base consolidada para decisões offline
  */
-@Singleton
-class ContractSnapshot @Inject constructor(
+// @Singleton
+class ContractSnapshot /* @Inject */ constructor(
     private val offlineDataRepository: OfflineDataRepository,
     private val paymentCalculationService: PaymentCalculationService
 ) {

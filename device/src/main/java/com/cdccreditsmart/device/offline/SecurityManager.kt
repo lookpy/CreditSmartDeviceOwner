@@ -6,7 +6,7 @@ import android.security.keystore.KeyProperties
 import android.util.Log
 import androidx.security.crypto.EncryptedFile
 import androidx.security.crypto.MasterKey
-import dagger.hilt.android.qualifiers.ApplicationContext
+// import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.io.File
@@ -17,16 +17,16 @@ import javax.crypto.Cipher
 import javax.crypto.KeyGenerator
 import javax.crypto.SecretKey
 import javax.crypto.spec.GCMParameterSpec
-import javax.inject.Inject
-import javax.inject.Singleton
+// import javax.inject.Inject
+// import javax.inject.Singleton
 
 /**
  * Gerenciador de segurança para proteção de dados críticos
  * Implementa criptografia, hashes de integridade e proteção contra manipulação
  */
-@Singleton
-class SecurityManager @Inject constructor(
-    @ApplicationContext private val context: Context
+// @Singleton
+class SecurityManager /* @Inject */ constructor(
+    /* @ApplicationContext */ private val context: Context
 ) {
 
     companion object {

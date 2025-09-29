@@ -11,15 +11,16 @@ import java.net.UnknownHostException
 import javax.net.ssl.SSLException
 import javax.net.ssl.SSLHandshakeException
 import javax.net.ssl.SSLPeerUnverifiedException
-import javax.inject.Inject
-import javax.inject.Singleton
+// HILT REMOVED
+// import javax.inject.Inject
+// import javax.inject.Singleton
 
 /**
  * Debug interceptor to track connectivity issues and DNS resolution failures
  * This helps diagnose exactly where network connections fail
  */
-@Singleton
-class ConnectivityDebugInterceptor @Inject constructor() : Interceptor {
+// HILT REMOVED - @Singleton
+class ConnectivityDebugInterceptor /* @Inject */ constructor() : Interceptor {
     
     companion object {
         private const val TAG = "ConnectivityDebug"

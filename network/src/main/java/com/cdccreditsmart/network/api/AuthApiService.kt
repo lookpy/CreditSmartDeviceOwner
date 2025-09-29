@@ -81,7 +81,7 @@ interface AuthApiService {
      * Validates current token and returns user info
      */
     @GET("v1/auth/validate")
-    suspend fun validateToken(): Response<TokenValidationResponse>
+    suspend fun validateToken(): Response<AuthTokenValidationResponse>
     
     /**
      * Gets available authentication scopes for device
@@ -151,7 +151,7 @@ data class UserInfo(
 )
 
 ////@JsonClass(generateAdapter = true) // Temporarily disabled to fix build // Temporarily disabled to fix KSP build issue
-data class TokenValidationResponse(
+data class AuthTokenValidationResponse(
     val valid: Boolean,
     val deviceId: String,
     val contractId: String? = null,
@@ -223,28 +223,8 @@ data class ImeiValidationResponse(
     val errorCode: String? = null
 )
 
-// CDC Credit Smart main registration DTOs according to documentation
-//@JsonClass(generateAdapter = true) // Temporarily disabled to fix build
-data class DeviceRegistrationRequest(
-    val imei: String,
-    val deviceFingerprint: String,
-    val hardwareSignature: String,
-    val model: String,
-    val brand: String,
-    val androidVersion: String
-)
-
-//@JsonClass(generateAdapter = true) // Temporarily disabled to fix build
-data class DeviceRegistrationResponse(
-    val success: Boolean,
-    val registered: Boolean,
-    val authenticated: Boolean,
-    val authToken: String? = null,
-    val fingerprint: String? = null,
-    val serverTimestamp: Long,
-    val message: String? = null,
-    val errorCode: String? = null
-)
+// DeviceRegistrationRequest and DeviceRegistrationResponse are imported from
+// DeviceRegistrationDTOs.kt to use the comprehensive token-based versions
 
 // Auto-sync DTOs
 //@JsonClass(generateAdapter = true) // Temporarily disabled to fix build
