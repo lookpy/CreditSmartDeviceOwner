@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.cdccreditsmart.app.device.SimpleDeviceRegistrationManager
 import com.cdccreditsmart.app.device.SimpleTokenManager
+import com.cdccreditsmart.app.utils.DeviceUtils
 import kotlinx.coroutines.launch
 
 data class SimplifiedAuthState(
@@ -17,18 +18,16 @@ data class SimplifiedAuthState(
     val isAuthenticated: Boolean = false,
     val deviceId: String? = null,
     val registrationStatus: String? = null,
-    val pdvImei: String? = null,
-    val userEnteredImei: String = "",
+    val hardwareImei: String? = null,
     val failedAttempts: Int = 0,
     val isLockedOut: Boolean = false,
     val lockoutEndTime: Long? = null,
-    val cachedPdvImei: String? = null, // Cache PDV IMEI to avoid redundant API calls
-    val pdvImeiCacheTime: Long? = null // Track when PDV IMEI was cached
+    val hasPhoneStatePermission: Boolean = false
 )
 
 enum class AuthStatus {
     Initializing,
-    AwaitingInput,
+    AwaitingPermission,
     Verifying,
     Registering,
     Error,
@@ -100,14 +99,26 @@ class SimplifiedAuthViewModel(
                         registrationStatus = "registered"
                     )
                 } else {
-                    Log.d(TAG, "Device not registered, going to IMEI input")
-                    // Go directly to IMEI input since no permissions are needed
-                    logStateChange(AuthStatus.AwaitingInput, "Ready for IMEI input")
-                    _authState.value = _authState.value.copy(
-                        currentState = AuthStatus.AwaitingInput,
-                        isLoading = false,
-                        errorMessage = null
-                    )
+                    Log.d(TAG, "Device not registered, checking permissions")
+                    // Check if we have READ_PHONE_STATE permission
+                    val hasPermission = DeviceUtils.hasPhoneStatePermission(context)
+                    
+                    if (hasPermission) {
+                        Log.d(TAG, "Permission granted, starting automatic pairing")
+                        _authState.value = _authState.value.copy(
+                            hasPhoneStatePermission = true
+                        )
+                        startAutomaticPairing()
+                    } else {
+                        Log.d(TAG, "Permission not granted, requesting permission")
+                        logStateChange(AuthStatus.AwaitingPermission, "Waiting for permission")
+                        _authState.value = _authState.value.copy(
+                            currentState = AuthStatus.AwaitingPermission,
+                            isLoading = false,
+                            errorMessage = null,
+                            hasPhoneStatePermission = false
+                        )
+                    }
                 }
                 
             } catch (e: Exception) {
@@ -212,50 +223,66 @@ class SimplifiedAuthViewModel(
 
 
     /**
-     * Handle IMEI input change
+     * Called when READ_PHONE_STATE permission is granted
      */
-    fun onImeiInputChanged(imei: String) {
-        // Only allow digits and limit to 15 characters
-        val filteredImei = imei.filter { it.isDigit() }.take(15)
+    fun onPermissionGranted() {
+        Log.d(TAG, "Permission granted callback received")
         _authState.value = _authState.value.copy(
-            userEnteredImei = filteredImei,
+            hasPhoneStatePermission = true,
             errorMessage = null
+        )
+        startAutomaticPairing()
+    }
+    
+    /**
+     * Called when READ_PHONE_STATE permission is denied
+     */
+    fun onPermissionDenied() {
+        Log.e(TAG, "Permission denied by user")
+        _authState.value = _authState.value.copy(
+            currentState = AuthStatus.Error,
+            isLoading = false,
+            errorMessage = "READ_PHONE_STATE permission is required to pair this device. Please grant the permission to continue.",
+            hasPhoneStatePermission = false
         )
     }
 
     /**
-     * Verify IMEI and claim sale using new "Handshake de Pareamento" flow
-     * 1. Search for pending sale by IMEI
-     * 2. If found, claim the sale with device fingerprint
+     * Start automatic pairing using hardware IMEI
+     * Reads IMEI from device and automatically searches for pending sale
      */
-    fun verifyImei() {
-        val userImei = _authState.value.userEnteredImei
-        
-        Log.d(TAG, "Starting sale claim flow - User entered: ${userImei.length} digits")
-        
-        if (userImei.length != 15) {
-            _authState.value = _authState.value.copy(
-                errorMessage = "IMEI must be exactly 15 digits"
-            )
-            return
-        }
-        
-        // Start verification process
-        _authState.value = _authState.value.copy(
-            currentState = AuthStatus.Verifying,
-            isLoading = true,
-            errorMessage = null
-        )
+    private fun startAutomaticPairing() {
+        Log.d(TAG, "Starting automatic pairing flow")
         
         viewModelScope.launch {
             try {
-                // Normalize user input
-                val normalizedUserImei = normalizeImei(userImei)
-                Log.d(TAG, "Normalized IMEI: $normalizedUserImei")
+                // Read IMEI from hardware
+                val hardwareImei = DeviceUtils.getDeviceImei(context)
+                
+                if (hardwareImei == null) {
+                    Log.e(TAG, "Failed to read IMEI from device")
+                    _authState.value = _authState.value.copy(
+                        currentState = AuthStatus.Error,
+                        isLoading = false,
+                        errorMessage = "Could not read device IMEI. Please ensure READ_PHONE_STATE permission is granted."
+                    )
+                    return@launch
+                }
+                
+                val normalizedImei = normalizeImei(hardwareImei)
+                Log.d(TAG, "Hardware IMEI read successfully: ${normalizedImei.take(4)}***")
+                Log.d(TAG, "IMEI length: ${normalizedImei.length}")
+                
+                _authState.value = _authState.value.copy(
+                    hardwareImei = normalizedImei,
+                    currentState = AuthStatus.Verifying,
+                    isLoading = true,
+                    errorMessage = null
+                )
                 
                 // STEP 1: Search for pending sale by IMEI
-                Log.d(TAG, "Searching for pending sale with IMEI: $normalizedUserImei")
-                val searchResult = deviceRegistrationManager.searchPendingSale(normalizedUserImei)
+                Log.d(TAG, "Searching for pending sale with IMEI: $normalizedImei")
+                val searchResult = deviceRegistrationManager.searchPendingSale(normalizedImei)
                 
                 searchResult.fold(
                     onSuccess = { queryResponse ->
@@ -275,9 +302,9 @@ class SimplifiedAuthViewModel(
                                 )
                             } else {
                                 _authState.value = _authState.value.copy(
-                                    currentState = AuthStatus.AwaitingInput,
+                                    currentState = AuthStatus.Error,
                                     isLoading = false,
-                                    errorMessage = "No pending sale found for this IMEI. Please verify the IMEI from the sales receipt. ${3 - newFailedAttempts} attempts remaining.",
+                                    errorMessage = "No pending sale found for this device IMEI. Please contact support or verify the device was properly registered in the sales system. ${3 - newFailedAttempts} attempts remaining.",
                                     failedAttempts = newFailedAttempts
                                 )
                             }
@@ -304,7 +331,7 @@ class SimplifiedAuthViewModel(
                         
                         val claimResult = deviceRegistrationManager.claimSale(
                             validationId = queryResponse.validationId!!,
-                            hardwareImei = normalizedUserImei,
+                            hardwareImei = normalizedImei,
                             fingerprint = fingerprint
                         )
                         

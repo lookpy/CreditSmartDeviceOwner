@@ -27,6 +27,9 @@ import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.text.SpanStyle
+import android.Manifest
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -37,6 +40,18 @@ fun IMEIAuthScreen(
     val context = LocalContext.current
     val viewModel = remember { SimplifiedAuthViewModel(context) }
     val authState by viewModel.authState
+    
+    // Permission request launcher
+    val permissionLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.RequestPermission(),
+        onResult = { isGranted ->
+            if (isGranted) {
+                viewModel.onPermissionGranted()
+            } else {
+                viewModel.onPermissionDenied()
+            }
+        }
+    )
     
     // Initialize auth when screen is ready (avoid network calls during Device Owner provisioning)
     LaunchedEffect(Unit) {
@@ -97,21 +112,20 @@ fun IMEIAuthScreen(
 
         when (authState.currentState) {
             AuthStatus.Initializing -> {
-                VerifyingContent()
+                VerifyingContent(message = "Initializing device...")
             }
-            AuthStatus.AwaitingInput -> {
-                IMEIInputContent(
-                    userEnteredImei = authState.userEnteredImei,
-                    onImeiChanged = viewModel::onImeiInputChanged,
-                    onVerifyClick = viewModel::verifyImei,
-                    errorMessage = authState.errorMessage
+            AuthStatus.AwaitingPermission -> {
+                PermissionRequestContent(
+                    onRequestPermission = {
+                        permissionLauncher.launch(Manifest.permission.READ_PHONE_STATE)
+                    }
                 )
             }
             AuthStatus.Verifying -> {
-                VerifyingContent()
+                VerifyingContent(message = "Reading device IMEI and searching for sale...")
             }
             AuthStatus.Registering -> {
-                VerifyingContent()
+                VerifyingContent(message = "Pairing device with sale...")
             }
             AuthStatus.Error -> {
                 ErrorContent(
@@ -130,97 +144,114 @@ fun IMEIAuthScreen(
 }
 
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun IMEIInputContent(
-    userEnteredImei: String,
-    onImeiChanged: (String) -> Unit,
-    onVerifyClick: () -> Unit,
-    errorMessage: String?
+private fun PermissionRequestContent(
+    onRequestPermission: () -> Unit
 ) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Icon(
-            imageVector = Icons.Default.Lock,
-            contentDescription = "IMEI Verification",
-            modifier = Modifier.size(48.dp),
+            imageVector = Icons.Default.Security,
+            contentDescription = "Permission Required",
+            modifier = Modifier.size(64.dp),
             tint = MaterialTheme.colorScheme.primary
         )
         
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(24.dp))
         
         Text(
-            text = "Device Pairing",
+            text = "Permission Required",
             style = MaterialTheme.typography.headlineSmall,
             fontWeight = FontWeight.Bold
         )
         
-        Spacer(modifier = Modifier.height(8.dp))
-        
-        Text(
-            text = "Enter the IMEI from your sales receipt to pair this device with your purchase",
-            style = MaterialTheme.typography.bodyMedium,
-            textAlign = TextAlign.Center,
-            color = MaterialTheme.colorScheme.onSurfaceVariant
-        )
-        
-        Spacer(modifier = Modifier.height(12.dp))
+        Spacer(modifier = Modifier.height(16.dp))
         
         Card(
+            modifier = Modifier.fillMaxWidth(),
             colors = CardDefaults.cardColors(
-                containerColor = MaterialTheme.colorScheme.tertiaryContainer
+                containerColor = MaterialTheme.colorScheme.primaryContainer
             )
         ) {
-            Row(
-                modifier = Modifier.padding(12.dp),
-                verticalAlignment = Alignment.CenterVertically
+            Column(
+                modifier = Modifier.padding(16.dp)
             ) {
-                Icon(
-                    imageVector = Icons.Default.Info,
-                    contentDescription = "Info",
-                    tint = MaterialTheme.colorScheme.onTertiaryContainer,
-                    modifier = Modifier.size(16.dp)
+                Text(
+                    text = "Why we need this permission:",
+                    style = MaterialTheme.typography.titleMedium,
+                    fontWeight = FontWeight.Bold,
+                    color = MaterialTheme.colorScheme.onPrimaryContainer
                 )
                 
-                Spacer(modifier = Modifier.width(8.dp))
+                Spacer(modifier = Modifier.height(12.dp))
                 
                 Text(
-                    text = "The IMEI is on your sales receipt. This pairs your device with your purchase.",
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onTertiaryContainer
+                    text = "• Read device IMEI automatically",
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onPrimaryContainer
+                )
+                
+                Spacer(modifier = Modifier.height(8.dp))
+                
+                Text(
+                    text = "• Pair this device with your purchase",
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onPrimaryContainer
+                )
+                
+                Spacer(modifier = Modifier.height(8.dp))
+                
+                Text(
+                    text = "• Verify device authenticity",
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onPrimaryContainer
                 )
             }
         }
         
         Spacer(modifier = Modifier.height(24.dp))
         
-        
-        // IMEI Input Field
-        OutlinedTextField(
-            value = userEnteredImei,
-            onValueChange = onImeiChanged,
-            label = { Text("Enter IMEI") },
-            placeholder = { Text("IMEI from receipt") },
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-            visualTransformation = ImeiVisualTransformation(),
-            isError = errorMessage != null,
+        Card(
             modifier = Modifier.fillMaxWidth(),
-            supportingText = if (errorMessage != null) {
-                { Text(errorMessage, color = MaterialTheme.colorScheme.error) }
-            } else {
-                { Text("${userEnteredImei.length}/15 digits") }
+            colors = CardDefaults.cardColors(
+                containerColor = MaterialTheme.colorScheme.tertiaryContainer
+            )
+        ) {
+            Row(
+                modifier = Modifier.padding(16.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Icon(
+                    imageVector = Icons.Default.Info,
+                    contentDescription = "Info",
+                    tint = MaterialTheme.colorScheme.onTertiaryContainer,
+                    modifier = Modifier.size(20.dp)
+                )
+                
+                Spacer(modifier = Modifier.width(12.dp))
+                
+                Text(
+                    text = "The device will automatically pair with your purchase once permission is granted. No manual IMEI entry required.",
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onTertiaryContainer
+                )
             }
-        )
+        }
         
-        Spacer(modifier = Modifier.height(24.dp))
+        Spacer(modifier = Modifier.height(32.dp))
         
         Button(
-            onClick = onVerifyClick,
-            enabled = userEnteredImei.length == 15,
+            onClick = onRequestPermission,
             modifier = Modifier.fillMaxWidth()
         ) {
-            Text("Pair Device")
+            Icon(
+                imageVector = Icons.Default.Lock,
+                contentDescription = null,
+                modifier = Modifier.size(20.dp)
+            )
+            Spacer(modifier = Modifier.width(8.dp))
+            Text("Grant Permission")
         }
         
         Spacer(modifier = Modifier.height(16.dp))
@@ -244,7 +275,7 @@ private fun IMEIInputContent(
                 Spacer(modifier = Modifier.width(8.dp))
                 
                 Text(
-                    text = "For security, verification will be locked after 3 failed attempts",
+                    text = "For security, pairing will be locked after 3 failed attempts",
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onErrorContainer
                 )
@@ -254,7 +285,7 @@ private fun IMEIInputContent(
 }
 
 @Composable
-private fun VerifyingContent() {
+private fun VerifyingContent(message: String = "Processing...") {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
@@ -274,7 +305,7 @@ private fun VerifyingContent() {
         Spacer(modifier = Modifier.height(8.dp))
         
         Text(
-            text = "Searching for your purchase and pairing this device...",
+            text = message,
             style = MaterialTheme.typography.bodyMedium,
             textAlign = TextAlign.Center,
             color = MaterialTheme.colorScheme.onSurfaceVariant
