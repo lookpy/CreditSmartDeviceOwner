@@ -1,0 +1,56 @@
+2025-09-29 18:57:18.201  5436-5436  SimplifiedAuthViewModel com.cdccreditsmart.app.debug         D  Starting pairing with manually entered IMEI: 15 digits
+2025-09-29 18:57:18.203  5436-5436  SimplifiedAuthViewModel com.cdccreditsmart.app.debug         D  Performing pairing with IMEI: 3531***
+2025-09-29 18:57:18.203  5436-5436  SimplifiedAuthViewModel com.cdccreditsmart.app.debug         D  Searching for pending sale with IMEI: 353104903560533
+2025-09-29 18:57:18.203  5436-5436  SimpleDevi...gistration com.cdccreditsmart.app.debug         D  Searching for pending sale with IMEI: 353104903560533
+2025-09-29 18:57:18.206  5436-8137  SimpleDevi...gistration com.cdccreditsmart.app.debug         D  Request URL: https://cdccreditsmart.com/api/device/claim-sale?imei=353104903560533
+2025-09-29 18:57:18.207  5436-8137  SimpleDevi...gistration com.cdccreditsmart.app.debug         D  Request Headers: Content-Type: application/json
+                                                                                                    Accept: application/json
+                                                                                                    User-Agent: CDC-CreditSmart/1.0.0
+2025-09-29 18:57:18.237  5436-5436  InsetsController        com.cdccreditsmart.app.debug         D  hide(ime(), fromIme=false)
+2025-09-29 18:57:18.239  5436-5436  ImeTracker              com.cdccreditsmart.app.debug         I  com.cdccreditsmart.app.debug:632e26eb: onRequestHide at ORIGIN_CLIENT reason HIDE_SOFT_INPUT_BY_INSETS_API fromUser false
+2025-09-29 18:57:18.239  5436-5436  ImeTracker              com.cdccreditsmart.app.debug         I  com.cdccreditsmart.app.debug:632e26eb: onCancelled at PHASE_CLIENT_APPLY_ANIMATION
+2025-09-29 18:57:18.538  5436-8137  SimpleDevi...gistration com.cdccreditsmart.app.debug         D  Response Code: 404
+2025-09-29 18:57:18.539  5436-8137  SimpleDevi...gistration com.cdccreditsmart.app.debug         D  Response Headers: access-control-allow-credentials: true
+                                                                                                    access-control-allow-headers: Origin, X-Requested-With, Content-Type, Accept, Authorization, x-client-key, x-client-token, x-client-secret, cache-control
+                                                                                                    access-control-allow-methods: GET, POST, PUT, PATCH, DELETE, OPTIONS
+                                                                                                    access-control-allow-origin: *
+                                                                                                    access-control-max-age: 86400
+                                                                                                    content-length: 79
+                                                                                                    content-security-policy: default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://replit.com; style-src 'self' 'unsafe-inline' https://replit.com; img-src 'self' data: https:; font-src 'self' data: https://replit.com; connect-src 'self';
+                                                                                                    content-type: application/json; charset=utf-8
+                                                                                                    date: Mon, 29 Sep 2025 21:57:19 GMT
+                                                                                                    etag: W/"4f-AIhdSY2ER3VhaQMWtceWp5fblTo"
+                                                                                                    permissions-policy: geolocation=(), microphone=(), camera=()
+                                                                                                    referrer-policy: strict-origin-when-cross-origin
+                                                                                                    server: Google Frontend
+                                                                                                    strict-transport-security: max-age=63072000; includeSubDomains
+                                                                                                    strict-transport-security: max-age=31536000; includeSubDomains
+                                                                                                    x-anti-fraud-protection: active
+                                                                                                    x-certificate-pinning-enabled: false
+                                                                                                    x-certificate-pinning-status: disabled-for-stability
+                                                                                                    x-cloud-trace-context: c8e496fef7548cfbad8fb725a49004d7;o=1
+                                                                                                    x-content-type-options: nosniff
+                                                                                                    x-financial-data-protection: enabled
+                                                                                                    x-frame-options: DENY
+                                                                                                    x-transaction-security-level: maximum
+                                                                                                    x-xss-protection: 1; mode=block
+                                                                                                    via: 1.1 google
+                                                                                                    alt-svc: h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
+2025-09-29 18:57:18.539  5436-8137  SimpleDevi...gistration com.cdccreditsmart.app.debug         D  Response Content-Type: application/json; charset=utf-8
+2025-09-29 18:57:18.541  5436-5436  SimpleDevi...gistration com.cdccreditsmart.app.debug         D  Search response - Code: 404, Success: false
+2025-09-29 18:57:18.541  5436-5436  SimpleDevi...gistration com.cdccreditsmart.app.debug         E  Failed to search pending sale - HTTP 404
+2025-09-29 18:57:18.541  5436-5436  SimpleDevi...gistration com.cdccreditsmart.app.debug         E  Error body: {"success":false,"found":false,"message":"No pending sale found for this IMEI"}
+2025-09-29 18:57:18.542  5436-5436  SimplifiedAuthViewModel com.cdccreditsmart.app.debug         E  Failed to search for pending sale (Ask Gemini)
+                                                                                                    java.lang.Exception: No pending sale found for this IMEI. Please verify the IMEI or contact support.
+                                                                                                    	at com.cdccreditsmart.app.device.SimpleDeviceRegistrationManager.searchPendingSale-gIAlu-s(SimpleDeviceRegistrationManager.kt:132)
+                                                                                                    	at com.cdccreditsmart.app.device.SimpleDeviceRegistrationManager$searchPendingSale$1.invokeSuspend(Unknown Source:15)
+                                                                                                    	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:34)
+                                                                                                    	at kotlinx.coroutines.DispatchedTask.run(DispatchedTask.kt:108)
+                                                                                                    	at android.os.Handler.handleCallback(Handler.java:959)
+                                                                                                    	at android.os.Handler.dispatchMessage(Handler.java:100)
+                                                                                                    	at android.os.Looper.loopOnce(Looper.java:234)
+                                                                                                    	at android.os.Looper.loop(Looper.java:319)
+                                                                                                    	at android.app.ActivityThread.main(ActivityThread.java:8754)
+                                                                                                    	at java.lang.reflect.Method.invoke(Native Method)
+                                                                                                    	at com.android.internal.os.RuntimeInit$MethodAndArgsCaller.run(RuntimeInit.java:602)
+                                                                                                    	at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:962)
