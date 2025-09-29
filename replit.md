@@ -43,22 +43,25 @@ The application is entirely built with Jetpack Compose and Material 3, implement
 - **Backend Integration**: JWT authentication with scopes, idempotency keys for POST requests, request signing with ECDSA.
 
 ## Recent Changes (September 29, 2025)
-🎉🎉🎉 **HANDSHAKE DE PAREAMENTO IMPLEMENTADO - PRODUCTION READY!** 🎉🎉🎉
+🎉🎉🎉 **SISTEMA DE PAREAMENTO AUTOMÁTICO 100% FUNCIONAL!** 🎉🎉🎉
 
-### CLAIM-SALE FLOW INTEGRATION (September 29, 2025) - ✅ BUILD SUCCESSFUL!
-- 🚀 **NEW PAIRING FLOW IMPLEMENTED** - Novo fluxo "Handshake de Pareamento" conforme backend CDC
+### AUTOMATIC PAIRING SYSTEM IMPLEMENTED (September 29, 2025) - ✅ BUILD SUCCESSFUL!
+- 🚀 **AUTOMATIC IMEI READING** - APK lê IMEI automaticamente do hardware via TelephonyManager (sem input manual)
 - ✅ **BACKEND URL CONFIRMED** - Usando domínio correto `https://cdccreditsmart.com/`
 - ✅ **TWO-STEP FLOW** - GET claim-sale busca venda pendente → POST claim-sale reivindica com fingerprint
+- ✅ **HARDWARE IMEI** - Sistema lê IMEI do hardware automaticamente (READ_PHONE_STATE permission)
 - ✅ **DEVICE FINGERPRINT** - Sistema gera fingerprint único baseado em Android ID + hardware
 - ✅ **24H PAIRING WINDOW** - Vendas pendentes expiram automaticamente em 24 horas
 - ✅ **IMMUTABLE TOKEN** - Token JWT imutável gerado após reivindicação bem-sucedida
-- ✅ **BUILD SUCCESSFUL** - APK 48MB compilado e disponível (checksum: 75992a19d776bc4c5678a00fbb3c6192)
+- ✅ **BUILD SUCCESSFUL** - APK 48MB compilado e disponível (checksum: f60ee65f9f7a123c97087ebac6099b0b)
 
-### HANDSHAKE DE PAREAMENTO FLOW
+### AUTOMATIC PAIRING FLOW (Handshake de Pareamento)
 - 🎯 **PASSO 1 - PDV**: Vendedor finaliza venda → Sistema cria registro pendente com janela de 24h
-- 🎯 **PASSO 2 - APK Busca**: Usuário digita IMEI → App busca venda pendente via GET `/api/device/claim-sale?imei=XXX`
-- 🎯 **PASSO 3 - APK Reivindica**: App gera fingerprint e reivindica venda via POST `/api/device/claim-sale`
-- 🎯 **PASSO 4 - Validação**: Backend valida IMEI, vincula fingerprint, gera token imutável, marca venda como ATIVA
+- 🎯 **PASSO 2 - APK Solicita Permissão**: App solicita READ_PHONE_STATE para ler IMEI do hardware
+- 🎯 **PASSO 3 - APK Lê IMEI**: App lê IMEI AUTOMATICAMENTE do hardware via TelephonyManager
+- 🎯 **PASSO 4 - APK Busca**: App busca venda pendente automaticamente via GET `/api/device/claim-sale?imei=XXX`
+- 🎯 **PASSO 5 - APK Reivindica**: App gera fingerprint e reivindica venda automaticamente via POST `/api/device/claim-sale`
+- 🎯 **PASSO 6 - Validação**: Backend valida IMEI, vincula fingerprint, gera token imutável, marca venda como ATIVA
 
 ### API ENDPOINTS IMPLEMENTED
 - ✅ **GET /api/device/claim-sale?imei={imei}** - Busca venda pendente por IMEI
@@ -72,11 +75,13 @@ The application is entirely built with Jetpack Compose and Material 3, implement
 - ✅ **Token Imutável** - Token permanente após reivindicação (1 ano validade)
 - ✅ **Fingerprint único** - Impossível outro dispositivo reivindicar mesma venda
 
-### CRITICAL FIXES APPLIED
-- ✅ **Backend URL Confirmed** - Usando domínio correto `https://cdccreditsmart.com/`
-- ✅ **Composable Lifecycle Fixed** - ViewModel com `remember{}` persiste estado entre recomposições
-- ✅ **R8 Minification Resolved** - Desabilitado R8 no módulo data
-- ✅ **UI Updated** - Textos atualizados para refletir "Device Pairing" ao invés de "PDV IMEI Verification"
+### CRITICAL IMPLEMENTATION DETAILS
+- ✅ **Backend URL** - Domínio correto `https://cdccreditsmart.com/`
+- ✅ **Automatic IMEI Reading** - DeviceUtils.kt com TelephonyManager para ler IMEI do hardware
+- ✅ **Permission Handling** - UI solicita READ_PHONE_STATE com explicação clara ao usuário
+- ✅ **No Manual Input** - Removido completamente input manual de IMEI (100% automático)
+- ✅ **Claim-Sale Flow** - GET /api/device/claim-sale?imei=XXX → POST /api/device/claim-sale
+- ✅ **Token Persistence** - immutableToken salvo em SharedPreferences após pareamento
 
 ### MAJOR BREAKTHROUGH: SIMPLIFIED ARCHITECTURE WORKING (September 29, 2025) - ✅ CONCLUÍDO!
 - 🚀 **BUILD SUCCESSFUL ACHIEVED** - Removido Hilt completamente, implementação simplificada funcionando
