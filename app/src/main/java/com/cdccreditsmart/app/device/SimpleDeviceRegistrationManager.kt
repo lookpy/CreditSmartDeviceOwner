@@ -4,7 +4,6 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.os.Build
 import android.provider.Settings
-import android.telephony.TelephonyManager
 import androidx.core.content.ContextCompat
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -17,6 +16,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.POST
+import retrofit2.http.GET
 import android.util.Log
 import java.util.concurrent.TimeUnit
 import okhttp3.ResponseBody
@@ -67,6 +67,14 @@ class SimpleDeviceRegistrationManager(private val context: Context) {
         private const val PREF_REGISTRATION_TIME = "registration_time"
         private const val PREF_TOKEN_EXPIRY = "token_expiry"
     }
+    
+    /**
+     * Normalize IMEI by removing all non-digit characters
+     * This handles cases where PDV returns formatted IMEI like "12 345678 901234 5"
+     */
+    private fun normalizeImei(imei: String): String {
+        return imei.replace(Regex("[^0-9]"), "")
+    }
 
     /**
      * Check if device is already registered with valid token
@@ -89,18 +97,53 @@ class SimpleDeviceRegistrationManager(private val context: Context) {
     }
 
     /**
-     * Get device IMEI (requires READ_PHONE_STATE permission)
+     * Get PDV IMEI from CDC Credit Smart API
+     * This fetches the IMEI that is registered in the PDV (Point of Sale) system
+     * Returns normalized IMEI to handle formatting differences
      */
-    fun getDeviceImei(): String? {
+    suspend fun getPdvImei(): Result<String> {
         return try {
-            val telephonyManager = context.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
-            telephonyManager.deviceId // This is the IMEI for GSM devices
-        } catch (e: SecurityException) {
-            Log.w(TAG, "No permission to read device IMEI", e)
-            null
+            Log.d(TAG, "Fetching PDV IMEI from CDC API...")
+            
+            val response = withContext(Dispatchers.IO) {
+                deviceApi.getPdvImei()
+            }
+            
+            Log.d(TAG, "PDV IMEI API response - Code: ${response.code()}, Success: ${response.isSuccessful}")
+            
+            if (response.isSuccessful && response.body() != null) {
+                val result = response.body()!!
+                val originalImei = result.imei
+                val normalizedImei = normalizeImei(originalImei)
+                
+                Log.d(TAG, "PDV IMEI retrieved successfully")
+                Log.d(TAG, "Original PDV IMEI: '$originalImei'")
+                Log.d(TAG, "Normalized PDV IMEI: '$normalizedImei'")
+                
+                // Validate normalized IMEI length
+                if (normalizedImei.length != 15) {
+                    Log.w(TAG, "Warning: Normalized PDV IMEI length is ${normalizedImei.length}, expected 15")
+                    return Result.failure(Exception("PDV IMEI has invalid length after normalization: ${normalizedImei.length} digits. Expected 15 digits."))
+                }
+                
+                Result.success(normalizedImei)
+            } else {
+                val errorBody = response.errorBody()?.string()
+                Log.e(TAG, "Failed to fetch PDV IMEI - HTTP ${response.code()}")
+                Log.e(TAG, "Error body: ${errorBody?.take(1000)}")
+                
+                val errorMsg = when (response.code()) {
+                    404 -> "PDV IMEI not found. Device may not be registered in the sales system."
+                    403 -> "Access denied to PDV IMEI. Authentication may be required."
+                    500 -> "Server error while fetching PDV IMEI. Please try again later."
+                    else -> "Failed to retrieve PDV IMEI: HTTP ${response.code()}"
+                }
+                
+                Result.failure(Exception(errorMsg))
+            }
         } catch (e: Exception) {
-            Log.e(TAG, "Failed to get device IMEI", e)
-            null
+            Log.e(TAG, "Exception while fetching PDV IMEI", e)
+            Result.failure(Exception("Error connecting to PDV system: ${e.message}"))
         }
     }
 
@@ -208,7 +251,6 @@ class SimpleDeviceRegistrationManager(private val context: Context) {
      * Collect device information for registration
      */
     private fun collectDeviceInfo(): SimpleDeviceInfo {
-        val telephonyManager = ContextCompat.getSystemService(context, TelephonyManager::class.java)
         val androidId = Settings.Secure.getString(context.contentResolver, Settings.Secure.ANDROID_ID)
 
         return SimpleDeviceInfo(
@@ -216,7 +258,7 @@ class SimpleDeviceRegistrationManager(private val context: Context) {
             model = Build.MODEL,
             androidVersion = Build.VERSION.RELEASE,
             apiLevel = Build.VERSION.SDK_INT,
-            imei = null, // Will be null for now to avoid permission issues
+            imei = null, // No longer collecting device IMEI
             serialNumber = Build.getSerial().takeIf { it != Build.UNKNOWN },
             androidId = androidId
         )
@@ -281,9 +323,21 @@ data class DeviceRegistrationResponse(
 )
 
 /**
- * Simple Retrofit API interface for device registration
+ * PDV IMEI response from CDC API
+ */
+data class PdvImeiResponse(
+    val success: Boolean,
+    val imei: String,
+    val message: String? = null
+)
+
+/**
+ * Simple Retrofit API interface for device registration and PDV IMEI
  */
 interface DeviceRegistrationApi {
     @POST("api/device/register")
     suspend fun registerDevice(@Body request: DeviceRegistrationRequest): Response<DeviceRegistrationResponse>
+    
+    @GET("api/device/pdv-imei")
+    suspend fun getPdvImei(): Response<PdvImeiResponse>
 }

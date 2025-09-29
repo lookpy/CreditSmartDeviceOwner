@@ -17,25 +17,22 @@ data class SimplifiedAuthState(
     val isAuthenticated: Boolean = false,
     val deviceId: String? = null,
     val registrationStatus: String? = null,
-    val deviceImei: String? = null,
+    val pdvImei: String? = null,
     val userEnteredImei: String = "",
     val failedAttempts: Int = 0,
     val isLockedOut: Boolean = false,
     val lockoutEndTime: Long? = null,
-    val permissionDenied: Boolean = false,
-    val permissionRequestCount: Int = 0,
-    val showManualEntry: Boolean = false
+    val cachedPdvImei: String? = null, // Cache PDV IMEI to avoid redundant API calls
+    val pdvImeiCacheTime: Long? = null // Track when PDV IMEI was cached
 )
 
 enum class AuthStatus {
     Initializing,
-    Permission,
     AwaitingInput,
     Verifying,
     Registering,
     Error,
-    Authenticated,
-    ManualEntry
+    Authenticated
 }
 
 /**
@@ -55,7 +52,14 @@ class SimplifiedAuthViewModel(
 
     companion object {
         private const val TAG = "SimplifiedAuthViewModel"
+        private const val PDV_CACHE_DURATION_MS = 5 * 60 * 1000L // 5 minutes cache
     }
+    
+    /**
+     * Normalize IMEI by removing all non-digit characters
+     * This handles cases where PDV returns formatted IMEI like "12 345678 901234 5"
+     */
+    private fun normalizeImei(imei: String) = imei.replace(Regex("[^0-9]"), "")
     
     /**
      * Log current state for debugging
@@ -63,10 +67,7 @@ class SimplifiedAuthViewModel(
     private fun logStateChange(newState: AuthStatus, context: String = "") {
         val currentState = _authState.value
         Log.d(TAG, "STATE CHANGE: ${currentState.currentState} -> $newState" + 
-               if (context.isNotEmpty()) " ($context)" else "" +
-               ", Permission denied: ${currentState.permissionDenied}" +
-               ", Request count: ${currentState.permissionRequestCount}" +
-               ", Show manual: ${currentState.showManualEntry}")
+               if (context.isNotEmpty()) " ($context)" else "")
     }
 
     init {
@@ -99,24 +100,14 @@ class SimplifiedAuthViewModel(
                         registrationStatus = "registered"
                     )
                 } else {
-                    Log.d(TAG, "Device not registered, checking permission status")
-                    // Check if we should request permission or go to manual entry
-                    if (shouldRequestPermission()) {
-                        logStateChange(AuthStatus.Permission, "Requesting IMEI permission")
-                        _authState.value = _authState.value.copy(
-                            currentState = AuthStatus.Permission,
-                            isLoading = false,
-                            errorMessage = null
-                        )
-                    } else {
-                        logStateChange(AuthStatus.ManualEntry, "Permission denied, offering manual entry")
-                        _authState.value = _authState.value.copy(
-                            currentState = AuthStatus.ManualEntry,
-                            isLoading = false,
-                            errorMessage = null,
-                            showManualEntry = true
-                        )
-                    }
+                    Log.d(TAG, "Device not registered, going to IMEI input")
+                    // Go directly to IMEI input since no permissions are needed
+                    logStateChange(AuthStatus.AwaitingInput, "Ready for IMEI input")
+                    _authState.value = _authState.value.copy(
+                        currentState = AuthStatus.AwaitingInput,
+                        isLoading = false,
+                        errorMessage = null
+                    )
                 }
                 
             } catch (e: Exception) {
@@ -219,50 +210,6 @@ class SimplifiedAuthViewModel(
         return deviceRegistrationManager.getDeviceToken()
     }
 
-    /**
-     * Handle permission granted for READ_PHONE_STATE
-     */
-    fun onPermissionGranted() {
-        logStateChange(AuthStatus.AwaitingInput, "Permission granted")
-        try {
-            // Get device IMEI now that we have permission
-            val imei = deviceRegistrationManager.getDeviceImei()
-            Log.d(TAG, "Retrieved device IMEI successfully")
-            _authState.value = _authState.value.copy(
-                currentState = AuthStatus.AwaitingInput,
-                deviceImei = imei,
-                errorMessage = null,
-                permissionDenied = false
-            )
-        } catch (e: Exception) {
-            Log.e(TAG, "Failed to get device IMEI", e)
-            logStateChange(AuthStatus.Error, "Failed to retrieve IMEI")
-            _authState.value = _authState.value.copy(
-                currentState = AuthStatus.Error,
-                errorMessage = "Failed to get device IMEI: ${e.message}"
-            )
-        }
-    }
-
-    /**
-     * Handle permission denied for READ_PHONE_STATE
-     */
-    fun onPermissionDenied() {
-        val currentRequestCount = _authState.value.permissionRequestCount
-        logStateChange(AuthStatus.Error, "Permission denied (attempt ${currentRequestCount + 1})")
-        
-        _authState.value = _authState.value.copy(
-            currentState = AuthStatus.Error,
-            errorMessage = if (currentRequestCount == 0) {
-                "Phone permission is required for automatic device verification. You can grant permission or use manual verification."
-            } else {
-                "Permission denied multiple times. Please use manual verification or grant permission in device settings."
-            },
-            permissionDenied = true,
-            permissionRequestCount = currentRequestCount + 1,
-            showManualEntry = true
-        )
-    }
 
     /**
      * Handle IMEI input change
@@ -277,62 +224,13 @@ class SimplifiedAuthViewModel(
     }
 
     /**
-     * Verify entered IMEI against device IMEI (with permission)
+     * Verify entered IMEI against PDV IMEI from CDC system
+     * Implements caching and normalization to prevent false negatives from formatting differences
      */
     fun verifyImei() {
-        val deviceImei = _authState.value.deviceImei
         val userImei = _authState.value.userEnteredImei
         
-        Log.d(TAG, "Verifying IMEI - Device IMEI available: ${deviceImei != null}, User entered: ${userImei.length} digits")
-        
-        if (deviceImei == null) {
-            _authState.value = _authState.value.copy(
-                errorMessage = "Device IMEI not available"
-            )
-            return
-        }
-        
-        if (userImei != deviceImei) {
-            val newFailedAttempts = _authState.value.failedAttempts + 1
-            Log.w(TAG, "IMEI verification failed. Attempt $newFailedAttempts/3")
-            
-            if (newFailedAttempts >= 3) {
-                // Lock out the user
-                val lockoutEndTime = System.currentTimeMillis() + (30 * 60 * 1000L) // 30 minutes
-                _authState.value = _authState.value.copy(
-                    currentState = AuthStatus.Error,
-                    errorMessage = "Too many failed attempts. Device locked for 30 minutes.",
-                    failedAttempts = newFailedAttempts,
-                    isLockedOut = true,
-                    lockoutEndTime = lockoutEndTime
-                )
-            } else {
-                _authState.value = _authState.value.copy(
-                    errorMessage = "IMEI does not match. ${3 - newFailedAttempts} attempts remaining.",
-                    failedAttempts = newFailedAttempts
-                )
-            }
-            return
-        }
-        
-        // IMEI matches, start device registration
-        Log.d(TAG, "IMEI verification successful, starting registration")
-        _authState.value = _authState.value.copy(
-            currentState = AuthStatus.Verifying,
-            isLoading = true,
-            errorMessage = null
-        )
-        
-        startDeviceRegistration()
-    }
-    
-    /**
-     * Verify manually entered IMEI (without device permission)
-     */
-    fun verifyManualImei() {
-        val userImei = _authState.value.userEnteredImei
-        
-        Log.d(TAG, "Manual IMEI verification - User entered: ${userImei.length} digits")
+        Log.d(TAG, "Verifying IMEI against PDV system - User entered: ${userImei.length} digits")
         
         if (userImei.length != 15) {
             _authState.value = _authState.value.copy(
@@ -341,18 +239,109 @@ class SimplifiedAuthViewModel(
             return
         }
         
-        // For manual entry, we'll proceed with registration using the entered IMEI
-        // This is less secure but provides a fallback when permission is denied
-        Log.d(TAG, "Manual IMEI entered, proceeding with registration")
+        // Start verification process
         _authState.value = _authState.value.copy(
             currentState = AuthStatus.Verifying,
             isLoading = true,
-            errorMessage = null,
-            deviceImei = userImei // Store the manually entered IMEI
+            errorMessage = null
         )
         
-        startDeviceRegistration()
+        viewModelScope.launch {
+            try {
+                // Normalize user input for comparison
+                val normalizedUserImei = normalizeImei(userImei)
+                Log.d(TAG, "Normalized user IMEI: $normalizedUserImei")
+                
+                // Check if we have a valid cached PDV IMEI
+                val currentTime = System.currentTimeMillis()
+                val currentState = _authState.value
+                val isCacheValid = currentState.cachedPdvImei != null && 
+                                   currentState.pdvImeiCacheTime != null &&
+                                   (currentTime - currentState.pdvImeiCacheTime) < PDV_CACHE_DURATION_MS
+                
+                val pdvImei: String = if (isCacheValid) {
+                    Log.d(TAG, "Using cached PDV IMEI (cache age: ${(currentTime - currentState.pdvImeiCacheTime!!) / 1000}s)")
+                    currentState.cachedPdvImei!!
+                } else {
+                    Log.d(TAG, "Fetching fresh PDV IMEI from CDC system...")
+                    
+                    // Fetch PDV IMEI from CDC API
+                    val pdvImeiResult = deviceRegistrationManager.getPdvImei()
+                    
+                    pdvImeiResult.fold(
+                        onSuccess = { fetchedPdvImei ->
+                            Log.d(TAG, "PDV IMEI retrieved successfully, original: '$fetchedPdvImei'")
+                            val normalizedPdvImei = normalizeImei(fetchedPdvImei)
+                            Log.d(TAG, "Normalized PDV IMEI: '$normalizedPdvImei'")
+                            
+                            // Cache the normalized PDV IMEI
+                            _authState.value = _authState.value.copy(
+                                cachedPdvImei = normalizedPdvImei,
+                                pdvImeiCacheTime = currentTime
+                            )
+                            
+                            normalizedPdvImei
+                        },
+                        onFailure = { exception ->
+                            Log.e(TAG, "Failed to fetch PDV IMEI", exception)
+                            _authState.value = _authState.value.copy(
+                                currentState = AuthStatus.Error,
+                                isLoading = false,
+                                errorMessage = "Unable to verify IMEI with PDV system: ${exception.message}"
+                            )
+                            return@launch
+                        }
+                    )
+                }
+                
+                // Compare normalized IMEIs
+                Log.d(TAG, "Comparing normalized IMEIs - User: '$normalizedUserImei', PDV: '$pdvImei'")
+                
+                if (normalizedUserImei == pdvImei) {
+                    Log.d(TAG, "IMEI verification successful, matches PDV system")
+                    _authState.value = _authState.value.copy(
+                        pdvImei = pdvImei,
+                        failedAttempts = 0, // Reset failed attempts on success
+                        isLoading = false
+                    )
+                    startDeviceRegistration()
+                } else {
+                    val newFailedAttempts = _authState.value.failedAttempts + 1
+                    Log.w(TAG, "IMEI verification failed. Normalized IMEIs do not match. Attempt $newFailedAttempts/3")
+                    Log.w(TAG, "User normalized: '$normalizedUserImei', PDV normalized: '$pdvImei'")
+                    
+                    if (newFailedAttempts >= 3) {
+                        // Lock out the user
+                        val lockoutEndTime = System.currentTimeMillis() + (30 * 60 * 1000L) // 30 minutes
+                        _authState.value = _authState.value.copy(
+                            currentState = AuthStatus.Error,
+                            errorMessage = "Too many failed attempts. The IMEI entered does not match the PDV system. Device locked for 30 minutes.",
+                            failedAttempts = newFailedAttempts,
+                            isLockedOut = true,
+                            lockoutEndTime = lockoutEndTime,
+                            isLoading = false
+                        )
+                    } else {
+                        _authState.value = _authState.value.copy(
+                            currentState = AuthStatus.AwaitingInput,
+                            isLoading = false,
+                            errorMessage = "IMEI does not match the PDV system. Please verify the IMEI from the sales receipt. ${3 - newFailedAttempts} attempts remaining.",
+                            failedAttempts = newFailedAttempts
+                        )
+                    }
+                }
+                
+            } catch (e: Exception) {
+                Log.e(TAG, "Exception during IMEI verification", e)
+                _authState.value = _authState.value.copy(
+                    currentState = AuthStatus.Error,
+                    isLoading = false,
+                    errorMessage = "Error verifying IMEI: ${e.message}"
+                )
+            }
+        }
     }
+    
 
     /**
      * Retry authentication (reset state and start over)
@@ -370,54 +359,11 @@ class SimplifiedAuthViewModel(
             return
         }
         
-        // If permission was already denied multiple times, don't retry permission
-        if (_authState.value.permissionDenied && _authState.value.permissionRequestCount >= 2) {
-            Log.d(TAG, "Permission denied multiple times, offering manual entry")
-            _authState.value = _authState.value.copy(
-                currentState = AuthStatus.ManualEntry,
-                errorMessage = null,
-                showManualEntry = true
-            )
-            return
-        }
-        
-        // Reset state and start over (but preserve permission request count)
-        val previousRequestCount = _authState.value.permissionRequestCount
+        // Reset state and start over
         _authState.value = SimplifiedAuthState(
-            currentState = AuthStatus.Initializing,
-            permissionRequestCount = previousRequestCount
+            currentState = AuthStatus.Initializing
         )
         initializeAuth()
     }
     
-    /**
-     * Handle manual entry request when permission is denied
-     */
-    fun requestManualEntry() {
-        Log.d(TAG, "User requested manual entry")
-        _authState.value = _authState.value.copy(
-            currentState = AuthStatus.ManualEntry,
-            errorMessage = null,
-            showManualEntry = true
-        )
-    }
-    
-    /**
-     * Check if we should request permission (not if already denied multiple times)
-     */
-    fun shouldRequestPermission(): Boolean {
-        val currentState = _authState.value
-        return !currentState.permissionDenied || currentState.permissionRequestCount < 2
-    }
-    
-    /**
-     * Request permission again (for manual retry)
-     */
-    fun requestPermissionAgain() {
-        Log.d(TAG, "User manually requested permission again")
-        _authState.value = _authState.value.copy(
-            currentState = AuthStatus.Permission,
-            errorMessage = null
-        )
-    }
 }

@@ -1,8 +1,5 @@
 package com.cdccreditsmart.app.presentation.auth
 
-import android.Manifest
-import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
@@ -10,7 +7,6 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Lock
-import androidx.compose.material.icons.filled.Phone
 import androidx.compose.material.icons.filled.Security
 import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material3.*
@@ -47,38 +43,10 @@ fun IMEIAuthScreen(
         viewModel.initializeAuth()
     }
     
-    // Permission launcher
-    val permissionLauncher = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.RequestPermission()
-    ) { isGranted ->
-        if (isGranted) {
-            viewModel.onPermissionGranted()
-        } else {
-            viewModel.onPermissionDenied()
-        }
-    }
-
     // Handle authentication success
     LaunchedEffect(authState.isAuthenticated) {
         if (authState.isAuthenticated) {
             onAuthenticationSuccess()
-        }
-    }
-
-    // Track permission request to prevent loops
-    var permissionRequested by remember { mutableStateOf(false) }
-    
-    // Request permission on first load (but only once per state change)
-    LaunchedEffect(authState.currentState, authState.permissionRequestCount) {
-        if (authState.currentState == AuthStatus.Permission) {
-            // Only request if we haven't already requested for this specific attempt
-            if (!permissionRequested && viewModel.shouldRequestPermission()) {
-                permissionRequested = true
-                permissionLauncher.launch(Manifest.permission.READ_PHONE_STATE)
-            }
-        } else {
-            // Reset the flag when we're not in Permission state
-            permissionRequested = false
         }
     }
 
@@ -131,30 +99,12 @@ fun IMEIAuthScreen(
             AuthStatus.Initializing -> {
                 VerifyingContent()
             }
-            AuthStatus.Permission -> {
-                PermissionRequestContent(
-                    onManualEntry = viewModel::requestManualEntry,
-                    permissionRequestCount = authState.permissionRequestCount
-                )
-            }
             AuthStatus.AwaitingInput -> {
                 IMEIInputContent(
-                    deviceImei = authState.deviceImei,
                     userEnteredImei = authState.userEnteredImei,
                     onImeiChanged = viewModel::onImeiInputChanged,
                     onVerifyClick = viewModel::verifyImei,
-                    errorMessage = authState.errorMessage,
-                    isManualEntry = false
-                )
-            }
-            AuthStatus.ManualEntry -> {
-                IMEIInputContent(
-                    deviceImei = null, // No device IMEI for manual entry
-                    userEnteredImei = authState.userEnteredImei,
-                    onImeiChanged = viewModel::onImeiInputChanged,
-                    onVerifyClick = viewModel::verifyManualImei,
-                    errorMessage = authState.errorMessage,
-                    isManualEntry = true
+                    errorMessage = authState.errorMessage
                 )
             }
             AuthStatus.Verifying -> {
@@ -169,10 +119,7 @@ fun IMEIAuthScreen(
                     isLockedOut = authState.isLockedOut,
                     lockoutEndTime = authState.lockoutEndTime,
                     failedAttempts = authState.failedAttempts,
-                    onRetry = viewModel::retry,
-                    showManualEntry = authState.showManualEntry,
-                    onManualEntry = viewModel::requestManualEntry,
-                    onRequestPermission = viewModel::requestPermissionAgain
+                    onRetry = viewModel::retry
                 )
             }
             AuthStatus.Authenticated -> {
@@ -182,99 +129,14 @@ fun IMEIAuthScreen(
     }
 }
 
-@Composable
-private fun PermissionRequestContent(
-    onManualEntry: () -> Unit,
-    permissionRequestCount: Int = 0
-) {
-    Column(
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        Icon(
-            imageVector = Icons.Default.Phone,
-            contentDescription = "Phone Permission",
-            modifier = Modifier.size(48.dp),
-            tint = MaterialTheme.colorScheme.primary
-        )
-        
-        Spacer(modifier = Modifier.height(16.dp))
-        
-        Text(
-            text = "Permission Required",
-            style = MaterialTheme.typography.headlineSmall,
-            fontWeight = FontWeight.Bold
-        )
-        
-        Spacer(modifier = Modifier.height(8.dp))
-        
-        Text(
-            text = "This app requires access to your device's phone state to verify your device IMEI for secure authentication.",
-            style = MaterialTheme.typography.bodyMedium,
-            textAlign = TextAlign.Center,
-            color = MaterialTheme.colorScheme.onSurfaceVariant
-        )
-        
-        if (permissionRequestCount > 0) {
-            Spacer(modifier = Modifier.height(12.dp))
-            
-            Text(
-                text = "Permission request attempt ${permissionRequestCount + 1}",
-                style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.error,
-                textAlign = TextAlign.Center
-            )
-        }
-        
-        Spacer(modifier = Modifier.height(16.dp))
-        
-        Card(
-            colors = CardDefaults.cardColors(
-                containerColor = MaterialTheme.colorScheme.surfaceVariant
-            )
-        ) {
-            Row(
-                modifier = Modifier.padding(16.dp),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Icon(
-                    imageVector = Icons.Default.Info,
-                    contentDescription = "Info",
-                    tint = MaterialTheme.colorScheme.primary,
-                    modifier = Modifier.size(20.dp)
-                )
-                
-                Spacer(modifier = Modifier.width(12.dp))
-                
-                Text(
-                    text = "Your IMEI is used only for device verification and is encrypted locally.",
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
-                )
-            }
-        }
-        
-        if (permissionRequestCount > 0) {
-            Spacer(modifier = Modifier.height(24.dp))
-            
-            OutlinedButton(
-                onClick = onManualEntry,
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                Text("Use Manual Verification Instead")
-            }
-        }
-    }
-}
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun IMEIInputContent(
-    deviceImei: String?,
     userEnteredImei: String,
     onImeiChanged: (String) -> Unit,
     onVerifyClick: () -> Unit,
-    errorMessage: String?,
-    isManualEntry: Boolean = false
+    errorMessage: String?
 ) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally
@@ -289,7 +151,7 @@ private fun IMEIInputContent(
         Spacer(modifier = Modifier.height(16.dp))
         
         Text(
-            text = if (isManualEntry) "Manual Verification" else "Device Verification",
+            text = "PDV IMEI Verification",
             style = MaterialTheme.typography.headlineSmall,
             fontWeight = FontWeight.Bold
         )
@@ -297,93 +159,49 @@ private fun IMEIInputContent(
         Spacer(modifier = Modifier.height(8.dp))
         
         Text(
-            text = if (isManualEntry) {
-                "Please enter your device IMEI number for manual verification"
-            } else {
-                "Please enter your device IMEI to verify your identity"
-            },
+            text = "Please enter the IMEI from your sales receipt to verify this device matches the PDV system",
             style = MaterialTheme.typography.bodyMedium,
             textAlign = TextAlign.Center,
             color = MaterialTheme.colorScheme.onSurfaceVariant
         )
         
-        if (isManualEntry) {
-            Spacer(modifier = Modifier.height(12.dp))
-            
-            Card(
-                colors = CardDefaults.cardColors(
-                    containerColor = MaterialTheme.colorScheme.tertiaryContainer
-                )
+        Spacer(modifier = Modifier.height(12.dp))
+        
+        Card(
+            colors = CardDefaults.cardColors(
+                containerColor = MaterialTheme.colorScheme.tertiaryContainer
+            )
+        ) {
+            Row(
+                modifier = Modifier.padding(12.dp),
+                verticalAlignment = Alignment.CenterVertically
             ) {
-                Row(
-                    modifier = Modifier.padding(12.dp),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Icon(
-                        imageVector = Icons.Default.Info,
-                        contentDescription = "Manual Entry Info",
-                        tint = MaterialTheme.colorScheme.onTertiaryContainer,
-                        modifier = Modifier.size(16.dp)
-                    )
-                    
-                    Spacer(modifier = Modifier.width(8.dp))
-                    
-                    Text(
-                        text = "You can find your IMEI by dialing *#06# or in device settings.",
-                        style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.onTertiaryContainer
-                    )
-                }
+                Icon(
+                    imageVector = Icons.Default.Info,
+                    contentDescription = "PDV Info",
+                    tint = MaterialTheme.colorScheme.onTertiaryContainer,
+                    modifier = Modifier.size(16.dp)
+                )
+                
+                Spacer(modifier = Modifier.width(8.dp))
+                
+                Text(
+                    text = "Enter the IMEI exactly as shown on your CDC Credit Smart sales receipt.",
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onTertiaryContainer
+                )
             }
         }
         
         Spacer(modifier = Modifier.height(24.dp))
         
-        // Device IMEI Display
-        if (deviceImei != null) {
-            Card(
-                modifier = Modifier.fillMaxWidth(),
-                colors = CardDefaults.cardColors(
-                    containerColor = MaterialTheme.colorScheme.surfaceVariant
-                )
-            ) {
-                Column(
-                    modifier = Modifier.padding(16.dp)
-                ) {
-                    Text(
-                        text = "Device IMEI",
-                        style = MaterialTheme.typography.labelMedium,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
-                    )
-                    
-                    Spacer(modifier = Modifier.height(4.dp))
-                    
-                    Text(
-                        text = formatImei(deviceImei),
-                        style = MaterialTheme.typography.bodyLarge,
-                        fontWeight = FontWeight.Bold,
-                        color = MaterialTheme.colorScheme.onSurface
-                    )
-                    
-                    Spacer(modifier = Modifier.height(8.dp))
-                    
-                    Text(
-                        text = "Enter the IMEI shown above to confirm this is your device",
-                        style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
-                    )
-                }
-            }
-            
-            Spacer(modifier = Modifier.height(24.dp))
-        }
         
         // IMEI Input Field
         OutlinedTextField(
             value = userEnteredImei,
             onValueChange = onImeiChanged,
-            label = { Text("Enter IMEI") },
-            placeholder = { Text("15-digit IMEI number") },
+            label = { Text("Enter PDV IMEI") },
+            placeholder = { Text("IMEI from sales receipt") },
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
             visualTransformation = ImeiVisualTransformation(),
             isError = errorMessage != null,
@@ -402,7 +220,7 @@ private fun IMEIInputContent(
             enabled = userEnteredImei.length == 15,
             modifier = Modifier.fillMaxWidth()
         ) {
-            Text(if (isManualEntry) "Verify IMEI" else "Verify Device")
+            Text("Verify PDV IMEI")
         }
         
         Spacer(modifier = Modifier.height(16.dp))
@@ -426,7 +244,7 @@ private fun IMEIInputContent(
                 Spacer(modifier = Modifier.width(8.dp))
                 
                 Text(
-                    text = "For security, this device will be locked after 3 failed attempts",
+                    text = "For security, verification will be locked after 3 failed attempts",
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onErrorContainer
                 )
@@ -448,7 +266,7 @@ private fun VerifyingContent() {
         Spacer(modifier = Modifier.height(24.dp))
         
         Text(
-            text = "Verifying Device",
+            text = "Verifying PDV IMEI",
             style = MaterialTheme.typography.headlineSmall,
             fontWeight = FontWeight.Bold
         )
@@ -456,7 +274,7 @@ private fun VerifyingContent() {
         Spacer(modifier = Modifier.height(8.dp))
         
         Text(
-            text = "Authenticating with CDC Credit Smart servers...",
+            text = "Checking IMEI against CDC Credit Smart PDV system...",
             style = MaterialTheme.typography.bodyMedium,
             textAlign = TextAlign.Center,
             color = MaterialTheme.colorScheme.onSurfaceVariant
@@ -470,10 +288,7 @@ private fun ErrorContent(
     isLockedOut: Boolean,
     lockoutEndTime: Long?,
     failedAttempts: Int,
-    onRetry: () -> Unit,
-    showManualEntry: Boolean = false,
-    onManualEntry: (() -> Unit)? = null,
-    onRequestPermission: (() -> Unit)? = null
+    onRetry: () -> Unit
 ) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally
@@ -520,47 +335,11 @@ private fun ErrorContent(
         if (!isLockedOut || (lockoutEndTime != null && System.currentTimeMillis() >= lockoutEndTime)) {
             Spacer(modifier = Modifier.height(24.dp))
             
-            // Show different options based on the error type
-            if (showManualEntry) {
-                // Permission-related error with manual entry option
-                Column {
-                    Button(
-                        onClick = onRetry,
-                        modifier = Modifier.fillMaxWidth()
-                    ) {
-                        Text("Try Again")
-                    }
-                    
-                    Spacer(modifier = Modifier.height(12.dp))
-                    
-                    if (onManualEntry != null) {
-                        OutlinedButton(
-                            onClick = onManualEntry,
-                            modifier = Modifier.fillMaxWidth()
-                        ) {
-                            Text("Use Manual Verification")
-                        }
-                    }
-                    
-                    if (onRequestPermission != null) {
-                        Spacer(modifier = Modifier.height(8.dp))
-                        
-                        TextButton(
-                            onClick = onRequestPermission,
-                            modifier = Modifier.fillMaxWidth()
-                        ) {
-                            Text("Grant Permission")
-                        }
-                    }
-                }
-            } else {
-                // Standard retry button
-                Button(
-                    onClick = onRetry,
-                    modifier = Modifier.fillMaxWidth()
-                ) {
-                    Text("Try Again")
-                }
+            Button(
+                onClick = onRetry,
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Text("Try Again")
             }
         }
         
@@ -591,7 +370,7 @@ private fun AuthenticatedContent() {
         Spacer(modifier = Modifier.height(16.dp))
         
         Text(
-            text = "Device Verified",
+            text = "PDV IMEI Verified",
             style = MaterialTheme.typography.headlineSmall,
             fontWeight = FontWeight.Bold,
             color = Color.Green
@@ -600,7 +379,7 @@ private fun AuthenticatedContent() {
         Spacer(modifier = Modifier.height(8.dp))
         
         Text(
-            text = "Authentication successful. Redirecting to dashboard...",
+            text = "IMEI matches PDV system. Device registration successful!",
             style = MaterialTheme.typography.bodyMedium,
             textAlign = TextAlign.Center,
             color = MaterialTheme.colorScheme.onSurfaceVariant
