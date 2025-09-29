@@ -12,6 +12,7 @@ import com.cdccreditsmart.network.interceptors.ConnectivityDebugInterceptor
 import com.cdccreditsmart.network.interceptors.DeviceSignatureInterceptor
 import com.cdccreditsmart.network.interceptors.IdempotencyKeyInterceptor
 import com.cdccreditsmart.network.interceptors.JwtInterceptor
+import com.cdccreditsmart.network.interceptors.XClientAuthInterceptor
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -28,6 +29,7 @@ class OkHttpClientFactory @Inject constructor(
     private val commonHeadersInterceptor: CommonHeadersInterceptor,
     private val connectivityDebugInterceptor: ConnectivityDebugInterceptor,
     private val jwtInterceptor: JwtInterceptor,
+    private val xClientAuthInterceptor: XClientAuthInterceptor,
     private val deviceSignatureInterceptor: DeviceSignatureInterceptor,
     private val idempotencyKeyInterceptor: IdempotencyKeyInterceptor,
     private val certificatePinningManager: CertificatePinningManager
@@ -210,7 +212,10 @@ class OkHttpClientFactory @Inject constructor(
         // 3. JWT authentication (before other custom headers)
         builder.addInterceptor(jwtInterceptor)
         
-        // 4. Device signature (after authentication for complete request)
+        // 4. X-Client authentication (alternative to JWT for CDC API)
+        builder.addInterceptor(xClientAuthInterceptor)
+        
+        // 5. Device signature (after authentication for complete request)
         builder.addInterceptor(deviceSignatureInterceptor)
         
         // 5. Idempotency key (for POST/PUT/PATCH requests)

@@ -5,6 +5,10 @@ import com.cdccreditsmart.domain.repository.AuthenticationRepository
 import com.cdccreditsmart.network.api.AuthApiService
 import com.cdccreditsmart.network.api.ApkAuthRequest
 import com.cdccreditsmart.network.api.ImeiValidationRequest
+import com.cdccreditsmart.network.api.CdcApiService
+import com.cdccreditsmart.network.api.CdcImeiValidationRequest
+import com.cdccreditsmart.network.interceptors.JwtInterceptor
+import com.cdccreditsmart.network.interceptors.XClientAuthInterceptor
 import com.cdccreditsmart.network.api.FlowEventsApiService
 import com.cdccreditsmart.network.api.DeviceAttestationStartRequest
 import com.cdccreditsmart.network.api.ImeiValidationStartRequest
@@ -22,7 +26,10 @@ import javax.inject.Singleton
 class CdcAuthenticationRepositoryImpl @Inject constructor(
     @Named("encrypted_prefs") private val encryptedPrefs: SharedPreferences,
     private val authApiService: AuthApiService,
+    private val cdcApiService: CdcApiService,
     private val flowEventsApiService: FlowEventsApiService,
+    private val jwtInterceptor: JwtInterceptor,
+    private val xClientAuthInterceptor: XClientAuthInterceptor,
     private val networkErrorMapper: NetworkErrorMapper
 ) : AuthenticationRepository {
 
@@ -37,6 +44,11 @@ class CdcAuthenticationRepositoryImpl @Inject constructor(
         const val KEY_LOCKOUT_END_TIME = "lockout_end_time"
         const val KEY_LAST_AUTH_TIME = "last_auth_time"
         const val KEY_FLOW_ID = "current_flow_id"
+        const val KEY_AUTH_METHOD = "auth_method" // "jwt" or "x_client"
+        
+        // Authentication method constants
+        const val AUTH_METHOD_JWT = "jwt"
+        const val AUTH_METHOD_X_CLIENT = "x_client"
     }
 
     /**
@@ -154,8 +166,8 @@ class CdcAuthenticationRepositoryImpl @Inject constructor(
             val flowResponse = flowEventsApiService.startImeiValidation(flowStartRequest)
             
             if (flowResponse.isSuccessful && flowResponse.body()?.success == true) {
-                // Perform IMEI validation
-                val imeiValidationRequest = ImeiValidationRequest(
+                // Perform IMEI validation using CDC API service
+                val cdcImeiValidationRequest = CdcImeiValidationRequest(
                     imei = imei,
                     deviceId = deviceId,
                     contractCode = contractCode,
@@ -164,7 +176,7 @@ class CdcAuthenticationRepositoryImpl @Inject constructor(
                     simSerialNumber = simSerialNumber
                 )
                 
-                val validationResponse = authApiService.validateImei(imeiValidationRequest)
+                val validationResponse = cdcApiService.validateImei(cdcImeiValidationRequest)
                 
                 if (validationResponse.isSuccessful && validationResponse.body()?.success == true) {
                     val responseBody = validationResponse.body()!!
@@ -254,12 +266,56 @@ class CdcAuthenticationRepositoryImpl @Inject constructor(
                 .remove(KEY_FAILED_ATTEMPTS)
                 .remove(KEY_LOCKOUT_END_TIME)
                 .remove(KEY_FLOW_ID)
+                .remove(KEY_AUTH_METHOD)
                 .apply()
+            
+            // Clear authentication data from interceptors
+            jwtInterceptor.clearTokens()
+            xClientAuthInterceptor.clearXClientCredentials()
             
             logSecurityEvent("Authentication data cleared via CDC repository")
         } catch (e: Exception) {
             logSecurityEvent("Failed to clear authentication data: ${e.message}")
         }
+    }
+
+    /**
+     * Sets the authentication method to use for API calls
+     */
+    fun setAuthenticationMethod(method: String) {
+        if (method == AUTH_METHOD_JWT || method == AUTH_METHOD_X_CLIENT) {
+            encryptedPrefs.edit()
+                .putString(KEY_AUTH_METHOD, method)
+                .apply()
+            logSecurityEvent("Authentication method set to: $method")
+        } else {
+            logSecurityEvent("Invalid authentication method: $method")
+        }
+    }
+
+    /**
+     * Gets the current authentication method
+     */
+    fun getCurrentAuthenticationMethod(): String {
+        return encryptedPrefs.getString(KEY_AUTH_METHOD, AUTH_METHOD_JWT) ?: AUTH_METHOD_JWT
+    }
+
+    /**
+     * Stores X-Client credentials for authentication
+     */
+    fun storeXClientCredentials(clientKey: String, clientToken: String, clientSecret: String) {
+        xClientAuthInterceptor.storeXClientCredentials(clientKey, clientToken, clientSecret)
+        setAuthenticationMethod(AUTH_METHOD_X_CLIENT)
+        logSecurityEvent("X-Client credentials stored")
+    }
+
+    /**
+     * Stores JWT tokens for authentication
+     */
+    fun storeJwtTokens(accessToken: String, refreshToken: String) {
+        jwtInterceptor.storeTokens(accessToken, refreshToken)
+        setAuthenticationMethod(AUTH_METHOD_JWT)
+        logSecurityEvent("JWT tokens stored")
     }
 
     override fun isAuthenticated(): Boolean {

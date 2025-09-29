@@ -61,8 +61,8 @@ class CommonHeadersInterceptor @Inject constructor(
     }
     
     private fun buildUserAgent(): String {
-        val appName = "CDC-CreditSmart"
-        return "$appName/$appVersion (Android ${Build.VERSION.RELEASE}; ${Build.MODEL})"
+        // CDC Credit Smart specification requires exactly "CDC-CreditSmart/1.0.0"
+        return "CDC-CreditSmart/1.0.0"
     }
     
     private fun generateRequestId(): String {

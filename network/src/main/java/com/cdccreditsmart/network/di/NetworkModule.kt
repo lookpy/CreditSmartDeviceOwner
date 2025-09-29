@@ -13,6 +13,7 @@ import com.cdccreditsmart.network.interceptors.ConnectivityDebugInterceptor
 import com.cdccreditsmart.network.interceptors.DeviceSignatureInterceptor
 import com.cdccreditsmart.network.interceptors.IdempotencyKeyInterceptor
 import com.cdccreditsmart.network.interceptors.JwtInterceptor
+import com.cdccreditsmart.network.interceptors.XClientAuthInterceptor
 import com.cdccreditsmart.network.security.EncryptionHelper
 import com.cdccreditsmart.network.security.AntiTamperingDetector
 import com.cdccreditsmart.network.api.*
@@ -112,6 +113,17 @@ object NetworkModule {
     }
     
     /**
+     * Provides X-Client authentication interceptor for CDC Credit Smart API
+     */
+    @Provides
+    @Singleton
+    fun provideXClientAuthInterceptor(
+        @NetworkEncryptedPrefs encryptedSharedPreferences: EncryptedSharedPreferences
+    ): XClientAuthInterceptor {
+        return XClientAuthInterceptor(encryptedSharedPreferences)
+    }
+    
+    /**
      * Provides device signature interceptor for request signing
      */
     @Provides
@@ -149,6 +161,7 @@ object NetworkModule {
         commonHeadersInterceptor: CommonHeadersInterceptor,
         connectivityDebugInterceptor: ConnectivityDebugInterceptor,
         jwtInterceptor: JwtInterceptor,
+        xClientAuthInterceptor: XClientAuthInterceptor,
         deviceSignatureInterceptor: DeviceSignatureInterceptor,
         idempotencyKeyInterceptor: IdempotencyKeyInterceptor,
         certificatePinningManager: CertificatePinningManager
@@ -157,6 +170,7 @@ object NetworkModule {
             commonHeadersInterceptor,
             connectivityDebugInterceptor,
             jwtInterceptor,
+            xClientAuthInterceptor,
             deviceSignatureInterceptor,
             idempotencyKeyInterceptor,
             certificatePinningManager
