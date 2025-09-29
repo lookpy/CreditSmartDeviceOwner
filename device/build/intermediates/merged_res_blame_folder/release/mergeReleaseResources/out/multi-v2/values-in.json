@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "com.cdccreditsmart.device-mergeReleaseResources-35:/values-in/values-in.xml",
+            "outputFile": "com.cdccreditsmart.device-release-38:/values-in/values-in.xml",
             "map": [
                 {
                     "source": "/home/runner/.gradle/caches/8.13/transforms/809a357bc590c410de4c9eacb74cf666/transformed/biometric-1.1.0/res/values-in/values-in.xml",
@@ -74,7 +74,7 @@
             ]
         },
         {
-            "outputFile": "com.cdccreditsmart.device-release-37:/values-in/values-in.xml",
+            "outputFile": "com.cdccreditsmart.device-mergeReleaseResources-36:/values-in/values-in.xml",
             "map": [
                 {
                     "source": "/home/runner/.gradle/caches/8.13/transforms/809a357bc590c410de4c9eacb74cf666/transformed/biometric-1.1.0/res/values-in/values-in.xml",

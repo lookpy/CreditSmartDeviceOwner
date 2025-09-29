@@ -10,8 +10,7 @@ import android.util.Log
 import com.cdccreditsmart.device.CDCDeviceAdminReceiver
 import com.cdccreditsmart.device.DeviceOwnerManager
 import com.cdccreditsmart.device.ManufacturerCompatibilityService
-import com.cdccreditsmart.domain.model.*
-import com.cdccreditsmart.data.repository.security.SecurityPolicyRepository
+import com.cdccreditsmart.device.security.model.*
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext

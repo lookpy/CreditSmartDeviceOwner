@@ -8,13 +8,11 @@ import androidx.security.crypto.MasterKeys
 import com.cdccreditsmart.data.local.CDCDatabase
 import com.cdccreditsmart.data.local.dao.*
 import com.cdccreditsmart.data.repository.*
-import com.cdccreditsmart.data.repository.security.SecurityPolicyRepository
 import com.cdccreditsmart.domain.repository.*
 import com.cdccreditsmart.network.api.*
 import com.cdccreditsmart.network.error.NetworkErrorMapper
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
-import kotlinx.serialization.json.Json
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -151,35 +149,15 @@ object DataModule {
     @Singleton
     fun provideAuthenticationRepository(
         @Named("encrypted_prefs") encryptedPrefs: SharedPreferences,
-        cdcApiService: CdcApiService,
-        jwtInterceptor: com.cdccreditsmart.network.interceptors.JwtInterceptor,
-        xClientAuthInterceptor: com.cdccreditsmart.network.interceptors.XClientAuthInterceptor,
+        authApiService: AuthApiService,
+        flowEventsApiService: FlowEventsApiService,
         networkErrorMapper: NetworkErrorMapper
     ): AuthenticationRepository {
         return CdcAuthenticationRepositoryImpl(
             encryptedPrefs,
-            cdcApiService,
-            jwtInterceptor,
-            xClientAuthInterceptor,
+            authApiService,
+            flowEventsApiService,
             networkErrorMapper
         )
-    }
-
-    /**
-     * Provides security policy repository for device security policy storage
-     */
-    @Provides
-    @Singleton
-    fun provideSecurityPolicyRepository(
-        @ApplicationContext context: Context,
-        database: CDCDatabase,
-        moshi: Moshi
-    ): SecurityPolicyRepository {
-        // Convert Moshi to kotlinx.serialization.Json
-        val json = Json {
-            ignoreUnknownKeys = true
-            encodeDefaults = true
-        }
-        return SecurityPolicyRepository(context, database, json)
     }
 }

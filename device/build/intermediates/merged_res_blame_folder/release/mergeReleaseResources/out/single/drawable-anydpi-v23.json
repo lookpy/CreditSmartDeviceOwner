@@ -1,6 +1,6 @@
 [
     {
-        "merged": "com.cdccreditsmart.device-release-37:/drawable-anydpi-v23/fingerprint_dialog_fp_icon.xml",
+        "merged": "com.cdccreditsmart.device-release-38:/drawable-anydpi-v23/fingerprint_dialog_fp_icon.xml",
         "source": "com.cdccreditsmart.device-biometric-1.1.0-13:/drawable-anydpi-v23/fingerprint_dialog_fp_icon.xml"
     }
 ]

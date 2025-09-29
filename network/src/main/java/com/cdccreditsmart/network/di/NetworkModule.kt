@@ -16,7 +16,6 @@ import com.cdccreditsmart.network.interceptors.JwtInterceptor
 import com.cdccreditsmart.network.interceptors.XClientAuthInterceptor
 import com.cdccreditsmart.network.security.EncryptionHelper
 import com.cdccreditsmart.network.security.AntiTamperingDetector
-import android.content.SharedPreferences
 import com.cdccreditsmart.network.api.*
 import com.cdccreditsmart.network.websocket.FlowStatusWebSocketService
 import com.cdccreditsmart.network.websocket.DeviceCommandWebSocketService
@@ -31,7 +30,6 @@ import dagger.hilt.components.SingletonComponent
 import retrofit2.Retrofit
 import javax.inject.Qualifier
 import javax.inject.Singleton
-import javax.inject.Named
 
 /**
  * Hilt module providing network-related dependencies
@@ -153,7 +151,6 @@ object NetworkModule {
     fun provideConnectivityDebugInterceptor(): ConnectivityDebugInterceptor {
         return ConnectivityDebugInterceptor()
     }
-    
     
     /**
      * Provides OkHttp client factory with all interceptors
@@ -312,7 +309,27 @@ object NetworkModule {
         return retrofit.create(ContractApiService::class.java)
     }
     
+    /**
+     * Provides Auth API service for authentication operations
+     */
+    @Provides
+    @Singleton
+    fun provideAuthApiService(
+        @BasicRetrofit retrofit: Retrofit // Auth uses basic client to avoid circular dependency
+    ): AuthApiService {
+        return retrofit.create(AuthApiService::class.java)
+    }
     
+    /**
+     * Provides Flow Events API service for flow tracking operations
+     */
+    @Provides
+    @Singleton
+    fun provideFlowEventsApiService(
+        @SecureRetrofit retrofit: Retrofit
+    ): FlowEventsApiService {
+        return retrofit.create(FlowEventsApiService::class.java)
+    }
     
     /**
      * Provides CDC API service for CDC-specific operations
