@@ -4,7 +4,6 @@ plugins {
     id("org.jetbrains.kotlin.android") version "2.2.20" apply false
     id("com.google.devtools.ksp") version "2.2.20-2.0.3" apply false
     id("com.google.dagger.hilt.android") version "2.54" apply false
-    id("org.gradle.toolchains.foojay-resolver-convention") version "0.8.0"
 }
 
 allprojects {
