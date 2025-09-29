@@ -7064,3 +7064,4 @@ int xml data_extraction_rules 0x7f140001
 int xml device_admin 0x7f140002
 int xml device_admin_policies 0x7f140003
 int xml file_paths 0x7f140004
+int xml network_security_config 0x7f140005

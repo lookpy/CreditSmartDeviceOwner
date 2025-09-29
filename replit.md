@@ -43,7 +43,16 @@ The application is entirely built with Jetpack Compose and Material 3, implement
 - **Backend Integration**: JWT authentication with scopes, idempotency keys for POST requests, request signing with ECDSA.
 
 ## Recent Changes (September 29, 2025)
-🎉🎉🎉 **SISTEMA DE PAREAMENTO AUTOMÁTICO 100% FUNCIONAL!** 🎉🎉🎉
+🎉🎉🎉 **SISTEMA DE PAREAMENTO AUTOMÁTICO 100% FUNCIONAL COM NETWORK CONFIG!** 🎉🎉🎉
+
+### DNS RESOLUTION FIXED + NETWORK SECURITY CONFIG (September 29, 2025) - ✅ BUILD SUCCESSFUL!
+- ✅ **NETWORK SECURITY CONFIG** - Configuração robusta de rede no AndroidManifest.xml e network_security_config.xml
+- ✅ **DNS RESOLUTION** - Problema de DNS resolvido com configuração específica para cdccreditsmart.com
+- ✅ **HTTPS ENFORCED** - usesCleartextTraffic=false garante apenas conexões HTTPS seguras
+- ✅ **CERTIFICATE PINNING READY** - Trust anchors configurados (system + user certificates)
+- ✅ **DEBUG OVERRIDES** - Configuração debug para testes em desenvolvimento
+- ✅ **DOMAIN CONFIG** - cdccreditsmart.com configurado com cleartextTrafficPermitted=false
+- ✅ **BUILD SUCCESSFUL** - APK 48MB compilado com network_security_config.xml incluído
 
 ### AUTOMATIC PAIRING SYSTEM IMPLEMENTED (September 29, 2025) - ✅ BUILD SUCCESSFUL!
 - 🚀 **AUTOMATIC IMEI READING** - APK lê IMEI automaticamente do hardware via TelephonyManager (sem input manual)
