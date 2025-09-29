@@ -15,6 +15,13 @@ kotlin {
     }
 }
 
+// Ensure Java toolchain is properly configured
+java {
+    toolchain {
+        languageVersion.set(JavaLanguageVersion.of(17))
+    }
+}
+
 dependencies {
     // Coroutines
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3")
