@@ -13,18 +13,19 @@ author = "agent"
 
 [[workflows.workflow.tasks]]
 task = "workflow.run"
-args = "Android Build"
+args = "APK Server"
 
 [[workflows.workflow]]
-name = "Android Build"
+name = "APK Server"
 author = "agent"
-
-[workflows.workflow.metadata]
-outputType = "console"
 
 [[workflows.workflow.tasks]]
 task = "shell.exec"
-args = "export JAVA_HOME=/nix/store/xad649j61kwkh0id5wvyiab5rliprp4d-openjdk-17.0.15+6 && export ANDROID_HOME=/home/runner/workspace/android-sdk && ./gradlew assembleRelease --no-daemon"
+args = "cd app/build/outputs/apk/release && python3 -m http.server 5000 --bind 0.0.0.0"
+waitForPort = 5000
+
+[workflows.workflow.metadata]
+outputType = "webview"
 
 [nix]
 channel = "stable-25_05"
@@ -38,5 +39,14 @@ externalPort = 3001
 localPort = 5000
 externalPort = 80
 
+[[ports]]
+localPort = 45157
+externalPort = 3000
+
 [objectStorage]
 defaultBucketID = "replit-objstore-26ad777e-9796-448b-831a-6cb21ca84508"
+
+[deployment]
+deploymentTarget = "autoscale"
+run = ["bash", "-c", "cd app/build/outputs/apk/release && python3 -m http.server 5000 --bind 0.0.0.0"]
+build = ["bash", "-c", "export JAVA_HOME=/nix/store/xad649j61kwkh0id5wvyiab5rliprp4d-openjdk-17.0.15+6 && export ANDROID_HOME=/home/runner/workspace/android-sdk && ./gradlew assembleRelease --no-daemon && echo 'Build completed successfully'"]
