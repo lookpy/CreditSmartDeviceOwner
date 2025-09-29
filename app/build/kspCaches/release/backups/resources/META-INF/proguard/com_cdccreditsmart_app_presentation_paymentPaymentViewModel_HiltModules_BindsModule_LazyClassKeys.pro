@@ -1,9 +1,0 @@
--keep,allowobfuscation,allowshrinking class com.cdccreditsmart.app.presentation.home.HomeViewModel
--keep,allowobfuscation,allowshrinking class com.cdccreditsmart.app.presentation.home.HomeViewModel
--keep,allowobfuscation,allowshrinking class com.cdccreditsmart.app.presentation.installments.InstallmentsViewModel
--keep,allowobfuscation,allowshrinking class com.cdccreditsmart.app.presentation.installments.InstallmentsViewModel
--keep,allowobfuscation,allowshrinking class com.cdccreditsmart.app.presentation.profile.ProfileViewModel
--keep,allowobfuscation,allowshrinking class com.cdccreditsmart.app.presentation.profile.ProfileViewModel
--keep,allowobfuscation,allowshrinking class com.cdccreditsmart.app.presentation.auth.AuthViewModel
--keep,allowobfuscation,allowshrinking class com.cdccreditsmart.app.presentation.auth.AuthViewModel
--keep,allowobfuscation,allowshrinking class com.cdccreditsmart.app.presentation.payment.PaymentViewModel

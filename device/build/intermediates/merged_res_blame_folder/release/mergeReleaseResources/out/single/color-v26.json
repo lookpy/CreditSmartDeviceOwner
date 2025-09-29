@@ -1,6 +1,6 @@
 [
     {
-        "merged": "com.cdccreditsmart.device-release-38:/color-v26/biometric_error_color.xml",
+        "merged": "com.cdccreditsmart.device-release-37:/color-v26/biometric_error_color.xml",
         "source": "com.cdccreditsmart.device-biometric-1.1.0-13:/color-v26/biometric_error_color.xml"
     }
 ]

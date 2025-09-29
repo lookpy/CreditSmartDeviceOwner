@@ -1,6 +1,6 @@
 [
     {
-        "merged": "com.cdccreditsmart.device-release-38:/drawable-v23/abc_control_background_material.xml",
+        "merged": "com.cdccreditsmart.device-release-37:/drawable-v23/abc_control_background_material.xml",
         "source": "com.cdccreditsmart.device-appcompat-1.7.0-20:/drawable-v23/abc_control_background_material.xml"
     }
 ]

@@ -10,6 +10,15 @@ import retrofit2.http.*
  */
 interface CdcApiService {
     
+    // Device registration temporarily removed to fix build issues
+    // TODO: Re-implement simplified device registration later
+    
+    // Device token status temporarily removed to fix build issues
+    // TODO: Re-implement simplified device token status later
+    
+    // Device token refresh temporarily removed to fix build issues
+    // TODO: Re-implement simplified device token refresh later
+    
     /**
      * APK Authentication endpoint
      * POST /api/apk/auth
@@ -272,4 +281,68 @@ data class ProvisioningQrResponse(
     val qrData: String? = null, // Raw QR code data
     val expiresAt: Long? = null,
     val provisioningUrl: String? = null
+)
+
+// NEW CDC CreditSmart Device Registration System DTOs
+
+/**
+ * Device Registration Request DTO
+ * Used for /api/device/register endpoint
+ */
+@JsonClass(generateAdapter = true)
+data class DeviceRegistrationRequest(
+    val deviceFingerprint: String,
+    val imei: String,
+    val deviceModel: String,
+    val deviceBrand: String,
+    val androidVersion: String,
+    val storeId: String? = null
+)
+
+/**
+ * Device Registration Response DTO
+ * Response from /api/device/register endpoint
+ */
+@JsonClass(generateAdapter = true)
+data class DeviceRegistrationResponse(
+    val success: Boolean,
+    val message: String? = null,
+    val deviceToken: String? = null,
+    val expiresIn: Long? = null, // Token expiration in seconds (30 days = 2592000)
+    val expiresAt: Long? = null, // Absolute expiration timestamp
+    val deviceId: String? = null,
+    val serverTimestamp: Long,
+    val refreshInterval: Long? = null // How often to refresh token
+)
+
+/**
+ * Device Token Status Response DTO
+ * Response from /api/device/{fingerprint}/status endpoint
+ */
+@JsonClass(generateAdapter = true)
+data class DeviceTokenStatusResponse(
+    val success: Boolean,
+    val message: String? = null,
+    val isValid: Boolean,
+    val isExpired: Boolean,
+    val expiresAt: Long? = null,
+    val issuedAt: Long? = null,
+    val deviceId: String? = null,
+    val needsRefresh: Boolean = false,
+    val serverTimestamp: Long
+)
+
+/**
+ * Device Token Refresh Response DTO
+ * Response from /api/device/{fingerprint}/refresh endpoint
+ */
+@JsonClass(generateAdapter = true)
+data class DeviceTokenRefreshResponse(
+    val success: Boolean,
+    val message: String? = null,
+    val deviceToken: String? = null,
+    val expiresIn: Long? = null, // New token expiration in seconds
+    val expiresAt: Long? = null, // New absolute expiration timestamp
+    val refreshedAt: Long,
+    val serverTimestamp: Long
 )

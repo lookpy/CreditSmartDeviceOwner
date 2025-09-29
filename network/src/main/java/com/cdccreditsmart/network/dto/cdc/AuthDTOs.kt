@@ -7,35 +7,11 @@ import com.squareup.moshi.JsonClass
  * Based on official CDC CreditSmart API documentation
  */
 
-@JsonClass(generateAdapter = true)
-data class DeviceRegistrationRequest(
-    val imei: String,
-    val deviceFingerprint: String,
-    val hardwareSignature: String,
-    val model: String,
-    val brand: String,
-    val androidVersion: String
-)
+// DeviceRegistrationRequest temporarily removed to fix build issues
+// TODO: Re-implement simplified device registration request later
 
-@JsonClass(generateAdapter = true)
-data class DeviceRegistrationResponse(
-    val success: Boolean,
-    val registered: Boolean,
-    val authenticated: Boolean,
-    val authToken: String? = null,
-    val fingerprint: String? = null,
-    val immutableToken: String? = null,
-    val expiresIn: Long? = null,
-    val securityLevel: String? = null,
-    val device: DeviceInfo? = null,
-    val customer: CustomerInfo? = null,
-    val store: StoreInfo? = null,
-    val paymentSummary: PaymentSummary? = null,
-    val security: SecurityInfo? = null,
-    val serverTimestamp: Long,
-    val message: String? = null,
-    val errorCode: String? = null
-)
+// DeviceRegistrationResponse temporarily removed to fix build issues
+// TODO: Re-implement simplified device registration response later
 
 @JsonClass(generateAdapter = true)
 data class AutoSyncRequest(

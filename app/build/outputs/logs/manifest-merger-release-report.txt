@@ -15,10 +15,10 @@ ADDED from /home/runner/workspace/app/src/main/AndroidManifest.xml:2:1-154:12
 INJECTED from /home/runner/workspace/app/src/main/AndroidManifest.xml:2:1-154:12
 INJECTED from /home/runner/workspace/app/src/main/AndroidManifest.xml:2:1-154:12
 INJECTED from /home/runner/workspace/app/src/main/AndroidManifest.xml:2:1-154:12
-MERGED from [:device] /home/runner/workspace/device/build/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml:2:1-98:12
 MERGED from [:data] /home/runner/workspace/data/build/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml:2:1-7:12
 MERGED from [:network] /home/runner/workspace/network/build/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml:2:1-10:12
 MERGED from [:biometry] /home/runner/workspace/biometry/build/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml:2:1-7:12
+MERGED from [:device] /home/runner/workspace/device/build/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml:2:1-98:12
 MERGED from [:payments] /home/runner/workspace/payments/build/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml:2:1-7:12
 MERGED from [androidx.hilt:hilt-navigation-compose:1.2.0] /home/runner/.gradle/caches/8.13/transforms/084933162d7f8f2457ff77814600d936/transformed/hilt-navigation-compose-1.2.0/AndroidManifest.xml:2:1-7:12
 MERGED from [androidx.hilt:hilt-navigation:1.2.0] /home/runner/.gradle/caches/8.13/transforms/20ae5e57d07eb6831752fb8a268e85ab/transformed/hilt-navigation-1.2.0/AndroidManifest.xml:2:1-7:12
@@ -135,10 +135,10 @@ MERGED from [:network] /home/runner/workspace/network/build/intermediates/merged
 		ADDED from /home/runner/workspace/app/src/main/AndroidManifest.xml:6:22-64
 uses-permission#android.permission.ACCESS_NETWORK_STATE
 ADDED from /home/runner/workspace/app/src/main/AndroidManifest.xml:7:5-79
-MERGED from [:device] /home/runner/workspace/device/build/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml:65:5-79
-MERGED from [:device] /home/runner/workspace/device/build/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml:65:5-79
 MERGED from [:network] /home/runner/workspace/network/build/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml:8:5-79
 MERGED from [:network] /home/runner/workspace/network/build/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml:8:5-79
+MERGED from [:device] /home/runner/workspace/device/build/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml:65:5-79
+MERGED from [:device] /home/runner/workspace/device/build/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml:65:5-79
 MERGED from [androidx.work:work-runtime:2.9.1] /home/runner/.gradle/caches/8.13/transforms/6e10cb0db923d35705d667c22d63e299/transformed/work-runtime-2.9.1/AndroidManifest.xml:24:5-79
 MERGED from [androidx.work:work-runtime:2.9.1] /home/runner/.gradle/caches/8.13/transforms/6e10cb0db923d35705d667c22d63e299/transformed/work-runtime-2.9.1/AndroidManifest.xml:24:5-79
 	android:name
@@ -450,14 +450,14 @@ uses-sdk
 INJECTED from /home/runner/workspace/app/src/main/AndroidManifest.xml reason: use-sdk injection requested
 INJECTED from /home/runner/workspace/app/src/main/AndroidManifest.xml
 INJECTED from /home/runner/workspace/app/src/main/AndroidManifest.xml
-MERGED from [:device] /home/runner/workspace/device/build/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml:5:5-44
-MERGED from [:device] /home/runner/workspace/device/build/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml:5:5-44
 MERGED from [:data] /home/runner/workspace/data/build/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml:5:5-44
 MERGED from [:data] /home/runner/workspace/data/build/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml:5:5-44
 MERGED from [:network] /home/runner/workspace/network/build/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml:5:5-44
 MERGED from [:network] /home/runner/workspace/network/build/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml:5:5-44
 MERGED from [:biometry] /home/runner/workspace/biometry/build/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml:5:5-44
 MERGED from [:biometry] /home/runner/workspace/biometry/build/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml:5:5-44
+MERGED from [:device] /home/runner/workspace/device/build/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml:5:5-44
+MERGED from [:device] /home/runner/workspace/device/build/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml:5:5-44
 MERGED from [:payments] /home/runner/workspace/payments/build/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml:5:5-44
 MERGED from [:payments] /home/runner/workspace/payments/build/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml:5:5-44
 MERGED from [androidx.hilt:hilt-navigation-compose:1.2.0] /home/runner/.gradle/caches/8.13/transforms/084933162d7f8f2457ff77814600d936/transformed/hilt-navigation-compose-1.2.0/AndroidManifest.xml:5:5-44

@@ -8,7 +8,8 @@ import com.cdccreditsmart.device.DeviceOwnerManager
 import com.cdccreditsmart.device.ManufacturerCompatibilityService
 import com.cdccreditsmart.device.offline.OfflineBlockingEngine
 import com.cdccreditsmart.device.offline.SecurityManager
-import com.cdccreditsmart.device.security.model.*
+import com.cdccreditsmart.domain.model.*
+import com.cdccreditsmart.data.repository.security.SecurityPolicyRepository
 import com.cdccreditsmart.data.local.entity.ActiveSecurityPolicyEntity
 import com.cdccreditsmart.data.local.entity.PolicyConfigurationEntity
 import dagger.hilt.android.qualifiers.ApplicationContext

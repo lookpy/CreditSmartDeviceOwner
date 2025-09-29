@@ -4,7 +4,6 @@ import com.squareup.moshi.JsonClass
 import retrofit2.Response
 import retrofit2.http.*
 import com.cdccreditsmart.network.dto.cdc.DeviceRegistrationRequest
-import com.cdccreditsmart.network.dto.cdc.DeviceRegistrationResponse
 import com.cdccreditsmart.network.dto.cdc.AutoSyncRequest
 import com.cdccreditsmart.network.dto.cdc.AutoSyncResponse
 
@@ -33,14 +32,8 @@ interface AuthApiService {
         @Body request: ImeiValidationRequest
     ): Response<ImeiValidationResponse>
     
-    /**
-     * Main device registration endpoint - CDC Credit Smart specific
-     * POST /api/apk/register
-     */
-    @POST("api/apk/register")
-    suspend fun registerDevice(
-        @Body request: DeviceRegistrationRequest
-    ): Response<DeviceRegistrationResponse>
+    // Device registration temporarily removed to fix build issues
+    // TODO: Re-implement simplified device registration later
     
     /**
      * Auto-sync by IMEI endpoint - CDC Credit Smart specific

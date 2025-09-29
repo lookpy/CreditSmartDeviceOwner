@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "com.cdccreditsmart.device-release-38:/values-es/values-es.xml",
+            "outputFile": "com.cdccreditsmart.device-release-37:/values-es/values-es.xml",
             "map": [
                 {
                     "source": "/home/runner/.gradle/caches/8.13/transforms/731aa70a8839d374d48bbb1c660b3cbc/transformed/play-services-basement-18.4.0/res/values-es/values.xml",
@@ -74,7 +74,7 @@
             ]
         },
         {
-            "outputFile": "com.cdccreditsmart.device-mergeReleaseResources-36:/values-es/values-es.xml",
+            "outputFile": "com.cdccreditsmart.device-mergeReleaseResources-35:/values-es/values-es.xml",
             "map": [
                 {
                     "source": "/home/runner/.gradle/caches/8.13/transforms/731aa70a8839d374d48bbb1c660b3cbc/transformed/play-services-basement-18.4.0/res/values-es/values.xml",

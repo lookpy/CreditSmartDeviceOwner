@@ -2,6 +2,9 @@ package com.cdccreditsmart.device.di
 
 import android.app.admin.DevicePolicyManager
 import android.content.Context
+import android.content.SharedPreferences
+import androidx.security.crypto.EncryptedSharedPreferences
+import androidx.security.crypto.MasterKeys
 import com.cdccreditsmart.device.DeviceManufacturerDetector
 import com.cdccreditsmart.device.DeviceOwnerManager
 import com.cdccreditsmart.device.ManufacturerCompatibilityService
@@ -11,6 +14,7 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import javax.inject.Named
 import javax.inject.Singleton
 
 /**
@@ -56,4 +60,22 @@ object DeviceModule {
     fun provideFallbackDeviceManager(@ApplicationContext context: Context): FallbackDeviceManager {
         return FallbackDeviceManager(context)
     }
+
+    /**
+     * Provides encrypted shared preferences for device token storage
+     */
+    @Provides
+    @Singleton
+    @Named("encrypted_prefs")
+    fun provideEncryptedSharedPreferences(@ApplicationContext context: Context): SharedPreferences {
+        val masterKeyAlias = MasterKeys.getOrCreate(MasterKeys.AES256_GCM_SPEC)
+        return EncryptedSharedPreferences.create(
+            "cdc_auth_prefs",
+            masterKeyAlias,
+            context,
+            EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
+            EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
+        )
+    }
+
 }
