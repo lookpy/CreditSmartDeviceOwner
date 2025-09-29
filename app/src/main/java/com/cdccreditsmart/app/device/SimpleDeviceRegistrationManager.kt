@@ -375,6 +375,14 @@ class SimpleDeviceRegistrationManager(private val context: Context) {
      */
     private fun collectDeviceInfo(): SimpleDeviceInfo {
         val androidId = Settings.Secure.getString(context.contentResolver, Settings.Secure.ANDROID_ID)
+        
+        // Try to get serial number, but don't fail if permission denied
+        val serialNumber = try {
+            Build.getSerial().takeIf { it != Build.UNKNOWN }
+        } catch (e: SecurityException) {
+            Log.d(TAG, "Cannot access serial number (permission denied), using null")
+            null
+        }
 
         return SimpleDeviceInfo(
             manufacturer = Build.MANUFACTURER,
@@ -382,7 +390,7 @@ class SimpleDeviceRegistrationManager(private val context: Context) {
             androidVersion = Build.VERSION.RELEASE,
             apiLevel = Build.VERSION.SDK_INT,
             imei = null, // No longer collecting device IMEI
-            serialNumber = Build.getSerial().takeIf { it != Build.UNKNOWN },
+            serialNumber = serialNumber,
             androidId = androidId
         )
     }
