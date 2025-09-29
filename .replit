@@ -44,5 +44,5 @@ defaultBucketID = "replit-objstore-26ad777e-9796-448b-831a-6cb21ca84508"
 
 [deployment]
 deploymentTarget = "autoscale"
-run = ["bash", "-c", "cd app/build/outputs/apk/release && python3 -m http.server 5000 --bind 0.0.0.0"]
+run = ["python3", "-m", "http.server", "5000", "--bind", "0.0.0.0", "--directory", "app/build/outputs/apk/release"]
 build = ["bash", "-c", "export JAVA_HOME=/nix/store/xad649j61kwkh0id5wvyiab5rliprp4d-openjdk-17.0.15+6 && export ANDROID_HOME=/home/runner/workspace/android-sdk && ./gradlew assembleRelease --no-daemon && echo 'Build completed successfully'"]
