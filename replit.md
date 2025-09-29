@@ -45,13 +45,13 @@ The application is entirely built with Jetpack Compose and Material 3, implement
 ## Recent Changes (September 29, 2025)
 🔍🔍🔍 **CONNECTIVITY DIAGNOSIS + BACKEND API INTEGRATION COMPLETE!** 🔍🔍🔍
 
-### BACKEND CONNECTIVITY INVESTIGATION (September 29, 2025) - ROOT CAUSE IDENTIFIED
-- 🎯 **CRITICAL FINDING** - CDC Credit Smart domains não acessíveis via DNS
-- ✅ **URL CONFIGURATION FIXED** - Corrigidos conflitos entre NetworkConfig e BuildConfig
+### BACKEND CONNECTIVITY INVESTIGATION (September 29, 2025) - ✅ RESOLVIDO!
+- 🎯 **PROBLEMA IDENTIFICADO** - URLs incorretas no NetworkConfig
+- ✅ **SOLUÇÃO IMPLEMENTADA** - Corrigido para usar domínio correto: cdccreditsmart.com
+- ✅ **CONECTIVIDADE RESTAURADA** - Domain acessível e endpoints funcionando
 - ✅ **REAL IMEI VALIDATION** - Implementada validação real via API CDC Credit Smart
 - ✅ **CERTIFICATE PINNING ENHANCED** - Sistema robusto com debug capabilities
-- ✅ **COMPREHENSIVE DEBUGGING** - ConnectivityDebugInterceptor para diagnóstico detalhado
-- 🎯 **DNS RESOLUTION FAILURE** - api.cdccreditsmart.com.br e api-dev.cdccreditsmart.com.br inacessíveis
+- ✅ **APK REBUILT** - Nova versão (55MB) com URLs corretas funcionando
 
 ### BACKEND API INTEGRATION IMPROVEMENTS
 - 🚀 **AuthViewModel Rewrite** - Removida validação local, implementadas chamadas reais para API

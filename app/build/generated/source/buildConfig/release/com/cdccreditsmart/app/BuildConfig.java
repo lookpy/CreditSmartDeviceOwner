@@ -12,7 +12,7 @@ public final class BuildConfig {
   // Field from default config.
   public static final boolean ANDROID_15_EDGE_TO_EDGE = true;
   // Field from build type: release
-  public static final String BASE_URL = "https://api.cdccreditsmart.com.br/";
+  public static final String BASE_URL = "https://cdccreditsmart.com/";
   // Field from build type: release
   public static final boolean ENABLE_NETWORK_LOGGING = false;
   // Field from default config.

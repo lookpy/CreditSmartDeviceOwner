@@ -52,7 +52,7 @@ android {
             proguardFiles()
             
             // Debug network configuration
-            buildConfigField("String", "BASE_URL", "\"https://api-dev.cdccreditsmart.com.br/\"")
+            buildConfigField("String", "BASE_URL", "\"https://cdccreditsmart.com/\"")
             buildConfigField("boolean", "ENABLE_NETWORK_LOGGING", "true")
         }
         
@@ -63,7 +63,7 @@ android {
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
             
             // Production network configuration
-            buildConfigField("String", "BASE_URL", "\"https://api.cdccreditsmart.com.br/\"")
+            buildConfigField("String", "BASE_URL", "\"https://cdccreditsmart.com/\"")
             buildConfigField("boolean", "ENABLE_NETWORK_LOGGING", "false")
         }
     }
