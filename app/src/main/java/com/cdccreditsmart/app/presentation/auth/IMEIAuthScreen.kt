@@ -32,11 +32,11 @@ import androidx.compose.ui.text.SpanStyle
 @Composable
 fun IMEIAuthScreen(
     onAuthenticationSuccess: () -> Unit,
-    modifier: Modifier = Modifier,
-    viewModel: SimplifiedAuthViewModel = remember { SimplifiedAuthViewModel(LocalContext.current) }
+    modifier: Modifier = Modifier
 ) {
-    val authState by viewModel.authState
     val context = LocalContext.current
+    val viewModel = remember { SimplifiedAuthViewModel(context) }
+    val authState by viewModel.authState
     
     // Initialize auth when screen is ready (avoid network calls during Device Owner provisioning)
     LaunchedEffect(Unit) {
