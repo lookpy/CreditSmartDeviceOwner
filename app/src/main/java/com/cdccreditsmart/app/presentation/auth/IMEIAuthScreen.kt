@@ -65,10 +65,20 @@ fun IMEIAuthScreen(
         }
     }
 
-    // Request permission on first load
-    LaunchedEffect(authState.currentState) {
+    // Track permission request to prevent loops
+    var permissionRequested by remember { mutableStateOf(false) }
+    
+    // Request permission on first load (but only once per state change)
+    LaunchedEffect(authState.currentState, authState.permissionRequestCount) {
         if (authState.currentState == AuthStatus.Permission) {
-            permissionLauncher.launch(Manifest.permission.READ_PHONE_STATE)
+            // Only request if we haven't already requested for this specific attempt
+            if (!permissionRequested && viewModel.shouldRequestPermission()) {
+                permissionRequested = true
+                permissionLauncher.launch(Manifest.permission.READ_PHONE_STATE)
+            }
+        } else {
+            // Reset the flag when we're not in Permission state
+            permissionRequested = false
         }
     }
 
@@ -122,7 +132,10 @@ fun IMEIAuthScreen(
                 VerifyingContent()
             }
             AuthStatus.Permission -> {
-                PermissionRequestContent()
+                PermissionRequestContent(
+                    onManualEntry = viewModel::requestManualEntry,
+                    permissionRequestCount = authState.permissionRequestCount
+                )
             }
             AuthStatus.AwaitingInput -> {
                 IMEIInputContent(
@@ -130,7 +143,18 @@ fun IMEIAuthScreen(
                     userEnteredImei = authState.userEnteredImei,
                     onImeiChanged = viewModel::onImeiInputChanged,
                     onVerifyClick = viewModel::verifyImei,
-                    errorMessage = authState.errorMessage
+                    errorMessage = authState.errorMessage,
+                    isManualEntry = false
+                )
+            }
+            AuthStatus.ManualEntry -> {
+                IMEIInputContent(
+                    deviceImei = null, // No device IMEI for manual entry
+                    userEnteredImei = authState.userEnteredImei,
+                    onImeiChanged = viewModel::onImeiInputChanged,
+                    onVerifyClick = viewModel::verifyManualImei,
+                    errorMessage = authState.errorMessage,
+                    isManualEntry = true
                 )
             }
             AuthStatus.Verifying -> {
@@ -145,7 +169,10 @@ fun IMEIAuthScreen(
                     isLockedOut = authState.isLockedOut,
                     lockoutEndTime = authState.lockoutEndTime,
                     failedAttempts = authState.failedAttempts,
-                    onRetry = viewModel::retry
+                    onRetry = viewModel::retry,
+                    showManualEntry = authState.showManualEntry,
+                    onManualEntry = viewModel::requestManualEntry,
+                    onRequestPermission = viewModel::requestPermissionAgain
                 )
             }
             AuthStatus.Authenticated -> {
@@ -156,7 +183,10 @@ fun IMEIAuthScreen(
 }
 
 @Composable
-private fun PermissionRequestContent() {
+private fun PermissionRequestContent(
+    onManualEntry: () -> Unit,
+    permissionRequestCount: Int = 0
+) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
@@ -183,6 +213,17 @@ private fun PermissionRequestContent() {
             textAlign = TextAlign.Center,
             color = MaterialTheme.colorScheme.onSurfaceVariant
         )
+        
+        if (permissionRequestCount > 0) {
+            Spacer(modifier = Modifier.height(12.dp))
+            
+            Text(
+                text = "Permission request attempt ${permissionRequestCount + 1}",
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.error,
+                textAlign = TextAlign.Center
+            )
+        }
         
         Spacer(modifier = Modifier.height(16.dp))
         
@@ -211,6 +252,17 @@ private fun PermissionRequestContent() {
                 )
             }
         }
+        
+        if (permissionRequestCount > 0) {
+            Spacer(modifier = Modifier.height(24.dp))
+            
+            OutlinedButton(
+                onClick = onManualEntry,
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Text("Use Manual Verification Instead")
+            }
+        }
     }
 }
 
@@ -221,7 +273,8 @@ private fun IMEIInputContent(
     userEnteredImei: String,
     onImeiChanged: (String) -> Unit,
     onVerifyClick: () -> Unit,
-    errorMessage: String?
+    errorMessage: String?,
+    isManualEntry: Boolean = false
 ) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally
@@ -236,7 +289,7 @@ private fun IMEIInputContent(
         Spacer(modifier = Modifier.height(16.dp))
         
         Text(
-            text = "Device Verification",
+            text = if (isManualEntry) "Manual Verification" else "Device Verification",
             style = MaterialTheme.typography.headlineSmall,
             fontWeight = FontWeight.Bold
         )
@@ -244,11 +297,45 @@ private fun IMEIInputContent(
         Spacer(modifier = Modifier.height(8.dp))
         
         Text(
-            text = "Please enter your device IMEI to verify your identity",
+            text = if (isManualEntry) {
+                "Please enter your device IMEI number for manual verification"
+            } else {
+                "Please enter your device IMEI to verify your identity"
+            },
             style = MaterialTheme.typography.bodyMedium,
             textAlign = TextAlign.Center,
             color = MaterialTheme.colorScheme.onSurfaceVariant
         )
+        
+        if (isManualEntry) {
+            Spacer(modifier = Modifier.height(12.dp))
+            
+            Card(
+                colors = CardDefaults.cardColors(
+                    containerColor = MaterialTheme.colorScheme.tertiaryContainer
+                )
+            ) {
+                Row(
+                    modifier = Modifier.padding(12.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Info,
+                        contentDescription = "Manual Entry Info",
+                        tint = MaterialTheme.colorScheme.onTertiaryContainer,
+                        modifier = Modifier.size(16.dp)
+                    )
+                    
+                    Spacer(modifier = Modifier.width(8.dp))
+                    
+                    Text(
+                        text = "You can find your IMEI by dialing *#06# or in device settings.",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onTertiaryContainer
+                    )
+                }
+            }
+        }
         
         Spacer(modifier = Modifier.height(24.dp))
         
@@ -315,7 +402,7 @@ private fun IMEIInputContent(
             enabled = userEnteredImei.length == 15,
             modifier = Modifier.fillMaxWidth()
         ) {
-            Text("Verify Device")
+            Text(if (isManualEntry) "Verify IMEI" else "Verify Device")
         }
         
         Spacer(modifier = Modifier.height(16.dp))
@@ -383,7 +470,10 @@ private fun ErrorContent(
     isLockedOut: Boolean,
     lockoutEndTime: Long?,
     failedAttempts: Int,
-    onRetry: () -> Unit
+    onRetry: () -> Unit,
+    showManualEntry: Boolean = false,
+    onManualEntry: (() -> Unit)? = null,
+    onRequestPermission: (() -> Unit)? = null
 ) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally
@@ -430,11 +520,47 @@ private fun ErrorContent(
         if (!isLockedOut || (lockoutEndTime != null && System.currentTimeMillis() >= lockoutEndTime)) {
             Spacer(modifier = Modifier.height(24.dp))
             
-            Button(
-                onClick = onRetry,
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                Text("Try Again")
+            // Show different options based on the error type
+            if (showManualEntry) {
+                // Permission-related error with manual entry option
+                Column {
+                    Button(
+                        onClick = onRetry,
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        Text("Try Again")
+                    }
+                    
+                    Spacer(modifier = Modifier.height(12.dp))
+                    
+                    if (onManualEntry != null) {
+                        OutlinedButton(
+                            onClick = onManualEntry,
+                            modifier = Modifier.fillMaxWidth()
+                        ) {
+                            Text("Use Manual Verification")
+                        }
+                    }
+                    
+                    if (onRequestPermission != null) {
+                        Spacer(modifier = Modifier.height(8.dp))
+                        
+                        TextButton(
+                            onClick = onRequestPermission,
+                            modifier = Modifier.fillMaxWidth()
+                        ) {
+                            Text("Grant Permission")
+                        }
+                    }
+                }
+            } else {
+                // Standard retry button
+                Button(
+                    onClick = onRetry,
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Text("Try Again")
+                }
             }
         }
         

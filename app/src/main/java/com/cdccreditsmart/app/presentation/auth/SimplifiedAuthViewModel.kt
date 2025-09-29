@@ -21,7 +21,10 @@ data class SimplifiedAuthState(
     val userEnteredImei: String = "",
     val failedAttempts: Int = 0,
     val isLockedOut: Boolean = false,
-    val lockoutEndTime: Long? = null
+    val lockoutEndTime: Long? = null,
+    val permissionDenied: Boolean = false,
+    val permissionRequestCount: Int = 0,
+    val showManualEntry: Boolean = false
 )
 
 enum class AuthStatus {
@@ -31,7 +34,8 @@ enum class AuthStatus {
     Verifying,
     Registering,
     Error,
-    Authenticated
+    Authenticated,
+    ManualEntry
 }
 
 /**
@@ -52,6 +56,18 @@ class SimplifiedAuthViewModel(
     companion object {
         private const val TAG = "SimplifiedAuthViewModel"
     }
+    
+    /**
+     * Log current state for debugging
+     */
+    private fun logStateChange(newState: AuthStatus, context: String = "") {
+        val currentState = _authState.value
+        Log.d(TAG, "STATE CHANGE: ${currentState.currentState} -> $newState" + 
+               if (context.isNotEmpty()) " ($context)" else "" +
+               ", Permission denied: ${currentState.permissionDenied}" +
+               ", Request count: ${currentState.permissionRequestCount}" +
+               ", Show manual: ${currentState.showManualEntry}")
+    }
 
     init {
         Log.d(TAG, "Initializing simplified auth system")
@@ -65,7 +81,7 @@ class SimplifiedAuthViewModel(
     private fun checkDeviceRegistrationStatus() {
         viewModelScope.launch {
             try {
-                Log.d(TAG, "Checking device registration status")
+                logStateChange(AuthStatus.Initializing, "Starting device registration check")
                 _authState.value = _authState.value.copy(
                     currentState = AuthStatus.Initializing,
                     isLoading = true,
@@ -83,13 +99,24 @@ class SimplifiedAuthViewModel(
                         registrationStatus = "registered"
                     )
                 } else {
-                    Log.d(TAG, "Device not registered, requesting permission")
-                    // Request permission first for IMEI access
-                    _authState.value = _authState.value.copy(
-                        currentState = AuthStatus.Permission,
-                        isLoading = false,
-                        errorMessage = null
-                    )
+                    Log.d(TAG, "Device not registered, checking permission status")
+                    // Check if we should request permission or go to manual entry
+                    if (shouldRequestPermission()) {
+                        logStateChange(AuthStatus.Permission, "Requesting IMEI permission")
+                        _authState.value = _authState.value.copy(
+                            currentState = AuthStatus.Permission,
+                            isLoading = false,
+                            errorMessage = null
+                        )
+                    } else {
+                        logStateChange(AuthStatus.ManualEntry, "Permission denied, offering manual entry")
+                        _authState.value = _authState.value.copy(
+                            currentState = AuthStatus.ManualEntry,
+                            isLoading = false,
+                            errorMessage = null,
+                            showManualEntry = true
+                        )
+                    }
                 }
                 
             } catch (e: Exception) {
@@ -196,17 +223,20 @@ class SimplifiedAuthViewModel(
      * Handle permission granted for READ_PHONE_STATE
      */
     fun onPermissionGranted() {
-        Log.d(TAG, "Phone state permission granted")
+        logStateChange(AuthStatus.AwaitingInput, "Permission granted")
         try {
             // Get device IMEI now that we have permission
             val imei = deviceRegistrationManager.getDeviceImei()
+            Log.d(TAG, "Retrieved device IMEI successfully")
             _authState.value = _authState.value.copy(
                 currentState = AuthStatus.AwaitingInput,
                 deviceImei = imei,
-                errorMessage = null
+                errorMessage = null,
+                permissionDenied = false
             )
         } catch (e: Exception) {
             Log.e(TAG, "Failed to get device IMEI", e)
+            logStateChange(AuthStatus.Error, "Failed to retrieve IMEI")
             _authState.value = _authState.value.copy(
                 currentState = AuthStatus.Error,
                 errorMessage = "Failed to get device IMEI: ${e.message}"
@@ -218,10 +248,19 @@ class SimplifiedAuthViewModel(
      * Handle permission denied for READ_PHONE_STATE
      */
     fun onPermissionDenied() {
-        Log.d(TAG, "Phone state permission denied")
+        val currentRequestCount = _authState.value.permissionRequestCount
+        logStateChange(AuthStatus.Error, "Permission denied (attempt ${currentRequestCount + 1})")
+        
         _authState.value = _authState.value.copy(
             currentState = AuthStatus.Error,
-            errorMessage = "Phone state permission is required for device authentication"
+            errorMessage = if (currentRequestCount == 0) {
+                "Phone permission is required for automatic device verification. You can grant permission or use manual verification."
+            } else {
+                "Permission denied multiple times. Please use manual verification or grant permission in device settings."
+            },
+            permissionDenied = true,
+            permissionRequestCount = currentRequestCount + 1,
+            showManualEntry = true
         )
     }
 
@@ -238,11 +277,13 @@ class SimplifiedAuthViewModel(
     }
 
     /**
-     * Verify entered IMEI against device IMEI
+     * Verify entered IMEI against device IMEI (with permission)
      */
     fun verifyImei() {
         val deviceImei = _authState.value.deviceImei
         val userImei = _authState.value.userEnteredImei
+        
+        Log.d(TAG, "Verifying IMEI - Device IMEI available: ${deviceImei != null}, User entered: ${userImei.length} digits")
         
         if (deviceImei == null) {
             _authState.value = _authState.value.copy(
@@ -284,6 +325,34 @@ class SimplifiedAuthViewModel(
         
         startDeviceRegistration()
     }
+    
+    /**
+     * Verify manually entered IMEI (without device permission)
+     */
+    fun verifyManualImei() {
+        val userImei = _authState.value.userEnteredImei
+        
+        Log.d(TAG, "Manual IMEI verification - User entered: ${userImei.length} digits")
+        
+        if (userImei.length != 15) {
+            _authState.value = _authState.value.copy(
+                errorMessage = "IMEI must be exactly 15 digits"
+            )
+            return
+        }
+        
+        // For manual entry, we'll proceed with registration using the entered IMEI
+        // This is less secure but provides a fallback when permission is denied
+        Log.d(TAG, "Manual IMEI entered, proceeding with registration")
+        _authState.value = _authState.value.copy(
+            currentState = AuthStatus.Verifying,
+            isLoading = true,
+            errorMessage = null,
+            deviceImei = userImei // Store the manually entered IMEI
+        )
+        
+        startDeviceRegistration()
+    }
 
     /**
      * Retry authentication (reset state and start over)
@@ -301,8 +370,54 @@ class SimplifiedAuthViewModel(
             return
         }
         
-        // Reset state and start over
-        _authState.value = SimplifiedAuthState(currentState = AuthStatus.Initializing)
+        // If permission was already denied multiple times, don't retry permission
+        if (_authState.value.permissionDenied && _authState.value.permissionRequestCount >= 2) {
+            Log.d(TAG, "Permission denied multiple times, offering manual entry")
+            _authState.value = _authState.value.copy(
+                currentState = AuthStatus.ManualEntry,
+                errorMessage = null,
+                showManualEntry = true
+            )
+            return
+        }
+        
+        // Reset state and start over (but preserve permission request count)
+        val previousRequestCount = _authState.value.permissionRequestCount
+        _authState.value = SimplifiedAuthState(
+            currentState = AuthStatus.Initializing,
+            permissionRequestCount = previousRequestCount
+        )
         initializeAuth()
+    }
+    
+    /**
+     * Handle manual entry request when permission is denied
+     */
+    fun requestManualEntry() {
+        Log.d(TAG, "User requested manual entry")
+        _authState.value = _authState.value.copy(
+            currentState = AuthStatus.ManualEntry,
+            errorMessage = null,
+            showManualEntry = true
+        )
+    }
+    
+    /**
+     * Check if we should request permission (not if already denied multiple times)
+     */
+    fun shouldRequestPermission(): Boolean {
+        val currentState = _authState.value
+        return !currentState.permissionDenied || currentState.permissionRequestCount < 2
+    }
+    
+    /**
+     * Request permission again (for manual retry)
+     */
+    fun requestPermissionAgain() {
+        Log.d(TAG, "User manually requested permission again")
+        _authState.value = _authState.value.copy(
+            currentState = AuthStatus.Permission,
+            errorMessage = null
+        )
     }
 }

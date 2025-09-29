@@ -1,0 +1,55 @@
+---------------------------- PROCESS STARTED (28751) for package com.cdccreditsmart.app.debug ----------------------------
+2025-09-29 13:40:00.114 28751-28751 ziparchive              com.cdccreditsmart.app.debug         W  Unable to open '/data/app/~~tOS8kSq145m7SQcGeMp5Kw==/com.cdccreditsmart.app.debug-0FmSX628ZSB77q4jHJsh0A==/base.dm': No such file or directory
+2025-09-29 13:40:00.114 28751-28751 ziparchive              com.cdccreditsmart.app.debug         W  Unable to open '/data/app/~~tOS8kSq145m7SQcGeMp5Kw==/com.cdccreditsmart.app.debug-0FmSX628ZSB77q4jHJsh0A==/base.dm': No such file or directory
+2025-09-29 13:40:00.570 28751-28751 nativeloader            com.cdccreditsmart.app.debug         D  Configuring clns-7 for other apk /data/app/~~tOS8kSq145m7SQcGeMp5Kw==/com.cdccreditsmart.app.debug-0FmSX628ZSB77q4jHJsh0A==/base.apk. target_sdk_version=35, uses_libraries=, library_path=/data/app/~~tOS8kSq145m7SQcGeMp5Kw==/com.cdccreditsmart.app.debug-0FmSX628ZSB77q4jHJsh0A==/lib/arm64:/data/app/~~tOS8kSq145m7SQcGeMp5Kw==/com.cdccreditsmart.app.debug-0FmSX628ZSB77q4jHJsh0A==/base.apk!/lib/arm64-v8a, permitted_path=/data:/mnt/expand:/data/user/0/com.cdccreditsmart.app.debug
+2025-09-29 13:40:00.573 28751-28751 CompatChangeReporter    com.cdccreditsmart.app.debug         D  Compat change id reported: 202956589; UID 10240; state: ENABLED
+2025-09-29 13:40:00.587 28751-28751 GraphicsEnvironment     com.cdccreditsmart.app.debug         V  Currently set values for:
+2025-09-29 13:40:00.587 28751-28751 GraphicsEnvironment     com.cdccreditsmart.app.debug         V    angle_gl_driver_selection_pkgs=[]
+2025-09-29 13:40:00.587 28751-28751 GraphicsEnvironment     com.cdccreditsmart.app.debug         V    angle_gl_driver_selection_values=[]
+2025-09-29 13:40:00.587 28751-28751 GraphicsEnvironment     com.cdccreditsmart.app.debug         V  Global.Settings values are invalid: number of packages: 0, number of values: 0
+2025-09-29 13:40:00.587 28751-28751 GraphicsEnvironment     com.cdccreditsmart.app.debug         V  Neither updatable production driver nor prerelease driver is supported.
+2025-09-29 13:40:00.633 28751-28751 CompatChangeReporter    com.cdccreditsmart.app.debug         D  Compat change id reported: 279646685; UID 10240; state: ENABLED
+2025-09-29 13:40:00.642 28751-28751 MbrainDebugManagerImpl  com.cdccreditsmart.app.debug         D  getService failed
+2025-09-29 13:40:00.647 28751-28751 Typeface                com.cdccreditsmart.app.debug         I  initOverlayFonts====family: RookeryNew-Regular
+2025-09-29 13:40:00.657 28751-28751 nativeloader            com.cdccreditsmart.app.debug         D  Load libpowerhalwrap_jni.so using system ns (caller=/system_ext/framework/mediatek-framework.jar): ok
+2025-09-29 13:40:00.658 28751-28751 PowerHalWrapper         com.cdccreditsmart.app.debug         I  PowerHalWrapper.getInstance 
+2025-09-29 13:40:00.659 28751-28751 M-ProMotion             com.cdccreditsmart.app.debug         I  M-ProMotion is disabled
+2025-09-29 13:40:00.666 28751-28771 vulkan                  com.cdccreditsmart.app.debug         D  searching for layers in '/data/app/~~tOS8kSq145m7SQcGeMp5Kw==/com.cdccreditsmart.app.debug-0FmSX628ZSB77q4jHJsh0A==/lib/arm64'
+2025-09-29 13:40:00.667 28751-28771 vulkan                  com.cdccreditsmart.app.debug         D  searching for layers in '/data/app/~~tOS8kSq145m7SQcGeMp5Kw==/com.cdccreditsmart.app.debug-0FmSX628ZSB77q4jHJsh0A==/base.apk!/lib/arm64-v8a'
+2025-09-29 13:40:00.667 28751-28771 vulkan                  com.cdccreditsmart.app.debug         D  searching for layers in '/data/app/~~tOS8kSq145m7SQcGeMp5Kw==/com.cdccreditsmart.app.debug-0FmSX628ZSB77q4jHJsh0A==/lib/arm64'
+2025-09-29 13:40:00.668 28751-28771 vulkan                  com.cdccreditsmart.app.debug         D  searching for layers in '/data/app/~~tOS8kSq145m7SQcGeMp5Kw==/com.cdccreditsmart.app.debug-0FmSX628ZSB77q4jHJsh0A==/base.apk!/lib/arm64-v8a'
+2025-09-29 13:40:00.676 28751-28771 MMUD                    com.cdccreditsmart.app.debug         D  mtk_memory_debug_init com.cdccreditsmart.app.debug 0xb40000721c3e55d0
+2025-09-29 13:40:00.726 28751-28751 CompatChangeReporter    com.cdccreditsmart.app.debug         D  Compat change id reported: 309578419; UID 10240; state: ENABLED
+2025-09-29 13:40:00.778 28751-28775 MMUD                    com.cdccreditsmart.app.debug         D  get_leak_baseline 3246391296
+2025-09-29 13:40:00.814 28751-28751 Activity                com.cdccreditsmart.app.debug         D  onResume setDolbyGameProfilePackage lastPkg =  currentPkg = com.cdccreditsmart.app.debug
+2025-09-29 13:40:00.818 28751-28770 PowerHalWrapper         com.cdccreditsmart.app.debug         I  PowerHalWrapper.getInstance 
+2025-09-29 13:40:00.820 28751-28751 SurfaceFactory          com.cdccreditsmart.app.debug         I  [static] sSurfaceFactory = com.mediatek.view.impl.SurfaceFactoryImpl@7fdb65b
+2025-09-29 13:40:00.828 28751-28751 HWUI                    com.cdccreditsmart.app.debug         W  Unknown dataspace 0
+2025-09-29 13:40:00.832 28751-28751 VRI[MainActivity]       com.cdccreditsmart.app.debug         D  hardware acceleration = true, forceHwAccelerated = false
+2025-09-29 13:40:00.843 28751-28751 InputEventReceiver      com.cdccreditsmart.app.debug         D  Input log is disabled in InputEventReceiver.
+2025-09-29 13:40:01.572 28751-28751 smart.app.debug         com.cdccreditsmart.app.debug         W  Accessing hidden method Ljava/lang/invoke/MethodHandles$Lookup;-><init>(Ljava/lang/Class;I)V (unsupported, reflection, allowed)
+2025-09-29 13:40:01.595 28751-28751 SimplifiedAuthViewModel com.cdccreditsmart.app.debug         D  Initializing simplified auth system
+2025-09-29 13:40:01.712 28751-28755 smart.app.debug         com.cdccreditsmart.app.debug         I  Compiler allocated 6943KB to compile void android.view.ViewRootImpl.performTraversals()
+2025-09-29 13:40:01.803 28751-28751 View                    com.cdccreditsmart.app.debug         D  [ANR Warning]onMeasure time too long, this =androidx.compose.ui.platform.AndroidComposeView{d86fcd4 VFED..... ......I. 0,0-0,0}time =444 ms
+2025-09-29 13:40:01.803 28751-28751 View                    com.cdccreditsmart.app.debug         D  [ANR Warning]onMeasure time too long, this =androidx.compose.ui.platform.ComposeView{5a55b59 V.E...... ......I. 0,0-0,0}time =444 ms
+2025-09-29 13:40:01.804 28751-28751 View                    com.cdccreditsmart.app.debug         D  [ANR Warning]onMeasure time too long, this =android.widget.FrameLayout{913331e V.E...... ......I. 0,0-0,0 #1020002 android:id/content}time =444 ms
+2025-09-29 13:40:01.804 28751-28751 View                    com.cdccreditsmart.app.debug         D  [ANR Warning]onMeasure time too long, this =android.widget.LinearLayout{df417ff V.E...... ......I. 0,0-0,0}time =445 ms
+2025-09-29 13:40:01.805 28751-28751 View                    com.cdccreditsmart.app.debug         D  [ANR Warning]onMeasure time too long, this =DecorView@e7819cc[MainActivity]time =445 ms
+2025-09-29 13:40:01.819 28751-28751 BufferQueueConsumer     com.cdccreditsmart.app.debug         D  [](id:704f00000000,api:0,p:-1,c:28751) connect: controlledByApp=false
+2025-09-29 13:40:01.821 28751-28751 BLASTBufferQueue        com.cdccreditsmart.app.debug         D  [VRI[MainActivity]#0](f:0,a:0) constructor()
+2025-09-29 13:40:01.821 28751-28751 BLASTBufferQueue        com.cdccreditsmart.app.debug         D  [VRI[MainActivity]#0](f:0,a:0) update width=1080 height=2400 format=-3 mTransformHint=0
+2025-09-29 13:40:01.823 28751-28751 FBI                     com.cdccreditsmart.app.debug         E  Can't load library: dlopen failed: library "libmagtsync.so" not found
+2025-09-29 13:40:01.884 28751-28771 GrallocExtra            com.cdccreditsmart.app.debug         I  gralloc_extra_query:is_SW3D 0
+2025-09-29 13:40:01.916 28751-28771 GrallocExtra            com.cdccreditsmart.app.debug         I  gralloc_extra_query:is_SW3D 0
+2025-09-29 13:40:01.917 28751-28771 BLASTBufferQueue        com.cdccreditsmart.app.debug         D  [VRI[MainActivity]#0](f:0,a:1) acquireNextBufferLocked size=1080x2400 mFrameNumber=1 applyTransaction=true mTimestamp=42969927908791(auto) mPendingTransactions.size=0 graphicBufferId=123484604727299 transform=0
+2025-09-29 13:40:01.944 28751-28751 SimplifiedAuthViewModel com.cdccreditsmart.app.debug         D  Checking device registration status
+2025-09-29 13:40:01.945 28751-28751 SimplifiedAuthViewModel com.cdccreditsmart.app.debug         D  Device not registered, requesting permission
+2025-09-29 13:40:01.962 28751-28760 HWUI                    com.cdccreditsmart.app.debug         I  Davey! duration=1266ms; Flags=1, FrameTimelineVsyncId=696574, IntendedVsync=42968659930963, Vsync=42968843224172, InputEventId=0, HandleInputStart=42968860449483, AnimationStart=42968860503022, PerformTraversalsStart=42968860989714, DrawStart=42969866698330, FrameDeadline=42968679930963, FrameInterval=42968859089483, FrameStartTime=16663019, SyncQueued=42969887216868, SyncStart=42969891603637, IssueDrawCommandsStart=42969892334330, SwapBuffers=42969927350330, FrameCompleted=42969930374714, DequeueBufferDuration=28000, QueueBufferDuration=903770, GpuCompleted=42969929929407, SwapBuffersCompleted=42969930374714, DisplayPresentTime=72904454231359566, CommandSubmissionCompleted=42969927350330, 
+2025-09-29 13:40:01.980 28751-28751 Choreographer           com.cdccreditsmart.app.debug         I  Skipped 60 frames!  The application may be doing too much work on its main thread.
+2025-09-29 13:40:01.990 28751-28751 SimplifiedAuthViewModel com.cdccreditsmart.app.debug         D  Initializing simplified auth system
+2025-09-29 13:40:02.096 28751-28791 LibMBrainProxy          com.cdccreditsmart.app.debug         D  Init Paramters
+2025-09-29 13:40:02.165 28751-28751 SimplifiedAuthViewModel com.cdccreditsmart.app.debug         D  Phone state permission denied
+2025-09-29 13:40:02.166 28751-28751 Activity                com.cdccreditsmart.app.debug         D  onResume setDolbyGameProfilePackage lastPkg =  currentPkg = com.cdccreditsmart.app.debug
+2025-09-29 13:40:02.176 28751-28751 SimplifiedAuthViewModel com.cdccreditsmart.app.debug         D  Initializing simplified auth system
+2025-09-29 13:40:02.419 28751-28751 InteractionJankMonitor  com.cdccreditsmart.app.debug         W  Initializing without READ_DEVICE_CONFIG permission. enabled=false, interval=1, missedFrameThreshold=3, frameTimeThreshold=64, package=com.cdccreditsmart.app.debug
+2025-09-29 13:40:06.640 28751-28799 ProfileInstaller        com.cdccreditsmart.app.debug         D  Installing profile for com.cdccreditsmart.app.debug
