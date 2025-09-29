@@ -1,0 +1,12 @@
+2025-09-28 23:00:22.174 22071-22071 VRI[MainActivity]       com.cdccreditsmart.app.debug         V  Input event delivered to android.view.ViewRootImpl$EarlyPostImeInputStage@a1f7e2a at 2025-09-28 23:00:22.173
+2025-09-28 23:00:22.174 22071-22071 VRI[MainActivity]       com.cdccreditsmart.app.debug         V  Input event delivered to android.view.ViewRootImpl$ViewPostImeInputStage@74019b8 at 2025-09-28 23:00:22.173
+2025-09-28 23:00:22.174 22071-22071 VRI[MainActivity]       com.cdccreditsmart.app.debug         V  Input event delivered to android.view.ViewRootImpl$NativePostImeInputStage@655b41b at 2025-09-28 23:00:22.173
+2025-09-28 23:00:22.217 22071-22071 InsetsController        com.cdccreditsmart.app.debug         D  show(ime(), fromIme=true)
+2025-09-28 23:00:22.217 22071-22071 ImeTracker              com.cdccreditsmart.app.debug         I  com.cdccreditsmart.app.debug:f398f71c: onCancelled at PHASE_CLIENT_APPLY_ANIMATION
+2025-09-28 23:00:23.949 22071-22071 InsetsController        com.cdccreditsmart.app.debug         D  hide(ime(), fromIme=true)
+2025-09-28 23:00:23.964 22071-22071 WindowOnBackDispatcher  com.cdccreditsmart.app.debug         W  sendCancelIfRunning: isInProgress=false callback=ImeCallback=ImeOnBackInvokedCallback@70091123 Callback=android.window.IOnBackInvokedCallback$Stub$Proxy@d50dcbc
+2025-09-28 23:00:24.275 22071-22071 ImeTracker              com.cdccreditsmart.app.debug         I  com.cdccreditsmart.app.debug:326d46fb: onRequestHide at ORIGIN_CLIENT reason HIDE_SOFT_INPUT_ON_ANIMATION_STATE_CHANGED fromUser false
+2025-09-28 23:00:24.279 22071-22071 ImeTracker              com.cdccreditsmart.app.debug         I  com.google.android.inputmethod.latin:2a2bcde2: onHidden
+2025-09-28 23:00:24.767 22071-22071 InsetsController        com.cdccreditsmart.app.debug         D  hide(ime(), fromIme=false)
+2025-09-28 23:00:24.768 22071-22071 ImeTracker              com.cdccreditsmart.app.debug         I  com.cdccreditsmart.app.debug:5d25e96d: onRequestHide at ORIGIN_CLIENT reason HIDE_SOFT_INPUT_BY_INSETS_API fromUser false
+2025-09-28 23:00:24.768 22071-22071 ImeTracker              com.cdccreditsmart.app.debug         I  com.cdccreditsmart.app.debug:5d25e96d: onCancelled at PHASE_CLIENT_APPLY_ANIMATION
