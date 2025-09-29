@@ -7,12 +7,12 @@ object NetworkConfig {
     
     // Base URLs - Updated for CDC Credit Smart according to documentation
     // Production URLs as specified in the official documentation
-    const val BASE_URL = "https://cdccreditsmart.com/"
-    const val BASE_URL_DEBUG = "http://localhost:5000/"
+    const val BASE_URL = "https://api.cdccreditsmart.com.br/"
+    const val BASE_URL_DEBUG = "https://api-dev.cdccreditsmart.com.br/"
     
     // WebSocket URLs for real-time communication
-    const val WS_BASE_URL = "wss://cdccreditsmart.com/ws"
-    const val WS_BASE_URL_DEBUG = "ws://localhost:5000/ws"
+    const val WS_BASE_URL = "wss://api.cdccreditsmart.com.br/ws"
+    const val WS_BASE_URL_DEBUG = "wss://api-dev.cdccreditsmart.com.br/ws"
     
     // Timeout configurations (in milliseconds)
     const val CONNECT_TIMEOUT = 30_000L
@@ -43,19 +43,43 @@ object NetworkConfig {
         "TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305_SHA256"
     )
     
-    // Certificate pins - Updated for CDC Credit Smart real backend
-    // These will be updated with actual CDC Credit Smart certificate pins in production
+    // Certificate Pinning Configuration
+    // ================================================
+    // IMPORTANT: The certificate pins below are PLACEHOLDER VALUES!
+    // 
+    // The CDC Credit Smart domains (api.cdccreditsmart.com.br and api-dev.cdccreditsmart.com.br)
+    // are not currently accessible, so these pins are not real certificate pins.
+    // 
+    // Before deploying to production:
+    // 1. Verify the actual CDC Credit Smart domains are accessible
+    // 2. Extract real certificate pins using: 
+    //    openssl s_client -servername DOMAIN -connect DOMAIN:443 | openssl x509 -pubkey -noout | openssl rsa -pubin -outform der | openssl dgst -sha256 -binary | openssl enc -base64
+    // 3. Replace these placeholder values with the actual pins
+    // 4. Include backup pins (intermediate CA, root CA) for pin rotation
+    // 5. Test thoroughly in staging environment before production deployment
+    //
+    // For debugging, certificate pinning can be disabled using:
+    // CertificatePinningManager.setDisableCertificatePinning(true)
     val CERTIFICATE_PINS = mapOf(
-        "cdccreditsmart.com" to listOf(
-            "sha256/YLh1dUR9y6Kja30RrAn7JKnbQG/uEtLMkBgFF2Fuihg=", // Production certificate pin
-            "sha256/Vjs8r4z+80wjNcr1YKepWQboSIRi63WsWXhIMN+eWys=", // Backup certificate pin
-            "sha256/C5+lpZ7tcVwmwQIMcRtPbsQtWLABXhQzejna0wHFr8M="  // Root CA pin
+        "api.cdccreditsmart.com.br" to listOf(
+            "sha256/YLh1dUR9y6Kja30RrAn7JKnbQG/uEtLMkBgFF2Fuihg=", // PLACEHOLDER: Production certificate pin
+            "sha256/Vjs8r4z+80wjNcr1YKepWQboSIRi63WsWXhIMN+eWys=", // PLACEHOLDER: Backup certificate pin
+            "sha256/C5+lpZ7tcVwmwQIMcRtPbsQtWLABXhQzejna0wHFr8M="  // PLACEHOLDER: Root CA pin
         ),
         "api-dev.cdccreditsmart.com.br" to listOf(
-            "sha256/YLh1dUR9y6Kja30RrAn7JKnbQG/uEtLMkBgFF2Fuihg=", // Development certificate pin
-            "sha256/Vjs8r4z+80wjNcr1YKepWQboSIRi63WsWXhIMN+eWys="  // Development backup pin
+            "sha256/YLh1dUR9y6Kja30RrAn7JKnbQG/uEtLMkBgFF2Fuihg=", // PLACEHOLDER: Development certificate pin
+            "sha256/Vjs8r4z+80wjNcr1YKepWQboSIRi63WsWXhIMN+eWys="  // PLACEHOLDER: Development backup pin
         )
     )
+    
+    // Certificate Pinning Debug Configuration
+    // =======================================
+    // Set to true to enable verbose certificate pinning logging
+    const val CERTIFICATE_PINNING_DEBUG_LOGGING = true
+    
+    // Set to true to allow connections without certificate pinning in debug builds
+    // This should NEVER be true in production releases
+    const val ALLOW_CERTIFICATE_PINNING_BYPASS_IN_DEBUG = true
     
     // API endpoints - Complete endpoint configuration for CDC Credit Smart according to documentation
     object Endpoints {

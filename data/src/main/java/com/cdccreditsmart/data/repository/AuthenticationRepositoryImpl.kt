@@ -2,6 +2,9 @@ package com.cdccreditsmart.data.repository
 
 import android.content.SharedPreferences
 import com.cdccreditsmart.domain.repository.AuthenticationRepository
+import com.cdccreditsmart.domain.common.Resource
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flowOf
 import java.time.LocalDateTime
 import javax.inject.Inject
 import javax.inject.Named
@@ -69,6 +72,19 @@ class AuthenticationRepositoryImpl @Inject constructor(
             logSecurityEvent("Failed to check authentication status: ${e.message}")
             false
         }
+    }
+
+    override suspend fun validateImei(
+        imei: String,
+        deviceId: String,
+        contractCode: String?,
+        phoneNumber: String?,
+        operatorName: String?,
+        simSerialNumber: String?
+    ): Flow<Resource<Boolean>> {
+        // Basic implementation doesn't have API services - this method should not be used
+        // Only CdcAuthenticationRepositoryImpl should be used for real IMEI validation
+        return flowOf(Resource.error("IMEI validation requires CDC API services. Use CdcAuthenticationRepositoryImpl."))
     }
 
     private fun logSecurityEvent(event: String) {

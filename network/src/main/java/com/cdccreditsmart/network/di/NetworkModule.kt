@@ -9,6 +9,7 @@ import com.cdccreditsmart.network.config.CertificatePinningManager
 import com.cdccreditsmart.network.config.NetworkConfig
 import com.cdccreditsmart.network.error.NetworkErrorMapper
 import com.cdccreditsmart.network.interceptors.CommonHeadersInterceptor
+import com.cdccreditsmart.network.interceptors.ConnectivityDebugInterceptor
 import com.cdccreditsmart.network.interceptors.DeviceSignatureInterceptor
 import com.cdccreditsmart.network.interceptors.IdempotencyKeyInterceptor
 import com.cdccreditsmart.network.interceptors.JwtInterceptor
@@ -131,12 +132,22 @@ object NetworkModule {
     }
     
     /**
+     * Provides connectivity debug interceptor for network diagnostics
+     */
+    @Provides
+    @Singleton
+    fun provideConnectivityDebugInterceptor(): ConnectivityDebugInterceptor {
+        return ConnectivityDebugInterceptor()
+    }
+    
+    /**
      * Provides OkHttp client factory with all interceptors
      */
     @Provides
     @Singleton
     fun provideOkHttpClientFactory(
         commonHeadersInterceptor: CommonHeadersInterceptor,
+        connectivityDebugInterceptor: ConnectivityDebugInterceptor,
         jwtInterceptor: JwtInterceptor,
         deviceSignatureInterceptor: DeviceSignatureInterceptor,
         idempotencyKeyInterceptor: IdempotencyKeyInterceptor,
@@ -144,6 +155,7 @@ object NetworkModule {
     ): OkHttpClientFactory {
         return OkHttpClientFactory(
             commonHeadersInterceptor,
+            connectivityDebugInterceptor,
             jwtInterceptor,
             deviceSignatureInterceptor,
             idempotencyKeyInterceptor,
@@ -292,6 +304,28 @@ object NetworkModule {
         @BasicRetrofit retrofit: Retrofit // Auth uses basic client to avoid circular dependency
     ): AuthApiService {
         return retrofit.create(AuthApiService::class.java)
+    }
+    
+    /**
+     * Provides Flow Events API service for flow tracking operations
+     */
+    @Provides
+    @Singleton
+    fun provideFlowEventsApiService(
+        @SecureRetrofit retrofit: Retrofit
+    ): FlowEventsApiService {
+        return retrofit.create(FlowEventsApiService::class.java)
+    }
+    
+    /**
+     * Provides CDC API service for CDC-specific operations
+     */
+    @Provides
+    @Singleton
+    fun provideCdcApiService(
+        @SecureRetrofit retrofit: Retrofit
+    ): CdcApiService {
+        return retrofit.create(CdcApiService::class.java)
     }
     
     // WebSocket Services

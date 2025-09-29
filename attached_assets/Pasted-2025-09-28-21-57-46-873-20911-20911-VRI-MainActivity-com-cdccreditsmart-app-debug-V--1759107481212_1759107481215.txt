@@ -1,0 +1,13 @@
+2025-09-28 21:57:46.873 20911-20911 VRI[MainActivity]       com.cdccreditsmart.app.debug         V  Input event delivered to android.view.ViewRootImpl$NativePostImeInputStage@65da117 at 2025-09-28 21:57:46.872
+2025-09-28 21:57:46.934 20911-20911 InsetsController        com.cdccreditsmart.app.debug         D  show(ime(), fromIme=true)
+2025-09-28 21:57:46.935 20911-20911 ImeTracker              com.cdccreditsmart.app.debug         I  com.cdccreditsmart.app.debug:cb1c9a07: onCancelled at PHASE_CLIENT_APPLY_ANIMATION
+2025-09-28 21:57:50.473 20911-20911 WindowOnBackDispatcher  com.cdccreditsmart.app.debug         W  sendCancelIfRunning: isInProgress=false callback=ImeCallback=ImeOnBackInvokedCallback@70091123 Callback=android.window.IOnBackInvokedCallback$Stub$Proxy@71e0754
+2025-09-28 21:57:51.545 20911-20911 InsetsController        com.cdccreditsmart.app.debug         D  hide(ime(), fromIme=false)
+2025-09-28 21:57:51.547 20911-20911 ImeTracker              com.cdccreditsmart.app.debug         I  com.cdccreditsmart.app.debug:31029bf9: onRequestHide at ORIGIN_CLIENT reason HIDE_SOFT_INPUT_BY_INSETS_API fromUser false
+2025-09-28 21:57:51.548 20911-20911 ImeTracker              com.cdccreditsmart.app.debug         I  com.cdccreditsmart.app.debug:1b184ffe: onRequestHide at ORIGIN_CLIENT reason HIDE_SOFT_INPUT_REQUEST_HIDE_WITH_CONTROL fromUser false
+2025-09-28 21:57:51.569 20911-20911 RemoteInpu...ectionImpl com.cdccreditsmart.app.debug         W  requestCursorUpdates on inactive InputConnection
+2025-09-28 21:57:51.570 20911-20911 InsetsController        com.cdccreditsmart.app.debug         D  hide(ime(), fromIme=true)
+2025-09-28 21:57:51.570 20911-20911 ImeTracker              com.cdccreditsmart.app.debug         I  com.cdccreditsmart.app.debug:1b184ffe: onCancelled at PHASE_CLIENT_APPLY_ANIMATION
+2025-09-28 21:57:51.575 20911-20911 WindowOnBackDispatcher  com.cdccreditsmart.app.debug         W  sendCancelIfRunning: isInProgress=false callback=ImeCallback=ImeOnBackInvokedCallback@70091123 Callback=android.window.IOnBackInvokedCallback$Stub$Proxy@71e0754
+2025-09-28 21:57:51.858 20911-20911 ImeTracker              com.cdccreditsmart.app.debug         I  com.cdccreditsmart.app.debug:dc29d462: onRequestHide at ORIGIN_CLIENT reason HIDE_SOFT_INPUT_ON_ANIMATION_STATE_CHANGED fromUser false
+2025-09-28 21:57:51.862 20911-20911 ImeTracker              com.cdccreditsmart.app.debug         I  com.cdccreditsmart.app.debug:31029bf9: onHidden

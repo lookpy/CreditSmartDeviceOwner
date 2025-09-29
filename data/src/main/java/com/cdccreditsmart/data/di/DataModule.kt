@@ -148,8 +148,16 @@ object DataModule {
     @Provides
     @Singleton
     fun provideAuthenticationRepository(
-        @Named("encrypted_prefs") encryptedPrefs: SharedPreferences
+        @Named("encrypted_prefs") encryptedPrefs: SharedPreferences,
+        authApiService: AuthApiService,
+        flowEventsApiService: FlowEventsApiService,
+        networkErrorMapper: NetworkErrorMapper
     ): AuthenticationRepository {
-        return AuthenticationRepositoryImpl(encryptedPrefs)
+        return CdcAuthenticationRepositoryImpl(
+            encryptedPrefs,
+            authApiService,
+            flowEventsApiService,
+            networkErrorMapper
+        )
     }
 }

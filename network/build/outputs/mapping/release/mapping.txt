@@ -2,8 +2,8 @@
 # compiler_version: 8.13.6
 # common_typos_disable
 # {"id":"com.android.tools.r8.mapping","version":"2.2"}
-# pg_map_id: cff50121cac946eb45713cc76eb6845068ccf5bde94678473b00a53133d06875
-# pg_map_hash: SHA-256 cff50121cac946eb45713cc76eb6845068ccf5bde94678473b00a53133d06875
+# pg_map_id: 3a4031797beb2176bcd043c27f77f1527e96e1ab2a316c661669f045b7250861
+# pg_map_hash: SHA-256 3a4031797beb2176bcd043c27f77f1527e96e1ab2a316c661669f045b7250861
 com.cdccreditsmart.network.api.Address -> com.cdccreditsmart.network.api.Address:
 # {"id":"sourceFile","fileName":"ContractApiService.kt"}
     1:9:void <init>(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String):153:161 -> <init>
@@ -15015,23 +15015,37 @@ com.cdccreditsmart.network.error.NetworkConnectionException -> com.cdccreditsmar
     4:4:void <init>(java.lang.String,java.lang.Throwable,int,kotlin.jvm.internal.DefaultConstructorMarker):16:16 -> <init>
 com.cdccreditsmart.network.error.NetworkErrorMapper -> com.cdccreditsmart.network.error.NetworkErrorMapper:
 # {"id":"sourceFile","fileName":"NetworkErrorMapper.kt"}
-    1:1:void <init>():15:15 -> <init>
-    1:5:com.cdccreditsmart.network.error.CdcApiException mapHttpException(retrofit2.HttpException):68:72 -> mapHttpException
-    6:11:com.cdccreditsmart.network.error.CdcApiException mapHttpException(retrofit2.HttpException):72:77 -> mapHttpException
-    12:16:com.cdccreditsmart.network.error.CdcApiException mapHttpException(retrofit2.HttpException):77:81 -> mapHttpException
-    17:23:com.cdccreditsmart.network.error.CdcApiException mapHttpException(retrofit2.HttpException):81:87 -> mapHttpException
-    24:33:com.cdccreditsmart.network.error.CdcApiException mapHttpException(retrofit2.HttpException):87:96 -> mapHttpException
-    34:42:com.cdccreditsmart.network.error.CdcApiException mapHttpException(retrofit2.HttpException):93:101 -> mapHttpException
-    43:51:com.cdccreditsmart.network.error.CdcApiException mapHttpException(retrofit2.HttpException):99:107 -> mapHttpException
-    52:52:com.cdccreditsmart.network.error.CdcApiException mapHttpException(retrofit2.HttpException):104:104 -> mapHttpException
-    1:7:com.cdccreditsmart.network.error.CdcApiException mapToCdcException(java.lang.Throwable):20:26 -> mapToCdcException
-    8:13:com.cdccreditsmart.network.error.CdcApiException mapToCdcException(java.lang.Throwable):26:31 -> mapToCdcException
-    14:20:com.cdccreditsmart.network.error.CdcApiException mapToCdcException(java.lang.Throwable):31:37 -> mapToCdcException
-    21:28:com.cdccreditsmart.network.error.CdcApiException mapToCdcException(java.lang.Throwable):37:44 -> mapToCdcException
-    29:41:com.cdccreditsmart.network.error.CdcApiException mapToCdcException(java.lang.Throwable):43:55 -> mapToCdcException
-    42:50:com.cdccreditsmart.network.error.CdcApiException mapToCdcException(java.lang.Throwable):54:62 -> mapToCdcException
-    51:51:com.cdccreditsmart.network.error.CdcApiException mapToCdcException(java.lang.Throwable):60:60 -> mapToCdcException
-    52:53:com.cdccreditsmart.network.error.CdcApiException mapToCdcException(java.lang.Throwable):48:48 -> mapToCdcException
+    1:1:void <clinit>():25:25 -> <clinit>
+    2:2:void <clinit>():22:22 -> <clinit>
+    1:1:void <init>():18:18 -> <init>
+    1:1:java.lang.String analyzeCertificateFailure(javax.net.ssl.SSLPeerUnverifiedException):155:155 -> analyzeCertificateFailure
+    1:2:java.lang.String analyzeConnectionRefused(java.net.ConnectException):118:119 -> analyzeConnectionRefused
+    3:13:java.lang.String analyzeConnectionRefused(java.net.ConnectException):119:129 -> analyzeConnectionRefused
+    1:18:java.lang.String analyzeDnsFailure(java.net.UnknownHostException):96:113 -> analyzeDnsFailure
+    1:3:java.lang.String analyzeSslHandshakeFailure(javax.net.ssl.SSLHandshakeException):134:136 -> analyzeSslHandshakeFailure
+    4:14:java.lang.String analyzeSslHandshakeFailure(javax.net.ssl.SSLHandshakeException):135:145 -> analyzeSslHandshakeFailure
+    15:29:java.lang.String analyzeSslHandshakeFailure(javax.net.ssl.SSLHandshakeException):135:149 -> analyzeSslHandshakeFailure
+    1:7:java.lang.String extractHostFromException(java.lang.Exception):167:173 -> extractHostFromException
+    8:8:java.lang.String extractHostFromException(java.lang.Exception):169:169 -> extractHostFromException
+    1:53:boolean isCdcDomain(java.lang.String):178:230 -> isCdcDomain
+    54:54:boolean isCdcDomain(java.lang.String):179:179 -> isCdcDomain
+    1:5:com.cdccreditsmart.network.error.CdcApiException mapHttpException(retrofit2.HttpException):184:188 -> mapHttpException
+    6:11:com.cdccreditsmart.network.error.CdcApiException mapHttpException(retrofit2.HttpException):188:193 -> mapHttpException
+    12:16:com.cdccreditsmart.network.error.CdcApiException mapHttpException(retrofit2.HttpException):193:197 -> mapHttpException
+    17:23:com.cdccreditsmart.network.error.CdcApiException mapHttpException(retrofit2.HttpException):197:203 -> mapHttpException
+    24:33:com.cdccreditsmart.network.error.CdcApiException mapHttpException(retrofit2.HttpException):203:212 -> mapHttpException
+    34:42:com.cdccreditsmart.network.error.CdcApiException mapHttpException(retrofit2.HttpException):209:217 -> mapHttpException
+    43:51:com.cdccreditsmart.network.error.CdcApiException mapHttpException(retrofit2.HttpException):215:223 -> mapHttpException
+    52:52:com.cdccreditsmart.network.error.CdcApiException mapHttpException(retrofit2.HttpException):220:220 -> mapHttpException
+    1:20:com.cdccreditsmart.network.error.CdcApiException mapToCdcException(java.lang.Throwable):32:51 -> mapToCdcException
+    21:53:com.cdccreditsmart.network.error.CdcApiException mapToCdcException(java.lang.Throwable):51:83 -> mapToCdcException
+    54:62:com.cdccreditsmart.network.error.CdcApiException mapToCdcException(java.lang.Throwable):82:90 -> mapToCdcException
+    63:63:com.cdccreditsmart.network.error.CdcApiException mapToCdcException(java.lang.Throwable):88:88 -> mapToCdcException
+    64:65:com.cdccreditsmart.network.error.CdcApiException mapToCdcException(java.lang.Throwable):76:76 -> mapToCdcException
+com.cdccreditsmart.network.error.NetworkErrorMapper$Companion -> com.cdccreditsmart.network.error.NetworkErrorMapper$Companion:
+# {"id":"sourceFile","fileName":"NetworkErrorMapper.kt"}
+    1:1:void <init>(kotlin.jvm.internal.DefaultConstructorMarker):0:0 -> <init>
+    2:2:void <init>():20:20 -> <init>
 com.cdccreditsmart.network.error.RateLimitException -> com.cdccreditsmart.network.error.RateLimitException:
 # {"id":"sourceFile","fileName":"NetworkExceptions.kt"}
     1:1:void <init>():0:0 -> <init>

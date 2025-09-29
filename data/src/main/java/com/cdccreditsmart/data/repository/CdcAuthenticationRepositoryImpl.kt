@@ -128,13 +128,13 @@ class CdcAuthenticationRepositoryImpl @Inject constructor(
     /**
      * Validate IMEI with CDC Credit Smart backend
      */
-    suspend fun validateImei(
+    override suspend fun validateImei(
         imei: String,
         deviceId: String,
-        contractCode: String? = null,
-        phoneNumber: String? = null,
-        operatorName: String? = null,
-        simSerialNumber: String? = null
+        contractCode: String?,
+        phoneNumber: String?,
+        operatorName: String?,
+        simSerialNumber: String?
     ): Flow<Resource<Boolean>> = flow {
         emit(Resource.Loading())
         

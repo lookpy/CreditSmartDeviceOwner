@@ -5,10 +5,10 @@
       resolved="::"/>
   <library
       name=":@@:data::release"
-      jars="/home/runner/.gradle/caches/8.13/transforms/d06b352aeefc342e58391dda1dd4459f/transformed/out/jars/classes.jar:/home/runner/.gradle/caches/8.13/transforms/d06b352aeefc342e58391dda1dd4459f/transformed/out/jars/libs/R.jar"
+      jars="/home/runner/.gradle/caches/8.13/transforms/455a7dbe56531f06e4e24a0f52716dcf/transformed/out/jars/classes.jar:/home/runner/.gradle/caches/8.13/transforms/455a7dbe56531f06e4e24a0f52716dcf/transformed/out/jars/libs/R.jar"
       resolved="CDC Credit Smart:data:unspecified"
       partialResultsDir="/home/runner/workspace/data/build/intermediates/lint_vital_partial_results/release/lintVitalAnalyzeRelease/out"
-      folder="/home/runner/.gradle/caches/8.13/transforms/d06b352aeefc342e58391dda1dd4459f/transformed/out"
+      folder="/home/runner/.gradle/caches/8.13/transforms/455a7dbe56531f06e4e24a0f52716dcf/transformed/out"
       manifest="AndroidManifest.xml"
       resFolder="res"
       assetsFolder="assets"
@@ -19,10 +19,10 @@
       proguardRules="proguard.txt"/>
   <library
       name=":@@:network::release"
-      jars="/home/runner/.gradle/caches/8.13/transforms/fd910110f0653a874208593a69bb1e0f/transformed/out/jars/classes.jar:/home/runner/.gradle/caches/8.13/transforms/fd910110f0653a874208593a69bb1e0f/transformed/out/jars/libs/R.jar"
+      jars="/home/runner/.gradle/caches/8.13/transforms/eac6f6b75ba1dfe39bec2ccd108afac5/transformed/out/jars/classes.jar:/home/runner/.gradle/caches/8.13/transforms/eac6f6b75ba1dfe39bec2ccd108afac5/transformed/out/jars/libs/R.jar"
       resolved="CDC Credit Smart:network:unspecified"
       partialResultsDir="/home/runner/workspace/network/build/intermediates/lint_vital_partial_results/release/lintVitalAnalyzeRelease/out"
-      folder="/home/runner/.gradle/caches/8.13/transforms/fd910110f0653a874208593a69bb1e0f/transformed/out"
+      folder="/home/runner/.gradle/caches/8.13/transforms/eac6f6b75ba1dfe39bec2ccd108afac5/transformed/out"
       manifest="AndroidManifest.xml"
       resFolder="res"
       assetsFolder="assets"

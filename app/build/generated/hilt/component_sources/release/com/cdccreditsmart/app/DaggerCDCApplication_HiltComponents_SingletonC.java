@@ -54,19 +54,25 @@ import com.cdccreditsmart.domain.repository.BiometryRepository;
 import com.cdccreditsmart.domain.repository.ContractRepository;
 import com.cdccreditsmart.domain.repository.DeviceRepository;
 import com.cdccreditsmart.domain.repository.PaymentsRepository;
+import com.cdccreditsmart.network.api.AuthApiService;
 import com.cdccreditsmart.network.api.BiometryApiService;
 import com.cdccreditsmart.network.api.ContractApiService;
 import com.cdccreditsmart.network.api.DeviceApiService;
+import com.cdccreditsmart.network.api.FlowEventsApiService;
 import com.cdccreditsmart.network.api.PaymentsApiService;
 import com.cdccreditsmart.network.client.OkHttpClientFactory;
 import com.cdccreditsmart.network.client.RetrofitFactory;
 import com.cdccreditsmart.network.config.CertificatePinningManager;
+import com.cdccreditsmart.network.di.NetworkModule_ProvideAuthApiServiceFactory;
+import com.cdccreditsmart.network.di.NetworkModule_ProvideBasicRetrofitFactory;
 import com.cdccreditsmart.network.di.NetworkModule_ProvideBiometryApiServiceFactory;
 import com.cdccreditsmart.network.di.NetworkModule_ProvideCertificatePinningManagerFactory;
 import com.cdccreditsmart.network.di.NetworkModule_ProvideCommonHeadersInterceptorFactory;
+import com.cdccreditsmart.network.di.NetworkModule_ProvideConnectivityDebugInterceptorFactory;
 import com.cdccreditsmart.network.di.NetworkModule_ProvideContractApiServiceFactory;
 import com.cdccreditsmart.network.di.NetworkModule_ProvideDeviceApiServiceFactory;
 import com.cdccreditsmart.network.di.NetworkModule_ProvideDeviceSignatureInterceptorFactory;
+import com.cdccreditsmart.network.di.NetworkModule_ProvideFlowEventsApiServiceFactory;
 import com.cdccreditsmart.network.di.NetworkModule_ProvideIdempotencyKeyInterceptorFactory;
 import com.cdccreditsmart.network.di.NetworkModule_ProvideJwtInterceptorFactory;
 import com.cdccreditsmart.network.di.NetworkModule_ProvideMoshiFactory;
@@ -78,6 +84,7 @@ import com.cdccreditsmart.network.di.NetworkModule_ProvideRetrofitFactoryFactory
 import com.cdccreditsmart.network.di.NetworkModule_ProvideSecureRetrofitFactory;
 import com.cdccreditsmart.network.error.NetworkErrorMapper;
 import com.cdccreditsmart.network.interceptors.CommonHeadersInterceptor;
+import com.cdccreditsmart.network.interceptors.ConnectivityDebugInterceptor;
 import com.cdccreditsmart.network.interceptors.DeviceSignatureInterceptor;
 import com.cdccreditsmart.network.interceptors.IdempotencyKeyInterceptor;
 import com.cdccreditsmart.network.interceptors.JwtInterceptor;
@@ -629,6 +636,8 @@ public final class DaggerCDCApplication_HiltComponents_SingletonC {
 
     private Provider<CommonHeadersInterceptor> provideCommonHeadersInterceptorProvider;
 
+    private Provider<ConnectivityDebugInterceptor> provideConnectivityDebugInterceptorProvider;
+
     private Provider<EncryptedSharedPreferences> provideNetworkEncryptedSharedPreferencesProvider;
 
     private Provider<JwtInterceptor> provideJwtInterceptorProvider;
@@ -657,6 +666,12 @@ public final class DaggerCDCApplication_HiltComponents_SingletonC {
 
     private Provider<SharedPreferences> provideEncryptedSharedPreferencesProvider;
 
+    private Provider<Retrofit> provideBasicRetrofitProvider;
+
+    private Provider<AuthApiService> provideAuthApiServiceProvider;
+
+    private Provider<FlowEventsApiService> provideFlowEventsApiServiceProvider;
+
     private Provider<AuthenticationRepository> provideAuthenticationRepositoryProvider;
 
     private Provider<ContractApiService> provideContractApiServiceProvider;
@@ -674,6 +689,7 @@ public final class DaggerCDCApplication_HiltComponents_SingletonC {
     private SingletonCImpl(ApplicationContextModule applicationContextModuleParam) {
       this.applicationContextModule = applicationContextModuleParam;
       initialize(applicationContextModuleParam);
+      initialize2(applicationContextModuleParam);
 
     }
 
@@ -704,31 +720,39 @@ public final class DaggerCDCApplication_HiltComponents_SingletonC {
     @SuppressWarnings("unchecked")
     private void initialize(final ApplicationContextModule applicationContextModuleParam) {
       this.provideCommonHeadersInterceptorProvider = DoubleCheck.provider(new SwitchingProvider<CommonHeadersInterceptor>(singletonCImpl, 5));
-      this.provideNetworkEncryptedSharedPreferencesProvider = DoubleCheck.provider(new SwitchingProvider<EncryptedSharedPreferences>(singletonCImpl, 7));
-      this.provideJwtInterceptorProvider = DoubleCheck.provider(new SwitchingProvider<JwtInterceptor>(singletonCImpl, 6));
-      this.provideDeviceSignatureInterceptorProvider = DoubleCheck.provider(new SwitchingProvider<DeviceSignatureInterceptor>(singletonCImpl, 8));
-      this.provideIdempotencyKeyInterceptorProvider = DoubleCheck.provider(new SwitchingProvider<IdempotencyKeyInterceptor>(singletonCImpl, 9));
-      this.provideCertificatePinningManagerProvider = DoubleCheck.provider(new SwitchingProvider<CertificatePinningManager>(singletonCImpl, 10));
+      this.provideConnectivityDebugInterceptorProvider = DoubleCheck.provider(new SwitchingProvider<ConnectivityDebugInterceptor>(singletonCImpl, 6));
+      this.provideNetworkEncryptedSharedPreferencesProvider = DoubleCheck.provider(new SwitchingProvider<EncryptedSharedPreferences>(singletonCImpl, 8));
+      this.provideJwtInterceptorProvider = DoubleCheck.provider(new SwitchingProvider<JwtInterceptor>(singletonCImpl, 7));
+      this.provideDeviceSignatureInterceptorProvider = DoubleCheck.provider(new SwitchingProvider<DeviceSignatureInterceptor>(singletonCImpl, 9));
+      this.provideIdempotencyKeyInterceptorProvider = DoubleCheck.provider(new SwitchingProvider<IdempotencyKeyInterceptor>(singletonCImpl, 10));
+      this.provideCertificatePinningManagerProvider = DoubleCheck.provider(new SwitchingProvider<CertificatePinningManager>(singletonCImpl, 11));
       this.provideOkHttpClientFactoryProvider = DoubleCheck.provider(new SwitchingProvider<OkHttpClientFactory>(singletonCImpl, 4));
-      this.provideNetworkErrorMapperProvider = DoubleCheck.provider(new SwitchingProvider<NetworkErrorMapper>(singletonCImpl, 11));
+      this.provideNetworkErrorMapperProvider = DoubleCheck.provider(new SwitchingProvider<NetworkErrorMapper>(singletonCImpl, 12));
       this.provideRetrofitFactoryProvider = DoubleCheck.provider(new SwitchingProvider<RetrofitFactory>(singletonCImpl, 3));
       this.provideSecureRetrofitProvider = DoubleCheck.provider(new SwitchingProvider<Retrofit>(singletonCImpl, 2));
       this.provideDeviceApiServiceProvider = DoubleCheck.provider(new SwitchingProvider<DeviceApiService>(singletonCImpl, 1));
-      this.provideCDCDatabaseProvider = DoubleCheck.provider(new SwitchingProvider<CDCDatabase>(singletonCImpl, 12));
-      this.provideMoshiProvider = DoubleCheck.provider(new SwitchingProvider<Moshi>(singletonCImpl, 13));
+      this.provideCDCDatabaseProvider = DoubleCheck.provider(new SwitchingProvider<CDCDatabase>(singletonCImpl, 13));
+      this.provideMoshiProvider = DoubleCheck.provider(new SwitchingProvider<Moshi>(singletonCImpl, 14));
       this.provideDeviceRepositoryProvider = DoubleCheck.provider(new SwitchingProvider<DeviceRepository>(singletonCImpl, 0));
-      this.provideEncryptedSharedPreferencesProvider = DoubleCheck.provider(new SwitchingProvider<SharedPreferences>(singletonCImpl, 15));
-      this.provideAuthenticationRepositoryProvider = DoubleCheck.provider(new SwitchingProvider<AuthenticationRepository>(singletonCImpl, 14));
-      this.provideContractApiServiceProvider = DoubleCheck.provider(new SwitchingProvider<ContractApiService>(singletonCImpl, 17));
-      this.provideContractRepositoryProvider = DoubleCheck.provider(new SwitchingProvider<ContractRepository>(singletonCImpl, 16));
-      this.providePaymentsApiServiceProvider = DoubleCheck.provider(new SwitchingProvider<PaymentsApiService>(singletonCImpl, 19));
-      this.providePaymentsRepositoryProvider = DoubleCheck.provider(new SwitchingProvider<PaymentsRepository>(singletonCImpl, 18));
-      this.provideBiometryApiServiceProvider = DoubleCheck.provider(new SwitchingProvider<BiometryApiService>(singletonCImpl, 21));
-      this.provideBiometryRepositoryProvider = DoubleCheck.provider(new SwitchingProvider<BiometryRepository>(singletonCImpl, 20));
+      this.provideEncryptedSharedPreferencesProvider = DoubleCheck.provider(new SwitchingProvider<SharedPreferences>(singletonCImpl, 16));
+      this.provideBasicRetrofitProvider = DoubleCheck.provider(new SwitchingProvider<Retrofit>(singletonCImpl, 18));
+      this.provideAuthApiServiceProvider = DoubleCheck.provider(new SwitchingProvider<AuthApiService>(singletonCImpl, 17));
+      this.provideFlowEventsApiServiceProvider = DoubleCheck.provider(new SwitchingProvider<FlowEventsApiService>(singletonCImpl, 19));
+      this.provideAuthenticationRepositoryProvider = DoubleCheck.provider(new SwitchingProvider<AuthenticationRepository>(singletonCImpl, 15));
+      this.provideContractApiServiceProvider = DoubleCheck.provider(new SwitchingProvider<ContractApiService>(singletonCImpl, 21));
+      this.provideContractRepositoryProvider = DoubleCheck.provider(new SwitchingProvider<ContractRepository>(singletonCImpl, 20));
+      this.providePaymentsApiServiceProvider = DoubleCheck.provider(new SwitchingProvider<PaymentsApiService>(singletonCImpl, 23));
+      this.providePaymentsRepositoryProvider = DoubleCheck.provider(new SwitchingProvider<PaymentsRepository>(singletonCImpl, 22));
+      this.provideBiometryApiServiceProvider = DoubleCheck.provider(new SwitchingProvider<BiometryApiService>(singletonCImpl, 25));
+    }
+
+    @SuppressWarnings("unchecked")
+    private void initialize2(final ApplicationContextModule applicationContextModuleParam) {
+      this.provideBiometryRepositoryProvider = DoubleCheck.provider(new SwitchingProvider<BiometryRepository>(singletonCImpl, 24));
     }
 
     @Override
-    public void injectCDCApplication(CDCApplication arg0) {
+    public void injectCDCApplication(CDCApplication cDCApplication) {
     }
 
     @Override
@@ -773,57 +797,69 @@ public final class DaggerCDCApplication_HiltComponents_SingletonC {
           return (T) NetworkModule_ProvideRetrofitFactoryFactory.provideRetrofitFactory(singletonCImpl.provideOkHttpClientFactoryProvider.get(), singletonCImpl.provideNetworkErrorMapperProvider.get());
 
           case 4: // com.cdccreditsmart.network.client.OkHttpClientFactory 
-          return (T) NetworkModule_ProvideOkHttpClientFactoryFactory.provideOkHttpClientFactory(singletonCImpl.provideCommonHeadersInterceptorProvider.get(), singletonCImpl.provideJwtInterceptorProvider.get(), singletonCImpl.provideDeviceSignatureInterceptorProvider.get(), singletonCImpl.provideIdempotencyKeyInterceptorProvider.get(), singletonCImpl.provideCertificatePinningManagerProvider.get());
+          return (T) NetworkModule_ProvideOkHttpClientFactoryFactory.provideOkHttpClientFactory(singletonCImpl.provideCommonHeadersInterceptorProvider.get(), singletonCImpl.provideConnectivityDebugInterceptorProvider.get(), singletonCImpl.provideJwtInterceptorProvider.get(), singletonCImpl.provideDeviceSignatureInterceptorProvider.get(), singletonCImpl.provideIdempotencyKeyInterceptorProvider.get(), singletonCImpl.provideCertificatePinningManagerProvider.get());
 
           case 5: // com.cdccreditsmart.network.interceptors.CommonHeadersInterceptor 
           return (T) NetworkModule_ProvideCommonHeadersInterceptorFactory.provideCommonHeadersInterceptor(ApplicationContextModule_ProvideContextFactory.provideContext(singletonCImpl.applicationContextModule));
 
-          case 6: // com.cdccreditsmart.network.interceptors.JwtInterceptor 
+          case 6: // com.cdccreditsmart.network.interceptors.ConnectivityDebugInterceptor 
+          return (T) NetworkModule_ProvideConnectivityDebugInterceptorFactory.provideConnectivityDebugInterceptor();
+
+          case 7: // com.cdccreditsmart.network.interceptors.JwtInterceptor 
           return (T) NetworkModule_ProvideJwtInterceptorFactory.provideJwtInterceptor(singletonCImpl.provideNetworkEncryptedSharedPreferencesProvider.get());
 
-          case 7: // @com.cdccreditsmart.network.di.NetworkModule.NetworkEncryptedPrefs androidx.security.crypto.EncryptedSharedPreferences 
+          case 8: // @com.cdccreditsmart.network.di.NetworkModule.NetworkEncryptedPrefs androidx.security.crypto.EncryptedSharedPreferences 
           return (T) NetworkModule_ProvideNetworkEncryptedSharedPreferencesFactory.provideNetworkEncryptedSharedPreferences(ApplicationContextModule_ProvideContextFactory.provideContext(singletonCImpl.applicationContextModule));
 
-          case 8: // com.cdccreditsmart.network.interceptors.DeviceSignatureInterceptor 
+          case 9: // com.cdccreditsmart.network.interceptors.DeviceSignatureInterceptor 
           return (T) NetworkModule_ProvideDeviceSignatureInterceptorFactory.provideDeviceSignatureInterceptor(ApplicationContextModule_ProvideContextFactory.provideContext(singletonCImpl.applicationContextModule));
 
-          case 9: // com.cdccreditsmart.network.interceptors.IdempotencyKeyInterceptor 
+          case 10: // com.cdccreditsmart.network.interceptors.IdempotencyKeyInterceptor 
           return (T) NetworkModule_ProvideIdempotencyKeyInterceptorFactory.provideIdempotencyKeyInterceptor();
 
-          case 10: // com.cdccreditsmart.network.config.CertificatePinningManager 
+          case 11: // com.cdccreditsmart.network.config.CertificatePinningManager 
           return (T) NetworkModule_ProvideCertificatePinningManagerFactory.provideCertificatePinningManager();
 
-          case 11: // com.cdccreditsmart.network.error.NetworkErrorMapper 
+          case 12: // com.cdccreditsmart.network.error.NetworkErrorMapper 
           return (T) NetworkModule_ProvideNetworkErrorMapperFactory.provideNetworkErrorMapper();
 
-          case 12: // com.cdccreditsmart.data.local.CDCDatabase 
+          case 13: // com.cdccreditsmart.data.local.CDCDatabase 
           return (T) DataModule_ProvideCDCDatabaseFactory.provideCDCDatabase(ApplicationContextModule_ProvideContextFactory.provideContext(singletonCImpl.applicationContextModule));
 
-          case 13: // com.squareup.moshi.Moshi 
+          case 14: // com.squareup.moshi.Moshi 
           return (T) NetworkModule_ProvideMoshiFactory.provideMoshi();
 
-          case 14: // com.cdccreditsmart.domain.repository.AuthenticationRepository 
-          return (T) DataModule_ProvideAuthenticationRepositoryFactory.provideAuthenticationRepository(singletonCImpl.provideEncryptedSharedPreferencesProvider.get());
+          case 15: // com.cdccreditsmart.domain.repository.AuthenticationRepository 
+          return (T) DataModule_ProvideAuthenticationRepositoryFactory.provideAuthenticationRepository(singletonCImpl.provideEncryptedSharedPreferencesProvider.get(), singletonCImpl.provideAuthApiServiceProvider.get(), singletonCImpl.provideFlowEventsApiServiceProvider.get(), singletonCImpl.provideNetworkErrorMapperProvider.get());
 
-          case 15: // @javax.inject.Named("encrypted_prefs") android.content.SharedPreferences 
+          case 16: // @javax.inject.Named("encrypted_prefs") android.content.SharedPreferences 
           return (T) DataModule_ProvideEncryptedSharedPreferencesFactory.provideEncryptedSharedPreferences(ApplicationContextModule_ProvideContextFactory.provideContext(singletonCImpl.applicationContextModule));
 
-          case 16: // com.cdccreditsmart.domain.repository.ContractRepository 
+          case 17: // com.cdccreditsmart.network.api.AuthApiService 
+          return (T) NetworkModule_ProvideAuthApiServiceFactory.provideAuthApiService(singletonCImpl.provideBasicRetrofitProvider.get());
+
+          case 18: // @com.cdccreditsmart.network.di.NetworkModule.BasicRetrofit retrofit2.Retrofit 
+          return (T) NetworkModule_ProvideBasicRetrofitFactory.provideBasicRetrofit(singletonCImpl.provideRetrofitFactoryProvider.get());
+
+          case 19: // com.cdccreditsmart.network.api.FlowEventsApiService 
+          return (T) NetworkModule_ProvideFlowEventsApiServiceFactory.provideFlowEventsApiService(singletonCImpl.provideSecureRetrofitProvider.get());
+
+          case 20: // com.cdccreditsmart.domain.repository.ContractRepository 
           return (T) DataModule_ProvideContractRepositoryFactory.provideContractRepository(singletonCImpl.provideContractApiServiceProvider.get(), singletonCImpl.contractDao(), singletonCImpl.provideNetworkErrorMapperProvider.get());
 
-          case 17: // com.cdccreditsmart.network.api.ContractApiService 
+          case 21: // com.cdccreditsmart.network.api.ContractApiService 
           return (T) NetworkModule_ProvideContractApiServiceFactory.provideContractApiService(singletonCImpl.provideSecureRetrofitProvider.get());
 
-          case 18: // com.cdccreditsmart.domain.repository.PaymentsRepository 
+          case 22: // com.cdccreditsmart.domain.repository.PaymentsRepository 
           return (T) DataModule_ProvidePaymentsRepositoryFactory.providePaymentsRepository(singletonCImpl.providePaymentsApiServiceProvider.get(), singletonCImpl.paymentDao(), singletonCImpl.provideNetworkErrorMapperProvider.get());
 
-          case 19: // com.cdccreditsmart.network.api.PaymentsApiService 
+          case 23: // com.cdccreditsmart.network.api.PaymentsApiService 
           return (T) NetworkModule_ProvidePaymentsApiServiceFactory.providePaymentsApiService(singletonCImpl.provideSecureRetrofitProvider.get());
 
-          case 20: // com.cdccreditsmart.domain.repository.BiometryRepository 
+          case 24: // com.cdccreditsmart.domain.repository.BiometryRepository 
           return (T) DataModule_ProvideBiometryRepositoryFactory.provideBiometryRepository(singletonCImpl.provideBiometryApiServiceProvider.get(), singletonCImpl.biometrySessionDao(), singletonCImpl.provideNetworkErrorMapperProvider.get());
 
-          case 21: // com.cdccreditsmart.network.api.BiometryApiService 
+          case 25: // com.cdccreditsmart.network.api.BiometryApiService 
           return (T) NetworkModule_ProvideBiometryApiServiceFactory.provideBiometryApiService(singletonCImpl.provideSecureRetrofitProvider.get());
 
           default: throw new AssertionError(id);

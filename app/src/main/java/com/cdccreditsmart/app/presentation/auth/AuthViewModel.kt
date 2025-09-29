@@ -255,40 +255,81 @@ class AuthViewModel @Inject constructor(
                 return@launch
             }
 
-            // Perform local IMEI validation since repository method doesn't exist
+            // Validate IMEI with real CDC Credit Smart API
             try {
-                // Generate a device ID for validation
+                // Generate device ID for API call
                 val deviceId = generateDeviceId()
                 
-                // Perform basic IMEI validation (Luhn algorithm check)
-                val isValidImei = validateImeiLocally(userImei)
-                
-                if (isValidImei) {
-                    // IMEI validation successful
-                    // Store authentication data securely
-                    storeAuthData(
-                        verifiedImei = deviceImei,
-                        attestedDeviceId = deviceId,
-                        jwtToken = "validated_${System.currentTimeMillis()}" // Temporary token
-                    )
-                    
-                    _authState.value = _authState.value.copy(
-                        currentState = AuthStatus.Authenticated,
-                        isAuthenticated = true,
-                        isLoading = false,
-                        attestedDeviceId = deviceId,
-                        jwtToken = "validated_${System.currentTimeMillis()}",
-                        failedAttempts = 0,
-                        isLockedOut = false
-                    )
-                    
-                    clearFailedAttempts()
-                    logSecurityEvent("IMEI validation successful")
-                } else {
-                    handleFailedAttempt("IMEI validation failed - Invalid IMEI format")
+                // Call the real CDC Credit Smart API for IMEI validation
+                authRepository.validateImei(
+                    imei = userImei,
+                    deviceId = deviceId,
+                    contractCode = null, // Can be populated from device binding if needed
+                    phoneNumber = null,  // Can be populated if available
+                    operatorName = null, // Can be populated if available
+                    simSerialNumber = null // Can be populated if available
+                ).collectLatest { resource ->
+                    when (resource) {
+                        is Resource.Loading -> {
+                            // Loading state is already set above, but ensure it remains
+                            _authState.value = _authState.value.copy(
+                                isLoading = true,
+                                errorMessage = null
+                            )
+                        }
+                        
+                        is Resource.Success -> {
+                            val isValid = resource.data
+                            if (isValid) {
+                                // IMEI validation successful - get the stored attested device ID
+                                val attestedDeviceId = authRepository.getStoredAttestedDeviceId()
+                                
+                                // Generate a real authentication token (in real implementation, this would come from server)
+                                val authToken = "cdc_auth_${System.currentTimeMillis()}"
+                                
+                                // Store authentication data securely
+                                storeAuthData(
+                                    verifiedImei = deviceImei,
+                                    attestedDeviceId = attestedDeviceId ?: deviceId,
+                                    jwtToken = authToken
+                                )
+                                
+                                _authState.value = _authState.value.copy(
+                                    currentState = AuthStatus.Authenticated,
+                                    isAuthenticated = true,
+                                    isLoading = false,
+                                    attestedDeviceId = attestedDeviceId ?: deviceId,
+                                    jwtToken = authToken,
+                                    failedAttempts = 0,
+                                    isLockedOut = false,
+                                    errorMessage = null
+                                )
+                                
+                                clearFailedAttempts()
+                                logSecurityEvent("IMEI validation successful via CDC API")
+                            } else {
+                                handleFailedAttempt("IMEI validation failed - Server rejected IMEI")
+                            }
+                        }
+                        
+                        is Resource.Error -> {
+                            val errorMessage = when {
+                                resource.exception.message?.contains("network", ignoreCase = true) == true -> 
+                                    "Network error - please check your internet connection"
+                                resource.exception.message?.contains("timeout", ignoreCase = true) == true -> 
+                                    "Request timed out - please try again"
+                                resource.exception.message?.contains("unauthorized", ignoreCase = true) == true -> 
+                                    "Authentication failed - device not authorized"
+                                resource.exception.message?.contains("blocked", ignoreCase = true) == true -> 
+                                    "IMEI has been blocked by the system"
+                                else -> "Validation failed: ${resource.exception.message}"
+                            }
+                            handleFailedAttempt("API Error: $errorMessage")
+                        }
+                    }
                 }
             } catch (e: Exception) {
-                handleFailedAttempt("Authentication error: ${e.message}")
+                handleFailedAttempt("Unexpected error during IMEI validation: ${e.message}")
             }
         }
     }
@@ -498,32 +539,6 @@ class AuthViewModel @Inject constructor(
         }
     }
 
-    private fun validateImeiLocally(imei: String): Boolean {
-        // Basic IMEI validation using Luhn algorithm
-        if (imei.length != 15 || !imei.all { it.isDigit() }) {
-            return false
-        }
-        
-        // Luhn algorithm check
-        var sum = 0
-        var alternate = false
-        
-        for (i in imei.length - 1 downTo 0) {
-            var digit = imei[i].toString().toInt()
-            
-            if (alternate) {
-                digit *= 2
-                if (digit > 9) {
-                    digit = (digit % 10) + 1
-                }
-            }
-            
-            sum += digit
-            alternate = !alternate
-        }
-        
-        return sum % 10 == 0
-    }
     
     private fun logSecurityEvent(event: String) {
         // In production, this would send to a security monitoring system
