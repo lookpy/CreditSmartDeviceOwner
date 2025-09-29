@@ -224,13 +224,14 @@ class SimplifiedAuthViewModel(
     }
 
     /**
-     * Verify entered IMEI against PDV IMEI from CDC system
-     * Implements caching and normalization to prevent false negatives from formatting differences
+     * Verify IMEI and claim sale using new "Handshake de Pareamento" flow
+     * 1. Search for pending sale by IMEI
+     * 2. If found, claim the sale with device fingerprint
      */
     fun verifyImei() {
         val userImei = _authState.value.userEnteredImei
         
-        Log.d(TAG, "Verifying IMEI against PDV system - User entered: ${userImei.length} digits")
+        Log.d(TAG, "Starting sale claim flow - User entered: ${userImei.length} digits")
         
         if (userImei.length != 15) {
             _authState.value = _authState.value.copy(
@@ -248,95 +249,109 @@ class SimplifiedAuthViewModel(
         
         viewModelScope.launch {
             try {
-                // Normalize user input for comparison
+                // Normalize user input
                 val normalizedUserImei = normalizeImei(userImei)
-                Log.d(TAG, "Normalized user IMEI: $normalizedUserImei")
+                Log.d(TAG, "Normalized IMEI: $normalizedUserImei")
                 
-                // Check if we have a valid cached PDV IMEI
-                val currentTime = System.currentTimeMillis()
-                val currentState = _authState.value
-                val isCacheValid = currentState.cachedPdvImei != null && 
-                                   currentState.pdvImeiCacheTime != null &&
-                                   (currentTime - currentState.pdvImeiCacheTime) < PDV_CACHE_DURATION_MS
+                // STEP 1: Search for pending sale by IMEI
+                Log.d(TAG, "Searching for pending sale with IMEI: $normalizedUserImei")
+                val searchResult = deviceRegistrationManager.searchPendingSale(normalizedUserImei)
                 
-                val pdvImei: String = if (isCacheValid) {
-                    Log.d(TAG, "Using cached PDV IMEI (cache age: ${(currentTime - currentState.pdvImeiCacheTime!!) / 1000}s)")
-                    currentState.cachedPdvImei!!
-                } else {
-                    Log.d(TAG, "Fetching fresh PDV IMEI from CDC system...")
-                    
-                    // Fetch PDV IMEI from CDC API
-                    val pdvImeiResult = deviceRegistrationManager.getPdvImei()
-                    
-                    pdvImeiResult.fold(
-                        onSuccess = { fetchedPdvImei ->
-                            Log.d(TAG, "PDV IMEI retrieved successfully, original: '$fetchedPdvImei'")
-                            val normalizedPdvImei = normalizeImei(fetchedPdvImei)
-                            Log.d(TAG, "Normalized PDV IMEI: '$normalizedPdvImei'")
+                searchResult.fold(
+                    onSuccess = { queryResponse ->
+                        if (queryResponse == null || !queryResponse.found) {
+                            Log.w(TAG, "No pending sale found for this IMEI")
+                            val newFailedAttempts = _authState.value.failedAttempts + 1
                             
-                            // Cache the normalized PDV IMEI
-                            _authState.value = _authState.value.copy(
-                                cachedPdvImei = normalizedPdvImei,
-                                pdvImeiCacheTime = currentTime
-                            )
-                            
-                            normalizedPdvImei
-                        },
-                        onFailure = { exception ->
-                            Log.e(TAG, "Failed to fetch PDV IMEI", exception)
-                            _authState.value = _authState.value.copy(
-                                currentState = AuthStatus.Error,
-                                isLoading = false,
-                                errorMessage = "Unable to verify IMEI with PDV system: ${exception.message}"
-                            )
+                            if (newFailedAttempts >= 3) {
+                                val lockoutEndTime = System.currentTimeMillis() + (30 * 60 * 1000L)
+                                _authState.value = _authState.value.copy(
+                                    currentState = AuthStatus.Error,
+                                    errorMessage = "Too many failed attempts. No pending sale found for this IMEI. Device locked for 30 minutes.",
+                                    failedAttempts = newFailedAttempts,
+                                    isLockedOut = true,
+                                    lockoutEndTime = lockoutEndTime,
+                                    isLoading = false
+                                )
+                            } else {
+                                _authState.value = _authState.value.copy(
+                                    currentState = AuthStatus.AwaitingInput,
+                                    isLoading = false,
+                                    errorMessage = "No pending sale found for this IMEI. Please verify the IMEI from the sales receipt. ${3 - newFailedAttempts} attempts remaining.",
+                                    failedAttempts = newFailedAttempts
+                                )
+                            }
                             return@launch
                         }
-                    )
-                }
-                
-                // Compare normalized IMEIs
-                Log.d(TAG, "Comparing normalized IMEIs - User: '$normalizedUserImei', PDV: '$pdvImei'")
-                
-                if (normalizedUserImei == pdvImei) {
-                    Log.d(TAG, "IMEI verification successful, matches PDV system")
-                    _authState.value = _authState.value.copy(
-                        pdvImei = pdvImei,
-                        failedAttempts = 0, // Reset failed attempts on success
-                        isLoading = false
-                    )
-                    startDeviceRegistration()
-                } else {
-                    val newFailedAttempts = _authState.value.failedAttempts + 1
-                    Log.w(TAG, "IMEI verification failed. Normalized IMEIs do not match. Attempt $newFailedAttempts/3")
-                    Log.w(TAG, "User normalized: '$normalizedUserImei', PDV normalized: '$pdvImei'")
-                    
-                    if (newFailedAttempts >= 3) {
-                        // Lock out the user
-                        val lockoutEndTime = System.currentTimeMillis() + (30 * 60 * 1000L) // 30 minutes
+                        
+                        // Sale found! Log details
+                        Log.d(TAG, "Pending sale found!")
+                        Log.d(TAG, "Sale ID: ${queryResponse.saleId}")
+                        Log.d(TAG, "Validation ID: ${queryResponse.validationId}")
+                        Log.d(TAG, "Customer: ${queryResponse.customerName}")
+                        Log.d(TAG, "Device Model: ${queryResponse.deviceModel}")
+                        Log.d(TAG, "Expires in: ${queryResponse.expiresIn}s")
+                        
+                        // STEP 2: Claim the sale with device fingerprint
+                        _authState.value = _authState.value.copy(
+                            currentState = AuthStatus.Registering,
+                            registrationStatus = "Claiming sale and registering device..."
+                        )
+                        
+                        Log.d(TAG, "Claiming sale and pairing device...")
+                        val fingerprint = deviceRegistrationManager.generateFingerprint()
+                        Log.d(TAG, "Generated device fingerprint: $fingerprint")
+                        
+                        val claimResult = deviceRegistrationManager.claimSale(
+                            validationId = queryResponse.validationId!!,
+                            hardwareImei = normalizedUserImei,
+                            fingerprint = fingerprint
+                        )
+                        
+                        claimResult.fold(
+                            onSuccess = { claimResponse ->
+                                Log.d(TAG, "Sale claimed successfully!")
+                                Log.d(TAG, "Device ID: ${claimResponse.deviceId}")
+                                Log.d(TAG, "Sale ID: ${claimResponse.saleId}")
+                                Log.d(TAG, "Message: ${claimResponse.message}")
+                                
+                                _authState.value = _authState.value.copy(
+                                    currentState = AuthStatus.Authenticated,
+                                    isAuthenticated = true,
+                                    isLoading = false,
+                                    deviceId = claimResponse.deviceId,
+                                    registrationStatus = "Device paired successfully",
+                                    failedAttempts = 0,
+                                    errorMessage = null
+                                )
+                            },
+                            onFailure = { exception ->
+                                Log.e(TAG, "Failed to claim sale", exception)
+                                _authState.value = _authState.value.copy(
+                                    currentState = AuthStatus.Error,
+                                    isLoading = false,
+                                    errorMessage = "Failed to pair device: ${exception.message}",
+                                    isAuthenticated = false
+                                )
+                            }
+                        )
+                    },
+                    onFailure = { exception ->
+                        Log.e(TAG, "Failed to search for pending sale", exception)
                         _authState.value = _authState.value.copy(
                             currentState = AuthStatus.Error,
-                            errorMessage = "Too many failed attempts. The IMEI entered does not match the PDV system. Device locked for 30 minutes.",
-                            failedAttempts = newFailedAttempts,
-                            isLockedOut = true,
-                            lockoutEndTime = lockoutEndTime,
-                            isLoading = false
-                        )
-                    } else {
-                        _authState.value = _authState.value.copy(
-                            currentState = AuthStatus.AwaitingInput,
                             isLoading = false,
-                            errorMessage = "IMEI does not match the PDV system. Please verify the IMEI from the sales receipt. ${3 - newFailedAttempts} attempts remaining.",
-                            failedAttempts = newFailedAttempts
+                            errorMessage = "Error searching for sale: ${exception.message}"
                         )
                     }
-                }
+                )
                 
             } catch (e: Exception) {
-                Log.e(TAG, "Exception during IMEI verification", e)
+                Log.e(TAG, "Exception during sale claim flow", e)
                 _authState.value = _authState.value.copy(
                     currentState = AuthStatus.Error,
                     isLoading = false,
-                    errorMessage = "Error verifying IMEI: ${e.message}"
+                    errorMessage = "Error processing sale claim: ${e.message}"
                 )
             }
         }

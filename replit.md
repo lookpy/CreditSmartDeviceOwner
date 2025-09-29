@@ -43,29 +43,40 @@ The application is entirely built with Jetpack Compose and Material 3, implement
 - **Backend Integration**: JWT authentication with scopes, idempotency keys for POST requests, request signing with ECDSA.
 
 ## Recent Changes (September 29, 2025)
-🎉🎉🎉 **PDV IMEI VERIFICATION SYSTEM - PRODUCTION READY!** 🎉🎉🎉
+🎉🎉🎉 **HANDSHAKE DE PAREAMENTO IMPLEMENTADO - PRODUCTION READY!** 🎉🎉🎉
 
-### PDV IMEI INTEGRATION COMPLETE (September 29, 2025) - ✅ FINAL BUILD SUCCESSFUL!
-- 🚀 **PDV IMEI VERIFICATION IMPLEMENTED** - App agora valida IMEI contra sistema de vendas CDC Credit Smart
-- ✅ **LIFECYCLE BUG FIXED** - Corrigido reset de estado ViewModel em recomposições com `remember{}`
-- ✅ **NO DEVICE PERMISSIONS REQUIRED** - Removida dependência de READ_PHONE_STATE completamente
-- ✅ **SMART NORMALIZATION** - Sistema trata IMEI formatado e não-formatado automaticamente
-- ✅ **PDV CACHE SYSTEM** - Cache inteligente de 5 minutos reduz chamadas à API
-- ✅ **LOCKOUT PROTECTION** - Sistema de bloqueio após 3 tentativas com timeout de 30 minutos
-- ✅ **BUILD SUCCESSFUL** - APK 48MB compilado e disponível (checksum: 29b82479952f3f673267edbe6185a195)
+### CLAIM-SALE FLOW INTEGRATION (September 29, 2025) - ✅ BUILD SUCCESSFUL!
+- 🚀 **NEW PAIRING FLOW IMPLEMENTED** - Novo fluxo "Handshake de Pareamento" conforme backend CDC
+- ✅ **CORRECT BACKEND URL** - URLs corrigidas para `api.cdccreditsmart.com.br` e `api-dev.cdccreditsmart.com.br`
+- ✅ **TWO-STEP FLOW** - GET claim-sale busca venda pendente → POST claim-sale reivindica com fingerprint
+- ✅ **DEVICE FINGERPRINT** - Sistema gera fingerprint único baseado em Android ID + hardware
+- ✅ **24H PAIRING WINDOW** - Vendas pendentes expiram automaticamente em 24 horas
+- ✅ **IMMUTABLE TOKEN** - Token JWT imutável gerado após reivindicação bem-sucedida
+- ✅ **BUILD SUCCESSFUL** - APK 48MB compilado e disponível (checksum: 31ac73ba66ca3b8364dd336e29bc423e)
 
-### PDV IMEI VERIFICATION FLOW
-- 🎯 **User Flow**: Usuário digita IMEI do recibo de venda → App busca IMEI do PDV via API → Compara IMEIs
-- ✅ **API Endpoint**: GET `/api/device/pdv-imei` com headers CDC corretos
-- ✅ **Manual Input**: Interface clara para entrada de IMEI sem necessidade de permissões
-- ✅ **State Persistence**: ViewModel mantém cache PDV e contadores de lockout entre recomposições
-- 🚀 **Production Ready**: Sistema completo pronto para dispositivos Android reais
+### HANDSHAKE DE PAREAMENTO FLOW
+- 🎯 **PASSO 1 - PDV**: Vendedor finaliza venda → Sistema cria registro pendente com janela de 24h
+- 🎯 **PASSO 2 - APK Busca**: Usuário digita IMEI → App busca venda pendente via GET `/api/device/claim-sale?imei=XXX`
+- 🎯 **PASSO 3 - APK Reivindica**: App gera fingerprint e reivindica venda via POST `/api/device/claim-sale`
+- 🎯 **PASSO 4 - Validação**: Backend valida IMEI, vincula fingerprint, gera token imutável, marca venda como ATIVA
+
+### API ENDPOINTS IMPLEMENTED
+- ✅ **GET /api/device/claim-sale?imei={imei}** - Busca venda pendente por IMEI
+- ✅ **POST /api/device/claim-sale** - Reivindica venda com validationId + hardwareImei + fingerprint + deviceInfo
+- ✅ **Response**: immutableToken, deviceId, saleId, success, message
+
+### SECURITY & PROTECTION
+- ✅ **Unicidade IMEI** - Apenas uma validação ativa por IMEI
+- ✅ **Expiração 24h** - Registros pendentes expiram automaticamente
+- ✅ **Lockout Protection** - 3 tentativas falhas = bloqueio de 30 minutos
+- ✅ **Token Imutável** - Token permanente após reivindicação (1 ano validade)
+- ✅ **Fingerprint único** - Impossível outro dispositivo reivindicar mesma venda
 
 ### CRITICAL FIXES APPLIED
-- ✅ **Composable Context Error Fixed** - Movido `remember { SimplifiedAuthViewModel() }` para dentro da função @Composable
-- ✅ **R8 Minification Resolved** - Desabilitado R8 no módulo data para evitar conflitos com ProGuard rules
-- ✅ **State Reset Bug Fixed** - ViewModel agora persiste estado corretamente durante UI updates
-- 🎯 **No Breaking Changes** - Mantida arquitetura simplificada sem Hilt em todos os módulos
+- ✅ **Backend URL Fixed** - Corrigido de `cdccreditsmart.com` → `api.cdccreditsmart.com.br`
+- ✅ **Composable Lifecycle Fixed** - ViewModel com `remember{}` persiste estado entre recomposições
+- ✅ **R8 Minification Resolved** - Desabilitado R8 no módulo data
+- ✅ **UI Updated** - Textos atualizados para refletir "Device Pairing" ao invés de "PDV IMEI Verification"
 
 ### MAJOR BREAKTHROUGH: SIMPLIFIED ARCHITECTURE WORKING (September 29, 2025) - ✅ CONCLUÍDO!
 - 🚀 **BUILD SUCCESSFUL ACHIEVED** - Removido Hilt completamente, implementação simplificada funcionando

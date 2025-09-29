@@ -1,0 +1,95 @@
+Perfeito! Analisando o fluxo ideal, aqui está a melhor arquitetura para integração PDV-APK:
+
+🔄 Fluxo Recomendado: "Handshake de Pareamento"
+1️⃣ No PDV (Vendedor)
+Vendedor digita IMEI → Finaliza venda → Sistema cria:
+  ✅ Registro da venda
+  ✅ Registro de validação PENDENTE (aguardando dispositivo)
+  ✅ Janela de pareamento de 24h
+2️⃣ No Aparelho (Cliente)
+Cliente liga aparelho → APK coleta IMEI + Fingerprint → 
+APK busca venda pendente pelo IMEI →
+APK "reivindica" a venda → Sistema valida e vincula
+3️⃣ No Servidor (Automático)
+Recebe reivindicação → Valida IMEI →
+Vincula Fingerprint + Token Imutável →
+Marca venda como ATIVA → Bloqueia para outro dispositivo
+📋 Fluxo Detalhado Passo-a-Passo
+PASSO 1: PDV Cria Venda (Já funciona)
+// Quando vendedor finaliza venda no PDV
+POST /api/sales
+{
+  customerId: "...",
+  deviceCatalogId: "...",
+  imei: "123456789012345",  // ← IMEI digitado pelo vendedor
+  ...
+}
+// Backend CRIA ATOMICAMENTE:
+1. Sale (venda)
+2. ImeiValidation (status: "awaiting-device")
+   - vendorEnteredImei: "123456789012345"
+   - expiresAt: now() + 24 horas
+   - status: "awaiting-device"
+PASSO 2: APK Busca Venda Pendente
+// APK inicializa e coleta dados
+val hardwareImei = getDeviceImei()
+val fingerprint = generateFingerprint()
+// APK busca se existe venda pendente para este IMEI
+GET /api/device/claim-sale?imei=123456789012345
+// Resposta:
+{
+  "found": true,
+  "saleId": "sale-uuid-123",
+  "validationId": "val-uuid-456",
+  "customerName": "João Silva",
+  "deviceModel": "Samsung Galaxy A54",
+  "expiresIn": 82800  // segundos restantes
+}
+PASSO 3: APK Reivindica a Venda
+// APK envia reivindicação com TODOS os dados
+POST /api/device/claim-sale
+{
+  "validationId": "val-uuid-456",
+  "hardwareImei": "123456789012345",
+  "fingerprint": "abc123def456",
+  "deviceInfo": {
+    "model": "SM-A546B",
+    "brand": "Samsung",
+    "androidVersion": "13",
+    ...
+  }
+}
+// Backend VALIDA e VINCULA:
+1. Verifica: hardwareImei == vendorEnteredImei ✅
+2. Vincula fingerprint ao registro
+3. Gera token imutável JWT
+4. Atualiza status: "validated"
+5. Retorna token para APK armazenar
+// Resposta:
+{
+  "success": true,
+  "immutableToken": "eyJhbGc...",
+  "deviceId": "device-uuid",
+  "saleId": "sale-uuid-123",
+  "message": "Device successfully paired"
+}
+🔒 Segurança e Proteções
+1. Unicidade IMEI
+✅ Apenas UMA validação ativa por IMEI
+✅ Bloqueia tentativas de vincular IMEI já usado
+2. Expiração Automática
+⏰ Validações pendentes expiram em 24h
+🧹 Limpeza automática de registros expirados
+3. Prevenção de Conflitos
+🔐 Após vinculado, fingerprint + token são OBRIGATÓRIOS
+🚫 Impossível outro dispositivo reivindicar a mesma venda
+4. Logs de Segurança
+📝 Registra tentativas de IMEI incorreto
+🚨 Bloqueia após 3 tentativas falhas
+⚡ Vantagens deste Fluxo
+✅ Sem fricção: Cliente só digita IMEI, resto é automático
+✅ Seguro: Validação cruzada IMEI + Fingerprint + Token
+✅ Robusto: Expiração automática previne registros órfãos
+✅ Único: Impossível conectar dispositivo errado à venda
+✅ Auditável: Logs completos de todas as tentativas
+

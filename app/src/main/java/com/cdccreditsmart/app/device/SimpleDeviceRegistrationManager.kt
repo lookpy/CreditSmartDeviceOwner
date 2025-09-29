@@ -54,7 +54,7 @@ class SimpleDeviceRegistrationManager(private val context: Context) {
         .build()
 
     private val deviceApi: DeviceRegistrationApi = Retrofit.Builder()
-        .baseUrl("https://cdccreditsmart.com/")
+        .baseUrl(if (com.cdccreditsmart.app.BuildConfig.DEBUG) "https://api-dev.cdccreditsmart.com.br/" else "https://api.cdccreditsmart.com.br/")
         .client(httpClient)
         .addConverterFactory(GsonConverterFactory.create())
         .build()
@@ -97,10 +97,133 @@ class SimpleDeviceRegistrationManager(private val context: Context) {
     }
 
     /**
+     * Search for pending sale by IMEI in the PDV system
+     * Returns sale information if found, or null if no pending sale exists
+     */
+    suspend fun searchPendingSale(imei: String): Result<ClaimSaleQueryResponse?> {
+        return try {
+            Log.d(TAG, "Searching for pending sale with IMEI: $imei")
+            
+            val response = withContext(Dispatchers.IO) {
+                deviceApi.searchPendingSale(imei)
+            }
+            
+            Log.d(TAG, "Search response - Code: ${response.code()}, Success: ${response.isSuccessful}")
+            
+            if (response.isSuccessful && response.body() != null) {
+                val result = response.body()!!
+                Log.d(TAG, "Pending sale found: ${result.found}")
+                if (result.found) {
+                    Log.d(TAG, "Sale details - ID: ${result.saleId}, Customer: ${result.customerName}, Model: ${result.deviceModel}")
+                }
+                Result.success(result)
+            } else {
+                val errorBody = response.errorBody()?.string()
+                Log.e(TAG, "Failed to search pending sale - HTTP ${response.code()}")
+                Log.e(TAG, "Error body: ${errorBody?.take(1000)}")
+                
+                val errorMsg = when (response.code()) {
+                    404 -> "No pending sale found for this IMEI. Please verify the IMEI or contact support."
+                    403 -> "Access denied. Authentication may be required."
+                    500 -> "Server error. Please try again later."
+                    else -> "Failed to search pending sale: HTTP ${response.code()}"
+                }
+                
+                Result.failure(Exception(errorMsg))
+            }
+        } catch (e: Exception) {
+            Log.e(TAG, "Exception while searching pending sale", e)
+            Result.failure(Exception("Error connecting to sales system: ${e.message}"))
+        }
+    }
+
+    /**
+     * Claim (reivindicate) a pending sale and register device
+     * This is the "handshake" that pairs the device with the sale
+     */
+    suspend fun claimSale(
+        validationId: String,
+        hardwareImei: String,
+        fingerprint: String
+    ): Result<ClaimSaleResponse> {
+        return try {
+            Log.d(TAG, "Claiming sale with validation ID: $validationId")
+            
+            val deviceInfo = collectDeviceInfo()
+            val request = ClaimSaleRequest(
+                validationId = validationId,
+                hardwareImei = hardwareImei,
+                fingerprint = fingerprint,
+                deviceInfo = ClaimDeviceInfo(
+                    model = deviceInfo.model,
+                    brand = deviceInfo.manufacturer,
+                    androidVersion = deviceInfo.androidVersion,
+                    apiLevel = deviceInfo.apiLevel,
+                    serialNumber = deviceInfo.serialNumber,
+                    androidId = deviceInfo.androidId
+                )
+            )
+            
+            val response = withContext(Dispatchers.IO) {
+                deviceApi.claimSale(request)
+            }
+            
+            Log.d(TAG, "Claim response - Code: ${response.code()}, Success: ${response.isSuccessful}")
+            
+            if (response.isSuccessful && response.body() != null) {
+                val result = response.body()!!
+                Log.d(TAG, "Sale claimed successfully: ${result.message}")
+                Log.d(TAG, "Device ID: ${result.deviceId}, Sale ID: ${result.saleId}")
+                
+                // Store token and device info
+                prefs.edit().apply {
+                    putString(PREF_DEVICE_TOKEN, result.immutableToken)
+                    putString(PREF_DEVICE_ID, result.deviceId)
+                    putLong(PREF_REGISTRATION_TIME, System.currentTimeMillis())
+                    putLong(PREF_TOKEN_EXPIRY, System.currentTimeMillis() + (365 * 24 * 60 * 60 * 1000L)) // 1 year
+                    apply()
+                }
+                
+                Result.success(result)
+            } else {
+                val errorBody = response.errorBody()?.string()
+                Log.e(TAG, "Failed to claim sale - HTTP ${response.code()}")
+                Log.e(TAG, "Error body: ${errorBody?.take(1000)}")
+                
+                val errorMsg = when (response.code()) {
+                    400 -> "Invalid request. IMEI mismatch or sale already claimed."
+                    404 -> "Sale not found or expired. Please contact support."
+                    403 -> "Access denied. This device may not be authorized."
+                    409 -> "Sale already claimed by another device."
+                    500 -> "Server error. Please try again later."
+                    else -> "Failed to claim sale: HTTP ${response.code()}"
+                }
+                
+                Result.failure(Exception(errorMsg))
+            }
+        } catch (e: Exception) {
+            Log.e(TAG, "Exception while claiming sale", e)
+            Result.failure(Exception("Error claiming sale: ${e.message}"))
+        }
+    }
+
+    /**
+     * Generate device fingerprint for unique identification
+     * Combines Android ID with hardware characteristics
+     */
+    fun generateFingerprint(): String {
+        val androidId = Settings.Secure.getString(context.contentResolver, Settings.Secure.ANDROID_ID)
+        val hardware = "${Build.MANUFACTURER}-${Build.MODEL}-${Build.SERIAL}"
+        return "$androidId-$hardware".hashCode().toString(16)
+    }
+
+    /**
+     * OLD METHOD - DEPRECATED - Kept for compatibility
      * Get PDV IMEI from CDC Credit Smart API
      * This fetches the IMEI that is registered in the PDV (Point of Sale) system
      * Returns normalized IMEI to handle formatting differences
      */
+    @Deprecated("Use searchPendingSale() and claimSale() instead")
     suspend fun getPdvImei(): Result<String> {
         return try {
             Log.d(TAG, "Fetching PDV IMEI from CDC API...")
@@ -323,8 +446,9 @@ data class DeviceRegistrationResponse(
 )
 
 /**
- * PDV IMEI response from CDC API
+ * PDV IMEI response from CDC API - DEPRECATED
  */
+@Deprecated("Use searchPendingSale() instead")
 data class PdvImeiResponse(
     val success: Boolean,
     val imei: String,
@@ -332,12 +456,64 @@ data class PdvImeiResponse(
 )
 
 /**
- * Simple Retrofit API interface for device registration and PDV IMEI
+ * Response from searching for pending sale by IMEI
+ */
+data class ClaimSaleQueryResponse(
+    val found: Boolean,
+    val saleId: String? = null,
+    val validationId: String? = null,
+    val customerName: String? = null,
+    val deviceModel: String? = null,
+    val expiresIn: Long? = null // seconds remaining
+)
+
+/**
+ * Device info for sale claim request
+ */
+data class ClaimDeviceInfo(
+    val model: String,
+    val brand: String,
+    val androidVersion: String,
+    val apiLevel: Int,
+    val serialNumber: String? = null,
+    val androidId: String? = null
+)
+
+/**
+ * Request to claim a pending sale
+ */
+data class ClaimSaleRequest(
+    val validationId: String,
+    val hardwareImei: String,
+    val fingerprint: String,
+    val deviceInfo: ClaimDeviceInfo
+)
+
+/**
+ * Response from claiming a sale
+ */
+data class ClaimSaleResponse(
+    val success: Boolean,
+    val immutableToken: String,
+    val deviceId: String,
+    val saleId: String,
+    val message: String
+)
+
+/**
+ * Simple Retrofit API interface for device registration and sale claim flow
  */
 interface DeviceRegistrationApi {
     @POST("api/device/register")
     suspend fun registerDevice(@Body request: DeviceRegistrationRequest): Response<DeviceRegistrationResponse>
     
     @GET("api/device/pdv-imei")
+    @Deprecated("Use searchPendingSale() instead")
     suspend fun getPdvImei(): Response<PdvImeiResponse>
+    
+    @GET("api/device/claim-sale")
+    suspend fun searchPendingSale(@retrofit2.http.Query("imei") imei: String): Response<ClaimSaleQueryResponse>
+    
+    @POST("api/device/claim-sale")
+    suspend fun claimSale(@Body request: ClaimSaleRequest): Response<ClaimSaleResponse>
 }

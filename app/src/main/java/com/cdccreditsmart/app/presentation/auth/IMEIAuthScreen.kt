@@ -151,7 +151,7 @@ private fun IMEIInputContent(
         Spacer(modifier = Modifier.height(16.dp))
         
         Text(
-            text = "PDV IMEI Verification",
+            text = "Device Pairing",
             style = MaterialTheme.typography.headlineSmall,
             fontWeight = FontWeight.Bold
         )
@@ -159,7 +159,7 @@ private fun IMEIInputContent(
         Spacer(modifier = Modifier.height(8.dp))
         
         Text(
-            text = "Please enter the IMEI from your sales receipt to verify this device matches the PDV system",
+            text = "Enter the IMEI from your sales receipt to pair this device with your purchase",
             style = MaterialTheme.typography.bodyMedium,
             textAlign = TextAlign.Center,
             color = MaterialTheme.colorScheme.onSurfaceVariant
@@ -178,7 +178,7 @@ private fun IMEIInputContent(
             ) {
                 Icon(
                     imageVector = Icons.Default.Info,
-                    contentDescription = "PDV Info",
+                    contentDescription = "Info",
                     tint = MaterialTheme.colorScheme.onTertiaryContainer,
                     modifier = Modifier.size(16.dp)
                 )
@@ -186,7 +186,7 @@ private fun IMEIInputContent(
                 Spacer(modifier = Modifier.width(8.dp))
                 
                 Text(
-                    text = "Enter the IMEI exactly as shown on your CDC Credit Smart sales receipt.",
+                    text = "The IMEI is on your sales receipt. This pairs your device with your purchase.",
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onTertiaryContainer
                 )
@@ -200,8 +200,8 @@ private fun IMEIInputContent(
         OutlinedTextField(
             value = userEnteredImei,
             onValueChange = onImeiChanged,
-            label = { Text("Enter PDV IMEI") },
-            placeholder = { Text("IMEI from sales receipt") },
+            label = { Text("Enter IMEI") },
+            placeholder = { Text("IMEI from receipt") },
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
             visualTransformation = ImeiVisualTransformation(),
             isError = errorMessage != null,
@@ -220,7 +220,7 @@ private fun IMEIInputContent(
             enabled = userEnteredImei.length == 15,
             modifier = Modifier.fillMaxWidth()
         ) {
-            Text("Verify PDV IMEI")
+            Text("Pair Device")
         }
         
         Spacer(modifier = Modifier.height(16.dp))
@@ -266,7 +266,7 @@ private fun VerifyingContent() {
         Spacer(modifier = Modifier.height(24.dp))
         
         Text(
-            text = "Verifying PDV IMEI",
+            text = "Pairing Device",
             style = MaterialTheme.typography.headlineSmall,
             fontWeight = FontWeight.Bold
         )
@@ -274,7 +274,7 @@ private fun VerifyingContent() {
         Spacer(modifier = Modifier.height(8.dp))
         
         Text(
-            text = "Checking IMEI against CDC Credit Smart PDV system...",
+            text = "Searching for your purchase and pairing this device...",
             style = MaterialTheme.typography.bodyMedium,
             textAlign = TextAlign.Center,
             color = MaterialTheme.colorScheme.onSurfaceVariant
@@ -370,7 +370,7 @@ private fun AuthenticatedContent() {
         Spacer(modifier = Modifier.height(16.dp))
         
         Text(
-            text = "PDV IMEI Verified",
+            text = "Device Paired",
             style = MaterialTheme.typography.headlineSmall,
             fontWeight = FontWeight.Bold,
             color = Color.Green
@@ -379,7 +379,7 @@ private fun AuthenticatedContent() {
         Spacer(modifier = Modifier.height(8.dp))
         
         Text(
-            text = "IMEI matches PDV system. Device registration successful!",
+            text = "Your device has been successfully paired with your purchase!",
             style = MaterialTheme.typography.bodyMedium,
             textAlign = TextAlign.Center,
             color = MaterialTheme.colorScheme.onSurfaceVariant
