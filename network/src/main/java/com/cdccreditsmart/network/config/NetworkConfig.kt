@@ -5,14 +5,14 @@ package com.cdccreditsmart.network.config
  */
 object NetworkConfig {
     
-    // Base URLs - Updated for CDC Credit Smart backend
-    // Production and Debug URLs using api.cdccreditsmart.com.br domain
-    const val BASE_URL = "https://api.cdccreditsmart.com.br/"
-    const val BASE_URL_DEBUG = "https://api-dev.cdccreditsmart.com.br/"
+    // Base URLs - CDC Credit Smart backend
+    // Production and Debug URLs using cdccreditsmart.com domain
+    const val BASE_URL = "https://cdccreditsmart.com/"
+    const val BASE_URL_DEBUG = "https://cdccreditsmart.com/"
     
     // WebSocket URLs for real-time communication
-    const val WS_BASE_URL = "wss://api.cdccreditsmart.com.br/ws"
-    const val WS_BASE_URL_DEBUG = "wss://api-dev.cdccreditsmart.com.br/ws"
+    const val WS_BASE_URL = "wss://cdccreditsmart.com/ws"
+    const val WS_BASE_URL_DEBUG = "wss://cdccreditsmart.com/ws"
     
     // Timeout configurations (in milliseconds)
     const val CONNECT_TIMEOUT = 30_000L
@@ -60,7 +60,7 @@ object NetworkConfig {
     // For debugging, certificate pinning can be disabled using:
     // CertificatePinningManager.setDisableCertificatePinning(true)
     val CERTIFICATE_PINS = mapOf(
-        "api.cdccreditsmart.com.br" to listOf(
+        "cdccreditsmart.com" to listOf(
             "sha256/YLh1dUR9y6Kja30RrAn7JKnbQG/uEtLMkBgFF2Fuihg=", // PLACEHOLDER: Production certificate pin
             "sha256/Vjs8r4z+80wjNcr1YKepWQboSIRi63WsWXhIMN+eWys=", // PLACEHOLDER: Backup certificate pin
             "sha256/C5+lpZ7tcVwmwQIMcRtPbsQtWLABXhIMN+eWys="  // PLACEHOLDER: Root CA pin

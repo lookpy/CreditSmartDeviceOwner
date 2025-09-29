@@ -54,7 +54,7 @@ class SimpleDeviceRegistrationManager(private val context: Context) {
         .build()
 
     private val deviceApi: DeviceRegistrationApi = Retrofit.Builder()
-        .baseUrl(if (com.cdccreditsmart.app.BuildConfig.DEBUG) "https://api-dev.cdccreditsmart.com.br/" else "https://api.cdccreditsmart.com.br/")
+        .baseUrl("https://cdccreditsmart.com/")
         .client(httpClient)
         .addConverterFactory(GsonConverterFactory.create())
         .build()

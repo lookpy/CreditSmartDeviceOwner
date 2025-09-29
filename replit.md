@@ -47,12 +47,12 @@ The application is entirely built with Jetpack Compose and Material 3, implement
 
 ### CLAIM-SALE FLOW INTEGRATION (September 29, 2025) - ✅ BUILD SUCCESSFUL!
 - 🚀 **NEW PAIRING FLOW IMPLEMENTED** - Novo fluxo "Handshake de Pareamento" conforme backend CDC
-- ✅ **CORRECT BACKEND URL** - URLs corrigidas para `api.cdccreditsmart.com.br` e `api-dev.cdccreditsmart.com.br`
+- ✅ **BACKEND URL CONFIRMED** - Usando domínio correto `https://cdccreditsmart.com/`
 - ✅ **TWO-STEP FLOW** - GET claim-sale busca venda pendente → POST claim-sale reivindica com fingerprint
 - ✅ **DEVICE FINGERPRINT** - Sistema gera fingerprint único baseado em Android ID + hardware
 - ✅ **24H PAIRING WINDOW** - Vendas pendentes expiram automaticamente em 24 horas
 - ✅ **IMMUTABLE TOKEN** - Token JWT imutável gerado após reivindicação bem-sucedida
-- ✅ **BUILD SUCCESSFUL** - APK 48MB compilado e disponível (checksum: 31ac73ba66ca3b8364dd336e29bc423e)
+- ✅ **BUILD SUCCESSFUL** - APK 48MB compilado e disponível (checksum: 75992a19d776bc4c5678a00fbb3c6192)
 
 ### HANDSHAKE DE PAREAMENTO FLOW
 - 🎯 **PASSO 1 - PDV**: Vendedor finaliza venda → Sistema cria registro pendente com janela de 24h
@@ -73,7 +73,7 @@ The application is entirely built with Jetpack Compose and Material 3, implement
 - ✅ **Fingerprint único** - Impossível outro dispositivo reivindicar mesma venda
 
 ### CRITICAL FIXES APPLIED
-- ✅ **Backend URL Fixed** - Corrigido de `cdccreditsmart.com` → `api.cdccreditsmart.com.br`
+- ✅ **Backend URL Confirmed** - Usando domínio correto `https://cdccreditsmart.com/`
 - ✅ **Composable Lifecycle Fixed** - ViewModel com `remember{}` persiste estado entre recomposições
 - ✅ **R8 Minification Resolved** - Desabilitado R8 no módulo data
 - ✅ **UI Updated** - Textos atualizados para refletir "Device Pairing" ao invés de "PDV IMEI Verification"
@@ -125,7 +125,7 @@ The application is entirely built with Jetpack Compose and Material 3, implement
 - 🎯 **ROOT CAUSE SOLUTION** - Agora conseguimos VER exatamente onde provisioning trava mesmo com hang total
 
 ## External Dependencies
-- **CDC Credit Smart Backend API**: `https://api.cdccreditsmart.com.br/` (Production) and `https://api-dev.cdccreditsmart.com.br/` (Debug). This is the primary backend for all core application functionalities, including APK authentication, IMEI validation, heartbeat, flow events, and real-time WebSocket communication.
+- **CDC Credit Smart Backend API**: `https://cdccreditsmart.com/`. This is the primary backend for all core application functionalities, including device pairing, sale claim flow, heartbeat, flow events, and real-time WebSocket communication.
 - **Samsung Knox Enterprise SDK v3.12+**: Utilized for advanced device management, security, and attestation on Samsung devices.
 - **Google Play Integrity API**: For device integrity verification.
 - **Firebase Messaging**: For push notifications.
