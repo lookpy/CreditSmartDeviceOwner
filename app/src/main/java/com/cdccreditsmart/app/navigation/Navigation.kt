@@ -7,10 +7,10 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.cdccreditsmart.app.presentation.auth.IMEIAuthScreen
+import com.cdccreditsmart.app.presentation.screens.flow.BiometryScreen
 // TEMPORARILY DISABLED FOR SIMPLIFIED BUILD - screens with complex dependencies
 // import com.cdccreditsmart.app.presentation.screens.onboarding.WelcomeScreen
 // import com.cdccreditsmart.app.presentation.screens.flow.AttestedScreen
-// import com.cdccreditsmart.app.presentation.screens.flow.BiometryScreen
 // import com.cdccreditsmart.app.presentation.screens.flow.SignatureScreen
 // import com.cdccreditsmart.app.presentation.screens.flow.DoneScreen
 // import com.cdccreditsmart.app.presentation.screens.home.HomeScreen
@@ -46,14 +46,27 @@ fun CDCNavigation(
         navController = navController,
         startDestination = startDestination
     ) {
-        // IMEI Authentication - App Entry Point (SIMPLIFIED BUILD - only working screen)
+        // IMEI Authentication - App Entry Point
         composable(Routes.AUTH_IMEI) {
             IMEIAuthScreen(
                 onAuthenticationSuccess = {
-                    // For simplified build, just stay on auth screen to test device registration
-                    // navController.navigate(Routes.HOME) {
-                    //     popUpTo(Routes.AUTH_IMEI) { inclusive = true }
-                    // }
+                    // Navigate to biometry screen after successful device pairing
+                    navController.navigate(Routes.FLOW_BIOMETRY) {
+                        popUpTo(Routes.AUTH_IMEI) { inclusive = true }
+                    }
+                }
+            )
+        }
+        
+        // Biometry Screen - Facial validation after device pairing
+        composable(Routes.FLOW_BIOMETRY) {
+            BiometryScreen(
+                onNavigateToNext = { 
+                    // TODO: Navigate to next flow step (signature, home, etc)
+                    navController.popBackStack()
+                },
+                onNavigateBack = { 
+                    navController.popBackStack() 
                 }
             )
         }
