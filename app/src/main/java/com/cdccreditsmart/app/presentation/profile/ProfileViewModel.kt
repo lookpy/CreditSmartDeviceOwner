@@ -1,18 +1,21 @@
+/*
+ * DISABLED: ProfileViewModel with domain module dependencies
+ * Use simplified implementation without domain/data dependencies
+ */
+/*
 package com.cdccreditsmart.app.presentation.profile
 
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.cdccreditsmart.domain.repository.AuthenticationRepository
-import com.cdccreditsmart.domain.repository.DeviceRepository
-import com.cdccreditsmart.domain.repository.ContractRepository
-import com.cdccreditsmart.domain.model.Contract
-import com.cdccreditsmart.domain.common.Resource
-import dagger.hilt.android.lifecycle.HiltViewModel
+// REMOVED: import com.cdccreditsmart.domain.repository.AuthenticationRepository
+// REMOVED: import com.cdccreditsmart.domain.repository.DeviceRepository
+// REMOVED: import com.cdccreditsmart.domain.repository.ContractRepository
+// REMOVED: import com.cdccreditsmart.domain.model.Contract
+// REMOVED: import com.cdccreditsmart.domain.common.Resource
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 data class ProfileUiState(
     val isLoading: Boolean = false,
@@ -23,8 +26,8 @@ data class ProfileUiState(
     val errorMessage: String? = null
 )
 
-@HiltViewModel
-class ProfileViewModel @Inject constructor(
+// @HiltViewModel // TEMPORARILY DISABLED FOR BUILD
+class ProfileViewModel( // @Inject constructor - TEMPORARILY DISABLED FOR BUILD
     private val deviceRepository: DeviceRepository,
     private val contractRepository: ContractRepository,
     private val authRepository: AuthenticationRepository
@@ -145,4 +148,4 @@ class ProfileViewModel @Inject constructor(
             }
         }
     }
-}
+}*/

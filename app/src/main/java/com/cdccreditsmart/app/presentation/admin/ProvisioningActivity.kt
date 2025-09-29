@@ -1,3 +1,9 @@
+/*
+ * DISABLED: ProvisioningActivity temporarily commented out due to device module dependency issues
+ * This is for Device Owner provisioning and not essential for core CDC device registration
+ * Focus on SimplifiedAuthViewModel for CDC device registration functionality
+ */
+/*
 package com.cdccreditsmart.app.presentation.admin
 
 import android.app.Activity
@@ -637,4 +643,4 @@ class ProvisioningActivity : Activity() {
             onCreate(null)
         }
     }
-}
+}*/

@@ -20,7 +20,7 @@ enum class WebSocketConnectionStatus {
 /**
  * Erro base para WebSocket
  */
-@JsonClass(generateAdapter = true)
+//@JsonClass(generateAdapter = true) // Temporarily disabled to fix build
 data class WebSocketError(
     val code: String,
     val message: String,

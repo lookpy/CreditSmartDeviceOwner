@@ -1,3 +1,8 @@
+/*
+ * DISABLED: InstallmentsScreen depends on InstallmentsViewModel which uses disabled domain modules
+ * Focus on CDC device registration functionality with SimplifiedAuthViewModel
+ */
+/*
 package com.cdccreditsmart.app.presentation.screens.installments
 
 import androidx.compose.foundation.layout.*
@@ -306,4 +311,4 @@ fun EnhancedInstallmentCard(
             }
         }
     }
-}
+}*/

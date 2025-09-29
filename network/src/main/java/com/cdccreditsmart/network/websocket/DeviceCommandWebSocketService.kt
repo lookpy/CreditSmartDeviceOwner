@@ -286,7 +286,7 @@ class DeviceCommandWebSocketService @Inject constructor(
 /**
  * Wrapper for incoming device commands
  */
-@JsonClass(generateAdapter = true)
+//@JsonClass(generateAdapter = true) // Temporarily disabled to fix build
 data class DeviceCommandWrapper(
     val type: String,
     val data: CommandData
@@ -303,7 +303,7 @@ sealed class DeviceCommand {
 /**
  * Base command data
  */
-@JsonClass(generateAdapter = true)
+//@JsonClass(generateAdapter = true) // Temporarily disabled to fix build
 open class CommandData(
     val reason: String? = null,
     val message: String? = null,
@@ -338,7 +338,7 @@ data class UninstallCommand(
 /**
  * APK Update command data
  */
-@JsonClass(generateAdapter = true)
+//@JsonClass(generateAdapter = true) // Temporarily disabled to fix build
 data class ApkUpdateData(
     val downloadUrl: String,
     val packageName: String,
@@ -361,7 +361,7 @@ data class ApkUpdateCommand(
 /**
  * Command acknowledgment message
  */
-@JsonClass(generateAdapter = true)
+//@JsonClass(generateAdapter = true) // Temporarily disabled to fix build
 data class CommandAcknowledgment(
     val type: String,
     val commandId: String,

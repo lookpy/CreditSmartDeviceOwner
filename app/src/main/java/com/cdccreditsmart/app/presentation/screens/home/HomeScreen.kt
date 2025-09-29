@@ -1,3 +1,8 @@
+/*
+ * DISABLED: HomeScreen depends on HomeViewModel which uses disabled domain modules
+ * Focus on CDC device registration functionality with SimplifiedAuthViewModel
+ */
+/*
 package com.cdccreditsmart.app.presentation.screens.home
 
 import androidx.compose.foundation.layout.*
@@ -369,4 +374,4 @@ private fun buildTimelineItems(uiState: HomeUiState): List<TimelineItem> {
     // All timeline data must originate from live repositories
     
     return items
-}
+}*/

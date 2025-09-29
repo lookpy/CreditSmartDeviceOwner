@@ -23,7 +23,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
+// HILT REMOVED: import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.input.TransformedText
 import androidx.compose.ui.text.input.OffsetMapping
@@ -37,7 +37,7 @@ import androidx.compose.ui.text.SpanStyle
 fun IMEIAuthScreen(
     onAuthenticationSuccess: () -> Unit,
     modifier: Modifier = Modifier,
-    viewModel: AuthViewModel = hiltViewModel()
+    viewModel: SimplifiedAuthViewModel = SimplifiedAuthViewModel(LocalContext.current)
 ) {
     val authState by viewModel.authState
     val context = LocalContext.current
@@ -118,6 +118,9 @@ fun IMEIAuthScreen(
         Spacer(modifier = Modifier.height(32.dp))
 
         when (authState.currentState) {
+            AuthStatus.Initializing -> {
+                VerifyingContent()
+            }
             AuthStatus.Permission -> {
                 PermissionRequestContent()
             }
@@ -131,6 +134,9 @@ fun IMEIAuthScreen(
                 )
             }
             AuthStatus.Verifying -> {
+                VerifyingContent()
+            }
+            AuthStatus.Registering -> {
                 VerifyingContent()
             }
             AuthStatus.Error -> {

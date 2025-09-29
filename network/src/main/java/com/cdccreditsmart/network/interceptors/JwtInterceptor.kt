@@ -1,6 +1,7 @@
 package com.cdccreditsmart.network.interceptors
 
 import androidx.security.crypto.EncryptedSharedPreferences
+import com.cdccreditsmart.network.di.NetworkModule
 import okhttp3.Interceptor
 import okhttp3.Request
 import okhttp3.Response
@@ -8,8 +9,9 @@ import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import java.io.IOException
-import javax.inject.Inject
-import javax.inject.Singleton
+// HILT REMOVED
+// import javax.inject.Inject
+// import javax.inject.Singleton
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import okhttp3.RequestBody.Companion.toRequestBody
@@ -19,9 +21,9 @@ import okhttp3.RequestBody.Companion.toRequestBody
  * Adds Bearer token to Authorization header
  * Refreshes token automatically on 401 responses
  */
-@Singleton
-class JwtInterceptor @Inject constructor(
-    private val encryptedSharedPreferences: EncryptedSharedPreferences
+// HILT REMOVED - @Singleton
+class JwtInterceptor /* @Inject */ constructor(
+    /* @NetworkModule.NetworkEncryptedPrefs */ private val encryptedSharedPreferences: EncryptedSharedPreferences
 ) : Interceptor {
     
     companion object {

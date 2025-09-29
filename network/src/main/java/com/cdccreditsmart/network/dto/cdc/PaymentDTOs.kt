@@ -7,7 +7,7 @@ import com.squareup.moshi.JsonClass
  * Based on official CDC CreditSmart API documentation
  */
 
-@JsonClass(generateAdapter = true)
+//@JsonClass(generateAdapter = true) // Temporarily disabled to fix build
 data class CdcInstallmentsResponse(
     val success: Boolean,
     val installments: List<InstallmentDetail>,
@@ -18,7 +18,7 @@ data class CdcInstallmentsResponse(
     val message: String? = null
 )
 
-@JsonClass(generateAdapter = true)
+//@JsonClass(generateAdapter = true) // Temporarily disabled to fix build
 data class InstallmentDetail(
     val installmentId: String,
     val number: Int,
@@ -33,7 +33,7 @@ data class InstallmentDetail(
     val paymentOptions: List<PaymentOption>
 )
 
-@JsonClass(generateAdapter = true)
+//@JsonClass(generateAdapter = true) // Temporarily disabled to fix build
 data class FeeInfo(
     val latePaymentFee: Double = 0.0,
     val interestFee: Double = 0.0,
@@ -42,7 +42,7 @@ data class FeeInfo(
     val feeDetails: List<FeeDetail>? = null
 )
 
-@JsonClass(generateAdapter = true)
+//@JsonClass(generateAdapter = true) // Temporarily disabled to fix build
 data class FeeDetail(
     val type: String, // "late_payment", "interest", "service", "discount"
     val amount: Double,
@@ -50,7 +50,7 @@ data class FeeDetail(
     val appliedDate: String? = null
 )
 
-@JsonClass(generateAdapter = true)
+//@JsonClass(generateAdapter = true) // Temporarily disabled to fix build
 data class PaymentOption(
     val method: String, // "pix", "boleto", "credit_card", "debit_card"
     val available: Boolean,
@@ -59,7 +59,7 @@ data class PaymentOption(
     val description: String? = null
 )
 
-@JsonClass(generateAdapter = true)
+//@JsonClass(generateAdapter = true) // Temporarily disabled to fix build
 data class ContractSummary(
     val contractId: String,
     val contractCode: String,
@@ -73,7 +73,7 @@ data class ContractSummary(
     val status: String
 )
 
-@JsonClass(generateAdapter = true)
+//@JsonClass(generateAdapter = true) // Temporarily disabled to fix build
 data class PaymentMethodInfo(
     val method: String,
     val displayName: String,
@@ -85,14 +85,14 @@ data class PaymentMethodInfo(
     val instructions: String? = null
 )
 
-@JsonClass(generateAdapter = true)
+//@JsonClass(generateAdapter = true) // Temporarily disabled to fix build
 data class CdcPixPaymentRequest(
     val amount: Double? = null, // Optional, can use installment amount
     val description: String? = null,
     val expirationMinutes: Int = 30
 )
 
-@JsonClass(generateAdapter = true)
+//@JsonClass(generateAdapter = true) // Temporarily disabled to fix build
 data class CdcPixPaymentResponse(
     val success: Boolean,
     val paymentId: String? = null,
@@ -107,7 +107,7 @@ data class CdcPixPaymentResponse(
     val serverTimestamp: Long
 )
 
-@JsonClass(generateAdapter = true)
+//@JsonClass(generateAdapter = true) // Temporarily disabled to fix build
 data class CdcBoletoPaymentRequest(
     val amount: Double? = null, // Optional, can use installment amount
     val dueDate: String? = null, // ISO date, optional
@@ -115,7 +115,7 @@ data class CdcBoletoPaymentRequest(
     val instructions: List<String>? = null
 )
 
-@JsonClass(generateAdapter = true)
+//@JsonClass(generateAdapter = true) // Temporarily disabled to fix build
 data class CdcBoletoPaymentResponse(
     val success: Boolean,
     val paymentId: String? = null,
@@ -130,7 +130,7 @@ data class CdcBoletoPaymentResponse(
     val serverTimestamp: Long
 )
 
-@JsonClass(generateAdapter = true)
+//@JsonClass(generateAdapter = true) // Temporarily disabled to fix build
 data class BoletoBank(
     val bankCode: String,
     val bankName: String,
@@ -141,7 +141,7 @@ data class BoletoBank(
 /**
  * Payment confirmation structures
  */
-@JsonClass(generateAdapter = true)
+//@JsonClass(generateAdapter = true) // Temporarily disabled to fix build
 data class PaymentConfirmation(
     val paymentId: String,
     val installmentId: String,
@@ -153,7 +153,7 @@ data class PaymentConfirmation(
     val receipt: PaymentReceipt? = null
 )
 
-@JsonClass(generateAdapter = true)
+//@JsonClass(generateAdapter = true) // Temporarily disabled to fix build
 data class PaymentReceipt(
     val receiptId: String,
     val receiptUrl: String? = null,
@@ -164,7 +164,7 @@ data class PaymentReceipt(
 /**
  * Payment history structures
  */
-@JsonClass(generateAdapter = true)
+//@JsonClass(generateAdapter = true) // Temporarily disabled to fix build
 data class PaymentHistoryResponse(
     val success: Boolean,
     val payments: List<PaymentHistoryItem>,
@@ -173,7 +173,7 @@ data class PaymentHistoryResponse(
     val serverTimestamp: Long
 )
 
-@JsonClass(generateAdapter = true)
+//@JsonClass(generateAdapter = true) // Temporarily disabled to fix build
 data class PaymentHistoryItem(
     val paymentId: String,
     val installmentId: String,
@@ -187,7 +187,7 @@ data class PaymentHistoryItem(
     val fees: FeeInfo? = null
 )
 
-@JsonClass(generateAdapter = true)
+//@JsonClass(generateAdapter = true) // Temporarily disabled to fix build
 data class PaymentHistorySummary(
     val totalPayments: Int,
     val totalAmount: Double,
@@ -196,7 +196,7 @@ data class PaymentHistorySummary(
     val statusBreakdown: Map<String, Int>
 )
 
-@JsonClass(generateAdapter = true)
+//@JsonClass(generateAdapter = true) // Temporarily disabled to fix build
 data class PaginationInfo(
     val currentPage: Int,
     val totalPages: Int,

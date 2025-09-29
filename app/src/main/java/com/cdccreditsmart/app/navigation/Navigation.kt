@@ -7,17 +7,18 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.cdccreditsmart.app.presentation.auth.IMEIAuthScreen
-import com.cdccreditsmart.app.presentation.screens.onboarding.WelcomeScreen
-import com.cdccreditsmart.app.presentation.screens.flow.AttestedScreen
-import com.cdccreditsmart.app.presentation.screens.flow.BiometryScreen
-import com.cdccreditsmart.app.presentation.screens.flow.SignatureScreen
-import com.cdccreditsmart.app.presentation.screens.flow.DoneScreen
-import com.cdccreditsmart.app.presentation.screens.home.HomeScreen
-import com.cdccreditsmart.app.presentation.screens.installments.InstallmentsScreen
-import com.cdccreditsmart.app.presentation.screens.payment.PaymentScreen
-import com.cdccreditsmart.app.presentation.screens.support.SupportScreen
-import com.cdccreditsmart.app.presentation.screens.profile.ProfileScreen
-import com.cdccreditsmart.app.presentation.screens.lock.LockOverlayScreen
+// TEMPORARILY DISABLED FOR SIMPLIFIED BUILD - screens with complex dependencies
+// import com.cdccreditsmart.app.presentation.screens.onboarding.WelcomeScreen
+// import com.cdccreditsmart.app.presentation.screens.flow.AttestedScreen
+// import com.cdccreditsmart.app.presentation.screens.flow.BiometryScreen
+// import com.cdccreditsmart.app.presentation.screens.flow.SignatureScreen
+// import com.cdccreditsmart.app.presentation.screens.flow.DoneScreen
+// import com.cdccreditsmart.app.presentation.screens.home.HomeScreen
+// import com.cdccreditsmart.app.presentation.screens.installments.InstallmentsScreen
+// import com.cdccreditsmart.app.presentation.screens.payment.PaymentScreen
+// import com.cdccreditsmart.app.presentation.screens.support.SupportScreen
+// import com.cdccreditsmart.app.presentation.screens.profile.ProfileScreen
+// import com.cdccreditsmart.app.presentation.screens.lock.LockOverlayScreen
 
 object Routes {
     const val AUTH_IMEI = "auth/imei"
@@ -45,17 +46,20 @@ fun CDCNavigation(
         navController = navController,
         startDestination = startDestination
     ) {
-        // IMEI Authentication - App Entry Point
+        // IMEI Authentication - App Entry Point (SIMPLIFIED BUILD - only working screen)
         composable(Routes.AUTH_IMEI) {
             IMEIAuthScreen(
                 onAuthenticationSuccess = {
-                    navController.navigate(Routes.HOME) {
-                        popUpTo(Routes.AUTH_IMEI) { inclusive = true }
-                    }
+                    // For simplified build, just stay on auth screen to test device registration
+                    // navController.navigate(Routes.HOME) {
+                    //     popUpTo(Routes.AUTH_IMEI) { inclusive = true }
+                    // }
                 }
             )
         }
         
+        // ALL OTHER SCREENS TEMPORARILY DISABLED FOR SIMPLIFIED BUILD
+        /*
         // Onboarding (legacy - kept for potential use)
         composable(Routes.ONBOARDING_WELCOME) {
             WelcomeScreen(
@@ -158,5 +162,6 @@ fun CDCNavigation(
                 }
             )
         }
+        */
     }
 }

@@ -73,7 +73,7 @@ interface CdcApiService {
 }
 
 // Request DTOs
-@JsonClass(generateAdapter = true)
+//@JsonClass(generateAdapter = true) // Temporarily disabled to fix build
 data class CdcApkAuthRequest(
     val packageName: String,
     val versionCode: Int,
@@ -85,7 +85,7 @@ data class CdcApkAuthRequest(
     val hardwareSerial: String? = null
 )
 
-@JsonClass(generateAdapter = true)
+//@JsonClass(generateAdapter = true) // Temporarily disabled to fix build
 data class CdcImeiValidationRequest(
     val imei: String,
     val deviceId: String,
@@ -95,7 +95,7 @@ data class CdcImeiValidationRequest(
     val simSerialNumber: String? = null
 )
 
-@JsonClass(generateAdapter = true)
+//@JsonClass(generateAdapter = true) // Temporarily disabled to fix build
 data class DeviceSyncRequest(
     val timestamp: Long,
     val batteryLevel: Int? = null,
@@ -105,7 +105,7 @@ data class DeviceSyncRequest(
     val systemInfo: SystemInfo? = null
 )
 
-@JsonClass(generateAdapter = true)
+//@JsonClass(generateAdapter = true) // Temporarily disabled to fix build
 data class LocationData(
     val latitude: Double,
     val longitude: Double,
@@ -113,7 +113,7 @@ data class LocationData(
     val timestamp: Long
 )
 
-@JsonClass(generateAdapter = true)
+//@JsonClass(generateAdapter = true) // Temporarily disabled to fix build
 data class SystemInfo(
     val totalMemory: Long? = null,
     val availableMemory: Long? = null,
@@ -123,7 +123,7 @@ data class SystemInfo(
     val networkType: String? = null
 )
 
-@JsonClass(generateAdapter = true)
+//@JsonClass(generateAdapter = true) // Temporarily disabled to fix build
 data class DeviceRegisterInfoRequest(
     val deviceInfo: CdcDeviceInfo,
     val userInfo: CdcUserInfo? = null,
@@ -131,7 +131,7 @@ data class DeviceRegisterInfoRequest(
     val attestationData: CdcAttestationData? = null
 )
 
-@JsonClass(generateAdapter = true)
+//@JsonClass(generateAdapter = true) // Temporarily disabled to fix build
 data class CdcDeviceInfo(
     val manufacturer: String,
     val model: String,
@@ -145,7 +145,7 @@ data class CdcDeviceInfo(
     val storageSize: Long? = null
 )
 
-@JsonClass(generateAdapter = true)
+//@JsonClass(generateAdapter = true) // Temporarily disabled to fix build
 data class CdcUserInfo(
     val userId: String? = null,
     val name: String? = null,
@@ -154,7 +154,7 @@ data class CdcUserInfo(
     val documentNumber: String? = null
 )
 
-@JsonClass(generateAdapter = true)
+//@JsonClass(generateAdapter = true) // Temporarily disabled to fix build
 data class CdcContractInfo(
     val contractCode: String,
     val contractType: String? = null,
@@ -163,7 +163,7 @@ data class CdcContractInfo(
     val status: String? = null
 )
 
-@JsonClass(generateAdapter = true)
+//@JsonClass(generateAdapter = true) // Temporarily disabled to fix build
 data class CdcAttestationData(
     val attestationToken: String? = null,
     val publicKey: String? = null,
@@ -172,7 +172,7 @@ data class CdcAttestationData(
 )
 
 // Response DTOs
-@JsonClass(generateAdapter = true)
+//@JsonClass(generateAdapter = true) // Temporarily disabled to fix build
 data class CdcApkAuthResponse(
     val success: Boolean,
     val message: String? = null,
@@ -184,7 +184,7 @@ data class CdcApkAuthResponse(
     val nextSteps: List<String>? = null
 )
 
-@JsonClass(generateAdapter = true)
+//@JsonClass(generateAdapter = true) // Temporarily disabled to fix build
 data class CdcImeiValidationResponse(
     val success: Boolean,
     val message: String? = null,
@@ -197,7 +197,7 @@ data class CdcImeiValidationResponse(
     val errorCode: String? = null
 )
 
-@JsonClass(generateAdapter = true)
+//@JsonClass(generateAdapter = true) // Temporarily disabled to fix build
 data class CdcDeviceSyncStatusResponse(
     val deviceId: String,
     val status: String, // "active", "inactive", "blocked", "suspended"
@@ -209,7 +209,7 @@ data class CdcDeviceSyncStatusResponse(
     val pendingActions: List<String>? = null
 )
 
-@JsonClass(generateAdapter = true)
+//@JsonClass(generateAdapter = true) // Temporarily disabled to fix build
 data class CdcBlockingPolicy(
     val level: String, // "none", "partial", "full"
     val reason: String? = null,
@@ -218,7 +218,7 @@ data class CdcBlockingPolicy(
     val expiresAt: Long? = null
 )
 
-@JsonClass(generateAdapter = true)
+//@JsonClass(generateAdapter = true) // Temporarily disabled to fix build
 data class CdcDeviceConfiguration(
     val syncInterval: Long = 300000, // 5 minutes default
     val locationTracking: Boolean = false,
@@ -228,14 +228,14 @@ data class CdcDeviceConfiguration(
     val allowedTimeRange: TimeRange? = null
 )
 
-@JsonClass(generateAdapter = true)
+//@JsonClass(generateAdapter = true) // Temporarily disabled to fix build
 data class TimeRange(
     val startHour: Int,
     val endHour: Int,
     val timezone: String? = null
 )
 
-@JsonClass(generateAdapter = true)
+//@JsonClass(generateAdapter = true) // Temporarily disabled to fix build
 data class DeviceSyncResponse(
     val success: Boolean,
     val message: String? = null,
@@ -245,7 +245,7 @@ data class DeviceSyncResponse(
     val actions: List<CdcDeviceAction>? = null
 )
 
-@JsonClass(generateAdapter = true)
+//@JsonClass(generateAdapter = true) // Temporarily disabled to fix build
 data class CdcDeviceAction(
     val type: String, // "update", "block", "notify", "collect_data"
     val parameters: Map<String, String>? = null,
@@ -253,7 +253,7 @@ data class CdcDeviceAction(
     val expiresAt: Long? = null
 )
 
-@JsonClass(generateAdapter = true)
+//@JsonClass(generateAdapter = true) // Temporarily disabled to fix build
 data class DeviceRegisterInfoResponse(
     val success: Boolean,
     val message: String? = null,
@@ -264,7 +264,7 @@ data class DeviceRegisterInfoResponse(
     val nextSteps: List<String>? = null
 )
 
-@JsonClass(generateAdapter = true)
+//@JsonClass(generateAdapter = true) // Temporarily disabled to fix build
 data class ProvisioningQrResponse(
     val success: Boolean,
     val message: String? = null,

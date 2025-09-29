@@ -95,7 +95,7 @@ interface PaymentsApiService {
 }
 
 // Request/Response Data Classes
-@JsonClass(generateAdapter = true)
+//@JsonClass(generateAdapter = true) // Temporarily disabled to fix build
 data class CreatePixPaymentRequest(
     val installmentId: String,
     val deviceId: String,
@@ -103,7 +103,7 @@ data class CreatePixPaymentRequest(
     val description: String? = null
 )
 
-@JsonClass(generateAdapter = true)
+//@JsonClass(generateAdapter = true) // Temporarily disabled to fix build
 data class PixPaymentResponse(
     val paymentId: String,
     val pixKey: String,
@@ -114,7 +114,7 @@ data class PixPaymentResponse(
     val status: String
 )
 
-@JsonClass(generateAdapter = true)
+//@JsonClass(generateAdapter = true) // Temporarily disabled to fix build
 data class CreateBoletoPaymentRequest(
     val installmentId: String,
     val deviceId: String,
@@ -123,7 +123,7 @@ data class CreateBoletoPaymentRequest(
     val description: String? = null
 )
 
-@JsonClass(generateAdapter = true)
+//@JsonClass(generateAdapter = true) // Temporarily disabled to fix build
 data class BoletoPaymentResponse(
     val paymentId: String,
     val boletoCode: String,
@@ -134,7 +134,7 @@ data class BoletoPaymentResponse(
     val status: String
 )
 
-@JsonClass(generateAdapter = true)
+//@JsonClass(generateAdapter = true) // Temporarily disabled to fix build
 data class PaymentStatusResponse(
     val paymentId: String,
     val installmentId: String,
@@ -147,7 +147,7 @@ data class PaymentStatusResponse(
     val failureReason: String? = null
 )
 
-@JsonClass(generateAdapter = true)
+//@JsonClass(generateAdapter = true) // Temporarily disabled to fix build
 data class PaymentConfirmationRequest(
     val transactionId: String,
     val paymentProof: String? = null, // Base64 encoded proof of payment
@@ -155,7 +155,7 @@ data class PaymentConfirmationRequest(
     val paidAt: Long
 )
 
-@JsonClass(generateAdapter = true)
+//@JsonClass(generateAdapter = true) // Temporarily disabled to fix build
 data class PaymentConfirmationResponse(
     val paymentId: String,
     val status: String,
@@ -163,13 +163,13 @@ data class PaymentConfirmationResponse(
     val message: String?
 )
 
-@JsonClass(generateAdapter = true)
+//@JsonClass(generateAdapter = true) // Temporarily disabled to fix build
 data class CancelPaymentRequest(
     val reason: String,
     val cancelledBy: String? = "user"
 )
 
-@JsonClass(generateAdapter = true)
+//@JsonClass(generateAdapter = true) // Temporarily disabled to fix build
 data class PaymentHistoryResponse(
     val deviceId: String?,
     val contractId: String?,
@@ -177,7 +177,7 @@ data class PaymentHistoryResponse(
     val totalCount: Int
 )
 
-@JsonClass(generateAdapter = true)
+//@JsonClass(generateAdapter = true) // Temporarily disabled to fix build
 data class PaymentHistoryItem(
     val paymentId: String,
     val installmentId: String,
@@ -191,13 +191,13 @@ data class PaymentHistoryItem(
 )
 
 // Legacy support
-@JsonClass(generateAdapter = true)
+//@JsonClass(generateAdapter = true) // Temporarily disabled to fix build
 data class LegacyPaymentRequest(
     val paymentMethod: String, // "pix" or "boleto"
     val amount: Double
 )
 
-@JsonClass(generateAdapter = true)
+//@JsonClass(generateAdapter = true) // Temporarily disabled to fix build
 data class LegacyPaymentResponse(
     val success: Boolean,
     val paymentId: String?,
@@ -208,13 +208,13 @@ data class LegacyPaymentResponse(
 // CDC Credit Smart specific payment DTOs according to documentation
 
 // PIX Payment DTOs for installment-specific payments
-@JsonClass(generateAdapter = true)
+//@JsonClass(generateAdapter = true) // Temporarily disabled to fix build
 data class CdcPixPaymentRequest(
     val amount: Double? = null, // Optional, can use installment amount
     val description: String? = null
 )
 
-@JsonClass(generateAdapter = true)
+//@JsonClass(generateAdapter = true) // Temporarily disabled to fix build
 data class CdcPixPaymentResponse(
     val success: Boolean,
     val paymentId: String? = null,
@@ -227,14 +227,14 @@ data class CdcPixPaymentResponse(
 )
 
 // Boleto Payment DTOs for installment-specific payments
-@JsonClass(generateAdapter = true)
+//@JsonClass(generateAdapter = true) // Temporarily disabled to fix build
 data class CdcBoletoPaymentRequest(
     val amount: Double? = null, // Optional, can use installment amount
     val dueDate: String? = null, // ISO date, optional
     val description: String? = null
 )
 
-@JsonClass(generateAdapter = true)
+//@JsonClass(generateAdapter = true) // Temporarily disabled to fix build
 data class CdcBoletoPaymentResponse(
     val success: Boolean,
     val paymentId: String? = null,

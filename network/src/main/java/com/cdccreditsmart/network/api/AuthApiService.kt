@@ -93,7 +93,7 @@ interface AuthApiService {
 }
 
 // Request/Response Data Classes
-@JsonClass(generateAdapter = true)
+//@JsonClass(generateAdapter = true) // Temporarily disabled to fix build
 data class LoginRequest(
     val deviceId: String,
     val contractCode: String? = null,
@@ -102,14 +102,14 @@ data class LoginRequest(
     val credentials: LoginCredentials? = null
 )
 
-@JsonClass(generateAdapter = true)
+//@JsonClass(generateAdapter = true) // Temporarily disabled to fix build
 data class DeviceAttestation(
     val attestationToken: String,
     val devicePublicKey: String,
     val nonce: String
 )
 
-@JsonClass(generateAdapter = true)
+//@JsonClass(generateAdapter = true) // Temporarily disabled to fix build
 data class LoginCredentials(
     val username: String? = null,
     val password: String? = null,
@@ -117,18 +117,18 @@ data class LoginCredentials(
     val biometricHash: String? = null
 )
 
-@JsonClass(generateAdapter = true)
+//@JsonClass(generateAdapter = true) // Temporarily disabled to fix build
 data class RefreshTokenRequest(
     val refreshToken: String
 )
 
-@JsonClass(generateAdapter = true)
+//@JsonClass(generateAdapter = true) // Temporarily disabled to fix build
 data class LogoutRequest(
     val deviceId: String,
     val allSessions: Boolean = false
 )
 
-@JsonClass(generateAdapter = true)
+//@JsonClass(generateAdapter = true) // Temporarily disabled to fix build
 data class AuthResponse(
     val accessToken: String,
     val refreshToken: String,
@@ -140,7 +140,7 @@ data class AuthResponse(
     val userInfo: UserInfo? = null
 )
 
-@JsonClass(generateAdapter = true)
+//@JsonClass(generateAdapter = true) // Temporarily disabled to fix build
 data class UserInfo(
     val userId: String,
     val name: String,
@@ -150,7 +150,7 @@ data class UserInfo(
     val permissions: List<String>
 )
 
-@JsonClass(generateAdapter = true)
+////@JsonClass(generateAdapter = true) // Temporarily disabled to fix build // Temporarily disabled to fix KSP build issue
 data class TokenValidationResponse(
     val valid: Boolean,
     val deviceId: String,
@@ -160,13 +160,13 @@ data class TokenValidationResponse(
     val userInfo: UserInfo? = null
 )
 
-@JsonClass(generateAdapter = true)
+//@JsonClass(generateAdapter = true) // Temporarily disabled to fix build
 data class AuthScopesResponse(
     val deviceId: String,
     val availableScopes: List<AuthScope>
 )
 
-@JsonClass(generateAdapter = true)
+//@JsonClass(generateAdapter = true) // Temporarily disabled to fix build
 data class AuthScope(
     val name: String,
     val description: String,
@@ -176,7 +176,7 @@ data class AuthScope(
 )
 
 // CDC Credit Smart authentication DTOs
-@JsonClass(generateAdapter = true)
+//@JsonClass(generateAdapter = true) // Temporarily disabled to fix build
 data class ApkAuthRequest(
     val packageName: String,
     val versionCode: Int,
@@ -188,7 +188,7 @@ data class ApkAuthRequest(
     val hardwareSerial: String? = null
 )
 
-@JsonClass(generateAdapter = true)
+//@JsonClass(generateAdapter = true) // Temporarily disabled to fix build
 data class ApkAuthResponse(
     val success: Boolean,
     val message: String? = null,
@@ -200,7 +200,7 @@ data class ApkAuthResponse(
     val nextSteps: List<String>? = null
 )
 
-@JsonClass(generateAdapter = true)
+//@JsonClass(generateAdapter = true) // Temporarily disabled to fix build
 data class ImeiValidationRequest(
     val imei: String,
     val deviceId: String,
@@ -210,7 +210,7 @@ data class ImeiValidationRequest(
     val simSerialNumber: String? = null
 )
 
-@JsonClass(generateAdapter = true)
+//@JsonClass(generateAdapter = true) // Temporarily disabled to fix build
 data class ImeiValidationResponse(
     val success: Boolean,
     val message: String? = null,
@@ -224,7 +224,7 @@ data class ImeiValidationResponse(
 )
 
 // CDC Credit Smart main registration DTOs according to documentation
-@JsonClass(generateAdapter = true)
+//@JsonClass(generateAdapter = true) // Temporarily disabled to fix build
 data class DeviceRegistrationRequest(
     val imei: String,
     val deviceFingerprint: String,
@@ -234,7 +234,7 @@ data class DeviceRegistrationRequest(
     val androidVersion: String
 )
 
-@JsonClass(generateAdapter = true)
+//@JsonClass(generateAdapter = true) // Temporarily disabled to fix build
 data class DeviceRegistrationResponse(
     val success: Boolean,
     val registered: Boolean,
@@ -247,13 +247,13 @@ data class DeviceRegistrationResponse(
 )
 
 // Auto-sync DTOs
-@JsonClass(generateAdapter = true)
+//@JsonClass(generateAdapter = true) // Temporarily disabled to fix build
 data class AutoSyncRequest(
     val imei: String,
     val deviceFingerprint: String? = null
 )
 
-@JsonClass(generateAdapter = true)
+//@JsonClass(generateAdapter = true) // Temporarily disabled to fix build
 data class AutoSyncResponse(
     val success: Boolean,
     val synced: Boolean,

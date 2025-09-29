@@ -1,19 +1,22 @@
+/*
+ * DISABLED: InstallmentsViewModel with domain module dependencies
+ * Use simplified implementation without domain/data dependencies
+ */
+/*
 package com.cdccreditsmart.app.presentation.installments
 
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.cdccreditsmart.domain.repository.AuthenticationRepository
-import com.cdccreditsmart.domain.repository.DeviceRepository
-import com.cdccreditsmart.domain.model.Installment
-import com.cdccreditsmart.domain.model.InstallmentStatus
-import com.cdccreditsmart.domain.common.Resource
-import dagger.hilt.android.lifecycle.HiltViewModel
+// REMOVED: import com.cdccreditsmart.domain.repository.AuthenticationRepository
+// REMOVED: import com.cdccreditsmart.domain.repository.DeviceRepository
+// REMOVED: import com.cdccreditsmart.domain.model.Installment
+// REMOVED: import com.cdccreditsmart.domain.model.InstallmentStatus
+// REMOVED: import com.cdccreditsmart.domain.common.Resource
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import java.time.format.DateTimeFormatter
-import javax.inject.Inject
 
 data class InstallmentsUiState(
     val isLoading: Boolean = false,
@@ -21,8 +24,8 @@ data class InstallmentsUiState(
     val errorMessage: String? = null
 )
 
-@HiltViewModel
-class InstallmentsViewModel @Inject constructor(
+// @HiltViewModel // TEMPORARILY DISABLED FOR BUILD
+class InstallmentsViewModel( // @Inject constructor - TEMPORARILY DISABLED FOR BUILD
     private val deviceRepository: DeviceRepository,
     private val authRepository: AuthenticationRepository
 ) : ViewModel() {
@@ -110,4 +113,4 @@ class InstallmentsViewModel @Inject constructor(
             InstallmentStatus.CANCELLED -> "Cancelado"
         }
     }
-}
+}*/

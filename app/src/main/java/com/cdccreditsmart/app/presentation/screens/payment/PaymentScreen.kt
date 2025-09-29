@@ -1,3 +1,8 @@
+/*
+ * DISABLED: PaymentScreen depends on PaymentViewModel which uses disabled domain modules
+ * Focus on CDC device registration functionality with SimplifiedAuthViewModel
+ */
+/*
 package com.cdccreditsmart.app.presentation.screens.payment
 
 import androidx.compose.foundation.background
@@ -495,4 +500,4 @@ fun EnhancedBoletoPaymentCard(
             }
         }
     }
-}
+}*/

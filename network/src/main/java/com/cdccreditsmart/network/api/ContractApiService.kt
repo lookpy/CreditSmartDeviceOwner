@@ -51,7 +51,7 @@ interface ContractApiService {
 }
 
 // Request/Response Data Classes
-@JsonClass(generateAdapter = true)
+//@JsonClass(generateAdapter = true) // Temporarily disabled to fix build
 data class ContractTermsResponse(
     val version: String,
     val hash: String,
@@ -62,7 +62,7 @@ data class ContractTermsResponse(
     val sections: List<ContractSection>
 )
 
-@JsonClass(generateAdapter = true)
+//@JsonClass(generateAdapter = true) // Temporarily disabled to fix build
 data class ContractSection(
     val id: String,
     val title: String,
@@ -71,7 +71,7 @@ data class ContractSection(
     val order: Int
 )
 
-@JsonClass(generateAdapter = true)
+//@JsonClass(generateAdapter = true) // Temporarily disabled to fix build
 data class ContractSignRequest(
     val contractId: String? = null,
     val deviceId: String,
@@ -84,7 +84,7 @@ data class ContractSignRequest(
     val ipAddress: String? = null
 )
 
-@JsonClass(generateAdapter = true)
+//@JsonClass(generateAdapter = true) // Temporarily disabled to fix build
 data class ContractSignResponse(
     val contractId: String,
     val signatureReceiptId: String,
@@ -94,7 +94,7 @@ data class ContractSignResponse(
     val auditRef: String
 )
 
-@JsonClass(generateAdapter = true)
+//@JsonClass(generateAdapter = true) // Temporarily disabled to fix build
 data class ContractSyncRequest(
     val contractId: String,
     val deviceId: String,
@@ -102,7 +102,7 @@ data class ContractSyncRequest(
     val localHash: String? = null
 )
 
-@JsonClass(generateAdapter = true)
+//@JsonClass(generateAdapter = true) // Temporarily disabled to fix build
 data class ContractSyncResponse(
     val contractId: String,
     val status: String,
@@ -112,7 +112,7 @@ data class ContractSyncResponse(
     val requiresResync: Boolean
 )
 
-@JsonClass(generateAdapter = true)
+//@JsonClass(generateAdapter = true) // Temporarily disabled to fix build
 data class ContractUpdate(
     val field: String,
     val oldValue: String?,
@@ -121,7 +121,7 @@ data class ContractUpdate(
     val reason: String?
 )
 
-@JsonClass(generateAdapter = true)
+//@JsonClass(generateAdapter = true) // Temporarily disabled to fix build
 data class ContractResponse(
     val contractId: String,
     val deviceId: String,
@@ -133,7 +133,7 @@ data class ContractResponse(
     val contractData: ContractData
 )
 
-@JsonClass(generateAdapter = true)
+//@JsonClass(generateAdapter = true) // Temporarily disabled to fix build
 data class ContractData(
     val customerInfo: CustomerInfo,
     val deviceInfo: ContractDeviceInfo,
@@ -141,7 +141,7 @@ data class ContractData(
     val paymentSchedule: List<PaymentScheduleItem>
 )
 
-@JsonClass(generateAdapter = true)
+//@JsonClass(generateAdapter = true) // Temporarily disabled to fix build
 data class CustomerInfo(
     val name: String,
     val cpf: String,
@@ -150,7 +150,7 @@ data class CustomerInfo(
     val address: Address?
 )
 
-@JsonClass(generateAdapter = true)
+//@JsonClass(generateAdapter = true) // Temporarily disabled to fix build
 data class Address(
     val street: String,
     val number: String,
@@ -161,7 +161,7 @@ data class Address(
     val zipCode: String
 )
 
-@JsonClass(generateAdapter = true)
+//@JsonClass(generateAdapter = true) // Temporarily disabled to fix build
 data class ContractDeviceInfo(
     val manufacturer: String,
     val model: String,
@@ -171,7 +171,7 @@ data class ContractDeviceInfo(
     val purchasePrice: Double
 )
 
-@JsonClass(generateAdapter = true)
+//@JsonClass(generateAdapter = true) // Temporarily disabled to fix build
 data class FinancingTerms(
     val totalAmount: Double,
     val downPayment: Double,
@@ -183,7 +183,7 @@ data class FinancingTerms(
     val endDate: String
 )
 
-@JsonClass(generateAdapter = true)
+//@JsonClass(generateAdapter = true) // Temporarily disabled to fix build
 data class PaymentScheduleItem(
     val installmentNumber: Int,
     val dueDate: String,
@@ -193,13 +193,13 @@ data class PaymentScheduleItem(
     val status: String
 )
 
-@JsonClass(generateAdapter = true)
+//@JsonClass(generateAdapter = true) // Temporarily disabled to fix build
 data class ContractSignaturesResponse(
     val contractId: String,
     val signatures: List<ContractSignature>
 )
 
-@JsonClass(generateAdapter = true)
+//@JsonClass(generateAdapter = true) // Temporarily disabled to fix build
 data class ContractSignature(
     val signatureId: String,
     val deviceId: String,

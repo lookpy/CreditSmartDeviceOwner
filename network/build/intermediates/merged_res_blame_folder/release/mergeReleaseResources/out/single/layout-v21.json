@@ -1,18 +1,18 @@
 [
     {
-        "merged": "com.cdccreditsmart.network-release-18:/layout-v21/notification_template_custom_big.xml",
-        "source": "com.cdccreditsmart.network-core-1.13.1-8:/layout-v21/notification_template_custom_big.xml"
+        "merged": "com.cdccreditsmart.network-release-11:/layout-v21/notification_action_tombstone.xml",
+        "source": "com.cdccreditsmart.network-core-1.13.1-3:/layout-v21/notification_action_tombstone.xml"
     },
     {
-        "merged": "com.cdccreditsmart.network-release-18:/layout-v21/notification_action_tombstone.xml",
-        "source": "com.cdccreditsmart.network-core-1.13.1-8:/layout-v21/notification_action_tombstone.xml"
+        "merged": "com.cdccreditsmart.network-release-11:/layout-v21/notification_template_icon_group.xml",
+        "source": "com.cdccreditsmart.network-core-1.13.1-3:/layout-v21/notification_template_icon_group.xml"
     },
     {
-        "merged": "com.cdccreditsmart.network-release-18:/layout-v21/notification_template_icon_group.xml",
-        "source": "com.cdccreditsmart.network-core-1.13.1-8:/layout-v21/notification_template_icon_group.xml"
+        "merged": "com.cdccreditsmart.network-release-11:/layout-v21/notification_action.xml",
+        "source": "com.cdccreditsmart.network-core-1.13.1-3:/layout-v21/notification_action.xml"
     },
     {
-        "merged": "com.cdccreditsmart.network-release-18:/layout-v21/notification_action.xml",
-        "source": "com.cdccreditsmart.network-core-1.13.1-8:/layout-v21/notification_action.xml"
+        "merged": "com.cdccreditsmart.network-release-11:/layout-v21/notification_template_custom_big.xml",
+        "source": "com.cdccreditsmart.network-core-1.13.1-3:/layout-v21/notification_template_custom_big.xml"
     }
 ]

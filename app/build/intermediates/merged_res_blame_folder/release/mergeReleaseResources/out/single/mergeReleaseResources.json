@@ -1,114 +1,114 @@
 [
     {
-        "merged": "com.cdccreditsmart.app-release-79:/menu_bottom_nav_menu.xml.flat",
-        "source": "com.cdccreditsmart.app-main-80:/menu/bottom_nav_menu.xml"
+        "merged": "com.cdccreditsmart.app-release-65:/drawable_rounded_orange_bg.xml.flat",
+        "source": "com.cdccreditsmart.app-main-66:/drawable/rounded_orange_bg.xml"
     },
     {
-        "merged": "com.cdccreditsmart.app-release-79:/xml_backup_rules.xml.flat",
-        "source": "com.cdccreditsmart.app-main-80:/xml/backup_rules.xml"
+        "merged": "com.cdccreditsmart.app-release-65:/drawable_ic_launcher_foreground.xml.flat",
+        "source": "com.cdccreditsmart.app-main-66:/drawable/ic_launcher_foreground.xml"
     },
     {
-        "merged": "com.cdccreditsmart.app-release-79:/layout_fragment_pdv.xml.flat",
-        "source": "com.cdccreditsmart.app-main-80:/layout/fragment_pdv.xml"
+        "merged": "com.cdccreditsmart.app-release-65:/layout_activity_main.xml.flat",
+        "source": "com.cdccreditsmart.app-main-66:/layout/activity_main.xml"
     },
     {
-        "merged": "com.cdccreditsmart.app-release-79:/layout_navigation_drawer.xml.flat",
-        "source": "com.cdccreditsmart.app-main-80:/layout/navigation_drawer.xml"
+        "merged": "com.cdccreditsmart.app-release-65:/mipmap-anydpi-v26_ic_launcher.xml.flat",
+        "source": "com.cdccreditsmart.app-main-66:/mipmap-anydpi-v26/ic_launcher.xml"
     },
     {
-        "merged": "com.cdccreditsmart.app-release-79:/layout_fragment_home.xml.flat",
-        "source": "com.cdccreditsmart.app-main-80:/layout/fragment_home.xml"
+        "merged": "com.cdccreditsmart.app-release-65:/xml_backup_rules.xml.flat",
+        "source": "com.cdccreditsmart.app-main-66:/xml/backup_rules.xml"
     },
     {
-        "merged": "com.cdccreditsmart.app-release-79:/xml_file_paths.xml.flat",
-        "source": "com.cdccreditsmart.app-main-80:/xml/file_paths.xml"
+        "merged": "com.cdccreditsmart.app-release-65:/drawable_ic_payment_24.xml.flat",
+        "source": "com.cdccreditsmart.app-main-66:/drawable/ic_payment_24.xml"
     },
     {
-        "merged": "com.cdccreditsmart.app-release-79:/drawable_ic_payment_24.xml.flat",
-        "source": "com.cdccreditsmart.app-main-80:/drawable/ic_payment_24.xml"
+        "merged": "com.cdccreditsmart.app-release-65:/xml_device_admin_policies.xml.flat",
+        "source": "com.cdccreditsmart.app-main-66:/xml/device_admin_policies.xml"
     },
     {
-        "merged": "com.cdccreditsmart.app-release-79:/drawable_ic_payments_24.xml.flat",
-        "source": "com.cdccreditsmart.app-main-80:/drawable/ic_payments_24.xml"
+        "merged": "com.cdccreditsmart.app-release-65:/drawable_ic_home_24.xml.flat",
+        "source": "com.cdccreditsmart.app-main-66:/drawable/ic_home_24.xml"
     },
     {
-        "merged": "com.cdccreditsmart.app-release-79:/drawable_rounded_input_bg.xml.flat",
-        "source": "com.cdccreditsmart.app-main-80:/drawable/rounded_input_bg.xml"
+        "merged": "com.cdccreditsmart.app-release-65:/drawable_qr_code_placeholder.xml.flat",
+        "source": "com.cdccreditsmart.app-main-66:/drawable/qr_code_placeholder.xml"
     },
     {
-        "merged": "com.cdccreditsmart.app-release-79:/drawable_qr_code_placeholder.xml.flat",
-        "source": "com.cdccreditsmart.app-main-80:/drawable/qr_code_placeholder.xml"
+        "merged": "com.cdccreditsmart.app-release-65:/color_bottom_nav_color_selector.xml.flat",
+        "source": "com.cdccreditsmart.app-main-66:/color/bottom_nav_color_selector.xml"
     },
     {
-        "merged": "com.cdccreditsmart.app-release-79:/layout_fragment_installments.xml.flat",
-        "source": "com.cdccreditsmart.app-main-80:/layout/fragment_installments.xml"
+        "merged": "com.cdccreditsmart.app-release-65:/drawable_ic_person_24.xml.flat",
+        "source": "com.cdccreditsmart.app-main-66:/drawable/ic_person_24.xml"
     },
     {
-        "merged": "com.cdccreditsmart.app-release-79:/drawable_ic_launcher_foreground.xml.flat",
-        "source": "com.cdccreditsmart.app-main-80:/drawable/ic_launcher_foreground.xml"
+        "merged": "com.cdccreditsmart.app-release-65:/xml_device_admin.xml.flat",
+        "source": "com.cdccreditsmart.app-main-66:/xml/device_admin.xml"
     },
     {
-        "merged": "com.cdccreditsmart.app-release-79:/xml_data_extraction_rules.xml.flat",
-        "source": "com.cdccreditsmart.app-main-80:/xml/data_extraction_rules.xml"
+        "merged": "com.cdccreditsmart.app-release-65:/menu_bottom_nav_menu.xml.flat",
+        "source": "com.cdccreditsmart.app-main-66:/menu/bottom_nav_menu.xml"
     },
     {
-        "merged": "com.cdccreditsmart.app-release-79:/layout_fragment_profile.xml.flat",
-        "source": "com.cdccreditsmart.app-main-80:/layout/fragment_profile.xml"
+        "merged": "com.cdccreditsmart.app-release-65:/layout_fragment_pdv.xml.flat",
+        "source": "com.cdccreditsmart.app-main-66:/layout/fragment_pdv.xml"
     },
     {
-        "merged": "com.cdccreditsmart.app-release-79:/xml_device_admin_policies.xml.flat",
-        "source": "com.cdccreditsmart.app-main-80:/xml/device_admin_policies.xml"
+        "merged": "com.cdccreditsmart.app-release-65:/layout_fragment_payments.xml.flat",
+        "source": "com.cdccreditsmart.app-main-66:/layout/fragment_payments.xml"
     },
     {
-        "merged": "com.cdccreditsmart.app-release-79:/layout_fragment_support.xml.flat",
-        "source": "com.cdccreditsmart.app-main-80:/layout/fragment_support.xml"
+        "merged": "com.cdccreditsmart.app-release-65:/drawable_circle_white_bg.xml.flat",
+        "source": "com.cdccreditsmart.app-main-66:/drawable/circle_white_bg.xml"
     },
     {
-        "merged": "com.cdccreditsmart.app-release-79:/layout_activity_main.xml.flat",
-        "source": "com.cdccreditsmart.app-main-80:/layout/activity_main.xml"
+        "merged": "com.cdccreditsmart.app-release-65:/xml_data_extraction_rules.xml.flat",
+        "source": "com.cdccreditsmart.app-main-66:/xml/data_extraction_rules.xml"
     },
     {
-        "merged": "com.cdccreditsmart.app-release-79:/drawable_splash_background.xml.flat",
-        "source": "com.cdccreditsmart.app-main-80:/drawable/splash_background.xml"
+        "merged": "com.cdccreditsmart.app-release-65:/layout_fragment_installments.xml.flat",
+        "source": "com.cdccreditsmart.app-main-66:/layout/fragment_installments.xml"
     },
     {
-        "merged": "com.cdccreditsmart.app-release-79:/drawable_ic_person_24.xml.flat",
-        "source": "com.cdccreditsmart.app-main-80:/drawable/ic_person_24.xml"
+        "merged": "com.cdccreditsmart.app-release-65:/drawable_rounded_gray_bg.xml.flat",
+        "source": "com.cdccreditsmart.app-main-66:/drawable/rounded_gray_bg.xml"
     },
     {
-        "merged": "com.cdccreditsmart.app-release-79:/layout_fragment_payments.xml.flat",
-        "source": "com.cdccreditsmart.app-main-80:/layout/fragment_payments.xml"
+        "merged": "com.cdccreditsmart.app-release-65:/layout_fragment_home.xml.flat",
+        "source": "com.cdccreditsmart.app-main-66:/layout/fragment_home.xml"
     },
     {
-        "merged": "com.cdccreditsmart.app-release-79:/drawable_ic_home_24.xml.flat",
-        "source": "com.cdccreditsmart.app-main-80:/drawable/ic_home_24.xml"
+        "merged": "com.cdccreditsmart.app-release-65:/drawable_splash_background.xml.flat",
+        "source": "com.cdccreditsmart.app-main-66:/drawable/splash_background.xml"
     },
     {
-        "merged": "com.cdccreditsmart.app-release-79:/drawable_ic_support_24.xml.flat",
-        "source": "com.cdccreditsmart.app-main-80:/drawable/ic_support_24.xml"
+        "merged": "com.cdccreditsmart.app-release-65:/drawable_rounded_input_bg.xml.flat",
+        "source": "com.cdccreditsmart.app-main-66:/drawable/rounded_input_bg.xml"
     },
     {
-        "merged": "com.cdccreditsmart.app-release-79:/xml_device_admin.xml.flat",
-        "source": "com.cdccreditsmart.app-main-80:/xml/device_admin.xml"
+        "merged": "com.cdccreditsmart.app-release-65:/xml_file_paths.xml.flat",
+        "source": "com.cdccreditsmart.app-main-66:/xml/file_paths.xml"
     },
     {
-        "merged": "com.cdccreditsmart.app-release-79:/color_bottom_nav_color_selector.xml.flat",
-        "source": "com.cdccreditsmart.app-main-80:/color/bottom_nav_color_selector.xml"
+        "merged": "com.cdccreditsmart.app-release-65:/drawable_ic_support_24.xml.flat",
+        "source": "com.cdccreditsmart.app-main-66:/drawable/ic_support_24.xml"
     },
     {
-        "merged": "com.cdccreditsmart.app-release-79:/drawable_circle_white_bg.xml.flat",
-        "source": "com.cdccreditsmart.app-main-80:/drawable/circle_white_bg.xml"
+        "merged": "com.cdccreditsmart.app-release-65:/layout_navigation_drawer.xml.flat",
+        "source": "com.cdccreditsmart.app-main-66:/layout/navigation_drawer.xml"
     },
     {
-        "merged": "com.cdccreditsmart.app-release-79:/mipmap-anydpi-v26_ic_launcher.xml.flat",
-        "source": "com.cdccreditsmart.app-main-80:/mipmap-anydpi-v26/ic_launcher.xml"
+        "merged": "com.cdccreditsmart.app-release-65:/drawable_ic_payments_24.xml.flat",
+        "source": "com.cdccreditsmart.app-main-66:/drawable/ic_payments_24.xml"
     },
     {
-        "merged": "com.cdccreditsmart.app-release-79:/drawable_rounded_orange_bg.xml.flat",
-        "source": "com.cdccreditsmart.app-main-80:/drawable/rounded_orange_bg.xml"
+        "merged": "com.cdccreditsmart.app-release-65:/layout_fragment_support.xml.flat",
+        "source": "com.cdccreditsmart.app-main-66:/layout/fragment_support.xml"
     },
     {
-        "merged": "com.cdccreditsmart.app-release-79:/drawable_rounded_gray_bg.xml.flat",
-        "source": "com.cdccreditsmart.app-main-80:/drawable/rounded_gray_bg.xml"
+        "merged": "com.cdccreditsmart.app-release-65:/layout_fragment_profile.xml.flat",
+        "source": "com.cdccreditsmart.app-main-66:/layout/fragment_profile.xml"
     }
 ]

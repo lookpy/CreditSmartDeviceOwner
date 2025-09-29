@@ -115,16 +115,6 @@
 }
 
 # End of content from /home/runner/.gradle/caches/8.13/transforms/9ae64fe8f97c834f414441323949b5ec/transformed/appcompat-1.7.0/proguard.txt
-# The proguard configuration file for the following section is /home/runner/.gradle/caches/8.13/transforms/445161e1b817462e0aa0545a768578b6/transformed/hilt-android-2.54/proguard.txt
-# Keep for the reflective cast done in EntryPoints.
-# See b/183070411#comment4 for more info.
--keep,allowobfuscation,allowshrinking @dagger.hilt.EntryPoint class *# Keep for the reflective cast done in EntryPoints.
-# See b/183070411#comment4 for more info.
--keep,allowobfuscation,allowshrinking @dagger.hilt.android.EarlyEntryPoint class *# Keep for the reflective cast done in EntryPoints.
-# See b/183070411#comment4 for more info.
--keep,allowobfuscation,allowshrinking @dagger.hilt.internal.ComponentEntryPoint class *
--keep,allowobfuscation,allowshrinking @dagger.hilt.internal.GeneratedEntryPoint class *
-# End of content from /home/runner/.gradle/caches/8.13/transforms/445161e1b817462e0aa0545a768578b6/transformed/hilt-android-2.54/proguard.txt
 # The proguard configuration file for the following section is /home/runner/.gradle/caches/8.13/transforms/db8d903ec3a421ff2e25c4e8e262be7f/transformed/fragment-1.5.4/proguard.txt
 # Copyright (C) 2020 The Android Open Source Project
 #
@@ -354,12 +344,6 @@
 }
 
 # End of content from /home/runner/.gradle/caches/8.13/transforms/181cdb0dc81672b9e64365709522eb3a/transformed/shrink-rules/lib/META-INF/proguard/androidx-annotations.pro
-# The proguard configuration file for the following section is /home/runner/.gradle/caches/8.13/transforms/e4db8399de2512054480cfa2378ae425/transformed/shrink-rules/lib/META-INF/com.android.tools/r8/r8.pro
--identifiernamestring @dagger.internal.IdentifierNameString class ** {
-    static java.lang.String *;
-}
-
-# End of content from /home/runner/.gradle/caches/8.13/transforms/e4db8399de2512054480cfa2378ae425/transformed/shrink-rules/lib/META-INF/com.android.tools/r8/r8.pro
 # The proguard configuration file for the following section is <unknown>
 -keep class **.R
 -keep class **.R$* {*;}

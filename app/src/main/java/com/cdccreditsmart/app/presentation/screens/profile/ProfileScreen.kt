@@ -1,3 +1,8 @@
+/*
+ * DISABLED: ProfileScreen depends on ProfileViewModel which uses disabled domain modules
+ * Focus on CDC device registration functionality with SimplifiedAuthViewModel
+ */
+/*
 package com.cdccreditsmart.app.presentation.screens.profile
 
 import androidx.compose.foundation.layout.*
@@ -153,4 +158,4 @@ fun ProfileOptionCard(
             )
         }
     }
-}
+}*/

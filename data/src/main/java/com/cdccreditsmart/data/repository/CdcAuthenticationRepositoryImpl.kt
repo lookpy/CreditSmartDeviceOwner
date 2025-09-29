@@ -18,13 +18,14 @@ import com.cdccreditsmart.domain.common.Resource
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import java.time.LocalDateTime
-import javax.inject.Inject
-import javax.inject.Named
-import javax.inject.Singleton
+// HILT REMOVED
+// import javax.inject.Inject
+// import javax.inject.Named
+// import javax.inject.Singleton
 
-@Singleton
-class CdcAuthenticationRepositoryImpl @Inject constructor(
-    @Named("encrypted_prefs") private val encryptedPrefs: SharedPreferences,
+// HILT REMOVED - @Singleton
+class CdcAuthenticationRepositoryImpl /* @Inject */ constructor(
+    /* @Named("encrypted_prefs") */ private val encryptedPrefs: SharedPreferences,
     private val authApiService: AuthApiService,
     private val cdcApiService: CdcApiService,
     private val flowEventsApiService: FlowEventsApiService,

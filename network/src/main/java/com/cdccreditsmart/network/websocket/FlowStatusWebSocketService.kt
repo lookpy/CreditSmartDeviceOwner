@@ -211,7 +211,7 @@ class FlowStatusWebSocketService @Inject constructor(
 }
 
 // WebSocket Data Classes
-@JsonClass(generateAdapter = true)
+//@JsonClass(generateAdapter = true) // Temporarily disabled to fix build
 data class FlowSubscriptionMessage(
     val action: String, // "subscribe", "unsubscribe"
     val flowId: String,
@@ -229,7 +229,7 @@ data class FlowStatusUpdate(
     val errorCode: String? = null
 )
 
-@JsonClass(generateAdapter = true)
+//@JsonClass(generateAdapter = true) // Temporarily disabled to fix build
 data class FlowProgressUpdate(
     val currentStepIndex: Int,
     val totalSteps: Int,
@@ -238,7 +238,7 @@ data class FlowProgressUpdate(
     val stepName: String? = null
 )
 
-@JsonClass(generateAdapter = true)
+//@JsonClass(generateAdapter = true) // Temporarily disabled to fix build
 data class FlowStatusWebSocketError(
     val code: String,
     val message: String,

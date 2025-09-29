@@ -13,9 +13,6 @@ import androidx.navigation.compose.rememberNavController
 import com.cdccreditsmart.app.navigation.CDCNavigation
 import com.cdccreditsmart.app.navigation.Routes
 import com.cdccreditsmart.app.ui.theme.CDCCreditSmartTheme
-import dagger.hilt.android.AndroidEntryPoint
-
-@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {

@@ -1,8 +1,8 @@
 plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
-    id("com.google.devtools.ksp")
-    id("com.google.dagger.hilt.android")
+    // HILT REMOVED - id("com.google.devtools.ksp")
+    // HILT REMOVED - id("com.google.dagger.hilt.android")
 }
 
 android {
@@ -54,9 +54,9 @@ dependencies {
     
     // Alternative: Use Intent-based QR scanning or web-based solutions for now
     
-    // Dependency Injection
-    implementation("com.google.dagger:hilt-android:2.54")
-    ksp("com.google.dagger:hilt-compiler:2.54")
+    // Dependency Injection - HILT REMOVED
+    // implementation("com.google.dagger:hilt-android:2.54")
+    // ksp("com.google.dagger:hilt-compiler:2.54")
     
     // Coroutines
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")

@@ -1,4 +1,4 @@
-modules = ["java", "nodejs-20"]
+modules = ["java", "nodejs-20", "python-3.11"]
 [agent]
 expertMode = true
 integrations = ["javascript_object_storage:1.0.0"]
@@ -29,7 +29,7 @@ outputType = "webview"
 
 [nix]
 channel = "stable-25_05"
-packages = ["openjdk17", "android-tools", "wget", "curl", "unzip"]
+packages = ["android-tools", "curl", "openjdk17", "unzip", "wget"]
 
 [[ports]]
 localPort = 3001

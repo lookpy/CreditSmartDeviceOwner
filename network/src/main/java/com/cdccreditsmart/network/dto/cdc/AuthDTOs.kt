@@ -7,7 +7,7 @@ import com.squareup.moshi.JsonClass
  * Based on official CDC CreditSmart API documentation
  */
 
-@JsonClass(generateAdapter = true)
+//@JsonClass(generateAdapter = true) // Temporarily disabled to fix build
 data class DeviceRegistrationRequest(
     val imei: String,
     val deviceFingerprint: String,
@@ -17,7 +17,7 @@ data class DeviceRegistrationRequest(
     val androidVersion: String
 )
 
-@JsonClass(generateAdapter = true)
+//@JsonClass(generateAdapter = true) // Temporarily disabled to fix build
 data class DeviceRegistrationResponse(
     val success: Boolean,
     val registered: Boolean,
@@ -37,13 +37,13 @@ data class DeviceRegistrationResponse(
     val errorCode: String? = null
 )
 
-@JsonClass(generateAdapter = true)
+//@JsonClass(generateAdapter = true) // Temporarily disabled to fix build
 data class AutoSyncRequest(
     val imei: String,
     val deviceFingerprint: String? = null
 )
 
-@JsonClass(generateAdapter = true)
+//@JsonClass(generateAdapter = true) // Temporarily disabled to fix build
 data class AutoSyncResponse(
     val success: Boolean,
     val synced: Boolean,
@@ -58,7 +58,7 @@ data class AutoSyncResponse(
 /**
  * Device information structure
  */
-@JsonClass(generateAdapter = true)
+//@JsonClass(generateAdapter = true) // Temporarily disabled to fix build
 data class DeviceInfo(
     val deviceId: String,
     val imei: String,
@@ -77,7 +77,7 @@ data class DeviceInfo(
 /**
  * Customer information structure
  */
-@JsonClass(generateAdapter = true)
+//@JsonClass(generateAdapter = true) // Temporarily disabled to fix build
 data class CustomerInfo(
     val customerId: String,
     val name: String,
@@ -92,7 +92,7 @@ data class CustomerInfo(
 /**
  * Store information structure
  */
-@JsonClass(generateAdapter = true)
+//@JsonClass(generateAdapter = true) // Temporarily disabled to fix build
 data class StoreInfo(
     val storeId: String,
     val name: String,
@@ -105,7 +105,7 @@ data class StoreInfo(
 /**
  * Address information structure
  */
-@JsonClass(generateAdapter = true)
+//@JsonClass(generateAdapter = true) // Temporarily disabled to fix build
 data class AddressInfo(
     val street: String,
     val number: String,
@@ -119,7 +119,7 @@ data class AddressInfo(
 /**
  * Payment summary structure
  */
-@JsonClass(generateAdapter = true)
+//@JsonClass(generateAdapter = true) // Temporarily disabled to fix build
 data class PaymentSummary(
     val totalAmount: Double,
     val paidAmount: Double,
@@ -134,7 +134,7 @@ data class PaymentSummary(
 /**
  * Security information structure
  */
-@JsonClass(generateAdapter = true)
+//@JsonClass(generateAdapter = true) // Temporarily disabled to fix build
 data class SecurityInfo(
     val level: String, // "low", "medium", "high", "critical"
     val policies: List<SecurityPolicy>,
@@ -146,7 +146,7 @@ data class SecurityInfo(
 /**
  * Security policy structure
  */
-@JsonClass(generateAdapter = true)
+//@JsonClass(generateAdapter = true) // Temporarily disabled to fix build
 data class SecurityPolicy(
     val type: String, // "location", "app_restriction", "time_restriction", etc.
     val enabled: Boolean,

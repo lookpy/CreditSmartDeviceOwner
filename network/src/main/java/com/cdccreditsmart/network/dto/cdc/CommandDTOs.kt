@@ -7,14 +7,14 @@ import com.squareup.moshi.JsonClass
  * Based on official CDC CreditSmart API documentation
  */
 
-@JsonClass(generateAdapter = true)
+//@JsonClass(generateAdapter = true) // Temporarily disabled to fix build
 data class CdcPermissionsRequest(
     val requestedPermissions: List<PermissionRequest>,
     val requestReason: String? = null,
     val urgencyLevel: String = "normal" // "low", "normal", "high", "critical"
 )
 
-@JsonClass(generateAdapter = true)
+//@JsonClass(generateAdapter = true) // Temporarily disabled to fix build
 data class CdcPermissionsResponse(
     val success: Boolean,
     val permissions: List<PermissionGrant>,
@@ -23,7 +23,7 @@ data class CdcPermissionsResponse(
     val serverTimestamp: Long
 )
 
-@JsonClass(generateAdapter = true)
+//@JsonClass(generateAdapter = true) // Temporarily disabled to fix build
 data class PermissionRequest(
     val permission: String, // Android permission name or custom permission
     val required: Boolean = true,
@@ -31,7 +31,7 @@ data class PermissionRequest(
     val duration: String? = null // "session", "permanent", "temporary"
 )
 
-@JsonClass(generateAdapter = true)
+//@JsonClass(generateAdapter = true) // Temporarily disabled to fix build
 data class PermissionGrant(
     val permission: String,
     val granted: Boolean,
@@ -41,7 +41,7 @@ data class PermissionGrant(
     val conditions: List<String>? = null
 )
 
-@JsonClass(generateAdapter = true)
+//@JsonClass(generateAdapter = true) // Temporarily disabled to fix build
 data class PermissionDenial(
     val permission: String,
     val reason: String,
@@ -49,7 +49,7 @@ data class PermissionDenial(
     val retryAfter: Long? = null
 )
 
-@JsonClass(generateAdapter = true)
+//@JsonClass(generateAdapter = true) // Temporarily disabled to fix build
 data class CdcCommandsResponse(
     val success: Boolean,
     val commands: List<DeviceCommand>,
@@ -60,7 +60,7 @@ data class CdcCommandsResponse(
     val message: String? = null
 )
 
-@JsonClass(generateAdapter = true)
+//@JsonClass(generateAdapter = true) // Temporarily disabled to fix build
 data class CdcCommandResponseRequest(
     val commandId: String,
     val executionStatus: String, // "started", "completed", "failed", "skipped"
@@ -69,7 +69,7 @@ data class CdcCommandResponseRequest(
     val errorDetails: ErrorDetails? = null
 )
 
-@JsonClass(generateAdapter = true)
+//@JsonClass(generateAdapter = true) // Temporarily disabled to fix build
 data class CdcCommandResponseResponse(
     val success: Boolean,
     val acknowledged: Boolean,
@@ -79,7 +79,7 @@ data class CdcCommandResponseResponse(
     val serverTimestamp: Long
 )
 
-@JsonClass(generateAdapter = true)
+//@JsonClass(generateAdapter = true) // Temporarily disabled to fix build
 data class CommandResult(
     val success: Boolean,
     val resultData: Map<String, Any>? = null,
@@ -88,14 +88,14 @@ data class CommandResult(
     val metrics: CommandMetrics? = null
 )
 
-@JsonClass(generateAdapter = true)
+//@JsonClass(generateAdapter = true) // Temporarily disabled to fix build
 data class CommandMetrics(
     val executionTimeMs: Long,
     val resourceUsage: ResourceUsage? = null,
     val sideEffects: List<String>? = null
 )
 
-@JsonClass(generateAdapter = true)
+//@JsonClass(generateAdapter = true) // Temporarily disabled to fix build
 data class ResourceUsage(
     val cpuUsage: Double? = null, // percentage
     val memoryUsage: Long? = null, // bytes
@@ -103,7 +103,7 @@ data class ResourceUsage(
     val storageUsage: Long? = null // bytes
 )
 
-@JsonClass(generateAdapter = true)
+//@JsonClass(generateAdapter = true) // Temporarily disabled to fix build
 data class ErrorDetails(
     val errorCode: String,
     val errorMessage: String,
@@ -112,7 +112,7 @@ data class ErrorDetails(
     val suggestedAction: String? = null
 )
 
-@JsonClass(generateAdapter = true)
+//@JsonClass(generateAdapter = true) // Temporarily disabled to fix build
 data class CdcPendingDecisionsResponse(
     val success: Boolean,
     val decisions: List<PendingDecision>,
@@ -122,7 +122,7 @@ data class CdcPendingDecisionsResponse(
     val message: String? = null
 )
 
-@JsonClass(generateAdapter = true)
+//@JsonClass(generateAdapter = true) // Temporarily disabled to fix build
 data class PendingDecision(
     val decisionId: String,
     val type: String, // "payment_overdue", "device_lost", "contract_violation", "security_breach"
@@ -136,7 +136,7 @@ data class PendingDecision(
     val priority: Int = 0
 )
 
-@JsonClass(generateAdapter = true)
+//@JsonClass(generateAdapter = true) // Temporarily disabled to fix build
 data class DecisionOption(
     val optionId: String,
     val label: String,
@@ -146,7 +146,7 @@ data class DecisionOption(
     val isDefault: Boolean = false
 )
 
-@JsonClass(generateAdapter = true)
+//@JsonClass(generateAdapter = true) // Temporarily disabled to fix build
 data class Consequence(
     val type: String, // "financial", "access_restriction", "service_suspension", "legal"
     val description: String,
@@ -154,7 +154,7 @@ data class Consequence(
     val reversible: Boolean = true
 )
 
-@JsonClass(generateAdapter = true)
+//@JsonClass(generateAdapter = true) // Temporarily disabled to fix build
 data class DecisionContext(
     val contractId: String? = null,
     val installmentId: String? = null,
@@ -165,7 +165,7 @@ data class DecisionContext(
     val userHistory: Map<String, Any>? = null
 )
 
-@JsonClass(generateAdapter = true)
+//@JsonClass(generateAdapter = true) // Temporarily disabled to fix build
 data class CdcUnblockRequest(
     val unblockType: String, // "temporary", "conditional", "permanent"
     val reason: String,
@@ -175,7 +175,7 @@ data class CdcUnblockRequest(
     val paymentProof: PaymentProof? = null
 )
 
-@JsonClass(generateAdapter = true)
+//@JsonClass(generateAdapter = true) // Temporarily disabled to fix build
 data class CdcUnblockResponse(
     val success: Boolean,
     val unblocked: Boolean,
@@ -187,7 +187,7 @@ data class CdcUnblockResponse(
     val serverTimestamp: Long
 )
 
-@JsonClass(generateAdapter = true)
+//@JsonClass(generateAdapter = true) // Temporarily disabled to fix build
 data class PaymentProof(
     val paymentId: String,
     val transactionId: String,
@@ -198,7 +198,7 @@ data class PaymentProof(
     val bankReference: String? = null
 )
 
-@JsonClass(generateAdapter = true)
+//@JsonClass(generateAdapter = true) // Temporarily disabled to fix build
 data class PartialUnblockInfo(
     val allowedActions: List<String>,
     val blockedActions: List<String>,
@@ -207,7 +207,7 @@ data class PartialUnblockInfo(
     val restrictions: List<Restriction>? = null
 )
 
-@JsonClass(generateAdapter = true)
+//@JsonClass(generateAdapter = true) // Temporarily disabled to fix build
 data class Restriction(
     val type: String, // "time", "location", "usage", "network"
     val description: String,
@@ -218,7 +218,7 @@ data class Restriction(
 /**
  * Uninstall request structures
  */
-@JsonClass(generateAdapter = true)
+//@JsonClass(generateAdapter = true) // Temporarily disabled to fix build
 data class UninstallRequest(
     val reason: String, // "contract_completed", "device_replaced", "user_request"
     val contractStatus: String? = null,
@@ -226,7 +226,7 @@ data class UninstallRequest(
     val deviceCondition: DeviceCondition? = null
 )
 
-@JsonClass(generateAdapter = true)
+//@JsonClass(generateAdapter = true) // Temporarily disabled to fix build
 data class UninstallResponse(
     val success: Boolean,
     val approved: Boolean,
@@ -238,7 +238,7 @@ data class UninstallResponse(
     val serverTimestamp: Long
 )
 
-@JsonClass(generateAdapter = true)
+//@JsonClass(generateAdapter = true) // Temporarily disabled to fix build
 data class DeviceCondition(
     val isWorking: Boolean = true,
     val hasPhysicalDamage: Boolean = false,
@@ -247,7 +247,7 @@ data class DeviceCondition(
     val notes: String? = null
 )
 
-@JsonClass(generateAdapter = true)
+//@JsonClass(generateAdapter = true) // Temporarily disabled to fix build
 data class UninstallRequirement(
     val type: String, // "payment_verification", "device_return", "data_backup", "manual_approval"
     val description: String,

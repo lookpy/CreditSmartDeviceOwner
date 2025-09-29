@@ -17,6 +17,8 @@ import com.cdccreditsmart.network.interceptors.XClientAuthInterceptor
 import com.cdccreditsmart.network.security.EncryptionHelper
 import com.cdccreditsmart.network.security.AntiTamperingDetector
 import com.cdccreditsmart.network.api.*
+import com.cdccreditsmart.network.client.NetworkClient
+import com.cdccreditsmart.network.debug.CertificatePinningDebugHelper
 import com.cdccreditsmart.network.websocket.FlowStatusWebSocketService
 import com.cdccreditsmart.network.websocket.DeviceCommandWebSocketService
 import com.squareup.moshi.Moshi
@@ -34,9 +36,10 @@ import javax.inject.Singleton
 /**
  * Hilt module providing network-related dependencies
  */
-@Module
-@InstallIn(SingletonComponent::class)
-object NetworkModule {
+// TEMPORARILY DISABLED - Using SimplifiedNetworkModule to fix build issues
+//@Module
+//@InstallIn(SingletonComponent::class)
+object NetworkModule_DISABLED {
     
     @Qualifier
     @Retention(AnnotationRetention.BINARY)
@@ -54,8 +57,8 @@ object NetworkModule {
      * Provides encrypted shared preferences for network security data
      */
     @NetworkEncryptedPrefs
-    @Provides
-    @Singleton
+    //@Provides
+    //@Singleton
     fun provideNetworkEncryptedSharedPreferences(
         @ApplicationContext context: Context
     ): EncryptedSharedPreferences {
@@ -75,8 +78,8 @@ object NetworkModule {
     /**
      * Provides network error mapper for consistent error handling
      */
-    @Provides
-    @Singleton
+    //@Provides
+    //@Singleton
     fun provideNetworkErrorMapper(): NetworkErrorMapper {
         return NetworkErrorMapper()
     }
@@ -84,8 +87,8 @@ object NetworkModule {
     /**
      * Provides certificate pinning manager for TLS security
      */
-    @Provides
-    @Singleton
+    //@Provides
+    //@Singleton
     fun provideCertificatePinningManager(): CertificatePinningManager {
         return CertificatePinningManager()
     }
@@ -93,8 +96,8 @@ object NetworkModule {
     /**
      * Provides common headers interceptor
      */
-    @Provides
-    @Singleton
+    //@Provides
+    //@Singleton
     fun provideCommonHeadersInterceptor(
         @ApplicationContext context: Context
     ): CommonHeadersInterceptor {
@@ -104,8 +107,8 @@ object NetworkModule {
     /**
      * Provides JWT authentication interceptor
      */
-    @Provides
-    @Singleton
+    //@Provides
+    //@Singleton
     fun provideJwtInterceptor(
         @NetworkEncryptedPrefs encryptedSharedPreferences: EncryptedSharedPreferences
     ): JwtInterceptor {
@@ -115,8 +118,8 @@ object NetworkModule {
     /**
      * Provides X-Client authentication interceptor for CDC Credit Smart API
      */
-    @Provides
-    @Singleton
+    //@Provides
+    //@Singleton
     fun provideXClientAuthInterceptor(
         @NetworkEncryptedPrefs encryptedSharedPreferences: EncryptedSharedPreferences
     ): XClientAuthInterceptor {
@@ -126,8 +129,8 @@ object NetworkModule {
     /**
      * Provides device signature interceptor for request signing
      */
-    @Provides
-    @Singleton
+    //@Provides
+    //@Singleton
     fun provideDeviceSignatureInterceptor(
         @ApplicationContext context: Context
     ): DeviceSignatureInterceptor {
@@ -137,8 +140,8 @@ object NetworkModule {
     /**
      * Provides idempotency key interceptor for POST requests
      */
-    @Provides
-    @Singleton
+    //@Provides
+    //@Singleton
     fun provideIdempotencyKeyInterceptor(): IdempotencyKeyInterceptor {
         return IdempotencyKeyInterceptor()
     }
@@ -146,17 +149,19 @@ object NetworkModule {
     /**
      * Provides connectivity debug interceptor for network diagnostics
      */
-    @Provides
-    @Singleton
+    //@Provides
+    //@Singleton
     fun provideConnectivityDebugInterceptor(): ConnectivityDebugInterceptor {
         return ConnectivityDebugInterceptor()
     }
     
+    // DeviceTokenInterceptor moved to DataModule to avoid circular dependency
+    
     /**
      * Provides OkHttp client factory with all interceptors
      */
-    @Provides
-    @Singleton
+    //@Provides
+    //@Singleton
     fun provideOkHttpClientFactory(
         commonHeadersInterceptor: CommonHeadersInterceptor,
         connectivityDebugInterceptor: ConnectivityDebugInterceptor,
@@ -180,8 +185,8 @@ object NetworkModule {
     /**
      * Provides Retrofit factory for creating API clients
      */
-    @Provides
-    @Singleton
+    //@Provides
+    //@Singleton
     fun provideRetrofitFactory(
         okHttpClientFactory: OkHttpClientFactory,
         networkErrorMapper: NetworkErrorMapper
@@ -193,8 +198,8 @@ object NetworkModule {
      * Provides secure Retrofit instance for authenticated API calls
      */
     @SecureRetrofit
-    @Provides
-    @Singleton
+    //@Provides
+    //@Singleton
     fun provideSecureRetrofit(
         retrofitFactory: RetrofitFactory
     ): Retrofit {
@@ -224,8 +229,8 @@ object NetworkModule {
      * Provides basic Retrofit instance for non-authenticated API calls
      */
     @BasicRetrofit
-    @Provides
-    @Singleton
+    //@Provides
+    //@Singleton
     fun provideBasicRetrofit(
         retrofitFactory: RetrofitFactory
     ): Retrofit {
@@ -246,8 +251,8 @@ object NetworkModule {
     /**
      * Provides encryption helper for request/response encryption
      */
-    @Provides
-    @Singleton
+    //@Provides
+    //@Singleton
     fun provideEncryptionHelper(): EncryptionHelper {
         return EncryptionHelper()
     }
@@ -255,8 +260,8 @@ object NetworkModule {
     /**
      * Provides anti-tampering detector for security validation
      */
-    @Provides
-    @Singleton
+    //@Provides
+    //@Singleton
     fun provideAntiTamperingDetector(
         @ApplicationContext context: Context
     ): AntiTamperingDetector {
@@ -268,8 +273,8 @@ object NetworkModule {
     /**
      * Provides Device API service for device-related operations
      */
-    @Provides
-    @Singleton
+    //@Provides
+    //@Singleton
     fun provideDeviceApiService(
         @SecureRetrofit retrofit: Retrofit
     ): DeviceApiService {
@@ -279,8 +284,8 @@ object NetworkModule {
     /**
      * Provides Biometry API service for facial recognition operations
      */
-    @Provides
-    @Singleton
+    //@Provides
+    //@Singleton
     fun provideBiometryApiService(
         @SecureRetrofit retrofit: Retrofit
     ): BiometryApiService {
@@ -290,8 +295,8 @@ object NetworkModule {
     /**
      * Provides Payments API service for payment operations
      */
-    @Provides
-    @Singleton
+    //@Provides
+    //@Singleton
     fun providePaymentsApiService(
         @SecureRetrofit retrofit: Retrofit
     ): PaymentsApiService {
@@ -301,8 +306,8 @@ object NetworkModule {
     /**
      * Provides Contract API service for contract operations
      */
-    @Provides
-    @Singleton
+    //@Provides
+    //@Singleton
     fun provideContractApiService(
         @SecureRetrofit retrofit: Retrofit
     ): ContractApiService {
@@ -312,8 +317,8 @@ object NetworkModule {
     /**
      * Provides Auth API service for authentication operations
      */
-    @Provides
-    @Singleton
+    //@Provides
+    //@Singleton
     fun provideAuthApiService(
         @BasicRetrofit retrofit: Retrofit // Auth uses basic client to avoid circular dependency
     ): AuthApiService {
@@ -323,8 +328,8 @@ object NetworkModule {
     /**
      * Provides Flow Events API service for flow tracking operations
      */
-    @Provides
-    @Singleton
+    //@Provides
+    //@Singleton
     fun provideFlowEventsApiService(
         @SecureRetrofit retrofit: Retrofit
     ): FlowEventsApiService {
@@ -334,12 +339,23 @@ object NetworkModule {
     /**
      * Provides CDC API service for CDC-specific operations
      */
-    @Provides
-    @Singleton
+    //@Provides
+    //@Singleton
     fun provideCdcApiService(
         @SecureRetrofit retrofit: Retrofit
     ): CdcApiService {
         return retrofit.create(CdcApiService::class.java)
+    }
+    
+    /**
+     * Provides Device Registration API service for new token system
+     */
+    //@Provides
+    //@Singleton
+    fun provideDeviceRegistrationApiService(
+        @BasicRetrofit retrofit: Retrofit // Use basic retrofit to avoid circular dependency during registration
+    ): DeviceRegistrationApiService {
+        return retrofit.create(DeviceRegistrationApiService::class.java)
     }
     
     // WebSocket Services
@@ -347,8 +363,8 @@ object NetworkModule {
     /**
      * Provides Moshi for JSON parsing
      */
-    @Provides
-    @Singleton
+    //@Provides
+    //@Singleton
     fun provideMoshi(): Moshi {
         return Moshi.Builder()
             .add(KotlinJsonAdapterFactory())
@@ -358,8 +374,8 @@ object NetworkModule {
     /**
      * Provides OkHttpClient for WebSocket connections
      */
-    @Provides
-    @Singleton
+    //@Provides
+    //@Singleton
     fun provideWebSocketOkHttpClient(
         okHttpClientFactory: OkHttpClientFactory
     ): OkHttpClient {
@@ -386,8 +402,8 @@ object NetworkModule {
     /**
      * Provides FlowStatusWebSocketService for flow status monitoring
      */
-    @Provides
-    @Singleton
+    //@Provides
+    //@Singleton
     fun provideFlowStatusWebSocketService(
         okHttpClient: OkHttpClient,
         moshi: Moshi
@@ -398,12 +414,38 @@ object NetworkModule {
     /**
      * Provides DeviceCommandWebSocketService for device command monitoring
      */
-    @Provides
-    @Singleton
+    //@Provides
+    //@Singleton
     fun provideDeviceCommandWebSocketService(
         okHttpClient: OkHttpClient,
         moshi: Moshi
     ): DeviceCommandWebSocketService {
         return DeviceCommandWebSocketService(okHttpClient, moshi)
+    }
+    
+    /**
+     * Provides NetworkClient for safe API call execution
+     */
+    //@Provides
+    //@Singleton
+    fun provideNetworkClient(
+        networkErrorMapper: NetworkErrorMapper
+    ): NetworkClient {
+        return NetworkClient(networkErrorMapper)
+    }
+    
+    /**
+     * Provides CertificatePinningDebugHelper for certificate pinning debugging
+     */
+    //@Provides
+    //@Singleton
+    fun provideCertificatePinningDebugHelper(
+        certificatePinningManager: CertificatePinningManager,
+        okHttpClientFactory: OkHttpClientFactory
+    ): CertificatePinningDebugHelper {
+        return CertificatePinningDebugHelper(
+            certificatePinningManager,
+            okHttpClientFactory
+        )
     }
 }

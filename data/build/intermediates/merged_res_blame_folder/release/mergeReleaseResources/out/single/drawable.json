@@ -1,18 +1,18 @@
 [
     {
-        "merged": "com.cdccreditsmart.data-release-22:/drawable/notification_bg.xml",
-        "source": "com.cdccreditsmart.data-core-1.13.1-11:/drawable/notification_bg.xml"
+        "merged": "com.cdccreditsmart.data-release-15:/drawable/notification_icon_background.xml",
+        "source": "com.cdccreditsmart.data-core-1.13.1-6:/drawable/notification_icon_background.xml"
     },
     {
-        "merged": "com.cdccreditsmart.data-release-22:/drawable/notification_bg_low.xml",
-        "source": "com.cdccreditsmart.data-core-1.13.1-11:/drawable/notification_bg_low.xml"
+        "merged": "com.cdccreditsmart.data-release-15:/drawable/notification_bg_low.xml",
+        "source": "com.cdccreditsmart.data-core-1.13.1-6:/drawable/notification_bg_low.xml"
     },
     {
-        "merged": "com.cdccreditsmart.data-release-22:/drawable/notification_tile_bg.xml",
-        "source": "com.cdccreditsmart.data-core-1.13.1-11:/drawable/notification_tile_bg.xml"
+        "merged": "com.cdccreditsmart.data-release-15:/drawable/notification_tile_bg.xml",
+        "source": "com.cdccreditsmart.data-core-1.13.1-6:/drawable/notification_tile_bg.xml"
     },
     {
-        "merged": "com.cdccreditsmart.data-release-22:/drawable/notification_icon_background.xml",
-        "source": "com.cdccreditsmart.data-core-1.13.1-11:/drawable/notification_icon_background.xml"
+        "merged": "com.cdccreditsmart.data-release-15:/drawable/notification_bg.xml",
+        "source": "com.cdccreditsmart.data-core-1.13.1-6:/drawable/notification_bg.xml"
     }
 ]

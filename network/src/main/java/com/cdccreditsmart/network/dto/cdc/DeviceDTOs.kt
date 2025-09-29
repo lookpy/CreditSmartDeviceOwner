@@ -7,7 +7,7 @@ import com.squareup.moshi.JsonClass
  * Based on official CDC CreditSmart API documentation
  */
 
-@JsonClass(generateAdapter = true)
+//@JsonClass(generateAdapter = true) // Temporarily disabled to fix build
 data class CdcHeartbeatRequest(
     val timestamp: Long,
     val status: String = "active",
@@ -17,7 +17,7 @@ data class CdcHeartbeatRequest(
     val appMetrics: AppMetricsInfo? = null
 )
 
-@JsonClass(generateAdapter = true)
+//@JsonClass(generateAdapter = true) // Temporarily disabled to fix build
 data class CdcHeartbeatResponse(
     val success: Boolean,
     val message: String? = null,
@@ -28,7 +28,7 @@ data class CdcHeartbeatResponse(
     val configUpdates: Map<String, Any>? = null
 )
 
-@JsonClass(generateAdapter = true)
+//@JsonClass(generateAdapter = true) // Temporarily disabled to fix build
 data class CdcDeviceStatusResponse(
     val success: Boolean,
     val device: DeviceInfo,
@@ -39,14 +39,14 @@ data class CdcDeviceStatusResponse(
     val message: String? = null
 )
 
-@JsonClass(generateAdapter = true)
+//@JsonClass(generateAdapter = true) // Temporarily disabled to fix build
 data class CdcDeviceSyncRequest(
     val timestamp: Long,
     val forceSync: Boolean = false,
     val syncScope: List<String>? = null // ["payments", "commands", "policies", "config"]
 )
 
-@JsonClass(generateAdapter = true)
+//@JsonClass(generateAdapter = true) // Temporarily disabled to fix build
 data class CdcDeviceSyncResponse(
     val success: Boolean,
     val synced: Boolean,
@@ -55,14 +55,14 @@ data class CdcDeviceSyncResponse(
     val message: String? = null
 )
 
-@JsonClass(generateAdapter = true)
+//@JsonClass(generateAdapter = true) // Temporarily disabled to fix build
 data class CdcDeviceRegisterInfoRequest(
     val deviceInfo: ExtendedDeviceInfo,
     val appInfo: AppInfo,
     val systemInfo: SystemInfo
 )
 
-@JsonClass(generateAdapter = true)
+//@JsonClass(generateAdapter = true) // Temporarily disabled to fix build
 data class CdcDeviceRegisterInfoResponse(
     val success: Boolean,
     val registered: Boolean,
@@ -72,7 +72,7 @@ data class CdcDeviceRegisterInfoResponse(
     val serverTimestamp: Long
 )
 
-@JsonClass(generateAdapter = true)
+//@JsonClass(generateAdapter = true) // Temporarily disabled to fix build
 data class CdcProvisioningQrResponse(
     val success: Boolean,
     val qrCode: String? = null, // Base64 encoded QR code image
@@ -84,7 +84,7 @@ data class CdcProvisioningQrResponse(
 /**
  * Location information structure
  */
-@JsonClass(generateAdapter = true)
+//@JsonClass(generateAdapter = true) // Temporarily disabled to fix build
 data class LocationInfo(
     val latitude: Double,
     val longitude: Double,
@@ -97,7 +97,7 @@ data class LocationInfo(
 /**
  * Device health information
  */
-@JsonClass(generateAdapter = true)
+//@JsonClass(generateAdapter = true) // Temporarily disabled to fix build
 data class DeviceHealthInfo(
     val batteryLevel: Int,
     val batteryStatus: String, // "charging", "discharging", "not_charging", "full"
@@ -111,7 +111,7 @@ data class DeviceHealthInfo(
 /**
  * App metrics information
  */
-@JsonClass(generateAdapter = true)
+//@JsonClass(generateAdapter = true) // Temporarily disabled to fix build
 data class AppMetricsInfo(
     val appVersion: String,
     val buildNumber: Int,
@@ -124,7 +124,7 @@ data class AppMetricsInfo(
 /**
  * Performance metrics
  */
-@JsonClass(generateAdapter = true)
+//@JsonClass(generateAdapter = true) // Temporarily disabled to fix build
 data class PerformanceMetrics(
     val avgResponseTime: Double, // milliseconds
     val apiCallCount: Int,
@@ -135,7 +135,7 @@ data class PerformanceMetrics(
 /**
  * Device command structure
  */
-@JsonClass(generateAdapter = true)
+//@JsonClass(generateAdapter = true) // Temporarily disabled to fix build
 data class DeviceCommand(
     val commandId: String,
     val type: String, // "block", "unblock", "locate", "wipe", "install_app", "uninstall_app", "restart"
@@ -149,7 +149,7 @@ data class DeviceCommand(
 /**
  * Contract information structure
  */
-@JsonClass(generateAdapter = true)
+//@JsonClass(generateAdapter = true) // Temporarily disabled to fix build
 data class ContractInfo(
     val contractId: String,
     val contractCode: String,
@@ -164,7 +164,7 @@ data class ContractInfo(
 /**
  * Installment information structure
  */
-@JsonClass(generateAdapter = true)
+//@JsonClass(generateAdapter = true) // Temporarily disabled to fix build
 data class InstallmentInfo(
     val installmentId: String,
     val number: Int,
@@ -179,7 +179,7 @@ data class InstallmentInfo(
 /**
  * Blocking status structure
  */
-@JsonClass(generateAdapter = true)
+//@JsonClass(generateAdapter = true) // Temporarily disabled to fix build
 data class BlockingStatus(
     val isBlocked: Boolean,
     val blockingLevel: String, // "none", "partial", "full"
@@ -193,7 +193,7 @@ data class BlockingStatus(
 /**
  * Unblock condition structure
  */
-@JsonClass(generateAdapter = true)
+//@JsonClass(generateAdapter = true) // Temporarily disabled to fix build
 data class UnblockCondition(
     val type: String, // "payment", "time", "manual", "location"
     val description: String,
@@ -205,7 +205,7 @@ data class UnblockCondition(
 /**
  * Extended device information
  */
-@JsonClass(generateAdapter = true)
+//@JsonClass(generateAdapter = true) // Temporarily disabled to fix build
 data class ExtendedDeviceInfo(
     val imei: String,
     val model: String,
@@ -224,7 +224,7 @@ data class ExtendedDeviceInfo(
 /**
  * App information structure
  */
-@JsonClass(generateAdapter = true)
+//@JsonClass(generateAdapter = true) // Temporarily disabled to fix build
 data class AppInfo(
     val packageName: String,
     val versionName: String,
@@ -238,7 +238,7 @@ data class AppInfo(
 /**
  * System information structure  
  */
-@JsonClass(generateAdapter = true)
+//@JsonClass(generateAdapter = true) // Temporarily disabled to fix build
 data class SystemInfo(
     val totalStorage: Long,
     val availableStorage: Long,
