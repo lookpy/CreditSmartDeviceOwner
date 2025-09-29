@@ -1,0 +1,32 @@
+show(ime(), fromIme=true)
+2025-09-29 16:53:23.802  2559-2559  ImeTracker              com.cdccreditsmart.app.debug         I  com.cdccreditsmart.app.debug:33cac4a2: onCancelled at PHASE_CLIENT_APPLY_ANIMATION
+2025-09-29 16:53:24.979  2559-2559  InsetsController        com.cdccreditsmart.app.debug         D  hide(ime(), fromIme=true)
+2025-09-29 16:53:24.984  2559-2559  WindowOnBackDispatcher  com.cdccreditsmart.app.debug         W  sendCancelIfRunning: isInProgress=false callback=ImeCallback=ImeOnBackInvokedCallback@70091123 Callback=android.window.IOnBackInvokedCallback$Stub$Proxy@95691a6
+2025-09-29 16:53:25.311  2559-2559  ImeTracker              com.cdccreditsmart.app.debug         I  com.cdccreditsmart.app.debug:bba01aec: onRequestHide at ORIGIN_CLIENT reason HIDE_SOFT_INPUT_ON_ANIMATION_STATE_CHANGED fromUser false
+2025-09-29 16:53:25.314  2559-2559  ImeTracker              com.cdccreditsmart.app.debug         I  com.google.android.inputmethod.latin:c5ce75e6: onHidden
+2025-09-29 16:53:25.987  2559-2559  SimplifiedAuthViewModel com.cdccreditsmart.app.debug         D  Verifying IMEI against PDV system - User entered: 15 digits
+2025-09-29 16:53:25.988  2559-2559  SimplifiedAuthViewModel com.cdccreditsmart.app.debug         D  Normalized user IMEI: 353104903560533
+2025-09-29 16:53:25.988  2559-2559  SimplifiedAuthViewModel com.cdccreditsmart.app.debug         D  Fetching fresh PDV IMEI from CDC system...
+2025-09-29 16:53:25.988  2559-2559  SimpleDevi...gistration com.cdccreditsmart.app.debug         D  Fetching PDV IMEI from CDC API...
+2025-09-29 16:53:25.995  2559-2975  SimpleDevi...gistration com.cdccreditsmart.app.debug         D  Request URL: https://cdccreditsmart.com/api/device/pdv-imei
+2025-09-29 16:53:25.995  2559-2975  SimpleDevi...gistration com.cdccreditsmart.app.debug         D  Request Headers: Content-Type: application/json
+                                                                                                    Accept: application/json
+                                                                                                    User-Agent: CDC-CreditSmart/1.0.0
+2025-09-29 16:53:26.022  2559-2559  SimpleDevi...gistration com.cdccreditsmart.app.debug         E  Exception while fetching PDV IMEI
+2025-09-29 16:53:26.023  2559-2559  SimplifiedAuthViewModel com.cdccreditsmart.app.debug         E  Failed to fetch PDV IMEI (Ask Gemini)
+                                                                                                    java.lang.Exception: Error connecting to PDV system: Unable to resolve host "cdccreditsmart.com": No address associated with hostname
+                                                                                                    	at com.cdccreditsmart.app.device.SimpleDeviceRegistrationManager.getPdvImei-IoAF18A(SimpleDeviceRegistrationManager.kt:146)
+                                                                                                    	at com.cdccreditsmart.app.device.SimpleDeviceRegistrationManager$getPdvImei$1.invokeSuspend(Unknown Source:14)
+                                                                                                    	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:34)
+                                                                                                    	at kotlinx.coroutines.DispatchedTask.run(DispatchedTask.kt:106)
+                                                                                                    	at android.os.Handler.handleCallback(Handler.java:959)
+                                                                                                    	at android.os.Handler.dispatchMessage(Handler.java:100)
+                                                                                                    	at android.os.Looper.loopOnce(Looper.java:234)
+                                                                                                    	at android.os.Looper.loop(Looper.java:319)
+                                                                                                    	at android.app.ActivityThread.main(ActivityThread.java:8754)
+                                                                                                    	at java.lang.reflect.Method.invoke(Native Method)
+                                                                                                    	at com.android.internal.os.RuntimeInit$MethodAndArgsCaller.run(RuntimeInit.java:602)
+                                                                                                    	at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:962)
+2025-09-29 16:53:26.039  2559-2559  InsetsController        com.cdccreditsmart.app.debug         D  hide(ime(), fromIme=false)
+2025-09-29 16:53:26.040  2559-2559  ImeTracker              com.cdccreditsmart.app.debug         I  com.cdccreditsmart.app.debug:53bbc38a: onRequestHide at ORIGIN_CLIENT reason HIDE_SOFT_INPUT_BY_INSETS_API fromUser false
+2025-09-29 16:53:26.040  2559-2559  ImeTracker              com.cdccreditsmart.app.debug         I  com.cdccreditsmart.app.debug:53bbc38a: onCancelled at PHASE_CLIENT_APPLY_ANIMATION
