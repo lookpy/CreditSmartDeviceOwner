@@ -249,7 +249,7 @@ fun BiometryScreen(
                 
                 StatusChip(
                     status = when {
-                        !hasCameraPermission -> StatusType.REJECTED
+                        !hasCameraPermission -> StatusType.DENIED
                         livenessStatus == "Preparando..." -> StatusType.PENDING
                         livenessStatus == "Liveness validation" -> StatusType.REVIEW
                         livenessStatus == "Validação concluída" -> StatusType.APPROVED

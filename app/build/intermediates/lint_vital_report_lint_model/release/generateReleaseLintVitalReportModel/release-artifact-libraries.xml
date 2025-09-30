@@ -169,6 +169,71 @@
       externalAnnotations="annotations.zip"
       proguardRules="proguard.txt"/>
   <library
+      name="androidx.camera:camera-video:1.3.4@aar"
+      jars="/home/runner/.gradle/caches/8.13/transforms/67cc18ac55f7d1b1ce32502cd2517e9f/transformed/camera-video-1.3.4/jars/classes.jar"
+      resolved="androidx.camera:camera-video:1.3.4"
+      folder="/home/runner/.gradle/caches/8.13/transforms/67cc18ac55f7d1b1ce32502cd2517e9f/transformed/camera-video-1.3.4"
+      manifest="AndroidManifest.xml"
+      resFolder="res"
+      assetsFolder="assets"
+      lintJar="lint.jar"
+      publicResources="public.txt"
+      symbolFile="R.txt"
+      externalAnnotations="annotations.zip"
+      proguardRules="proguard.txt"/>
+  <library
+      name="androidx.camera:camera-view:1.3.4@aar"
+      jars="/home/runner/.gradle/caches/8.13/transforms/955a0990664843dc6dcf3d6fb614d7d2/transformed/camera-view-1.3.4/jars/classes.jar"
+      resolved="androidx.camera:camera-view:1.3.4"
+      folder="/home/runner/.gradle/caches/8.13/transforms/955a0990664843dc6dcf3d6fb614d7d2/transformed/camera-view-1.3.4"
+      manifest="AndroidManifest.xml"
+      resFolder="res"
+      assetsFolder="assets"
+      lintJar="lint.jar"
+      publicResources="public.txt"
+      symbolFile="R.txt"
+      externalAnnotations="annotations.zip"
+      proguardRules="proguard.txt"/>
+  <library
+      name="androidx.camera:camera-lifecycle:1.3.4@aar"
+      jars="/home/runner/.gradle/caches/8.13/transforms/c41948abbaf72cc83f9af5516d1ec069/transformed/camera-lifecycle-1.3.4/jars/classes.jar"
+      resolved="androidx.camera:camera-lifecycle:1.3.4"
+      folder="/home/runner/.gradle/caches/8.13/transforms/c41948abbaf72cc83f9af5516d1ec069/transformed/camera-lifecycle-1.3.4"
+      manifest="AndroidManifest.xml"
+      resFolder="res"
+      assetsFolder="assets"
+      lintJar="lint.jar"
+      publicResources="public.txt"
+      symbolFile="R.txt"
+      externalAnnotations="annotations.zip"
+      proguardRules="proguard.txt"/>
+  <library
+      name="androidx.camera:camera-camera2:1.3.4@aar"
+      jars="/home/runner/.gradle/caches/8.13/transforms/03791f362f087fa5c50bec7dd5cb7b59/transformed/camera-camera2-1.3.4/jars/classes.jar"
+      resolved="androidx.camera:camera-camera2:1.3.4"
+      folder="/home/runner/.gradle/caches/8.13/transforms/03791f362f087fa5c50bec7dd5cb7b59/transformed/camera-camera2-1.3.4"
+      manifest="AndroidManifest.xml"
+      resFolder="res"
+      assetsFolder="assets"
+      lintJar="lint.jar"
+      publicResources="public.txt"
+      symbolFile="R.txt"
+      externalAnnotations="annotations.zip"
+      proguardRules="proguard.txt"/>
+  <library
+      name="androidx.camera:camera-core:1.3.4@aar"
+      jars="/home/runner/.gradle/caches/8.13/transforms/44386d421057f676c046f2753c217e25/transformed/camera-core-1.3.4/jars/classes.jar"
+      resolved="androidx.camera:camera-core:1.3.4"
+      folder="/home/runner/.gradle/caches/8.13/transforms/44386d421057f676c046f2753c217e25/transformed/camera-core-1.3.4"
+      manifest="AndroidManifest.xml"
+      resFolder="res"
+      assetsFolder="assets"
+      lintJar="lint.jar"
+      publicResources="public.txt"
+      symbolFile="R.txt"
+      externalAnnotations="annotations.zip"
+      proguardRules="proguard.txt"/>
+  <library
       name="androidx.compose.material3:material3-android:1.3.0@aar"
       jars="/home/runner/.gradle/caches/8.13/transforms/5ffaeb6d2d905120d0e65e3917f96df8/transformed/material3-release/jars/classes.jar"
       resolved="androidx.compose.material3:material3-android:1.3.0"
@@ -533,23 +598,10 @@
       externalAnnotations="annotations.zip"
       proguardRules="proguard.txt"/>
   <library
-      name="androidx.lifecycle:lifecycle-livedata-core-ktx:2.8.6@aar"
-      jars="/home/runner/.gradle/caches/8.13/transforms/c160c7cfc628dabb7a02e95fd530ad07/transformed/lifecycle-livedata-core-ktx-2.8.6/jars/classes.jar"
-      resolved="androidx.lifecycle:lifecycle-livedata-core-ktx:2.8.6"
-      folder="/home/runner/.gradle/caches/8.13/transforms/c160c7cfc628dabb7a02e95fd530ad07/transformed/lifecycle-livedata-core-ktx-2.8.6"
-      manifest="AndroidManifest.xml"
-      resFolder="res"
-      assetsFolder="assets"
-      lintJar="lint.jar"
-      publicResources="public.txt"
-      symbolFile="R.txt"
-      externalAnnotations="annotations.zip"
-      proguardRules="proguard.txt"/>
-  <library
-      name="androidx.lifecycle:lifecycle-livedata:2.8.6@aar"
-      jars="/home/runner/.gradle/caches/8.13/transforms/36b7a0ec3296b79b76c60e26eb13cd49/transformed/lifecycle-livedata-2.8.6/jars/classes.jar"
-      resolved="androidx.lifecycle:lifecycle-livedata:2.8.6"
-      folder="/home/runner/.gradle/caches/8.13/transforms/36b7a0ec3296b79b76c60e26eb13cd49/transformed/lifecycle-livedata-2.8.6"
+      name="androidx.lifecycle:lifecycle-runtime-android:2.8.6@aar"
+      jars="/home/runner/.gradle/caches/8.13/transforms/2064cf6ea2c7420989ae3bd07916f0c4/transformed/lifecycle-runtime-release/jars/classes.jar"
+      resolved="androidx.lifecycle:lifecycle-runtime-android:2.8.6"
+      folder="/home/runner/.gradle/caches/8.13/transforms/2064cf6ea2c7420989ae3bd07916f0c4/transformed/lifecycle-runtime-release"
       manifest="AndroidManifest.xml"
       resFolder="res"
       assetsFolder="assets"
@@ -563,10 +615,10 @@
       jars="/home/runner/.gradle/caches/modules-2/files-2.1/androidx.lifecycle/lifecycle-common-jvm/2.8.6/7174a594afb73a9ad9ac9074ce78b94af3cc52a7/lifecycle-common-jvm-2.8.6.jar"
       resolved="androidx.lifecycle:lifecycle-common-jvm:2.8.6"/>
   <library
-      name="androidx.lifecycle:lifecycle-runtime-android:2.8.6@aar"
-      jars="/home/runner/.gradle/caches/8.13/transforms/2064cf6ea2c7420989ae3bd07916f0c4/transformed/lifecycle-runtime-release/jars/classes.jar"
-      resolved="androidx.lifecycle:lifecycle-runtime-android:2.8.6"
-      folder="/home/runner/.gradle/caches/8.13/transforms/2064cf6ea2c7420989ae3bd07916f0c4/transformed/lifecycle-runtime-release"
+      name="androidx.lifecycle:lifecycle-livedata-core-ktx:2.8.6@aar"
+      jars="/home/runner/.gradle/caches/8.13/transforms/c160c7cfc628dabb7a02e95fd530ad07/transformed/lifecycle-livedata-core-ktx-2.8.6/jars/classes.jar"
+      resolved="androidx.lifecycle:lifecycle-livedata-core-ktx:2.8.6"
+      folder="/home/runner/.gradle/caches/8.13/transforms/c160c7cfc628dabb7a02e95fd530ad07/transformed/lifecycle-livedata-core-ktx-2.8.6"
       manifest="AndroidManifest.xml"
       resFolder="res"
       assetsFolder="assets"
@@ -632,6 +684,19 @@
       jars="/home/runner/.gradle/caches/8.13/transforms/22a21e60994a166d443a2d2115b0c4e8/transformed/lifecycle-runtime-compose-release/jars/classes.jar"
       resolved="androidx.lifecycle:lifecycle-runtime-compose-android:2.8.6"
       folder="/home/runner/.gradle/caches/8.13/transforms/22a21e60994a166d443a2d2115b0c4e8/transformed/lifecycle-runtime-compose-release"
+      manifest="AndroidManifest.xml"
+      resFolder="res"
+      assetsFolder="assets"
+      lintJar="lint.jar"
+      publicResources="public.txt"
+      symbolFile="R.txt"
+      externalAnnotations="annotations.zip"
+      proguardRules="proguard.txt"/>
+  <library
+      name="androidx.lifecycle:lifecycle-livedata:2.8.6@aar"
+      jars="/home/runner/.gradle/caches/8.13/transforms/36b7a0ec3296b79b76c60e26eb13cd49/transformed/lifecycle-livedata-2.8.6/jars/classes.jar"
+      resolved="androidx.lifecycle:lifecycle-livedata:2.8.6"
+      folder="/home/runner/.gradle/caches/8.13/transforms/36b7a0ec3296b79b76c60e26eb13cd49/transformed/lifecycle-livedata-2.8.6"
       manifest="AndroidManifest.xml"
       resFolder="res"
       assetsFolder="assets"
@@ -812,6 +877,19 @@
       externalAnnotations="annotations.zip"
       proguardRules="proguard.txt"/>
   <library
+      name="androidx.arch.core:core-runtime:2.2.0@aar"
+      jars="/home/runner/.gradle/caches/8.13/transforms/1943847612e891f7979db29b77bd2733/transformed/core-runtime-2.2.0/jars/classes.jar"
+      resolved="androidx.arch.core:core-runtime:2.2.0"
+      folder="/home/runner/.gradle/caches/8.13/transforms/1943847612e891f7979db29b77bd2733/transformed/core-runtime-2.2.0"
+      manifest="AndroidManifest.xml"
+      resFolder="res"
+      assetsFolder="assets"
+      lintJar="lint.jar"
+      publicResources="public.txt"
+      symbolFile="R.txt"
+      externalAnnotations="annotations.zip"
+      proguardRules="proguard.txt"/>
+  <library
       name="androidx.savedstate:savedstate-ktx:1.2.1@aar"
       jars="/home/runner/.gradle/caches/8.13/transforms/79c32dedfd12bf788386859103ea3f2a/transformed/savedstate-ktx-1.2.1/jars/classes.jar"
       resolved="androidx.savedstate:savedstate-ktx:1.2.1"
@@ -850,6 +928,10 @@
       symbolFile="R.txt"
       externalAnnotations="annotations.zip"
       proguardRules="proguard.txt"/>
+  <library
+      name="androidx.arch.core:core-common:2.2.0@jar"
+      jars="/home/runner/.gradle/caches/modules-2/files-2.1/androidx.arch.core/core-common/2.2.0/5e1b8b81dfd5f52c56a8d53b18ca759c19a301f3/core-common-2.2.0.jar"
+      resolved="androidx.arch.core:core-common:2.2.0"/>
   <library
       name="androidx.collection:collection-jvm:1.4.4@jar"
       jars="/home/runner/.gradle/caches/modules-2/files-2.1/androidx.collection/collection-jvm/1.4.4/da13a7e557c430276b8cb490420effebc1398c0d/collection-jvm-1.4.4.jar"
@@ -894,23 +976,6 @@
       externalAnnotations="annotations.zip"
       proguardRules="proguard.txt"/>
   <library
-      name="androidx.arch.core:core-runtime:2.2.0@aar"
-      jars="/home/runner/.gradle/caches/8.13/transforms/1943847612e891f7979db29b77bd2733/transformed/core-runtime-2.2.0/jars/classes.jar"
-      resolved="androidx.arch.core:core-runtime:2.2.0"
-      folder="/home/runner/.gradle/caches/8.13/transforms/1943847612e891f7979db29b77bd2733/transformed/core-runtime-2.2.0"
-      manifest="AndroidManifest.xml"
-      resFolder="res"
-      assetsFolder="assets"
-      lintJar="lint.jar"
-      publicResources="public.txt"
-      symbolFile="R.txt"
-      externalAnnotations="annotations.zip"
-      proguardRules="proguard.txt"/>
-  <library
-      name="androidx.arch.core:core-common:2.2.0@jar"
-      jars="/home/runner/.gradle/caches/modules-2/files-2.1/androidx.arch.core/core-common/2.2.0/5e1b8b81dfd5f52c56a8d53b18ca759c19a301f3/core-common-2.2.0.jar"
-      resolved="androidx.arch.core:core-common:2.2.0"/>
-  <library
       name="androidx.interpolator:interpolator:1.0.0@aar"
       jars="/home/runner/.gradle/caches/8.13/transforms/17c28ac2a6dc0129196735c14df7dc00/transformed/interpolator-1.0.0/jars/classes.jar"
       resolved="androidx.interpolator:interpolator:1.0.0"
@@ -943,6 +1008,10 @@
       name="org.jetbrains:annotations:23.0.0@jar"
       jars="/home/runner/.gradle/caches/modules-2/files-2.1/org.jetbrains/annotations/23.0.0/8cc20c07506ec18e0834947b84a864bfc094484e/annotations-23.0.0.jar"
       resolved="org.jetbrains:annotations:23.0.0"/>
+  <library
+      name="com.google.guava:listenablefuture:1.0@jar"
+      jars="/home/runner/.gradle/caches/modules-2/files-2.1/com.google.guava/listenablefuture/1.0/c949a840a6acbc5268d088e47b04177bf90b3cad/listenablefuture-1.0.jar"
+      resolved="com.google.guava:listenablefuture:1.0"/>
   <library
       name="androidx.resourceinspection:resourceinspection-annotation:1.0.1@jar"
       jars="/home/runner/.gradle/caches/modules-2/files-2.1/androidx.resourceinspection/resourceinspection-annotation/1.0.1/8c21f8ff5d96d5d52c948707f7e4d6ca6773feef/resourceinspection-annotation-1.0.1.jar"
@@ -1042,6 +1111,19 @@
       jars="/home/runner/.gradle/caches/modules-2/files-2.1/androidx.collection/collection-ktx/1.4.4/2ad14aed781c4a73ed4dbb421966d408a0a06686/collection-ktx-1.4.4.jar"
       resolved="androidx.collection:collection-ktx:1.4.4"/>
   <library
+      name="androidx.exifinterface:exifinterface:1.3.2@aar"
+      jars="/home/runner/.gradle/caches/8.13/transforms/05856672fe92dfc8de669dad5437822b/transformed/exifinterface-1.3.2/jars/classes.jar"
+      resolved="androidx.exifinterface:exifinterface:1.3.2"
+      folder="/home/runner/.gradle/caches/8.13/transforms/05856672fe92dfc8de669dad5437822b/transformed/exifinterface-1.3.2"
+      manifest="AndroidManifest.xml"
+      resFolder="res"
+      assetsFolder="assets"
+      lintJar="lint.jar"
+      publicResources="public.txt"
+      symbolFile="R.txt"
+      externalAnnotations="annotations.zip"
+      proguardRules="proguard.txt"/>
+  <library
       name="androidx.profileinstaller:profileinstaller:1.3.1@aar"
       jars="/home/runner/.gradle/caches/8.13/transforms/8f1ce9102b6841595e5db92579216d35/transformed/profileinstaller-1.3.1/jars/classes.jar"
       resolved="androidx.profileinstaller:profileinstaller:1.3.1"
@@ -1089,11 +1171,11 @@
       jars="/home/runner/.gradle/caches/modules-2/files-2.1/com.google.crypto.tink/tink-android/1.8.0/bda82b49568d444a3b54773ca5aa487816473295/tink-android-1.8.0.jar"
       resolved="com.google.crypto.tink:tink-android:1.8.0"/>
   <library
+      name="com.google.auto.value:auto-value-annotations:1.6.3@jar"
+      jars="/home/runner/.gradle/caches/modules-2/files-2.1/com.google.auto.value/auto-value-annotations/1.6.3/b88c1bb7f149f6d2cc03898359283e57b08f39cc/auto-value-annotations-1.6.3.jar"
+      resolved="com.google.auto.value:auto-value-annotations:1.6.3"/>
+  <library
       name="com.google.errorprone:error_prone_annotations:2.15.0@jar"
       jars="/home/runner/.gradle/caches/modules-2/files-2.1/com.google.errorprone/error_prone_annotations/2.15.0/38c8485a652f808c8c149150da4e5c2b0bd17f9a/error_prone_annotations-2.15.0.jar"
       resolved="com.google.errorprone:error_prone_annotations:2.15.0"/>
-  <library
-      name="com.google.guava:listenablefuture:1.0@jar"
-      jars="/home/runner/.gradle/caches/modules-2/files-2.1/com.google.guava/listenablefuture/1.0/c949a840a6acbc5268d088e47b04177bf90b3cad/listenablefuture-1.0.jar"
-      resolved="com.google.guava:listenablefuture:1.0"/>
 </libraries>
