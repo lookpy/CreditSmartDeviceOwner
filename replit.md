@@ -45,12 +45,14 @@ The application is entirely built with Jetpack Compose and Material 3, implement
 ## Recent Changes (September 29, 2025)
 🎉🎉🎉 **SISTEMA DE PAREAMENTO AUTOMÁTICO 100% FUNCIONAL COM NETWORK CONFIG!** 🎉🎉🎉
 
-### BIOMETRY NAVIGATION ENABLED (September 29, 2025) - ✅ BUILD SUCCESSFUL!
-- ✅ **AUTO NAVIGATION** - Após pareamento bem-sucedido, app navega automaticamente para BiometryScreen
+### BIOMETRY NAVIGATION ENABLED (September 30, 2025) - ✅ BUILD SUCCESSFUL!
+- ✅ **AUTO NAVIGATION** - Após pareamento bem-sucedido, app naviga automaticamente para BiometryScreen
 - ✅ **FLOW INTEGRATION** - Integração do fluxo AUTH_IMEI → FLOW_BIOMETRY implementada
 - ✅ **BIOMETRY SCREEN** - Tela de validação facial habilitada após device pairing
-- ✅ **BUILD SUCCESSFUL** - APK 48MB compilado (checksum: 7b520ef8477b59485a50755162e4add7)
+- ✅ **BUILD SUCCESSFUL** - APK 48MB compilado (checksum: 90361574b1d9af644a27f132bbabd7e9)
 - ✅ **NAVIGATION FLOW** - Device Paired → Automatic redirect to Facial Biometry validation
+- ⚠️ **CAMERA PREVIEW** - Atualmente mostra mockup (ícone de rosto com outline circular)
+- 📝 **PRÓXIMO PASSO** - Adicionar CameraX para preview real da câmera (dependências prontas)
 
 ### DEVICE INFO COLLECTION FIX (September 29, 2025) - ✅ BUILD SUCCESSFUL!
 - ✅ **SERIAL NUMBER FIX** - Try-catch em Build.getSerial() para evitar SecurityException

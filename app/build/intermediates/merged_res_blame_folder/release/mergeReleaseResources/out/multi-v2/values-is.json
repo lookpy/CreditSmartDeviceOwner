@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "com.cdccreditsmart.app-mergeReleaseResources-68:/values-is/values-is.xml",
+            "outputFile": "com.cdccreditsmart.app-mergeReleaseResources-63:/values-is/values-is.xml",
             "map": [
                 {
                     "source": "/home/runner/.gradle/caches/8.13/transforms/21156c551ef6ec3191f9400c0b17ad39/transformed/ui-release/res/values-is/values-is.xml",
