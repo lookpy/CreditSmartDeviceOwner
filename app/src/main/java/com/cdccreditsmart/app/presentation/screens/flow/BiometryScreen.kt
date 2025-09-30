@@ -1,5 +1,13 @@
 package com.cdccreditsmart.app.presentation.screens.flow
 
+import android.Manifest
+import android.content.pm.PackageManager
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.camera.core.CameraSelector
+import androidx.camera.core.Preview
+import androidx.camera.lifecycle.ProcessCameraProvider
+import androidx.camera.view.PreviewView
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
@@ -8,33 +16,60 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.CameraAlt
 import androidx.compose.material.icons.filled.Face
+import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
-import kotlinx.coroutines.delay
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.viewinterop.AndroidView
+import androidx.core.content.ContextCompat
 import com.cdccreditsmart.app.ui.components.*
+import kotlinx.coroutines.delay
 
 @Composable
 fun BiometryScreen(
     onNavigateToNext: () -> Unit,
     onNavigateBack: () -> Unit
 ) {
+    val context = LocalContext.current
+    val lifecycleOwner = LocalLifecycleOwner.current
+    
+    var hasCameraPermission by remember {
+        mutableStateOf(
+            ContextCompat.checkSelfPermission(
+                context,
+                Manifest.permission.CAMERA
+            ) == PackageManager.PERMISSION_GRANTED
+        )
+    }
+    
     var livenessStatus by remember { mutableStateOf("Preparando...") }
     var isProcessing by remember { mutableStateOf(false) }
+    var cameraProvider by remember { mutableStateOf<ProcessCameraProvider?>(null) }
     
-    LaunchedEffect(Unit) {
-        delay(2000)
-        livenessStatus = "Liveness validation"
-        isProcessing = true
-        delay(3000)
-        livenessStatus = "Validação concluída"
-        isProcessing = false
+    val cameraPermissionLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.RequestPermission(),
+        onResult = { granted ->
+            hasCameraPermission = granted
+        }
+    )
+    
+    LaunchedEffect(hasCameraPermission) {
+        if (hasCameraPermission) {
+            delay(2000)
+            livenessStatus = "Liveness validation"
+            isProcessing = true
+            delay(3000)
+            livenessStatus = "Validação concluída"
+            isProcessing = false
+        }
     }
     
     Column(
@@ -43,7 +78,6 @@ fun BiometryScreen(
             .padding(16.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
-        // Header
         Text(
             text = "Captura Biométrica",
             style = MaterialTheme.typography.headlineMedium,
@@ -52,7 +86,6 @@ fun BiometryScreen(
             modifier = Modifier.fillMaxWidth()
         )
         
-        // Stepper
         CDCStepper(
             steps = listOf(
                 StepperItem("Buscar Cliente", StepperState.DONE, 1),
@@ -65,7 +98,6 @@ fun BiometryScreen(
         
         Spacer(modifier = Modifier.height(8.dp))
         
-        // Camera Preview Card
         CDCCard(
             modifier = Modifier.fillMaxWidth()
         ) {
@@ -86,7 +118,7 @@ fun BiometryScreen(
                     Spacer(modifier = Modifier.width(8.dp))
                     
                     Text(
-                        text = "Preview da Câmera (Em breve)",
+                        text = if (hasCameraPermission) "Preview da Câmera" else "Permissão da Câmera",
                         style = MaterialTheme.typography.titleMedium,
                         fontWeight = FontWeight.SemiBold
                     )
@@ -94,74 +126,146 @@ fun BiometryScreen(
                 
                 Spacer(modifier = Modifier.height(16.dp))
                 
-                // Camera Preview Area (Mockup - CameraX will be added next)
-                Box(
-                    modifier = Modifier
-                        .size(250.dp)
-                        .clip(RoundedCornerShape(16.dp))
-                        .background(Color.Black)
-                        .border(
-                            width = 2.dp,
-                            color = if (isProcessing) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.outline,
-                            shape = RoundedCornerShape(16.dp)
-                        ),
-                    contentAlignment = Alignment.Center
-                ) {
-                    // Face outline
+                if (!hasCameraPermission) {
                     Box(
                         modifier = Modifier
-                            .size(180.dp)
-                            .clip(CircleShape)
+                            .size(250.dp)
+                            .clip(RoundedCornerShape(16.dp))
+                            .background(MaterialTheme.colorScheme.errorContainer)
                             .border(
-                                width = 3.dp,
-                                color = if (isProcessing) MaterialTheme.colorScheme.primary else Color.White,
-                                shape = CircleShape
+                                width = 2.dp,
+                                color = MaterialTheme.colorScheme.error,
+                                shape = RoundedCornerShape(16.dp)
                             ),
                         contentAlignment = Alignment.Center
                     ) {
-                        Icon(
-                            imageVector = Icons.Default.Face,
-                            contentDescription = "Face outline",
-                            tint = Color.White.copy(alpha = 0.7f),
-                            modifier = Modifier.size(120.dp)
-                        )
+                        Column(
+                            horizontalAlignment = Alignment.CenterHorizontally,
+                            verticalArrangement = Arrangement.spacedBy(16.dp)
+                        ) {
+                            Icon(
+                                imageVector = Icons.Default.Warning,
+                                contentDescription = "Permission required",
+                                tint = MaterialTheme.colorScheme.error,
+                                modifier = Modifier.size(64.dp)
+                            )
+                            
+                            Text(
+                                text = "Permissão de câmera necessária",
+                                style = MaterialTheme.typography.titleMedium,
+                                color = MaterialTheme.colorScheme.onErrorContainer,
+                                textAlign = TextAlign.Center,
+                                modifier = Modifier.padding(horizontal = 16.dp)
+                            )
+                            
+                            Button(
+                                onClick = {
+                                    cameraPermissionLauncher.launch(Manifest.permission.CAMERA)
+                                },
+                                colors = ButtonDefaults.buttonColors(
+                                    containerColor = MaterialTheme.colorScheme.error
+                                )
+                            ) {
+                                Text("Conceder Permissão")
+                            }
+                        }
                     }
-                    
-                    // Processing indicator
-                    if (isProcessing) {
+                } else {
+                    Box(
+                        modifier = Modifier
+                            .size(250.dp)
+                            .clip(RoundedCornerShape(16.dp))
+                            .border(
+                                width = 2.dp,
+                                color = if (isProcessing) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.outline,
+                                shape = RoundedCornerShape(16.dp)
+                            )
+                    ) {
+                        AndroidView(
+                            factory = { ctx ->
+                                val previewView = PreviewView(ctx)
+                                val cameraProviderFuture = ProcessCameraProvider.getInstance(ctx)
+                                
+                                cameraProviderFuture.addListener({
+                                    val provider = cameraProviderFuture.get()
+                                    cameraProvider = provider
+                                    
+                                    val preview = Preview.Builder().build().also {
+                                        it.setSurfaceProvider(previewView.surfaceProvider)
+                                    }
+                                    
+                                    val cameraSelector = CameraSelector.Builder()
+                                        .requireLensFacing(CameraSelector.LENS_FACING_FRONT)
+                                        .build()
+                                    
+                                    try {
+                                        provider.unbindAll()
+                                        provider.bindToLifecycle(
+                                            lifecycleOwner,
+                                            cameraSelector,
+                                            preview
+                                        )
+                                    } catch (e: Exception) {
+                                        e.printStackTrace()
+                                    }
+                                }, ContextCompat.getMainExecutor(ctx))
+                                
+                                previewView
+                            },
+                            modifier = Modifier.fillMaxSize()
+                        )
+                        
                         Box(
                             modifier = Modifier
-                                .fillMaxSize()
-                                .background(MaterialTheme.colorScheme.primary.copy(alpha = 0.1f)),
-                            contentAlignment = Alignment.BottomCenter
-                        ) {
-                            LinearProgressIndicator(
+                                .size(180.dp)
+                                .align(Alignment.Center)
+                                .clip(CircleShape)
+                                .border(
+                                    width = 3.dp,
+                                    color = if (isProcessing) MaterialTheme.colorScheme.primary else Color.White,
+                                    shape = CircleShape
+                                )
+                        )
+                        
+                        if (isProcessing) {
+                            Box(
                                 modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(16.dp),
-                                color = MaterialTheme.colorScheme.primary
-                            )
+                                    .fillMaxSize()
+                                    .background(MaterialTheme.colorScheme.primary.copy(alpha = 0.1f)),
+                                contentAlignment = Alignment.BottomCenter
+                            ) {
+                                LinearProgressIndicator(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .padding(16.dp),
+                                    color = MaterialTheme.colorScheme.primary
+                                )
+                            }
                         }
                     }
                 }
                 
                 Spacer(modifier = Modifier.height(16.dp))
                 
-                // Status
                 StatusChip(
-                    status = when (livenessStatus) {
-                        "Preparando..." -> StatusType.PENDING
-                        "Liveness validation" -> StatusType.REVIEW
-                        "Validação concluída" -> StatusType.APPROVED
+                    status = when {
+                        !hasCameraPermission -> StatusType.REJECTED
+                        livenessStatus == "Preparando..." -> StatusType.PENDING
+                        livenessStatus == "Liveness validation" -> StatusType.REVIEW
+                        livenessStatus == "Validação concluída" -> StatusType.APPROVED
                         else -> StatusType.PENDING
                     },
-                    text = livenessStatus
+                    text = if (!hasCameraPermission) "Sem permissão" else livenessStatus
                 )
                 
                 Spacer(modifier = Modifier.height(8.dp))
                 
                 Text(
-                    text = "Posicione seu rosto dentro da área indicada e mantenha-se imóvel",
+                    text = if (hasCameraPermission) {
+                        "Posicione seu rosto dentro da área indicada e mantenha-se imóvel"
+                    } else {
+                        "Para continuar, é necessário conceder permissão de acesso à câmera"
+                    },
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                     textAlign = TextAlign.Center
@@ -169,7 +273,6 @@ fun BiometryScreen(
             }
         }
         
-        // Instructions Card
         CDCCard(
             modifier = Modifier.fillMaxWidth()
         ) {
@@ -204,7 +307,6 @@ fun BiometryScreen(
         
         Spacer(modifier = Modifier.weight(1f))
         
-        // Action buttons
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.spacedBy(16.dp)
@@ -219,10 +321,16 @@ fun BiometryScreen(
             Button(
                 onClick = onNavigateToNext,
                 modifier = Modifier.weight(1f),
-                enabled = !isProcessing
+                enabled = hasCameraPermission && !isProcessing
             ) {
                 Text("Continuar")
             }
+        }
+    }
+    
+    DisposableEffect(Unit) {
+        onDispose {
+            cameraProvider?.unbindAll()
         }
     }
 }
