@@ -1,5 +1,11 @@
 package com.cdccreditsmart.app.presentation.screens.flow
 
+import android.Manifest
+import android.util.Log
+import androidx.camera.core.CameraSelector
+import androidx.camera.core.Preview
+import androidx.camera.lifecycle.ProcessCameraProvider
+import androidx.camera.view.PreviewView
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
@@ -8,33 +14,66 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.CameraAlt
 import androidx.compose.material.icons.filled.Face
+import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
-import kotlinx.coroutines.delay
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.viewinterop.AndroidView
+import androidx.core.content.ContextCompat
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import com.cdccreditsmart.app.ui.components.*
+import kotlinx.coroutines.delay
 
 @Composable
 fun BiometryScreen(
     onNavigateToNext: () -> Unit,
     onNavigateBack: () -> Unit
 ) {
-    var livenessStatus by remember { mutableStateOf("Preparando...") }
-    var isProcessing by remember { mutableStateOf(false) }
+    val context = LocalContext.current
+    val lifecycleOwner = LocalLifecycleOwner.current
     
+    var livenessStatus by remember { mutableStateOf("Aguardando permissão...") }
+    var isProcessing by remember { mutableStateOf(false) }
+    var hasCameraPermission by remember { mutableStateOf(false) }
+    var cameraProvider: ProcessCameraProvider? by remember { mutableStateOf(null) }
+    
+    // Camera permission launcher
+    val permissionLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.RequestPermission(),
+        onResult = { isGranted ->
+            hasCameraPermission = isGranted
+            if (isGranted) {
+                livenessStatus = "Preparando câmera..."
+            } else {
+                livenessStatus = "Permissão negada"
+            }
+        }
+    )
+    
+    // Request camera permission on launch
     LaunchedEffect(Unit) {
-        delay(2000)
-        livenessStatus = "Liveness validation"
-        isProcessing = true
-        delay(3000)
-        livenessStatus = "Validação concluída"
-        isProcessing = false
+        permissionLauncher.launch(Manifest.permission.CAMERA)
+    }
+    
+    // Mock liveness validation
+    LaunchedEffect(hasCameraPermission) {
+        if (hasCameraPermission) {
+            delay(2000)
+            livenessStatus = "Liveness validation"
+            isProcessing = true
+            delay(3000)
+            livenessStatus = "Validação concluída"
+            isProcessing = false
+        }
     }
     
     Column(
@@ -99,48 +138,106 @@ fun BiometryScreen(
                     modifier = Modifier
                         .size(250.dp)
                         .clip(RoundedCornerShape(16.dp))
-                        .background(Color.Black)
                         .border(
                             width = 2.dp,
                             color = if (isProcessing) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.outline,
                             shape = RoundedCornerShape(16.dp)
-                        ),
-                    contentAlignment = Alignment.Center
-                ) {
-                    // Face outline
-                    Box(
-                        modifier = Modifier
-                            .size(180.dp)
-                            .clip(CircleShape)
-                            .border(
-                                width = 3.dp,
-                                color = if (isProcessing) MaterialTheme.colorScheme.primary else Color.White,
-                                shape = CircleShape
-                            ),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Icon(
-                            imageVector = Icons.Default.Face,
-                            contentDescription = "Face outline",
-                            tint = Color.White.copy(alpha = 0.7f),
-                            modifier = Modifier.size(120.dp)
                         )
-                    }
-                    
-                    // Processing indicator
-                    if (isProcessing) {
+                ) {
+                    if (hasCameraPermission) {
+                        // Real camera preview
+                        AndroidView(
+                            factory = { ctx ->
+                                val previewView = PreviewView(ctx)
+                                val cameraProviderFuture = ProcessCameraProvider.getInstance(ctx)
+                                
+                                cameraProviderFuture.addListener({
+                                    try {
+                                        val provider = cameraProviderFuture.get()
+                                        cameraProvider = provider
+                                        
+                                        val preview = Preview.Builder().build()
+                                        preview.setSurfaceProvider(previewView.surfaceProvider)
+                                        
+                                        val cameraSelector = CameraSelector.Builder()
+                                            .requireLensFacing(CameraSelector.LENS_FACING_FRONT)
+                                            .build()
+                                        
+                                        provider.unbindAll()
+                                        provider.bindToLifecycle(
+                                            lifecycleOwner,
+                                            cameraSelector,
+                                            preview
+                                        )
+                                        
+                                        Log.d("BiometryScreen", "Camera initialized successfully")
+                                    } catch (e: Exception) {
+                                        Log.e("BiometryScreen", "Camera initialization failed", e)
+                                    }
+                                }, ContextCompat.getMainExecutor(ctx))
+                                
+                                previewView
+                            },
+                            modifier = Modifier.fillMaxSize()
+                        )
+                        
+                        // Face outline overlay
+                        Box(
+                            modifier = Modifier.fillMaxSize(),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Box(
+                                modifier = Modifier
+                                    .size(180.dp)
+                                    .clip(CircleShape)
+                                    .border(
+                                        width = 3.dp,
+                                        color = if (isProcessing) MaterialTheme.colorScheme.primary else Color.White,
+                                        shape = CircleShape
+                                    )
+                            )
+                        }
+                        
+                        // Processing indicator
+                        if (isProcessing) {
+                            Box(
+                                modifier = Modifier
+                                    .fillMaxSize()
+                                    .background(MaterialTheme.colorScheme.primary.copy(alpha = 0.1f)),
+                                contentAlignment = Alignment.BottomCenter
+                            ) {
+                                LinearProgressIndicator(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .padding(16.dp),
+                                    color = MaterialTheme.colorScheme.primary
+                                )
+                            }
+                        }
+                    } else {
+                        // No permission - show placeholder
                         Box(
                             modifier = Modifier
                                 .fillMaxSize()
-                                .background(MaterialTheme.colorScheme.primary.copy(alpha = 0.1f)),
-                            contentAlignment = Alignment.BottomCenter
+                                .background(Color.Black),
+                            contentAlignment = Alignment.Center
                         ) {
-                            LinearProgressIndicator(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(16.dp),
-                                color = MaterialTheme.colorScheme.primary
-                            )
+                            Column(
+                                horizontalAlignment = Alignment.CenterHorizontally
+                            ) {
+                                Icon(
+                                    imageVector = Icons.Default.Warning,
+                                    contentDescription = "No permission",
+                                    tint = Color.White,
+                                    modifier = Modifier.size(64.dp)
+                                )
+                                Spacer(modifier = Modifier.height(8.dp))
+                                Text(
+                                    text = "Permissão de câmera necessária",
+                                    color = Color.White,
+                                    textAlign = TextAlign.Center
+                                )
+                            }
                         }
                     }
                 }
