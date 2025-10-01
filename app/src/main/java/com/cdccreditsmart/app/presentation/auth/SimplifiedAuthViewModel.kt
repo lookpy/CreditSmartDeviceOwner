@@ -396,6 +396,32 @@ class SimplifiedAuthViewModel(
                 onSuccess = { queryResponse ->
                     if (queryResponse == null || !queryResponse.found) {
                         Log.w(TAG, "No pending sale found for this IMEI")
+                        
+                        // ✅ SPECIAL CASE: Device already has valid token but no biometry data
+                        // This happens when device was paired before biometry flow was added
+                        // or the sale was already claimed previously
+                        val hasValidToken = deviceRegistrationManager.isDeviceRegistered()
+                        
+                        if (hasValidToken) {
+                            Log.w(TAG, "⚠️ SPECIAL CASE: Device has valid token but no pending sale for biometry")
+                            Log.w(TAG, "⚠️ This device was already paired. Sale was claimed previously.")
+                            Log.w(TAG, "✅ BYPASSING biometry requirement - proceeding as authenticated")
+                            
+                            // Allow user to proceed WITHOUT biometry data
+                            // They can still use the app, biometry just won't be available
+                            _authState.value = _authState.value.copy(
+                                currentState = AuthStatus.Authenticated,
+                                isAuthenticated = true,
+                                isLoading = false,
+                                deviceId = deviceRegistrationManager.getDeviceId(),
+                                registrationStatus = "Device authenticated (biometry unavailable)",
+                                errorMessage = null,
+                                failedAttempts = 0
+                            )
+                            return
+                        }
+                        
+                        // Normal case: first-time pairing failed
                         val newFailedAttempts = _authState.value.failedAttempts + 1
                         
                         if (newFailedAttempts >= 3) {

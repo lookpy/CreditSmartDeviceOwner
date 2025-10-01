@@ -107,6 +107,14 @@ The UI is built entirely with Jetpack Compose and Material 3, featuring a CDC in
 - 📋 **USE CASE**: Dispositivos pareados antes da implementação do fluxo de biometria
 - ✅ **SEAMLESS**: Usuário não precisa re-parear manualmente
 
+**INFINITE LOOP FIX (October 01, 2025) - ✅ BYPASS BIOMETRY WHEN NO SALE!**
+- 🐛 **BUG**: Dispositivos já pareados ficavam em loop infinito ao tentar obter biometry data
+- 🔍 **ROOT CAUSE**: Venda já claimed → backend retorna 404 → retry infinito
+- ✅ **SOLUÇÃO**: Detecta token válido + erro 404 → BYPASS biometry requirement
+- 🚀 **BEHAVIOR**: Permite continuar como authenticated sem dados de biometria
+- 📱 **UX**: App funciona normalmente, apenas sem funcionalidade de biometria facial
+- ✅ **NO MORE LOOPS**: Usuário não fica preso em tela de erro
+
 **PRÓXIMOS PASSOS:**
 - 🏗️ Build APK em ambiente com mais memória (local/CI) ou usar modelo 128-dim
 - 🧪 Testar fluxo completo: pairing → claim-sale → biometry verify → fraud detection
