@@ -1,0 +1,65 @@
+          	at com.android.internal.os.RuntimeInit$MethodAndArgsCaller.run(RuntimeInit.java:602)
+                                                                                                    	at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:962)
+2025-10-01 20:10:49.888 11805-11805 SimplifiedAuthViewModel com.cdccreditsmart.app.debug         D  Retrying authentication
+2025-10-01 20:10:49.889 11805-11805 SimplifiedAuthViewModel com.cdccreditsmart.app.debug         D  STATE CHANGE: Initializing -> Initializing (Starting device registration check)
+2025-10-01 20:10:49.889 11805-11805 SimplifiedAuthViewModel com.cdccreditsmart.app.debug         D  Device already registered with valid token
+2025-10-01 20:10:49.889 11805-11805 SimplifiedAuthViewModel com.cdccreditsmart.app.debug         W  ⚠️ Token found but NO biometry session data
+2025-10-01 20:10:49.889 11805-11805 SimplifiedAuthViewModel com.cdccreditsmart.app.debug         W  ⚠️ This happens if device was paired before biometry flow was added
+2025-10-01 20:10:49.889 11805-11805 SimplifiedAuthViewModel com.cdccreditsmart.app.debug         W  🔄 Need to perform claim-sale to get biometry session
+2025-10-01 20:10:49.889 11805-11805 SimplifiedAuthViewModel com.cdccreditsmart.app.debug         D  Permission available, will perform claim-sale to get biometry data
+2025-10-01 20:10:49.889 11805-11805 SimplifiedAuthViewModel com.cdccreditsmart.app.debug         D  Starting automatic pairing flow
+2025-10-01 20:10:49.890 11805-11805 SimplifiedAuthViewModel com.cdccreditsmart.app.debug         D  ✅ Using saved IMEI from previous pairing: 3531***
+2025-10-01 20:10:49.890 11805-11805 SimplifiedAuthViewModel com.cdccreditsmart.app.debug         D  ✅ IMEI ready for pairing: 3531***
+2025-10-01 20:10:49.890 11805-11805 SimplifiedAuthViewModel com.cdccreditsmart.app.debug         D     IMEI length: 15
+2025-10-01 20:10:49.890 11805-11805 SimplifiedAuthViewModel com.cdccreditsmart.app.debug         D  Performing pairing with IMEI: 3531***
+2025-10-01 20:10:49.890 11805-11805 SimplifiedAuthViewModel com.cdccreditsmart.app.debug         D  Searching for pending sale with IMEI: 353104903560533
+2025-10-01 20:10:49.890 11805-11805 SimpleDevi...gistration com.cdccreditsmart.app.debug         D  Searching for pending sale with IMEI: 353104903560533
+2025-10-01 20:10:49.899 11805-11849 SimpleDevi...gistration com.cdccreditsmart.app.debug         D  Request URL: https://cdccreditsmart.com/api/device/claim-sale?imei=353104903560533
+2025-10-01 20:10:49.899 11805-11849 SimpleDevi...gistration com.cdccreditsmart.app.debug         D  Request Headers: Content-Type: application/json
+                                                                                                    Accept: application/json
+                                                                                                    User-Agent: CDC-CreditSmart/1.0.0
+2025-10-01 20:10:50.251 11805-11849 SimpleDevi...gistration com.cdccreditsmart.app.debug         D  Response Code: 404
+2025-10-01 20:10:50.252 11805-11849 SimpleDevi...gistration com.cdccreditsmart.app.debug         D  Response Headers: access-control-allow-credentials: true
+                                                                                                    access-control-allow-headers: Origin, X-Requested-With, Content-Type, Accept, Authorization, x-client-key, x-client-token, x-client-secret, cache-control
+                                                                                                    access-control-allow-methods: GET, POST, PUT, PATCH, DELETE, OPTIONS
+                                                                                                    access-control-allow-origin: *
+                                                                                                    access-control-max-age: 86400
+                                                                                                    content-length: 79
+                                                                                                    content-security-policy: default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://replit.com; style-src 'self' 'unsafe-inline' https://replit.com; img-src 'self' data: https:; font-src 'self' data: https://replit.com; connect-src 'self';
+                                                                                                    content-type: application/json; charset=utf-8
+                                                                                                    date: Wed, 01 Oct 2025 23:10:51 GMT
+                                                                                                    etag: W/"4f-AIhdSY2ER3VhaQMWtceWp5fblTo"
+                                                                                                    permissions-policy: geolocation=(), microphone=(), camera=()
+                                                                                                    referrer-policy: strict-origin-when-cross-origin
+                                                                                                    server: Google Frontend
+                                                                                                    strict-transport-security: max-age=63072000; includeSubDomains
+                                                                                                    strict-transport-security: max-age=31536000; includeSubDomains
+                                                                                                    x-anti-fraud-protection: active
+                                                                                                    x-certificate-pinning-enabled: false
+                                                                                                    x-certificate-pinning-status: disabled-for-stability
+                                                                                                    x-cloud-trace-context: 4718324610648e104c34e7f0cad77450
+                                                                                                    x-content-type-options: nosniff
+                                                                                                    x-financial-data-protection: enabled
+                                                                                                    x-frame-options: DENY
+                                                                                                    x-transaction-security-level: maximum
+                                                                                                    x-xss-protection: 1; mode=block
+                                                                                                    via: 1.1 google
+                                                                                                    alt-svc: h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
+2025-10-01 20:10:50.252 11805-11849 SimpleDevi...gistration com.cdccreditsmart.app.debug         D  Response Content-Type: application/json; charset=utf-8
+2025-10-01 20:10:50.259 11805-11805 SimpleDevi...gistration com.cdccreditsmart.app.debug         D  Search response - Code: 404, Success: false
+2025-10-01 20:10:50.260 11805-11805 SimpleDevi...gistration com.cdccreditsmart.app.debug         E  Failed to search pending sale - HTTP 404
+2025-10-01 20:10:50.260 11805-11805 SimpleDevi...gistration com.cdccreditsmart.app.debug         E  Error body: {"success":false,"found":false,"message":"No pending sale found for this IMEI"}
+2025-10-01 20:10:50.261 11805-11805 SimplifiedAuthViewModel com.cdccreditsmart.app.debug         E  Failed to search for pending sale (Ask Gemini)
+                                                                                                    java.lang.Exception: No pending sale found for this IMEI. Please verify the IMEI or contact support.
+                                                                                                    	at com.cdccreditsmart.app.device.SimpleDeviceRegistrationManager.searchPendingSale-gIAlu-s(SimpleDeviceRegistrationManager.kt:133)
+                                                                                                    	at com.cdccreditsmart.app.device.SimpleDeviceRegistrationManager$searchPendingSale$1.invokeSuspend(Unknown Source:15)
+                                                                                                    	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:34)
+                                                                                                    	at kotlinx.coroutines.DispatchedTask.run(DispatchedTask.kt:108)
+                                                                                                    	at android.os.Handler.handleCallback(Handler.java:959)
+                                                                                                    	at android.os.Handler.dispatchMessage(Handler.java:100)
+                                                                                                    	at android.os.Looper.loopOnce(Looper.java:234)
+                                                                                                    	at android.os.Looper.loop(Looper.java:319)
+                                                                                                    	at android.app.ActivityThread.main(ActivityThread.java:8754)
+                                                                                                    	at java.lang.reflect.Method.invoke(Native Method)
+                                                                                                    	at com.android.internal.os.RuntimeInit$MethodAndArgsCaller.run(RuntimeInit.java:602)
+                                                                                                    	at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:962)
