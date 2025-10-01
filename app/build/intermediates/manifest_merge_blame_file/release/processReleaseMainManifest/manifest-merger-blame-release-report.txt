@@ -392,40 +392,40 @@
 209            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
 209-->[com.google.android.gms:play-services-base:18.5.0] /home/runner/.gradle/caches/8.13/transforms/f55744bcd4dc3aba7fd9acf6599b8bd5/transformed/play-services-base-18.5.0/AndroidManifest.xml:5:86-145
 210
-211        <meta-data
-211-->[com.google.android.gms:play-services-basement:18.4.0] /home/runner/.gradle/caches/8.13/transforms/731aa70a8839d374d48bbb1c660b3cbc/transformed/play-services-basement-18.4.0/AndroidManifest.xml:6:9-122
-212            android:name="com.google.android.gms.version"
-212-->[com.google.android.gms:play-services-basement:18.4.0] /home/runner/.gradle/caches/8.13/transforms/731aa70a8839d374d48bbb1c660b3cbc/transformed/play-services-basement-18.4.0/AndroidManifest.xml:6:20-65
-213            android:value="@integer/google_play_services_version" />
-213-->[com.google.android.gms:play-services-basement:18.4.0] /home/runner/.gradle/caches/8.13/transforms/731aa70a8839d374d48bbb1c660b3cbc/transformed/play-services-basement-18.4.0/AndroidManifest.xml:6:66-119
-214
-215        <provider
-215-->[androidx.emoji2:emoji2:1.3.0] /home/runner/.gradle/caches/8.13/transforms/bf307a596df8b477e07ba8deb239c630/transformed/emoji2-1.3.0/AndroidManifest.xml:24:9-32:20
-216            android:name="androidx.startup.InitializationProvider"
-216-->[androidx.emoji2:emoji2:1.3.0] /home/runner/.gradle/caches/8.13/transforms/bf307a596df8b477e07ba8deb239c630/transformed/emoji2-1.3.0/AndroidManifest.xml:25:13-67
-217            android:authorities="com.cdccreditsmart.app.androidx-startup"
-217-->[androidx.emoji2:emoji2:1.3.0] /home/runner/.gradle/caches/8.13/transforms/bf307a596df8b477e07ba8deb239c630/transformed/emoji2-1.3.0/AndroidManifest.xml:26:13-68
-218            android:exported="false" >
-218-->[androidx.emoji2:emoji2:1.3.0] /home/runner/.gradle/caches/8.13/transforms/bf307a596df8b477e07ba8deb239c630/transformed/emoji2-1.3.0/AndroidManifest.xml:27:13-37
-219            <meta-data
-219-->[androidx.emoji2:emoji2:1.3.0] /home/runner/.gradle/caches/8.13/transforms/bf307a596df8b477e07ba8deb239c630/transformed/emoji2-1.3.0/AndroidManifest.xml:29:13-31:52
-220                android:name="androidx.emoji2.text.EmojiCompatInitializer"
-220-->[androidx.emoji2:emoji2:1.3.0] /home/runner/.gradle/caches/8.13/transforms/bf307a596df8b477e07ba8deb239c630/transformed/emoji2-1.3.0/AndroidManifest.xml:30:17-75
-221                android:value="androidx.startup" />
-221-->[androidx.emoji2:emoji2:1.3.0] /home/runner/.gradle/caches/8.13/transforms/bf307a596df8b477e07ba8deb239c630/transformed/emoji2-1.3.0/AndroidManifest.xml:31:17-49
-222            <meta-data
-222-->[androidx.lifecycle:lifecycle-process:2.8.6] /home/runner/.gradle/caches/8.13/transforms/0b6f78a9a08e599dd18079f2a7aa3dd8/transformed/lifecycle-process-2.8.6/AndroidManifest.xml:29:13-31:52
-223                android:name="androidx.lifecycle.ProcessLifecycleInitializer"
-223-->[androidx.lifecycle:lifecycle-process:2.8.6] /home/runner/.gradle/caches/8.13/transforms/0b6f78a9a08e599dd18079f2a7aa3dd8/transformed/lifecycle-process-2.8.6/AndroidManifest.xml:30:17-78
-224                android:value="androidx.startup" />
-224-->[androidx.lifecycle:lifecycle-process:2.8.6] /home/runner/.gradle/caches/8.13/transforms/0b6f78a9a08e599dd18079f2a7aa3dd8/transformed/lifecycle-process-2.8.6/AndroidManifest.xml:31:17-49
-225            <meta-data
-225-->[androidx.profileinstaller:profileinstaller:1.3.1] /home/runner/.gradle/caches/8.13/transforms/8f1ce9102b6841595e5db92579216d35/transformed/profileinstaller-1.3.1/AndroidManifest.xml:29:13-31:52
-226                android:name="androidx.profileinstaller.ProfileInstallerInitializer"
-226-->[androidx.profileinstaller:profileinstaller:1.3.1] /home/runner/.gradle/caches/8.13/transforms/8f1ce9102b6841595e5db92579216d35/transformed/profileinstaller-1.3.1/AndroidManifest.xml:30:17-85
-227                android:value="androidx.startup" />
-227-->[androidx.profileinstaller:profileinstaller:1.3.1] /home/runner/.gradle/caches/8.13/transforms/8f1ce9102b6841595e5db92579216d35/transformed/profileinstaller-1.3.1/AndroidManifest.xml:31:17-49
-228        </provider>
+211        <provider
+211-->[androidx.emoji2:emoji2:1.3.0] /home/runner/.gradle/caches/8.13/transforms/bf307a596df8b477e07ba8deb239c630/transformed/emoji2-1.3.0/AndroidManifest.xml:24:9-32:20
+212            android:name="androidx.startup.InitializationProvider"
+212-->[androidx.emoji2:emoji2:1.3.0] /home/runner/.gradle/caches/8.13/transforms/bf307a596df8b477e07ba8deb239c630/transformed/emoji2-1.3.0/AndroidManifest.xml:25:13-67
+213            android:authorities="com.cdccreditsmart.app.androidx-startup"
+213-->[androidx.emoji2:emoji2:1.3.0] /home/runner/.gradle/caches/8.13/transforms/bf307a596df8b477e07ba8deb239c630/transformed/emoji2-1.3.0/AndroidManifest.xml:26:13-68
+214            android:exported="false" >
+214-->[androidx.emoji2:emoji2:1.3.0] /home/runner/.gradle/caches/8.13/transforms/bf307a596df8b477e07ba8deb239c630/transformed/emoji2-1.3.0/AndroidManifest.xml:27:13-37
+215            <meta-data
+215-->[androidx.emoji2:emoji2:1.3.0] /home/runner/.gradle/caches/8.13/transforms/bf307a596df8b477e07ba8deb239c630/transformed/emoji2-1.3.0/AndroidManifest.xml:29:13-31:52
+216                android:name="androidx.emoji2.text.EmojiCompatInitializer"
+216-->[androidx.emoji2:emoji2:1.3.0] /home/runner/.gradle/caches/8.13/transforms/bf307a596df8b477e07ba8deb239c630/transformed/emoji2-1.3.0/AndroidManifest.xml:30:17-75
+217                android:value="androidx.startup" />
+217-->[androidx.emoji2:emoji2:1.3.0] /home/runner/.gradle/caches/8.13/transforms/bf307a596df8b477e07ba8deb239c630/transformed/emoji2-1.3.0/AndroidManifest.xml:31:17-49
+218            <meta-data
+218-->[androidx.lifecycle:lifecycle-process:2.8.6] /home/runner/.gradle/caches/8.13/transforms/0b6f78a9a08e599dd18079f2a7aa3dd8/transformed/lifecycle-process-2.8.6/AndroidManifest.xml:29:13-31:52
+219                android:name="androidx.lifecycle.ProcessLifecycleInitializer"
+219-->[androidx.lifecycle:lifecycle-process:2.8.6] /home/runner/.gradle/caches/8.13/transforms/0b6f78a9a08e599dd18079f2a7aa3dd8/transformed/lifecycle-process-2.8.6/AndroidManifest.xml:30:17-78
+220                android:value="androidx.startup" />
+220-->[androidx.lifecycle:lifecycle-process:2.8.6] /home/runner/.gradle/caches/8.13/transforms/0b6f78a9a08e599dd18079f2a7aa3dd8/transformed/lifecycle-process-2.8.6/AndroidManifest.xml:31:17-49
+221            <meta-data
+221-->[androidx.profileinstaller:profileinstaller:1.3.1] /home/runner/.gradle/caches/8.13/transforms/8f1ce9102b6841595e5db92579216d35/transformed/profileinstaller-1.3.1/AndroidManifest.xml:29:13-31:52
+222                android:name="androidx.profileinstaller.ProfileInstallerInitializer"
+222-->[androidx.profileinstaller:profileinstaller:1.3.1] /home/runner/.gradle/caches/8.13/transforms/8f1ce9102b6841595e5db92579216d35/transformed/profileinstaller-1.3.1/AndroidManifest.xml:30:17-85
+223                android:value="androidx.startup" />
+223-->[androidx.profileinstaller:profileinstaller:1.3.1] /home/runner/.gradle/caches/8.13/transforms/8f1ce9102b6841595e5db92579216d35/transformed/profileinstaller-1.3.1/AndroidManifest.xml:31:17-49
+224        </provider>
+225
+226        <meta-data
+226-->[com.google.android.gms:play-services-basement:18.4.0] /home/runner/.gradle/caches/8.13/transforms/731aa70a8839d374d48bbb1c660b3cbc/transformed/play-services-basement-18.4.0/AndroidManifest.xml:6:9-122
+227            android:name="com.google.android.gms.version"
+227-->[com.google.android.gms:play-services-basement:18.4.0] /home/runner/.gradle/caches/8.13/transforms/731aa70a8839d374d48bbb1c660b3cbc/transformed/play-services-basement-18.4.0/AndroidManifest.xml:6:20-65
+228            android:value="@integer/google_play_services_version" />
+228-->[com.google.android.gms:play-services-basement:18.4.0] /home/runner/.gradle/caches/8.13/transforms/731aa70a8839d374d48bbb1c660b3cbc/transformed/play-services-basement-18.4.0/AndroidManifest.xml:6:66-119
 229
 230        <service
 230-->[com.google.android.datatransport:transport-backend-cct:2.3.3] /home/runner/.gradle/caches/8.13/transforms/ef3d93d2f400c6f20ee6e91d68210cf3/transformed/transport-backend-cct-2.3.3/AndroidManifest.xml:29:9-35:19

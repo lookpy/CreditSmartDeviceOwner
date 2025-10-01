@@ -39,9 +39,18 @@ class FaceEmbeddingExtractor(context: Context) {
             }
         }
         
-        // 4. Run inference
+        // 4. CRITICAL: Rewind buffer before inference (position is at end after writes)
+        inputBuffer.rewind()
+        
+        // 5. Run inference
         val output = Array(1) { FloatArray(512) }
         interpreter.run(inputBuffer, output)
+        
+        // 6. Validate embedding is not all zeros (sanity check for buffer issues)
+        val isAllZero = output[0].all { kotlin.math.abs(it) < 1e-6f }
+        if (isAllZero) {
+            throw IllegalStateException("TFLite returned all-zero embedding - buffer rewind or model loading failed")
+        }
         
         return output[0]
     }

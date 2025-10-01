@@ -2,8 +2,8 @@
 # compiler_version: 8.13.6
 # common_typos_disable
 # {"id":"com.android.tools.r8.mapping","version":"2.2"}
-# pg_map_id: 852365e127a7bc2919a5fc09858dd5f08e8ce07ff8ff23f060d240dfb527def3
-# pg_map_hash: SHA-256 852365e127a7bc2919a5fc09858dd5f08e8ce07ff8ff23f060d240dfb527def3
+# pg_map_id: 99f8d9a3b85d451bef0649233da70a80073dea5a5917ec7ef6c815b4f20087df
+# pg_map_hash: SHA-256 99f8d9a3b85d451bef0649233da70a80073dea5a5917ec7ef6c815b4f20087df
 com.cdccreditsmart.network.api.Address -> com.cdccreditsmart.network.api.Address:
 # {"id":"sourceFile","fileName":"ContractApiService.kt"}
     1:8:void <init>(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String):154:161 -> <init>
@@ -233,18 +233,18 @@ com.cdccreditsmart.network.api.BiometryConfiguration$$ExternalSyntheticOutline0 
       # {"id":"com.android.tools.r8.outline"}
 com.cdccreditsmart.network.api.BiometryHistoryResponse -> com.cdccreditsmart.network.api.BiometryHistoryResponse:
 # {"id":"sourceFile","fileName":"BiometryApiService.kt"}
-    1:3:void <init>(java.lang.String,java.util.List):139:141 -> <init>
-    1:1:java.lang.String getDeviceId():140:140 -> getDeviceId
-    1:1:java.util.List getSessions():141:141 -> getSessions
+    1:3:void <init>(java.lang.String,java.util.List):172:174 -> <init>
+    1:1:java.lang.String getDeviceId():173:173 -> getDeviceId
+    1:1:java.util.List getSessions():174:174 -> getSessions
 com.cdccreditsmart.network.api.BiometryHistorySession -> com.cdccreditsmart.network.api.BiometryHistorySession:
 # {"id":"sourceFile","fileName":"BiometryApiService.kt"}
-    1:7:void <init>(java.lang.String,long,java.lang.String,java.lang.String,java.lang.String,java.lang.Double):145:151 -> <init>
-    1:1:java.lang.Double getConfidence():151:151 -> getConfidence
-    1:1:long getCreatedAt():147:147 -> getCreatedAt
-    1:1:java.lang.String getResult():150:150 -> getResult
-    1:1:java.lang.String getSessionId():146:146 -> getSessionId
-    1:1:java.lang.String getStatus():148:148 -> getStatus
-    1:1:java.lang.String getVerificationType():149:149 -> getVerificationType
+    1:7:void <init>(java.lang.String,long,java.lang.String,java.lang.String,java.lang.String,java.lang.Double):178:184 -> <init>
+    1:1:java.lang.Double getConfidence():184:184 -> getConfidence
+    1:1:long getCreatedAt():180:180 -> getCreatedAt
+    1:1:java.lang.String getResult():183:183 -> getResult
+    1:1:java.lang.String getSessionId():179:179 -> getSessionId
+    1:1:java.lang.String getStatus():181:181 -> getStatus
+    1:1:java.lang.String getVerificationType():182:182 -> getVerificationType
     1:1:int hashCode():0:0 -> hashCode
       # {"id":"com.android.tools.r8.outlineCallsite","positions":{"1":7},"outline":"La/c;a(JII)I"}
     2:2:int hashCode():0:0 -> hashCode
@@ -257,12 +257,12 @@ com.cdccreditsmart.network.api.BiometryHistorySession -> com.cdccreditsmart.netw
     8:8:int hashCode():0:0 -> hashCode
 com.cdccreditsmart.network.api.BiometryMetadata -> com.cdccreditsmart.network.api.BiometryMetadata:
 # {"id":"sourceFile","fileName":"BiometryApiService.kt"}
-    1:5:void <init>(com.cdccreditsmart.network.api.CameraInfo,com.cdccreditsmart.network.api.EnvironmentInfo,long,int):93:97 -> <init>
-    6:6:void <init>(com.cdccreditsmart.network.api.CameraInfo,com.cdccreditsmart.network.api.EnvironmentInfo,long,int,int,kotlin.jvm.internal.DefaultConstructorMarker):93:93 -> <init>
-    1:1:int getAttempts():97:97 -> getAttempts
-    1:1:com.cdccreditsmart.network.api.CameraInfo getCameraInfo():94:94 -> getCameraInfo
-    1:1:long getCaptureTimestamp():96:96 -> getCaptureTimestamp
-    1:1:com.cdccreditsmart.network.api.EnvironmentInfo getEnvironmentInfo():95:95 -> getEnvironmentInfo
+    1:5:void <init>(com.cdccreditsmart.network.api.CameraInfo,com.cdccreditsmart.network.api.EnvironmentInfo,long,int):101:105 -> <init>
+    6:6:void <init>(com.cdccreditsmart.network.api.CameraInfo,com.cdccreditsmart.network.api.EnvironmentInfo,long,int,int,kotlin.jvm.internal.DefaultConstructorMarker):101:101 -> <init>
+    1:1:int getAttempts():105:105 -> getAttempts
+    1:1:com.cdccreditsmart.network.api.CameraInfo getCameraInfo():102:102 -> getCameraInfo
+    1:1:long getCaptureTimestamp():104:104 -> getCaptureTimestamp
+    1:1:com.cdccreditsmart.network.api.EnvironmentInfo getEnvironmentInfo():103:103 -> getEnvironmentInfo
     1:1:int hashCode():0:0 -> hashCode
       # {"id":"com.android.tools.r8.outlineCallsite","positions":{"1":3},"outline":"La/c;a(JII)I"}
     2:2:int hashCode():0:0 -> hashCode
@@ -284,15 +284,15 @@ com.cdccreditsmart.network.api.BiometrySessionResponse -> com.cdccreditsmart.net
     6:6:int hashCode():0:0 -> hashCode
 com.cdccreditsmart.network.api.BiometrySessionStatusResponse -> com.cdccreditsmart.network.api.BiometrySessionStatusResponse:
 # {"id":"sourceFile","fileName":"BiometryApiService.kt"}
-    1:9:void <init>(java.lang.String,java.lang.String,long,long,int,int,java.lang.Long,com.cdccreditsmart.network.api.BiometryVerificationResponse):127:135 -> <init>
-    1:1:int getAttempts():132:132 -> getAttempts
-    1:1:long getCreatedAt():130:130 -> getCreatedAt
-    1:1:long getExpiresAt():131:131 -> getExpiresAt
-    1:1:java.lang.Long getLastAttemptAt():134:134 -> getLastAttemptAt
-    1:1:int getMaxAttempts():133:133 -> getMaxAttempts
-    1:1:com.cdccreditsmart.network.api.BiometryVerificationResponse getResult():135:135 -> getResult
-    1:1:java.lang.String getSessionId():128:128 -> getSessionId
-    1:1:java.lang.String getStatus():129:129 -> getStatus
+    1:9:void <init>(java.lang.String,java.lang.String,long,long,int,int,java.lang.Long,com.cdccreditsmart.network.api.BiometryVerificationResponse):160:168 -> <init>
+    1:1:int getAttempts():165:165 -> getAttempts
+    1:1:long getCreatedAt():163:163 -> getCreatedAt
+    1:1:long getExpiresAt():164:164 -> getExpiresAt
+    1:1:java.lang.Long getLastAttemptAt():167:167 -> getLastAttemptAt
+    1:1:int getMaxAttempts():166:166 -> getMaxAttempts
+    1:1:com.cdccreditsmart.network.api.BiometryVerificationResponse getResult():168:168 -> getResult
+    1:1:java.lang.String getSessionId():161:161 -> getSessionId
+    1:1:java.lang.String getStatus():162:162 -> getStatus
     1:1:int hashCode():0:0 -> hashCode
       # {"id":"com.android.tools.r8.outlineCallsite","positions":{"1":11},"outline":"La/a;a(Ljava/lang/String;II)I"}
     2:2:int hashCode():0:0 -> hashCode
@@ -311,23 +311,29 @@ com.cdccreditsmart.network.api.BiometrySessionStatusResponse -> com.cdccreditsma
     13:13:int hashCode():0:0 -> hashCode
 com.cdccreditsmart.network.api.BiometryVerificationResponse -> com.cdccreditsmart.network.api.BiometryVerificationResponse:
 # {"id":"sourceFile","fileName":"BiometryApiService.kt"}
-    1:8:void <init>(java.lang.String,java.lang.String,double,java.lang.String,java.lang.String,java.lang.String,java.lang.String):116:123 -> <init>
-    9:9:void <init>(java.lang.String,java.lang.String,double,java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,kotlin.jvm.internal.DefaultConstructorMarker):116:116 -> <init>
-    1:1:double getConfidence():119:119 -> getConfidence
-    1:1:java.lang.String getErrorCode():123:123 -> getErrorCode
-    1:1:java.lang.String getMessage():121:121 -> getMessage
-    1:1:java.lang.String getNextAction():122:122 -> getNextAction
-    1:1:java.lang.String getResultId():120:120 -> getResultId
-    1:1:java.lang.String getSessionId():117:117 -> getSessionId
-    1:1:java.lang.String getStatus():118:118 -> getStatus
-    1:1:int hashCode():0:0 -> hashCode
-      # {"id":"com.android.tools.r8.outlineCallsite","positions":{"1":5},"outline":"La/a;a(Ljava/lang/String;II)I"}
-    2:2:int hashCode():0:0 -> hashCode
-    3:3:int hashCode():0:0 -> hashCode
-      # {"id":"com.android.tools.r8.outlineCallsite","positions":{"1":6},"outline":"La/f;a(DII)I"}
-    4:4:int hashCode():0:0 -> hashCode
-    5:5:int hashCode():0:0 -> hashCode
-    6:6:int hashCode():0:0 -> hashCode
+    1:1:void <init>():0:0 -> <init>
+    2:28:void <init>(java.lang.Boolean,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.Double,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.List,java.lang.Integer,java.lang.String,java.lang.Boolean,com.cdccreditsmart.network.api.FraudFlags):124:150 -> <init>
+    29:29:void <init>(java.lang.Boolean,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.Double,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.List,java.lang.Integer,java.lang.String,java.lang.Boolean,com.cdccreditsmart.network.api.FraudFlags,int,kotlin.jvm.internal.DefaultConstructorMarker):124:124 -> <init>
+    1:1:java.lang.String getAction():146:146 -> getAction
+    1:1:java.lang.String getBiometrySessionId():128:128 -> getBiometrySessionId
+    1:1:java.lang.Boolean getCanRetry():147:147 -> getCanRetry
+    1:1:java.lang.String getCode():139:139 -> getCode
+    1:1:java.lang.Double getConfidence():133:133 -> getConfidence
+    1:1:java.lang.String getDetails():140:140 -> getDetails
+    1:1:java.util.List getDuplicateCustomerIds():144:144 -> getDuplicateCustomerIds
+    1:1:java.lang.String getError():138:138 -> getError
+    1:1:com.cdccreditsmart.network.api.FraudFlags getFraudFlags():150:150 -> getFraudFlags
+    1:1:java.lang.String getFraudType():143:143 -> getFraudType
+    1:1:java.lang.String getMessage():127:127 -> getMessage
+    1:1:java.lang.String getNextAction():135:135 -> getNextAction
+    1:1:java.lang.String getNextStep():131:131 -> getNextStep
+    1:1:java.lang.String getRequestId():132:132 -> getRequestId
+    1:1:java.lang.String getResultId():134:134 -> getResultId
+    1:1:java.lang.String getSignatureSessionId():129:129 -> getSignatureSessionId
+    1:1:java.lang.String getStatus():126:126 -> getStatus
+    1:1:java.lang.Boolean getSuccess():125:125 -> getSuccess
+    1:1:java.lang.String getToken():130:130 -> getToken
+    1:1:java.lang.Integer getTotalDuplicates():145:145 -> getTotalDuplicates
 com.cdccreditsmart.network.api.BlockingPolicy -> com.cdccreditsmart.network.api.BlockingPolicy:
 # {"id":"sourceFile","fileName":"DeviceApiService.kt"}
     1:5:void <init>(java.lang.String,java.lang.String,java.util.List,java.util.List):280:284 -> <init>
@@ -365,11 +371,11 @@ com.cdccreditsmart.network.api.BoletoPaymentResponse -> com.cdccreditsmart.netwo
     12:12:int hashCode():0:0 -> hashCode
 com.cdccreditsmart.network.api.CameraInfo -> com.cdccreditsmart.network.api.CameraInfo:
 # {"id":"sourceFile","fileName":"BiometryApiService.kt"}
-    1:5:void <init>(java.lang.String,java.lang.String,java.lang.String,int):101:105 -> <init>
-    1:1:java.lang.String getFlashMode():104:104 -> getFlashMode
-    1:1:java.lang.String getFocusMode():103:103 -> getFocusMode
-    1:1:int getOrientation():105:105 -> getOrientation
-    1:1:java.lang.String getResolution():102:102 -> getResolution
+    1:5:void <init>(java.lang.String,java.lang.String,java.lang.String,int):109:113 -> <init>
+    1:1:java.lang.String getFlashMode():112:112 -> getFlashMode
+    1:1:java.lang.String getFocusMode():111:111 -> getFocusMode
+    1:1:int getOrientation():113:113 -> getOrientation
+    1:1:java.lang.String getResolution():110:110 -> getResolution
     1:1:int hashCode():0:0 -> hashCode
       # {"id":"com.android.tools.r8.outlineCallsite","positions":{"1":5},"outline":"La/a;a(Ljava/lang/String;II)I"}
     2:2:int hashCode():0:0 -> hashCode
@@ -1698,36 +1704,41 @@ com.cdccreditsmart.network.api.DeviceUpdateResponse -> com.cdccreditsmart.networ
     6:6:int hashCode():0:0 -> hashCode
 com.cdccreditsmart.network.api.EnvironmentInfo -> com.cdccreditsmart.network.api.EnvironmentInfo:
 # {"id":"sourceFile","fileName":"BiometryApiService.kt"}
-    1:4:void <init>(java.lang.String,java.lang.String,java.lang.String):109:112 -> <init>
-    1:1:java.lang.String getBackgroundNoise():111:111 -> getBackgroundNoise
-    1:1:java.lang.String getDeviceStability():112:112 -> getDeviceStability
-    1:1:java.lang.String getLightingCondition():110:110 -> getLightingCondition
+    1:4:void <init>(java.lang.String,java.lang.String,java.lang.String):117:120 -> <init>
+    1:1:java.lang.String getBackgroundNoise():119:119 -> getBackgroundNoise
+    1:1:java.lang.String getDeviceStability():120:120 -> getDeviceStability
+    1:1:java.lang.String getLightingCondition():118:118 -> getLightingCondition
     1:1:int hashCode():0:0 -> hashCode
       # {"id":"com.android.tools.r8.outlineCallsite","positions":{"1":3},"outline":"La/a;a(Ljava/lang/String;II)I"}
     2:2:int hashCode():0:0 -> hashCode
     3:3:int hashCode():0:0 -> hashCode
 com.cdccreditsmart.network.api.FaceBiometryRequest -> com.cdccreditsmart.network.api.FaceBiometryRequest:
 # {"id":"sourceFile","fileName":"BiometryApiService.kt"}
-    1:9:void <init>(java.lang.String,java.lang.String,java.lang.String,double,double,java.lang.String,java.lang.String,com.cdccreditsmart.network.api.BiometryMetadata):81:89 -> <init>
-    10:10:void <init>(java.lang.String,java.lang.String,java.lang.String,double,double,java.lang.String,java.lang.String,com.cdccreditsmart.network.api.BiometryMetadata,int,kotlin.jvm.internal.DefaultConstructorMarker):81:81 -> <init>
-    1:1:java.lang.String getDocumentHash():87:87 -> getDocumentHash
-    1:1:java.lang.String getFaceEmbedding():83:83 -> getFaceEmbedding
-    1:1:java.lang.String getFaceImage():84:84 -> getFaceImage
-    1:1:double getLivenessScore():85:85 -> getLivenessScore
-    1:1:com.cdccreditsmart.network.api.BiometryMetadata getMetadata():89:89 -> getMetadata
-    1:1:double getQualityScore():86:86 -> getQualityScore
-    1:1:java.lang.String getSessionId():82:82 -> getSessionId
-    1:1:java.lang.String getStoreId():88:88 -> getStoreId
+    1:10:void <init>(java.lang.String,java.util.List,double,java.lang.String,java.lang.String,com.cdccreditsmart.network.api.GeoHint,java.lang.String,java.lang.Double,com.cdccreditsmart.network.api.BiometryMetadata):81:90 -> <init>
+    11:11:void <init>(java.lang.String,java.util.List,double,java.lang.String,java.lang.String,com.cdccreditsmart.network.api.GeoHint,java.lang.String,java.lang.Double,com.cdccreditsmart.network.api.BiometryMetadata,int,kotlin.jvm.internal.DefaultConstructorMarker):81:81 -> <init>
+    1:1:java.lang.String getBiometrySessionId():82:82 -> getBiometrySessionId
+    1:1:java.lang.String getDocumentHash():85:85 -> getDocumentHash
+    1:1:java.util.List getFaceEmbedding():83:83 -> getFaceEmbedding
+    1:1:java.lang.String getFaceImage():88:88 -> getFaceImage
+    1:1:com.cdccreditsmart.network.api.GeoHint getGeoHint():87:87 -> getGeoHint
+    1:1:double getLivenessScore():84:84 -> getLivenessScore
+    1:1:com.cdccreditsmart.network.api.BiometryMetadata getMetadata():90:90 -> getMetadata
+    1:1:java.lang.Double getQualityScore():89:89 -> getQualityScore
+    1:1:java.lang.String getStoreId():86:86 -> getStoreId
     1:1:int hashCode():0:0 -> hashCode
-      # {"id":"com.android.tools.r8.outlineCallsite","positions":{"1":7},"outline":"La/a;a(Ljava/lang/String;II)I"}
+      # {"id":"com.android.tools.r8.outlineCallsite","positions":{"1":9},"outline":"La/d;a(Ljava/util/List;II)I"}
     2:2:int hashCode():0:0 -> hashCode
     3:3:int hashCode():0:0 -> hashCode
-      # {"id":"com.android.tools.r8.outlineCallsite","positions":{"1":8},"outline":"La/f;a(DII)I"}
+      # {"id":"com.android.tools.r8.outlineCallsite","positions":{"1":10},"outline":"La/f;a(DII)I"}
     4:4:int hashCode():0:0 -> hashCode
     5:5:int hashCode():0:0 -> hashCode
+      # {"id":"com.android.tools.r8.outlineCallsite","positions":{"1":11},"outline":"La/a;a(Ljava/lang/String;II)I"}
     6:6:int hashCode():0:0 -> hashCode
     7:7:int hashCode():0:0 -> hashCode
     8:8:int hashCode():0:0 -> hashCode
+    9:9:int hashCode():0:0 -> hashCode
+    10:10:int hashCode():0:0 -> hashCode
+    11:11:int hashCode():0:0 -> hashCode
 com.cdccreditsmart.network.api.FinancingTerms -> com.cdccreditsmart.network.api.FinancingTerms:
 # {"id":"sourceFile","fileName":"ContractApiService.kt"}
     1:9:void <init>(double,double,double,double,int,double,java.lang.String,java.lang.String):175:183 -> <init>
@@ -1913,6 +1924,24 @@ com.cdccreditsmart.network.api.FlowTokens -> com.cdccreditsmart.network.api.Flow
     1:1:java.lang.String getDeviceToken():232:232 -> getDeviceToken
     1:1:java.lang.Long getExpiresIn():233:233 -> getExpiresIn
     1:1:java.lang.String getRefreshToken():231:231 -> getRefreshToken
+com.cdccreditsmart.network.api.FraudFlags -> com.cdccreditsmart.network.api.FraudFlags:
+# {"id":"sourceFile","fileName":"BiometryApiService.kt"}
+    1:1:void <init>():0:0 -> <init>
+    2:4:void <init>(java.lang.Boolean,java.lang.Boolean):154:156 -> <init>
+    5:5:void <init>(java.lang.Boolean,java.lang.Boolean,int,kotlin.jvm.internal.DefaultConstructorMarker):154:154 -> <init>
+    1:1:java.lang.Boolean getCrossDocumentMatch():156:156 -> getCrossDocumentMatch
+    1:1:java.lang.Boolean getDuplicateInStore():155:155 -> getDuplicateInStore
+com.cdccreditsmart.network.api.GeoHint -> com.cdccreditsmart.network.api.GeoHint:
+# {"id":"sourceFile","fileName":"BiometryApiService.kt"}
+    1:4:void <init>(double,double,java.lang.Double):94:97 -> <init>
+    5:5:void <init>(double,double,java.lang.Double,int,kotlin.jvm.internal.DefaultConstructorMarker):94:94 -> <init>
+    1:1:java.lang.Double getAccuracy():97:97 -> getAccuracy
+    1:1:double getLatitude():95:95 -> getLatitude
+    1:1:double getLongitude():96:96 -> getLongitude
+    1:1:int hashCode():0:0 -> hashCode
+      # {"id":"com.android.tools.r8.outlineCallsite","positions":{"1":3},"outline":"La/f;a(DII)I"}
+    2:2:int hashCode():0:0 -> hashCode
+    3:3:int hashCode():0:0 -> hashCode
 com.cdccreditsmart.network.api.HeartbeatRequest -> com.cdccreditsmart.network.api.HeartbeatRequest:
 # {"id":"sourceFile","fileName":"DeviceApiService.kt"}
     1:6:void <init>(java.lang.String,long,java.lang.String,java.lang.Integer,com.cdccreditsmart.network.api.Location):254:259 -> <init>

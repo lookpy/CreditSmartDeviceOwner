@@ -11,6 +11,7 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.cdccreditsmart.app.biometry.FaceEmbeddingExtractor
 import com.cdccreditsmart.app.device.SimpleTokenManager
 import com.cdccreditsmart.network.api.BiometryApiService
 import com.cdccreditsmart.network.api.CreateBiometrySessionRequest
@@ -41,7 +42,10 @@ data class BiometryState(
     val capturedImageBase64: String? = null,
     val faceEmbedding: String? = null,
     val livenessScore: Double? = null,
-    val qualityScore: Double? = null
+    val qualityScore: Double? = null,
+    val faceEmbeddingVector: List<Double>? = null,
+    val documentHash: String? = null,
+    val storeId: String? = null
 )
 
 enum class BiometryStatus {
@@ -71,6 +75,8 @@ class SimpleBiometryViewModel(
     val biometryState: State<BiometryState> = _biometryState
 
     private val tokenManager = SimpleTokenManager(context)
+    
+    private val faceEmbeddingExtractor = FaceEmbeddingExtractor(context)
     
     private val biometryApi: BiometryApiService by lazy {
         createBiometryApiService()
@@ -231,15 +237,28 @@ class SimpleBiometryViewModel(
             Log.d(TAG, "Face quality score: $qualityScore")
             Log.d(TAG, "Face liveness score: $livenessScore")
             
-            // Generate face embedding from landmarks
-            val faceEmbedding = generateFaceEmbedding(primaryFace)
+            // Crop face from bitmap using bounding box
+            val faceBoundingBox = primaryFace.boundingBox
+            val croppedFace = Bitmap.createBitmap(
+                bitmap,
+                faceBoundingBox.left.coerceAtLeast(0),
+                faceBoundingBox.top.coerceAtLeast(0),
+                faceBoundingBox.width().coerceAtMost(bitmap.width - faceBoundingBox.left),
+                faceBoundingBox.height().coerceAtMost(bitmap.height - faceBoundingBox.top)
+            )
             
-            Log.d(TAG, "Face embedding generated: ${faceEmbedding.take(50)}...")
+            Log.d(TAG, "Cropped face: ${croppedFace.width}x${croppedFace.height}")
+            
+            // Extract real face embedding using TFLite FaceNet model
+            val realEmbedding = extractRealEmbedding(croppedFace)
+            
+            Log.d(TAG, "Real face embedding extracted: ${realEmbedding.size} dimensions")
+            Log.d(TAG, "Embedding preview: [${realEmbedding.take(5).joinToString(", ")}...]")
             
             // Update state with captured data
             _biometryState.value = _biometryState.value.copy(
                 capturedImageBase64 = imageBase64,
-                faceEmbedding = faceEmbedding,
+                faceEmbeddingVector = realEmbedding,
                 livenessScore = livenessScore,
                 qualityScore = qualityScore
             )
@@ -477,37 +496,12 @@ class SimpleBiometryViewModel(
     }
     
     /**
-     * Generate face embedding from face landmarks
-     * Creates a serialized representation of face features for anti-fraud verification
+     * Extract real face embedding using TFLite FaceNet model
+     * Returns 512-dimensional embedding vector
      */
-    private fun generateFaceEmbedding(face: Face): String {
-        val embeddings = mutableListOf<Float>()
-        
-        // Add bounding box normalized coordinates
-        embeddings.add(face.boundingBox.left.toFloat())
-        embeddings.add(face.boundingBox.top.toFloat())
-        embeddings.add(face.boundingBox.right.toFloat())
-        embeddings.add(face.boundingBox.bottom.toFloat())
-        
-        // Add head rotation angles
-        embeddings.add(face.headEulerAngleX)
-        embeddings.add(face.headEulerAngleY)
-        embeddings.add(face.headEulerAngleZ)
-        
-        // Add facial features if available
-        face.smilingProbability?.let { embeddings.add(it) }
-        face.leftEyeOpenProbability?.let { embeddings.add(it) }
-        face.rightEyeOpenProbability?.let { embeddings.add(it) }
-        
-        // Add landmark positions if available
-        face.allLandmarks.forEach { landmark ->
-            embeddings.add(landmark.position.x)
-            embeddings.add(landmark.position.y)
-        }
-        
-        // Convert to JSON string and then to Base64
-        val embeddingJson = Gson().toJson(embeddings)
-        return Base64.encodeToString(embeddingJson.toByteArray(), Base64.NO_WRAP)
+    private fun extractRealEmbedding(faceBitmap: Bitmap): List<Double> {
+        val embedding = faceEmbeddingExtractor.extractEmbedding(faceBitmap)
+        return embedding.map { it.toDouble() }
     }
 
     /**
@@ -633,7 +627,7 @@ class SimpleBiometryViewModel(
         }
 
         val currentState = _biometryState.value
-        if (currentState.faceEmbedding == null || currentState.capturedImageBase64 == null) {
+        if (currentState.faceEmbeddingVector == null || currentState.capturedImageBase64 == null) {
             Log.e(TAG, "Cannot submit biometry data - face data not captured")
             _biometryState.value = _biometryState.value.copy(
                 status = BiometryStatus.Error,
@@ -651,21 +645,20 @@ class SimpleBiometryViewModel(
                 )
 
                 val biometryRequest = FaceBiometryRequest(
-                    sessionId = sessionId,
-                    faceEmbedding = currentState.faceEmbedding!!,
-                    faceImage = currentState.capturedImageBase64!!,
+                    biometrySessionId = sessionId,
+                    faceEmbedding = currentState.faceEmbeddingVector!!,
                     livenessScore = currentState.livenessScore ?: 0.0,
-                    qualityScore = currentState.qualityScore ?: 0.0,
-                    documentHash = null,
-                    storeId = tokenManager.getDeviceId(),
-                    metadata = null
+                    documentHash = "sha256_placeholder",
+                    storeId = "00000000-0000-0000-0000-000000000000",
+                    faceImage = currentState.capturedImageBase64,
+                    qualityScore = currentState.qualityScore
                 )
 
                 Log.d(TAG, "Verifying facial biometry for session: $sessionId")
                 Log.d(TAG, "Liveness score: ${biometryRequest.livenessScore}")
                 Log.d(TAG, "Quality score: ${biometryRequest.qualityScore}")
                 Log.d(TAG, "Face image size: ${currentState.capturedImageBase64!!.length} chars")
-                Log.d(TAG, "Face embedding size: ${currentState.faceEmbedding!!.length} chars")
+                Log.d(TAG, "Face embedding dimensions: ${currentState.faceEmbeddingVector!!.size}")
 
                 val response = biometryApi.verifyFacialBiometry(biometryRequest)
 
@@ -692,6 +685,44 @@ class SimpleBiometryViewModel(
                     val errorBody = response.errorBody()?.string()
                     Log.e(TAG, "Failed to verify biometry - HTTP ${response.code()}")
                     Log.e(TAG, "Error body: $errorBody")
+
+                    // Handle fraud detection (error 409)
+                    if (response.code() == 409 && errorBody != null) {
+                        try {
+                            val gson = Gson()
+                            val fraudResponse = gson.fromJson(errorBody, BiometryVerificationResponse::class.java)
+                            
+                            if (fraudResponse.fraudType == "same_face_different_cpf") {
+                                // FRAUD DETECTED: Same face with different CPF
+                                Log.e(TAG, "🚨 FRAUDE DETECTADA!")
+                                Log.e(TAG, "Tipo: ${fraudResponse.fraudType}")
+                                Log.e(TAG, "CPFs duplicados: ${fraudResponse.duplicateCustomerIds}")
+                                Log.e(TAG, "Total duplicatas: ${fraudResponse.totalDuplicates}")
+                                Log.e(TAG, "Ação: ${fraudResponse.action}")
+                                Log.e(TAG, "Pode tentar novamente: ${fraudResponse.canRetry}")
+                                
+                                _biometryState.value = _biometryState.value.copy(
+                                    status = BiometryStatus.Error,
+                                    isLoading = false,
+                                    errorMessage = fraudResponse.details ?: 
+                                        "🚨 FRAUDE DETECTADA!\n\n${fraudResponse.message}\n\nEsta pessoa já está cadastrada com outro CPF.\n\n❌ Transação bloqueada permanentemente."
+                                )
+                                return@launch
+                            } else if (fraudResponse.fraudFlags?.duplicateInStore == true) {
+                                // POSSIBLE DUPLICATE: Requires manual review
+                                Log.w(TAG, "⚠️ Possível duplicata detectada - revisão manual necessária")
+                                
+                                _biometryState.value = _biometryState.value.copy(
+                                    status = BiometryStatus.Error,
+                                    isLoading = false,
+                                    errorMessage = "⚠️ Detectamos similaridade com outro cliente.\n\nAguarde revisão manual do supervisor."
+                                )
+                                return@launch
+                            }
+                        } catch (parseError: Exception) {
+                            Log.e(TAG, "Error parsing fraud response", parseError)
+                        }
+                    }
 
                     _biometryState.value = _biometryState.value.copy(
                         status = BiometryStatus.Error,
@@ -726,5 +757,14 @@ class SimpleBiometryViewModel(
         Log.d(TAG, "Retrying biometry validation")
         reset()
         startBiometryValidation()
+    }
+
+    /**
+     * Clean up resources when ViewModel is cleared
+     */
+    override fun onCleared() {
+        super.onCleared()
+        faceEmbeddingExtractor.close()
+        Log.d(TAG, "FaceEmbeddingExtractor closed")
     }
 }
