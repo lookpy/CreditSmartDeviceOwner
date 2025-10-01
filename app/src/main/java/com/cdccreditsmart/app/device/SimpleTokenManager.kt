@@ -20,6 +20,7 @@ class SimpleTokenManager(context: Context) {
         private const val PREF_STORE_ID = "store_id"
         private const val PREF_BIOMETRY_SESSION_ID = "biometry_session_id"
         private const val PREF_CUSTOMER_CPF = "customer_cpf"
+        private const val PREF_HARDWARE_IMEI = "hardware_imei"
     }
 
     /**
@@ -45,7 +46,8 @@ class SimpleTokenManager(context: Context) {
         storeId: String?,
         biometrySessionId: String?,
         customerCpf: String?,
-        expiryTimeMs: Long
+        expiryTimeMs: Long,
+        hardwareImei: String? = null
     ) {
         Log.d(TAG, "Saving binding data for device: $deviceId")
         Log.d(TAG, "StoreId: $storeId, BiometrySessionId: $biometrySessionId, CustomerCpf: ${customerCpf?.let { "***" }}")
@@ -57,6 +59,13 @@ class SimpleTokenManager(context: Context) {
             putString(PREF_BIOMETRY_SESSION_ID, biometrySessionId)
             putString(PREF_CUSTOMER_CPF, customerCpf)
             putLong(PREF_TOKEN_EXPIRY, expiryTimeMs)
+            
+            // Save IMEI if provided to reuse in future claim-sale calls
+            if (hardwareImei != null) {
+                putString(PREF_HARDWARE_IMEI, hardwareImei)
+                Log.d(TAG, "Saved IMEI: ${hardwareImei.take(4)}***")
+            }
+            
             apply()
         }
     }
@@ -126,5 +135,13 @@ class SimpleTokenManager(context: Context) {
      */
     fun getCustomerCpf(): String? {
         return prefs.getString(PREF_CUSTOMER_CPF, null)
+    }
+    
+    /**
+     * Get hardware IMEI from binding data
+     * This is the IMEI that was used during the initial device pairing
+     */
+    fun getHardwareImei(): String? {
+        return prefs.getString(PREF_HARDWARE_IMEI, null)
     }
 }

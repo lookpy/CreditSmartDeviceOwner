@@ -227,7 +227,8 @@ class SimpleDeviceRegistrationManager(private val context: Context) {
                     storeId = result.storeId,
                     biometrySessionId = result.biometrySessionId,
                     customerCpf = result.customerCpf,
-                    expiryTimeMs = expiryTime
+                    expiryTimeMs = expiryTime,
+                    hardwareImei = hardwareImei  // ✅ Save IMEI for future use
                 )
                 
                 // Also save to legacy SharedPreferences for backward compatibility

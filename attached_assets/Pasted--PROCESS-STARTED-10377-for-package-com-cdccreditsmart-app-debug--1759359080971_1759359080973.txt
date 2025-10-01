@@ -1,0 +1,108 @@
+---------------------------- PROCESS STARTED (10377) for package com.cdccreditsmart.app.debug ----------------------------
+2025-10-01 19:51:07.762 10377-10377 ziparchive              com.cdccreditsmart.app.debug         W  Unable to open '/data/data/com.cdccreditsmart.app.debug/code_cache/.overlay/base.apk/classes15.dm': No such file or directory
+2025-10-01 19:51:07.765 10377-10377 ziparchive              com.cdccreditsmart.app.debug         W  Unable to open '/data/data/com.cdccreditsmart.app.debug/code_cache/.overlay/base.apk/classes12.dm': No such file or directory
+2025-10-01 19:51:07.766 10377-10377 ziparchive              com.cdccreditsmart.app.debug         W  Unable to open '/data/data/com.cdccreditsmart.app.debug/code_cache/.overlay/base.apk/classes17.dm': No such file or directory
+2025-10-01 19:51:07.768 10377-10377 ziparchive              com.cdccreditsmart.app.debug         W  Unable to open '/data/app/~~SE6aMTnDxXyBrBt5eOLvYg==/com.cdccreditsmart.app.debug-HAIhpYJzaqd7ZPQvZl4QiA==/base.dm': No such file or directory
+2025-10-01 19:51:07.768 10377-10377 ziparchive              com.cdccreditsmart.app.debug         W  Unable to open '/data/app/~~SE6aMTnDxXyBrBt5eOLvYg==/com.cdccreditsmart.app.debug-HAIhpYJzaqd7ZPQvZl4QiA==/base.dm': No such file or directory
+2025-10-01 19:51:08.256 10377-10377 nativeloader            com.cdccreditsmart.app.debug         D  Configuring clns-7 for other apk /data/app/~~SE6aMTnDxXyBrBt5eOLvYg==/com.cdccreditsmart.app.debug-HAIhpYJzaqd7ZPQvZl4QiA==/base.apk. target_sdk_version=35, uses_libraries=, library_path=/data/app/~~SE6aMTnDxXyBrBt5eOLvYg==/com.cdccreditsmart.app.debug-HAIhpYJzaqd7ZPQvZl4QiA==/lib/arm64:/data/app/~~SE6aMTnDxXyBrBt5eOLvYg==/com.cdccreditsmart.app.debug-HAIhpYJzaqd7ZPQvZl4QiA==/base.apk!/lib/arm64-v8a, permitted_path=/data:/mnt/expand:/data/user/0/com.cdccreditsmart.app.debug
+2025-10-01 19:51:08.260 10377-10377 CompatChangeReporter    com.cdccreditsmart.app.debug         D  Compat change id reported: 202956589; UID 10240; state: ENABLED
+2025-10-01 19:51:08.277 10377-10377 GraphicsEnvironment     com.cdccreditsmart.app.debug         V  Currently set values for:
+2025-10-01 19:51:08.277 10377-10377 GraphicsEnvironment     com.cdccreditsmart.app.debug         V    angle_gl_driver_selection_pkgs=[]
+2025-10-01 19:51:08.278 10377-10377 GraphicsEnvironment     com.cdccreditsmart.app.debug         V    angle_gl_driver_selection_values=[]
+2025-10-01 19:51:08.278 10377-10377 GraphicsEnvironment     com.cdccreditsmart.app.debug         V  Global.Settings values are invalid: number of packages: 0, number of values: 0
+2025-10-01 19:51:08.278 10377-10377 GraphicsEnvironment     com.cdccreditsmart.app.debug         V  Neither updatable production driver nor prerelease driver is supported.
+2025-10-01 19:51:08.342 10377-10377 MbrainDebugManagerImpl  com.cdccreditsmart.app.debug         D  getService failed
+2025-10-01 19:51:08.370 10377-10377 CompatChangeReporter    com.cdccreditsmart.app.debug         D  Compat change id reported: 279646685; UID 10240; state: ENABLED
+2025-10-01 19:51:08.382 10377-10377 Typeface                com.cdccreditsmart.app.debug         I  initOverlayFonts====family: RookeryNew-Regular
+2025-10-01 19:51:08.394 10377-10377 nativeloader            com.cdccreditsmart.app.debug         D  Load libpowerhalwrap_jni.so using system ns (caller=/system_ext/framework/mediatek-framework.jar): ok
+2025-10-01 19:51:08.394 10377-10377 PowerHalWrapper         com.cdccreditsmart.app.debug         I  PowerHalWrapper.getInstance 
+2025-10-01 19:51:08.395 10377-10377 M-ProMotion             com.cdccreditsmart.app.debug         I  M-ProMotion is disabled
+2025-10-01 19:51:08.402 10377-10395 vulkan                  com.cdccreditsmart.app.debug         D  searching for layers in '/data/app/~~SE6aMTnDxXyBrBt5eOLvYg==/com.cdccreditsmart.app.debug-HAIhpYJzaqd7ZPQvZl4QiA==/lib/arm64'
+2025-10-01 19:51:08.403 10377-10395 vulkan                  com.cdccreditsmart.app.debug         D  searching for layers in '/data/app/~~SE6aMTnDxXyBrBt5eOLvYg==/com.cdccreditsmart.app.debug-HAIhpYJzaqd7ZPQvZl4QiA==/base.apk!/lib/arm64-v8a'
+2025-10-01 19:51:08.404 10377-10395 vulkan                  com.cdccreditsmart.app.debug         D  searching for layers in '/data/app/~~SE6aMTnDxXyBrBt5eOLvYg==/com.cdccreditsmart.app.debug-HAIhpYJzaqd7ZPQvZl4QiA==/lib/arm64'
+2025-10-01 19:51:08.404 10377-10395 vulkan                  com.cdccreditsmart.app.debug         D  searching for layers in '/data/app/~~SE6aMTnDxXyBrBt5eOLvYg==/com.cdccreditsmart.app.debug-HAIhpYJzaqd7ZPQvZl4QiA==/base.apk!/lib/arm64-v8a'
+2025-10-01 19:51:08.411 10377-10395 MMUD                    com.cdccreditsmart.app.debug         D  mtk_memory_debug_init com.cdccreditsmart.app.debug 0xb40000721c5fe5d0
+2025-10-01 19:51:08.472 10377-10377 CompatChangeReporter    com.cdccreditsmart.app.debug         D  Compat change id reported: 309578419; UID 10240; state: ENABLED
+2025-10-01 19:51:08.513 10377-10400 MMUD                    com.cdccreditsmart.app.debug         D  get_leak_baseline 3246391296
+2025-10-01 19:51:08.593 10377-10377 Activity                com.cdccreditsmart.app.debug         D  onResume setDolbyGameProfilePackage lastPkg =  currentPkg = com.cdccreditsmart.app.debug
+2025-10-01 19:51:08.597 10377-10394 PowerHalWrapper         com.cdccreditsmart.app.debug         I  PowerHalWrapper.getInstance 
+2025-10-01 19:51:08.599 10377-10377 SurfaceFactory          com.cdccreditsmart.app.debug         I  [static] sSurfaceFactory = com.mediatek.view.impl.SurfaceFactoryImpl@6a088ff
+2025-10-01 19:51:08.608 10377-10377 HWUI                    com.cdccreditsmart.app.debug         W  Unknown dataspace 0
+2025-10-01 19:51:08.612 10377-10377 VRI[MainActivity]       com.cdccreditsmart.app.debug         D  hardware acceleration = true, forceHwAccelerated = false
+2025-10-01 19:51:08.622 10377-10377 InputEventReceiver      com.cdccreditsmart.app.debug         D  Input log is disabled in InputEventReceiver.
+2025-10-01 19:51:09.352 10377-10382 smart.app.debug         com.cdccreditsmart.app.debug         I  Compiler allocated 6943KB to compile void android.view.ViewRootImpl.performTraversals()
+2025-10-01 19:51:09.565 10377-10377 SimplifiedAuthViewModel com.cdccreditsmart.app.debug         D  Initializing simplified auth system
+2025-10-01 19:51:09.801 10377-10377 View                    com.cdccreditsmart.app.debug         D  [ANR Warning]onMeasure time too long, this =androidx.compose.ui.platform.AndroidComposeView{3537501 VFED..... ......I. 0,0-0,0}time =548 ms
+2025-10-01 19:51:09.801 10377-10377 View                    com.cdccreditsmart.app.debug         D  [ANR Warning]onMeasure time too long, this =androidx.compose.ui.platform.ComposeView{9799dd5 V.E...... ......I. 0,0-0,0}time =548 ms
+2025-10-01 19:51:09.802 10377-10377 View                    com.cdccreditsmart.app.debug         D  [ANR Warning]onMeasure time too long, this =android.widget.FrameLayout{e9d49ea V.E...... ......I. 0,0-0,0 #1020002 android:id/content}time =549 ms
+2025-10-01 19:51:09.802 10377-10377 View                    com.cdccreditsmart.app.debug         D  [ANR Warning]onMeasure time too long, this =android.widget.LinearLayout{a79f4db V.E...... ......I. 0,0-0,0}time =549 ms
+2025-10-01 19:51:09.803 10377-10377 View                    com.cdccreditsmart.app.debug         D  [ANR Warning]onMeasure time too long, this =DecorView@aea2b78[MainActivity]time =551 ms
+2025-10-01 19:51:09.817 10377-10377 BufferQueueConsumer     com.cdccreditsmart.app.debug         D  [](id:288900000000,api:0,p:-1,c:10377) connect: controlledByApp=false
+2025-10-01 19:51:09.819 10377-10377 BLASTBufferQueue        com.cdccreditsmart.app.debug         D  [VRI[MainActivity]#0](f:0,a:0) constructor()
+2025-10-01 19:51:09.819 10377-10377 BLASTBufferQueue        com.cdccreditsmart.app.debug         D  [VRI[MainActivity]#0](f:0,a:0) update width=1080 height=2400 format=-3 mTransformHint=0
+2025-10-01 19:51:09.821 10377-10377 FBI                     com.cdccreditsmart.app.debug         E  Can't load library: dlopen failed: library "libmagtsync.so" not found
+2025-10-01 19:51:09.894 10377-10395 GrallocExtra            com.cdccreditsmart.app.debug         I  gralloc_extra_query:is_SW3D 0
+2025-10-01 19:51:09.927 10377-10395 GrallocExtra            com.cdccreditsmart.app.debug         I  gralloc_extra_query:is_SW3D 0
+2025-10-01 19:51:09.928 10377-10395 BLASTBufferQueue        com.cdccreditsmart.app.debug         D  [VRI[MainActivity]#0](f:0,a:1) acquireNextBufferLocked size=1080x2400 mFrameNumber=1 applyTransaction=true mTimestamp=95319420641911(auto) mPendingTransactions.size=0 graphicBufferId=44568875630595 transform=0
+2025-10-01 19:51:09.929 10377-10416 LibMBrainProxy          com.cdccreditsmart.app.debug         D  Init Paramters
+2025-10-01 19:51:09.953 10377-10377 SimplifiedAuthViewModel com.cdccreditsmart.app.debug         D  STATE CHANGE: Initializing -> Initializing (Starting device registration check)
+2025-10-01 19:51:09.954 10377-10377 SimplifiedAuthViewModel com.cdccreditsmart.app.debug         D  Device already registered with valid token
+2025-10-01 19:51:09.954 10377-10377 SimplifiedAuthViewModel com.cdccreditsmart.app.debug         W  ⚠️ Token found but NO biometry session data
+2025-10-01 19:51:09.954 10377-10377 SimplifiedAuthViewModel com.cdccreditsmart.app.debug         W  ⚠️ This happens if device was paired before biometry flow was added
+2025-10-01 19:51:09.954 10377-10377 SimplifiedAuthViewModel com.cdccreditsmart.app.debug         W  🔄 Need to perform claim-sale to get biometry session
+2025-10-01 19:51:09.958 10377-10377 SimplifiedAuthViewModel com.cdccreditsmart.app.debug         D  Permission available, will perform claim-sale to get biometry data
+2025-10-01 19:51:09.959 10377-10377 SimplifiedAuthViewModel com.cdccreditsmart.app.debug         D  Starting automatic pairing flow
+2025-10-01 19:51:09.968 10377-10388 HWUI                    com.cdccreditsmart.app.debug         I  Davey! duration=1575ms; Flags=1, FrameTimelineVsyncId=1703698, IntendedVsync=95317847013547, Vsync=95318113644459, InputEventId=0, HandleInputStart=95318120336681, AnimationStart=95318120361911, PerformTraversalsStart=95318120617219, DrawStart=95319355096296, FrameDeadline=95317867013547, FrameInterval=95318119676296, FrameStartTime=16664432, SyncQueued=95319382490834, SyncStart=95319383124911, IssueDrawCommandsStart=95319383636604, SwapBuffers=95319419905219, FrameCompleted=95319423273834, DequeueBufferDuration=18461, QueueBufferDuration=851924, GpuCompleted=95319423273834, SwapBuffersCompleted=95319423196988, DisplayPresentTime=0, CommandSubmissionCompleted=95319419905219, 
+2025-10-01 19:51:09.976 10377-10377 DeviceUtils             com.cdccreditsmart.app.debug         E  SecurityException reading IMEI - permission denied (Ask Gemini)
+                                                                                                    java.lang.SecurityException: getImeiForSlot: The uid 10240 does not meet the requirements to access device identifiers.
+                                                                                                    	at android.os.Parcel.createExceptionOrNull(Parcel.java:3242)
+                                                                                                    	at android.os.Parcel.createException(Parcel.java:3226)
+                                                                                                    	at android.os.Parcel.readException(Parcel.java:3209)
+                                                                                                    	at android.os.Parcel.readException(Parcel.java:3151)
+                                                                                                    	at com.android.internal.telephony.ITelephony$Stub$Proxy.getImeiForSlot(ITelephony.java:12135)
+                                                                                                    	at android.telephony.TelephonyManager.getImei(TelephonyManager.java:2363)
+                                                                                                    	at android.telephony.TelephonyManager.getImei(TelephonyManager.java:2314)
+                                                                                                    	at com.cdccreditsmart.app.utils.DeviceUtils.getDeviceImei(DeviceUtils.kt:49)
+                                                                                                    	at com.cdccreditsmart.app.presentation.auth.SimplifiedAuthViewModel$startAutomaticPairing$1.invokeSuspend(SimplifiedAuthViewModel.kt:295)
+                                                                                                    	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:34)
+                                                                                                    	at kotlinx.coroutines.DispatchedTask.run(DispatchedTask.kt:108)
+                                                                                                    	at kotlinx.coroutines.EventLoop.processUnconfinedEvent(EventLoop.common.kt:68)
+                                                                                                    	at kotlinx.coroutines.internal.DispatchedContinuationKt.resumeCancellableWith(DispatchedContinuation.kt:375)
+                                                                                                    	at kotlinx.coroutines.intrinsics.CancellableKt.startCoroutineCancellable(Cancellable.kt:30)
+                                                                                                    	at kotlinx.coroutines.intrinsics.CancellableKt.startCoroutineCancellable$default(Cancellable.kt:25)
+                                                                                                    	at kotlinx.coroutines.CoroutineStart.invoke(CoroutineStart.kt:110)
+                                                                                                    	at kotlinx.coroutines.AbstractCoroutine.start(AbstractCoroutine.kt:126)
+                                                                                                    	at kotlinx.coroutines.BuildersKt__Builders_commonKt.launch(Builders.common.kt:56)
+                                                                                                    	at kotlinx.coroutines.BuildersKt.launch(Unknown Source:1)
+                                                                                                    	at kotlinx.coroutines.BuildersKt__Builders_commonKt.launch$default(Builders.common.kt:47)
+                                                                                                    	at kotlinx.coroutines.BuildersKt.launch$default(Unknown Source:1)
+                                                                                                    	at com.cdccreditsmart.app.presentation.auth.SimplifiedAuthViewModel.checkDeviceRegistrationStatus(SimplifiedAuthViewModel.kt:85)
+                                                                                                    	at com.cdccreditsmart.app.presentation.auth.SimplifiedAuthViewModel.initializeAuth(SimplifiedAuthViewModel.kt:81)
+                                                                                                    	at com.cdccreditsmart.app.presentation.auth.IMEIAuthScreenKt$IMEIAuthScreen$1$1.invokeSuspend(IMEIAuthScreen.kt:58)
+                                                                                                    	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:34)
+                                                                                                    	at kotlinx.coroutines.DispatchedTask.run(DispatchedTask.kt:108)
+                                                                                                    	at androidx.compose.ui.platform.AndroidUiDispatcher.performTrampolineDispatch(AndroidUiDispatcher.android.kt:81)
+                                                                                                    	at androidx.compose.ui.platform.AndroidUiDispatcher.access$performTrampolineDispatch(AndroidUiDispatcher.android.kt:41)
+                                                                                                    	at androidx.compose.ui.platform.AndroidUiDispatcher$dispatchCallback$1.run(AndroidUiDispatcher.android.kt:57)
+                                                                                                    	at android.os.Handler.handleCallback(Handler.java:959)
+                                                                                                    	at android.os.Handler.dispatchMessage(Handler.java:100)
+                                                                                                    	at android.os.Looper.loopOnce(Looper.java:234)
+                                                                                                    	at android.os.Looper.loop(Looper.java:319)
+                                                                                                    	at android.app.ActivityThread.main(ActivityThread.java:8754)
+                                                                                                    	at java.lang.reflect.Method.invoke(Native Method)
+                                                                                                    	at com.android.internal.os.RuntimeInit$MethodAndArgsCaller.run(RuntimeInit.java:602)
+                                                                                                    	at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:962)
+2025-10-01 19:51:09.976 10377-10377 SimplifiedAuthViewModel com.cdccreditsmart.app.debug         W  Failed to read IMEI automatically, falling back to manual input
+2025-10-01 19:51:09.984 10377-10377 Choreographer           com.cdccreditsmart.app.debug         I  Skipped 73 frames!  The application may be doing too much work on its main thread.
+2025-10-01 19:51:10.427 10377-10388 HWUI                    com.cdccreditsmart.app.debug         I  Davey! duration=1667ms; Flags=0, FrameTimelineVsyncId=1703937, IntendedVsync=95318247051431, Vsync=95319463758491, InputEventId=0, HandleInputStart=95319478728911, AnimationStart=95319478732604, PerformTraversalsStart=95319792571988, DrawStart=95319792830219, FrameDeadline=95319450134587, FrameInterval=95319477581834, FrameStartTime=16667220, SyncQueued=95319896280604, SyncStart=95319896384296, IssueDrawCommandsStart=95319896481604, SwapBuffers=95319911624911, FrameCompleted=95319914889604, DequeueBufferDuration=19461, QueueBufferDuration=466692, GpuCompleted=95319914889604, SwapBuffersCompleted=95319912434758, DisplayPresentTime=0, CommandSubmissionCompleted=95319911624911, 
+2025-10-01 19:51:10.841 10377-10377 InteractionJankMonitor  com.cdccreditsmart.app.debug         W  Initializing without READ_DEVICE_CONFIG permission. enabled=false, interval=1, missedFrameThreshold=3, frameTimeThreshold=64, package=com.cdccreditsmart.app.debug
+2025-10-01 19:51:11.968 10377-10377 InsetsController        com.cdccreditsmart.app.debug         D  show(ime(), fromIme=false)
+2025-10-01 19:51:11.970 10377-10377 ImeTracker              com.cdccreditsmart.app.debug         I  com.cdccreditsmart.app.debug:73659f14: onRequestShow at ORIGIN_CLIENT reason SHOW_SOFT_INPUT_BY_INSETS_API fromUser false
+2025-10-01 19:51:11.971 10377-10377 InputMethodManager      com.cdccreditsmart.app.debug         D  showSoftInput() view=androidx.compose.ui.platform.AndroidComposeView{3537501 VFED..... .F....ID 0,0-1080,2400 aid=1073741824} flags=0 reason=SHOW_SOFT_INPUT_BY_INSETS_API
+2025-10-01 19:51:12.038 10377-10377 ImeTracker              com.cdccreditsmart.app.debug         I  com.cdccreditsmart.app.debug:5e5e5767: onRequestShow at ORIGIN_CLIENT reason SHOW_SOFT_INPUT fromUser false
+2025-10-01 19:51:12.038 10377-10377 InputMethodManager      com.cdccreditsmart.app.debug         D  showSoftInput() view=androidx.compose.ui.platform.AndroidComposeView{3537501 VFED..... .F...... 0,0-1080,2400 aid=1073741824} flags=0 reason=SHOW_SOFT_INPUT
+2025-10-01 19:51:12.191 10377-10377 InsetsController        com.cdccreditsmart.app.debug         D  show(ime(), fromIme=true)
+2025-10-01 19:51:12.193 10377-10377 InsetsController        com.cdccreditsmart.app.debug         D  show(ime(), fromIme=true)
+2025-10-01 19:51:12.193 10377-10377 ImeTracker              com.cdccreditsmart.app.debug         I  com.cdccreditsmart.app.debug:5e5e5767: onCancelled at PHASE_CLIENT_APPLY_ANIMATION
+2025-10-01 19:51:12.571 10377-10377 ImeTracker              com.cdccreditsmart.app.debug         I  com.cdccreditsmart.app.debug:73659f14: onShown
+2025-10-01 19:51:13.666 10377-10425 ProfileInstaller        com.cdccreditsmart.app.debug         D  Installing profile for com.cdccreditsmart.app.debug

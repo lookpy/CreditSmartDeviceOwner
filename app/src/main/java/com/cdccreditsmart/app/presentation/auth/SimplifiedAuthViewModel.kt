@@ -291,11 +291,21 @@ class SimplifiedAuthViewModel(
         
         viewModelScope.launch {
             try {
-                // Read IMEI from hardware
-                val hardwareImei = DeviceUtils.getDeviceImei(context)
+                // ✅ FIRST: Try to use IMEI saved from previous pairing
+                val savedImei = tokenManager.getHardwareImei()
+                
+                val hardwareImei = if (savedImei != null) {
+                    Log.d(TAG, "✅ Using saved IMEI from previous pairing: ${savedImei.take(4)}***")
+                    savedImei
+                } else {
+                    // Try to read IMEI from hardware
+                    Log.d(TAG, "No saved IMEI found, attempting to read from hardware...")
+                    DeviceUtils.getDeviceImei(context)
+                }
                 
                 if (hardwareImei == null) {
-                    Log.w(TAG, "Failed to read IMEI automatically, falling back to manual input")
+                    Log.w(TAG, "❌ Failed to read IMEI (neither saved nor from hardware)")
+                    Log.w(TAG, "🔧 Falling back to manual IMEI input")
                     _authState.value = _authState.value.copy(
                         currentState = AuthStatus.AwaitingManualInput,
                         isLoading = false,
@@ -306,8 +316,8 @@ class SimplifiedAuthViewModel(
                 }
                 
                 val normalizedImei = normalizeImei(hardwareImei)
-                Log.d(TAG, "Hardware IMEI read successfully: ${normalizedImei.take(4)}***")
-                Log.d(TAG, "IMEI length: ${normalizedImei.length}")
+                Log.d(TAG, "✅ IMEI ready for pairing: ${normalizedImei.take(4)}***")
+                Log.d(TAG, "   IMEI length: ${normalizedImei.length}")
                 
                 _authState.value = _authState.value.copy(
                     hardwareImei = normalizedImei,
