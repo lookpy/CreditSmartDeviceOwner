@@ -79,14 +79,22 @@ data class BiometryConfiguration(
 
 //@JsonClass(generateAdapter = true) // Temporarily disabled to fix build
 data class FaceBiometryRequest(
-    val sessionId: String,
-    val faceEmbedding: String, // Base64 encoded face embedding
-    val faceImage: String?, // Base64 encoded face image (optional)
-    val livenessScore: Double,
-    val qualityScore: Double,
-    val documentHash: String? = null,
-    val storeId: String? = null,
+    val biometrySessionId: String,  // Renamed from sessionId to match API docs
+    val faceEmbedding: List<Double>,  // Array of 128-512 float numbers (not Base64!)
+    val livenessScore: Double,  // Required: minimum 0.8
+    val documentHash: String,  // Required: SHA-256 of customer CPF
+    val storeId: String,  // Required: UUID of the store
+    val geoHint: GeoHint? = null,  // Optional: GPS location hint
+    val faceImage: String? = null,  // Optional: Base64 encoded face image for audit
+    val qualityScore: Double? = null,  // Optional: face quality score
     val metadata: BiometryMetadata? = null
+)
+
+//@JsonClass(generateAdapter = true) // Temporarily disabled to fix build
+data class GeoHint(
+    val latitude: Double,
+    val longitude: Double,
+    val accuracy: Double? = null
 )
 
 //@JsonClass(generateAdapter = true) // Temporarily disabled to fix build
@@ -114,13 +122,38 @@ data class EnvironmentInfo(
 
 //@JsonClass(generateAdapter = true) // Temporarily disabled to fix build
 data class BiometryVerificationResponse(
-    val sessionId: String,
-    val status: String, // "approved", "denied", "review", "error"
-    val confidence: Double,
-    val resultId: String?,
-    val message: String?,
-    val nextAction: String?, // "retry", "manual_review", "proceed"
-    val errorCode: String? = null
+    val success: Boolean? = null,
+    val status: String? = null, // "APPROVED", "DENIED", "REVIEW"
+    val message: String? = null,
+    val biometrySessionId: String? = null,
+    val signatureSessionId: String? = null,
+    val token: String? = null,
+    val nextStep: String? = null,
+    val requestId: String? = null,
+    val confidence: Double? = null,
+    val resultId: String? = null,
+    val nextAction: String? = null,
+    
+    // Error fields (when success = false)
+    val error: String? = null,
+    val code: String? = null,
+    val details: String? = null,
+    
+    // Fraud detection fields (error 409)
+    val fraudType: String? = null,  // "same_face_different_cpf"
+    val duplicateCustomerIds: List<String>? = null,
+    val totalDuplicates: Int? = null,
+    val action: String? = null,  // "transaction_blocked"
+    val canRetry: Boolean? = null,
+    
+    // Flags
+    val fraudFlags: FraudFlags? = null
+)
+
+//@JsonClass(generateAdapter = true) // Temporarily disabled to fix build
+data class FraudFlags(
+    val duplicateInStore: Boolean? = null,
+    val crossDocumentMatch: Boolean? = null
 )
 
 //@JsonClass(generateAdapter = true) // Temporarily disabled to fix build
