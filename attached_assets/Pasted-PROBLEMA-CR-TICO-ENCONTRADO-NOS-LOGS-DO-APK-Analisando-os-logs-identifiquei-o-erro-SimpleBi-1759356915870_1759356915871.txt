@@ -1,0 +1,127 @@
+PROBLEMA CRÍTICO ENCONTRADO NOS LOGS DO APK!
+
+Analisando os logs, identifiquei o erro:
+
+SimpleBiometryViewModel: No biometry session found - binding may have failed or not completed
+SimpleBiometryViewModel: Device must be paired first using POST /v1/device/bind
+❌ O Que Está Acontecendo:
+O APK está pulando a etapa de binding e tentando fazer biometria diretamente. Isso não funciona porque:
+
+❌ APK não possui biometrySessionId
+❌ APK não possui token JWT com escopo biometry:verify
+❌ Backend vai rejeitar qualquer request sem sessão válida
+✅ O Que Está Funcionando (Positivo):
+Pelos logs, vejo que:
+
+✅ TensorFlow Lite carregado com sucesso
+   - "Initialized TensorFlow Lite runtime"
+   - "Created TensorFlow Lite XNNPACK delegate for CPU"
+   - "Replacing 49 out of 181 node(s) with delegate"
+✅ Câmera conectada e funcionando
+   - "Connecting to camera service"
+   - "Device Level: INFO_SUPPORTED_HARDWARE_LEVEL_FULL"
+🔧 SOLUÇÃO - Fluxo Correto:
+A IA do APK precisa implementar este fluxo:
+
+1️⃣ ETAPA 1: Fazer Binding ANTES da Biometria
+class SimpleBiometryViewModel {
+    private var biometrySessionId: String? = null
+    private var storeId: String? = null
+    private var jwtToken: String? = null
+    
+    // ✅ ADICIONAR: Função de binding executada ANTES da captura facial
+    suspend fun initializeBinding(
+        contractCode: String,
+        imei: String,
+        deviceModel: String,
+        hardwareId: String
+    ) {
+        try {
+            Log.d(TAG, "Iniciando binding antes da biometria...")
+            
+            val bindingResponse = deviceApi.bind(
+                contractCode = contractCode,
+                imeiPDV = imei,
+                deviceModel = deviceModel,
+                attestedDeviceId = hardwareId
+            )
+            
+            // ✅ SALVAR dados da resposta
+            biometrySessionId = bindingResponse.biometrySessionId
+            storeId = bindingResponse.storeId
+            jwtToken = bindingResponse.token
+            
+            Log.d(TAG, "Binding concluído: sessionId=$biometrySessionId, storeId=$storeId")
+            
+        } catch (e: Exception) {
+            Log.e(TAG, "Erro no binding: ${e.message}")
+            throw e
+        }
+    }
+}
+2️⃣ ETAPA 2: Atualizar UI para Chamar Binding Primeiro
+@Composable
+fun SimpleBiometryScreen(viewModel: SimpleBiometryViewModel) {
+    
+    // ✅ Executar binding quando a tela abre
+    LaunchedEffect(Unit) {
+        viewModel.initializeBinding(
+            contractCode = "CTR_1759342768_560533",  // Obter do navegação/intent
+            imei = "123456789012345",                 // Obter do hardware
+            deviceModel = Build.MODEL,
+            hardwareId = getHardwareId()
+        )
+    }
+    
+    // Resto da UI com captura facial...
+}
+3️⃣ ETAPA 3: Verificar Sessão Antes de Capturar
+// ✅ Modificar função de captura facial
+fun onCaptureFace(bitmap: Bitmap) {
+    // VERIFICAR se tem sessão
+    if (biometrySessionId == null) {
+        Log.e(TAG, "❌ ERRO: Sem biometrySessionId - binding não foi feito!")
+        _uiState.value = BiometryUiState.Error("Erro de inicialização")
+        return
+    }
+    
+    if (storeId == null) {
+        Log.e(TAG, "❌ ERRO: Sem storeId - binding retornou incompleto!")
+        _uiState.value = BiometryUiState.Error("Erro de configuração")
+        return
+    }
+    
+    // ✅ Agora pode processar
+    viewModelScope.launch {
+        val embeddings = embeddingExtractor.extractEmbedding(bitmap)
+        
+        val request = FaceBiometryRequest(
+            biometrySessionId = biometrySessionId!!,  // ✅ Agora existe!
+            faceEmbedding = embeddings,
+            livenessScore = 0.92,
+            documentHash = generateDocumentHash(customerCPF),
+            storeId = storeId!!,                      // ✅ Agora existe!
+            geoHint = getCurrentLocation()
+        )
+        
+        // Enviar ao backend
+        val response = biometryApi.verifyFace(
+            token = "Bearer $jwtToken",  // ✅ Token do binding
+            request = request
+        )
+    }
+}
+📋 Checklist de Correção:
+Para a IA do APK implementar:
+
+ 1. Criar função initializeBinding() no ViewModel
+ 2. Chamar binding quando tela de biometria abrir (LaunchedEffect)
+ 3. Salvar biometrySessionId, storeId e token da resposta
+ 4. Validar sessão existe ANTES de capturar facial
+ 5. Usar token do binding no header Authorization
+🎯 Resumo:
+Problema: APK tenta fazer biometria SEM fazer binding antes
+Solução: Fazer POST /v1/device/bind PRIMEIRO, salvar resposta, DEPOIS capturar facial
+Resultado Esperado: Logs mostrarão ✅ Binding concluído: sessionId=bio_ses_abc123...
+
+Passe estas instruções para a IA que está editando o APK! 🚀

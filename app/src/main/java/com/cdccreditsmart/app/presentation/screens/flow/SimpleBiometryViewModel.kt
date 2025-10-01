@@ -552,25 +552,45 @@ class SimpleBiometryViewModel(
                     return@launch
                 }
 
-                // Get biometry session from binding (already created during device pairing!)
+                // ✅ Get biometry session from binding (already created during device pairing!)
                 val biometrySessionId = tokenManager.getBiometrySessionId()
                 val storeId = tokenManager.getStoreId()
                 val customerCpf = tokenManager.getCustomerCpf()
                 
+                // 🔍 DEBUG: Log binding data status
+                Log.d(TAG, "📋 Checking binding data from TokenManager:")
+                Log.d(TAG, "   - biometrySessionId: ${if (biometrySessionId != null) "✅ Present" else "❌ NULL"}")
+                Log.d(TAG, "   - storeId: ${if (storeId != null) "✅ Present ($storeId)" else "❌ NULL"}")
+                Log.d(TAG, "   - customerCpf: ${if (customerCpf != null) "✅ Present (${customerCpf.take(3)}***)" else "❌ NULL"}")
+                
                 if (biometrySessionId == null) {
-                    Log.e(TAG, "No biometry session found - binding may have failed or not completed")
-                    Log.e(TAG, "Device must be paired first using POST /v1/device/bind")
+                    Log.e(TAG, "❌ CRITICAL: No biometry session found!")
+                    Log.e(TAG, "❌ This means the backend did NOT return 'biometrySessionId' in ClaimSaleResponse")
+                    Log.e(TAG, "❌ Check SimpleDeviceRegistrationManager logs for 'WARNING: No biometry session ID'")
+                    Log.e(TAG, "❌ Backend must return biometrySessionId in POST /v1/device/claim-sale response")
+                    Log.e(TAG, "")
+                    Log.e(TAG, "🔧 SOLUTION: Ensure backend returns these fields in ClaimSaleResponse:")
+                    Log.e(TAG, "   { biometrySessionId: 'bio_ses_...', storeId: '...', customerCpf: '...' }")
+                    
                     _biometryState.value = _biometryState.value.copy(
                         status = BiometryStatus.Error,
                         isLoading = false,
-                        errorMessage = "Biometry session not found. Please complete device pairing first."
+                        errorMessage = "Backend configuration error: biometry session not provided. Contact support."
                     )
                     return@launch
                 }
                 
-                Log.d(TAG, "Using biometry session from binding: $biometrySessionId")
-                Log.d(TAG, "Store ID: $storeId")
-                Log.d(TAG, "Customer CPF: ${if (customerCpf != null) "***" else "null (may need to fetch)"}")
+                Log.d(TAG, "✅ Using biometry session from binding: $biometrySessionId")
+                if (storeId != null) {
+                    Log.d(TAG, "✅ Store ID available: $storeId")
+                } else {
+                    Log.w(TAG, "⚠️ storeId is NULL - may cause issues")
+                }
+                if (customerCpf != null) {
+                    Log.d(TAG, "✅ Customer CPF available: ${customerCpf.take(3)}***")
+                } else {
+                    Log.w(TAG, "⚠️ customerCpf is NULL - documentHash will fail validation")
+                }
                 
                 // Update state with binding data
                 _biometryState.value = _biometryState.value.copy(
