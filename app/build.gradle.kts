@@ -120,10 +120,10 @@ java {
 }
 
 dependencies {
-    // Project module dependencies - TEMPORARILY DISABLED FOR SIMPLIFIED BUILD
+    // Project module dependencies
     // implementation(project(":domain"))
     // implementation(project(":data"))
-    // implementation(project(":network"))
+    implementation(project(":network"))  // Required for BiometryApiService
     // implementation(project(":biometry"))
     // implementation(project(":device"))
     // implementation(project(":payments"))
