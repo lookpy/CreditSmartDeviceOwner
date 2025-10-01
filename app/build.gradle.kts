@@ -152,6 +152,11 @@ dependencies {
     // Google ML Kit Face Detection for biometric validation
     implementation("com.google.mlkit:face-detection:16.1.7")
     
+    // TensorFlow Lite for face embedding extraction (FaceNet model)
+    implementation("org.tensorflow:tensorflow-lite:2.14.0")
+    implementation("org.tensorflow:tensorflow-lite-support:0.4.4")
+    implementation("org.tensorflow:tensorflow-lite-gpu:2.14.0")
+    
     // Kotlin Coroutines Play Services for await() extension
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.7.3")
     
