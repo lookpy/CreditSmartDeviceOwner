@@ -17,16 +17,45 @@ class SimpleTokenManager(context: Context) {
         private const val PREF_DEVICE_TOKEN = "device_token"
         private const val PREF_DEVICE_ID = "device_id"
         private const val PREF_TOKEN_EXPIRY = "token_expiry"
+        private const val PREF_STORE_ID = "store_id"
+        private const val PREF_BIOMETRY_SESSION_ID = "biometry_session_id"
+        private const val PREF_CUSTOMER_CPF = "customer_cpf"
     }
 
     /**
-     * Save device token
+     * Save device token (legacy method, kept for compatibility)
      */
     fun saveToken(token: String, deviceId: String, expiryTimeMs: Long) {
         Log.d(TAG, "Saving device token for device: $deviceId")
         prefs.edit().apply {
             putString(PREF_DEVICE_TOKEN, token)
             putString(PREF_DEVICE_ID, deviceId)
+            putLong(PREF_TOKEN_EXPIRY, expiryTimeMs)
+            apply()
+        }
+    }
+
+    /**
+     * Save binding data including biometry session information
+     * This is the preferred method for saving device data after binding
+     */
+    fun saveBindingData(
+        token: String,
+        deviceId: String,
+        storeId: String?,
+        biometrySessionId: String?,
+        customerCpf: String?,
+        expiryTimeMs: Long
+    ) {
+        Log.d(TAG, "Saving binding data for device: $deviceId")
+        Log.d(TAG, "StoreId: $storeId, BiometrySessionId: $biometrySessionId, CustomerCpf: ${customerCpf?.let { "***" }}")
+        
+        prefs.edit().apply {
+            putString(PREF_DEVICE_TOKEN, token)
+            putString(PREF_DEVICE_ID, deviceId)
+            putString(PREF_STORE_ID, storeId)
+            putString(PREF_BIOMETRY_SESSION_ID, biometrySessionId)
+            putString(PREF_CUSTOMER_CPF, customerCpf)
             putLong(PREF_TOKEN_EXPIRY, expiryTimeMs)
             apply()
         }
@@ -76,5 +105,26 @@ class SimpleTokenManager(context: Context) {
      */
     fun getTokenExpiry(): Long {
         return prefs.getLong(PREF_TOKEN_EXPIRY, 0)
+    }
+
+    /**
+     * Get store ID from binding data
+     */
+    fun getStoreId(): String? {
+        return prefs.getString(PREF_STORE_ID, null)
+    }
+
+    /**
+     * Get biometry session ID from binding data
+     */
+    fun getBiometrySessionId(): String? {
+        return prefs.getString(PREF_BIOMETRY_SESSION_ID, null)
+    }
+
+    /**
+     * Get customer CPF from binding data
+     */
+    fun getCustomerCpf(): String? {
+        return prefs.getString(PREF_CUSTOMER_CPF, null)
     }
 }

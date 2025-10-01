@@ -29,6 +29,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.io.ByteArrayOutputStream
 import java.nio.ByteBuffer
+import java.security.MessageDigest
 import java.util.concurrent.TimeUnit
 
 data class BiometryState(
@@ -45,7 +46,8 @@ data class BiometryState(
     val qualityScore: Double? = null,
     val faceEmbeddingVector: List<Double>? = null,
     val documentHash: String? = null,
-    val storeId: String? = null
+    val storeId: String? = null,
+    val customerCpf: String? = null
 )
 
 enum class BiometryStatus {
@@ -507,8 +509,11 @@ class SimpleBiometryViewModel(
     /**
      * Start biometry validation process
      * 
+     * NEW FLOW: Uses biometry session from binding (POST /v1/device/bind)
+     * No longer creates a separate session - the binding already returns biometrySessionId
+     * 
      * DEMO_MODE = true: Simulates successful validation after 3 seconds
-     * DEMO_MODE = false: Creates real biometry session on backend
+     * DEMO_MODE = false: Uses real biometry session from binding data
      */
     fun startBiometryValidation() {
         Log.d(TAG, "Starting biometry validation (DEMO_MODE=$DEMO_MODE)")
@@ -516,7 +521,7 @@ class SimpleBiometryViewModel(
         viewModelScope.launch {
             try {
                 _biometryState.value = _biometryState.value.copy(
-                    status = BiometryStatus.CreatingSession,
+                    status = BiometryStatus.Processing,
                     isLoading = true,
                     errorMessage = null
                 )
@@ -546,65 +551,71 @@ class SimpleBiometryViewModel(
                     return@launch
                 }
 
-                // Get device ID from token manager
-                val deviceId = tokenManager.getDeviceId()
-                if (deviceId == null) {
-                    Log.e(TAG, "Device ID not found, cannot create biometry session")
+                // Get biometry session from binding (already created during device pairing!)
+                val biometrySessionId = tokenManager.getBiometrySessionId()
+                val storeId = tokenManager.getStoreId()
+                val customerCpf = tokenManager.getCustomerCpf()
+                
+                if (biometrySessionId == null) {
+                    Log.e(TAG, "No biometry session found - binding may have failed or not completed")
+                    Log.e(TAG, "Device must be paired first using POST /v1/device/bind")
                     _biometryState.value = _biometryState.value.copy(
                         status = BiometryStatus.Error,
                         isLoading = false,
-                        errorMessage = "Device not registered. Please complete device pairing first."
+                        errorMessage = "Biometry session not found. Please complete device pairing first."
                     )
                     return@launch
                 }
-
-                Log.d(TAG, "Creating biometry session for device: $deviceId")
-
-                // Create biometry session request
-                val sessionRequest = CreateBiometrySessionRequest(
-                    deviceId = deviceId,
-                    contractId = deviceId,
-                    verificationType = "facial_liveness"
+                
+                Log.d(TAG, "Using biometry session from binding: $biometrySessionId")
+                Log.d(TAG, "Store ID: $storeId")
+                Log.d(TAG, "Customer CPF: ${if (customerCpf != null) "***" else "null (may need to fetch)"}")
+                
+                // Update state with binding data
+                _biometryState.value = _biometryState.value.copy(
+                    sessionId = biometrySessionId,
+                    storeId = storeId,
+                    customerCpf = customerCpf,
+                    status = BiometryStatus.Processing,
+                    isLoading = false
                 )
-
-                // Make API call to create session
-                val response = biometryApi.createBiometrySession(sessionRequest)
-
-                if (response.isSuccessful && response.body() != null) {
-                    val sessionResponse = response.body()!!
-                    Log.d(TAG, "Biometry session created successfully: ${sessionResponse.sessionId}")
-                    Log.d(TAG, "Session status: ${sessionResponse.status}")
-                    Log.d(TAG, "Session expires at: ${sessionResponse.expiresAt}")
-
-                    _biometryState.value = _biometryState.value.copy(
-                        sessionId = sessionResponse.sessionId,
-                        status = BiometryStatus.Processing
-                    )
-
-                    // Note: Image capture and processing will be triggered from BiometryScreen
-                    // After image is captured, processCapturedImage() will be called
-                    // which will then call submitBiometryData()
-                } else {
-                    val errorBody = response.errorBody()?.string()
-                    Log.e(TAG, "Failed to create biometry session - HTTP ${response.code()}")
-                    Log.e(TAG, "Error body: $errorBody")
-
-                    _biometryState.value = _biometryState.value.copy(
-                        status = BiometryStatus.Error,
-                        isLoading = false,
-                        errorMessage = "Failed to create biometry session: ${response.message()}"
-                    )
-                }
+                
+                // Note: Camera capture will be triggered from BiometryScreen
+                // After image is captured, processCapturedImage() will be called
+                // which will then call submitBiometryData()
+                
+                Log.d(TAG, "Biometry validation ready - waiting for camera capture")
 
             } catch (e: Exception) {
-                Log.e(TAG, "Exception during biometry session creation", e)
+                Log.e(TAG, "Error starting biometry validation", e)
                 _biometryState.value = _biometryState.value.copy(
                     status = BiometryStatus.Error,
                     isLoading = false,
-                    errorMessage = "Error creating biometry session: ${e.message}"
+                    errorMessage = "Error: ${e.message}"
                 )
             }
         }
+    }
+
+    /**
+     * Generate SHA-256 hash from CPF for biometric verification
+     * 
+     * Removes formatting (dots, dashes) and generates SHA-256 hash
+     * Example: "123.456.789-00" -> "12345678900" -> SHA-256 hash in hex format
+     * 
+     * @param cpf CPF with or without formatting
+     * @return SHA-256 hash in hexadecimal format (64 characters)
+     */
+    private fun generateDocumentHash(cpf: String): String {
+        // Remove formatação: "123.456.789-00" → "12345678900"
+        val cpfClean = cpf.replace(Regex("[^0-9]"), "")
+        
+        // Gera SHA-256
+        val digest = MessageDigest.getInstance("SHA-256")
+        val hashBytes = digest.digest(cpfClean.toByteArray(Charsets.UTF_8))
+        
+        // Converte para hexadecimal
+        return hashBytes.joinToString("") { "%02x".format(it) }
     }
 
     /**
@@ -644,17 +655,47 @@ class SimpleBiometryViewModel(
                     isLoading = true
                 )
 
+                // Validar que temos CPF real (obrigatório para documentHash)
+                val cpf = currentState.customerCpf
+                if (cpf.isNullOrBlank()) {
+                    Log.e(TAG, "❌ CPF do cliente não encontrado - não é possível gerar documentHash")
+                    _biometryState.value = _biometryState.value.copy(
+                        status = BiometryStatus.Error,
+                        isLoading = false,
+                        errorMessage = "Dados do cliente não encontrados. Por favor, reinicie o processo de vinculação."
+                    )
+                    return@launch
+                }
+                
+                val documentHash = generateDocumentHash(cpf)
+                Log.d(TAG, "Generated documentHash from CPF: ${documentHash.take(16)}...")
+                
+                // Validar que temos storeId real (obrigatório)
+                val storeId = currentState.storeId
+                if (storeId.isNullOrBlank()) {
+                    Log.e(TAG, "❌ storeId não encontrado - binding pode ter falhado")
+                    _biometryState.value = _biometryState.value.copy(
+                        status = BiometryStatus.Error,
+                        isLoading = false,
+                        errorMessage = "Dados da loja não encontrados. Por favor, reinicie o processo de vinculação."
+                    )
+                    return@launch
+                }
+
                 val biometryRequest = FaceBiometryRequest(
                     biometrySessionId = sessionId,
                     faceEmbedding = currentState.faceEmbeddingVector!!,
                     livenessScore = currentState.livenessScore ?: 0.0,
-                    documentHash = "sha256_placeholder",
-                    storeId = "00000000-0000-0000-0000-000000000000",
+                    documentHash = documentHash,
+                    storeId = storeId,
                     faceImage = currentState.capturedImageBase64,
                     qualityScore = currentState.qualityScore
                 )
 
                 Log.d(TAG, "Verifying facial biometry for session: $sessionId")
+                Log.d(TAG, "CPF (masked): ${cpf.take(3)}***")
+                Log.d(TAG, "Document Hash: $documentHash")
+                Log.d(TAG, "Store ID: $storeId")
                 Log.d(TAG, "Liveness score: ${biometryRequest.livenessScore}")
                 Log.d(TAG, "Quality score: ${biometryRequest.qualityScore}")
                 Log.d(TAG, "Face image size: ${currentState.capturedImageBase64!!.length} chars")

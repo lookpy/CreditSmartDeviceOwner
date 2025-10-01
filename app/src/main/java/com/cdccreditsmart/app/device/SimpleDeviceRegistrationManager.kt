@@ -29,6 +29,7 @@ import com.google.gson.JsonSyntaxException
 class SimpleDeviceRegistrationManager(private val context: Context) {
 
     private val prefs: SharedPreferences = context.getSharedPreferences("cdc_device_prefs", Context.MODE_PRIVATE)
+    private val tokenManager = SimpleTokenManager(context)
     private val httpClient: OkHttpClient = OkHttpClient.Builder()
         .connectTimeout(30, TimeUnit.SECONDS)
         .readTimeout(30, TimeUnit.SECONDS)
@@ -175,13 +176,41 @@ class SimpleDeviceRegistrationManager(private val context: Context) {
                 Log.d(TAG, "Sale claimed successfully: ${result.message}")
                 Log.d(TAG, "Device ID: ${result.deviceId}, Sale ID: ${result.saleId}")
                 
-                // Store token and device info
+                // Store token and device info using TokenManager
+                // This includes biometry session data from binding response
+                val expiryTime = System.currentTimeMillis() + (365 * 24 * 60 * 60 * 1000L) // 1 year
+                
+                tokenManager.saveBindingData(
+                    token = result.immutableToken,
+                    deviceId = result.deviceId,
+                    storeId = result.storeId,
+                    biometrySessionId = result.biometrySessionId,
+                    customerCpf = result.customerCpf,
+                    expiryTimeMs = expiryTime
+                )
+                
+                // Also save to legacy SharedPreferences for backward compatibility
                 prefs.edit().apply {
                     putString(PREF_DEVICE_TOKEN, result.immutableToken)
                     putString(PREF_DEVICE_ID, result.deviceId)
                     putLong(PREF_REGISTRATION_TIME, System.currentTimeMillis())
-                    putLong(PREF_TOKEN_EXPIRY, System.currentTimeMillis() + (365 * 24 * 60 * 60 * 1000L)) // 1 year
+                    putLong(PREF_TOKEN_EXPIRY, expiryTime)
                     apply()
+                }
+                
+                // Log binding data received
+                if (result.storeId != null) {
+                    Log.d(TAG, "Binding data - StoreId: ${result.storeId}")
+                }
+                if (result.biometrySessionId != null) {
+                    Log.d(TAG, "Binding data - BiometrySessionId: ${result.biometrySessionId}")
+                } else {
+                    Log.w(TAG, "WARNING: No biometry session ID in binding response - biometry flow may fail")
+                }
+                if (result.customerCpf != null) {
+                    Log.d(TAG, "Binding data - CustomerCpf: ***")
+                } else {
+                    Log.w(TAG, "WARNING: No customer CPF in binding response - may need to fetch separately")
                 }
                 
                 Result.success(result)
@@ -499,13 +528,17 @@ data class ClaimSaleRequest(
 
 /**
  * Response from claiming a sale
+ * Includes biometry session data from binding response
  */
 data class ClaimSaleResponse(
     val success: Boolean,
     val immutableToken: String,
     val deviceId: String,
     val saleId: String,
-    val message: String
+    val message: String,
+    val storeId: String? = null,
+    val biometrySessionId: String? = null,
+    val customerCpf: String? = null
 )
 
 /**

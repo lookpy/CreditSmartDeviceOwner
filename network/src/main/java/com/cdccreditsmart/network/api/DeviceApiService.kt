@@ -247,6 +247,9 @@ data class DeviceBindResponse(
     val bindingId: String,
     val status: String,
     val contractId: String?,
+    val storeId: String?,
+    val biometrySessionId: String?,
+    val token: String?,
     val message: String?
 )
 
