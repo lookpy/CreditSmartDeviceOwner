@@ -8,6 +8,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.cdccreditsmart.app.presentation.auth.IMEIAuthScreen
 import com.cdccreditsmart.app.presentation.screens.flow.BiometryScreen
+import com.cdccreditsmart.app.presentation.screens.flow.SuccessScreen
 // TEMPORARILY DISABLED FOR SIMPLIFIED BUILD - screens with complex dependencies
 // import com.cdccreditsmart.app.presentation.screens.onboarding.WelcomeScreen
 // import com.cdccreditsmart.app.presentation.screens.flow.AttestedScreen
@@ -25,6 +26,7 @@ object Routes {
     const val ONBOARDING_WELCOME = "onboarding/welcome"
     const val FLOW_ATTESTED = "flow/attested"
     const val FLOW_BIOMETRY = "flow/biometry"
+    const val FLOW_SUCCESS = "flow/success"
     const val FLOW_SIGN = "flow/sign"
     const val FLOW_DONE = "flow/done"
     const val HOME = "home"
@@ -62,11 +64,23 @@ fun CDCNavigation(
         composable(Routes.FLOW_BIOMETRY) {
             BiometryScreen(
                 onNavigateToNext = { 
-                    // TODO: Navigate to next flow step (signature, home, etc)
-                    navController.popBackStack()
+                    navController.navigate(Routes.FLOW_SUCCESS) {
+                        popUpTo(Routes.FLOW_BIOMETRY) { inclusive = false }
+                    }
                 },
                 onNavigateBack = { 
                     navController.popBackStack() 
+                }
+            )
+        }
+        
+        // Success Screen - Completion of biometry validation
+        composable(Routes.FLOW_SUCCESS) {
+            SuccessScreen(
+                onNavigateToHome = {
+                    navController.navigate(Routes.AUTH_IMEI) {
+                        popUpTo(Routes.AUTH_IMEI) { inclusive = true }
+                    }
                 }
             )
         }

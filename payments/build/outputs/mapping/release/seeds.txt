@@ -1,2 +1,0 @@
-com.cdccreditsmart.payments.R
-com.cdccreditsmart.payments.R: R()

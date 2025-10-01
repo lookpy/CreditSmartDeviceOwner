@@ -40,6 +40,8 @@ fun BiometryScreen(
 ) {
     val context = LocalContext.current
     val lifecycleOwner = LocalLifecycleOwner.current
+    val viewModel = remember { SimpleBiometryViewModel(context) }
+    val biometryState by viewModel.biometryState
     
     var hasCameraPermission by remember {
         mutableStateOf(
@@ -50,27 +52,35 @@ fun BiometryScreen(
         )
     }
     
-    var livenessStatus by remember { mutableStateOf("Preparando...") }
-    var isProcessing by remember { mutableStateOf(false) }
     var cameraProvider by remember { mutableStateOf<ProcessCameraProvider?>(null) }
     
     val cameraPermissionLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.RequestPermission(),
         onResult = { granted ->
             hasCameraPermission = granted
+            if (granted) {
+                viewModel.startBiometryValidation()
+            }
         }
     )
     
     LaunchedEffect(hasCameraPermission) {
-        if (hasCameraPermission) {
-            delay(2000)
-            livenessStatus = "Liveness validation"
-            isProcessing = true
-            delay(3000)
-            livenessStatus = "Validação concluída"
-            isProcessing = false
+        if (hasCameraPermission && biometryState.status == BiometryStatus.Idle) {
+            delay(1000)
+            viewModel.startBiometryValidation()
         }
     }
+    
+    val livenessStatus = when (biometryState.status) {
+        BiometryStatus.Idle -> "Preparando..."
+        BiometryStatus.CreatingSession -> "Criando sessão..."
+        BiometryStatus.Processing -> "Validando biometria..."
+        BiometryStatus.Success -> "Validação aprovada ✓"
+        BiometryStatus.Error -> "Erro na validação"
+    }
+    
+    val isProcessing = biometryState.status == BiometryStatus.CreatingSession || 
+                       biometryState.status == BiometryStatus.Processing
     
     Column(
         modifier = Modifier
@@ -250,13 +260,33 @@ fun BiometryScreen(
                 StatusChip(
                     status = when {
                         !hasCameraPermission -> StatusType.DENIED
-                        livenessStatus == "Preparando..." -> StatusType.PENDING
-                        livenessStatus == "Liveness validation" -> StatusType.REVIEW
-                        livenessStatus == "Validação concluída" -> StatusType.APPROVED
+                        biometryState.status == BiometryStatus.Idle -> StatusType.PENDING
+                        biometryState.status == BiometryStatus.CreatingSession -> StatusType.PENDING
+                        biometryState.status == BiometryStatus.Processing -> StatusType.REVIEW
+                        biometryState.status == BiometryStatus.Success && biometryState.isApproved -> StatusType.APPROVED
+                        biometryState.status == BiometryStatus.Error -> StatusType.DENIED
                         else -> StatusType.PENDING
                     },
                     text = if (!hasCameraPermission) "Sem permissão" else livenessStatus
                 )
+                
+                if (biometryState.errorMessage != null) {
+                    Spacer(modifier = Modifier.height(8.dp))
+                    
+                    Card(
+                        colors = CardDefaults.cardColors(
+                            containerColor = MaterialTheme.colorScheme.errorContainer
+                        )
+                    ) {
+                        Text(
+                            text = biometryState.errorMessage!!,
+                            style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.onErrorContainer,
+                            textAlign = TextAlign.Center,
+                            modifier = Modifier.padding(12.dp)
+                        )
+                    }
+                }
                 
                 Spacer(modifier = Modifier.height(8.dp))
                 
@@ -321,7 +351,7 @@ fun BiometryScreen(
             Button(
                 onClick = onNavigateToNext,
                 modifier = Modifier.weight(1f),
-                enabled = hasCameraPermission && !isProcessing
+                enabled = hasCameraPermission && biometryState.isApproved && !isProcessing
             ) {
                 Text("Continuar")
             }
