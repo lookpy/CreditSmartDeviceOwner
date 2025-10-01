@@ -552,4 +552,32 @@ class SimplifiedAuthViewModel(
         initializeAuth()
     }
     
+    /**
+     * Clear device pairing to allow pairing with a new sale
+     * 
+     * IMPORTANT: This does NOT allow re-pairing with the SAME sale.
+     * Once a sale is claimed, it cannot be claimed again.
+     * This clears the local pairing data to allow pairing with a DIFFERENT (new) sale.
+     */
+    fun clearPairingAndRetry() {
+        Log.w(TAG, "🔧 Clearing device pairing data...")
+        Log.w(TAG, "⚠️ This will allow pairing with a NEW sale")
+        Log.w(TAG, "⚠️ Cannot re-pair with the same sale that was already claimed")
+        
+        // Clear all stored data
+        tokenManager.clearToken()
+        deviceRegistrationManager.clearRegistrationData()
+        
+        Log.d(TAG, "✅ Pairing data cleared successfully")
+        Log.d(TAG, "🔄 Restarting authentication flow...")
+        
+        // Reset state and restart
+        _authState.value = SimplifiedAuthState(
+            currentState = AuthStatus.Initializing,
+            errorMessage = null,
+            failedAttempts = 0
+        )
+        initializeAuth()
+    }
+    
 }

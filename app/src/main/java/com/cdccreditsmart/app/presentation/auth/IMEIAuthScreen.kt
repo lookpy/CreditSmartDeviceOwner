@@ -141,7 +141,8 @@ fun IMEIAuthScreen(
                     isLockedOut = authState.isLockedOut,
                     lockoutEndTime = authState.lockoutEndTime,
                     failedAttempts = authState.failedAttempts,
-                    onRetry = viewModel::retry
+                    onRetry = viewModel::retry,
+                    onClearPairing = viewModel::clearPairingAndRetry
                 )
             }
             AuthStatus.Authenticated -> {
@@ -437,7 +438,8 @@ private fun ErrorContent(
     isLockedOut: Boolean,
     lockoutEndTime: Long?,
     failedAttempts: Int,
-    onRetry: () -> Unit
+    onRetry: () -> Unit,
+    onClearPairing: () -> Unit
 ) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally
@@ -489,6 +491,36 @@ private fun ErrorContent(
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Text("Try Again")
+            }
+            
+            // Show "Clear Pairing" option for devices already paired
+            // but unable to get biometry data (no pending sale)
+            if (errorMessage.contains("No pending sale", ignoreCase = true)) {
+                Spacer(modifier = Modifier.height(12.dp))
+                
+                OutlinedButton(
+                    onClick = onClearPairing,
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Text("Clear Pairing & Try New Sale")
+                }
+                
+                Spacer(modifier = Modifier.height(8.dp))
+                
+                Card(
+                    modifier = Modifier.fillMaxWidth(),
+                    colors = CardDefaults.cardColors(
+                        containerColor = MaterialTheme.colorScheme.surfaceVariant
+                    )
+                ) {
+                    Text(
+                        text = "⚠️ This clears your current pairing and allows you to pair with a NEW sale. Cannot re-pair with the same sale that was already claimed.",
+                        style = MaterialTheme.typography.bodySmall,
+                        textAlign = TextAlign.Center,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        modifier = Modifier.padding(12.dp)
+                    )
+                }
             }
         }
         
