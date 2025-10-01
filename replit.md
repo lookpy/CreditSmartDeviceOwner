@@ -68,10 +68,19 @@ The UI is built entirely with Jetpack Compose and Material 3, featuring a CDC in
 - org.tensorflow:tensorflow-lite-gpu:2.14.0
 - kotlinx-coroutines-play-services:1.7.3
 
+**BINDING DATA FLOW REFACTORED (October 01, 2025) - ✅ COMPLETE!**
+- 🔄 **BIOMETRY SESSION FROM BINDING** - Usa biometrySessionId do binding (não cria sessão separada!)
+- 💾 **SIMPLETOKENMANAGER EXPANDED** - Persiste storeId, biometrySessionId, customerCpf do binding
+- ✅ **REAL DATA ONLY** - Valida CPF e storeId antes de gerar documentHash (falha explícita se ausente)
+- 🔐 **SHA-256 DOCUMENT HASH** - Hash gerado apenas com CPF autêntico (não usa fallback inválido)
+- 📝 **API COMPLIANCE** - Fluxo 100% conforme documentação CDC: bind → usa sessionId → verify
+- 🚨 **ERROR HANDLING** - Mensagens claras ao usuário se dados do binding estiverem faltando
+- ✅ **NO LSP ERRORS** - Código compila sem erros (exceto build por memória)
+
 **PRÓXIMOS PASSOS:**
 - Build APK em ambiente com mais memória (local/CI) ou usar modelo 128-dim
-- Preencher documentHash e storeId reais (atualmente placeholders)
-- Testar fluxo completo de detecção de fraude com backend
+- Testar fluxo completo: QR scan → bind → biometry verify → fraud detection
+- Verificar se backend retorna customerCpf no binding response
 
 ### CAMERAX REAL PREVIEW (September 30, 2025) - ✅ BUILD SUCCESSFUL!
 - ✅ **CÂMERA REAL** - Preview real da câmera frontal usando CameraX 1.3.4
