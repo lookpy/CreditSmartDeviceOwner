@@ -14,6 +14,7 @@ import androidx.lifecycle.viewModelScope
 import com.cdccreditsmart.app.biometry.FaceEmbeddingExtractor
 import com.cdccreditsmart.app.device.SimpleTokenManager
 import com.cdccreditsmart.network.api.BiometryApiService
+import com.cdccreditsmart.network.api.BiometryVerificationResponse
 import com.cdccreditsmart.network.api.CreateBiometrySessionRequest
 import com.cdccreditsmart.network.api.FaceBiometryRequest
 import com.google.gson.Gson

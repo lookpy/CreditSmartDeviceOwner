@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<full-backup-content>
+    <exclude domain="sharedpref" path="device_prefs" />
+    <exclude domain="database" path="cdc_database" />
+    <exclude domain="database" path="cdc_database-wal" />
+    <exclude domain="database" path="cdc_database-shm" />
+</full-backup-content>
