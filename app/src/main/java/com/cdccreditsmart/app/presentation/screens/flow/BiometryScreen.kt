@@ -2,9 +2,12 @@ package com.cdccreditsmart.app.presentation.screens.flow
 
 import android.Manifest
 import android.content.pm.PackageManager
+import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.camera.core.CameraSelector
+import androidx.camera.core.ImageCapture
+import androidx.camera.core.ImageCaptureException
 import androidx.camera.core.Preview
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.camera.view.PreviewView
@@ -31,7 +34,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.content.ContextCompat
 import com.cdccreditsmart.app.ui.components.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 @Composable
 fun BiometryScreen(
@@ -40,6 +46,7 @@ fun BiometryScreen(
 ) {
     val context = LocalContext.current
     val lifecycleOwner = LocalLifecycleOwner.current
+    val coroutineScope = rememberCoroutineScope()
     val viewModel = remember { SimpleBiometryViewModel(context) }
     val biometryState by viewModel.biometryState
     
@@ -53,6 +60,8 @@ fun BiometryScreen(
     }
     
     var cameraProvider by remember { mutableStateOf<ProcessCameraProvider?>(null) }
+    var imageCapture by remember { mutableStateOf<ImageCapture?>(null) }
+    var captureTriggered by remember { mutableStateOf(false) }
     
     val cameraPermissionLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.RequestPermission(),
@@ -68,6 +77,35 @@ fun BiometryScreen(
         if (hasCameraPermission && biometryState.status == BiometryStatus.Idle) {
             delay(1000)
             viewModel.startBiometryValidation()
+        }
+    }
+    
+    LaunchedEffect(biometryState.status) {
+        if (biometryState.status == BiometryStatus.Processing && 
+            !captureTriggered && 
+            imageCapture != null &&
+            biometryState.capturedImageBase64 == null) {
+            
+            captureTriggered = true
+            Log.d("BiometryScreen", "Triggering image capture for face detection")
+            
+            imageCapture?.takePicture(
+                ContextCompat.getMainExecutor(context),
+                object : ImageCapture.OnImageCapturedCallback() {
+                    override fun onCaptureSuccess(image: androidx.camera.core.ImageProxy) {
+                        Log.d("BiometryScreen", "Image captured successfully, processing with ML Kit")
+                        coroutineScope.launch {
+                            viewModel.processCapturedImage(image)
+                            image.close()
+                        }
+                    }
+                    
+                    override fun onError(exception: ImageCaptureException) {
+                        Log.e("BiometryScreen", "Image capture failed", exception)
+                        captureTriggered = false
+                    }
+                }
+            )
         }
     }
     
@@ -204,6 +242,13 @@ fun BiometryScreen(
                                         it.setSurfaceProvider(previewView.surfaceProvider)
                                     }
                                     
+                                    val imageCaptureUseCase = ImageCapture.Builder()
+                                        .setCaptureMode(ImageCapture.CAPTURE_MODE_MINIMIZE_LATENCY)
+                                        .setTargetRotation(previewView.display.rotation)
+                                        .build()
+                                    
+                                    imageCapture = imageCaptureUseCase
+                                    
                                     val cameraSelector = CameraSelector.Builder()
                                         .requireLensFacing(CameraSelector.LENS_FACING_FRONT)
                                         .build()
@@ -213,9 +258,12 @@ fun BiometryScreen(
                                         provider.bindToLifecycle(
                                             lifecycleOwner,
                                             cameraSelector,
-                                            preview
+                                            preview,
+                                            imageCaptureUseCase
                                         )
+                                        Log.d("BiometryScreen", "Camera bound with Preview and ImageCapture")
                                     } catch (e: Exception) {
+                                        Log.e("BiometryScreen", "Failed to bind camera", e)
                                         e.printStackTrace()
                                     }
                                 }, ContextCompat.getMainExecutor(ctx))

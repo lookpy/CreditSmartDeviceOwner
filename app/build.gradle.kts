@@ -149,6 +149,12 @@ dependencies {
     implementation("androidx.camera:camera-lifecycle:1.3.4")
     implementation("androidx.camera:camera-view:1.3.4")
     
+    // Google ML Kit Face Detection for biometric validation
+    implementation("com.google.mlkit:face-detection:16.1.7")
+    
+    // Kotlin Coroutines Play Services for await() extension
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.7.3")
+    
     // Navigation Compose (Android 15 compatible)
     implementation("androidx.navigation:navigation-compose:2.8.2")
     

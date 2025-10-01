@@ -1,2 +1,0 @@
-com.cdccreditsmart.biometry.R
-com.cdccreditsmart.biometry.R: R()
