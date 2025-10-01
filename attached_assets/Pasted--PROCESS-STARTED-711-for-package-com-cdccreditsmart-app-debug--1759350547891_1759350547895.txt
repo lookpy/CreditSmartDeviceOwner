@@ -1,0 +1,145 @@
+---------------------------- PROCESS STARTED (711) for package com.cdccreditsmart.app.debug ----------------------------
+2025-10-01 17:28:48.344   711-711   ziparchive              com.cdccreditsmart.app.debug         W  Unable to open '/data/app/~~gqHlR1oIwY3jorXwXfwUbA==/com.cdccreditsmart.app.debug-BzftjUXeEovWEdWxafeOpw==/base.dm': No such file or directory
+2025-10-01 17:28:48.344   711-711   ziparchive              com.cdccreditsmart.app.debug         W  Unable to open '/data/app/~~gqHlR1oIwY3jorXwXfwUbA==/com.cdccreditsmart.app.debug-BzftjUXeEovWEdWxafeOpw==/base.dm': No such file or directory
+2025-10-01 17:28:48.838   711-711   nativeloader            com.cdccreditsmart.app.debug         D  Configuring clns-7 for other apk /data/app/~~gqHlR1oIwY3jorXwXfwUbA==/com.cdccreditsmart.app.debug-BzftjUXeEovWEdWxafeOpw==/base.apk. target_sdk_version=35, uses_libraries=, library_path=/data/app/~~gqHlR1oIwY3jorXwXfwUbA==/com.cdccreditsmart.app.debug-BzftjUXeEovWEdWxafeOpw==/lib/arm64:/data/app/~~gqHlR1oIwY3jorXwXfwUbA==/com.cdccreditsmart.app.debug-BzftjUXeEovWEdWxafeOpw==/base.apk!/lib/arm64-v8a, permitted_path=/data:/mnt/expand:/data/user/0/com.cdccreditsmart.app.debug
+2025-10-01 17:28:48.843   711-711   CompatChangeReporter    com.cdccreditsmart.app.debug         D  Compat change id reported: 202956589; UID 10240; state: ENABLED
+2025-10-01 17:28:48.865   711-711   GraphicsEnvironment     com.cdccreditsmart.app.debug         V  Currently set values for:
+2025-10-01 17:28:48.865   711-711   GraphicsEnvironment     com.cdccreditsmart.app.debug         V    angle_gl_driver_selection_pkgs=[]
+2025-10-01 17:28:48.865   711-711   GraphicsEnvironment     com.cdccreditsmart.app.debug         V    angle_gl_driver_selection_values=[]
+2025-10-01 17:28:48.865   711-711   GraphicsEnvironment     com.cdccreditsmart.app.debug         V  Global.Settings values are invalid: number of packages: 0, number of values: 0
+2025-10-01 17:28:48.865   711-711   GraphicsEnvironment     com.cdccreditsmart.app.debug         V  Neither updatable production driver nor prerelease driver is supported.
+2025-10-01 17:28:48.917   711-711   MbrainDebugManagerImpl  com.cdccreditsmart.app.debug         D  getService failed
+2025-10-01 17:28:48.922   711-711   CompatChangeReporter    com.cdccreditsmart.app.debug         D  Compat change id reported: 279646685; UID 10240; state: ENABLED
+2025-10-01 17:28:48.933   711-711   Typeface                com.cdccreditsmart.app.debug         I  initOverlayFonts====family: RookeryNew-Regular
+2025-10-01 17:28:48.946   711-711   nativeloader            com.cdccreditsmart.app.debug         D  Load libpowerhalwrap_jni.so using system ns (caller=/system_ext/framework/mediatek-framework.jar): ok
+2025-10-01 17:28:48.947   711-711   PowerHalWrapper         com.cdccreditsmart.app.debug         I  PowerHalWrapper.getInstance 
+2025-10-01 17:28:48.948   711-711   M-ProMotion             com.cdccreditsmart.app.debug         I  M-ProMotion is disabled
+2025-10-01 17:28:48.959   711-795   vulkan                  com.cdccreditsmart.app.debug         D  searching for layers in '/data/app/~~gqHlR1oIwY3jorXwXfwUbA==/com.cdccreditsmart.app.debug-BzftjUXeEovWEdWxafeOpw==/lib/arm64'
+2025-10-01 17:28:48.960   711-795   vulkan                  com.cdccreditsmart.app.debug         D  searching for layers in '/data/app/~~gqHlR1oIwY3jorXwXfwUbA==/com.cdccreditsmart.app.debug-BzftjUXeEovWEdWxafeOpw==/base.apk!/lib/arm64-v8a'
+2025-10-01 17:28:48.961   711-795   vulkan                  com.cdccreditsmart.app.debug         D  searching for layers in '/data/app/~~gqHlR1oIwY3jorXwXfwUbA==/com.cdccreditsmart.app.debug-BzftjUXeEovWEdWxafeOpw==/lib/arm64'
+2025-10-01 17:28:48.961   711-795   vulkan                  com.cdccreditsmart.app.debug         D  searching for layers in '/data/app/~~gqHlR1oIwY3jorXwXfwUbA==/com.cdccreditsmart.app.debug-BzftjUXeEovWEdWxafeOpw==/base.apk!/lib/arm64-v8a'
+2025-10-01 17:28:48.970   711-795   MMUD                    com.cdccreditsmart.app.debug         D  mtk_memory_debug_init com.cdccreditsmart.app.debug 0xb40000721c5fe5d0
+2025-10-01 17:28:49.018   711-711   CompatChangeReporter    com.cdccreditsmart.app.debug         D  Compat change id reported: 309578419; UID 10240; state: ENABLED
+2025-10-01 17:28:49.073   711-799   MMUD                    com.cdccreditsmart.app.debug         D  get_leak_baseline 3246391296
+2025-10-01 17:28:49.126   711-711   Activity                com.cdccreditsmart.app.debug         D  onResume setDolbyGameProfilePackage lastPkg =  currentPkg = com.cdccreditsmart.app.debug
+2025-10-01 17:28:49.130   711-792   PowerHalWrapper         com.cdccreditsmart.app.debug         I  PowerHalWrapper.getInstance 
+2025-10-01 17:28:49.132   711-711   SurfaceFactory          com.cdccreditsmart.app.debug         I  [static] sSurfaceFactory = com.mediatek.view.impl.SurfaceFactoryImpl@bd75d37
+2025-10-01 17:28:49.141   711-711   HWUI                    com.cdccreditsmart.app.debug         W  Unknown dataspace 0
+2025-10-01 17:28:49.146   711-711   VRI[MainActivity]       com.cdccreditsmart.app.debug         D  hardware acceleration = true, forceHwAccelerated = false
+2025-10-01 17:28:49.156   711-711   InputEventReceiver      com.cdccreditsmart.app.debug         D  Input log is disabled in InputEventReceiver.
+2025-10-01 17:28:49.954   711-780   smart.app.debug         com.cdccreditsmart.app.debug         I  Compiler allocated 6943KB to compile void android.view.ViewRootImpl.performTraversals()
+2025-10-01 17:28:50.008   711-711   SimplifiedAuthViewModel com.cdccreditsmart.app.debug         D  Initializing simplified auth system
+2025-10-01 17:28:50.221   711-711   View                    com.cdccreditsmart.app.debug         D  [ANR Warning]onMeasure time too long, this =androidx.compose.ui.platform.AndroidComposeView{b447579 VFED..... ......I. 0,0-0,0}time =483 ms
+2025-10-01 17:28:50.221   711-711   View                    com.cdccreditsmart.app.debug         D  [ANR Warning]onMeasure time too long, this =androidx.compose.ui.platform.ComposeView{22dd664 V.E...... ......I. 0,0-0,0}time =483 ms
+2025-10-01 17:28:50.221   711-711   View                    com.cdccreditsmart.app.debug         D  [ANR Warning]onMeasure time too long, this =android.widget.FrameLayout{a2ef0cd V.E...... ......I. 0,0-0,0 #1020002 android:id/content}time =483 ms
+2025-10-01 17:28:50.222   711-711   View                    com.cdccreditsmart.app.debug         D  [ANR Warning]onMeasure time too long, this =android.widget.LinearLayout{ee92d82 V.E...... ......I. 0,0-0,0}time =484 ms
+2025-10-01 17:28:50.223   711-711   View                    com.cdccreditsmart.app.debug         D  [ANR Warning]onMeasure time too long, this =DecorView@9b22c93[MainActivity]time =485 ms
+2025-10-01 17:28:50.236   711-711   BufferQueueConsumer     com.cdccreditsmart.app.debug         D  [](id:2c700000000,api:0,p:-1,c:711) connect: controlledByApp=false
+2025-10-01 17:28:50.237   711-711   BLASTBufferQueue        com.cdccreditsmart.app.debug         D  [VRI[MainActivity]#0](f:0,a:0) constructor()
+2025-10-01 17:28:50.238   711-711   BLASTBufferQueue        com.cdccreditsmart.app.debug         D  [VRI[MainActivity]#0](f:0,a:0) update width=1080 height=2400 format=-3 mTransformHint=0
+2025-10-01 17:28:50.240   711-711   FBI                     com.cdccreditsmart.app.debug         E  Can't load library: dlopen failed: library "libmagtsync.so" not found
+2025-10-01 17:28:50.305   711-795   GrallocExtra            com.cdccreditsmart.app.debug         I  gralloc_extra_query:is_SW3D 0
+2025-10-01 17:28:50.339   711-795   GrallocExtra            com.cdccreditsmart.app.debug         I  gralloc_extra_query:is_SW3D 0
+2025-10-01 17:28:50.339   711-795   BLASTBufferQueue        com.cdccreditsmart.app.debug         D  [VRI[MainActivity]#0](f:0,a:1) acquireNextBufferLocked size=1080x2400 mFrameNumber=1 applyTransaction=true mTimestamp=86784213999557(auto) mPendingTransactions.size=0 graphicBufferId=3053721747459 transform=0
+2025-10-01 17:28:50.341   711-869   LibMBrainProxy          com.cdccreditsmart.app.debug         D  Init Paramters
+2025-10-01 17:28:50.363   711-711   SimplifiedAuthViewModel com.cdccreditsmart.app.debug         D  STATE CHANGE: Initializing -> Initializing (Starting device registration check)
+2025-10-01 17:28:50.364   711-711   SimplifiedAuthViewModel com.cdccreditsmart.app.debug         D  Device already registered with valid token
+2025-10-01 17:28:50.371   711-788   HWUI                    com.cdccreditsmart.app.debug         I  Davey! duration=1411ms; Flags=1, FrameTimelineVsyncId=1462878, IntendedVsync=86782798163268, Vsync=86783031463608, InputEventId=0, HandleInputStart=86783035902864, AnimationStart=86783035953095, PerformTraversalsStart=86783036577018, DrawStart=86784147435249, FrameDeadline=86782818163268, FrameInterval=86783034733403, FrameStartTime=16664310, SyncQueued=86784168469018, SyncStart=86784175207480, IssueDrawCommandsStart=86784175858941, SwapBuffers=86784213323249, FrameCompleted=86784216730633, DequeueBufferDuration=17230, QueueBufferDuration=863693, GpuCompleted=86784216730633, SwapBuffersCompleted=86784216598326, DisplayPresentTime=0, CommandSubmissionCompleted=86784213323249, 
+2025-10-01 17:28:50.381   711-711   Choreographer           com.cdccreditsmart.app.debug         I  Skipped 65 frames!  The application may be doing too much work on its main thread.
+2025-10-01 17:28:50.432   711-788   HWUI                    com.cdccreditsmart.app.debug         I  Davey! duration=1130ms; Flags=0, FrameTimelineVsyncId=1463082, IntendedVsync=86783164812439, Vsync=86784248112644, InputEventId=0, HandleInputStart=86784257622941, AnimationStart=86784257626249, PerformTraversalsStart=86784280235249, DrawStart=86784280638249, FrameDeadline=86784251293928, FrameInterval=86784256776095, FrameStartTime=16666157, SyncQueued=86784289990326, SyncStart=86784290133941, IssueDrawCommandsStart=86784290197633, SwapBuffers=86784292490557, FrameCompleted=86784295065710, DequeueBufferDuration=18154, QueueBufferDuration=699077, GpuCompleted=86784295065710, SwapBuffersCompleted=86784293682018, DisplayPresentTime=0, CommandSubmissionCompleted=86784292490557, 
+2025-10-01 17:28:50.634   711-881   CameraManagerGlobal     com.cdccreditsmart.app.debug         I  Connecting to camera service
+2025-10-01 17:28:50.642   711-881   CameraTinnoAccessUtil   com.cdccreditsmart.app.debug         D  tinno checking isCameraHiddenFromApp() cameraId 0isAuxCameraSupported trueisAuxCameraExposed false
+2025-10-01 17:28:50.642   711-881   CameraTinnoAccessUtil   com.cdccreditsmart.app.debug         D  tinno checking1 isCameraHiddenFromApp() id 0 hidden camera IDs: false
+2025-10-01 17:28:50.643   711-881   CameraTinnoAccessUtil   com.cdccreditsmart.app.debug         D  tinno checking isCameraHiddenFromApp() cameraId 1isAuxCameraSupported trueisAuxCameraExposed false
+2025-10-01 17:28:50.643   711-881   CameraTinnoAccessUtil   com.cdccreditsmart.app.debug         D  tinno checking1 isCameraHiddenFromApp() id 1 hidden camera IDs: false
+2025-10-01 17:28:50.644   711-881   CameraTinnoAccessUtil   com.cdccreditsmart.app.debug         D  tinno checking isCameraHiddenFromApp() cameraId 2isAuxCameraSupported trueisAuxCameraExposed false
+2025-10-01 17:28:50.644   711-881   CameraTinnoAccessUtil   com.cdccreditsmart.app.debug         D  tinno checking1 isCameraHiddenFromApp() id 2 hidden camera IDs: true
+2025-10-01 17:28:50.645   711-881   CameraTinnoAccessUtil   com.cdccreditsmart.app.debug         D  tinno getNumberofPhysicalCamera() physicalcamera_num 3
+2025-10-01 17:28:50.646   711-881   CameraTinnoAccessUtil   com.cdccreditsmart.app.debug         D  tinno getNumberofPhysicalCamera() physicalcamera_num 3
+2025-10-01 17:28:50.646   711-881   CameraTinnoAccessUtil   com.cdccreditsmart.app.debug         D  tinno getNumberofPhysicalCamera() physicalcamera_num 3
+2025-10-01 17:28:50.646   711-881   CameraTinnoAccessUtil   com.cdccreditsmart.app.debug         D  tinno getNumberofPhysicalCamera() physicalcamera_num 3
+2025-10-01 17:28:50.648   711-788   CameraTinnoAccessUtil   com.cdccreditsmart.app.debug         D  tinno checking isCameraHiddenFromApp() cameraId 0isAuxCameraSupported trueisAuxCameraExposed false
+2025-10-01 17:28:50.648   711-788   CameraTinnoAccessUtil   com.cdccreditsmart.app.debug         D  tinno checking1 isCameraHiddenFromApp() id 0 hidden camera IDs: false
+2025-10-01 17:28:50.649   711-788   CameraTinnoAccessUtil   com.cdccreditsmart.app.debug         D  tinno checking isCameraHiddenFromApp() cameraId 2isAuxCameraSupported trueisAuxCameraExposed false
+2025-10-01 17:28:50.650   711-788   CameraTinnoAccessUtil   com.cdccreditsmart.app.debug         D  tinno checking1 isCameraHiddenFromApp() id 2 hidden camera IDs: true
+2025-10-01 17:28:50.689   711-881   CameraRepository        com.cdccreditsmart.app.debug         D  Added camera: 0
+2025-10-01 17:28:50.722   711-881   Camera2CameraInfo       com.cdccreditsmart.app.debug         I  Device Level: INFO_SUPPORTED_HARDWARE_LEVEL_FULL
+2025-10-01 17:28:50.727   711-881   CameraRepository        com.cdccreditsmart.app.debug         D  Added camera: 1
+2025-10-01 17:28:50.729   711-881   Camera2CameraInfo       com.cdccreditsmart.app.debug         I  Device Level: INFO_SUPPORTED_HARDWARE_LEVEL_FULL
+2025-10-01 17:28:50.731   711-881   CameraValidator         com.cdccreditsmart.app.debug         D  Verifying camera lens facing on lamu, lensFacingInteger: null
+2025-10-01 17:28:50.984   711-711   CameraOrientationUtil   com.cdccreditsmart.app.debug         D  getRelativeImageRotation: destRotationDegrees=0, sourceRotationDegrees=270, isOppositeFacing=false, result=270
+2025-10-01 17:28:50.985   711-711   CameraOrientationUtil   com.cdccreditsmart.app.debug         D  getRelativeImageRotation: destRotationDegrees=0, sourceRotationDegrees=270, isOppositeFacing=false, result=270
+2025-10-01 17:28:51.002   711-711   DynamicRangeResolver    com.cdccreditsmart.app.debug         D  Resolved dynamic range for use case androidx.camera.core.Preview-382ff0e3-2331-40bb-9e8d-65bbc6040ecf to no compatible HDR dynamic ranges.
+                                                                                                    DynamicRange@88ee42d{encoding=UNSPECIFIED, bitDepth=0}
+                                                                                                    ->
+                                                                                                    DynamicRange@62b0d62{encoding=SDR, bitDepth=8}
+2025-10-01 17:28:51.010   711-711   CameraOrientationUtil   com.cdccreditsmart.app.debug         D  getRelativeImageRotation: destRotationDegrees=0, sourceRotationDegrees=270, isOppositeFacing=false, result=270
+2025-10-01 17:28:51.012   711-711   DeferrableSurface       com.cdccreditsmart.app.debug         D  Surface created[total_surfaces=1, used_surfaces=0](androidx.camera.core.processing.SurfaceEdge$SettableSurface@a229629}
+2025-10-01 17:28:51.016   711-711   DeferrableSurface       com.cdccreditsmart.app.debug         D  Surface created[total_surfaces=2, used_surfaces=0](androidx.camera.core.SurfaceRequest$2@e256be5}
+2025-10-01 17:28:51.019   711-711   DeferrableSurface       com.cdccreditsmart.app.debug         D  New surface in use[total_surfaces=2, used_surfaces=1](androidx.camera.core.SurfaceRequest$2@e256be5}
+2025-10-01 17:28:51.019   711-711   DeferrableSurface       com.cdccreditsmart.app.debug         D  use count+1, useCount=1 androidx.camera.core.SurfaceRequest$2@e256be5
+2025-10-01 17:28:51.020   711-711   CameraOrientationUtil   com.cdccreditsmart.app.debug         D  getRelativeImageRotation: destRotationDegrees=0, sourceRotationDegrees=270, isOppositeFacing=false, result=270
+2025-10-01 17:28:51.026   711-881   Camera2CameraImpl       com.cdccreditsmart.app.debug         D  {Camera@bbcc904[id=1]} Use case androidx.camera.core.Preview-382ff0e3-2331-40bb-9e8d-65bbc6040ecf7051761 ACTIVE
+2025-10-01 17:28:51.030   711-881   UseCaseAttachState      com.cdccreditsmart.app.debug         D  Active and attached use case: [] for camera: 1
+2025-10-01 17:28:51.034   711-881   Camera2CameraImpl       com.cdccreditsmart.app.debug         D  {Camera@bbcc904[id=1]} Use cases [androidx.camera.core.Preview-382ff0e3-2331-40bb-9e8d-65bbc6040ecf7051761] now ATTACHED
+2025-10-01 17:28:51.035   711-881   UseCaseAttachState      com.cdccreditsmart.app.debug         D  All use case: [androidx.camera.core.Preview-382ff0e3-2331-40bb-9e8d-65bbc6040ecf7051761] for camera: 1
+2025-10-01 17:28:51.036   711-881   UseCaseAttachState      com.cdccreditsmart.app.debug         D  Active and attached use case: [androidx.camera.core.Preview-382ff0e3-2331-40bb-9e8d-65bbc6040ecf7051761] for camera: 1
+2025-10-01 17:28:51.039   711-881   Camera2CameraImpl       com.cdccreditsmart.app.debug         D  {Camera@bbcc904[id=1]} Resetting Capture Session
+2025-10-01 17:28:51.041   711-881   Camera2CameraImpl       com.cdccreditsmart.app.debug         D  {Camera@bbcc904[id=1]} Releasing session in state INITIALIZED
+2025-10-01 17:28:51.043   711-881   Camera2CameraImpl       com.cdccreditsmart.app.debug         D  {Camera@bbcc904[id=1]} Attempting to force open the camera.
+2025-10-01 17:28:51.044   711-881   CameraStateRegistry     com.cdccreditsmart.app.debug         D  tryOpenCamera(Camera@bbcc904[id=1]) [Available Cameras: 1, Already Open: false (Previous state: null)] --> SUCCESS
+2025-10-01 17:28:51.047   711-881   CameraStateRegistry     com.cdccreditsmart.app.debug         D  Recalculating open cameras:
+                                                                                                    Camera                                       State                 
+                                                                                                    -------------------------------------------------------------------
+                                                                                                    Camera@bbcc904[id=1]                         OPENING               
+                                                                                                    Camera@bc6d2ca[id=0]                         UNKNOWN               
+                                                                                                    -------------------------------------------------------------------
+                                                                                                    Open count: 1 (Max allowed: 1)
+2025-10-01 17:28:51.048   711-881   Camera2CameraImpl       com.cdccreditsmart.app.debug         D  {Camera@bbcc904[id=1]} Opening camera.
+2025-10-01 17:28:51.049   711-881   Camera2CameraImpl       com.cdccreditsmart.app.debug         D  {Camera@bbcc904[id=1]} Transitioning camera internal state: INITIALIZED --> OPENING
+2025-10-01 17:28:51.049   711-881   CameraStateMachine      com.cdccreditsmart.app.debug         D  New public camera state CameraState{type=OPENING, error=null} from OPENING and null
+2025-10-01 17:28:51.049   711-881   CameraStateMachine      com.cdccreditsmart.app.debug         D  Publishing new public camera state CameraState{type=OPENING, error=null}
+2025-10-01 17:28:51.050   711-881   UseCaseAttachState      com.cdccreditsmart.app.debug         D  All use case: [androidx.camera.core.Preview-382ff0e3-2331-40bb-9e8d-65bbc6040ecf7051761] for camera: 1
+2025-10-01 17:28:51.052   711-711   PreviewView             com.cdccreditsmart.app.debug         D  Surface requested by Preview.
+2025-10-01 17:28:51.066   711-788   CameraTinnoAccessUtil   com.cdccreditsmart.app.debug         D  tinno checking isCameraHiddenFromApp() cameraId 1isAuxCameraSupported trueisAuxCameraExposed false
+2025-10-01 17:28:51.066   711-788   CameraTinnoAccessUtil   com.cdccreditsmart.app.debug         D  tinno checking1 isCameraHiddenFromApp() id 1 hidden camera IDs: false
+2025-10-01 17:28:51.082   711-881   Camera2CameraImpl       com.cdccreditsmart.app.debug         D  {Camera@bbcc904[id=1]} Use case androidx.camera.core.Preview-382ff0e3-2331-40bb-9e8d-65bbc6040ecf7051761 ACTIVE
+2025-10-01 17:28:51.084   711-881   UseCaseAttachState      com.cdccreditsmart.app.debug         D  Active and attached use case: [androidx.camera.core.Preview-382ff0e3-2331-40bb-9e8d-65bbc6040ecf7051761] for camera: 1
+2025-10-01 17:28:51.090   711-881   Camera2CameraImpl       com.cdccreditsmart.app.debug         D  {Camera@bbcc904[id=1]} CameraDevice.onOpened()
+2025-10-01 17:28:51.090   711-881   Camera2CameraImpl       com.cdccreditsmart.app.debug         D  {Camera@bbcc904[id=1]} Transitioning camera internal state: OPENING --> OPENED
+2025-10-01 17:28:51.091   711-881   CameraStateRegistry     com.cdccreditsmart.app.debug         D  Recalculating open cameras:
+                                                                                                    Camera                                       State                 
+                                                                                                    -------------------------------------------------------------------
+                                                                                                    Camera@bbcc904[id=1]                         OPEN                  
+                                                                                                    Camera@bc6d2ca[id=0]                         UNKNOWN               
+                                                                                                    -------------------------------------------------------------------
+                                                                                                    Open count: 1 (Max allowed: 1)
+2025-10-01 17:28:51.091   711-881   CameraStateMachine      com.cdccreditsmart.app.debug         D  New public camera state CameraState{type=OPEN, error=null} from OPEN and null
+2025-10-01 17:28:51.091   711-881   CameraStateMachine      com.cdccreditsmart.app.debug         D  Publishing new public camera state CameraState{type=OPEN, error=null}
+2025-10-01 17:28:51.092   711-881   UseCaseAttachState      com.cdccreditsmart.app.debug         D  All use case: [androidx.camera.core.Preview-382ff0e3-2331-40bb-9e8d-65bbc6040ecf7051761] for camera: 1
+2025-10-01 17:28:51.097   711-881   UseCaseAttachState      com.cdccreditsmart.app.debug         D  Active and attached use case: [androidx.camera.core.Preview-382ff0e3-2331-40bb-9e8d-65bbc6040ecf7051761] for camera: 1
+2025-10-01 17:28:51.124   711-711   PreviewView             com.cdccreditsmart.app.debug         D  Preview transformation info updated. TransformationInfo{getCropRect=Rect(0, 0 - 1440, 1088), getRotationDegrees=270, getTargetRotation=-1, hasCameraTransform=true, getSensorToBufferTransform=Matrix{[1.0, 0.0, 0.0][0.0, 1.0, 0.0][0.0, 0.0, 1.0]}, getMirroring=true}
+2025-10-01 17:28:51.124   711-711   PreviewTransform        com.cdccreditsmart.app.debug         D  Transformation info set: TransformationInfo{getCropRect=Rect(0, 0 - 1440, 1088), getRotationDegrees=270, getTargetRotation=-1, hasCameraTransform=true, getSensorToBufferTransform=Matrix{[1.0, 0.0, 0.0][0.0, 1.0, 0.0][0.0, 0.0, 1.0]}, getMirroring=true} 1440x1088 true
+2025-10-01 17:28:51.125   711-711   CameraOrientationUtil   com.cdccreditsmart.app.debug         D  getRelativeImageRotation: destRotationDegrees=0, sourceRotationDegrees=270, isOppositeFacing=false, result=270
+2025-10-01 17:28:51.126   711-711   SurfaceViewImpl         com.cdccreditsmart.app.debug         D  Wait for new Surface creation.
+2025-10-01 17:28:51.148   711-711   BufferQueueConsumer     com.cdccreditsmart.app.debug         D  [](id:2c700000001,api:0,p:-1,c:711) connect: controlledByApp=false
+2025-10-01 17:28:51.149   711-711   BLASTBufferQueue        com.cdccreditsmart.app.debug         D  [SurfaceView[com.cdccreditsmart.app.debug/com.cdccreditsmart.app.presentation.MainActivity]#1](f:0,a:0) constructor()
+2025-10-01 17:28:51.149   711-711   BLASTBufferQueue        com.cdccreditsmart.app.debug         D  [SurfaceView[com.cdccreditsmart.app.debug/com.cdccreditsmart.app.presentation.MainActivity]#1](f:0,a:0) update width=1440 height=1088 format=4 mTransformHint=0
+2025-10-01 17:28:51.150   711-711   SurfaceViewImpl         com.cdccreditsmart.app.debug         D  Surface created.
+2025-10-01 17:28:51.150   711-711   SurfaceViewImpl         com.cdccreditsmart.app.debug         D  Surface changed. Size: 1440x1088
+2025-10-01 17:28:51.150   711-711   SurfaceViewImpl         com.cdccreditsmart.app.debug         D  Surface set on Preview.
+2025-10-01 17:28:51.151   711-881   SyncCaptureSessionBase  com.cdccreditsmart.app.debug         D  [androidx.camera.camera2.internal.SynchronizedCaptureSessionBaseImpl@3ada92f] getSurface...done
+2025-10-01 17:28:51.152   711-881   CaptureSession          com.cdccreditsmart.app.debug         D  Opening capture session.
+2025-10-01 17:28:51.160   711-881   DeferrableSurface       com.cdccreditsmart.app.debug         D  use count+1, useCount=2 androidx.camera.core.SurfaceRequest$2@e256be5
+2025-10-01 17:28:51.186   711-881   CaptureSession          com.cdccreditsmart.app.debug         D  Attempting to send capture request onConfigured
+2025-10-01 17:28:51.186   711-881   CaptureSession          com.cdccreditsmart.app.debug         D  Issuing request for session.
+2025-10-01 17:28:51.187   711-881   Camera2Cap...estBuilder com.cdccreditsmart.app.debug         D  createCaptureRequest
+2025-10-01 17:28:51.195   711-881   CaptureSession          com.cdccreditsmart.app.debug         D  CameraCaptureSession.onConfigured() mState=OPENED
+2025-10-01 17:28:51.195   711-881   CaptureSession          com.cdccreditsmart.app.debug         D  CameraCaptureSession.onReady() OPENED
+2025-10-01 17:28:51.259   711-711   InteractionJankMonitor  com.cdccreditsmart.app.debug         W  Initializing without READ_DEVICE_CONFIG permission. enabled=false, interval=1, missedFrameThreshold=3, frameTimeThreshold=64, package=com.cdccreditsmart.app.debug
+2025-10-01 17:28:51.423   711-786   BLASTBufferQueue        com.cdccreditsmart.app.debug         D  [SurfaceView[com.cdccreditsmart.app.debug/com.cdccreditsmart.app.presentation.MainActivity]#1](f:0,a:1) acquireNextBufferLocked size=1440x1088 mFrameNumber=1 applyTransaction=true mTimestamp=86785238301387 mPendingTransactions.size=0 graphicBufferId=3053721747460 transform=5
+2025-10-01 17:28:51.427   711-891   StreamStateObserver     com.cdccreditsmart.app.debug         D  Update Preview stream state to STREAMING
+2025-10-01 17:28:51.914   711-711   SimpleBiometryViewModel com.cdccreditsmart.app.debug         D  Starting biometry validation (DEMO_MODE=true)
+2025-10-01 17:28:51.915   711-711   SimpleBiometryViewModel com.cdccreditsmart.app.debug         D  DEMO_MODE: Simulating successful biometry validation...
+2025-10-01 17:28:54.915   711-711   SimpleBiometryViewModel com.cdccreditsmart.app.debug         D  DEMO_MODE: Biometry validation simulated successfully
+2025-10-01 17:28:55.063   711-1052  ProfileInstaller        com.cdccreditsmart.app.debug         D  Installing profile for com.cdccreditsmart.app.debug
