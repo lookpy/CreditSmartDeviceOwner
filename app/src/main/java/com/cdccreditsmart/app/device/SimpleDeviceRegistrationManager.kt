@@ -237,8 +237,7 @@ class SimpleDeviceRegistrationManager(private val context: Context) {
                     putString(PREF_DEVICE_ID, result.deviceId)
                     putLong(PREF_REGISTRATION_TIME, System.currentTimeMillis())
                     putLong(PREF_TOKEN_EXPIRY, expiryTime)
-                    apply()
-                }
+                }.commit()  // ✅ SYNCHRONOUS to ensure data is persisted before navigation
                 
                 Log.d(TAG, "✅ Data saved successfully!")
                 Log.d(TAG, "✅ ========== CLAIM-SALE COMPLETE ==========")
@@ -464,8 +463,7 @@ class SimpleDeviceRegistrationManager(private val context: Context) {
             putString(PREF_DEVICE_ID, response.deviceId)
             putLong(PREF_REGISTRATION_TIME, System.currentTimeMillis())
             putLong(PREF_TOKEN_EXPIRY, System.currentTimeMillis() + (24 * 60 * 60 * 1000)) // 24 hours
-            apply()
-        }
+        }.commit()  // ✅ SYNCHRONOUS to ensure data is persisted
     }
 
     /**

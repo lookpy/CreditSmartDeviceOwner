@@ -1,0 +1,20 @@
+D  createCaptureRequest
+2025-10-01 20:05:08.131 11284-11347 CaptureSession          com.cdccreditsmart.app.debug         D  CameraCaptureSession.onConfigured() mState=OPENED
+2025-10-01 20:05:08.133 11284-11347 CaptureSession          com.cdccreditsmart.app.debug         D  CameraCaptureSession.onReady() OPENED
+2025-10-01 20:05:08.364 11284-11300 BLASTBufferQueue        com.cdccreditsmart.app.debug         D  [SurfaceView[com.cdccreditsmart.app.debug/com.cdccreditsmart.app.presentation.MainActivity]#1](f:0,a:1) acquireNextBufferLocked size=1440x1088 mFrameNumber=1 applyTransaction=true mTimestamp=96157798230233 mPendingTransactions.size=0 graphicBufferId=48464410968068 transform=5
+2025-10-01 20:05:08.369 11284-11347 StreamStateObserver     com.cdccreditsmart.app.debug         D  Update Preview stream state to STREAMING
+2025-10-01 20:05:08.794 11284-11284 SimpleBiometryViewModel com.cdccreditsmart.app.debug         D  Starting biometry validation (DEMO_MODE=false)
+2025-10-01 20:05:08.796 11284-11284 SimpleBiometryViewModel com.cdccreditsmart.app.debug         D  📋 Checking binding data from TokenManager:
+2025-10-01 20:05:08.796 11284-11284 SimpleBiometryViewModel com.cdccreditsmart.app.debug         D     - biometrySessionId: ❌ NULL
+2025-10-01 20:05:08.796 11284-11284 SimpleBiometryViewModel com.cdccreditsmart.app.debug         D     - storeId: ❌ NULL
+2025-10-01 20:05:08.796 11284-11284 SimpleBiometryViewModel com.cdccreditsmart.app.debug         D     - customerCpf: ❌ NULL
+2025-10-01 20:05:08.796 11284-11284 SimpleBiometryViewModel com.cdccreditsmart.app.debug         E  ❌ CRITICAL: No biometry session found!
+2025-10-01 20:05:08.796 11284-11284 SimpleBiometryViewModel com.cdccreditsmart.app.debug         E  ❌ This means the backend did NOT return 'biometrySessionId' in ClaimSaleResponse
+2025-10-01 20:05:08.796 11284-11284 SimpleBiometryViewModel com.cdccreditsmart.app.debug         E  ❌ Check SimpleDeviceRegistrationManager logs for 'WARNING: No biometry session ID'
+2025-10-01 20:05:08.796 11284-11284 SimpleBiometryViewModel com.cdccreditsmart.app.debug         E  ❌ Backend must return biometrySessionId in POST /v1/device/claim-sale response
+2025-10-01 20:05:08.796 11284-11284 SimpleBiometryViewModel com.cdccreditsmart.app.debug         E  
+2025-10-01 20:05:08.796 11284-11284 SimpleBiometryViewModel com.cdccreditsmart.app.debug         E  🔧 SOLUTION: Ensure backend returns these fields in ClaimSaleResponse:
+2025-10-01 20:05:08.796 11284-11284 SimpleBiometryViewModel com.cdccreditsmart.app.debug         E     { biometrySessionId: 'bio_ses_...', storeId: '...', customerCpf: '...' }
+2025-10-01 20:05:10.326 11284-11412 ProfileInstaller        com.cdccreditsmart.app.debug         D  Installing profile for com.cdccreditsmart.app.debug
+2025-10-01 20:05:23.330 11284-11291 smart.app.debug         com.cdccreditsmart.app.debug         I  Background concurrent mark compact GC freed 9152KB AllocSpace bytes, 9(304KB) LOS objects, 66% free, 6314KB/18MB, paused 470us,5.357ms total 67.798ms
+2025-10-01 20:05:23.347 11284-11293 System                  com.cdccreditsmart.app.debug         W  A resource failed to call close. 

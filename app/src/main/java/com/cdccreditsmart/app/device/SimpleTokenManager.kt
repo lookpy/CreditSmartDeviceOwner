@@ -49,10 +49,12 @@ class SimpleTokenManager(context: Context) {
         expiryTimeMs: Long,
         hardwareImei: String? = null
     ) {
-        Log.d(TAG, "Saving binding data for device: $deviceId")
-        Log.d(TAG, "StoreId: $storeId, BiometrySessionId: $biometrySessionId, CustomerCpf: ${customerCpf?.let { "***" }}")
+        Log.d(TAG, "💾 Saving binding data for device: $deviceId")
+        Log.d(TAG, "   StoreId: $storeId")
+        Log.d(TAG, "   BiometrySessionId: $biometrySessionId")
+        Log.d(TAG, "   CustomerCpf: ${customerCpf?.let { "***" }}")
         
-        prefs.edit().apply {
+        val success = prefs.edit().apply {
             putString(PREF_DEVICE_TOKEN, token)
             putString(PREF_DEVICE_ID, deviceId)
             putString(PREF_STORE_ID, storeId)
@@ -63,10 +65,19 @@ class SimpleTokenManager(context: Context) {
             // Save IMEI if provided to reuse in future claim-sale calls
             if (hardwareImei != null) {
                 putString(PREF_HARDWARE_IMEI, hardwareImei)
-                Log.d(TAG, "Saved IMEI: ${hardwareImei.take(4)}***")
+                Log.d(TAG, "   Saving IMEI: ${hardwareImei.take(4)}***")
             }
+        }.commit()  // ✅ SYNCHRONOUS! Blocks until write completes
+        
+        if (success) {
+            Log.d(TAG, "✅ Data persisted successfully to SharedPreferences")
             
-            apply()
+            // Verify data was saved correctly
+            val verifyBiometryId = prefs.getString(PREF_BIOMETRY_SESSION_ID, null)
+            val verifyStoreId = prefs.getString(PREF_STORE_ID, null)
+            Log.d(TAG, "✅ Verification - BiometrySessionId: ${verifyBiometryId != null}, StoreId: ${verifyStoreId != null}")
+        } else {
+            Log.e(TAG, "❌ CRITICAL: Failed to persist data to SharedPreferences!")
         }
     }
 

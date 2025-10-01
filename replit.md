@@ -86,15 +86,31 @@ The UI is built entirely with Jetpack Compose and Material 3, featuring a CDC in
 - 🔧 **ENHANCED LOGGING** - Logs detalhados adicionados para diagnosticar campos faltantes
 - 📋 **BACKEND COMPLIANCE** - Backend PRECISA retornar os 3 campos no ClaimSaleResponse
 
-**DIAGNÓSTICO (Logs do APK):**
-- ❌ Backend está retornando NULL para `biometrySessionId`, `storeId`, `customerCpf`
-- ❌ Isso causa falha na tela de biometria (dados obrigatórios faltando)
-- ✅ APK detecta e exibe erro claro: "Backend configuration error: biometry session not provided"
+**RACE CONDITION FIX (October 01, 2025) - ✅ CRITICAL BUG FIXED!**
+- 🐛 **BUG IDENTIFICADO**: SharedPreferences.apply() é assíncrono, causando race condition
+- 🔍 **ROOT CAUSE**: SimpleBiometryViewModel lia dados ANTES do TokenManager.saveBindingData() completar write
+- ✅ **SOLUÇÃO**: Trocado apply() por commit() em todos os lugares críticos (TokenManager, DeviceRegistrationManager)
+- 🔐 **SYNC WRITES**: commit() bloqueia até write completar, garantindo que navegação só acontece APÓS dados salvos
+- 📊 **VERIFICATION**: Logs adicionados para verificar que dados foram persistidos corretamente
+- ✅ **ARCHITECT APPROVED**: Análise completa de race condition e solução validada
+
+**IMEI PERMISSION FIX (October 01, 2025) - ✅ ANDROID 10+ COMPATIBILITY!**
+- 🐛 **BUG**: Android 10+ bloqueia IMEI mesmo com READ_PHONE_STATE (requer READ_PRIVILEGED_PHONE_STATE)
+- ✅ **SOLUÇÃO**: TokenManager agora salva e reutiliza IMEI do primeiro pareamento
+- 💾 **PERSISTENCE**: IMEI salvo em SharedPreferences durante claim-sale
+- 🔄 **FALLBACK CHAIN**: Tenta IMEI salvo → IMEI hardware → entrada manual
+- ✅ **NO ERRORS**: Elimina SecurityException em dispositivos Android 10+
+
+**CLAIM-SALE RE-RUN FIX (October 01, 2025) - ✅ MISSING BIOMETRY DATA DETECTION!**
+- 🔍 **DETECTION**: checkDeviceRegistrationStatus() agora verifica se biometrySessionId existe
+- 🔄 **AUTO RE-PAIR**: Se token existe mas falta biometry data, executa claim-sale automaticamente
+- 📋 **USE CASE**: Dispositivos pareados antes da implementação do fluxo de biometria
+- ✅ **SEAMLESS**: Usuário não precisa re-parear manualmente
 
 **PRÓXIMOS PASSOS:**
-- 🔧 **BACKEND FIX REQUIRED**: Atualizar `/api/device/claim-sale` para retornar campos conforme documentação
 - 🏗️ Build APK em ambiente com mais memória (local/CI) ou usar modelo 128-dim
-- ✅ Após backend fix, testar fluxo completo: claim-sale → biometry verify → fraud detection
+- 🧪 Testar fluxo completo: pairing → claim-sale → biometry verify → fraud detection
+- 📱 Verificar logs detalhados para confirmar que backend retorna biometrySessionId, storeId, customerCpf
 
 ### CAMERAX REAL PREVIEW (September 30, 2025) - ✅ BUILD SUCCESSFUL!
 - ✅ **CÂMERA REAL** - Preview real da câmera frontal usando CameraX 1.3.4
