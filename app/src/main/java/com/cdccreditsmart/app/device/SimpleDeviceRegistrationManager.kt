@@ -148,9 +148,19 @@ class SimpleDeviceRegistrationManager(private val context: Context) {
         fingerprint: String
     ): Result<ClaimSaleResponse> {
         return try {
-            Log.d(TAG, "Claiming sale with validation ID: $validationId")
+            Log.d(TAG, "🔄 ========== CLAIM-SALE STARTED ==========")
+            Log.d(TAG, "🔄 Endpoint: POST /api/device/claim-sale")
+            Log.d(TAG, "📋 Request parameters:")
+            Log.d(TAG, "   - validationId: $validationId")
+            Log.d(TAG, "   - hardwareImei: $hardwareImei")
+            Log.d(TAG, "   - fingerprint: ${fingerprint.take(16)}...")
             
             val deviceInfo = collectDeviceInfo()
+            Log.d(TAG, "📱 Device info:")
+            Log.d(TAG, "   - model: ${deviceInfo.model}")
+            Log.d(TAG, "   - brand: ${deviceInfo.manufacturer}")
+            Log.d(TAG, "   - androidVersion: ${deviceInfo.androidVersion}")
+            
             val request = ClaimSaleRequest(
                 validationId = validationId,
                 hardwareImei = hardwareImei,
@@ -165,21 +175,52 @@ class SimpleDeviceRegistrationManager(private val context: Context) {
                 )
             )
             
+            Log.d(TAG, "🌐 Sending HTTP request to backend...")
             val response = withContext(Dispatchers.IO) {
                 deviceApi.claimSale(request)
             }
             
-            Log.d(TAG, "Claim response - Code: ${response.code()}, Success: ${response.isSuccessful}")
+            Log.d(TAG, "📥 HTTP Response received:")
+            Log.d(TAG, "   - Status Code: ${response.code()}")
+            Log.d(TAG, "   - Success: ${response.isSuccessful}")
             
             if (response.isSuccessful && response.body() != null) {
                 val result = response.body()!!
-                Log.d(TAG, "Sale claimed successfully: ${result.message}")
-                Log.d(TAG, "Device ID: ${result.deviceId}, Sale ID: ${result.saleId}")
+                
+                Log.d(TAG, "✅ ========== CLAIM-SALE SUCCESS ==========")
+                Log.d(TAG, "✅ Message: ${result.message}")
+                Log.d(TAG, "✅ Response data:")
+                Log.d(TAG, "   - deviceId: ${result.deviceId}")
+                Log.d(TAG, "   - saleId: ${result.saleId}")
+                Log.d(TAG, "   - immutableToken: ${result.immutableToken.take(20)}...")
+                
+                // ✅ CRITICAL: Log biometry data received
+                Log.d(TAG, "")
+                Log.d(TAG, "🔐 BIOMETRY DATA FROM BACKEND:")
+                if (result.biometrySessionId != null) {
+                    Log.d(TAG, "   ✅ biometrySessionId: ${result.biometrySessionId}")
+                } else {
+                    Log.e(TAG, "   ❌ biometrySessionId: NULL (BACKEND NOT RETURNING!)")
+                }
+                
+                if (result.storeId != null) {
+                    Log.d(TAG, "   ✅ storeId: ${result.storeId}")
+                } else {
+                    Log.e(TAG, "   ❌ storeId: NULL (BACKEND NOT RETURNING!)")
+                }
+                
+                if (result.customerCpf != null) {
+                    Log.d(TAG, "   ✅ customerCpf: ${result.customerCpf.take(3)}***")
+                } else {
+                    Log.e(TAG, "   ❌ customerCpf: NULL (BACKEND NOT RETURNING!)")
+                }
+                Log.d(TAG, "")
                 
                 // Store token and device info using TokenManager
                 // This includes biometry session data from binding response
                 val expiryTime = System.currentTimeMillis() + (365 * 24 * 60 * 60 * 1000L) // 1 year
                 
+                Log.d(TAG, "💾 Saving data to TokenManager...")
                 tokenManager.saveBindingData(
                     token = result.immutableToken,
                     deviceId = result.deviceId,
@@ -198,20 +239,9 @@ class SimpleDeviceRegistrationManager(private val context: Context) {
                     apply()
                 }
                 
-                // Log binding data received
-                if (result.storeId != null) {
-                    Log.d(TAG, "Binding data - StoreId: ${result.storeId}")
-                }
-                if (result.biometrySessionId != null) {
-                    Log.d(TAG, "Binding data - BiometrySessionId: ${result.biometrySessionId}")
-                } else {
-                    Log.w(TAG, "WARNING: No biometry session ID in binding response - biometry flow may fail")
-                }
-                if (result.customerCpf != null) {
-                    Log.d(TAG, "Binding data - CustomerCpf: ***")
-                } else {
-                    Log.w(TAG, "WARNING: No customer CPF in binding response - may need to fetch separately")
-                }
+                Log.d(TAG, "✅ Data saved successfully!")
+                Log.d(TAG, "✅ ========== CLAIM-SALE COMPLETE ==========")
+                Log.d(TAG, "")
                 
                 Result.success(result)
             } else {

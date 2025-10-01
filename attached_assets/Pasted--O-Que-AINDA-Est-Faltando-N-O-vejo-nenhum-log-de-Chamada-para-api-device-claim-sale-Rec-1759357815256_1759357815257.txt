@@ -1,0 +1,88 @@
+ O Que AINDA Está Faltando:
+NÃO vejo nenhum log de:
+
+❌ Chamada para /api/device/claim-sale
+❌ Recebimento de biometrySessionId
+❌ Recebimento de storeId
+❌ Recebimento de customerCpf
+Os logs param na autenticação inicial. O APK parece estar registrado (tem token válido), mas não está chamando claim-sale antes de abrir a tela de biometria.
+
+🔍 Diagnóstico:
+Compare com o que DEVERIA aparecer nos logs:
+
+// ✅ DEVERIA ver isto nos logs:
+Log.d(TAG, "🔄 Calling claim-sale endpoint...")
+Log.d(TAG, "validationId: val_abc123")
+Log.d(TAG, "hardwareImei: 123456789012345")
+// Após sucesso:
+Log.d(TAG, "✅ Claim-sale concluído!")
+Log.d(TAG, "   biometrySessionId: bio_ses_abc123")
+Log.d(TAG, "   storeId: f3d6763d-...")
+Log.d(TAG, "   customerCpf: 123***")
+Mas nos logs só vejo:
+
+SimplifiedAuthViewModel: Device already registered with valid token
+E depois nada mais relacionado a claim-sale ou biometria.
+
+📝 INSTRUÇÕES PARA A IA DO APK:
+A IA do APK precisa adicionar logs de debug para confirmar que está chamando claim-sale:
+
+class SimplifiedAuthViewModel {
+    
+    suspend fun initializeBiometrySession() {
+        Log.d(TAG, "🔄 INICIANDO CLAIM-SALE...")
+        
+        try {
+            // Obter validationId da navegação
+            val validationId = // ... obter do intent/navigation
+            val hardwareImei = getHardwareImei()
+            val fingerprint = getDeviceFingerprint()
+            
+            Log.d(TAG, "📋 Dados para claim-sale:")
+            Log.d(TAG, "   validationId: $validationId")
+            Log.d(TAG, "   hardwareImei: $hardwareImei")
+            Log.d(TAG, "   fingerprint: ${fingerprint.take(16)}...")
+            
+            // Fazer request
+            val response = deviceApi.claimSale(
+                validationId = validationId,
+                hardwareImei = hardwareImei,
+                fingerprint = fingerprint,
+                deviceInfo = DeviceInfo(...)
+            )
+            
+            if (response.success) {
+                Log.d(TAG, "✅ CLAIM-SALE SUCESSO!")
+                Log.d(TAG, "   biometrySessionId: ${response.biometrySessionId}")
+                Log.d(TAG, "   storeId: ${response.storeId}")
+                Log.d(TAG, "   customerCpf: ${response.customerCpf?.take(3)}***")
+                
+                // Salvar para uso na biometria
+                _biometrySessionId = response.biometrySessionId
+                _storeId = response.storeId
+                _customerCpf = response.customerCpf
+            } else {
+                Log.e(TAG, "❌ CLAIM-SALE FALHOU: ${response.error}")
+            }
+            
+        } catch (e: Exception) {
+            Log.e(TAG, "❌ ERRO NO CLAIM-SALE: ${e.message}", e)
+        }
+    }
+}
+🎯 Resumo:
+Item	Status	Observação
+TensorFlow Lite	✅ OK	Carregando corretamente
+Câmera	✅ OK	3 câmeras detectadas
+Autenticação	✅ OK	Token válido encontrado
+claim-sale	❌ FALTANDO	Não está sendo chamado!
+biometrySessionId	❌ Não obtido	Depende do claim-sale
+storeId	❌ Não obtido	Depende do claim-sale
+customerCpf	❌ Não obtido	Depende do claim-sale
+Diga para sua IA do APK:
+
+Adicionar logs de debug detalhados
+Chamar claimSale() ANTES de abrir a tela de biometria
+Verificar se validationId está sendo passado corretamente da navegação
+Enviar os logs após implementar para eu validar
+O backend JÁ ESTÁ PRONTO para retornar os dados! Só falta o APK chamar o endpoint. 🚀

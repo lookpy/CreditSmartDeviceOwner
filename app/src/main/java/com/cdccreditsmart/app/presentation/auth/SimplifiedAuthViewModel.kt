@@ -94,13 +94,44 @@ class SimplifiedAuthViewModel(
                 // Check if device is already registered with valid token
                 if (deviceRegistrationManager.isDeviceRegistered()) {
                     Log.d(TAG, "Device already registered with valid token")
-                    _authState.value = _authState.value.copy(
-                        currentState = AuthStatus.Authenticated,
-                        isAuthenticated = true,
-                        isLoading = false,
-                        deviceId = deviceRegistrationManager.getDeviceId(),
-                        registrationStatus = "registered"
-                    )
+                    
+                    // ✅ CRITICAL: Check if we have biometry session data
+                    val hasBiometrySession = tokenManager.getBiometrySessionId() != null
+                    
+                    if (hasBiometrySession) {
+                        Log.d(TAG, "✅ Biometry session data found - device ready for biometry")
+                        _authState.value = _authState.value.copy(
+                            currentState = AuthStatus.Authenticated,
+                            isAuthenticated = true,
+                            isLoading = false,
+                            deviceId = deviceRegistrationManager.getDeviceId(),
+                            registrationStatus = "registered"
+                        )
+                    } else {
+                        Log.w(TAG, "⚠️ Token found but NO biometry session data")
+                        Log.w(TAG, "⚠️ This happens if device was paired before biometry flow was added")
+                        Log.w(TAG, "🔄 Need to perform claim-sale to get biometry session")
+                        
+                        // Get IMEI to perform claim-sale
+                        val hasPermission = DeviceUtils.hasPhoneStatePermission(context)
+                        
+                        if (hasPermission) {
+                            Log.d(TAG, "Permission available, will perform claim-sale to get biometry data")
+                            _authState.value = _authState.value.copy(
+                                hasPhoneStatePermission = true
+                            )
+                            startAutomaticPairing()
+                        } else {
+                            Log.w(TAG, "No permission - requesting to get IMEI for claim-sale")
+                            logStateChange(AuthStatus.AwaitingPermission, "Need IMEI for claim-sale")
+                            _authState.value = _authState.value.copy(
+                                currentState = AuthStatus.AwaitingPermission,
+                                isLoading = false,
+                                errorMessage = null,
+                                hasPhoneStatePermission = false
+                            )
+                        }
+                    }
                 } else {
                     Log.d(TAG, "Device not registered, checking permissions")
                     // Check if we have READ_PHONE_STATE permission
