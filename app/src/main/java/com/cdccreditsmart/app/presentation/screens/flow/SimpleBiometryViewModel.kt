@@ -11,6 +11,7 @@ import com.cdccreditsmart.network.api.BiometryApiService
 import com.cdccreditsmart.network.api.CreateBiometrySessionRequest
 import com.cdccreditsmart.network.api.FaceBiometryRequest
 import com.google.gson.Gson
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
@@ -36,8 +37,15 @@ enum class BiometryStatus {
 }
 
 /**
- * SimpleBiometryViewModel handles real backend integration for biometric validation
- * Uses mock face embedding data but makes REAL API calls to the backend
+ * SimpleBiometryViewModel handles biometric validation with DEMO_MODE
+ * 
+ * DEMO_MODE = true: Simulates successful biometric validation without backend calls
+ *                   This allows demonstration of the flow without real ML integration
+ * 
+ * DEMO_MODE = false: Makes real API calls to backend (requires real ML integration)
+ * 
+ * TODO: Substituir DEMO_MODE por integração ML real (Google ML Kit para face detection)
+ *       Quando ML estiver disponível, desabilitar DEMO_MODE e usar faceEmbedding real
  */
 class SimpleBiometryViewModel(
     private val context: Context
@@ -54,6 +62,23 @@ class SimpleBiometryViewModel(
 
     companion object {
         private const val TAG = "SimpleBiometryViewModel"
+        
+        private const val DEMO_MODE = true
+    }
+
+    /**
+     * Masks sensitive information in headers for logging
+     * Prevents JWT token leakage in logs
+     */
+    private fun maskSensitiveHeaders(headers: String): String {
+        return headers.replace(
+            Regex("Authorization: Bearer ([a-zA-Z0-9._-]+)"),
+            { matchResult ->
+                val token = matchResult.groupValues[1]
+                val preview = if (token.length > 10) token.substring(0, 10) + "***" else "***"
+                "Authorization: Bearer $preview"
+            }
+        )
     }
 
     /**
@@ -81,12 +106,11 @@ class SimpleBiometryViewModel(
                 val request = requestBuilder.build()
                 
                 Log.d(TAG, "Request URL: ${request.url}")
-                Log.d(TAG, "Request Headers: ${request.headers}")
+                Log.d(TAG, "Request Headers: ${maskSensitiveHeaders(request.headers.toString())}")
                 
                 val response = chain.proceed(request)
                 
                 Log.d(TAG, "Response Code: ${response.code}")
-                Log.d(TAG, "Response Headers: ${response.headers}")
                 
                 response
             }
@@ -102,10 +126,12 @@ class SimpleBiometryViewModel(
 
     /**
      * Start biometry validation process
-     * Step 1: Create a biometry session on the backend
+     * 
+     * DEMO_MODE = true: Simulates successful validation after 3 seconds
+     * DEMO_MODE = false: Creates real biometry session on backend
      */
     fun startBiometryValidation() {
-        Log.d(TAG, "Starting biometry validation")
+        Log.d(TAG, "Starting biometry validation (DEMO_MODE=$DEMO_MODE)")
         
         viewModelScope.launch {
             try {
@@ -114,6 +140,31 @@ class SimpleBiometryViewModel(
                     isLoading = true,
                     errorMessage = null
                 )
+
+                if (DEMO_MODE) {
+                    Log.d(TAG, "DEMO_MODE: Simulating successful biometry validation...")
+                    
+                    delay(1500)
+                    
+                    _biometryState.value = _biometryState.value.copy(
+                        sessionId = "demo_session_${System.currentTimeMillis()}",
+                        status = BiometryStatus.Processing
+                    )
+                    
+                    delay(1500)
+                    
+                    _biometryState.value = _biometryState.value.copy(
+                        status = BiometryStatus.Success,
+                        isLoading = false,
+                        verificationResult = "approved",
+                        confidence = 0.98,
+                        isApproved = true,
+                        errorMessage = null
+                    )
+                    
+                    Log.d(TAG, "DEMO_MODE: Biometry validation simulated successfully")
+                    return@launch
+                }
 
                 // Get device ID from token manager
                 val deviceId = tokenManager.getDeviceId()
@@ -132,7 +183,7 @@ class SimpleBiometryViewModel(
                 // Create biometry session request
                 val sessionRequest = CreateBiometrySessionRequest(
                     deviceId = deviceId,
-                    contractId = deviceId, // Using deviceId as contractId for now
+                    contractId = deviceId,
                     verificationType = "facial_liveness"
                 )
 
@@ -177,7 +228,9 @@ class SimpleBiometryViewModel(
 
     /**
      * Submit biometry data for verification
-     * Step 2: Send mock face embedding data (real ML capture would be needed for production)
+     * 
+     * NOTE: Only used when DEMO_MODE = false
+     * TODO: Replace mock faceEmbedding with real ML Kit face detection data
      */
     fun submitBiometryData() {
         Log.d(TAG, "Submitting biometry data")
@@ -200,8 +253,6 @@ class SimpleBiometryViewModel(
                     isLoading = true
                 )
 
-                // Create face biometry request with MOCK data
-                // In production, this would come from ML Kit or similar face detection library
                 val biometryRequest = FaceBiometryRequest(
                     sessionId = sessionId,
                     faceEmbedding = "mock_embedding_base64_" + System.currentTimeMillis(),
@@ -217,7 +268,6 @@ class SimpleBiometryViewModel(
                 Log.d(TAG, "Liveness score: ${biometryRequest.livenessScore}")
                 Log.d(TAG, "Quality score: ${biometryRequest.qualityScore}")
 
-                // Make API call to verify biometry
                 val response = biometryApi.verifyFacialBiometry(biometryRequest)
 
                 if (response.isSuccessful && response.body() != null) {

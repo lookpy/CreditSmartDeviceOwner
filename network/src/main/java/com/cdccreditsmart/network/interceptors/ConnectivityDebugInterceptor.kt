@@ -51,7 +51,6 @@ class ConnectivityDebugInterceptor /* @Inject */ constructor() : Interceptor {
             Log.i(TAG, "Response code: ${response.code}")
             Log.i(TAG, "Response message: ${response.message}")
             Log.i(TAG, "Duration: ${duration}ms")
-            Log.i(TAG, "Response headers: ${response.headers}")
             
             if (response.isSuccessful) {
                 Log.i(TAG, "✅ HTTP SUCCESS: ${response.code}")
