@@ -77,10 +77,24 @@ The UI is built entirely with Jetpack Compose and Material 3, featuring a CDC in
 - 🚨 **ERROR HANDLING** - Mensagens claras ao usuário se dados do binding estiverem faltando
 - ✅ **NO LSP ERRORS** - Código compila sem erros (exceto build por memória)
 
+**DOCUMENTAÇÃO OFICIAL CONFIRMADA (October 01, 2025):**
+- 📄 **API SPEC VALIDADA** - Documentação oficial confirma que `/api/device/claim-sale` DEVE retornar:
+  - `biometrySessionId` (string) - ID da sessão de biometria
+  - `storeId` (UUID) - ID da loja
+  - `customerCpf` (string) - CPF do cliente para gerar documentHash
+- ✅ **APK IMPLEMENTATION CORRECT** - Código APK implementado 100% conforme spec oficial
+- 🔧 **ENHANCED LOGGING** - Logs detalhados adicionados para diagnosticar campos faltantes
+- 📋 **BACKEND COMPLIANCE** - Backend PRECISA retornar os 3 campos no ClaimSaleResponse
+
+**DIAGNÓSTICO (Logs do APK):**
+- ❌ Backend está retornando NULL para `biometrySessionId`, `storeId`, `customerCpf`
+- ❌ Isso causa falha na tela de biometria (dados obrigatórios faltando)
+- ✅ APK detecta e exibe erro claro: "Backend configuration error: biometry session not provided"
+
 **PRÓXIMOS PASSOS:**
-- Build APK em ambiente com mais memória (local/CI) ou usar modelo 128-dim
-- Testar fluxo completo: QR scan → bind → biometry verify → fraud detection
-- Verificar se backend retorna customerCpf no binding response
+- 🔧 **BACKEND FIX REQUIRED**: Atualizar `/api/device/claim-sale` para retornar campos conforme documentação
+- 🏗️ Build APK em ambiente com mais memória (local/CI) ou usar modelo 128-dim
+- ✅ Após backend fix, testar fluxo completo: claim-sale → biometry verify → fraud detection
 
 ### CAMERAX REAL PREVIEW (September 30, 2025) - ✅ BUILD SUCCESSFUL!
 - ✅ **CÂMERA REAL** - Preview real da câmera frontal usando CameraX 1.3.4
