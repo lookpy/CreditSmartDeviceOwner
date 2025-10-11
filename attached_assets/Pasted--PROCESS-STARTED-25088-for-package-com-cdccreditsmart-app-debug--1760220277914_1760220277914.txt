@@ -1,0 +1,98 @@
+---------------------------- PROCESS STARTED (25088) for package com.cdccreditsmart.app.debug ----------------------------
+2025-10-11 19:04:02.567 25088-25088 ziparchive              com.cdccreditsmart.app.debug         W  Unable to open '/data/app/~~sKpeKl3bFvTBiv6AbKzC1Q==/com.cdccreditsmart.app.debug-pVvH91niIel4JkSD6dHx6A==/base.dm': No such file or directory
+2025-10-11 19:04:02.567 25088-25088 ziparchive              com.cdccreditsmart.app.debug         W  Unable to open '/data/app/~~sKpeKl3bFvTBiv6AbKzC1Q==/com.cdccreditsmart.app.debug-pVvH91niIel4JkSD6dHx6A==/base.dm': No such file or directory
+2025-10-11 19:04:03.168 25088-25088 nativeloader            com.cdccreditsmart.app.debug         D  Configuring clns-7 for other apk /data/app/~~sKpeKl3bFvTBiv6AbKzC1Q==/com.cdccreditsmart.app.debug-pVvH91niIel4JkSD6dHx6A==/base.apk. target_sdk_version=35, uses_libraries=, library_path=/data/app/~~sKpeKl3bFvTBiv6AbKzC1Q==/com.cdccreditsmart.app.debug-pVvH91niIel4JkSD6dHx6A==/lib/arm64:/data/app/~~sKpeKl3bFvTBiv6AbKzC1Q==/com.cdccreditsmart.app.debug-pVvH91niIel4JkSD6dHx6A==/base.apk!/lib/arm64-v8a, permitted_path=/data:/mnt/expand:/data/user/0/com.cdccreditsmart.app.debug
+2025-10-11 19:04:03.173 25088-25088 CompatChangeReporter    com.cdccreditsmart.app.debug         D  Compat change id reported: 202956589; UID 10240; state: ENABLED
+2025-10-11 19:04:03.190 25088-25088 GraphicsEnvironment     com.cdccreditsmart.app.debug         V  Currently set values for:
+2025-10-11 19:04:03.190 25088-25088 GraphicsEnvironment     com.cdccreditsmart.app.debug         V    angle_gl_driver_selection_pkgs=[]
+2025-10-11 19:04:03.190 25088-25088 GraphicsEnvironment     com.cdccreditsmart.app.debug         V    angle_gl_driver_selection_values=[]
+2025-10-11 19:04:03.190 25088-25088 GraphicsEnvironment     com.cdccreditsmart.app.debug         V  Global.Settings values are invalid: number of packages: 0, number of values: 0
+2025-10-11 19:04:03.190 25088-25088 GraphicsEnvironment     com.cdccreditsmart.app.debug         V  Neither updatable production driver nor prerelease driver is supported.
+2025-10-11 19:04:03.272 25088-25088 CompatChangeReporter    com.cdccreditsmart.app.debug         D  Compat change id reported: 279646685; UID 10240; state: ENABLED
+2025-10-11 19:04:03.283 25088-25088 MbrainDebugManagerImpl  com.cdccreditsmart.app.debug         D  getService failed
+2025-10-11 19:04:03.289 25088-25088 Typeface                com.cdccreditsmart.app.debug         I  initOverlayFonts====family: RookeryNew-Regular
+2025-10-11 19:04:03.302 25088-25202 vulkan                  com.cdccreditsmart.app.debug         D  searching for layers in '/data/app/~~sKpeKl3bFvTBiv6AbKzC1Q==/com.cdccreditsmart.app.debug-pVvH91niIel4JkSD6dHx6A==/lib/arm64'
+2025-10-11 19:04:03.303 25088-25202 vulkan                  com.cdccreditsmart.app.debug         D  searching for layers in '/data/app/~~sKpeKl3bFvTBiv6AbKzC1Q==/com.cdccreditsmart.app.debug-pVvH91niIel4JkSD6dHx6A==/base.apk!/lib/arm64-v8a'
+2025-10-11 19:04:03.304 25088-25202 vulkan                  com.cdccreditsmart.app.debug         D  searching for layers in '/data/app/~~sKpeKl3bFvTBiv6AbKzC1Q==/com.cdccreditsmart.app.debug-pVvH91niIel4JkSD6dHx6A==/lib/arm64'
+2025-10-11 19:04:03.305 25088-25202 vulkan                  com.cdccreditsmart.app.debug         D  searching for layers in '/data/app/~~sKpeKl3bFvTBiv6AbKzC1Q==/com.cdccreditsmart.app.debug-pVvH91niIel4JkSD6dHx6A==/base.apk!/lib/arm64-v8a'
+2025-10-11 19:04:03.321 25088-25202 MMUD                    com.cdccreditsmart.app.debug         D  mtk_memory_debug_init com.cdccreditsmart.app.debug 0xb40000721c5fe5d0
+2025-10-11 19:04:03.363 25088-25088 CompatChangeReporter    com.cdccreditsmart.app.debug         D  Compat change id reported: 309578419; UID 10240; state: ENABLED
+2025-10-11 19:04:03.423 25088-25206 MMUD                    com.cdccreditsmart.app.debug         D  get_leak_baseline 3246391296
+2025-10-11 19:04:03.487 25088-25088 Activity                com.cdccreditsmart.app.debug         D  onResume setDolbyGameProfilePackage lastPkg =  currentPkg = com.cdccreditsmart.app.debug
+2025-10-11 19:04:03.497 25088-25088 nativeloader            com.cdccreditsmart.app.debug         D  Load libpowerhalwrap_jni.so using system ns (caller=/system_ext/framework/mediatek-framework.jar): ok
+2025-10-11 19:04:03.498 25088-25088 PowerHalWrapper         com.cdccreditsmart.app.debug         I  PowerHalWrapper.getInstance 
+2025-10-11 19:04:03.499 25088-25088 M-ProMotion             com.cdccreditsmart.app.debug         I  M-ProMotion is disabled
+2025-10-11 19:04:03.501 25088-25216 PowerHalWrapper         com.cdccreditsmart.app.debug         I  PowerHalWrapper.getInstance 
+2025-10-11 19:04:03.503 25088-25088 SurfaceFactory          com.cdccreditsmart.app.debug         I  [static] sSurfaceFactory = com.mediatek.view.impl.SurfaceFactoryImpl@a62b0a0
+2025-10-11 19:04:03.512 25088-25088 HWUI                    com.cdccreditsmart.app.debug         W  Unknown dataspace 0
+2025-10-11 19:04:03.518 25088-25088 VRI[MainActivity]       com.cdccreditsmart.app.debug         D  hardware acceleration = true, forceHwAccelerated = false
+2025-10-11 19:04:03.527 25088-25088 InputEventReceiver      com.cdccreditsmart.app.debug         D  Input log is disabled in InputEventReceiver.
+2025-10-11 19:04:04.370 25088-25128 smart.app.debug         com.cdccreditsmart.app.debug         I  Compiler allocated 6943KB to compile void android.view.ViewRootImpl.performTraversals()
+2025-10-11 19:04:04.402 25088-25088 SimplifiedAuthViewModel com.cdccreditsmart.app.debug         D  Initializing simplified auth system
+2025-10-11 19:04:04.624 25088-25088 View                    com.cdccreditsmart.app.debug         D  [ANR Warning]onMeasure time too long, this =androidx.compose.ui.platform.AndroidComposeView{1360fda VFED..... ......I. 0,0-0,0}time =498 ms
+2025-10-11 19:04:04.624 25088-25088 View                    com.cdccreditsmart.app.debug         D  [ANR Warning]onMeasure time too long, this =androidx.compose.ui.platform.ComposeView{6402dde V.E...... ......I. 0,0-0,0}time =498 ms
+2025-10-11 19:04:04.625 25088-25088 View                    com.cdccreditsmart.app.debug         D  [ANR Warning]onMeasure time too long, this =android.widget.FrameLayout{f015bbf V.E...... ......I. 0,0-0,0 #1020002 android:id/content}time =498 ms
+2025-10-11 19:04:04.625 25088-25088 View                    com.cdccreditsmart.app.debug         D  [ANR Warning]onMeasure time too long, this =android.widget.LinearLayout{242728c V.E...... ......I. 0,0-0,0}time =500 ms
+2025-10-11 19:04:04.625 25088-25088 View                    com.cdccreditsmart.app.debug         D  [ANR Warning]onMeasure time too long, this =DecorView@9799dd5[MainActivity]time =500 ms
+2025-10-11 19:04:04.639 25088-25088 BufferQueueConsumer     com.cdccreditsmart.app.debug         D  [](id:620000000000,api:0,p:-1,c:25088) connect: controlledByApp=false
+2025-10-11 19:04:04.642 25088-25088 BLASTBufferQueue        com.cdccreditsmart.app.debug         D  [VRI[MainActivity]#0](f:0,a:0) constructor()
+2025-10-11 19:04:04.642 25088-25088 BLASTBufferQueue        com.cdccreditsmart.app.debug         D  [VRI[MainActivity]#0](f:0,a:0) update width=1080 height=2400 format=-3 mTransformHint=0
+2025-10-11 19:04:04.647 25088-25088 FBI                     com.cdccreditsmart.app.debug         E  Can't load library: dlopen failed: library "libmagtsync.so" not found
+2025-10-11 19:04:04.713 25088-25202 GrallocExtra            com.cdccreditsmart.app.debug         I  gralloc_extra_query:is_SW3D 0
+2025-10-11 19:04:04.746 25088-25202 GrallocExtra            com.cdccreditsmart.app.debug         I  gralloc_extra_query:is_SW3D 0
+2025-10-11 19:04:04.747 25088-25202 BLASTBufferQueue        com.cdccreditsmart.app.debug         D  [VRI[MainActivity]#0](f:0,a:1) acquireNextBufferLocked size=1080x2400 mFrameNumber=1 applyTransaction=true mTimestamp=142115986086393(auto) mPendingTransactions.size=0 graphicBufferId=107752139522051 transform=0
+2025-10-11 19:04:04.777 25088-25088 SimplifiedAuthViewModel com.cdccreditsmart.app.debug         D  STATE CHANGE: Initializing -> Initializing (Starting device registration check)
+2025-10-11 19:04:04.778 25088-25088 SimplifiedAuthViewModel com.cdccreditsmart.app.debug         D  Device already registered with valid token
+2025-10-11 19:04:04.778 25088-25088 SimplifiedAuthViewModel com.cdccreditsmart.app.debug         W  ⚠️ Token found but NO biometry session data
+2025-10-11 19:04:04.778 25088-25088 SimplifiedAuthViewModel com.cdccreditsmart.app.debug         W  ⚠️ Device was paired without biometry flow
+2025-10-11 19:04:04.778 25088-25088 SimplifiedAuthViewModel com.cdccreditsmart.app.debug         W  ❌ Cannot proceed - biometry session required for full functionality
+2025-10-11 19:04:04.785 25088-25088 Choreographer           com.cdccreditsmart.app.debug         I  Skipped 67 frames!  The application may be doing too much work on its main thread.
+2025-10-11 19:04:04.793 25088-25144 HWUI                    com.cdccreditsmart.app.debug         I  Davey! duration=1447ms; Flags=1, FrameTimelineVsyncId=2138385, IntendedVsync=142114534835549, Vsync=142114768131241, InputEventId=0, HandleInputStart=142114772912316, AnimationStart=142114772943316, PerformTraversalsStart=142114773203316, DrawStart=142115919413239, FrameDeadline=142114554835549, FrameInterval=142114771594701, FrameStartTime=16663978, SyncQueued=142115940990470, SyncStart=142115947029162, IssueDrawCommandsStart=142115947656931, SwapBuffers=142115985501162, FrameCompleted=142115988704008, DequeueBufferDuration=19077, QueueBufferDuration=1136000, GpuCompleted=142115988070393, SwapBuffersCompleted=142115988704008, DisplayPresentTime=72904454231359566, CommandSubmissionCompleted=142115985501162, 
+2025-10-11 19:04:04.901 25088-25224 LibMBrainProxy          com.cdccreditsmart.app.debug         D  Init Paramters
+2025-10-11 19:04:04.921 25088-25144 HWUI                    com.cdccreditsmart.app.debug         I  Davey! duration=1239ms; Flags=0, FrameTimelineVsyncId=2138610, IntendedVsync=142114901451910, Vsync=142116017952975, InputEventId=0, HandleInputStart=142116027747931, AnimationStart=142116027757547, PerformTraversalsStart=142116093981470, DrawStart=142116094517162, FrameDeadline=142116021265613, FrameInterval=142116025231085, FrameStartTime=16664195, SyncQueued=142116128767008, SyncStart=142116128916624, IssueDrawCommandsStart=142116129006470, SwapBuffers=142116137604547, FrameCompleted=142116141056239, DequeueBufferDuration=20308, QueueBufferDuration=1709539, GpuCompleted=142116141056239, SwapBuffersCompleted=142116139923624, DisplayPresentTime=144115222452437076, CommandSubmissionCompleted=142116137604547, 
+2025-10-11 19:04:05.281 25088-25088 InteractionJankMonitor  com.cdccreditsmart.app.debug         W  Initializing without READ_DEVICE_CONFIG permission. enabled=false, interval=1, missedFrameThreshold=3, frameTimeThreshold=64, package=com.cdccreditsmart.app.debug
+2025-10-11 19:04:06.746 25088-25088 SimplifiedAuthViewModel com.cdccreditsmart.app.debug         D  Retrying authentication
+2025-10-11 19:04:06.746 25088-25088 SimplifiedAuthViewModel com.cdccreditsmart.app.debug         D  STATE CHANGE: Initializing -> Initializing (Starting device registration check)
+2025-10-11 19:04:06.746 25088-25088 SimplifiedAuthViewModel com.cdccreditsmart.app.debug         D  Device already registered with valid token
+2025-10-11 19:04:06.746 25088-25088 SimplifiedAuthViewModel com.cdccreditsmart.app.debug         W  ⚠️ Token found but NO biometry session data
+2025-10-11 19:04:06.746 25088-25088 SimplifiedAuthViewModel com.cdccreditsmart.app.debug         W  ⚠️ Device was paired without biometry flow
+2025-10-11 19:04:06.746 25088-25088 SimplifiedAuthViewModel com.cdccreditsmart.app.debug         W  ❌ Cannot proceed - biometry session required for full functionality
+2025-10-11 19:04:07.777 25088-25088 SimplifiedAuthViewModel com.cdccreditsmart.app.debug         D  Retrying authentication
+2025-10-11 19:04:07.778 25088-25088 SimplifiedAuthViewModel com.cdccreditsmart.app.debug         D  STATE CHANGE: Initializing -> Initializing (Starting device registration check)
+2025-10-11 19:04:07.778 25088-25088 SimplifiedAuthViewModel com.cdccreditsmart.app.debug         D  Device already registered with valid token
+2025-10-11 19:04:07.778 25088-25088 SimplifiedAuthViewModel com.cdccreditsmart.app.debug         W  ⚠️ Token found but NO biometry session data
+2025-10-11 19:04:07.778 25088-25088 SimplifiedAuthViewModel com.cdccreditsmart.app.debug         W  ⚠️ Device was paired without biometry flow
+2025-10-11 19:04:07.778 25088-25088 SimplifiedAuthViewModel com.cdccreditsmart.app.debug         W  ❌ Cannot proceed - biometry session required for full functionality
+2025-10-11 19:04:08.673 25088-25230 ProfileInstaller        com.cdccreditsmart.app.debug         D  Installing profile for com.cdccreditsmart.app.debug
+2025-10-11 19:04:14.505 25088-25088 ScrollIdentify          com.cdccreditsmart.app.debug         I  on fling
+2025-10-11 19:04:19.068 25088-25088 ScrollIdentify          com.cdccreditsmart.app.debug         I  on fling
+2025-10-11 19:04:21.414 25088-25088 SimplifiedAuthViewModel com.cdccreditsmart.app.debug         D  Retrying authentication
+2025-10-11 19:04:21.415 25088-25088 SimplifiedAuthViewModel com.cdccreditsmart.app.debug         D  STATE CHANGE: Initializing -> Initializing (Starting device registration check)
+2025-10-11 19:04:21.415 25088-25088 SimplifiedAuthViewModel com.cdccreditsmart.app.debug         D  Device already registered with valid token
+2025-10-11 19:04:21.415 25088-25088 SimplifiedAuthViewModel com.cdccreditsmart.app.debug         W  ⚠️ Token found but NO biometry session data
+2025-10-11 19:04:21.415 25088-25088 SimplifiedAuthViewModel com.cdccreditsmart.app.debug         W  ⚠️ Device was paired without biometry flow
+2025-10-11 19:04:21.415 25088-25088 SimplifiedAuthViewModel com.cdccreditsmart.app.debug         W  ❌ Cannot proceed - biometry session required for full functionality
+2025-10-11 19:04:22.904 25088-25088 SimplifiedAuthViewModel com.cdccreditsmart.app.debug         D  Retrying authentication
+2025-10-11 19:04:22.905 25088-25088 SimplifiedAuthViewModel com.cdccreditsmart.app.debug         D  STATE CHANGE: Initializing -> Initializing (Starting device registration check)
+2025-10-11 19:04:22.905 25088-25088 SimplifiedAuthViewModel com.cdccreditsmart.app.debug         D  Device already registered with valid token
+2025-10-11 19:04:22.905 25088-25088 SimplifiedAuthViewModel com.cdccreditsmart.app.debug         W  ⚠️ Token found but NO biometry session data
+2025-10-11 19:04:22.905 25088-25088 SimplifiedAuthViewModel com.cdccreditsmart.app.debug         W  ⚠️ Device was paired without biometry flow
+2025-10-11 19:04:22.905 25088-25088 SimplifiedAuthViewModel com.cdccreditsmart.app.debug         W  ❌ Cannot proceed - biometry session required for full functionality
+2025-10-11 19:04:23.355 25088-25088 SimplifiedAuthViewModel com.cdccreditsmart.app.debug         D  Retrying authentication
+2025-10-11 19:04:23.355 25088-25088 SimplifiedAuthViewModel com.cdccreditsmart.app.debug         D  STATE CHANGE: Initializing -> Initializing (Starting device registration check)
+2025-10-11 19:04:23.356 25088-25088 SimplifiedAuthViewModel com.cdccreditsmart.app.debug         D  Device already registered with valid token
+2025-10-11 19:04:23.356 25088-25088 SimplifiedAuthViewModel com.cdccreditsmart.app.debug         W  ⚠️ Token found but NO biometry session data
+2025-10-11 19:04:23.356 25088-25088 SimplifiedAuthViewModel com.cdccreditsmart.app.debug         W  ⚠️ Device was paired without biometry flow
+2025-10-11 19:04:23.356 25088-25088 SimplifiedAuthViewModel com.cdccreditsmart.app.debug         W  ❌ Cannot proceed - biometry session required for full functionality
+2025-10-11 19:04:23.538 25088-25088 SimplifiedAuthViewModel com.cdccreditsmart.app.debug         D  Retrying authentication
+2025-10-11 19:04:23.538 25088-25088 SimplifiedAuthViewModel com.cdccreditsmart.app.debug         D  STATE CHANGE: Initializing -> Initializing (Starting device registration check)
+2025-10-11 19:04:23.539 25088-25088 SimplifiedAuthViewModel com.cdccreditsmart.app.debug         D  Device already registered with valid token
+2025-10-11 19:04:23.539 25088-25088 SimplifiedAuthViewModel com.cdccreditsmart.app.debug         W  ⚠️ Token found but NO biometry session data
+2025-10-11 19:04:23.539 25088-25088 SimplifiedAuthViewModel com.cdccreditsmart.app.debug         W  ⚠️ Device was paired without biometry flow
+2025-10-11 19:04:23.539 25088-25088 SimplifiedAuthViewModel com.cdccreditsmart.app.debug         W  ❌ Cannot proceed - biometry session required for full functionality
+2025-10-11 19:04:23.705 25088-25088 SimplifiedAuthViewModel com.cdccreditsmart.app.debug         D  Retrying authentication
+2025-10-11 19:04:23.705 25088-25088 SimplifiedAuthViewModel com.cdccreditsmart.app.debug         D  STATE CHANGE: Initializing -> Initializing (Starting device registration check)
+2025-10-11 19:04:23.705 25088-25088 SimplifiedAuthViewModel com.cdccreditsmart.app.debug         D  Device already registered with valid token
+2025-10-11 19:04:23.705 25088-25088 SimplifiedAuthViewModel com.cdccreditsmart.app.debug         W  ⚠️ Token found but NO biometry session data
+2025-10-11 19:04:23.705 25088-25088 SimplifiedAuthViewModel com.cdccreditsmart.app.debug         W  ⚠️ Device was paired without biometry flow
+2025-10-11 19:04:23.705 25088-25088 SimplifiedAuthViewModel com.cdccreditsmart.app.debug         W  ❌ Cannot proceed - biometry session required for full functionality

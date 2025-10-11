@@ -109,15 +109,28 @@ class SimplifiedAuthViewModel(
                         )
                     } else {
                         Log.w(TAG, "⚠️ Token found but NO biometry session data")
-                        Log.w(TAG, "⚠️ Device was paired without biometry flow")
-                        Log.w(TAG, "❌ Cannot proceed - biometry session required for full functionality")
+                        Log.w(TAG, "🤖 APK INTELLIGENT MODE: Auto re-pairing to get biometry data")
+                        Log.w(TAG, "🔄 Will attempt claim-sale to retrieve biometry session")
                         
-                        _authState.value = _authState.value.copy(
-                            currentState = AuthStatus.Error,
-                            isLoading = false,
-                            errorMessage = "Device paired without biometry data. Please clear pairing and pair with a new sale to enable biometry.",
-                            isAuthenticated = false
-                        )
+                        // Get IMEI to perform claim-sale
+                        val hasPermission = DeviceUtils.hasPhoneStatePermission(context)
+                        
+                        if (hasPermission) {
+                            Log.d(TAG, "Permission available, starting intelligent re-pairing")
+                            _authState.value = _authState.value.copy(
+                                hasPhoneStatePermission = true
+                            )
+                            startAutomaticPairing()
+                        } else {
+                            Log.w(TAG, "No permission - requesting to get IMEI for intelligent re-pairing")
+                            logStateChange(AuthStatus.AwaitingPermission, "Need IMEI for intelligent re-pairing")
+                            _authState.value = _authState.value.copy(
+                                currentState = AuthStatus.AwaitingPermission,
+                                isLoading = false,
+                                errorMessage = null,
+                                hasPhoneStatePermission = false
+                            )
+                        }
                     }
                 } else {
                     Log.d(TAG, "Device not registered, checking permissions")
