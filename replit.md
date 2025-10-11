@@ -101,27 +101,14 @@ The UI is built entirely with Jetpack Compose and Material 3, featuring a CDC in
 - 🔄 **FALLBACK CHAIN**: Tenta IMEI salvo → IMEI hardware → entrada manual
 - ✅ **NO ERRORS**: Elimina SecurityException em dispositivos Android 10+
 
-**CLAIM-SALE RE-RUN FIX (October 01, 2025) - ✅ MISSING BIOMETRY DATA DETECTION!**
-- 🔍 **DETECTION**: checkDeviceRegistrationStatus() agora verifica se biometrySessionId existe
-- 🔄 **AUTO RE-PAIR**: Se token existe mas falta biometry data, executa claim-sale automaticamente
-- 📋 **USE CASE**: Dispositivos pareados antes da implementação do fluxo de biometria
-- ✅ **SEAMLESS**: Usuário não precisa re-parear manualmente
-
-**INFINITE LOOP FIX (October 01, 2025) - ✅ BYPASS BIOMETRY WHEN NO SALE!**
-- 🐛 **BUG**: Dispositivos já pareados ficavam em loop infinito ao tentar obter biometry data
-- 🔍 **ROOT CAUSE**: Venda já claimed → backend retorna 404 → retry infinito
-- ✅ **SOLUÇÃO**: Detecta token válido + erro 404 → BYPASS biometry requirement
-- 🚀 **BEHAVIOR**: Permite continuar como authenticated sem dados de biometria
-- 📱 **UX**: App funciona normalmente, apenas sem funcionalidade de biometria facial
-- ✅ **NO MORE LOOPS**: Usuário não fica preso em tela de erro
-
-**BYPASS 404 FIX (October 11, 2025) - ✅ CRITICAL BUG FIXED!**
-- 🐛 **BUG DISCOVERED**: searchPendingSale() retornava Result.failure() para HTTP 404, impedindo bypass logic
-- 🔍 **ROOT CAUSE**: SimplifiedAuthViewModel tinha código de bypass correto, mas nunca era ativado
-- ✅ **SOLUÇÃO**: HTTP 404 agora retorna Result.success() com found=false para ativar bypass
-- 🔄 **BYPASS LOGIC**: Token válido + 404 → authenticated sem biometry (conforme esperado)
-- 📝 **ERROR MAPPING**: Outros códigos HTTP (403, 500) continuam retornando failure corretamente
-- ✅ **NO LSP ERRORS**: Código compila sem erros
+**REAL FLOW ENFORCEMENT (October 11, 2025) - ✅ NO BYPASS, ALL REAL!**
+- 🎯 **REQUIREMENT**: Fluxo 100% REAL sem atalhos ou bypass automático
+- ✅ **BEHAVIOR**: SEMPRE requer venda pendente no PDV para pareamento
+- ✅ **BEHAVIOR**: SEMPRE requer claim-sale completo com biometry session
+- ✅ **BEHAVIOR**: SEMPRE requer biometry verify para anti-fraud
+- 🚫 **NO BYPASS**: HTTP 404 gera erro (não permite continuar sem biometry)
+- 🚫 **NO AUTO RE-CLAIM**: Dispositivos sem biometry data devem limpar pairing
+- 📝 **ERROR HANDLING**: Erros claros direcionam para "Clear Pairing" quando necessário
 
 **CLEAR PAIRING FEATURE (October 11, 2025) - ✅ NEW FUNCTIONALITY!**
 - 🆕 **FUNCIONALIDADE**: Botão "Clear Pairing & Try New Sale" adicionado na tela de erro

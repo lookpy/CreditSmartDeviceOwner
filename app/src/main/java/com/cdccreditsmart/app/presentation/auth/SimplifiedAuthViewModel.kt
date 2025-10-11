@@ -95,7 +95,7 @@ class SimplifiedAuthViewModel(
                 if (deviceRegistrationManager.isDeviceRegistered()) {
                     Log.d(TAG, "Device already registered with valid token")
                     
-                    // ✅ CRITICAL: Check if we have biometry session data
+                    // Check if we have biometry session data
                     val hasBiometrySession = tokenManager.getBiometrySessionId() != null
                     
                     if (hasBiometrySession) {
@@ -109,28 +109,15 @@ class SimplifiedAuthViewModel(
                         )
                     } else {
                         Log.w(TAG, "⚠️ Token found but NO biometry session data")
-                        Log.w(TAG, "⚠️ This happens if device was paired before biometry flow was added")
-                        Log.w(TAG, "🔄 Need to perform claim-sale to get biometry session")
+                        Log.w(TAG, "⚠️ Device was paired without biometry flow")
+                        Log.w(TAG, "❌ Cannot proceed - biometry session required for full functionality")
                         
-                        // Get IMEI to perform claim-sale
-                        val hasPermission = DeviceUtils.hasPhoneStatePermission(context)
-                        
-                        if (hasPermission) {
-                            Log.d(TAG, "Permission available, will perform claim-sale to get biometry data")
-                            _authState.value = _authState.value.copy(
-                                hasPhoneStatePermission = true
-                            )
-                            startAutomaticPairing()
-                        } else {
-                            Log.w(TAG, "No permission - requesting to get IMEI for claim-sale")
-                            logStateChange(AuthStatus.AwaitingPermission, "Need IMEI for claim-sale")
-                            _authState.value = _authState.value.copy(
-                                currentState = AuthStatus.AwaitingPermission,
-                                isLoading = false,
-                                errorMessage = null,
-                                hasPhoneStatePermission = false
-                            )
-                        }
+                        _authState.value = _authState.value.copy(
+                            currentState = AuthStatus.Error,
+                            isLoading = false,
+                            errorMessage = "Device paired without biometry data. Please clear pairing and pair with a new sale to enable biometry.",
+                            isAuthenticated = false
+                        )
                     }
                 } else {
                     Log.d(TAG, "Device not registered, checking permissions")
@@ -397,31 +384,7 @@ class SimplifiedAuthViewModel(
                     if (queryResponse == null || !queryResponse.found) {
                         Log.w(TAG, "No pending sale found for this IMEI")
                         
-                        // ✅ SPECIAL CASE: Device already has valid token but no biometry data
-                        // This happens when device was paired before biometry flow was added
-                        // or the sale was already claimed previously
-                        val hasValidToken = deviceRegistrationManager.isDeviceRegistered()
-                        
-                        if (hasValidToken) {
-                            Log.w(TAG, "⚠️ SPECIAL CASE: Device has valid token but no pending sale for biometry")
-                            Log.w(TAG, "⚠️ This device was already paired. Sale was claimed previously.")
-                            Log.w(TAG, "✅ BYPASSING biometry requirement - proceeding as authenticated")
-                            
-                            // Allow user to proceed WITHOUT biometry data
-                            // They can still use the app, biometry just won't be available
-                            _authState.value = _authState.value.copy(
-                                currentState = AuthStatus.Authenticated,
-                                isAuthenticated = true,
-                                isLoading = false,
-                                deviceId = deviceRegistrationManager.getDeviceId(),
-                                registrationStatus = "Device authenticated (biometry unavailable)",
-                                errorMessage = null,
-                                failedAttempts = 0
-                            )
-                            return
-                        }
-                        
-                        // Normal case: first-time pairing failed
+                        // First-time pairing failed - no pending sale
                         val newFailedAttempts = _authState.value.failedAttempts + 1
                         
                         if (newFailedAttempts >= 3) {
