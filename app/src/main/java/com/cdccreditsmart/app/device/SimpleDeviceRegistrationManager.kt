@@ -127,9 +127,7 @@ class SimpleDeviceRegistrationManager(private val context: Context) {
                 
                 // Return success with found=false to trigger bypass logic in ViewModel
                 Result.success(ClaimSaleQueryResponse(
-                    success = false,
                     found = false,
-                    message = "No pending sale found for this IMEI",
                     saleId = null,
                     validationId = null,
                     customerName = null,
