@@ -118,13 +118,30 @@ class SimpleDeviceRegistrationManager(private val context: Context) {
                     Log.d(TAG, "Sale details - ID: ${result.saleId}, Customer: ${result.customerName}, Model: ${result.deviceModel}")
                 }
                 Result.success(result)
+            } else if (response.code() == 404) {
+                // ✅ SPECIAL CASE: HTTP 404 means no pending sale found
+                // Return SUCCESS with found=false to allow bypass logic for already-paired devices
+                val errorBody = response.errorBody()?.string()
+                Log.w(TAG, "HTTP 404 - No pending sale found for IMEI")
+                Log.d(TAG, "Error body: ${errorBody?.take(1000)}")
+                
+                // Return success with found=false to trigger bypass logic in ViewModel
+                Result.success(ClaimSaleQueryResponse(
+                    success = false,
+                    found = false,
+                    message = "No pending sale found for this IMEI",
+                    saleId = null,
+                    validationId = null,
+                    customerName = null,
+                    deviceModel = null,
+                    expiresIn = null
+                ))
             } else {
                 val errorBody = response.errorBody()?.string()
                 Log.e(TAG, "Failed to search pending sale - HTTP ${response.code()}")
                 Log.e(TAG, "Error body: ${errorBody?.take(1000)}")
                 
                 val errorMsg = when (response.code()) {
-                    404 -> "No pending sale found for this IMEI. Please verify the IMEI or contact support."
                     403 -> "Access denied. Authentication may be required."
                     500 -> "Server error. Please try again later."
                     else -> "Failed to search pending sale: HTTP ${response.code()}"

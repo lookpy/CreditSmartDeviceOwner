@@ -115,6 +115,23 @@ The UI is built entirely with Jetpack Compose and Material 3, featuring a CDC in
 - 📱 **UX**: App funciona normalmente, apenas sem funcionalidade de biometria facial
 - ✅ **NO MORE LOOPS**: Usuário não fica preso em tela de erro
 
+**BYPASS 404 FIX (October 11, 2025) - ✅ CRITICAL BUG FIXED!**
+- 🐛 **BUG DISCOVERED**: searchPendingSale() retornava Result.failure() para HTTP 404, impedindo bypass logic
+- 🔍 **ROOT CAUSE**: SimplifiedAuthViewModel tinha código de bypass correto, mas nunca era ativado
+- ✅ **SOLUÇÃO**: HTTP 404 agora retorna Result.success() com found=false para ativar bypass
+- 🔄 **BYPASS LOGIC**: Token válido + 404 → authenticated sem biometry (conforme esperado)
+- 📝 **ERROR MAPPING**: Outros códigos HTTP (403, 500) continuam retornando failure corretamente
+- ✅ **NO LSP ERRORS**: Código compila sem erros
+
+**CLEAR PAIRING FEATURE (October 11, 2025) - ✅ NEW FUNCTIONALITY!**
+- 🆕 **FUNCIONALIDADE**: Botão "Clear Pairing & Try New Sale" adicionado na tela de erro
+- 🎯 **USE CASE**: Permite limpar pareamento local e parear com NOVA venda
+- ⚠️ **LIMITAÇÃO**: NÃO permite re-parear com a MESMA venda já claimed (arquitetural do backend)
+- 🔐 **IMPLEMENTAÇÃO**: clearPairingAndRetry() em SimplifiedAuthViewModel
+- 📱 **UX**: Botão aparece automaticamente quando erro contém "No pending sale"
+- 💡 **AVISO**: UI mostra aviso claro sobre limitação de re-claim
+- ✅ **BEHAVIOR**: Limpa TokenManager + DeviceRegistrationManager → restart auth flow
+
 **PRÓXIMOS PASSOS:**
 - 🏗️ Build APK em ambiente com mais memória (local/CI) ou usar modelo 128-dim
 - 🧪 Testar fluxo completo: pairing → claim-sale → biometry verify → fraud detection
