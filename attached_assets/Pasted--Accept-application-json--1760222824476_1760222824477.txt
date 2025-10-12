@@ -1,0 +1,85 @@
+                               Accept: application/json
+                                                                                                    User-Agent: CDC-CreditSmart/1.0.0
+2025-10-11 19:45:59.986 27544-27635 SimpleDevi...gistration com.cdccreditsmart.app.debug         D  Response Code: 200
+2025-10-11 19:45:59.987 27544-27635 SimpleDevi...gistration com.cdccreditsmart.app.debug         D  Response Headers: access-control-allow-credentials: true
+                                                                                                    access-control-allow-headers: Origin, X-Requested-With, Content-Type, Accept, Authorization, x-client-key, x-client-token, x-client-secret, cache-control
+                                                                                                    access-control-allow-methods: GET, POST, PUT, PATCH, DELETE, OPTIONS
+                                                                                                    access-control-allow-origin: *
+                                                                                                    access-control-max-age: 86400
+                                                                                                    content-length: 551
+                                                                                                    content-security-policy: default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://replit.com; style-src 'self' 'unsafe-inline' https://replit.com; img-src 'self' data: https:; font-src 'self' data: https://replit.com; connect-src 'self';
+                                                                                                    content-type: application/json; charset=utf-8
+                                                                                                    date: Sat, 11 Oct 2025 22:46:01 GMT
+                                                                                                    etag: W/"227-GxDg5bk8Bw6YKFSG8Ot3kZe1S2g"
+                                                                                                    permissions-policy: geolocation=(), microphone=(), camera=()
+                                                                                                    referrer-policy: strict-origin-when-cross-origin
+                                                                                                    server: Google Frontend
+                                                                                                    strict-transport-security: max-age=63072000; includeSubDomains
+                                                                                                    strict-transport-security: max-age=31536000; includeSubDomains
+                                                                                                    x-anti-fraud-protection: active
+                                                                                                    x-certificate-pinning-enabled: false
+                                                                                                    x-certificate-pinning-status: disabled-for-stability
+                                                                                                    x-cloud-trace-context: 05814473be0355677b60fbe799490c2a
+                                                                                                    x-content-type-options: nosniff
+                                                                                                    x-financial-data-protection: enabled
+                                                                                                    x-frame-options: DENY
+                                                                                                    x-transaction-security-level: maximum
+                                                                                                    x-xss-protection: 1; mode=block
+                                                                                                    via: 1.1 google
+                                                                                                    alt-svc: h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
+2025-10-11 19:45:59.987 27544-27635 SimpleDevi...gistration com.cdccreditsmart.app.debug         D  Response Content-Type: application/json; charset=utf-8
+2025-10-11 19:45:59.994 27544-27544 SimpleDevi...gistration com.cdccreditsmart.app.debug         D  📥 HTTP Response received:
+2025-10-11 19:45:59.994 27544-27544 SimpleDevi...gistration com.cdccreditsmart.app.debug         D     - Status Code: 200
+2025-10-11 19:45:59.994 27544-27544 SimpleDevi...gistration com.cdccreditsmart.app.debug         D     - Success: true
+2025-10-11 19:45:59.995 27544-27544 SimpleDevi...gistration com.cdccreditsmart.app.debug         D  ✅ ========== CLAIM-SALE SUCCESS ==========
+2025-10-11 19:45:59.995 27544-27544 SimpleDevi...gistration com.cdccreditsmart.app.debug         D  ✅ Message: Device successfully paired to sale
+2025-10-11 19:45:59.995 27544-27544 SimpleDevi...gistration com.cdccreditsmart.app.debug         D  ✅ Response data:
+2025-10-11 19:45:59.995 27544-27544 SimpleDevi...gistration com.cdccreditsmart.app.debug         D     - deviceId: sale_1760222696252_tdga6apnqkq
+2025-10-11 19:45:59.996 27544-27544 SimpleDevi...gistration com.cdccreditsmart.app.debug         D     - saleId: sale_1760222696252_tdga6apnqkq
+2025-10-11 19:45:59.996 27544-27544 SimpleDevi...gistration com.cdccreditsmart.app.debug         D     - immutableToken: eyJhbGciOiJIUzI1NiIs...
+2025-10-11 19:45:59.996 27544-27544 SimpleDevi...gistration com.cdccreditsmart.app.debug         D  
+2025-10-11 19:45:59.996 27544-27544 SimpleDevi...gistration com.cdccreditsmart.app.debug         D  🔐 BIOMETRY DATA FROM BACKEND:
+2025-10-11 19:45:59.996 27544-27544 SimpleDevi...gistration com.cdccreditsmart.app.debug         E     ❌ biometrySessionId: NULL (BACKEND NOT RETURNING!)
+2025-10-11 19:45:59.996 27544-27544 SimpleDevi...gistration com.cdccreditsmart.app.debug         E     ❌ storeId: NULL (BACKEND NOT RETURNING!)
+2025-10-11 19:45:59.997 27544-27544 SimpleDevi...gistration com.cdccreditsmart.app.debug         E     ❌ customerCpf: NULL (BACKEND NOT RETURNING!)
+2025-10-11 19:45:59.997 27544-27544 SimpleDevi...gistration com.cdccreditsmart.app.debug         D  
+2025-10-11 19:45:59.997 27544-27544 SimpleDevi...gistration com.cdccreditsmart.app.debug         D  💾 Saving data to TokenManager...
+2025-10-11 19:45:59.997 27544-27544 SimpleTokenManager      com.cdccreditsmart.app.debug         D  💾 Saving binding data for device: sale_1760222696252_tdga6apnqkq
+2025-10-11 19:45:59.998 27544-27544 SimpleTokenManager      com.cdccreditsmart.app.debug         D     StoreId: null
+2025-10-11 19:45:59.998 27544-27544 SimpleTokenManager      com.cdccreditsmart.app.debug         D     BiometrySessionId: null
+2025-10-11 19:45:59.998 27544-27544 SimpleTokenManager      com.cdccreditsmart.app.debug         D     CustomerCpf: null
+2025-10-11 19:45:59.998 27544-27544 SimpleTokenManager      com.cdccreditsmart.app.debug         D     Saving IMEI: 3531***
+2025-10-11 19:46:00.015 27544-27544 SimpleTokenManager      com.cdccreditsmart.app.debug         D  ✅ Data persisted successfully to SharedPreferences
+2025-10-11 19:46:00.015 27544-27544 SimpleTokenManager      com.cdccreditsmart.app.debug         D  ✅ Verification - BiometrySessionId: false, StoreId: false
+2025-10-11 19:46:00.023 27544-27544 SimpleDevi...gistration com.cdccreditsmart.app.debug         D  ✅ Data saved successfully!
+2025-10-11 19:46:00.023 27544-27544 SimpleDevi...gistration com.cdccreditsmart.app.debug         D  ✅ ========== CLAIM-SALE COMPLETE ==========
+2025-10-11 19:46:00.023 27544-27544 SimpleDevi...gistration com.cdccreditsmart.app.debug         D  
+2025-10-11 19:46:00.023 27544-27544 SimplifiedAuthViewModel com.cdccreditsmart.app.debug         D  Sale claimed successfully!
+2025-10-11 19:46:00.023 27544-27544 SimplifiedAuthViewModel com.cdccreditsmart.app.debug         D  Device ID: sale_1760222696252_tdga6apnqkq
+2025-10-11 19:46:00.023 27544-27544 SimplifiedAuthViewModel com.cdccreditsmart.app.debug         D  Sale ID: sale_1760222696252_tdga6apnqkq
+2025-10-11 19:46:00.023 27544-27544 SimplifiedAuthViewModel com.cdccreditsmart.app.debug         D  Message: Device successfully paired to sale
+2025-10-11 19:46:00.237 27544-27544 nativeloader            com.cdccreditsmart.app.debug         D  Load /data/app/~~sKpeKl3bFvTBiv6AbKzC1Q==/com.cdccreditsmart.app.debug-pVvH91niIel4JkSD6dHx6A==/base.apk!/lib/arm64-v8a/libtensorflowlite_jni.so using ns clns-7 from class loader (caller=/data/app/~~sKpeKl3bFvTBiv6AbKzC1Q==/com.cdccreditsmart.app.debug-pVvH91niIel4JkSD6dHx6A==/base.apk!classes21.dex): ok
+2025-10-11 19:46:00.238 27544-27544 InterpreterApi          com.cdccreditsmart.app.debug         I  Loaded native library: tensorflowlite_jni
+2025-10-11 19:46:00.242 27544-27544 nativeloader            com.cdccreditsmart.app.debug         D  Load libtensorflowlite_jni_gms_client.so using ns clns-7 from class loader (caller=/data/app/~~sKpeKl3bFvTBiv6AbKzC1Q==/com.cdccreditsmart.app.debug-pVvH91niIel4JkSD6dHx6A==/base.apk!classes21.dex): dlopen failed: library "libtensorflowlite_jni_gms_client.so" not found
+2025-10-11 19:46:00.242 27544-27544 InterpreterApi          com.cdccreditsmart.app.debug         I  Didn't load native library: tensorflowlite_jni_gms_client
+2025-10-11 19:46:00.245 27544-27544 tflite                  com.cdccreditsmart.app.debug         I  Initialized TensorFlow Lite runtime.
+2025-10-11 19:46:00.247 27544-27544 libc                    com.cdccreditsmart.app.debug         W  Access denied finding property "ro.hardware.chipname"
+2025-10-11 19:46:00.251 27544-27544 tflite                  com.cdccreditsmart.app.debug         I  Created TensorFlow Lite XNNPACK delegate for CPU.
+2025-10-11 19:46:00.252 27544-27544 tflite                  com.cdccreditsmart.app.debug         I  Replacing 49 out of 181 node(s) with delegate (TfLiteXNNPackDelegate) node, yielding 92 partitions for the whole graph.
+2025-10-11 19:46:03.041 27544-27544 SimpleBiometryViewModel com.cdccreditsmart.app.debug         D  Starting biometry validation (DEMO_MODE=false)
+2025-10-11 19:46:03.042 27544-27544 SimpleBiometryViewModel com.cdccreditsmart.app.debug         D  📋 Checking binding data from TokenManager:
+2025-10-11 19:46:03.042 27544-27544 SimpleBiometryViewModel com.cdccreditsmart.app.debug         D     - biometrySessionId: ❌ NULL
+2025-10-11 19:46:03.042 27544-27544 SimpleBiometryViewModel com.cdccreditsmart.app.debug         D     - storeId: ❌ NULL
+2025-10-11 19:46:03.042 27544-27544 SimpleBiometryViewModel com.cdccreditsmart.app.debug         D     - customerCpf: ❌ NULL
+2025-10-11 19:46:03.042 27544-27544 SimpleBiometryViewModel com.cdccreditsmart.app.debug         E  ❌ CRITICAL: No biometry session found!
+2025-10-11 19:46:03.042 27544-27544 SimpleBiometryViewModel com.cdccreditsmart.app.debug         E  ❌ This means the backend did NOT return 'biometrySessionId' in ClaimSaleResponse
+2025-10-11 19:46:03.042 27544-27544 SimpleBiometryViewModel com.cdccreditsmart.app.debug         E  ❌ Check SimpleDeviceRegistrationManager logs for 'WARNING: No biometry session ID'
+2025-10-11 19:46:03.042 27544-27544 SimpleBiometryViewModel com.cdccreditsmart.app.debug         E  ❌ Backend must return biometrySessionId in POST /v1/device/claim-sale response
+2025-10-11 19:46:03.042 27544-27544 SimpleBiometryViewModel com.cdccreditsmart.app.debug         E  
+2025-10-11 19:46:03.042 27544-27544 SimpleBiometryViewModel com.cdccreditsmart.app.debug         E  🔧 SOLUTION: Ensure backend returns these fields in ClaimSaleResponse:
+2025-10-11 19:46:03.042 27544-27544 SimpleBiometryViewModel com.cdccreditsmart.app.debug         E     { biometrySessionId: 'bio_ses_...', storeId: '...', customerCpf: '...' }
+2025-10-11 19:46:03.043 27544-27544 Activity                com.cdccreditsmart.app.debug         D  onResume setDolbyGameProfilePackage lastPkg =  currentPkg = com.cdccreditsmart.app.debug
+2025-10-11 19:46:03.129 27544-27646 CameraManagerGlobal     com.cdccreditsmart.app.debug         I  Connecting to camera service
+2025-10-11 19:46:03.135 27544-27646 CameraTinnoAccessUtil   com.cdccreditsmart.app.debug         D  tinno checking isCameraHiddenFromApp() cameraId 0isAuxCameraSupported trueisAuxCameraExposed false
+2025-10-11 19:46:03.136 27544-27646 CameraTinnoAccessUtil   com.cdccreditsmart.app.debug         D  tinno checking1 isCameraHiddenFromApp() id 0 hidden camera IDs: false
+2025-10-11 19:46:03.136 27544-27646 CameraTinnoAccessUtil   com.cdccreditsmart.app.debug         D  tinno checking isCameraHiddenFromApp() cameraId 1isAuxCameraSupported trueisAuxCameraExposed false

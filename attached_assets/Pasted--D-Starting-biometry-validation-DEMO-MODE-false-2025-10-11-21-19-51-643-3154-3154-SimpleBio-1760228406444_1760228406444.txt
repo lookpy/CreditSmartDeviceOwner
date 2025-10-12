@@ -1,0 +1,30 @@
+    D  Starting biometry validation (DEMO_MODE=false)
+2025-10-11 21:19:51.643  3154-3154  SimpleBiometryViewModel com.cdccreditsmart.app.debug         D  📋 Checking binding data from TokenManager:
+2025-10-11 21:19:51.643  3154-3154  SimpleBiometryViewModel com.cdccreditsmart.app.debug         D     - biometrySessionId: ❌ NULL
+2025-10-11 21:19:51.643  3154-3154  SimpleBiometryViewModel com.cdccreditsmart.app.debug         D     - storeId: ❌ NULL
+2025-10-11 21:19:51.643  3154-3154  SimpleBiometryViewModel com.cdccreditsmart.app.debug         D     - customerCpf: ❌ NULL
+2025-10-11 21:19:51.643  3154-3154  SimpleBiometryViewModel com.cdccreditsmart.app.debug         E  ❌ CRITICAL: No biometry session found!
+2025-10-11 21:19:51.643  3154-3154  SimpleBiometryViewModel com.cdccreditsmart.app.debug         E  ❌ This means the backend did NOT return 'biometrySessionId' in ClaimSaleResponse
+2025-10-11 21:19:51.643  3154-3154  SimpleBiometryViewModel com.cdccreditsmart.app.debug         E  ❌ Check SimpleDeviceRegistrationManager logs for 'WARNING: No biometry session ID'
+2025-10-11 21:19:51.643  3154-3154  SimpleBiometryViewModel com.cdccreditsmart.app.debug         E  ❌ Backend must return biometrySessionId in POST /v1/device/claim-sale response
+2025-10-11 21:19:51.643  3154-3154  SimpleBiometryViewModel com.cdccreditsmart.app.debug         E  
+2025-10-11 21:19:51.643  3154-3154  SimpleBiometryViewModel com.cdccreditsmart.app.debug         E  🔧 SOLUTION: Ensure backend returns these fields in ClaimSaleResponse:
+2025-10-11 21:19:51.643  3154-3154  SimpleBiometryViewModel com.cdccreditsmart.app.debug         E     { biometrySessionId: 'bio_ses_...', storeId: '...', customerCpf: '...' }
+2025-10-11 21:19:51.645  3154-3154  Activity                com.cdccreditsmart.app.debug         D  onResume setDolbyGameProfilePackage lastPkg =  currentPkg = com.cdccreditsmart.app.debug
+2025-10-11 21:19:51.708  3154-3377  CameraManagerGlobal     com.cdccreditsmart.app.debug         I  Connecting to camera service
+2025-10-11 21:19:51.721  3154-3377  CameraTinnoAccessUtil   com.cdccreditsmart.app.debug         D  tinno checking isCameraHiddenFromApp() cameraId 0isAuxCameraSupported trueisAuxCameraExposed false
+2025-10-11 21:19:51.721  3154-3377  CameraTinnoAccessUtil   com.cdccreditsmart.app.debug         D  tinno checking1 isCameraHiddenFromApp() id 0 hidden camera IDs: false
+2025-10-11 21:19:51.721  3154-3377  CameraTinnoAccessUtil   com.cdccreditsmart.app.debug         D  tinno checking isCameraHiddenFromApp() cameraId 1isAuxCameraSupported trueisAuxCameraExposed false
+2025-10-11 21:19:51.722  3154-3377  CameraTinnoAccessUtil   com.cdccreditsmart.app.debug         D  tinno checking1 isCameraHiddenFromApp() id 1 hidden camera IDs: false
+2025-10-11 21:19:51.722  3154-3377  CameraTinnoAccessUtil   com.cdccreditsmart.app.debug         D  tinno checking isCameraHiddenFromApp() cameraId 2isAuxCameraSupported trueisAuxCameraExposed false
+2025-10-11 21:19:51.723  3154-3377  CameraTinnoAccessUtil   com.cdccreditsmart.app.debug         D  tinno checking1 isCameraHiddenFromApp() id 2 hidden camera IDs: true
+2025-10-11 21:19:51.724  3154-3377  CameraTinnoAccessUtil   com.cdccreditsmart.app.debug         D  tinno getNumberofPhysicalCamera() physicalcamera_num 3
+2025-10-11 21:19:51.725  3154-3377  CameraTinnoAccessUtil   com.cdccreditsmart.app.debug         D  tinno getNumberofPhysicalCamera() physicalcamera_num 3
+2025-10-11 21:19:51.726  3154-3377  CameraTinnoAccessUtil   com.cdccreditsmart.app.debug         D  tinno getNumberofPhysicalCamera() physicalcamera_num 3
+2025-10-11 21:19:51.726  3154-3377  CameraTinnoAccessUtil   com.cdccreditsmart.app.debug         D  tinno getNumberofPhysicalCamera() physicalcamera_num 3
+2025-10-11 21:19:51.726  3154-3331  CameraTinnoAccessUtil   com.cdccreditsmart.app.debug         D  tinno checking isCameraHiddenFromApp() cameraId 0isAuxCameraSupported trueisAuxCameraExposed false
+2025-10-11 21:19:51.726  3154-3331  CameraTinnoAccessUtil   com.cdccreditsmart.app.debug         D  tinno checking1 isCameraHiddenFromApp() id 0 hidden camera IDs: false
+2025-10-11 21:19:51.728  3154-3331  CameraTinnoAccessUtil   com.cdccreditsmart.app.debug         D  tinno checking isCameraHiddenFromApp() cameraId 2isAuxCameraSupported trueisAuxCameraExposed false
+2025-10-11 21:19:51.728  3154-3331  CameraTinnoAccessUtil   com.cdccreditsmart.app.debug         D  tinno checking1 isCameraHiddenFromApp() id 2 hidden camera IDs: true
+2025-10-11 21:19:51.759  3154-3377  CameraRepository        com.cdccreditsmart.app.debug         D  Added camera: 0
+2025-10-11 21:19:51.769  3154-3377  Camera2CameraInfo       com.cdccreditsmart.app.debug         I  Device Level: INFO_SUPPORTED_HARDWARE_LEVEL_FULL
