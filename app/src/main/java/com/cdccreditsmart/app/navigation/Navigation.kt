@@ -8,6 +8,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.cdccreditsmart.app.presentation.auth.IMEIAuthScreen
+import com.cdccreditsmart.app.presentation.screens.flow.WaitingPdvScreen
 import com.cdccreditsmart.app.presentation.screens.flow.BiometryScreen
 import com.cdccreditsmart.app.presentation.screens.flow.SuccessScreen
 import com.cdccreditsmart.app.presentation.screens.home.SimpleHomeScreen
@@ -27,6 +28,7 @@ object Routes {
     const val AUTH_IMEI = "auth/imei"
     const val ONBOARDING_WELCOME = "onboarding/welcome"
     const val FLOW_ATTESTED = "flow/attested"
+    const val FLOW_WAITING_PDV = "flow/waiting_pdv"
     const val FLOW_BIOMETRY = "flow/biometry"
     const val FLOW_SUCCESS = "flow/success"
     const val FLOW_SIGN = "flow/sign"
@@ -56,15 +58,33 @@ fun CDCNavigation(
         composable(Routes.AUTH_IMEI) {
             IMEIAuthScreen(
                 onAuthenticationSuccess = {
-                    // Navigate to biometry screen after successful device pairing
-                    navController.navigate(Routes.FLOW_BIOMETRY) {
+                    // Navigate to waiting PDV screen after successful claim-sale
+                    // APK will wait for PDV to reach biometry stage
+                    navController.navigate(Routes.FLOW_WAITING_PDV) {
                         popUpTo(Routes.AUTH_IMEI) { inclusive = true }
                     }
                 }
             )
         }
         
-        // Biometry Screen - Facial validation after device pairing
+        // Waiting PDV Screen - Synchronizes with PDV flow
+        composable(Routes.FLOW_WAITING_PDV) {
+            WaitingPdvScreen(
+                onNavigateToBiometry = {
+                    // PDV reached biometry stage, navigate to biometry screen
+                    navController.navigate(Routes.FLOW_BIOMETRY) {
+                        popUpTo(Routes.FLOW_WAITING_PDV) { inclusive = true }
+                    }
+                },
+                onNavigateBack = {
+                    navController.navigate(Routes.AUTH_IMEI) {
+                        popUpTo(Routes.FLOW_WAITING_PDV) { inclusive = true }
+                    }
+                }
+            )
+        }
+        
+        // Biometry Screen - Facial validation when PDV is ready
         composable(Routes.FLOW_BIOMETRY) {
             BiometryScreen(
                 onNavigateToNext = { 
