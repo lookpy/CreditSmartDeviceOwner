@@ -1,0 +1,62 @@
+2025-10-13 01:20:18.601 11523-11662 FaceDetectorV2Jni       com.cdccreditsmart.app.debug         V  detectFacesImageByteBuffer.start()
+2025-10-13 01:20:18.673 11523-11662 FaceDetectorV2Jni       com.cdccreditsmart.app.debug         V  %s detectFacesImageByteBuffer.end()
+2025-10-13 01:20:18.679 11523-11523 SimpleBiometryViewModel com.cdccreditsmart.app.debug         D  ML Kit detected 1 face(s)
+2025-10-13 01:20:18.680 11523-11523 SimpleBiometryViewModel com.cdccreditsmart.app.debug         D  Selected primary face with bounding box: Rect(560, 1337 - 1881, 2659)
+2025-10-13 01:20:18.680 11523-11523 SimpleBiometryViewModel com.cdccreditsmart.app.debug         D  Face quality score: 0.684415756346827
+2025-10-13 01:20:18.680 11523-11523 SimpleBiometryViewModel com.cdccreditsmart.app.debug         D  Face liveness score: 0.9856086476643879
+2025-10-13 01:20:18.684 11523-11659 TransportR...EventStore com.cdccreditsmart.app.debug         D  Storing event with priority=VERY_LOW, name=FIREBASE_ML_SDK for destination cct
+2025-10-13 01:20:18.690 11523-11523 SimpleBiometryViewModel com.cdccreditsmart.app.debug         D  Cropped face: 1321x1322
+2025-10-13 01:20:18.691 11523-11659 TransportR...oScheduler com.cdccreditsmart.app.debug         D  Upload for context TransportContext(cct, VERY_LOW, MSRodHRwczovL2ZpcmViYXNlbG9nZ2luZy5nb29nbGVhcGlzLmNvbS92MGNjL2xvZy9iYXRjaD9mb3JtYXQ9anNvbl9wcm90bzNc) is already scheduled. Returning...
+2025-10-13 01:20:18.700 11523-11659 TransportR...EventStore com.cdccreditsmart.app.debug         D  Storing event with priority=VERY_LOW, name=FIREBASE_ML_SDK for destination cct
+2025-10-13 01:20:18.706 11523-11659 TransportR...oScheduler com.cdccreditsmart.app.debug         D  Upload for context TransportContext(cct, VERY_LOW, MSRodHRwczovL2ZpcmViYXNlbG9nZ2luZy5nb29nbGVhcGlzLmNvbS92MGNjL2xvZy9iYXRjaD9mb3JtYXQ9anNvbl9wcm90bzNc) is already scheduled. Returning...
+2025-10-13 01:20:18.928 11523-11523 SimpleBiometryViewModel com.cdccreditsmart.app.debug         D  Real face embedding extracted: 512 dimensions
+2025-10-13 01:20:18.928 11523-11523 SimpleBiometryViewModel com.cdccreditsmart.app.debug         D  Embedding preview: [-1.0741134881973267, 0.1948947310447693, 0.9551452994346619, 0.005628772079944611, 0.5603455901145935...]
+2025-10-13 01:20:18.928 11523-11523 SimpleBiometryViewModel com.cdccreditsmart.app.debug         D  Image processing completed successfully
+2025-10-13 01:20:18.929 11523-11523 SimpleBiometryViewModel com.cdccreditsmart.app.debug         D  Submitting biometry data
+2025-10-13 01:20:18.935 11523-11523 SimpleBiometryViewModel com.cdccreditsmart.app.debug         D  Generated documentHash from CPF: a8476735b37a541a...
+2025-10-13 01:20:18.935 11523-11523 SimpleBiometryViewModel com.cdccreditsmart.app.debug         D  Verifying facial biometry for session: bio_ses_1760328543418_mrhuww3htzb
+2025-10-13 01:20:18.935 11523-11523 SimpleBiometryViewModel com.cdccreditsmart.app.debug         D  CPF (masked): 123***
+2025-10-13 01:20:18.936 11523-11523 SimpleBiometryViewModel com.cdccreditsmart.app.debug         D  Document Hash: a8476735b37a541a38402a2e7037c79e2d217fe9780e5e34347156ef61eff42b
+2025-10-13 01:20:18.936 11523-11523 SimpleBiometryViewModel com.cdccreditsmart.app.debug         D  Store ID: f3d6763d-9661-44fc-9ffd-d1dc9af5674d
+2025-10-13 01:20:18.936 11523-11523 SimpleBiometryViewModel com.cdccreditsmart.app.debug         D  Liveness score: 0.9856086476643879
+2025-10-13 01:20:18.936 11523-11523 SimpleBiometryViewModel com.cdccreditsmart.app.debug         D  Quality score: 0.684415756346827
+2025-10-13 01:20:18.936 11523-11523 SimpleBiometryViewModel com.cdccreditsmart.app.debug         D  Face image size: 1785468 chars
+2025-10-13 01:20:18.936 11523-11523 SimpleBiometryViewModel com.cdccreditsmart.app.debug         D  Face embedding dimensions: 512
+2025-10-13 01:20:18.936 11523-11523 SimpleBiometryViewModel com.cdccreditsmart.app.debug         D  Attempt 1/5: Calling biometry verification API...
+2025-10-13 01:20:19.179 11523-11673 SimpleBiometryViewModel com.cdccreditsmart.app.debug         D  Request URL: https://cdccreditsmart.com/v1/biometry/face/verify
+2025-10-13 01:20:19.181 11523-11673 SimpleBiometryViewModel com.cdccreditsmart.app.debug         D  Request Headers: Content-Type: application/json
+                                                                                                    Accept: application/json
+                                                                                                    User-Agent: CDC-CreditSmart/1.0.0
+                                                                                                    Authorization: ██
+2025-10-13 01:20:19.344 11523-11673 TrafficStats            com.cdccreditsmart.app.debug         D  tagSocket(5) with statsTag=0xffffffff, statsUid=-1
+2025-10-13 01:20:20.909 11523-11673 SimpleBiometryViewModel com.cdccreditsmart.app.debug         D  Response Code: 401
+2025-10-13 01:20:20.914 11523-11523 SimpleBiometryViewModel com.cdccreditsmart.app.debug         E  Failed to verify biometry - HTTP 401
+2025-10-13 01:20:20.914 11523-11523 SimpleBiometryViewModel com.cdccreditsmart.app.debug         E  Error body: {"success":false,"error":"INVALID_TOKEN","code":"AUTH_401","message":"Token inválido ou expirado"}
+2025-10-13 01:20:20.914 11523-11523 SimpleBiometryViewModel com.cdccreditsmart.app.debug         W  ⚠️ Retryable error 401 - will retry (attempt 1/5)
+2025-10-13 01:20:20.914 11523-11523 SimpleBiometryViewModel com.cdccreditsmart.app.debug         D  ⏳ Tentativa 2/5: Aguardando device ser criado no PDV...
+2025-10-13 01:20:20.914 11523-11523 SimpleBiometryViewModel com.cdccreditsmart.app.debug         D  ⏱️ Próxima tentativa em 12000ms
+2025-10-13 01:20:32.916 11523-11523 SimpleBiometryViewModel com.cdccreditsmart.app.debug         D  Attempt 2/5: Calling biometry verification API...
+2025-10-13 01:20:32.994 11523-11673 SimpleBiometryViewModel com.cdccreditsmart.app.debug         D  Request URL: https://cdccreditsmart.com/v1/biometry/face/verify
+2025-10-13 01:20:32.994 11523-11673 SimpleBiometryViewModel com.cdccreditsmart.app.debug         D  Request Headers: Content-Type: application/json
+                                                                                                    Accept: application/json
+                                                                                                    User-Agent: CDC-CreditSmart/1.0.0
+                                                                                                    Authorization: ██
+2025-10-13 01:20:33.413 11523-11673 SimpleBiometryViewModel com.cdccreditsmart.app.debug         D  Response Code: 401
+2025-10-13 01:20:33.415 11523-11523 SimpleBiometryViewModel com.cdccreditsmart.app.debug         E  Failed to verify biometry - HTTP 401
+2025-10-13 01:20:33.415 11523-11523 SimpleBiometryViewModel com.cdccreditsmart.app.debug         E  Error body: {"success":false,"error":"INVALID_TOKEN","code":"AUTH_401","message":"Token inválido ou expirado"}
+2025-10-13 01:20:33.415 11523-11523 SimpleBiometryViewModel com.cdccreditsmart.app.debug         W  ⚠️ Retryable error 401 - will retry (attempt 2/5)
+2025-10-13 01:20:33.415 11523-11523 SimpleBiometryViewModel com.cdccreditsmart.app.debug         D  ⏳ Tentativa 3/5: Aguardando device ser criado no PDV...
+2025-10-13 01:20:33.415 11523-11523 SimpleBiometryViewModel com.cdccreditsmart.app.debug         D  ⏱️ Próxima tentativa em 14400ms
+2025-10-13 01:20:47.818 11523-11523 SimpleBiometryViewModel com.cdccreditsmart.app.debug         D  Attempt 3/5: Calling biometry verification API...
+2025-10-13 01:20:47.907 11523-11673 SimpleBiometryViewModel com.cdccreditsmart.app.debug         D  Request URL: https://cdccreditsmart.com/v1/biometry/face/verify
+2025-10-13 01:20:47.908 11523-11673 SimpleBiometryViewModel com.cdccreditsmart.app.debug         D  Request Headers: Content-Type: application/json
+                                                                                                    Accept: application/json
+                                                                                                    User-Agent: CDC-CreditSmart/1.0.0
+                                                                                                    Authorization: ██
+2025-10-13 01:20:47.975 11523-11529 smart.app.debug         com.cdccreditsmart.app.debug         I  Background concurrent mark compact GC freed 11MB AllocSpace bytes, 5(49MB) LOS objects, 63% free, 13MB/37MB, paused 491us,5.643ms total 77.739ms
+2025-10-13 01:20:48.462 11523-11673 SimpleBiometryViewModel com.cdccreditsmart.app.debug         D  Response Code: 401
+2025-10-13 01:20:48.467 11523-11523 SimpleBiometryViewModel com.cdccreditsmart.app.debug         E  Failed to verify biometry - HTTP 401
+2025-10-13 01:20:48.467 11523-11523 SimpleBiometryViewModel com.cdccreditsmart.app.debug         E  Error body: {"success":false,"error":"INVALID_TOKEN","code":"AUTH_401","message":"Token inválido ou expirado"}
+2025-10-13 01:20:48.467 11523-11523 SimpleBiometryViewModel com.cdccreditsmart.app.debug         W  ⚠️ Retryable error 401 - will retry (attempt 3/5)
+2025-10-13 01:20:48.467 11523-11523 SimpleBiometryViewModel com.cdccreditsmart.app.debug         D  ⏳ Tentativa 4/5: Aguardando device ser criado no PDV...
+2025-10-13 01:20:48.467 11523-11523 SimpleBiometryViewModel com.cdccreditsmart.app.debug         D  ⏱️ Próxima tentativa em 17279ms
