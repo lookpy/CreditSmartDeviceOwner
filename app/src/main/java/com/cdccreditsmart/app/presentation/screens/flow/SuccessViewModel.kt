@@ -35,21 +35,33 @@ enum class SaleStatus {
 }
 
 /**
- * Estados detectáveis da venda baseado em CdcDeviceStatusResponse
+ * Estados detectáveis da venda baseado em CdcDeviceStatusResponse + pdvSession
  * 
- * NOTA: SALE_IN_PROGRESS (vendedor montando carrinho) NÃO é detectável porque:
- * - CdcDeviceStatusResponse não tem campo indicando claim-sale
- * - SuccessScreen só é acessada APÓS biometria (pós claim-sale)
- * - Não há como distinguir "pré-claim" de "pós-claim" com dados disponíveis
+ * Backend agora envia pdvSession com:
+ * - currentStage: "app", "biometrics", "completed"
+ * - shouldWait: true/false (APK deve aguardar?)
+ * - heartbeatAge: idade do último heartbeat PDV
+ * - status: "active", "completed", "abandoned", "paused"
  */
 enum class SaleState {
-    SALE_NOT_OPEN,        // Venda não aberta no PDV - customerInfo ausente
-    WAITING_PDV,          // Aguardando PDV finalizar - customerInfo presente, sem paymentInfo finalizado
-    SALE_COMPLETED,       // Venda finalizada - paymentInfo com status "completed/paid"
-    SALE_CANCELLED,       // Venda cancelada - paymentInfo com status "cancelled"
-    DEVICE_BLOCKED,       // Dispositivo bloqueado - device status "blocked"
-    DEVICE_INACTIVE,      // Dispositivo inativo - device status "inactive/suspended"
-    UNKNOWN               // Estado desconhecido ou não mapeado
+    // Estados sem venda
+    SALE_NOT_OPEN,             // Venda não aberta - customerInfo ausente
+    
+    // Estados baseados em pdvSession.currentStage
+    PDV_ASSEMBLING_CART,       // PDV montando carrinho - currentStage = "app"
+    PDV_WAITING_BIOMETRY,      // PDV aguardando biometria - currentStage = "biometrics"
+    PDV_PROCESSING_PAYMENT,    // PDV processando pagamento - shouldWait = true
+    PDV_COMPLETED,             // PDV finalizou - currentStage = "completed" ou shouldWait = false
+    
+    // Estados de abandono/erro
+    PDV_ABANDONED,             // PDV abandonado - heartbeatAge > 30s
+    SALE_CANCELLED,            // Venda cancelada - paymentStatus = "cancelled"
+    
+    // Estados de dispositivo
+    DEVICE_BLOCKED,            // Dispositivo bloqueado - status = "blocked"
+    DEVICE_INACTIVE,           // Dispositivo inativo - status = "inactive/suspended"
+    
+    UNKNOWN                    // Estado desconhecido
 }
 
 /**

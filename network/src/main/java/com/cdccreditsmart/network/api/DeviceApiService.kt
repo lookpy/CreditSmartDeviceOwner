@@ -510,7 +510,8 @@ data class CdcDeviceStatusResponse(
     val status: String,
     val hasBlockReason: Boolean,
     val customerInfo: CdcCustomerInfo? = null,
-    val paymentInfo: CdcPaymentInfo? = null
+    val paymentInfo: CdcPaymentInfo? = null,
+    val pdvSession: PdvSessionInfo? = null
 )
 
 //@JsonClass(generateAdapter = true) // Temporarily disabled to fix build
@@ -525,6 +526,22 @@ data class CdcPaymentInfo(
     val paidInstallments: Int,
     val remainingInstallments: Int,
     val paymentStatus: String
+)
+
+/**
+ * PDV Session tracking information
+ * Backend tracks PDV heartbeats and session state to detect when PDV is active
+ */
+//@JsonClass(generateAdapter = true) // Temporarily disabled to fix build
+data class PdvSessionInfo(
+    val status: String,              // "active", "completed", "abandoned", "paused"
+    val currentStage: String,        // "app", "biometrics", "completed"
+    val isActive: Boolean,           // Whether PDV is currently active
+    val lastHeartbeat: String? = null, // ISO 8601 timestamp
+    val heartbeatAge: Double? = null,  // Age in seconds since last heartbeat
+    val sessionStarted: String? = null, // ISO 8601 timestamp
+    val sessionCompleted: String? = null, // ISO 8601 timestamp
+    val shouldWait: Boolean          // APK should continue waiting if true
 )
 
 // CDC Credit Smart specific DTOs according to documentation

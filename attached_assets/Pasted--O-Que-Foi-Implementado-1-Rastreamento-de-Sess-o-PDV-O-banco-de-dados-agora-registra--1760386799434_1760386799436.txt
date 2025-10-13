@@ -1,0 +1,91 @@
+
+🎯 O Que Foi Implementado:
+1. Rastreamento de Sessão PDV 📊
+O banco de dados agora registra:
+
+Status da sessão: active, completed, abandoned, paused
+Etapa atual: app, biometrics, completed, etc.
+Heartbeat: PDV envia pulso a cada 10 segundos informando que está ativo
+Timestamps: Início e conclusão da sessão
+2. Endpoint Melhorado para APK 🔄
+GET /api/apk/device/status agora retorna:
+
+{
+  "pdvSession": {
+    "status": "completed",
+    "currentStage": "completed",
+    "isActive": false,
+    "lastHeartbeat": "2025-10-13T20:10:00Z",
+    "heartbeatAge": 25.3,
+    "sessionStarted": "2025-10-13T20:05:00Z",
+    "sessionCompleted": "2025-10-13T20:10:00Z",
+    "shouldWait": false  ← APK sabe que pode prosseguir!
+  },
+  "paymentInfo": {...}  ← Parcelas disponíveis
+}
+3. PDV Heartbeat Automático 💓
+O PDV agora envia automaticamente:
+
+A cada 10 segundos quando em etapas ativas (app, biometrics)
+Uma única vez quando chega em "completed"
+Informa: IMEI, etapa atual e status da sessão
+4. Lógica Inteligente de Espera 🧠
+O APK detecta:
+
+✅ PDV ativo: shouldWait = true → Continue aguardando
+✅ PDV finalizou: shouldWait = false → Pode prosseguir para Home Screen
+✅ PDV abandonou: heartbeatAge > 30s → PDV inativo, timeout
+🔄 Fluxo Completo PDV → APK:
+┌─────────────────────────────────────────────────┐
+│ 1. PDV: Vendedor inicia venda                  │
+│    - Preenche dados, IMEI, etc.                │
+│    - Avança para etapa "app" (QR Code)         │
+│    - Heartbeat: {stage: "app", status: "active"}│
+└──────────────┬──────────────────────────────────┘
+               ↓
+┌─────────────────────────────────────────────────┐
+│ 2. APK: Escaneia QR Code                       │
+│    - Faz claim-sale                            │
+│    - Captura biometria                         │
+│    - Aguarda PDV finalizar (polling)           │
+└──────────────┬──────────────────────────────────┘
+               ↓ (APK polling a cada 5s)
+┌─────────────────────────────────────────────────┐
+│ 3. APK polling: GET /api/apk/device/status     │
+│    ┌─────────────────────────────────────────┐ │
+│    │ pdvSession.shouldWait = true            │ │
+│    │ → Continue aguardando...                │ │
+│    └─────────────────────────────────────────┘ │
+└─────────────────────────────────────────────────┘
+               ↑
+               │ (a cada 5 segundos)
+               ↓
+┌─────────────────────────────────────────────────┐
+│ 4. PDV: Biometria aprovada                     │
+│    - WebSocket deveria notificar (se conectado)│
+│    - Avança para "completed"                   │
+│    - Heartbeat: {stage: "completed",           │
+│                  status: "completed"} (1x)     │
+└──────────────┬──────────────────────────────────┘
+               ↓
+┌─────────────────────────────────────────────────┐
+│ 5. APK polling detecta mudança:                │
+│    ┌─────────────────────────────────────────┐ │
+│    │ pdvSession.shouldWait = false ✅        │ │
+│    │ paymentInfo != null ✅                  │ │
+│    │ → Navega para Home Screen!              │ │
+│    └─────────────────────────────────────────┘ │
+└─────────────────────────────────────────────────┘
+📋 Casos de Uso Cobertos:
+✅ PDV ativo aguardando biometria: shouldWait = true
+✅ PDV finalizou venda: shouldWait = false, APK prossegue
+✅ PDV abandonou (vendedor fechou): heartbeatAge > 30s, APK pode dar timeout
+✅ PDV em outra etapa: APK vê currentStage e sabe onde vendedor está
+
+🧪 Para Testar:
+Faça uma venda no PDV até mostrar QR Code
+No APK: Escaneie QR, faça biometria
+Observe: APK vai fazer polling e mostrar "Aguardando PDV..."
+No PDV: O sistema deve avançar automaticamente quando biometria aprovar
+APK detecta: shouldWait = false e vai para Home Screen
+O sistema está 100% pronto! O APK agora é inteligente e sabe exatamente o que está acontecendo no PDV. 🚀
