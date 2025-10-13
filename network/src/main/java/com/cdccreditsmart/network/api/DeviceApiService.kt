@@ -555,36 +555,11 @@ data class CdcSystemHealth(
     val networkType: String? = null
 )
 
-// Installments DTOs
-//@JsonClass(generateAdapter = true) // Temporarily disabled to fix build
-data class CdcInstallmentsResponse(
-    val success: Boolean,
-    val installments: List<CdcInstallmentInfo>,
-    val summary: CdcPaymentSummary? = null,
-    val totalCount: Int
-)
-
-//@JsonClass(generateAdapter = true) // Temporarily disabled to fix build
-data class CdcInstallmentInfo(
-    val id: String,
-    val number: Int,
-    val dueDate: String,
-    val amount: Double,
-    val status: String, // "paid", "pending", "overdue"
-    val paymentMethod: String? = null,
-    val paymentDate: String? = null,
-    val description: String? = null
-)
-
-//@JsonClass(generateAdapter = true) // Temporarily disabled to fix build
-data class CdcPaymentSummary(
-    val totalAmount: Double,
-    val paidAmount: Double,
-    val remainingAmount: Double,
-    val overdueAmount: Double,
-    val nextDueDate: String? = null,
-    val remainingInstallments: Int
-)
+// Installments DTOs - USE PaymentDTOs.kt FOR COMPLETE DEFINITIONS
+// These are kept for backward compatibility but should use the full DTOs from PaymentDTOs.kt
+// CdcInstallmentsResponse is defined in PaymentDTOs.kt with all fields
+// CdcInstallmentInfo is defined as InstallmentDetail in PaymentDTOs.kt
+// CdcPaymentSummary is defined as PaymentSummary in PaymentDTOs.kt
 
 // Permissions DTOs
 //@JsonClass(generateAdapter = true) // Temporarily disabled to fix build

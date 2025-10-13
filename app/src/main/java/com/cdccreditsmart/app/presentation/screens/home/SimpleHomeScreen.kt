@@ -253,11 +253,12 @@ private fun CustomerInfoCard(customer: com.cdccreditsmart.network.dto.cdc.Custom
                 value = formatPhone(customer.phone)
             )
             
-            if (!customer.email.isNullOrBlank()) {
+            val emailValue = customer.email
+            if (!emailValue.isNullOrBlank()) {
                 CustomerInfoRow(
                     icon = Icons.Default.Email,
                     label = "Email",
-                    value = customer.email
+                    value = emailValue
                 )
             }
         }

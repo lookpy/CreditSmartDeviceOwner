@@ -14,6 +14,7 @@ import com.cdccreditsmart.network.dto.cdc.CustomerInfo
 import com.cdccreditsmart.network.dto.cdc.InstallmentDetail
 import com.cdccreditsmart.network.dto.cdc.PaymentMethodInfo
 import com.cdccreditsmart.network.dto.cdc.PaymentSummary
+import com.cdccreditsmart.network.dto.cdc.PaymentDTOs
 import com.google.gson.Gson
 import kotlinx.coroutines.launch
 import okhttp3.OkHttpClient
