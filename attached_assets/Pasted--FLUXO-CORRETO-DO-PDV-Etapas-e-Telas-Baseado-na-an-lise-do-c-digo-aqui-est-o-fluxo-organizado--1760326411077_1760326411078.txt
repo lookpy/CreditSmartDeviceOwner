@@ -1,0 +1,128 @@
+ FLUXO CORRETO DO PDV - Etapas e Telas
+Baseado na análise do código, aqui está o fluxo organizado:
+
+ETAPA 1: BUSCAR CLIENTE + VENDA
+Tela: search-sale
+
+1.1 Seleção/Cadastro de Cliente
+ Buscar cliente existente OU
+ Cadastrar novo cliente (nome, CPF, telefone, etc.)
+1.2 Análise de Crédito
+ Sistema analisa CPF + valor do aparelho
+ Exibe resultado: Aprovado ✅ ou Negado ❌
+ Mostra limite aprovado
+1.3 Configuração da Venda
+ Selecionar dispositivo do catálogo
+ Digitar IMEI do dispositivo físico (validação automática)
+ Definir valor de entrada
+ Sistema calcula:
+Número de parcelas
+Valor das parcelas quinzenais
+Juros aplicados
+1.4 Preparar Venda
+ Sistema cria ImeiValidation (janela de 24h)
+ Gera Contract Code (ex: CTR_1760326002928_560533)
+ NÃO cria o Device ainda (apenas validação)
+ Avança para próxima etapa
+Backend: POST /api/sales → Cria validation, retorna contractCode e saleId
+
+ETAPA 2: APLICATIVO (APK)
+Tela: app
+
+2.1 QR Code / Instruções
+ PDV exibe QR Code com contractCode
+ Cliente escaneia no dispositivo Android
+ Timeout: 5 minutos
+2.2 Device Attestation (APK)
+APK → Lê IMEI do hardware
+APK → GET /api/device/claim-sale?imei=xxx
+APK → POST /api/device/claim-sale (com fingerprint)
+APK → Recebe JWT imutável
+2.3 Eventos WebSocket
+device:attestation-start → "Verificando integridade..."
+device:imei-verification → "Validando IMEI..."
+device:bind-success → ✅ "Dispositivo vinculado!"
+device:bind-error → ❌ Modal de erro
+2.4 Transição Automática
+ Ao receber device:bind-success
+ PDV avança para biometrics automaticamente
+Backend: APK faz claim-sale, recebe JWT (com saleId ou deviceId temporário)
+
+ETAPA 3: BIOMETRIA
+Tela: biometrics
+
+3.1 Verificação Facial (PDV)
+ PDV inicia captura biométrica do cliente
+ Cliente posiciona rosto na câmera
+ Sistema verifica:
+Liveness (prova de vida)
+Quality score (qualidade da imagem)
+Face embedding (512 dimensões)
+3.2 Anti-Fraude
+ Compara com rostos cadastrados (mesmo CPF)
+ Detecta duplicatas (fraude potencial)
+ Resultados:
+✅ Aprovado → Prossegue
+⚠️ Revisão Manual → Aguarda aprovação
+❌ Fraude Detectada → Bloqueia venda
+3.3 Finalização da Venda (CRÍTICO)
+POST /api/sales/finalize
+→ Cria Device com ID único
+→ Atualiza ImeiValidation.deviceId = device.id
+→ Gera contrato PDF
+→ Cria comissões
+→ Envia notificações
+Importante: É AQUI que o Device é criado com deviceId real!
+
+3.4 Eventos WebSocket
+biometric:validation-start → "Iniciando verificação..."
+biometric:liveness-check → "Verificando prova de vida..."
+biometric:approved → ✅ Avança para conclusão
+biometric:fraud-detected → ❌ Interrompe fluxo
+Backend: POST /api/sales/finalize → Cria device, atualiza validation com deviceId
+
+ETAPA 4: CONCLUÍDO
+Tela: completed
+
+4.1 Assinatura Digital
+ Cliente lê termos do contrato
+ Cliente assina digitalmente
+ Sistema finaliza transação
+4.2 Entrega
+ Dispositivo liberado para cliente
+ Contrato salvo no sistema
+ Vendedor pode iniciar nova venda
+4.3 Eventos WebSocket
+contract:reading-start → "Cliente lendo termos..."
+contract:signature-start → "Assinando contrato..."
+contract:completed → 🎉 "Venda concluída!"
+🔄 FLUXO BACKEND CORRETO
+1️⃣ POST /api/sales
+   ↓
+   Cria ImeiValidation (deviceId = NULL)
+   ↓
+   Retorna contractCode, saleId, validationId
+2️⃣ APK: GET /api/device/claim-sale?imei=xxx
+   ↓
+   Busca validation pendente
+3️⃣ APK: POST /api/device/claim-sale
+   ↓
+   Gera JWT (deviceId = saleId temporário se validation.deviceId = NULL)
+   ↓
+   Retorna immutableToken
+4️⃣ POST /api/sales/finalize (após biometria PDV)
+   ↓
+   Cria Device (ID real gerado)
+   ↓
+   Atualiza validation.deviceId = device.id
+   ↓
+   APK agora pode usar JWT para biometria
+5️⃣ APK: POST /v1/biometry/face/verify
+   ↓
+   JWT autenticado
+   ↓
+   Device encontrado via deviceId ou IMEI
+   ↓
+   Biometria validada ✅
+⚠️ TIMING CRÍTICO
+PROBLEMA ATUAL: APK tenta biometria ANTES de PDV finalizar venda
