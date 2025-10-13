@@ -495,6 +495,10 @@ class SimplifiedAuthViewModel(
                                 Log.d(TAG, "Sale ID: ${claimResponse.saleId}")
                                 Log.d(TAG, "Message: ${claimResponse.message}")
                                 
+                                // Save JWT token for authenticated API calls
+                                tokenManager.saveToken(claimResponse.immutableToken)
+                                Log.d(TAG, "✅ JWT Token saved to TokenManager")
+                                
                                 // Save saleId to TokenManager for later use in SuccessScreen polling
                                 tokenManager.saveSaleId(claimResponse.saleId)
                                 Log.d(TAG, "✅ SaleId persisted to TokenManager for PDV finalization polling")

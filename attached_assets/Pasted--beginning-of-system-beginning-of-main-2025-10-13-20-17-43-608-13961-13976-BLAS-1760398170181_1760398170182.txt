@@ -1,0 +1,158 @@
+--------- beginning of system
+--------- beginning of main
+2025-10-13 20:17:43.608 13961-13976 BLASTBufferQueue        com.cdccreditsmart.app.debug         E  [SurfaceView[com.cdccreditsmart.app.debug/com.cdccreditsmart.app.presentation.MainActivity]#1](f:1,a:4) acquireNextBufferLocked: Can't acquire next buffer. Already acquired max frames 4 max:2 + 2
+2025-10-13 20:20:39.117 14301-14301 smart.app.debug         com.cdccreditsmart.app.debug         I  Late-enabling -Xcheck:jni
+2025-10-13 20:20:39.158 14301-14301 smart.app.debug         com.cdccreditsmart.app.debug         I  Using CollectorTypeCMC GC.
+2025-10-13 20:20:39.252 14301-14301 smart.app.debug         com.cdccreditsmart.app.debug         W  DexFile /data/data/com.cdccreditsmart.app.debug/code_cache/.studio/instruments-873176f2.jar is in boot class path but is not in a known location
+2025-10-13 20:20:39.476 14301-14301 smart.app.debug         com.cdccreditsmart.app.debug         W  Redefining intrinsic method java.lang.Thread java.lang.Thread.currentThread(). This may cause the unexpected use of the original definition of java.lang.Thread java.lang.Thread.currentThread()in methods that have already been compiled.
+2025-10-13 20:20:39.477 14301-14301 smart.app.debug         com.cdccreditsmart.app.debug         W  Redefining intrinsic method boolean java.lang.Thread.interrupted(). This may cause the unexpected use of the original definition of boolean java.lang.Thread.interrupted()in methods that have already been compiled.
+2025-10-13 20:20:39.550 14301-14301 ziparchive              com.cdccreditsmart.app.debug         W  Unable to open '/data/data/com.cdccreditsmart.app.debug/code_cache/.overlay/base.apk/classes15.dm': No such file or directory
+2025-10-13 20:20:39.558 14301-14301 smart.app.debug         com.cdccreditsmart.app.debug         W  ClassLoaderContext classpath size mismatch. expected=0, found=1 (PCL[] | PCL[/data/data/com.cdccreditsmart.app.debug/code_cache/.overlay/base.apk/classes15.dex*1792421489])
+2025-10-13 20:20:39.662 14301-14301 Typeface                com.cdccreditsmart.app.debug         I  initOverlayFonts====family: RookeryNew-Regular
+2025-10-13 20:20:39.676 14301-14301 PowerHalWrapper         com.cdccreditsmart.app.debug         I  PowerHalWrapper.getInstance 
+2025-10-13 20:20:39.677 14301-14301 M-ProMotion             com.cdccreditsmart.app.debug         I  M-ProMotion is disabled
+2025-10-13 20:20:39.813 14301-14316 PowerHalWrapper         com.cdccreditsmart.app.debug         I  PowerHalWrapper.getInstance 
+2025-10-13 20:20:39.816 14301-14301 SurfaceFactory          com.cdccreditsmart.app.debug         I  [static] sSurfaceFactory = com.mediatek.view.impl.SurfaceFactoryImpl@6a088ff
+2025-10-13 20:20:39.827 14301-14301 HWUI                    com.cdccreditsmart.app.debug         W  Unknown dataspace 0
+2025-10-13 20:20:40.962 14301-14301 FBI                     com.cdccreditsmart.app.debug         E  Can't load library: dlopen failed: library "libmagtsync.so" not found
+2025-10-13 20:20:41.100 14301-14317 GrallocExtra            com.cdccreditsmart.app.debug         I  gralloc_extra_query:is_SW3D 0
+2025-10-13 20:20:41.165 14301-14317 GrallocExtra            com.cdccreditsmart.app.debug         I  gralloc_extra_query:is_SW3D 0
+2025-10-13 20:20:41.182 14301-14312 HWUI                    com.cdccreditsmart.app.debug         I  Davey! duration=1504ms; Flags=1, FrameTimelineVsyncId=4406284, IntendedVsync=212282203361652, Vsync=212282386694989, InputEventId=0, HandleInputStart=212282401983114, AnimationStart=212282402027498, PerformTraversalsStart=212282402528729, DrawStart=212283579512421, FrameDeadline=212282219361652, FrameInterval=212282400434575, FrameStartTime=16666667, SyncQueued=212283629818498, SyncStart=212283630103729, IssueDrawCommandsStart=212283631562575, SwapBuffers=212283702188729, FrameCompleted=212283707781575, DequeueBufferDuration=40615, QueueBufferDuration=2189461, GpuCompleted=212283707376037, SwapBuffersCompleted=212283707781575, DisplayPresentTime=0, CommandSubmissionCompleted=212283702188729, 
+2025-10-13 20:20:41.257 14301-14301 Choreographer           com.cdccreditsmart.app.debug         I  Skipped 80 frames!  The application may be doing too much work on its main thread.
+2025-10-13 20:20:41.499 14301-14305 smart.app.debug         com.cdccreditsmart.app.debug         I  Compiler allocated 6943KB to compile void android.view.ViewRootImpl.performTraversals()
+2025-10-13 20:20:44.623 14301-14301 WaitingPdvViewModel     com.cdccreditsmart.app.debug         E  ❌ API error: 401 - 
+2025-10-13 20:20:47.656 14301-14301 WaitingPdvViewModel     com.cdccreditsmart.app.debug         E  ❌ Exception during polling
+2025-10-13 20:20:50.685 14301-14301 WaitingPdvViewModel     com.cdccreditsmart.app.debug         E  ❌ Exception during polling
+2025-10-13 20:20:53.711 14301-14301 WaitingPdvViewModel     com.cdccreditsmart.app.debug         E  ❌ Exception during polling
+2025-10-13 20:20:56.741 14301-14301 WaitingPdvViewModel     com.cdccreditsmart.app.debug         E  ❌ Exception during polling
+2025-10-13 20:20:59.314 14301-14306 smart.app.debug         com.cdccreditsmart.app.debug         I  Background concurrent mark compact GC freed 5657KB AllocSpace bytes, 4(80KB) LOS objects, 66% free, 4556KB/13MB, paused 384us,8.362ms total 94.829ms
+2025-10-13 20:20:59.766 14301-14301 WaitingPdvViewModel     com.cdccreditsmart.app.debug         E  ❌ Exception during polling
+2025-10-13 20:21:02.796 14301-14301 WaitingPdvViewModel     com.cdccreditsmart.app.debug         E  ❌ Exception during polling
+2025-10-13 20:21:05.828 14301-14301 WaitingPdvViewModel     com.cdccreditsmart.app.debug         E  ❌ Exception during polling
+2025-10-13 20:21:08.862 14301-14301 WaitingPdvViewModel     com.cdccreditsmart.app.debug         E  ❌ Exception during polling
+2025-10-13 20:21:11.892 14301-14301 WaitingPdvViewModel     com.cdccreditsmart.app.debug         E  ❌ Exception during polling
+2025-10-13 20:21:14.926 14301-14301 WaitingPdvViewModel     com.cdccreditsmart.app.debug         E  ❌ Exception during polling
+2025-10-13 20:21:17.960 14301-14301 WaitingPdvViewModel     com.cdccreditsmart.app.debug         E  ❌ Exception during polling
+2025-10-13 20:21:20.995 14301-14301 WaitingPdvViewModel     com.cdccreditsmart.app.debug         E  ❌ Exception during polling
+2025-10-13 20:21:24.027 14301-14301 WaitingPdvViewModel     com.cdccreditsmart.app.debug         E  ❌ Exception during polling
+2025-10-13 20:21:27.061 14301-14301 WaitingPdvViewModel     com.cdccreditsmart.app.debug         E  ❌ Exception during polling
+2025-10-13 20:21:30.094 14301-14301 WaitingPdvViewModel     com.cdccreditsmart.app.debug         E  ❌ Exception during polling
+2025-10-13 20:21:33.126 14301-14301 WaitingPdvViewModel     com.cdccreditsmart.app.debug         E  ❌ Exception during polling
+2025-10-13 20:21:36.158 14301-14301 WaitingPdvViewModel     com.cdccreditsmart.app.debug         E  ❌ Exception during polling
+2025-10-13 20:21:39.189 14301-14301 WaitingPdvViewModel     com.cdccreditsmart.app.debug         E  ❌ Exception during polling
+2025-10-13 20:21:42.219 14301-14301 WaitingPdvViewModel     com.cdccreditsmart.app.debug         E  ❌ Exception during polling
+2025-10-13 20:21:45.252 14301-14301 WaitingPdvViewModel     com.cdccreditsmart.app.debug         E  ❌ Exception during polling
+2025-10-13 20:21:48.283 14301-14301 WaitingPdvViewModel     com.cdccreditsmart.app.debug         E  ❌ Exception during polling
+2025-10-13 20:21:51.314 14301-14301 WaitingPdvViewModel     com.cdccreditsmart.app.debug         E  ❌ Exception during polling
+2025-10-13 20:21:54.346 14301-14301 WaitingPdvViewModel     com.cdccreditsmart.app.debug         E  ❌ Exception during polling
+2025-10-13 20:21:57.377 14301-14301 WaitingPdvViewModel     com.cdccreditsmart.app.debug         E  ❌ Exception during polling
+2025-10-13 20:22:00.408 14301-14301 WaitingPdvViewModel     com.cdccreditsmart.app.debug         E  ❌ Exception during polling
+2025-10-13 20:22:03.439 14301-14301 WaitingPdvViewModel     com.cdccreditsmart.app.debug         E  ❌ Exception during polling
+2025-10-13 20:22:06.470 14301-14301 WaitingPdvViewModel     com.cdccreditsmart.app.debug         E  ❌ Exception during polling
+2025-10-13 20:22:09.501 14301-14301 WaitingPdvViewModel     com.cdccreditsmart.app.debug         E  ❌ Exception during polling
+2025-10-13 20:22:12.531 14301-14301 WaitingPdvViewModel     com.cdccreditsmart.app.debug         E  ❌ Exception during polling
+2025-10-13 20:22:15.562 14301-14301 WaitingPdvViewModel     com.cdccreditsmart.app.debug         E  ❌ Exception during polling
+2025-10-13 20:22:18.593 14301-14301 WaitingPdvViewModel     com.cdccreditsmart.app.debug         E  ❌ Exception during polling
+2025-10-13 20:22:21.624 14301-14301 WaitingPdvViewModel     com.cdccreditsmart.app.debug         E  ❌ Exception during polling
+2025-10-13 20:22:24.654 14301-14301 WaitingPdvViewModel     com.cdccreditsmart.app.debug         E  ❌ Exception during polling
+2025-10-13 20:22:27.689 14301-14301 WaitingPdvViewModel     com.cdccreditsmart.app.debug         E  ❌ Exception during polling
+2025-10-13 20:22:30.719 14301-14301 WaitingPdvViewModel     com.cdccreditsmart.app.debug         E  ❌ Exception during polling
+2025-10-13 20:22:33.747 14301-14301 WaitingPdvViewModel     com.cdccreditsmart.app.debug         E  ❌ Exception during polling
+2025-10-13 20:22:36.778 14301-14301 WaitingPdvViewModel     com.cdccreditsmart.app.debug         E  ❌ Exception during polling
+2025-10-13 20:22:39.809 14301-14301 WaitingPdvViewModel     com.cdccreditsmart.app.debug         E  ❌ Exception during polling
+2025-10-13 20:22:42.839 14301-14301 WaitingPdvViewModel     com.cdccreditsmart.app.debug         E  ❌ Exception during polling
+2025-10-13 20:22:45.869 14301-14301 WaitingPdvViewModel     com.cdccreditsmart.app.debug         E  ❌ Exception during polling
+2025-10-13 20:22:48.899 14301-14301 WaitingPdvViewModel     com.cdccreditsmart.app.debug         E  ❌ Exception during polling
+2025-10-13 20:22:51.930 14301-14301 WaitingPdvViewModel     com.cdccreditsmart.app.debug         E  ❌ Exception during polling
+2025-10-13 20:22:54.960 14301-14301 WaitingPdvViewModel     com.cdccreditsmart.app.debug         E  ❌ Exception during polling
+2025-10-13 20:22:57.990 14301-14301 WaitingPdvViewModel     com.cdccreditsmart.app.debug         E  ❌ Exception during polling
+2025-10-13 20:23:01.021 14301-14301 WaitingPdvViewModel     com.cdccreditsmart.app.debug         E  ❌ Exception during polling
+2025-10-13 20:23:04.050 14301-14301 WaitingPdvViewModel     com.cdccreditsmart.app.debug         E  ❌ Exception during polling
+2025-10-13 20:23:07.080 14301-14301 WaitingPdvViewModel     com.cdccreditsmart.app.debug         E  ❌ Exception during polling
+2025-10-13 20:23:10.111 14301-14301 WaitingPdvViewModel     com.cdccreditsmart.app.debug         E  ❌ Exception during polling
+2025-10-13 20:23:13.142 14301-14301 WaitingPdvViewModel     com.cdccreditsmart.app.debug         E  ❌ Exception during polling
+2025-10-13 20:23:16.169 14301-14301 WaitingPdvViewModel     com.cdccreditsmart.app.debug         E  ❌ Exception during polling
+2025-10-13 20:23:19.192 14301-14301 WaitingPdvViewModel     com.cdccreditsmart.app.debug         E  ❌ Exception during polling
+2025-10-13 20:23:22.215 14301-14301 WaitingPdvViewModel     com.cdccreditsmart.app.debug         E  ❌ Exception during polling
+2025-10-13 20:23:25.241 14301-14301 WaitingPdvViewModel     com.cdccreditsmart.app.debug         E  ❌ Exception during polling
+2025-10-13 20:23:28.267 14301-14301 WaitingPdvViewModel     com.cdccreditsmart.app.debug         E  ❌ Exception during polling
+2025-10-13 20:23:31.291 14301-14301 WaitingPdvViewModel     com.cdccreditsmart.app.debug         E  ❌ Exception during polling
+2025-10-13 20:23:34.318 14301-14301 WaitingPdvViewModel     com.cdccreditsmart.app.debug         E  ❌ Exception during polling
+2025-10-13 20:23:37.341 14301-14301 WaitingPdvViewModel     com.cdccreditsmart.app.debug         E  ❌ Exception during polling
+2025-10-13 20:23:40.368 14301-14301 WaitingPdvViewModel     com.cdccreditsmart.app.debug         E  ❌ Exception during polling
+2025-10-13 20:23:43.391 14301-14301 WaitingPdvViewModel     com.cdccreditsmart.app.debug         E  ❌ Exception during polling
+2025-10-13 20:26:36.152 14301-14301 InteractionJankMonitor  com.cdccreditsmart.app.debug         W  Initializing without READ_DEVICE_CONFIG permission. enabled=false, interval=1, missedFrameThreshold=3, frameTimeThreshold=64, package=com.cdccreditsmart.app.debug
+2025-10-13 20:26:46.703 14301-14301 WaitingPdvViewModel     com.cdccreditsmart.app.debug         E  ❌ API error: 401 - 
+2025-10-13 20:26:49.920 14301-14301 WaitingPdvViewModel     com.cdccreditsmart.app.debug         E  ❌ API error: 401 - 
+2025-10-13 20:26:53.138 14301-14301 WaitingPdvViewModel     com.cdccreditsmart.app.debug         E  ❌ API error: 401 - 
+2025-10-13 20:26:56.361 14301-14301 WaitingPdvViewModel     com.cdccreditsmart.app.debug         E  ❌ API error: 401 - 
+2025-10-13 20:26:59.663 14301-14301 WaitingPdvViewModel     com.cdccreditsmart.app.debug         E  ❌ API error: 401 - 
+2025-10-13 20:27:02.896 14301-14301 WaitingPdvViewModel     com.cdccreditsmart.app.debug         E  ❌ API error: 401 - 
+2025-10-13 20:27:06.382 14685-14685 smart.app.debug         com.cdccreditsmart.app.debug         I  Late-enabling -Xcheck:jni
+2025-10-13 20:27:06.420 14685-14685 smart.app.debug         com.cdccreditsmart.app.debug         I  Using CollectorTypeCMC GC.
+2025-10-13 20:27:06.488 14685-14685 smart.app.debug         com.cdccreditsmart.app.debug         W  DexFile /data/data/com.cdccreditsmart.app.debug/code_cache/.studio/instruments-873176f2.jar is in boot class path but is not in a known location
+2025-10-13 20:27:06.807 14685-14685 smart.app.debug         com.cdccreditsmart.app.debug         W  Redefining intrinsic method java.lang.Thread java.lang.Thread.currentThread(). This may cause the unexpected use of the original definition of java.lang.Thread java.lang.Thread.currentThread()in methods that have already been compiled.
+2025-10-13 20:27:06.807 14685-14685 smart.app.debug         com.cdccreditsmart.app.debug         W  Redefining intrinsic method boolean java.lang.Thread.interrupted(). This may cause the unexpected use of the original definition of boolean java.lang.Thread.interrupted()in methods that have already been compiled.
+2025-10-13 20:27:06.857 14685-14685 ziparchive              com.cdccreditsmart.app.debug         W  Unable to open '/data/data/com.cdccreditsmart.app.debug/code_cache/.overlay/base.apk/classes15.dm': No such file or directory
+2025-10-13 20:27:06.864 14685-14685 smart.app.debug         com.cdccreditsmart.app.debug         W  ClassLoaderContext classpath size mismatch. expected=0, found=1 (PCL[] | PCL[/data/data/com.cdccreditsmart.app.debug/code_cache/.overlay/base.apk/classes15.dex*1792421489])
+2025-10-13 20:27:06.960 14685-14685 Typeface                com.cdccreditsmart.app.debug         I  initOverlayFonts====family: RookeryNew-Regular
+2025-10-13 20:27:06.970 14685-14685 PowerHalWrapper         com.cdccreditsmart.app.debug         I  PowerHalWrapper.getInstance 
+2025-10-13 20:27:06.971 14685-14685 M-ProMotion             com.cdccreditsmart.app.debug         I  M-ProMotion is disabled
+2025-10-13 20:27:07.081 14685-14707 PowerHalWrapper         com.cdccreditsmart.app.debug         I  PowerHalWrapper.getInstance 
+2025-10-13 20:27:07.083 14685-14685 SurfaceFactory          com.cdccreditsmart.app.debug         I  [static] sSurfaceFactory = com.mediatek.view.impl.SurfaceFactoryImpl@6a088ff
+2025-10-13 20:27:07.092 14685-14685 HWUI                    com.cdccreditsmart.app.debug         W  Unknown dataspace 0
+2025-10-13 20:27:07.760 14685-14685 FBI                     com.cdccreditsmart.app.debug         E  Can't load library: dlopen failed: library "libmagtsync.so" not found
+2025-10-13 20:27:07.849 14685-14708 GrallocExtra            com.cdccreditsmart.app.debug         I  gralloc_extra_query:is_SW3D 0
+2025-10-13 20:27:07.879 14685-14708 GrallocExtra            com.cdccreditsmart.app.debug         I  gralloc_extra_query:is_SW3D 0
+2025-10-13 20:27:07.918 14685-14695 HWUI                    com.cdccreditsmart.app.debug         I  Davey! duration=927ms; Flags=1, FrameTimelineVsyncId=4423475, IntendedVsync=212669491760615, Vsync=212669641738892, InputEventId=0, HandleInputStart=212669649495829, AnimationStart=212669649520675, PerformTraversalsStart=212669649905060, DrawStart=212670352287445, FrameDeadline=212669511760615, FrameInterval=212669648858829, FrameStartTime=16664253, SyncQueued=212670383044675, SyncStart=212670383201368, IssueDrawCommandsStart=212670384252060, SwapBuffers=212670417100675, FrameCompleted=212670419892368, DequeueBufferDuration=20077, QueueBufferDuration=744615, GpuCompleted=212670419892368, SwapBuffersCompleted=212670419773906, DisplayPresentTime=0, CommandSubmissionCompleted=212670417100675, 
+2025-10-13 20:27:07.932 14685-14685 Choreographer           com.cdccreditsmart.app.debug         I  Skipped 46 frames!  The application may be doing too much work on its main thread.
+2025-10-13 20:27:08.029 14685-14695 HWUI                    com.cdccreditsmart.app.debug         I  Davey! duration=858ms; Flags=0, FrameTimelineVsyncId=4423599, IntendedVsync=212669691727350, Vsync=212670458279768, InputEventId=0, HandleInputStart=212670471911752, AnimationStart=212670471923752, PerformTraversalsStart=212670520467137, DrawStart=212670521177598, FrameDeadline=212670444958783, FrameInterval=212670471297983, FrameStartTime=16664183, SyncQueued=212670541869598, SyncStart=212670542072675, IssueDrawCommandsStart=212670542190598, SwapBuffers=212670547021906, FrameCompleted=212670550043829, DequeueBufferDuration=27770, QueueBufferDuration=756308, GpuCompleted=212670550043829, SwapBuffersCompleted=212670548642829, DisplayPresentTime=0, CommandSubmissionCompleted=212670547021906, 
+2025-10-13 20:27:08.103 14685-14690 smart.app.debug         com.cdccreditsmart.app.debug         I  Compiler allocated 6943KB to compile void android.view.ViewRootImpl.performTraversals()
+2025-10-13 20:27:08.690 14685-14685 InteractionJankMonitor  com.cdccreditsmart.app.debug         W  Initializing without READ_DEVICE_CONFIG permission. enabled=false, interval=1, missedFrameThreshold=3, frameTimeThreshold=64, package=com.cdccreditsmart.app.debug
+2025-10-13 20:27:09.118 14685-14685 WaitingPdvViewModel     com.cdccreditsmart.app.debug         E  ❌ API error: 401 - 
+2025-10-13 20:27:12.335 14685-14685 WaitingPdvViewModel     com.cdccreditsmart.app.debug         E  ❌ API error: 401 - 
+2025-10-13 20:27:15.593 14685-14685 WaitingPdvViewModel     com.cdccreditsmart.app.debug         E  ❌ API error: 401 - 
+2025-10-13 20:27:18.852 14685-14685 WaitingPdvViewModel     com.cdccreditsmart.app.debug         E  ❌ API error: 401 - 
+2025-10-13 20:27:22.144 14685-14685 WaitingPdvViewModel     com.cdccreditsmart.app.debug         E  ❌ API error: 401 - 
+2025-10-13 20:27:25.371 14685-14685 WaitingPdvViewModel     com.cdccreditsmart.app.debug         E  ❌ API error: 401 - 
+2025-10-13 20:27:28.622 14685-14685 WaitingPdvViewModel     com.cdccreditsmart.app.debug         E  ❌ API error: 401 - 
+2025-10-13 20:27:31.847 14685-14685 WaitingPdvViewModel     com.cdccreditsmart.app.debug         E  ❌ API error: 401 - 
+2025-10-13 20:27:35.074 14685-14685 WaitingPdvViewModel     com.cdccreditsmart.app.debug         E  ❌ API error: 401 - 
+2025-10-13 20:27:38.303 14685-14685 WaitingPdvViewModel     com.cdccreditsmart.app.debug         E  ❌ API error: 401 - 
+2025-10-13 20:27:41.543 14685-14685 WaitingPdvViewModel     com.cdccreditsmart.app.debug         E  ❌ API error: 401 - 
+2025-10-13 20:27:44.796 14685-14685 WaitingPdvViewModel     com.cdccreditsmart.app.debug         E  ❌ API error: 401 - 
+2025-10-13 20:27:48.031 14685-14685 WaitingPdvViewModel     com.cdccreditsmart.app.debug         E  ❌ API error: 401 - 
+2025-10-13 20:27:51.271 14685-14685 WaitingPdvViewModel     com.cdccreditsmart.app.debug         E  ❌ API error: 401 - 
+2025-10-13 20:27:54.507 14685-14685 WaitingPdvViewModel     com.cdccreditsmart.app.debug         E  ❌ API error: 401 - 
+2025-10-13 20:27:57.789 14685-14685 WaitingPdvViewModel     com.cdccreditsmart.app.debug         E  ❌ API error: 401 - 
+2025-10-13 20:28:01.029 14685-14685 WaitingPdvViewModel     com.cdccreditsmart.app.debug         E  ❌ API error: 401 - 
+2025-10-13 20:28:04.303 14685-14685 WaitingPdvViewModel     com.cdccreditsmart.app.debug         E  ❌ API error: 401 - 
+2025-10-13 20:28:07.867 14685-14685 WaitingPdvViewModel     com.cdccreditsmart.app.debug         E  ❌ API error: 401 - 
+2025-10-13 20:28:11.248 14685-14685 WaitingPdvViewModel     com.cdccreditsmart.app.debug         E  ❌ API error: 401 - 
+2025-10-13 20:28:14.274 14685-14685 WaitingPdvViewModel     com.cdccreditsmart.app.debug         E  ❌ Exception during polling
+2025-10-13 20:28:17.294 14685-14685 WaitingPdvViewModel     com.cdccreditsmart.app.debug         E  ❌ Exception during polling
+2025-10-13 20:28:20.317 14685-14685 WaitingPdvViewModel     com.cdccreditsmart.app.debug         E  ❌ Exception during polling
+2025-10-13 20:28:23.336 14685-14685 WaitingPdvViewModel     com.cdccreditsmart.app.debug         E  ❌ Exception during polling
+2025-10-13 20:28:26.754 14685-14685 WaitingPdvViewModel     com.cdccreditsmart.app.debug         E  ❌ API error: 401 - 
+2025-10-13 20:28:30.159 14685-14685 WaitingPdvViewModel     com.cdccreditsmart.app.debug         E  ❌ API error: 401 - 
+2025-10-13 20:28:33.413 14685-14685 WaitingPdvViewModel     com.cdccreditsmart.app.debug         E  ❌ API error: 401 - 
+2025-10-13 20:28:36.632 14685-14685 WaitingPdvViewModel     com.cdccreditsmart.app.debug         E  ❌ API error: 401 - 
+2025-10-13 20:28:39.912 14685-14685 WaitingPdvViewModel     com.cdccreditsmart.app.debug         E  ❌ API error: 401 - 
+2025-10-13 20:28:43.144 14685-14685 WaitingPdvViewModel     com.cdccreditsmart.app.debug         E  ❌ API error: 401 - 
+2025-10-13 20:28:46.377 14685-14685 WaitingPdvViewModel     com.cdccreditsmart.app.debug         E  ❌ API error: 401 - 
+2025-10-13 20:28:49.634 14685-14685 WaitingPdvViewModel     com.cdccreditsmart.app.debug         E  ❌ API error: 401 - 
+2025-10-13 20:28:52.876 14685-14685 WaitingPdvViewModel     com.cdccreditsmart.app.debug         E  ❌ API error: 401 - 
+2025-10-13 20:28:54.261 14685-14691 smart.app.debug         com.cdccreditsmart.app.debug         I  Background concurrent mark compact GC freed 8977KB AllocSpace bytes, 0(0B) LOS objects, 66% free, 4665KB/13MB, paused 429us,5.730ms total 53.996ms
+2025-10-13 20:28:56.112 14685-14685 WaitingPdvViewModel     com.cdccreditsmart.app.debug         E  ❌ API error: 401 - 
+2025-10-13 20:28:59.342 14685-14685 WaitingPdvViewModel     com.cdccreditsmart.app.debug         E  ❌ API error: 401 - 
+2025-10-13 20:29:02.594 14685-14685 WaitingPdvViewModel     com.cdccreditsmart.app.debug         E  ❌ API error: 401 - 
+2025-10-13 20:29:05.925 14685-14685 WaitingPdvViewModel     com.cdccreditsmart.app.debug         E  ❌ API error: 401 - 
+2025-10-13 20:29:09.166 14685-14685 WaitingPdvViewModel     com.cdccreditsmart.app.debug         E  ❌ API error: 401 - 
+2025-10-13 20:29:12.539 14685-14685 WaitingPdvViewModel     com.cdccreditsmart.app.debug         E  ❌ API error: 401 - 
+2025-10-13 20:29:15.772 14685-14685 WaitingPdvViewModel     com.cdccreditsmart.app.debug         E  ❌ API error: 401 - 
+2025-10-13 20:29:19.023 14685-14685 WaitingPdvViewModel     com.cdccreditsmart.app.debug         E  ❌ API error: 401 - 
+2025-10-13 20:29:22.262 14685-14685 WaitingPdvViewModel     com.cdccreditsmart.app.debug         E  ❌ API error: 401 - 
+2025-10-13 20:29:25.263 14685-14685 WaitingPdvViewModel     com.cdccreditsmart.app.debug         D  📡 Polling attempt 43/60
+2025-10-13 20:29:25.268 14685-14731 WaitingPdvViewModel     com.cdccreditsmart.app.debug         D  API Request: GET https://cdccreditsmart.com/api/apk/device/status
+2025-10-13 20:29:25.485 14685-14731 WaitingPdvViewModel     com.cdccreditsmart.app.debug         D  API Response: 401
+2025-10-13 20:29:25.490 14685-14685 WaitingPdvViewModel     com.cdccreditsmart.app.debug         E  ❌ API error: 401 - 

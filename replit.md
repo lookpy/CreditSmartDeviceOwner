@@ -47,6 +47,18 @@ The UI is developed using Jetpack Compose and Material 3, incorporating a CDC in
 
 ## Recent Changes (October 13, 2025)
 
+### 🛠️ **FIX CRÍTICO: TOKEN JWT NÃO ERA SALVO!**
+- 🐛 **BUG IDENTIFICADO** - SimplifiedAuthViewModel recebia token do claim-sale mas não salvava
+- ❌ **Sintoma** - WaitingPdvViewModel recebia 401 Unauthorized ao fazer polling
+- ✅ **CORREÇÃO** - Adicionado `tokenManager.saveToken(claimResponse.immutableToken)` após claim-sale
+- 📍 **Local** - `SimplifiedAuthViewModel.kt` linha 502
+- 🔧 **Ordem correta**:
+  1. Claim-sale retorna `immutableToken`
+  2. **Salva token** → `tokenManager.saveToken()`
+  3. Salva saleId → `tokenManager.saveSaleId()`
+  4. Navega para WAITING_PDV
+- ✅ **Agora funciona** - WaitingPdvViewModel consegue fazer polling autenticado
+
 ### 🔄 **FLUXO APK SINCRONIZADO COM PDV - REORGANIZADO!**
 - 🎯 **SINCRONIZAÇÃO COMPLETA** - APK agora segue os passos do PDV em tempo real
 - ✨ **WAITING_PDV SCREEN** - Nova tela criada que aguarda PDV chegar na etapa de biometria
