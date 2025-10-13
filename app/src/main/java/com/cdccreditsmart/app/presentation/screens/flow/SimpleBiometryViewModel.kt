@@ -806,7 +806,7 @@ class SimpleBiometryViewModel(
                         Log.d(TAG, "Message: ${verificationResponse.message}")
                         Log.d(TAG, "Next action: ${verificationResponse.nextAction}")
 
-                        val isApproved = verificationResponse.status == "approved"
+                        val isApproved = verificationResponse.status.equals("approved", ignoreCase = true)
 
                         _biometryState.value = _biometryState.value.copy(
                             status = if (isApproved) BiometryStatus.Success else BiometryStatus.Error,

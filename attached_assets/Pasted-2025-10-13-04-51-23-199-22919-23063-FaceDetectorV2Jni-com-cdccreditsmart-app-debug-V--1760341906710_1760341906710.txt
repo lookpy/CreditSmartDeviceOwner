@@ -1,0 +1,37 @@
+2025-10-13 04:51:23.199 22919-23063 FaceDetectorV2Jni       com.cdccreditsmart.app.debug         V  detectFacesImageByteBuffer.start()
+2025-10-13 04:51:23.268 22919-23063 FaceDetectorV2Jni       com.cdccreditsmart.app.debug         V  %s detectFacesImageByteBuffer.end()
+2025-10-13 04:51:23.277 22919-22919 SimpleBiometryViewModel com.cdccreditsmart.app.debug         D  ML Kit detected 1 face(s)
+2025-10-13 04:51:23.277 22919-22919 SimpleBiometryViewModel com.cdccreditsmart.app.debug         D  Selected primary face with bounding box: Rect(642, 1426 - 1714, 2499)
+2025-10-13 04:51:23.277 22919-22919 SimpleBiometryViewModel com.cdccreditsmart.app.debug         D  Face quality score: 0.6539134872520366
+2025-10-13 04:51:23.277 22919-22919 SimpleBiometryViewModel com.cdccreditsmart.app.debug         D  Face liveness score: 0.9636577153205871
+2025-10-13 04:51:23.278 22919-23060 TransportR...EventStore com.cdccreditsmart.app.debug         D  Storing event with priority=VERY_LOW, name=FIREBASE_ML_SDK for destination cct
+2025-10-13 04:51:23.284 22919-23060 TransportR...oScheduler com.cdccreditsmart.app.debug         D  Upload for context TransportContext(cct, VERY_LOW, MSRodHRwczovL2ZpcmViYXNlbG9nZ2luZy5nb29nbGVhcGlzLmNvbS92MGNjL2xvZy9iYXRjaD9mb3JtYXQ9anNvbl9wcm90bzNc) is already scheduled. Returning...
+2025-10-13 04:51:23.284 22919-22919 SimpleBiometryViewModel com.cdccreditsmart.app.debug         D  Cropped face: 1072x1073
+2025-10-13 04:51:23.296 22919-23060 TransportR...EventStore com.cdccreditsmart.app.debug         D  Storing event with priority=VERY_LOW, name=FIREBASE_ML_SDK for destination cct
+2025-10-13 04:51:23.302 22919-23060 TransportR...oScheduler com.cdccreditsmart.app.debug         D  Upload for context TransportContext(cct, VERY_LOW, MSRodHRwczovL2ZpcmViYXNlbG9nZ2luZy5nb29nbGVhcGlzLmNvbS92MGNjL2xvZy9iYXRjaD9mb3JtYXQ9anNvbl9wcm90bzNc) is already scheduled. Returning...
+2025-10-13 04:51:23.503 22919-22919 SimpleBiometryViewModel com.cdccreditsmart.app.debug         D  Real face embedding extracted: 512 dimensions
+2025-10-13 04:51:23.504 22919-22919 SimpleBiometryViewModel com.cdccreditsmart.app.debug         D  Embedding preview: [-0.3772318363189697, -0.13481299579143524, 0.7776767015457153, -0.5660662055015564, 0.6205528974533081...]
+2025-10-13 04:51:23.504 22919-22919 SimpleBiometryViewModel com.cdccreditsmart.app.debug         D  Image processing completed successfully
+2025-10-13 04:51:23.504 22919-22919 SimpleBiometryViewModel com.cdccreditsmart.app.debug         D  Submitting biometry data
+2025-10-13 04:51:23.509 22919-22919 SimpleBiometryViewModel com.cdccreditsmart.app.debug         D  Generated documentHash from CPF: a8476735b37a541a...
+2025-10-13 04:51:23.510 22919-22919 SimpleBiometryViewModel com.cdccreditsmart.app.debug         D  Verifying facial biometry for session: bio_ses_1760338865745_wn9b3pooijl
+2025-10-13 04:51:23.510 22919-22919 SimpleBiometryViewModel com.cdccreditsmart.app.debug         D  CPF (masked): 123***
+2025-10-13 04:51:23.510 22919-22919 SimpleBiometryViewModel com.cdccreditsmart.app.debug         D  Document Hash: a8476735b37a541a38402a2e7037c79e2d217fe9780e5e34347156ef61eff42b
+2025-10-13 04:51:23.510 22919-22919 SimpleBiometryViewModel com.cdccreditsmart.app.debug         D  Store ID: f3d6763d-9661-44fc-9ffd-d1dc9af5674d
+2025-10-13 04:51:23.510 22919-22919 SimpleBiometryViewModel com.cdccreditsmart.app.debug         D  Liveness score: 0.9636577153205871
+2025-10-13 04:51:23.510 22919-22919 SimpleBiometryViewModel com.cdccreditsmart.app.debug         D  Quality score: 0.6539134872520366
+2025-10-13 04:51:23.510 22919-22919 SimpleBiometryViewModel com.cdccreditsmart.app.debug         D  Face image size: 1721700 chars
+2025-10-13 04:51:23.510 22919-22919 SimpleBiometryViewModel com.cdccreditsmart.app.debug         D  Face embedding dimensions: 512
+2025-10-13 04:51:23.511 22919-22919 SimpleBiometryViewModel com.cdccreditsmart.app.debug         D  Attempt 1/5: Calling biometry verification API...
+2025-10-13 04:51:23.671 22919-23074 SimpleBiometryViewModel com.cdccreditsmart.app.debug         D  Request URL: https://cdccreditsmart.com/v1/biometry/face/verify
+2025-10-13 04:51:23.672 22919-23074 SimpleBiometryViewModel com.cdccreditsmart.app.debug         D  Request Headers: Content-Type: application/json
+                                                                                                    Accept: application/json
+                                                                                                    User-Agent: CDC-CreditSmart/1.0.0
+                                                                                                    Authorization: ██
+2025-10-13 04:51:23.690 22919-23074 TrafficStats            com.cdccreditsmart.app.debug         D  tagSocket(233) with statsTag=0xffffffff, statsUid=-1
+2025-10-13 04:51:25.438 22919-23074 SimpleBiometryViewModel com.cdccreditsmart.app.debug         D  Response Code: 200
+2025-10-13 04:51:25.447 22919-22919 SimpleBiometryViewModel com.cdccreditsmart.app.debug         D  Biometry verification response received
+2025-10-13 04:51:25.447 22919-22919 SimpleBiometryViewModel com.cdccreditsmart.app.debug         D  Status: APPROVED
+2025-10-13 04:51:25.447 22919-22919 SimpleBiometryViewModel com.cdccreditsmart.app.debug         D  Confidence: 0.9636577153205871
+2025-10-13 04:51:25.447 22919-22919 SimpleBiometryViewModel com.cdccreditsmart.app.debug         D  Message: Biometria verificada com sucesso
+2025-10-13 04:51:25.447 22919-22919 SimpleBiometryViewModel com.cdccreditsmart.app.debug         D  Next action: CONTINUE
