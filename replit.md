@@ -56,7 +56,10 @@ The UI is built entirely with Jetpack Compose and Material 3, featuring a CDC in
 - 📱 **UI MATERIAL 3** - Edge-to-edge, CDC theme, formatação de dados (CPF, telefone)
 - ✅ **ARCHITECT APPROVED** - Implementação completa aprovada
 - 🎯 **ENDPOINT INTEGRADO** - GET /api/apk/device/installments com Authorization
-- 📝 **DTOSS ATUALIZADOS** - CdcInstallmentsResponse agora inclui CustomerInfo
+- 📝 **DTOS ATUALIZADOS** - CdcInstallmentsResponse agora inclui CustomerInfo
+- 🐛 **BUG CORRIGIDO** - Duplicação de DTOs em DeviceApiService.kt removida
+- 🔧 **SMART CAST FIX** - Variável local para customer.email
+- ✅ **COMPILAÇÃO OK** - Warnings não-críticos apenas (deprecated APIs)
 
 ✅ **CÓDIGO 100% PRONTO (October 13, 2025) - RETRY LOGIC FUNCIONANDO PERFEITAMENTE!**
 - 🔍 **PROBLEMA DESCOBERTO** - APK fazia claim-sale ANTES do PDV completar STAGE 2!
