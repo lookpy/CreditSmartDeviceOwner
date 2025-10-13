@@ -21,6 +21,7 @@ class SimpleTokenManager(context: Context) {
         private const val PREF_BIOMETRY_SESSION_ID = "biometry_session_id"
         private const val PREF_CUSTOMER_CPF = "customer_cpf"
         private const val PREF_HARDWARE_IMEI = "hardware_imei"
+        private const val PREF_SALE_ID = "sale_id"
     }
 
     /**
@@ -154,5 +155,22 @@ class SimpleTokenManager(context: Context) {
      */
     fun getHardwareImei(): String? {
         return prefs.getString(PREF_HARDWARE_IMEI, null)
+    }
+    
+    /**
+     * Save sale ID from claim-sale response
+     * Used to poll for sale finalization status
+     */
+    fun saveSaleId(saleId: String) {
+        Log.d(TAG, "💾 Saving saleId: $saleId")
+        prefs.edit().putString(PREF_SALE_ID, saleId).apply()
+    }
+    
+    /**
+     * Get sale ID from claim-sale response
+     * Used to poll for sale finalization status
+     */
+    fun getSaleId(): String? {
+        return prefs.getString(PREF_SALE_ID, null)
     }
 }

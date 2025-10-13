@@ -495,6 +495,10 @@ class SimplifiedAuthViewModel(
                                 Log.d(TAG, "Sale ID: ${claimResponse.saleId}")
                                 Log.d(TAG, "Message: ${claimResponse.message}")
                                 
+                                // Save saleId to TokenManager for later use in SuccessScreen polling
+                                tokenManager.saveSaleId(claimResponse.saleId)
+                                Log.d(TAG, "✅ SaleId persisted to TokenManager for PDV finalization polling")
+                                
                                 _authState.value = _authState.value.copy(
                                     currentState = AuthStatus.Authenticated,
                                     isAuthenticated = true,
