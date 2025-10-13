@@ -61,8 +61,10 @@ The UI is built entirely with Jetpack Compose and Material 3, featuring a CDC in
 - 📜 **SCROLL ADICIONADO** - BiometryScreen e SuccessScreen agora com scroll (botões sempre acessíveis)
 - ✅ **COMPILAÇÃO OK** - Build concluído com warnings menores (não bloqueantes)
 - 🧪 **TESTADO EM PRODUÇÃO** - Retry logic funcionando (logs confirmam tentativas 1/5, 2/5, 3/5...)
+- 🐛 **BUG CRÍTICO CORRIGIDO** - Comparação case-sensitive de status "approved" causava erro falso
+- ✅ **BACKEND COMPATIBILIDADE** - Aceita "APPROVED" ou "approved" (ignoreCase = true)
 - 📄 **BUILD_INSTRUCTIONS.md** - Guia completo para build local/CI/CD
-- 🚀 **PRÓXIMO PASSO** - PDV finalizar venda para APK aprovar automaticamente
+- 🚀 **PRÓXIMO PASSO** - Recompilar APK com correção de case-sensitivity
 
 ## Recent Changes (October 12, 2025)
 📄 **DOCUMENTAÇÃO BACKEND CRIADA (October 12, 2025) - ✅ PRONTA!**
