@@ -7,7 +7,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.cdccreditsmart.app.device.SimpleTokenManager
-import com.cdccreditsmart.network.api.FlowEventsApiService
+import com.cdccreditsmart.network.api.DeviceApiService
 import com.google.gson.Gson
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -46,8 +46,8 @@ class SuccessViewModel(
 
     private val tokenManager = SimpleTokenManager(context)
     
-    private val flowEventsApi: FlowEventsApiService by lazy {
-        createFlowEventsApiService()
+    private val deviceApi: DeviceApiService by lazy {
+        createDeviceApiService()
     }
 
     companion object {
@@ -59,9 +59,9 @@ class SuccessViewModel(
     }
 
     /**
-     * Create FlowEventsApiService with CDC backend configuration
+     * Create DeviceApiService with CDC backend configuration
      */
-    private fun createFlowEventsApiService(): FlowEventsApiService {
+    private fun createDeviceApiService(): DeviceApiService {
         val client = OkHttpClient.Builder()
             .connectTimeout(30, TimeUnit.SECONDS)
             .readTimeout(30, TimeUnit.SECONDS)
@@ -83,26 +83,17 @@ class SuccessViewModel(
             .addConverterFactory(GsonConverterFactory.create(Gson()))
             .build()
 
-        return retrofit.create(FlowEventsApiService::class.java)
+        return retrofit.create(DeviceApiService::class.java)
     }
 
     /**
      * Start polling for sale finalization status
+     * 
+     * Strategy: Poll GET /api/apk/device/status to check if PDV has finalized the sale
+     * When sale is finalized, the response will include paymentInfo with installments
      */
     fun startPollingForSaleFinalization() {
-        val saleId = tokenManager.getSaleId()
         val token = tokenManager.getValidToken()
-        
-        if (saleId == null) {
-            Log.e(TAG, "❌ No saleId found in TokenManager, cannot poll")
-            _state.value = _state.value.copy(
-                status = SaleStatus.Error,
-                isLoading = false,
-                errorMessage = "Erro interno: ID da venda não encontrado",
-                canRetry = false
-            )
-            return
-        }
         
         if (token == null) {
             Log.e(TAG, "❌ No valid token found, cannot poll")
@@ -115,7 +106,7 @@ class SuccessViewModel(
             return
         }
         
-        Log.d(TAG, "🔄 Starting polling for saleId: $saleId")
+        Log.d(TAG, "🔄 Starting polling for sale finalization using device status endpoint")
         
         viewModelScope.launch {
             var attempt = 1
@@ -123,77 +114,51 @@ class SuccessViewModel(
             
             while (attempt <= MAX_POLLING_ATTEMPTS && !completed) {
                 try {
-                    Log.d(TAG, "📡 Polling attempt ${attempt}/${MAX_POLLING_ATTEMPTS} - Checking sale status...")
+                    Log.d(TAG, "📡 Polling attempt ${attempt}/${MAX_POLLING_ATTEMPTS} - Checking device status...")
                     
                     _state.value = _state.value.copy(
                         retryAttempt = attempt,
                         progressPercent = (attempt * 100) / MAX_POLLING_ATTEMPTS
                     )
                     
-                    // Call FlowEventsApiService to check sale status
-                    val response = flowEventsApi.getFlowStatus(
-                        flowId = saleId,
+                    // Call DeviceApiService to check device status
+                    // When PDV finalizes sale, paymentInfo will be populated
+                    val response = deviceApi.getDeviceStatus(
                         authorization = "Bearer $token"
                     )
                     
                     if (response.isSuccessful && response.body() != null) {
-                        val flowStatus = response.body()!!
-                        Log.d(TAG, "✅ Flow status received: ${flowStatus.status}")
-                        Log.d(TAG, "   Current step: ${flowStatus.currentStep}")
-                        Log.d(TAG, "   Progress: ${flowStatus.progress?.percentComplete}%")
+                        val deviceStatus = response.body()!!
+                        Log.d(TAG, "✅ Device status received:")
+                        Log.d(TAG, "   Status: ${deviceStatus.status}")
+                        Log.d(TAG, "   Has customer: ${deviceStatus.customerInfo?.hasCustomer}")
+                        Log.d(TAG, "   Has payment info: ${deviceStatus.paymentInfo != null}")
                         
-                        _state.value = _state.value.copy(
-                            currentStep = flowStatus.currentStep,
-                            progressPercent = flowStatus.progress?.percentComplete ?: _state.value.progressPercent
-                        )
-                        
-                        when (flowStatus.status.lowercase()) {
-                            "completed" -> {
-                                Log.d(TAG, "🎉 Sale completed! PDV finalized the purchase")
-                                _state.value = _state.value.copy(
-                                    status = SaleStatus.Completed,
-                                    isLoading = false,
-                                    errorMessage = null,
-                                    progressPercent = 100
-                                )
-                                completed = true
-                            }
+                        // Sale is finalized when we have payment info (installments)
+                        if (deviceStatus.paymentInfo != null) {
+                            Log.d(TAG, "🎉 Sale completed! Payment info is available")
+                            Log.d(TAG, "   Total installments: ${deviceStatus.paymentInfo.totalInstallments}")
+                            Log.d(TAG, "   Payment status: ${deviceStatus.paymentInfo.paymentStatus}")
                             
-                            "failed", "cancelled", "expired" -> {
-                                Log.w(TAG, "⚠️ Sale finalization failed: ${flowStatus.status}")
-                                _state.value = _state.value.copy(
-                                    status = SaleStatus.Error,
-                                    isLoading = false,
-                                    errorMessage = "Venda não foi finalizada no PDV: ${flowStatus.status}",
-                                    canRetry = true
-                                )
-                                completed = true
-                            }
-                            
-                            "pending", "in_progress" -> {
-                                Log.d(TAG, "⏳ Sale still pending/in_progress, will retry in ${POLLING_INTERVAL_MS}ms")
-                                // Continue polling
-                            }
-                            
-                            else -> {
-                                Log.w(TAG, "❓ Unknown status: ${flowStatus.status}, will retry")
-                                // Continue polling
-                            }
+                            _state.value = _state.value.copy(
+                                status = SaleStatus.Completed,
+                                isLoading = false,
+                                errorMessage = null,
+                                progressPercent = 100,
+                                currentStep = "Venda finalizada"
+                            )
+                            completed = true
+                        } else {
+                            Log.d(TAG, "⏳ Payment info not yet available, PDV still processing...")
+                            _state.value = _state.value.copy(
+                                currentStep = "Aguardando PDV finalizar venda..."
+                            )
+                            // Continue polling
                         }
                     } else {
                         Log.e(TAG, "❌ API error: ${response.code()} - ${response.message()}")
                         
-                        // Handle 404 - flow not found (maybe saleId is not the same as flowId?)
-                        if (response.code() == 404) {
-                            Log.e(TAG, "❌ Flow not found (404). SaleId might not be the flowId.")
-                            _state.value = _state.value.copy(
-                                status = SaleStatus.Error,
-                                isLoading = false,
-                                errorMessage = "Erro ao verificar status da venda (flow não encontrado)",
-                                canRetry = true
-                            )
-                            completed = true
-                        } else if (attempt >= MAX_POLLING_ATTEMPTS) {
+                        if (attempt >= MAX_POLLING_ATTEMPTS) {
                             // Last attempt failed
                             _state.value = _state.value.copy(
                                 status = SaleStatus.Error,
