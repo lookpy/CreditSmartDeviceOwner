@@ -45,6 +45,15 @@ The UI is built entirely with Jetpack Compose and Material 3, featuring a CDC in
 - **WorkManager**: Background tasks.
 - **CameraX**: Camera preview for biometry capture.
 
+## Recent Changes (October 13, 2025)
+🎉 **BACKEND v2.4 LANÇADO (October 13, 2025) - ✅ CORREÇÕES IMPLEMENTADAS!**
+- ✅ **PROBLEMA RESOLVIDO** - Backend agora retorna biometrySessionId, storeId, customerCpf
+- 🔄 **DETECÇÃO AUTOMÁTICA** - Auto-routing para APKs antigos (legacy) e novos
+- 🎯 **TODOS ENDPOINTS CORRIGIDOS** - Incluindo /api/device/claim-sale e generate-apk-token
+- 📊 **BANCO ÚNICO** - Dev e prod usando mesma estrutura de dados
+- 🧪 **GUIA DE TESTES** - BACKEND_V2.4_TEST_GUIDE.md criado para validação
+- ⏳ **STATUS** - Aguardando testes com APK real para confirmar funcionamento
+
 ## Recent Changes (October 12, 2025)
 📄 **DOCUMENTAÇÃO BACKEND CRIADA (October 12, 2025) - ✅ PRONTA!**
 - 📋 **API_BACKEND_REQUIREMENTS.md** - Documentação técnica completa para IA do backend
