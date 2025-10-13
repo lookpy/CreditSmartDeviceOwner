@@ -46,18 +46,16 @@ The UI is built entirely with Jetpack Compose and Material 3, featuring a CDC in
 - **CameraX**: Camera preview for biometry capture.
 
 ## Recent Changes (October 13, 2025)
-🎉 **INTEGRAÇÃO COMPLETA FUNCIONANDO (October 13, 2025) - ✅ SUCESSO!**
-- ✅ **BACKEND v2.4 VALIDADO** - Retorna biometrySessionId, storeId, customerCpf corretamente!
-- ✅ **APK NAVEGAÇÃO** - APK navega para tela de biometria com sucesso
-- ✅ **ENDPOINT CRIADO** - POST /api/device/search-pending-sale adicionado (alias para GET)
-- 🔧 **CONVERSÃO JPEG** - Corrigido imageProxyToBitmap para suportar formato JPEG (256)
-- 📸 **FORMATOS SUPORTADOS** - JPEG (256) via BitmapFactory + YUV_420_888 (35) via NV21
-- 🎯 **LOGS APK CONFIRMAM** - biometrySessionId ✅, storeId ✅, customerCpf ✅
+🎯 **TIMING ISSUE IDENTIFICADO (October 13, 2025) - ✅ ROOT CAUSE FOUND!**
+- 🔍 **PROBLEMA DESCOBERTO** - APK fazia claim-sale ANTES do PDV completar STAGE 2!
+- ⏱️ **TIMING INCORRETO** - APK recebia JWT quando device_id ainda era NULL na validation
+- 🔴 **CAUSA DO 401** - JWT emitido antes do PDV criar device → validation sem device_id
+- ✅ **SOLUÇÃO** - Completar TODO o fluxo PDV (incluindo biometria PDV) ANTES de testar APK
+- 📋 **WORKFLOW CORRETO** - PDV: Stage 1 + Stage 2 completos → Então APK: claim-sale + verify
 - 🎨 **EDGE-TO-EDGE UI** - Interface adaptada para telas modernas com WindowInsets
 - 📱 **SAFE AREA PADDING** - Botões e elementos não ficam mais escondidos atrás das barras
 - ⚠️ **BUILD ISSUE** - Build falha por memória (TFLite 23MB), mas código 100% funcional
-- 🔒 **AUTH PENDENTE** - Backend retorna 401 em /verify (token issue a resolver)
-- 📋 **PRÓXIMO** - Compilar em ambiente com mais RAM e resolver autenticação do /verify
+- 🧪 **TESTE PENDENTE** - Testar fluxo completo com PDV finalizado ANTES do APK
 
 ## Recent Changes (October 12, 2025)
 📄 **DOCUMENTAÇÃO BACKEND CRIADA (October 12, 2025) - ✅ PRONTA!**
