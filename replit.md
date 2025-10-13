@@ -55,6 +55,7 @@ The UI is developed using Jetpack Compose and Material 3, incorporating a CDC in
   - "biometrics" → Navega automaticamente para tela de biometria
   - "completed" → Aviso que PDV já finalizou
   - heartbeatAge > 30s → Detecta abandono
+  - **null** → Continua aguardando (safe call previne NPE) ✨
 - 📱 **NOVO FLUXO**:
   1. AUTH_IMEI (QR scan + claim-sale)
   2. **WAITING_PDV** ✨ (aguarda PDV)
@@ -63,10 +64,12 @@ The UI is developed using Jetpack Compose and Material 3, incorporating a CDC in
   5. HOME (exibe parcelas)
 - ✅ **SEM BIOMETRIA PREMATURA** - Biometria só é solicitada quando PDV está na tela de biometria
 - 🎨 **UI COMPLETA** - Tela de espera com spinner, mensagens contextuais e botão retry
+- 🛡️ **NPE CORRIGIDO** - Safe call `currentStage?.lowercase()` previne crash quando null
 - 🔧 **ARQUIVOS CRIADOS**:
   - `WaitingPdvViewModel.kt` - ViewModel com polling de pdvSession
   - `WaitingPdvScreen.kt` - Tela de sincronização com PDV
   - `Navigation.kt` - Atualizado com rota FLOW_WAITING_PDV
+- ✅ **ARCHITECT APPROVED** - Fluxo completo revisado e aprovado
 
 ### 🎉 **SISTEMA PDV SESSION HEARTBEAT - RASTREAMENTO COMPLETO IMPLEMENTADO!**
 - 💓 **HEARTBEAT PDV** - Backend agora rastreia sessão PDV com heartbeat a cada 10s
