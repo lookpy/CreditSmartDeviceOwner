@@ -1,0 +1,110 @@
+2025-10-12 23:16:56.506  3638-3638  DMABUFHEAPS             com.cdccreditsmart.app.debug         I  Using DMA-BUF heap named: mtk_mm
+2025-10-12 23:16:56.507  3638-3638  skia                    com.cdccreditsmart.app.debug         D  stream getLength() supported, buffer addr 0x6e876af000 length 3123968
+2025-10-12 23:16:56.511  3638-3638  skia                    com.cdccreditsmart.app.debug         D  LoadInputStreamToMem va 0x6e876af000  size 3123968
+2025-10-12 23:16:56.512  3638-3638  libjpeg-alpha           com.cdccreditsmart.app.debug         D  Huffman Builder run in subthread
+2025-10-12 23:16:56.512  3638-3638  libjpeg-alpha           com.cdccreditsmart.app.debug         D  Tile Decoder (#thread:4, size:768 512 512 656x816, alignment:256x16)
+2025-10-12 23:16:56.567  3638-3638  skia                    com.cdccreditsmart.app.debug         D  SkJpegCodec::onGetPixels -
+2025-10-12 23:16:56.569  3638-3638  SimpleBiometryViewModel com.cdccreditsmart.app.debug         D  Successfully converted ImageProxy to Bitmap: 2448x3264
+2025-10-12 23:16:56.878  3638-3787  TransportR...oScheduler com.cdccreditsmart.app.debug         D  Upload for context TransportContext(cct, VERY_LOW, MSRodHRwczovL2ZpcmViYXNlbG9nZ2luZy5nb29nbGVhcGlzLmNvbS92MGNjL2xvZy9iYXRjaD9mb3JtYXQ9anNvbl9wcm90bzNc) is already scheduled. Returning...
+2025-10-12 23:16:56.903  3638-3790  DynamiteModule          com.cdccreditsmart.app.debug         I  Considering local module com.google.mlkit.dynamite.face:10000 and remote module com.google.mlkit.dynamite.face:0
+2025-10-12 23:16:56.903  3638-3790  DynamiteModule          com.cdccreditsmart.app.debug         I  Selected local version of com.google.mlkit.dynamite.face
+2025-10-12 23:16:56.909  3638-3790  nativeloader            com.cdccreditsmart.app.debug         D  Load /data/app/~~hH1i7xOJdHpN-zwBnCiL4w==/com.cdccreditsmart.app.debug-RCOq9OKfhiVDZm90CfNR0g==/base.apk!/lib/arm64-v8a/libface_detector_v2_jni.so using ns clns-7 from class loader (caller=/data/app/~~hH1i7xOJdHpN-zwBnCiL4w==/com.cdccreditsmart.app.debug-RCOq9OKfhiVDZm90CfNR0g==/base.apk!classes20.dex): ok
+2025-10-12 23:16:56.947  3638-3790  DynamiteModule          com.cdccreditsmart.app.debug         I  Considering local module com.google.mlkit.dynamite.face:10000 and remote module com.google.mlkit.dynamite.face:0
+2025-10-12 23:16:56.947  3638-3790  DynamiteModule          com.cdccreditsmart.app.debug         I  Selected local version of com.google.mlkit.dynamite.face
+2025-10-12 23:16:56.951  3638-3790  FaceDetectorV2Jni       com.cdccreditsmart.app.debug         V  initialize.start()
+2025-10-12 23:16:56.956  3638-3790  native                  com.cdccreditsmart.app.debug         I  I0000 00:00:1760321816.956383    3790 face_detector_v2_jni.cc:34] Loading models_bundled/fssd_medium_8bit_v5.tflite
+2025-10-12 23:16:56.962  3638-3790  native                  com.cdccreditsmart.app.debug         I  I0000 00:00:1760321816.962581    3790 face_detector_v2_jni.cc:34] Loading models_bundled/fssd_medium_8bit_gray_v5.tflite
+2025-10-12 23:16:56.969  3638-3790  native                  com.cdccreditsmart.app.debug         I  I0000 00:00:1760321816.969097    3790 face_detector_v2_jni.cc:34] Loading models_bundled/fssd_anchors_v5.pb
+2025-10-12 23:16:56.969  3638-3790  native                  com.cdccreditsmart.app.debug         I  I0000 00:00:1760321816.969566    3790 face_detector_v2_jni.cc:34] Loading models_bundled/LMprec_600.emd
+2025-10-12 23:16:56.987  3638-3790  native                  com.cdccreditsmart.app.debug         I  I0000 00:00:1760321816.987516    3790 face_detector_v2_jni.cc:34] Loading models_bundled/BCLlefteyeclosed_200.emd
+2025-10-12 23:16:56.988  3638-3790  native                  com.cdccreditsmart.app.debug         I  I0000 00:00:1760321816.988633    3790 face_detector_v2_jni.cc:34] Loading models_bundled/BCLrighteyeclosed_200.emd
+2025-10-12 23:16:56.989  3638-3790  native                  com.cdccreditsmart.app.debug         I  I0000 00:00:1760321816.989396    3790 face_detector_v2_jni.cc:34] Loading models_bundled/BCLjoy_200.emd
+2025-10-12 23:16:56.990  3638-3790  native                  com.cdccreditsmart.app.debug         I  I0000 00:00:1760321816.990406    3790 face_detector_v2_jni.cc:34] Loading models_bundled/MFT_fssd_accgray.pb
+2025-10-12 23:16:56.990  3638-3790  native                  com.cdccreditsmart.app.debug         I  I0000 00:00:1760321816.990753    3790 face_detector_v2_jni.cc:34] Loading models_bundled/contours.tfl
+2025-10-12 23:16:56.998  3638-3787  TransportR...EventStore com.cdccreditsmart.app.debug         D  Storing event with priority=DEFAULT, name=FIREBASE_ML_SDK for destination cct
+2025-10-12 23:16:57.010  3638-3787  TransportR...oScheduler com.cdccreditsmart.app.debug         D  Scheduling upload for context TransportContext(cct, DEFAULT, MSRodHRwczovL2ZpcmViYXNlbG9nZ2luZy5nb29nbGVhcGlzLmNvbS92MGNjL2xvZy9iYXRjaD9mb3JtYXQ9anNvbl9wcm90bzNc) with jobId=-1741084605 in 875311ms(Backend next call timestamp 1760322692320). Attempt 1
+2025-10-12 23:16:57.011  3638-3787  CompatChangeReporter    com.cdccreditsmart.app.debug         D  Compat change id reported: 311402873; UID 10240; state: ENABLED
+2025-10-12 23:16:57.011  3638-3787  CompatChangeReporter    com.cdccreditsmart.app.debug         D  Compat change id reported: 323349338; UID 10240; state: ENABLED
+2025-10-12 23:16:57.012  3638-3790  native                  com.cdccreditsmart.app.debug         I  I0000 00:00:1760321817.012359    3790 face_detector_v2_jni.cc:34] Loading models_bundled/blazeface.tfl
+2025-10-12 23:16:57.018  3638-3787  TransportR...EventStore com.cdccreditsmart.app.debug         D  Storing event with priority=VERY_LOW, name=FIREBASE_ML_SDK for destination cct
+2025-10-12 23:16:57.025  3638-3790  tflite                  com.cdccreditsmart.app.debug         I  Initialized TensorFlow Lite runtime.
+2025-10-12 23:16:57.026  3638-3790  libc                    com.cdccreditsmart.app.debug         W  Access denied finding property "ro.hardware.chipname"
+2025-10-12 23:16:57.027  3638-3790  tflite                  com.cdccreditsmart.app.debug         I  Created TensorFlow Lite XNNPACK delegate for CPU.
+2025-10-12 23:16:57.028  3638-3790  tflite                  com.cdccreditsmart.app.debug         W  Attempting to use a delegate that only supports static-sized tensors with a graph that has dynamic-sized tensors (tensor#137 is a dynamic-sized tensor).
+2025-10-12 23:16:57.030  3638-3787  TransportR...oScheduler com.cdccreditsmart.app.debug         D  Upload for context TransportContext(cct, VERY_LOW, MSRodHRwczovL2ZpcmViYXNlbG9nZ2luZy5nb29nbGVhcGlzLmNvbS92MGNjL2xvZy9iYXRjaD9mb3JtYXQ9anNvbl9wcm90bzNc) is already scheduled. Returning...
+2025-10-12 23:16:57.034  3638-3787  TransportR...EventStore com.cdccreditsmart.app.debug         D  Storing event with priority=VERY_LOW, name=FIREBASE_ML_SDK for destination cct
+2025-10-12 23:16:57.040  3638-3787  TransportR...oScheduler com.cdccreditsmart.app.debug         D  Upload for context TransportContext(cct, VERY_LOW, MSRodHRwczovL2ZpcmViYXNlbG9nZ2luZy5nb29nbGVhcGlzLmNvbS92MGNjL2xvZy9iYXRjaD9mb3JtYXQ9anNvbl9wcm90bzNc) is already scheduled. Returning...
+2025-10-12 23:16:57.050  3638-3790  FaceDetectorV2Jni       com.cdccreditsmart.app.debug         V  initialize.end()
+2025-10-12 23:16:57.050  3638-3790  FaceDetectorV2Jni       com.cdccreditsmart.app.debug         V  initialize.start()
+2025-10-12 23:16:57.052  3638-3790  native                  com.cdccreditsmart.app.debug         I  I0000 00:00:1760321817.052266    3790 face_detector_v2_jni.cc:34] Loading models_bundled/fssd_medium_8bit_v5.tflite
+2025-10-12 23:16:57.052  3638-3790  native                  com.cdccreditsmart.app.debug         I  I0000 00:00:1760321817.052938    3790 face_detector_v2_jni.cc:34] Loading models_bundled/fssd_medium_8bit_gray_v5.tflite
+2025-10-12 23:16:57.053  3638-3790  native                  com.cdccreditsmart.app.debug         I  I0000 00:00:1760321817.053450    3790 face_detector_v2_jni.cc:34] Loading models_bundled/fssd_anchors_v5.pb
+2025-10-12 23:16:57.053  3638-3790  native                  com.cdccreditsmart.app.debug         I  I0000 00:00:1760321817.053627    3790 face_detector_v2_jni.cc:34] Loading models_bundled/LMprec_600.emd
+2025-10-12 23:16:57.065  3638-3790  native                  com.cdccreditsmart.app.debug         I  I0000 00:00:1760321817.065236    3790 face_detector_v2_jni.cc:34] Loading models_bundled/BCLlefteyeclosed_200.emd
+2025-10-12 23:16:57.065  3638-3790  native                  com.cdccreditsmart.app.debug         I  I0000 00:00:1760321817.065577    3790 face_detector_v2_jni.cc:34] Loading models_bundled/BCLrighteyeclosed_200.emd
+2025-10-12 23:16:57.065  3638-3790  native                  com.cdccreditsmart.app.debug         I  I0000 00:00:1760321817.065937    3790 face_detector_v2_jni.cc:34] Loading models_bundled/BCLjoy_200.emd
+2025-10-12 23:16:57.066  3638-3790  native                  com.cdccreditsmart.app.debug         I  I0000 00:00:1760321817.066235    3790 face_detector_v2_jni.cc:34] Loading models_bundled/MFT_fssd_fastgray.pb
+2025-10-12 23:16:57.066  3638-3790  native                  com.cdccreditsmart.app.debug         I  I0000 00:00:1760321817.066332    3790 face_detector_v2_jni.cc:34] Loading models_bundled/contours.tfl
+2025-10-12 23:16:57.077  3638-3790  native                  com.cdccreditsmart.app.debug         I  I0000 00:00:1760321817.077452    3790 face_detector_v2_jni.cc:34] Loading models_bundled/blazeface.tfl
+2025-10-12 23:16:57.087  3638-3790  FaceDetectorV2Jni       com.cdccreditsmart.app.debug         V  initialize.end()
+2025-10-12 23:16:57.175  3638-3647  System                  com.cdccreditsmart.app.debug         W  A resource failed to call close. 
+2025-10-12 23:16:57.691  3638-3791  ProfileInstaller        com.cdccreditsmart.app.debug         D  Installing profile for com.cdccreditsmart.app.debug
+2025-10-12 23:16:58.101  3638-3790  FaceDetectorV2Jni       com.cdccreditsmart.app.debug         V  detectFacesImageByteBuffer.start()
+2025-10-12 23:16:58.209  3638-3790  FaceDetectorV2Jni       com.cdccreditsmart.app.debug         V  %s detectFacesImageByteBuffer.end()
+2025-10-12 23:16:58.210  3638-3790  ThickFaceDetector       com.cdccreditsmart.app.debug         D  Unknown landmark type: 2
+2025-10-12 23:16:58.210  3638-3790  ThickFaceDetector       com.cdccreditsmart.app.debug         D  Unknown landmark type: 3
+2025-10-12 23:16:58.210  3638-3790  ThickFaceDetector       com.cdccreditsmart.app.debug         D  Unknown landmark type: 4
+2025-10-12 23:16:58.210  3638-3790  ThickFaceDetector       com.cdccreditsmart.app.debug         D  Unknown landmark type: 5
+2025-10-12 23:16:58.210  3638-3790  ThickFaceDetector       com.cdccreditsmart.app.debug         D  Unknown landmark type: 6
+2025-10-12 23:16:58.210  3638-3790  ThickFaceDetector       com.cdccreditsmart.app.debug         D  Unknown landmark type: 10
+2025-10-12 23:16:58.210  3638-3790  ThickFaceDetector       com.cdccreditsmart.app.debug         D  Unknown landmark type: 45
+2025-10-12 23:16:58.210  3638-3790  ThickFaceDetector       com.cdccreditsmart.app.debug         D  Unknown landmark type: 43
+2025-10-12 23:16:58.210  3638-3790  ThickFaceDetector       com.cdccreditsmart.app.debug         D  Unknown landmark type: 44
+2025-10-12 23:16:58.210  3638-3790  ThickFaceDetector       com.cdccreditsmart.app.debug         D  Unknown landmark type: 200
+2025-10-12 23:16:58.210  3638-3790  ThickFaceDetector       com.cdccreditsmart.app.debug         D  Unknown landmark type: 220
+2025-10-12 23:16:58.210  3638-3790  ThickFaceDetector       com.cdccreditsmart.app.debug         D  Unknown landmark type: 221
+2025-10-12 23:16:58.210  3638-3790  ThickFaceDetector       com.cdccreditsmart.app.debug         D  Unknown landmark type: 222
+2025-10-12 23:16:58.210  3638-3790  ThickFaceDetector       com.cdccreditsmart.app.debug         D  Unknown landmark type: 223
+2025-10-12 23:16:58.210  3638-3790  ThickFaceDetector       com.cdccreditsmart.app.debug         D  Unknown landmark type: 224
+2025-10-12 23:16:58.210  3638-3790  ThickFaceDetector       com.cdccreditsmart.app.debug         D  Unknown landmark type: 225
+2025-10-12 23:16:58.210  3638-3790  ThickFaceDetector       com.cdccreditsmart.app.debug         D  Unknown landmark type: 226
+2025-10-12 23:16:58.210  3638-3790  ThickFaceDetector       com.cdccreditsmart.app.debug         D  Unknown landmark type: 227
+2025-10-12 23:16:58.210  3638-3790  ThickFaceDetector       com.cdccreditsmart.app.debug         D  Unknown landmark type: 300
+2025-10-12 23:16:58.210  3638-3790  ThickFaceDetector       com.cdccreditsmart.app.debug         D  Unknown landmark type: 302
+2025-10-12 23:16:58.210  3638-3790  ThickFaceDetector       com.cdccreditsmart.app.debug         D  Unknown landmark type: 312
+2025-10-12 23:16:58.210  3638-3790  ThickFaceDetector       com.cdccreditsmart.app.debug         D  Unknown landmark type: 314
+2025-10-12 23:16:58.210  3638-3790  ThickFaceDetector       com.cdccreditsmart.app.debug         D  Unknown landmark type: 315
+2025-10-12 23:16:58.210  3638-3790  ThickFaceDetector       com.cdccreditsmart.app.debug         D  Unknown landmark type: 316
+2025-10-12 23:16:58.971  3638-3790  FaceDetectorV2Jni       com.cdccreditsmart.app.debug         V  detectFacesImageByteBuffer.start()
+2025-10-12 23:16:59.043  3638-3790  FaceDetectorV2Jni       com.cdccreditsmart.app.debug         V  %s detectFacesImageByteBuffer.end()
+2025-10-12 23:16:59.050  3638-3638  SimpleBiometryViewModel com.cdccreditsmart.app.debug         D  ML Kit detected 1 face(s)
+2025-10-12 23:16:59.050  3638-3638  SimpleBiometryViewModel com.cdccreditsmart.app.debug         D  Selected primary face with bounding box: Rect(434, 1158 - 1956, 2681)
+2025-10-12 23:16:59.050  3638-3638  SimpleBiometryViewModel com.cdccreditsmart.app.debug         D  Face quality score: 0.7132392489480831
+2025-10-12 23:16:59.050  3638-3638  SimpleBiometryViewModel com.cdccreditsmart.app.debug         D  Face liveness score: 0.9871081709861754
+2025-10-12 23:16:59.054  3638-3787  TransportR...EventStore com.cdccreditsmart.app.debug         D  Storing event with priority=VERY_LOW, name=FIREBASE_ML_SDK for destination cct
+2025-10-12 23:16:59.062  3638-3638  SimpleBiometryViewModel com.cdccreditsmart.app.debug         D  Cropped face: 1522x1523
+2025-10-12 23:16:59.066  3638-3787  TransportR...oScheduler com.cdccreditsmart.app.debug         D  Upload for context TransportContext(cct, VERY_LOW, MSRodHRwczovL2ZpcmViYXNlbG9nZ2luZy5nb29nbGVhcGlzLmNvbS92MGNjL2xvZy9iYXRjaD9mb3JtYXQ9anNvbl9wcm90bzNc) is already scheduled. Returning...
+2025-10-12 23:16:59.073  3638-3787  TransportR...EventStore com.cdccreditsmart.app.debug         D  Storing event with priority=VERY_LOW, name=FIREBASE_ML_SDK for destination cct
+2025-10-12 23:16:59.077  3638-3787  TransportR...oScheduler com.cdccreditsmart.app.debug         D  Upload for context TransportContext(cct, VERY_LOW, MSRodHRwczovL2ZpcmViYXNlbG9nZ2luZy5nb29nbGVhcGlzLmNvbS92MGNjL2xvZy9iYXRjaD9mb3JtYXQ9anNvbl9wcm90bzNc) is already scheduled. Returning...
+2025-10-12 23:16:59.281  3638-3638  SimpleBiometryViewModel com.cdccreditsmart.app.debug         D  Real face embedding extracted: 512 dimensions
+2025-10-12 23:16:59.281  3638-3638  SimpleBiometryViewModel com.cdccreditsmart.app.debug         D  Embedding preview: [-0.4163898527622223, -0.926993727684021, 0.5171993970870972, -0.253386527299881, 1.0815950632095337...]
+2025-10-12 23:16:59.282  3638-3638  SimpleBiometryViewModel com.cdccreditsmart.app.debug         D  Image processing completed successfully
+2025-10-12 23:16:59.282  3638-3638  SimpleBiometryViewModel com.cdccreditsmart.app.debug         D  Submitting biometry data
+2025-10-12 23:16:59.288  3638-3638  SimpleBiometryViewModel com.cdccreditsmart.app.debug         D  Generated documentHash from CPF: a8476735b37a541a...
+2025-10-12 23:16:59.288  3638-3638  SimpleBiometryViewModel com.cdccreditsmart.app.debug         D  Verifying facial biometry for session: bio_ses_1760319755352_nzn3x1ck5s
+2025-10-12 23:16:59.288  3638-3638  SimpleBiometryViewModel com.cdccreditsmart.app.debug         D  CPF (masked): 123***
+2025-10-12 23:16:59.288  3638-3638  SimpleBiometryViewModel com.cdccreditsmart.app.debug         D  Document Hash: a8476735b37a541a38402a2e7037c79e2d217fe9780e5e34347156ef61eff42b
+2025-10-12 23:16:59.288  3638-3638  SimpleBiometryViewModel com.cdccreditsmart.app.debug         D  Store ID: f3d6763d-9661-44fc-9ffd-d1dc9af5674d
+2025-10-12 23:16:59.289  3638-3638  SimpleBiometryViewModel com.cdccreditsmart.app.debug         D  Liveness score: 0.9871081709861754
+2025-10-12 23:16:59.289  3638-3638  SimpleBiometryViewModel com.cdccreditsmart.app.debug         D  Quality score: 0.7132392489480831
+2025-10-12 23:16:59.289  3638-3638  SimpleBiometryViewModel com.cdccreditsmart.app.debug         D  Face image size: 1744468 chars
+2025-10-12 23:16:59.289  3638-3638  SimpleBiometryViewModel com.cdccreditsmart.app.debug         D  Face embedding dimensions: 512
+2025-10-12 23:16:59.507  3638-3802  SimpleBiometryViewModel com.cdccreditsmart.app.debug         D  Request URL: https://cdccreditsmart.com/v1/biometry/face/verify
+2025-10-12 23:16:59.509  3638-3802  SimpleBiometryViewModel com.cdccreditsmart.app.debug         D  Request Headers: Content-Type: application/json
+                                                                                                    Accept: application/json
+                                                                                                    User-Agent: CDC-CreditSmart/1.0.0
+                                                                                                    Authorization: ██
+2025-10-12 23:16:59.529  3638-3802  TrafficStats            com.cdccreditsmart.app.debug         D  tagSocket(179) with statsTag=0xffffffff, statsUid=-1
+2025-10-12 23:17:00.458  3638-3802  SimpleBiometryViewModel com.cdccreditsmart.app.debug         D  Response Code: 401
+2025-10-12 23:17:00.464  3638-3638  SimpleBiometryViewModel com.cdccreditsmart.app.debug         E  Failed to verify biometry - HTTP 401
+2025-10-12 23:17:00.464  3638-3638  SimpleBiometryViewModel com.cdccreditsmart.app.debug         E  Error body: {"success":false,"error":"INVALID_TOKEN","code":"AUTH_401"}
