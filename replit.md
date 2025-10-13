@@ -44,3 +44,50 @@ The UI is developed using Jetpack Compose and Material 3, incorporating a CDC in
 - **WorkManager**: For managing deferrable, asynchronous tasks.
 - **CameraX**: Used for camera preview in biometry capture.
 - **TensorFlow Lite**: Integrated for real 512-dimensional facial embeddings using a FaceNet model.
+
+## Recent Changes (October 13, 2025)
+
+### ✅ **AGUARDAR PDV FINALIZAR COMPRA - FLUXO COMPLETO IMPLEMENTADO!**
+- ⏳ **POLLING DE STATUS** - SuccessScreen agora aguarda PDV finalizar venda antes de navegar para Home
+- 🔄 **DeviceApiService** - GET /api/apk/device/status com polling a cada 5s (timeout 3 min)
+- 🎯 **DETECÇÃO INTELIGENTE** - Verifica `paymentInfo != null` como critério de finalização
+- 📊 **MÁQUINA DE ESTADOS** - Waiting (spinner), Completed (auto-navega), Timeout, Error
+- 💾 **PERSISTÊNCIA** - saleId salvo no TokenManager após claim-sale (referência futura)
+- 🎨 **UI COMPLETA** - Progress bar, spinner circular, retry buttons, mensagens claras
+- ✅ **ARCHITECT APPROVED** - Solução robusta, resolve problema crítico de saleId != flowId
+- 🔧 **ARQUIVOS CRIADOS/MODIFICADOS**:
+  - `SuccessViewModel.kt` - Nova ViewModel com polling
+  - `SuccessScreen.kt` - Refatorada para máquina de estados
+  - `SimpleTokenManager.kt` - Adicionado saveSaleId/getSaleId
+  - `SimplifiedAuthViewModel.kt` - Salva saleId após claim-sale
+
+### ✅ **BOTÃO DE RETENTATIVA BIOMÉTRICA - UX APRIMORADA!**
+- 🔄 **RETRY BUTTON** - Botão "Tentar Novamente" aparece quando há erro biométrico
+- 🎯 **CONDICIONAL** - Exibido APENAS quando BiometryStatus.Error
+- 🎨 **DESIGN** - Largura completa, altura 56.dp, cor primária CDC, ícone Face
+- ⚡ **FUNCIONALIDADE** - Reseta captureTriggered + chama viewModel.retry()
+- 📍 **POSICIONAMENTO** - Acima dos botões "Voltar"/"Continuar"
+- ✅ **ARCHITECT APPROVED** - Lógica correta, UI coerente
+
+### ✅ **HOME SCREEN IMPLEMENTADA - TELA COMPLETA COM DADOS DO CLIENTE!**
+- 🏠 **HOMESCREEN CRIADA** - Tela completa após aprovação biométrica
+- 👤 **DADOS DO CLIENTE** - Card dedicado mostrando nome, CPF, telefone e email
+- 💰 **PARCELAS DETALHADAS** - Lista de parcelas com status, valor e vencimento
+- 📊 **RESUMO FINANCEIRO** - Total, pago, restante e valores em atraso
+- 💳 **OPÇÕES DE PAGAMENTO** - PIX, Boleto e outros métodos disponíveis
+- 🔄 **NAVEGAÇÃO CORRIGIDA** - SuccessScreen → HOME (ao invés de AUTH_IMEI)
+- 📱 **UI MATERIAL 3** - Edge-to-edge, CDC theme, formatação de dados (CPF, telefone)
+- ✅ **ARCHITECT APPROVED** - Implementação completa aprovada
+- 🎯 **ENDPOINT INTEGRADO** - GET /api/apk/device/installments com Authorization
+
+## Business Flow
+```
+1. AUTH_IMEI Screen
+   ↓ (QR Code scan + claim-sale)
+2. BIOMETRY Screen
+   ↓ (Face capture + TensorFlow Lite verification)
+3. SUCCESS Screen
+   ↓ (Polling device status até paymentInfo disponível)
+4. HOME Screen
+   ↓ (Exibe parcelas, dados cliente, opções pagamento)
+```
