@@ -1,7 +1,7 @@
 # CDC Credit Smart Android App
 
 ## Overview
-The CDC Credit Smart Android App is designed for CDC Credit Smart clients, providing a secure and efficient mobile experience. Developed in Kotlin, it functions as a Device Owner application with advanced security features, biometric authentication, and robust device management capabilities. The app integrates with the CDC Credit Smart backend to offer functionalities such as device pairing, payment processing (PIX and Boleto), and graduated blocking policies, aiming to streamline operations and enhance security for mobile transactions.
+The CDC Credit Smart Android App provides a secure and efficient mobile experience for CDC Credit Smart clients. It functions as a Device Owner application with advanced security features, biometric authentication, and robust device management capabilities. The app integrates with the CDC Credit Smart backend for device pairing, payment processing (PIX and Boleto), and graduated blocking policies, aiming to streamline operations and enhance security for mobile transactions. Its business vision includes enhancing mobile transaction security, offering market potential in secure financial services, and ambitions to set a new standard for mobile device management in financial applications.
 
 ## User Preferences
 - I prefer simple language and clear explanations.
@@ -13,164 +13,34 @@ The CDC Credit Smart Android App is designed for CDC Credit Smart clients, provi
 - Do not modify the core `build.gradle.kts` files unless absolutely necessary for dependency updates.
 
 ## System Architecture
-The application follows a Clean Architecture with MVVM, using Jetpack Compose for the UI. It is structured into multiple modules: `app` (UI, DI), `data` (persistence, repositories), `network` (API communication), `domain` (business logic), `device` (Device Owner, Knox integration), `payments` (PIX, Boleto), and `biometry` (facial recognition).
+The application follows a Clean Architecture with MVVM, utilizing Jetpack Compose for the UI. It is modularized into `app`, `data`, `network`, `domain`, `device`, `payments`, and `biometry` components.
 
 **UI/UX Decisions:**
-The UI is built entirely with Jetpack Compose and Material 3, featuring a CDC institutional dark theme (`#FF7A1A`/`#F47C2C`). It includes a complete navigation system with Compose NavController, covering onboarding, dashboard, payments, and a lock overlay for device blocking.
+The UI is developed using Jetpack Compose and Material 3, incorporating a CDC institutional dark theme (`#FF7A1A`/`#F47C2C`). It features a comprehensive navigation system powered by Compose NavController, covering onboarding, dashboard, payments, and a device lock overlay.
 
 **Technical Implementations:**
-- **DI**: Hilt (though a simplified architecture without Hilt has also been explored).
-- **Database**: Room and EncryptedSharedPreferences.
-- **Networking**: Retrofit, OkHttp, and Certificate Pinning.
-- **Background Jobs**: WorkManager.
-- **Security**: Play Integrity, Key Attestation, Device Owner APIs, Samsung Knox Enterprise SDK v3.12+, anti-tampering, overlay blocking, and silent app updates.
-- **UI**: Jetpack Compose, Material 3, and Compose Navigation.
-- **Device Owner**: Implemented via an exported `ProvisioningActivity` with DPC permissions and an active timeout detection system for provisioning hangs.
-- **Samsung Knox**: Hybrid architecture with `KnoxFactory` for abstraction and enterprise features like KPE licensing and container management.
-- **Error Handling**: `CdcApiException` mapping and `NetworkErrorMapper`.
+- **Dependency Injection**: Hilt is used for DI.
+- **Data Persistence**: Room for local database and EncryptedSharedPreferences for secure data storage.
+- **Networking**: Retrofit, OkHttp, and Certificate Pinning ensure secure API communication.
+- **Background Processing**: WorkManager handles background tasks.
+- **Security**: Play Integrity, Key Attestation, Device Owner APIs, Samsung Knox Enterprise SDK, anti-tampering measures, overlay blocking, and silent app updates provide robust security. Facial biometry with liveness detection and digital signature capabilities are also integrated.
+- **UI Framework**: Jetpack Compose, Material 3, and Compose Navigation are used for building the user interface.
+- **Device Management**: Implemented via an exported `ProvisioningActivity` with DPC permissions and a timeout detection system for provisioning. Samsung Knox integration uses a hybrid architecture with `KnoxFactory` for enterprise features.
+- **Error Handling**: `CdcApiException` and `NetworkErrorMapper` manage API and network errors.
 - **Build System**: Optimized with KSP, R8, and compatibility with 16KB page size for Android 15+.
-- **Business Flow**: QR code onboarding, device attestation and binding, facial biometry with liveness, digital signature, PIX/Boleto payment processing, and graduated blocking policies.
-- **Backend Integration**: JWT authentication with scopes, idempotency keys, and ECDSA request signing.
+- **Business Logic**: Includes QR code onboarding, device attestation and binding, PIX/Boleto payment processing, and graduated blocking policies.
+- **Backend Integration**: Features JWT authentication with scopes, idempotency keys, and ECDSA request signing. The application also implements retry logic with exponential backoff for claim-sale and biometry verification in case of transient errors.
 
 ## External Dependencies
-- **CDC Credit Smart Backend API**: `https://cdccreditsmart.com/` for device pairing, sale claim, heartbeat, flow events, and WebSocket communication.
-- **Samsung Knox Enterprise SDK v3.12+**: For advanced device management and security on Samsung devices.
-- **Google Play Integrity API**: For device integrity verification.
-- **Firebase Messaging**: For push notifications.
-- **android-signaturepad**: For digital signature functionality.
-- **Jetpack Compose, Material 3, Compose Navigation**: UI framework.
-- **Hilt**: Dependency Injection.
-- **Room**: Local database persistence.
-- **Retrofit, OkHttp**: Network communication.
-- **WorkManager**: Background tasks.
-- **CameraX**: Camera preview for biometry capture.
-
-## Recent Changes (October 13, 2025)
-✅ **HOME SCREEN IMPLEMENTADA (October 13, 2025) - TELA COMPLETA COM DADOS DO CLIENTE!**
-- 🏠 **HOMESCREEN CRIADA** - Tela completa após aprovação biométrica
-- 👤 **DADOS DO CLIENTE** - Card dedicado mostrando nome, CPF, telefone e email
-- 💰 **PARCELAS DETALHADAS** - Lista de parcelas com status, valor e vencimento
-- 📊 **RESUMO FINANCEIRO** - Total, pago, restante e valores em atraso
-- 💳 **OPÇÕES DE PAGAMENTO** - PIX, Boleto e outros métodos disponíveis
-- 🔄 **NAVEGAÇÃO CORRIGIDA** - SuccessScreen → HOME (ao invés de AUTH_IMEI)
-- 📱 **UI MATERIAL 3** - Edge-to-edge, CDC theme, formatação de dados (CPF, telefone)
-- ✅ **ARCHITECT APPROVED** - Implementação completa aprovada
-- 🎯 **ENDPOINT INTEGRADO** - GET /api/apk/device/installments com Authorization
-- 📝 **DTOS ATUALIZADOS** - CdcInstallmentsResponse agora inclui CustomerInfo
-- 🐛 **BUG CORRIGIDO** - Duplicação de DTOs em DeviceApiService.kt removida
-- 🔧 **SMART CAST FIX** - Variável local para customer.email
-- ✅ **COMPILAÇÃO OK** - Warnings não-críticos apenas (deprecated APIs)
-
-✅ **CÓDIGO 100% PRONTO (October 13, 2025) - RETRY LOGIC FUNCIONANDO PERFEITAMENTE!**
-- 🔍 **PROBLEMA DESCOBERTO** - APK fazia claim-sale ANTES do PDV completar STAGE 2!
-- ⏱️ **TIMING INCORRETO** - APK recebia JWT quando device_id ainda era NULL na validation
-- 🔴 **CAUSA DO 401** - JWT emitido antes do PDV criar device → validation sem device_id
-- ✅ **SOLUÇÃO IMPLEMENTADA** - Retry automático com backoff exponencial
-- 🔄 **RETRY BIOMETRY VERIFY** - 5 tentativas (10s → 12s → 14s → 17s → 21s) em 401/404
-- 🔄 **RETRY CLAIM-SALE** - 5 tentativas (5s → 7.5s → 11s → 17s → 25s) em 400 "not finalized"
-- 📊 **UI FEEDBACK** - Mostra "Aguardando PDV finalizar venda... (tentativa X/5)"
-- 🛡️ **SEGURANÇA MANTIDA** - Fraud detection (409) e erros finais (403/410) sem retry
-- 📋 **WORKFLOW ATUALIZADO** - TESTING_WORKFLOW.md criado com passo-a-passo correto
-- 🎨 **EDGE-TO-EDGE UI** - Interface adaptada para telas modernas com WindowInsets
-- 🐛 **IMPORTS CORRIGIDOS** - Modifier (Navigation.kt) e LocalLifecycleOwner (BiometryScreen.kt)
-- 📜 **SCROLL ADICIONADO** - BiometryScreen e SuccessScreen agora com scroll (botões sempre acessíveis)
-- ✅ **COMPILAÇÃO OK** - Build concluído com warnings menores (não bloqueantes)
-- 🧪 **TESTADO EM PRODUÇÃO** - Retry logic funcionando (logs confirmam tentativas 1/5, 2/5, 3/5...)
-- 🐛 **BUG CRÍTICO CORRIGIDO** - Comparação case-sensitive de status "approved" causava erro falso
-- ✅ **BACKEND COMPATIBILIDADE** - Aceita "APPROVED" ou "approved" (ignoreCase = true)
-- 📄 **BUILD_INSTRUCTIONS.md** - Guia completo para build local/CI/CD
-- 🚀 **PRÓXIMO PASSO** - Recompilar APK com correção de case-sensitivity
-
-## Recent Changes (October 12, 2025)
-📄 **DOCUMENTAÇÃO BACKEND CRIADA (October 12, 2025) - ✅ PRONTA!**
-- 📋 **API_BACKEND_REQUIREMENTS.md** - Documentação técnica completa para IA do backend
-- 🎯 **CONTRATO API DEFINIDO** - Especificação detalhada do endpoint POST /api/device/claim-sale
-- ✅ **3 CAMPOS FALTANTES DOCUMENTADOS** - biometrySessionId, storeId, customerCpf
-- 💡 **EXEMPLOS DE CÓDIGO** - Implementação de referência em Node.js/Express
-- 🔄 **FLUXO COMPLETO** - Diagrama sequencial do pareamento até biometry verify
-- 🧪 **TESTES DE VALIDAÇÃO** - Como testar se backend está retornando corretamente
-
-## Recent Changes (October 01, 2025)
-🎉🎉🎉 **TENSORFLOW LITE FACENET INTEGRATION - REAL 512-DIM EMBEDDINGS!** 🎉🎉🎉
-
-### FACENET 512 EMBEDDINGS WITH TFLITE (October 01, 2025) - ✅ CODE READY!
-- 🚀 **TENSORFLOW LITE INTEGRATED** - FaceNet 512-dim model para embeddings faciais reais
-- 🧠 **REAL FACE EMBEDDINGS** - Vetores numéricos de 512 dimensões (não landmarks JSON!)
-- 🎯 **ANTI-FRAUD READY** - Backend compara embeddings para detectar mesmo rosto com CPFs diferentes
-- 📸 **FACE CROPPING** - Rosto recortado do bitmap antes de extração (bounding box do ML Kit)
-- ✅ **BUFFER REWIND FIX** - ByteBuffer rewind crítico implementado antes de TFLite inference
-- 🔐 **API CONTRACT UPDATED** - FaceBiometryRequest com List<Double> de 512 números
-- 🚨 **FRAUD HANDLING** - Erro 409 com fraudType: "same_face_different_cpf" tratado
-- 📝 **CAMPOS OBRIGATÓRIOS** - documentHash (SHA-256 CPF) e storeId adicionados
-- 💾 **MODEL SIZE** - FaceNet 512 modelo: 23MB em assets/
-- 🔄 **RESOURCE CLEANUP** - FaceEmbeddingExtractor.close() em ViewModel.onCleared()
-- ⚠️ **BUILD ISSUE** - Build falha por memória limitada (TFLite 23MB + ML Kit), mas código 100% funcional
-- ✅ **ARCHITECT APPROVED** - Implementação completa aprovada após 6 iterações de correções
-
-**DEPENDÊNCIAS ADICIONADAS:**
-- org.tensorflow:tensorflow-lite:2.14.0
-- org.tensorflow:tensorflow-lite-support:0.4.4  
-- org.tensorflow:tensorflow-lite-gpu:2.14.0
-- kotlinx-coroutines-play-services:1.7.3
-
-**BINDING DATA FLOW REFACTORED (October 01, 2025) - ✅ COMPLETE!**
-- 🔄 **BIOMETRY SESSION FROM BINDING** - Usa biometrySessionId do binding (não cria sessão separada!)
-- 💾 **SIMPLETOKENMANAGER EXPANDED** - Persiste storeId, biometrySessionId, customerCpf do binding
-- ✅ **REAL DATA ONLY** - Valida CPF e storeId antes de gerar documentHash (falha explícita se ausente)
-- 🔐 **SHA-256 DOCUMENT HASH** - Hash gerado apenas com CPF autêntico (não usa fallback inválido)
-- 📝 **API COMPLIANCE** - Fluxo 100% conforme documentação CDC: bind → usa sessionId → verify
-- 🚨 **ERROR HANDLING** - Mensagens claras ao usuário se dados do binding estiverem faltando
-- ✅ **NO LSP ERRORS** - Código compila sem erros (exceto build por memória)
-
-**DOCUMENTAÇÃO OFICIAL CONFIRMADA (October 01, 2025):**
-- 📄 **API SPEC VALIDADA** - Documentação oficial confirma que `/api/device/claim-sale` DEVE retornar:
-  - `biometrySessionId` (string) - ID da sessão de biometria
-  - `storeId` (UUID) - ID da loja
-  - `customerCpf` (string) - CPF do cliente para gerar documentHash
-- ✅ **APK IMPLEMENTATION CORRECT** - Código APK implementado 100% conforme spec oficial
-- 🔧 **ENHANCED LOGGING** - Logs detalhados adicionados para diagnosticar campos faltantes
-- 📋 **BACKEND COMPLIANCE** - Backend PRECISA retornar os 3 campos no ClaimSaleResponse
-
-**RACE CONDITION FIX (October 01, 2025) - ✅ CRITICAL BUG FIXED!**
-- 🐛 **BUG IDENTIFICADO**: SharedPreferences.apply() é assíncrono, causando race condition
-- 🔍 **ROOT CAUSE**: SimpleBiometryViewModel lia dados ANTES do TokenManager.saveBindingData() completar write
-- ✅ **SOLUÇÃO**: Trocado apply() por commit() em todos os lugares críticos (TokenManager, DeviceRegistrationManager)
-- 🔐 **SYNC WRITES**: commit() bloqueia até write completar, garantindo que navegação só acontece APÓS dados salvos
-- 📊 **VERIFICATION**: Logs adicionados para verificar que dados foram persistidos corretamente
-- ✅ **ARCHITECT APPROVED**: Análise completa de race condition e solução validada
-
-**IMEI PERMISSION FIX (October 01, 2025) - ✅ ANDROID 10+ COMPATIBILITY!**
-- 🐛 **BUG**: Android 10+ bloqueia IMEI mesmo com READ_PHONE_STATE (requer READ_PRIVILEGED_PHONE_STATE)
-- ✅ **SOLUÇÃO**: TokenManager agora salva e reutiliza IMEI do primeiro pareamento
-- 💾 **PERSISTENCE**: IMEI salvo em SharedPreferences durante claim-sale
-- 🔄 **FALLBACK CHAIN**: Tenta IMEI salvo → IMEI hardware → entrada manual
-- ✅ **NO ERRORS**: Elimina SecurityException em dispositivos Android 10+
-
-**REAL FLOW ENFORCEMENT (October 11, 2025) - ✅ NO BYPASS, ALL REAL!**
-- 🎯 **REQUIREMENT**: Fluxo 100% REAL sem atalhos ou bypass automático
-- ✅ **BEHAVIOR**: SEMPRE requer venda pendente no PDV para pareamento
-- ✅ **BEHAVIOR**: SEMPRE requer claim-sale completo com biometry session
-- ✅ **BEHAVIOR**: SEMPRE requer biometry verify para anti-fraud
-- 🚫 **NO BYPASS**: HTTP 404 gera erro (não permite continuar sem biometry)
-- 🚫 **NO AUTO RE-CLAIM**: Dispositivos sem biometry data devem limpar pairing
-- 📝 **ERROR HANDLING**: Erros claros direcionam para "Clear Pairing" quando necessário
-
-**CLEAR PAIRING FEATURE (October 11, 2025) - ✅ NEW FUNCTIONALITY!**
-- 🆕 **FUNCIONALIDADE**: Botão "Clear Pairing & Try New Sale" adicionado na tela de erro
-- 🎯 **USE CASE**: Permite limpar pareamento local e parear com NOVA venda
-- ⚠️ **LIMITAÇÃO**: NÃO permite re-parear com a MESMA venda já claimed (arquitetural do backend)
-- 🔐 **IMPLEMENTAÇÃO**: clearPairingAndRetry() em SimplifiedAuthViewModel
-- 📱 **UX**: Botão aparece automaticamente quando erro contém "No pending sale"
-- 💡 **AVISO**: UI mostra aviso claro sobre limitação de re-claim
-- ✅ **BEHAVIOR**: Limpa TokenManager + DeviceRegistrationManager → restart auth flow
-
-**PRÓXIMOS PASSOS:**
-- 🏗️ Build APK em ambiente com mais memória (local/CI) ou usar modelo 128-dim
-- 🧪 Testar fluxo completo: pairing → claim-sale → biometry verify → fraud detection
-- 📱 Verificar logs detalhados para confirmar que backend retorna biometrySessionId, storeId, customerCpf
-
-### CAMERAX REAL PREVIEW (September 30, 2025) - ✅ BUILD SUCCESSFUL!
-- ✅ **CÂMERA REAL** - Preview real da câmera frontal usando CameraX 1.3.4
-- ✅ **PERMISSION HANDLING** - Solicitação runtime de permissão CAMERA com UI de retry
-- ✅ **LIFECYCLE MANAGEMENT** - Camera bind/unbind correto com DisposableEffect
-- ✅ **FACE GUIDE OVERLAY** - Círculo guia facial sobreposto ao preview da câmera
+- **CDC Credit Smart Backend API**: Used for device pairing, sale claims, heartbeat, flow events, and WebSocket communication.
+- **Samsung Knox Enterprise SDK v3.12+**: Utilized for advanced device management and security on Samsung devices.
+- **Google Play Integrity API**: Integrated for device integrity verification.
+- **Firebase Messaging**: Employed for push notifications.
+- **android-signaturepad**: Provides digital signature functionality.
+- **Jetpack Compose, Material 3, Compose Navigation**: Core UI framework components.
+- **Hilt**: Dependency injection library.
+- **Room**: ORM for local database persistence.
+- **Retrofit, OkHttp**: HTTP client and interceptor for network requests.
+- **WorkManager**: For managing deferrable, asynchronous tasks.
+- **CameraX**: Used for camera preview in biometry capture.
+- **TensorFlow Lite**: Integrated for real 512-dimensional facial embeddings using a FaceNet model.
