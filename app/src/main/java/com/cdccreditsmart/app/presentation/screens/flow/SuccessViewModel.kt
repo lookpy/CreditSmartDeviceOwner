@@ -118,14 +118,17 @@ class SuccessViewModel(
     }
 
     /**
-     * Interpreta o estado da venda com base na resposta do backend
+     * Interpreta o estado da venda usando pdvSession (sistema novo) e fallback para lógica antiga
      * 
-     * Lógica de detecção (por prioridade):
-     * 1. Device bloqueado/inativo → DEVICE_BLOCKED/DEVICE_INACTIVE
-     * 2. PaymentInfo com status final → SALE_COMPLETED ou SALE_CANCELLED
-     * 3. PaymentInfo com status intermediário → WAITING_PDV (continua polling)
-     * 4. Sem customerInfo → SALE_NOT_OPEN
-     * 5. Com customer, sem payment → WAITING_PDV (PDV processando)
+     * Prioridade de detecção:
+     * 1. Device bloqueado/inativo (máxima prioridade)
+     * 2. PDV Session info (se disponível):
+     *    - heartbeatAge > 30s → PDV_ABANDONED
+     *    - currentStage: "app"/"biometrics"/"completed"
+     *    - shouldWait: false → PDV_COMPLETED
+     * 3. PaymentInfo: "cancelled" → SALE_CANCELLED
+     * 4. CustomerInfo ausente → SALE_NOT_OPEN
+     * 5. Fallback: estado desconhecido
      */
     private fun interpretSaleState(deviceStatus: com.cdccreditsmart.network.api.CdcDeviceStatusResponse): SaleState {
         // 1. Check device status first (highest priority)
@@ -140,41 +143,77 @@ class SuccessViewModel(
             }
         }
         
-        // 2. Check payment info (finalization state)
-        val paymentInfo = deviceStatus.paymentInfo
-        if (paymentInfo != null) {
-            when (paymentInfo.paymentStatus.lowercase()) {
-                "completed", "paid", "paid_off" -> {
-                    Log.d(TAG, "✅ SALE_COMPLETED - Payment successfully finalized")
-                    return SaleState.SALE_COMPLETED
+        // 2. Check PDV Session info (NEW - backend heartbeat tracking)
+        val pdvSession = deviceStatus.pdvSession
+        if (pdvSession != null) {
+            Log.d(TAG, "🔍 PDV Session detected: stage=${pdvSession.currentStage}, shouldWait=${pdvSession.shouldWait}, heartbeatAge=${pdvSession.heartbeatAge}")
+            
+            // Check for abandoned session (PDV closed/crashed)
+            if (pdvSession.heartbeatAge != null && pdvSession.heartbeatAge > 30.0) {
+                Log.w(TAG, "⏰ PDV_ABANDONED - Heartbeat age: ${pdvSession.heartbeatAge}s > 30s")
+                return SaleState.PDV_ABANDONED
+            }
+            
+            // Check PDV current stage
+            when (pdvSession.currentStage.lowercase()) {
+                "app" -> {
+                    Log.d(TAG, "🛒 PDV_ASSEMBLING_CART - Vendedor montando carrinho")
+                    return SaleState.PDV_ASSEMBLING_CART
                 }
-                "cancelled" -> {
-                    Log.w(TAG, "❌ SALE_CANCELLED by PDV")
-                    return SaleState.SALE_CANCELLED
+                "biometrics" -> {
+                    Log.d(TAG, "👤 PDV_WAITING_BIOMETRY - PDV aguardando biometria no APK")
+                    return SaleState.PDV_WAITING_BIOMETRY
                 }
-                "pending", "processing" -> {
-                    // PaymentInfo exists but still processing - NOT completed yet!
-                    Log.d(TAG, "⏳ WAITING_PDV - Payment status '${paymentInfo.paymentStatus}', still processing")
-                    return SaleState.WAITING_PDV
+                "completed" -> {
+                    Log.d(TAG, "✅ PDV_COMPLETED - PDV finalizou venda")
+                    return SaleState.PDV_COMPLETED
                 }
-                else -> {
-                    // Unknown payment status - treat as still waiting (safe default)
-                    Log.w(TAG, "❓ UNKNOWN payment status: '${paymentInfo.paymentStatus}'")
-                    return SaleState.WAITING_PDV
-                }
+            }
+            
+            // Check shouldWait flag (explicit instruction from backend)
+            if (!pdvSession.shouldWait) {
+                Log.d(TAG, "✅ PDV_COMPLETED - shouldWait=false, APK pode prosseguir")
+                return SaleState.PDV_COMPLETED
+            } else {
+                Log.d(TAG, "⏳ PDV_PROCESSING_PAYMENT - shouldWait=true, aguardando...")
+                return SaleState.PDV_PROCESSING_PAYMENT
             }
         }
         
-        // 3. Check customer info (sale started?)
+        // 3. Fallback: Use old logic with paymentInfo/customerInfo
+        Log.d(TAG, "⚠️ No pdvSession - usando lógica antiga (paymentInfo/customerInfo)")
+        
+        // Check payment cancellation
+        val paymentInfo = deviceStatus.paymentInfo
+        if (paymentInfo != null && paymentInfo.paymentStatus.lowercase() == "cancelled") {
+            Log.w(TAG, "❌ SALE_CANCELLED by PDV")
+            return SaleState.SALE_CANCELLED
+        }
+        
+        // Check if sale is open
         val customerInfo = deviceStatus.customerInfo
         if (customerInfo == null || !customerInfo.hasCustomer) {
             Log.d(TAG, "📭 SALE_NOT_OPEN - No customer associated")
             return SaleState.SALE_NOT_OPEN
         }
         
-        // 4. Customer exists but no payment info yet - PDV still processing
-        Log.d(TAG, "⏳ WAITING_PDV - Customer associated, PDV processing...")
-        return SaleState.WAITING_PDV
+        // Check if payment completed
+        if (paymentInfo != null) {
+            when (paymentInfo.paymentStatus.lowercase()) {
+                "completed", "paid", "paid_off" -> {
+                    Log.d(TAG, "✅ PDV_COMPLETED - Payment finalized")
+                    return SaleState.PDV_COMPLETED
+                }
+                "pending", "processing" -> {
+                    Log.d(TAG, "⏳ PDV_PROCESSING_PAYMENT - Payment status: ${paymentInfo.paymentStatus}")
+                    return SaleState.PDV_PROCESSING_PAYMENT
+                }
+            }
+        }
+        
+        // Unknown state
+        Log.w(TAG, "❓ UNKNOWN state")
+        return SaleState.UNKNOWN
     }
 
     /**
@@ -182,18 +221,31 @@ class SuccessViewModel(
      */
     private fun getSaleStateMessage(saleState: SaleState): String {
         return when (saleState) {
+            // Estados sem venda
             SaleState.SALE_NOT_OPEN -> 
                 "⚠️ Venda não está aberta no PDV.\n\nPeça ao vendedor para iniciar uma nova venda."
             
-            SaleState.WAITING_PDV -> 
-                "⏳ Aguardando PDV finalizar venda.\n\nBiometria aprovada com sucesso!"
+            // Estados PDV (baseado em pdvSession)
+            SaleState.PDV_ASSEMBLING_CART -> 
+                "🛒 Vendedor está montando o carrinho.\n\nBiometria aprovada! Aguarde o PDV finalizar..."
             
-            SaleState.SALE_COMPLETED -> 
+            SaleState.PDV_WAITING_BIOMETRY -> 
+                "👤 PDV aguardando biometria.\n\n(Este estado não deveria aparecer aqui, pois você já fez biometria)"
+            
+            SaleState.PDV_PROCESSING_PAYMENT -> 
+                "⏳ PDV processando pagamento.\n\nBiometria aprovada! Aguarde finalização..."
+            
+            SaleState.PDV_COMPLETED -> 
                 "✅ Venda finalizada!\n\nParcelas disponíveis."
+            
+            // Estados de abandono/erro
+            SaleState.PDV_ABANDONED -> 
+                "⏰ PDV foi fechado ou abandonou a venda.\n\nContate o vendedor para continuar."
             
             SaleState.SALE_CANCELLED -> 
                 "❌ Venda foi cancelada no PDV.\n\nInicie uma nova venda."
             
+            // Estados de dispositivo
             SaleState.DEVICE_BLOCKED -> 
                 "🚫 Dispositivo bloqueado.\n\nContate o suporte CDC Credit Smart."
             
@@ -267,13 +319,25 @@ class SuccessViewModel(
                         
                         // Decide what to do based on the sale state
                         when (currentSaleState) {
-                            SaleState.SALE_COMPLETED -> {
-                                Log.d(TAG, "✅ Sale finalized! Navigating to Home...")
+                            // Terminal states - stop polling
+                            SaleState.PDV_COMPLETED -> {
+                                Log.d(TAG, "✅ PDV completed! Navigating to Home...")
                                 _state.value = _state.value.copy(
                                     status = SaleStatus.Completed,
                                     isLoading = false,
                                     errorMessage = null,
                                     progressPercent = 100
+                                )
+                                completed = true
+                            }
+                            
+                            SaleState.PDV_ABANDONED -> {
+                                Log.w(TAG, "⏰ PDV abandoned session")
+                                _state.value = _state.value.copy(
+                                    status = SaleStatus.Error,
+                                    isLoading = false,
+                                    errorMessage = stateMessage,
+                                    canRetry = true
                                 )
                                 completed = true
                             }
@@ -311,9 +375,20 @@ class SuccessViewModel(
                                 completed = true
                             }
                             
-                            SaleState.WAITING_PDV -> {
-                                Log.d(TAG, "⏳ Continue polling - PDV still processing")
-                                // Continue polling - sale still in progress
+                            // Intermediate states - continue polling
+                            SaleState.PDV_ASSEMBLING_CART -> {
+                                Log.d(TAG, "🛒 Continue polling - Vendedor montando carrinho")
+                                // Continue polling
+                            }
+                            
+                            SaleState.PDV_WAITING_BIOMETRY -> {
+                                Log.d(TAG, "👤 Continue polling - PDV aguardando biometria (não deveria aparecer aqui)")
+                                // Continue polling
+                            }
+                            
+                            SaleState.PDV_PROCESSING_PAYMENT -> {
+                                Log.d(TAG, "⏳ Continue polling - PDV processando pagamento")
+                                // Continue polling
                             }
                             
                             SaleState.UNKNOWN -> {
