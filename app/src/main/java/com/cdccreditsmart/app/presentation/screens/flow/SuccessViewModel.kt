@@ -149,8 +149,9 @@ class SuccessViewModel(
             Log.d(TAG, "🔍 PDV Session detected: stage=${pdvSession.currentStage}, shouldWait=${pdvSession.shouldWait}, heartbeatAge=${pdvSession.heartbeatAge}")
             
             // Check for abandoned session (PDV closed/crashed)
-            if (pdvSession.heartbeatAge != null && pdvSession.heartbeatAge > 30.0) {
-                Log.w(TAG, "⏰ PDV_ABANDONED - Heartbeat age: ${pdvSession.heartbeatAge}s > 30s")
+            val heartbeatAge = pdvSession.heartbeatAge
+            if (heartbeatAge != null && heartbeatAge > 30.0) {
+                Log.w(TAG, "⏰ PDV_ABANDONED - Heartbeat age: ${heartbeatAge}s > 30s")
                 return SaleState.PDV_ABANDONED
             }
             
