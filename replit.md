@@ -45,6 +45,15 @@ The UI is built entirely with Jetpack Compose and Material 3, featuring a CDC in
 - **WorkManager**: Background tasks.
 - **CameraX**: Camera preview for biometry capture.
 
+## Recent Changes (October 12, 2025)
+📄 **DOCUMENTAÇÃO BACKEND CRIADA (October 12, 2025) - ✅ PRONTA!**
+- 📋 **API_BACKEND_REQUIREMENTS.md** - Documentação técnica completa para IA do backend
+- 🎯 **CONTRATO API DEFINIDO** - Especificação detalhada do endpoint POST /api/device/claim-sale
+- ✅ **3 CAMPOS FALTANTES DOCUMENTADOS** - biometrySessionId, storeId, customerCpf
+- 💡 **EXEMPLOS DE CÓDIGO** - Implementação de referência em Node.js/Express
+- 🔄 **FLUXO COMPLETO** - Diagrama sequencial do pareamento até biometry verify
+- 🧪 **TESTES DE VALIDAÇÃO** - Como testar se backend está retornando corretamente
+
 ## Recent Changes (October 01, 2025)
 🎉🎉🎉 **TENSORFLOW LITE FACENET INTEGRATION - REAL 512-DIM EMBEDDINGS!** 🎉🎉🎉
 
