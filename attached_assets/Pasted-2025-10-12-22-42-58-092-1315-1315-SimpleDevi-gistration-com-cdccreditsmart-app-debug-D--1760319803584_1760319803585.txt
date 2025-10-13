@@ -1,0 +1,19 @@
+2025-10-12 22:42:58.092  1315-1315  SimpleDevi...gistration com.cdccreditsmart.app.debug         D  📥 HTTP Response received:
+2025-10-12 22:42:58.092  1315-1315  SimpleDevi...gistration com.cdccreditsmart.app.debug         D     - Status Code: 500
+2025-10-12 22:42:58.092  1315-1315  SimpleDevi...gistration com.cdccreditsmart.app.debug         D     - Success: false
+2025-10-12 22:42:58.093  1315-1315  SimpleDevi...gistration com.cdccreditsmart.app.debug         E  Failed to claim sale - HTTP 500
+2025-10-12 22:42:58.093  1315-1315  SimpleDevi...gistration com.cdccreditsmart.app.debug         E  Error body: {"success":false,"error":"Internal error: missing biometry session ID","details":"The sale is missing required biometry session data"}
+2025-10-12 22:42:58.094  1315-1315  SimplifiedAuthViewModel com.cdccreditsmart.app.debug         E  Failed to claim sale (Ask Gemini)
+                                                                                                    java.lang.Exception: Server error. Please try again later.
+                                                                                                    	at com.cdccreditsmart.app.device.SimpleDeviceRegistrationManager.claimSale-BWLJW6A(SimpleDeviceRegistrationManager.kt:261)
+                                                                                                    	at com.cdccreditsmart.app.device.SimpleDeviceRegistrationManager$claimSale$1.invokeSuspend(Unknown Source:15)
+                                                                                                    	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:34)
+                                                                                                    	at kotlinx.coroutines.DispatchedTask.run(DispatchedTask.kt:108)
+                                                                                                    	at android.os.Handler.handleCallback(Handler.java:959)
+                                                                                                    	at android.os.Handler.dispatchMessage(Handler.java:100)
+                                                                                                    	at android.os.Looper.loopOnce(Looper.java:234)
+                                                                                                    	at android.os.Looper.loop(Looper.java:319)
+                                                                                                    	at android.app.ActivityThread.main(ActivityThread.java:8754)
+                                                                                                    	at java.lang.reflect.Method.invoke(Native Method)
+                                                                                                    	at com.android.internal.os.RuntimeInit$MethodAndArgsCaller.run(RuntimeInit.java:602)
+                                                                                                    	at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:962)
