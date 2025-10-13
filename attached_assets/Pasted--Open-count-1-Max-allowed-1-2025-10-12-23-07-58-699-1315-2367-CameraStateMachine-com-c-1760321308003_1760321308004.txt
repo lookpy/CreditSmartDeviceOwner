@@ -1,0 +1,69 @@
+   Open count: 1 (Max allowed: 1)
+2025-10-12 23:07:58.699  1315-2367  CameraStateMachine      com.cdccreditsmart.app.debug         D  New public camera state CameraState{type=OPEN, error=null} from OPEN and null
+2025-10-12 23:07:58.700  1315-2367  CameraStateMachine      com.cdccreditsmart.app.debug         D  Publishing new public camera state CameraState{type=OPEN, error=null}
+2025-10-12 23:07:58.702  1315-2367  UseCaseAttachState      com.cdccreditsmart.app.debug         D  All use case: [androidx.camera.core.ImageCapture-69c2c4c1-2a29-45ff-88c6-c691142efac0254317225, androidx.camera.core.Preview-bf8f024f-e685-465a-ad9e-1757da6de9bf3909168] for camera: 1
+2025-10-12 23:07:58.707  1315-2367  UseCaseAttachState      com.cdccreditsmart.app.debug         D  Active and attached use case: [androidx.camera.core.ImageCapture-69c2c4c1-2a29-45ff-88c6-c691142efac0254317225, androidx.camera.core.Preview-bf8f024f-e685-465a-ad9e-1757da6de9bf3909168] for camera: 1
+2025-10-12 23:07:58.709  1315-2367  SyncCaptureSessionBase  com.cdccreditsmart.app.debug         D  [androidx.camera.camera2.internal.SynchronizedCaptureSessionBaseImpl@ddaf0d8] getSurface...done
+2025-10-12 23:07:58.709  1315-2367  CaptureSession          com.cdccreditsmart.app.debug         D  Opening capture session.
+2025-10-12 23:07:58.730  1315-2367  DeferrableSurface       com.cdccreditsmart.app.debug         D  use count+1, useCount=2 androidx.camera.core.SurfaceRequest$2@47f363
+2025-10-12 23:07:58.730  1315-2367  DeferrableSurface       com.cdccreditsmart.app.debug         D  New surface in use[total_surfaces=3, used_surfaces=2](androidx.camera.core.impl.ImmediateSurface@de57cd5}
+2025-10-12 23:07:58.731  1315-2367  DeferrableSurface       com.cdccreditsmart.app.debug         D  use count+1, useCount=1 androidx.camera.core.impl.ImmediateSurface@de57cd5
+2025-10-12 23:07:58.962  1315-2367  CaptureSession          com.cdccreditsmart.app.debug         D  Attempting to send capture request onConfigured
+2025-10-12 23:07:58.962  1315-2367  CaptureSession          com.cdccreditsmart.app.debug         D  Issuing request for session.
+2025-10-12 23:07:58.963  1315-2367  Camera2Cap...estBuilder com.cdccreditsmart.app.debug         D  createCaptureRequest
+2025-10-12 23:07:58.971  1315-2367  CaptureSession          com.cdccreditsmart.app.debug         D  CameraCaptureSession.onConfigured() mState=OPENED
+2025-10-12 23:07:58.972  1315-2367  CaptureSession          com.cdccreditsmart.app.debug         D  CameraCaptureSession.onReady() OPENED
+2025-10-12 23:07:59.263  1315-1315  SimpleBiometryViewModel com.cdccreditsmart.app.debug         D  Starting biometry validation (DEMO_MODE=false)
+2025-10-12 23:07:59.264  1315-1315  SimpleBiometryViewModel com.cdccreditsmart.app.debug         D  📋 Checking binding data from TokenManager:
+2025-10-12 23:07:59.264  1315-1315  SimpleBiometryViewModel com.cdccreditsmart.app.debug         D     - biometrySessionId: ✅ Present
+2025-10-12 23:07:59.264  1315-1315  SimpleBiometryViewModel com.cdccreditsmart.app.debug         D     - storeId: ✅ Present (f3d6763d-9661-44fc-9ffd-d1dc9af5674d)
+2025-10-12 23:07:59.264  1315-1315  SimpleBiometryViewModel com.cdccreditsmart.app.debug         D     - customerCpf: ✅ Present (123***)
+2025-10-12 23:07:59.264  1315-1315  SimpleBiometryViewModel com.cdccreditsmart.app.debug         D  ✅ Using biometry session from binding: bio_ses_1760319755352_nzn3x1ck5s
+2025-10-12 23:07:59.264  1315-1315  SimpleBiometryViewModel com.cdccreditsmart.app.debug         D  ✅ Store ID available: f3d6763d-9661-44fc-9ffd-d1dc9af5674d
+2025-10-12 23:07:59.264  1315-1315  SimpleBiometryViewModel com.cdccreditsmart.app.debug         D  ✅ Customer CPF available: 123***
+2025-10-12 23:07:59.264  1315-1315  SimpleBiometryViewModel com.cdccreditsmart.app.debug         D  Biometry validation ready - waiting for camera capture
+2025-10-12 23:07:59.289  1315-1315  BiometryScreen          com.cdccreditsmart.app.debug         D  Triggering image capture for face detection
+2025-10-12 23:07:59.290  1315-1315  ImageCapture            com.cdccreditsmart.app.debug         D  takePictureInternal
+2025-10-12 23:07:59.291  1315-1315  CameraOrientationUtil   com.cdccreditsmart.app.debug         D  getRelativeImageRotation: destRotationDegrees=0, sourceRotationDegrees=270, isOppositeFacing=false, result=270
+2025-10-12 23:07:59.292  1315-1315  TakePictureManager      com.cdccreditsmart.app.debug         D  Issue the next TakePictureRequest.
+2025-10-12 23:07:59.449  1315-1325  BLASTBufferQueue        com.cdccreditsmart.app.debug         D  [SurfaceView[com.cdccreditsmart.app.debug/com.cdccreditsmart.app.presentation.MainActivity]#5](f:0,a:1) acquireNextBufferLocked size=1440x1088 mFrameNumber=1 applyTransaction=true mTimestamp=176408389371001 mPendingTransactions.size=0 graphicBufferId=5647881994260 transform=5
+2025-10-12 23:07:59.461  1315-2372  StreamStateObserver     com.cdccreditsmart.app.debug         D  Update Preview stream state to STREAMING
+2025-10-12 23:07:59.467  1315-2372  Camera2CameraImpl       com.cdccreditsmart.app.debug         D  {Camera@79bdb01[id=1]} Issue capture request
+2025-10-12 23:07:59.467  1315-2372  CaptureSession          com.cdccreditsmart.app.debug         D  Issuing capture request.
+2025-10-12 23:07:59.469  1315-2372  Camera2Cap...estBuilder com.cdccreditsmart.app.debug         D  createCaptureRequest
+2025-10-12 23:08:00.220  1315-1315  DMABUFHEAPS             com.cdccreditsmart.app.debug         I  Using DMA-BUF heap named: mtk_mm
+2025-10-12 23:08:00.221  1315-1315  DMABUFHEAPS             com.cdccreditsmart.app.debug         I  Using DMA-BUF heap named: mtk_mm-uncached
+2025-10-12 23:08:00.221  1315-1315  DMABUFHEAPS             com.cdccreditsmart.app.debug         I  Using DMA-BUF heap named: mtk_svp_region
+2025-10-12 23:08:00.221  1315-1315  DMABUFHEAPS             com.cdccreditsmart.app.debug         I  Using DMA-BUF heap named: mtk_prot_region
+2025-10-12 23:08:00.221  1315-1315  DMABUFHEAPS             com.cdccreditsmart.app.debug         I  Using DMA-BUF heap named: mtk_wfd_region
+2025-10-12 23:08:00.236  1315-1315  TakePictureManager      com.cdccreditsmart.app.debug         D  Issue the next TakePictureRequest.
+2025-10-12 23:08:00.236  1315-1315  TakePictureManager      com.cdccreditsmart.app.debug         D  No new request.
+2025-10-12 23:08:00.296  1315-1315  BiometryScreen          com.cdccreditsmart.app.debug         D  Image captured successfully, processing with ML Kit
+2025-10-12 23:08:00.297  1315-1315  SimpleBiometryViewModel com.cdccreditsmart.app.debug         D  Processing captured image with ML Kit Face Detection
+2025-10-12 23:08:00.298  1315-1315  SimpleBiometryViewModel com.cdccreditsmart.app.debug         D  ImageProxy format: 256
+2025-10-12 23:08:00.298  1315-1315  SimpleBiometryViewModel com.cdccreditsmart.app.debug         D  ImageProxy dimensions: 2448x3264
+2025-10-12 23:08:00.298  1315-1315  SimpleBiometryViewModel com.cdccreditsmart.app.debug         D  ImageProxy rotation: 0°
+2025-10-12 23:08:00.298  1315-1315  SimpleBiometryViewModel com.cdccreditsmart.app.debug         D  ImageProxy planes: 1
+2025-10-12 23:08:00.299  1315-1315  SimpleBiometryViewModel com.cdccreditsmart.app.debug         D  === YUV to RGB Conversion Start ===
+2025-10-12 23:08:00.299  1315-1315  SimpleBiometryViewModel com.cdccreditsmart.app.debug         D  Image dimensions: 2448x3264
+2025-10-12 23:08:00.299  1315-1315  SimpleBiometryViewModel com.cdccreditsmart.app.debug         E  === YUV to RGB Conversion FAILED ===
+2025-10-12 23:08:00.300  1315-1315  SimpleBiometryViewModel com.cdccreditsmart.app.debug         E  Exception: ArrayIndexOutOfBoundsException: length=1; index=1
+2025-10-12 23:08:00.300  1315-1315  System.err              com.cdccreditsmart.app.debug         W  java.lang.ArrayIndexOutOfBoundsException: length=1; index=1
+2025-10-12 23:08:00.301  1315-1315  System.err              com.cdccreditsmart.app.debug         W  	at com.cdccreditsmart.app.presentation.screens.flow.SimpleBiometryViewModel.imageProxyToBitmap(SimpleBiometryViewModel.kt:310)
+2025-10-12 23:08:00.302  1315-1315  System.err              com.cdccreditsmart.app.debug         W  	at com.cdccreditsmart.app.presentation.screens.flow.SimpleBiometryViewModel.processCapturedImage(SimpleBiometryViewModel.kt:165)
+2025-10-12 23:08:00.302  1315-1315  System.err              com.cdccreditsmart.app.debug         W  	at com.cdccreditsmart.app.presentation.screens.flow.BiometryScreenKt$BiometryScreen$2$1$1$onCaptureSuccess$1.invokeSuspend(BiometryScreen.kt:98)
+2025-10-12 23:08:00.303  1315-1315  System.err              com.cdccreditsmart.app.debug         W  	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:34)
+2025-10-12 23:08:00.303  1315-1315  System.err              com.cdccreditsmart.app.debug         W  	at kotlinx.coroutines.DispatchedTask.run(DispatchedTask.kt:108)
+2025-10-12 23:08:00.304  1315-1315  System.err              com.cdccreditsmart.app.debug         W  	at androidx.compose.ui.platform.AndroidUiDispatcher.performTrampolineDispatch(AndroidUiDispatcher.android.kt:81)
+2025-10-12 23:08:00.304  1315-1315  System.err              com.cdccreditsmart.app.debug         W  	at androidx.compose.ui.platform.AndroidUiDispatcher.access$performTrampolineDispatch(AndroidUiDispatcher.android.kt:41)
+2025-10-12 23:08:00.305  1315-1315  System.err              com.cdccreditsmart.app.debug         W  	at androidx.compose.ui.platform.AndroidUiDispatcher$dispatchCallback$1.run(AndroidUiDispatcher.android.kt:57)
+2025-10-12 23:08:00.305  1315-1315  System.err              com.cdccreditsmart.app.debug         W  	at android.os.Handler.handleCallback(Handler.java:959)
+2025-10-12 23:08:00.305  1315-1315  System.err              com.cdccreditsmart.app.debug         W  	at android.os.Handler.dispatchMessage(Handler.java:100)
+2025-10-12 23:08:00.306  1315-1315  System.err              com.cdccreditsmart.app.debug         W  	at android.os.Looper.loopOnce(Looper.java:234)
+2025-10-12 23:08:00.306  1315-1315  System.err              com.cdccreditsmart.app.debug         W  	at android.os.Looper.loop(Looper.java:319)
+2025-10-12 23:08:00.306  1315-1315  System.err              com.cdccreditsmart.app.debug         W  	at android.app.ActivityThread.main(ActivityThread.java:8754)
+2025-10-12 23:08:00.306  1315-1315  System.err              com.cdccreditsmart.app.debug         W  	at java.lang.reflect.Method.invoke(Native Method)
+2025-10-12 23:08:00.307  1315-1315  System.err              com.cdccreditsmart.app.debug         W  	at com.android.internal.os.RuntimeInit$MethodAndArgsCaller.run(RuntimeInit.java:602)
+2025-10-12 23:08:00.307  1315-1315  System.err              com.cdccreditsmart.app.debug         W  	at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:962)
+2025-10-12 23:08:00.307  1315-1315  SimpleBiometryViewModel com.cdccreditsmart.app.debug         E  Failed to convert ImageProxy to Bitmap - YUV conversion returned null
+2025-10-12 23:08:00.307  1315-1315  SimpleBiometryViewModel com.cdccreditsmart.app.debug         E  ImageProxy format was: 256 (expected YUV_420_888 = 35)

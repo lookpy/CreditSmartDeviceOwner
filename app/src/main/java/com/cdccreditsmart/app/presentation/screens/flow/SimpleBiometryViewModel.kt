@@ -282,29 +282,71 @@ class SimpleBiometryViewModel(
     }
     
     /**
-     * Convert ImageProxy (YUV_420_888) to RGB Bitmap
+     * Convert ImageProxy to RGB Bitmap
      * 
-     * CRITICAL: This function MUST respect rowStride and pixelStride to avoid corrupted bitmaps.
+     * Supports both JPEG and YUV_420_888 formats.
      * 
-     * CameraX ImageCapture returns YUV_420_888 format with the following characteristics:
-     * - Y plane: may have padding (rowStride > width)
-     * - U/V planes: often interleaved (pixelStride == 2) on most devices
-     * - Simply concatenating buffers WITHOUT respecting strides = CORRUPTED BITMAPS
+     * JPEG (format 256): Direct decode using BitmapFactory
+     * YUV_420_888 (format 35): Convert via NV21 intermediate format
      * 
-     * This function properly converts YUV_420_888 to NV21 format by:
-     * 1. Copying Y plane line-by-line, respecting rowStride
-     * 2. Interleaving U/V planes into NV21 format, respecting pixelStride
-     * 3. Converting NV21 to JPEG to RGB Bitmap
-     * 4. Applying rotation correction
+     * CRITICAL: YUV conversion MUST respect rowStride and pixelStride to avoid corrupted bitmaps.
      */
     private fun imageProxyToBitmap(imageProxy: ImageProxy): Bitmap? {
         return try {
             val width = imageProxy.width
             val height = imageProxy.height
+            val format = imageProxy.format
             
-            Log.d(TAG, "=== YUV to RGB Conversion Start ===")
+            Log.d(TAG, "=== Image Conversion Start ===")
             Log.d(TAG, "Image dimensions: ${width}x${height}")
+            Log.d(TAG, "Image format: $format (JPEG=256, YUV_420_888=35)")
             
+            // Check format and use appropriate conversion
+            when (format) {
+                256 -> { // ImageFormat.JPEG
+                    Log.d(TAG, "Detected JPEG format - using BitmapFactory")
+                    val buffer = imageProxy.planes[0].buffer
+                    val bytes = ByteArray(buffer.remaining())
+                    buffer.get(bytes)
+                    
+                    val bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.size)
+                    
+                    // Apply rotation if needed
+                    val rotation = imageProxy.imageInfo.rotationDegrees
+                    if (rotation != 0) {
+                        Log.d(TAG, "Applying rotation: ${rotation}°")
+                        val matrix = Matrix().apply { postRotate(rotation.toFloat()) }
+                        Matrix().apply { postRotate(rotation.toFloat()) }.let { matrix ->
+                            Bitmap.createBitmap(bitmap, 0, 0, bitmap.width, bitmap.height, matrix, true)
+                        }
+                    } else {
+                        bitmap
+                    }
+                }
+                35 -> { // ImageFormat.YUV_420_888
+                    Log.d(TAG, "Detected YUV_420_888 format - using YUV conversion")
+                    convertYuvToBitmap(imageProxy, width, height)
+                }
+                else -> {
+                    Log.e(TAG, "Unsupported image format: $format")
+                    null
+                }
+            }
+        } catch (e: Exception) {
+            Log.e(TAG, "=== Image Conversion FAILED ===")
+            Log.e(TAG, "Exception: ${e.javaClass.simpleName}: ${e.message}")
+            e.printStackTrace()
+            null
+        }
+    }
+    
+    /**
+     * Convert YUV_420_888 ImageProxy to RGB Bitmap
+     * 
+     * CRITICAL: This function MUST respect rowStride and pixelStride to avoid corrupted bitmaps.
+     */
+    private fun convertYuvToBitmap(imageProxy: ImageProxy, width: Int, height: Int): Bitmap? {
+        return try {
             // Extract planes
             val yPlane = imageProxy.planes[0]
             val uPlane = imageProxy.planes[1]
