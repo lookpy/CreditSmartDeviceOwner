@@ -42,11 +42,13 @@ object Routes {
 @Composable
 fun CDCNavigation(
     navController: NavHostController,
-    startDestination: String = Routes.AUTH_IMEI
+    startDestination: String = Routes.AUTH_IMEI,
+    modifier: Modifier = Modifier
 ) {
     NavHost(
         navController = navController,
-        startDestination = startDestination
+        startDestination = startDestination,
+        modifier = modifier
     ) {
         // IMEI Authentication - App Entry Point
         composable(Routes.AUTH_IMEI) {

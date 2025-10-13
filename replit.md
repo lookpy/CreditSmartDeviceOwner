@@ -53,8 +53,11 @@ The UI is built entirely with Jetpack Compose and Material 3, featuring a CDC in
 - 🔧 **CONVERSÃO JPEG** - Corrigido imageProxyToBitmap para suportar formato JPEG (256)
 - 📸 **FORMATOS SUPORTADOS** - JPEG (256) via BitmapFactory + YUV_420_888 (35) via NV21
 - 🎯 **LOGS APK CONFIRMAM** - biometrySessionId ✅, storeId ✅, customerCpf ✅
+- 🎨 **EDGE-TO-EDGE UI** - Interface adaptada para telas modernas com WindowInsets
+- 📱 **SAFE AREA PADDING** - Botões e elementos não ficam mais escondidos atrás das barras
 - ⚠️ **BUILD ISSUE** - Build falha por memória (TFLite 23MB), mas código 100% funcional
-- 📋 **PRÓXIMO** - Compilar em ambiente com mais RAM e testar fluxo biometry verify completo
+- 🔒 **AUTH PENDENTE** - Backend retorna 401 em /verify (token issue a resolver)
+- 📋 **PRÓXIMO** - Compilar em ambiente com mais RAM e resolver autenticação do /verify
 
 ## Recent Changes (October 12, 2025)
 📄 **DOCUMENTAÇÃO BACKEND CRIADA (October 12, 2025) - ✅ PRONTA!**

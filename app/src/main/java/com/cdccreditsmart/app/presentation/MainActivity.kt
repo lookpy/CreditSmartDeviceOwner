@@ -33,10 +33,11 @@ fun CDCCreditSmartApp() {
     
     Scaffold(
         modifier = Modifier.fillMaxSize()
-    ) { innerPadding ->
+    ) { paddingValues ->
         CDCNavigation(
             navController = navController,
-            startDestination = Routes.AUTH_IMEI
+            startDestination = Routes.AUTH_IMEI,
+            modifier = Modifier.padding(paddingValues)
         )
     }
 }
