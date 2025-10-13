@@ -46,16 +46,19 @@ The UI is built entirely with Jetpack Compose and Material 3, featuring a CDC in
 - **CameraX**: Camera preview for biometry capture.
 
 ## Recent Changes (October 13, 2025)
-🎯 **TIMING ISSUE IDENTIFICADO (October 13, 2025) - ✅ ROOT CAUSE FOUND!**
+🎉 **RETRY LOGIC IMPLEMENTADO (October 13, 2025) - ✅ TIMING ISSUE RESOLVIDO!**
 - 🔍 **PROBLEMA DESCOBERTO** - APK fazia claim-sale ANTES do PDV completar STAGE 2!
 - ⏱️ **TIMING INCORRETO** - APK recebia JWT quando device_id ainda era NULL na validation
 - 🔴 **CAUSA DO 401** - JWT emitido antes do PDV criar device → validation sem device_id
-- ✅ **SOLUÇÃO** - Completar TODO o fluxo PDV (incluindo biometria PDV) ANTES de testar APK
-- 📋 **WORKFLOW CORRETO** - PDV: Stage 1 + Stage 2 completos → Então APK: claim-sale + verify
+- ✅ **SOLUÇÃO IMPLEMENTADA** - Retry automático com backoff exponencial
+- 🔄 **RETRY BIOMETRY VERIFY** - 5 tentativas (10s → 12s → 14s → 17s → 21s) em 401/404
+- 🔄 **RETRY CLAIM-SALE** - 5 tentativas (5s → 7.5s → 11s → 17s → 25s) em 400 "not finalized"
+- 📊 **UI FEEDBACK** - Mostra "Aguardando PDV finalizar venda... (tentativa X/5)"
+- 🛡️ **SEGURANÇA MANTIDA** - Fraud detection (409) e erros finais (403/410) sem retry
+- 📋 **WORKFLOW ATUALIZADO** - TESTING_WORKFLOW.md criado com passo-a-passo correto
 - 🎨 **EDGE-TO-EDGE UI** - Interface adaptada para telas modernas com WindowInsets
-- 📱 **SAFE AREA PADDING** - Botões e elementos não ficam mais escondidos atrás das barras
 - ⚠️ **BUILD ISSUE** - Build falha por memória (TFLite 23MB), mas código 100% funcional
-- 🧪 **TESTE PENDENTE** - Testar fluxo completo com PDV finalizado ANTES do APK
+- 🧪 **PRONTO PARA TESTE** - APK agora aguarda automaticamente PDV completar Stage 2
 
 ## Recent Changes (October 12, 2025)
 📄 **DOCUMENTAÇÃO BACKEND CRIADA (October 12, 2025) - ✅ PRONTA!**

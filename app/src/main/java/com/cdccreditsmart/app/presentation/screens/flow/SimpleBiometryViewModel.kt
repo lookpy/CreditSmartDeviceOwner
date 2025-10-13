@@ -48,7 +48,9 @@ data class BiometryState(
     val faceEmbeddingVector: List<Double>? = null,
     val documentHash: String? = null,
     val storeId: String? = null,
-    val customerCpf: String? = null
+    val customerCpf: String? = null,
+    val retryAttempt: Int = 0,
+    val maxRetries: Int = 0
 )
 
 enum class BiometryStatus {
@@ -682,9 +684,10 @@ class SimpleBiometryViewModel(
     }
 
     /**
-     * Submit biometry data for verification
+     * Submit biometry data for verification with retry logic
      * 
      * Uses real captured image and face embeddings from ML Kit Face Detection
+     * Implements exponential backoff retry for 401/404 errors (device not created yet)
      */
     fun submitBiometryData() {
         Log.d(TAG, "Submitting biometry data")
@@ -764,75 +767,132 @@ class SimpleBiometryViewModel(
                 Log.d(TAG, "Face image size: ${currentState.capturedImageBase64!!.length} chars")
                 Log.d(TAG, "Face embedding dimensions: ${currentState.faceEmbeddingVector!!.size}")
 
-                val response = biometryApi.verifyFacialBiometry(biometryRequest)
-
-                if (response.isSuccessful && response.body() != null) {
-                    val verificationResponse = response.body()!!
-                    Log.d(TAG, "Biometry verification response received")
-                    Log.d(TAG, "Status: ${verificationResponse.status}")
-                    Log.d(TAG, "Confidence: ${verificationResponse.confidence}")
-                    Log.d(TAG, "Message: ${verificationResponse.message}")
-                    Log.d(TAG, "Next action: ${verificationResponse.nextAction}")
-
-                    val isApproved = verificationResponse.status == "approved"
-
-                    _biometryState.value = _biometryState.value.copy(
-                        status = if (isApproved) BiometryStatus.Success else BiometryStatus.Error,
-                        isLoading = false,
-                        verificationResult = verificationResponse.status,
-                        confidence = verificationResponse.confidence,
-                        isApproved = isApproved,
-                        errorMessage = if (!isApproved) verificationResponse.message else null
-                    )
-
-                } else {
-                    val errorBody = response.errorBody()?.string()
-                    Log.e(TAG, "Failed to verify biometry - HTTP ${response.code()}")
-                    Log.e(TAG, "Error body: $errorBody")
-
-                    // Handle fraud detection (error 409)
-                    if (response.code() == 409 && errorBody != null) {
-                        try {
-                            val gson = Gson()
-                            val fraudResponse = gson.fromJson(errorBody, BiometryVerificationResponse::class.java)
-                            
-                            if (fraudResponse.fraudType == "same_face_different_cpf") {
-                                // FRAUD DETECTED: Same face with different CPF
-                                Log.e(TAG, "🚨 FRAUDE DETECTADA!")
-                                Log.e(TAG, "Tipo: ${fraudResponse.fraudType}")
-                                Log.e(TAG, "CPFs duplicados: ${fraudResponse.duplicateCustomerIds}")
-                                Log.e(TAG, "Total duplicatas: ${fraudResponse.totalDuplicates}")
-                                Log.e(TAG, "Ação: ${fraudResponse.action}")
-                                Log.e(TAG, "Pode tentar novamente: ${fraudResponse.canRetry}")
-                                
-                                _biometryState.value = _biometryState.value.copy(
-                                    status = BiometryStatus.Error,
-                                    isLoading = false,
-                                    errorMessage = fraudResponse.details ?: 
-                                        "🚨 FRAUDE DETECTADA!\n\n${fraudResponse.message}\n\nEsta pessoa já está cadastrada com outro CPF.\n\n❌ Transação bloqueada permanentemente."
-                                )
-                                return@launch
-                            } else if (fraudResponse.fraudFlags?.duplicateInStore == true) {
-                                // POSSIBLE DUPLICATE: Requires manual review
-                                Log.w(TAG, "⚠️ Possível duplicata detectada - revisão manual necessária")
-                                
-                                _biometryState.value = _biometryState.value.copy(
-                                    status = BiometryStatus.Error,
-                                    isLoading = false,
-                                    errorMessage = "⚠️ Detectamos similaridade com outro cliente.\n\nAguarde revisão manual do supervisor."
-                                )
-                                return@launch
-                            }
-                        } catch (parseError: Exception) {
-                            Log.e(TAG, "Error parsing fraud response", parseError)
-                        }
+                // Retry configuration
+                val maxAttempts = 5
+                val initialDelay = 10000L
+                val backoffMultiplier = 1.2
+                
+                var attempt = 1
+                var success = false
+                
+                while (attempt <= maxAttempts && !success) {
+                    if (attempt > 1) {
+                        val delay = (initialDelay * Math.pow(backoffMultiplier, (attempt - 1).toDouble())).toLong()
+                        Log.d(TAG, "⏳ Tentativa ${attempt}/${maxAttempts}: Aguardando device ser criado no PDV...")
+                        Log.d(TAG, "⏱️ Próxima tentativa em ${delay}ms")
+                        
+                        _biometryState.value = _biometryState.value.copy(
+                            retryAttempt = attempt,
+                            maxRetries = maxAttempts,
+                            errorMessage = "Aguardando PDV finalizar venda... (tentativa ${attempt}/${maxAttempts})"
+                        )
+                        
+                        delay(delay)
+                    } else {
+                        _biometryState.value = _biometryState.value.copy(
+                            retryAttempt = 1,
+                            maxRetries = maxAttempts
+                        )
                     }
 
-                    _biometryState.value = _biometryState.value.copy(
-                        status = BiometryStatus.Error,
-                        isLoading = false,
-                        errorMessage = "Biometry verification failed: ${response.message()}"
-                    )
+                    Log.d(TAG, "Attempt ${attempt}/${maxAttempts}: Calling biometry verification API...")
+                    val response = biometryApi.verifyFacialBiometry(biometryRequest)
+
+                    if (response.isSuccessful && response.body() != null) {
+                        val verificationResponse = response.body()!!
+                        Log.d(TAG, "Biometry verification response received")
+                        Log.d(TAG, "Status: ${verificationResponse.status}")
+                        Log.d(TAG, "Confidence: ${verificationResponse.confidence}")
+                        Log.d(TAG, "Message: ${verificationResponse.message}")
+                        Log.d(TAG, "Next action: ${verificationResponse.nextAction}")
+
+                        val isApproved = verificationResponse.status == "approved"
+
+                        _biometryState.value = _biometryState.value.copy(
+                            status = if (isApproved) BiometryStatus.Success else BiometryStatus.Error,
+                            isLoading = false,
+                            verificationResult = verificationResponse.status,
+                            confidence = verificationResponse.confidence,
+                            isApproved = isApproved,
+                            errorMessage = if (!isApproved) verificationResponse.message else null,
+                            retryAttempt = 0,
+                            maxRetries = 0
+                        )
+                        
+                        success = true
+
+                    } else {
+                        val errorBody = response.errorBody()?.string()
+                        val httpCode = response.code()
+                        Log.e(TAG, "Failed to verify biometry - HTTP ${httpCode}")
+                        Log.e(TAG, "Error body: $errorBody")
+
+                        // Check if this is a retryable error (401 or 404)
+                        val isRetryableError = httpCode == 401 || httpCode == 404
+                        
+                        if (isRetryableError && attempt < maxAttempts) {
+                            Log.w(TAG, "⚠️ Retryable error ${httpCode} - will retry (attempt ${attempt}/${maxAttempts})")
+                            attempt++
+                            continue
+                        }
+
+                        // Handle fraud detection (error 409)
+                        if (httpCode == 409 && errorBody != null) {
+                            try {
+                                val gson = Gson()
+                                val fraudResponse = gson.fromJson(errorBody, BiometryVerificationResponse::class.java)
+                                
+                                if (fraudResponse.fraudType == "same_face_different_cpf") {
+                                    Log.e(TAG, "🚨 FRAUDE DETECTADA!")
+                                    Log.e(TAG, "Tipo: ${fraudResponse.fraudType}")
+                                    Log.e(TAG, "CPFs duplicados: ${fraudResponse.duplicateCustomerIds}")
+                                    Log.e(TAG, "Total duplicatas: ${fraudResponse.totalDuplicates}")
+                                    Log.e(TAG, "Ação: ${fraudResponse.action}")
+                                    Log.e(TAG, "Pode tentar novamente: ${fraudResponse.canRetry}")
+                                    
+                                    _biometryState.value = _biometryState.value.copy(
+                                        status = BiometryStatus.Error,
+                                        isLoading = false,
+                                        errorMessage = fraudResponse.details ?: 
+                                            "🚨 FRAUDE DETECTADA!\n\n${fraudResponse.message}\n\nEsta pessoa já está cadastrada com outro CPF.\n\n❌ Transação bloqueada permanentemente.",
+                                        retryAttempt = 0,
+                                        maxRetries = 0
+                                    )
+                                    return@launch
+                                } else if (fraudResponse.fraudFlags?.duplicateInStore == true) {
+                                    Log.w(TAG, "⚠️ Possível duplicata detectada - revisão manual necessária")
+                                    
+                                    _biometryState.value = _biometryState.value.copy(
+                                        status = BiometryStatus.Error,
+                                        isLoading = false,
+                                        errorMessage = "⚠️ Detectamos similaridade com outro cliente.\n\nAguarde revisão manual do supervisor.",
+                                        retryAttempt = 0,
+                                        maxRetries = 0
+                                    )
+                                    return@launch
+                                }
+                            } catch (parseError: Exception) {
+                                Log.e(TAG, "Error parsing fraud response", parseError)
+                            }
+                        }
+
+                        // Final error after all retries or non-retryable error
+                        val errorMessage = if (isRetryableError && attempt >= maxAttempts) {
+                            "❌ Não foi possível completar a verificação após ${maxAttempts} tentativas.\n\nPor favor, verifique se o vendedor finalizou a venda no PDV."
+                        } else {
+                            "Biometry verification failed: ${response.message()}"
+                        }
+                        
+                        _biometryState.value = _biometryState.value.copy(
+                            status = BiometryStatus.Error,
+                            isLoading = false,
+                            errorMessage = errorMessage,
+                            retryAttempt = 0,
+                            maxRetries = 0
+                        )
+                        
+                        success = true
+                    }
                 }
 
             } catch (e: Exception) {
@@ -840,7 +900,9 @@ class SimpleBiometryViewModel(
                 _biometryState.value = _biometryState.value.copy(
                     status = BiometryStatus.Error,
                     isLoading = false,
-                    errorMessage = "Error verifying biometry: ${e.message}"
+                    errorMessage = "Error verifying biometry: ${e.message}",
+                    retryAttempt = 0,
+                    maxRetries = 0
                 )
             }
         }

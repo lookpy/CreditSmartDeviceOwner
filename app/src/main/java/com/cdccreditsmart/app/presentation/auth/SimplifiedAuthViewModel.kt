@@ -24,7 +24,9 @@ data class SimplifiedAuthState(
     val isLockedOut: Boolean = false,
     val lockoutEndTime: Long? = null,
     val hasPhoneStatePermission: Boolean = false,
-    val useManualInput: Boolean = false
+    val useManualInput: Boolean = false,
+    val retryAttempt: Int = 0,
+    val maxRetries: Int = 0
 )
 
 enum class AuthStatus {
@@ -451,39 +453,95 @@ class SimplifiedAuthViewModel(
                     val fingerprint = deviceRegistrationManager.generateFingerprint()
                     Log.d(TAG, "Generated device fingerprint: $fingerprint")
                     
-                    val claimResult = deviceRegistrationManager.claimSale(
-                        validationId = queryResponse.validationId!!,
-                        hardwareImei = normalizedImei,
-                        fingerprint = fingerprint
-                    )
+                    // Retry configuration for claim-sale
+                    val maxAttempts = 5
+                    val initialDelay = 5000L
+                    val backoffMultiplier = 1.5
                     
-                    claimResult.fold(
-                        onSuccess = { claimResponse ->
-                            Log.d(TAG, "Sale claimed successfully!")
-                            Log.d(TAG, "Device ID: ${claimResponse.deviceId}")
-                            Log.d(TAG, "Sale ID: ${claimResponse.saleId}")
-                            Log.d(TAG, "Message: ${claimResponse.message}")
+                    var attempt = 1
+                    var success = false
+                    
+                    while (attempt <= maxAttempts && !success) {
+                        if (attempt > 1) {
+                            val delay = (initialDelay * Math.pow(backoffMultiplier, (attempt - 1).toDouble())).toLong()
+                            Log.d(TAG, "⏳ Tentativa ${attempt}/${maxAttempts}: Venda ainda não finalizada no PDV...")
+                            Log.d(TAG, "⏱️ Próxima tentativa em ${delay}ms")
                             
                             _authState.value = _authState.value.copy(
-                                currentState = AuthStatus.Authenticated,
-                                isAuthenticated = true,
-                                isLoading = false,
-                                deviceId = claimResponse.deviceId,
-                                registrationStatus = "Device paired successfully",
-                                failedAttempts = 0,
-                                errorMessage = null
+                                retryAttempt = attempt,
+                                maxRetries = maxAttempts,
+                                registrationStatus = "Aguardando PDV finalizar venda... (tentativa ${attempt}/${maxAttempts})"
                             )
-                        },
-                        onFailure = { exception ->
-                            Log.e(TAG, "Failed to claim sale", exception)
+                            
+                            kotlinx.coroutines.delay(delay)
+                        } else {
                             _authState.value = _authState.value.copy(
-                                currentState = AuthStatus.Error,
-                                isLoading = false,
-                                errorMessage = "Failed to pair device: ${exception.message}",
-                                isAuthenticated = false
+                                retryAttempt = 1,
+                                maxRetries = maxAttempts
                             )
                         }
-                    )
+                        
+                        Log.d(TAG, "Attempt ${attempt}/${maxAttempts}: Calling claim-sale API...")
+                        val claimResult = deviceRegistrationManager.claimSale(
+                            validationId = queryResponse.validationId!!,
+                            hardwareImei = normalizedImei,
+                            fingerprint = fingerprint
+                        )
+                        
+                        claimResult.fold(
+                            onSuccess = { claimResponse ->
+                                Log.d(TAG, "Sale claimed successfully!")
+                                Log.d(TAG, "Device ID: ${claimResponse.deviceId}")
+                                Log.d(TAG, "Sale ID: ${claimResponse.saleId}")
+                                Log.d(TAG, "Message: ${claimResponse.message}")
+                                
+                                _authState.value = _authState.value.copy(
+                                    currentState = AuthStatus.Authenticated,
+                                    isAuthenticated = true,
+                                    isLoading = false,
+                                    deviceId = claimResponse.deviceId,
+                                    registrationStatus = "Device paired successfully",
+                                    failedAttempts = 0,
+                                    errorMessage = null,
+                                    retryAttempt = 0,
+                                    maxRetries = 0
+                                )
+                                
+                                success = true
+                            },
+                            onFailure = { exception ->
+                                Log.e(TAG, "Failed to claim sale", exception)
+                                
+                                // Check if this is a retryable error (400 with "not finalized")
+                                val errorMessage = exception.message ?: ""
+                                val isRetryableError = errorMessage.contains("not finalized", ignoreCase = true) || 
+                                                      errorMessage.contains("400", ignoreCase = true)
+                                
+                                if (isRetryableError && attempt < maxAttempts) {
+                                    Log.w(TAG, "⚠️ Retryable error (sale not finalized) - will retry (attempt ${attempt}/${maxAttempts})")
+                                    attempt++
+                                } else {
+                                    // Final error after all retries or non-retryable error
+                                    val finalErrorMessage = if (isRetryableError && attempt >= maxAttempts) {
+                                        "❌ Não foi possível completar o pareamento após ${maxAttempts} tentativas.\n\nPor favor, verifique se o vendedor finalizou a venda no PDV."
+                                    } else {
+                                        "Failed to pair device: ${exception.message}"
+                                    }
+                                    
+                                    _authState.value = _authState.value.copy(
+                                        currentState = AuthStatus.Error,
+                                        isLoading = false,
+                                        errorMessage = finalErrorMessage,
+                                        isAuthenticated = false,
+                                        retryAttempt = 0,
+                                        maxRetries = 0
+                                    )
+                                    
+                                    success = true
+                                }
+                            }
+                        )
+                    }
                 },
                 onFailure = { exception ->
                     Log.e(TAG, "Failed to search for pending sale", exception)
