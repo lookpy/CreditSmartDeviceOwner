@@ -10,6 +10,7 @@ import androidx.navigation.navArgument
 import com.cdccreditsmart.app.presentation.auth.IMEIAuthScreen
 import com.cdccreditsmart.app.presentation.screens.flow.BiometryScreen
 import com.cdccreditsmart.app.presentation.screens.flow.SuccessScreen
+import com.cdccreditsmart.app.presentation.screens.home.SimpleHomeScreen
 // TEMPORARILY DISABLED FOR SIMPLIFIED BUILD - screens with complex dependencies
 // import com.cdccreditsmart.app.presentation.screens.onboarding.WelcomeScreen
 // import com.cdccreditsmart.app.presentation.screens.flow.AttestedScreen
@@ -81,11 +82,16 @@ fun CDCNavigation(
         composable(Routes.FLOW_SUCCESS) {
             SuccessScreen(
                 onNavigateToHome = {
-                    navController.navigate(Routes.AUTH_IMEI) {
+                    navController.navigate(Routes.HOME) {
                         popUpTo(Routes.AUTH_IMEI) { inclusive = true }
                     }
                 }
             )
+        }
+        
+        // Home Screen - Main app screen after successful authentication
+        composable(Routes.HOME) {
+            SimpleHomeScreen()
         }
         
         // ALL OTHER SCREENS TEMPORARILY DISABLED FOR SIMPLIFIED BUILD

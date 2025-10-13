@@ -46,6 +46,18 @@ The UI is built entirely with Jetpack Compose and Material 3, featuring a CDC in
 - **CameraX**: Camera preview for biometry capture.
 
 ## Recent Changes (October 13, 2025)
+✅ **HOME SCREEN IMPLEMENTADA (October 13, 2025) - TELA COMPLETA COM DADOS DO CLIENTE!**
+- 🏠 **HOMESCREEN CRIADA** - Tela completa após aprovação biométrica
+- 👤 **DADOS DO CLIENTE** - Card dedicado mostrando nome, CPF, telefone e email
+- 💰 **PARCELAS DETALHADAS** - Lista de parcelas com status, valor e vencimento
+- 📊 **RESUMO FINANCEIRO** - Total, pago, restante e valores em atraso
+- 💳 **OPÇÕES DE PAGAMENTO** - PIX, Boleto e outros métodos disponíveis
+- 🔄 **NAVEGAÇÃO CORRIGIDA** - SuccessScreen → HOME (ao invés de AUTH_IMEI)
+- 📱 **UI MATERIAL 3** - Edge-to-edge, CDC theme, formatação de dados (CPF, telefone)
+- ✅ **ARCHITECT APPROVED** - Implementação completa aprovada
+- 🎯 **ENDPOINT INTEGRADO** - GET /api/apk/device/installments com Authorization
+- 📝 **DTOSS ATUALIZADOS** - CdcInstallmentsResponse agora inclui CustomerInfo
+
 ✅ **CÓDIGO 100% PRONTO (October 13, 2025) - RETRY LOGIC FUNCIONANDO PERFEITAMENTE!**
 - 🔍 **PROBLEMA DESCOBERTO** - APK fazia claim-sale ANTES do PDV completar STAGE 2!
 - ⏱️ **TIMING INCORRETO** - APK recebia JWT quando device_id ainda era NULL na validation

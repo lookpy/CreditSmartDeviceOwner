@@ -13,6 +13,7 @@ data class CdcInstallmentsResponse(
     val installments: List<InstallmentDetail>,
     val summary: PaymentSummary,
     val contract: ContractSummary? = null,
+    val customer: CustomerInfo? = null,
     val paymentMethods: List<PaymentMethodInfo>,
     val serverTimestamp: Long,
     val message: String? = null
