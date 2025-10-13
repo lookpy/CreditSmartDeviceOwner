@@ -18,6 +18,7 @@ import java.util.concurrent.TimeUnit
 
 data class SaleFinalizationState(
     val status: SaleStatus = SaleStatus.Waiting,
+    val saleState: SaleState? = null,
     val isLoading: Boolean = true,
     val errorMessage: String? = null,
     val currentStep: String? = null,
@@ -31,6 +32,17 @@ enum class SaleStatus {
     Completed,    // PDV finalizou, venda completa
     Timeout,      // Timeout esperando PDV
     Error         // Erro ao verificar status
+}
+
+enum class SaleState {
+    SALE_NOT_OPEN,        // Venda não aberta no PDV - sem cliente associado
+    SALE_IN_PROGRESS,     // Venda em andamento - cliente selecionado, escolhendo produtos
+    WAITING_BIOMETRY,     // Aguardando biometria - claim-sale feito, PDV esperando aprovação
+    SALE_COMPLETED,       // Venda finalizada - parcelas disponíveis
+    SALE_CANCELLED,       // Venda cancelada no PDV
+    DEVICE_BLOCKED,       // Dispositivo bloqueado
+    DEVICE_INACTIVE,      // Dispositivo inativo
+    UNKNOWN               // Estado desconhecido
 }
 
 /**
@@ -87,6 +99,94 @@ class SuccessViewModel(
     }
 
     /**
+     * Interpreta o estado da venda com base na resposta do backend
+     * 
+     * Lógica de detecção:
+     * 1. Device bloqueado/inativo = estado específico
+     * 2. Sem customerInfo = venda não aberta
+     * 3. Com customerInfo, sem paymentInfo = venda em andamento ou aguardando biometria
+     * 4. Com paymentInfo = venda finalizada ou cancelada (baseado em paymentStatus)
+     */
+    private fun interpretSaleState(deviceStatus: com.cdccreditsmart.network.api.CdcDeviceStatusResponse): SaleState {
+        // Check device status first
+        when (deviceStatus.status.lowercase()) {
+            "blocked" -> {
+                Log.w(TAG, "🚫 Device is BLOCKED")
+                return SaleState.DEVICE_BLOCKED
+            }
+            "inactive", "suspended" -> {
+                Log.w(TAG, "⏸️ Device is INACTIVE/SUSPENDED")
+                return SaleState.DEVICE_INACTIVE
+            }
+        }
+        
+        // Check payment info (finalization state)
+        val paymentInfo = deviceStatus.paymentInfo
+        if (paymentInfo != null) {
+            when (paymentInfo.paymentStatus.lowercase()) {
+                "completed", "paid", "paid_off" -> {
+                    Log.d(TAG, "✅ Sale COMPLETED - Payment finalized")
+                    return SaleState.SALE_COMPLETED
+                }
+                "cancelled" -> {
+                    Log.w(TAG, "❌ Sale CANCELLED")
+                    return SaleState.SALE_CANCELLED
+                }
+                "pending", "processing" -> {
+                    Log.d(TAG, "⏳ Sale COMPLETED but payment pending")
+                    return SaleState.SALE_COMPLETED
+                }
+            }
+        }
+        
+        // Check customer info (sale started?)
+        val customerInfo = deviceStatus.customerInfo
+        if (customerInfo == null || !customerInfo.hasCustomer) {
+            Log.d(TAG, "📭 SALE_NOT_OPEN - No customer associated")
+            return SaleState.SALE_NOT_OPEN
+        }
+        
+        // Customer exists but no payment info yet
+        // This could mean:
+        // - PDV still selecting products (SALE_IN_PROGRESS)
+        // - Waiting for biometry after claim-sale (WAITING_BIOMETRY)
+        // We assume WAITING_BIOMETRY after claim-sale is done (we're in SuccessScreen)
+        Log.d(TAG, "⏳ WAITING_BIOMETRY - Customer exists, waiting for PDV to finalize")
+        return SaleState.WAITING_BIOMETRY
+    }
+
+    /**
+     * Get user-friendly message for current sale state
+     */
+    private fun getSaleStateMessage(saleState: SaleState): String {
+        return when (saleState) {
+            SaleState.SALE_NOT_OPEN -> 
+                "⚠️ Venda não está aberta no PDV.\n\nPeça ao vendedor para iniciar uma nova venda."
+            
+            SaleState.SALE_IN_PROGRESS -> 
+                "🛒 Venda em andamento.\n\nVendedor está selecionando produtos..."
+            
+            SaleState.WAITING_BIOMETRY -> 
+                "⏳ Aguardando PDV finalizar venda.\n\nBiometria aprovada com sucesso!"
+            
+            SaleState.SALE_COMPLETED -> 
+                "✅ Venda finalizada!\n\nParcelas disponíveis."
+            
+            SaleState.SALE_CANCELLED -> 
+                "❌ Venda foi cancelada no PDV.\n\nInicie uma nova venda."
+            
+            SaleState.DEVICE_BLOCKED -> 
+                "🚫 Dispositivo bloqueado.\n\nContate o suporte CDC Credit Smart."
+            
+            SaleState.DEVICE_INACTIVE -> 
+                "⏸️ Dispositivo inativo.\n\nReative o dispositivo para continuar."
+            
+            SaleState.UNKNOWN -> 
+                "❓ Estado desconhecido.\n\nVerifique com o vendedor."
+        }
+    }
+
+    /**
      * Start polling for sale finalization status
      * 
      * Strategy: Poll GET /api/apk/device/status to check if PDV has finalized the sale
@@ -134,29 +234,73 @@ class SuccessViewModel(
                         Log.d(TAG, "   Has customer: ${deviceStatus.customerInfo?.hasCustomer}")
                         Log.d(TAG, "   Has payment info: ${deviceStatus.paymentInfo != null}")
                         
-                        // Store paymentInfo in local variable to allow smart cast
-                        val paymentInfo = deviceStatus.paymentInfo
+                        // Interpret the current state of the sale
+                        val currentSaleState = interpretSaleState(deviceStatus)
+                        val stateMessage = getSaleStateMessage(currentSaleState)
                         
-                        // Sale is finalized when we have payment info (installments)
-                        if (paymentInfo != null) {
-                            Log.d(TAG, "🎉 Sale completed! Payment info is available")
-                            Log.d(TAG, "   Total installments: ${paymentInfo.totalInstallments}")
-                            Log.d(TAG, "   Payment status: ${paymentInfo.paymentStatus}")
+                        Log.d(TAG, "🔍 Interpreted sale state: $currentSaleState")
+                        
+                        // Update state with detected sale state
+                        _state.value = _state.value.copy(
+                            saleState = currentSaleState,
+                            currentStep = stateMessage
+                        )
+                        
+                        // Decide what to do based on the sale state
+                        when (currentSaleState) {
+                            SaleState.SALE_COMPLETED -> {
+                                Log.d(TAG, "✅ Sale finalized! Navigating to Home...")
+                                _state.value = _state.value.copy(
+                                    status = SaleStatus.Completed,
+                                    isLoading = false,
+                                    errorMessage = null,
+                                    progressPercent = 100
+                                )
+                                completed = true
+                            }
                             
-                            _state.value = _state.value.copy(
-                                status = SaleStatus.Completed,
-                                isLoading = false,
-                                errorMessage = null,
-                                progressPercent = 100,
-                                currentStep = "Venda finalizada"
-                            )
-                            completed = true
-                        } else {
-                            Log.d(TAG, "⏳ Payment info not yet available, PDV still processing...")
-                            _state.value = _state.value.copy(
-                                currentStep = "Aguardando PDV finalizar venda..."
-                            )
-                            // Continue polling
+                            SaleState.SALE_CANCELLED -> {
+                                Log.w(TAG, "❌ Sale was cancelled")
+                                _state.value = _state.value.copy(
+                                    status = SaleStatus.Error,
+                                    isLoading = false,
+                                    errorMessage = stateMessage,
+                                    canRetry = true
+                                )
+                                completed = true
+                            }
+                            
+                            SaleState.SALE_NOT_OPEN -> {
+                                Log.w(TAG, "⚠️ Sale not open on PDV")
+                                _state.value = _state.value.copy(
+                                    status = SaleStatus.Error,
+                                    isLoading = false,
+                                    errorMessage = stateMessage,
+                                    canRetry = true
+                                )
+                                completed = true
+                            }
+                            
+                            SaleState.DEVICE_BLOCKED, SaleState.DEVICE_INACTIVE -> {
+                                Log.w(TAG, "🚫 Device issue: $currentSaleState")
+                                _state.value = _state.value.copy(
+                                    status = SaleStatus.Error,
+                                    isLoading = false,
+                                    errorMessage = stateMessage,
+                                    canRetry = false
+                                )
+                                completed = true
+                            }
+                            
+                            SaleState.WAITING_BIOMETRY, SaleState.SALE_IN_PROGRESS -> {
+                                Log.d(TAG, "⏳ Continue polling - state: $currentSaleState")
+                                // Continue polling
+                            }
+                            
+                            SaleState.UNKNOWN -> {
+                                Log.w(TAG, "❓ Unknown state, continue polling...")
+                                // Continue polling, might resolve
+                            }
                         }
                     } else {
                         Log.e(TAG, "❌ API error: ${response.code()} - ${response.message()}")
