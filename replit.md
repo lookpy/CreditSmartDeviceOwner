@@ -47,17 +47,38 @@ The UI is developed using Jetpack Compose and Material 3, incorporating a CDC in
 
 ## Recent Changes (October 13, 2025)
 
+### ✅ **DETECÇÃO INTELIGENTE DE ESTADO DA VENDA - SISTEMA COMPLETO!**
+- 🧠 **INTELIGÊNCIA IMPLEMENTADA** - APK detecta automaticamente em que etapa está a venda
+- 📊 **7 ESTADOS DETECTÁVEIS**:
+  - `SALE_NOT_OPEN` - Venda não aberta no PDV (sem cliente associado)
+  - `WAITING_PDV` - Aguardando PDV finalizar (cliente presente, processando)
+  - `SALE_COMPLETED` - Venda finalizada com sucesso
+  - `SALE_CANCELLED` - Venda cancelada pelo vendedor
+  - `DEVICE_BLOCKED` - Dispositivo bloqueado (sem retry)
+  - `DEVICE_INACTIVE` - Dispositivo inativo/suspenso
+  - `UNKNOWN` - Estado desconhecido (continua polling)
+- 🔍 **LÓGICA DE INTERPRETAÇÃO** - `interpretSaleState()` analisa CdcDeviceStatusResponse:
+  1. Verifica status do dispositivo (blocked/inactive)
+  2. Analisa paymentInfo.paymentStatus (completed/cancelled/pending)
+  3. Verifica customerInfo.hasCustomer
+  4. Retorna estado correto baseado em prioridade
+- ✅ **CORREÇÕES CRÍTICAS**:
+  - pending/processing **não causam COMPLETED** (continua polling)
+  - Status desconhecidos tratados com segurança (WAITING_PDV)
+  - Smart cast fix aplicado (variável local)
+- 💬 **MENSAGENS CONTEXTUAIS** - Cada estado tem mensagem user-friendly específica
+- 🔄 **POLLING INTELIGENTE** - Para apenas em estados terminais, continua em intermediários
+- ⚠️ **LIMITAÇÃO TÉCNICA DOCUMENTADA**: Estado "vendedor montando carrinho" não é detectável porque CdcDeviceStatusResponse não tem campo indicando claim-sale
+
 ### ✅ **AGUARDAR PDV FINALIZAR COMPRA - FLUXO COMPLETO IMPLEMENTADO!**
 - ⏳ **POLLING DE STATUS** - SuccessScreen aguarda PDV finalizar venda antes de navegar para Home
 - 🔄 **DeviceApiService** - GET /api/apk/device/status com polling a cada 5s (timeout 3 min)
-- 🎯 **DETECÇÃO INTELIGENTE** - Verifica `paymentInfo != null` como critério de finalização
+- 🎯 **DETECÇÃO BASEADA EM ESTADO** - Usa interpretSaleState() para decisões inteligentes
 - 📊 **MÁQUINA DE ESTADOS** - Waiting (spinner), Completed (auto-navega), Timeout, Error
 - 💾 **PERSISTÊNCIA** - saleId salvo no TokenManager após claim-sale (referência futura)
 - 🎨 **UI COMPLETA** - Progress bar, spinner circular, retry buttons, mensagens claras
-- 🔧 **SMART CAST FIX** - paymentInfo armazenado em variável local para evitar erro de compilação
-- ✅ **ARCHITECT APPROVED** - Solução robusta, resolve problema crítico de saleId != flowId
 - 🔧 **ARQUIVOS CRIADOS/MODIFICADOS**:
-  - `SuccessViewModel.kt` - ViewModel com polling + smart cast fix
+  - `SuccessViewModel.kt` - ViewModel com detecção inteligente de estado
   - `SuccessScreen.kt` - Refatorada para máquina de estados
   - `SimpleTokenManager.kt` - Adicionado saveSaleId/getSaleId
   - `SimplifiedAuthViewModel.kt` - Salva saleId após claim-sale

@@ -34,15 +34,22 @@ enum class SaleStatus {
     Error         // Erro ao verificar status
 }
 
+/**
+ * Estados detectáveis da venda baseado em CdcDeviceStatusResponse
+ * 
+ * NOTA: SALE_IN_PROGRESS (vendedor montando carrinho) NÃO é detectável porque:
+ * - CdcDeviceStatusResponse não tem campo indicando claim-sale
+ * - SuccessScreen só é acessada APÓS biometria (pós claim-sale)
+ * - Não há como distinguir "pré-claim" de "pós-claim" com dados disponíveis
+ */
 enum class SaleState {
-    SALE_NOT_OPEN,        // Venda não aberta no PDV - sem cliente associado
-    SALE_IN_PROGRESS,     // Venda em andamento - cliente selecionado, escolhendo produtos
-    WAITING_BIOMETRY,     // Aguardando biometria - claim-sale feito, PDV esperando aprovação
-    SALE_COMPLETED,       // Venda finalizada - parcelas disponíveis
-    SALE_CANCELLED,       // Venda cancelada no PDV
-    DEVICE_BLOCKED,       // Dispositivo bloqueado
-    DEVICE_INACTIVE,      // Dispositivo inativo
-    UNKNOWN               // Estado desconhecido
+    SALE_NOT_OPEN,        // Venda não aberta no PDV - customerInfo ausente
+    WAITING_PDV,          // Aguardando PDV finalizar - customerInfo presente, sem paymentInfo finalizado
+    SALE_COMPLETED,       // Venda finalizada - paymentInfo com status "completed/paid"
+    SALE_CANCELLED,       // Venda cancelada - paymentInfo com status "cancelled"
+    DEVICE_BLOCKED,       // Dispositivo bloqueado - device status "blocked"
+    DEVICE_INACTIVE,      // Dispositivo inativo - device status "inactive/suspended"
+    UNKNOWN               // Estado desconhecido ou não mapeado
 }
 
 /**
@@ -101,14 +108,15 @@ class SuccessViewModel(
     /**
      * Interpreta o estado da venda com base na resposta do backend
      * 
-     * Lógica de detecção:
-     * 1. Device bloqueado/inativo = estado específico
-     * 2. Sem customerInfo = venda não aberta
-     * 3. Com customerInfo, sem paymentInfo = venda em andamento ou aguardando biometria
-     * 4. Com paymentInfo = venda finalizada ou cancelada (baseado em paymentStatus)
+     * Lógica de detecção (por prioridade):
+     * 1. Device bloqueado/inativo → DEVICE_BLOCKED/DEVICE_INACTIVE
+     * 2. PaymentInfo com status final → SALE_COMPLETED ou SALE_CANCELLED
+     * 3. PaymentInfo com status intermediário → WAITING_PDV (continua polling)
+     * 4. Sem customerInfo → SALE_NOT_OPEN
+     * 5. Com customer, sem payment → WAITING_PDV (PDV processando)
      */
     private fun interpretSaleState(deviceStatus: com.cdccreditsmart.network.api.CdcDeviceStatusResponse): SaleState {
-        // Check device status first
+        // 1. Check device status first (highest priority)
         when (deviceStatus.status.lowercase()) {
             "blocked" -> {
                 Log.w(TAG, "🚫 Device is BLOCKED")
@@ -120,39 +128,41 @@ class SuccessViewModel(
             }
         }
         
-        // Check payment info (finalization state)
+        // 2. Check payment info (finalization state)
         val paymentInfo = deviceStatus.paymentInfo
         if (paymentInfo != null) {
             when (paymentInfo.paymentStatus.lowercase()) {
                 "completed", "paid", "paid_off" -> {
-                    Log.d(TAG, "✅ Sale COMPLETED - Payment finalized")
+                    Log.d(TAG, "✅ SALE_COMPLETED - Payment successfully finalized")
                     return SaleState.SALE_COMPLETED
                 }
                 "cancelled" -> {
-                    Log.w(TAG, "❌ Sale CANCELLED")
+                    Log.w(TAG, "❌ SALE_CANCELLED by PDV")
                     return SaleState.SALE_CANCELLED
                 }
                 "pending", "processing" -> {
-                    Log.d(TAG, "⏳ Sale COMPLETED but payment pending")
-                    return SaleState.SALE_COMPLETED
+                    // PaymentInfo exists but still processing - NOT completed yet!
+                    Log.d(TAG, "⏳ WAITING_PDV - Payment status '${paymentInfo.paymentStatus}', still processing")
+                    return SaleState.WAITING_PDV
+                }
+                else -> {
+                    // Unknown payment status - treat as still waiting (safe default)
+                    Log.w(TAG, "❓ UNKNOWN payment status: '${paymentInfo.paymentStatus}'")
+                    return SaleState.WAITING_PDV
                 }
             }
         }
         
-        // Check customer info (sale started?)
+        // 3. Check customer info (sale started?)
         val customerInfo = deviceStatus.customerInfo
         if (customerInfo == null || !customerInfo.hasCustomer) {
             Log.d(TAG, "📭 SALE_NOT_OPEN - No customer associated")
             return SaleState.SALE_NOT_OPEN
         }
         
-        // Customer exists but no payment info yet
-        // This could mean:
-        // - PDV still selecting products (SALE_IN_PROGRESS)
-        // - Waiting for biometry after claim-sale (WAITING_BIOMETRY)
-        // We assume WAITING_BIOMETRY after claim-sale is done (we're in SuccessScreen)
-        Log.d(TAG, "⏳ WAITING_BIOMETRY - Customer exists, waiting for PDV to finalize")
-        return SaleState.WAITING_BIOMETRY
+        // 4. Customer exists but no payment info yet - PDV still processing
+        Log.d(TAG, "⏳ WAITING_PDV - Customer associated, PDV processing...")
+        return SaleState.WAITING_PDV
     }
 
     /**
@@ -163,10 +173,7 @@ class SuccessViewModel(
             SaleState.SALE_NOT_OPEN -> 
                 "⚠️ Venda não está aberta no PDV.\n\nPeça ao vendedor para iniciar uma nova venda."
             
-            SaleState.SALE_IN_PROGRESS -> 
-                "🛒 Venda em andamento.\n\nVendedor está selecionando produtos..."
-            
-            SaleState.WAITING_BIOMETRY -> 
+            SaleState.WAITING_PDV -> 
                 "⏳ Aguardando PDV finalizar venda.\n\nBiometria aprovada com sucesso!"
             
             SaleState.SALE_COMPLETED -> 
@@ -292,9 +299,9 @@ class SuccessViewModel(
                                 completed = true
                             }
                             
-                            SaleState.WAITING_BIOMETRY, SaleState.SALE_IN_PROGRESS -> {
-                                Log.d(TAG, "⏳ Continue polling - state: $currentSaleState")
-                                // Continue polling
+                            SaleState.WAITING_PDV -> {
+                                Log.d(TAG, "⏳ Continue polling - PDV still processing")
+                                // Continue polling - sale still in progress
                             }
                             
                             SaleState.UNKNOWN -> {
