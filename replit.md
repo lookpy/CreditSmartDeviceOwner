@@ -46,7 +46,7 @@ The UI is built entirely with Jetpack Compose and Material 3, featuring a CDC in
 - **CameraX**: Camera preview for biometry capture.
 
 ## Recent Changes (October 13, 2025)
-✅ **CÓDIGO 100% PRONTO (October 13, 2025) - COMPILAÇÃO CONCLUÍDA COM WARNINGS MENORES!**
+✅ **CÓDIGO 100% PRONTO (October 13, 2025) - RETRY LOGIC FUNCIONANDO PERFEITAMENTE!**
 - 🔍 **PROBLEMA DESCOBERTO** - APK fazia claim-sale ANTES do PDV completar STAGE 2!
 - ⏱️ **TIMING INCORRETO** - APK recebia JWT quando device_id ainda era NULL na validation
 - 🔴 **CAUSA DO 401** - JWT emitido antes do PDV criar device → validation sem device_id
@@ -58,9 +58,11 @@ The UI is built entirely with Jetpack Compose and Material 3, featuring a CDC in
 - 📋 **WORKFLOW ATUALIZADO** - TESTING_WORKFLOW.md criado com passo-a-passo correto
 - 🎨 **EDGE-TO-EDGE UI** - Interface adaptada para telas modernas com WindowInsets
 - 🐛 **IMPORTS CORRIGIDOS** - Modifier (Navigation.kt) e LocalLifecycleOwner (BiometryScreen.kt)
+- 📜 **SCROLL ADICIONADO** - BiometryScreen e SuccessScreen agora com scroll (botões sempre acessíveis)
 - ✅ **COMPILAÇÃO OK** - Build concluído com warnings menores (não bloqueantes)
+- 🧪 **TESTADO EM PRODUÇÃO** - Retry logic funcionando (logs confirmam tentativas 1/5, 2/5, 3/5...)
 - 📄 **BUILD_INSTRUCTIONS.md** - Guia completo para build local/CI/CD
-- 🚀 **PRÓXIMO PASSO** - Gerar APK release em ambiente com mais recursos
+- 🚀 **PRÓXIMO PASSO** - PDV finalizar venda para APK aprovar automaticamente
 
 ## Recent Changes (October 12, 2025)
 📄 **DOCUMENTAÇÃO BACKEND CRIADA (October 12, 2025) - ✅ PRONTA!**
