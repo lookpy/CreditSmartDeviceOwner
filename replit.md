@@ -47,28 +47,46 @@ The UI is developed using Jetpack Compose and Material 3, incorporating a CDC in
 
 ## Recent Changes (October 13, 2025)
 
-### ✅ **DETECÇÃO INTELIGENTE DE ESTADO DA VENDA - SISTEMA COMPLETO!**
-- 🧠 **INTELIGÊNCIA IMPLEMENTADA** - APK detecta automaticamente em que etapa está a venda
-- 📊 **7 ESTADOS DETECTÁVEIS**:
-  - `SALE_NOT_OPEN` - Venda não aberta no PDV (sem cliente associado)
-  - `WAITING_PDV` - Aguardando PDV finalizar (cliente presente, processando)
-  - `SALE_COMPLETED` - Venda finalizada com sucesso
+### 🎉 **SISTEMA PDV SESSION HEARTBEAT - RASTREAMENTO COMPLETO IMPLEMENTADO!**
+- 💓 **HEARTBEAT PDV** - Backend agora rastreia sessão PDV com heartbeat a cada 10s
+- 🔄 **pdvSession INFO** - GET /api/apk/device/status retorna dados completos da sessão PDV:
+  - `status`: "active", "completed", "abandoned", "paused"
+  - `currentStage`: "app", "biometrics", "completed"
+  - `isActive`: boolean indicando se PDV está ativo
+  - `shouldWait`: boolean explícito - APK deve aguardar?
+  - `heartbeatAge`: idade em segundos do último heartbeat
+  - `lastHeartbeat`, `sessionStarted`, `sessionCompleted`: timestamps ISO 8601
+- 📊 **10 ESTADOS DETECTÁVEIS AGORA**:
+  - `SALE_NOT_OPEN` - Venda não aberta no PDV
+  - `PDV_ASSEMBLING_CART` - Vendedor montando carrinho (currentStage = "app") ✨ NOVO!
+  - `PDV_WAITING_BIOMETRY` - PDV aguardando biometria (currentStage = "biometrics") ✨ NOVO!
+  - `PDV_PROCESSING_PAYMENT` - PDV processando pagamento (shouldWait = true) ✨ NOVO!
+  - `PDV_COMPLETED` - PDV finalizou (currentStage = "completed" ou shouldWait = false)
+  - `PDV_ABANDONED` - PDV abandonou sessão (heartbeatAge > 30s) ✨ NOVO!
   - `SALE_CANCELLED` - Venda cancelada pelo vendedor
   - `DEVICE_BLOCKED` - Dispositivo bloqueado (sem retry)
   - `DEVICE_INACTIVE` - Dispositivo inativo/suspenso
   - `UNKNOWN` - Estado desconhecido (continua polling)
-- 🔍 **LÓGICA DE INTERPRETAÇÃO** - `interpretSaleState()` analisa CdcDeviceStatusResponse:
-  1. Verifica status do dispositivo (blocked/inactive)
-  2. Analisa paymentInfo.paymentStatus (completed/cancelled/pending)
-  3. Verifica customerInfo.hasCustomer
-  4. Retorna estado correto baseado em prioridade
-- ✅ **CORREÇÕES CRÍTICAS**:
-  - pending/processing **não causam COMPLETED** (continua polling)
-  - Status desconhecidos tratados com segurança (WAITING_PDV)
-  - Smart cast fix aplicado (variável local)
-- 💬 **MENSAGENS CONTEXTUAIS** - Cada estado tem mensagem user-friendly específica
-- 🔄 **POLLING INTELIGENTE** - Para apenas em estados terminais, continua em intermediários
-- ⚠️ **LIMITAÇÃO TÉCNICA DOCUMENTADA**: Estado "vendedor montando carrinho" não é detectável porque CdcDeviceStatusResponse não tem campo indicando claim-sale
+- 🔍 **LÓGICA DE INTERPRETAÇÃO REFATORADA** - `interpretSaleState()` com prioridade:
+  1. ✅ Device status (blocked/inactive)
+  2. ✅ **pdvSession** (sistema novo - prioridade!):
+     - heartbeatAge > 30s → PDV_ABANDONED
+     - currentStage: "app"/"biometrics"/"completed"
+     - shouldWait: true/false
+  3. ✅ Fallback para lógica antiga (paymentInfo/customerInfo)
+  4. ✅ Cancelamento e venda não aberta
+- 💬 **MENSAGENS CONTEXTUAIS ATUALIZADAS**:
+  - 🛒 "Vendedor está montando o carrinho..."
+  - 👤 "PDV aguardando biometria..."
+  - ⏳ "PDV processando pagamento..."
+  - ⏰ "PDV foi fechado ou abandonou a venda..."
+  - ✅ "Venda finalizada! Parcelas disponíveis."
+- 🔄 **POLLING INTELIGENTE EXPANDIDO**:
+  - Estados terminais: PDV_COMPLETED, PDV_ABANDONED, SALE_CANCELLED, SALE_NOT_OPEN, DEVICE_BLOCKED/INACTIVE
+  - Estados intermediários: PDV_ASSEMBLING_CART, PDV_WAITING_BIOMETRY, PDV_PROCESSING_PAYMENT, UNKNOWN
+- ✅ **LIMITAÇÃO ANTERIOR RESOLVIDA**: Agora detecta "vendedor montando carrinho" via currentStage = "app"!
+- 🔧 **COMPATIBILIDADE**: Funciona com backend novo (pdvSession) E antigo (fallback automático)
+- ✅ **ARCHITECT APPROVED** - Sistema completo, lógica correta, mensagens user-friendly
 
 ### ✅ **AGUARDAR PDV FINALIZAR COMPRA - FLUXO COMPLETO IMPLEMENTADO!**
 - ⏳ **POLLING DE STATUS** - SuccessScreen aguarda PDV finalizar venda antes de navegar para Home
