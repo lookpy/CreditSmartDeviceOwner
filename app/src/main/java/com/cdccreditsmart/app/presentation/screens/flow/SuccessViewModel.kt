@@ -134,11 +134,14 @@ class SuccessViewModel(
                         Log.d(TAG, "   Has customer: ${deviceStatus.customerInfo?.hasCustomer}")
                         Log.d(TAG, "   Has payment info: ${deviceStatus.paymentInfo != null}")
                         
+                        // Store paymentInfo in local variable to allow smart cast
+                        val paymentInfo = deviceStatus.paymentInfo
+                        
                         // Sale is finalized when we have payment info (installments)
-                        if (deviceStatus.paymentInfo != null) {
+                        if (paymentInfo != null) {
                             Log.d(TAG, "🎉 Sale completed! Payment info is available")
-                            Log.d(TAG, "   Total installments: ${deviceStatus.paymentInfo.totalInstallments}")
-                            Log.d(TAG, "   Payment status: ${deviceStatus.paymentInfo.paymentStatus}")
+                            Log.d(TAG, "   Total installments: ${paymentInfo.totalInstallments}")
+                            Log.d(TAG, "   Payment status: ${paymentInfo.paymentStatus}")
                             
                             _state.value = _state.value.copy(
                                 status = SaleStatus.Completed,

@@ -13,15 +13,15 @@ author = "agent"
 
 [[workflows.workflow.tasks]]
 task = "workflow.run"
-args = "APK Server"
+args = "Build Status"
 
 [[workflows.workflow]]
-name = "APK Server"
+name = "Build Status"
 author = "agent"
 
 [[workflows.workflow.tasks]]
 task = "shell.exec"
-args = "cd app/build/outputs/apk/release && python3 -m http.server 5000 --bind 0.0.0.0"
+args = "python3 -m http.server 5000 --bind 0.0.0.0"
 waitForPort = 5000
 
 [workflows.workflow.metadata]
@@ -38,6 +38,10 @@ externalPort = 3001
 [[ports]]
 localPort = 5000
 externalPort = 80
+
+[[ports]]
+localPort = 40507
+externalPort = 3000
 
 [objectStorage]
 defaultBucketID = "replit-objstore-26ad777e-9796-448b-831a-6cb21ca84508"

@@ -48,15 +48,16 @@ The UI is developed using Jetpack Compose and Material 3, incorporating a CDC in
 ## Recent Changes (October 13, 2025)
 
 ### ✅ **AGUARDAR PDV FINALIZAR COMPRA - FLUXO COMPLETO IMPLEMENTADO!**
-- ⏳ **POLLING DE STATUS** - SuccessScreen agora aguarda PDV finalizar venda antes de navegar para Home
+- ⏳ **POLLING DE STATUS** - SuccessScreen aguarda PDV finalizar venda antes de navegar para Home
 - 🔄 **DeviceApiService** - GET /api/apk/device/status com polling a cada 5s (timeout 3 min)
 - 🎯 **DETECÇÃO INTELIGENTE** - Verifica `paymentInfo != null` como critério de finalização
 - 📊 **MÁQUINA DE ESTADOS** - Waiting (spinner), Completed (auto-navega), Timeout, Error
 - 💾 **PERSISTÊNCIA** - saleId salvo no TokenManager após claim-sale (referência futura)
 - 🎨 **UI COMPLETA** - Progress bar, spinner circular, retry buttons, mensagens claras
+- 🔧 **SMART CAST FIX** - paymentInfo armazenado em variável local para evitar erro de compilação
 - ✅ **ARCHITECT APPROVED** - Solução robusta, resolve problema crítico de saleId != flowId
 - 🔧 **ARQUIVOS CRIADOS/MODIFICADOS**:
-  - `SuccessViewModel.kt` - Nova ViewModel com polling
+  - `SuccessViewModel.kt` - ViewModel com polling + smart cast fix
   - `SuccessScreen.kt` - Refatorada para máquina de estados
   - `SimpleTokenManager.kt` - Adicionado saveSaleId/getSaleId
   - `SimplifiedAuthViewModel.kt` - Salva saleId após claim-sale
