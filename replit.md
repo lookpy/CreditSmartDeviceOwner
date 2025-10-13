@@ -47,6 +47,27 @@ The UI is developed using Jetpack Compose and Material 3, incorporating a CDC in
 
 ## Recent Changes (October 13, 2025)
 
+### 🔄 **FLUXO APK SINCRONIZADO COM PDV - REORGANIZADO!**
+- 🎯 **SINCRONIZAÇÃO COMPLETA** - APK agora segue os passos do PDV em tempo real
+- ✨ **WAITING_PDV SCREEN** - Nova tela criada que aguarda PDV chegar na etapa de biometria
+- 🔄 **POLLING INTELIGENTE** - Detecta currentStage do PDV a cada 3s:
+  - "app" → Mostra "Vendedor montando carrinho..."
+  - "biometrics" → Navega automaticamente para tela de biometria
+  - "completed" → Aviso que PDV já finalizou
+  - heartbeatAge > 30s → Detecta abandono
+- 📱 **NOVO FLUXO**:
+  1. AUTH_IMEI (QR scan + claim-sale)
+  2. **WAITING_PDV** ✨ (aguarda PDV)
+  3. BIOMETRY (só aparece quando PDV pronto!)
+  4. SUCCESS (aguarda finalização)
+  5. HOME (exibe parcelas)
+- ✅ **SEM BIOMETRIA PREMATURA** - Biometria só é solicitada quando PDV está na tela de biometria
+- 🎨 **UI COMPLETA** - Tela de espera com spinner, mensagens contextuais e botão retry
+- 🔧 **ARQUIVOS CRIADOS**:
+  - `WaitingPdvViewModel.kt` - ViewModel com polling de pdvSession
+  - `WaitingPdvScreen.kt` - Tela de sincronização com PDV
+  - `Navigation.kt` - Atualizado com rota FLOW_WAITING_PDV
+
 ### 🎉 **SISTEMA PDV SESSION HEARTBEAT - RASTREAMENTO COMPLETO IMPLEMENTADO!**
 - 💓 **HEARTBEAT PDV** - Backend agora rastreia sessão PDV com heartbeat a cada 10s
 - 🔄 **pdvSession INFO** - GET /api/apk/device/status retorna dados completos da sessão PDV:
@@ -120,14 +141,20 @@ The UI is developed using Jetpack Compose and Material 3, incorporating a CDC in
 - ✅ **ARCHITECT APPROVED** - Implementação completa aprovada
 - 🎯 **ENDPOINT INTEGRADO** - GET /api/apk/device/installments com Authorization
 
-## Business Flow
+## Business Flow (Sincronizado com PDV)
 ```
 1. AUTH_IMEI Screen
    ↓ (QR Code scan + claim-sale)
-2. BIOMETRY Screen
+2. WAITING_PDV Screen ✨ NOVO!
+   ↓ (Polling pdvSession.currentStage até detectar "biometrics")
+   ↓ Estados detectados:
+   ↓   - "app" → "Vendedor montando carrinho..."
+   ↓   - "biometrics" → Navega para BIOMETRY
+3. BIOMETRY Screen
    ↓ (Face capture + TensorFlow Lite verification)
-3. SUCCESS Screen
+   ↓ (Só aparece quando PDV está pronto!)
+4. SUCCESS Screen
    ↓ (Polling device status até paymentInfo disponível)
-4. HOME Screen
+5. HOME Screen
    ↓ (Exibe parcelas, dados cliente, opções pagamento)
 ```

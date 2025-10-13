@@ -142,47 +142,53 @@ class WaitingPdvViewModel(
                                 pdvMessage = pdvMessage
                             )
                             
-                            // Check if PDV reached biometrics stage
-                            when (currentStage.lowercase()) {
-                                "biometrics" -> {
-                                    Log.d(TAG, "✅ PDV reached BIOMETRICS stage! Navigating...")
-                                    _state.value = _state.value.copy(
-                                        isLoading = false,
-                                        shouldNavigateToBiometry = true
-                                    )
-                                    completed = true
-                                }
-                                
-                                "completed" -> {
-                                    Log.w(TAG, "⚠️ PDV already completed without biometry!")
-                                    _state.value = _state.value.copy(
-                                        isLoading = false,
-                                        errorMessage = "PDV já finalizou sem biometria.\n\nInicie uma nova venda.",
-                                        canRetry = true
-                                    )
-                                    completed = true
-                                }
-                                
-                                "app" -> {
-                                    Log.d(TAG, "🛒 PDV still assembling cart, continue polling...")
-                                    // Continue polling
-                                }
-                                
-                                else -> {
-                                    Log.d(TAG, "❓ Unknown PDV stage: $currentStage, continue polling...")
-                                    // Continue polling
-                                }
-                            }
-                            
-                            // Check for abandoned session
-                            if (heartbeatAge != null && heartbeatAge > 30.0) {
-                                Log.w(TAG, "⏰ PDV abandoned (heartbeat ${heartbeatAge}s)")
+                            // Check for abandoned session first
+                            val heartbeatAgeValue = pdvSession.heartbeatAge
+                            if (heartbeatAgeValue != null && heartbeatAgeValue > 30.0) {
+                                Log.w(TAG, "⏰ PDV abandoned (heartbeat ${heartbeatAgeValue}s)")
                                 _state.value = _state.value.copy(
                                     isLoading = false,
                                     errorMessage = "PDV foi fechado ou abandonou a venda.\n\nContate o vendedor.",
                                     canRetry = true
                                 )
                                 completed = true
+                            } else {
+                                // Check if PDV reached biometrics stage (safe call for nullable currentStage)
+                                when (currentStage?.lowercase()) {
+                                    "biometrics" -> {
+                                        Log.d(TAG, "✅ PDV reached BIOMETRICS stage! Navigating...")
+                                        _state.value = _state.value.copy(
+                                            isLoading = false,
+                                            shouldNavigateToBiometry = true
+                                        )
+                                        completed = true
+                                    }
+                                    
+                                    "completed" -> {
+                                        Log.w(TAG, "⚠️ PDV already completed without biometry!")
+                                        _state.value = _state.value.copy(
+                                            isLoading = false,
+                                            errorMessage = "PDV já finalizou sem biometria.\n\nInicie uma nova venda.",
+                                            canRetry = true
+                                        )
+                                        completed = true
+                                    }
+                                    
+                                    "app" -> {
+                                        Log.d(TAG, "🛒 PDV still assembling cart, continue polling...")
+                                        // Continue polling
+                                    }
+                                    
+                                    null -> {
+                                        Log.d(TAG, "❓ PDV stage is null, continue polling...")
+                                        // Continue polling - stage might be set soon
+                                    }
+                                    
+                                    else -> {
+                                        Log.d(TAG, "❓ Unknown PDV stage: $currentStage, continue polling...")
+                                        // Continue polling
+                                    }
+                                }
                             }
                             
                         } else {
