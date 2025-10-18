@@ -47,6 +47,27 @@ The UI is developed using Jetpack Compose and Material 3, incorporating a CDC in
 
 ## Recent Changes (October 13, 2025)
 
+### 🎯 **ROUTER SCREEN - APK AVANÇA DE ACORDO COM PDV!**
+- 🚀 **PROBLEMA RESOLVIDO** - APK não pedia biometria novamente após já ter validado
+- ❌ **ANTES** - App sempre iniciava em AUTH_IMEI, refazendo todo fluxo
+- ✅ **AGORA** - RouterScreen verifica estado atual e navega para tela correta
+- 🔍 **LÓGICA INTELIGENTE**:
+  1. Consulta GET /api/apk/device/status ao iniciar
+  2. Verifica: installments, customerInfo, pdvSession.currentStage
+  3. Decide qual tela mostrar:
+     - ✅ Tem parcelas → HOME (biometria aprovada!)
+     - 👤 Tem cliente → HOME (venda finalizada)
+     - 📸 PDV em "biometrics" → BIOMETRY
+     - ⏳ PDV em "app" → WAITING_PDV
+     - 🆕 Sem token → AUTH_IMEI
+- 🎨 **UX MELHORADA** - Loading screen durante determinação
+- 📁 **ARQUIVOS CRIADOS**:
+  - `RouterViewModel.kt` - Lógica de decisão inteligente
+  - `RouterScreen.kt` - Tela inicial com loading
+  - `Navigation.kt` - Rota ROUTER como startDestination
+  - `MainActivity.kt` - Atualizado para iniciar em ROUTER
+- ✅ **RESULTADO** - APK sincroniza perfeitamente com estado do PDV
+
 ### 🛠️ **FIX CRÍTICO: TOKEN JWT NÃO ERA SALVO!**
 - 🐛 **BUG IDENTIFICADO** - SimplifiedAuthViewModel recebia token do claim-sale mas não salvava
 - ❌ **Sintoma** - WaitingPdvViewModel recebia 401 Unauthorized ao fazer polling
@@ -158,9 +179,18 @@ The UI is developed using Jetpack Compose and Material 3, incorporating a CDC in
 
 ## Business Flow (Sincronizado com PDV)
 ```
+0. ROUTER Screen ✨ NOVO!
+   ↓ (Verifica estado atual da venda e decide qual tela mostrar)
+   ↓ Decisões:
+   ↓   - Parcelas disponíveis → HOME (biometria já aprovada!)
+   ↓   - Cliente cadastrado → HOME
+   ↓   - PDV em "biometrics" → BIOMETRY
+   ↓   - PDV em "app" → WAITING_PDV
+   ↓   - Sem token → AUTH_IMEI
+   ↓
 1. AUTH_IMEI Screen
    ↓ (QR Code scan + claim-sale)
-2. WAITING_PDV Screen ✨ NOVO!
+2. WAITING_PDV Screen
    ↓ (Polling pdvSession.currentStage até detectar "biometrics")
    ↓ Estados detectados:
    ↓   - "app" → "Vendedor montando carrinho..."

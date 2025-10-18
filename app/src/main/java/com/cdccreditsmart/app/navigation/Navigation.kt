@@ -7,6 +7,7 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
+import com.cdccreditsmart.app.presentation.router.RouterScreen
 import com.cdccreditsmart.app.presentation.auth.IMEIAuthScreen
 import com.cdccreditsmart.app.presentation.screens.flow.WaitingPdvScreen
 import com.cdccreditsmart.app.presentation.screens.flow.BiometryScreen
@@ -25,6 +26,7 @@ import com.cdccreditsmart.app.presentation.screens.home.SimpleHomeScreen
 // import com.cdccreditsmart.app.presentation.screens.lock.LockOverlayScreen
 
 object Routes {
+    const val ROUTER = "router"
     const val AUTH_IMEI = "auth/imei"
     const val ONBOARDING_WELCOME = "onboarding/welcome"
     const val FLOW_ATTESTED = "flow/attested"
@@ -46,7 +48,7 @@ object Routes {
 @Composable
 fun CDCNavigation(
     navController: NavHostController,
-    startDestination: String = Routes.AUTH_IMEI,
+    startDestination: String = Routes.ROUTER,
     modifier: Modifier = Modifier
 ) {
     NavHost(
@@ -54,6 +56,32 @@ fun CDCNavigation(
         startDestination = startDestination,
         modifier = modifier
     ) {
+        // Router - Determines initial screen based on sale state
+        composable(Routes.ROUTER) {
+            RouterScreen(
+                onNavigateToAuthImei = {
+                    navController.navigate(Routes.AUTH_IMEI) {
+                        popUpTo(Routes.ROUTER) { inclusive = true }
+                    }
+                },
+                onNavigateToWaitingPdv = {
+                    navController.navigate(Routes.FLOW_WAITING_PDV) {
+                        popUpTo(Routes.ROUTER) { inclusive = true }
+                    }
+                },
+                onNavigateToBiometry = {
+                    navController.navigate(Routes.FLOW_BIOMETRY) {
+                        popUpTo(Routes.ROUTER) { inclusive = true }
+                    }
+                },
+                onNavigateToHome = {
+                    navController.navigate(Routes.HOME) {
+                        popUpTo(Routes.ROUTER) { inclusive = true }
+                    }
+                }
+            )
+        }
+        
         // IMEI Authentication - App Entry Point
         composable(Routes.AUTH_IMEI) {
             IMEIAuthScreen(
