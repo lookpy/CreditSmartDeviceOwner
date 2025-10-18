@@ -103,6 +103,7 @@ class RouterViewModel(
                 Log.d(TAG, "  - pdvSession.currentStage: ${pdvSession?.currentStage}")
                 Log.d(TAG, "  - customerInfo.hasCustomer: ${customerInfo?.hasCustomer}")
                 Log.d(TAG, "  - installments count: ${installments?.size}")
+                Log.d(TAG, "  - biometry approved (local): ${tokenManager.isBiometryApproved()}")
                 
                 // DECISÃO: Para onde navegar?
                 
@@ -120,21 +121,29 @@ class RouterViewModel(
                     return@launch
                 }
                 
-                // 3. Se PDV em "completed" → Venda finalizada
+                // 3. Se biometria JÁ FOI APROVADA localmente → Aguardar PDV finalizar
+                // Isso previne pedir biometria novamente se app foi fechado antes do PDV terminar
+                if (tokenManager.isBiometryApproved()) {
+                    Log.d(TAG, "📸 BIOMETRIA JÁ APROVADA (flag local) → Navegando para HOME (aguardar PDV)")
+                    _destination.value = RouterDestination.Home
+                    return@launch
+                }
+                
+                // 4. Se PDV em "completed" → Venda finalizada
                 if (pdvSession?.currentStage?.lowercase() == "completed") {
                     Log.d(TAG, "✅ PDV COMPLETED → Navegando para HOME")
                     _destination.value = RouterDestination.Home
                     return@launch
                 }
                 
-                // 4. Se PDV em "biometrics" → Pedir biometria agora
+                // 5. Se PDV em "biometrics" → Pedir biometria agora
                 if (pdvSession?.currentStage?.lowercase() == "biometrics") {
                     Log.d(TAG, "📸 PDV EM BIOMETRICS → Navegando para BIOMETRY")
                     _destination.value = RouterDestination.Biometry
                     return@launch
                 }
                 
-                // 5. Se PDV em "app" ou "searching" → Aguardar PDV
+                // 6. Se PDV em "app" ou "searching" → Aguardar PDV
                 if (pdvSession?.currentStage?.lowercase() == "app" || 
                     pdvSession?.currentStage?.lowercase() == "searching") {
                     Log.d(TAG, "⏳ PDV EM ${pdvSession.currentStage?.uppercase()} → Navegando para WAITING_PDV")
@@ -142,14 +151,14 @@ class RouterViewModel(
                     return@launch
                 }
                 
-                // 6. PDV abandonado (heartbeat antigo)
+                // 7. PDV abandonado (heartbeat antigo)
                 if (pdvSession != null && pdvSession.heartbeatAge != null && pdvSession.heartbeatAge!! > 30.0) {
                     Log.w(TAG, "⏰ PDV ABANDONADO (heartbeat ${pdvSession.heartbeatAge}s) → Nova venda")
                     _destination.value = RouterDestination.AuthImei
                     return@launch
                 }
                 
-                // 7. Estado desconhecido → Aguardar PDV (seguro)
+                // 8. Estado desconhecido → Aguardar PDV (seguro)
                 Log.d(TAG, "❓ Estado desconhecido → Navegando para WAITING_PDV (seguro)")
                 _destination.value = RouterDestination.WaitingPdv
                 

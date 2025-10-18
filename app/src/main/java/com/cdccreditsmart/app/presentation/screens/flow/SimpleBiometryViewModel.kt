@@ -819,6 +819,13 @@ class SimpleBiometryViewModel(
                             maxRetries = 0
                         )
                         
+                        // ✅ SALVAR FLAG DE BIOMETRIA APROVADA
+                        // Isso previne pedir biometria novamente se o app for fechado antes do PDV finalizar
+                        if (isApproved) {
+                            Log.d(TAG, "✅ Biometria aprovada - salvando flag persistente")
+                            tokenManager.setBiometryApproved(true)
+                        }
+                        
                         success = true
 
                     } else {

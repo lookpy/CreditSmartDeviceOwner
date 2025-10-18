@@ -22,6 +22,7 @@ class SimpleTokenManager(context: Context) {
         private const val PREF_CUSTOMER_CPF = "customer_cpf"
         private const val PREF_HARDWARE_IMEI = "hardware_imei"
         private const val PREF_SALE_ID = "sale_id"
+        private const val PREF_BIOMETRY_APPROVED = "biometry_approved"
     }
 
     /**
@@ -172,5 +173,30 @@ class SimpleTokenManager(context: Context) {
      */
     fun getSaleId(): String? {
         return prefs.getString(PREF_SALE_ID, null)
+    }
+    
+    /**
+     * Mark that biometry has been approved for current sale
+     * This prevents re-requesting biometry if app is closed before PDV finishes
+     */
+    fun setBiometryApproved(approved: Boolean) {
+        Log.d(TAG, "📸 Setting biometry approved: $approved")
+        prefs.edit().putBoolean(PREF_BIOMETRY_APPROVED, approved).apply()
+    }
+    
+    /**
+     * Check if biometry has been approved for current sale
+     * Returns true if biometry was validated, even if PDV hasn't finished yet
+     */
+    fun isBiometryApproved(): Boolean {
+        return prefs.getBoolean(PREF_BIOMETRY_APPROVED, false)
+    }
+    
+    /**
+     * Clear biometry approved flag (e.g., when starting new sale)
+     */
+    fun clearBiometryApproved() {
+        Log.d(TAG, "🗑️ Clearing biometry approved flag")
+        prefs.edit().remove(PREF_BIOMETRY_APPROVED).apply()
     }
 }

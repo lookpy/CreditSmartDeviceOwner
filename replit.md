@@ -45,7 +45,38 @@ The UI is developed using Jetpack Compose and Material 3, incorporating a CDC in
 - **CameraX**: Used for camera preview in biometry capture.
 - **TensorFlow Lite**: Integrated for real 512-dimensional facial embeddings using a FaceNet model.
 
-## Recent Changes (October 13, 2025)
+## Recent Changes (October 18, 2025)
+
+### 🔧 **FIX: BIOMETRIA NÃO ERA MAIS SOLICITADA APÓS FECHAR APP!**
+- 🐛 **BUG CORRIGIDO** - APK voltava a pedir biometria mesmo após já ter aprovado
+- 🔍 **PROBLEMA**: Se usuário fechasse o app antes do PDV finalizar venda, ao reabrir pedia biometria novamente
+- **ROOT CAUSE**: Flag de aprovação biométrica só existia na memória (ViewModel), perdido ao fechar app
+- ✅ **SOLUÇÃO IMPLEMENTADA**:
+  1. **TokenManager**: Adicionados métodos persistentes
+     - `setBiometryApproved(approved: Boolean)` - Salva flag em SharedPreferences
+     - `isBiometryApproved(): Boolean` - Verifica se biometria foi aprovada
+     - `clearBiometryApproved()` - Limpa flag ao iniciar nova venda
+  2. **SimpleBiometryViewModel**: Linha 827-830
+     - Após aprovação biométrica → `tokenManager.setBiometryApproved(true)`
+     - Flag salvo mesmo se app fechar antes de PDV finalizar
+  3. **RouterViewModel**: Linhas 127-133
+     - Verifica `isBiometryApproved()` antes de decidir navegação
+     - Se flag = true → Navega para HOME (não pede biometria novamente!)
+  4. **SimplifiedAuthViewModel**: Linhas 396-399
+     - Ao iniciar nova venda → `clearBiometryApproved()`
+     - Limpa flag de venda anterior para permitir nova biometria
+- 🎯 **CENÁRIO AGORA FUNCIONA**:
+  1. Usuário aprova biometria ✅
+  2. App vai para SUCCESS (aguardando PDV)
+  3. **Usuário fecha app antes do PDV finalizar** ❌
+  4. Usuário reabre app
+  5. **Router detecta flag de biometria aprovada → VAI DIRETO PARA HOME** ✅
+- 📁 **ARQUIVOS MODIFICADOS**:
+  - `SimpleTokenManager.kt` - Métodos de persistência do flag
+  - `SimpleBiometryViewModel.kt` - Salva flag após aprovação
+  - `RouterViewModel.kt` - Verifica flag na decisão
+  - `SimplifiedAuthViewModel.kt` - Limpa flag em nova venda
+- ✅ **RESULTADO** - Biometria NUNCA é solicitada novamente após aprovação!
 
 ### 🎯 **ROUTER SCREEN - APK AVANÇA DE ACORDO COM PDV!**
 - 🚀 **PROBLEMA RESOLVIDO** - APK não pedia biometria novamente após já ter validado

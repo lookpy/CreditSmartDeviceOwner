@@ -390,6 +390,11 @@ class SimplifiedAuthViewModel(
         try {
             Log.d(TAG, "Performing pairing with IMEI: ${normalizedImei.take(4)}***")
             
+            // 🗑️ Limpar flag de biometria aprovada de venda anterior
+            // Isso permite iniciar nova venda sem interferência de estado anterior
+            tokenManager.clearBiometryApproved()
+            Log.d(TAG, "🗑️ Cleared previous biometry approval flag for new sale")
+            
             // STEP 1: Search for pending sale by IMEI
             Log.d(TAG, "Searching for pending sale with IMEI: $normalizedImei")
             val searchResult = deviceRegistrationManager.searchPendingSale(normalizedImei)
