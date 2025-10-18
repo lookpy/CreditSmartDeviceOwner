@@ -83,8 +83,9 @@ class RouterViewModel(
                 
                 Log.d(TAG, "✅ Token encontrado - Verificando estado no backend...")
                 
-                // Consulta estado atual no backend
-                val response = deviceApi.getDeviceStatus(
+                // Consulta estado atual no backend usando endpoint de installments
+                // Este endpoint retorna dados completos: pdvSession, customer, installments
+                val response = deviceApi.getDeviceInstallments(
                     authorization = "Bearer $token"
                 )
                 
@@ -96,26 +97,26 @@ class RouterViewModel(
                 
                 val deviceStatus = response.body()!!
                 val pdvSession = deviceStatus.pdvSession
-                val customerInfo = deviceStatus.customerInfo
+                val customerInfo = deviceStatus.customer
                 val installments = deviceStatus.installments
                 
                 Log.d(TAG, "📊 Estado atual:")
                 Log.d(TAG, "  - pdvSession.currentStage: ${pdvSession?.currentStage}")
-                Log.d(TAG, "  - customerInfo.hasCustomer: ${customerInfo?.hasCustomer}")
-                Log.d(TAG, "  - installments count: ${installments?.size}")
+                Log.d(TAG, "  - customer name: ${customerInfo?.name}")
+                Log.d(TAG, "  - installments count: ${installments.size}")
                 Log.d(TAG, "  - biometry approved (local): ${tokenManager.isBiometryApproved()}")
                 
                 // DECISÃO: Para onde navegar?
                 
                 // 1. Se já tem parcelas → Biometria aprovada, ir para HOME
-                if (installments != null && installments.isNotEmpty()) {
+                if (installments.isNotEmpty()) {
                     Log.d(TAG, "✅ PARCELAS ENCONTRADAS → Navegando para HOME")
                     _destination.value = RouterDestination.Home
                     return@launch
                 }
                 
                 // 2. Se tem customerInfo → Biometria foi aprovada, aguardando finalização
-                if (customerInfo != null && customerInfo.hasCustomer) {
+                if (customerInfo != null) {
                     Log.d(TAG, "👤 CLIENTE ENCONTRADO (sem parcelas) → Navegando para HOME")
                     _destination.value = RouterDestination.Home
                     return@launch

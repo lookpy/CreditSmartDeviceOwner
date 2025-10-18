@@ -501,7 +501,13 @@ class SimplifiedAuthViewModel(
                                 Log.d(TAG, "Message: ${claimResponse.message}")
                                 
                                 // Save JWT token for authenticated API calls
-                                tokenManager.saveToken(claimResponse.immutableToken)
+                                // Token expires in 30 days (standard JWT expiry)
+                                val expiryTime = System.currentTimeMillis() + (30L * 24 * 60 * 60 * 1000)
+                                tokenManager.saveToken(
+                                    token = claimResponse.immutableToken,
+                                    deviceId = claimResponse.deviceId,
+                                    expiryTimeMs = expiryTime
+                                )
                                 Log.d(TAG, "✅ JWT Token saved to TokenManager")
                                 
                                 // Save saleId to TokenManager for later use in SuccessScreen polling

@@ -15,6 +15,7 @@ data class CdcInstallmentsResponse(
     val contract: ContractSummary? = null,
     val customer: CustomerInfo? = null,
     val paymentMethods: List<PaymentMethodInfo>,
+    val pdvSession: com.cdccreditsmart.network.api.PdvSessionInfo? = null,
     val serverTimestamp: Long,
     val message: String? = null
 )
