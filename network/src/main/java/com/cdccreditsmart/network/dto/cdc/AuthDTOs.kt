@@ -29,10 +29,11 @@ data class AutoSyncResponse(
 )
 
 /**
- * Device information structure
+ * Device information structure (Legacy - not used in current pairing flow)
+ * Use DeviceInfo from PairingDTOs.kt for new pairing flow
  */
 //@JsonClass(generateAdapter = true) // Temporarily disabled to fix build
-data class DeviceInfo(
+data class LegacyDeviceInfo(
     val deviceId: String,
     val imei: String,
     val model: String,
