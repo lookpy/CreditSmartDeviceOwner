@@ -214,7 +214,8 @@ class PairingViewModel(private val context: Context) : ViewModel() {
     private suspend fun stepFallbackClaimByCodeOnly(contractId: String) {
         _state.value = PairingState.Claiming("Sincronizando dispositivo...")
         
-        Log.d(TAG, "Using fallback: claiming by code only (no IMEI)")
+        Log.d(TAG, "========== CODE-ONLY SYNC FALLBACK ==========")
+        Log.d(TAG, "Contract ID: $contractId")
         
         val fingerprint = FingerprintCalculator.calculateFingerprint(null)
         val deviceInfo = deviceInfoManager.collectDeviceInfo()
@@ -234,14 +235,26 @@ class PairingViewModel(private val context: Context) : ViewModel() {
             )
         )
         
+        Log.d(TAG, "Request payload:")
+        Log.d(TAG, "  validationId: (empty)")
+        Log.d(TAG, "  hardwareImei: CODE_ONLY_SYNC")
+        Log.d(TAG, "  fingerprint: ${fingerprint.take(16)}...")
+        Log.d(TAG, "  deviceInfo.brand: ${deviceInfo.brand}")
+        Log.d(TAG, "  deviceInfo.model: ${deviceInfo.model}")
+        
         retryWithBackoff(MAX_RETRIES) {
+            Log.d(TAG, "Sending POST /api/device/claim-sale...")
             val response = deviceApi.claimSale(request)
+            
+            Log.d(TAG, "Response code: ${response.code()}")
+            Log.d(TAG, "Response message: ${response.message()}")
             
             if (response.isSuccessful) {
                 val body = response.body()
+                Log.d(TAG, "Response body: $body")
                 
                 if (body != null && body.success) {
-                    Log.d(TAG, "Code-only sync successful! Device paired without IMEI")
+                    Log.d(TAG, "✅ Code-only sync successful! Device paired")
                     
                     tokenStorage.saveTokens(
                         deviceToken = body.deviceToken ?: "",
@@ -257,7 +270,8 @@ class PairingViewModel(private val context: Context) : ViewModel() {
                     )
                     
                 } else {
-                    Log.w(TAG, "Code-only sync failed: ${body?.message}")
+                    Log.w(TAG, "❌ Code-only sync failed")
+                    Log.w(TAG, "Response: ${body?.message}")
                     
                     _state.value = PairingState.Error(
                         message = body?.message ?: "Falha ao sincronizar pelo código. Tente novamente.",
@@ -265,7 +279,16 @@ class PairingViewModel(private val context: Context) : ViewModel() {
                     )
                 }
             } else {
-                throw Exception("HTTP ${response.code()}: ${response.message()}")
+                val errorBody = try {
+                    response.errorBody()?.string()
+                } catch (e: Exception) {
+                    "Could not read error body"
+                }
+                
+                Log.e(TAG, "❌ HTTP Error ${response.code()}")
+                Log.e(TAG, "Error body: $errorBody")
+                
+                throw Exception("HTTP ${response.code()}: $errorBody")
             }
         }
     }
