@@ -212,69 +212,54 @@ class PairingViewModel(private val context: Context) : ViewModel() {
     }
 
     private suspend fun stepFallbackClaimByCodeOnly(contractId: String) {
-        _state.value = PairingState.Claiming("Sincronizando dispositivo...")
+        _state.value = PairingState.Claiming("Autenticando APK...")
         
-        Log.d(TAG, "========== CODE-ONLY SYNC FALLBACK ==========")
-        Log.d(TAG, "Contract ID: $contractId")
+        Log.d(TAG, "========== APK AUTHENTICATION ==========")
+        Log.d(TAG, "Pairing Code: $contractId")
         
-        val fingerprint = FingerprintCalculator.calculateFingerprint(null)
-        val deviceInfo = deviceInfoManager.collectDeviceInfo()
-        
-        val request = ClaimRequest(
-            validationId = "",
-            hardwareImei = "CODE_ONLY_SYNC",
-            fingerprint = fingerprint,
-            deviceInfo = com.cdccreditsmart.network.dto.cdc.DeviceInfo(
-                brand = deviceInfo.brand,
-                model = deviceInfo.model,
-                manufacturer = deviceInfo.manufacturer,
-                androidVersion = deviceInfo.androidVersion,
-                sdkInt = deviceInfo.sdkInt,
-                serialNumber = deviceInfo.serialNumber,
-                buildId = deviceInfo.buildId
-            )
+        val request = com.cdccreditsmart.network.dto.apk.ApkAuthRequest(
+            code = contractId
         )
         
-        Log.d(TAG, "Request payload:")
-        Log.d(TAG, "  validationId: (empty)")
-        Log.d(TAG, "  hardwareImei: CODE_ONLY_SYNC")
-        Log.d(TAG, "  fingerprint: ${fingerprint.take(16)}...")
-        Log.d(TAG, "  deviceInfo.brand: ${deviceInfo.brand}")
-        Log.d(TAG, "  deviceInfo.model: ${deviceInfo.model}")
+        Log.d(TAG, "Sending POST /api/apk/auth...")
+        Log.d(TAG, "Request: { code: \"${contractId.take(4)}****\" }")
         
         retryWithBackoff(MAX_RETRIES) {
-            Log.d(TAG, "Sending POST /api/device/claim-sale...")
-            val response = deviceApi.claimSale(request)
+            val response = deviceApi.authenticateApk(request)
             
             Log.d(TAG, "Response code: ${response.code()}")
             Log.d(TAG, "Response message: ${response.message()}")
             
             if (response.isSuccessful) {
                 val body = response.body()
-                Log.d(TAG, "Response body: $body")
+                Log.d(TAG, "Response body received")
                 
-                if (body != null && body.success) {
-                    Log.d(TAG, "✅ Code-only sync successful! Device paired")
+                if (body != null && body.success && body.authenticated) {
+                    Log.d(TAG, "✅ APK Authentication successful!")
+                    Log.d(TAG, "Auth token received, expires in ${body.expiresIn}s")
+                    Log.d(TAG, "Device: ${body.device?.brand} ${body.device?.model}")
+                    Log.d(TAG, "Customer: ${body.customer?.name}")
                     
-                    tokenStorage.saveTokens(
-                        deviceToken = body.deviceToken ?: "",
-                        apkToken = body.apkToken ?: "",
-                        fingerprint = fingerprint,
-                        contractCode = body.contractCode ?: contractId
+                    val authToken = body.authToken ?: ""
+                    val deviceId = body.device?.id ?: contractId
+                    
+                    tokenStorage.saveAuthToken(
+                        authToken = authToken,
+                        contractCode = deviceId
                     )
                     
                     step3ConnectWebSocket(
-                        contractCode = body.contractCode ?: contractId,
-                        customerName = null,
-                        deviceModel = deviceInfo.model
+                        contractCode = deviceId,
+                        customerName = body.customer?.name,
+                        deviceModel = body.device?.model
                     )
                     
                 } else {
-                    Log.w(TAG, "❌ Code-only sync failed")
-                    Log.w(TAG, "Response: ${body?.message}")
+                    Log.w(TAG, "❌ APK Authentication failed")
+                    Log.w(TAG, "authenticated: ${body?.authenticated}")
                     
                     _state.value = PairingState.Error(
-                        message = body?.message ?: "Falha ao sincronizar pelo código. Tente novamente.",
+                        message = "Código de pareamento inválido ou expirado. Verifique com a loja.",
                         canRetry = true
                     )
                 }
@@ -288,7 +273,13 @@ class PairingViewModel(private val context: Context) : ViewModel() {
                 Log.e(TAG, "❌ HTTP Error ${response.code()}")
                 Log.e(TAG, "Error body: $errorBody")
                 
-                throw Exception("HTTP ${response.code()}: $errorBody")
+                val errorMessage = when (response.code()) {
+                    400 -> "Código de pareamento inválido"
+                    404 -> "Código não encontrado ou expirado"
+                    else -> "Erro ao autenticar: HTTP ${response.code()}"
+                }
+                
+                throw Exception(errorMessage)
             }
         }
     }

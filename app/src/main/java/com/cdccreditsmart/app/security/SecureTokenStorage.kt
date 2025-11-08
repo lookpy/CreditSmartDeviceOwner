@@ -13,6 +13,7 @@ class SecureTokenStorage(context: Context) {
         
         private const val KEY_DEVICE_TOKEN = "device_token"
         private const val KEY_APK_TOKEN = "apk_token"
+        private const val KEY_AUTH_TOKEN = "auth_token"
         private const val KEY_FINGERPRINT = "fingerprint"
         private const val KEY_CONTRACT_CODE = "contract_code"
     }
@@ -49,6 +50,25 @@ class SecureTokenStorage(context: Context) {
             throw TokenStorageException("Failed to save tokens", e)
         }
     }
+    
+    fun saveAuthToken(
+        authToken: String,
+        contractCode: String? = null
+    ) {
+        try {
+            encryptedPrefs.edit().apply {
+                putString(KEY_AUTH_TOKEN, authToken)
+                if (contractCode != null) {
+                    putString(KEY_CONTRACT_CODE, contractCode)
+                }
+                apply()
+            }
+            Log.d(TAG, "Auth token saved successfully")
+        } catch (e: Exception) {
+            Log.e(TAG, "Error saving auth token", e)
+            throw TokenStorageException("Failed to save auth token", e)
+        }
+    }
 
     fun getDeviceToken(): String? {
         return try {
@@ -64,6 +84,15 @@ class SecureTokenStorage(context: Context) {
             encryptedPrefs.getString(KEY_APK_TOKEN, null)
         } catch (e: Exception) {
             Log.e(TAG, "Error getting APK token", e)
+            null
+        }
+    }
+    
+    fun getAuthToken(): String? {
+        return try {
+            encryptedPrefs.getString(KEY_AUTH_TOKEN, null)
+        } catch (e: Exception) {
+            Log.e(TAG, "Error getting auth token", e)
             null
         }
     }
@@ -98,6 +127,10 @@ class SecureTokenStorage(context: Context) {
 
     fun hasTokens(): Boolean {
         return getDeviceToken() != null && getApkToken() != null
+    }
+    
+    fun hasAuthToken(): Boolean {
+        return getAuthToken() != null
     }
 
     class TokenStorageException(message: String, cause: Throwable? = null) : Exception(message, cause)

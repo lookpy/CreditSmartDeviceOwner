@@ -19,21 +19,21 @@ The application follows a Clean Architecture with MVVM, utilizing Jetpack Compos
 The UI is developed using Jetpack Compose and Material 3, incorporating a CDC institutional dark theme (`#FF7A1A`/`#F47C2C`). It features a comprehensive navigation system powered by Compose NavController, covering device pairing, dashboard, and payments. The app includes a `RouterScreen` to intelligently direct users based on token status, a contract code input screen for manual entry of the contract ID, `PairingProgressScreen` for visual feedback during the handshake process, and Success/Error screens for pairing outcomes.
 
 **Technical Implementations:**
-- **Device Pairing**: Secure 3-step handshake process with IMEI validation and SHA-256 fingerprint calculation. **Fallback mode**: If IMEI unavailable, syncs by code-only with fingerprint based on Serial+Brand+Model+BuildID
+- **Device Pairing**: APK authentication via POST /api/apk/auth using pairing code (8-digit alphanumeric). Returns JWT authToken valid for 24h. **No IMEI required** for pairing.
 - **Real-time Communication**: WebSocket connection (wss://cdccreditsmart.com/ws/flow-status) with automatic reconnection and heartbeat (30s intervals)
-- **Security**: EncryptedSharedPreferences with AES256_GCM for token storage, Device fingerprint validation, IMEI mismatch detection (max 3 attempts), permanent device blocking on security violations
-- **Data Persistence**: SecureTokenStorage for deviceToken, apkToken, fingerprint, and contractCode
+- **Security**: EncryptedSharedPreferences with AES256_GCM for token storage (authToken, deviceToken, apkToken, fingerprint, contractCode), JWT authentication for API requests, permanent device blocking on security violations
+- **Data Persistence**: SecureTokenStorage for authToken (JWT), deviceToken, apkToken, fingerprint, and contractCode
 - **Networking**: Retrofit, OkHttp with retry logic and exponential backoff (1s, 2s, 4s, 8s), Certificate Pinning for secure API communication
 - **Device Information**: DeviceInfoManager collects Build.BRAND, MODEL, MANUFACTURER, Android version, SDK level, serial number, and build ID
 - **UI Framework**: Jetpack Compose, Material 3, and Compose Navigation for responsive UI
 - **Device Management**: Device Owner APIs completos (10+ políticas configuradas), DeviceAdminReceiver implementado, Activities de provisioning (Android 12+), suporte a QR Code/NFC/ADB provisioning, Samsung Knox Enterprise SDK, anti-tampering measures, overlay blocking, and silent app updates
 - **Error Handling**: Comprehensive error states with retry capabilities, user-friendly error messages, security violation handling
 - **Build System**: Optimized with R8 and compatibility with 16KB page size for Android 15+
-- **Business Logic**: Device pairing via manual contract code input, IMEI validation, fingerprint verification, PIX/Boleto payment processing, graduated blocking policies
-- **Backend Integration**: JWT authentication with deviceToken and apkToken, WebSocket events (authenticated, device_connected, sale_completed, error)
+- **Business Logic**: Device pairing via manual 8-digit pairing code input, JWT token expiration handling (24h), PIX/Boleto payment processing, graduated blocking policies
+- **Backend Integration**: JWT authentication (authToken) for all API requests, WebSocket events (authenticated, device_connected, sale_completed, error), automatic token refresh on expiration
 
 ## External Dependencies
-- **CDC Credit Smart Backend API**: Device pairing handshake (`GET /api/device/claim-sale?imei=`, `POST /api/device/claim-sale`), installments data (`/api/apk/device/installments`), payment processing
+- **CDC Credit Smart Backend API**: APK authentication (`POST /api/apk/auth`), device status (`GET /api/apk/device/status`), installments data (`/api/apk/device/installments`), payment processing, heartbeat (`POST /api/apk/device/heartbeat`)
 - **WebSocket Server**: Real-time communication at `wss://cdccreditsmart.com/ws/flow-status` for flow status events
 - **Samsung Knox Enterprise SDK v3.12+**: Advanced device management and security on Samsung devices
 - **Google Play Integrity API**: Device integrity verification

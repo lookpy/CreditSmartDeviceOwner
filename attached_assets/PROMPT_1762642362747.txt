@@ -1,0 +1,512 @@
+# 📱 CDC CreditSmart - Documentação da API para APK Android
+
+## 🌐 Base URL
+- **Desenvolvimento**: `https://a4bce526-b203-4033-aa78-b63372425272-00-1ftij2ojlf9qz.kirk.replit.dev`
+- **Produção**: `https://cdccreditsmart.com`
+
+---
+
+## 🔐 1. AUTENTICAÇÃO APK
+
+### 1.1. Endpoint Principal de Autenticação
+
+**POST** `/api/apk/auth`
+
+Endpoint para autenticação inicial do APK usando o código de pareamento fornecido pelo vendedor no PDV.
+
+#### Request Headers
+```
+Content-Type: application/json
+```
+
+#### Request Body (Múltiplos formatos aceitos)
+
+O endpoint aceita o código de pareamento em **qualquer um** dos seguintes campos:
+
+```json
+{
+  "token": "22ZJ3RZP"
+}
+```
+
+**OU**
+
+```json
+{
+  "code": "22ZJ3RZP"
+}
+```
+
+**OU**
+
+```json
+{
+  "pairingCode": "22ZJ3RZP"
+}
+```
+
+**OU**
+
+```json
+{
+  "apkToken": "22ZJ3RZP"
+}
+```
+
+**OU**
+
+```json
+{
+  "serialNumber": "22ZJ3RZP"
+}
+```
+
+> **⚠️ IMPORTANTE**: O código de pareamento tem **8 caracteres** alfanuméricos (ex: `22ZJ3RZP`, `A4B7C5K9`).
+
+#### Response - Sucesso (200 OK)
+
+```json
+{
+  "success": true,
+  "authenticated": true,
+  "authToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+  "expiresIn": 86400,
+  "expiresAt": "2025-11-09T22:45:00.000Z",
+  "device": {
+    "id": "device_1762640738997_1x6tq2m25y6",
+    "name": "Moto G15 Power",
+    "model": "G15 Power",
+    "brand": "Motorola",
+    "imei": "353104903560533",
+    "imeiList": ["353104903560533"],
+    "isBlocked": false,
+    "status": "active",
+    "blockReason": null,
+    "totalValue": "1399.00",
+    "installmentValue": "125.80",
+    "installmentCount": 24,
+    "saleDate": "2025-11-08T22:19:45.356Z"
+  },
+  "customer": {
+    "name": "Aline Aosue",
+    "phone": "11999998888",
+    "cpf": "123.456.789-00"
+  },
+  "store": {
+    "name": "Loja Zona Sul",
+    "phone": "(11) 77777-9012",
+    "email": "zonasul@loja.com"
+  },
+  "paymentSummary": {
+    "total": 24,
+    "paid": 0,
+    "pending": 24,
+    "overdue": 0,
+    "totalAmount": 1399.00,
+    "paidAmount": 0,
+    "pendingAmount": 1399.00
+  }
+}
+```
+
+#### Response - Erro 400 (Bad Request)
+
+```json
+{
+  "error": "Token obrigatório",
+  "hint": "Forneça o token de pareamento nos campos: token, code, pairingCode, apkToken ou serialNumber"
+}
+```
+
+#### Response - Erro 404 (Not Found)
+
+```json
+{
+  "error": "Token inválido ou dispositivo não encontrado",
+  "tokenProvided": "22ZJ****"
+}
+```
+
+#### Response - Erro 500 (Internal Server Error)
+
+```json
+{
+  "error": "Internal server error"
+}
+```
+
+---
+
+## 🔑 2. USO DO TOKEN JWT
+
+Após autenticação bem-sucedida, use o `authToken` (JWT) recebido em todas as requisições subsequentes.
+
+### Headers para requisições autenticadas:
+
+```
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+Content-Type: application/json
+```
+
+### Validade do Token
+- **Duração**: 24 horas (86400 segundos)
+- **Renovação**: Faça uma nova chamada a `/api/apk/auth` quando o token expirar
+
+---
+
+## 📊 3. VERIFICAR STATUS DO DISPOSITIVO
+
+**GET** `/api/apk/device/status`
+
+Verifica o status atual do dispositivo, incluindo bloqueios e parcelas em atraso.
+
+#### Request Headers
+```
+Authorization: Bearer {authToken}
+```
+
+#### Response - Sucesso (200 OK)
+
+```json
+{
+  "success": true,
+  "device": {
+    "id": "device_xxx",
+    "isBlocked": false,
+    "status": "active",
+    "blockReason": null
+  },
+  "shouldBlock": false,
+  "overdueInstallments": [],
+  "paymentInfo": {
+    "totalInstallments": 24,
+    "paidInstallments": 5,
+    "pendingInstallments": 19,
+    "overdueInstallments": 0,
+    "nextDueDate": "2025-11-15T00:00:00.000Z",
+    "totalAmount": 1399.00,
+    "paidAmount": 629.00,
+    "pendingAmount": 770.00
+  },
+  "pdvSessionInfo": {
+    "status": "completed",
+    "currentStage": "completed",
+    "pdvActive": false,
+    "lastHeartbeat": "2025-11-08T22:40:00.000Z"
+  }
+}
+```
+
+---
+
+## 💰 4. PAGAMENTO DE PARCELA
+
+**POST** `/api/apk/device/:serialNumber/pay/:installmentId`
+
+Registra o pagamento de uma parcela.
+
+#### Request Headers
+```
+Authorization: Bearer {authToken}
+Content-Type: application/json
+```
+
+#### URL Parameters
+- `serialNumber`: Código de pareamento do dispositivo (ex: `22ZJ3RZP`)
+- `installmentId`: ID da parcela a ser paga
+
+#### Request Body
+
+```json
+{
+  "paymentMethod": "cash",
+  "paymentDate": "2025-11-08T10:00:00.000Z",
+  "amount": 125.80,
+  "notes": "Pagamento via APK"
+}
+```
+
+#### Response - Sucesso (200 OK)
+
+```json
+{
+  "success": true,
+  "installment": {
+    "id": "installment_xxx",
+    "status": "paid",
+    "paidAt": "2025-11-08T10:00:00.000Z",
+    "paymentMethod": "cash",
+    "value": "125.80"
+  }
+}
+```
+
+---
+
+## 🔒 5. BLOQUEAR/DESBLOQUEAR DISPOSITIVO
+
+### 5.1. Bloquear Dispositivo
+
+**POST** `/api/apk/device/:serialNumber/block`
+
+#### Request Headers
+```
+Authorization: Bearer {authToken}
+Content-Type: application/json
+```
+
+#### Request Body
+
+```json
+{
+  "reason": "Pagamento em atraso"
+}
+```
+
+#### Response - Sucesso (200 OK)
+
+```json
+{
+  "success": true,
+  "message": "Dispositivo bloqueado com sucesso"
+}
+```
+
+### 5.2. Desbloquear Dispositivo
+
+**POST** `/api/apk/device/:serialNumber/unblock`
+
+#### Request Headers
+```
+Authorization: Bearer {authToken}
+```
+
+#### Response - Sucesso (200 OK)
+
+```json
+{
+  "success": true,
+  "message": "Dispositivo desbloqueado com sucesso"
+}
+```
+
+---
+
+## 💓 6. HEARTBEAT (MANTER CONEXÃO ATIVA)
+
+**POST** `/api/apk/device/heartbeat`
+
+Envia um sinal periódico para manter a conexão ativa e reportar status.
+
+#### Request Headers
+```
+Authorization: Bearer {authToken}
+Content-Type: application/json
+```
+
+#### Request Body
+
+```json
+{
+  "batteryLevel": 85,
+  "isCharging": false,
+  "screenOn": true,
+  "locationEnabled": true,
+  "timestamp": "2025-11-08T22:45:00.000Z"
+}
+```
+
+#### Response - Sucesso (200 OK)
+
+```json
+{
+  "success": true,
+  "message": "Heartbeat recebido"
+}
+```
+
+---
+
+## 🔄 7. FLUXO COMPLETO DE AUTENTICAÇÃO E USO
+
+### Passo 1: Cliente compra dispositivo no PDV
+- Vendedor gera código de pareamento (ex: `22ZJ3RZP`)
+- Cliente recebe o dispositivo com o código
+
+### Passo 2: APK faz primeira autenticação
+```http
+POST /api/apk/auth
+Content-Type: application/json
+
+{
+  "code": "22ZJ3RZP"
+}
+```
+
+### Passo 3: APK recebe token JWT e dados do dispositivo
+```json
+{
+  "success": true,
+  "authToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+  "device": { ... },
+  "customer": { ... },
+  "paymentSummary": { ... }
+}
+```
+
+### Passo 4: APK usa o JWT em todas as requisições
+```http
+GET /api/apk/device/status
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+```
+
+### Passo 5: APK mantém heartbeat periódico
+```http
+POST /api/apk/device/heartbeat
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+
+{
+  "batteryLevel": 85,
+  "timestamp": "2025-11-08T22:45:00.000Z"
+}
+```
+
+---
+
+## ⚠️ 8. CÓDIGOS DE STATUS HTTP
+
+| Código | Significado | Descrição |
+|--------|-------------|-----------|
+| `200` | OK | Requisição bem-sucedida |
+| `400` | Bad Request | Parâmetros inválidos ou ausentes |
+| `401` | Unauthorized | Token JWT inválido ou expirado |
+| `403` | Forbidden | Acesso negado (ex: IMEI mismatch) |
+| `404` | Not Found | Recurso não encontrado (ex: token de pareamento inválido) |
+| `410` | Gone | Recurso expirado (ex: validação expirada) |
+| `500` | Internal Server Error | Erro no servidor |
+
+---
+
+## 🔧 9. EXEMPLOS DE IMPLEMENTAÇÃO
+
+### Kotlin/Java (Android)
+
+```kotlin
+// 1. Autenticação
+fun authenticateAPK(pairingCode: String): AuthResponse {
+    val url = "https://cdccreditsmart.com/api/apk/auth"
+    val json = JSONObject()
+    json.put("code", pairingCode)
+    
+    val request = Request.Builder()
+        .url(url)
+        .post(json.toString().toRequestBody("application/json".toMediaType()))
+        .build()
+    
+    client.newCall(request).execute().use { response ->
+        if (!response.isSuccessful) {
+            throw IOException("Unexpected code $response")
+        }
+        return Gson().fromJson(response.body?.string(), AuthResponse::class.java)
+    }
+}
+
+// 2. Verificar status com JWT
+fun checkDeviceStatus(authToken: String): DeviceStatus {
+    val url = "https://cdccreditsmart.com/api/apk/device/status"
+    
+    val request = Request.Builder()
+        .url(url)
+        .addHeader("Authorization", "Bearer $authToken")
+        .get()
+        .build()
+    
+    client.newCall(request).execute().use { response ->
+        if (!response.isSuccessful) {
+            throw IOException("Unexpected code $response")
+        }
+        return Gson().fromJson(response.body?.string(), DeviceStatus::class.java)
+    }
+}
+
+// 3. Enviar heartbeat
+fun sendHeartbeat(authToken: String, batteryLevel: Int) {
+    val url = "https://cdccreditsmart.com/api/apk/device/heartbeat"
+    val json = JSONObject()
+    json.put("batteryLevel", batteryLevel)
+    json.put("timestamp", Instant.now().toString())
+    
+    val request = Request.Builder()
+        .url(url)
+        .addHeader("Authorization", "Bearer $authToken")
+        .post(json.toString().toRequestBody("application/json".toMediaType()))
+        .build()
+    
+    client.newCall(request).execute()
+}
+```
+
+---
+
+## 🐛 10. TROUBLESHOOTING
+
+### Erro 400: "Token obrigatório"
+**Causa**: Nenhum campo de token foi enviado no body
+**Solução**: Certifique-se de enviar o código em um dos campos aceitos: `token`, `code`, `pairingCode`, `apkToken` ou `serialNumber`
+
+### Erro 404: "Token inválido ou dispositivo não encontrado"
+**Causa**: O código de pareamento não existe ou já foi usado
+**Solução**: 
+- Verifique se o código está correto
+- Verifique se a venda foi concluída no PDV
+- Verifique se o código não expirou (24h)
+
+### Erro 401: "Unauthorized"
+**Causa**: Token JWT inválido ou expirado
+**Solução**: Faça nova autenticação em `/api/apk/auth` para obter novo token
+
+### Erro 403: "IMEI mismatch"
+**Causa**: IMEI do dispositivo não corresponde ao registrado na venda
+**Solução**: Verifique se o dispositivo correto está sendo usado
+
+---
+
+## 📝 11. NOTAS IMPORTANTES
+
+1. **Código de Pareamento**: 
+   - Formato: 8 caracteres alfanuméricos
+   - Exemplo: `22ZJ3RZP`, `A4B7C5K9`
+   - Válido por: 24 horas após geração
+
+2. **Token JWT**:
+   - Duração: 24 horas
+   - Armazenar localmente com segurança
+   - Renovar antes de expirar
+
+3. **Heartbeat**:
+   - Enviar a cada 30 segundos enquanto ativo
+   - Mantém conexão com servidor
+   - Reporta status do dispositivo
+
+4. **IMEI**:
+   - Deve corresponder ao IMEI registrado na venda
+   - Sistema detecta e bloqueia tentativas de troca de IMEI
+
+5. **Rate Limiting**:
+   - Endpoint `/api/apk/auth` tem limite de requisições
+   - Evite tentativas repetidas em caso de erro
+
+---
+
+## 📞 12. SUPORTE
+
+Para dúvidas ou problemas, consulte os logs do servidor que mostram informações detalhadas:
+- `🔐 APK Auth Request:` - Mostra campos recebidos na autenticação
+- `✅ APK Auth successful:` - Autenticação bem-sucedida
+- `❌ APK Auth failed:` - Detalhes do erro de autenticação
+
+---
+
+**Versão da documentação**: 2.0  
+**Última atualização**: 08/11/2025  
+**Compatibilidade**: APK v1.0+

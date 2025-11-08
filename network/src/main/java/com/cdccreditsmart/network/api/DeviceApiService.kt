@@ -13,6 +13,16 @@ interface DeviceApiService {
     // CDC Credit Smart specific device endpoints
     
     /**
+     * APK Authentication endpoint - CDC Credit Smart specific
+     * POST /api/apk/auth
+     * Main authentication endpoint for APK using pairing code
+     */
+    @POST("api/apk/auth")
+    suspend fun authenticateApk(
+        @Body request: com.cdccreditsmart.network.dto.apk.ApkAuthRequest
+    ): Response<com.cdccreditsmart.network.dto.apk.ApkAuthResponse>
+    
+    /**
      * Device Status endpoint - CDC Credit Smart specific
      * GET /api/apk/device/{serial}/status
      */
