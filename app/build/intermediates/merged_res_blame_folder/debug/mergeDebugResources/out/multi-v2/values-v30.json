@@ -1,21 +1,6 @@
 {
     "logs": [
         {
-            "outputFile": "/home/runner/.gradle/daemon/8.13/com.cdccreditsmart.app-mergeDebugResources-67:/values-v30/values-v30.xml",
-            "map": [
-                {
-                    "source": "/home/runner/.gradle/caches/8.13/transforms/33f5f4adc70a09bfe0dee24f8f42acd2/transformed/material3-release/res/values-v30/values-v30.xml",
-                    "from": {
-                        "startLines": "2",
-                        "startColumns": "4",
-                        "startOffsets": "55",
-                        "endColumns": "72",
-                        "endOffsets": "123"
-                    }
-                }
-            ]
-        },
-        {
             "outputFile": "com.cdccreditsmart.app-mergeDebugResources-67:/values-v30/values-v30.xml",
             "map": [
                 {

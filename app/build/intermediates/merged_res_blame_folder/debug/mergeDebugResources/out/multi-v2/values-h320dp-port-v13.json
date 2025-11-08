@@ -14,21 +14,6 @@
                     }
                 }
             ]
-        },
-        {
-            "outputFile": "/home/runner/.gradle/daemon/8.13/com.cdccreditsmart.app-mergeDebugResources-67:/values-h320dp-port-v13/values-h320dp-port-v13.xml",
-            "map": [
-                {
-                    "source": "/home/runner/.gradle/caches/8.13/transforms/075fc868793856ea9a1700da95d334a2/transformed/material-1.12.0/res/values-h320dp-port-v13/values-h320dp-port-v13.xml",
-                    "from": {
-                        "startLines": "2",
-                        "startColumns": "4",
-                        "startOffsets": "55",
-                        "endColumns": "63",
-                        "endOffsets": "114"
-                    }
-                }
-            ]
         }
     ]
 }
