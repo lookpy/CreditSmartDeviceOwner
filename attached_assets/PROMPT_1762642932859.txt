@@ -1,0 +1,182 @@
+2025-11-08 20:00:42.530  9226-9271  ProfileInstaller        com.cdccreditsmart.app.debug         D  Installing profile for com.cdccreditsmart.app.debug
+2025-11-08 20:00:55.693  9226-9231  smart.app.debug         com.cdccreditsmart.app.debug         I  Background concurrent mark compact GC freed 4999KB AllocSpace bytes, 14(472KB) LOS objects, 66% free, 5235KB/15MB, paused 321us,7.417ms total 104.220ms
+---------------------------- PROCESS ENDED (9226) for package com.cdccreditsmart.app.debug ----------------------------
+---------------------------- PROCESS STARTED (9309) for package com.cdccreditsmart.app.debug ----------------------------
+2025-11-08 20:01:10.754  9309-9309  ziparchive              com.cdccreditsmart.app.debug         W  Unable to open '/data/data/com.cdccreditsmart.app.debug/code_cache/.overlay/base.apk/classes10.dm': No such file or directory
+2025-11-08 20:01:10.756  9309-9309  ziparchive              com.cdccreditsmart.app.debug         W  Unable to open '/data/data/com.cdccreditsmart.app.debug/code_cache/.overlay/base.apk/classes13.dm': No such file or directory
+2025-11-08 20:01:10.758  9309-9309  ziparchive              com.cdccreditsmart.app.debug         W  Unable to open '/data/data/com.cdccreditsmart.app.debug/code_cache/.overlay/base.apk/classes14.dm': No such file or directory
+2025-11-08 20:01:10.759  9309-9309  ziparchive              com.cdccreditsmart.app.debug         W  Unable to open '/data/data/com.cdccreditsmart.app.debug/code_cache/.overlay/base.apk/classes2.dm': No such file or directory
+2025-11-08 20:01:10.764  9309-9309  ziparchive              com.cdccreditsmart.app.debug         W  Unable to open '/data/data/com.cdccreditsmart.app.debug/code_cache/.overlay/base.apk/classes24.dm': No such file or directory
+2025-11-08 20:01:10.766  9309-9309  ziparchive              com.cdccreditsmart.app.debug         W  Unable to open '/data/app/~~C7QG03mHZ9BZqvLAzi9-4g==/com.cdccreditsmart.app.debug-B-SQeQOJ_vxkKI_nYpGttQ==/base.dm': No such file or directory
+2025-11-08 20:01:10.766  9309-9309  ziparchive              com.cdccreditsmart.app.debug         W  Unable to open '/data/app/~~C7QG03mHZ9BZqvLAzi9-4g==/com.cdccreditsmart.app.debug-B-SQeQOJ_vxkKI_nYpGttQ==/base.dm': No such file or directory
+2025-11-08 20:01:11.448  9309-9309  nativeloader            com.cdccreditsmart.app.debug         D  Configuring clns-7 for other apk /data/app/~~C7QG03mHZ9BZqvLAzi9-4g==/com.cdccreditsmart.app.debug-B-SQeQOJ_vxkKI_nYpGttQ==/base.apk. target_sdk_version=35, uses_libraries=, library_path=/data/app/~~C7QG03mHZ9BZqvLAzi9-4g==/com.cdccreditsmart.app.debug-B-SQeQOJ_vxkKI_nYpGttQ==/lib/arm64:/data/app/~~C7QG03mHZ9BZqvLAzi9-4g==/com.cdccreditsmart.app.debug-B-SQeQOJ_vxkKI_nYpGttQ==/base.apk!/lib/arm64-v8a, permitted_path=/data:/mnt/expand:/data/user/0/com.cdccreditsmart.app.debug
+2025-11-08 20:01:11.457  9309-9309  CompatChangeReporter    com.cdccreditsmart.app.debug         D  Compat change id reported: 202956589; UID 10261; state: ENABLED
+2025-11-08 20:01:11.497  9309-9309  GraphicsEnvironment     com.cdccreditsmart.app.debug         V  Currently set values for:
+2025-11-08 20:01:11.498  9309-9309  GraphicsEnvironment     com.cdccreditsmart.app.debug         V    angle_gl_driver_selection_pkgs=[]
+2025-11-08 20:01:11.498  9309-9309  GraphicsEnvironment     com.cdccreditsmart.app.debug         V    angle_gl_driver_selection_values=[]
+2025-11-08 20:01:11.498  9309-9309  GraphicsEnvironment     com.cdccreditsmart.app.debug         V  Global.Settings values are invalid: number of packages: 0, number of values: 0
+2025-11-08 20:01:11.498  9309-9309  GraphicsEnvironment     com.cdccreditsmart.app.debug         V  Neither updatable production driver nor prerelease driver is supported.
+2025-11-08 20:01:11.593  9309-9309  MbrainDebugManagerImpl  com.cdccreditsmart.app.debug         D  getService failed
+2025-11-08 20:01:11.674  9309-9309  CompatChangeReporter    com.cdccreditsmart.app.debug         D  Compat change id reported: 279646685; UID 10261; state: ENABLED
+2025-11-08 20:01:11.699  9309-9309  Typeface                com.cdccreditsmart.app.debug         I  initOverlayFonts====family: RookeryNew-Regular
+2025-11-08 20:01:11.722  9309-9309  nativeloader            com.cdccreditsmart.app.debug         D  Load libpowerhalwrap_jni.so using system ns (caller=/system_ext/framework/mediatek-framework.jar): ok
+2025-11-08 20:01:11.723  9309-9309  PowerHalWrapper         com.cdccreditsmart.app.debug         I  PowerHalWrapper.getInstance 
+2025-11-08 20:01:11.725  9309-9309  M-ProMotion             com.cdccreditsmart.app.debug         I  M-ProMotion is disabled
+2025-11-08 20:01:11.740  9309-9384  vulkan                  com.cdccreditsmart.app.debug         D  searching for layers in '/data/app/~~C7QG03mHZ9BZqvLAzi9-4g==/com.cdccreditsmart.app.debug-B-SQeQOJ_vxkKI_nYpGttQ==/lib/arm64'
+2025-11-08 20:01:11.742  9309-9384  vulkan                  com.cdccreditsmart.app.debug         D  searching for layers in '/data/app/~~C7QG03mHZ9BZqvLAzi9-4g==/com.cdccreditsmart.app.debug-B-SQeQOJ_vxkKI_nYpGttQ==/base.apk!/lib/arm64-v8a'
+2025-11-08 20:01:11.743  9309-9384  vulkan                  com.cdccreditsmart.app.debug         D  searching for layers in '/data/app/~~C7QG03mHZ9BZqvLAzi9-4g==/com.cdccreditsmart.app.debug-B-SQeQOJ_vxkKI_nYpGttQ==/lib/arm64'
+2025-11-08 20:01:11.744  9309-9384  vulkan                  com.cdccreditsmart.app.debug         D  searching for layers in '/data/app/~~C7QG03mHZ9BZqvLAzi9-4g==/com.cdccreditsmart.app.debug-B-SQeQOJ_vxkKI_nYpGttQ==/base.apk!/lib/arm64-v8a'
+2025-11-08 20:01:11.754  9309-9384  MMUD                    com.cdccreditsmart.app.debug         D  mtk_memory_debug_init com.cdccreditsmart.app.debug 0xb400007641be75d0
+2025-11-08 20:01:11.857  9309-9388  MMUD                    com.cdccreditsmart.app.debug         D  get_leak_baseline 3246391296
+2025-11-08 20:01:11.878  9309-9309  CompatChangeReporter    com.cdccreditsmart.app.debug         D  Compat change id reported: 309578419; UID 10261; state: ENABLED
+2025-11-08 20:01:12.123  9309-9309  Activity                com.cdccreditsmart.app.debug         D  onResume setDolbyGameProfilePackage lastPkg =  currentPkg = com.cdccreditsmart.app.debug
+2025-11-08 20:01:12.131  9309-9383  PowerHalWrapper         com.cdccreditsmart.app.debug         I  PowerHalWrapper.getInstance 
+2025-11-08 20:01:12.136  9309-9309  SurfaceFactory          com.cdccreditsmart.app.debug         I  [static] sSurfaceFactory = com.mediatek.view.impl.SurfaceFactoryImpl@eda0e1
+2025-11-08 20:01:12.154  9309-9309  HWUI                    com.cdccreditsmart.app.debug         W  Unknown dataspace 0
+2025-11-08 20:01:12.163  9309-9309  VRI[MainActivity]       com.cdccreditsmart.app.debug         D  hardware acceleration = true, forceHwAccelerated = false
+2025-11-08 20:01:12.183  9309-9309  InputEventReceiver      com.cdccreditsmart.app.debug         D  Input log is disabled in InputEventReceiver.
+2025-11-08 20:01:12.199  9309-9309  Choreographer           com.cdccreditsmart.app.debug         I  Skipped 34 frames!  The application may be doing too much work on its main thread.
+2025-11-08 20:01:13.993  9309-9313  smart.app.debug         com.cdccreditsmart.app.debug         I  Compiler allocated 6943KB to compile void android.view.ViewRootImpl.performTraversals()
+2025-11-08 20:01:14.540  9309-9309  View                    com.cdccreditsmart.app.debug         D  [ANR Warning]onMeasure time too long, this =androidx.compose.ui.platform.AndroidComposeView{a63b90 VFED..... ......I. 0,0-0,0}time =815 ms
+2025-11-08 20:01:14.540  9309-9309  View                    com.cdccreditsmart.app.debug         D  [ANR Warning]onMeasure time too long, this =androidx.compose.ui.platform.ComposeView{17ce59b V.E...... ......I. 0,0-0,0}time =816 ms
+2025-11-08 20:01:14.541  9309-9309  View                    com.cdccreditsmart.app.debug         D  [ANR Warning]onMeasure time too long, this =android.widget.FrameLayout{1052d38 V.E...... ......I. 0,0-0,0 #1020002 android:id/content}time =817 ms
+2025-11-08 20:01:14.541  9309-9309  View                    com.cdccreditsmart.app.debug         D  [ANR Warning]onMeasure time too long, this =android.widget.LinearLayout{44b8111 V.E...... ......I. 0,0-0,0}time =817 ms
+2025-11-08 20:01:14.542  9309-9309  View                    com.cdccreditsmart.app.debug         D  [ANR Warning]onMeasure time too long, this =DecorView@99f5276[MainActivity]time =817 ms
+2025-11-08 20:01:14.560  9309-9309  BufferQueueConsumer     com.cdccreditsmart.app.debug         D  [](id:245d00000000,api:0,p:-1,c:9309) connect: controlledByApp=false
+2025-11-08 20:01:14.562  9309-9309  BLASTBufferQueue        com.cdccreditsmart.app.debug         D  [VRI[MainActivity]#0](f:0,a:0) constructor()
+2025-11-08 20:01:14.562  9309-9309  BLASTBufferQueue        com.cdccreditsmart.app.debug         D  [VRI[MainActivity]#0](f:0,a:0) update width=1080 height=2400 format=-3 mTransformHint=0
+2025-11-08 20:01:14.565  9309-9309  FBI                     com.cdccreditsmart.app.debug         E  Can't load library: dlopen failed: library "libmagtsync.so" not found
+2025-11-08 20:01:14.617  9309-9384  GrallocExtra            com.cdccreditsmart.app.debug         I  gralloc_extra_query:is_SW3D 0
+2025-11-08 20:01:14.663  9309-9384  GrallocExtra            com.cdccreditsmart.app.debug         I  gralloc_extra_query:is_SW3D 0
+2025-11-08 20:01:14.664  9309-9384  BLASTBufferQueue        com.cdccreditsmart.app.debug         D  [VRI[MainActivity]#0](f:0,a:1) acquireNextBufferLocked size=1080x2400 mFrameNumber=1 applyTransaction=true mTimestamp=14858002725885(auto) mPendingTransactions.size=0 graphicBufferId=39981850558467 transform=0
+2025-11-08 20:01:14.694  9309-9309  RouterViewModel         com.cdccreditsmart.app.debug         D  🔍 Verificando autenticação...
+2025-11-08 20:01:14.697  9309-9318  HWUI                    com.cdccreditsmart.app.debug         I  Davey! duration=3045ms; Flags=1, FrameTimelineVsyncId=325841, IntendedVsync=14854959377885, Vsync=14855526059455, InputEventId=0, HandleInputStart=14855540909808, AnimationStart=14855540969269, PerformTraversalsStart=14855541485808, DrawStart=14857939381808, FrameDeadline=14854975377885, FrameInterval=14855538877577, FrameStartTime=16667105, SyncQueued=14857951879346, SyncStart=14857952165269, IssueDrawCommandsStart=14857952810423, SwapBuffers=14858001966192, FrameCompleted=14858005228577, DequeueBufferDuration=32615, QueueBufferDuration=1050769, GpuCompleted=14858004503423, SwapBuffersCompleted=14858005228577, DisplayPresentTime=0, CommandSubmissionCompleted=14858001966192, 
+2025-11-08 20:01:14.699  9309-9309  RouterViewModel         com.cdccreditsmart.app.debug         D  ❌ Sem tokens - Ir para QR Scanner
+2025-11-08 20:01:14.729  9309-9309  Choreographer           com.cdccreditsmart.app.debug         I  Skipped 134 frames!  The application may be doing too much work on its main thread.
+2025-11-08 20:01:14.765  9309-9309  Activity                com.cdccreditsmart.app.debug         D  onResume setDolbyGameProfilePackage lastPkg =  currentPkg = com.cdccreditsmart.app.debug
+2025-11-08 20:01:15.474  9309-9460  LibMBrainProxy          com.cdccreditsmart.app.debug         D  Init Paramters
+2025-11-08 20:01:15.490  9309-9453  HWUI                    com.cdccreditsmart.app.debug         I  Davey! duration=741ms; Flags=0, FrameTimelineVsyncId=327561, IntendedVsync=14858072614018, Vsync=14858122582822, InputEventId=0, HandleInputStart=14858134196039, AnimationStart=14858134199962, PerformTraversalsStart=14858605636885, DrawStart=14858610683039, FrameDeadline=14858092614018, FrameInterval=14858134159654, FrameStartTime=16656268, SyncQueued=14858808981808, SyncStart=14858809091116, IssueDrawCommandsStart=14858809227731, SwapBuffers=14858811267039, FrameCompleted=14858814059654, DequeueBufferDuration=23000, QueueBufferDuration=543077, GpuCompleted=14858814059654, SwapBuffersCompleted=14858812179731, DisplayPresentTime=0, CommandSubmissionCompleted=14858811267039, 
+2025-11-08 20:01:15.490  9309-9309  Choreographer           com.cdccreditsmart.app.debug         I  Skipped 41 frames!  The application may be doing too much work on its main thread.
+2025-11-08 20:01:15.556  9309-9453  HWUI                    com.cdccreditsmart.app.debug         I  Davey! duration=749ms; Flags=0, FrameTimelineVsyncId=327656, IntendedVsync=14858139273678, Vsync=14858822296327, InputEventId=0, HandleInputStart=14858831199962, AnimationStart=14858831202808, PerformTraversalsStart=14858854116885, DrawStart=14858854257500, FrameDeadline=14858842146078, FrameInterval=14858830696269, FrameStartTime=16659089, SyncQueued=14858870642731, SyncStart=14858870828962, IssueDrawCommandsStart=14858870957269, SwapBuffers=14858885008885, FrameCompleted=14858888580346, DequeueBufferDuration=23385, QueueBufferDuration=886154, GpuCompleted=14858888580346, SwapBuffersCompleted=14858886401193, DisplayPresentTime=0, CommandSubmissionCompleted=14858885008885, 
+2025-11-08 20:01:15.867  9309-9309  InteractionJankMonitor  com.cdccreditsmart.app.debug         W  Initializing without READ_DEVICE_CONFIG permission. enabled=false, interval=1, missedFrameThreshold=3, frameTimeThreshold=64, package=com.cdccreditsmart.app.debug
+2025-11-08 20:01:16.545  9309-9309  InsetsController        com.cdccreditsmart.app.debug         D  show(ime(), fromIme=false)
+2025-11-08 20:01:16.551  9309-9309  ImeTracker              com.cdccreditsmart.app.debug         I  com.cdccreditsmart.app.debug:e533b853: onRequestShow at ORIGIN_CLIENT reason SHOW_SOFT_INPUT_BY_INSETS_API fromUser false
+2025-11-08 20:01:16.552  9309-9309  InputMethodManager      com.cdccreditsmart.app.debug         D  showSoftInput() view=androidx.compose.ui.platform.AndroidComposeView{a63b90 VFED..... .F....ID 0,0-1080,2400 aid=1073741824} flags=0 reason=SHOW_SOFT_INPUT_BY_INSETS_API
+2025-11-08 20:01:16.618  9309-9309  ImeTracker              com.cdccreditsmart.app.debug         I  com.cdccreditsmart.app.debug:a6bcfa3d: onRequestShow at ORIGIN_CLIENT reason SHOW_SOFT_INPUT fromUser false
+2025-11-08 20:01:16.618  9309-9309  InputMethodManager      com.cdccreditsmart.app.debug         D  showSoftInput() view=androidx.compose.ui.platform.AndroidComposeView{a63b90 VFED..... .F...... 0,0-1080,2400 aid=1073741824} flags=0 reason=SHOW_SOFT_INPUT
+2025-11-08 20:01:16.783  9309-9309  InsetsController        com.cdccreditsmart.app.debug         D  show(ime(), fromIme=true)
+2025-11-08 20:01:16.784  9309-9309  InsetsController        com.cdccreditsmart.app.debug         D  show(ime(), fromIme=true)
+2025-11-08 20:01:16.785  9309-9309  ImeTracker              com.cdccreditsmart.app.debug         I  com.cdccreditsmart.app.debug:a6bcfa3d: onCancelled at PHASE_CLIENT_APPLY_ANIMATION
+2025-11-08 20:01:17.167  9309-9309  ImeTracker              com.cdccreditsmart.app.debug         I  com.cdccreditsmart.app.debug:e533b853: onShown
+2025-11-08 20:01:17.480  9309-9475  ProfileInstaller        com.cdccreditsmart.app.debug         D  Installing profile for com.cdccreditsmart.app.debug
+2025-11-08 20:01:24.250  9309-9309  InsetsController        com.cdccreditsmart.app.debug         D  hide(ime(), fromIme=false)
+2025-11-08 20:01:24.251  9309-9309  ImeTracker              com.cdccreditsmart.app.debug         I  com.cdccreditsmart.app.debug:54bae1d8: onRequestHide at ORIGIN_CLIENT reason HIDE_SOFT_INPUT_BY_INSETS_API fromUser false
+2025-11-08 20:01:24.252  9309-9309  ImeTracker              com.cdccreditsmart.app.debug         I  com.cdccreditsmart.app.debug:7a3a535: onRequestHide at ORIGIN_CLIENT reason HIDE_SOFT_INPUT_REQUEST_HIDE_WITH_CONTROL fromUser false
+2025-11-08 20:01:24.285  9309-9309  InsetsController        com.cdccreditsmart.app.debug         D  hide(ime(), fromIme=true)
+2025-11-08 20:01:24.285  9309-9309  ImeTracker              com.cdccreditsmart.app.debug         I  com.cdccreditsmart.app.debug:7a3a535: onCancelled at PHASE_CLIENT_APPLY_ANIMATION
+2025-11-08 20:01:24.286  9309-9309  WindowOnBackDispatcher  com.cdccreditsmart.app.debug         W  sendCancelIfRunning: isInProgress=false callback=ImeCallback=ImeOnBackInvokedCallback@8749374 Callback=android.window.IOnBackInvokedCallback$Stub$Proxy@cd89490
+2025-11-08 20:01:24.569  9309-9309  ImeTracker              com.cdccreditsmart.app.debug         I  com.cdccreditsmart.app.debug:556d3f7a: onRequestHide at ORIGIN_CLIENT reason HIDE_SOFT_INPUT_ON_ANIMATION_STATE_CHANGED fromUser false
+2025-11-08 20:01:24.571  9309-9309  ImeTracker              com.cdccreditsmart.app.debug         I  com.cdccreditsmart.app.debug:54bae1d8: onHidden
+2025-11-08 20:01:25.149  9309-9309  PairingViewModel        com.cdccreditsmart.app.debug         D  Starting handshake for contract: BSX2F5UV
+2025-11-08 20:01:25.152  9309-9309  DeviceInfoManager       com.cdccreditsmart.app.debug         W  READ_PHONE_STATE permission not granted
+2025-11-08 20:01:25.152  9309-9309  PairingViewModel        com.cdccreditsmart.app.debug         D  Device IMEI: UNKN...
+2025-11-08 20:01:25.152  9309-9309  PairingViewModel        com.cdccreditsmart.app.debug         W  IMEI not available - using code-only sync fallback
+2025-11-08 20:01:25.153  9309-9309  PairingViewModel        com.cdccreditsmart.app.debug         D  ========== APK AUTHENTICATION ==========
+2025-11-08 20:01:25.153  9309-9309  PairingViewModel        com.cdccreditsmart.app.debug         D  Pairing Code: BSX2F5UV
+2025-11-08 20:01:25.153  9309-9309  PairingViewModel        com.cdccreditsmart.app.debug         D  Sending POST /api/apk/auth...
+2025-11-08 20:01:25.153  9309-9309  PairingViewModel        com.cdccreditsmart.app.debug         D  Request: { code: "BSX2****" }
+2025-11-08 20:01:25.796  9309-9309  InsetsController        com.cdccreditsmart.app.debug         D  hide(ime(), fromIme=false)
+2025-11-08 20:01:25.797  9309-9309  ImeTracker              com.cdccreditsmart.app.debug         I  com.cdccreditsmart.app.debug:3c9bb427: onRequestHide at ORIGIN_CLIENT reason HIDE_SOFT_INPUT_BY_INSETS_API fromUser false
+2025-11-08 20:01:25.797  9309-9309  ImeTracker              com.cdccreditsmart.app.debug         I  com.cdccreditsmart.app.debug:3c9bb427: onCancelled at PHASE_CLIENT_APPLY_ANIMATION
+2025-11-08 20:01:26.095  9309-9309  PairingViewModel        com.cdccreditsmart.app.debug         D  Response code: 404
+2025-11-08 20:01:26.096  9309-9309  PairingViewModel        com.cdccreditsmart.app.debug         D  Response message: 
+2025-11-08 20:01:26.099  9309-9309  PairingViewModel        com.cdccreditsmart.app.debug         E  ❌ HTTP Error 404
+2025-11-08 20:01:26.099  9309-9309  PairingViewModel        com.cdccreditsmart.app.debug         E  Error body: {"error":"Token inválido ou dispositivo não encontrado","tokenProvided":"BSX2****"}
+2025-11-08 20:01:26.099  9309-9309  PairingViewModel        com.cdccreditsmart.app.debug         W  Attempt 1 failed: Código não encontrado ou expirado
+2025-11-08 20:01:27.408  9309-9309  PairingViewModel        com.cdccreditsmart.app.debug         D  Response code: 404
+2025-11-08 20:01:27.408  9309-9309  PairingViewModel        com.cdccreditsmart.app.debug         D  Response message: 
+2025-11-08 20:01:27.408  9309-9309  PairingViewModel        com.cdccreditsmart.app.debug         E  ❌ HTTP Error 404
+2025-11-08 20:01:27.408  9309-9309  PairingViewModel        com.cdccreditsmart.app.debug         E  Error body: {"error":"Token inválido ou dispositivo não encontrado","tokenProvided":"BSX2****"}
+2025-11-08 20:01:27.408  9309-9309  PairingViewModel        com.cdccreditsmart.app.debug         W  Attempt 2 failed: Código não encontrado ou expirado
+2025-11-08 20:01:29.756  9309-9309  PairingViewModel        com.cdccreditsmart.app.debug         D  Response code: 404
+2025-11-08 20:01:29.756  9309-9309  PairingViewModel        com.cdccreditsmart.app.debug         D  Response message: 
+2025-11-08 20:01:29.756  9309-9309  PairingViewModel        com.cdccreditsmart.app.debug         E  ❌ HTTP Error 404
+2025-11-08 20:01:29.756  9309-9309  PairingViewModel        com.cdccreditsmart.app.debug         E  Error body: {"error":"Token inválido ou dispositivo não encontrado","tokenProvided":"BSX2****"}
+2025-11-08 20:01:29.758  9309-9309  PairingViewModel        com.cdccreditsmart.app.debug         E  Error in handshake (Ask Gemini)
+                                                                                                    java.lang.Exception: Código não encontrado ou expirado
+                                                                                                    	at com.cdccreditsmart.app.presentation.pairing.PairingViewModel$stepFallbackClaimByCodeOnly$2.invokeSuspend(PairingViewModel.kt:282)
+                                                                                                    	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:34)
+                                                                                                    	at kotlinx.coroutines.DispatchedTask.run(DispatchedTask.kt:108)
+                                                                                                    	at android.os.Handler.handleCallback(Handler.java:959)
+                                                                                                    	at android.os.Handler.dispatchMessage(Handler.java:100)
+                                                                                                    	at android.os.Looper.loopOnce(Looper.java:234)
+                                                                                                    	at android.os.Looper.loop(Looper.java:319)
+                                                                                                    	at android.app.ActivityThread.main(ActivityThread.java:8754)
+                                                                                                    	at java.lang.reflect.Method.invoke(Native Method)
+                                                                                                    	at com.android.internal.os.RuntimeInit$MethodAndArgsCaller.run(RuntimeInit.java:602)
+                                                                                                    	at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:962)
+2025-11-08 20:01:37.565  9309-9309  InsetsController        com.cdccreditsmart.app.debug         D  show(ime(), fromIme=false)
+2025-11-08 20:01:37.567  9309-9309  ImeTracker              com.cdccreditsmart.app.debug         I  com.cdccreditsmart.app.debug:280ea95c: onRequestShow at ORIGIN_CLIENT reason SHOW_SOFT_INPUT_BY_INSETS_API fromUser false
+2025-11-08 20:01:37.568  9309-9309  InputMethodManager      com.cdccreditsmart.app.debug         D  showSoftInput() view=androidx.compose.ui.platform.AndroidComposeView{a63b90 VFED..... .F....ID 0,0-1080,2400 aid=1073741824} flags=0 reason=SHOW_SOFT_INPUT_BY_INSETS_API
+2025-11-08 20:01:37.617  9309-9309  ImeTracker              com.cdccreditsmart.app.debug         I  com.cdccreditsmart.app.debug:f5c071f2: onRequestShow at ORIGIN_CLIENT reason SHOW_SOFT_INPUT fromUser false
+2025-11-08 20:01:37.617  9309-9309  InputMethodManager      com.cdccreditsmart.app.debug         D  showSoftInput() view=androidx.compose.ui.platform.AndroidComposeView{a63b90 VFED..... .F...... 0,0-1080,2400 aid=1073741824} flags=0 reason=SHOW_SOFT_INPUT
+2025-11-08 20:01:37.787  9309-9309  InsetsController        com.cdccreditsmart.app.debug         D  show(ime(), fromIme=true)
+2025-11-08 20:01:37.788  9309-9309  InsetsController        com.cdccreditsmart.app.debug         D  show(ime(), fromIme=true)
+2025-11-08 20:01:37.788  9309-9309  ImeTracker              com.cdccreditsmart.app.debug         I  com.cdccreditsmart.app.debug:f5c071f2: onCancelled at PHASE_CLIENT_APPLY_ANIMATION
+2025-11-08 20:01:38.149  9309-9309  ImeTracker              com.cdccreditsmart.app.debug         I  com.cdccreditsmart.app.debug:280ea95c: onShown
+2025-11-08 20:01:42.850  9309-9309  VRI[MainActivity]       com.cdccreditsmart.app.debug         V  [ANR Warning]Input routeing takes more than 6000ms since 1969-12-31 21:00:00.000, this = com.mediatek.view.impl.ViewDebugManagerImpl@599174b
+2025-11-08 20:01:42.851  9309-9309  VRI[MainActivity]       com.cdccreditsmart.app.debug         V  Input event delivered to android.view.ViewRootImpl$EarlyPostImeInputStage@589f8b1 at 2025-11-08 20:01:42.827
+2025-11-08 20:01:42.852  9309-9309  VRI[MainActivity]       com.cdccreditsmart.app.debug         V  Input event delivered to android.view.ViewRootImpl$ViewPostImeInputStage@b0f9117 at 2025-11-08 20:01:42.827
+2025-11-08 20:01:42.852  9309-9309  VRI[MainActivity]       com.cdccreditsmart.app.debug         V  Input event delivered to android.view.ViewRootImpl$SyntheticInputStage@29ff904 at 2025-11-08 20:01:42.843
+2025-11-08 20:01:42.853  9309-9309  VRI[MainActivity]       com.cdccreditsmart.app.debug         V  Input event delivered to android.view.ViewRootImpl$NativePostImeInputStage@f6b0196 at 2025-11-08 20:01:42.827
+2025-11-08 20:01:42.857  9309-9309  VRI[MainActivity]       com.cdccreditsmart.app.debug         V  [ANR Warning]Input routeing takes more than 6000ms since 1969-12-31 21:00:00.000, this = com.mediatek.view.impl.ViewDebugManagerImpl@599174b
+2025-11-08 20:01:42.857  9309-9309  VRI[MainActivity]       com.cdccreditsmart.app.debug         V  Input event delivered to android.view.ViewRootImpl$EarlyPostImeInputStage@589f8b1 at 2025-11-08 20:01:42.853
+2025-11-08 20:01:42.858  9309-9309  VRI[MainActivity]       com.cdccreditsmart.app.debug         V  Input event delivered to android.view.ViewRootImpl$ViewPostImeInputStage@b0f9117 at 2025-11-08 20:01:42.853
+2025-11-08 20:01:42.858  9309-9309  VRI[MainActivity]       com.cdccreditsmart.app.debug         V  Input event delivered to android.view.ViewRootImpl$SyntheticInputStage@29ff904 at 2025-11-08 20:01:42.854
+2025-11-08 20:01:42.858  9309-9309  VRI[MainActivity]       com.cdccreditsmart.app.debug         V  Input event delivered to android.view.ViewRootImpl$NativePostImeInputStage@f6b0196 at 2025-11-08 20:01:42.853
+2025-11-08 20:01:50.129  9309-9309  InsetsController        com.cdccreditsmart.app.debug         D  hide(ime(), fromIme=false)
+2025-11-08 20:01:50.131  9309-9309  ImeTracker              com.cdccreditsmart.app.debug         I  com.cdccreditsmart.app.debug:f070b5d: onRequestHide at ORIGIN_CLIENT reason HIDE_SOFT_INPUT_BY_INSETS_API fromUser false
+2025-11-08 20:01:50.132  9309-9309  ImeTracker              com.cdccreditsmart.app.debug         I  com.cdccreditsmart.app.debug:89f6c198: onRequestHide at ORIGIN_CLIENT reason HIDE_SOFT_INPUT_REQUEST_HIDE_WITH_CONTROL fromUser false
+2025-11-08 20:01:50.160  9309-9309  InsetsController        com.cdccreditsmart.app.debug         D  hide(ime(), fromIme=true)
+2025-11-08 20:01:50.162  9309-9309  ImeTracker              com.cdccreditsmart.app.debug         I  com.cdccreditsmart.app.debug:89f6c198: onCancelled at PHASE_CLIENT_APPLY_ANIMATION
+2025-11-08 20:01:50.163  9309-9309  WindowOnBackDispatcher  com.cdccreditsmart.app.debug         W  sendCancelIfRunning: isInProgress=false callback=ImeCallback=ImeOnBackInvokedCallback@8749374 Callback=android.window.IOnBackInvokedCallback$Stub$Proxy@a78f858
+2025-11-08 20:01:50.448  9309-9309  ImeTracker              com.cdccreditsmart.app.debug         I  com.cdccreditsmart.app.debug:d45c1ea2: onRequestHide at ORIGIN_CLIENT reason HIDE_SOFT_INPUT_ON_ANIMATION_STATE_CHANGED fromUser false
+2025-11-08 20:01:50.449  9309-9309  ImeTracker              com.cdccreditsmart.app.debug         I  com.cdccreditsmart.app.debug:f070b5d: onHidden
+2025-11-08 20:01:50.919  9309-9309  PairingViewModel        com.cdccreditsmart.app.debug         D  Starting handshake for contract: BSX2-F5UV
+2025-11-08 20:01:50.919  9309-9309  DeviceInfoManager       com.cdccreditsmart.app.debug         W  READ_PHONE_STATE permission not granted
+2025-11-08 20:01:50.919  9309-9309  PairingViewModel        com.cdccreditsmart.app.debug         D  Device IMEI: UNKN...
+2025-11-08 20:01:50.919  9309-9309  PairingViewModel        com.cdccreditsmart.app.debug         W  IMEI not available - using code-only sync fallback
+2025-11-08 20:01:50.919  9309-9309  PairingViewModel        com.cdccreditsmart.app.debug         D  ========== APK AUTHENTICATION ==========
+2025-11-08 20:01:50.919  9309-9309  PairingViewModel        com.cdccreditsmart.app.debug         D  Pairing Code: BSX2-F5UV
+2025-11-08 20:01:50.919  9309-9309  PairingViewModel        com.cdccreditsmart.app.debug         D  Sending POST /api/apk/auth...
+2025-11-08 20:01:50.919  9309-9309  PairingViewModel        com.cdccreditsmart.app.debug         D  Request: { code: "BSX2****" }
+2025-11-08 20:01:51.370  9309-9309  PairingViewModel        com.cdccreditsmart.app.debug         D  Response code: 404
+2025-11-08 20:01:51.370  9309-9309  PairingViewModel        com.cdccreditsmart.app.debug         D  Response message: 
+2025-11-08 20:01:51.370  9309-9309  PairingViewModel        com.cdccreditsmart.app.debug         E  ❌ HTTP Error 404
+2025-11-08 20:01:51.370  9309-9309  PairingViewModel        com.cdccreditsmart.app.debug         E  Error body: {"error":"Token inválido ou dispositivo não encontrado","tokenProvided":"BSX2****"}
+2025-11-08 20:01:51.371  9309-9309  PairingViewModel        com.cdccreditsmart.app.debug         W  Attempt 1 failed: Código não encontrado ou expirado
+2025-11-08 20:01:51.601  9309-9309  InsetsController        com.cdccreditsmart.app.debug         D  hide(ime(), fromIme=false)
+2025-11-08 20:01:51.602  9309-9309  ImeTracker              com.cdccreditsmart.app.debug         I  com.cdccreditsmart.app.debug:3861d093: onRequestHide at ORIGIN_CLIENT reason HIDE_SOFT_INPUT_BY_INSETS_API fromUser false
+2025-11-08 20:01:51.602  9309-9309  ImeTracker              com.cdccreditsmart.app.debug         I  com.cdccreditsmart.app.debug:3861d093: onCancelled at PHASE_CLIENT_APPLY_ANIMATION
+2025-11-08 20:01:52.639  9309-9309  PairingViewModel        com.cdccreditsmart.app.debug         D  Response code: 404
+2025-11-08 20:01:52.639  9309-9309  PairingViewModel        com.cdccreditsmart.app.debug         D  Response message: 
+2025-11-08 20:01:52.639  9309-9309  PairingViewModel        com.cdccreditsmart.app.debug         E  ❌ HTTP Error 404
+2025-11-08 20:01:52.639  9309-9309  PairingViewModel        com.cdccreditsmart.app.debug         E  Error body: {"error":"Token inválido ou dispositivo não encontrado","tokenProvided":"BSX2****"}
+2025-11-08 20:01:52.640  9309-9309  PairingViewModel        com.cdccreditsmart.app.debug         W  Attempt 2 failed: Código não encontrado ou expirado
+2025-11-08 20:01:54.943  9309-9309  PairingViewModel        com.cdccreditsmart.app.debug         D  Response code: 404
+2025-11-08 20:01:54.943  9309-9309  PairingViewModel        com.cdccreditsmart.app.debug         D  Response message: 
+2025-11-08 20:01:54.944  9309-9309  PairingViewModel        com.cdccreditsmart.app.debug         E  ❌ HTTP Error 404
+2025-11-08 20:01:54.944  9309-9309  PairingViewModel        com.cdccreditsmart.app.debug         E  Error body: {"error":"Token inválido ou dispositivo não encontrado","tokenProvided":"BSX2****"}
+2025-11-08 20:01:54.946  9309-9309  PairingViewModel        com.cdccreditsmart.app.debug         E  Error in handshake (Ask Gemini)
+                                                                                                    java.lang.Exception: Código não encontrado ou expirado
+                                                                                                    	at com.cdccreditsmart.app.presentation.pairing.PairingViewModel$stepFallbackClaimByCodeOnly$2.invokeSuspend(PairingViewModel.kt:282)
+                                                                                                    	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:34)
+                                                                                                    	at kotlinx.coroutines.DispatchedTask.run(DispatchedTask.kt:108)
+                                                                                                    	at android.os.Handler.handleCallback(Handler.java:959)
+                                                                                                    	at android.os.Handler.dispatchMessage(Handler.java:100)
+                                                                                                    	at android.os.Looper.loopOnce(Looper.java:234)
+                                                                                                    	at android.os.Looper.loop(Looper.java:319)
+                                                                                                    	at android.app.ActivityThread.main(ActivityThread.java:8754)
+                                                                                                    	at java.lang.reflect.Method.invoke(Native Method)
+                                                                                                    	at com.android.internal.os.RuntimeInit$MethodAndArgsCaller.run(RuntimeInit.java:602)
+                                                                                                    	at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:962)
