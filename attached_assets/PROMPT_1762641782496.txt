@@ -1,0 +1,17 @@
+com.cdccreditsmart.app.debug:616390d7: onCancelled at PHASE_CLIENT_APPLY_ANIMATION
+2025-11-08 19:41:35.774  8431-8431  PairingViewModel        com.cdccreditsmart.app.debug         W  Attempt 1 failed: HTTP 400: 
+2025-11-08 19:41:37.061  8431-8431  PairingViewModel        com.cdccreditsmart.app.debug         W  Attempt 2 failed: HTTP 400: 
+2025-11-08 19:41:39.319  8431-8431  PairingViewModel        com.cdccreditsmart.app.debug         E  Error in handshake (Ask Gemini)
+                                                                                                    java.lang.Exception: HTTP 400: 
+                                                                                                    	at com.cdccreditsmart.app.presentation.pairing.PairingViewModel$stepFallbackClaimByCodeOnly$2.invokeSuspend(PairingViewModel.kt:268)
+                                                                                                    	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:34)
+                                                                                                    	at kotlinx.coroutines.DispatchedTask.run(DispatchedTask.kt:108)
+                                                                                                    	at android.os.Handler.handleCallback(Handler.java:959)
+                                                                                                    	at android.os.Handler.dispatchMessage(Handler.java:100)
+                                                                                                    	at android.os.Looper.loopOnce(Looper.java:234)
+                                                                                                    	at android.os.Looper.loop(Looper.java:319)
+                                                                                                    	at android.app.ActivityThread.main(ActivityThread.java:8754)
+                                                                                                    	at java.lang.reflect.Method.invoke(Native Method)
+                                                                                                    	at com.android.internal.os.RuntimeInit$MethodAndArgsCaller.run(RuntimeInit.java:602)
+                                                                                                    	at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:962)
+2025-11-08 19:42:34.867  8431-8431  VRI[MainActivity]       com.cdccreditsmart.app.debug         D  visibilityChanged oldVisibility=true newVisibility=false

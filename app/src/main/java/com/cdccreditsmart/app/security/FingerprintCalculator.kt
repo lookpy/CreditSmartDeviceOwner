@@ -10,7 +10,7 @@ object FingerprintCalculator {
 
     fun calculateFingerprint(imei: String? = null): String {
         return try {
-            val serialNumber = try {
+            val deviceIdentifier = try {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                     Build.getSerial()
                 } else {
@@ -18,17 +18,17 @@ object FingerprintCalculator {
                     Build.SERIAL
                 }
             } catch (e: SecurityException) {
-                Log.w(TAG, "Cannot get serial number for fingerprint", e)
-                "UNKNOWN_SERIAL"
+                Log.d(TAG, "Serial not accessible, using Build.FINGERPRINT as fallback")
+                Build.FINGERPRINT
             }
 
             val data = if (imei == null || imei == "UNKNOWN_IMEI") {
-                "${serialNumber}${Build.BRAND}${Build.MODEL}${Build.ID}"
+                "${deviceIdentifier}${Build.BRAND}${Build.MODEL}${Build.ID}${Build.DEVICE}${Build.MANUFACTURER}"
             } else {
-                "${serialNumber}${Build.BRAND}${Build.MODEL}${imei}"
+                "${deviceIdentifier}${Build.BRAND}${Build.MODEL}${imei}"
             }
             
-            Log.d(TAG, "Calculating fingerprint from: SERIAL=${serialNumber.take(4)}..., BRAND=${Build.BRAND}, MODEL=${Build.MODEL}, IMEI=${imei?.take(4) ?: "N/A"}...")
+            Log.d(TAG, "Calculating fingerprint from: ID=${deviceIdentifier.take(10)}..., BRAND=${Build.BRAND}, MODEL=${Build.MODEL}, IMEI=${imei?.take(4) ?: "N/A"}")
             
             val digest = MessageDigest.getInstance("SHA-256")
             val hashBytes = digest.digest(data.toByteArray(Charsets.UTF_8))
@@ -37,11 +37,11 @@ object FingerprintCalculator {
                 "%02x".format(byte)
             }
             
-            Log.d(TAG, "Fingerprint calculated: ${hexString.take(16)}... (length: ${hexString.length})")
+            Log.d(TAG, "✅ Fingerprint calculated: ${hexString.take(16)}... (length: ${hexString.length})")
             
             hexString
         } catch (e: Exception) {
-            Log.e(TAG, "Error calculating fingerprint", e)
+            Log.e(TAG, "❌ Error calculating fingerprint", e)
             throw FingerprintCalculationException("Failed to calculate device fingerprint", e)
         }
     }

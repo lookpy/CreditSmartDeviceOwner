@@ -83,8 +83,8 @@ class DeviceInfoManager(private val context: Context) {
                 Build.SERIAL
             }
         } catch (e: SecurityException) {
-            Log.w(TAG, "Cannot get serial number", e)
-            "UNKNOWN_SERIAL"
+            Log.d(TAG, "Serial not accessible, using Build.FINGERPRINT")
+            Build.FINGERPRINT
         }
 
         return DeviceInfo(
