@@ -1,0 +1,36 @@
+{
+    "logs": [
+        {
+            "outputFile": "/home/runner/.gradle/daemon/8.13/com.cdccreditsmart.app-mergeDebugResources-67:/values-v16/values-v16.xml",
+            "map": [
+                {
+                    "source": "/home/runner/.gradle/caches/8.13/transforms/8b0f8e1e6ff1dbb7c7a6c9c413c2089d/transformed/appcompat-1.6.1/res/values-v16/values-v16.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endLines": "5",
+                        "endColumns": "12",
+                        "endOffsets": "223"
+                    }
+                }
+            ]
+        },
+        {
+            "outputFile": "com.cdccreditsmart.app-mergeDebugResources-67:/values-v16/values-v16.xml",
+            "map": [
+                {
+                    "source": "/home/runner/.gradle/caches/8.13/transforms/8b0f8e1e6ff1dbb7c7a6c9c413c2089d/transformed/appcompat-1.6.1/res/values-v16/values-v16.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endLines": "5",
+                        "endColumns": "12",
+                        "endOffsets": "223"
+                    }
+                }
+            ]
+        }
+    ]
+}
