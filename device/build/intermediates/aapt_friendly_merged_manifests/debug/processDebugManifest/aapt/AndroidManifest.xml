@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.cdccreditsmart.device" >
+
+    <uses-sdk android:minSdkVersion="26" />
+
+    <!-- Samsung Knox SDK v3.12+ Required Permissions -->
+
+
+    <!-- Core Knox Permissions -->
+    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_ADMIN" />
+    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_ENTERPRISE_DEVICE_ADMIN" />
+    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_DEVICE_CONFIGURATION" />
+
+    <!-- Knox Container Permissions -->
+    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_CONTAINER" />
+    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_CONTAINER_POLICY" />
+
+    <!-- Knox Application Management -->
+    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_APPLICATION" />
+    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_APP_MGMT" />
+
+    <!-- Knox Security and Restriction Policies -->
+    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_SECURITY" />
+    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_RESTRICTION" />
+    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_ADVANCED_SECURITY" />
+
+    <!-- Knox Hardware Control -->
+    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_HW_CONTROL" />
+    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_HARDWARE_CONTROL" />
+
+    <!-- Knox VPN and Network -->
+    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_VPN" />
+    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_NETWORK" />
+
+    <!-- Knox License Management -->
+    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_LICENSE" />
+    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_LICENSE_LOG" />
+
+    <!-- Knox Attestation and Keystore -->
+    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_ATTESTATION" />
+    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_TIMA_KEYSTORE" />
+    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_KEYSTORE" />
+
+    <!-- Knox Custom Settings -->
+    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_CUSTOM_SETTING" />
+    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_CUSTOM_SYSTEM" />
+
+    <!-- Knox Multi-User and Workspace -->
+    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_MULTI_USER_MGMT" />
+    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_WORKSPACE" />
+
+    <!-- Knox DualDAR (Dual Data-At-Rest) -->
+    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_DUAL_DAR" />
+
+    <!-- Knox UCM (Universal Credential Management) -->
+    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_UCM" />
+    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_CCM_KEYSTORE" />
+
+    <!-- Standard Android Permissions required by Knox -->
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.WRITE_SETTINGS" />
+    <uses-permission android:name="android.permission.WRITE_SECURE_SETTINGS" />
+
+    <!-- Device Admin Permissions -->
+    <uses-permission android:name="android.permission.BIND_DEVICE_ADMIN" />
+
+    <application>
+
+        <!-- Knox SDK Selective Permissions -->
+        <meta-data
+            android:name="com.samsung.knoxlicense.permissions"
+            android:value="true" />
+
+        <!-- Knox SDK Version Compatibility -->
+        <meta-data
+            android:name="com.samsung.knox.sdk.version"
+            android:value="3.12" />
+
+        <!-- Knox Container Support -->
+        <meta-data
+            android:name="com.samsung.knox.container.support"
+            android:value="true" />
+
+        <!-- Knox Attestation Support -->
+        <meta-data
+            android:name="com.samsung.knox.attestation.support"
+            android:value="true" />
+    </application>
+
+</manifest>

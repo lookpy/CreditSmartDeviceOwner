@@ -75,9 +75,27 @@ fun QRCodeScannerScreen(
                     ) {
                         OutlinedTextField(
                             value = contractId,
-                            onValueChange = { contractId = it },
+                            onValueChange = { newValue ->
+                                // Formatação automática:
+                                // 1. Remove espaços e caracteres especiais
+                                // 2. Converte para MAIÚSCULAS
+                                // 3. Aceita apenas A-Z e 0-9
+                                // 4. Limita a 8 caracteres
+                                val formatted = newValue
+                                    .replace(Regex("[^A-Za-z0-9]"), "") // Remove tudo exceto letras e números
+                                    .uppercase() // Converte para maiúsculas
+                                    .take(8) // Limita a 8 caracteres
+                                
+                                contractId = formatted
+                            },
                             label = { Text("Código do Contrato") },
-                            placeholder = { Text("Digite o código...") },
+                            placeholder = { Text("ABC123XY") },
+                            supportingText = {
+                                Text(
+                                    text = "${contractId.length}/8 caracteres",
+                                    color = if (contractId.length == 8) CDCOrange else MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
+                                )
+                            },
                             modifier = Modifier.fillMaxWidth(),
                             singleLine = true,
                             colors = OutlinedTextFieldDefaults.colors(
@@ -90,14 +108,15 @@ fun QRCodeScannerScreen(
                         
                         Button(
                             onClick = {
-                                if (contractId.isNotBlank()) {
-                                    onQRCodeScanned(contractId.trim())
+                                if (contractId.length == 8) {
+                                    onQRCodeScanned(contractId)
                                 }
                             },
-                            enabled = contractId.isNotBlank(),
+                            enabled = contractId.length == 8,
                             modifier = Modifier.fillMaxWidth(),
                             colors = ButtonDefaults.buttonColors(
-                                containerColor = CDCOrange
+                                containerColor = CDCOrange,
+                                disabledContainerColor = CDCOrange.copy(alpha = 0.3f)
                             ),
                             shape = RoundedCornerShape(12.dp)
                         ) {

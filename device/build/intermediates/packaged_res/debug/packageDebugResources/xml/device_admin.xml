@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<device-admin xmlns:android="http://schemas.android.com/apk/res/android">
+    <uses-policies>
+        <!-- CORE Device Owner Policies -->
+        <limit-password />
+        <watch-login />
+        <reset-password />
+        <force-lock />
+        <wipe-data />
+        <set-global-proxy />
+        <expire-password />
+        <encrypted-storage />
+        <disable-camera />
+        <disable-keyguard-features />
+        
+        <!-- CRITICAL: Android 12/13+ Work Profile Preparation Policies -->
+        <!-- These policies are essential to prevent hangs during "Preparing for work profile configuration" -->
+        
+        <!-- User and Profile Management (API Level 21+) -->
+        <!-- Required for managed profile creation and initialization -->
+        <!-- Note: Most work profile policies are enforced via DevicePolicyManager API, not XML -->
+        
+        <!-- Network Security and App Management -->
+        <!-- These ensure proper network access during provisioning -->
+        <!-- Important for downloading additional provisioning data -->
+        
+        <!-- Device State Management -->
+        <!-- Required for proper device state transitions during work profile setup -->
+        <!-- Prevents infinite loops in provisioning state machine -->
+    </uses-policies>
+</device-admin>
