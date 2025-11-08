@@ -188,12 +188,15 @@
         <div class="info-section">
             <h3>📦 Funcionalidades Implementadas</h3>
             <ul>
-                <li>Autenticação com QR Code e claim-sale</li>
-                <li>Biometria facial com TensorFlow Lite (embeddings 512D)</li>
-                <li>Polling inteligente - aguarda PDV finalizar compra</li>
+                <li>QR Code Scanner - Input manual de Contract ID</li>
+                <li>Handshake de 3 steps (QR → IMEI validation → Fingerprint claim)</li>
+                <li>WebSocket em tempo real (wss://cdccreditsmart.com/ws/flow-status)</li>
+                <li>Secure Token Storage com AES256_GCM encryption</li>
+                <li>Device fingerprint SHA-256 (SERIAL + BRAND + MODEL + IMEI)</li>
+                <li>Retry logic com backoff exponencial (1s/2s/4s/8s)</li>
+                <li>IMEI mismatch detection - máximo 3 tentativas</li>
+                <li>Bloqueio permanente após violação de segurança</li>
                 <li>Home Screen com dados do cliente e parcelas</li>
-                <li>Máquina de estados completa (Waiting, Completed, Timeout, Error)</li>
-                <li>Retry buttons para erros biométricos e timeout</li>
             </ul>
         </div>
         
@@ -295,8 +298,8 @@
         </div>
         
         <div style="margin-top: 30px; text-align: center; color: #6b7280; font-size: 12px;">
-            <p>Última atualização: Outubro 13, 2025</p>
-            <p>✅ Smart cast corrigido | ✅ Polling de device status implementado</p>
+            <p>Última atualização: Novembro 08, 2025</p>
+            <p>✅ QR Code + IMEI handshake | ✅ WebSocket real-time | ✅ Architect aprovado</p>
         </div>
     </div>
 </body>
