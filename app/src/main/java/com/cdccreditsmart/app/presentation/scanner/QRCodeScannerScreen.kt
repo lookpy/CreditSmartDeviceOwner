@@ -1,12 +1,11 @@
 package com.cdccreditsmart.app.presentation.scanner
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
-import androidx.compose.material.icons.filled.QrCodeScanner
+import androidx.compose.material.icons.filled.Smartphone
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -22,124 +21,108 @@ fun QRCodeScannerScreen(
     onQRCodeScanned: (String) -> Unit,
     onCancel: () -> Unit
 ) {
-    var manualContractId by remember { mutableStateOf("") }
-    var showManualInput by remember { mutableStateOf(false) }
+    var contractId by remember { mutableStateOf("") }
 
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(Color.Black)
+    Surface(
+        modifier = Modifier.fillMaxSize(),
+        color = MaterialTheme.colorScheme.background
     ) {
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(24.dp),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
-        ) {
-            Icon(
-                imageVector = Icons.Default.QrCodeScanner,
-                contentDescription = "QR Code Scanner",
-                modifier = Modifier.size(120.dp),
-                tint = CDCOrange
-            )
-            
-            Spacer(modifier = Modifier.height(32.dp))
-            
-            Text(
-                text = "Escaneie o QR Code",
-                style = MaterialTheme.typography.headlineMedium,
-                fontWeight = FontWeight.Bold,
-                color = Color.White
-            )
-            
-            Spacer(modifier = Modifier.height(16.dp))
-            
-            Text(
-                text = "Aponte a câmera para o QR Code\nexibido no PDV da loja",
-                style = MaterialTheme.typography.bodyLarge,
-                color = Color.White.copy(alpha = 0.7f),
-                textAlign = TextAlign.Center
-            )
-            
-            Spacer(modifier = Modifier.height(48.dp))
-            
-            Box(
+        Box(modifier = Modifier.fillMaxSize()) {
+            Column(
                 modifier = Modifier
-                    .size(250.dp)
-                    .border(3.dp, CDCOrange, RoundedCornerShape(16.dp))
-            )
-            
-            Spacer(modifier = Modifier.height(48.dp))
-            
-            if (!showManualInput) {
-                OutlinedButton(
-                    onClick = { showManualInput = true },
-                    colors = ButtonDefaults.outlinedButtonColors(
-                        contentColor = Color.White
-                    ),
-                    modifier = Modifier.fillMaxWidth(0.8f)
-                ) {
-                    Text("Inserir código manualmente")
-                }
-            } else {
+                    .fillMaxSize()
+                    .padding(32.dp),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center
+            ) {
+                Icon(
+                    imageVector = Icons.Default.Smartphone,
+                    contentDescription = "Ativação de Dispositivo",
+                    modifier = Modifier.size(100.dp),
+                    tint = CDCOrange
+                )
+                
+                Spacer(modifier = Modifier.height(32.dp))
+                
+                Text(
+                    text = "Ativação de Dispositivo",
+                    style = MaterialTheme.typography.headlineMedium,
+                    fontWeight = FontWeight.Bold,
+                    color = MaterialTheme.colorScheme.onBackground
+                )
+                
+                Spacer(modifier = Modifier.height(16.dp))
+                
+                Text(
+                    text = "Digite o código do contrato\nfornecido pela loja",
+                    style = MaterialTheme.typography.bodyLarge,
+                    color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.7f),
+                    textAlign = TextAlign.Center
+                )
+                
+                Spacer(modifier = Modifier.height(48.dp))
+                
                 Card(
-                    modifier = Modifier.fillMaxWidth(0.9f),
+                    modifier = Modifier.fillMaxWidth(),
                     colors = CardDefaults.cardColors(
-                        containerColor = Color.White.copy(alpha = 0.1f)
-                    )
+                        containerColor = MaterialTheme.colorScheme.surface
+                    ),
+                    shape = RoundedCornerShape(16.dp)
                 ) {
                     Column(
-                        modifier = Modifier.padding(16.dp),
+                        modifier = Modifier.padding(24.dp),
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
                         OutlinedTextField(
-                            value = manualContractId,
-                            onValueChange = { manualContractId = it },
-                            label = { Text("Código do Contrato", color = Color.White) },
-                            placeholder = { Text("CTR_...", color = Color.White.copy(alpha = 0.5f)) },
+                            value = contractId,
+                            onValueChange = { contractId = it },
+                            label = { Text("Código do Contrato") },
+                            placeholder = { Text("Digite o código...") },
                             modifier = Modifier.fillMaxWidth(),
+                            singleLine = true,
                             colors = OutlinedTextFieldDefaults.colors(
-                                focusedTextColor = Color.White,
-                                unfocusedTextColor = Color.White,
                                 focusedBorderColor = CDCOrange,
-                                unfocusedBorderColor = Color.White.copy(alpha = 0.5f)
+                                focusedLabelColor = CDCOrange
                             )
                         )
                         
-                        Spacer(modifier = Modifier.height(16.dp))
+                        Spacer(modifier = Modifier.height(24.dp))
                         
                         Button(
                             onClick = {
-                                if (manualContractId.isNotBlank()) {
-                                    onQRCodeScanned(manualContractId.trim())
+                                if (contractId.isNotBlank()) {
+                                    onQRCodeScanned(contractId.trim())
                                 }
                             },
-                            enabled = manualContractId.isNotBlank(),
+                            enabled = contractId.isNotBlank(),
                             modifier = Modifier.fillMaxWidth(),
                             colors = ButtonDefaults.buttonColors(
                                 containerColor = CDCOrange
-                            )
+                            ),
+                            shape = RoundedCornerShape(12.dp)
                         ) {
-                            Text("Confirmar", color = Color.White)
+                            Text(
+                                "Ativar Dispositivo",
+                                modifier = Modifier.padding(vertical = 8.dp),
+                                style = MaterialTheme.typography.titleMedium
+                            )
                         }
                     }
                 }
             }
-        }
-        
-        IconButton(
-            onClick = onCancel,
-            modifier = Modifier
-                .align(Alignment.TopStart)
-                .padding(16.dp)
-        ) {
-            Icon(
-                imageVector = Icons.Default.Close,
-                contentDescription = "Cancelar",
-                tint = Color.White,
-                modifier = Modifier.size(32.dp)
-            )
+            
+            IconButton(
+                onClick = onCancel,
+                modifier = Modifier
+                    .align(Alignment.TopStart)
+                    .padding(16.dp)
+            ) {
+                Icon(
+                    imageVector = Icons.Default.Close,
+                    contentDescription = "Cancelar",
+                    tint = MaterialTheme.colorScheme.onBackground
+                )
+            }
         }
     }
 }

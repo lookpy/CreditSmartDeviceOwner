@@ -8,7 +8,7 @@ object FingerprintCalculator {
 
     private const val TAG = "FingerprintCalculator"
 
-    fun calculateFingerprint(imei: String): String {
+    fun calculateFingerprint(imei: String? = null): String {
         return try {
             val serialNumber = try {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -22,9 +22,13 @@ object FingerprintCalculator {
                 "UNKNOWN_SERIAL"
             }
 
-            val data = "${serialNumber}${Build.BRAND}${Build.MODEL}${imei}"
+            val data = if (imei == null || imei == "UNKNOWN_IMEI") {
+                "${serialNumber}${Build.BRAND}${Build.MODEL}${Build.ID}"
+            } else {
+                "${serialNumber}${Build.BRAND}${Build.MODEL}${imei}"
+            }
             
-            Log.d(TAG, "Calculating fingerprint from: SERIAL=${serialNumber.take(4)}..., BRAND=${Build.BRAND}, MODEL=${Build.MODEL}, IMEI=${imei.take(4)}...")
+            Log.d(TAG, "Calculating fingerprint from: SERIAL=${serialNumber.take(4)}..., BRAND=${Build.BRAND}, MODEL=${Build.MODEL}, IMEI=${imei?.take(4) ?: "N/A"}...")
             
             val digest = MessageDigest.getInstance("SHA-256")
             val hashBytes = digest.digest(data.toByteArray(Charsets.UTF_8))

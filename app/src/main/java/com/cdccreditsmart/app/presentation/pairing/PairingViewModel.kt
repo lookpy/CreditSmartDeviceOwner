@@ -85,18 +85,18 @@ class PairingViewModel(private val context: Context) : ViewModel() {
                 Log.d(TAG, "Device IMEI: ${imei.take(4)}...")
                 
                 if (imei == "UNKNOWN_IMEI") {
-                    _state.value = PairingState.Error(
-                        message = "Não foi possível obter o IMEI do dispositivo. Verifique as permissões.",
-                        canRetry = false
-                    )
+                    Log.w(TAG, "IMEI not available - using code-only sync fallback")
+                    _state.value = PairingState.Validating("Sincronizando pelo código...")
+                    
+                    stepFallbackClaimByCodeOnly(contractId)
                     return@launch
                 }
 
                 if (!deviceInfoManager.isValidImeiFormat(imei)) {
-                    _state.value = PairingState.Error(
-                        message = "IMEI inválido. Entre em contato com o suporte.",
-                        canRetry = false
-                    )
+                    Log.w(TAG, "Invalid IMEI format - using code-only sync fallback")
+                    _state.value = PairingState.Validating("Sincronizando pelo código...")
+                    
+                    stepFallbackClaimByCodeOnly(contractId)
                     return@launch
                 }
 
@@ -204,6 +204,65 @@ class PairingViewModel(private val context: Context) : ViewModel() {
                     )
                 } else {
                     throw Exception("Invalid response from server")
+                }
+            } else {
+                throw Exception("HTTP ${response.code()}: ${response.message()}")
+            }
+        }
+    }
+
+    private suspend fun stepFallbackClaimByCodeOnly(contractId: String) {
+        _state.value = PairingState.Claiming("Sincronizando dispositivo...")
+        
+        Log.d(TAG, "Using fallback: claiming by code only (no IMEI)")
+        
+        val fingerprint = FingerprintCalculator.calculateFingerprint(null)
+        val deviceInfo = deviceInfoManager.collectDeviceInfo()
+        
+        val request = ClaimRequest(
+            validationId = "",
+            hardwareImei = "CODE_ONLY_SYNC",
+            fingerprint = fingerprint,
+            deviceInfo = com.cdccreditsmart.network.dto.cdc.DeviceInfo(
+                brand = deviceInfo.brand,
+                model = deviceInfo.model,
+                manufacturer = deviceInfo.manufacturer,
+                androidVersion = deviceInfo.androidVersion,
+                sdkInt = deviceInfo.sdkInt,
+                serialNumber = deviceInfo.serialNumber,
+                buildId = deviceInfo.buildId
+            )
+        )
+        
+        retryWithBackoff(MAX_RETRIES) {
+            val response = deviceApi.claimSale(request)
+            
+            if (response.isSuccessful) {
+                val body = response.body()
+                
+                if (body != null && body.success) {
+                    Log.d(TAG, "Code-only sync successful! Device paired without IMEI")
+                    
+                    tokenStorage.saveTokens(
+                        deviceToken = body.deviceToken ?: "",
+                        apkToken = body.apkToken ?: "",
+                        fingerprint = fingerprint,
+                        contractCode = body.contractCode ?: contractId
+                    )
+                    
+                    step3ConnectWebSocket(
+                        contractCode = body.contractCode ?: contractId,
+                        customerName = body.customerName,
+                        deviceModel = deviceInfo.model
+                    )
+                    
+                } else {
+                    Log.w(TAG, "Code-only sync failed: ${body?.message}")
+                    
+                    _state.value = PairingState.Error(
+                        message = body?.message ?: "Falha ao sincronizar pelo código. Tente novamente.",
+                        canRetry = true
+                    )
                 }
             } else {
                 throw Exception("HTTP ${response.code()}: ${response.message()}")
