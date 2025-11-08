@@ -4,6 +4,7 @@ import androidx.compose.ui.graphics.Color
 
 // CDC Brand Colors
 val CDCPrimary = Color(0xFFFF7A1A)
+val CDCOrange = Color(0xFFFF7A1A) // Alias for CDCPrimary
 val CDCSecondary = Color(0xFFF47C2C)
 val CDCBackground = Color(0xFF121212)
 val CDCCard = Color(0xFF1E1E1E)
