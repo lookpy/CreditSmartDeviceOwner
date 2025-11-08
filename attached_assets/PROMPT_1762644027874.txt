@@ -1,0 +1,38 @@
+2025-11-08 20:19:52.038  9309-9309  PairingViewModel        com.cdccreditsmart.app.debug         D  Starting handshake for contract: Z8ZEMSAV
+2025-11-08 20:19:52.038  9309-9309  DeviceInfoManager       com.cdccreditsmart.app.debug         W  READ_PHONE_STATE permission not granted
+2025-11-08 20:19:52.038  9309-9309  PairingViewModel        com.cdccreditsmart.app.debug         D  Device IMEI: UNKN...
+2025-11-08 20:19:52.038  9309-9309  PairingViewModel        com.cdccreditsmart.app.debug         W  IMEI not available - using code-only sync fallback
+2025-11-08 20:19:52.039  9309-9309  PairingViewModel        com.cdccreditsmart.app.debug         D  ========== APK AUTHENTICATION ==========
+2025-11-08 20:19:52.039  9309-9309  PairingViewModel        com.cdccreditsmart.app.debug         D  Pairing Code: Z8ZEMSAV
+2025-11-08 20:19:52.039  9309-9309  PairingViewModel        com.cdccreditsmart.app.debug         D  Sending POST /api/apk/auth...
+2025-11-08 20:19:52.039  9309-9309  PairingViewModel        com.cdccreditsmart.app.debug         D  Request: { code: "Z8ZE****" }
+2025-11-08 20:19:52.648  9309-9309  PairingViewModel        com.cdccreditsmart.app.debug         D  Response code: 404
+2025-11-08 20:19:52.648  9309-9309  PairingViewModel        com.cdccreditsmart.app.debug         D  Response message: 
+2025-11-08 20:19:52.649  9309-9309  PairingViewModel        com.cdccreditsmart.app.debug         E  ❌ HTTP Error 404
+2025-11-08 20:19:52.649  9309-9309  PairingViewModel        com.cdccreditsmart.app.debug         E  Error body: {"error":"Token inválido ou dispositivo não encontrado","tokenProvided":"Z8ZE****"}
+2025-11-08 20:19:52.649  9309-9309  PairingViewModel        com.cdccreditsmart.app.debug         W  Attempt 1 failed: Código não encontrado ou expirado
+2025-11-08 20:19:52.715  9309-9309  InsetsController        com.cdccreditsmart.app.debug         D  hide(ime(), fromIme=false)
+2025-11-08 20:19:52.718  9309-9309  ImeTracker              com.cdccreditsmart.app.debug         I  com.cdccreditsmart.app.debug:2d4df9fe: onRequestHide at ORIGIN_CLIENT reason HIDE_SOFT_INPUT_BY_INSETS_API fromUser false
+2025-11-08 20:19:52.718  9309-9309  ImeTracker              com.cdccreditsmart.app.debug         I  com.cdccreditsmart.app.debug:2d4df9fe: onCancelled at PHASE_CLIENT_APPLY_ANIMATION
+2025-11-08 20:19:53.916  9309-9309  PairingViewModel        com.cdccreditsmart.app.debug         D  Response code: 404
+2025-11-08 20:19:53.916  9309-9309  PairingViewModel        com.cdccreditsmart.app.debug         D  Response message: 
+2025-11-08 20:19:53.917  9309-9309  PairingViewModel        com.cdccreditsmart.app.debug         E  ❌ HTTP Error 404
+2025-11-08 20:19:53.917  9309-9309  PairingViewModel        com.cdccreditsmart.app.debug         E  Error body: {"error":"Token inválido ou dispositivo não encontrado","tokenProvided":"Z8ZE****"}
+2025-11-08 20:19:53.917  9309-9309  PairingViewModel        com.cdccreditsmart.app.debug         W  Attempt 2 failed: Código não encontrado ou expirado
+2025-11-08 20:19:56.214  9309-9309  PairingViewModel        com.cdccreditsmart.app.debug         D  Response code: 404
+2025-11-08 20:19:56.215  9309-9309  PairingViewModel        com.cdccreditsmart.app.debug         D  Response message: 
+2025-11-08 20:19:56.215  9309-9309  PairingViewModel        com.cdccreditsmart.app.debug         E  ❌ HTTP Error 404
+2025-11-08 20:19:56.215  9309-9309  PairingViewModel        com.cdccreditsmart.app.debug         E  Error body: {"error":"Token inválido ou dispositivo não encontrado","tokenProvided":"Z8ZE****"}
+2025-11-08 20:19:56.217  9309-9309  PairingViewModel        com.cdccreditsmart.app.debug         E  Error in handshake (Ask Gemini)
+                                                                                                    java.lang.Exception: Código não encontrado ou expirado
+                                                                                                    	at com.cdccreditsmart.app.presentation.pairing.PairingViewModel$stepFallbackClaimByCodeOnly$2.invokeSuspend(PairingViewModel.kt:282)
+                                                                                                    	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:34)
+                                                                                                    	at kotlinx.coroutines.DispatchedTask.run(DispatchedTask.kt:108)
+                                                                                                    	at android.os.Handler.handleCallback(Handler.java:959)
+                                                                                                    	at android.os.Handler.dispatchMessage(Handler.java:100)
+                                                                                                    	at android.os.Looper.loopOnce(Looper.java:234)
+                                                                                                    	at android.os.Looper.loop(Looper.java:319)
+                                                                                                    	at android.app.ActivityThread.main(ActivityThread.java:8754)
+                                                                                                    	at java.lang.reflect.Method.invoke(Native Method)
+                                                                                                    	at com.android.internal.os.RuntimeInit$MethodAndArgsCaller.run(RuntimeInit.java:602)
+                                                                                                    	at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:962)
