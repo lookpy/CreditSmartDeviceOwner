@@ -252,7 +252,7 @@ class PairingViewModel(private val context: Context) : ViewModel() {
                     
                     step3ConnectWebSocket(
                         contractCode = body.contractCode ?: contractId,
-                        customerName = body.customerName,
+                        customerName = null,
                         deviceModel = deviceInfo.model
                     )
                     
