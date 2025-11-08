@@ -56,6 +56,46 @@ interface DeviceApiService {
     ): Response<CdcProvisioningQrResponse>
     
     /**
+     * IMEI Authentication endpoint - CDC Credit Smart specific
+     * POST /api/apk/device/auth/imei
+     * Authenticates device automatically using IMEI
+     */
+    @POST("api/apk/device/auth/imei")
+    suspend fun authenticateByImei(
+        @Body request: ImeiAuthRequest
+    ): Response<AuthResponse>
+    
+    /**
+     * Code Authentication endpoint - CDC Credit Smart specific
+     * POST /api/apk/device/auth/code
+     * Authenticates device manually using a code provided by the store
+     */
+    @POST("api/apk/device/auth/code")
+    suspend fun authenticateByCode(
+        @Body request: CodeAuthRequest
+    ): Response<AuthResponse>
+    
+    /**
+     * Search Pending Sale by IMEI (Handshake Step 1) - CDC Credit Smart specific
+     * GET /api/device/claim-sale?imei={IMEI}
+     * Searches for a pending sale associated with the provided IMEI
+     */
+    @GET("api/device/claim-sale")
+    suspend fun searchPendingSale(
+        @Query("imei") imei: String
+    ): Response<PendingSaleResponse>
+    
+    /**
+     * Claim Sale (Handshake Step 2) - CDC Credit Smart specific
+     * POST /api/device/claim-sale
+     * Claims a sale by validating IMEI and device information
+     */
+    @POST("api/device/claim-sale")
+    suspend fun claimSale(
+        @Body request: ClaimRequest
+    ): Response<ClaimResponse>
+    
+    /**
      * Authenticated device status endpoint - CDC Credit Smart specific
      * GET /api/apk/device/status
      */

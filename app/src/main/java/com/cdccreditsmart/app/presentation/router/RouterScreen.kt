@@ -13,15 +13,9 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 
-/**
- * Tela inicial que determina para onde navegar baseado no estado atual da venda
- * Evita mostrar telas desnecessárias quando a venda já avançou
- */
 @Composable
 fun RouterScreen(
-    onNavigateToAuthImei: () -> Unit,
-    onNavigateToWaitingPdv: () -> Unit,
-    onNavigateToBiometry: () -> Unit,
+    onNavigateToQRScanner: () -> Unit,
     onNavigateToHome: () -> Unit
 ) {
     val context = LocalContext.current
@@ -36,24 +30,18 @@ fun RouterScreen(
 
     val destination by viewModel.destination
 
-    // Determina destino ao carregar a tela
     LaunchedEffect(Unit) {
         viewModel.determineInitialDestination()
     }
 
-    // Navega quando destino é determinado
     LaunchedEffect(destination) {
         when (destination) {
-            is RouterDestination.AuthImei -> onNavigateToAuthImei()
-            is RouterDestination.WaitingPdv -> onNavigateToWaitingPdv()
-            is RouterDestination.Biometry -> onNavigateToBiometry()
+            is RouterDestination.QRScanner -> onNavigateToQRScanner()
             is RouterDestination.Home -> onNavigateToHome()
             is RouterDestination.Error -> {
-                // Erro → fallback para AUTH_IMEI
-                onNavigateToAuthImei()
+                onNavigateToQRScanner()
             }
             RouterDestination.Loading -> {
-                // Aguarda determinação
             }
         }
     }

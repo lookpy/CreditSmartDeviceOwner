@@ -1,48 +1,53 @@
 package com.cdccreditsmart.app.navigation
 
+import android.content.Context
+import android.net.Uri
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
+import com.cdccreditsmart.app.presentation.pairing.PairingErrorScreen
+import com.cdccreditsmart.app.presentation.pairing.PairingProgressScreen
+import com.cdccreditsmart.app.presentation.pairing.PairingState
+import com.cdccreditsmart.app.presentation.pairing.PairingSuccessScreen
+import com.cdccreditsmart.app.presentation.pairing.PairingViewModel
 import com.cdccreditsmart.app.presentation.router.RouterScreen
-import com.cdccreditsmart.app.presentation.auth.IMEIAuthScreen
-import com.cdccreditsmart.app.presentation.screens.flow.WaitingPdvScreen
-import com.cdccreditsmart.app.presentation.screens.flow.BiometryScreen
-import com.cdccreditsmart.app.presentation.screens.flow.SuccessScreen
+import com.cdccreditsmart.app.presentation.scanner.QRCodeScannerScreen
 import com.cdccreditsmart.app.presentation.screens.home.SimpleHomeScreen
-// TEMPORARILY DISABLED FOR SIMPLIFIED BUILD - screens with complex dependencies
-// import com.cdccreditsmart.app.presentation.screens.onboarding.WelcomeScreen
-// import com.cdccreditsmart.app.presentation.screens.flow.AttestedScreen
-// import com.cdccreditsmart.app.presentation.screens.flow.SignatureScreen
-// import com.cdccreditsmart.app.presentation.screens.flow.DoneScreen
-// import com.cdccreditsmart.app.presentation.screens.home.HomeScreen
-// import com.cdccreditsmart.app.presentation.screens.installments.InstallmentsScreen
-// import com.cdccreditsmart.app.presentation.screens.payment.PaymentScreen
-// import com.cdccreditsmart.app.presentation.screens.support.SupportScreen
-// import com.cdccreditsmart.app.presentation.screens.profile.ProfileScreen
-// import com.cdccreditsmart.app.presentation.screens.lock.LockOverlayScreen
 
 object Routes {
     const val ROUTER = "router"
-    const val AUTH_IMEI = "auth/imei"
-    const val ONBOARDING_WELCOME = "onboarding/welcome"
-    const val FLOW_ATTESTED = "flow/attested"
-    const val FLOW_WAITING_PDV = "flow/waiting_pdv"
-    const val FLOW_BIOMETRY = "flow/biometry"
-    const val FLOW_SUCCESS = "flow/success"
-    const val FLOW_SIGN = "flow/sign"
-    const val FLOW_DONE = "flow/done"
+    const val QR_SCANNER = "pairing/qr_scanner"
+    const val PAIRING_PROGRESS = "pairing/progress/{contractId}"
+    const val PAIRING_SUCCESS = "pairing/success/{contractCode}/{customerName}/{deviceModel}"
+    const val PAIRING_ERROR = "pairing/error/{errorMessage}/{attemptsRemaining}/{securityViolation}/{canRetry}"
     const val HOME = "home"
-    const val INSTALLMENTS = "installments"
-    const val PAYMENT = "payment/{installmentId}"
-    const val SUPPORT = "support"
-    const val PROFILE = "profile"
-    const val LOCK_OVERLAY = "lock/overlay"
     
-    fun createPaymentRoute(installmentId: String) = "payment/$installmentId"
+    fun createPairingProgressRoute(contractId: String) = "pairing/progress/$contractId"
+    
+    fun createPairingSuccessRoute(contractCode: String, customerName: String?, deviceModel: String?): String {
+        val encodedContractCode = Uri.encode(contractCode)
+        val encodedCustomerName = Uri.encode(customerName ?: "NONE")
+        val encodedDeviceModel = Uri.encode(deviceModel ?: "NONE")
+        return "pairing/success/$encodedContractCode/$encodedCustomerName/$encodedDeviceModel"
+    }
+    
+    fun createPairingErrorRoute(
+        errorMessage: String,
+        attemptsRemaining: Int?,
+        securityViolation: Boolean,
+        canRetry: Boolean
+    ): String {
+        val encodedMessage = Uri.encode(errorMessage)
+        val attempts = attemptsRemaining?.toString() ?: "NONE"
+        return "pairing/error/$encodedMessage/$attempts/$securityViolation/$canRetry"
+    }
 }
 
 @Composable
@@ -51,26 +56,17 @@ fun CDCNavigation(
     startDestination: String = Routes.ROUTER,
     modifier: Modifier = Modifier
 ) {
+    val context = LocalContext.current
+    
     NavHost(
         navController = navController,
         startDestination = startDestination,
         modifier = modifier
     ) {
-        // Router - Determines initial screen based on sale state
         composable(Routes.ROUTER) {
             RouterScreen(
-                onNavigateToAuthImei = {
-                    navController.navigate(Routes.AUTH_IMEI) {
-                        popUpTo(Routes.ROUTER) { inclusive = true }
-                    }
-                },
-                onNavigateToWaitingPdv = {
-                    navController.navigate(Routes.FLOW_WAITING_PDV) {
-                        popUpTo(Routes.ROUTER) { inclusive = true }
-                    }
-                },
-                onNavigateToBiometry = {
-                    navController.navigate(Routes.FLOW_BIOMETRY) {
+                onNavigateToQRScanner = {
+                    navController.navigate(Routes.QR_SCANNER) {
                         popUpTo(Routes.ROUTER) { inclusive = true }
                     }
                 },
@@ -82,170 +78,139 @@ fun CDCNavigation(
             )
         }
         
-        // IMEI Authentication - App Entry Point
-        composable(Routes.AUTH_IMEI) {
-            IMEIAuthScreen(
-                onAuthenticationSuccess = {
-                    // Navigate to waiting PDV screen after successful claim-sale
-                    // APK will wait for PDV to reach biometry stage
-                    navController.navigate(Routes.FLOW_WAITING_PDV) {
-                        popUpTo(Routes.AUTH_IMEI) { inclusive = true }
-                    }
-                }
-            )
-        }
-        
-        // Waiting PDV Screen - Synchronizes with PDV flow
-        composable(Routes.FLOW_WAITING_PDV) {
-            WaitingPdvScreen(
-                onNavigateToBiometry = {
-                    // PDV reached biometry stage, navigate to biometry screen
-                    navController.navigate(Routes.FLOW_BIOMETRY) {
-                        popUpTo(Routes.FLOW_WAITING_PDV) { inclusive = true }
+        composable(Routes.QR_SCANNER) {
+            QRCodeScannerScreen(
+                onQRCodeScanned = { contractId ->
+                    navController.navigate(Routes.createPairingProgressRoute(contractId)) {
+                        popUpTo(Routes.QR_SCANNER) { inclusive = false }
                     }
                 },
-                onNavigateBack = {
-                    navController.navigate(Routes.AUTH_IMEI) {
-                        popUpTo(Routes.FLOW_WAITING_PDV) { inclusive = true }
-                    }
+                onCancel = {
+                    navController.popBackStack()
                 }
-            )
-        }
-        
-        // Biometry Screen - Facial validation when PDV is ready
-        composable(Routes.FLOW_BIOMETRY) {
-            BiometryScreen(
-                onNavigateToNext = { 
-                    navController.navigate(Routes.FLOW_SUCCESS) {
-                        popUpTo(Routes.FLOW_BIOMETRY) { inclusive = false }
-                    }
-                },
-                onNavigateBack = { 
-                    navController.popBackStack() 
-                }
-            )
-        }
-        
-        // Success Screen - Completion of biometry validation
-        composable(Routes.FLOW_SUCCESS) {
-            SuccessScreen(
-                onNavigateToHome = {
-                    navController.navigate(Routes.HOME) {
-                        popUpTo(Routes.AUTH_IMEI) { inclusive = true }
-                    }
-                }
-            )
-        }
-        
-        // Home Screen - Main app screen after successful authentication
-        composable(Routes.HOME) {
-            SimpleHomeScreen()
-        }
-        
-        // ALL OTHER SCREENS TEMPORARILY DISABLED FOR SIMPLIFIED BUILD
-        /*
-        // Onboarding (legacy - kept for potential use)
-        composable(Routes.ONBOARDING_WELCOME) {
-            WelcomeScreen(
-                onNavigateToHome = {
-                    navController.navigate(Routes.HOME) {
-                        popUpTo(Routes.ONBOARDING_WELCOME) { inclusive = true }
-                    }
-                }
-            )
-        }
-        
-        // Flow Steps
-        composable(Routes.FLOW_ATTESTED) {
-            AttestedScreen(
-                onNavigateToNext = { navController.navigate(Routes.FLOW_BIOMETRY) },
-                onNavigateBack = { navController.popBackStack() }
-            )
-        }
-        
-        composable(Routes.FLOW_BIOMETRY) {
-            BiometryScreen(
-                onNavigateToNext = { navController.navigate(Routes.FLOW_SIGN) },
-                onNavigateBack = { navController.popBackStack() }
-            )
-        }
-        
-        composable(Routes.FLOW_SIGN) {
-            SignatureScreen(
-                onNavigateToNext = { navController.navigate(Routes.FLOW_DONE) },
-                onNavigateBack = { navController.popBackStack() }
-            )
-        }
-        
-        composable(Routes.FLOW_DONE) {
-            DoneScreen(
-                onNavigateToHome = {
-                    navController.navigate(Routes.HOME) {
-                        popUpTo(Routes.FLOW_ATTESTED) { inclusive = true }
-                    }
-                }
-            )
-        }
-        
-        // Main screens
-        composable(Routes.HOME) {
-            HomeScreen(
-                onNavigateToInstallments = { navController.navigate(Routes.INSTALLMENTS) },
-                onNavigateToPayment = { installmentId ->
-                    navController.navigate(Routes.createPaymentRoute(installmentId))
-                },
-                onNavigateToSupport = { navController.navigate(Routes.SUPPORT) },
-                onNavigateToProfile = { navController.navigate(Routes.PROFILE) }
-            )
-        }
-        
-        composable(Routes.INSTALLMENTS) {
-            InstallmentsScreen(
-                onNavigateToPayment = { installmentId ->
-                    navController.navigate(Routes.createPaymentRoute(installmentId))
-                },
-                onNavigateBack = { navController.popBackStack() }
             )
         }
         
         composable(
-            route = Routes.PAYMENT,
-            arguments = listOf(navArgument("installmentId") { type = NavType.StringType })
-        ) { backStackEntry ->
-            val installmentId = backStackEntry.arguments?.getString("installmentId") ?: ""
-            PaymentScreen(
-                installmentId = installmentId,
-                onNavigateBack = { navController.popBackStack() },
-                onPaymentComplete = {
+            route = Routes.PAIRING_PROGRESS,
+            arguments = listOf(
+                navArgument("contractId") {
+                    type = NavType.StringType
+                }
+            )
+        ) {
+            val contractId = it.arguments?.getString("contractId") ?: ""
+            
+            val viewModel = remember(context) { PairingViewModel(context) }
+            val state by viewModel.state
+            
+            LaunchedEffect(contractId) {
+                if (contractId.isNotBlank()) {
+                    viewModel.startHandshake(contractId)
+                }
+            }
+            
+            when (val currentState = state) {
+                is PairingState.Success -> {
+                    LaunchedEffect(Unit) {
+                        navController.navigate(
+                            Routes.createPairingSuccessRoute(
+                                currentState.contractCode,
+                                currentState.customerName,
+                                currentState.deviceModel
+                            )
+                        ) {
+                            popUpTo(Routes.QR_SCANNER) { inclusive = true }
+                        }
+                    }
+                }
+                is PairingState.Error -> {
+                    LaunchedEffect(Unit) {
+                        navController.navigate(
+                            Routes.createPairingErrorRoute(
+                                currentState.message,
+                                currentState.attemptsRemaining,
+                                currentState.securityViolation,
+                                currentState.canRetry
+                            )
+                        ) {
+                            popUpTo(Routes.PAIRING_PROGRESS) { inclusive = true }
+                        }
+                    }
+                }
+                else -> {
+                    PairingProgressScreen(state = state)
+                }
+            }
+        }
+        
+        composable(
+            route = Routes.PAIRING_SUCCESS,
+            arguments = listOf(
+                navArgument("contractCode") { type = NavType.StringType },
+                navArgument("customerName") { type = NavType.StringType },
+                navArgument("deviceModel") { type = NavType.StringType }
+            )
+        ) {
+            val contractCode = it.arguments?.getString("contractCode") ?: ""
+            val customerName = it.arguments?.getString("customerName")?.let { name ->
+                if (name == "NONE") null else name
+            }
+            val deviceModel = it.arguments?.getString("deviceModel")?.let { model ->
+                if (model == "NONE") null else model
+            }
+            
+            PairingSuccessScreen(
+                contractCode = contractCode,
+                customerName = customerName,
+                deviceModel = deviceModel,
+                onContinue = {
                     navController.navigate(Routes.HOME) {
-                        popUpTo(Routes.HOME) { inclusive = true }
+                        popUpTo(Routes.QR_SCANNER) { inclusive = true }
                     }
                 }
             )
         }
         
-        composable(Routes.SUPPORT) {
-            SupportScreen(
-                onNavigateBack = { navController.popBackStack() }
+        composable(
+            route = Routes.PAIRING_ERROR,
+            arguments = listOf(
+                navArgument("errorMessage") { type = NavType.StringType },
+                navArgument("attemptsRemaining") { type = NavType.StringType },
+                navArgument("securityViolation") { type = NavType.BoolType },
+                navArgument("canRetry") { type = NavType.BoolType }
             )
-        }
-        
-        composable(Routes.PROFILE) {
-            ProfileScreen(
-                onNavigateBack = { navController.popBackStack() }
-            )
-        }
-        
-        // Lock Overlay Screen - Device Owner functionality
-        composable(Routes.LOCK_OVERLAY) {
-            LockOverlayScreen(
-                onPayNow = { 
-                    navController.navigate(Routes.INSTALLMENTS) {
-                        popUpTo(Routes.LOCK_OVERLAY) { inclusive = true }
+        ) {
+            val errorMessage = it.arguments?.getString("errorMessage") ?: "Erro desconhecido"
+            val attemptsRemaining = it.arguments?.getString("attemptsRemaining")?.let { attempts ->
+                if (attempts == "NONE") null else attempts.toIntOrNull()
+            }
+            val securityViolation = it.arguments?.getBoolean("securityViolation") ?: false
+            val canRetry = it.arguments?.getBoolean("canRetry") ?: true
+            
+            PairingErrorScreen(
+                message = errorMessage,
+                attemptsRemaining = attemptsRemaining,
+                securityViolation = securityViolation,
+                canRetry = canRetry,
+                onRetry = {
+                    navController.navigate(Routes.QR_SCANNER) {
+                        popUpTo(Routes.PAIRING_ERROR) { inclusive = true }
                     }
+                },
+                onContactSupport = {
+                    // TODO: Implement support contact functionality
                 }
             )
         }
-        */
+        
+        composable(Routes.HOME) {
+            SimpleHomeScreen()
+        }
     }
+}
+
+@Composable
+private fun remember(context: Context, calculation: () -> PairingViewModel): PairingViewModel {
+    return androidx.compose.runtime.remember { calculation() }
 }

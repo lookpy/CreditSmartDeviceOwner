@@ -1,7 +1,7 @@
 # CDC Credit Smart Android App
 
 ## Overview
-The CDC Credit Smart Android App provides a secure and efficient mobile experience for CDC Credit Smart clients. It functions as a Device Owner application with advanced security features, biometric authentication, and robust device management capabilities. The app integrates with the CDC Credit Smart backend for device pairing, payment processing (PIX and Boleto), and graduated blocking policies, aiming to streamline operations and enhance security for mobile transactions. Its business vision includes enhancing mobile transaction security, offering market potential in secure financial services, and ambitions to set a new standard for mobile device management in financial applications.
+The CDC Credit Smart Android App provides a secure and efficient mobile experience for CDC Credit Smart clients. It functions as a Device Owner application with advanced security features and robust device pairing capabilities. The app integrates with the CDC Credit Smart backend using a secure 3-step handshake process: QR Code scanning, IMEI validation, and device fingerprint verification. Real-time communication via WebSocket ensures seamless synchronization with the PDV system. The app handles payment processing (PIX and Boleto) and implements graduated blocking policies, aiming to streamline operations and enhance security for mobile transactions.
 
 ## User Preferences
 - I prefer simple language and clear explanations.
@@ -16,31 +16,30 @@ The CDC Credit Smart Android App provides a secure and efficient mobile experien
 The application follows a Clean Architecture with MVVM, utilizing Jetpack Compose for the UI. It is modularized into `app`, `data`, `network`, `domain`, `device`, `payments`, and `biometry` components.
 
 **UI/UX Decisions:**
-The UI is developed using Jetpack Compose and Material 3, incorporating a CDC institutional dark theme (`#FF7A1A`/`#F47C2C`). It features a comprehensive navigation system powered by Compose NavController, covering onboarding, dashboard, payments, and a device lock overlay. The app now includes a `RouterScreen` to intelligently direct users based on the current PDV session status, ensuring a synchronized experience. A `WaitingPdvScreen` manages the polling of `pdvSession.currentStage` to ensure biometric capture only occurs when the PDV is ready.
+The UI is developed using Jetpack Compose and Material 3, incorporating a CDC institutional dark theme (`#FF7A1A`/`#F47C2C`). It features a comprehensive navigation system powered by Compose NavController, covering device pairing, dashboard, and payments. The app includes a `RouterScreen` to intelligently direct users based on token status, a `QRCodeScannerScreen` for contract ID input, `PairingProgressScreen` for visual feedback during the handshake process, and Success/Error screens for pairing outcomes.
 
 **Technical Implementations:**
-- **Dependency Injection**: Hilt is used for DI.
-- **Data Persistence**: Room for local database and EncryptedSharedPreferences for secure data storage.
-- **Networking**: Retrofit, OkHttp, and Certificate Pinning ensure secure API communication, with retry logic for transient errors.
-- **Background Processing**: WorkManager handles background tasks.
-- **Security**: Play Integrity, Key Attestation, Device Owner APIs, Samsung Knox Enterprise SDK, anti-tampering measures, overlay blocking, and silent app updates provide robust security. Facial biometry with liveness detection and digital signature capabilities are also integrated.
-- **UI Framework**: Jetpack Compose, Material 3, and Compose Navigation are used for building the user interface.
-- **Device Management**: Implemented via an exported `ProvisioningActivity` with DPC permissions and a timeout detection system for provisioning. Samsung Knox integration uses a hybrid architecture with `KnoxFactory` for enterprise features.
-- **Error Handling**: `CdcApiException` and `NetworkErrorMapper` manage API and network errors.
-- **Build System**: Optimized with KSP, R8, and compatibility with 16KB page size for Android 15+.
-- **Business Logic**: Includes QR code onboarding, device attestation and binding, PIX/Boleto payment processing, and graduated blocking policies. The application now features robust synchronization with the PDV backend using a `pdvSession` heartbeat system, enabling intelligent state detection and navigation (e.g., `SALE_NOT_OPEN`, `PDV_ASSEMBLING_CART`, `PDV_WAITING_BIOMETRY`, `PDV_COMPLETED`, `PDV_ABANDONED`). The app ensures the JWT token is properly saved and utilized for authenticated API calls.
-- **Backend Integration**: Features JWT authentication with scopes, idempotency keys, and ECDSA request signing.
+- **Device Pairing**: Secure 3-step handshake process with IMEI validation and SHA-256 fingerprint calculation
+- **Real-time Communication**: WebSocket connection (wss://cdccreditsmart.com/ws/flow-status) with automatic reconnection and heartbeat (30s intervals)
+- **Security**: EncryptedSharedPreferences with AES256_GCM for token storage, Device fingerprint validation, IMEI mismatch detection (max 3 attempts), permanent device blocking on security violations
+- **Data Persistence**: SecureTokenStorage for deviceToken, apkToken, fingerprint, and contractCode
+- **Networking**: Retrofit, OkHttp with retry logic and exponential backoff (1s, 2s, 4s, 8s), Certificate Pinning for secure API communication
+- **Device Information**: DeviceInfoManager collects Build.BRAND, MODEL, MANUFACTURER, Android version, SDK level, serial number, and build ID
+- **UI Framework**: Jetpack Compose, Material 3, and Compose Navigation for responsive UI
+- **Device Management**: Device Owner APIs, Samsung Knox Enterprise SDK, anti-tampering measures, overlay blocking, and silent app updates
+- **Error Handling**: Comprehensive error states with retry capabilities, user-friendly error messages, security violation handling
+- **Build System**: Optimized with R8 and compatibility with 16KB page size for Android 15+
+- **Business Logic**: Device pairing via QR Code, IMEI validation, fingerprint verification, PIX/Boleto payment processing, graduated blocking policies
+- **Backend Integration**: JWT authentication with deviceToken and apkToken, WebSocket events (authenticated, device_connected, sale_completed, error)
 
 ## External Dependencies
-- **CDC Credit Smart Backend API**: Used for device pairing, sale claims, heartbeat, flow events, and WebSocket communication, including the `/api/apk/device/status` and `/api/apk/device/installments` endpoints.
-- **Samsung Knox Enterprise SDK v3.12+**: Utilized for advanced device management and security on Samsung devices.
-- **Google Play Integrity API**: Integrated for device integrity verification.
-- **Firebase Messaging**: Employed for push notifications.
-- **android-signaturepad**: Provides digital signature functionality.
-- **Jetpack Compose, Material 3, Compose Navigation**: Core UI framework components.
-- **Hilt**: Dependency injection library.
-- **Room**: ORM for local database persistence.
-- **Retrofit, OkHttp**: HTTP client and interceptor for network requests.
-- **WorkManager**: For managing deferrable, asynchronous tasks.
-- **CameraX**: Used for camera preview in biometry capture.
-- **TensorFlow Lite**: Integrated for real 512-dimensional facial embeddings using a FaceNet model.
+- **CDC Credit Smart Backend API**: Device pairing handshake (`GET /api/device/claim-sale?imei=`, `POST /api/device/claim-sale`), installments data (`/api/apk/device/installments`), payment processing
+- **WebSocket Server**: Real-time communication at `wss://cdccreditsmart.com/ws/flow-status` for flow status events
+- **Samsung Knox Enterprise SDK v3.12+**: Advanced device management and security on Samsung devices
+- **Google Play Integrity API**: Device integrity verification
+- **Firebase Messaging**: Push notifications
+- **Jetpack Compose, Material 3, Compose Navigation**: Core UI framework
+- **Retrofit, OkHttp**: HTTP client with WebSocket support
+- **EncryptedSharedPreferences**: Secure local storage with AES256_GCM encryption
+- **WorkManager**: Deferrable asynchronous tasks
+- **Kotlin Coroutines**: Asynchronous programming with suspend functions

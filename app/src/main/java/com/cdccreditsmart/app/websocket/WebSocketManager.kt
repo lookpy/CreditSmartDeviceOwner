@@ -1,0 +1,204 @@
+package com.cdccreditsmart.app.websocket
+
+import android.os.Handler
+import android.os.Looper
+import android.util.Log
+import okhttp3.OkHttpClient
+import okhttp3.Request
+import okhttp3.Response
+import okhttp3.WebSocket
+import okhttp3.WebSocketListener
+import org.json.JSONObject
+import java.util.concurrent.TimeUnit
+
+class WebSocketManager(
+    private val contractCode: String,
+    private val onDeviceConnected: () -> Unit,
+    private val onSaleCompleted: (data: SaleCompletedData) -> Unit,
+    private val onError: (message: String) -> Unit
+) {
+
+    companion object {
+        private const val TAG = "WebSocketManager"
+        private const val WS_URL = "wss://cdccreditsmart.com/ws/flow-status"
+        private const val HEARTBEAT_INTERVAL = 30_000L
+        private const val RECONNECT_DELAY = 5_000L
+    }
+
+    private var webSocket: WebSocket? = null
+    private val heartbeatHandler = Handler(Looper.getMainLooper())
+    private var isConnected = false
+    private var shouldReconnect = true
+
+    private val client = OkHttpClient.Builder()
+        .pingInterval(30, TimeUnit.SECONDS)
+        .connectTimeout(15, TimeUnit.SECONDS)
+        .readTimeout(30, TimeUnit.SECONDS)
+        .writeTimeout(15, TimeUnit.SECONDS)
+        .build()
+
+    fun connect() {
+        Log.d(TAG, "Connecting to WebSocket: $WS_URL")
+        shouldReconnect = true
+        
+        val request = Request.Builder()
+            .url(WS_URL)
+            .build()
+
+        webSocket = client.newWebSocket(request, WebSocketListenerImpl())
+    }
+
+    fun disconnect() {
+        Log.d(TAG, "Disconnecting WebSocket")
+        shouldReconnect = false
+        stopHeartbeat()
+        webSocket?.close(1000, "Client disconnect")
+        webSocket = null
+        isConnected = false
+    }
+
+    private fun authenticate() {
+        try {
+            val authMessage = JSONObject().apply {
+                put("type", "authenticate")
+                put("contractId", contractCode)
+            }
+            send(authMessage.toString())
+            Log.d(TAG, "Authentication message sent for contract: $contractCode")
+        } catch (e: Exception) {
+            Log.e(TAG, "Error sending authentication", e)
+            onError("Failed to authenticate: ${e.message}")
+        }
+    }
+
+    private fun send(message: String) {
+        if (webSocket != null) {
+            webSocket?.send(message)
+        } else {
+            Log.w(TAG, "Cannot send message: WebSocket is null")
+        }
+    }
+
+    private fun startHeartbeat() {
+        Log.d(TAG, "Starting heartbeat")
+        heartbeatHandler.postDelayed(object : Runnable {
+            override fun run() {
+                if (isConnected) {
+                    try {
+                        val pingMessage = JSONObject().apply {
+                            put("type", "ping")
+                        }
+                        send(pingMessage.toString())
+                        Log.d(TAG, "Heartbeat ping sent")
+                        heartbeatHandler.postDelayed(this, HEARTBEAT_INTERVAL)
+                    } catch (e: Exception) {
+                        Log.e(TAG, "Error sending heartbeat", e)
+                    }
+                }
+            }
+        }, HEARTBEAT_INTERVAL)
+    }
+
+    private fun stopHeartbeat() {
+        heartbeatHandler.removeCallbacksAndMessages(null)
+    }
+
+    private fun reconnect() {
+        if (shouldReconnect) {
+            Log.d(TAG, "Scheduling reconnection in ${RECONNECT_DELAY}ms")
+            Handler(Looper.getMainLooper()).postDelayed({
+                if (shouldReconnect) {
+                    connect()
+                }
+            }, RECONNECT_DELAY)
+        }
+    }
+
+    private fun handleMessage(text: String) {
+        try {
+            val message = JSONObject(text)
+            val type = message.optString("type", "unknown")
+
+            Log.d(TAG, "Received message type: $type")
+
+            when (type) {
+                "authenticated" -> {
+                    isConnected = true
+                    Log.d(TAG, "Successfully authenticated")
+                    startHeartbeat()
+                }
+                
+                "device_connected" -> {
+                    Log.d(TAG, "Device connected event received")
+                    onDeviceConnected()
+                }
+                
+                "sale_completed" -> {
+                    val data = message.optJSONObject("data")
+                    if (data != null) {
+                        val saleData = SaleCompletedData(
+                            contractCode = data.optString("contractCode", ""),
+                            totalValue = data.optDouble("totalValue", 0.0),
+                            installments = data.optInt("installments", 0)
+                        )
+                        Log.d(TAG, "Sale completed: ${saleData.contractCode}")
+                        onSaleCompleted(saleData)
+                    }
+                }
+                
+                "error" -> {
+                    val errorMessage = message.optString("message", "Unknown error")
+                    Log.e(TAG, "WebSocket error: $errorMessage")
+                    onError(errorMessage)
+                }
+                
+                "pong" -> {
+                    Log.d(TAG, "Pong received")
+                }
+                
+                else -> {
+                    Log.w(TAG, "Unknown message type: $type")
+                }
+            }
+        } catch (e: Exception) {
+            Log.e(TAG, "Error handling message", e)
+            onError("Error processing message: ${e.message}")
+        }
+    }
+
+    inner class WebSocketListenerImpl : WebSocketListener() {
+        
+        override fun onOpen(webSocket: WebSocket, response: Response) {
+            Log.d(TAG, "WebSocket connection opened")
+            authenticate()
+        }
+
+        override fun onMessage(webSocket: WebSocket, text: String) {
+            Log.d(TAG, "Message received: ${text.take(100)}...")
+            handleMessage(text)
+        }
+
+        override fun onFailure(webSocket: WebSocket, t: Throwable, response: Response?) {
+            Log.e(TAG, "WebSocket failure: ${t.message}", t)
+            isConnected = false
+            stopHeartbeat()
+            onError("Connection failed: ${t.message}")
+            reconnect()
+        }
+
+        override fun onClosed(webSocket: WebSocket, code: Int, reason: String) {
+            Log.d(TAG, "WebSocket closed. Code: $code, Reason: $reason")
+            isConnected = false
+            stopHeartbeat()
+            if (code != 1000) {
+                reconnect()
+            }
+        }
+    }
+
+    data class SaleCompletedData(
+        val contractCode: String,
+        val totalValue: Double,
+        val installments: Int
+    )
+}

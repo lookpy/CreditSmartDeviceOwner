@@ -1,0 +1,598 @@
+# 🤖 PROMPT PARA IA - Desenvolvimento APK Kotlin
+
+## Contexto
+Você está desenvolvendo um aplicativo Android em Kotlin para o sistema CDC Credit Smart, uma plataforma fintech de vendas de dispositivos com crédito. O APK precisa se integrar com o backend para realizar pareamento seguro de dispositivos vendidos.
+
+## Objetivo
+Implementar o **fluxo completo de pareamento APK-PDV** seguindo a documentação técnica fornecida no arquivo `APK_INTEGRATION_DOCUMENTATION.md`.
+
+---
+
+## 📋 TAREFAS PRINCIPAIS
+
+### 1. **Leitura e Validação de IMEI**
+
+Implemente a leitura do IMEI do dispositivo com as seguintes características:
+
+```kotlin
+// Requisitos:
+- Usar TelephonyManager para ler IMEI
+- Suportar Android 5.0 (API 21) até Android 14+ (API 34)
+- Validar formato: 15-17 dígitos numéricos
+- Implementar fallback para dispositivos sem IMEI (tablets)
+- Função cleanImei() para remover caracteres não-numéricos
+```
+
+**Método esperado:**
+```kotlin
+fun getDeviceImei(context: Context): String
+```
+
+---
+
+### 2. **Scanner de QR Code**
+
+Implemente scanner de QR Code que:
+
+```kotlin
+// Requisitos:
+- Use biblioteca ML Kit ou ZXing
+- Extraia o contractId do formato: "CTR_timestamp_imei"
+- Valide formato do QR Code
+- Mostre preview da câmera
+- Retorne resultado via callback ou LiveData
+```
+
+**Método esperado:**
+```kotlin
+fun scanQRCode(activity: Activity, onResult: (String) -> Unit)
+```
+
+---
+
+### 3. **Cálculo de Device Fingerprint**
+
+Implemente função que calcula identificador único do dispositivo:
+
+```kotlin
+// Requisitos:
+- Use SHA-256
+- Combine: Build.SERIAL + Build.BRAND + Build.MODEL + IMEI
+- Resultado: String hexadecimal (64 caracteres)
+- Deve ser idempotente (mesmo resultado sempre)
+```
+
+**Fórmula:**
+```kotlin
+SHA256("${Build.SERIAL}${Build.BRAND}${Build.MODEL}${imei}")
+```
+
+**Método esperado:**
+```kotlin
+fun calculateFingerprint(imei: String): String
+```
+
+---
+
+### 4. **Coleta de Device Info**
+
+Implemente função que coleta informações do dispositivo:
+
+```kotlin
+// Dados necessários:
+data class DeviceInfo(
+    val brand: String,          // Build.BRAND
+    val model: String,          // Build.MODEL
+    val manufacturer: String,   // Build.MANUFACTURER
+    val androidVersion: String, // Build.VERSION.RELEASE
+    val sdkInt: Int,           // Build.VERSION.SDK_INT
+    val serialNumber: String,  // Build.SERIAL
+    val buildId: String        // Build.ID
+)
+```
+
+**Método esperado:**
+```kotlin
+fun collectDeviceInfo(): DeviceInfo
+```
+
+---
+
+### 5. **Handshake Step 1: Buscar Venda Pendente**
+
+Implemente requisição GET para buscar venda:
+
+```kotlin
+// Endpoint: GET https://cdccreditsmart.com/api/device/claim-sale?imei={IMEI}
+
+// Resposta esperada:
+data class PendingSaleResponse(
+    val success: Boolean,
+    val found: Boolean,
+    val validationId: String,
+    val saleId: String,
+    val customerName: String,
+    val deviceModel: String,
+    val biometrySessionId: String,
+    val storeId: String,
+    val customerCpf: String,
+    val expiresIn: Int
+)
+```
+
+**Método esperado:**
+```kotlin
+suspend fun searchPendingSale(imei: String): Result<PendingSaleResponse>
+```
+
+**Regras:**
+- Se `found = false`: mostrar erro "Dispositivo não registrado"
+- Se `found = true`: prosseguir para Step 2
+- Timeout: 30 segundos
+- Usar Coroutines (suspend function)
+
+---
+
+### 6. **Handshake Step 2: Reivindicar Venda**
+
+Implemente requisição POST para reivindicar venda:
+
+```kotlin
+// Endpoint: POST https://cdccreditsmart.com/api/device/claim-sale
+
+// Request body:
+data class ClaimRequest(
+    val validationId: String,
+    val hardwareImei: String,
+    val fingerprint: String,
+    val deviceInfo: DeviceInfo
+)
+
+// Response:
+data class ClaimResponse(
+    val success: Boolean,
+    val matched: Boolean,
+    val deviceId: String?,
+    val deviceToken: String?,
+    val apkToken: String?,
+    val contractCode: String?,
+    val customerCpf: String?,
+    val message: String,
+    val securityViolation: Boolean?,
+    val attemptsRemaining: Int?
+)
+```
+
+**Método esperado:**
+```kotlin
+suspend fun claimSale(
+    validationId: String,
+    hardwareImei: String,
+    fingerprint: String,
+    deviceInfo: DeviceInfo
+): Result<ClaimResponse>
+```
+
+**Regras:**
+- Se `matched = false`: mostrar erro com tentativas restantes
+- Se `securityViolation = true` e `attemptsRemaining = 0`: bloquear app
+- Se `success = true` e `matched = true`: salvar tokens e prosseguir
+
+---
+
+### 7. **Armazenamento Seguro de Tokens**
+
+Implemente armazenamento criptografado dos tokens:
+
+```kotlin
+// Requisitos:
+- Use EncryptedSharedPreferences
+- Salve: deviceToken, apkToken, fingerprint, contractCode
+- Implemente getToken() e saveToken()
+- Use MasterKey com AES256_GCM
+```
+
+**Métodos esperados:**
+```kotlin
+fun saveTokens(deviceToken: String, apkToken: String, fingerprint: String)
+fun getDeviceToken(): String?
+fun getApkToken(): String?
+fun clearTokens()
+```
+
+---
+
+### 8. **WebSocket - Conexão em Tempo Real**
+
+Implemente cliente WebSocket:
+
+```kotlin
+// URL: wss://cdccreditsmart.com/ws/flow-status
+
+// Requisitos:
+- Use OkHttp WebSocket
+- Implementar autenticação com contractId
+- Implementar heartbeat (ping/pong a cada 30s)
+- Reconexão automática em caso de falha
+- Processar eventos: device_connected, sale_completed, error
+```
+
+**Classe esperada:**
+```kotlin
+class WebSocketManager(
+    private val contractCode: String,
+    private val onDeviceConnected: () -> Unit,
+    private val onSaleCompleted: (data: SaleData) -> Unit,
+    private val onError: (message: String) -> Unit
+) {
+    fun connect()
+    fun disconnect()
+    fun send(message: String)
+}
+```
+
+**Mensagens para enviar:**
+
+1. **Autenticação** (imediatamente após conexão):
+```json
+{
+  "type": "authenticate",
+  "contractId": "CTR_1762630954593_560533"
+}
+```
+
+2. **Heartbeat** (a cada 30 segundos):
+```json
+{
+  "type": "ping"
+}
+```
+
+**Mensagens para receber:**
+
+- `authenticated`: Confirmação de autenticação
+- `device_connected`: Dispositivo conectado ao sistema
+- `sale_completed`: Venda finalizada com sucesso
+- `error`: Erro na comunicação
+- `pong`: Resposta ao ping
+
+---
+
+### 9. **Tratamento de Erros e Retry Logic**
+
+Implemente estratégias de retry:
+
+```kotlin
+// Requisitos:
+- Retry com backoff exponencial: 1s, 2s, 4s, 8s
+- Máximo 3 tentativas para requests HTTP
+- Tratamento específico para códigos HTTP:
+  * 429 (Rate Limit): aguardar 15 minutos
+  * 500-599: retry com backoff
+  * 400-499: não fazer retry (erro do cliente)
+```
+
+**Função esperada:**
+```kotlin
+suspend fun <T> retryWithBackoff(
+    maxRetries: Int = 3,
+    initialDelay: Long = 1000L,
+    factor: Double = 2.0,
+    block: suspend () -> T
+): Result<T>
+```
+
+---
+
+### 10. **UI/UX - Telas Principais**
+
+Implemente as seguintes telas:
+
+#### **Tela 1: Scanner QR Code**
+- Preview da câmera em fullscreen
+- Indicador de área de escaneamento
+- Botão "Cancelar"
+- Feedback visual ao detectar QR Code
+
+#### **Tela 2: Pareamento em Progresso**
+- Loading spinner
+- Texto: "Conectando dispositivo..."
+- Progresso: "Validando IMEI..." → "Verificando dados..." → "Conectando..."
+- Não cancelável
+
+#### **Tela 3: Sucesso**
+- Ícone de sucesso (✓ verde)
+- Texto: "Dispositivo ativado com sucesso!"
+- Mostrar: Nome do cliente, Modelo do dispositivo, Código do contrato
+- Botão: "Continuar"
+
+#### **Tela 4: Erro**
+- Ícone de erro (✗ vermelho)
+- Mensagem de erro específica
+- Para IMEI mismatch: mostrar tentativas restantes
+- Botões: "Tentar Novamente" (se tentativas > 0) ou "Contatar Suporte"
+
+---
+
+### 11. **Segurança e Validações**
+
+Implemente as seguintes validações:
+
+```kotlin
+// 1. Validação de IMEI
+fun isValidImeiFormat(imei: String): Boolean {
+    val cleaned = imei.replace(Regex("[^0-9]"), "")
+    return cleaned.length in 15..17
+}
+
+// 2. Contador de tentativas
+class AttemptCounter {
+    private val maxAttempts = 3
+    private var attempts = 0
+    
+    fun increment(): Int
+    fun getRemainingAttempts(): Int
+    fun isBlocked(): Boolean
+}
+
+// 3. Bloqueio de dispositivo
+fun blockDevice(reason: String) {
+    // Salvar flag de bloqueio
+    // Mostrar tela de bloqueio permanente
+    // Impedir uso do app
+}
+```
+
+---
+
+## 🔧 DEPENDÊNCIAS NECESSÁRIAS
+
+Adicione ao `build.gradle` (app):
+
+```gradle
+dependencies {
+    // HTTP & WebSocket
+    implementation 'com.squareup.okhttp3:okhttp:4.12.0'
+    implementation 'com.squareup.okhttp3:logging-interceptor:4.12.0'
+    
+    // Coroutines
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3'
+    
+    // JSON
+    implementation 'org.json:json:20231013'
+    
+    // Security
+    implementation 'androidx.security:security-crypto:1.1.0-alpha06'
+    
+    // QR Code Scanner
+    implementation 'com.google.mlkit:barcode-scanning:17.2.0'
+    // OU
+    implementation 'com.journeyapps:zxing-android-embedded:4.3.0'
+    
+    // Lifecycle
+    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.7.0'
+    implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.7.0'
+}
+```
+
+**Permissões no AndroidManifest.xml:**
+```xml
+<uses-permission android:name="android.permission.INTERNET" />
+<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+<uses-permission android:name="android.permission.READ_PHONE_STATE" />
+<uses-permission android:name="android.permission.CAMERA" />
+
+<uses-feature android:name="android.hardware.camera" android:required="true" />
+```
+
+---
+
+## 📱 FLUXO COMPLETO DE USO (Ponto de Vista do Usuário)
+
+1. **Usuário abre app** após comprar dispositivo na loja
+2. **App solicita permissões**: Câmera, Telefone
+3. **Usuário toca** em "Escanear QR Code"
+4. **Câmera abre** e usuário aponta para QR Code no PDV
+5. **App detecta** QR Code e extrai contractId
+6. **App automaticamente**:
+   - Lê IMEI do hardware
+   - Busca venda pendente (Step 1)
+   - Envia dados do dispositivo (Step 2)
+   - Conecta via WebSocket
+7. **Tela mostra**: "Conectando dispositivo..."
+8. **Backend valida** IMEI e retorna tokens
+9. **App salva** tokens de forma segura
+10. **WebSocket notifica**: "Dispositivo conectado"
+11. **Tela mostra**: "✓ Dispositivo ativado com sucesso!"
+12. **Usuário** pode usar o dispositivo normalmente
+
+---
+
+## ⚠️ CASOS DE ERRO A TRATAR
+
+### Erro 1: IMEI Não Coincide
+```kotlin
+// Cenário: APK envia IMEI diferente do registrado no PDV
+// Ação: Mostrar erro + tentativas restantes
+// Se tentativas = 0: bloquear dispositivo permanentemente
+```
+
+### Erro 2: Venda Não Encontrada
+```kotlin
+// Cenário: IMEI não tem venda pendente no sistema
+// Ação: Mostrar "Dispositivo não registrado. Verifique com a loja."
+```
+
+### Erro 3: Validação Expirada
+```kotlin
+// Cenário: Prazo de 24h expirou
+// Ação: Mostrar "Prazo expirado. Entre em contato com a loja."
+```
+
+### Erro 4: Rate Limit Excedido
+```kotlin
+// Cenário: Muitas tentativas em pouco tempo
+// Ação: Desabilitar botão "Tentar Novamente" por 15 minutos
+```
+
+### Erro 5: Sem Internet
+```kotlin
+// Cenário: Dispositivo offline
+// Ação: Mostrar "Sem conexão. Verifique sua internet."
+```
+
+### Erro 6: Timeout
+```kotlin
+// Cenário: Requisição demora >30s
+// Ação: Mostrar "Tempo esgotado. Tente novamente."
+```
+
+---
+
+## 🧪 TESTES RECOMENDADOS
+
+### Teste 1: Fluxo Feliz
+- Escanear QR Code válido
+- IMEI correto
+- Pareamento bem-sucedido
+- ✅ Esperado: Dispositivo ativado
+
+### Teste 2: IMEI Incorreto
+- Escanear QR Code válido
+- Modificar IMEI antes de enviar
+- ❌ Esperado: Erro + tentativas restantes
+
+### Teste 3: IMEI Bloqueado
+- Fazer 3 tentativas com IMEI errado
+- ❌ Esperado: Dispositivo bloqueado permanentemente
+
+### Teste 4: QR Code Inválido
+- Escanear QR Code aleatório
+- ❌ Esperado: Erro "QR Code inválido"
+
+### Teste 5: Sem Internet
+- Desativar WiFi e dados móveis
+- Tentar escanear QR Code
+- ❌ Esperado: Erro "Sem conexão"
+
+### Teste 6: Reconexão WebSocket
+- Conectar WebSocket
+- Desconectar internet por 10s
+- Reconectar internet
+- ✅ Esperado: WebSocket reconecta automaticamente
+
+---
+
+## 📚 REFERÊNCIA RÁPIDA DE ENDPOINTS
+
+| Método | Endpoint | Descrição |
+|--------|----------|-----------|
+| GET | `/api/device/claim-sale?imei={IMEI}` | Buscar venda pendente |
+| POST | `/api/device/claim-sale` | Reivindicar venda |
+| POST | `/api/device/claim-sale/legacy` | Endpoint legacy (compatibilidade) |
+| GET | `/api/device/{fingerprint}/status` | Status do dispositivo |
+| POST | `/api/device/{fingerprint}/refresh` | Refresh de token |
+| WS | `wss://cdccreditsmart.com/ws/flow-status` | WebSocket tempo real |
+
+---
+
+## 🎯 CRITÉRIOS DE SUCESSO
+
+Seu código será considerado completo quando:
+
+- ✅ Conseguir escanear QR Code do PDV
+- ✅ Ler IMEI do dispositivo corretamente
+- ✅ Realizar handshake completo (Step 1 + Step 2)
+- ✅ Salvar tokens de forma segura
+- ✅ Conectar via WebSocket e receber eventos
+- ✅ Tratar todos os casos de erro documentados
+- ✅ Bloquear dispositivo após 3 tentativas de IMEI incorreto
+- ✅ Reconectar WebSocket automaticamente
+- ✅ Mostrar UI clara para cada estado (loading, sucesso, erro)
+
+---
+
+## 💡 DICAS DE IMPLEMENTAÇÃO
+
+### Dica 1: Estrutura de Arquivos
+```
+app/src/main/java/com/cdccreditsmart/
+├── models/
+│   ├── DeviceInfo.kt
+│   ├── PendingSaleResponse.kt
+│   └── ClaimResponse.kt
+├── network/
+│   ├── ApiClient.kt
+│   ├── WebSocketManager.kt
+│   └── RetryPolicy.kt
+├── security/
+│   ├── FingerprintCalculator.kt
+│   └── SecureStorage.kt
+├── ui/
+│   ├── QRScannerActivity.kt
+│   ├── PairingActivity.kt
+│   └── SuccessActivity.kt
+└── utils/
+    ├── ImeiValidator.kt
+    └── AttemptCounter.kt
+```
+
+### Dica 2: Use ViewModel
+```kotlin
+class PairingViewModel : ViewModel() {
+    private val _pairingState = MutableLiveData<PairingState>()
+    val pairingState: LiveData<PairingState> = _pairingState
+    
+    fun pairDevice(qrCode: String) {
+        viewModelScope.launch {
+            _pairingState.value = PairingState.Loading
+            // ... lógica de pareamento
+        }
+    }
+}
+
+sealed class PairingState {
+    object Loading : PairingState()
+    data class Success(val contractCode: String) : PairingState()
+    data class Error(val message: String, val attemptsRemaining: Int?) : PairingState()
+}
+```
+
+### Dica 3: Logging
+```kotlin
+// Use Timber ou Android Log
+Log.d("Pairing", "Step 1: Searching pending sale for IMEI: $imei")
+Log.d("Pairing", "Step 2: Claiming sale with validationId: $validationId")
+Log.e("Pairing", "Error: ${error.message}")
+```
+
+---
+
+## 📄 DOCUMENTAÇÃO COMPLETA
+
+Consulte o arquivo `APK_INTEGRATION_DOCUMENTATION.md` para:
+- Detalhes técnicos completos de cada endpoint
+- Estruturas de dados JSON
+- Exemplos de código Kotlin
+- Diagramas de fluxo
+- Troubleshooting avançado
+
+---
+
+## 🚀 COMEÇE AQUI
+
+1. Leia o arquivo `APK_INTEGRATION_DOCUMENTATION.md` completo
+2. Configure as dependências no `build.gradle`
+3. Adicione permissões no `AndroidManifest.xml`
+4. Implemente na seguinte ordem:
+   - ✅ Leitura de IMEI
+   - ✅ Scanner QR Code
+   - ✅ Cálculo de Fingerprint
+   - ✅ Handshake Step 1
+   - ✅ Handshake Step 2
+   - ✅ Armazenamento de Tokens
+   - ✅ WebSocket
+   - ✅ UI/UX
+   - ✅ Tratamento de Erros
+
+Boa sorte! 🎉

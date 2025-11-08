@@ -126,3 +126,53 @@ data class SecurityPolicy(
     val parameters: Map<String, Any>? = null,
     val description: String? = null
 )
+
+/**
+ * IMEI Authentication Request
+ * Used for automatic device authentication using IMEI
+ */
+//@JsonClass(generateAdapter = true) // Temporarily disabled to fix build
+data class ImeiAuthRequest(
+    val imei: String
+)
+
+/**
+ * Code Authentication Request
+ * Used for manual device authentication using a code provided by the store
+ */
+//@JsonClass(generateAdapter = true) // Temporarily disabled to fix build
+data class CodeAuthRequest(
+    val code: String
+)
+
+/**
+ * Authentication Response
+ * Common response for both IMEI and Code authentication
+ */
+//@JsonClass(generateAdapter = true) // Temporarily disabled to fix build
+data class AuthResponse(
+    val success: Boolean,
+    val token: String? = null,
+    val deviceId: String,
+    val saleData: SaleData? = null,
+    val message: String? = null,
+    val serverTimestamp: Long? = null
+)
+
+/**
+ * Sale Data
+ * Contains information about the sale associated with the device
+ */
+//@JsonClass(generateAdapter = true) // Temporarily disabled to fix build
+data class SaleData(
+    val saleId: String,
+    val contractCode: String,
+    val storeId: String,
+    val storeName: String,
+    val customerName: String? = null,
+    val deviceModel: String? = null,
+    val purchaseDate: String,
+    val totalAmount: Double,
+    val installments: Int,
+    val status: String // "pending", "active", "completed"
+)
