@@ -1,0 +1,47 @@
+ V  Input event delivered to android.view.ViewRootImpl$NativePostImeInputStage@f6b0196 at 2025-11-08 20:04:37.916
+2025-11-08 20:04:43.236  9309-9309  InsetsController        com.cdccreditsmart.app.debug         D  hide(ime(), fromIme=false)
+2025-11-08 20:04:43.238  9309-9309  ImeTracker              com.cdccreditsmart.app.debug         I  com.cdccreditsmart.app.debug:52ed34a1: onRequestHide at ORIGIN_CLIENT reason HIDE_SOFT_INPUT_BY_INSETS_API fromUser false
+2025-11-08 20:04:43.240  9309-9309  ImeTracker              com.cdccreditsmart.app.debug         I  com.cdccreditsmart.app.debug:ee82eb4a: onRequestHide at ORIGIN_CLIENT reason HIDE_SOFT_INPUT_REQUEST_HIDE_WITH_CONTROL fromUser false
+2025-11-08 20:04:43.263  9309-9309  InsetsController        com.cdccreditsmart.app.debug         D  hide(ime(), fromIme=true)
+2025-11-08 20:04:43.263  9309-9309  ImeTracker              com.cdccreditsmart.app.debug         I  com.cdccreditsmart.app.debug:ee82eb4a: onCancelled at PHASE_CLIENT_APPLY_ANIMATION
+2025-11-08 20:04:43.270  9309-9309  WindowOnBackDispatcher  com.cdccreditsmart.app.debug         W  sendCancelIfRunning: isInProgress=false callback=ImeCallback=ImeOnBackInvokedCallback@8749374 Callback=android.window.IOnBackInvokedCallback$Stub$Proxy@87d30d9
+2025-11-08 20:04:43.557  9309-9309  ImeTracker              com.cdccreditsmart.app.debug         I  com.cdccreditsmart.app.debug:22ca1d69: onRequestHide at ORIGIN_CLIENT reason HIDE_SOFT_INPUT_ON_ANIMATION_STATE_CHANGED fromUser false
+2025-11-08 20:04:43.559  9309-9309  ImeTracker              com.cdccreditsmart.app.debug         I  com.cdccreditsmart.app.debug:52ed34a1: onHidden
+2025-11-08 20:04:43.981  9309-9309  PairingViewModel        com.cdccreditsmart.app.debug         D  Starting handshake for contract: 92DU-JR3W
+2025-11-08 20:04:43.981  9309-9309  DeviceInfoManager       com.cdccreditsmart.app.debug         W  READ_PHONE_STATE permission not granted
+2025-11-08 20:04:43.981  9309-9309  PairingViewModel        com.cdccreditsmart.app.debug         D  Device IMEI: UNKN...
+2025-11-08 20:04:43.982  9309-9309  PairingViewModel        com.cdccreditsmart.app.debug         W  IMEI not available - using code-only sync fallback
+2025-11-08 20:04:43.982  9309-9309  PairingViewModel        com.cdccreditsmart.app.debug         D  ========== APK AUTHENTICATION ==========
+2025-11-08 20:04:43.982  9309-9309  PairingViewModel        com.cdccreditsmart.app.debug         D  Pairing Code: 92DU-JR3W
+2025-11-08 20:04:43.982  9309-9309  PairingViewModel        com.cdccreditsmart.app.debug         D  Sending POST /api/apk/auth...
+2025-11-08 20:04:43.982  9309-9309  PairingViewModel        com.cdccreditsmart.app.debug         D  Request: { code: "92DU****" }
+2025-11-08 20:04:44.430  9309-9309  PairingViewModel        com.cdccreditsmart.app.debug         D  Response code: 404
+2025-11-08 20:04:44.430  9309-9309  PairingViewModel        com.cdccreditsmart.app.debug         D  Response message: 
+2025-11-08 20:04:44.430  9309-9309  PairingViewModel        com.cdccreditsmart.app.debug         E  ❌ HTTP Error 404
+2025-11-08 20:04:44.430  9309-9309  PairingViewModel        com.cdccreditsmart.app.debug         E  Error body: {"error":"Token inválido ou dispositivo não encontrado","tokenProvided":"92DU****"}
+2025-11-08 20:04:44.431  9309-9309  PairingViewModel        com.cdccreditsmart.app.debug         W  Attempt 1 failed: Código não encontrado ou expirado
+2025-11-08 20:04:44.665  9309-9309  InsetsController        com.cdccreditsmart.app.debug         D  hide(ime(), fromIme=false)
+2025-11-08 20:04:44.666  9309-9309  ImeTracker              com.cdccreditsmart.app.debug         I  com.cdccreditsmart.app.debug:73dbb2f8: onRequestHide at ORIGIN_CLIENT reason HIDE_SOFT_INPUT_BY_INSETS_API fromUser false
+2025-11-08 20:04:44.667  9309-9309  ImeTracker              com.cdccreditsmart.app.debug         I  com.cdccreditsmart.app.debug:73dbb2f8: onCancelled at PHASE_CLIENT_APPLY_ANIMATION
+2025-11-08 20:04:45.728  9309-9309  PairingViewModel        com.cdccreditsmart.app.debug         D  Response code: 404
+2025-11-08 20:04:45.728  9309-9309  PairingViewModel        com.cdccreditsmart.app.debug         D  Response message: 
+2025-11-08 20:04:45.729  9309-9309  PairingViewModel        com.cdccreditsmart.app.debug         E  ❌ HTTP Error 404
+2025-11-08 20:04:45.729  9309-9309  PairingViewModel        com.cdccreditsmart.app.debug         E  Error body: {"error":"Token inválido ou dispositivo não encontrado","tokenProvided":"92DU****"}
+2025-11-08 20:04:45.729  9309-9309  PairingViewModel        com.cdccreditsmart.app.debug         W  Attempt 2 failed: Código não encontrado ou expirado
+2025-11-08 20:04:48.016  9309-9309  PairingViewModel        com.cdccreditsmart.app.debug         D  Response code: 404
+2025-11-08 20:04:48.016  9309-9309  PairingViewModel        com.cdccreditsmart.app.debug         D  Response message: 
+2025-11-08 20:04:48.016  9309-9309  PairingViewModel        com.cdccreditsmart.app.debug         E  ❌ HTTP Error 404
+2025-11-08 20:04:48.016  9309-9309  PairingViewModel        com.cdccreditsmart.app.debug         E  Error body: {"error":"Token inválido ou dispositivo não encontrado","tokenProvided":"92DU****"}
+2025-11-08 20:04:48.018  9309-9309  PairingViewModel        com.cdccreditsmart.app.debug         E  Error in handshake (Ask Gemini)
+                                                                                                    java.lang.Exception: Código não encontrado ou expirado
+                                                                                                    	at com.cdccreditsmart.app.presentation.pairing.PairingViewModel$stepFallbackClaimByCodeOnly$2.invokeSuspend(PairingViewModel.kt:282)
+                                                                                                    	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:34)
+                                                                                                    	at kotlinx.coroutines.DispatchedTask.run(DispatchedTask.kt:108)
+                                                                                                    	at android.os.Handler.handleCallback(Handler.java:959)
+                                                                                                    	at android.os.Handler.dispatchMessage(Handler.java:100)
+                                                                                                    	at android.os.Looper.loopOnce(Looper.java:234)
+                                                                                                    	at android.os.Looper.loop(Looper.java:319)
+                                                                                                    	at android.app.ActivityThread.main(ActivityThread.java:8754)
+                                                                                                    	at java.lang.reflect.Method.invoke(Native Method)
+                                                                                                    	at com.android.internal.os.RuntimeInit$MethodAndArgsCaller.run(RuntimeInit.java:602)
+                                                                                                    	at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:962)
