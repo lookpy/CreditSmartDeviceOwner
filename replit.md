@@ -11,6 +11,7 @@ The CDC Credit Smart Android App provides a secure and efficient mobile experien
 - Não modificar o `server` folder ou subdiretórios
 - Não modificar `build.gradle.kts` principais exceto para dependências
 - App não usa QR Code scanner - apenas input manual do código do contrato
+- **NUNCA usar dados mockados** - apenas dados reais do backend
 
 ## System Architecture
 The application follows a Clean Architecture with MVVM, utilizing Jetpack Compose for the UI. It is modularized into `app`, `data`, `network`, `domain`, `device`, `payments`, and `biometry` components.
@@ -46,7 +47,26 @@ The UI is developed using Jetpack Compose and Material 3, incorporating a CDC in
 - **Kotlin Coroutines**: Asynchronous programming with suspend functions
 
 ## Recent Changes
-### 2025-11-09
+### 2025-11-09 (Tarde) - FINAL
+- **Windows Compilation Setup**: Ferramentas consolidadas para compilação no Windows
+  - **criar-local-properties.bat**: Script automático que detecta Android SDK e cria local.properties
+  - **COMPILAR_APK_WINDOWS.md**: Guia completo consolidado (substitui múltiplos guias)
+  - **CONFIGURAR_SDK_WINDOWS.md**: Guia detalhado de configuração do Android SDK
+  - **fix-windows-build.bat**: Limpa cache e recompila (troubleshooting)
+  - Solução para erro "SDK location not found" no Windows
+  - Documentação redundante removida (6 arquivos MD consolidados em 1)
+  
+- **Data Policy Enforcement**: Removido completamente código de dados mockados
+  - SimpleHomeViewModel usa APENAS dados reais do backend (/api/apk/device/installments)
+  - Preferência do usuário: "nunca usar dados mockados"
+  - App 100% dependente de API real em produção (https://cdccreditsmart.com)
+
+- **Samsung Knox APIs**: Documentação de funcionalidades futuras
+  - **SAMSUNG_KNOX_FUTURO.md**: APIs Knox solicitadas documentadas para implementação futura
+  - ContainerConfigurationPolicy, CustomDeviceManager, DeviceSecurityPolicy, SettingsManager, ApplicationPolicy
+  - Implementação em espera até validação de necessidades reais vs. MVP
+
+### 2025-11-09 (Manhã)
 - **CRITICAL: Persistent Pairing Code Authentication** (Auto-login) - ✅ IMPLEMENTADO E CORRIGIDO
   - **AuthenticationOrchestrator**: Componente central de autenticação silenciosa
   - Código de pareamento persiste PERMANENTEMENTE no dispositivo
