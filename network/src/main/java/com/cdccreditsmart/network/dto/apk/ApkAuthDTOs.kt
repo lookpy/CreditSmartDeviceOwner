@@ -7,6 +7,8 @@ data class ApkAuthRequest(
 data class ApkAuthResponse(
     val success: Boolean,
     val authenticated: Boolean,
+    val pending: Boolean?,
+    val message: String?,
     val authToken: String?,
     val expiresIn: Int?,
     val expiresAt: String?,

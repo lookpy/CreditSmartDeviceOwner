@@ -13,6 +13,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.cdccreditsmart.app.presentation.pairing.PairingErrorScreen
+import com.cdccreditsmart.app.presentation.pairing.PairingPendingScreen
 import com.cdccreditsmart.app.presentation.pairing.PairingProgressScreen
 import com.cdccreditsmart.app.presentation.pairing.PairingState
 import com.cdccreditsmart.app.presentation.pairing.PairingSuccessScreen
@@ -25,11 +26,18 @@ object Routes {
     const val ROUTER = "router"
     const val QR_SCANNER = "pairing/qr_scanner"
     const val PAIRING_PROGRESS = "pairing/progress/{contractId}"
+    const val PAIRING_PENDING = "pairing/pending/{message}/{contractCode}"
     const val PAIRING_SUCCESS = "pairing/success/{contractCode}/{customerName}/{deviceModel}"
     const val PAIRING_ERROR = "pairing/error/{errorMessage}/{attemptsRemaining}/{securityViolation}/{canRetry}"
     const val HOME = "home"
     
     fun createPairingProgressRoute(contractId: String) = "pairing/progress/$contractId"
+    
+    fun createPairingPendingRoute(message: String, contractCode: String?): String {
+        val encodedMessage = Uri.encode(message)
+        val encodedCode = Uri.encode(contractCode ?: "NONE")
+        return "pairing/pending/$encodedMessage/$encodedCode"
+    }
     
     fun createPairingSuccessRoute(contractCode: String, customerName: String?, deviceModel: String?): String {
         val encodedContractCode = Uri.encode(contractCode)
@@ -124,6 +132,18 @@ fun CDCNavigation(
                         }
                     }
                 }
+                is PairingState.Pending -> {
+                    LaunchedEffect(Unit) {
+                        navController.navigate(
+                            Routes.createPairingPendingRoute(
+                                currentState.message,
+                                currentState.contractCode
+                            )
+                        ) {
+                            popUpTo(Routes.PAIRING_PROGRESS) { inclusive = true }
+                        }
+                    }
+                }
                 is PairingState.Error -> {
                     LaunchedEffect(Unit) {
                         navController.navigate(
@@ -142,6 +162,31 @@ fun CDCNavigation(
                     PairingProgressScreen(state = state)
                 }
             }
+        }
+        
+        composable(
+            route = Routes.PAIRING_PENDING,
+            arguments = listOf(
+                navArgument("message") { type = NavType.StringType },
+                navArgument("contractCode") { type = NavType.StringType }
+            )
+        ) {
+            val message = it.arguments?.getString("message") ?: "Venda em andamento"
+            val contractCode = it.arguments?.getString("contractCode")?.let { code ->
+                if (code == "NONE") null else code
+            }
+            
+            PairingPendingScreen(
+                message = message,
+                contractCode = contractCode,
+                onRetry = {
+                    if (contractCode != null) {
+                        navController.navigate(Routes.createPairingProgressRoute(contractCode)) {
+                            popUpTo(Routes.PAIRING_PENDING) { inclusive = true }
+                        }
+                    }
+                }
+            )
         }
         
         composable(

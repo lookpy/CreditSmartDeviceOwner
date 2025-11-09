@@ -16,10 +16,10 @@ The CDC Credit Smart Android App provides a secure and efficient mobile experien
 The application follows a Clean Architecture with MVVM, utilizing Jetpack Compose for the UI. It is modularized into `app`, `data`, `network`, `domain`, `device`, `payments`, and `biometry` components.
 
 **UI/UX Decisions:**
-The UI is developed using Jetpack Compose and Material 3, incorporating a CDC institutional dark theme (`#FF7A1A`/`#F47C2C`). It features a comprehensive navigation system powered by Compose NavController, covering device pairing, dashboard, and payments. The app includes a `RouterScreen` to intelligently direct users based on token status, a contract code input screen for manual entry of the contract ID, `PairingProgressScreen` for visual feedback during the handshake process, and Success/Error screens for pairing outcomes.
+The UI is developed using Jetpack Compose and Material 3, incorporating a CDC institutional dark theme (`#FF7A1A`/`#F47C2C`). It features a comprehensive navigation system powered by Compose NavController, covering device pairing, dashboard, and payments. The app includes a `RouterScreen` to intelligently direct users based on token status, a contract code input screen for manual entry of the contract ID with **automatic formatting** (uppercase, alphanumeric only, 8 characters max), `PairingProgressScreen` for visual feedback during the handshake process, `PairingPendingScreen` for sales awaiting PDV completion, and Success/Error screens for pairing outcomes.
 
 **Technical Implementations:**
-- **Device Pairing**: APK authentication via POST /api/apk/auth using pairing code (8-digit alphanumeric). Returns JWT authToken valid for 24h. **No IMEI required** for pairing.
+- **Device Pairing**: APK authentication via POST /api/apk/auth using pairing code (8-digit alphanumeric with automatic formatting). Supports three states: `authenticated: true` (success), `pending: true` (sale awaiting PDV completion), or error. Returns JWT authToken valid for 24h when authenticated. **No IMEI required** for pairing.
 - **Real-time Communication**: WebSocket connection (wss://cdccreditsmart.com/ws/flow-status) with automatic reconnection and heartbeat (30s intervals)
 - **Security**: EncryptedSharedPreferences with AES256_GCM for token storage (authToken, deviceToken, apkToken, fingerprint, contractCode), JWT authentication for API requests, permanent device blocking on security violations
 - **Data Persistence**: SecureTokenStorage for authToken (JWT), deviceToken, apkToken, fingerprint, and contractCode
@@ -29,7 +29,7 @@ The UI is developed using Jetpack Compose and Material 3, incorporating a CDC in
 - **Device Management**: Device Owner APIs completos (10+ políticas configuradas), DeviceAdminReceiver implementado, Activities de provisioning (Android 12+), suporte a QR Code/NFC/ADB provisioning, Samsung Knox Enterprise SDK, anti-tampering measures, overlay blocking, and silent app updates
 - **Error Handling**: Comprehensive error states with retry capabilities, user-friendly error messages, security violation handling
 - **Build System**: Optimized with R8 and compatibility with 16KB page size for Android 15+
-- **Business Logic**: Device pairing via manual 8-digit pairing code input, JWT token expiration handling (24h), PIX/Boleto payment processing, graduated blocking policies
+- **Business Logic**: Device pairing via manual 8-digit pairing code input with automatic formatting (uppercase, alphanumeric only), JWT token expiration handling (24h), pending sale flow with retry capability, PIX/Boleto payment processing, graduated blocking policies
 - **Backend Integration**: JWT authentication (authToken) for all API requests, WebSocket events (authenticated, device_connected, sale_completed, error), automatic token refresh on expiration
 
 ## External Dependencies

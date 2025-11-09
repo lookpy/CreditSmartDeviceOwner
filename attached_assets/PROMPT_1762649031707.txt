@@ -1,0 +1,45 @@
+2025-11-08 21:39:40.335 12990-12990 Activity                com.cdccreditsmart.app.debug         D  onResume setDolbyGameProfilePackage lastPkg =  currentPkg = com.cdccreditsmart.app.debug
+2025-11-08 21:39:40.352 12990-12990 BufferQueueConsumer     com.cdccreditsmart.app.debug         D  [](id:32be00000001,api:0,p:-1,c:12990) connect: controlledByApp=false
+2025-11-08 21:39:40.352 12990-12990 BLASTBufferQueue        com.cdccreditsmart.app.debug         D  [VRI[MainActivity]#1](f:0,a:0) constructor()
+2025-11-08 21:39:40.353 12990-12990 BLASTBufferQueue        com.cdccreditsmart.app.debug         D  [VRI[MainActivity]#1](f:0,a:0) update width=1080 height=2400 format=-3 mTransformHint=0
+2025-11-08 21:39:40.383 12990-13106 BLASTBufferQueue        com.cdccreditsmart.app.debug         D  [VRI[MainActivity]#1](f:0,a:1) acquireNextBufferLocked size=1080x2400 mFrameNumber=1 applyTransaction=true mTimestamp=20763723291083(auto) mPendingTransactions.size=0 graphicBufferId=55791625175047 transform=0
+2025-11-08 21:39:41.298 12990-12990 InsetsController        com.cdccreditsmart.app.debug         D  show(ime(), fromIme=false)
+2025-11-08 21:39:41.300 12990-12990 ImeTracker              com.cdccreditsmart.app.debug         I  com.cdccreditsmart.app.debug:a8fc92d5: onRequestShow at ORIGIN_CLIENT reason SHOW_SOFT_INPUT_BY_INSETS_API fromUser false
+2025-11-08 21:39:41.301 12990-12990 InputMethodManager      com.cdccreditsmart.app.debug         D  showSoftInput() view=androidx.compose.ui.platform.AndroidComposeView{cb53124 VFED..... .F....ID 0,0-1080,2400 aid=1073741824} flags=0 reason=SHOW_SOFT_INPUT_BY_INSETS_API
+2025-11-08 21:39:41.335 12990-12990 ImeTracker              com.cdccreditsmart.app.debug         I  com.cdccreditsmart.app.debug:d8ef716b: onRequestShow at ORIGIN_CLIENT reason SHOW_SOFT_INPUT fromUser false
+2025-11-08 21:39:41.335 12990-12990 InputMethodManager      com.cdccreditsmart.app.debug         D  showSoftInput() view=androidx.compose.ui.platform.AndroidComposeView{cb53124 VFED..... .F...... 0,0-1080,2400 aid=1073741824} flags=0 reason=SHOW_SOFT_INPUT
+2025-11-08 21:39:41.483 12990-12990 InsetsController        com.cdccreditsmart.app.debug         D  show(ime(), fromIme=true)
+2025-11-08 21:39:41.819 12990-12990 ImeTracker              com.cdccreditsmart.app.debug         I  com.cdccreditsmart.app.debug:d8ef716b: onShown
+2025-11-08 21:39:43.889 12990-12990 InsetsController        com.cdccreditsmart.app.debug         D  show(ime(), fromIme=true)
+2025-11-08 21:39:43.889 12990-12990 ImeTracker              com.cdccreditsmart.app.debug         I  com.cdccreditsmart.app.debug:fd62eb54: onCancelled at PHASE_CLIENT_APPLY_ANIMATION
+2025-11-08 21:39:46.054 12990-12990 InsetsController        com.cdccreditsmart.app.debug         D  show(ime(), fromIme=true)
+2025-11-08 21:39:46.054 12990-12990 ImeTracker              com.cdccreditsmart.app.debug         I  com.cdccreditsmart.app.debug:a2fc7884: onCancelled at PHASE_CLIENT_APPLY_ANIMATION
+2025-11-08 21:39:49.036 12990-12990 InsetsController        com.cdccreditsmart.app.debug         D  show(ime(), fromIme=true)
+2025-11-08 21:39:49.036 12990-12990 ImeTracker              com.cdccreditsmart.app.debug         I  com.cdccreditsmart.app.debug:41bd08f9: onCancelled at PHASE_CLIENT_APPLY_ANIMATION
+2025-11-08 21:39:49.648 12990-12990 InsetsController        com.cdccreditsmart.app.debug         D  show(ime(), fromIme=true)
+2025-11-08 21:39:49.648 12990-12990 ImeTracker              com.cdccreditsmart.app.debug         I  com.cdccreditsmart.app.debug:2249c214: onCancelled at PHASE_CLIENT_APPLY_ANIMATION
+2025-11-08 21:39:50.483 12990-12990 InsetsController        com.cdccreditsmart.app.debug         D  hide(ime(), fromIme=false)
+2025-11-08 21:39:50.485 12990-12990 ImeTracker              com.cdccreditsmart.app.debug         I  com.cdccreditsmart.app.debug:a8540d22: onRequestHide at ORIGIN_CLIENT reason HIDE_SOFT_INPUT_BY_INSETS_API fromUser false
+2025-11-08 21:39:50.486 12990-12990 ImeTracker              com.cdccreditsmart.app.debug         I  com.cdccreditsmart.app.debug:37b617d: onRequestHide at ORIGIN_CLIENT reason HIDE_SOFT_INPUT_REQUEST_HIDE_WITH_CONTROL fromUser false
+2025-11-08 21:39:50.517 12990-12990 WindowOnBackDispatcher  com.cdccreditsmart.app.debug         W  sendCancelIfRunning: isInProgress=false callback=ImeCallback=ImeOnBackInvokedCallback@8749374 Callback=android.window.IOnBackInvokedCallback$Stub$Proxy@4f95e9b
+2025-11-08 21:39:50.518 12990-12990 InsetsController        com.cdccreditsmart.app.debug         D  hide(ime(), fromIme=true)
+2025-11-08 21:39:50.519 12990-12990 ImeTracker              com.cdccreditsmart.app.debug         I  com.cdccreditsmart.app.debug:37b617d: onCancelled at PHASE_CLIENT_APPLY_ANIMATION
+2025-11-08 21:39:50.804 12990-12990 ImeTracker              com.cdccreditsmart.app.debug         I  com.cdccreditsmart.app.debug:37fdf309: onRequestHide at ORIGIN_CLIENT reason HIDE_SOFT_INPUT_ON_ANIMATION_STATE_CHANGED fromUser false
+2025-11-08 21:39:50.807 12990-12990 ImeTracker              com.cdccreditsmart.app.debug         I  com.cdccreditsmart.app.debug:a8540d22: onHidden
+2025-11-08 21:39:51.296 12990-12990 PairingViewModel        com.cdccreditsmart.app.debug         D  Starting handshake for contract: P2P35T6H
+2025-11-08 21:39:51.296 12990-12990 DeviceInfoManager       com.cdccreditsmart.app.debug         W  READ_PHONE_STATE permission not granted
+2025-11-08 21:39:51.296 12990-12990 PairingViewModel        com.cdccreditsmart.app.debug         D  Device IMEI: UNKN...
+2025-11-08 21:39:51.296 12990-12990 PairingViewModel        com.cdccreditsmart.app.debug         W  IMEI not available - using code-only sync fallback
+2025-11-08 21:39:51.297 12990-12990 PairingViewModel        com.cdccreditsmart.app.debug         D  ========== APK AUTHENTICATION ==========
+2025-11-08 21:39:51.297 12990-12990 PairingViewModel        com.cdccreditsmart.app.debug         D  Pairing Code: P2P35T6H
+2025-11-08 21:39:51.297 12990-12990 PairingViewModel        com.cdccreditsmart.app.debug         D  Sending POST /api/apk/auth...
+2025-11-08 21:39:51.297 12990-12990 PairingViewModel        com.cdccreditsmart.app.debug         D  Request: { code: "P2P3****" }
+2025-11-08 21:39:51.630 12990-13009 smart.app.debug         com.cdccreditsmart.app.debug         I  Background concurrent mark compact GC freed 9321KB AllocSpace bytes, 25(880KB) LOS objects, 66% free, 6421KB/18MB, paused 625us,5.979ms total 63.625ms
+2025-11-08 21:39:51.956 12990-12990 InsetsController        com.cdccreditsmart.app.debug         D  hide(ime(), fromIme=false)
+2025-11-08 21:39:51.958 12990-12990 ImeTracker              com.cdccreditsmart.app.debug         I  com.cdccreditsmart.app.debug:d00c169: onRequestHide at ORIGIN_CLIENT reason HIDE_SOFT_INPUT_BY_INSETS_API fromUser false
+2025-11-08 21:39:51.958 12990-12990 ImeTracker              com.cdccreditsmart.app.debug         I  com.cdccreditsmart.app.debug:d00c169: onCancelled at PHASE_CLIENT_APPLY_ANIMATION
+2025-11-08 21:39:51.964 12990-12990 PairingViewModel        com.cdccreditsmart.app.debug         D  Response code: 200
+2025-11-08 21:39:51.964 12990-12990 PairingViewModel        com.cdccreditsmart.app.debug         D  Response message: 
+2025-11-08 21:39:51.964 12990-12990 PairingViewModel        com.cdccreditsmart.app.debug         D  Response body received
+2025-11-08 21:39:51.964 12990-12990 PairingViewModel        com.cdccreditsmart.app.debug         W  ❌ APK Authentication failed
+2025-11-08 21:39:51.964 12990-12990 PairingViewModel        com.cdccreditsmart.app.debug         W  authenticated: false

@@ -27,6 +27,10 @@ sealed class PairingState {
     data class Validating(val message: String = "Validando IMEI...") : PairingState()
     data class Claiming(val message: String = "Verificando dados...") : PairingState()
     data class Connecting(val message: String = "Conectando...") : PairingState()
+    data class Pending(
+        val message: String = "Venda em andamento. Aguarde o vendedor finalizar no PDV.",
+        val contractCode: String? = null
+    ) : PairingState()
     data class Success(
         val contractCode: String,
         val customerName: String? = null,
@@ -234,34 +238,54 @@ class PairingViewModel(private val context: Context) : ViewModel() {
                 val body = response.body()
                 Log.d(TAG, "Response body received")
                 
-                if (body != null && body.success && body.authenticated) {
-                    Log.d(TAG, "✅ APK Authentication successful!")
-                    Log.d(TAG, "Auth token received, expires in ${body.expiresIn}s")
-                    Log.d(TAG, "Device: ${body.device?.brand} ${body.device?.model}")
-                    Log.d(TAG, "Customer: ${body.customer?.name}")
+                when {
+                    body != null && body.success && body.authenticated -> {
+                        Log.d(TAG, "✅ APK Authentication successful!")
+                        Log.d(TAG, "Auth token received, expires in ${body.expiresIn}s")
+                        Log.d(TAG, "Device: ${body.device?.brand} ${body.device?.model}")
+                        Log.d(TAG, "Customer: ${body.customer?.name}")
+                        
+                        val authToken = body.authToken ?: ""
+                        val deviceId = body.device?.id ?: contractId
+                        
+                        tokenStorage.saveAuthToken(
+                            authToken = authToken,
+                            contractCode = deviceId
+                        )
+                        
+                        step3ConnectWebSocket(
+                            contractCode = deviceId,
+                            customerName = body.customer?.name,
+                            deviceModel = body.device?.model
+                        )
+                    }
                     
-                    val authToken = body.authToken ?: ""
-                    val deviceId = body.device?.id ?: contractId
+                    body != null && body.pending == true -> {
+                        Log.d(TAG, "⏳ Sale pending - awaiting PDV completion")
+                        Log.d(TAG, "Message: ${body.message}")
+                        
+                        val message = body.message 
+                            ?: "Venda em andamento. Aguarde o vendedor finalizar no PDV."
+                        
+                        _state.value = PairingState.Pending(
+                            message = message,
+                            contractCode = contractId
+                        )
+                    }
                     
-                    tokenStorage.saveAuthToken(
-                        authToken = authToken,
-                        contractCode = deviceId
-                    )
-                    
-                    step3ConnectWebSocket(
-                        contractCode = deviceId,
-                        customerName = body.customer?.name,
-                        deviceModel = body.device?.model
-                    )
-                    
-                } else {
-                    Log.w(TAG, "❌ APK Authentication failed")
-                    Log.w(TAG, "authenticated: ${body?.authenticated}")
-                    
-                    _state.value = PairingState.Error(
-                        message = "Código de pareamento inválido ou expirado. Verifique com a loja.",
-                        canRetry = true
-                    )
+                    else -> {
+                        Log.w(TAG, "❌ APK Authentication failed")
+                        Log.w(TAG, "authenticated: ${body?.authenticated}")
+                        Log.w(TAG, "pending: ${body?.pending}")
+                        
+                        val message = body?.message 
+                            ?: "Código de pareamento inválido ou expirado. Verifique com a loja."
+                        
+                        _state.value = PairingState.Error(
+                            message = message,
+                            canRetry = true
+                        )
+                    }
                 }
             } else {
                 val errorBody = try {
