@@ -2,6 +2,7 @@ plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
     id("org.jetbrains.kotlin.plugin.compose") version "2.2.20"
+    id("com.google.gms.google-services")
     // Temporarily disabled KSP and Hilt to fix build issues
     // id("com.google.devtools.ksp")
     // id("com.google.dagger.hilt.android")
@@ -178,6 +179,18 @@ dependencies {
     implementation("com.squareup.retrofit2:converter-gson:2.9.0")
     implementation("com.squareup.okhttp3:okhttp:4.12.0")
     implementation("com.google.code.gson:gson:2.10.1")
+    
+    // Firebase BOM (Bill of Materials) for consistent Firebase library versions
+    implementation(platform("com.google.firebase:firebase-bom:33.7.0"))
+    
+    // Firebase Cloud Messaging for push notifications
+    implementation("com.google.firebase:firebase-messaging-ktx")
+    
+    // Firebase Analytics (optional, but recommended for FCM)
+    implementation("com.google.firebase:firebase-analytics-ktx")
+    
+    // Kotlin Coroutines Play Services for Firebase Task await()
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.7.3")
     
     // Core library desugaring for Java 8+ language features
     coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.1.3")

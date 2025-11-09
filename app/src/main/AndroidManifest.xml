@@ -152,6 +152,15 @@
             </intent-filter>
         </activity>
 
+        <!-- Firebase Cloud Messaging Service -->
+        <service
+            android:name=".notifications.CdcMessagingService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+
         <!-- File provider for sharing documents -->
         <provider
             android:name="androidx.core.content.FileProvider"

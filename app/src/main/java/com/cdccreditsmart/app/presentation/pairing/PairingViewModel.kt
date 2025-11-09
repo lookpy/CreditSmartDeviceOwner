@@ -7,6 +7,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.cdccreditsmart.app.device.DeviceInfoManager
+import com.cdccreditsmart.app.notifications.FcmTokenManager
 import com.cdccreditsmart.app.security.FingerprintCalculator
 import com.cdccreditsmart.app.security.SecureTokenStorage
 import com.cdccreditsmart.app.websocket.WebSocketManager
@@ -51,6 +52,7 @@ class PairingViewModel(private val context: Context) : ViewModel() {
 
     private val deviceInfoManager = DeviceInfoManager(context)
     private val tokenStorage = SecureTokenStorage(context)
+    private val fcmTokenManager = FcmTokenManager(context)
     private var webSocketManager: WebSocketManager? = null
 
     private val deviceApi: DeviceApiService by lazy {
@@ -319,6 +321,8 @@ class PairingViewModel(private val context: Context) : ViewModel() {
     ) {
         _state.value = PairingState.Connecting("Estabelecendo conexão...")
         
+        registerFcmToken()
+        
         webSocketManager = WebSocketManager(
             contractCode = contractCode,
             onDeviceConnected = {
@@ -349,6 +353,26 @@ class PairingViewModel(private val context: Context) : ViewModel() {
                     customerName = customerName,
                     deviceModel = deviceModel
                 )
+            }
+        }
+    }
+
+    private fun registerFcmToken() {
+        Log.d(TAG, "Registering FCM token with backend...")
+        
+        viewModelScope.launch {
+            try {
+                fcmTokenManager.registerTokenWithBackend(
+                    onSuccess = {
+                        Log.d(TAG, "✅ FCM token registered successfully")
+                    },
+                    onError = { error ->
+                        Log.w(TAG, "⚠️ FCM token registration failed: $error")
+                        Log.w(TAG, "Push notifications may not work until token is registered")
+                    }
+                )
+            } catch (e: Exception) {
+                Log.e(TAG, "Failed to register FCM token", e)
             }
         }
     }
