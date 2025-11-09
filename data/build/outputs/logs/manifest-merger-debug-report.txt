@@ -1,16 +1,16 @@
 -- Merging decision tree log ---
 manifest
-ADDED from /home/runner/workspace/data/build/intermediates/tmp/ProcessLibraryManifest/debug/tempAndroidManifest7703022378750593111.xml:2:13-83
-INJECTED from /home/runner/workspace/data/build/intermediates/tmp/ProcessLibraryManifest/debug/tempAndroidManifest7703022378750593111.xml:2:13-83
+ADDED from /home/runner/workspace/data/build/intermediates/tmp/ProcessLibraryManifest/debug/tempAndroidManifest13402668779341074476.xml:2:13-83
+INJECTED from /home/runner/workspace/data/build/intermediates/tmp/ProcessLibraryManifest/debug/tempAndroidManifest13402668779341074476.xml:2:13-83
 	package
-		INJECTED from /home/runner/workspace/data/build/intermediates/tmp/ProcessLibraryManifest/debug/tempAndroidManifest7703022378750593111.xml
+		INJECTED from /home/runner/workspace/data/build/intermediates/tmp/ProcessLibraryManifest/debug/tempAndroidManifest13402668779341074476.xml
 	xmlns:android
-		ADDED from /home/runner/workspace/data/build/intermediates/tmp/ProcessLibraryManifest/debug/tempAndroidManifest7703022378750593111.xml:2:23-81
+		ADDED from /home/runner/workspace/data/build/intermediates/tmp/ProcessLibraryManifest/debug/tempAndroidManifest13402668779341074476.xml:2:23-81
 uses-sdk
-INJECTED from /home/runner/workspace/data/build/intermediates/tmp/ProcessLibraryManifest/debug/tempAndroidManifest7703022378750593111.xml reason: use-sdk injection requested
-INJECTED from /home/runner/workspace/data/build/intermediates/tmp/ProcessLibraryManifest/debug/tempAndroidManifest7703022378750593111.xml
-INJECTED from /home/runner/workspace/data/build/intermediates/tmp/ProcessLibraryManifest/debug/tempAndroidManifest7703022378750593111.xml
+INJECTED from /home/runner/workspace/data/build/intermediates/tmp/ProcessLibraryManifest/debug/tempAndroidManifest13402668779341074476.xml reason: use-sdk injection requested
+INJECTED from /home/runner/workspace/data/build/intermediates/tmp/ProcessLibraryManifest/debug/tempAndroidManifest13402668779341074476.xml
+INJECTED from /home/runner/workspace/data/build/intermediates/tmp/ProcessLibraryManifest/debug/tempAndroidManifest13402668779341074476.xml
 	android:targetSdkVersion
-		INJECTED from /home/runner/workspace/data/build/intermediates/tmp/ProcessLibraryManifest/debug/tempAndroidManifest7703022378750593111.xml
+		INJECTED from /home/runner/workspace/data/build/intermediates/tmp/ProcessLibraryManifest/debug/tempAndroidManifest13402668779341074476.xml
 	android:minSdkVersion
-		INJECTED from /home/runner/workspace/data/build/intermediates/tmp/ProcessLibraryManifest/debug/tempAndroidManifest7703022378750593111.xml
+		INJECTED from /home/runner/workspace/data/build/intermediates/tmp/ProcessLibraryManifest/debug/tempAndroidManifest13402668779341074476.xml
