@@ -43,3 +43,11 @@ The UI is developed using Jetpack Compose and Material 3, incorporating a CDC in
 - **EncryptedSharedPreferences**: Secure local storage with AES256_GCM encryption
 - **WorkManager**: Deferrable asynchronous tasks
 - **Kotlin Coroutines**: Asynchronous programming with suspend functions
+
+## Recent Changes
+### 2025-11-08
+- **Fixed WebSocket authentication error**: Removed invalid "authenticate" message that backend didn't recognize
+- **Fixed Home screen token error**: Corrected token storage - now using SecureTokenStorage consistently across app
+- **Fixed 401 Unauthorized on /installments**: Removed duplicate Authorization header (interceptor was adding it automatically)
+- **Implemented pending sale flow**: Added PairingPendingScreen for Stage 1 sales awaiting PDV completion
+- **Added automatic code formatting**: Contract codes auto-format to uppercase, alphanumeric only, 8 chars max

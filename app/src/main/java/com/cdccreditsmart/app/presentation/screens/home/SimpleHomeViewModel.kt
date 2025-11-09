@@ -116,7 +116,7 @@ class SimpleHomeViewModel(
 
                 Log.d(TAG, "Fetching device installments...")
                 Log.d(TAG, "Using auth token from SecureTokenStorage")
-                val response = deviceApiService.getDeviceInstallments("Bearer $token")
+                val response = deviceApiService.getDeviceInstallments()
 
                 if (response.isSuccessful && response.body() != null) {
                     val data = response.body()!!

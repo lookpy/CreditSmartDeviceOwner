@@ -1,0 +1,51 @@
+2025-11-08 22:22:44.895 15868-15868 PairingViewModel        com.cdccreditsmart.app.debug         D  ========== APK AUTHENTICATION ==========
+2025-11-08 22:22:44.895 15868-15868 PairingViewModel        com.cdccreditsmart.app.debug         D  Pairing Code: QY5D5B69
+2025-11-08 22:22:44.895 15868-15868 PairingViewModel        com.cdccreditsmart.app.debug         D  Sending POST /api/apk/auth...
+2025-11-08 22:22:44.895 15868-15868 PairingViewModel        com.cdccreditsmart.app.debug         D  Request: { code: "QY5D****" }
+2025-11-08 22:22:45.378 15868-15868 PairingViewModel        com.cdccreditsmart.app.debug         D  Response code: 200
+2025-11-08 22:22:45.378 15868-15868 PairingViewModel        com.cdccreditsmart.app.debug         D  Response message: 
+2025-11-08 22:22:45.378 15868-15868 PairingViewModel        com.cdccreditsmart.app.debug         D  Response body received
+2025-11-08 22:22:45.378 15868-15868 PairingViewModel        com.cdccreditsmart.app.debug         D  ⏳ Sale pending - awaiting PDV completion
+2025-11-08 22:22:45.378 15868-15868 PairingViewModel        com.cdccreditsmart.app.debug         D  Message: Venda em andamento. Aguardando finalização no PDV.
+2025-11-08 22:22:55.259 15868-15868 PairingViewModel        com.cdccreditsmart.app.debug         D  Starting handshake for contract: QY5D5B69
+2025-11-08 22:22:55.260 15868-15868 DeviceInfoManager       com.cdccreditsmart.app.debug         W  READ_PHONE_STATE permission not granted
+2025-11-08 22:22:55.260 15868-15868 PairingViewModel        com.cdccreditsmart.app.debug         D  Device IMEI: UNKN...
+2025-11-08 22:22:55.260 15868-15868 PairingViewModel        com.cdccreditsmart.app.debug         W  IMEI not available - using code-only sync fallback
+2025-11-08 22:22:55.260 15868-15868 PairingViewModel        com.cdccreditsmart.app.debug         D  ========== APK AUTHENTICATION ==========
+2025-11-08 22:22:55.260 15868-15868 PairingViewModel        com.cdccreditsmart.app.debug         D  Pairing Code: QY5D5B69
+2025-11-08 22:22:55.260 15868-15868 PairingViewModel        com.cdccreditsmart.app.debug         D  Sending POST /api/apk/auth...
+2025-11-08 22:22:55.260 15868-15868 PairingViewModel        com.cdccreditsmart.app.debug         D  Request: { code: "QY5D****" }
+2025-11-08 22:22:55.773 15868-15868 PairingViewModel        com.cdccreditsmart.app.debug         D  Response code: 200
+2025-11-08 22:22:55.773 15868-15868 PairingViewModel        com.cdccreditsmart.app.debug         D  Response message: 
+2025-11-08 22:22:55.773 15868-15868 PairingViewModel        com.cdccreditsmart.app.debug         D  Response body received
+2025-11-08 22:22:55.773 15868-15868 PairingViewModel        com.cdccreditsmart.app.debug         D  ✅ APK Authentication successful!
+2025-11-08 22:22:55.773 15868-15868 PairingViewModel        com.cdccreditsmart.app.debug         D  Auth token received, expires in 86400s
+2025-11-08 22:22:55.773 15868-15868 PairingViewModel        com.cdccreditsmart.app.debug         D  Device: Motorola G15 Power
+2025-11-08 22:22:55.773 15868-15868 PairingViewModel        com.cdccreditsmart.app.debug         D  Customer: aline aosue
+2025-11-08 22:22:55.781 15868-15868 SecureTokenStorage      com.cdccreditsmart.app.debug         D  Auth token saved successfully
+2025-11-08 22:22:55.783 15868-15868 WebSocketManager        com.cdccreditsmart.app.debug         D  Connecting to WebSocket: wss://cdccreditsmart.com/ws/flow-status
+2025-11-08 22:22:56.139 15868-16085 WebSocketManager        com.cdccreditsmart.app.debug         D  WebSocket connection opened
+2025-11-08 22:22:56.139 15868-16085 WebSocketManager        com.cdccreditsmart.app.debug         D  WebSocket connected for contract: device_1762651339679_zikcyyt55as
+2025-11-08 22:22:56.139 15868-16085 WebSocketManager        com.cdccreditsmart.app.debug         D  Starting heartbeat
+2025-11-08 22:22:57.845 15868-15868 WindowOnBackDispatcher  com.cdccreditsmart.app.debug         W  sendCancelIfRunning: isInProgress=false callback=androidx.activity.OnBackPressedDispatcher$Api34Impl$createOnBackAnimationCallback$1@11f5338
+2025-11-08 22:22:59.169 15868-15868 NavController           com.cdccreditsmart.app.debug         I  Ignoring popBackStack to route pairing/qr_scanner as it was not found on the current back stack
+2025-11-08 22:22:59.298 15868-15868 SimpleHomeViewModel     com.cdccreditsmart.app.debug         D  Fetching device installments...
+2025-11-08 22:22:59.298 15868-15868 SimpleHomeViewModel     com.cdccreditsmart.app.debug         D  Using auth token from SecureTokenStorage
+2025-11-08 22:22:59.340 15868-16086 SimpleHomeViewModel     com.cdccreditsmart.app.debug         D  Added Authorization header with token
+2025-11-08 22:22:59.341 15868-16086 SimpleHomeViewModel     com.cdccreditsmart.app.debug         D  Request URL: https://cdccreditsmart.com/api/apk/device/installments
+2025-11-08 22:22:59.707 15868-16086 SimpleHomeViewModel     com.cdccreditsmart.app.debug         D  Response Code: 401
+2025-11-08 22:22:59.710 15868-15868 SimpleHomeViewModel     com.cdccreditsmart.app.debug         E  API error: 401 - {"error":"Token inválido ou expirado"}
+2025-11-08 22:23:01.067 15868-15868 SimpleHomeViewModel     com.cdccreditsmart.app.debug         D  Refreshing installments data...
+2025-11-08 22:23:01.070 15868-15868 SimpleHomeViewModel     com.cdccreditsmart.app.debug         D  Fetching device installments...
+2025-11-08 22:23:01.070 15868-15868 SimpleHomeViewModel     com.cdccreditsmart.app.debug         D  Using auth token from SecureTokenStorage
+2025-11-08 22:23:01.078 15868-16086 SimpleHomeViewModel     com.cdccreditsmart.app.debug         D  Added Authorization header with token
+2025-11-08 22:23:01.078 15868-16086 SimpleHomeViewModel     com.cdccreditsmart.app.debug         D  Request URL: https://cdccreditsmart.com/api/apk/device/installments
+2025-11-08 22:23:01.294 15868-16086 SimpleHomeViewModel     com.cdccreditsmart.app.debug         D  Response Code: 401
+2025-11-08 22:23:01.300 15868-15868 SimpleHomeViewModel     com.cdccreditsmart.app.debug         E  API error: 401 - {"error":"Token inválido ou expirado"}
+2025-11-08 22:23:09.282 15868-15868 SimpleHomeViewModel     com.cdccreditsmart.app.debug         D  Refreshing installments data...
+2025-11-08 22:23:09.285 15868-15868 SimpleHomeViewModel     com.cdccreditsmart.app.debug         D  Fetching device installments...
+2025-11-08 22:23:09.285 15868-15868 SimpleHomeViewModel     com.cdccreditsmart.app.debug         D  Using auth token from SecureTokenStorage
+2025-11-08 22:23:09.294 15868-16086 SimpleHomeViewModel     com.cdccreditsmart.app.debug         D  Added Authorization header with token
+2025-11-08 22:23:09.294 15868-16086 SimpleHomeViewModel     com.cdccreditsmart.app.debug         D  Request URL: https://cdccreditsmart.com/api/apk/device/installments
+2025-11-08 22:23:09.511 15868-16086 SimpleHomeViewModel     com.cdccreditsmart.app.debug         D  Response Code: 401
+2025-11-08 22:23:09.523 15868-15868 SimpleHomeViewModel     com.cdccreditsmart.app.debug         E  API error: 401 - {"error":"Token inválido ou expirado"}
