@@ -245,7 +245,7 @@ private fun NextInstallmentCard(installment: InstallmentItem) {
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                     Text(
-                        text = formatCurrency(installment.currentAmount),
+                        text = formatCurrency(installment.value),
                         style = MaterialTheme.typography.headlineSmall,
                         fontWeight = FontWeight.Bold,
                         color = MaterialTheme.colorScheme.onSurface
@@ -418,7 +418,7 @@ private fun InstallmentRow(installment: InstallmentItem) {
         }
         
         Text(
-            text = formatCurrency(installment.currentAmount),
+            text = formatCurrency(installment.value),
             style = MaterialTheme.typography.bodyLarge,
             fontWeight = FontWeight.SemiBold,
             color = MaterialTheme.colorScheme.onSurface
