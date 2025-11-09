@@ -1,0 +1,36 @@
+finished
+Download info
+:app:compileDebugKotlin
+DeviceInfoManager.kt
+'val deviceId: String!' is deprecated. Deprecated in Java.
+SimpleDeviceRegistrationManager.kt
+'static field SERIAL: String!' is deprecated. Deprecated in Java.
+'suspend fun getPdvImei(): Response<PdvImeiResponse>' is deprecated. Use searchPendingSale() instead.
+'data class PdvImeiResponse : Any' is deprecated. Use searchPendingSale() instead.
+CdcMessagingService.kt
+This declaration overrides a deprecated member but is not marked as deprecated itself. Add the '@Deprecated' annotation or suppress the diagnostic.
+'fun onMessageSent(p0: String): Unit' is deprecated. Deprecated in Java.
+This declaration overrides a deprecated member but is not marked as deprecated itself. Add the '@Deprecated' annotation or suppress the diagnostic.
+'fun onSendError(p0: String, p1: Exception): Unit' is deprecated. Deprecated in Java.
+ProvisioningActivity.kt
+'static field ACTION_PROVISION_MANAGED_DEVICE: String' is deprecated. Deprecated in Java.
+ModernHomeScreen.kt
+'fun Divider(modifier: Modifier = ..., thickness: Dp = ..., color: Color = ...): Unit' is deprecated. Renamed to HorizontalDivider.
+'fun Divider(modifier: Modifier = ..., thickness: Dp = ..., color: Color = ...): Unit' is deprecated. Renamed to HorizontalDivider.
+'val Icons.Filled.ArrowForward: ImageVector' is deprecated. Use the AutoMirrored version at Icons.AutoMirrored.Filled.ArrowForward.
+SimpleHomeScreen.kt
+'fun Divider(modifier: Modifier = ..., thickness: Dp = ..., color: Color = ...): Unit' is deprecated. Renamed to HorizontalDivider.
+'fun Divider(modifier: Modifier = ..., thickness: Dp = ..., color: Color = ...): Unit' is deprecated. Renamed to HorizontalDivider.
+'fun Divider(modifier: Modifier = ..., thickness: Dp = ..., color: Color = ...): Unit' is deprecated. Renamed to HorizontalDivider.
+'val Icons.Filled.List: ImageVector' is deprecated. Use the AutoMirrored version at Icons.AutoMirrored.Filled.List.
+'fun Divider(modifier: Modifier = ..., thickness: Dp = ..., color: Color = ...): Unit' is deprecated. Renamed to HorizontalDivider.
+'fun Divider(modifier: Modifier = ..., thickness: Dp = ..., color: Color = ...): Unit' is deprecated. Renamed to HorizontalDivider.
+CDCDeviceAdminReceiver.kt
+This declaration overrides a deprecated member but is not marked as deprecated itself. Add the '@Deprecated' annotation or suppress the diagnostic.
+'fun onPasswordChanged(p0: Context, p1: Intent): Unit' is deprecated. Deprecated in Java.
+This declaration overrides a deprecated member but is not marked as deprecated itself. Add the '@Deprecated' annotation or suppress the diagnostic.
+'fun onPasswordFailed(p0: Context, p1: Intent): Unit' is deprecated. Deprecated in Java.
+This declaration overrides a deprecated member but is not marked as deprecated itself. Add the '@Deprecated' annotation or suppress the diagnostic.
+'fun onPasswordSucceeded(p0: Context, p1: Intent): Unit' is deprecated. Deprecated in Java.
+ProvisioningDebugReceiver.kt
+'fun get(p0: String!): Any?' is deprecated. Deprecated in Java.
