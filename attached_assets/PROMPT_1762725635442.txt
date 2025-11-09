@@ -1,0 +1,378 @@
+🌐 ROTAS DO APK - COMUNICAÇÃO COM SERVIDOR
+Aqui estão TODAS as rotas que o APK precisa acessar para se comunicar com o servidor, buscar parcelas e pagamentos:
+
+🔐 1. AUTENTICAÇÃO E PAREAMENTO
+GET /api/device/claim-sale?imei={IMEI} (Step 1)
+Descrição: Busca venda pendente pelo IMEI do hardware
+Autenticação: Nenhuma
+Quando usar: Primeiro passo do pareamento após escanear QR Code
+
+Request:
+
+GET /api/device/claim-sale?imei=353104903560533
+
+Response:
+
+{
+  "success": true,
+  "found": true,
+  "validationId": "uuid-validacao",
+  "saleId": "uuid-venda",
+  "customerName": "João Silva",
+  "deviceModel": "Moto G15 Power",
+  "biometrySessionId": "uuid-sessao",
+  "storeId": "uuid-loja",
+  "customerCpf": "12345678901",
+  "expiresIn": 86400
+}
+
+POST /api/device/claim-sale (Step 2)
+Descrição: Reivindica venda com IMEI + fingerprint
+Autenticação: Nenhuma
+Quando usar: Segundo passo após confirmar venda encontrada
+
+Request:
+
+{
+  "validationId": "uuid-recebido-step-1",
+  "hardwareImei": "353104903560533",
+  "fingerprint": "sha256-hash-unico",
+  "deviceInfo": {
+    "brand": "Motorola",
+    "model": "Moto G15 Power",
+    "manufacturer": "motorola",
+    "androidVersion": "14",
+    "sdkInt": 34,
+    "serialNumber": "ABC123XYZ",
+    "buildId": "UP1A.231005.007"
+  }
+}
+
+Response:
+
+{
+  "success": true,
+  "matched": true,
+  "deviceId": "uuid-dispositivo",
+  "deviceToken": "jwt-token-permanente",
+  "apkToken": "jwt-apk-token",
+  "contractCode": "CTR_1762630954593_560533",
+  "customerCpf": "12345678901",
+  "message": "Device successfully paired"
+}
+
+📱 2. STATUS DO DISPOSITIVO
+GET /api/apk/device/status ⭐ PRINCIPAL
+Descrição: Status completo do dispositivo autenticado
+Autenticação: Authorization: Bearer {apkToken}
+Quando usar: Verificar se dispositivo está bloqueado, parcelas atrasadas, etc.
+
+Request:
+
+GET /api/apk/device/status
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+
+Response:
+
+{
+  "device": {
+    "id": "uuid",
+    "name": "Moto G15 Power",
+    "isBlocked": false,
+    "blockReason": null,
+    "status": "active"
+  },
+  "shouldBlock": false,
+  "overdueCount": 2,
+  "daysSinceOverdue": 5,
+  "pdvSession": {
+    "status": "completed",
+    "currentStage": "stage-3",
+    "isActive": false,
+    "lastHeartbeat": "2025-11-09T10:00:00Z",
+    "shouldWait": false
+  },
+  "paymentInfo": {
+    "totalInstallments": 4,
+    "paidInstallments": 2,
+    "remainingInstallments": 2,
+    "overdueInstallments": 2,
+    "allPaid": false
+  }
+}
+
+💰 3. PARCELAS E PAGAMENTOS
+GET /api/apk/device/installments ⭐ PRINCIPAL
+Descrição: Lista TODAS as parcelas com detalhes completos
+Autenticação: Authorization: Bearer {apkToken}
+Quando usar: Exibir lista de parcelas na tela do app
+
+Request:
+
+GET /api/apk/device/installments
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+
+Response:
+
+{
+  "device": {
+    "id": "uuid",
+    "name": "Moto G15 Power",
+    "totalValue": 1423.60,
+    "installmentValue": 355.90,
+    "installmentCount": 4
+  },
+  "summary": {
+    "total": 4,
+    "paid": 2,
+    "pending": 1,
+    "overdue": 1,
+    "totalAmount": 1423.60,
+    "paidAmount": 711.80,
+    "pendingAmount": 355.90,
+    "overdueAmount": 355.90,
+    "completionPercentage": 50
+  },
+  "timing": {
+    "daysUntilNext": 7,
+    "daysOverdue": 5,
+    "nextDueDate": "2025-11-16T00:00:00Z",
+    "mostOverdueDueDate": "2025-11-04T00:00:00Z"
+  },
+  "nextInstallment": {
+    "id": "uuid-3",
+    "number": 3,
+    "value": 355.90,
+    "dueDate": "2025-11-16T00:00:00Z",
+    "status": "pending",
+    "isPaid": false,
+    "isOverdue": false,
+    "daysSinceDue": 0
+  },
+  "mostOverdueInstallment": {
+    "id": "uuid-2",
+    "number": 2,
+    "value": 355.90,
+    "dueDate": "2025-11-04T00:00:00Z",
+    "status": "overdue",
+    "isPaid": false,
+    "isOverdue": true,
+    "daysSinceDue": 5
+  },
+  "allInstallments": [
+    {
+      "id": "uuid-1",
+      "number": 1,
+      "value": 355.90,
+      "dueDate": "2025-10-20T00:00:00Z",
+      "paidDate": "2025-10-19T14:30:00Z",
+      "status": "paid",
+      "paymentMethod": "pix",
+      "isPaid": true,
+      "isOverdue": false,
+      "daysSinceDue": 0
+    },
+    {
+      "id": "uuid-2",
+      "number": 2,
+      "value": 355.90,
+      "dueDate": "2025-11-04T00:00:00Z",
+      "paidDate": null,
+      "status": "overdue",
+      "paymentMethod": null,
+      "isPaid": false,
+      "isOverdue": true,
+      "daysSinceDue": 5
+    }
+  ],
+  "status": "OK",
+  "message": "Dados carregados com sucesso"
+}
+
+GET /api/apk/device/overdue
+Descrição: Lista apenas parcelas em atraso
+Autenticação: Authorization: Bearer {apkToken}
+Quando usar: Mostrar alertas de atraso
+
+Request:
+
+GET /api/apk/device/overdue
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+
+Response:
+
+{
+  "deviceId": "uuid",
+  "deviceName": "Moto G15 Power",
+  "overdueCount": 1,
+  "totalOverdueAmount": 355.90,
+  "installments": [
+    {
+      "id": "uuid-2",
+      "installmentNumber": 2,
+      "value": 355.90,
+      "dueDate": "2025-11-04T00:00:00Z",
+      "status": "overdue",
+      "daysPastDue": 5
+    }
+  ]
+}
+
+🔔 4. PUSH NOTIFICATIONS (FCM)
+POST /api/apk/device/fcm-token
+Descrição: Registra token FCM para receber notificações push
+Autenticação: Authorization: Bearer {apkToken}
+Quando usar: Após obter token do Firebase no APK
+
+Request:
+
+{
+  "fcmToken": "dGhpc19pc19hX2Zha2VfdG9rZW4..."
+}
+
+Response:
+
+{
+  "success": true,
+  "message": "FCM token registrado com sucesso"
+}
+
+💓 5. HEARTBEAT E MONITORAMENTO
+POST /api/apk/device/heartbeat
+Descrição: Envia sinal de vida do dispositivo
+Autenticação: Authorization: Bearer {apkToken}
+Quando usar: A cada 30-60 segundos
+
+Request:
+
+{
+  "timestamp": "2025-11-09T10:00:00Z",
+  "batteryLevel": 85,
+  "isCharging": false,
+  "networkType": "wifi",
+  "location": {
+    "latitude": -23.550520,
+    "longitude": -46.633308
+  },
+  "appVersion": "1.0.0"
+}
+
+Response:
+
+{
+  "success": true,
+  "serverTime": "2025-11-09T10:00:01Z",
+  "shouldBlock": false,
+  "overdueCount": 0
+}
+
+🔒 6. BLOQUEIO/DESBLOQUEIO
+POST /api/apk/device/block
+Descrição: Bloqueia o dispositivo
+Autenticação: Authorization: Bearer {apkToken}
+Quando usar: Quando detectar condições de bloqueio automático
+
+Request:
+
+{
+  "reason": "Pagamento em atraso há 5 dias"
+}
+
+Response:
+
+{
+  "success": true,
+  "deviceId": "uuid",
+  "isBlocked": true,
+  "blockReason": "Pagamento em atraso há 5 dias",
+  "message": "Device blocked successfully"
+}
+
+POST /api/apk/device/unblock
+Descrição: Desbloqueia o dispositivo
+Autenticação: Authorization: Bearer {apkToken}
+Quando usar: Após pagamento de parcelas atrasadas
+
+Response:
+
+{
+  "success": true,
+  "deviceId": "uuid",
+  "isBlocked": false,
+  "blockReason": null,
+  "message": "Device unblocked successfully"
+}
+
+🌐 7. WEBSOCKET - TEMPO REAL
+WS /ws/flow-status
+Descrição: Conexão WebSocket para comunicação em tempo real
+Autenticação: Via mensagem authenticate
+Quando usar: Durante o processo de pareamento e para receber atualizações
+
+Conectar:
+
+const ws = new WebSocket("wss://cdccreditsmart.com/ws/flow-status");
+
+Mensagens do APK → Servidor:
+
+1. Autenticação:
+
+{
+  "type": "authenticate",
+  "contractId": "CTR_1762630954593_560533"
+}
+
+2. Heartbeat:
+
+{
+  "type": "ping"
+}
+
+Mensagens do Servidor → APK:
+
+1. Confirmação:
+
+{
+  "type": "authenticated",
+  "success": true,
+  "message": "Conectado ao sistema",
+  "contractId": "CTR_1762630954593_560533",
+  "timestamp": "2025-11-09T10:00:00Z"
+}
+
+2. Venda Concluída:
+
+{
+  "type": "sale_completed",
+  "data": {
+    "contractCode": "CTR_1762630954593_560533",
+    "totalValue": 1423.60,
+    "installments": 4
+  }
+}
+
+3. Pong:
+
+{
+  "type": "pong"
+}
+
+📊 RESUMO DAS ROTAS PRINCIPAIS
+Rota	Método	Autenticação	Uso
+/api/device/claim-sale (GET)	GET	❌ Não	Buscar venda por IMEI
+/api/device/claim-sale (POST)	POST	❌ Não	Reivindicar venda
+/api/apk/device/status	GET	✅ apkToken	Status do dispositivo
+/api/apk/device/installments	GET	✅ apkToken	Lista todas as parcelas
+/api/apk/device/overdue	GET	✅ apkToken	Parcelas em atraso
+/api/apk/device/fcm-token	POST	✅ apkToken	Registrar token FCM
+/api/apk/device/heartbeat	POST	✅ apkToken	Enviar sinal de vida
+/api/apk/device/block	POST	✅ apkToken	Bloquear dispositivo
+/api/apk/device/unblock	POST	✅ apkToken	Desbloquear dispositivo
+/ws/flow-status	WebSocket	Via mensagem	Comunicação em tempo real
+🔑 COMO USAR O apkToken
+Todas as rotas com ✅ precisam do header de autenticação:
+
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+
+O apkToken é recebido na resposta do /api/device/claim-sale (POST) após o pareamento bem-sucedido.
+

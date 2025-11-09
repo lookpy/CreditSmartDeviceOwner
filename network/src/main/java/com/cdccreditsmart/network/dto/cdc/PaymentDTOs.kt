@@ -4,14 +4,95 @@ import com.squareup.moshi.JsonClass
 
 /**
  * CDC CreditSmart Payment DTOs
- * Based on official CDC CreditSmart API documentation
+ * Based on OFFICIAL CDC CreditSmart API documentation
+ * Endpoint: GET /api/apk/device/installments
  */
 
-//@JsonClass(generateAdapter = true) // Temporarily disabled to fix build
+/**
+ * Main response from /api/apk/device/installments
+ * Matches EXACTLY the backend response structure
+ */
+//@JsonClass(generateAdapter = true)
 data class CdcInstallmentsResponse(
+    val device: DeviceInstallmentInfo? = null,
+    val summary: InstallmentsSummary? = null,
+    val timing: TimingInfo? = null,
+    val nextInstallment: InstallmentItem? = null,
+    val mostOverdueInstallment: InstallmentItem? = null,
+    val allInstallments: List<InstallmentItem>? = null,
+    val status: String? = null,
+    val message: String? = null
+)
+
+/**
+ * Device information in installments response
+ */
+//@JsonClass(generateAdapter = true)
+data class DeviceInstallmentInfo(
+    val id: String,
+    val name: String,
+    val totalValue: Double,
+    val installmentValue: Double,
+    val installmentCount: Int
+)
+
+/**
+ * Summary information about installments
+ */
+//@JsonClass(generateAdapter = true)
+data class InstallmentsSummary(
+    val total: Int,
+    val paid: Int,
+    val pending: Int,
+    val overdue: Int,
+    val totalAmount: Double,
+    val paidAmount: Double,
+    val pendingAmount: Double,
+    val overdueAmount: Double,
+    val completionPercentage: Int
+)
+
+/**
+ * Timing information
+ */
+//@JsonClass(generateAdapter = true)
+data class TimingInfo(
+    val daysUntilNext: Int? = null,
+    val daysOverdue: Int? = null,
+    val nextDueDate: String? = null,
+    val mostOverdueDueDate: String? = null
+)
+
+/**
+ * Individual installment item
+ */
+//@JsonClass(generateAdapter = true)
+data class InstallmentItem(
+    val id: String,
+    val number: Int,
+    val value: Double,
+    val dueDate: String,
+    val paidDate: String? = null,
+    val status: String, // "paid", "pending", "overdue"
+    val paymentMethod: String? = null, // "pix", "boleto", null
+    val isPaid: Boolean,
+    val isOverdue: Boolean,
+    val daysSinceDue: Int
+)
+
+// ============================================================================
+// LEGACY DTOs - Kept for backward compatibility with other endpoints
+// ============================================================================
+
+/**
+ * LEGACY: Old installments response structure
+ * DO NOT USE for /api/apk/device/installments - use CdcInstallmentsResponse instead
+ */
+//@JsonClass(generateAdapter = true)
+data class LegacyCdcInstallmentsResponse(
     val success: Boolean,
     val installments: List<InstallmentDetail>? = null,
-    val summary: PaymentSummary? = null,
+    val summary: PaymentSummaryLegacy? = null,
     val contract: ContractSummary? = null,
     val customer: CustomerInfo? = null,
     val paymentMethods: List<PaymentMethodInfo>? = null,
@@ -20,7 +101,7 @@ data class CdcInstallmentsResponse(
     val message: String? = null
 )
 
-//@JsonClass(generateAdapter = true) // Temporarily disabled to fix build
+//@JsonClass(generateAdapter = true)
 data class InstallmentDetail(
     val installmentId: String,
     val number: Int,
@@ -32,10 +113,10 @@ data class InstallmentDetail(
     val paymentMethod: String? = null,
     val transactionId: String? = null,
     val fees: FeeInfo? = null,
-    val paymentOptions: List<PaymentOption>
+    val paymentOptions: List<PaymentOption>? = null
 )
 
-//@JsonClass(generateAdapter = true) // Temporarily disabled to fix build
+//@JsonClass(generateAdapter = true)
 data class FeeInfo(
     val latePaymentFee: Double = 0.0,
     val interestFee: Double = 0.0,
@@ -44,7 +125,7 @@ data class FeeInfo(
     val feeDetails: List<FeeDetail>? = null
 )
 
-//@JsonClass(generateAdapter = true) // Temporarily disabled to fix build
+//@JsonClass(generateAdapter = true)
 data class FeeDetail(
     val type: String, // "late_payment", "interest", "service", "discount"
     val amount: Double,
@@ -52,7 +133,7 @@ data class FeeDetail(
     val appliedDate: String? = null
 )
 
-//@JsonClass(generateAdapter = true) // Temporarily disabled to fix build
+//@JsonClass(generateAdapter = true)
 data class PaymentOption(
     val method: String, // "pix", "boleto", "credit_card", "debit_card"
     val available: Boolean,
@@ -61,21 +142,21 @@ data class PaymentOption(
     val description: String? = null
 )
 
-//@JsonClass(generateAdapter = true) // Temporarily disabled to fix build
+//@JsonClass(generateAdapter = true)
 data class ContractSummary(
-    val contractId: String,
-    val contractCode: String,
-    val deviceModel: String,
-    val purchaseDate: String,
-    val totalValue: Double,
-    val downPayment: Double,
-    val financedAmount: Double,
-    val interestRate: Double,
-    val totalInstallments: Int,
-    val status: String
+    val contractId: String? = null,
+    val contractCode: String? = null,
+    val deviceModel: String? = null,
+    val purchaseDate: String? = null,
+    val totalValue: Double? = null,
+    val downPayment: Double? = null,
+    val financedAmount: Double? = null,
+    val interestRate: Double? = null,
+    val totalInstallments: Int? = null,
+    val status: String? = null
 )
 
-//@JsonClass(generateAdapter = true) // Temporarily disabled to fix build
+//@JsonClass(generateAdapter = true)
 data class PaymentMethodInfo(
     val method: String,
     val displayName: String,
@@ -87,14 +168,30 @@ data class PaymentMethodInfo(
     val instructions: String? = null
 )
 
-//@JsonClass(generateAdapter = true) // Temporarily disabled to fix build
+/**
+ * Legacy Payment Summary
+ * For backward compatibility
+ */
+//@JsonClass(generateAdapter = true)
+data class PaymentSummaryLegacy(
+    val totalAmount: Double,
+    val paidAmount: Double,
+    val remainingAmount: Double,
+    val overdueAmount: Double,
+    val nextDueDate: String?,
+    val installmentsPaid: Int,
+    val totalInstallments: Int,
+    val currentStatus: String // "current", "overdue", "paid_off"
+)
+
+//@JsonClass(generateAdapter = true)
 data class CdcPixPaymentRequest(
     val amount: Double? = null, // Optional, can use installment amount
     val description: String? = null,
     val expirationMinutes: Int = 30
 )
 
-//@JsonClass(generateAdapter = true) // Temporarily disabled to fix build
+//@JsonClass(generateAdapter = true)
 data class CdcPixPaymentResponse(
     val success: Boolean,
     val paymentId: String? = null,
@@ -109,7 +206,7 @@ data class CdcPixPaymentResponse(
     val serverTimestamp: Long
 )
 
-//@JsonClass(generateAdapter = true) // Temporarily disabled to fix build
+//@JsonClass(generateAdapter = true)
 data class CdcBoletoPaymentRequest(
     val amount: Double? = null, // Optional, can use installment amount
     val dueDate: String? = null, // ISO date, optional
@@ -117,7 +214,7 @@ data class CdcBoletoPaymentRequest(
     val instructions: List<String>? = null
 )
 
-//@JsonClass(generateAdapter = true) // Temporarily disabled to fix build
+//@JsonClass(generateAdapter = true)
 data class CdcBoletoPaymentResponse(
     val success: Boolean,
     val paymentId: String? = null,
@@ -132,7 +229,7 @@ data class CdcBoletoPaymentResponse(
     val serverTimestamp: Long
 )
 
-//@JsonClass(generateAdapter = true) // Temporarily disabled to fix build
+//@JsonClass(generateAdapter = true)
 data class BoletoBank(
     val bankCode: String,
     val bankName: String,
@@ -143,7 +240,7 @@ data class BoletoBank(
 /**
  * Payment confirmation structures
  */
-//@JsonClass(generateAdapter = true) // Temporarily disabled to fix build
+//@JsonClass(generateAdapter = true)
 data class PaymentConfirmation(
     val paymentId: String,
     val installmentId: String,
@@ -155,7 +252,7 @@ data class PaymentConfirmation(
     val receipt: PaymentReceipt? = null
 )
 
-//@JsonClass(generateAdapter = true) // Temporarily disabled to fix build
+//@JsonClass(generateAdapter = true)
 data class PaymentReceipt(
     val receiptId: String,
     val receiptUrl: String? = null,
@@ -166,7 +263,7 @@ data class PaymentReceipt(
 /**
  * Payment history structures
  */
-//@JsonClass(generateAdapter = true) // Temporarily disabled to fix build
+//@JsonClass(generateAdapter = true)
 data class PaymentHistoryResponse(
     val success: Boolean,
     val payments: List<PaymentHistoryItem>,
@@ -175,7 +272,7 @@ data class PaymentHistoryResponse(
     val serverTimestamp: Long
 )
 
-//@JsonClass(generateAdapter = true) // Temporarily disabled to fix build
+//@JsonClass(generateAdapter = true)
 data class PaymentHistoryItem(
     val paymentId: String,
     val installmentId: String,
@@ -189,7 +286,7 @@ data class PaymentHistoryItem(
     val fees: FeeInfo? = null
 )
 
-//@JsonClass(generateAdapter = true) // Temporarily disabled to fix build
+//@JsonClass(generateAdapter = true)
 data class PaymentHistorySummary(
     val totalPayments: Int,
     val totalAmount: Double,
@@ -198,7 +295,7 @@ data class PaymentHistorySummary(
     val statusBreakdown: Map<String, Int>
 )
 
-//@JsonClass(generateAdapter = true) // Temporarily disabled to fix build
+//@JsonClass(generateAdapter = true)
 data class PaginationInfo(
     val currentPage: Int,
     val totalPages: Int,

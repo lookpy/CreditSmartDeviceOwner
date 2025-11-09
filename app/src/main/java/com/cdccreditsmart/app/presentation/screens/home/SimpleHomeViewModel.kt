@@ -8,12 +8,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.cdccreditsmart.app.security.SecureTokenStorage
 import com.cdccreditsmart.network.api.DeviceApiService
-import com.cdccreditsmart.network.dto.cdc.CdcInstallmentsResponse
-import com.cdccreditsmart.network.dto.cdc.ContractSummary
-import com.cdccreditsmart.network.dto.cdc.CustomerInfo
-import com.cdccreditsmart.network.dto.cdc.InstallmentDetail
-import com.cdccreditsmart.network.dto.cdc.PaymentMethodInfo
-import com.cdccreditsmart.network.dto.cdc.PaymentSummary
+import com.cdccreditsmart.network.dto.cdc.DeviceInstallmentInfo
+import com.cdccreditsmart.network.dto.cdc.InstallmentItem
+import com.cdccreditsmart.network.dto.cdc.InstallmentsSummary
+import com.cdccreditsmart.network.dto.cdc.TimingInfo
 import com.google.gson.Gson
 import kotlinx.coroutines.launch
 import okhttp3.OkHttpClient
@@ -25,11 +23,12 @@ data class HomeState(
     val isLoading: Boolean = false,
     val isError: Boolean = false,
     val errorMessage: String? = null,
-    val installments: List<InstallmentDetail> = emptyList(),
-    val summary: PaymentSummary? = null,
-    val contract: ContractSummary? = null,
-    val customer: CustomerInfo? = null,
-    val paymentMethods: List<PaymentMethodInfo> = emptyList()
+    val device: DeviceInstallmentInfo? = null,
+    val summary: InstallmentsSummary? = null,
+    val timing: TimingInfo? = null,
+    val nextInstallment: InstallmentItem? = null,
+    val mostOverdueInstallment: InstallmentItem? = null,
+    val allInstallments: List<InstallmentItem> = emptyList()
 )
 
 class SimpleHomeViewModel(
@@ -68,18 +67,18 @@ class SimpleHomeViewModel(
                 val token = tokenStorage.getAuthToken()
                 if (token != null) {
                     requestBuilder.addHeader("Authorization", "Bearer $token")
-                    Log.d(TAG, "Added Authorization header with token")
+                    Log.d(TAG, "✅ Added Authorization header with token")
                 } else {
-                    Log.w(TAG, "No valid token available for API call")
+                    Log.w(TAG, "⚠️ No valid token available for API call")
                 }
                 
                 val request = requestBuilder.build()
                 
-                Log.d(TAG, "Request URL: ${request.url}")
+                Log.d(TAG, "📤 Request URL: ${request.url}")
                 
                 val response = chain.proceed(request)
                 
-                Log.d(TAG, "Response Code: ${response.code}")
+                Log.d(TAG, "📥 Response Code: ${response.code}")
                 
                 response
             }
@@ -105,7 +104,7 @@ class SimpleHomeViewModel(
                 val token = tokenStorage.getAuthToken()
                 
                 if (token == null) {
-                    Log.e(TAG, "No valid token available")
+                    Log.e(TAG, "❌ No valid token available")
                     _homeState.value = _homeState.value.copy(
                         isLoading = false,
                         isError = true,
@@ -114,31 +113,38 @@ class SimpleHomeViewModel(
                     return@launch
                 }
 
-                Log.d(TAG, "Fetching device installments...")
-                Log.d(TAG, "Using auth token from SecureTokenStorage")
+                Log.d(TAG, "📡 Fetching device installments from /api/apk/device/installments...")
                 val response = deviceApiService.getDeviceInstallments()
 
                 if (response.isSuccessful && response.body() != null) {
                     val data = response.body()!!
                     
-                    Log.d(TAG, "Successfully fetched installments data")
-                    Log.d(TAG, "Installments count: ${data.installments?.size ?: 0}")
-                    Log.d(TAG, "Summary: ${data.summary}")
-                    Log.d(TAG, "Contract: ${data.contract}")
-                    Log.d(TAG, "Customer: ${data.customer}")
+                    Log.d(TAG, "✅ Successfully fetched installments data")
+                    Log.d(TAG, "📊 Device: ${data.device?.name ?: "N/A"}")
+                    Log.d(TAG, "📊 Total installments: ${data.summary?.total ?: 0}")
+                    Log.d(TAG, "📊 Paid: ${data.summary?.paid ?: 0}")
+                    Log.d(TAG, "📊 Overdue: ${data.summary?.overdue ?: 0}")
+                    Log.d(TAG, "📊 All installments count: ${data.allInstallments?.size ?: 0}")
+                    
+                    if (data.allInstallments.isNullOrEmpty()) {
+                        Log.w(TAG, "⚠️ WARNING: Backend returned ZERO installments!")
+                        Log.w(TAG, "⚠️ This is likely a backend issue - check /api/apk/device/installments endpoint")
+                    }
                     
                     _homeState.value = _homeState.value.copy(
                         isLoading = false,
                         isError = false,
-                        installments = data.installments ?: emptyList(),
+                        device = data.device,
                         summary = data.summary,
-                        contract = data.contract,
-                        customer = data.customer,
-                        paymentMethods = data.paymentMethods ?: emptyList()
+                        timing = data.timing,
+                        nextInstallment = data.nextInstallment,
+                        mostOverdueInstallment = data.mostOverdueInstallment,
+                        allInstallments = data.allInstallments ?: emptyList()
                     )
                 } else {
                     val errorBody = response.errorBody()?.string()
-                    Log.e(TAG, "API error: ${response.code()} - $errorBody")
+                    Log.e(TAG, "❌ API error: ${response.code()}")
+                    Log.e(TAG, "❌ Error body: $errorBody")
                     
                     _homeState.value = _homeState.value.copy(
                         isLoading = false,
@@ -147,7 +153,7 @@ class SimpleHomeViewModel(
                     )
                 }
             } catch (e: Exception) {
-                Log.e(TAG, "Exception loading installments", e)
+                Log.e(TAG, "❌ Exception loading installments", e)
                 _homeState.value = _homeState.value.copy(
                     isLoading = false,
                     isError = true,
@@ -158,7 +164,7 @@ class SimpleHomeViewModel(
     }
 
     fun refreshData() {
-        Log.d(TAG, "Refreshing installments data...")
+        Log.d(TAG, "🔄 Refreshing installments data...")
         loadInstallmentsData()
     }
 }
