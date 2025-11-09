@@ -1,0 +1,19 @@
+## INSTRUÇÕES:
+## 1. Renomeie este arquivo para: local.properties (sem .exemplo)
+## 2. Substitua o caminho abaixo pelo caminho do seu Android SDK
+## 3. Use \\ (barra dupla)
+
+## EXEMPLO 1 (mais comum):
+sdk.dir=C\:\\Users\\SeuNome\\AppData\\Local\\Android\\Sdk
+
+## EXEMPLO 2 (se instalou em outro local):
+## sdk.dir=D\:\\Programs\\Android\\Sdk
+
+## EXEMPLO 3 (Command Line Tools):
+## sdk.dir=C\:\\Android
+
+## COMO ENCONTRAR O CAMINHO:
+## 1. Abra Android Studio
+## 2. File → Settings → Android SDK
+## 3. Copie o caminho que aparece
+## 4. Substitua acima (use \\ ao invés de \)

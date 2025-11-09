@@ -1,0 +1,116 @@
+========================================
+SOLUÇÃO RÁPIDA - SDK NÃO ENCONTRADO
+========================================
+
+ERRO:
+  SDK location not found
+
+CAUSA:
+  O Android SDK não está instalado OU o arquivo local.properties está errado
+
+========================================
+SOLUÇÃO EM 3 PASSOS:
+========================================
+
+PASSO 1: ENCONTRAR O ANDROID SDK
+---------------------------------
+
+Abra o Android Studio:
+  → File 
+  → Settings 
+  → Android SDK
+  
+Copie o CAMINHO que aparece no topo.
+
+Exemplo do que você vai ver:
+  C:\Users\João\AppData\Local\Android\Sdk
+
+⚠️ COPIE ESTE CAMINHO EXATAMENTE!
+
+
+PASSO 2: CRIAR local.properties
+---------------------------------
+
+1. Abra o Bloco de Notas (Notepad)
+
+2. Cole EXATAMENTE isto (substitua SEU_CAMINHO):
+
+sdk.dir=C\:\\Users\\SeuNome\\AppData\\Local\\Android\\Sdk
+
+   ⚠️ IMPORTANTE:
+   - Use \\ (barra DUPLA)
+   - Substitua "SeuNome" pelo caminho que você copiou
+   - NÃO use aspas
+
+3. Salve como:
+   - Nome: local.properties
+   - Tipo: Todos os arquivos
+   - Local: C:\CreditSmartDeviceOwner\
+
+   ⚠️ Certifique-se que salvou como "local.properties" 
+      e NÃO "local.properties.txt"
+
+
+PASSO 3: COMPILAR
+---------------------------------
+
+cd C:\CreditSmartDeviceOwner
+.\gradlew.bat assembleDebug
+
+
+========================================
+NÃO TEM ANDROID STUDIO?
+========================================
+
+Baixe aqui: https://developer.android.com/studio
+
+Durante a instalação:
+  ✓ Marque "Android SDK"
+  ✓ Anote onde será instalado
+
+Depois volte ao PASSO 1.
+
+
+========================================
+EXEMPLO COMPLETO:
+========================================
+
+Se o Android Studio mostrou:
+  C:\Users\João\AppData\Local\Android\Sdk
+
+Então seu local.properties deve ter:
+  sdk.dir=C\:\\Users\\João\\AppData\\Local\\Android\\Sdk
+
+Se o Android Studio mostrou:
+  D:\Programs\Android\Sdk
+
+Então seu local.properties deve ter:
+  sdk.dir=D\:\\Programs\\Android\\Sdk
+
+
+========================================
+VERIFICAR SE ESTÁ CERTO:
+========================================
+
+1. Abra PowerShell/CMD
+
+2. Execute (substitua pelo SEU caminho):
+   dir "C:\Users\João\AppData\Local\Android\Sdk\platform-tools"
+
+3. Deve listar arquivos, incluindo adb.exe
+
+4. Se der "não encontrado", o caminho está ERRADO!
+
+
+========================================
+ME ENVIE SE AINDA DER ERRO:
+========================================
+
+1. Conteúdo do local.properties:
+   type local.properties
+
+2. Screenshot do Android Studio:
+   Settings → Android SDK
+
+3. Resultado de:
+   dir "%LOCALAPPDATA%\Android"

@@ -1,0 +1,68 @@
+================================================================================
+                    INSTRUÇÕES PARA COMPILAR NO WINDOWS
+================================================================================
+
+VOCÊ PRECISA:
+  1. Android Studio instalado
+  2. Saber onde está o Android SDK
+  3. Criar arquivo local.properties com caminho correto
+
+--------------------------------------------------------------------------------
+                              PASSO A PASSO
+--------------------------------------------------------------------------------
+
+1. ENCONTRE O ANDROID SDK
+   
+   Opção A: Via Android Studio
+   → Abra Android Studio
+   → File → Settings
+   → Android SDK
+   → COPIE o caminho que aparece
+   
+   Opção B: Caminho padrão
+   → C:\Users\SeuNome\AppData\Local\Android\Sdk
+   → Pressione Win+R
+   → Digite: %LOCALAPPDATA%\Android\Sdk
+   → Se abrir, COPIE o caminho da barra de endereços
+
+2. CRIE local.properties
+   
+   → Abra Bloco de Notas
+   → Cole:
+     sdk.dir=C\:\\Users\\SeuNome\\AppData\\Local\\Android\\Sdk
+   
+   → Substitua pelo CAMINHO que você copiou
+   → Use \\ (barra DUPLA)
+   
+   → Salve como:
+     - Nome: local.properties
+     - Local: C:\CreditSmartDeviceOwner\
+     - Tipo: Todos os arquivos
+
+3. COMPILE
+   
+   cd C:\CreditSmartDeviceOwner
+   .\gradlew.bat assembleDebug
+
+--------------------------------------------------------------------------------
+                           SCRIPTS DISPONÍVEIS
+--------------------------------------------------------------------------------
+
+criar-local-properties.bat    → Tenta detectar SDK automaticamente
+fix-windows-build.bat         → Limpa cache se der erro
+
+ARQUIVOS CRIADOS:
+  - SOLUCAO_RAPIDA.txt         → Leia este se tiver dúvidas
+  - local.properties.exemplo   → Template para copiar
+  - ERRO_SDK_NAO_ENCONTRADO.md → Troubleshooting completo
+
+--------------------------------------------------------------------------------
+                            ONDE PEDIR AJUDA
+--------------------------------------------------------------------------------
+
+Me envie:
+  1. Conteúdo de: type local.properties
+  2. Resultado de: dir "%LOCALAPPDATA%\Android"
+  3. Screenshot: Android Studio → Settings → Android SDK
+
+================================================================================
