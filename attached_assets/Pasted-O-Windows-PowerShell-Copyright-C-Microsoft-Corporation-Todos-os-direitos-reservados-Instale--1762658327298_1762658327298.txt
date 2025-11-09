@@ -1,0 +1,54 @@
+O Windows PowerShell
+Copyright (C) Microsoft Corporation. Todos os direitos reservados.
+
+Instale o PowerShell mais recente para obter novos recursos e aprimoramentos! https://aka.ms/PSWindows
+
+PS C:\Users\sabre> cd C:\CreditSmartDeviceOwner
+PS C:\CreditSmartDeviceOwner> echo {"project_info":{"project_number":"123456789012","firebase_url":"https://cdc-credit-smart-example.firebaseio.com","project_id":"cdc-credit-smart-example","storage_bucket":"cdc-credit-smart-example.appspot.com"},"client":[{"client_info":{"mobilesdk_app_id":"1:123456789012:android:abcdef1234567890abcdef","android_client_info":{"package_name":"com.cdccreditsmart.app"}},"oauth_client":[{"client_id":"123456789012-abcdefghijklmnopqrstuvwxyz123456.apps.googleusercontent.com","client_type":3}],"api_key":[{"current_key":"AIzaSyDemoKey1234567890abcdefghijklmnopqrs"}],"services":{"appinvite_service":{"other_platform_oauth_client":[{"client_id":"123456789012-abcdefghijklmnopqrstuvwxyz123456.apps.googleusercontent.com","client_type":3}]}}}],"configuration_version":"1"} > app\google-services.json
+No linha:1 caractere:21
++ echo {"project_info":{"project_number":"123456789012","firebase_url": ...
++                     ~
+Token ':' inesperado na expressão ou instrução.
+No linha:1 caractere:39
++ echo {"project_info":{"project_number":"123456789012","firebase_url": ...
++                                       ~~~~~~~~~~~~~~~
+Token ':"123456789012"' inesperado na expressão ou instrução.
+No linha:1 caractere:54
++ echo {"project_info":{"project_number":"123456789012","firebase_url": ...
++                                                      ~
+Argumento ausente na lista de parâmetros.
+No linha:1 caractere:241
++ ... -credit-smart-example.appspot.com"},"client":[{"client_info":{"mobile ...
++                                                                 ~
+Token ':' inesperado na expressão ou instrução.
+No linha:1 caractere:261
++ ... lesdk_app_id":"1:123456789012:android:abcdef1234567890abcdef","androi ...
++                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Token ':"1:123456789012:android:abcdef1234567890abcdef"' inesperado na expressão ou instrução.
+No linha:1 caractere:309
++ ... esdk_app_id":"1:123456789012:android:abcdef1234567890abcdef","android ...
++                                                                 ~
+Argumento ausente na lista de parâmetros.
+No linha:1 caractere:347
++ ... android_client_info":{"package_name":"com.cdccreditsmart.app"}},"oaut ...
++                                         ~~~~~~~~~~~~~~~~~~~~~~~~~
+Token ':"com.cdccreditsmart.app"' inesperado na expressão ou instrução.
+No linha:1 caractere:403
++ ... {"client_id":"123456789012-abcdefghijklmnopqrstuvwxyz123456.apps.goog ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Token ':"123456789012-abcdefghijklmnopqrstuvwxyz123456.apps.googleusercontent.com"' inesperado na expressão ou
+instrução.
+No linha:1 caractere:478
++ ... abcdefghijklmnopqrstuvwxyz123456.apps.googleusercontent.com","client_ ...
++                                                                 ~
+Argumento ausente na lista de parâmetros.
+No linha:1 caractere:522
++ ... :[{"current_key":"AIzaSyDemoKey1234567890abcdefghijklmnopqrs"}],"serv ...
++                     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Token ':"AIzaSyDemoKey1234567890abcdefghijklmnopqrs"' inesperado na expressão ou instrução.
+Nem todos os erros de análise foram indicados.  Corrija os erros indicados e tente de novo.
+    + CategoryInfo          : ParserError: (:) [], ParentContainsErrorRecordException
+    + FullyQualifiedErrorId : UnexpectedToken
+
+PS C:\CreditSmartDeviceOwner>
+PS C:\CreditSmartDeviceOwner> gradlew.bat clean assembleDebug
