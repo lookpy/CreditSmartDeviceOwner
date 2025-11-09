@@ -34,7 +34,7 @@ The UI is developed using Jetpack Compose and Material 3, incorporating a CDC in
 
 ## External Dependencies
 - **CDC Credit Smart Backend API**: APK authentication (`POST /api/apk/auth`), device status (`GET /api/apk/device/status`), installments data (`/api/apk/device/installments`), payment processing, heartbeat (`POST /api/apk/device/heartbeat`)
-- **WebSocket Server**: Real-time communication at `wss://cdccreditsmart.com/ws/flow-status` for flow status events
+- **WebSocket Server**: Real-time communication at `wss://cdccreditsmart.com/ws/flow-status` for flow status events (listen-only, no client authentication required)
 - **Samsung Knox Enterprise SDK v3.12+**: Advanced device management and security on Samsung devices
 - **Google Play Integrity API**: Device integrity verification
 - **Firebase Messaging**: Push notifications

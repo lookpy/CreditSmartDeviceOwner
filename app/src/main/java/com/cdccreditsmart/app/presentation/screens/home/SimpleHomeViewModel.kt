@@ -6,7 +6,7 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.cdccreditsmart.app.device.SimpleTokenManager
+import com.cdccreditsmart.app.security.SecureTokenStorage
 import com.cdccreditsmart.network.api.DeviceApiService
 import com.cdccreditsmart.network.dto.cdc.CdcInstallmentsResponse
 import com.cdccreditsmart.network.dto.cdc.ContractSummary
@@ -39,7 +39,7 @@ class SimpleHomeViewModel(
     private val _homeState = mutableStateOf(HomeState())
     val homeState: State<HomeState> = _homeState
 
-    private val tokenManager = SimpleTokenManager(context)
+    private val tokenStorage = SecureTokenStorage(context)
     
     private val deviceApiService: DeviceApiService by lazy {
         createDeviceApiService()
@@ -65,7 +65,7 @@ class SimpleHomeViewModel(
                     .addHeader("Accept", "application/json")
                     .addHeader("User-Agent", "CDC-CreditSmart/1.0.0")
                 
-                val token = tokenManager.getValidToken()
+                val token = tokenStorage.getAuthToken()
                 if (token != null) {
                     requestBuilder.addHeader("Authorization", "Bearer $token")
                     Log.d(TAG, "Added Authorization header with token")
@@ -102,7 +102,7 @@ class SimpleHomeViewModel(
             )
 
             try {
-                val token = tokenManager.getValidToken()
+                val token = tokenStorage.getAuthToken()
                 
                 if (token == null) {
                     Log.e(TAG, "No valid token available")
@@ -115,6 +115,7 @@ class SimpleHomeViewModel(
                 }
 
                 Log.d(TAG, "Fetching device installments...")
+                Log.d(TAG, "Using auth token from SecureTokenStorage")
                 val response = deviceApiService.getDeviceInstallments("Bearer $token")
 
                 if (response.isSuccessful && response.body() != null) {

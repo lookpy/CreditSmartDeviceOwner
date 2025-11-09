@@ -1,0 +1,25 @@
+2025-11-08 22:10:34.092 14754-14754 PairingViewModel        com.cdccreditsmart.app.debug         W  IMEI not available - using code-only sync fallback
+2025-11-08 22:10:34.092 14754-14754 PairingViewModel        com.cdccreditsmart.app.debug         D  ========== APK AUTHENTICATION ==========
+2025-11-08 22:10:34.092 14754-14754 PairingViewModel        com.cdccreditsmart.app.debug         D  Pairing Code: W5XJNRW7
+2025-11-08 22:10:34.092 14754-14754 PairingViewModel        com.cdccreditsmart.app.debug         D  Sending POST /api/apk/auth...
+2025-11-08 22:10:34.092 14754-14754 PairingViewModel        com.cdccreditsmart.app.debug         D  Request: { code: "W5XJ****" }
+2025-11-08 22:10:34.697 14754-14754 PairingViewModel        com.cdccreditsmart.app.debug         D  Response code: 200
+2025-11-08 22:10:34.697 14754-14754 PairingViewModel        com.cdccreditsmart.app.debug         D  Response message: 
+2025-11-08 22:10:34.697 14754-14754 PairingViewModel        com.cdccreditsmart.app.debug         D  Response body received
+2025-11-08 22:10:34.697 14754-14754 PairingViewModel        com.cdccreditsmart.app.debug         D  ✅ APK Authentication successful!
+2025-11-08 22:10:34.697 14754-14754 PairingViewModel        com.cdccreditsmart.app.debug         D  Auth token received, expires in 86400s
+2025-11-08 22:10:34.697 14754-14754 PairingViewModel        com.cdccreditsmart.app.debug         D  Device: Motorola G15 Power
+2025-11-08 22:10:34.697 14754-14754 PairingViewModel        com.cdccreditsmart.app.debug         D  Customer: aline aosue
+2025-11-08 22:10:34.706 14754-14754 SecureTokenStorage      com.cdccreditsmart.app.debug         D  Auth token saved successfully
+2025-11-08 22:10:34.709 14754-14754 WebSocketManager        com.cdccreditsmart.app.debug         D  Connecting to WebSocket: wss://cdccreditsmart.com/ws/flow-status
+2025-11-08 22:10:35.051 14754-15525 WebSocketManager        com.cdccreditsmart.app.debug         D  WebSocket connection opened
+2025-11-08 22:10:35.053 14754-15525 WebSocketManager        com.cdccreditsmart.app.debug         D  Authentication message sent for contract: device_1762650585334_8cdb0ub1ql8
+2025-11-08 22:10:35.053 14754-15525 WebSocketManager        com.cdccreditsmart.app.debug         D  Message received: {"type":"welcome","message":"Connected to unified WebSocket server","connectionId":"7210f854-8ab9-42...
+2025-11-08 22:10:35.054 14754-15525 WebSocketManager        com.cdccreditsmart.app.debug         D  Received message type: welcome
+2025-11-08 22:10:35.054 14754-15525 WebSocketManager        com.cdccreditsmart.app.debug         W  Unknown message type: welcome
+2025-11-08 22:10:35.220 14754-15525 WebSocketManager        com.cdccreditsmart.app.debug         D  Message received: {"type":"error","message":"Unknown message type for flow status: authenticate","timestamp":"2025-11-...
+2025-11-08 22:10:35.221 14754-15525 WebSocketManager        com.cdccreditsmart.app.debug         D  Received message type: error
+2025-11-08 22:10:35.221 14754-15525 WebSocketManager        com.cdccreditsmart.app.debug         E  WebSocket error: Unknown message type for flow status: authenticate
+2025-11-08 22:10:35.221 14754-15525 PairingViewModel        com.cdccreditsmart.app.debug         E  WebSocket error: Unknown message type for flow status: authenticate
+2025-11-08 22:11:40.620 14754-14754 WindowOnBackDispatcher  com.cdccreditsmart.app.debug         W  sendCancelIfRunning: isInProgress=false callback=androidx.activity.OnBackPressedDispatcher$Api34Impl$createOnBackAnimationCallback$1@e89ebbb
+2025-11-08 22:11:40.652 14754-14754 SimpleHomeViewModel     com.cdccreditsmart.app.debug         E  No valid token available

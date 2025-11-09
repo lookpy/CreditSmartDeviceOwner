@@ -58,17 +58,9 @@ class WebSocketManager(
     }
 
     private fun authenticate() {
-        try {
-            val authMessage = JSONObject().apply {
-                put("type", "authenticate")
-                put("contractId", contractCode)
-            }
-            send(authMessage.toString())
-            Log.d(TAG, "Authentication message sent for contract: $contractCode")
-        } catch (e: Exception) {
-            Log.e(TAG, "Error sending authentication", e)
-            onError("Failed to authenticate: ${e.message}")
-        }
+        Log.d(TAG, "WebSocket connected for contract: $contractCode")
+        isConnected = true
+        startHeartbeat()
     }
 
     private fun send(message: String) {
@@ -122,6 +114,10 @@ class WebSocketManager(
             Log.d(TAG, "Received message type: $type")
 
             when (type) {
+                "welcome" -> {
+                    Log.d(TAG, "WebSocket welcome received")
+                }
+                
                 "authenticated" -> {
                     isConnected = true
                     Log.d(TAG, "Successfully authenticated")
