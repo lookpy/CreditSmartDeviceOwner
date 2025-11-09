@@ -47,8 +47,6 @@ class SimpleHomeViewModel(
 
     companion object {
         private const val TAG = "SimpleHomeViewModel"
-        
-        private const val USE_MOCK_DATA = true
     }
 
     init {
@@ -102,12 +100,6 @@ class SimpleHomeViewModel(
                 isError = false,
                 errorMessage = null
             )
-
-            if (USE_MOCK_DATA) {
-                Log.d(TAG, "⚠️ USANDO DADOS DE TESTE (MOCK) - Altere USE_MOCK_DATA para false para usar dados reais")
-                loadMockData()
-                return@launch
-            }
 
             try {
                 val token = tokenStorage.getAuthToken()
@@ -163,119 +155,6 @@ class SimpleHomeViewModel(
                 )
             }
         }
-    }
-
-    private suspend fun loadMockData() {
-        kotlinx.coroutines.delay(1000)
-        
-        Log.d(TAG, "Carregando dados de teste...")
-        
-        val mockInstallments = listOf(
-            InstallmentDetail(
-                id = "1",
-                installmentNumber = 1,
-                dueDate = "2024-11-15",
-                amount = 416.67,
-                status = "paid",
-                paymentDate = "2024-11-10",
-                fine = 0.0,
-                interest = 0.0
-            ),
-            InstallmentDetail(
-                id = "2",
-                installmentNumber = 2,
-                dueDate = "2024-12-15",
-                amount = 416.67,
-                status = "paid",
-                paymentDate = "2024-12-12",
-                fine = 0.0,
-                interest = 0.0
-            ),
-            InstallmentDetail(
-                id = "3",
-                installmentNumber = 3,
-                dueDate = "2025-01-15",
-                amount = 416.67,
-                status = "overdue",
-                paymentDate = null,
-                fine = 20.83,
-                interest = 12.50
-            ),
-            InstallmentDetail(
-                id = "4",
-                installmentNumber = 4,
-                dueDate = "2025-02-15",
-                amount = 416.67,
-                status = "pending",
-                paymentDate = null,
-                fine = 0.0,
-                interest = 0.0
-            ),
-            InstallmentDetail(
-                id = "5",
-                installmentNumber = 5,
-                dueDate = "2025-03-15",
-                amount = 416.67,
-                status = "pending",
-                paymentDate = null,
-                fine = 0.0,
-                interest = 0.0
-            ),
-            InstallmentDetail(
-                id = "6",
-                installmentNumber = 6,
-                dueDate = "2025-04-15",
-                amount = 416.67,
-                status = "pending",
-                paymentDate = null,
-                fine = 0.0,
-                interest = 0.0
-            )
-        )
-        
-        val mockSummary = PaymentSummary(
-            totalAmount = 5000.00,
-            paidAmount = 833.34,
-            remainingAmount = 4166.66,
-            overdueAmount = 450.00
-        )
-        
-        val mockContract = ContractSummary(
-            contractCode = "DQDYXKF9",
-            totalAmount = 5000.00,
-            installmentCount = 12
-        )
-        
-        val mockCustomer = CustomerInfo(
-            name = "João Silva Santos",
-            document = "123.456.789-01"
-        )
-        
-        val mockPaymentMethods = listOf(
-            PaymentMethodInfo(
-                type = "PIX",
-                enabled = true,
-                fees = 0.0
-            ),
-            PaymentMethodInfo(
-                type = "BOLETO",
-                enabled = true,
-                fees = 3.50
-            )
-        )
-        
-        _homeState.value = _homeState.value.copy(
-            isLoading = false,
-            isError = false,
-            installments = mockInstallments,
-            summary = mockSummary,
-            contract = mockContract,
-            customer = mockCustomer,
-            paymentMethods = mockPaymentMethods
-        )
-        
-        Log.d(TAG, "✅ Dados de teste carregados com sucesso!")
-        Log.d(TAG, "Total de parcelas: ${mockInstallments.size}")
     }
 
     fun refreshData() {
