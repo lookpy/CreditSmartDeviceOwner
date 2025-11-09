@@ -1,0 +1,88 @@
+═══════════════════════════════════════════════════════════════════════════════
+  INSTRUÇÕES: Copiar google-services.json para Windows
+═══════════════════════════════════════════════════════════════════════════════
+
+PASSO 1: Criar o arquivo no Windows
+────────────────────────────────────────────────────────────────────────────
+
+1. Abra o Bloco de Notas (Notepad)
+2. Cole TODO o conteúdo abaixo (começando com { e terminando com })
+3. Salve como: C:\CreditSmartDeviceOwner\app\google-services.json
+
+IMPORTANTE: 
+- Salve com extensão .json (NÃO .txt)
+- No Bloco de Notas, escolha "Todos os arquivos (*.*)" ao salvar
+
+
+PASSO 2: Copiar este conteúdo COMPLETO
+────────────────────────────────────────────────────────────────────────────
+
+{
+  "project_info": {
+    "project_number": "123456789012",
+    "firebase_url": "https://cdc-credit-smart-example.firebaseio.com",
+    "project_id": "cdc-credit-smart-example",
+    "storage_bucket": "cdc-credit-smart-example.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:123456789012:android:abcdef1234567890abcdef",
+        "android_client_info": {
+          "package_name": "com.cdccreditsmart.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "123456789012-abcdefghijklmnopqrstuvwxyz123456.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDemoKey1234567890abcdefghijklmnopqrs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "123456789012-abcdefghijklmnopqrstuvwxyz123456.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
+
+
+PASSO 3: Verificar
+────────────────────────────────────────────────────────────────────────────
+
+No PowerShell ou CMD do Windows, execute:
+
+    dir C:\CreditSmartDeviceOwner\app\google-services.json
+
+Deve mostrar um arquivo de aproximadamente 1KB.
+
+
+PASSO 4: Compilar
+────────────────────────────────────────────────────────────────────────────
+
+    cd C:\CreditSmartDeviceOwner
+    gradlew.bat clean assembleDebug
+
+O APK será criado em:
+    C:\CreditSmartDeviceOwner\app\build\outputs\apk\debug\app-debug.apk
+
+
+═══════════════════════════════════════════════════════════════════════════════
+
+NOTA: Este é um arquivo de EXEMPLO com dados fictícios.
+      O APK compila, mas notificações push NÃO funcionarão.
+      Para produção, baixe arquivo real do Firebase Console.
+
+═══════════════════════════════════════════════════════════════════════════════

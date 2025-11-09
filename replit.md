@@ -55,8 +55,7 @@ The UI is developed using Jetpack Compose and Material 3, incorporating a CDC in
   - Banners com ícones, som e vibração personalizados por tipo
   - Suporte completo para Android 8+ notification channels
   - Zero leaks de dados sensíveis em logs
-  - Dependências: Firebase BOM 33.7.0, firebase-messaging-ktx, kotlinx-coroutines-play-services
-  - **IMPORTANTE**: Substituir google-services.json placeholder pelo arquivo real do Firebase Console
+  - **Para habilitar**: Ver COMO_HABILITAR_FIREBASE.md (3 passos)
 
 - **NEW Modern Home Screen**: Redesigned Home screen with Material 3 design system
   - Hero header card with gradient orange background and customer welcome
