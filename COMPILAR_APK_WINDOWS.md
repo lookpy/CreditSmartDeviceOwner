@@ -2,16 +2,18 @@
 
 ## ⚡ **INÍCIO RÁPIDO (Método Automático):**
 
-### **1. Execute o script:**
+### **1. Execute o script ATUALIZADO:**
 ```bash
 cd C:\CreditSmartDeviceOwner
 .\criar-local-properties.bat
 ```
 
-**O script vai:**
-- ✅ Detectar automaticamente o Android SDK no Windows
-- ✅ Criar arquivo `local.properties` com caminho correto
-- ✅ Preparar projeto para compilação
+**O script MELHORADO agora:**
+- ✅ Detecta automaticamente o Android SDK no Windows
+- ✅ **VALIDA** se o caminho realmente existe
+- ✅ Verifica se `adb.exe` está presente
+- ✅ Só cria `local.properties` se o SDK for válido
+- ✅ Mostra componentes instalados (platform-tools, build-tools, etc)
 
 ### **2. Compile o APK:**
 ```bash
@@ -135,10 +137,14 @@ adb install app\build\outputs\apk\debug\app-debug.apk
 
 ## ❌ **TROUBLESHOOTING:**
 
-### **Erro: "SDK location not found"**
-```bash
-.\criar-local-properties.bat
-```
+### **Erro: "SDK location not found" ou "Directory does not exist"**
+
+**Veja o guia completo:** `ERRO_SDK_NAO_ENCONTRADO.md`
+
+**Solução rápida:**
+1. Encontre o Android SDK no Android Studio (File → Settings → Android SDK)
+2. Execute novamente: `.\criar-local-properties.bat`
+3. Ou crie `local.properties` manualmente com o caminho correto
 
 ### **Erro: "JAVA_HOME is set to an invalid directory"**
 - Instale JDK 17: https://adoptium.net/
