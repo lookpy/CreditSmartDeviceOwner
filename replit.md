@@ -51,7 +51,8 @@ The UI is developed using Jetpack Compose and Material 3, incorporating a CDC in
 - **Projeto 100% Pronto para Compilação**
   - ✅ Código sem erros (LSP limpo, zero erros de compilação)
   - ✅ local.properties configurado (Replit: /home/runner/workspace/android-sdk)
-  - ✅ google-services.json placeholder criado
+  - ✅ **google-services.json REAL** configurado (Firebase Console)
+  - ✅ Firebase Cloud Messaging 100% funcional (package: com.cdccreditsmart.app)
   - ✅ Gradle reconhece Android SDK corretamente
   - ✅ Todas dependências configuradas
   
