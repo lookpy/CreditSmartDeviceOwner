@@ -6,15 +6,9 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.cdccreditsmart.app.device.SimpleTokenManager
-import com.cdccreditsmart.app.storage.ContractCodeStorage
-import com.cdccreditsmart.network.api.DeviceApiService
-import com.google.gson.Gson
+import com.cdccreditsmart.app.auth.AuthenticationOrchestrator
+import com.cdccreditsmart.app.auth.AuthenticationResult
 import kotlinx.coroutines.launch
-import okhttp3.OkHttpClient
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
-import java.util.concurrent.TimeUnit
 
 sealed class RouterDestination {
     object Loading : RouterDestination()
@@ -30,81 +24,41 @@ class RouterViewModel(
     private val _destination = mutableStateOf<RouterDestination>(RouterDestination.Loading)
     val destination: State<RouterDestination> = _destination
 
-    private val tokenStorage = com.cdccreditsmart.app.security.SecureTokenStorage(context)
-    private val contractCodeStorage = ContractCodeStorage(context)
-    
-    private val deviceApi: DeviceApiService by lazy {
-        createDeviceApiService()
-    }
+    private val authOrchestrator = AuthenticationOrchestrator(context)
 
     companion object {
         private const val TAG = "RouterViewModel"
     }
 
-    /**
-     * Create DeviceApiService with CDC backend configuration
-     */
-    private fun createDeviceApiService(): DeviceApiService {
-        val client = OkHttpClient.Builder()
-            .connectTimeout(15, TimeUnit.SECONDS)
-            .readTimeout(15, TimeUnit.SECONDS)
-            .writeTimeout(15, TimeUnit.SECONDS)
-            .build()
-
-        val retrofit = Retrofit.Builder()
-            .baseUrl("https://cdccreditsmart.com/")
-            .client(client)
-            .addConverterFactory(GsonConverterFactory.create(Gson()))
-            .build()
-
-        return retrofit.create(DeviceApiService::class.java)
-    }
-
     fun determineInitialDestination() {
         viewModelScope.launch {
             try {
-                Log.d(TAG, "🔍 Verificando autenticação...")
+                Log.d(TAG, "🚀 Iniciando verificação de autenticação...")
                 
-                if (!tokenStorage.hasTokens()) {
-                    Log.d(TAG, "❌ Sem tokens - Ir para QR Scanner")
-                    _destination.value = RouterDestination.QRScanner
-                    return@launch
-                }
-                
-                if (!contractCodeStorage.hasContractCode()) {
-                    Log.d(TAG, "❌ Sem contract code - Ir para QR Scanner")
-                    tokenStorage.clearTokens()
-                    _destination.value = RouterDestination.QRScanner
-                    return@launch
-                }
-                
-                val apkToken = tokenStorage.getApkToken()
-                val contractCode = contractCodeStorage.getContractCode()
-                
-                if (apkToken == null || contractCode == null) {
-                    Log.d(TAG, "❌ Token ou contract code inválido - Nova autenticação")
-                    tokenStorage.clearTokens()
-                    _destination.value = RouterDestination.QRScanner
-                    return@launch
-                }
-                
-                Log.d(TAG, "✅ Token e contract code válidos - Verificando no servidor...")
-                
-                val response = deviceApi.getDeviceStatus(
-                    authorization = "Bearer $apkToken"
-                )
-                
-                if (response.isSuccessful && response.body() != null) {
-                    Log.d(TAG, "✅ Autenticação verificada no servidor - Ir para HOME")
-                    _destination.value = RouterDestination.Home
-                } else {
-                    Log.w(TAG, "⚠️ Token inválido no servidor (${response.code()}) - Nova autenticação")
-                    tokenStorage.clearTokens()
-                    _destination.value = RouterDestination.QRScanner
+                when (val result = authOrchestrator.ensureAuthenticated()) {
+                    is AuthenticationResult.Authenticated -> {
+                        Log.d(TAG, "✅ Autenticado com sucesso - Ir para HOME")
+                        _destination.value = RouterDestination.Home
+                    }
+                    
+                    is AuthenticationResult.NeedsNewCode -> {
+                        Log.d(TAG, "❌ Código de pareamento necessário - Ir para QR Scanner")
+                        _destination.value = RouterDestination.QRScanner
+                    }
+                    
+                    is AuthenticationResult.Error -> {
+                        Log.w(TAG, "⚠️ Erro na autenticação: ${result.message}")
+                        
+                        if (result.canRetry) {
+                            _destination.value = RouterDestination.Error(result.message)
+                        } else {
+                            _destination.value = RouterDestination.QRScanner
+                        }
+                    }
                 }
                 
             } catch (e: Exception) {
-                Log.e(TAG, "❌ Erro ao verificar autenticação", e)
+                Log.e(TAG, "❌ Erro inesperado ao verificar autenticação", e)
                 _destination.value = RouterDestination.QRScanner
             }
         }
