@@ -122,17 +122,19 @@ class SimpleHomeViewModel(
                     val data = response.body()!!
                     
                     Log.d(TAG, "Successfully fetched installments data")
-                    Log.d(TAG, "Installments count: ${data.installments.size}")
+                    Log.d(TAG, "Installments count: ${data.installments?.size ?: 0}")
                     Log.d(TAG, "Summary: ${data.summary}")
+                    Log.d(TAG, "Contract: ${data.contract}")
+                    Log.d(TAG, "Customer: ${data.customer}")
                     
                     _homeState.value = _homeState.value.copy(
                         isLoading = false,
                         isError = false,
-                        installments = data.installments,
+                        installments = data.installments ?: emptyList(),
                         summary = data.summary,
                         contract = data.contract,
                         customer = data.customer,
-                        paymentMethods = data.paymentMethods
+                        paymentMethods = data.paymentMethods ?: emptyList()
                     )
                 } else {
                     val errorBody = response.errorBody()?.string()

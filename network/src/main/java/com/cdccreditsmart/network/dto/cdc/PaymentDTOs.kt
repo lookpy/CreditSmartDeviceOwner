@@ -10,13 +10,13 @@ import com.squareup.moshi.JsonClass
 //@JsonClass(generateAdapter = true) // Temporarily disabled to fix build
 data class CdcInstallmentsResponse(
     val success: Boolean,
-    val installments: List<InstallmentDetail>,
-    val summary: PaymentSummary,
+    val installments: List<InstallmentDetail>? = null,
+    val summary: PaymentSummary? = null,
     val contract: ContractSummary? = null,
     val customer: CustomerInfo? = null,
-    val paymentMethods: List<PaymentMethodInfo>,
+    val paymentMethods: List<PaymentMethodInfo>? = null,
     val pdvSession: com.cdccreditsmart.network.api.PdvSessionInfo? = null,
-    val serverTimestamp: Long,
+    val serverTimestamp: Long? = null,
     val message: String? = null
 )
 
