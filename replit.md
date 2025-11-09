@@ -29,8 +29,9 @@ The UI is developed using Jetpack Compose and Material 3, incorporating a CDC in
 - **Device Management**: Device Owner APIs completos (10+ políticas configuradas), DeviceAdminReceiver implementado, Activities de provisioning (Android 12+), suporte a QR Code/NFC/ADB provisioning, Samsung Knox Enterprise SDK, anti-tampering measures, overlay blocking, and silent app updates
 - **Error Handling**: Comprehensive error states with retry capabilities, user-friendly error messages, security violation handling
 - **Build System**: Optimized with R8 and compatibility with 16KB page size for Android 15+
-- **Business Logic**: Device pairing via manual 8-digit pairing code input with automatic formatting (uppercase, alphanumeric only), JWT token expiration handling (24h), pending sale flow with retry capability, PIX/Boleto payment processing, graduated blocking policies
-- **Backend Integration**: JWT authentication (authToken) for all API requests, WebSocket events (authenticated, device_connected, sale_completed, error), automatic token refresh on expiration
+- **Business Logic**: Device pairing via manual 8-digit pairing code input with automatic formatting (uppercase, alphanumeric only), JWT token expiration handling (24h), pending sale flow with retry capability, PIX/Boleto payment processing, graduated blocking policies, **persistent authentication (código salvo permanentemente, auto-login em aberturas futuras)**
+- **Backend Integration**: JWT authentication (authToken) for all API requests, WebSocket events (authenticated, device_connected, sale_completed, error), **automatic silent re-authentication using saved pairing code when JWT expires**
+- **Authentication**: AuthenticationOrchestrator gerencia autenticação silenciosa, verificação de contract code salvo, renovação automática de JWT, e tratamento de erros (401/404 limpa storage)
 
 ## External Dependencies
 - **CDC Credit Smart Backend API**: APK authentication (`POST /api/apk/auth`), device status (`GET /api/apk/device/status`), installments data (`/api/apk/device/installments`), payment processing, heartbeat (`POST /api/apk/device/heartbeat`)
@@ -46,6 +47,17 @@ The UI is developed using Jetpack Compose and Material 3, incorporating a CDC in
 
 ## Recent Changes
 ### 2025-11-09
+- **CRITICAL: Persistent Pairing Code Authentication** (Auto-login)
+  - **AuthenticationOrchestrator**: Componente central de autenticação silenciosa
+  - Código de pareamento persiste PERMANENTEMENTE no dispositivo
+  - App abre → Verifica código salvo → Autenticação automática → Home (sem pedir código novamente)
+  - Renovação automática de authToken (JWT) quando expira (24h)
+  - Fluxo silencioso: Contract code salvo + authToken expirado = autenticação automática
+  - Só pede código novamente se: (1) Primeiro uso, (2) Código inválido/rejeitado pelo servidor
+  - RouterViewModel refatorado para usar AuthenticationOrchestrator
+  - Zero interrupções para usuário após primeiro pareamento
+  - Tratamento inteligente de erros: 401/404 limpa storage e pede novo código
+
 - **Firebase Cloud Messaging (Push Notifications)**: Sistema completo de notificações push
   - **CdcMessagingService**: Recebe notificações em foreground e background
   - **NotificationHelper**: 4 tipos de notificação (INFO, ALERT, PAYMENT, CONTRACT) com canais Android 8+
