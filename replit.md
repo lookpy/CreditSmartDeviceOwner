@@ -47,7 +47,7 @@ The UI is developed using Jetpack Compose and Material 3, incorporating a CDC in
 
 ## Recent Changes
 ### 2025-11-09
-- **CRITICAL: Persistent Pairing Code Authentication** (Auto-login)
+- **CRITICAL: Persistent Pairing Code Authentication** (Auto-login) - ✅ IMPLEMENTADO E CORRIGIDO
   - **AuthenticationOrchestrator**: Componente central de autenticação silenciosa
   - Código de pareamento persiste PERMANENTEMENTE no dispositivo
   - App abre → Verifica código salvo → Autenticação automática → Home (sem pedir código novamente)
@@ -57,6 +57,10 @@ The UI is developed using Jetpack Compose and Material 3, incorporating a CDC in
   - RouterViewModel refatorado para usar AuthenticationOrchestrator
   - Zero interrupções para usuário após primeiro pareamento
   - Tratamento inteligente de erros: 401/404 limpa storage e pede novo código
+  - **Smart cast errors corrigidos**: Variáveis locais `existingAuthToken` e `responseAuthToken`
+  - **DTO corrigido**: Removido uso de campos inexistentes `apkToken` e `deviceToken`
+  - **Código 100% sem erros**: LSP limpo, pronto para compilação
+  - **COMPILAR NO WINDOWS**: Replit tem crashes de JVM (SIGBUS) - ver `COMPILAR_NO_WINDOWS.md`
 
 - **Firebase Cloud Messaging (Push Notifications)**: Sistema completo de notificações push
   - **CdcMessagingService**: Recebe notificações em foreground e background

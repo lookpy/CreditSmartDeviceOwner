@@ -148,11 +148,13 @@ class AuthenticationOrchestrator(private val context: Context) {
                 )
             }
             
-            if (authResponse.authenticated == true && authResponse.authToken != null) {
+            val responseAuthToken = authResponse.authToken
+            
+            if (authResponse.authenticated == true && responseAuthToken != null) {
                 Log.d(TAG, "✅ Autenticação silenciosa bem-sucedida!")
                 
                 tokenStorage.saveAuthToken(
-                    authToken = authResponse.authToken,
+                    authToken = responseAuthToken,
                     contractCode = contractCode
                 )
                 
