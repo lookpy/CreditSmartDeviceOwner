@@ -20,7 +20,7 @@ import com.cdccreditsmart.app.presentation.pairing.PairingSuccessScreen
 import com.cdccreditsmart.app.presentation.pairing.PairingViewModel
 import com.cdccreditsmart.app.presentation.router.RouterScreen
 import com.cdccreditsmart.app.presentation.scanner.QRCodeScannerScreen
-import com.cdccreditsmart.app.presentation.screens.home.SimpleHomeScreen
+import com.cdccreditsmart.app.presentation.screens.home.ModernHomeScreen
 
 object Routes {
     const val ROUTER = "router"
@@ -250,7 +250,7 @@ fun CDCNavigation(
         }
         
         composable(Routes.HOME) {
-            SimpleHomeScreen()
+            ModernHomeScreen()
         }
     }
 }

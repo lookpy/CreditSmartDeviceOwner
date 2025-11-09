@@ -1,0 +1,848 @@
+package com.cdccreditsmart.app.presentation.screens.home
+
+import androidx.compose.animation.*
+import androidx.compose.animation.core.*
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.*
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.dp
+import com.cdccreditsmart.app.ui.theme.CDCOrange
+import com.cdccreditsmart.network.dto.cdc.*
+import java.text.NumberFormat
+import java.text.SimpleDateFormat
+import java.util.*
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun ModernHomeScreen() {
+    val context = LocalContext.current
+    val viewModel = remember { SimpleHomeViewModel(context) }
+    val state by viewModel.homeState
+    
+    var showPaymentSheet by remember { mutableStateOf(false) }
+    var selectedInstallment by remember { mutableStateOf<InstallmentDetail?>(null) }
+    
+    Scaffold(
+        topBar = {
+            CenterAlignedTopAppBar(
+                title = {
+                    Text(
+                        text = "CDC CreditSmart",
+                        style = MaterialTheme.typography.titleLarge,
+                        fontWeight = FontWeight.Bold
+                    )
+                },
+                colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
+                    containerColor = MaterialTheme.colorScheme.surface
+                ),
+                actions = {
+                    IconButton(onClick = { viewModel.refreshData() }) {
+                        Icon(
+                            imageVector = Icons.Default.Refresh,
+                            contentDescription = "Atualizar"
+                        )
+                    }
+                }
+            )
+        }
+    ) { padding ->
+        when {
+            state.isLoading -> LoadingState(modifier = Modifier.padding(padding))
+            state.isError -> ErrorState(
+                modifier = Modifier.padding(padding),
+                errorMessage = state.errorMessage ?: "Erro desconhecido",
+                onRetry = { viewModel.refreshData() }
+            )
+            else -> HomeContent(
+                modifier = Modifier.padding(padding),
+                state = state,
+                onPayInstallment = { installment ->
+                    selectedInstallment = installment
+                    showPaymentSheet = true
+                }
+            )
+        }
+    }
+    
+    if (showPaymentSheet && selectedInstallment != null) {
+        PaymentBottomSheet(
+            installment = selectedInstallment!!,
+            paymentMethods = state.paymentMethods,
+            onDismiss = { showPaymentSheet = false },
+            onPayWithPix = { /* TODO */ },
+            onPayWithBoleto = { /* TODO */ }
+        )
+    }
+}
+
+@Composable
+private fun LoadingState(modifier: Modifier = Modifier) {
+    Box(
+        modifier = modifier.fillMaxSize(),
+        contentAlignment = Alignment.Center
+    ) {
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.spacedBy(16.dp)
+        ) {
+            CircularProgressIndicator(
+                modifier = Modifier.size(56.dp),
+                color = CDCOrange,
+                strokeWidth = 4.dp
+            )
+            Text(
+                text = "Carregando seus dados...",
+                style = MaterialTheme.typography.bodyLarge,
+                color = MaterialTheme.colorScheme.onSurfaceVariant
+            )
+        }
+    }
+}
+
+@Composable
+private fun ErrorState(
+    modifier: Modifier = Modifier,
+    errorMessage: String,
+    onRetry: () -> Unit
+) {
+    Box(
+        modifier = modifier.fillMaxSize(),
+        contentAlignment = Alignment.Center
+    ) {
+        Column(
+            modifier = Modifier.padding(32.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.spacedBy(16.dp)
+        ) {
+            Icon(
+                imageVector = Icons.Default.ErrorOutline,
+                contentDescription = null,
+                tint = MaterialTheme.colorScheme.error,
+                modifier = Modifier.size(80.dp)
+            )
+            Text(
+                text = "Ops! Algo deu errado",
+                style = MaterialTheme.typography.headlineSmall,
+                fontWeight = FontWeight.Bold,
+                textAlign = TextAlign.Center
+            )
+            Text(
+                text = errorMessage,
+                style = MaterialTheme.typography.bodyMedium,
+                textAlign = TextAlign.Center,
+                color = MaterialTheme.colorScheme.onSurfaceVariant
+            )
+            FilledTonalButton(
+                onClick = onRetry,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(56.dp)
+            ) {
+                Icon(Icons.Default.Refresh, contentDescription = null)
+                Spacer(Modifier.width(8.dp))
+                Text("Tentar Novamente", style = MaterialTheme.typography.titleMedium)
+            }
+        }
+    }
+}
+
+@Composable
+private fun HomeContent(
+    modifier: Modifier = Modifier,
+    state: HomeState,
+    onPayInstallment: (InstallmentDetail) -> Unit
+) {
+    LazyColumn(
+        modifier = modifier
+            .fillMaxSize()
+            .background(MaterialTheme.colorScheme.background),
+        contentPadding = PaddingValues(16.dp),
+        verticalArrangement = Arrangement.spacedBy(16.dp)
+    ) {
+        item {
+            HeroHeaderCard(
+                customerName = state.customer?.name ?: "Cliente",
+                deviceModel = state.contract?.deviceModel ?: "Dispositivo"
+            )
+        }
+        
+        item {
+            state.summary?.let { summary ->
+                ContractSummaryCard(summary = summary)
+            }
+        }
+        
+        val pendingInstallments = state.installments.filter { it.status == "pending" || it.status == "overdue" }
+        val paidInstallments = state.installments.filter { it.status == "paid" }
+        
+        if (pendingInstallments.isNotEmpty()) {
+            item {
+                SectionHeader(
+                    title = "Parcelas Pendentes",
+                    subtitle = "${pendingInstallments.size} parcela(s)",
+                    icon = Icons.Default.Schedule
+                )
+            }
+            
+            items(pendingInstallments) { installment ->
+                InstallmentCard(
+                    installment = installment,
+                    onPay = { onPayInstallment(installment) }
+                )
+            }
+        }
+        
+        if (paidInstallments.isNotEmpty()) {
+            item {
+                SectionHeader(
+                    title = "Parcelas Pagas",
+                    subtitle = "${paidInstallments.size} parcela(s)",
+                    icon = Icons.Default.CheckCircle
+                )
+            }
+            
+            items(paidInstallments.take(3)) { installment ->
+                PaidInstallmentCard(installment = installment)
+            }
+        }
+        
+        if (state.paymentMethods.isNotEmpty()) {
+            item {
+                SectionHeader(
+                    title = "Formas de Pagamento",
+                    subtitle = "Disponíveis",
+                    icon = Icons.Default.Payment
+                )
+            }
+            
+            item {
+                PaymentMethodsGrid(methods = state.paymentMethods)
+            }
+        }
+        
+        item {
+            Spacer(Modifier.height(16.dp))
+        }
+    }
+}
+
+@Composable
+private fun HeroHeaderCard(
+    customerName: String,
+    deviceModel: String
+) {
+    Card(
+        modifier = Modifier.fillMaxWidth(),
+        shape = RoundedCornerShape(24.dp),
+        colors = CardDefaults.cardColors(
+            containerColor = CDCOrange
+        ),
+        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
+    ) {
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(
+                    Brush.horizontalGradient(
+                        colors = listOf(CDCOrange, CDCOrange.copy(alpha = 0.8f))
+                    )
+                )
+        ) {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(24.dp),
+                verticalArrangement = Arrangement.spacedBy(16.dp)
+            ) {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(12.dp)
+                ) {
+                    Surface(
+                        shape = MaterialTheme.shapes.large,
+                        color = Color.White.copy(alpha = 0.2f)
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.PersonOutline,
+                            contentDescription = null,
+                            tint = Color.White,
+                            modifier = Modifier
+                                .padding(12.dp)
+                                .size(32.dp)
+                        )
+                    }
+                    
+                    Column {
+                        Text(
+                            text = "Olá,",
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = Color.White.copy(alpha = 0.9f)
+                        )
+                        Text(
+                            text = customerName,
+                            style = MaterialTheme.typography.headlineMedium,
+                            fontWeight = FontWeight.Bold,
+                            color = Color.White
+                        )
+                    }
+                }
+                
+                Surface(
+                    shape = MaterialTheme.shapes.medium,
+                    color = Color.White.copy(alpha = 0.15f)
+                ) {
+                    Row(
+                        modifier = Modifier.padding(horizontal = 16.dp, vertical = 12.dp),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(8.dp)
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.PhoneAndroid,
+                            contentDescription = null,
+                            tint = Color.White,
+                            modifier = Modifier.size(20.dp)
+                        )
+                        Text(
+                            text = deviceModel,
+                            style = MaterialTheme.typography.bodyLarge,
+                            fontWeight = FontWeight.Medium,
+                            color = Color.White
+                        )
+                    }
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun ContractSummaryCard(summary: PaymentSummary) {
+    Card(
+        modifier = Modifier.fillMaxWidth(),
+        shape = RoundedCornerShape(20.dp),
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.surfaceVariant
+        )
+    ) {
+        Column(
+            modifier = Modifier.padding(20.dp),
+            verticalArrangement = Arrangement.spacedBy(16.dp)
+        ) {
+            Text(
+                text = "Resumo do Contrato",
+                style = MaterialTheme.typography.titleLarge,
+                fontWeight = FontWeight.Bold,
+                color = MaterialTheme.colorScheme.onSurface
+            )
+            
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(12.dp)
+            ) {
+                SummaryMetric(
+                    modifier = Modifier.weight(1f),
+                    label = "Total",
+                    value = formatCurrency(summary.totalAmount),
+                    icon = Icons.Default.AccountBalance,
+                    color = MaterialTheme.colorScheme.primary
+                )
+                
+                SummaryMetric(
+                    modifier = Modifier.weight(1f),
+                    label = "Pago",
+                    value = formatCurrency(summary.paidAmount),
+                    icon = Icons.Default.CheckCircle,
+                    color = Color(0xFF4CAF50)
+                )
+            }
+            
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(12.dp)
+            ) {
+                SummaryMetric(
+                    modifier = Modifier.weight(1f),
+                    label = "Restante",
+                    value = formatCurrency(summary.remainingAmount),
+                    icon = Icons.Default.Schedule,
+                    color = MaterialTheme.colorScheme.tertiary
+                )
+                
+                if (summary.overdueAmount > 0) {
+                    SummaryMetric(
+                        modifier = Modifier.weight(1f),
+                        label = "Atrasado",
+                        value = formatCurrency(summary.overdueAmount),
+                        icon = Icons.Default.Warning,
+                        color = MaterialTheme.colorScheme.error
+                    )
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun SummaryMetric(
+    modifier: Modifier = Modifier,
+    label: String,
+    value: String,
+    icon: ImageVector,
+    color: Color
+) {
+    Surface(
+        modifier = modifier,
+        shape = RoundedCornerShape(16.dp),
+        color = color.copy(alpha = 0.1f)
+    ) {
+        Column(
+            modifier = Modifier.padding(16.dp),
+            verticalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            Icon(
+                imageVector = icon,
+                contentDescription = null,
+                tint = color,
+                modifier = Modifier.size(24.dp)
+            )
+            Text(
+                text = label,
+                style = MaterialTheme.typography.labelMedium,
+                color = MaterialTheme.colorScheme.onSurfaceVariant
+            )
+            Text(
+                text = value,
+                style = MaterialTheme.typography.titleMedium,
+                fontWeight = FontWeight.Bold,
+                color = color
+            )
+        }
+    }
+}
+
+@Composable
+private fun SectionHeader(
+    title: String,
+    subtitle: String,
+    icon: ImageVector
+) {
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(12.dp)
+    ) {
+        Icon(
+            imageVector = icon,
+            contentDescription = null,
+            tint = CDCOrange,
+            modifier = Modifier.size(28.dp)
+        )
+        Column {
+            Text(
+                text = title,
+                style = MaterialTheme.typography.titleMedium,
+                fontWeight = FontWeight.Bold,
+                color = MaterialTheme.colorScheme.onBackground
+            )
+            Text(
+                text = subtitle,
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant
+            )
+        }
+    }
+}
+
+@Composable
+private fun InstallmentCard(
+    installment: InstallmentDetail,
+    onPay: () -> Unit
+) {
+    val isOverdue = installment.status == "overdue"
+    
+    Card(
+        modifier = Modifier.fillMaxWidth(),
+        shape = RoundedCornerShape(16.dp),
+        colors = CardDefaults.cardColors(
+            containerColor = if (isOverdue) 
+                MaterialTheme.colorScheme.errorContainer.copy(alpha = 0.3f)
+            else 
+                MaterialTheme.colorScheme.surface
+        ),
+        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
+    ) {
+        Column(
+            modifier = Modifier.padding(20.dp),
+            verticalArrangement = Arrangement.spacedBy(16.dp)
+        ) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(12.dp)
+                ) {
+                    Surface(
+                        shape = MaterialTheme.shapes.large,
+                        color = if (isOverdue) 
+                            MaterialTheme.colorScheme.error.copy(alpha = 0.15f)
+                        else 
+                            CDCOrange.copy(alpha = 0.15f)
+                    ) {
+                        Icon(
+                            imageVector = if (isOverdue) Icons.Default.Warning else Icons.Default.CalendarToday,
+                            contentDescription = null,
+                            tint = if (isOverdue) MaterialTheme.colorScheme.error else CDCOrange,
+                            modifier = Modifier.padding(10.dp).size(20.dp)
+                        )
+                    }
+                    
+                    Column {
+                        Text(
+                            text = "Parcela ${installment.number}",
+                            style = MaterialTheme.typography.titleMedium,
+                            fontWeight = FontWeight.Bold
+                        )
+                        Text(
+                            text = "Vencimento: ${formatDate(installment.dueDate)}",
+                            style = MaterialTheme.typography.bodySmall,
+                            color = if (isOverdue) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.onSurfaceVariant
+                        )
+                    }
+                }
+                
+                InstallmentStatusChip(status = installment.status)
+            }
+            
+            Divider(
+                color = MaterialTheme.colorScheme.outline.copy(alpha = 0.2f)
+            )
+            
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.Bottom
+            ) {
+                Column {
+                    Text(
+                        text = "Valor",
+                        style = MaterialTheme.typography.labelMedium,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                    Text(
+                        text = formatCurrency(installment.currentAmount),
+                        style = MaterialTheme.typography.headlineMedium,
+                        fontWeight = FontWeight.Bold,
+                        color = if (isOverdue) MaterialTheme.colorScheme.error else CDCOrange
+                    )
+                }
+                
+                FilledTonalButton(
+                    onClick = onPay,
+                    colors = ButtonDefaults.filledTonalButtonColors(
+                        containerColor = if (isOverdue) MaterialTheme.colorScheme.error else CDCOrange,
+                        contentColor = Color.White
+                    )
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Payment,
+                        contentDescription = null,
+                        modifier = Modifier.size(20.dp)
+                    )
+                    Spacer(Modifier.width(8.dp))
+                    Text("Pagar")
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun PaidInstallmentCard(installment: InstallmentDetail) {
+    Card(
+        modifier = Modifier.fillMaxWidth(),
+        shape = RoundedCornerShape(12.dp),
+        colors = CardDefaults.cardColors(
+            containerColor = Color(0xFF4CAF50).copy(alpha = 0.1f)
+        )
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(12.dp)
+            ) {
+                Icon(
+                    imageVector = Icons.Default.CheckCircle,
+                    contentDescription = null,
+                    tint = Color(0xFF4CAF50),
+                    modifier = Modifier.size(24.dp)
+                )
+                Column {
+                    Text(
+                        text = "Parcela ${installment.number}",
+                        style = MaterialTheme.typography.bodyLarge,
+                        fontWeight = FontWeight.Medium
+                    )
+                    Text(
+                        text = "Paga em ${installment.paymentDate?.let { formatDate(it) } ?: "—"}",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                }
+            }
+            
+            Text(
+                text = formatCurrency(installment.currentAmount),
+                style = MaterialTheme.typography.titleMedium,
+                fontWeight = FontWeight.SemiBold,
+                color = Color(0xFF4CAF50)
+            )
+        }
+    }
+}
+
+@Composable
+private fun InstallmentStatusChip(status: String) {
+    val (text, color) = when (status) {
+        "paid" -> "Paga" to Color(0xFF4CAF50)
+        "pending" -> "Pendente" to Color(0xFFFFC107)
+        "overdue" -> "Atrasada" to MaterialTheme.colorScheme.error
+        "cancelled" -> "Cancelada" to MaterialTheme.colorScheme.outline
+        else -> status to MaterialTheme.colorScheme.outline
+    }
+    
+    Surface(
+        shape = RoundedCornerShape(8.dp),
+        color = color.copy(alpha = 0.15f)
+    ) {
+        Text(
+            text = text.uppercase(),
+            modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp),
+            style = MaterialTheme.typography.labelSmall,
+            color = color,
+            fontWeight = FontWeight.Bold
+        )
+    }
+}
+
+@Composable
+private fun PaymentMethodsGrid(methods: List<PaymentMethodInfo>) {
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.spacedBy(12.dp)
+    ) {
+        methods.filter { it.available }.forEach { method ->
+            PaymentMethodCard(
+                modifier = Modifier.weight(1f),
+                method = method
+            )
+        }
+    }
+}
+
+@Composable
+private fun PaymentMethodCard(
+    modifier: Modifier = Modifier,
+    method: PaymentMethodInfo
+) {
+    val icon = when (method.method.lowercase()) {
+        "pix" -> Icons.Default.QrCode
+        "boleto" -> Icons.Default.Receipt
+        else -> Icons.Default.Payment
+    }
+    
+    Card(
+        modifier = modifier,
+        shape = RoundedCornerShape(16.dp),
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.surfaceVariant
+        )
+    ) {
+        Column(
+            modifier = Modifier.padding(16.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            Icon(
+                imageVector = icon,
+                contentDescription = null,
+                tint = CDCOrange,
+                modifier = Modifier.size(32.dp)
+            )
+            Text(
+                text = method.displayName,
+                style = MaterialTheme.typography.labelLarge,
+                fontWeight = FontWeight.Bold,
+                textAlign = TextAlign.Center
+            )
+            Text(
+                text = method.processingTime,
+                style = MaterialTheme.typography.labelSmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                textAlign = TextAlign.Center
+            )
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun PaymentBottomSheet(
+    installment: InstallmentDetail,
+    paymentMethods: List<PaymentMethodInfo>,
+    onDismiss: () -> Unit,
+    onPayWithPix: () -> Unit,
+    onPayWithBoleto: () -> Unit
+) {
+    val sheetState = rememberModalBottomSheetState()
+    
+    ModalBottomSheet(
+        onDismissRequest = onDismiss,
+        sheetState = sheetState,
+        containerColor = MaterialTheme.colorScheme.surface
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(24.dp),
+            verticalArrangement = Arrangement.spacedBy(20.dp)
+        ) {
+            Text(
+                text = "Pagar Parcela ${installment.number}",
+                style = MaterialTheme.typography.headlineSmall,
+                fontWeight = FontWeight.Bold
+            )
+            
+            Text(
+                text = formatCurrency(installment.currentAmount),
+                style = MaterialTheme.typography.displaySmall,
+                fontWeight = FontWeight.Bold,
+                color = CDCOrange
+            )
+            
+            Divider()
+            
+            Text(
+                text = "Escolha a forma de pagamento:",
+                style = MaterialTheme.typography.titleMedium,
+                fontWeight = FontWeight.SemiBold
+            )
+            
+            val pixMethod = paymentMethods.find { it.method.lowercase() == "pix" }
+            val boletoMethod = paymentMethods.find { it.method.lowercase() == "boleto" }
+            
+            if (pixMethod?.available == true) {
+                PaymentOption(
+                    icon = Icons.Default.QrCode,
+                    title = "PIX",
+                    subtitle = "Pagamento instantâneo",
+                    onClick = onPayWithPix
+                )
+            }
+            
+            if (boletoMethod?.available == true) {
+                PaymentOption(
+                    icon = Icons.Default.Receipt,
+                    title = "Boleto Bancário",
+                    subtitle = boletoMethod.processingTime,
+                    onClick = onPayWithBoleto
+                )
+            }
+            
+            Spacer(Modifier.height(8.dp))
+        }
+    }
+}
+
+@Composable
+private fun PaymentOption(
+    icon: ImageVector,
+    title: String,
+    subtitle: String,
+    onClick: () -> Unit
+) {
+    Card(
+        onClick = onClick,
+        modifier = Modifier.fillMaxWidth(),
+        shape = RoundedCornerShape(16.dp),
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.surfaceVariant
+        )
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(20.dp),
+            horizontalArrangement = Arrangement.spacedBy(16.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Surface(
+                shape = MaterialTheme.shapes.large,
+                color = CDCOrange.copy(alpha = 0.15f)
+            ) {
+                Icon(
+                    imageVector = icon,
+                    contentDescription = null,
+                    tint = CDCOrange,
+                    modifier = Modifier.padding(12.dp).size(28.dp)
+                )
+            }
+            
+            Column(modifier = Modifier.weight(1f)) {
+                Text(
+                    text = title,
+                    style = MaterialTheme.typography.titleMedium,
+                    fontWeight = FontWeight.Bold
+                )
+                Text(
+                    text = subtitle,
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+            }
+            
+            Icon(
+                imageVector = Icons.Default.ArrowForward,
+                contentDescription = null,
+                tint = CDCOrange
+            )
+        }
+    }
+}
+
+private fun formatCurrency(value: Double): String {
+    return NumberFormat.getCurrencyInstance(Locale("pt", "BR")).format(value)
+}
+
+private fun formatDate(dateString: String): String {
+    return try {
+        val inputFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+        val outputFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+        val date = inputFormat.parse(dateString)
+        outputFormat.format(date ?: Date())
+    } catch (e: Exception) {
+        dateString
+    }
+}

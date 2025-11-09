@@ -45,6 +45,18 @@ The UI is developed using Jetpack Compose and Material 3, incorporating a CDC in
 - **Kotlin Coroutines**: Asynchronous programming with suspend functions
 
 ## Recent Changes
+### 2025-11-09
+- **NEW Modern Home Screen**: Redesigned Home screen with Material 3 design system
+  - Hero header card with gradient orange background and customer welcome
+  - Contract summary card with 4 visual metrics (Total, Pago, Restante, Atrasado)
+  - Installment cards with expandable payment options
+  - Payment bottom sheet for PIX and Boleto selection
+  - Separate sections for pending and paid installments
+  - Payment methods grid with visual cards
+  - Professional card-based layout with rounded corners and elevation
+  - Status chips with color-coding (green for paid, yellow for pending, red for overdue)
+  - Empty/error/loading states with professional UI
+
 ### 2025-11-08
 - **Fixed WebSocket authentication error**: Removed invalid "authenticate" message that backend didn't recognize
 - **Fixed Home screen token error**: Corrected token storage - now using SecureTokenStorage consistently across app

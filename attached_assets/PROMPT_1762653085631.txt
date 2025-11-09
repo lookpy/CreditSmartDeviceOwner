@@ -1,0 +1,106 @@
+2025-11-08 22:50:02.729 16737-16737 InsetsController        com.cdccreditsmart.app.debug         D  show(ime(), fromIme=false)
+2025-11-08 22:50:02.733 16737-16737 ImeTracker              com.cdccreditsmart.app.debug         I  com.cdccreditsmart.app.debug:d26992b6: onRequestShow at ORIGIN_CLIENT reason SHOW_SOFT_INPUT_BY_INSETS_API fromUser false
+2025-11-08 22:50:02.735 16737-16737 InputMethodManager      com.cdccreditsmart.app.debug         D  showSoftInput() view=androidx.compose.ui.platform.AndroidComposeView{1ca5653 VFED..... .F....ID 0,0-1080,2400 aid=1073741824} flags=0 reason=SHOW_SOFT_INPUT_BY_INSETS_API
+2025-11-08 22:50:02.805 16737-16737 ImeTracker              com.cdccreditsmart.app.debug         I  com.cdccreditsmart.app.debug:8ef66350: onRequestShow at ORIGIN_CLIENT reason SHOW_SOFT_INPUT fromUser false
+2025-11-08 22:50:02.806 16737-16737 InputMethodManager      com.cdccreditsmart.app.debug         D  showSoftInput() view=androidx.compose.ui.platform.AndroidComposeView{1ca5653 VFED..... .F...... 0,0-1080,2400 aid=1073741824} flags=0 reason=SHOW_SOFT_INPUT
+2025-11-08 22:50:03.057 16737-16737 InsetsController        com.cdccreditsmart.app.debug         D  show(ime(), fromIme=true)
+2025-11-08 22:50:03.060 16737-16737 InsetsController        com.cdccreditsmart.app.debug         D  show(ime(), fromIme=true)
+2025-11-08 22:50:03.060 16737-16737 ImeTracker              com.cdccreditsmart.app.debug         I  com.cdccreditsmart.app.debug:8ef66350: onCancelled at PHASE_CLIENT_APPLY_ANIMATION
+2025-11-08 22:50:03.408 16737-16737 ImeTracker              com.cdccreditsmart.app.debug         I  com.cdccreditsmart.app.debug:d26992b6: onShown
+2025-11-08 22:50:04.146 16737-16737 InsetsController        com.cdccreditsmart.app.debug         D  show(ime(), fromIme=true)
+2025-11-08 22:50:04.146 16737-16737 ImeTracker              com.cdccreditsmart.app.debug         I  com.cdccreditsmart.app.debug:ac949a67: onCancelled at PHASE_CLIENT_APPLY_ANIMATION
+2025-11-08 22:50:04.730 16737-16737 InsetsController        com.cdccreditsmart.app.debug         D  show(ime(), fromIme=true)
+2025-11-08 22:50:04.730 16737-16737 ImeTracker              com.cdccreditsmart.app.debug         I  com.cdccreditsmart.app.debug:827d24bf: onCancelled at PHASE_CLIENT_APPLY_ANIMATION
+2025-11-08 22:50:05.800 16737-16737 InsetsController        com.cdccreditsmart.app.debug         D  show(ime(), fromIme=true)
+2025-11-08 22:50:05.801 16737-16737 ImeTracker              com.cdccreditsmart.app.debug         I  com.cdccreditsmart.app.debug:f4b588f7: onCancelled at PHASE_CLIENT_APPLY_ANIMATION
+2025-11-08 22:50:06.113 16737-16737 InsetsController        com.cdccreditsmart.app.debug         D  show(ime(), fromIme=true)
+2025-11-08 22:50:06.114 16737-16737 ImeTracker              com.cdccreditsmart.app.debug         I  com.cdccreditsmart.app.debug:94c3b47f: onCancelled at PHASE_CLIENT_APPLY_ANIMATION
+2025-11-08 22:50:08.025 16737-16737 InsetsController        com.cdccreditsmart.app.debug         D  show(ime(), fromIme=true)
+2025-11-08 22:50:08.026 16737-16737 ImeTracker              com.cdccreditsmart.app.debug         I  com.cdccreditsmart.app.debug:a9e9592a: onCancelled at PHASE_CLIENT_APPLY_ANIMATION
+2025-11-08 22:50:08.776 16737-16737 InsetsController        com.cdccreditsmart.app.debug         D  show(ime(), fromIme=true)
+2025-11-08 22:50:08.776 16737-16737 ImeTracker              com.cdccreditsmart.app.debug         I  com.cdccreditsmart.app.debug:2c9fe113: onCancelled at PHASE_CLIENT_APPLY_ANIMATION
+2025-11-08 22:50:09.541 16737-16737 InsetsController        com.cdccreditsmart.app.debug         D  show(ime(), fromIme=true)
+2025-11-08 22:50:09.542 16737-16737 ImeTracker              com.cdccreditsmart.app.debug         I  com.cdccreditsmart.app.debug:76842aca: onCancelled at PHASE_CLIENT_APPLY_ANIMATION
+2025-11-08 22:50:10.538 16737-16737 InsetsController        com.cdccreditsmart.app.debug         D  hide(ime(), fromIme=false)
+2025-11-08 22:50:10.540 16737-16737 ImeTracker              com.cdccreditsmart.app.debug         I  com.cdccreditsmart.app.debug:78b10e2d: onRequestHide at ORIGIN_CLIENT reason HIDE_SOFT_INPUT_BY_INSETS_API fromUser false
+2025-11-08 22:50:10.542 16737-16737 ImeTracker              com.cdccreditsmart.app.debug         I  com.cdccreditsmart.app.debug:51485056: onRequestHide at ORIGIN_CLIENT reason HIDE_SOFT_INPUT_REQUEST_HIDE_WITH_CONTROL fromUser false
+2025-11-08 22:50:10.575 16737-16737 InsetsController        com.cdccreditsmart.app.debug         D  hide(ime(), fromIme=true)
+2025-11-08 22:50:10.576 16737-16737 ImeTracker              com.cdccreditsmart.app.debug         I  com.cdccreditsmart.app.debug:51485056: onCancelled at PHASE_CLIENT_APPLY_ANIMATION
+2025-11-08 22:50:10.577 16737-16737 WindowOnBackDispatcher  com.cdccreditsmart.app.debug         W  sendCancelIfRunning: isInProgress=false callback=ImeCallback=ImeOnBackInvokedCallback@8749374 Callback=android.window.IOnBackInvokedCallback$Stub$Proxy@7048c9a
+2025-11-08 22:50:10.875 16737-16737 ImeTracker              com.cdccreditsmart.app.debug         I  com.cdccreditsmart.app.debug:74dcfab2: onRequestHide at ORIGIN_CLIENT reason HIDE_SOFT_INPUT_ON_ANIMATION_STATE_CHANGED fromUser false
+2025-11-08 22:50:10.879 16737-16737 ImeTracker              com.cdccreditsmart.app.debug         I  com.cdccreditsmart.app.debug:78b10e2d: onHidden
+2025-11-08 22:50:11.445 16737-16737 PairingViewModel        com.cdccreditsmart.app.debug         D  Starting handshake for contract: DQDYXKF9
+2025-11-08 22:50:11.452 16737-16737 DeviceInfoManager       com.cdccreditsmart.app.debug         W  READ_PHONE_STATE permission not granted
+2025-11-08 22:50:11.452 16737-16737 PairingViewModel        com.cdccreditsmart.app.debug         D  Device IMEI: UNKN...
+2025-11-08 22:50:11.452 16737-16737 PairingViewModel        com.cdccreditsmart.app.debug         W  IMEI not available - using code-only sync fallback
+2025-11-08 22:50:11.454 16737-16737 PairingViewModel        com.cdccreditsmart.app.debug         D  ========== APK AUTHENTICATION ==========
+2025-11-08 22:50:11.454 16737-16737 PairingViewModel        com.cdccreditsmart.app.debug         D  Pairing Code: DQDYXKF9
+2025-11-08 22:50:11.454 16737-16737 PairingViewModel        com.cdccreditsmart.app.debug         D  Sending POST /api/apk/auth...
+2025-11-08 22:50:11.455 16737-16737 PairingViewModel        com.cdccreditsmart.app.debug         D  Request: { code: "DQDY****" }
+2025-11-08 22:50:12.105 16737-16737 InsetsController        com.cdccreditsmart.app.debug         D  hide(ime(), fromIme=false)
+2025-11-08 22:50:12.107 16737-16737 ImeTracker              com.cdccreditsmart.app.debug         I  com.cdccreditsmart.app.debug:24eb432b: onRequestHide at ORIGIN_CLIENT reason HIDE_SOFT_INPUT_BY_INSETS_API fromUser false
+2025-11-08 22:50:12.107 16737-16737 ImeTracker              com.cdccreditsmart.app.debug         I  com.cdccreditsmart.app.debug:24eb432b: onCancelled at PHASE_CLIENT_APPLY_ANIMATION
+2025-11-08 22:50:12.450 16737-16737 PairingViewModel        com.cdccreditsmart.app.debug         D  Response code: 200
+2025-11-08 22:50:12.450 16737-16737 PairingViewModel        com.cdccreditsmart.app.debug         D  Response message: 
+2025-11-08 22:50:12.450 16737-16737 PairingViewModel        com.cdccreditsmart.app.debug         D  Response body received
+2025-11-08 22:50:12.450 16737-16737 PairingViewModel        com.cdccreditsmart.app.debug         D  ⏳ Sale pending - awaiting PDV completion
+2025-11-08 22:50:12.451 16737-16737 PairingViewModel        com.cdccreditsmart.app.debug         D  Message: Venda em andamento. Aguardando finalização no PDV.
+2025-11-08 22:50:12.451 16737-16737 PairingViewModel        com.cdccreditsmart.app.debug         D  Starting automatic polling for pending sale: DQDYXKF9
+2025-11-08 22:50:15.462 16737-16737 PairingViewModel        com.cdccreditsmart.app.debug         D  Auto-polling: Checking if sale was completed...
+2025-11-08 22:50:15.763 16737-16737 PairingViewModel        com.cdccreditsmart.app.debug         D  ⏳ Auto-polling: Sale still pending...
+2025-11-08 22:50:18.763 16737-16737 PairingViewModel        com.cdccreditsmart.app.debug         D  Auto-polling: Checking if sale was completed...
+2025-11-08 22:50:19.080 16737-16737 PairingViewModel        com.cdccreditsmart.app.debug         D  ⏳ Auto-polling: Sale still pending...
+2025-11-08 22:50:22.082 16737-16737 PairingViewModel        com.cdccreditsmart.app.debug         D  Auto-polling: Checking if sale was completed...
+2025-11-08 22:50:22.461 16737-16737 PairingViewModel        com.cdccreditsmart.app.debug         D  ✅ Auto-polling: Sale completed! Authenticating...
+2025-11-08 22:50:22.474 16737-16737 SecureTokenStorage      com.cdccreditsmart.app.debug         D  Auth token saved successfully
+2025-11-08 22:50:22.481 16737-16737 WebSocketManager        com.cdccreditsmart.app.debug         D  Connecting to WebSocket: wss://cdccreditsmart.com/ws/flow-status
+2025-11-08 22:50:22.492 16737-16737 PairingViewModel        com.cdccreditsmart.app.debug         D  Auto-polling stopped
+2025-11-08 22:50:22.844 16737-16812 WebSocketManager        com.cdccreditsmart.app.debug         D  WebSocket connection opened
+2025-11-08 22:50:22.845 16737-16812 WebSocketManager        com.cdccreditsmart.app.debug         D  WebSocket connected for contract: device_1762652997532_7l87xj5ilp8
+2025-11-08 22:50:22.845 16737-16812 WebSocketManager        com.cdccreditsmart.app.debug         D  Starting heartbeat
+2025-11-08 22:50:33.917 16737-16737 PairingViewModel        com.cdccreditsmart.app.debug         D  Starting handshake for contract: DQDYXKF9
+2025-11-08 22:50:33.917 16737-16737 DeviceInfoManager       com.cdccreditsmart.app.debug         W  READ_PHONE_STATE permission not granted
+2025-11-08 22:50:33.917 16737-16737 PairingViewModel        com.cdccreditsmart.app.debug         D  Device IMEI: UNKN...
+2025-11-08 22:50:33.917 16737-16737 PairingViewModel        com.cdccreditsmart.app.debug         W  IMEI not available - using code-only sync fallback
+2025-11-08 22:50:33.918 16737-16737 PairingViewModel        com.cdccreditsmart.app.debug         D  ========== APK AUTHENTICATION ==========
+2025-11-08 22:50:33.918 16737-16737 PairingViewModel        com.cdccreditsmart.app.debug         D  Pairing Code: DQDYXKF9
+2025-11-08 22:50:33.918 16737-16737 PairingViewModel        com.cdccreditsmart.app.debug         D  Sending POST /api/apk/auth...
+2025-11-08 22:50:33.918 16737-16737 PairingViewModel        com.cdccreditsmart.app.debug         D  Request: { code: "DQDY****" }
+2025-11-08 22:50:34.412 16737-16737 PairingViewModel        com.cdccreditsmart.app.debug         D  Response code: 200
+2025-11-08 22:50:34.413 16737-16737 PairingViewModel        com.cdccreditsmart.app.debug         D  Response message: 
+2025-11-08 22:50:34.413 16737-16737 PairingViewModel        com.cdccreditsmart.app.debug         D  Response body received
+2025-11-08 22:50:34.413 16737-16737 PairingViewModel        com.cdccreditsmart.app.debug         D  ✅ APK Authentication successful!
+2025-11-08 22:50:34.413 16737-16737 PairingViewModel        com.cdccreditsmart.app.debug         D  Auth token received, expires in 86400s
+2025-11-08 22:50:34.413 16737-16737 PairingViewModel        com.cdccreditsmart.app.debug         D  Device: Motorola G15 Power
+2025-11-08 22:50:34.413 16737-16737 PairingViewModel        com.cdccreditsmart.app.debug         D  Customer: aline aosue
+2025-11-08 22:50:34.418 16737-16737 SecureTokenStorage      com.cdccreditsmart.app.debug         D  Auth token saved successfully
+2025-11-08 22:50:34.419 16737-16737 WebSocketManager        com.cdccreditsmart.app.debug         D  Connecting to WebSocket: wss://cdccreditsmart.com/ws/flow-status
+2025-11-08 22:50:34.739 16737-16823 WebSocketManager        com.cdccreditsmart.app.debug         D  WebSocket connection opened
+2025-11-08 22:50:34.739 16737-16823 WebSocketManager        com.cdccreditsmart.app.debug         D  WebSocket connected for contract: device_1762652997532_7l87xj5ilp8
+2025-11-08 22:50:34.739 16737-16823 WebSocketManager        com.cdccreditsmart.app.debug         D  Starting heartbeat
+2025-11-08 22:50:36.483 16737-16737 WindowOnBackDispatcher  com.cdccreditsmart.app.debug         W  sendCancelIfRunning: isInProgress=false callback=androidx.activity.OnBackPressedDispatcher$Api34Impl$createOnBackAnimationCallback$1@869504a
+2025-11-08 22:50:37.600 16737-16737 NavController           com.cdccreditsmart.app.debug         I  Ignoring popBackStack to route pairing/qr_scanner as it was not found on the current back stack
+2025-11-08 22:50:37.747 16737-16737 SimpleHomeViewModel     com.cdccreditsmart.app.debug         D  Fetching device installments...
+2025-11-08 22:50:37.747 16737-16737 SimpleHomeViewModel     com.cdccreditsmart.app.debug         D  Using auth token from SecureTokenStorage
+2025-11-08 22:50:37.786 16737-16824 SimpleHomeViewModel     com.cdccreditsmart.app.debug         D  Added Authorization header with token
+2025-11-08 22:50:37.786 16737-16824 SimpleHomeViewModel     com.cdccreditsmart.app.debug         D  Request URL: https://cdccreditsmart.com/api/apk/device/installments
+2025-11-08 22:50:38.217 16737-16824 SimpleHomeViewModel     com.cdccreditsmart.app.debug         D  Response Code: 200
+2025-11-08 22:50:38.227 16737-16737 SimpleHomeViewModel     com.cdccreditsmart.app.debug         D  Successfully fetched installments data
+2025-11-08 22:50:38.228 16737-16737 SimpleHomeViewModel     com.cdccreditsmart.app.debug         D  Installments count: 0
+2025-11-08 22:50:38.229 16737-16737 SimpleHomeViewModel     com.cdccreditsmart.app.debug         D  Summary: PaymentSummary(totalAmount=1399.0, paidAmount=0.0, remainingAmount=0.0, overdueAmount=0.0, nextDueDate=null, installmentsPaid=0, totalInstallments=0, currentStatus=null)
+2025-11-08 22:50:38.229 16737-16737 SimpleHomeViewModel     com.cdccreditsmart.app.debug         D  Contract: null
+2025-11-08 22:50:38.229 16737-16737 SimpleHomeViewModel     com.cdccreditsmart.app.debug         D  Customer: null
+2025-11-08 22:50:40.374 16737-16737 ScrollIdentify          com.cdccreditsmart.app.debug         I  on fling
+2025-11-08 22:50:40.996 16737-16737 ScrollIdentify          com.cdccreditsmart.app.debug         I  on fling
+2025-11-08 22:50:41.810 16737-16737 ScrollIdentify          com.cdccreditsmart.app.debug         I  on fling
+2025-11-08 22:50:42.742 16737-16737 ScrollIdentify          com.cdccreditsmart.app.debug         I  on fling
+2025-11-08 22:50:43.115 16737-16737 ScrollIdentify          com.cdccreditsmart.app.debug         I  on fling
+2025-11-08 22:50:43.514 16737-16737 ScrollIdentify          com.cdccreditsmart.app.debug         I  on fling
+2025-11-08 22:50:52.856 16737-16737 WebSocketManager        com.cdccreditsmart.app.debug         D  Heartbeat ping sent
+2025-11-08 22:50:53.045 16737-16812 WebSocketManager        com.cdccreditsmart.app.debug         D  Message received: {"type":"pong","timestamp":"2025-11-09T01:50:52.976Z"}...
+2025-11-08 22:50:53.046 16737-16812 WebSocketManager        com.cdccreditsmart.app.debug         D  Received message type: pong
+2025-11-08 22:50:53.046 16737-16812 WebSocketManager        com.cdccreditsmart.app.debug         D  Pong received
+2025-11-08 22:51:04.752 16737-16737 WebSocketManager        com.cdccreditsmart.app.debug         D  Heartbeat ping sent
+2025-11-08 22:51:04.915 16737-16823 WebSocketManager        com.cdccreditsmart.app.debug         D  Message received: {"type":"pong","timestamp":"2025-11-09T01:51:04.850Z"}...
+2025-11-08 22:51:04.916 16737-16823 WebSocketManager        com.cdccreditsmart.app.debug         D  Received message type: pong
+2025-11-08 22:51:04.916 16737-16823 WebSocketManager        com.cdccreditsmart.app.debug         D  Pong received
