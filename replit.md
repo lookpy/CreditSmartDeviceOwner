@@ -47,7 +47,19 @@ The UI is developed using Jetpack Compose and Material 3, incorporating a CDC in
 - **Kotlin Coroutines**: Asynchronous programming with suspend functions
 
 ## Recent Changes
-### 2025-11-09 (Noite) - CONFIGURAÇÃO FINALIZADA
+### 2025-11-09 (Noite) - DTOs CORRIGIDOS + FIREBASE CONFIGURADO ✅
+- **CRITICAL FIX: DTOs alinhados 100% com documentação oficial**
+  - ✅ **PaymentDTOs.kt**: CdcInstallmentsResponse refatorado para seguir EXATAMENTE a resposta de /api/apk/device/installments
+  - ✅ Novos DTOs criados: `DeviceInstallmentInfo`, `InstallmentsSummary`, `TimingInfo`, `InstallmentItem`
+  - ✅ Campos corretos: `device`, `summary`, `timing`, `nextInstallment`, `mostOverdueInstallment`, `allInstallments`
+  - ✅ DTO antigo renomeado para `LegacyCdcInstallmentsResponse` (backward compatibility)
+  
+- **UI Screens Atualizadas**
+  - ✅ SimpleHomeViewModel: HomeState refatorado para usar novos DTOs, logging detalhado
+  - ✅ ModernHomeScreen: Migrado de `InstallmentDetail` para `InstallmentItem`
+  - ✅ SimpleHomeScreen: Todos os campos legacy removidos (`currentAmount` → `value`, `paymentDate` → `paidDate`)
+  - ✅ **Zero erros LSP**: Código 100% compilável
+  
 - **Projeto 100% Pronto para Compilação**
   - ✅ Código sem erros (LSP limpo, zero erros de compilação)
   - ✅ local.properties configurado (Replit: /home/runner/workspace/android-sdk)
