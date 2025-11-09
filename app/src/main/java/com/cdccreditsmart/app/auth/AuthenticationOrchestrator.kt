@@ -62,12 +62,12 @@ class AuthenticationOrchestrator(private val context: Context) {
             
             Log.d(TAG, "✅ Código de pareamento encontrado: ${contractCode.take(4)}****")
             
-            val authToken = tokenStorage.getAuthToken()
+            val existingAuthToken = tokenStorage.getAuthToken()
             
-            if (authToken != null) {
+            if (!existingAuthToken.isNullOrBlank()) {
                 Log.d(TAG, "🔑 Token existente encontrado - validando no servidor...")
                 
-                val isValid = validateTokenOnServer(authToken)
+                val isValid = validateTokenOnServer(existingAuthToken)
                 
                 if (isValid) {
                     Log.d(TAG, "✅ Token válido - autenticação OK!")
@@ -156,16 +156,7 @@ class AuthenticationOrchestrator(private val context: Context) {
                     contractCode = contractCode
                 )
                 
-                if (authResponse.apkToken != null) {
-                    tokenStorage.saveTokens(
-                        deviceToken = authResponse.deviceToken ?: "",
-                        apkToken = authResponse.apkToken,
-                        fingerprint = "",
-                        contractCode = contractCode
-                    )
-                }
-                
-                Log.d(TAG, "💾 Tokens salvos com sucesso (authToken + apkToken)")
+                Log.d(TAG, "💾 authToken salvo com sucesso")
                 
                 return AuthenticationResult.Authenticated(contractCode)
             }
