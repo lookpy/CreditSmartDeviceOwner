@@ -1,0 +1,42 @@
+I  com.cdccreditsmart.app.debug:ce7225ad: onCancelled at PHASE_CLIENT_APPLY_ANIMATION
+2025-11-08 21:25:46.281 12990-12990 WindowOnBackDispatcher  com.cdccreditsmart.app.debug         W  sendCancelIfRunning: isInProgress=false callback=ImeCallback=ImeOnBackInvokedCallback@8749374 Callback=android.window.IOnBackInvokedCallback$Stub$Proxy@7048c9a
+2025-11-08 21:25:46.557 12990-12990 ImeTracker              com.cdccreditsmart.app.debug         I  com.cdccreditsmart.app.debug:44aec355: onRequestHide at ORIGIN_CLIENT reason HIDE_SOFT_INPUT_ON_ANIMATION_STATE_CHANGED fromUser false
+2025-11-08 21:25:46.559 12990-12990 ImeTracker              com.cdccreditsmart.app.debug         I  com.cdccreditsmart.app.debug:ec8cda15: onHidden
+2025-11-08 21:25:47.186 12990-12990 PairingViewModel        com.cdccreditsmart.app.debug         D  Starting handshake for contract: C3MGJQVR
+2025-11-08 21:25:47.193 12990-12990 DeviceInfoManager       com.cdccreditsmart.app.debug         W  READ_PHONE_STATE permission not granted
+2025-11-08 21:25:47.198 12990-12990 PairingViewModel        com.cdccreditsmart.app.debug         D  Device IMEI: UNKN...
+2025-11-08 21:25:47.199 12990-12990 PairingViewModel        com.cdccreditsmart.app.debug         W  IMEI not available - using code-only sync fallback
+2025-11-08 21:25:47.203 12990-12990 PairingViewModel        com.cdccreditsmart.app.debug         D  ========== APK AUTHENTICATION ==========
+2025-11-08 21:25:47.203 12990-12990 PairingViewModel        com.cdccreditsmart.app.debug         D  Pairing Code: C3MGJQVR
+2025-11-08 21:25:47.204 12990-12990 PairingViewModel        com.cdccreditsmart.app.debug         D  Sending POST /api/apk/auth...
+2025-11-08 21:25:47.204 12990-12990 PairingViewModel        com.cdccreditsmart.app.debug         D  Request: { code: "C3MG****" }
+2025-11-08 21:25:47.836 12990-12990 InsetsController        com.cdccreditsmart.app.debug         D  hide(ime(), fromIme=false)
+2025-11-08 21:25:47.837 12990-12990 ImeTracker              com.cdccreditsmart.app.debug         I  com.cdccreditsmart.app.debug:a3fc920f: onRequestHide at ORIGIN_CLIENT reason HIDE_SOFT_INPUT_BY_INSETS_API fromUser false
+2025-11-08 21:25:47.837 12990-12990 ImeTracker              com.cdccreditsmart.app.debug         I  com.cdccreditsmart.app.debug:a3fc920f: onCancelled at PHASE_CLIENT_APPLY_ANIMATION
+2025-11-08 21:25:47.944 12990-12990 PairingViewModel        com.cdccreditsmart.app.debug         D  Response code: 500
+2025-11-08 21:25:47.944 12990-12990 PairingViewModel        com.cdccreditsmart.app.debug         D  Response message: 
+2025-11-08 21:25:47.948 12990-12990 PairingViewModel        com.cdccreditsmart.app.debug         E  ❌ HTTP Error 500
+2025-11-08 21:25:47.948 12990-12990 PairingViewModel        com.cdccreditsmart.app.debug         E  Error body: {"error":"Internal server error"}
+2025-11-08 21:25:47.948 12990-12990 PairingViewModel        com.cdccreditsmart.app.debug         W  Attempt 1 failed: Erro ao autenticar: HTTP 500
+2025-11-08 21:25:49.288 12990-12990 PairingViewModel        com.cdccreditsmart.app.debug         D  Response code: 500
+2025-11-08 21:25:49.288 12990-12990 PairingViewModel        com.cdccreditsmart.app.debug         D  Response message: 
+2025-11-08 21:25:49.288 12990-12990 PairingViewModel        com.cdccreditsmart.app.debug         E  ❌ HTTP Error 500
+2025-11-08 21:25:49.288 12990-12990 PairingViewModel        com.cdccreditsmart.app.debug         E  Error body: {"error":"Internal server error"}
+2025-11-08 21:25:49.288 12990-12990 PairingViewModel        com.cdccreditsmart.app.debug         W  Attempt 2 failed: Erro ao autenticar: HTTP 500
+2025-11-08 21:25:51.551 12990-12990 PairingViewModel        com.cdccreditsmart.app.debug         D  Response code: 500
+2025-11-08 21:25:51.551 12990-12990 PairingViewModel        com.cdccreditsmart.app.debug         D  Response message: 
+2025-11-08 21:25:51.551 12990-12990 PairingViewModel        com.cdccreditsmart.app.debug         E  ❌ HTTP Error 500
+2025-11-08 21:25:51.551 12990-12990 PairingViewModel        com.cdccreditsmart.app.debug         E  Error body: {"error":"Internal server error"}
+2025-11-08 21:25:51.553 12990-12990 PairingViewModel        com.cdccreditsmart.app.debug         E  Error in handshake (Ask Gemini)
+                                                                                                    java.lang.Exception: Erro ao autenticar: HTTP 500
+                                                                                                    	at com.cdccreditsmart.app.presentation.pairing.PairingViewModel$stepFallbackClaimByCodeOnly$2.invokeSuspend(PairingViewModel.kt:282)
+                                                                                                    	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:34)
+                                                                                                    	at kotlinx.coroutines.DispatchedTask.run(DispatchedTask.kt:108)
+                                                                                                    	at android.os.Handler.handleCallback(Handler.java:959)
+                                                                                                    	at android.os.Handler.dispatchMessage(Handler.java:100)
+                                                                                                    	at android.os.Looper.loopOnce(Looper.java:234)
+                                                                                                    	at android.os.Looper.loop(Looper.java:319)
+                                                                                                    	at android.app.ActivityThread.main(ActivityThread.java:8754)
+                                                                                                    	at java.lang.reflect.Method.invoke(Native Method)
+                                                                                                    	at com.android.internal.os.RuntimeInit$MethodAndArgsCaller.run(RuntimeInit.java:602)
+                                                                                                    	at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:962)
