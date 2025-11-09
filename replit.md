@@ -46,6 +46,18 @@ The UI is developed using Jetpack Compose and Material 3, incorporating a CDC in
 
 ## Recent Changes
 ### 2025-11-09
+- **Firebase Cloud Messaging (Push Notifications)**: Sistema completo de notificações push
+  - **CdcMessagingService**: Recebe notificações em foreground e background
+  - **NotificationHelper**: 4 tipos de notificação (INFO, ALERT, PAYMENT, CONTRACT) com canais Android 8+
+  - **FcmTokenManager**: Gerenciamento seguro de tokens FCM com EncryptedSharedPreferences
+  - Registro automático de token no backend (POST /api/apk/device/fcm-token) após autenticação
+  - Deep links para navegação no app a partir de notificações
+  - Banners com ícones, som e vibração personalizados por tipo
+  - Suporte completo para Android 8+ notification channels
+  - Zero leaks de dados sensíveis em logs
+  - Dependências: Firebase BOM 33.7.0, firebase-messaging-ktx, kotlinx-coroutines-play-services
+  - **IMPORTANTE**: Substituir google-services.json placeholder pelo arquivo real do Firebase Console
+
 - **NEW Modern Home Screen**: Redesigned Home screen with Material 3 design system
   - Hero header card with gradient orange background and customer welcome
   - Contract summary card with 4 visual metrics (Total, Pago, Restante, Atrasado)
