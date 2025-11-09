@@ -51,3 +51,4 @@ The UI is developed using Jetpack Compose and Material 3, incorporating a CDC in
 - **Fixed 401 Unauthorized on /installments**: Removed duplicate Authorization header (interceptor was adding it automatically)
 - **Implemented pending sale flow**: Added PairingPendingScreen for Stage 1 sales awaiting PDV completion
 - **Added automatic code formatting**: Contract codes auto-format to uppercase, alphanumeric only, 8 chars max
+- **Added automatic polling**: App automatically checks every 3 seconds if pending sale was completed, no manual click needed

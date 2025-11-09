@@ -62,7 +62,10 @@ class PairingViewModel(private val context: Context) : ViewModel() {
         private const val MAX_RETRIES = 3
         private const val INITIAL_DELAY = 1000L
         private const val BACKOFF_FACTOR = 2.0
+        private const val PENDING_POLL_INTERVAL = 3000L
     }
+    
+    private var isPolling = false
 
     private fun createDeviceApiService(): DeviceApiService {
         val client = OkHttpClient.Builder()
@@ -271,6 +274,8 @@ class PairingViewModel(private val context: Context) : ViewModel() {
                             message = message,
                             contractCode = contractId
                         )
+                        
+                        startPendingPolling(contractId)
                     }
                     
                     else -> {
@@ -353,6 +358,87 @@ class PairingViewModel(private val context: Context) : ViewModel() {
         _state.value = PairingState.Idle
         startHandshake(contractId)
     }
+    
+    fun startPendingPolling(contractCode: String) {
+        if (isPolling) {
+            Log.d(TAG, "Polling already in progress")
+            return
+        }
+        
+        isPolling = true
+        Log.d(TAG, "Starting automatic polling for pending sale: $contractCode")
+        
+        viewModelScope.launch {
+            while (isPolling && _state.value is PairingState.Pending) {
+                delay(PENDING_POLL_INTERVAL)
+                
+                Log.d(TAG, "Auto-polling: Checking if sale was completed...")
+                
+                try {
+                    val request = com.cdccreditsmart.network.dto.apk.ApkAuthRequest(
+                        code = contractCode
+                    )
+                    
+                    val response = deviceApi.authenticateApk(request)
+                    
+                    if (response.isSuccessful) {
+                        val body = response.body()
+                        
+                        when {
+                            body != null && body.success && body.authenticated -> {
+                                Log.d(TAG, "✅ Auto-polling: Sale completed! Authenticating...")
+                                isPolling = false
+                                
+                                val authToken = body.authToken ?: ""
+                                val deviceId = body.device?.id ?: contractCode
+                                
+                                tokenStorage.saveAuthToken(
+                                    authToken = authToken,
+                                    contractCode = deviceId
+                                )
+                                
+                                step3ConnectWebSocket(
+                                    contractCode = deviceId,
+                                    customerName = body.customer?.name,
+                                    deviceModel = body.device?.model
+                                )
+                            }
+                            
+                            body != null && body.pending == true -> {
+                                Log.d(TAG, "⏳ Auto-polling: Sale still pending...")
+                            }
+                            
+                            else -> {
+                                Log.w(TAG, "❌ Auto-polling: Unexpected response")
+                                isPolling = false
+                                
+                                val message = body?.message 
+                                    ?: "Código de pareamento inválido ou expirado."
+                                
+                                _state.value = PairingState.Error(
+                                    message = message,
+                                    canRetry = true
+                                )
+                            }
+                        }
+                    } else {
+                        Log.e(TAG, "Auto-polling HTTP error: ${response.code()}")
+                    }
+                } catch (e: Exception) {
+                    Log.e(TAG, "Auto-polling exception: ${e.message}", e)
+                }
+            }
+            
+            Log.d(TAG, "Auto-polling stopped")
+        }
+    }
+    
+    fun stopPendingPolling() {
+        if (isPolling) {
+            Log.d(TAG, "Stopping automatic polling")
+            isPolling = false
+        }
+    }
 
     private suspend fun <T> retryWithBackoff(
         maxRetries: Int,
@@ -373,6 +459,7 @@ class PairingViewModel(private val context: Context) : ViewModel() {
 
     override fun onCleared() {
         super.onCleared()
+        stopPendingPolling()
         webSocketManager?.disconnect()
     }
 }

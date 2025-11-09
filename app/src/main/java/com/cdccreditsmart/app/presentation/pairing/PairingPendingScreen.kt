@@ -98,20 +98,40 @@ fun PairingPendingScreen(
                 Text(
                     text = "1. Aguarde o vendedor finalizar a venda no PDV\n" +
                           "2. O vendedor deve clicar em \"Dispositivo Atestado\"\n" +
-                          "3. Clique em \"Verificar Novamente\" abaixo",
+                          "3. O app verificará automaticamente a cada 3 segundos",
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.7f),
                     textAlign = TextAlign.Center
                 )
+                
+                Spacer(modifier = Modifier.height(16.dp))
+                
+                Row(
+                    horizontalArrangement = Arrangement.Center,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    CircularProgressIndicator(
+                        modifier = Modifier.size(16.dp),
+                        color = CDCOrange,
+                        strokeWidth = 2.dp
+                    )
+                    Spacer(modifier = Modifier.width(8.dp))
+                    Text(
+                        text = "Verificando automaticamente...",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = CDCOrange,
+                        fontWeight = FontWeight.Medium
+                    )
+                }
             }
             
             Spacer(modifier = Modifier.height(48.dp))
             
-            Button(
+            OutlinedButton(
                 onClick = onRetry,
                 modifier = Modifier.fillMaxWidth(),
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = CDCOrange
+                colors = ButtonDefaults.outlinedButtonColors(
+                    contentColor = CDCOrange
                 ),
                 shape = RoundedCornerShape(12.dp)
             ) {
@@ -122,7 +142,7 @@ fun PairingPendingScreen(
                 )
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(
-                    "Verificar Novamente",
+                    "Verificar Agora (Manual)",
                     modifier = Modifier.padding(vertical = 8.dp),
                     style = MaterialTheme.typography.titleMedium
                 )
