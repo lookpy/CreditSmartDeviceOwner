@@ -48,7 +48,8 @@ android {
         debug {
             isDebuggable = true
             isMinifyEnabled = false
-            applicationIdSuffix = ".debug"
+            // applicationIdSuffix removido para compatibilidade com google-services.json
+            // applicationIdSuffix = ".debug"
             versionNameSuffix = "-debug"
             // Disable R8 completely for debug builds
             proguardFiles()
