@@ -1,116 +1,102 @@
-========================================
-SOLUÇÃO RÁPIDA - SDK NÃO ENCONTRADO
-========================================
+═══════════════════════════════════════════════════════════════
+  SOLUÇÃO RÁPIDA - Erro: google-services.json is missing
+═══════════════════════════════════════════════════════════════
 
-ERRO:
-  SDK location not found
+PROBLEMA:
+  ❌ File google-services.json is missing
 
 CAUSA:
-  O Android SDK não está instalado OU o arquivo local.properties está errado
+  O arquivo não foi copiado quando você baixou o projeto do Replit
 
-========================================
-SOLUÇÃO EM 3 PASSOS:
-========================================
+═══════════════════════════════════════════════════════════════
+  SOLUÇÃO (ESCOLHA UMA):
+═══════════════════════════════════════════════════════════════
 
-PASSO 1: ENCONTRAR O ANDROID SDK
----------------------------------
+┌─────────────────────────────────────────────────────────────┐
+│ OPÇÃO 1: Script Automático (MAIS FÁCIL)                    │
+└─────────────────────────────────────────────────────────────┘
 
-Abra o Android Studio:
-  → File 
-  → Settings 
-  → Android SDK
+1. Abra o CMD na pasta do projeto
+2. Execute:
+   
+   COPIAR_GOOGLE_SERVICES.bat
+
+3. O arquivo será criado automaticamente em: app\google-services.json
+4. Compile novamente:
+   
+   gradlew.bat clean assembleDebug
+
+
+┌─────────────────────────────────────────────────────────────┐
+│ OPÇÃO 2: Criar Manualmente                                 │
+└─────────────────────────────────────────────────────────────┘
+
+1. Crie um arquivo chamado: app\google-services.json
+
+2. Cole este conteúdo dentro:
+
+{
+  "project_info": {
+    "project_number": "1002498413771",
+    "project_id": "gen-lang-client-0650271525",
+    "storage_bucket": "gen-lang-client-0650271525.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1002498413771:android:60044e27119ceb3c13374e",
+        "android_client_info": {
+          "package_name": "com.cdccreditsmart.app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCUDm0rV-O-MPuA7KN6Qk7TvenD8KpSdO8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
+
+3. Salve o arquivo
+4. Compile novamente:
+   
+   gradlew.bat clean assembleDebug
+
+
+═══════════════════════════════════════════════════════════════
+  VERIFICAR SE DEU CERTO:
+═══════════════════════════════════════════════════════════════
+
+Execute no CMD:
+
+  dir app\google-services.json
+
+Você deve ver:
   
-Copie o CAMINHO que aparece no topo.
+  ✅ app\google-services.json (706 bytes)
 
-Exemplo do que você vai ver:
-  C:\Users\João\AppData\Local\Android\Sdk
+Se aparecer, o arquivo foi criado corretamente!
 
-⚠️ COPIE ESTE CAMINHO EXATAMENTE!
+═══════════════════════════════════════════════════════════════
+  COMPILAR NOVAMENTE:
+═══════════════════════════════════════════════════════════════
 
+gradlew.bat clean assembleDebug
 
-PASSO 2: CRIAR local.properties
----------------------------------
+O erro "google-services.json is missing" NÃO vai aparecer mais!
 
-1. Abra o Bloco de Notas (Notepad)
+═══════════════════════════════════════════════════════════════
+  APK COMPILADO ESTARÁ EM:
+═══════════════════════════════════════════════════════════════
 
-2. Cole EXATAMENTE isto (substitua SEU_CAMINHO):
+app\build\outputs\apk\debug\app-debug.apk
 
-sdk.dir=C\:\\Users\\SeuNome\\AppData\\Local\\Android\\Sdk
-
-   ⚠️ IMPORTANTE:
-   - Use \\ (barra DUPLA)
-   - Substitua "SeuNome" pelo caminho que você copiou
-   - NÃO use aspas
-
-3. Salve como:
-   - Nome: local.properties
-   - Tipo: Todos os arquivos
-   - Local: C:\CreditSmartDeviceOwner\
-
-   ⚠️ Certifique-se que salvou como "local.properties" 
-      e NÃO "local.properties.txt"
-
-
-PASSO 3: COMPILAR
----------------------------------
-
-cd C:\CreditSmartDeviceOwner
-.\gradlew.bat assembleDebug
-
-
-========================================
-NÃO TEM ANDROID STUDIO?
-========================================
-
-Baixe aqui: https://developer.android.com/studio
-
-Durante a instalação:
-  ✓ Marque "Android SDK"
-  ✓ Anote onde será instalado
-
-Depois volte ao PASSO 1.
-
-
-========================================
-EXEMPLO COMPLETO:
-========================================
-
-Se o Android Studio mostrou:
-  C:\Users\João\AppData\Local\Android\Sdk
-
-Então seu local.properties deve ter:
-  sdk.dir=C\:\\Users\\João\\AppData\\Local\\Android\\Sdk
-
-Se o Android Studio mostrou:
-  D:\Programs\Android\Sdk
-
-Então seu local.properties deve ter:
-  sdk.dir=D\:\\Programs\\Android\\Sdk
-
-
-========================================
-VERIFICAR SE ESTÁ CERTO:
-========================================
-
-1. Abra PowerShell/CMD
-
-2. Execute (substitua pelo SEU caminho):
-   dir "C:\Users\João\AppData\Local\Android\Sdk\platform-tools"
-
-3. Deve listar arquivos, incluindo adb.exe
-
-4. Se der "não encontrado", o caminho está ERRADO!
-
-
-========================================
-ME ENVIE SE AINDA DER ERRO:
-========================================
-
-1. Conteúdo do local.properties:
-   type local.properties
-
-2. Screenshot do Android Studio:
-   Settings → Android SDK
-
-3. Resultado de:
-   dir "%LOCALAPPDATA%\Android"
+═══════════════════════════════════════════════════════════════

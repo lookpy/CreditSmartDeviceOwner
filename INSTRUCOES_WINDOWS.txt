@@ -1,68 +1,129 @@
-================================================================================
-                    INSTRUÇÕES PARA COMPILAR NO WINDOWS
-================================================================================
+═══════════════════════════════════════════════════════════════
+  INSTRUÇÕES COMPLETAS - Compilar APK no Windows
+═══════════════════════════════════════════════════════════════
 
-VOCÊ PRECISA:
-  1. Android Studio instalado
-  2. Saber onde está o Android SDK
-  3. Criar arquivo local.properties com caminho correto
+📋 CHECKLIST PRÉ-COMPILAÇÃO:
 
---------------------------------------------------------------------------------
-                              PASSO A PASSO
---------------------------------------------------------------------------------
+  ✅ Android Studio instalado
+  ✅ Android SDK configurado
+  ✅ Projeto baixado do Replit
+  ✅ Abriu CMD na pasta do projeto
 
-1. ENCONTRE O ANDROID SDK
-   
-   Opção A: Via Android Studio
-   → Abra Android Studio
-   → File → Settings
-   → Android SDK
-   → COPIE o caminho que aparece
-   
-   Opção B: Caminho padrão
-   → C:\Users\SeuNome\AppData\Local\Android\Sdk
-   → Pressione Win+R
-   → Digite: %LOCALAPPDATA%\Android\Sdk
-   → Se abrir, COPIE o caminho da barra de endereços
+═══════════════════════════════════════════════════════════════
+  PASSO 1: Criar google-services.json
+═══════════════════════════════════════════════════════════════
 
-2. CRIE local.properties
-   
-   → Abra Bloco de Notas
-   → Cole:
-     sdk.dir=C\:\\Users\\SeuNome\\AppData\\Local\\Android\\Sdk
-   
-   → Substitua pelo CAMINHO que você copiou
-   → Use \\ (barra DUPLA)
-   
-   → Salve como:
-     - Nome: local.properties
-     - Local: C:\CreditSmartDeviceOwner\
-     - Tipo: Todos os arquivos
+Execute:
 
-3. COMPILE
-   
-   cd C:\CreditSmartDeviceOwner
-   .\gradlew.bat assembleDebug
+  COPIAR_GOOGLE_SERVICES.bat
 
---------------------------------------------------------------------------------
-                           SCRIPTS DISPONÍVEIS
---------------------------------------------------------------------------------
+Isso cria: app\google-services.json (obrigatório para Firebase)
 
-criar-local-properties.bat    → Tenta detectar SDK automaticamente
-fix-windows-build.bat         → Limpa cache se der erro
+═══════════════════════════════════════════════════════════════
+  PASSO 2: Configurar Android SDK
+═══════════════════════════════════════════════════════════════
 
-ARQUIVOS CRIADOS:
-  - SOLUCAO_RAPIDA.txt         → Leia este se tiver dúvidas
-  - local.properties.exemplo   → Template para copiar
-  - ERRO_SDK_NAO_ENCONTRADO.md → Troubleshooting completo
+Execute:
 
---------------------------------------------------------------------------------
-                            ONDE PEDIR AJUDA
---------------------------------------------------------------------------------
+  criar-local-properties.bat
 
-Me envie:
-  1. Conteúdo de: type local.properties
-  2. Resultado de: dir "%LOCALAPPDATA%\Android"
-  3. Screenshot: Android Studio → Settings → Android SDK
+Isso cria: local.properties (obrigatório para Gradle)
 
-================================================================================
+═══════════════════════════════════════════════════════════════
+  PASSO 3: Compilar APK
+═══════════════════════════════════════════════════════════════
+
+gradlew.bat clean assembleDebug
+
+Aguarde 5-10 minutos (primeira compilação é lenta).
+
+═══════════════════════════════════════════════════════════════
+  PASSO 4: Localizar APK
+═══════════════════════════════════════════════════════════════
+
+APK compilado estará em:
+
+  app\build\outputs\apk\debug\app-debug.apk
+
+═══════════════════════════════════════════════════════════════
+  PASSO 5: Instalar no Dispositivo
+═══════════════════════════════════════════════════════════════
+
+Via USB:
+
+  adb install app\build\outputs\apk\debug\app-debug.apk
+
+Ou copie o APK manualmente para o celular.
+
+═══════════════════════════════════════════════════════════════
+  TROUBLESHOOTING:
+═══════════════════════════════════════════════════════════════
+
+┌─────────────────────────────────────────────────────────────┐
+│ ERRO: google-services.json is missing                      │
+└─────────────────────────────────────────────────────────────┘
+
+Solução:
+  COPIAR_GOOGLE_SERVICES.bat
+
+Depois compile novamente.
+
+
+┌─────────────────────────────────────────────────────────────┐
+│ ERRO: SDK location not found                               │
+└─────────────────────────────────────────────────────────────┘
+
+Solução:
+  criar-local-properties.bat
+
+Se não funcionar automaticamente, veja: ERRO_SDK_NAO_ENCONTRADO.md
+
+
+┌─────────────────────────────────────────────────────────────┐
+│ ERRO: Build failed (outros erros)                          │
+└─────────────────────────────────────────────────────────────┘
+
+Solução:
+  fix-windows-build.bat
+
+Isso limpa cache e tenta novamente.
+
+
+┌─────────────────────────────────────────────────────────────┐
+│ DÚVIDA: Onde está o Android SDK?                           │
+└─────────────────────────────────────────────────────────────┘
+
+Abra Android Studio:
+  → File → Settings → Android SDK
+  → Copie o caminho que aparece no topo
+
+Caminho típico:
+  C:\Users\SeuNome\AppData\Local\Android\Sdk
+
+
+═══════════════════════════════════════════════════════════════
+  RESUMO DOS COMANDOS:
+═══════════════════════════════════════════════════════════════
+
+# 1. Criar google-services.json
+COPIAR_GOOGLE_SERVICES.bat
+
+# 2. Configurar SDK
+criar-local-properties.bat
+
+# 3. Compilar
+gradlew.bat clean assembleDebug
+
+# 4. Instalar
+adb install app\build\outputs\apk\debug\app-debug.apk
+
+═══════════════════════════════════════════════════════════════
+  ARQUIVOS DE AJUDA:
+═══════════════════════════════════════════════════════════════
+
+SOLUCAO_RAPIDA.txt          - Solução para google-services.json
+COMPILAR_APK_WINDOWS.md     - Guia completo de compilação
+ERRO_SDK_NAO_ENCONTRADO.md  - Troubleshooting de SDK
+STATUS_COMPILACAO.md        - Status do projeto
+
+═══════════════════════════════════════════════════════════════
