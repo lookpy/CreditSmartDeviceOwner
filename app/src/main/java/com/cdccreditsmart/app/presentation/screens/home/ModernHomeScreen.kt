@@ -35,7 +35,7 @@ fun ModernHomeScreen() {
     val state by viewModel.homeState
     
     var showPaymentSheet by remember { mutableStateOf(false) }
-    var selectedInstallment by remember { mutableStateOf<InstallmentDetail?>(null) }
+    var selectedInstallment by remember { mutableStateOf<InstallmentItem?>(null) }
     
     Scaffold(
         topBar = {
@@ -82,7 +82,6 @@ fun ModernHomeScreen() {
     if (showPaymentSheet && selectedInstallment != null) {
         PaymentBottomSheet(
             installment = selectedInstallment!!,
-            paymentMethods = state.paymentMethods,
             onDismiss = { showPaymentSheet = false },
             onPayWithPix = { /* TODO */ },
             onPayWithBoleto = { /* TODO */ }
@@ -165,7 +164,7 @@ private fun ErrorState(
 private fun HomeContent(
     modifier: Modifier = Modifier,
     state: HomeState,
-    onPayInstallment: (InstallmentDetail) -> Unit
+    onPayInstallment: (InstallmentItem) -> Unit
 ) {
     LazyColumn(
         modifier = modifier
@@ -176,8 +175,8 @@ private fun HomeContent(
     ) {
         item {
             HeroHeaderCard(
-                customerName = state.customer?.name ?: "Cliente",
-                deviceModel = state.contract?.deviceModel ?: "Dispositivo"
+                customerName = state.device?.name ?: "Cliente",
+                deviceModel = state.device?.name ?: "Dispositivo"
             )
         }
         
@@ -187,8 +186,8 @@ private fun HomeContent(
             }
         }
         
-        val pendingInstallments = state.installments.filter { it.status == "pending" || it.status == "overdue" }
-        val paidInstallments = state.installments.filter { it.status == "paid" }
+        val pendingInstallments = state.allInstallments.filter { it.status == "pending" || it.status == "overdue" }
+        val paidInstallments = state.allInstallments.filter { it.status == "paid" }
         
         if (pendingInstallments.isNotEmpty()) {
             item {
@@ -218,20 +217,6 @@ private fun HomeContent(
             
             items(paidInstallments.take(3)) { installment ->
                 PaidInstallmentCard(installment = installment)
-            }
-        }
-        
-        if (state.paymentMethods.isNotEmpty()) {
-            item {
-                SectionHeader(
-                    title = "Formas de Pagamento",
-                    subtitle = "Disponíveis",
-                    icon = Icons.Default.Payment
-                )
-            }
-            
-            item {
-                PaymentMethodsGrid(methods = state.paymentMethods)
             }
         }
         
@@ -331,7 +316,7 @@ private fun HeroHeaderCard(
 }
 
 @Composable
-private fun ContractSummaryCard(summary: PaymentSummary) {
+private fun ContractSummaryCard(summary: InstallmentsSummary) {
     Card(
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(20.dp),
@@ -377,8 +362,8 @@ private fun ContractSummaryCard(summary: PaymentSummary) {
             ) {
                 SummaryMetric(
                     modifier = Modifier.weight(1f),
-                    label = "Restante",
-                    value = formatCurrency(summary.remainingAmount),
+                    label = "Pendente",
+                    value = formatCurrency(summary.pendingAmount),
                     icon = Icons.Default.Schedule,
                     color = MaterialTheme.colorScheme.tertiary
                 )
@@ -469,7 +454,7 @@ private fun SectionHeader(
 
 @Composable
 private fun InstallmentCard(
-    installment: InstallmentDetail,
+    installment: InstallmentItem,
     onPay: () -> Unit
 ) {
     val isOverdue = installment.status == "overdue"
@@ -546,7 +531,7 @@ private fun InstallmentCard(
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                     Text(
-                        text = formatCurrency(installment.currentAmount),
+                        text = formatCurrency(installment.value),
                         style = MaterialTheme.typography.headlineMedium,
                         fontWeight = FontWeight.Bold,
                         color = if (isOverdue) MaterialTheme.colorScheme.error else CDCOrange
@@ -574,7 +559,7 @@ private fun InstallmentCard(
 }
 
 @Composable
-private fun PaidInstallmentCard(installment: InstallmentDetail) {
+private fun PaidInstallmentCard(installment: InstallmentItem) {
     Card(
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(12.dp),
@@ -606,7 +591,7 @@ private fun PaidInstallmentCard(installment: InstallmentDetail) {
                         fontWeight = FontWeight.Medium
                     )
                     Text(
-                        text = "Paga em ${installment.paymentDate?.let { formatDate(it) } ?: "—"}",
+                        text = "Paga em ${installment.paidDate?.let { formatDate(it) } ?: "—"}",
                         style = MaterialTheme.typography.bodySmall,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
@@ -614,7 +599,7 @@ private fun PaidInstallmentCard(installment: InstallmentDetail) {
             }
             
             Text(
-                text = formatCurrency(installment.currentAmount),
+                text = formatCurrency(installment.value),
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.SemiBold,
                 color = Color(0xFF4CAF50)
@@ -647,71 +632,10 @@ private fun InstallmentStatusChip(status: String) {
     }
 }
 
-@Composable
-private fun PaymentMethodsGrid(methods: List<PaymentMethodInfo>) {
-    Row(
-        modifier = Modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.spacedBy(12.dp)
-    ) {
-        methods.filter { it.available }.forEach { method ->
-            PaymentMethodCard(
-                modifier = Modifier.weight(1f),
-                method = method
-            )
-        }
-    }
-}
-
-@Composable
-private fun PaymentMethodCard(
-    modifier: Modifier = Modifier,
-    method: PaymentMethodInfo
-) {
-    val icon = when (method.method.lowercase()) {
-        "pix" -> Icons.Default.QrCode
-        "boleto" -> Icons.Default.Receipt
-        else -> Icons.Default.Payment
-    }
-    
-    Card(
-        modifier = modifier,
-        shape = RoundedCornerShape(16.dp),
-        colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.surfaceVariant
-        )
-    ) {
-        Column(
-            modifier = Modifier.padding(16.dp),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(8.dp)
-        ) {
-            Icon(
-                imageVector = icon,
-                contentDescription = null,
-                tint = CDCOrange,
-                modifier = Modifier.size(32.dp)
-            )
-            Text(
-                text = method.displayName,
-                style = MaterialTheme.typography.labelLarge,
-                fontWeight = FontWeight.Bold,
-                textAlign = TextAlign.Center
-            )
-            Text(
-                text = method.processingTime,
-                style = MaterialTheme.typography.labelSmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                textAlign = TextAlign.Center
-            )
-        }
-    }
-}
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun PaymentBottomSheet(
-    installment: InstallmentDetail,
-    paymentMethods: List<PaymentMethodInfo>,
+    installment: InstallmentItem,
     onDismiss: () -> Unit,
     onPayWithPix: () -> Unit,
     onPayWithBoleto: () -> Unit
@@ -736,7 +660,7 @@ private fun PaymentBottomSheet(
             )
             
             Text(
-                text = formatCurrency(installment.currentAmount),
+                text = formatCurrency(installment.value),
                 style = MaterialTheme.typography.displaySmall,
                 fontWeight = FontWeight.Bold,
                 color = CDCOrange
@@ -750,26 +674,19 @@ private fun PaymentBottomSheet(
                 fontWeight = FontWeight.SemiBold
             )
             
-            val pixMethod = paymentMethods.find { it.method.lowercase() == "pix" }
-            val boletoMethod = paymentMethods.find { it.method.lowercase() == "boleto" }
+            PaymentOption(
+                icon = Icons.Default.QrCode,
+                title = "PIX",
+                subtitle = "Pagamento instantâneo",
+                onClick = onPayWithPix
+            )
             
-            if (pixMethod?.available == true) {
-                PaymentOption(
-                    icon = Icons.Default.QrCode,
-                    title = "PIX",
-                    subtitle = "Pagamento instantâneo",
-                    onClick = onPayWithPix
-                )
-            }
-            
-            if (boletoMethod?.available == true) {
-                PaymentOption(
-                    icon = Icons.Default.Receipt,
-                    title = "Boleto Bancário",
-                    subtitle = boletoMethod.processingTime,
-                    onClick = onPayWithBoleto
-                )
-            }
+            PaymentOption(
+                icon = Icons.Default.Receipt,
+                title = "Boleto Bancário",
+                subtitle = "Processamento em 1-3 dias",
+                onClick = onPayWithBoleto
+            )
             
             Spacer(Modifier.height(8.dp))
         }

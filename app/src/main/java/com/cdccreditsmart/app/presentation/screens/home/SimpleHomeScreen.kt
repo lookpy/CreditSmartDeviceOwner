@@ -18,9 +18,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.cdccreditsmart.app.ui.components.CDCCard
-import com.cdccreditsmart.network.dto.cdc.InstallmentDetail
-import com.cdccreditsmart.network.dto.cdc.PaymentMethodInfo
-import com.cdccreditsmart.network.dto.cdc.PaymentSummary
+import com.cdccreditsmart.network.dto.cdc.InstallmentItem
+import com.cdccreditsmart.network.dto.cdc.InstallmentsSummary
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -145,14 +144,10 @@ private fun HomeContent(
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
         HeaderSection(
-            customerName = state.customer?.name ?: state.contract?.deviceModel ?: "Cliente"
+            customerName = state.device?.name ?: "Cliente"
         )
         
-        if (state.customer != null) {
-            CustomerInfoCard(customer = state.customer)
-        }
-        
-        val nextInstallment = state.installments.firstOrNull { 
+        val nextInstallment = state.allInstallments.firstOrNull { 
             it.status == "pending" || it.status == "overdue" 
         }
         
@@ -164,21 +159,15 @@ private fun HomeContent(
             FinancialSummaryCard(summary = state.summary)
         }
         
-        if (state.installments.isNotEmpty()) {
+        if (state.allInstallments.isNotEmpty()) {
             InstallmentsListCard(
-                installments = state.installments.take(3)
+                installments = state.allInstallments.take(3)
             )
         }
         
         if (nextInstallment != null) {
             PayNextInstallmentButton(
                 installment = nextInstallment
-            )
-        }
-        
-        if (state.paymentMethods.isNotEmpty()) {
-            PaymentOptionsCard(
-                paymentMethods = state.paymentMethods
             )
         }
         
@@ -207,101 +196,7 @@ private fun HeaderSection(customerName: String) {
 }
 
 @Composable
-private fun CustomerInfoCard(customer: com.cdccreditsmart.network.dto.cdc.CustomerInfo) {
-    CDCCard(
-        modifier = Modifier.fillMaxWidth()
-    ) {
-        Column(
-            modifier = Modifier.padding(16.dp),
-            verticalArrangement = Arrangement.spacedBy(12.dp)
-        ) {
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(8.dp)
-            ) {
-                Icon(
-                    imageVector = Icons.Default.Person,
-                    contentDescription = null,
-                    tint = MaterialTheme.colorScheme.primary,
-                    modifier = Modifier.size(24.dp)
-                )
-                Text(
-                    text = "Dados do Cliente",
-                    style = MaterialTheme.typography.titleMedium,
-                    fontWeight = FontWeight.SemiBold,
-                    color = MaterialTheme.colorScheme.onSurface
-                )
-            }
-            
-            Divider(color = MaterialTheme.colorScheme.outline.copy(alpha = 0.3f))
-            
-            CustomerInfoRow(
-                icon = Icons.Default.Person,
-                label = "Nome",
-                value = customer.name
-            )
-            
-            CustomerInfoRow(
-                icon = Icons.Default.AccountBox,
-                label = "CPF",
-                value = formatCPF(customer.cpf)
-            )
-            
-            CustomerInfoRow(
-                icon = Icons.Default.Phone,
-                label = "Telefone",
-                value = formatPhone(customer.phone)
-            )
-            
-            val emailValue = customer.email
-            if (!emailValue.isNullOrBlank()) {
-                CustomerInfoRow(
-                    icon = Icons.Default.Email,
-                    label = "Email",
-                    value = emailValue
-                )
-            }
-        }
-    }
-}
-
-@Composable
-private fun CustomerInfoRow(
-    icon: ImageVector,
-    label: String,
-    value: String
-) {
-    Row(
-        modifier = Modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.spacedBy(12.dp),
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Icon(
-            imageVector = icon,
-            contentDescription = null,
-            tint = MaterialTheme.colorScheme.onSurfaceVariant,
-            modifier = Modifier.size(20.dp)
-        )
-        Column(
-            verticalArrangement = Arrangement.spacedBy(2.dp)
-        ) {
-            Text(
-                text = label,
-                style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
-            )
-            Text(
-                text = value,
-                style = MaterialTheme.typography.bodyMedium,
-                fontWeight = FontWeight.Medium,
-                color = MaterialTheme.colorScheme.onSurface
-            )
-        }
-    }
-}
-
-@Composable
-private fun NextInstallmentCard(installment: InstallmentDetail) {
+private fun NextInstallmentCard(installment: InstallmentItem) {
     val isOverdue = installment.status == "overdue"
     
     CDCCard(
@@ -376,7 +271,7 @@ private fun NextInstallmentCard(installment: InstallmentDetail) {
 }
 
 @Composable
-private fun FinancialSummaryCard(summary: PaymentSummary) {
+private fun FinancialSummaryCard(summary: InstallmentsSummary) {
     CDCCard(
         modifier = Modifier.fillMaxWidth()
     ) {
@@ -417,7 +312,7 @@ private fun FinancialSummaryCard(summary: PaymentSummary) {
             
             FinancialRow(
                 label = "Valor Restante",
-                value = formatCurrency(summary.remainingAmount),
+                value = formatCurrency(summary.pendingAmount),
                 valueColor = MaterialTheme.colorScheme.onSurface,
                 isHighlighted = true
             )
@@ -461,7 +356,7 @@ private fun FinancialRow(
 }
 
 @Composable
-private fun InstallmentsListCard(installments: List<InstallmentDetail>) {
+private fun InstallmentsListCard(installments: List<InstallmentItem>) {
     CDCCard(
         modifier = Modifier.fillMaxWidth()
     ) {
@@ -496,7 +391,7 @@ private fun InstallmentsListCard(installments: List<InstallmentDetail>) {
 }
 
 @Composable
-private fun InstallmentRow(installment: InstallmentDetail) {
+private fun InstallmentRow(installment: InstallmentItem) {
     Row(
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceBetween,
@@ -556,7 +451,7 @@ private fun InstallmentStatusChip(status: String) {
 }
 
 @Composable
-private fun PayNextInstallmentButton(installment: InstallmentDetail) {
+private fun PayNextInstallmentButton(installment: InstallmentItem) {
     val isOverdue = installment.status == "overdue"
     
     Button(
@@ -579,104 +474,6 @@ private fun PayNextInstallmentButton(installment: InstallmentDetail) {
             style = MaterialTheme.typography.titleMedium,
             fontWeight = FontWeight.SemiBold
         )
-    }
-}
-
-@Composable
-private fun PaymentOptionsCard(paymentMethods: List<PaymentMethodInfo>) {
-    CDCCard(
-        modifier = Modifier.fillMaxWidth()
-    ) {
-        Column(
-            modifier = Modifier.padding(16.dp),
-            verticalArrangement = Arrangement.spacedBy(12.dp)
-        ) {
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(8.dp)
-            ) {
-                Icon(
-                    imageVector = Icons.Default.AccountBalance,
-                    contentDescription = null,
-                    tint = MaterialTheme.colorScheme.primary,
-                    modifier = Modifier.size(24.dp)
-                )
-                Text(
-                    text = "Opções de Pagamento",
-                    style = MaterialTheme.typography.titleMedium,
-                    fontWeight = FontWeight.SemiBold
-                )
-            }
-            
-            Divider(color = MaterialTheme.colorScheme.outline.copy(alpha = 0.3f))
-            
-            paymentMethods.filter { it.available }.forEach { method ->
-                PaymentMethodRow(method = method)
-            }
-        }
-    }
-}
-
-@Composable
-private fun PaymentMethodRow(method: PaymentMethodInfo) {
-    val icon = when (method.method.lowercase()) {
-        "pix" -> Icons.Default.QrCode
-        "boleto" -> Icons.Default.Receipt
-        "credit_card" -> Icons.Default.CreditCard
-        "debit_card" -> Icons.Default.Payment
-        else -> Icons.Default.Payment
-    }
-    
-    Row(
-        modifier = Modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.SpaceBetween,
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(12.dp)
-        ) {
-            Icon(
-                imageVector = icon,
-                contentDescription = null,
-                tint = MaterialTheme.colorScheme.primary,
-                modifier = Modifier.size(20.dp)
-            )
-            
-            Column {
-                Text(
-                    text = method.displayName,
-                    style = MaterialTheme.typography.bodyMedium,
-                    fontWeight = FontWeight.Medium
-                )
-                Text(
-                    text = method.processingTime,
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
-                )
-            }
-        }
-        
-        if (method.fee > 0) {
-            Text(
-                text = "+ ${formatCurrency(method.fee)}",
-                style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
-            )
-        } else {
-            Surface(
-                color = MaterialTheme.colorScheme.primary.copy(alpha = 0.15f),
-                shape = MaterialTheme.shapes.small
-            ) {
-                Text(
-                    text = "Grátis",
-                    modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
-                    style = MaterialTheme.typography.labelSmall,
-                    color = MaterialTheme.colorScheme.primary,
-                    fontWeight = FontWeight.Medium
-                )
-            }
-        }
     }
 }
 
