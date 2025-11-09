@@ -57,6 +57,20 @@ The UI is developed using Jetpack Compose and Material 3, incorporating a CDC in
   - Status chips with color-coding (green for paid, yellow for pending, red for overdue)
   - Empty/error/loading states with professional UI
 
+- **SECURITY: Redundant Contract Code Storage** (Anti-Tampering)
+  - **ContractCodeStorage**: Sistema de armazenamento redundante em 7 locais criptografados
+  - Locais de armazenamento:
+    1. EncryptedSharedPreferences (AES256_GCM)
+    2. Device Protected Storage (sobrevive Clear Data no Android 7+)
+    3-5. Três arquivos encrypted com nomes ofuscados
+    6-7. Android Keystore com duas chaves backup (hardware-backed encryption)
+  - HMAC SHA-256 com chave não-exportável do Keystore para validação de integridade
+  - Auto-restauração cruzada: se algum local for apagado/corrompido, restaura dos outros
+  - Validação cruzada para detectar tampering
+  - Zero leaks de dados sensíveis em logs (tudo redatado)
+  - **Limitação do Android**: Clear Storage/Uninstall apaga TUDO (re-autenticação necessária)
+  - RouterViewModel verifica contract code ao boot - bloqueia se ausente/corrompido
+
 ### 2025-11-08
 - **Fixed WebSocket authentication error**: Removed invalid "authenticate" message that backend didn't recognize
 - **Fixed Home screen token error**: Corrected token storage - now using SecureTokenStorage consistently across app
