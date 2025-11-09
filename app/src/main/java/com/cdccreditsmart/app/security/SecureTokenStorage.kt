@@ -4,6 +4,7 @@ import android.content.Context
 import android.util.Log
 import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKey
+import com.cdccreditsmart.app.storage.ContractCodeStorage
 
 class SecureTokenStorage(context: Context) {
 
@@ -30,6 +31,8 @@ class SecureTokenStorage(context: Context) {
         EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
     )
 
+    private val contractCodeStorage = ContractCodeStorage(context)
+
     fun saveTokens(
         deviceToken: String,
         apkToken: String,
@@ -41,10 +44,12 @@ class SecureTokenStorage(context: Context) {
                 putString(KEY_DEVICE_TOKEN, deviceToken)
                 putString(KEY_APK_TOKEN, apkToken)
                 putString(KEY_FINGERPRINT, fingerprint)
-                putString(KEY_CONTRACT_CODE, contractCode)
                 apply()
             }
-            Log.d(TAG, "Tokens saved successfully")
+            
+            contractCodeStorage.saveContractCode(contractCode)
+            
+            Log.d(TAG, "Tokens saved successfully (contract code via ContractCodeStorage)")
         } catch (e: Exception) {
             Log.e(TAG, "Error saving tokens", e)
             throw TokenStorageException("Failed to save tokens", e)
@@ -58,12 +63,14 @@ class SecureTokenStorage(context: Context) {
         try {
             encryptedPrefs.edit().apply {
                 putString(KEY_AUTH_TOKEN, authToken)
-                if (contractCode != null) {
-                    putString(KEY_CONTRACT_CODE, contractCode)
-                }
                 apply()
             }
-            Log.d(TAG, "Auth token saved successfully")
+            
+            if (contractCode != null) {
+                contractCodeStorage.saveContractCode(contractCode)
+            }
+            
+            Log.d(TAG, "Auth token saved successfully (contract code via ContractCodeStorage)")
         } catch (e: Exception) {
             Log.e(TAG, "Error saving auth token", e)
             throw TokenStorageException("Failed to save auth token", e)
@@ -108,7 +115,23 @@ class SecureTokenStorage(context: Context) {
 
     fun getContractCode(): String? {
         return try {
-            encryptedPrefs.getString(KEY_CONTRACT_CODE, null)
+            val code = contractCodeStorage.getContractCode()
+            
+            if (code != null) {
+                return code
+            }
+            
+            val legacyCode = encryptedPrefs.getString(KEY_CONTRACT_CODE, null)
+            if (legacyCode != null) {
+                Log.d(TAG, "Migrating contract code from legacy storage to ContractCodeStorage")
+                contractCodeStorage.saveContractCode(legacyCode)
+                
+                encryptedPrefs.edit().remove(KEY_CONTRACT_CODE).apply()
+                
+                return legacyCode
+            }
+            
+            null
         } catch (e: Exception) {
             Log.e(TAG, "Error getting contract code", e)
             null
@@ -118,7 +141,8 @@ class SecureTokenStorage(context: Context) {
     fun clearTokens() {
         try {
             encryptedPrefs.edit().clear().apply()
-            Log.d(TAG, "Tokens cleared successfully")
+            contractCodeStorage.clearContractCode()
+            Log.d(TAG, "Tokens cleared successfully (including ContractCodeStorage)")
         } catch (e: Exception) {
             Log.e(TAG, "Error clearing tokens", e)
             throw TokenStorageException("Failed to clear tokens", e)

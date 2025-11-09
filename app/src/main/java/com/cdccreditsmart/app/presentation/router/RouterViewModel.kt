@@ -7,6 +7,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.cdccreditsmart.app.device.SimpleTokenManager
+import com.cdccreditsmart.app.storage.ContractCodeStorage
 import com.cdccreditsmart.network.api.DeviceApiService
 import com.google.gson.Gson
 import kotlinx.coroutines.launch
@@ -30,6 +31,7 @@ class RouterViewModel(
     val destination: State<RouterDestination> = _destination
 
     private val tokenStorage = com.cdccreditsmart.app.security.SecureTokenStorage(context)
+    private val contractCodeStorage = ContractCodeStorage(context)
     
     private val deviceApi: DeviceApiService by lazy {
         createDeviceApiService()
@@ -69,23 +71,31 @@ class RouterViewModel(
                     return@launch
                 }
                 
-                val apkToken = tokenStorage.getApkToken()
-                
-                if (apkToken == null) {
-                    Log.d(TAG, "❌ Token inválido - Nova autenticação")
+                if (!contractCodeStorage.hasContractCode()) {
+                    Log.d(TAG, "❌ Sem contract code - Ir para QR Scanner")
                     tokenStorage.clearTokens()
                     _destination.value = RouterDestination.QRScanner
                     return@launch
                 }
                 
-                Log.d(TAG, "✅ Token válido encontrado - Verificando no servidor...")
+                val apkToken = tokenStorage.getApkToken()
+                val contractCode = contractCodeStorage.getContractCode()
+                
+                if (apkToken == null || contractCode == null) {
+                    Log.d(TAG, "❌ Token ou contract code inválido - Nova autenticação")
+                    tokenStorage.clearTokens()
+                    _destination.value = RouterDestination.QRScanner
+                    return@launch
+                }
+                
+                Log.d(TAG, "✅ Token e contract code válidos - Verificando no servidor...")
                 
                 val response = deviceApi.getDeviceStatus(
                     authorization = "Bearer $apkToken"
                 )
                 
                 if (response.isSuccessful && response.body() != null) {
-                    Log.d(TAG, "✅ Token verificado no servidor - Ir para HOME")
+                    Log.d(TAG, "✅ Autenticação verificada no servidor - Ir para HOME")
                     _destination.value = RouterDestination.Home
                 } else {
                     Log.w(TAG, "⚠️ Token inválido no servidor (${response.code()}) - Nova autenticação")

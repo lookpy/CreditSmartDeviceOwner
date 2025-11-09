@@ -86,7 +86,7 @@ class PairingViewModel(private val context: Context) : ViewModel() {
     fun startHandshake(contractId: String) {
         viewModelScope.launch {
             try {
-                Log.d(TAG, "Starting handshake for contract: $contractId")
+                Log.d(TAG, "Starting handshake for contract")
                 
                 val imei = deviceInfoManager.getDeviceImei()
                 Log.d(TAG, "Device IMEI: ${imei.take(4)}...")
@@ -222,14 +222,13 @@ class PairingViewModel(private val context: Context) : ViewModel() {
         _state.value = PairingState.Claiming("Autenticando APK...")
         
         Log.d(TAG, "========== APK AUTHENTICATION ==========")
-        Log.d(TAG, "Pairing Code: $contractId")
+        Log.d(TAG, "Pairing Code: [REDACTED]")
         
         val request = com.cdccreditsmart.network.dto.apk.ApkAuthRequest(
             code = contractId
         )
         
         Log.d(TAG, "Sending POST /api/apk/auth...")
-        Log.d(TAG, "Request: { code: \"${contractId.take(4)}****\" }")
         
         retryWithBackoff(MAX_RETRIES) {
             val response = deviceApi.authenticateApk(request)
@@ -333,7 +332,7 @@ class PairingViewModel(private val context: Context) : ViewModel() {
                 }
             },
             onSaleCompleted = { data ->
-                Log.d(TAG, "WebSocket: Sale completed - ${data.contractCode}")
+                Log.d(TAG, "WebSocket: Sale completed")
             },
             onError = { message ->
                 Log.e(TAG, "WebSocket error: $message")
@@ -366,7 +365,7 @@ class PairingViewModel(private val context: Context) : ViewModel() {
         }
         
         isPolling = true
-        Log.d(TAG, "Starting automatic polling for pending sale: $contractCode")
+        Log.d(TAG, "Starting automatic polling for pending sale")
         
         viewModelScope.launch {
             while (isPolling && _state.value is PairingState.Pending) {
