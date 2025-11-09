@@ -5,7 +5,7 @@ import android.util.Log
 import com.cdccreditsmart.app.security.SecureTokenStorage
 import com.cdccreditsmart.app.storage.ContractCodeStorage
 import com.cdccreditsmart.network.api.DeviceApiService
-import com.cdccreditsmart.network.dto.cdc.ApkAuthRequest
+import com.cdccreditsmart.network.dto.apk.ApkAuthRequest
 import com.google.gson.Gson
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -112,7 +112,7 @@ class AuthenticationOrchestrator(private val context: Context) {
             Log.d(TAG, "🔐 Autenticando silenciosamente com código salvo...")
             
             val request = ApkAuthRequest(
-                pairingCode = contractCode
+                code = contractCode
             )
             
             val response = deviceApi.authenticateApk(request)
