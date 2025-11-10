@@ -30,7 +30,7 @@ import java.util.concurrent.TimeUnit
 /**
  * Blocking Check Worker
  * Periodic WorkManager job that checks installment status and applies blocking rules
- * Runs every 6 hours
+ * Runs every 15 minutes (minimum allowed by WorkManager for testing)
  */
 class BlockingCheckWorker(
     context: Context,
@@ -40,7 +40,7 @@ class BlockingCheckWorker(
     companion object {
         private const val TAG = "BlockingCheckWorker"
         const val WORK_NAME = "BlockingCheckWork"
-        const val CHECK_INTERVAL_HOURS = 6L
+        const val CHECK_INTERVAL_MINUTES = 15L
         
         /**
          * Schedule periodic blocking checks
@@ -51,8 +51,8 @@ class BlockingCheckWorker(
                 .build()
             
             val workRequest = PeriodicWorkRequestBuilder<BlockingCheckWorker>(
-                CHECK_INTERVAL_HOURS,
-                TimeUnit.HOURS
+                CHECK_INTERVAL_MINUTES,
+                TimeUnit.MINUTES
             )
                 .setConstraints(constraints)
                 .setBackoffCriteria(
@@ -68,7 +68,7 @@ class BlockingCheckWorker(
                 workRequest
             )
             
-            Log.d(TAG, "✅ Scheduled periodic blocking check (every $CHECK_INTERVAL_HOURS hours)")
+            Log.d(TAG, "✅ Scheduled periodic blocking check (every $CHECK_INTERVAL_MINUTES minutes)")
         }
         
         /**
