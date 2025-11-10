@@ -1,0 +1,206 @@
+PROMPT PARA IA CRIADORA DO APK — CDC CREDIT SMART (Bloqueios Progressivos e Tela de Bloqueio Knox)
+
+Você é o assistente de desenvolvimento responsável por criar e programar o APK oficial do CDC Credit Smart, um aplicativo corporativo usado para controle de financiamento de aparelhos celulares.
+Sua missão é implementar bloqueios progressivos de aplicativos com base nos dias de atraso do cliente e avisos automáticos na tela de bloqueio (Lockscreen) usando a API Samsung Knox.
+
+Siga rigorosamente as regras abaixo.
+
+🧩 1. Estrutura do Sistema
+
+O app deve operar em modo Device Owner (MDM) para ter permissão de bloquear apps e gerenciar o dispositivo.
+
+Caso o dispositivo não suporte Device Owner, implemente fallback com:
+
+UsageStatsManager para identificar apps em uso;
+
+AccessibilityService + overlay de bloqueio sobre o app proibido.
+
+O app deve verificar diariamente o número de dias de atraso (daysOverdue) e aplicar automaticamente as restrições correspondentes.
+
+📅 2. Regras de Bloqueio Progressivo (Escalonamento)
+
+As restrições são cumulativas — cada nível mantém os anteriores.
+
+🔹 Após 7 dias de atraso
+
+Bloquear:
+
+Apps de fotos, galeria, vídeos e navegadores.
+
+Permitir:
+
+WhatsApp, telefone, SMS, apps bancários e e-mail.
+
+Mensagem da tela de bloqueio:
+
+Dispositivo com atraso de 7 dias.
+Aplicativos de fotos, galeria, vídeos e navegadores foram bloqueados.
+Regularize seu pagamento para evitar novas restrições.
+
+🔹 Após 15 dias de atraso
+
+Bloquear também:
+
+YouTube, apps de música, Play Store e jogos.
+
+Mensagem da tela de bloqueio:
+
+Atraso de 15 dias.
+YouTube, música, jogos e Play Store foram bloqueados.
+Regularize seu pagamento para restaurar o acesso.
+
+🔹 Após 30 dias de atraso
+
+Bloquear todas as redes sociais, exceto WhatsApp.
+
+Mensagem:
+
+Atraso de 30 dias.
+Todas as redes sociais estão bloqueadas, exceto o WhatsApp.
+Regularize o pagamento para liberar o uso completo.
+
+🔹 Após 45 dias de atraso
+
+Bloquear todos os aplicativos, exceto:
+
+WhatsApp, telefone, SMS, bancos e e-mails.
+
+Mensagem:
+
+Atraso de 45 dias.
+A maioria dos aplicativos foi bloqueada, apenas WhatsApp e comunicações essenciais permanecem ativas.
+
+🔹 Após 60 dias de atraso
+
+Bloquear todos os aplicativos, exceto:
+
+Apps de banco, telefone, SMS e e-mail.
+
+Mensagem:
+
+Atraso de 60 dias.
+Acesso restrito apenas a chamadas, SMS, bancos e e-mails.
+Regularize seu pagamento imediatamente para restaurar o uso completo do aparelho.
+
+🖼️ 3. Exibição Visual (LockscreenOverlay – Samsung Knox)
+
+Utilize a classe com.samsung.android.knox.lockscreen.LockscreenOverlay para aplicar:
+
+Mensagem na tela de bloqueio via changeLockScreenString(String text);
+
+Wallpaper de aviso com setWallpaper(String path);
+
+Transparência ajustável com setAlpha(float value).
+
+Para cada nível de atraso, use um wallpaper correspondente, por exemplo:
+
+/storage/emulated/0/CDC/wallpapers/atraso_7.png
+
+/storage/emulated/0/CDC/wallpapers/atraso_15.png
+
+etc.
+
+Exemplo de uso:
+
+overlay.changeLockScreenString(mensagem);
+overlay.setWallpaper(caminhoWallpaper);
+overlay.setAlpha(0.8f);
+
+🔐 4. Whitelist (apps que nunca devem ser bloqueados)
+
+Mesmo em bloqueios severos, os seguintes pacotes sempre devem permanecer ativos:
+
+{
+  "whitelist": [
+    "com.whatsapp",
+    "com.android.dialer",
+    "com.android.messaging",
+    "com.google.android.gm",
+    "com.microsoft.office.outlook",
+    "br.com.bb",
+    "com.itau",
+    "com.santander.app",
+    "br.com.bradesco",
+    "com.google.android.apps.messaging"
+  ]
+}
+
+🧭 5. Integração com Backend
+
+O backend retorna daysOverdue e amountDue (valor em aberto).
+
+Após receber esses dados:
+
+Aplicar bloqueio progressivo conforme tabela.
+
+Atualizar lockscreen com mensagem e wallpaper correspondentes.
+
+Enviar log de execução para o servidor:
+
+{
+  "deviceId": "...",
+  "daysOverdue": 45,
+  "actionsApplied": ["blocked_apps", "lockscreen_updated"],
+  "timestamp": "2025-11-10T22:00:00Z"
+}
+
+
+Quando daysOverdue == 0, desbloquear tudo e restaurar lockscreen padrão.
+
+🧰 6. Segurança
+
+Evitar que o usuário possa desinstalar o app (usar Device Owner setUninstallBlocked(true)).
+
+Garantir que chamadas de emergência (112/190/192) permaneçam funcionais.
+
+Nunca apagar dados do usuário, apenas restringir uso.
+
+💬 7. UX / Mensagens
+
+Mostrar sempre notificações amigáveis com:
+
+Dias de atraso
+
+Valor em aberto
+
+Botão “Pagar agora” abrindo o app CDC Credit Smart.
+
+Exemplo:
+
+NotificationCompat.Builder builder = new NotificationCompat.Builder(context, "cdc_lock")
+    .setSmallIcon(R.drawable.ic_lock)
+    .setContentTitle("Atraso de 30 dias detectado")
+    .setContentText("Redes sociais bloqueadas. Toque aqui para regularizar.")
+    .setPriority(NotificationCompat.PRIORITY_HIGH);
+
+🧠 8. Comportamento esperado
+
+O app deve iniciar automaticamente com o sistema (BOOT_COMPLETED) e aplicar as regras assim que possível.
+
+O bloqueio deve persistir após reiniciar o celular.
+
+Ao confirmar o pagamento, as restrições são removidas em tempo real.
+
+✅ 9. Testes obrigatórios
+
+Simular atrasos de 7, 15, 30, 45 e 60 dias.
+
+Testar desbloqueio pós-pagamento.
+
+Testar fallback em dispositivos sem Knox.
+
+Confirmar que WhatsApp, telefone e SMS funcionam em todos os níveis.
+
+📜 Resumo
+
+Crie o APK do CDC Credit Smart com:
+
+Bloqueios progressivos automáticos conforme dias de atraso;
+
+Exibição de mensagem personalizada na lockscreen via Samsung Knox;
+
+Notificações e wallpapers informativos;
+
+Mecanismo reversível após pagamento;
+
+Operação persistente e segura em modo Device Owner.
