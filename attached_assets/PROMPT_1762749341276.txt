@@ -1,0 +1,42 @@
+       D  📱 Serviço onCreate()
+2025-11-10 01:35:20.734 25712-25712 CdcForegroundService    com.cdccreditsmart.app               D  ✅ Canal de notificação criado
+2025-11-10 01:35:20.739 25712-25712 CdcForegroundService    com.cdccreditsmart.app               D  🔋 WakeLock adquirido
+2025-11-10 01:35:20.740 25712-25712 CdcForegroundService    com.cdccreditsmart.app               D  🚀 Serviço onStartCommand() - Action: com.cdccreditsmart.app.START_SERVICE
+2025-11-10 01:35:20.767 25712-25712 AndroidRuntime          com.cdccreditsmart.app               D  Shutting down VM
+2025-11-10 01:35:20.777 25712-25712 AndroidRuntime          com.cdccreditsmart.app               E  FATAL EXCEPTION: main (Ask Gemini)
+                                                                                                    Process: com.cdccreditsmart.app, PID: 25712
+                                                                                                    java.lang.RuntimeException: Unable to start service com.cdccreditsmart.app.service.CdcForegroundService@6c460ed with Intent { act=com.cdccreditsmart.app.START_SERVICE cmp=com.cdccreditsmart.app/.service.CdcForegroundService }: android.app.ForegroundServiceStartNotAllowedException: Service.startForeground() not allowed due to mAllowStartForeground false: service com.cdccreditsmart.app/.service.CdcForegroundService
+                                                                                                    	at android.app.ActivityThread.handleServiceArgs(ActivityThread.java:5207)
+                                                                                                    	at android.app.ActivityThread.-$$Nest$mhandleServiceArgs(Unknown Source:0)
+                                                                                                    	at android.app.ActivityThread$H.handleMessage(ActivityThread.java:2511)
+                                                                                                    	at android.os.Handler.dispatchMessage(Handler.java:107)
+                                                                                                    	at android.os.Looper.loopOnce(Looper.java:234)
+                                                                                                    	at android.os.Looper.loop(Looper.java:319)
+                                                                                                    	at android.app.ActivityThread.main(ActivityThread.java:8754)
+                                                                                                    	at java.lang.reflect.Method.invoke(Native Method)
+                                                                                                    	at com.android.internal.os.RuntimeInit$MethodAndArgsCaller.run(RuntimeInit.java:602)
+                                                                                                    	at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:962)
+                                                                                                    Caused by: android.app.ForegroundServiceStartNotAllowedException: Service.startForeground() not allowed due to mAllowStartForeground false: service com.cdccreditsmart.app/.service.CdcForegroundService
+                                                                                                    	at android.app.ForegroundServiceStartNotAllowedException$1.createFromParcel(ForegroundServiceStartNotAllowedException.java:54)
+                                                                                                    	at android.app.ForegroundServiceStartNotAllowedException$1.createFromParcel(ForegroundServiceStartNotAllowedException.java:50)
+                                                                                                    	at android.os.Parcel.readParcelableInternal(Parcel.java:5075)
+                                                                                                    	at android.os.Parcel.readParcelable(Parcel.java:5057)
+                                                                                                    	at android.os.Parcel.createExceptionOrNull(Parcel.java:3237)
+                                                                                                    	at android.os.Parcel.createException(Parcel.java:3226)
+                                                                                                    	at android.os.Parcel.readException(Parcel.java:3209)
+                                                                                                    	at android.os.Parcel.readException(Parcel.java:3151)
+                                                                                                    	at android.app.IActivityManager$Stub$Proxy.setServiceForeground(IActivityManager.java:7265)
+                                                                                                    	at android.app.Service.startForeground(Service.java:776)
+                                                                                                    	at com.cdccreditsmart.app.service.CdcForegroundService.startForegroundService(CdcForegroundService.kt:84)
+                                                                                                    	at com.cdccreditsmart.app.service.CdcForegroundService.onStartCommand(CdcForegroundService.kt:73)
+                                                                                                    	at android.app.ActivityThread.handleServiceArgs(ActivityThread.java:5189)
+                                                                                                    	at android.app.ActivityThread.-$$Nest$mhandleServiceArgs(Unknown Source:0) 
+                                                                                                    	at android.app.ActivityThread$H.handleMessage(ActivityThread.java:2511) 
+                                                                                                    	at android.os.Handler.dispatchMessage(Handler.java:107) 
+                                                                                                    	at android.os.Looper.loopOnce(Looper.java:234) 
+                                                                                                    	at android.os.Looper.loop(Looper.java:319) 
+                                                                                                    	at android.app.ActivityThread.main(ActivityThread.java:8754) 
+                                                                                                    	at java.lang.reflect.Method.invoke(Native Method) 
+                                                                                                    	at com.android.internal.os.RuntimeInit$MethodAndArgsCaller.run(RuntimeInit.java:602) 
+                                                                                                    	at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:962) 
+2025-11-10 01:35:30.556 25712-25805 CompatChangeReporter    com.cdccreditsmart.app               D  Compat change id reported: 312399441; UID 10263; state: ENABLED
