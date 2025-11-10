@@ -1,0 +1,72 @@
+failed
+Download info
+:app:compileDebugKotlin
+BlockingViewModel.kt
+Unresolved reference 'data'.
+Unresolved reference 'blocking'.
+Unresolved reference 'blocking'.
+Unresolved reference 'blocking'.
+Unresolved reference 'logging'.
+Unresolved reference 'BlockingStateRepository'.
+Unresolved reference 'PackageCategoryMapper'.
+Unresolved reference 'AppBlockingManager'.
+Argument type mismatch: actual type is 'Any', but 'BlockingState?' was expected.
+Unresolved reference 'daysOverdue'.
+Unresolved reference 'BlockingEventLogger'.
+BlockingCheckWorker.kt
+Unresolved reference 'work'.
+Unresolved reference 'work'.
+Unresolved reference 'work'.
+Unresolved reference 'work'.
+Unresolved reference 'work'.
+Unresolved reference 'work'.
+Unresolved reference 'work'.
+Unresolved reference 'work'.
+Unresolved reference 'work'.
+Unresolved reference 'work'.
+Unresolved reference 'data'.
+Unresolved reference 'blocking'.
+Unresolved reference 'blocking'.
+Unresolved reference 'blocking'.
+Unresolved reference 'logging'.
+Unresolved reference 'WorkerParameters'.
+Unresolved reference 'CoroutineWorker'.
+Unresolved reference 'Constraints'.
+Unresolved reference 'NetworkType'.
+Unresolved reference 'PeriodicWorkRequestBuilder'.
+Unresolved reference 'BackoffPolicy'.
+Unresolved reference 'WorkRequest'.
+Unresolved reference 'WorkManager'.
+Unresolved reference 'ExistingPeriodicWorkPolicy'.
+Unresolved reference 'WorkManager'.
+Unresolved reference 'OneTimeWorkRequestBuilder'.
+Unresolved reference 'Constraints'.
+Unresolved reference 'NetworkType'.
+Unresolved reference 'WorkManager'.
+Unresolved reference 'applicationContext'.
+Unresolved reference 'BlockingStateRepository'.
+Unresolved reference 'applicationContext'.
+Unresolved reference 'PackageCategoryMapper'.
+Unresolved reference 'applicationContext'.
+Unresolved reference 'AppBlockingManager'.
+Unresolved reference 'applicationContext'.
+'doWork' overrides nothing.
+One type argument expected for class Result<out T> : Serializable.
+Cannot infer type for type parameter 'T'. Specify it explicitly.
+Cannot infer type for type parameter 'T'. Specify it explicitly.
+No value passed for parameter 'value'.
+Unresolved reference 'retry'.
+Unresolved reference 'retry'.
+Unresolved reference 'retry'.
+Unresolved reference 'BlockingRulesEngine'.
+Cannot infer type for type parameter 'T'. Specify it explicitly.
+Unresolved reference 'BlockingEventLogger'.
+Unresolved reference 'applicationContext'.
+Unresolved reference 'size'.
+Unresolved reference 'size'.
+Unresolved reference 'it'.
+Unresolved reference 'applicationContext'.
+Unresolved reference 'size'.
+Cannot infer type for type parameter 'T'. Specify it explicitly.
+No value passed for parameter 'value'.
+Unresolved reference 'retry'.

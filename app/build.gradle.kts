@@ -123,16 +123,19 @@ java {
 
 dependencies {
     // Project module dependencies
-    // implementation(project(":domain"))
-    // implementation(project(":data"))
+    implementation(project(":domain"))
+    implementation(project(":data"))
     implementation(project(":network"))
     // implementation(project(":biometry"))
-    // implementation(project(":device"))
+    implementation(project(":device"))
     // implementation(project(":payments"))
     
     // Android 15 Compatible Core dependencies
     implementation("androidx.core:core-ktx:1.13.1")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.8.6")
+    
+    // WorkManager for background tasks (Progressive Blocking System)
+    implementation("androidx.work:work-runtime-ktx:2.9.0")
     
     // Android 15 Compatible Compose BOM (Latest version with Android 15 support)
     implementation(platform("androidx.compose:compose-bom:2024.09.03"))
