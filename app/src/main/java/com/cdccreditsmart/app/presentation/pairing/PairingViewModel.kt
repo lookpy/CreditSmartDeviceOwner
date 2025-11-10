@@ -7,19 +7,15 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.cdccreditsmart.app.device.DeviceInfoManager
+import com.cdccreditsmart.app.network.RetrofitProvider
 import com.cdccreditsmart.app.notifications.FcmTokenManager
 import com.cdccreditsmart.app.security.FingerprintCalculator
 import com.cdccreditsmart.app.security.SecureTokenStorage
 import com.cdccreditsmart.app.websocket.WebSocketManager
 import com.cdccreditsmart.network.api.DeviceApiService
 import com.cdccreditsmart.network.dto.cdc.ClaimRequest
-import com.google.gson.Gson
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import okhttp3.OkHttpClient
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
-import java.util.concurrent.TimeUnit
 import kotlin.math.pow
 
 sealed class PairingState {
@@ -70,19 +66,8 @@ class PairingViewModel(private val context: Context) : ViewModel() {
     private var isPolling = false
 
     private fun createDeviceApiService(): DeviceApiService {
-        val client = OkHttpClient.Builder()
-            .connectTimeout(30, TimeUnit.SECONDS)
-            .readTimeout(30, TimeUnit.SECONDS)
-            .writeTimeout(30, TimeUnit.SECONDS)
-            .build()
-
-        val retrofit = Retrofit.Builder()
-            .baseUrl("https://cdccreditsmart.com/")
-            .client(client)
-            .addConverterFactory(GsonConverterFactory.create(Gson()))
-            .build()
-
-        return retrofit.create(DeviceApiService::class.java)
+        return RetrofitProvider.createRetrofit()
+            .create(DeviceApiService::class.java)
     }
 
     fun startHandshake(contractId: String) {

@@ -4,23 +4,23 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.os.Build
 import android.provider.Settings
+import android.util.Log
 import androidx.core.content.ContextCompat
+import com.cdccreditsmart.app.network.RetrofitProvider
+import com.squareup.moshi.Moshi
+import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.RequestBody.Companion.toRequestBody
 import okhttp3.MediaType.Companion.toMediaType
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
+import okhttp3.ResponseBody
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.POST
 import retrofit2.http.GET
-import android.util.Log
 import java.util.concurrent.TimeUnit
-import okhttp3.ResponseBody
-import com.google.gson.JsonSyntaxException
 
 /**
  * Simplified device registration manager that doesn't rely on complex DI
@@ -54,12 +54,12 @@ class SimpleDeviceRegistrationManager(private val context: Context) {
         }
         .build()
 
-    private val deviceApi: DeviceRegistrationApi = Retrofit.Builder()
-        .baseUrl("https://cdccreditsmart.com/")
-        .client(httpClient)
-        .addConverterFactory(GsonConverterFactory.create())
-        .build()
+    private val deviceApi: DeviceRegistrationApi = RetrofitProvider.createRetrofit()
         .create(DeviceRegistrationApi::class.java)
+    
+    private val moshi = Moshi.Builder()
+        .add(KotlinJsonAdapterFactory())
+        .build()
 
     companion object {
         private const val TAG = "SimpleDeviceRegistration"
@@ -391,7 +391,10 @@ class SimpleDeviceRegistrationManager(private val context: Context) {
                     response.code() == 403 -> {
                         // Handle the specific "suspicious activity" response from CDC server
                         val parsedError = try {
-                            errorBody?.let { com.google.gson.Gson().fromJson(it, Map::class.java) }
+                            errorBody?.let { 
+                                val adapter = moshi.adapter<Map<String, Any>>(Map::class.java)
+                                adapter.fromJson(it)
+                            }
                         } catch (e: Exception) { null }
                         
                         val errorMessage = parsedError?.get("error") as? String
@@ -420,7 +423,7 @@ class SimpleDeviceRegistrationManager(private val context: Context) {
                 
                 Result.failure(Exception(errorMsg))
             }
-        } catch (e: JsonSyntaxException) {
+        } catch (e: com.squareup.moshi.JsonDataException) {
             Log.e(TAG, "JSON parsing error - likely received HTML instead of JSON", e)
             Result.failure(Exception("Server returned invalid JSON response. Likely received HTML instead of expected JSON format."))
         } catch (e: Exception) {

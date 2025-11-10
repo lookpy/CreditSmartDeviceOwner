@@ -2,17 +2,13 @@ package com.cdccreditsmart.app.auth
 
 import android.content.Context
 import android.util.Log
+import com.cdccreditsmart.app.network.RetrofitProvider
 import com.cdccreditsmart.app.security.SecureTokenStorage
 import com.cdccreditsmart.app.storage.ContractCodeStorage
 import com.cdccreditsmart.network.api.DeviceApiService
 import com.cdccreditsmart.network.dto.apk.ApkAuthRequest
-import com.google.gson.Gson
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import okhttp3.OkHttpClient
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
-import java.util.concurrent.TimeUnit
 
 sealed class AuthenticationResult {
     data class Authenticated(val contractCode: String) : AuthenticationResult()
@@ -34,19 +30,8 @@ class AuthenticationOrchestrator(private val context: Context) {
     }
 
     private fun createDeviceApiService(): DeviceApiService {
-        val client = OkHttpClient.Builder()
-            .connectTimeout(15, TimeUnit.SECONDS)
-            .readTimeout(15, TimeUnit.SECONDS)
-            .writeTimeout(15, TimeUnit.SECONDS)
-            .build()
-
-        val retrofit = Retrofit.Builder()
-            .baseUrl("https://cdccreditsmart.com/")
-            .client(client)
-            .addConverterFactory(GsonConverterFactory.create(Gson()))
-            .build()
-
-        return retrofit.create(DeviceApiService::class.java)
+        return RetrofitProvider.createRetrofit()
+            .create(DeviceApiService::class.java)
     }
 
     suspend fun ensureAuthenticated(): AuthenticationResult = withContext(Dispatchers.IO) {

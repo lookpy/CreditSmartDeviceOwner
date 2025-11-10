@@ -6,8 +6,9 @@ import android.util.Log
 import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKey
 import com.cdccreditsmart.network.dto.blocking.BlockingState
-import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
+import com.squareup.moshi.Moshi
+import com.squareup.moshi.Types
+import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 
 /**
  * Blocking State Repository
@@ -26,7 +27,17 @@ class BlockingStateRepository(private val context: Context) {
         private const val KEY_CURRENT_LEVEL = "current_level"
     }
     
-    private val gson = Gson()
+    private val moshi = Moshi.Builder()
+        .add(KotlinJsonAdapterFactory())
+        .build()
+    
+    private val intListAdapter = moshi.adapter<List<Int>>(
+        Types.newParameterizedType(List::class.java, Int::class.javaObjectType)
+    )
+    
+    private val stringListAdapter = moshi.adapter<List<String>>(
+        Types.newParameterizedType(List::class.java, String::class.java)
+    )
     
     private val sharedPreferences: SharedPreferences by lazy {
         try {
@@ -54,15 +65,15 @@ class BlockingStateRepository(private val context: Context) {
         try {
             sharedPreferences.edit().apply {
                 putInt(KEY_DAYS_OVERDUE, state.daysOverdue)
-                putString(KEY_ACTIVE_RULES, gson.toJson(state.activeRules))
-                putString(KEY_BLOCKED_PACKAGES, gson.toJson(state.blockedPackages))
+                putString(KEY_ACTIVE_RULES, intListAdapter.toJson(state.activeRules))
+                putString(KEY_BLOCKED_PACKAGES, stringListAdapter.toJson(state.blockedPackages))
                 putLong(KEY_LAST_CHECKED, state.lastChecked)
                 putBoolean(KEY_CAN_UNBLOCK, state.canUnblock)
                 putString(KEY_CURRENT_LEVEL, state.currentLevel)
                 apply()
             }
             
-            Log.d(TAG, "✅ Saved blocking state: $state.daysOverdue days, ${state.blockedPackages.size} blocked")
+            Log.d(TAG, "✅ Saved blocking state: ${state.daysOverdue} days, ${state.blockedPackages.size} blocked")
         } catch (e: Exception) {
             Log.e(TAG, "❌ Error saving blocking state", e)
         }
@@ -83,15 +94,8 @@ class BlockingStateRepository(private val context: Context) {
             val activeRulesJson = sharedPreferences.getString(KEY_ACTIVE_RULES, "[]")
             val blockedPackagesJson = sharedPreferences.getString(KEY_BLOCKED_PACKAGES, "[]")
             
-            val activeRules: List<Int> = gson.fromJson(
-                activeRulesJson,
-                object : TypeToken<List<Int>>() {}.type
-            ) ?: emptyList()
-            
-            val blockedPackages: List<String> = gson.fromJson(
-                blockedPackagesJson,
-                object : TypeToken<List<String>>() {}.type
-            ) ?: emptyList()
+            val activeRules: List<Int> = intListAdapter.fromJson(activeRulesJson ?: "[]") ?: emptyList()
+            val blockedPackages: List<String> = stringListAdapter.fromJson(blockedPackagesJson ?: "[]") ?: emptyList()
             
             val lastChecked = sharedPreferences.getLong(KEY_LAST_CHECKED, 0)
             val canUnblock = sharedPreferences.getBoolean(KEY_CAN_UNBLOCK, true)
@@ -132,7 +136,7 @@ class BlockingStateRepository(private val context: Context) {
     fun updateBlockedPackages(packages: List<String>) {
         try {
             sharedPreferences.edit().apply {
-                putString(KEY_BLOCKED_PACKAGES, gson.toJson(packages))
+                putString(KEY_BLOCKED_PACKAGES, stringListAdapter.toJson(packages))
                 apply()
             }
             Log.d(TAG, "✅ Updated blocked packages: ${packages.size} total")
@@ -169,7 +173,7 @@ class BlockingStateRepository(private val context: Context) {
     fun getBlockedPackages(): List<String> {
         return try {
             val json = sharedPreferences.getString(KEY_BLOCKED_PACKAGES, "[]")
-            gson.fromJson(json, object : TypeToken<List<String>>() {}.type) ?: emptyList()
+            stringListAdapter.fromJson(json ?: "[]") ?: emptyList()
         } catch (e: Exception) {
             Log.e(TAG, "Error loading blocked packages", e)
             emptyList()

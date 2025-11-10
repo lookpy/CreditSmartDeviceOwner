@@ -6,17 +6,15 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.cdccreditsmart.app.network.RetrofitProvider
 import com.cdccreditsmart.app.security.SecureTokenStorage
 import com.cdccreditsmart.network.api.DeviceApiService
 import com.cdccreditsmart.network.dto.cdc.DeviceInstallmentInfo
 import com.cdccreditsmart.network.dto.cdc.InstallmentItem
 import com.cdccreditsmart.network.dto.cdc.InstallmentsSummary
 import com.cdccreditsmart.network.dto.cdc.TimingInfo
-import com.google.gson.Gson
 import kotlinx.coroutines.launch
 import okhttp3.OkHttpClient
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 
 data class HomeState(
@@ -84,10 +82,9 @@ class SimpleHomeViewModel(
             }
             .build()
 
-        return Retrofit.Builder()
-            .baseUrl("https://cdccreditsmart.com/")
+        return RetrofitProvider.createRetrofit()
+            .newBuilder()
             .client(httpClient)
-            .addConverterFactory(GsonConverterFactory.create())
             .build()
             .create(DeviceApiService::class.java)
     }

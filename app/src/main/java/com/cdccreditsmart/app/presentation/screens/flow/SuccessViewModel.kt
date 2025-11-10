@@ -7,13 +7,11 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.cdccreditsmart.app.device.SimpleTokenManager
+import com.cdccreditsmart.app.network.RetrofitProvider
 import com.cdccreditsmart.network.api.DeviceApiService
-import com.google.gson.Gson
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import okhttp3.OkHttpClient
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 
 data class SaleFinalizationState(
@@ -108,13 +106,11 @@ class SuccessViewModel(
             }
             .build()
 
-        val retrofit = Retrofit.Builder()
-            .baseUrl("https://cdccreditsmart.com/")
+        return RetrofitProvider.createRetrofit()
+            .newBuilder()
             .client(client)
-            .addConverterFactory(GsonConverterFactory.create(Gson()))
             .build()
-
-        return retrofit.create(DeviceApiService::class.java)
+            .create(DeviceApiService::class.java)
     }
 
     /**

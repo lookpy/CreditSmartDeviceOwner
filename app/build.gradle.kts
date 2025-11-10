@@ -178,11 +178,14 @@ dependencies {
     // Encrypted SharedPreferences for secure storage
     implementation("androidx.security:security-crypto:1.1.0-alpha06")
     
-    // Simple HTTP client and JSON parsing for basic device registration
-    implementation("com.squareup.retrofit2:retrofit:2.9.0")
-    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
+    // Retrofit and HTTP client for API calls
+    implementation("com.squareup.retrofit2:retrofit:2.11.0")
     implementation("com.squareup.okhttp3:okhttp:4.12.0")
-    implementation("com.google.code.gson:gson:2.10.1")
+    implementation("com.squareup.okhttp3:logging-interceptor:4.12.0")
+    
+    // Moshi for JSON serialization (used by DTOs with @Json annotations)
+    implementation("com.squareup.moshi:moshi-kotlin:1.15.0")
+    implementation("com.squareup.retrofit2:converter-moshi:2.11.0")
     
     // Firebase BOM (Bill of Materials) for consistent Firebase library versions
     implementation(platform("com.google.firebase:firebase-bom:33.7.0"))

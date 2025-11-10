@@ -5,7 +5,8 @@ import android.util.Log
 import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKey
 import com.google.firebase.messaging.FirebaseMessaging
-import com.google.gson.Gson
+import com.squareup.moshi.Moshi
+import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -41,6 +42,10 @@ class FcmTokenManager(private val context: Context) {
         EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
         EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
     )
+
+    private val moshi = Moshi.Builder()
+        .add(KotlinJsonAdapterFactory())
+        .build()
 
     private val okHttpClient = OkHttpClient.Builder()
         .connectTimeout(30, TimeUnit.SECONDS)
@@ -121,7 +126,8 @@ class FcmTokenManager(private val context: Context) {
                     "platform" to "android"
                 )
 
-                val jsonBody = Gson().toJson(requestBody)
+                val adapter = moshi.adapter<Map<String, String>>(Map::class.java)
+                val jsonBody = adapter.toJson(requestBody)
                 Log.d(TAG, "Sending FCM token to backend")
 
                 val mediaType = "application/json; charset=utf-8".toMediaType()

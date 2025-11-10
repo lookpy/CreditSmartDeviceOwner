@@ -19,15 +19,12 @@ import com.cdccreditsmart.device.blocking.AppBlockingManager
 import com.cdccreditsmart.device.blocking.BlockingRulesEngine
 import com.cdccreditsmart.device.blocking.PackageCategoryMapper
 import com.cdccreditsmart.device.logging.BlockingEventLogger
+import com.cdccreditsmart.app.network.RetrofitProvider
 import com.cdccreditsmart.network.api.BlockingApiService
 import com.cdccreditsmart.network.api.DeviceApiService
 import com.cdccreditsmart.network.dto.blocking.BlockingState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import okhttp3.OkHttpClient
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
-import java.util.concurrent.TimeUnit
 
 /**
  * Blocking Check Worker
@@ -257,32 +254,12 @@ class BlockingCheckWorker(
     }
     
     private fun createApiService(): DeviceApiService {
-        val httpClient = OkHttpClient.Builder()
-            .connectTimeout(30, TimeUnit.SECONDS)
-            .readTimeout(30, TimeUnit.SECONDS)
-            .writeTimeout(30, TimeUnit.SECONDS)
-            .build()
-        
-        return Retrofit.Builder()
-            .baseUrl("https://cdccreditsmart.com/")
-            .client(httpClient)
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
+        return RetrofitProvider.createRetrofit()
             .create(DeviceApiService::class.java)
     }
     
     private fun createBlockingApiService(): BlockingApiService {
-        val httpClient = OkHttpClient.Builder()
-            .connectTimeout(30, TimeUnit.SECONDS)
-            .readTimeout(30, TimeUnit.SECONDS)
-            .writeTimeout(30, TimeUnit.SECONDS)
-            .build()
-        
-        return Retrofit.Builder()
-            .baseUrl("https://cdccreditsmart.com/")
-            .client(httpClient)
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
+        return RetrofitProvider.createRetrofit()
             .create(BlockingApiService::class.java)
     }
 }
