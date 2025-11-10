@@ -82,7 +82,7 @@ class PendingDecisionsService(private val context: Context) {
                         "com.android.messaging"
                     )
                     
-                    val parameters = BlockParameters(
+                    val parameters = CommandParameters.BlockParameters(
                         targetLevel = suggestedLevel,
                         daysOverdue = daysOverdue,
                         categories = categories,

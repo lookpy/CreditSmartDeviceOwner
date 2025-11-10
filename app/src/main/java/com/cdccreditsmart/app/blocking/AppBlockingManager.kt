@@ -6,7 +6,7 @@ import android.content.Context
 import android.util.Log
 import com.cdccreditsmart.app.knox.KnoxLockscreenManager
 import com.cdccreditsmart.device.CDCDeviceAdminReceiver
-import com.cdccreditsmart.network.dto.mdm.BlockParameters
+import com.cdccreditsmart.network.dto.mdm.CommandParameters
 
 class AppBlockingManager(private val context: Context) {
     
@@ -28,7 +28,7 @@ class AppBlockingManager(private val context: Context) {
         KnoxLockscreenManager(context)
     }
     
-    fun applyProgressiveBlock(parameters: BlockParameters): BlockingResult {
+    fun applyProgressiveBlock(parameters: CommandParameters.BlockParameters): BlockingResult {
         Log.i(TAG, "🔒 Aplicando bloqueio progressivo - Nível ${parameters.targetLevel}")
         Log.d(TAG, "Dias de atraso: ${parameters.daysOverdue}")
         Log.d(TAG, "Razão: ${parameters.reason}")
