@@ -104,7 +104,7 @@ data class UnblockResponse(
 @JsonClass(generateAdapter = true)
 data class WebSocketMdmMessage(
     val type: String,
-    val payload: MdmPayload
+    val payload: MdmPayload? = null
 )
 
 @JsonClass(generateAdapter = true)

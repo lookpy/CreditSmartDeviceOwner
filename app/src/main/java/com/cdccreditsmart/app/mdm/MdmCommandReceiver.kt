@@ -115,8 +115,17 @@ class MdmCommandReceiver(private val context: Context) {
                 Log.d(TAG, "📨 Tipo de mensagem: ${message.type}")
                 
                 when (message.type) {
+                    "welcome" -> {
+                        Log.d(TAG, "👋 Mensagem de boas-vindas do servidor")
+                    }
+                    
                     "NEW_COMMAND" -> {
                         Log.i(TAG, "📋 Novo comando MDM recebido")
+                        
+                        if (message.payload == null) {
+                            Log.e(TAG, "❌ Comando sem payload!")
+                            return@launch
+                        }
                         
                         val command = message.payload.data.command
                         
