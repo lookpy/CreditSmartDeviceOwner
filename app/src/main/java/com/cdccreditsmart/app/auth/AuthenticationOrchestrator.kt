@@ -81,10 +81,28 @@ class AuthenticationOrchestrator(private val context: Context) {
                 authorization = "Bearer $authToken"
             )
             
-            val isValid = response.isSuccessful
-            Log.d(TAG, "Validação do token no servidor: ${if (isValid) "SUCESSO" else "FALHOU (${response.code()})"}")
+            if (response.isSuccessful) {
+                val responseBody = response.body()
+                val deviceId = responseBody?.device?.id
+                
+                if (deviceId != null) {
+                    val contractCode = contractCodeStorage.getContractCode()
+                    if (contractCode != null) {
+                        tokenStorage.saveAuthToken(
+                            authToken = authToken,
+                            contractCode = contractCode,
+                            deviceId = deviceId
+                        )
+                        Log.d(TAG, "💾 DeviceId salvo: ${deviceId.take(10)}...")
+                    }
+                }
+                
+                Log.d(TAG, "Validação do token no servidor: SUCESSO")
+                return true
+            }
             
-            isValid
+            Log.d(TAG, "Validação do token no servidor: FALHOU (${response.code()})")
+            false
             
         } catch (e: Exception) {
             Log.e(TAG, "Erro ao validar token no servidor", e)
@@ -138,10 +156,16 @@ class AuthenticationOrchestrator(private val context: Context) {
             if (authResponse.authenticated == true && responseAuthToken != null) {
                 Log.d(TAG, "✅ Autenticação silenciosa bem-sucedida!")
                 
+                val deviceId = authResponse.device?.id
                 tokenStorage.saveAuthToken(
                     authToken = responseAuthToken,
-                    contractCode = contractCode
+                    contractCode = contractCode,
+                    deviceId = deviceId
                 )
+                
+                if (deviceId != null) {
+                    Log.d(TAG, "💾 DeviceId salvo: ${deviceId.take(10)}...")
+                }
                 
                 Log.d(TAG, "💾 authToken salvo com sucesso")
                 
