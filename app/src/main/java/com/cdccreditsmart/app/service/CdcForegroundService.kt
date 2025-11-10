@@ -184,8 +184,19 @@ class CdcForegroundService : Service() {
                 mdmReceiver?.connectMdmWebSocket(authToken)
                 Log.i(TAG, "📡 WebSocket MDM conectado")
                 
-                webSocketManager = WebSocketManager.getInstance(applicationContext)
-                webSocketManager?.connect(contractCode)
+                webSocketManager = WebSocketManager(
+                    contractCode = contractCode,
+                    onDeviceConnected = { 
+                        Log.i(TAG, "✅ Dispositivo conectado via WebSocket")
+                    },
+                    onSaleCompleted = { data ->
+                        Log.i(TAG, "✅ Venda completa - contrato: ${data.contractCode}")
+                    },
+                    onError = { message ->
+                        Log.e(TAG, "❌ Erro no WebSocket: $message")
+                    }
+                )
+                webSocketManager?.connect()
                 Log.i(TAG, "📡 WebSocket Flow Status conectado")
                 
             } catch (e: Exception) {

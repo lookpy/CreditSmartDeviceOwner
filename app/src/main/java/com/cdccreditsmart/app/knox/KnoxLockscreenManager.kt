@@ -2,10 +2,8 @@ package com.cdccreditsmart.app.knox
 
 import android.content.Context
 import android.util.Log
-import com.samsung.android.knox.EnterpriseDeviceManager
-import com.samsung.android.knox.lockscreen.LockscreenOverlay
 
-class KnoxLockscreenManager(private val context: Context) {
+class KnoxLockscreenManager(context: Context) {
     
     companion object {
         private const val TAG = "KnoxLockscreenManager"
@@ -32,30 +30,19 @@ Acesso restrito apenas a chamadas, SMS, bancos e e-mails.
 Regularize seu pagamento imediatamente para restaurar o uso completo do aparelho."""
     }
     
-    private var lockscreenOverlay: LockscreenOverlay? = null
-    
-    init {
-        try {
-            val edm = EnterpriseDeviceManager.getInstance(context)
-            lockscreenOverlay = edm.lockscreenOverlay
-            Log.d(TAG, "Knox Lockscreen Manager inicializado")
-        } catch (e: Exception) {
-            Log.e(TAG, "Erro ao inicializar Knox Lockscreen: ${e.message}")
-            Log.w(TAG, "Dispositivo pode não ter Samsung Knox ativado")
-        }
+    private val knoxClient: KnoxCapability = try {
+        ReflectionKnoxClient(context)
+    } catch (e: Exception) {
+        Log.w(TAG, "Usando NoOpKnoxClient - Knox não disponível")
+        NoOpKnoxClient()
     }
     
     fun isKnoxAvailable(): Boolean {
-        return lockscreenOverlay != null
+        return knoxClient.isAvailable()
     }
     
     fun canConfigure(): Boolean {
-        return try {
-            lockscreenOverlay?.canConfigure() ?: false
-        } catch (e: Exception) {
-            Log.e(TAG, "Erro ao verificar canConfigure: ${e.message}")
-            false
-        }
+        return knoxClient.canConfigure()
     }
     
     fun applyLockscreenForLevel(
@@ -63,7 +50,7 @@ Regularize seu pagamento imediatamente para restaurar o uso completo do aparelho
         daysOverdue: Int,
         amountDue: Double? = null
     ): Boolean {
-        if (lockscreenOverlay == null) {
+        if (!knoxClient.isAvailable()) {
             Log.w(TAG, "Knox Lockscreen não disponível - pulando atualização")
             return false
         }
@@ -73,14 +60,14 @@ Regularize seu pagamento imediatamente para restaurar o uso completo do aparelho
             
             if (message.isEmpty()) {
                 Log.i(TAG, "Nível 0 - removendo mensagem da lockscreen")
-                lockscreenOverlay?.resetOverlay()
+                knoxClient.resetOverlay()
                 return true
             }
             
             Log.i(TAG, "🔒 Aplicando mensagem na lockscreen - Nível $level")
             Log.d(TAG, "Mensagem: $message")
             
-            val result = lockscreenOverlay?.changeLockScreenString(message) ?: false
+            val result = knoxClient.changeLockScreenString(message)
             
             if (result) {
                 Log.i(TAG, "✅ Lockscreen atualizada com sucesso")
@@ -97,7 +84,7 @@ Regularize seu pagamento imediatamente para restaurar o uso completo do aparelho
     }
     
     fun setWallpaper(wallpaperPath: String): Boolean {
-        if (lockscreenOverlay == null) {
+        if (!knoxClient.isAvailable()) {
             Log.w(TAG, "Knox Lockscreen não disponível - pulando wallpaper")
             return false
         }
@@ -105,7 +92,7 @@ Regularize seu pagamento imediatamente para restaurar o uso completo do aparelho
         try {
             Log.i(TAG, "🖼️ Aplicando wallpaper: $wallpaperPath")
             
-            val result = lockscreenOverlay?.setWallpaper(wallpaperPath) ?: -1
+            val result = knoxClient.setWallpaper(wallpaperPath)
             
             if (result == 0) {
                 Log.i(TAG, "✅ Wallpaper aplicado com sucesso")
@@ -122,13 +109,13 @@ Regularize seu pagamento imediatamente para restaurar o uso completo do aparelho
     }
     
     fun setAlpha(alpha: Float): Boolean {
-        if (lockscreenOverlay == null) {
+        if (!knoxClient.isAvailable()) {
             Log.w(TAG, "Knox Lockscreen não disponível - pulando alpha")
             return false
         }
         
         try {
-            val result = lockscreenOverlay?.setAlpha(alpha) ?: -1
+            val result = knoxClient.setAlpha(alpha)
             
             if (result == 0) {
                 Log.d(TAG, "✅ Alpha definido para $alpha")
@@ -145,7 +132,7 @@ Regularize seu pagamento imediatamente para restaurar o uso completo do aparelho
     }
     
     fun setEmergencyPhone(phoneNumber: String): Boolean {
-        if (lockscreenOverlay == null) {
+        if (!knoxClient.isAvailable()) {
             Log.w(TAG, "Knox Lockscreen não disponível - pulando telefone emergência")
             return false
         }
@@ -153,7 +140,7 @@ Regularize seu pagamento imediatamente para restaurar o uso completo do aparelho
         try {
             Log.i(TAG, "📞 Definindo telefone de emergência: $phoneNumber")
             
-            val result = lockscreenOverlay?.setEmergencyPhone(phoneNumber) ?: -1
+            val result = knoxClient.setEmergencyPhone(phoneNumber)
             
             if (result == 0) {
                 Log.i(TAG, "✅ Telefone de emergência definido")
@@ -170,7 +157,7 @@ Regularize seu pagamento imediatamente para restaurar o uso completo do aparelho
     }
     
     fun resetLockscreen(): Boolean {
-        if (lockscreenOverlay == null) {
+        if (!knoxClient.isAvailable()) {
             Log.w(TAG, "Knox Lockscreen não disponível - pulando reset")
             return false
         }
@@ -178,7 +165,7 @@ Regularize seu pagamento imediatamente para restaurar o uso completo do aparelho
         try {
             Log.i(TAG, "🔄 Resetando lockscreen para padrão")
             
-            lockscreenOverlay?.resetAll()
+            knoxClient.resetAll()
             
             Log.i(TAG, "✅ Lockscreen resetada")
             return true
@@ -190,25 +177,11 @@ Regularize seu pagamento imediatamente para restaurar o uso completo do aparelho
     }
     
     fun getCurrentMessage(): String? {
-        if (lockscreenOverlay == null) {
-            return null
-        }
-        
-        return try {
-            lockscreenOverlay?.currentLockScreenString
-        } catch (e: Exception) {
-            Log.e(TAG, "Erro ao obter mensagem atual: ${e.message}")
-            null
-        }
+        return knoxClient.getCurrentLockScreenString()
     }
     
     fun isConfigured(): Boolean {
-        return try {
-            lockscreenOverlay?.isConfigured ?: false
-        } catch (e: Exception) {
-            Log.e(TAG, "Erro ao verificar isConfigured: ${e.message}")
-            false
-        }
+        return knoxClient.isConfigured()
     }
     
     private fun getMessageForLevel(level: Int, daysOverdue: Int, amountDue: Double?): String {
