@@ -83,22 +83,35 @@ class MdmCommandReceiver(private val context: Context) {
     private fun handleMdmMessage(json: String) {
         scope.launch {
             try {
+                Log.d(TAG, "📥 JSON recebido: $json")
+                
                 val adapter = moshi.adapter(WebSocketMdmMessage::class.java)
                 val message = adapter.fromJson(json)
                 
                 if (message == null) {
-                    Log.w(TAG, "Não foi possível parsear mensagem MDM")
+                    Log.w(TAG, "⚠️ Não foi possível parsear mensagem MDM - JSON: $json")
                     return@launch
                 }
+                
+                Log.d(TAG, "📨 Tipo de mensagem: ${message.type}")
                 
                 when (message.type) {
                     "NEW_COMMAND" -> {
                         Log.i(TAG, "📋 Novo comando MDM recebido")
+                        
                         val command = message.payload.data.command
                         
-                        Log.i(TAG, "📋 Comando: ${command.commandType} (ID: ${command.id})")
+                        Log.i(TAG, "📋 Comando ID: ${command.id}")
+                        Log.i(TAG, "📋 Command Type: ${command.commandType}")
+                        Log.i(TAG, "📋 Target Level: ${command.parameters.targetLevel}")
+                        Log.i(TAG, "📋 Days Overdue: ${command.parameters.daysOverdue}")
+                        Log.i(TAG, "📋 Categories: ${command.parameters.categories}")
                         
-                        processMdmCommand(command.id, command.parameters)
+                        if (command.commandType == "BLOCK_APPS_PROGRESSIVE") {
+                            processMdmCommand(command.id, command.parameters)
+                        } else {
+                            Log.w(TAG, "⚠️ Tipo de comando desconhecido: ${command.commandType}")
+                        }
                     }
                     
                     "pong" -> {
@@ -106,12 +119,14 @@ class MdmCommandReceiver(private val context: Context) {
                     }
                     
                     else -> {
-                        Log.d(TAG, "📨 Mensagem tipo: ${message.type}")
+                        Log.d(TAG, "📨 Mensagem tipo desconhecido: ${message.type}")
                     }
                 }
                 
             } catch (e: Exception) {
-                Log.e(TAG, "❌ Erro ao processar mensagem MDM: ${e.message}", e)
+                Log.e(TAG, "❌ Erro ao processar mensagem MDM", e)
+                Log.e(TAG, "❌ JSON problemático: $json")
+                Log.e(TAG, "❌ Stack trace: ${e.stackTraceToString()}")
             }
         }
     }
@@ -119,15 +134,23 @@ class MdmCommandReceiver(private val context: Context) {
     private suspend fun processMdmCommand(commandId: String, parameters: BlockParameters) {
         try {
             Log.i(TAG, "⚙️ Processando comando $commandId")
+            Log.i(TAG, "⚙️ Level: ${parameters.targetLevel}, Days: ${parameters.daysOverdue}")
             
+            // Envia acknowledgement imediatamente
             sendAcknowledgement(commandId)
             
+            // Aplica o bloqueio
+            Log.i(TAG, "🔒 Aplicando bloqueio progressivo...")
             val result = blockingManager.applyProgressiveBlock(parameters)
             
+            Log.i(TAG, "✅ Bloqueio aplicado - Success: ${result.success}, Apps: ${result.blockedAppsCount}")
+            
+            // Envia response de sucesso/falha
             sendCommandResponse(commandId, result)
             
         } catch (e: Exception) {
-            Log.e(TAG, "❌ Erro ao processar comando $commandId: ${e.message}")
+            Log.e(TAG, "❌ Erro ao processar comando $commandId", e)
+            Log.e(TAG, "❌ Stack trace: ${e.stackTraceToString()}")
             sendCommandResponse(
                 commandId,
                 success = false,
@@ -224,16 +247,17 @@ class MdmCommandReceiver(private val context: Context) {
         pollingJob?.cancel()
         
         pollingJob = scope.launch {
-            Log.i(TAG, "🔄 Iniciando polling fallback (60s)")
+            Log.i(TAG, "🔄 Iniciando polling fallback (30s)")
             
             while (isActive) {
                 try {
-                    delay(60_000)
+                    delay(30_000)  // 30 segundos conforme especificação
+                    Log.d(TAG, "🔍 Verificando comandos pendentes...")
                     fetchPendingCommands()
                 } catch (e: CancellationException) {
                     throw e
                 } catch (e: Exception) {
-                    Log.e(TAG, "❌ Erro no polling: ${e.message}")
+                    Log.e(TAG, "❌ Erro no polling: ${e.message}", e)
                 }
             }
         }
@@ -241,6 +265,8 @@ class MdmCommandReceiver(private val context: Context) {
     
     private suspend fun fetchPendingCommands() {
         try {
+            Log.d(TAG, "🔍 Buscando comandos pendentes para serialNumber: $serialNumber")
+            
             val retrofit = RetrofitProvider.createRetrofit()
             val api = retrofit.create(MdmApiService::class.java)
             
@@ -253,15 +279,24 @@ class MdmCommandReceiver(private val context: Context) {
                 if (commands.isNotEmpty()) {
                     Log.i(TAG, "📋 ${commands.size} comandos pendentes encontrados")
                     commands.forEach { command ->
-                        processMdmCommand(command.id, command.parameters)
+                        Log.i(TAG, "📋 Processando comando pendente: ${command.commandType} (${command.id})")
+                        if (command.commandType == "BLOCK_APPS_PROGRESSIVE") {
+                            processMdmCommand(command.id, command.parameters)
+                        } else {
+                            Log.w(TAG, "⚠️ Comando ignorado - tipo: ${command.commandType}")
+                        }
                     }
+                } else {
+                    Log.d(TAG, "✅ Nenhum comando pendente")
                 }
             } else {
-                Log.e(TAG, "❌ Erro ao buscar comandos pendentes: ${response.code()}")
+                Log.e(TAG, "❌ Erro ao buscar comandos pendentes - HTTP ${response.code()}")
+                Log.e(TAG, "❌ Response body: ${response.errorBody()?.string()}")
             }
             
         } catch (e: Exception) {
-            Log.e(TAG, "❌ Erro ao buscar comandos pendentes: ${e.message}")
+            Log.e(TAG, "❌ Erro ao buscar comandos pendentes", e)
+            Log.e(TAG, "❌ Stack trace: ${e.stackTraceToString()}")
         }
     }
     
@@ -271,5 +306,16 @@ class MdmCommandReceiver(private val context: Context) {
         reconnectJob?.cancel()
         pollingJob?.cancel()
         Log.d(TAG, "🔌 MDM Command Receiver desconectado")
+    }
+    
+    /**
+     * Método público para forçar verificação imediata de comandos pendentes.
+     * Útil para debug e testes manuais.
+     */
+    fun checkPendingCommandsNow() {
+        scope.launch {
+            Log.i(TAG, "🔍 Verificação manual de comandos pendentes solicitada")
+            fetchPendingCommands()
+        }
     }
 }
