@@ -40,11 +40,6 @@ object SimplifiedDataModule_DISABLED {
     }
 
     // HILT REMOVED - @Provides
-    fun provideBiometrySessionDao(database: CDCDatabase): BiometrySessionDao {
-        return database.biometrySessionDao()
-    }
-
-    // HILT REMOVED - @Provides
     fun providePaymentDao(database: CDCDatabase): PaymentDao {
         return database.paymentDao()
     }
@@ -70,20 +65,6 @@ object SimplifiedDataModule_DISABLED {
     }
 
     // Simplified repositories without complex dependencies
-    // HILT REMOVED - @Provides
-    // HILT REMOVED - @Singleton
-    fun provideBiometryRepository(
-        biometryApiService: BiometryApiService,
-        biometrySessionDao: BiometrySessionDao,
-        networkErrorMapper: NetworkErrorMapper
-    ): BiometryRepository {
-        return BiometryRepositoryImpl(
-            biometryApiService,
-            biometrySessionDao,
-            networkErrorMapper
-        )
-    }
-
     // HILT REMOVED - @Provides
     // HILT REMOVED - @Singleton
     fun providePaymentsRepository(

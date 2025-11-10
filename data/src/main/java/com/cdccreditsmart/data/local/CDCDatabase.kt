@@ -12,7 +12,6 @@ import com.cdccreditsmart.data.local.dao.*
     entities = [
         DeviceBindingEntity::class,
         InstallmentEntity::class,
-        BiometrySessionEntity::class,
         PaymentEntity::class,
         ContractEntity::class,
         ContractTermsEntity::class,
@@ -30,7 +29,6 @@ abstract class CDCDatabase : RoomDatabase() {
     
     abstract fun deviceBindingDao(): DeviceBindingDao
     abstract fun installmentDao(): InstallmentDao
-    abstract fun biometrySessionDao(): BiometrySessionDao
     abstract fun paymentDao(): PaymentDao
     abstract fun contractDao(): ContractDao
     abstract fun deviceStatusDao(): DeviceStatusDao

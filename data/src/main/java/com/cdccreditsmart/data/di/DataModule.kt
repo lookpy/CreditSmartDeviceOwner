@@ -49,11 +49,6 @@ object DataModule_DISABLED {
     }
 
     // @Provides
-    fun provideBiometrySessionDao(database: CDCDatabase): BiometrySessionDao {
-        return database.biometrySessionDao()
-    }
-
-    // @Provides
     fun providePaymentDao(database: CDCDatabase): PaymentDao {
         return database.paymentDao()
     }
@@ -76,20 +71,6 @@ object DataModule_DISABLED {
     // @Provides
     fun provideInstallmentDao(database: CDCDatabase): InstallmentDao {
         return database.installmentDao()
-    }
-
-    // @Provides
-    // @Singleton
-    fun provideBiometryRepository(
-        biometryApiService: BiometryApiService,
-        biometrySessionDao: BiometrySessionDao,
-        networkErrorMapper: NetworkErrorMapper
-    ): BiometryRepository {
-        return BiometryRepositoryImpl(
-            biometryApiService,
-            biometrySessionDao,
-            networkErrorMapper
-        )
     }
 
     // @Provides
