@@ -147,7 +147,7 @@ private fun BlockingEventCard(event: BlockingEvent) {
                     color = when (event.result) {
                         "success" -> Color.Green
                         "failure" -> Color.Red
-                        "partial" -> Color.Orange
+                        "partial" -> Color(0xFFFF7A1A)
                         else -> Color.Gray
                     }
                 )

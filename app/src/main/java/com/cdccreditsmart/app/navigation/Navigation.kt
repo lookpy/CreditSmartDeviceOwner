@@ -30,6 +30,7 @@ import com.cdccreditsmart.app.presentation.screens.blocking.BlockingWarningScree
 import com.cdccreditsmart.app.presentation.screens.blocking.BlockedAppScreen
 import com.cdccreditsmart.app.presentation.screens.blocking.PaymentRecoveryScreen
 import com.cdccreditsmart.app.presentation.screens.blocking.BlockingHistoryScreen
+import com.cdccreditsmart.app.presentation.screens.blocking.BlockingViewModel
 import com.cdccreditsmart.app.presentation.screens.home.ModernHomeScreen
 
 object Routes {
@@ -270,9 +271,16 @@ fun CDCNavigation(
         }
         
         composable(Routes.BLOCKING_WARNING) {
+            val viewModel: BlockingViewModel = remember(context) { BlockingViewModel(context) }
+            val uiState by viewModel.blockingState
+            
             BlockingWarningScreen(
+                daysOverdue = uiState.currentState?.daysOverdue ?: 0,
+                daysUntilNextBlock = uiState.daysUntilNextBlock,
+                currentLevel = uiState.currentState?.currentLevel,
+                amountDue = uiState.amountDue,
                 onPayNow = {
-                    navController.navigate(Routes.createPaymentRecoveryRoute(it)) {
+                    navController.navigate(Routes.createPaymentRecoveryRoute(uiState.currentState?.daysOverdue ?: 0)) {
                         popUpTo(Routes.BLOCKING_WARNING) { inclusive = false }
                     }
                 },
@@ -291,10 +299,17 @@ fun CDCNavigation(
         ) {
             val appPackage = it.arguments?.getString("appPackage") ?: ""
             val daysOverdue = it.arguments?.getInt("daysOverdue") ?: 0
+            val viewModel: BlockingViewModel = remember(context) { BlockingViewModel(context) }
+            val uiState by viewModel.blockingState
+            
+            val appName = appPackage.split(".").lastOrNull()?.capitalize() ?: "Aplicativo"
+            val reason = "Pagamento de parcelas em atraso"
             
             BlockedAppScreen(
-                blockedAppPackage = appPackage,
+                appName = appName,
+                reason = reason,
                 daysOverdue = daysOverdue,
+                amountDue = uiState.amountDue,
                 onPayNow = {
                     navController.navigate(Routes.createPaymentRecoveryRoute(daysOverdue)) {
                         popUpTo(Routes.BLOCKED_APP) { inclusive = false }
@@ -303,7 +318,7 @@ fun CDCNavigation(
                 onContest = {
                     // TODO: Navigate to contest form
                 },
-                onDismiss = {
+                onClose = {
                     navController.popBackStack()
                 }
             )
@@ -357,7 +372,11 @@ fun CDCNavigation(
         }
         
         composable(Routes.BLOCKING_HISTORY) {
+            val viewModel: BlockingViewModel = remember(context) { BlockingViewModel(context) }
+            val uiState by viewModel.blockingState
+            
             BlockingHistoryScreen(
+                events = uiState.history,
                 onBack = {
                     navController.popBackStack()
                 }
