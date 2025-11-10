@@ -10,24 +10,45 @@ data class PendingCommandsResponse(
     val commands: List<MdmCommand> = emptyList()
 )
 
-@JsonClass(generateAdapter = true)
 data class MdmCommand(
     val id: String,
     val commandType: String,
-    val parameters: BlockParameters,
+    val parameters: CommandParameters,
     val priority: String = "normal",
     val createdAt: String? = null,
-    val expiresAt: String? = null
+    val expiresAt: String? = null,
+    val status: String? = null
 )
 
+sealed class CommandParameters {
+    @JsonClass(generateAdapter = true)
+    data class BlockParameters(
+        val targetLevel: Int,
+        val daysOverdue: Int,
+        val categories: List<String> = emptyList(),
+        val exceptions: List<String> = emptyList(),
+        val reason: String = "",
+        val isManual: Boolean = false,
+        val rules: List<BlockingRule>? = null
+    ) : CommandParameters()
+    
+    @JsonClass(generateAdapter = true)
+    object EmptyParameters : CommandParameters()
+    
+    @JsonClass(generateAdapter = true)
+    data class UnknownParameters(
+        val rawData: Map<String, Any?> = emptyMap()
+    ) : CommandParameters()
+}
+
 @JsonClass(generateAdapter = true)
-data class BlockParameters(
-    val targetLevel: Int,
-    val daysOverdue: Int,
+data class BlockingRule(
+    val days: Int,
+    val level: Int,
     val categories: List<String> = emptyList(),
     val exceptions: List<String> = emptyList(),
-    val reason: String = "",
-    val isManual: Boolean = false
+    @Json(name = "message_title") val messageTitle: String = "",
+    @Json(name = "message_body") val messageBody: String = ""
 )
 
 @JsonClass(generateAdapter = true)
@@ -123,7 +144,7 @@ data class MdmCommandFull(
     val id: String,
     val deviceId: String,
     val commandType: String,
-    val parameters: BlockParameters,
+    val parameters: CommandParameters,
     val status: String,
     val priority: String,
     val expiresAt: String

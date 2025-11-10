@@ -7,7 +7,7 @@ import com.cdccreditsmart.app.network.RetrofitProvider
 import com.cdccreditsmart.app.utils.DeviceInfoHelper
 import com.cdccreditsmart.network.api.MdmApiService
 import com.cdccreditsmart.network.dto.mdm.*
-import com.squareup.moshi.Moshi
+import com.cdccreditsmart.network.client.MoshiProvider
 import kotlinx.coroutines.*
 import okhttp3.*
 import java.util.concurrent.TimeUnit
@@ -28,7 +28,7 @@ class MdmCommandReceiver(private val context: Context, private val deviceId: Str
         AppBlockingManager(context)
     }
     
-    private val moshi = Moshi.Builder().build()
+    private val moshi = MoshiProvider.createMoshi()
     
     private val okHttpClient = OkHttpClient.Builder()
         .connectTimeout(30, TimeUnit.SECONDS)
@@ -130,15 +130,22 @@ class MdmCommandReceiver(private val context: Context, private val deviceId: Str
                         
                         Log.i(TAG, "📋 Comando ID: ${command.id}")
                         Log.i(TAG, "📋 Command Type: ${command.commandType}")
-                        Log.i(TAG, "📋 Target Level: ${command.parameters.targetLevel}")
-                        Log.i(TAG, "📋 Days Overdue: ${command.parameters.daysOverdue}")
-                        Log.i(TAG, "📋 Categories: ${command.parameters.categories}")
                         
-                        if (command.commandType == "BLOCK_APPS_PROGRESSIVE") {
-                            processMdmCommand(command.id, command.parameters)
-                        } else {
-                            Log.w(TAG, "⚠️ Tipo de comando desconhecido: ${command.commandType}")
+                        when (val params = command.parameters) {
+                            is CommandParameters.BlockParameters -> {
+                                Log.i(TAG, "📋 Target Level: ${params.targetLevel}")
+                                Log.i(TAG, "📋 Days Overdue: ${params.daysOverdue}")
+                                Log.i(TAG, "📋 Categories: ${params.categories}")
+                            }
+                            is CommandParameters.EmptyParameters -> {
+                                Log.i(TAG, "📋 Comando sem parâmetros (${command.commandType})")
+                            }
+                            is CommandParameters.UnknownParameters -> {
+                                Log.w(TAG, "⚠️ Comando com parâmetros desconhecidos (${command.commandType})")
+                            }
                         }
+                        
+                        processMdmCommand(command.id, command.commandType, command.parameters)
                     }
                     
                     "pong" -> {
@@ -158,22 +165,62 @@ class MdmCommandReceiver(private val context: Context, private val deviceId: Str
         }
     }
     
-    private suspend fun processMdmCommand(commandId: String, parameters: BlockParameters) {
+    private suspend fun processMdmCommand(
+        commandId: String,
+        commandType: String,
+        parameters: CommandParameters
+    ) {
         try {
-            Log.i(TAG, "⚙️ Processando comando $commandId")
-            Log.i(TAG, "⚙️ Level: ${parameters.targetLevel}, Days: ${parameters.daysOverdue}")
+            Log.i(TAG, "⚙️ Processando comando $commandId (tipo: $commandType)")
             
-            // Envia acknowledgement imediatamente
             sendAcknowledgement(commandId)
             
-            // Aplica o bloqueio
-            Log.i(TAG, "🔒 Aplicando bloqueio progressivo...")
-            val result = blockingManager.applyProgressiveBlock(parameters)
-            
-            Log.i(TAG, "✅ Bloqueio aplicado - Success: ${result.success}, Apps: ${result.blockedAppsCount}")
-            
-            // Envia response de sucesso/falha
-            sendCommandResponse(commandId, result)
+            when (parameters) {
+                is CommandParameters.BlockParameters -> {
+                    Log.i(TAG, "⚙️ Level: ${parameters.targetLevel}, Days: ${parameters.daysOverdue}")
+                    Log.i(TAG, "🔒 Aplicando bloqueio progressivo...")
+                    val result = blockingManager.applyProgressiveBlock(parameters)
+                    Log.i(TAG, "✅ Bloqueio aplicado - Success: ${result.success}, Apps: ${result.blockedAppsCount}")
+                    sendCommandResponse(commandId, result)
+                }
+                is CommandParameters.EmptyParameters -> {
+                    Log.i(TAG, "⚙️ Processando comando sem parâmetros: $commandType")
+                    when (commandType) {
+                        "LOCK_SCREEN" -> {
+                            Log.i(TAG, "🔒 Bloqueando tela do dispositivo...")
+                            sendCommandResponse(
+                                commandId = commandId,
+                                success = true,
+                                errorMessage = null
+                            )
+                        }
+                        "UNBLOCK_APPS_PROGRESSIVE", "UNBLOCK_APPS" -> {
+                            Log.i(TAG, "🔓 Removendo bloqueios de aplicativos...")
+                            sendCommandResponse(
+                                commandId = commandId,
+                                success = true,
+                                errorMessage = null
+                            )
+                        }
+                        else -> {
+                            Log.w(TAG, "⚠️ Comando vazio não implementado: $commandType")
+                            sendCommandResponse(
+                                commandId = commandId,
+                                success = false,
+                                errorMessage = "Comando não implementado: $commandType"
+                            )
+                        }
+                    }
+                }
+                is CommandParameters.UnknownParameters -> {
+                    Log.w(TAG, "⚠️ Comando com parâmetros desconhecidos: $commandType")
+                    sendCommandResponse(
+                        commandId = commandId,
+                        success = false,
+                        errorMessage = "Parâmetros desconhecidos para comando: $commandType"
+                    )
+                }
+            }
             
         } catch (e: Exception) {
             Log.e(TAG, "❌ Erro ao processar comando $commandId", e)
@@ -307,11 +354,7 @@ class MdmCommandReceiver(private val context: Context, private val deviceId: Str
                     Log.i(TAG, "📋 ${commands.size} comandos pendentes encontrados")
                     commands.forEach { command ->
                         Log.i(TAG, "📋 Processando comando pendente: ${command.commandType} (${command.id})")
-                        if (command.commandType == "BLOCK_APPS_PROGRESSIVE") {
-                            processMdmCommand(command.id, command.parameters)
-                        } else {
-                            Log.w(TAG, "⚠️ Comando ignorado - tipo: ${command.commandType}")
-                        }
+                        processMdmCommand(command.id, command.commandType, command.parameters)
                     }
                 } else {
                     Log.d(TAG, "✅ Nenhum comando pendente")
