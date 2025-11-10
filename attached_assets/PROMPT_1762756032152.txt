@@ -1,0 +1,267 @@
+---------------------------- PROCESS ENDED (1784) for package com.cdccreditsmart.app ----------------------------
+---------------------------- PROCESS STARTED (2419) for package com.cdccreditsmart.app ----------------------------
+2025-11-10 03:26:40.735  2419-2419  nativeloader            com.cdccreditsmart.app               D  Configuring clns-7 for other apk /data/app/~~AYdBITz8-rn1unOD8E0WUQ==/com.cdccreditsmart.app-dM7L3-XWTbeEATpHG0PhJQ==/base.apk. target_sdk_version=35, uses_libraries=, library_path=/data/app/~~AYdBITz8-rn1unOD8E0WUQ==/com.cdccreditsmart.app-dM7L3-XWTbeEATpHG0PhJQ==/lib/arm64:/data/app/~~AYdBITz8-rn1unOD8E0WUQ==/com.cdccreditsmart.app-dM7L3-XWTbeEATpHG0PhJQ==/base.apk!/lib/arm64-v8a, permitted_path=/data:/mnt/expand:/data/user/0/com.cdccreditsmart.app
+2025-11-10 03:26:40.742  2419-2419  CompatChangeReporter    com.cdccreditsmart.app               D  Compat change id reported: 202956589; UID 10265; state: ENABLED
+2025-11-10 03:26:40.763  2419-2419  GraphicsEnvironment     com.cdccreditsmart.app               V  Currently set values for:
+2025-11-10 03:26:40.764  2419-2419  GraphicsEnvironment     com.cdccreditsmart.app               V    angle_gl_driver_selection_pkgs=[]
+2025-11-10 03:26:40.764  2419-2419  GraphicsEnvironment     com.cdccreditsmart.app               V    angle_gl_driver_selection_values=[]
+2025-11-10 03:26:40.764  2419-2419  GraphicsEnvironment     com.cdccreditsmart.app               V  Global.Settings values are invalid: number of packages: 0, number of values: 0
+2025-11-10 03:26:40.764  2419-2419  GraphicsEnvironment     com.cdccreditsmart.app               V  Neither updatable production driver nor prerelease driver is supported.
+2025-11-10 03:26:40.886  2419-2419  FirebaseApp             com.cdccreditsmart.app               I  Device unlocked: initializing all Firebase APIs for app [DEFAULT]
+2025-11-10 03:26:40.955  2419-2419  FirebaseInitProvider    com.cdccreditsmart.app               I  FirebaseApp initialization successful
+2025-11-10 03:26:40.995  2419-2419  CompatChangeReporter    com.cdccreditsmart.app               D  Compat change id reported: 279646685; UID 10265; state: ENABLED
+2025-11-10 03:26:41.004  2419-2419  WM-WrkMgrInitializer    com.cdccreditsmart.app               D  Initializing WorkManager with default configuration.
+2025-11-10 03:26:41.044  2419-2443  creditsmart.app         com.cdccreditsmart.app               W  ClassLoaderContext classpath size mismatch. expected=1, found=0 (DLC[];PCL[base.apk*2610929939]{PCL[/system/framework/org.apache.http.legacy.jar*437079508]#PCL[/system/framework/com.android.media.remotedisplay.jar*2042759013]#PCL[/system/framework/com.android.location.provider.jar*3414091812]#PCL[/system_ext/framework/androidx.window.extensions.jar*83288132]#PCL[/system_ext/framework/androidx.window.sidecar.jar*3142613169]} | DLC[];PCL[])
+2025-11-10 03:26:41.058  2419-2443  DynamiteModule          com.cdccreditsmart.app               I  Considering local module com.google.android.gms.measurement.dynamite:127 and remote module com.google.android.gms.measurement.dynamite:165
+2025-11-10 03:26:41.058  2419-2443  DynamiteModule          com.cdccreditsmart.app               I  Selected remote version of com.google.android.gms.measurement.dynamite, version >= 165
+2025-11-10 03:26:41.058  2419-2443  DynamiteModule          com.cdccreditsmart.app               V  Dynamite loader version >= 2, using loadModule2NoCrashUtils
+2025-11-10 03:26:41.122  2419-2443  System                  com.cdccreditsmart.app               W  ClassLoader referenced unknown path: 
+2025-11-10 03:26:41.126  2419-2443  nativeloader            com.cdccreditsmart.app               D  Configuring clns-8 for other apk . target_sdk_version=36, uses_libraries=, library_path=/data/app/~~sk4SCoPtdlvw19bwjMnCCg==/com.google.android.gms-8YwSAzYNYYUVbIJWpbgoEA==/lib/arm64:/data/app/~~sk4SCoPtdlvw19bwjMnCCg==/com.google.android.gms-8YwSAzYNYYUVbIJWpbgoEA==/base.apk!/lib/arm64-v8a, permitted_path=/data:/mnt/expand:/data/user/0/com.google.android.gms
+2025-11-10 03:26:41.161  2419-2443  creditsmart.app         com.cdccreditsmart.app               W  ClassLoaderContext classpath size mismatch. expected=1, found=4 (DLC[];PCL[base.apk*2610929939]{PCL[/system/framework/org.apache.http.legacy.jar*437079508]#PCL[/system/framework/com.android.media.remotedisplay.jar*2042759013]#PCL[/system/framework/com.android.location.provider.jar*3414091812]#PCL[/system_ext/framework/androidx.window.extensions.jar*83288132]#PCL[/system_ext/framework/androidx.window.sidecar.jar*3142613169]} | DLC[];PCL[/data/data/com.cdccreditsmart.app/code_cache/.overlay/base.apk/classes11.dex*1850914104:/data/data/com.cdccreditsmart.app/code_cache/.overlay/base.apk/classes16.dex*4072684032:/data/data/com.cdccreditsmart.app/code_cache/.overlay/base.apk/classes22.dex*2221543014:/data/app/~~AYdBITz8-rn1unOD8E0WUQ==/com.cdccreditsmart.app-dM7L3-XWTbeEATpHG0PhJQ==/base.apk*2850381854])
+2025-11-10 03:26:41.221  2419-2419  WM-PackageManagerHelper com.cdccreditsmart.app               D  Skipping component enablement for androidx.work.impl.background.systemjob.SystemJobService
+2025-11-10 03:26:41.221  2419-2419  WM-Schedulers           com.cdccreditsmart.app               D  Created SystemJobScheduler and enabled SystemJobService
+2025-11-10 03:26:41.236  2419-2419  MbrainDebugManagerImpl  com.cdccreditsmart.app               D  getService failed
+2025-11-10 03:26:41.311  2419-2477  creditsmart.app         com.cdccreditsmart.app               W  Accessing hidden method Ldalvik/system/VMStack;->getStackClass2()Ljava/lang/Class; (unsupported, reflection, allowed)
+2025-11-10 03:26:41.349  2419-2476  creditsmart.app         com.cdccreditsmart.app               E  No package ID 6a found for resource ID 0x6a0b000f.
+2025-11-10 03:26:41.353  2419-2476  FA                      com.cdccreditsmart.app               I  App measurement initialized, version: 143003
+2025-11-10 03:26:41.353  2419-2476  FA                      com.cdccreditsmart.app               I  To enable debug logging run: adb shell setprop log.tag.FA VERBOSE
+2025-11-10 03:26:41.354  2419-2476  FA                      com.cdccreditsmart.app               I  To enable faster debug mode event logging run:
+                                                                                                      adb shell setprop debug.firebase.analytics.app com.cdccreditsmart.app
+2025-11-10 03:26:41.432  2419-2473  CompatChangeReporter    com.cdccreditsmart.app               D  Compat change id reported: 311402873; UID 10265; state: ENABLED
+2025-11-10 03:26:41.432  2419-2473  CompatChangeReporter    com.cdccreditsmart.app               D  Compat change id reported: 323349338; UID 10265; state: ENABLED
+2025-11-10 03:26:41.640  2419-2419  ContractCodeStorage     com.cdccreditsmart.app               D  Retrieving contract code from storage
+2025-11-10 03:26:42.124  2419-2419  ContractCodeStorage     com.cdccreditsmart.app               D  Storage verification: 7 valid, 0 tampered, 0 missing
+2025-11-10 03:26:42.125  2419-2419  ContractCodeStorage     com.cdccreditsmart.app               D  Contract code retrieved successfully
+2025-11-10 03:26:42.125  2419-2419  CDCApplication          com.cdccreditsmart.app               I  ✅ Tokens encontrados - iniciando CdcForegroundService
+2025-11-10 03:26:42.139  2419-2419  CdcForegroundService    com.cdccreditsmart.app               I  ✅ Serviço iniciado via startService()
+2025-11-10 03:26:42.180  2419-2419  BlockingCheckWorker     com.cdccreditsmart.app               D  ✅ Scheduled periodic blocking check (every 6 hours)
+2025-11-10 03:26:42.181  2419-2419  Typeface                com.cdccreditsmart.app               I  initOverlayFonts====family: RookeryNew-Regular
+2025-11-10 03:26:42.195  2419-2419  nativeloader            com.cdccreditsmart.app               D  Load libpowerhalwrap_jni.so using system ns (caller=/system_ext/framework/mediatek-framework.jar): ok
+2025-11-10 03:26:42.195  2419-2419  PowerHalWrapper         com.cdccreditsmart.app               I  PowerHalWrapper.getInstance 
+2025-11-10 03:26:42.197  2419-2419  M-ProMotion             com.cdccreditsmart.app               I  M-ProMotion is disabled
+2025-11-10 03:26:42.208  2419-2492  vulkan                  com.cdccreditsmart.app               D  searching for layers in '/data/app/~~AYdBITz8-rn1unOD8E0WUQ==/com.cdccreditsmart.app-dM7L3-XWTbeEATpHG0PhJQ==/lib/arm64'
+2025-11-10 03:26:42.210  2419-2492  vulkan                  com.cdccreditsmart.app               D  searching for layers in '/data/app/~~AYdBITz8-rn1unOD8E0WUQ==/com.cdccreditsmart.app-dM7L3-XWTbeEATpHG0PhJQ==/base.apk!/lib/arm64-v8a'
+2025-11-10 03:26:42.211  2419-2492  vulkan                  com.cdccreditsmart.app               D  searching for layers in '/data/app/~~AYdBITz8-rn1unOD8E0WUQ==/com.cdccreditsmart.app-dM7L3-XWTbeEATpHG0PhJQ==/lib/arm64'
+2025-11-10 03:26:42.212  2419-2492  vulkan                  com.cdccreditsmart.app               D  searching for layers in '/data/app/~~AYdBITz8-rn1unOD8E0WUQ==/com.cdccreditsmart.app-dM7L3-XWTbeEATpHG0PhJQ==/base.apk!/lib/arm64-v8a'
+2025-11-10 03:26:42.227  2419-2492  MMUD                    com.cdccreditsmart.app               D  mtk_memory_debug_init com.cdccreditsmart.app 0xb400007641be75d0
+2025-11-10 03:26:42.279  2419-2419  CompatChangeReporter    com.cdccreditsmart.app               D  Compat change id reported: 309578419; UID 10265; state: ENABLED
+2025-11-10 03:26:42.330  2419-2512  MMUD                    com.cdccreditsmart.app               D  get_leak_baseline 3246391296
+2025-11-10 03:26:42.364  2419-2419  Activity                com.cdccreditsmart.app               D  onResume setDolbyGameProfilePackage lastPkg =  currentPkg = com.cdccreditsmart.app
+2025-11-10 03:26:42.371  2419-2490  PowerHalWrapper         com.cdccreditsmart.app               I  PowerHalWrapper.getInstance 
+2025-11-10 03:26:42.373  2419-2476  FA                      com.cdccreditsmart.app               I  Tag Manager is not found and thus will not be used
+2025-11-10 03:26:42.375  2419-2419  SurfaceFactory          com.cdccreditsmart.app               I  [static] sSurfaceFactory = com.mediatek.view.impl.SurfaceFactoryImpl@7de2e54
+2025-11-10 03:26:42.391  2419-2419  HWUI                    com.cdccreditsmart.app               W  Unknown dataspace 0
+2025-11-10 03:26:42.397  2419-2419  VRI[MainActivity]       com.cdccreditsmart.app               D  hardware acceleration = true, forceHwAccelerated = false
+2025-11-10 03:26:42.415  2419-2419  InputEventReceiver      com.cdccreditsmart.app               D  Input log is disabled in InputEventReceiver.
+2025-11-10 03:26:42.424  2419-2419  BootReceiver            com.cdccreditsmart.app               I  🚀 Dispositivo iniciado - starting CdcForegroundService
+2025-11-10 03:26:42.428  2419-2419  CdcForegroundService    com.cdccreditsmart.app               I  ✅ Serviço iniciado via startService()
+2025-11-10 03:26:42.432  2419-2419  Choreographer           com.cdccreditsmart.app               I  Skipped 71 frames!  The application may be doing too much work on its main thread.
+2025-11-10 03:26:43.092  2419-2423  creditsmart.app         com.cdccreditsmart.app               I  Compiler allocated 6943KB to compile void android.view.ViewRootImpl.performTraversals()
+2025-11-10 03:26:43.545  2419-2419  View                    com.cdccreditsmart.app               D  [ANR Warning]onMeasure time too long, this =androidx.compose.ui.platform.AndroidComposeView{27e6bc6 VFED..... ......I. 0,0-0,0}time =454 ms
+2025-11-10 03:26:43.545  2419-2419  View                    com.cdccreditsmart.app               D  [ANR Warning]onMeasure time too long, this =androidx.compose.ui.platform.ComposeView{8d44f7f V.E...... ......I. 0,0-0,0}time =455 ms
+2025-11-10 03:26:43.546  2419-2419  View                    com.cdccreditsmart.app               D  [ANR Warning]onMeasure time too long, this =android.widget.FrameLayout{dd8bb4c V.E...... ......I. 0,0-0,0 #1020002 android:id/content}time =455 ms
+2025-11-10 03:26:43.546  2419-2419  View                    com.cdccreditsmart.app               D  [ANR Warning]onMeasure time too long, this =android.widget.LinearLayout{7211795 V.E...... ......I. 0,0-0,0}time =456 ms
+2025-11-10 03:26:43.547  2419-2419  View                    com.cdccreditsmart.app               D  [ANR Warning]onMeasure time too long, this =DecorView@84a0aa[MainActivity]time =457 ms
+2025-11-10 03:26:43.564  2419-2419  BufferQueueConsumer     com.cdccreditsmart.app               D  [](id:97300000000,api:0,p:-1,c:2419) connect: controlledByApp=false
+2025-11-10 03:26:43.567  2419-2419  BLASTBufferQueue        com.cdccreditsmart.app               D  [VRI[MainActivity]#0](f:0,a:0) constructor()
+2025-11-10 03:26:43.568  2419-2419  BLASTBufferQueue        com.cdccreditsmart.app               D  [VRI[MainActivity]#0](f:0,a:0) update width=1080 height=2400 format=-3 mTransformHint=0
+2025-11-10 03:26:43.573  2419-2419  FBI                     com.cdccreditsmart.app               E  Can't load library: dlopen failed: library "libmagtsync.so" not found
+2025-11-10 03:26:43.633  2419-2492  GrallocExtra            com.cdccreditsmart.app               I  gralloc_extra_query:is_SW3D 0
+2025-11-10 03:26:43.690  2419-2492  GrallocExtra            com.cdccreditsmart.app               I  gralloc_extra_query:is_SW3D 0
+2025-11-10 03:26:43.690  2419-2492  BLASTBufferQueue        com.cdccreditsmart.app               D  [VRI[MainActivity]#0](f:0,a:1) acquireNextBufferLocked size=1080x2400 mFrameNumber=1 applyTransaction=true mTimestamp=62746736692124(auto) mPendingTransactions.size=0 graphicBufferId=10389525889027 transform=0
+2025-11-10 03:26:43.701  2419-2419  CdcForegroundService    com.cdccreditsmart.app               D  📱 Serviço onCreate()
+2025-11-10 03:26:43.703  2419-2419  CdcForegroundService    com.cdccreditsmart.app               D  ✅ Canal de notificação criado
+2025-11-10 03:26:43.708  2419-2419  CdcForegroundService    com.cdccreditsmart.app               D  🔋 WakeLock adquirido
+2025-11-10 03:26:43.709  2419-2419  CdcForegroundService    com.cdccreditsmart.app               D  🚀 Serviço onStartCommand() - Action: com.cdccreditsmart.app.START_SERVICE
+2025-11-10 03:26:43.711  2419-2431  HWUI                    com.cdccreditsmart.app               I  Davey! duration=2433ms; Flags=1, FrameTimelineVsyncId=1515434, IntendedVsync=62744305615585, Vsync=62745473425715, InputEventId=0, HandleInputStart=62745481398278, AnimationStart=62745481435278, PerformTraversalsStart=62745481718278, DrawStart=62746656836431, FrameDeadline=62744321615585, FrameInterval=62745479566662, FrameStartTime=16448030, SyncQueued=62746670417970, SyncStart=62746670765047, IssueDrawCommandsStart=62746672393739, SwapBuffers=62746735755201, FrameCompleted=62746739359816, DequeueBufferDuration=39000, QueueBufferDuration=933846, GpuCompleted=62746737654585, SwapBuffersCompleted=62746739359816, DisplayPresentTime=72904454231359566, CommandSubmissionCompleted=62746735755201, 
+2025-11-10 03:26:43.738  2419-2419  CdcForegroundService    com.cdccreditsmart.app               I  ✅ Foreground Service ativo (Android 12+)
+2025-11-10 03:26:43.749  2419-2541  CdcForegroundService    com.cdccreditsmart.app               I  🔧 ========================================
+2025-11-10 03:26:43.749  2419-2541  CdcForegroundService    com.cdccreditsmart.app               I  🔧 INICIANDO initializeServices()...
+2025-11-10 03:26:43.749  2419-2541  CdcForegroundService    com.cdccreditsmart.app               I  🔧 ========================================
+2025-11-10 03:26:43.750  2419-2419  CdcForegroundService    com.cdccreditsmart.app               D  💓 Heartbeat iniciado (5 minutos)
+2025-11-10 03:26:43.752  2419-2419  CdcForegroundService    com.cdccreditsmart.app               D  🚀 Serviço onStartCommand() - Action: com.cdccreditsmart.app.START_SERVICE
+2025-11-10 03:26:43.762  2419-2419  CdcForegroundService    com.cdccreditsmart.app               I  ✅ Foreground Service ativo (Android 12+)
+2025-11-10 03:26:43.763  2419-2542  CdcForegroundService    com.cdccreditsmart.app               I  🔧 ========================================
+2025-11-10 03:26:43.763  2419-2542  CdcForegroundService    com.cdccreditsmart.app               I  🔧 INICIANDO initializeServices()...
+2025-11-10 03:26:43.763  2419-2542  CdcForegroundService    com.cdccreditsmart.app               I  🔧 ========================================
+2025-11-10 03:26:43.766  2419-2419  CdcForegroundService    com.cdccreditsmart.app               D  💓 Heartbeat iniciado (5 minutos)
+2025-11-10 03:26:43.797  2419-2419  RouterViewModel         com.cdccreditsmart.app               D  🚀 Iniciando verificação de autenticação...
+2025-11-10 03:26:43.800  2419-2543  AuthOrchestrator        com.cdccreditsmart.app               D  🔐 Verificando autenticação...
+2025-11-10 03:26:43.800  2419-2543  ContractCodeStorage     com.cdccreditsmart.app               D  Retrieving contract code from storage
+2025-11-10 03:26:43.807  2419-2419  Choreographer           com.cdccreditsmart.app               I  Skipped 76 frames!  The application may be doing too much work on its main thread.
+2025-11-10 03:26:43.851  2419-2492  BLASTBufferQueue        com.cdccreditsmart.app               D  [VRI[MainActivity]#0](f:0,a:1) destructor()
+2025-11-10 03:26:43.851  2419-2492  BufferQueueConsumer     com.cdccreditsmart.app               D  [VRI[MainActivity]#0(BLAST Consumer)0](id:97300000000,api:0,p:-1,c:2419) disconnect
+2025-11-10 03:26:43.986  2419-2541  ContractCodeStorage     com.cdccreditsmart.app               D  Retrieving contract code from storage
+2025-11-10 03:26:44.028  2419-2542  ContractCodeStorage     com.cdccreditsmart.app               D  Retrieving contract code from storage
+2025-11-10 03:26:44.426  2419-2476  FA                      com.cdccreditsmart.app               I  Application backgrounded at: timestamp_millis: 1762756002422
+2025-11-10 03:26:44.630  2419-2543  ContractCodeStorage     com.cdccreditsmart.app               D  Storage verification: 7 valid, 0 tampered, 0 missing
+2025-11-10 03:26:44.631  2419-2543  ContractCodeStorage     com.cdccreditsmart.app               D  Contract code retrieved successfully
+2025-11-10 03:26:44.631  2419-2543  AuthOrchestrator        com.cdccreditsmart.app               D  ✅ Código de pareamento encontrado: BVYG****
+2025-11-10 03:26:44.638  2419-2543  AuthOrchestrator        com.cdccreditsmart.app               D  🔑 Token existente encontrado - validando no servidor...
+2025-11-10 03:26:44.807  2419-2541  ContractCodeStorage     com.cdccreditsmart.app               D  Storage verification: 7 valid, 0 tampered, 0 missing
+2025-11-10 03:26:44.808  2419-2541  ContractCodeStorage     com.cdccreditsmart.app               D  Contract code retrieved successfully
+2025-11-10 03:26:44.812  2419-2541  CdcForegroundService    com.cdccreditsmart.app               I  🔐 AuthToken presente: true
+2025-11-10 03:26:44.812  2419-2541  CdcForegroundService    com.cdccreditsmart.app               I  🔐 AuthToken length: 259
+2025-11-10 03:26:44.812  2419-2541  CdcForegroundService    com.cdccreditsmart.app               I  🔐 ContractCode presente: true
+2025-11-10 03:26:44.812  2419-2541  CdcForegroundService    com.cdccreditsmart.app               I  🔐 ContractCode value: BVYG****
+2025-11-10 03:26:44.813  2419-2541  CdcForegroundService    com.cdccreditsmart.app               I  🔐 DeviceId presente: false
+2025-11-10 03:26:44.813  2419-2541  CdcForegroundService    com.cdccreditsmart.app               I  🔐 DeviceId value: ...
+2025-11-10 03:26:44.813  2419-2541  CdcForegroundService    com.cdccreditsmart.app               E  ❌ ========================================
+2025-11-10 03:26:44.813  2419-2541  CdcForegroundService    com.cdccreditsmart.app               E  ❌ DEVICE_ID VAZIO - MDM NÃO PODE SER INICIALIZADO
+2025-11-10 03:26:44.813  2419-2541  CdcForegroundService    com.cdccreditsmart.app               E  ❌ MDM polling requer deviceId válido do backend
+2025-11-10 03:26:44.813  2419-2541  CdcForegroundService    com.cdccreditsmart.app               E  ❌ ========================================
+2025-11-10 03:26:44.874  2419-2542  ContractCodeStorage     com.cdccreditsmart.app               D  Storage verification: 7 valid, 0 tampered, 0 missing
+2025-11-10 03:26:44.874  2419-2542  ContractCodeStorage     com.cdccreditsmart.app               D  Contract code retrieved successfully
+2025-11-10 03:26:44.878  2419-2542  CdcForegroundService    com.cdccreditsmart.app               I  🔐 AuthToken presente: true
+2025-11-10 03:26:44.878  2419-2542  CdcForegroundService    com.cdccreditsmart.app               I  🔐 AuthToken length: 259
+2025-11-10 03:26:44.879  2419-2542  CdcForegroundService    com.cdccreditsmart.app               I  🔐 ContractCode presente: true
+2025-11-10 03:26:44.879  2419-2542  CdcForegroundService    com.cdccreditsmart.app               I  🔐 ContractCode value: BVYG****
+2025-11-10 03:26:44.879  2419-2542  CdcForegroundService    com.cdccreditsmart.app               I  🔐 DeviceId presente: false
+2025-11-10 03:26:44.879  2419-2542  CdcForegroundService    com.cdccreditsmart.app               I  🔐 DeviceId value: ...
+2025-11-10 03:26:44.879  2419-2542  CdcForegroundService    com.cdccreditsmart.app               E  ❌ ========================================
+2025-11-10 03:26:44.879  2419-2542  CdcForegroundService    com.cdccreditsmart.app               E  ❌ DEVICE_ID VAZIO - MDM NÃO PODE SER INICIALIZADO
+2025-11-10 03:26:44.879  2419-2542  CdcForegroundService    com.cdccreditsmart.app               E  ❌ MDM polling requer deviceId válido do backend
+2025-11-10 03:26:44.879  2419-2542  CdcForegroundService    com.cdccreditsmart.app               E  ❌ ========================================
+2025-11-10 03:26:46.148  2419-2554  okhttp.OkHttpClient     com.cdccreditsmart.app               I  --> GET https://cdccreditsmart.com/api/apk/device/status
+2025-11-10 03:26:46.149  2419-2554  okhttp.OkHttpClient     com.cdccreditsmart.app               I  Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkZXZpY2VJZCI6ImRldmljZV8xNzYyNzI1MzU5MTUzX29ncWkyMGdxcXAiLCJhcGtUb2tlbiI6IkJWWUcyVlMyIiwidHlwZSI6ImFwayIsImV4cGlyZXNJbiI6IjI0aCIsImlhdCI6MTc2Mjc1NTA1MiwiZXhwIjoxNzYyODQxNDUyfQ.OciMIY8O2estqItztSmUlB-JhCkebA1BTMGvJh2Sf0U
+2025-11-10 03:26:46.150  2419-2554  okhttp.OkHttpClient     com.cdccreditsmart.app               I  --> END GET
+2025-11-10 03:26:47.293  2419-2419  Activity                com.cdccreditsmart.app               D  onResume setDolbyGameProfilePackage lastPkg =  currentPkg = com.cdccreditsmart.app
+2025-11-10 03:26:47.319  2419-2419  BufferQueueConsumer     com.cdccreditsmart.app               D  [](id:97300000001,api:0,p:-1,c:2419) connect: controlledByApp=false
+2025-11-10 03:26:47.320  2419-2419  BLASTBufferQueue        com.cdccreditsmart.app               D  [VRI[MainActivity]#1](f:0,a:0) constructor()
+2025-11-10 03:26:47.320  2419-2419  BLASTBufferQueue        com.cdccreditsmart.app               D  [VRI[MainActivity]#1](f:0,a:0) update width=1080 height=2400 format=-3 mTransformHint=0
+2025-11-10 03:26:47.377  2419-2492  BLASTBufferQueue        com.cdccreditsmart.app               D  [VRI[MainActivity]#1](f:0,a:1) acquireNextBufferLocked size=1080x2400 mFrameNumber=1 applyTransaction=true mTimestamp=62750421900432(auto) mPendingTransactions.size=0 graphicBufferId=10389525889031 transform=0
+2025-11-10 03:26:47.391  2419-2535  LibMBrainProxy          com.cdccreditsmart.app               D  Init Paramters
+2025-11-10 03:26:47.565  2419-2579  ProfileInstaller        com.cdccreditsmart.app               D  Installing profile for com.cdccreditsmart.app
+2025-11-10 03:26:48.016  2419-2419  InteractionJankMonitor  com.cdccreditsmart.app               W  Initializing without READ_DEVICE_CONFIG permission. enabled=false, interval=1, missedFrameThreshold=3, frameTimeThreshold=64, package=com.cdccreditsmart.app
+2025-11-10 03:26:49.405  2419-2554  okhttp.OkHttpClient     com.cdccreditsmart.app               I  <-- 200 https://cdccreditsmart.com/api/apk/device/status (3255ms)
+2025-11-10 03:26:49.405  2419-2554  okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-credentials: true
+2025-11-10 03:26:49.405  2419-2554  okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-headers: Origin, X-Requested-With, Content-Type, Accept, Authorization, x-client-key, x-client-token, x-client-secret, cache-control
+2025-11-10 03:26:49.406  2419-2554  okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-methods: GET, POST, PUT, PATCH, DELETE, OPTIONS
+2025-11-10 03:26:49.406  2419-2554  okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-origin: *
+2025-11-10 03:26:49.406  2419-2554  okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-max-age: 86400
+2025-11-10 03:26:49.406  2419-2554  okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-length: 471
+2025-11-10 03:26:49.406  2419-2554  okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-security-policy: default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://replit.com; style-src 'self' 'unsafe-inline' https://replit.com; img-src 'self' data: https:; font-src 'self' data: https://replit.com; connect-src 'self';
+2025-11-10 03:26:49.406  2419-2554  okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-type: application/json; charset=utf-8
+2025-11-10 03:26:49.406  2419-2554  okhttp.OkHttpClient     com.cdccreditsmart.app               I  date: Mon, 10 Nov 2025 06:26:49 GMT
+2025-11-10 03:26:49.406  2419-2554  okhttp.OkHttpClient     com.cdccreditsmart.app               I  etag: W/"1d7-UBQ8NUkfX6q0nUvUQGp3N/WBszY"
+2025-11-10 03:26:49.406  2419-2554  okhttp.OkHttpClient     com.cdccreditsmart.app               I  permissions-policy: geolocation=(), microphone=(), camera=()
+2025-11-10 03:26:49.406  2419-2554  okhttp.OkHttpClient     com.cdccreditsmart.app               I  referrer-policy: strict-origin-when-cross-origin
+2025-11-10 03:26:49.406  2419-2554  okhttp.OkHttpClient     com.cdccreditsmart.app               I  server: Google Frontend
+2025-11-10 03:26:49.406  2419-2554  okhttp.OkHttpClient     com.cdccreditsmart.app               I  strict-transport-security: max-age=63072000; includeSubDomains
+2025-11-10 03:26:49.406  2419-2554  okhttp.OkHttpClient     com.cdccreditsmart.app               I  strict-transport-security: max-age=31536000; includeSubDomains
+2025-11-10 03:26:49.406  2419-2554  okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-anti-fraud-protection: active
+2025-11-10 03:26:49.406  2419-2554  okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-certificate-pinning-enabled: false
+2025-11-10 03:26:49.407  2419-2554  okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-certificate-pinning-status: disabled-for-stability
+2025-11-10 03:26:49.407  2419-2554  okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-cloud-trace-context: d37c794ced241f6ae558a2e68d9bfa30;o=1
+2025-11-10 03:26:49.407  2419-2554  okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-content-type-options: nosniff
+2025-11-10 03:26:49.407  2419-2554  okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-financial-data-protection: enabled
+2025-11-10 03:26:49.407  2419-2554  okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-frame-options: DENY
+2025-11-10 03:26:49.407  2419-2554  okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-transaction-security-level: maximum
+2025-11-10 03:26:49.407  2419-2554  okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-xss-protection: 1; mode=block
+2025-11-10 03:26:49.407  2419-2554  okhttp.OkHttpClient     com.cdccreditsmart.app               I  via: 1.1 google
+2025-11-10 03:26:49.407  2419-2554  okhttp.OkHttpClient     com.cdccreditsmart.app               I  alt-svc: h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
+2025-11-10 03:26:49.409  2419-2554  okhttp.OkHttpClient     com.cdccreditsmart.app               I  {"device":{"id":"device_1762725359153_ogqi20gqqp","serialNumber":"BVYG2VS2","name":"Moto G15 Power","isBlocked":true,"blockReason":"55","status":"blocked"},"shouldBlock":false,"overdueCount":0,"daysSinceOverdue":0,"pdvSession":{"status":"completed","currentStage":"completed","isActive":false,"lastHeartbeat":"2025-11-09T21:56:50.180Z","heartbeatAge":30599.133,"sessionStarted":"2025-11-09T21:56:01.537Z","sessionCompleted":"2025-11-09T21:56:50.180Z","shouldWait":false}}
+2025-11-10 03:26:49.409  2419-2554  okhttp.OkHttpClient     com.cdccreditsmart.app               I  <-- END HTTP (471-byte body)
+2025-11-10 03:26:49.424  2419-2543  ContractCodeStorage     com.cdccreditsmart.app               D  Retrieving contract code from storage
+2025-11-10 03:26:49.591  2419-2543  ContractCodeStorage     com.cdccreditsmart.app               D  Storage verification: 7 valid, 0 tampered, 0 missing
+2025-11-10 03:26:49.591  2419-2543  ContractCodeStorage     com.cdccreditsmart.app               D  Contract code retrieved successfully
+2025-11-10 03:26:49.595  2419-2543  ContractCodeStorage     com.cdccreditsmart.app               D  Saving contract code to redundant storage
+2025-11-10 03:26:49.671  2419-2543  ContractCodeStorage     com.cdccreditsmart.app               D  Saved to EncryptedPrefs
+2025-11-10 03:26:49.763  2419-2543  ContractCodeStorage     com.cdccreditsmart.app               E  Failed to save to file: .cdc_protected_code.enc (Ask Gemini)
+                                                                                                    java.io.IOException: output file already exists, please use a new file: .cdc_protected_code.enc
+                                                                                                    	at androidx.security.crypto.EncryptedFile.openFileOutput(EncryptedFile.java:260)
+                                                                                                    	at com.cdccreditsmart.app.storage.ContractCodeStorage.saveToEncryptedFileWithMAC(ContractCodeStorage.kt:344)
+                                                                                                    	at com.cdccreditsmart.app.storage.ContractCodeStorage.saveToProtectedStorage(ContractCodeStorage.kt:266)
+                                                                                                    	at com.cdccreditsmart.app.storage.ContractCodeStorage.saveContractCode(ContractCodeStorage.kt:120)
+                                                                                                    	at com.cdccreditsmart.app.security.SecureTokenStorage.saveAuthToken(SecureTokenStorage.kt:75)
+                                                                                                    	at com.cdccreditsmart.app.auth.AuthenticationOrchestrator.validateTokenOnServer(AuthenticationOrchestrator.kt:91)
+                                                                                                    	at com.cdccreditsmart.app.auth.AuthenticationOrchestrator.access$validateTokenOnServer(AuthenticationOrchestrator.kt:19)
+                                                                                                    	at com.cdccreditsmart.app.auth.AuthenticationOrchestrator$validateTokenOnServer$1.invokeSuspend(Unknown Source:15)
+                                                                                                    	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:34)
+                                                                                                    	at kotlinx.coroutines.DispatchedTask.run(DispatchedTask.kt:108)
+                                                                                                    	at kotlinx.coroutines.internal.LimitedDispatcher$Worker.run(LimitedDispatcher.kt:115)
+                                                                                                    	at kotlinx.coroutines.scheduling.TaskImpl.run(Tasks.kt:103)
+                                                                                                    	at kotlinx.coroutines.scheduling.CoroutineScheduler.runSafely(CoroutineScheduler.kt:584)
+                                                                                                    	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.executeTask(CoroutineScheduler.kt:793)
+                                                                                                    	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.runWorker(CoroutineScheduler.kt:697)
+                                                                                                    	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.run(CoroutineScheduler.kt:684)
+2025-11-10 03:26:49.763  2419-2543  ContractCodeStorage     com.cdccreditsmart.app               D  Saved to Protected Storage
+2025-11-10 03:26:49.812  2419-2543  ContractCodeStorage     com.cdccreditsmart.app               E  Failed to save to file: .cdc_contract_b1.enc (Ask Gemini)
+                                                                                                    java.io.IOException: output file already exists, please use a new file: .cdc_contract_b1.enc
+                                                                                                    	at androidx.security.crypto.EncryptedFile.openFileOutput(EncryptedFile.java:260)
+                                                                                                    	at com.cdccreditsmart.app.storage.ContractCodeStorage.saveToEncryptedFileWithMAC(ContractCodeStorage.kt:344)
+                                                                                                    	at com.cdccreditsmart.app.storage.ContractCodeStorage.saveToBackupFile1(ContractCodeStorage.kt:299)
+                                                                                                    	at com.cdccreditsmart.app.storage.ContractCodeStorage.saveContractCode(ContractCodeStorage.kt:121)
+                                                                                                    	at com.cdccreditsmart.app.security.SecureTokenStorage.saveAuthToken(SecureTokenStorage.kt:75)
+                                                                                                    	at com.cdccreditsmart.app.auth.AuthenticationOrchestrator.validateTokenOnServer(AuthenticationOrchestrator.kt:91)
+                                                                                                    	at com.cdccreditsmart.app.auth.AuthenticationOrchestrator.access$validateTokenOnServer(AuthenticationOrchestrator.kt:19)
+                                                                                                    	at com.cdccreditsmart.app.auth.AuthenticationOrchestrator$validateTokenOnServer$1.invokeSuspend(Unknown Source:15)
+                                                                                                    	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:34)
+                                                                                                    	at kotlinx.coroutines.DispatchedTask.run(DispatchedTask.kt:108)
+                                                                                                    	at kotlinx.coroutines.internal.LimitedDispatcher$Worker.run(LimitedDispatcher.kt:115)
+                                                                                                    	at kotlinx.coroutines.scheduling.TaskImpl.run(Tasks.kt:103)
+                                                                                                    	at kotlinx.coroutines.scheduling.CoroutineScheduler.runSafely(CoroutineScheduler.kt:584)
+                                                                                                    	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.executeTask(CoroutineScheduler.kt:793)
+                                                                                                    	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.runWorker(CoroutineScheduler.kt:697)
+                                                                                                    	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.run(CoroutineScheduler.kt:684)
+2025-11-10 03:26:49.860  2419-2424  creditsmart.app         com.cdccreditsmart.app               I  Background concurrent mark compact GC freed 20MB AllocSpace bytes, 355(12MB) LOS objects, 66% free, 11MB/34MB, paused 2.093ms,4.423ms total 109.027ms
+2025-11-10 03:26:49.877  2419-2543  ContractCodeStorage     com.cdccreditsmart.app               E  Failed to save to file: .sys_device_cfg.enc (Ask Gemini)
+                                                                                                    java.io.IOException: output file already exists, please use a new file: .sys_device_cfg.enc
+                                                                                                    	at androidx.security.crypto.EncryptedFile.openFileOutput(EncryptedFile.java:260)
+                                                                                                    	at com.cdccreditsmart.app.storage.ContractCodeStorage.saveToEncryptedFileWithMAC(ContractCodeStorage.kt:344)
+                                                                                                    	at com.cdccreditsmart.app.storage.ContractCodeStorage.saveToBackupFile2(ContractCodeStorage.kt:307)
+                                                                                                    	at com.cdccreditsmart.app.storage.ContractCodeStorage.saveContractCode(ContractCodeStorage.kt:122)
+                                                                                                    	at com.cdccreditsmart.app.security.SecureTokenStorage.saveAuthToken(SecureTokenStorage.kt:75)
+                                                                                                    	at com.cdccreditsmart.app.auth.AuthenticationOrchestrator.validateTokenOnServer(AuthenticationOrchestrator.kt:91)
+                                                                                                    	at com.cdccreditsmart.app.auth.AuthenticationOrchestrator.access$validateTokenOnServer(AuthenticationOrchestrator.kt:19)
+                                                                                                    	at com.cdccreditsmart.app.auth.AuthenticationOrchestrator$validateTokenOnServer$1.invokeSuspend(Unknown Source:15)
+                                                                                                    	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:34)
+                                                                                                    	at kotlinx.coroutines.DispatchedTask.run(DispatchedTask.kt:108)
+                                                                                                    	at kotlinx.coroutines.internal.LimitedDispatcher$Worker.run(LimitedDispatcher.kt:115)
+                                                                                                    	at kotlinx.coroutines.scheduling.TaskImpl.run(Tasks.kt:103)
+                                                                                                    	at kotlinx.coroutines.scheduling.CoroutineScheduler.runSafely(CoroutineScheduler.kt:584)
+                                                                                                    	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.executeTask(CoroutineScheduler.kt:793)
+                                                                                                    	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.runWorker(CoroutineScheduler.kt:697)
+                                                                                                    	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.run(CoroutineScheduler.kt:684)
+2025-11-10 03:26:49.910  2419-2543  ContractCodeStorage     com.cdccreditsmart.app               E  Failed to save to file: .android_secure.enc (Ask Gemini)
+                                                                                                    java.io.IOException: output file already exists, please use a new file: .android_secure.enc
+                                                                                                    	at androidx.security.crypto.EncryptedFile.openFileOutput(EncryptedFile.java:260)
+                                                                                                    	at com.cdccreditsmart.app.storage.ContractCodeStorage.saveToEncryptedFileWithMAC(ContractCodeStorage.kt:344)
+                                                                                                    	at com.cdccreditsmart.app.storage.ContractCodeStorage.saveToBackupFile3(ContractCodeStorage.kt:315)
+                                                                                                    	at com.cdccreditsmart.app.storage.ContractCodeStorage.saveContractCode(ContractCodeStorage.kt:123)
+                                                                                                    	at com.cdccreditsmart.app.security.SecureTokenStorage.saveAuthToken(SecureTokenStorage.kt:75)
+                                                                                                    	at com.cdccreditsmart.app.auth.AuthenticationOrchestrator.validateTokenOnServer(AuthenticationOrchestrator.kt:91)
+                                                                                                    	at com.cdccreditsmart.app.auth.AuthenticationOrchestrator.access$validateTokenOnServer(AuthenticationOrchestrator.kt:19)
+                                                                                                    	at com.cdccreditsmart.app.auth.AuthenticationOrchestrator$validateTokenOnServer$1.invokeSuspend(Unknown Source:15)
+                                                                                                    	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:34)
+                                                                                                    	at kotlinx.coroutines.DispatchedTask.run(DispatchedTask.kt:108)
+                                                                                                    	at kotlinx.coroutines.internal.LimitedDispatcher$Worker.run(LimitedDispatcher.kt:115)
+                                                                                                    	at kotlinx.coroutines.scheduling.TaskImpl.run(Tasks.kt:103)
+                                                                                                    	at kotlinx.coroutines.scheduling.CoroutineScheduler.runSafely(CoroutineScheduler.kt:584)
+                                                                                                    	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.executeTask(CoroutineScheduler.kt:793)
+                                                                                                    	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.runWorker(CoroutineScheduler.kt:697)
+                                                                                                    	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.run(CoroutineScheduler.kt:684)
+2025-11-10 03:26:49.933  2419-2543  ContractCodeStorage     com.cdccreditsmart.app               D  Contract code saved to ALL storage locations
+2025-11-10 03:26:50.100  2419-2543  ContractCodeStorage     com.cdccreditsmart.app               D  Verification complete: 7/7 locations valid
+2025-11-10 03:26:50.100  2419-2543  SecureTokenStorage      com.cdccreditsmart.app               D  Auth token saved successfully (contract code via ContractCodeStorage, deviceId: device_176...)
+2025-11-10 03:26:50.100  2419-2543  AuthOrchestrator        com.cdccreditsmart.app               D  💾 DeviceId salvo: device_176...
+2025-11-10 03:26:50.100  2419-2543  AuthOrchestrator        com.cdccreditsmart.app               D  Validação do token no servidor: SUCESSO
+2025-11-10 03:26:50.100  2419-2543  AuthOrchestrator        com.cdccreditsmart.app               D  ✅ Token válido - autenticação OK!
+2025-11-10 03:26:50.101  2419-2419  RouterViewModel         com.cdccreditsmart.app               D  ✅ Autenticado com sucesso - Ir para HOME
+2025-11-10 03:26:50.281  2419-2419  SimpleHomeViewModel     com.cdccreditsmart.app               D  📡 Fetching device installments from /api/apk/device/installments...
+2025-11-10 03:26:50.724  2419-2623  SimpleHomeViewModel     com.cdccreditsmart.app               D  ✅ Added Authorization header with token
+2025-11-10 03:26:50.724  2419-2623  SimpleHomeViewModel     com.cdccreditsmart.app               D  📤 Request URL: https://cdccreditsmart.com/api/apk/device/installments
+2025-11-10 03:26:50.966  2419-2419  Choreographer           com.cdccreditsmart.app               I  Skipped 48 frames!  The application may be doing too much work on its main thread.
+2025-11-10 03:26:50.970  2419-2537  HWUI                    com.cdccreditsmart.app               I  Davey! duration=807ms; Flags=0, FrameTimelineVsyncId=1518921, IntendedVsync=62753200365964, Vsync=62753200365964, InputEventId=0, HandleInputStart=62753206417355, AnimationStart=62753206421970, PerformTraversalsStart=62753794821355, DrawStart=62753794982586, FrameDeadline=62753236802540, FrameInterval=62753206393355, FrameStartTime=16451068, SyncQueued=62754002335586, SyncStart=62754002534278, IssueDrawCommandsStart=62754002806278, SwapBuffers=62754005583893, FrameCompleted=62754008105124, DequeueBufferDuration=109000, QueueBufferDuration=914846, GpuCompleted=62754008105124, SwapBuffersCompleted=62754007069047, DisplayPresentTime=62751273658278, CommandSubmissionCompleted=62754005583893, 
+2025-11-10 03:26:51.035  2419-2537  HWUI                    com.cdccreditsmart.app               I  Davey! duration=849ms; Flags=0, FrameTimelineVsyncId=1518936, IntendedVsync=62753216805371, Vsync=62754006504731, InputEventId=0, HandleInputStart=62754013937432, AnimationStart=62754013942278, PerformTraversalsStart=62754034928817, DrawStart=62754035065432, FrameDeadline=62754042919364, FrameInterval=62754012875817, FrameStartTime=16452070, SyncQueued=62754041780124, SyncStart=62754041970663, IssueDrawCommandsStart=62754042209355, SwapBuffers=62754063490586, FrameCompleted=62754066509047, DequeueBufferDuration=94154, QueueBufferDuration=989539, GpuCompleted=62754066509047, SwapBuffersCompleted=62754064801124, DisplayPresentTime=62751290109047, CommandSubmissionCompleted=62754063490586, 
+2025-11-10 03:26:51.253  2419-2623  SimpleHomeViewModel     com.cdccreditsmart.app               D  📥 Response Code: 200
+2025-11-10 03:26:51.272  2419-2419  SimpleHomeViewModel     com.cdccreditsmart.app               D  ✅ Successfully fetched installments data
+2025-11-10 03:26:51.272  2419-2419  SimpleHomeViewModel     com.cdccreditsmart.app               D  📊 Device: Moto G15 Power
+2025-11-10 03:26:51.272  2419-2419  SimpleHomeViewModel     com.cdccreditsmart.app               D  📊 Total installments: 4
+2025-11-10 03:26:51.272  2419-2419  SimpleHomeViewModel     com.cdccreditsmart.app               D  📊 Paid: 0
+2025-11-10 03:26:51.272  2419-2419  SimpleHomeViewModel     com.cdccreditsmart.app               D  📊 Overdue: 0
+2025-11-10 03:26:51.272  2419-2419  SimpleHomeViewModel     com.cdccreditsmart.app               D  📊 All installments count: 4
+2025-11-10 03:26:51.911  2419-2419  Choreographer           com.cdccreditsmart.app               I  Skipped 37 frames!  The application may be doing too much work on its main thread.
+2025-11-10 03:26:53.490  2419-2419  ScrollIdentify          com.cdccreditsmart.app               I  on fling
+2025-11-10 03:26:54.076  2419-2419  ScrollIdentify          com.cdccreditsmart.app               I  on fling
+2025-11-10 03:26:54.593  2419-2419  ScrollIdentify          com.cdccreditsmart.app               I  on fling

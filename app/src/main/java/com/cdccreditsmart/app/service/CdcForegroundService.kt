@@ -190,17 +190,19 @@ class CdcForegroundService : Service() {
                 Log.i(TAG, "🔧 INICIANDO initializeServices()...")
                 Log.i(TAG, "🔧 ========================================")
                 
+                delay(500)
+                
                 val secureStorage = SecureTokenStorage(applicationContext)
                 val authToken = secureStorage.getAuthToken()
                 val contractCode = secureStorage.getContractCode()
-                val deviceId = secureStorage.getDeviceId() ?: ""
+                var deviceId = secureStorage.getDeviceId()
                 
                 Log.i(TAG, "🔐 AuthToken presente: ${!authToken.isNullOrBlank()}")
                 Log.i(TAG, "🔐 AuthToken length: ${authToken?.length ?: 0}")
                 Log.i(TAG, "🔐 ContractCode presente: ${!contractCode.isNullOrBlank()}")
                 Log.i(TAG, "🔐 ContractCode value: ${contractCode?.take(4)}****")
-                Log.i(TAG, "🔐 DeviceId presente: ${deviceId.isNotBlank()}")
-                Log.i(TAG, "🔐 DeviceId value: ${deviceId.take(10)}...")
+                Log.i(TAG, "🔐 DeviceId presente: ${!deviceId.isNullOrBlank()}")
+                Log.i(TAG, "🔐 DeviceId value: ${deviceId?.take(10) ?: "..."}...")
                 
                 if (authToken.isNullOrBlank() || contractCode.isNullOrBlank()) {
                     Log.w(TAG, "⚠️ ========================================")
@@ -211,19 +213,42 @@ class CdcForegroundService : Service() {
                     return@launch
                 }
                 
-                if (deviceId.isBlank()) {
-                    Log.e(TAG, "❌ ========================================")
-                    Log.e(TAG, "❌ DEVICE_ID VAZIO - MDM NÃO PODE SER INICIALIZADO")
-                    Log.e(TAG, "❌ MDM polling requer deviceId válido do backend")
-                    Log.e(TAG, "❌ ========================================")
-                    return@launch
+                if (deviceId.isNullOrBlank()) {
+                    Log.w(TAG, "⏳ DeviceId vazio - aguardando AuthOrchestrator salvar...")
+                    
+                    var attempts = 0
+                    val maxAttempts = 10
+                    
+                    while (attempts < maxAttempts) {
+                        delay((attempts + 1) * 1000L)
+                        deviceId = secureStorage.getDeviceId()
+                        
+                        if (!deviceId.isNullOrBlank()) {
+                            val resolvedDeviceId = deviceId!!
+                            Log.i(TAG, "✅ DeviceId encontrado após ${attempts + 1} tentativas: ${resolvedDeviceId.take(10)}...")
+                            break
+                        }
+                        
+                        attempts++
+                        Log.d(TAG, "⏳ Tentativa ${attempts}/$maxAttempts - DeviceId ainda vazio")
+                    }
+                    
+                    if (deviceId.isNullOrBlank()) {
+                        Log.e(TAG, "❌ DeviceId ainda vazio após $maxAttempts tentativas")
+                        Log.e(TAG, "⚠️ MDM será inicializado quando deviceId estiver disponível")
+                        return@launch
+                    }
                 }
+                
+                Log.i(TAG, "🔧 ========================================")
+                Log.i(TAG, "🔧 INICIALIZANDO MDM COM DEVICE_ID: ${deviceId!!.take(10)}...")
+                Log.i(TAG, "🔧 ========================================")
                 
                 Log.i(TAG, "🔐 Tokens encontrados - inicializando serviços MDM")
                 
                 // Inicializa MDM Command Receiver
                 Log.d(TAG, "📡 Criando MdmCommandReceiver com deviceId...")
-                mdmReceiver = MdmCommandReceiver(applicationContext, deviceId)
+                mdmReceiver = MdmCommandReceiver(applicationContext, deviceId!!)
                 
                 Log.d(TAG, "📡 Conectando MdmCommandReceiver ao WebSocket MDM...")
                 mdmReceiver?.connectMdmWebSocket(authToken)
