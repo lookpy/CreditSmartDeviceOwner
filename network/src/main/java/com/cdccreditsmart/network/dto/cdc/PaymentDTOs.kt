@@ -29,11 +29,11 @@ data class CdcInstallmentsResponse(
  */
 //@JsonClass(generateAdapter = true)
 data class DeviceInstallmentInfo(
-    val id: String,
-    val name: String,
-    val totalValue: Double,
-    val installmentValue: Double,
-    val installmentCount: Int
+    val id: String = "",
+    val name: String = "",
+    val totalValue: Double = 0.0,
+    val installmentValue: Double = 0.0,
+    val installmentCount: Int = 0
 )
 
 /**
@@ -41,15 +41,15 @@ data class DeviceInstallmentInfo(
  */
 //@JsonClass(generateAdapter = true)
 data class InstallmentsSummary(
-    val total: Int,
-    val paid: Int,
-    val pending: Int,
-    val overdue: Int,
-    val totalAmount: Double,
-    val paidAmount: Double,
-    val pendingAmount: Double,
-    val overdueAmount: Double,
-    val completionPercentage: Int
+    val total: Int = 0,
+    val paid: Int = 0,
+    val pending: Int = 0,
+    val overdue: Int = 0,
+    val totalAmount: Double = 0.0,
+    val paidAmount: Double = 0.0,
+    val pendingAmount: Double = 0.0,
+    val overdueAmount: Double = 0.0,
+    val completionPercentage: Int = 0
 )
 
 /**
@@ -68,16 +68,16 @@ data class TimingInfo(
  */
 //@JsonClass(generateAdapter = true)
 data class InstallmentItem(
-    val id: String,
-    val number: Int,
-    val value: Double,
-    val dueDate: String,
+    val id: String = "",
+    val number: Int = 0,
+    val value: Double = 0.0,
+    val dueDate: String = "",
     val paidDate: String? = null,
-    val status: String, // "paid", "pending", "overdue"
+    val status: String = "pending", // "paid", "pending", "overdue"
     val paymentMethod: String? = null, // "pix", "boleto", null
-    val isPaid: Boolean,
-    val isOverdue: Boolean,
-    val daysSinceDue: Int
+    val isPaid: Boolean = false, // Optional - backend may not send this field
+    val isOverdue: Boolean = false, // Optional - can be derived from status
+    val daysSinceDue: Int = 0 // Optional - can be calculated from dueDate
 )
 
 // ============================================================================

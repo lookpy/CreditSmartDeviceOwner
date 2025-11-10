@@ -1,0 +1,536 @@
+# Documentação de Integração - Bloqueio Progressivo APK
+
+## Visão Geral
+
+O sistema de **Bloqueio Progressivo** aplica restrições automáticas em dispositivos com base em dias de atraso no pagamento. O APK Kotlin deve implementar a lógica para receber comandos MDM de bloqueio/desbloqueio e aplicar as restrições apropriadas.
+
+---
+
+## 📋 Níveis de Bloqueio
+
+### Nível 0 - Sem Bloqueio
+- **Dias de atraso:** 0-6 dias
+- **Descrição:** Todos os apps liberados
+- **Ação:** Nenhuma restrição
+
+### Nível 1 - Bloqueio Leve (7 dias)
+- **Dias de atraso:** 7-14 dias
+- **Descrição:** Fotos, vídeos e navegadores bloqueados
+- **Categorias bloqueadas:**
+  - `CATEGORY_APP_GALLERY` (galeria)
+  - `CATEGORY_APP_BROWSER` (navegadores)
+  - `CATEGORY_VIDEO` (vídeos)
+
+### Nível 2 - Bloqueio Médio (15 dias)
+- **Dias de atraso:** 15-29 dias
+- **Descrição:** + YouTube, música, Play Store e jogos bloqueados
+- **Categorias bloqueadas adicionais:**
+  - `CATEGORY_GAME` (jogos)
+  - `CATEGORY_AUDIO` (música)
+- **Apps específicos bloqueados:**
+  - `com.google.android.youtube`
+  - `com.android.vending` (Play Store)
+
+### Nível 3 - Bloqueio Avançado (30 dias)
+- **Dias de atraso:** 30-44 dias
+- **Descrição:** + Redes sociais bloqueadas (exceto WhatsApp)
+- **Apps específicos bloqueados:**
+  - `com.facebook.katana` (Facebook)
+  - `com.instagram.android` (Instagram)
+  - `com.twitter.android` (Twitter/X)
+  - `com.snapchat.android` (Snapchat)
+  - `com.linkedin.android` (LinkedIn)
+
+### Nível 4 - Bloqueio Severo (45 dias)
+- **Dias de atraso:** 45-59 dias
+- **Descrição:** Quase tudo bloqueado (mantém WhatsApp)
+- **Categorias bloqueadas adicionais:**
+  - `CATEGORY_SOCIAL` (redes sociais)
+  - `CATEGORY_NEWS` (notícias)
+  - `CATEGORY_MAPS` (mapas)
+
+### Nível 5 - Bloqueio Máximo (60+ dias)
+- **Dias de atraso:** 60+ dias
+- **Descrição:** Bloqueio máximo - apenas bancos e emergência
+- **Apps bloqueados adicionais:**
+  - `com.whatsapp` (WhatsApp também é bloqueado neste nível)
+
+---
+
+## 🛡️ Apps NUNCA Bloqueados (Exceções Permanentes)
+
+**CRÍTICO:** Os seguintes apps **JAMAIS** devem ser bloqueados em NENHUM nível:
+
+### Banking & Finance
+- Todos os apps com categoria `bancos_allowed`
+- Exemplos: Nubank, Inter, PicPay, Mercado Pago, etc.
+
+### Comunicação de Emergência
+- `com.android.dialer` (telefone/discador)
+- `com.android.messaging` (SMS)
+- `com.android.contacts` (contatos)
+
+### Sistema & Essenciais
+- `com.android.settings` (configurações)
+- Apps do sistema Android
+- Apps de email (para receber contratos)
+
+---
+
+## 📡 Recebimento de Comandos MDM
+
+### 1. WebSocket (Tempo Real)
+
+Conecte-se ao WebSocket em `/ws` usando o token JWT do dispositivo:
+
+```kotlin
+val wsUrl = "wss://${serverHost}/ws?token=${deviceToken}"
+val webSocket = OkHttpClient().newWebSocket(
+    Request.Builder().url(wsUrl).build(),
+    object : WebSocketListener() {
+        override fun onMessage(webSocket: WebSocket, text: String) {
+            handleWebSocketMessage(text)
+        }
+    }
+)
+```
+
+**Tipos de mensagens recebidas:**
+
+```json
+{
+  "type": "NEW_COMMAND",
+  "payload": {
+    "commandId": "uuid-do-comando",
+    "data": {
+      "command": {
+        "id": "uuid-do-comando",
+        "deviceId": "device_xxx",
+        "commandType": "BLOCK_APPS_PROGRESSIVE",
+        "parameters": {
+          "targetLevel": 2,
+          "daysOverdue": 15,
+          "categories": ["CATEGORY_APP_GALLERY", "CATEGORY_APP_BROWSER", "CATEGORY_VIDEO", "CATEGORY_GAME", "CATEGORY_AUDIO"],
+          "exceptions": ["bancos_allowed", "com.android.dialer", "com.android.messaging"],
+          "reason": "Pagamento em atraso há 15 dias",
+          "rules": [
+            {
+              "level": 1,
+              "daysOverdue": 7,
+              "title": "7 dias - Nível 1",
+              "categories": ["CATEGORY_APP_GALLERY", "CATEGORY_APP_BROWSER", "CATEGORY_VIDEO"],
+              "exceptions": ["bancos_allowed", "com.android.dialer", "com.android.messaging"]
+            },
+            {
+              "level": 2,
+              "daysOverdue": 15,
+              "title": "15 dias - Nível 2",
+              "categories": ["CATEGORY_GAME", "CATEGORY_AUDIO"],
+              "blockedApps": ["com.google.android.youtube", "com.android.vending"],
+              "exceptions": ["bancos_allowed", "com.android.dialer", "com.android.messaging"]
+            }
+          ],
+          "isManual": false
+        },
+        "status": "sent",
+        "priority": "high",
+        "expiresAt": "2025-11-11T12:00:00.000Z"
+      }
+    }
+  }
+}
+```
+
+### 2. Polling (Fallback)
+
+Se o WebSocket falhar, faça polling a cada **30 segundos**:
+
+```kotlin
+// GET /v1/device/commands/pending
+// Headers: Authorization: Bearer ${deviceToken}
+
+val response = client.get("$serverUrl/v1/device/commands/pending") {
+    header("Authorization", "Bearer $deviceToken")
+}
+```
+
+**Resposta:**
+
+```json
+[
+  {
+    "id": "command-uuid",
+    "deviceId": "device_xxx",
+    "commandType": "BLOCK_APPS_PROGRESSIVE",
+    "parameters": { /* ... */ },
+    "status": "sent",
+    "priority": "high",
+    "expiresAt": "2025-11-11T12:00:00.000Z"
+  }
+]
+```
+
+---
+
+## ⚙️ Implementação no APK
+
+### 1. Receber e Validar Comando
+
+```kotlin
+data class ProgressiveBlockCommand(
+    val id: String,
+    val commandType: String,
+    val parameters: BlockParameters
+)
+
+data class BlockParameters(
+    val targetLevel: Int,              // 0-5
+    val daysOverdue: Int,              // Dias em atraso
+    val categories: List<String>,      // Categorias bloqueadas
+    val exceptions: List<String>,      // Apps nunca bloqueados
+    val blockedApps: List<String>?,    // Apps específicos bloqueados
+    val reason: String,                // Motivo do bloqueio
+    val rules: List<BlockRule>,        // Regras detalhadas
+    val isManual: Boolean              // True se aplicado manualmente
+)
+
+data class BlockRule(
+    val level: Int,
+    val daysOverdue: Int,
+    val title: String,
+    val categories: List<String>,
+    val exceptions: List<String>,
+    val blockedApps: List<String>?
+)
+```
+
+### 2. Enviar Acknowledgement
+
+**Imediatamente** após receber o comando:
+
+```kotlin
+// POST /v1/mdm/commands/acknowledge
+// Headers: Authorization: Bearer ${deviceToken}
+
+val acknowledgePayload = json.encodeToString(mapOf(
+    "commandId" to command.id,
+    "status" to "acknowledged"
+))
+
+client.post("$serverUrl/v1/mdm/commands/acknowledge") {
+    header("Authorization", "Bearer $deviceToken")
+    contentType(ContentType.Application.Json)
+    setBody(acknowledgePayload)
+}
+```
+
+### 3. Aplicar Bloqueio Progressivo
+
+```kotlin
+fun applyProgressiveBlock(params: BlockParameters) {
+    val dpm = getSystemService(Context.DEVICE_POLICY_SERVICE) as DevicePolicyManager
+    val adminComponent = ComponentName(this, DeviceAdminReceiver::class.java)
+    
+    // 1. Coletar todos os apps instalados
+    val installedApps = packageManager.getInstalledApplications(0)
+    
+    // 2. Determinar apps a bloquear
+    val appsToBlock = mutableListOf<String>()
+    
+    for (app in installedApps) {
+        val packageName = app.packageName
+        
+        // NUNCA bloquear exceções
+        if (isException(packageName, params.exceptions)) {
+            continue
+        }
+        
+        // Verificar se está em categoria bloqueada
+        if (isInBlockedCategory(app, params.categories)) {
+            appsToBlock.add(packageName)
+        }
+        
+        // Verificar se está na lista de apps bloqueados
+        params.blockedApps?.let { blocked ->
+            if (packageName in blocked) {
+                appsToBlock.add(packageName)
+            }
+        }
+    }
+    
+    // 3. Aplicar bloqueio usando Device Owner
+    for (packageName in appsToBlock) {
+        try {
+            dpm.setApplicationHidden(adminComponent, packageName, true)
+        } catch (e: Exception) {
+            Log.e("ProgressiveBlock", "Erro ao bloquear $packageName: ${e.message}")
+        }
+    }
+    
+    // 4. Desbloquear apps que não devem estar bloqueados
+    val appsToUnblock = installedApps
+        .map { it.packageName }
+        .filter { it !in appsToBlock }
+    
+    for (packageName in appsToUnblock) {
+        try {
+            if (dpm.isApplicationHidden(adminComponent, packageName)) {
+                dpm.setApplicationHidden(adminComponent, packageName, false)
+            }
+        } catch (e: Exception) {
+            Log.e("ProgressiveBlock", "Erro ao desbloquear $packageName: ${e.message}")
+        }
+    }
+}
+
+fun isException(packageName: String, exceptions: List<String>): Boolean {
+    // Verificar exceções permanentes
+    if (packageName == "com.android.dialer" || 
+        packageName == "com.android.messaging" ||
+        packageName == "com.android.settings" ||
+        packageName == "com.android.contacts") {
+        return true
+    }
+    
+    // Verificar bancos (categoria especial)
+    if ("bancos_allowed" in exceptions && isBankingApp(packageName)) {
+        return true
+    }
+    
+    return packageName in exceptions
+}
+
+fun isBankingApp(packageName: String): Boolean {
+    val bankingKeywords = listOf(
+        "nubank", "inter", "itau", "bradesco", "santander",
+        "caixa", "banco", "picpay", "mercadopago", "paypal",
+        "bancodobrasil", "sicoob", "sicredi", "next"
+    )
+    return bankingKeywords.any { packageName.contains(it, ignoreCase = true) }
+}
+
+fun isInBlockedCategory(app: ApplicationInfo, categories: List<String>): Boolean {
+    // Mapear categorias Android
+    val categoryMap = mapOf(
+        "CATEGORY_APP_GALLERY" to ApplicationInfo.CATEGORY_IMAGE,
+        "CATEGORY_APP_BROWSER" to ApplicationInfo.CATEGORY_PRODUCTIVITY,
+        "CATEGORY_VIDEO" to ApplicationInfo.CATEGORY_VIDEO,
+        "CATEGORY_GAME" to ApplicationInfo.CATEGORY_GAME,
+        "CATEGORY_AUDIO" to ApplicationInfo.CATEGORY_AUDIO,
+        "CATEGORY_SOCIAL" to ApplicationInfo.CATEGORY_SOCIAL,
+        "CATEGORY_NEWS" to ApplicationInfo.CATEGORY_NEWS,
+        "CATEGORY_MAPS" to ApplicationInfo.CATEGORY_MAPS
+    )
+    
+    return categories.any { category ->
+        categoryMap[category]?.let { androidCategory ->
+            app.category == androidCategory
+        } ?: false
+    }
+}
+```
+
+### 4. Enviar Confirmação de Execução
+
+**Após aplicar o bloqueio com sucesso:**
+
+```kotlin
+// POST /v1/mdm/commands/response
+// Headers: Authorization: Bearer ${deviceToken}
+
+val responsePayload = json.encodeToString(mapOf(
+    "commandId" to command.id,
+    "status" to "completed",
+    "response" to mapOf(
+        "success" to true,
+        "blockedAppsCount" to appsToBlock.size,
+        "appliedLevel" to params.targetLevel,
+        "timestamp" to System.currentTimeMillis()
+    )
+))
+
+client.post("$serverUrl/v1/mdm/commands/response") {
+    header("Authorization", "Bearer $deviceToken")
+    contentType(ContentType.Application.Json)
+    setBody(responsePayload)
+}
+```
+
+**Se houver erro:**
+
+```kotlin
+val errorPayload = json.encodeToString(mapOf(
+    "commandId" to command.id,
+    "status" to "failed",
+    "errorMessage" to "Descrição do erro",
+    "response" to mapOf(
+        "success" to false,
+        "errorCode" to "BLOCK_FAILED",
+        "timestamp" to System.currentTimeMillis()
+    )
+))
+```
+
+---
+
+## 🔄 Fluxo Completo de Execução
+
+```
+1. SERVIDOR → APK: Envia comando BLOCK_APPS_PROGRESSIVE via WebSocket
+                   ↓
+2. APK: Recebe comando e valida parâmetros
+                   ↓
+3. APK → SERVIDOR: Envia acknowledgement (status: "acknowledged")
+                   ↓
+4. APK: Aplica bloqueio progressivo usando DevicePolicyManager
+                   ↓
+5. APK → SERVIDOR: Envia confirmação (status: "completed" ou "failed")
+                   ↓
+6. SERVIDOR: Atualiza status do comando e notifica administrador
+```
+
+---
+
+## 🔍 Comando de Desbloqueio
+
+Quando o cliente regulariza o pagamento:
+
+```json
+{
+  "commandType": "UNBLOCK_APPS_PROGRESSIVE",
+  "parameters": {
+    "targetLevel": 0,
+    "daysOverdue": 0,
+    "categories": [],
+    "exceptions": [],
+    "reason": "Pagamento regularizado",
+    "isManual": false
+  }
+}
+```
+
+**Ação:** Desbloquear TODOS os apps (aplicar nível 0).
+
+---
+
+## 📊 Logs e Auditoria
+
+### Logs Obrigatórios no APK
+
+```kotlin
+// Ao receber comando
+Log.i("ProgressiveBlock", "Comando recebido - ID: ${command.id}, Nível: ${params.targetLevel}")
+
+// Ao enviar acknowledgement
+Log.i("ProgressiveBlock", "Acknowledgement enviado - ID: ${command.id}")
+
+// Durante execução
+Log.i("ProgressiveBlock", "Bloqueando ${appsToBlock.size} apps")
+Log.d("ProgressiveBlock", "Apps bloqueados: $appsToBlock")
+
+// Ao concluir
+Log.i("ProgressiveBlock", "Bloqueio aplicado com sucesso - Nível: ${params.targetLevel}")
+
+// Exceções (nunca bloqueados)
+Log.d("ProgressiveBlock", "Apps excluídos do bloqueio: ${exceptedApps}")
+```
+
+---
+
+## ⚠️ Validações Críticas
+
+### 1. Verificar Device Owner
+```kotlin
+if (!dpm.isDeviceOwnerApp(packageName)) {
+    Log.e("ProgressiveBlock", "App não é Device Owner - bloqueio impossível")
+    return false
+}
+```
+
+### 2. Validar Nível
+```kotlin
+if (params.targetLevel !in 0..5) {
+    Log.e("ProgressiveBlock", "Nível inválido: ${params.targetLevel}")
+    return false
+}
+```
+
+### 3. Nunca Bloquear Apps Essenciais
+```kotlin
+val CRITICAL_APPS = listOf(
+    "com.android.dialer",      // Telefone
+    "com.android.messaging",   // SMS
+    "com.android.settings",    // Configurações
+    "com.android.contacts"     // Contatos
+)
+
+// Sempre verificar antes de bloquear
+if (packageName in CRITICAL_APPS) {
+    Log.w("ProgressiveBlock", "Tentativa de bloquear app crítico: $packageName - BLOQUEIO IGNORADO")
+    continue
+}
+```
+
+### 4. Validar Bancos
+```kotlin
+// Lista expandida de bancos brasileiros
+val BANKING_PACKAGES = listOf(
+    "com.nubank.nuapp",
+    "br.com.intermedium",
+    "br.com.bb.android",
+    "com.itau",
+    "br.com.santander.app",
+    "br.com.bradesco",
+    "br.com.caixa",
+    "com.mercadopago",
+    "br.com.picpay"
+    // ... mais bancos
+)
+```
+
+---
+
+## 🧪 Testes Recomendados
+
+### Teste 1: Nível 0 → Nível 1
+- Aplicar nível 1 (7 dias)
+- Verificar: Galeria, navegador e vídeos bloqueados
+- Verificar: Bancos, telefone e SMS **NÃO** bloqueados
+
+### Teste 2: Nível 1 → Nível 5
+- Aplicar nível 5 (60+ dias)
+- Verificar: Quase tudo bloqueado (incluindo WhatsApp)
+- Verificar: Bancos, telefone e SMS **NÃO** bloqueados
+
+### Teste 3: Nível 5 → Nível 0
+- Desbloquear tudo
+- Verificar: Todos os apps desbloqueados
+
+### Teste 4: Bloqueio Manual
+- Administrador força nível 3 manualmente
+- Verificar: `isManual: true` no comando
+- Verificar: Bloqueio aplicado independente de dias de atraso
+
+---
+
+## 📞 Suporte
+
+**Dúvidas ou problemas na integração:**
+- Verifique os logs do servidor em `/api/admin/mdm/commands`
+- Consulte a documentação MDM completa em `DOCUMENTACAO_MDM_APK.md`
+- Teste os endpoints diretamente usando Postman/Insomnia
+
+---
+
+## 🔐 Segurança
+
+1. **Token JWT:** Sempre incluir `Authorization: Bearer ${token}` em todas as requisições
+2. **Validação de certificado:** Implementar SSL pinning para evitar man-in-the-middle
+3. **Logs sensíveis:** Nunca logar tokens ou informações de usuário
+4. **Persistência:** Salvar último nível aplicado para replicar em caso de reinicialização
+
+---
+
+**Versão:** 1.0  
+**Última atualização:** 10 de novembro de 2025  
+**Compatibilidade:** Android 5.0+ (API 21+) com Device Owner Mode

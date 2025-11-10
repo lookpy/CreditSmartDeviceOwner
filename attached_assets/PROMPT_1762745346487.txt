@@ -1,0 +1,24 @@
+WebSocket connection opened
+2025-11-10 00:28:47.932 19282-19479 WebSocketManager        com.cdccreditsmart.app               D  WebSocket connected for contract: device_1762725359153_ogqi20gqqp
+2025-11-10 00:28:47.932 19282-19479 WebSocketManager        com.cdccreditsmart.app               D  Starting heartbeat
+2025-11-10 00:28:49.688 19282-19282 WindowOnBackDispatcher  com.cdccreditsmart.app               W  sendCancelIfRunning: isInProgress=false callback=androidx.activity.OnBackPressedDispatcher$Api34Impl$createOnBackAnimationCallback$1@f925a0c
+2025-11-10 00:28:51.055 19282-19282 NavController           com.cdccreditsmart.app               I  Ignoring popBackStack to route pairing/qr_scanner as it was not found on the current back stack
+2025-11-10 00:28:51.161 19282-19282 SimpleHomeViewModel     com.cdccreditsmart.app               D  📡 Fetching device installments from /api/apk/device/installments...
+2025-11-10 00:28:51.411 19282-19480 SimpleHomeViewModel     com.cdccreditsmart.app               D  ✅ Added Authorization header with token
+2025-11-10 00:28:51.411 19282-19480 SimpleHomeViewModel     com.cdccreditsmart.app               D  📤 Request URL: https://cdccreditsmart.com/api/apk/device/installments
+2025-11-10 00:28:51.852 19282-19480 SimpleHomeViewModel     com.cdccreditsmart.app               D  📥 Response Code: 200
+2025-11-10 00:28:51.867 19282-19282 SimpleHomeViewModel     com.cdccreditsmart.app               E  ❌ Exception loading installments (Ask Gemini)
+                                                                                                    com.squareup.moshi.JsonDataException: Required value 'isPaid' missing at $.nextInstallment
+                                                                                                    	at com.squareup.moshi.internal.Util.missingProperty(Util.java:660)
+                                                                                                    	at com.squareup.moshi.kotlin.reflect.KotlinJsonAdapter.fromJson(KotlinJsonAdapter.kt:105)
+                                                                                                    	at com.squareup.moshi.internal.NullSafeJsonAdapter.fromJson(NullSafeJsonAdapter.java:41)
+                                                                                                    	at com.squareup.moshi.kotlin.reflect.KotlinJsonAdapter.fromJson(KotlinJsonAdapter.kt:86)
+                                                                                                    	at com.squareup.moshi.internal.NullSafeJsonAdapter.fromJson(NullSafeJsonAdapter.java:41)
+                                                                                                    	at retrofit2.converter.moshi.MoshiResponseBodyConverter.convert(MoshiResponseBodyConverter.java:46)
+                                                                                                    	at retrofit2.converter.moshi.MoshiResponseBodyConverter.convert(MoshiResponseBodyConverter.java:27)
+                                                                                                    	at retrofit2.OkHttpCall.parseResponse(OkHttpCall.java:246)
+                                                                                                    	at retrofit2.OkHttpCall$1.onResponse(OkHttpCall.java:156)
+                                                                                                    	at okhttp3.internal.connection.RealCall$AsyncCall.run(RealCall.kt:519)
+                                                                                                    	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1145)
+                                                                                                    	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:644)
+                                                                                                    	at java.lang.Thread.run(Thread.java:1012)
