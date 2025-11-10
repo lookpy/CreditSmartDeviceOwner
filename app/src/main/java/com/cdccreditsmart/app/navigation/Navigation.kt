@@ -2,9 +2,15 @@ package com.cdccreditsmart.app.navigation
 
 import android.content.Context
 import android.net.Uri
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavHostController
@@ -20,6 +26,10 @@ import com.cdccreditsmart.app.presentation.pairing.PairingSuccessScreen
 import com.cdccreditsmart.app.presentation.pairing.PairingViewModel
 import com.cdccreditsmart.app.presentation.router.RouterScreen
 import com.cdccreditsmart.app.presentation.scanner.QRCodeScannerScreen
+import com.cdccreditsmart.app.presentation.screens.blocking.BlockingWarningScreen
+import com.cdccreditsmart.app.presentation.screens.blocking.BlockedAppScreen
+import com.cdccreditsmart.app.presentation.screens.blocking.PaymentRecoveryScreen
+import com.cdccreditsmart.app.presentation.screens.blocking.BlockingHistoryScreen
 import com.cdccreditsmart.app.presentation.screens.home.ModernHomeScreen
 
 object Routes {
@@ -30,6 +40,10 @@ object Routes {
     const val PAIRING_SUCCESS = "pairing/success/{contractCode}/{customerName}/{deviceModel}"
     const val PAIRING_ERROR = "pairing/error/{errorMessage}/{attemptsRemaining}/{securityViolation}/{canRetry}"
     const val HOME = "home"
+    const val BLOCKING_WARNING = "blocking/warning"
+    const val BLOCKED_APP = "blocked_app/{appPackage}/{daysOverdue}"
+    const val PAYMENT_RECOVERY = "blocking/payment_recovery/{daysOverdue}"
+    const val BLOCKING_HISTORY = "blocking/history"
     
     fun createPairingProgressRoute(contractId: String) = "pairing/progress/$contractId"
     
@@ -56,6 +70,12 @@ object Routes {
         val attempts = attemptsRemaining?.toString() ?: "NONE"
         return "pairing/error/$encodedMessage/$attempts/$securityViolation/$canRetry"
     }
+    
+    fun createBlockedAppRoute(appPackage: String, daysOverdue: Int) = 
+        "blocked_app/${Uri.encode(appPackage)}/$daysOverdue"
+    
+    fun createPaymentRecoveryRoute(daysOverdue: Int) = 
+        "blocking/payment_recovery/$daysOverdue"
 }
 
 @Composable
@@ -245,6 +265,101 @@ fun CDCNavigation(
                 },
                 onContactSupport = {
                     // TODO: Implement support contact functionality
+                }
+            )
+        }
+        
+        composable(Routes.BLOCKING_WARNING) {
+            BlockingWarningScreen(
+                onPayNow = {
+                    navController.navigate(Routes.createPaymentRecoveryRoute(it)) {
+                        popUpTo(Routes.BLOCKING_WARNING) { inclusive = false }
+                    }
+                },
+                onDismiss = {
+                    navController.popBackStack()
+                }
+            )
+        }
+        
+        composable(
+            route = Routes.BLOCKED_APP,
+            arguments = listOf(
+                navArgument("appPackage") { type = NavType.StringType },
+                navArgument("daysOverdue") { type = NavType.IntType }
+            )
+        ) {
+            val appPackage = it.arguments?.getString("appPackage") ?: ""
+            val daysOverdue = it.arguments?.getInt("daysOverdue") ?: 0
+            
+            BlockedAppScreen(
+                blockedAppPackage = appPackage,
+                daysOverdue = daysOverdue,
+                onPayNow = {
+                    navController.navigate(Routes.createPaymentRecoveryRoute(daysOverdue)) {
+                        popUpTo(Routes.BLOCKED_APP) { inclusive = false }
+                    }
+                },
+                onContest = {
+                    // TODO: Navigate to contest form
+                },
+                onDismiss = {
+                    navController.popBackStack()
+                }
+            )
+        }
+        
+        composable(
+            route = Routes.PAYMENT_RECOVERY,
+            arguments = listOf(
+                navArgument("daysOverdue") { type = NavType.IntType }
+            )
+        ) {
+            val daysOverdue = it.arguments?.getInt("daysOverdue") ?: 0
+            var showPaymentDisabledDialog by remember { mutableStateOf(false) }
+            
+            PaymentRecoveryScreen(
+                daysOverdue = daysOverdue,
+                onProceedToPayment = {
+                    showPaymentDisabledDialog = true
+                },
+                onCancel = {
+                    navController.popBackStack()
+                }
+            )
+            
+            if (showPaymentDisabledDialog) {
+                AlertDialog(
+                    onDismissRequest = { showPaymentDisabledDialog = false },
+                    title = { Text("Funcionalidade em Desenvolvimento") },
+                    text = {
+                        Text(
+                            "O sistema de pagamento integrado está em desenvolvimento. " +
+                            "Por favor, entre em contato com o suporte para regularizar seu pagamento " +
+                            "e desbloquear seus aplicativos."
+                        )
+                    },
+                    confirmButton = {
+                        TextButton(onClick = { showPaymentDisabledDialog = false }) {
+                            Text("Entendi")
+                        }
+                    },
+                    dismissButton = {
+                        TextButton(onClick = {
+                            showPaymentDisabledDialog = false
+                            navController.popBackStack()
+                        }) {
+                            Text("Voltar")
+                        }
+                    }
+                )
+            }
+        }
+        
+        composable(Routes.BLOCKING_HISTORY) {
+            BlockingHistoryScreen(
+                onBack = {
+                    navController.popBackStack()
                 }
             )
         }

@@ -6,12 +6,14 @@ import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material.icons.filled.LockOpen
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 
 /**
  * Payment Recovery Screen
@@ -203,6 +205,33 @@ fun PaymentRecoveryScreen(
             }
         }
     }
+}
+
+/**
+ * Simplified overload that fetches data from BlockingViewModel
+ * Used by Navigation when only daysOverdue is known
+ */
+@Composable
+fun PaymentRecoveryScreen(
+    daysOverdue: Int,
+    onProceedToPayment: () -> Unit,
+    onCancel: () -> Unit
+) {
+    val viewModel: BlockingViewModel = viewModel()
+    val uiState by viewModel.blockingState
+    
+    val totalAmountDue = uiState.amountDue ?: 0.0
+    val overdueInstallmentsCount = 0
+    val blockedAppsCount = uiState.currentState?.blockedPackages?.size ?: 0
+    
+    PaymentRecoveryScreen(
+        daysOverdue = daysOverdue,
+        totalAmountDue = totalAmountDue,
+        overdueInstallmentsCount = overdueInstallmentsCount,
+        blockedAppsCount = blockedAppsCount,
+        onProceedToPayment = onProceedToPayment,
+        onCancel = onCancel
+    )
 }
 
 @Composable
