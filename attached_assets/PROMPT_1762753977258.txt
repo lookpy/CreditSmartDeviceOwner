@@ -1,0 +1,157 @@
+2025-11-10 02:51:35.334 30137-30137 Choreographer           com.cdccreditsmart.app               I  Skipped 33 frames!  The application may be doing too much work on its main thread.
+2025-11-10 02:51:37.537 30137-30143 creditsmart.app         com.cdccreditsmart.app               I  Background concurrent mark compact GC freed 23MB AllocSpace bytes, 239(8236KB) LOS objects, 64% free, 13MB/37MB, paused 1.279ms,4.120ms total 115.308ms
+2025-11-10 02:51:37.626 30137-30137 ScrollIdentify          com.cdccreditsmart.app               I  on fling
+2025-11-10 02:51:38.720 30137-30137 ScrollIdentify          com.cdccreditsmart.app               I  on fling
+2025-11-10 02:51:43.902 30137-30137 ScrollIdentify          com.cdccreditsmart.app               I  on fling
+2025-11-10 02:51:45.155 30137-30137 ScrollIdentify          com.cdccreditsmart.app               I  on fling
+2025-11-10 02:51:46.098 30137-30137 ScrollIdentify          com.cdccreditsmart.app               I  on fling
+2025-11-10 02:51:48.023 30137-30137 VRI[MainActivity]       com.cdccreditsmart.app               D  hardware acceleration = true, forceHwAccelerated = false
+2025-11-10 02:51:48.035 30137-30137 InputEventReceiver      com.cdccreditsmart.app               D  Input log is disabled in InputEventReceiver.
+2025-11-10 02:51:48.226 30137-30137 BufferQueueConsumer     com.cdccreditsmart.app               D  [](id:75b900000002,api:0,p:-1,c:30137) connect: controlledByApp=false
+2025-11-10 02:51:48.227 30137-30137 BLASTBufferQueue        com.cdccreditsmart.app               D  [VRI[MainActivity]#2](f:0,a:0) constructor()
+2025-11-10 02:51:48.227 30137-30137 BLASTBufferQueue        com.cdccreditsmart.app               D  [VRI[MainActivity]#2](f:0,a:0) update width=1080 height=2400 format=-2 mTransformHint=0
+2025-11-10 02:51:48.314 30137-30217 BLASTBufferQueue        com.cdccreditsmart.app               D  [VRI[MainActivity]#2](f:0,a:1) acquireNextBufferLocked size=1080x2400 mFrameNumber=1 applyTransaction=true mTimestamp=60651359926537(auto) mPendingTransactions.size=0 graphicBufferId=129437429399563 transform=0
+2025-11-10 02:51:50.431 30137-30137 WindowOnBackDispatcher  com.cdccreditsmart.app               W  sendCancelIfRunning: isInProgress=false callback=androidx.compose.material3.ModalBottomSheetDialogLayout$Api34Impl$createBackCallback$1@7d11a5
+2025-11-10 02:51:50.457 30137-30137 View                    com.cdccreditsmart.app               D  [Warning] assignParent to null: this = DecorView@99c9835[MainActivity]
+2025-11-10 02:51:50.457 30137-30137 BLASTBufferQueue        com.cdccreditsmart.app               D  [VRI[MainActivity]#2](f:0,a:1) destructor()
+2025-11-10 02:51:50.457 30137-30137 BufferQueueConsumer     com.cdccreditsmart.app               D  [VRI[MainActivity]#2(BLAST Consumer)2](id:75b900000002,api:0,p:-1,c:30137) disconnect
+2025-11-10 02:51:51.403 30137-30137 ScrollIdentify          com.cdccreditsmart.app               I  on fling
+2025-11-10 02:51:52.091 30137-30137 ScrollIdentify          com.cdccreditsmart.app               I  on fling
+2025-11-10 02:51:52.886 30137-30137 ScrollIdentify          com.cdccreditsmart.app               I  on fling
+2025-11-10 02:52:01.802 30137-30137 WebSocketManager        com.cdccreditsmart.app               D  Heartbeat ping sent
+2025-11-10 02:52:01.803 30137-30137 WebSocketManager        com.cdccreditsmart.app               D  Heartbeat ping sent
+2025-11-10 02:52:01.966 30137-30294 WebSocketManager        com.cdccreditsmart.app               D  Message received: {"type":"pong","timestamp":"2025-11-10T05:52:01.903Z"}...
+2025-11-10 02:52:01.966 30137-30294 WebSocketManager        com.cdccreditsmart.app               D  Received message type: pong
+2025-11-10 02:52:01.966 30137-30294 WebSocketManager        com.cdccreditsmart.app               D  Pong received
+2025-11-10 02:52:01.972 30137-30294 WebSocketManager        com.cdccreditsmart.app               D  Message received: {"type":"pong","timestamp":"2025-11-10T05:52:01.910Z"}...
+2025-11-10 02:52:01.972 30137-30294 WebSocketManager        com.cdccreditsmart.app               D  Received message type: pong
+2025-11-10 02:52:01.972 30137-30294 WebSocketManager        com.cdccreditsmart.app               D  Pong received
+2025-11-10 02:52:23.292 30137-30137 ScrollIdentify          com.cdccreditsmart.app               I  on fling
+2025-11-10 02:52:24.470 30137-30137 ScrollIdentify          com.cdccreditsmart.app               I  on fling
+2025-11-10 02:52:28.673 30137-30137 SimpleHomeViewModel     com.cdccreditsmart.app               D  🔄 Refreshing installments data...
+2025-11-10 02:52:28.676 30137-30137 SimpleHomeViewModel     com.cdccreditsmart.app               D  📡 Fetching device installments from /api/apk/device/installments...
+2025-11-10 02:52:28.683 30137-30318 SimpleHomeViewModel     com.cdccreditsmart.app               D  ✅ Added Authorization header with token
+2025-11-10 02:52:28.683 30137-30318 SimpleHomeViewModel     com.cdccreditsmart.app               D  📤 Request URL: https://cdccreditsmart.com/api/apk/device/installments
+2025-11-10 02:52:29.167 30137-30318 SimpleHomeViewModel     com.cdccreditsmart.app               D  📥 Response Code: 200
+2025-11-10 02:52:29.190 30137-30137 SimpleHomeViewModel     com.cdccreditsmart.app               D  ✅ Successfully fetched installments data
+2025-11-10 02:52:29.190 30137-30137 SimpleHomeViewModel     com.cdccreditsmart.app               D  📊 Device: Moto G15 Power
+2025-11-10 02:52:29.190 30137-30137 SimpleHomeViewModel     com.cdccreditsmart.app               D  📊 Total installments: 4
+2025-11-10 02:52:29.190 30137-30137 SimpleHomeViewModel     com.cdccreditsmart.app               D  📊 Paid: 0
+2025-11-10 02:52:29.191 30137-30137 SimpleHomeViewModel     com.cdccreditsmart.app               D  📊 Overdue: 0
+2025-11-10 02:52:29.191 30137-30137 SimpleHomeViewModel     com.cdccreditsmart.app               D  📊 All installments count: 4
+2025-11-10 02:52:31.490 30137-30137 VRI[MainActivity]       com.cdccreditsmart.app               D  visibilityChanged oldVisibility=true newVisibility=false
+2025-11-10 02:52:31.527 30137-30137 BLASTBufferQueue        com.cdccreditsmart.app               D  [VRI[MainActivity]#1](f:0,a:1) destructor()
+2025-11-10 02:52:31.527 30137-30137 BufferQueueConsumer     com.cdccreditsmart.app               D  [VRI[MainActivity]#1(BLAST Consumer)1](id:75b900000001,api:0,p:-1,c:30137) disconnect
+2025-11-10 02:52:31.803 30137-30137 WebSocketManager        com.cdccreditsmart.app               D  Heartbeat ping sent
+2025-11-10 02:52:31.804 30137-30137 WebSocketManager        com.cdccreditsmart.app               D  Heartbeat ping sent
+2025-11-10 02:52:31.967 30137-30294 WebSocketManager        com.cdccreditsmart.app               D  Message received: {"type":"pong","timestamp":"2025-11-10T05:52:31.905Z"}...
+2025-11-10 02:52:31.967 30137-30294 WebSocketManager        com.cdccreditsmart.app               D  Received message type: pong
+2025-11-10 02:52:31.967 30137-30294 WebSocketManager        com.cdccreditsmart.app               D  Pong received
+2025-11-10 02:52:31.973 30137-30294 WebSocketManager        com.cdccreditsmart.app               D  Message received: {"type":"pong","timestamp":"2025-11-10T05:52:31.912Z"}...
+2025-11-10 02:52:31.973 30137-30294 WebSocketManager        com.cdccreditsmart.app               D  Received message type: pong
+2025-11-10 02:52:31.973 30137-30294 WebSocketManager        com.cdccreditsmart.app               D  Pong received
+2025-11-10 02:52:33.601 30137-30352 FA                      com.cdccreditsmart.app               I  Application backgrounded at: timestamp_millis: 1762753951598
+2025-11-10 02:52:36.684 30137-30137 Activity                com.cdccreditsmart.app               D  onResume setDolbyGameProfilePackage lastPkg =  currentPkg = com.cdccreditsmart.app
+2025-11-10 02:52:36.703 30137-30137 BufferQueueConsumer     com.cdccreditsmart.app               D  [](id:75b900000003,api:0,p:-1,c:30137) connect: controlledByApp=false
+2025-11-10 02:52:36.703 30137-30137 BLASTBufferQueue        com.cdccreditsmart.app               D  [VRI[MainActivity]#3](f:0,a:0) constructor()
+2025-11-10 02:52:36.703 30137-30137 BLASTBufferQueue        com.cdccreditsmart.app               D  [VRI[MainActivity]#3](f:0,a:0) update width=1080 height=2400 format=-3 mTransformHint=0
+2025-11-10 02:52:36.745 30137-30217 BLASTBufferQueue        com.cdccreditsmart.app               D  [VRI[MainActivity]#3](f:0,a:1) acquireNextBufferLocked size=1080x2400 mFrameNumber=1 applyTransaction=true mTimestamp=60699792370771(auto) mPendingTransactions.size=0 graphicBufferId=129437429399567 transform=0
+2025-11-10 02:52:38.217 30137-30137 ScrollIdentify          com.cdccreditsmart.app               I  on fling
+2025-11-10 02:52:45.935 30137-30217 BLASTBufferQueue        com.cdccreditsmart.app               D  [VRI[MainActivity]#3](f:0,a:1) destructor()
+2025-11-10 02:52:45.936 30137-30217 BufferQueueConsumer     com.cdccreditsmart.app               D  [VRI[MainActivity]#3(BLAST Consumer)3](id:75b900000003,api:0,p:-1,c:30137) disconnect
+2025-11-10 02:52:46.114 30137-30137 WindowOnBackDispatcher  com.cdccreditsmart.app               W  sendCancelIfRunning: isInProgress=false callback=android.app.Activity$$ExternalSyntheticLambda0@1da49e2
+2025-11-10 02:52:46.124 30137-30137 View                    com.cdccreditsmart.app               D  [Warning] assignParent to null: this = DecorView@f2a76c6[MainActivity]
+2025-11-10 02:52:46.141 30137-30137 CdcForegroundService    com.cdccreditsmart.app               W  ⚠️ Task removida - mantendo serviço ativo
+2025-11-10 02:52:47.794 30137-30137 Activity                com.cdccreditsmart.app               D  onResume setDolbyGameProfilePackage lastPkg =  currentPkg = com.cdccreditsmart.app
+2025-11-10 02:52:47.800 30137-30137 VRI[MainActivity]       com.cdccreditsmart.app               D  hardware acceleration = true, forceHwAccelerated = false
+2025-11-10 02:52:47.805 30137-30137 InputEventReceiver      com.cdccreditsmart.app               D  Input log is disabled in InputEventReceiver.
+2025-11-10 02:52:47.990 30137-30137 BufferQueueConsumer     com.cdccreditsmart.app               D  [](id:75b900000004,api:0,p:-1,c:30137) connect: controlledByApp=false
+2025-11-10 02:52:47.990 30137-30137 BLASTBufferQueue        com.cdccreditsmart.app               D  [VRI[MainActivity]#4](f:0,a:0) constructor()
+2025-11-10 02:52:47.990 30137-30137 BLASTBufferQueue        com.cdccreditsmart.app               D  [VRI[MainActivity]#4](f:0,a:0) update width=1080 height=2400 format=-3 mTransformHint=0
+2025-11-10 02:52:48.012 30137-30217 BLASTBufferQueue        com.cdccreditsmart.app               D  [VRI[MainActivity]#4](f:0,a:1) acquireNextBufferLocked size=1080x2400 mFrameNumber=1 applyTransaction=true mTimestamp=60711058997849(auto) mPendingTransactions.size=0 graphicBufferId=129437429399570 transform=0
+2025-11-10 02:52:48.019 30137-30137 RouterViewModel         com.cdccreditsmart.app               D  🚀 Iniciando verificação de autenticação...
+2025-11-10 02:52:48.020 30137-30256 AuthOrchestrator        com.cdccreditsmart.app               D  🔐 Verificando autenticação...
+2025-11-10 02:52:48.020 30137-30256 ContractCodeStorage     com.cdccreditsmart.app               D  Retrieving contract code from storage
+2025-11-10 02:52:48.385 30137-30256 ContractCodeStorage     com.cdccreditsmart.app               D  Storage verification: 7 valid, 0 tampered, 0 missing
+2025-11-10 02:52:48.385 30137-30256 ContractCodeStorage     com.cdccreditsmart.app               D  Contract code retrieved successfully
+2025-11-10 02:52:48.386 30137-30256 AuthOrchestrator        com.cdccreditsmart.app               D  ✅ Código de pareamento encontrado: devi****
+2025-11-10 02:52:48.387 30137-30256 AuthOrchestrator        com.cdccreditsmart.app               D  🔑 Token existente encontrado - validando no servidor...
+2025-11-10 02:52:48.396 30137-30450 okhttp.OkHttpClient     com.cdccreditsmart.app               I  --> GET https://cdccreditsmart.com/api/apk/device/status
+2025-11-10 02:52:48.396 30137-30450 okhttp.OkHttpClient     com.cdccreditsmart.app               I  Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkZXZpY2VJZCI6ImRldmljZV8xNzYyNzI1MzU5MTUzX29ncWkyMGdxcXAiLCJhcGtUb2tlbiI6IkJWWUcyVlMyIiwidHlwZSI6ImFwayIsImV4cGlyZXNJbiI6IjI0aCIsImlhdCI6MTc2Mjc1MjYwMCwiZXhwIjoxNzYyODM5MDAwfQ.vAhN39KYaeQ8ZENV3DRriE5VPq3Ten9c4Zea9Kct7OQ
+2025-11-10 02:52:48.396 30137-30450 okhttp.OkHttpClient     com.cdccreditsmart.app               I  --> END GET
+2025-11-10 02:52:48.928 30137-30450 okhttp.OkHttpClient     com.cdccreditsmart.app               I  <-- 200 https://cdccreditsmart.com/api/apk/device/status (532ms)
+2025-11-10 02:52:48.929 30137-30450 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-credentials: true
+2025-11-10 02:52:48.929 30137-30450 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-headers: Origin, X-Requested-With, Content-Type, Accept, Authorization, x-client-key, x-client-token, x-client-secret, cache-control
+2025-11-10 02:52:48.929 30137-30450 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-methods: GET, POST, PUT, PATCH, DELETE, OPTIONS
+2025-11-10 02:52:48.929 30137-30450 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-origin: *
+2025-11-10 02:52:48.929 30137-30450 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-max-age: 86400
+2025-11-10 02:52:48.929 30137-30450 okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-length: 447
+2025-11-10 02:52:48.929 30137-30450 okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-security-policy: default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://replit.com; style-src 'self' 'unsafe-inline' https://replit.com; img-src 'self' data: https:; font-src 'self' data: https://replit.com; connect-src 'self';
+2025-11-10 02:52:48.929 30137-30450 okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-type: application/json; charset=utf-8
+2025-11-10 02:52:48.929 30137-30450 okhttp.OkHttpClient     com.cdccreditsmart.app               I  date: Mon, 10 Nov 2025 05:52:48 GMT
+2025-11-10 02:52:48.929 30137-30450 okhttp.OkHttpClient     com.cdccreditsmart.app               I  etag: W/"1bf-v0ygw3StiW8VmIuuTsypgIsW4og"
+2025-11-10 02:52:48.929 30137-30450 okhttp.OkHttpClient     com.cdccreditsmart.app               I  permissions-policy: geolocation=(), microphone=(), camera=()
+2025-11-10 02:52:48.929 30137-30450 okhttp.OkHttpClient     com.cdccreditsmart.app               I  referrer-policy: strict-origin-when-cross-origin
+2025-11-10 02:52:48.929 30137-30450 okhttp.OkHttpClient     com.cdccreditsmart.app               I  server: Google Frontend
+2025-11-10 02:52:48.929 30137-30450 okhttp.OkHttpClient     com.cdccreditsmart.app               I  strict-transport-security: max-age=63072000; includeSubDomains
+2025-11-10 02:52:48.929 30137-30450 okhttp.OkHttpClient     com.cdccreditsmart.app               I  strict-transport-security: max-age=31536000; includeSubDomains
+2025-11-10 02:52:48.930 30137-30450 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-anti-fraud-protection: active
+2025-11-10 02:52:48.930 30137-30450 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-certificate-pinning-enabled: false
+2025-11-10 02:52:48.930 30137-30450 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-certificate-pinning-status: disabled-for-stability
+2025-11-10 02:52:48.930 30137-30450 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-cloud-trace-context: cb50365409b6d29d2a15fc19ac94991e;o=1
+2025-11-10 02:52:48.930 30137-30450 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-content-type-options: nosniff
+2025-11-10 02:52:48.930 30137-30450 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-financial-data-protection: enabled
+2025-11-10 02:52:48.930 30137-30450 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-frame-options: DENY
+2025-11-10 02:52:48.930 30137-30450 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-transaction-security-level: maximum
+2025-11-10 02:52:48.930 30137-30450 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-xss-protection: 1; mode=block
+2025-11-10 02:52:48.930 30137-30450 okhttp.OkHttpClient     com.cdccreditsmart.app               I  via: 1.1 google
+2025-11-10 02:52:48.930 30137-30450 okhttp.OkHttpClient     com.cdccreditsmart.app               I  alt-svc: h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
+2025-11-10 02:52:48.931 30137-30450 okhttp.OkHttpClient     com.cdccreditsmart.app               I  {"device":{"id":"device_1762725359153_ogqi20gqqp","name":"Moto G15 Power","isBlocked":true,"blockReason":"8585","status":"blocked"},"shouldBlock":false,"overdueCount":0,"daysSinceOverdue":0,"pdvSession":{"status":"completed","currentStage":"completed","isActive":false,"lastHeartbeat":"2025-11-09T21:56:50.180Z","heartbeatAge":28558.603,"sessionStarted":"2025-11-09T21:56:01.537Z","sessionCompleted":"2025-11-09T21:56:50.180Z","shouldWait":false}}
+2025-11-10 02:52:48.931 30137-30450 okhttp.OkHttpClient     com.cdccreditsmart.app               I  <-- END HTTP (447-byte body)
+2025-11-10 02:52:48.936 30137-30256 AuthOrchestrator        com.cdccreditsmart.app               D  Validação do token no servidor: SUCESSO
+2025-11-10 02:52:48.936 30137-30256 AuthOrchestrator        com.cdccreditsmart.app               D  ✅ Token válido - autenticação OK!
+2025-11-10 02:52:48.941 30137-30137 RouterViewModel         com.cdccreditsmart.app               D  ✅ Autenticado com sucesso - Ir para HOME
+2025-11-10 02:52:49.098 30137-30137 SimpleHomeViewModel     com.cdccreditsmart.app               D  📡 Fetching device installments from /api/apk/device/installments...
+2025-11-10 02:52:49.112 30137-30451 SimpleHomeViewModel     com.cdccreditsmart.app               D  ✅ Added Authorization header with token
+2025-11-10 02:52:49.113 30137-30451 SimpleHomeViewModel     com.cdccreditsmart.app               D  📤 Request URL: https://cdccreditsmart.com/api/apk/device/installments
+2025-11-10 02:52:49.545 30137-30451 SimpleHomeViewModel     com.cdccreditsmart.app               D  📥 Response Code: 200
+2025-11-10 02:52:49.560 30137-30137 SimpleHomeViewModel     com.cdccreditsmart.app               D  ✅ Successfully fetched installments data
+2025-11-10 02:52:49.560 30137-30137 SimpleHomeViewModel     com.cdccreditsmart.app               D  📊 Device: Moto G15 Power
+2025-11-10 02:52:49.560 30137-30137 SimpleHomeViewModel     com.cdccreditsmart.app               D  📊 Total installments: 4
+2025-11-10 02:52:49.560 30137-30137 SimpleHomeViewModel     com.cdccreditsmart.app               D  📊 Paid: 0
+2025-11-10 02:52:49.560 30137-30137 SimpleHomeViewModel     com.cdccreditsmart.app               D  📊 Overdue: 0
+2025-11-10 02:52:49.560 30137-30137 SimpleHomeViewModel     com.cdccreditsmart.app               D  📊 All installments count: 4
+2025-11-10 02:52:51.156 30137-30137 CdcForegroundService    com.cdccreditsmart.app               D  🚀 Serviço onStartCommand() - Action: com.cdccreditsmart.app.START_SERVICE
+2025-11-10 02:52:51.167 30137-30137 CdcForegroundService    com.cdccreditsmart.app               I  ✅ Foreground Service ativo (Android 12+)
+2025-11-10 02:52:51.168 30137-30256 CdcForegroundService    com.cdccreditsmart.app               D  🔧 Iniciando initializeServices()...
+2025-11-10 02:52:51.170 30137-30137 CdcForegroundService    com.cdccreditsmart.app               D  💓 Heartbeat iniciado (5 minutos)
+2025-11-10 02:52:51.270 30137-30256 ContractCodeStorage     com.cdccreditsmart.app               D  Retrieving contract code from storage
+2025-11-10 02:52:51.497 30137-30137 ScrollIdentify          com.cdccreditsmart.app               I  on fling
+2025-11-10 02:52:51.588 30137-30256 ContractCodeStorage     com.cdccreditsmart.app               D  Storage verification: 7 valid, 0 tampered, 0 missing
+2025-11-10 02:52:51.589 30137-30256 ContractCodeStorage     com.cdccreditsmart.app               D  Contract code retrieved successfully
+2025-11-10 02:52:51.589 30137-30256 CdcForegroundService    com.cdccreditsmart.app               D  🔐 AuthToken presente: true
+2025-11-10 02:52:51.589 30137-30256 CdcForegroundService    com.cdccreditsmart.app               D  🔐 ContractCode presente: true
+2025-11-10 02:52:51.589 30137-30256 CdcForegroundService    com.cdccreditsmart.app               I  🔐 Tokens encontrados - inicializando serviços MDM
+2025-11-10 02:52:51.589 30137-30256 CdcForegroundService    com.cdccreditsmart.app               D  📡 Criando MdmCommandReceiver...
+2025-11-10 02:52:51.591 30137-30256 CdcForegroundService    com.cdccreditsmart.app               D  📡 Conectando MdmCommandReceiver ao WebSocket MDM...
+2025-11-10 02:52:51.591 30137-30256 MdmCommandReceiver      com.cdccreditsmart.app               I  🔗 Iniciando conexão WebSocket MDM...
+2025-11-10 02:52:51.591 30137-30256 MdmCommandReceiver      com.cdccreditsmart.app               D  🔗 URL: wss://cdccreditsmart.com/ws
+2025-11-10 02:52:51.591 30137-30256 MdmCommandReceiver      com.cdccreditsmart.app               D  🔗 JWT Token presente: true
+2025-11-10 02:52:51.591 30137-30256 MdmCommandReceiver      com.cdccreditsmart.app               D  🔌 MDM Command Receiver desconectado
+2025-11-10 02:52:51.595 30137-30256 MdmCommandReceiver      com.cdccreditsmart.app               D  🔗 Criando WebSocket OkHttp...
+2025-11-10 02:52:51.598 30137-30256 MdmCommandReceiver      com.cdccreditsmart.app               D  🔗 WebSocket request enviado - aguardando resposta...
+2025-11-10 02:52:51.598 30137-30256 CdcForegroundService    com.cdccreditsmart.app               I  📡 MdmCommandReceiver inicializado - aguardando conexão
+2025-11-10 02:52:51.598 30137-30256 CdcForegroundService    com.cdccreditsmart.app               D  📡 Criando WebSocketManager (flow-status)...
+2025-11-10 02:52:51.599 30137-30256 WebSocketManager        com.cdccreditsmart.app               D  Connecting to WebSocket: wss://cdccreditsmart.com/ws/flow-status
+2025-11-10 02:52:51.602 30137-30256 CdcForegroundService    com.cdccreditsmart.app               I  📡 WebSocketManager inicializado
+2025-11-10 02:52:51.602 30137-30256 CdcForegroundService    com.cdccreditsmart.app               I  ✅ Todos os serviços inicializados com sucesso
+2025-11-10 02:52:51.910 30137-30455 WebSocketManager        com.cdccreditsmart.app               D  WebSocket connection opened
+2025-11-10 02:52:51.910 30137-30455 WebSocketManager        com.cdccreditsmart.app               D  WebSocket connected for contract: device_1762725359153_ogqi20gqqp
+2025-11-10 02:52:51.910 30137-30455 WebSocketManager        com.cdccreditsmart.app               D  Starting heartbeat
+2025-11-10 02:52:51.919 30137-30454 MdmCommandReceiver      com.cdccreditsmart.app               I  ✅ WebSocket MDM CONECTADO COM SUCESSO!
+2025-11-10 02:52:51.919 30137-30454 MdmCommandReceiver      com.cdccreditsmart.app               D  ✅ Response code: 101
+2025-11-10 02:52:51.919 30137-30454 MdmCommandReceiver      com.cdccreditsmart.app               D  ✅ Polling fallback cancelado
+2025-11-10 02:52:51.920 30137-30454 MdmCommandReceiver      com.cdccreditsmart.app               D  📥 Mensagem MDM recebida: {"type":"welcome","message":"Connected to unified WebSocket server","connectionId":"115f9a46-a065-4e27-8cf7-0464a6e8cdf2","path":"/ws","routerKey":"device-control","timestamp":"2025-11-10T05:52:51.853Z","serverTime":"2025-11-10T05:52:51.853Z"}
+2025-11-10 02:52:51.921 30137-30256 MdmCommandReceiver      com.cdccreditsmart.app               D  📥 JSON recebido: {"type":"welcome","message":"Connected to unified WebSocket server","connectionId":"115f9a46-a065-4e27-8cf7-0464a6e8cdf2","path":"/ws","routerKey":"device-control","timestamp":"2025-11-10T05:52:51.853Z","serverTime":"2025-11-10T05:52:51.853Z"}
+2025-11-10 02:52:51.931 30137-30256 MdmCommandReceiver      com.cdccreditsmart.app               D  📨 Tipo de mensagem: welcome
+2025-11-10 02:52:51.931 30137-30256 MdmCommandReceiver      com.cdccreditsmart.app               D  👋 Mensagem de boas-vindas do servidor

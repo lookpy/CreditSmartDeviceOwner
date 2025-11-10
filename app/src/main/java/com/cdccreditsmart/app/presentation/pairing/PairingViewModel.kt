@@ -174,16 +174,20 @@ class PairingViewModel(private val context: Context) : ViewModel() {
                 
                 if (body != null && body.success && body.matched) {
                     Log.d(TAG, "Claim successful! Device paired")
+                    Log.d(TAG, "Saving pairing code: ${contractId.take(4)}****")
                     
                     tokenStorage.saveTokens(
                         deviceToken = body.deviceToken ?: "",
                         apkToken = body.apkToken ?: "",
                         fingerprint = fingerprint,
-                        contractCode = body.contractCode ?: contractId
+                        contractCode = contractId
                     )
                     
+                    Log.i(TAG, "🚀 Iniciando CdcForegroundService para MDM...")
+                    CdcForegroundService.startService(context.applicationContext)
+                    
                     step3ConnectWebSocket(
-                        contractCode = body.contractCode ?: contractId,
+                        contractCode = contractId,
                         customerName = customerName,
                         deviceModel = deviceModel
                     )

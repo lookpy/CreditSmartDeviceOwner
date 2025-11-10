@@ -186,19 +186,25 @@ class CdcForegroundService : Service() {
     private fun initializeServices() {
         serviceScope.launch {
             try {
-                Log.d(TAG, "🔧 Iniciando initializeServices()...")
+                Log.i(TAG, "🔧 ========================================")
+                Log.i(TAG, "🔧 INICIANDO initializeServices()...")
+                Log.i(TAG, "🔧 ========================================")
                 
                 val secureStorage = SecureTokenStorage(applicationContext)
                 val authToken = secureStorage.getAuthToken()
                 val contractCode = secureStorage.getContractCode()
                 
-                Log.d(TAG, "🔐 AuthToken presente: ${!authToken.isNullOrBlank()}")
-                Log.d(TAG, "🔐 ContractCode presente: ${!contractCode.isNullOrBlank()}")
+                Log.i(TAG, "🔐 AuthToken presente: ${!authToken.isNullOrBlank()}")
+                Log.i(TAG, "🔐 AuthToken length: ${authToken?.length ?: 0}")
+                Log.i(TAG, "🔐 ContractCode presente: ${!contractCode.isNullOrBlank()}")
+                Log.i(TAG, "🔐 ContractCode value: ${contractCode?.take(4)}****")
                 
                 if (authToken.isNullOrBlank() || contractCode.isNullOrBlank()) {
-                    Log.w(TAG, "⚠️ Sem token de autenticação - serviço em standby")
+                    Log.w(TAG, "⚠️ ========================================")
+                    Log.w(TAG, "⚠️ SEM TOKENS - SERVIÇO EM STANDBY")
                     Log.w(TAG, "⚠️ AuthToken isNull: ${authToken == null}, isEmpty: ${authToken?.isEmpty()}")
                     Log.w(TAG, "⚠️ ContractCode isNull: ${contractCode == null}, isEmpty: ${contractCode?.isEmpty()}")
+                    Log.w(TAG, "⚠️ ========================================")
                     return@launch
                 }
                 
