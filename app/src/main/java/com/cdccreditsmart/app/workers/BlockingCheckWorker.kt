@@ -25,6 +25,7 @@ import com.cdccreditsmart.network.api.DeviceApiService
 import com.cdccreditsmart.network.dto.blocking.BlockingState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import java.util.concurrent.TimeUnit
 
 /**
  * Blocking Check Worker
@@ -222,12 +223,14 @@ class BlockingCheckWorker(
                 blockingStateRepository.saveState(newState)
                 
                 // Send notification if level changed
-                if (levelChanged && toBlock.isNotEmpty() && decision.messageTitle != null && decision.messageBody != null) {
+                val notifTitle = decision.messageTitle
+                val notifBody = decision.messageBody
+                if (levelChanged && toBlock.isNotEmpty() && notifTitle != null && notifBody != null) {
                     Log.d(TAG, "📢 Blocking level changed - sending notification")
                     val notificationHelper = NotificationHelper(applicationContext)
                     notificationHelper.showBlockingNotification(
-                        title = decision.messageTitle,
-                        body = decision.messageBody,
+                        title = notifTitle,
+                        body = notifBody,
                         daysOverdue = daysOverdue
                     )
                 }
