@@ -274,9 +274,9 @@ class SuccessViewModel(
                     if (response.isSuccessful && response.body() != null) {
                         val deviceStatus = response.body()!!
                         Log.d(TAG, "✅ Device status received:")
-                        Log.d(TAG, "   Status: ${deviceStatus.status}")
-                        Log.d(TAG, "   Has customer: ${deviceStatus.customerInfo?.hasCustomer}")
-                        Log.d(TAG, "   Has payment info: ${deviceStatus.paymentInfo != null}")
+                        Log.d(TAG, "   Device Status: ${deviceStatus.device.status}")
+                        Log.d(TAG, "   Has customer: ${deviceStatus.customer != null}")
+                        Log.d(TAG, "   Has PDV session: ${deviceStatus.pdvSession != null}")
                         
                         // Interpret the current state of the sale
                         val currentSaleState = interpretSaleState(deviceStatus)
