@@ -122,12 +122,13 @@ class MdmCommandReceiver(private val context: Context) {
                     "NEW_COMMAND" -> {
                         Log.i(TAG, "📋 Novo comando MDM recebido")
                         
-                        if (message.payload == null) {
+                        val payload = message.payload
+                        if (payload == null) {
                             Log.e(TAG, "❌ Comando sem payload!")
                             return@launch
                         }
                         
-                        val command = message.payload.data.command
+                        val command = payload.data.command
                         
                         Log.i(TAG, "📋 Comando ID: ${command.id}")
                         Log.i(TAG, "📋 Command Type: ${command.commandType}")
