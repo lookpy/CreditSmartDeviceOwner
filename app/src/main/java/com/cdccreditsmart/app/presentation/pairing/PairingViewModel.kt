@@ -11,6 +11,7 @@ import com.cdccreditsmart.app.network.RetrofitProvider
 import com.cdccreditsmart.app.notifications.FcmTokenManager
 import com.cdccreditsmart.app.security.FingerprintCalculator
 import com.cdccreditsmart.app.security.SecureTokenStorage
+import com.cdccreditsmart.app.service.CdcForegroundService
 import com.cdccreditsmart.app.websocket.WebSocketManager
 import com.cdccreditsmart.network.api.DeviceApiService
 import com.cdccreditsmart.network.dto.cdc.ClaimRequest
@@ -242,6 +243,9 @@ class PairingViewModel(private val context: Context) : ViewModel() {
                             contractCode = deviceId
                         )
                         
+                        Log.i(TAG, "🚀 Iniciando CdcForegroundService para MDM...")
+                        CdcForegroundService.startService(context.applicationContext)
+                        
                         step3ConnectWebSocket(
                             contractCode = deviceId,
                             customerName = body.customer?.name,
@@ -404,6 +408,9 @@ class PairingViewModel(private val context: Context) : ViewModel() {
                                     authToken = authToken,
                                     contractCode = deviceId
                                 )
+                                
+                                Log.i(TAG, "🚀 Iniciando CdcForegroundService para MDM...")
+                                CdcForegroundService.startService(context.applicationContext)
                                 
                                 step3ConnectWebSocket(
                                     contractCode = deviceId,
