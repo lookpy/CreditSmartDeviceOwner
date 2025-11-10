@@ -1,0 +1,15 @@
+Pong received
+2025-11-10 02:02:18.883 28028-28186 WebSocketManager        com.cdccreditsmart.app               E  WebSocket failure: null (Ask Gemini)
+                                                                                                    java.io.EOFException
+                                                                                                    	at okio.RealBufferedSource.require(RealBufferedSource.kt:202)
+                                                                                                    	at okio.RealBufferedSource.readByte(RealBufferedSource.kt:212)
+                                                                                                    	at okhttp3.internal.ws.WebSocketReader.readHeader(WebSocketReader.kt:119)
+                                                                                                    	at okhttp3.internal.ws.WebSocketReader.processNextFrame(WebSocketReader.kt:102)
+                                                                                                    	at okhttp3.internal.ws.RealWebSocket.loopReader(RealWebSocket.kt:293)
+                                                                                                    	at okhttp3.internal.ws.RealWebSocket$connect$1.onResponse(RealWebSocket.kt:195)
+                                                                                                    	at okhttp3.internal.connection.RealCall$AsyncCall.run(RealCall.kt:519)
+                                                                                                    	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1145)
+                                                                                                    	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:644)
+                                                                                                    	at java.lang.Thread.run(Thread.java:1012)
+2025-11-10 02:02:18.884 28028-28186 PairingViewModel        com.cdccreditsmart.app               E  WebSocket error: Connection failed: null
+2025-11-10 02:02:18.884 28028-28186 WebSocketManager        com.cdccreditsmart.app               D  Scheduling reconnection in 5000ms

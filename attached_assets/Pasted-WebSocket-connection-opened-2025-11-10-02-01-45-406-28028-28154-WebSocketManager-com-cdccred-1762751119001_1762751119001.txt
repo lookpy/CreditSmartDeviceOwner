@@ -1,0 +1,113 @@
+WebSocket connection opened
+2025-11-10 02:01:45.406 28028-28154 WebSocketManager        com.cdccreditsmart.app               D  WebSocket connected for contract: device_1762725359153_ogqi20gqqp
+2025-11-10 02:01:45.406 28028-28154 WebSocketManager        com.cdccreditsmart.app               D  Starting heartbeat
+2025-11-10 02:01:45.406 28028-28152 MdmCommandReceiver      com.cdccreditsmart.app               D  📥 Mensagem MDM recebida: {"type":"welcome","message":"Connected to unified WebSocket server","connectionId":"3baf446b-6f7b-4c20-9120-f4f5a74c60b8","path":"/ws","routerKey":"device-control","timestamp":"2025-11-10T05:01:45.154Z","serverTime":"2025-11-10T05:01:45.154Z"}
+2025-11-10 02:01:45.409 28028-28145 MdmCommandReceiver      com.cdccreditsmart.app               D  📥 JSON recebido: {"type":"welcome","message":"Connected to unified WebSocket server","connectionId":"3baf446b-6f7b-4c20-9120-f4f5a74c60b8","path":"/ws","routerKey":"device-control","timestamp":"2025-11-10T05:01:45.154Z","serverTime":"2025-11-10T05:01:45.154Z"}
+2025-11-10 02:01:45.415 28028-28145 MdmCommandReceiver      com.cdccreditsmart.app               E  ❌ Erro ao processar mensagem MDM (Ask Gemini)
+                                                                                                    java.lang.RuntimeException: Failed to find the generated JsonAdapter class for class com.cdccreditsmart.network.dto.mdm.WebSocketMdmMessage
+                                                                                                    	at com.squareup.moshi.internal.Util.generatedAdapter(Util.java:590)
+                                                                                                    	at com.squareup.moshi.StandardJsonAdapters$1.create(StandardJsonAdapters.java:61)
+                                                                                                    	at com.squareup.moshi.Moshi.adapter(Moshi.java:146)
+                                                                                                    	at com.squareup.moshi.Moshi.adapter(Moshi.java:106)
+                                                                                                    	at com.squareup.moshi.Moshi.adapter(Moshi.java:80)
+                                                                                                    	at com.cdccreditsmart.app.mdm.MdmCommandReceiver$handleMdmMessage$1.invokeSuspend(MdmCommandReceiver.kt:88)
+                                                                                                    	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:34)
+                                                                                                    	at kotlinx.coroutines.DispatchedTask.run(DispatchedTask.kt:108)
+                                                                                                    	at kotlinx.coroutines.internal.LimitedDispatcher$Worker.run(LimitedDispatcher.kt:115)
+                                                                                                    	at kotlinx.coroutines.scheduling.TaskImpl.run(Tasks.kt:103)
+                                                                                                    	at kotlinx.coroutines.scheduling.CoroutineScheduler.runSafely(CoroutineScheduler.kt:584)
+                                                                                                    	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.executeTask(CoroutineScheduler.kt:793)
+                                                                                                    	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.runWorker(CoroutineScheduler.kt:697)
+                                                                                                    	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.run(CoroutineScheduler.kt:684)
+                                                                                                    Caused by: java.lang.ClassNotFoundException: com.cdccreditsmart.network.dto.mdm.WebSocketMdmMessageJsonAdapter
+                                                                                                    	at java.lang.Class.classForName(Native Method)
+                                                                                                    	at java.lang.Class.forName(Class.java:607)
+                                                                                                    	at com.squareup.moshi.internal.Util.generatedAdapter(Util.java:564)
+                                                                                                    	at com.squareup.moshi.StandardJsonAdapters$1.create(StandardJsonAdapters.java:61) 
+                                                                                                    	at com.squareup.moshi.Moshi.adapter(Moshi.java:146) 
+                                                                                                    	at com.squareup.moshi.Moshi.adapter(Moshi.java:106) 
+                                                                                                    	at com.squareup.moshi.Moshi.adapter(Moshi.java:80) 
+                                                                                                    	at com.cdccreditsmart.app.mdm.MdmCommandReceiver$handleMdmMessage$1.invokeSuspend(MdmCommandReceiver.kt:88) 
+                                                                                                    	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:34) 
+                                                                                                    	at kotlinx.coroutines.DispatchedTask.run(DispatchedTask.kt:108) 
+                                                                                                    	at kotlinx.coroutines.internal.LimitedDispatcher$Worker.run(LimitedDispatcher.kt:115) 
+                                                                                                    	at kotlinx.coroutines.scheduling.TaskImpl.run(Tasks.kt:103) 
+                                                                                                    	at kotlinx.coroutines.scheduling.CoroutineScheduler.runSafely(CoroutineScheduler.kt:584) 
+                                                                                                    	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.executeTask(CoroutineScheduler.kt:793) 
+                                                                                                    	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.runWorker(CoroutineScheduler.kt:697) 
+                                                                                                    	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.run(CoroutineScheduler.kt:684) 
+                                                                                                    Caused by: java.lang.ClassNotFoundException: Didn't find class "com.cdccreditsmart.network.dto.mdm.WebSocketMdmMessageJsonAdapter" on path: DexPathList[[dex file "/data/data/com.cdccreditsmart.app/code_cache/.overlay/base.apk/classes22.dex", zip file "/data/app/~~zJClO5sfgT6Ftqetx8305Q==/com.cdccreditsmart.app-JWqBVBrmFSvl2eO09j9Seg==/base.apk"],nativeLibraryDirectories=[/data/app/~~zJClO5sfgT6Ftqetx8305Q==/com.cdccreditsmart.app-JWqBVBrmFSvl2eO09j9Seg==/lib/arm64, /data/app/~~zJClO5sfgT6Ftqetx8305Q==/com.cdccreditsmart.app-JWqBVBrmFSvl2eO09j9Seg==/base.apk!/lib/arm64-v8a, /system/lib64, /system_ext/lib64]]
+                                                                                                    	at dalvik.system.BaseDexClassLoader.findClass(BaseDexClassLoader.java:259)
+                                                                                                    	at java.lang.ClassLoader.loadClass(ClassLoader.java:637)
+                                                                                                    	at java.lang.ClassLoader.loadClass(ClassLoader.java:573)
+                                                                                                    	at java.lang.Class.classForName(Native Method) 
+                                                                                                    	at java.lang.Class.forName(Class.java:607) 
+                                                                                                    	at com.squareup.moshi.internal.Util.generatedAdapter(Util.java:564) 
+                                                                                                    	at com.squareup.moshi.StandardJsonAdapters$1.create(StandardJsonAdapters.java:61) 
+                                                                                                    	at com.squareup.moshi.Moshi.adapter(Moshi.java:146) 
+                                                                                                    	at com.squareup.moshi.Moshi.adapter(Moshi.java:106) 
+                                                                                                    	at com.squareup.moshi.Moshi.adapter(Moshi.java:80) 
+                                                                                                    	at com.cdccreditsmart.app.mdm.MdmCommandReceiver$handleMdmMessage$1.invokeSuspend(MdmCommandReceiver.kt:88) 
+                                                                                                    	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:34) 
+                                                                                                    	at kotlinx.coroutines.DispatchedTask.run(DispatchedTask.kt:108) 
+                                                                                                    	at kotlinx.coroutines.internal.LimitedDispatcher$Worker.run(LimitedDispatcher.kt:115) 
+                                                                                                    	at kotlinx.coroutines.scheduling.TaskImpl.run(Tasks.kt:103) 
+                                                                                                    	at kotlinx.coroutines.scheduling.CoroutineScheduler.runSafely(CoroutineScheduler.kt:584) 
+                                                                                                    	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.executeTask(CoroutineScheduler.kt:793) 
+                                                                                                    	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.runWorker(CoroutineScheduler.kt:697) 
+                                                                                                    	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.run(CoroutineScheduler.kt:684) 
+2025-11-10 02:01:45.415 28028-28145 MdmCommandReceiver      com.cdccreditsmart.app               E  ❌ JSON problemático: {"type":"welcome","message":"Connected to unified WebSocket server","connectionId":"3baf446b-6f7b-4c20-9120-f4f5a74c60b8","path":"/ws","routerKey":"device-control","timestamp":"2025-11-10T05:01:45.154Z","serverTime":"2025-11-10T05:01:45.154Z"}
+2025-11-10 02:01:45.418 28028-28145 MdmCommandReceiver      com.cdccreditsmart.app               E  ❌ Stack trace: java.lang.RuntimeException: Failed to find the generated JsonAdapter class for class com.cdccreditsmart.network.dto.mdm.WebSocketMdmMessage (Ask Gemini)
+                                                                                                    	at com.squareup.moshi.internal.Util.generatedAdapter(Util.java:590)
+                                                                                                    	at com.squareup.moshi.StandardJsonAdapters$1.create(StandardJsonAdapters.java:61)
+                                                                                                    	at com.squareup.moshi.Moshi.adapter(Moshi.java:146)
+                                                                                                    	at com.squareup.moshi.Moshi.adapter(Moshi.java:106)
+                                                                                                    	at com.squareup.moshi.Moshi.adapter(Moshi.java:80)
+                                                                                                    	at com.cdccreditsmart.app.mdm.MdmCommandReceiver$handleMdmMessage$1.invokeSuspend(MdmCommandReceiver.kt:88)
+                                                                                                    	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:34)
+                                                                                                    	at kotlinx.coroutines.DispatchedTask.run(DispatchedTask.kt:108)
+                                                                                                    	at kotlinx.coroutines.internal.LimitedDispatcher$Worker.run(LimitedDispatcher.kt:115)
+                                                                                                    	at kotlinx.coroutines.scheduling.TaskImpl.run(Tasks.kt:103)
+                                                                                                    	at kotlinx.coroutines.scheduling.CoroutineScheduler.runSafely(CoroutineScheduler.kt:584)
+                                                                                                    	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.executeTask(CoroutineScheduler.kt:793)
+                                                                                                    	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.runWorker(CoroutineScheduler.kt:697)
+                                                                                                    	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.run(CoroutineScheduler.kt:684)
+                                                                                                    Caused by: java.lang.ClassNotFoundException: com.cdccreditsmart.network.dto.mdm.WebSocketMdmMessageJsonAdapter
+                                                                                                    	at java.lang.Class.classForName(Native Method)
+                                                                                                    	at java.lang.Class.forName(Class.java:607)
+                                                                                                    	at com.squareup.moshi.internal.Util.generatedAdapter(Util.java:564)
+                                                                                                    	at com.squareup.moshi.StandardJsonAdapters$1.create(StandardJsonAdapters.java:61) 
+                                                                                                    	at com.squareup.moshi.Moshi.adapter(Moshi.java:146) 
+                                                                                                    	at com.squareup.moshi.Moshi.adapter(Moshi.java:106) 
+                                                                                                    	at com.squareup.moshi.Moshi.adapter(Moshi.java:80) 
+                                                                                                    	at com.cdccreditsmart.app.mdm.MdmCommandReceiver$handleMdmMessage$1.invokeSuspend(MdmCommandReceiver.kt:88) 
+                                                                                                    	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:34) 
+                                                                                                    	at kotlinx.coroutines.DispatchedTask.run(DispatchedTask.kt:108) 
+                                                                                                    	at kotlinx.coroutines.internal.LimitedDispatcher$Worker.run(LimitedDispatcher.kt:115) 
+                                                                                                    	at kotlinx.coroutines.scheduling.TaskImpl.run(Tasks.kt:103) 
+                                                                                                    	at kotlinx.coroutines.scheduling.CoroutineScheduler.runSafely(CoroutineScheduler.kt:584) 
+                                                                                                    	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.executeTask(CoroutineScheduler.kt:793) 
+                                                                                                    	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.runWorker(CoroutineScheduler.kt:697) 
+                                                                                                    	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.run(CoroutineScheduler.kt:684) 
+                                                                                                    Caused by: java.lang.ClassNotFoundException: Didn't find class "com.cdccreditsmart.network.dto.mdm.WebSocketMdmMessageJsonAdapter" on path: DexPathList[[dex file "/data/data/com.cdccreditsmart.app/code_cache/.overlay/base.apk/classes22.dex", zip file "/data/app/~~zJClO5sfgT6Ftqetx8305Q==/com.cdccreditsmart.app-JWqBVBrmFSvl2eO09j9Seg==/base.apk"],nativeLibraryDirectories=[/data/app/~~zJClO5sfgT6Ftqetx8305Q==/com.cdccreditsmart.app-JWqBVBrmFSvl2eO09j9Seg==/lib/arm64, /data/app/~~zJClO5sfgT6Ftqetx8305Q==/com.cdccreditsmart.app-JWqBVBrmFSvl2eO09j9Seg==/base.apk!/lib/arm64-v8a, /system/lib64, /system_ext/lib64]]
+                                                                                                    	at dalvik.system.BaseDexClassLoader.findClass(BaseDexClassLoader.java:259)
+                                                                                                    	at java.lang.ClassLoader.loadClass(ClassLoader.java:637)
+                                                                                                    	at java.lang.ClassLoader.loadClass(ClassLoader.java:573)
+                                                                                                    	at java.lang.Class.classForName(Native Method) 
+                                                                                                    	at java.lang.Class.forName(Class.java:607) 
+                                                                                                    	at com.squareup.moshi.internal.Util.generatedAdapter(Util.java:564) 
+                                                                                                    	at com.squareup.moshi.StandardJsonAdapters$1.create(StandardJsonAdapters.java:61) 
+                                                                                                    	at com.squareup.moshi.Moshi.adapter(Moshi.java:146) 
+                                                                                                    	at com.squareup.moshi.Moshi.adapter(Moshi.java:106) 
+                                                                                                    	at com.squareup.moshi.Moshi.adapter(Moshi.java:80) 
+                                                                                                    	at com.cdccreditsmart.app.mdm.MdmCommandReceiver$handleMdmMessage$1.invokeSuspend(MdmCommandReceiver.kt:88) 
+                                                                                                    	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:34) 
+                                                                                                    	at kotlinx.coroutines.DispatchedTask.run(DispatchedTask.kt:108) 
+                                                                                                    	at kotlinx.coroutines.internal.LimitedDispatcher$Worker.run(LimitedDispatcher.kt:115) 
+                                                                                                    	at kotlinx.coroutines.scheduling.TaskImpl.run(Tasks.kt:103) 
+                                                                                                    	at kotlinx.coroutines.scheduling.CoroutineScheduler.runSafely(CoroutineScheduler.kt:584) 
+                                                                                                    	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.executeTask(CoroutineScheduler.kt:793) 
+                                                                                                    	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.runWorker(CoroutineScheduler.kt:697) 
+                                                                                                    	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.run(CoroutineScheduler.kt:684) 
+2025-11-10 02:01:47.656 28028-28028 WebSocketManager        com.cdccreditsmart.app               D  Heartbeat ping sent
+2025-11-10 02:01:47.923 28028-28186 WebSocketManager        com.cdccreditsmart.app               D  Message received: {"type":"pong","timestamp":"2025-11-10T05:01:47
