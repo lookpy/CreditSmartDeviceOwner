@@ -167,8 +167,8 @@ class BlockingCheckWorker(
             val currentBlocked = currentState?.blockedPackages?.toSet() ?: emptySet()
             val newBlocked = decision.packagesToBlock
             
-            // Check if blocking level changed
-            val levelChanged = currentState?.currentLevel != decision.currentLevel
+            // Check if blocking level changed (compare as String since currentLevel is stored as String)
+            val levelChanged = currentState?.currentLevel != decision.currentLevel?.toString()
             
             // Apply blocking if needed
             if (decision.shouldBlock) {
