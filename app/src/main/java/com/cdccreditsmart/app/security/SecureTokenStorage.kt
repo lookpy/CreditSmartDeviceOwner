@@ -17,6 +17,7 @@ class SecureTokenStorage(context: Context) {
         private const val KEY_AUTH_TOKEN = "auth_token"
         private const val KEY_FINGERPRINT = "fingerprint"
         private const val KEY_CONTRACT_CODE = "contract_code"
+        private const val KEY_DEVICE_ID = "device_id"
     }
 
     private val masterKey = MasterKey.Builder(context)
@@ -58,11 +59,15 @@ class SecureTokenStorage(context: Context) {
     
     fun saveAuthToken(
         authToken: String,
-        contractCode: String? = null
+        contractCode: String? = null,
+        deviceId: String? = null
     ) {
         try {
             encryptedPrefs.edit().apply {
                 putString(KEY_AUTH_TOKEN, authToken)
+                if (deviceId != null) {
+                    putString(KEY_DEVICE_ID, deviceId)
+                }
                 apply()
             }
             
@@ -70,7 +75,7 @@ class SecureTokenStorage(context: Context) {
                 contractCodeStorage.saveContractCode(contractCode)
             }
             
-            Log.d(TAG, "Auth token saved successfully (contract code via ContractCodeStorage)")
+            Log.d(TAG, "Auth token saved successfully (contract code via ContractCodeStorage, deviceId: ${deviceId?.take(10)}...)")
         } catch (e: Exception) {
             Log.e(TAG, "Error saving auth token", e)
             throw TokenStorageException("Failed to save auth token", e)
@@ -134,6 +139,15 @@ class SecureTokenStorage(context: Context) {
             null
         } catch (e: Exception) {
             Log.e(TAG, "Error getting contract code", e)
+            null
+        }
+    }
+
+    fun getDeviceId(): String? {
+        return try {
+            encryptedPrefs.getString(KEY_DEVICE_ID, null)
+        } catch (e: Exception) {
+            Log.e(TAG, "Error getting device ID", e)
             null
         }
     }

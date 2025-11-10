@@ -193,11 +193,14 @@ class CdcForegroundService : Service() {
                 val secureStorage = SecureTokenStorage(applicationContext)
                 val authToken = secureStorage.getAuthToken()
                 val contractCode = secureStorage.getContractCode()
+                val deviceId = secureStorage.getDeviceId() ?: ""
                 
                 Log.i(TAG, "🔐 AuthToken presente: ${!authToken.isNullOrBlank()}")
                 Log.i(TAG, "🔐 AuthToken length: ${authToken?.length ?: 0}")
                 Log.i(TAG, "🔐 ContractCode presente: ${!contractCode.isNullOrBlank()}")
                 Log.i(TAG, "🔐 ContractCode value: ${contractCode?.take(4)}****")
+                Log.i(TAG, "🔐 DeviceId presente: ${deviceId.isNotBlank()}")
+                Log.i(TAG, "🔐 DeviceId value: ${deviceId.take(10)}...")
                 
                 if (authToken.isNullOrBlank() || contractCode.isNullOrBlank()) {
                     Log.w(TAG, "⚠️ ========================================")
@@ -208,11 +211,19 @@ class CdcForegroundService : Service() {
                     return@launch
                 }
                 
+                if (deviceId.isBlank()) {
+                    Log.e(TAG, "❌ ========================================")
+                    Log.e(TAG, "❌ DEVICE_ID VAZIO - MDM NÃO PODE SER INICIALIZADO")
+                    Log.e(TAG, "❌ MDM polling requer deviceId válido do backend")
+                    Log.e(TAG, "❌ ========================================")
+                    return@launch
+                }
+                
                 Log.i(TAG, "🔐 Tokens encontrados - inicializando serviços MDM")
                 
                 // Inicializa MDM Command Receiver
-                Log.d(TAG, "📡 Criando MdmCommandReceiver...")
-                mdmReceiver = MdmCommandReceiver(applicationContext)
+                Log.d(TAG, "📡 Criando MdmCommandReceiver com deviceId...")
+                mdmReceiver = MdmCommandReceiver(applicationContext, deviceId)
                 
                 Log.d(TAG, "📡 Conectando MdmCommandReceiver ao WebSocket MDM...")
                 mdmReceiver?.connectMdmWebSocket(authToken)

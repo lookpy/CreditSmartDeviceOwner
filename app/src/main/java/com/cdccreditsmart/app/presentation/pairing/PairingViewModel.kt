@@ -237,14 +237,16 @@ class PairingViewModel(private val context: Context) : ViewModel() {
                         Log.d(TAG, "✅ APK Authentication successful!")
                         Log.d(TAG, "Auth token received, expires in ${body.expiresIn}s")
                         Log.d(TAG, "Device: ${body.device?.brand} ${body.device?.model}")
+                        Log.d(TAG, "Device ID: ${body.device?.id}")
                         Log.d(TAG, "Customer: ${body.customer?.name}")
                         
                         val authToken = body.authToken ?: ""
-                        val deviceId = body.device?.id ?: contractId
+                        val deviceId = body.device?.id
                         
                         tokenStorage.saveAuthToken(
                             authToken = authToken,
-                            contractCode = contractId  // Salva código de pareamento, NÃO deviceId
+                            contractCode = contractId,
+                            deviceId = deviceId
                         )
                         
                         Log.i(TAG, "🚀 Iniciando CdcForegroundService para MDM...")
@@ -403,14 +405,16 @@ class PairingViewModel(private val context: Context) : ViewModel() {
                         when {
                             body != null && body.success && body.authenticated -> {
                                 Log.d(TAG, "✅ Auto-polling: Sale completed! Authenticating...")
+                                Log.d(TAG, "Device ID: ${body.device?.id}")
                                 isPolling = false
                                 
                                 val authToken = body.authToken ?: ""
-                                val deviceId = body.device?.id ?: contractCode
+                                val deviceId = body.device?.id
                                 
                                 tokenStorage.saveAuthToken(
                                     authToken = authToken,
-                                    contractCode = contractCode  // Salva código de pareamento, NÃO deviceId
+                                    contractCode = contractCode,
+                                    deviceId = deviceId
                                 )
                                 
                                 Log.i(TAG, "🚀 Iniciando CdcForegroundService para MDM...")
