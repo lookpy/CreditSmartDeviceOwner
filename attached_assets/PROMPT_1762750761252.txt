@@ -1,0 +1,59 @@
+       I  on fling
+2025-11-10 01:57:37.507 28028-28028 WebSocketManager        com.cdccreditsmart.app               D  Heartbeat ping sent
+2025-11-10 01:57:37.675 28028-28099 WebSocketManager        com.cdccreditsmart.app               D  Message received: {"type":"pong","timestamp":"2025-11-10T04:57:37.613Z"}...
+2025-11-10 01:57:37.675 28028-28099 WebSocketManager        com.cdccreditsmart.app               D  Received message type: pong
+2025-11-10 01:57:37.675 28028-28099 WebSocketManager        com.cdccreditsmart.app               D  Pong received
+2025-11-10 01:57:38.678 28028-28028 WebSocketManager        com.cdccreditsmart.app               D  Heartbeat ping sent
+2025-11-10 01:57:38.850 28028-28154 WebSocketManager        com.cdccreditsmart.app               D  Message received: {"type":"pong","timestamp":"2025-11-10T04:57:38.786Z"}...
+2025-11-10 01:57:38.850 28028-28154 WebSocketManager        com.cdccreditsmart.app               D  Received message type: pong
+2025-11-10 01:57:38.850 28028-28154 WebSocketManager        com.cdccreditsmart.app               D  Pong received
+2025-11-10 01:57:46.975 28028-28028 ScrollIdentify          com.cdccreditsmart.app               I  on fling
+2025-11-10 01:57:47.595 28028-28028 WebSocketManager        com.cdccreditsmart.app               D  Heartbeat ping sent
+2025-11-10 01:57:47.749 28028-28028 ScrollIdentify          com.cdccreditsmart.app               I  on fling
+2025-11-10 01:57:47.756 28028-28186 WebSocketManager        com.cdccreditsmart.app               D  Message received: {"type":"pong","timestamp":"2025-11-10T04:57:47.692Z"}...
+2025-11-10 01:57:47.756 28028-28186 WebSocketManager        com.cdccreditsmart.app               D  Received message type: pong
+2025-11-10 01:57:47.756 28028-28186 WebSocketManager        com.cdccreditsmart.app               D  Pong received
+2025-11-10 01:58:07.529 28028-28028 WebSocketManager        com.cdccreditsmart.app               D  Heartbeat ping sent
+2025-11-10 01:58:07.692 28028-28099 WebSocketManager        com.cdccreditsmart.app               D  Message received: {"type":"pong","timestamp":"2025-11-10T04:58:07.630Z"}...
+2025-11-10 01:58:07.692 28028-28099 WebSocketManager        com.cdccreditsmart.app               D  Received message type: pong
+2025-11-10 01:58:07.692 28028-28099 WebSocketManager        com.cdccreditsmart.app               D  Pong received
+2025-11-10 01:58:08.681 28028-28028 WebSocketManager        com.cdccreditsmart.app               D  Heartbeat ping sent
+2025-11-10 01:58:08.852 28028-28154 WebSocketManager        com.cdccreditsmart.app               D  Message received: {"type":"pong","timestamp":"2025-11-10T04:58:08.788Z"}...
+2025-11-10 01:58:08.852 28028-28154 WebSocketManager        com.cdccreditsmart.app               D  Received message type: pong
+2025-11-10 01:58:08.853 28028-28154 WebSocketManager        com.cdccreditsmart.app               D  Pong received
+2025-11-10 01:58:17.606 28028-28028 WebSocketManager        com.cdccreditsmart.app               D  Heartbeat ping sent
+2025-11-10 01:58:17.772 28028-28186 WebSocketManager        com.cdccreditsmart.app               D  Message received: {"type":"pong","timestamp":"2025-11-10T04:58:17.707Z"}...
+2025-11-10 01:58:17.772 28028-28186 WebSocketManager        com.cdccreditsmart.app               D  Received message type: pong
+2025-11-10 01:58:17.772 28028-28186 WebSocketManager        com.cdccreditsmart.app               D  Pong received
+2025-11-10 01:58:37.550 28028-28028 WebSocketManager        com.cdccreditsmart.app               D  Heartbeat ping sent
+2025-11-10 01:58:37.715 28028-28099 WebSocketManager        com.cdccreditsmart.app               D  Message received: {"type":"pong","timestamp":"2025-11-10T04:58:37.654Z"}...
+2025-11-10 01:58:37.716 28028-28099 WebSocketManager        com.cdccreditsmart.app               D  Received message type: pong
+2025-11-10 01:58:37.716 28028-28099 WebSocketManager        com.cdccreditsmart.app               D  Pong received
+2025-11-10 01:58:38.683 28028-28028 WebSocketManager        com.cdccreditsmart.app               D  Heartbeat ping sent
+2025-11-10 01:58:38.851 28028-28154 WebSocketManager        com.cdccreditsmart.app               D  Message received: {"type":"pong","timestamp":"2025-11-10T04:58:38.787Z"}...
+2025-11-10 01:58:38.851 28028-28154 WebSocketManager        com.cdccreditsmart.app               D  Received message type: pong
+2025-11-10 01:58:38.851 28028-28154 WebSocketManager        com.cdccreditsmart.app               D  Pong received
+2025-11-10 01:58:47.614 28028-28028 WebSocketManager        com.cdccreditsmart.app               D  Heartbeat ping sent
+2025-11-10 01:58:47.778 28028-28186 WebSocketManager        com.cdccreditsmart.app               D  Message received: {"type":"pong","timestamp":"2025-11-10T04:58:47.714Z"}...
+2025-11-10 01:58:47.778 28028-28186 WebSocketManager        com.cdccreditsmart.app               D  Received message type: pong
+2025-11-10 01:58:47.778 28028-28186 WebSocketManager        com.cdccreditsmart.app               D  Pong received
+2025-11-10 01:58:47.935 28028-28028 VRI[MainActivity]       com.cdccreditsmart.app               D  visibilityChanged oldVisibility=true newVisibility=false
+2025-11-10 01:58:47.972 28028-28028 BLASTBufferQueue        com.cdccreditsmart.app               D  [VRI[MainActivity]#0](f:0,a:1) destructor()
+2025-11-10 01:58:47.973 28028-28028 BufferQueueConsumer     com.cdccreditsmart.app               D  [VRI[MainActivity]#0(BLAST Consumer)0](id:6d7c00000000,api:0,p:-1,c:28028) disconnect
+2025-11-10 01:58:47.976 28028-28028 WindowOnBackDispatcher  com.cdccreditsmart.app               W  sendCancelIfRunning: isInProgress=false callback=androidx.activity.OnBackPressedDispatcher$Api34Impl$createOnBackAnimationCallback$1@fab7a90
+2025-11-10 01:58:49.974 28028-28228 FA                      com.cdccreditsmart.app               I  Application backgrounded at: timestamp_millis: 1762750727970
+2025-11-10 01:59:07.553 28028-28028 WebSocketManager        com.cdccreditsmart.app               D  Heartbeat ping sent
+2025-11-10 01:59:07.688 28028-28028 Activity                com.cdccreditsmart.app               D  onResume setDolbyGameProfilePackage lastPkg =  currentPkg = com.cdccreditsmart.app
+2025-11-10 01:59:07.708 28028-28028 BufferQueueConsumer     com.cdccreditsmart.app               D  [](id:6d7c00000001,api:0,p:-1,c:28028) connect: controlledByApp=false
+2025-11-10 01:59:07.709 28028-28028 BLASTBufferQueue        com.cdccreditsmart.app               D  [VRI[MainActivity]#1](f:0,a:0) constructor()
+2025-11-10 01:59:07.709 28028-28028 BLASTBufferQueue        com.cdccreditsmart.app               D  [VRI[MainActivity]#1](f:0,a:0) update width=1080 height=2400 format=-3 mTransformHint=0
+2025-11-10 01:59:07.712 28028-28099 WebSocketManager        com.cdccreditsmart.app               D  Message received: {"type":"pong","timestamp":"2025-11-10T04:59:07.652Z"}...
+2025-11-10 01:59:07.712 28028-28099 WebSocketManager        com.cdccreditsmart.app               D  Received message type: pong
+2025-11-10 01:59:07.712 28028-28099 WebSocketManager        com.cdccreditsmart.app               D  Pong received
+2025-11-10 01:59:07.776 28028-28058 BLASTBufferQueue        com.cdccreditsmart.app               D  [VRI[MainActivity]#1](f:0,a:1) acquireNextBufferLocked size=1080x2400 mFrameNumber=1 applyTransaction=true mTimestamp=57490822314964(auto) mPendingTransactions.size=0 graphicBufferId=120379343372295 transform=0
+2025-11-10 01:59:08.685 28028-28028 WebSocketManager        com.cdccreditsmart.app               D  Heartbeat ping sent
+2025-11-10 01:59:08.846 28028-28154 WebSocketManager        com.cdccreditsmart.app               D  Message received: {"type":"pong","timestamp":"2025-11-10T04:59:08.784Z"}...
+2025-11-10 01:59:08.846 28028-28154 WebSocketManager        com.cdccreditsmart.app               D  Received message type: pong
+2025-11-10 01:59:08.846 28028-28154 WebSocketManager        com.cdccreditsmart.app               D  Pong received
+2025-11-10 01:59:08.967 28028-28028 ScrollIdentify          com.cdccreditsmart.app               I  on fling
+2025-11-10 01:59:09.819 28028-28028 ScrollIdentify          com.cdccreditsmart.app               I  on fling
