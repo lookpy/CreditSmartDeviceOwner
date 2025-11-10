@@ -32,10 +32,8 @@ sealed class CommandParameters {
         val rules: List<BlockingRule>? = null
     ) : CommandParameters()
     
-    @JsonClass(generateAdapter = true)
     object EmptyParameters : CommandParameters()
     
-    @JsonClass(generateAdapter = true)
     data class UnknownParameters(
         val rawData: Map<String, Any?> = emptyMap()
     ) : CommandParameters()

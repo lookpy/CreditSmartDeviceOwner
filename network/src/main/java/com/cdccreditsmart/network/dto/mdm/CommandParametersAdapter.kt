@@ -19,9 +19,8 @@ class CommandParametersAdapter : JsonAdapter.Factory {
     }
 }
 
-private class MdmCommandAdapter(moshi: Moshi) : JsonAdapter<MdmCommand>() {
+private class MdmCommandAdapter(val moshi: Moshi) : JsonAdapter<MdmCommand>() {
     private val blockParametersAdapter = moshi.adapter(CommandParameters.BlockParameters::class.java)
-    private val emptyParametersAdapter = moshi.adapter(CommandParameters.EmptyParameters::class.java)
     private val options: JsonReader.Options = JsonReader.Options.of(
         "id", "commandType", "parameters", "priority", "createdAt", "expiresAt", "status"
     )
@@ -29,7 +28,7 @@ private class MdmCommandAdapter(moshi: Moshi) : JsonAdapter<MdmCommand>() {
     override fun fromJson(reader: JsonReader): MdmCommand? {
         var id: String? = null
         var commandType: String? = null
-        var parameters: CommandParameters? = null
+        var parametersRaw: Any? = null
         var priority: String = "normal"
         var createdAt: String? = null
         var expiresAt: String? = null
@@ -41,27 +40,7 @@ private class MdmCommandAdapter(moshi: Moshi) : JsonAdapter<MdmCommand>() {
                 0 -> id = reader.nextString()
                 1 -> commandType = reader.nextString()
                 2 -> {
-                    // Parse parameters based on commandType
-                    parameters = when (commandType) {
-                        "BLOCK_APPS_PROGRESSIVE" -> {
-                            try {
-                                blockParametersAdapter.fromJson(reader)
-                            } catch (e: Exception) {
-                                // Fallback to empty if parsing fails
-                                reader.skipValue()
-                                CommandParameters.EmptyParameters
-                            }
-                        }
-                        "LOCK_SCREEN", "UNBLOCK_APPS_PROGRESSIVE", "UNBLOCK_APPS" -> {
-                            reader.skipValue() // Skip empty {} object
-                            CommandParameters.EmptyParameters
-                        }
-                        else -> {
-                            // Unknown command type - skip parameters
-                            reader.skipValue()
-                            CommandParameters.UnknownParameters()
-                        }
-                    }
+                    parametersRaw = reader.readJsonValue()
                 }
                 3 -> priority = reader.nextString()
                 4 -> createdAt = reader.nextString()
@@ -75,10 +54,30 @@ private class MdmCommandAdapter(moshi: Moshi) : JsonAdapter<MdmCommand>() {
         }
         reader.endObject()
         
+        val parameters = when (commandType) {
+            "BLOCK_APPS_PROGRESSIVE" -> {
+                try {
+                    if (parametersRaw != null) {
+                        blockParametersAdapter.fromJsonValue(parametersRaw)
+                    } else {
+                        CommandParameters.EmptyParameters
+                    }
+                } catch (e: Exception) {
+                    CommandParameters.EmptyParameters
+                }
+            }
+            "LOCK_SCREEN", "UNBLOCK_APPS_PROGRESSIVE", "UNBLOCK_APPS" -> {
+                CommandParameters.EmptyParameters
+            }
+            else -> {
+                CommandParameters.UnknownParameters()
+            }
+        }
+        
         return MdmCommand(
             id = id ?: throw JsonDataException("Required field 'id' missing"),
             commandType = commandType ?: throw JsonDataException("Required field 'commandType' missing"),
-            parameters = parameters ?: CommandParameters.EmptyParameters,
+            parameters = parameters,
             priority = priority,
             createdAt = createdAt,
             expiresAt = expiresAt,
@@ -112,7 +111,7 @@ private class MdmCommandAdapter(moshi: Moshi) : JsonAdapter<MdmCommand>() {
     }
 }
 
-private class MdmCommandFullAdapter(moshi: Moshi) : JsonAdapter<MdmCommandFull>() {
+private class MdmCommandFullAdapter(val moshi: Moshi) : JsonAdapter<MdmCommandFull>() {
     private val blockParametersAdapter = moshi.adapter(CommandParameters.BlockParameters::class.java)
     private val options: JsonReader.Options = JsonReader.Options.of(
         "id", "deviceId", "commandType", "parameters", "status", "priority", "expiresAt"
@@ -122,7 +121,7 @@ private class MdmCommandFullAdapter(moshi: Moshi) : JsonAdapter<MdmCommandFull>(
         var id: String? = null
         var deviceId: String? = null
         var commandType: String? = null
-        var parameters: CommandParameters? = null
+        var parametersRaw: Any? = null
         var status: String? = null
         var priority: String = "normal"
         var expiresAt: String? = null
@@ -134,24 +133,7 @@ private class MdmCommandFullAdapter(moshi: Moshi) : JsonAdapter<MdmCommandFull>(
                 1 -> deviceId = reader.nextString()
                 2 -> commandType = reader.nextString()
                 3 -> {
-                    parameters = when (commandType) {
-                        "BLOCK_APPS_PROGRESSIVE" -> {
-                            try {
-                                blockParametersAdapter.fromJson(reader)
-                            } catch (e: Exception) {
-                                reader.skipValue()
-                                CommandParameters.EmptyParameters
-                            }
-                        }
-                        "LOCK_SCREEN", "UNBLOCK_APPS_PROGRESSIVE", "UNBLOCK_APPS" -> {
-                            reader.skipValue()
-                            CommandParameters.EmptyParameters
-                        }
-                        else -> {
-                            reader.skipValue()
-                            CommandParameters.UnknownParameters()
-                        }
-                    }
+                    parametersRaw = reader.readJsonValue()
                 }
                 4 -> status = reader.nextString()
                 5 -> priority = reader.nextString()
@@ -164,11 +146,31 @@ private class MdmCommandFullAdapter(moshi: Moshi) : JsonAdapter<MdmCommandFull>(
         }
         reader.endObject()
         
+        val parameters = when (commandType) {
+            "BLOCK_APPS_PROGRESSIVE" -> {
+                try {
+                    if (parametersRaw != null) {
+                        blockParametersAdapter.fromJsonValue(parametersRaw)
+                    } else {
+                        CommandParameters.EmptyParameters
+                    }
+                } catch (e: Exception) {
+                    CommandParameters.EmptyParameters
+                }
+            }
+            "LOCK_SCREEN", "UNBLOCK_APPS_PROGRESSIVE", "UNBLOCK_APPS" -> {
+                CommandParameters.EmptyParameters
+            }
+            else -> {
+                CommandParameters.UnknownParameters()
+            }
+        }
+        
         return MdmCommandFull(
             id = id ?: throw JsonDataException("Required field 'id' missing"),
             deviceId = deviceId ?: throw JsonDataException("Required field 'deviceId' missing"),
             commandType = commandType ?: throw JsonDataException("Required field 'commandType' missing"),
-            parameters = parameters ?: CommandParameters.EmptyParameters,
+            parameters = parameters,
             status = status ?: "pending",
             priority = priority,
             expiresAt = expiresAt ?: ""
