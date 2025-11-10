@@ -551,23 +551,30 @@ data class UninstallPaymentInfo(
     val allPaid: Boolean
 )
 
-// CDC Device Status Response
+// CDC Device Status Response - Estrutura real do backend
 //@JsonClass(generateAdapter = true) // Temporarily disabled to fix build
 data class CdcDeviceStatusResponse(
-    val serialNumber: String,
-    val deviceId: String,
+    val device: CdcDeviceInfo,
+    val customer: CdcCustomerInfo? = null,
+    val pdvSession: PdvSessionInfo? = null,
+    val shouldBlock: Boolean? = null,
+    val overdueCount: Int? = null,
+    val daysSinceOverdue: Int? = null
+)
+
+//@JsonClass(generateAdapter = true) // Temporarily disabled to fix build
+data class CdcDeviceInfo(
+    val id: String,
+    val name: String? = null,
     val isBlocked: Boolean,
-    val status: String,
-    val hasBlockReason: Boolean,
-    val customerInfo: CdcCustomerInfo? = null,
-    val paymentInfo: CdcPaymentInfo? = null,
-    val pdvSession: PdvSessionInfo? = null
+    val blockReason: String? = null,
+    val status: String
 )
 
 //@JsonClass(generateAdapter = true) // Temporarily disabled to fix build
 data class CdcCustomerInfo(
-    val name: String? = null,
-    val hasCustomer: Boolean
+    val id: String? = null,
+    val name: String? = null
 )
 
 //@JsonClass(generateAdapter = true) // Temporarily disabled to fix build

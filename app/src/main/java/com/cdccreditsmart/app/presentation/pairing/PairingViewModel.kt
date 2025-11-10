@@ -240,14 +240,14 @@ class PairingViewModel(private val context: Context) : ViewModel() {
                         
                         tokenStorage.saveAuthToken(
                             authToken = authToken,
-                            contractCode = deviceId
+                            contractCode = contractId  // Salva código de pareamento, NÃO deviceId
                         )
                         
                         Log.i(TAG, "🚀 Iniciando CdcForegroundService para MDM...")
                         CdcForegroundService.startService(context.applicationContext)
                         
                         step3ConnectWebSocket(
-                            contractCode = deviceId,
+                            contractCode = contractId,  // Usa código de pareamento
                             customerName = body.customer?.name,
                             deviceModel = body.device?.model
                         )
@@ -406,14 +406,14 @@ class PairingViewModel(private val context: Context) : ViewModel() {
                                 
                                 tokenStorage.saveAuthToken(
                                     authToken = authToken,
-                                    contractCode = deviceId
+                                    contractCode = contractCode  // Salva código de pareamento, NÃO deviceId
                                 )
                                 
                                 Log.i(TAG, "🚀 Iniciando CdcForegroundService para MDM...")
                                 CdcForegroundService.startService(context.applicationContext)
                                 
                                 step3ConnectWebSocket(
-                                    contractCode = deviceId,
+                                    contractCode = contractCode,  // Usa código de pareamento
                                     customerName = body.customer?.name,
                                     deviceModel = body.device?.model
                                 )

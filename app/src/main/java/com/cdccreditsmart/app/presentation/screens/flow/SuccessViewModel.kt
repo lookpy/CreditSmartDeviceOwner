@@ -128,7 +128,7 @@ class SuccessViewModel(
      */
     private fun interpretSaleState(deviceStatus: com.cdccreditsmart.network.api.CdcDeviceStatusResponse): SaleState {
         // 1. Check device status first (highest priority)
-        when (deviceStatus.status.lowercase()) {
+        when (deviceStatus.device.status.lowercase()) {
             "blocked" -> {
                 Log.w(TAG, "🚫 Device is BLOCKED")
                 return SaleState.DEVICE_BLOCKED
@@ -139,7 +139,7 @@ class SuccessViewModel(
             }
         }
         
-        // 2. Check PDV Session info (NEW - backend heartbeat tracking)
+        // 2. Check PDV Session info (PRIMARY - backend heartbeat tracking)
         val pdvSession = deviceStatus.pdvSession
         if (pdvSession != null) {
             Log.d(TAG, "🔍 PDV Session detected: stage=${pdvSession.currentStage}, shouldWait=${pdvSession.shouldWait}, heartbeatAge=${pdvSession.heartbeatAge}")
@@ -177,40 +177,16 @@ class SuccessViewModel(
             }
         }
         
-        // 3. Fallback: Use old logic with paymentInfo/customerInfo
-        Log.d(TAG, "⚠️ No pdvSession - usando lógica antiga (paymentInfo/customerInfo)")
-        
-        // Check payment cancellation
-        val paymentInfo = deviceStatus.paymentInfo
-        if (paymentInfo != null && paymentInfo.paymentStatus.lowercase() == "cancelled") {
-            Log.w(TAG, "❌ SALE_CANCELLED by PDV")
-            return SaleState.SALE_CANCELLED
-        }
-        
-        // Check if sale is open
-        val customerInfo = deviceStatus.customerInfo
-        if (customerInfo == null || !customerInfo.hasCustomer) {
+        // 3. Fallback: Check if customer exists (sale is open)
+        val customer = deviceStatus.customer
+        if (customer == null || customer.name.isNullOrBlank()) {
             Log.d(TAG, "📭 SALE_NOT_OPEN - No customer associated")
             return SaleState.SALE_NOT_OPEN
         }
         
-        // Check if payment completed
-        if (paymentInfo != null) {
-            when (paymentInfo.paymentStatus.lowercase()) {
-                "completed", "paid", "paid_off" -> {
-                    Log.d(TAG, "✅ PDV_COMPLETED - Payment finalized")
-                    return SaleState.PDV_COMPLETED
-                }
-                "pending", "processing" -> {
-                    Log.d(TAG, "⏳ PDV_PROCESSING_PAYMENT - Payment status: ${paymentInfo.paymentStatus}")
-                    return SaleState.PDV_PROCESSING_PAYMENT
-                }
-            }
-        }
-        
-        // Unknown state
-        Log.w(TAG, "❓ UNKNOWN state")
-        return SaleState.UNKNOWN
+        // If we have customer but no pdvSession, assume processing
+        Log.d(TAG, "⏳ Customer exists but no pdvSession - assuming PDV_PROCESSING_PAYMENT")
+        return SaleState.PDV_PROCESSING_PAYMENT
     }
 
     /**

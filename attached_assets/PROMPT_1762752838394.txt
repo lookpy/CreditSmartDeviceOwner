@@ -1,0 +1,91 @@
+// 1. Criar WorkManager para buscar comandos periodicamente
+class MdmCommandWorker(context: Context, params: WorkerParameters) : Worker(context, params) {
+    
+    override fun doWork(): Result {
+        Log.d("MDM", "🔍 Verificando comandos pendentes...")
+        
+        val deviceSerial = contractStorage.getSerial() ?: return Result.failure()
+        
+        try {
+            // Buscar comandos pendentes
+            val response = apiService.getCommands(deviceSerial).execute()
+            
+            if (response.isSuccessful && response.body() != null) {
+                val commandsResponse = response.body()!!
+                Log.d("MDM", "📥 Recebidos ${commandsResponse.commands.size} comandos")
+                
+                // Processar cada comando
+                for (command in commandsResponse.commands) {
+                    when (command.commandType) {
+                        "BLOCK_APPS_PROGRESSIVE" -> {
+                            Log.d("MDM", "🔒 Aplicando bloqueio nível ${command.parameters.targetLevel}")
+                            applyProgressiveBlock(command.parameters)
+                            acknowledgeCommand(deviceSerial, command.id, "completed")
+                        }
+                        
+                        "UNBLOCK_APPS_PROGRESSIVE" -> {
+                            Log.d("MDM", "🔓 Desbloqueando todos os apps")
+                            unblockAllApps()
+                            acknowledgeCommand(deviceSerial, command.id, "completed")
+                        }
+                    }
+                }
+            }
+            
+            return Result.success()
+            
+        } catch (e: Exception) {
+            Log.e("MDM", "Erro ao buscar comandos: ${e.message}")
+            return Result.retry()
+        }
+    }
+    
+    private fun applyProgressiveBlock(params: BlockingParameters) {
+        val level = params.targetLevel
+        val categories = params.categories
+        val exceptions = params.exceptions
+        
+        // Implementar lógica de bloqueio progressivo aqui
+        // Bloquear apps conforme categorias
+        // Nunca bloquear: bancos, telefone, SMS
+    }
+    
+    private fun unblockAllApps() {
+        // Desbloquear todos os apps
+        // Remover todas as restrições do Device Owner
+    }
+    
+    private fun acknowledgeCommand(serial: String, commandId: String, status: String) {
+        try {
+            val ackRequest = CommandAcknowledgement(
+                commandId = commandId,
+                status = status,
+                response = mapOf("success" to true)
+            )
+            apiService.acknowledgeCommand(serial, ackRequest).execute()
+            Log.d("MDM", "✅ Comando $commandId confirmado")
+        } catch (e: Exception) {
+            Log.e("MDM", "Erro ao confirmar comando: ${e.message}")
+        }
+    }
+}
+
+// 2. Agendar WorkManager a cada 1 hora
+fun scheduleMdmCommandCheck(context: Context) {
+    val workRequest = PeriodicWorkRequestBuilder<MdmCommandWorker>(
+        1, TimeUnit.HOURS,
+        15, TimeUnit.MINUTES // Flex interval
+    ).build()
+    
+    WorkManager.getInstance(context).enqueueUniquePeriodicWork(
+        "mdm_command_check",
+        ExistingPeriodicWorkPolicy.KEEP,
+        workRequest
+    )
+}
+
+// 3. Chamar no Application.onCreate() ou após autenticação
+override fun onCreate() {
+    super.onCreate()
+    scheduleMdmCommandCheck(this)
+}

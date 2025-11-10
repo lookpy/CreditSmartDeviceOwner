@@ -68,16 +68,17 @@ fun DeviceStatusResponse.toDomain(): DeviceStatus = try {
 /**
  * Converts CdcDeviceStatusResponse to DeviceStatus domain model.
  * Maps CDC device status information from API response to domain model.
+ * Updated to match real backend structure with nested device object.
  */
 fun CdcDeviceStatusResponse.toDomain(): DeviceStatus = try {
     DeviceStatus(
-        deviceId = this.deviceId.safeString(),
-        status = this.status.safeString(),
+        deviceId = this.device.id.safeString(),
+        status = this.device.status.safeString(),
         contractId = null, // CDC API doesn't provide contractId in this response
-        blockingLevel = if (this.isBlocked) "full" else "none",
-        blockingReason = if (this.hasBlockReason) "Payment overdue" else null,
-        allowedActions = if (this.isBlocked) emptyList() else listOf("all"),
-        blockedPackages = if (this.isBlocked) listOf("*") else emptyList(),
+        blockingLevel = if (this.device.isBlocked) "full" else "none",
+        blockingReason = this.device.blockReason,
+        allowedActions = if (this.device.isBlocked) emptyList() else listOf("all"),
+        blockedPackages = if (this.device.isBlocked) listOf("*") else emptyList(),
         lastHeartbeat = System.currentTimeMillis(), // CDC API doesn't provide this, use current time
         configuration = DomainDeviceConfiguration(
             updateCheckInterval = 3600000L, // 1 hour default
@@ -88,11 +89,11 @@ fun CdcDeviceStatusResponse.toDomain(): DeviceStatus = try {
     )
 } catch (e: Exception) {
     DeviceStatus(
-        deviceId = this.deviceId ?: "unknown",
+        deviceId = "unknown",
         status = "error",
         contractId = null,
         blockingLevel = null,
-        blockingReason = "Error mapping CDC device status",
+        blockingReason = "Error mapping CDC device status: ${e.message}",
         allowedActions = emptyList(),
         blockedPackages = emptyList(),
         lastHeartbeat = 0L,
