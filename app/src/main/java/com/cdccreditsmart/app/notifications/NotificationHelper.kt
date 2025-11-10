@@ -41,6 +41,7 @@ class NotificationHelper(private val context: Context) {
         private const val TAG = "NotificationHelper"
         private const val DEFAULT_CHANNEL_ID = "cdc_default"
         private const val DEFAULT_CHANNEL_NAME = "CDC Credit Smart"
+        private const val NOTIFICATION_ID_BLOCKING = 1002
     }
 
     private val notificationManager: NotificationManager =
@@ -195,5 +196,50 @@ class NotificationHelper(private val context: Context) {
     fun cancelAllNotifications() {
         notificationManager.cancelAll()
         Log.d(TAG, "All notifications cancelled")
+    }
+
+    fun showBlockingNotification(
+        title: String,
+        body: String,
+        daysOverdue: Int
+    ) {
+        Log.d(TAG, "Showing blocking notification - Days overdue: $daysOverdue")
+
+        val intent = Intent(context, MainActivity::class.java).apply {
+            flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
+            putExtra("days_overdue", daysOverdue)
+            putExtra("blocking_alert", true)
+        }
+
+        val pendingIntentFlags = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
+        } else {
+            PendingIntent.FLAG_UPDATE_CURRENT
+        }
+
+        val pendingIntent = PendingIntent.getActivity(
+            context,
+            NOTIFICATION_ID_BLOCKING,
+            intent,
+            pendingIntentFlags
+        )
+
+        val notificationBuilder = NotificationCompat.Builder(context, NotificationType.ALERT.channelId)
+            .setSmallIcon(android.R.drawable.ic_dialog_alert)
+            .setContentTitle(title)
+            .setContentText(body)
+            .setPriority(NotificationCompat.PRIORITY_HIGH)
+            .setCategory(NotificationCompat.CATEGORY_ALARM)
+            .setAutoCancel(false)
+            .setContentIntent(pendingIntent)
+            .setStyle(NotificationCompat.BigTextStyle().bigText(body))
+            .setVibrate(longArrayOf(0, 500, 250, 500))
+
+        try {
+            notificationManager.notify(NOTIFICATION_ID_BLOCKING, notificationBuilder.build())
+            Log.d(TAG, "Blocking notification displayed successfully")
+        } catch (e: Exception) {
+            Log.e(TAG, "Error displaying blocking notification", e)
+        }
     }
 }

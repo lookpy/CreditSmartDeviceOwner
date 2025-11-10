@@ -1,0 +1,229 @@
+PROMPT (cole como instrução para a IA que edita o app CDC Credit Smart)
+
+Você é o assistente técnico responsável por gerar/alterar o comportamento do app CDC Credit Smart para aplicar regras progressivas de bloqueio de aplicativos com base em dias de atraso no pagamento. Siga estritamente estas instruções técnicas, de usabilidade e de segurança.
+
+Objetivo
+
+Aplicar bloqueios/limitações graduais a categorias de aplicativos no aparelho do cliente, conforme dias de atraso no contrato.
+
+Garantir que o aparelho não seja “tornado inútil” (não bricar), preservar chamadas de emergência, funções bancárias e comunicação essenciais conforme regras abaixo.
+
+Registrar toda ação em logs e oferecer canais de contestação/redeem (pagamento/recuperação) via app/servidor.
+
+Requisitos legais / consentimento (obrigatório)
+
+Só aplique estas medidas em aparelhos onde exista consentimento explícito do titular (contrato assinado / aceite TOS) e conformidade com leis locais.
+
+Antes de aplicar qualquer bloqueio, mostrar um aviso prévio no app (push + in-app) informando a data do primeiro bloqueio e quais apps serão afetados.
+
+Implementar mecanismo de contestação (apelação) e de pagamento que, quando concluído com sucesso, reverta bloqueios imediatamente.
+
+Contexto técnico
+
+O app deve operar como Device Owner / gestor do dispositivo (ou ter privilégios de MDM equivalentes) para aplicar bloqueios robustos; caso contrário, use o modelo de overlay + Accessibility + UsageStats com limitações claras.
+
+Registre eventos (data/hora, regra aplicada, pacotes bloqueados, ID do dispositivo, userId, motivo) em log local e envie para servidor seguro assim que houver conexão.
+
+Nunca bloquear funcionalidades essenciais do sistema (ex.: emergências) ou impedir updates de segurança do Android.
+
+Mapa de regras (níveis por dias de atraso)
+
+Use esta estrutura JSON como fonte de verdade para as regras; a IA/editor deve gerar a lógica a partir daqui:
+
+{
+  "escalation_rules": [
+    {
+      "days": 7,
+      "action": "block",
+      "categories": ["photos","gallery","video_players","web_browsers"],
+      "exceptions": ["com.whatsapp","com.android.dialer","com.android.messaging","bancos_allowed","emails_allowed"],
+      "message_title": "Atenção: limite de apps reduzido",
+      "message_body": "Seu aparelho está com atraso de 7 dias. Aplicativos de fotos, galeria, vídeos e navegadores foram temporariamente bloqueados até a regularização."
+    },
+    {
+      "days": 15,
+      "action": "block",
+      "categories": ["youtube","music_players","play_store","games"],
+      "exceptions": ["com.whatsapp","com.android.dialer","com.android.messaging","bancos_allowed","emails_allowed"],
+      "message_title": "Atenção: restrição ampliada",
+      "message_body": "Atraso de 15 dias. YouTube, apps de música, Play Store e jogos foram bloqueados além das restrições anteriores."
+    },
+    {
+      "days": 30,
+      "action": "block",
+      "categories": ["social_media"],
+      "exceptions": ["com.whatsapp","com.android.dialer","com.android.messaging","bancos_allowed","emails_allowed"],
+      "message_title": "Atenção: redes sociais bloqueadas",
+      "message_body": "Atraso de 30 dias. Todas as redes sociais foram bloqueadas, exceto WhatsApp."
+    },
+    {
+      "days": 45,
+      "action": "block",
+      "categories": ["all_apps_except_whatsapp"],
+      "exceptions": ["com.whatsapp","com.android.dialer","com.android.messaging","bancos_allowed","emails_allowed"],
+      "message_title": "Atenção: restrição severa",
+      "message_body": "Atraso de 45 dias. Quase todos os aplicativos estão bloqueados, WhatsApp continua liberado."
+    },
+    {
+      "days": 60,
+      "action": "block",
+      "categories": ["all_apps_except_banks_calls_sms_emails"],
+      "exceptions": ["bancos_allowed","com.android.dialer","com.android.messaging","emails_allowed"],
+      "message_title": "Atenção: restrição máxima",
+      "message_body": "Atraso de 60 dias. Apenas apps bancários, de e-mail, telefone e SMS permanecerão disponíveis. Demais apps foram bloqueados."
+    }
+  ]
+}
+
+
+Observações sobre categorias e exceções
+
+categories são conjuntos lógicos (ex.: photos = galeria, visualizadores de fotos; web_browsers = navegadores; social_media = facebook, instagram, twitter, tiktok, etc.).
+
+exceptions pode incluir pacotes explícitos (com.whatsapp) e tokens como bancos_allowed / emails_allowed que a implementação deve expandir para uma lista concreta de packageNames configurável no servidor.
+
+all_apps_except_whatsapp e all_apps_except_banks_calls_sms_emails devem ser tratados com cuidado: aplicar whitelists explícitas, não negar permissões do sistema.
+
+Comportamento do bloqueio
+
+Ao detectar que daysOverdue >= rule.days, aplique o bloqueio desta regra e de todas regras anteriores (cumulativo).
+
+Bloqueio robusto quando Device Owner: usar DevicePolicyManager.setApplicationHidden() (ou clearApplicationUserData? Não — não apagar dados), ou configurar lista de setLockTaskPackages() para impedir execução.
+
+Se não for Device Owner: usar combinação de overlay full-screen + Accessibility service que impede interação com o app bloqueado.
+
+Fornecer tela explicativa com:
+
+motivo do bloqueio,
+
+valor em atraso e instruções para pagamento,
+
+botão “Pagar / Regularizar” que inicia o fluxo de pagamento no app,
+
+botão “Contestar” com formulário que cria ticket.
+
+Mensagens / UX
+
+Enviar push + in-app com templates (use os message_title e message_body do JSON).
+
+Mostrar contagem regressiva para próximo nível de bloqueio (ex.: “Faltam X dias para bloqueio do YouTube”).
+
+Permitir que o usuário veja um extrato simples do débito dentro do app.
+
+Reversão do bloqueio
+
+Ao confirmar pagamento (webhook do gateway ou confirmação manual do backend), desbloquear imediatamente (em segundos) e registrar evento de desbloqueio.
+
+Se desbloqueio manual for solicitado pelo suporte, exigir autenticação forte (ex.: OTP + registro do atendente) e registrar no log quem fez a ação.
+
+Segurança e prevenção de abusos
+
+Implementar limites para evitar “bricking”: nunca bloquear acesso a configurações críticas de rede (Wi-Fi), updates do sistema, e ferramentas de recuperação.
+
+Garantir que, em modo de bloqueio severo, o usuário ainda consiga:
+
+ligar e receber chamadas,
+
+enviar/receber SMS,
+
+usar apps bancários e de email conforme regras,
+
+realizar chamadas de emergência (112/190/192 conforme país).
+
+Logar tentativas de desinstalação, alteração de permissões e tentativas de root/jailbreak e alertar backend.
+
+Lista de pacotes (exemplo)
+
+Forneça ao time de QA/Dev uma lista inicial mapeando categorias para packageNames. Exemplo (preencher/ajustar conforme mercado alvo):
+
+social_media: ["com.facebook.katana","com.instagram.android","com.twitter.android","com.tiktok.android"]
+
+photos: ["com.google.android.apps.photos","com.sec.android.gallery3d"]
+
+video_players: ["com.mxtech.videoplayer.ad","org.videolan.vlc"]
+
+web_browsers: ["com.android.chrome","org.mozilla.firefox","com.opera.browser"]
+
+youtube: ["com.google.android.youtube"]
+
+music_players: ["com.spotify.music","com.google.android.music","com.apple.android.music"]
+
+play_store: ["com.android.vending"]
+
+games: ["*"] (ou lista específica)
+
+whatsapp: ["com.whatsapp","com.whatsapp.w4b"]
+
+bancos_allowed: lista configurável via servidor (ex.: ["br.com.bancoX","br.com.bancoY"])
+
+emails_allowed: lista configurável (ex.: ["com.google.android.gm","com.microsoft.office.outlook"])
+
+Observabilidade
+
+Cada mudança de estado (aplicação de regra / tentativa de execução bloqueada / desbloqueio) deve gerar um evento com:
+
+timestamp (UTC),
+
+deviceId,
+
+userId,
+
+ruleApplied (days/identifier),
+
+packagesAffected,
+
+trigger (cron/check/manual/webhook),
+
+result (success/failure),
+
+serverAck (boolean).
+
+Logs locais devem ser compactados e enviados ao servidor periodicamente em conexões seguras (HTTPS/TLS).
+
+Testes / QA
+
+Fornecer ambiente de testes com simulação de daysOverdue (0,7,15,30,45,60) para validar comportamento.
+
+Testar com Device Owner e sem Device Owner (caminhos alternativos).
+
+Testar cenários de recuperação (pagamento + desbloqueio), apelação e casos offline.
+
+Mensagens de bloqueio — exemplos
+
+7 dias:
+
+Título: “Atraso: 7 dias — restrição parcial”
+
+Corpo: “Seu aparelho está com 7 dias de atraso. Apps de fotos, galeria, vídeos e navegadores estão temporariamente bloqueados. Toque para ver opções de pagamento.”
+
+15 dias:
+
+Título: “Atraso: 15 dias — restrição ampliada”
+
+Corpo: “Atraso de 15 dias. YouTube, apps de música, Play Store e jogos foram bloqueados. Pague para recuperar.”
+
+30 dias:
+
+Título: “Atraso: 30 dias — redes sociais bloqueadas”
+
+Corpo: “Redes sociais bloqueadas, exceto WhatsApp. Entre em contato para regularizar.”
+
+45 dias:
+
+Título: “Atraso: 45 dias — bloqueio severo”
+
+Corpo: “A maioria dos apps está bloqueada. WhatsApp permanece disponível.”
+
+60 dias:
+
+Título: “Atraso: 60 dias — restrição máxima”
+
+Corpo: “Apenas apps bancários, ligação, SMS e e-mail permanecem. Regularize o pagamento.”
+
+Notas finais / ética
+
+NÃO use esse sistema para controle sem consentimento. Mantenha logs e backups de ações administrativas.
+
+Informe claramente nos contratos: que apps serão restringidos em cada estágio, forma de desbloqueio, possibilidade de contestação e contato do suporte.
+
+Recomende análises legais locais antes do rollout em campo.
