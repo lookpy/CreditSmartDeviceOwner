@@ -1,6 +1,6 @@
 package com.cdccreditsmart.network.dto.blocking
 
-import com.google.gson.annotations.SerializedName
+import com.squareup.moshi.Json
 
 /**
  * Progressive App Blocking DTOs
@@ -11,17 +11,17 @@ import com.google.gson.annotations.SerializedName
  * Blocking category enum - defines categories of apps that can be blocked
  */
 enum class BlockingCategory {
-    @SerializedName("photos") PHOTOS,                                           // Gallery, photo viewers
-    @SerializedName("gallery") GALLERY,                                          // Gallery apps
-    @SerializedName("video_players") VIDEO_PLAYERS,                                    // Video player apps
-    @SerializedName("web_browsers") WEB_BROWSERS,                                     // Chrome, Firefox, etc.
-    @SerializedName("youtube") YOUTUBE,                                          // YouTube app
-    @SerializedName("music_players") MUSIC_PLAYERS,                                    // Spotify, Music players
-    @SerializedName("play_store") PLAY_STORE,                                       // Google Play Store
-    @SerializedName("games") GAMES,                                            // Gaming apps
-    @SerializedName("social_media") SOCIAL_MEDIA,                                     // Facebook, Instagram, TikTok, etc.
-    @SerializedName("all_apps_except_whatsapp") ALL_APPS_EXCEPT_WHATSAPP,                        // All apps except WhatsApp and essentials
-    @SerializedName("all_apps_except_banks_calls_sms_emails") ALL_APPS_EXCEPT_BANKS_CALLS_SMS_EMAILS           // All apps except banks, calls, SMS, emails
+    @Json(name = "photos") PHOTOS,                                           // Gallery, photo viewers
+    @Json(name = "gallery") GALLERY,                                          // Gallery apps
+    @Json(name = "video_players") VIDEO_PLAYERS,                                    // Video player apps
+    @Json(name = "web_browsers") WEB_BROWSERS,                                     // Chrome, Firefox, etc.
+    @Json(name = "youtube") YOUTUBE,                                          // YouTube app
+    @Json(name = "music_players") MUSIC_PLAYERS,                                    // Spotify, Music players
+    @Json(name = "play_store") PLAY_STORE,                                       // Google Play Store
+    @Json(name = "games") GAMES,                                            // Gaming apps
+    @Json(name = "social_media") SOCIAL_MEDIA,                                     // Facebook, Instagram, TikTok, etc.
+    @Json(name = "all_apps_except_whatsapp") ALL_APPS_EXCEPT_WHATSAPP,                        // All apps except WhatsApp and essentials
+    @Json(name = "all_apps_except_banks_calls_sms_emails") ALL_APPS_EXCEPT_BANKS_CALLS_SMS_EMAILS           // All apps except banks, calls, SMS, emails
 }
 
 /**
