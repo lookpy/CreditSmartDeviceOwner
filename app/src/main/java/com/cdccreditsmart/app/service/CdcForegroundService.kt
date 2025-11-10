@@ -186,38 +186,54 @@ class CdcForegroundService : Service() {
     private fun initializeServices() {
         serviceScope.launch {
             try {
+                Log.d(TAG, "🔧 Iniciando initializeServices()...")
+                
                 val secureStorage = SecureTokenStorage(applicationContext)
                 val authToken = secureStorage.getAuthToken()
                 val contractCode = secureStorage.getContractCode()
                 
+                Log.d(TAG, "🔐 AuthToken presente: ${!authToken.isNullOrBlank()}")
+                Log.d(TAG, "🔐 ContractCode presente: ${!contractCode.isNullOrBlank()}")
+                
                 if (authToken.isNullOrBlank() || contractCode.isNullOrBlank()) {
                     Log.w(TAG, "⚠️ Sem token de autenticação - serviço em standby")
+                    Log.w(TAG, "⚠️ AuthToken isNull: ${authToken == null}, isEmpty: ${authToken?.isEmpty()}")
+                    Log.w(TAG, "⚠️ ContractCode isNull: ${contractCode == null}, isEmpty: ${contractCode?.isEmpty()}")
                     return@launch
                 }
                 
-                Log.d(TAG, "🔐 Token encontrado - inicializando serviços")
+                Log.i(TAG, "🔐 Tokens encontrados - inicializando serviços MDM")
                 
+                // Inicializa MDM Command Receiver
+                Log.d(TAG, "📡 Criando MdmCommandReceiver...")
                 mdmReceiver = MdmCommandReceiver(applicationContext)
-                mdmReceiver?.connectMdmWebSocket(authToken)
-                Log.i(TAG, "📡 WebSocket MDM conectado")
                 
+                Log.d(TAG, "📡 Conectando MdmCommandReceiver ao WebSocket MDM...")
+                mdmReceiver?.connectMdmWebSocket(authToken)
+                Log.i(TAG, "📡 MdmCommandReceiver inicializado - aguardando conexão")
+                
+                // Inicializa WebSocket Flow Status
+                Log.d(TAG, "📡 Criando WebSocketManager (flow-status)...")
                 webSocketManager = WebSocketManager(
                     contractCode = contractCode,
                     onDeviceConnected = { 
-                        Log.i(TAG, "✅ Dispositivo conectado via WebSocket")
+                        Log.i(TAG, "✅ Dispositivo conectado via WebSocket Flow")
                     },
                     onSaleCompleted = { data ->
                         Log.i(TAG, "✅ Venda completa - contrato: ${data.contractCode}")
                     },
                     onError = { message ->
-                        Log.e(TAG, "❌ Erro no WebSocket: $message")
+                        Log.e(TAG, "❌ Erro no WebSocket Flow: $message")
                     }
                 )
                 webSocketManager?.connect()
-                Log.i(TAG, "📡 WebSocket Flow Status conectado")
+                Log.i(TAG, "📡 WebSocketManager inicializado")
+                
+                Log.i(TAG, "✅ Todos os serviços inicializados com sucesso")
                 
             } catch (e: Exception) {
-                Log.e(TAG, "❌ Erro ao inicializar serviços: ${e.message}", e)
+                Log.e(TAG, "❌ Erro ao inicializar serviços", e)
+                Log.e(TAG, "❌ Stack trace: ${e.stackTraceToString()}")
             }
         }
     }
@@ -326,5 +342,14 @@ class CdcForegroundService : Service() {
         )
         
         super.onTaskRemoved(rootIntent)
+    }
+    
+    /**
+     * Método público para forçar verificação de comandos MDM pendentes.
+     * Útil para debug e testes.
+     */
+    fun forceCheckPendingCommands() {
+        Log.i(TAG, "🔍 Forçando verificação de comandos pendentes...")
+        mdmReceiver?.checkPendingCommandsNow()
     }
 }

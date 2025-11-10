@@ -1,0 +1,125 @@
+Rotas de Bloqueio do APK
+🔐 Endpoints APK (Para o App Android)
+1. Comandos MDM
+Buscar Comandos Pendentes
+GET /api/apk/device/{serialNumber}/commands
+
+Autenticação: Play Integrity (automático)
+Uso: APK consulta comandos pendentes a cada 30-60 segundos (polling)
+Response: Lista de comandos pendentes (bloqueio/desbloqueio)
+Enviar Resposta de Comando
+POST /api/apk/device/{serialNumber}/command-response
+
+Autenticação: Play Integrity (automático)
+Uso: APK confirma execução do comando (sucesso ou falha)
+Body:
+{
+  "commandId": "cmd_uuid_123",
+  "status": "completed|failed|acknowledged",
+  "response": {
+    "success": true,
+    "blockedAppsCount": 15,
+    "appliedLevel": 2
+  }
+}
+
+2. Sistema de Decisões Pendentes
+Buscar Decisões Pendentes
+GET /api/apk/device/{serialNumber}/pending-decisions
+
+Autenticação: Play Integrity (automático)
+Uso: Verificar decisões administrativas de bloqueio
+Response: Lista de decisões pendentes
+Confirmar Decisão Processada
+POST /api/apk/device/{serialNumber}/acknowledge-decision
+
+Autenticação: Play Integrity (automático)
+Uso: Confirmar que a decisão foi processada
+Body:
+{
+  "decisionId": "decision_uuid_456",
+  "response": {
+    "success": true,
+    "processedAt": "2025-11-10T12:05:00.000Z"
+  }
+}
+
+3. Desbloqueio de Dispositivo
+Desbloquear Dispositivo
+POST /api/apk/device/{serialNumber}/unblock
+
+Autenticação: Play Integrity (automático)
+Uso: APK solicita desbloqueio (após pagamento regularizado)
+Response:
+{
+  "success": true,
+  "serialNumber": "ABC123456",
+  "deviceId": "device_xxx",
+  "isBlocked": false
+}
+
+4. Bloqueio Legado (Compatibilidade)
+Bloquear Dispositivo (Legado)
+POST /api/apk/device/{serialNumber}/block
+
+Status: DEPRECATED
+Uso: Manter compatibilidade com versões antigas do APK
+Recomendação: Usar sistema de comandos MDM acima
+🖥️ Endpoints Admin (Painel Web)
+1. Bloqueio Progressivo Manual
+Forçar Nível de Bloqueio
+POST /api/devices/{deviceId}/progressive-block
+
+Autenticação: JWT (Admin apenas)
+Uso: Administrador força um nível específico (0-5)
+Body:
+{
+  "targetLevel": 2,
+  "manualOverride": true
+}
+
+Obter Nível Atual
+GET /api/devices/{deviceId}/block-level
+
+Autenticação: JWT
+Response:
+{
+  "deviceId": "device_xxx",
+  "currentLevel": 2,
+  "daysOverdue": 15,
+  "suggestedLevel": 2
+}
+
+Obter Níveis de Todos Dispositivos
+GET /api/devices/block-levels
+
+Autenticação: JWT
+Response: Array com níveis de todos os dispositivos da loja
+2. Bloqueio/Desbloqueio Simples
+Bloquear Dispositivo
+POST /api/devices/{deviceId}/block
+
+Autenticação: JWT
+Uso: Bloqueio total do dispositivo (não progressivo)
+Desbloquear Dispositivo
+POST /api/devices/{deviceId}/unblock
+
+Autenticação: JWT
+Uso: Desbloqueio total do dispositivo
+🔄 WebSocket (Tempo Real)
+Notificações de Comandos MDM
+wss://{servidor}/ws?token={jwtToken}
+
+Evento: NEW_COMMAND
+Payload: Comando de bloqueio/desbloqueio em tempo real
+Uso: APK recebe comandos instantaneamente sem polling
+📊 Resumo de Uso
+APK Android (Kotlin)
+Polling: GET /api/apk/device/{serial}/commands (a cada 30-60s)
+Acknowledgement: POST /api/apk/device/{serial}/command-response
+WebSocket: Conectar em /ws para receber comandos em tempo real
+Painel Admin (Web)
+Bloqueio Manual: POST /api/devices/{id}/progressive-block
+Consulta: GET /api/devices/{id}/block-level
+Monitoramento: GET /api/devices/block-levels
+Todas as rotas APK (/api/apk/device/...) usam Play Integrity automaticamente - não precisam de token JWT nos headers! 🔐

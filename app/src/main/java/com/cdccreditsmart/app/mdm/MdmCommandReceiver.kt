@@ -42,6 +42,10 @@ class MdmCommandReceiver(private val context: Context) {
         .build()
     
     fun connectMdmWebSocket(jwtToken: String) {
+        Log.i(TAG, "🔗 Iniciando conexão WebSocket MDM...")
+        Log.d(TAG, "🔗 URL: $WS_URL")
+        Log.d(TAG, "🔗 JWT Token presente: ${jwtToken.isNotBlank()}")
+        
         disconnect()
         
         val wsUrl = "$WS_URL?token=$jwtToken"
@@ -50,12 +54,15 @@ class MdmCommandReceiver(private val context: Context) {
             .url(wsUrl)
             .build()
         
+        Log.d(TAG, "🔗 Criando WebSocket OkHttp...")
         webSocket = okHttpClient.newWebSocket(request, object : WebSocketListener() {
             
             override fun onOpen(webSocket: WebSocket, response: Response) {
-                Log.i(TAG, "✅ WebSocket MDM conectado")
+                Log.i(TAG, "✅ WebSocket MDM CONECTADO COM SUCESSO!")
+                Log.d(TAG, "✅ Response code: ${response.code}")
                 reconnectJob?.cancel()
                 pollingJob?.cancel()
+                Log.d(TAG, "✅ Polling fallback cancelado")
             }
             
             override fun onMessage(webSocket: WebSocket, text: String) {
@@ -64,20 +71,32 @@ class MdmCommandReceiver(private val context: Context) {
             }
             
             override fun onFailure(webSocket: WebSocket, t: Throwable, response: Response?) {
-                Log.e(TAG, "❌ WebSocket MDM falhou: ${t.message}")
+                Log.e(TAG, "❌ WebSocket MDM FALHOU!")
+                Log.e(TAG, "❌ Erro: ${t.message}")
+                Log.e(TAG, "❌ Response code: ${response?.code}")
+                Log.e(TAG, "❌ Response body: ${response?.body?.string()}")
+                Log.e(TAG, "❌ Stack trace: ${t.stackTraceToString()}")
+                
+                Log.w(TAG, "🔄 Agendando reconexão em 5 segundos...")
                 scheduleReconnect(jwtToken)
+                
+                Log.w(TAG, "🔄 Iniciando polling fallback...")
                 startPollingFallback()
             }
             
             override fun onClosing(webSocket: WebSocket, code: Int, reason: String) {
-                Log.w(TAG, "⚠️ WebSocket MDM fechando: $reason")
+                Log.w(TAG, "⚠️ WebSocket MDM fechando...")
+                Log.w(TAG, "⚠️ Code: $code, Reason: $reason")
             }
             
             override fun onClosed(webSocket: WebSocket, code: Int, reason: String) {
-                Log.w(TAG, "🔌 WebSocket MDM fechado: $reason")
+                Log.w(TAG, "🔌 WebSocket MDM fechado")
+                Log.w(TAG, "🔌 Code: $code, Reason: $reason")
                 scheduleReconnect(jwtToken)
             }
         })
+        
+        Log.d(TAG, "🔗 WebSocket request enviado - aguardando resposta...")
     }
     
     private fun handleMdmMessage(json: String) {
