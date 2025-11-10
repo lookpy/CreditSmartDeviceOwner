@@ -1,0 +1,173 @@
+-frame-options: DENY
+2025-11-10 03:39:19.603  2941-3063  okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-transaction-security-level: maximum
+2025-11-10 03:39:19.603  2941-3063  okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-xss-protection: 1; mode=block
+2025-11-10 03:39:19.603  2941-3063  okhttp.OkHttpClient     com.cdccreditsmart.app               I  via: 1.1 google
+2025-11-10 03:39:19.604  2941-3063  okhttp.OkHttpClient     com.cdccreditsmart.app               I  alt-svc: h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
+2025-11-10 03:39:19.605  2941-3050  okhttp.OkHttpClient     com.cdccreditsmart.app               I  {"error":"API endpoint not found","message":"Rota APK não encontrada","path":"/","method":"GET","timestamp":"2025-11-10T06:39:19.519Z","available_endpoints":["GET /api/apk/device/{serial}/status","POST /api/apk/device/{fingerprint}/sync","POST /api/apk/device/{fingerprint}/register-info","POST /api/apk/auth"]}
+2025-11-10 03:39:19.606  2941-3050  okhttp.OkHttpClient     com.cdccreditsmart.app               I  <-- END HTTP (312-byte body)
+2025-11-10 03:39:19.608  2941-3063  okhttp.OkHttpClient     com.cdccreditsmart.app               I  {"error":"API endpoint not found","message":"Rota APK não encontrada","path":"/","method":"GET","timestamp":"2025-11-10T06:39:19.521Z","available_endpoints":["GET /api/apk/device/{serial}/status","POST /api/apk/device/{fingerprint}/sync","POST /api/apk/device/{fingerprint}/register-info","POST /api/apk/auth"]}
+2025-11-10 03:39:19.609  2941-3063  okhttp.OkHttpClient     com.cdccreditsmart.app               I  <-- END HTTP (312-byte body)
+2025-11-10 03:39:19.610  2941-3016  MdmCommandReceiver      com.cdccreditsmart.app               E  ❌ Erro ao buscar comandos pendentes - HTTP 404
+2025-11-10 03:39:19.610  2941-3016  MdmCommandReceiver      com.cdccreditsmart.app               E  ❌ Response body: {"error":"API endpoint not found","message":"Rota APK não encontrada","path":"/","method":"GET","timestamp":"2025-11-10T06:39:19.519Z","available_endpoints":["GET /api/apk/device/{serial}/status","POST /api/apk/device/{fingerprint}/sync","POST /api/apk/device/{fingerprint}/register-info","POST /api/apk/auth"]}
+2025-11-10 03:39:19.614  2941-3016  MdmCommandReceiver      com.cdccreditsmart.app               E  ❌ Erro ao buscar comandos pendentes - HTTP 404
+2025-11-10 03:39:19.614  2941-3016  MdmCommandReceiver      com.cdccreditsmart.app               E  ❌ Response body: {"error":"API endpoint not found","message":"Rota APK não encontrada","path":"/","method":"GET","timestamp":"2025-11-10T06:39:19.521Z","available_endpoints":["GET /api/apk/device/{serial}/status","POST /api/apk/device/{fingerprint}/sync","POST /api/apk/device/{fingerprint}/register-info","POST /api/apk/auth"]}
+2025-11-10 03:39:23.433  2941-2941  VRI[MainActivity]       com.cdccreditsmart.app               D  visibilityChanged oldVisibility=true newVisibility=false
+2025-11-10 03:39:23.467  2941-2941  BLASTBufferQueue        com.cdccreditsmart.app               D  [VRI[MainActivity]#0](f:0,a:1) destructor()
+2025-11-10 03:39:23.467  2941-2941  BufferQueueConsumer     com.cdccreditsmart.app               D  [VRI[MainActivity]#0(BLAST Consumer)0](id:b7d00000000,api:0,p:-1,c:2941) disconnect
+2025-11-10 03:39:25.486  2941-3070  FA                      com.cdccreditsmart.app               I  Application backgrounded at: timestamp_millis: 1762756763481
+2025-11-10 03:39:48.886  2941-2941  WebSocketManager        com.cdccreditsmart.app               D  Heartbeat ping sent
+2025-11-10 03:39:48.888  2941-2941  WebSocketManager        com.cdccreditsmart.app               D  Heartbeat ping sent
+2025-11-10 03:39:49.257  2941-3024  WebSocketManager        com.cdccreditsmart.app               D  Message received: {"type":"pong","timestamp":"2025-11-10T06:39:48.989Z"}...
+2025-11-10 03:39:49.258  2941-3033  WebSocketManager        com.cdccreditsmart.app               D  Message received: {"type":"pong","timestamp":"2025-11-10T06:39:48.987Z"}...
+2025-11-10 03:39:49.258  2941-3024  WebSocketManager        com.cdccreditsmart.app               D  Received message type: pong
+2025-11-10 03:39:49.258  2941-3033  WebSocketManager        com.cdccreditsmart.app               D  Received message type: pong
+2025-11-10 03:39:49.258  2941-3033  WebSocketManager        com.cdccreditsmart.app               D  Pong received
+2025-11-10 03:39:49.258  2941-3024  WebSocketManager        com.cdccreditsmart.app               D  Pong received
+2025-11-10 03:39:49.615  2941-3016  MdmCommandReceiver      com.cdccreditsmart.app               D  🔍 Verificando comandos pendentes...
+2025-11-10 03:39:49.615  2941-3016  MdmCommandReceiver      com.cdccreditsmart.app               D  🔍 Buscando comandos pendentes para deviceId: device_176...
+2025-11-10 03:39:49.616  2941-3049  MdmCommandReceiver      com.cdccreditsmart.app               D  🔍 Verificando comandos pendentes...
+2025-11-10 03:39:49.616  2941-3049  MdmCommandReceiver      com.cdccreditsmart.app               D  🔍 Buscando comandos pendentes para deviceId: device_176...
+2025-11-10 03:39:49.636  2941-3063  okhttp.OkHttpClient     com.cdccreditsmart.app               I  --> GET https://cdccreditsmart.com/api/apk/device/device_1762725359153_ogqi20gqqp/commands
+2025-11-10 03:39:49.636  2941-3050  okhttp.OkHttpClient     com.cdccreditsmart.app               I  --> GET https://cdccreditsmart.com/api/apk/device/device_1762725359153_ogqi20gqqp/commands
+2025-11-10 03:39:49.636  2941-3063  okhttp.OkHttpClient     com.cdccreditsmart.app               I  --> END GET
+2025-11-10 03:39:49.636  2941-3050  okhttp.OkHttpClient     com.cdccreditsmart.app               I  --> END GET
+2025-11-10 03:39:50.085  2941-3063  okhttp.OkHttpClient     com.cdccreditsmart.app               I  <-- 404 https://cdccreditsmart.com/api/apk/device/device_1762725359153_ogqi20gqqp/commands (448ms)
+2025-11-10 03:39:50.086  2941-3063  okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-credentials: true
+2025-11-10 03:39:50.086  2941-3063  okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-headers: Origin, X-Requested-With, Content-Type, Accept, Authorization, x-client-key, x-client-token, x-client-secret, cache-control
+2025-11-10 03:39:50.086  2941-3063  okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-methods: GET, POST, PUT, PATCH, DELETE, OPTIONS
+2025-11-10 03:39:50.087  2941-3063  okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-origin: *
+2025-11-10 03:39:50.087  2941-3063  okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-max-age: 86400
+2025-11-10 03:39:50.087  2941-3063  okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-length: 312
+2025-11-10 03:39:50.088  2941-3063  okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-security-policy: default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://replit.com; style-src 'self' 'unsafe-inline' https://replit.com; img-src 'self' data: https:; font-src 'self' data: https://replit.com; connect-src 'self';
+2025-11-10 03:39:50.088  2941-3063  okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-type: application/json; charset=utf-8
+2025-11-10 03:39:50.088  2941-3063  okhttp.OkHttpClient     com.cdccreditsmart.app               I  date: Mon, 10 Nov 2025 06:39:49 GMT
+2025-11-10 03:39:50.089  2941-3063  okhttp.OkHttpClient     com.cdccreditsmart.app               I  etag: W/"138-gb0NHzLM2DRaTziRI+oY4EUZkGU"
+2025-11-10 03:39:50.089  2941-3063  okhttp.OkHttpClient     com.cdccreditsmart.app               I  permissions-policy: geolocation=(), microphone=(), camera=()
+2025-11-10 03:39:50.089  2941-3063  okhttp.OkHttpClient     com.cdccreditsmart.app               I  referrer-policy: strict-origin-when-cross-origin
+2025-11-10 03:39:50.089  2941-3063  okhttp.OkHttpClient     com.cdccreditsmart.app               I  server: Google Frontend
+2025-11-10 03:39:50.090  2941-3063  okhttp.OkHttpClient     com.cdccreditsmart.app               I  strict-transport-security: max-age=63072000; includeSubDomains
+2025-11-10 03:39:50.090  2941-3050  okhttp.OkHttpClient     com.cdccreditsmart.app               I  <-- 404 https://cdccreditsmart.com/api/apk/device/device_1762725359153_ogqi20gqqp/commands (453ms)
+2025-11-10 03:39:50.090  2941-3063  okhttp.OkHttpClient     com.cdccreditsmart.app               I  strict-transport-security: max-age=31536000; includeSubDomains
+2025-11-10 03:39:50.090  2941-3050  okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-credentials: true
+2025-11-10 03:39:50.090  2941-3063  okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-anti-fraud-protection: active
+2025-11-10 03:39:50.091  2941-3050  okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-headers: Origin, X-Requested-With, Content-Type, Accept, Authorization, x-client-key, x-client-token, x-client-secret, cache-control
+2025-11-10 03:39:50.091  2941-3063  okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-certificate-pinning-enabled: false
+2025-11-10 03:39:50.091  2941-3050  okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-methods: GET, POST, PUT, PATCH, DELETE, OPTIONS
+2025-11-10 03:39:50.091  2941-3063  okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-certificate-pinning-status: disabled-for-stability
+2025-11-10 03:39:50.091  2941-3050  okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-origin: *
+2025-11-10 03:39:50.091  2941-3063  okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-cloud-trace-context: 8bc351b22baeed7c5e7c4ba9a712d2d1;o=1
+2025-11-10 03:39:50.092  2941-3050  okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-max-age: 86400
+2025-11-10 03:39:50.092  2941-3063  okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-content-type-options: nosniff
+2025-11-10 03:39:50.092  2941-3050  okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-length: 312
+2025-11-10 03:39:50.092  2941-3063  okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-financial-data-protection: enabled
+2025-11-10 03:39:50.092  2941-3050  okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-security-policy: default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://replit.com; style-src 'self' 'unsafe-inline' https://replit.com; img-src 'self' data: https:; font-src 'self' data: https://replit.com; connect-src 'self';
+2025-11-10 03:39:50.092  2941-3063  okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-frame-options: DENY
+2025-11-10 03:39:50.093  2941-3050  okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-type: application/json; charset=utf-8
+2025-11-10 03:39:50.093  2941-3063  okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-transaction-security-level: maximum
+2025-11-10 03:39:50.093  2941-3050  okhttp.OkHttpClient     com.cdccreditsmart.app               I  date: Mon, 10 Nov 2025 06:39:49 GMT
+2025-11-10 03:39:50.093  2941-3063  okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-xss-protection: 1; mode=block
+2025-11-10 03:39:50.093  2941-3050  okhttp.OkHttpClient     com.cdccreditsmart.app               I  etag: W/"138-/HDof5MX6e3ZR6AvkN1V4IaO3gU"
+2025-11-10 03:39:50.093  2941-3063  okhttp.OkHttpClient     com.cdccreditsmart.app               I  via: 1.1 google
+2025-11-10 03:39:50.094  2941-3050  okhttp.OkHttpClient     com.cdccreditsmart.app               I  permissions-policy: geolocation=(), microphone=(), camera=()
+2025-11-10 03:39:50.094  2941-3063  okhttp.OkHttpClient     com.cdccreditsmart.app               I  alt-svc: h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
+2025-11-10 03:39:50.094  2941-3050  okhttp.OkHttpClient     com.cdccreditsmart.app               I  referrer-policy: strict-origin-when-cross-origin
+2025-11-10 03:39:50.094  2941-3050  okhttp.OkHttpClient     com.cdccreditsmart.app               I  server: Google Frontend
+2025-11-10 03:39:50.094  2941-3050  okhttp.OkHttpClient     com.cdccreditsmart.app               I  strict-transport-security: max-age=63072000; includeSubDomains
+2025-11-10 03:39:50.095  2941-3050  okhttp.OkHttpClient     com.cdccreditsmart.app               I  strict-transport-security: max-age=31536000; includeSubDomains
+2025-11-10 03:39:50.095  2941-3050  okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-anti-fraud-protection: active
+2025-11-10 03:39:50.096  2941-3050  okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-certificate-pinning-enabled: false
+2025-11-10 03:39:50.096  2941-3050  okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-certificate-pinning-status: disabled-for-stability
+2025-11-10 03:39:50.096  2941-3050  okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-cloud-trace-context: 7d3b8292a5589cca5e7c4ba9a712d730
+2025-11-10 03:39:50.097  2941-3050  okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-content-type-options: nosniff
+2025-11-10 03:39:50.097  2941-3050  okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-financial-data-protection: enabled
+2025-11-10 03:39:50.097  2941-3050  okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-frame-options: DENY
+2025-11-10 03:39:50.098  2941-3050  okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-transaction-security-level: maximum
+2025-11-10 03:39:50.098  2941-3063  okhttp.OkHttpClient     com.cdccreditsmart.app               I  {"error":"API endpoint not found","message":"Rota APK não encontrada","path":"/","method":"GET","timestamp":"2025-11-10T06:39:49.776Z","available_endpoints":["GET /api/apk/device/{serial}/status","POST /api/apk/device/{fingerprint}/sync","POST /api/apk/device/{fingerprint}/register-info","POST /api/apk/auth"]}
+2025-11-10 03:39:50.098  2941-3050  okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-xss-protection: 1; mode=block
+2025-11-10 03:39:50.098  2941-3063  okhttp.OkHttpClient     com.cdccreditsmart.app               I  <-- END HTTP (312-byte body)
+2025-11-10 03:39:50.099  2941-3050  okhttp.OkHttpClient     com.cdccreditsmart.app               I  via: 1.1 google
+2025-11-10 03:39:50.099  2941-3050  okhttp.OkHttpClient     com.cdccreditsmart.app               I  alt-svc: h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
+2025-11-10 03:39:50.103  2941-3050  okhttp.OkHttpClient     com.cdccreditsmart.app               I  {"error":"API endpoint not found","message":"Rota APK não encontrada","path":"/","method":"GET","timestamp":"2025-11-10T06:39:49.784Z","available_endpoints":["GET /api/apk/device/{serial}/status","POST /api/apk/device/{fingerprint}/sync","POST /api/apk/device/{fingerprint}/register-info","POST /api/apk/auth"]}
+2025-11-10 03:39:50.103  2941-3049  MdmCommandReceiver      com.cdccreditsmart.app               E  ❌ Erro ao buscar comandos pendentes - HTTP 404
+2025-11-10 03:39:50.103  2941-3050  okhttp.OkHttpClient     com.cdccreditsmart.app               I  <-- END HTTP (312-byte body)
+2025-11-10 03:39:50.103  2941-3049  MdmCommandReceiver      com.cdccreditsmart.app               E  ❌ Response body: {"error":"API endpoint not found","message":"Rota APK não encontrada","path":"/","method":"GET","timestamp":"2025-11-10T06:39:49.776Z","available_endpoints":["GET /api/apk/device/{serial}/status","POST /api/apk/device/{fingerprint}/sync","POST /api/apk/device/{fingerprint}/register-info","POST /api/apk/auth"]}
+2025-11-10 03:39:50.107  2941-3049  MdmCommandReceiver      com.cdccreditsmart.app               E  ❌ Erro ao buscar comandos pendentes - HTTP 404
+2025-11-10 03:39:50.108  2941-3049  MdmCommandReceiver      com.cdccreditsmart.app               E  ❌ Response body: {"error":"API endpoint not found","message":"Rota APK não encontrada","path":"/","method":"GET","timestamp":"2025-11-10T06:39:49.784Z","available_endpoints":["GET /api/apk/device/{serial}/status","POST /api/apk/device/{fingerprint}/sync","POST /api/apk/device/{fingerprint}/register-info","POST /api/apk/auth"]}
+2025-11-10 03:40:18.918  2941-2941  WebSocketManager        com.cdccreditsmart.app               D  Heartbeat ping sent
+2025-11-10 03:40:18.919  2941-2941  WebSocketManager        com.cdccreditsmart.app               D  Heartbeat ping sent
+2025-11-10 03:40:19.260  2941-3024  WebSocketManager        com.cdccreditsmart.app               D  Message received: {"type":"pong","timestamp":"2025-11-10T06:40:19.021Z"}...
+2025-11-10 03:40:19.260  2941-3033  WebSocketManager        com.cdccreditsmart.app               D  Message received: {"type":"pong","timestamp":"2025-11-10T06:40:19.021Z"}...
+2025-11-10 03:40:19.260  2941-3024  WebSocketManager        com.cdccreditsmart.app               D  Received message type: pong
+2025-11-10 03:40:19.260  2941-3024  WebSocketManager        com.cdccreditsmart.app               D  Pong received
+2025-11-10 03:40:19.260  2941-3033  WebSocketManager        com.cdccreditsmart.app               D  Received message type: pong
+2025-11-10 03:40:19.260  2941-3033  WebSocketManager        com.cdccreditsmart.app               D  Pong received
+2025-11-10 03:40:20.108  2941-3049  MdmCommandReceiver      com.cdccreditsmart.app               D  🔍 Verificando comandos pendentes...
+2025-11-10 03:40:20.108  2941-3049  MdmCommandReceiver      com.cdccreditsmart.app               D  🔍 Buscando comandos pendentes para deviceId: device_176...
+2025-11-10 03:40:20.111  2941-3016  MdmCommandReceiver      com.cdccreditsmart.app               D  🔍 Verificando comandos pendentes...
+2025-11-10 03:40:20.111  2941-3016  MdmCommandReceiver      com.cdccreditsmart.app               D  🔍 Buscando comandos pendentes para deviceId: device_176...
+2025-11-10 03:40:20.134  2941-3050  okhttp.OkHttpClient     com.cdccreditsmart.app               I  --> GET https://cdccreditsmart.com/api/apk/device/device_1762725359153_ogqi20gqqp/commands
+2025-11-10 03:40:20.134  2941-3063  okhttp.OkHttpClient     com.cdccreditsmart.app               I  --> GET https://cdccreditsmart.com/api/apk/device/device_1762725359153_ogqi20gqqp/commands
+2025-11-10 03:40:20.134  2941-3050  okhttp.OkHttpClient     com.cdccreditsmart.app               I  --> END GET
+2025-11-10 03:40:20.134  2941-3063  okhttp.OkHttpClient     com.cdccreditsmart.app               I  --> END GET
+2025-11-10 03:40:20.599  2941-3050  okhttp.OkHttpClient     com.cdccreditsmart.app               I  <-- 404 https://cdccreditsmart.com/api/apk/device/device_1762725359153_ogqi20gqqp/commands (464ms)
+2025-11-10 03:40:20.600  2941-3050  okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-credentials: true
+2025-11-10 03:40:20.600  2941-3050  okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-headers: Origin, X-Requested-With, Content-Type, Accept, Authorization, x-client-key, x-client-token, x-client-secret, cache-control
+2025-11-10 03:40:20.600  2941-3050  okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-methods: GET, POST, PUT, PATCH, DELETE, OPTIONS
+2025-11-10 03:40:20.600  2941-3050  okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-origin: *
+2025-11-10 03:40:20.601  2941-3050  okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-max-age: 86400
+2025-11-10 03:40:20.601  2941-3050  okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-length: 312
+2025-11-10 03:40:20.601  2941-3050  okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-security-policy: default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://replit.com; style-src 'self' 'unsafe-inline' https://replit.com; img-src 'self' data: https:; font-src 'self' data: https://replit.com; connect-src 'self';
+2025-11-10 03:40:20.601  2941-3050  okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-type: application/json; charset=utf-8
+2025-11-10 03:40:20.602  2941-3050  okhttp.OkHttpClient     com.cdccreditsmart.app               I  date: Mon, 10 Nov 2025 06:40:20 GMT
+2025-11-10 03:40:20.602  2941-3050  okhttp.OkHttpClient     com.cdccreditsmart.app               I  etag: W/"138-axQHRlfYv5o+J/MK99aiTTlaJCY"
+2025-11-10 03:40:20.602  2941-3050  okhttp.OkHttpClient     com.cdccreditsmart.app               I  permissions-policy: geolocation=(), microphone=(), camera=()
+2025-11-10 03:40:20.602  2941-3050  okhttp.OkHttpClient     com.cdccreditsmart.app               I  referrer-policy: strict-origin-when-cross-origin
+2025-11-10 03:40:20.602  2941-3050  okhttp.OkHttpClient     com.cdccreditsmart.app               I  server: Google Frontend
+2025-11-10 03:40:20.603  2941-3050  okhttp.OkHttpClient     com.cdccreditsmart.app               I  strict-transport-security: max-age=63072000; includeSubDomains
+2025-11-10 03:40:20.603  2941-3050  okhttp.OkHttpClient     com.cdccreditsmart.app               I  strict-transport-security: max-age=31536000; includeSubDomains
+2025-11-10 03:40:20.603  2941-3050  okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-anti-fraud-protection: active
+2025-11-10 03:40:20.603  2941-3050  okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-certificate-pinning-enabled: false
+2025-11-10 03:40:20.603  2941-3050  okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-certificate-pinning-status: disabled-for-stability
+2025-11-10 03:40:20.604  2941-3050  okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-cloud-trace-context: 8b0b2de45fea0ba8dfe219c9e205395a;o=1
+2025-11-10 03:40:20.604  2941-3050  okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-content-type-options: nosniff
+2025-11-10 03:40:20.604  2941-3050  okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-financial-data-protection: enabled
+2025-11-10 03:40:20.604  2941-3050  okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-frame-options: DENY
+2025-11-10 03:40:20.605  2941-3050  okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-transaction-security-level: maximum
+2025-11-10 03:40:20.605  2941-3050  okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-xss-protection: 1; mode=block
+2025-11-10 03:40:20.605  2941-3050  okhttp.OkHttpClient     com.cdccreditsmart.app               I  via: 1.1 google
+2025-11-10 03:40:20.605  2941-3050  okhttp.OkHttpClient     com.cdccreditsmart.app               I  alt-svc: h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
+2025-11-10 03:40:20.606  2941-3063  okhttp.OkHttpClient     com.cdccreditsmart.app               I  <-- 404 https://cdccreditsmart.com/api/apk/device/device_1762725359153_ogqi20gqqp/commands (471ms)
+2025-11-10 03:40:20.606  2941-3063  okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-credentials: true
+2025-11-10 03:40:20.607  2941-3063  okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-headers: Origin, X-Requested-With, Content-Type, Accept, Authorization, x-client-key, x-client-token, x-client-secret, cache-control
+2025-11-10 03:40:20.607  2941-3063  okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-methods: GET, POST, PUT, PATCH, DELETE, OPTIONS
+2025-11-10 03:40:20.607  2941-3063  okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-origin: *
+2025-11-10 03:40:20.608  2941-3063  okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-max-age: 86400
+2025-11-10 03:40:20.608  2941-3063  okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-length: 312
+2025-11-10 03:40:20.608  2941-3050  okhttp.OkHttpClient     com.cdccreditsmart.app               I  {"error":"API endpoint not found","message":"Rota APK não encontrada","path":"/","method":"GET","timestamp":"2025-11-10T06:40:20.264Z","available_endpoints":["GET /api/apk/device/{serial}/status","POST /api/apk/device/{fingerprint}/sync","POST /api/apk/device/{fingerprint}/register-info","POST /api/apk/auth"]}
+2025-11-10 03:40:20.608  2941-3063  okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-security-policy: default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://replit.com; style-src 'self' 'unsafe-inline' https://replit.com; img-src 'self' data: https:; font-src 'self' data: https://replit.com; connect-src 'self';
+2025-11-10 03:40:20.608  2941-3050  okhttp.OkHttpClient     com.cdccreditsmart.app               I  <-- END HTTP (312-byte body)
+2025-11-10 03:40:20.609  2941-3063  okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-type: application/json; charset=utf-8
+2025-11-10 03:40:20.609  2941-3063  okhttp.OkHttpClient     com.cdccreditsmart.app               I  date: Mon, 10 Nov 2025 06:40:20 GMT
+2025-11-10 03:40:20.609  2941-3063  okhttp.OkHttpClient     com.cdccreditsmart.app               I  etag: W/"138-/kXQlkpk69Do/gY1y+/Y/V3EwDM"
+2025-11-10 03:40:20.609  2941-3063  okhttp.OkHttpClient     com.cdccreditsmart.app               I  permissions-policy: geolocation=(), microphone=(), camera=()
+2025-11-10 03:40:20.610  2941-3063  okhttp.OkHttpClient     com.cdccreditsmart.app               I  referrer-policy: strict-origin-when-cross-origin
+2025-11-10 03:40:20.610  2941-3063  okhttp.OkHttpClient     com.cdccreditsmart.app               I  server: Google Frontend
+2025-11-10 03:40:20.610  2941-3063  okhttp.OkHttpClient     com.cdccreditsmart.app               I  strict-transport-security: max-age=63072000; includeSubDomains
+2025-11-10 03:40:20.610  2941-3063  okhttp.OkHttpClient     com.cdccreditsmart.app               I  strict-transport-security: max-age=31536000; includeSubDomains
+2025-11-10 03:40:20.610  2941-3063  okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-anti-fraud-protection: active
+2025-11-10 03:40:20.611  2941-3063  okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-certificate-pinning-enabled: false
+2025-11-10 03:40:20.611  2941-3063  okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-certificate-pinning-status: disabled-for-stability
+2025-11-10 03:40:20.611  2941-3063  okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-cloud-trace-context: b30441a8dcdde08fdfe219c9e2053344
+2025-11-10 03:40:20.611  2941-3063  okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-content-type-options: nosniff
+2025-11-10 03:40:20.612  2941-3063  okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-financial-data-protection: enabled
+2025-11-10 03:40:20.612  2941-3063  okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-frame-options: DENY
+2025-11-10 03:40:20.612  2941-3063  okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-transaction-security-level: maximum
+2025-11-10 03:40:20.612  2941-3016  MdmCommandReceiver      com.cdccreditsmart.app               E  ❌ Erro ao buscar comandos pendentes - HTTP 404
+2025-11-10 03:40:20.613  2941-3063  okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-xss-protection: 1; mode=block
+2025-11-10 03:40:20.613  2941-3063  okhttp.OkHttpClient     com.cdccreditsmart.app               I  via: 1.1 google
+2025-11-10 03:40:20.613  2941-3016  MdmCommandReceiver      com.cdccreditsmart.app               E  ❌ Response body: {"error":"API endpoint not found","message":"Rota APK não encontrada","path":"/","method":"GET","timestamp":"2025-11-10T06:40:20.264Z","available_endpoints":["GET /api/apk/device/{serial}/status","POST /api/apk/device/{fingerprint}/sync","POST /api/apk/device/{fingerprint}/register-info","POST /api/apk/auth"]}
+2025-11-10 03:40:20.613  2941-3063  okhttp.OkHttpClient     com.cdccreditsmart.app               I  alt-svc: h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
+2025-11-10 03:40:20.618  2941-3063  okhttp.OkHttpClient     com.cdccreditsmart.app               I  {"error":"API endpoint not found","message":"Rota APK não encontrada","path":"/","method":"GET","timestamp":"2025-11-10T06:40:20.299Z","available_endpoints":["GET /api/apk/device/{serial}/status","POST /api/apk/device/{fingerprint}/sync","POST /api/apk/device/{fingerprint}/register-info","POST /api/apk/auth"]}
+2025-11-10 03:40:20.618  2941-3063  okhttp.OkHttpClient     com.cdccreditsmart.app               I  <-- END HTTP (312-byte body)
+2025-11-10 03:40:20.623  2941-3016  MdmCommandReceiver      com.cdccreditsmart.app               E  ❌ Erro ao buscar comandos pendentes - HTTP 404
+2025-11-10 03:40:20.623  2941-3016  MdmCommandReceiver      com.cdccreditsmart.app               E  ❌ Response body: {"error":"API endpoint not found","message":"Rota APK não encontrada","path":"/","method":"GET","timestamp":"2025-11-10T06:40:20.299Z","available_endpoints":["GET /api/apk/device/{serial}/status","POST /api/apk/device/{fingerprint}/sync","POST /api/apk/device/{fingerprint}/register-info","POST /api/apk/auth"]}

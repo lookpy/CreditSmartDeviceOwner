@@ -1,0 +1,11 @@
+       I  x-xss-protection: 1; mode=block
+2025-11-10 03:38:49.344  2941-3063  okhttp.OkHttpClient     com.cdccreditsmart.app               I  via: 1.1 google
+2025-11-10 03:38:49.345  2941-3063  okhttp.OkHttpClient     com.cdccreditsmart.app               I  alt-svc: h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
+2025-11-10 03:38:49.347  2941-3049  MdmCommandReceiver      com.cdccreditsmart.app               E  ❌ Erro ao buscar comandos pendentes - HTTP 404
+2025-11-10 03:38:49.347  2941-3063  okhttp.OkHttpClient     com.cdccreditsmart.app               I  {"error":"API endpoint not found","message":"Rota APK não encontrada","path":"/","method":"GET","timestamp":"2025-11-10T06:38:49.268Z","available_endpoints":["GET /api/apk/device/{serial}/status","POST /api/apk/device/{fingerprint}/sync","POST /api/apk/device/{fingerprint}/register-info","POST /api/apk/auth"]}
+2025-11-10 03:38:49.347  2941-3049  MdmCommandReceiver      com.cdccreditsmart.app               E  ❌ Response body: {"error":"API endpoint not found","message":"Rota APK não encontrada","path":"/","method":"GET","timestamp":"2025-11-10T06:38:49.266Z","available_endpoints":["GET /api/apk/device/{serial}/status","POST /api/apk/device/{fingerprint}/sync","POST /api/apk/device/{fingerprint}/register-info","POST /api/apk/auth"]}
+2025-11-10 03:38:49.347  2941-3063  okhttp.OkHttpClient     com.cdccreditsmart.app               I  <-- END HTTP (312-byte body)
+2025-11-10 03:38:49.350  2941-3049  MdmCommandReceiver      com.cdccreditsmart.app               E  ❌ Erro ao buscar comandos pendentes - HTTP 404
+2025-11-10 03:38:49.350  2941-3049  MdmCommandReceiver      com.cdccreditsmart.app               E  ❌ Response body: {"error":"API endpoint not found","message":"Rota APK não encontrada","path":"/","method":"GET","timestamp":"2025-11-10T06:38:49.268Z","available_endpoints":["GET /api/apk/device/{serial}/status","POST /api/apk/device/{fingerprint}/sync","POST /api/apk/device/{fingerprint}/register-info","POST /api/apk/auth"]}
+2025-11-10 03:39:18.867  2941-2941  WebSocketManager        com.cdccreditsmart.app               D  Heartbeat ping sent
+2025-11-10 03:39:18.869  2941-2941  WebSocketManager        com.cdccreditsmart.app               D  Heartbeat ping sent
