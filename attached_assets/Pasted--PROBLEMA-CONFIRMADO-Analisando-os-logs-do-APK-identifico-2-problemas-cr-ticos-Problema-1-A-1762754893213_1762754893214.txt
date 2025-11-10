@@ -1,0 +1,118 @@
+ PROBLEMA CONFIRMADO
+Analisando os logs do APK, identifico 2 problemas críticos:
+
+❌ Problema 1: APK NÃO está buscando comandos MDM
+Evidência nos logs:
+
+✅ GET /api/apk/device/status (200 OK)
+❌ NENHUMA chamada para /api/apk/device/BVYG2VS2/commands
+
+Backend confirmado: 10 comandos de bloqueio pendentes esperando o APK buscar!
+
+Comando	Tipo	Status	Criado em
+b9303b62...	BLOCK	pending	05:52:16
+a3112e9f...	UNBLOCK	pending	05:52:14
+eae9adb3...	UNBLOCK	pending	05:30:36
+459fe49d...	UNBLOCK	pending	05:21:16
+118a83f9...	BLOCK	pending	05:12:08
++ 5 mais comandos...			
+❌ Problema 2: APK salvando deviceId em vez do pairing code
+Evidência no log:
+
+✅ Código de pareamento encontrado: devi****  // deviceId truncado
+
+Deveria mostrar:
+
+✅ Código de pareamento encontrado: BVYG2VS2  // pairing code
+
+🛠️ SOLUÇÃO: Criar endpoint de teste
+Vou criar um endpoint simplificado para você testar imediatamente se o APK consegue buscar comandos:
+
+
+Opened server/routes.ts
+
+Decided on simplified testing endpoint (5 seconds)
+Perfeito! O endpoint já existe. Vou criar um endpoint de teste sem Play Integrity para você testar facilmente:
+
+
+Show 5 more
+
+Decided on instruction document content (5 seconds)
+✅ ENDPOINT DE TESTE CRIADO!
+Criei um endpoint simplificado para você testar se o APK consegue buscar os comandos:
+
+GET /api/apk/device/commands/test
+Authorization: Bearer {seu_jwt_token}
+
+🧪 TESTE RÁPIDO NO APK (Adicione este código)
+1. Adicionar no código Kotlin após autenticar:
+// Logo após receber token de autenticação com sucesso
+private fun testFetchCommands() {
+    val token = authToken // Token JWT que você já tem
+    
+    lifecycleScope.launch(Dispatchers.IO) {
+        try {
+            val request = Request.Builder()
+                .url("https://cdccreditsmart.com/api/apk/device/commands/test")
+                .addHeader("Authorization", "Bearer $token")
+                .build()
+            
+            val response = httpClient.newCall(request).execute()
+            val body = response.body?.string()
+            
+            Log.d("MDM_TEST", "🧪 Response Code: ${response.code}")
+            Log.d("MDM_TEST", "🧪 Response Body: $body")
+            
+            if (response.isSuccessful && body != null) {
+                val json = JSONObject(body)
+                val commandsCount = json.getInt("commandsCount")
+                val commands = json.getJSONArray("commands")
+                
+                Log.d("MDM_TEST", "🎯 Encontrados $commandsCount comandos pendentes!")
+                
+                for (i in 0 until commands.length()) {
+                    val cmd = commands.getJSONObject(i)
+                    Log.d("MDM_TEST", "  📦 Comando: ${cmd.getString("commandType")}")
+                    Log.d("MDM_TEST", "     ID: ${cmd.getString("id")}")
+                    Log.d("MDM_TEST", "     Status: ${cmd.getString("status")}")
+                }
+            }
+            
+        } catch (e: Exception) {
+            Log.e("MDM_TEST", "❌ Erro ao buscar comandos: ${e.message}", e)
+        }
+    }
+}
+// Chamar após autenticar com sucesso
+override fun onAuthenticationSuccess() {
+    Log.d("AUTH", "✅ Autenticação OK!")
+    testFetchCommands() // <-- ADICIONAR AQUI
+}
+
+📊 RESULTADO ESPERADO
+Se funcionar, você verá nos logs do APK:
+
+MDM_TEST: 🧪 Response Code: 200
+MDM_TEST: 🎯 Encontrados 10 comandos pendentes!
+MDM_TEST:   📦 Comando: BLOCK_APPS_PROGRESSIVE
+MDM_TEST:      ID: b9303b62-f952-4e07-a3a4-0a08b5034395
+MDM_TEST:      Status: pending
+MDM_TEST:   📦 Comando: UNBLOCK_APPS_PROGRESSIVE
+...
+
+🎯 STATUS ATUAL
+Item	Status
+Backend	✅ Funcionando (10 comandos esperando)
+Endpoint de teste	✅ Criado e pronto
+Correção serialNumber	✅ Aplicada
+APK buscando comandos	❌ Precisa implementar
+📱 PRÓXIMOS PASSOS
+Adicione o código de teste acima no APK
+Rode o app e verifique os logs
+Me envie os logs do Logcat filtrados por MDM_TEST
+Se funcionar (verá os 10 comandos), implementaremos o bloqueio real!
+Após confirmar que o APK consegue buscar os comandos, implementaremos:
+
+WorkManager para polling automático a cada 1 hora
+Lógica de bloqueio progressivo de apps
+Confirmação de execução dos comandos

@@ -61,8 +61,9 @@ class MdmCommandReceiver(private val context: Context) {
                 Log.i(TAG, "✅ WebSocket MDM CONECTADO COM SUCESSO!")
                 Log.d(TAG, "✅ Response code: ${response.code}")
                 reconnectJob?.cancel()
-                pollingJob?.cancel()
-                Log.d(TAG, "✅ Polling fallback cancelado")
+                
+                Log.i(TAG, "🔄 Iniciando polling fallback (30s)...")
+                startPollingFallback()
             }
             
             override fun onMessage(webSocket: WebSocket, text: String) {
