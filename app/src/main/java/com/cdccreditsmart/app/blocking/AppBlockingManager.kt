@@ -4,6 +4,7 @@ import android.app.admin.DevicePolicyManager
 import android.content.ComponentName
 import android.content.Context
 import android.util.Log
+import com.cdccreditsmart.app.knox.KnoxLockscreenManager
 import com.cdccreditsmart.device.CDCDeviceAdminReceiver
 import com.cdccreditsmart.network.dto.mdm.BlockParameters
 
@@ -22,6 +23,10 @@ class AppBlockingManager(private val context: Context) {
     }
     
     private val categoryMapper = CategoryMapper(context)
+    
+    private val knoxLockscreen by lazy {
+        KnoxLockscreenManager(context)
+    }
     
     fun applyProgressiveBlock(parameters: BlockParameters): BlockingResult {
         Log.i(TAG, "🔒 Aplicando bloqueio progressivo - Nível ${parameters.targetLevel}")
@@ -83,12 +88,15 @@ class AppBlockingManager(private val context: Context) {
             
             Log.i(TAG, "✅ Bloqueio aplicado - ${blockedCount} bloqueados, ${unblockedCount} desbloqueados")
             
+            updateKnoxLockscreen(parameters.targetLevel, parameters.daysOverdue)
+            
             return BlockingResult(
                 success = true,
                 blockedAppsCount = blockedCount,
                 unblockedAppsCount = unblockedCount,
                 appliedLevel = parameters.targetLevel,
-                blockedPackages = appsToBlock
+                blockedPackages = appsToBlock,
+                lockscreenUpdated = true
             )
             
         } catch (e: Exception) {
@@ -135,9 +143,12 @@ class AppBlockingManager(private val context: Context) {
             
             Log.i(TAG, "✅ Desbloqueio completo - $unblockedCount apps desbloqueados")
             
+            resetKnoxLockscreen()
+            
             return UnblockResult(
                 success = true,
-                unblockedCount = unblockedCount
+                unblockedCount = unblockedCount,
+                lockscreenReset = true
             )
             
         } catch (e: Exception) {
@@ -159,6 +170,48 @@ class AppBlockingManager(private val context: Context) {
             false
         }
     }
+    
+    private fun updateKnoxLockscreen(level: Int, daysOverdue: Int) {
+        if (!knoxLockscreen.isKnoxAvailable()) {
+            Log.w(TAG, "Samsung Knox não disponível - pulando atualização de lockscreen")
+            return
+        }
+        
+        if (!knoxLockscreen.canConfigure()) {
+            Log.w(TAG, "Sem permissão para configurar Knox lockscreen")
+            return
+        }
+        
+        try {
+            Log.i(TAG, "📱 Atualizando Knox Lockscreen...")
+            
+            knoxLockscreen.applyLockscreenForLevel(
+                level = level,
+                daysOverdue = daysOverdue,
+                amountDue = null
+            )
+            
+            knoxLockscreen.setAlpha(0.8f)
+            
+            knoxLockscreen.setEmergencyPhone("190")
+            
+        } catch (e: Exception) {
+            Log.e(TAG, "Erro ao atualizar Knox lockscreen: ${e.message}")
+        }
+    }
+    
+    private fun resetKnoxLockscreen() {
+        if (!knoxLockscreen.isKnoxAvailable()) {
+            return
+        }
+        
+        try {
+            Log.i(TAG, "📱 Resetando Knox Lockscreen para padrão...")
+            knoxLockscreen.resetLockscreen()
+        } catch (e: Exception) {
+            Log.e(TAG, "Erro ao resetar Knox lockscreen: ${e.message}")
+        }
+    }
 }
 
 data class BlockingResult(
@@ -167,11 +220,13 @@ data class BlockingResult(
     val unblockedAppsCount: Int,
     val appliedLevel: Int,
     val blockedPackages: List<String> = emptyList(),
+    val lockscreenUpdated: Boolean = false,
     val errorMessage: String? = null
 )
 
 data class UnblockResult(
     val success: Boolean,
     val unblockedCount: Int,
+    val lockscreenReset: Boolean = false,
     val errorMessage: String? = null
 )
