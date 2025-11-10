@@ -1,36 +1,35 @@
 package com.cdccreditsmart.network.api
 
-import com.cdccreditsmart.network.dto.mdm.MdmCommand
+import com.cdccreditsmart.network.dto.mdm.*
 import retrofit2.Response
 import retrofit2.http.*
 
 interface MdmApiService {
     
-    @GET("v1/device/commands/pending")
-    suspend fun getPendingCommands(): List<MdmCommand>
+    @GET("api/apk/device/{serialNumber}/commands")
+    suspend fun getPendingCommands(
+        @Path("serialNumber") serialNumber: String
+    ): Response<PendingCommandsResponse>
     
-    @POST("v1/mdm/commands/acknowledge")
-    suspend fun acknowledgeCommand(@Body request: AcknowledgeRequest): Response<Unit>
+    @POST("api/apk/device/{serialNumber}/command-response")
+    suspend fun sendCommandResponse(
+        @Path("serialNumber") serialNumber: String,
+        @Body request: CommandResponseRequest
+    ): Response<Unit>
     
-    @POST("v1/mdm/commands/response")
-    suspend fun sendCommandResponse(@Body request: CommandResponseRequest): Response<Unit>
+    @GET("api/apk/device/{serialNumber}/pending-decisions")
+    suspend fun getPendingDecisions(
+        @Path("serialNumber") serialNumber: String
+    ): Response<PendingDecisionsResponse>
     
-    data class AcknowledgeRequest(
-        val commandId: String,
-        val status: String
-    )
+    @POST("api/apk/device/{serialNumber}/acknowledge-decision")
+    suspend fun acknowledgeDecision(
+        @Path("serialNumber") serialNumber: String,
+        @Body request: AcknowledgeDecisionRequest
+    ): Response<AcknowledgeDecisionResponse>
     
-    data class CommandResponseRequest(
-        val commandId: String,
-        val status: String,
-        val response: CommandResponse,
-        val errorMessage: String? = null
-    )
-    
-    data class CommandResponse(
-        val success: Boolean,
-        val blockedAppsCount: Int? = null,
-        val appliedLevel: Int? = null,
-        val timestamp: Long
-    )
+    @POST("api/apk/device/{serialNumber}/unblock")
+    suspend fun unblockDevice(
+        @Path("serialNumber") serialNumber: String
+    ): Response<UnblockResponse>
 }

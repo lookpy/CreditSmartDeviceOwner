@@ -1,0 +1,84 @@
+//
+// Decompiled by Jadx - 1286ms
+//
+package com.samsung.android.knox.lockscreen;
+
+import android.app.enterprise.MiscPolicy;
+
+public class LockscreenOverlay {
+    private android.app.enterprise.lso.LockscreenOverlay mLockscreenOverlay;
+    private MiscPolicy mMiscPolicy;
+
+    public LockscreenOverlay(android.app.enterprise.lso.LockscreenOverlay lockscreenOverlay, MiscPolicy miscPolicy) {
+        this.mLockscreenOverlay = lockscreenOverlay;
+        this.mMiscPolicy = miscPolicy;
+    }
+
+    public boolean canConfigure() {
+        return this.mLockscreenOverlay.canConfigure();
+    }
+
+    public boolean changeLockScreenString(String str) {
+        return this.mMiscPolicy.changeLockScreenString(str);
+    }
+
+    public int configure(String str, String str2, String str3, String str4) {
+        return this.mLockscreenOverlay.configure(str, str2, str3, str4);
+    }
+
+    public float getAlpha() {
+        return this.mLockscreenOverlay.getAlpha();
+    }
+
+    public String getCurrentLockScreenString() {
+        return this.mMiscPolicy.getCurrentLockScreenString();
+    }
+
+    public String getEmergencyPhone() {
+        return this.mLockscreenOverlay.getEmergencyPhone();
+    }
+
+    public LSOEmergencyPhoneInfo getEmergencyPhoneInfo() {
+        return LSOEmergencyPhoneInfo.convertToNew(this.mLockscreenOverlay.getEmergencyPhoneInfo());
+    }
+
+    public boolean isConfigured() {
+        return this.mLockscreenOverlay.isConfigured();
+    }
+
+    public void removeEmergencyPhone() {
+        this.mLockscreenOverlay.removeEmergencyPhone();
+    }
+
+    public void resetAll() {
+        this.mLockscreenOverlay.resetAll();
+    }
+
+    public void resetOverlay() {
+        this.mLockscreenOverlay.resetOverlay();
+    }
+
+    public void resetWallpaper() {
+        this.mLockscreenOverlay.resetWallpaper();
+    }
+
+    public int setAlpha(float f) {
+        return this.mLockscreenOverlay.setAlpha(f);
+    }
+
+    public int setEmergencyPhone(String str) {
+        return this.mLockscreenOverlay.setEmergencyPhone(str);
+    }
+
+    public int setEmergencyPhoneInfo(LSOEmergencyPhoneInfo lSOEmergencyPhoneInfo) {
+        return this.mLockscreenOverlay.setEmergencyPhoneInfo(LSOEmergencyPhoneInfo.convertToOld(lSOEmergencyPhoneInfo));
+    }
+
+    public int setWallpaper(String str) {
+        return this.mLockscreenOverlay.setWallpaper(str);
+    }
+
+    public int configure(LSOImage[] lSOImageArr) {
+        return this.mLockscreenOverlay.configure(LSOImage.convertToOldList(lSOImageArr));
+    }
+}
