@@ -79,7 +79,7 @@ class ReflectionKnoxClient(private val context: Context) : KnoxCapability {
         if (!available) return -1
         
         return try {
-            val method = lockscreenOverlay!!.javaClass.getMethod("setAlpha", Float::class.java)
+            val method = lockscreenOverlay!!.javaClass.getMethod("setAlpha", Float::class.javaPrimitiveType)
             method.invoke(lockscreenOverlay, alpha) as? Int ?: -1
         } catch (e: Exception) {
             Log.e(TAG, "Erro em setAlpha: ${e.message}")
