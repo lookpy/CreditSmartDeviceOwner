@@ -58,7 +58,7 @@ private class MdmCommandAdapter(val moshi: Moshi) : JsonAdapter<MdmCommand>() {
             "BLOCK_APPS_PROGRESSIVE" -> {
                 try {
                     if (parametersRaw != null) {
-                        blockParametersAdapter.fromJsonValue(parametersRaw)
+                        blockParametersAdapter.fromJsonValue(parametersRaw) ?: CommandParameters.EmptyParameters
                     } else {
                         CommandParameters.EmptyParameters
                     }
@@ -150,7 +150,7 @@ private class MdmCommandFullAdapter(val moshi: Moshi) : JsonAdapter<MdmCommandFu
             "BLOCK_APPS_PROGRESSIVE" -> {
                 try {
                     if (parametersRaw != null) {
-                        blockParametersAdapter.fromJsonValue(parametersRaw)
+                        blockParametersAdapter.fromJsonValue(parametersRaw) ?: CommandParameters.EmptyParameters
                     } else {
                         CommandParameters.EmptyParameters
                     }
