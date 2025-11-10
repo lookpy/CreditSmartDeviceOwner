@@ -554,7 +554,7 @@ data class UninstallPaymentInfo(
 // CDC Device Status Response - Estrutura real do backend
 //@JsonClass(generateAdapter = true) // Temporarily disabled to fix build
 data class CdcDeviceStatusResponse(
-    val device: CdcDeviceInfo,
+    val device: CdcDeviceStatus,
     val customer: CdcCustomerInfo? = null,
     val pdvSession: PdvSessionInfo? = null,
     val shouldBlock: Boolean? = null,
@@ -563,7 +563,7 @@ data class CdcDeviceStatusResponse(
 )
 
 //@JsonClass(generateAdapter = true) // Temporarily disabled to fix build
-data class CdcDeviceInfo(
+data class CdcDeviceStatus(
     val id: String,
     val name: String? = null,
     val isBlocked: Boolean,
