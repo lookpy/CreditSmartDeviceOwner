@@ -161,6 +161,28 @@
             </intent-filter>
         </service>
 
+        <!-- CDC Foreground Service - Always Active -->
+        <service
+            android:name=".service.CdcForegroundService"
+            android:exported="false"
+            android:foregroundServiceType="dataSync|remoteMessaging"
+            android:enabled="true"
+            android:stopWithTask="false" />
+
+        <!-- Boot Receiver - Auto-start service -->
+        <receiver
+            android:name=".service.BootReceiver"
+            android:exported="true"
+            android:enabled="true"
+            android:directBootAware="true">
+            <intent-filter android:priority="999">
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.LOCKED_BOOT_COMPLETED" />
+                <action android:name="android.intent.action.QUICKBOOT_POWERON" />
+                <action android:name="android.intent.action.MY_PACKAGE_REPLACED" />
+            </intent-filter>
+        </receiver>
+
         <!-- File provider for sharing documents -->
         <provider
             android:name="androidx.core.content.FileProvider"
