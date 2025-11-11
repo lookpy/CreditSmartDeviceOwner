@@ -1,0 +1,590 @@
+# Diagnóstico e Solução - Problema de Conectividade APK
+## CDC CreditSmart - Erro de DNS Resolution
+
+---
+
+## 🔴 PROBLEMA IDENTIFICADO
+
+```
+❌ Unable to resolve host "cdccreditsmart.com": No address associated with hostname
+```
+
+O APK não consegue resolver o DNS do domínio `cdccreditsmart.com` no dispositivo Android.
+
+---
+
+## 🔍 Diagnóstico Completo
+
+### Sintomas Observados nos Logs
+
+```
+2025-11-11 03:42:07.890  MdmCommandReceiver  ❌ WebSocket MDM FALHOU!
+2025-11-11 03:42:07.890  MdmCommandReceiver  ❌ Erro: Unable to resolve host "cdccreditsmart.com": No address associated with hostname
+```
+
+**Componentes Afetados:**
+1. ❌ WebSocketManager (`/ws/flow-status`)
+2. ❌ MdmCommandReceiver (`/ws` - comandos MDM)
+3. ❌ CdcForegroundService
+
+**Tentativas de Reconexão:**
+- ✅ Reconexão automática a cada 5 segundos (implementada)
+- ✅ Polling fallback iniciado (30s)
+- ❌ Todas falhando por DNS
+
+---
+
+## 🛠️ SOLUÇÕES
+
+### Solução 1: Forçar DNS Público no Android (RECOMENDADA)
+
+Configure DNS público (Google ou Cloudflare) no OkHttpClient:
+
+```kotlin
+import okhttp3.Dns
+import java.net.InetAddress
+
+// Custom DNS resolver usando Google DNS (8.8.8.8 / 8.8.4.4)
+object CustomDns : Dns {
+    private val googleDns1 = InetAddress.getByName("8.8.8.8")
+    private val googleDns2 = InetAddress.getByName("8.8.4.4")
+    private val cloudflareDns = InetAddress.getByName("1.1.1.1")
+    
+    override fun lookup(hostname: String): List<InetAddress> {
+        try {
+            // Tentar resolver usando DNS padrão primeiro
+            return Dns.SYSTEM.lookup(hostname)
+        } catch (e: UnknownHostException) {
+            Log.w("CustomDns", "Falha no DNS padrão para $hostname, tentando DNS público...")
+            
+            // Fallback: tentar resolver manualmente usando Google DNS
+            try {
+                val addresses = mutableListOf<InetAddress>()
+                
+                // Usar DnsResolver do Android 10+ se disponível
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                    // Usar API moderna de DNS
+                    val dnsResolver = android.net.DnsResolver.getInstance()
+                    // Implementar lookup assíncrono aqui
+                }
+                
+                // Fallback: IP hardcoded se necessário (NÃO RECOMENDADO)
+                // addresses.add(InetAddress.getByName("34.111.179.208"))
+                
+                return if (addresses.isNotEmpty()) addresses 
+                       else Dns.SYSTEM.lookup(hostname) // Última tentativa
+                       
+            } catch (e2: Exception) {
+                Log.e("CustomDns", "Todos os métodos de DNS falharam", e2)
+                throw e // Re-throw original exception
+            }
+        }
+    }
+}
+
+// Aplicar no OkHttpClient
+val okHttpClient = OkHttpClient.Builder()
+    .dns(CustomDns) // ← ADICIONAR ISTO
+    .connectTimeout(30, TimeUnit.SECONDS)
+    .readTimeout(30, TimeUnit.SECONDS)
+    .writeTimeout(30, TimeUnit.SECONDS)
+    .addInterceptor(loggingInterceptor)
+    .build()
+```
+
+### Solução 2: Fallback para IP Direto (TEMPORÁRIA)
+
+**⚠️ APENAS PARA TESTE - NÃO USAR EM PRODUÇÃO**
+
+```kotlin
+object ApiConfig {
+    // Endereço IP direto do servidor (obtido via nslookup)
+    const val FALLBACK_IP = "34.111.179.208"
+    const val PRIMARY_URL = "https://cdccreditsmart.com"
+    const val FALLBACK_URL = "https://$FALLBACK_IP"
+    
+    // Tentar URL primária, se falhar usar IP
+    fun getBaseUrl(): String {
+        return try {
+            // Testar conectividade
+            InetAddress.getByName("cdccreditsmart.com")
+            PRIMARY_URL
+        } catch (e: UnknownHostException) {
+            Log.w("ApiConfig", "DNS falhou, usando IP direto")
+            FALLBACK_URL
+        }
+    }
+}
+
+// Usar no Retrofit
+val retrofit = Retrofit.Builder()
+    .baseUrl(ApiConfig.getBaseUrl())
+    .build()
+```
+
+**Problema desta abordagem:**
+- ❌ SSL pode falhar (certificate mismatch)
+- ❌ IP pode mudar sem aviso
+- ❌ Não é escalável
+
+### Solução 3: Verificar Permissões de Rede
+
+Garanta que o APK tem todas as permissões necessárias:
+
+**AndroidManifest.xml:**
+
+```xml
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    
+    <!-- Permissões de Rede -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    
+    <!-- Para Android 9+ (clear text traffic) -->
+    <application
+        android:usesCleartextTraffic="true"
+        android:networkSecurityConfig="@xml/network_security_config">
+    </application>
+    
+</manifest>
+```
+
+**res/xml/network_security_config.xml:**
+
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<network-security-config>
+    <!-- Permitir clear text traffic para desenvolvimento -->
+    <base-config cleartextTrafficPermitted="true">
+        <trust-anchors>
+            <certificates src="system" />
+            <certificates src="user" />
+        </trust-anchors>
+    </base-config>
+    
+    <!-- Configuração específica para cdccreditsmart.com -->
+    <domain-config cleartextTrafficPermitted="false">
+        <domain includeSubdomains="true">cdccreditsmart.com</domain>
+        <trust-anchors>
+            <certificates src="system" />
+        </trust-anchors>
+    </domain-config>
+</network-security-config>
+```
+
+### Solução 4: Implementar Cache DNS Local
+
+```kotlin
+object DnsCache {
+    private val cache = mutableMapOf<String, List<InetAddress>>()
+    private val cacheTTL = 5 * 60 * 1000L // 5 minutos
+    private val cacheTimestamp = mutableMapOf<String, Long>()
+    
+    fun resolve(hostname: String): List<InetAddress> {
+        val now = System.currentTimeMillis()
+        val cached = cache[hostname]
+        val timestamp = cacheTimestamp[hostname] ?: 0L
+        
+        // Se cache válido, retornar
+        if (cached != null && (now - timestamp) < cacheTTL) {
+            Log.d("DnsCache", "✅ Usando DNS em cache para $hostname")
+            return cached
+        }
+        
+        // Resolver novo
+        return try {
+            val addresses = InetAddress.getAllByName(hostname).toList()
+            cache[hostname] = addresses
+            cacheTimestamp[hostname] = now
+            Log.d("DnsCache", "✅ DNS resolvido e em cache: $hostname → ${addresses.size} endereços")
+            addresses
+        } catch (e: UnknownHostException) {
+            Log.e("DnsCache", "❌ Falha ao resolver $hostname", e)
+            // Retornar cache expirado se existir
+            cached ?: throw e
+        }
+    }
+}
+
+// Usar no CustomDns
+object CustomDns : Dns {
+    override fun lookup(hostname: String): List<InetAddress> {
+        return DnsCache.resolve(hostname)
+    }
+}
+```
+
+---
+
+## 🧪 DIAGNÓSTICO DE CONECTIVIDADE
+
+Adicione estas funções de diagnóstico ao APK para identificar o problema:
+
+```kotlin
+object ConnectivityDiagnostics {
+    
+    fun checkNetworkConnectivity(context: Context): NetworkStatus {
+        val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        
+        val activeNetwork = connectivityManager.activeNetwork
+        val networkCapabilities = connectivityManager.getNetworkCapabilities(activeNetwork)
+        
+        return NetworkStatus(
+            isConnected = networkCapabilities != null,
+            hasInternet = networkCapabilities?.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET) == true,
+            hasValidated = networkCapabilities?.hasCapability(NetworkCapabilities.NET_CAPABILITY_VALIDATED) == true,
+            transportType = when {
+                networkCapabilities?.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) == true -> "WiFi"
+                networkCapabilities?.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) == true -> "Cellular"
+                networkCapabilities?.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET) == true -> "Ethernet"
+                else -> "Unknown"
+            }
+        )
+    }
+    
+    fun testDnsResolution(hostname: String): DnsResult {
+        val startTime = System.currentTimeMillis()
+        
+        return try {
+            val addresses = InetAddress.getAllByName(hostname)
+            val endTime = System.currentTimeMillis()
+            
+            DnsResult(
+                success = true,
+                hostname = hostname,
+                resolvedAddresses = addresses.map { it.hostAddress ?: "unknown" },
+                responseTime = endTime - startTime,
+                error = null
+            )
+        } catch (e: UnknownHostException) {
+            val endTime = System.currentTimeMillis()
+            
+            DnsResult(
+                success = false,
+                hostname = hostname,
+                resolvedAddresses = emptyList(),
+                responseTime = endTime - startTime,
+                error = e.message
+            )
+        }
+    }
+    
+    fun testHttpConnectivity(url: String): HttpResult {
+        val startTime = System.currentTimeMillis()
+        
+        return try {
+            val client = OkHttpClient.Builder()
+                .connectTimeout(10, TimeUnit.SECONDS)
+                .build()
+            
+            val request = Request.Builder()
+                .url(url)
+                .head() // Apenas HEAD request
+                .build()
+            
+            val response = client.newCall(request).execute()
+            val endTime = System.currentTimeMillis()
+            
+            HttpResult(
+                success = response.isSuccessful,
+                url = url,
+                statusCode = response.code,
+                responseTime = endTime - startTime,
+                error = if (!response.isSuccessful) response.message else null
+            )
+        } catch (e: Exception) {
+            val endTime = System.currentTimeMillis()
+            
+            HttpResult(
+                success = false,
+                url = url,
+                statusCode = null,
+                responseTime = endTime - startTime,
+                error = e.message
+            )
+        }
+    }
+    
+    fun runFullDiagnostics(context: Context): DiagnosticsReport {
+        Log.i("Diagnostics", "🔍 Iniciando diagnóstico completo de conectividade...")
+        
+        val networkStatus = checkNetworkConnectivity(context)
+        Log.i("Diagnostics", "📡 Rede: ${networkStatus.transportType}, Internet: ${networkStatus.hasInternet}")
+        
+        val dnsTest = testDnsResolution("cdccreditsmart.com")
+        Log.i("Diagnostics", "🌐 DNS: ${if (dnsTest.success) "✅ Sucesso" else "❌ Falhou"}")
+        if (dnsTest.success) {
+            Log.i("Diagnostics", "   IPs: ${dnsTest.resolvedAddresses.joinToString()}")
+        } else {
+            Log.e("Diagnostics", "   Erro: ${dnsTest.error}")
+        }
+        
+        val httpTest = testHttpConnectivity("https://cdccreditsmart.com/api/health")
+        Log.i("Diagnostics", "🌍 HTTP: ${if (httpTest.success) "✅ Sucesso" else "❌ Falhou"}")
+        if (httpTest.success) {
+            Log.i("Diagnostics", "   Status: ${httpTest.statusCode}, Tempo: ${httpTest.responseTime}ms")
+        } else {
+            Log.e("Diagnostics", "   Erro: ${httpTest.error}")
+        }
+        
+        return DiagnosticsReport(
+            timestamp = System.currentTimeMillis(),
+            networkStatus = networkStatus,
+            dnsTest = dnsTest,
+            httpTest = httpTest
+        )
+    }
+}
+
+data class NetworkStatus(
+    val isConnected: Boolean,
+    val hasInternet: Boolean,
+    val hasValidated: Boolean,
+    val transportType: String
+)
+
+data class DnsResult(
+    val success: Boolean,
+    val hostname: String,
+    val resolvedAddresses: List<String>,
+    val responseTime: Long,
+    val error: String?
+)
+
+data class HttpResult(
+    val success: Boolean,
+    val url: String,
+    val statusCode: Int?,
+    val responseTime: Long,
+    val error: String?
+)
+
+data class DiagnosticsReport(
+    val timestamp: Long,
+    val networkStatus: NetworkStatus,
+    val dnsTest: DnsResult,
+    val httpTest: HttpResult
+)
+```
+
+### Usar o Diagnóstico
+
+```kotlin
+// No onCreate do MainActivity ou CdcForegroundService
+lifecycleScope.launch(Dispatchers.IO) {
+    val report = ConnectivityDiagnostics.runFullDiagnostics(applicationContext)
+    
+    if (!report.networkStatus.isConnected) {
+        Log.e("Diagnostics", "❌ Sem conexão de rede!")
+    }
+    
+    if (!report.dnsTest.success) {
+        Log.e("Diagnostics", "❌ DNS não resolve - problema identificado!")
+        Log.e("Diagnostics", "   Considere usar DNS público (8.8.8.8)")
+    }
+    
+    if (!report.httpTest.success) {
+        Log.e("Diagnostics", "❌ HTTP não conecta - firewall ou backend offline!")
+    }
+}
+```
+
+---
+
+## 📱 COMANDOS ADB PARA TESTE
+
+Se tiver acesso via ADB ao dispositivo:
+
+```bash
+# 1. Verificar conectividade básica
+adb shell ping -c 3 8.8.8.8
+
+# 2. Tentar resolver DNS
+adb shell nslookup cdccreditsmart.com
+
+# 3. Verificar se consegue fazer HTTP
+adb shell curl -I https://cdccreditsmart.com/api/health
+
+# 4. Limpar cache DNS do Android
+adb shell su -c "ndc resolver clearnetcache"
+
+# 5. Verificar configuração de rede
+adb shell dumpsys connectivity
+
+# 6. Forçar usar DNS Google
+adb shell settings put global private_dns_mode hostname
+adb shell settings put global private_dns_specifier dns.google
+
+# 7. Ver logs em tempo real
+adb logcat | grep -E "MdmCommandReceiver|WebSocketManager|DNS"
+```
+
+---
+
+## ✅ CHECKLIST DE RESOLUÇÃO
+
+### 1. Verificar Ambiente
+- [ ] WiFi/Dados móveis estão ativos?
+- [ ] Outros apps conectam na internet?
+- [ ] Navegador abre `https://cdccreditsmart.com`?
+
+### 2. Verificar APK
+- [ ] Permissão `INTERNET` no AndroidManifest?
+- [ ] `network_security_config` configurado?
+- [ ] DNS customizado implementado?
+
+### 3. Implementar Fallbacks
+- [ ] Polling HTTP funcionando (não depende de WebSocket)?
+- [ ] Retry logic com backoff exponencial?
+- [ ] Cache DNS local?
+
+### 4. Diagnóstico
+- [ ] Executar `runFullDiagnostics()` e ver logs
+- [ ] Testar com DNS público (8.8.8.8)
+- [ ] Verificar firewall/VPN no dispositivo
+
+### 5. Solução Temporária
+- [ ] Implementar IP direto como fallback?
+- [ ] Notificar usuário sobre problema de rede?
+
+---
+
+## 🔄 SISTEMA DE POLLING (ALTERNATIVA AO WEBSOCKET)
+
+Enquanto o WebSocket não funciona, o APK deve **priorizar polling HTTP**:
+
+```kotlin
+class MdmPollingService(
+    private val apiService: ApiService,
+    private val deviceId: String,
+    private val authToken: String
+) {
+    
+    private val pollingScope = CoroutineScope(Dispatchers.IO + SupervisorJob())
+    private var pollingJob: Job? = null
+    private val pollingInterval = 30_000L // 30 segundos
+    
+    fun startPolling() {
+        Log.i("MdmPolling", "🔄 Iniciando polling de comandos MDM (${pollingInterval/1000}s)")
+        
+        pollingJob?.cancel()
+        pollingJob = pollingScope.launch {
+            while (isActive) {
+                try {
+                    fetchAndExecuteCommands()
+                } catch (e: Exception) {
+                    Log.e("MdmPolling", "❌ Erro no polling: ${e.message}", e)
+                }
+                
+                delay(pollingInterval)
+            }
+        }
+    }
+    
+    private suspend fun fetchAndExecuteCommands() {
+        try {
+            Log.d("MdmPolling", "📡 Buscando comandos MDM...")
+            
+            val response = apiService.getCommands(deviceId)
+            
+            if (response.isSuccessful) {
+                val commands = response.body()?.commands ?: emptyList()
+                
+                if (commands.isEmpty()) {
+                    Log.d("MdmPolling", "✅ Nenhum comando pendente")
+                } else {
+                    Log.i("MdmPolling", "📥 ${commands.size} comandos recebidos")
+                    
+                    commands.forEach { command ->
+                        executeCommand(command)
+                    }
+                }
+            } else {
+                Log.e("MdmPolling", "❌ Erro HTTP: ${response.code()} ${response.message()}")
+            }
+            
+        } catch (e: UnknownHostException) {
+            Log.e("MdmPolling", "❌ DNS não resolve - verificar conectividade")
+        } catch (e: IOException) {
+            Log.e("MdmPolling", "❌ Erro de rede: ${e.message}")
+        } catch (e: Exception) {
+            Log.e("MdmPolling", "❌ Erro inesperado: ${e.message}", e)
+        }
+    }
+    
+    private suspend fun executeCommand(command: MdmCommand) {
+        Log.i("MdmPolling", "⚙️ Executando comando: ${command.commandType} (${command.id})")
+        
+        val result = try {
+            when (command.commandType) {
+                "BLOCK_APPS_PROGRESSIVE" -> blockAppsProgressive(command)
+                "UNBLOCK_APPS_PROGRESSIVE" -> unblockAppsProgressive(command)
+                "LOCK_SCREEN" -> lockDevice(command)
+                else -> {
+                    Log.w("MdmPolling", "⚠️ Comando desconhecido: ${command.commandType}")
+                    CommandResult(success = false, error = "Comando não reconhecido")
+                }
+            }
+        } catch (e: Exception) {
+            Log.e("MdmPolling", "❌ Falha ao executar ${command.commandType}: ${e.message}", e)
+            CommandResult(success = false, error = e.message)
+        }
+        
+        // Enviar ACK ao backend
+        sendAck(command.id, result)
+    }
+    
+    private suspend fun sendAck(commandId: String, result: CommandResult) {
+        try {
+            val ackRequest = AckRequest(
+                status = if (result.success) "completed" else "failed",
+                result = result
+            )
+            
+            val response = apiService.acknowledgeCommand(deviceId, commandId, ackRequest)
+            
+            if (response.isSuccessful) {
+                Log.i("MdmPolling", "✅ ACK enviado com sucesso para comando $commandId")
+            } else {
+                Log.e("MdmPolling", "❌ Falha ao enviar ACK: ${response.code()}")
+            }
+            
+        } catch (e: Exception) {
+            Log.e("MdmPolling", "❌ Erro ao enviar ACK: ${e.message}", e)
+        }
+    }
+    
+    fun stopPolling() {
+        Log.i("MdmPolling", "🛑 Parando polling de comandos MDM")
+        pollingJob?.cancel()
+        pollingJob = null
+    }
+}
+```
+
+---
+
+## 📞 SUPORTE TÉCNICO
+
+**Próximos passos:**
+
+1. Executar `runFullDiagnostics()` no APK e enviar logs completos
+2. Testar DNS público (Solução 1)
+3. Verificar se navegador abre `https://cdccreditsmart.com` no dispositivo
+4. Se nada funcionar: usar IP direto temporariamente (Solução 2)
+
+**Informações para reportar:**
+- Modelo do dispositivo: Moto G15 Power
+- Versão do Android: [?]
+- Tipo de rede: WiFi ou Dados móveis?
+- Provedor de internet: [?]
+- Logs completos do diagnóstico
+
+---
+
+**Última atualização:** 11 de Novembro de 2025
+**Versão do documento:** 1.0.0
+**Sistema:** CDC CreditSmart APK - Connectivity Troubleshooting
