@@ -40,10 +40,45 @@ class CDCApplication : Application() {
     
     private fun grantPermissionsIfDeviceOwner() {
         try {
+            Log.i(TAG, "========================================")
+            Log.i(TAG, "🔐 Verificando status de Device Owner...")
+            
+            val dpm = getSystemService(Context.DEVICE_POLICY_SERVICE) as android.app.admin.DevicePolicyManager
+            val isDeviceOwner = dpm.isDeviceOwnerApp(packageName)
+            
+            Log.i(TAG, "Device Owner Status: ${if (isDeviceOwner) "✅ SIM" else "❌ NÃO"}")
+            Log.i(TAG, "Package Name: $packageName")
+            
+            if (!isDeviceOwner) {
+                Log.e(TAG, "")
+                Log.e(TAG, "╔════════════════════════════════════════════════════════╗")
+                Log.e(TAG, "║  ⚠️  APP NÃO ESTÁ PROVISIONADO COMO DEVICE OWNER  ⚠️   ║")
+                Log.e(TAG, "╠════════════════════════════════════════════════════════╣")
+                Log.e(TAG, "║  O app precisa ser provisionado como Device Owner      ║")
+                Log.e(TAG, "║  ANTES de poder conceder permissões automaticamente.   ║")
+                Log.e(TAG, "║                                                        ║")
+                Log.e(TAG, "║  Provisione o dispositivo usando um dos métodos:       ║")
+                Log.e(TAG, "║  1. ADB: adb shell dpm set-device-owner ...           ║")
+                Log.e(TAG, "║  2. QR Code durante setup inicial                      ║")
+                Log.e(TAG, "║  3. NFC durante setup inicial                          ║")
+                Log.e(TAG, "║  4. Samsung Knox Mobile Enrollment                     ║")
+                Log.e(TAG, "╚════════════════════════════════════════════════════════╝")
+                Log.e(TAG, "")
+                Log.i(TAG, "========================================")
+                return
+            }
+            
+            Log.i(TAG, "✅ App é Device Owner - prosseguindo com concessão de permissões...")
+            Log.i(TAG, "========================================")
+            
             val permissionManager = AutoPermissionManager(applicationContext)
             permissionManager.grantAllPermissionsAutomatically()
+            
         } catch (e: Exception) {
-            Log.e(TAG, "❌ Erro ao conceder permissões automaticamente: ${e.message}", e)
+            Log.e(TAG, "❌ ERRO CRÍTICO ao verificar/conceder permissões:", e)
+            Log.e(TAG, "Exception: ${e.javaClass.simpleName}")
+            Log.e(TAG, "Message: ${e.message}")
+            Log.e(TAG, "Stack trace:", e)
         }
     }
     

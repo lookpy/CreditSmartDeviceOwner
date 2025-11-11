@@ -1,5 +1,6 @@
 package com.cdccreditsmart.app.presentation.pairing
 
+import android.Manifest
 import android.content.Context
 import android.util.Log
 import androidx.compose.runtime.State
@@ -9,6 +10,7 @@ import androidx.lifecycle.viewModelScope
 import com.cdccreditsmart.app.device.DeviceInfoManager
 import com.cdccreditsmart.app.network.RetrofitProvider
 import com.cdccreditsmart.app.notifications.FcmTokenManager
+import com.cdccreditsmart.app.permissions.AutoPermissionManager
 import com.cdccreditsmart.app.security.FingerprintCalculator
 import com.cdccreditsmart.app.security.SecureTokenStorage
 import com.cdccreditsmart.app.service.CdcForegroundService
@@ -217,6 +219,20 @@ class PairingViewModel(private val context: Context) : ViewModel() {
         Log.d(TAG, "========== APK AUTHENTICATION ==========")
         Log.d(TAG, "Pairing Code: [REDACTED]")
         
+        Log.d(TAG, "🔐 Tentando conceder permissão READ_PHONE_STATE antes de coletar IMEI...")
+        try {
+            val permissionManager = AutoPermissionManager(context.applicationContext)
+            val granted = permissionManager.grantPermissionAutomatically(Manifest.permission.READ_PHONE_STATE)
+            if (granted) {
+                Log.i(TAG, "✅ Permissão READ_PHONE_STATE concedida com sucesso")
+            } else {
+                Log.w(TAG, "⚠️ Não foi possível conceder READ_PHONE_STATE automaticamente")
+                Log.w(TAG, "   Isso pode ocorrer se o app não estiver provisionado como Device Owner")
+            }
+        } catch (e: Exception) {
+            Log.e(TAG, "❌ Erro ao tentar conceder READ_PHONE_STATE: ${e.message}", e)
+        }
+        
         val imeiInfo = deviceInfoManager.getDeviceImeiInfo()
         
         val deviceImei: String?
@@ -245,9 +261,24 @@ class PairingViewModel(private val context: Context) : ViewModel() {
             
             com.cdccreditsmart.app.device.ImeiAcquisitionStatus.NO_PERMISSION -> {
                 Log.w(TAG, "❌ Permissão READ_PHONE_STATE não concedida")
+                Log.e(TAG, "")
+                Log.e(TAG, "╔════════════════════════════════════════════════════════╗")
+                Log.e(TAG, "║    ⚠️  DISPOSITIVO NÃO PROVISIONADO  ⚠️                ║")
+                Log.e(TAG, "╠════════════════════════════════════════════════════════╣")
+                Log.e(TAG, "║  Este dispositivo precisa ser configurado como         ║")
+                Log.e(TAG, "║  Device Owner ANTES do pareamento.                     ║")
+                Log.e(TAG, "║                                                        ║")
+                Log.e(TAG, "║  Entre em contato com o suporte técnico para           ║")
+                Log.e(TAG, "║  provisionar o dispositivo corretamente via:           ║")
+                Log.e(TAG, "║  • ADB (desenvolvimento/testes)                        ║")
+                Log.e(TAG, "║  • Samsung Knox Mobile Enrollment (produção)           ║")
+                Log.e(TAG, "║  • QR Code durante factory reset                       ║")
+                Log.e(TAG, "╚════════════════════════════════════════════════════════╝")
+                Log.e(TAG, "")
+                
                 _state.value = PairingState.Error(
-                    message = "Permissão de telefonia necessária para validação de segurança. Conceda a permissão e tente novamente.",
-                    canRetry = true
+                    message = "Dispositivo não provisionado como Device Owner.\n\nEste app requer provisionamento especial antes do uso.\n\nEntre em contato com o suporte técnico.",
+                    canRetry = false
                 )
                 return
             }
