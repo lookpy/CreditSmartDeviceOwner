@@ -9,6 +9,19 @@ import android.os.Build
 import android.util.Log
 import com.cdccreditsmart.device.CDCDeviceAdminReceiver
 
+/**
+ * AutoPermissionManager - Gerencia concessão automática de permissões como Device Owner
+ * 
+ * LIMITAÇÃO IMPORTANTE:
+ * - PACKAGE_USAGE_STATS (Usage Access) NÃO pode ser concedida automaticamente
+ * - Mesmo como Device Owner, esta permissão requer concessão manual do usuário
+ * - O app guia o usuário para Settings quando necessário
+ * - Esta é uma limitação inerente do Android, não um bug
+ * 
+ * IMPACTO:
+ * - BlockedAppInterceptor (overlay banner) só funciona após usuário conceder manualmente
+ * - App é HONESTO sobre esta limitação (conforme filosofia do projeto)
+ */
 class AutoPermissionManager(private val context: Context) {
     
     companion object {
@@ -127,43 +140,47 @@ class AutoPermissionManager(private val context: Context) {
     }
     
     private fun grantUsageStatsPermission() {
-        Log.i(TAG, "🔐 Concedendo permissão PACKAGE_USAGE_STATS (appOps)...")
+        Log.i(TAG, "========================================")
+        Log.i(TAG, "🔐 Verificando PACKAGE_USAGE_STATS")
+        Log.i(TAG, "========================================")
         
         try {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                val packageName = context.packageName
-                
-                val result = dpm.setPermissionGrantState(
-                    adminComponent,
-                    packageName,
-                    android.Manifest.permission.PACKAGE_USAGE_STATS,
-                    DevicePolicyManager.PERMISSION_GRANT_STATE_GRANTED
-                )
-                
-                if (result) {
-                    Log.i(TAG, "✅ PACKAGE_USAGE_STATS concedida via DPM")
-                } else {
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                        val appOps = context.getSystemService(Context.APP_OPS_SERVICE) as android.app.AppOpsManager
-                        
-                        val mode = appOps.checkOpNoThrow(
-                            "android:get_usage_stats",
-                            android.os.Process.myUid(),
-                            packageName
-                        )
-                        
-                        if (mode == android.app.AppOpsManager.MODE_ALLOWED) {
-                            Log.i(TAG, "✅ PACKAGE_USAGE_STATS já está concedida via AppOps")
-                        } else {
-                            Log.w(TAG, "⚠️ PACKAGE_USAGE_STATS não concedida (mode: $mode)")
-                            Log.w(TAG, "   Usuário pode precisar conceder manualmente em Settings > Special access")
-                        }
-                    }
-                }
+            val packageName = context.packageName
+            val appOps = context.getSystemService(Context.APP_OPS_SERVICE) as android.app.AppOpsManager
+            
+            val mode = appOps.checkOpNoThrow(
+                "android:get_usage_stats",
+                android.os.Process.myUid(),
+                packageName
+            )
+            
+            if (mode == android.app.AppOpsManager.MODE_ALLOWED) {
+                Log.i(TAG, "✅ PACKAGE_USAGE_STATS já concedida")
+                Log.i(TAG, "   BlockedAppInterceptor funcionará corretamente")
+            } else {
+                Log.w(TAG, "⚠️ PACKAGE_USAGE_STATS NÃO concedida (mode: $mode)")
+                Log.w(TAG, "")
+                Log.w(TAG, "╔════════════════════════════════════════════════════════╗")
+                Log.w(TAG, "║  LIMITAÇÃO DO ANDROID                                  ║")
+                Log.w(TAG, "╠════════════════════════════════════════════════════════╣")
+                Log.w(TAG, "║  PACKAGE_USAGE_STATS é uma permissão especial         ║")
+                Log.w(TAG, "║  que NÃO pode ser concedida automaticamente           ║")
+                Log.w(TAG, "║  mesmo com Device Owner.                              ║")
+                Log.w(TAG, "║                                                        ║")
+                Log.w(TAG, "║  IMPACTO: Overlay banner de apps bloqueados           ║")
+                Log.w(TAG, "║  NÃO funcionará até usuário conceder manualmente.     ║")
+                Log.w(TAG, "║                                                        ║")
+                Log.w(TAG, "║  SOLUÇÃO: O app mostrará tela de solicitação          ║")
+                Log.w(TAG, "║  com botão para Settings quando apropriado.           ║")
+                Log.w(TAG, "╚════════════════════════════════════════════════════════╝")
+                Log.w(TAG, "")
             }
+            
         } catch (e: Exception) {
-            Log.e(TAG, "❌ Erro ao conceder PACKAGE_USAGE_STATS: ${e.message}", e)
+            Log.e(TAG, "❌ Erro ao verificar PACKAGE_USAGE_STATS: ${e.message}", e)
         }
+        
+        Log.i(TAG, "========================================")
     }
     
     private fun verifyAllPermissionsGranted() {
@@ -228,6 +245,31 @@ class AutoPermissionManager(private val context: Context) {
         } catch (e: Exception) {
             Log.e(TAG, "Erro ao verificar Device Owner: ${e.message}")
             false
+        }
+    }
+    
+    fun hasUsageStatsPermission(): Boolean {
+        return try {
+            val appOps = context.getSystemService(Context.APP_OPS_SERVICE) as android.app.AppOpsManager
+            val mode = appOps.checkOpNoThrow(
+                "android:get_usage_stats",
+                android.os.Process.myUid(),
+                context.packageName
+            )
+            mode == android.app.AppOpsManager.MODE_ALLOWED
+        } catch (e: Exception) {
+            Log.e(TAG, "Erro ao verificar USAGE_STATS: ${e.message}")
+            false
+        }
+    }
+    
+    fun requestUsageStatsPermission(activityContext: android.app.Activity) {
+        Log.i(TAG, "📱 Redirecionando usuário para conceder PACKAGE_USAGE_STATS...")
+        try {
+            val intent = android.content.Intent(android.provider.Settings.ACTION_USAGE_ACCESS_SETTINGS)
+            activityContext.startActivity(intent)
+        } catch (e: Exception) {
+            Log.e(TAG, "❌ Erro ao abrir Settings: ${e.message}", e)
         }
     }
     
