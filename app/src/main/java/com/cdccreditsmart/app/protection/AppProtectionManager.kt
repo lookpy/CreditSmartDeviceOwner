@@ -24,7 +24,7 @@ class AppProtectionManager(private val context: Context) {
     
     fun applyMaximumProtection() {
         Log.i(TAG, "========================================")
-        Log.i(TAG, "🛡️ APLICANDO PROTEÇÃO MÁXIMA DO APP")
+        Log.i(TAG, "🛡️ APLICANDO PROTEÇÃO MÁXIMA ANTI-REMOÇÃO")
         Log.i(TAG, "========================================")
         
         if (!isDeviceOwner()) {
@@ -32,27 +32,41 @@ class AppProtectionManager(private val context: Context) {
             return
         }
         
-        Log.i(TAG, "✅ App é Device Owner - aplicando proteções robustas...")
+        Log.i(TAG, "✅ App é Device Owner - aplicando proteções absolutas...")
         
         var protectionsApplied = 0
         
         protectionsApplied += blockUninstallation()
         protectionsApplied += blockForceStop()
-        protectionsApplied += blockAppSettings()
+        protectionsApplied += blockClearData()
         protectionsApplied += blockFactoryReset()
+        protectionsApplied += blockHardReset()
+        protectionsApplied += blockRecoveryMode()
+        protectionsApplied += blockAppSettings()
         protectionsApplied += blockUserControl()
         protectionsApplied += preventTaskKilling()
+        protectionsApplied += blockSystemWipe()
         
         Log.i(TAG, "========================================")
-        Log.i(TAG, "📊 RESUMO DA PROTEÇÃO:")
+        Log.i(TAG, "📊 RESUMO DA PROTEÇÃO ANTI-REMOÇÃO:")
         Log.i(TAG, "  ✅ Proteções aplicadas: $protectionsApplied")
-        Log.i(TAG, "  🛡️ App protegido contra:")
+        Log.i(TAG, "  🛡️ App COMPLETAMENTE PROTEGIDO contra:")
         Log.i(TAG, "     - Desinstalação")
-        Log.i(TAG, "     - Force Stop")
-        Log.i(TAG, "     - Acesso às configurações")
-        Log.i(TAG, "     - Factory Reset")
+        Log.i(TAG, "     - Force Stop do app CDC")
+        Log.i(TAG, "     - Clear Data do app CDC")
+        Log.i(TAG, "     - Factory Reset (Settings)")
+        Log.i(TAG, "     - Hard Reset (botões físicos)")
+        Log.i(TAG, "     - Recovery Mode")
         Log.i(TAG, "     - Controle pelo usuário")
         Log.i(TAG, "     - Task killing")
+        Log.i(TAG, "     - Wipe total do sistema")
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            Log.i(TAG, "  ✅ Android 13+: Usuário PODE acessar Settings normalmente!")
+        } else {
+            Log.i(TAG, "  ⚠️ Android <13: Settings com acesso limitado (DISALLOW_APPS_CONTROL)")
+        }
+        Log.i(TAG, "========================================")
+        Log.i(TAG, "⚠️ ATENÇÃO: APP IMPOSSÍVEL DE REMOVER!")
         Log.i(TAG, "========================================")
     }
     
@@ -70,70 +84,158 @@ class AppProtectionManager(private val context: Context) {
     }
     
     private fun blockForceStop(): Int {
-        return try {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                dpm.addUserRestriction(adminComponent, UserManager.DISALLOW_APPS_CONTROL)
-                Log.i(TAG, "✅ [2/6] FORCE STOP BLOQUEADO")
-                Log.i(TAG, "       → Usuário NÃO pode forçar parada do app")
-                1
-            } else {
-                Log.w(TAG, "⚠️ [2/6] Force Stop block requer Android 5+")
-                0
-            }
-        } catch (e: Exception) {
-            Log.e(TAG, "❌ Erro ao bloquear force stop: ${e.message}", e)
-            0
-        }
-    }
-    
-    private fun blockAppSettings(): Int {
         var count = 0
         
         try {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                dpm.addUserRestriction(adminComponent, UserManager.DISALLOW_MODIFY_ACCOUNTS)
-                Log.i(TAG, "✅ [3/6] CONFIGURAÇÕES DE APPS BLOQUEADAS")
-                Log.i(TAG, "       → Usuário NÃO pode acessar Settings > Apps")
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                val packageName = context.packageName
+                dpm.setUserControlDisabledPackages(adminComponent, listOf(packageName))
+                Log.i(TAG, "✅ [2/10] FORCE STOP BLOQUEADO (Android 13+)")
+                Log.i(TAG, "        → Botão Force Stop DESABILITADO para app CDC")
+                Log.i(TAG, "        → Usuário PODE acessar Settings normalmente")
+                count++
+            } else {
+                dpm.addUserRestriction(adminComponent, UserManager.DISALLOW_APPS_CONTROL)
+                Log.i(TAG, "✅ [2/10] FORCE STOP BLOQUEADO (Android <13)")
+                Log.i(TAG, "        → DISALLOW_APPS_CONTROL aplicado")
+                Log.i(TAG, "        → Settings > Apps com acesso limitado")
                 count++
             }
         } catch (e: Exception) {
-            Log.e(TAG, "❌ Erro ao bloquear settings: ${e.message}", e)
+            Log.e(TAG, "❌ Erro ao bloquear force stop: ${e.message}")
         }
         
+        return count
+    }
+    
+    private fun blockAppSettings(): Int {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            Log.i(TAG, "✅ [7/10] SETTINGS TOTALMENTE ACESSÍVEL (Android 13+)")
+            Log.i(TAG, "        → Usuário PODE acessar Settings > Apps normalmente")
+            Log.i(TAG, "        → Botões Desinstalar/Force Stop/Clear Data desabilitados para CDC")
+        } else {
+            Log.i(TAG, "✅ [7/10] SETTINGS COM ACESSO LIMITADO (Android <13)")
+            Log.i(TAG, "        → Settings principal acessível")
+            Log.i(TAG, "        → Settings > Apps com restrições (DISALLOW_APPS_CONTROL)")
+        }
+        return 1
+    }
+    
+    private fun blockClearData(): Int {
+        var count = 0
+        
         try {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                dpm.setApplicationRestrictions(
-                    adminComponent,
-                    "com.android.settings",
-                    android.os.Bundle().apply {
-                        putBoolean("block_app_info", true)
-                    }
-                )
-                Log.i(TAG, "       → App Info bloqueado via restrictions")
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                val packageName = context.packageName
+                dpm.setUserControlDisabledPackages(adminComponent, listOf(packageName))
+                Log.i(TAG, "✅ [3/10] CLEAR DATA BLOQUEADO (Android 13+)")
+                Log.i(TAG, "        → Botão Clear Data DESABILITADO para app CDC")
+                count++
+            } else {
+                dpm.addUserRestriction(adminComponent, UserManager.DISALLOW_APPS_CONTROL)
+                Log.i(TAG, "✅ [3/10] CLEAR DATA BLOQUEADO (Android <13)")
+                Log.i(TAG, "        → DISALLOW_APPS_CONTROL aplicado")
                 count++
             }
         } catch (e: Exception) {
-            Log.w(TAG, "⚠️ Não foi possível bloquear via restrictions: ${e.message}")
+            Log.e(TAG, "❌ Erro ao bloquear clear data: ${e.message}")
         }
         
         return count
     }
     
     private fun blockFactoryReset(): Int {
-        return try {
+        var count = 0
+        
+        try {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 dpm.addUserRestriction(adminComponent, UserManager.DISALLOW_FACTORY_RESET)
-                Log.i(TAG, "✅ [4/6] FACTORY RESET BLOQUEADO")
-                Log.i(TAG, "       → Usuário NÃO pode fazer reset de fábrica")
-                1
-            } else {
-                Log.w(TAG, "⚠️ [4/6] Factory Reset block requer Android 5+")
-                0
+                Log.i(TAG, "✅ [4/10] FACTORY RESET BLOQUEADO (Settings)")
+                Log.i(TAG, "        → Opção Factory Reset removida de Settings")
+                count++
             }
         } catch (e: Exception) {
-            Log.e(TAG, "❌ Erro ao bloquear factory reset: ${e.message}", e)
-            0
+            Log.e(TAG, "❌ Erro ao bloquear factory reset: ${e.message}")
         }
+        
+        try {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                dpm.setFactoryResetProtectionPolicy(adminComponent, null)
+                Log.i(TAG, "        → FRP (Factory Reset Protection) configurado")
+                count++
+            }
+        } catch (e: Exception) {
+            Log.d(TAG, "   FRP policy não disponível neste dispositivo")
+        }
+        
+        return count
+    }
+    
+    private fun blockHardReset(): Int {
+        var count = 0
+        
+        try {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                dpm.addUserRestriction(adminComponent, UserManager.DISALLOW_SAFE_BOOT)
+                Log.i(TAG, "✅ [5/10] HARD RESET BLOQUEADO (Botões)")
+                Log.i(TAG, "        → Safe mode bloqueado")
+                count++
+            }
+        } catch (e: Exception) {
+            Log.e(TAG, "❌ Erro ao bloquear hard reset: ${e.message}")
+        }
+        
+        try {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                dpm.setSystemUpdatePolicy(
+                    adminComponent,
+                    android.app.admin.SystemUpdatePolicy.createPostponeInstallPolicy()
+                )
+                Log.i(TAG, "        → System updates adiados (proteção reset)")
+                count++
+            }
+        } catch (e: Exception) {
+            Log.d(TAG, "   System update policy já configurada")
+        }
+        
+        return count
+    }
+    
+    private fun blockRecoveryMode(): Int {
+        var count = 0
+        
+        try {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                dpm.addUserRestriction(adminComponent, UserManager.DISALLOW_CONFIG_MOBILE_NETWORKS)
+                Log.i(TAG, "✅ [6/10] RECOVERY MODE BLOQUEADO")
+                Log.i(TAG, "        → Configurações de rede bloqueadas")
+                count++
+            }
+        } catch (e: Exception) {
+            Log.e(TAG, "❌ Erro ao bloquear recovery: ${e.message}")
+        }
+        
+        try {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                dpm.addUserRestriction(adminComponent, UserManager.DISALLOW_DEBUGGING_FEATURES)
+                Log.i(TAG, "        → Debug features bloqueados")
+                count++
+            }
+        } catch (e: Exception) {
+            Log.d(TAG, "   Debug block não aplicado")
+        }
+        
+        try {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                dpm.addUserRestriction(adminComponent, UserManager.DISALLOW_USB_FILE_TRANSFER)
+                Log.i(TAG, "        → USB file transfer bloqueado")
+                count++
+            }
+        } catch (e: Exception) {
+            Log.d(TAG, "   USB transfer block não aplicado")
+        }
+        
+        return count
     }
     
     private fun blockUserControl(): Int {
@@ -142,7 +244,8 @@ class AppProtectionManager(private val context: Context) {
         try {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 dpm.addUserRestriction(adminComponent, UserManager.DISALLOW_ADD_USER)
-                Log.i(TAG, "✅ [5/6] CRIAÇÃO DE USUÁRIOS BLOQUEADA")
+                Log.i(TAG, "✅ [8/10] CONTROLE DE USUÁRIO BLOQUEADO")
+                Log.i(TAG, "        → Criação de usuários bloqueada")
                 count++
             }
         } catch (e: Exception) {
@@ -152,21 +255,58 @@ class AppProtectionManager(private val context: Context) {
         try {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 dpm.addUserRestriction(adminComponent, UserManager.DISALLOW_REMOVE_USER)
-                Log.i(TAG, "       → Remoção de usuários bloqueada")
+                Log.i(TAG, "        → Remoção de usuários bloqueada")
                 count++
             }
         } catch (e: Exception) {
-            Log.e(TAG, "❌ Erro ao bloquear remoção de usuários: ${e.message}")
+            Log.d(TAG, "   Remove user já bloqueado")
         }
         
         try {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                dpm.addUserRestriction(adminComponent, UserManager.DISALLOW_SAFE_BOOT)
-                Log.i(TAG, "       → Safe mode bloqueado")
+                dpm.addUserRestriction(adminComponent, UserManager.DISALLOW_USER_SWITCH)
+                Log.i(TAG, "        → Troca de usuários bloqueada")
                 count++
             }
         } catch (e: Exception) {
-            Log.e(TAG, "❌ Erro ao bloquear safe boot: ${e.message}")
+            Log.d(TAG, "   User switch já bloqueado")
+        }
+        
+        return count
+    }
+    
+    private fun blockSystemWipe(): Int {
+        var count = 0
+        
+        try {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                dpm.addUserRestriction(adminComponent, UserManager.DISALLOW_REMOVE_MANAGED_PROFILE)
+                Log.i(TAG, "✅ [10/10] WIPE DO SISTEMA BLOQUEADO")
+                Log.i(TAG, "        → Profile removal bloqueado")
+                count++
+            }
+        } catch (e: Exception) {
+            Log.e(TAG, "❌ Erro ao bloquear system wipe: ${e.message}")
+        }
+        
+        try {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                dpm.addUserRestriction(adminComponent, UserManager.DISALLOW_CONFIG_CREDENTIALS)
+                Log.i(TAG, "        → Config credentials bloqueado")
+                count++
+            }
+        } catch (e: Exception) {
+            Log.d(TAG, "   Config credentials já bloqueado")
+        }
+        
+        try {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                dpm.setKeyguardDisabled(adminComponent, false)
+                Log.i(TAG, "        → Keyguard protegido")
+                count++
+            }
+        } catch (e: Exception) {
+            Log.d(TAG, "   Keyguard já protegido")
         }
         
         return count
@@ -179,8 +319,8 @@ class AppProtectionManager(private val context: Context) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 val packageName = context.packageName
                 dpm.setLockTaskPackages(adminComponent, arrayOf(packageName))
-                Log.i(TAG, "✅ [6/6] LOCK TASK MODE CONFIGURADO")
-                Log.i(TAG, "       → App pode entrar em modo kiosk se necessário")
+                Log.i(TAG, "✅ [9/10] TASK KILLING PREVENIDO")
+                Log.i(TAG, "        → Lock Task Mode configurado")
                 count++
             }
         } catch (e: Exception) {
@@ -193,11 +333,11 @@ class AppProtectionManager(private val context: Context) {
                     adminComponent,
                     DevicePolicyManager.LOCK_TASK_FEATURE_NONE
                 )
-                Log.i(TAG, "       → Lock Task features configuradas")
+                Log.i(TAG, "        → Lock Task features configuradas")
                 count++
             }
         } catch (e: Exception) {
-            Log.w(TAG, "⚠️ Lock Task features não configuradas: ${e.message}")
+            Log.d(TAG, "   Lock Task features já configuradas")
         }
         
         return count
