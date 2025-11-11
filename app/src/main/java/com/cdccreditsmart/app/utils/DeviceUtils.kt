@@ -1,6 +1,7 @@
 package com.cdccreditsmart.app.utils
 
 import android.Manifest
+import android.app.admin.DevicePolicyManager
 import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Build
@@ -17,6 +18,62 @@ import android.util.Log
 object DeviceUtils {
     
     private const val TAG = "DeviceUtils"
+    
+    /**
+     * Verifica se o app está configurado como Device Owner
+     * 
+     * @param context Application context
+     * @return true se o app é Device Owner, false caso contrário
+     */
+    fun isDeviceOwner(context: Context): Boolean {
+        return try {
+            val dpm = context.getSystemService(Context.DEVICE_POLICY_SERVICE) as DevicePolicyManager
+            val isOwner = dpm.isDeviceOwnerApp(context.packageName)
+            Log.d(TAG, "Device Owner check: $isOwner")
+            isOwner
+        } catch (e: Exception) {
+            Log.e(TAG, "Error checking Device Owner: ${e.message}", e)
+            false
+        }
+    }
+    
+    /**
+     * Detecta se o dispositivo é Samsung
+     * 
+     * @return true se fabricante é Samsung, false caso contrário
+     */
+    fun isSamsung(): Boolean {
+        val isSamsung = Build.MANUFACTURER.equals("samsung", ignoreCase = true)
+        Log.d(TAG, "Samsung device: $isSamsung (Manufacturer: ${Build.MANUFACTURER})")
+        return isSamsung
+    }
+    
+    /**
+     * Retorna o fabricante do dispositivo
+     * 
+     * @return Fabricante (ex: Samsung, Motorola, etc)
+     */
+    fun getDeviceManufacturer(): String {
+        return Build.MANUFACTURER
+    }
+    
+    /**
+     * Retorna o modelo do dispositivo
+     * 
+     * @return Modelo do dispositivo
+     */
+    fun getDeviceModel(): String {
+        return Build.MODEL
+    }
+    
+    /**
+     * Retorna informações completas do dispositivo formatadas
+     * 
+     * @return String com fabricante, modelo e versão do Android
+     */
+    fun getDeviceInfo(): String {
+        return "${Build.MANUFACTURER} ${Build.MODEL} (Android ${Build.VERSION.RELEASE})"
+    }
     
     /**
      * Obtém o IMEI do dispositivo via TelephonyManager

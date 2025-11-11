@@ -12,9 +12,67 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.cdccreditsmart.app.presentation.deviceowner.DeviceOwnerCheckScreen
+import com.cdccreditsmart.app.presentation.deviceowner.DeviceOwnerCheckViewModel
+import com.cdccreditsmart.app.presentation.deviceowner.DeviceOwnerCheckViewModelFactory
+import com.cdccreditsmart.app.presentation.deviceowner.ProvisioningStep
+import com.cdccreditsmart.app.presentation.deviceowner.ProvisioningWizardScreen
 
 @Composable
 fun RouterScreen(
+    onNavigateToQRScanner: () -> Unit,
+    onNavigateToHome: () -> Unit
+) {
+    val context = LocalContext.current.applicationContext
+    val factory = remember { DeviceOwnerCheckViewModelFactory(context) }
+    val deviceOwnerViewModel: DeviceOwnerCheckViewModel = viewModel(factory = factory)
+    
+    val deviceOwnerState = deviceOwnerViewModel.state.value
+    
+    when (deviceOwnerState) {
+        is ProvisioningStep.Checking -> {
+            Box(
+                modifier = Modifier.fillMaxSize(),
+                contentAlignment = Alignment.Center
+            ) {
+                CircularProgressIndicator(color = Color(0xFFFF7A1A))
+            }
+        }
+        
+        is ProvisioningStep.NeedsProvisioning -> {
+            var showWizard by remember { mutableStateOf(false) }
+            
+            if (showWizard) {
+                ProvisioningWizardScreen(
+                    context = context,
+                    isSamsung = deviceOwnerState.isSamsung,
+                    onVerifyAgain = {
+                        deviceOwnerViewModel.checkDeviceOwner()
+                        showWizard = false
+                    },
+                    onClose = { showWizard = false }
+                )
+            } else {
+                DeviceOwnerCheckScreen(
+                    viewModel = deviceOwnerViewModel,
+                    onDeviceOwnerConfirmed = {
+                    },
+                    onNeedsProvisioning = { showWizard = true }
+                )
+            }
+        }
+        
+        is ProvisioningStep.DeviceOwnerFound -> {
+            RouterScreenContent(
+                onNavigateToQRScanner = onNavigateToQRScanner,
+                onNavigateToHome = onNavigateToHome
+            )
+        }
+    }
+}
+
+@Composable
+private fun RouterScreenContent(
     onNavigateToQRScanner: () -> Unit,
     onNavigateToHome: () -> Unit
 ) {
@@ -46,7 +104,6 @@ fun RouterScreen(
         }
     }
 
-    // UI de loading enquanto determina
     Surface(
         modifier = Modifier.fillMaxSize(),
         color = Color(0xFF1A1A1A)
