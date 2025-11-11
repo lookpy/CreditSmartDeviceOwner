@@ -2,6 +2,7 @@ package com.cdccreditsmart.app.provisioning
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
+import org.json.JSONObject
 
 @Parcelize
 data class QrCodeProvisioningConfig(
@@ -18,30 +19,32 @@ data class QrCodeProvisioningConfig(
 ) : Parcelable {
     
     fun toProvisioningJson(): String {
-        val json = mutableMapOf<String, Any>()
+        val json = JSONObject()
         
-        json["android.app.extra.PROVISIONING_DEVICE_ADMIN_COMPONENT_NAME"] = componentName
-        json["android.app.extra.PROVISIONING_DEVICE_ADMIN_PACKAGE_DOWNLOAD_LOCATION"] = apkDownloadUrl
-        json["android.app.extra.PROVISIONING_DEVICE_ADMIN_SIGNATURE_CHECKSUM"] = signatureChecksum
-        json["android.app.extra.PROVISIONING_SKIP_ENCRYPTION"] = skipEncryption
-        json["android.app.extra.PROVISIONING_LEAVE_ALL_SYSTEM_APPS_ENABLED"] = leaveAllSystemAppsEnabled
+        json.put("android.app.extra.PROVISIONING_DEVICE_ADMIN_COMPONENT_NAME", componentName)
+        json.put("android.app.extra.PROVISIONING_DEVICE_ADMIN_PACKAGE_DOWNLOAD_LOCATION", apkDownloadUrl)
+        json.put("android.app.extra.PROVISIONING_DEVICE_ADMIN_SIGNATURE_CHECKSUM", signatureChecksum)
+        json.put("android.app.extra.PROVISIONING_SKIP_ENCRYPTION", skipEncryption)
+        json.put("android.app.extra.PROVISIONING_LEAVE_ALL_SYSTEM_APPS_ENABLED", leaveAllSystemAppsEnabled)
         
         if (!wifiSsid.isNullOrBlank()) {
-            json["android.app.extra.PROVISIONING_WIFI_SSID"] = wifiSsid
+            json.put("android.app.extra.PROVISIONING_WIFI_SSID", wifiSsid)
             if (!wifiPassword.isNullOrBlank()) {
-                json["android.app.extra.PROVISIONING_WIFI_PASSWORD"] = wifiPassword
+                json.put("android.app.extra.PROVISIONING_WIFI_PASSWORD", wifiPassword)
             }
-            json["android.app.extra.PROVISIONING_WIFI_SECURITY_TYPE"] = wifiSecurityType
-            json["android.app.extra.PROVISIONING_WIFI_HIDDEN"] = wifiHidden
+            json.put("android.app.extra.PROVISIONING_WIFI_SECURITY_TYPE", wifiSecurityType)
+            json.put("android.app.extra.PROVISIONING_WIFI_HIDDEN", wifiHidden)
         }
         
         if (adminExtras.isNotEmpty()) {
-            json["android.app.extra.PROVISIONING_ADMIN_EXTRAS_BUNDLE"] = adminExtras
+            val extrasJson = JSONObject()
+            adminExtras.forEach { (key, value) ->
+                extrasJson.put(key, value)
+            }
+            json.put("android.app.extra.PROVISIONING_ADMIN_EXTRAS_BUNDLE", extrasJson)
         }
         
-        return com.squareup.moshi.Moshi.Builder().build()
-            .adapter(Map::class.java)
-            .toJson(json)
+        return json.toString()
     }
 }
 
