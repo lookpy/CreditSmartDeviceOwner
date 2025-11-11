@@ -1,7 +1,7 @@
 # CDC Credit Smart Android App
 
 ## Overview
-The CDC Credit Smart Android App provides a secure and efficient mobile experience for CDC Credit Smart clients. It functions as a Device Owner application with advanced security features and robust device pairing capabilities. The app integrates with the CDC Credit Smart backend using a secure 3-step handshake process (QR Code scanning, IMEI validation, and device fingerprint verification). Real-time communication via WebSocket ensures seamless synchronization with the PDV system. The app handles payment processing (PIX and Boleto) and implements graduated blocking policies, aiming to streamline operations and enhance security for mobile transactions.
+The CDC Credit Smart Android App delivers a secure and efficient mobile experience for CDC Credit Smart clients. It operates as a Device Owner application, integrating advanced security, robust device pairing, and real-time communication via WebSockets with the CDC Credit Smart backend. The app handles payment processing (PIX and Boleto) and implements graduated blocking policies, aiming to streamline operations and enhance security for mobile transactions. It employs a 3-step handshake process (QR Code scanning, IMEI validation, and device fingerprint verification) for secure pairing.
 
 ## User Preferences
 - Linguagem simples e clara em português
@@ -14,40 +14,108 @@ The CDC Credit Smart Android App provides a secure and efficient mobile experien
 - NUNCA usar dados mockados - apenas dados reais do backend
 
 ## System Architecture
-The application follows a Clean Architecture with MVVM, utilizing Jetpack Compose for the UI. It is modularized into `app`, `data`, `network`, `domain`, `device`, `payments`, and `biometry` components.
+The application is built with Clean Architecture principles, MVVM pattern, and Jetpack Compose for the UI. It is modularized into `app`, `data`, `network`, `domain`, `device`, `payments`, and `biometry` modules.
 
 **UI/UX Decisions:**
-The UI is developed using Jetpack Compose and Material 3, incorporating a CDC institutional dark theme (`#FF7A1A`/`#F47C2C`). It features a comprehensive navigation system powered by Compose NavController, covering device pairing, dashboard, and payments. The app includes a `RouterScreen` to intelligently direct users based on token status, a contract code input screen for manual entry with automatic formatting (uppercase, alphanumeric only, 8 characters max), `PairingProgressScreen` for visual feedback during handshake, `PairingPendingScreen` for sales awaiting PDV completion, and Success/Error screens for pairing outcomes. The Home screen features a hero header card, contract summary card, installment cards with expandable payment options, and a payment bottom sheet for PIX and Boleto selection, utilizing a professional card-based layout with rounded corners and elevation. Status chips are color-coded.
+The UI utilizes Jetpack Compose and Material 3 with a CDC institutional dark theme (`#FF7A1A`/`#F47C2C`). It features a comprehensive navigation system (Compose NavController), including screens for device pairing, dashboard, and payments. Key screens include `RouterScreen` for token-based routing, a contract code input screen with automatic formatting, `PairingProgressScreen`, `PairingPendingScreen`, and Success/Error screens. The Home screen displays contract summaries, installment cards with expandable payment options, and a payment bottom sheet for PIX and Boleto, all presented in a professional card-based layout with rounded corners and elevation. Status chips are color-coded.
 
 **Technical Implementations:**
-- **Device Pairing**: APK authentication via `POST /api/apk/auth` using an 8-digit alphanumeric pairing code (manual input with automatic formatting). Supports success, pending (sale awaiting PDV), or error states. Returns JWT authToken valid for 24h. No IMEI required for pairing.
-- **Foreground Service Always Active**: `CdcForegroundService` runs permanently in background with persistent notification, WakeLock, automatic restart on boot (BootReceiver), and auto-recovery if killed by system. Maintains WebSocket MDM connection and monitors device 24/7. Android 12+ compatible with FOREGROUND_SERVICE_DATA_SYNC and FOREGROUND_SERVICE_REMOTE_MESSAGING permissions, calling startForeground() immediately on service start to comply with Android 12+ restrictions.
-- **Real-time Communication**: Dual WebSocket system - (1) `wss://cdccreditsmart.com/ws/flow-status` for pairing flow status, (2) `wss://cdccreditsmart.com/ws?token=${deviceToken}` for MDM commands push. Both with automatic reconnection and heartbeat (30s intervals).
-- **MDM Command System**: Receives blocking commands via WebSocket push (primary) with polling fallback (30s). Sends immediate acknowledgement (`POST /v1/mdm/commands/acknowledge`) upon receiving command, applies blocking, and sends execution response (`POST /v1/mdm/commands/response`) with success/failure status.
-- **Security**: EncryptedSharedPreferences with AES256_GCM for token storage (authToken, deviceToken, apkToken, fingerprint, contractCode), JWT authentication for API requests, permanent device blocking on security violations.
-- **Data Persistence**: SecureTokenStorage for authToken (JWT), deviceToken, apkToken, fingerprint, and contractCode. Contract code is stored redundantly across multiple encrypted locations (EncryptedSharedPreferences, Device Protected Storage, encrypted files, Android Keystore) with HMAC SHA-256 validation for anti-tampering.
-- **Networking**: Retrofit, OkHttp with retry logic and exponential backoff, Certificate Pinning.
-- **Device Information**: `DeviceInfoManager` collects device build information, Android version, SDK level, serial number, and build ID.
-- **UI Framework**: Jetpack Compose, Material 3, and Compose Navigation.
-- **Device Management**: Comprehensive Device Owner APIs (10+ policies configured), `DeviceAdminReceiver` implemented, provisioning activities (Android 12+), **universal compatibility with all manufacturers** including Samsung (80+ models: S20-S25, Z Fold/Flip, A-series, M-series, Tab), Chinese OEMs (Xiaomi/MIUI, Oppo, Vivo, Realme, Huawei). Supports 5 provisioning methods: (1) ADB `dpm set-device-owner`, (2) QR Code scanning (universal, 100% devices), (3) DPC Identifier `afw#cdccreditsmart` (easiest), (4) NFC provisioning (Android 6-9), (5) Knox Mobile Enrollment - KME (Samsung zero-touch). Manufacturer-specific documentation covers Samsung Knox features (Container, Guard, Attestation), MIUI security toggles, ColorOS permission monitoring, Vivo account requirements, and Huawei/HarmonyOS restrictions. Includes Samsung Knox Enterprise SDK with lockscreen overlay, anti-tampering measures, and silent app updates.
-- **Auto-Permission Manager**: Automatic runtime permission granting when app is Device Owner. Uses `DevicePolicyManager.setPermissionGrantState()` to grant READ_PHONE_STATE, CAMERA, RECORD_AUDIO, POST_NOTIFICATIONS (Android 13+) without user interaction. Sets global permission policy to AUTO_GRANT via `setPermissionPolicy()` for future permissions. Executes automatically on app startup in `CDCApplication.onCreate()` with detailed logging and verification.
-- **Maximum Anti-Removal Protection (10 layers)**: `AppProtectionManager` implements absolute protection against removal attempts: (1) Uninstall blocked via `setUninstallBlocked()`, (2) Force stop blocked for CDC app only via `setUserControlDisabledPackages()` (Android 13+) or `DISALLOW_APPS_CONTROL` (Android <13), (3) Clear data blocked for CDC app only via `setUserControlDisabledPackages()` (Android 13+) or `DISALLOW_APPS_CONTROL` (Android <13), (4) Factory reset blocked via `DISALLOW_FACTORY_RESET` + FRP policy, (5) Hard reset (physical buttons) blocked via `DISALLOW_SAFE_BOOT`, (6) Recovery mode blocked via `DISALLOW_DEBUGGING_FEATURES` + `DISALLOW_USB_FILE_TRANSFER`, (7) Settings accessible (user can access device settings normally but cannot perform destructive actions on CDC app), (8) User control blocked (add/remove/switch users), (9) Task killing prevented via foreground service + WakeLock, (10) System wipe blocked via `DISALLOW_REMOVE_MANAGED_PROFILE` + `DISALLOW_CONFIG_CREDENTIALS`. User can access Settings normally but buttons Uninstall/Force Stop/Clear Data are disabled for CDC app only (Android 13+) or protected via resilient mechanisms (Android <13). App can only be removed via backend unblock command or ADB by CDC technician. All known bypass attempts blocked (ADB uninstall, Play Store, Settings actions, recovery wipe, bootloader, safe mode, task killers, new users). See `PROTECAO_ANTI_REMOCAO.md` for complete documentation.
-- **Error Handling**: Comprehensive error states with retry capabilities, user-friendly messages, security violation handling.
-- **Build System**: Optimized with R8 and compatibility with 16KB page size for Android 15+.
-- **Business Logic**: Device pairing via manual 8-digit code input, JWT token expiration handling (24h), pending sale flow with retry, PIX/Boleto payment processing, and graduated blocking policies.
-- **Backend Integration**: JWT authentication (authToken) for all API requests, WebSocket events (authenticated, device_connected, sale_completed, error). Automatic silent re-authentication using saved pairing code when JWT expires.
-- **Authentication**: `AuthenticationOrchestrator` manages silent authentication, saved contract code verification, automatic JWT renewal, and error handling (401/404 clears storage). Persistent authentication (auto-login on future openings) using the saved pairing code.
-- **Progressive Blocking System**: Receives blocking commands via MDM push architecture (WebSocket + polling fallback 30s). Uses polymorphic Moshi adapter with sealed class `CommandParameters` for type-safe command parsing. Supports multiple command types: `BLOCK_APPS_PROGRESSIVE` (with targetLevel, rules, categories), `LOCK_SCREEN`, `UNBLOCK_APPS_PROGRESSIVE`, and graceful fallback for unknown commands via `UnknownParameters`. Backend sends commands with target level (0-5), days overdue, categories (photos, gallery, games, social_media, all_apps_except_whatsapp, all_apps_except_banks_calls_sms_emails), and exceptions. APK acknowledges immediately via `POST /api/apk/device/{deviceId}/command-response`, applies blocking using `DevicePolicyManager.setApplicationHidden()` via `AppBlockingManager`, and sends execution response. `CategoryMapper` mapeia categorias string para package names. Exceptions include banking apps (5 layers protection), calls, SMS, and emails. `BlockingCheckWorker` runs every 15 minutes (WorkManager minimum) for periodic checks. Includes detailed logging and push notifications for blocking level changes. Centralized Moshi configuration via `MoshiProvider` ensures consistent JSON parsing across REST and WebSocket. **Blocked App Interceptor**: `BlockedAppInterceptor` monitors foreground apps via `UsageStatsManager` (granted via `setUsageStatsEnabled()` as Device Owner) and automatically shows `BlockedAppExplanationActivity` when user tries to open blocked app. Activity displays personalized explanation (why blocked, days overdue, how to unblock) with 5-second cooldown. `AppBlockingManager` persists blocking state (level, days, reason) in SharedPreferences and clears on unblock. Complete system documented in `BLOCKED_APP_EXPLANATION_SYSTEM.md`.
-- **Samsung Knox Lockscreen Overlay**: Automatic lockscreen messages on Samsung Knox devices showing personalized warnings based on overdue days (7, 15, 30, 45, 60 days). Uses reflection-based `ReflectionKnoxClient` to load Knox SDK dynamically at runtime via `Class.forName()`, allowing compilation without Knox JAR. `KnoxLockscreenManager` applies messages via `KnoxCapability` interface abstraction. Features include custom messages per level, transparency control (alpha 0.8f via primitive type reflection), emergency phone configuration (190), and automatic reset on unblock. Graceful fallback to `NoOpKnoxClient` on non-Knox devices (lockscreen updates are skipped but app continues working normally). Knox SDK is optional and can be added manually following `KNOX_SDK_MANUAL_SETUP.md`.
+- **Device Pairing**: Uses an 8-digit alphanumeric pairing code (manual input) and a 3-step handshake (QR Code scanning, IMEI validation, device fingerprint verification). It supports success, pending (sale awaiting PDV), or error states, returning a JWT authToken valid for 24h.
+- **IMEI Validation System**: Automatically captures device IMEI(s) (including dual-SIM, handling Wi-Fi tablets) during pairing. It uses Luhn validation, secure storage (SHA-256 hash + 32-byte salt), and compares with the IMEI registered in the PDV sale. The `DeviceInfoManager` ensures universal compatibility across Android API levels and OEMs.
+- **Foreground Service**: `CdcForegroundService` runs permanently, maintaining WebSocket connections and monitoring the device 24/7, with WakeLock and auto-restart on boot. It complies with Android 12+ foreground service restrictions.
+- **Real-time Communication**: Employs a dual WebSocket system for pairing flow status and MDM command push, with automatic reconnection and heartbeat.
+- **MDM Command System**: Receives blocking commands via WebSocket (with polling fallback), sends immediate acknowledgements, applies blocking, and sends execution responses.
+- **Security**: EncryptedSharedPreferences (AES256_GCM) for sensitive data (tokens, contractCode, validated IMEI hashes), JWT authentication, and permanent device blocking on security violations. Contract code is stored redundantly across multiple encrypted locations for anti-tampering.
+- **Data Persistence**: SecureTokenStorage for JWTs, device and APK tokens, fingerprint, contract code, and validated IMEI hashes.
+- **Networking**: Retrofit, OkHttp with retry logic, exponential backoff, and Certificate Pinning.
+- **Device Management (Device Owner)**: Configures 10+ Device Owner policies, implements `DeviceAdminReceiver`, and supports 5 provisioning methods (ADB, QR Code, DPC Identifier, NFC, Knox Mobile Enrollment). Includes Samsung Knox Enterprise SDK integration for advanced features like lockscreen overlays and anti-tampering.
+- **Auto-Permission Manager**: Automatically grants runtime permissions (e.g., READ_PHONE_STATE, CAMERA) as a Device Owner using `DevicePolicyManager.setPermissionGrantState()`.
+- **Maximum Anti-Removal Protection (10 Layers)**: `AppProtectionManager` prevents uninstall, force stop, clear data, factory reset, hard reset, recovery mode, user control changes, task killing, and system wipe.
+- **Progressive Blocking System**: Receives commands via MDM push, uses polymorphic Moshi adapter for type-safe command parsing (`BLOCK_APPS_PROGRESSIVE`, `LOCK_SCREEN`, `UNBLOCK_APPS_PROGRESSIVE`). Blocks apps based on level (0-5), days overdue, and categories (photos, games, social media), with exceptions for banking apps, calls, SMS, and emails. `BlockedAppInterceptor` displays an explanation screen when a blocked app is accessed.
+- **Samsung Knox Lockscreen Overlay**: Displays personalized lockscreen messages on Samsung Knox devices based on overdue days, with reflection-based dynamic Knox SDK loading and graceful fallback.
+
+## Sistema de Validação de IMEI
+
+### Visão Geral
+O aplicativo identifica automaticamente o IMEI do dispositivo e o compara com o IMEI registrado na venda do PDV durante o pareamento. Sistema completo com compatibilidade universal (Android API 21-35), suporte a dual-SIM, validação Luhn, armazenamento seguro com hash SHA-256, e fallbacks para dispositivos sem IMEI (tablets Wi-Fi).
+
+### Componentes Principais
+
+**1. DeviceInfoManager** (`app/src/main/java/com/cdccreditsmart/app/device/DeviceInfoManager.kt`)
+- ✅ Captura IMEI com compatibilidade universal (API 21-35)
+- ✅ Suporte a dual-SIM (múltiplos IMEIs via `TelephonyManager.phoneCount`)
+- ✅ Validação Luhn Algorithm (checksum de 15 dígitos)
+- ✅ Fallbacks para tablets Wi-Fi e dispositivos sem rádio
+- ✅ Tratamento de permissões (`READ_PHONE_STATE` obrigatório)
+- ✅ Compatibilidade com OEMs: Samsung, Xiaomi, Oppo, Vivo, Huawei
+
+**Data Classes:**
+- `DeviceImeiInfo`: Contém primaryImei, additionalImeis (dual-SIM), acquisitionStatus, totalImeis
+- `ImeiAcquisitionStatus`: SUCCESS | NO_PERMISSION | NO_TELEPHONY | NO_IMEI_AVAILABLE | ERROR
+- `ImeiValidationResult`: Resultado da validação (isValid, matchedImei, expectedImei, reason, deviceImeis)
+
+**2. SecureTokenStorage** (`app/src/main/java/com/cdccreditsmart/app/security/SecureTokenStorage.kt`)
+- ✅ Hash SHA-256 com salt aleatório de 32 bytes (SecureRandom)
+- ✅ Armazenamento em `EncryptedSharedPreferences` (AES256_GCM)
+- ✅ Base64 encoding (android.util.Base64 para API 21+ compatibility)
+- ✅ NUNCA armazena IMEI em plaintext
+- ✅ Timestamp de validação para auditoria
+- Métodos: `saveValidatedImeis()`, `validateImeiAgainstStored()`, `hasValidatedImeis()`, `clearValidatedImeis()`
+
+**3. PairingViewModel** (`app/src/main/java/com/cdccreditsmart/app/presentation/pairing/PairingViewModel.kt`)
+- Captura IMEI via `DeviceInfoManager.getDeviceImeiInfo()` durante pareamento
+- Envia IMEI(s) no `ApkAuthRequest` (POST /api/apk/auth)
+- Salva IMEIs validados com hash SHA-256 após autenticação bem-sucedida
+- Trata edge cases: dual-SIM, tablets Wi-Fi, sem permissão, IMEI inválido
+
+### Fluxo de Validação
+
+```
+1. Usuário insere código (ABCD1234) → UI: "Validando IMEI..."
+2. DeviceInfoManager.getDeviceImeiInfo() captura IMEI(s)
+   - Verifica READ_PHONE_STATE permission
+   - Loop em slots (dual-SIM support)
+   - Aplica validateImeiLuhn() (checksum)
+3. ApkAuthRequest criado:
+   - pairingCode: "ABCD1234"
+   - deviceImei: "123456789012345" (primário)
+   - additionalImeis: ["987654321098765"] (dual-SIM)
+   - imeiStatus: "unavailable" | "error" | null
+4. POST /api/apk/auth → Backend valida contra PDV
+5. HTTP 200 Success:
+   - Salva authToken, deviceToken, contractCode
+   - SecureTokenStorage.saveValidatedImeis() armazena com hash
+   - Navega para Dashboard
+```
+
+### Edge Cases Tratados
+- ✅ **Dual-SIM**: Envia primaryImei + array additionalImeis
+- ✅ **Tablet Wi-Fi**: Define imeiStatus="unavailable", continua pareamento
+- ✅ **Sem permissão**: Erro "Permissão de telefonia necessária", canRetry=true
+- ✅ **IMEI inválido (Luhn)**: Log warning, continua pareamento
+- ✅ **TelephonyManager null**: Define imeiStatus="unavailable"
+- ✅ **SecurityException**: Captura e trata gracefully
+
+### Compatibilidade
+- ✅ Android API 21-35 (Lollipop até Android 14+)
+- ✅ Smartphones single-SIM e dual-SIM
+- ✅ Tablets Wi-Fi (sem IMEI)
+- ✅ Samsung, Xiaomi, Oppo, Vivo, Huawei (todos os OEMs)
+
+### Segurança e Logging
+- ✅ NUNCA logar IMEI completo (apenas primeiros 6 dígitos: "123456****")
+- ✅ Hash SHA-256 irreversível
+- ✅ Salt único de 32 bytes por dispositivo
+- ✅ Armazenamento encriptado (AES256_GCM)
 
 ## External Dependencies
-- **CDC Credit Smart Backend API**: For APK authentication (`POST /api/apk/auth`), device status (`GET /api/apk/device/status`), installments data (`/api/apk/device/installments`), payment processing, heartbeat (`POST /api/apk/device/heartbeat`), MDM commands (`GET /api/apk/device/{serialNumber}/commands`, `POST /api/apk/device/{serialNumber}/command-response`), pending decisions (`GET /api/apk/device/{serialNumber}/pending-decisions`, `POST /api/apk/device/{serialNumber}/acknowledge-decision`), and unblock (`POST /api/apk/device/{serialNumber}/unblock`).
-- **WebSocket Server**: Dual WebSocket system - (1) `wss://cdccreditsmart.com/ws/flow-status` for pairing flow status, (2) `wss://cdccreditsmart.com/ws?token=${deviceToken}` for MDM commands push in real-time.
-- **Samsung Knox Enterprise SDK v3.12+**: Advanced device management and security on Samsung devices.
-- **Google Play Integrity API**: Device integrity verification.
-- **Firebase Messaging**: Push notifications.
-- **Jetpack Compose, Material 3, Compose Navigation**: Core UI framework.
-- **Retrofit, OkHttp**: HTTP client with WebSocket support.
-- **EncryptedSharedPreferences**: Secure local storage with AES256_GCM encryption.
-- **WorkManager**: Deferrable asynchronous tasks.
-- **Kotlin Coroutines**: Asynchronous programming.
+- **CDC Credit Smart Backend API**: For APK authentication, device status, installments data, payment processing, heartbeat, MDM commands, pending decisions, and unblock operations.
+- **WebSocket Server**: For real-time pairing flow status (`wss://cdccreditsmart.com/ws/flow-status`) and MDM commands push (`wss://cdccreditsmart.com/ws?token=${deviceToken}`).
+- **Samsung Knox Enterprise SDK v3.12+**: For advanced device management and security on Samsung devices.
+- **Google Play Integrity API**: For device integrity verification.
+- **Firebase Messaging**: For push notifications.
+- **Jetpack Compose, Material 3, Compose Navigation**: Core UI framework components.
+- **Retrofit, OkHttp**: HTTP client and WebSocket support.
+- **EncryptedSharedPreferences**: Secure local data storage.
+- **WorkManager**: For deferrable background tasks.
+- **Kotlin Coroutines**: For asynchronous programming.
