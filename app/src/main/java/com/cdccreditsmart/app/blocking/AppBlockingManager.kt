@@ -3,11 +3,9 @@ package com.cdccreditsmart.app.blocking
 import android.app.admin.DevicePolicyManager
 import android.content.ComponentName
 import android.content.Context
-import android.content.pm.SuspendDialogInfo
 import android.os.Build
 import android.os.PersistableBundle
 import android.util.Log
-import androidx.annotation.RequiresApi
 import com.cdccreditsmart.app.knox.KnoxLockscreenManager
 import com.cdccreditsmart.device.CDCDeviceAdminReceiver
 import com.cdccreditsmart.network.dto.mdm.CommandParameters
@@ -102,54 +100,8 @@ class AppBlockingManager(private val context: Context) {
             var blockedCount = 0
             var unblockedCount = 0
             
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                val dialogInfo = SuspendDialogInfo.Builder()
-                    .setIcon(android.R.drawable.ic_dialog_alert)
-                    .setTitle("Aplicativo Bloqueado")
-                    .setMessage("Este aplicativo está temporariamente bloqueado devido a pagamento em atraso de ${parameters.daysOverdue} dias.\n\nPara desbloquear, regularize seu pagamento através do app CDC Credit Smart.")
-                    .setNeutralButtonText("Entendi")
-                    .build()
-                
-                val packagesToSuspend = appsToBlock.toTypedArray()
-                val packagesToUnsuspend = allInstalledApps.filter { it !in appsToBlock }.toTypedArray()
-                
-                val suspendedPackages = dpm.setPackagesSuspended(
-                    adminComponent,
-                    packagesToSuspend,
-                    true,
-                    null,
-                    null,
-                    dialogInfo
-                )
-                
-                blockedCount = packagesToSuspend.size - suspendedPackages.size
-                
-                for (suspended in suspendedPackages) {
-                    Log.w(TAG, "  ⚠️ Não foi possível bloquear: $suspended")
-                }
-                
-                for (pkg in packagesToSuspend) {
-                    if (pkg !in suspendedPackages) {
-                        Log.d(TAG, "  ✅ Bloqueado (suspenso com diálogo customizado): $pkg")
-                    }
-                }
-                
-                val unsuspendedPackages = dpm.setPackagesSuspended(
-                    adminComponent,
-                    packagesToUnsuspend,
-                    false
-                )
-                
-                unblockedCount = packagesToUnsuspend.size - unsuspendedPackages.size
-                
-                for (pkg in packagesToUnsuspend) {
-                    if (pkg !in unsuspendedPackages) {
-                        Log.d(TAG, "  🔓 Desbloqueado: $pkg")
-                    }
-                }
-                
-            } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                Log.i(TAG, "Android 7-9: Usando suspensão sem diálogo customizado (sistema mostrará mensagem padrão)")
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                Log.i(TAG, "Android 7.0+: Usando setPackagesSuspended() - ícones permanecem visíveis")
                 
                 val packagesToSuspend = appsToBlock.toTypedArray()
                 val packagesToUnsuspend = allInstalledApps.filter { it !in appsToBlock }.toTypedArray()
@@ -160,15 +112,15 @@ class AppBlockingManager(private val context: Context) {
                     true
                 )
                 
-                blockedCount = packagesToSuspend.size - suspendedPackages.size
+                blockedCount = packagesToSuspend.size - (suspendedPackages?.size ?: 0)
                 
-                for (suspended in suspendedPackages) {
+                suspendedPackages?.forEach { suspended ->
                     Log.w(TAG, "  ⚠️ Não foi possível bloquear: $suspended")
                 }
                 
                 for (pkg in packagesToSuspend) {
-                    if (pkg !in suspendedPackages) {
-                        Log.d(TAG, "  ✅ Bloqueado (suspenso com mensagem padrão): $pkg")
+                    if (suspendedPackages == null || pkg !in suspendedPackages) {
+                        Log.d(TAG, "  ✅ Bloqueado (suspenso): $pkg")
                     }
                 }
                 
@@ -178,10 +130,10 @@ class AppBlockingManager(private val context: Context) {
                     false
                 )
                 
-                unblockedCount = packagesToUnsuspend.size - unsuspendedPackages.size
+                unblockedCount = packagesToUnsuspend.size - (unsuspendedPackages?.size ?: 0)
                 
                 for (pkg in packagesToUnsuspend) {
-                    if (pkg !in unsuspendedPackages) {
+                    if (unsuspendedPackages == null || pkg !in unsuspendedPackages) {
                         Log.d(TAG, "  🔓 Desbloqueado: $pkg")
                     }
                 }
