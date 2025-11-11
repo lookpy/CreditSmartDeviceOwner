@@ -328,6 +328,16 @@ class ContractCodeStorage(private val context: Context) {
     ) {
         try {
             val file = File(dir, fileName)
+            
+            if (file.exists()) {
+                val deleted = file.delete()
+                if (deleted) {
+                    Log.d(TAG, "Deleted existing file: $fileName")
+                } else {
+                    Log.w(TAG, "Failed to delete existing file: $fileName")
+                }
+            }
+            
             val combined = "$mac|$data"
             
             val masterKeyLocal = MasterKey.Builder(ctx)
@@ -344,6 +354,8 @@ class ContractCodeStorage(private val context: Context) {
             encryptedFile.openFileOutput().use { output ->
                 output.write(combined.toByteArray())
             }
+            
+            Log.d(TAG, "Successfully saved to file: $fileName")
         } catch (e: Exception) {
             Log.e(TAG, "Failed to save to file: $fileName", e)
         }
