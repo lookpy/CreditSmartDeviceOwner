@@ -8,6 +8,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.cdccreditsmart.app.device.DeviceInfoManager
+import com.cdccreditsmart.app.network.NetworkConnectivityHelper
 import com.cdccreditsmart.app.network.RetrofitProvider
 import com.cdccreditsmart.app.notifications.FcmTokenManager
 import com.cdccreditsmart.app.permissions.AutoPermissionManager
@@ -52,6 +53,7 @@ class PairingViewModel(private val context: Context) : ViewModel() {
     private val deviceInfoManager = DeviceInfoManager(context)
     private val tokenStorage = SecureTokenStorage(context)
     private val fcmTokenManager = FcmTokenManager(context)
+    private val networkHelper = NetworkConnectivityHelper(context)
     private var webSocketManager: WebSocketManager? = null
 
     private val deviceApi: DeviceApiService by lazy {
@@ -77,14 +79,34 @@ class PairingViewModel(private val context: Context) : ViewModel() {
         viewModelScope.launch {
             try {
                 Log.d(TAG, "🚀 Iniciando pareamento com código: ${pairingCode.take(4)}****")
+                
+                val networkState = networkHelper.getCurrentNetworkState()
+                Log.d(TAG, "📶 Estado da rede: ${networkState.userMessage}")
+                
+                if (!networkState.isConnected) {
+                    Log.e(TAG, "❌ Sem internet - abortando pareamento")
+                    _state.value = PairingState.Error(
+                        message = networkHelper.getNoInternetMessage(),
+                        canRetry = true
+                    )
+                    return@launch
+                }
+                
                 Log.d(TAG, "✅ Usando autenticação moderna: POST /api/apk/auth")
                 
                 stepFallbackClaimByCodeOnly(pairingCode)
                 
             } catch (e: Exception) {
                 Log.e(TAG, "Error in handshake", e)
+                
+                val errorMessage = if (networkHelper.isNetworkException(e)) {
+                    networkHelper.getErrorMessageForException(e)
+                } else {
+                    "Erro inesperado: ${e.message}"
+                }
+                
                 _state.value = PairingState.Error(
-                    message = "Erro inesperado: ${e.message}",
+                    message = errorMessage,
                     canRetry = true
                 )
             }
@@ -561,7 +583,21 @@ class PairingViewModel(private val context: Context) : ViewModel() {
             try {
                 return block()
             } catch (e: Exception) {
-                Log.w(TAG, "Attempt ${attempt + 1} failed: ${e.message}")
+                val isNetworkError = networkHelper.isNetworkException(e)
+                
+                if (isNetworkError) {
+                    val networkState = networkHelper.getCurrentNetworkState()
+                    if (!networkState.isConnected) {
+                        Log.e(TAG, "❌ Tentativa ${attempt + 1} falhou: SEM INTERNET")
+                        Log.e(TAG, "   Mensagem: ${networkState.userMessage}")
+                        throw Exception(networkHelper.getNoInternetMessage())
+                    } else {
+                        Log.w(TAG, "⚠️ Tentativa ${attempt + 1} falhou: Erro de rede (mas internet disponível)")
+                    }
+                } else {
+                    Log.w(TAG, "Attempt ${attempt + 1} failed: ${e.message}")
+                }
+                
                 delay(currentDelay)
                 currentDelay = (currentDelay * BACKOFF_FACTOR).toLong()
             }
