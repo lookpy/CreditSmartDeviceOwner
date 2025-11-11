@@ -73,31 +73,13 @@ class PairingViewModel(private val context: Context) : ViewModel() {
             .create(DeviceApiService::class.java)
     }
 
-    fun startHandshake(contractId: String) {
+    fun startHandshake(pairingCode: String) {
         viewModelScope.launch {
             try {
-                Log.d(TAG, "Starting handshake for contract")
+                Log.d(TAG, "🚀 Iniciando pareamento com código: ${pairingCode.take(4)}****")
+                Log.d(TAG, "✅ Usando autenticação moderna: POST /api/apk/auth")
                 
-                val imei = deviceInfoManager.getDeviceImei()
-                Log.d(TAG, "Device IMEI: ${imei.take(4)}...")
-                
-                if (imei == "UNKNOWN_IMEI") {
-                    Log.w(TAG, "IMEI not available - using code-only sync fallback")
-                    _state.value = PairingState.Validating("Sincronizando pelo código...")
-                    
-                    stepFallbackClaimByCodeOnly(contractId)
-                    return@launch
-                }
-
-                if (!deviceInfoManager.isValidImeiFormat(imei)) {
-                    Log.w(TAG, "Invalid IMEI format - using code-only sync fallback")
-                    _state.value = PairingState.Validating("Sincronizando pelo código...")
-                    
-                    stepFallbackClaimByCodeOnly(contractId)
-                    return@launch
-                }
-
-                step1SearchPendingSale(imei, contractId)
+                stepFallbackClaimByCodeOnly(pairingCode)
                 
             } catch (e: Exception) {
                 Log.e(TAG, "Error in handshake", e)
