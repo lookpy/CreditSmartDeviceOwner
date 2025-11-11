@@ -12,7 +12,7 @@ import kotlinx.coroutines.*
 import okhttp3.*
 import java.util.concurrent.TimeUnit
 
-class MdmCommandReceiver(private val context: Context, private val serialNumber: String) {
+class MdmCommandReceiver(private val context: Context, private val contractCode: String) {
     
     companion object {
         private const val TAG = "MdmCommandReceiver"
@@ -43,7 +43,7 @@ class MdmCommandReceiver(private val context: Context, private val serialNumber:
         Log.i(TAG, "🔗 Iniciando conexão WebSocket MDM...")
         Log.d(TAG, "🔗 URL: $WS_URL")
         Log.d(TAG, "🔗 JWT Token presente: ${jwtToken.isNotBlank()}")
-        Log.d(TAG, "🔗 Using serial number: ${serialNumber.take(6)}...")
+        Log.d(TAG, "🔗 Using contract code: ${contractCode.take(4)}...")
         
         disconnect()
         
@@ -373,12 +373,12 @@ class MdmCommandReceiver(private val context: Context, private val serialNumber:
     
     private suspend fun fetchPendingCommands() {
         try {
-            Log.d(TAG, "🔍 Buscando comandos pendentes para serial number: ${serialNumber.take(6)}...")
+            Log.d(TAG, "🔍 Buscando comandos pendentes para contract code: ${contractCode.take(4)}...")
             
             val retrofit = RetrofitProvider.createRetrofit()
             val api = retrofit.create(MdmApiService::class.java)
             
-            val response = api.getPendingCommands(serialNumber)
+            val response = api.getPendingCommands(contractCode)
             
             if (response.isSuccessful) {
                 val body = response.body()

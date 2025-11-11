@@ -270,8 +270,8 @@ class CdcForegroundService : Service(), ScreenStateListener {
                 Log.i(TAG, "🔐 Tokens encontrados - inicializando serviços MDM")
                 
                 // Inicializa MDM Command Receiver
-                Log.d(TAG, "📡 Criando MdmCommandReceiver com MDM device ID...")
-                mdmReceiver = MdmCommandReceiver(applicationContext, mdmDeviceId!!)
+                Log.d(TAG, "📡 Criando MdmCommandReceiver com contract code...")
+                mdmReceiver = MdmCommandReceiver(applicationContext, contractCode!!)
                 
                 mdmReceiver?.setForegroundService(this@CdcForegroundService)
                 Log.d(TAG, "🔋 Foreground service reference passada para MdmCommandReceiver")

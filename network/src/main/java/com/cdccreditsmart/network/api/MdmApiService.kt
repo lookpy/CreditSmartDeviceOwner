@@ -6,30 +6,30 @@ import retrofit2.http.*
 
 interface MdmApiService {
     
-    @GET("api/apk/device/{serialNumber}/commands")
+    @GET("api/apk/device/{contractCode}/commands")
     suspend fun getPendingCommands(
-        @Path("serialNumber") serialNumber: String
+        @Path("contractCode") contractCode: String
     ): Response<PendingCommandsResponse>
     
-    @POST("api/apk/device/{serialNumber}/command-response")
+    @POST("api/apk/device/{contractCode}/command-response")
     suspend fun sendCommandResponse(
-        @Path("serialNumber") serialNumber: String,
+        @Path("contractCode") contractCode: String,
         @Body request: CommandResponseRequest
     ): Response<Unit>
     
-    @GET("api/apk/device/{serialNumber}/pending-decisions")
+    @GET("api/apk/device/{contractCode}/pending-decisions")
     suspend fun getPendingDecisions(
-        @Path("serialNumber") serialNumber: String
+        @Path("contractCode") contractCode: String
     ): Response<PendingDecisionsResponse>
     
-    @POST("api/apk/device/{serialNumber}/acknowledge-decision")
+    @POST("api/apk/device/{contractCode}/acknowledge-decision")
     suspend fun acknowledgeDecision(
-        @Path("serialNumber") serialNumber: String,
+        @Path("contractCode") contractCode: String,
         @Body request: AcknowledgeDecisionRequest
     ): Response<AcknowledgeDecisionResponse>
     
-    @POST("api/apk/device/{serialNumber}/unblock")
+    @POST("api/apk/device/{contractCode}/unblock")
     suspend fun unblockDevice(
-        @Path("serialNumber") serialNumber: String
+        @Path("contractCode") contractCode: String
     ): Response<UnblockResponse>
 }
