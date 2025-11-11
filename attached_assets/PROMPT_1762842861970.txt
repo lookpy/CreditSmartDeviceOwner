@@ -1,0 +1,114 @@
+ Attempt 1 failed: Unable to resolve host "cdccreditsmart.com": No address associated with hostname
+2025-11-11 03:34:06.327  3695-3695  InsetsController        com.cdccreditsmart.app               D  hide(ime(), fromIme=false)
+2025-11-11 03:34:06.328  3695-3695  ImeTracker              com.cdccreditsmart.app               I  com.cdccreditsmart.app:2148d59b: onRequestHide at ORIGIN_CLIENT reason HIDE_SOFT_INPUT_BY_INSETS_API fromUser false
+2025-11-11 03:34:06.328  3695-3695  ImeTracker              com.cdccreditsmart.app               I  com.cdccreditsmart.app:2148d59b: onCancelled at PHASE_CLIENT_APPLY_ANIMATION
+2025-11-11 03:34:07.127  3695-4017  okhttp.OkHttpClient     com.cdccreditsmart.app               I  --> POST https://cdccreditsmart.com/api/apk/auth
+2025-11-11 03:34:07.127  3695-4017  okhttp.OkHttpClient     com.cdccreditsmart.app               I  Content-Type: application/json; charset=UTF-8
+2025-11-11 03:34:07.127  3695-4017  okhttp.OkHttpClient     com.cdccreditsmart.app               I  Content-Length: 88
+2025-11-11 03:34:07.128  3695-4017  okhttp.OkHttpClient     com.cdccreditsmart.app               I  {"code":"BVYG2VS2","deviceImei":"353104903560533","additionalImeis":["353104903560541"]}
+2025-11-11 03:34:07.129  3695-4017  okhttp.OkHttpClient     com.cdccreditsmart.app               I  --> END POST (88-byte body)
+2025-11-11 03:34:07.137  3695-4017  okhttp.OkHttpClient     com.cdccreditsmart.app               I  <-- HTTP FAILED: java.net.UnknownHostException: Unable to resolve host "cdccreditsmart.com": No address associated with hostname
+2025-11-11 03:34:07.140  3695-3695  PairingViewModel        com.cdccreditsmart.app               W  Attempt 2 failed: Unable to resolve host "cdccreditsmart.com": No address associated with hostname
+2025-11-11 03:34:09.145  3695-4017  okhttp.OkHttpClient     com.cdccreditsmart.app               I  --> POST https://cdccreditsmart.com/api/apk/auth
+2025-11-11 03:34:09.145  3695-4017  okhttp.OkHttpClient     com.cdccreditsmart.app               I  Content-Type: application/json; charset=UTF-8
+2025-11-11 03:34:09.146  3695-4017  okhttp.OkHttpClient     com.cdccreditsmart.app               I  Content-Length: 88
+2025-11-11 03:34:09.147  3695-4017  okhttp.OkHttpClient     com.cdccreditsmart.app               I  {"code":"BVYG2VS2","deviceImei":"353104903560533","additionalImeis":["353104903560541"]}
+2025-11-11 03:34:09.147  3695-4017  okhttp.OkHttpClient     com.cdccreditsmart.app               I  --> END POST (88-byte body)
+2025-11-11 03:34:09.156  3695-4017  okhttp.OkHttpClient     com.cdccreditsmart.app               I  <-- HTTP FAILED: java.net.UnknownHostException: Unable to resolve host "cdccreditsmart.com": No address associated with hostname
+2025-11-11 03:34:09.157  3695-3695  PairingViewModel        com.cdccreditsmart.app               E  Error in handshake
+2025-11-11 03:34:09.858  3695-3695  WebSocketManager        com.cdccreditsmart.app               D  Connecting to WebSocket: wss://cdccreditsmart.com/ws/flow-status
+2025-11-11 03:34:09.868  3695-3695  WebSocketManager        com.cdccreditsmart.app               D  Connecting to WebSocket: wss://cdccreditsmart.com/ws/flow-status
+2025-11-11 03:34:09.874  3695-3808  WebSocketManager        com.cdccreditsmart.app               E  WebSocket failure: Unable to resolve host "cdccreditsmart.com": No address associated with hostname
+2025-11-11 03:34:09.874  3695-3808  CdcForegroundService    com.cdccreditsmart.app               E  ❌ Erro no WebSocket Flow: Connection failed: Unable to resolve host "cdccreditsmart.com": No address associated with hostname
+2025-11-11 03:34:09.874  3695-3808  WebSocketManager        com.cdccreditsmart.app               D  Scheduling reconnection in 5000ms
+2025-11-11 03:34:09.879  3695-3807  WebSocketManager        com.cdccreditsmart.app               E  WebSocket failure: Unable to resolve host "cdccreditsmart.com": No address associated with hostname
+2025-11-11 03:34:09.879  3695-3807  CdcForegroundService    com.cdccreditsmart.app               E  ❌ Erro no WebSocket Flow: Connection failed: Unable to resolve host "cdccreditsmart.com": No address associated with hostname
+2025-11-11 03:34:09.879  3695-3807  WebSocketManager        com.cdccreditsmart.app               D  Scheduling reconnection in 5000ms
+2025-11-11 03:34:09.931  3695-3815  MdmCommandReceiver      com.cdccreditsmart.app               I  🔄 Tentando reconectar WebSocket MDM...
+2025-11-11 03:34:09.931  3695-3815  MdmCommandReceiver      com.cdccreditsmart.app               I  🔗 Iniciando conexão WebSocket MDM...
+2025-11-11 03:34:09.931  3695-3815  MdmCommandReceiver      com.cdccreditsmart.app               D  🔗 URL: wss://cdccreditsmart.com/ws
+2025-11-11 03:34:09.932  3695-3815  MdmCommandReceiver      com.cdccreditsmart.app               D  🔗 JWT Token presente: true
+2025-11-11 03:34:09.932  3695-3815  MdmCommandReceiver      com.cdccreditsmart.app               D  🔗 Using contract code: BVYG...
+2025-11-11 03:34:09.934  3695-3815  MdmCommandReceiver      com.cdccreditsmart.app               D  🔌 MDM Command Receiver desconectado
+2025-11-11 03:34:09.948  3695-3815  MdmCommandReceiver      com.cdccreditsmart.app               D  🔗 Criando WebSocket OkHttp...
+2025-11-11 03:34:09.951  3695-3815  MdmCommandReceiver      com.cdccreditsmart.app               D  🔗 WebSocket request enviado - aguardando resposta...
+2025-11-11 03:34:09.957  3695-3806  MdmCommandReceiver      com.cdccreditsmart.app               E  ❌ WebSocket MDM FALHOU!
+2025-11-11 03:34:09.957  3695-3806  MdmCommandReceiver      com.cdccreditsmart.app               E  ❌ Erro: Unable to resolve host "cdccreditsmart.com": No address associated with hostname
+2025-11-11 03:34:09.957  3695-3806  MdmCommandReceiver      com.cdccreditsmart.app               E  ❌ Response code: null
+2025-11-11 03:34:09.957  3695-3806  MdmCommandReceiver      com.cdccreditsmart.app               E  ❌ Response body: null
+2025-11-11 03:34:09.959  3695-3806  MdmCommandReceiver      com.cdccreditsmart.app               E  ❌ Stack trace: java.net.UnknownHostException: Unable to resolve host "cdccreditsmart.com": No address associated with hostname (Ask Gemini)
+                                                                                                    	at java.net.Inet6AddressImpl.lookupHostByName(Inet6AddressImpl.java:124)
+                                                                                                    	at java.net.Inet6AddressImpl.lookupAllHostAddr(Inet6AddressImpl.java:103)
+                                                                                                    	at java.net.InetAddress.getAllByName(InetAddress.java:1152)
+                                                                                                    	at okhttp3.Dns$Companion$DnsSystem.lookup(Dns.kt:49)
+                                                                                                    	at okhttp3.internal.connection.RouteSelector.resetNextInetSocketAddress(RouteSelector.kt:169)
+                                                                                                    	at okhttp3.internal.connection.RouteSelector.nextProxy(RouteSelector.kt:131)
+                                                                                                    	at okhttp3.internal.connection.RouteSelector.next(RouteSelector.kt:73)
+                                                                                                    	at okhttp3.internal.connection.ExchangeFinder.findConnection(ExchangeFinder.kt:205)
+                                                                                                    	at okhttp3.internal.connection.ExchangeFinder.findHealthyConnection(ExchangeFinder.kt:106)
+                                                                                                    	at okhttp3.internal.connection.ExchangeFinder.find(ExchangeFinder.kt:74)
+                                                                                                    	at okhttp3.internal.connection.RealCall.initExchange$okhttp(RealCall.kt:255)
+                                                                                                    	at okhttp3.internal.connection.ConnectInterceptor.intercept(ConnectInterceptor.kt:32)
+                                                                                                    	at okhttp3.internal.http.RealInterceptorChain.proceed(RealInterceptorChain.kt:109)
+                                                                                                    	at okhttp3.internal.cache.CacheInterceptor.intercept(CacheInterceptor.kt:95)
+                                                                                                    	at okhttp3.internal.http.RealInterceptorChain.proceed(RealInterceptorChain.kt:109)
+                                                                                                    	at okhttp3.internal.http.BridgeInterceptor.intercept(BridgeInterceptor.kt:83)
+                                                                                                    	at okhttp3.internal.http.RealInterceptorChain.proceed(RealInterceptorChain.kt:109)
+                                                                                                    	at okhttp3.internal.http.RetryAndFollowUpInterceptor.intercept(RetryAndFollowUpInterceptor.kt:76)
+                                                                                                    	at okhttp3.internal.http.RealInterceptorChain.proceed(RealInterceptorChain.kt:109)
+                                                                                                    	at okhttp3.internal.connection.RealCall.getResponseWithInterceptorChain$okhttp(RealCall.kt:201)
+                                                                                                    	at okhttp3.internal.connection.RealCall$AsyncCall.run(RealCall.kt:517)
+                                                                                                    	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1145)
+                                                                                                    	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:644)
+                                                                                                    	at java.lang.Thread.run(Thread.java:1012)
+2025-11-11 03:34:09.959  3695-3806  MdmCommandReceiver      com.cdccreditsmart.app               W  🔄 Agendando reconexão em 5 segundos...
+2025-11-11 03:34:09.960  3695-3806  MdmCommandReceiver      com.cdccreditsmart.app               W  🔄 Iniciando polling fallback...
+2025-11-11 03:34:09.961  3695-3809  MdmCommandReceiver      com.cdccreditsmart.app               I  🔄 Iniciando polling fallback (30s)
+2025-11-11 03:34:14.879  3695-3695  WebSocketManager        com.cdccreditsmart.app               D  Connecting to WebSocket: wss://cdccreditsmart.com/ws/flow-status
+2025-11-11 03:34:14.882  3695-3695  WebSocketManager        com.cdccreditsmart.app               D  Connecting to WebSocket: wss://cdccreditsmart.com/ws/flow-status
+2025-11-11 03:34:14.895  3695-3808  WebSocketManager        com.cdccreditsmart.app               E  WebSocket failure: Unable to resolve host "cdccreditsmart.com": No address associated with hostname
+2025-11-11 03:34:14.896  3695-3807  WebSocketManager        com.cdccreditsmart.app               E  WebSocket failure: Unable to resolve host "cdccreditsmart.com": No address associated with hostname
+2025-11-11 03:34:14.896  3695-3808  CdcForegroundService    com.cdccreditsmart.app               E  ❌ Erro no WebSocket Flow: Connection failed: Unable to resolve host "cdccreditsmart.com": No address associated with hostname
+2025-11-11 03:34:14.896  3695-3808  WebSocketManager        com.cdccreditsmart.app               D  Scheduling reconnection in 5000ms
+2025-11-11 03:34:14.896  3695-3807  CdcForegroundService    com.cdccreditsmart.app               E  ❌ Erro no WebSocket Flow: Connection failed: Unable to resolve host "cdccreditsmart.com": No address associated with hostname
+2025-11-11 03:34:14.896  3695-3807  WebSocketManager        com.cdccreditsmart.app               D  Scheduling reconnection in 5000ms
+2025-11-11 03:34:14.964  3695-3809  MdmCommandReceiver      com.cdccreditsmart.app               I  🔄 Tentando reconectar WebSocket MDM...
+2025-11-11 03:34:14.964  3695-3809  MdmCommandReceiver      com.cdccreditsmart.app               I  🔗 Iniciando conexão WebSocket MDM...
+2025-11-11 03:34:14.965  3695-3809  MdmCommandReceiver      com.cdccreditsmart.app               D  🔗 URL: wss://cdccreditsmart.com/ws
+2025-11-11 03:34:14.965  3695-3809  MdmCommandReceiver      com.cdccreditsmart.app               D  🔗 JWT Token presente: true
+2025-11-11 03:34:14.965  3695-3809  MdmCommandReceiver      com.cdccreditsmart.app               D  🔗 Using contract code: BVYG...
+2025-11-11 03:34:14.969  3695-3809  MdmCommandReceiver      com.cdccreditsmart.app               D  🔌 MDM Command Receiver desconectado
+2025-11-11 03:34:14.986  3695-3809  MdmCommandReceiver      com.cdccreditsmart.app               D  🔗 Criando WebSocket OkHttp...
+2025-11-11 03:34:14.990  3695-3809  MdmCommandReceiver      com.cdccreditsmart.app               D  🔗 WebSocket request enviado - aguardando resposta...
+2025-11-11 03:34:14.995  3695-3806  MdmCommandReceiver      com.cdccreditsmart.app               E  ❌ WebSocket MDM FALHOU!
+2025-11-11 03:34:14.995  3695-3806  MdmCommandReceiver      com.cdccreditsmart.app               E  ❌ Erro: Unable to resolve host "cdccreditsmart.com": No address associated with hostname
+2025-11-11 03:34:14.995  3695-3806  MdmCommandReceiver      com.cdccreditsmart.app               E  ❌ Response code: null
+2025-11-11 03:34:14.995  3695-3806  MdmCommandReceiver      com.cdccreditsmart.app               E  ❌ Response body: null
+2025-11-11 03:34:14.997  3695-3806  MdmCommandReceiver      com.cdccreditsmart.app               E  ❌ Stack trace: java.net.UnknownHostException: Unable to resolve host "cdccreditsmart.com": No address associated with hostname (Ask Gemini)
+                                                                                                    	at java.net.Inet6AddressImpl.lookupHostByName(Inet6AddressImpl.java:124)
+                                                                                                    	at java.net.Inet6AddressImpl.lookupAllHostAddr(Inet6AddressImpl.java:103)
+                                                                                                    	at java.net.InetAddress.getAllByName(InetAddress.java:1152)
+                                                                                                    	at okhttp3.Dns$Companion$DnsSystem.lookup(Dns.kt:49)
+                                                                                                    	at okhttp3.internal.connection.RouteSelector.resetNextInetSocketAddress(RouteSelector.kt:169)
+                                                                                                    	at okhttp3.internal.connection.RouteSelector.nextProxy(RouteSelector.kt:131)
+                                                                                                    	at okhttp3.internal.connection.RouteSelector.next(RouteSelector.kt:73)
+                                                                                                    	at okhttp3.internal.connection.ExchangeFinder.findConnection(ExchangeFinder.kt:205)
+                                                                                                    	at okhttp3.internal.connection.ExchangeFinder.findHealthyConnection(ExchangeFinder.kt:106)
+                                                                                                    	at okhttp3.internal.connection.ExchangeFinder.find(ExchangeFinder.kt:74)
+                                                                                                    	at okhttp3.internal.connection.RealCall.initExchange$okhttp(RealCall.kt:255)
+                                                                                                    	at okhttp3.internal.connection.ConnectInterceptor.intercept(ConnectInterceptor.kt:32)
+                                                                                                    	at okhttp3.internal.http.RealInterceptorChain.proceed(RealInterceptorChain.kt:109)
+                                                                                                    	at okhttp3.internal.cache.CacheInterceptor.intercept(CacheInterceptor.kt:95)
+                                                                                                    	at okhttp3.internal.http.RealInterceptorChain.proceed(RealInterceptorChain.kt:109)
+                                                                                                    	at okhttp3.internal.http.BridgeInterceptor.intercept(BridgeInterceptor.kt:83)
+                                                                                                    	at okhttp3.internal.http.RealInterceptorChain.proceed(RealInterceptorChain.kt:109)
+                                                                                                    	at okhttp3.internal.http.RetryAndFollowUpInterceptor.intercept(RetryAndFollowUpInterceptor.kt:76)
+                                                                                                    	at okhttp3.internal.http.RealInterceptorChain.proceed(RealInterceptorChain.kt:109)
+                                                                                                    	at okhttp3.internal.connection.RealCall.getResponseWithInterceptorChain$okhttp(RealCall.kt:201)
+                                                                                                    	at okhttp3.internal.connection.RealCall$AsyncCall.run(RealCall.kt:517)
+                                                                                                    	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1145)
+                                                                                                    	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:644)
+                                                                                                    	at java.lang.Thread.run(Thread.java:1012)
+2025-11-11 03:34:14.997  3695-3806  MdmCommandReceiver      com.cdccreditsmart.app               W  🔄 Agendando reconexão em 5 segundos...
+2025-11-11 03:34:14.998  3695-3806  MdmCommandReceiver      com.cdccreditsmart.app               W  🔄 Iniciando polling fallback...
+2025-11-11 03:34:14.999  3695-3809  MdmCommandReceiver      com.cdccreditsmart.app               I  🔄 Iniciando polling fallback (30s)
