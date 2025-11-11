@@ -195,14 +195,14 @@ class CdcForegroundService : Service() {
                 val secureStorage = SecureTokenStorage(applicationContext)
                 val authToken = secureStorage.getAuthToken()
                 val contractCode = secureStorage.getContractCode()
-                var deviceId = secureStorage.getDeviceId()
+                var mdmDeviceId = secureStorage.getMdmDeviceIdentifier()
                 
                 Log.i(TAG, "🔐 AuthToken presente: ${!authToken.isNullOrBlank()}")
                 Log.i(TAG, "🔐 AuthToken length: ${authToken?.length ?: 0}")
                 Log.i(TAG, "🔐 ContractCode presente: ${!contractCode.isNullOrBlank()}")
                 Log.i(TAG, "🔐 ContractCode value: ${contractCode?.take(4)}****")
-                Log.i(TAG, "🔐 DeviceId presente: ${!deviceId.isNullOrBlank()}")
-                Log.i(TAG, "🔐 DeviceId value: ${deviceId?.take(10) ?: "..."}...")
+                Log.i(TAG, "🔐 MDM Device ID presente: ${!mdmDeviceId.isNullOrBlank()}")
+                Log.i(TAG, "🔐 MDM Device ID value: ${mdmDeviceId?.take(8) ?: "..."}...")
                 
                 if (authToken.isNullOrBlank() || contractCode.isNullOrBlank()) {
                     Log.w(TAG, "⚠️ ========================================")
@@ -213,42 +213,41 @@ class CdcForegroundService : Service() {
                     return@launch
                 }
                 
-                if (deviceId.isNullOrBlank()) {
-                    Log.w(TAG, "⏳ DeviceId vazio - aguardando AuthOrchestrator salvar...")
+                if (mdmDeviceId.isNullOrBlank()) {
+                    Log.w(TAG, "⏳ MDM Device ID vazio - aguardando pareamento salvar...")
                     
                     var attempts = 0
                     val maxAttempts = 10
                     
                     while (attempts < maxAttempts) {
                         delay((attempts + 1) * 1000L)
-                        deviceId = secureStorage.getDeviceId()
+                        mdmDeviceId = secureStorage.getMdmDeviceIdentifier()
                         
-                        if (!deviceId.isNullOrBlank()) {
-                            val resolvedDeviceId = deviceId!!
-                            Log.i(TAG, "✅ DeviceId encontrado após ${attempts + 1} tentativas: ${resolvedDeviceId.take(10)}...")
+                        if (!mdmDeviceId.isNullOrBlank()) {
+                            Log.i(TAG, "✅ MDM Device ID encontrado após ${attempts + 1} tentativas: ${mdmDeviceId!!.take(8)}...")
                             break
                         }
                         
                         attempts++
-                        Log.d(TAG, "⏳ Tentativa ${attempts}/$maxAttempts - DeviceId ainda vazio")
+                        Log.d(TAG, "⏳ Tentativa ${attempts}/$maxAttempts - MDM Device ID ainda vazio")
                     }
                     
-                    if (deviceId.isNullOrBlank()) {
-                        Log.e(TAG, "❌ DeviceId ainda vazio após $maxAttempts tentativas")
-                        Log.e(TAG, "⚠️ MDM será inicializado quando deviceId estiver disponível")
+                    if (mdmDeviceId.isNullOrBlank()) {
+                        Log.e(TAG, "❌ MDM Device ID ainda vazio após $maxAttempts tentativas")
+                        Log.e(TAG, "⚠️ MDM será inicializado quando identificador estiver disponível")
                         return@launch
                     }
                 }
                 
                 Log.i(TAG, "🔧 ========================================")
-                Log.i(TAG, "🔧 INICIALIZANDO MDM COM DEVICE_ID: ${deviceId!!.take(10)}...")
+                Log.i(TAG, "🔧 INICIALIZANDO MDM COM DEVICE ID: ${mdmDeviceId!!.take(8)}...")
                 Log.i(TAG, "🔧 ========================================")
                 
                 Log.i(TAG, "🔐 Tokens encontrados - inicializando serviços MDM")
                 
                 // Inicializa MDM Command Receiver
-                Log.d(TAG, "📡 Criando MdmCommandReceiver com deviceId...")
-                mdmReceiver = MdmCommandReceiver(applicationContext, deviceId!!)
+                Log.d(TAG, "📡 Criando MdmCommandReceiver com MDM device ID...")
+                mdmReceiver = MdmCommandReceiver(applicationContext, mdmDeviceId!!)
                 
                 Log.d(TAG, "📡 Conectando MdmCommandReceiver ao WebSocket MDM...")
                 mdmReceiver?.connectMdmWebSocket(authToken)

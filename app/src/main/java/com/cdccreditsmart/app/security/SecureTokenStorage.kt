@@ -18,6 +18,7 @@ class SecureTokenStorage(context: Context) {
         private const val KEY_FINGERPRINT = "fingerprint"
         private const val KEY_CONTRACT_CODE = "contract_code"
         private const val KEY_DEVICE_ID = "device_id"
+        private const val KEY_SERIAL_NUMBER = "serial_number"
     }
 
     private val masterKey = MasterKey.Builder(context)
@@ -38,19 +39,23 @@ class SecureTokenStorage(context: Context) {
         deviceToken: String,
         apkToken: String,
         fingerprint: String,
-        contractCode: String
+        contractCode: String,
+        serialNumber: String? = null
     ) {
         try {
             encryptedPrefs.edit().apply {
                 putString(KEY_DEVICE_TOKEN, deviceToken)
                 putString(KEY_APK_TOKEN, apkToken)
                 putString(KEY_FINGERPRINT, fingerprint)
+                if (serialNumber != null) {
+                    putString(KEY_SERIAL_NUMBER, serialNumber)
+                }
                 apply()
             }
             
             contractCodeStorage.saveContractCode(contractCode)
             
-            Log.d(TAG, "Tokens saved successfully (contract code via ContractCodeStorage)")
+            Log.d(TAG, "Tokens saved successfully (contract code via ContractCodeStorage, serial: ${serialNumber?.take(6)}...)")
         } catch (e: Exception) {
             Log.e(TAG, "Error saving tokens", e)
             throw TokenStorageException("Failed to save tokens", e)
@@ -148,6 +153,51 @@ class SecureTokenStorage(context: Context) {
             encryptedPrefs.getString(KEY_DEVICE_ID, null)
         } catch (e: Exception) {
             Log.e(TAG, "Error getting device ID", e)
+            null
+        }
+    }
+    
+    fun saveSerialNumber(serialNumber: String) {
+        try {
+            encryptedPrefs.edit().apply {
+                putString(KEY_SERIAL_NUMBER, serialNumber)
+                apply()
+            }
+            Log.d(TAG, "Serial number saved: ${serialNumber.take(6)}...")
+        } catch (e: Exception) {
+            Log.e(TAG, "Error saving serial number", e)
+            throw TokenStorageException("Failed to save serial number", e)
+        }
+    }
+    
+    fun getSerialNumber(): String? {
+        return try {
+            encryptedPrefs.getString(KEY_SERIAL_NUMBER, null)
+        } catch (e: Exception) {
+            Log.e(TAG, "Error getting serial number", e)
+            null
+        }
+    }
+    
+    fun getMdmDeviceIdentifier(): String? {
+        return try {
+            val serialNumber = getSerialNumber()
+            
+            if (!serialNumber.isNullOrBlank() && serialNumber != "unknown" && serialNumber != "UNKNOWN") {
+                Log.d(TAG, "Using serial number as MDM identifier: ${serialNumber.take(6)}...")
+                return serialNumber
+            }
+            
+            val deviceId = getDeviceId()
+            if (!deviceId.isNullOrBlank()) {
+                Log.w(TAG, "Serial number unavailable - falling back to deviceId: ${deviceId.take(10)}...")
+                return deviceId
+            }
+            
+            Log.e(TAG, "No MDM device identifier available (serial number and deviceId both empty)")
+            null
+        } catch (e: Exception) {
+            Log.e(TAG, "Error getting MDM device identifier", e)
             null
         }
     }

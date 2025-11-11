@@ -1,0 +1,62 @@
+        D  Retrieving contract code from storage
+2025-11-10 22:45:47.408 24734-24797 AppBlockingManager      com.cdccreditsmart.app               D    ✅ Bloqueado: com.android.providers.userdictionary
+2025-11-10 22:45:47.420 24734-27562 FA                      com.cdccreditsmart.app               E  Discarding data. Failed to send event to service
+2025-11-10 22:45:47.421 24734-27562 FA                      com.cdccreditsmart.app               E  Failed to send current screen to service
+2025-11-10 22:45:47.421 24734-27562 FA                      com.cdccreditsmart.app               E  Failed to send current screen to service
+2025-11-10 22:45:47.424 24734-24747 BLASTBufferQueue        com.cdccreditsmart.app               D  [VRI[MainActivity]#4](f:0,a:1) destructor()
+2025-11-10 22:45:47.424 24734-24747 BufferQueueConsumer     com.cdccreditsmart.app               D  [VRI[MainActivity]#4(BLAST Consumer)4](id:609e00000004,api:0,p:-1,c:24734) disconnect
+2025-11-10 22:45:47.425 24734-24797 AppBlockingManager      com.cdccreditsmart.app               D    ✅ Bloqueado: com.google.android.apps.carrier.carrierwifi
+2025-11-10 22:45:47.440 24734-24734 AndroidRuntime          com.cdccreditsmart.app               E  FATAL EXCEPTION: main (Ask Gemini)
+                                                                                                    Process: com.cdccreditsmart.app, PID: 24734
+                                                                                                    java.lang.SecurityException: Failed to find provider settings for user 0; expected to find a valid ContentProvider for this authority
+                                                                                                    	at android.os.Parcel.createExceptionOrNull(Parcel.java:3242)
+                                                                                                    	at android.os.Parcel.createException(Parcel.java:3226)
+                                                                                                    	at android.os.Parcel.readException(Parcel.java:3209)
+                                                                                                    	at android.os.Parcel.readException(Parcel.java:3151)
+                                                                                                    	at android.content.IContentService$Stub$Proxy.registerContentObserver(IContentService.java:1040)
+                                                                                                    	at android.content.ContentResolver.registerContentObserver(ContentResolver.java:2728)
+                                                                                                    	at android.content.ContentResolver.registerContentObserver(ContentResolver.java:2676)
+                                                                                                    	at androidx.compose.ui.platform.WindowRecomposer_androidKt$getAnimationScaleFlowFor$1$1$1.invokeSuspend(WindowRecomposer.android.kt:115)
+                                                                                                    	at androidx.compose.ui.platform.WindowRecomposer_androidKt$getAnimationScaleFlowFor$1$1$1.invoke(Unknown Source:8)
+                                                                                                    	at androidx.compose.ui.platform.WindowRecomposer_androidKt$getAnimationScaleFlowFor$1$1$1.invoke(Unknown Source:4)
+                                                                                                    	at kotlinx.coroutines.flow.SafeFlow.collectSafely(Builders.kt:61)
+                                                                                                    	at kotlinx.coroutines.flow.AbstractFlow.collect(Flow.kt:230)
+                                                                                                    	at kotlinx.coroutines.flow.FlowKt__ShareKt$launchSharing$1$2.invokeSuspend(Share.kt:227)
+                                                                                                    	at kotlinx.coroutines.flow.FlowKt__ShareKt$launchSharing$1$2.invoke(Unknown Source:8)
+                                                                                                    	at kotlinx.coroutines.flow.FlowKt__ShareKt$launchSharing$1$2.invoke(Unknown Source:4)
+                                                                                                    	at kotlinx.coroutines.flow.FlowKt__MergeKt$mapLatest$1.invokeSuspend(Merge.kt:217)
+                                                                                                    	at kotlinx.coroutines.flow.FlowKt__MergeKt$mapLatest$1.invoke(Unknown Source:13)
+                                                                                                    	at kotlinx.coroutines.flow.FlowKt__MergeKt$mapLatest$1.invoke(Unknown Source:4)
+                                                                                                    	at kotlinx.coroutines.flow.internal.ChannelFlowTransformLatest$flowCollect$3$1$2.invokeSuspend(Merge.kt:34)
+                                                                                                    	at kotlinx.coroutines.flow.internal.ChannelFlowTransformLatest$flowCollect$3$1$2.invoke(Unknown Source:8)
+                                                                                                    	at kotlinx.coroutines.flow.internal.ChannelFlowTransformLatest$flowCollect$3$1$2.invoke(Unknown Source:4)
+                                                                                                    	at kotlinx.coroutines.intrinsics.UndispatchedKt.startCoroutineUndispatched(Undispatched.kt:44)
+                                                                                                    	at kotlinx.coroutines.CoroutineStart.invoke(CoroutineStart.kt:112)
+                                                                                                    	at kotlinx.coroutines.AbstractCoroutine.start(AbstractCoroutine.kt:126)
+                                                                                                    	at kotlinx.coroutines.BuildersKt__Builders_commonKt.launch(Builders.common.kt:56)
+                                                                                                    	at kotlinx.coroutines.BuildersKt.launch(Unknown Source:1)
+                                                                                                    	at kotlinx.coroutines.BuildersKt__Builders_commonKt.launch$default(Builders.common.kt:47)
+                                                                                                    	at kotlinx.coroutines.BuildersKt.launch$default(Unknown Source:1)
+                                                                                                    	at kotlinx.coroutines.flow.internal.ChannelFlowTransformLatest$flowCollect$3$1.emit(Merge.kt:33)
+                                                                                                    	at kotlinx.coroutines.flow.DistinctFlowImpl$collect$2.emit(Distinct.kt:77)
+                                                                                                    	at kotlinx.coroutines.flow.FlowKt__LimitKt$dropWhile$1$1.emit(Limit.kt:37)
+                                                                                                    	at kotlinx.coroutines.flow.FlowKt__ChannelsKt.emitAllImpl$FlowKt__ChannelsKt(Channels.kt:37)
+                                                                                                    	at kotlinx.coroutines.flow.FlowKt__ChannelsKt.access$emitAllImpl$FlowKt__ChannelsKt(Channels.kt:1)
+                                                                                                    	at kotlinx.coroutines.flow.FlowKt__ChannelsKt$emitAllImpl$1.invokeSuspend(Unknown Source:14)
+                                                                                                    	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:34)
+                                                                                                    	at kotlinx.coroutines.DispatchedTask.run(DispatchedTask.kt:108)
+                                                                                                    	at android.os.Handler.handleCallback(Handler.java:959)
+                                                                                                    	at android.os.Handler.dispatchMessage(Handler.java:100)
+                                                                                                    	at android.os.Looper.loopOnce(Looper.java:234)
+                                                                                                    	at android.os.Looper.loop(Looper.java:319)
+                                                                                                    	at android.app.ActivityThread.main(ActivityThread.java:8754)
+                                                                                                    	at java.lang.reflect.Method.invoke(Native Method)
+                                                                                                    	at com.android.internal.os.RuntimeInit$MethodAndArgsCaller.run(RuntimeInit.java:602)
+                                                                                                    	at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:962)
+                                                                                                    	Suppressed: kotlinx.coroutines.internal.DiagnosticCoroutineContextException: [StandaloneCoroutine{Cancelling}@c59ca16, Dispatchers.Main]
+                                                                                                    Caused by: android.os.RemoteException: Remote stack trace:
+2025-11-10 22:45:47.440 24734-24734 AndroidRuntime          com.cdccreditsmart.app               E  	at com.android.server.content.ContentService.registerContentObserver(ContentService.java:379) (Ask Gemini)
+                                                                                                    	at android.content.IContentService$Stub.onTransact(IContentService.java:494)
+                                                                                                    	at android.os.Binder.execTransactInternal(Binder.java:1500)
+                                                                                                    	at android.os.Binder.execTransact(Binder.java:1444)
+2025-11-10 22:45:47.445 24734-24797 AppBlockingManager      com.cdccreditsmart.app               D    ✅ Bloqueado: com.android.emergency

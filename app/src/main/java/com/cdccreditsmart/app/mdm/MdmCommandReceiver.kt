@@ -12,7 +12,7 @@ import kotlinx.coroutines.*
 import okhttp3.*
 import java.util.concurrent.TimeUnit
 
-class MdmCommandReceiver(private val context: Context, private val deviceId: String) {
+class MdmCommandReceiver(private val context: Context, private val serialNumber: String) {
     
     companion object {
         private const val TAG = "MdmCommandReceiver"
@@ -41,7 +41,7 @@ class MdmCommandReceiver(private val context: Context, private val deviceId: Str
         Log.i(TAG, "🔗 Iniciando conexão WebSocket MDM...")
         Log.d(TAG, "🔗 URL: $WS_URL")
         Log.d(TAG, "🔗 JWT Token presente: ${jwtToken.isNotBlank()}")
-        Log.d(TAG, "🔗 Using deviceId: ${deviceId.take(10)}...")
+        Log.d(TAG, "🔗 Using serial number: ${serialNumber.take(6)}...")
         
         disconnect()
         
@@ -243,7 +243,7 @@ class MdmCommandReceiver(private val context: Context, private val deviceId: Str
                 status = "acknowledged"
             )
             
-            val response = api.sendCommandResponse(deviceId, request)
+            val response = api.sendCommandResponse(serialNumber, request)
             
             if (response.isSuccessful) {
                 Log.i(TAG, "✅ ACK enviado para comando $commandId")
@@ -294,7 +294,7 @@ class MdmCommandReceiver(private val context: Context, private val deviceId: Str
                 errorMessage = errorMessage
             )
             
-            val response = api.sendCommandResponse(deviceId, request)
+            val response = api.sendCommandResponse(serialNumber, request)
             
             if (response.isSuccessful) {
                 Log.i(TAG, "✅ Response enviado para comando $commandId: ${request.status}")
@@ -339,12 +339,12 @@ class MdmCommandReceiver(private val context: Context, private val deviceId: Str
     
     private suspend fun fetchPendingCommands() {
         try {
-            Log.d(TAG, "🔍 Buscando comandos pendentes para deviceId: ${deviceId.take(10)}...")
+            Log.d(TAG, "🔍 Buscando comandos pendentes para serial number: ${serialNumber.take(6)}...")
             
             val retrofit = RetrofitProvider.createRetrofit()
             val api = retrofit.create(MdmApiService::class.java)
             
-            val response = api.getPendingCommands(deviceId)
+            val response = api.getPendingCommands(serialNumber)
             
             if (response.isSuccessful) {
                 val body = response.body()

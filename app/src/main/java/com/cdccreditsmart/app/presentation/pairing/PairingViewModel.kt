@@ -180,7 +180,8 @@ class PairingViewModel(private val context: Context) : ViewModel() {
                         deviceToken = body.deviceToken ?: "",
                         apkToken = body.apkToken ?: "",
                         fingerprint = fingerprint,
-                        contractCode = contractId
+                        contractCode = contractId,
+                        serialNumber = deviceInfo.serialNumber
                     )
                     
                     Log.i(TAG, "🚀 Iniciando CdcForegroundService para MDM...")
@@ -242,12 +243,14 @@ class PairingViewModel(private val context: Context) : ViewModel() {
                         
                         val authToken = body.authToken ?: ""
                         val deviceId = body.device?.id
+                        val serialNumber = deviceInfoManager.collectDeviceInfo().serialNumber
                         
                         tokenStorage.saveAuthToken(
                             authToken = authToken,
                             contractCode = contractId,
                             deviceId = deviceId
                         )
+                        tokenStorage.saveSerialNumber(serialNumber)
                         
                         Log.i(TAG, "🚀 Iniciando CdcForegroundService para MDM...")
                         CdcForegroundService.startService(context.applicationContext)
