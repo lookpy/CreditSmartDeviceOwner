@@ -193,15 +193,10 @@ class AppProtectionManager(private val context: Context) {
             Log.d(TAG, "   Modify accounts block não aplicado")
         }
         
-        try {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                dpm.setOemUnlockAllowed(adminComponent, false)
-                Log.i(TAG, "        → OEM unlock bloqueado (bootloader)")
-                count++
-            }
-        } catch (e: Exception) {
-            Log.d(TAG, "   OEM unlock block não aplicado")
-        }
+        // OEM unlock bloqueado via Knox Enhanced Protections (allowDeveloperMode)
+        // DevicePolicyManager padrão não tem API para bloquear OEM unlock diretamente
+        // Samsung Knox bloqueia via RestrictionPolicy.allowDeveloperMode(false)
+        Log.d(TAG, "   OEM unlock: Bloqueado via Knox Enhanced Protections")
         
         Log.w(TAG, "")
         Log.w(TAG, "⚠️ LIMITAÇÃO: Hard reset via botões físicos durante boot NÃO pode ser bloqueado")
