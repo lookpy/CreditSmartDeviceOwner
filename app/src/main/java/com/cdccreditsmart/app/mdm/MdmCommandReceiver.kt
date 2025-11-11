@@ -374,25 +374,53 @@ class MdmCommandReceiver(private val context: Context, private val contractCode:
         pollingJob?.cancel()
         
         pollingJob = scope.launch {
-            Log.i(TAG, "🔄 Iniciando polling fallback (30s)")
+            Log.i(TAG, "🔄 Iniciando polling fallback MDM (intervalo: 30s)")
+            Log.i(TAG, "📊 Conforme especificação: 30 segundos entre requests")
+            
+            var loopCount = 0L
+            var successCount = 0L
+            var errorCount = 0L
             
             while (isActive) {
+                val startTime = System.currentTimeMillis()
+                loopCount++
+                
                 try {
-                    delay(30_000)  // 30 segundos conforme especificação
-                    Log.d(TAG, "🔍 Verificando comandos pendentes...")
+                    Log.d(TAG, "🔍 [Polling #$loopCount] Verificando comandos pendentes...")
                     fetchPendingCommands()
+                    successCount++
+                    
                 } catch (e: CancellationException) {
+                    Log.i(TAG, "⏸️ Polling cancelado (job cancelled)")
                     throw e
+                    
                 } catch (e: Exception) {
-                    Log.e(TAG, "❌ Erro no polling: ${e.message}", e)
+                    errorCount++
+                    Log.e(TAG, "❌ [Polling #$loopCount] Erro no polling: ${e.message}")
+                    Log.e(TAG, "   Estatísticas: ${successCount} sucessos, ${errorCount} erros")
+                    
+                } finally {
+                    val elapsed = System.currentTimeMillis() - startTime
+                    val remainingDelay = 30_000L - elapsed
+                    
+                    if (remainingDelay > 0) {
+                        Log.d(TAG, "⏳ [Polling #$loopCount] Aguardando ${remainingDelay}ms até próxima verificação...")
+                        delay(remainingDelay)
+                    } else {
+                        Log.w(TAG, "⏱️ [Polling #$loopCount] Request levou ${elapsed}ms (>30s!) - próximo imediato")
+                    }
                 }
             }
+            
+            Log.i(TAG, "🛑 Polling fallback encerrado")
+            Log.i(TAG, "   Total loops: $loopCount, Sucessos: $successCount, Erros: $errorCount")
         }
     }
     
     private suspend fun fetchPendingCommands() {
         try {
             Log.d(TAG, "🔍 Buscando comandos pendentes para contract code: ${contractCode.take(4)}...")
+            val fetchStartTime = System.currentTimeMillis()
             
             val retrofit = RetrofitProvider.createRetrofit()
             val api = retrofit.create(MdmApiService::class.java)
@@ -412,6 +440,9 @@ class MdmCommandReceiver(private val context: Context, private val contractCode:
                 } else {
                     Log.d(TAG, "✅ Nenhum comando pendente")
                 }
+                
+                val fetchDuration = System.currentTimeMillis() - fetchStartTime
+                Log.d(TAG, "📊 Fetch duration: ${fetchDuration}ms")
             } else {
                 Log.e(TAG, "❌ Erro ao buscar comandos pendentes - HTTP ${response.code()}")
                 Log.e(TAG, "❌ Response body: ${response.errorBody()?.string()}")

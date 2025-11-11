@@ -1,0 +1,73 @@
+PROBLEMA IDENTIFICADO: APK fazendo Polling EXCESSIVO!
+📊 Análise dos Logs:
+83 requisições em ~30 segundos = ~2.8 requests/segundo
+
+Padrão observado:
+
+⚠️ 2-3 requisições POR SEGUNDO ao endpoint /commands
+⚠️ Intervalo de apenas ~300-500ms entre requests
+⚠️ Todas as requisições retornam 0 comandos (vazio)
+🔍 Investigando a Configuração do APK:
+
+Show 3 more
+
+Decided on polling interval (4 seconds)
+✅ PROBLEMA ENCONTRADO: APK com Polling 60x MAIS RÁPIDO que o Recomendado!
+🔴 Situação Atual vs. Recomendado:
+Métrica	Sua Configuração Atual	Recomendado	Diferença
+Intervalo de Polling	~500ms (0.5s)	30-60 segundos	60-120x mais rápido
+Requests por minuto	~120 requests/min	1-2 requests/min	60-120x mais requests
+Requests por hora	~7,200/hora	60-120/hora	60-120x mais carga
+Requests por dia	~172,800/dia	1,440-2,880/dia	60-120x mais carga
+📚 O que a Documentação Recomenda:
+APK_MDM_COMANDOS_BLOQUEIO.md (linha 605):
+// Endpoint de polling
+// O APK deve fazer polling a cada 30 segundos (ou intervalo configurável)
+GET /api/apk/device/{deviceId}/commands
+
+APK_BLOQUEIO_PROGRESSIVO_INTEGRACAO.md (linha 287):
+Se o WebSocket falhar, use polling a cada 30-60 segundos
+
+💥 Impacto do Polling Excessivo:
+1. Carga no Banco de Dados PostgreSQL:
+⚠️ 172,800 queries/dia por dispositivo
+⚠️ Com 100 dispositivos = 17 milhões queries/dia
+⚠️ Com 500k dispositivos = 86 bilhões queries/dia ❌
+2. Custos de Infraestrutura:
+💰 Aumento de custos Neon/Postgres
+💰 Uso excessivo de CPU/memória
+💰 Tráfego de rede desnecessário
+3. Latência de Rede:
+📡 Cada request leva ~270ms
+📡 APK gasta 54% do tempo esperando resposta
+✅ SOLUÇÃO: Reconfigurar o APK
+Opção 1: WebSocket (Melhor Opção) 🚀
+Use WebSocket para comunicação em tempo real (zero polling):
+
+// Conectar WebSocket uma vez
+wss://cdccreditsmart.com/ws/mdm-policies?deviceId={deviceId}&token={jwt}
+// Receber comandos instantaneamente (push notification)
+// Sem necessidade de polling!
+
+Opção 2: Aumentar Intervalo de Polling ⏱️
+Se não puder usar WebSocket, configure polling para 30 segundos:
+
+val POLLING_INTERVAL_MS = 30_000L // 30 segundos
+// ScheduledExecutorService
+scheduler.scheduleAtFixedRate(
+    { checkForCommands() },
+    0,
+    POLLING_INTERVAL_MS,
+    TimeUnit.MILLISECONDS
+)
+
+📊 Economia com Configuração Correta (30s):
+Métrica	Atual (500ms)	Recomendado (30s)	Economia
+Requests/dia	172,800	2,880	-98.3% ⬇️
+DB Queries	172,800	2,880	-98.3% ⬇️
+Tráfego de rede	~47MB/dia	~780KB/dia	-98.3% ⬇️
+🎯 Próximos Passos:
+Verificar código do APK - Encontre onde está configurado o intervalo de polling
+Alterar para 30 segundos ou implementar WebSocket
+Testar com a nova configuração
+Validar que comandos MDM continuam funcionando
