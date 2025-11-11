@@ -1,0 +1,977 @@
+2025-11-10 21:01:13.822 18151-18151 Activity                com.cdccreditsmart.app               D  onResume setDolbyGameProfilePackage lastPkg =  currentPkg = com.cdccreditsmart.app
+2025-11-10 21:01:13.856 18151-18151 BufferQueueConsumer     com.cdccreditsmart.app               D  [](id:46e700000002,api:0,p:-1,c:18151) connect: controlledByApp=false
+2025-11-10 21:01:13.860 18151-18151 BLASTBufferQueue        com.cdccreditsmart.app               D  [VRI[MainActivity]#2](f:0,a:0) constructor()
+2025-11-10 21:01:13.863 18151-18151 BLASTBufferQueue        com.cdccreditsmart.app               D  [VRI[MainActivity]#2](f:0,a:0) update width=1080 height=2400 format=-3 mTransformHint=0
+2025-11-10 21:01:13.927 18151-18186 BLASTBufferQueue        com.cdccreditsmart.app               D  [VRI[MainActivity]#2](f:0,a:1) acquireNextBufferLocked size=1080x2400 mFrameNumber=1 applyTransaction=true mTimestamp=104478872670919(auto) mPendingTransactions.size=0 graphicBufferId=77957951389707 transform=0
+2025-11-10 21:01:14.803 18151-18151 InsetsController        com.cdccreditsmart.app               D  show(ime(), fromIme=false)
+2025-11-10 21:01:14.810 18151-18151 ImeTracker              com.cdccreditsmart.app               I  com.cdccreditsmart.app:8237833f: onRequestShow at ORIGIN_CLIENT reason SHOW_SOFT_INPUT_BY_INSETS_API fromUser false
+2025-11-10 21:01:14.812 18151-18151 InputMethodManager      com.cdccreditsmart.app               D  showSoftInput() view=androidx.compose.ui.platform.AndroidComposeView{44b8111 VFED..... .F....ID 0,0-1080,2400 aid=1073741824} flags=0 reason=SHOW_SOFT_INPUT_BY_INSETS_API
+2025-11-10 21:01:14.870 18151-18151 ImeTracker              com.cdccreditsmart.app               I  com.cdccreditsmart.app:32b17a4: onRequestShow at ORIGIN_CLIENT reason SHOW_SOFT_INPUT fromUser false
+2025-11-10 21:01:14.870 18151-18151 InputMethodManager      com.cdccreditsmart.app               D  showSoftInput() view=androidx.compose.ui.platform.AndroidComposeView{44b8111 VFED..... .F...... 0,0-1080,2400 aid=1073741824} flags=0 reason=SHOW_SOFT_INPUT
+2025-11-10 21:01:15.184 18151-18151 InsetsController        com.cdccreditsmart.app               D  show(ime(), fromIme=true)
+2025-11-10 21:01:15.209 18151-18151 InsetsController        com.cdccreditsmart.app               D  show(ime(), fromIme=true)
+2025-11-10 21:01:15.209 18151-18151 ImeTracker              com.cdccreditsmart.app               I  com.cdccreditsmart.app:32b17a4: onCancelled at PHASE_CLIENT_APPLY_ANIMATION
+2025-11-10 21:01:15.513 18151-18151 ImeTracker              com.cdccreditsmart.app               I  com.cdccreditsmart.app:8237833f: onShown
+2025-11-10 21:01:17.345 18151-18151 InsetsController        com.cdccreditsmart.app               D  show(ime(), fromIme=true)
+2025-11-10 21:01:17.345 18151-18151 ImeTracker              com.cdccreditsmart.app               I  com.cdccreditsmart.app:1d238db2: onCancelled at PHASE_CLIENT_APPLY_ANIMATION
+2025-11-10 21:01:17.576 18151-18151 InsetsController        com.cdccreditsmart.app               D  show(ime(), fromIme=true)
+2025-11-10 21:01:17.577 18151-18151 ImeTracker              com.cdccreditsmart.app               I  com.cdccreditsmart.app:3c28e5b1: onCancelled at PHASE_CLIENT_APPLY_ANIMATION
+2025-11-10 21:01:17.744 18151-18151 InsetsController        com.cdccreditsmart.app               D  show(ime(), fromIme=true)
+2025-11-10 21:01:17.744 18151-18151 ImeTracker              com.cdccreditsmart.app               I  com.cdccreditsmart.app:df306f7c: onCancelled at PHASE_CLIENT_APPLY_ANIMATION
+2025-11-10 21:01:19.899 18151-18151 InsetsController        com.cdccreditsmart.app               D  show(ime(), fromIme=true)
+2025-11-10 21:01:19.899 18151-18151 ImeTracker              com.cdccreditsmart.app               I  com.cdccreditsmart.app:247cf3f2: onCancelled at PHASE_CLIENT_APPLY_ANIMATION
+2025-11-10 21:01:22.212 18151-18151 InsetsController        com.cdccreditsmart.app               D  show(ime(), fromIme=true)
+2025-11-10 21:01:22.213 18151-18151 ImeTracker              com.cdccreditsmart.app               I  com.cdccreditsmart.app:5d52664: onCancelled at PHASE_CLIENT_APPLY_ANIMATION
+2025-11-10 21:01:23.224 18151-18151 InsetsController        com.cdccreditsmart.app               D  show(ime(), fromIme=true)
+2025-11-10 21:01:23.225 18151-18151 ImeTracker              com.cdccreditsmart.app               I  com.cdccreditsmart.app:9b51cd6e: onCancelled at PHASE_CLIENT_APPLY_ANIMATION
+2025-11-10 21:01:24.059 18151-18151 InsetsController        com.cdccreditsmart.app               D  hide(ime(), fromIme=false)
+2025-11-10 21:01:24.061 18151-18151 ImeTracker              com.cdccreditsmart.app               I  com.cdccreditsmart.app:137f326c: onRequestHide at ORIGIN_CLIENT reason HIDE_SOFT_INPUT_BY_INSETS_API fromUser false
+2025-11-10 21:01:24.063 18151-18151 ImeTracker              com.cdccreditsmart.app               I  com.cdccreditsmart.app:6beb2391: onRequestHide at ORIGIN_CLIENT reason HIDE_SOFT_INPUT_REQUEST_HIDE_WITH_CONTROL fromUser false
+2025-11-10 21:01:24.090 18151-18151 InsetsController        com.cdccreditsmart.app               D  hide(ime(), fromIme=true)
+2025-11-10 21:01:24.090 18151-18151 ImeTracker              com.cdccreditsmart.app               I  com.cdccreditsmart.app:6beb2391: onCancelled at PHASE_CLIENT_APPLY_ANIMATION
+2025-11-10 21:01:24.112 18151-18151 WindowOnBackDispatcher  com.cdccreditsmart.app               W  sendCancelIfRunning: isInProgress=false callback=ImeCallback=ImeOnBackInvokedCallback@8749374 Callback=android.window.IOnBackInvokedCallback$Stub$Proxy@623c7d2
+2025-11-10 21:01:24.379 18151-18151 ImeTracker              com.cdccreditsmart.app               I  com.cdccreditsmart.app:3721ed9e: onRequestHide at ORIGIN_CLIENT reason HIDE_SOFT_INPUT_ON_ANIMATION_STATE_CHANGED fromUser false
+2025-11-10 21:01:24.383 18151-18151 ImeTracker              com.cdccreditsmart.app               I  com.cdccreditsmart.app:137f326c: onHidden
+2025-11-10 21:01:24.984 18151-18151 PairingViewModel        com.cdccreditsmart.app               D  Starting handshake for contract
+2025-11-10 21:01:24.985 18151-18151 DeviceInfoManager       com.cdccreditsmart.app               W  READ_PHONE_STATE permission not granted
+2025-11-10 21:01:24.985 18151-18151 PairingViewModel        com.cdccreditsmart.app               D  Device IMEI: UNKN...
+2025-11-10 21:01:24.985 18151-18151 PairingViewModel        com.cdccreditsmart.app               W  IMEI not available - using code-only sync fallback
+2025-11-10 21:01:24.986 18151-18151 PairingViewModel        com.cdccreditsmart.app               D  ========== APK AUTHENTICATION ==========
+2025-11-10 21:01:24.986 18151-18151 PairingViewModel        com.cdccreditsmart.app               D  Pairing Code: [REDACTED]
+2025-11-10 21:01:24.986 18151-18151 PairingViewModel        com.cdccreditsmart.app               D  Sending POST /api/apk/auth...
+2025-11-10 21:01:24.995 18151-18653 okhttp.OkHttpClient     com.cdccreditsmart.app               I  --> POST https://cdccreditsmart.com/api/apk/auth
+2025-11-10 21:01:24.995 18151-18653 okhttp.OkHttpClient     com.cdccreditsmart.app               I  Content-Type: application/json; charset=UTF-8
+2025-11-10 21:01:24.996 18151-18653 okhttp.OkHttpClient     com.cdccreditsmart.app               I  Content-Length: 19
+2025-11-10 21:01:24.997 18151-18653 okhttp.OkHttpClient     com.cdccreditsmart.app               I  {"code":"BVYG2VS2"}
+2025-11-10 21:01:24.998 18151-18653 okhttp.OkHttpClient     com.cdccreditsmart.app               I  --> END POST (19-byte body)
+2025-11-10 21:01:25.240 18151-18151 WebSocketManager        com.cdccreditsmart.app               D  Heartbeat ping sent
+2025-11-10 21:01:25.241 18151-18151 WebSocketManager        com.cdccreditsmart.app               D  Heartbeat ping sent
+2025-11-10 21:01:25.244 18151-18520 MdmCommandReceiver      com.cdccreditsmart.app               D  🔍 Verificando comandos pendentes...
+2025-11-10 21:01:25.245 18151-18520 MdmCommandReceiver      com.cdccreditsmart.app               D  🔍 Buscando comandos pendentes para deviceId: device_176...
+2025-11-10 21:01:25.255 18151-18520 MdmCommandReceiver      com.cdccreditsmart.app               E  ❌ Erro ao buscar comandos pendentes (Ask Gemini)
+                                                                                                    java.lang.IllegalArgumentException: Unable to create converter for class com.cdccreditsmart.network.dto.mdm.PendingCommandsResponse
+                                                                                                        for method MdmApiService.getPendingCommands
+                                                                                                    	at retrofit2.Utils.methodError(Utils.java:56)
+                                                                                                    	at retrofit2.HttpServiceMethod.createResponseConverter(HttpServiceMethod.java:139)
+                                                                                                    	at retrofit2.HttpServiceMethod.parseAnnotations(HttpServiceMethod.java:97)
+                                                                                                    	at retrofit2.ServiceMethod.parseAnnotations(ServiceMethod.java:39)
+                                                                                                    	at retrofit2.Retrofit.loadServiceMethod(Retrofit.java:235)
+                                                                                                    	at retrofit2.Retrofit$1.invoke(Retrofit.java:177)
+                                                                                                    	at java.lang.reflect.Proxy.invoke(Proxy.java:1006)
+                                                                                                    	at $Proxy10.getPendingCommands(Unknown Source)
+                                                                                                    	at com.cdccreditsmart.app.mdm.MdmCommandReceiver.fetchPendingCommands(MdmCommandReceiver.kt:347)
+                                                                                                    	at com.cdccreditsmart.app.mdm.MdmCommandReceiver.access$fetchPendingCommands(MdmCommandReceiver.kt:15)
+                                                                                                    	at com.cdccreditsmart.app.mdm.MdmCommandReceiver$startPollingFallback$1.invokeSuspend(MdmCommandReceiver.kt:330)
+                                                                                                    	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:34)
+                                                                                                    	at kotlinx.coroutines.DispatchedTask.run(DispatchedTask.kt:108)
+                                                                                                    	at kotlinx.coroutines.internal.LimitedDispatcher$Worker.run(LimitedDispatcher.kt:115)
+                                                                                                    	at kotlinx.coroutines.scheduling.TaskImpl.run(Tasks.kt:103)
+                                                                                                    	at kotlinx.coroutines.scheduling.CoroutineScheduler.runSafely(CoroutineScheduler.kt:584)
+                                                                                                    	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.executeTask(CoroutineScheduler.kt:793)
+                                                                                                    	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.runWorker(CoroutineScheduler.kt:697)
+                                                                                                    	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.run(CoroutineScheduler.kt:684)
+                                                                                                    Caused by: java.lang.IllegalArgumentException: Cannot reflectively serialize sealed class com.cdccreditsmart.network.dto.mdm.CommandParameters. Please register an adapter.
+                                                                                                    for class com.cdccreditsmart.network.dto.mdm.CommandParameters parameters
+                                                                                                    for class com.cdccreditsmart.network.dto.mdm.MdmCommand
+                                                                                                    for java.util.List<com.cdccreditsmart.network.dto.mdm.MdmCommand> commands
+                                                                                                    for class com.cdccreditsmart.network.dto.mdm.PendingCommandsResponse
+                                                                                                    	at com.squareup.moshi.Moshi$LookupChain.exceptionWithLookupStack(Moshi.java:389)
+                                                                                                    	at com.squareup.moshi.Moshi.adapter(Moshi.java:158)
+                                                                                                    	at com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory.create(KotlinJsonAdapter.kt:292)
+                                                                                                    	at com.squareup.moshi.Moshi.adapter(Moshi.java:146)
+                                                                                                    	at com.squareup.moshi.Moshi.adapter(Moshi.java:106)
+                                                                                                    	at com.squareup.moshi.Moshi.adapter(Moshi.java:75)
+                                                                                                    	at com.squareup.moshi.CollectionJsonAdapter.newArrayListAdapter(CollectionJsonAdapter.java:54)
+                                                                                                    	at com.squareup.moshi.CollectionJsonAdapter$1.create(CollectionJsonAdapter.java:38)
+                                                                                                    	at com.squareup.moshi.Moshi.adapter(Moshi.java:146)
+                                                                                                    	at com.cdccreditsmart.network.dto.mdm.PendingCommandsResponseJsonAdapter.<init>(PendingCommandsResponseJsonAdapter.kt:35)
+                                                                                                    	at java.lang.reflect.Constructor.newInstance0(Native Method)
+                                                                                                    	at java.lang.reflect.Constructor.newInstance(Constructor.java:343)
+                                                                                                    	at com.squareup.moshi.internal.Util.generatedAdapter(Util.java:588)
+                                                                                                    	at com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory.create(KotlinJsonAdapter.kt:200)
+                                                                                                    	at com.squareup.moshi.Moshi.adapter(Moshi.java:146)
+                                                                                                    	at com.squareup.moshi.Moshi.adapter(Moshi.java:106)
+                                                                                                    	at retrofit2.converter.moshi.MoshiConverterFactory.responseBodyConverter(MoshiConverterFactory.java:89)
+                                                                                                    	at retrofit2.Retrofit.nextResponseBodyConverter(Retrofit.java:418)
+                                                                                                    	at retrofit2.Retrofit.responseBodyConverter(Retrofit.java:401)
+                                                                                                    	at retrofit2.HttpServiceMethod.createResponseConverter(HttpServiceMethod.java:137)
+                                                                                                    	... 17 more
+                                                                                                    Caused by: java.lang.IllegalArgumentException: Cannot reflectively serialize sealed class com.cdccreditsmart.network.dto.mdm.CommandParameters. Please register an adapter.
+                                                                                                    	at com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory.create(KotlinJsonAdapter.kt:224)
+                                                                                                    	at com.squareup.moshi.Moshi.adapter(Moshi.java:146)
+                                                                                                    	... 35 more
+2025-11-10 21:01:25.256 18151-18520 MdmCommandReceiver      com.cdccreditsmart.app               E  ❌ Stack trace: java.lang.IllegalArgumentException: Unable to create converter for class com.cdccreditsmart.network.dto.mdm.PendingCommandsResponse (Ask Gemini)
+                                                                                                        for method MdmApiService.getPendingCommands
+                                                                                                    	at retrofit2.Utils.methodError(Utils.java:56)
+                                                                                                    	at retrofit2.HttpServiceMethod.createResponseConverter(HttpServiceMethod.java:139)
+                                                                                                    	at retrofit2.HttpServiceMethod.parseAnnotations(HttpServiceMethod.java:97)
+                                                                                                    	at retrofit2.ServiceMethod.parseAnnotations(ServiceMethod.java:39)
+                                                                                                    	at retrofit2.Retrofit.loadServiceMethod(Retrofit.java:235)
+                                                                                                    	at retrofit2.Retrofit$1.invoke(Retrofit.java:177)
+                                                                                                    	at java.lang.reflect.Proxy.invoke(Proxy.java:1006)
+                                                                                                    	at $Proxy10.getPendingCommands(Unknown Source)
+                                                                                                    	at com.cdccreditsmart.app.mdm.MdmCommandReceiver.fetchPendingCommands(MdmCommandReceiver.kt:347)
+                                                                                                    	at com.cdccreditsmart.app.mdm.MdmCommandReceiver.access$fetchPendingCommands(MdmCommandReceiver.kt:15)
+                                                                                                    	at com.cdccreditsmart.app.mdm.MdmCommandReceiver$startPollingFallback$1.invokeSuspend(MdmCommandReceiver.kt:330)
+                                                                                                    	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:34)
+                                                                                                    	at kotlinx.coroutines.DispatchedTask.run(DispatchedTask.kt:108)
+                                                                                                    	at kotlinx.coroutines.internal.LimitedDispatcher$Worker.run(LimitedDispatcher.kt:115)
+                                                                                                    	at kotlinx.coroutines.scheduling.TaskImpl.run(Tasks.kt:103)
+                                                                                                    	at kotlinx.coroutines.scheduling.CoroutineScheduler.runSafely(CoroutineScheduler.kt:584)
+                                                                                                    	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.executeTask(CoroutineScheduler.kt:793)
+                                                                                                    	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.runWorker(CoroutineScheduler.kt:697)
+                                                                                                    	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.run(CoroutineScheduler.kt:684)
+                                                                                                    Caused by: java.lang.IllegalArgumentException: Cannot reflectively serialize sealed class com.cdccreditsmart.network.dto.mdm.CommandParameters. Please register an adapter.
+                                                                                                    for class com.cdccreditsmart.network.dto.mdm.CommandParameters parameters
+                                                                                                    for class com.cdccreditsmart.network.dto.mdm.MdmCommand
+                                                                                                    for java.util.List<com.cdccreditsmart.network.dto.mdm.MdmCommand> commands
+                                                                                                    for class com.cdccreditsmart.network.dto.mdm.PendingCommandsResponse
+                                                                                                    	at com.squareup.moshi.Moshi$LookupChain.exceptionWithLookupStack(Moshi.java:389)
+                                                                                                    	at com.squareup.moshi.Moshi.adapter(Moshi.java:158)
+                                                                                                    	at com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory.create(KotlinJsonAdapter.kt:292)
+                                                                                                    	at com.squareup.moshi.Moshi.adapter(Moshi.java:146)
+                                                                                                    	at com.squareup.moshi.Moshi.adapter(Moshi.java:106)
+                                                                                                    	at com.squareup.moshi.Moshi.adapter(Moshi.java:75)
+                                                                                                    	at com.squareup.moshi.CollectionJsonAdapter.newArrayListAdapter(CollectionJsonAdapter.java:54)
+                                                                                                    	at com.squareup.moshi.CollectionJsonAdapter$1.create(CollectionJsonAdapter.java:38)
+                                                                                                    	at com.squareup.moshi.Moshi.adapter(Moshi.java:146)
+                                                                                                    	at com.cdccreditsmart.network.dto.mdm.PendingCommandsResponseJsonAdapter.<init>(PendingCommandsResponseJsonAdapter.kt:35)
+                                                                                                    	at java.lang.reflect.Constructor.newInstance0(Native Method)
+                                                                                                    	at java.lang.reflect.Constructor.newInstance(Constructor.java:343)
+                                                                                                    	at com.squareup.moshi.internal.Util.generatedAdapter(Util.java:588)
+                                                                                                    	at com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory.create(KotlinJsonAdapter.kt:200)
+                                                                                                    	at com.squareup.moshi.Moshi.adapter(Moshi.java:146)
+                                                                                                    	at com.squareup.moshi.Moshi.adapter(Moshi.java:106)
+                                                                                                    	at retrofit2.converter.moshi.MoshiConverterFactory.responseBodyConverter(MoshiConverterFactory.java:89)
+                                                                                                    	at retrofit2.Retrofit.nextResponseBodyConverter(Retrofit.java:418)
+                                                                                                    	at retrofit2.Retrofit.responseBodyConverter(Retrofit.java:401)
+                                                                                                    	at retrofit2.HttpServiceMethod.createResponseConverter(HttpServiceMethod.java:137)
+                                                                                                    	... 17 more
+                                                                                                    Caused by: java.lang.IllegalArgumentException: Cannot reflectively serialize sealed class com.cdccreditsmart.network.dto.mdm.CommandParameters. Please register an adapter.
+                                                                                                    	at com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory.create(KotlinJsonAdapter.kt:224)
+                                                                                                    	at com.squareup.moshi.Moshi.adapter(Moshi.java:146)
+                                                                                                    	... 35 more
+2025-11-10 21:01:25.258 18151-18520 MdmCommandReceiver      com.cdccreditsmart.app               D  🔍 Verificando comandos pendentes...
+2025-11-10 21:01:25.258 18151-18520 MdmCommandReceiver      com.cdccreditsmart.app               D  🔍 Buscando comandos pendentes para deviceId: device_176...
+2025-11-10 21:01:25.267 18151-18520 MdmCommandReceiver      com.cdccreditsmart.app               E  ❌ Erro ao buscar comandos pendentes (Ask Gemini)
+                                                                                                    java.lang.IllegalArgumentException: Unable to create converter for class com.cdccreditsmart.network.dto.mdm.PendingCommandsResponse
+                                                                                                        for method MdmApiService.getPendingCommands
+                                                                                                    	at retrofit2.Utils.methodError(Utils.java:56)
+                                                                                                    	at retrofit2.HttpServiceMethod.createResponseConverter(HttpServiceMethod.java:139)
+                                                                                                    	at retrofit2.HttpServiceMethod.parseAnnotations(HttpServiceMethod.java:97)
+                                                                                                    	at retrofit2.ServiceMethod.parseAnnotations(ServiceMethod.java:39)
+                                                                                                    	at retrofit2.Retrofit.loadServiceMethod(Retrofit.java:235)
+                                                                                                    	at retrofit2.Retrofit$1.invoke(Retrofit.java:177)
+                                                                                                    	at java.lang.reflect.Proxy.invoke(Proxy.java:1006)
+                                                                                                    	at $Proxy10.getPendingCommands(Unknown Source)
+                                                                                                    	at com.cdccreditsmart.app.mdm.MdmCommandReceiver.fetchPendingCommands(MdmCommandReceiver.kt:347)
+                                                                                                    	at com.cdccreditsmart.app.mdm.MdmCommandReceiver.access$fetchPendingCommands(MdmCommandReceiver.kt:15)
+                                                                                                    	at com.cdccreditsmart.app.mdm.MdmCommandReceiver$startPollingFallback$1.invokeSuspend(MdmCommandReceiver.kt:330)
+                                                                                                    	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:34)
+                                                                                                    	at kotlinx.coroutines.DispatchedTask.run(DispatchedTask.kt:108)
+                                                                                                    	at kotlinx.coroutines.internal.LimitedDispatcher$Worker.run(LimitedDispatcher.kt:115)
+                                                                                                    	at kotlinx.coroutines.scheduling.TaskImpl.run(Tasks.kt:103)
+                                                                                                    	at kotlinx.coroutines.scheduling.CoroutineScheduler.runSafely(CoroutineScheduler.kt:584)
+                                                                                                    	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.executeTask(CoroutineScheduler.kt:793)
+                                                                                                    	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.runWorker(CoroutineScheduler.kt:697)
+                                                                                                    	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.run(CoroutineScheduler.kt:684)
+                                                                                                    Caused by: java.lang.IllegalArgumentException: Cannot reflectively serialize sealed class com.cdccreditsmart.network.dto.mdm.CommandParameters. Please register an adapter.
+                                                                                                    for class com.cdccreditsmart.network.dto.mdm.CommandParameters parameters
+                                                                                                    for class com.cdccreditsmart.network.dto.mdm.MdmCommand
+                                                                                                    for java.util.List<com.cdccreditsmart.network.dto.mdm.MdmCommand> commands
+                                                                                                    for class com.cdccreditsmart.network.dto.mdm.PendingCommandsResponse
+                                                                                                    	at com.squareup.moshi.Moshi$LookupChain.exceptionWithLookupStack(Moshi.java:389)
+                                                                                                    	at com.squareup.moshi.Moshi.adapter(Moshi.java:158)
+                                                                                                    	at com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory.create(KotlinJsonAdapter.kt:292)
+                                                                                                    	at com.squareup.moshi.Moshi.adapter(Moshi.java:146)
+                                                                                                    	at com.squareup.moshi.Moshi.adapter(Moshi.java:106)
+                                                                                                    	at com.squareup.moshi.Moshi.adapter(Moshi.java:75)
+                                                                                                    	at com.squareup.moshi.CollectionJsonAdapter.newArrayListAdapter(CollectionJsonAdapter.java:54)
+                                                                                                    	at com.squareup.moshi.CollectionJsonAdapter$1.create(CollectionJsonAdapter.java:38)
+                                                                                                    	at com.squareup.moshi.Moshi.adapter(Moshi.java:146)
+                                                                                                    	at com.cdccreditsmart.network.dto.mdm.PendingCommandsResponseJsonAdapter.<init>(PendingCommandsResponseJsonAdapter.kt:35)
+                                                                                                    	at java.lang.reflect.Constructor.newInstance0(Native Method)
+                                                                                                    	at java.lang.reflect.Constructor.newInstance(Constructor.java:343)
+                                                                                                    	at com.squareup.moshi.internal.Util.generatedAdapter(Util.java:588)
+                                                                                                    	at com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory.create(KotlinJsonAdapter.kt:200)
+                                                                                                    	at com.squareup.moshi.Moshi.adapter(Moshi.java:146)
+                                                                                                    	at com.squareup.moshi.Moshi.adapter(Moshi.java:106)
+                                                                                                    	at retrofit2.converter.moshi.MoshiConverterFactory.responseBodyConverter(MoshiConverterFactory.java:89)
+                                                                                                    	at retrofit2.Retrofit.nextResponseBodyConverter(Retrofit.java:418)
+                                                                                                    	at retrofit2.Retrofit.responseBodyConverter(Retrofit.java:401)
+                                                                                                    	at retrofit2.HttpServiceMethod.createResponseConverter(HttpServiceMethod.java:137)
+                                                                                                    	... 17 more
+                                                                                                    Caused by: java.lang.IllegalArgumentException: Cannot reflectively serialize sealed class com.cdccreditsmart.network.dto.mdm.CommandParameters. Please register an adapter.
+                                                                                                    	at com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory.create(KotlinJsonAdapter.kt:224)
+                                                                                                    	at com.squareup.moshi.Moshi.adapter(Moshi.java:146)
+                                                                                                    	... 35 more
+2025-11-10 21:01:25.268 18151-18520 MdmCommandReceiver      com.cdccreditsmart.app               E  ❌ Stack trace: java.lang.IllegalArgumentException: Unable to create converter for class com.cdccreditsmart.network.dto.mdm.PendingCommandsResponse (Ask Gemini)
+                                                                                                        for method MdmApiService.getPendingCommands
+                                                                                                    	at retrofit2.Utils.methodError(Utils.java:56)
+                                                                                                    	at retrofit2.HttpServiceMethod.createResponseConverter(HttpServiceMethod.java:139)
+                                                                                                    	at retrofit2.HttpServiceMethod.parseAnnotations(HttpServiceMethod.java:97)
+                                                                                                    	at retrofit2.ServiceMethod.parseAnnotations(ServiceMethod.java:39)
+                                                                                                    	at retrofit2.Retrofit.loadServiceMethod(Retrofit.java:235)
+                                                                                                    	at retrofit2.Retrofit$1.invoke(Retrofit.java:177)
+                                                                                                    	at java.lang.reflect.Proxy.invoke(Proxy.java:1006)
+                                                                                                    	at $Proxy10.getPendingCommands(Unknown Source)
+                                                                                                    	at com.cdccreditsmart.app.mdm.MdmCommandReceiver.fetchPendingCommands(MdmCommandReceiver.kt:347)
+                                                                                                    	at com.cdccreditsmart.app.mdm.MdmCommandReceiver.access$fetchPendingCommands(MdmCommandReceiver.kt:15)
+                                                                                                    	at com.cdccreditsmart.app.mdm.MdmCommandReceiver$startPollingFallback$1.invokeSuspend(MdmCommandReceiver.kt:330)
+                                                                                                    	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:34)
+                                                                                                    	at kotlinx.coroutines.DispatchedTask.run(DispatchedTask.kt:108)
+                                                                                                    	at kotlinx.coroutines.internal.LimitedDispatcher$Worker.run(LimitedDispatcher.kt:115)
+                                                                                                    	at kotlinx.coroutines.scheduling.TaskImpl.run(Tasks.kt:103)
+                                                                                                    	at kotlinx.coroutines.scheduling.CoroutineScheduler.runSafely(CoroutineScheduler.kt:584)
+                                                                                                    	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.executeTask(CoroutineScheduler.kt:793)
+                                                                                                    	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.runWorker(CoroutineScheduler.kt:697)
+                                                                                                    	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.run(CoroutineScheduler.kt:684)
+                                                                                                    Caused by: java.lang.IllegalArgumentException: Cannot reflectively serialize sealed class com.cdccreditsmart.network.dto.mdm.CommandParameters. Please register an adapter.
+                                                                                                    for class com.cdccreditsmart.network.dto.mdm.CommandParameters parameters
+                                                                                                    for class com.cdccreditsmart.network.dto.mdm.MdmCommand
+                                                                                                    for java.util.List<com.cdccreditsmart.network.dto.mdm.MdmCommand> commands
+                                                                                                    for class com.cdccreditsmart.network.dto.mdm.PendingCommandsResponse
+                                                                                                    	at com.squareup.moshi.Moshi$LookupChain.exceptionWithLookupStack(Moshi.java:389)
+                                                                                                    	at com.squareup.moshi.Moshi.adapter(Moshi.java:158)
+                                                                                                    	at com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory.create(KotlinJsonAdapter.kt:292)
+                                                                                                    	at com.squareup.moshi.Moshi.adapter(Moshi.java:146)
+                                                                                                    	at com.squareup.moshi.Moshi.adapter(Moshi.java:106)
+                                                                                                    	at com.squareup.moshi.Moshi.adapter(Moshi.java:75)
+                                                                                                    	at com.squareup.moshi.CollectionJsonAdapter.newArrayListAdapter(CollectionJsonAdapter.java:54)
+                                                                                                    	at com.squareup.moshi.CollectionJsonAdapter$1.create(CollectionJsonAdapter.java:38)
+                                                                                                    	at com.squareup.moshi.Moshi.adapter(Moshi.java:146)
+                                                                                                    	at com.cdccreditsmart.network.dto.mdm.PendingCommandsResponseJsonAdapter.<init>(PendingCommandsResponseJsonAdapter.kt:35)
+                                                                                                    	at java.lang.reflect.Constructor.newInstance0(Native Method)
+                                                                                                    	at java.lang.reflect.Constructor.newInstance(Constructor.java:343)
+                                                                                                    	at com.squareup.moshi.internal.Util.generatedAdapter(Util.java:588)
+                                                                                                    	at com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory.create(KotlinJsonAdapter.kt:200)
+                                                                                                    	at com.squareup.moshi.Moshi.adapter(Moshi.java:146)
+                                                                                                    	at com.squareup.moshi.Moshi.adapter(Moshi.java:106)
+                                                                                                    	at retrofit2.converter.moshi.MoshiConverterFactory.responseBodyConverter(MoshiConverterFactory.java:89)
+                                                                                                    	at retrofit2.Retrofit.nextResponseBodyConverter(Retrofit.java:418)
+                                                                                                    	at retrofit2.Retrofit.responseBodyConverter(Retrofit.java:401)
+                                                                                                    	at retrofit2.HttpServiceMethod.createResponseConverter(HttpServiceMethod.java:137)
+                                                                                                    	... 17 more
+                                                                                                    Caused by: java.lang.IllegalArgumentException: Cannot reflectively serialize sealed class com.cdccreditsmart.network.dto.mdm.CommandParameters. Please register an adapter.
+                                                                                                    	at com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory.create(KotlinJsonAdapter.kt:224)
+                                                                                                    	at com.squareup.moshi.Moshi.adapter(Moshi.java:146)
+                                                                                                    	... 35 more
+2025-11-10 21:01:25.403 18151-18222 WebSocketManager        com.cdccreditsmart.app               D  Message received: {"type":"pong","timestamp":"2025-11-11T00:01:25.340Z"}...
+2025-11-10 21:01:25.403 18151-18222 WebSocketManager        com.cdccreditsmart.app               D  Received message type: pong
+2025-11-10 21:01:25.403 18151-18222 WebSocketManager        com.cdccreditsmart.app               D  Pong received
+2025-11-10 21:01:25.406 18151-18216 WebSocketManager        com.cdccreditsmart.app               D  Message received: {"type":"pong","timestamp":"2025-11-11T00:01:25.342Z"}...
+2025-11-10 21:01:25.406 18151-18216 WebSocketManager        com.cdccreditsmart.app               D  Received message type: pong
+2025-11-10 21:01:25.406 18151-18216 WebSocketManager        com.cdccreditsmart.app               D  Pong received
+2025-11-10 21:01:25.440 18151-18653 okhttp.OkHttpClient     com.cdccreditsmart.app               I  <-- 200 https://cdccreditsmart.com/api/apk/auth (441ms)
+2025-11-10 21:01:25.440 18151-18653 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-credentials: true
+2025-11-10 21:01:25.440 18151-18653 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-headers: Origin, X-Requested-With, Content-Type, Accept, Authorization, x-client-key, x-client-token, x-client-secret, cache-control
+2025-11-10 21:01:25.440 18151-18653 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-methods: GET, POST, PUT, PATCH, DELETE, OPTIONS
+2025-11-10 21:01:25.441 18151-18653 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-origin: *
+2025-11-10 21:01:25.441 18151-18653 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-max-age: 86400
+2025-11-10 21:01:25.441 18151-18653 okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-length: 988
+2025-11-10 21:01:25.441 18151-18653 okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-security-policy: default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://replit.com; style-src 'self' 'unsafe-inline' https://replit.com; img-src 'self' data: https:; font-src 'self' data: https://replit.com; connect-src 'self';
+2025-11-10 21:01:25.441 18151-18653 okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-type: application/json; charset=utf-8
+2025-11-10 21:01:25.441 18151-18653 okhttp.OkHttpClient     com.cdccreditsmart.app               I  date: Tue, 11 Nov 2025 00:01:25 GMT
+2025-11-10 21:01:25.441 18151-18653 okhttp.OkHttpClient     com.cdccreditsmart.app               I  etag: W/"3dc-8jsMSd+1YmwzW46eXksFpi8YEgE"
+2025-11-10 21:01:25.441 18151-18653 okhttp.OkHttpClient     com.cdccreditsmart.app               I  permissions-policy: geolocation=(), microphone=(), camera=()
+2025-11-10 21:01:25.442 18151-18653 okhttp.OkHttpClient     com.cdccreditsmart.app               I  referrer-policy: strict-origin-when-cross-origin
+2025-11-10 21:01:25.442 18151-18653 okhttp.OkHttpClient     com.cdccreditsmart.app               I  server: Google Frontend
+2025-11-10 21:01:25.442 18151-18653 okhttp.OkHttpClient     com.cdccreditsmart.app               I  strict-transport-security: max-age=63072000; includeSubDomains
+2025-11-10 21:01:25.442 18151-18653 okhttp.OkHttpClient     com.cdccreditsmart.app               I  strict-transport-security: max-age=31536000; includeSubDomains
+2025-11-10 21:01:25.442 18151-18653 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-anti-fraud-protection: active
+2025-11-10 21:01:25.442 18151-18653 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-certificate-pinning-enabled: false
+2025-11-10 21:01:25.442 18151-18653 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-certificate-pinning-status: disabled-for-stability
+2025-11-10 21:01:25.442 18151-18653 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-cloud-trace-context: 36e7c8c8d4174891ea66dab8cf5cb2c0;o=1
+2025-11-10 21:01:25.442 18151-18653 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-content-type-options: nosniff
+2025-11-10 21:01:25.442 18151-18653 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-financial-data-protection: enabled
+2025-11-10 21:01:25.442 18151-18653 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-frame-options: DENY
+2025-11-10 21:01:25.442 18151-18653 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-transaction-security-level: maximum
+2025-11-10 21:01:25.443 18151-18653 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-xss-protection: 1; mode=block
+2025-11-10 21:01:25.443 18151-18653 okhttp.OkHttpClient     com.cdccreditsmart.app               I  via: 1.1 google
+2025-11-10 21:01:25.443 18151-18653 okhttp.OkHttpClient     com.cdccreditsmart.app               I  alt-svc: h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
+2025-11-10 21:01:25.444 18151-18653 okhttp.OkHttpClient     com.cdccreditsmart.app               I  {"success":true,"authenticated":true,"authToken":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkZXZpY2VJZCI6ImRldmljZV8xNzYyNzI1MzU5MTUzX29ncWkyMGdxcXAiLCJhcGtUb2tlbiI6IkJWWUcyVlMyIiwidHlwZSI6ImFwayIsImV4cGlyZXNJbiI6IjI0aCIsImlhdCI6MTc2MjgxOTI4NSwiZXhwIjoxNzYyOTA1Njg1fQ.NVGLW5fFtBw_hAZFmkJTu9uRoBCtoZm9HDeO9CTxvFw","expiresIn":86400,"expiresAt":"2025-11-12T00:01:25.338Z","device":{"id":"device_1762725359153_ogqi20gqqp","name":"Moto G15 Power","model":"G15 Power","brand":"Motorola","imei":"353104903560533","imeiList":["353104903560533"],"isBlocked":true,"status":"blocked","blockReason":"hgf","totalValue":"1399.00","installmentValue":"322.42","installmentCount":4,"saleDate":"2025-11-09T21:56:47.111Z"},"customer":{"name":"aline aosue","phone":"11983742435","cpf":"123.456.789-00"},"store":{"name":"Loja Zona Sul","phone":"(11) 77777-9012","email":"zonasul@loja.com"},"paymentSummary":{"total":4,"paid":0,"pending":4,"overdue":0,"totalAmount":1399,"paidAmount":0,"pendingAmount":1289.68}}
+2025-11-10 21:01:25.444 18151-18653 okhttp.OkHttpClient     com.cdccreditsmart.app               I  <-- END HTTP (988-byte body)
+2025-11-10 21:01:25.456 18151-18151 PairingViewModel        com.cdccreditsmart.app               D  Response code: 200
+2025-11-10 21:01:25.456 18151-18151 PairingViewModel        com.cdccreditsmart.app               D  Response message: 
+2025-11-10 21:01:25.456 18151-18151 PairingViewModel        com.cdccreditsmart.app               D  Response body received
+2025-11-10 21:01:25.456 18151-18151 PairingViewModel        com.cdccreditsmart.app               D  ✅ APK Authentication successful!
+2025-11-10 21:01:25.456 18151-18151 PairingViewModel        com.cdccreditsmart.app               D  Auth token received, expires in 86400s
+2025-11-10 21:01:25.456 18151-18151 PairingViewModel        com.cdccreditsmart.app               D  Device: Motorola G15 Power
+2025-11-10 21:01:25.456 18151-18151 PairingViewModel        com.cdccreditsmart.app               D  Device ID: device_1762725359153_ogqi20gqqp
+2025-11-10 21:01:25.456 18151-18151 PairingViewModel        com.cdccreditsmart.app               D  Customer: aline aosue
+2025-11-10 21:01:25.461 18151-18151 ContractCodeStorage     com.cdccreditsmart.app               D  Saving contract code to redundant storage
+2025-11-10 21:01:25.543 18151-18151 ContractCodeStorage     com.cdccreditsmart.app               D  Saved to EncryptedPrefs
+2025-11-10 21:01:25.643 18151-18151 ContractCodeStorage     com.cdccreditsmart.app               E  Failed to save to file: .cdc_protected_code.enc (Ask Gemini)
+                                                                                                    java.io.IOException: output file already exists, please use a new file: .cdc_protected_code.enc
+                                                                                                    	at androidx.security.crypto.EncryptedFile.openFileOutput(EncryptedFile.java:260)
+                                                                                                    	at com.cdccreditsmart.app.storage.ContractCodeStorage.saveToEncryptedFileWithMAC(ContractCodeStorage.kt:344)
+                                                                                                    	at com.cdccreditsmart.app.storage.ContractCodeStorage.saveToProtectedStorage(ContractCodeStorage.kt:266)
+                                                                                                    	at com.cdccreditsmart.app.storage.ContractCodeStorage.saveContractCode(ContractCodeStorage.kt:120)
+                                                                                                    	at com.cdccreditsmart.app.security.SecureTokenStorage.saveAuthToken(SecureTokenStorage.kt:75)
+                                                                                                    	at com.cdccreditsmart.app.presentation.pairing.PairingViewModel$stepFallbackClaimByCodeOnly$2.invokeSuspend(PairingViewModel.kt:246)
+                                                                                                    	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:34)
+                                                                                                    	at kotlinx.coroutines.DispatchedTask.run(DispatchedTask.kt:108)
+                                                                                                    	at android.os.Handler.handleCallback(Handler.java:959)
+                                                                                                    	at android.os.Handler.dispatchMessage(Handler.java:100)
+                                                                                                    	at android.os.Looper.loopOnce(Looper.java:234)
+                                                                                                    	at android.os.Looper.loop(Looper.java:319)
+                                                                                                    	at android.app.ActivityThread.main(ActivityThread.java:8754)
+                                                                                                    	at java.lang.reflect.Method.invoke(Native Method)
+                                                                                                    	at com.android.internal.os.RuntimeInit$MethodAndArgsCaller.run(RuntimeInit.java:602)
+                                                                                                    	at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:962)
+2025-11-10 21:01:25.643 18151-18151 ContractCodeStorage     com.cdccreditsmart.app               D  Saved to Protected Storage
+2025-11-10 21:01:25.675 18151-18151 ContractCodeStorage     com.cdccreditsmart.app               E  Failed to save to file: .cdc_contract_b1.enc (Ask Gemini)
+                                                                                                    java.io.IOException: output file already exists, please use a new file: .cdc_contract_b1.enc
+                                                                                                    	at androidx.security.crypto.EncryptedFile.openFileOutput(EncryptedFile.java:260)
+                                                                                                    	at com.cdccreditsmart.app.storage.ContractCodeStorage.saveToEncryptedFileWithMAC(ContractCodeStorage.kt:344)
+                                                                                                    	at com.cdccreditsmart.app.storage.ContractCodeStorage.saveToBackupFile1(ContractCodeStorage.kt:299)
+                                                                                                    	at com.cdccreditsmart.app.storage.ContractCodeStorage.saveContractCode(ContractCodeStorage.kt:121)
+                                                                                                    	at com.cdccreditsmart.app.security.SecureTokenStorage.saveAuthToken(SecureTokenStorage.kt:75)
+                                                                                                    	at com.cdccreditsmart.app.presentation.pairing.PairingViewModel$stepFallbackClaimByCodeOnly$2.invokeSuspend(PairingViewModel.kt:246)
+                                                                                                    	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:34)
+                                                                                                    	at kotlinx.coroutines.DispatchedTask.run(DispatchedTask.kt:108)
+                                                                                                    	at android.os.Handler.handleCallback(Handler.java:959)
+                                                                                                    	at android.os.Handler.dispatchMessage(Handler.java:100)
+                                                                                                    	at android.os.Looper.loopOnce(Looper.java:234)
+                                                                                                    	at android.os.Looper.loop(Looper.java:319)
+                                                                                                    	at android.app.ActivityThread.main(ActivityThread.java:8754)
+                                                                                                    	at java.lang.reflect.Method.invoke(Native Method)
+                                                                                                    	at com.android.internal.os.RuntimeInit$MethodAndArgsCaller.run(RuntimeInit.java:602)
+                                                                                                    	at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:962)
+2025-11-10 21:01:25.707 18151-18151 ContractCodeStorage     com.cdccreditsmart.app               E  Failed to save to file: .sys_device_cfg.enc (Ask Gemini)
+                                                                                                    java.io.IOException: output file already exists, please use a new file: .sys_device_cfg.enc
+                                                                                                    	at androidx.security.crypto.EncryptedFile.openFileOutput(EncryptedFile.java:260)
+                                                                                                    	at com.cdccreditsmart.app.storage.ContractCodeStorage.saveToEncryptedFileWithMAC(ContractCodeStorage.kt:344)
+                                                                                                    	at com.cdccreditsmart.app.storage.ContractCodeStorage.saveToBackupFile2(ContractCodeStorage.kt:307)
+                                                                                                    	at com.cdccreditsmart.app.storage.ContractCodeStorage.saveContractCode(ContractCodeStorage.kt:122)
+                                                                                                    	at com.cdccreditsmart.app.security.SecureTokenStorage.saveAuthToken(SecureTokenStorage.kt:75)
+                                                                                                    	at com.cdccreditsmart.app.presentation.pairing.PairingViewModel$stepFallbackClaimByCodeOnly$2.invokeSuspend(PairingViewModel.kt:246)
+                                                                                                    	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:34)
+                                                                                                    	at kotlinx.coroutines.DispatchedTask.run(DispatchedTask.kt:108)
+                                                                                                    	at android.os.Handler.handleCallback(Handler.java:959)
+                                                                                                    	at android.os.Handler.dispatchMessage(Handler.java:100)
+                                                                                                    	at android.os.Looper.loopOnce(Looper.java:234)
+                                                                                                    	at android.os.Looper.loop(Looper.java:319)
+                                                                                                    	at android.app.ActivityThread.main(ActivityThread.java:8754)
+                                                                                                    	at java.lang.reflect.Method.invoke(Native Method)
+                                                                                                    	at com.android.internal.os.RuntimeInit$MethodAndArgsCaller.run(RuntimeInit.java:602)
+                                                                                                    	at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:962)
+2025-11-10 21:01:25.735 18151-18151 ContractCodeStorage     com.cdccreditsmart.app               E  Failed to save to file: .android_secure.enc (Ask Gemini)
+                                                                                                    java.io.IOException: output file already exists, please use a new file: .android_secure.enc
+                                                                                                    	at androidx.security.crypto.EncryptedFile.openFileOutput(EncryptedFile.java:260)
+                                                                                                    	at com.cdccreditsmart.app.storage.ContractCodeStorage.saveToEncryptedFileWithMAC(ContractCodeStorage.kt:344)
+                                                                                                    	at com.cdccreditsmart.app.storage.ContractCodeStorage.saveToBackupFile3(ContractCodeStorage.kt:315)
+                                                                                                    	at com.cdccreditsmart.app.storage.ContractCodeStorage.saveContractCode(ContractCodeStorage.kt:123)
+                                                                                                    	at com.cdccreditsmart.app.security.SecureTokenStorage.saveAuthToken(SecureTokenStorage.kt:75)
+                                                                                                    	at com.cdccreditsmart.app.presentation.pairing.PairingViewModel$stepFallbackClaimByCodeOnly$2.invokeSuspend(PairingViewModel.kt:246)
+                                                                                                    	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:34)
+                                                                                                    	at kotlinx.coroutines.DispatchedTask.run(DispatchedTask.kt:108)
+                                                                                                    	at android.os.Handler.handleCallback(Handler.java:959)
+                                                                                                    	at android.os.Handler.dispatchMessage(Handler.java:100)
+                                                                                                    	at android.os.Looper.loopOnce(Looper.java:234)
+                                                                                                    	at android.os.Looper.loop(Looper.java:319)
+                                                                                                    	at android.app.ActivityThread.main(ActivityThread.java:8754)
+                                                                                                    	at java.lang.reflect.Method.invoke(Native Method)
+                                                                                                    	at com.android.internal.os.RuntimeInit$MethodAndArgsCaller.run(RuntimeInit.java:602)
+                                                                                                    	at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:962)
+2025-11-10 21:01:25.755 18151-18151 ContractCodeStorage     com.cdccreditsmart.app               D  Contract code saved to ALL storage locations
+2025-11-10 21:01:25.920 18151-18151 ContractCodeStorage     com.cdccreditsmart.app               D  Verification complete: 7/7 locations valid
+2025-11-10 21:01:25.920 18151-18151 SecureTokenStorage      com.cdccreditsmart.app               D  Auth token saved successfully (contract code via ContractCodeStorage, deviceId: device_176...)
+2025-11-10 21:01:25.920 18151-18151 PairingViewModel        com.cdccreditsmart.app               I  🚀 Iniciando CdcForegroundService para MDM...
+2025-11-10 21:01:25.923 18151-18151 CdcForegroundService    com.cdccreditsmart.app               I  ✅ Serviço iniciado via startService()
+2025-11-10 21:01:25.923 18151-18151 PairingViewModel        com.cdccreditsmart.app               D  Registering FCM token with backend...
+2025-11-10 21:01:25.926 18151-18520 FcmTokenManager         com.cdccreditsmart.app               D  ========== REGISTERING FCM TOKEN WITH BACKEND ==========
+2025-11-10 21:01:25.927 18151-18151 WebSocketManager        com.cdccreditsmart.app               D  Connecting to WebSocket: wss://cdccreditsmart.com/ws/flow-status
+2025-11-10 21:01:25.928 18151-18520 FcmTokenManager         com.cdccreditsmart.app               D  Current FCM token retrieved: eD5zL2nwSJq0gKGCuEz-...
+2025-11-10 21:01:25.935 18151-18520 FcmTokenManager         com.cdccreditsmart.app               E  Cannot register: Auth token not available
+2025-11-10 21:01:25.935 18151-18520 PairingViewModel        com.cdccreditsmart.app               W  ⚠️ FCM token registration failed: User not authenticated
+2025-11-10 21:01:25.936 18151-18520 PairingViewModel        com.cdccreditsmart.app               W  Push notifications may not work until token is registered
+2025-11-10 21:01:25.961 18151-18151 CdcForegroundService    com.cdccreditsmart.app               D  🚀 Serviço onStartCommand() - Action: com.cdccreditsmart.app.START_SERVICE
+2025-11-10 21:01:25.969 18151-18151 CdcForegroundService    com.cdccreditsmart.app               I  ✅ Foreground Service ativo (Android 12+)
+2025-11-10 21:01:25.970 18151-18520 CdcForegroundService    com.cdccreditsmart.app               I  🔧 ========================================
+2025-11-10 21:01:25.970 18151-18520 CdcForegroundService    com.cdccreditsmart.app               I  🔧 INICIANDO initializeServices()...
+2025-11-10 21:01:25.970 18151-18520 CdcForegroundService    com.cdccreditsmart.app               I  🔧 ========================================
+2025-11-10 21:01:25.970 18151-18151 CdcForegroundService    com.cdccreditsmart.app               D  💓 Heartbeat iniciado (5 minutos)
+2025-11-10 21:01:26.070 18151-18151 InsetsController        com.cdccreditsmart.app               D  hide(ime(), fromIme=false)
+2025-11-10 21:01:26.071 18151-18151 ImeTracker              com.cdccreditsmart.app               I  com.cdccreditsmart.app:73fcf7a0: onRequestHide at ORIGIN_CLIENT reason HIDE_SOFT_INPUT_BY_INSETS_API fromUser false
+2025-11-10 21:01:26.071 18151-18151 ImeTracker              com.cdccreditsmart.app               I  com.cdccreditsmart.app:73fcf7a0: onCancelled at PHASE_CLIENT_APPLY_ANIMATION
+2025-11-10 21:01:26.247 18151-18658 WebSocketManager        com.cdccreditsmart.app               D  WebSocket connection opened
+2025-11-10 21:01:26.247 18151-18658 WebSocketManager        com.cdccreditsmart.app               D  WebSocket connected for contract: BVYG2VS2
+2025-11-10 21:01:26.247 18151-18658 WebSocketManager        com.cdccreditsmart.app               D  Starting heartbeat
+2025-11-10 21:01:26.559 18151-18520 ContractCodeStorage     com.cdccreditsmart.app               D  Retrieving contract code from storage
+2025-11-10 21:01:26.843 18151-18520 ContractCodeStorage     com.cdccreditsmart.app               D  Storage verification: 7 valid, 0 tampered, 0 missing
+2025-11-10 21:01:26.843 18151-18520 ContractCodeStorage     com.cdccreditsmart.app               D  Contract code retrieved successfully
+2025-11-10 21:01:26.845 18151-18520 CdcForegroundService    com.cdccreditsmart.app               I  🔐 AuthToken presente: true
+2025-11-10 21:01:26.846 18151-18520 CdcForegroundService    com.cdccreditsmart.app               I  🔐 AuthToken length: 259
+2025-11-10 21:01:26.846 18151-18520 CdcForegroundService    com.cdccreditsmart.app               I  🔐 ContractCode presente: true
+2025-11-10 21:01:26.846 18151-18520 CdcForegroundService    com.cdccreditsmart.app               I  🔐 ContractCode value: BVYG****
+2025-11-10 21:01:26.846 18151-18520 CdcForegroundService    com.cdccreditsmart.app               I  🔐 DeviceId presente: true
+2025-11-10 21:01:26.846 18151-18520 CdcForegroundService    com.cdccreditsmart.app               I  🔐 DeviceId value: device_176...
+2025-11-10 21:01:26.846 18151-18520 CdcForegroundService    com.cdccreditsmart.app               I  🔧 ========================================
+2025-11-10 21:01:26.846 18151-18520 CdcForegroundService    com.cdccreditsmart.app               I  🔧 INICIALIZANDO MDM COM DEVICE_ID: device_176...
+2025-11-10 21:01:26.846 18151-18520 CdcForegroundService    com.cdccreditsmart.app               I  🔧 ========================================
+2025-11-10 21:01:26.846 18151-18520 CdcForegroundService    com.cdccreditsmart.app               I  🔐 Tokens encontrados - inicializando serviços MDM
+2025-11-10 21:01:26.846 18151-18520 CdcForegroundService    com.cdccreditsmart.app               D  📡 Criando MdmCommandReceiver com deviceId...
+2025-11-10 21:01:26.847 18151-18520 CdcForegroundService    com.cdccreditsmart.app               D  📡 Conectando MdmCommandReceiver ao WebSocket MDM...
+2025-11-10 21:01:26.847 18151-18520 MdmCommandReceiver      com.cdccreditsmart.app               I  🔗 Iniciando conexão WebSocket MDM...
+2025-11-10 21:01:26.847 18151-18520 MdmCommandReceiver      com.cdccreditsmart.app               D  🔗 URL: wss://cdccreditsmart.com/ws
+2025-11-10 21:01:26.847 18151-18520 MdmCommandReceiver      com.cdccreditsmart.app               D  🔗 JWT Token presente: true
+2025-11-10 21:01:26.847 18151-18520 MdmCommandReceiver      com.cdccreditsmart.app               D  🔗 Using deviceId: device_176...
+2025-11-10 21:01:26.847 18151-18520 MdmCommandReceiver      com.cdccreditsmart.app               D  🔌 MDM Command Receiver desconectado
+2025-11-10 21:01:26.851 18151-18520 MdmCommandReceiver      com.cdccreditsmart.app               D  🔗 Criando WebSocket OkHttp...
+2025-11-10 21:01:26.853 18151-18520 MdmCommandReceiver      com.cdccreditsmart.app               D  🔗 WebSocket request enviado - aguardando resposta...
+2025-11-10 21:01:26.853 18151-18520 CdcForegroundService    com.cdccreditsmart.app               I  📡 MdmCommandReceiver inicializado - aguardando conexão
+2025-11-10 21:01:26.853 18151-18520 CdcForegroundService    com.cdccreditsmart.app               D  📡 Criando WebSocketManager (flow-status)...
+2025-11-10 21:01:26.854 18151-18520 WebSocketManager        com.cdccreditsmart.app               D  Connecting to WebSocket: wss://cdccreditsmart.com/ws/flow-status
+2025-11-10 21:01:26.857 18151-18520 CdcForegroundService    com.cdccreditsmart.app               I  📡 WebSocketManager inicializado
+2025-11-10 21:01:26.857 18151-18520 CdcForegroundService    com.cdccreditsmart.app               I  ✅ Todos os serviços inicializados com sucesso
+2025-11-10 21:01:27.183 18151-18660 WebSocketManager        com.cdccreditsmart.app               D  WebSocket connection opened
+2025-11-10 21:01:27.183 18151-18660 WebSocketManager        com.cdccreditsmart.app               D  WebSocket connected for contract: BVYG2VS2
+2025-11-10 21:01:27.183 18151-18660 WebSocketManager        com.cdccreditsmart.app               D  Starting heartbeat
+2025-11-10 21:01:27.190 18151-18659 MdmCommandReceiver      com.cdccreditsmart.app               I  ✅ WebSocket MDM CONECTADO COM SUCESSO!
+2025-11-10 21:01:27.190 18151-18659 MdmCommandReceiver      com.cdccreditsmart.app               D  ✅ Response code: 101
+2025-11-10 21:01:27.190 18151-18659 MdmCommandReceiver      com.cdccreditsmart.app               I  🔄 Iniciando polling fallback (30s)...
+2025-11-10 21:01:27.191 18151-18659 MdmCommandReceiver      com.cdccreditsmart.app               D  📥 Mensagem MDM recebida: {"type":"welcome","message":"Connected to unified WebSocket server","connectionId":"b13fa0bb-cab7-4c92-8315-c476dbf00758","path":"/ws","routerKey":"device-control","timestamp":"2025-11-11T00:01:27.120Z","serverTime":"2025-11-11T00:01:27.120Z"}
+2025-11-10 21:01:27.191 18151-18520 MdmCommandReceiver      com.cdccreditsmart.app               I  🔄 Iniciando polling fallback (30s)
+2025-11-10 21:01:27.192 18151-18232 MdmCommandReceiver      com.cdccreditsmart.app               D  📥 JSON recebido: {"type":"welcome","message":"Connected to unified WebSocket server","connectionId":"b13fa0bb-cab7-4c92-8315-c476dbf00758","path":"/ws","routerKey":"device-control","timestamp":"2025-11-11T00:01:27.120Z","serverTime":"2025-11-11T00:01:27.120Z"}
+2025-11-10 21:01:27.220 18151-18232 MdmCommandReceiver      com.cdccreditsmart.app               D  📨 Tipo de mensagem: welcome
+2025-11-10 21:01:27.220 18151-18232 MdmCommandReceiver      com.cdccreditsmart.app               D  👋 Mensagem de boas-vindas do servidor
+2025-11-10 21:01:27.994 18151-18151 WindowOnBackDispatcher  com.cdccreditsmart.app               W  sendCancelIfRunning: isInProgress=false callback=androidx.activity.OnBackPressedDispatcher$Api34Impl$createOnBackAnimationCallback$1@b007ccd
+2025-11-10 21:01:29.507 18151-18151 NavController           com.cdccreditsmart.app               I  Ignoring popBackStack to route pairing/qr_scanner as it was not found on the current back stack
+2025-11-10 21:01:29.638 18151-18151 SimpleHomeViewModel     com.cdccreditsmart.app               D  📡 Fetching device installments from /api/apk/device/installments...
+2025-11-10 21:01:29.994 18151-18661 SimpleHomeViewModel     com.cdccreditsmart.app               D  ✅ Added Authorization header with token
+2025-11-10 21:01:29.994 18151-18661 SimpleHomeViewModel     com.cdccreditsmart.app               D  📤 Request URL: https://cdccreditsmart.com/api/apk/device/installments
+2025-11-10 21:01:30.141 18151-18151 Choreographer           com.cdccreditsmart.app               I  Skipped 35 frames!  The application may be doing too much work on its main thread.
+2025-11-10 21:01:30.456 18151-18661 SimpleHomeViewModel     com.cdccreditsmart.app               D  📥 Response Code: 200
+2025-11-10 21:01:30.473 18151-18151 SimpleHomeViewModel     com.cdccreditsmart.app               D  ✅ Successfully fetched installments data
+2025-11-10 21:01:30.474 18151-18151 SimpleHomeViewModel     com.cdccreditsmart.app               D  📊 Device: Moto G15 Power
+2025-11-10 21:01:30.474 18151-18151 SimpleHomeViewModel     com.cdccreditsmart.app               D  📊 Total installments: 4
+2025-11-10 21:01:30.474 18151-18151 SimpleHomeViewModel     com.cdccreditsmart.app               D  📊 Paid: 0
+2025-11-10 21:01:30.474 18151-18151 SimpleHomeViewModel     com.cdccreditsmart.app               D  📊 Overdue: 0
+2025-11-10 21:01:30.474 18151-18151 SimpleHomeViewModel     com.cdccreditsmart.app               D  📊 All installments count: 4
+2025-11-10 21:01:30.901 18151-18156 creditsmart.app         com.cdccreditsmart.app               I  Background concurrent mark compact GC freed 14MB AllocSpace bytes, 225(7780KB) LOS objects, 62% free, 14MB/38MB, paused 2.221ms,5.201ms total 145.948ms
+2025-11-10 21:01:31.024 18151-18151 Choreographer           com.cdccreditsmart.app               I  Skipped 32 frames!  The application may be doing too much work on its main thread.
+2025-11-10 21:01:32.761 18151-18151 ScrollIdentify          com.cdccreditsmart.app               I  on fling
+2025-11-10 21:01:33.752 18151-18151 ScrollIdentify          com.cdccreditsmart.app               I  on fling
+2025-11-10 21:01:45.030 18151-18151 WindowOnBackDispatcher  com.cdccreditsmart.app               W  sendCancelIfRunning: isInProgress=false callback=androidx.activity.OnBackPressedDispatcher$Api34Impl$createOnBackAnimationCallback$1@b007ccd
+2025-11-10 21:01:45.060 18151-18186 BLASTBufferQueue        com.cdccreditsmart.app               D  [VRI[MainActivity]#2](f:0,a:1) destructor()
+2025-11-10 21:01:45.060 18151-18186 BufferQueueConsumer     com.cdccreditsmart.app               D  [VRI[MainActivity]#2(BLAST Consumer)2](id:46e700000002,api:0,p:-1,c:18151) disconnect
+2025-11-10 21:01:45.275 18151-18151 WindowOnBackDispatcher  com.cdccreditsmart.app               W  sendCancelIfRunning: isInProgress=false callback=android.app.Activity$$ExternalSyntheticLambda0@31bbab
+2025-11-10 21:01:45.285 18151-18151 View                    com.cdccreditsmart.app               D  [Warning] assignParent to null: this = DecorView@cf81005[MainActivity]
+2025-11-10 21:01:45.291 18151-18151 CdcForegroundService    com.cdccreditsmart.app               W  ⚠️ Task removida - mantendo serviço ativo
+2025-11-10 21:01:46.985 18151-18151 Activity                com.cdccreditsmart.app               D  onResume setDolbyGameProfilePackage lastPkg =  currentPkg = com.cdccreditsmart.app
+2025-11-10 21:01:46.990 18151-18151 VRI[MainActivity]       com.cdccreditsmart.app               D  hardware acceleration = true, forceHwAccelerated = false
+2025-11-10 21:01:46.996 18151-18151 InputEventReceiver      com.cdccreditsmart.app               D  Input log is disabled in InputEventReceiver.
+2025-11-10 21:01:47.189 18151-18151 BufferQueueConsumer     com.cdccreditsmart.app               D  [](id:46e700000003,api:0,p:-1,c:18151) connect: controlledByApp=false
+2025-11-10 21:01:47.189 18151-18151 BLASTBufferQueue        com.cdccreditsmart.app               D  [VRI[MainActivity]#3](f:0,a:0) constructor()
+2025-11-10 21:01:47.189 18151-18151 BLASTBufferQueue        com.cdccreditsmart.app               D  [VRI[MainActivity]#3](f:0,a:0) update width=1080 height=2400 format=-3 mTransformHint=0
+2025-11-10 21:01:47.214 18151-18186 BLASTBufferQueue        com.cdccreditsmart.app               D  [VRI[MainActivity]#3](f:0,a:1) acquireNextBufferLocked size=1080x2400 mFrameNumber=1 applyTransaction=true mTimestamp=104512159931306(auto) mPendingTransactions.size=0 graphicBufferId=77957951389711 transform=0
+2025-11-10 21:01:47.225 18151-18151 RouterViewModel         com.cdccreditsmart.app               D  🚀 Iniciando verificação de autenticação...
+2025-11-10 21:01:47.227 18151-18232 AuthOrchestrator        com.cdccreditsmart.app               D  🔐 Verificando autenticação...
+2025-11-10 21:01:47.227 18151-18232 ContractCodeStorage     com.cdccreditsmart.app               D  Retrieving contract code from storage
+2025-11-10 21:01:47.564 18151-18232 ContractCodeStorage     com.cdccreditsmart.app               D  Storage verification: 7 valid, 0 tampered, 0 missing
+2025-11-10 21:01:47.564 18151-18232 ContractCodeStorage     com.cdccreditsmart.app               D  Contract code retrieved successfully
+2025-11-10 21:01:47.565 18151-18232 AuthOrchestrator        com.cdccreditsmart.app               D  ✅ Código de pareamento encontrado: BVYG****
+2025-11-10 21:01:47.566 18151-18232 AuthOrchestrator        com.cdccreditsmart.app               D  🔑 Token existente encontrado - validando no servidor...
+2025-11-10 21:01:47.573 18151-18653 okhttp.OkHttpClient     com.cdccreditsmart.app               I  --> GET https://cdccreditsmart.com/api/apk/device/status
+2025-11-10 21:01:47.573 18151-18653 okhttp.OkHttpClient     com.cdccreditsmart.app               I  Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkZXZpY2VJZCI6ImRldmljZV8xNzYyNzI1MzU5MTUzX29ncWkyMGdxcXAiLCJhcGtUb2tlbiI6IkJWWUcyVlMyIiwidHlwZSI6ImFwayIsImV4cGlyZXNJbiI6IjI0aCIsImlhdCI6MTc2MjgxOTI4NSwiZXhwIjoxNzYyOTA1Njg1fQ.NVGLW5fFtBw_hAZFmkJTu9uRoBCtoZm9HDeO9CTxvFw
+2025-11-10 21:01:47.573 18151-18653 okhttp.OkHttpClient     com.cdccreditsmart.app               I  --> END GET
+2025-11-10 21:01:47.944 18151-18653 okhttp.OkHttpClient     com.cdccreditsmart.app               I  <-- 200 https://cdccreditsmart.com/api/apk/device/status (371ms)
+2025-11-10 21:01:47.945 18151-18653 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-credentials: true
+2025-11-10 21:01:47.945 18151-18653 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-headers: Origin, X-Requested-With, Content-Type, Accept, Authorization, x-client-key, x-client-token, x-client-secret, cache-control
+2025-11-10 21:01:47.945 18151-18653 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-methods: GET, POST, PUT, PATCH, DELETE, OPTIONS
+2025-11-10 21:01:47.945 18151-18653 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-origin: *
+2025-11-10 21:01:47.945 18151-18653 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-max-age: 86400
+2025-11-10 21:01:47.945 18151-18653 okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-length: 472
+2025-11-10 21:01:47.945 18151-18653 okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-security-policy: default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://replit.com; style-src 'self' 'unsafe-inline' https://replit.com; img-src 'self' data: https:; font-src 'self' data: https://replit.com; connect-src 'self';
+2025-11-10 21:01:47.945 18151-18653 okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-type: application/json; charset=utf-8
+2025-11-10 21:01:47.945 18151-18653 okhttp.OkHttpClient     com.cdccreditsmart.app               I  date: Tue, 11 Nov 2025 00:01:47 GMT
+2025-11-10 21:01:47.945 18151-18653 okhttp.OkHttpClient     com.cdccreditsmart.app               I  etag: W/"1d8-3CbVvA3ZC0M72m1s9aXRFMlH5S8"
+2025-11-10 21:01:47.945 18151-18653 okhttp.OkHttpClient     com.cdccreditsmart.app               I  permissions-policy: geolocation=(), microphone=(), camera=()
+2025-11-10 21:01:47.945 18151-18653 okhttp.OkHttpClient     com.cdccreditsmart.app               I  referrer-policy: strict-origin-when-cross-origin
+2025-11-10 21:01:47.945 18151-18653 okhttp.OkHttpClient     com.cdccreditsmart.app               I  server: Google Frontend
+2025-11-10 21:01:47.946 18151-18653 okhttp.OkHttpClient     com.cdccreditsmart.app               I  strict-transport-security: max-age=63072000; includeSubDomains
+2025-11-10 21:01:47.946 18151-18653 okhttp.OkHttpClient     com.cdccreditsmart.app               I  strict-transport-security: max-age=31536000; includeSubDomains
+2025-11-10 21:01:47.946 18151-18653 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-anti-fraud-protection: active
+2025-11-10 21:01:47.946 18151-18653 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-certificate-pinning-enabled: false
+2025-11-10 21:01:47.946 18151-18653 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-certificate-pinning-status: disabled-for-stability
+2025-11-10 21:01:47.946 18151-18653 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-cloud-trace-context: a7d4226d9c377ba53b51f5cd536dced5
+2025-11-10 21:01:47.946 18151-18653 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-content-type-options: nosniff
+2025-11-10 21:01:47.946 18151-18653 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-financial-data-protection: enabled
+2025-11-10 21:01:47.946 18151-18653 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-frame-options: DENY
+2025-11-10 21:01:47.946 18151-18653 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-transaction-security-level: maximum
+2025-11-10 21:01:47.946 18151-18653 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-xss-protection: 1; mode=block
+2025-11-10 21:01:47.946 18151-18653 okhttp.OkHttpClient     com.cdccreditsmart.app               I  via: 1.1 google
+2025-11-10 21:01:47.946 18151-18653 okhttp.OkHttpClient     com.cdccreditsmart.app               I  alt-svc: h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
+2025-11-10 21:01:47.947 18151-18653 okhttp.OkHttpClient     com.cdccreditsmart.app               I  {"device":{"id":"device_1762725359153_ogqi20gqqp","serialNumber":"BVYG2VS2","name":"Moto G15 Power","isBlocked":true,"blockReason":"hgf","status":"blocked"},"shouldBlock":false,"overdueCount":0,"daysSinceOverdue":0,"pdvSession":{"status":"completed","currentStage":"completed","isActive":false,"lastHeartbeat":"2025-11-09T21:56:50.180Z","heartbeatAge":93897.695,"sessionStarted":"2025-11-09T21:56:01.537Z","sessionCompleted":"2025-11-09T21:56:50.180Z","shouldWait":false}}
+2025-11-10 21:01:47.948 18151-18653 okhttp.OkHttpClient     com.cdccreditsmart.app               I  <-- END HTTP (472-byte body)
+2025-11-10 21:01:47.954 18151-18232 ContractCodeStorage     com.cdccreditsmart.app               D  Retrieving contract code from storage
+2025-11-10 21:01:48.088 18151-18232 ContractCodeStorage     com.cdccreditsmart.app               D  Storage verification: 7 valid, 0 tampered, 0 missing
+2025-11-10 21:01:48.089 18151-18232 ContractCodeStorage     com.cdccreditsmart.app               D  Contract code retrieved successfully
+2025-11-10 21:01:48.092 18151-18232 ContractCodeStorage     com.cdccreditsmart.app               D  Saving contract code to redundant storage
+2025-11-10 21:01:48.153 18151-18232 ContractCodeStorage     com.cdccreditsmart.app               D  Saved to EncryptedPrefs
+2025-11-10 21:01:48.252 18151-18232 ContractCodeStorage     com.cdccreditsmart.app               E  Failed to save to file: .cdc_protected_code.enc (Ask Gemini)
+                                                                                                    java.io.IOException: output file already exists, please use a new file: .cdc_protected_code.enc
+                                                                                                    	at androidx.security.crypto.EncryptedFile.openFileOutput(EncryptedFile.java:260)
+                                                                                                    	at com.cdccreditsmart.app.storage.ContractCodeStorage.saveToEncryptedFileWithMAC(ContractCodeStorage.kt:344)
+                                                                                                    	at com.cdccreditsmart.app.storage.ContractCodeStorage.saveToProtectedStorage(ContractCodeStorage.kt:266)
+                                                                                                    	at com.cdccreditsmart.app.storage.ContractCodeStorage.saveContractCode(ContractCodeStorage.kt:120)
+                                                                                                    	at com.cdccreditsmart.app.security.SecureTokenStorage.saveAuthToken(SecureTokenStorage.kt:75)
+                                                                                                    	at com.cdccreditsmart.app.auth.AuthenticationOrchestrator.validateTokenOnServer(AuthenticationOrchestrator.kt:91)
+                                                                                                    	at com.cdccreditsmart.app.auth.AuthenticationOrchestrator.access$validateTokenOnServer(AuthenticationOrchestrator.kt:19)
+                                                                                                    	at com.cdccreditsmart.app.auth.AuthenticationOrchestrator$validateTokenOnServer$1.invokeSuspend(Unknown Source:15)
+                                                                                                    	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:34)
+                                                                                                    	at kotlinx.coroutines.DispatchedTask.run(DispatchedTask.kt:108)
+                                                                                                    	at kotlinx.coroutines.internal.LimitedDispatcher$Worker.run(LimitedDispatcher.kt:115)
+                                                                                                    	at kotlinx.coroutines.scheduling.TaskImpl.run(Tasks.kt:103)
+                                                                                                    	at kotlinx.coroutines.scheduling.CoroutineScheduler.runSafely(CoroutineScheduler.kt:584)
+                                                                                                    	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.executeTask(CoroutineScheduler.kt:793)
+                                                                                                    	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.runWorker(CoroutineScheduler.kt:697)
+                                                                                                    	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.run(CoroutineScheduler.kt:684)
+2025-11-10 21:01:48.252 18151-18232 ContractCodeStorage     com.cdccreditsmart.app               D  Saved to Protected Storage
+2025-11-10 21:01:48.284 18151-18232 ContractCodeStorage     com.cdccreditsmart.app               E  Failed to save to file: .cdc_contract_b1.enc (Ask Gemini)
+                                                                                                    java.io.IOException: output file already exists, please use a new file: .cdc_contract_b1.enc
+                                                                                                    	at androidx.security.crypto.EncryptedFile.openFileOutput(EncryptedFile.java:260)
+                                                                                                    	at com.cdccreditsmart.app.storage.ContractCodeStorage.saveToEncryptedFileWithMAC(ContractCodeStorage.kt:344)
+                                                                                                    	at com.cdccreditsmart.app.storage.ContractCodeStorage.saveToBackupFile1(ContractCodeStorage.kt:299)
+                                                                                                    	at com.cdccreditsmart.app.storage.ContractCodeStorage.saveContractCode(ContractCodeStorage.kt:121)
+                                                                                                    	at com.cdccreditsmart.app.security.SecureTokenStorage.saveAuthToken(SecureTokenStorage.kt:75)
+                                                                                                    	at com.cdccreditsmart.app.auth.AuthenticationOrchestrator.validateTokenOnServer(AuthenticationOrchestrator.kt:91)
+                                                                                                    	at com.cdccreditsmart.app.auth.AuthenticationOrchestrator.access$validateTokenOnServer(AuthenticationOrchestrator.kt:19)
+                                                                                                    	at com.cdccreditsmart.app.auth.AuthenticationOrchestrator$validateTokenOnServer$1.invokeSuspend(Unknown Source:15)
+                                                                                                    	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:34)
+                                                                                                    	at kotlinx.coroutines.DispatchedTask.run(DispatchedTask.kt:108)
+                                                                                                    	at kotlinx.coroutines.internal.LimitedDispatcher$Worker.run(LimitedDispatcher.kt:115)
+                                                                                                    	at kotlinx.coroutines.scheduling.TaskImpl.run(Tasks.kt:103)
+                                                                                                    	at kotlinx.coroutines.scheduling.CoroutineScheduler.runSafely(CoroutineScheduler.kt:584)
+                                                                                                    	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.executeTask(CoroutineScheduler.kt:793)
+                                                                                                    	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.runWorker(CoroutineScheduler.kt:697)
+                                                                                                    	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.run(CoroutineScheduler.kt:684)
+2025-11-10 21:01:48.314 18151-18232 ContractCodeStorage     com.cdccreditsmart.app               E  Failed to save to file: .sys_device_cfg.enc (Ask Gemini)
+                                                                                                    java.io.IOException: output file already exists, please use a new file: .sys_device_cfg.enc
+                                                                                                    	at androidx.security.crypto.EncryptedFile.openFileOutput(EncryptedFile.java:260)
+                                                                                                    	at com.cdccreditsmart.app.storage.ContractCodeStorage.saveToEncryptedFileWithMAC(ContractCodeStorage.kt:344)
+                                                                                                    	at com.cdccreditsmart.app.storage.ContractCodeStorage.saveToBackupFile2(ContractCodeStorage.kt:307)
+                                                                                                    	at com.cdccreditsmart.app.storage.ContractCodeStorage.saveContractCode(ContractCodeStorage.kt:122)
+                                                                                                    	at com.cdccreditsmart.app.security.SecureTokenStorage.saveAuthToken(SecureTokenStorage.kt:75)
+                                                                                                    	at com.cdccreditsmart.app.auth.AuthenticationOrchestrator.validateTokenOnServer(AuthenticationOrchestrator.kt:91)
+                                                                                                    	at com.cdccreditsmart.app.auth.AuthenticationOrchestrator.access$validateTokenOnServer(AuthenticationOrchestrator.kt:19)
+                                                                                                    	at com.cdccreditsmart.app.auth.AuthenticationOrchestrator$validateTokenOnServer$1.invokeSuspend(Unknown Source:15)
+                                                                                                    	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:34)
+                                                                                                    	at kotlinx.coroutines.DispatchedTask.run(DispatchedTask.kt:108)
+                                                                                                    	at kotlinx.coroutines.internal.LimitedDispatcher$Worker.run(LimitedDispatcher.kt:115)
+                                                                                                    	at kotlinx.coroutines.scheduling.TaskImpl.run(Tasks.kt:103)
+                                                                                                    	at kotlinx.coroutines.scheduling.CoroutineScheduler.runSafely(CoroutineScheduler.kt:584)
+                                                                                                    	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.executeTask(CoroutineScheduler.kt:793)
+                                                                                                    	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.runWorker(CoroutineScheduler.kt:697)
+                                                                                                    	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.run(CoroutineScheduler.kt:684)
+2025-11-10 21:01:48.343 18151-18232 ContractCodeStorage     com.cdccreditsmart.app               E  Failed to save to file: .android_secure.enc (Ask Gemini)
+                                                                                                    java.io.IOException: output file already exists, please use a new file: .android_secure.enc
+                                                                                                    	at androidx.security.crypto.EncryptedFile.openFileOutput(EncryptedFile.java:260)
+                                                                                                    	at com.cdccreditsmart.app.storage.ContractCodeStorage.saveToEncryptedFileWithMAC(ContractCodeStorage.kt:344)
+                                                                                                    	at com.cdccreditsmart.app.storage.ContractCodeStorage.saveToBackupFile3(ContractCodeStorage.kt:315)
+                                                                                                    	at com.cdccreditsmart.app.storage.ContractCodeStorage.saveContractCode(ContractCodeStorage.kt:123)
+                                                                                                    	at com.cdccreditsmart.app.security.SecureTokenStorage.saveAuthToken(SecureTokenStorage.kt:75)
+                                                                                                    	at com.cdccreditsmart.app.auth.AuthenticationOrchestrator.validateTokenOnServer(AuthenticationOrchestrator.kt:91)
+                                                                                                    	at com.cdccreditsmart.app.auth.AuthenticationOrchestrator.access$validateTokenOnServer(AuthenticationOrchestrator.kt:19)
+                                                                                                    	at com.cdccreditsmart.app.auth.AuthenticationOrchestrator$validateTokenOnServer$1.invokeSuspend(Unknown Source:15)
+                                                                                                    	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:34)
+                                                                                                    	at kotlinx.coroutines.DispatchedTask.run(DispatchedTask.kt:108)
+                                                                                                    	at kotlinx.coroutines.internal.LimitedDispatcher$Worker.run(LimitedDispatcher.kt:115)
+                                                                                                    	at kotlinx.coroutines.scheduling.TaskImpl.run(Tasks.kt:103)
+                                                                                                    	at kotlinx.coroutines.scheduling.CoroutineScheduler.runSafely(CoroutineScheduler.kt:584)
+                                                                                                    	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.executeTask(CoroutineScheduler.kt:793)
+                                                                                                    	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.runWorker(CoroutineScheduler.kt:697)
+                                                                                                    	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.run(CoroutineScheduler.kt:684)
+2025-11-10 21:01:48.366 18151-18232 ContractCodeStorage     com.cdccreditsmart.app               D  Contract code saved to ALL storage locations
+2025-11-10 21:01:48.531 18151-18232 ContractCodeStorage     com.cdccreditsmart.app               D  Verification complete: 7/7 locations valid
+2025-11-10 21:01:48.531 18151-18232 SecureTokenStorage      com.cdccreditsmart.app               D  Auth token saved successfully (contract code via ContractCodeStorage, deviceId: device_176...)
+2025-11-10 21:01:48.531 18151-18232 AuthOrchestrator        com.cdccreditsmart.app               D  💾 DeviceId salvo: device_176...
+2025-11-10 21:01:48.532 18151-18232 AuthOrchestrator        com.cdccreditsmart.app               D  Validação do token no servidor: SUCESSO
+2025-11-10 21:01:48.532 18151-18232 AuthOrchestrator        com.cdccreditsmart.app               D  ✅ Token válido - autenticação OK!
+2025-11-10 21:01:48.532 18151-18151 RouterViewModel         com.cdccreditsmart.app               D  ✅ Autenticado com sucesso - Ir para HOME
+2025-11-10 21:01:48.661 18151-18151 SimpleHomeViewModel     com.cdccreditsmart.app               D  📡 Fetching device installments from /api/apk/device/installments...
+2025-11-10 21:01:48.671 18151-18693 SimpleHomeViewModel     com.cdccreditsmart.app               D  ✅ Added Authorization header with token
+2025-11-10 21:01:48.671 18151-18693 SimpleHomeViewModel     com.cdccreditsmart.app               D  📤 Request URL: https://cdccreditsmart.com/api/apk/device/installments
+2025-11-10 21:01:49.116 18151-18693 SimpleHomeViewModel     com.cdccreditsmart.app               D  📥 Response Code: 200
+2025-11-10 21:01:49.134 18151-18151 SimpleHomeViewModel     com.cdccreditsmart.app               D  ✅ Successfully fetched installments data
+2025-11-10 21:01:49.134 18151-18151 SimpleHomeViewModel     com.cdccreditsmart.app               D  📊 Device: Moto G15 Power
+2025-11-10 21:01:49.134 18151-18151 SimpleHomeViewModel     com.cdccreditsmart.app               D  📊 Total installments: 4
+2025-11-10 21:01:49.134 18151-18151 SimpleHomeViewModel     com.cdccreditsmart.app               D  📊 Paid: 0
+2025-11-10 21:01:49.134 18151-18151 SimpleHomeViewModel     com.cdccreditsmart.app               D  📊 Overdue: 0
+2025-11-10 21:01:49.134 18151-18151 SimpleHomeViewModel     com.cdccreditsmart.app               D  📊 All installments count: 4
+2025-11-10 21:01:50.303 18151-18151 CdcForegroundService    com.cdccreditsmart.app               D  🚀 Serviço onStartCommand() - Action: com.cdccreditsmart.app.START_SERVICE
+2025-11-10 21:01:50.314 18151-18151 CdcForegroundService    com.cdccreditsmart.app               I  ✅ Foreground Service ativo (Android 12+)
+2025-11-10 21:01:50.316 18151-18232 CdcForegroundService    com.cdccreditsmart.app               I  🔧 ========================================
+2025-11-10 21:01:50.316 18151-18232 CdcForegroundService    com.cdccreditsmart.app               I  🔧 INICIANDO initializeServices()...
+2025-11-10 21:01:50.316 18151-18232 CdcForegroundService    com.cdccreditsmart.app               I  🔧 ========================================
+2025-11-10 21:01:50.318 18151-18151 CdcForegroundService    com.cdccreditsmart.app               D  💓 Heartbeat iniciado (5 minutos)
+2025-11-10 21:01:50.919 18151-18232 ContractCodeStorage     com.cdccreditsmart.app               D  Retrieving contract code from storage
+2025-11-10 21:01:51.313 18151-18232 ContractCodeStorage     com.cdccreditsmart.app               D  Storage verification: 7 valid, 0 tampered, 0 missing
+2025-11-10 21:01:51.313 18151-18232 ContractCodeStorage     com.cdccreditsmart.app               D  Contract code retrieved successfully
+2025-11-10 21:01:51.315 18151-18232 CdcForegroundService    com.cdccreditsmart.app               I  🔐 AuthToken presente: true
+2025-11-10 21:01:51.315 18151-18232 CdcForegroundService    com.cdccreditsmart.app               I  🔐 AuthToken length: 259
+2025-11-10 21:01:51.315 18151-18232 CdcForegroundService    com.cdccreditsmart.app               I  🔐 ContractCode presente: true
+2025-11-10 21:01:51.315 18151-18232 CdcForegroundService    com.cdccreditsmart.app               I  🔐 ContractCode value: BVYG****
+2025-11-10 21:01:51.315 18151-18232 CdcForegroundService    com.cdccreditsmart.app               I  🔐 DeviceId presente: true
+2025-11-10 21:01:51.315 18151-18232 CdcForegroundService    com.cdccreditsmart.app               I  🔐 DeviceId value: device_176...
+2025-11-10 21:01:51.315 18151-18232 CdcForegroundService    com.cdccreditsmart.app               I  🔧 ========================================
+2025-11-10 21:01:51.315 18151-18232 CdcForegroundService    com.cdccreditsmart.app               I  🔧 INICIALIZANDO MDM COM DEVICE_ID: device_176...
+2025-11-10 21:01:51.315 18151-18232 CdcForegroundService    com.cdccreditsmart.app               I  🔧 ========================================
+2025-11-10 21:01:51.315 18151-18232 CdcForegroundService    com.cdccreditsmart.app               I  🔐 Tokens encontrados - inicializando serviços MDM
+2025-11-10 21:01:51.315 18151-18232 CdcForegroundService    com.cdccreditsmart.app               D  📡 Criando MdmCommandReceiver com deviceId...
+2025-11-10 21:01:51.317 18151-18232 CdcForegroundService    com.cdccreditsmart.app               D  📡 Conectando MdmCommandReceiver ao WebSocket MDM...
+2025-11-10 21:01:51.317 18151-18232 MdmCommandReceiver      com.cdccreditsmart.app               I  🔗 Iniciando conexão WebSocket MDM...
+2025-11-10 21:01:51.317 18151-18232 MdmCommandReceiver      com.cdccreditsmart.app               D  🔗 URL: wss://cdccreditsmart.com/ws
+2025-11-10 21:01:51.317 18151-18232 MdmCommandReceiver      com.cdccreditsmart.app               D  🔗 JWT Token presente: true
+2025-11-10 21:01:51.317 18151-18232 MdmCommandReceiver      com.cdccreditsmart.app               D  🔗 Using deviceId: device_176...
+2025-11-10 21:01:51.317 18151-18232 MdmCommandReceiver      com.cdccreditsmart.app               D  🔌 MDM Command Receiver desconectado
+2025-11-10 21:01:51.321 18151-18232 MdmCommandReceiver      com.cdccreditsmart.app               D  🔗 Criando WebSocket OkHttp...
+2025-11-10 21:01:51.323 18151-18232 MdmCommandReceiver      com.cdccreditsmart.app               D  🔗 WebSocket request enviado - aguardando resposta...
+2025-11-10 21:01:51.323 18151-18232 CdcForegroundService    com.cdccreditsmart.app               I  📡 MdmCommandReceiver inicializado - aguardando conexão
+2025-11-10 21:01:51.323 18151-18232 CdcForegroundService    com.cdccreditsmart.app               D  📡 Criando WebSocketManager (flow-status)...
+2025-11-10 21:01:51.324 18151-18232 WebSocketManager        com.cdccreditsmart.app               D  Connecting to WebSocket: wss://cdccreditsmart.com/ws/flow-status
+2025-11-10 21:01:51.327 18151-18232 CdcForegroundService    com.cdccreditsmart.app               I  📡 WebSocketManager inicializado
+2025-11-10 21:01:51.327 18151-18232 CdcForegroundService    com.cdccreditsmart.app               I  ✅ Todos os serviços inicializados com sucesso
+2025-11-10 21:01:51.664 18151-18698 MdmCommandReceiver      com.cdccreditsmart.app               I  ✅ WebSocket MDM CONECTADO COM SUCESSO!
+2025-11-10 21:01:51.664 18151-18698 MdmCommandReceiver      com.cdccreditsmart.app               D  ✅ Response code: 101
+2025-11-10 21:01:51.664 18151-18698 MdmCommandReceiver      com.cdccreditsmart.app               I  🔄 Iniciando polling fallback (30s)...
+2025-11-10 21:01:51.665 18151-18698 MdmCommandReceiver      com.cdccreditsmart.app               D  📥 Mensagem MDM recebida: {"type":"welcome","message":"Connected to unified WebSocket server","connectionId":"8f8164f8-454c-4c97-9ea8-818004a944a2","path":"/ws","routerKey":"device-control","timestamp":"2025-11-11T00:01:51.594Z","serverTime":"2025-11-11T00:01:51.594Z"}
+2025-11-10 21:01:51.666 18151-18232 MdmCommandReceiver      com.cdccreditsmart.app               I  🔄 Iniciando polling fallback (30s)
+2025-11-10 21:01:51.666 18151-18232 MdmCommandReceiver      com.cdccreditsmart.app               D  📥 JSON recebido: {"type":"welcome","message":"Connected to unified WebSocket server","connectionId":"8f8164f8-454c-4c97-9ea8-818004a944a2","path":"/ws","routerKey":"device-control","timestamp":"2025-11-11T00:01:51.594Z","serverTime":"2025-11-11T00:01:51.594Z"}
+2025-11-10 21:01:51.676 18151-18232 MdmCommandReceiver      com.cdccreditsmart.app               D  📨 Tipo de mensagem: welcome
+2025-11-10 21:01:51.676 18151-18232 MdmCommandReceiver      com.cdccreditsmart.app               D  👋 Mensagem de boas-vindas do servidor
+2025-11-10 21:01:51.860 18151-18699 WebSocketManager        com.cdccreditsmart.app               D  WebSocket connection opened
+2025-11-10 21:01:51.860 18151-18699 WebSocketManager        com.cdccreditsmart.app               D  WebSocket connected for contract: BVYG2VS2
+2025-11-10 21:01:51.860 18151-18699 WebSocketManager        com.cdccreditsmart.app               D  Starting heartbeat
+2025-11-10 21:01:55.244 18151-18151 WebSocketManager        com.cdccreditsmart.app               D  Heartbeat ping sent
+2025-11-10 21:01:55.246 18151-18151 WebSocketManager        com.cdccreditsmart.app               D  Heartbeat ping sent
+2025-11-10 21:01:55.259 18151-18232 MdmCommandReceiver      com.cdccreditsmart.app               D  🔍 Verificando comandos pendentes...
+2025-11-10 21:01:55.259 18151-18232 MdmCommandReceiver      com.cdccreditsmart.app               D  🔍 Buscando comandos pendentes para deviceId: device_176...
+2025-11-10 21:01:55.269 18151-18232 MdmCommandReceiver      com.cdccreditsmart.app               E  ❌ Erro ao buscar comandos pendentes (Ask Gemini)
+                                                                                                    java.lang.IllegalArgumentException: Unable to create converter for class com.cdccreditsmart.network.dto.mdm.PendingCommandsResponse
+                                                                                                        for method MdmApiService.getPendingCommands
+                                                                                                    	at retrofit2.Utils.methodError(Utils.java:56)
+                                                                                                    	at retrofit2.HttpServiceMethod.createResponseConverter(HttpServiceMethod.java:139)
+                                                                                                    	at retrofit2.HttpServiceMethod.parseAnnotations(HttpServiceMethod.java:97)
+                                                                                                    	at retrofit2.ServiceMethod.parseAnnotations(ServiceMethod.java:39)
+                                                                                                    	at retrofit2.Retrofit.loadServiceMethod(Retrofit.java:235)
+                                                                                                    	at retrofit2.Retrofit$1.invoke(Retrofit.java:177)
+                                                                                                    	at java.lang.reflect.Proxy.invoke(Proxy.java:1006)
+                                                                                                    	at $Proxy10.getPendingCommands(Unknown Source)
+                                                                                                    	at com.cdccreditsmart.app.mdm.MdmCommandReceiver.fetchPendingCommands(MdmCommandReceiver.kt:347)
+                                                                                                    	at com.cdccreditsmart.app.mdm.MdmCommandReceiver.access$fetchPendingCommands(MdmCommandReceiver.kt:15)
+                                                                                                    	at com.cdccreditsmart.app.mdm.MdmCommandReceiver$startPollingFallback$1.invokeSuspend(MdmCommandReceiver.kt:330)
+                                                                                                    	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:34)
+                                                                                                    	at kotlinx.coroutines.DispatchedTask.run(DispatchedTask.kt:108)
+                                                                                                    	at kotlinx.coroutines.internal.LimitedDispatcher$Worker.run(LimitedDispatcher.kt:115)
+                                                                                                    	at kotlinx.coroutines.scheduling.TaskImpl.run(Tasks.kt:103)
+                                                                                                    	at kotlinx.coroutines.scheduling.CoroutineScheduler.runSafely(CoroutineScheduler.kt:584)
+                                                                                                    	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.executeTask(CoroutineScheduler.kt:793)
+                                                                                                    	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.runWorker(CoroutineScheduler.kt:697)
+                                                                                                    	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.run(CoroutineScheduler.kt:684)
+                                                                                                    Caused by: java.lang.IllegalArgumentException: Cannot reflectively serialize sealed class com.cdccreditsmart.network.dto.mdm.CommandParameters. Please register an adapter.
+                                                                                                    for class com.cdccreditsmart.network.dto.mdm.CommandParameters parameters
+                                                                                                    for class com.cdccreditsmart.network.dto.mdm.MdmCommand
+                                                                                                    for java.util.List<com.cdccreditsmart.network.dto.mdm.MdmCommand> commands
+                                                                                                    for class com.cdccreditsmart.network.dto.mdm.PendingCommandsResponse
+                                                                                                    	at com.squareup.moshi.Moshi$LookupChain.exceptionWithLookupStack(Moshi.java:389)
+                                                                                                    	at com.squareup.moshi.Moshi.adapter(Moshi.java:158)
+                                                                                                    	at com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory.create(KotlinJsonAdapter.kt:292)
+                                                                                                    	at com.squareup.moshi.Moshi.adapter(Moshi.java:146)
+                                                                                                    	at com.squareup.moshi.Moshi.adapter(Moshi.java:106)
+                                                                                                    	at com.squareup.moshi.Moshi.adapter(Moshi.java:75)
+                                                                                                    	at com.squareup.moshi.CollectionJsonAdapter.newArrayListAdapter(CollectionJsonAdapter.java:54)
+                                                                                                    	at com.squareup.moshi.CollectionJsonAdapter$1.create(CollectionJsonAdapter.java:38)
+                                                                                                    	at com.squareup.moshi.Moshi.adapter(Moshi.java:146)
+                                                                                                    	at com.cdccreditsmart.network.dto.mdm.PendingCommandsResponseJsonAdapter.<init>(PendingCommandsResponseJsonAdapter.kt:35)
+                                                                                                    	at java.lang.reflect.Constructor.newInstance0(Native Method)
+                                                                                                    	at java.lang.reflect.Constructor.newInstance(Constructor.java:343)
+                                                                                                    	at com.squareup.moshi.internal.Util.generatedAdapter(Util.java:588)
+                                                                                                    	at com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory.create(KotlinJsonAdapter.kt:200)
+                                                                                                    	at com.squareup.moshi.Moshi.adapter(Moshi.java:146)
+                                                                                                    	at com.squareup.moshi.Moshi.adapter(Moshi.java:106)
+                                                                                                    	at retrofit2.converter.moshi.MoshiConverterFactory.responseBodyConverter(MoshiConverterFactory.java:89)
+                                                                                                    	at retrofit2.Retrofit.nextResponseBodyConverter(Retrofit.java:418)
+                                                                                                    	at retrofit2.Retrofit.responseBodyConverter(Retrofit.java:401)
+                                                                                                    	at retrofit2.HttpServiceMethod.createResponseConverter(HttpServiceMethod.java:137)
+                                                                                                    	... 17 more
+                                                                                                    Caused by: java.lang.IllegalArgumentException: Cannot reflectively serialize sealed class com.cdccreditsmart.network.dto.mdm.CommandParameters. Please register an adapter.
+                                                                                                    	at com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory.create(KotlinJsonAdapter.kt:224)
+                                                                                                    	at com.squareup.moshi.Moshi.adapter(Moshi.java:146)
+                                                                                                    	... 35 more
+2025-11-10 21:01:55.270 18151-18232 MdmCommandReceiver      com.cdccreditsmart.app               E  ❌ Stack trace: java.lang.IllegalArgumentException: Unable to create converter for class com.cdccreditsmart.network.dto.mdm.PendingCommandsResponse (Ask Gemini)
+                                                                                                        for method MdmApiService.getPendingCommands
+                                                                                                    	at retrofit2.Utils.methodError(Utils.java:56)
+                                                                                                    	at retrofit2.HttpServiceMethod.createResponseConverter(HttpServiceMethod.java:139)
+                                                                                                    	at retrofit2.HttpServiceMethod.parseAnnotations(HttpServiceMethod.java:97)
+                                                                                                    	at retrofit2.ServiceMethod.parseAnnotations(ServiceMethod.java:39)
+                                                                                                    	at retrofit2.Retrofit.loadServiceMethod(Retrofit.java:235)
+                                                                                                    	at retrofit2.Retrofit$1.invoke(Retrofit.java:177)
+                                                                                                    	at java.lang.reflect.Proxy.invoke(Proxy.java:1006)
+                                                                                                    	at $Proxy10.getPendingCommands(Unknown Source)
+                                                                                                    	at com.cdccreditsmart.app.mdm.MdmCommandReceiver.fetchPendingCommands(MdmCommandReceiver.kt:347)
+                                                                                                    	at com.cdccreditsmart.app.mdm.MdmCommandReceiver.access$fetchPendingCommands(MdmCommandReceiver.kt:15)
+                                                                                                    	at com.cdccreditsmart.app.mdm.MdmCommandReceiver$startPollingFallback$1.invokeSuspend(MdmCommandReceiver.kt:330)
+                                                                                                    	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:34)
+                                                                                                    	at kotlinx.coroutines.DispatchedTask.run(DispatchedTask.kt:108)
+                                                                                                    	at kotlinx.coroutines.internal.LimitedDispatcher$Worker.run(LimitedDispatcher.kt:115)
+                                                                                                    	at kotlinx.coroutines.scheduling.TaskImpl.run(Tasks.kt:103)
+                                                                                                    	at kotlinx.coroutines.scheduling.CoroutineScheduler.runSafely(CoroutineScheduler.kt:584)
+                                                                                                    	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.executeTask(CoroutineScheduler.kt:793)
+                                                                                                    	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.runWorker(CoroutineScheduler.kt:697)
+                                                                                                    	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.run(CoroutineScheduler.kt:684)
+                                                                                                    Caused by: java.lang.IllegalArgumentException: Cannot reflectively serialize sealed class com.cdccreditsmart.network.dto.mdm.CommandParameters. Please register an adapter.
+                                                                                                    for class com.cdccreditsmart.network.dto.mdm.CommandParameters parameters
+                                                                                                    for class com.cdccreditsmart.network.dto.mdm.MdmCommand
+                                                                                                    for java.util.List<com.cdccreditsmart.network.dto.mdm.MdmCommand> commands
+                                                                                                    for class com.cdccreditsmart.network.dto.mdm.PendingCommandsResponse
+                                                                                                    	at com.squareup.moshi.Moshi$LookupChain.exceptionWithLookupStack(Moshi.java:389)
+                                                                                                    	at com.squareup.moshi.Moshi.adapter(Moshi.java:158)
+                                                                                                    	at com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory.create(KotlinJsonAdapter.kt:292)
+                                                                                                    	at com.squareup.moshi.Moshi.adapter(Moshi.java:146)
+                                                                                                    	at com.squareup.moshi.Moshi.adapter(Moshi.java:106)
+                                                                                                    	at com.squareup.moshi.Moshi.adapter(Moshi.java:75)
+                                                                                                    	at com.squareup.moshi.CollectionJsonAdapter.newArrayListAdapter(CollectionJsonAdapter.java:54)
+                                                                                                    	at com.squareup.moshi.CollectionJsonAdapter$1.create(CollectionJsonAdapter.java:38)
+                                                                                                    	at com.squareup.moshi.Moshi.adapter(Moshi.java:146)
+                                                                                                    	at com.cdccreditsmart.network.dto.mdm.PendingCommandsResponseJsonAdapter.<init>(PendingCommandsResponseJsonAdapter.kt:35)
+                                                                                                    	at java.lang.reflect.Constructor.newInstance0(Native Method)
+                                                                                                    	at java.lang.reflect.Constructor.newInstance(Constructor.java:343)
+                                                                                                    	at com.squareup.moshi.internal.Util.generatedAdapter(Util.java:588)
+                                                                                                    	at com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory.create(KotlinJsonAdapter.kt:200)
+                                                                                                    	at com.squareup.moshi.Moshi.adapter(Moshi.java:146)
+                                                                                                    	at com.squareup.moshi.Moshi.adapter(Moshi.java:106)
+                                                                                                    	at retrofit2.converter.moshi.MoshiConverterFactory.responseBodyConverter(MoshiConverterFactory.java:89)
+                                                                                                    	at retrofit2.Retrofit.nextResponseBodyConverter(Retrofit.java:418)
+                                                                                                    	at retrofit2.Retrofit.responseBodyConverter(Retrofit.java:401)
+                                                                                                    	at retrofit2.HttpServiceMethod.createResponseConverter(HttpServiceMethod.java:137)
+                                                                                                    	... 17 more
+                                                                                                    Caused by: java.lang.IllegalArgumentException: Cannot reflectively serialize sealed class com.cdccreditsmart.network.dto.mdm.CommandParameters. Please register an adapter.
+                                                                                                    	at com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory.create(KotlinJsonAdapter.kt:224)
+                                                                                                    	at com.squareup.moshi.Moshi.adapter(Moshi.java:146)
+                                                                                                    	... 35 more
+2025-11-10 21:01:55.272 18151-18232 MdmCommandReceiver      com.cdccreditsmart.app               D  🔍 Verificando comandos pendentes...
+2025-11-10 21:01:55.272 18151-18232 MdmCommandReceiver      com.cdccreditsmart.app               D  🔍 Buscando comandos pendentes para deviceId: device_176...
+2025-11-10 21:01:55.282 18151-18232 MdmCommandReceiver      com.cdccreditsmart.app               E  ❌ Erro ao buscar comandos pendentes (Ask Gemini)
+                                                                                                    java.lang.IllegalArgumentException: Unable to create converter for class com.cdccreditsmart.network.dto.mdm.PendingCommandsResponse
+                                                                                                        for method MdmApiService.getPendingCommands
+                                                                                                    	at retrofit2.Utils.methodError(Utils.java:56)
+                                                                                                    	at retrofit2.HttpServiceMethod.createResponseConverter(HttpServiceMethod.java:139)
+                                                                                                    	at retrofit2.HttpServiceMethod.parseAnnotations(HttpServiceMethod.java:97)
+                                                                                                    	at retrofit2.ServiceMethod.parseAnnotations(ServiceMethod.java:39)
+                                                                                                    	at retrofit2.Retrofit.loadServiceMethod(Retrofit.java:235)
+                                                                                                    	at retrofit2.Retrofit$1.invoke(Retrofit.java:177)
+                                                                                                    	at java.lang.reflect.Proxy.invoke(Proxy.java:1006)
+                                                                                                    	at $Proxy10.getPendingCommands(Unknown Source)
+                                                                                                    	at com.cdccreditsmart.app.mdm.MdmCommandReceiver.fetchPendingCommands(MdmCommandReceiver.kt:347)
+                                                                                                    	at com.cdccreditsmart.app.mdm.MdmCommandReceiver.access$fetchPendingCommands(MdmCommandReceiver.kt:15)
+                                                                                                    	at com.cdccreditsmart.app.mdm.MdmCommandReceiver$startPollingFallback$1.invokeSuspend(MdmCommandReceiver.kt:330)
+                                                                                                    	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:34)
+                                                                                                    	at kotlinx.coroutines.DispatchedTask.run(DispatchedTask.kt:108)
+                                                                                                    	at kotlinx.coroutines.internal.LimitedDispatcher$Worker.run(LimitedDispatcher.kt:115)
+                                                                                                    	at kotlinx.coroutines.scheduling.TaskImpl.run(Tasks.kt:103)
+                                                                                                    	at kotlinx.coroutines.scheduling.CoroutineScheduler.runSafely(CoroutineScheduler.kt:584)
+                                                                                                    	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.executeTask(CoroutineScheduler.kt:793)
+                                                                                                    	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.runWorker(CoroutineScheduler.kt:697)
+                                                                                                    	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.run(CoroutineScheduler.kt:684)
+                                                                                                    Caused by: java.lang.IllegalArgumentException: Cannot reflectively serialize sealed class com.cdccreditsmart.network.dto.mdm.CommandParameters. Please register an adapter.
+                                                                                                    for class com.cdccreditsmart.network.dto.mdm.CommandParameters parameters
+                                                                                                    for class com.cdccreditsmart.network.dto.mdm.MdmCommand
+                                                                                                    for java.util.List<com.cdccreditsmart.network.dto.mdm.MdmCommand> commands
+                                                                                                    for class com.cdccreditsmart.network.dto.mdm.PendingCommandsResponse
+                                                                                                    	at com.squareup.moshi.Moshi$LookupChain.exceptionWithLookupStack(Moshi.java:389)
+                                                                                                    	at com.squareup.moshi.Moshi.adapter(Moshi.java:158)
+                                                                                                    	at com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory.create(KotlinJsonAdapter.kt:292)
+                                                                                                    	at com.squareup.moshi.Moshi.adapter(Moshi.java:146)
+                                                                                                    	at com.squareup.moshi.Moshi.adapter(Moshi.java:106)
+                                                                                                    	at com.squareup.moshi.Moshi.adapter(Moshi.java:75)
+                                                                                                    	at com.squareup.moshi.CollectionJsonAdapter.newArrayListAdapter(CollectionJsonAdapter.java:54)
+                                                                                                    	at com.squareup.moshi.CollectionJsonAdapter$1.create(CollectionJsonAdapter.java:38)
+                                                                                                    	at com.squareup.moshi.Moshi.adapter(Moshi.java:146)
+                                                                                                    	at com.cdccreditsmart.network.dto.mdm.PendingCommandsResponseJsonAdapter.<init>(PendingCommandsResponseJsonAdapter.kt:35)
+                                                                                                    	at java.lang.reflect.Constructor.newInstance0(Native Method)
+                                                                                                    	at java.lang.reflect.Constructor.newInstance(Constructor.java:343)
+                                                                                                    	at com.squareup.moshi.internal.Util.generatedAdapter(Util.java:588)
+                                                                                                    	at com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory.create(KotlinJsonAdapter.kt:200)
+                                                                                                    	at com.squareup.moshi.Moshi.adapter(Moshi.java:146)
+                                                                                                    	at com.squareup.moshi.Moshi.adapter(Moshi.java:106)
+                                                                                                    	at retrofit2.converter.moshi.MoshiConverterFactory.responseBodyConverter(MoshiConverterFactory.java:89)
+                                                                                                    	at retrofit2.Retrofit.nextResponseBodyConverter(Retrofit.java:418)
+                                                                                                    	at retrofit2.Retrofit.responseBodyConverter(Retrofit.java:401)
+                                                                                                    	at retrofit2.HttpServiceMethod.createResponseConverter(HttpServiceMethod.java:137)
+                                                                                                    	... 17 more
+                                                                                                    Caused by: java.lang.IllegalArgumentException: Cannot reflectively serialize sealed class com.cdccreditsmart.network.dto.mdm.CommandParameters. Please register an adapter.
+                                                                                                    	at com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory.create(KotlinJsonAdapter.kt:224)
+                                                                                                    	at com.squareup.moshi.Moshi.adapter(Moshi.java:146)
+                                                                                                    	... 35 more
+2025-11-10 21:01:55.284 18151-18232 MdmCommandReceiver      com.cdccreditsmart.app               E  ❌ Stack trace: java.lang.IllegalArgumentException: Unable to create converter for class com.cdccreditsmart.network.dto.mdm.PendingCommandsResponse (Ask Gemini)
+                                                                                                        for method MdmApiService.getPendingCommands
+                                                                                                    	at retrofit2.Utils.methodError(Utils.java:56)
+                                                                                                    	at retrofit2.HttpServiceMethod.createResponseConverter(HttpServiceMethod.java:139)
+                                                                                                    	at retrofit2.HttpServiceMethod.parseAnnotations(HttpServiceMethod.java:97)
+                                                                                                    	at retrofit2.ServiceMethod.parseAnnotations(ServiceMethod.java:39)
+                                                                                                    	at retrofit2.Retrofit.loadServiceMethod(Retrofit.java:235)
+                                                                                                    	at retrofit2.Retrofit$1.invoke(Retrofit.java:177)
+                                                                                                    	at java.lang.reflect.Proxy.invoke(Proxy.java:1006)
+                                                                                                    	at $Proxy10.getPendingCommands(Unknown Source)
+                                                                                                    	at com.cdccreditsmart.app.mdm.MdmCommandReceiver.fetchPendingCommands(MdmCommandReceiver.kt:347)
+                                                                                                    	at com.cdccreditsmart.app.mdm.MdmCommandReceiver.access$fetchPendingCommands(MdmCommandReceiver.kt:15)
+                                                                                                    	at com.cdccreditsmart.app.mdm.MdmCommandReceiver$startPollingFallback$1.invokeSuspend(MdmCommandReceiver.kt:330)
+                                                                                                    	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:34)
+                                                                                                    	at kotlinx.coroutines.DispatchedTask.run(DispatchedTask.kt:108)
+                                                                                                    	at kotlinx.coroutines.internal.LimitedDispatcher$Worker.run(LimitedDispatcher.kt:115)
+                                                                                                    	at kotlinx.coroutines.scheduling.TaskImpl.run(Tasks.kt:103)
+                                                                                                    	at kotlinx.coroutines.scheduling.CoroutineScheduler.runSafely(CoroutineScheduler.kt:584)
+                                                                                                    	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.executeTask(CoroutineScheduler.kt:793)
+                                                                                                    	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.runWorker(CoroutineScheduler.kt:697)
+                                                                                                    	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.run(CoroutineScheduler.kt:684)
+                                                                                                    Caused by: java.lang.IllegalArgumentException: Cannot reflectively serialize sealed class com.cdccreditsmart.network.dto.mdm.CommandParameters. Please register an adapter.
+                                                                                                    for class com.cdccreditsmart.network.dto.mdm.CommandParameters parameters
+                                                                                                    for class com.cdccreditsmart.network.dto.mdm.MdmCommand
+                                                                                                    for java.util.List<com.cdccreditsmart.network.dto.mdm.MdmCommand> commands
+                                                                                                    for class com.cdccreditsmart.network.dto.mdm.PendingCommandsResponse
+                                                                                                    	at com.squareup.moshi.Moshi$LookupChain.exceptionWithLookupStack(Moshi.java:389)
+                                                                                                    	at com.squareup.moshi.Moshi.adapter(Moshi.java:158)
+                                                                                                    	at com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory.create(KotlinJsonAdapter.kt:292)
+                                                                                                    	at com.squareup.moshi.Moshi.adapter(Moshi.java:146)
+                                                                                                    	at com.squareup.moshi.Moshi.adapter(Moshi.java:106)
+                                                                                                    	at com.squareup.moshi.Moshi.adapter(Moshi.java:75)
+                                                                                                    	at com.squareup.moshi.CollectionJsonAdapter.newArrayListAdapter(CollectionJsonAdapter.java:54)
+                                                                                                    	at com.squareup.moshi.CollectionJsonAdapter$1.create(CollectionJsonAdapter.java:38)
+                                                                                                    	at com.squareup.moshi.Moshi.adapter(Moshi.java:146)
+                                                                                                    	at com.cdccreditsmart.network.dto.mdm.PendingCommandsResponseJsonAdapter.<init>(PendingCommandsResponseJsonAdapter.kt:35)
+                                                                                                    	at java.lang.reflect.Constructor.newInstance0(Native Method)
+                                                                                                    	at java.lang.reflect.Constructor.newInstance(Constructor.java:343)
+                                                                                                    	at com.squareup.moshi.internal.Util.generatedAdapter(Util.java:588)
+                                                                                                    	at com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory.create(KotlinJsonAdapter.kt:200)
+                                                                                                    	at com.squareup.moshi.Moshi.adapter(Moshi.java:146)
+                                                                                                    	at com.squareup.moshi.Moshi.adapter(Moshi.java:106)
+                                                                                                    	at retrofit2.converter.moshi.MoshiConverterFactory.responseBodyConverter(MoshiConverterFactory.java:89)
+                                                                                                    	at retrofit2.Retrofit.nextResponseBodyConverter(Retrofit.java:418)
+                                                                                                    	at retrofit2.Retrofit.responseBodyConverter(Retrofit.java:401)
+                                                                                                    	at retrofit2.HttpServiceMethod.createResponseConverter(HttpServiceMethod.java:137)
+                                                                                                    	... 17 more
+                                                                                                    Caused by: java.lang.IllegalArgumentException: Cannot reflectively serialize sealed class com.cdccreditsmart.network.dto.mdm.CommandParameters. Please register an adapter.
+                                                                                                    	at com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory.create(KotlinJsonAdapter.kt:224)
+                                                                                                    	at com.squareup.moshi.Moshi.adapter(Moshi.java:146)
+                                                                                                    	... 35 more
+2025-11-10 21:01:55.410 18151-18216 WebSocketManager        com.cdccreditsmart.app               D  Message received: {"type":"pong","timestamp":"2025-11-11T00:01:55.345Z"}...
+2025-11-10 21:01:55.410 18151-18222 WebSocketManager        com.cdccreditsmart.app               D  Message received: {"type":"pong","timestamp":"2025-11-11T00:01:55.344Z"}...
+2025-11-10 21:01:55.411 18151-18216 WebSocketManager        com.cdccreditsmart.app               D  Received message type: pong
+2025-11-10 21:01:55.411 18151-18222 WebSocketManager        com.cdccreditsmart.app               D  Received message type: pong
+2025-11-10 21:01:55.411 18151-18216 WebSocketManager        com.cdccreditsmart.app               D  Pong received
+2025-11-10 21:01:55.411 18151-18222 WebSocketManager        com.cdccreditsmart.app               D  Pong received
+2025-11-10 21:01:56.250 18151-18151 WebSocketManager        com.cdccreditsmart.app               D  Heartbeat ping sent
+2025-11-10 21:01:56.430 18151-18658 WebSocketManager        com.cdccreditsmart.app               D  Message received: {"type":"pong","timestamp":"2025-11-11T00:01:56.366Z"}...
+2025-11-10 21:01:56.430 18151-18658 WebSocketManager        com.cdccreditsmart.app               D  Received message type: pong
+2025-11-10 21:01:56.430 18151-18658 WebSocketManager        com.cdccreditsmart.app               D  Pong received
+2025-11-10 21:01:57.186 18151-18151 WebSocketManager        com.cdccreditsmart.app               D  Heartbeat ping sent
+2025-11-10 21:01:57.194 18151-18232 MdmCommandReceiver      com.cdccreditsmart.app               D  🔍 Verificando comandos pendentes...
+2025-11-10 21:01:57.194 18151-18232 MdmCommandReceiver      com.cdccreditsmart.app               D  🔍 Buscando comandos pendentes para deviceId: device_176...
+2025-11-10 21:01:57.205 18151-18232 MdmCommandReceiver      com.cdccreditsmart.app               E  ❌ Erro ao buscar comandos pendentes (Ask Gemini)
+                                                                                                    java.lang.IllegalArgumentException: Unable to create converter for class com.cdccreditsmart.network.dto.mdm.PendingCommandsResponse
+                                                                                                        for method MdmApiService.getPendingCommands
+                                                                                                    	at retrofit2.Utils.methodError(Utils.java:56)
+                                                                                                    	at retrofit2.HttpServiceMethod.createResponseConverter(HttpServiceMethod.java:139)
+                                                                                                    	at retrofit2.HttpServiceMethod.parseAnnotations(HttpServiceMethod.java:97)
+                                                                                                    	at retrofit2.ServiceMethod.parseAnnotations(ServiceMethod.java:39)
+                                                                                                    	at retrofit2.Retrofit.loadServiceMethod(Retrofit.java:235)
+                                                                                                    	at retrofit2.Retrofit$1.invoke(Retrofit.java:177)
+                                                                                                    	at java.lang.reflect.Proxy.invoke(Proxy.java:1006)
+                                                                                                    	at $Proxy10.getPendingCommands(Unknown Source)
+                                                                                                    	at com.cdccreditsmart.app.mdm.MdmCommandReceiver.fetchPendingCommands(MdmCommandReceiver.kt:347)
+                                                                                                    	at com.cdccreditsmart.app.mdm.MdmCommandReceiver.access$fetchPendingCommands(MdmCommandReceiver.kt:15)
+                                                                                                    	at com.cdccreditsmart.app.mdm.MdmCommandReceiver$startPollingFallback$1.invokeSuspend(MdmCommandReceiver.kt:330)
+                                                                                                    	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:34)
+                                                                                                    	at kotlinx.coroutines.DispatchedTask.run(DispatchedTask.kt:108)
+                                                                                                    	at kotlinx.coroutines.internal.LimitedDispatcher$Worker.run(LimitedDispatcher.kt:115)
+                                                                                                    	at kotlinx.coroutines.scheduling.TaskImpl.run(Tasks.kt:103)
+                                                                                                    	at kotlinx.coroutines.scheduling.CoroutineScheduler.runSafely(CoroutineScheduler.kt:584)
+                                                                                                    	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.executeTask(CoroutineScheduler.kt:793)
+                                                                                                    	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.runWorker(CoroutineScheduler.kt:697)
+                                                                                                    	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.run(CoroutineScheduler.kt:684)
+                                                                                                    Caused by: java.lang.IllegalArgumentException: Cannot reflectively serialize sealed class com.cdccreditsmart.network.dto.mdm.CommandParameters. Please register an adapter.
+                                                                                                    for class com.cdccreditsmart.network.dto.mdm.CommandParameters parameters
+                                                                                                    for class com.cdccreditsmart.network.dto.mdm.MdmCommand
+                                                                                                    for java.util.List<com.cdccreditsmart.network.dto.mdm.MdmCommand> commands
+                                                                                                    for class com.cdccreditsmart.network.dto.mdm.PendingCommandsResponse
+                                                                                                    	at com.squareup.moshi.Moshi$LookupChain.exceptionWithLookupStack(Moshi.java:389)
+                                                                                                    	at com.squareup.moshi.Moshi.adapter(Moshi.java:158)
+                                                                                                    	at com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory.create(KotlinJsonAdapter.kt:292)
+                                                                                                    	at com.squareup.moshi.Moshi.adapter(Moshi.java:146)
+                                                                                                    	at com.squareup.moshi.Moshi.adapter(Moshi.java:106)
+                                                                                                    	at com.squareup.moshi.Moshi.adapter(Moshi.java:75)
+                                                                                                    	at com.squareup.moshi.CollectionJsonAdapter.newArrayListAdapter(CollectionJsonAdapter.java:54)
+                                                                                                    	at com.squareup.moshi.CollectionJsonAdapter$1.create(CollectionJsonAdapter.java:38)
+                                                                                                    	at com.squareup.moshi.Moshi.adapter(Moshi.java:146)
+                                                                                                    	at com.cdccreditsmart.network.dto.mdm.PendingCommandsResponseJsonAdapter.<init>(PendingCommandsResponseJsonAdapter.kt:35)
+                                                                                                    	at java.lang.reflect.Constructor.newInstance0(Native Method)
+                                                                                                    	at java.lang.reflect.Constructor.newInstance(Constructor.java:343)
+                                                                                                    	at com.squareup.moshi.internal.Util.generatedAdapter(Util.java:588)
+                                                                                                    	at com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory.create(KotlinJsonAdapter.kt:200)
+                                                                                                    	at com.squareup.moshi.Moshi.adapter(Moshi.java:146)
+                                                                                                    	at com.squareup.moshi.Moshi.adapter(Moshi.java:106)
+                                                                                                    	at retrofit2.converter.moshi.MoshiConverterFactory.responseBodyConverter(MoshiConverterFactory.java:89)
+                                                                                                    	at retrofit2.Retrofit.nextResponseBodyConverter(Retrofit.java:418)
+                                                                                                    	at retrofit2.Retrofit.responseBodyConverter(Retrofit.java:401)
+                                                                                                    	at retrofit2.HttpServiceMethod.createResponseConverter(HttpServiceMethod.java:137)
+                                                                                                    	... 17 more
+                                                                                                    Caused by: java.lang.IllegalArgumentException: Cannot reflectively serialize sealed class com.cdccreditsmart.network.dto.mdm.CommandParameters. Please register an adapter.
+                                                                                                    	at com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory.create(KotlinJsonAdapter.kt:224)
+                                                                                                    	at com.squareup.moshi.Moshi.adapter(Moshi.java:146)
+                                                                                                    	... 35 more
+2025-11-10 21:01:57.206 18151-18232 MdmCommandReceiver      com.cdccreditsmart.app               E  ❌ Stack trace: java.lang.IllegalArgumentException: Unable to create converter for class com.cdccreditsmart.network.dto.mdm.PendingCommandsResponse (Ask Gemini)
+                                                                                                        for method MdmApiService.getPendingCommands
+                                                                                                    	at retrofit2.Utils.methodError(Utils.java:56)
+                                                                                                    	at retrofit2.HttpServiceMethod.createResponseConverter(HttpServiceMethod.java:139)
+                                                                                                    	at retrofit2.HttpServiceMethod.parseAnnotations(HttpServiceMethod.java:97)
+                                                                                                    	at retrofit2.ServiceMethod.parseAnnotations(ServiceMethod.java:39)
+                                                                                                    	at retrofit2.Retrofit.loadServiceMethod(Retrofit.java:235)
+                                                                                                    	at retrofit2.Retrofit$1.invoke(Retrofit.java:177)
+                                                                                                    	at java.lang.reflect.Proxy.invoke(Proxy.java:1006)
+                                                                                                    	at $Proxy10.getPendingCommands(Unknown Source)
+                                                                                                    	at com.cdccreditsmart.app.mdm.MdmCommandReceiver.fetchPendingCommands(MdmCommandReceiver.kt:347)
+                                                                                                    	at com.cdccreditsmart.app.mdm.MdmCommandReceiver.access$fetchPendingCommands(MdmCommandReceiver.kt:15)
+                                                                                                    	at com.cdccreditsmart.app.mdm.MdmCommandReceiver$startPollingFallback$1.invokeSuspend(MdmCommandReceiver.kt:330)
+                                                                                                    	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:34)
+                                                                                                    	at kotlinx.coroutines.DispatchedTask.run(DispatchedTask.kt:108)
+                                                                                                    	at kotlinx.coroutines.internal.LimitedDispatcher$Worker.run(LimitedDispatcher.kt:115)
+                                                                                                    	at kotlinx.coroutines.scheduling.TaskImpl.run(Tasks.kt:103)
+                                                                                                    	at kotlinx.coroutines.scheduling.CoroutineScheduler.runSafely(CoroutineScheduler.kt:584)
+                                                                                                    	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.executeTask(CoroutineScheduler.kt:793)
+                                                                                                    	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.runWorker(CoroutineScheduler.kt:697)
+                                                                                                    	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.run(CoroutineScheduler.kt:684)
+                                                                                                    Caused by: java.lang.IllegalArgumentException: Cannot reflectively serialize sealed class com.cdccreditsmart.network.dto.mdm.CommandParameters. Please register an adapter.
+                                                                                                    for class com.cdccreditsmart.network.dto.mdm.CommandParameters parameters
+                                                                                                    for class com.cdccreditsmart.network.dto.mdm.MdmCommand
+                                                                                                    for java.util.List<com.cdccreditsmart.network.dto.mdm.MdmCommand> commands
+                                                                                                    for class com.cdccreditsmart.network.dto.mdm.PendingCommandsResponse
+                                                                                                    	at com.squareup.moshi.Moshi$LookupChain.exceptionWithLookupStack(Moshi.java:389)
+                                                                                                    	at com.squareup.moshi.Moshi.adapter(Moshi.java:158)
+                                                                                                    	at com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory.create(KotlinJsonAdapter.kt:292)
+                                                                                                    	at com.squareup.moshi.Moshi.adapter(Moshi.java:146)
+                                                                                                    	at com.squareup.moshi.Moshi.adapter(Moshi.java:106)
+                                                                                                    	at com.squareup.moshi.Moshi.adapter(Moshi.java:75)
+                                                                                                    	at com.squareup.moshi.CollectionJsonAdapter.newArrayListAdapter(CollectionJsonAdapter.java:54)
+                                                                                                    	at com.squareup.moshi.CollectionJsonAdapter$1.create(CollectionJsonAdapter.java:38)
+                                                                                                    	at com.squareup.moshi.Moshi.adapter(Moshi.java:146)
+                                                                                                    	at com.cdccreditsmart.network.dto.mdm.PendingCommandsResponseJsonAdapter.<init>(PendingCommandsResponseJsonAdapter.kt:35)
+                                                                                                    	at java.lang.reflect.Constructor.newInstance0(Native Method)
+                                                                                                    	at java.lang.reflect.Constructor.newInstance(Constructor.java:343)
+                                                                                                    	at com.squareup.moshi.internal.Util.generatedAdapter(Util.java:588)
+                                                                                                    	at com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory.create(KotlinJsonAdapter.kt:200)
+                                                                                                    	at com.squareup.moshi.Moshi.adapter(Moshi.java:146)
+                                                                                                    	at com.squareup.moshi.Moshi.adapter(Moshi.java:106)
+                                                                                                    	at retrofit2.converter.moshi.MoshiConverterFactory.responseBodyConverter(MoshiConverterFactory.java:89)
+                                                                                                    	at retrofit2.Retrofit.nextResponseBodyConverter(Retrofit.java:418)
+                                                                                                    	at retrofit2.Retrofit.responseBodyConverter(Retrofit.java:401)
+                                                                                                    	at retrofit2.HttpServiceMethod.createResponseConverter(HttpServiceMethod.java:137)
+                                                                                                    	... 17 more
+                                                                                                    Caused by: java.lang.IllegalArgumentException: Cannot reflectively serialize sealed class com.cdccreditsmart.network.dto.mdm.CommandParameters. Please register an adapter.
+                                                                                                    	at com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory.create(KotlinJsonAdapter.kt:224)
+                                                                                                    	at com.squareup.moshi.Moshi.adapter(Moshi.java:146)
+                                                                                                    	... 35 more
+2025-11-10 21:01:57.361 18151-18660 WebSocketManager        com.cdccreditsmart.app               D  Message received: {"type":"pong","timestamp":"2025-11-11T00:01:57.297Z"}...
+2025-11-10 21:01:57.362 18151-18660 WebSocketManager        com.cdccreditsmart.app               D  Received message type: pong
+2025-11-10 21:01:57.362 18151-18660 WebSocketManager        com.cdccreditsmart.app               D  Pong received

@@ -1,8 +1,7 @@
 package com.cdccreditsmart.app.network
 
 import com.cdccreditsmart.app.BuildConfig
-import com.squareup.moshi.Moshi
-import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
+import com.cdccreditsmart.network.client.MoshiProvider
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -13,9 +12,7 @@ object RetrofitProvider {
     
     private const val BASE_URL = "https://cdccreditsmart.com/"
     
-    private val moshi = Moshi.Builder()
-        .add(KotlinJsonAdapterFactory())
-        .build()
+    private val moshi = MoshiProvider.getMoshi()
     
     private val okHttpClient = OkHttpClient.Builder()
         .connectTimeout(30, TimeUnit.SECONDS)

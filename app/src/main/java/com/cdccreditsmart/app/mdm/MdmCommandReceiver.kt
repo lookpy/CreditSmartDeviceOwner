@@ -28,7 +28,7 @@ class MdmCommandReceiver(private val context: Context, private val deviceId: Str
         AppBlockingManager(context)
     }
     
-    private val moshi = MoshiProvider.createMoshi()
+    private val moshi = MoshiProvider.getMoshi()
     
     private val okHttpClient = OkHttpClient.Builder()
         .connectTimeout(30, TimeUnit.SECONDS)
