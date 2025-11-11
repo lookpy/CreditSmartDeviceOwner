@@ -137,6 +137,11 @@ class MdmCommandReceiver(private val context: Context, private val serialNumber:
                                 Log.i(TAG, "📋 Days Overdue: ${params.daysOverdue}")
                                 Log.i(TAG, "📋 Categories: ${params.categories}")
                             }
+                            is CommandParameters.LockScreenParameters -> {
+                                Log.i(TAG, "🔒 LOCK_SCREEN - Contrato: ${params.lockScreenData.contractInfo.contractNumber}")
+                                Log.i(TAG, "🔒 LOCK_SCREEN - Cliente: ${params.lockScreenData.contractInfo.customerName}")
+                                Log.i(TAG, "🔒 LOCK_SCREEN - Dias de atraso: ${params.lockScreenData.contractInfo.daysOverdue}")
+                            }
                             is CommandParameters.EmptyParameters -> {
                                 Log.i(TAG, "📋 Comando sem parâmetros (${command.commandType})")
                             }
@@ -183,17 +188,36 @@ class MdmCommandReceiver(private val context: Context, private val serialNumber:
                     Log.i(TAG, "✅ Bloqueio aplicado - Success: ${result.success}, Apps: ${result.blockedAppsCount}")
                     sendCommandResponse(commandId, result)
                 }
+                is CommandParameters.LockScreenParameters -> {
+                    Log.i(TAG, "🔒 LOCK_SCREEN - Bloqueando tela do dispositivo com informações de pagamento...")
+                    Log.i(TAG, "🔒 Contrato: ${parameters.lockScreenData.contractInfo.contractNumber}")
+                    Log.i(TAG, "🔒 Cliente: ${parameters.lockScreenData.contractInfo.customerName}")
+                    Log.i(TAG, "🔒 Valor em atraso: R$ ${parameters.lockScreenData.paymentInfo.totalDue}")
+                    Log.i(TAG, "🔒 Dias de atraso: ${parameters.lockScreenData.contractInfo.daysOverdue}")
+                    
+                    withContext(Dispatchers.Main) {
+                        try {
+                            val intent = com.cdccreditsmart.app.presentation.lock.LockScreenActivity.createIntent(
+                                context,
+                                parameters.lockScreenData
+                            )
+                            context.startActivity(intent)
+                            Log.i(TAG, "✅ LockScreenActivity iniciada com sucesso")
+                        } catch (e: Exception) {
+                            Log.e(TAG, "❌ Erro ao iniciar LockScreenActivity", e)
+                            throw e
+                        }
+                    }
+                    
+                    sendCommandResponse(
+                        commandId = commandId,
+                        success = true,
+                        errorMessage = null
+                    )
+                }
                 is CommandParameters.EmptyParameters -> {
                     Log.i(TAG, "⚙️ Processando comando sem parâmetros: $commandType")
                     when (commandType) {
-                        "LOCK_SCREEN" -> {
-                            Log.i(TAG, "🔒 Bloqueando tela do dispositivo...")
-                            sendCommandResponse(
-                                commandId = commandId,
-                                success = true,
-                                errorMessage = null
-                            )
-                        }
                         "UNBLOCK_APPS_PROGRESSIVE", "UNBLOCK_APPS" -> {
                             Log.i(TAG, "🔓 Removendo bloqueios de aplicativos...")
                             sendCommandResponse(

@@ -21,6 +21,7 @@ class CommandParametersAdapter : JsonAdapter.Factory {
 
 private class MdmCommandAdapter(val moshi: Moshi) : JsonAdapter<MdmCommand>() {
     private val blockParametersAdapter = moshi.adapter(CommandParameters.BlockParameters::class.java)
+    private val lockScreenParametersAdapter = moshi.adapter(LockScreenParameters::class.java)
     private val options: JsonReader.Options = JsonReader.Options.of(
         "id", "commandType", "parameters", "priority", "createdAt", "expiresAt", "status"
     )
@@ -66,7 +67,23 @@ private class MdmCommandAdapter(val moshi: Moshi) : JsonAdapter<MdmCommand>() {
                     CommandParameters.EmptyParameters
                 }
             }
-            "LOCK_SCREEN", "UNBLOCK_APPS_PROGRESSIVE", "UNBLOCK_APPS" -> {
+            "LOCK_SCREEN" -> {
+                try {
+                    if (parametersRaw != null) {
+                        val lockScreenData = lockScreenParametersAdapter.fromJsonValue(parametersRaw)
+                        if (lockScreenData != null) {
+                            CommandParameters.LockScreenParameters(lockScreenData)
+                        } else {
+                            CommandParameters.EmptyParameters
+                        }
+                    } else {
+                        CommandParameters.EmptyParameters
+                    }
+                } catch (e: Exception) {
+                    CommandParameters.EmptyParameters
+                }
+            }
+            "UNBLOCK_APPS_PROGRESSIVE", "UNBLOCK_APPS" -> {
                 CommandParameters.EmptyParameters
             }
             else -> {
@@ -98,6 +115,7 @@ private class MdmCommandAdapter(val moshi: Moshi) : JsonAdapter<MdmCommand>() {
         writer.name("parameters")
         when (val params = value.parameters) {
             is CommandParameters.BlockParameters -> blockParametersAdapter.toJson(writer, params)
+            is CommandParameters.LockScreenParameters -> lockScreenParametersAdapter.toJson(writer, params.lockScreenData)
             is CommandParameters.EmptyParameters -> writer.beginObject().endObject()
             is CommandParameters.UnknownParameters -> writer.beginObject().endObject()
         }
@@ -113,6 +131,7 @@ private class MdmCommandAdapter(val moshi: Moshi) : JsonAdapter<MdmCommand>() {
 
 private class MdmCommandFullAdapter(val moshi: Moshi) : JsonAdapter<MdmCommandFull>() {
     private val blockParametersAdapter = moshi.adapter(CommandParameters.BlockParameters::class.java)
+    private val lockScreenParametersAdapter = moshi.adapter(LockScreenParameters::class.java)
     private val options: JsonReader.Options = JsonReader.Options.of(
         "id", "deviceId", "commandType", "parameters", "status", "priority", "expiresAt"
     )
@@ -158,7 +177,23 @@ private class MdmCommandFullAdapter(val moshi: Moshi) : JsonAdapter<MdmCommandFu
                     CommandParameters.EmptyParameters
                 }
             }
-            "LOCK_SCREEN", "UNBLOCK_APPS_PROGRESSIVE", "UNBLOCK_APPS" -> {
+            "LOCK_SCREEN" -> {
+                try {
+                    if (parametersRaw != null) {
+                        val lockScreenData = lockScreenParametersAdapter.fromJsonValue(parametersRaw)
+                        if (lockScreenData != null) {
+                            CommandParameters.LockScreenParameters(lockScreenData)
+                        } else {
+                            CommandParameters.EmptyParameters
+                        }
+                    } else {
+                        CommandParameters.EmptyParameters
+                    }
+                } catch (e: Exception) {
+                    CommandParameters.EmptyParameters
+                }
+            }
+            "UNBLOCK_APPS_PROGRESSIVE", "UNBLOCK_APPS" -> {
                 CommandParameters.EmptyParameters
             }
             else -> {
@@ -191,6 +226,7 @@ private class MdmCommandFullAdapter(val moshi: Moshi) : JsonAdapter<MdmCommandFu
         writer.name("parameters")
         when (val params = value.parameters) {
             is CommandParameters.BlockParameters -> blockParametersAdapter.toJson(writer, params)
+            is CommandParameters.LockScreenParameters -> lockScreenParametersAdapter.toJson(writer, params.lockScreenData)
             is CommandParameters.EmptyParameters -> writer.beginObject().endObject()
             is CommandParameters.UnknownParameters -> writer.beginObject().endObject()
         }

@@ -31,6 +31,10 @@ sealed class CommandParameters {
         val rules: List<BlockingRule>? = null
     ) : CommandParameters()
     
+    data class LockScreenParameters(
+        val lockScreenData: com.cdccreditsmart.network.dto.mdm.LockScreenParameters
+    ) : CommandParameters()
+    
     object EmptyParameters : CommandParameters()
     
     data class UnknownParameters(
