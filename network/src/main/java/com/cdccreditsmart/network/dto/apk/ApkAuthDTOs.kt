@@ -1,7 +1,10 @@
 package com.cdccreditsmart.network.dto.apk
 
 data class ApkAuthRequest(
-    val code: String
+    val code: String,
+    val deviceImei: String? = null,
+    val additionalImeis: List<String>? = null,
+    val imeiStatus: String? = null
 )
 
 data class ApkAuthResponse(

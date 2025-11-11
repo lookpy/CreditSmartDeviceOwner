@@ -212,16 +212,81 @@ class PairingViewModel(private val context: Context) : ViewModel() {
     }
 
     private suspend fun stepFallbackClaimByCodeOnly(contractId: String) {
-        _state.value = PairingState.Claiming("Autenticando APK...")
+        _state.value = PairingState.Validating("Validando IMEI...")
         
         Log.d(TAG, "========== APK AUTHENTICATION ==========")
         Log.d(TAG, "Pairing Code: [REDACTED]")
         
+        val imeiInfo = deviceInfoManager.getDeviceImeiInfo()
+        
+        val deviceImei: String?
+        val additionalImeis: List<String>?
+        val imeiStatus: String?
+        
+        when (imeiInfo.acquisitionStatus) {
+            com.cdccreditsmart.app.device.ImeiAcquisitionStatus.SUCCESS -> {
+                deviceImei = imeiInfo.primaryImei
+                additionalImeis = if (imeiInfo.additionalImeis.isNotEmpty()) {
+                    imeiInfo.additionalImeis
+                } else {
+                    null
+                }
+                imeiStatus = null
+                
+                Log.d(TAG, "✅ IMEI capturado: ${deviceImei?.take(6)}****")
+                if (additionalImeis != null && additionalImeis.isNotEmpty()) {
+                    Log.d(TAG, "📱 Dual-SIM detectado: ${additionalImeis.size} IMEI(s) adicional(is)")
+                }
+                
+                if (deviceImei != null && !deviceInfoManager.validateImeiLuhn(deviceImei)) {
+                    Log.w(TAG, "⚠️ IMEI falhou na validação Luhn - continuando com autenticação")
+                }
+            }
+            
+            com.cdccreditsmart.app.device.ImeiAcquisitionStatus.NO_PERMISSION -> {
+                Log.w(TAG, "❌ Permissão READ_PHONE_STATE não concedida")
+                _state.value = PairingState.Error(
+                    message = "Permissão de telefonia necessária para validação de segurança. Conceda a permissão e tente novamente.",
+                    canRetry = true
+                )
+                return
+            }
+            
+            com.cdccreditsmart.app.device.ImeiAcquisitionStatus.NO_TELEPHONY -> {
+                deviceImei = null
+                additionalImeis = null
+                imeiStatus = "unavailable"
+                Log.d(TAG, "📱 Dispositivo sem telefonia (tablet Wi-Fi) - continuando sem IMEI")
+            }
+            
+            com.cdccreditsmart.app.device.ImeiAcquisitionStatus.NO_IMEI_AVAILABLE -> {
+                deviceImei = null
+                additionalImeis = null
+                imeiStatus = "unavailable"
+                Log.w(TAG, "⚠️ IMEI não disponível - continuando sem IMEI")
+            }
+            
+            com.cdccreditsmart.app.device.ImeiAcquisitionStatus.ERROR -> {
+                deviceImei = null
+                additionalImeis = null
+                imeiStatus = "error"
+                Log.e(TAG, "❌ Erro ao obter IMEI - continuando sem IMEI")
+            }
+        }
+        
+        _state.value = PairingState.Claiming("Autenticando APK...")
+        
         val request = com.cdccreditsmart.network.dto.apk.ApkAuthRequest(
-            code = contractId
+            code = contractId,
+            deviceImei = deviceImei,
+            additionalImeis = additionalImeis,
+            imeiStatus = imeiStatus
         )
         
         Log.d(TAG, "Sending POST /api/apk/auth...")
+        Log.d(TAG, "Request - deviceImei: ${if (deviceImei != null) "${deviceImei.take(6)}****" else "null"}")
+        Log.d(TAG, "Request - additionalImeis count: ${additionalImeis?.size ?: 0}")
+        Log.d(TAG, "Request - imeiStatus: $imeiStatus")
         
         retryWithBackoff(MAX_RETRIES) {
             val response = deviceApi.authenticateApk(request)
@@ -252,11 +317,19 @@ class PairingViewModel(private val context: Context) : ViewModel() {
                         )
                         tokenStorage.saveSerialNumber(serialNumber)
                         
+                        if (imeiInfo.hasValidImei()) {
+                            val imeisToSave = imeiInfo.getAllImeis()
+                            tokenStorage.saveValidatedImeis(imeisToSave)
+                            Log.i(TAG, "✅ ${imeisToSave.size} IMEI(s) validado(s) e armazenado(s) com segurança")
+                        } else {
+                            Log.d(TAG, "ℹ️ Nenhum IMEI para armazenar (dispositivo sem telefonia ou erro)")
+                        }
+                        
                         Log.i(TAG, "🚀 Iniciando CdcForegroundService para MDM...")
                         CdcForegroundService.startService(context.applicationContext)
                         
                         step3ConnectWebSocket(
-                            contractCode = contractId,  // Usa código de pareamento
+                            contractCode = contractId,
                             customerName = body.customer?.name,
                             deviceModel = body.device?.model
                         )
