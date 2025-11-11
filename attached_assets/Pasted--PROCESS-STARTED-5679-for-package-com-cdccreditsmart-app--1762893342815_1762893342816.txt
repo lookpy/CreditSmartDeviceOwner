@@ -1,0 +1,144 @@
+---------------------------- PROCESS STARTED (5679) for package com.cdccreditsmart.app ----------------------------
+2025-11-11 17:35:06.054  5679-5679  creditsmart.app         com.cdccreditsmart.app               I  Late-enabling -Xcheck:jni
+2025-11-11 17:35:06.987  5679-5679  creditsmart.app         com.cdccreditsmart.app               I  Using CollectorTypeCMC GC.
+2025-11-11 17:35:07.007  5679-5679  creditsmart.app         com.cdccreditsmart.app               W  Unexpected CPU variant for x86: x86_64.
+                                                                                                    Known variants: atom, sandybridge, silvermont, goldmont, goldmont-plus, goldmont-without-sha-xsaves, tremont, kabylake, alderlake, default
+2025-11-11 17:35:07.196  5679-5679  nativeloader            com.cdccreditsmart.app               D  Load libframework-connectivity-tiramisu-jni.so using APEX ns com_android_tethering for caller /apex/com.android.tethering/javalib/framework-connectivity-t.jar: ok
+2025-11-11 17:35:08.631  5679-5679  nativeloader            com.cdccreditsmart.app               D  Configuring clns-9 for other apk /data/app/~~zlve12IbBol5KfcCbvGH8w==/com.cdccreditsmart.app-QjnXV0_XfmNizk4P6HvoZg==/base.apk. target_sdk_version=35, uses_libraries=, library_path=/data/app/~~zlve12IbBol5KfcCbvGH8w==/com.cdccreditsmart.app-QjnXV0_XfmNizk4P6HvoZg==/lib/x86_64:/data/app/~~zlve12IbBol5KfcCbvGH8w==/com.cdccreditsmart.app-QjnXV0_XfmNizk4P6HvoZg==/base.apk!/lib/x86_64, permitted_path=/data:/mnt/expand:/data/user/0/com.cdccreditsmart.app
+2025-11-11 17:35:08.642  5679-5679  CompatChangeReporter    com.cdccreditsmart.app               D  Compat change id reported: 202956589; UID 10218; state: ENABLED
+2025-11-11 17:35:08.647  5679-5679  creditsmart.app         com.cdccreditsmart.app               I  AssetManager2(0x7250910b1358) locale list changing from [] to [en-US]
+2025-11-11 17:35:08.671  5679-5679  GraphicsEnvironment     com.cdccreditsmart.app               V  Currently set values for:
+2025-11-11 17:35:08.671  5679-5679  GraphicsEnvironment     com.cdccreditsmart.app               V    angle_gl_driver_selection_pkgs=[]
+2025-11-11 17:35:08.671  5679-5679  GraphicsEnvironment     com.cdccreditsmart.app               V    angle_gl_driver_selection_values=[]
+2025-11-11 17:35:08.671  5679-5679  GraphicsEnvironment     com.cdccreditsmart.app               V  com.cdccreditsmart.app is not listed in per-application setting
+2025-11-11 17:35:08.672  5679-5679  GraphicsEnvironment     com.cdccreditsmart.app               V  ANGLE allowlist from config: com.dreamgames.royalmatch com.dts.freefiremax com.dxx.firenow com.gramgames.mergedragons com.ludo.king com.mojang.minecraftpe com.my.defense com.nintendo.zaka com.os.airforce com.playrix.fishdomdd.gplay io.teslatech.callbreak jp.konami.prospia net.peakgames.toonblast
+2025-11-11 17:35:08.672  5679-5679  GraphicsEnvironment     com.cdccreditsmart.app               V  com.cdccreditsmart.app is not listed in ANGLE allowlist or settings, returning default
+2025-11-11 17:35:08.672  5679-5679  GraphicsEnvironment     com.cdccreditsmart.app               V  Neither updatable production driver nor prerelease driver is supported.
+2025-11-11 17:35:08.783  5679-5679  FirebaseApp             com.cdccreditsmart.app               I  Device unlocked: initializing all Firebase APIs for app [DEFAULT]
+2025-11-11 17:35:08.932  5679-5679  FirebaseInitProvider    com.cdccreditsmart.app               I  FirebaseApp initialization successful
+2025-11-11 17:35:08.963  5679-5679  CompatChangeReporter    com.cdccreditsmart.app               D  Compat change id reported: 279646685; UID 10218; state: ENABLED
+2025-11-11 17:35:08.970  5679-5679  WM-WrkMgrInitializer    com.cdccreditsmart.app               D  Initializing WorkManager with default configuration.
+2025-11-11 17:35:09.238  5679-5679  WM-PackageManagerHelper com.cdccreditsmart.app               D  androidx.work.impl.background.systemjob.SystemJobService enabled
+2025-11-11 17:35:09.238  5679-5679  WM-Schedulers           com.cdccreditsmart.app               D  Created SystemJobScheduler and enabled SystemJobService
+2025-11-11 17:35:09.255  5679-5679  CDCApplication          com.cdccreditsmart.app               I  🚀 CDC Credit Smart Application iniciando...
+2025-11-11 17:35:09.255  5679-5679  CDCApplication          com.cdccreditsmart.app               I  ========================================
+2025-11-11 17:35:09.255  5679-5679  CDCApplication          com.cdccreditsmart.app               I  🔐 Verificando status de Device Owner...
+2025-11-11 17:35:09.258  5679-5679  CompatChangeReporter    com.cdccreditsmart.app               D  Compat change id reported: 307233716; UID 10218; state: ENABLED
+2025-11-11 17:35:09.261  5679-5679  CDCApplication          com.cdccreditsmart.app               I  Device Owner Status: ❌ NÃO
+2025-11-11 17:35:09.261  5679-5679  CDCApplication          com.cdccreditsmart.app               I  Package Name: com.cdccreditsmart.app
+2025-11-11 17:35:09.261  5679-5679  CDCApplication          com.cdccreditsmart.app               E  
+2025-11-11 17:35:09.261  5679-5679  CDCApplication          com.cdccreditsmart.app               E  ╔════════════════════════════════════════════════════════╗
+2025-11-11 17:35:09.261  5679-5679  CDCApplication          com.cdccreditsmart.app               E  ║  ⚠️  APP NÃO ESTÁ PROVISIONADO COMO DEVICE OWNER  ⚠️   ║
+2025-11-11 17:35:09.261  5679-5679  CDCApplication          com.cdccreditsmart.app               E  ╠════════════════════════════════════════════════════════╣
+2025-11-11 17:35:09.261  5679-5679  CDCApplication          com.cdccreditsmart.app               E  ║  O app precisa ser provisionado como Device Owner      ║
+2025-11-11 17:35:09.261  5679-5679  CDCApplication          com.cdccreditsmart.app               E  ║  ANTES de poder conceder permissões automaticamente.   ║
+2025-11-11 17:35:09.261  5679-5679  CDCApplication          com.cdccreditsmart.app               E  ║                                                        ║
+2025-11-11 17:35:09.261  5679-5679  CDCApplication          com.cdccreditsmart.app               E  ║  Provisione o dispositivo usando um dos métodos:       ║
+2025-11-11 17:35:09.261  5679-5679  CDCApplication          com.cdccreditsmart.app               E  ║  1. ADB: adb shell dpm set-device-owner ...           ║
+2025-11-11 17:35:09.261  5679-5679  CDCApplication          com.cdccreditsmart.app               E  ║  2. QR Code durante setup inicial                      ║
+2025-11-11 17:35:09.261  5679-5679  CDCApplication          com.cdccreditsmart.app               E  ║  3. NFC durante setup inicial                          ║
+2025-11-11 17:35:09.261  5679-5679  CDCApplication          com.cdccreditsmart.app               E  ║  4. Samsung Knox Mobile Enrollment                     ║
+2025-11-11 17:35:09.261  5679-5679  CDCApplication          com.cdccreditsmart.app               E  ╚════════════════════════════════════════════════════════╝
+2025-11-11 17:35:09.261  5679-5679  CDCApplication          com.cdccreditsmart.app               E  
+2025-11-11 17:35:09.261  5679-5679  CDCApplication          com.cdccreditsmart.app               I  ========================================
+2025-11-11 17:35:09.262  5679-5679  CDCApplication          com.cdccreditsmart.app               E  
+2025-11-11 17:35:09.262  5679-5679  CDCApplication          com.cdccreditsmart.app               E  ╔════════════════════════════════════════════════════════════╗
+2025-11-11 17:35:09.262  5679-5679  CDCApplication          com.cdccreditsmart.app               E  ║  ⚠️  CRÍTICO: APP NÃO É DEVICE OWNER!                     ║
+2025-11-11 17:35:09.262  5679-5679  CDCApplication          com.cdccreditsmart.app               E  ║  PROTEÇÕES NÃO SERÃO APLICADAS!                            ║
+2025-11-11 17:35:09.262  5679-5679  CDCApplication          com.cdccreditsmart.app               E  ║  Factory reset, desinstalação, etc DESBLOQUEADOS          ║
+2025-11-11 17:35:09.262  5679-5679  CDCApplication          com.cdccreditsmart.app               E  ╚════════════════════════════════════════════════════════════╝
+2025-11-11 17:35:09.262  5679-5679  CDCApplication          com.cdccreditsmart.app               E  
+2025-11-11 17:35:09.263  5679-5679  TamperDetection         com.cdccreditsmart.app               I  ========================================
+2025-11-11 17:35:09.263  5679-5679  TamperDetection         com.cdccreditsmart.app               I  🔍 VERIFICANDO INTEGRIDADE DO DISPOSITIVO
+2025-11-11 17:35:09.263  5679-5679  TamperDetection         com.cdccreditsmart.app               I  ========================================
+2025-11-11 17:35:09.284  5679-5765  creditsmart.app         com.cdccreditsmart.app               W  ClassLoaderContext classpath size mismatch. expected=1, found=0 (DLC[];PCL[base.apk*2812784813]{PCL[/system/framework/org.apache.http.legacy.jar*4247870504]#PCL[/system/framework/com.android.media.remotedisplay.jar*487574312]#PCL[/system/framework/com.android.location.provider.jar*1570284764]#PCL[/system_ext/framework/androidx.window.extensions.jar*1030441313]#PCL[/system_ext/framework/androidx.window.sidecar.jar*3860983653]} | DLC[];PCL[])
+2025-11-11 17:35:09.322  5679-5780  CompatChangeReporter    com.cdccreditsmart.app               D  Compat change id reported: 312399441; UID 10218; state: ENABLED
+2025-11-11 17:35:09.349  5679-5765  DynamiteModule          com.cdccreditsmart.app               I  Considering local module com.google.android.gms.measurement.dynamite:127 and remote module com.google.android.gms.measurement.dynamite:165
+2025-11-11 17:35:09.349  5679-5765  DynamiteModule          com.cdccreditsmart.app               I  Selected remote version of com.google.android.gms.measurement.dynamite, version >= 165
+2025-11-11 17:35:09.349  5679-5765  DynamiteModule          com.cdccreditsmart.app               V  Dynamite loader version >= 2, using loadModule2NoCrashUtils
+2025-11-11 17:35:09.469  5679-5780  ashmem                  com.cdccreditsmart.app               E  Pinning is deprecated since Android Q. Please use trim or other methods.
+2025-11-11 17:35:09.558  5679-5765  System                  com.cdccreditsmart.app               W  ClassLoader referenced unknown path: 
+2025-11-11 17:35:09.561  5679-5765  nativeloader            com.cdccreditsmart.app               D  Configuring clns-10 for other apk . target_sdk_version=36, uses_libraries=, library_path=/data/app/~~bUKM-Yo5K5_2tWMcOMfh6A==/com.google.android.gms-0ZPjo9TfygHCZwq8zglabw==/lib/x86_64:/data/app/~~bUKM-Yo5K5_2tWMcOMfh6A==/com.google.android.gms-0ZPjo9TfygHCZwq8zglabw==/base.apk!/lib/x86_64, permitted_path=/data:/mnt/expand:/data/user/0/com.google.android.gms
+2025-11-11 17:35:09.572  5679-5765  creditsmart.app         com.cdccreditsmart.app               I  AssetManager2(0x7250910b9cd8) locale list changing from [] to [en-US]
+2025-11-11 17:35:09.637  5679-5765  creditsmart.app         com.cdccreditsmart.app               W  ClassLoaderContext classpath element checksum mismatch. expected=2812784813, found=2832147665 (DLC[];PCL[base.apk*2812784813]{PCL[/system/framework/org.apache.http.legacy.jar*4247870504]#PCL[/system/framework/com.android.media.remotedisplay.jar*487574312]#PCL[/system/framework/com.android.location.provider.jar*1570284764]#PCL[/system_ext/framework/androidx.window.extensions.jar*1030441313]#PCL[/system_ext/framework/androidx.window.sidecar.jar*3860983653]} | DLC[];PCL[/data/app/~~zlve12IbBol5KfcCbvGH8w==/com.cdccreditsmart.app-QjnXV0_XfmNizk4P6HvoZg==/base.apk*2832147665])
+2025-11-11 17:35:09.825  5679-5765  creditsmart.app         com.cdccreditsmart.app               I  AssetManager2(0x7250910bc898) locale list changing from [] to [en-US]
+2025-11-11 17:35:09.827  5679-5765  creditsmart.app         com.cdccreditsmart.app               I  AssetManager2(0x7250910bcbb8) locale list changing from [] to [en-US]
+2025-11-11 17:35:10.146  5679-5679  TamperDetection         com.cdccreditsmart.app               I  ✅ Primeira instalação detectada
+2025-11-11 17:35:10.146  5679-5679  TamperDetection         com.cdccreditsmart.app               I     Token e deviceId não existem - app nunca foi pareado
+2025-11-11 17:35:10.146  5679-5679  TamperDetection         com.cdccreditsmart.app               I  ========================================
+2025-11-11 17:35:10.302  5679-5679  TamperDetection         com.cdccreditsmart.app               I  ✅ Device fingerprint criado: CDC_-125****
+2025-11-11 17:35:10.302  5679-5679  TamperDetection         com.cdccreditsmart.app               I  
+2025-11-11 17:35:10.302  5679-5679  TamperDetection         com.cdccreditsmart.app               I  ╔════════════════════════════════════════════════════════╗
+2025-11-11 17:35:10.302  5679-5679  TamperDetection         com.cdccreditsmart.app               I  ║    📡 REPORTAR BOOT AO BACKEND                        ║
+2025-11-11 17:35:10.302  5679-5679  TamperDetection         com.cdccreditsmart.app               I  ╠════════════════════════════════════════════════════════╣
+2025-11-11 17:35:10.302  5679-5679  TamperDetection         com.cdccreditsmart.app               I  ║  Device Fingerprint: CDC_-1253590****      ║
+2025-11-11 17:35:10.303  5679-5679  TamperDetection         com.cdccreditsmart.app               I  ║  Boot Timestamp: 1762893310302          ║
+2025-11-11 17:35:10.303  5679-5679  TamperDetection         com.cdccreditsmart.app               I  ║                                                        ║
+2025-11-11 17:35:10.303  5679-5679  TamperDetection         com.cdccreditsmart.app               I  ║  Backend detectará factory reset comparando:          ║
+2025-11-11 17:35:10.303  5679-5679  TamperDetection         com.cdccreditsmart.app               I  ║  • Fingerprint histórico vs atual                     ║
+2025-11-11 17:35:10.303  5679-5679  TamperDetection         com.cdccreditsmart.app               I  ║  • Timestamp do último boot vs agora                  ║
+2025-11-11 17:35:10.303  5679-5679  TamperDetection         com.cdccreditsmart.app               I  ║  • Token válido vs ausente                            ║
+2025-11-11 17:35:10.303  5679-5679  TamperDetection         com.cdccreditsmart.app               I  ╚════════════════════════════════════════════════════════╝
+2025-11-11 17:35:10.303  5679-5679  TamperDetection         com.cdccreditsmart.app               I  
+2025-11-11 17:35:10.303  5679-5679  TamperDetection         com.cdccreditsmart.app               I  ⚠️ TODO: Implementar POST /api/security/device-boot
+2025-11-11 17:35:10.455  5679-5679  ContractCodeStorage     com.cdccreditsmart.app               D  Retrieving contract code from storage
+2025-11-11 17:35:10.691  5679-5679  ContractCodeStorage     com.cdccreditsmart.app               D  Storage verification: 0 valid, 0 tampered, 7 missing
+2025-11-11 17:35:10.691  5679-5679  ContractCodeStorage     com.cdccreditsmart.app               W  No valid contract code found in any location
+2025-11-11 17:35:10.691  5679-5679  CDCApplication          com.cdccreditsmart.app               I  ⏸️ Sem tokens - aguardando pairing para iniciar serviço MDM
+2025-11-11 17:35:10.821  5679-5679  BlockingCheckWorker     com.cdccreditsmart.app               D  ✅ Scheduled periodic blocking check (every 15 minutes)
+2025-11-11 17:35:10.851  5679-5679  Choreographer           com.cdccreditsmart.app               I  Skipped 114 frames!  The application may be doing too much work on its main thread.
+2025-11-11 17:35:10.882  5679-5679  creditsmart.app         com.cdccreditsmart.app               I  AssetManager2(0x7250910b9ff8) locale list changing from [] to [en-US]
+2025-11-11 17:35:10.906  5679-5822  DisplayManager          com.cdccreditsmart.app               I  Choreographer implicitly registered for the refresh rate.
+2025-11-11 17:35:11.041  5679-5822  EGL_emulation           com.cdccreditsmart.app               I  Opening libGLESv1_CM_emulation.so
+2025-11-11 17:35:11.053  5679-5822  EGL_emulation           com.cdccreditsmart.app               I  Opening libGLESv2_emulation.so
+2025-11-11 17:35:11.054  5679-5820  JobInfo                 com.cdccreditsmart.app               W  Requested important-while-foreground flag for job0 is ignored and takes no effect
+2025-11-11 17:35:11.054  5679-5820  CompatChangeReporter    com.cdccreditsmart.app               D  Compat change id reported: 311402873; UID 10218; state: ENABLED
+2025-11-11 17:35:11.054  5679-5820  CompatChangeReporter    com.cdccreditsmart.app               D  Compat change id reported: 323349338; UID 10218; state: ENABLED
+2025-11-11 17:35:11.066  5679-5822  HWUI                    com.cdccreditsmart.app               W  Failed to choose config with EGL_SWAP_BEHAVIOR_PRESERVED, retrying without...
+2025-11-11 17:35:11.067  5679-5822  HWUI                    com.cdccreditsmart.app               W  Failed to initialize 101010-2 format, error = EGL_SUCCESS
+2025-11-11 17:35:11.127  5679-5823  creditsmart.app         com.cdccreditsmart.app               W  Verification of com.google.firebase.installations.CrossProcessLock com.google.firebase.installations.CrossProcessLock.acquire(android.content.Context, java.lang.String) took 187.778ms (330.18 bytecodes/s) (0B arena alloc)
+2025-11-11 17:35:11.205  5679-5826  creditsmart.app         com.cdccreditsmart.app               I  hiddenapi: Accessing hidden method Ldalvik/system/VMStack;->getStackClass2()Ljava/lang/Class; (runtime_flags=0, domain=core-platform, api=unsupported) from Lm7/aox; (domain=app) using reflection: allowed
+2025-11-11 17:35:11.250  5679-5679  CompatChangeReporter    com.cdccreditsmart.app               D  Compat change id reported: 309578419; UID 10218; state: ENABLED
+2025-11-11 17:35:11.257  5679-5679  DesktopModeFlags        com.cdccreditsmart.app               D  Toggle override initialized to: OVERRIDE_UNSET
+2025-11-11 17:35:11.492  5679-5679  CompatChangeReporter    com.cdccreditsmart.app               D  Compat change id reported: 352594277; UID 10218; state: ENABLED
+2025-11-11 17:35:11.534  5679-5679  CompatChangeReporter    com.cdccreditsmart.app               D  Compat change id reported: 349153669; UID 10218; state: ENABLED
+2025-11-11 17:35:11.558  5679-5679  HWUI                    com.cdccreditsmart.app               W  Unknown dataspace 0
+2025-11-11 17:35:11.566  5679-5826  PhClient                com.cdccreditsmart.app               I  Unable to retrieve flag snapshot for com.google.android.gms.measurement#com.cdccreditsmart.app, using defaults.
+2025-11-11 17:35:11.585  5679-5679  InsetsController        com.cdccreditsmart.app               D  Setting requestedVisibleTypes to -14 (was -9)
+2025-11-11 17:35:11.827  5679-5807  creditsmart.app         com.cdccreditsmart.app               E  No package ID 6a found for resource ID 0x6a0b000f.
+2025-11-11 17:35:11.896  5679-5807  FA                      com.cdccreditsmart.app               I  App measurement initialized, version: 143003
+2025-11-11 17:35:11.896  5679-5807  FA                      com.cdccreditsmart.app               I  To enable debug logging run: adb shell setprop log.tag.FA VERBOSE
+2025-11-11 17:35:11.896  5679-5807  FA                      com.cdccreditsmart.app               I  To enable faster debug mode event logging run:
+                                                                                                      adb shell setprop debug.firebase.analytics.app com.cdccreditsmart.app
+2025-11-11 17:35:13.352  5679-5679  DeviceOwnerCheckVM      com.cdccreditsmart.app               I  ========================================
+2025-11-11 17:35:13.352  5679-5679  DeviceOwnerCheckVM      com.cdccreditsmart.app               I  🔐 Verificando status de Device Owner...
+2025-11-11 17:35:13.519  5679-5807  FA                      com.cdccreditsmart.app               I  Tag Manager is not found and thus will not be used
+2025-11-11 17:35:13.725  5679-5679  Choreographer           com.cdccreditsmart.app               I  Skipped 113 frames!  The application may be doing too much work on its main thread.
+2025-11-11 17:35:13.758  5679-5858  BlockingCheckWorker     com.cdccreditsmart.app               D  🔄 Starting blocking check...
+2025-11-11 17:35:13.758  5679-5858  BlockingCheckWorker     com.cdccreditsmart.app               W  ⚠️ Not Device Owner - skipping blocking check
+2025-11-11 17:35:13.772  5679-5735  HWUI                    com.cdccreditsmart.app               I  Davey! duration=2169ms; Flags=1, FrameTimelineVsyncId=1759373, IntendedVsync=5953677935350, Vsync=5953761268680, InputEventId=0, HandleInputStart=5953777114000, AnimationStart=5953777129300, PerformTraversalsStart=5953777151600, DrawStart=5955676125000, FrameDeadline=5953694602016, FrameStartTime=5953777084300, FrameInterval=16666666, WorkloadTarget=16666666, SyncQueued=5955691478200, SyncStart=5955706523500, IssueDrawCommandsStart=5955706570700, SwapBuffers=5955793978700, FrameCompleted=5955862404600, DequeueBufferDuration=17100, QueueBufferDuration=184700, GpuCompleted=5955862404600, SwapBuffersCompleted=5955796384900, DisplayPresentTime=0, CommandSubmissionCompleted=5955793978700, 
+2025-11-11 17:35:13.775  5679-5780  WM-WorkerWrapper        com.cdccreditsmart.app               I  Worker result SUCCESS for Work [ id=4e43cc10-0c51-40c7-98e0-4ee65a021605, tags={ com.cdccreditsmart.app.workers.BlockingCheckWorker } ]
+2025-11-11 17:35:13.866  5679-5679  DeviceUtils             com.cdccreditsmart.app               D  Device Owner check: false
+2025-11-11 17:35:13.866  5679-5679  DeviceUtils             com.cdccreditsmart.app               D  Samsung device: false (Manufacturer: Google)
+2025-11-11 17:35:13.866  5679-5679  DeviceOwnerCheckVM      com.cdccreditsmart.app               W  ❌ Dispositivo NÃO é Device Owner
+2025-11-11 17:35:13.866  5679-5679  DeviceOwnerCheckVM      com.cdccreditsmart.app               W  Dispositivo: Google sdk_gphone64_x86_64 (Android 16)
+2025-11-11 17:35:13.867  5679-5679  DeviceOwnerCheckVM      com.cdccreditsmart.app               W  Samsung: false
+2025-11-11 17:35:13.867  5679-5679  DeviceOwnerCheckVM      com.cdccreditsmart.app               I  ========================================
+2025-11-11 17:35:14.661  5679-5679  InteractionJankMonitor  com.cdccreditsmart.app               W  Initializing without READ_DEVICE_CONFIG permission. enabled=false, interval=1, missedFrameThreshold=3, frameTimeThreshold=64, package=com.cdccreditsmart.app
+2025-11-11 17:35:15.529  5679-5717  creditsmart.app         com.cdccreditsmart.app               I  Compiler allocated 5042KB to compile void android.view.ViewRootImpl.performTraversals()
+2025-11-11 17:35:15.624  5679-5679  NotificationHelper      com.cdccreditsmart.app               D  Notification channel created: cdc_default
+2025-11-11 17:35:15.626  5679-5679  NotificationHelper      com.cdccreditsmart.app               D  Notification channel created: cdc_info
+2025-11-11 17:35:15.628  5679-5679  NotificationHelper      com.cdccreditsmart.app               D  Notification channel created: cdc_alerts
+2025-11-11 17:35:15.630  5679-5679  NotificationHelper      com.cdccreditsmart.app               D  Notification channel created: cdc_payments
+2025-11-11 17:35:15.632  5679-5679  NotificationHelper      com.cdccreditsmart.app               D  Notification channel created: cdc_contract
+2025-11-11 17:35:15.739  5679-5679  CdcMessagingService     com.cdccreditsmart.app               D  CdcMessagingService created
+2025-11-11 17:35:15.743  5679-5874  CdcMessagingService     com.cdccreditsmart.app               D  ========== NEW FCM TOKEN RECEIVED ==========
+2025-11-11 17:35:15.743  5679-5874  CdcMessagingService     com.cdccreditsmart.app               D  Token: fMG1Aki4RC25oBMpf79U...
+2025-11-11 17:35:15.745  5679-5874  FcmTokenManager         com.cdccreditsmart.app               D  FCM token saved locally: fMG1Aki4RC25oBMpf79U...
+2025-11-11 17:35:15.747  5679-5857  FcmTokenManager         com.cdccreditsmart.app               D  ========== REGISTERING FCM TOKEN WITH BACKEND ==========
+2025-11-11 17:35:15.751  5679-5857  FcmTokenManager         com.cdccreditsmart.app               D  Current FCM token retrieved: fMG1Aki4RC25oBMpf79U...
+2025-11-11 17:35:15.755  5679-5857  FcmTokenManager         com.cdccreditsmart.app               E  Cannot register: Auth token not available
+2025-11-11 17:35:15.755  5679-5857  CdcMessagingService     com.cdccreditsmart.app               E  ❌ Failed to register FCM token with backend: User not authenticated
+2025-11-11 17:35:15.966  5679-5875  ProfileInstaller        com.cdccreditsmart.app               D  Installing profile for com.cdccreditsmart.app
+2025-11-11 17:35:18.397  5679-5679  InsetsController        com.cdccreditsmart.app               D  hide(ime(), fromIme=false)
+2025-11-11 17:35:18.397  5679-5679  ImeTracker              com.cdccreditsmart.app               I  com.cdccreditsmart.app:330aff9b: onCancelled at PHASE_CLIENT_ALREADY_HIDDEN
