@@ -3,7 +3,6 @@ package com.cdccreditsmart.network.dto.mdm
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
-@JsonClass(generateAdapter = true)
 data class PendingCommandsResponse(
     val deviceId: String = "",
     val serialNumber: String = "",
@@ -120,24 +119,20 @@ data class UnblockResponse(
     val message: String = ""
 )
 
-@JsonClass(generateAdapter = true)
 data class WebSocketMdmMessage(
     val type: String,
     val payload: MdmPayload? = null
 )
 
-@JsonClass(generateAdapter = true)
 data class MdmPayload(
     val commandId: String = "",
     val data: MdmData
 )
 
-@JsonClass(generateAdapter = true)
 data class MdmData(
     val command: MdmCommandFull
 )
 
-@JsonClass(generateAdapter = true)
 data class MdmCommandFull(
     val id: String,
     val deviceId: String,
