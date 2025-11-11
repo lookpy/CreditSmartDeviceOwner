@@ -10,13 +10,42 @@ class CategoryMapper(private val context: Context) {
     companion object {
         private const val TAG = "CategoryMapper"
         
+        private val CRITICAL_SYSTEM_PACKAGES = listOf(
+            "android",
+            "com.android.systemui",
+            "com.android.settings",
+            "com.android.providers.settings",
+            "com.android.providers.media",
+            "com.android.providers.downloads",
+            "com.android.providers.calendar",
+            "com.android.providers.contacts",
+            "com.android.providers.telephony",
+            "com.android.providers.userdictionary",
+            "com.android.externalstorage",
+            "com.android.shell",
+            "com.android.keychain",
+            "com.android.location.fused",
+            "com.android.nfc",
+            "com.google.android.gms",
+            "com.google.android.gsf",
+            "com.google.android.ext.services",
+            "com.google.android.ext.shared",
+            "com.google.android.packageinstaller",
+            "com.google.android.permissioncontroller",
+            "com.android.server.telecom",
+            "com.android.inputmethod",
+            "com.samsung.android.app.telephonyui",
+            "com.sec.android.inputmethod",
+            "com.cdccreditsmart.app"
+        )
+        
         private val PROTECTED_APPS = listOf(
             "com.android.dialer",
             "com.android.messaging",
-            "com.android.settings",
             "com.android.contacts",
             "com.android.phone",
-            "com.android.mms"
+            "com.android.mms",
+            "com.android.emergency"
         )
         
         private val BANKING_KEYWORDS = listOf(
@@ -62,7 +91,15 @@ class CategoryMapper(private val context: Context) {
     }
     
     private fun isProtectedApp(packageName: String, exceptions: List<String>): Boolean {
+        if (packageName in CRITICAL_SYSTEM_PACKAGES) {
+            return true
+        }
+        
         if (packageName in PROTECTED_APPS) {
+            return true
+        }
+        
+        if (isCriticalSystemApp(packageName)) {
             return true
         }
         
@@ -79,6 +116,29 @@ class CategoryMapper(private val context: Context) {
         }
         
         return packageName in exceptions
+    }
+    
+    private fun isCriticalSystemApp(packageName: String): Boolean {
+        try {
+            val appInfo = context.packageManager.getApplicationInfo(packageName, 0)
+            val isSystemApp = (appInfo.flags and ApplicationInfo.FLAG_SYSTEM) != 0
+            
+            val isCriticalProvider = packageName.startsWith("com.android.providers.") ||
+                                   packageName.startsWith("com.google.android.providers.")
+            
+            val isCriticalService = packageName.contains("systemui", ignoreCase = true) ||
+                                  packageName.contains("inputmethod", ignoreCase = true) ||
+                                  packageName.contains("launcher", ignoreCase = true)
+            
+            if (isCriticalProvider || isCriticalService) {
+                Log.d(TAG, "🛡️ App crítico do sistema detectado: $packageName")
+                return true
+            }
+            
+            return false
+        } catch (e: Exception) {
+            return false
+        }
     }
     
     private fun shouldBlockByCategory(app: ApplicationInfo, packageName: String, categories: List<String>): Boolean {
