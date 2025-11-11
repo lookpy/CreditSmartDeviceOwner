@@ -121,7 +121,49 @@ class AutoPermissionManager(private val context: Context) {
             Log.e(TAG, "❌ Erro ao configurar política de permissões: ${e.message}", e)
         }
         
+        grantUsageStatsPermission()
+        
         Log.i(TAG, "========================================")
+    }
+    
+    private fun grantUsageStatsPermission() {
+        Log.i(TAG, "🔐 Concedendo permissão PACKAGE_USAGE_STATS (appOps)...")
+        
+        try {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                val packageName = context.packageName
+                
+                val result = dpm.setPermissionGrantState(
+                    adminComponent,
+                    packageName,
+                    android.Manifest.permission.PACKAGE_USAGE_STATS,
+                    DevicePolicyManager.PERMISSION_GRANT_STATE_GRANTED
+                )
+                
+                if (result) {
+                    Log.i(TAG, "✅ PACKAGE_USAGE_STATS concedida via DPM")
+                } else {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                        val appOps = context.getSystemService(Context.APP_OPS_SERVICE) as android.app.AppOpsManager
+                        
+                        val mode = appOps.checkOpNoThrow(
+                            "android:get_usage_stats",
+                            android.os.Process.myUid(),
+                            packageName
+                        )
+                        
+                        if (mode == android.app.AppOpsManager.MODE_ALLOWED) {
+                            Log.i(TAG, "✅ PACKAGE_USAGE_STATS já está concedida via AppOps")
+                        } else {
+                            Log.w(TAG, "⚠️ PACKAGE_USAGE_STATS não concedida (mode: $mode)")
+                            Log.w(TAG, "   Usuário pode precisar conceder manualmente em Settings > Special access")
+                        }
+                    }
+                }
+            }
+        } catch (e: Exception) {
+            Log.e(TAG, "❌ Erro ao conceder PACKAGE_USAGE_STATS: ${e.message}", e)
+        }
     }
     
     private fun verifyAllPermissionsGranted() {

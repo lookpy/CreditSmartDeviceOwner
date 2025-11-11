@@ -151,7 +151,7 @@ class ProtectionVerificationWorker(
                         Log.i(TAG, "║  ✅ PROTEÇÕES RE-APLICADAS COM SUCESSO!                   ║")
                         Log.i(TAG, "╠════════════════════════════════════════════════════════════╣")
                         Log.i(TAG, "║  Factory Reset: BLOQUEADO                                  ║")
-                        Log.i(TAG, "║  Total de proteções ativas: ${verificationDiagnostic.totalProtections}                      
+                        Log.i(TAG, "║  Total de proteções ativas: ${verificationDiagnostic.totalProtections}                      ║")
                         Log.i(TAG, "║  Status: Sistema protegido                                 ║")
                         Log.i(TAG, "╚════════════════════════════════════════════════════════════╝")
                         Log.i(TAG, "")
@@ -211,8 +211,8 @@ class ProtectionVerificationWorker(
             Log.i(TAG, "╔════════════════════════════════════════════════════════════╗")
             Log.i(TAG, "║  ✅ VERIFICAÇÃO CONCLUÍDA                                  ║")
             Log.i(TAG, "╠════════════════════════════════════════════════════════════╣")
-            Log.i(TAG, "║  Duração: ${System.currentTimeMillis() - startTime}ms                                    
-            Log.i(TAG, "║  Próxima verificação: ~${CHECK_INTERVAL_HOURS} horas                      
+            Log.i(TAG, "║  Duração: ${System.currentTimeMillis() - startTime}ms                                    ║")
+            Log.i(TAG, "║  Próxima verificação: ~${CHECK_INTERVAL_HOURS} horas                      ║")
             Log.i(TAG, "╚════════════════════════════════════════════════════════════╝")
             Log.i(TAG, "")
             
@@ -225,8 +225,8 @@ class ProtectionVerificationWorker(
             Log.e(TAG, "╔════════════════════════════════════════════════════════════╗")
             Log.e(TAG, "║  ❌ ERRO DURANTE VERIFICAÇÃO                               ║")
             Log.e(TAG, "╠════════════════════════════════════════════════════════════╣")
-            Log.e(TAG, "║  Exception: ${e.javaClass.simpleName}                      
-            Log.e(TAG, "║  Message: ${e.message}                                     
+            Log.e(TAG, "║  Exception: ${e.javaClass.simpleName}                      ║")
+            Log.e(TAG, "║  Message: ${e.message}                                     ║")
             Log.e(TAG, "║                                                            ║")
             Log.e(TAG, "║  Tentando novamente em breve...                            ║")
             Log.e(TAG, "╚════════════════════════════════════════════════════════════╝")

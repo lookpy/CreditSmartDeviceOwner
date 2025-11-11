@@ -100,6 +100,10 @@ class BlockedAppInterceptor(private val context: Context) {
             
             lastShownTime[foregroundPackage] = now
             
+            Log.i(TAG, "🚀 Iniciando BlockedAppExplanationActivity...")
+            Log.i(TAG, "   Package: $foregroundPackage")
+            Log.i(TAG, "   Blocking Level: ${appBlockingManager.getBlockingInfo().currentLevel}")
+            
             showBlockedAppExplanation(foregroundPackage)
             return true
         }
@@ -110,11 +114,15 @@ class BlockedAppInterceptor(private val context: Context) {
     private var lastForegroundPackage: String? = null
     
     private fun getForegroundPackageName(): String? {
+        Log.d(TAG, "🔍 Verificando app em foreground...")
+        
         return try {
             val usageStatsManager = context.getSystemService(Context.USAGE_STATS_SERVICE) as? UsageStatsManager
             
             if (usageStatsManager == null) {
-                Log.w(TAG, "UsageStatsManager não disponível")
+                Log.e(TAG, "❌ CRÍTICO: UsageStatsManager não disponível!")
+                Log.e(TAG, "   Permissão PACKAGE_USAGE_STATS pode não estar concedida")
+                Log.e(TAG, "   Overlay banner NÃO funcionará sem esta permissão")
                 return lastForegroundPackage
             }
             
