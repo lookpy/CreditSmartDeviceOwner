@@ -10,16 +10,21 @@ import android.util.Log
  * Funciona apenas em dispositivos Samsung com Knox ativado.
  * Graceful degradation em outros dispositivos.
  * 
- * Proteções Implementadas:
- * 1. AdvancedRestrictionPolicy - CC Mode, VPN Always-On, Secure Connections
- * 2. ApplicationPolicy - Whitelist rigoroso, Force Stop protection
- * 3. SystemManager (Knox Custom) - Status bar hiding, UI restrictions
- * 4. KioskMode - Enhanced kiosk mode (status bar only)
- * 5. RestrictionPolicy - Screenshot blocking apenas
+ * Proteções Implementadas (FOCO: Anti-Factory Reset / Anti-Recovery):
+ * 1. AdvancedRestrictionPolicy - CC Mode, ODE Trusted Boot Verification
+ * 2. ApplicationPolicy - Whitelist de 26+ apps essenciais, Force Stop protection
+ * 3. SystemManager (Knox Custom) - Status bar hidden, expansion blocked
+ * 4. KioskMode - Status bar hidden, notifications cleared
+ * 5. RestrictionPolicy - Screenshots blocked, Firmware Recovery blocked, Developer Mode blocked, USB Debugging blocked
  * 
- * NOTA: Microfone e clipboard NÃO são bloqueados para permitir:
- *       - Chamadas de voz (incluindo emergências 190/192/193)
- *       - Cópia de código PIX e Boleto
+ * PROTEÇÕES ANTI-FACTORY RESET / ANTI-RECOVERY:
+ * - allowFirmwareRecovery(false): Bloqueia recovery mode operations
+ * - enableODETrustedBootVerification(true): Boot-level security verification
+ * - allowDeveloperMode(false): Previne OEM unlock
+ * - allowUsbDebugging(false): Previne ADB access e sideload
+ * 
+ * NOTA CRÍTICA: Microfone e clipboard NÃO são bloqueados para preservar funcionalidade essencial
+ * (chamadas de voz incluindo emergências 190/192/193, cópia de código PIX, abertura de Boleto URL).
  */
 class KnoxEnhancedProtections(private val context: Context) {
     
@@ -192,28 +197,19 @@ class KnoxEnhancedProtections(private val context: Context) {
             }
             
             try {
-                val secureConnMethod = arpClass.getMethod("allowOnlySecureConnections", Boolean::class.javaPrimitiveType)
-                val result = secureConnMethod.invoke(arp, true) as? Boolean
-                if (result == true) {
+                val odeTrustedBootMethod = arpClass.getMethod("enableODETrustedBootVerification", Boolean::class.javaPrimitiveType)
+                val result = odeTrustedBootMethod.invoke(arp, true) as? Int
+                if (result == 0) {
                     count++
-                    Log.i(TAG, "   ✅ Apenas VPN seguro permitido (IPsec/SSL)")
+                    Log.i(TAG, "   ✅ ODE Trusted Boot Verification ATIVADO (boot-level security)")
                 } else {
-                    Log.w(TAG, "   ⚠️ Secure connections restriction falhou")
+                    Log.w(TAG, "   ⚠️ ODE Trusted Boot falhou (code: $result)")
                 }
             } catch (e: Exception) {
-                Log.w(TAG, "   ⚠️ Secure connections não disponível: ${e.message}")
+                Log.w(TAG, "   ⚠️ ODE Trusted Boot não disponível: ${e.message}")
             }
             
-            try {
-                val blockBtScanMethod = arpClass.getMethod("allowBluetoothOutgoingCalls", Boolean::class.javaPrimitiveType)
-                blockBtScanMethod.invoke(arp, false)
-                count++
-                Log.i(TAG, "   ✅ Bluetooth outgoing calls BLOQUEADO")
-            } catch (e: Exception) {
-                Log.w(TAG, "   ⚠️ Bluetooth outgoing calls block não disponível")
-            }
-            
-            Log.i(TAG, "   → AdvancedRestrictionPolicy: $count/3 proteções aplicadas")
+            Log.i(TAG, "   → AdvancedRestrictionPolicy: $count/2 proteções aplicadas")
             count > 0
             
         } catch (e: Exception) {
@@ -407,7 +403,46 @@ class KnoxEnhancedProtections(private val context: Context) {
                 Log.w(TAG, "   ⚠️ Block screenshots não disponível")
             }
             
-            Log.i(TAG, "   → Enhanced RestrictionPolicy: $count/1 proteções aplicadas")
+            try {
+                val allowFirmwareMethod = restrictionClass.getMethod("allowFirmwareRecovery", Boolean::class.javaPrimitiveType)
+                val result = allowFirmwareMethod.invoke(restrictionPolicy, false) as? Boolean
+                if (result == true) {
+                    count++
+                    Log.i(TAG, "   ✅ Firmware Recovery BLOQUEADO (previne recovery mode reset)")
+                } else {
+                    Log.w(TAG, "   ⚠️ Block firmware recovery falhou")
+                }
+            } catch (e: Exception) {
+                Log.w(TAG, "   ⚠️ Block firmware recovery não disponível: ${e.message}")
+            }
+            
+            try {
+                val allowDevModeMethod = restrictionClass.getMethod("allowDeveloperMode", Boolean::class.javaPrimitiveType)
+                val result = allowDevModeMethod.invoke(restrictionPolicy, false) as? Boolean
+                if (result == true) {
+                    count++
+                    Log.i(TAG, "   ✅ Developer Mode BLOQUEADO (previne OEM unlock)")
+                } else {
+                    Log.w(TAG, "   ⚠️ Block developer mode falhou")
+                }
+            } catch (e: Exception) {
+                Log.w(TAG, "   ⚠️ Block developer mode não disponível: ${e.message}")
+            }
+            
+            try {
+                val allowUsbDebugMethod = restrictionClass.getMethod("allowUsbDebugging", Boolean::class.javaPrimitiveType)
+                val result = allowUsbDebugMethod.invoke(restrictionPolicy, false) as? Boolean
+                if (result == true) {
+                    count++
+                    Log.i(TAG, "   ✅ USB Debugging BLOQUEADO (previne ADB access)")
+                } else {
+                    Log.w(TAG, "   ⚠️ Block USB debugging falhou")
+                }
+            } catch (e: Exception) {
+                Log.w(TAG, "   ⚠️ Block USB debugging não disponível: ${e.message}")
+            }
+            
+            Log.i(TAG, "   → Enhanced RestrictionPolicy: $count/4 proteções aplicadas")
             count > 0
             
         } catch (e: Exception) {
