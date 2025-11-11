@@ -277,7 +277,7 @@ class MdmCommandReceiver(private val context: Context, private val contractCode:
                 status = "acknowledged"
             )
             
-            val response = api.sendCommandResponse(serialNumber, request)
+            val response = api.sendCommandResponse(contractCode, request)
             
             if (response.isSuccessful) {
                 Log.i(TAG, "✅ ACK enviado para comando $commandId")
@@ -328,7 +328,7 @@ class MdmCommandReceiver(private val context: Context, private val contractCode:
                 errorMessage = errorMessage
             )
             
-            val response = api.sendCommandResponse(serialNumber, request)
+            val response = api.sendCommandResponse(contractCode, request)
             
             if (response.isSuccessful) {
                 Log.i(TAG, "✅ Response enviado para comando $commandId: ${request.status}")

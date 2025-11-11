@@ -19,7 +19,8 @@ object ProtectionDiagnostics {
         Log.w(TAG, "")
         
         val dpm = context.getSystemService(Context.DEVICE_POLICY_SERVICE) as DevicePolicyManager
-        val adminComponent = ComponentName(context, com.cdccreditsmart.app.device.CdcDeviceAdminReceiver::class.java)
+        val adminComponentName = "com.cdccreditsmart.app.device.CdcDeviceAdminReceiver"
+        val adminComponent = ComponentName(context, adminComponentName)
         
         // 1. VERIFICAR SE É DEVICE OWNER
         val isDeviceOwner = dpm.isDeviceOwnerApp(context.packageName)
@@ -28,7 +29,7 @@ object ProtectionDiagnostics {
         Log.w(TAG, "═══════════════════════════════════════════════════════════")
         Log.w(TAG, if (isDeviceOwner) "✅ É DEVICE OWNER" else "❌ NÃO É DEVICE OWNER")
         Log.w(TAG, "Package Name: ${context.packageName}")
-        Log.w(TAG, "Admin Component: ${adminComponent.flattenToString()}")
+        Log.w(TAG, "Admin Component: $adminComponentName")
         
         if (!isDeviceOwner) {
             Log.e(TAG, "")
