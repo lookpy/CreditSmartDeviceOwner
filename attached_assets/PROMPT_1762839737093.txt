@@ -1,0 +1,46 @@
+025-11-11 02:41:17.713 23115-23528 okhttp.OkHttpClient     com.cdccreditsmart.app               I  <-- END HTTP (39-byte body)
+2025-11-11 02:41:17.715 23115-23334 MdmCommandReceiver      com.cdccreditsmart.app               E  ❌ Erro ao buscar comandos pendentes - HTTP 404
+2025-11-11 02:41:17.715 23115-23334 MdmCommandReceiver      com.cdccreditsmart.app               E  ❌ Response body: {"error":"Dispositivo não encontrado"}
+2025-11-11 02:41:45.846 23115-23115 WebSocketManager        com.cdccreditsmart.app               D  Heartbeat ping sent
+2025-11-11 02:41:46.008 23115-23566 WebSocketManager        com.cdccreditsmart.app               D  Message received: {"type":"pong","timestamp":"2025-11-11T05:41:46.348Z"}...
+2025-11-11 02:41:46.009 23115-23566 WebSocketManager        com.cdccreditsmart.app               D  Received message type: pong
+2025-11-11 02:41:46.009 23115-23566 WebSocketManager        com.cdccreditsmart.app               D  Pong received
+2025-11-11 02:41:46.778 23115-23115 WebSocketManager        com.cdccreditsmart.app               D  Heartbeat ping sent
+2025-11-11 02:41:46.953 23115-23571 WebSocketManager        com.cdccreditsmart.app               D  Message received: {"type":"pong","timestamp":"2025-11-11T05:41:47.291Z"}...
+2025-11-11 02:41:46.953 23115-23571 WebSocketManager        com.cdccreditsmart.app               D  Received message type: pong
+2025-11-11 02:41:46.953 23115-23571 WebSocketManager        com.cdccreditsmart.app               D  Pong received
+2025-11-11 02:41:47.717 23115-23334 MdmCommandReceiver      com.cdccreditsmart.app               D  🔍 Verificando comandos pendentes...
+2025-11-11 02:41:47.717 23115-23334 MdmCommandReceiver      com.cdccreditsmart.app               D  🔍 Buscando comandos pendentes para serial number: ZF5257...
+2025-11-11 02:41:47.725 23115-23528 okhttp.OkHttpClient     com.cdccreditsmart.app               I  --> GET https://cdccreditsmart.com/api/apk/device/ZF52572RFB/commands
+2025-11-11 02:41:47.725 23115-23528 okhttp.OkHttpClient     com.cdccreditsmart.app               I  --> END GET
+2025-11-11 02:41:48.002 23115-23528 okhttp.OkHttpClient     com.cdccreditsmart.app               I  <-- 404 https://cdccreditsmart.com/api/apk/device/ZF52572RFB/commands (276ms)
+2025-11-11 02:41:48.002 23115-23528 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-credentials: true
+2025-11-11 02:41:48.002 23115-23528 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-headers: Origin, X-Requested-With, Content-Type, Accept, Authorization, x-client-key, x-client-token, x-client-secret, cache-control
+2025-11-11 02:41:48.002 23115-23528 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-methods: GET, POST, PUT, PATCH, DELETE, OPTIONS
+2025-11-11 02:41:48.002 23115-23528 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-origin: *
+2025-11-11 02:41:48.002 23115-23528 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-max-age: 86400
+2025-11-11 02:41:48.002 23115-23528 okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-length: 39
+2025-11-11 02:41:48.003 23115-23528 okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-security-policy: default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://replit.com; style-src 'self' 'unsafe-inline' https://replit.com; img-src 'self' data: https:; font-src 'self' data: https://replit.com; connect-src 'self';
+2025-11-11 02:41:48.003 23115-23528 okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-type: application/json; charset=utf-8
+2025-11-11 02:41:48.003 23115-23528 okhttp.OkHttpClient     com.cdccreditsmart.app               I  date: Tue, 11 Nov 2025 05:41:48 GMT
+2025-11-11 02:41:48.003 23115-23528 okhttp.OkHttpClient     com.cdccreditsmart.app               I  etag: W/"27-vA7jVJXd7R0uBFzC1cm2VbpnUnw"
+2025-11-11 02:41:48.003 23115-23528 okhttp.OkHttpClient     com.cdccreditsmart.app               I  permissions-policy: geolocation=(), microphone=(), camera=()
+2025-11-11 02:41:48.003 23115-23528 okhttp.OkHttpClient     com.cdccreditsmart.app               I  referrer-policy: strict-origin-when-cross-origin
+2025-11-11 02:41:48.003 23115-23528 okhttp.OkHttpClient     com.cdccreditsmart.app               I  server: Google Frontend
+2025-11-11 02:41:48.003 23115-23528 okhttp.OkHttpClient     com.cdccreditsmart.app               I  strict-transport-security: max-age=63072000; includeSubDomains
+2025-11-11 02:41:48.004 23115-23528 okhttp.OkHttpClient     com.cdccreditsmart.app               I  strict-transport-security: max-age=31536000; includeSubDomains
+2025-11-11 02:41:48.004 23115-23528 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-anti-fraud-protection: active
+2025-11-11 02:41:48.004 23115-23528 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-certificate-pinning-enabled: false
+2025-11-11 02:41:48.004 23115-23528 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-certificate-pinning-status: disabled-for-stability
+2025-11-11 02:41:48.004 23115-23528 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-cloud-trace-context: efdb03c60640f7a2e19c491226858799
+2025-11-11 02:41:48.004 23115-23528 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-content-type-options: nosniff
+2025-11-11 02:41:48.004 23115-23528 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-financial-data-protection: enabled
+2025-11-11 02:41:48.004 23115-23528 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-frame-options: DENY
+2025-11-11 02:41:48.004 23115-23528 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-transaction-security-level: maximum
+2025-11-11 02:41:48.005 23115-23528 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-xss-protection: 1; mode=block
+2025-11-11 02:41:48.005 23115-23528 okhttp.OkHttpClient     com.cdccreditsmart.app               I  via: 1.1 google
+2025-11-11 02:41:48.005 23115-23528 okhttp.OkHttpClient     com.cdccreditsmart.app               I  alt-svc: h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
+2025-11-11 02:41:48.006 23115-23528 okhttp.OkHttpClient     com.cdccreditsmart.app               I  {"error":"Dispositivo não encontrado"}
+2025-11-11 02:41:48.007 23115-23528 okhttp.OkHttpClient     com.cdccreditsmart.app               I  <-- END HTTP (39-byte body)
+2025-11-11 02:41:48.009 23115-23334 MdmCommandReceiver      com.cdccreditsmart.app               E  ❌ Erro ao buscar comandos pendentes - HTTP 404
+2025-11-11 02:41:48.009 23115-23334 MdmCommandReceiver      com.cdccreditsmart.app               E  ❌ Response body: {"error":"Dispositivo não encontrado"}
