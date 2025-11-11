@@ -32,6 +32,8 @@ import com.cdccreditsmart.app.presentation.screens.blocking.PaymentRecoveryScree
 import com.cdccreditsmart.app.presentation.screens.blocking.BlockingHistoryScreen
 import com.cdccreditsmart.app.presentation.screens.blocking.BlockingViewModel
 import com.cdccreditsmart.app.presentation.screens.home.ModernHomeScreen
+import com.cdccreditsmart.app.presentation.diagnostic.ProtectionStatusScreen
+import com.cdccreditsmart.app.presentation.diagnostic.ProtectionStatusViewModel
 
 object Routes {
     const val ROUTER = "router"
@@ -45,6 +47,7 @@ object Routes {
     const val BLOCKED_APP = "blocked_app/{appPackage}/{daysOverdue}"
     const val PAYMENT_RECOVERY = "blocking/payment_recovery/{daysOverdue}"
     const val BLOCKING_HISTORY = "blocking/history"
+    const val PROTECTION_STATUS = "diagnostic/protection_status"
     
     fun createPairingProgressRoute(contractId: String) = "pairing/progress/$contractId"
     
@@ -385,6 +388,20 @@ fun CDCNavigation(
         
         composable(Routes.HOME) {
             ModernHomeScreen()
+        }
+        
+        composable(Routes.PROTECTION_STATUS) {
+            val viewModel: ProtectionStatusViewModel = remember(context) { ProtectionStatusViewModel(context) }
+            val uiState by viewModel.uiState
+            
+            ProtectionStatusScreen(
+                uiState = uiState,
+                onRefresh = { viewModel.refreshStatus() },
+                onToggleAutoRefresh = { viewModel.toggleAutoRefresh() },
+                onBack = {
+                    navController.popBackStack()
+                }
+            )
         }
     }
 }
