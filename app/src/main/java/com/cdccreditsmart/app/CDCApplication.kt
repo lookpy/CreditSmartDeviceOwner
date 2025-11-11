@@ -1,9 +1,11 @@
 package com.cdccreditsmart.app
 
 import android.app.Application
+import android.content.Context
 import android.util.Log
 import com.cdccreditsmart.app.permissions.AutoPermissionManager
 import com.cdccreditsmart.app.protection.AppProtectionManager
+import com.cdccreditsmart.app.protection.TamperDetectionService
 import com.cdccreditsmart.app.security.SecureTokenStorage
 import com.cdccreditsmart.app.service.CdcForegroundService
 import com.cdccreditsmart.app.workers.BlockingCheckWorker
@@ -21,6 +23,7 @@ class CDCApplication : Application() {
         
         grantPermissionsIfDeviceOwner()
         applyMaximumProtectionIfDeviceOwner()
+        checkTamperDetection()
         
         val secureStorage = SecureTokenStorage(applicationContext)
         val authToken = secureStorage.getAuthToken()
@@ -94,6 +97,27 @@ class CDCApplication : Application() {
             Log.i(TAG, "🛡️ Proteções verificadas: $protections")
         } catch (e: Exception) {
             Log.e(TAG, "❌ Erro ao aplicar proteções: ${e.message}", e)
+        }
+    }
+    
+    private fun checkTamperDetection() {
+        try {
+            val tamperDetection = TamperDetectionService(applicationContext)
+            
+            // Verificar integridade local
+            val factoryResetDetected = tamperDetection.checkFactoryResetAttempt()
+            
+            // Obter ou criar device fingerprint
+            val deviceFingerprint = tamperDetection.getOrCreateDeviceFingerprint()
+            
+            // Reportar boot ao backend para tamper detection server-side
+            tamperDetection.reportDeviceBootToBackend(deviceFingerprint)
+            
+            if (factoryResetDetected) {
+                Log.e(TAG, "🚨 Possível factory reset ou corrupção detectada")
+            }
+        } catch (e: Exception) {
+            Log.e(TAG, "❌ Erro ao verificar tamper: ${e.message}", e)
         }
     }
 }

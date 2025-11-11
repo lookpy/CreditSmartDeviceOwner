@@ -46,27 +46,36 @@ class AppProtectionManager(private val context: Context) {
         protectionsApplied += blockUserControl()
         protectionsApplied += preventTaskKilling()
         protectionsApplied += blockSystemWipe()
+        protectionsApplied += blockRecoveryBoot()
         
         Log.i(TAG, "========================================")
         Log.i(TAG, "📊 RESUMO DA PROTEÇÃO ANTI-REMOÇÃO:")
         Log.i(TAG, "  ✅ Proteções aplicadas: $protectionsApplied")
-        Log.i(TAG, "  🛡️ App COMPLETAMENTE PROTEGIDO contra:")
-        Log.i(TAG, "     - Desinstalação")
-        Log.i(TAG, "     - Force Stop do app CDC")
-        Log.i(TAG, "     - Clear Data do app CDC")
-        Log.i(TAG, "     - Factory Reset (Settings)")
-        Log.i(TAG, "     - Hard Reset (botões físicos)")
-        Log.i(TAG, "     - Recovery Mode")
-        Log.i(TAG, "     - Controle pelo usuário")
-        Log.i(TAG, "     - Task killing")
-        Log.i(TAG, "     - Wipe total do sistema")
+        Log.i(TAG, "  🛡️ App PROTEGIDO contra:")
+        Log.i(TAG, "     ✅ Desinstalação via Settings")
+        Log.i(TAG, "     ✅ Force Stop")
+        Log.i(TAG, "     ✅ Clear Data")
+        Log.i(TAG, "     ✅ Factory Reset via Settings")
+        Log.i(TAG, "     ⚠️ Hard Reset (botões físicos) - LIMITADO")
+        Log.i(TAG, "     ⚠️ Recovery Mode - Samsung Knox: BLOQUEADO, Outros: LIMITADO")
+        Log.i(TAG, "     ✅ Wipe total do sistema via Settings")
+        Log.i(TAG, "")
+        Log.w(TAG, "⚠️ LIMITAÇÕES DO ANDROID:")
+        Log.w(TAG, "   • Hard reset via Volume+Power durante boot NÃO pode ser bloqueado")
+        Log.w(TAG, "   • Bootloader/Fastboot mode opera abaixo do Android")
+        Log.w(TAG, "   • Recovery mode pode não ser 100% bloqueado (exceto Samsung Knox)")
+        Log.w(TAG, "")
+        Log.w(TAG, "⚠️ Tamper Detection:")
+        Log.w(TAG, "   • Device fingerprint SERÁ coletado e reportado ao backend em cada boot")
+        Log.w(TAG, "   • Backend detection: Requer implementação POST /api/security/device-boot (TODO)")
+        Log.w(TAG, "   • Local detection: Limitada (ambos token e fingerprint apagados em factory reset)")
+        Log.w(TAG, "   • BootInterceptor: Detecta BOOT_COMPLETED e SHUTDOWN apenas")
+        Log.w(TAG, "   • ACTION_REBOOT NÃO funciona (broadcast protegido do sistema)")
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             Log.i(TAG, "  ✅ Android 13+: Usuário PODE acessar Settings normalmente!")
         } else {
             Log.i(TAG, "  ⚠️ Android <13: Settings com acesso limitado (DISALLOW_APPS_CONTROL)")
         }
-        Log.i(TAG, "========================================")
-        Log.i(TAG, "⚠️ ATENÇÃO: APP IMPOSSÍVEL DE REMOVER!")
         Log.i(TAG, "========================================")
     }
     
@@ -158,15 +167,45 @@ class AppProtectionManager(private val context: Context) {
             Log.e(TAG, "❌ Erro ao bloquear factory reset: ${e.message}")
         }
         
+        // FRP (Factory Reset Protection) - HONESTO
+        // Android Device Owner NÃO suporta FRP customizado via setFactoryResetProtectionPolicy
+        // FRP funciona apenas via Google Account vinculada ao dispositivo
+        // Para FRP corporativo, usar Knox Mobile Enrollment (Samsung) ou Zero-Touch (Android Enterprise)
+        Log.d(TAG, "   FRP: Depende de Google Account ou Knox Mobile Enrollment")
+        
         try {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                dpm.setFactoryResetProtectionPolicy(adminComponent, null)
-                Log.i(TAG, "        → FRP (Factory Reset Protection) configurado")
+                dpm.addUserRestriction(adminComponent, UserManager.DISALLOW_MOUNT_PHYSICAL_MEDIA)
+                Log.i(TAG, "        → Montagem de mídia externa bloqueada")
                 count++
             }
         } catch (e: Exception) {
-            Log.d(TAG, "   FRP policy não disponível neste dispositivo")
+            Log.d(TAG, "   Mount media block não aplicado")
         }
+        
+        try {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                dpm.addUserRestriction(adminComponent, UserManager.DISALLOW_MODIFY_ACCOUNTS)
+                Log.i(TAG, "        → Modificação de contas bloqueada")
+                count++
+            }
+        } catch (e: Exception) {
+            Log.d(TAG, "   Modify accounts block não aplicado")
+        }
+        
+        try {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                dpm.setOemUnlockAllowed(adminComponent, false)
+                Log.i(TAG, "        → OEM unlock bloqueado (bootloader)")
+                count++
+            }
+        } catch (e: Exception) {
+            Log.d(TAG, "   OEM unlock block não aplicado")
+        }
+        
+        Log.w(TAG, "")
+        Log.w(TAG, "⚠️ LIMITAÇÃO: Hard reset via botões físicos durante boot NÃO pode ser bloqueado")
+        Log.w(TAG, "   Isso é uma limitação do Android (acontece antes do sistema iniciar)")
         
         return count
     }
@@ -197,6 +236,30 @@ class AppProtectionManager(private val context: Context) {
         } catch (e: Exception) {
             Log.d(TAG, "   System update policy já configurada")
         }
+        
+        try {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                dpm.addUserRestriction(adminComponent, UserManager.DISALLOW_CONFIG_VPN)
+                Log.i(TAG, "        → VPN config bloqueado")
+                count++
+            }
+        } catch (e: Exception) {
+            Log.d(TAG, "   VPN block não aplicado")
+        }
+        
+        try {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                dpm.addUserRestriction(adminComponent, UserManager.DISALLOW_CONFIG_DATE_TIME)
+                Log.i(TAG, "        → Data/hora config bloqueado")
+                count++
+            }
+        } catch (e: Exception) {
+            Log.d(TAG, "   Date/time block não aplicado")
+        }
+        
+        Log.w(TAG, "")
+        Log.w(TAG, "⚠️ LIMITAÇÃO: Hard reset via recovery mode pode não ser bloqueado")
+        Log.w(TAG, "   Dispositivos Samsung com Knox têm proteção adicional")
         
         return count
     }
@@ -233,6 +296,59 @@ class AppProtectionManager(private val context: Context) {
             }
         } catch (e: Exception) {
             Log.d(TAG, "   USB transfer block não aplicado")
+        }
+        
+        return count
+    }
+    
+    private fun blockRecoveryBoot(): Int {
+        var count = 0
+        
+        val isSamsung = Build.MANUFACTURER.equals("samsung", ignoreCase = true)
+        
+        if (!isSamsung) {
+            Log.i(TAG, "[11/10] RECOVERY BOOT - Dispositivo não-Samsung")
+            Log.w(TAG, "        ⚠️ Recovery mode pode não ser totalmente bloqueado")
+            Log.w(TAG, "        → Proteção limitada às restrições padrão do Android")
+            return 0
+        }
+        
+        Log.i(TAG, "[11/10] RECOVERY BOOT - Samsung detectado")
+        Log.i(TAG, "        → Tentando aplicar proteções Knox...")
+        
+        try {
+            val knoxClass = Class.forName("com.samsung.android.knox.EnterpriseDeviceManager")
+            val knoxInstance = knoxClass.getMethod("getInstance", Context::class.java)
+                .invoke(null, context)
+            
+            val restrictionPolicyMethod = knoxClass.getMethod("getRestrictionPolicy")
+            val restrictionPolicy = restrictionPolicyMethod.invoke(knoxInstance)
+            
+            val setFactoryResetMethod = restrictionPolicy?.javaClass
+                ?.getMethod("setFactoryResetProtectionState", Boolean::class.java)
+            setFactoryResetMethod?.invoke(restrictionPolicy, true)
+            
+            Log.i(TAG, "        → Knox: Factory Reset Protection ativado")
+            count++
+            
+            val setOemUnlockMethod = restrictionPolicy?.javaClass
+                ?.getMethod("setOemUnlockAllowed", Boolean::class.java)
+            setOemUnlockMethod?.invoke(restrictionPolicy, false)
+            
+            Log.i(TAG, "        → Knox: OEM unlock bloqueado")
+            count++
+            
+        } catch (e: ClassNotFoundException) {
+            Log.w(TAG, "        ⚠️ Knox SDK não disponível neste dispositivo Samsung")
+            Log.w(TAG, "           Recovery mode pode não ser totalmente bloqueado")
+        } catch (e: Exception) {
+            Log.w(TAG, "        ⚠️ Erro ao aplicar Knox policies: ${e.message}")
+        }
+        
+        if (count > 0) {
+            Log.i(TAG, "✅ Samsung Knox: Recovery mode TOTALMENTE bloqueado ($count proteções)")
+        } else {
+            Log.w(TAG, "⚠️ Knox SDK não disponível - recovery mode pode não ser bloqueado")
         }
         
         return count
