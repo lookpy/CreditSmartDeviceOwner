@@ -121,16 +121,6 @@ class AutoPermissionManager(private val context: Context) {
             Log.e(TAG, "❌ Erro ao configurar política de permissões: ${e.message}", e)
         }
         
-        try {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                @Suppress("DEPRECATION")
-                dpm.setUsageStatsEnabled(adminComponent, true)
-                Log.i(TAG, "✅ Usage Stats habilitado via Device Owner")
-            }
-        } catch (e: Exception) {
-            Log.e(TAG, "❌ Erro ao habilitar Usage Stats: ${e.message}", e)
-        }
-        
         Log.i(TAG, "========================================")
     }
     

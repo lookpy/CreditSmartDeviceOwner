@@ -3,6 +3,7 @@ package com.cdccreditsmart.app.service
 import android.app.*
 import android.content.Context
 import android.content.Intent
+import android.content.IntentFilter
 import android.content.pm.ServiceInfo
 import android.os.Build
 import android.os.IBinder
@@ -11,12 +12,13 @@ import android.util.Log
 import androidx.core.app.NotificationCompat
 import com.cdccreditsmart.app.R
 import com.cdccreditsmart.app.mdm.MdmCommandReceiver
+import com.cdccreditsmart.app.receivers.ScreenStateReceiver
 import com.cdccreditsmart.app.security.SecureTokenStorage
 import com.cdccreditsmart.app.websocket.WebSocketManager
+import com.cdccreditsmart.app.workers.HeartbeatWorker
 import kotlinx.coroutines.*
-import java.util.concurrent.TimeUnit
 
-class CdcForegroundService : Service() {
+class CdcForegroundService : Service(), ScreenStateReceiver.ScreenStateListener {
     
     companion object {
         private const val TAG = "CdcForegroundService"
@@ -50,7 +52,7 @@ class CdcForegroundService : Service() {
     
     private val serviceScope = CoroutineScope(Dispatchers.Default + SupervisorJob())
     private var wakeLock: PowerManager.WakeLock? = null
-    private var heartbeatJob: Job? = null
+    private var screenStateReceiver: ScreenStateReceiver? = null
     private var mdmReceiver: MdmCommandReceiver? = null
     private var webSocketManager: WebSocketManager? = null
     private var blockedAppInterceptor: com.cdccreditsmart.app.blocking.BlockedAppInterceptor? = null
@@ -60,7 +62,7 @@ class CdcForegroundService : Service() {
         Log.d(TAG, "📱 Serviço onCreate()")
         
         createNotificationChannel()
-        acquireWakeLock()
+        registerScreenStateReceiver()
     }
     
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
@@ -90,7 +92,6 @@ class CdcForegroundService : Service() {
             }
             else -> {
                 initializeServices()
-                startHeartbeat()
             }
         }
         
@@ -106,7 +107,7 @@ class CdcForegroundService : Service() {
     private fun stopForegroundService() {
         Log.i(TAG, "🛑 Parando Foreground Service")
         
-        heartbeatJob?.cancel()
+        HeartbeatWorker.cancel(applicationContext)
         mdmReceiver?.disconnect()
         webSocketManager?.disconnect()
         blockedAppInterceptor?.destroy()
@@ -156,19 +157,39 @@ class CdcForegroundService : Service() {
             .build()
     }
     
-    private fun acquireWakeLock() {
+    private fun acquireWakeLockForCommand() {
         try {
             val powerManager = getSystemService(Context.POWER_SERVICE) as PowerManager
             wakeLock = powerManager.newWakeLock(
                 PowerManager.PARTIAL_WAKE_LOCK,
                 WAKELOCK_TAG
             ).apply {
-                acquire(10 * 60 * 1000L) // 10 minutos, será renovado
+                acquire(30 * 1000L)
             }
-            Log.d(TAG, "🔋 WakeLock adquirido")
+            Log.d(TAG, "🔋 WakeLock adquirido para comando (30s)")
         } catch (e: Exception) {
             Log.e(TAG, "❌ Erro ao adquirir WakeLock: ${e.message}")
         }
+    }
+    
+    fun requestWakeLockForMdmCommand() {
+        acquireWakeLockForCommand()
+    }
+    
+    private fun registerScreenStateReceiver() {
+        screenStateReceiver = ScreenStateReceiver()
+        val filter = IntentFilter().apply {
+            addAction(Intent.ACTION_SCREEN_ON)
+            addAction(Intent.ACTION_SCREEN_OFF)
+        }
+        registerReceiver(screenStateReceiver, filter)
+        ScreenStateReceiver.addListener(this)
+        Log.i(TAG, "✅ ScreenStateReceiver registrado")
+    }
+    
+    override fun onScreenStateChanged(isScreenOn: Boolean) {
+        blockedAppInterceptor?.setScreenState(isScreenOn)
+        Log.d(TAG, "🔋 Estado da tela mudou: ${if (isScreenOn) "LIGADA" else "DESLIGADA"}")
     }
     
     private fun releaseWakeLock() {
@@ -251,6 +272,9 @@ class CdcForegroundService : Service() {
                 Log.d(TAG, "📡 Criando MdmCommandReceiver com MDM device ID...")
                 mdmReceiver = MdmCommandReceiver(applicationContext, mdmDeviceId!!)
                 
+                mdmReceiver?.setForegroundService(this@CdcForegroundService)
+                Log.d(TAG, "🔋 Foreground service reference passada para MdmCommandReceiver")
+                
                 Log.d(TAG, "📡 Conectando MdmCommandReceiver ao WebSocket MDM...")
                 mdmReceiver?.connectMdmWebSocket(authToken)
                 Log.i(TAG, "📡 MdmCommandReceiver inicializado - aguardando conexão")
@@ -278,47 +302,14 @@ class CdcForegroundService : Service() {
                 blockedAppInterceptor?.startMonitoring()
                 Log.i(TAG, "🔍 BlockedAppInterceptor inicializado e monitorando")
                 
+                HeartbeatWorker.schedule(applicationContext)
+                
                 Log.i(TAG, "✅ Todos os serviços inicializados com sucesso")
                 
             } catch (e: Exception) {
                 Log.e(TAG, "❌ Erro ao inicializar serviços", e)
                 Log.e(TAG, "❌ Stack trace: ${e.stackTraceToString()}")
             }
-        }
-    }
-    
-    private fun startHeartbeat() {
-        heartbeatJob?.cancel()
-        
-        heartbeatJob = serviceScope.launch {
-            while (isActive) {
-                try {
-                    delay(TimeUnit.MINUTES.toMillis(5))
-                    sendHeartbeat()
-                    
-                    if (wakeLock?.isHeld == false) {
-                        acquireWakeLock()
-                    }
-                    
-                } catch (e: CancellationException) {
-                    throw e
-                } catch (e: Exception) {
-                    Log.e(TAG, "❌ Erro no heartbeat: ${e.message}")
-                }
-            }
-        }
-        
-        Log.d(TAG, "💓 Heartbeat iniciado (5 minutos)")
-    }
-    
-    private suspend fun sendHeartbeat() {
-        try {
-            Log.d(TAG, "💓 Enviando heartbeat...")
-            
-            updateNotification("Ativo - Último heartbeat: ${System.currentTimeMillis()}")
-            
-        } catch (e: Exception) {
-            Log.e(TAG, "❌ Erro ao enviar heartbeat: ${e.message}")
         }
     }
     
@@ -345,6 +336,13 @@ class CdcForegroundService : Service() {
     
     override fun onDestroy() {
         Log.w(TAG, "⚠️ Serviço onDestroy() - reiniciando automaticamente...")
+        
+        ScreenStateReceiver.removeListener(this)
+        try {
+            unregisterReceiver(screenStateReceiver)
+        } catch (e: Exception) {
+            Log.e(TAG, "Erro ao desregistrar receiver: ${e.message}")
+        }
         
         stopForegroundService()
         

@@ -28,6 +28,8 @@ class MdmCommandReceiver(private val context: Context, private val serialNumber:
         AppBlockingManager(context)
     }
     
+    private var foregroundService: com.cdccreditsmart.app.service.CdcForegroundService? = null
+    
     private val moshi = MoshiProvider.getMoshi()
     
     private val okHttpClient = OkHttpClient.Builder()
@@ -95,6 +97,11 @@ class MdmCommandReceiver(private val context: Context, private val serialNumber:
         })
         
         Log.d(TAG, "🔗 WebSocket request enviado - aguardando resposta...")
+    }
+    
+    fun setForegroundService(service: com.cdccreditsmart.app.service.CdcForegroundService) {
+        this.foregroundService = service
+        Log.d(TAG, "✅ Foreground service reference set for WakeLock management")
     }
     
     private fun handleMdmMessage(json: String) {
@@ -177,6 +184,9 @@ class MdmCommandReceiver(private val context: Context, private val serialNumber:
     ) {
         try {
             Log.i(TAG, "⚙️ Processando comando $commandId (tipo: $commandType)")
+            
+            foregroundService?.requestWakeLockForMdmCommand()
+            Log.d(TAG, "🔋 WakeLock adquirido para comando MDM $commandId")
             
             sendAcknowledgement(commandId)
             

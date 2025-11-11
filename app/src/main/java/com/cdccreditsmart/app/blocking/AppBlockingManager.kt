@@ -291,10 +291,6 @@ class AppBlockingManager(private val context: Context) {
             Log.e(TAG, "Erro ao limpar estado de bloqueio", e)
         }
     }
-    
-    private fun isDeviceOwner(): Boolean {
-        return dpm.isDeviceOwnerApp(context.packageName)
-    }
 }
 
 data class BlockingResult(

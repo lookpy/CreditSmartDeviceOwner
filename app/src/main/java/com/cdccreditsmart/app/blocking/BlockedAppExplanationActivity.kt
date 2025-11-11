@@ -58,9 +58,11 @@ fun BlockedAppExplanationScreen(
     blockedAppsCount: Int,
     onClose: () -> Unit
 ) {
+    val context = androidx.compose.ui.platform.LocalContext.current
+    
     val appName = remember(blockedPackage) {
         try {
-            val pm = androidx.compose.ui.platform.LocalContext.current.packageManager
+            val pm = context.packageManager
             val appInfo = pm.getApplicationInfo(blockedPackage, 0)
             pm.getApplicationLabel(appInfo).toString()
         } catch (e: Exception) {
@@ -70,7 +72,7 @@ fun BlockedAppExplanationScreen(
     
     val appIcon = remember(blockedPackage) {
         try {
-            val pm = androidx.compose.ui.platform.LocalContext.current.packageManager
+            val pm = context.packageManager
             pm.getApplicationIcon(blockedPackage).toBitmap().asImageBitmap()
         } catch (e: Exception) {
             null

@@ -13,13 +13,17 @@ class BlockedAppInterceptor(private val context: Context) {
     
     companion object {
         private const val TAG = "BlockedAppInterceptor"
-        private const val CHECK_INTERVAL = 1000L // 1 segundo
+        private const val CHECK_INTERVAL = 5000L // 5 segundos (reduzido de 1s para economizar CPU)
     }
     
     private val scope = CoroutineScope(Dispatchers.Default + SupervisorJob())
     private var monitoringJob: Job? = null
     private val lastShownTime = ConcurrentHashMap<String, Long>()
     private val cooldownMs = 5000L // 5 segundos entre mostrar explicações para o mesmo app
+    
+    private var currentCheckInterval = 30000L // Inicia em 30s
+    private var isScreenOn = true
+    private var blockedAppDetectedRecently = false
     
     private val appBlockingManager by lazy {
         AppBlockingManager(context)
@@ -36,8 +40,17 @@ class BlockedAppInterceptor(private val context: Context) {
         monitoringJob = scope.launch {
             while (isActive) {
                 try {
-                    checkForegroundApp()
-                    delay(CHECK_INTERVAL)
+                    val hadBlockedApp = checkForegroundApp()
+                    
+                    if (!hadBlockedApp) {
+                        blockedAppDetectedRecently = false
+                    } else {
+                        blockedAppDetectedRecently = true
+                    }
+                    
+                    updateCheckInterval()
+                    
+                    delay(currentCheckInterval)
                 } catch (e: CancellationException) {
                     throw e
                 } catch (e: Exception) {
@@ -47,29 +60,39 @@ class BlockedAppInterceptor(private val context: Context) {
         }
     }
     
+    fun setScreenState(isScreenOn: Boolean) {
+        this.isScreenOn = isScreenOn
+        updateCheckInterval()
+        Log.i(TAG, "🔋 Tela ${if (isScreenOn) "LIGADA" else "DESLIGADA"} - Intervalo: ${currentCheckInterval}ms")
+    }
+    
+    private fun updateCheckInterval() {
+        currentCheckInterval = when {
+            !isScreenOn -> 60000L // 60s quando tela desligada
+            blockedAppDetectedRecently -> 5000L // 5s quando detectou bloqueio recente
+            else -> 30000L // 30s padrão quando tela ligada
+        }
+    }
+    
     fun stopMonitoring() {
         Log.i(TAG, "🛑 Parando monitoramento de apps bloqueados")
         monitoringJob?.cancel()
         monitoringJob = null
     }
     
-    private fun checkForegroundApp() {
-        val foregroundPackage = getForegroundPackageName() ?: return
+    private fun checkForegroundApp(): Boolean {
+        val foregroundPackage = getForegroundPackageName() ?: return false
         
-        // Ignora nosso próprio app
         if (foregroundPackage == context.packageName) {
-            return
+            return false
         }
         
-        // Verifica se o app está na lista de bloqueados
         if (appBlockingManager.isAppBlocked(foregroundPackage)) {
-            
-            // Cooldown para não mostrar múltiplas vezes rapidamente
             val lastShown = lastShownTime[foregroundPackage] ?: 0L
             val now = System.currentTimeMillis()
             
             if (now - lastShown < cooldownMs) {
-                return
+                return true
             }
             
             Log.i(TAG, "🚫 App bloqueado detectado em foreground: $foregroundPackage")
@@ -78,7 +101,10 @@ class BlockedAppInterceptor(private val context: Context) {
             lastShownTime[foregroundPackage] = now
             
             showBlockedAppExplanation(foregroundPackage)
+            return true
         }
+        
+        return false
     }
     
     private var lastForegroundPackage: String? = null
