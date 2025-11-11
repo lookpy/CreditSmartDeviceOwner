@@ -3,7 +3,11 @@ package com.cdccreditsmart.app.blocking
 import android.app.admin.DevicePolicyManager
 import android.content.ComponentName
 import android.content.Context
+import android.content.pm.SuspendDialogInfo
+import android.os.Build
+import android.os.PersistableBundle
 import android.util.Log
+import androidx.annotation.RequiresApi
 import com.cdccreditsmart.app.knox.KnoxLockscreenManager
 import com.cdccreditsmart.device.CDCDeviceAdminReceiver
 import com.cdccreditsmart.network.dto.mdm.CommandParameters
@@ -58,31 +62,117 @@ class AppBlockingManager(private val context: Context) {
             var blockedCount = 0
             var unblockedCount = 0
             
-            for (packageName in appsToBlock) {
-                try {
-                    if (!dpm.isApplicationHidden(adminComponent, packageName)) {
-                        dpm.setApplicationHidden(adminComponent, packageName, true)
-                        blockedCount++
-                        Log.d(TAG, "  ✅ Bloqueado: $packageName")
-                    } else {
-                        Log.d(TAG, "  ⏩ Já bloqueado: $packageName")
-                    }
-                } catch (e: Exception) {
-                    Log.e(TAG, "  ❌ Erro ao bloquear $packageName: ${e.message}")
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                val dialogInfo = SuspendDialogInfo.Builder()
+                    .setIcon(android.R.drawable.ic_dialog_alert)
+                    .setTitle("Aplicativo Bloqueado")
+                    .setMessage("Este aplicativo está temporariamente bloqueado devido a pagamento em atraso de ${parameters.daysOverdue} dias.\n\nPara desbloquear, regularize seu pagamento através do app CDC Credit Smart.")
+                    .setNeutralButtonText("Entendi")
+                    .build()
+                
+                val packagesToSuspend = appsToBlock.toTypedArray()
+                val packagesToUnsuspend = allInstalledApps.filter { it !in appsToBlock }.toTypedArray()
+                
+                val suspendedPackages = dpm.setPackagesSuspended(
+                    adminComponent,
+                    packagesToSuspend,
+                    true,
+                    null,
+                    null,
+                    dialogInfo
+                )
+                
+                blockedCount = packagesToSuspend.size - suspendedPackages.size
+                
+                for (suspended in suspendedPackages) {
+                    Log.w(TAG, "  ⚠️ Não foi possível bloquear: $suspended")
                 }
-            }
-            
-            val appsToUnblock = allInstalledApps.filter { it !in appsToBlock }
-            
-            for (packageName in appsToUnblock) {
-                try {
-                    if (dpm.isApplicationHidden(adminComponent, packageName)) {
-                        dpm.setApplicationHidden(adminComponent, packageName, false)
-                        unblockedCount++
-                        Log.d(TAG, "  🔓 Desbloqueado: $packageName")
+                
+                for (pkg in packagesToSuspend) {
+                    if (pkg !in suspendedPackages) {
+                        Log.d(TAG, "  ✅ Bloqueado (suspenso com diálogo customizado): $pkg")
                     }
-                } catch (e: Exception) {
-                    Log.e(TAG, "  ❌ Erro ao desbloquear $packageName: ${e.message}")
+                }
+                
+                val unsuspendedPackages = dpm.setPackagesSuspended(
+                    adminComponent,
+                    packagesToUnsuspend,
+                    false
+                )
+                
+                unblockedCount = packagesToUnsuspend.size - unsuspendedPackages.size
+                
+                for (pkg in packagesToUnsuspend) {
+                    if (pkg !in unsuspendedPackages) {
+                        Log.d(TAG, "  🔓 Desbloqueado: $pkg")
+                    }
+                }
+                
+            } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                Log.i(TAG, "Android 7-9: Usando suspensão sem diálogo customizado (sistema mostrará mensagem padrão)")
+                
+                val packagesToSuspend = appsToBlock.toTypedArray()
+                val packagesToUnsuspend = allInstalledApps.filter { it !in appsToBlock }.toTypedArray()
+                
+                val suspendedPackages = dpm.setPackagesSuspended(
+                    adminComponent,
+                    packagesToSuspend,
+                    true
+                )
+                
+                blockedCount = packagesToSuspend.size - suspendedPackages.size
+                
+                for (suspended in suspendedPackages) {
+                    Log.w(TAG, "  ⚠️ Não foi possível bloquear: $suspended")
+                }
+                
+                for (pkg in packagesToSuspend) {
+                    if (pkg !in suspendedPackages) {
+                        Log.d(TAG, "  ✅ Bloqueado (suspenso com mensagem padrão): $pkg")
+                    }
+                }
+                
+                val unsuspendedPackages = dpm.setPackagesSuspended(
+                    adminComponent,
+                    packagesToUnsuspend,
+                    false
+                )
+                
+                unblockedCount = packagesToUnsuspend.size - unsuspendedPackages.size
+                
+                for (pkg in packagesToUnsuspend) {
+                    if (pkg !in unsuspendedPackages) {
+                        Log.d(TAG, "  🔓 Desbloqueado: $pkg")
+                    }
+                }
+                
+            } else {
+                Log.w(TAG, "⚠️ Android < 7.0 - usando setApplicationHidden() como fallback")
+                
+                for (packageName in appsToBlock) {
+                    try {
+                        if (!dpm.isApplicationHidden(adminComponent, packageName)) {
+                            dpm.setApplicationHidden(adminComponent, packageName, true)
+                            blockedCount++
+                            Log.d(TAG, "  ✅ Bloqueado (oculto): $packageName")
+                        }
+                    } catch (e: Exception) {
+                        Log.e(TAG, "  ❌ Erro ao bloquear $packageName: ${e.message}")
+                    }
+                }
+                
+                val appsToUnblock = allInstalledApps.filter { it !in appsToBlock }
+                
+                for (packageName in appsToUnblock) {
+                    try {
+                        if (dpm.isApplicationHidden(adminComponent, packageName)) {
+                            dpm.setApplicationHidden(adminComponent, packageName, false)
+                            unblockedCount++
+                            Log.d(TAG, "  🔓 Desbloqueado: $packageName")
+                        }
+                    } catch (e: Exception) {
+                        Log.e(TAG, "  ❌ Erro ao desbloquear $packageName: ${e.message}")
+                    }
                 }
             }
             
@@ -133,19 +223,33 @@ class AppBlockingManager(private val context: Context) {
             val installedApps = context.packageManager.getInstalledApplications(0)
             var unblockedCount = 0
             
-            for (app in installedApps) {
-                try {
-                    if (dpm.isApplicationHidden(adminComponent, app.packageName)) {
-                        dpm.setApplicationHidden(adminComponent, app.packageName, false)
-                        unblockedCount++
-                        Log.d(TAG, "  🔓 Desbloqueado: ${app.packageName}")
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                val allPackages = installedApps.map { it.packageName }.toTypedArray()
+                
+                val failedPackages = dpm.setPackagesSuspended(
+                    adminComponent,
+                    allPackages,
+                    false
+                )
+                
+                unblockedCount = allPackages.size - failedPackages.size
+                
+                Log.i(TAG, "✅ Desbloqueio completo - $unblockedCount apps desbloqueados (${failedPackages.size} falharam)")
+            } else {
+                for (app in installedApps) {
+                    try {
+                        if (dpm.isApplicationHidden(adminComponent, app.packageName)) {
+                            dpm.setApplicationHidden(adminComponent, app.packageName, false)
+                            unblockedCount++
+                            Log.d(TAG, "  🔓 Desbloqueado: ${app.packageName}")
+                        }
+                    } catch (e: Exception) {
+                        Log.e(TAG, "  ❌ Erro ao desbloquear ${app.packageName}: ${e.message}")
                     }
-                } catch (e: Exception) {
-                    Log.e(TAG, "  ❌ Erro ao desbloquear ${app.packageName}: ${e.message}")
                 }
+                
+                Log.i(TAG, "✅ Desbloqueio completo - $unblockedCount apps desbloqueados")
             }
-            
-            Log.i(TAG, "✅ Desbloqueio completo - $unblockedCount apps desbloqueados")
             
             resetKnoxLockscreen()
             
@@ -222,7 +326,11 @@ class AppBlockingManager(private val context: Context) {
             if (!isDeviceOwner()) {
                 false
             } else {
-                dpm.isApplicationHidden(adminComponent, packageName)
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                    dpm.isPackageSuspended(packageName)
+                } else {
+                    dpm.isApplicationHidden(adminComponent, packageName)
+                }
             }
         } catch (e: Exception) {
             Log.e(TAG, "Erro ao verificar se app está bloqueado: $packageName", e)
