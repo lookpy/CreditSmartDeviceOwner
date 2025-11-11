@@ -133,20 +133,79 @@ private fun SamsungKnoxInstructions(deviceImei: String) {
 
 @Composable
 private fun GenericProvisioningInstructions() {
+    val isXiaomi = android.os.Build.MANUFACTURER.equals("Xiaomi", ignoreCase = true) ||
+            android.os.Build.MANUFACTURER.equals("Redmi", ignoreCase = true) ||
+            android.os.Build.MANUFACTURER.equals("POCO", ignoreCase = true)
+    
+    if (isXiaomi) {
+        XiaomiMiuiInstructions()
+    } else {
+        StandardProvisioningInstructions()
+    }
+}
+
+@Composable
+private fun XiaomiMiuiInstructions() {
+    Card(
+        modifier = Modifier.fillMaxWidth(),
+        colors = CardDefaults.cardColors(
+            containerColor = Color(0xFFFFEBEE)
+        )
+    ) {
+        Column(modifier = Modifier.padding(16.dp)) {
+            Text(
+                text = "⚠️ XIAOMI / MIUI / POCO DETECTADO",
+                style = MaterialTheme.typography.titleMedium,
+                fontWeight = FontWeight.Bold,
+                color = Color(0xFFD32F2F)
+            )
+            Spacer(modifier = Modifier.height(8.dp))
+            Text(
+                text = "IMPORTANTE: Desabilite 'MIUI Optimization' ANTES de provisionar!",
+                style = MaterialTheme.typography.bodyMedium,
+                color = Color(0xFFD32F2F),
+                fontWeight = FontWeight.Bold
+            )
+        }
+    }
+    
+    Spacer(modifier = Modifier.height(16.dp))
+    
+    InstructionCard(
+        step = "⚠️",
+        title = "PASSO 1: Desabilitar MIUI Optimization",
+        description = """
+            Opção 1 - Interface:
+            1. Settings → Additional Settings → Developer Options
+            2. Toque 4-5x em 'Restore defaults' até aparecer toggle
+            3. Desative 'MIUI Optimization' (aceite o aviso)
+            4. Reinicie o dispositivo
+            
+            Opção 2 - ADB:
+            adb shell settings put secure miui_optimization 0
+            
+            ⚠️ Sem este passo, o provisioning FALHARÁ!
+        """.trimIndent()
+    )
+    
+    Spacer(modifier = Modifier.height(16.dp))
+    
     Text(
-        text = "Escolha um método de provisionamento:",
+        text = "PASSO 2: Escolha o método de provisionamento:",
         style = MaterialTheme.typography.titleMedium,
         fontWeight = FontWeight.Bold
     )
     
+    Spacer(modifier = Modifier.height(8.dp))
+    
     InstructionCard(
         step = "A",
-        title = "QR Code (Recomendado)",
+        title = "QR Code Provisioning (Recomendado)",
         description = """
             1. Factory reset no dispositivo
-            2. Durante setup inicial, toque 6x na tela de boas-vindas
-            3. Conecte ao Wi-Fi quando solicitado
-            4. Escaneie o QR Code fornecido pelo suporte
+            2. Tela de boas-vindas: toque 6 vezes
+            3. Escaneie QR Code de provisioning
+            4. App instala automaticamente como Device Owner!
             
             ⚠️ Entre em contato com o suporte técnico para obter o QR Code.
         """.trimIndent()
@@ -156,15 +215,81 @@ private fun GenericProvisioningInstructions() {
     
     InstructionCard(
         step = "B",
-        title = "ADB (Desenvolvimento)",
+        title = "ADB Provisioning (Desenvolvimento)",
         description = """
-            1. Habilite USB Debugging nas Opções do Desenvolvedor
-            2. Conecte o dispositivo ao computador via USB
-            3. Execute no terminal:
+            1. Ative USB Debugging
+            2. Conecte ao PC via USB
+            3. Execute:
             
             adb shell dpm set-device-owner com.cdccreditsmart.app/.device.CDCDeviceAdminReceiver
             
             4. Reinicie o app e verifique novamente
+        """.trimIndent()
+    )
+    
+    Spacer(modifier = Modifier.height(16.dp))
+    
+    Card(
+        modifier = Modifier.fillMaxWidth(),
+        colors = CardDefaults.cardColors(
+            containerColor = Color(0xFFE8F5E9)
+        )
+    ) {
+        Column(modifier = Modifier.padding(16.dp)) {
+            Text(
+                text = "✅ Após provisioning completo:",
+                style = MaterialTheme.typography.titleSmall,
+                fontWeight = FontWeight.Bold,
+                color = Color(0xFF2E7D32)
+            )
+            Spacer(modifier = Modifier.height(4.dp))
+            Text(
+                text = "Você pode RE-HABILITAR MIUI Optimization para melhor desempenho.",
+                style = MaterialTheme.typography.bodySmall,
+                color = Color(0xFF2E7D32)
+            )
+        }
+    }
+}
+
+@Composable
+private fun StandardProvisioningInstructions() {
+    Text(
+        text = "Escolha um método de provisionamento:",
+        style = MaterialTheme.typography.titleMedium,
+        fontWeight = FontWeight.Bold
+    )
+    
+    Spacer(modifier = Modifier.height(8.dp))
+    
+    InstructionCard(
+        step = "A",
+        title = "QR Code Provisioning (Recomendado)",
+        description = """
+            1. Factory reset no dispositivo
+            2. Durante setup inicial, toque 6x na tela de boas-vindas
+            3. Conecte ao Wi-Fi quando solicitado
+            4. Escaneie o QR Code fornecido pelo suporte
+            5. App instala automaticamente como Device Owner!
+            
+            ⚠️ Entre em contato com o suporte técnico para obter o QR Code.
+        """.trimIndent()
+    )
+    
+    Divider(modifier = Modifier.padding(vertical = 8.dp))
+    
+    InstructionCard(
+        step = "B",
+        title = "ADB Provisioning (Desenvolvimento)",
+        description = """
+            1. Ative Developer Options (Settings → About → tap Build 7x)
+            2. Ative USB Debugging
+            3. Conecte ao PC via USB
+            4. Execute no terminal:
+            
+            adb shell dpm set-device-owner com.cdccreditsmart.app/.device.CDCDeviceAdminReceiver
+            
+            5. Reinicie o app e verifique novamente
         """.trimIndent()
     )
 }

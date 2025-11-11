@@ -2,6 +2,7 @@ plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
     id("org.jetbrains.kotlin.plugin.compose") version "2.2.20"
+    id("org.jetbrains.kotlin.plugin.parcelize")
     id("com.google.gms.google-services")
     // Temporarily disabled KSP and Hilt to fix build issues
     // id("com.google.devtools.ksp")
@@ -160,14 +161,9 @@ dependencies {
     // implementation("androidx.hilt:hilt-navigation-compose:1.2.0")
     // ksp("com.google.dagger:hilt-android-compiler:2.54")
     
-    // QR Code libraries - TEMPORARY REMOVAL due to 16KB page size incompatibility
-    // Both ZXing and ML Kit contain native libraries not yet aligned for 16KB pages
-    // Will be restored when 16KB-compatible versions are released (after Nov 1, 2025)
-    // implementation("com.journeyapps:zxing-android-embedded:4.3.0")
-    // implementation("com.google.zxing:core:3.5.3")
-    // implementation("com.google.mlkit:barcode-scanning:17.3.0")
-    
-    // Alternative: Use Intent-based QR scanning or web-based solutions for now
+    // QR Code generation (for admin QR code provisioning)
+    implementation("com.google.zxing:core:3.5.3")
+    implementation("com.journeyapps:zxing-android-embedded:4.3.0")
     
     // Icons Extended (for Material 3 icons)
     implementation("androidx.compose.material:material-icons-extended")
