@@ -1,8 +1,10 @@
 package com.cdccreditsmart.app.websocket
 
+import android.content.Context
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
+import com.cdccreditsmart.app.network.NetworkConnectivityHelper
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.Response
@@ -12,11 +14,16 @@ import org.json.JSONObject
 import java.util.concurrent.TimeUnit
 
 class WebSocketManager(
+    private val context: Context,
     private val contractCode: String,
     private val onDeviceConnected: () -> Unit,
     private val onSaleCompleted: (data: SaleCompletedData) -> Unit,
     private val onError: (message: String) -> Unit
 ) {
+    
+    private val networkHelper by lazy {
+        NetworkConnectivityHelper(context)
+    }
 
     companion object {
         private const val TAG = "WebSocketManager"
@@ -178,7 +185,22 @@ class WebSocketManager(
             Log.e(TAG, "WebSocket failure: ${t.message}", t)
             isConnected = false
             stopHeartbeat()
-            onError("Connection failed: ${t.message}")
+            
+            val errorMessage = if (networkHelper.isNetworkException(t)) {
+                val networkState = networkHelper.getCurrentNetworkState()
+                if (!networkState.isConnected) {
+                    Log.e(TAG, "❌ CAUSA: SEM CONEXÃO COM A INTERNET")
+                    Log.e(TAG, "📶 ${networkState.userMessage}")
+                    networkState.userMessage
+                } else {
+                    Log.w(TAG, "⚠️ Internet disponível, mas servidor pode estar offline")
+                    "Não foi possível conectar ao servidor.\n\nVerifique se o serviço está disponível."
+                }
+            } else {
+                "Connection failed: ${t.message}"
+            }
+            
+            onError(errorMessage)
             reconnect()
         }
 

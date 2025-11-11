@@ -430,6 +430,7 @@ class PairingViewModel(private val context: Context) : ViewModel() {
         registerFcmToken()
         
         webSocketManager = WebSocketManager(
+            context = context,
             contractCode = contractCode,
             onDeviceConnected = {
                 Log.d(TAG, "WebSocket: Device connected")

@@ -283,6 +283,7 @@ class CdcForegroundService : Service(), ScreenStateListener {
                 // Inicializa WebSocket Flow Status
                 Log.d(TAG, "📡 Criando WebSocketManager (flow-status)...")
                 webSocketManager = WebSocketManager(
+                    context = applicationContext,
                     contractCode = contractCode,
                     onDeviceConnected = { 
                         Log.i(TAG, "✅ Dispositivo conectado via WebSocket Flow")
