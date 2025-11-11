@@ -66,13 +66,13 @@ object ApkSignatureHelper {
             }
             
             val signatures = if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.P) {
-                packageInfo.signingInfo.apkContentsSigners
+                packageInfo.signingInfo?.apkContentsSigners
             } else {
                 @Suppress("DEPRECATION")
                 packageInfo.signatures
             }
             
-            if (signatures.isEmpty()) {
+            if (signatures == null || signatures.isEmpty()) {
                 null
             } else {
                 val cert = signatures[0].toByteArray()
