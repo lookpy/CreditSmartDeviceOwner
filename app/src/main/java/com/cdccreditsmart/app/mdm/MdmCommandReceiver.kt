@@ -3,6 +3,7 @@ package com.cdccreditsmart.app.mdm
 import android.content.Context
 import android.util.Log
 import com.cdccreditsmart.app.blocking.AppBlockingManager
+import com.cdccreditsmart.app.network.NetworkConnectivityHelper
 import com.cdccreditsmart.app.network.RetrofitProvider
 import com.cdccreditsmart.app.utils.DeviceInfoHelper
 import com.cdccreditsmart.network.api.MdmApiService
@@ -26,6 +27,10 @@ class MdmCommandReceiver(private val context: Context, private val contractCode:
     
     private val blockingManager by lazy {
         AppBlockingManager(context)
+    }
+    
+    private val networkHelper by lazy {
+        NetworkConnectivityHelper(context)
     }
     
     private var foregroundService: com.cdccreditsmart.app.service.CdcForegroundService? = null
@@ -72,10 +77,24 @@ class MdmCommandReceiver(private val context: Context, private val contractCode:
             
             override fun onFailure(webSocket: WebSocket, t: Throwable, response: Response?) {
                 Log.e(TAG, "❌ WebSocket MDM FALHOU!")
-                Log.e(TAG, "❌ Erro: ${t.message}")
+                
+                if (networkHelper.isNetworkException(t)) {
+                    val networkState = networkHelper.getCurrentNetworkState()
+                    if (!networkState.isConnected) {
+                        Log.e(TAG, "❌ CAUSA: SEM CONEXÃO COM A INTERNET")
+                        Log.e(TAG, "📶 ${networkState.userMessage}")
+                        Log.w(TAG, "⏸️  WebSocket será reconectado automaticamente quando a internet voltar")
+                    } else {
+                        Log.e(TAG, "❌ CAUSA: Erro de rede (internet disponível, mas servidor pode estar offline)")
+                        Log.e(TAG, "❌ Erro: ${t.message}")
+                    }
+                } else {
+                    Log.e(TAG, "❌ Erro: ${t.message}")
+                    Log.e(TAG, "❌ Stack trace: ${t.stackTraceToString()}")
+                }
+                
                 Log.e(TAG, "❌ Response code: ${response?.code}")
                 Log.e(TAG, "❌ Response body: ${response?.body?.string()}")
-                Log.e(TAG, "❌ Stack trace: ${t.stackTraceToString()}")
                 
                 Log.w(TAG, "🔄 Agendando reconexão em 5 segundos...")
                 scheduleReconnect(jwtToken)
