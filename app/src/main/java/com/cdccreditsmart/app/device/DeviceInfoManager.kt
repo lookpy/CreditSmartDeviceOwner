@@ -18,6 +18,38 @@ data class DeviceInfo(
     val buildId: String
 )
 
+data class DeviceImeiInfo(
+    val primaryImei: String?,
+    val additionalImeis: List<String>,
+    val acquisitionStatus: ImeiAcquisitionStatus,
+    val totalImeis: Int = (if (primaryImei != null) 1 else 0) + additionalImeis.size
+) {
+    fun getAllImeis(): List<String> {
+        val all = mutableListOf<String>()
+        primaryImei?.let { all.add(it) }
+        all.addAll(additionalImeis)
+        return all.distinct()
+    }
+    
+    fun hasValidImei(): Boolean = primaryImei != null || additionalImeis.isNotEmpty()
+}
+
+enum class ImeiAcquisitionStatus {
+    SUCCESS,
+    NO_PERMISSION,
+    NO_TELEPHONY,
+    NO_IMEI_AVAILABLE,
+    ERROR
+}
+
+data class ImeiValidationResult(
+    val isValid: Boolean,
+    val matchedImei: String?,
+    val expectedImei: String?,
+    val reason: String,
+    val deviceImeis: List<String> = emptyList()
+)
+
 class DeviceInfoManager(private val context: Context) {
 
     companion object {
@@ -25,53 +57,111 @@ class DeviceInfoManager(private val context: Context) {
         private const val FALLBACK_IMEI = "UNKNOWN_IMEI"
     }
 
-    fun getDeviceImei(): String {
+    fun getDeviceImeiInfo(): DeviceImeiInfo {
+        Log.i(TAG, "========================================")
+        Log.i(TAG, "📱 Coletando informações de IMEI do dispositivo")
+        Log.i(TAG, "========================================")
+        
         if (!hasPhoneStatePermission()) {
-            Log.w(TAG, "READ_PHONE_STATE permission not granted")
-            return FALLBACK_IMEI
+            Log.w(TAG, "❌ Permissão READ_PHONE_STATE não concedida")
+            return DeviceImeiInfo(
+                primaryImei = null,
+                additionalImeis = emptyList(),
+                acquisitionStatus = ImeiAcquisitionStatus.NO_PERMISSION
+            )
+        }
+
+        val telephonyManager = context.getSystemService(Context.TELEPHONY_SERVICE) as? TelephonyManager
+        
+        if (telephonyManager == null) {
+            Log.w(TAG, "❌ TelephonyManager não disponível (provavelmente tablet Wi-Fi)")
+            return DeviceImeiInfo(
+                primaryImei = null,
+                additionalImeis = emptyList(),
+                acquisitionStatus = ImeiAcquisitionStatus.NO_TELEPHONY
+            )
         }
 
         return try {
-            val telephonyManager = context.getSystemService(Context.TELEPHONY_SERVICE) as? TelephonyManager
+            val imeis = mutableListOf<String>()
             
-            if (telephonyManager == null) {
-                Log.e(TAG, "TelephonyManager not available")
-                return FALLBACK_IMEI
-            }
-
-            val imei = when {
-                Build.VERSION.SDK_INT >= Build.VERSION_CODES.O -> {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                val phoneCount = telephonyManager.phoneCount
+                Log.d(TAG, "Número de SIMs detectados: $phoneCount")
+                
+                for (slotIndex in 0 until phoneCount) {
                     try {
-                        telephonyManager.imei ?: telephonyManager.deviceId
+                        val imei = when {
+                            Build.VERSION.SDK_INT >= Build.VERSION_CODES.O -> {
+                                telephonyManager.getImei(slotIndex)
+                            }
+                            else -> {
+                                @Suppress("DEPRECATION")
+                                telephonyManager.getDeviceId(slotIndex)
+                            }
+                        }
+                        
+                        imei?.let {
+                            val cleaned = cleanImei(it)
+                            if (isValidImeiFormat(cleaned) && validateImeiLuhn(cleaned)) {
+                                imeis.add(cleaned)
+                                Log.d(TAG, "✅ IMEI válido encontrado no slot $slotIndex")
+                            }
+                        }
                     } catch (e: SecurityException) {
-                        Log.e(TAG, "SecurityException getting IMEI on Android O+", e)
-                        null
+                        Log.w(TAG, "SecurityException no slot $slotIndex", e)
                     }
                 }
-                else -> {
-                    try {
-                        @Suppress("DEPRECATION")
-                        telephonyManager.deviceId
-                    } catch (e: SecurityException) {
-                        Log.e(TAG, "SecurityException getting deviceId", e)
-                        null
-                    }
-                }
-            }
-
-            val cleanedImei = imei?.let { cleanImei(it) } ?: FALLBACK_IMEI
-            
-            if (isValidImeiFormat(cleanedImei)) {
-                Log.d(TAG, "Successfully retrieved IMEI (length: ${cleanedImei.length})")
-                cleanedImei
             } else {
-                Log.w(TAG, "Invalid IMEI format: $cleanedImei")
-                FALLBACK_IMEI
+                val imei = try {
+                    @Suppress("DEPRECATION")
+                    telephonyManager.deviceId
+                } catch (e: SecurityException) {
+                    Log.w(TAG, "SecurityException getting deviceId", e)
+                    null
+                }
+                
+                imei?.let {
+                    val cleaned = cleanImei(it)
+                    if (isValidImeiFormat(cleaned) && validateImeiLuhn(cleaned)) {
+                        imeis.add(cleaned)
+                        Log.d(TAG, "✅ IMEI válido encontrado")
+                    }
+                }
             }
+            
+            if (imeis.isEmpty()) {
+                Log.w(TAG, "❌ Nenhum IMEI válido encontrado")
+                DeviceImeiInfo(
+                    primaryImei = null,
+                    additionalImeis = emptyList(),
+                    acquisitionStatus = ImeiAcquisitionStatus.NO_IMEI_AVAILABLE
+                )
+            } else {
+                Log.i(TAG, "✅ ${imeis.size} IMEI(s) válido(s) coletado(s)")
+                DeviceImeiInfo(
+                    primaryImei = imeis.first(),
+                    additionalImeis = imeis.drop(1),
+                    acquisitionStatus = ImeiAcquisitionStatus.SUCCESS
+                )
+            }
+            
         } catch (e: Exception) {
-            Log.e(TAG, "Error getting IMEI", e)
-            FALLBACK_IMEI
+            Log.e(TAG, "❌ Erro ao coletar IMEIs", e)
+            DeviceImeiInfo(
+                primaryImei = null,
+                additionalImeis = emptyList(),
+                acquisitionStatus = ImeiAcquisitionStatus.ERROR
+            )
+        } finally {
+            Log.i(TAG, "========================================")
         }
+    }
+
+    @Deprecated("Use getDeviceImeiInfo() para obter informações completas")
+    fun getDeviceImei(): String {
+        val imeiInfo = getDeviceImeiInfo()
+        return imeiInfo.primaryImei ?: FALLBACK_IMEI
     }
 
     fun collectDeviceInfo(): DeviceInfo {
@@ -104,13 +194,57 @@ class DeviceInfoManager(private val context: Context) {
 
     fun isValidImeiFormat(imei: String): Boolean {
         val cleaned = cleanImei(imei)
-        return cleaned.length in 15..17
+        return cleaned.length == 15
+    }
+    
+    fun validateImeiLuhn(imei: String): Boolean {
+        val cleaned = cleanImei(imei)
+        
+        if (cleaned.length != 15) {
+            return false
+        }
+        
+        try {
+            var sum = 0
+            var shouldDouble = true
+            
+            for (i in cleaned.length - 2 downTo 0) {
+                var digit = cleaned[i].toString().toInt()
+                
+                if (shouldDouble) {
+                    digit *= 2
+                    if (digit > 9) {
+                        digit -= 9
+                    }
+                }
+                
+                sum += digit
+                shouldDouble = !shouldDouble
+            }
+            
+            val checkDigit = (10 - (sum % 10)) % 10
+            val lastDigit = cleaned.last().toString().toInt()
+            
+            val isValid = checkDigit == lastDigit
+            
+            if (!isValid) {
+                Log.w(TAG, "⚠️ IMEI falhou na validação Luhn (checksum inválido)")
+            }
+            
+            return isValid
+            
+        } catch (e: Exception) {
+            Log.e(TAG, "Erro na validação Luhn: ${e.message}")
+            return false
+        }
     }
 
     private fun hasPhoneStatePermission(): Boolean {
-        return ContextCompat.checkSelfPermission(
+        val hasReadPhoneState = ContextCompat.checkSelfPermission(
             context,
             Manifest.permission.READ_PHONE_STATE
         ) == PackageManager.PERMISSION_GRANTED
+        
+        return hasReadPhoneState
     }
 }
