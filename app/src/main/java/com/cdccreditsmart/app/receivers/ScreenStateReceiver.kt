@@ -5,14 +5,14 @@ import android.content.Context
 import android.content.Intent
 import android.util.Log
 
+interface ScreenStateListener {
+    fun onScreenStateChanged(isScreenOn: Boolean)
+}
+
 class ScreenStateReceiver : BroadcastReceiver() {
     
     companion object {
         private const val TAG = "ScreenStateReceiver"
-        
-        interface ScreenStateListener {
-            fun onScreenStateChanged(isScreenOn: Boolean)
-        }
         
         private val listeners = mutableSetOf<ScreenStateListener>()
         

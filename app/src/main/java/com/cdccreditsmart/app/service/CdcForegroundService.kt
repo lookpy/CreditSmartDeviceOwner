@@ -12,13 +12,14 @@ import android.util.Log
 import androidx.core.app.NotificationCompat
 import com.cdccreditsmart.app.R
 import com.cdccreditsmart.app.mdm.MdmCommandReceiver
+import com.cdccreditsmart.app.receivers.ScreenStateListener
 import com.cdccreditsmart.app.receivers.ScreenStateReceiver
 import com.cdccreditsmart.app.security.SecureTokenStorage
 import com.cdccreditsmart.app.websocket.WebSocketManager
 import com.cdccreditsmart.app.workers.HeartbeatWorker
 import kotlinx.coroutines.*
 
-class CdcForegroundService : Service(), ScreenStateReceiver.ScreenStateListener {
+class CdcForegroundService : Service(), ScreenStateListener {
     
     companion object {
         private const val TAG = "CdcForegroundService"
