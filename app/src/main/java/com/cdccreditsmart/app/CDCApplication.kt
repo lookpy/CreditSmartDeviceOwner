@@ -5,6 +5,7 @@ import android.content.Context
 import android.util.Log
 import com.cdccreditsmart.app.permissions.AutoPermissionManager
 import com.cdccreditsmart.app.protection.AppProtectionManager
+import com.cdccreditsmart.app.protection.KnoxEnhancedProtections
 import com.cdccreditsmart.app.protection.TamperDetectionService
 import com.cdccreditsmart.app.security.SecureTokenStorage
 import com.cdccreditsmart.app.service.CdcForegroundService
@@ -95,6 +96,13 @@ class CDCApplication : Application() {
             
             val protections = protectionManager.verifyProtections()
             Log.i(TAG, "🛡️ Proteções verificadas: $protections")
+            
+            try {
+                val knoxEnhanced = KnoxEnhancedProtections(applicationContext)
+                knoxEnhanced.applyAllEnhancedProtections()
+            } catch (e: Exception) {
+                Log.e(TAG, "Erro ao aplicar Knox Enhanced Protections: ${e.message}")
+            }
         } catch (e: Exception) {
             Log.e(TAG, "❌ Erro ao aplicar proteções: ${e.message}", e)
         }
