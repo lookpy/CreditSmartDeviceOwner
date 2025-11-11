@@ -36,6 +36,7 @@ class AppBlockingManager(private val context: Context) {
         Log.i(TAG, "🔒 Aplicando bloqueio progressivo - Nível ${parameters.targetLevel}")
         Log.d(TAG, "Dias de atraso: ${parameters.daysOverdue}")
         Log.d(TAG, "Razão: ${parameters.reason}")
+        Log.d(TAG, "Categorias recebidas: ${parameters.categories}")
         
         if (!isDeviceOwner()) {
             val error = "App não é Device Owner - não pode bloquear apps"
@@ -50,8 +51,47 @@ class AppBlockingManager(private val context: Context) {
         }
         
         try {
+            val previousLevel = getCurrentBlockingLevel()
+            val previousCategories = getBlockedCategories()
+            
+            Log.d(TAG, "Estado anterior - Nível: $previousLevel, Categorias: $previousCategories")
+            Log.d(TAG, "Novo comando - Nível: ${parameters.targetLevel}, Categorias: ${parameters.categories}")
+            
+            if (parameters.targetLevel == 0) {
+                Log.i(TAG, "💰 CLIENTE PAGOU! Nível = 0 → DESBLOQUEIO TOTAL")
+                val unblockResult = unblockAllApps()
+                return BlockingResult(
+                    success = unblockResult.success,
+                    blockedAppsCount = 0,
+                    unblockedAppsCount = unblockResult.unblockedCount,
+                    appliedLevel = 0,
+                    blockedPackages = emptyList(),
+                    lockscreenUpdated = unblockResult.lockscreenReset,
+                    errorMessage = unblockResult.errorMessage
+                )
+            }
+            
+            val finalCategories = if (parameters.targetLevel > previousLevel) {
+                val accumulated = (previousCategories + parameters.categories).distinct()
+                Log.i(TAG, "✅ Nível aumentou ($previousLevel → ${parameters.targetLevel}): ACUMULANDO categorias")
+                Log.i(TAG, "   Categorias CUMULATIVAS: $accumulated")
+                accumulated
+            } else if (parameters.targetLevel == previousLevel) {
+                val accumulated = (previousCategories + parameters.categories).distinct()
+                Log.i(TAG, "➡️ Nível manteve ($previousLevel): ACUMULANDO categorias")
+                Log.i(TAG, "   Categorias CUMULATIVAS: $accumulated")
+                accumulated
+            } else {
+                Log.w(TAG, "⚠️ Nível diminuiu mas não zerou ($previousLevel → ${parameters.targetLevel})")
+                Log.w(TAG, "   Isso não deveria acontecer! Cliente deveria ir direto para nível 0 ao pagar.")
+                Log.w(TAG, "   Usando categorias do comando atual (não cumulativo)")
+                parameters.categories
+            }
+            
+            saveBlockedCategories(finalCategories)
+            
             val appsToBlock = categoryMapper.getAppsToBlock(
-                parameters.categories,
+                finalCategories,
                 parameters.exceptions
             )
             
@@ -394,9 +434,35 @@ class AppBlockingManager(private val context: Context) {
         try {
             val prefs = context.getSharedPreferences("blocking_state", Context.MODE_PRIVATE)
             prefs.edit().clear().apply()
-            Log.d(TAG, "💾 Estado de bloqueio limpo")
+            Log.d(TAG, "💾 Estado de bloqueio limpo (incluindo categorias acumuladas)")
         } catch (e: Exception) {
             Log.e(TAG, "Erro ao limpar estado de bloqueio", e)
+        }
+    }
+    
+    private fun saveBlockedCategories(categories: List<String>) {
+        try {
+            val prefs = context.getSharedPreferences("blocking_state", Context.MODE_PRIVATE)
+            val categoriesJson = categories.joinToString(",")
+            prefs.edit().putString("blocked_categories", categoriesJson).apply()
+            Log.d(TAG, "💾 Categorias bloqueadas salvas: $categories")
+        } catch (e: Exception) {
+            Log.e(TAG, "Erro ao salvar categorias bloqueadas", e)
+        }
+    }
+    
+    private fun getBlockedCategories(): List<String> {
+        return try {
+            val prefs = context.getSharedPreferences("blocking_state", Context.MODE_PRIVATE)
+            val categoriesJson = prefs.getString("blocked_categories", "") ?: ""
+            if (categoriesJson.isEmpty()) {
+                emptyList()
+            } else {
+                categoriesJson.split(",").filter { it.isNotEmpty() }
+            }
+        } catch (e: Exception) {
+            Log.e(TAG, "Erro ao recuperar categorias bloqueadas", e)
+            emptyList()
         }
     }
 }
