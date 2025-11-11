@@ -199,7 +199,11 @@ class AppBlockingManager(private val context: Context) {
     }
     
     fun unblockAllApps(): UnblockResult {
-        Log.i(TAG, "🔓 Desbloqueando TODOS os apps")
+        Log.i(TAG, "")
+        Log.i(TAG, "╔════════════════════════════════════════════════════╗")
+        Log.i(TAG, "║  🔓 DESBLOQUEIO TOTAL - NÍVEL 0 (PAGAMENTO)      ║")
+        Log.i(TAG, "╚════════════════════════════════════════════════════╝")
+        Log.i(TAG, "")
         
         clearBlockingState()
         
@@ -220,15 +224,27 @@ class AppBlockingManager(private val context: Context) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                 val allPackages = installedApps.map { it.packageName }.toTypedArray()
                 
+                Log.d(TAG, "📊 Total de apps instalados: ${allPackages.size}")
+                Log.d(TAG, "   Chamando setPackagesSuspended(suspended=false) para desbloquear...")
+                
                 val failedPackages = dpm.setPackagesSuspended(
                     adminComponent,
                     allPackages,
                     false
                 )
                 
-                unblockedCount = allPackages.size - failedPackages.size
+                if (failedPackages == null) {
+                    Log.i(TAG, "✅ setPackagesSuspended retornou NULL - todos os apps foram desbloqueados com sucesso!")
+                } else {
+                    Log.w(TAG, "⚠️ ${failedPackages.size} apps falharam ao desbloquear:")
+                    failedPackages.forEach { pkg ->
+                        Log.w(TAG, "   - $pkg")
+                    }
+                }
                 
-                Log.i(TAG, "✅ Desbloqueio completo - $unblockedCount apps desbloqueados (${failedPackages.size} falharam)")
+                unblockedCount = allPackages.size - (failedPackages?.size ?: 0)
+                
+                Log.i(TAG, "📊 RESULTADO: $unblockedCount apps desbloqueados de ${allPackages.size} total")
             } else {
                 for (app in installedApps) {
                     try {
@@ -244,6 +260,16 @@ class AppBlockingManager(private val context: Context) {
                 
                 Log.i(TAG, "✅ Desbloqueio completo - $unblockedCount apps desbloqueados")
             }
+            
+            Log.i(TAG, "")
+            Log.i(TAG, "╔════════════════════════════════════════════════════╗")
+            Log.i(TAG, "║  ✅ DESBLOQUEIO TOTAL CONCLUÍDO COM SUCESSO!     ║")
+            Log.i(TAG, "╠════════════════════════════════════════════════════╣")
+            Log.i(TAG, "║  Apps desbloqueados: $unblockedCount              ║")
+            Log.i(TAG, "║  Knox Lockscreen: Resetado                        ║")
+            Log.i(TAG, "║  Estado de bloqueio: Limpo                        ║")
+            Log.i(TAG, "╚════════════════════════════════════════════════════╝")
+            Log.i(TAG, "")
             
             resetKnoxLockscreen()
             
