@@ -47,6 +47,7 @@ class AppProtectionManager(private val context: Context) {
         protectionsApplied += preventTaskKilling()
         protectionsApplied += blockSystemWipe()
         protectionsApplied += blockRecoveryBoot()
+        protectionsApplied += blockMotorolaSettingsApps()
         
         Log.i(TAG, "========================================")
         Log.i(TAG, "📊 RESUMO DA PROTEÇÃO ANTI-REMOÇÃO:")
@@ -193,14 +194,70 @@ class AppProtectionManager(private val context: Context) {
             Log.d(TAG, "   Modify accounts block não aplicado")
         }
         
+        // Restrições extras para proteção robusta (especialmente para Motorola)
+        try {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                dpm.addUserRestriction(adminComponent, UserManager.DISALLOW_NETWORK_RESET)
+                Log.i(TAG, "        → Network reset bloqueado (proteção extra)")
+                count++
+            }
+        } catch (e: Exception) {
+            Log.d(TAG, "   Network reset block não aplicado: ${e.message}")
+        }
+        
+        try {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                dpm.addUserRestriction(adminComponent, UserManager.DISALLOW_CONFIG_CELL_BROADCASTS)
+                Log.i(TAG, "        → Cell broadcasts config bloqueado (proteção extra)")
+                count++
+            }
+        } catch (e: Exception) {
+            Log.d(TAG, "   Cell broadcasts block não aplicado: ${e.message}")
+        }
+        
+        try {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                dpm.addUserRestriction(adminComponent, UserManager.DISALLOW_CONFIG_BLUETOOTH)
+                Log.i(TAG, "        → Bluetooth config bloqueado (proteção extra)")
+                count++
+            }
+        } catch (e: Exception) {
+            Log.d(TAG, "   Bluetooth config block não aplicado: ${e.message}")
+        }
+        
+        try {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                dpm.addUserRestriction(adminComponent, UserManager.DISALLOW_CONFIG_LOCATION)
+                Log.i(TAG, "        → Location config bloqueado (proteção extra)")
+                count++
+            }
+        } catch (e: Exception) {
+            Log.d(TAG, "   Location config block não aplicado: ${e.message}")
+        }
+        
+        try {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                dpm.addUserRestriction(adminComponent, UserManager.DISALLOW_OUTGOING_BEAM)
+                Log.i(TAG, "        → Outgoing beam bloqueado (proteção extra)")
+                count++
+            }
+        } catch (e: Exception) {
+            Log.d(TAG, "   Outgoing beam block não aplicado: ${e.message}")
+        }
+        
         // OEM unlock bloqueado via Knox Enhanced Protections (allowDeveloperMode)
         // DevicePolicyManager padrão não tem API para bloquear OEM unlock diretamente
         // Samsung Knox bloqueia via RestrictionPolicy.allowDeveloperMode(false)
         Log.d(TAG, "   OEM unlock: Bloqueado via Knox Enhanced Protections")
         
         Log.w(TAG, "")
-        Log.w(TAG, "⚠️ LIMITAÇÃO: Hard reset via botões físicos durante boot NÃO pode ser bloqueado")
-        Log.w(TAG, "   Isso é uma limitação do Android (acontece antes do sistema iniciar)")
+        Log.w(TAG, "📋 IMPORTANTE - LIMITAÇÕES DO ANDROID:")
+        Log.w(TAG, "   ✅ Factory reset VIA SETTINGS: BLOQUEADO")
+        Log.w(TAG, "   ❌ Factory reset VIA RECOVERY MODE (Volume+Power): NÃO BLOQUEÁVEL")
+        Log.w(TAG, "   ❌ Fastboot/Bootloader: Operam ABAIXO do Android - NÃO BLOQUEÁVEL")
+        Log.w(TAG, "")
+        Log.w(TAG, "   Dispositivos Motorola podem ter Settings customizados.")
+        Log.w(TAG, "   Apps Settings da Motorola foram bloqueados como proteção extra.")
         
         return count
     }
@@ -566,6 +623,77 @@ class AppProtectionManager(private val context: Context) {
         Log.i(TAG, "========================================")
         Log.i(TAG, "🔒 CONFIGURAÇÕES COMPLETAMENTE BLOQUEADAS: $blockedCount apps")
         Log.i(TAG, "⚠️ ATENÇÃO: Usuário NÃO pode acessar Settings do dispositivo!")
+        Log.i(TAG, "========================================")
+        
+        return blockedCount
+    }
+    
+    private fun blockMotorolaSettingsApps(): Int {
+        val isMotorola = Build.MANUFACTURER.equals("motorola", ignoreCase = true)
+        
+        if (!isMotorola) {
+            Log.d(TAG, "[12/10] MOTOROLA SETTINGS - Dispositivo não é Motorola")
+            return 0
+        }
+        
+        Log.i(TAG, "========================================")
+        Log.i(TAG, "📱 BLOQUEANDO APPS SETTINGS DA MOTOROLA")
+        Log.i(TAG, "========================================")
+        
+        if (!isDeviceOwner()) {
+            Log.e(TAG, "❌ App NÃO é Device Owner")
+            return 0
+        }
+        
+        val motorolaSettingsPackages = listOf(
+            "com.android.settings",
+            "com.motorola.cn.settings",
+            "com.motorola.motocare",
+            "com.motorola.launcher.settings"
+        )
+        
+        var blockedCount = 0
+        
+        for (pkg in motorolaSettingsPackages) {
+            try {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                    // Android 7.0+ usa setPackagesSuspended
+                    val suspended = dpm.setPackagesSuspended(
+                        adminComponent,
+                        arrayOf(pkg),
+                        true
+                    )
+                    if (suspended.isNotEmpty()) {
+                        Log.i(TAG, "✅ SUSPENSO (API 24+): $pkg")
+                        blockedCount++
+                    } else {
+                        Log.d(TAG, "   App não encontrado: $pkg")
+                    }
+                } else {
+                    // Android < 7.0 usa setApplicationHidden
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                        val wasHidden = dpm.setApplicationHidden(adminComponent, pkg, true)
+                        if (wasHidden) {
+                            Log.i(TAG, "✅ OCULTO (API 21+): $pkg")
+                            blockedCount++
+                        } else {
+                            Log.d(TAG, "   Já oculto ou não encontrado: $pkg")
+                        }
+                    }
+                }
+            } catch (e: Exception) {
+                Log.d(TAG, "   Não foi possível bloquear $pkg: ${e.message}")
+            }
+        }
+        
+        Log.i(TAG, "========================================")
+        if (blockedCount > 0) {
+            Log.i(TAG, "✅ [12/10] MOTOROLA SETTINGS BLOQUEADOS: $blockedCount apps")
+            Log.i(TAG, "   Proteção extra contra factory reset via Settings customizados")
+        } else {
+            Log.w(TAG, "⚠️ [12/10] Nenhum app Motorola Settings bloqueado")
+            Log.w(TAG, "   Apps podem não estar instalados neste dispositivo")
+        }
         Log.i(TAG, "========================================")
         
         return blockedCount
