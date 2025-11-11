@@ -6,14 +6,14 @@ import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 
 object MoshiProvider {
     
-    private val moshi: Moshi by lazy {
+    private val instance: Moshi by lazy {
         Moshi.Builder()
             .add(CommandParametersAdapter())
             .addLast(KotlinJsonAdapterFactory())
             .build()
     }
     
-    fun getMoshi(): Moshi = moshi
+    fun getMoshi(): Moshi = instance
     
     @Deprecated("Use getMoshi() instead", ReplaceWith("getMoshi()"))
     fun createMoshi(): Moshi = getMoshi()
