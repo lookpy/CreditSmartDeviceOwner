@@ -93,6 +93,8 @@ class AppBlockingManager(private val context: Context) {
                 parameters.exceptions
             )
             
+            saveBlockedPackages(appsToBlock)
+            
             val allInstalledApps = context.packageManager
                 .getInstalledApplications(0)
                 .map { it.packageName }
@@ -315,15 +317,8 @@ class AppBlockingManager(private val context: Context) {
     
     fun isAppBlocked(packageName: String): Boolean {
         return try {
-            if (!isDeviceOwner()) {
-                false
-            } else {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                    dpm.isPackageSuspended(packageName)
-                } else {
-                    dpm.isApplicationHidden(adminComponent, packageName)
-                }
-            }
+            val blockedPackages = getBlockedPackages()
+            packageName in blockedPackages
         } catch (e: Exception) {
             Log.e(TAG, "Erro ao verificar se app está bloqueado: $packageName", e)
             false
@@ -386,7 +381,7 @@ class AppBlockingManager(private val context: Context) {
         try {
             val prefs = context.getSharedPreferences("blocking_state", Context.MODE_PRIVATE)
             prefs.edit().clear().apply()
-            Log.d(TAG, "💾 Estado de bloqueio limpo (incluindo categorias acumuladas)")
+            Log.d(TAG, "💾 Estado de bloqueio limpo (incluindo categorias e pacotes acumulados)")
         } catch (e: Exception) {
             Log.e(TAG, "Erro ao limpar estado de bloqueio", e)
         }
@@ -414,6 +409,32 @@ class AppBlockingManager(private val context: Context) {
             }
         } catch (e: Exception) {
             Log.e(TAG, "Erro ao recuperar categorias bloqueadas", e)
+            emptyList()
+        }
+    }
+    
+    private fun saveBlockedPackages(packages: List<String>) {
+        try {
+            val prefs = context.getSharedPreferences("blocking_state", Context.MODE_PRIVATE)
+            val packagesJson = packages.joinToString(",")
+            prefs.edit().putString("blocked_packages", packagesJson).apply()
+            Log.d(TAG, "💾 Pacotes bloqueados salvos: ${packages.size} apps")
+        } catch (e: Exception) {
+            Log.e(TAG, "Erro ao salvar pacotes bloqueados", e)
+        }
+    }
+    
+    private fun getBlockedPackages(): List<String> {
+        return try {
+            val prefs = context.getSharedPreferences("blocking_state", Context.MODE_PRIVATE)
+            val packagesJson = prefs.getString("blocked_packages", "") ?: ""
+            if (packagesJson.isEmpty()) {
+                emptyList()
+            } else {
+                packagesJson.split(",").filter { it.isNotEmpty() }
+            }
+        } catch (e: Exception) {
+            Log.e(TAG, "Erro ao recuperar pacotes bloqueados", e)
             emptyList()
         }
     }
