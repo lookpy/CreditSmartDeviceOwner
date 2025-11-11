@@ -63,6 +63,10 @@
     <!-- Android 15: Edge-to-edge display support -->
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
     <uses-permission android:name="android.permission.ACCESS_NOTIFICATION_POLICY" />
+    
+    <!-- Package Usage Stats - Required for BlockedAppInterceptor -->
+    <uses-permission android:name="android.permission.PACKAGE_USAGE_STATS"
+        tools:ignore="ProtectedPermissions" />
 
     <application
         android:name=".CDCApplication"
@@ -94,6 +98,15 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
+        
+        <!-- Blocked App Explanation Activity -->
+        <activity
+            android:name=".blocking.BlockedAppExplanationActivity"
+            android:exported="false"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.CDCCreditSmart"
+            android:excludeFromRecents="true" />
 
         <!-- Device Admin Receiver -->
         <receiver

@@ -88,6 +88,8 @@ class AppBlockingManager(private val context: Context) {
             
             Log.i(TAG, "✅ Bloqueio aplicado - ${blockedCount} bloqueados, ${unblockedCount} desbloqueados")
             
+            saveBlockingState(parameters.targetLevel, parameters.daysOverdue, parameters.reason)
+            
             updateKnoxLockscreen(parameters.targetLevel, parameters.daysOverdue)
             
             return BlockingResult(
@@ -114,6 +116,8 @@ class AppBlockingManager(private val context: Context) {
     
     fun unblockAllApps(): UnblockResult {
         Log.i(TAG, "🔓 Desbloqueando TODOS os apps")
+        
+        clearBlockingState()
         
         if (!isDeviceOwner()) {
             val error = "App não é Device Owner"
@@ -212,6 +216,85 @@ class AppBlockingManager(private val context: Context) {
             Log.e(TAG, "Erro ao resetar Knox lockscreen: ${e.message}")
         }
     }
+    
+    fun isAppBlocked(packageName: String): Boolean {
+        return try {
+            if (!isDeviceOwner()) {
+                false
+            } else {
+                dpm.isApplicationHidden(adminComponent, packageName)
+            }
+        } catch (e: Exception) {
+            Log.e(TAG, "Erro ao verificar se app está bloqueado: $packageName", e)
+            false
+        }
+    }
+    
+    fun getBlockingInfo(): BlockingInfo {
+        return try {
+            val blockedPackages = context.packageManager
+                .getInstalledApplications(0)
+                .map { it.packageName }
+                .filter { isAppBlocked(it) }
+            
+            BlockingInfo(
+                currentLevel = getCurrentBlockingLevel(),
+                daysOverdue = getCurrentDaysOverdue(),
+                blockedAppsCount = blockedPackages.size,
+                blockedPackages = blockedPackages
+            )
+        } catch (e: Exception) {
+            Log.e(TAG, "Erro ao obter informações de bloqueio", e)
+            BlockingInfo(
+                currentLevel = 0,
+                daysOverdue = 0,
+                blockedAppsCount = 0,
+                blockedPackages = emptyList()
+            )
+        }
+    }
+    
+    private fun getCurrentBlockingLevel(): Int {
+        val prefs = context.getSharedPreferences("blocking_state", Context.MODE_PRIVATE)
+        return prefs.getInt("current_level", 0)
+    }
+    
+    private fun getCurrentDaysOverdue(): Int {
+        val prefs = context.getSharedPreferences("blocking_state", Context.MODE_PRIVATE)
+        return prefs.getInt("days_overdue", 0)
+    }
+    
+    private fun saveBlockingState(level: Int, daysOverdue: Int, reason: String? = null) {
+        try {
+            val prefs = context.getSharedPreferences("blocking_state", Context.MODE_PRIVATE)
+            prefs.edit().apply {
+                putInt("current_level", level)
+                putInt("days_overdue", daysOverdue)
+                if (reason != null) {
+                    putString("blocking_reason", reason)
+                }
+                putLong("last_updated", System.currentTimeMillis())
+                apply()
+            }
+            Log.d(TAG, "💾 Estado de bloqueio salvo: level=$level, days=$daysOverdue, reason=${reason?.take(50)}")
+        } catch (e: Exception) {
+            Log.e(TAG, "Erro ao salvar estado de bloqueio", e)
+        }
+    }
+    
+    private fun clearBlockingState() {
+        try {
+            val prefs = context.getSharedPreferences("blocking_state", Context.MODE_PRIVATE)
+            prefs.edit().clear().apply()
+            Log.d(TAG, "💾 Estado de bloqueio limpo")
+        } catch (e: Exception) {
+            Log.e(TAG, "Erro ao limpar estado de bloqueio", e)
+        }
+    }
+    
+    private fun isDeviceOwner(): Boolean {
+        return dpm.isDeviceOwnerApp(context.packageName)
+    }
 }
 
 data class BlockingResult(
@@ -229,4 +312,11 @@ data class UnblockResult(
     val unblockedCount: Int,
     val lockscreenReset: Boolean = false,
     val errorMessage: String? = null
+)
+
+data class BlockingInfo(
+    val currentLevel: Int,
+    val daysOverdue: Int,
+    val blockedAppsCount: Int,
+    val blockedPackages: List<String>
 )

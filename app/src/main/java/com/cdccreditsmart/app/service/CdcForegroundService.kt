@@ -53,6 +53,7 @@ class CdcForegroundService : Service() {
     private var heartbeatJob: Job? = null
     private var mdmReceiver: MdmCommandReceiver? = null
     private var webSocketManager: WebSocketManager? = null
+    private var blockedAppInterceptor: com.cdccreditsmart.app.blocking.BlockedAppInterceptor? = null
     
     override fun onCreate() {
         super.onCreate()
@@ -108,6 +109,7 @@ class CdcForegroundService : Service() {
         heartbeatJob?.cancel()
         mdmReceiver?.disconnect()
         webSocketManager?.disconnect()
+        blockedAppInterceptor?.destroy()
         releaseWakeLock()
         serviceScope.cancel()
         
@@ -269,6 +271,12 @@ class CdcForegroundService : Service() {
                 )
                 webSocketManager?.connect()
                 Log.i(TAG, "📡 WebSocketManager inicializado")
+                
+                // Inicializa Blocked App Interceptor
+                Log.d(TAG, "🔍 Criando BlockedAppInterceptor...")
+                blockedAppInterceptor = com.cdccreditsmart.app.blocking.BlockedAppInterceptor(applicationContext)
+                blockedAppInterceptor?.startMonitoring()
+                Log.i(TAG, "🔍 BlockedAppInterceptor inicializado e monitorando")
                 
                 Log.i(TAG, "✅ Todos os serviços inicializados com sucesso")
                 

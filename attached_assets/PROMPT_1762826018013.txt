@@ -1,0 +1,956 @@
+# Documentação Técnica - Comandos MDM de Bloqueio
+## Sistema CDC CreditSmart - Integração APK
+
+---
+
+## 📋 Sumário
+1. [Visão Geral](#visão-geral)
+2. [Bloqueio Progressivo (BLOCK_APPS_PROGRESSIVE)](#bloqueio-progressivo)
+3. [Bloqueio Total do Dispositivo (LOCK_SCREEN)](#bloqueio-total-do-dispositivo)
+4. [Estrutura de Comunicação](#estrutura-de-comunicação)
+5. [Exemplos de Implementação](#exemplos-de-implementação)
+
+---
+
+## 🎯 Visão Geral
+
+O sistema MDM (Mobile Device Management) do backend CDC CreditSmart envia dois tipos principais de comandos de bloqueio:
+
+### Comandos Disponíveis
+
+| Comando | Tipo | Finalidade | Requer Device Owner |
+|---------|------|------------|---------------------|
+| `BLOCK_APPS_PROGRESSIVE` | Bloqueio Progressivo | Bloqueia categorias de apps baseado em dias de atraso | ✅ Sim |
+| `UNBLOCK_APPS_PROGRESSIVE` | Desbloqueio Progressivo | Remove restrições de apps | ✅ Sim |
+| `LOCK_SCREEN` | Bloqueio Total | Bloqueia dispositivo inteiro com banner de pagamento | ✅ Sim |
+
+---
+
+## 🔒 Bloqueio Progressivo
+
+### BLOCK_APPS_PROGRESSIVE
+
+Bloqueia categorias específicas de aplicativos baseado no nível de atraso do cliente.
+
+### Estrutura do Comando
+
+```json
+{
+  "id": "uuid-do-comando",
+  "deviceId": "device_xxx",
+  "commandType": "BLOCK_APPS_PROGRESSIVE",
+  "parameters": {
+    "targetLevel": 1,
+    "daysOverdue": 7,
+    "categories": ["photos", "gallery", "video_players", "web_browsers"],
+    "exceptions": [
+      "com.whatsapp",
+      "com.android.dialer",
+      "com.android.messaging"
+    ],
+    "reason": "Atraso de 7 dias - Bloqueio nível 1"
+  },
+  "status": "pending",
+  "priority": "high",
+  "expiresAt": "2025-11-13T00:00:00Z"
+}
+```
+
+### Níveis de Bloqueio Progressivo
+
+#### Nível 1 - 7 dias de atraso
+```json
+{
+  "targetLevel": 1,
+  "daysOverdue": 7,
+  "categories": ["photos", "gallery", "video_players", "web_browsers"],
+  "exceptions": ["com.whatsapp", "com.android.dialer", "com.android.messaging", "bancos_allowed", "emails_allowed"],
+  "message_title": "Atenção: limite de apps reduzido",
+  "message_body": "Seu aparelho está com atraso de 7 dias. Aplicativos de fotos, galeria, vídeos e navegadores foram temporariamente bloqueados até a regularização."
+}
+```
+
+#### Nível 2 - 15 dias de atraso
+```json
+{
+  "targetLevel": 2,
+  "daysOverdue": 15,
+  "categories": ["youtube", "music_players", "play_store", "games"],
+  "exceptions": ["com.whatsapp", "com.android.dialer", "com.android.messaging", "bancos_allowed", "emails_allowed"],
+  "message_title": "Atenção: restrição ampliada",
+  "message_body": "Atraso de 15 dias. YouTube, apps de música, Play Store e jogos foram bloqueados além das restrições anteriores."
+}
+```
+
+#### Nível 3 - 30 dias de atraso
+```json
+{
+  "targetLevel": 3,
+  "daysOverdue": 30,
+  "categories": ["social_media"],
+  "exceptions": ["com.whatsapp", "com.android.dialer", "com.android.messaging", "bancos_allowed", "emails_allowed"],
+  "message_title": "Atenção: redes sociais bloqueadas",
+  "message_body": "Atraso de 30 dias. Todas as redes sociais foram bloqueadas, exceto WhatsApp."
+}
+```
+
+#### Nível 4 - 45 dias de atraso
+```json
+{
+  "targetLevel": 4,
+  "daysOverdue": 45,
+  "categories": ["all_apps_except_whatsapp"],
+  "exceptions": ["com.whatsapp", "com.android.dialer", "com.android.messaging", "bancos_allowed", "emails_allowed"],
+  "message_title": "Atenção: restrição severa",
+  "message_body": "Atraso de 45 dias. Quase todos os aplicativos estão bloqueados, WhatsApp continua liberado."
+}
+```
+
+#### Nível 5 - 60 dias de atraso
+```json
+{
+  "targetLevel": 5,
+  "daysOverdue": 60,
+  "categories": ["all_apps_except_banks_calls_sms_emails"],
+  "exceptions": ["bancos_allowed", "com.android.dialer", "com.android.messaging", "emails_allowed"],
+  "message_title": "Atenção: restrição máxima",
+  "message_body": "Atraso de 60 dias. Apenas apps bancários, de e-mail, telefone e SMS permanecerão disponíveis. Demais apps foram bloqueados."
+}
+```
+
+### ⚠️ Exceções SEMPRE Permitidas
+
+**CRÍTICO**: Os seguintes apps NUNCA devem ser bloqueados em nenhum nível:
+
+```kotlin
+val NEVER_BLOCK_APPS = listOf(
+    // Comunicação essencial
+    "com.whatsapp",
+    "com.android.dialer",           // Telefone
+    "com.android.messaging",        // SMS
+    
+    // Bancos (categoria especial)
+    // Todos os apps com package name contendo "banco" ou "bank"
+    // Ex: com.santander.app, com.bradesco.next, etc.
+    
+    // Emails (categoria especial)
+    // Todos os apps de email
+    // Ex: com.google.android.gm, etc.
+    
+    // Sistema Android
+    "com.android.settings",         // Configurações
+    "com.android.systemui",         // Interface do sistema
+    "com.android.launcher",         // Launcher
+)
+```
+
+### Mapeamento de Categorias
+
+O APK deve mapear as categorias para package names específicos:
+
+```kotlin
+object AppCategories {
+    val PHOTOS = listOf(
+        "com.google.android.apps.photos",
+        "com.android.gallery3d",
+        "com.sec.android.gallery3d"
+    )
+    
+    val GALLERY = listOf(
+        "com.android.gallery3d",
+        "com.sec.android.gallery3d",
+        "com.miui.gallery"
+    )
+    
+    val VIDEO_PLAYERS = listOf(
+        "com.google.android.youtube",
+        "com.google.android.videos",
+        "org.videolan.vlc"
+    )
+    
+    val WEB_BROWSERS = listOf(
+        "com.android.chrome",
+        "org.mozilla.firefox",
+        "com.opera.browser",
+        "com.microsoft.emmx"
+    )
+    
+    val YOUTUBE = listOf(
+        "com.google.android.youtube"
+    )
+    
+    val MUSIC_PLAYERS = listOf(
+        "com.spotify.music",
+        "com.google.android.music",
+        "com.soundcloud.android"
+    )
+    
+    val PLAY_STORE = listOf(
+        "com.android.vending"
+    )
+    
+    val GAMES = listOf(
+        // Detectar por categoria no PackageManager
+        // category == CATEGORY_GAME
+    )
+    
+    val SOCIAL_MEDIA = listOf(
+        "com.facebook.katana",
+        "com.instagram.android",
+        "com.twitter.android",
+        "com.snapchat.android",
+        "com.tiktok.android"
+        // Exceto WhatsApp que é exceção
+    )
+}
+```
+
+---
+
+## 🚨 Bloqueio Total do Dispositivo
+
+### LOCK_SCREEN
+
+Bloqueia o dispositivo inteiro exibindo um banner em tela cheia com informações de pagamento e opções de regularização.
+
+### Estrutura do Comando
+
+```json
+{
+  "id": "uuid-do-comando",
+  "deviceId": "device_xxx",
+  "commandType": "LOCK_SCREEN",
+  "parameters": {
+    "lockType": "payment_overdue",
+    "severity": "critical",
+    "allowUnlock": false,
+    "message": {
+      "title": "Dispositivo Bloqueado",
+      "subtitle": "Pagamento em atraso",
+      "body": "Este aparelho foi bloqueado devido a atraso no pagamento. Regularize sua situação para desbloquear o dispositivo.",
+      "footer": "CDC CreditSmart - Soluções Inteligentes em Crédito"
+    },
+    "contractInfo": {
+      "contractId": "device_1762725359153_ogqi20gqqp",
+      "contractNumber": "CDC-2025-001234",
+      "customerName": "João da Silva",
+      "customerCpf": "123.456.789-00",
+      "deviceName": "Samsung Galaxy A54",
+      "totalValue": 2400.00,
+      "amountPaid": 800.00,
+      "amountDue": 1600.00,
+      "installmentsPaid": 4,
+      "installmentsTotal": 12,
+      "nextDueDate": "2025-11-15",
+      "daysOverdue": 60
+    },
+    "paymentInfo": {
+      "totalDue": 1600.00,
+      "overdueAmount": 800.00,
+      "interestAmount": 120.00,
+      "fineAmount": 80.00,
+      "nextInstallment": 200.00,
+      "installmentsDue": [
+        {
+          "number": 5,
+          "dueDate": "2025-10-01",
+          "value": 200.00,
+          "daysOverdue": 41
+        },
+        {
+          "number": 6,
+          "dueDate": "2025-10-15",
+          "value": 200.00,
+          "daysOverdue": 27
+        },
+        {
+          "number": 7,
+          "dueDate": "2025-11-01",
+          "value": 200.00,
+          "daysOverdue": 10
+        },
+        {
+          "number": 8,
+          "dueDate": "2025-11-15",
+          "value": 200.00,
+          "daysOverdue": 0
+        }
+      ]
+    },
+    "contactInfo": {
+      "companyName": "CDC CreditSmart",
+      "storeName": "Loja Centro - São Paulo",
+      "phone": "(11) 98765-4321",
+      "whatsapp": "5511987654321",
+      "email": "atendimento@cdccreditsmart.com",
+      "address": "Av. Paulista, 1000 - São Paulo/SP",
+      "businessHours": "Seg-Sex: 9h-18h | Sáb: 9h-13h"
+    },
+    "paymentOptions": [
+      {
+        "type": "pix",
+        "label": "Pagar com PIX",
+        "pixKey": "atendimento@cdccreditsmart.com",
+        "qrCode": "00020126580014br.gov.bcb.pix...",
+        "enabled": true,
+        "icon": "pix"
+      },
+      {
+        "type": "boleto",
+        "label": "Gerar Boleto",
+        "boletoUrl": "https://backend.url/api/payments/boleto/xxx",
+        "enabled": true,
+        "icon": "barcode"
+      },
+      {
+        "type": "whatsapp",
+        "label": "Falar no WhatsApp",
+        "whatsappNumber": "5511987654321",
+        "whatsappMessage": "Olá! Preciso regularizar o pagamento do contrato CDC-2025-001234",
+        "enabled": true,
+        "icon": "whatsapp"
+      },
+      {
+        "type": "call",
+        "label": "Ligar para Loja",
+        "phoneNumber": "1198765432",
+        "enabled": true,
+        "icon": "phone"
+      }
+    ],
+    "allowedActions": [
+      "call_emergency",      // Ligar para emergências (190, 192, 193)
+      "receive_calls",       // Receber ligações
+      "use_banking_apps"     // Usar apps bancários para pagamento
+    ],
+    "theme": {
+      "primaryColor": "#E45713",      // Orange CDC
+      "backgroundColor": "#1A1A1A",   // Dark background
+      "textColor": "#FFFFFF",
+      "accentColor": "#FFA500"
+    }
+  },
+  "status": "pending",
+  "priority": "urgent",
+  "expiresAt": null
+}
+```
+
+### Layout do Banner de Bloqueio
+
+O APK deve exibir uma Activity em tela cheia (sem possibilidade de fechar) com o seguinte layout:
+
+```
+┌─────────────────────────────────────────┐
+│  🔒 CDC CREDITMART - Dispositivo Bloqueado │
+├─────────────────────────────────────────┤
+│                                           │
+│  ⚠️ PAGAMENTO EM ATRASO                  │
+│                                           │
+│  Contrato: CDC-2025-001234                │
+│  Cliente: João da Silva                   │
+│  CPF: 123.456.789-00                      │
+│                                           │
+│  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━   │
+│                                           │
+│  Aparelho: Samsung Galaxy A54             │
+│  Valor Total: R$ 2.400,00                 │
+│  Pago: R$ 800,00 (4/12 parcelas)          │
+│  Saldo Devedor: R$ 1.600,00               │
+│                                           │
+│  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━   │
+│                                           │
+│  💰 VALORES EM ATRASO                     │
+│                                           │
+│  Parcelas vencidas: 4                     │
+│  Valor atrasado: R$ 800,00                │
+│  Juros: R$ 120,00                         │
+│  Multa: R$ 80,00                          │
+│  Total a pagar: R$ 1.000,00               │
+│                                           │
+│  Dias de atraso: 60 dias                  │
+│                                           │
+│  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━   │
+│                                           │
+│  📱 REGULARIZE SEU PAGAMENTO:             │
+│                                           │
+│  ┌─────────────────────────────────────┐ │
+│  │  💳 Pagar com PIX                   │ │
+│  └─────────────────────────────────────┘ │
+│                                           │
+│  ┌─────────────────────────────────────┐ │
+│  │  📄 Gerar Boleto                    │ │
+│  └─────────────────────────────────────┘ │
+│                                           │
+│  ┌─────────────────────────────────────┐ │
+│  │  💬 Falar no WhatsApp               │ │
+│  └─────────────────────────────────────┘ │
+│                                           │
+│  ┌─────────────────────────────────────┐ │
+│  │  📞 Ligar para Loja                 │ │
+│  └─────────────────────────────────────┘ │
+│                                           │
+│  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━   │
+│                                           │
+│  📞 CONTATO                               │
+│  Loja Centro - São Paulo                  │
+│  (11) 98765-4321                          │
+│  atendimento@cdccreditsmart.com           │
+│                                           │
+│  Horário: Seg-Sex 9h-18h | Sáb 9h-13h    │
+│                                           │
+└─────────────────────────────────────────┘
+```
+
+### Implementação Kotlin - LockScreenActivity
+
+```kotlin
+@AndroidEntryPoint
+class LockScreenActivity : ComponentActivity() {
+    
+    private lateinit var lockScreenParams: LockScreenParameters
+    
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        
+        // Parse parâmetros do comando MDM
+        lockScreenParams = parseLockScreenCommand(intent)
+        
+        // Configurar Activity como tela de bloqueio
+        setupLockScreenMode()
+        
+        // Renderizar UI
+        setContent {
+            LockScreenTheme(lockScreenParams.theme) {
+                LockScreenContent(
+                    params = lockScreenParams,
+                    onPaymentAction = ::handlePaymentAction
+                )
+            }
+        }
+    }
+    
+    private fun setupLockScreenMode() {
+        // Impedir que usuário feche a Activity
+        window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+        window.addFlags(WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD)
+        window.addFlags(WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED)
+        window.addFlags(WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON)
+        
+        // Modo Kiosk - impedir saída
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            startLockTask()
+        }
+        
+        // Desabilitar botão voltar
+        onBackPressedDispatcher.addCallback(this) {
+            // Não faz nada - bloqueio ativo
+            Toast.makeText(
+                this@LockScreenActivity,
+                "Regularize seu pagamento para desbloquear",
+                Toast.LENGTH_SHORT
+            ).show()
+        }
+    }
+    
+    private fun handlePaymentAction(action: PaymentAction) {
+        when (action.type) {
+            "pix" -> {
+                // Mostrar QR Code PIX em dialog
+                showPixQrCodeDialog(action.qrCode, action.pixKey)
+            }
+            "boleto" -> {
+                // Abrir URL do boleto (permitido mesmo bloqueado)
+                val intent = Intent(Intent.ACTION_VIEW).apply {
+                    data = Uri.parse(action.boletoUrl)
+                }
+                startActivity(intent)
+            }
+            "whatsapp" -> {
+                // Abrir WhatsApp (permitido mesmo bloqueado)
+                val intent = Intent(Intent.ACTION_VIEW).apply {
+                    data = Uri.parse("https://wa.me/${action.whatsappNumber}?text=${action.whatsappMessage}")
+                }
+                startActivity(intent)
+            }
+            "call" -> {
+                // Fazer ligação (permitido mesmo bloqueado)
+                val intent = Intent(Intent.ACTION_DIAL).apply {
+                    data = Uri.parse("tel:${action.phoneNumber}")
+                }
+                startActivity(intent)
+            }
+        }
+    }
+    
+    private fun parseLockScreenCommand(intent: Intent): LockScreenParameters {
+        val parametersJson = intent.getStringExtra("parameters") ?: "{}"
+        return Gson().fromJson(parametersJson, LockScreenParameters::class.java)
+    }
+}
+
+data class LockScreenParameters(
+    val lockType: String,
+    val severity: String,
+    val allowUnlock: Boolean,
+    val message: MessageInfo,
+    val contractInfo: ContractInfo,
+    val paymentInfo: PaymentInfo,
+    val contactInfo: ContactInfo,
+    val paymentOptions: List<PaymentOption>,
+    val allowedActions: List<String>,
+    val theme: ThemeInfo
+)
+
+data class MessageInfo(
+    val title: String,
+    val subtitle: String,
+    val body: String,
+    val footer: String
+)
+
+data class ContractInfo(
+    val contractId: String,
+    val contractNumber: String,
+    val customerName: String,
+    val customerCpf: String,
+    val deviceName: String,
+    val totalValue: Double,
+    val amountPaid: Double,
+    val amountDue: Double,
+    val installmentsPaid: Int,
+    val installmentsTotal: Int,
+    val nextDueDate: String,
+    val daysOverdue: Int
+)
+
+data class PaymentInfo(
+    val totalDue: Double,
+    val overdueAmount: Double,
+    val interestAmount: Double,
+    val fineAmount: Double,
+    val nextInstallment: Double,
+    val installmentsDue: List<InstallmentDue>
+)
+
+data class InstallmentDue(
+    val number: Int,
+    val dueDate: String,
+    val value: Double,
+    val daysOverdue: Int
+)
+
+data class ContactInfo(
+    val companyName: String,
+    val storeName: String,
+    val phone: String,
+    val whatsapp: String,
+    val email: String,
+    val address: String,
+    val businessHours: String
+)
+
+data class PaymentOption(
+    val type: String,
+    val label: String,
+    val pixKey: String? = null,
+    val qrCode: String? = null,
+    val boletoUrl: String? = null,
+    val whatsappNumber: String? = null,
+    val whatsappMessage: String? = null,
+    val phoneNumber: String? = null,
+    val enabled: Boolean,
+    val icon: String
+)
+
+data class ThemeInfo(
+    val primaryColor: String,
+    val backgroundColor: String,
+    val textColor: String,
+    val accentColor: String
+)
+```
+
+### Comportamento do Bloqueio Total
+
+#### Ações Permitidas Durante o Bloqueio
+
+1. **Chamadas de Emergência**: 190, 192, 193
+2. **Receber Ligações**: Telefone toca normalmente
+3. **Apps Bancários**: Permitir acesso para facilitar pagamento
+4. **WhatsApp**: Apenas para contato com a loja
+5. **Abrir URLs de Pagamento**: PIX, boleto
+
+#### Ações Bloqueadas
+
+1. ❌ Sair da tela de bloqueio
+2. ❌ Usar qualquer outro app
+3. ❌ Desinstalar o APK MDM
+4. ❌ Remover Device Owner
+5. ❌ Reiniciar em Safe Mode
+
+#### Desbloqueio
+
+O dispositivo só é desbloqueado quando:
+1. Backend envia comando `UNLOCK_DEVICE`
+2. Sistema detecta que pagamento foi confirmado
+3. Administrador remove bloqueio manualmente
+
+---
+
+## 📡 Estrutura de Comunicação
+
+### Polling de Comandos
+
+O APK deve fazer polling a cada 30 segundos (ou intervalo configurável):
+
+```kotlin
+// Endpoint de polling
+GET /api/apk/device/{deviceId}/commands
+Authorization: Bearer {apk_jwt_token}
+
+// Resposta
+{
+  "commandsCount": 2,
+  "commands": [
+    {
+      "id": "cmd-001",
+      "commandType": "BLOCK_APPS_PROGRESSIVE",
+      "parameters": { ... },
+      "priority": "high",
+      "createdAt": "2025-11-11T01:36:00Z",
+      "expiresAt": "2025-11-13T01:36:00Z"
+    },
+    {
+      "id": "cmd-002",
+      "commandType": "LOCK_SCREEN",
+      "parameters": { ... },
+      "priority": "urgent",
+      "createdAt": "2025-11-11T02:00:00Z",
+      "expiresAt": null
+    }
+  ]
+}
+```
+
+### Envio de ACK (Acknowledgment)
+
+Após receber e processar cada comando:
+
+```kotlin
+// Sucesso
+POST /api/apk/device/{deviceId}/commands/{commandId}/ack
+Authorization: Bearer {apk_jwt_token}
+
+{
+  "status": "completed",
+  "result": {
+    "success": true,
+    "executedAt": "2025-11-11T01:36:43Z",
+    "blockedApps": [
+      "com.facebook.katana",
+      "com.instagram.android"
+    ],
+    "deviceInfo": {
+      "androidVersion": "13",
+      "deviceOwnerActive": true
+    }
+  }
+}
+
+// Falha
+POST /api/apk/device/{deviceId}/commands/{commandId}/ack
+Authorization: Bearer {apk_jwt_token}
+
+{
+  "status": "failed",
+  "result": {
+    "success": false,
+    "errorCode": "NO_DEVICE_OWNER",
+    "errorMessage": "App não é Device Owner - não pode bloquear apps",
+    "executedAt": "2025-11-11T01:36:43Z"
+  }
+}
+```
+
+---
+
+## 🔐 Segurança e Device Owner
+
+### Verificação de Permissões
+
+Antes de executar qualquer comando de bloqueio:
+
+```kotlin
+fun isDeviceOwner(): Boolean {
+    val dpm = getSystemService(Context.DEVICE_POLICY_SERVICE) as DevicePolicyManager
+    val adminComponent = ComponentName(this, DeviceAdminReceiver::class.java)
+    return dpm.isDeviceOwnerApp(packageName) && dpm.isAdminActive(adminComponent)
+}
+
+fun canExecuteCommand(commandType: String): Boolean {
+    return when (commandType) {
+        "BLOCK_APPS_PROGRESSIVE",
+        "UNBLOCK_APPS_PROGRESSIVE",
+        "LOCK_SCREEN" -> isDeviceOwner()
+        
+        "CHECK_STATUS",
+        "REPORT_LOCATION" -> true  // Não precisa Device Owner
+        
+        else -> false
+    }
+}
+```
+
+### Tratamento de Erros
+
+```kotlin
+fun executeCommand(command: MdmCommand) {
+    try {
+        if (!canExecuteCommand(command.commandType)) {
+            sendAck(
+                commandId = command.id,
+                status = "failed",
+                errorCode = "NO_DEVICE_OWNER",
+                errorMessage = "App não é Device Owner - não pode executar ${command.commandType}"
+            )
+            return
+        }
+        
+        when (command.commandType) {
+            "BLOCK_APPS_PROGRESSIVE" -> blockAppsProgressive(command.parameters)
+            "UNBLOCK_APPS_PROGRESSIVE" -> unblockAppsProgressive(command.parameters)
+            "LOCK_SCREEN" -> lockDevice(command.parameters)
+            else -> {
+                sendAck(
+                    commandId = command.id,
+                    status = "failed",
+                    errorCode = "UNKNOWN_COMMAND",
+                    errorMessage = "Comando não reconhecido: ${command.commandType}"
+                )
+            }
+        }
+        
+    } catch (e: Exception) {
+        Log.e(TAG, "Erro ao executar comando ${command.id}", e)
+        sendAck(
+            commandId = command.id,
+            status = "failed",
+            errorCode = "EXECUTION_ERROR",
+            errorMessage = e.message ?: "Erro desconhecido"
+        )
+    }
+}
+```
+
+---
+
+## 📊 Exemplos Completos
+
+### Exemplo 1: Comando de Bloqueio Progressivo Nível 3
+
+```json
+{
+  "id": "d27ca004-fae6-448c-b2a6-e0723619f7da",
+  "deviceId": "device_1762725359153_ogqi20gqqp",
+  "commandType": "BLOCK_APPS_PROGRESSIVE",
+  "parameters": {
+    "targetLevel": 3,
+    "daysOverdue": 30,
+    "categories": ["social_media"],
+    "exceptions": [
+      "com.whatsapp",
+      "com.android.dialer",
+      "com.android.messaging"
+    ],
+    "reason": "30 dias de atraso - Bloqueio nível 3"
+  },
+  "status": "pending",
+  "priority": "high",
+  "createdAt": "2025-11-11T01:36:00.000Z",
+  "expiresAt": "2025-11-13T01:36:00.000Z"
+}
+```
+
+**Resultado esperado no APK:**
+- Bloquear: Facebook, Instagram, Twitter, TikTok, Snapchat
+- Manter: WhatsApp, Telefone, SMS, Apps bancários, Emails
+
+### Exemplo 2: Comando de Bloqueio Total
+
+```json
+{
+  "id": "lock-screen-001",
+  "deviceId": "device_1762725359153_ogqi20gqqp",
+  "commandType": "LOCK_SCREEN",
+  "parameters": {
+    "lockType": "payment_overdue",
+    "severity": "critical",
+    "allowUnlock": false,
+    "message": {
+      "title": "Dispositivo Bloqueado",
+      "subtitle": "Pagamento em atraso - 60 dias",
+      "body": "Este aparelho foi bloqueado devido a atraso prolongado no pagamento. Regularize sua situação para desbloquear o dispositivo imediatamente.",
+      "footer": "CDC CreditSmart - Soluções Inteligentes em Crédito"
+    },
+    "contractInfo": {
+      "contractId": "device_1762725359153_ogqi20gqqp",
+      "contractNumber": "CDC-2025-001234",
+      "customerName": "João da Silva Santos",
+      "customerCpf": "123.456.789-00",
+      "deviceName": "Samsung Galaxy A54 5G 128GB",
+      "totalValue": 2400.00,
+      "amountPaid": 800.00,
+      "amountDue": 1600.00,
+      "installmentsPaid": 4,
+      "installmentsTotal": 12,
+      "nextDueDate": "2025-11-15",
+      "daysOverdue": 60
+    },
+    "paymentInfo": {
+      "totalDue": 1000.00,
+      "overdueAmount": 800.00,
+      "interestAmount": 120.00,
+      "fineAmount": 80.00,
+      "nextInstallment": 200.00,
+      "installmentsDue": [
+        {
+          "number": 5,
+          "dueDate": "2025-10-01",
+          "value": 200.00,
+          "daysOverdue": 41
+        },
+        {
+          "number": 6,
+          "dueDate": "2025-10-15",
+          "value": 200.00,
+          "daysOverdue": 27
+        },
+        {
+          "number": 7,
+          "dueDate": "2025-11-01",
+          "value": 200.00,
+          "daysOverdue": 10
+        },
+        {
+          "number": 8,
+          "dueDate": "2025-11-15",
+          "value": 200.00,
+          "daysOverdue": 0
+        }
+      ]
+    },
+    "contactInfo": {
+      "companyName": "CDC CreditSmart",
+      "storeName": "Loja Centro - São Paulo",
+      "phone": "(11) 98765-4321",
+      "whatsapp": "5511987654321",
+      "email": "atendimento@cdccreditsmart.com",
+      "address": "Av. Paulista, 1000 - Bela Vista, São Paulo/SP - CEP 01310-100",
+      "businessHours": "Segunda a Sexta: 9h às 18h | Sábado: 9h às 13h"
+    },
+    "paymentOptions": [
+      {
+        "type": "pix",
+        "label": "Pagar com PIX",
+        "pixKey": "atendimento@cdccreditsmart.com",
+        "qrCode": "00020126580014br.gov.bcb.pix0136atendimento@cdccreditsmart.com...",
+        "enabled": true,
+        "icon": "pix"
+      },
+      {
+        "type": "boleto",
+        "label": "Gerar Boleto Bancário",
+        "boletoUrl": "https://api.cdccreditsmart.com/payments/boleto/device_1762725359153_ogqi20gqqp",
+        "enabled": true,
+        "icon": "barcode"
+      },
+      {
+        "type": "whatsapp",
+        "label": "Negociar no WhatsApp",
+        "whatsappNumber": "5511987654321",
+        "whatsappMessage": "Olá! Preciso regularizar o pagamento do contrato CDC-2025-001234. Meu CPF é 123.456.789-00.",
+        "enabled": true,
+        "icon": "whatsapp"
+      },
+      {
+        "type": "call",
+        "label": "Ligar para Loja",
+        "phoneNumber": "1198765432",
+        "enabled": true,
+        "icon": "phone"
+      }
+    ],
+    "allowedActions": [
+      "call_emergency",
+      "receive_calls",
+      "use_banking_apps"
+    ],
+    "theme": {
+      "primaryColor": "#E45713",
+      "backgroundColor": "#1A1A1A",
+      "textColor": "#FFFFFF",
+      "accentColor": "#FFA500"
+    }
+  },
+  "status": "pending",
+  "priority": "urgent",
+  "createdAt": "2025-11-11T02:00:00.000Z",
+  "expiresAt": null
+}
+```
+
+**Resultado esperado no APK:**
+- Exibir tela de bloqueio em tela cheia
+- Mostrar todas as informações do contrato
+- Disponibilizar botões de pagamento funcionais
+- Impedir qualquer outra ação no dispositivo
+- Permitir apenas chamadas de emergência e apps bancários
+
+---
+
+## ✅ Checklist de Implementação
+
+### Para BLOCK_APPS_PROGRESSIVE
+- [ ] Validar se é Device Owner antes de executar
+- [ ] Mapear categorias para package names
+- [ ] Respeitar SEMPRE as exceções (WhatsApp, telefone, SMS, bancos, emails)
+- [ ] Bloquear apps usando DevicePolicyManager.setApplicationRestrictions()
+- [ ] Enviar ACK com lista de apps bloqueados
+- [ ] Tratar erros e enviar ACK de falha
+
+### Para LOCK_SCREEN
+- [ ] Criar LockScreenActivity com layout completo
+- [ ] Implementar modo Kiosk (startLockTask)
+- [ ] Exibir informações do contrato
+- [ ] Mostrar valores em atraso com detalhes
+- [ ] Implementar botões de pagamento funcionais
+- [ ] Permitir chamadas de emergência
+- [ ] Aplicar tema customizado (cores CDC)
+- [ ] Impedir fechamento da Activity
+- [ ] Enviar ACK quando bloqueio for ativado
+
+### Geral
+- [ ] Sistema de polling a cada 30 segundos
+- [ ] Parser JSON robusto para comandos
+- [ ] Logging detalhado de todas as ações
+- [ ] Tratamento de erros completo
+- [ ] Testes com Device Owner ativo
+- [ ] Testes sem Device Owner (deve falhar corretamente)
+
+---
+
+## 📞 Suporte Backend
+
+Para dúvidas ou problemas com os comandos MDM, contate o desenvolvedor do backend fornecendo:
+1. Log completo do APK
+2. ID do comando que falhou
+3. Device ID
+4. Versão do Android
+5. Status de Device Owner (ativo/inativo)
+
+---
+
+**Última atualização:** 11 de Novembro de 2025
+**Versão do documento:** 1.0.0
+**Sistema:** CDC CreditSmart MDM - APK Integration
