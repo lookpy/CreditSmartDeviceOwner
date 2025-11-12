@@ -10,6 +10,9 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
+import android.view.View
+import android.view.WindowInsets
+import android.view.WindowInsetsController
 import android.view.WindowManager
 import android.widget.Toast
 import androidx.activity.ComponentActivity
@@ -29,7 +32,11 @@ class LockScreenActivity : ComponentActivity() {
         
         fun createIntent(context: Context, parameters: LockScreenParameters): Intent {
             return Intent(context, LockScreenActivity::class.java).apply {
-                flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
+                flags = Intent.FLAG_ACTIVITY_NEW_TASK or
+                        Intent.FLAG_ACTIVITY_CLEAR_TOP or
+                        Intent.FLAG_ACTIVITY_NO_HISTORY or
+                        Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS or
+                        Intent.FLAG_ACTIVITY_SINGLE_TOP
                 val moshi = MoshiProvider.getMoshi()
                 val adapter = moshi.adapter(LockScreenParameters::class.java)
                 val parametersJson = adapter.toJson(parameters)
@@ -56,6 +63,8 @@ class LockScreenActivity : ComponentActivity() {
         
         setupBackButtonBlocking()
         
+        setupHomeButtonBlocking()
+        
         setContent {
             CDCCreditSmartTheme {
                 LockScreenContent(
@@ -66,6 +75,22 @@ class LockScreenActivity : ComponentActivity() {
         }
         
         Log.i(TAG, "✅ LockScreenActivity totalmente configurada - Dispositivo BLOQUEADO")
+    }
+    
+    override fun onNewIntent(intent: Intent) {
+        super.onNewIntent(intent)
+        Log.d(TAG, "🔄 onNewIntent - Re-exibindo LockScreen")
+        setIntent(intent)
+        
+        val dpm = getSystemService(Context.DEVICE_POLICY_SERVICE) as DevicePolicyManager
+        if (dpm.isDeviceOwnerApp(packageName)) {
+            try {
+                startLockTask()
+                Log.d(TAG, "✅ Lock Task Mode re-ativado")
+            } catch (e: Exception) {
+                Log.e(TAG, "❌ Erro ao re-ativar Lock Task", e)
+            }
+        }
     }
     
     private fun parseLockScreenParameters(intent: Intent): LockScreenParameters {
@@ -97,6 +122,26 @@ class LockScreenActivity : ComponentActivity() {
         
         Log.d(TAG, "✅ Window flags configurados (KEEP_SCREEN_ON, SHOW_WHEN_LOCKED, etc)")
         
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            window.setDecorFitsSystemWindows(false)
+            window.insetsController?.apply {
+                hide(WindowInsets.Type.statusBars() or WindowInsets.Type.navigationBars())
+                systemBarsBehavior = WindowInsetsController.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
+            }
+            Log.d(TAG, "✅ Fullscreen mode configurado (Android 11+)")
+        } else {
+            @Suppress("DEPRECATION")
+            window.decorView.systemUiVisibility = (
+                View.SYSTEM_UI_FLAG_FULLSCREEN
+                or View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                or View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
+                or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                or View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                or View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+            )
+            Log.d(TAG, "✅ Immersive mode configurado (Android <11)")
+        }
+        
         val dpm = getSystemService(Context.DEVICE_POLICY_SERVICE) as DevicePolicyManager
         val adminComponent = ComponentName(this, CDCDeviceAdminReceiver::class.java)
         
@@ -106,6 +151,22 @@ class LockScreenActivity : ComponentActivity() {
         if (isDeviceOwner) {
             try {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    val lockTaskPackages = dpm.getLockTaskPackages(adminComponent)
+                    if (lockTaskPackages.isEmpty()) {
+                        Log.e(TAG, "❌ ERRO CRÍTICO: Lock Task Packages NÃO foi configurado!")
+                        Log.e(TAG, "   enableKioskMode() deveria ter sido chamado durante inicialização")
+                        Log.e(TAG, "   Lock Task Mode NÃO funcionará sem isso")
+                    } else {
+                        Log.i(TAG, "✅ Lock Task Packages configurado: ${lockTaskPackages.size} apps permitidos")
+                        Log.d(TAG, "   Whitelist: ${lockTaskPackages.joinToString(", ")}")
+                        
+                        if (lockTaskPackages.contains(packageName)) {
+                            Log.i(TAG, "✅ Nosso app está na whitelist - Lock Task Mode pode ser ativado")
+                        } else {
+                            Log.w(TAG, "⚠️ Nosso app NÃO está na whitelist - Lock Task Mode falhará!")
+                        }
+                    }
+                    
                     Log.d(TAG, "🔒 Iniciando Lock Task Mode (Kiosk)...")
                     startLockTask()
                     Log.i(TAG, "✅ Lock Task Mode ATIVADO - Dispositivo em modo Kiosk")
@@ -136,6 +197,19 @@ class LockScreenActivity : ComponentActivity() {
         })
         
         Log.d(TAG, "✅ Bloqueio do botão voltar configurado")
+    }
+    
+    private fun setupHomeButtonBlocking() {
+        setShowWhenLocked(true)
+        setTurnScreenOn(true)
+        
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O_MR1) {
+            setShowWhenLocked(true)
+            setTurnScreenOn(true)
+            Log.d(TAG, "✅ Show when locked configurado (Android 8.1+)")
+        }
+        
+        Log.d(TAG, "✅ Bloqueio do botão Home configurado (Lock Task Mode bloqueia Home)")
     }
     
     private fun handlePaymentOption(option: PaymentOption) {
