@@ -1,0 +1,64 @@
+I  Internal Server Error
+2025-11-12 16:00:28.700  6260-7726  okhttp.OkHttpClient     com.cdccreditsmart.app               I  <-- END HTTP (21-byte body)
+2025-11-12 16:00:28.702  6260-6300  MdmCommandReceiver      com.cdccreditsmart.app               E  ❌ Erro ao buscar comandos pendentes - HTTP 500
+2025-11-12 16:00:28.703  6260-6300  MdmCommandReceiver      com.cdccreditsmart.app               E  ❌ Response body: Internal Server Error
+2025-11-12 16:00:28.703  6260-6300  MdmCommandReceiver      com.cdccreditsmart.app               D  ⏳ [Polling #1] Aguardando 29748ms até próxima verificação...
+2025-11-12 16:00:29.489  6260-6260  WindowOnBackDispatcher  com.cdccreditsmart.app               W  sendCancelIfRunning: isInProgress=false callback=androidx.activity.OnBackPressedDispatcher$Api34Impl$createOnBackAnimationCallback$1@aae9cda
+2025-11-12 16:00:30.795  6260-6260  NavController           com.cdccreditsmart.app               I  Ignoring popBackStack to route pairing/qr_scanner as it was not found on the current back stack
+2025-11-12 16:00:30.872  6260-6260  SimpleHomeViewModel     com.cdccreditsmart.app               D  📡 Fetching device installments from /api/apk/device/installments...
+2025-11-12 16:00:30.878  6260-7727  SimpleHomeViewModel     com.cdccreditsmart.app               D  ✅ Added Authorization header with token
+2025-11-12 16:00:30.878  6260-7727  SimpleHomeViewModel     com.cdccreditsmart.app               D  📤 Request URL: https://cdccreditsmart.com/api/apk/device/installments
+2025-11-12 16:00:31.184  6260-7727  SimpleHomeViewModel     com.cdccreditsmart.app               D  📥 Response Code: 500
+2025-11-12 16:00:31.187  6260-6260  SimpleHomeViewModel     com.cdccreditsmart.app               E  ❌ API error: 500
+2025-11-12 16:00:31.187  6260-6260  SimpleHomeViewModel     com.cdccreditsmart.app               E  ❌ Error body: Internal Server Error
+2025-11-12 16:00:32.808  6260-6260  WebSocketManager        com.cdccreditsmart.app               D  Connecting to WebSocket: wss://cdccreditsmart.com/ws/flow-status
+2025-11-12 16:00:33.323  6260-7722  WebSocketManager        com.cdccreditsmart.app               E  WebSocket failure: Expected HTTP 101 response but was '500 Internal Server Error' (Ask Gemini)
+                                                                                                    java.net.ProtocolException: Expected HTTP 101 response but was '500 Internal Server Error'
+                                                                                                    	at okhttp3.internal.ws.RealWebSocket.checkUpgradeSuccess$okhttp(RealWebSocket.kt:224)
+                                                                                                    	at okhttp3.internal.ws.RealWebSocket$connect$1.onResponse(RealWebSocket.kt:170)
+                                                                                                    	at okhttp3.internal.connection.RealCall$AsyncCall.run(RealCall.kt:519)
+                                                                                                    	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1156)
+                                                                                                    	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:651)
+                                                                                                    	at java.lang.Thread.run(Thread.java:1119)
+2025-11-12 16:00:33.324  6260-7722  PairingViewModel        com.cdccreditsmart.app               E  WebSocket error: Connection failed: Expected HTTP 101 response but was '500 Internal Server Error'
+2025-11-12 16:00:33.324  6260-7722  WebSocketManager        com.cdccreditsmart.app               D  Scheduling reconnection in 5000ms
+2025-11-12 16:00:33.455  6260-6260  WebSocketManager        com.cdccreditsmart.app               D  Connecting to WebSocket: wss://cdccreditsmart.com/ws/flow-status
+2025-11-12 16:00:33.456  6260-6300  MdmCommandReceiver      com.cdccreditsmart.app               I  🔄 Tentando reconectar WebSocket MDM...
+2025-11-12 16:00:33.456  6260-6300  MdmCommandReceiver      com.cdccreditsmart.app               I  🔗 Iniciando conexão WebSocket MDM...
+2025-11-12 16:00:33.456  6260-6300  MdmCommandReceiver      com.cdccreditsmart.app               D  🔗 URL: wss://cdccreditsmart.com/ws
+2025-11-12 16:00:33.456  6260-6300  MdmCommandReceiver      com.cdccreditsmart.app               D  🔗 JWT Token presente: true
+2025-11-12 16:00:33.456  6260-6300  MdmCommandReceiver      com.cdccreditsmart.app               D  🔗 Using contract code: WHJE...
+2025-11-12 16:00:33.462  6260-6300  MdmCommandReceiver      com.cdccreditsmart.app               D  🔌 MDM Command Receiver desconectado
+2025-11-12 16:00:33.463  6260-6300  MdmCommandReceiver      com.cdccreditsmart.app               D  🔗 Criando WebSocket OkHttp...
+2025-11-12 16:00:33.464  6260-6300  MdmCommandReceiver      com.cdccreditsmart.app               D  🔗 WebSocket request enviado - aguardando resposta...
+2025-11-12 16:00:33.908  6260-7724  MdmCommandReceiver      com.cdccreditsmart.app               E  ❌ WebSocket MDM FALHOU!
+2025-11-12 16:00:33.908  6260-7724  MdmCommandReceiver      com.cdccreditsmart.app               E  ❌ Erro: Expected HTTP 101 response but was '500 Internal Server Error'
+2025-11-12 16:00:33.908  6260-7724  MdmCommandReceiver      com.cdccreditsmart.app               E  ❌ Stack trace: java.net.ProtocolException: Expected HTTP 101 response but was '500 Internal Server Error' (Ask Gemini)
+                                                                                                    	at okhttp3.internal.ws.RealWebSocket.checkUpgradeSuccess$okhttp(RealWebSocket.kt:224)
+                                                                                                    	at okhttp3.internal.ws.RealWebSocket$connect$1.onResponse(RealWebSocket.kt:170)
+                                                                                                    	at okhttp3.internal.connection.RealCall$AsyncCall.run(RealCall.kt:519)
+                                                                                                    	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1156)
+                                                                                                    	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:651)
+                                                                                                    	at java.lang.Thread.run(Thread.java:1119)
+2025-11-12 16:00:33.908  6260-7724  MdmCommandReceiver      com.cdccreditsmart.app               E  ❌ Response code: 500
+2025-11-12 16:00:33.910  6260-7724  MdmCommandReceiver      com.cdccreditsmart.app               E  ❌ Response body: Internal Server Error
+2025-11-12 16:00:33.910  6260-7724  MdmCommandReceiver      com.cdccreditsmart.app               W  🔄 Agendando reconexão em 5 segundos...
+2025-11-12 16:00:33.910  6260-7724  MdmCommandReceiver      com.cdccreditsmart.app               W  🔄 Iniciando polling fallback...
+2025-11-12 16:00:33.912  6260-6345  MdmCommandReceiver      com.cdccreditsmart.app               I  🔄 Iniciando polling fallback MDM (intervalo: 30s)
+2025-11-12 16:00:33.912  6260-6345  MdmCommandReceiver      com.cdccreditsmart.app               I  📊 Conforme especificação: 30 segundos entre requests
+2025-11-12 16:00:33.912  6260-6345  MdmCommandReceiver      com.cdccreditsmart.app               D  🔍 [Polling #1] Verificando comandos pendentes...
+2025-11-12 16:00:33.912  6260-6345  MdmCommandReceiver      com.cdccreditsmart.app               D  🔍 Buscando comandos pendentes para contract code: WHJE...
+2025-11-12 16:00:33.915  6260-7726  okhttp.OkHttpClient     com.cdccreditsmart.app               I  --> GET https://cdccreditsmart.com/api/apk/device/WHJE29S6/commands
+2025-11-12 16:00:33.915  6260-7726  okhttp.OkHttpClient     com.cdccreditsmart.app               I  --> END GET
+2025-11-12 16:00:34.081  6260-7725  WebSocketManager        com.cdccreditsmart.app               E  WebSocket failure: Expected HTTP 101 response but was '500 Internal Server Error' (Ask Gemini)
+                                                                                                    java.net.ProtocolException: Expected HTTP 101 response but was '500 Internal Server Error'
+                                                                                                    	at okhttp3.internal.ws.RealWebSocket.checkUpgradeSuccess$okhttp(RealWebSocket.kt:224)
+                                                                                                    	at okhttp3.internal.ws.RealWebSocket$connect$1.onResponse(RealWebSocket.kt:170)
+                                                                                                    	at okhttp3.internal.connection.RealCall$AsyncCall.run(RealCall.kt:519)
+                                                                                                    	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1156)
+                                                                                                    	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:651)
+                                                                                                    	at java.lang.Thread.run(Thread.java:1119)
+2025-11-12 16:00:34.081  6260-7725  CdcForegroundService    com.cdccreditsmart.app               E  ❌ Erro no WebSocket Flow: Connection failed: Expected HTTP 101 response but was '500 Internal Server Error'
+2025-11-12 16:00:34.081  6260-7725  WebSocketManager        com.cdccreditsmart.app               D  Scheduling reconnection in 5000ms
+2025-11-12 16:00:34.086  6260-7726  okhttp.OkHttpClient     com.cdccreditsmart.app               I  <-- 500 https://cdccreditsmart.com/api/apk/device/WHJE29S6/commands (171ms)
+2025-11-12 16:00:34.087  6260-7726  okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-length: 21
