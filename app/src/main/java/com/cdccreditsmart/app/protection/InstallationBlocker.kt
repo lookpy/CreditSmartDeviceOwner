@@ -98,8 +98,10 @@ class InstallationBlocker(private val context: Context) {
             
             // Firewall apps (podem bloquear conexões do app CDC)
             "app.greyshirts.firewall",
+            "com.grey.shirts.noroot.firewall", // NoRoot Firewall
             "com.lostnet.fw.free",
-            "eu.faircode.netguard",
+            "eu.faircode.netguard", // NetGuard
+            "dev.ukanth.ufirewall", // AFWall+
             "com.cbinnovations.firewall",
             "com.ada.firewall",
             "com.androidfirewall"

@@ -52,3 +52,9 @@ The UI leverages Jetpack Compose and Material 3 with a CDC institutional dark th
 - **EncryptedSharedPreferences**: Secure local data storage.
 - **WorkManager**: For deferrable background tasks.
 - **Kotlin Coroutines**: For asynchronous programming.
+
+## Recent Changes
+**November 12, 2025 - Battery Optimization & Crash Prevention:**
+- **CrashHandler Global**: Crash prevention system instalado em `CDCApplication.onCreate()` captura exceções não tratadas, loga informações detalhadas e está preparado para integração com Firebase Crashlytics.
+- **ProtectionVerificationWorker Optimization**: Intervalo de verificação reduzido de 4h para 12h (66% de redução no consumo de bateria), flex interval aumentado para 30min.
+- **Firewall Apps Bloqueados**: Adicionados NoRoot Firewall (`com.grey.shirts.noroot.firewall`) e AFWall+ (`dev.ukanth.ufirewall`) à blacklist de apps perigosos do `InstallationBlocker`, totalizando 48+ apps bloqueados automaticamente.
