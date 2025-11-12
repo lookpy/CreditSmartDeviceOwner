@@ -15,6 +15,7 @@ import com.squareup.moshi.JsonClass
 //@JsonClass(generateAdapter = true)
 data class CdcInstallmentsResponse(
     val device: DeviceInstallmentInfo? = null,
+    val customer: CustomerInfo? = null,
     val summary: InstallmentsSummary? = null,
     val timing: TimingInfo? = null,
     val nextInstallment: InstallmentItem? = null,
@@ -34,6 +35,16 @@ data class DeviceInstallmentInfo(
     val totalValue: Double = 0.0,
     val installmentValue: Double = 0.0,
     val installmentCount: Int = 0
+)
+
+/**
+ * Customer information in installments response
+ */
+//@JsonClass(generateAdapter = true)
+data class CustomerInfo(
+    val name: String? = null,
+    val cpf: String? = null,
+    val phone: String? = null
 )
 
 /**

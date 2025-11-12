@@ -123,6 +123,14 @@ class SimpleHomeViewModel(
                     Log.d(TAG, "📊 Overdue: ${data.summary?.overdue ?: 0}")
                     Log.d(TAG, "📊 All installments count: ${data.allInstallments?.size ?: 0}")
                     
+                    val deviceModel = data.device?.name
+                    val customerName = data.customer?.name
+                    
+                    Log.i(TAG, "💾 Salvando dados do cliente no storage - CustomerName: '$customerName', DeviceModel: '$deviceModel'")
+                    if (!customerName.isNullOrBlank() || !deviceModel.isNullOrBlank()) {
+                        tokenStorage.saveCustomerInfo(customerName, deviceModel)
+                    }
+                    
                     if (data.allInstallments.isNullOrEmpty()) {
                         Log.w(TAG, "⚠️ WARNING: Backend returned ZERO installments!")
                         Log.w(TAG, "⚠️ This is likely a backend issue - check /api/apk/device/installments endpoint")

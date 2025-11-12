@@ -340,6 +340,7 @@ class PairingViewModel(private val context: Context) : ViewModel() {
                         Log.d(TAG, "Device: ${body.device?.brand} ${body.device?.model}")
                         Log.d(TAG, "Device ID: ${body.device?.id}")
                         Log.d(TAG, "Customer: ${body.customer?.name}")
+                        Log.i(TAG, "📊 DADOS DO BACKEND - CustomerName: '${body.customer?.name}', DeviceModel: '${body.device?.model}'")
                         
                         val authToken = body.authToken ?: ""
                         val deviceId = body.device?.id
@@ -363,10 +364,15 @@ class PairingViewModel(private val context: Context) : ViewModel() {
                         Log.i(TAG, "🚀 Iniciando CdcForegroundService para MDM...")
                         CdcForegroundService.startService(context.applicationContext)
                         
+                        val customerNameFromBackend = body.customer?.name
+                        val deviceModelFromBackend = body.device?.model
+                        
+                        Log.i(TAG, "🔄 Passando para step3 - CustomerName: '$customerNameFromBackend', DeviceModel: '$deviceModelFromBackend'")
+                        
                         step3ConnectWebSocket(
                             contractCode = contractId,
-                            customerName = body.customer?.name,
-                            deviceModel = body.device?.model
+                            customerName = customerNameFromBackend,
+                            deviceModel = deviceModelFromBackend
                         )
                     }
                     
@@ -425,6 +431,8 @@ class PairingViewModel(private val context: Context) : ViewModel() {
         customerName: String?,
         deviceModel: String?
     ) {
+        Log.d(TAG, "🔌 step3ConnectWebSocket chamado - CustomerName: '$customerName', DeviceModel: '$deviceModel'")
+        
         _state.value = PairingState.Connecting("Estabelecendo conexão...")
         
         registerFcmToken()
@@ -434,6 +442,7 @@ class PairingViewModel(private val context: Context) : ViewModel() {
             contractCode = contractCode,
             onDeviceConnected = {
                 Log.d(TAG, "WebSocket: Device connected")
+                Log.i(TAG, "💾 Salvando dados no onDeviceConnected - CustomerName: '$customerName', DeviceModel: '$deviceModel'")
                 viewModelScope.launch {
                     tokenStorage.saveCustomerInfo(customerName, deviceModel)
                     _state.value = PairingState.Success(
@@ -456,6 +465,7 @@ class PairingViewModel(private val context: Context) : ViewModel() {
         viewModelScope.launch {
             delay(2000)
             if (_state.value is PairingState.Connecting) {
+                Log.i(TAG, "💾 Salvando dados no fallback (após 2s) - CustomerName: '$customerName', DeviceModel: '$deviceModel'")
                 tokenStorage.saveCustomerInfo(customerName, deviceModel)
                 _state.value = PairingState.Success(
                     contractCode = contractCode,

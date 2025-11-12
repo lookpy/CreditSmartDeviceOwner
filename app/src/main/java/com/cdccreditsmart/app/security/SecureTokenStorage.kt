@@ -320,24 +320,41 @@ class SecureTokenStorage(context: Context) {
     
     fun saveCustomerInfo(customerName: String?, deviceModel: String?) {
         try {
+            Log.d(TAG, "💾 Salvando customer info - Name: $customerName, Device: $deviceModel")
+            
+            if (customerName.isNullOrBlank() && deviceModel.isNullOrBlank()) {
+                Log.w(TAG, "⚠️ Ambos customerName e deviceModel estão vazios/null - nada para salvar")
+                return
+            }
+            
             encryptedPrefs.edit().apply {
-                if (customerName != null) {
+                if (!customerName.isNullOrBlank()) {
                     putString(KEY_CUSTOMER_NAME, customerName)
+                    Log.d(TAG, "✅ CustomerName salvo: $customerName")
+                } else {
+                    Log.w(TAG, "⚠️ CustomerName vazio/null - não salvando")
                 }
-                if (deviceModel != null) {
+                
+                if (!deviceModel.isNullOrBlank()) {
                     putString(KEY_DEVICE_MODEL, deviceModel)
+                    Log.d(TAG, "✅ DeviceModel salvo: $deviceModel")
+                } else {
+                    Log.w(TAG, "⚠️ DeviceModel vazio/null - não salvando")
                 }
                 apply()
             }
-            Log.d(TAG, "Customer info saved: $customerName, device: $deviceModel")
+            
+            Log.i(TAG, "✅ Customer info saved successfully!")
         } catch (e: Exception) {
-            Log.e(TAG, "Error saving customer info", e)
+            Log.e(TAG, "❌ Error saving customer info", e)
         }
     }
     
     fun getCustomerName(): String? {
         return try {
-            encryptedPrefs.getString(KEY_CUSTOMER_NAME, null)
+            val name = encryptedPrefs.getString(KEY_CUSTOMER_NAME, null)
+            Log.d(TAG, "📖 Lendo customerName: ${name ?: "null/vazio"}")
+            name
         } catch (e: Exception) {
             Log.e(TAG, "Error getting customer name", e)
             null
@@ -346,7 +363,9 @@ class SecureTokenStorage(context: Context) {
     
     fun getDeviceModel(): String? {
         return try {
-            encryptedPrefs.getString(KEY_DEVICE_MODEL, null)
+            val model = encryptedPrefs.getString(KEY_DEVICE_MODEL, null)
+            Log.d(TAG, "📖 Lendo deviceModel: ${model ?: "null/vazio"}")
+            model
         } catch (e: Exception) {
             Log.e(TAG, "Error getting device model", e)
             null
