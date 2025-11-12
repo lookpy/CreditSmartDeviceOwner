@@ -166,6 +166,8 @@ private fun HomeContent(
     state: HomeState,
     onPayInstallment: (InstallmentItem) -> Unit
 ) {
+    val context = LocalContext.current
+    
     LazyColumn(
         modifier = modifier
             .fillMaxSize()
@@ -174,15 +176,15 @@ private fun HomeContent(
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
         item {
-            // Pega contract code do storage para mostrar ao invés do nome do dispositivo
-            val contractCode = remember {
-                val storage = com.cdccreditsmart.app.security.SecureTokenStorage(context)
-                storage.getContractCode()
-            }
+            val storage = remember { com.cdccreditsmart.app.security.SecureTokenStorage(context) }
+            val customerName = remember { storage.getCustomerName() }
+            val deviceModel = remember { storage.getDeviceModel() }
+            val contractCode = remember { storage.getContractCode() }
             
             HeroHeaderCard(
-                customerName = contractCode ?: "Cliente",
-                deviceModel = state.device?.name ?: "Dispositivo"
+                customerName = customerName ?: "Cliente",
+                deviceModel = deviceModel ?: "Dispositivo",
+                contractCode = contractCode ?: ""
             )
         }
         
@@ -235,7 +237,8 @@ private fun HomeContent(
 @Composable
 private fun HeroHeaderCard(
     customerName: String,
-    deviceModel: String
+    deviceModel: String,
+    contractCode: String
 ) {
     Card(
         modifier = Modifier.fillMaxWidth(),
@@ -311,6 +314,30 @@ private fun HeroHeaderCard(
                         Text(
                             text = deviceModel,
                             style = MaterialTheme.typography.bodyLarge,
+                            fontWeight = FontWeight.Medium,
+                            color = Color.White
+                        )
+                    }
+                }
+                
+                Surface(
+                    shape = MaterialTheme.shapes.medium,
+                    color = Color.White.copy(alpha = 0.15f)
+                ) {
+                    Row(
+                        modifier = Modifier.padding(horizontal = 16.dp, vertical = 12.dp),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(8.dp)
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.QrCode,
+                            contentDescription = null,
+                            tint = Color.White,
+                            modifier = Modifier.size(20.dp)
+                        )
+                        Text(
+                            text = contractCode,
+                            style = MaterialTheme.typography.bodyMedium,
                             fontWeight = FontWeight.Medium,
                             color = Color.White
                         )

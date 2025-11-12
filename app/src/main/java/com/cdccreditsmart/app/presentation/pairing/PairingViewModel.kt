@@ -435,6 +435,7 @@ class PairingViewModel(private val context: Context) : ViewModel() {
             onDeviceConnected = {
                 Log.d(TAG, "WebSocket: Device connected")
                 viewModelScope.launch {
+                    tokenStorage.saveCustomerInfo(customerName, deviceModel)
                     _state.value = PairingState.Success(
                         contractCode = contractCode,
                         customerName = customerName,
@@ -455,6 +456,7 @@ class PairingViewModel(private val context: Context) : ViewModel() {
         viewModelScope.launch {
             delay(2000)
             if (_state.value is PairingState.Connecting) {
+                tokenStorage.saveCustomerInfo(customerName, deviceModel)
                 _state.value = PairingState.Success(
                     contractCode = contractCode,
                     customerName = customerName,

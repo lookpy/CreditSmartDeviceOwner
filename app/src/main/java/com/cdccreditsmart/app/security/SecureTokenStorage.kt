@@ -25,6 +25,8 @@ class SecureTokenStorage(context: Context) {
         private const val KEY_IMEI_HASHES = "imei_hashes"
         private const val KEY_IMEI_SALT = "imei_salt"
         private const val KEY_IMEI_VALIDATED_AT = "imei_validated_at"
+        private const val KEY_CUSTOMER_NAME = "customer_name"
+        private const val KEY_DEVICE_MODEL = "device_model"
     }
 
     private val masterKey = MasterKey.Builder(context)
@@ -313,6 +315,41 @@ class SecureTokenStorage(context: Context) {
             Log.d(TAG, "IMEIs validados limpos")
         } catch (e: Exception) {
             Log.e(TAG, "Erro ao limpar IMEIs validados", e)
+        }
+    }
+    
+    fun saveCustomerInfo(customerName: String?, deviceModel: String?) {
+        try {
+            encryptedPrefs.edit().apply {
+                if (customerName != null) {
+                    putString(KEY_CUSTOMER_NAME, customerName)
+                }
+                if (deviceModel != null) {
+                    putString(KEY_DEVICE_MODEL, deviceModel)
+                }
+                apply()
+            }
+            Log.d(TAG, "Customer info saved: $customerName, device: $deviceModel")
+        } catch (e: Exception) {
+            Log.e(TAG, "Error saving customer info", e)
+        }
+    }
+    
+    fun getCustomerName(): String? {
+        return try {
+            encryptedPrefs.getString(KEY_CUSTOMER_NAME, null)
+        } catch (e: Exception) {
+            Log.e(TAG, "Error getting customer name", e)
+            null
+        }
+    }
+    
+    fun getDeviceModel(): String? {
+        return try {
+            encryptedPrefs.getString(KEY_DEVICE_MODEL, null)
+        } catch (e: Exception) {
+            Log.e(TAG, "Error getting device model", e)
+            null
         }
     }
     
