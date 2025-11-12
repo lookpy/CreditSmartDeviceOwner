@@ -166,13 +166,16 @@ class InstallationBlocker(private val context: Context) {
     }
     
     /**
-     * Escaneia apps instalados e remove apps perigosos
+     * Escaneia apps instalados e bloqueia apps perigosos
+     * 
+     * LIMITAÇÃO HONESTA:
+     * ⚠️ Device Owner NÃO pode desinstalar apps programaticamente
+     * ✅ Solução: BLOQUEIA apps (inacessíveis ao usuário)
      */
     fun scanAndRemoveDangerousApps(): RemovalResult {
         if (!dpm.isDeviceOwnerApp(context.packageName)) {
             return RemovalResult(
                 success = false,
-                appsRemoved = emptyList(),
                 appsBlocked = emptyList(),
                 message = "App não é Device Owner"
             )
@@ -181,7 +184,6 @@ class InstallationBlocker(private val context: Context) {
         val pm = context.packageManager
         val installedApps = pm.getInstalledApplications(PackageManager.GET_META_DATA)
         
-        val appsRemoved = mutableListOf<String>()
         val appsBlocked = mutableListOf<String>()
         
         for (app in installedApps) {
@@ -192,49 +194,41 @@ class InstallationBlocker(private val context: Context) {
             if (isDangerousPackage(packageName)) {
                 Log.w(TAG, "⚠️ App perigoso detectado: $packageName")
                 
+                // Device Owner pode BLOQUEAR apps perigosos (não pode desinstalar programaticamente)
                 try {
-                    dpm.uninstallPackage(adminComponent, packageName)
-                    appsRemoved.add(packageName)
-                    Log.i(TAG, "   ✅ App removido: $packageName")
-                } catch (e: Exception) {
-                    try {
-                        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
-                            dpm.setPackagesSuspended(adminComponent, arrayOf(packageName), true)
-                        } else {
-                            dpm.setApplicationHidden(adminComponent, packageName, true)
-                        }
-                        appsBlocked.add(packageName)
-                        Log.w(TAG, "   ⚠️ App não pôde ser removido, mas foi BLOQUEADO: $packageName")
-                    } catch (e2: Exception) {
-                        Log.e(TAG, "   ❌ Erro ao bloquear app: $packageName", e2)
+                    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+                        dpm.setPackagesSuspended(adminComponent, arrayOf(packageName), true)
+                    } else {
+                        dpm.setApplicationHidden(adminComponent, packageName, true)
                     }
+                    appsBlocked.add(packageName)
+                    Log.i(TAG, "   ✅ App BLOQUEADO: $packageName")
+                } catch (e: Exception) {
+                    Log.e(TAG, "   ❌ Erro ao bloquear app: $packageName", e)
                 }
             }
         }
         
-        val message = buildString {
-            if (appsRemoved.isNotEmpty()) {
-                append("${appsRemoved.size} app(s) perigoso(s) removido(s)")
-            }
-            if (appsBlocked.isNotEmpty()) {
-                if (appsRemoved.isNotEmpty()) append(", ")
-                append("${appsBlocked.size} bloqueado(s)")
-            }
-            if (appsRemoved.isEmpty() && appsBlocked.isEmpty()) {
-                append("Nenhum app perigoso detectado")
-            }
+        val message = if (appsBlocked.isNotEmpty()) {
+            "${appsBlocked.size} app(s) perigoso(s) bloqueado(s)"
+        } else {
+            "Nenhum app perigoso detectado"
         }
         
         return RemovalResult(
             success = true,
-            appsRemoved = appsRemoved,
             appsBlocked = appsBlocked,
             message = message
         )
     }
     
     /**
-     * Remove app específico se for perigoso
+     * Bloqueia app específico se for perigoso
+     * 
+     * LIMITAÇÃO HONESTA:
+     * ⚠️ Device Owner NÃO pode desinstalar apps programaticamente via DPM API
+     * ✅ Solução: BLOQUEIA app (setPackagesSuspended/setApplicationHidden)
+     *    → App fica inacessível mas não é removido completamente
      */
     fun removeIfDangerous(packageName: String): Boolean {
         if (!isDangerousPackage(packageName)) {
@@ -242,30 +236,24 @@ class InstallationBlocker(private val context: Context) {
         }
         
         if (!dpm.isDeviceOwnerApp(context.packageName)) {
-            Log.w(TAG, "⚠️ App não é Device Owner - não pode remover $packageName")
+            Log.w(TAG, "⚠️ App não é Device Owner - não pode bloquear $packageName")
             return false
         }
         
         return try {
-            Log.w(TAG, "🚨 REMOVENDO app perigoso: $packageName")
-            dpm.uninstallPackage(adminComponent, packageName)
-            Log.i(TAG, "   ✅ App removido com sucesso")
+            Log.w(TAG, "🚨 BLOQUEANDO app perigoso: $packageName")
+            
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+                dpm.setPackagesSuspended(adminComponent, arrayOf(packageName), true)
+            } else {
+                dpm.setApplicationHidden(adminComponent, packageName, true)
+            }
+            
+            Log.i(TAG, "   ✅ App BLOQUEADO com sucesso (inacessível ao usuário)")
             true
         } catch (e: Exception) {
-            Log.e(TAG, "   ❌ Erro ao remover, tentando bloquear...", e)
-            
-            try {
-                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
-                    dpm.setPackagesSuspended(adminComponent, arrayOf(packageName), true)
-                } else {
-                    dpm.setApplicationHidden(adminComponent, packageName, true)
-                }
-                Log.w(TAG, "   ⚠️ App BLOQUEADO (não pôde ser removido)")
-                true
-            } catch (e2: Exception) {
-                Log.e(TAG, "   ❌ Erro ao bloquear app", e2)
-                false
-            }
+            Log.e(TAG, "   ❌ Erro ao bloquear app", e)
+            false
         }
     }
     
@@ -313,11 +301,12 @@ class InstallationBlocker(private val context: Context) {
 }
 
 /**
- * Resultado da remoção de apps perigosos
+ * Resultado do bloqueio de apps perigosos
+ * 
+ * NOTA: appsRemoved foi removido - Device Owner não pode desinstalar programaticamente
  */
 data class RemovalResult(
     val success: Boolean,
-    val appsRemoved: List<String>,
     val appsBlocked: List<String>,
     val message: String
 )

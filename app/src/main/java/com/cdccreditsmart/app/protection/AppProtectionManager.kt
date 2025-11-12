@@ -57,12 +57,11 @@ class AppProtectionManager(private val context: Context) {
             protectionsApplied++
         }
         
-        // Escaneia e remove apps perigosos já instalados
+        // Escaneia e bloqueia apps perigosos já instalados
         val removalResult = installationBlocker.scanAndRemoveDangerousApps()
         if (removalResult.success) {
             Log.i(TAG, "✅ [14/10] Scan de apps perigosos: ${removalResult.message}")
-            if (removalResult.appsRemoved.isNotEmpty() || removalResult.appsBlocked.isNotEmpty()) {
-                Log.w(TAG, "        → Apps removidos: ${removalResult.appsRemoved}")
+            if (removalResult.appsBlocked.isNotEmpty()) {
                 Log.w(TAG, "        → Apps bloqueados: ${removalResult.appsBlocked}")
             }
             protectionsApplied++
