@@ -135,6 +135,13 @@ interface DeviceApiService {
     ): Response<CdcHeartbeatResponse>
     
     /**
+     * Get server time - CDC Credit Smart specific
+     * GET /api/apk/time/now
+     */
+    @GET("api/apk/time/now")
+    suspend fun getServerTime(): Response<com.cdccreditsmart.network.dto.apk.ServerTimeResponse>
+    
+    /**
      * List device installments - CDC Credit Smart specific
      * GET /api/apk/device/installments
      */

@@ -14,6 +14,9 @@ class TamperDetectionService(private val context: Context) {
     }
     
     private val storage by lazy { SecureTokenStorage(context) }
+    private val serverTimeManager by lazy { 
+        com.cdccreditsmart.app.time.ServerTimeManager(context) 
+    }
     
     fun checkFactoryResetAttempt(): Boolean {
         Log.i(TAG, "========================================")
@@ -149,5 +152,30 @@ class TamperDetectionService(private val context: Context) {
         // }
         
         Log.i(TAG, "⚠️ TODO: Implementar POST /api/security/device-boot")
+    }
+    
+    fun detectTimeManipulation(): com.cdccreditsmart.app.time.TamperDetectionResult {
+        Log.i(TAG, "")
+        Log.i(TAG, "╔════════════════════════════════════════════════════════╗")
+        Log.i(TAG, "║    🕐 VERIFICANDO MANIPULAÇÃO DE TEMPO                ║")
+        Log.i(TAG, "╚════════════════════════════════════════════════════════╝")
+        
+        val result = serverTimeManager.detectTimeTampering()
+        
+        if (result.tampered) {
+            Log.e(TAG, "🚨 MANIPULAÇÃO DE TEMPO DETECTADA!")
+            Log.e(TAG, "   Motivo: ${result.reason}")
+            Log.e(TAG, "   Ação: Bloqueio de emergência será aplicado")
+        } else {
+            Log.i(TAG, "✅ Tempo do dispositivo está sincronizado")
+            Log.i(TAG, "   Status: ${result.reason}")
+        }
+        
+        Log.i(TAG, "")
+        return result
+    }
+    
+    fun getTimeStatus(): com.cdccreditsmart.app.time.TimeStatus {
+        return serverTimeManager.getTimeStatus()
     }
 }

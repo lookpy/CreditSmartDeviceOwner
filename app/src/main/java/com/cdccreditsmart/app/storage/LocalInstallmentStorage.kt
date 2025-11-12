@@ -24,6 +24,9 @@ class LocalInstallmentStorage(private val context: Context) {
         private const val KEY_LAST_SYNC = "last_sync_timestamp"
     }
     
+    private val serverTimeManager by lazy { 
+        com.cdccreditsmart.app.time.ServerTimeManager(context) 
+    }
     private val moshi = Moshi.Builder().build()
     private val dateFormatter = DateTimeFormatter.ISO_LOCAL_DATE
     
@@ -99,7 +102,33 @@ class LocalInstallmentStorage(private val context: Context) {
             )
         }
         
-        val today = LocalDate.now()
+        val today = serverTimeManager.getAuthoritativeLocalDate()
+        
+        if (today == null) {
+            Log.e(TAG, "🚨 TEMPO AUTORITATIVO INDISPONÍVEL - assumindo PIOR CENÁRIO")
+            Log.e(TAG, "   Forçando bloqueio conservador até sincronização")
+            
+            // FALLBACK CONSERVADOR: Assumir que TODAS as parcelas estão vencidas
+            val conservativeOverdue = installments
+                .filter { it.status == "PENDING" || it.status == "OVERDUE" }
+                .map { installment ->
+                    InstallmentOverdue(
+                        number = installment.number,
+                        dueDate = installment.dueDate,
+                        amount = installment.amount,
+                        daysOverdue = 999 // Valor alto para forçar bloqueio máximo
+                    )
+                }
+            
+            return OverdueCalculation(
+                hasOverdueInstallments = conservativeOverdue.isNotEmpty(),
+                maxDaysOverdue = 999,
+                overdueInstallments = conservativeOverdue,
+                totalOverdueAmount = conservativeOverdue.sumOf { it.amount }
+            )
+        }
+        
+        Log.i(TAG, "📅 Usando tempo autoritativo para cálculo: $today")
         val overdueList = mutableListOf<InstallmentOverdue>()
         
         installments.forEach { installment ->

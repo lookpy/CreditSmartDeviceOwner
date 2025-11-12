@@ -58,3 +58,9 @@ data class PaymentSummaryData(
     val paidAmount: Double,
     val pendingAmount: Double
 )
+
+data class ServerTimeResponse(
+    val timestamp: Long,
+    val timezone: String,
+    val serverDate: String
+)
