@@ -49,6 +49,25 @@ class AppProtectionManager(private val context: Context) {
         protectionsApplied += blockRecoveryBoot()
         protectionsApplied += blockMotorolaSettingsApps()
         
+        // Bloqueia instalação de apps perigosos (TWRP, recovery, root)
+        val installationBlocker = InstallationBlocker(context)
+        
+        if (installationBlocker.blockUnknownSources()) {
+            Log.i(TAG, "✅ [13/10] Instalação de fontes desconhecidas bloqueada")
+            protectionsApplied++
+        }
+        
+        // Escaneia e remove apps perigosos já instalados
+        val removalResult = installationBlocker.scanAndRemoveDangerousApps()
+        if (removalResult.success) {
+            Log.i(TAG, "✅ [14/10] Scan de apps perigosos: ${removalResult.message}")
+            if (removalResult.appsRemoved.isNotEmpty() || removalResult.appsBlocked.isNotEmpty()) {
+                Log.w(TAG, "        → Apps removidos: ${removalResult.appsRemoved}")
+                Log.w(TAG, "        → Apps bloqueados: ${removalResult.appsBlocked}")
+            }
+            protectionsApplied++
+        }
+        
         // Google FRP (Factory Reset Protection) - OPCIONAL
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
             val frpHelper = FactoryResetProtectionHelper(context)

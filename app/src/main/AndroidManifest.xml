@@ -249,6 +249,18 @@
             </intent-filter>
         </receiver>
 
+        <!-- Monitora instalação de apps e bloqueia apps perigosos -->
+        <receiver
+            android:name=".receivers.PackageInstallReceiver"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.PACKAGE_ADDED" />
+                <action android:name="android.intent.action.PACKAGE_REMOVED" />
+                <data android:scheme="package" />
+            </intent-filter>
+        </receiver>
+
         <!-- File provider for sharing documents -->
         <provider
             android:name="androidx.core.content.FileProvider"
