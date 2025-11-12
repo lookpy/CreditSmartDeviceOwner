@@ -174,8 +174,14 @@ private fun HomeContent(
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
         item {
+            // Pega contract code do storage para mostrar ao invés do nome do dispositivo
+            val contractCode = remember {
+                val storage = com.cdccreditsmart.app.security.SecureTokenStorage(context)
+                storage.getContractCode()
+            }
+            
             HeroHeaderCard(
-                customerName = state.device?.name ?: "Cliente",
+                customerName = contractCode ?: "Cliente",
                 deviceModel = state.device?.name ?: "Dispositivo"
             )
         }
