@@ -263,6 +263,40 @@ interface DeviceApiService {
     suspend fun reportUpdateStatus(
         @Body request: UpdateReportRequest
     ): Response<Unit>
+    
+    /**
+     * PIX Payment Endpoints - CDC Credit Smart specific
+     */
+    
+    /**
+     * Listar parcelas pendentes/vencidas
+     * GET /v1/pix/installments/:deviceId
+     */
+    @GET("v1/pix/installments/{deviceId}")
+    suspend fun getPendingInstallments(
+        @Path("deviceId") deviceId: String,
+        @Header("Authorization") authorization: String
+    ): Response<com.cdccreditsmart.network.dto.PixInstallmentsResponse>
+    
+    /**
+     * Gerar QR Code PIX para uma parcela
+     * POST /v1/pix/generate/:installmentId
+     */
+    @POST("v1/pix/generate/{installmentId}")
+    suspend fun generatePixQRCode(
+        @Path("installmentId") installmentId: String,
+        @Header("Authorization") authorization: String
+    ): Response<com.cdccreditsmart.network.dto.PixQRCodeResponse>
+    
+    /**
+     * Verificar status de pagamento PIX
+     * GET /v1/pix/status/:orderId
+     */
+    @GET("v1/pix/status/{orderId}")
+    suspend fun checkPixStatus(
+        @Path("orderId") orderId: String,
+        @Header("Authorization") authorization: String
+    ): Response<com.cdccreditsmart.network.dto.PixStatusResponse>
 }
 
 // Request/Response Data Classes
