@@ -31,6 +31,7 @@ The application adheres to Clean Architecture principles, the MVVM pattern, and 
 The UI is built with Jetpack Compose and Material 3, featuring a CDC institutional dark theme (`#FF7A1A`/`#F47C2C`). It includes a comprehensive navigation system with Compose NavController for screens such as device pairing, dashboard, and payments. Key UI elements include `RouterScreen`, a contract code input screen with auto-formatting, `PairingProgressScreen`, and a minimalist `PairingPendingScreen` (clean layout without excessive instructions - auto-verifies every 3s with automatic navigation to success/error screens), and various success/error screens. The Home screen displays a personalized HeroHeaderCard showing: customer name ("Olá, [Nome]"), device model, and contract code as distinct information pieces; followed by contract summaries and installment cards with payment options (PIX and Boleto) in a professional, card-based layout with rounded corners and elevation. Status chips are color-coded. Customer name and device model are persisted during pairing via SecureTokenStorage.
 
 **Technical Implementations:**
+- **PIX Payment System (NEW)**: Sistema completo de pagamentos via PIX integrado ao app. Permite que clientes paguem parcelas vencidas através de QR Code PIX com verificação em tempo real. Inclui `PixPaymentViewModel` para gestão de estado, `InstallmentsScreen` para listar parcelas pendentes/vencidas, e `PixQRCodeScreen` com QR Code decodificado, código Copia e Cola, e polling automático (5s) de status. Integra com endpoints `/v1/pix/installments/:deviceId`, `/v1/pix/generate/:installmentId`, e `/v1/pix/status/:orderId`. Não depende de cache compartilhado entre telas - cada ViewModel funciona independentemente.
 - **Device Owner Provisioning**: Manages Device Owner status, including brand-specific provisioning steps and a debug skip option.
 - **Device Pairing**: Uses an 8-digit alphanumeric pairing code and a 3-step handshake for secure authentication, returning a JWT authToken.
 - **IMEI Validation System**: Automatically captures and validates device IMEI(s), storing them securely and comparing them against registered data.
@@ -53,7 +54,7 @@ The UI is built with Jetpack Compose and Material 3, featuring a CDC institution
 - **Knox Enhanced Protections (Samsung Only)**: Dynamically implements advanced Samsung Knox Enterprise protections to prevent factory resets, recovery mode access, developer mode, and USB debugging.
 
 ## External Dependencies
-- **CDC Credit Smart Backend API**: For APK authentication, device status, installments, payment processing, heartbeat, MDM commands, and unblock operations.
+- **CDC Credit Smart Backend API**: For APK authentication, device status, installments, payment processing (PIX endpoints: `/v1/pix/installments/:deviceId`, `/v1/pix/generate/:installmentId`, `/v1/pix/status/:orderId`), heartbeat, MDM commands, and unblock operations. Endpoint crítico: `GET /api/apk/time/now` para sincronização de tempo anti-tampering.
 - **WebSocket Server**: For real-time pairing flow status and MDM command push.
 - **Samsung Knox Enterprise SDK v3.12+**: For advanced device management and security on Samsung devices.
 - **Google Play Integrity API**: For device integrity verification.
