@@ -16,6 +16,17 @@ The CDC Credit Smart Android App is a Device Owner application designed for CDC 
 ## System Architecture
 The application adheres to Clean Architecture principles, the MVVM pattern, and utilizes Jetpack Compose for the UI. It is structured into modular components: `app`, `data`, `network`, `domain`, `device`, `payments`, and `biometry`.
 
+### Time Synchronization & Anti-Tampering (NEW)
+**Comprehensive protection against date manipulation:**
+- **ServerTimeManager**: Core component using `SystemClock.elapsedRealtime()` (monotonic clock immune to date changes) paired with server timestamp to calculate authoritative time
+- **Reboot Detection**: Automatically detects when `elapsedRealtime` resets (device reboot) and marks time as unreliable until resync
+- **Conservative Fallback**: When time is unavailable (never synced/after reboot), `LocalInstallmentStorage` assumes worst-case scenario (all pending installments overdue with daysOverdue=999), forcing maximum blocking until successful server sync
+- **Tamper Detection**: Compares authoritative time vs device time; drift >5 minutes triggers tamper alert
+- **Staleness Tracking**: 48h without sync = STALE (still reliable), 72h = CRITICALLY_STALE (unreliable)
+- **Encrypted Storage**: All time sync data stored via `EncryptedSharedPreferences` (AES256_GCM)
+- **TimeSyncWorker**: Periodic background sync (24h intervals) with exponential backoff on failures
+- **API**: Requires backend endpoint `GET /api/apk/time/now` returning `{timestamp: Long, timezone: String, serverDate: String}`
+
 **UI/UX Decisions:**
 The UI is built with Jetpack Compose and Material 3, featuring a CDC institutional dark theme (`#FF7A1A`/`#F47C2C`). It includes a comprehensive navigation system with Compose NavController for screens such as device pairing, dashboard, and payments. Key UI elements include `RouterScreen`, a contract code input screen with auto-formatting, `PairingProgressScreen`, and a minimalist `PairingPendingScreen` (clean layout without excessive instructions - auto-verifies every 3s with automatic navigation to success/error screens), and various success/error screens. The Home screen displays a personalized HeroHeaderCard showing: customer name ("Olá, [Nome]"), device model, and contract code as distinct information pieces; followed by contract summaries and installment cards with payment options (PIX and Boleto) in a professional, card-based layout with rounded corners and elevation. Status chips are color-coded. Customer name and device model are persisted during pairing via SecureTokenStorage.
 
