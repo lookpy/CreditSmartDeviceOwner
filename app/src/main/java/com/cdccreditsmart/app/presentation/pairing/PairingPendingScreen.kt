@@ -7,6 +7,7 @@ import androidx.compose.material.icons.filled.HourglassEmpty
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
@@ -18,8 +19,15 @@ import com.cdccreditsmart.app.ui.theme.CDCOrange
 fun PairingPendingScreen(
     message: String,
     contractCode: String?,
-    onRetry: () -> Unit
+    onRetry: () -> Unit,
+    viewModel: PairingViewModel? = null
 ) {
+    // CORREÇÃO: Iniciar polling automático quando tela aparece
+    LaunchedEffect(contractCode) {
+        if (contractCode != null && viewModel != null) {
+            viewModel.startPendingPolling(contractCode)
+        }
+    }
     Surface(
         modifier = Modifier.fillMaxSize(),
         color = MaterialTheme.colorScheme.background
@@ -31,17 +39,19 @@ fun PairingPendingScreen(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
+            // Ícone visual
             Icon(
                 imageVector = Icons.Default.HourglassEmpty,
                 contentDescription = "Aguardando",
-                modifier = Modifier.size(100.dp),
+                modifier = Modifier.size(80.dp),
                 tint = CDCOrange
             )
             
-            Spacer(modifier = Modifier.height(32.dp))
+            Spacer(modifier = Modifier.height(24.dp))
             
+            // Título simples
             Text(
-                text = "Aguardando Finalização",
+                text = "Aguardando Vendedor",
                 style = MaterialTheme.typography.headlineMedium,
                 fontWeight = FontWeight.Bold,
                 color = MaterialTheme.colorScheme.onBackground
@@ -49,84 +59,38 @@ fun PairingPendingScreen(
             
             Spacer(modifier = Modifier.height(16.dp))
             
-            Card(
-                modifier = Modifier.fillMaxWidth(),
-                colors = CardDefaults.cardColors(
-                    containerColor = CDCOrange.copy(alpha = 0.1f)
-                ),
-                shape = RoundedCornerShape(16.dp)
-            ) {
-                Column(
-                    modifier = Modifier.padding(24.dp),
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    Text(
-                        text = message,
-                        style = MaterialTheme.typography.bodyLarge,
-                        color = MaterialTheme.colorScheme.onBackground,
-                        textAlign = TextAlign.Center
-                    )
-                    
-                    if (contractCode != null) {
-                        Spacer(modifier = Modifier.height(16.dp))
-                        
-                        Text(
-                            text = "Código: $contractCode",
-                            style = MaterialTheme.typography.bodyMedium,
-                            color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.7f),
-                            fontWeight = FontWeight.Bold
-                        )
-                    }
-                }
-            }
+            // Mensagem curta e direta
+            Text(
+                text = "O vendedor está finalizando a venda no PDV.\n\nO app verificará automaticamente.",
+                style = MaterialTheme.typography.bodyLarge,
+                color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.7f),
+                textAlign = TextAlign.Center
+            )
             
-            Spacer(modifier = Modifier.height(48.dp))
+            Spacer(modifier = Modifier.height(32.dp))
             
-            Column(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalAlignment = Alignment.CenterHorizontally
+            // Indicador de verificação automática (clean)
+            Row(
+                horizontalArrangement = Arrangement.Center,
+                verticalAlignment = Alignment.CenterVertically
             ) {
-                Text(
-                    text = "O que fazer:",
-                    style = MaterialTheme.typography.titleMedium,
-                    fontWeight = FontWeight.Bold,
-                    color = MaterialTheme.colorScheme.onBackground
+                CircularProgressIndicator(
+                    modifier = Modifier.size(18.dp),
+                    color = CDCOrange,
+                    strokeWidth = 2.dp
                 )
-                
-                Spacer(modifier = Modifier.height(16.dp))
-                
+                Spacer(modifier = Modifier.width(10.dp))
                 Text(
-                    text = "1. Aguarde o vendedor finalizar a venda no PDV\n" +
-                          "2. O vendedor deve clicar em \"Dispositivo Atestado\"\n" +
-                          "3. O app verificará automaticamente a cada 3 segundos",
+                    text = "Verificando...",
                     style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.7f),
-                    textAlign = TextAlign.Center
+                    color = CDCOrange,
+                    fontWeight = FontWeight.Medium
                 )
-                
-                Spacer(modifier = Modifier.height(16.dp))
-                
-                Row(
-                    horizontalArrangement = Arrangement.Center,
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    CircularProgressIndicator(
-                        modifier = Modifier.size(16.dp),
-                        color = CDCOrange,
-                        strokeWidth = 2.dp
-                    )
-                    Spacer(modifier = Modifier.width(8.dp))
-                    Text(
-                        text = "Verificando automaticamente...",
-                        style = MaterialTheme.typography.bodySmall,
-                        color = CDCOrange,
-                        fontWeight = FontWeight.Medium
-                    )
-                }
             }
             
-            Spacer(modifier = Modifier.height(48.dp))
+            Spacer(modifier = Modifier.height(40.dp))
             
+            // Botão manual simplificado
             OutlinedButton(
                 onClick = onRetry,
                 modifier = Modifier.fillMaxWidth(),
@@ -142,7 +106,7 @@ fun PairingPendingScreen(
                 )
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(
-                    "Verificar Agora (Manual)",
+                    "Verificar Manualmente",
                     modifier = Modifier.padding(vertical = 8.dp),
                     style = MaterialTheme.typography.titleMedium
                 )

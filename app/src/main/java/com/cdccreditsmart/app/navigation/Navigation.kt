@@ -200,6 +200,42 @@ fun CDCNavigation(
                 if (code == "NONE") null else code
             }
             
+            // CORREÇÃO: Criar viewModel para iniciar polling automático
+            val viewModel = remember(context) { PairingViewModel(context) }
+            val state by viewModel.state
+            
+            // Observar mudanças de estado do polling
+            LaunchedEffect(state) {
+                when (val currentState = state) {
+                    is PairingState.Success -> {
+                        // Polling detectou sucesso - navegar
+                        navController.navigate(
+                            Routes.createPairingSuccessRoute(
+                                currentState.contractCode,
+                                currentState.customerName,
+                                currentState.deviceModel
+                            )
+                        ) {
+                            popUpTo(Routes.QR_SCANNER) { inclusive = true }
+                        }
+                    }
+                    is PairingState.Error -> {
+                        // Polling detectou erro - navegar
+                        navController.navigate(
+                            Routes.createPairingErrorRoute(
+                                currentState.message,
+                                currentState.attemptsRemaining,
+                                currentState.securityViolation,
+                                currentState.canRetry
+                            )
+                        ) {
+                            popUpTo(Routes.PAIRING_PENDING) { inclusive = true }
+                        }
+                    }
+                    else -> {}
+                }
+            }
+            
             PairingPendingScreen(
                 message = message,
                 contractCode = contractCode,
@@ -209,7 +245,8 @@ fun CDCNavigation(
                             popUpTo(Routes.PAIRING_PENDING) { inclusive = true }
                         }
                     }
-                }
+                },
+                viewModel = viewModel
             )
         }
         
