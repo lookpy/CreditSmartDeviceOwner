@@ -49,6 +49,26 @@ class AppProtectionManager(private val context: Context) {
         protectionsApplied += blockRecoveryBoot()
         protectionsApplied += blockMotorolaSettingsApps()
         
+        // Google FRP (Factory Reset Protection) - OPCIONAL
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            val frpHelper = FactoryResetProtectionHelper(context)
+            
+            if (frpHelper.hasGoogleAccountConfigured()) {
+                val frpResult = frpHelper.configureFRPPolicyWithExistingAccounts()
+                
+                if (frpResult.success) {
+                    Log.i(TAG, "✅ [EXTRA] Google FRP configurado")
+                    Log.i(TAG, "        → ${frpResult.accountsConfigured.size} conta(s) protegida(s)")
+                    protectionsApplied++
+                } else {
+                    Log.w(TAG, "⚠️ [EXTRA] Google FRP não configurado: ${frpResult.message}")
+                }
+            } else {
+                Log.w(TAG, "⚠️ [EXTRA] Google FRP não disponível - device sem conta Google")
+                Log.i(TAG, "        → Cliente pode adicionar conta Google manualmente em Settings")
+            }
+        }
+        
         Log.i(TAG, "========================================")
         Log.i(TAG, "📊 RESUMO DA PROTEÇÃO ANTI-REMOÇÃO:")
         Log.i(TAG, "  ✅ Proteções aplicadas: $protectionsApplied")
