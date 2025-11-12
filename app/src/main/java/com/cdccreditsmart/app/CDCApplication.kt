@@ -21,6 +21,9 @@ class CDCApplication : Application() {
     override fun onCreate() {
         super.onCreate()
         
+        // CRASH PREVENTION: Instalar handler global ANTES de qualquer outra inicialização
+        CrashHandler.install(this)
+        
         Log.i(TAG, "🚀 CDC Credit Smart Application iniciando...")
         
         grantPermissionsIfDeviceOwner()

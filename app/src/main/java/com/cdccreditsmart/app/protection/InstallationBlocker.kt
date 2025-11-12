@@ -34,6 +34,9 @@ class InstallationBlocker(private val context: Context) {
          * - ROM flashers
          * - Bootloader unlockers
          * - System modification tools
+         * - Terminal emulators
+         * - File managers com root
+         * - Firewall apps (podem bloquear conexões do app CDC)
          */
         private val DANGEROUS_PACKAGE_PATTERNS = listOf(
             // TWRP (TeamWin Recovery Project)
@@ -91,7 +94,15 @@ class InstallationBlocker(private val context: Context) {
             
             // Terminal emulators (podem executar comandos perigosos)
             "jackpal.androidterm",
-            "com.termux"
+            "com.termux",
+            
+            // Firewall apps (podem bloquear conexões do app CDC)
+            "app.greyshirts.firewall",
+            "com.lostnet.fw.free",
+            "eu.faircode.netguard",
+            "com.cbinnovations.firewall",
+            "com.ada.firewall",
+            "com.androidfirewall"
         )
         
         /**

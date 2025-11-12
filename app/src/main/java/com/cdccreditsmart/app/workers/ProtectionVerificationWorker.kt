@@ -24,8 +24,8 @@ class ProtectionVerificationWorker(
     companion object {
         private const val TAG = "ProtectionVerificationWorker"
         const val WORK_NAME = "ProtectionVerificationWork"
-        const val CHECK_INTERVAL_HOURS = 4L
-        const val FLEX_INTERVAL_MINUTES = 15L
+        const val CHECK_INTERVAL_HOURS = 12L // OTIMIZADO: era 4L (redução de 66% bateria)
+        const val FLEX_INTERVAL_MINUTES = 30L // OTIMIZADO: era 15L
         
         private var totalChecks = 0L
         private var driftDetections = 0L
