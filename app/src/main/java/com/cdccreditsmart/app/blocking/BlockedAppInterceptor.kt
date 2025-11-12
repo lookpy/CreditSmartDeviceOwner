@@ -6,6 +6,7 @@ import android.app.usage.UsageStatsManager
 import android.content.Context
 import android.content.Intent
 import android.util.Log
+import com.cdccreditsmart.app.BuildConfig
 import kotlinx.coroutines.*
 import java.util.concurrent.ConcurrentHashMap
 
@@ -14,9 +15,12 @@ class BlockedAppInterceptor(private val context: Context) {
     companion object {
         private const val TAG = "BlockedAppInterceptor"
         private const val CHECK_INTERVAL = 5000L // 5 segundos (reduzido de 1s para economizar CPU)
+        private const val MEMORY_CLEANUP_THRESHOLD = 50 // Limpar memória a cada 50 apps diferentes
+        private const val MEMORY_CLEANUP_AGE_MS = 300000L // 5 minutos
     }
     
-    private val scope = CoroutineScope(Dispatchers.Default + SupervisorJob())
+    // OTIMIZAÇÃO: Dispatchers.IO para operações I/O-bound (UsageStatsManager)
+    private val scope = CoroutineScope(Dispatchers.IO + SupervisorJob())
     private var monitoringJob: Job? = null
     private val lastShownTime = ConcurrentHashMap<String, Long>()
     private val cooldownMs = 5000L // 5 segundos entre mostrar explicações para o mesmo app
@@ -25,13 +29,16 @@ class BlockedAppInterceptor(private val context: Context) {
     private var isScreenOn = true
     private var blockedAppDetectedRecently = false
     
+    // OTIMIZAÇÃO: Delta timestamp tracking para processar apenas eventos novos
+    private var lastEventTimestamp = System.currentTimeMillis()
+    
     private val appBlockingManager by lazy {
         AppBlockingManager(context)
     }
     
     fun startMonitoring() {
         if (monitoringJob?.isActive == true) {
-            Log.d(TAG, "Monitoring já está ativo")
+            if (BuildConfig.DEBUG) Log.d(TAG, "Monitoring já está ativo")
             return
         }
         
@@ -40,6 +47,19 @@ class BlockedAppInterceptor(private val context: Context) {
         monitoringJob = scope.launch {
             while (isActive) {
                 try {
+                    // OTIMIZAÇÃO: Pausar monitoramento quando não há apps bloqueados (economia de CPU)
+                    val blockedPackages = appBlockingManager.getCurrentlyBlockedPackages()
+                    if (blockedPackages.isEmpty()) {
+                        if (BuildConfig.DEBUG) Log.d(TAG, "🔋 OTIMIZAÇÃO: Sem apps bloqueados - pausando monitoramento (60s)")
+                        
+                        // CORREÇÃO: Resetar estado para restart limpo quando bloqueios voltarem
+                        lastEventTimestamp = System.currentTimeMillis()
+                        lastForegroundPackage = null
+                        
+                        delay(60000L) // Pausa por 60s quando não há apps bloqueados
+                        continue
+                    }
+                    
                     val hadBlockedApp = checkForegroundApp()
                     
                     if (!hadBlockedApp) {
@@ -49,6 +69,9 @@ class BlockedAppInterceptor(private val context: Context) {
                     }
                     
                     updateCheckInterval()
+                    
+                    // OTIMIZAÇÃO: Limpeza periódica de memória
+                    cleanupMemory()
                     
                     delay(currentCheckInterval)
                 } catch (e: CancellationException) {
@@ -63,7 +86,33 @@ class BlockedAppInterceptor(private val context: Context) {
     fun setScreenState(isScreenOn: Boolean) {
         this.isScreenOn = isScreenOn
         updateCheckInterval()
-        Log.i(TAG, "🔋 Tela ${if (isScreenOn) "LIGADA" else "DESLIGADA"} - Intervalo: ${currentCheckInterval}ms")
+        if (BuildConfig.DEBUG) {
+            Log.i(TAG, "🔋 Tela ${if (isScreenOn) "LIGADA" else "DESLIGADA"} - Intervalo: ${currentCheckInterval}ms")
+        }
+    }
+    
+    /**
+     * OTIMIZAÇÃO DE MEMÓRIA: Limpa entradas antigas do ConcurrentHashMap
+     * Previne vazamento de memória quando muitos apps diferentes são bloqueados
+     * 
+     * CORREÇÃO: Usa removeIf para thread-safety (iterator.remove() causa UnsupportedOperationException)
+     */
+    private fun cleanupMemory() {
+        if (lastShownTime.size < MEMORY_CLEANUP_THRESHOLD) return
+        
+        val now = System.currentTimeMillis()
+        val initialSize = lastShownTime.size
+        
+        // THREAD-SAFE: removeIf é atômico no ConcurrentHashMap
+        lastShownTime.entries.removeIf { entry ->
+            now - entry.value > MEMORY_CLEANUP_AGE_MS
+        }
+        
+        val removedCount = initialSize - lastShownTime.size
+        
+        if (BuildConfig.DEBUG && removedCount > 0) {
+            Log.d(TAG, "🧹 MEMÓRIA: Removidas $removedCount entradas antigas (${lastShownTime.size} restantes)")
+        }
     }
     
     private fun updateCheckInterval() {
@@ -95,14 +144,18 @@ class BlockedAppInterceptor(private val context: Context) {
                 return true
             }
             
-            Log.i(TAG, "🚫 App bloqueado detectado em foreground: $foregroundPackage")
-            Log.i(TAG, "📱 Mostrando explicação ao usuário...")
+            if (BuildConfig.DEBUG) {
+                Log.i(TAG, "🚫 App bloqueado detectado em foreground: $foregroundPackage")
+                Log.i(TAG, "📱 Mostrando explicação ao usuário...")
+            }
             
             lastShownTime[foregroundPackage] = now
             
-            Log.i(TAG, "🚀 Iniciando BlockedAppExplanationActivity...")
-            Log.i(TAG, "   Package: $foregroundPackage")
-            Log.i(TAG, "   Blocking Level: ${appBlockingManager.getBlockingInfo().currentLevel}")
+            if (BuildConfig.DEBUG) {
+                Log.i(TAG, "🚀 Iniciando BlockedAppExplanationActivity...")
+                Log.i(TAG, "   Package: $foregroundPackage")
+                Log.i(TAG, "   Blocking Level: ${appBlockingManager.getBlockingInfo().currentLevel}")
+            }
             
             showBlockedAppExplanation(foregroundPackage)
             return true
@@ -113,8 +166,12 @@ class BlockedAppInterceptor(private val context: Context) {
     
     private var lastForegroundPackage: String? = null
     
+    /**
+     * OTIMIZAÇÃO: Delta timestamp tracking - processa apenas eventos NOVOS
+     * Reduz drasticamente o processamento de eventos repetidos
+     */
     private fun getForegroundPackageName(): String? {
-        Log.d(TAG, "🔍 Verificando app em foreground...")
+        if (BuildConfig.DEBUG) Log.d(TAG, "🔍 Verificando app em foreground...")
         
         return try {
             val usageStatsManager = context.getSystemService(Context.USAGE_STATS_SERVICE) as? UsageStatsManager
@@ -127,16 +184,29 @@ class BlockedAppInterceptor(private val context: Context) {
             }
             
             val now = System.currentTimeMillis()
-            val events = usageStatsManager.queryEvents(now - 10000, now)
+            // OTIMIZAÇÃO: Query apenas desde último evento processado (delta)
+            val events = usageStatsManager.queryEvents(lastEventTimestamp, now)
             
             val event = UsageEvents.Event()
+            var foundNewEvent = false
             
             while (events.hasNextEvent()) {
                 events.getNextEvent(event)
                 
                 if (event.eventType == UsageEvents.Event.MOVE_TO_FOREGROUND) {
                     lastForegroundPackage = event.packageName
+                    lastEventTimestamp = event.timeStamp // Atualiza para próxima query delta
+                    foundNewEvent = true
+                    
+                    if (BuildConfig.DEBUG) {
+                        Log.d(TAG, "📱 Novo foreground: $lastForegroundPackage (delta=${now - event.timeStamp}ms)")
+                    }
                 }
+            }
+            
+            // Se não encontrou eventos novos, atualiza timestamp para evitar re-processar
+            if (!foundNewEvent) {
+                lastEventTimestamp = now
             }
             
             lastForegroundPackage

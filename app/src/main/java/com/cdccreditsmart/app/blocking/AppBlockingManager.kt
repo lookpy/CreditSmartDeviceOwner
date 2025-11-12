@@ -464,6 +464,14 @@ class AppBlockingManager(private val context: Context) {
             emptyList()
         }
     }
+    
+    /**
+     * OTIMIZAÇÃO: Função pública para BlockedAppInterceptor verificar se há apps bloqueados
+     * Permite pausar monitoramento quando lista está vazia (economia de CPU/bateria)
+     */
+    fun getCurrentlyBlockedPackages(): List<String> {
+        return getBlockedPackages()
+    }
 }
 
 data class BlockingResult(

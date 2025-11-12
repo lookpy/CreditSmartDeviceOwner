@@ -10,6 +10,7 @@ import android.os.IBinder
 import android.os.PowerManager
 import android.util.Log
 import androidx.core.app.NotificationCompat
+import com.cdccreditsmart.app.BuildConfig
 import com.cdccreditsmart.app.R
 import com.cdccreditsmart.app.mdm.MdmCommandReceiver
 import com.cdccreditsmart.app.receivers.ScreenStateListener
@@ -51,8 +52,19 @@ class CdcForegroundService : Service(), ScreenStateListener {
         }
     }
     
-    private val serviceScope = CoroutineScope(Dispatchers.Default + SupervisorJob())
-    private var wakeLock: PowerManager.WakeLock? = null
+    // OTIMIZAÇÃO: Dispatchers.IO para operações I/O-bound (rede, WebSocket)
+    private val serviceScope = CoroutineScope(Dispatchers.IO + SupervisorJob())
+    
+    // OTIMIZAÇÃO: Lazy init do WakeLock com setReferenceCounted(false)
+    private val wakeLock: PowerManager.WakeLock by lazy {
+        val powerManager = getSystemService(Context.POWER_SERVICE) as PowerManager
+        powerManager.newWakeLock(
+            PowerManager.PARTIAL_WAKE_LOCK,
+            WAKELOCK_TAG
+        ).apply {
+            setReferenceCounted(false) // OTIMIZAÇÃO: Previne múltiplos acquire/release
+        }
+    }
     private var screenStateReceiver: ScreenStateReceiver? = null
     private var mdmReceiver: MdmCommandReceiver? = null
     private var webSocketManager: WebSocketManager? = null
@@ -158,16 +170,24 @@ class CdcForegroundService : Service(), ScreenStateListener {
             .build()
     }
     
+    /**
+     * OTIMIZAÇÃO: WakeLock balanceado com timeout
+     * - Verifica se já está held antes de acquire
+     * - Usa timeout de 30s para auto-release
+     * - Lazy init do WakeLock
+     */
     private fun acquireWakeLockForCommand() {
         try {
-            val powerManager = getSystemService(Context.POWER_SERVICE) as PowerManager
-            wakeLock = powerManager.newWakeLock(
-                PowerManager.PARTIAL_WAKE_LOCK,
-                WAKELOCK_TAG
-            ).apply {
-                acquire(30 * 1000L)
+            if (!wakeLock.isHeld) {
+                wakeLock.acquire(30 * 1000L) // 30s timeout
+                if (BuildConfig.DEBUG) {
+                    Log.d(TAG, "🔋 WakeLock adquirido para comando (30s timeout)")
+                }
+            } else {
+                if (BuildConfig.DEBUG) {
+                    Log.d(TAG, "🔋 WakeLock já está held - ignorando acquire")
+                }
             }
-            Log.d(TAG, "🔋 WakeLock adquirido para comando (30s)")
         } catch (e: Exception) {
             Log.e(TAG, "❌ Erro ao adquirir WakeLock: ${e.message}")
         }
@@ -193,15 +213,19 @@ class CdcForegroundService : Service(), ScreenStateListener {
         Log.d(TAG, "🔋 Estado da tela mudou: ${if (isScreenOn) "LIGADA" else "DESLIGADA"}")
     }
     
+    /**
+     * OTIMIZAÇÃO: Release seguro do WakeLock
+     * - Verifica se está held antes de release
+     * - Try-catch para prevenir crashes
+     */
     private fun releaseWakeLock() {
         try {
-            wakeLock?.let {
-                if (it.isHeld) {
-                    it.release()
+            if (wakeLock.isHeld) {
+                wakeLock.release()
+                if (BuildConfig.DEBUG) {
                     Log.d(TAG, "🔋 WakeLock liberado")
                 }
             }
-            wakeLock = null
         } catch (e: Exception) {
             Log.e(TAG, "❌ Erro ao liberar WakeLock: ${e.message}")
         }
@@ -345,6 +369,9 @@ class CdcForegroundService : Service(), ScreenStateListener {
         } catch (e: Exception) {
             Log.e(TAG, "Erro ao desregistrar receiver: ${e.message}")
         }
+        
+        // CORREÇÃO CRÍTICA: Garantir release do WakeLock ANTES de qualquer cleanup
+        releaseWakeLock()
         
         stopForegroundService()
         
