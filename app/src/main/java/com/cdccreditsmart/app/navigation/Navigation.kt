@@ -34,6 +34,9 @@ import com.cdccreditsmart.app.presentation.screens.blocking.BlockingViewModel
 import com.cdccreditsmart.app.presentation.screens.home.ModernHomeScreen
 import com.cdccreditsmart.app.presentation.diagnostic.ProtectionStatusScreen
 import com.cdccreditsmart.app.presentation.diagnostic.ProtectionStatusViewModel
+import com.cdccreditsmart.app.presentation.screens.pix.InstallmentsScreen
+import com.cdccreditsmart.app.presentation.screens.pix.PixQRCodeScreen
+import com.cdccreditsmart.app.presentation.pix.PixPaymentViewModel
 
 object Routes {
     const val ROUTER = "router"
@@ -48,6 +51,8 @@ object Routes {
     const val PAYMENT_RECOVERY = "blocking/payment_recovery/{daysOverdue}"
     const val BLOCKING_HISTORY = "blocking/history"
     const val PROTECTION_STATUS = "diagnostic/protection_status"
+    const val INSTALLMENTS = "pix/installments"
+    const val PIX_QR_CODE = "pix/qr_code/{installmentId}"
     
     fun createPairingProgressRoute(contractId: String) = "pairing/progress/$contractId"
     
@@ -80,6 +85,9 @@ object Routes {
     
     fun createPaymentRecoveryRoute(daysOverdue: Int) = 
         "blocking/payment_recovery/$daysOverdue"
+    
+    fun createPixQRCodeRoute(installmentId: String) = 
+        "pix/qr_code/$installmentId"
 }
 
 @Composable
@@ -424,7 +432,11 @@ fun CDCNavigation(
         }
         
         composable(Routes.HOME) {
-            ModernHomeScreen()
+            ModernHomeScreen(
+                onNavigateToInstallments = {
+                    navController.navigate(Routes.INSTALLMENTS)
+                }
+            )
         }
         
         composable(Routes.PROTECTION_STATUS) {
@@ -436,6 +448,38 @@ fun CDCNavigation(
                 onRefresh = { viewModel.refreshStatus() },
                 onToggleAutoRefresh = { viewModel.toggleAutoRefresh() },
                 onBack = {
+                    navController.popBackStack()
+                }
+            )
+        }
+        
+        composable(Routes.INSTALLMENTS) {
+            val viewModel: PixPaymentViewModel = remember(context) { PixPaymentViewModel(context) }
+            
+            InstallmentsScreen(
+                viewModel = viewModel,
+                onNavigateToQRCode = { installmentId ->
+                    navController.navigate(Routes.createPixQRCodeRoute(installmentId))
+                },
+                onNavigateBack = {
+                    navController.popBackStack()
+                }
+            )
+        }
+        
+        composable(
+            route = Routes.PIX_QR_CODE,
+            arguments = listOf(
+                navArgument("installmentId") { type = NavType.StringType }
+            )
+        ) { backStackEntry ->
+            val installmentId = backStackEntry.arguments?.getString("installmentId") ?: ""
+            val viewModel: PixPaymentViewModel = remember(context) { PixPaymentViewModel(context) }
+            
+            PixQRCodeScreen(
+                viewModel = viewModel,
+                installmentId = installmentId,
+                onNavigateBack = {
                     navController.popBackStack()
                 }
             )

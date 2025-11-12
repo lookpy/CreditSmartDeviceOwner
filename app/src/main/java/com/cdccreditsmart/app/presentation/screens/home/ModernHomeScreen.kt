@@ -29,7 +29,9 @@ import java.util.*
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ModernHomeScreen() {
+fun ModernHomeScreen(
+    onNavigateToInstallments: () -> Unit = {}
+) {
     val context = LocalContext.current
     val viewModel = remember { SimpleHomeViewModel(context) }
     val state by viewModel.homeState
@@ -74,7 +76,8 @@ fun ModernHomeScreen() {
                 onPayInstallment = { installment ->
                     selectedInstallment = installment
                     showPaymentSheet = true
-                }
+                },
+                onNavigateToInstallments = onNavigateToInstallments
             )
         }
     }
@@ -164,7 +167,8 @@ private fun ErrorState(
 private fun HomeContent(
     modifier: Modifier = Modifier,
     state: HomeState,
-    onPayInstallment: (InstallmentItem) -> Unit
+    onPayInstallment: (InstallmentItem) -> Unit,
+    onNavigateToInstallments: () -> Unit
 ) {
     val context = LocalContext.current
     
@@ -185,6 +189,12 @@ private fun HomeContent(
                 customerName = customerName ?: "Cliente",
                 deviceModel = deviceModel ?: "Dispositivo",
                 contractCode = contractCode ?: ""
+            )
+        }
+        
+        item {
+            PixInstallmentsActionCard(
+                onClick = onNavigateToInstallments
             )
         }
         
@@ -230,6 +240,67 @@ private fun HomeContent(
         
         item {
             Spacer(Modifier.height(16.dp))
+        }
+    }
+}
+
+@Composable
+private fun PixInstallmentsActionCard(
+    onClick: () -> Unit
+) {
+    Card(
+        onClick = onClick,
+        modifier = Modifier.fillMaxWidth(),
+        shape = RoundedCornerShape(20.dp),
+        colors = CardDefaults.cardColors(
+            containerColor = CDCOrange.copy(alpha = 0.15f)
+        ),
+        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(20.dp),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(16.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Surface(
+                    shape = RoundedCornerShape(12.dp),
+                    color = CDCOrange.copy(alpha = 0.2f)
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.QrCode,
+                        contentDescription = null,
+                        tint = CDCOrange,
+                        modifier = Modifier
+                            .padding(12.dp)
+                            .size(28.dp)
+                    )
+                }
+                
+                Column {
+                    Text(
+                        text = "Minhas Parcelas",
+                        style = MaterialTheme.typography.titleMedium,
+                        fontWeight = FontWeight.Bold
+                    )
+                    Text(
+                        text = "Pague com PIX de forma rápida",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                }
+            }
+            
+            Icon(
+                imageVector = Icons.Default.ChevronRight,
+                contentDescription = null,
+                tint = CDCOrange
+            )
         }
     }
 }
