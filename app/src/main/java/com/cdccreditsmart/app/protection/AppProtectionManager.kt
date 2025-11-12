@@ -194,7 +194,7 @@ class AppProtectionManager(private val context: Context) {
             Log.d(TAG, "   Modify accounts block não aplicado")
         }
         
-        // Restrições extras para proteção robusta (especialmente para Motorola)
+        // 3 restrições extras para proteção robusta (especialmente para Motorola)
         try {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 dpm.addUserRestriction(adminComponent, UserManager.DISALLOW_NETWORK_RESET)
@@ -203,36 +203,6 @@ class AppProtectionManager(private val context: Context) {
             }
         } catch (e: Exception) {
             Log.d(TAG, "   Network reset block não aplicado: ${e.message}")
-        }
-        
-        try {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                dpm.addUserRestriction(adminComponent, UserManager.DISALLOW_CONFIG_CELL_BROADCASTS)
-                Log.i(TAG, "        → Cell broadcasts config bloqueado (proteção extra)")
-                count++
-            }
-        } catch (e: Exception) {
-            Log.d(TAG, "   Cell broadcasts block não aplicado: ${e.message}")
-        }
-        
-        try {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                dpm.addUserRestriction(adminComponent, UserManager.DISALLOW_CONFIG_BLUETOOTH)
-                Log.i(TAG, "        → Bluetooth config bloqueado (proteção extra)")
-                count++
-            }
-        } catch (e: Exception) {
-            Log.d(TAG, "   Bluetooth config block não aplicado: ${e.message}")
-        }
-        
-        try {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                dpm.addUserRestriction(adminComponent, UserManager.DISALLOW_CONFIG_LOCATION)
-                Log.i(TAG, "        → Location config bloqueado (proteção extra)")
-                count++
-            }
-        } catch (e: Exception) {
-            Log.d(TAG, "   Location config block não aplicado: ${e.message}")
         }
         
         try {
@@ -645,8 +615,11 @@ class AppProtectionManager(private val context: Context) {
             return 0
         }
         
+        Log.w(TAG, "⚠️ IMPORTANTE: NÃO bloqueamos com.android.settings (Settings padrão)")
+        Log.w(TAG, "   Bloquear Settings padrão causa BOOTLOOP!")
+        Log.w(TAG, "   Bloqueando APENAS apps Settings customizados da Motorola...")
+        
         val motorolaSettingsPackages = listOf(
-            "com.android.settings",
             "com.motorola.cn.settings",
             "com.motorola.motocare",
             "com.motorola.launcher.settings"
@@ -688,11 +661,13 @@ class AppProtectionManager(private val context: Context) {
         
         Log.i(TAG, "========================================")
         if (blockedCount > 0) {
-            Log.i(TAG, "✅ [12/10] MOTOROLA SETTINGS BLOQUEADOS: $blockedCount apps")
-            Log.i(TAG, "   Proteção extra contra factory reset via Settings customizados")
+            Log.i(TAG, "✅ [12/10] MOTOROLA SETTINGS BLOQUEADOS: $blockedCount/3 apps")
+            Log.i(TAG, "   Proteção extra contra factory reset via Settings customizados da Motorola")
+            Log.i(TAG, "   com.android.settings (padrão) NÃO foi bloqueado - sistema pode inicializar")
         } else {
             Log.w(TAG, "⚠️ [12/10] Nenhum app Motorola Settings bloqueado")
-            Log.w(TAG, "   Apps podem não estar instalados neste dispositivo")
+            Log.w(TAG, "   Apps customizados da Motorola podem não estar instalados neste dispositivo")
+            Log.w(TAG, "   com.android.settings (padrão) NÃO foi bloqueado - evitando bootloop")
         }
         Log.i(TAG, "========================================")
         
