@@ -37,7 +37,7 @@ The UI is built with Jetpack Compose and Material 3, featuring a CDC institution
 - **IMEI Validation System**: Automatically captures and validates device IMEI(s), storing them securely and comparing them against registered data.
 - **Foreground Service**: `CdcForegroundService` runs with battery optimizations to comply with Android 12+ restrictions, handling WakeLocks and dynamic polling.
 - **Real-time Communication**: Utilizes a dual WebSocket system for pairing status and MDM command push, featuring automatic reconnection and heartbeat.
-- **MDM Command System**: Processes blocking commands via WebSocket, sends acknowledgements, applies blocks, and reports execution status.
+- **MDM Command System**: Processes blocking commands via WebSocket, sends acknowledgements, applies blocks, and reports execution status. **Remote Uninstall (NEW)**: Sistema completo de desinstalação remota via comando MDM `UNINSTALL_APP`. Backend pode remover o APK mesmo com proteções de Device Owner ativas através de sequência controlada: validação SHA-256 de confirmation code (constant-time comparison), remoção de bloqueios de desinstalação, remoção de Device Owner via `DeviceOwnerManager`, limpeza opcional de dados, envio de telemetria final ao backend (`POST /api/mdm/telemetry`), e solicitação de desinstalação via Intent. `SelfDestructManager` orquestra auto-destruição com audit trail completo, tratamento robusto de erros (best-effort telemetry, continua execução mesmo com falhas parciais), e logging detalhado em 7 passos. Hash de confirmação armazenado em `EncryptedSharedPreferences` via `SecureTokenStorage` para segurança máxima.
 - **Security**: Employs `EncryptedSharedPreferences` for sensitive data, JWT authentication, and permanent device blocking on security violations.
 - **Data Persistence**: `SecureTokenStorage` for JWTs, tokens, fingerprint, contract code, validated IMEI hashes, customer name, and device model. All sensitive data is encrypted via EncryptedSharedPreferences.
 - **Networking**: Retrofit and OkHttp with retry logic, exponential backoff, and Certificate Pinning.
@@ -54,7 +54,7 @@ The UI is built with Jetpack Compose and Material 3, featuring a CDC institution
 - **Knox Enhanced Protections (Samsung Only)**: Dynamically implements advanced Samsung Knox Enterprise protections to prevent factory resets, recovery mode access, developer mode, and USB debugging.
 
 ## External Dependencies
-- **CDC Credit Smart Backend API**: For APK authentication, device status, installments, payment processing (PIX endpoints: `/v1/pix/installments/:deviceId`, `/v1/pix/generate/:installmentId`, `/v1/pix/status/:orderId`), heartbeat, MDM commands, and unblock operations. Endpoint crítico: `GET /api/apk/time/now` para sincronização de tempo anti-tampering.
+- **CDC Credit Smart Backend API**: For APK authentication, device status, installments, payment processing (PIX endpoints: `/v1/pix/installments/:deviceId`, `/v1/pix/generate/:installmentId`, `/v1/pix/status/:orderId`), heartbeat, MDM commands, unblock operations, and remote uninstall telemetry (`POST /api/mdm/telemetry`). Endpoint crítico: `GET /api/apk/time/now` para sincronização de tempo anti-tampering.
 - **WebSocket Server**: For real-time pairing flow status and MDM command push.
 - **Samsung Knox Enterprise SDK v3.12+**: For advanced device management and security on Samsung devices.
 - **Google Play Integrity API**: For device integrity verification.
