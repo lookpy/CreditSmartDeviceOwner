@@ -435,6 +435,9 @@ fun CDCNavigation(
             ModernHomeScreen(
                 onNavigateToInstallments = {
                     navController.navigate(Routes.INSTALLMENTS)
+                },
+                onNavigateToPixPayment = { installmentId ->
+                    navController.navigate(Routes.createPixQRCodeRoute(installmentId))
                 }
             )
         }

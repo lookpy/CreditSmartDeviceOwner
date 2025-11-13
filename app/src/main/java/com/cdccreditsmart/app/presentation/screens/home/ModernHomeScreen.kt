@@ -30,7 +30,8 @@ import java.util.*
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ModernHomeScreen(
-    onNavigateToInstallments: () -> Unit = {}
+    onNavigateToInstallments: () -> Unit = {},
+    onNavigateToPixPayment: (String) -> Unit = {}
 ) {
     val context = LocalContext.current
     val viewModel = remember { SimpleHomeViewModel(context) }
@@ -86,8 +87,11 @@ fun ModernHomeScreen(
         PaymentBottomSheet(
             installment = selectedInstallment!!,
             onDismiss = { showPaymentSheet = false },
-            onPayWithPix = { /* TODO */ },
-            onPayWithBoleto = { /* TODO */ }
+            onPayWithPix = {
+                showPaymentSheet = false
+                onNavigateToPixPayment(selectedInstallment!!.id)
+            },
+            onPayWithBoleto = { /* TODO: Implementar Boleto */ }
         )
     }
 }
