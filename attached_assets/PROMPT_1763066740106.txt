@@ -1,0 +1,114 @@
+2025-11-13 17:44:58.268  9117-9117  WebSocketManager        com.cdccreditsmart.app               D  Heartbeat ping sent
+2025-11-13 17:44:58.464  9117-9214  WebSocketManager        com.cdccreditsmart.app               D  Message received: {"type":"pong","timestamp":"2025-11-13T20:44:58.972Z"}...
+2025-11-13 17:44:58.464  9117-9214  WebSocketManager        com.cdccreditsmart.app               D  Received message type: pong
+2025-11-13 17:44:58.464  9117-9214  WebSocketManager        com.cdccreditsmart.app               D  Pong received
+2025-11-13 17:44:58.783  9117-9172  MdmCommandReceiver      com.cdccreditsmart.app               D  🔍 [Polling #4] Verificando comandos pendentes...
+2025-11-13 17:44:58.783  9117-9172  MdmCommandReceiver      com.cdccreditsmart.app               D  🔍 Buscando comandos pendentes para contract code: WHJE...
+2025-11-13 17:44:58.785  9117-9202  okhttp.OkHttpClient     com.cdccreditsmart.app               I  --> GET https://cdccreditsmart.com/api/apk/device/WHJE29S6/commands
+2025-11-13 17:44:58.785  9117-9202  okhttp.OkHttpClient     com.cdccreditsmart.app               I  --> END GET
+2025-11-13 17:44:58.847  9117-9117  WebSocketManager        com.cdccreditsmart.app               D  Heartbeat ping sent
+2025-11-13 17:44:59.018  9117-9216  WebSocketManager        com.cdccreditsmart.app               D  Message received: {"type":"pong","timestamp":"2025-11-13T20:44:59.534Z"}...
+2025-11-13 17:44:59.018  9117-9216  WebSocketManager        com.cdccreditsmart.app               D  Received message type: pong
+2025-11-13 17:44:59.018  9117-9216  WebSocketManager        com.cdccreditsmart.app               D  Pong received
+2025-11-13 17:44:59.239  9117-9202  okhttp.OkHttpClient     com.cdccreditsmart.app               I  <-- 200 https://cdccreditsmart.com/api/apk/device/WHJE29S6/commands (453ms)
+2025-11-13 17:44:59.239  9117-9202  okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-credentials: true
+2025-11-13 17:44:59.239  9117-9202  okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-headers: Origin, X-Requested-With, Content-Type, Accept, Authorization, x-client-key, x-client-token, x-client-secret, cache-control
+2025-11-13 17:44:59.239  9117-9202  okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-methods: GET, POST, PUT, PATCH, DELETE, OPTIONS
+2025-11-13 17:44:59.239  9117-9202  okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-origin: *
+2025-11-13 17:44:59.239  9117-9202  okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-max-age: 86400
+2025-11-13 17:44:59.239  9117-9202  okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-length: 105
+2025-11-13 17:44:59.239  9117-9202  okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-security-policy: default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://replit.com; style-src 'self' 'unsafe-inline' https://replit.com; img-src 'self' data: https:; font-src 'self' data: https://replit.com; connect-src 'self';
+2025-11-13 17:44:59.239  9117-9202  okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-type: application/json; charset=utf-8
+2025-11-13 17:44:59.239  9117-9202  okhttp.OkHttpClient     com.cdccreditsmart.app               I  date: Thu, 13 Nov 2025 20:44:59 GMT
+2025-11-13 17:44:59.239  9117-9202  okhttp.OkHttpClient     com.cdccreditsmart.app               I  etag: W/"69-A8lEYaNost523hVkX3zmFdDAIBc"
+2025-11-13 17:44:59.239  9117-9202  okhttp.OkHttpClient     com.cdccreditsmart.app               I  permissions-policy: geolocation=(), microphone=(), camera=()
+2025-11-13 17:44:59.239  9117-9202  okhttp.OkHttpClient     com.cdccreditsmart.app               I  referrer-policy: strict-origin-when-cross-origin
+2025-11-13 17:44:59.239  9117-9202  okhttp.OkHttpClient     com.cdccreditsmart.app               I  server: Google Frontend
+2025-11-13 17:44:59.239  9117-9202  okhttp.OkHttpClient     com.cdccreditsmart.app               I  strict-transport-security: max-age=63072000; includeSubDomains
+2025-11-13 17:44:59.239  9117-9202  okhttp.OkHttpClient     com.cdccreditsmart.app               I  strict-transport-security: max-age=31536000; includeSubDomains
+2025-11-13 17:44:59.239  9117-9202  okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-anti-fraud-protection: active
+2025-11-13 17:44:59.239  9117-9202  okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-certificate-pinning-enabled: false
+2025-11-13 17:44:59.239  9117-9202  okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-certificate-pinning-status: disabled-for-stability
+2025-11-13 17:44:59.239  9117-9202  okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-cloud-trace-context: 955206213605c6d59915571bd5965671;o=1
+2025-11-13 17:44:59.239  9117-9202  okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-content-type-options: nosniff
+2025-11-13 17:44:59.239  9117-9202  okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-financial-data-protection: enabled
+2025-11-13 17:44:59.239  9117-9202  okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-frame-options: DENY
+2025-11-13 17:44:59.239  9117-9202  okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-transaction-security-level: maximum
+2025-11-13 17:44:59.239  9117-9202  okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-xss-protection: 1; mode=block
+2025-11-13 17:44:59.239  9117-9202  okhttp.OkHttpClient     com.cdccreditsmart.app               I  via: 1.1 google
+2025-11-13 17:44:59.239  9117-9202  okhttp.OkHttpClient     com.cdccreditsmart.app               I  alt-svc: h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
+2025-11-13 17:44:59.239  9117-9202  okhttp.OkHttpClient     com.cdccreditsmart.app               I  {"deviceId":"device_1762892329602_xyagy6ak4ec","serialNumber":"WHJE29S6","commandsCount":0,"commands":[]}
+2025-11-13 17:44:59.239  9117-9202  okhttp.OkHttpClient     com.cdccreditsmart.app               I  <-- END HTTP (105-byte body)
+2025-11-13 17:44:59.240  9117-9172  MdmCommandReceiver      com.cdccreditsmart.app               D  ✅ Nenhum comando pendente
+2025-11-13 17:44:59.240  9117-9172  MdmCommandReceiver      com.cdccreditsmart.app               D  📊 Fetch duration: 457ms
+2025-11-13 17:44:59.240  9117-9172  MdmCommandReceiver      com.cdccreditsmart.app               D  ⏳ [Polling #4] Aguardando 29543ms até próxima verificação...
+2025-11-13 17:45:18.065  9117-9229  okhttp.OkHttpClient     com.cdccreditsmart.app               I  <-- HTTP FAILED: java.net.SocketTimeoutException: timeout
+2025-11-13 17:45:18.082  9117-9117  PixPaymentViewModel     com.cdccreditsmart.app               E  Error generating PIX QR Code (Ask Gemini)
+                                                                                                    java.net.SocketTimeoutException: timeout
+                                                                                                    	at okhttp3.internal.http2.Http2Stream$StreamTimeout.newTimeoutException(Http2Stream.kt:675)
+                                                                                                    	at okhttp3.internal.http2.Http2Stream$StreamTimeout.exitAndThrowIfTimedOut(Http2Stream.kt:684)
+                                                                                                    	at okhttp3.internal.http2.Http2Stream.takeHeaders(Http2Stream.kt:143)
+                                                                                                    	at okhttp3.internal.http2.Http2ExchangeCodec.readResponseHeaders(Http2ExchangeCodec.kt:97)
+                                                                                                    	at okhttp3.internal.connection.Exchange.readResponseHeaders(Exchange.kt:110)
+                                                                                                    	at okhttp3.internal.http.CallServerInterceptor.intercept(CallServerInterceptor.kt:93)
+                                                                                                    	at okhttp3.internal.http.RealInterceptorChain.proceed(RealInterceptorChain.kt:109)
+                                                                                                    	at okhttp3.internal.connection.ConnectInterceptor.intercept(ConnectInterceptor.kt:34)
+                                                                                                    	at okhttp3.internal.http.RealInterceptorChain.proceed(RealInterceptorChain.kt:109)
+                                                                                                    	at okhttp3.internal.cache.CacheInterceptor.intercept(CacheInterceptor.kt:95)
+                                                                                                    	at okhttp3.internal.http.RealInterceptorChain.proceed(RealInterceptorChain.kt:109)
+                                                                                                    	at okhttp3.internal.http.BridgeInterceptor.intercept(BridgeInterceptor.kt:83)
+                                                                                                    	at okhttp3.internal.http.RealInterceptorChain.proceed(RealInterceptorChain.kt:109)
+                                                                                                    	at okhttp3.internal.http.RetryAndFollowUpInterceptor.intercept(RetryAndFollowUpInterceptor.kt:76)
+                                                                                                    	at okhttp3.internal.http.RealInterceptorChain.proceed(RealInterceptorChain.kt:109)
+                                                                                                    	at okhttp3.logging.HttpLoggingInterceptor.intercept(HttpLoggingInterceptor.kt:221)
+                                                                                                    	at okhttp3.internal.http.RealInterceptorChain.proceed(RealInterceptorChain.kt:109)
+                                                                                                    	at okhttp3.internal.connection.RealCall.getResponseWithInterceptorChain$okhttp(RealCall.kt:201)
+                                                                                                    	at okhttp3.internal.connection.RealCall$AsyncCall.run(RealCall.kt:517)
+                                                                                                    	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1156)
+                                                                                                    	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:651)
+                                                                                                    	at java.lang.Thread.run(Thread.java:1119)
+2025-11-13 17:45:28.279  9117-9117  WebSocketManager        com.cdccreditsmart.app               D  Heartbeat ping sent
+2025-11-13 17:45:28.440  9117-9214  WebSocketManager        com.cdccreditsmart.app               D  Message received: {"type":"pong","timestamp":"2025-11-13T20:45:28.959Z"}...
+2025-11-13 17:45:28.440  9117-9214  WebSocketManager        com.cdccreditsmart.app               D  Received message type: pong
+2025-11-13 17:45:28.440  9117-9214  WebSocketManager        com.cdccreditsmart.app               D  Pong received
+2025-11-13 17:45:28.504  9117-9172  BlockedAppInterceptor   com.cdccreditsmart.app               D  🔋 OTIMIZAÇÃO: Sem apps bloqueados - pausando monitoramento (60s)
+2025-11-13 17:45:28.786  9117-9172  MdmCommandReceiver      com.cdccreditsmart.app               D  🔍 [Polling #5] Verificando comandos pendentes...
+2025-11-13 17:45:28.786  9117-9172  MdmCommandReceiver      com.cdccreditsmart.app               D  🔍 Buscando comandos pendentes para contract code: WHJE...
+2025-11-13 17:45:28.787  9117-9202  okhttp.OkHttpClient     com.cdccreditsmart.app               I  --> GET https://cdccreditsmart.com/api/apk/device/WHJE29S6/commands
+2025-11-13 17:45:28.787  9117-9202  okhttp.OkHttpClient     com.cdccreditsmart.app               I  --> END GET
+2025-11-13 17:45:28.849  9117-9117  WebSocketManager        com.cdccreditsmart.app               D  Heartbeat ping sent
+2025-11-13 17:45:29.014  9117-9216  WebSocketManager        com.cdccreditsmart.app               D  Message received: {"type":"pong","timestamp":"2025-11-13T20:45:29.528Z"}...
+2025-11-13 17:45:29.014  9117-9216  WebSocketManager        com.cdccreditsmart.app               D  Received message type: pong
+2025-11-13 17:45:29.014  9117-9216  WebSocketManager        com.cdccreditsmart.app               D  Pong received
+2025-11-13 17:45:29.223  9117-9202  okhttp.OkHttpClient     com.cdccreditsmart.app               I  <-- 200 https://cdccreditsmart.com/api/apk/device/WHJE29S6/commands (435ms)
+2025-11-13 17:45:29.223  9117-9202  okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-credentials: true
+2025-11-13 17:45:29.223  9117-9202  okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-headers: Origin, X-Requested-With, Content-Type, Accept, Authorization, x-client-key, x-client-token, x-client-secret, cache-control
+2025-11-13 17:45:29.223  9117-9202  okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-methods: GET, POST, PUT, PATCH, DELETE, OPTIONS
+2025-11-13 17:45:29.223  9117-9202  okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-origin: *
+2025-11-13 17:45:29.223  9117-9202  okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-max-age: 86400
+2025-11-13 17:45:29.223  9117-9202  okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-length: 105
+2025-11-13 17:45:29.223  9117-9202  okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-security-policy: default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://replit.com; style-src 'self' 'unsafe-inline' https://replit.com; img-src 'self' data: https:; font-src 'self' data: https://replit.com; connect-src 'self';
+2025-11-13 17:45:29.223  9117-9202  okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-type: application/json; charset=utf-8
+2025-11-13 17:45:29.223  9117-9202  okhttp.OkHttpClient     com.cdccreditsmart.app               I  date: Thu, 13 Nov 2025 20:45:29 GMT
+2025-11-13 17:45:29.223  9117-9202  okhttp.OkHttpClient     com.cdccreditsmart.app               I  etag: W/"69-A8lEYaNost523hVkX3zmFdDAIBc"
+2025-11-13 17:45:29.223  9117-9202  okhttp.OkHttpClient     com.cdccreditsmart.app               I  permissions-policy: geolocation=(), microphone=(), camera=()
+2025-11-13 17:45:29.223  9117-9202  okhttp.OkHttpClient     com.cdccreditsmart.app               I  referrer-policy: strict-origin-when-cross-origin
+2025-11-13 17:45:29.223  9117-9202  okhttp.OkHttpClient     com.cdccreditsmart.app               I  server: Google Frontend
+2025-11-13 17:45:29.223  9117-9202  okhttp.OkHttpClient     com.cdccreditsmart.app               I  strict-transport-security: max-age=63072000; includeSubDomains
+2025-11-13 17:45:29.223  9117-9202  okhttp.OkHttpClient     com.cdccreditsmart.app               I  strict-transport-security: max-age=31536000; includeSubDomains
+2025-11-13 17:45:29.223  9117-9202  okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-anti-fraud-protection: active
+2025-11-13 17:45:29.223  9117-9202  okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-certificate-pinning-enabled: false
+2025-11-13 17:45:29.224  9117-9202  okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-certificate-pinning-status: disabled-for-stability
+2025-11-13 17:45:29.224  9117-9202  okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-cloud-trace-context: fb93f8fd73480e0bba17f5c846325724;o=1
+2025-11-13 17:45:29.224  9117-9202  okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-content-type-options: nosniff
+2025-11-13 17:45:29.224  9117-9202  okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-financial-data-protection: enabled
+2025-11-13 17:45:29.224  9117-9202  okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-frame-options: DENY
+2025-11-13 17:45:29.224  9117-9202  okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-transaction-security-level: maximum
+2025-11-13 17:45:29.224  9117-9202  okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-xss-protection: 1; mode=block
+2025-11-13 17:45:29.224  9117-9202  okhttp.OkHttpClient     com.cdccreditsmart.app               I  via: 1.1 google
+2025-11-13 17:45:29.224  9117-9202  okhttp.OkHttpClient     com.cdccreditsmart.app               I  alt-svc: h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
+2025-11-13 17:45:29.224  9117-9202  okhttp.OkHttpClient     com.cdccreditsmart.app               I  {"deviceId":"device_1762892329602_xyagy6ak4ec","serialNumber":"WHJE29S6","commandsCount":0,"commands":[]}
+2025-11-13 17:45:29.224  9117-9202  okhttp.OkHttpClient     com.cdccreditsmart.app               I  <-- END HTTP (105-byte body)
+2025-11-13 17:45:29.225  9117-9172  MdmCommandReceiver      com.cdccreditsmart.app               D  ✅ Nenhum comando pendente
+2025-11-13 17:45:29.225  9117-9172  MdmCommandReceiver      com.cdccreditsmart.app               D  📊 Fetch duration: 439ms
+2025-11-13 17:45:29.225  9117-9172  MdmCommandReceiver      com.cdccreditsmart.app               D  ⏳ [Polling #5] Aguardando 29560ms até próxima verificação...
