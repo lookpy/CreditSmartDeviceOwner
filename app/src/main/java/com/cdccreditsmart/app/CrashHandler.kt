@@ -2,16 +2,20 @@ package com.cdccreditsmart.app
 
 import android.content.Context
 import android.util.Log
+import com.cdccreditsmart.app.restart.AppRestartManager
+import java.io.PrintWriter
+import java.io.StringWriter
 import kotlin.system.exitProcess
 
 /**
  * Handler global de exceções não tratadas
  * Captura crashes antes do app morrer e loga informações úteis
  * 
- * OTIMIZAÇÃO: Crash prevention
+ * OTIMIZAÇÃO: Crash prevention + Auto-restart
  * - Captura exceções não tratadas globalmente
  * - Logging detalhado para diagnóstico
- * - Preparado para integração com Firebase Crashlytics
+ * - Auto-restart inteligente com proteção contra loops
+ * - Telemetria de crashes para backend
  */
 class CrashHandler(
     private val context: Context,
@@ -36,7 +40,6 @@ class CrashHandler(
     
     override fun uncaughtException(thread: Thread, throwable: Throwable) {
         try {
-            // Log detalhado do crash
             Log.e(TAG, "")
             Log.e(TAG, "╔═══════════════════════════════════════════════════════╗")
             Log.e(TAG, "║  💥 CRASH NÃO TRATADO DETECTADO                       ║")
@@ -55,17 +58,39 @@ class CrashHandler(
             Log.e(TAG, "Stack Trace Completo:", throwable)
             Log.e(TAG, "")
             
-            // Aqui você pode adicionar:
-            // - Firebase Crashlytics.recordException(throwable)
-            // - Envio para backend analytics
-            // - Salvar crash log localmente
+            val crashReason = "${throwable::class.java.simpleName}: ${throwable.message}"
+            val stackTrace = getStackTraceString(throwable)
+            
+            val restartManager = AppRestartManager(context)
+            
+            Log.i(TAG, "📊 Reportando crash ao backend...")
+            restartManager.reportCrashToBackend(crashReason, stackTrace)
+            
+            Log.i(TAG, "🔄 Agendando auto-restart do app...")
+            restartManager.scheduleRestart(crashReason)
             
         } catch (e: Exception) {
             Log.e(TAG, "❌ Erro ao processar crash", e)
         } finally {
-            // Delega para handler padrão (mata o app)
+            try {
+                Thread.sleep(2000)
+            } catch (e: InterruptedException) {
+                Log.e(TAG, "Sleep interrompido: ${e.message}")
+            }
+            
             defaultHandler?.uncaughtException(thread, throwable)
                 ?: exitProcess(1)
+        }
+    }
+    
+    private fun getStackTraceString(throwable: Throwable): String {
+        return try {
+            val sw = StringWriter()
+            val pw = PrintWriter(sw)
+            throwable.printStackTrace(pw)
+            sw.toString()
+        } catch (e: Exception) {
+            "Erro ao obter stack trace: ${e.message}"
         }
     }
 }

@@ -261,6 +261,12 @@
             </intent-filter>
         </receiver>
 
+        <!-- Auto-restart receiver - Reinicia app após crash -->
+        <receiver
+            android:name=".restart.RestartReceiver"
+            android:enabled="true"
+            android:exported="false" />
+
         <!-- File provider for sharing documents -->
         <provider
             android:name="androidx.core.content.FileProvider"
