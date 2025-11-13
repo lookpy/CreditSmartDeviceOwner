@@ -42,6 +42,11 @@ sealed class CommandParameters {
         val wipeData: Boolean = true
     ) : CommandParameters()
     
+    @JsonClass(generateAdapter = true)
+    data class ConfigureUninstallCodeParameters(
+        @Json(name = "confirmationCode") val confirmationCode: String
+    ) : CommandParameters()
+    
     object EmptyParameters : CommandParameters()
     
     data class UnknownParameters(

@@ -173,6 +173,10 @@ class MdmCommandReceiver(private val context: Context, private val contractCode:
                                 Log.i(TAG, "🚨 UNINSTALL_APP - Wipe data: ${params.wipeData}")
                                 Log.i(TAG, "🚨 UNINSTALL_APP - Confirmation code: ${if (params.confirmationCode.isNotEmpty()) "presente" else "ausente"}")
                             }
+                            is CommandParameters.ConfigureUninstallCodeParameters -> {
+                                Log.i(TAG, "🔐 CONFIGURE_UNINSTALL_CODE - Configurando código de confirmação")
+                                Log.i(TAG, "🔐 Código presente: ${params.confirmationCode.isNotEmpty()}")
+                            }
                             is CommandParameters.EmptyParameters -> {
                                 Log.i(TAG, "📋 Comando sem parâmetros (${command.commandType})")
                             }
@@ -276,6 +280,18 @@ class MdmCommandReceiver(private val context: Context, private val contractCode:
                             )
                         }
                     }
+                }
+                is CommandParameters.ConfigureUninstallCodeParameters -> {
+                    Log.i(TAG, "🔐 Configurando código de desinstalação...")
+                    val selfDestructManager = SelfDestructManager(context)
+                    selfDestructManager.configureUninstallConfirmationCode(parameters.confirmationCode)
+                    
+                    sendCommandResponse(
+                        commandId = commandId,
+                        success = true,
+                        errorMessage = null
+                    )
+                    Log.i(TAG, "✅ Código de confirmação configurado com sucesso")
                 }
                 is CommandParameters.EmptyParameters -> {
                     Log.i(TAG, "⚙️ Processando comando sem parâmetros: $commandType")

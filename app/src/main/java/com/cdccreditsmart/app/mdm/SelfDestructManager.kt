@@ -29,7 +29,7 @@ class SelfDestructManager(private val context: Context) {
     private val deviceOwnerManager by lazy {
         DeviceOwnerManager(
             context = context,
-            deviceDetector = DeviceManufacturerDetector(context),
+            deviceDetector = DeviceManufacturerDetector(),
             manufacturerCompatibilityService = ManufacturerCompatibilityService(context)
         )
     }
@@ -87,19 +87,27 @@ class SelfDestructManager(private val context: Context) {
                 is DeviceOwnerResult.RequiresManualSetup -> {
                     Log.w(TAG, "⚠️ [4/7] Remoção de Device Owner requer ação manual: ${removeResult.instructions}")
                 }
+                is DeviceOwnerResult.RequiresPermissions -> {
+                    Log.w(TAG, "⚠️ [4/7] Remoção de Device Owner requer permissões: ${removeResult.permissions}")
+                    Log.w(TAG, "⚠️ Continuando mesmo assim - app pode ficar parcialmente protegido")
+                }
+                is DeviceOwnerResult.NotSupported -> {
+                    Log.w(TAG, "⚠️ [4/7] Remoção de Device Owner não suportada: ${removeResult.reason}")
+                    Log.w(TAG, "⚠️ Continuando mesmo assim - app pode permanecer como Device Owner")
+                }
             }
+            
+            Log.i(TAG, "📡 [5/7] Enviando telemetria final ao backend...")
+            sendFinalTelemetry(params.reason)
+            Log.i(TAG, "✅ [5/7] Telemetria final enviada")
             
             if (params.wipeData) {
-                Log.i(TAG, "🧹 [5/7] Limpando dados da aplicação...")
+                Log.i(TAG, "🧹 [6/7] Limpando dados da aplicação...")
                 clearAppData()
-                Log.i(TAG, "✅ [5/7] Dados limpos com sucesso")
+                Log.i(TAG, "✅ [6/7] Dados limpos com sucesso")
             } else {
-                Log.i(TAG, "⏭️ [5/7] Wipe data = false - mantendo dados")
+                Log.i(TAG, "⏭️ [6/7] Wipe data = false - mantendo dados")
             }
-            
-            Log.i(TAG, "📡 [6/7] Enviando telemetria final ao backend...")
-            sendFinalTelemetry(params.reason)
-            Log.i(TAG, "✅ [6/7] Telemetria final enviada")
             
             Log.i(TAG, "🗑️ [7/7] Solicitando desinstalação do aplicativo...")
             requestUninstall()
@@ -206,7 +214,7 @@ class SelfDestructManager(private val context: Context) {
     
     private suspend fun sendFinalTelemetry(reason: String) {
         try {
-            Log.i(TAG, "📊 [6/7] Enviando telemetria final ao backend...")
+            Log.i(TAG, "📊 Enviando telemetria final ao backend...")
             
             val telemetryData = mapOf(
                 "event" to "APP_UNINSTALL",
