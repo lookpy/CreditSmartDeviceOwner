@@ -1,0 +1,577 @@
+# Documentação de Integração - Backend PIX e Time Sync
+
+## 🎯 Objetivo
+Integrar o APK Android com o sistema de pagamentos PIX e sincronização de tempo do backend.
+
+---
+
+## 📡 ENDPOINTS DISPONÍVEIS
+
+### 1. SINCRONIZAÇÃO DE TEMPO (CRÍTICO - JÁ IMPLEMENTADO ✅)
+
+#### `GET /api/apk/time/now`
+
+**Autenticação:** JWT Token (Bearer)
+
+**Request:**
+```http
+GET /api/apk/time/now HTTP/1.1
+Authorization: Bearer {JWT_TOKEN}
+Host: seu-backend.replit.app
+```
+
+**Response (200 OK):**
+```json
+{
+  "timestamp": 1762986789123,
+  "timezone": "America/Sao_Paulo",
+  "serverDate": "2024-11-12T22:26:29.123Z"
+}
+```
+
+**Campos:**
+- `timestamp` (Long): Timestamp Unix em milissegundos (epoch) - usar para cálculos
+- `timezone` (String): Timezone do servidor (sempre "America/Sao_Paulo")
+- `serverDate` (String): Data ISO 8601 para debug/logs
+
+**Uso no APK:**
+Este endpoint JÁ ESTÁ implementado e funcionando. O APK deve continuar usando conforme já implementado.
+
+---
+
+## 💳 SISTEMA PIX - NOVOS ENDPOINTS
+
+### 2. LISTAR PARCELAS PENDENTES/VENCIDAS
+
+#### `GET /v1/pix/installments/:deviceId`
+
+**Autenticação:** JWT Token APK (Bearer)
+
+**Request:**
+```http
+GET /v1/pix/installments/uuid-do-dispositivo HTTP/1.1
+Authorization: Bearer {APK_JWT_TOKEN}
+Host: seu-backend.replit.app
+```
+
+**Response (200 OK):**
+```json
+{
+  "success": true,
+  "installments": [
+    {
+      "id": "installment-uuid-1",
+      "installmentNumber": 1,
+      "value": "150.00",
+      "dueDate": "2024-11-15T00:00:00.000Z",
+      "status": "overdue",
+      "daysOverdue": 5,
+      "deviceId": "device-uuid",
+      "saleId": "sale-uuid"
+    },
+    {
+      "id": "installment-uuid-2",
+      "installmentNumber": 2,
+      "value": "150.00",
+      "dueDate": "2024-11-30T00:00:00.000Z",
+      "status": "pending",
+      "daysOverdue": 0,
+      "deviceId": "device-uuid",
+      "saleId": "sale-uuid"
+    }
+  ]
+}
+```
+
+**Status possíveis:**
+- `pending` - Parcela pendente, ainda não vencida
+- `overdue` - Parcela vencida (atrasada)
+- `paid` - Parcela paga (não retorna nesta lista)
+
+**Quando chamar:**
+- Quando usuário abrir tela de pagamentos
+- Após receber notificação push sobre cobrança
+- Periodicamente (a cada hora) se houver parcelas vencidas
+
+---
+
+### 3. GERAR QR CODE PIX
+
+#### `POST /v1/pix/generate/:installmentId`
+
+**Autenticação:** JWT Token APK (Bearer)
+
+**Request:**
+```http
+POST /v1/pix/generate/installment-uuid-1 HTTP/1.1
+Authorization: Bearer {APK_JWT_TOKEN}
+Content-Type: application/json
+Host: seu-backend.replit.app
+```
+
+**Response (200 OK):**
+```json
+{
+  "success": true,
+  "qrCode": "00020126580014br.gov.bcb.pix...",
+  "qrImage": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUg...",
+  "orderId": "ORDER-2024-001",
+  "transactionId": "TXN-123456789",
+  "expirationDate": "2024-11-13T00:26:29.123Z"
+}
+```
+
+**Campos:**
+- `qrCode` (String): Código PIX Copia e Cola (para copiar)
+- `qrImage` (String): QR Code em Base64 (para mostrar na tela)
+- `orderId` (String): ID do pedido (usar para consultar status)
+- `transactionId` (String): ID da transação PIX
+- `expirationDate` (String): Data de expiração do QR Code (normalmente 24h)
+
+**Response (503 Service Unavailable):**
+```json
+{
+  "success": false,
+  "message": "Failed to generate PIX QR code",
+  "error": "PIX API token não configurado"
+}
+```
+
+**Quando chamar:**
+- Quando usuário tocar em "Pagar com PIX" em uma parcela vencida
+- Gerar novo QR Code se o anterior expirou
+
+---
+
+### 4. VERIFICAR STATUS DE PAGAMENTO
+
+#### `GET /v1/pix/status/:orderId`
+
+**Autenticação:** JWT Token APK (Bearer)
+
+**Request:**
+```http
+GET /v1/pix/status/ORDER-2024-001 HTTP/1.1
+Authorization: Bearer {APK_JWT_TOKEN}
+Host: seu-backend.replit.app
+```
+
+**Response (200 OK - Pago):**
+```json
+{
+  "success": true,
+  "status": "PAID",
+  "paid": true
+}
+```
+
+**Response (200 OK - Pendente):**
+```json
+{
+  "success": true,
+  "status": "PENDING",
+  "paid": false
+}
+```
+
+**Status possíveis:**
+- `PENDING` - Aguardando pagamento
+- `PAID` - Pago com sucesso
+- `EXPIRED` - QR Code expirado
+- `CANCELLED` - Cancelado
+
+**Quando chamar:**
+- Polling: A cada 5 segundos enquanto tela de pagamento estiver aberta
+- Após usuário informar que pagou
+- Parar polling quando status = `PAID` ou usuário fechar tela
+
+---
+
+## 🔔 WEBHOOK AUTOMÁTICO (Backend → APK)
+
+O backend **automaticamente** processa webhooks da API PIX quando o pagamento é confirmado.
+
+**O que acontece automaticamente:**
+1. ✅ Parcela é marcada como paga no banco de dados
+2. ✅ Dispositivo é desbloqueado SE todas parcelas vencidas foram pagas
+3. ✅ Notificação push FCM é enviada ao dispositivo (se configurado)
+4. ✅ WebSocket notifica mudança de status (se conectado)
+
+**O APK deve:**
+- Escutar notificações FCM com tipo `PAYMENT`
+- Atualizar UI quando receber notificação de pagamento aprovado
+- Re-consultar lista de parcelas pendentes
+- Verificar status do dispositivo (pode ter sido desbloqueado)
+
+---
+
+## 🔄 FLUXO COMPLETO DE PAGAMENTO PIX
+
+### Fluxo Recomendado:
+
+```
+1. Usuário abre app → GET /v1/pix/installments/:deviceId
+   └─> Mostra lista de parcelas vencidas
+
+2. Usuário toca "Pagar Parcela X" → POST /v1/pix/generate/:installmentId
+   └─> Recebe QR Code + orderId
+   └─> Mostra QR Code na tela
+   └─> Botão "Copiar código PIX"
+
+3. Enquanto tela aberta → Polling GET /v1/pix/status/:orderId (5s)
+   └─> Se paid=true: Mostra "✅ Pagamento Confirmado!"
+   └─> Fecha tela automaticamente após 2s
+   └─> Atualiza lista de parcelas
+
+4. Notificação Push recebida (tipo PAYMENT)
+   └─> Toast: "Pagamento confirmado!"
+   └─> Atualiza lista de parcelas
+   └─> Se dispositivo foi desbloqueado, mostrar toast
+
+5. Usuário fecha tela antes de pagar
+   └─> Para polling
+   └─> QR Code continua válido até expirar (24h)
+```
+
+---
+
+## 🎨 SUGESTÃO DE UI/UX
+
+### Tela: Lista de Parcelas Vencidas
+
+```
+┌─────────────────────────────────────┐
+│ 💳 Minhas Parcelas                  │
+├─────────────────────────────────────┤
+│                                     │
+│ ⚠️ Parcela 1 - VENCIDA (5 dias)    │
+│ Vencimento: 15/11/2024              │
+│ Valor: R$ 150,00                    │
+│ [Pagar com PIX] 📱                  │
+│                                     │
+│ ⏳ Parcela 2 - Vence em 3 dias      │
+│ Vencimento: 30/11/2024              │
+│ Valor: R$ 150,00                    │
+│ [Pagar com PIX] 📱                  │
+│                                     │
+└─────────────────────────────────────┘
+```
+
+### Tela: QR Code PIX
+
+```
+┌─────────────────────────────────────┐
+│ ← Voltar    PIX - Parcela 1         │
+├─────────────────────────────────────┤
+│                                     │
+│         ┌───────────────┐           │
+│         │               │           │
+│         │   QR CODE     │           │
+│         │    IMAGE      │           │
+│         │               │           │
+│         └───────────────┘           │
+│                                     │
+│ Valor: R$ 150,00                    │
+│ Vencimento: 15/11/2024              │
+│                                     │
+│ Código PIX Copia e Cola:            │
+│ ┌─────────────────────────────┐    │
+│ │ 00020126580014br.gov.bcb... │ 📋 │
+│ └─────────────────────────────┘    │
+│                                     │
+│ ⏳ Aguardando pagamento...          │
+│ [Já Paguei] [Cancelar]              │
+│                                     │
+│ QR Code válido até: 13/11 00:26    │
+└─────────────────────────────────────┘
+```
+
+---
+
+## 🔐 AUTENTICAÇÃO
+
+Todos os endpoints `/v1/pix/*` e `/api/apk/time/now` requerem autenticação JWT.
+
+**Header obrigatório:**
+```
+Authorization: Bearer {APK_JWT_TOKEN}
+```
+
+O token JWT é o mesmo já usado pelo APK para outros endpoints.
+
+---
+
+## ⚠️ TRATAMENTO DE ERROS
+
+### Erro 401 - Não Autenticado
+```json
+{
+  "success": false,
+  "message": "Token inválido ou expirado"
+}
+```
+**Ação:** Redirecionar para login ou renovar token
+
+### Erro 404 - Parcela não encontrada
+```json
+{
+  "success": false,
+  "message": "Installment not found"
+}
+```
+**Ação:** Atualizar lista de parcelas (pode ter sido paga)
+
+### Erro 500 - Erro interno
+```json
+{
+  "success": false,
+  "message": "Failed to generate PIX QR code",
+  "error": "..."
+}
+```
+**Ação:** Mostrar erro ao usuário, permitir tentar novamente
+
+### Erro 503 - Serviço indisponível
+```json
+{
+  "success": false,
+  "message": "PIX service temporarily unavailable"
+}
+```
+**Ação:** Mostrar "Serviço temporariamente indisponível"
+
+---
+
+## 📊 DADOS ARMAZENADOS LOCALMENTE (SQLite)
+
+### Recomendações:
+
+1. **Cache de parcelas pendentes:**
+   - Atualizar a cada abertura do app
+   - Atualizar após pagamento confirmado
+   - TTL: 1 hora
+
+2. **Último QR Code gerado:**
+   - Armazenar `orderId` + `qrCode` + `expirationDate`
+   - Permitir reabrir se não expirou
+   - Limpar após expiração
+
+3. **Histórico de pagamentos:**
+   - Armazenar parcelas pagas
+   - Mostrar em "Histórico"
+
+---
+
+## 🧪 TESTES RECOMENDADOS
+
+### 1. Teste de Lista de Parcelas
+```kotlin
+// Chamar endpoint
+val response = apiService.getPendingInstallments(deviceId)
+
+// Verificar
+assert(response.success == true)
+assert(response.installments.isNotEmpty())
+assert(response.installments[0].status in listOf("pending", "overdue"))
+```
+
+### 2. Teste de Geração de QR Code
+```kotlin
+val response = apiService.generatePixQRCode(installmentId)
+
+assert(response.success == true)
+assert(response.qrCode.isNotEmpty())
+assert(response.orderId.isNotEmpty())
+```
+
+### 3. Teste de Polling de Status
+```kotlin
+// Simular polling
+for (i in 1..10) {
+    delay(5000)
+    val status = apiService.checkPixStatus(orderId)
+    
+    if (status.paid) {
+        // Pagamento confirmado!
+        break
+    }
+}
+```
+
+---
+
+## 🚀 PRÓXIMOS PASSOS
+
+### Para a IA do APK implementar:
+
+1. ✅ **Já implementado:** Endpoint `/api/apk/time/now` - continuar usando
+
+2. 🆕 **Novo:** Criar serviço Retrofit para endpoints PIX:
+   - `GET /v1/pix/installments/:deviceId`
+   - `POST /v1/pix/generate/:installmentId`
+   - `GET /v1/pix/status/:orderId`
+
+3. 🆕 **Novo:** Criar tela "Minhas Parcelas":
+   - Lista de parcelas vencidas/pendentes
+   - Badge de "X dias atrasado"
+   - Botão "Pagar com PIX"
+
+4. 🆕 **Novo:** Criar tela "QR Code PIX":
+   - Mostrar QR Code (ImageView + Base64)
+   - Botão "Copiar código PIX" (clipboard)
+   - Polling automático de status (5s)
+   - Feedback visual quando pago
+
+5. 🆕 **Novo:** Integrar com FCM:
+   - Escutar notificações tipo `PAYMENT`
+   - Atualizar UI quando receber
+   - Mostrar toast de confirmação
+
+6. 🆕 **Novo:** Cache local:
+   - Salvar lista de parcelas pendentes
+   - Salvar último QR Code gerado
+   - Limpar cache ao expirar
+
+---
+
+## 📝 EXEMPLO DE CÓDIGO KOTLIN
+
+### Retrofit Service
+```kotlin
+interface PixApiService {
+    @GET("/v1/pix/installments/{deviceId}")
+    suspend fun getPendingInstallments(
+        @Path("deviceId") deviceId: String,
+        @Header("Authorization") token: String
+    ): PixInstallmentsResponse
+
+    @POST("/v1/pix/generate/{installmentId}")
+    suspend fun generatePixQRCode(
+        @Path("installmentId") installmentId: String,
+        @Header("Authorization") token: String
+    ): PixQRCodeResponse
+
+    @GET("/v1/pix/status/{orderId}")
+    suspend fun checkPixStatus(
+        @Path("orderId") orderId: String,
+        @Header("Authorization") token: String
+    ): PixStatusResponse
+}
+
+data class PixInstallmentsResponse(
+    val success: Boolean,
+    val installments: List<Installment>
+)
+
+data class Installment(
+    val id: String,
+    val installmentNumber: Int,
+    val value: String,
+    val dueDate: String,
+    val status: String,
+    val daysOverdue: Int
+)
+
+data class PixQRCodeResponse(
+    val success: Boolean,
+    val qrCode: String,
+    val qrImage: String,
+    val orderId: String,
+    val transactionId: String,
+    val expirationDate: String
+)
+
+data class PixStatusResponse(
+    val success: Boolean,
+    val status: String,
+    val paid: Boolean
+)
+```
+
+### ViewModel
+```kotlin
+class PaymentViewModel : ViewModel() {
+    private val _installments = MutableLiveData<List<Installment>>()
+    val installments: LiveData<List<Installment>> = _installments
+
+    private val _qrCode = MutableLiveData<PixQRCodeResponse>()
+    val qrCode: LiveData<PixQRCodeResponse> = _qrCode
+
+    fun loadPendingInstallments(deviceId: String) {
+        viewModelScope.launch {
+            try {
+                val token = "Bearer ${getJwtToken()}"
+                val response = pixApiService.getPendingInstallments(deviceId, token)
+                _installments.value = response.installments
+            } catch (e: Exception) {
+                // Handle error
+            }
+        }
+    }
+
+    fun generateQRCode(installmentId: String) {
+        viewModelScope.launch {
+            try {
+                val token = "Bearer ${getJwtToken()}"
+                val response = pixApiService.generatePixQRCode(installmentId, token)
+                _qrCode.value = response
+                startPollingStatus(response.orderId)
+            } catch (e: Exception) {
+                // Handle error
+            }
+        }
+    }
+
+    private fun startPollingStatus(orderId: String) {
+        viewModelScope.launch {
+            while (true) {
+                delay(5000) // 5 segundos
+                
+                val token = "Bearer ${getJwtToken()}"
+                val status = pixApiService.checkPixStatus(orderId, token)
+                
+                if (status.paid) {
+                    // Pagamento confirmado!
+                    _paymentConfirmed.value = true
+                    break
+                }
+            }
+        }
+    }
+}
+```
+
+---
+
+## ✅ CHECKLIST DE IMPLEMENTAÇÃO
+
+- [ ] Adicionar endpoints PIX ao Retrofit service
+- [ ] Criar modelos de dados (Response classes)
+- [ ] Criar ViewModel para gerenciar estado
+- [ ] Criar tela "Minhas Parcelas"
+- [ ] Criar tela "QR Code PIX"
+- [ ] Implementar polling de status
+- [ ] Adicionar botão "Copiar código PIX"
+- [ ] Integrar com notificações FCM (tipo PAYMENT)
+- [ ] Adicionar cache local de parcelas
+- [ ] Testar fluxo completo
+- [ ] Adicionar loading states
+- [ ] Adicionar tratamento de erros
+- [ ] Adicionar analytics (opcional)
+
+---
+
+## 🆘 SUPORTE
+
+**Backend Endpoint Base URL:**
+```
+https://seu-backend.replit.app
+```
+
+**Documentação adicional:**
+- Webhook automático: Backend processa automaticamente, APK só escuta FCM
+- Rate limiting: 100 req/min no webhook (não afeta APK)
+- Timezone: Sempre "America/Sao_Paulo"
+
+**Dúvidas?**
+Entre em contato com o desenvolvedor do backend.
