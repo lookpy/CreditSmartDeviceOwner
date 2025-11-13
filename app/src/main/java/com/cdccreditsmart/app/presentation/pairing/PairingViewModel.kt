@@ -264,27 +264,35 @@ class PairingViewModel(private val context: Context) : ViewModel() {
             }
             
             com.cdccreditsmart.app.device.ImeiAcquisitionStatus.NO_PERMISSION -> {
-                Log.w(TAG, "❌ Permissão READ_PHONE_STATE não concedida")
-                Log.e(TAG, "")
-                Log.e(TAG, "╔════════════════════════════════════════════════════════╗")
-                Log.e(TAG, "║    ⚠️  DISPOSITIVO NÃO PROVISIONADO  ⚠️                ║")
-                Log.e(TAG, "╠════════════════════════════════════════════════════════╣")
-                Log.e(TAG, "║  Este dispositivo precisa ser configurado como         ║")
-                Log.e(TAG, "║  Device Owner ANTES do pareamento.                     ║")
-                Log.e(TAG, "║                                                        ║")
-                Log.e(TAG, "║  Entre em contato com o suporte técnico para           ║")
-                Log.e(TAG, "║  provisionar o dispositivo corretamente via:           ║")
-                Log.e(TAG, "║  • ADB (desenvolvimento/testes)                        ║")
-                Log.e(TAG, "║  • Samsung Knox Mobile Enrollment (produção)           ║")
-                Log.e(TAG, "║  • QR Code durante factory reset                       ║")
-                Log.e(TAG, "╚════════════════════════════════════════════════════════╝")
-                Log.e(TAG, "")
-                
-                _state.value = PairingState.Error(
-                    message = "Dispositivo não provisionado como Device Owner.\n\nEste app requer provisionamento especial antes do uso.\n\nEntre em contato com o suporte técnico.",
-                    canRetry = false
-                )
-                return
+                if (com.cdccreditsmart.app.BuildConfig.DEBUG) {
+                    Log.w(TAG, "⚠️ MODO DEBUG: Permissão READ_PHONE_STATE não concedida")
+                    Log.w(TAG, "⚠️ MODO DEBUG: Prosseguindo SEM IMEI (Device Owner não configurado)")
+                    deviceImei = null
+                    additionalImeis = null
+                    imeiStatus = "unavailable"
+                } else {
+                    Log.w(TAG, "❌ Permissão READ_PHONE_STATE não concedida")
+                    Log.e(TAG, "")
+                    Log.e(TAG, "╔════════════════════════════════════════════════════════╗")
+                    Log.e(TAG, "║    ⚠️  DISPOSITIVO NÃO PROVISIONADO  ⚠️                ║")
+                    Log.e(TAG, "╠════════════════════════════════════════════════════════╣")
+                    Log.e(TAG, "║  Este dispositivo precisa ser configurado como         ║")
+                    Log.e(TAG, "║  Device Owner ANTES do pareamento.                     ║")
+                    Log.e(TAG, "║                                                        ║")
+                    Log.e(TAG, "║  Entre em contato com o suporte técnico para           ║")
+                    Log.e(TAG, "║  provisionar o dispositivo corretamente via:           ║")
+                    Log.e(TAG, "║  • ADB (desenvolvimento/testes)                        ║")
+                    Log.e(TAG, "║  • Samsung Knox Mobile Enrollment (produção)           ║")
+                    Log.e(TAG, "║  • QR Code durante factory reset                       ║")
+                    Log.e(TAG, "╚════════════════════════════════════════════════════════╝")
+                    Log.e(TAG, "")
+                    
+                    _state.value = PairingState.Error(
+                        message = "Dispositivo não provisionado como Device Owner.\n\nEste app requer provisionamento especial antes do uso.\n\nEntre em contato com o suporte técnico.",
+                        canRetry = false
+                    )
+                    return
+                }
             }
             
             com.cdccreditsmart.app.device.ImeiAcquisitionStatus.NO_TELEPHONY -> {
