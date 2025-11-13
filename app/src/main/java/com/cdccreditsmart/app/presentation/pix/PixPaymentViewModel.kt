@@ -131,10 +131,13 @@ class PixPaymentViewModel(
 
                 if (response.isSuccessful && response.body()?.success == true) {
                     val body = response.body()!!
-                    if (!body.qrCode.isNullOrBlank() && !body.qrImage.isNullOrBlank()) {
+                    val qrCodeString = body.qrCode
+                    val qrImageString = body.qrImage
+                    
+                    if (!qrCodeString.isNullOrBlank() && !qrImageString.isNullOrBlank()) {
                         val qrCodeData = PixQRCodeData(
-                            qrCode = body.qrCode,
-                            qrImage = body.qrImage,
+                            qrCode = qrCodeString,
+                            qrImage = qrImageString,
                             orderId = body.orderId ?: "",
                             expirationDate = body.expirationDate ?: ""
                         )

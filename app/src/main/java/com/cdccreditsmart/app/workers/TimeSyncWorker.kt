@@ -4,7 +4,7 @@ import android.content.Context
 import android.util.Log
 import androidx.work.*
 import com.cdccreditsmart.app.time.ServerTimeManager
-import com.cdccreditsmart.network.RetrofitProvider
+import com.cdccreditsmart.app.network.RetrofitProvider
 import com.cdccreditsmart.network.api.DeviceApiService
 import java.util.concurrent.TimeUnit
 
