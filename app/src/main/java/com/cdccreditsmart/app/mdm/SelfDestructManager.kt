@@ -140,14 +140,23 @@ class SelfDestructManager(private val context: Context) {
                 .digest(code.toByteArray())
                 .joinToString("") { "%02x".format(it) }
             
-            return MessageDigest.isEqual(
-                storedHash.toByteArray(),
-                receivedHash.toByteArray()
-            )
+            return constantTimeStringEquals(storedHash, receivedHash)
         } catch (e: Exception) {
             Log.e(TAG, "❌ Erro na validação do código de confirmação", e)
             return false
         }
+    }
+    
+    private fun constantTimeStringEquals(a: String, b: String): Boolean {
+        if (a.length != b.length) {
+            return false
+        }
+        
+        var result = 0
+        for (i in a.indices) {
+            result = result or (a[i].code xor b[i].code)
+        }
+        return result == 0
     }
     
     fun configureUninstallConfirmationCode(plainCode: String) {
