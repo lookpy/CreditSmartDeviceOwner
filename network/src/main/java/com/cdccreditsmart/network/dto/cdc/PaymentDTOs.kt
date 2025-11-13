@@ -15,7 +15,7 @@ import com.squareup.moshi.JsonClass
 //@JsonClass(generateAdapter = true)
 data class CdcInstallmentsResponse(
     val device: DeviceInstallmentInfo? = null,
-    val customer: CustomerInfo? = null,
+    val customer: CustomerBasicInfo? = null,
     val summary: InstallmentsSummary? = null,
     val timing: TimingInfo? = null,
     val nextInstallment: InstallmentItem? = null,
@@ -38,10 +38,11 @@ data class DeviceInstallmentInfo(
 )
 
 /**
- * Customer information in installments response
+ * Customer basic information in installments response
+ * Renamed from CustomerInfo to avoid conflict with AuthDTOs.CustomerInfo
  */
 //@JsonClass(generateAdapter = true)
-data class CustomerInfo(
+data class CustomerBasicInfo(
     val name: String? = null,
     val cpf: String? = null,
     val phone: String? = null
@@ -105,7 +106,7 @@ data class LegacyCdcInstallmentsResponse(
     val installments: List<InstallmentDetail>? = null,
     val summary: PaymentSummaryLegacy? = null,
     val contract: ContractSummary? = null,
-    val customer: CustomerInfo? = null,
+    val customer: CustomerBasicInfo? = null,
     val paymentMethods: List<PaymentMethodInfo>? = null,
     val pdvSession: com.cdccreditsmart.network.api.PdvSessionInfo? = null,
     val serverTimestamp: Long? = null,
