@@ -50,7 +50,7 @@ class PixPaymentViewModel(
 
     private val secureTokenStorage = SecureTokenStorage(context)
     private val apiService: DeviceApiService by lazy {
-        RetrofitProvider.createRetrofit().create(DeviceApiService::class.java)
+        RetrofitProvider.createPixRetrofit().create(DeviceApiService::class.java)
     }
 
     private var pollingJob: Job? = null
@@ -165,9 +165,16 @@ class PixPaymentViewModel(
                 }
             } catch (e: Exception) {
                 Log.e(TAG, "Error generating PIX QR Code", e)
+                val errorMessage = when {
+                    e is java.net.SocketTimeoutException -> 
+                        "O servidor está demorando muito para responder. Verifique se o backend PIX está funcionando e tente novamente."
+                    e.message?.contains("timeout", ignoreCase = true) == true ->
+                        "Tempo esgotado ao gerar QR Code. O backend pode estar processando, aguarde e tente novamente."
+                    else -> "Erro ao gerar QR Code: ${e.message}"
+                }
                 _uiState.value = _uiState.value.copy(
                     isLoading = false,
-                    error = "Erro ao gerar QR Code: ${e.message}"
+                    error = errorMessage
                 )
             }
         }

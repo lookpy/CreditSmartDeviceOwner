@@ -1,0 +1,28 @@
+2025-11-13 14:47:48.674  2568-3114  MdmCommandReceiver      com.cdccreditsmart.app               D  ✅ Nenhum comando pendente
+2025-11-13 14:47:48.674  2568-3114  MdmCommandReceiver      com.cdccreditsmart.app               D  📊 Fetch duration: 497ms
+2025-11-13 14:47:48.674  2568-3114  MdmCommandReceiver      com.cdccreditsmart.app               D  ⏳ [Polling #2] Aguardando 29503ms até próxima verificação...
+2025-11-13 14:47:55.952  2568-5227  okhttp.OkHttpClient     com.cdccreditsmart.app               I  <-- HTTP FAILED: java.net.SocketTimeoutException: timeout
+2025-11-13 14:47:55.960  2568-2568  PixPaymentViewModel     com.cdccreditsmart.app               E  Error generating PIX QR Code (Ask Gemini)
+                                                                                                    java.net.SocketTimeoutException: timeout
+                                                                                                    	at okhttp3.internal.http2.Http2Stream$StreamTimeout.newTimeoutException(Http2Stream.kt:675)
+                                                                                                    	at okhttp3.internal.http2.Http2Stream$StreamTimeout.exitAndThrowIfTimedOut(Http2Stream.kt:684)
+                                                                                                    	at okhttp3.internal.http2.Http2Stream.takeHeaders(Http2Stream.kt:143)
+                                                                                                    	at okhttp3.internal.http2.Http2ExchangeCodec.readResponseHeaders(Http2ExchangeCodec.kt:97)
+                                                                                                    	at okhttp3.internal.connection.Exchange.readResponseHeaders(Exchange.kt:110)
+                                                                                                    	at okhttp3.internal.http.CallServerInterceptor.intercept(CallServerInterceptor.kt:93)
+                                                                                                    	at okhttp3.internal.http.RealInterceptorChain.proceed(RealInterceptorChain.kt:109)
+                                                                                                    	at okhttp3.internal.connection.ConnectInterceptor.intercept(ConnectInterceptor.kt:34)
+                                                                                                    	at okhttp3.internal.http.RealInterceptorChain.proceed(RealInterceptorChain.kt:109)
+                                                                                                    	at okhttp3.internal.cache.CacheInterceptor.intercept(CacheInterceptor.kt:95)
+                                                                                                    	at okhttp3.internal.http.RealInterceptorChain.proceed(RealInterceptorChain.kt:109)
+                                                                                                    	at okhttp3.internal.http.BridgeInterceptor.intercept(BridgeInterceptor.kt:83)
+                                                                                                    	at okhttp3.internal.http.RealInterceptorChain.proceed(RealInterceptorChain.kt:109)
+                                                                                                    	at okhttp3.internal.http.RetryAndFollowUpInterceptor.intercept(RetryAndFollowUpInterceptor.kt:76)
+                                                                                                    	at okhttp3.internal.http.RealInterceptorChain.proceed(RealInterceptorChain.kt:109)
+                                                                                                    	at okhttp3.logging.HttpLoggingInterceptor.intercept(HttpLoggingInterceptor.kt:221)
+                                                                                                    	at okhttp3.internal.http.RealInterceptorChain.proceed(RealInterceptorChain.kt:109)
+                                                                                                    	at okhttp3.internal.connection.RealCall.getResponseWithInterceptorChain$okhttp(RealCall.kt:201)
+                                                                                                    	at okhttp3.internal.connection.RealCall$AsyncCall.run(RealCall.kt:517)
+                                                                                                    	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1156)
+                                                                                                    	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:651)
+                                                                                                    	at java.lang.Thread.run(Thread.java:1119)

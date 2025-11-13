@@ -28,10 +28,31 @@ object RetrofitProvider {
         }
         .build()
     
+    private val pixOkHttpClient = OkHttpClient.Builder()
+        .connectTimeout(90, TimeUnit.SECONDS)
+        .readTimeout(90, TimeUnit.SECONDS)
+        .writeTimeout(90, TimeUnit.SECONDS)
+        .apply {
+            if (BuildConfig.ENABLE_NETWORK_LOGGING) {
+                addInterceptor(HttpLoggingInterceptor().apply {
+                    level = HttpLoggingInterceptor.Level.BODY
+                })
+            }
+        }
+        .build()
+    
     fun createRetrofit(baseUrl: String = BASE_URL): Retrofit {
         return Retrofit.Builder()
             .baseUrl(baseUrl)
             .client(okHttpClient)
+            .addConverterFactory(MoshiConverterFactory.create(moshi))
+            .build()
+    }
+    
+    fun createPixRetrofit(baseUrl: String = BASE_URL): Retrofit {
+        return Retrofit.Builder()
+            .baseUrl(baseUrl)
+            .client(pixOkHttpClient)
             .addConverterFactory(MoshiConverterFactory.create(moshi))
             .build()
     }
