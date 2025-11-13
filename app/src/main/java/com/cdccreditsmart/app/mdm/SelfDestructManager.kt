@@ -26,11 +26,19 @@ class SelfDestructManager(private val context: Context) {
         private const val TAG = "SelfDestructManager"
     }
     
+    private val deviceDetector by lazy {
+        DeviceManufacturerDetector()
+    }
+    
+    private val manufacturerCompatibilityService by lazy {
+        ManufacturerCompatibilityService(context, deviceDetector)
+    }
+    
     private val deviceOwnerManager by lazy {
         DeviceOwnerManager(
             context = context,
-            deviceDetector = DeviceManufacturerDetector(),
-            manufacturerCompatibilityService = ManufacturerCompatibilityService(context)
+            deviceDetector = deviceDetector,
+            manufacturerCompatibilityService = manufacturerCompatibilityService
         )
     }
     
