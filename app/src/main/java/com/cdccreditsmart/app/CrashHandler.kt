@@ -3,19 +3,17 @@ package com.cdccreditsmart.app
 import android.content.Context
 import android.util.Log
 import com.cdccreditsmart.app.restart.AppRestartManager
-import java.io.PrintWriter
-import java.io.StringWriter
 import kotlin.system.exitProcess
 
 /**
  * Handler global de exceções não tratadas
  * Captura crashes antes do app morrer e loga informações úteis
  * 
- * OTIMIZAÇÃO: Crash prevention + Auto-restart
+ * SISTEMA AUTÔNOMO: Crash prevention + Auto-restart
  * - Captura exceções não tratadas globalmente
  * - Logging detalhado para diagnóstico
  * - Auto-restart inteligente com proteção contra loops
- * - Telemetria de crashes para backend
+ * - 100% autônomo - SEM telemetria ao backend
  */
 class CrashHandler(
     private val context: Context,
@@ -41,56 +39,35 @@ class CrashHandler(
     override fun uncaughtException(thread: Thread, throwable: Throwable) {
         try {
             Log.e(TAG, "")
-            Log.e(TAG, "╔═══════════════════════════════════════════════════════╗")
-            Log.e(TAG, "║  💥 CRASH NÃO TRATADO DETECTADO                       ║")
-            Log.e(TAG, "╚═══════════════════════════════════════════════════════╝")
-            Log.e(TAG, "")
+            Log.e(TAG, "💥💥💥 APP CRASH DETECTADO 💥💥💥")
             Log.e(TAG, "Thread: ${thread.name}")
-            Log.e(TAG, "Mensagem: ${throwable.message}")
-            Log.e(TAG, "Tipo: ${throwable::class.java.simpleName}")
-            
-            throwable.cause?.let { cause ->
-                Log.e(TAG, "Causa: ${cause.message}")
-                Log.e(TAG, "Causa Tipo: ${cause::class.java.simpleName}")
-            }
-            
-            Log.e(TAG, "")
-            Log.e(TAG, "Stack Trace Completo:", throwable)
+            Log.e(TAG, "Exception: ${throwable::class.java.simpleName}")
+            Log.e(TAG, "Message: ${throwable.message}")
             Log.e(TAG, "")
             
-            val crashReason = "${throwable::class.java.simpleName}: ${throwable.message}"
-            val stackTrace = getStackTraceString(throwable)
+            val stackTrace = android.util.Log.getStackTraceString(throwable)
+            Log.e(TAG, "Stack trace:")
+            Log.e(TAG, stackTrace)
             
             val restartManager = AppRestartManager(context)
+            val crashReason = "${throwable::class.java.simpleName}: ${throwable.message}"
             
-            Log.i(TAG, "📊 Reportando crash ao backend...")
-            restartManager.reportCrashToBackend(crashReason, stackTrace)
-            
-            Log.i(TAG, "🔄 Agendando auto-restart do app...")
+            Log.i(TAG, "🤖 Sistema autônomo processando crash...")
             restartManager.scheduleRestart(crashReason)
             
+            Log.i(TAG, "⏳ Aguardando 2s para garantir persistência...")
+            
         } catch (e: Exception) {
-            Log.e(TAG, "❌ Erro ao processar crash", e)
+            Log.e(TAG, "❌ Erro ao processar crash handler", e)
         } finally {
-            try {
-                Thread.sleep(2000)
-            } catch (e: InterruptedException) {
-                Log.e(TAG, "Sleep interrompido: ${e.message}")
-            }
+            Thread.sleep(2000)
+            
+            Log.e(TAG, "")
+            Log.e(TAG, "☠️ Processo terminando agora...")
+            Log.e(TAG, "")
             
             defaultHandler?.uncaughtException(thread, throwable)
                 ?: exitProcess(1)
-        }
-    }
-    
-    private fun getStackTraceString(throwable: Throwable): String {
-        return try {
-            val sw = StringWriter()
-            val pw = PrintWriter(sw)
-            throwable.printStackTrace(pw)
-            sw.toString()
-        } catch (e: Exception) {
-            "Erro ao obter stack trace: ${e.message}"
         }
     }
 }
