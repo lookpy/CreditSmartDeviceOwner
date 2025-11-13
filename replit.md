@@ -32,7 +32,7 @@ The UI is built with Jetpack Compose and Material 3, featuring a CDC institution
 
 **Technical Implementations:**
 - **PIX Payment System (NEW)**: Sistema completo de pagamentos via PIX integrado ao app. Permite que clientes paguem parcelas vencidas através de QR Code PIX com verificação em tempo real. Inclui `PixPaymentViewModel` para gestão de estado, `InstallmentsScreen` para listar parcelas pendentes/vencidas, e `PixQRCodeScreen` com QR Code decodificado, código Copia e Cola, e polling automático (5s) de status. Integra com endpoints `/v1/pix/installments/:deviceId`, `/v1/pix/generate/:installmentId`, e `/v1/pix/status/:orderId`. Não depende de cache compartilhado entre telas - cada ViewModel funciona independentemente.
-- **Device Owner Provisioning**: Manages Device Owner status, including brand-specific provisioning steps and a debug skip option.
+- **Device Owner Provisioning**: Manages Device Owner status, including brand-specific provisioning steps and a debug skip option. **DEBUG MODE**: `DeviceOwnerCheckViewModel.skipProvisioning()` and `PairingViewModel` both support bypassing Device Owner requirements in DEBUG builds - allows pairing without IMEI when READ_PHONE_STATE permission is unavailable (treated as NO_TELEPHONY). Release builds block pairing without Device Owner.
 - **Device Pairing**: Uses an 8-digit alphanumeric pairing code and a 3-step handshake for secure authentication, returning a JWT authToken.
 - **IMEI Validation System**: Automatically captures and validates device IMEI(s), storing them securely and comparing them against registered data.
 - **Foreground Service**: `CdcForegroundService` runs with battery optimizations to comply with Android 12+ restrictions, handling WakeLocks and dynamic polling.
