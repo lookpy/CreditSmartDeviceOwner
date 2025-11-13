@@ -27,6 +27,7 @@ class SecureTokenStorage(context: Context) {
         private const val KEY_IMEI_VALIDATED_AT = "imei_validated_at"
         private const val KEY_CUSTOMER_NAME = "customer_name"
         private const val KEY_DEVICE_MODEL = "device_model"
+        private const val KEY_UNINSTALL_CONFIRMATION_HASH = "uninstall_confirmation_hash"
     }
 
     private val masterKey = MasterKey.Builder(context)
@@ -386,6 +387,27 @@ class SecureTokenStorage(context: Context) {
         
         val hash = digest.digest()
         return Base64.encodeToString(hash, Base64.NO_WRAP)
+    }
+    
+    fun saveUninstallConfirmationHash(hash: String) {
+        try {
+            encryptedPrefs.edit()
+                .putString(KEY_UNINSTALL_CONFIRMATION_HASH, hash)
+                .apply()
+            Log.i(TAG, "✅ Hash de confirmação de desinstalação salvo")
+        } catch (e: Exception) {
+            Log.e(TAG, "❌ Erro ao salvar hash de confirmação de desinstalação", e)
+            throw TokenStorageException("Failed to save uninstall confirmation hash", e)
+        }
+    }
+    
+    fun getUninstallConfirmationHash(): String? {
+        return try {
+            encryptedPrefs.getString(KEY_UNINSTALL_CONFIRMATION_HASH, null)
+        } catch (e: Exception) {
+            Log.e(TAG, "❌ Erro ao obter hash de confirmação de desinstalação", e)
+            null
+        }
     }
 
     class TokenStorageException(message: String, cause: Throwable? = null) : Exception(message, cause)

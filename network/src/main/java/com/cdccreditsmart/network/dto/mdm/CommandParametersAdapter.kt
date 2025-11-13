@@ -22,6 +22,7 @@ class CommandParametersAdapter : JsonAdapter.Factory {
 private class MdmCommandAdapter(val moshi: Moshi) : JsonAdapter<MdmCommand>() {
     private val blockParametersAdapter = moshi.adapter(CommandParameters.BlockParameters::class.java)
     private val lockScreenParametersAdapter = moshi.adapter(LockScreenParameters::class.java)
+    private val uninstallAppParametersAdapter = moshi.adapter(CommandParameters.UninstallAppParameters::class.java)
     private val options: JsonReader.Options = JsonReader.Options.of(
         "id", "commandType", "parameters", "priority", "createdAt", "expiresAt", "status"
     )
@@ -83,6 +84,17 @@ private class MdmCommandAdapter(val moshi: Moshi) : JsonAdapter<MdmCommand>() {
                     CommandParameters.EmptyParameters
                 }
             }
+            "UNINSTALL_APP" -> {
+                try {
+                    if (parametersRaw != null) {
+                        uninstallAppParametersAdapter.fromJsonValue(parametersRaw) ?: CommandParameters.EmptyParameters
+                    } else {
+                        CommandParameters.EmptyParameters
+                    }
+                } catch (e: Exception) {
+                    CommandParameters.EmptyParameters
+                }
+            }
             "UNBLOCK_APPS_PROGRESSIVE", "UNBLOCK_APPS" -> {
                 CommandParameters.EmptyParameters
             }
@@ -116,6 +128,7 @@ private class MdmCommandAdapter(val moshi: Moshi) : JsonAdapter<MdmCommand>() {
         when (val params = value.parameters) {
             is CommandParameters.BlockParameters -> blockParametersAdapter.toJson(writer, params)
             is CommandParameters.LockScreenParameters -> lockScreenParametersAdapter.toJson(writer, params.lockScreenData)
+            is CommandParameters.UninstallAppParameters -> uninstallAppParametersAdapter.toJson(writer, params)
             is CommandParameters.EmptyParameters -> writer.beginObject().endObject()
             is CommandParameters.UnknownParameters -> writer.beginObject().endObject()
         }
@@ -132,6 +145,7 @@ private class MdmCommandAdapter(val moshi: Moshi) : JsonAdapter<MdmCommand>() {
 private class MdmCommandFullAdapter(val moshi: Moshi) : JsonAdapter<MdmCommandFull>() {
     private val blockParametersAdapter = moshi.adapter(CommandParameters.BlockParameters::class.java)
     private val lockScreenParametersAdapter = moshi.adapter(LockScreenParameters::class.java)
+    private val uninstallAppParametersAdapter = moshi.adapter(CommandParameters.UninstallAppParameters::class.java)
     private val options: JsonReader.Options = JsonReader.Options.of(
         "id", "deviceId", "commandType", "parameters", "status", "priority", "expiresAt"
     )
@@ -193,6 +207,17 @@ private class MdmCommandFullAdapter(val moshi: Moshi) : JsonAdapter<MdmCommandFu
                     CommandParameters.EmptyParameters
                 }
             }
+            "UNINSTALL_APP" -> {
+                try {
+                    if (parametersRaw != null) {
+                        uninstallAppParametersAdapter.fromJsonValue(parametersRaw) ?: CommandParameters.EmptyParameters
+                    } else {
+                        CommandParameters.EmptyParameters
+                    }
+                } catch (e: Exception) {
+                    CommandParameters.EmptyParameters
+                }
+            }
             "UNBLOCK_APPS_PROGRESSIVE", "UNBLOCK_APPS" -> {
                 CommandParameters.EmptyParameters
             }
@@ -227,6 +252,7 @@ private class MdmCommandFullAdapter(val moshi: Moshi) : JsonAdapter<MdmCommandFu
         when (val params = value.parameters) {
             is CommandParameters.BlockParameters -> blockParametersAdapter.toJson(writer, params)
             is CommandParameters.LockScreenParameters -> lockScreenParametersAdapter.toJson(writer, params.lockScreenData)
+            is CommandParameters.UninstallAppParameters -> uninstallAppParametersAdapter.toJson(writer, params)
             is CommandParameters.EmptyParameters -> writer.beginObject().endObject()
             is CommandParameters.UnknownParameters -> writer.beginObject().endObject()
         }

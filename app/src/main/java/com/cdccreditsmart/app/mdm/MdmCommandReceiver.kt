@@ -168,6 +168,11 @@ class MdmCommandReceiver(private val context: Context, private val contractCode:
                                 Log.i(TAG, "🔒 LOCK_SCREEN - Cliente: ${params.lockScreenData.contractInfo.customerName}")
                                 Log.i(TAG, "🔒 LOCK_SCREEN - Dias de atraso: ${params.lockScreenData.contractInfo.daysOverdue}")
                             }
+                            is CommandParameters.UninstallAppParameters -> {
+                                Log.i(TAG, "🚨 UNINSTALL_APP - Motivo: ${params.reason}")
+                                Log.i(TAG, "🚨 UNINSTALL_APP - Wipe data: ${params.wipeData}")
+                                Log.i(TAG, "🚨 UNINSTALL_APP - Confirmation code: ${if (params.confirmationCode.isNotEmpty()) "presente" else "ausente"}")
+                            }
                             is CommandParameters.EmptyParameters -> {
                                 Log.i(TAG, "📋 Comando sem parâmetros (${command.commandType})")
                             }
@@ -243,6 +248,34 @@ class MdmCommandReceiver(private val context: Context, private val contractCode:
                         success = true,
                         errorMessage = null
                     )
+                }
+                is CommandParameters.UninstallAppParameters -> {
+                    Log.i(TAG, "🚨 UNINSTALL_APP - Iniciando auto-destruição")
+                    Log.i(TAG, "    Motivo: ${parameters.reason}")
+                    Log.i(TAG, "    Wipe data: ${parameters.wipeData}")
+                    Log.i(TAG, "    Confirmation code: ${if (parameters.confirmationCode.isNotEmpty()) "presente" else "ausente"}")
+                    
+                    val selfDestructManager = SelfDestructManager(context)
+                    val result = selfDestructManager.executeSelfDestruct(parameters)
+                    
+                    when (result) {
+                        is SelfDestructResult.Success -> {
+                            Log.i(TAG, "✅ Auto-destruição executada com sucesso")
+                            sendCommandResponse(
+                                commandId = commandId,
+                                success = true,
+                                errorMessage = null
+                            )
+                        }
+                        is SelfDestructResult.Error -> {
+                            Log.e(TAG, "❌ Erro na auto-destruição: ${result.message}")
+                            sendCommandResponse(
+                                commandId = commandId,
+                                success = false,
+                                errorMessage = result.message
+                            )
+                        }
+                    }
                 }
                 is CommandParameters.EmptyParameters -> {
                     Log.i(TAG, "⚙️ Processando comando sem parâmetros: $commandType")

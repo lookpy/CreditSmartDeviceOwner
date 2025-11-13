@@ -32,4 +32,10 @@ interface MdmApiService {
     suspend fun unblockDevice(
         @Path("contractCode") contractCode: String
     ): Response<UnblockResponse>
+    
+    @POST("/api/mdm/telemetry")
+    suspend fun sendTelemetry(
+        @Body telemetry: Map<String, Any?>
+    ): Response<Unit>
+    
 }

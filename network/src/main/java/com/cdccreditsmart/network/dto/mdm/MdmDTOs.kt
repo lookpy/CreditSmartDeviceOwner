@@ -35,6 +35,13 @@ sealed class CommandParameters {
         val lockScreenData: com.cdccreditsmart.network.dto.mdm.LockScreenParameters
     ) : CommandParameters()
     
+    @JsonClass(generateAdapter = true)
+    data class UninstallAppParameters(
+        val reason: String = "",
+        val confirmationCode: String = "",
+        val wipeData: Boolean = true
+    ) : CommandParameters()
+    
     object EmptyParameters : CommandParameters()
     
     data class UnknownParameters(
