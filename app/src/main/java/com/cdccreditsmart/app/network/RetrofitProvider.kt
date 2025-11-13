@@ -28,10 +28,15 @@ object RetrofitProvider {
         }
         .build()
     
+    // PIX OkHttpClient with extended timeouts
+    // Backend calls meiodepagamento.com API which can be slow (30-120s)
+    // Extended to 180s (3 minutes) to handle external payment gateway delays
     private val pixOkHttpClient = OkHttpClient.Builder()
-        .connectTimeout(90, TimeUnit.SECONDS)
-        .readTimeout(90, TimeUnit.SECONDS)
-        .writeTimeout(90, TimeUnit.SECONDS)
+        .connectTimeout(180, TimeUnit.SECONDS)
+        .readTimeout(180, TimeUnit.SECONDS)
+        .writeTimeout(180, TimeUnit.SECONDS)
+        .retryOnConnectionFailure(true)
+        .addInterceptor(PixRetryInterceptor())
         .apply {
             if (BuildConfig.ENABLE_NETWORK_LOGGING) {
                 addInterceptor(HttpLoggingInterceptor().apply {

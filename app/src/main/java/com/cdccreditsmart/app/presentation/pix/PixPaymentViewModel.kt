@@ -167,10 +167,25 @@ class PixPaymentViewModel(
                 Log.e(TAG, "Error generating PIX QR Code", e)
                 val errorMessage = when {
                     e is java.net.SocketTimeoutException -> 
-                        "O servidor está demorando muito para responder. Verifique se o backend PIX está funcionando e tente novamente."
+                        "⏱️ O processamento está demorando mais que o esperado.\n\n" +
+                        "Seu backend está consultando a API de pagamentos (meiodepagamento.com).\n\n" +
+                        "✅ Aguarde alguns segundos e tente novamente.\n" +
+                        "✅ A transação pode ter sido criada mesmo com este erro."
+                    
                     e.message?.contains("timeout", ignoreCase = true) == true ->
-                        "Tempo esgotado ao gerar QR Code. O backend pode estar processando, aguarde e tente novamente."
-                    else -> "Erro ao gerar QR Code: ${e.message}"
+                        "⏱️ Timeout ao processar pagamento.\n\n" +
+                        "O servidor de pagamentos está demorando para responder.\n\n" +
+                        "Aguarde 30 segundos e tente verificar o status do pagamento."
+                    
+                    e.message?.contains("Unable to resolve host", ignoreCase = true) == true ->
+                        "🔌 Sem conexão com o servidor.\n\n" +
+                        "Verifique sua conexão com a internet e tente novamente."
+                    
+                    e is java.io.IOException ->
+                        "🔌 Erro de conexão: ${e.message}\n\n" +
+                        "Verifique sua internet e tente novamente."
+                    
+                    else -> "❌ Erro ao gerar QR Code: ${e.message}"
                 }
                 _uiState.value = _uiState.value.copy(
                     isLoading = false,
