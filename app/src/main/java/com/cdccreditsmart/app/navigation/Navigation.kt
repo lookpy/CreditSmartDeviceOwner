@@ -37,6 +37,7 @@ import com.cdccreditsmart.app.presentation.diagnostic.ProtectionStatusViewModel
 import com.cdccreditsmart.app.presentation.screens.pix.InstallmentsScreen
 import com.cdccreditsmart.app.presentation.screens.pix.PixQRCodeScreen
 import com.cdccreditsmart.app.presentation.pix.PixPaymentViewModel
+import com.cdccreditsmart.app.presentation.screens.terms.TermsAndConditionsScreen
 
 object Routes {
     const val ROUTER = "router"
@@ -53,6 +54,7 @@ object Routes {
     const val PROTECTION_STATUS = "diagnostic/protection_status"
     const val INSTALLMENTS = "pix/installments"
     const val PIX_QR_CODE = "pix/qr_code/{installmentId}"
+    const val TERMS = "terms"
     
     fun createPairingProgressRoute(contractId: String) = "pairing/progress/$contractId"
     
@@ -438,6 +440,9 @@ fun CDCNavigation(
                 },
                 onNavigateToPixPayment = { installmentId ->
                     navController.navigate(Routes.createPixQRCodeRoute(installmentId))
+                },
+                onNavigateToTerms = {
+                    navController.navigate(Routes.TERMS)
                 }
             )
         }
@@ -482,6 +487,14 @@ fun CDCNavigation(
             PixQRCodeScreen(
                 viewModel = viewModel,
                 installmentId = installmentId,
+                onNavigateBack = {
+                    navController.popBackStack()
+                }
+            )
+        }
+        
+        composable(Routes.TERMS) {
+            TermsAndConditionsScreen(
                 onNavigateBack = {
                     navController.popBackStack()
                 }

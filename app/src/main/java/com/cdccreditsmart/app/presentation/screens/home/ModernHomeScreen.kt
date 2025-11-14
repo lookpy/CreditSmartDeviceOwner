@@ -31,7 +31,8 @@ import java.util.*
 @Composable
 fun ModernHomeScreen(
     onNavigateToInstallments: () -> Unit = {},
-    onNavigateToPixPayment: (String) -> Unit = {}
+    onNavigateToPixPayment: (String) -> Unit = {},
+    onNavigateToTerms: () -> Unit = {}
 ) {
     val context = LocalContext.current
     val viewModel = remember { SimpleHomeViewModel(context) }
@@ -78,7 +79,8 @@ fun ModernHomeScreen(
                     selectedInstallment = installment
                     showPaymentSheet = true
                 },
-                onNavigateToInstallments = onNavigateToInstallments
+                onNavigateToInstallments = onNavigateToInstallments,
+                onNavigateToTerms = onNavigateToTerms
             )
         }
     }
@@ -172,7 +174,8 @@ private fun HomeContent(
     modifier: Modifier = Modifier,
     state: HomeState,
     onPayInstallment: (InstallmentItem) -> Unit,
-    onNavigateToInstallments: () -> Unit
+    onNavigateToInstallments: () -> Unit,
+    onNavigateToTerms: () -> Unit
 ) {
     val context = LocalContext.current
     
@@ -238,6 +241,24 @@ private fun HomeContent(
         
         item {
             Spacer(Modifier.height(16.dp))
+        }
+        
+        item {
+            TextButton(
+                onClick = onNavigateToTerms,
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Icon(
+                    imageVector = Icons.Default.Article,
+                    contentDescription = null,
+                    modifier = Modifier.size(16.dp)
+                )
+                Spacer(modifier = Modifier.width(4.dp))
+                Text(
+                    text = "Termos e Condições de Uso",
+                    style = MaterialTheme.typography.bodySmall
+                )
+            }
         }
     }
 }
@@ -397,19 +418,11 @@ private fun ContractSummaryCard(summary: InstallmentsSummary) {
                 )
             }
             
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.spacedBy(12.dp)
-            ) {
-                SummaryMetric(
-                    modifier = Modifier.weight(1f),
-                    label = "Pendente",
-                    value = formatCurrency(summary.pendingAmount),
-                    icon = Icons.Default.Schedule,
-                    color = MaterialTheme.colorScheme.tertiary
-                )
-                
-                if (summary.overdueAmount > 0) {
+            if (summary.overdueAmount > 0) {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.spacedBy(12.dp)
+                ) {
                     SummaryMetric(
                         modifier = Modifier.weight(1f),
                         label = "Atrasado",

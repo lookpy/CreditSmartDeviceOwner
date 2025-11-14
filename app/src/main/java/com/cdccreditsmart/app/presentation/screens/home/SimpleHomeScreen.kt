@@ -24,7 +24,9 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 @Composable
-fun SimpleHomeScreen() {
+fun SimpleHomeScreen(
+    onNavigateToTerms: () -> Unit = {}
+) {
     val context = LocalContext.current
     val viewModel = remember { SimpleHomeViewModel(context) }
     val state = viewModel.homeState.value
@@ -48,7 +50,8 @@ fun SimpleHomeScreen() {
             else -> {
                 HomeContent(
                     state = state,
-                    onRefresh = { viewModel.refreshData() }
+                    onRefresh = { viewModel.refreshData() },
+                    onNavigateToTerms = onNavigateToTerms
                 )
             }
         }
@@ -134,7 +137,8 @@ private fun ErrorState(
 @Composable
 private fun HomeContent(
     state: HomeState,
-    onRefresh: () -> Unit
+    onRefresh: () -> Unit,
+    onNavigateToTerms: () -> Unit = {}
 ) {
     Column(
         modifier = Modifier
@@ -168,6 +172,22 @@ private fun HomeContent(
         if (nextInstallment != null) {
             PayNextInstallmentButton(
                 installment = nextInstallment
+            )
+        }
+        
+        TextButton(
+            onClick = onNavigateToTerms,
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Icon(
+                imageVector = Icons.Default.Article,
+                contentDescription = null,
+                modifier = Modifier.size(16.dp)
+            )
+            Spacer(modifier = Modifier.width(4.dp))
+            Text(
+                text = "Termos e Condições de Uso",
+                style = MaterialTheme.typography.bodySmall
             )
         }
         
@@ -308,13 +328,6 @@ private fun FinancialSummaryCard(summary: InstallmentsSummary) {
                 label = "Valor Pago",
                 value = formatCurrency(summary.paidAmount),
                 valueColor = MaterialTheme.colorScheme.primary
-            )
-            
-            FinancialRow(
-                label = "Valor Restante",
-                value = formatCurrency(summary.pendingAmount),
-                valueColor = MaterialTheme.colorScheme.onSurface,
-                isHighlighted = true
             )
             
             if (summary.overdueAmount > 0) {
