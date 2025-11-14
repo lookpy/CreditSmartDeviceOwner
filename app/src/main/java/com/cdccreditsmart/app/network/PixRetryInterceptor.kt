@@ -21,13 +21,22 @@ class PixRetryInterceptor : Interceptor {
             return chain.proceed(request)
         }
         
+        Log.d(TAG, "🎯 PixRetryInterceptor ativado para: ${request.url}")
+        Log.d(TAG, "⚙️ Configuração: MAX_RETRIES=$MAX_RETRIES, TIMEOUT=180s")
+        
         var response: Response? = null
         var exception: IOException? = null
         var attempt = 0
         
         while (attempt < MAX_RETRIES) {
             try {
+                Log.d(TAG, "📡 Tentativa ${attempt + 1}/$MAX_RETRIES - Enviando requisição...")
+                val requestStartTime = System.currentTimeMillis()
+                
                 response = chain.proceed(request)
+                
+                val requestDuration = System.currentTimeMillis() - requestStartTime
+                Log.d(TAG, "📬 Response recebida em ${requestDuration}ms - Status: ${response.code}")
                 
                 if (response.isSuccessful) {
                     if (attempt > 0) {

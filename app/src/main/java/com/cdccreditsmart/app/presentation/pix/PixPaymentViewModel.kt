@@ -123,11 +123,16 @@ class PixPaymentViewModel(
                 }
 
                 Log.d(TAG, "Generating PIX QR Code for installment: $installmentId")
+                Log.d(TAG, "⏳ Enviando requisição ao backend (timeout: 180s)...")
+                val startTime = System.currentTimeMillis()
 
                 val response = apiService.generatePixQRCode(
                     installmentId = installmentId,
                     authorization = "Bearer $authToken"
                 )
+                
+                val duration = System.currentTimeMillis() - startTime
+                Log.d(TAG, "✅ Resposta recebida do backend em ${duration}ms")
 
                 if (response.isSuccessful && response.body()?.success == true) {
                     val body = response.body()!!
