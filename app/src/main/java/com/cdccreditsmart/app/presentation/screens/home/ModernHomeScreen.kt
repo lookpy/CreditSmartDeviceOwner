@@ -195,29 +195,9 @@ private fun HomeContent(
             HeroHeaderCard(
                 customerName = customerName ?: "Cliente",
                 deviceModel = deviceModel ?: "Dispositivo",
-                contractCode = contractCode ?: ""
+                contractCode = contractCode ?: "",
+                onNavigateToTerms = onNavigateToTerms
             )
-        }
-        
-        item {
-            OutlinedButton(
-                onClick = onNavigateToTerms,
-                modifier = Modifier.fillMaxWidth(),
-                colors = ButtonDefaults.outlinedButtonColors(
-                    contentColor = MaterialTheme.colorScheme.onSurfaceVariant
-                )
-            ) {
-                Icon(
-                    imageVector = Icons.Default.Description,
-                    contentDescription = null,
-                    modifier = Modifier.size(18.dp)
-                )
-                Spacer(modifier = Modifier.width(8.dp))
-                Text(
-                    text = "Termos e Condições de Uso",
-                    style = MaterialTheme.typography.bodyMedium
-                )
-            }
         }
         
         val pendingInstallments = state.allInstallments.filter { it.status == "pending" || it.status == "overdue" }
@@ -264,7 +244,8 @@ private fun HomeContent(
 private fun HeroHeaderCard(
     customerName: String,
     deviceModel: String,
-    contractCode: String
+    contractCode: String,
+    onNavigateToTerms: () -> Unit
 ) {
     Card(
         modifier = Modifier.fillMaxWidth(),
@@ -368,6 +349,27 @@ private fun HeroHeaderCard(
                             color = Color.White
                         )
                     }
+                }
+                
+                OutlinedButton(
+                    onClick = onNavigateToTerms,
+                    modifier = Modifier.fillMaxWidth(),
+                    colors = ButtonDefaults.outlinedButtonColors(
+                        contentColor = Color.White
+                    ),
+                    border = BorderStroke(1.dp, Color.White.copy(alpha = 0.5f))
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Description,
+                        contentDescription = null,
+                        modifier = Modifier.size(18.dp)
+                    )
+                    Spacer(modifier = Modifier.width(8.dp))
+                    Text(
+                        text = "Termos e Condições de Uso",
+                        style = MaterialTheme.typography.bodyMedium,
+                        fontWeight = FontWeight.Medium
+                    )
                 }
             }
         }
