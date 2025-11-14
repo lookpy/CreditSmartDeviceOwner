@@ -1,0 +1,23 @@
+x-content-type-options: nosniff
+2025-11-14 19:13:08.763 11024-11116 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-financial-data-protection: enabled
+2025-11-14 19:13:08.763 11024-11116 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-frame-options: DENY
+2025-11-14 19:13:08.763 11024-11116 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-transaction-security-level: maximum
+2025-11-14 19:13:08.763 11024-11116 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-xss-protection: 1; mode=block
+2025-11-14 19:13:08.763 11024-11116 okhttp.OkHttpClient     com.cdccreditsmart.app               I  via: 1.1 google
+2025-11-14 19:13:08.763 11024-11116 okhttp.OkHttpClient     com.cdccreditsmart.app               I  alt-svc: h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
+2025-11-14 19:13:08.763 11024-11116 okhttp.OkHttpClient     com.cdccreditsmart.app               I  {"success":false,"message":"Failed to check payment status","error":"Erro ao verificar status PIX: 500 - "}
+2025-11-14 19:13:08.763 11024-11116 okhttp.OkHttpClient     com.cdccreditsmart.app               I  <-- END HTTP (107-byte body)
+2025-11-14 19:13:08.763 11024-11116 PixRetryInterceptor     com.cdccreditsmart.app               W  ⚠️ Server error 500 na tentativa 3/3
+2025-11-14 19:13:08.763 11024-11116 PixRetryInterceptor     com.cdccreditsmart.app               E  ❌ Erro 5xx após 3 tentativas - retornando response
+2025-11-14 19:13:08.764 11024-11024 PixPaymentViewModel     com.cdccreditsmart.app               W  Failed to check payment status: 500
+2025-11-14 19:13:09.486 11024-11125 okhttp.OkHttpClient     com.cdccreditsmart.app               I  --> GET https://cdccreditsmart.com/v1/pix/status/ce7796ae0dc948a0a5ca8e7691066340
+2025-11-14 19:13:09.486 11024-11125 okhttp.OkHttpClient     com.cdccreditsmart.app               I  Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkZXZpY2VJZCI6ImRldmljZV8xNzYyODkyMzI5NjAyX3h5YWd5NmFrNGVjIiwiYXBrVG9rZW4iOiJXSEpFMjlTNiIsInR5cGUiOiJhcGsiLCJleHBpcmVzSW4iOiIyNGgiLCJpYXQiOjE3NjMxNTgyNjAsImV4cCI6MTc2MzI0NDY2MH0.O-L4RpsoAhn1EKfAkxT_FlCu7IOd5Od1ZSHOKPGAdfg
+2025-11-14 19:13:09.486 11024-11125 okhttp.OkHttpClient     com.cdccreditsmart.app               I  --> END GET
+2025-11-14 19:13:09.972 11024-11125 okhttp.OkHttpClient     com.cdccreditsmart.app               I  <-- 500 https://cdccreditsmart.com/v1/pix/status/ce7796ae0dc948a0a5ca8e7691066340 (485ms)
+2025-11-14 19:13:09.972 11024-11125 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-credentials: true
+2025-11-14 19:13:09.972 11024-11125 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-headers: Origin, X-Requested-With, Content-Type, Accept, Authorization, x-client-key, x-client-token, x-client-secret, cache-control
+2025-11-14 19:13:09.972 11024-11125 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-methods: GET, POST, PUT, PATCH, DELETE, OPTIONS
+2025-11-14 19:13:09.972 11024-11125 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-origin: *
+2025-11-14 19:13:09.972 11024-11125 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-max-age: 86400
+2025-11-14 19:13:09.972 11024-11125 okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-length: 107
+2025-11-14 19:13:09.972 11024-11125 okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-security-policy: default-src 'sel
