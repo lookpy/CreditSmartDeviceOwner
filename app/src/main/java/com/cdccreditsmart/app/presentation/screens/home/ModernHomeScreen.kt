@@ -249,7 +249,7 @@ private fun HomeContent(
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Icon(
-                    imageVector = Icons.Default.Article,
+                    imageVector = Icons.Default.Description,
                     contentDescription = null,
                     modifier = Modifier.size(16.dp)
                 )
