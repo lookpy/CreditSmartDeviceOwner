@@ -200,8 +200,23 @@ private fun HomeContent(
         }
         
         item {
-            state.summary?.let { summary ->
-                ContractSummaryCard(summary = summary)
+            OutlinedButton(
+                onClick = onNavigateToTerms,
+                modifier = Modifier.fillMaxWidth(),
+                colors = ButtonDefaults.outlinedButtonColors(
+                    contentColor = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+            ) {
+                Icon(
+                    imageVector = Icons.Default.Description,
+                    contentDescription = null,
+                    modifier = Modifier.size(18.dp)
+                )
+                Spacer(modifier = Modifier.width(8.dp))
+                Text(
+                    text = "Termos e Condições de Uso",
+                    style = MaterialTheme.typography.bodyMedium
+                )
             }
         }
         
@@ -241,24 +256,6 @@ private fun HomeContent(
         
         item {
             Spacer(Modifier.height(16.dp))
-        }
-        
-        item {
-            TextButton(
-                onClick = onNavigateToTerms,
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                Icon(
-                    imageVector = Icons.Default.Description,
-                    contentDescription = null,
-                    modifier = Modifier.size(16.dp)
-                )
-                Spacer(modifier = Modifier.width(4.dp))
-                Text(
-                    text = "Termos e Condições de Uso",
-                    style = MaterialTheme.typography.bodySmall
-                )
-            }
         }
     }
 }
