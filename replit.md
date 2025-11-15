@@ -13,6 +13,11 @@ The CDC Credit Smart Android App is a Device Owner application for CDC Credit Sm
 - App não usa QR Code scanner - apenas input manual do código do contrato
 - NUNCA usar dados mockados - apenas dados reais do backend
 
+## App Visual Identity
+- **App Icon**: Logo circular laranja da CDC Credit Smart (círculos concêntricos laranjas)
+- **Adaptive Icon**: Background laranja CDC (#FF7A1A), foreground com logo circular em PNG (múltiplas resoluções: mdpi 108×108, hdpi 162×162, xhdpi 216×216, xxhdpi 324×324, xxxhdpi 432×432)
+- **Theme Colors**: Laranja institucional CDC (#FF7A1A primary, #F47C2C secondary)
+
 ## System Architecture
 The application adheres to Clean Architecture principles, the MVVM pattern, and utilizes Jetpack Compose for the UI. It is structured into modular components: `app`, `data`, `network`, `domain`, `device`, `payments`, and `biometry`.
 
