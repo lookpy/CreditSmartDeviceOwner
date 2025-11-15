@@ -227,31 +227,62 @@ class MdmCommandReceiver(private val context: Context, private val contractCode:
                     sendCommandResponse(commandId, result)
                 }
                 is CommandParameters.LockScreenParameters -> {
-                    Log.i(TAG, "🔒 LOCK_SCREEN - Bloqueando tela do dispositivo com informações de pagamento...")
+                    Log.i(TAG, "🔒 ========================================")
+                    Log.i(TAG, "🔒 COMANDO LOCK_SCREEN RECEBIDO!")
+                    Log.i(TAG, "🔒 ========================================")
                     Log.i(TAG, "🔒 Contrato: ${parameters.lockScreenData.contractInfo.contractNumber}")
                     Log.i(TAG, "🔒 Cliente: ${parameters.lockScreenData.contractInfo.customerName}")
                     Log.i(TAG, "🔒 Valor em atraso: R$ ${parameters.lockScreenData.paymentInfo.totalDue}")
                     Log.i(TAG, "🔒 Dias de atraso: ${parameters.lockScreenData.contractInfo.daysOverdue}")
+                    Log.i(TAG, "🔒 Lock type: ${parameters.lockScreenData.lockType}")
+                    Log.i(TAG, "🔒 Severity: ${parameters.lockScreenData.severity}")
                     
                     withContext(Dispatchers.Main) {
                         try {
+                            Log.d(TAG, "🔒 [1/4] Criando Intent para LockScreenActivity...")
                             val intent = com.cdccreditsmart.app.presentation.lock.LockScreenActivity.createIntent(
                                 context,
                                 parameters.lockScreenData
                             )
+                            Log.d(TAG, "🔒 [2/4] Intent criado com sucesso")
+                            Log.d(TAG, "🔒 [3/4] Iniciando LockScreenActivity via context.startActivity()...")
+                            
                             context.startActivity(intent)
-                            Log.i(TAG, "✅ LockScreenActivity iniciada com sucesso")
+                            
+                            Log.i(TAG, "🔒 [4/4] ✅ LockScreenActivity iniciada COM SUCESSO!")
+                            Log.i(TAG, "🔒 ========================================")
+                        } catch (e: android.content.ActivityNotFoundException) {
+                            Log.e(TAG, "❌ ========================================")
+                            Log.e(TAG, "❌ ERRO CRÍTICO: LockScreenActivity NÃO ENCONTRADA!")
+                            Log.e(TAG, "❌ ========================================")
+                            Log.e(TAG, "❌ Verifique se a Activity está declarada no AndroidManifest.xml")
+                            Log.e(TAG, "❌ Stack trace:", e)
+                            throw e
+                        } catch (e: SecurityException) {
+                            Log.e(TAG, "❌ ========================================")
+                            Log.e(TAG, "❌ ERRO DE SEGURANÇA ao iniciar LockScreenActivity!")
+                            Log.e(TAG, "❌ ========================================")
+                            Log.e(TAG, "❌ App pode estar sem permissões necessárias")
+                            Log.e(TAG, "❌ Stack trace:", e)
+                            throw e
                         } catch (e: Exception) {
-                            Log.e(TAG, "❌ Erro ao iniciar LockScreenActivity", e)
+                            Log.e(TAG, "❌ ========================================")
+                            Log.e(TAG, "❌ ERRO ao iniciar LockScreenActivity!")
+                            Log.e(TAG, "❌ Tipo: ${e.javaClass.simpleName}")
+                            Log.e(TAG, "❌ Mensagem: ${e.message}")
+                            Log.e(TAG, "❌ ========================================")
+                            Log.e(TAG, "❌ Stack trace:", e)
                             throw e
                         }
                     }
                     
+                    Log.d(TAG, "🔒 Enviando confirmação de sucesso ao backend...")
                     sendCommandResponse(
                         commandId = commandId,
                         success = true,
                         errorMessage = null
                     )
+                    Log.i(TAG, "🔒 Comando LOCK_SCREEN processado completamente ✅")
                 }
                 is CommandParameters.UninstallAppParameters -> {
                     Log.i(TAG, "🚨 UNINSTALL_APP - Iniciando auto-destruição")

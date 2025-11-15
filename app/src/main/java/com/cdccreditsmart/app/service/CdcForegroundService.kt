@@ -300,9 +300,20 @@ class CdcForegroundService : Service(), ScreenStateListener {
                 mdmReceiver?.setForegroundService(this@CdcForegroundService)
                 Log.d(TAG, "🔋 Foreground service reference passada para MdmCommandReceiver")
                 
-                Log.d(TAG, "📡 Conectando MdmCommandReceiver ao WebSocket MDM...")
+                Log.i(TAG, "📡 ========================================")
+                Log.i(TAG, "📡 CONECTANDO WebSocket MDM...")
+                Log.i(TAG, "📡 ========================================")
+                Log.i(TAG, "📡 AuthToken length: ${authToken.length} caracteres")
+                Log.i(TAG, "📡 AuthToken preview: ${authToken.take(20)}...")
+                Log.i(TAG, "📡 Contract code: ${contractCode}")
+                Log.i(TAG, "📡 Chamando mdmReceiver.connectMdmWebSocket()...")
+                
                 mdmReceiver?.connectMdmWebSocket(authToken)
-                Log.i(TAG, "📡 MdmCommandReceiver inicializado - aguardando conexão")
+                
+                Log.i(TAG, "📡 ========================================")
+                Log.i(TAG, "📡 connectMdmWebSocket() CHAMADO - Aguardando conexão...")
+                Log.i(TAG, "📡 Próximo log esperado: '✅ WebSocket MDM CONECTADO'")
+                Log.i(TAG, "📡 ========================================")
                 
                 // Inicializa WebSocket Flow Status
                 Log.d(TAG, "📡 Criando WebSocketManager (flow-status)...")
