@@ -65,7 +65,7 @@ class PairingViewModel(private val context: Context) : ViewModel() {
         private const val MAX_RETRIES = 3
         private const val INITIAL_DELAY = 1000L
         private const val BACKOFF_FACTOR = 2.0
-        private const val PENDING_POLL_INTERVAL = 3000L
+        private const val PENDING_POLL_INTERVAL = 2000L
     }
     
     private var isPolling = false
