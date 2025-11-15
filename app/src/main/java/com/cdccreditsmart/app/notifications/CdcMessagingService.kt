@@ -19,6 +19,7 @@ class CdcMessagingService : FirebaseMessagingService() {
         private const val KEY_DEEP_LINK = "deep_link"
         private const val KEY_CONTRACT_CODE = "contract_code"
         private const val KEY_NOTIFICATION_ID = "notification_id"
+        private const val KEY_IMAGE_URL = "image_url"
     }
 
     private lateinit var notificationHelper: NotificationHelper
@@ -70,18 +71,22 @@ class CdcMessagingService : FirebaseMessagingService() {
         }
 
         val deepLink = data[KEY_DEEP_LINK]
+        val imageUrl = data[KEY_IMAGE_URL] ?: notification?.imageUrl?.toString()
         val notificationId = data[KEY_NOTIFICATION_ID]?.toIntOrNull() 
             ?: System.currentTimeMillis().toInt()
 
         val extraData = mutableMapOf<String, String>()
         data[KEY_CONTRACT_CODE]?.let { extraData["contract_code"] = it }
         data.forEach { (key, value) ->
-            if (key !in listOf(KEY_TITLE, KEY_MESSAGE, KEY_BODY, KEY_TYPE, KEY_DEEP_LINK, KEY_NOTIFICATION_ID, KEY_CONTRACT_CODE)) {
+            if (key !in listOf(KEY_TITLE, KEY_MESSAGE, KEY_BODY, KEY_TYPE, KEY_DEEP_LINK, KEY_NOTIFICATION_ID, KEY_CONTRACT_CODE, KEY_IMAGE_URL)) {
                 extraData[key] = value
             }
         }
 
         Log.d(TAG, "Displaying notification - Type: $type, Title: $title")
+        if (imageUrl != null) {
+            Log.d(TAG, "Image URL detected: $imageUrl")
+        }
 
         notificationHelper.showNotification(
             title = title,
@@ -89,7 +94,8 @@ class CdcMessagingService : FirebaseMessagingService() {
             type = type,
             notificationId = notificationId,
             deepLink = deepLink,
-            data = extraData.takeIf { it.isNotEmpty() }
+            data = extraData.takeIf { it.isNotEmpty() },
+            imageUrl = imageUrl
         )
 
         logNotificationReceived(type, title)

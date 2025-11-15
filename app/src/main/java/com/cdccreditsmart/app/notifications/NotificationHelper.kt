@@ -5,12 +5,20 @@ import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.media.RingtoneManager
 import android.os.Build
 import android.util.Log
 import androidx.core.app.NotificationCompat
 import com.cdccreditsmart.app.R
 import com.cdccreditsmart.app.presentation.MainActivity
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import java.net.HttpURLConnection
+import java.net.URL
 
 enum class NotificationType(val channelId: String, val channelName: String, val priority: Int) {
     INFO(
@@ -121,10 +129,46 @@ class NotificationHelper(private val context: Context) {
         type: NotificationType = NotificationType.INFO,
         notificationId: Int = System.currentTimeMillis().toInt(),
         deepLink: String? = null,
-        data: Map<String, String>? = null
+        data: Map<String, String>? = null,
+        imageUrl: String? = null
     ) {
         Log.d(TAG, "Showing notification - Type: ${type.name}, Title: $title")
+        
+        if (imageUrl != null) {
+            Log.d(TAG, "Image URL provided: $imageUrl - downloading asynchronously")
+            
+            CoroutineScope(Dispatchers.IO).launch {
+                try {
+                    val bitmap = downloadImage(imageUrl)
+                    displayNotification(
+                        title, message, type, notificationId, 
+                        deepLink, data, bitmap
+                    )
+                } catch (e: Exception) {
+                    Log.e(TAG, "Error downloading image, showing notification without image", e)
+                    displayNotification(
+                        title, message, type, notificationId, 
+                        deepLink, data, null
+                    )
+                }
+            }
+        } else {
+            displayNotification(
+                title, message, type, notificationId, 
+                deepLink, data, null
+            )
+        }
+    }
 
+    private fun displayNotification(
+        title: String,
+        message: String,
+        type: NotificationType,
+        notificationId: Int,
+        deepLink: String?,
+        data: Map<String, String>?,
+        imageBitmap: Bitmap?
+    ) {
         val intent = Intent(context, MainActivity::class.java).apply {
             flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
             deepLink?.let { putExtra("deep_link", it) }
@@ -155,8 +199,20 @@ class NotificationHelper(private val context: Context) {
             .setAutoCancel(true)
             .setSound(defaultSoundUri)
             .setContentIntent(pendingIntent)
-            .setStyle(NotificationCompat.BigTextStyle().bigText(message))
             .setPriority(getNotificationPriority(type))
+
+        if (imageBitmap != null) {
+            notificationBuilder.setStyle(
+                NotificationCompat.BigPictureStyle()
+                    .bigPicture(imageBitmap)
+                    .bigLargeIcon(null as Bitmap?)
+                    .setSummaryText(message)
+            )
+            notificationBuilder.setLargeIcon(imageBitmap)
+            Log.d(TAG, "Notification with image created successfully")
+        } else {
+            notificationBuilder.setStyle(NotificationCompat.BigTextStyle().bigText(message))
+        }
 
         if (type == NotificationType.ALERT || type == NotificationType.PAYMENT) {
             notificationBuilder.setVibrate(longArrayOf(0, 500, 250, 500))
@@ -167,6 +223,34 @@ class NotificationHelper(private val context: Context) {
             Log.d(TAG, "Notification displayed successfully - ID: $notificationId")
         } catch (e: Exception) {
             Log.e(TAG, "Error displaying notification", e)
+        }
+    }
+
+    private suspend fun downloadImage(imageUrl: String): Bitmap? = withContext(Dispatchers.IO) {
+        try {
+            Log.d(TAG, "Downloading image from: $imageUrl")
+            val url = URL(imageUrl)
+            val connection = url.openConnection() as HttpURLConnection
+            connection.doInput = true
+            connection.connectTimeout = 10000
+            connection.readTimeout = 10000
+            connection.connect()
+            
+            val inputStream = connection.inputStream
+            val bitmap = BitmapFactory.decodeStream(inputStream)
+            inputStream.close()
+            connection.disconnect()
+            
+            if (bitmap != null) {
+                Log.d(TAG, "Image downloaded successfully - Size: ${bitmap.width}x${bitmap.height}")
+            } else {
+                Log.w(TAG, "Failed to decode image bitmap")
+            }
+            
+            bitmap
+        } catch (e: Exception) {
+            Log.e(TAG, "Error downloading notification image", e)
+            null
         }
     }
 
