@@ -28,6 +28,7 @@ The UI uses Jetpack Compose and Material 3 with a CDC institutional dark theme. 
 - **Time Synchronization & Anti-Tampering:** Utilizes `ServerTimeManager` with `SystemClock.elapsedRealtime()` for authoritative time, detecting reboots and tampered device time. It includes conservative fallback mechanisms and encrypted storage, with `TimeSyncWorker` for periodic background sync.
 - **Auto-Restart Inteligente:** An autonomous auto-restart system (`AppRestartManager`) ensures app continuity, managing restart attempts and persisting timestamps synchronously via `SharedPreferences.commit()` to prevent process termination.
 - **PIX Payment System:** Integrates a complete PIX payment system allowing clients to pay overdue installments via QR Code, with real-time status verification. It includes `PixPaymentViewModel`, `InstallmentsScreen`, and `PixQRCodeScreen`, optimized for slow backend responses with extended timeouts and exponential backoff retries.
+- **Push Notifications (Firebase FCM):** Complete Firebase Cloud Messaging integration for real-time notifications. Includes `CdcMessagingService` for receiving notifications, `FcmTokenManager` for token management and backend registration (POST /api/apk/device/fcm-token), `NotificationHelper` with 4 notification channels (INFO, ALERT, PAYMENT, CONTRACT), and deep linking support (cdc://home, cdc://payments, cdc://contract/{code}, cdc://alerts). Automatic FCM token registration after successful authentication in `AuthenticationOrchestrator`.
 - **Device Owner Provisioning:** Manages Device Owner status with brand-specific provisioning steps and a debug skip option for development builds.
 - **Device Pairing:** Secure 8-digit alphanumeric pairing with a 3-step handshake to obtain a JWT authToken.
 - **IMEI Validation System:** Captures, validates, and securely stores device IMEIs, comparing them against registered data.
@@ -50,12 +51,12 @@ The UI uses Jetpack Compose and Material 3 with a CDC institutional dark theme. 
 - **Knox Enhanced Protections (Samsung Only):** Dynamically implements advanced Samsung Knox Enterprise protections.
 
 ## External Dependencies
-- **CDC Credit Smart Backend API:** For APK authentication, device status, installments, PIX payment processing (`/v1/pix/installments/:deviceId`, `/v1/pix/generate/:installmentId`, `/v1/pix/status/:orderId`), heartbeat, MDM commands, unblock operations, remote uninstall telemetry (`POST /api/mdm/telemetry`), and time synchronization (`GET /api/apk/time/now`).
+- **CDC Credit Smart Backend API:** For APK authentication, device status, installments, PIX payment processing (`/v1/pix/installments/:deviceId`, `/v1/pix/generate/:installmentId`, `/v1/pix/status/:orderId`), heartbeat, MDM commands, unblock operations, remote uninstall telemetry (`POST /api/mdm/telemetry`), time synchronization (`GET /api/apk/time/now`), and FCM token registration (`POST /api/apk/device/fcm-token`).
 - **Meio de Pagamento API:** (Accessed via CDC backend) External payment gateway for PIX transactions, resilient to slow responses.
 - **WebSocket Server:** For real-time pairing flow status and MDM command push.
+- **Firebase Cloud Messaging (FCM):** Push notification infrastructure with Firebase BOM 33.7.0, Firebase Messaging KTX, and Firebase Analytics KTX. Requires google-services.json configuration. Supports 4 notification types (INFO, ALERT, PAYMENT, CONTRACT) with deep linking (cdc:// scheme).
 - **Samsung Knox Enterprise SDK v3.12+:** For advanced device management and security on Samsung devices.
 - **Google Play Integrity API:** For device integrity verification.
-- **Firebase Messaging:** For push notifications.
 - **Jetpack Compose, Material 3, Compose Navigation:** UI framework components.
 - **Retrofit, OkHttp:** HTTP client and WebSocket support.
 - **EncryptedSharedPreferences:** Secure local data storage.

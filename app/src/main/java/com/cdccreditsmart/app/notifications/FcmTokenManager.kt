@@ -4,6 +4,7 @@ import android.content.Context
 import android.util.Log
 import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKey
+import com.cdccreditsmart.app.security.SecureTokenStorage
 import com.google.firebase.messaging.FirebaseMessaging
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
@@ -42,6 +43,8 @@ class FcmTokenManager(private val context: Context) {
         EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
         EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
     )
+
+    private val secureTokenStorage = SecureTokenStorage(context)
 
     private val moshi = Moshi.Builder()
         .add(KotlinJsonAdapterFactory())
@@ -106,29 +109,20 @@ class FcmTokenManager(private val context: Context) {
                     return@withContext
                 }
 
-                val authToken = getAuthToken()
+                val authToken = secureTokenStorage.getAuthToken()
                 if (authToken == null) {
                     Log.e(TAG, "Cannot register: Auth token not available")
                     onError("User not authenticated")
                     return@withContext
                 }
 
-                val deviceId = getDeviceId()
-                if (deviceId == null) {
-                    Log.e(TAG, "Cannot register: Device ID not available")
-                    onError("Device not paired")
-                    return@withContext
-                }
-
                 val requestBody = mapOf(
-                    "fcmToken" to token,
-                    "deviceId" to deviceId,
-                    "platform" to "android"
+                    "fcmToken" to token
                 )
 
                 val adapter = moshi.adapter<Map<String, String>>(Map::class.java)
                 val jsonBody = adapter.toJson(requestBody)
-                Log.d(TAG, "Sending FCM token to backend")
+                Log.d(TAG, "Sending FCM token to backend (payload: {\"fcmToken\": \"${token.take(20)}...\"})")
 
                 val mediaType = "application/json; charset=utf-8".toMediaType()
                 val body = jsonBody.toRequestBody(mediaType)
@@ -174,26 +168,6 @@ class FcmTokenManager(private val context: Context) {
                 Log.e(TAG, "❌ Error registering FCM token", e)
                 onError("Error: ${e.message}")
             }
-        }
-    }
-
-    private fun getAuthToken(): String? {
-        return try {
-            val authPrefs = context.getSharedPreferences("cdc_auth_prefs", Context.MODE_PRIVATE)
-            authPrefs.getString("auth_token", null)
-        } catch (e: Exception) {
-            Log.e(TAG, "Error retrieving auth token", e)
-            null
-        }
-    }
-
-    private fun getDeviceId(): String? {
-        return try {
-            val authPrefs = context.getSharedPreferences("cdc_auth_prefs", Context.MODE_PRIVATE)
-            authPrefs.getString("contract_code", null)
-        } catch (e: Exception) {
-            Log.e(TAG, "Error retrieving device ID", e)
-            null
         }
     }
 

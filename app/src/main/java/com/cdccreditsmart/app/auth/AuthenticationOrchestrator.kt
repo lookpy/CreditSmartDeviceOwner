@@ -3,12 +3,15 @@ package com.cdccreditsmart.app.auth
 import android.content.Context
 import android.util.Log
 import com.cdccreditsmart.app.network.RetrofitProvider
+import com.cdccreditsmart.app.notifications.FcmTokenManager
 import com.cdccreditsmart.app.security.SecureTokenStorage
 import com.cdccreditsmart.app.storage.ContractCodeStorage
 import com.cdccreditsmart.network.api.DeviceApiService
 import com.cdccreditsmart.network.dto.apk.ApkAuthRequest
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import kotlinx.coroutines.CoroutineScope
 
 sealed class AuthenticationResult {
     data class Authenticated(val contractCode: String) : AuthenticationResult()
@@ -20,6 +23,7 @@ class AuthenticationOrchestrator(private val context: Context) {
 
     private val tokenStorage = SecureTokenStorage(context)
     private val contractCodeStorage = ContractCodeStorage(context)
+    private val fcmTokenManager = FcmTokenManager(context)
     
     private val deviceApi: DeviceApiService by lazy {
         createDeviceApiService()
@@ -94,6 +98,18 @@ class AuthenticationOrchestrator(private val context: Context) {
                             deviceId = deviceId
                         )
                         Log.d(TAG, "💾 DeviceId salvo: ${deviceId.take(10)}...")
+                        
+                        CoroutineScope(Dispatchers.IO).launch {
+                            Log.d(TAG, "🔔 Registrando FCM token após validação de authToken...")
+                            fcmTokenManager.registerTokenWithBackend(
+                                onSuccess = {
+                                    Log.d(TAG, "✅ FCM token registrado após validação")
+                                },
+                                onError = { error ->
+                                    Log.w(TAG, "⚠️ Erro ao registrar FCM token: $error")
+                                }
+                            )
+                        }
                     }
                 }
                 
@@ -168,6 +184,18 @@ class AuthenticationOrchestrator(private val context: Context) {
                 }
                 
                 Log.d(TAG, "💾 authToken salvo com sucesso")
+                
+                CoroutineScope(Dispatchers.IO).launch {
+                    Log.d(TAG, "🔔 Registrando FCM token após autenticação silenciosa...")
+                    fcmTokenManager.registerTokenWithBackend(
+                        onSuccess = {
+                            Log.d(TAG, "✅ FCM token registrado após autenticação")
+                        },
+                        onError = { error ->
+                            Log.w(TAG, "⚠️ Erro ao registrar FCM token: $error")
+                        }
+                    )
+                }
                 
                 return AuthenticationResult.Authenticated(contractCode)
             }
