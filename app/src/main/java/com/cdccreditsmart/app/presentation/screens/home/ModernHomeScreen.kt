@@ -204,6 +204,20 @@ private fun HomeContent(
         val pendingInstallments = state.allInstallments.filter { it.status == "pending" || it.status == "overdue" }
         val paidInstallments = state.allInstallments.filter { it.status == "paid" }
         
+        if (paidInstallments.isNotEmpty()) {
+            item {
+                SectionHeader(
+                    title = "Parcelas Pagas",
+                    subtitle = "${paidInstallments.size} parcela(s)",
+                    icon = Icons.Default.CheckCircle
+                )
+            }
+            
+            items(paidInstallments.take(3)) { installment ->
+                PaidInstallmentCard(installment = installment)
+            }
+        }
+        
         if (pendingInstallments.isNotEmpty()) {
             item {
                 SectionHeader(
@@ -218,20 +232,6 @@ private fun HomeContent(
                     installment = installment,
                     onPay = { onPayInstallment(installment) }
                 )
-            }
-        }
-        
-        if (paidInstallments.isNotEmpty()) {
-            item {
-                SectionHeader(
-                    title = "Parcelas Pagas",
-                    subtitle = "${paidInstallments.size} parcela(s)",
-                    icon = Icons.Default.CheckCircle
-                )
-            }
-            
-            items(paidInstallments.take(3)) { installment ->
-                PaidInstallmentCard(installment = installment)
             }
         }
         
