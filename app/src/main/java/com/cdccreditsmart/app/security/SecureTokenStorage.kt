@@ -190,20 +190,21 @@ class SecureTokenStorage(context: Context) {
     
     fun getMdmDeviceIdentifier(): String? {
         return try {
-            val serialNumber = getSerialNumber()
-            
-            if (!serialNumber.isNullOrBlank() && serialNumber != "unknown" && serialNumber != "UNKNOWN") {
-                Log.d(TAG, "Using serial number as MDM identifier: ${serialNumber.take(6)}...")
-                return serialNumber
-            }
-            
+            // Prioriza deviceId (retornado pelo backend na autenticação)
             val deviceId = getDeviceId()
             if (!deviceId.isNullOrBlank()) {
-                Log.w(TAG, "Serial number unavailable - falling back to deviceId: ${deviceId.take(10)}...")
+                Log.d(TAG, "✅ Using deviceId as MDM identifier: ${deviceId.take(10)}...")
                 return deviceId
             }
             
-            Log.e(TAG, "No MDM device identifier available (serial number and deviceId both empty)")
+            // Fallback: tenta serial number (apenas se deviceId não existir)
+            val serialNumber = getSerialNumber()
+            if (!serialNumber.isNullOrBlank() && serialNumber != "unknown" && serialNumber != "UNKNOWN") {
+                Log.w(TAG, "⚠️ DeviceId unavailable - falling back to serial number: ${serialNumber.take(6)}...")
+                return serialNumber
+            }
+            
+            Log.e(TAG, "❌ No MDM device identifier available (deviceId and serial number both empty)")
             null
         } catch (e: Exception) {
             Log.e(TAG, "Error getting MDM device identifier", e)
