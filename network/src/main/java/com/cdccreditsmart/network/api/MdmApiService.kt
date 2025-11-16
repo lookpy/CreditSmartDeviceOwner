@@ -4,36 +4,69 @@ import com.cdccreditsmart.network.dto.mdm.*
 import retrofit2.Response
 import retrofit2.http.*
 
+/**
+ * MDM API Service - Seguindo documentação oficial CDC Credit Smart
+ * Base URL: https://cdccreditsmart.com
+ * 
+ * Documentação completa: mdm_api_documentation.md
+ */
 interface MdmApiService {
     
-    @GET("api/apk/device/{contractCode}/commands")
+    /**
+     * Buscar comandos MDM pendentes para o dispositivo
+     * Endpoint: GET /api/admin/mdm/devices/{deviceId}/commands
+     * 
+     * @param deviceId ID único do dispositivo (deviceId ou serialNumber)
+     * @return Lista de comandos pendentes
+     */
+    @GET("api/admin/mdm/devices/{deviceId}/commands")
     suspend fun getPendingCommands(
-        @Path("contractCode") contractCode: String
+        @Path("deviceId") deviceId: String
     ): Response<PendingCommandsResponse>
     
-    @POST("api/apk/device/{contractCode}/command-response")
+    /**
+     * Enviar resposta/status de execução de comando MDM
+     * Endpoint: POST /api/mdm/commands/{commandId}/status
+     * 
+     * @param commandId ID do comando executado
+     * @param request Payload com status e resultado da execução
+     */
+    @POST("api/mdm/commands/{commandId}/status")
     suspend fun sendCommandResponse(
-        @Path("contractCode") contractCode: String,
+        @Path("commandId") commandId: String,
         @Body request: CommandResponseRequest
     ): Response<Unit>
     
-    @GET("api/apk/device/{contractCode}/pending-decisions")
+    /**
+     * Buscar decisões pendentes (legado - manter compatibilidade)
+     */
+    @GET("api/apk/device/{deviceId}/pending-decisions")
     suspend fun getPendingDecisions(
-        @Path("contractCode") contractCode: String
+        @Path("deviceId") deviceId: String
     ): Response<PendingDecisionsResponse>
     
-    @POST("api/apk/device/{contractCode}/acknowledge-decision")
+    /**
+     * Confirmar decisão (legado - manter compatibilidade)
+     */
+    @POST("api/apk/device/{deviceId}/acknowledge-decision")
     suspend fun acknowledgeDecision(
-        @Path("contractCode") contractCode: String,
+        @Path("deviceId") deviceId: String,
         @Body request: AcknowledgeDecisionRequest
     ): Response<AcknowledgeDecisionResponse>
     
-    @POST("api/apk/device/{contractCode}/unblock")
+    /**
+     * Desbloquear dispositivo (legado - manter compatibilidade)
+     */
+    @POST("api/apk/device/{deviceId}/unblock")
     suspend fun unblockDevice(
-        @Path("contractCode") contractCode: String
+        @Path("deviceId") deviceId: String
     ): Response<UnblockResponse>
     
-    @POST("/api/mdm/telemetry")
+    /**
+     * Enviar telemetria para o backend
+     * Endpoint: POST /api/mdm/telemetry
+     */
+    @POST("api/mdm/telemetry")
     suspend fun sendTelemetry(
         @Body telemetry: Map<String, Any?>
     ): Response<Unit>

@@ -1,0 +1,142 @@
+═══════════════════════════════════════════════════════════════
+   📱 RESUMO EXECUTIVO - API MDM CDC CREDIT SMART
+═══════════════════════════════════════════════════════════════
+
+🎯 BASE URL: https://seu-dominio.replit.dev
+🔐 AUTH: Bearer Token no header Authorization
+
+═══════════════════════════════════════════════════════════════
+📋 PRINCIPAIS ENDPOINTS PARA SUA IA INTEGRAR NO APK
+═══════════════════════════════════════════════════════════════
+
+┌─────────────────────────────────────────────────────────────┐
+│ 1. GESTÃO DE DISPOSITIVOS                                    │
+└─────────────────────────────────────────────────────────────┘
+
+GET    /api/devices                     # Listar todos dispositivos
+GET    /api/devices/imei/:imei          # Buscar por IMEI
+POST   /api/devices                     # Criar dispositivo
+POST   /api/devices/:id/block           # Bloquear manualmente
+POST   /api/devices/:id/unblock         # Desbloquear
+DELETE /api/devices/:id                 # Deletar
+GET    /api/devices/check-paired        # Verificar pareamento
+
+┌─────────────────────────────────────────────────────────────┐
+│ 2. COMANDOS MDM (11 COMANDOS DISPONÍVEIS)                   │
+└─────────────────────────────────────────────────────────────┘
+
+POST /api/admin/mdm/devices/:deviceId/commands
+
+Comandos suportados:
+  • LOCK_SCREEN         - Bloquear tela
+  • LOCATE_DEVICE       - Obter GPS
+  • RING_DEVICE         - Tocar alarme
+  • DISABLE_CAMERA      - Desabilitar câmera
+  • DISABLE_USB         - Desabilitar USB
+  • WIPE_DATA           - Apagar dados
+  • FACTORY_RESET       - Reset de fábrica
+  • REBOOT_DEVICE       - Reiniciar
+  • INSTALL_APP         - Instalar app
+  • UNINSTALL_APP       - Desinstalar app
+  • CONFIGURE_UNINSTALL_CODE - Código de desinstalação
+
+GET  /api/admin/mdm/devices/:deviceId/commands      # Listar comandos
+GET  /api/admin/mdm/commands/:commandId/status      # Status comando
+
+┌─────────────────────────────────────────────────────────────┐
+│ 3. BLOQUEIO PROGRESSIVO AUTOMÁTICO                          │
+└─────────────────────────────────────────────────────────────┘
+
+GET  /api/devices/block-levels              # Todos níveis
+GET  /api/devices/:id/block-level           # Nível específico
+POST /api/devices/:id/progressive-block     # Forçar nível
+
+Níveis:
+  0 → Nenhum bloqueio
+  1 → Câmera bloqueada (1-7 dias atraso)
+  2 → Câmera + WiFi (8-14 dias)
+  3 → Câmera + WiFi + Apps (15-21 dias)
+  4 → Tela bloqueada (22-30 dias)
+  5 → Bloqueio total (30+ dias)
+
+┌─────────────────────────────────────────────────────────────┐
+│ 4. POLÍTICAS MDM                                             │
+└─────────────────────────────────────────────────────────────┘
+
+GET    /api/admin/mdm/policies                    # Listar políticas
+POST   /api/admin/mdm/policies                    # Criar política
+PUT    /api/admin/mdm/policies/:id                # Atualizar
+DELETE /api/admin/mdm/policies/:id                # Deletar
+POST   /api/admin/mdm/policies/:id/assign         # Atribuir a dispositivos
+GET    /api/admin/mdm/devices/:deviceId/policies  # Políticas do device
+
+┌─────────────────────────────────────────────────────────────┐
+│ 5. WEBSOCKET TEMPO REAL                                      │
+└─────────────────────────────────────────────────────────────┘
+
+URL: wss://seu-dominio.replit.dev/ws?token=<APK_TOKEN>
+
+Mensagens recebidas pelo APK:
+  • NEW_COMMAND           - Novo comando MDM
+  • DEVICE_STATUS_UPDATE  - Mudança de status
+  • POLICY_UPDATE         - Atualização de política
+
+═══════════════════════════════════════════════════════════════
+💡 EXEMPLOS CURL RÁPIDOS
+═══════════════════════════════════════════════════════════════
+
+# Bloquear tela
+curl -X POST "https://seu-dominio.replit.dev/api/admin/mdm/devices/device_xxx/commands" \
+  -H "Authorization: Bearer $TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{"commandType":"LOCK_SCREEN","priority":"high"}'
+
+# Localizar dispositivo
+curl -X POST "https://seu-dominio.replit.dev/api/admin/mdm/devices/device_xxx/commands" \
+  -H "Authorization: Bearer $TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{"commandType":"LOCATE_DEVICE","priority":"high"}'
+
+# Tocar alarme
+curl -X POST "https://seu-dominio.replit.dev/api/admin/mdm/devices/device_xxx/commands" \
+  -H "Authorization: Bearer $TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{"commandType":"RING_DEVICE","priority":"medium","parameters":{"duration":30}}'
+
+# Verificar status do comando
+curl -X GET "https://seu-dominio.replit.dev/api/admin/mdm/commands/cmd_xxx/status" \
+  -H "Authorization: Bearer $TOKEN"
+
+═══════════════════════════════════════════════════════════════
+📦 ARQUIVOS CRIADOS
+═══════════════════════════════════════════════════════════════
+
+1. mdm_api_documentation.md (14KB)
+   → Documentação completa da API REST
+   → Todos os endpoints com exemplos cURL
+   → Tabela de erros
+   → Documentação WebSocket
+
+2. mdm_apk_integration_examples.md (18KB)
+   → Código Kotlin completo
+   → Serviço WebSocket com reconexão
+   → Executor de comandos MDM
+   → Cliente HTTP
+   → AndroidManifest configurado
+   → Fluxo completo de execução
+
+3. RESUMO_API_MDM.txt (este arquivo)
+   → Resumo executivo
+
+═══════════════════════════════════════════════════════════════
+✅ PRÓXIMOS PASSOS
+═══════════════════════════════════════════════════════════════
+
+1. Envie mdm_api_documentation.md para sua IA
+2. Use mdm_apk_integration_examples.md como base do código
+3. Configure o APK_TOKEN no SharedPreferences
+4. Implemente o WebSocketService
+5. Teste comandos MDM via cURL
+6. Valide WebSocket em tempo real
+
+═══════════════════════════════════════════════════════════════

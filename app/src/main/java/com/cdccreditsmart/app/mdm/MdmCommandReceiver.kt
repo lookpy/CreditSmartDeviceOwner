@@ -378,12 +378,6 @@ class MdmCommandReceiver(private val context: Context) {
     
     private suspend fun sendAcknowledgement(commandId: String) {
         try {
-            val deviceId = getDeviceIdentifier()
-            if (deviceId == null) {
-                Log.e(TAG, "❌ DeviceId não encontrado - impossível enviar ACK")
-                return
-            }
-            
             val retrofit = RetrofitProvider.createRetrofit()
             val api = retrofit.create(MdmApiService::class.java)
             
@@ -392,7 +386,7 @@ class MdmCommandReceiver(private val context: Context) {
                 status = "acknowledged"
             )
             
-            val response = api.sendCommandResponse(deviceId, request)
+            val response = api.sendCommandResponse(commandId, request)
             
             if (response.isSuccessful) {
                 Log.i(TAG, "✅ ACK enviado para comando $commandId")
@@ -426,12 +420,6 @@ class MdmCommandReceiver(private val context: Context) {
         errorMessage: String? = null
     ) {
         try {
-            val deviceId = getDeviceIdentifier()
-            if (deviceId == null) {
-                Log.e(TAG, "❌ DeviceId não encontrado - impossível enviar command response")
-                return
-            }
-            
             val retrofit = RetrofitProvider.createRetrofit()
             val api = retrofit.create(MdmApiService::class.java)
             
@@ -449,7 +437,7 @@ class MdmCommandReceiver(private val context: Context) {
                 errorMessage = errorMessage
             )
             
-            val response = api.sendCommandResponse(deviceId, request)
+            val response = api.sendCommandResponse(commandId, request)
             
             if (response.isSuccessful) {
                 Log.i(TAG, "✅ Response enviado para comando $commandId: ${request.status}")

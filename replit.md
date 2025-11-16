@@ -51,7 +51,7 @@ The UI uses Jetpack Compose and Material 3 with a CDC institutional dark theme. 
 - **Knox Enhanced Protections (Samsung Only):** Dynamically implements advanced Samsung Knox Enterprise protections.
 
 ## External Dependencies
-- **CDC Credit Smart Backend API:** For APK authentication, device status, installments, PIX payment processing (`/v1/pix/installments/:deviceId`, `/v1/pix/generate/:installmentId`, `/v1/pix/status/:orderId`), heartbeat, MDM commands, unblock operations, remote uninstall telemetry (`POST /api/mdm/telemetry`), time synchronization (`GET /api/apk/time/now`), and FCM token registration (`POST /api/apk/device/fcm-token`).
+- **CDC Credit Smart Backend API:** For APK authentication, device status, installments, PIX payment processing (`/v1/pix/installments/:deviceId`, `/v1/pix/generate/:installmentId`, `/v1/pix/status/:orderId`), heartbeat, MDM commands (`GET /api/admin/mdm/devices/{deviceId}/commands`, `POST /api/mdm/commands/{commandId}/status`), unblock operations, remote uninstall telemetry (`POST /api/mdm/telemetry`), time synchronization (`GET /api/apk/time/now`), and FCM token registration (`POST /api/apk/device/fcm-token`). MDM endpoints follow official documentation with deviceId-first identifier resolution.
 - **Meio de Pagamento API:** (Accessed via CDC backend) External payment gateway for PIX transactions, resilient to slow responses.
 - **WebSocket Server:** For real-time pairing flow status and MDM command push.
 - **Firebase Cloud Messaging (FCM):** Push notification infrastructure with Firebase BOM 33.7.0, Firebase Messaging KTX, and Firebase Analytics KTX. Requires google-services.json configuration. Supports 4 notification types (INFO, ALERT, PAYMENT, CONTRACT) with deep linking (cdc:// scheme).
