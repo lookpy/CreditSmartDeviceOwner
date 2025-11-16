@@ -1,0 +1,64 @@
+etag: W/"27-vA7jVJXd7R0uBFzC1cm2VbpnUnw"
+2025-11-16 20:39:21.357  9433-9515  okhttp.OkHttpClient     com.cdccreditsmart.app               I  permissions-policy: geolocation=(), microphone=(), camera=()
+2025-11-16 20:39:21.357  9433-9515  okhttp.OkHttpClient     com.cdccreditsmart.app               I  referrer-policy: strict-origin-when-cross-origin
+2025-11-16 20:39:21.358  9433-9515  okhttp.OkHttpClient     com.cdccreditsmart.app               I  server: Google Frontend
+2025-11-16 20:39:21.358  9433-9515  okhttp.OkHttpClient     com.cdccreditsmart.app               I  strict-transport-security: max-age=63072000; includeSubDomains
+2025-11-16 20:39:21.358  9433-9515  okhttp.OkHttpClient     com.cdccreditsmart.app               I  strict-transport-security: max-age=31536000; includeSubDomains
+2025-11-16 20:39:21.358  9433-9515  okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-anti-fraud-protection: active
+2025-11-16 20:39:21.358  9433-9515  okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-certificate-pinning-enabled: false
+2025-11-16 20:39:21.358  9433-9515  okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-certificate-pinning-status: disabled-for-stability
+2025-11-16 20:39:21.358  9433-9515  okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-cloud-trace-context: 8762720a424d6a2cb47cabb51cf97559
+2025-11-16 20:39:21.358  9433-9515  okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-content-type-options: nosniff
+2025-11-16 20:39:21.358  9433-9515  okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-financial-data-protection: enabled
+2025-11-16 20:39:21.358  9433-9515  okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-frame-options: DENY
+2025-11-16 20:39:21.358  9433-9515  okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-transaction-security-level: maximum
+2025-11-16 20:39:21.358  9433-9515  okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-xss-protection: 1; mode=block
+2025-11-16 20:39:21.358  9433-9515  okhttp.OkHttpClient     com.cdccreditsmart.app               I  via: 1.1 google
+2025-11-16 20:39:21.358  9433-9515  okhttp.OkHttpClient     com.cdccreditsmart.app               I  alt-svc: h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
+2025-11-16 20:39:21.358  9433-9515  okhttp.OkHttpClient     com.cdccreditsmart.app               I  {"error":"Dispositivo não encontrado"}
+2025-11-16 20:39:21.358  9433-9515  okhttp.OkHttpClient     com.cdccreditsmart.app               I  <-- END HTTP (39-byte body)
+2025-11-16 20:39:21.359  9433-9512  MdmCommandReceiver      com.cdccreditsmart.app               E  ❌ Erro ao buscar comandos pendentes - HTTP 404
+2025-11-16 20:39:21.360  9433-9512  MdmCommandReceiver      com.cdccreditsmart.app               E  ❌ Response body: {"error":"Dispositivo não encontrado"}
+2025-11-16 20:39:21.360  9433-9512  MdmCommandReceiver      com.cdccreditsmart.app               D  ⏳ [Polling #2] Aguardando 29752ms até próxima verificação...
+2025-11-16 20:39:21.589  9433-9512  MdmCommandReceiver      com.cdccreditsmart.app               D  🔍 [Polling #2] Verificando comandos pendentes...
+2025-11-16 20:39:21.589  9433-9512  SecureTokenStorage      com.cdccreditsmart.app               D  Using serial number as MDM identifier: EMULAT...
+2025-11-16 20:39:21.589  9433-9512  MdmCommandReceiver      com.cdccreditsmart.app               D  ✅ MDM identifier obtido: EMULATOR36...
+2025-11-16 20:39:21.590  9433-9512  MdmCommandReceiver      com.cdccreditsmart.app               D  🔍 Buscando comandos pendentes para deviceId: EMULATOR36...
+2025-11-16 20:39:21.592  9433-9515  okhttp.OkHttpClient     com.cdccreditsmart.app               I  --> GET https://cdccreditsmart.com/api/apk/device/EMULATOR36X2X12X0/commands
+2025-11-16 20:39:21.592  9433-9515  okhttp.OkHttpClient     com.cdccreditsmart.app               I  --> END GET
+2025-11-16 20:39:21.593  9433-9433  WebSocketManager        com.cdccreditsmart.app               D  Heartbeat ping sent
+2025-11-16 20:39:21.763  9433-9514  WebSocketManager        com.cdccreditsmart.app               D  Message received: {"type":"pong","timestamp":"2025-11-16T23:39:24.300Z"}...
+2025-11-16 20:39:21.764  9433-9514  WebSocketManager        com.cdccreditsmart.app               D  Received message type: pong
+2025-11-16 20:39:21.764  9433-9514  WebSocketManager        com.cdccreditsmart.app               D  Pong received
+2025-11-16 20:39:21.830  9433-9515  okhttp.OkHttpClient     com.cdccreditsmart.app               I  <-- 404 https://cdccreditsmart.com/api/apk/device/EMULATOR36X2X12X0/commands (237ms)
+2025-11-16 20:39:21.830  9433-9515  okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-credentials: true
+2025-11-16 20:39:21.830  9433-9515  okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-headers: Origin, X-Requested-With, Content-Type, Accept, Authorization, x-client-key, x-client-token, x-client-secret, cache-control
+2025-11-16 20:39:21.830  9433-9515  okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-methods: GET, POST, PUT, PATCH, DELETE, OPTIONS
+2025-11-16 20:39:21.830  9433-9515  okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-origin: *
+2025-11-16 20:39:21.830  9433-9515  okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-max-age: 86400
+2025-11-16 20:39:21.831  9433-9515  okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-length: 39
+2025-11-16 20:39:21.831  9433-9515  okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-security-policy: default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://replit.com; style-src 'self' 'unsafe-inline' https://replit.com; img-src 'self' data: https:; font-src 'self' data: https://replit.com; connect-src 'self';
+2025-11-16 20:39:21.831  9433-9515  okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-type: application/json; charset=utf-8
+2025-11-16 20:39:21.831  9433-9515  okhttp.OkHttpClient     com.cdccreditsmart.app               I  date: Sun, 16 Nov 2025 23:39:24 GMT
+2025-11-16 20:39:21.831  9433-9515  okhttp.OkHttpClient     com.cdccreditsmart.app               I  etag: W/"27-vA7jVJXd7R0uBFzC1cm2VbpnUnw"
+2025-11-16 20:39:21.831  9433-9515  okhttp.OkHttpClient     com.cdccreditsmart.app               I  permissions-policy: geolocation=(), microphone=(), camera=()
+2025-11-16 20:39:21.831  9433-9515  okhttp.OkHttpClient     com.cdccreditsmart.app               I  referrer-policy: strict-origin-when-cross-origin
+2025-11-16 20:39:21.832  9433-9515  okhttp.OkHttpClient     com.cdccreditsmart.app               I  server: Google Frontend
+2025-11-16 20:39:21.832  9433-9515  okhttp.OkHttpClient     com.cdccreditsmart.app               I  strict-transport-security: max-age=63072000; includeSubDomains
+2025-11-16 20:39:21.832  9433-9515  okhttp.OkHttpClient     com.cdccreditsmart.app               I  strict-transport-security: max-age=31536000; includeSubDomains
+2025-11-16 20:39:21.832  9433-9515  okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-anti-fraud-protection: active
+2025-11-16 20:39:21.832  9433-9515  okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-certificate-pinning-enabled: false
+2025-11-16 20:39:21.832  9433-9515  okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-certificate-pinning-status: disabled-for-stability
+2025-11-16 20:39:21.832  9433-9515  okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-cloud-trace-context: 5718543e7e9b9547b47cabb51cf972ba
+2025-11-16 20:39:21.833  9433-9515  okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-content-type-options: nosniff
+2025-11-16 20:39:21.833  9433-9515  okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-financial-data-protection: enabled
+2025-11-16 20:39:21.833  9433-9515  okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-frame-options: DENY
+2025-11-16 20:39:21.833  9433-9515  okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-transaction-security-level: maximum
+2025-11-16 20:39:21.833  9433-9515  okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-xss-protection: 1; mode=block
+2025-11-16 20:39:21.833  9433-9515  okhttp.OkHttpClient     com.cdccreditsmart.app               I  via: 1.1 google
+2025-11-16 20:39:21.833  9433-9515  okhttp.OkHttpClient     com.cdccreditsmart.app               I  alt-svc: h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
+2025-11-16 20:39:21.833  9433-9515  okhttp.OkHttpClient     com.cdccreditsmart.app               I  {"error":"Dispositivo não encontrado"}
+2025-11-16 20:39:21.833  9433-9515  okhttp.OkHttpClient     com.cdccreditsmart.app               I  <-- END HTTP (39-byte body)
+2025-11-16 20:39:21.834  9433-9512  MdmCommandReceiver      com.cdccreditsmart.app               E  ❌ Erro ao buscar comandos pendentes - HTTP 404
+2025-11-16 20:39:21.834  9433-9512  MdmCommandReceiver      com.cdccreditsmart.app               E  ❌ Response body: {"error":"Dispositivo não encontrado"}
+2025-11-16 20:39:21.834  9433-9512  MdmCommandReceiver      com.cdccreditsmart.app               D  ⏳ [Polling #2] Aguardando 29755ms até próxima verificação...
