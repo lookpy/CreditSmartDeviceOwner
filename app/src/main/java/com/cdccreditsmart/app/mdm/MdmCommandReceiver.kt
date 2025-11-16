@@ -5,6 +5,7 @@ import android.util.Log
 import com.cdccreditsmart.app.blocking.AppBlockingManager
 import com.cdccreditsmart.app.network.NetworkConnectivityHelper
 import com.cdccreditsmart.app.network.RetrofitProvider
+import com.cdccreditsmart.app.security.SecureTokenStorage
 import com.cdccreditsmart.app.utils.DeviceInfoHelper
 import com.cdccreditsmart.network.api.MdmApiService
 import com.cdccreditsmart.network.dto.mdm.*
@@ -13,12 +14,14 @@ import kotlinx.coroutines.*
 import okhttp3.*
 import java.util.concurrent.TimeUnit
 
-class MdmCommandReceiver(private val context: Context, private val contractCode: String) {
+class MdmCommandReceiver(private val context: Context) {
     
     companion object {
         private const val TAG = "MdmCommandReceiver"
         private const val WS_URL = "wss://cdccreditsmart.com/ws"
     }
+    
+    private val tokenStorage = SecureTokenStorage(context)
     
     private var webSocket: WebSocket? = null
     private var reconnectJob: Job? = null
@@ -45,10 +48,17 @@ class MdmCommandReceiver(private val context: Context, private val contractCode:
         .build()
     
     fun connectMdmWebSocket(jwtToken: String) {
+        val deviceId = getDeviceIdentifier()
+        
         Log.i(TAG, "🔗 Iniciando conexão WebSocket MDM...")
         Log.d(TAG, "🔗 URL: $WS_URL")
         Log.d(TAG, "🔗 JWT Token presente: ${jwtToken.isNotBlank()}")
-        Log.d(TAG, "🔗 Using contract code: ${contractCode.take(4)}...")
+        Log.d(TAG, "🔗 Using deviceId: ${deviceId?.take(10)}...")
+        
+        if (deviceId == null) {
+            Log.e(TAG, "❌ DeviceId não encontrado - impossível conectar MDM WebSocket")
+            return
+        }
         
         disconnect()
         
@@ -368,6 +378,12 @@ class MdmCommandReceiver(private val context: Context, private val contractCode:
     
     private suspend fun sendAcknowledgement(commandId: String) {
         try {
+            val deviceId = getDeviceIdentifier()
+            if (deviceId == null) {
+                Log.e(TAG, "❌ DeviceId não encontrado - impossível enviar ACK")
+                return
+            }
+            
             val retrofit = RetrofitProvider.createRetrofit()
             val api = retrofit.create(MdmApiService::class.java)
             
@@ -376,7 +392,7 @@ class MdmCommandReceiver(private val context: Context, private val contractCode:
                 status = "acknowledged"
             )
             
-            val response = api.sendCommandResponse(contractCode, request)
+            val response = api.sendCommandResponse(deviceId, request)
             
             if (response.isSuccessful) {
                 Log.i(TAG, "✅ ACK enviado para comando $commandId")
@@ -410,6 +426,12 @@ class MdmCommandReceiver(private val context: Context, private val contractCode:
         errorMessage: String? = null
     ) {
         try {
+            val deviceId = getDeviceIdentifier()
+            if (deviceId == null) {
+                Log.e(TAG, "❌ DeviceId não encontrado - impossível enviar command response")
+                return
+            }
+            
             val retrofit = RetrofitProvider.createRetrofit()
             val api = retrofit.create(MdmApiService::class.java)
             
@@ -427,7 +449,7 @@ class MdmCommandReceiver(private val context: Context, private val contractCode:
                 errorMessage = errorMessage
             )
             
-            val response = api.sendCommandResponse(contractCode, request)
+            val response = api.sendCommandResponse(deviceId, request)
             
             if (response.isSuccessful) {
                 Log.i(TAG, "✅ Response enviado para comando $commandId: ${request.status}")
@@ -499,13 +521,20 @@ class MdmCommandReceiver(private val context: Context, private val contractCode:
     
     private suspend fun fetchPendingCommands() {
         try {
-            Log.d(TAG, "🔍 Buscando comandos pendentes para contract code: ${contractCode.take(4)}...")
+            val deviceId = getDeviceIdentifier()
+            
+            if (deviceId == null) {
+                Log.e(TAG, "❌ DeviceId não encontrado - impossível buscar comandos")
+                return
+            }
+            
+            Log.d(TAG, "🔍 Buscando comandos pendentes para deviceId: ${deviceId.take(10)}...")
             val fetchStartTime = System.currentTimeMillis()
             
             val retrofit = RetrofitProvider.createRetrofit()
             val api = retrofit.create(MdmApiService::class.java)
             
-            val response = api.getPendingCommands(contractCode)
+            val response = api.getPendingCommands(deviceId)
             
             if (response.isSuccessful) {
                 val body = response.body()
@@ -551,5 +580,17 @@ class MdmCommandReceiver(private val context: Context, private val contractCode:
             Log.i(TAG, "🔍 Verificação manual de comandos pendentes solicitada")
             fetchPendingCommands()
         }
+    }
+    
+    private fun getDeviceIdentifier(): String? {
+        val identifier = tokenStorage.getMdmDeviceIdentifier()
+        
+        if (identifier.isNullOrBlank()) {
+            Log.e(TAG, "❌ Nenhum identificador MDM encontrado (deviceId e serialNumber vazios)!")
+            return null
+        }
+        
+        Log.d(TAG, "✅ MDM identifier obtido: ${identifier.take(10)}...")
+        return identifier
     }
 }
