@@ -169,6 +169,15 @@ class AppBlockingManager(private val context: Context) {
             
             updateKnoxLockscreen(parameters.targetLevel, parameters.daysOverdue)
             
+            // NOVO: Mostrar overlay IMEDIATAMENTE quando bloqueio é aplicado
+            if (parameters.targetLevel > 0 && parameters.targetLevel > previousLevel) {
+                Log.i(TAG, "🚨 NOVO BLOQUEIO APLICADO - Mostrando overlay imediatamente!")
+                showImmediateOverlay(parameters.targetLevel, parameters.daysOverdue, blockedCount, parameters.reason)
+            } else if (parameters.targetLevel > 0 && previousLevel == 0) {
+                Log.i(TAG, "🚨 PRIMEIRO BLOQUEIO - Mostrando overlay imediatamente!")
+                showImmediateOverlay(parameters.targetLevel, parameters.daysOverdue, blockedCount, parameters.reason)
+            }
+            
             return BlockingResult(
                 success = true,
                 blockedAppsCount = blockedCount,
@@ -659,6 +668,41 @@ class AppBlockingManager(private val context: Context) {
             5 -> listOf("SOCIAL_MEDIA", "GAMING", "ENTERTAINMENT", "SHOPPING", "PRODUCTIVITY")
             6 -> listOf("SOCIAL_MEDIA", "GAMING", "ENTERTAINMENT", "SHOPPING", "PRODUCTIVITY", "BROWSERS", "CAMERAS")
             else -> emptyList()
+        }
+    }
+    
+    /**
+     * Mostra overlay IMEDIATAMENTE quando bloqueio é aplicado
+     * Depois disso, PeriodicOverlayWorker continua com intervalos progressivos
+     */
+    private fun showImmediateOverlay(level: Int, daysOverdue: Int, blockedCount: Int, reason: String?) {
+        try {
+            val intent = android.content.Intent(context, BlockedAppExplanationActivity::class.java).apply {
+                addFlags(android.content.Intent.FLAG_ACTIVITY_NEW_TASK)
+                addFlags(android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                addFlags(android.content.Intent.FLAG_ACTIVITY_NO_HISTORY)
+                addFlags(android.content.Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS)
+                
+                // Passar dados do bloqueio
+                putExtra("blocked_package", "immediate_blocking")
+                putExtra("blocking_level", level)
+                putExtra("days_overdue", daysOverdue)
+                putExtra("blocked_apps_count", blockedCount)
+                putExtra("is_manual_block", !reason.isNullOrBlank())
+                putExtra("manual_block_reason", reason)
+                putExtra("is_immediate", true) // Flag especial: primeiro overlay
+            }
+            
+            context.startActivity(intent)
+            
+            Log.i(TAG, "✅ Overlay imediato mostrado!")
+            Log.i(TAG, "   → Nível: $level")
+            Log.i(TAG, "   → Dias de atraso: $daysOverdue")
+            Log.i(TAG, "   → Apps bloqueados: $blockedCount")
+            Log.i(TAG, "   → PeriodicOverlayWorker continuará com intervalos progressivos")
+            
+        } catch (e: Exception) {
+            Log.e(TAG, "❌ Erro ao mostrar overlay imediato", e)
         }
     }
 }
