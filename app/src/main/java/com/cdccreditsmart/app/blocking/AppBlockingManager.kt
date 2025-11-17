@@ -127,7 +127,8 @@ class AppBlockingManager(private val context: Context) {
                         }
                     }
                     
-                    // Desbloquear apps que não estão na lista
+                    // Desbloquear apps que não estão na lista de bloqueio
+                    val appsToUnblock = allInstalledApps.filter { it !in appsToBlock }
                     val packagesToUnblock = appsToUnblock.toTypedArray()
                     val failedToUnblock = dpm.setPackagesSuspended(
                         adminComponent,
