@@ -10,7 +10,6 @@ import com.cdccreditsmart.app.protection.TamperDetectionService
 import com.cdccreditsmart.app.security.SecureTokenStorage
 import com.cdccreditsmart.app.service.CdcForegroundService
 import com.cdccreditsmart.app.workers.AutoBlockingWorker
-import com.cdccreditsmart.app.workers.BlockingCheckWorker
 
 class CDCApplication : Application() {
 
