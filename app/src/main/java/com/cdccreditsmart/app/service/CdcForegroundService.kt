@@ -118,17 +118,24 @@ class CdcForegroundService : Service(), ScreenStateListener {
     }
     
     private fun stopForegroundService() {
-        Log.i(TAG, "🛑 Parando Foreground Service")
+        Log.i(TAG, "🛑 Parando Foreground Service via ACTION_STOP")
         
-        HeartbeatWorker.cancel(applicationContext)
-        mdmReceiver?.disconnect()
-        webSocketManager?.disconnect()
-        blockedAppInterceptor?.destroy()
-        releaseWakeLock()
-        serviceScope.cancel()
-        
-        stopForeground(true)
-        stopSelf()
+        // Cleanup completo de todos os componentes
+        try {
+            HeartbeatWorker.cancel(applicationContext)
+            mdmReceiver?.disconnect()
+            webSocketManager?.disconnect()
+            blockedAppInterceptor?.destroy()
+            releaseWakeLock()
+            serviceScope.cancel()
+            
+            stopForeground(true)
+            stopSelf()
+            
+            Log.i(TAG, "✅ Serviço parado com sucesso")
+        } catch (e: Exception) {
+            Log.e(TAG, "❌ Erro ao parar serviço: ${e.message}", e)
+        }
     }
     
     private fun createNotificationChannel() {
@@ -370,37 +377,61 @@ class CdcForegroundService : Service(), ScreenStateListener {
     }
     
     override fun onDestroy() {
-        Log.w(TAG, "⚠️ Serviço onDestroy() - reiniciando automaticamente...")
+        Log.w(TAG, "⚠️ Serviço onDestroy() - limpando recursos e reiniciando automaticamente...")
         
-        ScreenStateReceiver.removeListener(this)
+        // CORREÇÃO LIFECYCLE: Cleanup manual removido para evitar duplo cleanup
+        // stopForegroundService() já faz todo o cleanup necessário
         try {
-            unregisterReceiver(screenStateReceiver)
+            // Remover listener do ScreenStateReceiver
+            ScreenStateReceiver.removeListener(this)
+            
+            // Tentar desregistrar receiver (pode já estar desregistrado)
+            try {
+                screenStateReceiver?.let { unregisterReceiver(it) }
+            } catch (e: IllegalArgumentException) {
+                // Receiver já foi desregistrado - ignorar
+                Log.d(TAG, "Receiver já desregistrado - continuando cleanup")
+            }
+            
+            // Fazer cleanup completo de TODOS os componentes
+            HeartbeatWorker.cancel(applicationContext)
+            mdmReceiver?.disconnect()
+            webSocketManager?.disconnect()
+            blockedAppInterceptor?.destroy()
+            releaseWakeLock()
+            serviceScope.cancel()
+            
+            // Parar foreground e self
+            stopForeground(true)
+            
         } catch (e: Exception) {
-            Log.e(TAG, "Erro ao desregistrar receiver: ${e.message}")
+            Log.e(TAG, "❌ Erro durante cleanup em onDestroy: ${e.message}", e)
         }
         
-        // CORREÇÃO CRÍTICA: Garantir release do WakeLock ANTES de qualquer cleanup
-        releaseWakeLock()
-        
-        stopForegroundService()
-        
-        val restartIntent = Intent(applicationContext, CdcForegroundService::class.java).apply {
-            action = ACTION_START
+        // Agendar restart automático via AlarmManager
+        try {
+            val restartIntent = Intent(applicationContext, CdcForegroundService::class.java).apply {
+                action = ACTION_START
+            }
+            
+            val pendingIntent = PendingIntent.getService(
+                applicationContext,
+                0,
+                restartIntent,
+                PendingIntent.FLAG_ONE_SHOT or PendingIntent.FLAG_IMMUTABLE
+            )
+            
+            val alarmManager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
+            alarmManager.set(
+                AlarmManager.RTC_WAKEUP,
+                System.currentTimeMillis() + 1000,
+                pendingIntent
+            )
+            
+            Log.i(TAG, "✅ Restart agendado via AlarmManager (1 segundo)")
+        } catch (e: Exception) {
+            Log.e(TAG, "❌ Erro ao agendar restart: ${e.message}", e)
         }
-        
-        val pendingIntent = PendingIntent.getService(
-            applicationContext,
-            0,
-            restartIntent,
-            PendingIntent.FLAG_ONE_SHOT or PendingIntent.FLAG_IMMUTABLE
-        )
-        
-        val alarmManager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
-        alarmManager.set(
-            AlarmManager.RTC_WAKEUP,
-            System.currentTimeMillis() + 1000,
-            pendingIntent
-        )
         
         super.onDestroy()
     }
