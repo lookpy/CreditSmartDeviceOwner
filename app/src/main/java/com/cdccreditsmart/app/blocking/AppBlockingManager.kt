@@ -99,71 +99,51 @@ class AppBlockingManager(private val context: Context) {
                 .getInstalledApplications(0)
                 .map { it.packageName }
             
-            var blockedCount = 0
-            var unblockedCount = 0
+            val blockedCount = appsToBlock.size
+            val unblockedCount = 0
             
-            // ESTRATÉGIA HÍBRIDA (MELHOR DE DOIS MUNDOS):
-            // 1. setPackagesSuspended() para BLOQUEIO INSTANTÂNEO
-            //    → Cliente clica no ícone → Dialog padrão do Android aparece IMEDIATAMENTE
-            //    → Ícones permanecem VISÍVEIS (incentivo visual)
+            // ═══════════════════════════════════════════════════════════════
+            // SOLUÇÃO FINAL: BlockedAppInterceptor APENAS
+            // ═══════════════════════════════════════════════════════════════
             //
-            // 2. BlockedAppInterceptor continua monitorando
-            //    → Detecta tentativas de abertura (mesmo com app suspenso)
-            //    → Mostra BlockedAppExplanationActivity com informações de PIX
-            //    → Cliente vê: Dialog Android PRIMEIRO → Depois tela CDC customizada
+            // FUNCIONAMENTO:
+            // 1. Apps permanecem FUNCIONAIS (não suspensos)
+            // 2. Ícones permanecem VISÍVEIS no launcher
+            // 3. Cliente clica no app bloqueado → App ABRE
+            // 4. BlockedAppInterceptor detecta em 1-2 segundos
+            // 5. Fecha o app + Mostra BlockedAppExplanationActivity CDC
             //
-            // Resultado:
-            // ✅ Bloqueio instantâneo (0s - satisfaz requisito de velocidade)
-            // ✅ Mensagem customizada CDC (satisfaz requisito de informação)
-            // ✅ Funciona automaticamente (sem configuração manual)
+            // CARACTERÍSTICAS:
+            // ✅ Mensagem customizada CDC SEMPRE aparece
+            // ✅ Informações completas de PIX/pagamento
+            // ✅ Funciona AUTOMATICAMENTE (sem configuração)
             // ✅ Ícones visíveis (incentivo visual)
+            // ⚠️ App visível por 1-2 segundos (latência aceitável)
+            //
+            // IMPORTANTE:
+            // - NÃO usar setPackagesSuspended() pois bloqueia detecção
+            // - BlockedAppInterceptor já está ativo no CdcForegroundService
+            // - Polling otimizado: 1-2s (tela ligada), 60s (tela desligada)
+            // - Lista salva via saveBlockedPackages() para o interceptor
+            //
+            // ═══════════════════════════════════════════════════════════════
             
-            Log.i(TAG, "🎯 ESTRATÉGIA HÍBRIDA: setPackagesSuspended + BlockedAppInterceptor")
-            Log.i(TAG, "   1️⃣ Bloqueio instantâneo via setPackagesSuspended()")
-            Log.i(TAG, "   2️⃣ Mensagem customizada via BlockedAppInterceptor")
+            Log.i(TAG, "")
+            Log.i(TAG, "╔════════════════════════════════════════════════════════╗")
+            Log.i(TAG, "║  🎯 BLOQUEIO VIA BlockedAppInterceptor              ║")
+            Log.i(TAG, "╠════════════════════════════════════════════════════════╣")
+            Log.i(TAG, "║  Apps marcados: ${appsToBlock.size.toString().padStart(4)}                               ║")
+            Log.i(TAG, "║  Método: Interceptação em foreground                ║")
+            Log.i(TAG, "║  Latência: 1-2 segundos                              ║")
+            Log.i(TAG, "║  Ícones: VISÍVEIS (incentivo visual)                 ║")
+            Log.i(TAG, "║  Mensagem: CDC customizada com PIX                   ║")
+            Log.i(TAG, "╚════════════════════════════════════════════════════════╝")
+            Log.i(TAG, "")
             
-            try {
-                val packagesToBlock = appsToBlock.toTypedArray()
-                
-                // Bloquear apps com setPackagesSuspended
-                val failedToBlock = dpm.setPackagesSuspended(
-                    adminComponent,
-                    packagesToBlock,
-                    true
-                )
-                
-                blockedCount = packagesToBlock.size - (failedToBlock?.size ?: 0)
-                
-                if (failedToBlock == null) {
-                    Log.i(TAG, "✅ Todos os ${packagesToBlock.size} apps bloqueados instantaneamente")
-                } else {
-                    Log.i(TAG, "✅ ${blockedCount} apps bloqueados")
-                    failedToBlock.forEach { pkg ->
-                        Log.w(TAG, "  ⚠️ Falhou ao bloquear: $pkg")
-                    }
-                }
-                
-                // Desbloquear apps que não estão na lista
-                val appsToUnblock = allInstalledApps.filter { it !in appsToBlock }
-                val packagesToUnblock = appsToUnblock.toTypedArray()
-                val failedToUnblock = dpm.setPackagesSuspended(
-                    adminComponent,
-                    packagesToUnblock,
-                    false
-                )
-                
-                unblockedCount = packagesToUnblock.size - (failedToUnblock?.size ?: 0)
-                
-                Log.i(TAG, "✅ ${unblockedCount} apps desbloqueados")
-                
-            } catch (e: Exception) {
-                Log.e(TAG, "❌ Erro ao aplicar bloqueio híbrido: ${e.message}")
-            }
+            Log.d(TAG, "📋 Apps bloqueados: ${appsToBlock.take(5).joinToString(", ")}...")
             
-            // A lista de apps bloqueados também foi salva para o BlockedAppInterceptor
-            // Quando cliente clicar no app:
-            // → Dialog Android aparece (setPackagesSuspended)
-            // → BlockedAppInterceptor detecta e mostra tela CDC (1-2s depois)
+            // NÃO usar setPackagesSuspended - apps permanecem funcionais
+            // BlockedAppInterceptor vai detectar e mostrar mensagem
             
             saveBlockingState(parameters.targetLevel, parameters.daysOverdue, parameters.reason)
             
@@ -211,40 +191,18 @@ class AppBlockingManager(private val context: Context) {
         }
         
         try {
-            val installedApps = context.packageManager.getInstalledApplications(0)
-            var unblockedCount = 0
+            // DESBLOQUEIO TOTAL: Limpa lista de apps bloqueados
+            // Como não usamos setPackagesSuspended, apenas limpar a lista é suficiente
+            Log.i(TAG, "🎯 Limpando lista de apps bloqueados...")
             
-            // DESBLOQUEIO TOTAL: Remove suspensão de TODOS os apps
-            Log.i(TAG, "🎯 Desbloqueando TODOS os apps (setPackagesSuspended)...")
+            val previouslyBlockedCount = getBlockedPackages().size
             
-            try {
-                val allPackages = installedApps.map { it.packageName }.toTypedArray()
-                
-                Log.d(TAG, "📊 Total de apps instalados: ${allPackages.size}")
-                
-                val failedPackages = dpm.setPackagesSuspended(
-                    adminComponent,
-                    allPackages,
-                    false  // suspended = false → DESBLOQUEIA
-                )
-                
-                if (failedPackages == null) {
-                    unblockedCount = allPackages.size
-                    Log.i(TAG, "✅ TODOS os ${allPackages.size} apps desbloqueados!")
-                } else {
-                    unblockedCount = allPackages.size - failedPackages.size
-                    Log.i(TAG, "✅ ${unblockedCount} apps desbloqueados")
-                    failedPackages.forEach { pkg ->
-                        Log.w(TAG, "  ⚠️ Falhou ao desbloquear: $pkg")
-                    }
-                }
-                
-            } catch (e: Exception) {
-                Log.e(TAG, "❌ Erro ao desbloquear apps: ${e.message}")
-            }
+            // clearBlockingState() já foi chamado acima - limpa tudo
             
-            Log.i(TAG, "✅ Desbloqueio completo - $unblockedCount apps")
-            Log.i(TAG, "✅ BlockedAppInterceptor também não vai mais interceptar")
+            val unblockedCount = previouslyBlockedCount
+            
+            Log.i(TAG, "✅ Lista de bloqueio limpa - $unblockedCount apps desbloqueados")
+            Log.i(TAG, "✅ BlockedAppInterceptor não vai mais interceptar nenhum app")
             
             Log.i(TAG, "")
             Log.i(TAG, "╔════════════════════════════════════════════════════╗")
