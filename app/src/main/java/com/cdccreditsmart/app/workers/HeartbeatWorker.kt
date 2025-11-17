@@ -25,6 +25,9 @@ class HeartbeatWorker(
         private const val TAG = "HeartbeatWorker"
         const val WORK_NAME = "cdc_heartbeat_work"
         
+        // PROTEÇÃO: Máximo de correções consecutivas antes de parar
+        private const val MAX_COMPLIANCE_CORRECTIONS = 3
+        
         fun schedule(context: Context) {
             val constraints = Constraints.Builder()
                 .setRequiredNetworkType(NetworkType.CONNECTED)
@@ -281,14 +284,6 @@ class HeartbeatWorker(
     private fun clearComplianceCorrectionCount() {
         val prefs = context.getSharedPreferences("heartbeat_state", Context.MODE_PRIVATE)
         prefs.edit().remove("compliance_correction_count").apply()
-    }
-    
-    companion object {
-        private const val TAG = "HeartbeatWorker"
-        const val WORK_NAME = "cdc_heartbeat_work"
-        
-        // PROTEÇÃO: Máximo de correções consecutivas antes de parar
-        private const val MAX_COMPLIANCE_CORRECTIONS = 3
     }
     
     /**

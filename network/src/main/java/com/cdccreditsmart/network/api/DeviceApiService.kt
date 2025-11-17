@@ -654,18 +654,24 @@ data class PdvSessionInfo(
 )
 
 // CDC Credit Smart specific DTOs according to documentation
+// NOTE: CdcHeartbeatRequest and CdcHeartbeatResponse are now defined in DeviceDTOs.kt
+// The definitions below are kept for backward compatibility but are DEPRECATED
 
-// Heartbeat DTOs
+// DEPRECATED: Use CdcHeartbeatRequest from DeviceDTOs.kt instead
+// Heartbeat DTOs (Legacy - DO NOT USE)
 //@JsonClass(generateAdapter = true) // Temporarily disabled to fix build
-data class CdcHeartbeatRequest(
+@Deprecated("Use CdcHeartbeatRequest from DeviceDTOs.kt instead", ReplaceWith("CdcHeartbeatRequest", "com.cdccreditsmart.network.dto.cdc.CdcHeartbeatRequest"))
+data class CdcHeartbeatRequestLegacy(
     val timestamp: Long,
     val batteryLevel: Int? = null,
     val locationData: CdcLocationData? = null,
     val systemHealth: CdcSystemHealth? = null
 )
 
+// DEPRECATED: Use CdcHeartbeatResponse from DeviceDTOs.kt instead
 //@JsonClass(generateAdapter = true) // Temporarily disabled to fix build
-data class CdcHeartbeatResponse(
+@Deprecated("Use CdcHeartbeatResponse from DeviceDTOs.kt instead", ReplaceWith("CdcHeartbeatResponse", "com.cdccreditsmart.network.dto.cdc.CdcHeartbeatResponse"))
+data class CdcHeartbeatResponseLegacy(
     val success: Boolean,
     val serverTimestamp: Long,
     val nextHeartbeatIn: Long? = null,
