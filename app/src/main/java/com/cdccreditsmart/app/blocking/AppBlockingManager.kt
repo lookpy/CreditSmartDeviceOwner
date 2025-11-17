@@ -555,6 +555,97 @@ class AppBlockingManager(private val context: Context) {
     fun getCurrentlyBlockedPackages(): List<String> {
         return getBlockedPackages()
     }
+    
+    // ═══════════════════════════════════════════════════════════════════════════
+    // 🆕 MÉTODOS PARA SISTEMA DE VERIFICAÇÃO DE CONFORMIDADE (HEARTBEAT)
+    // ═══════════════════════════════════════════════════════════════════════════
+    
+    /**
+     * Obtém o nível atual de bloqueio progressivo (0-6)
+     * Usado pelo HeartbeatWorker para reportar ao backend
+     */
+    fun getCurrentBlockLevel(): Int {
+        return getCurrentBlockingLevel()
+    }
+    
+    /**
+     * Conta quantos apps estão bloqueados atualmente
+     * Usado pelo HeartbeatWorker para reportar ao backend
+     */
+    fun getBlockedAppsCount(): Int {
+        return getBlockedPackages().size
+    }
+    
+    /**
+     * Verifica se a tela de bloqueio (Knox Lockscreen) está ativa
+     * Usado pelo HeartbeatWorker para reportar ao backend
+     */
+    fun isLockScreenActive(): Boolean {
+        // Lockscreen é ativada em níveis altos (4+)
+        val currentLevel = getCurrentBlockingLevel()
+        return currentLevel >= 4
+    }
+    
+    /**
+     * Verifica se o bloqueio progressivo está ativo
+     * Usado pelo HeartbeatWorker para reportar ao backend
+     */
+    fun isProgressiveBlockActive(): Boolean {
+        val currentLevel = getCurrentBlockingLevel()
+        return currentLevel > 0
+    }
+    
+    /**
+     * Retorna categorias bloqueadas para o heartbeat
+     * Usado pelo HeartbeatWorker para reportar ao backend
+     */
+    fun getBlockedCategoriesForHeartbeat(): List<String> {
+        return getBlockedCategories()
+    }
+    
+    /**
+     * Aplica bloqueio corrigido quando backend detecta não-conformidade
+     * IMPORTANTE: Forçar aplicação mesmo se nível for o mesmo
+     */
+    fun forceComplianceCorrection(expectedLevel: Int) {
+        Log.w(TAG, "⚠️ NÃO-CONFORMIDADE DETECTADA pelo backend!")
+        Log.w(TAG, "   Nível atual: ${getCurrentBlockingLevel()}")
+        Log.w(TAG, "   Nível esperado: $expectedLevel")
+        Log.i(TAG, "🔧 Corrigindo bloqueio para nível $expectedLevel...")
+        
+        if (expectedLevel == 0) {
+            // Desbloqueio total
+            unblockAllApps()
+        } else {
+            // Aplicar bloqueio com categorias padrão do nível
+            val blockParams = CommandParameters.BlockParameters(
+                targetLevel = expectedLevel,
+                daysOverdue = 0, // Backend já calculou
+                categories = getDefaultCategoriesForLevel(expectedLevel),
+                exceptions = emptyList(),
+                reason = "Correção automática de conformidade"
+            )
+            applyProgressiveBlock(blockParams)
+        }
+        
+        Log.i(TAG, "✅ Conformidade corrigida - Nível $expectedLevel aplicado")
+    }
+    
+    /**
+     * Retorna categorias padrão para um nível de bloqueio
+     * Usado para correção de conformidade
+     */
+    private fun getDefaultCategoriesForLevel(level: Int): List<String> {
+        return when (level) {
+            1 -> listOf("SOCIAL_MEDIA")
+            2 -> listOf("SOCIAL_MEDIA", "GAMING")
+            3 -> listOf("SOCIAL_MEDIA", "GAMING", "ENTERTAINMENT")
+            4 -> listOf("SOCIAL_MEDIA", "GAMING", "ENTERTAINMENT", "SHOPPING")
+            5 -> listOf("SOCIAL_MEDIA", "GAMING", "ENTERTAINMENT", "SHOPPING", "PRODUCTIVITY")
+            6 -> listOf("SOCIAL_MEDIA", "GAMING", "ENTERTAINMENT", "SHOPPING", "PRODUCTIVITY", "BROWSERS", "CAMERAS")
+            else -> emptyList()
+        }
+    }
 }
 
 data class BlockingResult(

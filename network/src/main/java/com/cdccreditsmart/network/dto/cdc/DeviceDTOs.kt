@@ -14,7 +14,16 @@ data class CdcHeartbeatRequest(
     val batteryLevel: Int? = null,
     val location: LocationInfo? = null,
     val deviceHealth: DeviceHealthInfo? = null,
-    val appMetrics: AppMetricsInfo? = null
+    val appMetrics: AppMetricsInfo? = null,
+    
+    // 🆕 SISTEMA DE VERIFICAÇÃO DE CONFORMIDADE
+    // Campos adicionados para o backend verificar se o dispositivo está conforme
+    val currentBlockLevel: Int? = null,           // Nível atual de bloqueio (0-6)
+    val blockedAppsCount: Int? = null,            // Quantidade de apps bloqueados
+    val lockScreenActive: Boolean? = null,        // Se a tela de bloqueio está ativa
+    val progressiveBlockActive: Boolean? = null,  // Se o bloqueio progressivo está ativo
+    val blockedCategories: List<String>? = null,  // Categorias bloqueadas (ex: ["social", "games"])
+    val isManualBlock: Boolean? = null            // Se há bloqueio manual ativo
 )
 
 //@JsonClass(generateAdapter = true) // Temporarily disabled to fix build
@@ -25,7 +34,13 @@ data class CdcHeartbeatResponse(
     val nextHeartbeatInterval: Long? = null,
     val commands: List<DeviceCommand>? = null,
     val policies: List<SecurityPolicy>? = null,
-    val configUpdates: Map<String, Any>? = null
+    val configUpdates: Map<String, Any>? = null,
+    
+    // 🆕 SISTEMA DE VERIFICAÇÃO DE CONFORMIDADE
+    // Backend retorna se o dispositivo está conforme com o bloqueio esperado
+    val complianceStatus: String? = null,        // "OK" | "NON_COMPLIANT" | "UNKNOWN"
+    val expectedBlockLevel: Int? = null,         // Nível de bloqueio que o backend espera
+    val correctionRequired: Boolean? = null      // Se o APK precisa corrigir o bloqueio
 )
 
 //@JsonClass(generateAdapter = true) // Temporarily disabled to fix build

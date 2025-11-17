@@ -1,0 +1,373 @@
+# Atualização do APK - Sistema de Verificação de Conformidade
+
+## ⚠️ IMPORTANTE: APK Precisa Ser Atualizado
+
+O backend agora possui um sistema de verificação de conformidade que garante que dispositivos não escapem do bloqueio progressivo. Para funcionar corretamente, o APK precisa reportar seu estado atual de bloqueio.
+
+---
+
+## 🔧 O Que Precisa Ser Implementado no APK
+
+### 1. Expandir Payload do Heartbeat
+
+**Endpoint:** `POST /api/apk/device/:serialNumber/heartbeat`
+
+**ANTES (payload antigo - ainda funciona mas não verifica conformidade):**
+```json
+{
+  "batteryLevel": 85,
+  "networkType": "WiFi",
+  "appVersion": "1.2.3"
+}
+```
+
+**DEPOIS (payload novo - RECOMENDADO):**
+```json
+{
+  "batteryLevel": 85,
+  "networkType": "WiFi",
+  "appVersion": "1.2.3",
+  
+  // 🆕 NOVOS CAMPOS DE BLOQUEIO
+  "currentBlockLevel": 5,              // Nível atual de bloqueio (0-6)
+  "blockedAppsCount": 12,              // Quantidade de apps bloqueados
+  "lockScreenActive": true,            // Se a tela de bloqueio está ativa
+  "progressiveBlockActive": true,      // Se o bloqueio progressivo está ativo
+  "blockedCategories": ["social", "games"]  // Categorias bloqueadas (opcional)
+}
+```
+
+### 2. Processar Resposta do Heartbeat
+
+**Resposta do Backend:**
+```json
+{
+  "success": true,
+  "complianceStatus": "OK" | "NON_COMPLIANT" | "UNKNOWN",
+  "expectedBlockLevel": 5,
+  "message": "Device compliant"
+}
+```
+
+**Como Processar:**
+
+```kotlin
+// Enviar heartbeat expandido
+val heartbeat = JSONObject().apply {
+    put("batteryLevel", getBatteryLevel())
+    put("networkType", getNetworkType())
+    put("appVersion", BuildConfig.VERSION_NAME)
+    
+    // 🆕 Adicionar dados de bloqueio
+    put("currentBlockLevel", getCurrentBlockLevel())
+    put("blockedAppsCount", getBlockedAppsCount())
+    put("lockScreenActive", isLockScreenActive())
+    put("progressiveBlockActive", isProgressiveBlockActive())
+}
+
+val response = sendHeartbeat(serialNumber, heartbeat)
+
+// Processar resposta
+when (response.getString("complianceStatus")) {
+    "OK" -> {
+        // ✅ Dispositivo está conforme - tudo ok
+        Log.d(TAG, "Dispositivo conforme com nível ${response.getInt("expectedBlockLevel")}")
+    }
+    
+    "NON_COMPLIANT" -> {
+        // ❌ Dispositivo NÃO está conforme
+        // Backend detectou que o nível reportado não corresponde ao esperado
+        val expectedLevel = response.getInt("expectedBlockLevel")
+        
+        Log.w(TAG, "⚠️ NÃO CONFORME! Esperado: $expectedLevel, Atual: ${getCurrentBlockLevel()}")
+        
+        // AÇÃO RECOMENDADA: Forçar aplicação do nível correto
+        applyProgressiveBlock(expectedLevel)
+    }
+    
+    "UNKNOWN" -> {
+        // ℹ️ Backend não conseguiu verificar (sem dados de referência)
+        // Continuar operação normal
+    }
+}
+```
+
+---
+
+## 📋 Implementação Passo a Passo
+
+### Passo 1: Adicionar Métodos para Obter Estado de Bloqueio
+
+```kotlin
+class DeviceBlockManager {
+    
+    /**
+     * Obtém o nível atual de bloqueio progressivo (0-6)
+     */
+    fun getCurrentBlockLevel(): Int {
+        // Retornar o nível atual salvo em SharedPreferences
+        return sharedPrefs.getInt("current_block_level", 0)
+    }
+    
+    /**
+     * Conta quantos apps estão bloqueados atualmente
+     */
+    fun getBlockedAppsCount(): Int {
+        val blockedApps = sharedPrefs.getStringSet("blocked_apps", emptySet())
+        return blockedApps?.size ?: 0
+    }
+    
+    /**
+     * Verifica se a tela de bloqueio está ativa
+     */
+    fun isLockScreenActive(): Boolean {
+        return sharedPrefs.getBoolean("lock_screen_active", false)
+    }
+    
+    /**
+     * Verifica se o bloqueio progressivo está ativo
+     */
+    fun isProgressiveBlockActive(): Boolean {
+        val currentLevel = getCurrentBlockLevel()
+        return currentLevel > 0
+    }
+    
+    /**
+     * Retorna categorias bloqueadas (opcional)
+     */
+    fun getBlockedCategories(): List<String> {
+        // Ex: ["social", "games", "entertainment"]
+        return sharedPrefs.getStringSet("blocked_categories", emptySet())?.toList() ?: emptyList()
+    }
+}
+```
+
+### Passo 2: Atualizar Método de Heartbeat
+
+```kotlin
+class HeartbeatService : Service() {
+    
+    private val blockManager = DeviceBlockManager(this)
+    
+    private fun sendHeartbeat() {
+        try {
+            val payload = JSONObject().apply {
+                // Dados existentes
+                put("batteryLevel", getBatteryLevel())
+                put("networkType", getNetworkType())
+                put("appVersion", BuildConfig.VERSION_NAME)
+                
+                // 🆕 Dados de bloqueio
+                put("currentBlockLevel", blockManager.getCurrentBlockLevel())
+                put("blockedAppsCount", blockManager.getBlockedAppsCount())
+                put("lockScreenActive", blockManager.isLockScreenActive())
+                put("progressiveBlockActive", blockManager.isProgressiveBlockActive())
+                
+                // Opcional
+                val categories = blockManager.getBlockedCategories()
+                if (categories.isNotEmpty()) {
+                    put("blockedCategories", JSONArray(categories))
+                }
+            }
+            
+            // Enviar para backend
+            val response = apiClient.post(
+                url = "/api/apk/device/$serialNumber/heartbeat",
+                body = payload
+            )
+            
+            // Processar resposta
+            handleComplianceResponse(response)
+            
+        } catch (e: Exception) {
+            Log.e(TAG, "Erro ao enviar heartbeat", e)
+        }
+    }
+    
+    private fun handleComplianceResponse(response: JSONObject) {
+        val complianceStatus = response.getString("complianceStatus")
+        val expectedLevel = response.optInt("expectedBlockLevel", 0)
+        
+        when (complianceStatus) {
+            "NON_COMPLIANT" -> {
+                Log.w(TAG, "⚠️ Dispositivo não conforme! Corrigindo bloqueio...")
+                
+                // Forçar aplicação do nível correto
+                blockManager.applyProgressiveBlock(expectedLevel)
+                
+                // Enviar outro heartbeat após correção para confirmar
+                Handler(Looper.getMainLooper()).postDelayed({
+                    sendHeartbeat()
+                }, 5000) // 5 segundos depois
+            }
+            
+            "OK" -> {
+                Log.d(TAG, "✅ Dispositivo conforme - Nível $expectedLevel")
+            }
+        }
+    }
+}
+```
+
+### Passo 3: Garantir Persistência do Estado
+
+```kotlin
+class DeviceBlockManager {
+    
+    /**
+     * Aplicar bloqueio progressivo e SALVAR o nível
+     */
+    fun applyProgressiveBlock(level: Int) {
+        Log.d(TAG, "Aplicando bloqueio progressivo - Nível $level")
+        
+        // 1. Salvar nível atual
+        sharedPrefs.edit()
+            .putInt("current_block_level", level)
+            .apply()
+        
+        // 2. Aplicar bloqueios conforme o nível
+        when (level) {
+            0 -> {
+                removeAllBlocks()
+                sharedPrefs.edit()
+                    .putBoolean("lock_screen_active", false)
+                    .putBoolean("progressive_block_active", false)
+                    .apply()
+            }
+            1 -> {
+                blockCamera()
+                updateBlockedApps(listOf("camera"))
+            }
+            2 -> {
+                blockCamera()
+                blockWiFi()
+                updateBlockedApps(listOf("camera", "wifi"))
+            }
+            3 -> {
+                blockCamera()
+                blockWiFi()
+                blockSocialMediaApps()
+                updateBlockedApps(getSocialMediaPackages())
+            }
+            4 -> {
+                blockCamera()
+                blockWiFi()
+                blockSocialMediaApps()
+                activateLockScreen()
+                sharedPrefs.edit()
+                    .putBoolean("lock_screen_active", true)
+                    .apply()
+            }
+            5, 6 -> {
+                applyMaximumBlock(level)
+                sharedPrefs.edit()
+                    .putBoolean("lock_screen_active", true)
+                    .putBoolean("progressive_block_active", true)
+                    .apply()
+            }
+        }
+        
+        Log.d(TAG, "✅ Bloqueio nível $level aplicado e salvo")
+    }
+    
+    private fun updateBlockedApps(packages: List<String>) {
+        sharedPrefs.edit()
+            .putStringSet("blocked_apps", packages.toSet())
+            .putInt("blocked_apps_count", packages.size)
+            .apply()
+    }
+}
+```
+
+---
+
+## ✅ Checklist de Implementação
+
+- [ ] **Adicionar métodos para obter estado de bloqueio**
+  - `getCurrentBlockLevel()`
+  - `getBlockedAppsCount()`
+  - `isLockScreenActive()`
+  - `isProgressiveBlockActive()`
+
+- [ ] **Expandir payload do heartbeat**
+  - Incluir `currentBlockLevel`
+  - Incluir `blockedAppsCount`
+  - Incluir `lockScreenActive`
+  - Incluir `progressiveBlockActive`
+
+- [ ] **Processar resposta do heartbeat**
+  - Verificar `complianceStatus`
+  - Corrigir bloqueio quando `NON_COMPLIANT`
+  - Reenviar heartbeat após correção
+
+- [ ] **Garantir persistência**
+  - Salvar nível atual em `SharedPreferences`
+  - Atualizar contador de apps bloqueados
+  - Atualizar flags de estado
+
+- [ ] **Testar conformidade**
+  - Aplicar bloqueio e verificar heartbeat
+  - Simular não conformidade (alterar nível manualmente)
+  - Verificar se backend detecta e corrige
+
+---
+
+## 🧪 Como Testar
+
+### Teste 1: Conformidade Normal
+```
+1. Backend envia comando: Nível 5
+2. APK aplica bloqueio nível 5
+3. APK envia heartbeat com currentBlockLevel: 5
+4. Backend responde: complianceStatus: "OK"
+✅ Teste passou
+```
+
+### Teste 2: Não Conformidade (Detecção de Bypass)
+```
+1. Backend envia comando: Nível 5
+2. APK aplica bloqueio nível 5
+3. Usuário tenta burlar e remove bloqueio (nível volta para 0)
+4. APK envia heartbeat com currentBlockLevel: 0
+5. Backend responde: complianceStatus: "NON_COMPLIANT", expectedBlockLevel: 5
+6. APK detecta não conformidade e corrige, aplicando nível 5 novamente
+7. APK envia novo heartbeat com currentBlockLevel: 5
+8. Backend responde: complianceStatus: "OK"
+✅ Dispositivo não conseguiu escapar do bloqueio!
+```
+
+### Teste 3: APK Antigo (Compatibilidade)
+```
+1. APK antigo envia heartbeat SEM currentBlockLevel
+2. Backend responde: complianceStatus: "UNKNOWN"
+3. APK continua funcionando normalmente
+✅ Compatibilidade mantida
+```
+
+---
+
+## 📊 Benefícios
+
+✅ **Segurança Total**: Dispositivos não podem escapar do bloqueio  
+✅ **Detecção Automática**: Backend detecta tentativas de bypass  
+✅ **Correção Automática**: APK corrige bloqueio quando detectado  
+✅ **Audit Trail**: Todas as não conformidades são registradas  
+✅ **Compatível**: APKs antigos continuam funcionando  
+
+---
+
+## 🚨 Importante
+
+- **Não é obrigatório atualizar imediatamente** - APKs antigos continuam funcionando
+- **Recomendado atualizar** para obter verificação de conformidade completa
+- **Backend já está preparado** - só esperando o APK reportar os dados
+- **Sem breaking changes** - mudança é apenas adicional, não quebra código existente
+
+---
+
+## 💬 Dúvidas?
+
+Se tiver qualquer dúvida sobre a implementação, consulte:
+- `SISTEMA_VERIFICACAO_CONFORMIDADE_IMPLEMENTADO.md` - Documentação completa do backend
+- Endpoint de heartbeat: `/api/apk/device/:serialNumber/heartbeat`
+- Logs do backend mostram exatamente o que está sendo recebido
