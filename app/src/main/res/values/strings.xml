@@ -70,4 +70,7 @@
     <string name="nav_clients">Clientes</string>
     <string name="nav_contracts">Contratos</string>
     <string name="nav_reports">Relatórios</string>
+    
+    <!-- Accessibility Service -->
+    <string name="accessibility_service_description">Detecta quando você tenta abrir aplicativos bloqueados devido a parcelas em atraso e mostra informações de pagamento. Necessário para o funcionamento correto do sistema de bloqueio progressivo.</string>
 </resources>

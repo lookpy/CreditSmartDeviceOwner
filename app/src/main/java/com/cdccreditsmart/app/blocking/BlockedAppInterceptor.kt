@@ -14,7 +14,7 @@ class BlockedAppInterceptor(private val context: Context) {
     
     companion object {
         private const val TAG = "BlockedAppInterceptor"
-        private const val CHECK_INTERVAL = 5000L // 5 segundos (reduzido de 1s para economizar CPU)
+        private const val CHECK_INTERVAL = 2000L // 2 segundos (CRÍTICO: mensagem deve aparecer rapidamente)
         private const val MEMORY_CLEANUP_THRESHOLD = 50 // Limpar memória a cada 50 apps diferentes
         private const val MEMORY_CLEANUP_AGE_MS = 300000L // 5 minutos
     }
@@ -25,7 +25,7 @@ class BlockedAppInterceptor(private val context: Context) {
     private val lastShownTime = ConcurrentHashMap<String, Long>()
     private val cooldownMs = 5000L // 5 segundos entre mostrar explicações para o mesmo app
     
-    private var currentCheckInterval = 30000L // Inicia em 30s
+    private var currentCheckInterval = 2000L // Inicia em 2s (CRÍTICO: resposta rápida)
     private var isScreenOn = true
     private var blockedAppDetectedRecently = false
     
@@ -118,8 +118,8 @@ class BlockedAppInterceptor(private val context: Context) {
     private fun updateCheckInterval() {
         currentCheckInterval = when {
             !isScreenOn -> 60000L // 60s quando tela desligada
-            blockedAppDetectedRecently -> 5000L // 5s quando detectou bloqueio recente
-            else -> 30000L // 30s padrão quando tela ligada
+            blockedAppDetectedRecently -> 1000L // 1s quando detectou bloqueio recente (AGRESSIVO)
+            else -> 2000L // 2s padrão quando tela ligada (CRÍTICO: mensagem rápida)
         }
     }
     
