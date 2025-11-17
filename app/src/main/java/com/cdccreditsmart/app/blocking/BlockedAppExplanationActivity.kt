@@ -53,6 +53,10 @@ class BlockedAppExplanationActivity : ComponentActivity() {
             }
         }
     }
+    
+    override fun onBackPressed() {
+        finish()
+    }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -92,6 +96,15 @@ fun BlockedAppExplanationScreen(
         topBar = {
             TopAppBar(
                 title = { Text("Credit Smart") },
+                navigationIcon = {
+                    IconButton(onClick = onClose) {
+                        Icon(
+                            imageVector = Icons.Default.Close,
+                            contentDescription = "Fechar",
+                            tint = Color.White
+                        )
+                    }
+                },
                 colors = TopAppBarDefaults.topAppBarColors(
                     containerColor = Color(0xFFFF7A1A),
                     titleContentColor = Color.White
@@ -107,6 +120,42 @@ fun BlockedAppExplanationScreen(
                 .padding(16.dp)
         ) {
             Spacer(modifier = Modifier.height(8.dp))
+            
+            Card(
+                modifier = Modifier.fillMaxWidth(),
+                colors = CardDefaults.cardColors(
+                    containerColor = Color(0xFFE3F2FD)
+                )
+            ) {
+                Row(
+                    modifier = Modifier.padding(12.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Info,
+                        contentDescription = "Info",
+                        tint = Color(0xFF1976D2),
+                        modifier = Modifier.size(24.dp)
+                    )
+                    Spacer(modifier = Modifier.width(8.dp))
+                    Column {
+                        Text(
+                            text = "ℹ️ Você pode fechar este aviso a qualquer momento",
+                            style = MaterialTheme.typography.bodyMedium,
+                            fontWeight = FontWeight.Bold,
+                            color = Color(0xFF1565C0)
+                        )
+                        Spacer(modifier = Modifier.height(4.dp))
+                        Text(
+                            text = "Ligações de emergência e funções essenciais do aparelho continuam disponíveis",
+                            style = MaterialTheme.typography.bodySmall,
+                            color = Color(0xFF0D47A1)
+                        )
+                    }
+                }
+            }
+            
+            Spacer(modifier = Modifier.height(12.dp))
             
             if (appIcon != null) {
                 Row(
@@ -301,14 +350,33 @@ fun BlockedAppExplanationScreen(
             
             Spacer(modifier = Modifier.height(24.dp))
             
-            OutlinedButton(
+            Button(
                 onClick = onClose,
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(56.dp),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = MaterialTheme.colorScheme.secondary
+                )
             ) {
-                Icon(Icons.Default.ArrowBack, "Voltar")
+                Icon(Icons.Default.Close, "Fechar")
                 Spacer(modifier = Modifier.width(8.dp))
-                Text("Fechar")
+                Text(
+                    text = "FECHAR E CONTINUAR USANDO O APARELHO",
+                    style = MaterialTheme.typography.titleSmall,
+                    fontWeight = FontWeight.Bold
+                )
             }
+            
+            Spacer(modifier = Modifier.height(8.dp))
+            
+            Text(
+                text = "Este aviso aparecerá novamente ao abrir outros aplicativos",
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                textAlign = TextAlign.Center,
+                modifier = Modifier.fillMaxWidth()
+            )
             
             Spacer(modifier = Modifier.height(16.dp))
         }
