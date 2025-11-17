@@ -47,12 +47,9 @@ class CDCApplication : Application() {
         
         AutoBlockingWorker.scheduleDailyCheck(applicationContext)
         
-        // NOVO: Agendar overlay automático periódico (não precisa de PACKAGE_USAGE_STATS)
-        Log.i(TAG, "📅 Agendando overlay automático periódico...")
-        com.cdccreditsmart.app.workers.PeriodicOverlayWorker.schedule(
-            applicationContext,
-            intervalMinutes = 10L // A cada 10 minutos
-        )
+        // NOVO: Agendar overlay automático periódico com INTERVALO PROGRESSIVO
+        Log.i(TAG, "📅 Agendando overlay automático com intervalo progressivo...")
+        com.cdccreditsmart.app.workers.PeriodicOverlayWorker.schedule(applicationContext)
     }
     
     private fun grantPermissionsIfDeviceOwner() {
