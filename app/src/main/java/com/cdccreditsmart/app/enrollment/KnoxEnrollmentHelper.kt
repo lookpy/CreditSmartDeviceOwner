@@ -1,9 +1,12 @@
 package com.cdccreditsmart.app.enrollment
 
+import android.Manifest
 import android.content.Context
+import android.content.pm.PackageManager
 import android.os.Build
 import android.telephony.TelephonyManager
 import android.util.Log
+import androidx.core.content.ContextCompat
 import com.cdccreditsmart.app.enrollment.models.KnoxInfo
 
 class KnoxEnrollmentHelper(private val context: Context) {
@@ -132,9 +135,26 @@ class KnoxEnrollmentHelper(private val context: Context) {
     
     fun getSerialNumberForKnox(): String? {
         return try {
+            // Check permissions before accessing serial number
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                // API 26+ requires READ_PHONE_STATE permission
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                    // API 29+ requires READ_PRIVILEGED_PHONE_STATE
+                    if (!hasPrivilegedPhoneStatePermission()) {
+                        Log.w(TAG, "⚠️ READ_PRIVILEGED_PHONE_STATE permission not granted (API ${Build.VERSION.SDK_INT})")
+                        return null
+                    }
+                } else {
+                    // API 26-28 requires READ_PHONE_STATE
+                    if (!hasPhoneStatePermission()) {
+                        Log.w(TAG, "⚠️ READ_PHONE_STATE permission not granted (API ${Build.VERSION.SDK_INT})")
+                        return null
+                    }
+                }
+                
                 Build.getSerial()
             } else {
+                // API < 26: serial number available without permission
                 @Suppress("DEPRECATION")
                 Build.SERIAL
             }
@@ -149,6 +169,21 @@ class KnoxEnrollmentHelper(private val context: Context) {
     
     fun getImeiForKnox(): String? {
         return try {
+            // Check permissions before accessing IMEI
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                // API 29+ requires READ_PRIVILEGED_PHONE_STATE
+                if (!hasPrivilegedPhoneStatePermission()) {
+                    Log.w(TAG, "⚠️ READ_PRIVILEGED_PHONE_STATE permission not granted (API ${Build.VERSION.SDK_INT})")
+                    return null
+                }
+            } else {
+                // API < 29 requires READ_PHONE_STATE
+                if (!hasPhoneStatePermission()) {
+                    Log.w(TAG, "⚠️ READ_PHONE_STATE permission not granted (API ${Build.VERSION.SDK_INT})")
+                    return null
+                }
+            }
+            
             val telephonyManager = context.getSystemService(Context.TELEPHONY_SERVICE) as? TelephonyManager
             if (telephonyManager != null) {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -167,6 +202,38 @@ class KnoxEnrollmentHelper(private val context: Context) {
         } catch (e: Exception) {
             Log.e(TAG, "❌ Erro ao obter IMEI: ${e.message}")
             null
+        }
+    }
+    
+    /**
+     * Check if READ_PHONE_STATE permission is granted
+     * Required for accessing IMEI and Serial Number on API < 29
+     */
+    private fun hasPhoneStatePermission(): Boolean {
+        return ContextCompat.checkSelfPermission(
+            context,
+            Manifest.permission.READ_PHONE_STATE
+        ) == PackageManager.PERMISSION_GRANTED
+    }
+    
+    /**
+     * Check if READ_PRIVILEGED_PHONE_STATE permission is granted
+     * Required for accessing IMEI and Serial Number on API >= 29
+     * 
+     * Note: This is a privileged permission that can only be granted to
+     * system apps or apps signed with the platform key. Regular apps will
+     * not be able to obtain this permission.
+     */
+    private fun hasPrivilegedPhoneStatePermission(): Boolean {
+        return try {
+            ContextCompat.checkSelfPermission(
+                context,
+                "android.permission.READ_PRIVILEGED_PHONE_STATE"
+            ) == PackageManager.PERMISSION_GRANTED
+        } catch (e: Exception) {
+            // Permission might not be available on all devices
+            Log.d(TAG, "⚠️ READ_PRIVILEGED_PHONE_STATE permission check failed: ${e.message}")
+            false
         }
     }
     

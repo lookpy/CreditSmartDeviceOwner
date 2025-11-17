@@ -39,21 +39,85 @@ class ZeroTouchHelper(private val context: Context) {
         ComponentName(context, CDCDeviceAdminReceiver::class.java)
     }
     
+    /**
+     * Check if device is a Zero-Touch enrolled device
+     * 
+     * IMPORTANT LIMITATION: This method does NOT validate enrollment with Google's
+     * Zero-Touch API. It only checks for local indicators of Zero-Touch enrollment.
+     * For production validation, you should verify enrollment status with Google's
+     * Android Management API.
+     * 
+     * This method checks for multiple concrete indicators:
+     * 1. Manufacturer is in supported list
+     * 2. Android version is 7.0+ (API 24+)
+     * 3. App is registered as Device Owner
+     * 4. Provisioning extras exist (android.app.extra.PROVISIONING_*)
+     * 5. DPC package name matches this app
+     * 
+     * @return true only if there are concrete signs of Zero-Touch enrollment
+     */
     fun isZeroTouchDevice(): Boolean {
         val manufacturer = getManufacturer()
-        val isSupported = ZERO_TOUCH_SUPPORTED_MANUFACTURERS.contains(manufacturer)
         
-        Log.d(TAG, "Verificando suporte Zero-Touch:")
+        Log.d(TAG, "========================================")
+        Log.d(TAG, "🔍 VERIFICANDO ZERO-TOUCH ENROLLMENT")
+        Log.d(TAG, "========================================")
         Log.d(TAG, "  • Fabricante: $manufacturer")
         Log.d(TAG, "  • Android version: ${Build.VERSION.RELEASE} (SDK ${Build.VERSION.SDK_INT})")
-        Log.d(TAG, "  • Suporta Zero-Touch: $isSupported")
         
+        // Check 1: Android version requirement
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
-            Log.d(TAG, "  ⚠️ Zero-Touch requer Android 7.0+ (API 24+)")
+            Log.d(TAG, "  ❌ Zero-Touch requer Android 7.0+ (API 24+)")
+            Log.d(TAG, "========================================")
             return false
         }
         
-        return isSupported
+        // Check 2: Manufacturer support
+        val isManufacturerSupported = ZERO_TOUCH_SUPPORTED_MANUFACTURERS.contains(manufacturer)
+        Log.d(TAG, "  • Fabricante suportado: $isManufacturerSupported")
+        
+        if (!isManufacturerSupported) {
+            Log.d(TAG, "  ❌ Fabricante não está na lista de suporte Zero-Touch")
+            Log.d(TAG, "========================================")
+            return false
+        }
+        
+        // Check 3: Device Owner status
+        val isDeviceOwner = try {
+            dpm.isDeviceOwnerApp(context.packageName)
+        } catch (e: Exception) {
+            Log.w(TAG, "  ⚠️ Erro ao verificar Device Owner: ${e.message}")
+            false
+        }
+        Log.d(TAG, "  • App é Device Owner: $isDeviceOwner")
+        
+        // Check 4: Provisioning extras (indicates Zero-Touch provisioning)
+        val hasProvisioningExtras = try {
+            val prefs = context.getSharedPreferences("zero_touch_enrollment", Context.MODE_PRIVATE)
+            prefs.getBoolean("zero_touch_provisioned", false)
+        } catch (e: Exception) {
+            Log.w(TAG, "  ⚠️ Erro ao verificar provisioning extras: ${e.message}")
+            false
+        }
+        Log.d(TAG, "  • Tem provisioning extras: $hasProvisioningExtras")
+        
+        // Check 5: DPC package name matches
+        val dpcPackageMatches = isDeviceOwner && context.packageName.isNotEmpty()
+        Log.d(TAG, "  • DPC package matches: $dpcPackageMatches")
+        
+        // Return true only if we have concrete signs of Zero-Touch enrollment
+        // At minimum, we need Device Owner status
+        val hasConcreteIndicators = isDeviceOwner && (hasProvisioningExtras || dpcPackageMatches)
+        
+        if (hasConcreteIndicators) {
+            Log.d(TAG, "  ✅ SINAIS CONCRETOS DE ZERO-TOUCH DETECTADOS")
+        } else {
+            Log.d(TAG, "  ❌ SEM SINAIS CONCRETOS DE ZERO-TOUCH")
+            Log.d(TAG, "  ⚠️ Fabricante suportado, mas sem evidência de enrollment")
+        }
+        
+        Log.d(TAG, "========================================")
+        return hasConcreteIndicators
     }
     
     fun getZeroTouchEnrollmentInfo(): ZeroTouchInfo {

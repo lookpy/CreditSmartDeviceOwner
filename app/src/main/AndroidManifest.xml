@@ -6,8 +6,12 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     
-    <!-- Read IMEI for device pairing -->
+    <!-- Read IMEI/Serial for device pairing and enrollment (API < 29) -->
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    
+    <!-- Read IMEI/Serial for device pairing and enrollment (API >= 29) -->
+    <uses-permission android:name="android.permission.READ_PRIVILEGED_PHONE_STATE"
+        tools:ignore="ProtectedPermissions" />
 
     <!-- Essential Device Owner permissions -->
     <uses-permission android:name="android.permission.BIND_DEVICE_ADMIN" />

@@ -36,6 +36,34 @@ Para garantir **reinstalação automática** após factory reset, existem **2 so
 
 Ambas as soluções fazem com que o dispositivo **automaticamente se conecte a um servidor de enrollment** após factory reset e **baixe/instale o CDC Credit Smart** como Device Owner.
 
+### ⚠️ Limitações Técnicas Importantes
+
+**Leia com atenção antes de configurar enrollment:**
+
+1. **Permissões Privilegiadas (IMEI/Serial)**:
+   - O app precisa da permissão `READ_PRIVILEGED_PHONE_STATE` para acessar IMEI e Serial Number em Android 10+
+   - Esta permissão **só pode ser concedida a apps de sistema** (assinados com platform key)
+   - **Impacto**: Se o CDC Credit Smart for instalado como app normal (não-sistema), IMEI/Serial não estarão disponíveis
+   - **Workaround**: O app usa Android ID como identificador alternativo
+   - **Recomendação**: Para identificação completa via IMEI em KME, considere parceria com fabricante OEM
+
+2. **Detecção Zero-Touch**:
+   - A detecção Zero-Touch verifica sinais locais (Device Owner status, provisioning extras, fabricante)
+   - **NÃO valida** enrollment real com APIs do Google Zero-Touch (requer backend integration)
+   - **Impacto**: Podem existir falsos positivos/negativos na detecção de enrollment
+   - **Recomendação**: Valide enrollment manualmente após configuração inicial
+
+3. **Configuração Externa Obrigatória**:
+   - **Knox KME**: Requer conta Samsung Knox Portal + upload de seriais de dispositivos
+   - **Zero-Touch**: Requer compra via reseller autorizado Google
+   - **Impacto**: Dispositivos já distribuídos em campo **não podem** ser enrolled retroativamente via Zero-Touch
+   - **Recomendação**: Planejar enrollment ANTES da distribuição de novos dispositivos
+
+4. **Backend Integration**:
+   - O app reporta status de enrollment ao backend CDC via `POST /api/enrollment/report`
+   - **Backend deve implementar** este endpoint para receber dados de enrollment
+   - Ver seção "Backend CDC - Endpoints Necessários" abaixo
+
 ---
 
 ## 📱 Samsung Knox Mobile Enrollment (KME)

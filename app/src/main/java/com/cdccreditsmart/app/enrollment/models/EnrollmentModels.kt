@@ -13,6 +13,8 @@ data class EnrollmentStatus(
     val enrollmentType: EnrollmentType,
     val enrollmentDetails: String,
     val canReEnrollAfterReset: Boolean,
+    val manufacturer: String,
+    val model: String,
     val lastCheckedTimestamp: Long = System.currentTimeMillis()
 )
 

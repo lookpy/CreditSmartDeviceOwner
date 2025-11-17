@@ -4,12 +4,28 @@ import android.content.Context
 import android.os.Build
 import android.provider.Settings
 import android.util.Log
+import androidx.security.crypto.EncryptedSharedPreferences
+import androidx.security.crypto.MasterKey
 import com.cdccreditsmart.app.enrollment.models.DeviceEnrollmentInfo
 import com.cdccreditsmart.app.enrollment.models.EnrollmentStatus
 import com.cdccreditsmart.app.enrollment.models.EnrollmentType
+import com.cdccreditsmart.network.api.EnrollmentApiService
+import com.cdccreditsmart.network.client.NetworkClient
+import com.cdccreditsmart.network.client.OkHttpClientFactory
+import com.cdccreditsmart.network.client.Resource
+import com.cdccreditsmart.network.client.RetrofitFactory
+import com.cdccreditsmart.network.config.CertificatePinningManager
+import com.cdccreditsmart.network.dto.enrollment.EnrollmentReportRequest
+import com.cdccreditsmart.network.error.NetworkErrorMapper
+import com.cdccreditsmart.network.interceptors.CommonHeadersInterceptor
+import com.cdccreditsmart.network.interceptors.ConnectivityDebugInterceptor
+import com.cdccreditsmart.network.interceptors.DeviceSignatureInterceptor
+import com.cdccreditsmart.network.interceptors.IdempotencyKeyInterceptor
+import com.cdccreditsmart.network.interceptors.JwtInterceptor
+import com.cdccreditsmart.network.interceptors.XClientAuthInterceptor
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
-import org.json.JSONObject
 
 class EnrollmentManager(private val context: Context) {
     
@@ -18,6 +34,7 @@ class EnrollmentManager(private val context: Context) {
         private const val PREFS_NAME = "enrollment_manager"
         private const val KEY_LAST_ENROLLMENT_CHECK = "last_enrollment_check"
         private const val KEY_CACHED_ENROLLMENT_TYPE = "cached_enrollment_type"
+        private const val ENCRYPTED_PREFS_NAME = "enrollment_network_prefs"
     }
     
     private val knoxHelper: KnoxEnrollmentHelper by lazy {
@@ -30,6 +47,26 @@ class EnrollmentManager(private val context: Context) {
     
     private val prefs by lazy {
         context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+    }
+    
+    private val encryptedPrefs by lazy {
+        createEncryptedSharedPreferences()
+    }
+    
+    private val networkErrorMapper by lazy {
+        NetworkErrorMapper()
+    }
+    
+    private val networkClient by lazy {
+        NetworkClient(networkErrorMapper)
+    }
+    
+    private val baseUrl: String by lazy {
+        getBaseUrl()
+    }
+    
+    private val enrollmentApiService: EnrollmentApiService by lazy {
+        createEnrollmentApiService()
     }
     
     fun getEnrollmentType(): EnrollmentType {
@@ -240,6 +277,8 @@ class EnrollmentManager(private val context: Context) {
                 enrollmentType = enrollmentType,
                 enrollmentDetails = enrollmentDetails,
                 canReEnrollAfterReset = canReEnroll,
+                manufacturer = Build.MANUFACTURER,
+                model = Build.MODEL,
                 lastCheckedTimestamp = System.currentTimeMillis()
             )
             
@@ -268,6 +307,8 @@ class EnrollmentManager(private val context: Context) {
                 enrollmentType = EnrollmentType.NONE,
                 enrollmentDetails = "Erro ao validar enrollment: ${e.message}",
                 canReEnrollAfterReset = false,
+                manufacturer = Build.MANUFACTURER,
+                model = Build.MODEL,
                 lastCheckedTimestamp = System.currentTimeMillis()
             )
         }
@@ -282,60 +323,223 @@ class EnrollmentManager(private val context: Context) {
             val deviceInfo = getDeviceInfoForEnrollment()
             val enrollmentStatus = validateEnrollmentStatus()
             
-            val reportData = JSONObject().apply {
-                put("device_manufacturer", deviceInfo.deviceManufacturer)
-                put("device_model", deviceInfo.deviceModel)
-                put("device_brand", deviceInfo.deviceBrand)
-                put("serial_number", deviceInfo.serialNumber ?: "N/A")
-                put("android_id", deviceInfo.androidId)
-                put("enrollment_type", deviceInfo.enrollmentType.name)
-                put("is_enrolled", enrollmentStatus.isEnrolled)
-                put("can_re_enroll", enrollmentStatus.canReEnrollAfterReset)
-                put("is_samsung_device", deviceInfo.isSamsungDevice)
-                put("has_knox_support", deviceInfo.hasKnoxSupport)
-                put("has_zero_touch_support", deviceInfo.hasZeroTouchSupport)
-                put("timestamp", System.currentTimeMillis())
-                
-                if (deviceInfo.enrollmentType == EnrollmentType.KNOX_KME) {
-                    val knoxInfo = knoxHelper.getKnoxEnrollmentInfo()
-                    put("knox_version", knoxInfo.knoxVersion ?: "N/A")
-                    put("knox_api_level", knoxInfo.knoxApiLevel ?: 0)
-                    put("knox_enrollment_id", knoxInfo.knoxEnrollmentId ?: "N/A")
-                }
-                
-                if (deviceInfo.enrollmentType == EnrollmentType.ZERO_TOUCH) {
-                    val zeroTouchInfo = zeroTouchHelper.getZeroTouchEnrollmentInfo()
-                    put("dpc_package_name", zeroTouchInfo.dpcPackageName ?: "N/A")
-                }
-                
-                val additionalInfoJson = JSONObject()
-                deviceInfo.additionalInfo.forEach { (key, value) ->
-                    additionalInfoJson.put(key, value)
-                }
-                put("additional_info", additionalInfoJson)
+            // Prepare Knox info if applicable
+            val knoxInfo = if (deviceInfo.enrollmentType == EnrollmentType.KNOX_KME) {
+                knoxHelper.getKnoxEnrollmentInfo()
+            } else null
+            
+            // Prepare Zero-Touch info if applicable
+            val zeroTouchInfo = if (deviceInfo.enrollmentType == EnrollmentType.ZERO_TOUCH) {
+                zeroTouchHelper.getZeroTouchEnrollmentInfo()
+            } else null
+            
+            // Create request DTO
+            val request = EnrollmentReportRequest(
+                deviceManufacturer = deviceInfo.deviceManufacturer,
+                deviceModel = deviceInfo.deviceModel,
+                deviceBrand = deviceInfo.deviceBrand,
+                serialNumber = deviceInfo.serialNumber,
+                androidId = deviceInfo.androidId,
+                enrollmentType = deviceInfo.enrollmentType.name,
+                isEnrolled = enrollmentStatus.isEnrolled,
+                canReEnroll = enrollmentStatus.canReEnrollAfterReset,
+                isSamsungDevice = deviceInfo.isSamsungDevice,
+                hasKnoxSupport = deviceInfo.hasKnoxSupport,
+                hasZeroTouchSupport = deviceInfo.hasZeroTouchSupport,
+                timestamp = System.currentTimeMillis(),
+                knoxVersion = knoxInfo?.knoxVersion,
+                knoxApiLevel = knoxInfo?.knoxApiLevel?.toIntOrNull(),
+                knoxEnrollmentId = knoxInfo?.knoxEnrollmentId,
+                dpcPackageName = zeroTouchInfo?.dpcPackageName,
+                additionalInfo = deviceInfo.additionalInfo
+            )
+            
+            Log.i(TAG, "📦 Enviando dados ao backend:")
+            Log.i(TAG, "  • Enrollment Type: ${request.enrollmentType}")
+            Log.i(TAG, "  • Device: ${request.deviceManufacturer} ${request.deviceModel}")
+            Log.i(TAG, "  • Is Enrolled: ${request.isEnrolled}")
+            Log.i(TAG, "  • Can Re-Enroll: ${request.canReEnroll}")
+            
+            // Send report with retry logic
+            val result = sendEnrollmentReportWithRetry(request, maxRetries = 3)
+            
+            if (result.isSuccess) {
+                val enrollmentId = result.getOrNull()
+                Log.i(TAG, "✅ Enrollment reportado com sucesso!")
+                Log.i(TAG, "   • Enrollment ID: $enrollmentId")
+                Log.i(TAG, "========================================")
+                Result.success("Enrollment reportado com sucesso: $enrollmentId")
+            } else {
+                val error = result.exceptionOrNull()
+                Log.e(TAG, "❌ Falha ao reportar enrollment: ${error?.message}", error)
+                Log.i(TAG, "========================================")
+                Result.failure(error ?: Exception("Unknown error"))
             }
-            
-            Log.i(TAG, "📦 Dados preparados para envio ao backend:")
-            Log.i(TAG, reportData.toString(2))
-            
-            Log.w(TAG, "")
-            Log.w(TAG, "⚠️ BACKEND ENDPOINT NÃO IMPLEMENTADO")
-            Log.w(TAG, "TODO: Implementar POST /api/enrollment/report")
-            Log.w(TAG, "")
-            Log.w(TAG, "Dados que seriam enviados:")
-            Log.w(TAG, "  • Enrollment Type: ${deviceInfo.enrollmentType}")
-            Log.w(TAG, "  • Device: ${deviceInfo.deviceManufacturer} ${deviceInfo.deviceModel}")
-            Log.w(TAG, "  • Can Re-Enroll: ${enrollmentStatus.canReEnrollAfterReset}")
-            Log.w(TAG, "")
-            
-            Log.i(TAG, "========================================")
-            
-            Result.success("Enrollment report preparado (backend endpoint pendente)")
             
         } catch (e: Exception) {
             Log.e(TAG, "❌ Erro ao reportar enrollment: ${e.message}", e)
             Log.i(TAG, "========================================")
             Result.failure(e)
+        }
+    }
+    
+    /**
+     * Send enrollment report with retry logic
+     * Implements exponential backoff with maximum 3 retries
+     */
+    private suspend fun sendEnrollmentReportWithRetry(
+        request: EnrollmentReportRequest,
+        maxRetries: Int = 3
+    ): Result<String> {
+        var lastException: Exception? = null
+        
+        for (attempt in 1..maxRetries) {
+            try {
+                Log.d(TAG, "📡 Tentativa $attempt de $maxRetries...")
+                
+                // Make API call using NetworkClient pattern
+                val resource = networkClient.safeApiCall { 
+                    enrollmentApiService.reportEnrollment(request)
+                }
+                
+                when (resource) {
+                    is Resource.Success -> {
+                        val responseBody = resource.data
+                        
+                        if (responseBody.success) {
+                            Log.d(TAG, "✅ Tentativa $attempt: Sucesso!")
+                            Log.d(TAG, "   • Message: ${responseBody.message}")
+                            Log.d(TAG, "   • Enrollment ID: ${responseBody.enrollmentId}")
+                            
+                            return Result.success(responseBody.enrollmentId ?: "Success")
+                        } else {
+                            val error = "Backend returned success=false: ${responseBody.message}"
+                            Log.w(TAG, "⚠️ Tentativa $attempt: $error")
+                            lastException = Exception(error)
+                        }
+                    }
+                    
+                    is Resource.Error -> {
+                        val error = "API Error: ${resource.exception.message}"
+                        Log.w(TAG, "⚠️ Tentativa $attempt: $error")
+                        lastException = resource.exception
+                    }
+                    
+                    is Resource.Loading -> {
+                        // Not used in suspend function calls
+                        Log.d(TAG, "Loading state received (should not happen)")
+                    }
+                }
+                
+            } catch (e: Exception) {
+                Log.w(TAG, "⚠️ Tentativa $attempt: ${e.message}", e)
+                lastException = e
+            }
+            
+            // Exponential backoff before retry (except on last attempt)
+            if (attempt < maxRetries) {
+                val delayMs = (1000L * (1 shl (attempt - 1))).coerceAtMost(10000L)
+                Log.d(TAG, "⏳ Aguardando ${delayMs}ms antes da próxima tentativa...")
+                delay(delayMs)
+            }
+        }
+        
+        // All retries failed
+        val finalError = lastException ?: Exception("Failed after $maxRetries attempts")
+        Log.e(TAG, "❌ Todas as $maxRetries tentativas falharam", finalError)
+        return Result.failure(finalError)
+    }
+    
+    /**
+     * Creates EncryptedSharedPreferences for secure storage
+     */
+    private fun createEncryptedSharedPreferences(): EncryptedSharedPreferences {
+        return try {
+            val masterKey = MasterKey.Builder(context)
+                .setKeyScheme(MasterKey.KeyScheme.AES256_GCM)
+                .build()
+            
+            EncryptedSharedPreferences.create(
+                context,
+                ENCRYPTED_PREFS_NAME,
+                masterKey,
+                EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
+                EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
+            ) as EncryptedSharedPreferences
+        } catch (e: Exception) {
+            Log.e(TAG, "Error creating EncryptedSharedPreferences: ${e.message}", e)
+            throw e
+        }
+    }
+    
+    /**
+     * Gets base URL from BuildConfig using reflection (standard app pattern)
+     */
+    private fun getBaseUrl(): String {
+        return try {
+            val buildConfigClass = Class.forName("com.cdccreditsmart.app.BuildConfig")
+            val baseUrlField = buildConfigClass.getField("BASE_URL")
+            baseUrlField.get(null) as String
+        } catch (e: Exception) {
+            Log.w(TAG, "Unable to get BASE_URL from BuildConfig, using fallback: ${e.message}")
+            "https://api.cdccreditsmart.com/"
+        }
+    }
+    
+    /**
+     * Creates EnrollmentApiService using existing app networking infrastructure
+     */
+    private fun createEnrollmentApiService(): EnrollmentApiService {
+        try {
+            Log.d(TAG, "Creating networking infrastructure for enrollment API...")
+            
+            // Create interceptors
+            val commonHeadersInterceptor = CommonHeadersInterceptor(context)
+            val connectivityDebugInterceptor = ConnectivityDebugInterceptor()
+            val jwtInterceptor = JwtInterceptor(encryptedPrefs)
+            val xClientAuthInterceptor = XClientAuthInterceptor(encryptedPrefs)
+            val deviceSignatureInterceptor = DeviceSignatureInterceptor(context)
+            val idempotencyKeyInterceptor = IdempotencyKeyInterceptor()
+            val certificatePinningManager = CertificatePinningManager()
+            
+            // Create OkHttpClientFactory with all interceptors
+            val okHttpClientFactory = OkHttpClientFactory(
+                commonHeadersInterceptor,
+                connectivityDebugInterceptor,
+                jwtInterceptor,
+                xClientAuthInterceptor,
+                deviceSignatureInterceptor,
+                idempotencyKeyInterceptor,
+                certificatePinningManager
+            )
+            
+            // Create RetrofitFactory
+            val retrofitFactory = RetrofitFactory(okHttpClientFactory, networkErrorMapper)
+            
+            // Determine if debug mode
+            val isDebugMode = try {
+                val buildConfigClass = Class.forName("com.cdccreditsmart.app.BuildConfig")
+                val debugField = buildConfigClass.getField("DEBUG")
+                debugField.getBoolean(null)
+            } catch (e: Exception) {
+                false
+            }
+            
+            // Create Retrofit instance
+            val retrofit = retrofitFactory.createSecureRetrofit(baseUrl, isDebugMode)
+            
+            // Create API service
+            val apiService = retrofit.create(EnrollmentApiService::class.java)
+            
+            Log.d(TAG, "✅ Enrollment API service created successfully")
+            Log.d(TAG, "   • Base URL: $baseUrl")
+            Log.d(TAG, "   • Debug Mode: $isDebugMode")
+            
+            return apiService
+            
+        } catch (e: Exception) {
+            Log.e(TAG, "Failed to create EnrollmentApiService: ${e.message}", e)
+            throw e
         }
     }
     
