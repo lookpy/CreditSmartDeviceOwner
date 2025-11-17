@@ -35,13 +35,7 @@ class BlockedAppExplanationActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         
-        // IMPORTANTE: Quando vem do SuspendDialogInfo, o Android envia automaticamente
-        // o package name via DevicePolicyManager.EXTRA_PACKAGE_NAME
-        val blockedPackage = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-            intent.getStringExtra("android.app.extra.PACKAGE_NAME")
-        } else {
-            null
-        } ?: intent.getStringExtra("blocked_package") ?: ""
+        val blockedPackage = intent.getStringExtra("blocked_package") ?: ""
         
         val blockingLevel = intent.getIntExtra("blocking_level", 0)
         val daysOverdue = intent.getIntExtra("days_overdue", 0)

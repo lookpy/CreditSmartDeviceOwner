@@ -1,13 +1,13 @@
-# ✅ Correção: Overlay/Dialog Customizado em Apps Bloqueados
+# ⚠️ Nota: Dialog Padrão do Sistema (Simplificado)
 
-## 🐛 **PROBLEMA IDENTIFICADO:**
+## ℹ️ **NOTA TÉCNICA:**
 
-Quando apps eram bloqueados com `setPackagesSuspended()`, o usuário clicava no ícone do app mas:
+O código foi simplificado para usar apenas a versão básica de `setPackagesSuspended()` devido a problemas de compatibilidade com o `SuspendDialogInfo` (que requer API 28+, mas o app suporta API 26+).
 
-❌ Nenhum overlay/dialog aparecia  
-❌ O Android mostrava mensagem genérica "App is not available"  
-❌ O `BlockedAppInterceptor` nunca detectava o clique  
-❌ A tela customizada `BlockedAppExplanationActivity` nunca aparecia  
+**Comportamento atual:**
+- ✅ Apps bloqueados mantêm ícones visíveis
+- ⚠️ Dialog padrão do Android ("App is not available")
+- ⚠️ Sem dialog customizado (limitação técnica)  
 
 ---
 
