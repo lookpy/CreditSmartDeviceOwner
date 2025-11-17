@@ -102,25 +102,25 @@ class AppBlockingManager(private val context: Context) {
             var blockedCount = 0
             var unblockedCount = 0
             
-            // ESTRATÉGIA HÍBRIDA (MELHOR DE DOIS MUNDOS):
-            // 1. setPackagesSuspended() para BLOQUEIO INSTANTÂNEO
-            //    → Cliente clica no ícone → Dialog padrão do Android aparece IMEDIATAMENTE
+            // ESTRATÉGIA: Bloqueio progressivo + Overlay universal
+            // 1. Apps são bloqueados via setPackagesSuspended()
             //    → Ícones permanecem VISÍVEIS (incentivo visual)
+            //    → Apps bloqueados não abrem
             //
-            // 2. BlockedAppInterceptor continua monitorando
-            //    → Detecta tentativas de abertura (mesmo com app suspenso)
-            //    → Mostra BlockedAppExplanationActivity com informações de PIX
-            //    → Cliente vê: Dialog Android PRIMEIRO → Depois tela CDC customizada
+            // 2. BlockedAppInterceptor monitora TODOS os apps
+            //    → Quando cliente abre QUALQUER app (bloqueado ou não)
+            //    → Se há bloqueio ativo (parcelas atrasadas)
+            //    → Mostra overlay com informações de pagamento
             //
             // Resultado:
-            // ✅ Bloqueio instantâneo (0s - satisfaz requisito de velocidade)
-            // ✅ Mensagem customizada CDC (satisfaz requisito de informação)
-            // ✅ Funciona automaticamente (sem configuração manual)
-            // ✅ Ícones visíveis (incentivo visual)
+            // ✅ Apps específicos bloqueados (navegadores, câmeras, etc.)
+            // ✅ Overlay aparece em TODOS os apps quando há atraso
+            // ✅ Cliente sempre vê informações de pagamento
+            // ✅ Funciona automaticamente
             
-            Log.i(TAG, "🎯 ESTRATÉGIA HÍBRIDA: setPackagesSuspended + BlockedAppInterceptor")
-            Log.i(TAG, "   1️⃣ Bloqueio instantâneo via setPackagesSuspended()")
-            Log.i(TAG, "   2️⃣ Mensagem customizada via BlockedAppInterceptor")
+            Log.i(TAG, "🎯 BLOQUEIO PROGRESSIVO + OVERLAY UNIVERSAL")
+            Log.i(TAG, "   1️⃣ Apps bloqueados via setPackagesSuspended()")
+            Log.i(TAG, "   2️⃣ Overlay em TODOS os apps via BlockedAppInterceptor")
             
             try {
                 val packagesToBlock = appsToBlock.toTypedArray()

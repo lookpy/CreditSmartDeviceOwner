@@ -47,16 +47,16 @@ class BlockedAppInterceptor(private val context: Context) {
         monitoringJob = scope.launch {
             while (isActive) {
                 try {
-                    // OTIMIZAÇÃO: Pausar monitoramento quando não há apps bloqueados (economia de CPU)
-                    val blockedPackages = appBlockingManager.getCurrentlyBlockedPackages()
-                    if (blockedPackages.isEmpty()) {
-                        if (BuildConfig.DEBUG) Log.d(TAG, "🔋 OTIMIZAÇÃO: Sem apps bloqueados - pausando monitoramento (60s)")
+                    // OTIMIZAÇÃO: Pausar monitoramento quando não há bloqueio ativo
+                    val blockingInfo = appBlockingManager.getBlockingInfo()
+                    if (blockingInfo.currentLevel == 0) {
+                        if (BuildConfig.DEBUG) Log.d(TAG, "🔋 OTIMIZAÇÃO: Sem bloqueio ativo - pausando monitoramento (60s)")
                         
                         // CORREÇÃO: Resetar estado para restart limpo quando bloqueios voltarem
                         lastEventTimestamp = System.currentTimeMillis()
                         lastForegroundPackage = null
                         
-                        delay(60000L) // Pausa por 60s quando não há apps bloqueados
+                        delay(60000L) // Pausa por 60s quando não há bloqueio ativo
                         continue
                     }
                     
@@ -132,29 +132,36 @@ class BlockedAppInterceptor(private val context: Context) {
     private fun checkForegroundApp(): Boolean {
         val foregroundPackage = getForegroundPackageName() ?: return false
         
+        // Ignora o próprio app CDC
         if (foregroundPackage == context.packageName) {
             return false
         }
         
-        if (appBlockingManager.isAppBlocked(foregroundPackage)) {
+        // NOVO COMPORTAMENTO: Mostra overlay em QUALQUER app quando há bloqueio ativo
+        val blockingInfo = appBlockingManager.getBlockingInfo()
+        
+        // Se há algum nível de bloqueio ativo (parcelas atrasadas)
+        if (blockingInfo.currentLevel > 0) {
             val lastShown = lastShownTime[foregroundPackage] ?: 0L
             val now = System.currentTimeMillis()
             
+            // Cooldown: não mostrar novamente para o mesmo app em 5 segundos
             if (now - lastShown < cooldownMs) {
                 return true
             }
             
-            if (BuildConfig.DEBUG) {
-                Log.i(TAG, "🚫 App bloqueado detectado em foreground: $foregroundPackage")
-                Log.i(TAG, "📱 Mostrando explicação ao usuário...")
-            }
+            Log.i(TAG, "⚠️ Cliente com ${blockingInfo.daysOverdue} dia(s) de atraso")
+            Log.i(TAG, "📱 App detectado em foreground: $foregroundPackage")
+            Log.i(TAG, "🔔 Mostrando overlay com informações de parcelas atrasadas...")
             
             lastShownTime[foregroundPackage] = now
             
             if (BuildConfig.DEBUG) {
-                Log.i(TAG, "🚀 Iniciando BlockedAppExplanationActivity...")
+                Log.i(TAG, "🚀 Iniciando BlockedAppExplanationActivity (overlay)...")
                 Log.i(TAG, "   Package: $foregroundPackage")
-                Log.i(TAG, "   Blocking Level: ${appBlockingManager.getBlockingInfo().currentLevel}")
+                Log.i(TAG, "   Blocking Level: ${blockingInfo.currentLevel}")
+                Log.i(TAG, "   Days Overdue: ${blockingInfo.daysOverdue}")
+                Log.i(TAG, "   Blocked Apps Count: ${blockingInfo.blockedAppsCount}")
             }
             
             showBlockedAppExplanation(foregroundPackage)
