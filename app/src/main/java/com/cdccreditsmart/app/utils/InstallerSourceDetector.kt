@@ -4,7 +4,7 @@ import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Build
 import android.util.Log
-import com.cdccreditsmart.app.storage.SecureTokenStorage
+import com.cdccreditsmart.app.security.SecureTokenStorage
 
 /**
  * Detector de Fonte de Instalação
