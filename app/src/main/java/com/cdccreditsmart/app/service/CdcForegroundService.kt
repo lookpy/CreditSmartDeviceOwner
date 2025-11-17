@@ -70,6 +70,10 @@ class CdcForegroundService : Service(), ScreenStateListener {
     private var webSocketManager: WebSocketManager? = null
     private var blockedAppInterceptor: com.cdccreditsmart.app.blocking.BlockedAppInterceptor? = null
     
+    // CORREÇÃO LIFECYCLE: Flag para prevenir duplo cleanup (idempotência)
+    @Volatile
+    private var isShuttingDown = false
+    
     override fun onCreate() {
         super.onCreate()
         Log.d(TAG, "📱 Serviço onCreate()")
@@ -119,22 +123,127 @@ class CdcForegroundService : Service(), ScreenStateListener {
     
     private fun stopForegroundService() {
         Log.i(TAG, "🛑 Parando Foreground Service via ACTION_STOP")
+        performSafeCleanup(shouldStopSelf = true)
+    }
+    
+    /**
+     * CORREÇÃO LIFECYCLE CRÍTICA: Cleanup seguro e idempotente
+     * 
+     * Previne duplo cleanup e garante que stopSelf() sempre executa
+     * usando finally block. Cada componente tem seu próprio try/catch
+     * para confinar falhas sem abortar o shutdown completo.
+     */
+    private fun performSafeCleanup(shouldStopSelf: Boolean) {
+        // Guard contra duplo cleanup
+        if (isShuttingDown) {
+            Log.w(TAG, "⚠️ Cleanup já em andamento - ignorando chamada duplicada")
+            return
+        }
         
-        // Cleanup completo de todos os componentes
+        synchronized(this) {
+            if (isShuttingDown) {
+                Log.w(TAG, "⚠️ Cleanup já em andamento (double-check) - ignorando")
+                return
+            }
+            isShuttingDown = true
+        }
+        
+        Log.i(TAG, "🧹 Iniciando cleanup seguro de todos os componentes...")
+        
         try {
-            HeartbeatWorker.cancel(applicationContext)
-            mdmReceiver?.disconnect()
-            webSocketManager?.disconnect()
-            blockedAppInterceptor?.destroy()
-            releaseWakeLock()
-            serviceScope.cancel()
+            // 1. Remover listener do ScreenStateReceiver
+            try {
+                ScreenStateReceiver.removeListener(this)
+                Log.d(TAG, "✅ ScreenStateReceiver listener removido")
+            } catch (e: Exception) {
+                Log.e(TAG, "❌ Erro ao remover ScreenStateReceiver listener: ${e.message}", e)
+            }
             
-            stopForeground(true)
-            stopSelf()
+            // 2. Desregistrar ScreenStateReceiver
+            try {
+                screenStateReceiver?.let { 
+                    unregisterReceiver(it)
+                    screenStateReceiver = null
+                    Log.d(TAG, "✅ ScreenStateReceiver desregistrado")
+                }
+            } catch (e: IllegalArgumentException) {
+                Log.d(TAG, "ℹ️ Receiver já estava desregistrado")
+            } catch (e: Exception) {
+                Log.e(TAG, "❌ Erro ao desregistrar receiver: ${e.message}", e)
+            }
             
-            Log.i(TAG, "✅ Serviço parado com sucesso")
-        } catch (e: Exception) {
-            Log.e(TAG, "❌ Erro ao parar serviço: ${e.message}", e)
+            // 3. Cancelar HeartbeatWorker
+            try {
+                HeartbeatWorker.cancel(applicationContext)
+                Log.d(TAG, "✅ HeartbeatWorker cancelado")
+            } catch (e: Exception) {
+                Log.e(TAG, "❌ Erro ao cancelar HeartbeatWorker: ${e.message}", e)
+            }
+            
+            // 4. Desconectar MDM Receiver
+            try {
+                mdmReceiver?.disconnect()
+                mdmReceiver = null
+                Log.d(TAG, "✅ MDM Receiver desconectado")
+            } catch (e: Exception) {
+                Log.e(TAG, "❌ Erro ao desconectar MDM Receiver: ${e.message}", e)
+            }
+            
+            // 5. Desconectar WebSocket
+            try {
+                webSocketManager?.disconnect()
+                webSocketManager = null
+                Log.d(TAG, "✅ WebSocket desconectado")
+            } catch (e: Exception) {
+                Log.e(TAG, "❌ Erro ao desconectar WebSocket: ${e.message}", e)
+            }
+            
+            // 6. Destruir BlockedAppInterceptor
+            try {
+                blockedAppInterceptor?.destroy()
+                blockedAppInterceptor = null
+                Log.d(TAG, "✅ BlockedAppInterceptor destruído")
+            } catch (e: Exception) {
+                Log.e(TAG, "❌ Erro ao destruir BlockedAppInterceptor: ${e.message}", e)
+            }
+            
+            // 7. Liberar WakeLock
+            try {
+                releaseWakeLock()
+                Log.d(TAG, "✅ WakeLock liberado")
+            } catch (e: Exception) {
+                Log.e(TAG, "❌ Erro ao liberar WakeLock: ${e.message}", e)
+            }
+            
+            // 8. Cancelar CoroutineScope
+            try {
+                serviceScope.cancel()
+                Log.d(TAG, "✅ CoroutineScope cancelado")
+            } catch (e: Exception) {
+                Log.e(TAG, "❌ Erro ao cancelar scope: ${e.message}", e)
+            }
+            
+            // 9. Parar foreground notification
+            try {
+                stopForeground(true)
+                Log.d(TAG, "✅ Foreground notification removida")
+            } catch (e: Exception) {
+                Log.e(TAG, "❌ Erro ao parar foreground: ${e.message}", e)
+            }
+            
+            Log.i(TAG, "✅ Cleanup completo finalizado com sucesso")
+            
+        } finally {
+            // CRÍTICO: stopSelf() em finally block garante que SEMPRE executa
+            // mesmo se houver exceções durante cleanup
+            if (shouldStopSelf) {
+                try {
+                    stopSelf()
+                    Log.i(TAG, "✅ Serviço parado via stopSelf()")
+                } catch (e: Exception) {
+                    Log.e(TAG, "❌ CRÍTICO: Erro ao parar serviço via stopSelf(): ${e.message}", e)
+                }
+            }
         }
     }
     
@@ -379,34 +488,9 @@ class CdcForegroundService : Service(), ScreenStateListener {
     override fun onDestroy() {
         Log.w(TAG, "⚠️ Serviço onDestroy() - limpando recursos e reiniciando automaticamente...")
         
-        // CORREÇÃO LIFECYCLE: Cleanup manual removido para evitar duplo cleanup
-        // stopForegroundService() já faz todo o cleanup necessário
-        try {
-            // Remover listener do ScreenStateReceiver
-            ScreenStateReceiver.removeListener(this)
-            
-            // Tentar desregistrar receiver (pode já estar desregistrado)
-            try {
-                screenStateReceiver?.let { unregisterReceiver(it) }
-            } catch (e: IllegalArgumentException) {
-                // Receiver já foi desregistrado - ignorar
-                Log.d(TAG, "Receiver já desregistrado - continuando cleanup")
-            }
-            
-            // Fazer cleanup completo de TODOS os componentes
-            HeartbeatWorker.cancel(applicationContext)
-            mdmReceiver?.disconnect()
-            webSocketManager?.disconnect()
-            blockedAppInterceptor?.destroy()
-            releaseWakeLock()
-            serviceScope.cancel()
-            
-            // Parar foreground e self
-            stopForeground(true)
-            
-        } catch (e: Exception) {
-            Log.e(TAG, "❌ Erro durante cleanup em onDestroy: ${e.message}", e)
-        }
+        // CORREÇÃO LIFECYCLE: Usar performSafeCleanup() para cleanup idempotente
+        // shouldStopSelf = false porque onDestroy() já significa que o serviço está sendo destruído
+        performSafeCleanup(shouldStopSelf = false)
         
         // Agendar restart automático via AlarmManager
         try {
