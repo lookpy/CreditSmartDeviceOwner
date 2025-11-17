@@ -1,0 +1,541 @@
+2025-11-17 05:46:19.962  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  🔒 Marcado para bloqueio: com.google.android.apps.youtube.music
+2025-11-17 05:46:19.962  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  ✅ App bloqueável detectado: com.android.bluetoothmidiservice
+2025-11-17 05:46:19.963  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  ✅ App bloqueável detectado: com.google.android.uwb.resources.goldfish.overlay
+2025-11-17 05:46:19.964  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  ✅ App bloqueável detectado: com.android.traceur
+2025-11-17 05:46:19.965  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  ✅ App bloqueável detectado: com.android.storagemanager.auto_generated_rro_product__
+2025-11-17 05:46:19.967  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  ✅ App bloqueável detectado: com.google.android.cellbroadcastreceiver
+2025-11-17 05:46:19.968  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  ✅ App bloqueável detectado: com.android.phone.auto_generated_rro_product__
+2025-11-17 05:46:19.969  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  🛡️ App crítico do sistema detectado: com.android.systemui.emulation.pixel_9_pro_fold
+2025-11-17 05:46:19.969  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  🛡️ App protegido (não bloqueia): com.android.systemui.emulation.pixel_9_pro_fold
+2025-11-17 05:46:19.969  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  ✅ App bloqueável detectado: android.auto_generated_rro_product__
+2025-11-17 05:46:19.970  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  ✅ App bloqueável detectado: com.android.bluetooth
+2025-11-17 05:46:19.971  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  🛡️ App protegido (não bloqueia): com.android.providers.contacts
+2025-11-17 05:46:19.971  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  ✅ App bloqueável detectado: com.android.devicelockcontroller
+2025-11-17 05:46:19.972  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  ✅ App bloqueável detectado: com.google.android.photopicker
+2025-11-17 05:46:19.972  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  🔒 Marcado para bloqueio: com.google.android.photopicker
+2025-11-17 05:46:19.972  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  🛡️ App crítico do sistema detectado: com.google.android.inputmethod.latin
+2025-11-17 05:46:19.972  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  🛡️ App protegido (não bloqueia): com.google.android.inputmethod.latin
+2025-11-17 05:46:19.973  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  ✅ App bloqueável detectado: android.auto_generated_rro_vendor__
+2025-11-17 05:46:19.974  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  ✅ App bloqueável detectado: com.google.android.apps.restore
+2025-11-17 05:46:19.974  8054-8147  CategoryMapper          com.cdccreditsmart.app               I  📊 Total de apps marcados para bloqueio: 14
+2025-11-17 05:46:19.974  8054-8147  AppBlockingManager      com.cdccreditsmart.app               D  💾 Pacotes bloqueados salvos: 14 apps
+2025-11-17 05:46:19.984  8054-8147  AppBlockingManager      com.cdccreditsmart.app               I  🎯 BLOQUEIO PROGRESSIVO + OVERLAY UNIVERSAL
+2025-11-17 05:46:19.984  8054-8147  AppBlockingManager      com.cdccreditsmart.app               I     1️⃣ Apps bloqueados via setPackagesSuspended()
+2025-11-17 05:46:19.984  8054-8147  AppBlockingManager      com.cdccreditsmart.app               I     2️⃣ Overlay em TODOS os apps via BlockedAppInterceptor
+2025-11-17 05:46:19.999  8054-8147  AppBlockingManager      com.cdccreditsmart.app               I  ✅ 12 apps bloqueados
+2025-11-17 05:46:19.999  8054-8147  AppBlockingManager      com.cdccreditsmart.app               W    ⚠️ Falhou ao bloquear: com.android.vending
+2025-11-17 05:46:19.999  8054-8147  AppBlockingManager      com.cdccreditsmart.app               W    ⚠️ Falhou ao bloquear: com.android.emulator.multidisplay
+2025-11-17 05:46:20.029  8054-8147  AppBlockingManager      com.cdccreditsmart.app               I  ✅ 235 apps desbloqueados
+2025-11-17 05:46:20.029  8054-8147  AppBlockingManager      com.cdccreditsmart.app               D  💾 Estado de bloqueio salvo: level=2, days=0, reason=Bloqueio manual forçado para nível 2 pelo administ
+2025-11-17 05:46:20.030  8054-8147  ReflectionKnoxClient    com.cdccreditsmart.app               W  Samsung Knox SDK não encontrado - funcionalidade desabilitada
+2025-11-17 05:46:20.030  8054-8147  AppBlockingManager      com.cdccreditsmart.app               W  Samsung Knox não disponível - pulando atualização de lockscreen
+2025-11-17 05:46:20.031  8054-8147  MdmCommandReceiver      com.cdccreditsmart.app               I  ✅ Bloqueio aplicado - Success: true, Apps: 12
+2025-11-17 05:46:20.032  8054-8147  SecureTokenStorage      com.cdccreditsmart.app               D  ⚠️ Usando Serial Number para MDM (IMEI indisponível): AFD8YG...
+2025-11-17 05:46:20.032  8054-8147  MdmCommandReceiver      com.cdccreditsmart.app               D  📡 Enviando response usando identifier: AFD8YG79****
+2025-11-17 05:46:20.034  8054-8282  okhttp.OkHttpClient     com.cdccreditsmart.app               I  --> POST https://cdccreditsmart.com/api/apk/device/AFD8YG79/command-response
+2025-11-17 05:46:20.034  8054-8282  okhttp.OkHttpClient     com.cdccreditsmart.app               I  Content-Type: application/json; charset=UTF-8
+2025-11-17 05:46:20.035  8054-8282  okhttp.OkHttpClient     com.cdccreditsmart.app               I  Content-Length: 166
+2025-11-17 05:46:20.035  8054-8282  okhttp.OkHttpClient     com.cdccreditsmart.app               I  {"commandId":"e0c3c7b1-25d4-40fa-83ba-e28705742c1c","status":"completed","response":{"success":true,"blockedAppsCount":12,"appliedLevel":2,"timestamp":1763369180033}}
+2025-11-17 05:46:20.035  8054-8282  okhttp.OkHttpClient     com.cdccreditsmart.app               I  --> END POST (166-byte body)
+2025-11-17 05:46:20.399  8054-8282  okhttp.OkHttpClient     com.cdccreditsmart.app               I  <-- 200 https://cdccreditsmart.com/api/apk/device/AFD8YG79/command-response (363ms)
+2025-11-17 05:46:20.400  8054-8282  okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-credentials: true
+2025-11-17 05:46:20.400  8054-8282  okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-headers: Origin, X-Requested-With, Content-Type, Accept, Authorization, x-client-key, x-client-token, x-client-secret, cache-control
+2025-11-17 05:46:20.400  8054-8282  okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-methods: GET, POST, PUT, PATCH, DELETE, OPTIONS
+2025-11-17 05:46:20.400  8054-8282  okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-origin: *
+2025-11-17 05:46:20.400  8054-8282  okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-max-age: 86400
+2025-11-17 05:46:20.400  8054-8282  okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-length: 59
+2025-11-17 05:46:20.400  8054-8282  okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-security-policy: default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://replit.com; style-src 'self' 'unsafe-inline' https://replit.com; img-src 'self' data: https:; font-src 'self' data: https://replit.com; connect-src 'self';
+2025-11-17 05:46:20.400  8054-8282  okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-type: application/json; charset=utf-8
+2025-11-17 05:46:20.400  8054-8282  okhttp.OkHttpClient     com.cdccreditsmart.app               I  date: Mon, 17 Nov 2025 08:46:20 GMT
+2025-11-17 05:46:20.400  8054-8282  okhttp.OkHttpClient     com.cdccreditsmart.app               I  etag: W/"3b-9gCHwmPb8p6jYm5WExczQnIIdAU"
+2025-11-17 05:46:20.400  8054-8282  okhttp.OkHttpClient     com.cdccreditsmart.app               I  permissions-policy: geolocation=(), microphone=(), camera=()
+2025-11-17 05:46:20.400  8054-8282  okhttp.OkHttpClient     com.cdccreditsmart.app               I  referrer-policy: strict-origin-when-cross-origin
+2025-11-17 05:46:20.400  8054-8282  okhttp.OkHttpClient     com.cdccreditsmart.app               I  server: Google Frontend
+2025-11-17 05:46:20.400  8054-8282  okhttp.OkHttpClient     com.cdccreditsmart.app               I  strict-transport-security: max-age=63072000; includeSubDomains
+2025-11-17 05:46:20.400  8054-8282  okhttp.OkHttpClient     com.cdccreditsmart.app               I  strict-transport-security: max-age=31536000; includeSubDomains
+2025-11-17 05:46:20.400  8054-8282  okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-anti-fraud-protection: active
+2025-11-17 05:46:20.400  8054-8282  okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-certificate-pinning-enabled: false
+2025-11-17 05:46:20.400  8054-8282  okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-certificate-pinning-status: disabled-for-stability
+2025-11-17 05:46:20.400  8054-8282  okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-cloud-trace-context: e17188f0ada1924e44378b7327674c31
+2025-11-17 05:46:20.400  8054-8282  okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-content-type-options: nosniff
+2025-11-17 05:46:20.401  8054-8282  okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-financial-data-protection: enabled
+2025-11-17 05:46:20.401  8054-8282  okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-frame-options: DENY
+2025-11-17 05:46:20.401  8054-8282  okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-transaction-security-level: maximum
+2025-11-17 05:46:20.401  8054-8282  okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-xss-protection: 1; mode=block
+2025-11-17 05:46:20.401  8054-8282  okhttp.OkHttpClient     com.cdccreditsmart.app               I  via: 1.1 google
+2025-11-17 05:46:20.401  8054-8282  okhttp.OkHttpClient     com.cdccreditsmart.app               I  alt-svc: h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
+2025-11-17 05:46:20.401  8054-8282  okhttp.OkHttpClient     com.cdccreditsmart.app               I  {"success":true,"message":"Resposta do comando registrada"}
+2025-11-17 05:46:20.401  8054-8282  okhttp.OkHttpClient     com.cdccreditsmart.app               I  <-- END HTTP (59-byte body)
+2025-11-17 05:46:20.402  8054-8147  MdmCommandReceiver      com.cdccreditsmart.app               I  ✅ Response enviado para comando e0c3c7b1-25d4-40fa-83ba-e28705742c1c: completed
+2025-11-17 05:46:20.402  8054-8147  MdmCommandReceiver      com.cdccreditsmart.app               I  📋 Processando comando pendente: BLOCK_APPS_PROGRESSIVE (2c4a4184-7e32-460e-884b-111aa29c65d3)
+2025-11-17 05:46:20.402  8054-8147  MdmCommandReceiver      com.cdccreditsmart.app               I  ⚙️ Processando comando 2c4a4184-7e32-460e-884b-111aa29c65d3 (tipo: BLOCK_APPS_PROGRESSIVE)
+2025-11-17 05:46:20.402  8054-8147  CdcForegroundService    com.cdccreditsmart.app               D  🔋 WakeLock já está held - ignorando acquire
+2025-11-17 05:46:20.402  8054-8147  MdmCommandReceiver      com.cdccreditsmart.app               D  🔋 WakeLock adquirido para comando MDM 2c4a4184-7e32-460e-884b-111aa29c65d3
+2025-11-17 05:46:20.402  8054-8147  SecureTokenStorage      com.cdccreditsmart.app               D  ⚠️ Usando Serial Number para MDM (IMEI indisponível): AFD8YG...
+2025-11-17 05:46:20.403  8054-8147  MdmCommandReceiver      com.cdccreditsmart.app               D  📡 Enviando ACK usando identifier: AFD8YG79****
+2025-11-17 05:46:20.404  8054-8282  okhttp.OkHttpClient     com.cdccreditsmart.app               I  --> POST https://cdccreditsmart.com/api/apk/device/AFD8YG79/command-response
+2025-11-17 05:46:20.405  8054-8282  okhttp.OkHttpClient     com.cdccreditsmart.app               I  Content-Type: application/json; charset=UTF-8
+2025-11-17 05:46:20.405  8054-8282  okhttp.OkHttpClient     com.cdccreditsmart.app               I  Content-Length: 76
+2025-11-17 05:46:20.405  8054-8282  okhttp.OkHttpClient     com.cdccreditsmart.app               I  {"commandId":"2c4a4184-7e32-460e-884b-111aa29c65d3","status":"acknowledged"}
+2025-11-17 05:46:20.406  8054-8282  okhttp.OkHttpClient     com.cdccreditsmart.app               I  --> END POST (76-byte body)
+2025-11-17 05:46:20.767  8054-8282  okhttp.OkHttpClient     com.cdccreditsmart.app               I  <-- 200 https://cdccreditsmart.com/api/apk/device/AFD8YG79/command-response (361ms)
+2025-11-17 05:46:20.768  8054-8282  okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-credentials: true
+2025-11-17 05:46:20.768  8054-8282  okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-headers: Origin, X-Requested-With, Content-Type, Accept, Authorization, x-client-key, x-client-token, x-client-secret, cache-control
+2025-11-17 05:46:20.768  8054-8282  okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-methods: GET, POST, PUT, PATCH, DELETE, OPTIONS
+2025-11-17 05:46:20.768  8054-8282  okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-origin: *
+2025-11-17 05:46:20.768  8054-8282  okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-max-age: 86400
+2025-11-17 05:46:20.768  8054-8282  okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-length: 59
+2025-11-17 05:46:20.768  8054-8282  okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-security-policy: default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://replit.com; style-src 'self' 'unsafe-inline' https://replit.com; img-src 'self' data: https:; font-src 'self' data: https://replit.com; connect-src 'self';
+2025-11-17 05:46:20.768  8054-8282  okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-type: application/json; charset=utf-8
+2025-11-17 05:46:20.768  8054-8282  okhttp.OkHttpClient     com.cdccreditsmart.app               I  date: Mon, 17 Nov 2025 08:46:20 GMT
+2025-11-17 05:46:20.768  8054-8282  okhttp.OkHttpClient     com.cdccreditsmart.app               I  etag: W/"3b-9gCHwmPb8p6jYm5WExczQnIIdAU"
+2025-11-17 05:46:20.768  8054-8282  okhttp.OkHttpClient     com.cdccreditsmart.app               I  permissions-policy: geolocation=(), microphone=(), camera=()
+2025-11-17 05:46:20.768  8054-8282  okhttp.OkHttpClient     com.cdccreditsmart.app               I  referrer-policy: strict-origin-when-cross-origin
+2025-11-17 05:46:20.768  8054-8282  okhttp.OkHttpClient     com.cdccreditsmart.app               I  server: Google Frontend
+2025-11-17 05:46:20.768  8054-8282  okhttp.OkHttpClient     com.cdccreditsmart.app               I  strict-transport-security: max-age=63072000; includeSubDomains
+2025-11-17 05:46:20.768  8054-8282  okhttp.OkHttpClient     com.cdccreditsmart.app               I  strict-transport-security: max-age=31536000; includeSubDomains
+2025-11-17 05:46:20.768  8054-8282  okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-anti-fraud-protection: active
+2025-11-17 05:46:20.768  8054-8282  okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-certificate-pinning-enabled: false
+2025-11-17 05:46:20.768  8054-8282  okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-certificate-pinning-status: disabled-for-stability
+2025-11-17 05:46:20.768  8054-8282  okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-cloud-trace-context: cded19f653a1f0b544378b7327674977
+2025-11-17 05:46:20.768  8054-8282  okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-content-type-options: nosniff
+2025-11-17 05:46:20.768  8054-8282  okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-financial-data-protection: enabled
+2025-11-17 05:46:20.768  8054-8282  okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-frame-options: DENY
+2025-11-17 05:46:20.769  8054-8282  okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-transaction-security-level: maximum
+2025-11-17 05:46:20.769  8054-8282  okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-xss-protection: 1; mode=block
+2025-11-17 05:46:20.769  8054-8282  okhttp.OkHttpClient     com.cdccreditsmart.app               I  via: 1.1 google
+2025-11-17 05:46:20.769  8054-8282  okhttp.OkHttpClient     com.cdccreditsmart.app               I  alt-svc: h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
+2025-11-17 05:46:20.769  8054-8282  okhttp.OkHttpClient     com.cdccreditsmart.app               I  {"success":true,"message":"Resposta do comando registrada"}
+2025-11-17 05:46:20.770  8054-8282  okhttp.OkHttpClient     com.cdccreditsmart.app               I  <-- END HTTP (59-byte body)
+2025-11-17 05:46:20.770  8054-8147  MdmCommandReceiver      com.cdccreditsmart.app               I  ✅ ACK enviado para comando 2c4a4184-7e32-460e-884b-111aa29c65d3
+2025-11-17 05:46:20.770  8054-8147  MdmCommandReceiver      com.cdccreditsmart.app               I  ⚙️ Level: 2, Days: 0
+2025-11-17 05:46:20.771  8054-8147  MdmCommandReceiver      com.cdccreditsmart.app               I  🔒 Aplicando bloqueio progressivo...
+2025-11-17 05:46:20.771  8054-8147  AppBlockingManager      com.cdccreditsmart.app               I  🔒 Aplicando bloqueio progressivo - Nível 2
+2025-11-17 05:46:20.771  8054-8147  AppBlockingManager      com.cdccreditsmart.app               D  Dias de atraso: 0
+2025-11-17 05:46:20.771  8054-8147  AppBlockingManager      com.cdccreditsmart.app               D  Razão: Bloqueio manual forçado para nível 2 pelo administrador
+2025-11-17 05:46:20.771  8054-8147  AppBlockingManager      com.cdccreditsmart.app               D  Categorias recebidas: [photos, gallery, video_players, web_browsers, youtube, music_players, play_store, games]
+2025-11-17 05:46:20.771  8054-8147  AppBlockingManager      com.cdccreditsmart.app               D  Estado anterior - Nível: 2, Categorias: [photos, gallery, video_players, web_browsers, youtube, music_players, play_store, games]
+2025-11-17 05:46:20.771  8054-8147  AppBlockingManager      com.cdccreditsmart.app               D  Novo comando - Nível: 2, Categorias: [photos, gallery, video_players, web_browsers, youtube, music_players, play_store, games]
+2025-11-17 05:46:20.771  8054-8147  AppBlockingManager      com.cdccreditsmart.app               I  ➡️ Nível manteve (2): ACUMULANDO categorias
+2025-11-17 05:46:20.771  8054-8147  AppBlockingManager      com.cdccreditsmart.app               I     Categorias CUMULATIVAS: [photos, gallery, video_players, web_browsers, youtube, music_players, play_store, games]
+2025-11-17 05:46:20.772  8054-8147  AppBlockingManager      com.cdccreditsmart.app               D  💾 Categorias bloqueadas salvas: [photos, gallery, video_players, web_browsers, youtube, music_players, play_store, games]
+2025-11-17 05:46:20.781  8054-8147  CategoryMapper          com.cdccreditsmart.app               I  🔍 Processando 8 categorias para bloqueio
+2025-11-17 05:46:20.781  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  Categorias: [photos, gallery, video_players, web_browsers, youtube, music_players, play_store, games]
+2025-11-17 05:46:20.781  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  Exceções: [com.whatsapp, com.android.dialer, com.android.messaging, bancos_allowed, emails_allowed]
+2025-11-17 05:46:20.781  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  ✅ App bloqueável detectado: com.google.android.networkstack.tethering
+2025-11-17 05:46:20.782  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  ✅ App bloqueável detectado: com.android.cts.priv.ctsshim
+2025-11-17 05:46:20.783  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  ✅ App bloqueável detectado: com.google.android.youtube
+2025-11-17 05:46:20.783  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  🔒 Marcado para bloqueio: com.google.android.youtube
+2025-11-17 05:46:20.784  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  🛡️ App protegido (não bloqueia): com.android.internal.display.cutout.emulation.corner
+2025-11-17 05:46:20.784  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  🛡️ App protegido (não bloqueia): com.google.android.ext.services
+2025-11-17 05:46:20.784  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  🛡️ App protegido (não bloqueia): com.android.internal.display.cutout.emulation.double
+2025-11-17 05:46:20.784  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  🛡️ App protegido (não bloqueia): com.android.providers.telephony
+2025-11-17 05:46:20.785  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  ✅ App bloqueável detectado: com.android.dynsystem
+2025-11-17 05:46:20.785  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  ✅ App bloqueável detectado: com.google.android.googlequicksearchbox
+2025-11-17 05:46:20.786  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  ✅ App bloqueável detectado: com.google.android.cellbroadcastservice
+2025-11-17 05:46:20.787  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  🛡️ App protegido (não bloqueia): com.android.providers.calendar
+2025-11-17 05:46:20.787  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  🛡️ App protegido (não bloqueia): com.android.providers.media
+2025-11-17 05:46:20.787  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  ✅ App bloqueável detectado: com.google.android.onetimeinitializer
+2025-11-17 05:46:20.787  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  🛡️ App protegido (não bloqueia): com.google.android.ext.shared
+2025-11-17 05:46:20.788  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  ✅ App bloqueável detectado: com.android.virtualmachine.res
+2025-11-17 05:46:20.789  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  ✅ App bloqueável detectado: com.android.wallpapercropper
+2025-11-17 05:46:20.790  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  ✅ App bloqueável detectado: com.google.android.federatedcompute
+2025-11-17 05:46:20.791  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  ✅ App bloqueável detectado: com.android.managedprovisioning.auto_generated_rro_product__
+2025-11-17 05:46:20.792  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  ✅ App bloqueável detectado: com.android.carrierconfig.auto_generated_rro_vendor__
+2025-11-17 05:46:20.793  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  ✅ App bloqueável detectado: com.google.android.server.deviceconfig.resources
+2025-11-17 05:46:20.793  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  🛡️ App crítico do sistema detectado: com.android.systemui.emulation.pixel_3_xl
+2025-11-17 05:46:20.793  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  🛡️ App protegido (não bloqueia): com.android.systemui.emulation.pixel_3_xl
+2025-11-17 05:46:20.794  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  🛡️ App crítico do sistema detectado: com.android.systemui.emulation.pixel_4_xl
+2025-11-17 05:46:20.794  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  🛡️ App protegido (não bloqueia): com.android.systemui.emulation.pixel_4_xl
+2025-11-17 05:46:20.794  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  🛡️ App crítico do sistema detectado: com.android.systemui.emulation.pixel_fold
+2025-11-17 05:46:20.794  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  🛡️ App protegido (não bloqueia): com.android.systemui.emulation.pixel_fold
+2025-11-17 05:46:20.795  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  🛡️ App crítico do sistema detectado: com.android.providers.telephony.auto_generated_characteristics_rro
+2025-11-17 05:46:20.795  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  🛡️ App protegido (não bloqueia): com.android.providers.telephony.auto_generated_characteristics_rro
+2025-11-17 05:46:20.798  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  ✅ App bloqueável detectado: com.android.simappdialog.auto_generated_rro_product__
+2025-11-17 05:46:20.799  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  🛡️ App protegido (não bloqueia): com.android.externalstorage
+2025-11-17 05:46:20.800  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  ✅ App bloqueável detectado: com.android.htmlviewer
+2025-11-17 05:46:20.800  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  🛡️ App protegido (não bloqueia): com.android.companiondevicemanager
+2025-11-17 05:46:20.801  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  ✅ App bloqueável detectado: com.android.mms.service
+2025-11-17 05:46:20.801  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  🛡️ App protegido (não bloqueia): com.android.providers.downloads
+2025-11-17 05:46:20.802  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  ✅ App bloqueável detectado: com.google.android.overlay.largescreenconfig
+2025-11-17 05:46:20.803  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  ✅ App bloqueável detectado: com.google.android.health.connect.backuprestore
+2025-11-17 05:46:20.803  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  🛡️ App crítico do sistema detectado: com.android.systemui.auto_generated_rro_product__
+2025-11-17 05:46:20.803  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  🛡️ App protegido (não bloqueia): com.android.systemui.auto_generated_rro_product__
+2025-11-17 05:46:20.804  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  ✅ App bloqueável detectado: com.google.android.apps.messaging
+2025-11-17 05:46:20.805  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  ✅ App bloqueável detectado: com.google.android.soundpicker
+2025-11-17 05:46:20.805  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  🔒 Marcado para bloqueio: com.google.android.soundpicker
+2025-11-17 05:46:20.805  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  🛡️ App protegido (não bloqueia): com.cdccreditsmart.app
+2025-11-17 05:46:20.805  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  ✅ App bloqueável detectado: com.android.networkstack.tethering.emulator
+2025-11-17 05:46:20.807  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  ✅ App bloqueável detectado: com.google.android.marvin.talkbackoverlay
+2025-11-17 05:46:20.808  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  ✅ App bloqueável detectado: com.google.android.configupdater
+2025-11-17 05:46:20.813  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  🛡️ App protegido (não bloqueia): com.android.internal.emulation.pixel_3a_xl
+2025-11-17 05:46:20.813  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  🛡️ App protegido (não bloqueia): com.android.internal.emulation.pixel_6_pro
+2025-11-17 05:46:20.814  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  🛡️ App protegido (não bloqueia): com.android.internal.emulation.pixel_7_pro
+2025-11-17 05:46:20.815  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  🛡️ App protegido (não bloqueia): com.android.internal.emulation.pixel_8_pro
+2025-11-17 05:46:20.815  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  🛡️ App protegido (não bloqueia): com.android.internal.emulation.pixel_9_pro
+2025-11-17 05:46:20.816  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  🛡️ App crítico do sistema detectado: com.google.android.providers.media.module
+2025-11-17 05:46:20.816  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  🛡️ App protegido (não bloqueia): com.google.android.providers.media.module
+2025-11-17 05:46:20.816  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  🛡️ App protegido (não bloqueia): com.android.internal.emulation.pixel_3a
+2025-11-17 05:46:20.817  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  🛡️ App protegido (não bloqueia): com.android.internal.emulation.pixel_4a
+2025-11-17 05:46:20.818  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  🛡️ App protegido (não bloqueia): com.android.internal.emulation.pixel_6a
+2025-11-17 05:46:20.818  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  🛡️ App protegido (não bloqueia): com.android.internal.emulation.pixel_7a
+2025-11-17 05:46:20.820  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  🛡️ App protegido (não bloqueia): com.android.internal.emulation.pixel_8a
+2025-11-17 05:46:20.821  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  🛡️ App protegido (não bloqueia): com.android.internal.emulation.pixel_9a
+2025-11-17 05:46:20.822  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  ✅ App bloqueável detectado: com.google.android.overlay.googlewebview
+2025-11-17 05:46:20.823  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  ✅ App bloqueável detectado: com.google.android.apps.safetyhub
+2025-11-17 05:46:20.825  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  🛡️ App crítico do sistema detectado: com.android.systemui.plugin.globalactions.wallet
+2025-11-17 05:46:20.825  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  🛡️ App protegido (não bloqueia): com.android.systemui.plugin.globalactions.wallet
+2025-11-17 05:46:20.826  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  🛡️ App crítico do sistema detectado: com.android.providers.downloads.ui
+2025-11-17 05:46:20.826  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  🛡️ App protegido (não bloqueia): com.android.providers.downloads.ui
+2025-11-17 05:46:20.827  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  ✅ App bloqueável detectado: com.google.android.hotspot2.osulogin
+2025-11-17 05:46:20.830  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  ✅ App bloqueável detectado: com.android.vending
+2025-11-17 05:46:20.830  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  🔒 Marcado para bloqueio: com.android.vending
+2025-11-17 05:46:20.831  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  ✅ App bloqueável detectado: com.android.pacprocessor
+2025-11-17 05:46:20.832  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  ✅ App bloqueável detectado: com.android.simappdialog
+2025-11-17 05:46:20.833  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  ✅ App bloqueável detectado: com.google.android.adservices.api
+2025-11-17 05:46:20.834  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  🛡️ App protegido (não bloqueia): com.android.internal.display.cutout.emulation.hole
+2025-11-17 05:46:20.834  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  🛡️ App protegido (não bloqueia): com.android.internal.display.cutout.emulation.tall
+2025-11-17 05:46:20.835  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  ✅ App bloqueável detectado: com.android.certinstaller
+2025-11-17 05:46:20.836  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  ✅ App bloqueável detectado: com.android.carrierconfig
+2025-11-17 05:46:20.837  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  ✅ App bloqueável detectado: com.google.android.marvin.talkback
+2025-11-17 05:46:20.839  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  ✅ App bloqueável detectado: com.google.android.apps.accessibility.voiceaccess
+2025-11-17 05:46:20.841  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  🛡️ App crítico do sistema detectado: com.android.internal.systemui.navbar.threebutton
+2025-11-17 05:46:20.841  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  🛡️ App protegido (não bloqueia): com.android.internal.systemui.navbar.threebutton
+2025-11-17 05:46:20.841  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  🛡️ App protegido (não bloqueia): android
+2025-11-17 05:46:20.842  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  ✅ App bloqueável detectado: com.android.camera2
+2025-11-17 05:46:20.842  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  🔒 Marcado para bloqueio: com.android.camera2
+2025-11-17 05:46:20.843  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  🛡️ App protegido (não bloqueia): com.android.internal.ranchu.commonoverlay
+2025-11-17 05:46:20.843  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  ✅ App bloqueável detectado: com.google.android.sdksandbox
+2025-11-17 05:46:20.844  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  ✅ App bloqueável detectado: com.android.egg
+2025-11-17 05:46:20.845  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  ✅ App bloqueável detectado: com.android.mtp
+2025-11-17 05:46:20.845  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  🛡️ App protegido (não bloqueia): com.android.nfc
+2025-11-17 05:46:20.846  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  ✅ App bloqueável detectado: com.android.ons
+2025-11-17 05:46:20.847  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  ✅ App bloqueável detectado: com.android.stk
+2025-11-17 05:46:20.848  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  ✅ App bloqueável detectado: com.android.backupconfirm
+2025-11-17 05:46:20.849  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  🛡️ App crítico do sistema detectado: com.android.systemui.auto_generated_rro_vendor__
+2025-11-17 05:46:20.849  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  🛡️ App protegido (não bloqueia): com.android.systemui.auto_generated_rro_vendor__
+2025-11-17 05:46:20.850  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  ✅ App bloqueável detectado: com.google.android.deskclock
+2025-11-17 05:46:20.851  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  🛡️ App crítico do sistema detectado: com.android.internal.systemui.navbar.twobutton
+2025-11-17 05:46:20.851  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  🛡️ App protegido (não bloqueia): com.android.internal.systemui.navbar.twobutton
+2025-11-17 05:46:20.852  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  ✅ App bloqueável detectado: com.google.android.as
+2025-11-17 05:46:20.853  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  🛡️ App protegido (não bloqueia): com.google.android.gm
+2025-11-17 05:46:20.854  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  ✅ App bloqueável detectado: com.android.compos.payload
+2025-11-17 05:46:20.854  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  🛡️ App crítico do sistema detectado: com.android.systemui.accessibility.accessibilitymenu
+2025-11-17 05:46:20.854  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  🛡️ App protegido (não bloqueia): com.android.systemui.accessibility.accessibilitymenu
+2025-11-17 05:46:20.854  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  🛡️ App protegido (não bloqueia): com.google.android.permissioncontroller
+2025-11-17 05:46:20.855  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  🛡️ App crítico do sistema detectado: com.android.systemui.emulation.pixel_3
+2025-11-17 05:46:20.855  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  🛡️ App protegido (não bloqueia): com.android.systemui.emulation.pixel_3
+2025-11-17 05:46:20.855  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  🛡️ App crítico do sistema detectado: com.android.systemui.emulation.pixel_4
+2025-11-17 05:46:20.855  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  🛡️ App protegido (não bloqueia): com.android.systemui.emulation.pixel_4
+2025-11-17 05:46:20.856  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  🛡️ App crítico do sistema detectado: com.android.systemui.emulation.pixel_5
+2025-11-17 05:46:20.856  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  🛡️ App protegido (não bloqueia): com.android.systemui.emulation.pixel_5
+2025-11-17 05:46:20.857  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  🛡️ App crítico do sistema detectado: com.android.systemui.emulation.pixel_6
+2025-11-17 05:46:20.857  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  🛡️ App protegido (não bloqueia): com.android.systemui.emulation.pixel_6
+2025-11-17 05:46:20.857  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  🛡️ App crítico do sistema detectado: com.android.systemui.emulation.pixel_7
+2025-11-17 05:46:20.857  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  🛡️ App protegido (não bloqueia): com.android.systemui.emulation.pixel_7
+2025-11-17 05:46:20.858  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  🛡️ App crítico do sistema detectado: com.android.systemui.emulation.pixel_8
+2025-11-17 05:46:20.858  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  🛡️ App protegido (não bloqueia): com.android.systemui.emulation.pixel_8
+2025-11-17 05:46:20.858  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  🛡️ App crítico do sistema detectado: com.android.systemui.emulation.pixel_9
+2025-11-17 05:46:20.858  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  🛡️ App protegido (não bloqueia): com.android.systemui.emulation.pixel_9
+2025-11-17 05:46:20.859  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  ✅ App bloqueável detectado: com.android.emulator.radio.config
+2025-11-17 05:46:20.860  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  ✅ App bloqueável detectado: com.google.android.bluetooth
+2025-11-17 05:46:20.860  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  🛡️ App protegido (não bloqueia): com.android.providers.settings
+2025-11-17 05:46:20.860  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  ✅ App bloqueável detectado: com.android.sharedstoragebackup
+2025-11-17 05:46:20.861  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  ✅ App bloqueável detectado: com.android.printspooler
+2025-11-17 05:46:20.862  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  ✅ App bloqueável detectado: com.google.android.connectivity.resources.goldfish.overlay
+2025-11-17 05:46:20.862  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  ✅ App bloqueável detectado: com.android.virtualization.terminal
+2025-11-17 05:46:20.863  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  ✅ App bloqueável detectado: com.android.dreams.basic
+2025-11-17 05:46:20.864  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  ✅ App bloqueável detectado: com.google.android.networkstack.tethering.emulator
+2025-11-17 05:46:20.865  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  🛡️ App crítico do sistema detectado: com.android.providers.settings.auto_generated_rro_product__
+2025-11-17 05:46:20.865  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  🛡️ App protegido (não bloqueia): com.android.providers.settings.auto_generated_rro_product__
+2025-11-17 05:46:20.866  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  ✅ App bloqueável detectado: com.google.android.as.oss
+2025-11-17 05:46:20.867  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  ✅ App bloqueável detectado: com.android.se
+2025-11-17 05:46:20.868  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  ✅ App bloqueável detectado: com.android.inputdevices
+2025-11-17 05:46:20.868  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  ✅ App bloqueável detectado: com.android.traceur.auto_generated_rro_product__
+2025-11-17 05:46:20.869  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  ✅ App bloqueável detectado: com.google.android.apps.wellbeing
+2025-11-17 05:46:20.870  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  🛡️ App protegido (não bloqueia): com.android.internal.emulation.pixel_9_pro_fold
+2025-11-17 05:46:20.871  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  ✅ App bloqueável detectado: com.google.android.dialer
+2025-11-17 05:46:20.871  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  ✅ App bloqueável detectado: com.android.bips
+2025-11-17 05:46:20.872  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  🛡️ App protegido (não bloqueia): com.android.internal.emulation.pixel_3
+2025-11-17 05:46:20.872  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  🛡️ App protegido (não bloqueia): com.android.internal.emulation.pixel_4
+2025-11-17 05:46:20.873  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  🛡️ App protegido (não bloqueia): com.android.internal.emulation.pixel_5
+2025-11-17 05:46:20.873  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  🛡️ App protegido (não bloqueia): com.android.internal.emulation.pixel_6
+2025-11-17 05:46:20.873  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  🛡️ App protegido (não bloqueia): com.android.internal.emulation.pixel_7
+2025-11-17 05:46:20.874  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  🛡️ App protegido (não bloqueia): com.android.internal.emulation.pixel_8
+2025-11-17 05:46:20.874  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  🛡️ App protegido (não bloqueia): com.android.internal.emulation.pixel_9
+2025-11-17 05:46:20.875  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  ✅ App bloqueável detectado: com.google.android.captiveportallogin
+2025-11-17 05:46:20.875  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  ✅ App bloqueável detectado: android.auto_generated_characteristics_rro
+2025-11-17 05:46:20.876  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  ✅ App bloqueável detectado: com.google.android.appsearch.apk
+2025-11-17 05:46:20.877  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  ✅ App bloqueável detectado: com.android.musicfx
+2025-11-17 05:46:20.878  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  🔒 Marcado para bloqueio: com.android.musicfx
+2025-11-17 05:46:20.878  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  ✅ App bloqueável detectado: com.google.android.apps.docs
+2025-11-17 05:46:20.879  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  ✅ App bloqueável detectado: com.google.android.apps.maps
+2025-11-17 05:46:20.880  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  ✅ App bloqueável detectado: com.google.android.modulemetadata
+2025-11-17 05:46:20.881  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  🛡️ App protegido (não bloqueia): com.android.internal.display.cutout.emulation.emu01
+2025-11-17 05:46:20.882  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  ✅ App bloqueável detectado: com.google.android.avatarpicker
+2025-11-17 05:46:20.882  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  🔒 Marcado para bloqueio: com.google.android.avatarpicker
+2025-11-17 05:46:20.883  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  ✅ App bloqueável detectado: com.google.android.markup
+2025-11-17 05:46:20.883  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  ✅ App bloqueável detectado: com.android.cellbroadcastreceiver
+2025-11-17 05:46:20.884  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  ✅ App bloqueável detectado: com.google.android.webview
+2025-11-17 05:46:20.885  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  ✅ App bloqueável detectado: com.google.android.networkstack
+2025-11-17 05:46:20.886  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  ✅ App bloqueável detectado: com.google.android.rkpdapp
+2025-11-17 05:46:20.887  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  ✅ App bloqueável detectado: com.google.android.contacts
+2025-11-17 05:46:20.887  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  🛡️ App protegido (não bloqueia): com.android.server.telecom
+2025-11-17 05:46:20.887  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  🛡️ App protegido (não bloqueia): com.android.keychain
+2025-11-17 05:46:20.888  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  ✅ App bloqueável detectado: com.android.server.telecom.auto_generated_rro_product__
+2025-11-17 05:46:20.889  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  ✅ App bloqueável detectado: com.android.phone.auto_generated_characteristics_rro
+2025-11-17 05:46:20.890  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  ✅ App bloqueável detectado: com.google.android.overlay.googleconfig
+2025-11-17 05:46:20.892  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  ✅ App bloqueável detectado: com.android.chrome
+2025-11-17 05:46:20.892  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  🔒 Marcado para bloqueio: com.android.chrome
+2025-11-17 05:46:20.893  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  ✅ App bloqueável detectado: com.android.bips.auto_generated_rro_product__
+2025-11-17 05:46:20.893  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  🛡️ App protegido (não bloqueia): com.google.android.packageinstaller
+2025-11-17 05:46:20.894  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  ✅ App bloqueável detectado: com.google.android.apps.customization.pixel
+2025-11-17 05:46:20.894  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  🛡️ App protegido (não bloqueia): com.google.android.gms
+2025-11-17 05:46:20.894  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  🛡️ App protegido (não bloqueia): com.google.android.gsf
+2025-11-17 05:46:20.895  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  ✅ App bloqueável detectado: com.google.android.nfc
+2025-11-17 05:46:20.896  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  ✅ App bloqueável detectado: com.google.android.tag
+2025-11-17 05:46:20.896  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  ✅ App bloqueável detectado: com.google.android.tts
+2025-11-17 05:46:20.897  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  ✅ App bloqueável detectado: com.google.android.overlay.permissioncontroller
+2025-11-17 05:46:20.899  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  ✅ App bloqueável detectado: com.google.android.googlesdksetup
+2025-11-17 05:46:20.900  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  ✅ App bloqueável detectado: com.android.calllogbackup
+2025-11-17 05:46:20.901  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  ✅ App bloqueável detectado: com.google.android.partnersetup
+2025-11-17 05:46:20.902  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  ✅ App bloqueável detectado: com.android.cameraextensions
+2025-11-17 05:46:20.902  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  🔒 Marcado para bloqueio: com.android.cameraextensions
+2025-11-17 05:46:20.902  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  ✅ App bloqueável detectado: com.android.localtransport
+2025-11-17 05:46:20.903  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  🛡️ App crítico do sistema detectado: com.google.android.apps.nexuslauncher
+2025-11-17 05:46:20.904  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  🛡️ App protegido (não bloqueia): com.google.android.apps.nexuslauncher
+2025-11-17 05:46:20.904  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  ✅ App bloqueável detectado: com.android.carrierdefaultapp
+2025-11-17 05:46:20.905  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  ✅ App bloqueável detectado: com.android.credentialmanager
+2025-11-17 05:46:20.906  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  ✅ App bloqueável detectado: com.android.theme.font.notoserifsource
+2025-11-17 05:46:20.907  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  ✅ App bloqueável detectado: com.android.DeviceAsWebcam
+2025-11-17 05:46:20.908  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  ✅ App bloqueável detectado: com.android.proxyhandler
+2025-11-17 05:46:20.909  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  ✅ App bloqueável detectado: com.google.android.safetycenter.resources
+2025-11-17 05:46:20.910  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  🛡️ App protegido (não bloqueia): com.android.internal.display.cutout.emulation.waterfall
+2025-11-17 05:46:20.910  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  ✅ App bloqueável detectado: com.android.intentresolver
+2025-11-17 05:46:20.912  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  🛡️ App crítico do sistema detectado: com.android.internal.systemui.navbar.transparent
+2025-11-17 05:46:20.912  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  🛡️ App protegido (não bloqueia): com.android.internal.systemui.navbar.transparent
+2025-11-17 05:46:20.912  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  🛡️ App crítico do sistema detectado: com.android.providers.contactkeys
+2025-11-17 05:46:20.912  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  🛡️ App protegido (não bloqueia): com.android.providers.contactkeys
+2025-11-17 05:46:20.913  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  ✅ App bloqueável detectado: com.google.android.connectivity.resources
+2025-11-17 05:46:20.914  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  🛡️ App crítico do sistema detectado: com.android.providers.contacts.auto_generated_rro_product__
+2025-11-17 05:46:20.914  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  🛡️ App protegido (não bloqueia): com.android.providers.contacts.auto_generated_rro_product__
+2025-11-17 05:46:20.914  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  ✅ App bloqueável detectado: com.google.android.feedback
+2025-11-17 05:46:20.916  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  ✅ App bloqueável detectado: com.google.android.printservice.recommendation
+2025-11-17 05:46:20.917  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  ✅ App bloqueável detectado: com.google.android.apps.photos
+2025-11-17 05:46:20.917  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  🔒 Marcado para bloqueio: com.google.android.apps.photos
+2025-11-17 05:46:20.917  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  ✅ App bloqueável detectado: com.google.android.calendar
+2025-11-17 05:46:20.918  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  ✅ App bloqueável detectado: com.android.managedprovisioning
+2025-11-17 05:46:20.919  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  ✅ App bloqueável detectado: com.android.soundpicker
+2025-11-17 05:46:20.919  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  🔒 Marcado para bloqueio: com.android.soundpicker
+2025-11-17 05:46:20.920  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  ✅ App bloqueável detectado: com.google.android.documentsui
+2025-11-17 05:46:20.921  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  🛡️ App crítico do sistema detectado: com.android.systemui.emulation.pixel_3a_xl
+2025-11-17 05:46:20.921  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  🛡️ App protegido (não bloqueia): com.android.systemui.emulation.pixel_3a_xl
+2025-11-17 05:46:20.921  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  🛡️ App crítico do sistema detectado: com.android.systemui.emulation.pixel_6_pro
+2025-11-17 05:46:20.921  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  🛡️ App protegido (não bloqueia): com.android.systemui.emulation.pixel_6_pro
+2025-11-17 05:46:20.921  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  🛡️ App crítico do sistema detectado: com.android.systemui.emulation.pixel_7_pro
+2025-11-17 05:46:20.921  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  🛡️ App protegido (não bloqueia): com.android.systemui.emulation.pixel_7_pro
+2025-11-17 05:46:20.922  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  🛡️ App crítico do sistema detectado: com.android.systemui.emulation.pixel_8_pro
+2025-11-17 05:46:20.922  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  🛡️ App protegido (não bloqueia): com.android.systemui.emulation.pixel_8_pro
+2025-11-17 05:46:20.922  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  🛡️ App crítico do sistema detectado: com.android.systemui.emulation.pixel_9_pro
+2025-11-17 05:46:20.922  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  🛡️ App protegido (não bloqueia): com.android.systemui.emulation.pixel_9_pro
+2025-11-17 05:46:20.923  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  ✅ App bloqueável detectado: com.google.android.accessibility.switchaccess
+2025-11-17 05:46:20.924  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  ✅ App bloqueável detectado: com.google.mainline.telemetry
+2025-11-17 05:46:20.925  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  ✅ App bloqueável detectado: com.android.carrierconfig.auto_generated_rro_product__
+2025-11-17 05:46:20.926  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  ✅ App bloqueável detectado: com.android.emulator.multidisplay
+2025-11-17 05:46:20.927  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  🔒 Marcado para bloqueio: com.android.emulator.multidisplay
+2025-11-17 05:46:20.927  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  ✅ App bloqueável detectado: com.android.devicediagnostics.auto_generated_rro_product__
+2025-11-17 05:46:20.928  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  ✅ App bloqueável detectado: com.android.devicediagnostics
+2025-11-17 05:46:20.929  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  ✅ App bloqueável detectado: com.google.android.overlay.largescreensettingsprovider
+2025-11-17 05:46:20.930  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  🛡️ App crítico do sistema detectado: com.android.providers.partnerbookmarks
+2025-11-17 05:46:20.930  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  🛡️ App protegido (não bloqueia): com.android.providers.partnerbookmarks
+2025-11-17 05:46:20.931  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  ✅ App bloqueável detectado: com.android.role.notes.enabled
+2025-11-17 05:46:20.932  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  ✅ App bloqueável detectado: com.android.wallpaper.livepicker
+2025-11-17 05:46:20.932  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  🔒 Marcado para bloqueio: com.android.wallpaper.livepicker
+2025-11-17 05:46:20.933  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  🛡️ App crítico do sistema detectado: com.android.providers.telephony.auto_generated_rro_product__
+2025-11-17 05:46:20.933  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  🛡️ App protegido (não bloqueia): com.android.providers.telephony.auto_generated_rro_product__
+2025-11-17 05:46:20.933  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  ✅ App bloqueável detectado: com.android.phone.auto_generated_rro_vendor__
+2025-11-17 05:46:20.934  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  ✅ App bloqueável detectado: com.google.mainline.adservices
+2025-11-17 05:46:20.935  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  ✅ App bloqueável detectado: com.android.imsserviceentitlement
+2025-11-17 05:46:20.936  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  🛡️ App protegido (não bloqueia): com.android.internal.emulation.pixel_9_pro_xl
+2025-11-17 05:46:20.936  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  ✅ App bloqueável detectado: com.google.android.healthconnect.controller
+2025-11-17 05:46:20.937  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  ✅ App bloqueável detectado: com.google.android.gms.supervision
+2025-11-17 05:46:20.938  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  🛡️ App protegido (não bloqueia): com.android.internal.emulation.pixel_2_xl
+2025-11-17 05:46:20.938  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  🛡️ App protegido (não bloqueia): com.android.internal.emulation.pixel_3_xl
+2025-11-17 05:46:20.939  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  🛡️ App protegido (não bloqueia): com.android.internal.emulation.pixel_4_xl
+2025-11-17 05:46:20.939  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  🛡️ App protegido (não bloqueia): com.android.internal.emulation.pixel_fold
+2025-11-17 05:46:20.940  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  ✅ App bloqueável detectado: com.android.storagemanager
+2025-11-17 05:46:20.940  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  ✅ App bloqueável detectado: com.android.bookmarkprovider
+2025-11-17 05:46:20.942  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  ✅ App bloqueável detectado: com.google.android.overlay.pixelconfigcommon
+2025-11-17 05:46:20.942  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  🛡️ App protegido (não bloqueia): com.android.settings
+2025-11-17 05:46:20.943  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  🛡️ App crítico do sistema detectado: com.android.systemui.accessibility.accessibilitymenu.auto_generated_rro_product__
+2025-11-17 05:46:20.943  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  🛡️ App protegido (não bloqueia): com.android.systemui.accessibility.accessibilitymenu.auto_generated_rro_product__
+2025-11-17 05:46:20.943  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  🛡️ App crítico do sistema detectado: com.android.systemui.emulation.pixel_3a
+2025-11-17 05:46:20.943  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  🛡️ App protegido (não bloqueia): com.android.systemui.emulation.pixel_3a
+2025-11-17 05:46:20.944  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  🛡️ App crítico do sistema detectado: com.android.systemui.emulation.pixel_4a
+2025-11-17 05:46:20.944  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  🛡️ App protegido (não bloqueia): com.android.systemui.emulation.pixel_4a
+2025-11-17 05:46:20.945  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  🛡️ App crítico do sistema detectado: com.android.systemui.emulation.pixel_6a
+2025-11-17 05:46:20.945  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  🛡️ App protegido (não bloqueia): com.android.systemui.emulation.pixel_6a
+2025-11-17 05:46:20.946  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  🛡️ App crítico do sistema detectado: com.android.systemui.emulation.pixel_7a
+2025-11-17 05:46:20.946  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  🛡️ App protegido (não bloqueia): com.android.systemui.emulation.pixel_7a
+2025-11-17 05:46:20.946  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  🛡️ App crítico do sistema detectado: com.android.systemui.emulation.pixel_8a
+2025-11-17 05:46:20.946  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  🛡️ App protegido (não bloqueia): com.android.systemui.emulation.pixel_8a
+2025-11-17 05:46:20.948  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  🛡️ App crítico do sistema detectado: com.android.systemui.emulation.pixel_9a
+2025-11-17 05:46:20.948  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  🛡️ App protegido (não bloqueia): com.android.systemui.emulation.pixel_9a
+2025-11-17 05:46:20.949  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  ✅ App bloqueável detectado: com.google.android.settings.intelligence
+2025-11-17 05:46:20.950  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  ✅ App bloqueável detectado: com.google.android.projection.gearhead
+2025-11-17 05:46:20.951  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  ✅ App bloqueável detectado: com.google.android.uwb.resources
+2025-11-17 05:46:20.952  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  ✅ App bloqueável detectado: com.android.cts.ctsshim
+2025-11-17 05:46:20.953  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  ✅ App bloqueável detectado: com.google.android.wifi.resources
+2025-11-17 05:46:20.953  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  ✅ App bloqueável detectado: com.google.android.wifi.dialog
+2025-11-17 05:46:20.954  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  ✅ App bloqueável detectado: com.google.android.telephony.satellite
+2025-11-17 05:46:20.955  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  ✅ App bloqueável detectado: com.android.wallpaper
+2025-11-17 05:46:20.956  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  ✅ App bloqueável detectado: com.android.microdroid.empty_payload
+2025-11-17 05:46:20.958  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  ✅ App bloqueável detectado: com.android.vpndialogs
+2025-11-17 05:46:20.959  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  ✅ App bloqueável detectado: com.google.android.apps.wallpaper
+2025-11-17 05:46:20.960  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  ✅ App bloqueável detectado: com.google.android.odad
+2025-11-17 05:46:20.961  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  🛡️ App protegido (não bloqueia): com.android.phone
+2025-11-17 05:46:20.961  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  🛡️ App protegido (não bloqueia): com.android.shell
+2025-11-17 05:46:20.962  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  ✅ App bloqueável detectado: com.android.wallpaperbackup
+2025-11-17 05:46:20.963  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  🛡️ App crítico do sistema detectado: com.android.providers.blockednumber
+2025-11-17 05:46:20.963  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  🛡️ App protegido (não bloqueia): com.android.providers.blockednumber
+2025-11-17 05:46:20.963  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  ✅ App bloqueável detectado: com.android.settings.auto_generated_rro_product__
+2025-11-17 05:46:20.964  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  🛡️ App protegido (não bloqueia): com.android.providers.userdictionary
+2025-11-17 05:46:20.965  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  🛡️ App crítico do sistema detectado: com.android.systemui.emulation.pixel_9_pro_xl
+2025-11-17 05:46:20.965  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  🛡️ App protegido (não bloqueia): com.android.systemui.emulation.pixel_9_pro_xl
+2025-11-17 05:46:20.965  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  🛡️ App protegido (não bloqueia): com.android.emergency
+2025-11-17 05:46:20.966  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  🛡️ App protegido (não bloqueia): com.android.companiondevicemanager.auto_generated_characteristics_rro
+2025-11-17 05:46:20.966  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  🛡️ App crítico do sistema detectado: com.android.internal.systemui.navbar.gestural
+2025-11-17 05:46:20.966  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  🛡️ App protegido (não bloqueia): com.android.internal.systemui.navbar.gestural
+2025-11-17 05:46:20.966  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  🛡️ App protegido (não bloqueia): com.android.location.fused
+2025-11-17 05:46:20.966  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  🛡️ App protegido (não bloqueia): com.android.systemui
+2025-11-17 05:46:20.967  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  ✅ App bloqueável detectado: com.google.android.ondevicepersonalization.services
+2025-11-17 05:46:20.968  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  ✅ App bloqueável detectado: com.google.android.apps.youtube.music
+2025-11-17 05:46:20.968  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  🔒 Marcado para bloqueio: com.google.android.apps.youtube.music
+2025-11-17 05:46:20.969  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  ✅ App bloqueável detectado: com.android.bluetoothmidiservice
+2025-11-17 05:46:20.970  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  ✅ App bloqueável detectado: com.google.android.uwb.resources.goldfish.overlay
+2025-11-17 05:46:20.971  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  ✅ App bloqueável detectado: com.android.traceur
+2025-11-17 05:46:20.974  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  ✅ App bloqueável detectado: com.android.storagemanager.auto_generated_rro_product__
+2025-11-17 05:46:20.976  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  ✅ App bloqueável detectado: com.google.android.cellbroadcastreceiver
+2025-11-17 05:46:20.977  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  ✅ App bloqueável detectado: com.android.phone.auto_generated_rro_product__
+2025-11-17 05:46:20.980  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  🛡️ App crítico do sistema detectado: com.android.systemui.emulation.pixel_9_pro_fold
+2025-11-17 05:46:20.980  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  🛡️ App protegido (não bloqueia): com.android.systemui.emulation.pixel_9_pro_fold
+2025-11-17 05:46:20.981  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  ✅ App bloqueável detectado: android.auto_generated_rro_product__
+2025-11-17 05:46:20.982  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  ✅ App bloqueável detectado: com.android.bluetooth
+2025-11-17 05:46:20.982  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  🛡️ App protegido (não bloqueia): com.android.providers.contacts
+2025-11-17 05:46:20.983  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  ✅ App bloqueável detectado: com.android.devicelockcontroller
+2025-11-17 05:46:20.984  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  ✅ App bloqueável detectado: com.google.android.photopicker
+2025-11-17 05:46:20.984  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  🔒 Marcado para bloqueio: com.google.android.photopicker
+2025-11-17 05:46:20.985  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  🛡️ App crítico do sistema detectado: com.google.android.inputmethod.latin
+2025-11-17 05:46:20.985  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  🛡️ App protegido (não bloqueia): com.google.android.inputmethod.latin
+2025-11-17 05:46:20.985  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  ✅ App bloqueável detectado: android.auto_generated_rro_vendor__
+2025-11-17 05:46:20.986  8054-8147  CategoryMapper          com.cdccreditsmart.app               D  ✅ App bloqueável detectado: com.google.android.apps.restore
+2025-11-17 05:46:20.986  8054-8147  CategoryMapper          com.cdccreditsmart.app               I  📊 Total de apps marcados para bloqueio: 14
+2025-11-17 05:46:20.987  8054-8147  AppBlockingManager      com.cdccreditsmart.app               D  💾 Pacotes bloqueados salvos: 14 apps
+2025-11-17 05:46:21.005  8054-8147  AppBlockingManager      com.cdccreditsmart.app               I  🎯 BLOQUEIO PROGRESSIVO + OVERLAY UNIVERSAL
+2025-11-17 05:46:21.005  8054-8147  AppBlockingManager      com.cdccreditsmart.app               I     1️⃣ Apps bloqueados via setPackagesSuspended()
+2025-11-17 05:46:21.005  8054-8147  AppBlockingManager      com.cdccreditsmart.app               I     2️⃣ Overlay em TODOS os apps via BlockedAppInterceptor
+2025-11-17 05:46:21.021  8054-8147  AppBlockingManager      com.cdccreditsmart.app               I  ✅ 12 apps bloqueados
+2025-11-17 05:46:21.022  8054-8147  AppBlockingManager      com.cdccreditsmart.app               W    ⚠️ Falhou ao bloquear: com.android.vending
+2025-11-17 05:46:21.022  8054-8147  AppBlockingManager      com.cdccreditsmart.app               W    ⚠️ Falhou ao bloquear: com.android.emulator.multidisplay
+2025-11-17 05:46:21.055  8054-8147  AppBlockingManager      com.cdccreditsmart.app               I  ✅ 235 apps desbloqueados
+2025-11-17 05:46:21.055  8054-8147  AppBlockingManager      com.cdccreditsmart.app               D  💾 Estado de bloqueio salvo: level=2, days=0, reason=Bloqueio manual forçado para nível 2 pelo administ
+2025-11-17 05:46:21.056  8054-8147  AppBlockingManager      com.cdccreditsmart.app               W  Samsung Knox não disponível - pulando atualização de lockscreen
+2025-11-17 05:46:21.056  8054-8147  MdmCommandReceiver      com.cdccreditsmart.app               I  ✅ Bloqueio aplicado - Success: true, Apps: 12
+2025-11-17 05:46:21.084  8054-8147  SecureTokenStorage      com.cdccreditsmart.app               D  ⚠️ Usando Serial Number para MDM (IMEI indisponível): AFD8YG...
+2025-11-17 05:46:21.084  8054-8147  MdmCommandReceiver      com.cdccreditsmart.app               D  📡 Enviando response usando identifier: AFD8YG79****
+2025-11-17 05:46:21.114  8054-8282  okhttp.OkHttpClient     com.cdccreditsmart.app               I  --> POST https://cdccreditsmart.com/api/apk/device/AFD8YG79/command-response
+2025-11-17 05:46:21.118  8054-8282  okhttp.OkHttpClient     com.cdccreditsmart.app               I  Content-Type: application/json; charset=UTF-8
+2025-11-17 05:46:21.118  8054-8282  okhttp.OkHttpClient     com.cdccreditsmart.app               I  Content-Length: 166
+2025-11-17 05:46:21.118  8054-8282  okhttp.OkHttpClient     com.cdccreditsmart.app               I  {"commandId":"2c4a4184-7e32-460e-884b-111aa29c65d3","status":"completed","response":{"success":true,"blockedAppsCount":12,"appliedLevel":2,"timestamp":1763369181106}}
+2025-11-17 05:46:21.118  8054-8282  okhttp.OkHttpClient     com.cdccreditsmart.app               I  --> END POST (166-byte body)
+2025-11-17 05:46:21.526  8054-8282  okhttp.OkHttpClient     com.cdccreditsmart.app               I  <-- 200 https://cdccreditsmart.com/api/apk/device/AFD8YG79/command-response (407ms)
+2025-11-17 05:46:21.526  8054-8282  okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-credentials: true
+2025-11-17 05:46:21.526  8054-8282  okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-headers: Origin, X-Requested-With, Content-Type, Accept, Authorization, x-client-key, x-client-token, x-client-secret, cache-control
+2025-11-17 05:46:21.526  8054-8282  okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-methods: GET, POST, PUT, PATCH, DELETE, OPTIONS
+2025-11-17 05:46:21.526  8054-8282  okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-origin: *
+2025-11-17 05:46:21.526  8054-8282  okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-max-age: 86400
+2025-11-17 05:46:21.526  8054-8282  okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-length: 59
+2025-11-17 05:46:21.527  8054-8282  okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-security-policy: default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://replit.com; style-src 'self' 'unsafe-inline' https://replit.com; img-src 'self' data: https:; font-src 'self' data: https://replit.com; connect-src 'self';
+2025-11-17 05:46:21.527  8054-8282  okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-type: application/json; charset=utf-8
+2025-11-17 05:46:21.527  8054-8282  okhttp.OkHttpClient     com.cdccreditsmart.app               I  date: Mon, 17 Nov 2025 08:46:21 GMT
+2025-11-17 05:46:21.527  8054-8282  okhttp.OkHttpClient     com.cdccreditsmart.app               I  etag: W/"3b-9gCHwmPb8p6jYm5WExczQnIIdAU"
+2025-11-17 05:46:21.527  8054-8282  okhttp.OkHttpClient     com.cdccreditsmart.app               I  permissions-policy: geolocation=(), microphone=(), camera=()
+2025-11-17 05:46:21.527  8054-8282  okhttp.OkHttpClient     com.cdccreditsmart.app               I  referrer-policy: strict-origin-when-cross-origin
+2025-11-17 05:46:21.527  8054-8282  okhttp.OkHttpClient     com.cdccreditsmart.app               I  server: Google Frontend
+2025-11-17 05:46:21.527  8054-8282  okhttp.OkHttpClient     com.cdccreditsmart.app               I  strict-transport-security: max-age=63072000; includeSubDomains
+2025-11-17 05:46:21.527  8054-8282  okhttp.OkHttpClient     com.cdccreditsmart.app               I  strict-transport-security: max-age=31536000; includeSubDomains
+2025-11-17 05:46:21.527  8054-8282  okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-anti-fraud-protection: active
+2025-11-17 05:46:21.527  8054-8282  okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-certificate-pinning-enabled: false
+2025-11-17 05:46:21.527  8054-8282  okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-certificate-pinning-status: disabled-for-stability
+2025-11-17 05:46:21.527  8054-8282  okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-cloud-trace-context: a6390c5867a1cff644378b732767419d
+2025-11-17 05:46:21.528  8054-8282  okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-content-type-options: nosniff
+2025-11-17 05:46:21.528  8054-8282  okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-financial-data-protection: enabled
+2025-11-17 05:46:21.528  8054-8282  okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-frame-options: DENY
+2025-11-17 05:46:21.528  8054-8282  okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-transaction-security-level: maximum
+2025-11-17 05:46:21.528  8054-8282  okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-xss-protection: 1; mode=block
+2025-11-17 05:46:21.528  8054-8282  okhttp.OkHttpClient     com.cdccreditsmart.app               I  via: 1.1 google
+2025-11-17 05:46:21.528  8054-8282  okhttp.OkHttpClient     com.cdccreditsmart.app               I  alt-svc: h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
+2025-11-17 05:46:21.533  8054-8282  okhttp.OkHttpClient     com.cdccreditsmart.app               I  {"success":true,"message":"Resposta do comando registrada"}
+2025-11-17 05:46:21.534  8054-8282  okhttp.OkHttpClient     com.cdccreditsmart.app               I  <-- END HTTP (59-byte body)
+2025-11-17 05:46:21.538  8054-8147  MdmCommandReceiver      com.cdccreditsmart.app               I  ✅ Response enviado para comando 2c4a4184-7e32-460e-884b-111aa29c65d3: completed
+2025-11-17 05:46:21.538  8054-8147  MdmCommandReceiver      com.cdccreditsmart.app               D  📊 Fetch duration: 2492ms
+2025-11-17 05:46:21.538  8054-8147  MdmCommandReceiver      com.cdccreditsmart.app               D  ⏳ [Polling #3] Aguardando 27508ms até próxima verificação...
+2025-11-17 05:46:31.828  8054-8054  ViewRootImpl            com.cdccreditsmart.app               D  Skipping stats log for color mode
+2025-11-17 05:46:31.831  8054-8054  MainActivity            com.cdccreditsmart.app               D  ========== NEW INTENT RECEIVED ==========
+2025-11-17 05:46:32.029  8054-8054  InsetsController        com.cdccreditsmart.app               D  hide(ime(), fromIme=false)
+2025-11-17 05:46:32.030  8054-8054  ImeTracker              com.cdccreditsmart.app               I  com.cdccreditsmart.app:24938ba3: onCancelled at PHASE_CLIENT_ALREADY_HIDDEN
+2025-11-17 05:46:34.653  8054-8054  VRI[MainActivity]       com.cdccreditsmart.app               D  visibilityChanged oldVisibility=true newVisibility=false
+2025-11-17 05:46:34.696  8054-8054  WindowOnBackDispatcher  com.cdccreditsmart.app               W  sendCancelIfRunning: isInProgress=false callback=androidx.activity.OnBackPressedDispatcher$Api34Impl$createOnBackAnimationCallback$1@9b0e5bb
+2025-11-17 05:46:36.732  8054-8365  FA                      com.cdccreditsmart.app               I  Application backgrounded at: timestamp_millis: 1763369194730
+2025-11-17 05:46:48.334  8054-8054  WebSocketManager        com.cdccreditsmart.app               D  Heartbeat ping sent
+2025-11-17 05:46:48.501  8054-8297  WebSocketManager        com.cdccreditsmart.app               D  Message received: {"type":"pong","timestamp":"2025-11-17T08:46:48.424Z"}...
+2025-11-17 05:46:48.501  8054-8297  WebSocketManager        com.cdccreditsmart.app               D  Received message type: pong
+2025-11-17 05:46:48.501  8054-8297  WebSocketManager        com.cdccreditsmart.app               D  Pong received
+2025-11-17 05:46:49.042  8054-8054  WebSocketManager        com.cdccreditsmart.app               D  Heartbeat ping sent
+2025-11-17 05:46:49.047  8054-8147  MdmCommandReceiver      com.cdccreditsmart.app               D  🔍 [Polling #4] Verificando comandos pendentes...
+2025-11-17 05:46:49.049  8054-8147  SecureTokenStorage      com.cdccreditsmart.app               D  ⚠️ Usando Serial Number para MDM (IMEI indisponível): AFD8YG...
+2025-11-17 05:46:49.049  8054-8147  MdmCommandReceiver      com.cdccreditsmart.app               D  🔍 Buscando comandos pendentes com identifier: AFD8YG79...
+2025-11-17 05:46:49.051  8054-8282  okhttp.OkHttpClient     com.cdccreditsmart.app               I  --> GET https://cdccreditsmart.com/api/apk/device/AFD8YG79/commands
+2025-11-17 05:46:49.051  8054-8282  okhttp.OkHttpClient     com.cdccreditsmart.app               I  --> END GET
+2025-11-17 05:46:49.204  8054-8300  WebSocketManager        com.cdccreditsmart.app               D  Message received: {"type":"pong","timestamp":"2025-11-17T08:46:49.132Z"}...
+2025-11-17 05:46:49.204  8054-8300  WebSocketManager        com.cdccreditsmart.app               D  Received message type: pong
+2025-11-17 05:46:49.204  8054-8300  WebSocketManager        com.cdccreditsmart.app               D  Pong received
+2025-11-17 05:46:49.542  8054-8282  okhttp.OkHttpClient     com.cdccreditsmart.app               I  <-- 200 https://cdccreditsmart.com/api/apk/device/AFD8YG79/commands (491ms)
+2025-11-17 05:46:49.543  8054-8282  okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-credentials: true
+2025-11-17 05:46:49.543  8054-8282  okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-headers: Origin, X-Requested-With, Content-Type, Accept, Authorization, x-client-key, x-client-token, x-client-secret, cache-control
+2025-11-17 05:46:49.543  8054-8282  okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-methods: GET, POST, PUT, PATCH, DELETE, OPTIONS
+2025-11-17 05:46:49.543  8054-8282  okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-origin: *
+2025-11-17 05:46:49.543  8054-8282  okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-max-age: 86400
+2025-11-17 05:46:49.543  8054-8282  okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-length: 105
+2025-11-17 05:46:49.543  8054-8282  okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-security-policy: default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://replit.com; style-src 'self' 'unsafe-inline' https://replit.com; img-src 'self' data: https:; font-src 'self' data: https://replit.com; connect-src 'self';
+2025-11-17 05:46:49.543  8054-8282  okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-type: application/json; charset=utf-8
+2025-11-17 05:46:49.543  8054-8282  okhttp.OkHttpClient     com.cdccreditsmart.app               I  date: Mon, 17 Nov 2025 08:46:49 GMT
+2025-11-17 05:46:49.543  8054-8282  okhttp.OkHttpClient     com.cdccreditsmart.app               I  etag: W/"69-H5UyKQcmxNYYA3rh8nPao1qiPuA"
+2025-11-17 05:46:49.543  8054-8282  okhttp.OkHttpClient     com.cdccreditsmart.app               I  permissions-policy: geolocation=(), microphone=(), camera=()
+2025-11-17 05:46:49.543  8054-8282  okhttp.OkHttpClient     com.cdccreditsmart.app               I  referrer-policy: strict-origin-when-cross-origin
+2025-11-17 05:46:49.543  8054-8282  okhttp.OkHttpClient     com.cdccreditsmart.app               I  server: Google Frontend
+2025-11-17 05:46:49.543  8054-8282  okhttp.OkHttpClient     com.cdccreditsmart.app               I  strict-transport-security: max-age=63072000; includeSubDomains
+2025-11-17 05:46:49.543  8054-8282  okhttp.OkHttpClient     com.cdccreditsmart.app               I  strict-transport-security: max-age=31536000; includeSubDomains
+2025-11-17 05:46:49.543  8054-8282  okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-anti-fraud-protection: active
+2025-11-17 05:46:49.544  8054-8282  okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-certificate-pinning-enabled: false
+2025-11-17 05:46:49.544  8054-8282  okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-certificate-pinning-status: disabled-for-stability
+2025-11-17 05:46:49.544  8054-8282  okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-cloud-trace-context: 2472b6257b452da52e3e1b890645c3d0;o=1
+2025-11-17 05:46:49.544  8054-8282  okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-content-type-options: nosniff
+2025-11-17 05:46:49.544  8054-8282  okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-financial-data-protection: enabled
+2025-11-17 05:46:49.544  8054-8282  okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-frame-options: DENY
+2025-11-17 05:46:49.544  8054-8282  okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-transaction-security-level: maximum
+2025-11-17 05:46:49.544  8054-8282  okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-xss-protection: 1; mode=block
+2025-11-17 05:46:49.544  8054-8282  okhttp.OkHttpClient     com.cdccreditsmart.app               I  via: 1.1 google
+2025-11-17 05:46:49.544  8054-8282  okhttp.OkHttpClient     com.cdccreditsmart.app               I  alt-svc: h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
+2025-11-17 05:46:49.544  8054-8282  okhttp.OkHttpClient     com.cdccreditsmart.app               I  {"deviceId":"device_1763345744228_4fyqpmlmh75","serialNumber":"AFD8YG79","commandsCount":0,"commands":[]}
+2025-11-17 05:46:49.544  8054-8282  okhttp.OkHttpClient     com.cdccreditsmart.app               I  <-- END HTTP (105-byte body)
+2025-11-17 05:46:49.545  8054-8147  MdmCommandReceiver      com.cdccreditsmart.app               D  ✅ Nenhum comando pendente
+2025-11-17 05:46:49.545  8054-8147  MdmCommandReceiver      com.cdccreditsmart.app               D  📊 Fetch duration: 496ms
+2025-11-17 05:46:49.545  8054-8147  MdmCommandReceiver      com.cdccreditsmart.app               D  ⏳ [Polling #4] Aguardando 29502ms até próxima verificação...
+2025-11-17 05:46:54.242  8054-8054  ViewRootImpl            com.cdccreditsmart.app               D  Skipping stats log for color mode
+2025-11-17 05:46:54.243  8054-8054  MainActivity            com.cdccreditsmart.app               D  ========== NEW INTENT RECEIVED ==========
+2025-11-17 05:46:54.430  8054-8054  InsetsController        com.cdccreditsmart.app               D  hide(ime(), fromIme=false)
+2025-11-17 05:46:54.430  8054-8054  ImeTracker              com.cdccreditsmart.app               I  com.cdccreditsmart.app:664ee5e9: onCancelled at PHASE_CLIENT_ALREADY_HIDDEN
+2025-11-17 05:46:56.352  8054-8054  VRI[MainActivity]       com.cdccreditsmart.app               D  visibilityChanged oldVisibility=true newVisibility=false
+2025-11-17 05:46:56.414  8054-8054  WindowOnBackDispatcher  com.cdccreditsmart.app               W  sendCancelIfRunning: isInProgress=false callback=androidx.activity.OnBackPressedDispatcher$Api34Impl$createOnBackAnimationCallback$1@9b0e5bb
+2025-11-17 05:46:58.430  8054-8365  FA                      com.cdccreditsmart.app               I  Application backgrounded at: timesta
