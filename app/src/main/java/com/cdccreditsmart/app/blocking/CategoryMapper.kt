@@ -142,6 +142,12 @@ class CategoryMapper(private val context: Context) {
     }
     
     private fun shouldBlockByCategory(app: ApplicationInfo, packageName: String, categories: List<String>): Boolean {
+        // REGRA FUNDAMENTAL: Apenas bloquear apps instalados pelo USUÁRIO
+        // NÃO bloquear apps de sistema (exceto Play Store que é exceção)
+        if (!isUserInstalledApp(app, packageName)) {
+            return false
+        }
+        
         for (category in categories) {
             when (category) {
                 "photos", "gallery" -> {
@@ -186,6 +192,28 @@ class CategoryMapper(private val context: Context) {
             }
         }
         return false
+    }
+    
+    private fun isUserInstalledApp(app: ApplicationInfo, packageName: String): Boolean {
+        // Play Store é exceção: mesmo sendo "sistema" em alguns devices, queremos bloqueá-la
+        if (packageName == "com.android.vending") {
+            return true
+        }
+        
+        // Verificar se é app de sistema
+        val isSystemApp = (app.flags and ApplicationInfo.FLAG_SYSTEM) != 0
+        val isUpdatedSystemApp = (app.flags and ApplicationInfo.FLAG_UPDATED_SYSTEM_APP) != 0
+        
+        // Apps de sistema NÃO são considerados "instalados pelo usuário"
+        if (isSystemApp && !isUpdatedSystemApp) {
+            Log.d(TAG, "⛔ App de sistema ignorado: $packageName")
+            return false
+        }
+        
+        // Apps atualizados do sistema (ex: Chrome atualizado) SÃO bloqueáveis
+        // Apps instalados pelo usuário (Play Store/ADB) SÃO bloqueáveis
+        Log.d(TAG, "✅ App instalado pelo usuário detectado: $packageName")
+        return true
     }
     
     private fun isBankingApp(packageName: String): Boolean {
