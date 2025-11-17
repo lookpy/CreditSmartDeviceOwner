@@ -195,24 +195,19 @@ class CategoryMapper(private val context: Context) {
     }
     
     private fun isUserInstalledApp(app: ApplicationInfo, packageName: String): Boolean {
-        // Play Store é exceção: mesmo sendo "sistema" em alguns devices, queremos bloqueá-la
-        if (packageName == "com.android.vending") {
-            return true
-        }
+        // NOVA LÓGICA: Bloquear apps pré-instalados QUE NÃO SÃO ESSENCIAIS
+        // Exemplos bloqueáveis: YouTube, Chrome, Google Fotos (pré-instalados mas não críticos)
+        // Exemplos protegidos: SystemUI, Providers, Telefone, SMS (essenciais)
         
-        // Verificar se é app de sistema
-        val isSystemApp = (app.flags and ApplicationInfo.FLAG_SYSTEM) != 0
-        val isUpdatedSystemApp = (app.flags and ApplicationInfo.FLAG_UPDATED_SYSTEM_APP) != 0
+        // A proteção de apps essenciais já é feita por:
+        // 1. CRITICAL_SYSTEM_PACKAGES (linha 13-40)
+        // 2. PROTECTED_APPS (linha 42-49)
+        // 3. isCriticalSystemApp() (linha 121-142)
         
-        // Apps de sistema NÃO são considerados "instalados pelo usuário"
-        if (isSystemApp && !isUpdatedSystemApp) {
-            Log.d(TAG, "⛔ App de sistema ignorado: $packageName")
-            return false
-        }
+        // Portanto, podemos permitir que QUALQUER app que passou por isProtectedApp() seja bloqueável
+        // incluindo apps pré-instalados como YouTube, Chrome, Google Fotos
         
-        // Apps atualizados do sistema (ex: Chrome atualizado) SÃO bloqueáveis
-        // Apps instalados pelo usuário (Play Store/ADB) SÃO bloqueáveis
-        Log.d(TAG, "✅ App instalado pelo usuário detectado: $packageName")
+        Log.d(TAG, "✅ App bloqueável detectado: $packageName")
         return true
     }
     

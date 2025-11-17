@@ -1,45 +1,58 @@
-# ✅ Filtro Inteligente - Apenas Apps do Usuário
+# ✅ Filtro Inteligente - Apps do Usuário + Apps Pré-Instalados
 
 ## 🎯 Problema Resolvido
 
-**ANTES:** O sistema bloqueava **TODOS** os apps que correspondiam às categorias, incluindo apps **essenciais do sistema Android**:
-- ❌ `com.android.mms.service` (Serviço de SMS/MMS)
-- ❌ `com.google.android.cellbroadcastservice` (Alertas de emergência)
-- ❌ `com.google.android.networkstack.tethering` (Rede do sistema)
-- ❌ `com.android.dynsystem` (Sistema Android)
-- ❌ E centenas de outros apps críticos do sistema
+**VERSÃO 1 (ERRO):** O sistema bloqueava **TODOS** os apps incluindo essenciais:
+- ❌ `com.android.mms.service` (SMS/MMS essencial)
+- ❌ `com.google.android.cellbroadcastservice` (Emergência)
+- ❌ Apps críticos do sistema
 
-**DEPOIS:** Sistema bloqueia **APENAS**:
+**VERSÃO 2 (INCOMPLETO):** Sistema bloqueava apenas apps do usuário:
+- ✅ Apps da Play Store
+- ✅ Apps instalados via ADB
+- ❌ **YouTube, Chrome, Google Fotos (pré-instalados) NÃO eram bloqueados**
+
+**VERSÃO 3 (CORRETO - ATUAL):** Sistema bloqueia:
 - ✅ Apps baixados da **Play Store** pelo usuário
 - ✅ Apps instalados via **ADB** (manual)
-- ✅ Apps **atualizados do sistema** (ex: Chrome atualizado via Play Store)
+- ✅ Apps **pré-instalados** (YouTube, Chrome, Google Fotos, Gmail, Maps, etc.)
+- 🛡️ **MAS protege apps essenciais** (SystemUI, Providers, Telefone, SMS)
 
 ---
 
 ## 🔧 Mudança Implementada
 
-### **CategoryMapper.kt - Nova Função `isUserInstalledApp()`**
+### **CategoryMapper.kt - Função `isUserInstalledApp()` Atualizada**
 
+**VERSÃO ANTERIOR (INCOMPLETA):**
 ```kotlin
 private fun isUserInstalledApp(app: ApplicationInfo, packageName: String): Boolean {
-    // Play Store é exceção: mesmo sendo "sistema" em alguns devices, queremos bloqueá-la
-    if (packageName == "com.android.vending") {
-        return true
-    }
-    
-    // Verificar se é app de sistema
     val isSystemApp = (app.flags and ApplicationInfo.FLAG_SYSTEM) != 0
     val isUpdatedSystemApp = (app.flags and ApplicationInfo.FLAG_UPDATED_SYSTEM_APP) != 0
     
-    // Apps de sistema NÃO são considerados "instalados pelo usuário"
+    // ❌ PROBLEMA: Bloqueava apps de sistema pré-instalados (YouTube, Chrome)
     if (isSystemApp && !isUpdatedSystemApp) {
-        Log.d(TAG, "⛔ App de sistema ignorado: $packageName")
-        return false
+        return false  // NÃO bloqueável
     }
     
-    // Apps atualizados do sistema (ex: Chrome atualizado) SÃO bloqueáveis
-    // Apps instalados pelo usuário (Play Store/ADB) SÃO bloqueáveis
-    Log.d(TAG, "✅ App instalado pelo usuário detectado: $packageName")
+    return true
+}
+```
+
+**VERSÃO ATUAL (CORRIGIDA):**
+```kotlin
+private fun isUserInstalledApp(app: ApplicationInfo, packageName: String): Boolean {
+    // NOVA LÓGICA: Bloquear apps pré-instalados QUE NÃO SÃO ESSENCIAIS
+    // Exemplos bloqueáveis: YouTube, Chrome, Google Fotos (pré-instalados mas não críticos)
+    // Exemplos protegidos: SystemUI, Providers, Telefone, SMS (essenciais)
+    
+    // A proteção de apps essenciais já é feita por:
+    // 1. CRITICAL_SYSTEM_PACKAGES (linha 13-40)
+    // 2. PROTECTED_APPS (linha 42-49)
+    // 3. isCriticalSystemApp() (linha 121-142)
+    
+    // ✅ Permite bloquear QUALQUER app que passou por isProtectedApp()
+    // incluindo apps pré-instalados como YouTube, Chrome, Google Fotos
     return true
 }
 ```
