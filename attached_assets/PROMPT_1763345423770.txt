@@ -1,0 +1,640 @@
+# 🔄 Fluxo de Auto-Conexão Inteligente do APK
+
+## 📋 Visão Geral
+
+O APK tenta se conectar automaticamente ao servidor usando o **IMEI do aparelho**. Somente pede ativação manual se o dispositivo não estiver cadastrado.
+
+---
+
+## 🚀 Fluxo Completo
+
+```
+┌─────────────────┐
+│  APK Abre       │
+└────────┬────────┘
+         │
+         v
+┌─────────────────────────────┐
+│ 1. Buscar IMEI do Aparelho  │
+│    val imei = getDeviceImei()│
+└────────┬────────────────────┘
+         │
+         v
+┌──────────────────────────────────────────┐
+│ 2. Tentar Auto-Discovery                 │
+│    GET /api/apk/discover/{imei}          │
+└────────┬─────────────────────────────────┘
+         │
+         ├─────── 200 OK ─────────┐
+         │                        │
+         │                        v
+         │              ┌──────────────────────┐
+         │              │ ✅ SUCESSO           │
+         │              │ Dispositivo Encontrado│
+         │              └─────────┬────────────┘
+         │                        │
+         │                        v
+         │              ┌──────────────────────┐
+         │              │ 3. Salvar Dados      │
+         │              │ - deviceId           │
+         │              │ - serialNumber       │
+         │              │ - imei               │
+         │              │ - customer           │
+         │              └─────────┬────────────┘
+         │                        │
+         │                        v
+         │              ┌──────────────────────┐
+         │              │ 4. Conectar          │
+         │              │ Automaticamente      │
+         │              │ (sem pedir ativação) │
+         │              └─────────┬────────────┘
+         │                        │
+         │                        v
+         │              ┌──────────────────────┐
+         │              │ 5. Iniciar Polling   │
+         │              │ de Comandos MDM      │
+         │              └──────────────────────┘
+         │
+         │
+         └─────── 404 Not Found ───┐
+                                   │
+                                   v
+                         ┌──────────────────────┐
+                         │ ❌ NÃO ENCONTRADO    │
+                         │ Dispositivo não      │
+                         │ cadastrado           │
+                         └─────────┬────────────┘
+                                   │
+                                   v
+                         ┌──────────────────────┐
+                         │ 6. Mostrar Tela de   │
+                         │ Ativação Manual      │
+                         │ - Pedir código       │
+                         │ - Ou QR Code         │
+                         └──────────────────────┘
+```
+
+---
+
+## 📝 Implementação em Kotlin
+
+### **Passo 1: Ao Abrir o APK (MainActivity/SplashActivity)**
+
+```kotlin
+class SplashActivity : AppCompatActivity() {
+    
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        
+        // Tentar auto-conexão
+        lifecycleScope.launch {
+            tryAutoConnect()
+        }
+    }
+    
+    private suspend fun tryAutoConnect() {
+        try {
+            // 1. Buscar IMEI do aparelho
+            val imei = getDeviceImei()
+            
+            if (imei.isNullOrEmpty()) {
+                Log.e("AutoConnect", "Não foi possível obter IMEI do aparelho")
+                showActivationScreen()
+                return
+            }
+            
+            Log.d("AutoConnect", "🔍 Tentando auto-discovery com IMEI: $imei")
+            
+            // 2. Fazer auto-discovery no servidor
+            val response = apiService.discover(imei)
+            
+            if (response.isSuccessful && response.body()?.success == true) {
+                val data = response.body()!!
+                
+                Log.d("AutoConnect", "✅ Dispositivo encontrado: ${data.device.name}")
+                
+                // 3. Salvar informações localmente
+                saveDeviceInfo(data)
+                
+                // 4. Ir direto para a tela principal (conectado)
+                goToMainScreen()
+                
+            } else {
+                Log.w("AutoConnect", "❌ Dispositivo não cadastrado (404)")
+                showActivationScreen()
+            }
+            
+        } catch (e: Exception) {
+            Log.e("AutoConnect", "❌ Erro no auto-connect: ${e.message}")
+            showActivationScreen()
+        }
+    }
+    
+    private fun getDeviceImei(): String? {
+        return try {
+            val telephonyManager = getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
+            
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                telephonyManager.imei
+            } else {
+                @Suppress("DEPRECATION")
+                telephonyManager.deviceId
+            }
+        } catch (e: Exception) {
+            Log.e("AutoConnect", "Erro ao obter IMEI: ${e.message}")
+            null
+        }
+    }
+    
+    private fun saveDeviceInfo(data: DiscoveryResponse) {
+        val prefs = getSharedPreferences("device_config", Context.MODE_PRIVATE)
+        prefs.edit().apply {
+            putString("device_id", data.device.id)
+            putString("device_name", data.device.name)
+            putString("serial_number", data.device.serialNumber)
+            putString("imei", data.device.imei)
+            putString("customer_name", data.customer?.name)
+            putString("customer_cpf", data.customer?.cpf)
+            putBoolean("is_activated", true)
+            apply()
+        }
+    }
+    
+    private fun goToMainScreen() {
+        startActivity(Intent(this, MainActivity::class.java))
+        finish()
+    }
+    
+    private fun showActivationScreen() {
+        startActivity(Intent(this, ActivationActivity::class.java))
+        finish()
+    }
+}
+```
+
+---
+
+### **Passo 2: Retrofit API Interface**
+
+```kotlin
+interface ApiService {
+    
+    // Auto-discovery: buscar dispositivo por IMEI
+    @GET("api/apk/discover/{imei}")
+    suspend fun discover(
+        @Path("imei") imei: String
+    ): Response<DiscoveryResponse>
+    
+    // Buscar comandos MDM usando IMEI
+    @GET("api/apk/device/{imei}/commands")
+    suspend fun getCommands(
+        @Path("imei") imei: String
+    ): Response<CommandsResponse>
+    
+    // Responder comando usando IMEI
+    @POST("api/apk/device/{imei}/command-response")
+    suspend fun sendCommandResponse(
+        @Path("imei") imei: String,
+        @Body response: CommandResponse
+    ): Response<ApiResponse>
+}
+```
+
+---
+
+### **Passo 3: Data Classes**
+
+```kotlin
+data class DiscoveryResponse(
+    val success: Boolean,
+    val device: DeviceInfo,
+    val customer: CustomerInfo?,
+    val connection: ConnectionInfo
+)
+
+data class DeviceInfo(
+    val id: String,
+    val name: String,
+    val serialNumber: String,
+    val imei: String,
+    val imeiList: List<String>?,
+    val model: String?,
+    val brand: String?,
+    val status: String,
+    val isBlocked: Boolean,
+    val blockReason: String?
+)
+
+data class CustomerInfo(
+    val id: String,
+    val name: String,
+    val cpf: String,
+    val phone: String?
+)
+
+data class ConnectionInfo(
+    val useImei: String,
+    val useSerialNumber: String,
+    val useDeviceId: String
+)
+```
+
+---
+
+## 🔐 Permissões Necessárias (AndroidManifest.xml)
+
+```xml
+<!-- Permissão para ler IMEI -->
+<uses-permission android:name="android.permission.READ_PHONE_STATE" />
+
+<!-- Para Android 10+ -->
+<uses-permission android:name="android.permission.READ_PRIVILEGED_PHONE_STATE" 
+    tools:ignore="ProtectedPermissions" />
+```
+
+---
+
+## 🎯 Vantagens deste Fluxo
+
+| Vantagem | Descrição |
+|----------|-----------|
+| **🚀 Zero Configuração** | Se o aparelho já está cadastrado, conecta automaticamente |
+| **🔄 Auto-Reconexão** | Após reset de fábrica, reconecta sozinho usando o IMEI |
+| **🎯 UX Perfeita** | Usuário não precisa digitar nada se já cadastrado |
+| **🔒 Seguro** | IMEI é único e imutável do hardware |
+| **📱 Inteligente** | Fallback para tela de ativação se não cadastrado |
+
+---
+
+## 📊 Endpoints Disponíveis
+
+| Endpoint | Método | Descrição |
+|----------|--------|-----------|
+| `/api/apk/discover/{imei}` | GET | Auto-discovery por IMEI |
+| `/api/apk/device/{imei}/commands` | GET | Buscar comandos MDM |
+| `/api/apk/device/{imei}/command-response` | POST | Responder comando |
+
+**OBS:** Todos os endpoints aceitam **IMEI**, **Serial Number** ou **Device ID** como identificador.
+
+---
+
+## ✅ Checklist de Implementação
+
+- [ ] Implementar `getDeviceImei()` para buscar IMEI do aparelho
+- [ ] Adicionar permissões READ_PHONE_STATE no AndroidManifest
+- [ ] Criar `tryAutoConnect()` no SplashActivity
+- [ ] Implementar endpoint `discover()` no ApiService
+- [ ] Criar data classes (DiscoveryResponse, DeviceInfo, etc)
+- [ ] Salvar dados em SharedPreferences após sucesso
+- [ ] Implementar fallback para tela de ativação (404)
+- [ ] Testar fluxo completo: cadastrado → auto-conecta | não cadastrado → pede ativação
+- [ ] Usar IMEI em todas as chamadas de comandos MDM
+
+---
+
+## 🧪 Teste do Fluxo
+
+### **Cenário 1: Dispositivo Cadastrado ✅**
+1. Cadastrar dispositivo na web com IMEI: `353184093560533`
+2. Abrir APK no aparelho com este IMEI
+3. **Resultado**: APK conecta automaticamente sem pedir ativação
+
+### **Cenário 2: Dispositivo NÃO Cadastrado ❌**
+1. Abrir APK em aparelho com IMEI não cadastrado
+2. **Resultado**: APK mostra tela de ativação manual
+
+### **Cenário 3: Após Reset de Fábrica 🔄**
+1. Dispositivo já cadastrado
+2. Fazer reset de fábrica
+3. Reinstalar APK
+4. **Resultado**: APK reconecta automaticamente usando IMEI
+   
+   
+   # ✅ Backend: Busca Flexível de Identificadores Implementada
+
+## 🎯 Resumo
+
+O backend agora aceita **3 tipos de identificadores** em TODOS os endpoints MDM:
+1. **IMEI** (preferencial)
+2. **Serial Number** (fallback)
+3. **Device ID** (último fallback)
+
+---
+
+## 🔍 Função Helper Implementada
+
+```typescript
+async function findDeviceByIdentifier(identifier: string) {
+  console.log(`🔍 [FLEX-SEARCH] Buscando dispositivo por identifier: "${identifier}"`);
+  
+  // 1ª tentativa: Buscar por IMEI
+  let device = await storage.getDeviceByImei(identifier);
+  if (device) {
+    console.log(`✅ [FLEX-SEARCH] Dispositivo encontrado por IMEI: ${device.serialNumber}`);
+    return device;
+  }
+  
+  // 2ª tentativa: Buscar por Serial Number
+  device = await storage.getDeviceBySerial(identifier);
+  if (device) {
+    console.log(`✅ [FLEX-SEARCH] Dispositivo encontrado por Serial Number: ${device.serialNumber}`);
+    return device;
+  }
+  
+  // 3ª tentativa: Buscar por Device ID
+  try {
+    device = await storage.getDevice(identifier);
+    if (device) {
+      console.log(`✅ [FLEX-SEARCH] Dispositivo encontrado por Device ID: ${device.serialNumber}`);
+      return device;
+    }
+  } catch (error) {
+    // ID não encontrado
+  }
+  
+  console.log(`❌ [FLEX-SEARCH] Dispositivo não encontrado: "${identifier}"`);
+  return null;
+}
+```
+
+---
+
+## 📋 Endpoints Atualizados
+
+Todos os endpoints MDM agora aceitam `{identifier}` em vez de `{serialNumber}`:
+
+| Endpoint Antigo | Endpoint Novo | Status |
+|----------------|---------------|--------|
+| `GET /api/apk/device/:serialNumber/commands` | `GET /api/apk/device/:identifier/commands` | ✅ Atualizado |
+| `POST /api/apk/device/:serialNumber/command-response` | `POST /api/apk/device/:identifier/command-response` | ✅ Atualizado |
+| `GET /api/apk/device/:serialNumber/policies` | `GET /api/apk/device/:identifier/policies` | ✅ Atualizado |
+| `POST /api/apk/device/:serialNumber/policy-status` | `POST /api/apk/device/:identifier/policy-status` | ✅ Atualizado |
+
+---
+
+## 🧪 Exemplos de Uso
+
+### **Exemplo 1: Dispositivo Real com IMEI**
+
+```http
+GET /api/apk/device/353184093560533/commands
+```
+
+**Logs do backend:**
+```
+🔍 [FLEX-SEARCH] Buscando dispositivo por identifier: "353184093560533"
+✅ [FLEX-SEARCH] Dispositivo encontrado por IMEI: RSKUS3G7 (Moto G15 Power)
+```
+
+**Response:**
+```json
+{
+  "deviceId": "device_1763331005716_1bfglcpm6rg",
+  "serialNumber": "RSKUS3G7",
+  "commands": []
+}
+```
+
+---
+
+### **Exemplo 2: Emulador com Serial Number**
+
+```http
+GET /api/apk/device/RSKUS3G7/commands
+```
+
+**Logs do backend:**
+```
+🔍 [FLEX-SEARCH] Buscando dispositivo por identifier: "RSKUS3G7"
+🔍 [FLEX-SEARCH] Tentativa 1 (IMEI): não encontrado
+✅ [FLEX-SEARCH] Dispositivo encontrado por Serial Number: RSKUS3G7 (Moto G15 Power)
+```
+
+**Response:**
+```json
+{
+  "deviceId": "device_1763331005716_1bfglcpm6rg",
+  "serialNumber": "RSKUS3G7",
+  "commands": []
+}
+```
+
+---
+
+### **Exemplo 3: Usando Device ID**
+
+```http
+GET /api/apk/device/device_1763331005716_1bfglcpm6rg/commands
+```
+
+**Logs do backend:**
+```
+🔍 [FLEX-SEARCH] Buscando dispositivo por identifier: "device_1763331005716_1bfglcpm6rg"
+🔍 [FLEX-SEARCH] Tentativa 1 (IMEI): não encontrado
+🔍 [FLEX-SEARCH] Tentativa 2 (Serial): não encontrado
+✅ [FLEX-SEARCH] Dispositivo encontrado por Device ID: RSKUS3G7 (Moto G15 Power)
+```
+
+**Response:**
+```json
+{
+  "deviceId": "device_1763331005716_1bfglcpm6rg",
+  "serialNumber": "RSKUS3G7",
+  "commands": []
+}
+```
+
+---
+
+### **Exemplo 4: Identifier Inválido (404)**
+
+```http
+GET /api/apk/device/INVALIDO123/commands
+```
+
+**Logs do backend:**
+```
+🔍 [FLEX-SEARCH] Buscando dispositivo por identifier: "INVALIDO123"
+🔍 [FLEX-SEARCH] Tentativa 1 (IMEI): não encontrado
+🔍 [FLEX-SEARCH] Tentativa 2 (Serial): não encontrado
+🔍 [FLEX-SEARCH] Tentativa 3 (Device ID): não encontrado
+❌ [FLEX-SEARCH] Dispositivo não encontrado: "INVALIDO123"
+```
+
+**Response:**
+```json
+{
+  "error": "Dispositivo não encontrado",
+  "hint": "Use IMEI, Serial Number ou Device ID do aparelho cadastrado"
+}
+```
+
+---
+
+## ✅ Compatibilidade com Documentação do APK
+
+O backend está **100% compatível** com a documentação enviada pela IA do APK.
+
+### **APK envia (conforme documentação):**
+
+```kotlin
+fun getMdmIdentifier(): String? {
+    // 1ª tentativa: IMEI
+    val imei = storage.getImei()
+    if (imei != null) return imei
+    
+    // 2ª tentativa: Serial Number
+    val serialNumber = storage.getSerialNumber()
+    if (serialNumber != null) return serialNumber
+    
+    // 3ª tentativa: Device ID
+    val deviceId = storage.getDeviceId()
+    if (deviceId != null) return deviceId
+    
+    return null
+}
+```
+
+### **Backend aceita (implementado):**
+
+```typescript
+async function findDeviceByIdentifier(identifier: string) {
+    // 1ª tentativa: IMEI ✅
+    let device = await storage.getDeviceByImei(identifier);
+    if (device) return device;
+    
+    // 2ª tentativa: Serial Number ✅
+    device = await storage.getDeviceBySerial(identifier);
+    if (device) return device;
+    
+    // 3ª tentativa: Device ID ✅
+    device = await storage.getDevice(identifier);
+    if (device) return device;
+    
+    return null;
+}
+```
+
+**✅ Totalmente compatível!**
+
+---
+
+## 🔄 Ordem de Prioridade
+
+| Prioridade | Tipo | Quando Usado |
+|------------|------|--------------|
+| 🥇 1ª | **IMEI** | Dispositivo real com IMEI disponível |
+| 🥈 2ª | **Serial Number** | Emulador, tablet, ou IMEI indisponível |
+| 🥉 3ª | **Device ID** | Fallback final (identificador único do banco) |
+
+---
+
+## 📊 Endpoints com Busca Flexível
+
+### **1. Comandos MDM**
+
+#### **Buscar Comandos Pendentes**
+```http
+GET /api/apk/device/{identifier}/commands
+```
+
+**Aceita:**
+- ✅ IMEI: `353184093560533`
+- ✅ Serial: `RSKUS3G7`
+- ✅ Device ID: `device_1763331005716_1bfglcpm6rg`
+
+#### **Responder Comando**
+```http
+POST /api/apk/device/{identifier}/command-response
+```
+
+**Body:**
+```json
+{
+  "commandId": "cmd_xxx",
+  "status": "completed",
+  "response": {"executedAt": 1700000000000},
+  "errorMessage": null
+}
+```
+
+**Aceita:**
+- ✅ IMEI: `353184093560533`
+- ✅ Serial: `RSKUS3G7`
+- ✅ Device ID: `device_1763331005716_1bfglcpm6rg`
+
+---
+
+### **2. Políticas MDM**
+
+#### **Buscar Políticas**
+```http
+GET /api/apk/device/{identifier}/policies
+```
+
+**Aceita:**
+- ✅ IMEI: `353184093560533`
+- ✅ Serial: `RSKUS3G7`
+- ✅ Device ID: `device_1763331005716_1bfglcpm6rg`
+
+#### **Reportar Status de Política**
+```http
+POST /api/apk/device/{identifier}/policy-status
+```
+
+**Body:**
+```json
+{
+  "policyId": "policy_xxx",
+  "status": "applied",
+  "executionDetails": {},
+  "errorMessage": null
+}
+```
+
+**Aceita:**
+- ✅ IMEI: `353184093560533`
+- ✅ Serial: `RSKUS3G7`
+- ✅ Device ID: `device_1763331005716_1bfglcpm6rg`
+
+---
+
+## 🎯 Benefícios
+
+| Benefício | Descrição |
+|-----------|-----------|
+| ✅ **Flexibilidade** | APK pode usar qualquer identificador disponível |
+| ✅ **Compatibilidade** | Funciona em dispositivos reais, emuladores e tablets |
+| ✅ **Inteligente** | Busca automática em 3 fontes de dados |
+| ✅ **Robusto** | Fallback automático se identificador preferencial falhar |
+| ✅ **Logs Claros** | Mostra qual método encontrou o dispositivo |
+
+---
+
+## 🚀 Status
+
+| Componente | Status |
+|------------|--------|
+| Função Helper | ✅ Implementada |
+| Endpoint `/commands` | ✅ Atualizado |
+| Endpoint `/command-response` | ✅ Atualizado |
+| Endpoint `/policies` | ✅ Atualizado |
+| Endpoint `/policy-status` | ✅ Atualizado |
+| Logs de Debug | ✅ Implementados |
+| Compatibilidade APK | ✅ 100% |
+
+---
+
+## 📝 Observações
+
+1. **Backward Compatible**: Todos os endpoints mantêm compatibilidade com chamadas antigas usando serial number
+2. **Performance**: Busca sequencial otimizada (para na primeira correspondência)
+3. **Logs**: Cada busca registra qual método encontrou o dispositivo
+4. **Error Handling**: Retorna 404 com hint útil se nenhum identificador funcionar
+
+---
+
+**✅ Backend pronto para produção!**
+
+
+
