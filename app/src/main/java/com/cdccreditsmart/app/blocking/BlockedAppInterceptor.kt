@@ -154,9 +154,9 @@ class BlockedAppInterceptor(private val context: Context) {
             }
             
             if (hasManualBlock) {
-                Log.i(TAG, "🚨 BLOQUEIO MANUAL ATIVO (forçado pelo backend)")
+                Log.i(TAG, "🚨 BLOQUEIO MANUAL ATIVO (backend forçou nível ${blockingInfo.currentLevel})")
                 Log.i(TAG, "📱 App detectado em foreground: $foregroundPackage")
-                Log.i(TAG, "🔔 Mostrando overlay de bloqueio manual...")
+                Log.i(TAG, "🔔 Mostrando overlay (cliente vê como parcelas atrasadas)...")
             } else {
                 Log.i(TAG, "⚠️ Cliente com ${blockingInfo.daysOverdue} dia(s) de atraso")
                 Log.i(TAG, "📱 App detectado em foreground: $foregroundPackage")

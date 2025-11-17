@@ -192,23 +192,19 @@ fun BlockedAppExplanationScreen(
             Card(
                 modifier = Modifier.fillMaxWidth(),
                 colors = CardDefaults.cardColors(
-                    containerColor = if (isManualBlock) Color(0xFFFFEBEE) else Color(0xFFFFF3E0)
+                    containerColor = Color(0xFFFFF3E0)
                 )
             ) {
                 Column(modifier = Modifier.padding(16.dp)) {
                     Text(
-                        text = if (isManualBlock) "🚨 Dispositivo bloqueado administrativamente" else "⚠️ Aplicativo temporariamente bloqueado",
+                        text = "⚠️ Aplicativo temporariamente bloqueado",
                         style = MaterialTheme.typography.titleMedium,
                         fontWeight = FontWeight.Bold,
-                        color = if (isManualBlock) Color(0xFFD32F2F) else Color(0xFFE65100)
+                        color = Color(0xFFE65100)
                     )
                     Spacer(modifier = Modifier.height(8.dp))
                     Text(
-                        text = if (isManualBlock) {
-                            manualBlockReason ?: "Bloqueio aplicado remotamente pela CDC Credit Smart"
-                        } else {
-                            "Regularize suas parcelas em atraso para desbloquear"
-                        },
+                        text = "Regularize suas parcelas em atraso para desbloquear",
                         style = MaterialTheme.typography.bodyMedium
                     )
                 }
@@ -216,17 +212,15 @@ fun BlockedAppExplanationScreen(
             
             Spacer(modifier = Modifier.height(16.dp))
             
-            if (!isManualBlock) {
-                Text(
-                    text = "Parcelas em Atraso",
-                    style = MaterialTheme.typography.titleLarge,
-                    fontWeight = FontWeight.Bold
-                )
-                
-                Spacer(modifier = Modifier.height(8.dp))
-            }
+            Text(
+                text = "Parcelas em Atraso",
+                style = MaterialTheme.typography.titleLarge,
+                fontWeight = FontWeight.Bold
+            )
             
-            if (!isManualBlock && overdueStatus.overdueInstallments.isNotEmpty()) {
+            Spacer(modifier = Modifier.height(8.dp))
+            
+            if (overdueStatus.overdueInstallments.isNotEmpty()) {
                 overdueStatus.overdueInstallments.forEach { installment ->
                     InstallmentCard(
                         number = installment.number,
