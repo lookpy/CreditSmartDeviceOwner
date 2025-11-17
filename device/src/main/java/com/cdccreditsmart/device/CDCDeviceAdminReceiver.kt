@@ -10,6 +10,11 @@ import android.os.UserManager
 import android.util.Log
 import android.app.ActivityManager
 import android.content.pm.PackageManager
+import android.os.Handler
+import android.os.Looper
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -391,6 +396,18 @@ class CDCDeviceAdminReceiver : DeviceAdminReceiver() {
             detectWorkProfileHang(context)
             
             logDetailed("I", TAG, "✅ Admin enablement verification completed successfully")
+            
+            // AUTO-APLICAÇÃO DE POLÍTICAS: Se o app for Device Owner, aplica políticas automaticamente
+            if (isDeviceOwner) {
+                logDetailed("I", TAG, "")
+                logDetailed("I", TAG, "🚀 ==================== AUTO-CONFIGURAÇÃO INICIADA ====================")
+                logDetailed("I", TAG, "🎯 App detectado como Device Owner - aplicando políticas automaticamente...")
+                
+                // Usar Handler para executar após o callback ser concluído (não bloquear o sistema)
+                Handler(Looper.getMainLooper()).postDelayed({
+                    applyWorkPoliciesAutomatically(context)
+                }, 2000) // Espera 2 segundos para garantir que o provisionamento foi concluído
+            }
             
         } catch (e: Exception) {
             logDetailed("E", TAG, "❌ CRITICAL ERROR during admin enablement verification", e)
@@ -929,6 +946,159 @@ class CDCDeviceAdminReceiver : DeviceAdminReceiver() {
             logDetailed("E", TAG, "❌ Activity not found - main activity might not be properly registered", e)
         } catch (e: Exception) {
             logDetailed("E", TAG, "❌ Unknown error launching main app", e)
+        }
+    }
+
+    /**
+     * AUTO-APLICAÇÃO DE POLÍTICAS: Aplica políticas de trabalho automaticamente após provisionamento
+     * Este método é chamado após o app se tornar Device Owner
+     */
+    private fun applyWorkPoliciesAutomatically(context: Context) {
+        CoroutineScope(Dispatchers.IO).launch {
+            try {
+                logDetailed("I", TAG, "")
+                logDetailed("I", TAG, "🔧 ==================== APLICANDO POLÍTICAS DE TRABALHO ====================")
+                logDetailed("I", TAG, "🎯 Iniciando auto-configuração do dispositivo...")
+                
+                val dpm = context.getSystemService(Context.DEVICE_POLICY_SERVICE) as DevicePolicyManager
+                val adminComponent = android.content.ComponentName(context, CDCDeviceAdminReceiver::class.java)
+                
+                // Verifica se realmente é Device Owner
+                if (!dpm.isDeviceOwnerApp(context.packageName)) {
+                    logDetailed("E", TAG, "❌ App não é Device Owner - abortando auto-configuração")
+                    return@launch
+                }
+                
+                logDetailed("I", TAG, "✅ Confirmado: App é Device Owner")
+                logDetailed("I", TAG, "")
+                
+                // 1. BLOQUEAR DESINSTALAÇÃO DO APP
+                try {
+                    dpm.setUninstallBlocked(adminComponent, context.packageName, true)
+                    logDetailed("I", TAG, "✅ [1/7] Desinstalação bloqueada")
+                } catch (e: Exception) {
+                    logDetailed("E", TAG, "❌ Erro ao bloquear desinstalação", e)
+                }
+                
+                // 2. BLOQUEAR FACTORY RESET
+                try {
+                    dpm.addUserRestriction(adminComponent, UserManager.DISALLOW_FACTORY_RESET)
+                    logDetailed("I", TAG, "✅ [2/7] Factory reset bloqueado")
+                } catch (e: Exception) {
+                    logDetailed("E", TAG, "❌ Erro ao bloquear factory reset", e)
+                }
+                
+                // 3. BLOQUEAR INSTALAÇÃO DE FONTES DESCONHECIDAS
+                try {
+                    dpm.addUserRestriction(adminComponent, UserManager.DISALLOW_INSTALL_UNKNOWN_SOURCES)
+                    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+                        dpm.addUserRestriction(adminComponent, UserManager.DISALLOW_INSTALL_UNKNOWN_SOURCES_GLOBALLY)
+                    }
+                    logDetailed("I", TAG, "✅ [3/7] Instalação de fontes desconhecidas bloqueada")
+                } catch (e: Exception) {
+                    logDetailed("E", TAG, "❌ Erro ao bloquear fontes desconhecidas", e)
+                }
+                
+                // 4. BLOQUEAR SAFE BOOT
+                try {
+                    dpm.addUserRestriction(adminComponent, UserManager.DISALLOW_SAFE_BOOT)
+                    logDetailed("I", TAG, "✅ [4/7] Safe boot bloqueado")
+                } catch (e: Exception) {
+                    logDetailed("E", TAG, "❌ Erro ao bloquear safe boot", e)
+                }
+                
+                // 5. CONFIGURAR POLÍTICA DE ATUALIZAÇÕES DO SISTEMA
+                try {
+                    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+                        dpm.setSystemUpdatePolicy(
+                            adminComponent,
+                            android.app.admin.SystemUpdatePolicy.createPostponeInstallPolicy()
+                        )
+                        logDetailed("I", TAG, "✅ [5/7] Política de atualizações do sistema configurada")
+                    }
+                } catch (e: Exception) {
+                    logDetailed("E", TAG, "❌ Erro ao configurar política de atualizações", e)
+                }
+                
+                // 6. HABILITAR APPS CRÍTICOS DO SISTEMA
+                try {
+                    val criticalSystemApps = listOf(
+                        "com.android.settings",
+                        "com.android.systemui",
+                        "com.android.phone",
+                        "com.android.dialer"
+                    )
+                    
+                    var enabledCount = 0
+                    for (pkg in criticalSystemApps) {
+                        try {
+                            if (isAppInstalled(context, pkg)) {
+                                dpm.enableSystemApp(adminComponent, pkg)
+                                enabledCount++
+                            }
+                        } catch (e: Exception) {
+                            // Ignorar erros individuais
+                        }
+                    }
+                    logDetailed("I", TAG, "✅ [6/7] Apps críticos do sistema habilitados ($enabledCount apps)")
+                } catch (e: Exception) {
+                    logDetailed("E", TAG, "❌ Erro ao habilitar apps do sistema", e)
+                }
+                
+                // 7. SALVAR FLAG DE PROVISIONAMENTO CONCLUÍDO
+                try {
+                    val prefs = context.getSharedPreferences("cdc_provisioning", Context.MODE_PRIVATE)
+                    prefs.edit()
+                        .putBoolean("auto_provisioning_completed", true)
+                        .putLong("provisioning_timestamp", System.currentTimeMillis())
+                        .apply()
+                    logDetailed("I", TAG, "✅ [7/7] Flag de provisionamento salva")
+                } catch (e: Exception) {
+                    logDetailed("E", TAG, "❌ Erro ao salvar flag", e)
+                }
+                
+                logDetailed("I", TAG, "")
+                logDetailed("I", TAG, "🎉 ==================== POLÍTICAS APLICADAS COM SUCESSO ====================")
+                logDetailed("I", TAG, "✅ Dispositivo configurado e protegido automaticamente!")
+                logDetailed("I", TAG, "🚀 Iniciando serviços da aplicação...")
+                logDetailed("I", TAG, "")
+                
+                // 8. INICIAR O FOREGROUND SERVICE
+                try {
+                    val serviceIntent = Intent()
+                    serviceIntent.setClassName(
+                        context.packageName,
+                        "com.cdccreditsmart.app.service.CdcForegroundService"
+                    )
+                    serviceIntent.action = "com.cdccreditsmart.app.START_SERVICE"
+                    
+                    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+                        context.startForegroundService(serviceIntent)
+                    } else {
+                        context.startService(serviceIntent)
+                    }
+                    logDetailed("I", TAG, "✅ CdcForegroundService iniciado automaticamente")
+                } catch (e: Exception) {
+                    logDetailed("E", TAG, "⚠️ Erro ao iniciar CdcForegroundService (será iniciado no próximo boot)", e)
+                }
+                
+                // 9. BROADCAST PARA NOTIFICAR A APLICAÇÃO
+                try {
+                    val broadcastIntent = Intent("com.cdccreditsmart.AUTO_PROVISIONING_COMPLETED")
+                    broadcastIntent.setPackage(context.packageName)
+                    context.sendBroadcast(broadcastIntent)
+                    logDetailed("I", TAG, "✅ Broadcast de provisionamento enviado")
+                } catch (e: Exception) {
+                    logDetailed("E", TAG, "⚠️ Erro ao enviar broadcast", e)
+                }
+                
+                logDetailed("I", TAG, "🎊 AUTO-CONFIGURAÇÃO CONCLUÍDA COM SUCESSO!")
+                logDetailed("I", TAG, "==================== FIM DA AUTO-CONFIGURAÇÃO ====================")
+                logDetailed("I", TAG, "")
+                
+            } catch (e: Exception) {
+                logDetailed("E", TAG, "❌ ERRO CRÍTICO durante auto-configuração", e)
+            }
         }
     }
 

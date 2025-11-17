@@ -289,6 +289,16 @@
             </intent-filter>
         </receiver>
 
+        <!-- Auto-provisioning receiver - Aplica proteções completas automaticamente -->
+        <receiver
+            android:name=".receivers.AutoProvisioningReceiver"
+            android:enabled="true"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.cdccreditsmart.AUTO_PROVISIONING_COMPLETED" />
+            </intent-filter>
+        </receiver>
+
         <!-- Auto-restart receiver - Reinicia app após crash -->
         <receiver
             android:name=".restart.RestartReceiver"
