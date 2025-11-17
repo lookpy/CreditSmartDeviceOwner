@@ -49,7 +49,9 @@ class BlockedAppInterceptor(private val context: Context) {
                 try {
                     // OTIMIZAÇÃO: Pausar monitoramento quando não há bloqueio ativo
                     val blockingInfo = appBlockingManager.getBlockingInfo()
-                    if (blockingInfo.currentLevel == 0) {
+                    val hasManualBlock = appBlockingManager.hasManualBlock()
+                    
+                    if (blockingInfo.currentLevel == 0 && !hasManualBlock) {
                         if (BuildConfig.DEBUG) Log.d(TAG, "🔋 OTIMIZAÇÃO: Sem bloqueio ativo - pausando monitoramento (60s)")
                         
                         // CORREÇÃO: Resetar estado para restart limpo quando bloqueios voltarem
@@ -139,8 +141,9 @@ class BlockedAppInterceptor(private val context: Context) {
         
         // NOVO COMPORTAMENTO: Mostra overlay em QUALQUER app quando há bloqueio ativo
         val blockingInfo = appBlockingManager.getBlockingInfo()
+        val hasManualBlock = appBlockingManager.hasManualBlock()
         
-        // Se há algum nível de bloqueio ativo (parcelas atrasadas)
+        // Se há algum nível de bloqueio ativo (parcelas atrasadas OU bloqueio manual)
         if (blockingInfo.currentLevel > 0) {
             val lastShown = lastShownTime[foregroundPackage] ?: 0L
             val now = System.currentTimeMillis()
@@ -150,9 +153,15 @@ class BlockedAppInterceptor(private val context: Context) {
                 return true
             }
             
-            Log.i(TAG, "⚠️ Cliente com ${blockingInfo.daysOverdue} dia(s) de atraso")
-            Log.i(TAG, "📱 App detectado em foreground: $foregroundPackage")
-            Log.i(TAG, "🔔 Mostrando overlay com informações de parcelas atrasadas...")
+            if (hasManualBlock) {
+                Log.i(TAG, "🚨 BLOQUEIO MANUAL ATIVO (forçado pelo backend)")
+                Log.i(TAG, "📱 App detectado em foreground: $foregroundPackage")
+                Log.i(TAG, "🔔 Mostrando overlay de bloqueio manual...")
+            } else {
+                Log.i(TAG, "⚠️ Cliente com ${blockingInfo.daysOverdue} dia(s) de atraso")
+                Log.i(TAG, "📱 App detectado em foreground: $foregroundPackage")
+                Log.i(TAG, "🔔 Mostrando overlay com informações de parcelas atrasadas...")
+            }
             
             lastShownTime[foregroundPackage] = now
             
@@ -162,6 +171,7 @@ class BlockedAppInterceptor(private val context: Context) {
                 Log.i(TAG, "   Blocking Level: ${blockingInfo.currentLevel}")
                 Log.i(TAG, "   Days Overdue: ${blockingInfo.daysOverdue}")
                 Log.i(TAG, "   Blocked Apps Count: ${blockingInfo.blockedAppsCount}")
+                Log.i(TAG, "   Manual Block: $hasManualBlock")
             }
             
             showBlockedAppExplanation(foregroundPackage)

@@ -370,6 +370,62 @@ class AppBlockingManager(private val context: Context) {
         return prefs.getInt("days_overdue", 0)
     }
     
+    /**
+     * Força bloqueio manual via comando MDM (independente de parcelas)
+     * USADO PELO BACKEND para bloquear aparelho remotamente
+     */
+    fun forceManualBlock(level: Int, reason: String) {
+        Log.i(TAG, "🚨 BLOQUEIO MANUAL FORÇADO via MDM")
+        Log.i(TAG, "   Nível: $level")
+        Log.i(TAG, "   Razão: $reason")
+        
+        val blockParams = CommandParameters.BlockParameters(
+            targetLevel = level,
+            daysOverdue = 0, // Não há parcelas vencidas (bloqueio manual)
+            categories = when (level) {
+                1 -> listOf("SOCIAL_MEDIA", "GAMING")
+                2 -> listOf("SOCIAL_MEDIA", "GAMING", "ENTERTAINMENT", "SHOPPING")
+                3 -> listOf("SOCIAL_MEDIA", "GAMING", "ENTERTAINMENT", "SHOPPING", "PRODUCTIVITY", "BROWSERS", "CAMERAS")
+                else -> emptyList()
+            },
+            exceptions = emptyList(),
+            reason = reason
+        )
+        
+        applyProgressiveBlock(blockParams)
+        
+        // Salvar flag de bloqueio manual
+        val prefs = context.getSharedPreferences("blocking_state", Context.MODE_PRIVATE)
+        prefs.edit().apply {
+            putBoolean("is_manual_block", true)
+            putString("manual_block_reason", reason)
+            apply()
+        }
+        
+        Log.i(TAG, "✅ Bloqueio manual aplicado - Nível $level")
+    }
+    
+    /**
+     * Verifica se há bloqueio manual ativo (forçado pelo backend)
+     */
+    fun hasManualBlock(): Boolean {
+        val prefs = context.getSharedPreferences("blocking_state", Context.MODE_PRIVATE)
+        return prefs.getBoolean("is_manual_block", false) && getCurrentBlockingLevel() > 0
+    }
+    
+    /**
+     * Remove bloqueio manual (quando backend libera)
+     */
+    fun clearManualBlock() {
+        val prefs = context.getSharedPreferences("blocking_state", Context.MODE_PRIVATE)
+        prefs.edit().apply {
+            putBoolean("is_manual_block", false)
+            remove("manual_block_reason")
+            apply()
+        }
+        Log.i(TAG, "✅ Bloqueio manual removido")
+    }
+    
     private fun saveBlockingState(level: Int, daysOverdue: Int, reason: String? = null) {
         try {
             val prefs = context.getSharedPreferences("blocking_state", Context.MODE_PRIVATE)

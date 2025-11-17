@@ -31,6 +31,21 @@ class OfflineBlockingEngine(
         try {
             Log.i(TAG, "🤖 Iniciando verificação automática de bloqueio offline...")
             
+            // CRITICAL: Verificar se há bloqueio manual ANTES de processar
+            if (appBlockingManager.hasManualBlock()) {
+                Log.i(TAG, "🚨 BLOQUEIO MANUAL ATIVO - ignorando bloqueio automático")
+                Log.i(TAG, "   Bloqueio manual tem PRIORIDADE sobre parcelas vencidas")
+                Log.i(TAG, "   Somente o backend pode remover bloqueio manual")
+                
+                return AutoBlockingResult(
+                    blockingApplied = false,
+                    appliedLevel = appBlockingManager.getBlockingInfo().currentLevel,
+                    daysOverdue = 0,
+                    reason = "Bloqueio manual ativo (backend)",
+                    blockingResult = null
+                )
+            }
+            
             val overdueCalc = installmentStorage.calculateOverdueStatus()
             
             if (!overdueCalc.hasOverdueInstallments) {
