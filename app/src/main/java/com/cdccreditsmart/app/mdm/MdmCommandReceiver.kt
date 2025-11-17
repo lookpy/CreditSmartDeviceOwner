@@ -509,20 +509,20 @@ class MdmCommandReceiver(private val context: Context) {
     
     private suspend fun fetchPendingCommands() {
         try {
-            val deviceId = getDeviceIdentifier()
+            val serialNumber = getDeviceIdentifier()
             
-            if (deviceId == null) {
+            if (serialNumber == null) {
                 Log.e(TAG, "❌ SerialNumber não encontrado - impossível buscar comandos")
                 return
             }
             
-            Log.d(TAG, "🔍 Buscando comandos pendentes para serialNumber: ${deviceId.take(10)}...")
+            Log.d(TAG, "🔍 Buscando comandos pendentes para serialNumber: ${serialNumber.take(10)}...")
             val fetchStartTime = System.currentTimeMillis()
             
             val retrofit = RetrofitProvider.createAuthenticatedRetrofit(context)
             val api = retrofit.create(MdmApiService::class.java)
             
-            val response = api.getPendingCommands(deviceId)
+            val response = api.getPendingCommands(serialNumber)
             
             if (response.isSuccessful) {
                 val body = response.body()

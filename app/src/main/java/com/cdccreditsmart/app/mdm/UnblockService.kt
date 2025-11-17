@@ -4,7 +4,7 @@ import android.content.Context
 import android.util.Log
 import com.cdccreditsmart.app.blocking.AppBlockingManager
 import com.cdccreditsmart.app.network.RetrofitProvider
-import com.cdccreditsmart.app.utils.DeviceInfoHelper
+import com.cdccreditsmart.app.security.SecureTokenStorage
 import com.cdccreditsmart.network.api.MdmApiService
 import com.cdccreditsmart.network.dto.mdm.UnblockResponse
 
@@ -14,8 +14,12 @@ class UnblockService(private val context: Context) {
         private const val TAG = "UnblockService"
     }
     
-    private val serialNumber by lazy {
-        DeviceInfoHelper.getSerialNumber()
+    private val tokenStorage by lazy {
+        SecureTokenStorage(context)
+    }
+    
+    private val deviceId by lazy {
+        tokenStorage.getMdmDeviceIdentifier()
     }
     
     private val blockingManager by lazy {
@@ -29,7 +33,7 @@ class UnblockService(private val context: Context) {
             val retrofit = RetrofitProvider.createAuthenticatedRetrofit(context)
             val api = retrofit.create(MdmApiService::class.java)
             
-            val response = api.unblockDevice(serialNumber)
+            val response = api.unblockDevice(deviceId ?: "")
             
             if (!response.isSuccessful) {
                 Log.e(TAG, "❌ Erro ao solicitar desbloqueio: ${response.code()}")
