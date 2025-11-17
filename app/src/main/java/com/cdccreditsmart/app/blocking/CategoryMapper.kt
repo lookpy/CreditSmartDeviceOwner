@@ -223,7 +223,81 @@ class CategoryMapper(private val context: Context) {
     
     private fun isPhotosGalleryApp(app: ApplicationInfo, packageName: String): Boolean {
         val photoApps = listOf(
+            // Google
             "com.google.android.apps.photos",
+            "com.google.android.gallery3d",
+            
+            // Apps de câmera nativos por marca
+            // Samsung
+            "com.sec.android.app.camera",
+            "com.samsung.android.app.camera",
+            "com.sec.android.gallery3d",
+            "com.samsung.android.gallery3d",
+            
+            // Xiaomi (Mi)
+            "com.android.camera",
+            "com.mi.android.globalminusscreen",
+            "com.miui.gallery",
+            "com.xiaomi.camera",
+            
+            // Motorola
+            "com.motorola.camera",
+            "com.motorola.camera2",
+            "com.motorola.camera3",
+            "com.motorola.cameraone",
+            "com.motorola.gallery",
+            
+            // LG
+            "com.lge.camera",
+            "com.lge.snapshothdr",
+            "com.lge.gallery",
+            
+            // Sony
+            "com.sonyericsson.android.camera",
+            "com.sonymobile.camera",
+            "com.sonymobile.album",
+            
+            // Huawei / Honor
+            "com.huawei.camera",
+            "com.huawei.photos",
+            "com.huawei.gallery",
+            
+            // OnePlus
+            "com.oneplus.camera",
+            "com.oneplus.gallery",
+            
+            // ASUS
+            "com.asus.camera",
+            "com.asus.gallery",
+            
+            // Nokia (HMD Global)
+            "com.hmdglobal.app.camera",
+            "com.evenwell.camera2",
+            
+            // Realme
+            "com.oppo.camera",
+            "com.coloros.gallery3d",
+            
+            // OPPO
+            "com.oppo.camera",
+            "com.coloros.gallery",
+            
+            // Vivo
+            "com.vivo.camera",
+            "com.vivo.gallery",
+            "com.bbk.camera",
+            
+            // Lenovo
+            "com.lenovo.scg",
+            "com.lenovo.camera",
+            
+            // ZTE
+            "com.zte.camera",
+            
+            // TCL
+            "com.tcl.camera",
+            
+            // Apps de fotos e edição populares
             "com.instagram.android",
             "com.picsart.studio",
             "com.vsco.cam",
@@ -238,9 +312,7 @@ class CategoryMapper(private val context: Context) {
             "com.lightricks.facetune",
             "com.cyberlink.photodirector",
             "com.lightricks.facetune2",
-            "com.meitu.beautyplusme",
-            "com.sec.android.gallery3d",
-            "com.google.android.gallery3d"
+            "com.meitu.beautyplusme"
         )
         
         val photoKeywords = listOf(
@@ -289,11 +361,112 @@ class CategoryMapper(private val context: Context) {
     }
     
     private fun isWebBrowserApp(app: ApplicationInfo, packageName: String): Boolean {
-        return packageName.contains("browser", ignoreCase = true) ||
-               packageName.contains("chrome", ignoreCase = true) ||
-               packageName.contains("firefox", ignoreCase = true) ||
-               packageName == "com.android.browser" ||
-               packageName == "com.google.android.apps.chrome"
+        val browserApps = listOf(
+            // Google
+            "com.android.browser",
+            "com.android.chrome",
+            "com.google.android.apps.chrome",
+            "com.chrome.beta",
+            "com.chrome.dev",
+            "com.chrome.canary",
+            
+            // Mozilla Firefox
+            "org.mozilla.firefox",
+            "org.mozilla.firefox_beta",
+            "org.mozilla.focus",
+            "org.mozilla.fenix",
+            "org.mozilla.klar",
+            
+            // Microsoft Edge
+            "com.microsoft.emmx",
+            "com.microsoft.edge",
+            
+            // Opera
+            "com.opera.browser",
+            "com.opera.browser.beta",
+            "com.opera.mini.native",
+            "com.opera.mini.native.beta",
+            "com.opera.max.global",
+            "com.opera.touch",
+            "com.opera.gx",
+            
+            // Brave
+            "com.brave.browser",
+            "com.brave.browser_beta",
+            "com.brave.browser_nightly",
+            
+            // UC Browser
+            "com.UCMobile.intl",
+            "com.uc.browser.en",
+            "com.uc.browser.hd",
+            
+            // Samsung Internet
+            "com.sec.android.app.sbrowser",
+            "com.sec.android.app.sbrowser.beta",
+            
+            // Xiaomi (Mi Browser)
+            "com.mi.globalbrowser",
+            "com.android.browser.mi",
+            
+            // Yandex
+            "com.yandex.browser",
+            "com.yandex.browser.alpha",
+            "com.yandex.browser.beta",
+            
+            // DuckDuckGo
+            "com.duckduckgo.mobile.android",
+            
+            // Vivaldi
+            "com.vivaldi.browser",
+            "com.vivaldi.browser.snapshot",
+            
+            // Kiwi Browser
+            "com.kiwibrowser.browser",
+            
+            // Puffin
+            "com.cloudmosa.puffinFree",
+            "com.cloudmosa.puffin",
+            
+            // Dolphin
+            "mobi.mgeek.TunnyBrowser",
+            "com.dolphin.browser.express",
+            
+            // Huawei Browser
+            "com.huawei.browser",
+            
+            // Vivo Browser
+            "com.vivo.browser",
+            
+            // Realme Browser
+            "com.coloros.browser",
+            
+            // OPPO Browser
+            "com.oppo.browser",
+            
+            // OnePlus Browser
+            "net.oneplus.browser",
+            
+            // Cake Browser
+            "com.cake.browser",
+            
+            // Ecosia
+            "com.ecosia.android",
+            
+            // Tor Browser
+            "org.torproject.torbrowser",
+            
+            // Firefox Focus/Klar
+            "org.mozilla.focus",
+            "org.mozilla.klar"
+        )
+        
+        val browserKeywords = listOf(
+            "browser", "chrome", "firefox", "safari", "opera", 
+            "edge", "brave", "ucweb", "uc.browser"
+        )
+        
+        return packageName in browserApps ||
+               browserKeywords.any { packageName.contains(it, ignoreCase = true) }
     }
     
     private fun isMusicPlayerApp(app: ApplicationInfo, packageName: String): Boolean {
