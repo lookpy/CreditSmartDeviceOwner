@@ -1,8 +1,10 @@
 package com.cdccreditsmart.app.blocking
 
+import android.app.PendingIntent
 import android.app.admin.DevicePolicyManager
 import android.content.ComponentName
 import android.content.Context
+import android.content.Intent
 import android.os.Build
 import android.os.PersistableBundle
 import android.util.Log
@@ -107,13 +109,28 @@ class AppBlockingManager(private val context: Context) {
             Log.i(TAG, "🎯 Usando setPackagesSuspended() - ícones permanecem visíveis")
             
             try {
-                // Bloquear apps
+                // Bloquear apps com dialog customizado
                 val packagesToBlock = appsToBlock.toTypedArray()
-                val failedToBlock = dpm.setPackagesSuspended(
-                    adminComponent,
-                    packagesToBlock,
-                    true
-                )
+                
+                val failedToBlock = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                    // Android 9+ : Usa SuspendDialogInfo para customizar o dialog
+                    val dialogInfo = createSuspendDialogInfo(parameters.targetLevel, parameters.daysOverdue)
+                    dpm.setPackagesSuspended(
+                        adminComponent,
+                        packagesToBlock,
+                        true,
+                        null,  // appExtras
+                        null,  // launcherExtras
+                        dialogInfo
+                    )
+                } else {
+                    // Android 7-8: Dialog padrão do sistema
+                    dpm.setPackagesSuspended(
+                        adminComponent,
+                        packagesToBlock,
+                        true
+                    )
+                }
                 
                 blockedCount = packagesToBlock.size - (failedToBlock?.size ?: 0)
                 
@@ -261,6 +278,57 @@ class AppBlockingManager(private val context: Context) {
         } catch (e: Exception) {
             Log.e(TAG, "Erro ao verificar Device Owner: ${e.message}")
             false
+        }
+    }
+    
+    private fun createSuspendDialogInfo(level: Int, daysOverdue: Int): DevicePolicyManager.SuspendDialogInfo? {
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            try {
+                // Intent para abrir BlockedAppExplanationActivity quando clicar no botão
+                // NOTA: O Android automaticamente adiciona DevicePolicyManager.EXTRA_PACKAGE_NAME
+                // quando o PendingIntent é disparado de um app suspenso
+                val intent = Intent(context, BlockedAppExplanationActivity::class.java).apply {
+                    addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                    addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                    putExtra("blocking_level", level)
+                    putExtra("days_overdue", daysOverdue)
+                    // blocked_apps_count será calculado na Activity a partir do AppBlockingManager
+                }
+                
+                val pendingIntent = PendingIntent.getActivity(
+                    context,
+                    0,
+                    intent,
+                    PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
+                )
+                
+                // Mensagens customizadas baseadas no nível de bloqueio
+                val title = "Aplicativo Bloqueado"
+                val message = when {
+                    daysOverdue > 0 -> "Este aplicativo está bloqueado devido a $daysOverdue dia(s) de atraso no pagamento."
+                    else -> "Este aplicativo está bloqueado temporariamente."
+                }
+                val buttonText = "Ver Detalhes"
+                
+                Log.d(TAG, "📱 Criando dialog customizado:")
+                Log.d(TAG, "   Título: $title")
+                Log.d(TAG, "   Mensagem: $message")
+                Log.d(TAG, "   Botão: $buttonText")
+                
+                // Criar SuspendDialogInfo com API 28+
+                DevicePolicyManager.SuspendDialogInfo.Builder()
+                    .setTitle(title)
+                    .setMessage(message)
+                    .setNeutralButtonText(buttonText)
+                    .setNeutralButtonAction(pendingIntent)
+                    .build()
+                
+            } catch (e: Exception) {
+                Log.e(TAG, "❌ Erro ao criar SuspendDialogInfo: ${e.message}", e)
+                null
+            }
+        } else {
+            null
         }
     }
     

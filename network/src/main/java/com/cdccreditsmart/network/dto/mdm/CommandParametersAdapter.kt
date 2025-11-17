@@ -58,7 +58,8 @@ private class MdmCommandAdapter(val moshi: Moshi) : JsonAdapter<MdmCommand>() {
         reader.endObject()
         
         val parameters = when (commandType) {
-            "BLOCK_APPS_PROGRESSIVE" -> {
+            "BLOCK_APPS_PROGRESSIVE", "UNBLOCK_APPS_PROGRESSIVE", "BLOCK_APPS", "UNBLOCK_APPS" -> {
+                // IMPORTANTE: UNBLOCK_APPS_PROGRESSIVE também usa BlockParameters com targetLevel=0
                 try {
                     if (parametersRaw != null) {
                         blockParametersAdapter.fromJsonValue(parametersRaw) ?: CommandParameters.EmptyParameters
@@ -106,9 +107,6 @@ private class MdmCommandAdapter(val moshi: Moshi) : JsonAdapter<MdmCommand>() {
                 } catch (e: Exception) {
                     CommandParameters.EmptyParameters
                 }
-            }
-            "UNBLOCK_APPS_PROGRESSIVE", "UNBLOCK_APPS" -> {
-                CommandParameters.EmptyParameters
             }
             else -> {
                 CommandParameters.UnknownParameters()
@@ -194,7 +192,8 @@ private class MdmCommandFullAdapter(val moshi: Moshi) : JsonAdapter<MdmCommandFu
         reader.endObject()
         
         val parameters = when (commandType) {
-            "BLOCK_APPS_PROGRESSIVE" -> {
+            "BLOCK_APPS_PROGRESSIVE", "UNBLOCK_APPS_PROGRESSIVE", "BLOCK_APPS", "UNBLOCK_APPS" -> {
+                // IMPORTANTE: UNBLOCK_APPS_PROGRESSIVE também usa BlockParameters com targetLevel=0
                 try {
                     if (parametersRaw != null) {
                         blockParametersAdapter.fromJsonValue(parametersRaw) ?: CommandParameters.EmptyParameters
@@ -242,9 +241,6 @@ private class MdmCommandFullAdapter(val moshi: Moshi) : JsonAdapter<MdmCommandFu
                 } catch (e: Exception) {
                     CommandParameters.EmptyParameters
                 }
-            }
-            "UNBLOCK_APPS_PROGRESSIVE", "UNBLOCK_APPS" -> {
-                CommandParameters.EmptyParameters
             }
             else -> {
                 CommandParameters.UnknownParameters()
