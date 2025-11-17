@@ -9,6 +9,7 @@ import android.os.Build
 import android.util.Log
 import androidx.core.app.NotificationCompat
 import com.cdccreditsmart.app.R
+import com.cdccreditsmart.app.enrollment.EnrollmentManager
 import com.cdccreditsmart.app.protection.AppProtectionManager
 import com.cdccreditsmart.app.protection.WorkProfileManager
 import com.cdccreditsmart.app.service.CdcForegroundService
@@ -72,15 +73,50 @@ class AutoProvisioningReceiver : BroadcastReceiver() {
         try {
             Log.i(TAG, "🛡️ Iniciando aplicação de proteções completas...")
             
+            // 0. Detectar e reportar enrollment (KME/Zero-Touch)
+            Log.i(TAG, "")
+            Log.i(TAG, "📋 [0/7] Detectando enrollment pós-factory-reset...")
+            val enrollmentManager = EnrollmentManager(context)
+            
+            try {
+                val enrollmentStatus = enrollmentManager.validateEnrollmentStatus()
+                Log.i(TAG, "📊 Status de Enrollment:")
+                Log.i(TAG, "   Tipo: ${enrollmentStatus.enrollmentType}")
+                Log.i(TAG, "   Enrolled: ${enrollmentStatus.isEnrolled}")
+                Log.i(TAG, "   Fabricante: ${enrollmentStatus.manufacturer}")
+                Log.i(TAG, "   Modelo: ${enrollmentStatus.model}")
+                
+                if (enrollmentStatus.isEnrolled) {
+                    Log.i(TAG, "✅ Dispositivo está enrolled - proteção pós-factory-reset ATIVA")
+                    
+                    // Reportar ao backend (async)
+                    CoroutineScope(Dispatchers.IO).launch {
+                        try {
+                            enrollmentManager.reportEnrollmentToBackend()
+                            Log.i(TAG, "✅ Status de enrollment reportado ao backend")
+                        } catch (e: Exception) {
+                            Log.w(TAG, "⚠️ Erro ao reportar enrollment ao backend: ${e.message}")
+                        }
+                    }
+                } else {
+                    Log.w(TAG, "⚠️ Dispositivo NÃO está enrolled")
+                    Log.w(TAG, "   → Factory reset via recovery mode removerá o app PERMANENTEMENTE")
+                    Log.w(TAG, "   → Recomendação: Configurar Knox KME ou Zero-Touch Enrollment")
+                }
+            } catch (e: Exception) {
+                Log.w(TAG, "⚠️ Erro ao verificar enrollment: ${e.message}")
+            }
+            Log.i(TAG, "")
+            
             // 1. Aplicar proteções máximas
             val protectionManager = AppProtectionManager(context)
             
-            Log.i(TAG, "📋 [1/6] Aplicando proteções máximas anti-remoção...")
+            Log.i(TAG, "📋 [1/7] Aplicando proteções máximas anti-remoção...")
             protectionManager.applyMaximumProtection()
             
             // 1.5. Criar Work Profile (perfil de trabalho gerenciado)
             Log.i(TAG, "")
-            Log.i(TAG, "📋 [2/6] Criando Work Profile (perfil de trabalho)...")
+            Log.i(TAG, "📋 [2/7] Criando Work Profile (perfil de trabalho)...")
             val workProfileManager = WorkProfileManager(context)
             val workProfileCreated = workProfileManager.createWorkProfile()
             
@@ -92,23 +128,23 @@ class AutoProvisioningReceiver : BroadcastReceiver() {
             }
             Log.i(TAG, "")
             
-            Log.i(TAG, "📋 [3/6] Tornando o app persistente...")
+            Log.i(TAG, "📋 [3/7] Tornando o app persistente...")
             protectionManager.makeAppPersistent()
             
-            Log.i(TAG, "📋 [4/6] Bloqueando acesso às configurações...")
+            Log.i(TAG, "📋 [4/7] Bloqueando acesso às configurações...")
             protectionManager.blockAccessToSettings()
             
-            Log.i(TAG, "📋 [5/6] Habilitando modo kiosk...")
+            Log.i(TAG, "📋 [5/7] Habilitando modo kiosk...")
             protectionManager.enableKioskMode()
             
             // 2. Verificar proteções aplicadas
-            Log.i(TAG, "📋 [6/6] Verificando proteções...")
+            Log.i(TAG, "📋 [6/7] Verificando proteções...")
             val protections = protectionManager.verifyProtections()
             Log.i(TAG, "✅ Proteções verificadas: $protections")
             
             // 3. Executar diagnóstico completo
             Log.i(TAG, "")
-            Log.i(TAG, "🔍 Executando diagnóstico completo de proteções...")
+            Log.i(TAG, "📋 [7/7] Executando diagnóstico completo de proteções...")
             val diagnostic = com.cdccreditsmart.app.utils.ProtectionDiagnostics.runCompleteDiagnostic(context)
             
             if (diagnostic.criticalIssues.isNotEmpty()) {
