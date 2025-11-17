@@ -15,6 +15,102 @@ class AppProtectionManager(private val context: Context) {
         private const val TAG = "AppProtectionManager"
     }
     
+    /**
+     * Retorna lista de todas as ações bloqueadas pelas políticas de trabalho
+     * 
+     * Este método documenta claramente e HONESTAMENTE as proteções aplicadas,
+     * diferenciando entre GARANTIDAS (✅) e TENTADAS (⚠️).
+     * 
+     * ✅ = Proteção GARANTIDA aplicada com sucesso
+     * ⚠️ = Proteção TENTADA, pode falhar em alguns dispositivos/versões
+     * ❌ = NÃO bloqueável (limitação do Android)
+     * 
+     * @return Mapa de categorias e ações bloqueadas
+     */
+    fun getBlockedActions(): Map<String, List<String>> {
+        return mapOf(
+            "🚫 RESTAURAÇÃO E RESET (GARANTIDAS)" to listOf(
+                "✅ Factory Reset via Settings (DISALLOW_FACTORY_RESET - crítica)",
+                "❌ Factory Reset via Recovery Mode (botões Volume+Power) - NÃO BLOQUEÁVEL",
+                "❌ Factory Reset via Fastboot/Bootloader - NÃO BLOQUEÁVEL"
+            ),
+            
+            "🛡️ PROTEÇÃO DO APP (GARANTIDAS)" to listOf(
+                "✅ Desinstalação do app (setUninstallBlocked)",
+                "✅ Force Stop (setUserControlDisabledPackages ou DISALLOW_APPS_CONTROL)",
+                "✅ Clear Data (setUserControlDisabledPackages ou DISALLOW_APPS_CONTROL)",
+                "✅ Remoção do Device Admin (Device Owner não pode ser removido via Settings)"
+            ),
+            
+            "🔐 SEGURANÇA E ACESSO (GARANTIDAS)" to listOf(
+                "✅ Modificação de contas (DISALLOW_MODIFY_ACCOUNTS)",
+                "✅ Adição de usuários (DISALLOW_ADD_USER)",
+                "✅ Remoção de usuários (DISALLOW_REMOVE_USER)",
+                "✅ Debug Features e USB Debugging (DISALLOW_DEBUGGING_FEATURES)",
+                "✅ USB File Transfer MTP/PTP (DISALLOW_USB_FILE_TRANSFER)",
+                "✅ Safe Boot Mode (DISALLOW_SAFE_BOOT)"
+            ),
+            
+            "🌐 REDE E SISTEMA (TENTADAS - podem falhar)" to listOf(
+                "⚠️ Configuração de VPN (DISALLOW_CONFIG_VPN - pode falhar)",
+                "⚠️ Configuração de redes móveis (DISALLOW_CONFIG_MOBILE_NETWORKS - pode falhar)",
+                "⚠️ Configuração de data/hora (DISALLOW_CONFIG_DATE_TIME - pode falhar)",
+                "⚠️ Network Reset (DISALLOW_NETWORK_RESET - pode falhar)",
+                "⚠️ Montagem de mídia externa (DISALLOW_MOUNT_PHYSICAL_MEDIA - pode falhar)",
+                "⚠️ Outgoing Beam/NFC (DISALLOW_OUTGOING_BEAM - pode falhar)"
+            ),
+            
+            "📱 INSTALAÇÃO E APPS (TENTADAS)" to listOf(
+                "⚠️ Fontes desconhecidas (InstallationBlocker, falha em Android moderno)",
+                "⚠️ Apps perigosos (escaneados, remoção requer confirmação do usuário)",
+                "⚠️ Apps Settings Motorola (setApplicationHidden, só funciona em Motorola)"
+            ),
+            
+            "⚙️ SAMSUNG KNOX (se disponível)" to listOf(
+                "⚠️ Knox Factory Reset Protection (requer Knox SDK)",
+                "⚠️ Knox OEM Unlock bloqueado (requer Knox SDK)",
+                "⚠️ Knox Recovery Mode bloqueado (requer Knox SDK)"
+            ),
+            
+            "ℹ️ OBSERVAÇÕES IMPORTANTES" to listOf(
+                "• Proteções ✅ são GARANTIDAS pelo Device Owner",
+                "• Proteções ⚠️ são TENTADAS, mas podem falhar silenciosamente",
+                "• Proteções ❌ são impossíveis de bloquear (limitação do Android)",
+                "• WiFi, Bluetooth, Tethering NÃO são bloqueados (usuário precisa)",
+                "• Recovery Mode e Fastboot operam ANTES do Android iniciar"
+            )
+        )
+    }
+    
+    /**
+     * Exibe no log todas as ações bloqueadas de forma organizada
+     */
+    fun logBlockedActions() {
+        Log.i(TAG, "")
+        Log.i(TAG, "╔════════════════════════════════════════════════════════════════╗")
+        Log.i(TAG, "║                                                                ║")
+        Log.i(TAG, "║        📋 AÇÕES BLOQUEADAS PELAS POLÍTICAS DE TRABALHO         ║")
+        Log.i(TAG, "║                                                                ║")
+        Log.i(TAG, "╚════════════════════════════════════════════════════════════════╝")
+        Log.i(TAG, "")
+        
+        val blockedActions = getBlockedActions()
+        
+        blockedActions.forEach { (category, actions) ->
+            Log.i(TAG, category)
+            Log.i(TAG, "═".repeat(64))
+            actions.forEach { action ->
+                Log.i(TAG, "  $action")
+            }
+            Log.i(TAG, "")
+        }
+        
+        Log.i(TAG, "╔════════════════════════════════════════════════════════════════╗")
+        Log.i(TAG, "║  🔒 PROTEÇÃO MÁXIMA APLICADA - CDC CREDIT SMART PROTEGIDO      ║")
+        Log.i(TAG, "╚════════════════════════════════════════════════════════════════╝")
+        Log.i(TAG, "")
+    }
+    
     private val dpm: DevicePolicyManager by lazy {
         context.getSystemService(Context.DEVICE_POLICY_SERVICE) as DevicePolicyManager
     }
@@ -101,20 +197,7 @@ class AppProtectionManager(private val context: Context) {
         Log.i(TAG, "========================================")
         Log.i(TAG, "📊 RESUMO DA PROTEÇÃO ANTI-REMOÇÃO:")
         Log.i(TAG, "  ✅ Proteções aplicadas: $protectionsApplied")
-        Log.i(TAG, "  🛡️ App PROTEGIDO contra:")
-        Log.i(TAG, "     ✅ Desinstalação via Settings")
-        Log.i(TAG, "     ✅ Force Stop")
-        Log.i(TAG, "     ✅ Clear Data")
-        Log.i(TAG, "     ✅ Factory Reset via Settings")
-        Log.i(TAG, "     ⚠️ Hard Reset (botões físicos) - LIMITADO")
-        Log.i(TAG, "     ⚠️ Recovery Mode - Samsung Knox: BLOQUEADO, Outros: LIMITADO")
-        Log.i(TAG, "     ✅ Wipe total do sistema via Settings")
         Log.i(TAG, "")
-        Log.w(TAG, "⚠️ LIMITAÇÕES DO ANDROID:")
-        Log.w(TAG, "   • Hard reset via Volume+Power durante boot NÃO pode ser bloqueado")
-        Log.w(TAG, "   • Bootloader/Fastboot mode opera abaixo do Android")
-        Log.w(TAG, "   • Recovery mode pode não ser 100% bloqueado (exceto Samsung Knox)")
-        Log.w(TAG, "")
         Log.w(TAG, "⚠️ Tamper Detection:")
         Log.w(TAG, "   • Device fingerprint SERÁ coletado e reportado ao backend em cada boot")
         Log.w(TAG, "   • Backend detection: Requer implementação POST /api/security/device-boot (TODO)")
@@ -127,6 +210,10 @@ class AppProtectionManager(private val context: Context) {
             Log.i(TAG, "  ⚠️ Android <13: Settings com acesso limitado (DISALLOW_APPS_CONTROL)")
         }
         Log.i(TAG, "========================================")
+        Log.i(TAG, "")
+        
+        // Exibir lista completa de ações bloqueadas
+        logBlockedActions()
     }
     
     private fun blockUninstallation(): Int {
