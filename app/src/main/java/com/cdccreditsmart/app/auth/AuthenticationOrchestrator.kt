@@ -125,7 +125,7 @@ class AuthenticationOrchestrator(private val context: Context) {
             tokenStorage.saveDeviceInfo(
                 deviceId = device.id,
                 serialNumber = device.serialNumber,
-                imei = connection.useImei,
+                imei = device.imei,
                 contractCode = contractCode,
                 customerName = customer?.name,
                 deviceModel = device.model ?: device.name
@@ -134,7 +134,7 @@ class AuthenticationOrchestrator(private val context: Context) {
             Log.d(TAG, "💾 Dados salvos:")
             Log.d(TAG, "   - ContractCode: ${contractCode}")
             Log.d(TAG, "   - DeviceId: ${device.id.take(15)}...")
-            Log.d(TAG, "   - IMEI: ${connection.useImei.take(4)}***")
+            Log.d(TAG, "   - IMEI: ${device.imei.take(4)}***${device.imei.takeLast(3)}")
             
             // 6. Registrar FCM token
             CoroutineScope(Dispatchers.IO).launch {
