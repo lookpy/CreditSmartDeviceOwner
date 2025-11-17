@@ -109,12 +109,13 @@ class AppBlockingManager(private val context: Context) {
             Log.i(TAG, "🎯 Usando setPackagesSuspended() - ícones permanecem visíveis")
             
             try {
-                // Bloquear apps com dialog customizado
+                // Bloquear apps
                 val packagesToBlock = appsToBlock.toTypedArray()
                 
                 val failedToBlock = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-                    // Android 9+ : Usa SuspendDialogInfo para customizar o dialog
+                    // Android 9+: Usa SuspendDialogInfo para customizar o dialog
                     val dialogInfo = createSuspendDialogInfo(parameters.targetLevel, parameters.daysOverdue)
+                    @Suppress("NewApi")
                     dpm.setPackagesSuspended(
                         adminComponent,
                         packagesToBlock,
@@ -281,7 +282,8 @@ class AppBlockingManager(private val context: Context) {
         }
     }
     
-    private fun createSuspendDialogInfo(level: Int, daysOverdue: Int): DevicePolicyManager.SuspendDialogInfo? {
+    @Suppress("NewApi")
+    private fun createSuspendDialogInfo(level: Int, daysOverdue: Int): Any? {
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
             try {
                 // Intent para abrir BlockedAppExplanationActivity quando clicar no botão

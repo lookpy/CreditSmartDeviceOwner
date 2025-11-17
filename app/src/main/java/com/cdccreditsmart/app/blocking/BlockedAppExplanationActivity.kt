@@ -3,6 +3,7 @@ package com.cdccreditsmart.app.blocking
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -36,9 +37,11 @@ class BlockedAppExplanationActivity : ComponentActivity() {
         
         // IMPORTANTE: Quando vem do SuspendDialogInfo, o Android envia automaticamente
         // o package name via DevicePolicyManager.EXTRA_PACKAGE_NAME
-        val blockedPackage = intent.getStringExtra(android.app.admin.DevicePolicyManager.EXTRA_PACKAGE_NAME)
-            ?: intent.getStringExtra("blocked_package") 
-            ?: ""
+        val blockedPackage = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            intent.getStringExtra("android.app.extra.PACKAGE_NAME")
+        } else {
+            null
+        } ?: intent.getStringExtra("blocked_package") ?: ""
         
         val blockingLevel = intent.getIntExtra("blocking_level", 0)
         val daysOverdue = intent.getIntExtra("days_overdue", 0)
