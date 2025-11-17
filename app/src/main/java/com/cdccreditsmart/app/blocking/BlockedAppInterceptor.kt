@@ -145,10 +145,22 @@ class BlockedAppInterceptor(private val context: Context) {
     }
     
     private fun checkForegroundApp(): Boolean {
-        val foregroundPackage = getForegroundPackageName() ?: return false
+        val foregroundPackage = getForegroundPackageName()
+        
+        if (foregroundPackage == null) {
+            Log.w(TAG, "⚠️ getForegroundPackageName() retornou NULL")
+            Log.w(TAG, "   Possíveis causas:")
+            Log.w(TAG, "   1. Nenhum app foi aberto recentemente")
+            Log.w(TAG, "   2. Permissão PACKAGE_USAGE_STATS não concedida")
+            Log.w(TAG, "   3. Timestamp muito recente (sem eventos novos)")
+            return false
+        }
+        
+        Log.d(TAG, "🎯 App em foreground: $foregroundPackage")
         
         // Ignora o próprio app CDC
         if (foregroundPackage == context.packageName) {
+            Log.d(TAG, "⏭️ Ignorando CDC app (próprio app)")
             return false
         }
         
@@ -221,7 +233,7 @@ class BlockedAppInterceptor(private val context: Context) {
      * Reduz drasticamente o processamento de eventos repetidos
      */
     private fun getForegroundPackageName(): String? {
-        if (BuildConfig.DEBUG) Log.d(TAG, "🔍 Verificando app em foreground...")
+        Log.d(TAG, "🔍 Verificando app em foreground...")
         
         return try {
             val usageStatsManager = context.getSystemService(Context.USAGE_STATS_SERVICE) as? UsageStatsManager
@@ -234,35 +246,53 @@ class BlockedAppInterceptor(private val context: Context) {
             }
             
             val now = System.currentTimeMillis()
+            val queryStart = lastEventTimestamp
+            val queryDuration = now - queryStart
+            
+            Log.d(TAG, "📊 Query eventos desde ${queryDuration}ms atrás...")
+            
             // OTIMIZAÇÃO: Query apenas desde último evento processado (delta)
-            val events = usageStatsManager.queryEvents(lastEventTimestamp, now)
+            val events = usageStatsManager.queryEvents(queryStart, now)
             
             val event = UsageEvents.Event()
             var foundNewEvent = false
+            var totalEvents = 0
+            var foregroundEvents = 0
             
             while (events.hasNextEvent()) {
                 events.getNextEvent(event)
+                totalEvents++
                 
                 if (event.eventType == UsageEvents.Event.MOVE_TO_FOREGROUND) {
+                    foregroundEvents++
                     lastForegroundPackage = event.packageName
                     lastEventTimestamp = event.timeStamp // Atualiza para próxima query delta
                     foundNewEvent = true
                     
-                    if (BuildConfig.DEBUG) {
-                        Log.d(TAG, "📱 Novo foreground: $lastForegroundPackage (delta=${now - event.timeStamp}ms)")
-                    }
+                    Log.d(TAG, "📱 FOREGROUND DETECTADO: ${event.packageName}")
+                    Log.d(TAG, "   Timestamp: ${event.timeStamp}")
+                    Log.d(TAG, "   Delta: ${now - event.timeStamp}ms atrás")
                 }
             }
             
+            Log.d(TAG, "📊 Total eventos: $totalEvents, FOREGROUND eventos: $foregroundEvents")
+            
             // Se não encontrou eventos novos, atualiza timestamp para evitar re-processar
             if (!foundNewEvent) {
+                Log.w(TAG, "⚠️ NENHUM evento MOVE_TO_FOREGROUND detectado!")
+                Log.w(TAG, "   lastForegroundPackage cached: $lastForegroundPackage")
+                Log.w(TAG, "   Query range: ${queryDuration}ms")
                 lastEventTimestamp = now
+            } else {
+                Log.i(TAG, "✅ App em foreground: $lastForegroundPackage")
             }
             
             lastForegroundPackage
             
         } catch (e: Exception) {
-            Log.e(TAG, "Erro ao obter foreground package", e)
+            Log.e(TAG, "❌ ERRO ao obter foreground package", e)
+            Log.e(TAG, "   Exception: ${e.message}")
+            Log.e(TAG, "   Stack: ${e.stackTraceToString()}")
             lastForegroundPackage
         }
     }
