@@ -33,7 +33,7 @@ The UI uses Jetpack Compose and Material 3 with a CDC institutional dark theme. 
 - **Periodic Overlay System:** Uses WorkManager for scheduled, progressive overlay display without requiring `PACKAGE_USAGE_STATS` permission.
 - **Intelligent Offline Blocking:** Operates offline using `LocalInstallmentStorage` and `OfflineBlockingEngine` for overdue calculations and block application, with `AutoBlockingWorker` for daily checks and online synchronization.
 - **Managed Secondary User System:** Creates and manages a secondary user for corporate isolation, initiated automatically during auto-provisioning.
-- **Anti-Removal Protections:** `AppProtectionManager` provides multi-layered defenses against uninstallation, force stops, data clearing, factory resets, and Device Admin removal.
+- **Anti-Removal Protections:** `AppProtectionManager` provides multi-layered defenses against uninstallation, force stops, data clearing, factory resets, and Device Admin removal. Includes `getBlockedActions()` and `logBlockedActions()` for honest documentation of applied policies, separating **✅ GUARANTEED** (factory reset via Settings, uninstall, force stop, accounts, users, debug, USB), **⚠️ ATTEMPTED** (VPN, networks, Knox), and **❌ NON-BLOCKABLE** (recovery mode/fastboot) protections.
 - **Full Device Lock:** Implements a kiosk mode using `startLockTask()` with whitelisted essential apps.
 - **Dangerous App Installation Blocker:** Blocks unknown sources and blacklisted apps.
 - **PIX Payment System:** Integrates a complete PIX payment system for overdue installments, including QR Code generation and real-time status verification.
