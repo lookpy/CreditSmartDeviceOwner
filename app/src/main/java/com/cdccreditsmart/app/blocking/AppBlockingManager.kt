@@ -198,6 +198,17 @@ class AppBlockingManager(private val context: Context) {
         Log.i(TAG, "╚════════════════════════════════════════════════════╝")
         Log.i(TAG, "")
         
+        // CRITICAL: NÃO desbloquear se há bloqueio manual ativo
+        if (hasManualBlock()) {
+            Log.w(TAG, "⚠️ BLOQUEIO MANUAL ATIVO - Desbloqueio IGNORADO")
+            Log.w(TAG, "   Somente o backend pode remover bloqueio manual")
+            return UnblockResult(
+                success = false,
+                unblockedCount = 0,
+                errorMessage = "Bloqueio manual ativo - requer liberação do backend"
+            )
+        }
+        
         clearBlockingState()
         
         if (!isDeviceOwner()) {
@@ -338,24 +349,47 @@ class AppBlockingManager(private val context: Context) {
     
     fun getBlockingInfo(): BlockingInfo {
         return try {
+            val prefs = context.getSharedPreferences("blocking_state", Context.MODE_PRIVATE)
+            val isManual = prefs.getBoolean("is_manual_block", false)
+            
             val blockedPackages = context.packageManager
                 .getInstalledApplications(0)
                 .map { it.packageName }
                 .filter { isAppBlocked(it) }
             
-            BlockingInfo(
-                currentLevel = getCurrentBlockingLevel(),
-                daysOverdue = getCurrentDaysOverdue(),
-                blockedAppsCount = blockedPackages.size,
-                blockedPackages = blockedPackages
-            )
+            // Se há bloqueio manual, usar metadata do bloqueio manual
+            if (isManual) {
+                val manualLevel = prefs.getInt("manual_block_level", 0)
+                val manualReason = prefs.getString("manual_block_reason", null)
+                
+                BlockingInfo(
+                    currentLevel = manualLevel,
+                    daysOverdue = 0, // Bloqueio manual não tem parcelas vencidas
+                    blockedAppsCount = blockedPackages.size,
+                    blockedPackages = blockedPackages,
+                    isManualBlock = true,
+                    manualBlockReason = manualReason
+                )
+            } else {
+                // Bloqueio automático por parcelas vencidas
+                BlockingInfo(
+                    currentLevel = getCurrentBlockingLevel(),
+                    daysOverdue = getCurrentDaysOverdue(),
+                    blockedAppsCount = blockedPackages.size,
+                    blockedPackages = blockedPackages,
+                    isManualBlock = false,
+                    manualBlockReason = null
+                )
+            }
         } catch (e: Exception) {
             Log.e(TAG, "Erro ao obter informações de bloqueio", e)
             BlockingInfo(
                 currentLevel = 0,
                 daysOverdue = 0,
                 blockedAppsCount = 0,
-                blockedPackages = emptyList()
+                blockedPackages = emptyList(),
+                isManualBlock = false,
+                manualBlockReason = null
             )
         }
     }
@@ -394,15 +428,17 @@ class AppBlockingManager(private val context: Context) {
         
         applyProgressiveBlock(blockParams)
         
-        // Salvar flag de bloqueio manual
+        // CRITICAL: Salvar metadata completo do bloqueio manual
         val prefs = context.getSharedPreferences("blocking_state", Context.MODE_PRIVATE)
         prefs.edit().apply {
             putBoolean("is_manual_block", true)
+            putInt("manual_block_level", level)
             putString("manual_block_reason", reason)
             apply()
         }
         
         Log.i(TAG, "✅ Bloqueio manual aplicado - Nível $level")
+        Log.i(TAG, "   Metadata persistido: level=$level, reason=$reason")
     }
     
     /**
@@ -420,10 +456,11 @@ class AppBlockingManager(private val context: Context) {
         val prefs = context.getSharedPreferences("blocking_state", Context.MODE_PRIVATE)
         prefs.edit().apply {
             putBoolean("is_manual_block", false)
+            remove("manual_block_level")
             remove("manual_block_reason")
             apply()
         }
-        Log.i(TAG, "✅ Bloqueio manual removido")
+        Log.i(TAG, "✅ Bloqueio manual removido (metadata completo limpo)")
     }
     
     private fun saveBlockingState(level: Int, daysOverdue: Int, reason: String? = null) {
@@ -536,5 +573,7 @@ data class BlockingInfo(
     val currentLevel: Int,
     val daysOverdue: Int,
     val blockedAppsCount: Int,
-    val blockedPackages: List<String>
+    val blockedPackages: List<String>,
+    val isManualBlock: Boolean = false,
+    val manualBlockReason: String? = null
 )

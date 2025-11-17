@@ -256,6 +256,8 @@ class BlockedAppInterceptor(private val context: Context) {
                 putExtra("blocking_level", blockingInfo.currentLevel)
                 putExtra("days_overdue", blockingInfo.daysOverdue)
                 putExtra("blocked_apps_count", blockingInfo.blockedAppsCount)
+                putExtra("is_manual_block", blockingInfo.isManualBlock)
+                putExtra("manual_block_reason", blockingInfo.manualBlockReason)
             }
             
             context.startActivity(intent)

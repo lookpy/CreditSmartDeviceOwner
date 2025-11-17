@@ -40,6 +40,8 @@ class BlockedAppExplanationActivity : ComponentActivity() {
         val blockingLevel = intent.getIntExtra("blocking_level", 0)
         val daysOverdue = intent.getIntExtra("days_overdue", 0)
         val blockedAppsCount = intent.getIntExtra("blocked_apps_count", 0)
+        val isManualBlock = intent.getBooleanExtra("is_manual_block", false)
+        val manualBlockReason = intent.getStringExtra("manual_block_reason")
         
         setContent {
             CDCCreditSmartTheme {
@@ -48,6 +50,8 @@ class BlockedAppExplanationActivity : ComponentActivity() {
                     blockingLevel = blockingLevel,
                     daysOverdue = daysOverdue,
                     blockedAppsCount = blockedAppsCount,
+                    isManualBlock = isManualBlock,
+                    manualBlockReason = manualBlockReason,
                     onClose = { finish() }
                 )
             }
@@ -66,6 +70,8 @@ fun BlockedAppExplanationScreen(
     blockingLevel: Int,
     daysOverdue: Int,
     blockedAppsCount: Int,
+    isManualBlock: Boolean = false,
+    manualBlockReason: String? = null,
     onClose: () -> Unit
 ) {
     val context = androidx.compose.ui.platform.LocalContext.current
@@ -186,19 +192,23 @@ fun BlockedAppExplanationScreen(
             Card(
                 modifier = Modifier.fillMaxWidth(),
                 colors = CardDefaults.cardColors(
-                    containerColor = Color(0xFFFFF3E0)
+                    containerColor = if (isManualBlock) Color(0xFFFFEBEE) else Color(0xFFFFF3E0)
                 )
             ) {
                 Column(modifier = Modifier.padding(16.dp)) {
                     Text(
-                        text = "⚠️ Aplicativo temporariamente bloqueado",
+                        text = if (isManualBlock) "🚨 Dispositivo bloqueado administrativamente" else "⚠️ Aplicativo temporariamente bloqueado",
                         style = MaterialTheme.typography.titleMedium,
                         fontWeight = FontWeight.Bold,
-                        color = Color(0xFFE65100)
+                        color = if (isManualBlock) Color(0xFFD32F2F) else Color(0xFFE65100)
                     )
                     Spacer(modifier = Modifier.height(8.dp))
                     Text(
-                        text = "Regularize suas parcelas em atraso para desbloquear",
+                        text = if (isManualBlock) {
+                            manualBlockReason ?: "Bloqueio aplicado remotamente pela CDC Credit Smart"
+                        } else {
+                            "Regularize suas parcelas em atraso para desbloquear"
+                        },
                         style = MaterialTheme.typography.bodyMedium
                     )
                 }
@@ -206,15 +216,17 @@ fun BlockedAppExplanationScreen(
             
             Spacer(modifier = Modifier.height(16.dp))
             
-            Text(
-                text = "Parcelas em Atraso",
-                style = MaterialTheme.typography.titleLarge,
-                fontWeight = FontWeight.Bold
-            )
+            if (!isManualBlock) {
+                Text(
+                    text = "Parcelas em Atraso",
+                    style = MaterialTheme.typography.titleLarge,
+                    fontWeight = FontWeight.Bold
+                )
+                
+                Spacer(modifier = Modifier.height(8.dp))
+            }
             
-            Spacer(modifier = Modifier.height(8.dp))
-            
-            if (overdueStatus.overdueInstallments.isNotEmpty()) {
+            if (!isManualBlock && overdueStatus.overdueInstallments.isNotEmpty()) {
                 overdueStatus.overdueInstallments.forEach { installment ->
                     InstallmentCard(
                         number = installment.number,
