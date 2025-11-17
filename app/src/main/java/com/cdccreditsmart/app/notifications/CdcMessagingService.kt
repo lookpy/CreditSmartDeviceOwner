@@ -83,10 +83,15 @@ class CdcMessagingService : FirebaseMessagingService() {
             }
         }
 
-        Log.d(TAG, "Displaying notification - Type: $type, Title: $title")
-        if (imageUrl != null) {
-            Log.d(TAG, "Image URL detected: $imageUrl")
-        }
+        Log.d(TAG, "========== NOTIFICATION PAYLOAD ANALYSIS ==========")
+        Log.d(TAG, "Type: $type")
+        Log.d(TAG, "Title: $title")
+        Log.d(TAG, "Message: $messageText")
+        Log.d(TAG, "Deep Link: ${deepLink ?: "None"}")
+        Log.d(TAG, "Image URL from data[image_url]: ${data[KEY_IMAGE_URL] ?: "NULL"}")
+        Log.d(TAG, "Image URL from notification.imageUrl: ${notification?.imageUrl?.toString() ?: "NULL"}")
+        Log.d(TAG, "Final imageUrl: ${imageUrl ?: "NULL - NO IMAGE WILL BE SHOWN"}")
+        Log.d(TAG, "====================================================")
 
         notificationHelper.showNotification(
             title = title,

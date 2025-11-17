@@ -132,20 +132,40 @@ class NotificationHelper(private val context: Context) {
         data: Map<String, String>? = null,
         imageUrl: String? = null
     ) {
-        Log.d(TAG, "Showing notification - Type: ${type.name}, Title: $title")
+        Log.d(TAG, "========== SHOWING NOTIFICATION ==========")
+        Log.d(TAG, "Type: ${type.name}")
+        Log.d(TAG, "Title: $title")
+        Log.d(TAG, "Message: $message")
+        Log.d(TAG, "ImageURL: ${imageUrl ?: "NULL (no image)"}")
+        Log.d(TAG, "=========================================")
         
-        if (imageUrl != null) {
-            Log.d(TAG, "Image URL provided: $imageUrl - downloading asynchronously")
+        if (imageUrl != null && imageUrl.isNotBlank()) {
+            Log.i(TAG, "📥 Iniciando download de imagem: $imageUrl")
             
             CoroutineScope(Dispatchers.IO).launch {
                 try {
+                    val downloadStartTime = System.currentTimeMillis()
                     val bitmap = downloadImage(imageUrl)
-                    displayNotification(
-                        title, message, type, notificationId, 
-                        deepLink, data, bitmap
-                    )
+                    val downloadDuration = System.currentTimeMillis() - downloadStartTime
+                    
+                    if (bitmap != null) {
+                        Log.i(TAG, "✅ Imagem baixada com sucesso em ${downloadDuration}ms")
+                        Log.i(TAG, "   Tamanho: ${bitmap.width}x${bitmap.height}")
+                        displayNotification(
+                            title, message, type, notificationId, 
+                            deepLink, data, bitmap
+                        )
+                    } else {
+                        Log.w(TAG, "⚠️ Bitmap é NULL após download - mostrando sem imagem")
+                        displayNotification(
+                            title, message, type, notificationId, 
+                            deepLink, data, null
+                        )
+                    }
                 } catch (e: Exception) {
-                    Log.e(TAG, "Error downloading image, showing notification without image", e)
+                    Log.e(TAG, "❌ Erro ao baixar imagem - mostrando notificação sem imagem", e)
+                    Log.e(TAG, "   Tipo de erro: ${e.javaClass.simpleName}")
+                    Log.e(TAG, "   Mensagem: ${e.message}")
                     displayNotification(
                         title, message, type, notificationId, 
                         deepLink, data, null
@@ -153,6 +173,7 @@ class NotificationHelper(private val context: Context) {
                 }
             }
         } else {
+            Log.d(TAG, "ℹ️ Nenhuma URL de imagem fornecida - mostrando notificação sem imagem")
             displayNotification(
                 title, message, type, notificationId, 
                 deepLink, data, null
@@ -227,30 +248,93 @@ class NotificationHelper(private val context: Context) {
     }
 
     private suspend fun downloadImage(imageUrl: String): Bitmap? = withContext(Dispatchers.IO) {
+        var connection: HttpURLConnection? = null
+        var inputStream: java.io.InputStream? = null
+        
         try {
-            Log.d(TAG, "Downloading image from: $imageUrl")
+            Log.d(TAG, "📥 Iniciando download de imagem...")
+            Log.d(TAG, "   URL: $imageUrl")
+            
             val url = URL(imageUrl)
-            val connection = url.openConnection() as HttpURLConnection
+            Log.d(TAG, "   Protocol: ${url.protocol}")
+            Log.d(TAG, "   Host: ${url.host}")
+            Log.d(TAG, "   Path: ${url.path}")
+            
+            connection = url.openConnection() as HttpURLConnection
             connection.doInput = true
-            connection.connectTimeout = 10000
-            connection.readTimeout = 10000
+            connection.connectTimeout = 15000
+            connection.readTimeout = 15000
+            connection.requestMethod = "GET"
+            connection.setRequestProperty("User-Agent", "CDC-CreditSmart-Android")
+            
+            Log.d(TAG, "🔌 Conectando ao servidor...")
             connection.connect()
             
-            val inputStream = connection.inputStream
+            val responseCode = connection.responseCode
+            Log.d(TAG, "📡 Response Code: $responseCode")
+            
+            if (responseCode != HttpURLConnection.HTTP_OK) {
+                Log.e(TAG, "❌ HTTP Error: $responseCode - ${connection.responseMessage}")
+                return@withContext null
+            }
+            
+            val contentType = connection.contentType
+            val contentLength = connection.contentLength
+            Log.d(TAG, "📦 Content-Type: $contentType")
+            Log.d(TAG, "📦 Content-Length: $contentLength bytes")
+            
+            if (contentType != null && !contentType.startsWith("image/")) {
+                Log.e(TAG, "❌ Content-Type não é imagem: $contentType")
+                return@withContext null
+            }
+            
+            inputStream = connection.inputStream
+            Log.d(TAG, "🎨 Decodificando bitmap...")
+            
             val bitmap = BitmapFactory.decodeStream(inputStream)
-            inputStream.close()
-            connection.disconnect()
             
             if (bitmap != null) {
-                Log.d(TAG, "Image downloaded successfully - Size: ${bitmap.width}x${bitmap.height}")
+                Log.i(TAG, "✅ Bitmap decodificado com sucesso!")
+                Log.i(TAG, "   Dimensões: ${bitmap.width}x${bitmap.height}")
+                Log.i(TAG, "   Config: ${bitmap.config}")
+                Log.i(TAG, "   Tamanho estimado: ${bitmap.byteCount / 1024} KB")
             } else {
-                Log.w(TAG, "Failed to decode image bitmap")
+                Log.e(TAG, "❌ BitmapFactory.decodeStream() retornou NULL")
+                Log.e(TAG, "   Possíveis causas:")
+                Log.e(TAG, "   - Formato de imagem não suportado")
+                Log.e(TAG, "   - Imagem corrompida")
+                Log.e(TAG, "   - Stream vazio")
             }
             
             bitmap
-        } catch (e: Exception) {
-            Log.e(TAG, "Error downloading notification image", e)
+            
+        } catch (e: java.net.MalformedURLException) {
+            Log.e(TAG, "❌ URL inválida: ${e.message}", e)
             null
+        } catch (e: java.net.SocketTimeoutException) {
+            Log.e(TAG, "❌ Timeout ao baixar imagem: ${e.message}", e)
+            null
+        } catch (e: java.net.UnknownHostException) {
+            Log.e(TAG, "❌ Host desconhecido: ${e.message}", e)
+            null
+        } catch (e: javax.net.ssl.SSLException) {
+            Log.e(TAG, "❌ Erro SSL: ${e.message}", e)
+            null
+        } catch (e: java.io.IOException) {
+            Log.e(TAG, "❌ Erro de I/O: ${e.message}", e)
+            null
+        } catch (e: Exception) {
+            Log.e(TAG, "❌ Erro inesperado ao baixar imagem: ${e.javaClass.simpleName}", e)
+            Log.e(TAG, "   Mensagem: ${e.message}")
+            null
+        } finally {
+            try {
+                inputStream?.close()
+                connection?.disconnect()
+                Log.d(TAG, "🔌 Conexão fechada")
+            } catch (e: Exception) {
+                Log.w(TAG, "Erro ao fechar recursos: ${e.message}")
+            }
         }
     }
 
