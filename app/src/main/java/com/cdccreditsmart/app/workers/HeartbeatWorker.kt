@@ -28,29 +28,40 @@ class HeartbeatWorker(
         // PROTEÇÃO: Máximo de correções consecutivas antes de parar
         private const val MAX_COMPLIANCE_CORRECTIONS = 3
         
+        // OTIMIZAÇÃO: Intervalo aumentado para reduzir carga no backend
+        // De 15min → 1h = Redução de 75% nas requisições
+        private const val HEARTBEAT_INTERVAL_MINUTES = 60L
+        
+        // SharedPreferences para cache de último estado
+        private const val PREFS_NAME = "heartbeat_cache"
+        private const val KEY_LAST_STATE_HASH = "last_state_hash"
+        private const val KEY_LAST_SENT_TIMESTAMP = "last_sent_timestamp"
+        
         fun schedule(context: Context) {
             val constraints = Constraints.Builder()
                 .setRequiredNetworkType(NetworkType.CONNECTED)
                 .build()
             
             val heartbeatRequest = PeriodicWorkRequestBuilder<HeartbeatWorker>(
-                15, TimeUnit.MINUTES,
-                5, TimeUnit.MINUTES
+                HEARTBEAT_INTERVAL_MINUTES, TimeUnit.MINUTES,
+                15, TimeUnit.MINUTES // Flex: 15min de flexibilidade
             )
                 .setConstraints(constraints)
                 .setBackoffCriteria(
                     BackoffPolicy.EXPONENTIAL,
-                    1, TimeUnit.MINUTES
+                    15, TimeUnit.MINUTES
                 )
                 .build()
             
             WorkManager.getInstance(context).enqueueUniquePeriodicWork(
                 WORK_NAME,
-                ExistingPeriodicWorkPolicy.KEEP,
+                ExistingPeriodicWorkPolicy.REPLACE, // REPLACE para aplicar nova configuração
                 heartbeatRequest
             )
             
-            Log.i(TAG, "✅ Heartbeat agendado via WorkManager (15min com flex 5min)")
+            Log.i(TAG, "✅ Heartbeat OTIMIZADO agendado via WorkManager")
+            Log.i(TAG, "   📊 Intervalo: ${HEARTBEAT_INTERVAL_MINUTES}min (redução de 75% vs 15min)")
+            Log.i(TAG, "   🎯 Economia: ~72 requisições/dia por dispositivo")
         }
         
         fun cancel(context: Context) {
@@ -64,9 +75,26 @@ class HeartbeatWorker(
     
     override suspend fun doWork(): Result {
         return try {
-            Log.d(TAG, "💓 Enviando heartbeat com dados de conformidade...")
+            Log.d(TAG, "💓 Verificando necessidade de enviar heartbeat...")
+            
+            // OTIMIZAÇÃO: Verificar se estado mudou antes de enviar
+            val currentStateHash = calculateCurrentStateHash()
+            val lastStateHash = getLastStateHash()
+            
+            if (currentStateHash == lastStateHash) {
+                Log.i(TAG, "⏭️ SKIP: Estado inalterado desde último heartbeat")
+                Log.i(TAG, "   🎯 Economia: 1 requisição ao backend")
+                return Result.success()
+            }
+            
+            Log.d(TAG, "📤 Estado mudou - enviando heartbeat...")
+            Log.d(TAG, "   Hash anterior: $lastStateHash")
+            Log.d(TAG, "   Hash atual: $currentStateHash")
             
             sendHeartbeat()
+            
+            // Salvar novo hash após envio bem-sucedido
+            saveLastStateHash(currentStateHash)
             
             Log.i(TAG, "✅ Heartbeat enviado com sucesso")
             Result.success()
@@ -377,5 +405,52 @@ class HeartbeatWorker(
             lastCrash = null,
             performanceMetrics = null
         )
+    }
+    
+    /**
+     * OTIMIZAÇÃO: Calcula hash do estado atual do dispositivo
+     * Usado para detectar mudanças e evitar envios desnecessários
+     */
+    private fun calculateCurrentStateHash(): String {
+        val blockLevel = blockingManager.getCurrentBlockLevel()
+        val blockedAppsCount = blockingManager.getBlockedAppsCount()
+        val lockScreenActive = blockingManager.isLockScreenActive()
+        val progressiveBlockActive = blockingManager.isProgressiveBlockActive()
+        val isManualBlock = blockingManager.hasManualBlock()
+        
+        // Hash simples: combinar valores críticos
+        val stateString = "$blockLevel|$blockedAppsCount|$lockScreenActive|$progressiveBlockActive|$isManualBlock"
+        
+        return stateString.hashCode().toString()
+    }
+    
+    /**
+     * Recupera hash do último estado enviado
+     */
+    private fun getLastStateHash(): String? {
+        return try {
+            val prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+            prefs.getString(KEY_LAST_STATE_HASH, null)
+        } catch (e: Exception) {
+            Log.e(TAG, "Erro ao recuperar hash do último estado", e)
+            null
+        }
+    }
+    
+    /**
+     * Salva hash do estado atual após envio bem-sucedido
+     */
+    private fun saveLastStateHash(hash: String) {
+        try {
+            val prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+            prefs.edit()
+                .putString(KEY_LAST_STATE_HASH, hash)
+                .putLong(KEY_LAST_SENT_TIMESTAMP, System.currentTimeMillis())
+                .apply()
+            
+            Log.d(TAG, "💾 Hash do estado salvo: $hash")
+        } catch (e: Exception) {
+            Log.e(TAG, "Erro ao salvar hash do estado", e)
+        }
     }
 }

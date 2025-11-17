@@ -43,7 +43,8 @@ class CDCApplication : Application() {
             Log.i(TAG, "⏸️ Sem tokens - aguardando pairing para iniciar serviço MDM")
         }
         
-        BlockingCheckWorker.schedulePeriodicCheck(applicationContext)
+        // REMOVIDO: BlockingCheckWorker (redundante - HeartbeatWorker já envia dados de bloqueio)
+        // Economia: ~192 requisições/dia por dispositivo
         
         AutoBlockingWorker.scheduleDailyCheck(applicationContext)
         
