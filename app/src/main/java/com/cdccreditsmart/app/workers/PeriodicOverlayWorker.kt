@@ -6,7 +6,7 @@ import android.util.Log
 import androidx.work.*
 import com.cdccreditsmart.app.blocking.AppBlockingManager
 import com.cdccreditsmart.app.blocking.BlockingInfo
-import com.cdccreditsmart.app.presentation.blocking.BlockedAppExplanationActivity
+import com.cdccreditsmart.app.blocking.BlockedAppExplanationActivity
 import java.util.concurrent.TimeUnit
 
 /**
