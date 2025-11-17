@@ -10,6 +10,7 @@ import android.util.Log
 import androidx.core.app.NotificationCompat
 import com.cdccreditsmart.app.R
 import com.cdccreditsmart.app.protection.AppProtectionManager
+import com.cdccreditsmart.app.protection.WorkProfileManager
 import com.cdccreditsmart.app.service.CdcForegroundService
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -74,20 +75,34 @@ class AutoProvisioningReceiver : BroadcastReceiver() {
             // 1. Aplicar proteções máximas
             val protectionManager = AppProtectionManager(context)
             
-            Log.i(TAG, "📋 [1/5] Aplicando proteções máximas anti-remoção...")
+            Log.i(TAG, "📋 [1/6] Aplicando proteções máximas anti-remoção...")
             protectionManager.applyMaximumProtection()
             
-            Log.i(TAG, "📋 [2/5] Tornando o app persistente...")
+            // 1.5. Criar Work Profile (perfil de trabalho gerenciado)
+            Log.i(TAG, "")
+            Log.i(TAG, "📋 [2/6] Criando Work Profile (perfil de trabalho)...")
+            val workProfileManager = WorkProfileManager(context)
+            val workProfileCreated = workProfileManager.createWorkProfile()
+            
+            if (workProfileCreated) {
+                Log.i(TAG, "✅ Work Profile criado com sucesso!")
+                Log.i(TAG, workProfileManager.getWorkProfileInfo())
+            } else {
+                Log.w(TAG, "⚠️ Work Profile não foi criado (pode não ser suportado neste dispositivo)")
+            }
+            Log.i(TAG, "")
+            
+            Log.i(TAG, "📋 [3/6] Tornando o app persistente...")
             protectionManager.makeAppPersistent()
             
-            Log.i(TAG, "📋 [3/5] Bloqueando acesso às configurações...")
+            Log.i(TAG, "📋 [4/6] Bloqueando acesso às configurações...")
             protectionManager.blockAccessToSettings()
             
-            Log.i(TAG, "📋 [4/5] Habilitando modo kiosk...")
+            Log.i(TAG, "📋 [5/6] Habilitando modo kiosk...")
             protectionManager.enableKioskMode()
             
             // 2. Verificar proteções aplicadas
-            Log.i(TAG, "📋 [5/5] Verificando proteções...")
+            Log.i(TAG, "📋 [6/6] Verificando proteções...")
             val protections = protectionManager.verifyProtections()
             Log.i(TAG, "✅ Proteções verificadas: $protections")
             

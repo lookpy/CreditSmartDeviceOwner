@@ -38,6 +38,7 @@ class AppProtectionManager(private val context: Context) {
         var protectionsApplied = 0
         
         protectionsApplied += blockUninstallation()
+        protectionsApplied += blockDeviceAdminRemoval()
         protectionsApplied += blockForceStop()
         protectionsApplied += blockClearData()
         protectionsApplied += blockFactoryReset()
@@ -132,13 +133,106 @@ class AppProtectionManager(private val context: Context) {
         return try {
             val packageName = context.packageName
             dpm.setUninstallBlocked(adminComponent, packageName, true)
-            Log.i(TAG, "✅ [1/6] DESINSTALAÇÃO BLOQUEADA")
-            Log.i(TAG, "       → Usuário NÃO pode desinstalar o app")
+            Log.i(TAG, "✅ [1/10] DESINSTALAÇÃO BLOQUEADA")
+            Log.i(TAG, "        → Usuário NÃO pode desinstalar o app")
             1
         } catch (e: Exception) {
             Log.e(TAG, "❌ Erro ao bloquear desinstalação: ${e.message}", e)
             0
         }
+    }
+    
+    /**
+     * CRÍTICO: Bloqueia remoção do Device Admin
+     * 
+     * Aplica múltiplas proteções para evitar que o usuário desative o Device Admin:
+     * 1. Bloqueia desinstalação do app (via setUninstallBlocked)
+     * 2. Bloqueia modificação de contas (impede adicionar conta que poderia remover Device Owner)
+     * 3. Bloqueia adição/remoção de usuários (impede criar usuário admin que poderia remover)
+     * 4. Bloqueia debug features (impede usar adb para remover)
+     * 
+     * IMPORTANTE: Device Owner NÃO pode ser removido programaticamente pelo próprio usuário.
+     * As únicas formas de remover são:
+     * - Factory reset (que já bloqueamos)
+     * - ADB em modo desenvolvedor (que bloqueamos via USB debugging)
+     * - Bootloader/Fastboot (opera abaixo do Android - não pode ser bloqueado)
+     */
+    private fun blockDeviceAdminRemoval(): Int {
+        var count = 0
+        
+        Log.i(TAG, "🔐 [2/10] BLOQUEANDO REMOÇÃO DO DEVICE ADMIN")
+        
+        // 1. Bloquear modificação de contas
+        try {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                dpm.addUserRestriction(adminComponent, UserManager.DISALLOW_MODIFY_ACCOUNTS)
+                Log.i(TAG, "        ✅ Modificação de contas bloqueada")
+                Log.i(TAG, "           → Previne adicionar conta Google que poderia remover Device Owner")
+                count++
+            }
+        } catch (e: Exception) {
+            Log.w(TAG, "        ⚠️ Não foi possível bloquear modificação de contas: ${e.message}")
+        }
+        
+        // 2. Bloquear adição/remoção de usuários
+        try {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
+                dpm.addUserRestriction(adminComponent, UserManager.DISALLOW_ADD_USER)
+                Log.i(TAG, "        ✅ Adição de usuários bloqueada")
+                Log.i(TAG, "           → Previne criar usuário secundário com privilégios de remoção")
+                count++
+            }
+        } catch (e: Exception) {
+            Log.w(TAG, "        ⚠️ Não foi possível bloquear adição de usuários: ${e.message}")
+        }
+        
+        try {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
+                dpm.addUserRestriction(adminComponent, UserManager.DISALLOW_REMOVE_USER)
+                Log.i(TAG, "        ✅ Remoção de usuários bloqueada")
+                count++
+            }
+        } catch (e: Exception) {
+            Log.w(TAG, "        ⚠️ Não foi possível bloquear remoção de usuários: ${e.message}")
+        }
+        
+        // 3. Bloquear debugging features (previne remoção via ADB)
+        try {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                dpm.addUserRestriction(adminComponent, UserManager.DISALLOW_DEBUGGING_FEATURES)
+                Log.i(TAG, "        ✅ Debugging features bloqueadas")
+                Log.i(TAG, "           → Previne uso de ADB para remover Device Owner")
+                count++
+            }
+        } catch (e: Exception) {
+            Log.w(TAG, "        ⚠️ Não foi possível bloquear debugging: ${e.message}")
+        }
+        
+        // 4. Bloquear USB file transfer (camada extra de segurança)
+        try {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                dpm.addUserRestriction(adminComponent, UserManager.DISALLOW_USB_FILE_TRANSFER)
+                Log.i(TAG, "        ✅ USB file transfer bloqueado")
+                Log.i(TAG, "           → Previne acesso via USB MTP/PTP")
+                count++
+            }
+        } catch (e: Exception) {
+            Log.w(TAG, "        ⚠️ Não foi possível bloquear USB transfer: ${e.message}")
+        }
+        
+        // 5. Como Device Owner, o app JÁ ESTÁ protegido contra remoção via Settings
+        Log.i(TAG, "        ℹ️ Device Owner NÃO pode ser desativado via Settings")
+        Log.i(TAG, "           → Botão 'Deactivate device admin' não aparece para Device Owner")
+        
+        if (count >= 3) {
+            Log.i(TAG, "        ✅ Device Admin MÁXIMAMENTE PROTEGIDO contra remoção")
+            Log.i(TAG, "           → Proteções aplicadas: $count/5")
+        } else {
+            Log.w(TAG, "        ⚠️ Algumas proteções não puderam ser aplicadas")
+            Log.w(TAG, "           → Proteções aplicadas: $count/5")
+        }
+        
+        return if (count >= 3) 1 else 0
     }
     
     private fun blockForceStop(): Int {
