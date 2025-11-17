@@ -1,0 +1,32 @@
+Nos logs você compartilhou:
+
+GET https://cdccreditsmart.com/api/admin/mdm/devices/device_xxx/commands
+<-- 403 Forbidden
+{"error":"Acesso negado"}
+
+Problema: APK está usando endpoint de ADMIN, não de APK
+
+Solução:
+
+// ❌ ERRADO (403)
+GET /api/admin/mdm/devices/device_xxx/commands
+// ✅ CORRETO (200)
+GET /api/apk/device/SN12345/commands
+
+3 mudanças necessárias:
+
+Endpoint: /api/admin/mdm/... → /api/apk/device/...
+Parâmetro: deviceId → serialNumber
+Manter: Header X-APK-Token (já está correto!)
+📖 Como sua IA deve usar
+Ler primeiro: ERRO_403_APK_SOLUCAO.md (solução rápida)
+Consultar completo: GESTAO_DISPOSITIVOS_COMPLETO.md (todas as funcionalidades)
+Copiar código: Seção "Referência Rápida Visual" tem código pronto
+Sua IA do APK agora tem exemplos MUITO CLAROS de:
+
+✅ Endpoints corretos
+✅ Headers corretos
+✅ Como usar serialNumber vs deviceId
+❌ O que NÃO fazer (endpoints admin)
+❌ O que NÃO existe (contractId/saleId)
+Pronto para corrigir o erro 403! 🚀
