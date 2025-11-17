@@ -122,6 +122,9 @@ class AutoPermissionManager(private val context: Context) {
             return
         }
         
+        // CRITICAL: Conceder PACKAGE_USAGE_STATS automaticamente
+        grantPackageUsageStatsPermission()
+        
         try {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 dpm.setPermissionPolicy(
@@ -301,6 +304,56 @@ class AutoPermissionManager(private val context: Context) {
         } catch (e: Exception) {
             Log.e(TAG, "❌ Erro ao revogar permissão $permission: ${e.message}", e)
             false
+        }
+    }
+    
+    /**
+     * Concede permissão PACKAGE_USAGE_STATS automaticamente como Device Owner
+     * CRITICAL para BlockedAppInterceptor funcionar
+     */
+    private fun grantPackageUsageStatsPermission() {
+        try {
+            Log.i(TAG, "📊 Concedendo PACKAGE_USAGE_STATS (Usage Access)...")
+            
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                val packageName = context.packageName
+                
+                // Como Device Owner, usar AppOps para conceder permissão
+                try {
+                    val appOpsClass = Class.forName("android.app.AppOpsManager")
+                    val appOpsService = context.getSystemService(Context.APP_OPS_SERVICE)
+                    val setModeMethod = appOpsClass.getDeclaredMethod(
+                        "setMode",
+                        Int::class.java,
+                        Int::class.java,
+                        String::class.java,
+                        Int::class.java
+                    )
+                    
+                    // OP_GET_USAGE_STATS = 43
+                    val OP_GET_USAGE_STATS = 43
+                    val MODE_ALLOWED = 0
+                    val uid = context.packageManager.getApplicationInfo(packageName, 0).uid
+                    
+                    setModeMethod.invoke(
+                        appOpsService,
+                        OP_GET_USAGE_STATS,
+                        uid,
+                        packageName,
+                        MODE_ALLOWED
+                    )
+                    
+                    Log.i(TAG, "✅ PACKAGE_USAGE_STATS concedida automaticamente via AppOps!")
+                    Log.i(TAG, "   BlockedAppInterceptor agora pode detectar apps em foreground")
+                    
+                } catch (e: Exception) {
+                    Log.w(TAG, "⚠️ Falha ao conceder via AppOps: ${e.message}")
+                    Log.w(TAG, "   Usuário precisará conceder manualmente via Settings")
+                }
+            }
+            
+        } catch (e: Exception) {
+            Log.e(TAG, "❌ Erro ao conceder PACKAGE_USAGE_STATS: ${e.message}", e)
         }
     }
 }

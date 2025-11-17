@@ -446,7 +446,12 @@ class AppBlockingManager(private val context: Context) {
      */
     fun hasManualBlock(): Boolean {
         val prefs = context.getSharedPreferences("blocking_state", Context.MODE_PRIVATE)
-        return prefs.getBoolean("is_manual_block", false) && getCurrentBlockingLevel() > 0
+        val isManual = prefs.getBoolean("is_manual_block", false)
+        if (!isManual) return false
+        
+        // Bloqueio manual lê de manual_block_level, não current_level
+        val manualLevel = prefs.getInt("manual_block_level", 0)
+        return manualLevel > 0
     }
     
     /**
