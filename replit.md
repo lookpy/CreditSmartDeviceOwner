@@ -33,6 +33,7 @@ The UI uses Jetpack Compose and Material 3 with a CDC institutional dark theme. 
 - **Periodic Overlay System:** Uses WorkManager for scheduled, progressive overlay display without requiring `PACKAGE_USAGE_STATS` permission.
 - **Intelligent Offline Blocking:** Operates offline using `LocalInstallmentStorage` and `OfflineBlockingEngine` for overdue calculations and block application, with `AutoBlockingWorker` for daily checks and online synchronization.
 - **Managed Secondary User System:** Creates and manages a secondary user for corporate isolation, initiated automatically during auto-provisioning.
+- **Post-Factory-Reset Enrollment (Hybrid):** Implements automatic app reinstallation after factory reset via Samsung Knox Mobile Enrollment (KME) for Samsung devices and Android Zero-Touch Enrollment for other manufacturers. `EnrollmentManager` orchestrates `KnoxEnrollmentHelper` and `ZeroTouchHelper` to detect enrollment type, collect device information, and report status to backend. Integrated into `AutoProvisioningReceiver` for automatic enrollment detection during device setup. See `ENROLLMENT_GUIDE.md` for operational procedures.
 - **Anti-Removal Protections:** `AppProtectionManager` provides multi-layered defenses against uninstallation, force stops, data clearing, factory resets, and Device Admin removal. Includes `getBlockedActions()` and `logBlockedActions()` for honest documentation of applied policies, separating **✅ GUARANTEED** (factory reset via Settings, uninstall, force stop, accounts, users, debug, USB), **⚠️ ATTEMPTED** (VPN, networks, Knox), and **❌ NON-BLOCKABLE** (recovery mode/fastboot) protections.
 - **Full Device Lock:** Implements a kiosk mode using `startLockTask()` with whitelisted essential apps.
 - **Dangerous App Installation Blocker:** Blocks unknown sources and blacklisted apps.
@@ -42,11 +43,13 @@ The UI uses Jetpack Compose and Material 3 with a CDC institutional dark theme. 
 - **Networking:** Utilizes Retrofit and OkHttp with retry logic, exponential backoff, and Certificate Pinning.
 
 ## External Dependencies
-- **CDC Credit Smart Backend API:** For APK authentication, auto-discovery, device status, installments, PIX payment processing, heartbeat, MDM commands, unblock operations, remote uninstall telemetry, time synchronization, and FCM token registration. MDM endpoints prioritize IMEI > Serial Number > Device ID.
+- **CDC Credit Smart Backend API:** For APK authentication, auto-discovery, device status, installments, PIX payment processing, heartbeat, MDM commands, unblock operations, remote uninstall telemetry, time synchronization, FCM token registration, and enrollment reporting. MDM endpoints prioritize IMEI > Serial Number > Device ID. Must host APK download endpoint for Knox KME and Zero-Touch provisioning.
 - **Meio de Pagamento API:** External payment gateway for PIX transactions (accessed via CDC backend).
 - **WebSocket Server:** For real-time pairing status and MDM command push.
 - **Firebase Cloud Messaging (FCM):** For push notification infrastructure and analytics.
-- **Samsung Knox Enterprise SDK:** For advanced device management and security on Samsung devices.
+- **Samsung Knox Enterprise SDK:** For advanced device management, security on Samsung devices, and Knox Mobile Enrollment (KME) detection.
+- **Samsung Knox Mobile Enrollment (KME):** Enterprise enrollment system for automatic app reinstallation on Samsung devices after factory reset.
+- **Android Zero-Touch Enrollment:** Google's enterprise enrollment system for automatic app reinstallation on non-Samsung devices after factory reset.
 - **Google Play Integrity API:** For device integrity verification.
 - **Jetpack Compose, Material 3, Compose Navigation:** UI framework components.
 - **Retrofit, OkHttp:** HTTP client and WebSocket support.
