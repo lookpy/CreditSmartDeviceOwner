@@ -104,7 +104,7 @@ fun HomeScreen(
                     color = MaterialTheme.colorScheme.onSurface
                 )
                 Text(
-                    text = "Bem-vindo ao CDC Credit Smart",
+                    text = "Bem-vindo ao Credit Smart",
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )

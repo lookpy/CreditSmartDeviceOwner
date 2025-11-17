@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">CDC Credit Smart</string>
+    <string name="app_name">Credit Smart</string>
     
     <!-- Navigation -->
     <string name="title_home">Início</string>
@@ -18,7 +18,7 @@
     <string name="back">Voltar</string>
     
     <!-- Home -->
-    <string name="welcome_title">Bem-vindo ao CDC Credit Smart</string>
+    <string name="welcome_title">Bem-vindo ao Credit Smart</string>
     <string name="contract_status">Status do Contrato</string>
     <string name="next_payment">Próximo Pagamento</string>
     

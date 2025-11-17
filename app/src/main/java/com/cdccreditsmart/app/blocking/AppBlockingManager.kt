@@ -106,45 +106,41 @@ class AppBlockingManager(private val context: Context) {
             // Ícones ficam visíveis, mas ao clicar → BlockedAppInterceptor mostra tela CDC
             Log.i(TAG, "🎯 Usando setPackagesSuspended() - ícones permanecem visíveis")
             
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                try {
-                    // Bloquear apps
-                    val packagesToBlock = appsToBlock.toTypedArray()
-                    val failedToBlock = dpm.setPackagesSuspended(
-                        adminComponent,
-                        packagesToBlock,
-                        true
-                    )
-                    
-                    blockedCount = packagesToBlock.size - (failedToBlock?.size ?: 0)
-                    
-                    if (failedToBlock == null) {
-                        Log.i(TAG, "✅ Todos os ${packagesToBlock.size} apps bloqueados com sucesso")
-                    } else {
-                        Log.i(TAG, "✅ ${blockedCount} apps bloqueados")
-                        failedToBlock.forEach { pkg ->
-                            Log.w(TAG, "  ⚠️ Falhou ao bloquear: $pkg")
-                        }
+            try {
+                // Bloquear apps
+                val packagesToBlock = appsToBlock.toTypedArray()
+                val failedToBlock = dpm.setPackagesSuspended(
+                    adminComponent,
+                    packagesToBlock,
+                    true
+                )
+                
+                blockedCount = packagesToBlock.size - (failedToBlock?.size ?: 0)
+                
+                if (failedToBlock == null) {
+                    Log.i(TAG, "✅ Todos os ${packagesToBlock.size} apps bloqueados com sucesso")
+                } else {
+                    Log.i(TAG, "✅ ${blockedCount} apps bloqueados")
+                    failedToBlock.forEach { pkg ->
+                        Log.w(TAG, "  ⚠️ Falhou ao bloquear: $pkg")
                     }
-                    
-                    // Desbloquear apps que não estão na lista de bloqueio
-                    val appsToUnblock = allInstalledApps.filter { it !in appsToBlock }
-                    val packagesToUnblock = appsToUnblock.toTypedArray()
-                    val failedToUnblock = dpm.setPackagesSuspended(
-                        adminComponent,
-                        packagesToUnblock,
-                        false
-                    )
-                    
-                    unblockedCount = packagesToUnblock.size - (failedToUnblock?.size ?: 0)
-                    
-                    Log.i(TAG, "✅ ${unblockedCount} apps desbloqueados")
-                    
-                } catch (e: Exception) {
-                    Log.e(TAG, "❌ Erro ao aplicar bloqueio via setPackagesSuspended: ${e.message}")
                 }
-            } else {
-                Log.e(TAG, "❌ Android < 7.0 não suporta setPackagesSuspended")
+                
+                // Desbloquear apps que não estão na lista de bloqueio
+                val appsToUnblock = allInstalledApps.filter { it !in appsToBlock }
+                val packagesToUnblock = appsToUnblock.toTypedArray()
+                val failedToUnblock = dpm.setPackagesSuspended(
+                    adminComponent,
+                    packagesToUnblock,
+                    false
+                )
+                
+                unblockedCount = packagesToUnblock.size - (failedToUnblock?.size ?: 0)
+                
+                Log.i(TAG, "✅ ${unblockedCount} apps desbloqueados")
+                
+            } catch (e: Exception) {
+                Log.e(TAG, "❌ Erro ao aplicar bloqueio via setPackagesSuspended: ${e.message}")
             }
             
             Log.i(TAG, "✅ Bloqueio aplicado - ${blockedCount} bloqueados, ${unblockedCount} desbloqueados")
@@ -201,35 +197,31 @@ class AppBlockingManager(private val context: Context) {
             // DESBLOQUEIO TOTAL: Remove suspension de TODOS os apps
             Log.i(TAG, "🎯 Desbloqueando TODOS os apps usando setPackagesSuspended()...")
             
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                try {
-                    val allPackages = installedApps.map { it.packageName }.toTypedArray()
-                    
-                    Log.d(TAG, "📊 Total de apps instalados: ${allPackages.size}")
-                    
-                    // Desbloquear TODOS os apps de uma vez
-                    val failedPackages = dpm.setPackagesSuspended(
-                        adminComponent,
-                        allPackages,
-                        false  // suspended = false → DESBLOQUEIA
-                    )
-                    
-                    if (failedPackages == null) {
-                        unblockedCount = allPackages.size
-                        Log.i(TAG, "✅ TODOS os ${allPackages.size} apps desbloqueados com sucesso!")
-                    } else {
-                        unblockedCount = allPackages.size - failedPackages.size
-                        Log.i(TAG, "✅ ${unblockedCount} apps desbloqueados")
-                        failedPackages.forEach { pkg ->
-                            Log.w(TAG, "  ⚠️ Falhou ao desbloquear: $pkg")
-                        }
+            try {
+                val allPackages = installedApps.map { it.packageName }.toTypedArray()
+                
+                Log.d(TAG, "📊 Total de apps instalados: ${allPackages.size}")
+                
+                // Desbloquear TODOS os apps de uma vez
+                val failedPackages = dpm.setPackagesSuspended(
+                    adminComponent,
+                    allPackages,
+                    false  // suspended = false → DESBLOQUEIA
+                )
+                
+                if (failedPackages == null) {
+                    unblockedCount = allPackages.size
+                    Log.i(TAG, "✅ TODOS os ${allPackages.size} apps desbloqueados com sucesso!")
+                } else {
+                    unblockedCount = allPackages.size - failedPackages.size
+                    Log.i(TAG, "✅ ${unblockedCount} apps desbloqueados")
+                    failedPackages.forEach { pkg ->
+                        Log.w(TAG, "  ⚠️ Falhou ao desbloquear: $pkg")
                     }
-                    
-                } catch (e: Exception) {
-                    Log.e(TAG, "❌ Erro ao desbloquear via setPackagesSuspended: ${e.message}")
                 }
-            } else {
-                Log.e(TAG, "❌ Android < 7.0 não suporta setPackagesSuspended")
+                
+            } catch (e: Exception) {
+                Log.e(TAG, "❌ Erro ao desbloquear via setPackagesSuspended: ${e.message}")
             }
             
             Log.i(TAG, "✅ Desbloqueio completo - $unblockedCount apps desbloqueados")

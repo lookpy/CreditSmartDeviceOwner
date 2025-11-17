@@ -48,7 +48,7 @@ class NotificationHelper(private val context: Context) {
     companion object {
         private const val TAG = "NotificationHelper"
         private const val DEFAULT_CHANNEL_ID = "cdc_default"
-        private const val DEFAULT_CHANNEL_NAME = "CDC Credit Smart"
+        private const val DEFAULT_CHANNEL_NAME = "Credit Smart"
         private const val NOTIFICATION_ID_BLOCKING = 1002
     }
 
@@ -67,7 +67,7 @@ class NotificationHelper(private val context: Context) {
                     DEFAULT_CHANNEL_NAME,
                     NotificationManager.IMPORTANCE_DEFAULT
                 ).apply {
-                    description = "Notificações gerais do CDC Credit Smart"
+                    description = "Notificações gerais do Credit Smart"
                     enableVibration(true)
                     enableLights(true)
                 },

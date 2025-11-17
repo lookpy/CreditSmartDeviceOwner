@@ -89,7 +89,7 @@ fun BlockedAppExplanationScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("CDC Credit Smart") },
+                title = { Text("Credit Smart") },
                 colors = TopAppBarDefaults.topAppBarColors(
                     containerColor = Color(0xFFFF7A1A),
                     titleContentColor = Color.White

@@ -124,7 +124,7 @@ private fun RouterScreenContent(
             Spacer(modifier = Modifier.height(24.dp))
             
             Text(
-                text = "Iniciando CDC Credit Smart",
+                text = "Iniciando Credit Smart",
                 style = MaterialTheme.typography.headlineSmall,
                 color = Color.White,
                 fontWeight = FontWeight.Bold,

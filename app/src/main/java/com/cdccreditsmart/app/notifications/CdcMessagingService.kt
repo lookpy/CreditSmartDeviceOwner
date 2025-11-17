@@ -55,7 +55,7 @@ class CdcMessagingService : FirebaseMessagingService() {
 
         val title = data[KEY_TITLE] 
             ?: notification?.title 
-            ?: "CDC Credit Smart"
+            ?: "Credit Smart"
         
         val messageText = data[KEY_MESSAGE] 
             ?: data[KEY_BODY]

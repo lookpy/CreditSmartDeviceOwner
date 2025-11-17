@@ -20,7 +20,7 @@ fun WelcomeScreen(
         verticalArrangement = Arrangement.Center
     ) {
         Text(
-            text = "Bem-vindo ao CDC Credit Smart",
+            text = "Bem-vindo ao Credit Smart",
             style = MaterialTheme.typography.headlineMedium,
             textAlign = TextAlign.Center
         )

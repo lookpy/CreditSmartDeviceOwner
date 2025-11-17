@@ -1,7 +1,7 @@
-# CDC Credit Smart Android App
+# Credit Smart Android App
 
 ## Overview
-The CDC Credit Smart Android App is a Device Owner application for CDC Credit Smart clients. It provides a secure and efficient mobile experience by integrating advanced security features, robust device pairing, real-time communication, and payment processing (PIX and Boleto). The app implements progressive blocking policies to enhance operational efficiency and bolster security for mobile financial transactions, using a 3-step handshake for secure device pairing. Its primary purpose is to provide a secure mobile experience for financial transactions, ensuring operational efficiency and strong security.
+The Credit Smart Android App is a Device Owner application for Credit Smart clients. It provides a secure and efficient mobile experience by integrating advanced security features, robust device pairing, real-time communication, and payment processing (PIX and Boleto). The app implements progressive blocking policies to enhance operational efficiency and bolster security for mobile financial transactions, using a 3-step handshake for secure device pairing. Its primary purpose is to provide a secure mobile experience for financial transactions, ensuring operational efficiency and strong security.
 
 ## User Preferences
 - Linguagem simples e clara em português

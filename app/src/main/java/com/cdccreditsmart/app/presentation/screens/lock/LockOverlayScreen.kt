@@ -154,7 +154,7 @@ fun LockOverlayScreen(
         
         // CDC branding at bottom
         Text(
-            text = "CDC Credit Smart - Device Owner",
+            text = "Credit Smart - Device Owner",
             style = MaterialTheme.typography.labelSmall,
             color = Color.White.copy(alpha = 0.8f),
             modifier = Modifier

@@ -118,7 +118,7 @@ private fun NeedsProvisioningContent(
         )
         
         Text(
-            text = "Este dispositivo precisa ser provisionado como Device Owner antes de usar o CDC Credit Smart.",
+            text = "Este dispositivo precisa ser provisionado como Device Owner antes de usar o Credit Smart.",
             style = MaterialTheme.typography.bodyMedium,
             textAlign = TextAlign.Center,
             color = MaterialTheme.colorScheme.onSurfaceVariant

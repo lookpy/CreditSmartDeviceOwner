@@ -48,12 +48,12 @@ fun TermsAndConditionsScreen(
         ) {
             TermsSection(
                 title = "1. Aceitação dos Termos",
-                content = "Ao utilizar o aplicativo CDC Credit Smart, você concorda com estes Termos e Condições de Uso. Caso não concorde com algum dos termos aqui apresentados, você não deve utilizar este aplicativo."
+                content = "Ao utilizar o aplicativo Credit Smart, você concorda com estes Termos e Condições de Uso. Caso não concorde com algum dos termos aqui apresentados, você não deve utilizar este aplicativo."
             )
             
             TermsSection(
                 title = "2. Uso do Aplicativo",
-                content = "Este aplicativo é destinado exclusivamente aos clientes da CDC Credit Smart para gerenciamento de parcelas e pagamentos. O uso é pessoal e intransferível, sendo vedado o compartilhamento de credenciais de acesso."
+                content = "Este aplicativo é destinado exclusivamente aos clientes da Credit Smart para gerenciamento de parcelas e pagamentos. O uso é pessoal e intransferível, sendo vedado o compartilhamento de credenciais de acesso."
             )
             
             TermsSection(
@@ -73,7 +73,7 @@ fun TermsAndConditionsScreen(
             
             TermsSection(
                 title = "6. Responsabilidades do Usuário",
-                content = "Você é responsável por manter seus dados de acesso em segurança, realizar os pagamentos nas datas de vencimento, e notificar imediatamente a CDC Credit Smart em caso de perda ou roubo do dispositivo."
+                content = "Você é responsável por manter seus dados de acesso em segurança, realizar os pagamentos nas datas de vencimento, e notificar imediatamente a Credit Smart em caso de perda ou roubo do dispositivo."
             )
             
             TermsSection(
@@ -83,12 +83,12 @@ fun TermsAndConditionsScreen(
             
             TermsSection(
                 title = "8. Modificações nos Termos",
-                content = "A CDC Credit Smart reserva-se o direito de modificar estes termos a qualquer momento. Você será notificado sobre alterações significativas através do aplicativo."
+                content = "A Credit Smart reserva-se o direito de modificar estes termos a qualquer momento. Você será notificado sobre alterações significativas através do aplicativo."
             )
             
             TermsSection(
                 title = "9. Suporte e Contato",
-                content = "Em caso de dúvidas ou problemas com o aplicativo, entre em contato com nossa central de atendimento através dos canais oficiais da CDC Credit Smart."
+                content = "Em caso de dúvidas ou problemas com o aplicativo, entre em contato com nossa central de atendimento através dos canais oficiais da Credit Smart."
             )
             
             TermsSection(
@@ -108,7 +108,7 @@ fun TermsAndConditionsScreen(
             )
             
             Text(
-                text = "CDC Credit Smart - Todos os direitos reservados",
+                text = "Credit Smart - Todos os direitos reservados",
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
