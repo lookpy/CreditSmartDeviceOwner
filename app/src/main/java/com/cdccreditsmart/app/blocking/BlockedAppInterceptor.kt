@@ -17,13 +17,19 @@ class BlockedAppInterceptor(private val context: Context) {
         private const val CHECK_INTERVAL = 2000L // 2 segundos (CRÍTICO: mensagem deve aparecer rapidamente)
         private const val MEMORY_CLEANUP_THRESHOLD = 50 // Limpar memória a cada 50 apps diferentes
         private const val MEMORY_CLEANUP_AGE_MS = 300000L // 5 minutos
+        
+        // COOLDOWN GLOBAL: Previne overlay aparecer sem parar ao trocar de apps
+        private const val GLOBAL_COOLDOWN_MS = 60000L // 60 segundos (1 minuto) entre exibições
+        private const val PER_APP_COOLDOWN_MS = 5000L // 5 segundos para o mesmo app
     }
     
     // OTIMIZAÇÃO: Dispatchers.IO para operações I/O-bound (UsageStatsManager)
     private val scope = CoroutineScope(Dispatchers.IO + SupervisorJob())
     private var monitoringJob: Job? = null
     private val lastShownTime = ConcurrentHashMap<String, Long>()
-    private val cooldownMs = 5000L // 5 segundos entre mostrar explicações para o mesmo app
+    
+    // COOLDOWN: Rastreamento global + por app
+    private var lastGlobalShownTime = 0L // Última exibição do overlay (qualquer app)
     
     private var currentCheckInterval = 2000L // Inicia em 2s (CRÍTICO: resposta rápida)
     private var isScreenOn = true
@@ -145,11 +151,25 @@ class BlockedAppInterceptor(private val context: Context) {
         
         // Se há algum nível de bloqueio ativo (parcelas atrasadas OU bloqueio manual)
         if (blockingInfo.currentLevel > 0) {
-            val lastShown = lastShownTime[foregroundPackage] ?: 0L
             val now = System.currentTimeMillis()
             
-            // Cooldown: não mostrar novamente para o mesmo app em 5 segundos
-            if (now - lastShown < cooldownMs) {
+            // COOLDOWN GLOBAL: Previne spam ao trocar de apps
+            val timeSinceLastGlobalShow = now - lastGlobalShownTime
+            if (timeSinceLastGlobalShow < GLOBAL_COOLDOWN_MS) {
+                if (BuildConfig.DEBUG) {
+                    val remainingSeconds = (GLOBAL_COOLDOWN_MS - timeSinceLastGlobalShow) / 1000
+                    Log.d(TAG, "⏱️ COOLDOWN GLOBAL: Aguardar ${remainingSeconds}s antes de mostrar overlay novamente")
+                }
+                return true // Bloqueio ativo, mas aguardando cooldown
+            }
+            
+            // COOLDOWN POR APP: Previne spam no mesmo app
+            val lastShown = lastShownTime[foregroundPackage] ?: 0L
+            val timeSinceLastAppShow = now - lastShown
+            if (timeSinceLastAppShow < PER_APP_COOLDOWN_MS) {
+                if (BuildConfig.DEBUG) {
+                    Log.d(TAG, "⏱️ COOLDOWN APP: Já mostrado recentemente para $foregroundPackage")
+                }
                 return true
             }
             
@@ -163,7 +183,13 @@ class BlockedAppInterceptor(private val context: Context) {
                 Log.i(TAG, "🔔 Mostrando overlay com informações de parcelas atrasadas...")
             }
             
+            // Atualiza timestamps de cooldown
             lastShownTime[foregroundPackage] = now
+            lastGlobalShownTime = now
+            
+            if (BuildConfig.DEBUG) {
+                Log.i(TAG, "⏱️ Próximo overlay pode aparecer em ${GLOBAL_COOLDOWN_MS / 1000}s (cooldown global)")
+            }
             
             if (BuildConfig.DEBUG) {
                 Log.i(TAG, "🚀 Iniciando BlockedAppExplanationActivity (overlay)...")
