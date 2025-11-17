@@ -102,71 +102,34 @@ class AppBlockingManager(private val context: Context) {
             var blockedCount = 0
             var unblockedCount = 0
             
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                Log.i(TAG, "Android 7.0+: Usando setPackagesSuspended() - ícones permanecem visíveis")
-                
-                val packagesToSuspend = appsToBlock.toTypedArray()
-                val packagesToUnsuspend = allInstalledApps.filter { it !in appsToBlock }.toTypedArray()
-                
-                val suspendedPackages = dpm.setPackagesSuspended(
-                    adminComponent,
-                    packagesToSuspend,
-                    true
-                )
-                
-                blockedCount = packagesToSuspend.size - (suspendedPackages?.size ?: 0)
-                
-                suspendedPackages?.forEach { suspended ->
-                    Log.w(TAG, "  ⚠️ Não foi possível bloquear: $suspended")
-                }
-                
-                for (pkg in packagesToSuspend) {
-                    if (suspendedPackages == null || pkg !in suspendedPackages) {
-                        Log.d(TAG, "  ✅ Bloqueado (suspenso): $pkg")
+            // IMPORTANTE: Usando setApplicationHidden() ao invés de setPackagesSuspended()
+            // para evitar o dialog genérico do Android "Blocked by work policy"
+            // Nossa tela customizada será mostrada pelo BlockedAppInterceptor
+            Log.i(TAG, "🎯 Usando setApplicationHidden() - tela customizada CDC será exibida")
+            
+            for (packageName in appsToBlock) {
+                try {
+                    if (!dpm.isApplicationHidden(adminComponent, packageName)) {
+                        dpm.setApplicationHidden(adminComponent, packageName, true)
+                        blockedCount++
+                        Log.d(TAG, "  ✅ Bloqueado (oculto): $packageName")
                     }
+                } catch (e: Exception) {
+                    Log.e(TAG, "  ❌ Erro ao bloquear $packageName: ${e.message}")
                 }
-                
-                val unsuspendedPackages = dpm.setPackagesSuspended(
-                    adminComponent,
-                    packagesToUnsuspend,
-                    false
-                )
-                
-                unblockedCount = packagesToUnsuspend.size - (unsuspendedPackages?.size ?: 0)
-                
-                for (pkg in packagesToUnsuspend) {
-                    if (unsuspendedPackages == null || pkg !in unsuspendedPackages) {
-                        Log.d(TAG, "  🔓 Desbloqueado: $pkg")
+            }
+            
+            val appsToUnblock = allInstalledApps.filter { it !in appsToBlock }
+            
+            for (packageName in appsToUnblock) {
+                try {
+                    if (dpm.isApplicationHidden(adminComponent, packageName)) {
+                        dpm.setApplicationHidden(adminComponent, packageName, false)
+                        unblockedCount++
+                        Log.d(TAG, "  🔓 Desbloqueado: $packageName")
                     }
-                }
-                
-            } else {
-                Log.w(TAG, "⚠️ Android < 7.0 - usando setApplicationHidden() como fallback")
-                
-                for (packageName in appsToBlock) {
-                    try {
-                        if (!dpm.isApplicationHidden(adminComponent, packageName)) {
-                            dpm.setApplicationHidden(adminComponent, packageName, true)
-                            blockedCount++
-                            Log.d(TAG, "  ✅ Bloqueado (oculto): $packageName")
-                        }
-                    } catch (e: Exception) {
-                        Log.e(TAG, "  ❌ Erro ao bloquear $packageName: ${e.message}")
-                    }
-                }
-                
-                val appsToUnblock = allInstalledApps.filter { it !in appsToBlock }
-                
-                for (packageName in appsToUnblock) {
-                    try {
-                        if (dpm.isApplicationHidden(adminComponent, packageName)) {
-                            dpm.setApplicationHidden(adminComponent, packageName, false)
-                            unblockedCount++
-                            Log.d(TAG, "  🔓 Desbloqueado: $packageName")
-                        }
-                    } catch (e: Exception) {
-                        Log.e(TAG, "  ❌ Erro ao desbloquear $packageName: ${e.message}")
-                    }
+                } catch (e: Exception) {
+                    Log.e(TAG, "  ❌ Erro ao desbloquear $packageName: ${e.message}")
                 }
             }
             
@@ -221,45 +184,22 @@ class AppBlockingManager(private val context: Context) {
             val installedApps = context.packageManager.getInstalledApplications(0)
             var unblockedCount = 0
             
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                val allPackages = installedApps.map { it.packageName }.toTypedArray()
-                
-                Log.d(TAG, "📊 Total de apps instalados: ${allPackages.size}")
-                Log.d(TAG, "   Chamando setPackagesSuspended(suspended=false) para desbloquear...")
-                
-                val failedPackages = dpm.setPackagesSuspended(
-                    adminComponent,
-                    allPackages,
-                    false
-                )
-                
-                if (failedPackages == null) {
-                    Log.i(TAG, "✅ setPackagesSuspended retornou NULL - todos os apps foram desbloqueados com sucesso!")
-                } else {
-                    Log.w(TAG, "⚠️ ${failedPackages.size} apps falharam ao desbloquear:")
-                    failedPackages.forEach { pkg ->
-                        Log.w(TAG, "   - $pkg")
+            // IMPORTANTE: Usando setApplicationHidden() consistentemente
+            Log.i(TAG, "🎯 Desbloqueando apps usando setApplicationHidden()...")
+            
+            for (app in installedApps) {
+                try {
+                    if (dpm.isApplicationHidden(adminComponent, app.packageName)) {
+                        dpm.setApplicationHidden(adminComponent, app.packageName, false)
+                        unblockedCount++
+                        Log.d(TAG, "  🔓 Desbloqueado: ${app.packageName}")
                     }
+                } catch (e: Exception) {
+                    Log.e(TAG, "  ❌ Erro ao desbloquear ${app.packageName}: ${e.message}")
                 }
-                
-                unblockedCount = allPackages.size - (failedPackages?.size ?: 0)
-                
-                Log.i(TAG, "📊 RESULTADO: $unblockedCount apps desbloqueados de ${allPackages.size} total")
-            } else {
-                for (app in installedApps) {
-                    try {
-                        if (dpm.isApplicationHidden(adminComponent, app.packageName)) {
-                            dpm.setApplicationHidden(adminComponent, app.packageName, false)
-                            unblockedCount++
-                            Log.d(TAG, "  🔓 Desbloqueado: ${app.packageName}")
-                        }
-                    } catch (e: Exception) {
-                        Log.e(TAG, "  ❌ Erro ao desbloquear ${app.packageName}: ${e.message}")
-                    }
-                }
-                
-                Log.i(TAG, "✅ Desbloqueio completo - $unblockedCount apps desbloqueados")
             }
+            
+            Log.i(TAG, "✅ Desbloqueio completo - $unblockedCount apps desbloqueados")
             
             Log.i(TAG, "")
             Log.i(TAG, "╔════════════════════════════════════════════════════╗")

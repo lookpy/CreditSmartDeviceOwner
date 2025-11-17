@@ -219,11 +219,22 @@ class BlockedAppInterceptor(private val context: Context) {
     
     private fun showBlockedAppExplanation(packageName: String) {
         try {
+            // IMPORTANTE: Força o fechamento do app bloqueado ANTES de mostrar a tela
+            // Isso previne que o usuário veja o app funcionando por alguns segundos
+            val activityManager = context.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
+            try {
+                activityManager.killBackgroundProcesses(packageName)
+                Log.i(TAG, "🚫 Processo do app bloqueado finalizado: $packageName")
+            } catch (e: Exception) {
+                Log.w(TAG, "⚠️ Não foi possível finalizar processo (requer Device Owner): ${e.message}")
+            }
+            
             val blockingInfo = appBlockingManager.getBlockingInfo()
             
             val intent = Intent(context, BlockedAppExplanationActivity::class.java).apply {
                 addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                 addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY) // Não manter no histórico
                 putExtra("blocked_package", packageName)
                 putExtra("blocking_level", blockingInfo.currentLevel)
                 putExtra("days_overdue", blockingInfo.daysOverdue)
@@ -231,6 +242,8 @@ class BlockedAppInterceptor(private val context: Context) {
             }
             
             context.startActivity(intent)
+            
+            Log.i(TAG, "✅ Tela customizada CDC Credit Smart exibida")
             
         } catch (e: Exception) {
             Log.e(TAG, "Erro ao mostrar explicação", e)

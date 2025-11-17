@@ -43,7 +43,7 @@ The UI uses Jetpack Compose and Material 3 with a CDC institutional dark theme. 
 - **QR Code Provisioning:** Automated provisioning system compatible with Android 7.0+.
 - **Auto-Permission Manager:** Automatically grants runtime permissions as a Device Owner, with noted limitations for `PACKAGE_USAGE_STATS`.
 - **Maximum Anti-Removal Protection:** `AppProtectionManager` provides multi-layered defense against uninstallation, force stops, data clearing, and factory resets, including Motorola-specific protections and a `Protection Verification Worker`.
-- **Progressive Blocking System:** Receives MDM commands to progressively block applications based on overdue levels, using `setPackagesSuspended()` or `setApplicationHidden()`. A `Blocked App Interceptor` monitors foreground apps and displays overlay banners.
+- **Progressive Blocking System:** Receives MDM commands to progressively block applications based on overdue levels, using `setApplicationHidden()` to avoid generic Android dialogs. A `Blocked App Interceptor` monitors foreground apps and displays a custom CDC Credit Smart overlay with payment options and contact information when blocked apps are accessed.
 - **Intelligent Offline Blocking System:** Operates offline using `LocalInstallmentStorage` for encrypted installment data, with `OfflineBlockingEngine` calculating overdue days and applying blocks. `AutoBlockingWorker` performs daily checks and online synchronization.
 - **Full Device Lock System (LOCK_SCREEN):** Implements a kiosk mode using `startLockTask()` with a whitelist of essential apps.
 - **Factory Reset Protection (Multi-Layer):** Implements layered protection against factory resets, including `DISALLOW_FACTORY_RESET`, Google FRP, and Samsung Knox Enhanced features.
