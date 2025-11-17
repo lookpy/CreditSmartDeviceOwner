@@ -182,12 +182,14 @@ class PairingViewModel(private val context: Context) : ViewModel() {
                     Log.d(TAG, "Claim successful! Device paired")
                     Log.d(TAG, "Saving pairing code: ${contractId.take(4)}****")
                     
+                    // IMPORTANTE: contractId (ex: RSKUS3G7) É o Serial Number do contrato
+                    // Isso permite que getMdmIdentifier() use RSKUS3G7 para polling MDM
                     tokenStorage.saveTokens(
                         deviceToken = body.deviceToken ?: "",
                         apkToken = body.apkToken ?: "",
                         fingerprint = fingerprint,
                         contractCode = contractId,
-                        serialNumber = deviceInfo.serialNumber
+                        serialNumber = contractId  // Usar contractId como serialNumber
                     )
                     
                     Log.i(TAG, "🚀 Iniciando CdcForegroundService para MDM...")
@@ -352,14 +354,15 @@ class PairingViewModel(private val context: Context) : ViewModel() {
                         
                         val authToken = body.authToken ?: ""
                         val deviceId = body.device?.id
-                        val serialNumber = deviceInfoManager.collectDeviceInfo().serialNumber
                         
+                        // IMPORTANTE: contractId (ex: RSKUS3G7) É o Serial Number do contrato
+                        // Isso permite que getMdmIdentifier() use RSKUS3G7 para polling MDM
                         tokenStorage.saveAuthToken(
                             authToken = authToken,
                             contractCode = contractId,
                             deviceId = deviceId
                         )
-                        tokenStorage.saveSerialNumber(serialNumber)
+                        tokenStorage.saveSerialNumber(contractId)  // Usar contractId como serialNumber
                         
                         if (imeiInfo.hasValidImei()) {
                             val imeisToSave = imeiInfo.getAllImeis()

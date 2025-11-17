@@ -308,11 +308,17 @@ class AuthenticationOrchestrator(private val context: Context) {
                     deviceId = deviceId
                 )
                 
+                // IMPORTANTE: Salvar contractCode também como serialNumber
+                // O código digitado (ex: RSKUS3G7) É o Serial Number do contrato no backend
+                // Isso permite que getMdmIdentifier() use RSKUS3G7 para polling MDM
+                tokenStorage.saveSerialNumber(contractCode)
+                
                 if (deviceId != null) {
                     Log.d(TAG, "💾 DeviceId salvo: ${deviceId.take(10)}...")
                 }
                 
-                Log.d(TAG, "💾 authToken salvo com sucesso")
+                Log.d(TAG, "💾 authToken e serialNumber salvos com sucesso")
+                Log.d(TAG, "   - ContractCode/SerialNumber: $contractCode")
                 
                 CoroutineScope(Dispatchers.IO).launch {
                     Log.d(TAG, "🔔 Registrando FCM token após autenticação silenciosa...")
