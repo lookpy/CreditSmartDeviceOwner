@@ -378,7 +378,7 @@ class MdmCommandReceiver(private val context: Context) {
     
     private suspend fun sendAcknowledgement(commandId: String) {
         try {
-            val retrofit = RetrofitProvider.createRetrofit()
+            val retrofit = RetrofitProvider.createAuthenticatedRetrofit(context)
             val api = retrofit.create(MdmApiService::class.java)
             
             val request = CommandResponseRequest(
@@ -420,7 +420,7 @@ class MdmCommandReceiver(private val context: Context) {
         errorMessage: String? = null
     ) {
         try {
-            val retrofit = RetrofitProvider.createRetrofit()
+            val retrofit = RetrofitProvider.createAuthenticatedRetrofit(context)
             val api = retrofit.create(MdmApiService::class.java)
             
             val request = CommandResponseRequest(
@@ -519,7 +519,7 @@ class MdmCommandReceiver(private val context: Context) {
             Log.d(TAG, "🔍 Buscando comandos pendentes para deviceId: ${deviceId.take(10)}...")
             val fetchStartTime = System.currentTimeMillis()
             
-            val retrofit = RetrofitProvider.createRetrofit()
+            val retrofit = RetrofitProvider.createAuthenticatedRetrofit(context)
             val api = retrofit.create(MdmApiService::class.java)
             
             val response = api.getPendingCommands(deviceId)

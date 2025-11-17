@@ -26,7 +26,7 @@ class UnblockService(private val context: Context) {
         try {
             Log.i(TAG, "📤 Solicitando desbloqueio do dispositivo ao backend...")
             
-            val retrofit = RetrofitProvider.createRetrofit()
+            val retrofit = RetrofitProvider.createAuthenticatedRetrofit(context)
             val api = retrofit.create(MdmApiService::class.java)
             
             val response = api.unblockDevice(serialNumber)

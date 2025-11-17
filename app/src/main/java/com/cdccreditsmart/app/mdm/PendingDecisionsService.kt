@@ -28,7 +28,7 @@ class PendingDecisionsService(private val context: Context) {
         try {
             Log.i(TAG, "🔍 Verificando decisões pendentes...")
             
-            val retrofit = RetrofitProvider.createRetrofit()
+            val retrofit = RetrofitProvider.createAuthenticatedRetrofit(context)
             val api = retrofit.create(MdmApiService::class.java)
             
             val response = api.getPendingDecisions(serialNumber)
@@ -116,7 +116,7 @@ class PendingDecisionsService(private val context: Context) {
     
     private suspend fun acknowledgeDecision(decisionId: String, success: Boolean) {
         try {
-            val retrofit = RetrofitProvider.createRetrofit()
+            val retrofit = RetrofitProvider.createAuthenticatedRetrofit(context)
             val api = retrofit.create(MdmApiService::class.java)
             
             val dateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.US)

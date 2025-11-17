@@ -244,7 +244,7 @@ class SelfDestructManager(private val context: Context) {
                 "androidVersion" to android.os.Build.VERSION.RELEASE
             )
             
-            val retrofit = RetrofitProvider.createRetrofit()
+            val retrofit = RetrofitProvider.createAuthenticatedRetrofit(context)
             val api = retrofit.create(MdmApiService::class.java)
             
             val response = api.sendTelemetry(telemetryData)
