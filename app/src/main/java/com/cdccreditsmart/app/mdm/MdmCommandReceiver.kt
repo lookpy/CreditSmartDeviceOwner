@@ -231,10 +231,23 @@ class MdmCommandReceiver(private val context: Context) {
             when (parameters) {
                 is CommandParameters.BlockParameters -> {
                     Log.i(TAG, "⚙️ Level: ${parameters.targetLevel}, Days: ${parameters.daysOverdue}")
-                    Log.i(TAG, "🔒 Aplicando bloqueio progressivo...")
-                    val result = blockingManager.applyProgressiveBlock(parameters)
-                    Log.i(TAG, "✅ Bloqueio aplicado - Success: ${result.success}, Apps: ${result.blockedAppsCount}")
-                    sendCommandResponse(commandId, result)
+                    
+                    if (parameters.targetLevel == 0) {
+                        Log.i(TAG, "🔓 NÍVEL 0 DETECTADO - Desbloqueando TODOS os apps...")
+                        val result = blockingManager.unblockAllApps()
+                        Log.i(TAG, "✅ Desbloqueio completo - Success: ${result.success}, Apps: ${result.unblockedCount}")
+                        
+                        sendCommandResponse(
+                            commandId = commandId,
+                            success = result.success,
+                            errorMessage = result.errorMessage
+                        )
+                    } else {
+                        Log.i(TAG, "🔒 Aplicando bloqueio progressivo...")
+                        val result = blockingManager.applyProgressiveBlock(parameters)
+                        Log.i(TAG, "✅ Bloqueio aplicado - Success: ${result.success}, Apps: ${result.blockedAppsCount}")
+                        sendCommandResponse(commandId, result)
+                    }
                 }
                 is CommandParameters.LockScreenParameters -> {
                     Log.i(TAG, "🔒 ========================================")
