@@ -22,6 +22,7 @@ class SecureTokenStorage(context: Context) {
         private const val KEY_CONTRACT_CODE = "contract_code"
         private const val KEY_DEVICE_ID = "device_id"
         private const val KEY_SERIAL_NUMBER = "serial_number"
+        private const val KEY_IMEI = "imei"
         private const val KEY_IMEI_HASHES = "imei_hashes"
         private const val KEY_IMEI_SALT = "imei_salt"
         private const val KEY_IMEI_VALIDATED_AT = "imei_validated_at"
@@ -93,6 +94,57 @@ class SecureTokenStorage(context: Context) {
         } catch (e: Exception) {
             Log.e(TAG, "Error saving auth token", e)
             throw TokenStorageException("Failed to save auth token", e)
+        }
+    }
+    
+    /**
+     * Salva informações do dispositivo após auto-discovery bem-sucedido
+     * Usado quando APK conecta automaticamente via IMEI
+     */
+    fun saveDeviceInfo(
+        deviceId: String,
+        serialNumber: String,
+        imei: String,
+        contractCode: String,
+        customerName: String? = null,
+        deviceModel: String? = null
+    ) {
+        try {
+            encryptedPrefs.edit().apply {
+                putString(KEY_DEVICE_ID, deviceId)
+                putString(KEY_SERIAL_NUMBER, serialNumber)
+                putString(KEY_IMEI, imei)
+                if (customerName != null) {
+                    putString(KEY_CUSTOMER_NAME, customerName)
+                }
+                if (deviceModel != null) {
+                    putString(KEY_DEVICE_MODEL, deviceModel)
+                }
+                apply()
+            }
+            
+            contractCodeStorage.saveContractCode(contractCode)
+            
+            Log.d(TAG, "Device info saved successfully from auto-discovery")
+            Log.d(TAG, "  - DeviceId: ${deviceId.take(15)}...")
+            Log.d(TAG, "  - SerialNumber: $serialNumber")
+            Log.d(TAG, "  - IMEI: ${imei.take(4)}***")
+            Log.d(TAG, "  - ContractCode: $contractCode")
+        } catch (e: Exception) {
+            Log.e(TAG, "Error saving device info", e)
+            throw TokenStorageException("Failed to save device info", e)
+        }
+    }
+    
+    /**
+     * Retorna o IMEI salvo (usado para polling de comandos MDM)
+     */
+    fun getImei(): String? {
+        return try {
+            encryptedPrefs.getString(KEY_IMEI, null)
+        } catch (e: Exception) {
+            Log.e(TAG, "Error getting IMEI", e)
+            null
         }
     }
 

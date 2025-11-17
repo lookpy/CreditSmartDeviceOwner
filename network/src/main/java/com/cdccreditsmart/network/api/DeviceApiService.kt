@@ -86,6 +86,17 @@ interface DeviceApiService {
     ): Response<AuthResponse>
     
     /**
+     * Auto-Discovery endpoint - CDC Credit Smart specific
+     * GET /api/apk/discover/{imei}
+     * Attempts to auto-discover and auto-connect device using IMEI
+     * Returns device, customer, and connection information if device is registered
+     */
+    @GET("api/apk/discover/{imei}")
+    suspend fun discover(
+        @Path("imei") imei: String
+    ): Response<com.cdccreditsmart.network.dto.cdc.DiscoveryResponse>
+    
+    /**
      * Search Pending Sale by IMEI (Handshake Step 1) - CDC Credit Smart specific
      * GET /api/device/claim-sale?imei={IMEI}
      * Searches for a pending sale associated with the provided IMEI
