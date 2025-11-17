@@ -136,6 +136,9 @@ class SimpleHomeViewModel(
                         Log.w(TAG, "⚠️ This is likely a backend issue - check /api/apk/device/installments endpoint")
                     }
                     
+                    // CRITICAL: Salvar parcelas localmente para offline blocking e overlay
+                    saveInstallmentsLocally(data.allInstallments ?: emptyList())
+                    
                     _homeState.value = _homeState.value.copy(
                         isLoading = false,
                         isError = false,
@@ -171,5 +174,37 @@ class SimpleHomeViewModel(
     fun refreshData() {
         Log.d(TAG, "🔄 Refreshing installments data...")
         loadInstallmentsData()
+    }
+    
+    private fun saveInstallmentsLocally(installments: List<InstallmentItem>) {
+        try {
+            val localStorage = com.cdccreditsmart.app.storage.LocalInstallmentStorage(context)
+            
+            // Converter InstallmentItem (DTO) para LocalInstallment (Storage)
+            val localInstallments = installments.map { item ->
+                com.cdccreditsmart.app.storage.LocalInstallment(
+                    number = item.number,
+                    dueDate = item.dueDate, // Já está no formato "YYYY-MM-DD"
+                    amount = java.math.BigDecimal.valueOf(item.value), // Double → BigDecimal
+                    status = when {
+                        item.isPaid || item.status == "paid" -> "PAID"
+                        item.isOverdue || item.status == "overdue" -> "OVERDUE"
+                        else -> "PENDING"
+                    }
+                )
+            }
+            
+            // Salvar com contractCode
+            val contractCode = tokenStorage.getContractCode() ?: "UNKNOWN"
+            localStorage.saveInstallments(contractCode, localInstallments)
+            
+            Log.i(TAG, "✅ ${localInstallments.size} parcelas salvas localmente")
+            Log.i(TAG, "   → ${localInstallments.count { it.status == "OVERDUE" }} em atraso")
+            Log.i(TAG, "   → ${localInstallments.count { it.status == "PAID" }} pagas")
+            Log.i(TAG, "   → Dados disponíveis para overlay e offline blocking")
+            
+        } catch (e: Exception) {
+            Log.e(TAG, "❌ Erro ao salvar parcelas localmente: ${e.message}", e)
+        }
     }
 }

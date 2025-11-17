@@ -129,6 +129,9 @@ class HomeViewModel( // @Inject constructor - TEMPORARILY DISABLED FOR BUILD
     private fun processInstallments(installments: List<Installment>) {
         val today = LocalDate.now()
         
+        // CRITICAL: Salvar parcelas localmente para offline blocking e overlay
+        saveInstallmentsLocally(installments)
+        
         // Find overdue installments
         val overdueInstallments = installments.filter { 
             it.status == InstallmentStatus.OVERDUE || 
@@ -145,6 +148,45 @@ class HomeViewModel( // @Inject constructor - TEMPORARILY DISABLED FOR BUILD
             nextInstallment = nextInstallment,
             overdueInstallments = overdueInstallments
         )
+    }
+    
+    private fun saveInstallmentsLocally(installments: List<Installment>) {
+        try {
+            val localStorage = com.cdccreditsmart.app.storage.LocalInstallmentStorage(
+                getApplication()
+            )
+            
+            // Converter Installment (domain) para LocalInstallment (storage)
+            val localInstallments = installments.map { installment ->
+                com.cdccreditsmart.app.storage.LocalInstallment(
+                    number = installment.number,
+                    dueDate = installment.dueDate.toString(), // "2025-11-15"
+                    amount = installment.amount,
+                    status = when (installment.status) {
+                        InstallmentStatus.PAID -> "PAID"
+                        InstallmentStatus.PENDING -> "PENDING"
+                        InstallmentStatus.OVERDUE -> "OVERDUE"
+                        InstallmentStatus.CANCELLED -> "CANCELLED"
+                    }
+                )
+            }
+            
+            // Salvar com contractCode
+            val contractCode = authRepository.getStoredContractCode() ?: "UNKNOWN"
+            localStorage.saveInstallments(contractCode, localInstallments)
+            
+            android.util.Log.i(
+                "HomeViewModel",
+                "✅ ${localInstallments.size} parcelas salvas localmente para overlay/offline blocking"
+            )
+            
+        } catch (e: Exception) {
+            android.util.Log.e(
+                "HomeViewModel",
+                "❌ Erro ao salvar parcelas localmente: ${e.message}",
+                e
+            )
+        }
     }
 
     private suspend fun loadPaymentHistory(deviceId: String) {

@@ -4,11 +4,24 @@ import android.content.Context
 import android.util.Log
 import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKey
+import com.squareup.moshi.FromJson
 import com.squareup.moshi.Moshi
+import com.squareup.moshi.ToJson
 import com.squareup.moshi.Types
 import java.math.BigDecimal
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
+
+/**
+ * Moshi adapter para serializar/desserializar BigDecimal
+ */
+class BigDecimalAdapter {
+    @ToJson
+    fun toJson(value: BigDecimal): String = value.toString()
+    
+    @FromJson
+    fun fromJson(value: String): BigDecimal = BigDecimal(value)
+}
 
 /**
  * Armazena parcelas localmente de forma criptografada
@@ -27,7 +40,9 @@ class LocalInstallmentStorage(private val context: Context) {
     private val serverTimeManager by lazy { 
         com.cdccreditsmart.app.time.ServerTimeManager(context) 
     }
-    private val moshi = Moshi.Builder().build()
+    private val moshi = Moshi.Builder()
+        .add(BigDecimalAdapter())
+        .build()
     private val dateFormatter = DateTimeFormatter.ISO_LOCAL_DATE
     
     private val encryptedPrefs by lazy {
