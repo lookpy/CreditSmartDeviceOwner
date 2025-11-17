@@ -281,59 +281,27 @@ class SecureTokenStorage(context: Context) {
     }
     
     /**
-     * NOVO: Para comandos MDM que usam serialNumber como identificador primário
-     * Endpoints: /api/apk/device/{serialNumber}/commands
+     * @deprecated Use getMdmIdentifier() que prioriza IMEI > Serial Number > Device ID
+     * Mantido apenas para compatibilidade com código legado
      */
+    @Deprecated(
+        message = "Use getMdmIdentifier() que prioriza IMEI conforme documentação",
+        replaceWith = ReplaceWith("getMdmIdentifier()")
+    )
     fun getSerialNumberForMdm(): String? {
-        return try {
-            // PRIORIDADE 1: serialNumber (Build.SERIAL) - identificador primário para backend MDM
-            val serialNumber = getSerialNumber()
-            if (!serialNumber.isNullOrBlank() && serialNumber != "unknown" && serialNumber != "UNKNOWN") {
-                Log.d(TAG, "✅ Using serialNumber for MDM commands: ${serialNumber.take(10)}...")
-                return serialNumber
-            }
-            
-            // PRIORIDADE 2: deviceId (fallback apenas se serialNumber indisponível)
-            val deviceId = getDeviceId()
-            if (!deviceId.isNullOrBlank()) {
-                Log.w(TAG, "⚠️ SerialNumber unavailable - falling back to deviceId: ${deviceId.take(10)}...")
-                return deviceId
-            }
-            
-            Log.e(TAG, "❌ No MDM identifier available (serialNumber and deviceId both empty)")
-            null
-        } catch (e: Exception) {
-            Log.e(TAG, "Error getting serial number for MDM", e)
-            null
-        }
+        return getMdmIdentifier()
     }
     
     /**
-     * LEGADO: Para endpoints antigos que ainda usam deviceId
-     * Endpoints: /api/apk/device/{deviceId}/pending-decisions, /api/apk/device/{deviceId}/unblock
+     * @deprecated Use getMdmIdentifier() que prioriza IMEI > Serial Number > Device ID
+     * Mantido apenas para compatibilidade com código legado
      */
+    @Deprecated(
+        message = "Use getMdmIdentifier() que prioriza IMEI conforme documentação",
+        replaceWith = ReplaceWith("getMdmIdentifier()")
+    )
     fun getMdmDeviceIdentifier(): String? {
-        return try {
-            // Prioriza deviceId (para compatibilidade com endpoints legados)
-            val deviceId = getDeviceId()
-            if (!deviceId.isNullOrBlank()) {
-                Log.d(TAG, "✅ Using deviceId for legacy endpoints: ${deviceId.take(10)}...")
-                return deviceId
-            }
-            
-            // Fallback: tenta serial number
-            val serialNumber = getSerialNumber()
-            if (!serialNumber.isNullOrBlank() && serialNumber != "unknown" && serialNumber != "UNKNOWN") {
-                Log.w(TAG, "⚠️ DeviceId unavailable - falling back to serialNumber: ${serialNumber.take(6)}...")
-                return serialNumber
-            }
-            
-            Log.e(TAG, "❌ No device identifier available (deviceId and serialNumber both empty)")
-            null
-        } catch (e: Exception) {
-            Log.e(TAG, "Error getting MDM device identifier", e)
-            null
-        }
+        return getMdmIdentifier()
     }
 
     fun clearTokens() {
