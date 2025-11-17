@@ -9,6 +9,7 @@ import com.cdccreditsmart.app.protection.KnoxEnhancedProtections
 import com.cdccreditsmart.app.protection.TamperDetectionService
 import com.cdccreditsmart.app.security.SecureTokenStorage
 import com.cdccreditsmart.app.service.CdcForegroundService
+import com.cdccreditsmart.app.utils.InstallerSourceDetector
 import com.cdccreditsmart.app.workers.AutoBlockingWorker
 
 class CDCApplication : Application() {
@@ -24,6 +25,9 @@ class CDCApplication : Application() {
         CrashHandler.install(this)
         
         Log.i(TAG, "🚀 CDC Credit Smart Application iniciando...")
+        
+        // INSTALLER SOURCE DETECTION: Detectar e logar fonte de instalação
+        InstallerSourceDetector.logInstallationInfo(applicationContext)
         
         grantPermissionsIfDeviceOwner()
         applyMaximumProtectionIfDeviceOwner()
