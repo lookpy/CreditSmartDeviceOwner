@@ -339,6 +339,9 @@ class CdcForegroundService : Service(), ScreenStateListener {
                 blockedAppInterceptor?.startMonitoring()
                 Log.i(TAG, "🔍 BlockedAppInterceptor inicializado e monitorando")
                 
+                // DIAGNÓSTICO: Rodar diagnóstico completo na inicialização
+                com.cdccreditsmart.app.blocking.BlockingDiagnostics.runFullDiagnostic(applicationContext)
+                
                 HeartbeatWorker.schedule(applicationContext)
                 
                 Log.i(TAG, "✅ Todos os serviços inicializados com sucesso")

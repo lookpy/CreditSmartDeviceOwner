@@ -57,8 +57,13 @@ class BlockedAppInterceptor(private val context: Context) {
                     val blockingInfo = appBlockingManager.getBlockingInfo()
                     val hasManualBlock = appBlockingManager.hasManualBlock()
                     
+                    // LOG DIAGNÓSTICO DETALHADO
+                    Log.i(TAG, "🔍 CHECK: currentLevel=${blockingInfo.currentLevel}, hasManualBlock=$hasManualBlock, daysOverdue=${blockingInfo.daysOverdue}")
+                    
                     if (blockingInfo.currentLevel == 0 && !hasManualBlock) {
-                        if (BuildConfig.DEBUG) Log.d(TAG, "🔋 OTIMIZAÇÃO: Sem bloqueio ativo - pausando monitoramento (60s)")
+                        Log.w(TAG, "⚠️ SEM BLOQUEIO ATIVO - Overlay NÃO vai aparecer")
+                        Log.w(TAG, "   📝 Para ativar overlay: aplicar comando BLOCK com targetLevel > 0")
+                        Log.w(TAG, "   ⏸️ Pausando monitoramento por 60s para economizar bateria...")
                         
                         // CORREÇÃO: Resetar estado para restart limpo quando bloqueios voltarem
                         lastEventTimestamp = System.currentTimeMillis()
@@ -67,6 +72,8 @@ class BlockedAppInterceptor(private val context: Context) {
                         delay(60000L) // Pausa por 60s quando não há bloqueio ativo
                         continue
                     }
+                    
+                    Log.i(TAG, "✅ BLOQUEIO ATIVO (nível ${blockingInfo.currentLevel}) - Overlay DEVE aparecer")
                     
                     val hadBlockedApp = checkForegroundApp()
                     
