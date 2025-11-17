@@ -31,14 +31,14 @@ interface MdmApiService {
     
     /**
      * Enviar resposta/status de execução de comando MDM
-     * Endpoint: POST /api/apk/device/commands/{commandId}/status
+     * Endpoint: POST /api/apk/device/{identifier}/command-response
      * 
-     * @param commandId ID do comando executado
-     * @param request Payload com status e resultado da execução
+     * @param identifier IMEI (preferencial), Serial Number, ou Device ID
+     * @param request Payload com status e resultado da execução (inclui commandId no body)
      */
-    @POST("api/apk/device/commands/{commandId}/status")
+    @POST("api/apk/device/{identifier}/command-response")
     suspend fun sendCommandResponse(
-        @Path("commandId") commandId: String,
+        @Path("identifier") identifier: String,
         @Body request: CommandResponseRequest
     ): Response<Unit>
     

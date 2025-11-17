@@ -378,6 +378,15 @@ class MdmCommandReceiver(private val context: Context) {
     
     private suspend fun sendAcknowledgement(commandId: String) {
         try {
+            val identifier = tokenStorage.getMdmIdentifier()
+            
+            if (identifier == null) {
+                Log.e(TAG, "❌ Nenhum identificador MDM disponível para enviar ACK")
+                return
+            }
+            
+            Log.d(TAG, "📡 Enviando ACK usando identifier: ${identifier.take(8)}****")
+            
             val retrofit = RetrofitProvider.createAuthenticatedRetrofit(context)
             val api = retrofit.create(MdmApiService::class.java)
             
@@ -386,7 +395,7 @@ class MdmCommandReceiver(private val context: Context) {
                 status = "acknowledged"
             )
             
-            val response = api.sendCommandResponse(commandId, request)
+            val response = api.sendCommandResponse(identifier, request)
             
             if (response.isSuccessful) {
                 Log.i(TAG, "✅ ACK enviado para comando $commandId")
@@ -420,6 +429,15 @@ class MdmCommandReceiver(private val context: Context) {
         errorMessage: String? = null
     ) {
         try {
+            val identifier = tokenStorage.getMdmIdentifier()
+            
+            if (identifier == null) {
+                Log.e(TAG, "❌ Nenhum identificador MDM disponível para enviar response")
+                return
+            }
+            
+            Log.d(TAG, "📡 Enviando response usando identifier: ${identifier.take(8)}****")
+            
             val retrofit = RetrofitProvider.createAuthenticatedRetrofit(context)
             val api = retrofit.create(MdmApiService::class.java)
             
@@ -437,7 +455,7 @@ class MdmCommandReceiver(private val context: Context) {
                 errorMessage = errorMessage
             )
             
-            val response = api.sendCommandResponse(commandId, request)
+            val response = api.sendCommandResponse(identifier, request)
             
             if (response.isSuccessful) {
                 Log.i(TAG, "✅ Response enviado para comando $commandId: ${request.status}")
