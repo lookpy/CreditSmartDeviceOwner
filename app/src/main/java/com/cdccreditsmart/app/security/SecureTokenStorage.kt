@@ -29,7 +29,6 @@ class SecureTokenStorage(context: Context) {
         private const val KEY_CUSTOMER_NAME = "customer_name"
         private const val KEY_DEVICE_MODEL = "device_model"
         private const val KEY_UNINSTALL_CONFIRMATION_HASH = "uninstall_confirmation_hash"
-        private const val KEY_CUSTOM_INSTALLER_SOURCE = "custom_installer_source"
     }
 
     private val masterKey = MasterKey.Builder(context)
@@ -500,26 +499,6 @@ class SecureTokenStorage(context: Context) {
             encryptedPrefs.getString(KEY_UNINSTALL_CONFIRMATION_HASH, null)
         } catch (e: Exception) {
             Log.e(TAG, "❌ Erro ao obter hash de confirmação de desinstalação", e)
-            null
-        }
-    }
-    
-    fun saveCustomInstallerSource(source: String) {
-        try {
-            encryptedPrefs.edit()
-                .putString(KEY_CUSTOM_INSTALLER_SOURCE, source)
-                .apply()
-            Log.d(TAG, "✅ Fonte customizada de instalação salva: $source")
-        } catch (e: Exception) {
-            Log.e(TAG, "❌ Erro ao salvar fonte customizada de instalação", e)
-        }
-    }
-    
-    fun getCustomInstallerSource(): String? {
-        return try {
-            encryptedPrefs.getString(KEY_CUSTOM_INSTALLER_SOURCE, null)
-        } catch (e: Exception) {
-            Log.e(TAG, "❌ Erro ao obter fonte customizada de instalação", e)
             null
         }
     }
