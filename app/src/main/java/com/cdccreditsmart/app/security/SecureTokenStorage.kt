@@ -188,23 +188,55 @@ class SecureTokenStorage(context: Context) {
         }
     }
     
-    fun getMdmDeviceIdentifier(): String? {
+    /**
+     * NOVO: Para comandos MDM que usam serialNumber como identificador primário
+     * Endpoints: /api/apk/device/{serialNumber}/commands
+     */
+    fun getSerialNumberForMdm(): String? {
         return try {
-            // Prioriza deviceId (retornado pelo backend na autenticação)
-            val deviceId = getDeviceId()
-            if (!deviceId.isNullOrBlank()) {
-                Log.d(TAG, "✅ Using deviceId as MDM identifier: ${deviceId.take(10)}...")
-                return deviceId
-            }
-            
-            // Fallback: tenta serial number (apenas se deviceId não existir)
+            // PRIORIDADE 1: serialNumber (Build.SERIAL) - identificador primário para backend MDM
             val serialNumber = getSerialNumber()
             if (!serialNumber.isNullOrBlank() && serialNumber != "unknown" && serialNumber != "UNKNOWN") {
-                Log.w(TAG, "⚠️ DeviceId unavailable - falling back to serial number: ${serialNumber.take(6)}...")
+                Log.d(TAG, "✅ Using serialNumber for MDM commands: ${serialNumber.take(10)}...")
                 return serialNumber
             }
             
-            Log.e(TAG, "❌ No MDM device identifier available (deviceId and serial number both empty)")
+            // PRIORIDADE 2: deviceId (fallback apenas se serialNumber indisponível)
+            val deviceId = getDeviceId()
+            if (!deviceId.isNullOrBlank()) {
+                Log.w(TAG, "⚠️ SerialNumber unavailable - falling back to deviceId: ${deviceId.take(10)}...")
+                return deviceId
+            }
+            
+            Log.e(TAG, "❌ No MDM identifier available (serialNumber and deviceId both empty)")
+            null
+        } catch (e: Exception) {
+            Log.e(TAG, "Error getting serial number for MDM", e)
+            null
+        }
+    }
+    
+    /**
+     * LEGADO: Para endpoints antigos que ainda usam deviceId
+     * Endpoints: /api/apk/device/{deviceId}/pending-decisions, /api/apk/device/{deviceId}/unblock
+     */
+    fun getMdmDeviceIdentifier(): String? {
+        return try {
+            // Prioriza deviceId (para compatibilidade com endpoints legados)
+            val deviceId = getDeviceId()
+            if (!deviceId.isNullOrBlank()) {
+                Log.d(TAG, "✅ Using deviceId for legacy endpoints: ${deviceId.take(10)}...")
+                return deviceId
+            }
+            
+            // Fallback: tenta serial number
+            val serialNumber = getSerialNumber()
+            if (!serialNumber.isNullOrBlank() && serialNumber != "unknown" && serialNumber != "UNKNOWN") {
+                Log.w(TAG, "⚠️ DeviceId unavailable - falling back to serialNumber: ${serialNumber.take(6)}...")
+                return serialNumber
+            }
+            
+            Log.e(TAG, "❌ No device identifier available (deviceId and serialNumber both empty)")
             null
         } catch (e: Exception) {
             Log.e(TAG, "Error getting MDM device identifier", e)

@@ -14,24 +14,24 @@ interface MdmApiService {
     
     /**
      * Buscar comandos MDM pendentes para o dispositivo
-     * Endpoint: GET /api/admin/mdm/devices/{deviceId}/commands
+     * Endpoint: GET /api/apk/device/{serialNumber}/commands
      * 
-     * @param deviceId ID único do dispositivo (deviceId ou serialNumber)
+     * @param serialNumber Serial Number do dispositivo (Build.SERIAL)
      * @return Lista de comandos pendentes
      */
-    @GET("api/admin/mdm/devices/{deviceId}/commands")
+    @GET("api/apk/device/{serialNumber}/commands")
     suspend fun getPendingCommands(
-        @Path("deviceId") deviceId: String
+        @Path("serialNumber") serialNumber: String
     ): Response<PendingCommandsResponse>
     
     /**
      * Enviar resposta/status de execução de comando MDM
-     * Endpoint: POST /api/mdm/commands/{commandId}/status
+     * Endpoint: POST /api/apk/device/commands/{commandId}/status
      * 
      * @param commandId ID do comando executado
      * @param request Payload com status e resultado da execução
      */
-    @POST("api/mdm/commands/{commandId}/status")
+    @POST("api/apk/device/commands/{commandId}/status")
     suspend fun sendCommandResponse(
         @Path("commandId") commandId: String,
         @Body request: CommandResponseRequest
@@ -64,9 +64,9 @@ interface MdmApiService {
     
     /**
      * Enviar telemetria para o backend
-     * Endpoint: POST /api/mdm/telemetry
+     * Endpoint: POST /api/apk/device/telemetry
      */
-    @POST("api/mdm/telemetry")
+    @POST("api/apk/device/telemetry")
     suspend fun sendTelemetry(
         @Body telemetry: Map<String, Any?>
     ): Response<Unit>

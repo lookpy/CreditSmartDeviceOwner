@@ -1,0 +1,2446 @@
+# 📱 GESTÃO DE DISPOSITIVOS - DOCUMENTAÇÃO COMPLETA
+
+## 🚨 ALERTA PARA IA DO APK: ERRO 403 FORBIDDEN
+
+**Se você está recebendo erro 403 ao buscar comandos MDM, leia isto primeiro:**
+
+```
+❌ ERRADO (403 Forbidden):
+GET /api/admin/mdm/devices/device_xxx/commands
+
+✅ CORRETO (200 OK):
+GET /api/apk/device/SN12345/commands
+```
+
+**Problema:** Você está usando endpoint de **ADMIN** em vez de **APK**.
+
+**Solução rápida:**
+1. Use `/api/apk/device/:serialNumber/commands` (não `/api/admin/mdm/...`)
+2. Use `serialNumber` (ex: "SN12345"), não `deviceId`
+3. Header: `X-APK-Token` (não `Authorization: Bearer`)
+
+**[Ir direto para a solução completa](#erro-comum-no-apk-403-forbidden)**
+
+---
+
+## 📋 Índice
+
+1. [Visão Geral](#visão-geral)
+2. [⚠️ IMPORTANTE: Device vs Contract](#importante-device-vs-contract)
+3. [Arquitetura do Sistema](#arquitetura-do-sistema)
+4. [Endpoints por Categoria](#endpoints-por-categoria)
+5. [Sistema de Bloqueio Progressivo](#sistema-de-bloqueio-progressivo)
+6. [Sistema de Bloqueio Básico](#sistema-de-bloqueio-básico)
+7. [Sistema Auto/Manual](#sistema-auto-manual)
+8. [Comandos MDM](#comandos-mdm)
+9. [WebSocket em Tempo Real](#websocket-em-tempo-real)
+10. [Validação IMEI e APK](#validação-imei-e-apk)
+11. [Push Notifications](#push-notifications)
+12. [Casos de Uso Práticos](#casos-de-uso-práticos)
+13. [Integração para IA](#integração-para-ia)
+
+---
+
+## 🎯 Visão Geral
+
+O sistema de **Gestão de Dispositivos** é o núcleo do controle MDM (Mobile Device Management) da plataforma CDC CreditSmart. Ele permite:
+
+- ✅ Registro e pareamento de dispositivos via IMEI
+- ✅ Bloqueio progressivo automático (7 níveis: 0-6)
+- ✅ Bloqueio básico on/off para emergências
+- ✅ Modo automático/manual para cada dispositivo
+- ✅ Comandos MDM em tempo real via WebSocket
+- ✅ Push notifications via Firebase FCM
+- ✅ Validação de segurança e anti-fraude
+- ✅ Auditoria completa de todas as ações
+
+---
+
+## ⚠️ IMPORTANTE: Device vs Contract
+
+### 🔴 NÃO EXISTE `contractId` ou `saleId` SEPARADO!
+
+**REGRA FUNDAMENTAL:**
+- ✅ **O `deviceId` É o identificador único de TUDO**
+- ❌ **NÃO existe `contractId` separado**
+- ❌ **NÃO existe `saleId` separado**
+
+### 💡 Conceito Chave
+
+```
+┌─────────────────────────────────────────────────────┐
+│  1 DISPOSITIVO = 1 VENDA = 1 CONTRATO = 1 DEVICE   │
+│                                                     │
+│  deviceId → Identifica o dispositivo                │
+│  deviceId → Identifica a venda                      │
+│  deviceId → Identifica o contrato                   │
+│  deviceId → Identifica as parcelas                  │
+└─────────────────────────────────────────────────────┘
+```
+
+### 📊 Estrutura de Dados
+
+```javascript
+// ✅ CORRETO: Tudo usa deviceId
+{
+  "devices": {
+    "id": "device_1763331005716_xxx",  // ← Este é o deviceId
+    "name": "Moto G15 Power",
+    "imei": "123456789012345",
+    "customerId": "customer_xxx",
+    "totalValue": 1500.00,
+    "installmentCount": 10,
+    "installmentValue": 150.00
+  },
+  "installments": [
+    {
+      "id": "inst_1",
+      "deviceId": "device_1763331005716_xxx",  // ← Referencia o deviceId
+      "installmentNumber": 1,
+      "value": 150.00
+    }
+  ],
+  "device_block_levels": {
+    "deviceId": "device_1763331005716_xxx",  // ← Referencia o deviceId
+    "currentLevel": 0
+  }
+}
+```
+
+### ❌ ERROS COMUNS (NÃO FAÇA ISSO!)
+
+```javascript
+// ❌ ERRADO: Não existe contractId
+{
+  "contractId": "contract_xxx",  // ISTO NÃO EXISTE!
+  "deviceId": "device_xxx"
+}
+
+// ❌ ERRADO: Não existe saleId
+{
+  "saleId": "sale_xxx",  // ISTO NÃO EXISTE!
+  "deviceId": "device_xxx"
+}
+
+// ❌ ERRADO: Buscar parcelas por contractId
+GET /api/contracts/contract_xxx/installments  // ENDPOINT NÃO EXISTE!
+
+// ✅ CORRETO: Buscar parcelas por deviceId
+GET /api/devices/device_xxx/installments
+```
+
+### 🎯 Exemplos Práticos
+
+#### Exemplo 1: APK Busca Parcelas em Atraso
+
+```kotlin
+// ❌ ERRADO
+class ApkClient {
+  fun getOverdueInstallments(contractId: String) {  // NÃO!
+    api.get("/api/contracts/$contractId/overdue")  // ENDPOINT NÃO EXISTE!
+  }
+}
+
+// ✅ CORRETO
+class ApkClient {
+  fun getOverdueInstallments(deviceId: String) {  // SIM!
+    api.get("/api/devices/$deviceId/overdue-installments")
+  }
+}
+```
+
+#### Exemplo 2: APK Autentica
+
+```kotlin
+// Quando APK autentica
+POST /api/apk/auth
+{
+  "imei": "123456789012345",
+  "serialNumber": "SN12345"
+}
+
+// Resposta
+{
+  "token": "apk_token_xxx",
+  "deviceId": "device_1763331005716_xxx"  // ← Use ESTE ID para tudo!
+}
+
+// ✅ CORRETO: Salvar deviceId e usar em todas as requisições
+sharedPreferences.edit()
+  .putString("DEVICE_ID", "device_1763331005716_xxx")  // ← Salvar
+  .apply()
+
+// Depois usar em todas as APIs
+val deviceId = sharedPreferences.getString("DEVICE_ID", null)
+
+// ✅ Buscar status
+GET /api/apk/device/status  // Usa token APK (já sabe o deviceId)
+
+// ✅ Buscar parcelas em atraso
+GET /api/apk/device/overdue  // Usa token APK (já sabe o deviceId)
+
+// ✅ Buscar comandos MDM
+GET /api/apk/device/:serialNumber/commands
+```
+
+#### Exemplo 3: Admin Bloqueia Dispositivo
+
+```javascript
+// ❌ ERRADO
+async function blockContract(contractId) {
+  await api.post(`/api/contracts/${contractId}/block`);  // NÃO EXISTE!
+}
+
+// ✅ CORRETO
+async function blockDevice(deviceId) {
+  await api.post(`/api/devices/${deviceId}/block`);
+}
+
+// Uso:
+blockDevice("device_1763331005716_xxx");
+```
+
+#### Exemplo 4: Listar Parcelas
+
+```javascript
+// ❌ ERRADO - API não tem /api/contracts
+const installments = await fetch('/api/contracts/contract_xxx/installments');
+
+// ✅ CORRETO - API usa /api/devices
+const installments = await fetch('/api/devices/device_xxx/installments');
+
+// Resposta:
+[
+  {
+    "id": "inst_1",
+    "deviceId": "device_xxx",  // ← deviceId, NÃO contractId
+    "installmentNumber": 1,
+    "value": 150.00
+  }
+]
+```
+
+### 🔍 Como Identificar IDs no Sistema
+
+```javascript
+// Padrão de IDs gerados pelo sistema:
+device_1763331005716_xxx    // ← deviceId (sempre começa com device_)
+customer_xxx                // ← customerId
+store_xxx                   // ← storeId
+inst_xxx                    // ← installmentId
+cmd_xxx                     // ← commandId
+
+// ⚠️ NUNCA EXISTIRÁ:
+contract_xxx  ❌  // Não existe!
+sale_xxx      ❌  // Não existe!
+```
+
+### 📱 Fluxo Completo APK
+
+```kotlin
+// 1. APK inicia
+class MainActivity : AppCompatActivity() {
+  override fun onCreate(savedInstanceState: Bundle?) {
+    super.onCreate(savedInstanceState)
+    
+    // Buscar deviceId salvo
+    val deviceId = sharedPreferences.getString("DEVICE_ID", null)
+    
+    if (deviceId == null) {
+      // Não autenticado, fazer auth
+      authenticate()
+    } else {
+      // Já tem deviceId, usar para tudo
+      checkDeviceStatus(deviceId)
+      fetchOverdueInstallments(deviceId)
+      connectWebSocket(deviceId)
+    }
+  }
+  
+  // 2. Autenticar e receber deviceId
+  private suspend fun authenticate() {
+    val response = api.post("/api/apk/auth") {
+      body = {
+        "imei": deviceImei,
+        "serialNumber": deviceSerial
+      }
+    }
+    
+    // Salvar deviceId recebido
+    val deviceId = response.deviceId  // ← device_1763331005716_xxx
+    sharedPreferences.edit()
+      .putString("DEVICE_ID", deviceId)  // ← SALVAR!
+      .apply()
+      
+    // Salvar token também
+    val token = response.token
+    sharedPreferences.edit()
+      .putString("APK_TOKEN", token)
+      .apply()
+  }
+  
+  // 3. Usar deviceId em todas as operações
+  private suspend fun checkDeviceStatus(deviceId: String) {
+    // ❌ ERRADO
+    // val status = api.get("/api/contracts/$contractId/status")
+    
+    // ✅ CORRETO
+    val status = api.get("/api/apk/device/status")  // Usa token, não precisa deviceId na URL
+  }
+  
+  private suspend fun fetchOverdueInstallments(deviceId: String) {
+    // ❌ ERRADO
+    // val installments = api.get("/api/contracts/$contractId/installments")
+    
+    // ✅ CORRETO
+    val installments = api.get("/api/apk/device/overdue")  // Usa token
+    
+    // Ou via admin API (se tiver deviceId)
+    // val installments = api.get("/api/devices/$deviceId/overdue-installments")
+  }
+}
+```
+
+### 🎓 Resumo para IA
+
+**Quando você for desenvolver o APK, lembre-se:**
+
+1. ✅ **Só existe `deviceId`** - é o identificador único de tudo
+2. ✅ **Salve o `deviceId` ao autenticar** - você vai precisar dele
+3. ✅ **Use `/api/devices/:deviceId/*` nas APIs admin** - para admin web portal
+4. ✅ **Use `/api/apk/device/*` nas APIs APK** - para o aplicativo Android
+5. ❌ **NUNCA use `contractId` ou `saleId`** - eles não existem!
+
+**Mapeamento mental:**
+```
+deviceId = contractId = saleId = deviceId
+```
+
+Tudo é deviceId! 🎯
+
+### 📊 Tabela Comparativa: Endpoints Admin vs APK
+
+| Funcionalidade | ❌ ERRADO (NÃO EXISTE) | ✅ Admin API | ✅ APK API |
+|----------------|------------------------|--------------|------------|
+| **Buscar parcelas em atraso** | `/api/contracts/:contractId/overdue` | `/api/devices/:deviceId/overdue-installments` | `/api/apk/device/overdue` |
+| **Buscar todas parcelas** | `/api/sales/:saleId/installments` | `/api/devices/:deviceId/installments` | `/api/apk/device/installments` |
+| **Status do dispositivo** | `/api/contracts/:contractId/status` | `/api/devices/:deviceId` | `/api/apk/device/status` |
+| **Bloquear dispositivo** | `/api/contracts/:contractId/block` | `/api/devices/:deviceId/block` | - |
+| **Desbloquear dispositivo** | `/api/sales/:saleId/unblock` | `/api/devices/:deviceId/unblock` | - |
+| **Bloqueio progressivo** | `/api/contracts/:contractId/progressive-block` | `/api/devices/:deviceId/progressive-block` | - |
+| **Comandos MDM** | `/api/contracts/:contractId/commands` | - | `/api/apk/device/:serialNumber/commands` |
+
+### 🔄 Exemplo Real Completo
+
+```kotlin
+// ================================================
+// CÓDIGO APK COMPLETO - EXEMPLO REAL
+// ================================================
+
+class CreditSmartAPK {
+  private lateinit var deviceId: String
+  private lateinit var apkToken: String
+  private lateinit var apiClient: ApiClient
+  
+  // ────────────────────────────────────────────
+  // 1. AUTENTICAÇÃO
+  // ────────────────────────────────────────────
+  suspend fun authenticate() {
+    val imei = getDeviceImei()  // "123456789012345"
+    val serial = getDeviceSerial()  // "SN12345"
+    
+    // ✅ Endpoint correto
+    val response = apiClient.post("/api/apk/auth") {
+      body = AuthRequest(
+        imei = imei,
+        serialNumber = serial,
+        fingerprint = getDeviceFingerprint()
+      )
+    }
+    
+    // Salvar deviceId e token
+    deviceId = response.deviceId  // "device_1763331005716_xxx"
+    apkToken = response.token      // "apk_token_xxx"
+    
+    // Persistir
+    sharedPreferences.edit()
+      .putString("DEVICE_ID", deviceId)
+      .putString("APK_TOKEN", apkToken)
+      .apply()
+      
+    Log.d("APK", "✅ Autenticado! deviceId: $deviceId")
+  }
+  
+  // ────────────────────────────────────────────
+  // 2. BUSCAR PARCELAS EM ATRASO (PARA OVERLAY)
+  // ────────────────────────────────────────────
+  suspend fun fetchOverdueInstallments(): OverdueData {
+    // ❌ ERRADO - Não faça isso!
+    // val url = "/api/contracts/$contractId/overdue"
+    
+    // ✅ CORRETO - Use endpoint APK
+    val response = apiClient.get("/api/apk/device/overdue") {
+      header("X-APK-Token", apkToken)
+    }
+    
+    Log.d("APK", "Parcelas em atraso: ${response.overdueCount}")
+    return response
+  }
+  
+  // ────────────────────────────────────────────
+  // 3. VERIFICAR STATUS DO DISPOSITIVO
+  // ────────────────────────────────────────────
+  suspend fun checkDeviceStatus(): DeviceStatus {
+    // ❌ ERRADO - Não faça isso!
+    // val url = "/api/contracts/$contractId/status"
+    
+    // ✅ CORRETO - Use endpoint APK
+    val response = apiClient.get("/api/apk/device/status") {
+      header("X-APK-Token", apkToken)
+    }
+    
+    if (response.isBlocked) {
+      Log.w("APK", "⚠️ Dispositivo bloqueado!")
+      showBlockScreen()
+    }
+    
+    return response
+  }
+  
+  // ────────────────────────────────────────────
+  // 4. BUSCAR COMANDOS MDM (POLLING)
+  // ────────────────────────────────────────────
+  suspend fun fetchMdmCommands(): List<MdmCommand> {
+    val serial = getDeviceSerial()
+    
+    // ❌ ERRADO - Não faça isso!
+    // val url = "/api/contracts/$contractId/commands"
+    
+    // ✅ CORRETO - Use endpoint APK
+    val response = apiClient.get("/api/apk/device/$serial/commands") {
+      header("X-APK-Token", apkToken)
+    }
+    
+    response.commands.forEach { command ->
+      when (command.type) {
+        "BLOCK_BASIC" -> handleBlockBasic(command)
+        "BLOCK_APPS_PROGRESSIVE" -> handleProgressiveBlock(command)
+        "FULL_DEVICE_LOCK" -> handleFullLock(command)
+        else -> Log.w("APK", "Comando desconhecido: ${command.type}")
+      }
+    }
+    
+    return response.commands
+  }
+  
+  // ────────────────────────────────────────────
+  // 5. EXIBIR OVERLAY NÍVEL 6
+  // ────────────────────────────────────────────
+  suspend fun showLevel6Overlay() {
+    // ✅ Buscar parcelas em atraso usando deviceId correto
+    val overdueData = fetchOverdueInstallments()
+    
+    // Exibir overlay com informações
+    val overlayIntent = Intent(this, OverlayActivity::class.java).apply {
+      putExtra("DEVICE_ID", deviceId)  // ← deviceId, NÃO contractId!
+      putExtra("OVERDUE_COUNT", overdueData.overdueCount)
+      putExtra("TOTAL_AMOUNT", overdueData.totalOverdueAmount)
+      putExtra("INSTALLMENTS", overdueData.installments.toTypedArray())
+    }
+    
+    startActivity(overlayIntent)
+  }
+  
+  // ────────────────────────────────────────────
+  // 6. CONECTAR WEBSOCKET
+  // ────────────────────────────────────────────
+  fun connectWebSocket() {
+    // ✅ WebSocket usa token APK
+    val wsUrl = "wss://domain.replit.app/ws?token=$apkToken"
+    
+    val webSocket = OkHttpClient().newWebSocket(
+      Request.Builder().url(wsUrl).build(),
+      object : WebSocketListener() {
+        override fun onMessage(webSocket: WebSocket, text: String) {
+          val message = Json.decodeFromString<WsMessage>(text)
+          
+          if (message.type == "MDM_COMMAND") {
+            handleMdmCommand(message.command)
+          }
+        }
+      }
+    )
+  }
+  
+  // ────────────────────────────────────────────
+  // RESUMO: VARIÁVEIS IMPORTANTES
+  // ────────────────────────────────────────────
+  fun printDebugInfo() {
+    Log.d("APK", """
+      ═══════════════════════════════════════
+      📱 CREDIT SMART APK - DEBUG INFO
+      ═══════════════════════════════════════
+      deviceId: $deviceId
+      apkToken: $apkToken
+      
+      ✅ USE SEMPRE:
+      - deviceId (NÃO contractId, NÃO saleId)
+      - Endpoints: /api/apk/device/*
+      - Header: X-APK-Token
+      
+      ❌ NUNCA USE:
+      - contractId (não existe!)
+      - saleId (não existe!)
+      - Endpoints: /api/contracts/* (não existem!)
+      ═══════════════════════════════════════
+    """.trimIndent())
+  }
+}
+```
+
+### 🎯 Checklist para IA do APK
+
+Antes de fazer qualquer requisição, verifique:
+
+- [ ] ✅ Estou usando `deviceId` (não contractId/saleId)?
+- [ ] ✅ Estou usando endpoint `/api/apk/device/*`?
+- [ ] ✅ Estou enviando header `X-APK-Token`?
+- [ ] ✅ Salvei o `deviceId` ao autenticar?
+- [ ] ❌ NÃO estou tentando usar `/api/contracts/*`?
+- [ ] ❌ NÃO estou tentando usar `/api/sales/*`?
+- [ ] ❌ NÃO estou tentando usar `/api/admin/*`?
+
+---
+
+## 🚨 ERRO COMUM NO APK: 403 Forbidden
+
+### ❌ Erro nos Logs
+
+```
+GET https://cdccreditsmart.com/api/admin/mdm/devices/device_xxx/commands
+<-- 403 Forbidden
+{"error":"Acesso negado"}
+```
+
+### 🔍 Diagnóstico
+
+**Problema:** O APK está tentando acessar endpoint de **ADMIN**, não de **APK**.
+
+**Endpoints ERRADOS (NÃO USE!):**
+```kotlin
+// ❌ ERRADO - Endpoint de admin (403 Forbidden)
+GET /api/admin/mdm/devices/{deviceId}/commands
+
+// ❌ ERRADO - Endpoint de admin (403 Forbidden)
+GET /api/devices/{deviceId}/commands
+
+// ❌ ERRADO - Requer JWT token de admin
+GET /api/admin/devices/{deviceId}/status
+```
+
+**Endpoints CORRETOS (USE ESTES!):**
+```kotlin
+// ✅ CORRETO - Endpoint APK com serial number
+GET /api/apk/device/{serialNumber}/commands
+
+// ✅ CORRETO - Endpoint APK para status
+GET /api/apk/device/status
+
+// ✅ CORRETO - Endpoint APK para parcelas
+GET /api/apk/device/overdue
+```
+
+### 🔧 Solução
+
+#### Antes (ERRADO):
+```kotlin
+class MdmCommandReceiver {
+  suspend fun fetchPendingCommands(): List<MdmCommand> {
+    val deviceId = getDeviceId()  // device_xxx
+    
+    // ❌ ERRADO: Usando endpoint de admin
+    val response = apiClient.get(
+      "/api/admin/mdm/devices/$deviceId/commands"
+    ) {
+      header("X-APK-Token", apkToken)  // Header correto, mas endpoint errado!
+    }
+    
+    // Resultado: 403 Forbidden {"error":"Acesso negado"}
+    return response.commands
+  }
+}
+```
+
+#### Depois (CORRETO):
+```kotlin
+class MdmCommandReceiver {
+  suspend fun fetchPendingCommands(): List<MdmCommand> {
+    val serialNumber = getDeviceSerial()  // SN12345
+    
+    // ✅ CORRETO: Usando endpoint APK com serial number
+    val response = apiClient.get(
+      "/api/apk/device/$serialNumber/commands"
+    ) {
+      header("X-APK-Token", apkToken)
+    }
+    
+    // Resultado: 200 OK com lista de comandos
+    return response.commands
+  }
+}
+```
+
+### 📊 Diferença: Admin vs APK Endpoints
+
+| Funcionalidade | ❌ Admin Endpoint (403 para APK) | ✅ APK Endpoint (Use este!) |
+|----------------|----------------------------------|----------------------------|
+| **Autenticação** | JWT Token (admin/store_user) | APK Token (X-APK-Token) |
+| **Comandos MDM** | `/api/admin/mdm/devices/:deviceId/commands` | `/api/apk/device/:serialNumber/commands` |
+| **Status** | `/api/devices/:deviceId` | `/api/apk/device/status` |
+| **Parcelas** | `/api/devices/:deviceId/overdue-installments` | `/api/apk/device/overdue` |
+| **Heartbeat** | N/A | `/api/apk/device/heartbeat` |
+| **FCM Token** | N/A | `/api/apk/device/fcm-token` |
+
+### 🎯 Por que 403 Forbidden?
+
+```javascript
+// Backend verifica tipo de autenticação
+app.get('/api/admin/mdm/devices/:deviceId/commands', 
+  authenticateToken,  // ← Espera JWT Token de admin
+  async (req, res) => {
+    // APK está enviando X-APK-Token, não JWT Token
+    // Resultado: 403 Forbidden
+  }
+);
+
+// APK deve usar este endpoint:
+app.get('/api/apk/device/:serialNumber/commands',
+  apkTokenMiddleware,  // ← Espera X-APK-Token
+  async (req, res) => {
+    // APK envia X-APK-Token corretamente
+    // Resultado: 200 OK
+  }
+);
+```
+
+### 🔄 Exemplo Completo Corrigido
+
+```kotlin
+class CreditSmartAPK {
+  private lateinit var apkToken: String
+  private lateinit var serialNumber: String
+  private val apiClient = ApiClient("https://cdccreditsmart.com")
+  
+  // ────────────────────────────────────────────
+  // 1. AUTENTICAR (CORRETO)
+  // ────────────────────────────────────────────
+  suspend fun authenticate() {
+    val imei = getDeviceImei()
+    serialNumber = getDeviceSerial()  // ← Salvar serial number!
+    
+    val response = apiClient.post("/api/apk/auth") {
+      body = AuthRequest(
+        imei = imei,
+        serialNumber = serialNumber,
+        fingerprint = getDeviceFingerprint()
+      )
+    }
+    
+    apkToken = response.token
+    
+    // Salvar token e serial
+    sharedPreferences.edit()
+      .putString("APK_TOKEN", apkToken)
+      .putString("SERIAL_NUMBER", serialNumber)
+      .apply()
+  }
+  
+  // ────────────────────────────────────────────
+  // 2. BUSCAR COMANDOS MDM (CORRETO)
+  // ────────────────────────────────────────────
+  suspend fun fetchMdmCommands(): List<MdmCommand> {
+    // ✅ CORRETO: Usar serial number, não deviceId
+    val response = apiClient.get(
+      "/api/apk/device/$serialNumber/commands"  // ← Serial, não deviceId!
+    ) {
+      header("X-APK-Token", apkToken)
+    }
+    
+    Log.d("APK", "✅ Comandos recebidos: ${response.commands.size}")
+    return response.commands
+  }
+  
+  // ────────────────────────────────────────────
+  // 3. POLLING DE COMANDOS (CORRETO)
+  // ────────────────────────────────────────────
+  fun startCommandPolling() {
+    coroutineScope.launch {
+      while (isActive) {
+        try {
+          val commands = fetchMdmCommands()
+          
+          commands.forEach { command ->
+            when (command.type) {
+              "BLOCK_BASIC" -> handleBlockBasic(command)
+              "BLOCK_APPS_PROGRESSIVE" -> handleProgressiveBlock(command)
+              "FULL_DEVICE_LOCK" -> handleFullLock(command)
+              "UNBLOCK_BASIC" -> handleUnblock(command)
+              else -> Log.w("APK", "Comando desconhecido: ${command.type}")
+            }
+          }
+        } catch (e: Exception) {
+          Log.e("APK", "Erro ao buscar comandos", e)
+        }
+        
+        delay(30_000) // 30 segundos
+      }
+    }
+  }
+  
+  // ────────────────────────────────────────────
+  // 4. CONFIRMAR EXECUÇÃO DE COMANDO (CORRETO)
+  // ────────────────────────────────────────────
+  suspend fun confirmCommandExecution(commandId: String, success: Boolean) {
+    apiClient.post(
+      "/api/apk/device/$serialNumber/command-response"
+    ) {
+      header("X-APK-Token", apkToken)
+      body = CommandResponse(
+        commandId = commandId,
+        status = if (success) "executed" else "failed",
+        executedAt = System.currentTimeMillis(),
+        result = mapOf("success" to success)
+      )
+    }
+  }
+}
+```
+
+### 📝 Resumo da Correção
+
+1. **❌ NÃO use:** `/api/admin/mdm/devices/:deviceId/commands`
+2. **✅ USE:** `/api/apk/device/:serialNumber/commands`
+3. **❌ NÃO use:** `deviceId` para buscar comandos
+4. **✅ USE:** `serialNumber` para buscar comandos
+5. **❌ NÃO use:** JWT Token
+6. **✅ USE:** APK Token (header `X-APK-Token`)
+
+### 🎓 Para a IA do APK
+
+**Regra simples:**
+```
+Se você está no APK, SEMPRE use:
+✅ Endpoints que começam com /api/apk/device/*
+✅ Header X-APK-Token (não Authorization)
+✅ serialNumber para comandos MDM (não deviceId)
+```
+
+**NUNCA use no APK:**
+```
+❌ /api/admin/*  → Endpoints de administração (403)
+❌ /api/devices/* → Endpoints de gestão (403)
+❌ Authorization: Bearer → JWT token (errado)
+❌ deviceId para comandos → Use serialNumber
+```
+
+---
+
+## 🏗️ Arquitetura do Sistema
+
+```
+┌─────────────────────────────────────────────────────────┐
+│                    ADMIN WEB PORTAL                     │
+│          (React + TanStack Query + Wouter)             │
+└────────────────┬────────────────────────────────────────┘
+                 │ JWT Auth + REST APIs
+                 ▼
+┌─────────────────────────────────────────────────────────┐
+│                   EXPRESS BACKEND                       │
+│        • Autenticação (Replit Auth + JWT)              │
+│        • Validação de permissões (admin/store)         │
+│        • Lógica de negócio                             │
+│        • Audit logs                                    │
+└──┬────────┬─────────┬────────────────────────────┬─────┘
+   │        │         │                            │
+   │        │         │                            │
+   ▼        ▼         ▼                            ▼
+┌────┐  ┌─────┐  ┌────────┐                  ┌──────────┐
+│ DB │  │ FCM │  │ WebSocket│                │ APK Device│
+│    │  │     │  │ Server   │                │           │
+└────┘  └─────┘  └──────────┘                └──────────┘
+                      │                             │
+                      │   wss://domain/ws?token=X   │
+                      └─────────────────────────────┘
+                                  │
+                                  ▼
+                        ┌──────────────────┐
+                        │  MDM Commands    │
+                        │  • BLOCK_BASIC   │
+                        │  • BLOCK_PROG    │
+                        │  • UNBLOCK       │
+                        │  • WIPE          │
+                        └──────────────────┘
+```
+
+### Componentes Principais
+
+1. **Admin Web Portal**: Interface React para gerenciar dispositivos
+2. **Express Backend**: API REST + WebSocket server
+3. **PostgreSQL Database**: Armazena dispositivos, bloqueios, comandos, audit logs
+4. **Firebase FCM**: Push notifications para APK
+5. **WebSocket Server**: Comandos MDM em tempo real
+6. **APK Client**: App Android nos dispositivos arrendados
+
+---
+
+## 📡 Endpoints por Categoria
+
+### 1️⃣ Registro e Gestão Básica
+
+#### **GET /api/devices**
+Listar todos os dispositivos (com filtros opcionais)
+
+**Auth:** JWT Token (admin ou store_user)
+
+**Query Params (opcionais):**
+```
+?storeId=store_xxx       // Filtrar por loja
+?status=active           // Filtrar por status
+?search=Moto             // Busca por nome/modelo
+```
+
+**Resposta:**
+```json
+[
+  {
+    "id": "device_xxx",
+    "name": "Moto G15 Power",
+    "model": "Moto G15",
+    "imei": "123456789012345",
+    "serialNumber": "SN12345",
+    "isBlocked": false,
+    "isPaired": true,
+    "storeId": "store_xxx",
+    "customerId": "customer_xxx",
+    "apkToken": "token_xxx",
+    "fcmToken": "fcm_token_xxx",
+    "lastSeen": "2025-11-17T10:30:00Z",
+    "createdAt": "2025-11-01T00:00:00Z"
+  }
+]
+```
+
+**Exemplo:**
+```bash
+curl -X GET "http://localhost:5000/api/devices?storeId=store_xxx" \
+  -H "Authorization: Bearer <JWT_TOKEN>"
+```
+
+---
+
+#### **POST /api/devices**
+Registrar novo dispositivo
+
+**Auth:** JWT Token (admin ou store_user)
+
+**Body:**
+```json
+{
+  "name": "Moto G15 Power",
+  "model": "Moto G15",
+  "imei": "123456789012345",
+  "serialNumber": "SN12345",
+  "storeId": "store_xxx",
+  "customerId": "customer_xxx"
+}
+```
+
+**Validações:**
+- ✅ IMEI deve ter 15 dígitos
+- ✅ IMEI não pode estar cadastrado em outro dispositivo
+- ✅ Serial number deve ser único
+- ✅ Store e Customer devem existir
+
+**Resposta:**
+```json
+{
+  "id": "device_1763331005716_xxx",
+  "name": "Moto G15 Power",
+  "model": "Moto G15",
+  "imei": "123456789012345",
+  "serialNumber": "SN12345",
+  "isBlocked": false,
+  "isPaired": false,
+  "createdAt": "2025-11-17T10:30:00Z"
+}
+```
+
+**Exemplo:**
+```bash
+curl -X POST "http://localhost:5000/api/devices" \
+  -H "Authorization: Bearer <JWT_TOKEN>" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "name": "Moto G15 Power",
+    "model": "Moto G15",
+    "imei": "123456789012345",
+    "serialNumber": "SN12345",
+    "storeId": "store_xxx",
+    "customerId": "customer_xxx"
+  }'
+```
+
+---
+
+#### **GET /api/devices/:id**
+Obter detalhes de um dispositivo específico
+
+**Auth:** JWT Token (admin ou store_user)
+
+**Resposta:**
+```json
+{
+  "id": "device_xxx",
+  "name": "Moto G15 Power",
+  "model": "Moto G15",
+  "imei": "123456789012345",
+  "serialNumber": "SN12345",
+  "isBlocked": false,
+  "isPaired": true,
+  "storeId": "store_xxx",
+  "customerId": "customer_xxx",
+  "apkToken": "token_xxx",
+  "fcmToken": "fcm_token_xxx",
+  "lastSeen": "2025-11-17T10:30:00Z",
+  "blockLevel": {
+    "currentLevel": 0,
+    "manualOverride": false,
+    "lastChecked": "2025-11-17T10:30:00Z"
+  }
+}
+```
+
+---
+
+#### **DELETE /api/devices/:id**
+Deletar dispositivo
+
+**Auth:** JWT Token (apenas admin)
+
+**Resposta:**
+```json
+{
+  "message": "Dispositivo deletado com sucesso",
+  "deviceId": "device_xxx"
+}
+```
+
+**Comportamento:**
+- ✅ Envia comando WIPE para o APK via WebSocket
+- ✅ Remove todos os dados relacionados
+- ✅ Cria audit log
+- ✅ Aguarda confirmação do APK (timeout 30s)
+
+---
+
+#### **GET /api/devices/imei/:imei**
+Buscar dispositivo por IMEI
+
+**Auth:** JWT Token (admin ou store_user)
+
+**Resposta:**
+```json
+{
+  "id": "device_xxx",
+  "name": "Moto G15 Power",
+  "imei": "123456789012345",
+  "isPaired": true,
+  "customerId": "customer_xxx"
+}
+```
+
+---
+
+#### **GET /api/devices/check-paired**
+Verificar se um IMEI já está pareado
+
+**Auth:** JWT Token (admin ou store_user)
+
+**Query Params:**
+```
+?imei=123456789012345
+```
+
+**Resposta:**
+```json
+{
+  "isPaired": true,
+  "device": {
+    "id": "device_xxx",
+    "name": "Moto G15 Power",
+    "customerId": "customer_xxx"
+  }
+}
+```
+
+---
+
+### 2️⃣ Bloqueio Básico (On/Off)
+
+#### **POST /api/devices/:id/block**
+Bloquear dispositivo (bloqueio básico on/off)
+
+**Auth:** JWT Token (admin ou store_user)
+
+**Body (opcional):**
+```json
+{
+  "reason": "Roubo reportado",
+  "sendNotification": true
+}
+```
+
+**Resposta:**
+```json
+{
+  "message": "Dispositivo bloqueado com sucesso",
+  "deviceId": "device_xxx",
+  "commandSent": true
+}
+```
+
+**Comportamento:**
+- ✅ Envia comando MDM `BLOCK_BASIC` via WebSocket
+- ✅ Envia push notification via FCM (opcional)
+- ✅ Atualiza `devices.isBlocked = true`
+- ✅ Cria audit log
+
+**Exemplo:**
+```bash
+curl -X POST "http://localhost:5000/api/devices/device_xxx/block" \
+  -H "Authorization: Bearer <JWT_TOKEN>" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "reason": "Roubo reportado",
+    "sendNotification": true
+  }'
+```
+
+---
+
+#### **POST /api/devices/:id/unblock**
+Desbloquear dispositivo (bloqueio básico)
+
+**Auth:** JWT Token (admin ou store_user)
+
+**Body (opcional):**
+```json
+{
+  "reason": "Situação regularizada",
+  "sendNotification": true
+}
+```
+
+**Resposta:**
+```json
+{
+  "message": "Dispositivo desbloqueado com sucesso",
+  "deviceId": "device_xxx",
+  "commandSent": true
+}
+```
+
+**Comportamento:**
+- ✅ Envia comando MDM `UNBLOCK_BASIC` via WebSocket
+- ✅ Envia push notification via FCM (opcional)
+- ✅ Atualiza `devices.isBlocked = false`
+- ✅ Cria audit log
+
+---
+
+### 3️⃣ Bloqueio Progressivo (7 Níveis)
+
+#### **GET /api/devices/block-levels**
+Listar todos os dispositivos com seus níveis de bloqueio
+
+**Auth:** JWT Token (admin ou store_user)
+
+**Resposta:**
+```json
+[
+  {
+    "deviceId": "device_xxx",
+    "deviceName": "Moto G15 Power",
+    "currentLevel": 3,
+    "manualOverride": false,
+    "daysOverdue": 10,
+    "lastChecked": "2025-11-17T10:30:00Z",
+    "metadata": {
+      "lastModeChange": "2025-11-17T10:00:00Z",
+      "changedBy": "admin@admin.com",
+      "mode": "auto"
+    }
+  }
+]
+```
+
+---
+
+#### **GET /api/devices/:id/block-level**
+Obter nível de bloqueio de um dispositivo específico
+
+**Auth:** JWT Token (admin ou store_user)
+
+**Resposta:**
+```json
+{
+  "deviceId": "device_xxx",
+  "deviceName": "Moto G15 Power",
+  "currentLevel": 3,
+  "manualOverride": false,
+  "daysOverdue": 10,
+  "rule": {
+    "level": 3,
+    "days": 9,
+    "categories": ["social_media"],
+    "exceptions": ["com.whatsapp", "com.android.dialer"],
+    "message_title": "Atenção: redes sociais bloqueadas",
+    "message_body": "Atraso de 9 dias. Todas as redes sociais foram bloqueadas, exceto WhatsApp."
+  },
+  "lastChecked": "2025-11-17T10:30:00Z"
+}
+```
+
+---
+
+#### **POST /api/devices/:id/progressive-block**
+Aplicar bloqueio progressivo manual
+
+**Auth:** JWT Token (apenas admin)
+
+**Body:**
+```json
+{
+  "targetLevel": 3,
+  "manualOverride": true,
+  "expiresInMinutes": 1440
+}
+```
+
+**Parâmetros:**
+- `targetLevel` (0-6): Nível de bloqueio a ser aplicado
+- `manualOverride` (boolean): Se true, sistema automático não altera
+- `expiresInMinutes` (opcional): Tempo até o comando expirar
+
+**Resposta:**
+```json
+{
+  "success": true,
+  "message": "Bloqueio progressivo nível 3 aplicado com sucesso",
+  "deviceId": "device_xxx",
+  "deviceName": "Moto G15 Power",
+  "previousLevel": 0,
+  "newLevel": 3,
+  "commandSent": true,
+  "rule": {
+    "level": 3,
+    "days": 9,
+    "categories": ["social_media"],
+    "message_title": "Atenção: redes sociais bloqueadas"
+  }
+}
+```
+
+**Comportamento:**
+- ✅ Envia comando MDM `BLOCK_APPS_PROGRESSIVE` ou `UNBLOCK_APPS_PROGRESSIVE`
+- ✅ Atualiza tabela `device_block_levels`
+- ✅ Cria `mdm_commands` com regras de bloqueio
+- ✅ Cria audit log
+- ✅ Se `manualOverride=true`, sistema automático pula esse dispositivo
+
+**Exemplo:**
+```bash
+curl -X POST "http://localhost:5000/api/devices/device_xxx/progressive-block" \
+  -H "Authorization: Bearer <JWT_TOKEN>" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "targetLevel": 3,
+    "manualOverride": true
+  }'
+```
+
+---
+
+### 4️⃣ Sistema Auto/Manual
+
+#### **GET /api/devices/:id/block-mode**
+Verificar modo atual (automático ou manual)
+
+**Auth:** JWT Token (admin ou store_user)
+
+**Resposta:**
+```json
+{
+  "deviceId": "device_xxx",
+  "deviceName": "Moto G15 Power",
+  "mode": "auto",
+  "manualOverride": false,
+  "currentLevel": 0,
+  "daysOverdue": 0,
+  "description": "Sistema automático gerencia o bloqueio baseado em atrasos"
+}
+```
+
+**Modos possíveis:**
+- `auto`: Sistema automático gerencia (manualOverride=false)
+- `manual`: Admin controla manualmente (manualOverride=true)
+
+---
+
+#### **POST /api/devices/:id/toggle-auto-manual**
+Alternar entre modo automático e manual
+
+**Auth:** JWT Token (apenas admin)
+
+**Body (opcional):**
+```json
+{
+  "mode": "manual"
+}
+```
+
+**Opções:**
+- `{ "mode": "auto" }` → Força modo automático
+- `{ "mode": "manual" }` → Força modo manual
+- `{}` → Toggle: se está em auto vai para manual, vice-versa
+
+**Resposta:**
+```json
+{
+  "success": true,
+  "message": "Modo manual ativado - sistema automático não alterará o nível de bloqueio",
+  "deviceId": "device_xxx",
+  "deviceName": "Moto G15 Power",
+  "previousMode": "auto",
+  "newMode": "manual",
+  "manualOverride": true,
+  "currentLevel": 0,
+  "emoji": "👤"
+}
+```
+
+**Comportamento:**
+- ✅ Atualiza `device_block_levels.manualOverride`
+- ✅ Cria audit log
+- ✅ Atualiza metadata (quem alterou, quando, modo anterior)
+- ✅ Se modo manual, sistema automático pula esse dispositivo
+
+**Exemplo:**
+```bash
+# Ativar modo manual
+curl -X POST "http://localhost:5000/api/devices/device_xxx/toggle-auto-manual" \
+  -H "Authorization: Bearer <JWT_TOKEN>" \
+  -H "Content-Type: application/json" \
+  -d '{"mode": "manual"}'
+
+# Toggle automático
+curl -X POST "http://localhost:5000/api/devices/device_xxx/toggle-auto-manual" \
+  -H "Authorization: Bearer <JWT_TOKEN>" \
+  -H "Content-Type: application/json" \
+  -d '{}'
+```
+
+---
+
+### 5️⃣ Comandos MDM
+
+#### **GET /api/apk/device/:serialNumber/commands**
+APK busca comandos pendentes (polling)
+
+**Auth:** APK Token (via header `X-APK-Token`)
+
+**Resposta:**
+```json
+{
+  "commands": [
+    {
+      "id": "cmd_xxx",
+      "type": "BLOCK_APPS_PROGRESSIVE",
+      "payload": {
+        "level": 3,
+        "categories": ["social_media"],
+        "exceptions": ["com.whatsapp"],
+        "message": "Dispositivo bloqueado - nível 3"
+      },
+      "issuedBy": "admin@admin.com",
+      "issuedAt": "2025-11-17T10:30:00Z",
+      "expiresAt": "2025-11-18T10:30:00Z"
+    }
+  ]
+}
+```
+
+**Tipos de comando MDM:**
+- `BLOCK_BASIC`: Bloqueio básico (tela preta)
+- `UNBLOCK_BASIC`: Desbloquear básico
+- `BLOCK_APPS_PROGRESSIVE`: Bloqueio progressivo (níveis 1-5)
+- `UNBLOCK_APPS_PROGRESSIVE`: Desbloqueio progressivo (nível 0)
+- `FULL_DEVICE_LOCK`: Bloqueio total com overlay (nível 6)
+- `WIPE`: Limpar dados do dispositivo
+- `NOTIFICATION`: Enviar notificação
+
+---
+
+#### **POST /api/apk/device/:serialNumber/command-response**
+APK confirma execução de comando
+
+**Auth:** APK Token
+
+**Body:**
+```json
+{
+  "commandId": "cmd_xxx",
+  "status": "executed",
+  "executedAt": "2025-11-17T10:31:00Z",
+  "result": {
+    "success": true,
+    "message": "Comando executado com sucesso"
+  }
+}
+```
+
+**Status possíveis:**
+- `executed`: Comando executado com sucesso
+- `failed`: Falha na execução
+- `expired`: Comando expirou antes da execução
+
+---
+
+### 6️⃣ Parcelas e Atrasos
+
+#### **GET /api/devices/:deviceId/overdue-installments**
+Buscar parcelas em atraso de um dispositivo
+
+**Auth:** JWT Token (admin ou store_user)
+
+**Resposta:**
+```json
+{
+  "deviceId": "device_xxx",
+  "overdueCount": 3,
+  "totalOverdueAmount": 450.00,
+  "daysOverdue": 10,
+  "installments": [
+    {
+      "id": "inst_1",
+      "installmentNumber": 1,
+      "amount": 150.00,
+      "dueDate": "2025-11-01",
+      "status": "overdue",
+      "daysOverdue": 16
+    },
+    {
+      "id": "inst_2",
+      "installmentNumber": 2,
+      "amount": 150.00,
+      "dueDate": "2025-11-08",
+      "status": "overdue",
+      "daysOverdue": 9
+    },
+    {
+      "id": "inst_3",
+      "installmentNumber": 3,
+      "amount": 150.00,
+      "dueDate": "2025-11-15",
+      "status": "overdue",
+      "daysOverdue": 2
+    }
+  ]
+}
+```
+
+---
+
+#### **GET /api/devices/:deviceId/installments**
+Buscar todas as parcelas de um dispositivo
+
+**Auth:** JWT Token (admin ou store_user)
+
+**Query Params (opcionais):**
+```
+?status=pending        // Filtrar por status (pending, paid, overdue)
+```
+
+**Resposta:**
+```json
+[
+  {
+    "id": "inst_1",
+    "installmentNumber": 1,
+    "amount": 150.00,
+    "dueDate": "2025-11-01",
+    "status": "paid",
+    "paidAt": "2025-11-01T10:00:00Z"
+  },
+  {
+    "id": "inst_2",
+    "installmentNumber": 2,
+    "amount": 150.00,
+    "dueDate": "2025-11-15",
+    "status": "pending"
+  }
+]
+```
+
+---
+
+### 7️⃣ Endpoints APK (Device Side)
+
+#### **POST /api/apk/auth**
+APK autentica e recebe token
+
+**Body:**
+```json
+{
+  "imei": "123456789012345",
+  "serialNumber": "SN12345",
+  "fingerprint": "device_fingerprint_xxx"
+}
+```
+
+**Validações:**
+- ✅ IMEI deve existir no banco
+- ✅ IMEI deve estar pareado (isPaired=true)
+- ✅ Fingerprint deve corresponder ao registrado
+- ✅ Rate limiting: 5 tentativas por minuto
+
+**Resposta:**
+```json
+{
+  "success": true,
+  "token": "apk_token_xxx",
+  "deviceId": "device_xxx",
+  "expiresIn": 2592000
+}
+```
+
+---
+
+#### **GET /api/apk/device/status**
+APK verifica status atual
+
+**Auth:** APK Token
+
+**Resposta:**
+```json
+{
+  "deviceId": "device_xxx",
+  "isBlocked": false,
+  "blockLevel": {
+    "currentLevel": 0,
+    "manualOverride": false
+  },
+  "hasPendingCommands": false,
+  "lastSync": "2025-11-17T10:30:00Z"
+}
+```
+
+---
+
+#### **GET /api/apk/device/overdue**
+APK busca parcelas em atraso (para overlay nível 6)
+
+**Auth:** APK Token
+
+**Resposta:**
+```json
+{
+  "deviceId": "device_xxx",
+  "overdueCount": 3,
+  "totalOverdueAmount": 450.00,
+  "installments": [
+    {
+      "installmentNumber": 1,
+      "amount": 150.00,
+      "dueDate": "2025-11-01",
+      "daysOverdue": 16
+    }
+  ],
+  "contactInfo": {
+    "phone": "+55 11 98765-4321",
+    "whatsapp": "+55 11 98765-4321",
+    "storeName": "Loja Centro"
+  }
+}
+```
+
+**Uso:** APK exibe essas informações no overlay de bloqueio nível 6
+
+---
+
+#### **POST /api/apk/device/fcm-token**
+APK registra token FCM para push notifications
+
+**Auth:** APK Token
+
+**Body:**
+```json
+{
+  "fcmToken": "firebase_cloud_messaging_token_xxx"
+}
+```
+
+**Resposta:**
+```json
+{
+  "success": true,
+  "message": "FCM token registrado com sucesso"
+}
+```
+
+---
+
+#### **POST /api/apk/device/heartbeat**
+APK envia heartbeat (prova de vida)
+
+**Auth:** APK Token
+
+**Body:**
+```json
+{
+  "batteryLevel": 85,
+  "isCharging": false,
+  "signalStrength": 4,
+  "location": {
+    "latitude": -23.550520,
+    "longitude": -46.633308
+  }
+}
+```
+
+**Resposta:**
+```json
+{
+  "success": true,
+  "serverTime": "2025-11-17T10:30:00Z"
+}
+```
+
+**Comportamento:**
+- ✅ Atualiza `devices.lastSeen`
+- ✅ Armazena telemetria (bateria, sinal, localização)
+
+---
+
+#### **POST /api/apk/device/permissions**
+APK reporta permissões concedidas/negadas
+
+**Auth:** APK Token
+
+**Body:**
+```json
+{
+  "permissions": {
+    "DEVICE_ADMIN": true,
+    "SYSTEM_ALERT_WINDOW": true,
+    "USAGE_STATS": true,
+    "LOCATION": false,
+    "CAMERA": true
+  }
+}
+```
+
+**Resposta:**
+```json
+{
+  "success": true,
+  "message": "Permissões atualizadas"
+}
+```
+
+---
+
+## 🎚️ Sistema de Bloqueio Progressivo
+
+### 7 Níveis (0-6)
+
+O sistema possui **7 níveis de bloqueio progressivo** aplicados automaticamente baseado em dias de atraso:
+
+```javascript
+const PROGRESSIVE_BLOCK_RULES = [
+  {
+    level: 0,
+    days: 0,
+    categories: [],
+    exceptions: [],
+    message_title: "Dispositivo Desbloqueado",
+    message_body: "Seu dispositivo está funcionando normalmente. Todas as parcelas estão em dia."
+  },
+  {
+    level: 1,
+    days: 3,
+    categories: ["photos", "gallery", "video_players", "web_browsers"],
+    exceptions: ["com.whatsapp", "com.android.dialer", "com.android.messaging", "bancos_allowed", "emails_allowed"],
+    message_title: "Atenção: limite de apps reduzido",
+    message_body: "Seu aparelho está com atraso de 3 dias. Aplicativos de fotos, galeria, vídeos e navegadores foram temporariamente bloqueados até a regularização."
+  },
+  {
+    level: 2,
+    days: 6,
+    categories: ["youtube", "music_players", "play_store", "games"],
+    exceptions: ["com.whatsapp", "com.android.dialer", "com.android.messaging", "bancos_allowed", "emails_allowed"],
+    message_title: "Atenção: restrição ampliada",
+    message_body: "Atraso de 6 dias. YouTube, apps de música, Play Store e jogos foram bloqueados além das restrições anteriores."
+  },
+  {
+    level: 3,
+    days: 9,
+    categories: ["social_media"],
+    exceptions: ["com.whatsapp", "com.android.dialer", "com.android.messaging", "bancos_allowed", "emails_allowed"],
+    message_title: "Atenção: redes sociais bloqueadas",
+    message_body: "Atraso de 9 dias. Todas as redes sociais foram bloqueadas, exceto WhatsApp."
+  },
+  {
+    level: 4,
+    days: 12,
+    categories: ["all_apps_except_whatsapp"],
+    exceptions: ["com.whatsapp", "com.android.dialer", "com.android.messaging", "bancos_allowed", "emails_allowed"],
+    message_title: "Atenção: restrição severa",
+    message_body: "Atraso de 12 dias. Quase todos os aplicativos estão bloqueados, WhatsApp continua liberado."
+  },
+  {
+    level: 5,
+    days: 15,
+    categories: ["all_apps_except_banks_calls_sms_emails"],
+    exceptions: ["bancos_allowed", "com.android.dialer", "com.android.messaging", "emails_allowed"],
+    message_title: "Atenção: restrição máxima",
+    message_body: "Atraso de 15 dias. Apenas apps bancários, de e-mail, telefone e SMS permanecerão disponíveis. Demais apps foram bloqueados."
+  },
+  {
+    level: 6,
+    days: 18,
+    categories: ["FULL_DEVICE_LOCK"],
+    exceptions: [],
+    message_title: "⚠️ DISPOSITIVO BLOQUEADO",
+    message_body: "Atraso de 18 dias ou mais. Dispositivo bloqueado completamente. Uma tela de bloqueio com suas parcelas em atraso será exibida sobrepondo todo o sistema Android até a regularização do pagamento."
+  }
+];
+```
+
+### Cálculo Automático de Níveis
+
+```javascript
+function determineBlockLevel(daysOverdue: number): number {
+  if (daysOverdue < 3) return 0;   // 0-2 dias: sem bloqueio
+  if (daysOverdue < 6) return 1;   // 3-5 dias: nível 1
+  if (daysOverdue < 9) return 2;   // 6-8 dias: nível 2
+  if (daysOverdue < 12) return 3;  // 9-11 dias: nível 3
+  if (daysOverdue < 15) return 4;  // 12-14 dias: nível 4
+  if (daysOverdue < 18) return 5;  // 15-17 dias: nível 5
+  return 6;                        // 18+ dias: nível 6 (BLOQUEIO TOTAL)
+}
+```
+
+### Sistema Automático
+
+O sistema roda **a cada 15 minutos** verificando:
+
+1. ✅ Busca vendas com pagamentos em atraso
+2. ✅ Calcula dias de atraso de cada dispositivo
+3. ✅ Determina nível apropriado (0-6)
+4. ✅ **Pula dispositivos com `manualOverride=true`**
+5. ✅ Envia comandos MDM via WebSocket
+6. ✅ Atualiza `device_block_levels`
+7. ✅ Cria audit logs
+
+**Desbloqueio Automático:**
+- Quando parcelas atrasadas são pagas
+- Sistema detecta na próxima execução (15 min)
+- Calcula novo nível (geralmente 0)
+- Envia comando `UNBLOCK_PROGRESSIVE`
+- APK fecha overlay/desbloqueio automaticamente
+
+---
+
+## 🔒 Sistema de Bloqueio Básico
+
+Bloqueio binário simples (on/off) para emergências:
+
+### Quando usar:
+- 🚨 Roubo reportado
+- 🚨 Perda do dispositivo
+- 🚨 Fraude detectada
+- 🚨 Violação de contrato
+
+### Características:
+- ✅ **Independente do bloqueio progressivo**
+- ✅ Tem **prioridade sobre bloqueio progressivo**
+- ✅ Bloqueia totalmente o dispositivo
+- ✅ APK exibe tela preta com mensagem
+- ✅ Não libera apps essenciais
+
+### Lógica de Prioridade:
+
+```javascript
+// Verificação no APK
+if (device.isBlocked) {
+  // Bloqueio básico tem prioridade máxima
+  showBlackScreen();
+  return;
+}
+
+// Depois verifica bloqueio progressivo
+if (device.blockLevel.currentLevel === 6) {
+  showOverlayWithInstallments();
+} else if (device.blockLevel.currentLevel > 0) {
+  applyProgressiveBlocking();
+}
+```
+
+---
+
+## 🔄 Sistema Auto/Manual
+
+Permite alternar entre **gestão automática** e **controle manual** por dispositivo.
+
+### 🤖 Modo Automático (AUTO)
+
+**Características:**
+- Sistema calcula níveis 0-6 automaticamente
+- Baseado em dias de atraso
+- Desbloqueio automático ao pagar
+- Roda a cada 15 minutos
+- `manualOverride = false`
+
+**Quando usar:**
+- ✅ Operação padrão do sistema
+- ✅ Gestão em escala de muitos dispositivos
+- ✅ Quando não há acordos especiais
+
+---
+
+### 👤 Modo Manual (MANUAL)
+
+**Características:**
+- Admin define nível específico
+- Sistema automático **NÃO altera** mais esse dispositivo
+- Nível permanece fixo até admin mudar
+- `manualOverride = true`
+
+**Quando usar:**
+- ✅ Clientes com acordos especiais
+- ✅ Negociações de prazo
+- ✅ Testes de bloqueio
+- ✅ Clientes VIP
+
+---
+
+### Alternância Entre Modos
+
+```bash
+# Verificar modo atual
+GET /api/devices/:id/block-mode
+
+# Ativar modo manual
+POST /api/devices/:id/toggle-auto-manual
+{ "mode": "manual" }
+
+# Ativar modo automático
+POST /api/devices/:id/toggle-auto-manual
+{ "mode": "auto" }
+
+# Toggle (alternar automaticamente)
+POST /api/devices/:id/toggle-auto-manual
+{}
+```
+
+---
+
+## 🌐 WebSocket em Tempo Real
+
+O sistema usa **WebSocket** para enviar comandos MDM instantaneamente aos dispositivos.
+
+### Conexão APK
+
+```kotlin
+// APK conecta ao WebSocket
+val wsUrl = "wss://domain.replit.app/ws?token=${apkToken}"
+val webSocket = OkHttpClient().newWebSocket(
+    Request.Builder().url(wsUrl).build(),
+    object : WebSocketListener() {
+        override fun onMessage(webSocket: WebSocket, text: String) {
+            val message = Json.decodeFromString<WSMessage>(text)
+            handleMdmCommand(message)
+        }
+    }
+)
+```
+
+### Mensagens WebSocket
+
+**Formato:**
+```json
+{
+  "type": "MDM_COMMAND",
+  "command": {
+    "id": "cmd_xxx",
+    "type": "BLOCK_APPS_PROGRESSIVE",
+    "payload": {
+      "level": 3,
+      "categories": ["social_media"],
+      "exceptions": ["com.whatsapp"],
+      "message": "Bloqueio nível 3"
+    },
+    "issuedBy": "admin@admin.com",
+    "issuedAt": "2025-11-17T10:30:00Z"
+  }
+}
+```
+
+### Tipos de Comando via WebSocket
+
+1. **BLOCK_BASIC**: Bloqueio básico total
+2. **UNBLOCK_BASIC**: Desbloqueio básico
+3. **BLOCK_APPS_PROGRESSIVE**: Bloqueio progressivo (níveis 1-5)
+4. **UNBLOCK_APPS_PROGRESSIVE**: Desbloqueio progressivo (nível 0)
+5. **FULL_DEVICE_LOCK**: Bloqueio total com overlay (nível 6)
+6. **WIPE**: Limpar dados do dispositivo
+7. **NOTIFICATION**: Enviar notificação
+
+---
+
+## 🔐 Validação IMEI e APK
+
+### Fluxo de Registro
+
+1. **Admin registra dispositivo no portal**
+   ```bash
+   POST /api/devices
+   {
+     "imei": "123456789012345",
+     "serialNumber": "SN12345",
+     ...
+   }
+   ```
+
+2. **APK tenta autenticar**
+   ```bash
+   POST /api/apk/auth
+   {
+     "imei": "123456789012345",
+     "serialNumber": "SN12345",
+     "fingerprint": "device_fingerprint_xxx"
+   }
+   ```
+
+3. **Backend valida**
+   - ✅ IMEI existe?
+   - ✅ IMEI está pareado (isPaired=true)?
+   - ✅ Fingerprint corresponde?
+   - ✅ Rate limiting ok?
+
+4. **Backend retorna token**
+   ```json
+   {
+     "success": true,
+     "token": "apk_token_xxx",
+     "deviceId": "device_xxx"
+   }
+   ```
+
+5. **APK usa token para todas as requisições**
+   ```
+   Header: X-APK-Token: apk_token_xxx
+   ```
+
+### Segurança
+
+- ✅ **IMEI imutável**: Não pode ser alterado após registro
+- ✅ **Fingerprint único**: Device fingerprint único por dispositivo
+- ✅ **Rate limiting**: 5 tentativas de auth por minuto
+- ✅ **Token expirável**: Tokens APK expiram em 30 dias
+- ✅ **Bloqueio automático**: 3 falhas consecutivas → dispositivo bloqueado
+- ✅ **Audit log**: Todas as tentativas são registradas
+
+---
+
+## 📲 Push Notifications
+
+O sistema usa **Firebase Cloud Messaging (FCM)** para enviar notificações aos dispositivos.
+
+### Registro de Token FCM
+
+```bash
+POST /api/apk/device/fcm-token
+{
+  "fcmToken": "firebase_token_xxx"
+}
+```
+
+### Envio de Notificação
+
+```javascript
+// Backend envia notificação
+const message = {
+  notification: {
+    title: "Atenção: Pagamento Atrasado",
+    body: "Sua parcela venceu há 5 dias. Regularize para evitar bloqueios."
+  },
+  data: {
+    type: "payment_reminder",
+    deviceId: "device_xxx",
+    installmentId: "inst_xxx"
+  },
+  token: device.fcmToken
+};
+
+await admin.messaging().send(message);
+```
+
+### Tipos de Notificação
+
+1. **payment_reminder**: Lembrete de pagamento
+2. **block_warning**: Aviso de bloqueio iminente
+3. **block_applied**: Bloqueio aplicado
+4. **unblock_applied**: Desbloqueio aplicado
+5. **system_message**: Mensagem do sistema
+
+---
+
+## 💼 Casos de Uso Práticos
+
+### 📝 Caso 1: Cliente Negociou Prazo Extra
+
+**Situação:**
+- Cliente está com 10 dias de atraso (seria nível 3)
+- Negociou mais 15 dias de prazo
+- Quer que dispositivo fique desbloqueado
+
+**Solução:**
+```bash
+# 1. Alternar para modo manual
+POST /api/devices/device_xxx/toggle-auto-manual
+{ "mode": "manual" }
+
+# 2. Forçar nível 0 (desbloqueado)
+POST /api/devices/device_xxx/progressive-block
+{ "targetLevel": 0, "manualOverride": true }
+
+# Resultado: Dispositivo fica desbloqueado
+# Sistema automático NÃO altera
+
+# Depois dos 15 dias:
+POST /api/devices/device_xxx/toggle-auto-manual
+{ "mode": "auto" }
+# Sistema retoma controle
+```
+
+---
+
+### 📝 Caso 2: Roubo Reportado
+
+**Situação:**
+- Cliente reportou roubo
+- Precisa bloquear imediatamente
+
+**Solução:**
+```bash
+# Bloquear imediatamente (bloqueio básico)
+POST /api/devices/device_xxx/block
+{
+  "reason": "Roubo reportado pelo cliente",
+  "sendNotification": true
+}
+
+# Resultado:
+# ✅ Comando enviado via WebSocket instantaneamente
+# ✅ Push notification enviada via FCM
+# ✅ APK exibe tela preta
+# ✅ Audit log criado
+```
+
+---
+
+### 📝 Caso 3: Cliente VIP sem Bloqueio
+
+**Situação:**
+- Cliente VIP nunca deve ser bloqueado
+- Independente de atrasos
+
+**Solução:**
+```bash
+# Configurar permanentemente em modo manual nível 0
+POST /api/devices/device_xxx/toggle-auto-manual
+{ "mode": "manual" }
+
+POST /api/devices/device_xxx/progressive-block
+{ "targetLevel": 0, "manualOverride": true }
+
+# Resultado: Cliente VIP nunca bloqueado automaticamente
+```
+
+---
+
+### 📝 Caso 4: Teste de Bloqueio
+
+**Situação:**
+- Quer testar como fica bloqueio nível 4
+- Mas não quer que sistema altere automaticamente
+
+**Solução:**
+```bash
+# 1. Modo manual
+POST /api/devices/device_xxx/toggle-auto-manual
+{ "mode": "manual" }
+
+# 2. Aplicar nível 4
+POST /api/devices/device_xxx/progressive-block
+{ "targetLevel": 4 }
+
+# 3. Testar no APK...
+
+# 4. Voltar para auto
+POST /api/devices/device_xxx/toggle-auto-manual
+{ "mode": "auto" }
+```
+
+---
+
+### 📝 Caso 5: Cliente Pagou Parcelas Atrasadas
+
+**Situação:**
+- Cliente tinha 3 parcelas atrasadas (nível 3)
+- Pagou todas as parcelas
+- Quer desbloquear automaticamente
+
+**Solução:**
+```bash
+# Admin registra pagamentos no sistema
+POST /api/payments
+{ "installmentId": "inst_1", "amount": 150.00 }
+POST /api/payments
+{ "installmentId": "inst_2", "amount": 150.00 }
+POST /api/payments
+{ "installmentId": "inst_3", "amount": 150.00 }
+
+# Sistema automático (a cada 15 min):
+# 1. Detecta que parcelas foram pagas
+# 2. Calcula novo nível: 0 dias de atraso = nível 0
+# 3. Envia comando UNBLOCK_PROGRESSIVE via WebSocket
+# 4. APK recebe e fecha overlay/desbloqueia
+# 5. Cliente volta a usar dispositivo normalmente
+
+# Não precisa fazer nada manualmente!
+```
+
+---
+
+## 🤖 Integração para IA
+
+### Exemplo: IA gerenciando dispositivos
+
+```javascript
+// Exemplo de script para IA gerenciar dispositivos
+
+const axios = require('axios');
+
+class DeviceManagementAI {
+  constructor(jwtToken, baseUrl = 'http://localhost:5000') {
+    this.token = jwtToken;
+    this.baseUrl = baseUrl;
+  }
+
+  // Listar todos os dispositivos
+  async listDevices(filters = {}) {
+    const params = new URLSearchParams(filters);
+    const response = await axios.get(`${this.baseUrl}/api/devices?${params}`, {
+      headers: { Authorization: `Bearer ${this.token}` }
+    });
+    return response.data;
+  }
+
+  // Verificar dispositivos com bloqueio progressivo
+  async getDevicesWithBlocking() {
+    const response = await axios.get(`${this.baseUrl}/api/devices/block-levels`, {
+      headers: { Authorization: `Bearer ${this.token}` }
+    });
+    return response.data;
+  }
+
+  // Aplicar bloqueio progressivo
+  async applyProgressiveBlock(deviceId, level, manual = false) {
+    const response = await axios.post(
+      `${this.baseUrl}/api/devices/${deviceId}/progressive-block`,
+      { targetLevel: level, manualOverride: manual },
+      { headers: { Authorization: `Bearer ${this.token}` } }
+    );
+    return response.data;
+  }
+
+  // Alternar modo auto/manual
+  async toggleMode(deviceId, mode) {
+    const response = await axios.post(
+      `${this.baseUrl}/api/devices/${deviceId}/toggle-auto-manual`,
+      { mode },
+      { headers: { Authorization: `Bearer ${this.token}` } }
+    );
+    return response.data;
+  }
+
+  // Bloquear dispositivo (emergência)
+  async blockDevice(deviceId, reason) {
+    const response = await axios.post(
+      `${this.baseUrl}/api/devices/${deviceId}/block`,
+      { reason, sendNotification: true },
+      { headers: { Authorization: `Bearer ${this.token}` } }
+    );
+    return response.data;
+  }
+
+  // Desbloquear dispositivo
+  async unblockDevice(deviceId, reason) {
+    const response = await axios.post(
+      `${this.baseUrl}/api/devices/${deviceId}/unblock`,
+      { reason, sendNotification: true },
+      { headers: { Authorization: `Bearer ${this.token}` } }
+    );
+    return response.data;
+  }
+
+  // Analisar e agir baseado em atrasos
+  async autoManageDevices() {
+    const devices = await this.getDevicesWithBlocking();
+    
+    for (const device of devices) {
+      console.log(`Analisando dispositivo ${device.deviceName}...`);
+      
+      // Dispositivo em modo manual? Pula
+      if (device.manualOverride) {
+        console.log(`  → Modo manual, pulando`);
+        continue;
+      }
+      
+      // Verifica atrasos
+      if (device.daysOverdue >= 18 && device.currentLevel < 6) {
+        console.log(`  → 18+ dias de atraso, aplicando nível 6`);
+        await this.applyProgressiveBlock(device.deviceId, 6);
+      } else if (device.daysOverdue >= 15 && device.currentLevel < 5) {
+        console.log(`  → 15+ dias de atraso, aplicando nível 5`);
+        await this.applyProgressiveBlock(device.deviceId, 5);
+      } else if (device.daysOverdue === 0 && device.currentLevel > 0) {
+        console.log(`  → Sem atrasos, desbloqueando (nível 0)`);
+        await this.applyProgressiveBlock(device.deviceId, 0);
+      }
+    }
+  }
+
+  // Negociar prazo com cliente
+  async negotiateGracePeriod(deviceId, extraDays) {
+    console.log(`Negociando ${extraDays} dias extras para dispositivo ${deviceId}`);
+    
+    // 1. Alternar para modo manual
+    await this.toggleMode(deviceId, 'manual');
+    
+    // 2. Forçar nível 0 (desbloqueado)
+    await this.applyProgressiveBlock(deviceId, 0, true);
+    
+    // 3. Agendar volta para auto depois do prazo
+    setTimeout(async () => {
+      console.log(`Prazo expirou, voltando para modo automático`);
+      await this.toggleMode(deviceId, 'auto');
+    }, extraDays * 24 * 60 * 60 * 1000);
+    
+    return { success: true, message: `${extraDays} dias de prazo concedidos` };
+  }
+}
+
+// Uso:
+const ai = new DeviceManagementAI('jwt_token_xxx');
+
+// Listar dispositivos
+const devices = await ai.listDevices({ storeId: 'store_xxx' });
+
+// Auto-gerenciar dispositivos
+await ai.autoManageDevices();
+
+// Negociar prazo
+await ai.negotiateGracePeriod('device_xxx', 15);
+```
+
+---
+
+## 📊 Resumo de Endpoints
+
+### Dispositivos
+
+| Método | Endpoint | Descrição | Auth |
+|--------|----------|-----------|------|
+| GET | `/api/devices` | Listar dispositivos | JWT |
+| POST | `/api/devices` | Criar dispositivo | JWT |
+| GET | `/api/devices/:id` | Obter dispositivo | JWT |
+| DELETE | `/api/devices/:id` | Deletar dispositivo | JWT (admin) |
+| GET | `/api/devices/imei/:imei` | Buscar por IMEI | JWT |
+| GET | `/api/devices/check-paired` | Verificar pareamento | JWT |
+
+### Bloqueio Básico
+
+| Método | Endpoint | Descrição | Auth |
+|--------|----------|-----------|------|
+| POST | `/api/devices/:id/block` | Bloquear (básico) | JWT |
+| POST | `/api/devices/:id/unblock` | Desbloquear (básico) | JWT |
+
+### Bloqueio Progressivo
+
+| Método | Endpoint | Descrição | Auth |
+|--------|----------|-----------|------|
+| GET | `/api/devices/block-levels` | Listar níveis | JWT |
+| GET | `/api/devices/:id/block-level` | Obter nível | JWT |
+| POST | `/api/devices/:id/progressive-block` | Aplicar bloqueio progressivo | JWT (admin) |
+
+### Auto/Manual
+
+| Método | Endpoint | Descrição | Auth |
+|--------|----------|-----------|------|
+| GET | `/api/devices/:id/block-mode` | Verificar modo | JWT |
+| POST | `/api/devices/:id/toggle-auto-manual` | Alternar modo | JWT (admin) |
+
+### Parcelas
+
+| Método | Endpoint | Descrição | Auth |
+|--------|----------|-----------|------|
+| GET | `/api/devices/:id/overdue-installments` | Parcelas em atraso | JWT |
+| GET | `/api/devices/:id/installments` | Todas as parcelas | JWT |
+
+### APK
+
+| Método | Endpoint | Descrição | Auth |
+|--------|----------|-----------|------|
+| POST | `/api/apk/auth` | Autenticar APK | - |
+| GET | `/api/apk/device/status` | Status do dispositivo | APK Token |
+| GET | `/api/apk/device/overdue` | Parcelas em atraso (overlay) | APK Token |
+| POST | `/api/apk/device/fcm-token` | Registrar FCM token | APK Token |
+| POST | `/api/apk/device/heartbeat` | Heartbeat | APK Token |
+| POST | `/api/apk/device/permissions` | Reportar permissões | APK Token |
+| GET | `/api/apk/device/:serial/commands` | Buscar comandos MDM | APK Token |
+| POST | `/api/apk/device/:serial/command-response` | Confirmar execução | APK Token |
+
+---
+
+## 🔑 Autenticação
+
+### Admin/Store User (Portal Web)
+
+```bash
+# 1. Login
+POST /api/auth/login
+{
+  "email": "admin@admin.com",
+  "password": "admin123"
+}
+
+# Response:
+{
+  "token": "jwt_token_xxx",
+  "user": { ... }
+}
+
+# 2. Usar token em todas as requisições
+Header: Authorization: Bearer jwt_token_xxx
+```
+
+### APK (Dispositivo)
+
+```bash
+# 1. Autenticar
+POST /api/apk/auth
+{
+  "imei": "123456789012345",
+  "serialNumber": "SN12345",
+  "fingerprint": "fingerprint_xxx"
+}
+
+# Response:
+{
+  "token": "apk_token_xxx",
+  "deviceId": "device_xxx"
+}
+
+# 2. Usar token em todas as requisições
+Header: X-APK-Token: apk_token_xxx
+```
+
+---
+
+## 🎨 REFERÊNCIA RÁPIDA VISUAL
+
+### 📍 Endpoints APK - Cole Aqui no Seu Código
+
+```kotlin
+// ════════════════════════════════════════════════════════════
+// 📱 ENDPOINTS APK - CREDIT SMART - REFERÊNCIA RÁPIDA
+// ════════════════════════════════════════════════════════════
+
+object ApkEndpoints {
+  const val BASE_URL = "https://cdccreditsmart.com"
+  
+  // ──────────────────────────────────────────────────────────
+  // 🔐 AUTENTICAÇÃO
+  // ──────────────────────────────────────────────────────────
+  const val AUTH = "/api/apk/auth"
+  // POST - Body: { imei, serialNumber, fingerprint }
+  // Response: { token, deviceId }
+  
+  // ──────────────────────────────────────────────────────────
+  // 📊 STATUS E INFORMAÇÕES
+  // ──────────────────────────────────────────────────────────
+  const val STATUS = "/api/apk/device/status"
+  // GET - Header: X-APK-Token
+  // Response: { deviceId, isBlocked, blockLevel, ... }
+  
+  const val OVERDUE = "/api/apk/device/overdue"
+  // GET - Header: X-APK-Token
+  // Response: { overdueCount, totalOverdueAmount, installments }
+  
+  const val INSTALLMENTS = "/api/apk/device/installments"
+  // GET - Header: X-APK-Token
+  // Response: [ { installmentNumber, amount, dueDate, ... } ]
+  
+  // ──────────────────────────────────────────────────────────
+  // 🎮 COMANDOS MDM
+  // ──────────────────────────────────────────────────────────
+  fun commands(serialNumber: String) = "/api/apk/device/$serialNumber/commands"
+  // GET - Header: X-APK-Token
+  // Response: { commands: [ { id, type, payload, ... } ] }
+  
+  fun commandResponse(serialNumber: String) = "/api/apk/device/$serialNumber/command-response"
+  // POST - Header: X-APK-Token
+  // Body: { commandId, status, executedAt, result }
+  
+  // ──────────────────────────────────────────────────────────
+  // 📲 PUSH NOTIFICATIONS E TELEMETRIA
+  // ──────────────────────────────────────────────────────────
+  const val FCM_TOKEN = "/api/apk/device/fcm-token"
+  // POST - Header: X-APK-Token
+  // Body: { fcmToken }
+  
+  const val HEARTBEAT = "/api/apk/device/heartbeat"
+  // POST - Header: X-APK-Token
+  // Body: { batteryLevel, isCharging, signalStrength, location }
+  
+  const val PERMISSIONS = "/api/apk/device/permissions"
+  // POST - Header: X-APK-Token
+  // Body: { permissions: { DEVICE_ADMIN: true, ... } }
+  
+  // ──────────────────────────────────────────────────────────
+  // 🌐 WEBSOCKET
+  // ──────────────────────────────────────────────────────────
+  fun webSocket(token: String) = "wss://cdccreditsmart.com/ws?token=$token"
+  // WebSocket connection with APK token
+}
+
+// ════════════════════════════════════════════════════════════
+// ❌ ENDPOINTS QUE NÃO EXISTEM - NÃO USE!
+// ════════════════════════════════════════════════════════════
+// ❌ /api/contracts/*
+// ❌ /api/sales/*
+// ❌ /api/admin/mdm/devices/* (403 Forbidden)
+// ❌ /api/devices/* (Requer JWT admin)
+```
+
+### 🔑 Headers APK
+
+```kotlin
+// ✅ SEMPRE use este header nas requisições APK:
+headers {
+  append("X-APK-Token", apkToken)
+  append("Content-Type", "application/json")
+}
+
+// ❌ NÃO use este (é para admin):
+headers {
+  append("Authorization", "Bearer $jwtToken")  // ERRADO!
+}
+```
+
+### 🎯 Fluxo de Autenticação Simples
+
+```
+1. POST /api/apk/auth
+   ↓
+2. Salvar { token, deviceId, serialNumber }
+   ↓
+3. Usar token em TODAS as requisições (header X-APK-Token)
+   ↓
+4. Buscar comandos: GET /api/apk/device/{serialNumber}/commands
+```
+
+### 📊 Tipos de Comando MDM
+
+```kotlin
+enum class MdmCommandType {
+  BLOCK_BASIC,              // Bloqueio básico total
+  UNBLOCK_BASIC,            // Desbloqueio básico
+  BLOCK_APPS_PROGRESSIVE,   // Bloqueio progressivo (níveis 1-5)
+  UNBLOCK_APPS_PROGRESSIVE, // Desbloqueio progressivo (nível 0)
+  FULL_DEVICE_LOCK,         // Bloqueio total com overlay (nível 6)
+  WIPE,                     // Limpar dados do dispositivo
+  NOTIFICATION              // Enviar notificação
+}
+```
+
+### 🚦 Status Codes
+
+| Código | Significado | Ação |
+|--------|-------------|------|
+| **200** | ✅ OK | Comando recebido com sucesso |
+| **401** | 🔒 Unauthorized | Token inválido ou expirado - Re-autenticar |
+| **403** | 🚫 Forbidden | Endpoint errado - Usar `/api/apk/*` |
+| **404** | 🔍 Not Found | Endpoint não existe - Verificar URL |
+| **429** | ⏳ Rate Limited | Muitas requisições - Aguardar |
+| **500** | 💥 Server Error | Erro no servidor - Tentar novamente |
+
+### 🔄 Exemplo Mínimo Completo
+
+```kotlin
+// 1. Autenticar
+val auth = apiClient.post("/api/apk/auth") {
+  body = { "imei" to imei, "serialNumber" to serial }
+}
+apkToken = auth.token
+serialNumber = serial
+
+// 2. Buscar comandos
+val commands = apiClient.get("/api/apk/device/$serialNumber/commands") {
+  header("X-APK-Token", apkToken)
+}
+
+// 3. Executar comandos
+commands.forEach { cmd ->
+  when (cmd.type) {
+    "BLOCK_BASIC" -> blockDevice()
+    "UNBLOCK_BASIC" -> unblockDevice()
+    else -> Log.w("APK", "Unknown: ${cmd.type}")
+  }
+  
+  // 4. Confirmar execução
+  apiClient.post("/api/apk/device/$serialNumber/command-response") {
+    header("X-APK-Token", apkToken)
+    body = { "commandId" to cmd.id, "status" to "executed" }
+  }
+}
+```
+
+---
+
+## 📚 Referências Adicionais
+
+- **SISTEMA_DESBLOQUEIO_AUTOMATICO.md**: Detalhes do desbloqueio automático
+- **MODOS_DE_BLOQUEIO.md**: Explicação dos 3 modos de bloqueio
+- **SISTEMA_AUTO_MANUAL.md**: Sistema de alternância auto/manual
+- **RELATORIO_TESTES_BLOQUEIO.md**: Relatório de testes realizados
+
+---
+
+**Última atualização:** 17/11/2025  
+**Versão:** 1.0.0  
+**Sistema:** CDC CreditSmart - Gestão de Dispositivos MDM

@@ -243,14 +243,14 @@ class CdcForegroundService : Service(), ScreenStateListener {
                 val secureStorage = SecureTokenStorage(applicationContext)
                 val authToken = secureStorage.getAuthToken()
                 val contractCode = secureStorage.getContractCode()
-                var mdmDeviceId = secureStorage.getMdmDeviceIdentifier()
+                var mdmDeviceId = secureStorage.getSerialNumberForMdm()
                 
                 Log.i(TAG, "🔐 AuthToken presente: ${!authToken.isNullOrBlank()}")
                 Log.i(TAG, "🔐 AuthToken length: ${authToken?.length ?: 0}")
                 Log.i(TAG, "🔐 ContractCode presente: ${!contractCode.isNullOrBlank()}")
                 Log.i(TAG, "🔐 ContractCode value: ${contractCode?.take(4)}****")
-                Log.i(TAG, "🔐 MDM Device ID presente: ${!mdmDeviceId.isNullOrBlank()}")
-                Log.i(TAG, "🔐 MDM Device ID value: ${mdmDeviceId?.take(8) ?: "..."}...")
+                Log.i(TAG, "🔐 MDM SerialNumber presente: ${!mdmDeviceId.isNullOrBlank()}")
+                Log.i(TAG, "🔐 MDM SerialNumber value: ${mdmDeviceId?.take(8) ?: "..."}...")
                 
                 if (authToken.isNullOrBlank() || contractCode.isNullOrBlank()) {
                     Log.w(TAG, "⚠️ ========================================")
@@ -262,39 +262,39 @@ class CdcForegroundService : Service(), ScreenStateListener {
                 }
                 
                 if (mdmDeviceId.isNullOrBlank()) {
-                    Log.w(TAG, "⏳ MDM Device ID vazio - aguardando pareamento salvar...")
+                    Log.w(TAG, "⏳ MDM SerialNumber vazio - aguardando pareamento salvar...")
                     
                     var attempts = 0
                     val maxAttempts = 10
                     
                     while (attempts < maxAttempts) {
                         delay((attempts + 1) * 1000L)
-                        mdmDeviceId = secureStorage.getMdmDeviceIdentifier()
+                        mdmDeviceId = secureStorage.getSerialNumberForMdm()
                         
                         if (!mdmDeviceId.isNullOrBlank()) {
-                            Log.i(TAG, "✅ MDM Device ID encontrado após ${attempts + 1} tentativas: ${mdmDeviceId!!.take(8)}...")
+                            Log.i(TAG, "✅ MDM SerialNumber encontrado após ${attempts + 1} tentativas: ${mdmDeviceId!!.take(8)}...")
                             break
                         }
                         
                         attempts++
-                        Log.d(TAG, "⏳ Tentativa ${attempts}/$maxAttempts - MDM Device ID ainda vazio")
+                        Log.d(TAG, "⏳ Tentativa ${attempts}/$maxAttempts - MDM SerialNumber ainda vazio")
                     }
                     
                     if (mdmDeviceId.isNullOrBlank()) {
-                        Log.e(TAG, "❌ MDM Device ID ainda vazio após $maxAttempts tentativas")
+                        Log.e(TAG, "❌ MDM SerialNumber ainda vazio após $maxAttempts tentativas")
                         Log.e(TAG, "⚠️ MDM será inicializado quando identificador estiver disponível")
                         return@launch
                     }
                 }
                 
                 Log.i(TAG, "🔧 ========================================")
-                Log.i(TAG, "🔧 INICIALIZANDO MDM COM DEVICE ID: ${mdmDeviceId!!.take(8)}...")
+                Log.i(TAG, "🔧 INICIALIZANDO MDM COM SERIAL NUMBER: ${mdmDeviceId!!.take(8)}...")
                 Log.i(TAG, "🔧 ========================================")
                 
                 Log.i(TAG, "🔐 Tokens encontrados - inicializando serviços MDM")
                 
                 // Inicializa MDM Command Receiver
-                Log.d(TAG, "📡 Criando MdmCommandReceiver (usando deviceId do SecureTokenStorage)...")
+                Log.d(TAG, "📡 Criando MdmCommandReceiver (usando serialNumber do SecureTokenStorage)...")
                 mdmReceiver = MdmCommandReceiver(applicationContext)
                 
                 mdmReceiver?.setForegroundService(this@CdcForegroundService)
