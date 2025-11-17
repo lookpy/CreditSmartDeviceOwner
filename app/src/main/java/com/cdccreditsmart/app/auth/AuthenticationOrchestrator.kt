@@ -1,13 +1,16 @@
 package com.cdccreditsmart.app.auth
 
 import android.content.Context
+import android.os.Build
 import android.util.Log
 import com.cdccreditsmart.app.network.RetrofitProvider
 import com.cdccreditsmart.app.notifications.FcmTokenManager
 import com.cdccreditsmart.app.security.SecureTokenStorage
 import com.cdccreditsmart.app.storage.ContractCodeStorage
+import com.cdccreditsmart.app.utils.DeviceUtils
 import com.cdccreditsmart.network.api.DeviceApiService
 import com.cdccreditsmart.network.dto.apk.ApkAuthRequest
+import com.cdccreditsmart.network.dto.cdc.ImeiAuthRequest
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -37,11 +40,174 @@ class AuthenticationOrchestrator(private val context: Context) {
         return RetrofitProvider.createRetrofit()
             .create(DeviceApiService::class.java)
     }
+    
+    /**
+     * Tentativa automática de conexão usando IMEI, Serial Number e código de ativação
+     * Retorna AuthenticationResult.Authenticated se conseguir autenticar automaticamente
+     * Retorna null se falhar (dispositivo não encontrado no backend)
+     */
+    private suspend fun attemptAutoConnection(): AuthenticationResult? {
+        return try {
+            Log.d(TAG, "🔄 ========== TENTATIVA DE AUTO-CONEXÃO ==========")
+            
+            // 1. Tentar obter IMEI do dispositivo
+            val imei = DeviceUtils.getDeviceImei(context)
+            
+            if (imei != null) {
+                Log.d(TAG, "📱 IMEI obtido: ${imei.take(4)}***")
+                Log.d(TAG, "🔍 Tentando autenticar via IMEI...")
+                
+                val request = ImeiAuthRequest(imei = imei)
+                val response = deviceApi.authenticateByImei(request)
+                
+                if (response.isSuccessful && response.body() != null) {
+                    val authResponse = response.body()!!
+                    
+                    if (authResponse.success && authResponse.token != null) {
+                        // ✅ CRITICAL: Backend MUST return a valid contractCode
+                        val contractCode = authResponse.saleData?.contractCode
+                        
+                        if (contractCode.isNullOrBlank()) {
+                            Log.e(TAG, "❌ Backend retornou sucesso mas SEM contractCode!")
+                            Log.e(TAG, "   → Resposta inconsistente - forçando pareamento manual")
+                            Log.e(TAG, "   → DeviceId: ${authResponse.deviceId}")
+                            Log.e(TAG, "   → Informe o backend sobre esta inconsistência!")
+                            return@attemptAutoConnection null
+                        }
+                        
+                        Log.d(TAG, "✅ AUTO-CONEXÃO VIA IMEI BEM-SUCEDIDA!")
+                        Log.d(TAG, "✅ DeviceId: ${authResponse.deviceId.take(10)}...")
+                        Log.d(TAG, "✅ ContractCode válido recebido: ${contractCode.take(4)}****")
+                        
+                        // Salvar dados de autenticação
+                        contractCodeStorage.saveContractCode(contractCode)
+                        tokenStorage.saveAuthToken(
+                            authToken = authResponse.token,
+                            contractCode = contractCode,
+                            deviceId = authResponse.deviceId
+                        )
+                        
+                        Log.d(TAG, "💾 Credenciais salvas - contractCode: ${contractCode.take(4)}****")
+                        
+                        // Registrar FCM token
+                        CoroutineScope(Dispatchers.IO).launch {
+                            Log.d(TAG, "🔔 Registrando FCM token após auto-conexão...")
+                            fcmTokenManager.registerTokenWithBackend(
+                                onSuccess = {
+                                    Log.d(TAG, "✅ FCM token registrado")
+                                },
+                                onError = { error ->
+                                    Log.w(TAG, "⚠️ Erro ao registrar FCM token: $error")
+                                }
+                            )
+                        }
+                        
+                        Log.d(TAG, "🎉 ========== AUTO-CONEXÃO CONCLUÍDA ==========")
+                        return AuthenticationResult.Authenticated(contractCode)
+                    }
+                } else {
+                    Log.w(TAG, "⚠️ Autenticação via IMEI falhou: ${response.code()}")
+                    if (response.code() == 404) {
+                        Log.d(TAG, "   → Dispositivo não encontrado no backend")
+                    }
+                }
+            } else {
+                Log.w(TAG, "⚠️ IMEI não disponível (permissão negada ou emulador)")
+            }
+            
+            // 2. Tentar obter Serial Number do dispositivo
+            val serialNumber = try {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    Build.getSerial()
+                } else {
+                    @Suppress("DEPRECATION")
+                    Build.SERIAL
+                }
+            } catch (e: SecurityException) {
+                Log.w(TAG, "⚠️ Serial Number não acessível: ${e.message}")
+                null
+            }
+            
+            if (serialNumber != null && serialNumber != Build.UNKNOWN) {
+                Log.d(TAG, "📱 Serial Number obtido: ${serialNumber.take(10)}...")
+                Log.d(TAG, "🔍 Tentando autenticar via Serial Number...")
+                
+                // Backend pode aceitar S/N no lugar de IMEI
+                val request = ImeiAuthRequest(imei = serialNumber)
+                val response = deviceApi.authenticateByImei(request)
+                
+                if (response.isSuccessful && response.body() != null) {
+                    val authResponse = response.body()!!
+                    
+                    if (authResponse.success && authResponse.token != null) {
+                        // ✅ CRITICAL: Backend MUST return a valid contractCode
+                        val contractCode = authResponse.saleData?.contractCode
+                        
+                        if (contractCode.isNullOrBlank()) {
+                            Log.e(TAG, "❌ Backend retornou sucesso mas SEM contractCode!")
+                            Log.e(TAG, "   → Resposta inconsistente - forçando pareamento manual")
+                            Log.e(TAG, "   → DeviceId: ${authResponse.deviceId}")
+                            Log.e(TAG, "   → Informe o backend sobre esta inconsistência!")
+                            return@attemptAutoConnection null
+                        }
+                        
+                        Log.d(TAG, "✅ AUTO-CONEXÃO VIA SERIAL NUMBER BEM-SUCEDIDA!")
+                        Log.d(TAG, "✅ DeviceId: ${authResponse.deviceId.take(10)}...")
+                        Log.d(TAG, "✅ ContractCode válido recebido: ${contractCode.take(4)}****")
+                        
+                        contractCodeStorage.saveContractCode(contractCode)
+                        tokenStorage.saveAuthToken(
+                            authToken = authResponse.token,
+                            contractCode = contractCode,
+                            deviceId = authResponse.deviceId
+                        )
+                        
+                        Log.d(TAG, "💾 Credenciais salvas - contractCode: ${contractCode.take(4)}****")
+                        
+                        CoroutineScope(Dispatchers.IO).launch {
+                            Log.d(TAG, "🔔 Registrando FCM token após auto-conexão...")
+                            fcmTokenManager.registerTokenWithBackend(
+                                onSuccess = {
+                                    Log.d(TAG, "✅ FCM token registrado")
+                                },
+                                onError = { error ->
+                                    Log.w(TAG, "⚠️ Erro ao registrar FCM token: $error")
+                                }
+                            )
+                        }
+                        
+                        Log.d(TAG, "🎉 ========== AUTO-CONEXÃO CONCLUÍDA ==========")
+                        return AuthenticationResult.Authenticated(contractCode)
+                    }
+                } else {
+                    Log.w(TAG, "⚠️ Autenticação via Serial Number falhou: ${response.code()}")
+                }
+            } else {
+                Log.w(TAG, "⚠️ Serial Number não disponível")
+            }
+            
+            Log.d(TAG, "❌ Auto-conexão falhou - nenhum método funcionou")
+            Log.d(TAG, "   → Será necessário pareamento manual com código")
+            null
+            
+        } catch (e: Exception) {
+            Log.e(TAG, "❌ Erro durante tentativa de auto-conexão", e)
+            null
+        }
+    }
 
     suspend fun ensureAuthenticated(): AuthenticationResult = withContext(Dispatchers.IO) {
         try {
             Log.d(TAG, "🔐 Verificando autenticação...")
             
+            // 🎯 NOVO: Tentar auto-conexão PRIMEIRO (IMEI, S/N, código de ativação)
+            val autoConnectionResult = attemptAutoConnection()
+            if (autoConnectionResult != null) {
+                Log.d(TAG, "✅ Auto-conexão bem-sucedida - autenticação OK!")
+                return@withContext autoConnectionResult
+            }
+            
+            // Se auto-conexão falhou, continua fluxo normal (verifica contractCode salvo)
             val contractCode = contractCodeStorage.getContractCode()
             
             if (contractCode.isNullOrBlank()) {
