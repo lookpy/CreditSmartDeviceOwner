@@ -99,29 +99,71 @@ class AppBlockingManager(private val context: Context) {
                 .getInstalledApplications(0)
                 .map { it.packageName }
             
-            var blockedCount = appsToBlock.size
+            var blockedCount = 0
             var unblockedCount = 0
             
-            // MUDANÇA CRÍTICA: NÃO usamos setPackagesSuspended() para permitir
-            // que o AccessibilityService detecte tentativas de abertura
-            // 
-            // Funcionamento:
-            // 1. Apps permanecem FUNCIONAIS e ícones VISÍVEIS
-            // 2. Quando cliente clica no ícone, app TENTA abrir
-            // 3. AccessibilityService detecta e intercepta
-            // 4. Volta para home e mostra BlockedAppExplanationActivity
+            // ESTRATÉGIA HÍBRIDA (MELHOR DE DOIS MUNDOS):
+            // 1. setPackagesSuspended() para BLOQUEIO INSTANTÂNEO
+            //    → Cliente clica no ícone → Dialog padrão do Android aparece IMEDIATAMENTE
+            //    → Ícones permanecem VISÍVEIS (incentivo visual)
             //
-            // Vantagens:
-            // - Mensagem customizada SEMPRE aparece
-            // - Ícones visíveis (incentivo visual)
-            // - Funciona em Android 7+ sem problemas
+            // 2. BlockedAppInterceptor continua monitorando
+            //    → Detecta tentativas de abertura (mesmo com app suspenso)
+            //    → Mostra BlockedAppExplanationActivity com informações de PIX
+            //    → Cliente vê: Dialog Android PRIMEIRO → Depois tela CDC customizada
+            //
+            // Resultado:
+            // ✅ Bloqueio instantâneo (0s - satisfaz requisito de velocidade)
+            // ✅ Mensagem customizada CDC (satisfaz requisito de informação)
+            // ✅ Funciona automaticamente (sem configuração manual)
+            // ✅ Ícones visíveis (incentivo visual)
             
-            Log.i(TAG, "🎯 Rastreamento de apps bloqueados ativado (AccessibilityService)")
-            Log.i(TAG, "📋 ${appsToBlock.size} apps marcados para bloqueio")
-            Log.i(TAG, "✅ Ícones permanecerão VISÍVEIS - AccessibilityService vai interceptar")
+            Log.i(TAG, "🎯 ESTRATÉGIA HÍBRIDA: setPackagesSuspended + BlockedAppInterceptor")
+            Log.i(TAG, "   1️⃣ Bloqueio instantâneo via setPackagesSuspended()")
+            Log.i(TAG, "   2️⃣ Mensagem customizada via BlockedAppInterceptor")
             
-            // A lista já foi salva com saveBlockedPackages(appsToBlock) acima
-            // AccessibilityService vai ler essa lista via isAppBlocked()
+            try {
+                val packagesToBlock = appsToBlock.toTypedArray()
+                
+                // Bloquear apps com setPackagesSuspended
+                val failedToBlock = dpm.setPackagesSuspended(
+                    adminComponent,
+                    packagesToBlock,
+                    true
+                )
+                
+                blockedCount = packagesToBlock.size - (failedToBlock?.size ?: 0)
+                
+                if (failedToBlock == null) {
+                    Log.i(TAG, "✅ Todos os ${packagesToBlock.size} apps bloqueados instantaneamente")
+                } else {
+                    Log.i(TAG, "✅ ${blockedCount} apps bloqueados")
+                    failedToBlock.forEach { pkg ->
+                        Log.w(TAG, "  ⚠️ Falhou ao bloquear: $pkg")
+                    }
+                }
+                
+                // Desbloquear apps que não estão na lista
+                val appsToUnblock = allInstalledApps.filter { it !in appsToBlock }
+                val packagesToUnblock = appsToUnblock.toTypedArray()
+                val failedToUnblock = dpm.setPackagesSuspended(
+                    adminComponent,
+                    packagesToUnblock,
+                    false
+                )
+                
+                unblockedCount = packagesToUnblock.size - (failedToUnblock?.size ?: 0)
+                
+                Log.i(TAG, "✅ ${unblockedCount} apps desbloqueados")
+                
+            } catch (e: Exception) {
+                Log.e(TAG, "❌ Erro ao aplicar bloqueio híbrido: ${e.message}")
+            }
+            
+            // A lista de apps bloqueados também foi salva para o BlockedAppInterceptor
+            // Quando cliente clicar no app:
+            // → Dialog Android aparece (setPackagesSuspended)
+            // → BlockedAppInterceptor detecta e mostra tela CDC (1-2s depois)
             
             saveBlockingState(parameters.targetLevel, parameters.daysOverdue, parameters.reason)
             
@@ -169,18 +211,40 @@ class AppBlockingManager(private val context: Context) {
         }
         
         try {
-            // DESBLOQUEIO TOTAL: Limpa a lista de apps bloqueados
-            Log.i(TAG, "🎯 Limpando lista de apps bloqueados...")
+            val installedApps = context.packageManager.getInstalledApplications(0)
+            var unblockedCount = 0
             
-            val previouslyBlockedCount = getBlockedPackages().size
+            // DESBLOQUEIO TOTAL: Remove suspensão de TODOS os apps
+            Log.i(TAG, "🎯 Desbloqueando TODOS os apps (setPackagesSuspended)...")
             
-            // Já foi chamado clearBlockingState() acima, que limpa tudo
-            // Só precisa garantir que a lista está vazia
+            try {
+                val allPackages = installedApps.map { it.packageName }.toTypedArray()
+                
+                Log.d(TAG, "📊 Total de apps instalados: ${allPackages.size}")
+                
+                val failedPackages = dpm.setPackagesSuspended(
+                    adminComponent,
+                    allPackages,
+                    false  // suspended = false → DESBLOQUEIA
+                )
+                
+                if (failedPackages == null) {
+                    unblockedCount = allPackages.size
+                    Log.i(TAG, "✅ TODOS os ${allPackages.size} apps desbloqueados!")
+                } else {
+                    unblockedCount = allPackages.size - failedPackages.size
+                    Log.i(TAG, "✅ ${unblockedCount} apps desbloqueados")
+                    failedPackages.forEach { pkg ->
+                        Log.w(TAG, "  ⚠️ Falhou ao desbloquear: $pkg")
+                    }
+                }
+                
+            } catch (e: Exception) {
+                Log.e(TAG, "❌ Erro ao desbloquear apps: ${e.message}")
+            }
             
-            val unblockedCount = previouslyBlockedCount
-            
-            Log.i(TAG, "✅ Lista de bloqueio limpa - $unblockedCount apps foram desbloqueados")
-            Log.i(TAG, "✅ AccessibilityService não vai mais interceptar nenhum app")
+            Log.i(TAG, "✅ Desbloqueio completo - $unblockedCount apps")
+            Log.i(TAG, "✅ BlockedAppInterceptor também não vai mais interceptar")
             
             Log.i(TAG, "")
             Log.i(TAG, "╔════════════════════════════════════════════════════╗")
