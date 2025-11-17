@@ -1,0 +1,570 @@
+# 🖼️ Notificações Push com Imagem - Solução
+
+## 🔍 Problema Identificado
+
+As notificações push estão chegando **SEM IMAGEM** no APK Android, mesmo o backend enviando a `imageUrl` corretamente via Firebase Cloud Messaging (FCM).
+
+**Exemplo de notificação sem imagem:**
+```
+📱 Notificação recebida:
+   Título: "CDC"
+   Mensagem: "TESTE"
+   Imagem: ❌ NÃO APARECE
+```
+
+---
+
+## ✅ Backend Está CORRETO
+
+O backend **JÁ está enviando** a `imageUrl` corretamente via FCM:
+
+### **Código de Envio (server/firebase.ts):**
+
+```typescript
+const message: admin.messaging.Message = {
+  notification: {
+    title: notification.title,
+    body: notification.body,
+    ...(notification.imageUrl && { imageUrl: notification.imageUrl })  // ✅ Enviando
+  },
+  data: dataPayload,
+  android: {
+    priority: 'high',
+    ttl: 86400000,
+    ...(notification.imageUrl && {
+      notification: {
+        imageUrl: notification.imageUrl  // ✅ Enviando para Android
+      }
+    })
+  },
+  token: fcmToken
+};
+```
+
+**Payload FCM enviado:**
+```json
+{
+  "notification": {
+    "title": "CDC",
+    "body": "TESTE",
+    "imageUrl": "https://cdccreditsmart.com/storage/campaign_xxx.jpg"
+  },
+  "android": {
+    "notification": {
+      "imageUrl": "https://cdccreditsmart.com/storage/campaign_xxx.jpg"
+    }
+  }
+}
+```
+
+✅ **Backend enviando corretamente!**
+
+---
+
+## ❌ Problema Está no APK Android
+
+O **APK não está processando a `imageUrl`** recebida do FCM. 
+
+**Possíveis causas:**
+
+1. ✅ APK recebe a mensagem FCM
+2. ❌ APK **NÃO** processa o campo `imageUrl`
+3. ❌ APK **NÃO** faz download da imagem
+4. ❌ APK **NÃO** exibe a imagem na notificação
+
+---
+
+## 🔧 Solução: Processar imageUrl no APK
+
+### **1. Adicionar Permissão de Internet (AndroidManifest.xml):**
+
+```xml
+<uses-permission android:name="android.permission.INTERNET" />
+```
+
+---
+
+### **2. Processar imageUrl no FirebaseMessagingService:**
+
+```kotlin
+package com.cdccreditsmart.app.services
+
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.app.PendingIntent
+import android.content.Context
+import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.os.Build
+import android.util.Log
+import androidx.core.app.NotificationCompat
+import com.google.firebase.messaging.FirebaseMessagingService
+import com.google.firebase.messaging.RemoteMessage
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import java.net.HttpURLConnection
+import java.net.URL
+
+class CdcFirebaseMessagingService : FirebaseMessagingService() {
+    
+    private val TAG = "FCM_Service"
+    private val CHANNEL_ID = "cdc_push_notifications"
+    
+    override fun onMessageReceived(remoteMessage: RemoteMessage) {
+        Log.d(TAG, "📥 Mensagem FCM recebida de: ${remoteMessage.from}")
+        
+        // Extrair dados da notificação
+        val title = remoteMessage.notification?.title ?: "CDC CreditSmart"
+        val body = remoteMessage.notification?.body ?: ""
+        val imageUrl = remoteMessage.notification?.imageUrl
+        
+        Log.d(TAG, "📋 Título: $title")
+        Log.d(TAG, "📋 Mensagem: $body")
+        Log.d(TAG, "🖼️ Image URL: $imageUrl")
+        
+        // Verificar se tem imagem
+        if (imageUrl != null && imageUrl.isNotEmpty()) {
+            // Carregar imagem e exibir notificação com imagem
+            loadImageAndShowNotification(title, body, imageUrl, remoteMessage.data)
+        } else {
+            // Exibir notificação sem imagem
+            showNotification(title, body, null, remoteMessage.data)
+        }
+    }
+    
+    private fun loadImageAndShowNotification(
+        title: String,
+        body: String,
+        imageUrl: String,
+        data: Map<String, String>
+    ) {
+        CoroutineScope(Dispatchers.IO).launch {
+            try {
+                Log.d(TAG, "⬇️ Baixando imagem: $imageUrl")
+                
+                val bitmap = downloadImage(imageUrl)
+                
+                if (bitmap != null) {
+                    Log.d(TAG, "✅ Imagem carregada com sucesso! Tamanho: ${bitmap.width}x${bitmap.height}")
+                    withContext(Dispatchers.Main) {
+                        showNotification(title, body, bitmap, data)
+                    }
+                } else {
+                    Log.e(TAG, "❌ Falha ao carregar imagem, exibindo notificação sem imagem")
+                    withContext(Dispatchers.Main) {
+                        showNotification(title, body, null, data)
+                    }
+                }
+            } catch (e: Exception) {
+                Log.e(TAG, "❌ Erro ao carregar imagem: ${e.message}", e)
+                withContext(Dispatchers.Main) {
+                    showNotification(title, body, null, data)
+                }
+            }
+        }
+    }
+    
+    private fun downloadImage(imageUrl: String): Bitmap? {
+        return try {
+            val url = URL(imageUrl)
+            val connection = url.openConnection() as HttpURLConnection
+            connection.doInput = true
+            connection.connectTimeout = 10000
+            connection.readTimeout = 10000
+            connection.connect()
+            
+            val inputStream = connection.inputStream
+            val bitmap = BitmapFactory.decodeStream(inputStream)
+            inputStream.close()
+            
+            bitmap
+        } catch (e: Exception) {
+            Log.e(TAG, "❌ Erro ao baixar imagem: ${e.message}", e)
+            null
+        }
+    }
+    
+    private fun showNotification(
+        title: String,
+        body: String,
+        bitmap: Bitmap?,
+        data: Map<String, String>
+    ) {
+        Log.d(TAG, "📱 Exibindo notificação - Com imagem: ${bitmap != null}")
+        
+        // Criar canal de notificação (Android 8+)
+        createNotificationChannel()
+        
+        // Intent para abrir o app ao clicar na notificação
+        val intent = Intent(this, MainActivity::class.java).apply {
+            flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            putExtra("fromNotification", true)
+            
+            // Adicionar data do FCM como extras
+            data.forEach { (key, value) ->
+                putExtra(key, value)
+            }
+        }
+        
+        val pendingIntent = PendingIntent.getActivity(
+            this,
+            System.currentTimeMillis().toInt(),
+            intent,
+            PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
+        )
+        
+        // Construir notificação
+        val notificationBuilder = NotificationCompat.Builder(this, CHANNEL_ID)
+            .setSmallIcon(R.drawable.ic_notification) // Seu ícone
+            .setContentTitle(title)
+            .setContentText(body)
+            .setPriority(NotificationCompat.PRIORITY_HIGH)
+            .setAutoCancel(true)
+            .setContentIntent(pendingIntent)
+        
+        // Adicionar imagem se disponível
+        if (bitmap != null) {
+            notificationBuilder
+                .setLargeIcon(bitmap)  // Ícone grande (thumbnail)
+                .setStyle(
+                    NotificationCompat.BigPictureStyle()
+                        .bigPicture(bitmap)
+                        .bigLargeIcon(null)  // Remove ícone grande quando expandido
+                )
+            
+            Log.d(TAG, "✅ Notificação com imagem criada!")
+        } else {
+            // Sem imagem, usar estilo de texto expandido
+            notificationBuilder.setStyle(
+                NotificationCompat.BigTextStyle()
+                    .bigText(body)
+            )
+            
+            Log.d(TAG, "⚠️ Notificação SEM imagem criada")
+        }
+        
+        // Exibir notificação
+        val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        notificationManager.notify(System.currentTimeMillis().toInt(), notificationBuilder.build())
+        
+        Log.d(TAG, "✅ Notificação exibida com sucesso!")
+    }
+    
+    private fun createNotificationChannel() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val name = "Push Notifications"
+            val descriptionText = "Notificações do CDC CreditSmart"
+            val importance = NotificationManager.IMPORTANCE_HIGH
+            val channel = NotificationChannel(CHANNEL_ID, name, importance).apply {
+                description = descriptionText
+            }
+            
+            val notificationManager: NotificationManager =
+                getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+            notificationManager.createNotificationChannel(channel)
+        }
+    }
+    
+    override fun onNewToken(token: String) {
+        super.onNewToken(token)
+        Log.d(TAG, "🔑 Novo FCM Token: $token")
+        
+        // Enviar token para o backend
+        // TODO: Implementar envio do token via API
+    }
+}
+```
+
+---
+
+### **3. Registrar Service no AndroidManifest.xml:**
+
+```xml
+<service
+    android:name=".services.CdcFirebaseMessagingService"
+    android:exported="false">
+    <intent-filter>
+        <action android:name="com.google.firebase.MESSAGING_EVENT" />
+    </intent-filter>
+</service>
+```
+
+---
+
+### **4. Adicionar Ícone de Notificação:**
+
+Crie `res/drawable/ic_notification.xml`:
+
+```xml
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24"
+    android:tint="@android:color/white">
+    <path
+        android:fillColor="@android:color/white"
+        android:pathData="M12,22c1.1,0 2,-0.9 2,-2h-4c0,1.1 0.9,2 2,2zM18,16v-5c0,-3.07 -1.64,-5.64 -4.5,-6.32V4c0,-0.83 -0.67,-1.5 -1.5,-1.5s-1.5,0.67 -1.5,1.5v0.68C7.63,5.36 6,7.92 6,11v5l-2,2v1h16v-1l-2,-2z"/>
+</vector>
+```
+
+---
+
+## 📊 Fluxo Completo
+
+### **1. Backend Envia Notificação (Campanha):**
+
+```typescript
+// server/services/campaignService.ts
+const result = await sendPushNotification(storage, deviceId, {
+  title: "CDC",
+  body: "TESTE",
+  imageUrl: "https://cdccreditsmart.com/storage/campaign_123.jpg",  // ✅
+  type: 'INFO',
+  deepLink: 'cdc://home'
+});
+```
+
+---
+
+### **2. FCM Entrega para o APK:**
+
+```json
+{
+  "notification": {
+    "title": "CDC",
+    "body": "TESTE",
+    "imageUrl": "https://cdccreditsmart.com/storage/campaign_123.jpg"
+  },
+  "data": {
+    "campaignId": "campaign_123",
+    "priority": "high"
+  }
+}
+```
+
+---
+
+### **3. APK Recebe e Processa:**
+
+```kotlin
+// CdcFirebaseMessagingService.kt
+override fun onMessageReceived(remoteMessage: RemoteMessage) {
+    val imageUrl = remoteMessage.notification?.imageUrl
+    
+    if (imageUrl != null) {
+        // ✅ Baixar imagem
+        val bitmap = downloadImage(imageUrl)
+        
+        // ✅ Exibir notificação com imagem
+        showNotification(title, body, bitmap, data)
+    }
+}
+```
+
+---
+
+### **4. Notificação Exibida COM IMAGEM:**
+
+```
+📱 Notificação (Expandida):
+┌──────────────────────────┐
+│  CDC CreditSmart    [X]  │
+│  TESTE                   │
+│                          │
+│  ┌──────────────────┐    │
+│  │                  │    │
+│  │  [IMAGEM AQUI]   │    │
+│  │                  │    │
+│  └──────────────────┘    │
+└──────────────────────────┘
+```
+
+---
+
+## 🧪 Como Testar
+
+### **1. Criar Campanha com Imagem:**
+
+```
+Painel Admin → Push Campaigns → Nova Campanha
+- Título: "CDC"
+- Mensagem: "TESTE"
+- Imagem: [Upload uma imagem]
+- Público: Todos
+- Enviar Agora
+```
+
+---
+
+### **2. Verificar Logs do APK:**
+
+```kotlin
+📥 Mensagem FCM recebida de: ...
+📋 Título: CDC
+📋 Mensagem: TESTE
+🖼️ Image URL: https://cdccreditsmart.com/storage/campaign_xxx.jpg
+⬇️ Baixando imagem: https://...
+✅ Imagem carregada com sucesso! Tamanho: 1200x630
+✅ Notificação com imagem criada!
+✅ Notificação exibida com sucesso!
+```
+
+---
+
+### **3. Verificar Notificação no Device:**
+
+**Notificação deve exibir:**
+- ✅ Título: "CDC"
+- ✅ Mensagem: "TESTE"
+- ✅ **IMAGEM GRANDE** quando expandida
+
+---
+
+## 🚨 Problemas Comuns
+
+### **Problema 1: Imagem Não Carrega**
+
+**Sintomas:**
+- Notificação aparece
+- Mas sem imagem
+
+**Causas:**
+1. URL da imagem não está acessível publicamente
+2. Certificado SSL inválido
+3. Timeout de conexão
+
+**Solução:**
+```kotlin
+// Verificar se a URL é acessível
+val url = "https://cdccreditsmart.com/storage/campaign_xxx.jpg"
+
+// Testar no navegador - deve abrir a imagem
+// Se não abrir, a URL está incorreta
+```
+
+---
+
+### **Problema 2: "Network on main thread"**
+
+**Sintomas:**
+```
+android.os.NetworkOnMainThreadException
+```
+
+**Causa:**
+Download de imagem na thread principal
+
+**Solução:**
+```kotlin
+// ✅ CORRETO - Usar Coroutines
+CoroutineScope(Dispatchers.IO).launch {
+    val bitmap = downloadImage(imageUrl)
+    withContext(Dispatchers.Main) {
+        showNotification(title, body, bitmap, data)
+    }
+}
+
+// ❌ ERRADO - Download direto
+val bitmap = downloadImage(imageUrl)  // Erro!
+```
+
+---
+
+### **Problema 3: Imagem Muito Grande**
+
+**Sintomas:**
+- App congela
+- OutOfMemoryError
+
+**Causa:**
+Imagem com resolução muito alta
+
+**Solução:**
+```kotlin
+fun downloadImageScaled(imageUrl: String, maxWidth: Int = 1200): Bitmap? {
+    try {
+        val options = BitmapFactory.Options().apply {
+            inJustDecodeBounds = true
+        }
+        
+        // Primeiro: calcular tamanho
+        BitmapFactory.decodeStream(url.openStream(), null, options)
+        
+        // Calcular scale
+        val scale = calculateInSampleSize(options, maxWidth, maxWidth)
+        
+        // Decodificar com scale
+        val scaledOptions = BitmapFactory.Options().apply {
+            inSampleSize = scale
+        }
+        
+        return BitmapFactory.decodeStream(url.openStream(), null, scaledOptions)
+    } catch (e: Exception) {
+        Log.e(TAG, "Erro ao baixar imagem: ${e.message}")
+        return null
+    }
+}
+
+fun calculateInSampleSize(options: BitmapFactory.Options, reqWidth: Int, reqHeight: Int): Int {
+    val height = options.outHeight
+    val width = options.outWidth
+    var inSampleSize = 1
+    
+    if (height > reqHeight || width > reqWidth) {
+        val halfHeight = height / 2
+        val halfWidth = width / 2
+        
+        while ((halfHeight / inSampleSize) >= reqHeight && (halfWidth / inSampleSize) >= reqWidth) {
+            inSampleSize *= 2
+        }
+    }
+    
+    return inSampleSize
+}
+```
+
+---
+
+## ✅ Checklist de Implementação
+
+### **Backend (Já Implementado):**
+
+- [x] Enviar `imageUrl` no payload FCM
+- [x] Incluir `imageUrl` em `notification`
+- [x] Incluir `imageUrl` em `android.notification`
+- [x] Validar URL é acessível publicamente
+
+### **APK (Precisa Implementar):**
+
+- [ ] Processar campo `imageUrl` do payload FCM
+- [ ] Fazer download da imagem (coroutines)
+- [ ] Redimensionar imagem se necessário
+- [ ] Exibir notificação com `BigPictureStyle`
+- [ ] Testar com diferentes tamanhos de imagem
+- [ ] Adicionar fallback para URLs inválidas
+- [ ] Logs detalhados para debugging
+
+---
+
+## 📄 Resumo
+
+| Item | Backend | APK |
+|------|---------|-----|
+| **Enviar imageUrl** | ✅ Correto | - |
+| **Processar imageUrl** | - | ❌ Falta |
+| **Baixar imagem** | - | ❌ Falta |
+| **Exibir imagem** | - | ❌ Falta |
+| **BigPictureStyle** | - | ❌ Falta |
+
+**✅ Backend:** Funcionando 100%  
+**❌ APK:** Precisa implementar processamento de imagem
+
+---
+
+**Implementação estimada:** ~30 minutos  
+**Complexidade:** Média  
+**Impacto:** Alto (melhora significativa na experiência do usuário)
