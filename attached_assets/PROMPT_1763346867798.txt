@@ -1,0 +1,421 @@
+   I  x-frame-options: DENY
+2025-11-16 23:33:11.632 12366-12490 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-transaction-security-level: maximum
+2025-11-16 23:33:11.632 12366-12490 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-xss-protection: 1; mode=block
+2025-11-16 23:33:11.632 12366-12490 okhttp.OkHttpClient     com.cdccreditsmart.app               I  via: 1.1 google
+2025-11-16 23:33:11.632 12366-12490 okhttp.OkHttpClient     com.cdccreditsmart.app               I  alt-svc: h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
+2025-11-16 23:33:11.632 12366-12490 okhttp.OkHttpClient     com.cdccreditsmart.app               I  {"success":true,"message":"Resposta do comando registrada"}
+2025-11-16 23:33:11.632 12366-12490 okhttp.OkHttpClient     com.cdccreditsmart.app               I  <-- END HTTP (59-byte body)
+2025-11-16 23:33:11.633 12366-12420 MdmCommandReceiver      com.cdccreditsmart.app               I  ✅ ACK enviado para comando 74a32781-af3c-4c89-b823-d082c0fc292e
+2025-11-16 23:33:11.633 12366-12420 MdmCommandReceiver      com.cdccreditsmart.app               I  ⚙️ Level: 5, Days: 0
+2025-11-16 23:33:11.633 12366-12420 MdmCommandReceiver      com.cdccreditsmart.app               I  🔒 Aplicando bloqueio progressivo...
+2025-11-16 23:33:11.633 12366-12420 AppBlockingManager      com.cdccreditsmart.app               I  🔒 Aplicando bloqueio progressivo - Nível 5
+2025-11-16 23:33:11.633 12366-12420 AppBlockingManager      com.cdccreditsmart.app               D  Dias de atraso: 0
+2025-11-16 23:33:11.633 12366-12420 AppBlockingManager      com.cdccreditsmart.app               D  Razão: Bloqueio manual forçado para nível 5 pelo administrador
+2025-11-16 23:33:11.633 12366-12420 AppBlockingManager      com.cdccreditsmart.app               D  Categorias recebidas: [photos, gallery, video_players, web_browsers, youtube, music_players, play_store, games, social_media, all_apps_except_whatsapp, all_apps_except_banks_calls_sms_emails]
+2025-11-16 23:33:11.633 12366-12420 AppBlockingManager      com.cdccreditsmart.app               D  Estado anterior - Nível: 2, Categorias: [photos, gallery, video_players, web_browsers, youtube, music_players, play_store, games]
+2025-11-16 23:33:11.634 12366-12420 AppBlockingManager      com.cdccreditsmart.app               D  Novo comando - Nível: 5, Categorias: [photos, gallery, video_players, web_browsers, youtube, music_players, play_store, games, social_media, all_apps_except_whatsapp, all_apps_except_banks_calls_sms_emails]
+2025-11-16 23:33:11.635 12366-12420 AppBlockingManager      com.cdccreditsmart.app               I  ✅ Nível aumentou (2 → 5): ACUMULANDO categorias
+2025-11-16 23:33:11.635 12366-12420 AppBlockingManager      com.cdccreditsmart.app               I     Categorias CUMULATIVAS: [photos, gallery, video_players, web_browsers, youtube, music_players, play_store, games, social_media, all_apps_except_whatsapp, all_apps_except_banks_calls_sms_emails]
+2025-11-16 23:33:11.635 12366-12420 AppBlockingManager      com.cdccreditsmart.app               D  💾 Categorias bloqueadas salvas: [photos, gallery, video_players, web_browsers, youtube, music_players, play_store, games, social_media, all_apps_except_whatsapp, all_apps_except_banks_calls_sms_emails]
+2025-11-16 23:33:11.644 12366-12420 CategoryMapper          com.cdccreditsmart.app               I  🔍 Processando 11 categorias para bloqueio
+2025-11-16 23:33:11.645 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  Categorias: [photos, gallery, video_players, web_browsers, youtube, music_players, play_store, games, social_media, all_apps_except_whatsapp, all_apps_except_banks_calls_sms_emails]
+2025-11-16 23:33:11.645 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  Exceções: [com.whatsapp, com.android.dialer, com.android.messaging, bancos_allowed, emails_allowed]
+2025-11-16 23:33:11.646 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🔒 Marcado para bloqueio: com.google.android.networkstack.tethering
+2025-11-16 23:33:11.649 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🔒 Marcado para bloqueio: com.android.cts.priv.ctsshim
+2025-11-16 23:33:11.650 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🛡️ App protegido (não bloqueia): com.android.internal.display.cutout.emulation.corner
+2025-11-16 23:33:11.650 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🛡️ App protegido (não bloqueia): com.google.android.ext.services
+2025-11-16 23:33:11.650 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🛡️ App protegido (não bloqueia): com.android.internal.display.cutout.emulation.double
+2025-11-16 23:33:11.650 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🛡️ App protegido (não bloqueia): com.android.providers.telephony
+2025-11-16 23:33:11.651 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🔒 Marcado para bloqueio: com.android.dynsystem
+2025-11-16 23:33:11.652 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🔒 Marcado para bloqueio: com.google.android.googlequicksearchbox
+2025-11-16 23:33:11.653 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🔒 Marcado para bloqueio: com.google.android.cellbroadcastservice
+2025-11-16 23:33:11.653 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🛡️ App protegido (não bloqueia): com.android.providers.calendar
+2025-11-16 23:33:11.653 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🛡️ App protegido (não bloqueia): com.android.providers.media
+2025-11-16 23:33:11.654 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🔒 Marcado para bloqueio: com.google.android.onetimeinitializer
+2025-11-16 23:33:11.654 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🛡️ App protegido (não bloqueia): com.google.android.ext.shared
+2025-11-16 23:33:11.655 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🔒 Marcado para bloqueio: com.android.virtualmachine.res
+2025-11-16 23:33:11.656 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🔒 Marcado para bloqueio: com.android.wallpapercropper
+2025-11-16 23:33:11.656 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🔒 Marcado para bloqueio: com.google.android.federatedcompute
+2025-11-16 23:33:11.657 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🔒 Marcado para bloqueio: com.android.managedprovisioning.auto_generated_rro_product__
+2025-11-16 23:33:11.658 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🔒 Marcado para bloqueio: com.android.carrierconfig.auto_generated_rro_vendor__
+2025-11-16 23:33:11.659 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🔒 Marcado para bloqueio: com.google.android.server.deviceconfig.resources
+2025-11-16 23:33:11.660 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🛡️ App crítico do sistema detectado: com.android.systemui.emulation.pixel_3_xl
+2025-11-16 23:33:11.660 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🛡️ App protegido (não bloqueia): com.android.systemui.emulation.pixel_3_xl
+2025-11-16 23:33:11.660 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🛡️ App crítico do sistema detectado: com.android.systemui.emulation.pixel_4_xl
+2025-11-16 23:33:11.660 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🛡️ App protegido (não bloqueia): com.android.systemui.emulation.pixel_4_xl
+2025-11-16 23:33:11.661 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🛡️ App crítico do sistema detectado: com.android.systemui.emulation.pixel_fold
+2025-11-16 23:33:11.661 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🛡️ App protegido (não bloqueia): com.android.systemui.emulation.pixel_fold
+2025-11-16 23:33:11.662 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🛡️ App crítico do sistema detectado: com.android.providers.telephony.auto_generated_characteristics_rro
+2025-11-16 23:33:11.662 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🛡️ App protegido (não bloqueia): com.android.providers.telephony.auto_generated_characteristics_rro
+2025-11-16 23:33:11.662 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🔒 Marcado para bloqueio: com.android.simappdialog.auto_generated_rro_product__
+2025-11-16 23:33:11.662 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🛡️ App protegido (não bloqueia): com.android.externalstorage
+2025-11-16 23:33:11.663 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🔒 Marcado para bloqueio: com.android.htmlviewer
+2025-11-16 23:33:11.663 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🛡️ App protegido (não bloqueia): com.android.companiondevicemanager
+2025-11-16 23:33:11.665 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🔒 Marcado para bloqueio: com.android.mms.service
+2025-11-16 23:33:11.665 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🛡️ App protegido (não bloqueia): com.android.providers.downloads
+2025-11-16 23:33:11.666 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🔒 Marcado para bloqueio: com.google.android.overlay.largescreenconfig
+2025-11-16 23:33:11.666 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🔒 Marcado para bloqueio: com.google.android.health.connect.backuprestore
+2025-11-16 23:33:11.666 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🛡️ App crítico do sistema detectado: com.android.systemui.auto_generated_rro_product__
+2025-11-16 23:33:11.666 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🛡️ App protegido (não bloqueia): com.android.systemui.auto_generated_rro_product__
+2025-11-16 23:33:11.667 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🔒 Marcado para bloqueio: com.google.android.apps.messaging
+2025-11-16 23:33:11.667 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🔒 Marcado para bloqueio: com.google.android.soundpicker
+2025-11-16 23:33:11.667 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🛡️ App protegido (não bloqueia): com.cdccreditsmart.app
+2025-11-16 23:33:11.667 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🔒 Marcado para bloqueio: com.android.networkstack.tethering.emulator
+2025-11-16 23:33:11.667 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🔒 Marcado para bloqueio: com.google.android.marvin.talkbackoverlay
+2025-11-16 23:33:11.668 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🔒 Marcado para bloqueio: com.google.android.configupdater
+2025-11-16 23:33:11.668 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🛡️ App protegido (não bloqueia): com.android.internal.emulation.pixel_3a_xl
+2025-11-16 23:33:11.668 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🛡️ App protegido (não bloqueia): com.android.internal.emulation.pixel_6_pro
+2025-11-16 23:33:11.668 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🛡️ App protegido (não bloqueia): com.android.internal.emulation.pixel_7_pro
+2025-11-16 23:33:11.668 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🛡️ App protegido (não bloqueia): com.android.internal.emulation.pixel_8_pro
+2025-11-16 23:33:11.668 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🛡️ App protegido (não bloqueia): com.android.internal.emulation.pixel_9_pro
+2025-11-16 23:33:11.668 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🛡️ App crítico do sistema detectado: com.google.android.providers.media.module
+2025-11-16 23:33:11.668 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🛡️ App protegido (não bloqueia): com.google.android.providers.media.module
+2025-11-16 23:33:11.669 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🛡️ App protegido (não bloqueia): com.android.internal.emulation.pixel_3a
+2025-11-16 23:33:11.672 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🛡️ App protegido (não bloqueia): com.android.internal.emulation.pixel_4a
+2025-11-16 23:33:11.673 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🛡️ App protegido (não bloqueia): com.android.internal.emulation.pixel_6a
+2025-11-16 23:33:11.674 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🛡️ App protegido (não bloqueia): com.android.internal.emulation.pixel_7a
+2025-11-16 23:33:11.674 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🛡️ App protegido (não bloqueia): com.android.internal.emulation.pixel_8a
+2025-11-16 23:33:11.674 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🛡️ App protegido (não bloqueia): com.android.internal.emulation.pixel_9a
+2025-11-16 23:33:11.675 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🔒 Marcado para bloqueio: com.google.android.overlay.googlewebview
+2025-11-16 23:33:11.676 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🔒 Marcado para bloqueio: com.google.android.apps.safetyhub
+2025-11-16 23:33:11.676 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🛡️ App crítico do sistema detectado: com.android.systemui.plugin.globalactions.wallet
+2025-11-16 23:33:11.676 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🛡️ App protegido (não bloqueia): com.android.systemui.plugin.globalactions.wallet
+2025-11-16 23:33:11.676 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🛡️ App crítico do sistema detectado: com.android.providers.downloads.ui
+2025-11-16 23:33:11.676 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🛡️ App protegido (não bloqueia): com.android.providers.downloads.ui
+2025-11-16 23:33:11.677 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🔒 Marcado para bloqueio: com.google.android.hotspot2.osulogin
+2025-11-16 23:33:11.677 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🔒 Marcado para bloqueio: com.android.pacprocessor
+2025-11-16 23:33:11.678 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🔒 Marcado para bloqueio: com.android.simappdialog
+2025-11-16 23:33:11.679 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🔒 Marcado para bloqueio: com.google.android.adservices.api
+2025-11-16 23:33:11.679 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🛡️ App protegido (não bloqueia): com.android.internal.display.cutout.emulation.hole
+2025-11-16 23:33:11.679 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🛡️ App protegido (não bloqueia): com.android.internal.display.cutout.emulation.tall
+2025-11-16 23:33:11.680 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🔒 Marcado para bloqueio: com.android.certinstaller
+2025-11-16 23:33:11.681 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🔒 Marcado para bloqueio: com.android.carrierconfig
+2025-11-16 23:33:11.682 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🔒 Marcado para bloqueio: com.google.android.marvin.talkback
+2025-11-16 23:33:11.682 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🔒 Marcado para bloqueio: com.google.android.apps.accessibility.voiceaccess
+2025-11-16 23:33:11.683 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🛡️ App crítico do sistema detectado: com.android.internal.systemui.navbar.threebutton
+2025-11-16 23:33:11.683 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🛡️ App protegido (não bloqueia): com.android.internal.systemui.navbar.threebutton
+2025-11-16 23:33:11.683 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🛡️ App protegido (não bloqueia): android
+2025-11-16 23:33:11.684 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🛡️ App protegido (não bloqueia): com.android.internal.ranchu.commonoverlay
+2025-11-16 23:33:11.685 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🔒 Marcado para bloqueio: com.google.android.sdksandbox
+2025-11-16 23:33:11.686 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🔒 Marcado para bloqueio: com.android.egg
+2025-11-16 23:33:11.687 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🔒 Marcado para bloqueio: com.android.mtp
+2025-11-16 23:33:11.687 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🛡️ App protegido (não bloqueia): com.android.nfc
+2025-11-16 23:33:11.688 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🔒 Marcado para bloqueio: com.android.ons
+2025-11-16 23:33:11.691 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🔒 Marcado para bloqueio: com.android.stk
+2025-11-16 23:33:11.692 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🔒 Marcado para bloqueio: com.android.backupconfirm
+2025-11-16 23:33:11.692 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🛡️ App crítico do sistema detectado: com.android.systemui.auto_generated_rro_vendor__
+2025-11-16 23:33:11.693 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🛡️ App protegido (não bloqueia): com.android.systemui.auto_generated_rro_vendor__
+2025-11-16 23:33:11.695 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🔒 Marcado para bloqueio: com.google.android.deskclock
+2025-11-16 23:33:11.695 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🛡️ App crítico do sistema detectado: com.android.internal.systemui.navbar.twobutton
+2025-11-16 23:33:11.695 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🛡️ App protegido (não bloqueia): com.android.internal.systemui.navbar.twobutton
+2025-11-16 23:33:11.696 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🔒 Marcado para bloqueio: com.google.android.as
+2025-11-16 23:33:11.697 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🛡️ App protegido (não bloqueia): com.google.android.gm
+2025-11-16 23:33:11.698 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🔒 Marcado para bloqueio: com.android.compos.payload
+2025-11-16 23:33:11.699 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🛡️ App crítico do sistema detectado: com.android.systemui.accessibility.accessibilitymenu
+2025-11-16 23:33:11.699 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🛡️ App protegido (não bloqueia): com.android.systemui.accessibility.accessibilitymenu
+2025-11-16 23:33:11.699 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🛡️ App protegido (não bloqueia): com.google.android.permissioncontroller
+2025-11-16 23:33:11.700 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🛡️ App crítico do sistema detectado: com.android.systemui.emulation.pixel_3
+2025-11-16 23:33:11.700 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🛡️ App protegido (não bloqueia): com.android.systemui.emulation.pixel_3
+2025-11-16 23:33:11.700 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🛡️ App crítico do sistema detectado: com.android.systemui.emulation.pixel_4
+2025-11-16 23:33:11.700 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🛡️ App protegido (não bloqueia): com.android.systemui.emulation.pixel_4
+2025-11-16 23:33:11.700 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🛡️ App crítico do sistema detectado: com.android.systemui.emulation.pixel_5
+2025-11-16 23:33:11.700 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🛡️ App protegido (não bloqueia): com.android.systemui.emulation.pixel_5
+2025-11-16 23:33:11.701 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🛡️ App crítico do sistema detectado: com.android.systemui.emulation.pixel_6
+2025-11-16 23:33:11.701 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🛡️ App protegido (não bloqueia): com.android.systemui.emulation.pixel_6
+2025-11-16 23:33:11.701 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🛡️ App crítico do sistema detectado: com.android.systemui.emulation.pixel_7
+2025-11-16 23:33:11.702 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🛡️ App protegido (não bloqueia): com.android.systemui.emulation.pixel_7
+2025-11-16 23:33:11.702 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🛡️ App crítico do sistema detectado: com.android.systemui.emulation.pixel_8
+2025-11-16 23:33:11.702 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🛡️ App protegido (não bloqueia): com.android.systemui.emulation.pixel_8
+2025-11-16 23:33:11.703 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🛡️ App crítico do sistema detectado: com.android.systemui.emulation.pixel_9
+2025-11-16 23:33:11.703 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🛡️ App protegido (não bloqueia): com.android.systemui.emulation.pixel_9
+2025-11-16 23:33:11.704 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🔒 Marcado para bloqueio: com.android.emulator.radio.config
+2025-11-16 23:33:11.706 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🔒 Marcado para bloqueio: com.google.android.bluetooth
+2025-11-16 23:33:11.706 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🛡️ App protegido (não bloqueia): com.android.providers.settings
+2025-11-16 23:33:11.708 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🔒 Marcado para bloqueio: com.android.sharedstoragebackup
+2025-11-16 23:33:11.710 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🔒 Marcado para bloqueio: com.android.printspooler
+2025-11-16 23:33:11.711 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🔒 Marcado para bloqueio: com.google.android.connectivity.resources.goldfish.overlay
+2025-11-16 23:33:11.712 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🔒 Marcado para bloqueio: com.android.virtualization.terminal
+2025-11-16 23:33:11.712 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🔒 Marcado para bloqueio: com.android.dreams.basic
+2025-11-16 23:33:11.717 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🔒 Marcado para bloqueio: com.google.android.networkstack.tethering.emulator
+2025-11-16 23:33:11.718 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🛡️ App crítico do sistema detectado: com.android.providers.settings.auto_generated_rro_product__
+2025-11-16 23:33:11.718 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🛡️ App protegido (não bloqueia): com.android.providers.settings.auto_generated_rro_product__
+2025-11-16 23:33:11.719 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🔒 Marcado para bloqueio: com.google.android.as.oss
+2025-11-16 23:33:11.719 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🔒 Marcado para bloqueio: com.android.se
+2025-11-16 23:33:11.719 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🔒 Marcado para bloqueio: com.android.inputdevices
+2025-11-16 23:33:11.720 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🔒 Marcado para bloqueio: com.android.traceur.auto_generated_rro_product__
+2025-11-16 23:33:11.720 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🔒 Marcado para bloqueio: com.google.android.apps.wellbeing
+2025-11-16 23:33:11.720 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🛡️ App protegido (não bloqueia): com.android.internal.emulation.pixel_9_pro_fold
+2025-11-16 23:33:11.721 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🔒 Marcado para bloqueio: com.google.android.dialer
+2025-11-16 23:33:11.721 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🔒 Marcado para bloqueio: com.android.bips
+2025-11-16 23:33:11.721 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🛡️ App protegido (não bloqueia): com.android.internal.emulation.pixel_3
+2025-11-16 23:33:11.721 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🛡️ App protegido (não bloqueia): com.android.internal.emulation.pixel_4
+2025-11-16 23:33:11.721 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🛡️ App protegido (não bloqueia): com.android.internal.emulation.pixel_5
+2025-11-16 23:33:11.721 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🛡️ App protegido (não bloqueia): com.android.internal.emulation.pixel_6
+2025-11-16 23:33:11.721 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🛡️ App protegido (não bloqueia): com.android.internal.emulation.pixel_7
+2025-11-16 23:33:11.722 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🛡️ App protegido (não bloqueia): com.android.internal.emulation.pixel_8
+2025-11-16 23:33:11.722 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🛡️ App protegido (não bloqueia): com.android.internal.emulation.pixel_9
+2025-11-16 23:33:11.722 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🔒 Marcado para bloqueio: com.google.android.captiveportallogin
+2025-11-16 23:33:11.722 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🔒 Marcado para bloqueio: android.auto_generated_characteristics_rro
+2025-11-16 23:33:11.723 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🔒 Marcado para bloqueio: com.google.android.appsearch.apk
+2025-11-16 23:33:11.723 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🔒 Marcado para bloqueio: com.google.android.apps.docs
+2025-11-16 23:33:11.723 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🔒 Marcado para bloqueio: com.google.android.apps.maps
+2025-11-16 23:33:11.724 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🔒 Marcado para bloqueio: com.google.android.modulemetadata
+2025-11-16 23:33:11.724 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🛡️ App protegido (não bloqueia): com.android.internal.display.cutout.emulation.emu01
+2025-11-16 23:33:11.724 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🔒 Marcado para bloqueio: com.google.android.avatarpicker
+2025-11-16 23:33:11.725 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🔒 Marcado para bloqueio: com.google.android.markup
+2025-11-16 23:33:11.725 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🔒 Marcado para bloqueio: com.android.cellbroadcastreceiver
+2025-11-16 23:33:11.726 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🔒 Marcado para bloqueio: com.google.android.webview
+2025-11-16 23:33:11.726 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🔒 Marcado para bloqueio: com.google.android.networkstack
+2025-11-16 23:33:11.727 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🔒 Marcado para bloqueio: com.google.android.rkpdapp
+2025-11-16 23:33:11.731 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🔒 Marcado para bloqueio: com.google.android.contacts
+2025-11-16 23:33:11.732 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🛡️ App protegido (não bloqueia): com.android.server.telecom
+2025-11-16 23:33:11.732 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🛡️ App protegido (não bloqueia): com.android.keychain
+2025-11-16 23:33:11.737 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🔒 Marcado para bloqueio: com.android.server.telecom.auto_generated_rro_product__
+2025-11-16 23:33:11.740 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🔒 Marcado para bloqueio: com.android.phone.auto_generated_characteristics_rro
+2025-11-16 23:33:11.741 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🔒 Marcado para bloqueio: com.google.android.overlay.googleconfig
+2025-11-16 23:33:11.742 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🔒 Marcado para bloqueio: com.android.bips.auto_generated_rro_product__
+2025-11-16 23:33:11.742 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🛡️ App protegido (não bloqueia): com.google.android.packageinstaller
+2025-11-16 23:33:11.742 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🔒 Marcado para bloqueio: com.google.android.apps.customization.pixel
+2025-11-16 23:33:11.742 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🛡️ App protegido (não bloqueia): com.google.android.gms
+2025-11-16 23:33:11.742 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🛡️ App protegido (não bloqueia): com.google.android.gsf
+2025-11-16 23:33:11.743 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🔒 Marcado para bloqueio: com.google.android.nfc
+2025-11-16 23:33:11.744 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🔒 Marcado para bloqueio: com.google.android.tag
+2025-11-16 23:33:11.744 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🔒 Marcado para bloqueio: com.google.android.tts
+2025-11-16 23:33:11.745 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🔒 Marcado para bloqueio: com.google.android.overlay.permissioncontroller
+2025-11-16 23:33:11.745 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🔒 Marcado para bloqueio: com.google.android.googlesdksetup
+2025-11-16 23:33:11.746 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🔒 Marcado para bloqueio: com.android.calllogbackup
+2025-11-16 23:33:11.748 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🔒 Marcado para bloqueio: com.google.android.partnersetup
+2025-11-16 23:33:11.748 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🔒 Marcado para bloqueio: com.android.localtransport
+2025-11-16 23:33:11.749 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🛡️ App crítico do sistema detectado: com.google.android.apps.nexuslauncher
+2025-11-16 23:33:11.749 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🛡️ App protegido (não bloqueia): com.google.android.apps.nexuslauncher
+2025-11-16 23:33:11.750 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🔒 Marcado para bloqueio: com.android.carrierdefaultapp
+2025-11-16 23:33:11.751 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🔒 Marcado para bloqueio: com.android.credentialmanager
+2025-11-16 23:33:11.754 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🔒 Marcado para bloqueio: com.android.theme.font.notoserifsource
+2025-11-16 23:33:11.755 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🔒 Marcado para bloqueio: com.android.DeviceAsWebcam
+2025-11-16 23:33:11.756 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🔒 Marcado para bloqueio: com.android.proxyhandler
+2025-11-16 23:33:11.758 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🔒 Marcado para bloqueio: com.google.android.safetycenter.resources
+2025-11-16 23:33:11.759 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🛡️ App protegido (não bloqueia): com.android.internal.display.cutout.emulation.waterfall
+2025-11-16 23:33:11.760 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🔒 Marcado para bloqueio: com.android.intentresolver
+2025-11-16 23:33:11.760 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🛡️ App crítico do sistema detectado: com.android.internal.systemui.navbar.transparent
+2025-11-16 23:33:11.760 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🛡️ App protegido (não bloqueia): com.android.internal.systemui.navbar.transparent
+2025-11-16 23:33:11.760 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🛡️ App crítico do sistema detectado: com.android.providers.contactkeys
+2025-11-16 23:33:11.761 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🛡️ App protegido (não bloqueia): com.android.providers.contactkeys
+2025-11-16 23:33:11.762 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🔒 Marcado para bloqueio: com.google.android.connectivity.resources
+2025-11-16 23:33:11.763 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🛡️ App crítico do sistema detectado: com.android.providers.contacts.auto_generated_rro_product__
+2025-11-16 23:33:11.764 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🛡️ App protegido (não bloqueia): com.android.providers.contacts.auto_generated_rro_product__
+2025-11-16 23:33:11.769 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🔒 Marcado para bloqueio: com.google.android.feedback
+2025-11-16 23:33:11.770 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🔒 Marcado para bloqueio: com.google.android.printservice.recommendation
+2025-11-16 23:33:11.772 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🔒 Marcado para bloqueio: com.google.android.calendar
+2025-11-16 23:33:11.773 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🔒 Marcado para bloqueio: com.android.managedprovisioning
+2025-11-16 23:33:11.773 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🔒 Marcado para bloqueio: com.android.soundpicker
+2025-11-16 23:33:11.777 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🔒 Marcado para bloqueio: com.google.android.documentsui
+2025-11-16 23:33:11.777 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🛡️ App crítico do sistema detectado: com.android.systemui.emulation.pixel_3a_xl
+2025-11-16 23:33:11.777 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🛡️ App protegido (não bloqueia): com.android.systemui.emulation.pixel_3a_xl
+2025-11-16 23:33:11.778 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🛡️ App crítico do sistema detectado: com.android.systemui.emulation.pixel_6_pro
+2025-11-16 23:33:11.778 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🛡️ App protegido (não bloqueia): com.android.systemui.emulation.pixel_6_pro
+2025-11-16 23:33:11.779 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🛡️ App crítico do sistema detectado: com.android.systemui.emulation.pixel_7_pro
+2025-11-16 23:33:11.779 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🛡️ App protegido (não bloqueia): com.android.systemui.emulation.pixel_7_pro
+2025-11-16 23:33:11.780 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🛡️ App crítico do sistema detectado: com.android.systemui.emulation.pixel_8_pro
+2025-11-16 23:33:11.780 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🛡️ App protegido (não bloqueia): com.android.systemui.emulation.pixel_8_pro
+2025-11-16 23:33:11.781 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🛡️ App crítico do sistema detectado: com.android.systemui.emulation.pixel_9_pro
+2025-11-16 23:33:11.781 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🛡️ App protegido (não bloqueia): com.android.systemui.emulation.pixel_9_pro
+2025-11-16 23:33:11.782 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🔒 Marcado para bloqueio: com.google.android.accessibility.switchaccess
+2025-11-16 23:33:11.782 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🔒 Marcado para bloqueio: com.google.mainline.telemetry
+2025-11-16 23:33:11.786 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🔒 Marcado para bloqueio: com.android.carrierconfig.auto_generated_rro_product__
+2025-11-16 23:33:11.788 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🔒 Marcado para bloqueio: com.android.emulator.multidisplay
+2025-11-16 23:33:11.788 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🔒 Marcado para bloqueio: com.android.devicediagnostics.auto_generated_rro_product__
+2025-11-16 23:33:11.789 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🔒 Marcado para bloqueio: com.android.devicediagnostics
+2025-11-16 23:33:11.790 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🔒 Marcado para bloqueio: com.google.android.overlay.largescreensettingsprovider
+2025-11-16 23:33:11.791 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🛡️ App crítico do sistema detectado: com.android.providers.partnerbookmarks
+2025-11-16 23:33:11.791 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🛡️ App protegido (não bloqueia): com.android.providers.partnerbookmarks
+2025-11-16 23:33:11.791 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🔒 Marcado para bloqueio: com.android.role.notes.enabled
+2025-11-16 23:33:11.792 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🔒 Marcado para bloqueio: com.android.wallpaper.livepicker
+2025-11-16 23:33:11.792 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🛡️ App crítico do sistema detectado: com.android.providers.telephony.auto_generated_rro_product__
+2025-11-16 23:33:11.792 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🛡️ App protegido (não bloqueia): com.android.providers.telephony.auto_generated_rro_product__
+2025-11-16 23:33:11.793 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🔒 Marcado para bloqueio: com.android.phone.auto_generated_rro_vendor__
+2025-11-16 23:33:11.794 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🔒 Marcado para bloqueio: com.google.mainline.adservices
+2025-11-16 23:33:11.795 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🔒 Marcado para bloqueio: com.android.imsserviceentitlement
+2025-11-16 23:33:11.798 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🛡️ App protegido (não bloqueia): com.android.internal.emulation.pixel_9_pro_xl
+2025-11-16 23:33:11.798 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🔒 Marcado para bloqueio: com.google.android.healthconnect.controller
+2025-11-16 23:33:11.799 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🔒 Marcado para bloqueio: com.google.android.gms.supervision
+2025-11-16 23:33:11.799 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🛡️ App protegido (não bloqueia): com.android.internal.emulation.pixel_2_xl
+2025-11-16 23:33:11.800 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🛡️ App protegido (não bloqueia): com.android.internal.emulation.pixel_3_xl
+2025-11-16 23:33:11.800 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🛡️ App protegido (não bloqueia): com.android.internal.emulation.pixel_4_xl
+2025-11-16 23:33:11.800 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🛡️ App protegido (não bloqueia): com.android.internal.emulation.pixel_fold
+2025-11-16 23:33:11.800 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🔒 Marcado para bloqueio: com.android.storagemanager
+2025-11-16 23:33:11.801 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🔒 Marcado para bloqueio: com.android.bookmarkprovider
+2025-11-16 23:33:11.802 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🔒 Marcado para bloqueio: com.google.android.overlay.pixelconfigcommon
+2025-11-16 23:33:11.802 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🛡️ App protegido (não bloqueia): com.android.settings
+2025-11-16 23:33:11.802 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🛡️ App crítico do sistema detectado: com.android.systemui.accessibility.accessibilitymenu.auto_generated_rro_product__
+2025-11-16 23:33:11.802 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🛡️ App protegido (não bloqueia): com.android.systemui.accessibility.accessibilitymenu.auto_generated_rro_product__
+2025-11-16 23:33:11.802 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🛡️ App crítico do sistema detectado: com.android.systemui.emulation.pixel_3a
+2025-11-16 23:33:11.802 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🛡️ App protegido (não bloqueia): com.android.systemui.emulation.pixel_3a
+2025-11-16 23:33:11.802 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🛡️ App crítico do sistema detectado: com.android.systemui.emulation.pixel_4a
+2025-11-16 23:33:11.802 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🛡️ App protegido (não bloqueia): com.android.systemui.emulation.pixel_4a
+2025-11-16 23:33:11.802 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🛡️ App crítico do sistema detectado: com.android.systemui.emulation.pixel_6a
+2025-11-16 23:33:11.803 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🛡️ App protegido (não bloqueia): com.android.systemui.emulation.pixel_6a
+2025-11-16 23:33:11.803 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🛡️ App crítico do sistema detectado: com.android.systemui.emulation.pixel_7a
+2025-11-16 23:33:11.803 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🛡️ App protegido (não bloqueia): com.android.systemui.emulation.pixel_7a
+2025-11-16 23:33:11.803 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🛡️ App crítico do sistema detectado: com.android.systemui.emulation.pixel_8a
+2025-11-16 23:33:11.803 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🛡️ App protegido (não bloqueia): com.android.systemui.emulation.pixel_8a
+2025-11-16 23:33:11.803 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🛡️ App crítico do sistema detectado: com.android.systemui.emulation.pixel_9a
+2025-11-16 23:33:11.803 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🛡️ App protegido (não bloqueia): com.android.systemui.emulation.pixel_9a
+2025-11-16 23:33:11.803 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🔒 Marcado para bloqueio: com.google.android.settings.intelligence
+2025-11-16 23:33:11.804 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🔒 Marcado para bloqueio: com.google.android.projection.gearhead
+2025-11-16 23:33:11.805 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🔒 Marcado para bloqueio: com.google.android.uwb.resources
+2025-11-16 23:33:11.805 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🔒 Marcado para bloqueio: com.android.cts.ctsshim
+2025-11-16 23:33:11.806 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🔒 Marcado para bloqueio: com.google.android.wifi.resources
+2025-11-16 23:33:11.806 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🔒 Marcado para bloqueio: com.google.android.wifi.dialog
+2025-11-16 23:33:11.807 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🔒 Marcado para bloqueio: com.google.android.telephony.satellite
+2025-11-16 23:33:11.807 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🔒 Marcado para bloqueio: com.android.wallpaper
+2025-11-16 23:33:11.808 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🔒 Marcado para bloqueio: com.android.microdroid.empty_payload
+2025-11-16 23:33:11.808 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🔒 Marcado para bloqueio: com.android.vpndialogs
+2025-11-16 23:33:11.809 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🔒 Marcado para bloqueio: com.google.android.apps.wallpaper
+2025-11-16 23:33:11.809 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🔒 Marcado para bloqueio: com.google.android.odad
+2025-11-16 23:33:11.809 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🛡️ App protegido (não bloqueia): com.android.phone
+2025-11-16 23:33:11.810 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🛡️ App protegido (não bloqueia): com.android.shell
+2025-11-16 23:33:11.810 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🔒 Marcado para bloqueio: com.android.wallpaperbackup
+2025-11-16 23:33:11.810 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🛡️ App crítico do sistema detectado: com.android.providers.blockednumber
+2025-11-16 23:33:11.810 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🛡️ App protegido (não bloqueia): com.android.providers.blockednumber
+2025-11-16 23:33:11.811 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🔒 Marcado para bloqueio: com.android.settings.auto_generated_rro_product__
+2025-11-16 23:33:11.811 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🛡️ App protegido (não bloqueia): com.android.providers.userdictionary
+2025-11-16 23:33:11.811 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🛡️ App crítico do sistema detectado: com.android.systemui.emulation.pixel_9_pro_xl
+2025-11-16 23:33:11.811 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🛡️ App protegido (não bloqueia): com.android.systemui.emulation.pixel_9_pro_xl
+2025-11-16 23:33:11.811 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🛡️ App protegido (não bloqueia): com.android.emergency
+2025-11-16 23:33:11.811 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🛡️ App protegido (não bloqueia): com.android.companiondevicemanager.auto_generated_characteristics_rro
+2025-11-16 23:33:11.811 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🛡️ App crítico do sistema detectado: com.android.internal.systemui.navbar.gestural
+2025-11-16 23:33:11.811 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🛡️ App protegido (não bloqueia): com.android.internal.systemui.navbar.gestural
+2025-11-16 23:33:11.811 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🛡️ App protegido (não bloqueia): com.android.location.fused
+2025-11-16 23:33:11.811 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🛡️ App protegido (não bloqueia): com.android.systemui
+2025-11-16 23:33:11.812 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🔒 Marcado para bloqueio: com.google.android.ondevicepersonalization.services
+2025-11-16 23:33:11.812 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🔒 Marcado para bloqueio: com.android.bluetoothmidiservice
+2025-11-16 23:33:11.812 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🔒 Marcado para bloqueio: com.google.android.uwb.resources.goldfish.overlay
+2025-11-16 23:33:11.813 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🔒 Marcado para bloqueio: com.android.traceur
+2025-11-16 23:33:11.814 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🔒 Marcado para bloqueio: com.android.storagemanager.auto_generated_rro_product__
+2025-11-16 23:33:11.814 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🔒 Marcado para bloqueio: com.google.android.cellbroadcastreceiver
+2025-11-16 23:33:11.814 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🔒 Marcado para bloqueio: com.android.phone.auto_generated_rro_product__
+2025-11-16 23:33:11.814 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🛡️ App crítico do sistema detectado: com.android.systemui.emulation.pixel_9_pro_fold
+2025-11-16 23:33:11.814 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🛡️ App protegido (não bloqueia): com.android.systemui.emulation.pixel_9_pro_fold
+2025-11-16 23:33:11.815 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🔒 Marcado para bloqueio: android.auto_generated_rro_product__
+2025-11-16 23:33:11.815 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🔒 Marcado para bloqueio: com.android.bluetooth
+2025-11-16 23:33:11.815 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🛡️ App protegido (não bloqueia): com.android.providers.contacts
+2025-11-16 23:33:11.816 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🔒 Marcado para bloqueio: com.android.devicelockcontroller
+2025-11-16 23:33:11.816 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🛡️ App crítico do sistema detectado: com.google.android.inputmethod.latin
+2025-11-16 23:33:11.816 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🛡️ App protegido (não bloqueia): com.google.android.inputmethod.latin
+2025-11-16 23:33:11.816 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🔒 Marcado para bloqueio: android.auto_generated_rro_vendor__
+2025-11-16 23:33:11.816 12366-12420 CategoryMapper          com.cdccreditsmart.app               D  🔒 Marcado para bloqueio: com.google.android.apps.restore
+2025-11-16 23:33:11.816 12366-12420 CategoryMapper          com.cdccreditsmart.app               I  📊 Total de apps marcados para bloqueio: 139
+2025-11-16 23:33:11.816 12366-12420 AppBlockingManager      com.cdccreditsmart.app               D  💾 Pacotes bloqueados salvos: 139 apps
+2025-11-16 23:33:11.820 12366-12420 AppBlockingManager      com.cdccreditsmart.app               I  🎯 Usando setApplicationHidden() - tela customizada CDC será exibida
+2025-11-16 23:33:11.832 12366-12420 AppBlockingManager      com.cdccreditsmart.app               D    ✅ Bloqueado (oculto): com.google.android.networkstack.tethering
+2025-11-16 23:33:11.846 12366-12420 AppBlockingManager      com.cdccreditsmart.app               D    ✅ Bloqueado (oculto): com.android.cts.priv.ctsshim
+2025-11-16 23:33:11.905 12366-12420 AppBlockingManager      com.cdccreditsmart.app               D    ✅ Bloqueado (oculto): com.android.dynsystem
+2025-11-16 23:33:12.051 12366-12420 AppBlockingManager      com.cdccreditsmart.app               D    ✅ Bloqueado (oculto): com.google.android.googlequicksearchbox
+2025-11-16 23:33:12.079 12366-12420 AppBlockingManager      com.cdccreditsmart.app               D    ✅ Bloqueado (oculto): com.google.android.cellbroadcastservice
+2025-11-16 23:33:12.117 12366-12420 AppBlockingManager      com.cdccreditsmart.app               D    ✅ Bloqueado (oculto): com.google.android.onetimeinitializer
+2025-11-16 23:33:12.212 12366-12420 AppBlockingManager      com.cdccreditsmart.app               D    ✅ Bloqueado (oculto): com.android.virtualmachine.res
+2025-11-16 23:33:12.400 12366-12420 AppBlockingManager      com.cdccreditsmart.app               D    ✅ Bloqueado (oculto): com.android.wallpapercropper
+2025-11-16 23:33:12.434 12366-12420 AppBlockingManager      com.cdccreditsmart.app               D    ✅ Bloqueado (oculto): com.google.android.federatedcompute
+2025-11-16 23:33:12.461 12366-12420 AppBlockingManager      com.cdccreditsmart.app               D    ✅ Bloqueado (oculto): com.android.managedprovisioning.auto_generated_rro_product__
+2025-11-16 23:33:12.553 12366-12420 AppBlockingManager      com.cdccreditsmart.app               D    ✅ Bloqueado (oculto): com.android.carrierconfig.auto_generated_rro_vendor__
+2025-11-16 23:33:12.660 12366-12420 AppBlockingManager      com.cdccreditsmart.app               D    ✅ Bloqueado (oculto): com.google.android.server.deviceconfig.resources
+2025-11-16 23:33:12.837 12366-12420 AppBlockingManager      com.cdccreditsmart.app               D    ✅ Bloqueado (oculto): com.android.simappdialog.auto_generated_rro_product__
+2025-11-16 23:33:12.885 12366-12420 AppBlockingManager      com.cdccreditsmart.app               D    ✅ Bloqueado (oculto): com.android.htmlviewer
+2025-11-16 23:33:12.973 12366-12420 AppBlockingManager      com.cdccreditsmart.app               D    ✅ Bloqueado (oculto): com.android.mms.service
+2025-11-16 23:33:13.022 12366-12420 AppBlockingManager      com.cdccreditsmart.app               D    ✅ Bloqueado (oculto): com.google.android.overlay.largescreenconfig
+2025-11-16 23:33:13.125 12366-12420 AppBlockingManager      com.cdccreditsmart.app               D    ✅ Bloqueado (oculto): com.google.android.health.connect.backuprestore
+2025-11-16 23:33:13.451 12366-12420 AppBlockingManager      com.cdccreditsmart.app               D    ✅ Bloqueado (oculto): com.google.android.apps.messaging
+2025-11-16 23:33:13.543 12366-12420 AppBlockingManager      com.cdccreditsmart.app               D    ✅ Bloqueado (oculto): com.google.android.soundpicker
+2025-11-16 23:33:13.689 12366-12420 AppBlockingManager      com.cdccreditsmart.app               D    ✅ Bloqueado (oculto): com.android.networkstack.tethering.emulator
+2025-11-16 23:33:13.788 12366-12420 AppBlockingManager      com.cdccreditsmart.app               D    ✅ Bloqueado (oculto): com.google.android.marvin.talkbackoverlay
+2025-11-16 23:33:14.069 12366-12420 AppBlockingManager      com.cdccreditsmart.app               D    ✅ Bloqueado (oculto): com.google.android.configupdater
+2025-11-16 23:33:14.084 12366-12420 AppBlockingManager      com.cdccreditsmart.app               D    ✅ Bloqueado (oculto): com.google.android.overlay.googlewebview
+2025-11-16 23:33:14.278 12366-12420 AppBlockingManager      com.cdccreditsmart.app               D    ✅ Bloqueado (oculto): com.google.android.apps.safetyhub
+2025-11-16 23:33:14.339 12366-12420 AppBlockingManager      com.cdccreditsmart.app               D    ✅ Bloqueado (oculto): com.google.android.hotspot2.osulogin
+2025-11-16 23:33:14.353 12366-12420 AppBlockingManager      com.cdccreditsmart.app               D    ✅ Bloqueado (oculto): com.android.pacprocessor
+2025-11-16 23:33:14.397 12366-12420 AppBlockingManager      com.cdccreditsmart.app               D    ✅ Bloqueado (oculto): com.android.simappdialog
+2025-11-16 23:33:14.513 12366-12420 AppBlockingManager      com.cdccreditsmart.app               D    ✅ Bloqueado (oculto): com.google.android.adservices.api
+2025-11-16 23:33:14.617 12366-12420 AppBlockingManager      com.cdccreditsmart.app               D    ✅ Bloqueado (oculto): com.android.certinstaller
+2025-11-16 23:33:14.854 12366-12420 AppBlockingManager      com.cdccreditsmart.app               D    ✅ Bloqueado (oculto): com.android.carrierconfig
+2025-11-16 23:33:14.867 12366-12420 AppBlockingManager      com.cdccreditsmart.app               D    ✅ Bloqueado (oculto): com.google.android.marvin.talkback
+2025-11-16 23:33:14.899 12366-12420 AppBlockingManager      com.cdccreditsmart.app               D    ✅ Bloqueado (oculto): com.google.android.apps.accessibility.voiceaccess
+2025-11-16 23:33:15.029 12366-12420 AppBlockingManager      com.cdccreditsmart.app               D    ✅ Bloqueado (oculto): com.google.android.sdksandbox
+2025-11-16 23:33:15.066 12366-12420 AppBlockingManager      com.cdccreditsmart.app               D    ✅ Bloqueado (oculto): com.android.egg
+2025-11-16 23:33:15.093 12366-12420 AppBlockingManager      com.cdccreditsmart.app               D    ✅ Bloqueado (oculto): com.android.mtp
+2025-11-16 23:33:15.117 12366-12420 AppBlockingManager      com.cdccreditsmart.app               D    ✅ Bloqueado (oculto): com.android.ons
+2025-11-16 23:33:15.132 12366-12420 AppBlockingManager      com.cdccreditsmart.app               D    ✅ Bloqueado (oculto): com.android.stk
+2025-11-16 23:33:15.216 12366-12420 AppBlockingManager      com.cdccreditsmart.app               D    ✅ Bloqueado (oculto): com.android.backupconfirm
+2025-11-16 23:33:15.322 12366-12420 AppBlockingManager      com.cdccreditsmart.app               D    ✅ Bloqueado (oculto): com.google.android.deskclock
+2025-11-16 23:33:15.380 12366-12420 AppBlockingManager      com.cdccreditsmart.app               D    ✅ Bloqueado (oculto): com.google.android.as
+2025-11-16 23:33:15.409 12366-12420 AppBlockingManager      com.cdccreditsmart.app               D    ✅ Bloqueado (oculto): com.android.compos.payload
+2025-11-16 23:33:15.436 12366-12420 AppBlockingManager      com.cdccreditsmart.app               D    ✅ Bloqueado (oculto): com.android.emulator.radio.config
+2025-11-16 23:33:15.542 12366-12420 AppBlockingManager      com.cdccreditsmart.app               D    ✅ Bloqueado (oculto): com.google.android.bluetooth
+2025-11-16 23:33:16.113 12366-12420 AppBlockingManager      com.cdccreditsmart.app               D    ✅ Bloqueado (oculto): com.android.sharedstoragebackup
+2025-11-16 23:33:16.317 12366-12420 AppBlockingManager      com.cdccreditsmart.app               D    ✅ Bloqueado (oculto): com.android.printspooler
+2025-11-16 23:33:16.507 12366-12420 AppBlockingManager      com.cdccreditsmart.app               D    ✅ Bloqueado (oculto): com.google.android.connectivity.resources.goldfish.overlay
+2025-11-16 23:33:16.597 12366-12420 AppBlockingManager      com.cdccreditsmart.app               D    ✅ Bloqueado (oculto): com.android.virtualization.terminal
+2025-11-16 23:33:16.619 12366-12420 AppBlockingManager      com.cdccreditsmart.app               D    ✅ Bloqueado (oculto): com.android.dreams.basic
+2025-11-16 23:33:16.630 12366-12420 AppBlockingManager      com.cdccreditsmart.app               D    ✅ Bloqueado (oculto): com.google.android.networkstack.tethering.emulator
+2025-11-16 23:33:16.760 12366-12420 AppBlockingManager      com.cdccreditsmart.app               D    ✅ Bloqueado (oculto): com.google.android.as.oss
+2025-11-16 23:33:16.781 12366-12420 AppBlockingManager      com.cdccreditsmart.app               D    ✅ Bloqueado (oculto): com.android.se
+2025-11-16 23:33:16.791 12366-12420 AppBlockingManager      com.cdccreditsmart.app               D    ✅ Bloqueado (oculto): com.android.inputdevices
+2025-11-16 23:33:16.835 12366-12420 AppBlockingManager      com.cdccreditsmart.app               D    ✅ Bloqueado (oculto): com.android.traceur.auto_generated_rro_product__
+2025-11-16 23:33:16.969 12366-12420 AppBlockingManager      com.cdccreditsmart.app               D    ✅ Bloqueado (oculto): com.google.android.apps.wellbeing
+2025-11-16 23:33:17.319 12366-12420 AppBlockingManager      com.cdccreditsmart.app               D    ✅ Bloqueado (oculto): com.google.android.dialer
+2025-11-16 23:33:17.334 12366-12420 AppBlockingManager      com.cdccreditsmart.app               D    ✅ Bloqueado (oculto): com.android.bips
+2025-11-16 23:33:17.395 12366-12420 AppBlockingManager      com.cdccreditsmart.app               D    ✅ Bloqueado (oculto): com.google.android.captiveportallogin
+2025-11-16 23:33:17.452 12366-12420 AppBlockingManager      com.cdccreditsmart.app               D    ✅ Bloqueado (oculto): android.auto_generated_characteristics_rro
+2025-11-16 23:33:17.604 12366-12420 AppBlockingManager      com.cdccreditsmart.app               D    ✅ Bloqueado (oculto): com.google.android.appsearch.apk
+2025-11-16 23:33:17.615 12366-12420 AppBlockingManager      com.cdccreditsmart.app               D    ✅ Bloqueado (oculto): com.google.android.apps.docs
+2025-11-16 23:33:17.626 12366-12420 AppBlockingManager      com.cdccreditsmart.app               D    ✅ Bloqueado (oculto): com.google.android.apps.maps
+2025-11-16 23:33:17.654 12366-12420 AppBlockingManager      com.cdccreditsmart.app               D    ✅ Bloqueado (oculto): com.google.android.modulemetadata
+2025-11-16 23:33:17.685 12366-12420 AppBlockingManager      com.cdccreditsmart.app               D    ✅ Bloqueado (oculto): com.google.android.avatarpicker
+2025-11-16 23:33:17.744 12366-12420 AppBlockingManager      com.cdccreditsmart.app               D    ✅ Bloqueado (oculto): com.google.android.markup
+2025-11-16 23:33:17.827 12366-12420 AppBlockingManager      com.cdccreditsmart.app               D    ✅ Bloqueado (oculto): com.android.cellbroadcastreceiver
+2025-11-16 23:33:17.919 12366-12420 AppBlockingManager      com.cdccreditsmart.app               D    ✅ Bloqueado (oculto): com.google.android.webview
+2025-11-16 23:33:18.115 12366-12420 AppBlockingManager      com.cdccreditsmart.app               D    ✅ Bloqueado (oculto): com.google.android.networkstack
+2025-11-16 23:33:18.137 12366-12420 AppBlockingManager      com.cdccreditsmart.app               D    ✅ Bloqueado (oculto): com.google.android.rkpdapp
+2025-11-16 23:33:20.153 12366-12420 IPCThreadState          com.cdccreditsmart.app               E  Binder transaction failure. id: 1109369, BR_*: 29189, error: -3 (No such process)
+2025-11-16 23:33:20.153 12366-12420 ActivityThread          com.cdccreditsmart.app               D  Too many transaction errors, throttling freezer binder callback.
+2025-11-16 23:33:20.157 12366-12420 creditsmart.app         com.cdccreditsmart.app               A  java_vm_ext.cc:616] JNI DETECTED ERROR IN APPLICATION: JNI NewStringUTF called with pending exception android.os.DeadSystemRuntimeException: android.os.DeadSystemException
+                                                                                                    java_vm_ext.cc:616]   at void android.app.ActivityThread$3.onTransactionError(int, int, int, int) (ActivityThread.java:7888)
+                                                                                                    java_vm_ext.cc:616]   at void android.os.Binder.transactionCallback(int, int, int, int) (Binder.java:706)
+                                                                                                    java_vm_ext.cc:616]   at boolean android.os.BinderProxy.transactNative(int, android.os.Parcel, android.os.Parcel, int) (BinderProxy.java:-2)
+                                                                                                    java_vm_ext.cc:616]   at boolean android.os.BinderProxy.transact(int, android.os.Parcel, android.os.Parcel, int) (BinderProxy.java:592)
+                                                                                                    java_vm_ext.cc:616]   at boolean android.app.admin.IDevicePolicyManager$Stub$Proxy.setApplicationHidden(android.content.ComponentName, java.lang.String, java.lang.String, boolean, boolean) (IDevicePolicyManager.java:9474)
+                                                                                                    java_vm_ext.cc:616]   at boolean android.app.admin.DevicePolicyManager.setApplicationHidden(android.content.ComponentName, java.lang.String, boolean) (DevicePolicyManager.java:12700)
+                                                                                                    java_vm_ext.cc:616]   at com.cdccreditsmart.app.blocking.BlockingResult com.cdccreditsmart.app.blocking.AppBlockingManager.applyProgressiveBlock(com.cdccreditsmart.network.dto.mdm.CommandParameters$BlockParameters) (AppBlockingManager.kt:113)
+                                                                                                    java_vm_ext.cc:616]   at java.lang.Object com.cdccreditsmart.app.mdm.MdmCommandReceiver.processMdmCommand(java.lang.String, java.lang.String, com.cdccreditsmart.network.dto.mdm.CommandParameters, kotlin.coroutines.Continuation) (MdmCommandReceiver.kt:235)
+                                                                                                    java_vm_ext.cc:616]   at java.lang.Object com.cdccreditsmart.app.mdm.MdmCommandReceiver.access$processMdmCommand(com.cdccreditsmart.app.mdm.MdmCommandReceiver, java.lang.String, java.lang.String, com.cdccreditsmart.network.dto.mdm.CommandParameters, kotlin.coroutines.Continuation) (MdmCommandReceiver.kt:17)
+                                                                                                    java_vm_ext.cc:616]   at java.lang.Object com.cdccreditsmart.app.mdm.MdmCommandReceiver$processMdmCommand$1.invokeSuspend(java.lang.Object) (MdmCommandReceiver.kt:-1)
+                                                                                                    java_vm_ext.cc:616]   at void kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(java.lang.Object) (ContinuationImpl.kt:34)
+                                                                                                    java_vm_ext.cc:616]   at void kotlinx.coroutines.DispatchedTask.run() (DispatchedTask.kt:108)
+                                                                                                    java_vm_ext.cc:616]   at void kotlinx.coroutines.internal.LimitedDispatcher$Worker.run() (LimitedDispatcher.kt:115)
+                                                                                                    java_vm_ext.cc:616]   at void kotlinx.coroutines.scheduling.TaskImpl.run() (Tasks.kt:103)
+                                                                                                    java_vm_ext.cc:616]   at void kotlinx.coroutines.scheduling.CoroutineScheduler.runSafely(kotlinx.coroutines.scheduling.Task) (CoroutineScheduler.kt:584)
+                                                                                                    java_vm_ext.cc:616]   at void kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.executeTask(kotlinx.coroutines.scheduling.Task) (CoroutineScheduler.kt:793)
+                                                                                                    java_vm_ext.cc:616]   at void kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.runWorker() (CoroutineScheduler.kt:697)
+                                                                                                    java_vm_ext.cc:616]   at void kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.run() (CoroutineScheduler.kt:684)
+                                                                                                    java_vm_ext.cc:616] Caused by: android.os.DeadSystemException: 
+                                                                                                    java_vm_ext.cc:616]   at void android.app.ActivityThread$3.onTransactionError(int, int, int, int) (ActivityThread.java:7888)
+                                                                                                    java_vm_ext.cc:616]   at void android.os.Binder.transactionCallback(int, int, int, int) (Binder.java:706)
+                                                                                                    java_vm_ext.cc:616]   at boolean android.os.BinderProxy.transactNative(int, android.os.Parcel, android.os.Parcel, int) (BinderProxy.java:-2)
+                                                                                                    java_vm_ext.cc:616]   at boolean android.os.BinderProxy.transact(int, android.os.Parcel, android.os.Parcel, int) (BinderProxy.java:592)
+                                                                                                    java_vm_ext.cc:616]   at boolean android.app.admin.IDevicePolicyManager$Stub$Proxy.setApplicationHidden(android.content.ComponentName, java.lang.String, java.lang.String, boolean, boolean) (IDevicePolicyManager.java:9474)
+2025-11-16 23:33:20.157 12366-12420 creditsmart.app         com.cdccreditsmart.app               A  java_vm_ext.cc:616]   at boolean android.app.admin.DevicePolicyManager.setApplicationHidden(android.content.ComponentName, java.lang.String, boolean) (DevicePolicyManager.java:12700)
+                                                                                                    java_vm_ext.cc:616]   at com.cdccreditsmart.app.blocking.BlockingResult com.cdccreditsmart.app.blocking.AppBlockingManager.applyProgressiveBlock(com.cdccreditsmart.network.dto.mdm.CommandParameters$BlockParameters) (AppBlockingManager.kt:113)
+                                                                                                    java_vm_ext.cc:616]   at java.lang.Object com.cdccreditsmart.app.mdm.MdmCommandReceiver.processMdmCommand(java.lang.String, java.lang.String, com.cdccreditsmart.network.dto.mdm.CommandParameters, kotlin.coroutines.Continuation) (MdmCommandReceiver.kt:235)
+                                                                                                    java_vm_ext.cc:616]   at java.lang.Object com.cdccreditsmart.app.mdm.MdmCommandReceiver.access$processMdmCommand(com.cdccreditsmart.app.mdm.MdmCommandReceiver, java.lang.String, java.lang.String, com.cdccreditsmart.network.dto.mdm.CommandParameters, kotlin.coroutines.Continuation) (MdmCommandReceiver.kt:17)
+                                                                                                    java_vm_ext.cc:616]   at java.lang.Object com.cdccreditsmart.app.mdm.MdmCommandReceiver$processMdmCommand$1.invokeSuspend(java.lang.Object) (MdmCommandReceiver.kt:-1)
+                                                                                                    java_vm_ext.cc:616]   at void kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(java.lang.Object) (ContinuationImpl.kt:34)
+                                                                                                    java_vm_ext.cc:616]   at void kotlinx.coroutines.DispatchedTask.run() (DispatchedTask.kt:108)
+                                                                                                    java_vm_ext.cc:616]   at void kotlinx.coroutines.internal.LimitedDispatcher$Worker.run() (LimitedDispatcher.kt:115)
+                                                                                                    java_vm_ext.cc:616]   at void kotlinx.coroutines.scheduling.TaskImpl.run() (Tasks.kt:103)
+                                                                                                    java_vm_ext.cc:616]   at void kotlinx.coroutines.scheduling.CoroutineScheduler.runSafely(kotlinx.coroutines.scheduling.Task) (CoroutineScheduler.kt:584)
+                                                                                                    java_vm_ext.cc:616]   at void kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.executeTask(kotlinx.coroutines.scheduling.Task) (CoroutineScheduler.kt:793)
+                                                                                                    java_vm_ext.cc:616]   at void kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.runWorker() (CoroutineScheduler.kt:697)
+                                                                                                    java_vm_ext.cc:616]   at void kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.run() (CoroutineScheduler.kt:684)
+                                                                                                    java_vm_ext.cc:616] 
+                                                                                                    java_vm_ext.cc:616]     in call to NewStringUTF
+                                                                                                    java_vm_ext.cc:616]     from boolean android.os.BinderProxy.transactNative(int, android.os.Parcel, android.os.Parcel, int)
+---------------------------- PROCESS ENDED (12366) for package com.cdccreditsmart.app ----------------------------
