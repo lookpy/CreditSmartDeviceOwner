@@ -151,9 +151,9 @@ class HeartbeatWorker(
     
     /**
      * Processa resposta de conformidade do backend
-     * Corrige bloqueio se NON_COMPLIANT
+     * Retorna true se precisa reenviar heartbeat (agendado via WorkManager)
      */
-    private suspend fun handleComplianceResponse(response: CdcHeartbeatResponse) {
+    private fun handleComplianceResponse(response: CdcHeartbeatResponse): Boolean {
         val complianceStatus = response.complianceStatus
         val expectedLevel = response.expectedBlockLevel
         
@@ -162,48 +162,133 @@ class HeartbeatWorker(
         when (complianceStatus) {
             "OK" -> {
                 Log.i(TAG, "✅ Dispositivo CONFORME - Nível $expectedLevel")
+                // Limpar contador de correções
+                clearComplianceCorrectionCount()
+                return false
             }
             
             "NON_COMPLIANT" -> {
                 if (expectedLevel != null) {
+                    // PROTEÇÃO: Verificar se já tentamos corrigir muitas vezes
+                    val correctionCount = getComplianceCorrectionCount()
+                    if (correctionCount >= MAX_COMPLIANCE_CORRECTIONS) {
+                        Log.e(TAG, "❌ LIMITE DE CORREÇÕES ATINGIDO ($correctionCount tentativas)")
+                        Log.e(TAG, "   Parando para evitar loop infinito e DDoS no backend")
+                        Log.e(TAG, "   Próxima tentativa será no próximo heartbeat agendado (15min)")
+                        clearComplianceCorrectionCount()
+                        return false
+                    }
+                    
                     Log.w(TAG, "")
                     Log.w(TAG, "╔════════════════════════════════════════════════════╗")
                     Log.w(TAG, "║  ⚠️ DISPOSITIVO NÃO-CONFORME DETECTADO!          ║")
                     Log.w(TAG, "╠════════════════════════════════════════════════════╣")
                     Log.w(TAG, "║  Nível atual: ${blockingManager.getCurrentBlockLevel()}                              ║")
                     Log.w(TAG, "║  Nível esperado: $expectedLevel                            ║")
+                    Log.w(TAG, "║  Tentativa: ${correctionCount + 1}/$MAX_COMPLIANCE_CORRECTIONS                         ║")
                     Log.w(TAG, "║  Ação: Corrigir bloqueio automaticamente         ║")
                     Log.w(TAG, "╚════════════════════════════════════════════════════╝")
                     Log.w(TAG, "")
                     
+                    // Incrementar contador de correções
+                    incrementComplianceCorrectionCount()
+                    
                     // Corrigir bloqueio
-                    blockingManager.forceComplianceCorrection(expectedLevel)
+                    val correctionSuccess = blockingManager.forceComplianceCorrection(expectedLevel)
                     
-                    // Aguardar 5 segundos para aplicação de bloqueio
-                    delay(5000)
+                    if (!correctionSuccess) {
+                        Log.e(TAG, "❌ Falha ao corrigir bloqueio!")
+                        Log.e(TAG, "   Próxima tentativa será no próximo heartbeat agendado (15min)")
+                        return false
+                    }
                     
-                    // Enviar novo heartbeat para confirmar correção
-                    Log.i(TAG, "🔄 Reenviando heartbeat para confirmar correção...")
-                    sendHeartbeat()
+                    Log.i(TAG, "✅ Bloqueio corrigido - agendando reenvio de heartbeat em 10s...")
+                    
+                    // CORREÇÃO: Agendar one-off work para reenviar heartbeat
+                    // Ao invés de recursão, usa WorkManager com backoff
+                    scheduleComplianceVerification()
+                    
+                    return true // Indica que correção foi aplicada
                 } else {
                     Log.w(TAG, "⚠️ NON_COMPLIANT mas sem expectedBlockLevel - ignorando")
+                    return false
                 }
             }
             
             "UNKNOWN" -> {
                 Log.d(TAG, "ℹ️ Status DESCONHECIDO - backend sem dados de referência")
                 Log.d(TAG, "   Continuando operação normal")
+                clearComplianceCorrectionCount()
+                return false
             }
             
             null -> {
                 Log.d(TAG, "ℹ️ Backend não retornou complianceStatus")
                 Log.d(TAG, "   Possível APK antigo ou backend em transição")
+                return false
             }
             
             else -> {
                 Log.w(TAG, "⚠️ Status de conformidade desconhecido: $complianceStatus")
+                return false
             }
         }
+    }
+    
+    /**
+     * Agenda verificação one-off para confirmar correção de conformidade
+     * Usa WorkManager com delay ao invés de recursão
+     */
+    private fun scheduleComplianceVerification() {
+        val verificationWork = OneTimeWorkRequestBuilder<HeartbeatWorker>()
+            .setInitialDelay(10, TimeUnit.SECONDS) // Aguarda 10s para aplicação
+            .setBackoffCriteria(
+                BackoffPolicy.EXPONENTIAL,
+                1, TimeUnit.MINUTES
+            )
+            .build()
+        
+        WorkManager.getInstance(context).enqueueUniqueWork(
+            "compliance_verification",
+            ExistingWorkPolicy.REPLACE,
+            verificationWork
+        )
+        
+        Log.i(TAG, "✅ Verificação de conformidade agendada para 10 segundos")
+    }
+    
+    /**
+     * Obtém contador de correções de conformidade
+     * Previne loop infinito
+     */
+    private fun getComplianceCorrectionCount(): Int {
+        val prefs = context.getSharedPreferences("heartbeat_state", Context.MODE_PRIVATE)
+        return prefs.getInt("compliance_correction_count", 0)
+    }
+    
+    /**
+     * Incrementa contador de correções de conformidade
+     */
+    private fun incrementComplianceCorrectionCount() {
+        val prefs = context.getSharedPreferences("heartbeat_state", Context.MODE_PRIVATE)
+        val currentCount = prefs.getInt("compliance_correction_count", 0)
+        prefs.edit().putInt("compliance_correction_count", currentCount + 1).apply()
+    }
+    
+    /**
+     * Limpa contador de correções quando conformidade OK
+     */
+    private fun clearComplianceCorrectionCount() {
+        val prefs = context.getSharedPreferences("heartbeat_state", Context.MODE_PRIVATE)
+        prefs.edit().remove("compliance_correction_count").apply()
+    }
+    
+    companion object {
+        private const val TAG = "HeartbeatWorker"
+        const val WORK_NAME = "cdc_heartbeat_work"
+        
+        // PROTEÇÃO: Máximo de correções consecutivas antes de parar
+        private const val MAX_COMPLIANCE_CORRECTIONS = 3
     }
     
     /**

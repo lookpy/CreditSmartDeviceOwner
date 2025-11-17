@@ -606,29 +606,44 @@ class AppBlockingManager(private val context: Context) {
     /**
      * Aplica bloqueio corrigido quando backend detecta não-conformidade
      * IMPORTANTE: Forçar aplicação mesmo se nível for o mesmo
+     * 
+     * @return true se correção bem-sucedida, false se falhou
      */
-    fun forceComplianceCorrection(expectedLevel: Int) {
+    fun forceComplianceCorrection(expectedLevel: Int): Boolean {
         Log.w(TAG, "⚠️ NÃO-CONFORMIDADE DETECTADA pelo backend!")
         Log.w(TAG, "   Nível atual: ${getCurrentBlockingLevel()}")
         Log.w(TAG, "   Nível esperado: $expectedLevel")
         Log.i(TAG, "🔧 Corrigindo bloqueio para nível $expectedLevel...")
         
-        if (expectedLevel == 0) {
-            // Desbloqueio total
-            unblockAllApps()
-        } else {
-            // Aplicar bloqueio com categorias padrão do nível
-            val blockParams = CommandParameters.BlockParameters(
-                targetLevel = expectedLevel,
-                daysOverdue = 0, // Backend já calculou
-                categories = getDefaultCategoriesForLevel(expectedLevel),
-                exceptions = emptyList(),
-                reason = "Correção automática de conformidade"
-            )
-            applyProgressiveBlock(blockParams)
+        return try {
+            val result = if (expectedLevel == 0) {
+                // Desbloqueio total
+                val unblockResult = unblockAllApps()
+                unblockResult.success
+            } else {
+                // Aplicar bloqueio com categorias padrão do nível
+                val blockParams = CommandParameters.BlockParameters(
+                    targetLevel = expectedLevel,
+                    daysOverdue = 0, // Backend já calculou
+                    categories = getDefaultCategoriesForLevel(expectedLevel),
+                    exceptions = emptyList(),
+                    reason = "Correção automática de conformidade"
+                )
+                val blockResult = applyProgressiveBlock(blockParams)
+                blockResult.success
+            }
+            
+            if (result) {
+                Log.i(TAG, "✅ Conformidade corrigida - Nível $expectedLevel aplicado")
+            } else {
+                Log.e(TAG, "❌ Falha ao corrigir conformidade para nível $expectedLevel")
+            }
+            
+            result
+        } catch (e: Exception) {
+            Log.e(TAG, "❌ Exceção ao corrigir conformidade: ${e.message}", e)
+            false
         }
-        
-        Log.i(TAG, "✅ Conformidade corrigida - Nível $expectedLevel aplicado")
     }
     
     /**
