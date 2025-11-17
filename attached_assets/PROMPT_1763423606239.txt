@@ -1,0 +1,510 @@
+//
+// Decompiled by Jadx - 1709ms
+//
+package c9;
+
+import android.content.ComponentName;
+import android.content.Context;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.net.Uri;
+import android.util.Log;
+import androidx.core.content.FileProvider;
+import c9.o0;
+import com.payjoy.status.C;
+import com.payjoy.status.M;
+import com.payjoy.status.l;
+import com.payjoy.status.net.ActivateResponse;
+import com.payjoy.status.partner.bridge.charlie.protocol.RPCResponse;
+import com.payjoy.status.s;
+import com.payjoy.status.s0;
+import com.payjoy.status.t;
+import com.payjoy.status.u;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicReference;
+import java.util.regex.Pattern;
+import org.apache.commons.lang3.StringUtils;
+
+public class Y extends C {
+    public static final String[] e = {"com.android.chrome", "com.google.android.apps.plus", "com.google.android.apps.mapslite", "com.google.android.googlequicksearchbox", "com.google.android.youtube", "com.facebook.katana", "com.facebook.orca", "com.facebook.mlite", "com.whatsapp", "com.instagram.android", "com.ubercab", "com.twitter.android", "com.zhiliaoapp.musically", "com.skout.android", "com.snapchat.android", "com.pinterest", "com.linkedin.android", "com.waze", "com.h8games.helixjump", "com.spotify.music", "com.netflix.mediaclient", "org.mozilla.firefox", "com.opera.browser", "com.amazon.avod.thirdpartyclient"};
+    public static final String[] f = {"com.huawei.parentcontrol", "com.google.android.apps.kids.familylink", "com.google.android.apps.kids.familylinkhelper"};
+    public static Y g = null;
+    public String d;
+
+    public Y(Context context, ComponentName componentName) {
+        super(context);
+        this.d = null;
+        M.a("HuaweiBridgeMDM instance created.");
+    }
+
+    public static void H(Y y, boolean z, RPCResponse rPCResponse) {
+        y.getClass();
+        h0.l(rPCResponse, "setMultiWindowDisabled " + z, true);
+        if (rPCResponse.mRetValue == null) {
+            M.h("setLock: setMultiWindowDisabled does not exist in " + y.j());
+        }
+    }
+
+    public static void J(AtomicReference atomicReference, CountDownLatch countDownLatch, RPCResponse rPCResponse) {
+        h0.l(rPCResponse, "getTopAppPackageName", false);
+        try {
+            atomicReference.set(String.valueOf(rPCResponse.mRetValue.getValue()));
+        } catch (Exception e2) {
+            M.c(Log.getStackTraceString(e2));
+        } finally {
+            countDownLatch.countDown();
+        }
+    }
+
+    public static void O(Y y, RPCResponse rPCResponse) {
+        y.getClass();
+        h0.l(rPCResponse, "removeRuntimePermissionFixAppList", true);
+        if (rPCResponse.mRetValue == null) {
+            M.c("setHooks: removeRuntimePermissionFixAppList does not exist in " + y.j());
+        }
+    }
+
+    public static void R(Y y, boolean z, RPCResponse rPCResponse) {
+        y.getClass();
+        h0.l(rPCResponse, "setSdCardUpdateDisabled " + z, true);
+        if (rPCResponse.mRetValue == null) {
+            M.h("setHooks: setSdCardUpdateDisabled does not exist in " + y.j());
+        }
+    }
+
+    public static void S(Y y, RPCResponse rPCResponse) {
+        y.getClass();
+        h0.l(rPCResponse, "hangupCalling", false);
+        if (rPCResponse.mRetValue == null) {
+            M.c("endCall: hangupCalling does not have MDM_PHONE permission!!!");
+            super.e();
+        }
+    }
+
+    public static void W(RPCResponse rPCResponse) {
+        h0.l(rPCResponse, "removeMdmNumberList", true);
+        if (rPCResponse.mRetValue == null) {
+            M.c("setLock: removeMdmNumberList may not have permission MDM_PHONE_MANAGER!!!");
+        }
+    }
+
+    public static void f0(RPCResponse rPCResponse) {
+        h0.l(rPCResponse, "addMdmNumberList", true);
+        if (rPCResponse.mRetValue == null) {
+            M.c("setLock: addMdmNumberList may not have permission MDM_PHONE_MANAGER!!!");
+        }
+    }
+
+    public static void g0(Y y, RPCResponse rPCResponse) {
+        y.getClass();
+        h0.l(rPCResponse, "addRuntimePermissionFixAppList", true);
+        if (rPCResponse.mRetValue == null) {
+            M.h("setHooks: addRuntimePermissionFixAppList does not exist in " + y.j());
+        }
+    }
+
+    public static void q0(Y y, boolean z, RPCResponse rPCResponse) {
+        y.getClass();
+        h0.l(rPCResponse, "setPowerSaveModeDisabled " + z, true);
+        if (rPCResponse.mRetValue == null) {
+            M.h("setLock: setPowerSaveModeDisabled does not exist in " + y.j());
+        }
+    }
+
+    public static void r0(Y y, boolean z) {
+        y.getClass();
+        l.f().l(y, !z);
+    }
+
+    public static Y z0(Context context, ComponentName componentName) {
+        if (g == null) {
+            g = new Y(context, componentName);
+        }
+        return g;
+    }
+
+    public boolean A(boolean z) {
+        M.a("setHooks: on=[" + z + "]");
+        if (!r()) {
+            M.c("The MDM is not activated!!!");
+            return false;
+        }
+        if (!m0.g().h()) {
+            M.c("The MDM Service is not Connected!!!");
+            return false;
+        }
+        if (!z) {
+            B(false);
+        }
+        ArrayList arrayList = new ArrayList(Collections.singletonList("com.payjoy.status"));
+        ArrayList arrayList2 = new ArrayList(arrayList);
+        ArrayList arrayList3 = new ArrayList(Collections.singletonList("com.payjoy.bridge"));
+        ArrayList arrayList4 = new ArrayList(arrayList3);
+        if (!o0.g.b(z, new n(z))) {
+            M.c("Failure in setDevelopmentOptionDisabled " + z);
+        }
+        if (!o0.f.e(z, new z(z))) {
+            M.c("Failure in setUSBDataDisabled " + z);
+        }
+        if (!o0.f.b(z, new H(z))) {
+            M.c("Failure in setSafeModeDisabled " + z);
+        }
+        if (z) {
+            if (!o0.d.a(arrayList, new I())) {
+                M.c("Calling RPCApis addDisabledDeactivateMdmPackages for PJM has failed!!!");
+            }
+        } else if (!o0.d.d(arrayList, new J())) {
+            M.c("Calling RPCApis removeDisabledDeactivateMdmPackages for PJM has failed!!!");
+        }
+        if (z) {
+            if (!o0.d.a(arrayList3, new K())) {
+                M.c("Calling RPCApis addDisabledDeactivateMdmPackages for PJB has failed!!!");
+            }
+        } else if (!o0.d.d(arrayList3, new L())) {
+            M.c("Calling RPCApis removeDisabledDeactivateMdmPackages for PJB has failed!!!");
+        }
+        if (!o0.g.a(z, new N(z))) {
+            M.c("Calling RPCApis setAddUserDisabled " + z + " has failed!!!");
+        }
+        if (!o0.g.d(z, new O(z))) {
+            M.c("Failure in setRestoreFactoryDisabled " + z);
+        }
+        if (z) {
+            if (!o0.d.b(arrayList, new P())) {
+                M.c("Calling RPCApis addDisallowedUninstallPackages for PJM has failed!!!");
+            }
+        } else if (!o0.d.e(arrayList, new o())) {
+            M.c("Calling RPCApis removeDisallowedUninstallPackages for PJM has failed!!!");
+        }
+        if (z) {
+            if (!o0.d.b(arrayList3, new p())) {
+                M.c("Calling RPCApis addDisallowedUninstallPackages for PJB has failed!!!");
+            }
+        } else if (!o0.d.e(arrayList3, new r())) {
+            M.c("Calling RPCApis removeDisallowedUninstallPackages for PJB has failed!!!");
+        }
+        if (z) {
+            if (!o0.a.d(arrayList, new s())) {
+                M.c("Calling RPCApis addPersistentApp for PJM has failed!!!");
+            }
+        } else if (!o0.a.l(arrayList, new t())) {
+            M.c("Calling RPCApis removePersistentApp for PJM has failed!!!");
+        }
+        if (z) {
+            if (!o0.a.d(arrayList3, new u())) {
+                M.c("Calling RPCApis addPersistentApp for PJB has failed!!!");
+            }
+        } else if (!o0.a.l(arrayList3, new v())) {
+            M.c("Calling RPCApis removePersistentApp for PJB has failed!!!");
+        }
+        if (z) {
+            if (!o0.c.c(arrayList2, new w())) {
+                M.c("Calling RPCApis setSuperWhiteListForHwSystemManger for PJM has failed!!!");
+            }
+        } else if (!o0.c.a(arrayList2, new x())) {
+            M.c("Calling RPCApis removeSuperWhiteListForHwSystemManger for PJM has failed!!!");
+        }
+        if (z) {
+            if (!o0.c.c(arrayList4, new y())) {
+                M.c("Calling RPCApis setSuperWhiteListForHwSystemManger for PJB has failed!!!");
+            }
+        } else if (!o0.c.a(arrayList4, new A())) {
+            M.c("Calling RPCApis removeSuperWhiteListForHwSystemManger for PJB has failed!!!");
+        }
+        if (!o0.f.d(z, new C(z))) {
+            M.c("Calling RPCApis setSystemUpdateDisabled " + z + " has failed!!!");
+        }
+        if (!o0.f.c(z, new D(this, z))) {
+            M.c("Calling RPCApis setSdCardUpdateDisabled " + z + " has failed!!!");
+        }
+        for (String str : f) {
+            StringBuilder sb = new StringBuilder();
+            sb.append("setHooks: blacklisted Huawei app pkgName=[");
+            sb.append(str);
+            sb.append("], !on=[");
+            sb.append(!z);
+            sb.append("]");
+            M.f(sb.toString());
+            x(str, !z);
+        }
+        if (!o0.g.c(z, new E(z))) {
+            M.c("Calling RPCApis setParentControlDisabled " + z + " has failed!!!");
+        }
+        if (z) {
+            if (!o0.a.e(arrayList2, new F(this))) {
+                M.c("setHooks: Calling RPCApis addRuntimePermissionFixAppList has failed!!!");
+            }
+        } else if (!o0.a.m(arrayList2, new G(this))) {
+            M.c("setHooks: Calling RPCApis removeRuntimePermissionFixAppList has failed!!!");
+        }
+        super.A(z);
+        M.f("setHooks: end");
+        return true;
+    }
+
+    public void B(boolean z) {
+        M.a("setLock: locked=[" + z + "]");
+        if (!r()) {
+            M.c("setLock: MDM is not activated!!!");
+            return;
+        }
+        if (!m0.g().h()) {
+            M.c("setLock: The MDM Service is not Connected!!!");
+            return;
+        }
+        if (!o0.f.e(false, new f())) {
+            M.c("Failure in setUSBDataDisabled false");
+        }
+        for (String str : e) {
+            StringBuilder sb = new StringBuilder();
+            sb.append("setLock: popular app pkgName=[");
+            sb.append(str);
+            sb.append("], !locked=[");
+            sb.append(!z);
+            sb.append("]");
+            M.f(sb.toString());
+            x(str, !z);
+        }
+        if (!o0.c.b(z, new q(this, z))) {
+            M.c("setLock: Calling RPCApis setPowerSaveModeDisabled has failed!!!");
+        }
+        if (!z && !o0.a.g("com.payjoy.status", new B())) {
+            M.c("Calling RPCApis clearSingleApp has failed!!!");
+        }
+        ArrayList arrayList = new ArrayList();
+        Iterator it = s0.e().iterator();
+        while (it.hasNext()) {
+            String removeStart = StringUtils.removeStart((String) it.next(), ".*");
+            if (StringUtils.isNumeric(removeStart)) {
+                arrayList.add(removeStart);
+            }
+        }
+        M.f("setLock: numbers=[" + String.join(", ", arrayList) + "]");
+        if (z) {
+            boolean[] zArr = {false, true};
+            for (int i = 0; i < 2; i++) {
+                if (!o0.e.a(arrayList, 0, zArr[i], false, new M())) {
+                    M.c("setLock: Calling RPCApis addMdmNumberList has failed!!!");
+                }
+            }
+        } else {
+            boolean[] zArr2 = {false, true};
+            for (int i2 = 0; i2 < 2; i2++) {
+                if (!o0.e.c(arrayList, 3, zArr2[i2], true, new S())) {
+                    M.c("setLock: Calling RPCApis removeMdmNumberList has failed!!!");
+                }
+            }
+        }
+        if (!o0.f.a(z, new T(this, z))) {
+            M.c("setLock: Calling RPCApis setMultiWindowDisabled " + z + " has failed!!!");
+        }
+        new Thread((Runnable) new U(this, z)).start();
+        M.f("setLock: end");
+    }
+
+    public void D(String str, boolean z) {
+        M.a("setPackageState: packageName=[" + str + "], state=[" + z + "]");
+        if (!s0.a(str)) {
+            M.f("setPackageState: package can't be disabled.");
+            return;
+        }
+        if (!r()) {
+            M.c("setPackageState: MDM is not activated!!!");
+            return;
+        }
+        if (!m0.g().h()) {
+            M.c("setPackageState: The MDM Service is not Connected!!!");
+            return;
+        }
+        ArrayList arrayList = new ArrayList(Collections.singletonList(str));
+        ArrayList arrayList2 = new ArrayList(arrayList);
+        if (z) {
+            if (!o0.d.e(arrayList, new W(str))) {
+                M.c("Calling RPCApis removeDisallowedUninstallPackages " + str + " has failed!!!");
+            }
+        } else if (!o0.d.b(arrayList, new X(str))) {
+            M.c("Calling RPCApis addDisallowedUninstallPackages " + str + " has failed!!!");
+        }
+        if (z) {
+            if (!o0.a.i(arrayList, new g(str))) {
+                M.c("Calling RPCApis removeDisallowedRunningApp " + str + " has failed!!!");
+            }
+        } else if (!o0.a.a(arrayList, new h(str))) {
+            M.c("Calling RPCApis addDisallowedRunningApp " + str + " has failed!!!");
+        }
+        String i = h0.i();
+        if (z) {
+            if (!i.contains("_9.") && !i.contains("_10.")) {
+                if (i.contains("_11.") && !o0.a.k(arrayList2, new j(str))) {
+                    M.c("Calling RPCApis removeInstallPackageBlockList " + str + " has failed!!!");
+                    return;
+                }
+                return;
+            }
+            if (!o0.a.j(arrayList2, new i(str))) {
+                M.c("Calling RPCApis removeInstallPackageBlackList " + str + " has failed!!!");
+                return;
+            }
+            return;
+        }
+        if (!i.contains("_9.") && !i.contains("_10.")) {
+            if (i.contains("_11.") && !o0.a.c(arrayList2, new l(str))) {
+                M.c("Calling RPCApis addInstallPackageBlockList " + str + " has failed!!!");
+                return;
+            }
+            return;
+        }
+        if (!o0.a.b(arrayList2, new k(str))) {
+            M.c("Calling RPCApis addInstallPackageBlackList " + str + " has failed!!!");
+        }
+    }
+
+    public void F(String str) {
+        M.a("updateApplicationFromFile: updateFilePath=[" + str + "]");
+        if (!r()) {
+            M.c("The MDM is not activated!!!");
+            return;
+        }
+        if (!m0.g().h()) {
+            M.c("The MDM Service is not Connected!!!");
+            return;
+        }
+        try {
+            Uri uriForFile = FileProvider.getUriForFile(((C) this).a, "com.payjoy.fileprovider", new File(str));
+            str = uriForFile.toString();
+            ((C) this).a.grantUriPermission("com.android.packageinstaller", uriForFile, 1);
+            ((C) this).a.grantUriPermission("com.google.android.packageinstaller", uriForFile, 1);
+        } catch (IllegalArgumentException e2) {
+            t.b("Failed to locate APK for update", s.b, e2);
+            M.c("updateApplicationFromFile: e=[" + s0.j(e2) + "]");
+        }
+        M.f("updateApplicationFromFile: huaweiUpdateFilePath=[" + str + "]");
+        if (!o0.d.c(str, new Q())) {
+            t.a("Failed to install updated APK", s.b);
+            M.c("Calling RPCApis installPackage for PJM has failed!!!");
+        }
+    }
+
+    public boolean a(ActivateResponse activateResponse) {
+        M.a("activate");
+        return r();
+    }
+
+    public boolean c() {
+        M.a("canBroadcastForegroundChange: Returning false.");
+        return false;
+    }
+
+    public boolean d() {
+        return true;
+    }
+
+    public void e() {
+        M.a("endCall");
+        if (!m0.g().h()) {
+            M.c("endCall: The MDM Service is not Connected!!!");
+        } else if (!o0.e.b(new m(this))) {
+            M.c("endCall: Calling RPCApis hangupCalling has failed!!!");
+        }
+    }
+
+    public C.a f() {
+        C.a aVar = C.a.c;
+        String[] split = h0.i().split(Pattern.quote("."));
+        int parseInt = Integer.parseInt(split[0].split("_")[1]);
+        int parseInt2 = Integer.parseInt(split[1]);
+        if (parseInt >= 9) {
+            if (parseInt == 9) {
+                if (parseInt2 >= 1) {
+                    aVar = C.a.b;
+                }
+            } else {
+                aVar = C.a.b;
+            }
+        }
+        M.f("getAccessibleState: emuiMajorVersion=[" + parseInt + "], emuiMinorVersion=[" + parseInt2 + "], accessibleState=[" + aVar + "]");
+        return aVar;
+    }
+
+    public String i() {
+        if (!m0.g().h()) {
+            M.c("getForegroundPackageName: The MDM Service is not Connected!!!");
+            return null;
+        }
+        CountDownLatch countDownLatch = new CountDownLatch(1);
+        AtomicReference atomicReference = new AtomicReference();
+        if (o0.a.h(new V(atomicReference, countDownLatch))) {
+            try {
+                countDownLatch.await(3L, TimeUnit.SECONDS);
+            } catch (InterruptedException e2) {
+                Thread.currentThread().interrupt();
+                M.c(Log.getStackTraceString(e2));
+            }
+        } else {
+            M.c("getForegroundPackageName: Calling RPCApis getTopAppPackageName has failed!!!");
+        }
+        M.f("getForegroundPackageName: topAppPackageName=[" + ((String) atomicReference.get()) + "]");
+        return (String) atomicReference.get();
+    }
+
+    public String j() {
+        return StringUtils.join(new Object[]{"HUAWEI", h0.i(), Long.valueOf(y0())}, ", ");
+    }
+
+    public boolean o() {
+        return false;
+    }
+
+    public boolean p() {
+        return false;
+    }
+
+    public boolean r() {
+        boolean z;
+        boolean isAdminActive = ((C) this).b.isAdminActive(((C) this).c);
+        boolean g2 = u.g(((C) this).a, new ComponentName("com.payjoy.bridge", "com.payjoy.bridge.DeviceReceiver"));
+        C.a f2 = f();
+        if (isAdminActive && g2 && f2 == C.a.b) {
+            z = true;
+        } else {
+            z = false;
+        }
+        M.f("isMDMActivated: pjmActivated=[" + isAdminActive + "], pjbActivated=[" + g2 + "], accessibleState=[" + f2 + "]");
+        return z;
+    }
+
+    public void x(String str, boolean z) {
+        M.a("setAppEnabledState: packageName=[" + str + "], state=[" + z + "]");
+        D(str, z);
+    }
+
+    public void y(String[] strArr, boolean z) {
+        for (String str : strArr) {
+            x(str, z);
+        }
+    }
+
+    public long y0() {
+        PackageInfo packageInfo;
+        try {
+            packageInfo = ((C) this).a.getPackageManager().getPackageInfo("com.payjoy.bridge", 0);
+        } catch (PackageManager.NameNotFoundException unused) {
+            packageInfo = null;
+        }
+        if (packageInfo != null) {
+            return packageInfo.versionCode;
+        }
+        return 0L;
+    }
+
+    public void z(ComponentName componentName, boolean z) {
+        String packageName = componentName.getPackageName();
+        M.a("setApplicationComponentState: pkgName=[" + packageName + "], state=[" + z + "]");
+        D(packageName, z);
+    }
+}
