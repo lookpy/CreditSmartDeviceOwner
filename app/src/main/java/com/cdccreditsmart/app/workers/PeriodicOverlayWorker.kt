@@ -5,6 +5,7 @@ import android.content.Intent
 import android.util.Log
 import androidx.work.*
 import com.cdccreditsmart.app.blocking.AppBlockingManager
+import com.cdccreditsmart.app.blocking.BlockingInfo
 import com.cdccreditsmart.app.presentation.blocking.BlockedAppExplanationActivity
 import java.util.concurrent.TimeUnit
 
@@ -213,7 +214,7 @@ class PeriodicOverlayWorker(
         }
     }
     
-    private fun showPreOverlayNotification(context: Context, blockingInfo: com.cdccreditsmart.app.blocking.BlockingInfo) {
+    private fun showPreOverlayNotification(context: Context, blockingInfo: BlockingInfo) {
         try {
             val notificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) 
                 as? android.app.NotificationManager ?: return
@@ -256,7 +257,7 @@ class PeriodicOverlayWorker(
     
     private fun scheduleOverlayIn1Minute(
         context: Context, 
-        blockingInfo: com.cdccreditsmart.app.blocking.BlockingInfo,
+        blockingInfo: BlockingInfo,
         hasManualBlock: Boolean
     ) {
         try {
@@ -286,7 +287,7 @@ class PeriodicOverlayWorker(
         }
     }
     
-    private fun showOverlay(blockingInfo: com.cdccreditsmart.app.blocking.BlockingInfo, hasManualBlock: Boolean) {
+    private fun showOverlay(blockingInfo: BlockingInfo, hasManualBlock: Boolean) {
         try {
             val intent = Intent(context, BlockedAppExplanationActivity::class.java).apply {
                 addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
@@ -337,7 +338,7 @@ class DelayedOverlayWorker(
             val isManualBlock = inputData.getBoolean("is_manual_block", false)
             val manualBlockReason = inputData.getString("manual_block_reason")
             
-            val intent = Intent(context, com.cdccreditsmart.app.presentation.blocking.BlockedAppExplanationActivity::class.java).apply {
+            val intent = Intent(context, BlockedAppExplanationActivity::class.java).apply {
                 addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                 addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
                 addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY)
