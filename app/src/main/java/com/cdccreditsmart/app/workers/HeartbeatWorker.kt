@@ -10,7 +10,7 @@ import androidx.work.*
 import com.cdccreditsmart.app.BuildConfig
 import com.cdccreditsmart.app.blocking.AppBlockingManager
 import com.cdccreditsmart.app.network.RetrofitProvider
-import com.cdccreditsmart.app.storage.SecureTokenStorage
+import com.cdccreditsmart.app.security.SecureTokenStorage
 import com.cdccreditsmart.network.api.DeviceApiService
 import com.cdccreditsmart.network.dto.cdc.*
 import kotlinx.coroutines.delay
