@@ -1,11 +1,12 @@
 package com.cdccreditsmart.app.blocking
 
+import android.content.Intent
 import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -19,11 +20,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.core.graphics.drawable.toBitmap
+import com.cdccreditsmart.app.storage.LocalInstallmentStorage
 import com.cdccreditsmart.app.ui.theme.CDCCreditSmartTheme
+import java.math.BigDecimal
 
 class BlockedAppExplanationActivity : ComponentActivity() {
     
@@ -60,6 +64,9 @@ fun BlockedAppExplanationScreen(
 ) {
     val context = androidx.compose.ui.platform.LocalContext.current
     
+    val localStorage = remember { LocalInstallmentStorage(context) }
+    val overdueStatus = remember { localStorage.calculateOverdueStatus() }
+    
     val appName = remember(blockedPackage) {
         try {
             val pm = context.packageManager
@@ -82,7 +89,7 @@ fun BlockedAppExplanationScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Aplicativo Bloqueado") },
+                title = { Text("CDC Credit Smart") },
                 colors = TopAppBarDefaults.topAppBarColors(
                     containerColor = Color(0xFFFF7A1A),
                     titleContentColor = Color.White
@@ -95,240 +102,286 @@ fun BlockedAppExplanationScreen(
                 .fillMaxSize()
                 .padding(paddingValues)
                 .verticalScroll(rememberScrollState())
-                .padding(24.dp),
-            horizontalAlignment = Alignment.CenterHorizontally
+                .padding(16.dp)
         ) {
-            Spacer(modifier = Modifier.height(24.dp))
+            Spacer(modifier = Modifier.height(8.dp))
             
-            // Ícone do app bloqueado
             if (appIcon != null) {
-                Image(
-                    bitmap = appIcon,
-                    contentDescription = "App icon",
-                    modifier = Modifier
-                        .size(80.dp)
-                        .clip(RoundedCornerShape(16.dp))
-                )
-                Spacer(modifier = Modifier.height(16.dp))
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.Center
+                ) {
+                    Image(
+                        bitmap = appIcon,
+                        contentDescription = "App icon",
+                        modifier = Modifier
+                            .size(64.dp)
+                            .clip(RoundedCornerShape(12.dp))
+                    )
+                }
+                Spacer(modifier = Modifier.height(12.dp))
             }
             
-            // Ícone de bloqueio
-            Icon(
-                imageVector = Icons.Default.Lock,
-                contentDescription = "Bloqueado",
-                modifier = Modifier.size(64.dp),
-                tint = Color(0xFFFF7A1A)
+            Text(
+                text = appName,
+                style = MaterialTheme.typography.titleLarge,
+                fontWeight = FontWeight.Bold,
+                textAlign = TextAlign.Center,
+                modifier = Modifier.fillMaxWidth()
             )
             
             Spacer(modifier = Modifier.height(16.dp))
             
-            // Nome do app
-            Text(
-                text = appName,
-                style = MaterialTheme.typography.headlineSmall,
-                fontWeight = FontWeight.Bold,
-                textAlign = TextAlign.Center
-            )
-            
-            Spacer(modifier = Modifier.height(8.dp))
-            
-            // Mensagem principal
             Card(
                 modifier = Modifier.fillMaxWidth(),
                 colors = CardDefaults.cardColors(
                     containerColor = Color(0xFFFFF3E0)
                 )
             ) {
-                Column(
-                    modifier = Modifier.padding(16.dp)
-                ) {
+                Column(modifier = Modifier.padding(16.dp)) {
                     Text(
-                        text = "Este aplicativo está temporariamente bloqueado",
+                        text = "⚠️ Aplicativo temporariamente bloqueado",
                         style = MaterialTheme.typography.titleMedium,
                         fontWeight = FontWeight.Bold,
                         color = Color(0xFFE65100)
                     )
-                    
-                    Spacer(modifier = Modifier.height(12.dp))
-                    
+                    Spacer(modifier = Modifier.height(8.dp))
                     Text(
-                        text = getBlockingMessage(blockingLevel, daysOverdue),
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = Color(0xFF5D4037)
+                        text = "Regularize suas parcelas em atraso para desbloquear",
+                        style = MaterialTheme.typography.bodyMedium
                     )
+                }
+            }
+            
+            Spacer(modifier = Modifier.height(16.dp))
+            
+            Text(
+                text = "Parcelas em Atraso",
+                style = MaterialTheme.typography.titleLarge,
+                fontWeight = FontWeight.Bold
+            )
+            
+            Spacer(modifier = Modifier.height(8.dp))
+            
+            if (overdueStatus.overdueInstallments.isNotEmpty()) {
+                overdueStatus.overdueInstallments.forEach { installment ->
+                    InstallmentCard(
+                        number = installment.number,
+                        dueDate = installment.dueDate,
+                        amount = installment.amount,
+                        daysOverdue = installment.daysOverdue
+                    )
+                    Spacer(modifier = Modifier.height(8.dp))
+                }
+                
+                Card(
+                    modifier = Modifier.fillMaxWidth(),
+                    colors = CardDefaults.cardColors(
+                        containerColor = Color(0xFFFF7A1A)
+                    )
+                ) {
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(16.dp),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Text(
+                            text = "Total em Atraso:",
+                            style = MaterialTheme.typography.titleMedium,
+                            fontWeight = FontWeight.Bold,
+                            color = Color.White
+                        )
+                        Text(
+                            text = "R$ %.2f".format(overdueStatus.totalOverdueAmount.toDouble()),
+                            style = MaterialTheme.typography.headlineSmall,
+                            fontWeight = FontWeight.Bold,
+                            color = Color.White
+                        )
+                    }
+                }
+            } else {
+                Card(
+                    modifier = Modifier.fillMaxWidth(),
+                    colors = CardDefaults.cardColors(
+                        containerColor = MaterialTheme.colorScheme.surfaceVariant
+                    )
+                ) {
+                    Column(
+                        modifier = Modifier.padding(16.dp),
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.Info,
+                            contentDescription = "Info",
+                            tint = Color(0xFFFF7A1A),
+                            modifier = Modifier.size(32.dp)
+                        )
+                        Spacer(modifier = Modifier.height(8.dp))
+                        Text(
+                            text = "Nenhuma parcela em atraso encontrada localmente",
+                            style = MaterialTheme.typography.bodyMedium,
+                            textAlign = TextAlign.Center
+                        )
+                        Spacer(modifier = Modifier.height(4.dp))
+                        Text(
+                            text = "Sincronize com o servidor para atualizar",
+                            style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            textAlign = TextAlign.Center
+                        )
+                    }
                 }
             }
             
             Spacer(modifier = Modifier.height(24.dp))
             
-            // Informações de bloqueio
+            Button(
+                onClick = {
+                    val intent = Intent(Intent.ACTION_VIEW, Uri.parse("cdc://payments"))
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                    context.startActivity(intent)
+                    onClose()
+                },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(56.dp),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = Color(0xFF4CAF50)
+                )
+            ) {
+                Icon(Icons.Default.Payment, "PIX")
+                Spacer(modifier = Modifier.width(8.dp))
+                Text(
+                    text = "PAGAR VIA PIX",
+                    style = MaterialTheme.typography.titleMedium,
+                    fontWeight = FontWeight.Bold
+                )
+            }
+            
+            Spacer(modifier = Modifier.height(16.dp))
+            
+            Text(
+                text = "Central de Atendimento",
+                style = MaterialTheme.typography.titleLarge,
+                fontWeight = FontWeight.Bold
+            )
+            
+            Spacer(modifier = Modifier.height(8.dp))
+            
             Card(
                 modifier = Modifier.fillMaxWidth(),
                 colors = CardDefaults.cardColors(
                     containerColor = MaterialTheme.colorScheme.surfaceVariant
                 )
             ) {
-                Column(
-                    modifier = Modifier.padding(16.dp)
-                ) {
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Icon(
-                            imageVector = Icons.Default.Info,
-                            contentDescription = "Info",
-                            tint = Color(0xFFFF7A1A)
-                        )
-                        Spacer(modifier = Modifier.width(12.dp))
-                        Column {
-                            Text(
-                                text = "Situação do Contrato",
-                                style = MaterialTheme.typography.titleSmall,
-                                fontWeight = FontWeight.Bold
-                            )
-                            Text(
-                                text = "$daysOverdue ${if (daysOverdue == 1) "dia" else "dias"} de atraso",
-                                style = MaterialTheme.typography.bodyMedium,
-                                color = MaterialTheme.colorScheme.onSurfaceVariant
-                            )
-                        }
-                    }
-                    
-                    Spacer(modifier = Modifier.height(16.dp))
-                    Divider()
-                    Spacer(modifier = Modifier.height(16.dp))
-                    
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Icon(
-                            imageVector = Icons.Default.Block,
-                            contentDescription = "Bloqueados",
-                            tint = Color(0xFFFF7A1A)
-                        )
-                        Spacer(modifier = Modifier.width(12.dp))
-                        Column {
-                            Text(
-                                text = "Aplicativos Bloqueados",
-                                style = MaterialTheme.typography.titleSmall,
-                                fontWeight = FontWeight.Bold
-                            )
-                            Text(
-                                text = "$blockedAppsCount ${if (blockedAppsCount == 1) "aplicativo" else "aplicativos"}",
-                                style = MaterialTheme.typography.bodyMedium,
-                                color = MaterialTheme.colorScheme.onSurfaceVariant
-                            )
-                        }
-                    }
-                }
-            }
-            
-            Spacer(modifier = Modifier.height(24.dp))
-            
-            // Como desbloquear
-            Card(
-                modifier = Modifier.fillMaxWidth(),
-                colors = CardDefaults.cardColors(
-                    containerColor = Color(0xFFE8F5E9)
-                )
-            ) {
-                Column(
-                    modifier = Modifier.padding(16.dp)
-                ) {
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Icon(
-                            imageVector = Icons.Default.CheckCircle,
-                            contentDescription = "Solução",
-                            tint = Color(0xFF2E7D32),
-                            modifier = Modifier.size(32.dp)
-                        )
-                        Spacer(modifier = Modifier.width(12.dp))
-                        Text(
-                            text = "Como Desbloquear",
-                            style = MaterialTheme.typography.titleMedium,
-                            fontWeight = FontWeight.Bold,
-                            color = Color(0xFF2E7D32)
-                        )
-                    }
-                    
-                    Spacer(modifier = Modifier.height(16.dp))
-                    
-                    Text(
-                        text = "✅ Regularize suas parcelas atrasadas",
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = Color(0xFF1B5E20)
+                Column(modifier = Modifier.padding(16.dp)) {
+                    ContactRow(
+                        icon = Icons.Default.Phone,
+                        label = "Telefone",
+                        value = "0800 123 4567"
                     )
-                    Spacer(modifier = Modifier.height(8.dp))
-                    Text(
-                        text = "✅ O desbloqueio é automático após pagamento",
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = Color(0xFF1B5E20)
+                    HorizontalDivider(modifier = Modifier.padding(vertical = 12.dp))
+                    ContactRow(
+                        icon = Icons.Default.Message,
+                        label = "WhatsApp",
+                        value = "(11) 99999-9999"
                     )
-                    Spacer(modifier = Modifier.height(8.dp))
-                    Text(
-                        text = "✅ Entre em contato com a CDC Credit Smart",
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = Color(0xFF1B5E20)
+                    HorizontalDivider(modifier = Modifier.padding(vertical = 12.dp))
+                    ContactRow(
+                        icon = Icons.Default.Email,
+                        label = "E-mail",
+                        value = "atendimento@cdccreditsmart.com"
                     )
                 }
             }
             
             Spacer(modifier = Modifier.height(24.dp))
             
-            // Contato CDC
-            Card(
-                modifier = Modifier.fillMaxWidth(),
-                colors = CardDefaults.cardColors(
-                    containerColor = Color(0xFFFF7A1A)
-                )
-            ) {
-                Column(
-                    modifier = Modifier.padding(16.dp),
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    Icon(
-                        imageVector = Icons.Default.Phone,
-                        contentDescription = "Contato",
-                        tint = Color.White,
-                        modifier = Modifier.size(32.dp)
-                    )
-                    Spacer(modifier = Modifier.height(8.dp))
-                    Text(
-                        text = "Entre em Contato",
-                        style = MaterialTheme.typography.titleMedium,
-                        fontWeight = FontWeight.Bold,
-                        color = Color.White
-                    )
-                    Spacer(modifier = Modifier.height(4.dp))
-                    Text(
-                        text = "Estamos prontos para ajudar você",
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = Color.White.copy(alpha = 0.9f),
-                        textAlign = TextAlign.Center
-                    )
-                }
-            }
-            
-            Spacer(modifier = Modifier.height(32.dp))
-            
-            // Botão voltar
-            Button(
+            OutlinedButton(
                 onClick = onClose,
-                modifier = Modifier.fillMaxWidth(),
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = MaterialTheme.colorScheme.surface,
-                    contentColor = MaterialTheme.colorScheme.onSurface
-                )
+                modifier = Modifier.fillMaxWidth()
             ) {
-                Icon(
-                    imageVector = Icons.Default.ArrowBack,
-                    contentDescription = "Voltar"
-                )
+                Icon(Icons.Default.ArrowBack, "Voltar")
                 Spacer(modifier = Modifier.width(8.dp))
-                Text("Voltar")
+                Text("Fechar")
             }
+            
+            Spacer(modifier = Modifier.height(16.dp))
+        }
+    }
+}
+
+@Composable
+fun InstallmentCard(
+    number: Int,
+    dueDate: String,
+    amount: BigDecimal,
+    daysOverdue: Int
+) {
+    Card(
+        modifier = Modifier.fillMaxWidth(),
+        colors = CardDefaults.cardColors(
+            containerColor = Color(0xFFFFF3E0)
+        )
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(12.dp),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Column {
+                Text(
+                    text = "Parcela #$number",
+                    style = MaterialTheme.typography.titleSmall,
+                    fontWeight = FontWeight.Bold
+                )
+                Text(
+                    text = "Vencimento: $dueDate",
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+                Text(
+                    text = "$daysOverdue dias em atraso",
+                    style = MaterialTheme.typography.bodySmall,
+                    color = Color(0xFFD32F2F)
+                )
+            }
+            Text(
+                text = "R$ %.2f".format(amount.toDouble()),
+                style = MaterialTheme.typography.titleMedium,
+                fontWeight = FontWeight.Bold,
+                color = Color(0xFFE65100)
+            )
+        }
+    }
+}
+
+@Composable
+fun ContactRow(icon: ImageVector, label: String, value: String) {
+    Row(
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Icon(
+            imageVector = icon,
+            contentDescription = label,
+            tint = Color(0xFFFF7A1A)
+        )
+        Spacer(modifier = Modifier.width(12.dp))
+        Column {
+            Text(
+                text = label,
+                style = MaterialTheme.typography.labelMedium,
+                color = MaterialTheme.colorScheme.onSurfaceVariant
+            )
+            Text(
+                text = value,
+                style = MaterialTheme.typography.bodyLarge,
+                fontWeight = FontWeight.Bold
+            )
         }
     }
 }
