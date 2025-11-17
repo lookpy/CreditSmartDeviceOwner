@@ -509,20 +509,20 @@ class MdmCommandReceiver(private val context: Context) {
     
     private suspend fun fetchPendingCommands() {
         try {
-            val serialNumber = getDeviceIdentifier()
+            val identifier = getDeviceIdentifier()
             
-            if (serialNumber == null) {
-                Log.e(TAG, "❌ SerialNumber não encontrado - impossível buscar comandos")
+            if (identifier == null) {
+                Log.e(TAG, "❌ Nenhum identificador MDM disponível - impossível buscar comandos")
                 return
             }
             
-            Log.d(TAG, "🔍 Buscando comandos pendentes para serialNumber: ${serialNumber.take(10)}...")
+            Log.d(TAG, "🔍 Buscando comandos pendentes com identifier: ${identifier.take(10)}...")
             val fetchStartTime = System.currentTimeMillis()
             
             val retrofit = RetrofitProvider.createAuthenticatedRetrofit(context)
             val api = retrofit.create(MdmApiService::class.java)
             
-            val response = api.getPendingCommands(serialNumber)
+            val response = api.getPendingCommands(identifier)
             
             if (response.isSuccessful) {
                 val body = response.body()
@@ -570,16 +570,19 @@ class MdmCommandReceiver(private val context: Context) {
         }
     }
     
+    /**
+     * Obtém o melhor identificador disponível para comandos MDM
+     * Prioridade: IMEI > Serial Number > Device ID
+     * Conforme documentação: DOCUMENTACAO_APK_ROTAS_1763342801436.md
+     */
     private fun getDeviceIdentifier(): String? {
-        // Usa serialNumber para novos endpoints MDM /api/apk/device/{serialNumber}/commands
-        val identifier = tokenStorage.getSerialNumberForMdm()
+        val identifier = tokenStorage.getMdmIdentifier()
         
         if (identifier.isNullOrBlank()) {
-            Log.e(TAG, "❌ Nenhum identificador MDM encontrado (serialNumber e deviceId vazios)!")
+            Log.e(TAG, "❌ Nenhum identificador MDM encontrado!")
             return null
         }
         
-        Log.d(TAG, "✅ SerialNumber MDM obtido: ${identifier.take(10)}...")
         return identifier
     }
 }

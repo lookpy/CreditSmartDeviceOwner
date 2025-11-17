@@ -147,6 +147,46 @@ class SecureTokenStorage(context: Context) {
             null
         }
     }
+    
+    /**
+     * Retorna o melhor identificador disponível para comandos MDM
+     * Prioridade conforme documentação oficial:
+     * 1. IMEI (preferencial)
+     * 2. Serial Number (fallback)
+     * 3. Device ID (último fallback)
+     * 
+     * Retorna null se nenhum identificador disponível
+     */
+    fun getMdmIdentifier(): String? {
+        return try {
+            // 1ª prioridade: IMEI
+            val imei = encryptedPrefs.getString(KEY_IMEI, null)
+            if (!imei.isNullOrBlank()) {
+                Log.d(TAG, "✅ Usando IMEI para MDM: ${imei.take(4)}***${imei.takeLast(3)}")
+                return imei
+            }
+            
+            // 2ª prioridade: Serial Number
+            val serialNumber = encryptedPrefs.getString(KEY_SERIAL_NUMBER, null)
+            if (!serialNumber.isNullOrBlank()) {
+                Log.d(TAG, "⚠️ Usando Serial Number para MDM (IMEI indisponível): ${serialNumber.take(6)}...")
+                return serialNumber
+            }
+            
+            // 3ª prioridade: Device ID
+            val deviceId = encryptedPrefs.getString(KEY_DEVICE_ID, null)
+            if (!deviceId.isNullOrBlank()) {
+                Log.w(TAG, "⚠️ Usando Device ID para MDM (IMEI e SerialNumber indisponíveis): ${deviceId.take(15)}...")
+                return deviceId
+            }
+            
+            Log.e(TAG, "❌ Nenhum identificador MDM disponível!")
+            null
+        } catch (e: Exception) {
+            Log.e(TAG, "Error getting MDM identifier", e)
+            null
+        }
+    }
 
     fun getDeviceToken(): String? {
         return try {

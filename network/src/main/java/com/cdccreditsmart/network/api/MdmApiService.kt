@@ -8,20 +8,25 @@ import retrofit2.http.*
  * MDM API Service - Seguindo documentação oficial CDC Credit Smart
  * Base URL: https://cdccreditsmart.com
  * 
- * Documentação completa: mdm_api_documentation.md
+ * Documentação completa: DOCUMENTACAO_APK_ROTAS_1763342801436.md
+ * 
+ * IMPORTANTE: Todos os endpoints MDM aceitam 3 tipos de identificadores:
+ * 1. IMEI: 353184093560533 (PREFERENCIAL - usar sempre que disponível)
+ * 2. Serial Number: RSKUS3G7 (fallback se IMEI indisponível)
+ * 3. Device ID: device_1763331005716_1bfglcpm6rg (último fallback)
  */
 interface MdmApiService {
     
     /**
      * Buscar comandos MDM pendentes para o dispositivo
-     * Endpoint: GET /api/apk/device/{serialNumber}/commands
+     * Endpoint: GET /api/apk/device/{identifier}/commands
      * 
-     * @param serialNumber Serial Number do dispositivo (Build.SERIAL)
+     * @param identifier IMEI (preferencial), Serial Number, ou Device ID
      * @return Lista de comandos pendentes
      */
-    @GET("api/apk/device/{serialNumber}/commands")
+    @GET("api/apk/device/{identifier}/commands")
     suspend fun getPendingCommands(
-        @Path("serialNumber") serialNumber: String
+        @Path("identifier") identifier: String
     ): Response<PendingCommandsResponse>
     
     /**
