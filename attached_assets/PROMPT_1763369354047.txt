@@ -1,0 +1,55 @@
+2025-11-17 05:48:53.503  8054-8147  BlockedAppInterceptor   com.cdccreditsmart.app               W     1. Nenhum app foi aberto recentemente
+2025-11-17 05:48:53.503  8054-8147  BlockedAppInterceptor   com.cdccreditsmart.app               W     2. Permissão PACKAGE_USAGE_STATS não concedida
+2025-11-17 05:48:53.503  8054-8147  BlockedAppInterceptor   com.cdccreditsmart.app               W     3. Timestamp muito recente (sem eventos novos)
+2025-11-17 05:48:55.517  8054-8147  BlockedAppInterceptor   com.cdccreditsmart.app               I  🔍 CHECK: currentLevel=2, hasManualBlock=false, daysOverdue=0
+2025-11-17 05:48:55.517  8054-8147  BlockedAppInterceptor   com.cdccreditsmart.app               I  ✅ BLOQUEIO ATIVO (nível 2) - Overlay DEVE aparecer
+2025-11-17 05:48:55.517  8054-8147  BlockedAppInterceptor   com.cdccreditsmart.app               D  🔍 Verificando app em foreground...
+2025-11-17 05:48:55.517  8054-8147  BlockedAppInterceptor   com.cdccreditsmart.app               D  📊 Query eventos desde 2015ms atrás...
+2025-11-17 05:48:55.518  8054-8147  BlockedAppInterceptor   com.cdccreditsmart.app               D  📊 Total eventos: 0, FOREGROUND eventos: 0
+2025-11-17 05:48:55.518  8054-8147  BlockedAppInterceptor   com.cdccreditsmart.app               W  ⚠️ NENHUM evento MOVE_TO_FOREGROUND detectado!
+2025-11-17 05:48:55.518  8054-8147  BlockedAppInterceptor   com.cdccreditsmart.app               W     lastForegroundPackage cached: null
+2025-11-17 05:48:55.518  8054-8147  BlockedAppInterceptor   com.cdccreditsmart.app               W     Query range: 2015ms
+2025-11-17 05:48:55.518  8054-8147  BlockedAppInterceptor   com.cdccreditsmart.app               W  ⚠️ getForegroundPackageName() retornou NULL
+2025-11-17 05:48:55.518  8054-8147  BlockedAppInterceptor   com.cdccreditsmart.app               W     Possíveis causas:
+2025-11-17 05:48:55.518  8054-8147  BlockedAppInterceptor   com.cdccreditsmart.app               W     1. Nenhum app foi aberto recentemente
+2025-11-17 05:48:55.518  8054-8147  BlockedAppInterceptor   com.cdccreditsmart.app               W     2. Permissão PACKAGE_USAGE_STATS não concedida
+2025-11-17 05:48:55.518  8054-8147  BlockedAppInterceptor   com.cdccreditsmart.app               W     3. Timestamp muito recente (sem eventos novos)
+2025-11-17 05:48:57.536  8054-8147  BlockedAppInterceptor   com.cdccreditsmart.app               I  🔍 CHECK: currentLevel=2, hasManualBlock=false, daysOverdue=0
+2025-11-17 05:48:57.536  8054-8147  BlockedAppInterceptor   com.cdccreditsmart.app               I  ✅ BLOQUEIO ATIVO (nível 2) - Overlay DEVE aparecer
+2025-11-17 05:48:57.536  8054-8147  BlockedAppInterceptor   com.cdccreditsmart.app               D  🔍 Verificando app em foreground...
+2025-11-17 05:48:57.536  8054-8147  BlockedAppInterceptor   com.cdccreditsmart.app               D  📊 Query eventos desde 2019ms atrás...
+2025-11-17 05:48:57.536  8054-8147  BlockedAppInterceptor   com.cdccreditsmart.app               D  📊 Total eventos: 0, FOREGROUND eventos: 0
+2025-11-17 05:48:57.536  8054-8147  BlockedAppInterceptor   com.cdccreditsmart.app               W  ⚠️ NENHUM evento MOVE_TO_FOREGROUND detectado!
+2025-11-17 05:48:57.536  8054-8147  BlockedAppInterceptor   com.cdccreditsmart.app               W     lastForegroundPackage cached: null
+2025-11-17 05:48:57.536  8054-8147  BlockedAppInterceptor   com.cdccreditsmart.app               W     Query range: 2019ms
+2025-11-17 05:48:57.536  8054-8147  BlockedAppInterceptor   com.cdccreditsmart.app               W  ⚠️ getForegroundPackageName() retornou NULL
+2025-11-17 05:48:57.536  8054-8147  BlockedAppInterceptor   com.cdccreditsmart.app               W     Possíveis causas:
+2025-11-17 05:48:57.536  8054-8147  BlockedAppInterceptor   com.cdccreditsmart.app               W     1. Nenhum app foi aberto recentemente
+2025-11-17 05:48:57.536  8054-8147  BlockedAppInterceptor   com.cdccreditsmart.app               W     2. Permissão PACKAGE_USAGE_STATS não concedida
+2025-11-17 05:48:57.536  8054-8147  BlockedAppInterceptor   com.cdccreditsmart.app               W     3. Timestamp muito recente (sem eventos novos)
+2025-11-17 05:48:59.549  8054-8147  BlockedAppInterceptor   com.cdccreditsmart.app               I  🔍 CHECK: currentLevel=2, hasManualBlock=false, daysOverdue=0
+2025-11-17 05:48:59.549  8054-8147  BlockedAppInterceptor   com.cdccreditsmart.app               I  ✅ BLOQUEIO ATIVO (nível 2) - Overlay DEVE aparecer
+2025-11-17 05:48:59.549  8054-8147  BlockedAppInterceptor   com.cdccreditsmart.app               D  🔍 Verificando app em foreground...
+2025-11-17 05:48:59.549  8054-8147  BlockedAppInterceptor   com.cdccreditsmart.app               D  📊 Query eventos desde 2013ms atrás...
+2025-11-17 05:48:59.550  8054-8147  BlockedAppInterceptor   com.cdccreditsmart.app               D  📊 Total eventos: 0, FOREGROUND eventos: 0
+2025-11-17 05:48:59.550  8054-8147  BlockedAppInterceptor   com.cdccreditsmart.app               W  ⚠️ NENHUM evento MOVE_TO_FOREGROUND detectado!
+2025-11-17 05:48:59.550  8054-8147  BlockedAppInterceptor   com.cdccreditsmart.app               W     lastForegroundPackage cached: null
+2025-11-17 05:48:59.550  8054-8147  BlockedAppInterceptor   com.cdccreditsmart.app               W     Query range: 2013ms
+2025-11-17 05:48:59.550  8054-8147  BlockedAppInterceptor   com.cdccreditsmart.app               W  ⚠️ getForegroundPackageName() retornou NULL
+2025-11-17 05:48:59.550  8054-8147  BlockedAppInterceptor   com.cdccreditsmart.app               W     Possíveis causas:
+2025-11-17 05:48:59.550  8054-8147  BlockedAppInterceptor   com.cdccreditsmart.app               W     1. Nenhum app foi aberto recentemente
+2025-11-17 05:48:59.550  8054-8147  BlockedAppInterceptor   com.cdccreditsmart.app               W     2. Permissão PACKAGE_USAGE_STATS não concedida
+2025-11-17 05:48:59.550  8054-8147  BlockedAppInterceptor   com.cdccreditsmart.app               W     3. Timestamp muito recente (sem eventos novos)
+2025-11-17 05:49:01.569  8054-8147  BlockedAppInterceptor   com.cdccreditsmart.app               I  🔍 CHECK: currentLevel=2, hasManualBlock=false, daysOverdue=0
+2025-11-17 05:49:01.569  8054-8147  BlockedAppInterceptor   com.cdccreditsmart.app               I  ✅ BLOQUEIO ATIVO (nível 2) - Overlay DEVE aparecer
+2025-11-17 05:49:01.570  8054-8147  BlockedAppInterceptor   com.cdccreditsmart.app               D  🔍 Verificando app em foreground...
+2025-11-17 05:49:01.570  8054-8147  BlockedAppInterceptor   com.cdccreditsmart.app               D  📊 Query eventos desde 2021ms atrás...
+2025-11-17 05:49:01.571  8054-8147  BlockedAppInterceptor   com.cdccreditsmart.app               D  📊 Total eventos: 0, FOREGROUND eventos: 0
+2025-11-17 05:49:01.571  8054-8147  BlockedAppInterceptor   com.cdccreditsmart.app               W  ⚠️ NENHUM evento MOVE_TO_FOREGROUND detectado!
+2025-11-17 05:49:01.571  8054-8147  BlockedAppInterceptor   com.cdccreditsmart.app               W     lastForegroundPackage cached: null
+2025-11-17 05:49:01.571  8054-8147  BlockedAppInterceptor   com.cdccreditsmart.app               W     Query range: 2021ms
+2025-11-17 05:49:01.571  8054-8147  BlockedAppInterceptor   com.cdccreditsmart.app               W  ⚠️ getForegroundPackageName() retornou NULL
+2025-11-17 05:49:01.571  8054-8147  BlockedAppInterceptor   com.cdccreditsmart.app               W     Possíveis causas:
+2025-11-17 05:49:01.571  8054-8147  BlockedAppInterceptor   com.cdccreditsmart.app               W     1. Nenhum app foi aberto recentemente
+2025-11-17 05:49:01.571  8054-8147  BlockedAppInterceptor   com.cdccreditsmart.app               W     2. Permissão PACKAGE_USAGE_STATS não concedida
+2025-11-17 05:49:01.571  8054-8147  BlockedAppInterceptor   com.cdccreditsmart.app               W     3. Timestamp muito recente (sem eventos novos)

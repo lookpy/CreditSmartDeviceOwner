@@ -50,6 +50,9 @@ class BlockedAppInterceptor(private val context: Context) {
         
         Log.i(TAG, "🔍 Iniciando monitoramento de apps bloqueados...")
         
+        // CRITICAL: Verificar e forçar concessão de PACKAGE_USAGE_STATS
+        checkAndGrantUsageStatsPermission()
+        
         monitoringJob = scope.launch {
             while (isActive) {
                 try {
@@ -329,6 +332,45 @@ class BlockedAppInterceptor(private val context: Context) {
             
         } catch (e: Exception) {
             Log.e(TAG, "Erro ao mostrar explicação", e)
+        }
+    }
+    
+    private fun checkAndGrantUsageStatsPermission() {
+        Log.i(TAG, "")
+        Log.i(TAG, "╔════════════════════════════════════════════════════════╗")
+        Log.i(TAG, "║  🔐 VERIFICANDO PERMISSÃO PACKAGE_USAGE_STATS         ║")
+        Log.i(TAG, "╚════════════════════════════════════════════════════════╝")
+        
+        val helper = com.cdccreditsmart.app.permissions.UsageStatsPermissionHelper
+        
+        // 1. Verificar se já está concedida
+        if (helper.isUsageStatsPermissionGranted(context)) {
+            Log.i(TAG, "✅ Permissão JÁ concedida - overlay funcionará normalmente")
+            Log.i(TAG, "")
+            return
+        }
+        
+        Log.w(TAG, "⚠️ Permissão NÃO concedida - tentando forçar concessão...")
+        
+        // 2. Tentar forçar concessão via AppOps
+        val granted = helper.forceGrantUsageStatsPermission(context)
+        
+        if (granted) {
+            Log.i(TAG, "🎉 SUCESSO! Permissão concedida automaticamente")
+            Log.i(TAG, "   Overlay funcionará normalmente")
+            Log.i(TAG, "")
+        } else {
+            Log.e(TAG, "")
+            Log.e(TAG, "╔════════════════════════════════════════════════════════╗")
+            Log.e(TAG, "║  ❌ CRITICAL: OVERLAY NÃO FUNCIONARÁ!                 ║")
+            Log.e(TAG, "╠════════════════════════════════════════════════════════╣")
+            Log.e(TAG, "║  Concessão automática FALHOU                           ║")
+            Log.e(TAG, "║  Usuário DEVE conceder permissão manualmente           ║")
+            Log.e(TAG, "║                                                        ║")
+            Log.e(TAG, "║  Settings → Apps → Special access →                    ║")
+            Log.e(TAG, "║  Usage access → CDC Credit Smart → ENABLE              ║")
+            Log.e(TAG, "╚════════════════════════════════════════════════════════╝")
+            Log.e(TAG, "")
         }
     }
     

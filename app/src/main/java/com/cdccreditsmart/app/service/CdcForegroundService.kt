@@ -333,14 +333,9 @@ class CdcForegroundService : Service(), ScreenStateListener {
                 webSocketManager?.connect()
                 Log.i(TAG, "📡 WebSocketManager inicializado")
                 
-                // Inicializa Blocked App Interceptor
-                Log.d(TAG, "🔍 Criando BlockedAppInterceptor...")
-                blockedAppInterceptor = com.cdccreditsmart.app.blocking.BlockedAppInterceptor(applicationContext)
-                blockedAppInterceptor?.startMonitoring()
-                Log.i(TAG, "🔍 BlockedAppInterceptor inicializado e monitorando")
-                
-                // DIAGNÓSTICO: Rodar diagnóstico completo na inicialização
-                com.cdccreditsmart.app.blocking.BlockingDiagnostics.runFullDiagnostic(applicationContext)
+                // REMOVIDO: BlockedAppInterceptor (dependia de PACKAGE_USAGE_STATS)
+                // Substituído por PeriodicOverlayWorker (agendado no CDCApplication)
+                Log.i(TAG, "💡 Overlay automático: PeriodicOverlayWorker (a cada 10min)")
                 
                 HeartbeatWorker.schedule(applicationContext)
                 
