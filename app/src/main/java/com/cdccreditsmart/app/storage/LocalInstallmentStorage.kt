@@ -8,6 +8,7 @@ import com.squareup.moshi.FromJson
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.ToJson
 import com.squareup.moshi.Types
+import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import java.math.BigDecimal
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
@@ -42,6 +43,7 @@ class LocalInstallmentStorage(private val context: Context) {
     }
     private val moshi = Moshi.Builder()
         .add(BigDecimalAdapter())
+        .addLast(KotlinJsonAdapterFactory())
         .build()
     private val dateFormatter = DateTimeFormatter.ISO_LOCAL_DATE
     

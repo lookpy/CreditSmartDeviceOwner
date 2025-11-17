@@ -1,0 +1,41 @@
+Retrieving contract code from storage
+2025-11-17 07:15:17.013  7687-7687  ContractCodeStorage     com.cdccreditsmart.app               D  Storage verification: 7 valid, 0 tampered, 0 missing
+2025-11-17 07:15:17.013  7687-7687  ContractCodeStorage     com.cdccreditsmart.app               D  Contract code retrieved successfully
+2025-11-17 07:15:17.016  7687-7687  LocalInstallmentStorage com.cdccreditsmart.app               E  ❌ Erro ao salvar parcelas (Ask Gemini)
+                                                                                                    java.lang.IllegalArgumentException: Cannot serialize Kotlin type com.cdccreditsmart.app.storage.LocalInstallment. Reflective serialization of Kotlin classes without using kotlin-reflect has undefined and unexpected behavior. Please use KotlinJsonAdapterFactory from the moshi-kotlin artifact or use code gen from the moshi-kotlin-codegen artifact.
+                                                                                                    for class com.cdccreditsmart.app.storage.LocalInstallment
+                                                                                                    for java.util.List<com.cdccreditsmart.app.storage.LocalInstallment>
+                                                                                                    	at com.squareup.moshi.Moshi$LookupChain.exceptionWithLookupStack(Moshi.java:389)
+                                                                                                    	at com.squareup.moshi.Moshi.adapter(Moshi.java:158)
+                                                                                                    	at com.squareup.moshi.Moshi.adapter(Moshi.java:106)
+                                                                                                    	at com.squareup.moshi.Moshi.adapter(Moshi.java:75)
+                                                                                                    	at com.squareup.moshi.CollectionJsonAdapter.newArrayListAdapter(CollectionJsonAdapter.java:54)
+                                                                                                    	at com.squareup.moshi.CollectionJsonAdapter$1.create(CollectionJsonAdapter.java:38)
+                                                                                                    	at com.squareup.moshi.Moshi.adapter(Moshi.java:146)
+                                                                                                    	at com.squareup.moshi.Moshi.adapter(Moshi.java:106)
+                                                                                                    	at com.squareup.moshi.Moshi.adapter(Moshi.java:75)
+                                                                                                    	at com.cdccreditsmart.app.storage.LocalInstallmentStorage.saveInstallments(LocalInstallmentStorage.kt:71)
+                                                                                                    	at com.cdccreditsmart.app.presentation.screens.home.SimpleHomeViewModel.saveInstallmentsLocally(SimpleHomeViewModel.kt:199)
+                                                                                                    	at com.cdccreditsmart.app.presentation.screens.home.SimpleHomeViewModel.access$saveInstallmentsLocally(SimpleHomeViewModel.kt:32)
+                                                                                                    	at com.cdccreditsmart.app.presentation.screens.home.SimpleHomeViewModel$loadInstallmentsData$1.invokeSuspend(SimpleHomeViewModel.kt:140)
+                                                                                                    	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:34)
+                                                                                                    	at kotlinx.coroutines.DispatchedTask.run(DispatchedTask.kt:108)
+                                                                                                    	at android.os.Handler.handleCallback(Handler.java:995)
+                                                                                                    	at android.os.Handler.dispatchMessage(Handler.java:103)
+                                                                                                    	at android.os.Looper.loopOnce(Looper.java:248)
+                                                                                                    	at android.os.Looper.loop(Looper.java:338)
+                                                                                                    	at android.app.ActivityThread.main(ActivityThread.java:9067)
+                                                                                                    	at java.lang.reflect.Method.invoke(Native Method)
+                                                                                                    	at com.android.internal.os.RuntimeInit$MethodAndArgsCaller.run(RuntimeInit.java:593)
+                                                                                                    	at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:932)
+                                                                                                    Caused by: java.lang.IllegalArgumentException: Cannot serialize Kotlin type com.cdccreditsmart.app.storage.LocalInstallment. Reflective serialization of Kotlin classes without using kotlin-reflect has undefined and unexpected behavior. Please use KotlinJsonAdapterFactory from the moshi-kotlin artifact or use code gen from the moshi-kotlin-codegen artifact.
+                                                                                                    	at com.squareup.moshi.ClassJsonAdapter$1.create(ClassJsonAdapter.java:98)
+                                                                                                    	at com.squareup.moshi.Moshi.adapter(Moshi.java:146)
+                                                                                                    	... 21 more
+2025-11-17 07:15:17.016  7687-7687  SimpleHomeViewModel     com.cdccreditsmart.app               I  ✅ 4 parcelas salvas localmente
+2025-11-17 07:15:17.016  7687-7687  SimpleHomeViewModel     com.cdccreditsmart.app               I     → 0 em atraso
+2025-11-17 07:15:17.016  7687-7687  SimpleHomeViewModel     com.cdccreditsmart.app               I     → 0 pagas
+2025-11-17 07:15:17.016  7687-7687  SimpleHomeViewModel     com.cdccreditsmart.app               I     → Dados disponíveis para overlay e offline blocking
+2025-11-17 07:15:17.089  7687-7687  SecureTokenStorage      com.cdccreditsmart.app               D  📖 Lendo customerName: Marcos Antunes
+2025-11-17 07:15:17.089  7687-7687  SecureTokenStorage      com.cdccreditsmart.app               D  📖 Lendo deviceModel: Moto G15 Power
+2025-11-17 07:15:17.090  7687-7687  ContractCodeStorage     com.cdccreditsmart.app               D  Retrieving contract code from storage
