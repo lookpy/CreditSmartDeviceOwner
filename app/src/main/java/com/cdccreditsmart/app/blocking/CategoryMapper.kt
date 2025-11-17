@@ -222,17 +222,70 @@ class CategoryMapper(private val context: Context) {
     }
     
     private fun isPhotosGalleryApp(app: ApplicationInfo, packageName: String): Boolean {
+        val photoApps = listOf(
+            "com.google.android.apps.photos",
+            "com.instagram.android",
+            "com.picsart.studio",
+            "com.vsco.cam",
+            "com.canva.editor",
+            "com.niksoftware.snapseed",
+            "com.adobe.lrmobile",
+            "com.roidapp.photogrid",
+            "com.jb.gokeyboard.theme.emoji.photo",
+            "com.snowcorp.snow",
+            "com.campmobile.snow",
+            "jp.naver.linetools.camerab612",
+            "com.lightricks.facetune",
+            "com.cyberlink.photodirector",
+            "com.lightricks.facetune2",
+            "com.meitu.beautyplusme",
+            "com.sec.android.gallery3d",
+            "com.google.android.gallery3d"
+        )
+        
+        val photoKeywords = listOf(
+            "gallery", "photo", "camera", "pic", "image", 
+            "album", "selfie", "beauty", "filter", "edit"
+        )
+        
         return app.category == ApplicationInfo.CATEGORY_IMAGE ||
-               packageName.contains("gallery", ignoreCase = true) ||
-               packageName.contains("photo", ignoreCase = true) ||
-               packageName.contains("camera", ignoreCase = true) ||
-               packageName == "com.google.android.apps.photos"
+               packageName in photoApps ||
+               photoKeywords.any { packageName.contains(it, ignoreCase = true) }
     }
     
     private fun isVideoPlayerApp(app: ApplicationInfo, packageName: String): Boolean {
+        val videoApps = listOf(
+            "com.google.android.youtube",
+            "com.google.android.youtube.tv",
+            "com.netflix.mediaclient",
+            "com.amazon.avod.thirdpartyclient",
+            "com.disney.disneyplus",
+            "com.hbo.hbonow",
+            "com.spotify.tv.android",
+            "com.globo.globoplay",
+            "com.vimeo.android.videoapp",
+            "tv.twitch.android.app",
+            "com.kwai.video",
+            "video.like",
+            "com.ss.android.ugc.trill",
+            "com.inshot.videoeditor",
+            "com.camerasideas.instashot",
+            "videoeditor.videomaker.videocutter",
+            "com.cyberlink.powerdirector.DRA140225_01",
+            "com.funcamerastudio.videomaker",
+            "com.vivacut.videoeditor",
+            "com.xigua.video",
+            "br.com.meuplay"
+        )
+        
+        val videoKeywords = listOf(
+            "video", "player", "movie", "film", "tv", 
+            "stream", "netflix", "youtube", "vimeo", "twitch"
+        )
+        
         return app.category == ApplicationInfo.CATEGORY_VIDEO ||
-               packageName.contains("video", ignoreCase = true) ||
-               packageName.contains("player", ignoreCase = true)
+               packageName in videoApps ||
+               videoKeywords.any { packageName.contains(it, ignoreCase = true) }
     }
     
     private fun isWebBrowserApp(app: ApplicationInfo, packageName: String): Boolean {
@@ -252,15 +305,71 @@ class CategoryMapper(private val context: Context) {
     }
     
     private fun isGameApp(app: ApplicationInfo): Boolean {
-        return app.category == ApplicationInfo.CATEGORY_GAME
+        val gameKeywords = listOf(
+            "game", "play", "candy", "clash", "pubg", "free.fire",
+            "minecraft", "roblox", "garena", "supercell", "king.com",
+            "zynga", "gameloft", "ea.sports", "fifa", "gta",
+            "fortnite", "among.us", "mobile.legends", "lol", "valorant",
+            "cod", "callofduty", "pokemon", "mario", "sonic"
+        )
+        
+        return app.category == ApplicationInfo.CATEGORY_GAME ||
+               gameKeywords.any { app.packageName.contains(it, ignoreCase = true) }
     }
     
     private fun isSocialMediaApp(packageName: String): Boolean {
-        val socialMediaKeywords = listOf(
-            "facebook", "instagram", "twitter", "snapchat",
-            "linkedin", "tiktok", "telegram", "discord"
+        val socialMediaApps = listOf(
+            "com.facebook.katana",
+            "com.facebook.orca",
+            "com.facebook.lite",
+            "com.instagram.android",
+            "com.instagram.lite",
+            "com.whatsapp",
+            "com.whatsapp.w4b",
+            "com.tencent.mm",
+            "com.twitter.android",
+            "com.snapchat.android",
+            "com.linkedin.android",
+            "com.zhiliaoapp.musically",
+            "com.ss.android.ugc.trill",
+            "org.telegram.messenger",
+            "org.telegram.plus",
+            "com.discord",
+            "com.reddit.frontpage",
+            "com.pinterest",
+            "com.tumblr",
+            "com.vkontakte.android",
+            "com.sina.weibo",
+            "jp.naver.line.android",
+            "com.viber.voip",
+            "com.imo.android.imoim",
+            "com.skype.raider",
+            "com.google.android.apps.tachyon",
+            "us.zoom.videomeetings",
+            "com.facebook.mlite",
+            "com.instagram.threads",
+            "tv.kwai.kwai",
+            "video.like",
+            "com.bigo.live",
+            "sg.bigo.live",
+            "com.ss.android.ugc.aweme",
+            "br.com.enjoei",
+            "com.happn.app",
+            "com.tinder",
+            "com.badoo.mobile",
+            "br.com.parmais.android"
         )
         
-        return socialMediaKeywords.any { packageName.contains(it, ignoreCase = true) }
+        val socialMediaKeywords = listOf(
+            "facebook", "instagram", "whatsapp", "twitter", "snapchat",
+            "linkedin", "tiktok", "telegram", "discord", "reddit",
+            "pinterest", "tumblr", "vkontakte", "weibo", "line",
+            "viber", "imo", "skype", "hangouts", "duo", "zoom",
+            "threads", "kwai", "likee", "bigo", "tinder",
+            "badoo", "happn", "bumble", "messenger", "wechat"
+        )
+        
+        return packageName in socialMediaApps ||
+               socialMediaKeywords.any { packageName.contains(it, ignoreCase = true) }
     }
 }
