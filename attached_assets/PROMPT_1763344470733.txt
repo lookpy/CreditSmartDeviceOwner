@@ -1,0 +1,89 @@
+25-11-17 01:53:46.879] [PID:7916] [TID:2|main]    📷 Camera permission grant state: 0
+2025-11-16 22:53:46.880  7916-7916  CDCDeviceAdminReceiver  com.cdccreditsmart.app               I  [2025-11-17 01:53:46.880] [PID:7916] [TID:2|main]    🔒 Lock task packages: []
+2025-11-16 22:53:46.882  7916-7916  CDCDeviceAdminReceiver  com.cdccreditsmart.app               I  [2025-11-17 01:53:46.881] [PID:7916] [TID:2|main]    💾 Storage encryption status: false
+2025-11-16 22:53:46.882  7916-7916  CDCDeviceAdminReceiver  com.cdccreditsmart.app               I  [2025-11-17 01:53:46.882] [PID:7916] [TID:2|main] ✅ Device capabilities analysis completed
+2025-11-16 22:53:46.882  7916-7916  CDC_PROVISIONING_DEBUG  com.cdccreditsmart.app               I  [2025-11-17 01:53:46.882] [PID:7916] [TID:2|main] 📋 CALLBACK SEQUENCE (1 callbacks):
+2025-11-16 22:53:46.882  7916-7916  CDC_PROVISIONING_DEBUG  com.cdccreditsmart.app               I  [2025-11-17 01:53:46.882] [PID:7916] [TID:2|main]    1. 2025-11-17 01:53:46.834 - onEnabled
+2025-11-16 22:53:46.882  7916-7916  CDC_PROVISIONING_DEBUG  com.cdccreditsmart.app               I  [2025-11-17 01:53:46.882] [PID:7916] [TID:2|main] 🔍 HANG DETECTION CHECK:
+2025-11-16 22:53:46.883  7916-7916  CDC_PROVISIONING_DEBUG  com.cdccreditsmart.app               I  [2025-11-17 01:53:46.882] [PID:7916] [TID:2|main]    ⏱️ Time since provisioning start: 48ms
+2025-11-16 22:53:46.883  7916-7916  CDC_PROVISIONING_DEBUG  com.cdccreditsmart.app               I  [2025-11-17 01:53:46.883] [PID:7916] [TID:2|main]    ⏱️ Time since last callback: 48ms
+2025-11-16 22:53:46.883  7916-7916  CDCDeviceAdminReceiver  com.cdccreditsmart.app               I  [2025-11-17 01:53:46.883] [PID:7916] [TID:2|main] ✅ Admin enablement verification completed successfully
+2025-11-16 22:53:46.883  7916-7916  CDCDeviceAdminReceiver  com.cdccreditsmart.app               I  [2025-11-17 01:53:46.883] [PID:7916] [TID:2|main] 🏁 onEnabled callback completed - work profile preparation should continue
+2025-11-16 22:53:46.883  7916-7916  CDCDeviceAdminReceiver  com.cdccreditsmart.app               I  [2025-11-17 01:53:46.883] [PID:7916] [TID:2|main] 🔑 =================================================================
+2025-11-16 22:53:49.595  7916-7916  NavController           com.cdccreditsmart.app               I  Ignoring popBackStack to route pairing/qr_scanner as it was not found on the current back stack
+2025-11-16 22:53:49.672  7916-7916  SimpleHomeViewModel     com.cdccreditsmart.app               D  📡 Fetching device installments from /api/apk/device/installments...
+2025-11-16 22:53:49.751  7916-9908  SimpleHomeViewModel     com.cdccreditsmart.app               D  ✅ Added Authorization header with token
+2025-11-16 22:53:49.751  7916-9908  SimpleHomeViewModel     com.cdccreditsmart.app               D  📤 Request URL: https://cdccreditsmart.com/api/apk/device/installments
+2025-11-16 22:53:50.243  7916-9908  SimpleHomeViewModel     com.cdccreditsmart.app               D  📥 Response Code: 200
+2025-11-16 22:53:50.268  7916-7916  SimpleHomeViewModel     com.cdccreditsmart.app               D  ✅ Successfully fetched installments data
+2025-11-16 22:53:50.269  7916-7916  SimpleHomeViewModel     com.cdccreditsmart.app               D  📊 Device: Moto G15 Power
+2025-11-16 22:53:50.269  7916-7916  SimpleHomeViewModel     com.cdccreditsmart.app               D  📊 Total installments: 24
+2025-11-16 22:53:50.269  7916-7916  SimpleHomeViewModel     com.cdccreditsmart.app               D  📊 Paid: 0
+2025-11-16 22:53:50.269  7916-7916  SimpleHomeViewModel     com.cdccreditsmart.app               D  📊 Overdue: 0
+2025-11-16 22:53:50.269  7916-7916  SimpleHomeViewModel     com.cdccreditsmart.app               D  📊 All installments count: 24
+2025-11-16 22:53:50.269  7916-7916  SimpleHomeViewModel     com.cdccreditsmart.app               I  💾 Salvando dados do cliente no storage - CustomerName: 'null', DeviceModel: 'Moto G15 Power'
+2025-11-16 22:53:50.269  7916-7916  SecureTokenStorage      com.cdccreditsmart.app               D  💾 Salvando customer info - Name: null, Device: Moto G15 Power
+2025-11-16 22:53:50.269  7916-7916  SecureTokenStorage      com.cdccreditsmart.app               W  ⚠️ CustomerName vazio/null - não salvando
+2025-11-16 22:53:50.270  7916-7916  SecureTokenStorage      com.cdccreditsmart.app               D  ✅ DeviceModel salvo: Moto G15 Power
+2025-11-16 22:53:50.270  7916-7916  SecureTokenStorage      com.cdccreditsmart.app               I  ✅ Customer info saved successfully!
+2025-11-16 22:53:50.347  7916-7916  SecureTokenStorage      com.cdccreditsmart.app               D  📖 Lendo customerName: Marcos Antunes
+2025-11-16 22:53:50.348  7916-7916  SecureTokenStorage      com.cdccreditsmart.app               D  📖 Lendo deviceModel: Moto G15 Power
+2025-11-16 22:53:50.348  7916-7916  ContractCodeStorage     com.cdccreditsmart.app               D  Retrieving contract code from storage
+2025-11-16 22:53:50.439  7916-7916  ContractCodeStorage     com.cdccreditsmart.app               D  Storage verification: 7 valid, 0 tampered, 0 missing
+2025-11-16 22:53:50.439  7916-7916  ContractCodeStorage     com.cdccreditsmart.app               D  Contract code retrieved successfully
+2025-11-16 22:53:54.022  7916-7916  SecureTokenStorage      com.cdccreditsmart.app               D  📖 Lendo customerName: Marcos Antunes
+2025-11-16 22:53:54.022  7916-7916  SecureTokenStorage      com.cdccreditsmart.app               D  📖 Lendo deviceModel: Moto G15 Power
+2025-11-16 22:53:54.022  7916-7916  ContractCodeStorage     com.cdccreditsmart.app               D  Retrieving contract code from storage
+2025-11-16 22:53:54.092  7916-7916  ContractCodeStorage     com.cdccreditsmart.app               D  Storage verification: 7 valid, 0 tampered, 0 missing
+2025-11-16 22:53:54.092  7916-7916  ContractCodeStorage     com.cdccreditsmart.app               D  Contract code retrieved successfully
+2025-11-16 22:53:56.475  7916-7916  VRI[MainActivity]       com.cdccreditsmart.app               D  visibilityChanged oldVisibility=true newVisibility=false
+2025-11-16 22:53:56.476  7916-7916  WindowOnBackDispatcher  com.cdccreditsmart.app               W  sendCancelIfRunning: isInProgress=false callback=androidx.activity.OnBackPressedDispatcher$Api34Impl$createOnBackAnimationCallback$1@8c42927
+2025-11-16 22:53:58.542  7916-9927  FA                      com.cdccreditsmart.app               I  Application backgrounded at: timestamp_millis: 1763344436541
+2025-11-16 22:54:02.530  7916-7916  MainActivity            com.cdccreditsmart.app               D  ========== NEW INTENT RECEIVED ==========
+2025-11-16 22:54:02.796  7916-7916  InsetsController        com.cdccreditsmart.app               D  hide(ime(), fromIme=false)
+2025-11-16 22:54:02.798  7916-7916  ImeTracker              com.cdccreditsmart.app               I  com.cdccreditsmart.app:2ad8e1a6: onCancelled at PHASE_CLIENT_ALREADY_HIDDEN
+2025-11-16 22:54:04.926  7916-7916  WebSocketManager        com.cdccreditsmart.app               D  Heartbeat ping sent
+2025-11-16 22:54:05.083  7916-9020  WebSocketManager        com.cdccreditsmart.app               D  Message received: {"type":"pong","timestamp":"2025-11-17T01:54:06.725Z"}...
+2025-11-16 22:54:05.083  7916-9020  WebSocketManager        com.cdccreditsmart.app               D  Received message type: pong
+2025-11-16 22:54:05.083  7916-9020  WebSocketManager        com.cdccreditsmart.app               D  Pong received
+2025-11-16 22:54:05.655  7916-8093  MdmCommandReceiver      com.cdccreditsmart.app               D  🔍 [Polling #2] Verificando comandos pendentes...
+2025-11-16 22:54:05.656  7916-8093  SecureTokenStorage      com.cdccreditsmart.app               D  ⚠️ Usando Serial Number para MDM (IMEI indisponível): google...
+2025-11-16 22:54:05.657  7916-8093  MdmCommandReceiver      com.cdccreditsmart.app               D  🔍 Buscando comandos pendentes com identifier: google/sdk...
+2025-11-16 22:54:05.658  7916-8927  okhttp.OkHttpClient     com.cdccreditsmart.app               I  --> GET https://cdccreditsmart.com/api/apk/device/google%2Fsdk_gphone64_x86_64%2Femu64xa:16%2FBE2A.250530.026.D1%2F13818094:user%2Frelease-keys/commands
+2025-11-16 22:54:05.659  7916-8927  okhttp.OkHttpClient     com.cdccreditsmart.app               I  --> END GET
+2025-11-16 22:54:05.670  7916-7916  WebSocketManager        com.cdccreditsmart.app               D  Heartbeat ping sent
+2025-11-16 22:54:05.833  7916-9086  WebSocketManager        com.cdccreditsmart.app               D  Message received: {"type":"pong","timestamp":"2025-11-17T01:54:07.471Z"}...
+2025-11-16 22:54:05.834  7916-9086  WebSocketManager        com.cdccreditsmart.app               D  Received message type: pong
+2025-11-16 22:54:05.834  7916-9086  WebSocketManager        com.cdccreditsmart.app               D  Pong received
+2025-11-16 22:54:05.960  7916-8927  okhttp.OkHttpClient     com.cdccreditsmart.app               I  <-- 404 https://cdccreditsmart.com/api/apk/device/google%2Fsdk_gphone64_x86_64%2Femu64xa:16%2FBE2A.250530.026.D1%2F13818094:user%2Frelease-keys/commands (301ms)
+2025-11-16 22:54:05.961  7916-8927  okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-credentials: true
+2025-11-16 22:54:05.961  7916-8927  okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-headers: Origin, X-Requested-With, Content-Type, Accept, Authorization, x-client-key, x-client-token, x-client-secret, cache-control
+2025-11-16 22:54:05.962  7916-8927  okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-methods: GET, POST, PUT, PATCH, DELETE, OPTIONS
+2025-11-16 22:54:05.962  7916-8927  okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-origin: *
+2025-11-16 22:54:05.962  7916-8927  okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-max-age: 86400
+2025-11-16 22:54:05.962  7916-8927  okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-length: 108
+2025-11-16 22:54:05.962  7916-8927  okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-security-policy: default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://replit.com; style-src 'self' 'unsafe-inline' https://replit.com; img-src 'self' data: https:; font-src 'self' data: https://replit.com; connect-src 'self';
+2025-11-16 22:54:05.962  7916-8927  okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-type: application/json; charset=utf-8
+2025-11-16 22:54:05.962  7916-8927  okhttp.OkHttpClient     com.cdccreditsmart.app               I  date: Mon, 17 Nov 2025 01:54:07 GMT
+2025-11-16 22:54:05.962  7916-8927  okhttp.OkHttpClient     com.cdccreditsmart.app               I  etag: W/"6c-vuuciI00e6Pw0rqSTJRUmUCYNYs"
+2025-11-16 22:54:05.962  7916-8927  okhttp.OkHttpClient     com.cdccreditsmart.app               I  permissions-policy: geolocation=(), microphone=(), camera=()
+2025-11-16 22:54:05.962  7916-8927  okhttp.OkHttpClient     com.cdccreditsmart.app               I  referrer-policy: strict-origin-when-cross-origin
+2025-11-16 22:54:05.962  7916-8927  okhttp.OkHttpClient     com.cdccreditsmart.app               I  server: Google Frontend
+2025-11-16 22:54:05.963  7916-8927  okhttp.OkHttpClient     com.cdccreditsmart.app               I  strict-transport-security: max-age=63072000; includeSubDomains
+2025-11-16 22:54:05.963  7916-8927  okhttp.OkHttpClient     com.cdccreditsmart.app               I  strict-transport-security: max-age=31536000; includeSubDomains
+2025-11-16 22:54:05.963  7916-8927  okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-anti-fraud-protection: active
+2025-11-16 22:54:05.963  7916-8927  okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-certificate-pinning-enabled: false
+2025-11-16 22:54:05.963  7916-8927  okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-certificate-pinning-status: disabled-for-stability
+2025-11-16 22:54:05.963  7916-8927  okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-cloud-trace-context: a2bfd9cc7dab982492d94821bb23ecb5;o=1
+2025-11-16 22:54:05.963  7916-8927  okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-content-type-options: nosniff
+2025-11-16 22:54:05.963  7916-8927  okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-financial-data-protection: enabled
+2025-11-16 22:54:05.963  7916-8927  okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-frame-options: DENY
+2025-11-16 22:54:05.963  7916-8927  okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-transaction-security-level: maximum
+2025-11-16 22:54:05.963  7916-8927  okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-xss-protection: 1; mode=block
+2025-11-16 22:54:05.963  7916-8927  okhttp.OkHttpClient     com.cdccreditsmart.app               I  via: 1.1 google
+2025-11-16 22:54:05.963  7916-8927  okhttp.OkHttpClient     com.cdccreditsmart.app               I  alt-svc: h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
+2025-11-16 22:54:05.964  7916-8927  okhttp.OkHttpClient     com.cdccreditsmart.app               I  {"error":"Dispositivo não encontrado","hint":"Use IMEI, Serial Number ou Device ID do aparelho cadastrado"}
+2025-11-16 22:54:05.964  7916-8927  okhttp.OkHttpClient     com.cdccreditsmart.app               I  <-- END HTTP (108-byte body)
+2025-11-16 22:54:05.965  7916-8093  MdmCommandReceiver      com.cdccreditsmart.app               E  ❌ Erro ao buscar comandos pendentes - HTTP 404
+2025-11-16 22:54:05.965  7916-8093  MdmCommandReceiver      com.cdccreditsmart.app               E  ❌ Response body: {"error":"Dispositivo não encontrado","hint":"Use IMEI, Serial Number ou Device ID do aparelho cadastrado"}
+2025-11-16 22:54:05.966  7916-8093  MdmCommandReceiver      com.cdccreditsmart.app               D  ⏳ [Polling #2] Aguardando 29689ms até próxima verificação...
