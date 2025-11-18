@@ -26,20 +26,6 @@ class EnhancedProtectionsManager(private val context: Context) {
         ParentalControlBlocker(context)
     }
     
-    enum class Operation {
-        PARENTAL_BLOCK,
-        SYSTEM_UPDATE_POLICY,
-        POWER_SAVING_POLICY,
-        MULTI_WINDOW_POLICY
-    }
-    
-    data class OperationResult(
-        val operation: Operation,
-        val enabled: Boolean,
-        val success: Boolean,
-        val details: String = ""
-    )
-    
     data class ProtectionResult(
         val success: Boolean,
         val appliedPolicies: Int,
@@ -65,317 +51,211 @@ class EnhancedProtectionsManager(private val context: Context) {
             )
         }
         
-        val results = mutableListOf<OperationResult>()
+        var success = true
+        var appliedPolicies = 0
+        val details = mutableListOf<String>()
         
-        results.add(applyParentalBlock(enable))
-        results.add(blockSystemUpdates(enable))
-        results.add(blockPowerSavingMode(enable))
-        results.add(blockMultiWindow(enable))
-        
-        val success = if (enable) {
-            results.any { it.enabled && it.success }
-        } else {
-            results.all { !it.enabled || it.success }
-        }
-        
-        val failures = results.filter { 
+        try {
             if (enable) {
-                it.enabled && !it.success
-            } else {
-                it.enabled && !it.success
-            }
-        }
-        
-        val message = if (enable) {
-            if (success) {
-                val successfulOps = results.filter { it.enabled && it.success }
-                if (successfulOps.isEmpty()) {
-                    "Proteções avançadas aplicadas (nenhuma operação necessária)"
-                } else {
-                    val opNames = successfulOps.map { it.operation.name }.joinToString(", ")
-                    "Proteções avançadas aplicadas com sucesso: $opNames"
+                Log.i(TAG, "═══ ENABLE: Aplicando proteções ═══")
+                
+                try {
+                    val parentalResult = parentalControlBlocker.blockParentalControlApps()
+                    if (parentalResult.success) {
+                        appliedPolicies++
+                        details.add("Parental: ${parentalResult.message}")
+                        Log.i(TAG, "✅ Parental control bloqueado: ${parentalResult.message}")
+                    } else {
+                        success = false
+                        details.add("Parental: falhou - ${parentalResult.message}")
+                        Log.e(TAG, "❌ Parental control falhou: ${parentalResult.message}")
+                    }
+                } catch (e: Exception) {
+                    success = false
+                    details.add("Parental: exception - ${e.message}")
+                    Log.e(TAG, "❌ Parental control exception: ${e.message}")
                 }
+                
+                try {
+                    blockSystemUpdates(true)
+                    appliedPolicies++
+                    details.add("System updates: bloqueado")
+                    Log.i(TAG, "✅ System updates bloqueado")
+                } catch (e: Exception) {
+                    success = false
+                    details.add("System updates: falhou - ${e.message}")
+                    Log.e(TAG, "❌ System updates falhou: ${e.message}")
+                }
+                
+                try {
+                    blockPowerSavingMode(true)
+                    appliedPolicies++
+                    details.add("Power saving: configurado")
+                    Log.i(TAG, "✅ Power saving configurado")
+                } catch (e: Exception) {
+                    success = false
+                    details.add("Power saving: falhou - ${e.message}")
+                    Log.e(TAG, "❌ Power saving falhou: ${e.message}")
+                }
+                
+                try {
+                    blockMultiWindow(true)
+                    appliedPolicies++
+                    details.add("Multi-window: bloqueado")
+                    Log.i(TAG, "✅ Multi-window bloqueado")
+                } catch (e: Exception) {
+                    success = false
+                    details.add("Multi-window: falhou - ${e.message}")
+                    Log.e(TAG, "❌ Multi-window falhou: ${e.message}")
+                }
+                
             } else {
-                val failureDetails = failures.joinToString("; ") { "${it.operation.name}: ${it.details}" }
-                "Falha ao aplicar proteções avançadas: $failureDetails"
-            }
-        } else {
-            if (success) {
-                "Proteções avançadas removidas com sucesso"
-            } else {
-                val failureDetails = failures.joinToString("; ") { "${it.operation.name}: ${it.details}" }
-                "Falha ao remover proteções avançadas: $failureDetails"
-            }
-        }
-        
-        val appliedPolicies = results.count { it.enabled && it.success }
-        val parentalAppsBlocked = parentalControlBlocker.getInstalledParentalControlApps().size
-        
-        Log.i(TAG, "")
-        Log.i(TAG, "╔════════════════════════════════════════════════════════════════╗")
-        Log.i(TAG, "║  📊 RESUMO DAS PROTEÇÕES AVANÇADAS                             ║")
-        Log.i(TAG, "╠════════════════════════════════════════════════════════════════╣")
-        Log.i(TAG, "║  Operação: ${if (enable) "ATIVAR" else "DESATIVAR"}                                          ║")
-        Log.i(TAG, "║  Success: $success                                              ║")
-        Log.i(TAG, "║  Políticas aplicadas: $appliedPolicies                                     ║")
-        Log.i(TAG, "║  Apps de controle parental detectados: $parentalAppsBlocked                  ║")
-        Log.i(TAG, "╠════════════════════════════════════════════════════════════════╣")
-        results.forEach { result ->
-            val status = if (result.success) "✅" else "❌"
-            val action = if (result.enabled) "ATIVADO" else "DESATIVADO"
-            Log.i(TAG, "║  $status ${result.operation.name}: $action")
-            if (result.details.isNotEmpty()) {
-                Log.i(TAG, "║     → ${result.details}")
-            }
-        }
-        Log.i(TAG, "╚════════════════════════════════════════════════════════════════╝")
-        Log.i(TAG, "")
-        
-        return ProtectionResult(
-            success = success,
-            appliedPolicies = appliedPolicies,
-            parentalAppsBlocked = parentalAppsBlocked,
-            message = message
-        )
-    }
-    
-    private fun applyParentalBlock(enable: Boolean): OperationResult {
-        Log.i(TAG, "")
-        Log.i(TAG, "═══ BLOQUEIO DE CONTROLE PARENTAL ═══")
-        Log.i(TAG, "Proteções avançadas: Bloqueio de controle parental")
-        Log.i(TAG, "Razão: Previne que pais/responsáveis usem apps de controle parental")
-        Log.i(TAG, "")
-        
-        return try {
-            val result = if (enable) {
-                parentalControlBlocker.blockParentalControlApps()
-            } else {
-                parentalControlBlocker.unblockParentalControlApps()
+                Log.i(TAG, "═══ DISABLE: Removendo proteções ═══")
+                
+                try {
+                    val unblockResult = parentalControlBlocker.unblockParentalControlApps()
+                    if (unblockResult.success) {
+                        details.add("Parental: ${unblockResult.message}")
+                        Log.i(TAG, "✅ Parental control desbloqueado: ${unblockResult.message}")
+                    } else {
+                        success = false
+                        details.add("Parental: falhou ao remover - ${unblockResult.message}")
+                        Log.e(TAG, "❌ Parental control falhou ao desbloquear: ${unblockResult.message}")
+                    }
+                } catch (e: Exception) {
+                    success = false
+                    details.add("Parental: exception ao remover - ${e.message}")
+                    Log.e(TAG, "❌ Parental control exception ao desbloquear: ${e.message}")
+                }
+                
+                try {
+                    blockSystemUpdates(false)
+                    details.add("System updates: removido")
+                    Log.i(TAG, "✅ System updates removido")
+                } catch (e: Exception) {
+                    success = false
+                    details.add("System updates: falhou ao remover - ${e.message}")
+                    Log.e(TAG, "❌ System updates falhou ao remover: ${e.message}")
+                }
+                
+                try {
+                    blockPowerSavingMode(false)
+                    details.add("Power saving: removido")
+                    Log.i(TAG, "✅ Power saving removido")
+                } catch (e: Exception) {
+                    success = false
+                    details.add("Power saving: falhou ao remover - ${e.message}")
+                    Log.e(TAG, "❌ Power saving falhou ao remover: ${e.message}")
+                }
+                
+                try {
+                    blockMultiWindow(false)
+                    details.add("Multi-window: removido")
+                    Log.i(TAG, "✅ Multi-window removido")
+                } catch (e: Exception) {
+                    success = false
+                    details.add("Multi-window: falhou ao remover - ${e.message}")
+                    Log.e(TAG, "❌ Multi-window falhou ao remover: ${e.message}")
+                }
             }
             
-            if (enable) {
-                if (result.success) {
-                    if (result.blockedApps.isEmpty()) {
-                        Log.i(TAG, "✅ Nenhum app de controle parental detectado - no-op bem-sucedido")
-                        OperationResult(
-                            operation = Operation.PARENTAL_BLOCK,
-                            enabled = true,
-                            success = true,
-                            details = "Nenhum app de controle parental instalado"
-                        )
-                    } else {
-                        Log.i(TAG, "✅ Controle parental bloqueado: ${result.blockedApps.size} app(s)")
-                        OperationResult(
-                            operation = Operation.PARENTAL_BLOCK,
-                            enabled = true,
-                            success = true,
-                            details = "${result.blockedApps.size} app(s) bloqueado(s)"
-                        )
-                    }
-                } else {
-                    Log.e(TAG, "❌ Falha ao bloquear controle parental: ${result.message}")
-                    OperationResult(
-                        operation = Operation.PARENTAL_BLOCK,
-                        enabled = true,
-                        success = false,
-                        details = result.message
-                    )
-                }
+            val parentalAppsBlocked = parentalControlBlocker.getInstalledParentalControlApps().size
+            val message = if (success) {
+                if (enable) "Proteções aplicadas com sucesso" else "Proteções removidas com sucesso"
             } else {
-                if (result.success) {
-                    Log.i(TAG, "✅ Controle parental desbloqueado")
-                    OperationResult(
-                        operation = Operation.PARENTAL_BLOCK,
-                        enabled = false,
-                        success = true,
-                        details = result.message
-                    )
-                } else {
-                    Log.e(TAG, "❌ Falha ao desbloquear controle parental: ${result.message}")
-                    OperationResult(
-                        operation = Operation.PARENTAL_BLOCK,
-                        enabled = false,
-                        success = false,
-                        details = result.message
-                    )
-                }
+                "Falhas detectadas: ${details.joinToString("; ")}"
             }
+            
+            Log.i(TAG, "")
+            Log.i(TAG, "╔════════════════════════════════════════════════════════════════╗")
+            Log.i(TAG, "║  📊 RESUMO DAS PROTEÇÕES AVANÇADAS                             ║")
+            Log.i(TAG, "╠════════════════════════════════════════════════════════════════╣")
+            Log.i(TAG, "║  Operação: ${if (enable) "ATIVAR" else "DESATIVAR"}                                          ║")
+            Log.i(TAG, "║  Success: $success                                              ║")
+            Log.i(TAG, "║  Políticas aplicadas: $appliedPolicies                                     ║")
+            Log.i(TAG, "║  Apps de controle parental detectados: $parentalAppsBlocked                  ║")
+            Log.i(TAG, "╠════════════════════════════════════════════════════════════════╣")
+            details.forEach { detail ->
+                Log.i(TAG, "║  → $detail")
+            }
+            Log.i(TAG, "╚════════════════════════════════════════════════════════════════╝")
+            Log.i(TAG, "")
+            
+            return ProtectionResult(
+                success = success,
+                appliedPolicies = appliedPolicies,
+                parentalAppsBlocked = parentalAppsBlocked,
+                message = message
+            )
+            
         } catch (e: Exception) {
-            Log.e(TAG, "❌ Exception ao processar controle parental: ${e.message}")
-            OperationResult(
-                operation = Operation.PARENTAL_BLOCK,
-                enabled = enable,
+            Log.e(TAG, "❌ Erro crítico ao aplicar proteções: ${e.message}")
+            return ProtectionResult(
                 success = false,
-                details = "Exception: ${e.message}"
+                appliedPolicies = 0,
+                parentalAppsBlocked = 0,
+                message = "Erro crítico: ${e.message}"
             )
         }
     }
     
-    private fun blockSystemUpdates(enable: Boolean): OperationResult {
+    private fun blockSystemUpdates(enable: Boolean) {
         Log.i(TAG, "")
         Log.i(TAG, "═══ BLOQUEIO DE SYSTEM UPDATES ═══")
-        Log.i(TAG, "Proteções avançadas: Bloqueio de atualizações de sistema")
-        Log.i(TAG, "Razão: Previne updates que possam remover proteções")
-        Log.i(TAG, "")
         
-        return try {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                val policy = if (enable) {
-                    android.app.admin.SystemUpdatePolicy.createPostponeInstallPolicy()
-                } else {
-                    null
-                }
-                
-                dpm.setSystemUpdatePolicy(adminComponent, policy)
-                
-                if (enable) {
-                    Log.i(TAG, "✅ System updates ADIADOS (postpone)")
-                    OperationResult(
-                        operation = Operation.SYSTEM_UPDATE_POLICY,
-                        enabled = true,
-                        success = true,
-                        details = "Updates adiados - não instalam automaticamente"
-                    )
-                } else {
-                    Log.i(TAG, "✅ System updates LIBERADOS (política removida)")
-                    OperationResult(
-                        operation = Operation.SYSTEM_UPDATE_POLICY,
-                        enabled = false,
-                        success = true,
-                        details = "Política de updates removida"
-                    )
-                }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            val policy = if (enable) {
+                android.app.admin.SystemUpdatePolicy.createPostponeInstallPolicy()
             } else {
-                Log.w(TAG, "⚠️ setSystemUpdatePolicy requer Android N+")
-                OperationResult(
-                    operation = Operation.SYSTEM_UPDATE_POLICY,
-                    enabled = enable,
-                    success = false,
-                    details = "Requer Android N+ (API 24+)"
-                )
+                null
             }
-        } catch (e: Exception) {
-            Log.e(TAG, "❌ Erro ao configurar system updates: ${e.message}")
-            OperationResult(
-                operation = Operation.SYSTEM_UPDATE_POLICY,
-                enabled = enable,
-                success = false,
-                details = "Exception: ${e.message}"
-            )
+            
+            dpm.setSystemUpdatePolicy(adminComponent, policy)
+            Log.i(TAG, "System updates ${if (enable) "ADIADOS" else "LIBERADOS"}")
+        } else {
+            throw UnsupportedOperationException("setSystemUpdatePolicy requer Android N+ (API 24+)")
         }
     }
     
-    private fun blockPowerSavingMode(enable: Boolean): OperationResult {
+    private fun blockPowerSavingMode(enable: Boolean) {
         Log.i(TAG, "")
         Log.i(TAG, "═══ CONFIGURAÇÃO POWER SAVING MODE ═══")
-        Log.i(TAG, "Proteções avançadas: Configuração de economia de energia")
-        Log.i(TAG, "")
         
-        return try {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                if (enable) {
-                    dpm.addUserRestriction(adminComponent, UserManager.DISALLOW_CONFIG_BRIGHTNESS)
-                    Log.i(TAG, "✅ Configuração de brilho bloqueada")
-                    OperationResult(
-                        operation = Operation.POWER_SAVING_POLICY,
-                        enabled = true,
-                        success = true,
-                        details = "Configuração de brilho bloqueada"
-                    )
-                } else {
-                    dpm.clearUserRestriction(adminComponent, UserManager.DISALLOW_CONFIG_BRIGHTNESS)
-                    Log.i(TAG, "✅ Configuração de brilho liberada")
-                    OperationResult(
-                        operation = Operation.POWER_SAVING_POLICY,
-                        enabled = false,
-                        success = true,
-                        details = "Configuração de brilho restaurada"
-                    )
-                }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            if (enable) {
+                dpm.addUserRestriction(adminComponent, UserManager.DISALLOW_CONFIG_BRIGHTNESS)
+                Log.i(TAG, "Configuração de brilho bloqueada")
             } else {
-                Log.w(TAG, "⚠️ DISALLOW_CONFIG_BRIGHTNESS requer API 21+")
-                OperationResult(
-                    operation = Operation.POWER_SAVING_POLICY,
-                    enabled = enable,
-                    success = false,
-                    details = "Requer API 21+ (Lollipop)"
-                )
+                dpm.clearUserRestriction(adminComponent, UserManager.DISALLOW_CONFIG_BRIGHTNESS)
+                Log.i(TAG, "Configuração de brilho liberada")
             }
-        } catch (e: Exception) {
-            Log.e(TAG, "❌ Erro ao configurar power saving: ${e.message}")
-            OperationResult(
-                operation = Operation.POWER_SAVING_POLICY,
-                enabled = enable,
-                success = false,
-                details = "Exception: ${e.message}"
-            )
+        } else {
+            throw UnsupportedOperationException("DISALLOW_CONFIG_BRIGHTNESS requer API 21+ (Lollipop)")
         }
     }
     
-    private fun blockMultiWindow(enable: Boolean): OperationResult {
+    private fun blockMultiWindow(enable: Boolean) {
         Log.i(TAG, "")
         Log.i(TAG, "═══ BLOQUEIO DE MULTI-WINDOW ═══")
-        Log.i(TAG, "Proteções avançadas: Bloqueio de multi-janela")
-        Log.i(TAG, "Razão: Previne usuário usar apps em modo janela/split-screen")
-        Log.i(TAG, "")
         
-        return try {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-                if (!isDeviceOwner()) {
-                    Log.w(TAG, "⚠️ Não é Device Owner - não pode usar setLockTaskFeatures")
-                    return OperationResult(
-                        operation = Operation.MULTI_WINDOW_POLICY,
-                        enabled = enable,
-                        success = false,
-                        details = "Não é Device Owner"
-                    )
-                }
-                
-                dpm.setLockTaskFeatures(
-                    adminComponent,
-                    if (enable) {
-                        DevicePolicyManager.LOCK_TASK_FEATURE_NONE
-                    } else {
-                        DevicePolicyManager.LOCK_TASK_FEATURE_SYSTEM_INFO or
-                        DevicePolicyManager.LOCK_TASK_FEATURE_HOME or
-                        DevicePolicyManager.LOCK_TASK_FEATURE_OVERVIEW
-                    }
-                )
-                
-                if (enable) {
-                    Log.i(TAG, "✅ Multi-window/Split-screen BLOQUEADO")
-                    OperationResult(
-                        operation = Operation.MULTI_WINDOW_POLICY,
-                        enabled = true,
-                        success = true,
-                        details = "Multi-window bloqueado via Lock Task"
-                    )
-                } else {
-                    Log.i(TAG, "✅ Multi-window/Split-screen LIBERADO")
-                    OperationResult(
-                        operation = Operation.MULTI_WINDOW_POLICY,
-                        enabled = false,
-                        success = true,
-                        details = "Multi-window restaurado"
-                    )
-                }
-            } else {
-                Log.w(TAG, "⚠️ setLockTaskFeatures requer API 28+")
-                OperationResult(
-                    operation = Operation.MULTI_WINDOW_POLICY,
-                    enabled = enable,
-                    success = false,
-                    details = "Requer API 28+ (Android P)"
-                )
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            if (!isDeviceOwner()) {
+                throw SecurityException("Não é Device Owner - não pode usar setLockTaskFeatures")
             }
-        } catch (e: Exception) {
-            Log.e(TAG, "❌ Erro ao configurar multi-window: ${e.message}")
-            OperationResult(
-                operation = Operation.MULTI_WINDOW_POLICY,
-                enabled = enable,
-                success = false,
-                details = "Exception: ${e.message}"
+            
+            dpm.setLockTaskFeatures(
+                adminComponent,
+                if (enable) {
+                    DevicePolicyManager.LOCK_TASK_FEATURE_NONE
+                } else {
+                    DevicePolicyManager.LOCK_TASK_FEATURE_SYSTEM_INFO or
+                    DevicePolicyManager.LOCK_TASK_FEATURE_HOME or
+                    DevicePolicyManager.LOCK_TASK_FEATURE_OVERVIEW
+                }
             )
+            Log.i(TAG, "Multi-window ${if (enable) "BLOQUEADO" else "LIBERADO"}")
+        } else {
+            throw UnsupportedOperationException("setLockTaskFeatures requer API 28+ (Android P)")
         }
     }
     
