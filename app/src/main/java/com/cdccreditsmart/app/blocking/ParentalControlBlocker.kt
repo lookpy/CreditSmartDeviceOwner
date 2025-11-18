@@ -128,6 +128,17 @@ class ParentalControlBlocker(private val context: Context) {
         
         val installedParentalApps = getInstalledParentalControlApps()
         
+        if (installedParentalApps.isEmpty()) {
+            val msg = "Nenhum app de controle parental instalado - no-op bem-sucedido"
+            Log.i(TAG, "✅ $msg")
+            return BlockResult(
+                success = true,
+                blockedApps = emptyList(),
+                failedApps = emptyList(),
+                message = msg
+            )
+        }
+        
         val unblockedApps = mutableListOf<String>()
         val failedApps = mutableListOf<String>()
         
