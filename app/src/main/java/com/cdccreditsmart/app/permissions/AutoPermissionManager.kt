@@ -38,6 +38,20 @@ class AutoPermissionManager(private val context: Context) {
                 emptyList()
             }
         )
+        
+        /**
+         * Retorna a lista de permissões runtime que o app precisa
+         * Para ser usado ao solicitar permissões manualmente quando não é Device Owner
+         */
+        fun getAllRuntimePermissions(context: Context): List<String> {
+            return RUNTIME_PERMISSIONS.filter { permission ->
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    context.checkSelfPermission(permission) != PackageManager.PERMISSION_GRANTED
+                } else {
+                    false
+                }
+            }
+        }
     }
     
     private val dpm: DevicePolicyManager by lazy {
