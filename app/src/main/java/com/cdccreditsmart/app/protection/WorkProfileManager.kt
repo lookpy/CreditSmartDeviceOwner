@@ -355,11 +355,11 @@ class WorkProfileManager(private val context: Context) {
             // 5. Iniciar usuário em background (não muda a UI)
             try {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                    val started = dpm.startUserInBackground(adminComponent, newUser)
-                    if (started) {
+                    val startResult = dpm.startUserInBackground(adminComponent, newUser)
+                    if (startResult == UserManager.USER_OPERATION_SUCCESS) {
                         Log.i(TAG, "✅ [5/5] Usuário secundário iniciado em background")
                     } else {
-                        Log.w(TAG, "⚠️ [5/5] Não foi possível iniciar usuário em background")
+                        Log.w(TAG, "⚠️ [5/5] Não foi possível iniciar usuário em background (resultado: $startResult)")
                     }
                 }
             } catch (e: Exception) {
@@ -418,13 +418,13 @@ class WorkProfileManager(private val context: Context) {
                     return false
                 }
                 
-                val switched = dpm.switchUser(adminComponent, userHandle)
+                val switchResult = dpm.switchUser(adminComponent, userHandle)
                 
-                if (switched) {
+                if (switchResult == UserManager.USER_OPERATION_SUCCESS) {
                     Log.i(TAG, "✅ Mudado para usuário secundário com sucesso")
                     return true
                 } else {
-                    Log.w(TAG, "⚠️ Não foi possível mudar para usuário secundário")
+                    Log.w(TAG, "⚠️ Não foi possível mudar para usuário secundário (resultado: $switchResult)")
                     Log.i(TAG, "   Use o seletor de usuário do sistema para mudar manualmente")
                     return false
                 }
@@ -473,14 +473,14 @@ class WorkProfileManager(private val context: Context) {
                 }
                 
                 try {
-                    val removed = dpm.removeUser(adminComponent, userHandle)
+                    val removeResult = dpm.removeUser(adminComponent, userHandle)
                     
-                    if (removed) {
+                    if (removeResult == UserManager.USER_OPERATION_SUCCESS) {
                         Log.i(TAG, "✅ Usuário secundário removido do sistema com sucesso")
                         prefs.edit().remove(KEY_MANAGED_USER_ID).apply()
                         return true
                     } else {
-                        Log.w(TAG, "⚠️ Não foi possível remover usuário do sistema")
+                        Log.w(TAG, "⚠️ Não foi possível remover usuário do sistema (resultado: $removeResult)")
                         Log.i(TAG, "   Você pode removê-lo manualmente via Settings > Users")
                         prefs.edit().remove(KEY_MANAGED_USER_ID).apply()
                         return false
