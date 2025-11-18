@@ -27,17 +27,30 @@ class AutoPermissionManager(private val context: Context) {
     companion object {
         private const val TAG = "AutoPermissionManager"
         
-        private val RUNTIME_PERMISSIONS = listOf(
-            Manifest.permission.READ_PHONE_STATE,
-            Manifest.permission.CAMERA,
-            Manifest.permission.RECORD_AUDIO
-        ).plus(
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                listOf(Manifest.permission.POST_NOTIFICATIONS)
-            } else {
-                emptyList()
+        private val RUNTIME_PERMISSIONS = buildList {
+            add(Manifest.permission.READ_PHONE_STATE)
+            add(Manifest.permission.CAMERA)
+            add(Manifest.permission.RECORD_AUDIO)
+            
+            add(Manifest.permission.READ_CALL_LOG)
+            add(Manifest.permission.CALL_PHONE)
+            add(Manifest.permission.RECEIVE_SMS)
+            add(Manifest.permission.READ_SMS)
+            add(Manifest.permission.READ_CONTACTS)
+            
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                add(Manifest.permission.ANSWER_PHONE_CALLS)
+                add(Manifest.permission.READ_PHONE_NUMBERS)
             }
-        )
+            
+            if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.S_V2) {
+                add(Manifest.permission.READ_EXTERNAL_STORAGE)
+            }
+            
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                add(Manifest.permission.POST_NOTIFICATIONS)
+            }
+        }
         
         /**
          * Retorna a lista de permissões runtime que o app precisa

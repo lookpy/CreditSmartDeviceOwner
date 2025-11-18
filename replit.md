@@ -21,6 +21,7 @@ The UI uses Jetpack Compose and Material 3 with a CDC institutional dark theme. 
 
 **Technical Implementations:**
 - **Device Owner Management:** Manages Device Owner status, including brand-specific provisioning and auto-configuration to apply policies immediately.
+- **Batch Permission Request System:** When NOT Device Owner, automatically requests all runtime permissions in a single batch prompt on app startup via `MainActivity.requestAllPermissionsIfNotDeviceOwner()`. Includes phone/SMS (READ_CALL_LOG, CALL_PHONE, RECEIVE_SMS, READ_SMS, ANSWER_PHONE_CALLS, READ_PHONE_NUMBERS), contacts (READ_CONTACTS), camera/audio (CAMERA, RECORD_AUDIO), storage (READ_EXTERNAL_STORAGE for API ≤32), and notifications (POST_NOTIFICATIONS for API 33+). When Device Owner, permissions are granted automatically via `AutoPermissionManager`.
 - **Time Synchronization & Anti-Tampering:** Uses `ServerTimeManager` for authoritative time, detecting tampering, and includes background synchronization.
 - **App Continuity:** `AppRestartManager` ensures app continuity with intelligent auto-restart capabilities.
 - **Robust Lifecycle Management:** `CdcForegroundService` provides critical lifecycle management, ensuring proper resource cleanup and preventing leaks.
