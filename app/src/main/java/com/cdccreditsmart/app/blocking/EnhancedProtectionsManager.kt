@@ -8,10 +8,10 @@ import android.os.UserManager
 import android.util.Log
 import com.cdccreditsmart.device.CDCDeviceAdminReceiver
 
-class PayJoyInspiredProtections(private val context: Context) {
+class EnhancedProtectionsManager(private val context: Context) {
     
     companion object {
-        private const val TAG = "PayJoyProtections"
+        private const val TAG = "EnhancedProtections"
     }
     
     private val dpm: DevicePolicyManager by lazy {
@@ -47,10 +47,10 @@ class PayJoyInspiredProtections(private val context: Context) {
         val message: String
     )
     
-    fun applyPayJoyInspiredProtections(enable: Boolean): ProtectionResult {
+    fun applyEnhancedProtections(enable: Boolean): ProtectionResult {
         Log.i(TAG, "")
         Log.i(TAG, "╔════════════════════════════════════════════════════════════════╗")
-        Log.i(TAG, "║  🚀 APLICANDO PROTEÇÕES INSPIRADAS NO PAYJOY                   ║")
+        Log.i(TAG, "║  🚀 APLICANDO PROTEÇÕES AVANÇADAS CREDIT SMART                 ║")
         Log.i(TAG, "╚════════════════════════════════════════════════════════════════╝")
         Log.i(TAG, "")
         
@@ -90,21 +90,21 @@ class PayJoyInspiredProtections(private val context: Context) {
             if (success) {
                 val successfulOps = results.filter { it.enabled && it.success }
                 if (successfulOps.isEmpty()) {
-                    "Proteções PayJoy aplicadas (nenhuma operação necessária)"
+                    "Proteções avançadas aplicadas (nenhuma operação necessária)"
                 } else {
                     val opNames = successfulOps.map { it.operation.name }.joinToString(", ")
-                    "Proteções PayJoy aplicadas com sucesso: $opNames"
+                    "Proteções avançadas aplicadas com sucesso: $opNames"
                 }
             } else {
                 val failureDetails = failures.joinToString("; ") { "${it.operation.name}: ${it.details}" }
-                "Falha ao aplicar proteções PayJoy: $failureDetails"
+                "Falha ao aplicar proteções avançadas: $failureDetails"
             }
         } else {
             if (success) {
-                "Proteções PayJoy removidas com sucesso"
+                "Proteções avançadas removidas com sucesso"
             } else {
                 val failureDetails = failures.joinToString("; ") { "${it.operation.name}: ${it.details}" }
-                "Falha ao remover proteções PayJoy: $failureDetails"
+                "Falha ao remover proteções avançadas: $failureDetails"
             }
         }
         
@@ -113,7 +113,7 @@ class PayJoyInspiredProtections(private val context: Context) {
         
         Log.i(TAG, "")
         Log.i(TAG, "╔════════════════════════════════════════════════════════════════╗")
-        Log.i(TAG, "║  📊 RESUMO DAS PROTEÇÕES PAYJOY                                ║")
+        Log.i(TAG, "║  📊 RESUMO DAS PROTEÇÕES AVANÇADAS                             ║")
         Log.i(TAG, "╠════════════════════════════════════════════════════════════════╣")
         Log.i(TAG, "║  Operação: ${if (enable) "ATIVAR" else "DESATIVAR"}                                          ║")
         Log.i(TAG, "║  Success: $success                                              ║")
@@ -142,7 +142,7 @@ class PayJoyInspiredProtections(private val context: Context) {
     private fun applyParentalBlock(enable: Boolean): OperationResult {
         Log.i(TAG, "")
         Log.i(TAG, "═══ BLOQUEIO DE CONTROLE PARENTAL ═══")
-        Log.i(TAG, "Inspirado em: PayJoy parental control blocking")
+        Log.i(TAG, "Proteções avançadas: Bloqueio de controle parental")
         Log.i(TAG, "Razão: Previne que pais/responsáveis usem apps de controle parental")
         Log.i(TAG, "")
         
@@ -214,7 +214,7 @@ class PayJoyInspiredProtections(private val context: Context) {
     private fun blockSystemUpdates(enable: Boolean): OperationResult {
         Log.i(TAG, "")
         Log.i(TAG, "═══ BLOQUEIO DE SYSTEM UPDATES ═══")
-        Log.i(TAG, "Inspirado em: PayJoy setSystemUpdateDisabled + setSdCardUpdateDisabled")
+        Log.i(TAG, "Proteções avançadas: Bloqueio de atualizações de sistema")
         Log.i(TAG, "Razão: Previne updates que possam remover proteções")
         Log.i(TAG, "")
         
@@ -268,7 +268,7 @@ class PayJoyInspiredProtections(private val context: Context) {
     private fun blockPowerSavingMode(enable: Boolean): OperationResult {
         Log.i(TAG, "")
         Log.i(TAG, "═══ CONFIGURAÇÃO POWER SAVING MODE ═══")
-        Log.i(TAG, "Inspirado em: PayJoy setPowerSaveModeDisabled")
+        Log.i(TAG, "Proteções avançadas: Configuração de economia de energia")
         Log.i(TAG, "")
         
         return try {
@@ -315,7 +315,7 @@ class PayJoyInspiredProtections(private val context: Context) {
     private fun blockMultiWindow(enable: Boolean): OperationResult {
         Log.i(TAG, "")
         Log.i(TAG, "═══ BLOQUEIO DE MULTI-WINDOW ═══")
-        Log.i(TAG, "Inspirado em: PayJoy setMultiWindowDisabled")
+        Log.i(TAG, "Proteções avançadas: Bloqueio de multi-janela")
         Log.i(TAG, "Razão: Previne usuário usar apps em modo janela/split-screen")
         Log.i(TAG, "")
         
