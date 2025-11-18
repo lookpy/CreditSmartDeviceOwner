@@ -269,8 +269,8 @@ class KnoxEnrollmentHelper(private val context: Context) {
                 null
             }
             
-            if (knoxContainerManagerMethod != null) {
-                val kcmInstance = knoxContainerManagerMethod.invoke(edmInstance, context)
+            if (getKnoxContainerManagerMethod != null) {
+                val kcmInstance = getKnoxContainerManagerMethod.invoke(edmInstance, context)
                 if (kcmInstance != null) {
                     Log.d(TAG, "✅ Knox Container Manager disponível - dispositivo pode estar enrolled")
                     return true

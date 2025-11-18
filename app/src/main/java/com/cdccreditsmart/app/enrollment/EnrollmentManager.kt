@@ -348,7 +348,7 @@ class EnrollmentManager(private val context: Context) {
                 hasZeroTouchSupport = deviceInfo.hasZeroTouchSupport,
                 timestamp = System.currentTimeMillis(),
                 knoxVersion = knoxInfo?.knoxVersion,
-                knoxApiLevel = knoxInfo?.knoxApiLevel?.toIntOrNull(),
+                knoxApiLevel = knoxInfo?.knoxApiLevel,
                 knoxEnrollmentId = knoxInfo?.knoxEnrollmentId,
                 dpcPackageName = zeroTouchInfo?.dpcPackageName,
                 additionalInfo = deviceInfo.additionalInfo

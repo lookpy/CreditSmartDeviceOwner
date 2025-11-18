@@ -255,7 +255,7 @@ class ZeroTouchHelper(private val context: Context) {
             
             val adminExtras = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 try {
-                    dpm.getClass()
+                    dpm.javaClass
                         .getMethod("getTransferOwnershipBundle")
                         .invoke(dpm) as? PersistableBundle
                 } catch (e: Exception) {

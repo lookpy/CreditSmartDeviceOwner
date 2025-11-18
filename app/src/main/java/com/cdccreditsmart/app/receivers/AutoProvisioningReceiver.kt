@@ -158,7 +158,7 @@ class AutoProvisioningReceiver : BroadcastReceiver() {
             
             // 4. Aplicar proteções Knox se for Samsung
             try {
-                val knoxEnhanced = com.cdccreditsmart.app.knox.KnoxEnhancedProtections(context)
+                val knoxEnhanced = com.cdccreditsmart.app.protection.KnoxEnhancedProtections(context)
                 Log.i(TAG, "")
                 Log.i(TAG, "🔐 Aplicando proteções Samsung Knox...")
                 knoxEnhanced.applyAllEnhancedProtections()
@@ -221,7 +221,7 @@ class AutoProvisioningReceiver : BroadcastReceiver() {
             
             // Criar notificação
             val notification = NotificationCompat.Builder(context, "auto_provisioning")
-                .setSmallIcon(R.drawable.ic_notification)
+                .setSmallIcon(android.R.drawable.ic_dialog_info)
                 .setContentTitle("✅ Dispositivo Configurado!")
                 .setContentText("O dispositivo foi configurado e protegido automaticamente.")
                 .setStyle(
@@ -267,7 +267,7 @@ class AutoProvisioningReceiver : BroadcastReceiver() {
             
             // Criar notificação
             val notification = NotificationCompat.Builder(context, "auto_provisioning")
-                .setSmallIcon(R.drawable.ic_notification)
+                .setSmallIcon(android.R.drawable.ic_dialog_info)
                 .setContentTitle("⚠️ Erro na Configuração")
                 .setContentText("Houve um problema ao configurar o dispositivo automaticamente.")
                 .setStyle(

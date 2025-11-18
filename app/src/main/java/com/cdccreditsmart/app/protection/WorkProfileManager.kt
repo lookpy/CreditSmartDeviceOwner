@@ -116,32 +116,54 @@ class WorkProfileManager(private val context: Context) {
             }
             
             // Obter TODOS os usuários do dispositivo (não apenas profiles)
-            // API 28+: getUserHandles() retorna List<UserHandle> com todos os usuários
-            // API 24-27: getUsers() retorna List<UserInfo> com todos os usuários
+            // API 30+: getUserHandles() retorna List<UserHandle> com todos os usuários
+            // API 24-29: Use reflection para acessar getUsers() que pode estar @hide
             
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-                // Android 9.0+ (API 28+)
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                // Android 11+ (API 30+)
                 // getUserHandles(excludeDying=true) retorna todos os UserHandles ativos
-                val userHandles = userManager.getUserHandles(true)
+                try {
+                    val getUserHandlesMethod = UserManager::class.java.getMethod("getUserHandles", Boolean::class.javaPrimitiveType)
+                    @Suppress("UNCHECKED_CAST")
+                    val userHandles = getUserHandlesMethod.invoke(userManager, true) as? List<UserHandle>
+                    
+                    if (userHandles != null) {
+                        for (handle in userHandles) {
+                            val id = UserHandle::class.java.getDeclaredMethod("getIdentifier").invoke(handle) as Int
+                            if (id == userId) {
+                                Log.d(TAG, "✅ Usuário com ID $userId encontrado no sistema (via getUserHandles)")
+                                return true
+                            }
+                        }
+                    }
+                } catch (e: Exception) {
+                    Log.w(TAG, "⚠️ Erro ao usar getUserHandles, tentando método alternativo: ${e.message}")
+                }
+            }
+            
+            // Android 7.0-10 (API 24-29) ou fallback para API 30+
+            // Use reflection para acessar getUsers() que pode estar @hide em algumas versões
+            try {
+                val getUsersMethod = UserManager::class.java.getMethod("getUsers")
+                @Suppress("UNCHECKED_CAST")
+                val userInfoList = getUsersMethod.invoke(userManager) as? List<*>
                 
-                for (handle in userHandles) {
-                    val id = UserHandle::class.java.getDeclaredMethod("getIdentifier").invoke(handle) as Int
-                    if (id == userId) {
-                        Log.d(TAG, "✅ Usuário com ID $userId encontrado no sistema (via getUserHandles)")
-                        return true
+                if (userInfoList != null) {
+                    for (userInfoObj in userInfoList) {
+                        if (userInfoObj != null) {
+                            val userInfoClass = Class.forName("android.content.pm.UserInfo")
+                            val idField = userInfoClass.getField("id")
+                            val id = idField.getInt(userInfoObj)
+                            
+                            if (id == userId) {
+                                Log.d(TAG, "✅ Usuário com ID $userId encontrado no sistema (via getUsers)")
+                                return true
+                            }
+                        }
                     }
                 }
-            } else {
-                // Android 7.0-8.1 (API 24-27)
-                // getUsers() retorna List<UserInfo> com todos os usuários do sistema
-                val users = userManager.users
-                
-                for (userInfo in users) {
-                    if (userInfo.id == userId) {
-                        Log.d(TAG, "✅ Usuário com ID $userId encontrado no sistema (via getUsers)")
-                        return true
-                    }
-                }
+            } catch (e: Exception) {
+                Log.e(TAG, "❌ Erro ao acessar lista de usuários via reflection: ${e.message}")
             }
             
             Log.w(TAG, "⚠️ Usuário com ID $userId não encontrado no sistema")

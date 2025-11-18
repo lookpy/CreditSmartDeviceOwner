@@ -1,0 +1,51 @@
+failed
+Download info
+:device:compileDebugKotlin
+CDCDeviceAdminReceiver.kt
+'fun get(p0: String!): Any?' is deprecated. Deprecated in Java.
+'fun get(p0: String!): Any?' is deprecated. Deprecated in Java.
+This declaration overrides a deprecated member but is not marked as deprecated itself. Add the '@Deprecated' annotation or suppress the diagnostic.
+'fun onReadyForUserInitialization(p0: Context, p1: Intent): Unit' is deprecated. Deprecated in Java.
+'fun getStorageEncryption(p0: ComponentName?): Boolean' is deprecated. Deprecated in Java.
+:app:compileDebugKotlin
+EnrollmentManager.kt
+Unresolved reference 'Resource'.
+Unresolved reference 'toIntOrNull'.
+'when' expression must be exhaustive. Add the 'is Error', 'is Loading', 'is Success<*>' branches or an 'else' branch.
+Unresolved reference 'Resource'.
+Unresolved reference 'data'.
+Unresolved reference 'Resource'.
+Unresolved reference 'exception'.
+Unresolved reference 'exception'.
+Unresolved reference 'Resource'.
+KnoxEnrollmentHelper.kt
+Unresolved reference 'knoxContainerManagerMethod'.
+Unresolved reference 'knoxContainerManagerMethod'.
+Cannot infer type for type parameter 'R'. Specify it explicitly.
+ZeroTouchHelper.kt
+Unresolved reference 'getClass'.
+Cannot infer type for type parameter 'R'. Specify it explicitly.
+WorkProfileManager.kt
+Unresolved reference 'getUserHandles'.
+Method 'iterator()' is ambiguous for this expression. Applicable candidates:
+fun <T> Enumeration<T>.iterator(): Iterator<T>
+fun <T> Iterator<T>.iterator(): Iterator<T>
+fun <K, V> Map<out K, V>.iterator(): Iterator<Map.Entry<K, V>>
+fun <K, V> MutableMap<K, V>.iterator(): MutableIterator<MutableMap.MutableEntry<K, V>>
+fun CharSequence.iterator(): CharIterator
+fun BufferedInputStream.iterator(): ByteIterator
+Unresolved reference 'users'.
+Method 'iterator()' is ambiguous for this expression. Applicable candidates:
+fun <T> Enumeration<T>.iterator(): Iterator<T>
+fun <T> Iterator<T>.iterator(): Iterator<T>
+fun <K, V> Map<out K, V>.iterator(): Iterator<Map.Entry<K, V>>
+fun <K, V> MutableMap<K, V>.iterator(): MutableIterator<MutableMap.MutableEntry<K, V>>
+fun CharSequence.iterator(): CharIterator
+fun BufferedInputStream.iterator(): ByteIterator
+Condition type mismatch: inferred type is 'Int' but 'Boolean' was expected.
+AutoProvisioningReceiver.kt
+Unresolved reference 'KnoxEnhancedProtections'.
+Unresolved reference 'ic_notification'.
+Unresolved reference 'setContentTitle'.
+Unresolved reference 'ic_notification'.
+Unresolved reference 'setContentTitle'.
