@@ -1,0 +1,79 @@
+finished
+Download info
+:app:compileDebugKotlin
+AppBlockingManager.kt
+Condition is always 'false'.
+Condition is always 'false'.
+BlockedAppExplanationActivity.kt
+BlockedAppInterceptor.kt
+DeviceInfoManager.kt
+SimpleDeviceRegistrationManager.kt
+ZeroTouchHelper.kt
+PendingDecisionsService.kt
+UnblockService.kt
+Navigation.kt
+CdcMessagingService.kt
+AutoPermissionManager.kt
+UsageStatsPermissionHelper.kt
+ProvisioningActivity.kt
+'static field ACTION_PROVISION_MANAGED_DEVICE: String' is deprecated. Deprecated in Java.
+ProvisioningWizardScreen.kt
+'fun Divider(modifier: Modifier = ..., thickness: Dp = ..., color: Color = ...): Unit' is deprecated. Renamed to HorizontalDivider.
+'fun Divider(modifier: Modifier = ..., thickness: Dp = ..., color: Color = ...): Unit' is deprecated. Renamed to HorizontalDivider.
+ProtectionStatusScreen.kt
+'fun Divider(modifier: Modifier = ..., thickness: Dp = ..., color: Color = ...): Unit' is deprecated. Renamed to HorizontalDivider.
+'fun LinearProgressIndicator(progress: Float, modifier: Modifier = ..., color: Color = ..., trackColor: Color = ..., strokeCap: StrokeCap = ...): Unit' is deprecated. Use the overload that takes `progress` as a lambda.
+LockScreenActivity.kt
+'static field FLAG_SHOW_WHEN_LOCKED: Int' is deprecated. Deprecated in Java.
+'static field FLAG_DISMISS_KEYGUARD: Int' is deprecated. Deprecated in Java.
+'static field FLAG_TURN_SCREEN_ON: Int' is deprecated. Deprecated in Java.
+'fun setDecorFitsSystemWindows(p0: Boolean): Unit' is deprecated. Deprecated in Java.
+LockScreenContent.kt
+'fun Divider(modifier: Modifier = ..., thickness: Dp = ..., color: Color = ...): Unit' is deprecated. Renamed to HorizontalDivider.
+'fun Divider(modifier: Modifier = ..., thickness: Dp = ..., color: Color = ...): Unit' is deprecated. Renamed to HorizontalDivider.
+'fun Divider(modifier: Modifier = ..., thickness: Dp = ..., color: Color = ...): Unit' is deprecated. Renamed to HorizontalDivider.
+'fun Divider(modifier: Modifier = ..., thickness: Dp = ..., color: Color = ...): Unit' is deprecated. Renamed to HorizontalDivider.
+'fun Divider(modifier: Modifier = ..., thickness: Dp = ..., color: Color = ...): Unit' is deprecated. Renamed to HorizontalDivider.
+'fun Divider(modifier: Modifier = ..., thickness: Dp = ..., color: Color = ...): Unit' is deprecated. Renamed to HorizontalDivider.
+'val Icons.Filled.Article: ImageVector' is deprecated. Use the AutoMirrored version at Icons.AutoMirrored.Filled.Article.
+'val Icons.Filled.Chat: ImageVector' is deprecated. Use the AutoMirrored version at Icons.AutoMirrored.Filled.Chat.
+PixPaymentViewModel.kt
+BlockingHistoryScreen.kt
+'fun String.capitalize(locale: Locale): String' is deprecated. Use replaceFirstChar instead.
+PaymentRecoveryScreen.kt
+'fun Divider(modifier: Modifier = ..., thickness: Dp = ..., color: Color = ...): Unit' is deprecated. Renamed to HorizontalDivider.
+'fun Divider(modifier: Modifier = ..., thickness: Dp = ..., color: Color = ...): Unit' is deprecated. Renamed to HorizontalDivider.
+ModernHomeScreen.kt
+'fun Divider(modifier: Modifier = ..., thickness: Dp = ..., color: Color = ...): Unit' is deprecated. Renamed to HorizontalDivider.
+'fun Divider(modifier: Modifier = ..., thickness: Dp = ..., color: Color = ...): Unit' is deprecated. Renamed to HorizontalDivider.
+'val Icons.Filled.ArrowForward: ImageVector' is deprecated. Use the AutoMirrored version at Icons.AutoMirrored.Filled.ArrowForward.
+SimpleHomeScreen.kt
+'fun Divider(modifier: Modifier = ..., thickness: Dp = ..., color: Color = ...): Unit' is deprecated. Renamed to HorizontalDivider.
+'fun Divider(modifier: Modifier = ..., thickness: Dp = ..., color: Color = ...): Unit' is deprecated. Renamed to HorizontalDivider.
+'val Icons.Filled.List: ImageVector' is deprecated. Use the AutoMirrored version at Icons.AutoMirrored.Filled.List.
+'fun Divider(modifier: Modifier = ..., thickness: Dp = ..., color: Color = ...): Unit' is deprecated. Renamed to HorizontalDivider.
+InstallmentsScreen.kt
+'fun Divider(modifier: Modifier = ..., thickness: Dp = ..., color: Color = ...): Unit' is deprecated. Renamed to HorizontalDivider.
+TermsAndConditionsScreen.kt
+'val Icons.Filled.ArrowBack: ImageVector' is deprecated. Use the AutoMirrored version at Icons.AutoMirrored.Filled.ArrowBack.
+'fun Divider(modifier: Modifier = ..., thickness: Dp = ..., color: Color = ...): Unit' is deprecated. Renamed to HorizontalDivider.
+AppProtectionManager.kt
+'static field DISALLOW_REMOVE_MANAGED_PROFILE: String' is deprecated. Deprecated in Java.
+CdcForegroundService.kt
+'fun stopForeground(p0: Boolean): Unit' is deprecated. Deprecated in Java.
+'fun getSerialNumberForMdm(): String?' is deprecated. Use getMdmIdentifier() que prioriza IMEI conforme documentação.
+'fun getSerialNumberForMdm(): String?' is deprecated. Use getMdmIdentifier() que prioriza IMEI conforme documentação.
+HeartbeatWorker.kt
+'val activeNetworkInfo: NetworkInfo?' is deprecated. Deprecated in Java.
+'val isConnected: Boolean' is deprecated. Deprecated in Java.
+'val type: Int' is deprecated. Deprecated in Java.
+'static field TYPE_WIFI: Int' is deprecated. Deprecated in Java.
+'val type: Int' is deprecated. Deprecated in Java.
+'static field TYPE_MOBILE: Int' is deprecated. Deprecated in Java.
+CDCDeviceAdminReceiver.kt
+This declaration overrides a deprecated member but is not marked as deprecated itself. Add the '@Deprecated' annotation or suppress the diagnostic.
+'fun onPasswordChanged(p0: Context, p1: Intent): Unit' is deprecated. Deprecated in Java.
+This declaration overrides a deprecated member but is not marked as deprecated itself. Add the '@Deprecated' annotation or suppress the diagnostic.
+'fun onPasswordFailed(p0: Context, p1: Intent): Unit' is deprecated. Deprecated in Java.
+This declaration overrides a deprecated member but is not marked as deprecated itself. Add the '@Deprecated' annotation or suppress the diagnostic.
+'fun onPasswordSucceeded(p0: Context, p1: Intent): Unit' is deprecated. Deprecated in Java.
