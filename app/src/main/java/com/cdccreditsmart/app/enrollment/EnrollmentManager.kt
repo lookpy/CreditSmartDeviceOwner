@@ -12,9 +12,9 @@ import com.cdccreditsmart.app.enrollment.models.EnrollmentType
 import com.cdccreditsmart.network.api.EnrollmentApiService
 import com.cdccreditsmart.network.client.NetworkClient
 import com.cdccreditsmart.network.client.OkHttpClientFactory
-import com.cdccreditsmart.network.client.Resource
 import com.cdccreditsmart.network.client.RetrofitFactory
 import com.cdccreditsmart.network.config.CertificatePinningManager
+import com.cdccreditsmart.network.error.Resource
 import com.cdccreditsmart.network.dto.enrollment.EnrollmentReportRequest
 import com.cdccreditsmart.network.error.NetworkErrorMapper
 import com.cdccreditsmart.network.interceptors.CommonHeadersInterceptor
