@@ -62,7 +62,7 @@ class EnrollmentManager(private val context: Context) {
     }
     
     private val baseUrl: String by lazy {
-        getBaseUrl()
+        fetchBaseUrl()
     }
     
     private val enrollmentApiService: EnrollmentApiService by lazy {
@@ -475,7 +475,7 @@ class EnrollmentManager(private val context: Context) {
     /**
      * Gets base URL from BuildConfig using reflection (standard app pattern)
      */
-    private fun getBaseUrl(): String {
+    private fun fetchBaseUrl(): String {
         return try {
             val buildConfigClass = Class.forName("com.cdccreditsmart.app.BuildConfig")
             val baseUrlField = buildConfigClass.getField("BASE_URL")
