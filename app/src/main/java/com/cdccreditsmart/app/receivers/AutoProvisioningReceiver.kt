@@ -116,15 +116,56 @@ class AutoProvisioningReceiver : BroadcastReceiver() {
             
             // 1.5. Criar Work Profile (perfil de trabalho gerenciado)
             Log.i(TAG, "")
-            Log.i(TAG, "📋 [2/7] Criando Work Profile (perfil de trabalho)...")
-            val workProfileManager = WorkProfileManager(context)
-            val workProfileCreated = workProfileManager.createWorkProfile()
+            Log.i(TAG, "╔════════════════════════════════════════════════════════════════════╗")
+            Log.i(TAG, "║          CRIANDO USUÁRIO SECUNDÁRIO GERENCIADO (WORK PROFILE)      ║")
+            Log.i(TAG, "╚════════════════════════════════════════════════════════════════════╝")
+            Log.i(TAG, "📋 [2/7] Iniciando criação de Work Profile...")
+            Log.i(TAG, "ℹ️  Tipo: Usuário Secundário Gerenciado (não work profile tradicional)")
+            Log.i(TAG, "ℹ️  Isolamento: Total (apps e dados separados)")
+            Log.i(TAG, "ℹ️  Controle: Device Owner tem controle completo")
             
-            if (workProfileCreated) {
-                Log.i(TAG, "✅ Work Profile criado com sucesso!")
+            val workProfileManager = WorkProfileManager(context)
+            
+            // Verificar se já existe
+            if (workProfileManager.hasWorkProfile()) {
+                Log.i(TAG, "✅ Usuário secundário JÁ EXISTE - pulando criação")
                 Log.i(TAG, workProfileManager.getWorkProfileInfo())
             } else {
-                Log.w(TAG, "⚠️ Work Profile não foi criado (pode não ser suportado neste dispositivo)")
+                Log.i(TAG, "🔧 Usuário secundário não existe - criando agora...")
+                val workProfileCreated = workProfileManager.createWorkProfile()
+                
+                if (workProfileCreated) {
+                    Log.i(TAG, "")
+                    Log.i(TAG, "╔═══════════════════════════════════════════════════════════════════╗")
+                    Log.i(TAG, "║  ✅ WORK PROFILE CRIADO COM SUCESSO!                              ║")
+                    Log.i(TAG, "╠═══════════════════════════════════════════════════════════════════╣")
+                    Log.i(TAG, "║  O dispositivo agora tem um usuário secundário gerenciado         ║")
+                    Log.i(TAG, "║  separado para isolamento de apps e dados corporativos.          ║")
+                    Log.i(TAG, "║                                                                   ║")
+                    Log.i(TAG, "║  IMPORTANTE: Este NÃO é um work profile tradicional com badging! ║")
+                    Log.i(TAG, "║  É um usuário secundário completo (como contas do Windows).      ║")
+                    Log.i(TAG, "║                                                                   ║")
+                    Log.i(TAG, "║  Para verificar:                                                  ║")
+                    Log.i(TAG, "║  adb shell pm list users                                          ║")
+                    Log.i(TAG, "╚═══════════════════════════════════════════════════════════════════╝")
+                    Log.i(TAG, "")
+                    Log.i(TAG, workProfileManager.getWorkProfileInfo())
+                } else {
+                    Log.w(TAG, "")
+                    Log.w(TAG, "╔═══════════════════════════════════════════════════════════════════╗")
+                    Log.w(TAG, "║  ⚠️ WORK PROFILE NÃO FOI CRIADO                                   ║")
+                    Log.w(TAG, "╠═══════════════════════════════════════════════════════════════════╣")
+                    Log.w(TAG, "║  Possíveis causas:                                                ║")
+                    Log.w(TAG, "║  • Dispositivo não suporta usuários múltiplos                     ║")
+                    Log.w(TAG, "║  • Android < 7.0 (API 24)                                         ║")
+                    Log.w(TAG, "║  • App não é Device Owner                                         ║")
+                    Log.w(TAG, "║  • Limite de usuários atingido                                    ║")
+                    Log.w(TAG, "║                                                                   ║")
+                    Log.w(TAG, "║  O app funcionará normalmente sem work profile,                  ║")
+                    Log.w(TAG, "║  mas com menos isolamento de dados.                              ║")
+                    Log.w(TAG, "╚═══════════════════════════════════════════════════════════════════╝")
+                    Log.w(TAG, "")
+                }
             }
             Log.i(TAG, "")
             
