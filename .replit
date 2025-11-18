@@ -29,7 +29,7 @@ outputType = "webview"
 
 [nix]
 channel = "stable-25_05"
-packages = ["android-tools", "curl", "openjdk17", "unzip", "wget", "imagemagick"]
+packages = ["android-tools", "curl", "openjdk17", "unzip", "wget", "imagemagick", "jadx"]
 
 [[ports]]
 localPort = 3001
