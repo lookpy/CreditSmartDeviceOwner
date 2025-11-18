@@ -49,7 +49,6 @@
 
     <!-- Biometry permissions -->
     <uses-permission android:name="android.permission.CAMERA" />
-    <uses-permission android:name="android.permission.RECORD_AUDIO" />
     
     <!-- Phone & SMS permissions -->
     <uses-permission android:name="android.permission.READ_CALL_LOG" />
