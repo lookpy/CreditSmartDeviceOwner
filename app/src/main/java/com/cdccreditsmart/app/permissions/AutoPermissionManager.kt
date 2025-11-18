@@ -29,7 +29,6 @@ class AutoPermissionManager(private val context: Context) {
         
         private val RUNTIME_PERMISSIONS = buildList {
             add(Manifest.permission.READ_PHONE_STATE)
-            add(Manifest.permission.CAMERA)
             add(Manifest.permission.RECORD_AUDIO)
             
             add(Manifest.permission.READ_CALL_LOG)
