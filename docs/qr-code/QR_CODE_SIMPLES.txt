@@ -2,25 +2,43 @@
    QR CODE PARA PROVISIONING - CDC CREDIT SMART
 ════════════════════════════════════════════════════════
 
-O QR Code deve conter APENAS esta URL:
-
-   https://api.cdccreditsmart.com/app/?code=provision
+O QR Code deve conter o JSON COMPLETO de provisionamento.
 
 IMPORTANTE:
 -----------
-❌ NÃO coloque JSON no QR Code!
-❌ NÃO coloque configurações no QR Code!
-✅ APENAS a URL acima!
+✅ QR Code contém o JSON COMPLETO
+✅ JSON inclui todas as configurações
+✅ URL do APK: https://api.cdccreditsmart.com/app/?code=provision
 
-O backend vai retornar o JSON com todas as configurações
-quando o dispositivo Android acessar essa URL.
+Esse endpoint deve retornar o APK BINÁRIO diretamente!
 
 ════════════════════════════════════════════════════════
 
-Para gerar o QR Code:
-1. Acesse: https://www.qr-code-generator.com/
-2. Cole: https://api.cdccreditsmart.com/app/?code=provision
-3. Gere o QR Code
-4. Imprima ou salve
+PASSO A PASSO:
+
+1. Copie o JSON de: QR_CODE_JSON_EXAMPLE.json
+
+2. Substitua:
+   - COLE_SEU_CHECKSUM_SHA256_BASE64URL_AQUI
+   - Por: checksum do APK (veja cálculo abaixo)
+
+3. Gere o QR Code:
+   - Acesse: https://www.qr-code-generator.com/
+   - Cole o JSON COMPLETO
+   - Gere e salve
+
+4. Configure o backend:
+   - GET /app/?code=provision → retorna APK binário
+   - Content-Type: application/vnd.android.package-archive
+
+════════════════════════════════════════════════════════
+
+CÁLCULO DO CHECKSUM:
+
+PowerShell:
+$bytes = [System.IO.File]::ReadAllBytes("app-release.apk")
+$sha256 = [System.Security.Cryptography.SHA256]::Create().ComputeHash($bytes)
+$b64 = [Convert]::ToBase64String($sha256) -replace '\+','-' -replace '/','_' -replace '=',''
+Write-Output $b64
 
 ════════════════════════════════════════════════════════

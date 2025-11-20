@@ -40,22 +40,21 @@ CreditSmartDeviceOwner/
 
 ## 🎯 QR Code Provisioning
 
-### URL do QR Code:
-```
-https://api.cdccreditsmart.com/app/?code=provision
-```
-
-### Backend deve retornar:
+### **QR Code contém JSON COMPLETO:**
 ```json
 {
   "android.app.extra.PROVISIONING_DEVICE_ADMIN_COMPONENT_NAME": 
     "com.cdccreditsmart.app/com.cdccreditsmart.device.CDCDeviceAdminReceiver",
   "android.app.extra.PROVISIONING_DEVICE_ADMIN_PACKAGE_DOWNLOAD_LOCATION": 
-    "https://api.cdccreditsmart.com/downloads/app-release.apk",
+    "https://api.cdccreditsmart.com/app/?code=provision",
   "android.app.extra.PROVISIONING_DEVICE_ADMIN_PACKAGE_CHECKSUM": 
     "base64url_sha256_checksum"
 }
 ```
+
+### **Backend deve:**
+- Endpoint `/app/?code=provision` → **retorna APK binário** (não JSON!)
+- Content-Type: `application/vnd.android.package-archive`
 
 **Documentação completa:** `docs/qr-code/QR_CODE_BACKEND_INTEGRATION.md`
 
@@ -79,14 +78,15 @@ Write-Output $b64
 ```
 
 ### 3️⃣ Backend - Hospedar APK
-- Upload para: `https://api.cdccreditsmart.com/downloads/app-release.apk`
-- Configurar endpoint: `/app/?code=provision`
-- Retornar JSON com checksum
+- Upload para servidor backend
+- Configurar endpoint: `/app/?code=provision` → **retorna APK binário**
+- Exemplo: `docs/qr-code/QR_CODE_BACKEND_INTEGRATION.md`
 
-### 4️⃣ Gerar QR Code
-1. Acessar: https://www.qr-code-generator.com/
-2. Colar: `https://api.cdccreditsmart.com/app/?code=provision`
-3. Gerar e salvar
+### 4️⃣ Gerar QR Code com JSON Completo
+1. Copiar: `docs/qr-code/QR_CODE_JSON_EXAMPLE.json`
+2. Substituir checksum pelo calculado no passo 2
+3. Acessar: https://www.qr-code-generator.com/
+4. Colar JSON COMPLETO e gerar QR Code
 
 ### 5️⃣ Testar Provisioning
 - Factory reset no dispositivo
