@@ -1,0 +1,26 @@
+════════════════════════════════════════════════════════
+   QR CODE PARA PROVISIONING - CDC CREDIT SMART
+════════════════════════════════════════════════════════
+
+O QR Code deve conter APENAS esta URL:
+
+   https://api.cdccreditsmart.com/app/?code=provision
+
+IMPORTANTE:
+-----------
+❌ NÃO coloque JSON no QR Code!
+❌ NÃO coloque configurações no QR Code!
+✅ APENAS a URL acima!
+
+O backend vai retornar o JSON com todas as configurações
+quando o dispositivo Android acessar essa URL.
+
+════════════════════════════════════════════════════════
+
+Para gerar o QR Code:
+1. Acesse: https://www.qr-code-generator.com/
+2. Cole: https://api.cdccreditsmart.com/app/?code=provision
+3. Gere o QR Code
+4. Imprima ou salve
+
+════════════════════════════════════════════════════════
