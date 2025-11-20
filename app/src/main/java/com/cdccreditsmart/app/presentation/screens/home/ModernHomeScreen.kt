@@ -41,6 +41,7 @@ fun ModernHomeScreen(
     
     var showPaymentSheet by remember { mutableStateOf(false) }
     var selectedInstallment by remember { mutableStateOf<InstallmentItem?>(null) }
+    var showUninstallDialog by remember { mutableStateOf(false) }
     
     Scaffold(
         topBar = {
@@ -81,7 +82,8 @@ fun ModernHomeScreen(
                     showPaymentSheet = true
                 },
                 onNavigateToInstallments = onNavigateToInstallments,
-                onNavigateToTerms = onNavigateToTerms
+                onNavigateToTerms = onNavigateToTerms,
+                onUninstallClick = { showUninstallDialog = true }
             )
         }
     }
@@ -95,6 +97,12 @@ fun ModernHomeScreen(
                 onNavigateToPixPayment(selectedInstallment!!.id)
             },
             onPayWithBoleto = { /* TODO: Implementar Boleto */ }
+        )
+    }
+    
+    if (showUninstallDialog) {
+        VoluntaryUninstallDialog(
+            onDismiss = { showUninstallDialog = false }
         )
     }
 }
@@ -176,7 +184,8 @@ private fun HomeContent(
     state: HomeState,
     onPayInstallment: (InstallmentItem) -> Unit,
     onNavigateToInstallments: () -> Unit,
-    onNavigateToTerms: () -> Unit
+    onNavigateToTerms: () -> Unit,
+    onUninstallClick: () -> Unit
 ) {
     val context = LocalContext.current
     
@@ -203,6 +212,16 @@ private fun HomeContent(
         
         val pendingInstallments = state.allInstallments.filter { it.status == "pending" || it.status == "overdue" }
         val paidInstallments = state.allInstallments.filter { it.status == "paid" }
+        val hasInstallments = state.allInstallments.isNotEmpty()
+        val allPaid = hasInstallments && pendingInstallments.isEmpty()
+        
+        if (allPaid) {
+            item {
+                VoluntaryUninstallCard(
+                    onUninstallClick = onUninstallClick
+                )
+            }
+        }
         
         if (paidInstallments.isNotEmpty()) {
             item {
