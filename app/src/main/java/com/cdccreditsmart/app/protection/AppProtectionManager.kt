@@ -87,15 +87,29 @@ class AppProtectionManager(private val context: Context) {
      * Exibe no log todas as ações bloqueadas de forma organizada
      */
     fun logBlockedActions() {
-        Log.i(TAG, "📋 Ações bloqueadas pelas políticas de trabalho")
+        Log.i(TAG, "")
+        Log.i(TAG, "╔════════════════════════════════════════════════════════════════╗")
+        Log.i(TAG, "║                                                                ║")
+        Log.i(TAG, "║        📋 AÇÕES BLOQUEADAS PELAS POLÍTICAS DE TRABALHO         ║")
+        Log.i(TAG, "║                                                                ║")
+        Log.i(TAG, "╚════════════════════════════════════════════════════════════════╝")
+        Log.i(TAG, "")
+        
         val blockedActions = getBlockedActions()
+        
         blockedActions.forEach { (category, actions) ->
             Log.i(TAG, category)
+            Log.i(TAG, "═".repeat(64))
             actions.forEach { action ->
                 Log.i(TAG, "  $action")
             }
+            Log.i(TAG, "")
         }
-        Log.i(TAG, "🔒 Proteção máxima aplicada")
+        
+        Log.i(TAG, "╔════════════════════════════════════════════════════════════════╗")
+        Log.i(TAG, "║  🔒 PROTEÇÃO MÁXIMA APLICADA - CDC CREDIT SMART PROTEGIDO      ║")
+        Log.i(TAG, "╚════════════════════════════════════════════════════════════════╝")
+        Log.i(TAG, "")
     }
     
     private val dpm: DevicePolicyManager by lazy {
