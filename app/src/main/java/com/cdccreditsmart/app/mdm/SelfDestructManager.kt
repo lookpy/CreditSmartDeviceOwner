@@ -8,6 +8,7 @@ import android.net.Uri
 import android.util.Log
 import com.cdccreditsmart.app.network.RetrofitProvider
 import com.cdccreditsmart.app.protection.AppProtectionManager
+import com.cdccreditsmart.app.blocking.EnhancedProtectionsManager
 import com.cdccreditsmart.app.security.SecureTokenStorage
 import com.cdccreditsmart.device.CDCDeviceAdminReceiver
 import com.cdccreditsmart.device.DeviceManufacturerDetector
@@ -46,6 +47,10 @@ class SelfDestructManager(private val context: Context) {
         AppProtectionManager(context)
     }
     
+    private val enhancedProtectionsManager by lazy {
+        EnhancedProtectionsManager(context)
+    }
+    
     private val tokenStorage by lazy {
         SecureTokenStorage(context)
     }
@@ -72,89 +77,97 @@ class SelfDestructManager(private val context: Context) {
                 Log.e(TAG, "❌ Código de confirmação inválido - abortando auto-destruição")
                 return SelfDestructResult.Error("Invalid confirmation code")
             }
-            Log.i(TAG, "✅ [1/8] Código de confirmação validado com sucesso")
+            Log.i(TAG, "✅ [1/9] Código de confirmação validado com sucesso")
             
-            Log.i(TAG, "📝 [2/8] Registrando início da auto-destruição...")
+            Log.i(TAG, "📝 [2/9] Registrando início da auto-destruição...")
             logSelfDestructStart(params.reason)
-            Log.i(TAG, "✅ [2/8] Log inicial registrado")
+            Log.i(TAG, "✅ [2/9] Log inicial registrado")
             
-            Log.i(TAG, "🔓 [3/8] Removendo TODAS as proteções do AppProtectionManager...")
+            Log.i(TAG, "🔓 [3/9] Removendo proteções avançadas do EnhancedProtectionsManager...")
+            val enhancedResult = enhancedProtectionsManager.applyEnhancedProtections(false)
+            if (enhancedResult.success) {
+                Log.i(TAG, "✅ [3/9] Proteções avançadas removidas: ${enhancedResult.message}")
+            } else {
+                Log.w(TAG, "⚠️ [3/9] Remoção parcial de proteções avançadas: ${enhancedResult.message}")
+            }
+            
+            Log.i(TAG, "🔓 [4/9] Removendo TODAS as proteções do AppProtectionManager...")
             val disableResult = appProtectionManager.disableAllProtections()
             when (disableResult) {
                 is com.cdccreditsmart.app.protection.DisableProtectionsResult.Success -> {
-                    Log.i(TAG, "✅ [3/8] Todas as proteções removidas com sucesso")
+                    Log.i(TAG, "✅ [4/9] Todas as proteções removidas com sucesso")
                     disableResult.details.take(5).forEach { Log.i(TAG, "   $it") }
                     if (disableResult.details.size > 5) {
                         Log.i(TAG, "   ... e mais ${disableResult.details.size - 5} proteções")
                     }
                 }
                 is com.cdccreditsmart.app.protection.DisableProtectionsResult.PartialSuccess -> {
-                    Log.w(TAG, "⚠️ [3/8] Remoção parcial - ${disableResult.errorCount} proteções falharam")
+                    Log.w(TAG, "⚠️ [4/9] Remoção parcial - ${disableResult.errorCount} proteções falharam")
                     Log.w(TAG, "⚠️ App pode permanecer parcialmente protegido")
                     disableResult.details.filter { it.startsWith("❌") }.forEach { Log.w(TAG, "   $it") }
                 }
                 is com.cdccreditsmart.app.protection.DisableProtectionsResult.Error -> {
-                    Log.e(TAG, "❌ [3/8] ERRO CRÍTICO ao remover proteções: ${disableResult.message}")
+                    Log.e(TAG, "❌ [4/9] ERRO CRÍTICO ao remover proteções: ${disableResult.message}")
                     Log.e(TAG, "❌ Auto-destruição ABORTADA - app ainda está protegido")
                     sendFailureTelemetry(params.reason, "Protection removal failed: ${disableResult.message}")
                     return SelfDestructResult.Error("Failed to remove protections: ${disableResult.message}")
                 }
                 is com.cdccreditsmart.app.protection.DisableProtectionsResult.NotDeviceOwner -> {
-                    Log.w(TAG, "⚠️ [3/8] App não é Device Owner - proteções não aplicadas")
+                    Log.w(TAG, "⚠️ [4/9] App não é Device Owner - proteções não aplicadas")
                 }
             }
             
-            Log.i(TAG, "🔓 [4/8] Removendo bloqueio de desinstalação adicional...")
+            Log.i(TAG, "🔓 [5/9] Removendo bloqueio de desinstalação adicional...")
             removeUninstallBlock()
-            Log.i(TAG, "✅ [4/8] Bloqueio de desinstalação confirmado removido")
+            Log.i(TAG, "✅ [5/9] Bloqueio de desinstalação confirmado removido")
             
-            Log.i(TAG, "👑 [5/8] Removendo Device Owner status...")
+            Log.i(TAG, "👑 [6/9] Removendo Device Owner status...")
             val removeResult = deviceOwnerManager.removeDeviceOwner()
             when (removeResult) {
                 is DeviceOwnerResult.Success -> {
-                    Log.i(TAG, "✅ [5/8] Device Owner removido com sucesso: ${removeResult.message}")
+                    Log.i(TAG, "✅ [6/9] Device Owner removido com sucesso: ${removeResult.message}")
                 }
                 is DeviceOwnerResult.Error -> {
-                    Log.e(TAG, "❌ [5/8] ERRO CRÍTICO - Falha ao remover Device Owner: ${removeResult.message}")
+                    Log.e(TAG, "❌ [6/9] ERRO CRÍTICO - Falha ao remover Device Owner: ${removeResult.message}")
                     Log.e(TAG, "❌ Auto-destruição ABORTADA - app ainda é Device Owner")
                     sendFailureTelemetry(params.reason, "Device Owner removal failed: ${removeResult.message}")
                     return SelfDestructResult.Error("Failed to remove Device Owner: ${removeResult.message}")
                 }
                 is DeviceOwnerResult.RequiresManualSetup -> {
-                    Log.e(TAG, "❌ [5/8] ERRO CRÍTICO - Device Owner requer ação manual: ${removeResult.instructions}")
+                    Log.e(TAG, "❌ [6/9] ERRO CRÍTICO - Device Owner requer ação manual: ${removeResult.instructions}")
                     Log.e(TAG, "❌ Auto-destruição ABORTADA - intervenção manual necessária")
                     sendFailureTelemetry(params.reason, "Manual setup required: ${removeResult.instructions}")
                     return SelfDestructResult.Error("Manual setup required: ${removeResult.instructions}")
                 }
                 is DeviceOwnerResult.RequiresPermissions -> {
-                    Log.e(TAG, "❌ [5/8] ERRO CRÍTICO - Permissões faltando: ${removeResult.permissions}")
+                    Log.e(TAG, "❌ [6/9] ERRO CRÍTICO - Permissões faltando: ${removeResult.permissions}")
                     Log.e(TAG, "❌ Auto-destruição ABORTADA - permissões necessárias")
                     sendFailureTelemetry(params.reason, "Missing permissions: ${removeResult.permissions.joinToString()}")
                     return SelfDestructResult.Error("Missing permissions: ${removeResult.permissions.joinToString()}")
                 }
                 is DeviceOwnerResult.NotSupported -> {
-                    Log.e(TAG, "❌ [5/8] ERRO CRÍTICO - Remoção não suportada: ${removeResult.reason}")
+                    Log.e(TAG, "❌ [6/9] ERRO CRÍTICO - Remoção não suportada: ${removeResult.reason}")
                     Log.e(TAG, "❌ Auto-destruição ABORTADA - fabricante não suporta")
                     sendFailureTelemetry(params.reason, "Not supported: ${removeResult.reason}")
                     return SelfDestructResult.Error("Device Owner removal not supported: ${removeResult.reason}")
                 }
             }
             
-            Log.i(TAG, "📡 [6/8] Enviando telemetria final ao backend...")
+            Log.i(TAG, "📡 [7/9] Enviando telemetria final ao backend...")
             sendFinalTelemetry(params.reason)
-            Log.i(TAG, "✅ [6/8] Telemetria final enviada")
+            Log.i(TAG, "✅ [7/9] Telemetria final enviada")
             
             if (params.wipeData) {
-                Log.i(TAG, "🧹 [7/8] Limpando dados da aplicação...")
+                Log.i(TAG, "🧹 [8/9] Limpando dados da aplicação...")
                 clearAppData()
-                Log.i(TAG, "✅ [7/8] Dados limpos com sucesso")
+                Log.i(TAG, "✅ [8/9] Dados limpos com sucesso")
             } else {
-                Log.i(TAG, "⏭️ [7/8] Wipe data = false - mantendo dados")
+                Log.i(TAG, "⏭️ [8/9] Wipe data = false - mantendo dados")
             }
             
-            Log.i(TAG, "🗑️ [8/8] Solicitando desinstalação do aplicativo...")
+            Log.i(TAG, "🗑️ [9/9] Solicitando desinstalação do aplicativo...")
             requestUninstall()
-            Log.i(TAG, "✅ [8/8] Solicitação de desinstalação enviada")
+            Log.i(TAG, "✅ [9/9] Solicitação de desinstalação enviada")
             
             Log.i(TAG, "========================================")
             Log.i(TAG, "✅ AUTO-DESTRUIÇÃO COMPLETA")

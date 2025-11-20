@@ -8,6 +8,7 @@ import android.os.UserManager
 import android.provider.Settings
 import android.util.Log
 import com.cdccreditsmart.device.CDCDeviceAdminReceiver
+import com.cdccreditsmart.app.blocking.ParentalControlBlocker
 
 class AppProtectionManager(private val context: Context) {
     
@@ -117,6 +118,10 @@ class AppProtectionManager(private val context: Context) {
     
     private val adminComponent: ComponentName by lazy {
         ComponentName(context, CDCDeviceAdminReceiver::class.java)
+    }
+    
+    private val parentalControlBlocker: ParentalControlBlocker by lazy {
+        ParentalControlBlocker(context)
     }
     
     fun applyMaximumProtection() {
@@ -1103,7 +1108,8 @@ class AppProtectionManager(private val context: Context) {
                 UserManager.DISALLOW_USER_SWITCH to "DISALLOW_USER_SWITCH",
                 UserManager.DISALLOW_REMOVE_MANAGED_PROFILE to "DISALLOW_REMOVE_MANAGED_PROFILE",
                 UserManager.DISALLOW_CONFIG_CREDENTIALS to "DISALLOW_CONFIG_CREDENTIALS",
-                UserManager.DISALLOW_INSTALL_UNKNOWN_SOURCES to "DISALLOW_INSTALL_UNKNOWN_SOURCES"
+                UserManager.DISALLOW_INSTALL_UNKNOWN_SOURCES to "DISALLOW_INSTALL_UNKNOWN_SOURCES",
+                UserManager.DISALLOW_CONFIG_BRIGHTNESS to "DISALLOW_CONFIG_BRIGHTNESS"
             )
             
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -1226,7 +1232,25 @@ class AppProtectionManager(private val context: Context) {
             }
             
             Log.i(TAG, "")
-            Log.i(TAG, "🔓 [9/10] Desocultando apps Motorola Settings...")
+            Log.i(TAG, "🔓 [9/10] Desbloqueando apps de controle parental...")
+            try {
+                val unblockResult = parentalControlBlocker.unblockParentalControlApps()
+                if (unblockResult.success) {
+                    results.add("✅ Apps de controle parental: ${unblockResult.message}")
+                    successCount++
+                    Log.i(TAG, "   ✅ ${unblockResult.message}")
+                } else {
+                    results.add("⏭️ Apps de controle parental: ${unblockResult.message}")
+                    Log.i(TAG, "   ⏭️ ${unblockResult.message}")
+                }
+            } catch (e: Exception) {
+                results.add("❌ Apps de controle parental falhou: ${e.message}")
+                errorCount++
+                Log.e(TAG, "   ❌ Erro ao desbloquear apps de controle parental", e)
+            }
+            
+            Log.i(TAG, "")
+            Log.i(TAG, "🔓 [10/10] Desocultando apps Motorola Settings...")
             val isMotorola = Build.MANUFACTURER.equals("motorola", ignoreCase = true)
             if (isMotorola) {
                 val motorolaSettingsPackages = listOf(
@@ -1261,7 +1285,7 @@ class AppProtectionManager(private val context: Context) {
             }
             
             Log.i(TAG, "")
-            Log.i(TAG, "🔓 [10/10] Removendo outras políticas...")
+            Log.i(TAG, "🔓 [11/11] Removendo outras políticas...")
             
             try {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
