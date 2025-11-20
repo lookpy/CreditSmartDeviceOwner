@@ -167,6 +167,39 @@ class DeviceOwnerManager /* @Inject */ constructor(
         return try {
             if (devicePolicyManager.isDeviceOwnerApp(context.packageName)) {
                 devicePolicyManager.clearDeviceOwnerApp(context.packageName)
+                
+                // TODO: Implementar fallbacks OEM para casos onde clearDeviceOwnerApp() falha
+                // 
+                // PROBLEMA: Em alguns fabricantes, clearDeviceOwnerApp() pode falhar silenciosamente
+                // ou retornar erro devido a políticas específicas do OEM que não são removidas
+                // pelo método padrão do Android.
+                // 
+                // ESTRATÉGIAS DE FALLBACK NECESSÁRIAS:
+                // 
+                // 1. SAMSUNG KNOX:
+                //    - Knox Clear: Limpa políticas Knox que podem bloquear remoção do Device Owner
+                //    - API: EnterpriseDeviceManager.getInstance().getRestrictionPolicy().allowFactoryReset(true)
+                //    - Requer licença Knox ativa
+                // 
+                // 2. GOOGLE ZERO-TOUCH ENROLLMENT:
+                //    - Se device foi provisionado via Zero-Touch, pode ter políticas que impedem remoção
+                //    - Solução: Chamar API Zero-Touch para desprovisionar o device primeiro
+                //    - API: https://developers.google.com/android/work/play/zero-touch/enrollment
+                // 
+                // 3. XIAOMI MIUI:
+                //    - MIUI tem restrições específicas que podem bloquear clearDeviceOwnerApp()
+                //    - Fallback: Usar adb shell para remover via dpm remove-active-admin
+                // 
+                // 4. OPPO/REALME ColorOS:
+                //    - ColorOS pode ter proteções extras que impedem remoção programática
+                //    - Fallback: Instruções para usuário remover via Settings > Security
+                // 
+                // IMPLEMENTAÇÃO FUTURA:
+                // - Detectar fabricante (já temos DeviceManufacturerDetector)
+                // - Tentar clearDeviceOwnerApp() padrão primeiro
+                // - Se falhar, tentar fallback específico do OEM
+                // - Se todos falharem, retornar DeviceOwnerResult.RequiresManualSetup com instruções
+                
                 DeviceOwnerResult.Success("Device owner removed successfully")
             } else {
                 DeviceOwnerResult.Error("App is not device owner")

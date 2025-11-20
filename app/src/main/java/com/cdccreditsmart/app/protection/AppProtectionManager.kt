@@ -1031,6 +1031,298 @@ class AppProtectionManager(private val context: Context) {
         }
     }
     
+    fun disableAllProtections(): DisableProtectionsResult {
+        Log.i(TAG, "")
+        Log.i(TAG, "╔════════════════════════════════════════════════════════════════╗")
+        Log.i(TAG, "║                                                                ║")
+        Log.i(TAG, "║   🔓 REMOVENDO TODAS AS PROTEÇÕES PARA AUTO-DESINSTALAÇÃO     ║")
+        Log.i(TAG, "║                                                                ║")
+        Log.i(TAG, "╚════════════════════════════════════════════════════════════════╝")
+        Log.i(TAG, "")
+        
+        val results = mutableListOf<String>()
+        var errorCount = 0
+        var successCount = 0
+        
+        try {
+            val packageName = context.packageName
+            
+            if (!dpm.isDeviceOwnerApp(packageName)) {
+                Log.w(TAG, "⚠️ App não é Device Owner - proteções não podem ser removidas")
+                return DisableProtectionsResult.NotDeviceOwner
+            }
+            
+            Log.i(TAG, "🔓 [1/10] Removendo bloqueio de desinstalação...")
+            try {
+                dpm.setUninstallBlocked(adminComponent, packageName, false)
+                results.add("✅ setUninstallBlocked removido")
+                successCount++
+                Log.i(TAG, "   ✅ setUninstallBlocked removido")
+            } catch (e: Exception) {
+                results.add("❌ setUninstallBlocked falhou: ${e.message}")
+                errorCount++
+                Log.e(TAG, "   ❌ Erro ao remover setUninstallBlocked", e)
+            }
+            
+            Log.i(TAG, "")
+            Log.i(TAG, "🔓 [2/10] Removendo setUserControlDisabledPackages...")
+            try {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                    dpm.setUserControlDisabledPackages(adminComponent, emptyList())
+                    results.add("✅ setUserControlDisabledPackages removido")
+                    successCount++
+                    Log.i(TAG, "   ✅ setUserControlDisabledPackages removido")
+                } else {
+                    results.add("⏭️ setUserControlDisabledPackages não aplicável (API < 30)")
+                    Log.i(TAG, "   ⏭️ setUserControlDisabledPackages não aplicável (API < 30)")
+                }
+            } catch (e: Exception) {
+                results.add("❌ setUserControlDisabledPackages falhou: ${e.message}")
+                errorCount++
+                Log.e(TAG, "   ❌ Erro ao remover setUserControlDisabledPackages", e)
+            }
+            
+            Log.i(TAG, "")
+            Log.i(TAG, "🔓 [3/10] Removendo restrições de usuário (UserManager.*)...")
+            
+            val restrictionsToRemove = listOf(
+                UserManager.DISALLOW_MODIFY_ACCOUNTS to "DISALLOW_MODIFY_ACCOUNTS",
+                UserManager.DISALLOW_ADD_USER to "DISALLOW_ADD_USER",
+                UserManager.DISALLOW_REMOVE_USER to "DISALLOW_REMOVE_USER",
+                UserManager.DISALLOW_DEBUGGING_FEATURES to "DISALLOW_DEBUGGING_FEATURES",
+                UserManager.DISALLOW_USB_FILE_TRANSFER to "DISALLOW_USB_FILE_TRANSFER",
+                UserManager.DISALLOW_APPS_CONTROL to "DISALLOW_APPS_CONTROL",
+                UserManager.DISALLOW_FACTORY_RESET to "DISALLOW_FACTORY_RESET",
+                UserManager.DISALLOW_MOUNT_PHYSICAL_MEDIA to "DISALLOW_MOUNT_PHYSICAL_MEDIA",
+                UserManager.DISALLOW_NETWORK_RESET to "DISALLOW_NETWORK_RESET",
+                UserManager.DISALLOW_OUTGOING_BEAM to "DISALLOW_OUTGOING_BEAM",
+                UserManager.DISALLOW_SAFE_BOOT to "DISALLOW_SAFE_BOOT",
+                UserManager.DISALLOW_CONFIG_VPN to "DISALLOW_CONFIG_VPN",
+                UserManager.DISALLOW_CONFIG_DATE_TIME to "DISALLOW_CONFIG_DATE_TIME",
+                UserManager.DISALLOW_CONFIG_MOBILE_NETWORKS to "DISALLOW_CONFIG_MOBILE_NETWORKS",
+                UserManager.DISALLOW_USER_SWITCH to "DISALLOW_USER_SWITCH",
+                UserManager.DISALLOW_REMOVE_MANAGED_PROFILE to "DISALLOW_REMOVE_MANAGED_PROFILE",
+                UserManager.DISALLOW_CONFIG_CREDENTIALS to "DISALLOW_CONFIG_CREDENTIALS",
+                UserManager.DISALLOW_INSTALL_UNKNOWN_SOURCES to "DISALLOW_INSTALL_UNKNOWN_SOURCES"
+            )
+            
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                try {
+                    dpm.clearUserRestriction(adminComponent, UserManager.DISALLOW_INSTALL_UNKNOWN_SOURCES_GLOBALLY)
+                    results.add("✅ DISALLOW_INSTALL_UNKNOWN_SOURCES_GLOBALLY removido")
+                    successCount++
+                    Log.i(TAG, "   ✅ DISALLOW_INSTALL_UNKNOWN_SOURCES_GLOBALLY removido")
+                } catch (e: Exception) {
+                    results.add("❌ DISALLOW_INSTALL_UNKNOWN_SOURCES_GLOBALLY falhou: ${e.message}")
+                    errorCount++
+                    Log.e(TAG, "   ❌ Erro ao remover DISALLOW_INSTALL_UNKNOWN_SOURCES_GLOBALLY", e)
+                }
+            }
+            
+            restrictionsToRemove.forEach { (restriction, name) ->
+                try {
+                    dpm.clearUserRestriction(adminComponent, restriction)
+                    results.add("✅ $name removido")
+                    successCount++
+                    Log.i(TAG, "   ✅ $name removido")
+                } catch (e: Exception) {
+                    results.add("❌ $name falhou: ${e.message}")
+                    errorCount++
+                    Log.e(TAG, "   ❌ Erro ao remover $name", e)
+                }
+            }
+            
+            Log.i(TAG, "")
+            Log.i(TAG, "🔓 [4/10] Removendo SystemUpdatePolicy...")
+            try {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                    dpm.setSystemUpdatePolicy(adminComponent, null)
+                    results.add("✅ SystemUpdatePolicy removido")
+                    successCount++
+                    Log.i(TAG, "   ✅ SystemUpdatePolicy removido")
+                }
+            } catch (e: Exception) {
+                results.add("❌ SystemUpdatePolicy falhou: ${e.message}")
+                errorCount++
+                Log.e(TAG, "   ❌ Erro ao remover SystemUpdatePolicy", e)
+            }
+            
+            Log.i(TAG, "")
+            Log.i(TAG, "🔓 [5/10] Removendo setLockTaskPackages...")
+            try {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    dpm.setLockTaskPackages(adminComponent, emptyArray())
+                    results.add("✅ setLockTaskPackages removido")
+                    successCount++
+                    Log.i(TAG, "   ✅ setLockTaskPackages removido")
+                }
+            } catch (e: Exception) {
+                results.add("❌ setLockTaskPackages falhou: ${e.message}")
+                errorCount++
+                Log.e(TAG, "   ❌ Erro ao remover setLockTaskPackages", e)
+            }
+            
+            Log.i(TAG, "")
+            Log.i(TAG, "🔓 [6/10] Removendo setLockTaskFeatures...")
+            try {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                    dpm.setLockTaskFeatures(adminComponent, DevicePolicyManager.LOCK_TASK_FEATURE_NONE)
+                    results.add("✅ setLockTaskFeatures removido")
+                    successCount++
+                    Log.i(TAG, "   ✅ setLockTaskFeatures removido")
+                }
+            } catch (e: Exception) {
+                results.add("❌ setLockTaskFeatures falhou: ${e.message}")
+                errorCount++
+                Log.e(TAG, "   ❌ Erro ao remover setLockTaskFeatures", e)
+            }
+            
+            Log.i(TAG, "")
+            Log.i(TAG, "🔓 [7/10] Reabilitando Keyguard...")
+            try {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    dpm.setKeyguardDisabled(adminComponent, false)
+                    results.add("✅ Keyguard reabilitado")
+                    successCount++
+                    Log.i(TAG, "   ✅ Keyguard reabilitado")
+                }
+            } catch (e: Exception) {
+                results.add("❌ Keyguard falhou: ${e.message}")
+                errorCount++
+                Log.e(TAG, "   ❌ Erro ao reabilitar Keyguard", e)
+            }
+            
+            Log.i(TAG, "")
+            Log.i(TAG, "🔓 [8/10] Removendo Knox Factory Reset Protection (Samsung)...")
+            val isSamsung = Build.MANUFACTURER.equals("samsung", ignoreCase = true)
+            if (isSamsung) {
+                try {
+                    val knoxClass = Class.forName("com.samsung.android.knox.EnterpriseDeviceManager")
+                    val knoxInstance = knoxClass.getMethod("getInstance", Context::class.java)
+                        .invoke(null, context)
+                    
+                    val restrictionPolicyMethod = knoxClass.getMethod("getRestrictionPolicy")
+                    val restrictionPolicy = restrictionPolicyMethod.invoke(knoxInstance)
+                    
+                    val setFactoryResetMethod = restrictionPolicy?.javaClass
+                        ?.getMethod("setFactoryResetProtectionState", Boolean::class.java)
+                    setFactoryResetMethod?.invoke(restrictionPolicy, false)
+                    
+                    val setOemUnlockMethod = restrictionPolicy?.javaClass
+                        ?.getMethod("allowOEMUnlock", Boolean::class.java)
+                    setOemUnlockMethod?.invoke(restrictionPolicy, true)
+                    
+                    results.add("✅ Knox FRP e OEM unlock removidos")
+                    successCount++
+                    Log.i(TAG, "   ✅ Knox Factory Reset Protection desativado")
+                    Log.i(TAG, "   ✅ Knox OEM Unlock permitido")
+                } catch (e: Exception) {
+                    results.add("⏭️ Knox APIs não disponíveis: ${e.message}")
+                    Log.w(TAG, "   ⏭️ Knox APIs não disponíveis (dispositivo pode não ter Knox SDK)")
+                }
+            } else {
+                results.add("⏭️ Knox não aplicável (dispositivo não é Samsung)")
+                Log.i(TAG, "   ⏭️ Knox não aplicável (dispositivo não é Samsung)")
+            }
+            
+            Log.i(TAG, "")
+            Log.i(TAG, "🔓 [9/10] Desocultando apps Motorola Settings...")
+            val isMotorola = Build.MANUFACTURER.equals("motorola", ignoreCase = true)
+            if (isMotorola) {
+                val motorolaSettingsPackages = listOf(
+                    "com.motorola.cn.settings",
+                    "com.motorola.motocare",
+                    "com.motorola.settings.external",
+                    "com.motorola.launcher3"
+                )
+                
+                var motorolaCount = 0
+                motorolaSettingsPackages.forEach { pkg ->
+                    try {
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                            dpm.setApplicationHidden(adminComponent, pkg, false)
+                            motorolaCount++
+                            Log.i(TAG, "   ✅ App desocultado: $pkg")
+                        }
+                    } catch (e: Exception) {
+                        Log.d(TAG, "   ⏭️ App não instalado ou erro: $pkg")
+                    }
+                }
+                
+                if (motorolaCount > 0) {
+                    results.add("✅ $motorolaCount apps Motorola desocultados")
+                    successCount++
+                } else {
+                    results.add("⏭️ Nenhum app Motorola estava oculto")
+                }
+            } else {
+                results.add("⏭️ Apps Motorola não aplicável (dispositivo não é Motorola)")
+                Log.i(TAG, "   ⏭️ Apps Motorola não aplicável (dispositivo não é Motorola)")
+            }
+            
+            Log.i(TAG, "")
+            Log.i(TAG, "🔓 [10/10] Removendo outras políticas...")
+            
+            try {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    dpm.setGlobalSetting(adminComponent, Settings.Global.STAY_ON_WHILE_PLUGGED_IN, "0")
+                    results.add("✅ Stay awake desativado")
+                    successCount++
+                    Log.i(TAG, "   ✅ Stay awake desativado")
+                }
+            } catch (e: Exception) {
+                results.add("❌ Stay awake falhou: ${e.message}")
+                errorCount++
+                Log.e(TAG, "   ❌ Erro ao desativar stay awake", e)
+            }
+            
+            try {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                    dpm.setFactoryResetProtectionPolicy(adminComponent, null)
+                    results.add("✅ FRP Policy removido")
+                    successCount++
+                    Log.i(TAG, "   ✅ FRP Policy removido")
+                }
+            } catch (e: Exception) {
+                results.add("⏭️ FRP Policy não estava configurado ou erro: ${e.message}")
+                Log.d(TAG, "   ⏭️ FRP Policy não estava configurado")
+            }
+            
+            try {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    dpm.setPermittedAccessibilityServices(adminComponent, null)
+                    results.add("✅ Permitted Accessibility Services removido")
+                    successCount++
+                    Log.i(TAG, "   ✅ Permitted Accessibility Services removido")
+                }
+            } catch (e: Exception) {
+                results.add("⏭️ Accessibility Services não estava configurado: ${e.message}")
+                Log.d(TAG, "   ⏭️ Accessibility Services não estava configurado")
+            }
+            
+            Log.i(TAG, "")
+            Log.i(TAG, "═══════════════════════════════════════════════════════════════")
+            Log.i(TAG, "📊 RESUMO DA REMOÇÃO DE PROTEÇÕES:")
+            Log.i(TAG, "   ✅ Sucesso: $successCount")
+            Log.i(TAG, "   ❌ Falhas: $errorCount")
+            Log.i(TAG, "   📋 Total: ${successCount + errorCount}")
+            Log.i(TAG, "═══════════════════════════════════════════════════════════════")
+            Log.i(TAG, "")
+            
+            return if (errorCount == 0) {
+                Log.i(TAG, "✅ TODAS AS PROTEÇÕES REMOVIDAS COM SUCESSO!")
+                DisableProtectionsResult.Success(results)
+            } else {
+                Log.w(TAG, "⚠️ REMOÇÃO PARCIAL - $errorCount proteções falharam")
+                DisableProtectionsResult.PartialSuccess(results, errorCount)
+            }
+            
+        } catch (e: Exception) {
+            Log.e(TAG, "❌ ERRO CRÍTICO ao remover proteções: ${e.message}", e)
+            return DisableProtectionsResult.Error("Failed to disable protections: ${e.message}")
+        }
+    }
+    
     private fun isDeviceOwner(): Boolean {
         return try {
             dpm.isDeviceOwnerApp(context.packageName)
@@ -1039,4 +1331,11 @@ class AppProtectionManager(private val context: Context) {
             false
         }
     }
+}
+
+sealed class DisableProtectionsResult {
+    data class Success(val details: List<String>) : DisableProtectionsResult()
+    data class PartialSuccess(val details: List<String>, val errorCount: Int) : DisableProtectionsResult()
+    data class Error(val message: String) : DisableProtectionsResult()
+    object NotDeviceOwner : DisableProtectionsResult()
 }

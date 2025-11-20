@@ -72,54 +72,89 @@ class SelfDestructManager(private val context: Context) {
                 Log.e(TAG, "❌ Código de confirmação inválido - abortando auto-destruição")
                 return SelfDestructResult.Error("Invalid confirmation code")
             }
-            Log.i(TAG, "✅ [1/7] Código de confirmação validado com sucesso")
+            Log.i(TAG, "✅ [1/8] Código de confirmação validado com sucesso")
             
-            Log.i(TAG, "📝 [2/7] Registrando início da auto-destruição...")
+            Log.i(TAG, "📝 [2/8] Registrando início da auto-destruição...")
             logSelfDestructStart(params.reason)
-            Log.i(TAG, "✅ [2/7] Log inicial registrado")
+            Log.i(TAG, "✅ [2/8] Log inicial registrado")
             
-            Log.i(TAG, "🔓 [3/7] Removendo bloqueio de desinstalação...")
+            Log.i(TAG, "🔓 [3/8] Removendo TODAS as proteções do AppProtectionManager...")
+            val disableResult = appProtectionManager.disableAllProtections()
+            when (disableResult) {
+                is com.cdccreditsmart.app.protection.DisableProtectionsResult.Success -> {
+                    Log.i(TAG, "✅ [3/8] Todas as proteções removidas com sucesso")
+                    disableResult.details.take(5).forEach { Log.i(TAG, "   $it") }
+                    if (disableResult.details.size > 5) {
+                        Log.i(TAG, "   ... e mais ${disableResult.details.size - 5} proteções")
+                    }
+                }
+                is com.cdccreditsmart.app.protection.DisableProtectionsResult.PartialSuccess -> {
+                    Log.w(TAG, "⚠️ [3/8] Remoção parcial - ${disableResult.errorCount} proteções falharam")
+                    Log.w(TAG, "⚠️ App pode permanecer parcialmente protegido")
+                    disableResult.details.filter { it.startsWith("❌") }.forEach { Log.w(TAG, "   $it") }
+                }
+                is com.cdccreditsmart.app.protection.DisableProtectionsResult.Error -> {
+                    Log.e(TAG, "❌ [3/8] ERRO CRÍTICO ao remover proteções: ${disableResult.message}")
+                    Log.e(TAG, "❌ Auto-destruição ABORTADA - app ainda está protegido")
+                    sendFailureTelemetry(params.reason, "Protection removal failed: ${disableResult.message}")
+                    return SelfDestructResult.Error("Failed to remove protections: ${disableResult.message}")
+                }
+                is com.cdccreditsmart.app.protection.DisableProtectionsResult.NotDeviceOwner -> {
+                    Log.w(TAG, "⚠️ [3/8] App não é Device Owner - proteções não aplicadas")
+                }
+            }
+            
+            Log.i(TAG, "🔓 [4/8] Removendo bloqueio de desinstalação adicional...")
             removeUninstallBlock()
-            Log.i(TAG, "✅ [3/7] Bloqueio de desinstalação removido")
+            Log.i(TAG, "✅ [4/8] Bloqueio de desinstalação confirmado removido")
             
-            Log.i(TAG, "👑 [4/7] Removendo Device Owner status...")
+            Log.i(TAG, "👑 [5/8] Removendo Device Owner status...")
             val removeResult = deviceOwnerManager.removeDeviceOwner()
             when (removeResult) {
                 is DeviceOwnerResult.Success -> {
-                    Log.i(TAG, "✅ [4/7] Device Owner removido com sucesso: ${removeResult.message}")
+                    Log.i(TAG, "✅ [5/8] Device Owner removido com sucesso: ${removeResult.message}")
                 }
                 is DeviceOwnerResult.Error -> {
-                    Log.e(TAG, "❌ [4/7] Falha ao remover Device Owner: ${removeResult.message}")
-                    Log.w(TAG, "⚠️ Continuando mesmo assim - app ficará sem Device Owner")
+                    Log.e(TAG, "❌ [5/8] ERRO CRÍTICO - Falha ao remover Device Owner: ${removeResult.message}")
+                    Log.e(TAG, "❌ Auto-destruição ABORTADA - app ainda é Device Owner")
+                    sendFailureTelemetry(params.reason, "Device Owner removal failed: ${removeResult.message}")
+                    return SelfDestructResult.Error("Failed to remove Device Owner: ${removeResult.message}")
                 }
                 is DeviceOwnerResult.RequiresManualSetup -> {
-                    Log.w(TAG, "⚠️ [4/7] Remoção de Device Owner requer ação manual: ${removeResult.instructions}")
+                    Log.e(TAG, "❌ [5/8] ERRO CRÍTICO - Device Owner requer ação manual: ${removeResult.instructions}")
+                    Log.e(TAG, "❌ Auto-destruição ABORTADA - intervenção manual necessária")
+                    sendFailureTelemetry(params.reason, "Manual setup required: ${removeResult.instructions}")
+                    return SelfDestructResult.Error("Manual setup required: ${removeResult.instructions}")
                 }
                 is DeviceOwnerResult.RequiresPermissions -> {
-                    Log.w(TAG, "⚠️ [4/7] Remoção de Device Owner requer permissões: ${removeResult.permissions}")
-                    Log.w(TAG, "⚠️ Continuando mesmo assim - app pode ficar parcialmente protegido")
+                    Log.e(TAG, "❌ [5/8] ERRO CRÍTICO - Permissões faltando: ${removeResult.permissions}")
+                    Log.e(TAG, "❌ Auto-destruição ABORTADA - permissões necessárias")
+                    sendFailureTelemetry(params.reason, "Missing permissions: ${removeResult.permissions.joinToString()}")
+                    return SelfDestructResult.Error("Missing permissions: ${removeResult.permissions.joinToString()}")
                 }
                 is DeviceOwnerResult.NotSupported -> {
-                    Log.w(TAG, "⚠️ [4/7] Remoção de Device Owner não suportada: ${removeResult.reason}")
-                    Log.w(TAG, "⚠️ Continuando mesmo assim - app pode permanecer como Device Owner")
+                    Log.e(TAG, "❌ [5/8] ERRO CRÍTICO - Remoção não suportada: ${removeResult.reason}")
+                    Log.e(TAG, "❌ Auto-destruição ABORTADA - fabricante não suporta")
+                    sendFailureTelemetry(params.reason, "Not supported: ${removeResult.reason}")
+                    return SelfDestructResult.Error("Device Owner removal not supported: ${removeResult.reason}")
                 }
             }
             
-            Log.i(TAG, "📡 [5/7] Enviando telemetria final ao backend...")
+            Log.i(TAG, "📡 [6/8] Enviando telemetria final ao backend...")
             sendFinalTelemetry(params.reason)
-            Log.i(TAG, "✅ [5/7] Telemetria final enviada")
+            Log.i(TAG, "✅ [6/8] Telemetria final enviada")
             
             if (params.wipeData) {
-                Log.i(TAG, "🧹 [6/7] Limpando dados da aplicação...")
+                Log.i(TAG, "🧹 [7/8] Limpando dados da aplicação...")
                 clearAppData()
-                Log.i(TAG, "✅ [6/7] Dados limpos com sucesso")
+                Log.i(TAG, "✅ [7/8] Dados limpos com sucesso")
             } else {
-                Log.i(TAG, "⏭️ [6/7] Wipe data = false - mantendo dados")
+                Log.i(TAG, "⏭️ [7/8] Wipe data = false - mantendo dados")
             }
             
-            Log.i(TAG, "🗑️ [7/7] Solicitando desinstalação do aplicativo...")
+            Log.i(TAG, "🗑️ [8/8] Solicitando desinstalação do aplicativo...")
             requestUninstall()
-            Log.i(TAG, "✅ [7/7] Solicitação de desinstalação enviada")
+            Log.i(TAG, "✅ [8/8] Solicitação de desinstalação enviada")
             
             Log.i(TAG, "========================================")
             Log.i(TAG, "✅ AUTO-DESTRUIÇÃO COMPLETA")
@@ -229,6 +264,42 @@ class SelfDestructManager(private val context: Context) {
         }
     }
     
+    private suspend fun sendFailureTelemetry(reason: String, errorMessage: String) {
+        try {
+            Log.i(TAG, "📊 Enviando telemetria de FALHA ao backend...")
+            
+            val telemetryData = mapOf(
+                "event" to "APP_UNINSTALL_FAILED",
+                "reason" to reason,
+                "error" to errorMessage,
+                "timestamp" to System.currentTimeMillis(),
+                "deviceId" to (tokenStorage.getDeviceId() ?: "unknown"),
+                "contractCode" to (tokenStorage.getContractCode() ?: "unknown"),
+                "manufacturer" to android.os.Build.MANUFACTURER,
+                "model" to android.os.Build.MODEL,
+                "androidVersion" to android.os.Build.VERSION.RELEASE
+            )
+            
+            withContext(Dispatchers.IO) {
+                val retrofit = RetrofitProvider.createAuthenticatedRetrofit(context)
+                val api = retrofit.create(MdmApiService::class.java)
+                
+                val response = api.sendTelemetry(telemetryData)
+                
+                if (response.isSuccessful) {
+                    Log.i(TAG, "✅ Telemetria de falha enviada com sucesso")
+                    Log.i(TAG, "   Event: APP_UNINSTALL_FAILED")
+                    Log.i(TAG, "   Error: $errorMessage")
+                } else {
+                    Log.e(TAG, "❌ Falha ao enviar telemetria de falha - HTTP ${response.code()}")
+                }
+            }
+            
+        } catch (e: Exception) {
+            Log.e(TAG, "❌ Erro ao enviar telemetria de falha", e)
+        }
+    }
+    
     private suspend fun sendFinalTelemetry(reason: String) {
         try {
             Log.i(TAG, "📊 Enviando telemetria final ao backend...")
@@ -244,18 +315,20 @@ class SelfDestructManager(private val context: Context) {
                 "androidVersion" to android.os.Build.VERSION.RELEASE
             )
             
-            val retrofit = RetrofitProvider.createAuthenticatedRetrofit(context)
-            val api = retrofit.create(MdmApiService::class.java)
-            
-            val response = api.sendTelemetry(telemetryData)
-            
-            if (response.isSuccessful) {
-                Log.i(TAG, "✅ Telemetria final enviada com sucesso")
-                Log.i(TAG, "   Event: APP_UNINSTALL")
-                Log.i(TAG, "   Reason: $reason")
-            } else {
-                Log.e(TAG, "❌ Falha ao enviar telemetria - HTTP ${response.code()}")
-                Log.e(TAG, "   Backend pode não receber notificação de desinstalação")
+            withContext(Dispatchers.IO) {
+                val retrofit = RetrofitProvider.createAuthenticatedRetrofit(context)
+                val api = retrofit.create(MdmApiService::class.java)
+                
+                val response = api.sendTelemetry(telemetryData)
+                
+                if (response.isSuccessful) {
+                    Log.i(TAG, "✅ Telemetria final enviada com sucesso")
+                    Log.i(TAG, "   Event: APP_UNINSTALL")
+                    Log.i(TAG, "   Reason: $reason")
+                } else {
+                    Log.e(TAG, "❌ Falha ao enviar telemetria - HTTP ${response.code()}")
+                    Log.e(TAG, "   Backend pode não receber notificação de desinstalação")
+                }
             }
             
         } catch (e: Exception) {
