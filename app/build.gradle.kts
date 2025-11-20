@@ -49,7 +49,6 @@ android {
         debug {
             isDebuggable = true
             isMinifyEnabled = false
-            isShrinkResources = false
             // applicationIdSuffix removido para compatibilidade com google-services.json
             // applicationIdSuffix = ".debug"
             versionNameSuffix = "-debug"
@@ -63,24 +62,13 @@ android {
         
         release {
             isDebuggable = false
-            isMinifyEnabled = true
-            isShrinkResources = true
+            isMinifyEnabled = false
             signingConfig = signingConfigs.getByName("release")
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
             
             // Production network configuration
             buildConfigField("String", "BASE_URL", "\"https://cdccreditsmart.com/\"")
             buildConfigField("boolean", "ENABLE_NETWORK_LOGGING", "false")
-        }
-    }
-    
-    // APK optimization: Split APKs by ABI to reduce size
-    splits {
-        abi {
-            isEnable = true
-            reset()
-            include("arm64-v8a", "x86_64")
-            isUniversalApk = false
         }
     }
 

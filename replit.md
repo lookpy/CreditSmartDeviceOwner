@@ -46,7 +46,6 @@ The UI uses Jetpack Compose and Material 3 with a CDC institutional dark theme. 
 - **Push Notifications (Firebase FCM):** Integrates Firebase Cloud Messaging for real-time notifications with image support, multiple channels, and deep linking.
 - **Security & Data Persistence:** Employs `EncryptedSharedPreferences` for sensitive data, JWT authentication, and permanent device blocking on security violations. Contract code serves as both contractCode and serialNumber for MDM operations.
 - **Networking:** Utilizes Retrofit and OkHttp with retry logic, exponential backoff, and Certificate Pinning.
-- **APK Size Optimization:** Implemented aggressive size reduction strategies: removed unused 23MB TensorFlow Lite model, enabled R8/ProGuard minification and resource shrinking, configured ABI splits for architecture-specific APKs (~50% size reduction), and optimized ProGuard rules to remove logs and metadata. Target size: ~25-30 MB per architecture (down from ~80 MB universal). See `docs/technical/APK_SIZE_OPTIMIZATION.md` for details.
 
 ## External Dependencies
 - **CDC Credit Smart Backend API:** For APK authentication, auto-discovery, device status, installments, PIX payment processing, heartbeat, MDM commands, unblock operations, remote uninstall telemetry, time synchronization, FCM token registration, and enrollment reporting. MDM endpoints prioritize IMEI > Serial Number > Device ID. Must host APK download endpoint for Knox KME and Zero-Touch provisioning.
