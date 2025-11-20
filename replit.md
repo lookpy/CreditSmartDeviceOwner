@@ -12,6 +12,8 @@ The Credit Smart Android App is a Device Owner application for Credit Smart clie
 - Não modificar `build.gradle.kts` principais exceto para dependências
 - App não usa QR Code scanner - apenas input manual do código do contrato
 - NUNCA usar dados mockados - apenas dados reais do backend
+- NUNCA usar a palavra "PayJoy" - sempre "Credit Smart"
+- Documentação organizada em `docs/` (setup, backend, features, qr-code, troubleshooting, analysis)
 
 ## System Architecture
 The application adheres to Clean Architecture principles, the MVVM pattern, and utilizes Jetpack Compose for the UI. It is structured into modular components: `app`, `data`, `network`, `domain`, `device`, `payments`, and `biometry`.
