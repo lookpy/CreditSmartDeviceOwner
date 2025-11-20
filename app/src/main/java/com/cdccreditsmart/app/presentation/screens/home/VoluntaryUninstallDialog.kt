@@ -31,6 +31,8 @@ fun VoluntaryUninstallDialog(
     var isProcessing by remember { mutableStateOf(false) }
     var errorMessage by remember { mutableStateOf<String?>(null) }
     var showConfirmation by remember { mutableStateOf(false) }
+    var requestedCode by remember { mutableStateOf<String?>(null) }
+    var codeRequestMessage by remember { mutableStateOf<String?>(null) }
     
     if (!showConfirmation) {
         // Primeiro dialog: Aviso e explicação
@@ -86,10 +88,37 @@ fun VoluntaryUninstallDialog(
             },
             confirmButton = {
                 TextButton(
-                    onClick = { showConfirmation = true },
+                    onClick = {
+                        // Solicitar código do backend ANTES de mostrar o segundo dialog
+                        isProcessing = true
+                        scope.launch {
+                            val result = uninstallManager.requestUninstallCode()
+                            isProcessing = false
+                            
+                            when (result) {
+                                is com.cdccreditsmart.app.uninstall.RequestCodeResult.Success -> {
+                                    requestedCode = result.displayCode
+                                    codeRequestMessage = result.message
+                                    showConfirmation = true
+                                }
+                                is com.cdccreditsmart.app.uninstall.RequestCodeResult.Error -> {
+                                    errorMessage = result.message
+                                }
+                            }
+                        }
+                    },
                     enabled = !isProcessing
                 ) {
-                    Text("Continuar")
+                    if (isProcessing) {
+                        CircularProgressIndicator(
+                            modifier = Modifier.size(16.dp),
+                            strokeWidth = 2.dp
+                        )
+                        Spacer(Modifier.width(8.dp))
+                        Text("Solicitando...")
+                    } else {
+                        Text("Continuar")
+                    }
                 }
             },
             dismissButton = {
@@ -124,9 +153,25 @@ fun VoluntaryUninstallDialog(
                 Column(
                     verticalArrangement = Arrangement.spacedBy(16.dp)
                 ) {
+                    // Mostrar mensagem do backend (código enviado via SMS, etc)
+                    if (codeRequestMessage != null) {
+                        Surface(
+                            color = MaterialTheme.colorScheme.primaryContainer,
+                            shape = MaterialTheme.shapes.medium
+                        ) {
+                            Text(
+                                text = codeRequestMessage!!,
+                                style = MaterialTheme.typography.bodySmall,
+                                modifier = Modifier.padding(12.dp),
+                                color = MaterialTheme.colorScheme.onPrimaryContainer
+                            )
+                        }
+                    }
+                    
                     Text(
-                        text = "Para confirmar a desinstalação, digite o código de confirmação fornecido pelo sistema:",
-                        style = MaterialTheme.typography.bodyMedium
+                        text = "Digite o código de confirmação:",
+                        style = MaterialTheme.typography.bodyMedium,
+                        fontWeight = FontWeight.Medium
                     )
                     
                     OutlinedTextField(
