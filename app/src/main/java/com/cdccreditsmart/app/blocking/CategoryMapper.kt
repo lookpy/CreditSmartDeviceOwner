@@ -36,7 +36,37 @@ class CategoryMapper(private val context: Context) {
             "com.android.inputmethod",
             "com.samsung.android.app.telephonyui",
             "com.sec.android.inputmethod",
-            "com.cdccreditsmart.app"
+            "com.cdccreditsmart.app",
+            "com.google.android.apps.nexuslauncher",
+            "com.android.launcher3",
+            "com.google.android.launcher",
+            "com.sec.android.app.launcher",
+            "com.motorola.launcher3",
+            "com.miui.home",
+            "com.huawei.android.launcher",
+            "com.oppo.launcher",
+            "com.oneplus.launcher",
+            "com.vivo.launcher",
+            "com.realme.launcher",
+            "com.asus.launcher",
+            "com.lenovo.launcher",
+            "com.lge.launcher2",
+            "com.lge.launcher3",
+            "com.nokia.launcher",
+            "com.sonymobile.home",
+            "com.positivo.launcher",
+            "com.tcl.launcher",
+            "com.transsion.launcher",
+            "com.infinix.launcher",
+            "com.tecno.launcher",
+            "com.itel.launcher",
+            "com.microsoft.launcher",
+            "com.teslacoilsw.launcher",
+            "net.oneplus.launcher",
+            "org.adw.launcher",
+            "com.actionlauncher.playstore",
+            "com.anddoes.launcher",
+            "ginlemon.flowerfree"
         )
         
         private val PROTECTED_APPS = listOf(
@@ -128,7 +158,11 @@ class CategoryMapper(private val context: Context) {
             
             val isCriticalService = packageName.contains("systemui", ignoreCase = true) ||
                                   packageName.contains("inputmethod", ignoreCase = true) ||
-                                  packageName.contains("launcher", ignoreCase = true)
+                                  packageName.contains("launcher", ignoreCase = true) ||
+                                  packageName.contains(".home", ignoreCase = true) ||
+                                  packageName.endsWith(".launcher") ||
+                                  packageName.endsWith(".launcher2") ||
+                                  packageName.endsWith(".launcher3")
             
             if (isCriticalProvider || isCriticalService) {
                 Log.d(TAG, "🛡️ App crítico do sistema detectado: $packageName")
