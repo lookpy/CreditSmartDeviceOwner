@@ -58,7 +58,7 @@ import com.cdccreditsmart.app.blocking.BlockedAppExplanationActivity
         "PeriodicOverlayWorker",
         "com.cdccreditsmart.app.workers.PeriodicOverlayWorker"
     ),
-    level = DeprecationLevel.ERROR
+    level = DeprecationLevel.WARNING
 )
 class BlockedAppAccessibilityService : AccessibilityService() {
     

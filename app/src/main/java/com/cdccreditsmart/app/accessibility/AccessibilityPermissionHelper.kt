@@ -57,7 +57,7 @@ import android.view.accessibility.AccessibilityManager
         "PeriodicOverlayWorker",
         "com.cdccreditsmart.app.workers.PeriodicOverlayWorker"
     ),
-    level = DeprecationLevel.ERROR
+    level = DeprecationLevel.WARNING
 )
 object AccessibilityPermissionHelper {
 
