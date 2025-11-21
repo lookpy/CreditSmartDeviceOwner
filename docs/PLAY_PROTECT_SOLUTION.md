@@ -104,10 +104,11 @@ Explica **claramente** ao usuário por que cada permissão é necessária.
 
 **O que exibe:**
 - ✅ Telefone e SMS → Identificar dispositivo (IMEI)
-- ✅ Câmera → Verificação biométrica
 - ✅ Contatos → Contato de emergência
 - ✅ Localização → Prevenção de fraudes
 - ✅ Administração → Gerenciar configurações de segurança
+
+**Nota:** Permissões de câmera, microfone e áudio foram **removidas** pois não são necessárias para o funcionamento do app.
 
 **Card de privacidade:**
 - Dados criptografados e protegidos
