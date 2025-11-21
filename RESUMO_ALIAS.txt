@@ -1,0 +1,35 @@
+═══════════════════════════════════════════════════════
+RESUMO RÁPIDO: O QUE COLOCAR NO ALIAS
+═══════════════════════════════════════════════════════
+
+✅ RECOMENDAÇÃO PRINCIPAL:
+
+    Alias: creditsmart
+
+═══════════════════════════════════════════════════════
+
+ALTERNATIVAS (escolha apenas UMA):
+
+    ✓ creditsmart
+    ✓ creditsmart_release
+    ✓ cdc_creditsmart
+    ✓ release
+    ✓ production
+
+═══════════════════════════════════════════════════════
+
+COMANDO COMPLETO:
+
+    keytool -genkey -v -keystore creditsmart.keystore -alias creditsmart -keyalg RSA -keysize 2048 -validity 10000
+
+═══════════════════════════════════════════════════════
+
+⚠️ IMPORTANTE:
+
+    1. Use APENAS letras, números e underscore (_)
+    2. SEM espaços, SEM caracteres especiais
+    3. Escolha um nome e USE SEMPRE O MESMO
+    4. Anote o alias em local seguro
+    5. Você vai precisar dele para SEMPRE
+
+═══════════════════════════════════════════════════════
