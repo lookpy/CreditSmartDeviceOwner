@@ -33,6 +33,7 @@ fun VoluntaryUninstallDialog(
     var showConfirmation by remember { mutableStateOf(false) }
     var requestedCode by remember { mutableStateOf<String?>(null) }
     var codeRequestMessage by remember { mutableStateOf<String?>(null) }
+    var uninstallSuccess by remember { mutableStateOf(false) }
     
     if (!showConfirmation) {
         // Primeiro dialog: Aviso e explicação
@@ -215,52 +216,82 @@ fun VoluntaryUninstallDialog(
                             )
                         }
                     }
+                    
+                    if (uninstallSuccess) {
+                        Surface(
+                            color = Color(0xFF4CAF50).copy(alpha = 0.1f),
+                            shape = MaterialTheme.shapes.medium
+                        ) {
+                            Row(
+                                modifier = Modifier.padding(12.dp),
+                                verticalAlignment = Alignment.CenterVertically,
+                                horizontalArrangement = Arrangement.spacedBy(8.dp)
+                            ) {
+                                Icon(
+                                    imageVector = Icons.Default.CheckCircle,
+                                    contentDescription = null,
+                                    tint = Color(0xFF4CAF50)
+                                )
+                                Text(
+                                    text = "Desinstalação iniciada! O app será removido em instantes...",
+                                    style = MaterialTheme.typography.bodySmall,
+                                    color = Color(0xFF4CAF50)
+                                )
+                            }
+                        }
+                    }
                 }
             },
             confirmButton = {
-                Button(
-                    onClick = {
-                        if (confirmationCode.isBlank()) {
-                            errorMessage = "Por favor, digite o código de confirmação"
-                            return@Button
-                        }
-                        
-                        isProcessing = true
-                        scope.launch {
-                            val result = uninstallManager.executeUninstall(confirmationCode.trim())
+                if (!uninstallSuccess) {
+                    Button(
+                        onClick = {
+                            if (confirmationCode.isBlank()) {
+                                errorMessage = "Por favor, digite o código de confirmação"
+                                return@Button
+                            }
                             
-                            when (result) {
-                                is UninstallResult.Success -> {
-                                    // App será desinstalado automaticamente
-                                    // Não precisa fazer nada aqui
-                                }
-                                is UninstallResult.NotEligible -> {
-                                    isProcessing = false
-                                    errorMessage = result.reason
-                                }
-                                is UninstallResult.Error -> {
-                                    isProcessing = false
-                                    errorMessage = result.message
+                            errorMessage = null
+                            isProcessing = true
+                            scope.launch {
+                                val result = uninstallManager.executeUninstall(confirmationCode.trim())
+                                
+                                when (result) {
+                                    is UninstallResult.Success -> {
+                                        // App será desinstalado automaticamente
+                                        uninstallSuccess = true
+                                        isProcessing = false
+                                    }
+                                    is UninstallResult.NotEligible -> {
+                                        isProcessing = false
+                                        errorMessage = "Você não está mais elegível: ${result.reason}"
+                                    }
+                                    is UninstallResult.Error -> {
+                                        isProcessing = false
+                                        errorMessage = result.message
+                                    }
                                 }
                             }
-                        }
-                    },
-                    enabled = !isProcessing && confirmationCode.isNotBlank(),
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = MaterialTheme.colorScheme.error
-                    )
-                ) {
-                    Icon(Icons.Default.Delete, contentDescription = null)
-                    Spacer(Modifier.width(8.dp))
-                    Text("Desinstalar")
+                        },
+                        enabled = !isProcessing && confirmationCode.isNotBlank(),
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = MaterialTheme.colorScheme.error
+                        )
+                    ) {
+                        Icon(Icons.Default.Delete, contentDescription = null)
+                        Spacer(Modifier.width(8.dp))
+                        Text("Desinstalar")
+                    }
                 }
             },
             dismissButton = {
-                TextButton(
-                    onClick = onDismiss,
-                    enabled = !isProcessing
-                ) {
-                    Text("Cancelar")
+                if (!uninstallSuccess) {
+                    TextButton(
+                        onClick = onDismiss,
+                        enabled = !isProcessing
+                    ) {
+                        Text("Cancelar")
+                    }
                 }
             }
         )
