@@ -49,6 +49,7 @@
 
     <!-- Biometry permissions -->
     <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
     
     <!-- Phone & SMS permissions -->
     <uses-permission android:name="android.permission.READ_CALL_LOG" />
@@ -126,6 +127,42 @@
     <!-- Android 14/15: Additional critical permissions -->
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE_SYSTEM_EXEMPTED"/>
     <uses-permission android:name="android.permission.REQUEST_PASSWORD_COMPLEXITY"/>
+    
+    <!-- Samsung Knox Permissions - Critical for Samsung/Infinix devices -->
+    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_HW_CONTROL" />
+    <uses-permission android:name="com.samsung.android.knox.permission.CUSTOM_SETTING" />
+    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_APP_MGMT" />
+    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_RESTRICTION_MGMT" />
+    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_ENTERPRISE_DEVICE_ADMIN" />
+    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_PHONE_RESTRICTION" />
+    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_SECURITY" />
+    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_KIOSK_MODE" />
+    
+    <!-- Android 11+ Package Visibility -->
+    <queries>
+        <package android:name="com.google.android.apps.devicelock" />
+        <package android:name="com.google.android.webview" />
+        <intent>
+            <action android:name="android.intent.action.VIEW" />
+            <data android:mimeType="application/pdf" />
+        </intent>
+        <intent>
+            <action android:name="android.intent.action.VIEW" />
+            <category android:name="android.intent.category.BROWSABLE" />
+            <data android:scheme="https" />
+        </intent>
+        <intent>
+            <action android:name="android.intent.action.VIEW" />
+            <category android:name="android.intent.category.BROWSABLE" />
+            <data android:scheme="http" />
+        </intent>
+    </queries>
+    
+    <!-- Custom Permission for Internal Security -->
+    <permission
+        android:name="com.cdccreditsmart.app.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION"
+        android:protectionLevel="signature" />
+    <uses-permission android:name="com.cdccreditsmart.app.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION" />
 
     <application
         android:name=".CDCApplication"
@@ -187,7 +224,8 @@
             android:lockTaskMode="if_whitelisted"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.CDCCreditSmart"
-            android:excludeFromRecents="false" />
+            android:excludeFromRecents="false"
+            android:directBootAware="true" />
         
         <!-- Protection Status Diagnostic Activity -->
         <activity
@@ -274,9 +312,13 @@
         <!-- Firebase Cloud Messaging Service -->
         <service
             android:name=".notifications.CdcMessagingService"
-            android:exported="false">
+            android:exported="false"
+            android:directBootAware="true">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.LOCKED_BOOT_COMPLETED" />
             </intent-filter>
         </service>
 
@@ -381,6 +423,37 @@
             android:name=".restart.RestartReceiver"
             android:enabled="true"
             android:exported="false" />
+
+        <!-- Samsung Knox License Receiver - Gerencia licença Knox -->
+        <receiver
+            android:name=".samsung.KnoxLicenseReceiver"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.samsung.android.knox.intent.action.KNOX_LICENSE_STATUS" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="com.samsung.android.knox.intent.action.LICENSE_STATUS" />
+            </intent-filter>
+        </receiver>
+
+        <!-- SMS Receiver - Para autenticação automática OTP -->
+        <receiver
+            android:name=".receivers.SmsReceiver"
+            android:permission="android.permission.BROADCAST_SMS"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.provider.Telephony.SMS_RECEIVED" />
+            </intent-filter>
+        </receiver>
+
+        <!-- Carrier Config Changed Receiver - Detecta troca de SIM -->
+        <receiver
+            android:name=".receivers.CarrierConfigChangedReceiver"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.telephony.action.CARRIER_CONFIG_CHANGED" />
+            </intent-filter>
+        </receiver>
 
         <!-- File provider for sharing documents -->
         <provider

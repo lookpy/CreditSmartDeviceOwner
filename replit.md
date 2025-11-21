@@ -7,7 +7,9 @@ The Credit Smart Android App is a Device Owner application for Credit Smart clie
 Para resolver erros "Something went wrong" e "Can't set up device" no Android 15:
 - **✅ CORREÇÃO IMPLEMENTADA:** Adicionadas 26 permissões `MANAGE_DEVICE_POLICY_*` obrigatórias para Android 14/15
 - **✅ NOVOS COMPONENTES:** `CDCDeviceAdminService` e `ProvisioningSuccessActivity` implementados
+- **✅ MELHORIAS PAYJOY:** 8 permissões Samsung Knox + directBootAware + 3 novos receivers
 - **Guia Completo:** `SOLUCAO_DESCOBERTA_ANDROID15.md`
+- **Melhorias Implementadas:** `MELHORIAS_IMPLEMENTADAS_PAYJOY.md`
 - **Provisioning via ADB (Windows):** `provisioning-infinix-adb.bat`
 - **Provisioning via ADB (Linux/Mac):** `provisioning-infinix-adb.sh`
 - **Captura de Logs:** `capturar-logs-provisioning.bat`
