@@ -2,6 +2,7 @@ package com.cdccreditsmart.app.presentation.screens.home
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.Delete
@@ -311,10 +312,7 @@ fun VoluntaryUninstallCard(
         colors = CardDefaults.cardColors(
             containerColor = Color(0xFF4CAF50).copy(alpha = 0.1f)
         ),
-        border = ButtonDefaults.outlinedButtonBorder.copy(
-            width = 1.dp,
-            brush = null
-        )
+        border = BorderStroke(1.dp, Color(0xFF4CAF50))
     ) {
         Column(
             modifier = Modifier.padding(20.dp),
