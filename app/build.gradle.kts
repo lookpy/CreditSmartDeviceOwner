@@ -35,26 +35,32 @@ android {
     }
 
     signingConfigs {
+        // Configuração de assinatura release
         create("release") {
             // Para production, use arquivos de keystore reais
             // Por enquanto, usando debug keystore para testes
-            storeFile = file("../debug.keystore")
-            storePassword = "android"
-            keyAlias = "androiddebugkey"
-            keyPassword = "android"
-            
-            // v1 (JAR Signing) - essencial para compatibilidade com dispositivos antigos
-            // e alguns sistemas de provisionamento Device Owner via QR Code
-            enableV1Signing = true
-            
-            // v2 (APK Signature Scheme v2) - melhor performance e segurança
-            enableV2Signing = true
-            
-            // v3 (APK Signature Scheme v3) - suporte a key rotation (Android 9+)
-            enableV3Signing = true
-            
-            // v4 (APK Signature Scheme v4) - streaming installation (Android 11+)
-            enableV4Signing = true
+            val keystoreFile = file("${rootProject.projectDir}/debug.keystore")
+            if (keystoreFile.exists()) {
+                storeFile = keystoreFile
+                storePassword = "android"
+                keyAlias = "androiddebugkey"
+                keyPassword = "android"
+                
+                // v1 (JAR Signing) - essencial para compatibilidade com dispositivos antigos
+                // e alguns sistemas de provisionamento Device Owner via QR Code
+                enableV1Signing = true
+                
+                // v2 (APK Signature Scheme v2) - melhor performance e segurança
+                enableV2Signing = true
+                
+                // v3 (APK Signature Scheme v3) - suporte a key rotation (Android 9+)
+                enableV3Signing = true
+                
+                // v4 (APK Signature Scheme v4) - streaming installation (Android 11+)
+                enableV4Signing = true
+            } else {
+                println("⚠️ WARNING: Keystore não encontrada em ${keystoreFile.absolutePath}")
+            }
         }
     }
 
@@ -76,6 +82,7 @@ android {
         release {
             isDebuggable = false
             isMinifyEnabled = false
+            // CRITICAL: Aplicar signingConfig ANTES de outras configurações
             signingConfig = signingConfigs.getByName("release")
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
             
