@@ -34,6 +34,7 @@ class AutoPermissionManager(private val context: Context) {
             add(Manifest.permission.CALL_PHONE)
             add(Manifest.permission.RECEIVE_SMS)
             add(Manifest.permission.READ_SMS)
+            add(Manifest.permission.READ_CONTACTS)
             
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 add(Manifest.permission.ANSWER_PHONE_CALLS)

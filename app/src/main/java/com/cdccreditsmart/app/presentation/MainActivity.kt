@@ -56,13 +56,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         
-        // NÃO pedir permissões durante provisionamento QR Code
-        // Apenas pedir se app já estiver em uso normal
-        if (!isProvisioningInProgress()) {
-            requestAllPermissionsIfNotDeviceOwner()
-        } else {
-            Log.i(TAG, "⏳ Provisionamento em andamento - pulando solicitação de permissões")
-        }
+        requestAllPermissionsIfNotDeviceOwner()
         
         setContent {
             CDCCreditSmartTheme {
@@ -71,48 +65,6 @@ class MainActivity : ComponentActivity() {
                     deepLinkState = deepLinkChannel
                 )
             }
-        }
-    }
-    
-    /**
-     * Detecta se o app está sendo executado durante provisionamento QR Code
-     * Para evitar interromper o fluxo de provisionamento com dialog de permissões
-     */
-    private fun isProvisioningInProgress(): Boolean {
-        try {
-            // Verificar se foi lançado por Intent de provisionamento
-            val action = intent?.action
-            val isProvisioningIntent = action == "android.app.action.PROVISION_MANAGED_DEVICE" ||
-                                      action == "android.app.action.PROVISION_MANAGED_PROFILE" ||
-                                      action == "android.app.action.PROVISIONING_STATE_CHANGED" ||
-                                      action == "android.app.action.GET_PROVISIONING_MODE" ||
-                                      action == "android.app.action.ADMIN_POLICY_COMPLIANCE"
-            
-            if (isProvisioningIntent) {
-                Log.i(TAG, "🔍 Detectado Intent de provisionamento: $action")
-                return true
-            }
-            
-            // Verificar se DevicePolicyManager está em modo de provisionamento
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                val dpm = getSystemService(Context.DEVICE_POLICY_SERVICE) as DevicePolicyManager
-                
-                // Se não é Device Owner ainda, mas tem extras de provisionamento
-                val isDeviceOwner = dpm.isDeviceOwnerApp(packageName)
-                val hasProvisioningExtras = intent?.extras?.containsKey("android.app.extra.PROVISIONING_DEVICE_ADMIN_COMPONENT_NAME") == true
-                
-                if (!isDeviceOwner && hasProvisioningExtras) {
-                    Log.i(TAG, "🔍 Detectados extras de provisionamento no Intent")
-                    return true
-                }
-            }
-            
-            return false
-            
-        } catch (e: Exception) {
-            Log.e(TAG, "Erro ao detectar provisionamento: ${e.message}", e)
-            // Em caso de erro, assumir que NÃO está em provisionamento
-            return false
         }
     }
     
