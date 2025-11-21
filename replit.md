@@ -4,8 +4,10 @@
 The Credit Smart Android App is a Device Owner application for Credit Smart clients, designed to provide a secure and efficient mobile experience for financial transactions. It integrates advanced security features, robust device pairing via a 3-step handshake, real-time communication, and payment processing (PIX and Boleto). The app implements progressive blocking policies to enhance operational efficiency and bolster security.
 
 ## ⚠️ Android 15 + Infinix Hot 50 Provisioning
-Para resolver erros "Something went wrong" no Android 15 com Infinix Hot 50:
-- **Guia Completo:** `SOLUCAO_ANDROID_15_INFINIX.md`
+Para resolver erros "Something went wrong" e "Can't set up device" no Android 15:
+- **✅ CORREÇÃO IMPLEMENTADA:** Adicionadas 26 permissões `MANAGE_DEVICE_POLICY_*` obrigatórias para Android 14/15
+- **✅ NOVOS COMPONENTES:** `CDCDeviceAdminService` e `ProvisioningSuccessActivity` implementados
+- **Guia Completo:** `SOLUCAO_DESCOBERTA_ANDROID15.md`
 - **Provisioning via ADB (Windows):** `provisioning-infinix-adb.bat`
 - **Provisioning via ADB (Linux/Mac):** `provisioning-infinix-adb.sh`
 - **Captura de Logs:** `capturar-logs-provisioning.bat`
