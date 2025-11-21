@@ -45,19 +45,9 @@
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE_DATA_SYNC" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE_REMOTE_MESSAGING" />
     
-    <!-- Camera permission - Necessária para QR Code provisioning (sistema Android pode exigir) -->
-    <uses-permission android:name="android.permission.CAMERA" 
-        android:required="false" />
-    
-    <!-- Foreground service permissions - Podem ser necessárias para provisionamento em alguns dispositivos -->
-    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_MICROPHONE"
-        android:required="false" />
-    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_MEDIA_PROJECTION"
-        android:required="false" />
-    
-    <!-- Read contacts - Pode ser necessária para provisionamento em alguns OEMs -->
-    <uses-permission android:name="android.permission.READ_CONTACTS"
-        android:required="false" />
+    <!-- TESTE 1: CAMERA + FOREGROUND_SERVICE_MICROPHONE -->
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_MICROPHONE" />
     
     <!-- Phone & SMS permissions (apenas essenciais para batch permission request) -->
     <uses-permission android:name="android.permission.READ_CALL_LOG" />
