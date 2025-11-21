@@ -5,6 +5,15 @@ import android.content.Context
 import android.content.Intent
 import android.telephony.TelephonyManager
 import android.util.Log
+import com.cdccreditsmart.app.network.RetrofitProvider
+import com.cdccreditsmart.app.security.SecureTokenStorage
+import com.cdccreditsmart.network.api.SecurityApiService
+import com.cdccreditsmart.network.dto.security.SimChangeEvent
+import com.cdccreditsmart.network.dto.security.SimChangeRequest
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.launch
 
 /**
  * Carrier Config Changed Receiver - Detecta troca de SIM
@@ -18,6 +27,7 @@ import android.util.Log
  * - Anti-fraude (detectar se usuário trocou o chip)
  * - Atualizar informações da operadora
  * - Validar se dispositivo ainda está com o chip original
+ * - Reportar ao backend para análise de segurança
  */
 class CarrierConfigChangedReceiver : BroadcastReceiver() {
 
@@ -27,6 +37,8 @@ class CarrierConfigChangedReceiver : BroadcastReceiver() {
         private const val KEY_LAST_CARRIER = "last_carrier_name"
         private const val KEY_LAST_SIM_SERIAL = "last_sim_serial"
     }
+    
+    private val scope = CoroutineScope(Dispatchers.IO + SupervisorJob())
 
     override fun onReceive(context: Context?, intent: Intent?) {
         if (context == null || intent == null) return
@@ -94,6 +106,11 @@ class CarrierConfigChangedReceiver : BroadcastReceiver() {
         // SIM foi trocado - possível indicador de fraude
         Log.w(TAG, "⚠️ SECURITY ALERT: SIM card replacement detected")
         
+        val telephonyManager = context.getSystemService(Context.TELEPHONY_SERVICE) as? TelephonyManager
+        val oldCarrier = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+            .getString(KEY_LAST_CARRIER, null)
+        val newCarrier = telephonyManager?.networkOperatorName
+        
         // Broadcast para o app notificar sobre troca de SIM
         val simChangeIntent = Intent("com.cdccreditsmart.SIM_CHANGED").apply {
             putExtra("old_sim_serial", oldSerial)
@@ -104,8 +121,82 @@ class CarrierConfigChangedReceiver : BroadcastReceiver() {
         
         context.sendBroadcast(simChangeIntent)
         
-        // TODO: Enviar alerta para servidor backend
-        // TODO: Considerar bloquear dispositivo se política de segurança exigir
+        // Enviar alerta para servidor backend (anti-fraude)
+        reportSimChangeToBackend(context, oldSerial, newSerial, oldCarrier, newCarrier)
+    }
+    
+    /**
+     * Reporta troca de SIM ao backend para análise de segurança
+     */
+    private fun reportSimChangeToBackend(
+        context: Context,
+        oldSimSerial: String?,
+        newSimSerial: String?,
+        oldCarrier: String?,
+        newCarrier: String?
+    ) {
+        scope.launch {
+            try {
+                val tokenStorage = SecureTokenStorage(context)
+                val deviceId = tokenStorage.getDeviceId()
+                val imei = tokenStorage.getImei()
+                val contractCode = tokenStorage.getContractCode()
+                
+                if (deviceId.isNullOrEmpty()) {
+                    Log.w(TAG, "⚠️ Device ID not available - skipping backend report")
+                    return@launch
+                }
+                
+                Log.i(TAG, "📡 Enviando alerta de troca de SIM para backend...")
+                
+                val request = SimChangeRequest(
+                    deviceId = deviceId,
+                    imei = imei,
+                    contractCode = contractCode,
+                    event = SimChangeEvent(
+                        type = "SIM_CHANGED",
+                        timestamp = System.currentTimeMillis(),
+                        oldSimSerial = oldSimSerial,
+                        newSimSerial = newSimSerial,
+                        oldCarrier = oldCarrier,
+                        newCarrier = newCarrier
+                    )
+                )
+                
+                val retrofit = RetrofitProvider.createAuthenticatedRetrofit(context)
+                val securityApi = retrofit.create(SecurityApiService::class.java)
+                
+                val response = securityApi.reportSimChange(request)
+                
+                if (response.isSuccessful) {
+                    val body = response.body()
+                    Log.i(TAG, "✅ Backend notificado com sucesso")
+                    Log.d(TAG, "Status: ${body?.status}")
+                    Log.d(TAG, "Action: ${body?.action}")
+                    Log.d(TAG, "Message: ${body?.message}")
+                    
+                    // Se backend solicitar ação, executar
+                    when (body?.action) {
+                        "BLOCK_DEVICE" -> {
+                            Log.w(TAG, "🚨 Backend solicitou BLOQUEIO DO DISPOSITIVO por troca de SIM")
+                            // TODO: Implementar lógica de bloqueio
+                        }
+                        "ALERT_ONLY" -> {
+                            Log.i(TAG, "⚠️ Backend registrou alerta (sem bloqueio)")
+                        }
+                        "ALLOW" -> {
+                            Log.i(TAG, "✅ Backend autorizou troca de SIM")
+                        }
+                    }
+                } else {
+                    Log.e(TAG, "❌ Falha ao reportar troca de SIM: HTTP ${response.code()}")
+                    Log.e(TAG, "Error: ${response.errorBody()?.string()}")
+                }
+                
+            } catch (e: Exception) {
+                Log.e(TAG, "❌ Erro ao reportar troca de SIM ao backend", e)
+            }
+        }
     }
 
     private fun onCarrierChanged(context: Context, oldCarrier: String?, newCarrier: String?) {
