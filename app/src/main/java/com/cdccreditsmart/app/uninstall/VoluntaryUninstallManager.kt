@@ -31,7 +31,7 @@ class VoluntaryUninstallManager(private val context: Context) {
     private val selfDestructManager = SelfDestructManager(context)
     
     private val deviceApiService: DeviceApiService by lazy {
-        RetrofitProvider.createRetrofitWithAuth(context).create(DeviceApiService::class.java)
+        RetrofitProvider.createAuthenticatedRetrofit(context).create(DeviceApiService::class.java)
     }
     
     /**
@@ -113,7 +113,7 @@ class VoluntaryUninstallManager(private val context: Context) {
             Log.i(TAG, "")
             
             // Obter token JWT
-            val token = tokenStorage.getToken()
+            val token = tokenStorage.getAuthToken()
             if (token.isNullOrBlank()) {
                 Log.e(TAG, "❌ Token JWT não encontrado - usuário não autenticado")
                 return@withContext RequestCodeResult.Error("Erro: Sessão não autenticada. Por favor, reinicie o app.")
