@@ -37,55 +37,30 @@ android {
     signingConfigs {
         // Configuração de assinatura release
         create("release") {
-            // Prioridade: 1) keystore de produção, 2) debug keystore, 3) sem assinatura
-            
-            // Tentar keystore de produção (se fornecido via gradle.properties)
-            val releaseKeystoreFile = if (project.hasProperty("RELEASE_STORE_FILE")) {
-                file(project.property("RELEASE_STORE_FILE") as String)
+            // Para production, use arquivos de keystore reais
+            // Por enquanto, usando debug keystore para testes
+            val keystoreFile = file("${rootProject.projectDir}/debug.keystore")
+            if (keystoreFile.exists()) {
+                storeFile = keystoreFile
+                storePassword = "android"
+                keyAlias = "androiddebugkey"
+                keyPassword = "android"
+                
+                // v1 (JAR Signing) - essencial para compatibilidade com dispositivos antigos
+                // e alguns sistemas de provisionamento Device Owner via QR Code
+                enableV1Signing = true
+                
+                // v2 (APK Signature Scheme v2) - melhor performance e segurança
+                enableV2Signing = true
+                
+                // v3 (APK Signature Scheme v3) - suporte a key rotation (Android 9+)
+                enableV3Signing = true
+                
+                // v4 (APK Signature Scheme v4) - streaming installation (Android 11+)
+                enableV4Signing = true
             } else {
-                null
+                println("⚠️ WARNING: Keystore não encontrada em ${keystoreFile.absolutePath}")
             }
-            
-            // Fallback para debug keystore
-            val debugKeystoreFile = file("${rootProject.projectDir}/debug.keystore")
-            
-            when {
-                // Usar keystore de produção se existir
-                releaseKeystoreFile != null && releaseKeystoreFile.exists() -> {
-                    println("✅ Usando keystore de produção: ${releaseKeystoreFile.absolutePath}")
-                    storeFile = releaseKeystoreFile
-                    storePassword = project.property("RELEASE_STORE_PASSWORD") as String
-                    keyAlias = project.property("RELEASE_KEY_ALIAS") as String
-                    keyPassword = project.property("RELEASE_KEY_PASSWORD") as String
-                }
-                // Fallback para debug keystore
-                debugKeystoreFile.exists() -> {
-                    println("⚠️ AVISO: Usando debug keystore para release (somente desenvolvimento)")
-                    println("   Keystore: ${debugKeystoreFile.absolutePath}")
-                    storeFile = debugKeystoreFile
-                    storePassword = "android"
-                    keyAlias = "androiddebugkey"
-                    keyPassword = "android"
-                }
-                // Sem keystore disponível
-                else -> {
-                    println("❌ ERRO: Nenhum keystore disponível para assinatura!")
-                    println("   Configure RELEASE_STORE_FILE em gradle.properties ou crie debug.keystore")
-                }
-            }
-            
-            // v1 (JAR Signing) - essencial para compatibilidade com dispositivos antigos
-            // e alguns sistemas de provisionamento Device Owner via QR Code
-            enableV1Signing = true
-            
-            // v2 (APK Signature Scheme v2) - melhor performance e segurança
-            enableV2Signing = true
-            
-            // v3 (APK Signature Scheme v3) - suporte a key rotation (Android 9+)
-            enableV3Signing = true
-            
-            // v4 (APK Signature Scheme v4) - streaming installation (Android 11+)
-            enableV4Signing = true
         }
     }
 
@@ -239,9 +214,6 @@ dependencies {
     
     // Kotlin Coroutines Play Services for Firebase Task await()
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.7.3")
-    
-    // Google Play Integrity API (anti-Play Protect false positives)
-    implementation("com.google.android.play:integrity:1.3.0")
     
     // Core library desugaring for Java 8+ language features
     coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.1.3")

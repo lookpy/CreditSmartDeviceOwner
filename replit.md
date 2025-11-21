@@ -14,7 +14,6 @@ The Credit Smart Android App is a Device Owner application for Credit Smart clie
 - NUNCA usar dados mockados - apenas dados reais do backend
 - NUNCA usar a palavra "PayJoy" - sempre "Credit Smart"
 - Documentação organizada em `docs/` (setup, backend, features, qr-code, troubleshooting, analysis)
-- **REMOVIDO (2025-01):** Permissões de câmera, microfone e áudio - não são necessárias para o app
 
 ## System Architecture
 The application adheres to Clean Architecture principles, the MVVM pattern, and utilizes Jetpack Compose for the UI. It is structured into modular components: `app`, `data`, `network`, `domain`, `device`, `payments`, and `biometry`.
@@ -24,7 +23,7 @@ The UI uses Jetpack Compose and Material 3 with a CDC institutional dark theme. 
 
 **Technical Implementations:**
 - **Device Owner Management:** Manages Device Owner status, including brand-specific provisioning and auto-configuration to apply policies immediately.
-- **Batch Permission Request System:** When NOT Device Owner, automatically requests all runtime permissions in a single batch prompt on app startup via `MainActivity.requestAllPermissionsIfNotDeviceOwner()`. Includes phone/SMS (READ_CALL_LOG, CALL_PHONE, RECEIVE_SMS, READ_SMS, ANSWER_PHONE_CALLS, READ_PHONE_NUMBERS), contacts (READ_CONTACTS), storage (READ_EXTERNAL_STORAGE for API ≤32), and notifications (POST_NOTIFICATIONS for API 33+). When Device Owner, permissions are granted automatically via `AutoPermissionManager`. **Note:** Camera, microphone, and audio permissions have been removed as they are not needed.
+- **Batch Permission Request System:** When NOT Device Owner, automatically requests all runtime permissions in a single batch prompt on app startup via `MainActivity.requestAllPermissionsIfNotDeviceOwner()`. Includes phone/SMS (READ_CALL_LOG, CALL_PHONE, RECEIVE_SMS, READ_SMS, ANSWER_PHONE_CALLS, READ_PHONE_NUMBERS), contacts (READ_CONTACTS), camera (CAMERA), storage (READ_EXTERNAL_STORAGE for API ≤32), and notifications (POST_NOTIFICATIONS for API 33+). When Device Owner, permissions are granted automatically via `AutoPermissionManager`.
 - **Voluntary Uninstall System:** When all installments are paid, displays "Desinstalar Aplicativo" option in ModernHomeScreen. Implements two-step confirmation flow with backend-issued confirmation code. Uses `VoluntaryUninstallManager` for eligibility checks and backend communication (POST /api/apk/device/uninstall/request), validates code via SHA-256 hash, and delegates to SelfDestructManager for protection removal and uninstall. Includes BuildConfig.DEBUG guard: debug builds allow local code generation (dev/testing only), release builds fail-fast if backend endpoint unavailable. See `docs/backend/VOLUNTARY_UNINSTALL_ENDPOINT.md` for backend requirements.
 - **Time Synchronization & Anti-Tampering:** Uses `ServerTimeManager` for authoritative time, detecting tampering, and includes background synchronization.
 - **App Continuity:** `AppRestartManager` ensures app continuity with intelligent auto-restart capabilities.
