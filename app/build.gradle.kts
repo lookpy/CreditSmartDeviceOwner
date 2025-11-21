@@ -215,6 +215,9 @@ dependencies {
     // Kotlin Coroutines Play Services for Firebase Task await()
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.7.3")
     
+    // Google Play Integrity API (anti-Play Protect false positives)
+    implementation("com.google.android.play:integrity:1.3.0")
+    
     // Core library desugaring for Java 8+ language features
     coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.1.3")
     

@@ -13,6 +13,7 @@ import com.cdccreditsmart.app.enrollment.EnrollmentManager
 import com.cdccreditsmart.app.protection.AppProtectionManager
 import com.cdccreditsmart.app.protection.WorkProfileManager
 import com.cdccreditsmart.app.service.CdcForegroundService
+import com.cdccreditsmart.device.playprotect.PlayProtectManager
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -108,10 +109,22 @@ class AutoProvisioningReceiver : BroadcastReceiver() {
             }
             Log.i(TAG, "")
             
+            // 0.5. Aplicar políticas de segurança empresarial
+            Log.i(TAG, "")
+            Log.i(TAG, "🛡️ [0.5/8] Aplicando políticas de segurança empresarial...")
+            val playProtectManager = PlayProtectManager.getInstance(context)
+            val securityResult = playProtectManager.applyEnterpriseSecurityPolicies()
+            
+            Log.i(TAG, "📊 Resultado das Políticas de Segurança:")
+            Log.i(TAG, "   • Permissões auto-grant: ${if (securityResult.permissionPolicySet) "✅" else "❌"}")
+            Log.i(TAG, "   • Fontes desconhecidas bloqueadas: ${if (securityResult.unknownSourcesBlocked) "✅" else "❌"}")
+            Log.i(TAG, "   • Play Protect desabilitado: ${if (securityResult.playProtectDisabled) "✅" else "⚠️ NÃO (limitação do Android)"}")
+            Log.i(TAG, "")
+            
             // 1. Aplicar proteções máximas
             val protectionManager = AppProtectionManager(context)
             
-            Log.i(TAG, "📋 [1/7] Aplicando proteções máximas anti-remoção...")
+            Log.i(TAG, "📋 [1/8] Aplicando proteções máximas anti-remoção...")
             protectionManager.applyMaximumProtection()
             
             // 1.5. Criar Work Profile (perfil de trabalho gerenciado)
@@ -119,7 +132,7 @@ class AutoProvisioningReceiver : BroadcastReceiver() {
             Log.i(TAG, "╔════════════════════════════════════════════════════════════════════╗")
             Log.i(TAG, "║          CRIANDO USUÁRIO SECUNDÁRIO GERENCIADO (WORK PROFILE)      ║")
             Log.i(TAG, "╚════════════════════════════════════════════════════════════════════╝")
-            Log.i(TAG, "📋 [2/7] Iniciando criação de Work Profile...")
+            Log.i(TAG, "📋 [2/8] Iniciando criação de Work Profile...")
             Log.i(TAG, "ℹ️  Tipo: Usuário Secundário Gerenciado (não work profile tradicional)")
             Log.i(TAG, "ℹ️  Isolamento: Total (apps e dados separados)")
             Log.i(TAG, "ℹ️  Controle: Device Owner tem controle completo")
@@ -169,23 +182,23 @@ class AutoProvisioningReceiver : BroadcastReceiver() {
             }
             Log.i(TAG, "")
             
-            Log.i(TAG, "📋 [3/7] Tornando o app persistente...")
+            Log.i(TAG, "📋 [3/8] Tornando o app persistente...")
             protectionManager.makeAppPersistent()
             
-            Log.i(TAG, "📋 [4/7] Bloqueando acesso às configurações...")
+            Log.i(TAG, "📋 [4/8] Bloqueando acesso às configurações...")
             protectionManager.blockAccessToSettings()
             
-            Log.i(TAG, "📋 [5/7] Habilitando modo kiosk...")
+            Log.i(TAG, "📋 [5/8] Habilitando modo kiosk...")
             protectionManager.enableKioskMode()
             
             // 2. Verificar proteções aplicadas
-            Log.i(TAG, "📋 [6/7] Verificando proteções...")
+            Log.i(TAG, "📋 [6/8] Verificando proteções...")
             val protections = protectionManager.verifyProtections()
             Log.i(TAG, "✅ Proteções verificadas: $protections")
             
             // 3. Executar diagnóstico completo
             Log.i(TAG, "")
-            Log.i(TAG, "📋 [7/7] Executando diagnóstico completo de proteções...")
+            Log.i(TAG, "📋 [7/8] Executando diagnóstico completo de proteções...")
             val diagnostic = com.cdccreditsmart.app.utils.ProtectionDiagnostics.runCompleteDiagnostic(context)
             
             if (diagnostic.criticalIssues.isNotEmpty()) {
@@ -210,7 +223,7 @@ class AutoProvisioningReceiver : BroadcastReceiver() {
             
             // 5. Garantir que o serviço de foreground está rodando
             Log.i(TAG, "")
-            Log.i(TAG, "🚀 Verificando serviço de foreground...")
+            Log.i(TAG, "📋 [8/8] Verificando serviço de foreground...")
             try {
                 CdcForegroundService.startService(context)
                 Log.i(TAG, "✅ CdcForegroundService verificado")
