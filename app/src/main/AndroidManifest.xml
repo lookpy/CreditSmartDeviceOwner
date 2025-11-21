@@ -44,13 +44,8 @@
     <!-- Android 12+ (API 31+) Foreground Service Type Permissions -->
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE_DATA_SYNC" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE_REMOTE_MESSAGING" />
-    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_MICROPHONE" />
-    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_MEDIA_PROJECTION" />
-
-    <!-- Biometry permissions -->
-    <uses-permission android:name="android.permission.CAMERA" />
     
-    <!-- Phone & SMS permissions -->
+    <!-- Phone & SMS permissions (apenas essenciais para batch permission request) -->
     <uses-permission android:name="android.permission.READ_CALL_LOG" />
     <uses-permission android:name="android.permission.CALL_PHONE" />
     <uses-permission android:name="android.permission.RECEIVE_SMS" />
@@ -58,19 +53,12 @@
     <uses-permission android:name="android.permission.READ_PHONE_NUMBERS" />
     <uses-permission android:name="android.permission.READ_SMS" />
     
-    <!-- Contacts permission -->
-    <uses-permission android:name="android.permission.READ_CONTACTS" />
-    
     <!-- Storage permissions (for older Android versions) -->
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"
         android:maxSdkVersion="32" />
     
     <!-- Vibration -->
     <uses-permission android:name="android.permission.VIBRATE" />
-    
-    <!-- Camera hardware features -->
-    <uses-feature android:name="android.hardware.camera" android:required="true" />
-    <uses-feature android:name="android.hardware.camera.front" android:required="true" />
 
     <!-- Firebase Messaging -->
     <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
