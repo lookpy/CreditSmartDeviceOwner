@@ -1045,14 +1045,22 @@ class CDCDeviceAdminReceiver : DeviceAdminReceiver() {
                     logDetailed("E", TAG, "❌ Erro ao habilitar apps do sistema", e)
                 }
                 
-                // 7. SALVAR FLAG DE PROVISIONAMENTO CONCLUÍDO
+                // 7. CONFIGURAR LAUNCHER PADRÃO DO SISTEMA (SEM PERGUNTA AO USUÁRIO)
+                try {
+                    setSystemLauncherAsDefault(context, dpm, adminComponent)
+                    logDetailed("I", TAG, "✅ [7/8] Launcher padrão do sistema configurado")
+                } catch (e: Exception) {
+                    logDetailed("E", TAG, "❌ Erro ao configurar launcher padrão", e)
+                }
+                
+                // 8. SALVAR FLAG DE PROVISIONAMENTO CONCLUÍDO
                 try {
                     val prefs = context.getSharedPreferences("cdc_provisioning", Context.MODE_PRIVATE)
                     prefs.edit()
                         .putBoolean("auto_provisioning_completed", true)
                         .putLong("provisioning_timestamp", System.currentTimeMillis())
                         .apply()
-                    logDetailed("I", TAG, "✅ [7/7] Flag de provisionamento salva")
+                    logDetailed("I", TAG, "✅ [8/8] Flag de provisionamento salva")
                 } catch (e: Exception) {
                     logDetailed("E", TAG, "❌ Erro ao salvar flag", e)
                 }
@@ -1063,7 +1071,7 @@ class CDCDeviceAdminReceiver : DeviceAdminReceiver() {
                 logDetailed("I", TAG, "🚀 Iniciando serviços da aplicação...")
                 logDetailed("I", TAG, "")
                 
-                // 8. INICIAR O FOREGROUND SERVICE
+                // 9. INICIAR O FOREGROUND SERVICE
                 try {
                     val serviceIntent = Intent()
                     serviceIntent.setClassName(
@@ -1082,7 +1090,7 @@ class CDCDeviceAdminReceiver : DeviceAdminReceiver() {
                     logDetailed("E", TAG, "⚠️ Erro ao iniciar CdcForegroundService (será iniciado no próximo boot)", e)
                 }
                 
-                // 9. BROADCAST PARA NOTIFICAR A APLICAÇÃO
+                // 10. BROADCAST PARA NOTIFICAR A APLICAÇÃO
                 try {
                     val broadcastIntent = Intent("com.cdccreditsmart.AUTO_PROVISIONING_COMPLETED")
                     broadcastIntent.setPackage(context.packageName)
@@ -1099,6 +1107,97 @@ class CDCDeviceAdminReceiver : DeviceAdminReceiver() {
             } catch (e: Exception) {
                 logDetailed("E", TAG, "❌ ERRO CRÍTICO durante auto-configuração", e)
             }
+        }
+    }
+
+    /**
+     * Configura o launcher padrão do sistema automaticamente (elimina pergunta ao usuário)
+     */
+    private fun setSystemLauncherAsDefault(
+        context: Context,
+        dpm: DevicePolicyManager,
+        adminComponent: android.content.ComponentName
+    ) {
+        try {
+            logDetailed("I", TAG, "🏠 Configurando launcher padrão do sistema...")
+            
+            // Criar intent filter para categoria HOME
+            val filter = android.content.IntentFilter(Intent.ACTION_MAIN)
+            filter.addCategory(Intent.CATEGORY_HOME)
+            filter.addCategory(Intent.CATEGORY_DEFAULT)
+            
+            // Encontrar o launcher do sistema atual
+            val homeIntent = Intent(Intent.ACTION_MAIN)
+            homeIntent.addCategory(Intent.CATEGORY_HOME)
+            
+            val pm = context.packageManager
+            val resolveInfos = pm.queryIntentActivities(homeIntent, PackageManager.MATCH_DEFAULT_ONLY)
+            
+            var systemLauncherComponent: android.content.ComponentName? = null
+            
+            // Procurar pelo launcher padrão do sistema (não o nosso app)
+            for (info in resolveInfos) {
+                val packageName = info.activityInfo.packageName
+                
+                // Ignorar nosso próprio app
+                if (packageName == context.packageName) {
+                    continue
+                }
+                
+                // Procurar por launchers conhecidos do sistema
+                if (packageName.contains("launcher", ignoreCase = true) ||
+                    packageName.contains("home", ignoreCase = true) ||
+                    packageName == "com.android.settings" ||
+                    packageName.startsWith("com.google.android") ||
+                    packageName.startsWith("com.android.") ||
+                    info.activityInfo.applicationInfo.flags and android.content.pm.ApplicationInfo.FLAG_SYSTEM != 0
+                ) {
+                    systemLauncherComponent = android.content.ComponentName(
+                        packageName,
+                        info.activityInfo.name
+                    )
+                    logDetailed("I", TAG, "🏠 Launcher do sistema encontrado: $packageName")
+                    break
+                }
+            }
+            
+            if (systemLauncherComponent == null && resolveInfos.isNotEmpty()) {
+                // Se não encontrou launcher específico, usar o primeiro disponível (que não seja nosso app)
+                val firstNonOurApp = resolveInfos.firstOrNull { 
+                    it.activityInfo.packageName != context.packageName 
+                }
+                
+                if (firstNonOurApp != null) {
+                    systemLauncherComponent = android.content.ComponentName(
+                        firstNonOurApp.activityInfo.packageName,
+                        firstNonOurApp.activityInfo.name
+                    )
+                    logDetailed("I", TAG, "🏠 Usando primeiro launcher disponível: ${firstNonOurApp.activityInfo.packageName}")
+                }
+            }
+            
+            if (systemLauncherComponent != null) {
+                // Definir como launcher padrão persistente (não pergunta ao usuário)
+                dpm.addPersistentPreferredActivity(
+                    adminComponent,
+                    filter,
+                    systemLauncherComponent
+                )
+                
+                logDetailed("I", TAG, "✅ Launcher padrão configurado com sucesso!")
+                logDetailed("I", TAG, "   📱 Package: ${systemLauncherComponent.packageName}")
+                logDetailed("I", TAG, "   🎯 Activity: ${systemLauncherComponent.className}")
+                logDetailed("I", TAG, "   ✅ Usuário NÃO será perguntado sobre launcher!")
+                
+            } else {
+                logDetailed("W", TAG, "⚠️ Nenhum launcher do sistema encontrado")
+                logDetailed("W", TAG, "⚠️ Usuário pode precisar selecionar manualmente")
+            }
+            
+        } catch (e: SecurityException) {
+            logDetailed("E", TAG, "❌ Erro de segurança ao configurar launcher - verifique permissões", e)
+        } catch (e: Exception) {
+            logDetailed("E", TAG, "❌ Erro ao configurar launcher padrão", e)
         }
     }
 
