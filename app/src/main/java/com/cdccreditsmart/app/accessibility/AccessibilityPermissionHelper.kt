@@ -8,6 +8,24 @@ import android.util.Log
 import android.view.accessibility.AccessibilityManager
 
 /**
+ * ════════════════════════════════════════════════════════════════════════════
+ * ⚠️ DEPRECATED - NÃO MAIS UTILIZADO
+ * ════════════════════════════════════════════════════════════════════════════
+ * 
+ * MOTIVO: Permissão BIND_ACCESSIBILITY_SERVICE causa bloqueio automático do 
+ *         Google Play Protect durante QR Code provisioning.
+ * 
+ * SUBSTITUÍDO POR: PeriodicOverlayWorker (timers progressivos)
+ *   - Localização: app/src/main/java/com/cdccreditsmart/app/workers/PeriodicOverlayWorker.kt
+ *   - Não requer ativação manual do usuário
+ *   - Zero permissões sensíveis
+ * 
+ * STATUS: Service desabilitado no manifest (21/11/2025)
+ * Data de deprecação: 21/11/2025
+ * ════════════════════════════════════════════════════════════════════════════
+ * 
+ * CÓDIGO ORIGINAL (não mais utilizado):
+ * 
  * Helper para solicitar ativação manual do Accessibility Service.
  * 
  * ⚠️ MUDANÇA IMPORTANTE (Nov 2025):
@@ -33,6 +51,14 @@ import android.view.accessibility.AccessibilityManager
  * ⚠️ Requer 1 ação manual do usuário
  * ⚠️ Não funciona em provisioning totalmente automatizado
  */
+@Deprecated(
+    message = "Accessibility Service removido. Use PeriodicOverlayWorker.",
+    replaceWith = ReplaceWith(
+        "PeriodicOverlayWorker",
+        "com.cdccreditsmart.app.workers.PeriodicOverlayWorker"
+    ),
+    level = DeprecationLevel.ERROR
+)
 object AccessibilityPermissionHelper {
 
     private const val TAG = "AccessibilityPermission"

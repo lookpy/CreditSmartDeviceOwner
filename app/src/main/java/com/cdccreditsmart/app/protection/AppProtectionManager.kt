@@ -190,7 +190,11 @@ class AppProtectionManager(private val context: Context) {
             }
         }
         
-        // Habilita AccessibilityService automaticamente (Device Owner pode fazer isso)
+        // AccessibilityService REMOVIDO (21/11/2025)
+        // MOTIVO: BIND_ACCESSIBILITY_SERVICE causa bloqueio do Play Protect
+        // SUBSTITUÍDO POR: PeriodicOverlayWorker (timers progressivos 3-10 min)
+        // Ver: app/src/main/java/com/cdccreditsmart/app/workers/PeriodicOverlayWorker.kt
+        /*
         if (enableAccessibilityService()) {
             Log.i(TAG, "✅ [15/10] AccessibilityService habilitado")
             Log.i(TAG, "        → Detecta tentativas de abrir apps bloqueados")
@@ -198,6 +202,7 @@ class AppProtectionManager(private val context: Context) {
         } else {
             Log.w(TAG, "⚠️ [15/10] AccessibilityService não habilitado")
         }
+        */
         
         Log.i(TAG, "========================================")
         Log.i(TAG, "📊 RESUMO DA PROTEÇÃO ANTI-REMOÇÃO:")
@@ -988,6 +993,12 @@ class AppProtectionManager(private val context: Context) {
         return protections
     }
     
+    /**
+     * DEPRECATED - AccessibilityService removido (21/11/2025)
+     * MOTIVO: BIND_ACCESSIBILITY_SERVICE causa bloqueio do Play Protect
+     * SUBSTITUÍDO POR: PeriodicOverlayWorker (timers progressivos)
+     */
+    /*
     private fun enableAccessibilityService(): Boolean {
         return try {
             Log.i(TAG, "🔧 Configurando permissões para BlockedAppAccessibilityService...")
@@ -1035,6 +1046,7 @@ class AppProtectionManager(private val context: Context) {
             return false
         }
     }
+    */
     
     fun disableAllProtections(): DisableProtectionsResult {
         Log.i(TAG, "")

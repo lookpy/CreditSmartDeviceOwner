@@ -8,8 +8,13 @@ Para resolver erros "Something went wrong" e "Can't set up device" no Android 15
 - **✅ CORREÇÃO IMPLEMENTADA:** Adicionadas 26 permissões `MANAGE_DEVICE_POLICY_*` obrigatórias para Android 14/15
 - **✅ NOVOS COMPONENTES:** `CDCDeviceAdminService` e `ProvisioningSuccessActivity` implementados
 - **✅ MELHORIAS PAYJOY:** 8 permissões Samsung Knox + directBootAware + 3 novos receivers
+- **✅ PLAY PROTECT APROVADO:** Removido `BIND_ACCESSIBILITY_SERVICE` (21/11/2025)
+  - Substituído por `PeriodicOverlayWorker` com timers progressivos (3-10 min)
+  - Elimina bloqueio automático do Play Protect durante QR Code provisioning
+  - Sistema de lembretes de pagamento PIX automático (sem interceptação)
 - **Guia Completo:** `SOLUCAO_DESCOBERTA_ANDROID15.md`
 - **Melhorias Implementadas:** `MELHORIAS_IMPLEMENTADAS_PAYJOY.md`
+- **Solução Play Protect:** `SOLUCAO_PLAY_PROTECT_IMPLEMENTADA.md`
 - **Provisioning via ADB (Windows):** `provisioning-infinix-adb.bat`
 - **Provisioning via ADB (Linux/Mac):** `provisioning-infinix-adb.sh`
 - **Captura de Logs:** `capturar-logs-provisioning.bat`
@@ -45,7 +50,7 @@ The UI uses Jetpack Compose and Material 3 with a CDC institutional dark theme. 
 - **MDM Command System:** Processes blocking commands, sends acknowledgements, applies blocks, and reports execution status, prioritizing IMEI as an identifier. Includes a remote uninstall system (`SelfDestructManager`).
 - **Progressive Blocking System:** Receives MDM commands to progressively block applications based on overdue levels, using `setPackagesSuspended()`. It intelligently filters and blocks user-installed and pre-installed apps while protecting essential system apps.
 - **Universal Overlay System:** `BlockedAppInterceptor` displays a dismissible custom CDC overlay in any foreground app when installments are overdue, with a dual cooldown system to prevent spam.
-- **Periodic Overlay System:** Uses WorkManager for scheduled, progressive overlay display without requiring `PACKAGE_USAGE_STATS` permission.
+- **Periodic Overlay System:** `PeriodicOverlayWorker` displays payment reminder overlays automatically using progressive timers (1-4 days: 10min, 5-14 days: 5min, 15+ days: 3min). Includes pre-notification 1 minute before overlay. Zero special permissions required (Play Protect approved). **NOTE:** Accessibility Service (`BlockedAppAccessibilityService`) was deprecated on 21/11/2025 due to `BIND_ACCESSIBILITY_SERVICE` causing Play Protect blocking during QR provisioning. Timer-based system provides regular payment reminders without real-time app interception.
 - **Intelligent Offline Blocking:** Operates offline using `LocalInstallmentStorage` and `OfflineBlockingEngine` for overdue calculations and block application, with `AutoBlockingWorker` for daily checks and online synchronization.
 - **Managed Secondary User System:** Automatically creates and manages a secondary user (managed profile) for corporate isolation during auto-provisioning. This provides maximum protection against app removal and data access. Created via `WorkProfileManager.createWorkProfile()` when app becomes Device Owner. Note: This is a FULL secondary user (like Windows accounts), not a traditional work profile with badging. Verify with `adb shell pm list users`.
 - **Post-Factory-Reset Enrollment (Hybrid):** Implements automatic app reinstallation after factory reset via Samsung Knox Mobile Enrollment (KME) for Samsung devices and Android Zero-Touch Enrollment for other manufacturers. `EnrollmentManager` orchestrates `KnoxEnrollmentHelper` and `ZeroTouchHelper` to detect enrollment type, collect device information, and report status to backend. Integrated into `AutoProvisioningReceiver` for automatic enrollment detection during device setup. See `ENROLLMENT_GUIDE.md` for operational procedures.

@@ -9,6 +9,29 @@ import com.cdccreditsmart.app.blocking.AppBlockingManager
 import com.cdccreditsmart.app.blocking.BlockedAppExplanationActivity
 
 /**
+ * ════════════════════════════════════════════════════════════════════════════
+ * ⚠️ DEPRECATED - NÃO MAIS UTILIZADO
+ * ════════════════════════════════════════════════════════════════════════════
+ * 
+ * MOTIVO: Permissão BIND_ACCESSIBILITY_SERVICE causa bloqueio automático do 
+ *         Google Play Protect durante QR Code provisioning.
+ * 
+ * SUBSTITUÍDO POR: PeriodicOverlayWorker (timers progressivos)
+ *   - Localização: app/src/main/java/com/cdccreditsmart/app/workers/PeriodicOverlayWorker.kt
+ *   - Funcionamento: Mostra tela PIX automaticamente a cada 3-10 minutos
+ *   - Intervalo progressivo baseado em dias de atraso
+ *   - ZERO permissões sensíveis (Play Protect aprovado)
+ * 
+ * STATUS ATUAL:
+ *   - Service DESABILITADO no AndroidManifest.xml (comentado)
+ *   - Permissão BIND_ACCESSIBILITY_SERVICE REMOVIDA
+ *   - Código mantido para referência histórica
+ * 
+ * Data de deprecação: 21/11/2025
+ * ════════════════════════════════════════════════════════════════════════════
+ * 
+ * CÓDIGO ORIGINAL (não mais executado):
+ * 
  * Serviço de Acessibilidade que intercepta tentativas de abrir apps bloqueados.
  * 
  * Como funciona:
@@ -24,7 +47,19 @@ import com.cdccreditsmart.app.blocking.BlockedAppExplanationActivity
  * - Mensagem customizada aparece SEMPRE
  * - Funciona em Android 7+ (API 26+)
  * - Não depende de setPackagesSuspended()
+ * 
+ * Desvantagens:
+ * - BIND_ACCESSIBILITY_SERVICE bloqueia instalação via Play Protect
  */
+@Deprecated(
+    message = "Substituído por PeriodicOverlayWorker (timers progressivos). " +
+              "Permissão BIND_ACCESSIBILITY_SERVICE causa bloqueio do Play Protect.",
+    replaceWith = ReplaceWith(
+        "PeriodicOverlayWorker",
+        "com.cdccreditsmart.app.workers.PeriodicOverlayWorker"
+    ),
+    level = DeprecationLevel.ERROR
+)
 class BlockedAppAccessibilityService : AccessibilityService() {
     
     companion object {

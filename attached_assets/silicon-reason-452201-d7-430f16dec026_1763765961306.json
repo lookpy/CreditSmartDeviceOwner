@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "silicon-reason-452201-d7",
+  "private_key_id": "430f16dec02647bca588054b20d3c8b9accfbd8e",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQDNNxDgCFcWJcM3\nCG5upWP8zBGVFF4fIvBnu7DXH7H0JGNW590C8HRx4H5pQms1AQ+4ReIGXrG7U2G7\nU3kDKjbaTIjFGiXRuk6/594UxjHfO4efI8QAVRiCVrKg91+DLrVlZe6A+mB2MxWQ\nVl10wpZU4ACelqZky0IOSpDrSq/L2dSDcnpCRaucS13jpYNvXrT6uxEfP9UtIja/\nvbtzRdSviysD8aW3Sv1i6SKMd/vDvPHHZiQcZeFDwcwDMZkSPE41jYJp668VyIy9\nw+dxYRNKL64GRGLErJf+F5dG451/IQjA/eBpcs7DJrx72BzzRuyQald91SojOhEH\nCV2IbVEhAgMBAAECggEAAhe9//rgdc+xcPM7ZRIiCzxC2vlX3bYWgN2kzQd8DML+\nPFmlowJevaE4yMwDmd5xPEOCLZHI+uG7zRQ/LK1r3R1gsQSLlDBJM03NsaU1HFNY\nFmMKpvzh1hpvkef+kluR6qnNHTBFzDlzI9itn/jdXZo3MhF+kD0+Zt+TIMMkjc3z\nMnw2FkHZ43A6GnSGBAnhGRWu+RaQmS2bwedJyav82O5HJQvx+JhnpvI0zBcyegtx\nl+3Cn5iW8vnY1TOQvaITEeqhxeXhNyeA1O89l8hp2Uoy699cA/n2N8p1xMHmK6yX\nZ54qaO+ANO/EVnOLoT/oduiVftQyVV8721ZU+iQl0QKBgQDyoi67tp4z+lEa35gH\nqHmWTr/vZJ2RlX6I9B8f4goD+brmiOb1sK8GKNBERZivDY+npH6zaVqeWNTyM8x0\nvCXc/gCgObcvDKKQ6UUl2yGEOPIr+L4MVkRF+Z9DJJ3SowxLauNRAMUVRmSO5nX2\nboXWGSAlAGz/5plCuwAtxMQMxQKBgQDYhS2QZqaEi5bYptxmv+mp/D+L61RfA7Sv\nYwgQBwqWQ33BvSVduFMXx13JWeYa0s7RFHfkHTFbV+o+JhDEXzlJAEBEK/82u+Gu\nCE5Kc6TzaRD+g6ZM+2AzuWOveFQ/d9CnzknKnTCK+L8i5wQlcqxB8pxliB9TIdpu\nD/QgY5jwrQKBgCjLggYHt2PP45EcJQisl/zgsr7CcQfIVeUa/pyyubJfa8BVJlgK\n4/KqLBI+jWRpaEzsiG0L+rODBhLPCMJb3BXjEyHdcmJTwoWQ4xJxXJpJpNYl1XZn\njsUhKlj0sCB5T5jimOPGuFxSYJfyQcU0YgZUZSYzgyAnmn8wx9/qJHhtAoGAb21C\nQKEDKw0nSUG+BUbYenltPpWSKv+eOfBOEul8wk3jZxPvKecVJBSeqGOSbtV0R9cv\nx/5aCzcYPnmagWS791ygtjSqN8HC56wwllIjXn0AmOqpZ86p+JR8v62+NZd0kxcv\nlI0GkU5oFw8qbBcynRG8+Odvr3mpjqC5Mv3ulFUCgYBZW1CXPt1pxA/lCMMovua4\nrozl2XVI6QO/gdoq9iluzxlaK+kFpriM5uKqX9IAY/GUN/SfZSlAcJsU4VIhnc1j\nwV8flznHV7bw3ORj1OjyQ0UVi2WAaplip5ll0DrmVdYJygspZiqzlU+4zWCRTV0+\nUbBgvvvlOxozcylykK982g==\n-----END PRIVATE KEY-----\n",
+  "client_email": "credit-smart@silicon-reason-452201-d7.iam.gserviceaccount.com",
+  "client_id": "115111268080039409531",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/credit-smart%40silicon-reason-452201-d7.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}
