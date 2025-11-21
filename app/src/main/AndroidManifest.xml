@@ -45,6 +45,9 @@
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE_DATA_SYNC" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE_REMOTE_MESSAGING" />
     
+    <!-- Camera permission - NECESSÁRIA para QR Code provisioning funcionar -->
+    <uses-permission android:name="android.permission.CAMERA" />
+    
     <!-- Phone & SMS permissions (apenas essenciais para batch permission request) -->
     <uses-permission android:name="android.permission.READ_CALL_LOG" />
     <uses-permission android:name="android.permission.CALL_PHONE" />
