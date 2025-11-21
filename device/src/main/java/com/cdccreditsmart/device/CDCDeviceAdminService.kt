@@ -28,14 +28,4 @@ class CDCDeviceAdminService : DeviceAdminService() {
         Log.i(TAG, "Device Admin Service destroyed")
         super.onDestroy()
     }
-
-    override fun onBind(intent: android.content.Intent?): android.os.IBinder? {
-        Log.d(TAG, "onBind called with intent: ${intent?.action}")
-        return super.onBind(intent)
-    }
-
-    override fun onUnbind(intent: android.content.Intent?): Boolean {
-        Log.d(TAG, "onUnbind called")
-        return super.onUnbind(intent)
-    }
 }
