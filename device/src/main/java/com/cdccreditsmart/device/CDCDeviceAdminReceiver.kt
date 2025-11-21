@@ -1020,10 +1020,17 @@ class CDCDeviceAdminReceiver : DeviceAdminReceiver() {
                     logDetailed("E", TAG, "❌ Erro ao configurar política de atualizações", e)
                 }
                 
-                // 6. HABILITAR APPS CRÍTICOS DO SISTEMA
+                // 6. GARANTIR ACESSO AO SETTINGS (TODAS AS VARIANTES)
+                try {
+                    ensureSettingsAccessible(context, dpm, adminComponent)
+                    logDetailed("I", TAG, "✅ [6/8] Settings garantido como acessível")
+                } catch (e: Exception) {
+                    logDetailed("E", TAG, "❌ Erro ao garantir acesso ao Settings", e)
+                }
+                
+                // 7. HABILITAR APPS CRÍTICOS DO SISTEMA
                 try {
                     val criticalSystemApps = listOf(
-                        "com.android.settings",
                         "com.android.systemui",
                         "com.android.phone",
                         "com.android.dialer"
@@ -1040,27 +1047,27 @@ class CDCDeviceAdminReceiver : DeviceAdminReceiver() {
                             // Ignorar erros individuais
                         }
                     }
-                    logDetailed("I", TAG, "✅ [6/7] Apps críticos do sistema habilitados ($enabledCount apps)")
+                    logDetailed("I", TAG, "✅ [7/9] Apps críticos do sistema habilitados ($enabledCount apps)")
                 } catch (e: Exception) {
                     logDetailed("E", TAG, "❌ Erro ao habilitar apps do sistema", e)
                 }
                 
-                // 7. CONFIGURAR LAUNCHER PADRÃO DO SISTEMA (SEM PERGUNTA AO USUÁRIO)
+                // 8. CONFIGURAR LAUNCHER PADRÃO DO SISTEMA (SEM PERGUNTA AO USUÁRIO)
                 try {
                     setSystemLauncherAsDefault(context, dpm, adminComponent)
-                    logDetailed("I", TAG, "✅ [7/8] Launcher padrão do sistema configurado")
+                    logDetailed("I", TAG, "✅ [8/9] Launcher padrão do sistema configurado")
                 } catch (e: Exception) {
                     logDetailed("E", TAG, "❌ Erro ao configurar launcher padrão", e)
                 }
                 
-                // 8. SALVAR FLAG DE PROVISIONAMENTO CONCLUÍDO
+                // 9. SALVAR FLAG DE PROVISIONAMENTO CONCLUÍDO
                 try {
                     val prefs = context.getSharedPreferences("cdc_provisioning", Context.MODE_PRIVATE)
                     prefs.edit()
                         .putBoolean("auto_provisioning_completed", true)
                         .putLong("provisioning_timestamp", System.currentTimeMillis())
                         .apply()
-                    logDetailed("I", TAG, "✅ [8/8] Flag de provisionamento salva")
+                    logDetailed("I", TAG, "✅ [9/9] Flag de provisionamento salva")
                 } catch (e: Exception) {
                     logDetailed("E", TAG, "❌ Erro ao salvar flag", e)
                 }
@@ -1071,7 +1078,7 @@ class CDCDeviceAdminReceiver : DeviceAdminReceiver() {
                 logDetailed("I", TAG, "🚀 Iniciando serviços da aplicação...")
                 logDetailed("I", TAG, "")
                 
-                // 9. INICIAR O FOREGROUND SERVICE
+                // 10. INICIAR O FOREGROUND SERVICE
                 try {
                     val serviceIntent = Intent()
                     serviceIntent.setClassName(
@@ -1090,7 +1097,7 @@ class CDCDeviceAdminReceiver : DeviceAdminReceiver() {
                     logDetailed("E", TAG, "⚠️ Erro ao iniciar CdcForegroundService (será iniciado no próximo boot)", e)
                 }
                 
-                // 10. BROADCAST PARA NOTIFICAR A APLICAÇÃO
+                // 11. BROADCAST PARA NOTIFICAR A APLICAÇÃO
                 try {
                     val broadcastIntent = Intent("com.cdccreditsmart.AUTO_PROVISIONING_COMPLETED")
                     broadcastIntent.setPackage(context.packageName)
@@ -1107,6 +1114,138 @@ class CDCDeviceAdminReceiver : DeviceAdminReceiver() {
             } catch (e: Exception) {
                 logDetailed("E", TAG, "❌ ERRO CRÍTICO durante auto-configuração", e)
             }
+        }
+    }
+
+    /**
+     * CRÍTICO: Garante que o Settings sempre esteja acessível (todas as variantes)
+     * Resolve problema comum: usuário não consegue visualizar Settings após provisioning
+     */
+    private fun ensureSettingsAccessible(
+        context: Context,
+        dpm: DevicePolicyManager,
+        adminComponent: android.content.ComponentName
+    ) {
+        try {
+            logDetailed("I", TAG, "⚙️ Garantindo acesso ao Settings do sistema...")
+            
+            // TODAS as variantes conhecidas de Settings por fabricante
+            val settingsVariants = listOf(
+                // Android padrão
+                "com.android.settings",
+                "com.google.android.settings",
+                
+                // Samsung
+                "com.samsung.android.settings",
+                "com.sec.android.app.settings",
+                
+                // Xiaomi (MIUI)
+                "com.android.settings",
+                "com.miui.securitycenter",
+                
+                // Infinix/Tecno/Itel (Transsion)
+                "com.transsion.settings",
+                "com.itel.settings",
+                "com.tecno.settings",
+                "com.infinix.settings",
+                
+                // Realme/OPPO (ColorOS)
+                "com.coloros.settings",
+                "com.oppo.settings",
+                
+                // Motorola
+                "com.motorola.settings",
+                
+                // Huawei
+                "com.huawei.systemmanager",
+                "com.huawei.settings",
+                
+                // OnePlus
+                "com.oneplus.settings",
+                
+                // Vivo
+                "com.vivo.settings",
+                "com.bbk.settings"
+            )
+            
+            var enabledCount = 0
+            var foundSettings = false
+            
+            for (pkg in settingsVariants) {
+                try {
+                    if (isAppInstalled(context, pkg)) {
+                        foundSettings = true
+                        
+                        // 1. Habilitar o Settings (caso esteja desabilitado)
+                        try {
+                            dpm.enableSystemApp(adminComponent, pkg)
+                            logDetailed("I", TAG, "   ✅ Settings habilitado: $pkg")
+                            enabledCount++
+                        } catch (e: Exception) {
+                            logDetailed("W", TAG, "   ⚠️ Não foi possível habilitar $pkg: ${e.message}")
+                        }
+                        
+                        // 2. Garantir que NÃO está suspenso
+                        try {
+                            val suspendedPackages = if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+                                dpm.getPackagesSuspended(adminComponent)
+                            } else {
+                                emptyArray()
+                            }
+                            
+                            if (suspendedPackages.contains(pkg)) {
+                                dpm.setPackagesSuspended(adminComponent, arrayOf(pkg), false)
+                                logDetailed("I", TAG, "   ✅ Settings dessuspenso: $pkg")
+                            }
+                        } catch (e: Exception) {
+                            logDetailed("W", TAG, "   ⚠️ Não foi possível verificar suspensão de $pkg")
+                        }
+                        
+                        // 3. Garantir que está desbloqueado
+                        try {
+                            dpm.setUninstallBlocked(adminComponent, pkg, false)
+                            logDetailed("I", TAG, "   ✅ Settings desbloqueado: $pkg")
+                        } catch (e: Exception) {
+                            // Ignorar - Settings de sistema não pode ser desinstalado de qualquer forma
+                        }
+                    }
+                } catch (e: Exception) {
+                    logDetailed("W", TAG, "   ⚠️ Erro ao processar $pkg: ${e.message}")
+                }
+            }
+            
+            if (foundSettings) {
+                logDetailed("I", TAG, "✅ Settings garantido como acessível!")
+                logDetailed("I", TAG, "   📊 Variantes habilitadas: $enabledCount")
+            } else {
+                logDetailed("E", TAG, "❌ AVISO: Nenhuma variante de Settings encontrada!")
+                logDetailed("E", TAG, "❌ Dispositivo pode ter Settings em pacote desconhecido")
+            }
+            
+            // 4. CRÍTICO: Remover restrições que possam bloquear acesso ao Settings
+            try {
+                val restrictionsThatMightBlockSettings = listOf(
+                    UserManager.DISALLOW_APPS_CONTROL,
+                    UserManager.DISALLOW_CONFIG_WIFI,
+                    UserManager.DISALLOW_CONFIG_BLUETOOTH,
+                    UserManager.DISALLOW_CONFIG_MOBILE_NETWORKS,
+                    UserManager.DISALLOW_MODIFY_ACCOUNTS
+                )
+                
+                for (restriction in restrictionsThatMightBlockSettings) {
+                    try {
+                        dpm.clearUserRestriction(adminComponent, restriction)
+                    } catch (e: Exception) {
+                        // Ignorar se não estava aplicada
+                    }
+                }
+                logDetailed("I", TAG, "✅ Restrições que bloqueiam Settings foram removidas")
+            } catch (e: Exception) {
+                logDetailed("W", TAG, "⚠️ Erro ao remover restrições: ${e.message}")
+            }
+            
+        } catch (e: Exception) {
+            logDetailed("E", TAG, "❌ ERRO CRÍTICO ao garantir acesso ao Settings", e)
         }
     }
 
