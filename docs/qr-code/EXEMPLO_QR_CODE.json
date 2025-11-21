@@ -1,0 +1,15 @@
+{
+  "android.app.extra.PROVISIONING_DEVICE_ADMIN_COMPONENT_NAME": "com.cdccreditsmart.app/com.cdccreditsmart.device.CDCDeviceAdminReceiver",
+  "android.app.extra.PROVISIONING_DEVICE_ADMIN_SIGNATURE_CHECKSUM": "SUBSTITUA_COM_SEU_SIGNATURE_CHECKSUM_SHA256_BASE64URL",
+  "android.app.extra.PROVISIONING_DEVICE_ADMIN_PACKAGE_DOWNLOAD_LOCATION": "https://api.cdccreditsmart.com/app/?code=provision",
+  "android.app.extra.PROVISIONING_SKIP_ENCRYPTION": true,
+  "android.app.extra.PROVISIONING_LEAVE_ALL_SYSTEM_APPS_ENABLED": true,
+  "android.app.extra.PROVISIONING_ADMIN_EXTRAS_BUNDLE": {
+    "contract_code": "12345678",
+    "server_url": "https://api.cdccreditsmart.com",
+    "enrollment_token": "abc123",
+    "customer_cpf": "12345678900",
+    "kiosk_mode_enabled": true,
+    "auto_start_pairing": true
+  }
+}

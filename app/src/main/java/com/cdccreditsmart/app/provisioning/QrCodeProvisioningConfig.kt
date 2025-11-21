@@ -6,7 +6,7 @@ import org.json.JSONObject
 
 @Parcelize
 data class QrCodeProvisioningConfig(
-    val componentName: String = "com.cdccreditsmart.app/com.cdccreditsmart.app.device.CdcDeviceAdminReceiver",
+    val componentName: String = "com.cdccreditsmart.app/com.cdccreditsmart.device.CDCDeviceAdminReceiver",
     val apkDownloadUrl: String,
     val signatureChecksum: String,
     val wifiSsid: String? = null,
