@@ -28,7 +28,7 @@ outputType = "console"
 
 [nix]
 channel = "stable-25_05"
-packages = ["android-tools", "curl", "imagemagick", "jadx", "openjdk17", "unzip", "wget"]
+packages = ["android-tools", "curl", "imagemagick", "jadx", "openjdk17", "unzip", "wget", "xcodebuild", "zlib"]
 
 [[ports]]
 localPort = 3001
