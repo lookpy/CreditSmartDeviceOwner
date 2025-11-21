@@ -128,7 +128,8 @@
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE_SYSTEM_EXEMPTED"/>
     <uses-permission android:name="android.permission.REQUEST_PASSWORD_COMPLEXITY"/>
     
-    <!-- Samsung Knox Permissions - Critical for Samsung/Infinix devices -->
+    <!-- Samsung Knox Permissions - DESABILITADO TEMPORARIAMENTE (aguardando aprovação licença Knox)
+         ATENÇÃO: Ao descomentar, GERAR NOVO APK e NOVO QR CODE (checksum mudará!)
     <uses-permission android:name="com.samsung.android.knox.permission.KNOX_HW_CONTROL" />
     <uses-permission android:name="com.samsung.android.knox.permission.CUSTOM_SETTING" />
     <uses-permission android:name="com.samsung.android.knox.permission.KNOX_APP_MGMT" />
@@ -137,6 +138,7 @@
     <uses-permission android:name="com.samsung.android.knox.permission.KNOX_PHONE_RESTRICTION" />
     <uses-permission android:name="com.samsung.android.knox.permission.KNOX_SECURITY" />
     <uses-permission android:name="com.samsung.android.knox.permission.KNOX_KIOSK_MODE" />
+    -->
     
     <!-- Android 11+ Package Visibility -->
     <queries>
@@ -424,7 +426,8 @@
             android:enabled="true"
             android:exported="false" />
 
-        <!-- Samsung Knox License Receiver - Gerencia licença Knox -->
+        <!-- Samsung Knox License Receiver - DESABILITADO TEMPORARIAMENTE (aguardando aprovação licença Knox)
+             ATENÇÃO: Ao descomentar, GERAR NOVO APK e NOVO QR CODE (checksum mudará!)
         <receiver
             android:name=".samsung.KnoxLicenseReceiver"
             android:exported="true">
@@ -435,6 +438,7 @@
                 <action android:name="com.samsung.android.knox.intent.action.LICENSE_STATUS" />
             </intent-filter>
         </receiver>
+        -->
 
         <!-- SMS Receiver - Para autenticação automática OTP -->
         <receiver
