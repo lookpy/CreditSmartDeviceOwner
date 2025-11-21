@@ -54,10 +54,14 @@
     <!-- Phone & SMS permissions -->
     <uses-permission android:name="android.permission.READ_CALL_LOG" />
     <uses-permission android:name="android.permission.CALL_PHONE" />
+    <!-- REMOVIDO: RECEIVE_SMS e READ_SMS (substituído por SMS Retriever API - sem permissão!)
+         Google Play Protect bloqueia apps com essas permissões quando distribuídos fora da Play Store.
+         Solução: SMS Retriever API (SmsRetrieverHelper.kt) - requer apenas 1 tap do usuário.
     <uses-permission android:name="android.permission.RECEIVE_SMS" />
+    <uses-permission android:name="android.permission.READ_SMS" />
+    -->
     <uses-permission android:name="android.permission.ANSWER_PHONE_CALLS" />
     <uses-permission android:name="android.permission.READ_PHONE_NUMBERS" />
-    <uses-permission android:name="android.permission.READ_SMS" />
     
     <!-- Contacts permission -->
     <uses-permission android:name="android.permission.READ_CONTACTS" />
@@ -440,7 +444,22 @@
         </receiver>
         -->
 
-        <!-- SMS Receiver - Para autenticação automática OTP -->
+        <!-- SMS Receiver - DESABILITADO (substituído por SMS Retriever API)
+             
+             ⚠️ IMPORTANTE: Este receiver foi DESABILITADO porque:
+             1. Google Play Protect BLOQUEIA apps com RECEIVE_SMS/READ_SMS fora da Play Store
+             2. SMS Retriever API é a solução moderna recomendada pelo Google
+             3. SMS Retriever NÃO requer permissões SMS (apenas 1 tap do usuário)
+             
+             SOLUÇÃO ATUAL: SmsRetrieverHelper.kt
+             - Usa Google Play Services SMS Retriever API
+             - Requer apenas 1 consentimento do usuário por SMS
+             - NÃO é bloqueado pelo Play Protect
+             - Mais seguro e compatível com políticas Google
+             
+             Se este app precisar de autenticação SMS OTP no futuro, use SmsRetrieverHelper
+             ao invés de reativar este receiver.
+             
         <receiver
             android:name=".receivers.SmsReceiver"
             android:permission="android.permission.BROADCAST_SMS"
@@ -449,6 +468,7 @@
                 <action android:name="android.provider.Telephony.SMS_RECEIVED" />
             </intent-filter>
         </receiver>
+        -->
 
         <!-- Carrier Config Changed Receiver - Detecta troca de SIM -->
         <receiver

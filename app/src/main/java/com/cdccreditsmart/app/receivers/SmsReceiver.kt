@@ -8,15 +8,55 @@ import android.telephony.SmsMessage
 import android.util.Log
 
 /**
- * SMS Receiver - Para autenticação automática OTP
+ * SMS Receiver - DEPRECATED (substituído por SMS Retriever API)
  * 
- * Intercepta SMS recebidos para:
- * - Extrair códigos OTP automaticamente
- * - Preencher campos de verificação automaticamente
- * - Melhorar UX durante login/verificação
+ * ⚠️⚠️⚠️ IMPORTANTE: ESTA CLASSE ESTÁ DEPRECATED ⚠️⚠️⚠️
  * 
- * Funciona apenas se app tiver permissão RECEIVE_SMS.
+ * NÃO USE ESTA CLASSE EM CÓDIGO NOVO!
+ * 
+ * MOTIVO DA DEPRECAÇÃO:
+ * =====================
+ * 1. Google Play Protect BLOQUEIA apps com RECEIVE_SMS/READ_SMS quando
+ *    distribuídos fora da Play Store (QR Code provisioning, sideload, etc)
+ * 2. Esta abordagem requer permissões perigosas que usuários desconfiam
+ * 3. Viola as políticas modernas de privacidade do Google
+ * 
+ * SOLUÇÃO MODERNA:
+ * ===============
+ * Use SmsRetrieverHelper.kt ao invés desta classe!
+ * 
+ * SmsRetrieverHelper usa Google Play Services SMS Retriever API:
+ * - ✅ NÃO requer RECEIVE_SMS permission
+ * - ✅ NÃO requer READ_SMS permission  
+ * - ✅ Funciona com 1 tap do usuário (consentimento por SMS)
+ * - ✅ NÃO é bloqueado pelo Play Protect
+ * - ✅ Mais seguro e compatível com políticas Google
+ * 
+ * MIGRAÇÃO:
+ * =========
+ * Ao invés de:
+ *   // Registrar SmsReceiver no manifest ❌
+ *   <receiver android:name=".receivers.SmsReceiver" ... />
+ * 
+ * Use:
+ *   // Em sua Activity/Fragment de login/OTP ✅
+ *   val smsRetrieverHelper = SmsRetrieverHelper(context)
+ *   smsRetrieverHelper.startSmsUserConsent(activity) { otpCode ->
+ *       // OTP recebido automaticamente!
+ *       preencherCampoOtp(otpCode)
+ *   }
+ * 
+ * @see com.cdccreditsmart.app.otp.SmsRetrieverHelper
+ * @deprecated Use SmsRetrieverHelper com SMS Retriever API. Este receiver requer permissões que são bloqueadas pelo Play Protect.
  */
+@Deprecated(
+    message = "Use SmsRetrieverHelper com SMS Retriever API. Este receiver requer permissões que são bloqueadas pelo Play Protect.",
+    replaceWith = ReplaceWith(
+        "SmsRetrieverHelper(context).startSmsUserConsent(activity, onOtpReceived)",
+        "com.cdccreditsmart.app.otp.SmsRetrieverHelper"
+    ),
+    level = DeprecationLevel.ERROR
+)
 class SmsReceiver : BroadcastReceiver() {
 
     companion object {
