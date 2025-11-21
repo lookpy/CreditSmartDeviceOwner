@@ -1,0 +1,612 @@
+# 📱 Documentação: Sistema de Desinstalação de Aplicativos
+## CDC Credit Smart - Fintech Platform
+
+> **Versão:** 1.0.0  
+> **Última Atualização:** 21 de Novembro de 2025  
+> **Autor:** Sistema CDC Credit Smart
+
+---
+
+## 📋 Índice
+
+1. [Visão Geral](#visão-geral)
+2. [Arquitetura do Sistema](#arquitetura-do-sistema)
+3. [Fluxo de Desinstalação](#fluxo-de-desinstalação)
+4. [Proteções de Segurança](#proteções-de-segurança)
+5. [Endpoint da API](#endpoint-da-api)
+6. [Códigos de Desinstalação](#códigos-de-desinstalação)
+7. [Comandos MDM](#comandos-mdm)
+8. [Auto-Desinstalação](#auto-desinstalação)
+9. [Logs e Auditoria](#logs-e-auditoria)
+10. [Device Owner e Device Admin](#device-owner-e-device-admin)
+
+---
+
+## 🎯 Visão Geral
+
+O sistema de desinstalação do CDC Credit Smart é projetado com **múltiplas camadas de segurança** para garantir que:
+
+- ✅ Apenas administradores autorizados possam solicitar desinstalações
+- ✅ Toda desinstalação seja **validada com código único**
+- ✅ Todas as ações sejam **registradas para auditoria**
+- ✅ O dispositivo seja notificado em **tempo real via WebSocket**
+- ✅ O APK possa se **auto-desinstalar** quando autorizado
+
+---
+
+## 🏗️ Arquitetura do Sistema
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│                    ADMIN WEB DASHBOARD                       │
+│  (Solicita desinstalação com código de autorização)         │
+└───────────────────────────┬─────────────────────────────────┘
+                            │
+                            ▼
+┌─────────────────────────────────────────────────────────────┐
+│                 BACKEND API SERVER                           │
+│                                                              │
+│  1. Valida código de desinstalação                          │
+│  2. Cria comando MDM (UNINSTALL_APP)                        │
+│  3. Envia notificação WebSocket                             │
+│  4. Registra log de auditoria                               │
+└───────────────────────────┬─────────────────────────────────┘
+                            │
+              ┌─────────────┴──────────────┐
+              │                            │
+              ▼                            ▼
+┌──────────────────────┐      ┌──────────────────────┐
+│   WEBSOCKET SERVER   │      │  COMANDO MDM DB      │
+│  (Notificação Real)  │      │  (24h expiration)    │
+└──────────┬───────────┘      └──────────────────────┘
+           │
+           ▼
+┌─────────────────────────────────────────────────────────────┐
+│              DISPOSITIVO ANDROID (APK)                       │
+│                                                              │
+│  1. Recebe notificação WebSocket                            │
+│  2. Valida comando MDM                                      │
+│  3. Verifica código de desinstalação                        │
+│  4. Executa auto-desinstalação                              │
+│  5. Remove Device Owner/Admin                               │
+└─────────────────────────────────────────────────────────────┘
+```
+
+---
+
+## 🔄 Fluxo de Desinstalação
+
+### **Passo 1: Solicitação pelo Admin**
+
+```http
+POST /api/devices/:deviceId/uninstall
+Authorization: Bearer {JWT_TOKEN}
+Content-Type: application/json
+
+{
+  "uninstallCode": "ABC123XYZ"
+}
+```
+
+### **Passo 2: Validação de Permissões**
+
+1. ✅ Verificar se usuário é **admin** (role check)
+2. ✅ Verificar se **código de desinstalação** é válido
+3. ✅ Verificar se dispositivo existe
+4. ❌ **Bloquear** se qualquer validação falhar
+
+### **Passo 3: Criação do Comando MDM**
+
+```typescript
+{
+  deviceId: "device_123",
+  commandType: "UNINSTALL_APP",
+  commandData: {
+    reason: "Desinstalação autorizada pelo admin",
+    uninstallCode: "ABC123XYZ",
+    requestedBy: "admin@cdccreditsmart.com"
+  },
+  priority: "critical",
+  status: "pending",
+  expiresAt: "2025-11-22T03:00:00.000Z" // 24 horas
+}
+```
+
+### **Passo 4: Notificação WebSocket**
+
+```json
+{
+  "type": "mdm_command",
+  "command": "UNINSTALL_APP",
+  "commandId": "cmd_456",
+  "priority": "critical",
+  "reason": "Desinstalação autorizada pelo admin",
+  "uninstallCode": "ABC123XYZ"
+}
+```
+
+### **Passo 5: Execução no Dispositivo**
+
+1. APK recebe notificação WebSocket
+2. Valida código de desinstalação com servidor
+3. Remove permissões Device Owner/Admin
+4. Executa auto-desinstalação
+5. Reporta status ao servidor
+
+---
+
+## 🔒 Proteções de Segurança
+
+### **1. Código de Desinstalação Obrigatório**
+
+- ✅ Código único gerado por dispositivo
+- ✅ Validado no servidor antes de executar
+- ✅ Expira após uso ou tempo limite
+- ✅ Registrado em log de auditoria
+
+### **2. Autenticação e Autorização**
+
+```typescript
+// Apenas admins podem solicitar desinstalação
+if (req.user?.role !== 'admin') {
+  return res.status(403).json({ 
+    error: 'Acesso negado - apenas administradores podem solicitar desinstalação' 
+  });
+}
+```
+
+### **3. Validação de Código**
+
+```typescript
+// Validar código de desinstalação
+const isValid = await storage.validateUninstallCode(deviceId, uninstallCode);
+if (!isValid) {
+  // Log de tentativa inválida
+  await logAuditEvent({
+    action: 'uninstall_attempt_failed',
+    reason: 'Código de desinstalação inválido'
+  });
+  
+  return res.status(403).json({ 
+    error: 'Código de desinstalação inválido' 
+  });
+}
+```
+
+### **4. Prioridade Crítica**
+
+- ⚡ Comandos de desinstalação têm **prioridade máxima**
+- 🔔 Notificações WebSocket em tempo real
+- ⏱️ Expiração em 24 horas
+- 📊 Monitoramento de entrega
+
+---
+
+## 🌐 Endpoint da API
+
+### **POST /api/devices/:deviceId/uninstall**
+
+**Descrição:** Solicita desinstalação do APK de um dispositivo específico.
+
+**Autenticação:** Bearer Token (JWT)
+
+**Permissão:** Admin apenas
+
+**Parâmetros:**
+
+| Nome | Tipo | Obrigatório | Descrição |
+|------|------|-------------|-----------|
+| `deviceId` | string | ✅ Sim | ID do dispositivo |
+| `uninstallCode` | string | ✅ Sim | Código de desinstalação válido |
+
+**Exemplo de Request:**
+
+```bash
+curl -X POST https://cdccreditsmart.com/api/devices/device_123/uninstall \
+  -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..." \
+  -H "Content-Type: application/json" \
+  -d '{
+    "uninstallCode": "ABC123XYZ"
+  }'
+```
+
+**Resposta de Sucesso (201):**
+
+```json
+{
+  "success": true,
+  "message": "Comando de desinstalação enviado ao dispositivo",
+  "commandId": "cmd_789",
+  "command": {
+    "id": "cmd_789",
+    "deviceId": "device_123",
+    "commandType": "UNINSTALL_APP",
+    "status": "pending",
+    "priority": "critical",
+    "expiresAt": "2025-11-22T03:00:00.000Z"
+  }
+}
+```
+
+**Respostas de Erro:**
+
+| Código | Descrição |
+|--------|-----------|
+| `400` | Código de desinstalação não fornecido |
+| `403` | Acesso negado (não é admin) ou código inválido |
+| `404` | Dispositivo não encontrado |
+| `500` | Erro interno do servidor |
+
+---
+
+## 🔑 Códigos de Desinstalação
+
+### **Geração de Códigos**
+
+Os códigos de desinstalação são:
+
+- 📝 Gerados automaticamente por dispositivo
+- 🔐 Únicos e não reutilizáveis
+- ⏱️ Com tempo de expiração
+- 🗄️ Armazenados no banco de dados
+
+### **Validação de Códigos**
+
+```typescript
+// Método de validação no storage
+async validateUninstallCode(deviceId: string, code: string): Promise<boolean> {
+  const result = await db
+    .select()
+    .from(uninstallCodes)
+    .where(
+      and(
+        eq(uninstallCodes.deviceId, deviceId),
+        eq(uninstallCodes.code, code),
+        eq(uninstallCodes.used, false),
+        gt(uninstallCodes.expiresAt, new Date())
+      )
+    )
+    .limit(1);
+  
+  if (result.length === 0) {
+    return false;
+  }
+  
+  // Marcar código como usado
+  await db
+    .update(uninstallCodes)
+    .set({ used: true, usedAt: new Date() })
+    .where(eq(uninstallCodes.id, result[0].id));
+  
+  return true;
+}
+```
+
+---
+
+## 📡 Comandos MDM
+
+### **Estrutura do Comando MDM**
+
+```typescript
+interface MDMCommand {
+  id: string;
+  deviceId: string;
+  commandType: "UNINSTALL_APP";
+  commandData: {
+    reason: string;
+    uninstallCode: string;
+    requestedBy: string;
+  };
+  status: "pending" | "delivered" | "executed" | "failed" | "expired";
+  priority: "critical" | "high" | "normal" | "low";
+  createdAt: Date;
+  expiresAt: Date;
+  deliveredAt?: Date;
+  executedAt?: Date;
+}
+```
+
+### **Ciclo de Vida do Comando**
+
+```
+pending → delivered → executed
+   ↓          ↓          ↓
+ expired    failed    failed
+```
+
+### **Tipos de Comandos MDM**
+
+| Tipo | Descrição |
+|------|-----------|
+| `UNINSTALL_APP` | Desinstalar o APK do dispositivo |
+| `BLOCK_DEVICE` | Bloquear acesso a apps |
+| `UNBLOCK_DEVICE` | Desbloquear acesso a apps |
+| `UPDATE_CONFIG` | Atualizar configurações |
+| `FACTORY_RESET` | Reset de fábrica (extremo) |
+
+---
+
+## 🤖 Auto-Desinstalação
+
+### **Mecanismo de Auto-Desinstalação**
+
+O APK possui capacidade de **auto-desinstalação** quando recebe comando autorizado:
+
+```typescript
+// Notificação WebSocket recebida pelo APK
+onWebSocketMessage(message) {
+  if (message.command === 'UNINSTALL_APP') {
+    const uninstallCode = message.uninstallCode;
+    
+    // Validar código com servidor
+    const isValid = await validateUninstallCode(uninstallCode);
+    
+    if (isValid) {
+      console.log('✅ Código válido - iniciando auto-desinstalação');
+      
+      // 1. Remover Device Owner/Admin
+      await removeDeviceOwner();
+      
+      // 2. Notificar servidor
+      await notifyUninstallStarted();
+      
+      // 3. Auto-desinstalar
+      await selfUninstall();
+    }
+  }
+}
+```
+
+### **Processo de Remoção Device Owner**
+
+Antes da desinstalação, o APK deve:
+
+1. ✅ Remover permissões de Device Owner
+2. ✅ Desabilitar Device Admin Receiver
+3. ✅ Limpar políticas MDM aplicadas
+4. ✅ Notificar servidor sobre conclusão
+
+```java
+// Código Android (exemplo)
+DevicePolicyManager dpm = getSystemService(DevicePolicyManager.class);
+ComponentName adminReceiver = new ComponentName(this, CDCDeviceAdminReceiver.class);
+
+// Remover como Device Owner
+dpm.clearDeviceOwnerApp(getPackageName());
+
+// Desinstalar
+Intent intent = new Intent(Intent.ACTION_DELETE);
+intent.setData(Uri.parse("package:" + getPackageName()));
+startActivity(intent);
+```
+
+---
+
+## 📊 Logs e Auditoria
+
+### **Eventos Registrados**
+
+Todos os eventos de desinstalação são registrados:
+
+| Evento | Descrição |
+|--------|-----------|
+| `uninstall_authorized` | Admin autorizou desinstalação |
+| `uninstall_attempt_failed` | Tentativa com código inválido |
+| `mdm_command_created` | Comando MDM criado |
+| `mdm_websocket_uninstall_notification` | WebSocket enviado |
+| `uninstall_started` | APK iniciou desinstalação |
+| `uninstall_completed` | Desinstalação concluída |
+
+### **Estrutura do Log de Auditoria**
+
+```typescript
+{
+  action: "uninstall_authorized",
+  entityType: "device",
+  entityId: "device_123",
+  userId: "admin_456",
+  details: {
+    uninstallCode: "ABC123XYZ",
+    requestedBy: "admin@cdccreditsmart.com",
+    commandId: "cmd_789",
+    websocketDelivered: true
+  },
+  timestamp: "2025-11-21T03:35:14.000Z"
+}
+```
+
+### **Consulta de Logs**
+
+```sql
+SELECT * FROM audit_logs
+WHERE action LIKE '%uninstall%'
+  AND entity_type = 'device'
+  AND entity_id = 'device_123'
+ORDER BY created_at DESC;
+```
+
+---
+
+## 🛡️ Device Owner e Device Admin
+
+### **Componente Device Admin Receiver**
+
+O APK utiliza um **Device Admin Receiver** para gerenciar permissões:
+
+```
+Component Name: 
+com.cdccreditsmart.app/com.cdccreditsmart.device.CDCDeviceAdminReceiver
+```
+
+### **Detecção Automática**
+
+O sistema detecta automaticamente o Device Admin Receiver do APK:
+
+```typescript
+const detectDeviceAdminComponent = (manifest: any, packageName: string): string | null => {
+  // Verificar por padrões comuns
+  const commonDeviceAdminClasses = [
+    '.device.CDCDeviceAdminReceiver',
+    '.admin.CDCDeviceAdminReceiver', 
+    '.device.DeviceAdminReceiver',
+    '.admin.DeviceAdminReceiver',
+    '.admin.AdvancedDeviceAdminReceiver'
+  ];
+  
+  // Buscar no manifest
+  const receivers = manifest.application.receiver;
+  const deviceAdminReceivers = receivers.filter(receiver => {
+    return receiver.permission === 'android.permission.BIND_DEVICE_ADMIN' ||
+           receiver['meta-data']?.name === 'android.app.device_admin' ||
+           receiver['intent-filter']?.action?.name === 'android.app.action.DEVICE_ADMIN_ENABLED';
+  });
+  
+  return deviceAdminReceivers[0]?.name || null;
+};
+```
+
+### **Permissões Device Owner**
+
+Quando configurado como Device Owner, o APK pode:
+
+- ✅ **Gerenciar apps** instalados (não desinstalar)
+- ✅ **Aplicar políticas** MDM
+- ✅ **Monitorar** uso do dispositivo
+- ✅ **Bloquear/desbloquear** acesso a apps
+- ❌ **NÃO pode bloquear** o aparelho completamente (Lei 19.547/2025)
+
+---
+
+## 🚨 Importante: Lei 19.547/2025 (Ceará)
+
+> **ATENÇÃO:** O sistema **NÃO bloqueia o funcionamento** do aparelho telefônico, apenas **LIMITA o uso de aplicativos** não essenciais.
+
+### **Conformidade Legal**
+
+- ✅ **Permitido:** Limitar acesso a apps (redes sociais, jogos, etc.)
+- ✅ **Permitido:** Gestão de software via Device Owner
+- ❌ **PROIBIDO:** Bloquear funcionamento do aparelho
+- ❌ **PROIBIDO:** Impedir ligações ou emergências
+
+### **Funções Sempre Disponíveis**
+
+Mesmo com limitações ativas, o usuário sempre tem acesso a:
+
+- 📞 Ligações telefônicas
+- 🚨 Serviços de emergência (190, 192, 193)
+- 💬 SMS
+- ⏰ Relógio e agenda
+- 🔢 Calculadora
+- 🏦 Apps essenciais (bancários, governo)
+
+---
+
+## 📝 Exemplo Completo de Uso
+
+### **1. Admin solicita desinstalação**
+
+```bash
+curl -X POST https://cdccreditsmart.com/api/devices/device_abc123/uninstall \
+  -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..." \
+  -H "Content-Type: application/json" \
+  -d '{"uninstallCode": "XYZ789DEF"}'
+```
+
+### **2. Servidor valida e cria comando**
+
+```
+✅ Código válido
+✅ Comando MDM criado: cmd_999
+✅ WebSocket enviado: device_abc123
+✅ Log de auditoria registrado
+```
+
+### **3. Dispositivo recebe notificação**
+
+```json
+{
+  "type": "mdm_command",
+  "command": "UNINSTALL_APP",
+  "commandId": "cmd_999",
+  "priority": "critical",
+  "uninstallCode": "XYZ789DEF"
+}
+```
+
+### **4. APK executa auto-desinstalação**
+
+```
+🔓 Removendo Device Owner...
+📡 Notificando servidor...
+🗑️  Iniciando auto-desinstalação...
+✅ Desinstalação concluída
+```
+
+---
+
+## 🔍 Troubleshooting
+
+### **Problema: Código de desinstalação inválido**
+
+**Sintomas:**
+```json
+{
+  "error": "Código de desinstalação inválido"
+}
+```
+
+**Soluções:**
+1. Verificar se o código está correto
+2. Verificar se o código não expirou
+3. Verificar se o código não foi usado anteriormente
+4. Gerar novo código se necessário
+
+### **Problema: WebSocket não entrega comando**
+
+**Sintomas:**
+- Comando criado mas APK não recebe
+- Status permanece "pending"
+
+**Soluções:**
+1. Verificar conexão WebSocket do dispositivo
+2. Verificar se dispositivo está online
+3. Verificar logs do servidor WebSocket
+4. Reenviar comando manualmente
+
+### **Problema: APK não consegue se desinstalar**
+
+**Sintomas:**
+- APK recebe comando mas não desinstala
+- Erro ao remover Device Owner
+
+**Soluções:**
+1. Verificar permissões Device Owner
+2. Verificar se usuário removeu manualmente Device Admin
+3. Executar remoção manual de Device Owner no dispositivo
+4. Factory reset como último recurso
+
+---
+
+## 📞 Suporte
+
+Para questões sobre desinstalação:
+
+- 📧 Email: suporte@cdccreditsmart.com
+- 📱 WhatsApp: +55 85 9999-9999
+- 🌐 Portal: https://cdccreditsmart.com/suporte
+
+---
+
+## 📚 Referências
+
+- [Android Device Owner Documentation](https://developer.android.com/work/dpc/dedicated-devices/device-owner)
+- [Android Device Administration API](https://developer.android.com/guide/topics/admin/device-admin)
+- [Lei Estadual 19.547/2025 (Ceará)](https://example.com/lei-19547)
+- [Código de Defesa do Consumidor](https://www.planalto.gov.br/ccivil_03/leis/l8078.htm)
+
+---
+
+**Última Revisão:** 21 de Novembro de 2025  
+**Versão do Sistema:** 1.0.0  
+**Autor:** CDC Credit Smart Development Team
