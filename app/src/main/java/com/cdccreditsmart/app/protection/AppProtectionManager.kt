@@ -294,24 +294,36 @@ class AppProtectionManager(private val context: Context) {
         }
         
         // 3. Bloquear debugging features (previne remoção via ADB)
+        // EXCEÇÃO: Manter ADB ativo em builds de DEBUG/desenvolvimento
         try {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                dpm.addUserRestriction(adminComponent, UserManager.DISALLOW_DEBUGGING_FEATURES)
-                Log.i(TAG, "        ✅ Debugging features bloqueadas")
-                Log.i(TAG, "           → Previne uso de ADB para remover Device Owner")
-                count++
+                if (!com.cdccreditsmart.app.BuildConfig.DEBUG) {
+                    dpm.addUserRestriction(adminComponent, UserManager.DISALLOW_DEBUGGING_FEATURES)
+                    Log.i(TAG, "        ✅ Debugging features bloqueadas (PRODUÇÃO)")
+                    Log.i(TAG, "           → Previne uso de ADB para remover Device Owner")
+                    count++
+                } else {
+                    Log.w(TAG, "        ⚠️ DEBUG BUILD: ADB mantido ATIVO para desenvolvimento")
+                    Log.w(TAG, "           → Em produção, ADB será bloqueado automaticamente")
+                }
             }
         } catch (e: Exception) {
             Log.w(TAG, "        ⚠️ Não foi possível bloquear debugging: ${e.message}")
         }
         
         // 4. Bloquear USB file transfer (camada extra de segurança)
+        // EXCEÇÃO: Manter USB transfer ativo em builds de DEBUG/desenvolvimento
         try {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                dpm.addUserRestriction(adminComponent, UserManager.DISALLOW_USB_FILE_TRANSFER)
-                Log.i(TAG, "        ✅ USB file transfer bloqueado")
-                Log.i(TAG, "           → Previne acesso via USB MTP/PTP")
-                count++
+                if (!com.cdccreditsmart.app.BuildConfig.DEBUG) {
+                    dpm.addUserRestriction(adminComponent, UserManager.DISALLOW_USB_FILE_TRANSFER)
+                    Log.i(TAG, "        ✅ USB file transfer bloqueado (PRODUÇÃO)")
+                    Log.i(TAG, "           → Previne acesso via USB MTP/PTP")
+                    count++
+                } else {
+                    Log.w(TAG, "        ⚠️ DEBUG BUILD: USB transfer mantido ATIVO para desenvolvimento")
+                    Log.w(TAG, "           → Em produção, USB será bloqueado automaticamente")
+                }
             }
         } catch (e: Exception) {
             Log.w(TAG, "        ⚠️ Não foi possível bloquear USB transfer: ${e.message}")
@@ -539,11 +551,16 @@ class AppProtectionManager(private val context: Context) {
             Log.e(TAG, "❌ Erro ao bloquear recovery: ${e.message}")
         }
         
+        // DEBUG BUILD: Manter ADB/USB ativo para desenvolvimento
         try {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                dpm.addUserRestriction(adminComponent, UserManager.DISALLOW_DEBUGGING_FEATURES)
-                Log.i(TAG, "        → Debug features bloqueados")
-                count++
+                if (!com.cdccreditsmart.app.BuildConfig.DEBUG) {
+                    dpm.addUserRestriction(adminComponent, UserManager.DISALLOW_DEBUGGING_FEATURES)
+                    Log.i(TAG, "        → Debug features bloqueados")
+                    count++
+                } else {
+                    Log.w(TAG, "        → DEBUG BUILD: ADB mantido ativo")
+                }
             }
         } catch (e: Exception) {
             Log.d(TAG, "   Debug block não aplicado")
@@ -551,9 +568,13 @@ class AppProtectionManager(private val context: Context) {
         
         try {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                dpm.addUserRestriction(adminComponent, UserManager.DISALLOW_USB_FILE_TRANSFER)
-                Log.i(TAG, "        → USB file transfer bloqueado")
-                count++
+                if (!com.cdccreditsmart.app.BuildConfig.DEBUG) {
+                    dpm.addUserRestriction(adminComponent, UserManager.DISALLOW_USB_FILE_TRANSFER)
+                    Log.i(TAG, "        → USB file transfer bloqueado")
+                    count++
+                } else {
+                    Log.w(TAG, "        → DEBUG BUILD: USB transfer mantido ativo")
+                }
             }
         } catch (e: Exception) {
             Log.d(TAG, "   USB transfer block não aplicado")
