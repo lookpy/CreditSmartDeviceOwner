@@ -308,6 +308,16 @@ interface DeviceApiService {
         @Path("orderId") orderId: String,
         @Header("Authorization") authorization: String
     ): Response<com.cdccreditsmart.network.dto.PixStatusResponse>
+    
+    /**
+     * Solicitar código de desinstalação voluntária
+     * POST /api/apk/device/uninstall/request
+     * Gera código de confirmação para desinstalação quando cliente quitou todas as parcelas
+     */
+    @POST("api/apk/device/uninstall/request")
+    suspend fun requestUninstallCode(
+        @Header("Authorization") authorization: String
+    ): Response<UninstallCodeResponse>
 }
 
 // Request/Response Data Classes
@@ -601,6 +611,26 @@ data class UninstallPaymentInfo(
     val paidInstallments: Int,
     val remainingInstallments: Int? = null,
     val allPaid: Boolean
+)
+
+//@JsonClass(generateAdapter = true) // Temporarily disabled to fix build
+data class UninstallCodeResponse(
+    val success: Boolean,
+    val hash: String? = null,
+    val message: String? = null,
+    val codeDeliveryMethod: String? = null,
+    val code: String? = null,
+    val expiresAt: String? = null,
+    val expiresInSeconds: Int? = null,
+    val error: String? = null,
+    val details: UninstallCodeErrorDetails? = null
+)
+
+//@JsonClass(generateAdapter = true) // Temporarily disabled to fix build
+data class UninstallCodeErrorDetails(
+    val totalInstallments: Int? = null,
+    val paidInstallments: Int? = null,
+    val pendingInstallments: Int? = null
 )
 
 // CDC Device Status Response - Estrutura real do backend

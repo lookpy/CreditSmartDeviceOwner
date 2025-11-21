@@ -112,53 +112,149 @@ class VoluntaryUninstallManager(private val context: Context) {
             Log.i(TAG, "╚════════════════════════════════════════════════════════════════╝")
             Log.i(TAG, "")
             
-            // TODO: Implementar endpoint no backend
-            // POST /api/apk/device/uninstall/request
-            // Response: { "success": true, "hash": "...", "message": "..." }
+            // Obter token JWT
+            val token = tokenStorage.getToken()
+            if (token.isNullOrBlank()) {
+                Log.e(TAG, "❌ Token JWT não encontrado - usuário não autenticado")
+                return@withContext RequestCodeResult.Error("Erro: Sessão não autenticada. Por favor, reinicie o app.")
+            }
             
-            Log.w(TAG, "⚠️ CRÍTICO: Endpoint /api/apk/device/uninstall/request ainda NÃO implementado no backend")
-            Log.w(TAG, "⚠️ Para produção, o backend DEVE:")
-            Log.w(TAG, "   1. Gerar código aleatório (ex: 'X7K9M2P4')")
-            Log.w(TAG, "   2. Calcular SHA-256 hash do código")
-            Log.w(TAG, "   3. Retornar hash para app armazenar localmente")
-            Log.w(TAG, "   4. Enviar código para cliente via SMS/Email")
-            Log.w(TAG, "")
-            Log.w(TAG, "⚠️ MODO DESENVOLVIMENTO: Gerando código localmente (NÃO USE EM PRODUÇÃO!)")
-            Log.w(TAG, "")
+            Log.i(TAG, "🔐 Token JWT obtido, chamando backend...")
+            Log.i(TAG, "📡 POST /api/apk/device/uninstall/request")
             
-            // MODO DESENVOLVIMENTO APENAS - Gerar código localmente
-            // Em produção, isso DEVE vir do backend!
-            val devCode = generateDevelopmentCode()
-            val hash = calculateSHA256Hash(devCode)
+            // Chamar backend real
+            val response = deviceApiService.requestUninstallCode("Bearer $token")
             
-            Log.i(TAG, "🔐 Código gerado (DEV): $devCode")
-            Log.i(TAG, "🔐 Hash SHA-256: ${hash.take(16)}...")
-            Log.i(TAG, "")
-            
-            // Armazenar hash localmente
-            tokenStorage.saveUninstallConfirmationHash(hash)
-            Log.i(TAG, "✅ Hash de confirmação salvo no storage")
-            
-            // Em produção, o backend enviaria o código via SMS
-            // Aqui estamos retornando para mostrar na UI (apenas dev)
-            Log.i(TAG, "✅ Código de desinstalação gerado e salvo")
-            Log.i(TAG, "")
-            return@withContext RequestCodeResult.Success(
-                message = "[DEV] Código: $devCode\n\nEm produção, este código seria enviado via SMS.",
-                displayCode = devCode  // Apenas para desenvolvimento
-            )
+            if (response.isSuccessful) {
+                val body = response.body()
+                
+                if (body == null) {
+                    Log.e(TAG, "❌ Resposta do backend vazia")
+                    return@withContext RequestCodeResult.Error("Erro: Resposta inválida do servidor")
+                }
+                
+                if (!body.success) {
+                    Log.e(TAG, "❌ Backend recusou solicitação: ${body.error}")
+                    Log.e(TAG, "   Detalhes: ${body.details}")
+                    return@withContext RequestCodeResult.Error(
+                        body.message ?: "Erro: ${body.error}"
+                    )
+                }
+                
+                val hash = body.hash
+                if (hash.isNullOrBlank()) {
+                    Log.e(TAG, "❌ Backend não retornou hash de confirmação")
+                    return@withContext RequestCodeResult.Error("Erro: Resposta inválida do servidor (hash ausente)")
+                }
+                
+                Log.i(TAG, "✅ Hash de confirmação recebido do backend: ${hash.take(16)}...")
+                
+                // Armazenar hash localmente
+                tokenStorage.saveUninstallConfirmationHash(hash)
+                Log.i(TAG, "✅ Hash de confirmação salvo no storage")
+                
+                val message = body.message ?: "Código de desinstalação solicitado. Verifique seu celular."
+                val displayCode = body.code  // Apenas se codeDeliveryMethod = "display"
+                
+                Log.i(TAG, "✅ Código solicitado com sucesso")
+                Log.i(TAG, "   Método de entrega: ${body.codeDeliveryMethod ?: "desconhecido"}")
+                Log.i(TAG, "   Mensagem: $message")
+                if (displayCode != null) {
+                    Log.i(TAG, "   Código para exibir: $displayCode")
+                }
+                Log.i(TAG, "")
+                
+                return@withContext RequestCodeResult.Success(
+                    message = message,
+                    displayCode = displayCode
+                )
+                
+            } else {
+                // Erro HTTP (404, 403, 500, etc)
+                val errorCode = response.code()
+                val errorBody = response.errorBody()?.string()
+                
+                Log.e(TAG, "❌ Erro HTTP $errorCode ao solicitar código")
+                Log.e(TAG, "   Error body: $errorBody")
+                
+                // Se backend ainda não implementou endpoint (404)
+                if (errorCode == 404) {
+                    Log.e(TAG, "")
+                    Log.e(TAG, "⚠️⚠️⚠️ ENDPOINT NÃO IMPLEMENTADO NO BACKEND ⚠️⚠️⚠️")
+                    Log.e(TAG, "")
+                    Log.e(TAG, "O backend ainda NÃO implementou o endpoint:")
+                    Log.e(TAG, "POST /api/apk/device/uninstall/request")
+                    Log.e(TAG, "")
+                    Log.e(TAG, "📄 Veja: docs/backend/VOLUNTARY_UNINSTALL_ENDPOINT.md")
+                    Log.e(TAG, "")
+                    
+                    // SEGURANÇA: Fallback local APENAS em builds de DEBUG
+                    // Em produção, FALHAR ao invés de gerar código localmente
+                    if (com.cdccreditsmart.app.BuildConfig.DEBUG) {
+                        Log.w(TAG, "⚠️ BUILD DEBUG DETECTADO - Ativando modo desenvolvimento")
+                        Log.w(TAG, "⚠️ Gerando código localmente (INSEGURO - apenas para testes!)")
+                        Log.w(TAG, "")
+                        
+                        // Fallback para modo dev APENAS em debug builds
+                        return@withContext generateDevelopmentCode()
+                    } else {
+                        // PRODUÇÃO: FALHAR explicitamente
+                        Log.e(TAG, "❌ BUILD DE PRODUÇÃO - Fallback local BLOQUEADO por segurança")
+                        Log.e(TAG, "❌ Backend DEVE implementar o endpoint antes de usar em produção!")
+                        Log.e(TAG, "")
+                        
+                        return@withContext RequestCodeResult.Error(
+                            "Funcionalidade não disponível. O servidor não suporta desinstalação voluntária. " +
+                            "Entre em contato com o suporte."
+                        )
+                    }
+                }
+                
+                // Outros erros HTTP
+                return@withContext RequestCodeResult.Error(
+                    when (errorCode) {
+                        401 -> "Sessão expirada. Por favor, reinicie o app."
+                        403 -> "Você ainda possui parcelas pendentes. Quite todas as parcelas primeiro."
+                        429 -> "Muitas tentativas. Aguarde alguns minutos e tente novamente."
+                        else -> "Erro ao solicitar código (HTTP $errorCode). Tente novamente."
+                    }
+                )
+            }
             
         } catch (e: Exception) {
-            Log.e(TAG, "❌ Erro ao solicitar código de desinstalação", e)
-            return@withContext RequestCodeResult.Error("Erro ao solicitar código: ${e.message}")
+            Log.e(TAG, "❌ Exceção ao solicitar código de desinstalação", e)
+            return@withContext RequestCodeResult.Error("Erro de conexão: ${e.message}")
         }
     }
     
     /**
-     * Gera código de desenvolvimento (8 caracteres alfanuméricos).
-     * ATENÇÃO: Apenas para testes! Em produção, o backend deve gerar.
+     * MODO DESENVOLVIMENTO - Gera código localmente quando backend não está disponível (HTTP 404).
+     * ATENÇÃO: Apenas para testes! NÃO usar em produção!
      */
-    private fun generateDevelopmentCode(): String {
+    private fun generateDevelopmentCode(): RequestCodeResult {
+        val devCode = generateDevCode()
+        val hash = calculateSHA256Hash(devCode)
+        
+        Log.i(TAG, "🔐 Código gerado (DEV MODE): $devCode")
+        Log.i(TAG, "🔐 Hash SHA-256: ${hash.take(16)}...")
+        Log.i(TAG, "")
+        
+        // Armazenar hash localmente
+        tokenStorage.saveUninstallConfirmationHash(hash)
+        Log.i(TAG, "✅ Hash de confirmação salvo no storage (DEV MODE)")
+        Log.i(TAG, "")
+        
+        return RequestCodeResult.Success(
+            message = "⚠️ MODO DESENVOLVIMENTO\n\nCódigo: $devCode\n\nEm produção, este código seria enviado via SMS após o backend implementar o endpoint.",
+            displayCode = devCode
+        )
+    }
+    
+    /**
+     * Gera código de desenvolvimento (8 caracteres alfanuméricos).
+     * ATENÇÃO: Apenas para testes quando backend retorna 404! NÃO usar em produção!
+     */
+    private fun generateDevCode(): String {
         val chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
         return (1..8)
             .map { chars.random() }
