@@ -229,11 +229,43 @@ dpm.setFactoryResetProtectionPolicy(adminComponent, frpPolicy)
 
 ---
 
-## 🆚 **COMPARAÇÃO COM SAMSUNG KNOX**
+## 🆚 **FABRICANTES QUE BLOQUEIAM RECOVERY MODE**
+
+### **🎉 DESCOBERTA (21/11/2025): Motorola TAMBÉM Bloqueia!**
+
+**Confirmado:** Motorola com ThinkShield consegue bloquear Recovery Mode usando apenas `DISALLOW_FACTORY_RESET`!
+
+### **Motorola ThinkShield (Descoberta Recente)**
+
+**Bloqueia Recovery Mode SEM custo adicional:**
+
+```
+Usuário pressiona Power + Volume Up
+     ↓
+Recovery Mode carrega
+     ↓
+Recovery Menu mostra:
+┌─────────────────────────────────────┐
+│  Android recovery                    │
+│  ─────────────────                  │
+│  • Reboot system now                │
+│  • Apply update from ADB            │
+│  ❌ Wipe data/factory reset          │ ← SUMIU!
+│  (ou aparece cinza com erro)        │
+└──────────────────────────────────────┘
+     ↓
+Factory reset NÃO FUNCIONA (bloqueado)
+```
+
+**Como funciona:**
+- Recovery Mode da Motorola **lê políticas** do Device Owner
+- Detecta `DISALLOW_FACTORY_RESET`
+- **Remove opção** ou **bloqueia** com erro
+- Sem custo adicional (ThinkShield incluído)
 
 ### **Samsung Knox Guard (Solução Premium)**
 
-**ÚNICA solução que bloqueia hardware reset:**
+**Também bloqueia hardware reset:**
 
 ```kotlin
 // Samsung Knox API (apenas Samsung devices)
@@ -260,19 +292,21 @@ Recovery Menu mostra:
 Factory reset NÃO FUNCIONA (100% bloqueado)
 ```
 
-### **Por que Samsung Knox funciona?**
+### **Comparação Técnica:**
 
-| Aspecto | Android Padrão | Samsung Knox |
-|---------|----------------|--------------|
-| **Controle de Recovery** | ❌ Nenhum | ✅ Total |
-| **Modificação de Firmware** | ❌ Não permitido | ✅ Knox modifica recovery |
-| **Bootloader Enforcement** | ❌ Não | ✅ Knox Warranty Bit |
-| **Hardware Security** | ⚠️ TEE padrão | ✅ Knox Vault (hardware) |
+| Aspecto | Android Padrão (Infinix) | Motorola ThinkShield | Samsung Knox |
+|---------|-------------------------|----------------------|--------------|
+| **Controle de Recovery** | ❌ Nenhum | ✅ **Total** | ✅ Total |
+| **Modificação de Firmware** | ❌ Não | ✅ **Recovery customizado** | ✅ Knox modifica recovery |
+| **Bootloader Enforcement** | ❌ Não | ⚠️ Parcial | ✅ Knox Warranty Bit |
+| **Hardware Security** | ⚠️ TEE padrão | ⚠️ TEE padrão | ✅ Knox Vault (hardware) |
+| **Custo Licença** | R$ 0 | **R$ 0** | R$ 50-100/ano |
+| **Custo Device** | R$ 500-800 | **R$ 700-1200** | R$ 900-1500 |
 
-**Limitações para nós:**
-- ❌ Infinix Hot 50 **NÃO tem Knox** (usa chipset MediaTek)
-- ❌ Knox Guard **requer licença paga** (~$50-100/device/ano)
-- ❌ Knox só funciona em **dispositivos Samsung**
+**Opções para CDC Credit Smart:**
+- ✅ Infinix Hot 50 - Custo baixo + FRP
+- ⭐ **Motorola ThinkShield** - Bloqueio total SEM licença (melhor custo-benefício!)
+- ✅ Samsung Knox - Máxima segurança + hardware (premium)
 
 ---
 
