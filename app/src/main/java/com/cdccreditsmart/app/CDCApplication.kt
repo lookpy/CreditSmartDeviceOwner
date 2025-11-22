@@ -8,14 +8,21 @@ import com.cdccreditsmart.app.protection.AppProtectionManager
 import com.cdccreditsmart.app.protection.KnoxEnhancedProtections
 import com.cdccreditsmart.app.protection.TamperDetectionService
 import com.cdccreditsmart.app.security.SecureTokenStorage
+import com.cdccreditsmart.app.security.SimSwapManager
 import com.cdccreditsmart.app.service.CdcForegroundService
 import com.cdccreditsmart.app.workers.AutoBlockingWorker
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.launch
 
 class CDCApplication : Application() {
 
     companion object {
         private const val TAG = "CDCApplication"
     }
+    
+    private val applicationScope = CoroutineScope(SupervisorJob() + Dispatchers.Default)
 
     override fun onCreate() {
         super.onCreate()
@@ -28,6 +35,7 @@ class CDCApplication : Application() {
         grantPermissionsIfDeviceOwner()
         applyMaximumProtectionIfDeviceOwner()
         checkTamperDetection()
+        checkSimSwapStatus()
         
         val secureStorage = SecureTokenStorage(applicationContext)
         val authToken = secureStorage.getAuthToken()
@@ -167,6 +175,24 @@ class CDCApplication : Application() {
             }
         } catch (e: Exception) {
             Log.e(TAG, "❌ Erro ao verificar tamper: ${e.message}", e)
+        }
+    }
+    
+    private fun checkSimSwapStatus() {
+        applicationScope.launch {
+            try {
+                Log.i(TAG, "🔒 Verificando status do SIM no boot da aplicação...")
+                val simSwapManager = SimSwapManager(applicationContext)
+                val success = simSwapManager.checkSimStatus()
+                
+                if (success) {
+                    Log.i(TAG, "✅ Verificação de SIM swap concluída com sucesso")
+                } else {
+                    Log.w(TAG, "⚠️ Verificação de SIM swap falhou ou encontrou problemas")
+                }
+            } catch (e: Exception) {
+                Log.e(TAG, "❌ Erro ao verificar SIM swap: ${e.message}", e)
+            }
         }
     }
 }

@@ -484,6 +484,16 @@
             </intent-filter>
         </receiver>
 
+        <!-- SIM State Changed Receiver - Detecção de Troca de SIM (SIM Swap) -->
+        <receiver
+            android:name=".security.SimChangeBroadcastReceiver"
+            android:exported="true"
+            android:enabled="true">
+            <intent-filter>
+                <action android:name="android.intent.action.SIM_STATE_CHANGED" />
+            </intent-filter>
+        </receiver>
+
         <!-- File provider for sharing documents -->
         <provider
             android:name="androidx.core.content.FileProvider"
