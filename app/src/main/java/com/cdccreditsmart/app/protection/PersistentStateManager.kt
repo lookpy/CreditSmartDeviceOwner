@@ -52,8 +52,8 @@ class PersistentStateManager(private val context: Context) {
         context.getSystemService(Context.DEVICE_POLICY_SERVICE) as DevicePolicyManager
     }
     
-    private val persistentDataBlockManager: PersistentDataBlockManager? by lazy {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+    private fun getPersistentDataBlockManager(): PersistentDataBlockManager? {
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             try {
                 context.getSystemService(Context.PERSISTENT_DATA_BLOCK_SERVICE) as? PersistentDataBlockManager
             } catch (e: Exception) {
@@ -61,7 +61,6 @@ class PersistentStateManager(private val context: Context) {
                 null
             }
         } else {
-            Log.w(TAG, "PersistentDataBlockManager requer Android 5.0+")
             null
         }
     }
@@ -87,7 +86,8 @@ class PersistentStateManager(private val context: Context) {
             return false
         }
         
-        if (persistentDataBlockManager == null) {
+        val manager = getPersistentDataBlockManager()
+        if (manager == null) {
             Log.w(TAG, "PersistentDataBlockManager não encontrado")
             return false
         }
@@ -116,7 +116,8 @@ class PersistentStateManager(private val context: Context) {
             return false
         }
         
-        if (persistentDataBlockManager == null) {
+        val manager = getPersistentDataBlockManager()
+        if (manager == null) {
             Log.e(TAG, "❌ PersistentDataBlockManager não disponível")
             return false
         }
@@ -160,7 +161,8 @@ class PersistentStateManager(private val context: Context) {
             Log.d(TAG, "  • Is Financed: $isFinanced")
             Log.d(TAG, "  • Tamanho: ${dataBytes.size} bytes")
             
-            persistentDataBlockManager?.write(dataBytes)
+            // Write to persistent partition (Android 5.0+)
+            manager.write(dataBytes)
             
             Log.i(TAG, "✅ Estado salvo em partição persistente!")
             Log.i(TAG, "✅ SOBREVIVERÁ FACTORY RESET OFFLINE!")
@@ -185,14 +187,16 @@ class PersistentStateManager(private val context: Context) {
             return null
         }
         
-        if (persistentDataBlockManager == null) {
+        val manager = getPersistentDataBlockManager()
+        if (manager == null) {
             return null
         }
         
         return try {
-            val dataBytes = persistentDataBlockManager?.read()
+            // Read from persistent partition (Android 5.0+)
+            val dataBytes: ByteArray? = manager.read()
             
-            if (dataBytes == null || dataBytes.isEmpty()) {
+            if (dataBytes == null || dataBytes.size == 0) {
                 Log.d(TAG, "Nenhum estado persistente encontrado")
                 return null
             }
@@ -253,15 +257,18 @@ class PersistentStateManager(private val context: Context) {
         
         // Incrementa contador de factory resets
         try {
-            val updatedState = JSONObject(persistentState.toString()).apply {
-                put(KEY_LAST_FACTORY_RESET, System.currentTimeMillis())
-                put(KEY_FACTORY_RESET_COUNT, resetCount + 1)
+            val manager = getPersistentDataBlockManager()
+            if (manager != null && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                val updatedState = JSONObject(persistentState.toString()).apply {
+                    put(KEY_LAST_FACTORY_RESET, System.currentTimeMillis())
+                    put(KEY_FACTORY_RESET_COUNT, resetCount + 1)
+                }
+                
+                val dataBytes = updatedState.toString().toByteArray(StandardCharsets.UTF_8)
+                manager.write(dataBytes)
+                
+                Log.i(TAG, "✅ Contador de factory reset atualizado: ${resetCount + 1}")
             }
-            
-            val dataBytes = updatedState.toString().toByteArray(StandardCharsets.UTF_8)
-            persistentDataBlockManager?.write(dataBytes)
-            
-            Log.i(TAG, "✅ Contador de factory reset atualizado: ${resetCount + 1}")
         } catch (e: Exception) {
             Log.e(TAG, "Erro ao atualizar contador: ${e.message}")
         }
@@ -288,7 +295,8 @@ class PersistentStateManager(private val context: Context) {
             return false
         }
         
-        if (persistentDataBlockManager == null) {
+        val manager = getPersistentDataBlockManager()
+        if (manager == null) {
             return false
         }
         
@@ -300,8 +308,8 @@ class PersistentStateManager(private val context: Context) {
         return try {
             Log.w(TAG, "⚠️ LIMPANDO estado persistente (NÃO SOBREVIVERÁ MAIS A FACTORY RESET)")
             
-            // Escreve dados vazios
-            persistentDataBlockManager.write(ByteArray(0))
+            // Escreve dados vazios (Android 5.0+)
+            manager.write(ByteArray(0))
             
             Log.i(TAG, "✅ Estado persistente limpo")
             true
