@@ -114,6 +114,15 @@ private fun checkSimSwapStatus() {
 
 ---
 
+## ⚡ **REGRA DE OURO**
+
+**"SIM mudou = Bloqueio IMEDIATO. Backend apenas confirma ou reverte."**
+
+Essa regra garante que o dispositivo **NUNCA** fica desbloqueado quando SIM muda, mesmo:
+- ❌ Offline (sem internet)
+- ❌ Backend timeout/erro
+- ❌ Primeira vez (sem histórico)
+
 ## 🔄 **FLUXO COMPLETO**
 
 ### **Primeira Inicialização (SIM Original):**
