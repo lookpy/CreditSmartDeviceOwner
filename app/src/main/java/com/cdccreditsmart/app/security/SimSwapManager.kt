@@ -451,8 +451,7 @@ class SimSwapManager(private val context: Context) {
             xClientAuthInterceptor,
             deviceSignatureInterceptor,
             idempotencyKeyInterceptor,
-            certificatePinningManager,
-            networkErrorMapper
+            certificatePinningManager
         )
         
         val retrofitFactory = RetrofitFactory(okHttpClientFactory, networkErrorMapper)

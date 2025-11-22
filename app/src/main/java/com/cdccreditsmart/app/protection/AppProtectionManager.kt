@@ -9,6 +9,7 @@ import android.provider.Settings
 import android.util.Log
 import com.cdccreditsmart.device.CDCDeviceAdminReceiver
 import com.cdccreditsmart.app.blocking.ParentalControlBlocker
+import com.cdccreditsmart.app.BuildConfig
 
 class AppProtectionManager(private val context: Context) {
     

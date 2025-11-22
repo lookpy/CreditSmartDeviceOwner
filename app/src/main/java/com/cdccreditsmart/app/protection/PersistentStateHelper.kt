@@ -49,8 +49,11 @@ object PersistentStateHelper {
             val deviceInfoManager = DeviceInfoManager(context)
             val contractCodeStorage = ContractCodeStorage(context)
             
-            val imei = deviceInfoManager.getIMEI() ?: "UNKNOWN"
-            val deviceId = deviceInfoManager.getDeviceId()
+            val imeiInfo = deviceInfoManager.getDeviceImeiInfo()
+            val deviceInfo = deviceInfoManager.collectDeviceInfo()
+            
+            val imei = imeiInfo.primaryImei ?: "UNKNOWN"
+            val deviceId = deviceInfo.serialNumber
             val finalContractCode = contractCode 
                 ?: contractCodeStorage.getContractCode()
                 ?: "PENDING"

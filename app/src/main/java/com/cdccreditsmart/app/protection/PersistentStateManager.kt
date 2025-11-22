@@ -160,7 +160,7 @@ class PersistentStateManager(private val context: Context) {
             Log.d(TAG, "  • Is Financed: $isFinanced")
             Log.d(TAG, "  • Tamanho: ${dataBytes.size} bytes")
             
-            persistentDataBlockManager.write(dataBytes)
+            persistentDataBlockManager?.write(dataBytes)
             
             Log.i(TAG, "✅ Estado salvo em partição persistente!")
             Log.i(TAG, "✅ SOBREVIVERÁ FACTORY RESET OFFLINE!")
@@ -190,7 +190,7 @@ class PersistentStateManager(private val context: Context) {
         }
         
         return try {
-            val dataBytes = persistentDataBlockManager.read()
+            val dataBytes = persistentDataBlockManager?.read()
             
             if (dataBytes == null || dataBytes.isEmpty()) {
                 Log.d(TAG, "Nenhum estado persistente encontrado")
