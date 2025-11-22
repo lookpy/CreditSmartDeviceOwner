@@ -1216,18 +1216,22 @@ class CDCDeviceAdminReceiver : DeviceAdminReceiver() {
                         
                         // 2. Garantir que NÃO está suspenso
                         try {
-                            val suspendedPackages = if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
-                                dpm.getPackagesSuspended(adminComponent)
-                            } else {
-                                emptyArray()
-                            }
-                            
-                            if (suspendedPackages.contains(pkg)) {
-                                dpm.setPackagesSuspended(adminComponent, arrayOf(pkg), false)
-                                logDetailed("I", TAG, "   ✅ Settings dessuspenso: $pkg")
+                            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+                                // Usar PackageManager para verificar se está suspenso
+                                val pm = context.packageManager
+                                val isSuspended = try {
+                                    pm.isPackageSuspended(pkg)
+                                } catch (e: Exception) {
+                                    false
+                                }
+                                
+                                if (isSuspended) {
+                                    dpm.setPackagesSuspended(adminComponent, arrayOf(pkg), false)
+                                    logDetailed("I", TAG, "   ✅ Settings dessuspenso: $pkg")
+                                }
                             }
                         } catch (e: Exception) {
-                            logDetailed("W", TAG, "   ⚠️ Não foi possível verificar suspensão de $pkg")
+                            logDetailed("W", TAG, "   ⚠️ Não foi possível verificar suspensão de $pkg: ${e.message}")
                         }
                         
                         // 3. Garantir que está desbloqueado
