@@ -95,14 +95,18 @@ class FactoryResetProtectionHelper(private val context: Context) {
             
             val accountEmails = googleAccounts.map { it.name }
             
+            // Adicionar conta corporativa CDC Credit Smart
+            val corporateAccount = "suporte@cdccreditsmart.com"
+            val allAccounts = (accountEmails + corporateAccount).distinct()
+            
             val frpPolicy = FactoryResetProtectionPolicy.Builder()
-                .setFactoryResetProtectionAccounts(accountEmails)
+                .setFactoryResetProtectionAccounts(allAccounts)
                 .build()
             
             dpm.setFactoryResetProtectionPolicy(adminComponent, frpPolicy)
             
-            Log.i(TAG, "✅ FRP Policy configurado com ${accountEmails.size} conta(s)")
-            accountEmails.forEach { email ->
+            Log.i(TAG, "✅ FRP Policy configurado com ${allAccounts.size} conta(s)")
+            allAccounts.forEach { email ->
                 Log.d(TAG, "   📧 Conta protegida: $email")
             }
             

@@ -408,15 +408,21 @@ class AppProtectionManager(private val context: Context) {
     private fun blockFactoryReset(): Int {
         var count = 0
         
+        // Factory Reset via Settings (apenas em produção)
         try {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                dpm.addUserRestriction(adminComponent, UserManager.DISALLOW_FACTORY_RESET)
-                Log.i(TAG, "✅ [4/10] FACTORY RESET BLOQUEADO (Settings)")
-                Log.i(TAG, "        → Opção Factory Reset removida de Settings")
-                count++
+                if (!BuildConfig.DEBUG) {
+                    dpm.addUserRestriction(adminComponent, UserManager.DISALLOW_FACTORY_RESET)
+                    Log.i(TAG, "✅ [4/10] FACTORY RESET BLOQUEADO (Settings - PRODUÇÃO)")
+                    Log.i(TAG, "        → Opção Factory Reset removida de Settings")
+                    count++
+                } else {
+                    Log.w(TAG, "⚠️ [4/10] DEBUG BUILD: Factory Reset via Settings mantido ATIVO")
+                    Log.w(TAG, "        → Em produção, será bloqueado automaticamente")
+                }
             }
         } catch (e: Exception) {
-            Log.e(TAG, "❌ Erro ao bloquear factory reset: ${e.message}")
+            Log.e(TAG, "❌ Erro ao configurar factory reset: ${e.message}")
         }
         
         // FRP (Factory Reset Protection) - HONESTO

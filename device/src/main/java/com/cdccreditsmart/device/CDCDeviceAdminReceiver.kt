@@ -980,12 +980,17 @@ class CDCDeviceAdminReceiver : DeviceAdminReceiver() {
                     logDetailed("E", TAG, "❌ Erro ao bloquear desinstalação", e)
                 }
                 
-                // 2. BLOQUEAR FACTORY RESET VIA SETTINGS
+                // 2. BLOQUEAR FACTORY RESET VIA SETTINGS (APENAS EM PRODUÇÃO)
                 try {
-                    dpm.addUserRestriction(adminComponent, UserManager.DISALLOW_FACTORY_RESET)
-                    logDetailed("I", TAG, "✅ [2/10] Factory reset via Settings bloqueado")
+                    if (!com.cdccreditsmart.app.BuildConfig.DEBUG) {
+                        dpm.addUserRestriction(adminComponent, UserManager.DISALLOW_FACTORY_RESET)
+                        logDetailed("I", TAG, "✅ [2/10] Factory reset via Settings bloqueado (PRODUÇÃO)")
+                    } else {
+                        logDetailed("W", TAG, "⚠️ [2/10] DEBUG BUILD: Factory reset via Settings mantido ATIVO")
+                        logDetailed("W", TAG, "   → Em produção, factory reset será bloqueado automaticamente")
+                    }
                 } catch (e: Exception) {
-                    logDetailed("E", TAG, "❌ Erro ao bloquear factory reset", e)
+                    logDetailed("E", TAG, "❌ Erro ao configurar factory reset", e)
                 }
                 
                 // 3. CONFIGURAR FRP (FACTORY RESET PROTECTION) - ANDROID 11+
