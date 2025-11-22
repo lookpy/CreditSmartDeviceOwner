@@ -1,0 +1,938 @@
+# 📱 Integração APK - Sistema de Detecção de Troca de SIM (SIM Swap)
+
+## 📋 Índice
+1. [Visão Geral](#visão-geral)
+2. [Endpoints Disponíveis](#endpoints-disponíveis)
+3. [Fluxo de Integração](#fluxo-de-integração)
+4. [Exemplos de Código](#exemplos-de-código)
+5. [Respostas da API](#respostas-da-api)
+6. [Logs e Debugging](#logs-e-debugging)
+7. [Perguntas Frequentes](#perguntas-frequentes)
+
+Detalhe o aplicativo deve ser capaz de aplicar esses bloqueios e desbloqueios mesmo estando offline.
+
+---
+
+## 🎯 Visão Geral
+
+O sistema anti-fraude de troca de SIM protege os dispositivos financiados detectando quando o usuário troca o chip do celular. 
+
+### Como Funciona
+
+1. **Primeira Conexão**: APK envia informações do chip → Sistema registra como "chip original" → Dispositivo liberado
+2. **Troca de Chip**: Usuário troca para chip diferente → Sistema bloqueia automaticamente (nível 4)
+3. **Volta ao Original**: Usuário volta ao chip original → Sistema desbloqueia (se sem parcelas atrasadas)
+
+### Regras de Negócio
+
+✅ **Troca de SIM** → Bloqueio automático nível 4  
+✅ **Volta ao SIM original SEM atraso** → Desbloqueia automaticamente  
+⚠️ **Volta ao SIM original COM atraso** → Mantém bloqueado  
+✅ **Primeira detecção** → Apenas registra (sem bloqueio)
+
+---
+
+## 🔌 Endpoints Disponíveis
+
+### 1. POST /api/apk/device/security/sim-change
+
+**Detecta troca de chip e aplica bloqueio/desbloqueio automático**
+
+#### URL Base
+```
+https://seu-dominio.replit.app/api/apk/device/security/sim-change
+```
+
+#### Autenticação
+- ❌ **Não requer JWT** (APK usa autenticação própria via deviceId + IMEI + contractCode)
+- O backend valida se o dispositivo existe no sistema
+
+#### Headers Obrigatórios
+```http
+Content-Type: application/json
+```
+
+#### Request Body (JSON)
+```json
+{
+  "deviceId": "device_1234567890_abc123",
+  "imei": "123456789012345",
+  "contractCode": "CON-2024-001",
+  "event": {
+    "oldSimSerial": "89551234567890123456",
+    "newSimSerial": "89552234567890123456",
+    "oldCarrier": "TIM",
+    "newCarrier": "Claro",
+    "timestamp": "2024-01-15T10:30:00Z"
+  }
+}
+```
+
+#### Parâmetros Detalhados
+
+| Campo | Tipo | Obrigatório | Descrição | Exemplo |
+|-------|------|-------------|-----------|---------|
+| `deviceId` | string | ✅ Sim | ID único do dispositivo no sistema | `"device_1234567890_abc123"` |
+| `imei` | string | ✅ Sim | IMEI do dispositivo (15 dígitos) | `"123456789012345"` |
+| `contractCode` | string | ✅ Sim | Código do contrato de financiamento | `"CON-2024-001"` |
+| `event.oldSimSerial` | string | ⚠️ Opcional* | Serial do chip anterior (ICCID - 19-20 dígitos) | `"89551234567890123456"` |
+| `event.newSimSerial` | string | ✅ Sim | Serial do chip atual (ICCID - 19-20 dígitos) | `"89552234567890123456"` |
+| `event.oldCarrier` | string | ❌ Não | Operadora anterior | `"TIM"`, `"Claro"`, `"Vivo"`, `"Oi"` |
+| `event.newCarrier` | string | ❌ Não | Operadora atual | `"TIM"`, `"Claro"`, `"Vivo"`, `"Oi"` |
+| `event.timestamp` | string (ISO 8601) | ✅ Sim | Data/hora da detecção | `"2024-01-15T10:30:00Z"` |
+
+**\*Nota sobre `oldSimSerial`:** Na primeira conexão, pode ser `null`. Em trocas subsequentes, sempre enviar o valor anterior.
+
+#### Como Obter o Serial do SIM (ICCID)
+
+**Android (API 22+):**
+```java
+TelephonyManager telephonyManager = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
+
+// Requer permissão: android.permission.READ_PHONE_STATE
+String simSerial = telephonyManager.getSimSerialNumber();
+
+// Para dispositivos com múltiplos SIMs:
+SubscriptionManager subscriptionManager = (SubscriptionManager) getSystemService(Context.TELEPHONY_SUBSCRIPTION_SERVICE);
+List<SubscriptionInfo> subscriptionInfoList = subscriptionManager.getActiveSubscriptionInfoList();
+
+if (subscriptionInfoList != null) {
+    for (SubscriptionInfo info : subscriptionInfoList) {
+        String iccid = info.getIccId(); // Serial do SIM
+        String carrier = info.getCarrierName().toString(); // Nome da operadora
+    }
+}
+```
+
+#### Response - Success (200 OK)
+
+**1. Primeira Detecção (ALLOW)**
+```json
+{
+  "status": "success",
+  "action": "ALLOW",
+  "message": "SIM original registrado pela primeira vez",
+  "requiresAction": false
+}
+```
+
+**2. Troca de SIM Detectada (BLOCK_DEVICE)**
+```json
+{
+  "status": "success",
+  "action": "BLOCK_DEVICE",
+  "message": "Dispositivo bloqueado por segurança (nível 4)",
+  "requiresAction": true,
+  "blockLevel": 4
+}
+```
+
+**3. Volta ao SIM Original - Sem Atraso (UNBLOCK_DEVICE)**
+```json
+{
+  "status": "success",
+  "action": "UNBLOCK_DEVICE",
+  "message": "Dispositivo desbloqueado - SIM original restaurado",
+  "requiresAction": true,
+  "blockLevel": 0
+}
+```
+
+**4. Volta ao SIM Original - Com Atraso (ALERT_ONLY)**
+```json
+{
+  "status": "success",
+  "action": "ALERT_ONLY",
+  "message": "SIM original detectado, mas há parcelas atrasadas",
+  "requiresAction": false,
+  "overdueCount": 2
+}
+```
+
+#### Response - Erros
+
+**Dispositivo Não Encontrado (404)**
+```json
+{
+  "error": "Dispositivo não encontrado"
+}
+```
+
+**Dados Inválidos (400)**
+```json
+{
+  "error": "Dados inválidos no request",
+  "details": [
+    {
+      "field": "event.newSimSerial",
+      "message": "Campo obrigatório"
+    }
+  ]
+}
+```
+
+**Erro Interno (500)**
+```json
+{
+  "error": "Erro ao processar evento de segurança"
+}
+```
+
+---
+
+### 2. POST /api/apk/device/knox/status
+
+**Envia status da licença Samsung Knox (opcional - analytics)**
+
+#### URL Base
+```
+https://seu-dominio.replit.app/api/apk/device/knox/status
+```
+
+#### Request Body (JSON)
+```json
+{
+  "deviceId": "device_1234567890_abc123",
+  "imei": "123456789012345",
+  "contractCode": "CON-2024-001",
+  "knoxStatus": "active",
+  "errorCode": null
+}
+```
+
+#### Parâmetros
+
+| Campo | Tipo | Obrigatório | Descrição | Valores Possíveis |
+|-------|------|-------------|-----------|-------------------|
+| `deviceId` | string | ✅ Sim | ID único do dispositivo | - |
+| `imei` | string | ✅ Sim | IMEI do dispositivo | - |
+| `contractCode` | string | ✅ Sim | Código do contrato | - |
+| `knoxStatus` | string | ✅ Sim | Status da licença Knox | `"active"`, `"inactive"`, `"expired"`, `"error"` |
+| `errorCode` | number | ❌ Não | Código de erro (se houver) | `1001`, `1002`, etc. |
+
+#### Response - Success (200 OK)
+```json
+{
+  "status": "success",
+  "message": "Status Knox registrado com sucesso"
+}
+```
+
+---
+
+## 🔄 Fluxo de Integração
+
+### Quando Enviar Eventos de SIM?
+
+Recomendamos enviar eventos de SIM nas seguintes situações:
+
+#### 1️⃣ **Na Inicialização do APK** (SEMPRE)
+```
+APK inicia → Lê serial do SIM atual → Envia para /api/apk/device/security/sim-change
+```
+- Envia `oldSimSerial: null` (se primeira vez)
+- Envia `newSimSerial: <serial_atual>`
+
+#### 2️⃣ **Quando Detectar Mudança de SIM** (BROADCAST)
+```java
+// Registrar BroadcastReceiver para detectar mudança de SIM
+IntentFilter filter = new IntentFilter("android.intent.action.SIM_STATE_CHANGED");
+registerReceiver(simChangeReceiver, filter);
+```
+
+```java
+private BroadcastReceiver simChangeReceiver = new BroadcastReceiver() {
+    @Override
+    public void onReceive(Context context, Intent intent) {
+        String action = intent.getAction();
+        
+        if ("android.intent.action.SIM_STATE_CHANGED".equals(action)) {
+            String simState = intent.getStringExtra("ss");
+            
+            if ("LOADED".equals(simState)) {
+                // SIM card foi inserido/trocado
+                String newSimSerial = getSimSerial();
+                enviarEventoSimChange(oldSimSerial, newSimSerial);
+            }
+        }
+    }
+};
+```
+
+#### 3️⃣ **Periodicamente (Heartbeat)** - Opcional
+```
+A cada 24h ou em sincronização programada → Envia status atual do SIM
+```
+
+### Diagrama de Fluxo
+
+```
+┌─────────────────────┐
+│  APK Inicializa     │
+└──────────┬──────────┘
+           │
+           ▼
+┌─────────────────────┐
+│ Lê Serial do SIM    │
+│ (getSimSerial())    │
+└──────────┬──────────┘
+           │
+           ▼
+┌─────────────────────────────────────┐
+│ POST /api/apk/device/security/      │
+│ sim-change                          │
+│                                     │
+│ {                                   │
+│   deviceId: "...",                  │
+│   oldSimSerial: null,  ← primeira   │
+│   newSimSerial: "8955..."           │
+│ }                                   │
+└──────────┬──────────────────────────┘
+           │
+           ▼
+┌─────────────────────────────────────┐
+│ Backend Responde:                   │
+│                                     │
+│ {                                   │
+│   action: "ALLOW",                  │
+│   message: "SIM original            │
+│             registrado"             │
+│ }                                   │
+└──────────┬──────────────────────────┘
+           │
+           ▼
+┌─────────────────────┐
+│ APK: Dispositivo OK │
+└─────────────────────┘
+
+─────── USUÁRIO TROCA DE CHIP ───────
+
+┌─────────────────────┐
+│ Broadcast Detecta   │
+│ SIM_STATE_CHANGED   │
+└──────────┬──────────┘
+           │
+           ▼
+┌─────────────────────────────────────┐
+│ POST /api/apk/device/security/      │
+│ sim-change                          │
+│                                     │
+│ {                                   │
+│   oldSimSerial: "8955...",          │
+│   newSimSerial: "8956..."  ← novo!  │
+│ }                                   │
+└──────────┬──────────────────────────┘
+           │
+           ▼
+┌─────────────────────────────────────┐
+│ Backend Responde:                   │
+│                                     │
+│ {                                   │
+│   action: "BLOCK_DEVICE",           │
+│   blockLevel: 4,                    │
+│   requiresAction: true              │
+│ }                                   │
+└──────────┬──────────────────────────┘
+           │
+           ▼
+┌─────────────────────────────────────┐
+│ APK: Aplicar bloqueio nível 4       │
+│ (restringir funcionalidades)        │
+└─────────────────────────────────────┘
+```
+
+---
+
+## 💻 Exemplos de Código
+
+### Exemplo 1: Classe Completa Android (Java)
+
+```java
+package com.cdcsmartcredit.apk.security;
+
+import android.content.Context;
+import android.telephony.SubscriptionInfo;
+import android.telephony.SubscriptionManager;
+import android.telephony.TelephonyManager;
+import android.util.Log;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
+import java.util.List;
+
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
+
+public class SimSwapDetector {
+    private static final String TAG = "SimSwapDetector";
+    private static final String API_URL = "https://seu-dominio.replit.app/api/apk/device/security/sim-change";
+    
+    private Context context;
+    private String deviceId;
+    private String imei;
+    private String contractCode;
+    private OkHttpClient httpClient;
+    
+    public SimSwapDetector(Context context, String deviceId, String imei, String contractCode) {
+        this.context = context;
+        this.deviceId = deviceId;
+        this.imei = imei;
+        this.contractCode = contractCode;
+        this.httpClient = new OkHttpClient();
+    }
+    
+    /**
+     * Obtém o serial do SIM card atual (ICCID)
+     */
+    public String getCurrentSimSerial() {
+        try {
+            SubscriptionManager subscriptionManager = 
+                (SubscriptionManager) context.getSystemService(Context.TELEPHONY_SUBSCRIPTION_SERVICE);
+            
+            List<SubscriptionInfo> subscriptionInfoList = 
+                subscriptionManager.getActiveSubscriptionInfoList();
+            
+            if (subscriptionInfoList != null && !subscriptionInfoList.isEmpty()) {
+                // Retorna o ICCID do primeiro SIM ativo
+                return subscriptionInfoList.get(0).getIccId();
+            }
+        } catch (SecurityException e) {
+            Log.e(TAG, "Permissão READ_PHONE_STATE necessária", e);
+        } catch (Exception e) {
+            Log.e(TAG, "Erro ao obter serial do SIM", e);
+        }
+        
+        return null;
+    }
+    
+    /**
+     * Obtém o nome da operadora atual
+     */
+    public String getCurrentCarrier() {
+        try {
+            SubscriptionManager subscriptionManager = 
+                (SubscriptionManager) context.getSystemService(Context.TELEPHONY_SUBSCRIPTION_SERVICE);
+            
+            List<SubscriptionInfo> subscriptionInfoList = 
+                subscriptionManager.getActiveSubscriptionInfoList();
+            
+            if (subscriptionInfoList != null && !subscriptionInfoList.isEmpty()) {
+                return subscriptionInfoList.get(0).getCarrierName().toString();
+            }
+        } catch (Exception e) {
+            Log.e(TAG, "Erro ao obter operadora", e);
+        }
+        
+        return null;
+    }
+    
+    /**
+     * Envia evento de troca de SIM para o backend
+     */
+    public void reportSimChange(String oldSimSerial, String newSimSerial) {
+        try {
+            JSONObject payload = new JSONObject();
+            payload.put("deviceId", deviceId);
+            payload.put("imei", imei);
+            payload.put("contractCode", contractCode);
+            
+            JSONObject event = new JSONObject();
+            event.put("oldSimSerial", oldSimSerial != null ? oldSimSerial : JSONObject.NULL);
+            event.put("newSimSerial", newSimSerial);
+            event.put("oldCarrier", JSONObject.NULL);
+            event.put("newCarrier", getCurrentCarrier());
+            event.put("timestamp", getCurrentTimestamp());
+            
+            payload.put("event", event);
+            
+            RequestBody body = RequestBody.create(
+                payload.toString(),
+                MediaType.parse("application/json; charset=utf-8")
+            );
+            
+            Request request = new Request.Builder()
+                .url(API_URL)
+                .post(body)
+                .build();
+            
+            httpClient.newCall(request).enqueue(new Callback() {
+                @Override
+                public void onFailure(Call call, IOException e) {
+                    Log.e(TAG, "Erro ao enviar evento de SIM", e);
+                }
+                
+                @Override
+                public void onResponse(Call call, Response response) throws IOException {
+                    String responseBody = response.body().string();
+                    
+                    if (response.isSuccessful()) {
+                        try {
+                            JSONObject json = new JSONObject(responseBody);
+                            String action = json.getString("action");
+                            
+                            Log.i(TAG, "Evento de SIM processado: " + action);
+                            
+                            // Processar ação
+                            handleSecurityAction(action, json);
+                            
+                        } catch (JSONException e) {
+                            Log.e(TAG, "Erro ao parsear resposta", e);
+                        }
+                    } else {
+                        Log.e(TAG, "Erro HTTP " + response.code() + ": " + responseBody);
+                    }
+                }
+            });
+            
+        } catch (JSONException e) {
+            Log.e(TAG, "Erro ao criar payload JSON", e);
+        }
+    }
+    
+    /**
+     * Processa a ação de segurança retornada pelo backend
+     */
+    private void handleSecurityAction(String action, JSONObject response) throws JSONException {
+        switch (action) {
+            case "ALLOW":
+                Log.i(TAG, "Dispositivo permitido: " + response.getString("message"));
+                // Continuar operação normal
+                break;
+                
+            case "BLOCK_DEVICE":
+                int blockLevel = response.getInt("blockLevel");
+                Log.w(TAG, "Dispositivo bloqueado no nível " + blockLevel);
+                
+                // Aplicar bloqueio conforme nível
+                applyBlockingLevel(blockLevel);
+                break;
+                
+            case "UNBLOCK_DEVICE":
+                Log.i(TAG, "Dispositivo desbloqueado: " + response.getString("message"));
+                
+                // Remover bloqueios
+                removeBlockingLevel();
+                break;
+                
+            case "ALERT_ONLY":
+                int overdueCount = response.optInt("overdueCount", 0);
+                Log.w(TAG, "Alerta: " + overdueCount + " parcelas atrasadas");
+                
+                // Mostrar alerta ao usuário
+                showPaymentAlert(overdueCount);
+                break;
+        }
+    }
+    
+    /**
+     * Aplica nível de bloqueio no dispositivo
+     */
+    private void applyBlockingLevel(int level) {
+        // Implementar lógica de bloqueio conforme nível
+        // Exemplo: desabilitar funcionalidades, exibir tela de bloqueio, etc.
+        Log.i(TAG, "Aplicando bloqueio nível " + level);
+    }
+    
+    /**
+     * Remove bloqueios do dispositivo
+     */
+    private void removeBlockingLevel() {
+        // Implementar lógica de desbloqueio
+        Log.i(TAG, "Removendo bloqueios");
+    }
+    
+    /**
+     * Mostra alerta de pagamento ao usuário
+     */
+    private void showPaymentAlert(int overdueCount) {
+        // Implementar UI de alerta
+        Log.i(TAG, "Mostrando alerta de " + overdueCount + " parcelas atrasadas");
+    }
+    
+    /**
+     * Retorna timestamp atual em formato ISO 8601
+     */
+    private String getCurrentTimestamp() {
+        return new java.text.SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'")
+            .format(new java.util.Date());
+    }
+}
+```
+
+### Exemplo 2: Uso da Classe
+
+```java
+// No onCreate() ou inicialização do app
+SimSwapDetector simDetector = new SimSwapDetector(
+    this,  // Context
+    "device_1234567890_abc123",  // deviceId
+    "123456789012345",  // IMEI
+    "CON-2024-001"  // contractCode
+);
+
+// Obter SIM atual
+String currentSim = simDetector.getCurrentSimSerial();
+
+// Enviar na primeira conexão (oldSimSerial = null)
+simDetector.reportSimChange(null, currentSim);
+
+// Salvar SIM atual nas preferências
+SharedPreferences prefs = getSharedPreferences("security", MODE_PRIVATE);
+prefs.edit().putString("last_sim_serial", currentSim).apply();
+```
+
+### Exemplo 3: BroadcastReceiver para Detectar Troca de SIM
+
+```java
+public class SimChangeBroadcastReceiver extends BroadcastReceiver {
+    @Override
+    public void onReceive(Context context, Intent intent) {
+        String action = intent.getAction();
+        
+        if ("android.intent.action.SIM_STATE_CHANGED".equals(action)) {
+            String simState = intent.getStringExtra("ss");
+            
+            if ("LOADED".equals(simState)) {
+                // SIM foi inserido/trocado
+                handleSimChange(context);
+            }
+        }
+    }
+    
+    private void handleSimChange(Context context) {
+        // Obter dados do dispositivo
+        SharedPreferences prefs = context.getSharedPreferences("device", Context.MODE_PRIVATE);
+        String deviceId = prefs.getString("device_id", null);
+        String imei = prefs.getString("imei", null);
+        String contractCode = prefs.getString("contract_code", null);
+        
+        if (deviceId != null && imei != null && contractCode != null) {
+            SimSwapDetector detector = new SimSwapDetector(context, deviceId, imei, contractCode);
+            
+            // Obter SIM anterior
+            String oldSim = prefs.getString("last_sim_serial", null);
+            
+            // Obter SIM atual
+            String newSim = detector.getCurrentSimSerial();
+            
+            // Enviar evento
+            detector.reportSimChange(oldSim, newSim);
+            
+            // Salvar novo SIM
+            prefs.edit().putString("last_sim_serial", newSim).apply();
+        }
+    }
+}
+```
+
+**Registrar no AndroidManifest.xml:**
+```xml
+<receiver android:name=".security.SimChangeBroadcastReceiver"
+          android:enabled="true"
+          android:exported="true">
+    <intent-filter>
+        <action android:name="android.intent.action.SIM_STATE_CHANGED" />
+    </intent-filter>
+</receiver>
+```
+
+### Exemplo 4: Kotlin (versão moderna)
+
+```kotlin
+import android.content.Context
+import android.telephony.SubscriptionManager
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
+import okhttp3.MediaType.Companion.toMediaType
+import okhttp3.OkHttpClient
+import okhttp3.Request
+import okhttp3.RequestBody.Companion.toRequestBody
+import org.json.JSONObject
+import java.text.SimpleDateFormat
+import java.util.*
+
+class SimSwapDetector(
+    private val context: Context,
+    private val deviceId: String,
+    private val imei: String,
+    private val contractCode: String
+) {
+    private val httpClient = OkHttpClient()
+    private val apiUrl = "https://seu-dominio.replit.app/api/apk/device/security/sim-change"
+    
+    fun getCurrentSimSerial(): String? {
+        return try {
+            val subscriptionManager = context.getSystemService(Context.TELEPHONY_SUBSCRIPTION_SERVICE) 
+                as SubscriptionManager
+            subscriptionManager.activeSubscriptionInfoList?.firstOrNull()?.iccId
+        } catch (e: Exception) {
+            null
+        }
+    }
+    
+    suspend fun reportSimChange(oldSimSerial: String?, newSimSerial: String) {
+        withContext(Dispatchers.IO) {
+            try {
+                val payload = JSONObject().apply {
+                    put("deviceId", deviceId)
+                    put("imei", imei)
+                    put("contractCode", contractCode)
+                    put("event", JSONObject().apply {
+                        put("oldSimSerial", oldSimSerial)
+                        put("newSimSerial", newSimSerial)
+                        put("timestamp", SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.US)
+                            .format(Date()))
+                    })
+                }
+                
+                val body = payload.toString()
+                    .toRequestBody("application/json; charset=utf-8".toMediaType())
+                
+                val request = Request.Builder()
+                    .url(apiUrl)
+                    .post(body)
+                    .build()
+                
+                httpClient.newCall(request).execute().use { response ->
+                    if (response.isSuccessful) {
+                        val json = JSONObject(response.body?.string() ?: "{}")
+                        val action = json.getString("action")
+                        handleSecurityAction(action, json)
+                    }
+                }
+            } catch (e: Exception) {
+                // Log erro
+            }
+        }
+    }
+    
+    private fun handleSecurityAction(action: String, response: JSONObject) {
+        when (action) {
+            "BLOCK_DEVICE" -> {
+                val blockLevel = response.getInt("blockLevel")
+                // Aplicar bloqueio
+            }
+            "UNBLOCK_DEVICE" -> {
+                // Remover bloqueio
+            }
+            // ... outros casos
+        }
+    }
+}
+```
+
+---
+
+## 📊 Respostas da API
+
+### Códigos de Status HTTP
+
+| Código | Significado | Quando Ocorre |
+|--------|-------------|---------------|
+| 200 | Success | Evento processado com sucesso |
+| 400 | Bad Request | Dados inválidos no payload |
+| 404 | Not Found | Dispositivo não encontrado |
+| 500 | Internal Server Error | Erro no servidor |
+
+### Tipos de Action
+
+| Action | Descrição | requiresAction | O que o APK deve fazer |
+|--------|-----------|----------------|------------------------|
+| `ALLOW` | Permitir operação normal | `false` | Continuar normalmente |
+| `BLOCK_DEVICE` | Bloquear dispositivo | `true` | Aplicar restrições de nível 4 |
+| `UNBLOCK_DEVICE` | Desbloquear dispositivo | `true` | Remover todas as restrições |
+| `ALERT_ONLY` | Apenas alertar | `false` | Mostrar alerta de pagamento |
+
+### Níveis de Bloqueio
+
+| Nível | Descrição | Ações Restritas |
+|-------|-----------|-----------------|
+| 0 | Sem bloqueio | Nenhuma |
+| 1-3 | Bloqueios progressivos | Conforme política do sistema |
+| 4 | **Bloqueio por troca de SIM** | Funcionalidades críticas bloqueadas |
+| 5-6 | Bloqueios máximos | Dispositivo quase completamente restrito |
+
+---
+
+## 🐛 Logs e Debugging
+
+### Logs do Backend
+
+Quando enviar eventos, o backend registra logs detalhados:
+
+```
+📱 Original SIM registered on first detection: 89551234567890123456
+🚨 SIM change detected (not original) - BLOCKING device at level 4
+✅ Device blocked at level 4 due to SIM change
+✅ SIM changed back to original - checking payment status...
+⚠️  Device has 2 overdue installments - NOT unblocking
+✅ No overdue payments - UNBLOCKING device
+```
+
+### Como Testar
+
+#### 1. Testar Primeira Detecção
+```bash
+curl -X POST https://seu-dominio.replit.app/api/apk/device/security/sim-change \
+-H "Content-Type: application/json" \
+-d '{
+  "deviceId": "device_test_123",
+  "imei": "123456789012345",
+  "contractCode": "CON-TEST-001",
+  "event": {
+    "oldSimSerial": null,
+    "newSimSerial": "89551234567890123456",
+    "timestamp": "2024-01-15T10:30:00Z"
+  }
+}'
+```
+
+**Resposta esperada:** `action: "ALLOW"`
+
+#### 2. Testar Troca de SIM (Bloqueio)
+```bash
+curl -X POST https://seu-dominio.replit.app/api/apk/device/security/sim-change \
+-H "Content-Type: application/json" \
+-d '{
+  "deviceId": "device_test_123",
+  "imei": "123456789012345",
+  "contractCode": "CON-TEST-001",
+  "event": {
+    "oldSimSerial": "89551234567890123456",
+    "newSimSerial": "89559999999999999999",
+    "timestamp": "2024-01-15T11:00:00Z"
+  }
+}'
+```
+
+**Resposta esperada:** `action: "BLOCK_DEVICE"`, `blockLevel: 4`
+
+#### 3. Testar Volta ao Original (Desbloqueio)
+```bash
+curl -X POST https://seu-dominio.replit.app/api/apk/device/security/sim-change \
+-H "Content-Type: application/json" \
+-d '{
+  "deviceId": "device_test_123",
+  "imei": "123456789012345",
+  "contractCode": "CON-TEST-001",
+  "event": {
+    "oldSimSerial": "89559999999999999999",
+    "newSimSerial": "89551234567890123456",
+    "timestamp": "2024-01-15T12:00:00Z"
+  }
+}'
+```
+
+**Resposta esperada:** `action: "UNBLOCK_DEVICE"` ou `action: "ALERT_ONLY"` (se tiver parcelas atrasadas)
+
+---
+
+## ❓ Perguntas Frequentes (FAQ)
+
+### 1. Com que frequência devo enviar eventos de SIM?
+
+**Recomendamos:**
+- ✅ **Na inicialização do APK** (sempre)
+- ✅ **Quando detectar mudança de SIM** (via BroadcastReceiver)
+- ⚠️ **Periodicamente (opcional)** - A cada 24h ou sincronização programada
+
+### 2. O que acontece se o usuário tirar o chip?
+
+Se o SIM for removido:
+- `getCurrentSimSerial()` retornará `null`
+- Envie o evento normalmente com `newSimSerial: null`
+- Backend registrará o evento mas não bloqueará (ausência de SIM não é fraude)
+
+### 3. E dispositivos com dual-SIM?
+
+Use o SIM primário (slot 0) para tracking:
+```java
+subscriptionInfoList.get(0).getIccId(); // Sempre o primeiro SIM
+```
+
+### 4. Preciso armazenar o SIM anterior no APK?
+
+**Sim!** Salve em `SharedPreferences`:
+```java
+SharedPreferences prefs = getSharedPreferences("security", MODE_PRIVATE);
+prefs.edit().putString("last_sim_serial", currentSim).apply();
+```
+
+### 5. O que fazer se o endpoint retornar erro 500?
+
+1. Verificar logs do backend
+2. Tentar novamente após 30 segundos (retry)
+3. Se persistir, reportar ao time da CDC
+
+### 6. Posso cachear a resposta da API?
+
+**Não!** Cada evento de SIM deve ser enviado imediatamente ao backend para garantir segurança em tempo real.
+
+### 7. Como testar sem trocar o chip físico?
+
+Use emuladores Android ou modifique o ICCID manualmente em builds de desenvolvimento:
+```java
+// Apenas para DEBUG
+String fakeSimSerial = "DEBUG_" + System.currentTimeMillis();
+```
+
+### 8. Preciso implementar o endpoint Knox também?
+
+**Opcional.** O endpoint Knox é apenas para analytics. Se seu dispositivo usa Samsung Knox, envie o status periodicamente.
+
+### 9. O que acontece se enviar dados incorretos?
+
+Backend retornará **400 Bad Request** com detalhes do erro. Corrija o payload e tente novamente.
+
+### 10. Há rate limiting?
+
+Atualmente não há rate limiting nos endpoints de segurança, mas evite enviar mais de 1 evento por minuto para o mesmo dispositivo.
+
+---
+
+## 📞 Suporte
+
+**Dúvidas técnicas:**
+- Email: dev@cdcsmartcredit.com.br
+- Slack: #integracao-apk
+
+**Reportar bugs:**
+- GitHub Issues: https://github.com/cdcsmartcredit/apk/issues
+
+**Ambiente de testes:**
+- API Base URL: `https://staging.cdcsmartcredit.com.br`
+- Dashboard Admin: `https://staging.cdcsmartcredit.com.br/admin`
+
+---
+
+## 📝 Changelog
+
+### v1.0.0 - 2024-01-15
+- ✅ Sistema de detecção de SIM Swap implementado
+- ✅ Endpoint `/api/apk/device/security/sim-change`
+- ✅ Endpoint `/api/apk/device/knox/status`
+- ✅ Bloqueio automático nível 4 em troca de SIM
+- ✅ Desbloqueio automático ao retornar SIM original
+- ✅ Tabela `security_events` para auditoria completa
+
+---
+
+## 🔒 Segurança e Privacidade
+
+- 🔐 Todos os dados de SIM são criptografados em trânsito (HTTPS)
+- 🔐 Seriais de SIM não são expostos em logs públicos
+- 🔐 Eventos de segurança têm auditoria completa
+- 🔐 Apenas dispositivos registrados podem enviar eventos
+
+---
+
+**Documentação gerada em:** 21 de Novembro de 2024  
+**Versão:** 1.0.0  
+**Time:** CDC CreditSmart - Equipe de Desenvolvimento

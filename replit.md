@@ -17,10 +17,20 @@ Para resolver erros "Something went wrong" e "Can't set up device" no Android 15
   - Requer login com conta Google autorizada para reativar
   - Android 15: FRP sempre enforçado (impossível bypasear sem ferramentas profissionais)
   - **LIMITAÇÃO HONESTA:** NÃO é possível bloquear hardware reset em Android padrão (apenas Samsung Knox)
+- **✅ PERSISTENT STATE MANAGER (22/11/2025):** Sistema de detecção e recuperação pós-factory reset OFFLINE
+  - **FUNCIONA IGUAL PAYJOY:** Usa `PersistentDataBlockManager` para sobreviver factory reset
+  - Salva estado em partição protegida (`/dev/block/mmcblk0p`) que não é apagada no reset
+  - Detecta automaticamente quando device foi resetado (estado OK + /data vazio = reset)
+  - Recupera contractCode, IMEI, deviceId e status de financiamento
+  - Contador de factory resets para telemetria
+  - **REQUER:** Device Owner + Android 5.0+ (API 21+)
+  - **LIMITAÇÃO:** APK não sobrevive (precisa reinstalar via QR Code), apenas o estado
+  - Componentes: `PersistentStateManager`, `PersistentStateHelper`, `MainActivity.checkFactoryReset()`
 - **Guia Completo:** `SOLUCAO_DESCOBERTA_ANDROID15.md`
 - **Melhorias Implementadas:** `MELHORIAS_IMPLEMENTADAS_PAYJOY.md`
 - **Solução Play Protect:** `SOLUCAO_PLAY_PROTECT_IMPLEMENTADA.md`
 - **Factory Reset Protection:** `docs/troubleshooting/FACTORY_RESET_PROTECTION_GUIDE.md`
+- **Persistent State (PayJoy-like):** `PERSISTENT_STATE_IMPLEMENTADO.md`
 - **Provisioning via ADB (Windows):** `provisioning-infinix-adb.bat`
 - **Provisioning via ADB (Linux/Mac):** `provisioning-infinix-adb.sh`
 - **Captura de Logs:** `capturar-logs-provisioning.bat`

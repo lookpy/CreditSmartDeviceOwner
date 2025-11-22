@@ -23,7 +23,12 @@ import androidx.navigation.compose.rememberNavController
 import com.cdccreditsmart.app.navigation.CDCNavigation
 import com.cdccreditsmart.app.navigation.Routes
 import com.cdccreditsmart.app.permissions.AutoPermissionManager
+import com.cdccreditsmart.app.protection.FactoryResetDetectionResult
+import com.cdccreditsmart.app.protection.PersistentStateManager
 import com.cdccreditsmart.app.ui.theme.CDCCreditSmartTheme
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
 
@@ -32,6 +37,8 @@ class MainActivity : ComponentActivity() {
     }
 
     private val deepLinkChannel = mutableStateOf<String?>(null)
+    private val factoryResetDetected = mutableStateOf(false)
+    private val persistentStateManager by lazy { PersistentStateManager(this) }
 
     private val requestPermissionsLauncher = registerForActivityResult(
         ActivityResultContracts.RequestMultiplePermissions()
@@ -56,14 +63,69 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         
+        checkFactoryReset()
         requestAllPermissionsIfNotDeviceOwner()
         
         setContent {
             CDCCreditSmartTheme {
                 CDCCreditSmartApp(
                     initialDeepLink = handleDeepLink(intent),
-                    deepLinkState = deepLinkChannel
+                    deepLinkState = deepLinkChannel,
+                    factoryResetDetected = factoryResetDetected.value
                 )
+            }
+        }
+    }
+    
+    /**
+     * DETECTA factory reset - FUNCIONA COMO PAYJOY!
+     * 
+     * LÓGICA:
+     * 1. Verifica se há estado persistente (sobrevive factory reset)
+     * 2. Verifica se /data está vazio (foi apagado)
+     * 3. Se persistente OK mas /data vazio = FACTORY RESET!
+     * 4. Mostra tela para re-provisionar via QR Code
+     */
+    private fun checkFactoryReset() {
+        if (!persistentStateManager.isAvailable()) {
+            Log.d(TAG, "PersistentStateManager não disponível (não Device Owner ou Android < 5.0)")
+            return
+        }
+        
+        CoroutineScope(Dispatchers.IO).launch {
+            try {
+                val result = persistentStateManager.detectFactoryReset()
+                
+                when (result) {
+                    is FactoryResetDetectionResult.NeverProvisioned -> {
+                        Log.i(TAG, "🆕 Device nunca foi provisionado")
+                    }
+                    
+                    is FactoryResetDetectionResult.Normal -> {
+                        Log.i(TAG, "✅ Device OK - sem factory reset")
+                    }
+                    
+                    is FactoryResetDetectionResult.FactoryResetDetected -> {
+                        Log.w(TAG, "========================================")
+                        Log.w(TAG, "🚨 FACTORY RESET DETECTADO!")
+                        Log.w(TAG, "========================================")
+                        Log.w(TAG, "📋 DADOS RECUPERADOS:")
+                        Log.w(TAG, "  • Contract Code: ${result.contractCode}")
+                        Log.w(TAG, "  • IMEI: ${result.imei.take(6)}***")
+                        Log.w(TAG, "  • Is Financed: ${result.isFinanced}")
+                        Log.w(TAG, "  • Reset Count: ${result.resetCount}")
+                        Log.w(TAG, "========================================")
+                        Log.w(TAG, "⚠️ APP PRECISA SER RE-PROVISIONADO VIA QR CODE")
+                        Log.w(TAG, "========================================")
+                        
+                        factoryResetDetected.value = true
+                        
+                        // TODO: Mostrar tela de re-provisionamento
+                        // TODO: Enviar telemetria ao backend
+                    }
+                }
+            } catch (e: Exception) {
+                Log.e(TAG, "Erro ao detectar factory reset: ${e.message}", e)
             }
         }
     }
@@ -173,10 +235,15 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun CDCCreditSmartApp(
     initialDeepLink: String? = null,
-    deepLinkState: androidx.compose.runtime.MutableState<String?>? = null
+    deepLinkState: androidx.compose.runtime.MutableState<String?>? = null,
+    factoryResetDetected: Boolean = false
 ) {
     val navController = rememberNavController()
     val deepLinkProcessed = remember { mutableStateOf(false) }
+    
+    if (factoryResetDetected) {
+        Log.w("CDCCreditSmartApp", "🚨 Factory Reset detectado - mostrando alerta ao usuário")
+    }
     
     LaunchedEffect(initialDeepLink) {
         if (initialDeepLink != null && !deepLinkProcessed.value) {
