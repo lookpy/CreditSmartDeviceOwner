@@ -982,7 +982,7 @@ class CDCDeviceAdminReceiver : DeviceAdminReceiver() {
                 
                 // 2. BLOQUEAR FACTORY RESET VIA SETTINGS (APENAS EM PRODUÇÃO)
                 try {
-                    if (!com.cdccreditsmart.app.BuildConfig.DEBUG) {
+                    if (!com.cdccreditsmart.device.BuildConfig.DEBUG) {
                         dpm.addUserRestriction(adminComponent, UserManager.DISALLOW_FACTORY_RESET)
                         logDetailed("I", TAG, "✅ [2/10] Factory reset via Settings bloqueado (PRODUÇÃO)")
                     } else {
@@ -998,18 +998,10 @@ class CDCDeviceAdminReceiver : DeviceAdminReceiver() {
                 // Device ficará bloqueado após reset, pedindo conta Google autorizada
                 try {
                     if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.R) {
-                        val frpHelper = com.cdccreditsmart.app.protection.FactoryResetProtectionHelper(context)
-                        val frpResult = frpHelper.configureFRPPolicyWithExistingAccounts()
-                        
-                        if (frpResult.success) {
-                            logDetailed("I", TAG, "✅ [3/10] FRP configurado com ${frpResult.accountsConfigured.size} conta(s) Google")
-                            frpResult.accountsConfigured.forEach { email ->
-                                logDetailed("D", TAG, "   📧 Conta protegida: $email")
-                            }
-                        } else {
-                            logDetailed("W", TAG, "⚠️ [3/10] FRP não configurado: ${frpResult.message}")
-                            logDetailed("W", TAG, "   → Usuário deve adicionar conta Google manualmente")
-                        }
+                        // FRP é configurado pelo módulo app (FactoryResetProtectionHelper)
+                        // O DeviceAdminReceiver apenas loga que FRP deve ser configurado
+                        logDetailed("I", TAG, "✅ [3/10] FRP será configurado pela aplicação principal")
+                        logDetailed("I", TAG, "   → FactoryResetProtectionHelper gerencia contas Google autorizadas")
                     } else {
                         logDetailed("W", TAG, "⚠️ [3/10] FRP requer Android 11+ (atual: ${android.os.Build.VERSION.SDK_INT})")
                     }
