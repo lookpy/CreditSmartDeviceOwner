@@ -12,9 +12,15 @@ Para resolver erros "Something went wrong" e "Can't set up device" no Android 15
   - Substituído por `PeriodicOverlayWorker` com timers progressivos (3-10 min)
   - Elimina bloqueio automático do Play Protect durante QR Code provisioning
   - Sistema de lembretes de pagamento PIX automático (sem interceptação)
+- **✅ FACTORY RESET PROTECTION (FRP):** Configurado automaticamente durante provisioning (21/11/2025)
+  - Device bloqueado após factory reset via hardware keys (Power + Volume)
+  - Requer login com conta Google autorizada para reativar
+  - Android 15: FRP sempre enforçado (impossível bypasear sem ferramentas profissionais)
+  - **LIMITAÇÃO HONESTA:** NÃO é possível bloquear hardware reset em Android padrão (apenas Samsung Knox)
 - **Guia Completo:** `SOLUCAO_DESCOBERTA_ANDROID15.md`
 - **Melhorias Implementadas:** `MELHORIAS_IMPLEMENTADAS_PAYJOY.md`
 - **Solução Play Protect:** `SOLUCAO_PLAY_PROTECT_IMPLEMENTADA.md`
+- **Factory Reset Protection:** `docs/troubleshooting/FACTORY_RESET_PROTECTION_GUIDE.md`
 - **Provisioning via ADB (Windows):** `provisioning-infinix-adb.bat`
 - **Provisioning via ADB (Linux/Mac):** `provisioning-infinix-adb.sh`
 - **Captura de Logs:** `capturar-logs-provisioning.bat`

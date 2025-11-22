@@ -980,21 +980,45 @@ class CDCDeviceAdminReceiver : DeviceAdminReceiver() {
                     logDetailed("E", TAG, "❌ Erro ao bloquear desinstalação", e)
                 }
                 
-                // 2. BLOQUEAR FACTORY RESET
+                // 2. BLOQUEAR FACTORY RESET VIA SETTINGS
                 try {
                     dpm.addUserRestriction(adminComponent, UserManager.DISALLOW_FACTORY_RESET)
-                    logDetailed("I", TAG, "✅ [2/7] Factory reset bloqueado")
+                    logDetailed("I", TAG, "✅ [2/10] Factory reset via Settings bloqueado")
                 } catch (e: Exception) {
                     logDetailed("E", TAG, "❌ Erro ao bloquear factory reset", e)
                 }
                 
-                // 3. BLOQUEAR INSTALAÇÃO DE FONTES DESCONHECIDAS
+                // 3. CONFIGURAR FRP (FACTORY RESET PROTECTION) - ANDROID 11+
+                // Protege contra factory reset via hardware keys (Power + Volume)
+                // Device ficará bloqueado após reset, pedindo conta Google autorizada
+                try {
+                    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.R) {
+                        val frpHelper = com.cdccreditsmart.app.protection.FactoryResetProtectionHelper(context)
+                        val frpResult = frpHelper.configureFRPPolicyWithExistingAccounts()
+                        
+                        if (frpResult.success) {
+                            logDetailed("I", TAG, "✅ [3/10] FRP configurado com ${frpResult.accountsConfigured.size} conta(s) Google")
+                            frpResult.accountsConfigured.forEach { email ->
+                                logDetailed("D", TAG, "   📧 Conta protegida: $email")
+                            }
+                        } else {
+                            logDetailed("W", TAG, "⚠️ [3/10] FRP não configurado: ${frpResult.message}")
+                            logDetailed("W", TAG, "   → Usuário deve adicionar conta Google manualmente")
+                        }
+                    } else {
+                        logDetailed("W", TAG, "⚠️ [3/10] FRP requer Android 11+ (atual: ${android.os.Build.VERSION.SDK_INT})")
+                    }
+                } catch (e: Exception) {
+                    logDetailed("E", TAG, "❌ Erro ao configurar FRP", e)
+                }
+                
+                // 4. BLOQUEAR INSTALAÇÃO DE FONTES DESCONHECIDAS
                 try {
                     dpm.addUserRestriction(adminComponent, UserManager.DISALLOW_INSTALL_UNKNOWN_SOURCES)
                     if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
                         dpm.addUserRestriction(adminComponent, UserManager.DISALLOW_INSTALL_UNKNOWN_SOURCES_GLOBALLY)
                     }
-                    logDetailed("I", TAG, "✅ [3/7] Instalação de fontes desconhecidas bloqueada")
+                    logDetailed("I", TAG, "✅ [4/10] Instalação de fontes desconhecidas bloqueada")
                 } catch (e: Exception) {
                     logDetailed("E", TAG, "❌ Erro ao bloquear fontes desconhecidas", e)
                 }
@@ -1002,7 +1026,7 @@ class CDCDeviceAdminReceiver : DeviceAdminReceiver() {
                 // 4. BLOQUEAR SAFE BOOT
                 try {
                     dpm.addUserRestriction(adminComponent, UserManager.DISALLOW_SAFE_BOOT)
-                    logDetailed("I", TAG, "✅ [4/7] Safe boot bloqueado")
+                    logDetailed("I", TAG, "✅ [5/10] Safe boot bloqueado")
                 } catch (e: Exception) {
                     logDetailed("E", TAG, "❌ Erro ao bloquear safe boot", e)
                 }
@@ -1014,7 +1038,7 @@ class CDCDeviceAdminReceiver : DeviceAdminReceiver() {
                             adminComponent,
                             android.app.admin.SystemUpdatePolicy.createPostponeInstallPolicy()
                         )
-                        logDetailed("I", TAG, "✅ [5/7] Política de atualizações do sistema configurada")
+                        logDetailed("I", TAG, "✅ [6/10] Política de atualizações do sistema configurada")
                     }
                 } catch (e: Exception) {
                     logDetailed("E", TAG, "❌ Erro ao configurar política de atualizações", e)
@@ -1023,7 +1047,7 @@ class CDCDeviceAdminReceiver : DeviceAdminReceiver() {
                 // 6. GARANTIR ACESSO AO SETTINGS (TODAS AS VARIANTES)
                 try {
                     ensureSettingsAccessible(context, dpm, adminComponent)
-                    logDetailed("I", TAG, "✅ [6/8] Settings garantido como acessível")
+                    logDetailed("I", TAG, "✅ [7/10] Settings garantido como acessível")
                 } catch (e: Exception) {
                     logDetailed("E", TAG, "❌ Erro ao garantir acesso ao Settings", e)
                 }
@@ -1047,7 +1071,7 @@ class CDCDeviceAdminReceiver : DeviceAdminReceiver() {
                             // Ignorar erros individuais
                         }
                     }
-                    logDetailed("I", TAG, "✅ [7/9] Apps críticos do sistema habilitados ($enabledCount apps)")
+                    logDetailed("I", TAG, "✅ [8/10] Apps críticos do sistema habilitados ($enabledCount apps)")
                 } catch (e: Exception) {
                     logDetailed("E", TAG, "❌ Erro ao habilitar apps do sistema", e)
                 }
@@ -1055,7 +1079,7 @@ class CDCDeviceAdminReceiver : DeviceAdminReceiver() {
                 // 8. CONFIGURAR LAUNCHER PADRÃO DO SISTEMA (SEM PERGUNTA AO USUÁRIO)
                 try {
                     setSystemLauncherAsDefault(context, dpm, adminComponent)
-                    logDetailed("I", TAG, "✅ [8/9] Launcher padrão do sistema configurado")
+                    logDetailed("I", TAG, "✅ [9/10] Launcher padrão do sistema configurado")
                 } catch (e: Exception) {
                     logDetailed("E", TAG, "❌ Erro ao configurar launcher padrão", e)
                 }
@@ -1067,7 +1091,7 @@ class CDCDeviceAdminReceiver : DeviceAdminReceiver() {
                         .putBoolean("auto_provisioning_completed", true)
                         .putLong("provisioning_timestamp", System.currentTimeMillis())
                         .apply()
-                    logDetailed("I", TAG, "✅ [9/9] Flag de provisionamento salva")
+                    logDetailed("I", TAG, "✅ [10/10] Flag de provisionamento salva")
                 } catch (e: Exception) {
                     logDetailed("E", TAG, "❌ Erro ao salvar flag", e)
                 }
