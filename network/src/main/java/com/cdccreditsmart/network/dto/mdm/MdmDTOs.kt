@@ -151,10 +151,10 @@ data class MdmData(
 
 data class MdmCommandFull(
     val id: String,
-    val deviceId: String,
+    val deviceId: String?,
     val commandType: String,
     val parameters: CommandParameters,
     val status: String,
     val priority: String,
-    val expiresAt: String
+    val expiresAt: String?
 )

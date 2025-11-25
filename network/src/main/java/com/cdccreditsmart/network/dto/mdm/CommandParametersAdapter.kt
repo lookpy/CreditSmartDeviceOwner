@@ -46,9 +46,9 @@ private class MdmCommandAdapter(val moshi: Moshi) : JsonAdapter<MdmCommand>() {
                     parametersRaw = reader.readJsonValue()
                 }
                 3 -> priority = reader.nextString()
-                4 -> createdAt = reader.nextString()
-                5 -> expiresAt = reader.nextString()
-                6 -> status = reader.nextString()
+                4 -> createdAt = if (reader.peek() == JsonReader.Token.NULL) { reader.nextNull(); null } else reader.nextString()
+                5 -> expiresAt = if (reader.peek() == JsonReader.Token.NULL) { reader.nextNull(); null } else reader.nextString()
+                6 -> status = if (reader.peek() == JsonReader.Token.NULL) { reader.nextNull(); null } else reader.nextString()
                 -1 -> {
                     reader.skipName()
                     reader.skipValue()
@@ -175,14 +175,14 @@ private class MdmCommandFullAdapter(val moshi: Moshi) : JsonAdapter<MdmCommandFu
         while (reader.hasNext()) {
             when (reader.selectName(options)) {
                 0 -> id = reader.nextString()
-                1 -> deviceId = reader.nextString()
+                1 -> deviceId = if (reader.peek() == JsonReader.Token.NULL) { reader.nextNull(); null } else reader.nextString()
                 2 -> commandType = reader.nextString()
                 3 -> {
                     parametersRaw = reader.readJsonValue()
                 }
-                4 -> status = reader.nextString()
-                5 -> priority = reader.nextString()
-                6 -> expiresAt = reader.nextString()
+                4 -> status = if (reader.peek() == JsonReader.Token.NULL) { reader.nextNull(); null } else reader.nextString()
+                5 -> priority = if (reader.peek() == JsonReader.Token.NULL) { reader.nextNull(); "normal" } else reader.nextString()
+                6 -> expiresAt = if (reader.peek() == JsonReader.Token.NULL) { reader.nextNull(); null } else reader.nextString()
                 -1 -> {
                     reader.skipName()
                     reader.skipValue()
@@ -249,12 +249,12 @@ private class MdmCommandFullAdapter(val moshi: Moshi) : JsonAdapter<MdmCommandFu
         
         return MdmCommandFull(
             id = id ?: throw JsonDataException("Required field 'id' missing"),
-            deviceId = deviceId ?: throw JsonDataException("Required field 'deviceId' missing"),
+            deviceId = deviceId,
             commandType = commandType ?: throw JsonDataException("Required field 'commandType' missing"),
             parameters = parameters,
             status = status ?: "pending",
             priority = priority,
-            expiresAt = expiresAt ?: ""
+            expiresAt = expiresAt
         )
     }
     

@@ -1,0 +1,117 @@
+  via: 1.1 google
+2025-11-25 00:11:59.352  7339-7431  okhttp.OkHttpClient     com.cdccreditsmart.app               I  alt-svc: h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
+2025-11-25 00:11:59.353  7339-7431  okhttp.OkHttpClient     com.cdccreditsmart.app               I  {"deviceId":"device_1764037861659_ut810g9nybk","serialNumber":"MSQRG6MU","commandsCount":2,"commands":[{"id":"358d8370-d944-452e-914b-7d9446d626eb","commandType":"CONFIGURE_UNINSTALL_CODE","parameters":null,"priority":"high","status":"pending","createdAt":"2025-11-25T02:31:32.941Z","expiresAt":null},{"id":"c9552bfc-a8e9-4f53-aa7e-1b7eb3232861","commandType":"CONFIGURE_UNINSTALL_CODE","parameters":null,"priority":"high","status":"pending","createdAt":"2025-11-25T02:31:32.861Z","expiresAt":null}]}
+2025-11-25 00:11:59.353  7339-7431  okhttp.OkHttpClient     com.cdccreditsmart.app               I  <-- END HTTP (500-byte body)
+2025-11-25 00:11:59.354  7339-7378  MdmCommandReceiver      com.cdccreditsmart.app               E  ❌ Erro ao buscar comandos pendentes (Ask Gemini)
+                                                                                                    com.squareup.moshi.JsonDataException: Expected a string but was NULL at path $.commands[0].expiresAt
+                                                                                                    	at com.squareup.moshi.JsonUtf8Reader.nextString(JsonUtf8Reader.java:676)
+                                                                                                    	at com.cdccreditsmart.network.dto.mdm.MdmCommandAdapter.fromJson(CommandParametersAdapter.kt:50)
+                                                                                                    	at com.cdccreditsmart.network.dto.mdm.MdmCommandAdapter.fromJson(CommandParametersAdapter.kt:22)
+                                                                                                    	at com.squareup.moshi.CollectionJsonAdapter.fromJson(CollectionJsonAdapter.java:81)
+                                                                                                    	at com.squareup.moshi.CollectionJsonAdapter$2.fromJson(CollectionJsonAdapter.java:55)
+                                                                                                    	at com.squareup.moshi.internal.NullSafeJsonAdapter.fromJson(NullSafeJsonAdapter.java:41)
+                                                                                                    	at com.squareup.moshi.kotlin.reflect.KotlinJsonAdapter.fromJson(KotlinJsonAdapter.kt:86)
+                                                                                                    	at com.squareup.moshi.internal.NullSafeJsonAdapter.fromJson(NullSafeJsonAdapter.java:41)
+                                                                                                    	at retrofit2.converter.moshi.MoshiResponseBodyConverter.convert(MoshiResponseBodyConverter.java:46)
+                                                                                                    	at retrofit2.converter.moshi.MoshiResponseBodyConverter.convert(MoshiResponseBodyConverter.java:27)
+                                                                                                    	at retrofit2.OkHttpCall.parseResponse(OkHttpCall.java:246)
+                                                                                                    	at retrofit2.OkHttpCall$1.onResponse(OkHttpCall.java:156)
+                                                                                                    	at okhttp3.internal.connection.RealCall$AsyncCall.run(RealCall.kt:519)
+                                                                                                    	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1156)
+                                                                                                    	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:651)
+                                                                                                    	at java.lang.Thread.run(Thread.java:1119)
+2025-11-25 00:11:59.354  7339-7378  MdmCommandReceiver      com.cdccreditsmart.app               E  ❌ Stack trace: com.squareup.moshi.JsonDataException: Expected a string but was NULL at path $.commands[0].expiresAt (Ask Gemini)
+                                                                                                    	at com.squareup.moshi.JsonUtf8Reader.nextString(JsonUtf8Reader.java:676)
+                                                                                                    	at com.cdccreditsmart.network.dto.mdm.MdmCommandAdapter.fromJson(CommandParametersAdapter.kt:50)
+                                                                                                    	at com.cdccreditsmart.network.dto.mdm.MdmCommandAdapter.fromJson(CommandParametersAdapter.kt:22)
+                                                                                                    	at com.squareup.moshi.CollectionJsonAdapter.fromJson(CollectionJsonAdapter.java:81)
+                                                                                                    	at com.squareup.moshi.CollectionJsonAdapter$2.fromJson(CollectionJsonAdapter.java:55)
+                                                                                                    	at com.squareup.moshi.internal.NullSafeJsonAdapter.fromJson(NullSafeJsonAdapter.java:41)
+                                                                                                    	at com.squareup.moshi.kotlin.reflect.KotlinJsonAdapter.fromJson(KotlinJsonAdapter.kt:86)
+                                                                                                    	at com.squareup.moshi.internal.NullSafeJsonAdapter.fromJson(NullSafeJsonAdapter.java:41)
+                                                                                                    	at retrofit2.converter.moshi.MoshiResponseBodyConverter.convert(MoshiResponseBodyConverter.java:46)
+                                                                                                    	at retrofit2.converter.moshi.MoshiResponseBodyConverter.convert(MoshiResponseBodyConverter.java:27)
+                                                                                                    	at retrofit2.OkHttpCall.parseResponse(OkHttpCall.java:246)
+                                                                                                    	at retrofit2.OkHttpCall$1.onResponse(OkHttpCall.java:156)
+                                                                                                    	at okhttp3.internal.connection.RealCall$AsyncCall.run(RealCall.kt:519)
+                                                                                                    	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1156)
+                                                                                                    	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:651)
+                                                                                                    	at java.lang.Thread.run(Thread.java:1119)
+2025-11-25 00:11:59.354  7339-7378  MdmCommandReceiver      com.cdccreditsmart.app               D  ⏳ [Polling #2] Aguardando 29599ms até próxima verificação...
+2025-11-25 00:11:59.643  7339-7378  MdmCommandReceiver      com.cdccreditsmart.app               D  🔍 [Polling #2] Verificando comandos pendentes...
+2025-11-25 00:11:59.645  7339-7378  SecureTokenStorage      com.cdccreditsmart.app               D  ⚠️ Usando Serial Number para MDM (IMEI indisponível): MSQRG6...
+2025-11-25 00:11:59.645  7339-7378  MdmCommandReceiver      com.cdccreditsmart.app               D  🔍 Buscando comandos pendentes com identifier: MSQRG6MU...
+2025-11-25 00:11:59.646  7339-7431  okhttp.OkHttpClient     com.cdccreditsmart.app               I  --> GET https://cdccreditsmart.com/api/apk/device/MSQRG6MU/commands
+2025-11-25 00:11:59.647  7339-7431  okhttp.OkHttpClient     com.cdccreditsmart.app               I  --> END GET
+2025-11-25 00:11:59.668  7339-7339  WebSocketManager        com.cdccreditsmart.app               D  Heartbeat ping sent
+2025-11-25 00:11:59.869  7339-7428  WebSocketManager        com.cdccreditsmart.app               D  Message received: {"type":"pong","timestamp":"2025-11-25T03:12:01.405Z"}...
+2025-11-25 00:11:59.869  7339-7428  WebSocketManager        com.cdccreditsmart.app               D  Received message type: pong
+2025-11-25 00:11:59.869  7339-7428  WebSocketManager        com.cdccreditsmart.app               D  Pong received
+2025-11-25 00:12:00.024  7339-7431  okhttp.OkHttpClient     com.cdccreditsmart.app               I  <-- 200 https://cdccreditsmart.com/api/apk/device/MSQRG6MU/commands (377ms)
+2025-11-25 00:12:00.024  7339-7431  okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-credentials: true
+2025-11-25 00:12:00.024  7339-7431  okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-headers: Origin, X-Requested-With, Content-Type, Accept, Authorization, x-client-key, x-client-token, x-client-secret, cache-control
+2025-11-25 00:12:00.024  7339-7431  okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-methods: GET, POST, PUT, PATCH, DELETE, OPTIONS
+2025-11-25 00:12:00.024  7339-7431  okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-origin: *
+2025-11-25 00:12:00.024  7339-7431  okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-max-age: 86400
+2025-11-25 00:12:00.025  7339-7431  okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-length: 500
+2025-11-25 00:12:00.025  7339-7431  okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-security-policy: default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://replit.com; style-src 'self' 'unsafe-inline' https://replit.com; img-src 'self' data: https:; font-src 'self' data: https://replit.com; connect-src 'self';
+2025-11-25 00:12:00.025  7339-7431  okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-type: application/json; charset=utf-8
+2025-11-25 00:12:00.025  7339-7431  okhttp.OkHttpClient     com.cdccreditsmart.app               I  date: Tue, 25 Nov 2025 03:12:01 GMT
+2025-11-25 00:12:00.025  7339-7431  okhttp.OkHttpClient     com.cdccreditsmart.app               I  etag: W/"1f4-du8jBKdRYAiPsNfJ03GzVQfwyOM"
+2025-11-25 00:12:00.025  7339-7431  okhttp.OkHttpClient     com.cdccreditsmart.app               I  permissions-policy: geolocation=(), microphone=(), camera=()
+2025-11-25 00:12:00.025  7339-7431  okhttp.OkHttpClient     com.cdccreditsmart.app               I  referrer-policy: strict-origin-when-cross-origin
+2025-11-25 00:12:00.025  7339-7431  okhttp.OkHttpClient     com.cdccreditsmart.app               I  server: Google Frontend
+2025-11-25 00:12:00.025  7339-7431  okhttp.OkHttpClient     com.cdccreditsmart.app               I  strict-transport-security: max-age=63072000; includeSubDomains
+2025-11-25 00:12:00.025  7339-7431  okhttp.OkHttpClient     com.cdccreditsmart.app               I  strict-transport-security: max-age=31536000; includeSubDomains
+2025-11-25 00:12:00.025  7339-7431  okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-anti-fraud-protection: active
+2025-11-25 00:12:00.025  7339-7431  okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-certificate-pinning-enabled: false
+2025-11-25 00:12:00.025  7339-7431  okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-certificate-pinning-status: disabled-for-stability
+2025-11-25 00:12:00.025  7339-7431  okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-cloud-trace-context: 4dd0ad1fd7df223f2e2166f4d26720e0
+2025-11-25 00:12:00.025  7339-7431  okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-content-type-options: nosniff
+2025-11-25 00:12:00.025  7339-7431  okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-financial-data-protection: enabled
+2025-11-25 00:12:00.026  7339-7431  okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-frame-options: DENY
+2025-11-25 00:12:00.026  7339-7431  okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-transaction-security-level: maximum
+2025-11-25 00:12:00.026  7339-7431  okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-xss-protection: 1; mode=block
+2025-11-25 00:12:00.026  7339-7431  okhttp.OkHttpClient     com.cdccreditsmart.app               I  via: 1.1 google
+2025-11-25 00:12:00.026  7339-7431  okhttp.OkHttpClient     com.cdccreditsmart.app               I  alt-svc: h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
+2025-11-25 00:12:00.026  7339-7431  okhttp.OkHttpClient     com.cdccreditsmart.app               I  {"deviceId":"device_1764037861659_ut810g9nybk","serialNumber":"MSQRG6MU","commandsCount":2,"commands":[{"id":"358d8370-d944-452e-914b-7d9446d626eb","commandType":"CONFIGURE_UNINSTALL_CODE","parameters":null,"priority":"high","status":"pending","createdAt":"2025-11-25T02:31:32.941Z","expiresAt":null},{"id":"c9552bfc-a8e9-4f53-aa7e-1b7eb3232861","commandType":"CONFIGURE_UNINSTALL_CODE","parameters":null,"priority":"high","status":"pending","createdAt":"2025-11-25T02:31:32.861Z","expiresAt":null}]}
+2025-11-25 00:12:00.026  7339-7431  okhttp.OkHttpClient     com.cdccreditsmart.app               I  <-- END HTTP (500-byte body)
+2025-11-25 00:12:00.027  7339-7378  MdmCommandReceiver      com.cdccreditsmart.app               E  ❌ Erro ao buscar comandos pendentes (Ask Gemini)
+                                                                                                    com.squareup.moshi.JsonDataException: Expected a string but was NULL at path $.commands[0].expiresAt
+                                                                                                    	at com.squareup.moshi.JsonUtf8Reader.nextString(JsonUtf8Reader.java:676)
+                                                                                                    	at com.cdccreditsmart.network.dto.mdm.MdmCommandAdapter.fromJson(CommandParametersAdapter.kt:50)
+                                                                                                    	at com.cdccreditsmart.network.dto.mdm.MdmCommandAdapter.fromJson(CommandParametersAdapter.kt:22)
+                                                                                                    	at com.squareup.moshi.CollectionJsonAdapter.fromJson(CollectionJsonAdapter.java:81)
+                                                                                                    	at com.squareup.moshi.CollectionJsonAdapter$2.fromJson(CollectionJsonAdapter.java:55)
+                                                                                                    	at com.squareup.moshi.internal.NullSafeJsonAdapter.fromJson(NullSafeJsonAdapter.java:41)
+                                                                                                    	at com.squareup.moshi.kotlin.reflect.KotlinJsonAdapter.fromJson(KotlinJsonAdapter.kt:86)
+                                                                                                    	at com.squareup.moshi.internal.NullSafeJsonAdapter.fromJson(NullSafeJsonAdapter.java:41)
+                                                                                                    	at retrofit2.converter.moshi.MoshiResponseBodyConverter.convert(MoshiResponseBodyConverter.java:46)
+                                                                                                    	at retrofit2.converter.moshi.MoshiResponseBodyConverter.convert(MoshiResponseBodyConverter.java:27)
+                                                                                                    	at retrofit2.OkHttpCall.parseResponse(OkHttpCall.java:246)
+                                                                                                    	at retrofit2.OkHttpCall$1.onResponse(OkHttpCall.java:156)
+                                                                                                    	at okhttp3.internal.connection.RealCall$AsyncCall.run(RealCall.kt:519)
+                                                                                                    	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1156)
+                                                                                                    	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:651)
+                                                                                                    	at java.lang.Thread.run(Thread.java:1119)
+2025-11-25 00:12:00.028  7339-7378  MdmCommandReceiver      com.cdccreditsmart.app               E  ❌ Stack trace: com.squareup.moshi.JsonDataException: Expected a string but was NULL at path $.commands[0].expiresAt (Ask Gemini)
+                                                                                                    	at com.squareup.moshi.JsonUtf8Reader.nextString(JsonUtf8Reader.java:676)
+                                                                                                    	at com.cdccreditsmart.network.dto.mdm.MdmCommandAdapter.fromJson(CommandParametersAdapter.kt:50)
+                                                                                                    	at com.cdccreditsmart.network.dto.mdm.MdmCommandAdapter.fromJson(CommandParametersAdapter.kt:22)
+                                                                                                    	at com.squareup.moshi.CollectionJsonAdapter.fromJson(CollectionJsonAdapter.java:81)
+                                                                                                    	at com.squareup.moshi.CollectionJsonAdapter$2.fromJson(CollectionJsonAdapter.java:55)
+                                                                                                    	at com.squareup.moshi.internal.NullSafeJsonAdapter.fromJson(NullSafeJsonAdapter.java:41)
+                                                                                                    	at com.squareup.moshi.kotlin.reflect.KotlinJsonAdapter.fromJson(KotlinJsonAdapter.kt:86)
+                                                                                                    	at com.squareup.moshi.internal.NullSafeJsonAdapter.fromJson(NullSafeJsonAdapter.java:41)
+                                                                                                    	at retrofit2.converter.moshi.MoshiResponseBodyConverter.convert(MoshiResponseBodyConverter.java:46)
+                                                                                                    	at retrofit2.converter.moshi.MoshiResponseBodyConverter.convert(MoshiResponseBodyConverter.java:27)
+                                                                                                    	at retrofit2.OkHttpCall.parseResponse(OkHttpCall.java:246)
+                                                                                                    	at retrofit2.OkHttpCall$1.onResponse(OkHttpCall.java:156)
+                                                                                                    	at okhttp3.internal.connection.RealCall$AsyncCall.run(RealCall.kt:519)
+                                                                                                    	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1156)
+                                                                                                    	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:651)
+                                                                                                    	at java.lang.Thread.run(Thread.java:1119)
+2025-11-25 00:12:00.028  7339-7378  MdmCommandReceiver      com.cdccreditsmart.app               D  ⏳ [Polling #2] Aguardando 29615ms até próxima verificação...
+2025-11-25 00:12:03.633  7339-7339  PixPaymentViewModel     com.cdccreditsmart.app               D  Checking payment status for orderId: 79c9b90f93ac4f15bb089b2e1cf429d2
+2025-11-25 00:12:03.635  7339-7457  PixRetryInterceptor     com.cdccreditsmart.app               D  🎯 PixRetryInterceptor ativado para: https://cdccreditsmart.com/v1/pix/status/79c9b90f93ac4f15bb089b2e1cf429d2
+2025-11-25 00:12:03.635  7339-7457  PixRetryInterceptor     com.cdccreditsmart.app               D  ⚙️ Configuração: MAX_RETRIES=3, TIMEOUT=180s
