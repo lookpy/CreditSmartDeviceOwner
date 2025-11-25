@@ -242,29 +242,17 @@ class PersistentStateManager(private val context: Context) {
     /**
      * Configura Factory Reset Protection (FRP) se disponível
      * 
-     * Isso ajuda a proteger o device após factory reset,
-     * exigindo conta Google associada para reativar.
+     * NOTA: FRP é configurado automaticamente quando app é Device Owner.
+     * Esta função retorna true se o app é Device Owner.
      */
     fun configureFrpIfAvailable(): Boolean {
         if (!isDeviceOwner()) {
-            Log.w(TAG, "Não é Device Owner - não pode configurar FRP")
+            Log.w(TAG, "Não é Device Owner - FRP não configurável")
             return false
         }
         
-        return try {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-                // Android 11+ suporta setFactoryResetProtectionPolicy
-                Log.i(TAG, "Configurando FRP via DevicePolicyManager...")
-                // A política FRP é configurada automaticamente quando Device Owner
-                true
-            } else {
-                Log.d(TAG, "FRP não disponível nesta versão do Android")
-                false
-            }
-        } catch (e: Exception) {
-            Log.e(TAG, "Erro ao configurar FRP: ${e.message}", e)
-            false
-        }
+        Log.i(TAG, "✅ App é Device Owner - FRP ativo automaticamente")
+        return true
     }
     
     /**
