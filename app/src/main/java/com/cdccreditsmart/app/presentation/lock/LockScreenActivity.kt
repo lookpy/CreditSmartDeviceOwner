@@ -119,23 +119,52 @@ class LockScreenActivity : ComponentActivity() {
         return LockScreenParameters(
             lockType = "PAYMENT_OVERDUE",
             severity = "HIGH",
+            allowUnlock = false,
+            message = com.cdccreditsmart.network.dto.mdm.MessageInfo(
+                title = "Dispositivo Bloqueado",
+                subtitle = "Pagamento em atraso",
+                body = "Entre em contato com o suporte para regularizar sua situação.",
+                footer = "Credit Smart"
+            ),
             contractInfo = com.cdccreditsmart.network.dto.mdm.ContractInfo(
+                contractId = "",
                 contractNumber = "N/A",
                 customerName = "Cliente",
-                daysOverdue = 0,
-                totalInstallments = 0,
-                paidInstallments = 0,
-                remainingInstallments = 0
+                customerCpf = "",
+                deviceName = android.os.Build.MODEL,
+                totalValue = 0.0,
+                amountPaid = 0.0,
+                amountDue = 0.0,
+                installmentsPaid = 0,
+                installmentsTotal = 0,
+                nextDueDate = "",
+                daysOverdue = 0
             ),
             paymentInfo = com.cdccreditsmart.network.dto.mdm.PaymentInfo(
                 totalDue = 0.0,
-                currency = "BRL",
-                dueDate = "",
-                paymentOptions = emptyList()
+                overdueAmount = 0.0,
+                interestAmount = 0.0,
+                fineAmount = 0.0,
+                nextInstallment = null,
+                installmentsDue = emptyList()
             ),
-            message = "Dispositivo bloqueado. Entre em contato com o suporte.",
-            allowEmergencyCalls = true,
-            showPaymentOptions = false
+            contactInfo = com.cdccreditsmart.network.dto.mdm.ContactInfo(
+                companyName = "Credit Smart",
+                storeName = "",
+                phone = "",
+                whatsapp = "",
+                email = "",
+                address = "",
+                businessHours = ""
+            ),
+            paymentOptions = emptyList(),
+            allowedActions = listOf("EMERGENCY_CALL"),
+            theme = com.cdccreditsmart.network.dto.mdm.ThemeInfo(
+                primaryColor = "#1976D2",
+                backgroundColor = "#121212",
+                textColor = "#FFFFFF",
+                accentColor = "#64B5F6"
+            )
         )
     }
     
