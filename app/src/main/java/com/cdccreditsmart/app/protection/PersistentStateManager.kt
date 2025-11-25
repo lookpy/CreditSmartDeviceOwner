@@ -3,8 +3,6 @@ package com.cdccreditsmart.app.protection
 import android.app.admin.DevicePolicyManager
 import android.content.ComponentName
 import android.content.Context
-import android.os.Build
-import android.service.persistentdata.PersistentDataBlockManager
 import android.util.Log
 import com.cdccreditsmart.device.CDCDeviceAdminReceiver
 import org.json.JSONObject
@@ -232,18 +230,6 @@ class PersistentStateManager(private val context: Context) {
                 .edit()
                 .clear()
                 .apply()
-            
-            // Se Device Owner, tenta limpar PersistentDataBlock também
-            if (isDeviceOwner() && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                try {
-                    val pdbManager = context.getSystemService(Context.PERSISTENT_DATA_BLOCK_SERVICE) 
-                        as? PersistentDataBlockManager
-                    pdbManager?.wipe()
-                    Log.i(TAG, "✅ PersistentDataBlock limpo via wipe()")
-                } catch (e: Exception) {
-                    Log.w(TAG, "Não foi possível limpar PersistentDataBlock: ${e.message}")
-                }
-            }
             
             Log.i(TAG, "✅ Estado local limpo")
             true
