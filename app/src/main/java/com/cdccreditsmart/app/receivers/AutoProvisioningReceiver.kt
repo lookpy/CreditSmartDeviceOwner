@@ -169,23 +169,20 @@ class AutoProvisioningReceiver : BroadcastReceiver() {
             }
             Log.i(TAG, "")
             
-            Log.i(TAG, "📋 [3/7] Tornando o app persistente...")
+            Log.i(TAG, "📋 [3/6] Tornando o app persistente...")
             protectionManager.makeAppPersistent()
             
-            Log.i(TAG, "📋 [4/7] Bloqueando acesso às configurações...")
-            protectionManager.blockAccessToSettings()
-            
-            Log.i(TAG, "📋 [5/7] Habilitando modo kiosk...")
+            Log.i(TAG, "📋 [4/6] Habilitando modo kiosk...")
             protectionManager.enableKioskMode()
             
             // 2. Verificar proteções aplicadas
-            Log.i(TAG, "📋 [6/7] Verificando proteções...")
+            Log.i(TAG, "📋 [5/6] Verificando proteções...")
             val protections = protectionManager.verifyProtections()
             Log.i(TAG, "✅ Proteções verificadas: $protections")
             
             // 3. Executar diagnóstico completo
             Log.i(TAG, "")
-            Log.i(TAG, "📋 [7/7] Executando diagnóstico completo de proteções...")
+            Log.i(TAG, "📋 [6/6] Executando diagnóstico completo de proteções...")
             val diagnostic = com.cdccreditsmart.app.utils.ProtectionDiagnostics.runCompleteDiagnostic(context)
             
             if (diagnostic.criticalIssues.isNotEmpty()) {

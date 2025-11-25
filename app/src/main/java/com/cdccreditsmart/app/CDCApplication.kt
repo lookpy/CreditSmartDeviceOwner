@@ -126,7 +126,6 @@ class CDCApplication : Application() {
             val protectionManager = AppProtectionManager(applicationContext)
             protectionManager.applyMaximumProtection()
             protectionManager.makeAppPersistent()
-            protectionManager.blockAccessToSettings()
             protectionManager.enableKioskMode()
             
             val protections = protectionManager.verifyProtections()

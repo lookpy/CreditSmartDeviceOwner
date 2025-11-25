@@ -1,0 +1,54 @@
+2025-11-25 00:22:43.491  7617-10695 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-financial-data-protection: enabled
+2025-11-25 00:22:43.491  7617-10695 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-frame-options: DENY
+2025-11-25 00:22:43.491  7617-10695 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-transaction-security-level: maximum
+2025-11-25 00:22:43.491  7617-10695 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-xss-protection: 1; mode=block
+2025-11-25 00:22:43.491  7617-10695 okhttp.OkHttpClient     com.cdccreditsmart.app               I  via: 1.1 google
+2025-11-25 00:22:43.491  7617-10695 okhttp.OkHttpClient     com.cdccreditsmart.app               I  alt-svc: h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
+2025-11-25 00:22:43.492  7617-10695 okhttp.OkHttpClient     com.cdccreditsmart.app               I  {"deviceId":"device_1764037861659_ut810g9nybk","serialNumber":"MSQRG6MU","commandsCount":0,"commands":[]}
+2025-11-25 00:22:43.492  7617-10695 okhttp.OkHttpClient     com.cdccreditsmart.app               I  <-- END HTTP (105-byte body)
+2025-11-25 00:22:43.494  7617-7652  MdmCommandReceiver      com.cdccreditsmart.app               D  ✅ Nenhum comando pendente
+2025-11-25 00:22:43.494  7617-7652  MdmCommandReceiver      com.cdccreditsmart.app               D  📊 Fetch duration: 419ms
+2025-11-25 00:22:43.494  7617-7652  MdmCommandReceiver      com.cdccreditsmart.app               D  ⏳ [Polling #11] Aguardando 29580ms até próxima verificação...
+2025-11-25 00:22:44.023  7617-7864  MdmCommandReceiver      com.cdccreditsmart.app               E  ❌ WebSocket MDM FALHOU!
+2025-11-25 00:22:44.023  7617-7864  MdmCommandReceiver      com.cdccreditsmart.app               E  ❌ Erro: null
+2025-11-25 00:22:44.024  7617-7864  MdmCommandReceiver      com.cdccreditsmart.app               E  ❌ Stack trace: java.io.EOFException (Ask Gemini)
+                                                                                                    	at okio.RealBufferedSource.require(RealBufferedSource.kt:202)
+                                                                                                    	at okio.RealBufferedSource.readByte(RealBufferedSource.kt:212)
+                                                                                                    	at okhttp3.internal.ws.WebSocketReader.readHeader(WebSocketReader.kt:119)
+                                                                                                    	at okhttp3.internal.ws.WebSocketReader.processNextFrame(WebSocketReader.kt:102)
+                                                                                                    	at okhttp3.internal.ws.RealWebSocket.loopReader(RealWebSocket.kt:293)
+                                                                                                    	at okhttp3.internal.ws.RealWebSocket$connect$1.onResponse(RealWebSocket.kt:195)
+                                                                                                    	at okhttp3.internal.connection.RealCall$AsyncCall.run(RealCall.kt:519)
+                                                                                                    	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1156)
+                                                                                                    	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:651)
+                                                                                                    	at java.lang.Thread.run(Thread.java:1119)
+2025-11-25 00:22:44.024  7617-7864  MdmCommandReceiver      com.cdccreditsmart.app               E  ❌ Response code: null
+2025-11-25 00:22:44.024  7617-7864  MdmCommandReceiver      com.cdccreditsmart.app               E  ❌ Response body: null
+2025-11-25 00:22:44.024  7617-7864  MdmCommandReceiver      com.cdccreditsmart.app               W  🔄 Agendando reconexão em 5 segundos...
+2025-11-25 00:22:44.024  7617-7864  MdmCommandReceiver      com.cdccreditsmart.app               W  🔄 Iniciando polling fallback...
+2025-11-25 00:22:44.024  7617-7652  MdmCommandReceiver      com.cdccreditsmart.app               I  🔄 Iniciando polling fallback MDM (intervalo: 30s)
+2025-11-25 00:22:44.024  7617-7652  MdmCommandReceiver      com.cdccreditsmart.app               I  📊 Conforme especificação: 30 segundos entre requests
+2025-11-25 00:22:44.024  7617-7652  MdmCommandReceiver      com.cdccreditsmart.app               D  🔍 [Polling #1] Verificando comandos pendentes...
+2025-11-25 00:22:44.026  7617-7652  SecureTokenStorage      com.cdccreditsmart.app               D  ⚠️ Usando Serial Number para MDM (IMEI indisponível): MSQRG6...
+2025-11-25 00:22:44.026  7617-7652  MdmCommandReceiver      com.cdccreditsmart.app               D  🔍 Buscando comandos pendentes com identifier: MSQRG6MU...
+2025-11-25 00:22:44.028  7617-10695 okhttp.OkHttpClient     com.cdccreditsmart.app               I  --> GET https://cdccreditsmart.com/api/apk/device/MSQRG6MU/commands
+2025-11-25 00:22:44.028  7617-10695 okhttp.OkHttpClient     com.cdccreditsmart.app               I  --> END GET
+2025-11-25 00:22:44.073  7617-7865  WebSocketManager        com.cdccreditsmart.app               E  WebSocket failure: null (Ask Gemini)
+                                                                                                    java.io.EOFException
+                                                                                                    	at okio.RealBufferedSource.require(RealBufferedSource.kt:202)
+                                                                                                    	at okio.RealBufferedSource.readByte(RealBufferedSource.kt:212)
+                                                                                                    	at okhttp3.internal.ws.WebSocketReader.readHeader(WebSocketReader.kt:119)
+                                                                                                    	at okhttp3.internal.ws.WebSocketReader.processNextFrame(WebSocketReader.kt:102)
+                                                                                                    	at okhttp3.internal.ws.RealWebSocket.loopReader(RealWebSocket.kt:293)
+                                                                                                    	at okhttp3.internal.ws.RealWebSocket$connect$1.onResponse(RealWebSocket.kt:195)
+                                                                                                    	at okhttp3.internal.connection.RealCall$AsyncCall.run(RealCall.kt:519)
+                                                                                                    	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1156)
+                                                                                                    	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:651)
+                                                                                                    	at java.lang.Thread.run(Thread.java:1119)
+2025-11-25 00:22:44.073  7617-7865  CdcForegroundService    com.cdccreditsmart.app               E  ❌ Erro no WebSocket Flow: Connection failed: null
+2025-11-25 00:22:44.073  7617-7865  WebSocketManager        com.cdccreditsmart.app               D  Scheduling reconnection in 5000ms
+2025-11-25 00:22:44.390  7617-10695 okhttp.OkHttpClient     com.cdccreditsmart.app               I  <-- 200 https://cdccreditsmart.com/api/apk/device/MSQRG6MU/commands (362ms)
+2025-11-25 00:22:44.391  7617-10695 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-credentials: true
+2025-11-25 00:22:44.391  7617-10695 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-headers: Origin, X-Requested-With, Content-Type, Accept, Authorization, x-client-key, x-client-token, x-client-secret, cache-control
+2025-11-25 00:22:44.391  7617-10695 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-methods: GET, POST, PUT, PATCH, DELETE, OPTIONS
+2025-11-25 00:22:44.391  7617-10695 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-origin: *
