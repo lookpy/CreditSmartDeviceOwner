@@ -1,0 +1,432 @@
+2025-11-25 00:04:56.415  2705-2934  ContractCodeStorage     com.cdccreditsmart.app               D  Retrieving contract code from storage
+2025-11-25 00:04:56.524  2705-2934  ContractCodeStorage     com.cdccreditsmart.app               D  Storage verification: 0 valid, 0 tampered, 7 missing
+2025-11-25 00:04:56.524  2705-2934  ContractCodeStorage     com.cdccreditsmart.app               W  No valid contract code found in any location
+2025-11-25 00:04:56.527  2705-2934  SecureTokenStorage      com.cdccreditsmart.app               E  ❌ Nenhum identificador MDM disponível!
+2025-11-25 00:04:56.527  2705-2934  CdcForegroundService    com.cdccreditsmart.app               I  🔐 AuthToken presente: false
+2025-11-25 00:04:56.527  2705-2934  CdcForegroundService    com.cdccreditsmart.app               I  🔐 AuthToken length: 0
+2025-11-25 00:04:56.527  2705-2934  CdcForegroundService    com.cdccreditsmart.app               I  🔐 ContractCode presente: false
+2025-11-25 00:04:56.527  2705-2934  CdcForegroundService    com.cdccreditsmart.app               I  🔐 ContractCode value: null****
+2025-11-25 00:04:56.527  2705-2934  CdcForegroundService    com.cdccreditsmart.app               I  🔐 MDM SerialNumber presente: false
+2025-11-25 00:04:56.527  2705-2934  CdcForegroundService    com.cdccreditsmart.app               I  🔐 MDM SerialNumber value: ......
+2025-11-25 00:04:56.527  2705-2934  CdcForegroundService    com.cdccreditsmart.app               W  ⚠️ ========================================
+2025-11-25 00:04:56.527  2705-2934  CdcForegroundService    com.cdccreditsmart.app               W  ⚠️ SEM TOKENS - SERVIÇO EM STANDBY
+2025-11-25 00:04:56.527  2705-2934  CdcForegroundService    com.cdccreditsmart.app               W  ⚠️ AuthToken isNull: true, isEmpty: null
+2025-11-25 00:04:56.527  2705-2934  CdcForegroundService    com.cdccreditsmart.app               W  ⚠️ ContractCode isNull: true, isEmpty: null
+2025-11-25 00:04:56.527  2705-2934  CdcForegroundService    com.cdccreditsmart.app               W  ⚠️ ========================================
+2025-11-25 00:04:59.176  2705-2705  DeviceOwnerCheckVM      com.cdccreditsmart.app               W  ⚠️ MODO DEBUG: Pulando verificação de Device Owner
+2025-11-25 00:04:59.176  2705-2705  DeviceOwnerCheckVM      com.cdccreditsmart.app               W  ⚠️ ATENÇÃO: App pode não funcionar corretamente sem Device Owner
+2025-11-25 00:04:59.523  2705-2705  RouterViewModel         com.cdccreditsmart.app               D  🚀 Iniciando verificação de autenticação...
+2025-11-25 00:04:59.525  2705-2934  AuthOrchestrator        com.cdccreditsmart.app               D  🔐 Verificando autenticação...
+2025-11-25 00:04:59.525  2705-2934  AuthOrchestrator        com.cdccreditsmart.app               D  🔄 ========== AUTO-DISCOVERY INICIADO ==========
+2025-11-25 00:04:59.538  2705-2705  CarrierConfigChanged    com.cdccreditsmart.app               I  ════════════════════════════════════════════════════════
+2025-11-25 00:04:59.538  2705-2705  CarrierConfigChanged    com.cdccreditsmart.app               I  Carrier Config Changed Detected
+2025-11-25 00:04:59.538  2705-2705  CarrierConfigChanged    com.cdccreditsmart.app               I  ════════════════════════════════════════════════════════
+2025-11-25 00:04:59.558  2705-2705  CarrierConfigChanged    com.cdccreditsmart.app               E  Permission denied to read SIM info (Ask Gemini)
+                                                                                                    java.lang.SecurityException: getIccSerialNumber: The uid 10217 does not meet the requirements to access device identifiers.
+                                                                                                    	at android.os.Parcel.createExceptionOrNull(Parcel.java:3340)
+                                                                                                    	at android.os.Parcel.createException(Parcel.java:3324)
+                                                                                                    	at android.os.Parcel.readException(Parcel.java:3307)
+                                                                                                    	at android.os.Parcel.readException(Parcel.java:3249)
+                                                                                                    	at com.android.internal.telephony.IPhoneSubInfo$Stub$Proxy.getIccSerialNumberForSubscriber(IPhoneSubInfo.java:1331)
+                                                                                                    	at android.telephony.TelephonyManager.getSimSerialNumber(TelephonyManager.java:4332)
+                                                                                                    	at android.telephony.TelephonyManager.getSimSerialNumber(TelephonyManager.java:4289)
+                                                                                                    	at com.cdccreditsmart.app.receivers.CarrierConfigChangedReceiver.handleCarrierConfigChanged(CarrierConfigChangedReceiver.kt:65)
+                                                                                                    	at com.cdccreditsmart.app.receivers.CarrierConfigChangedReceiver.onReceive(CarrierConfigChangedReceiver.kt:47)
+                                                                                                    	at android.app.ActivityThread.handleReceiver(ActivityThread.java:5029)
+                                                                                                    	at android.app.ActivityThread.-$$Nest$mhandleReceiver(Unknown Source:0)
+                                                                                                    	at android.app.ActivityThread$H.handleMessage(ActivityThread.java:2577)
+                                                                                                    	at android.os.Handler.dispatchMessage(Handler.java:110)
+                                                                                                    	at android.os.Looper.loopOnce(Looper.java:248)
+                                                                                                    	at android.os.Looper.loop(Looper.java:338)
+                                                                                                    	at android.app.ActivityThread.main(ActivityThread.java:9067)
+                                                                                                    	at java.lang.reflect.Method.invoke(Native Method)
+                                                                                                    	at com.android.internal.os.RuntimeInit$MethodAndArgsCaller.run(RuntimeInit.java:593)
+                                                                                                    	at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:932)
+2025-11-25 00:04:59.585  2705-2934  DeviceUtils             com.cdccreditsmart.app               E  SecurityException reading IMEI - permission denied (Ask Gemini)
+                                                                                                    java.lang.SecurityException: getImeiForSlot: The uid 10217 does not meet the requirements to access device identifiers.
+                                                                                                    	at android.os.Parcel.createExceptionOrNull(Parcel.java:3340)
+                                                                                                    	at android.os.Parcel.createException(Parcel.java:3324)
+                                                                                                    	at android.os.Parcel.readException(Parcel.java:3307)
+                                                                                                    	at android.os.Parcel.readException(Parcel.java:3249)
+                                                                                                    	at com.android.internal.telephony.ITelephony$Stub$Proxy.getImeiForSlot(ITelephony.java:12518)
+                                                                                                    	at android.telephony.TelephonyManager.getImei(TelephonyManager.java:2387)
+                                                                                                    	at android.telephony.TelephonyManager.getImei(TelephonyManager.java:2342)
+                                                                                                    	at com.cdccreditsmart.app.utils.DeviceUtils.getDeviceImei(DeviceUtils.kt:106)
+                                                                                                    	at com.cdccreditsmart.app.auth.AuthenticationOrchestrator.attemptAutoConnection(AuthenticationOrchestrator.kt:56)
+                                                                                                    	at com.cdccreditsmart.app.auth.AuthenticationOrchestrator.access$attemptAutoConnection(AuthenticationOrchestrator.kt:25)
+                                                                                                    	at com.cdccreditsmart.app.auth.AuthenticationOrchestrator$ensureAuthenticated$2.invokeSuspend(AuthenticationOrchestrator.kt:167)
+                                                                                                    	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:34)
+                                                                                                    	at kotlinx.coroutines.DispatchedTask.run(DispatchedTask.kt:108)
+                                                                                                    	at kotlinx.coroutines.internal.LimitedDispatcher$Worker.run(LimitedDispatcher.kt:115)
+                                                                                                    	at kotlinx.coroutines.scheduling.TaskImpl.run(Tasks.kt:103)
+                                                                                                    	at kotlinx.coroutines.scheduling.CoroutineScheduler.runSafely(CoroutineScheduler.kt:584)
+                                                                                                    	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.executeTask(CoroutineScheduler.kt:793)
+                                                                                                    	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.runWorker(CoroutineScheduler.kt:697)
+                                                                                                    	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.run(CoroutineScheduler.kt:684)
+2025-11-25 00:04:59.586  2705-2934  AuthOrchestrator        com.cdccreditsmart.app               W  ⚠️ IMEI não disponível (permissão negada ou emulador)
+2025-11-25 00:04:59.586  2705-2934  AuthOrchestrator        com.cdccreditsmart.app               D     → Fallback para pareamento manual
+2025-11-25 00:04:59.586  2705-2934  ContractCodeStorage     com.cdccreditsmart.app               D  Retrieving contract code from storage
+2025-11-25 00:04:59.874  2705-2934  ContractCodeStorage     com.cdccreditsmart.app               D  Storage verification: 0 valid, 0 tampered, 7 missing
+2025-11-25 00:04:59.874  2705-2934  ContractCodeStorage     com.cdccreditsmart.app               W  No valid contract code found in any location
+2025-11-25 00:04:59.874  2705-2934  AuthOrchestrator        com.cdccreditsmart.app               D  ❌ Código de pareamento não encontrado - precisa de novo código
+2025-11-25 00:04:59.886  2705-2705  RouterViewModel         com.cdccreditsmart.app               D  ❌ Código de pareamento necessário - Ir para QR Scanner
+2025-11-25 00:05:00.437  2705-2727  creditsmart.app         com.cdccreditsmart.app               W  Suspending all threads took: 12.566ms
+2025-11-25 00:05:00.572  2705-2727  creditsmart.app         com.cdccreditsmart.app               I  Background concurrent mark compact GC freed 2248KB AllocSpace bytes, 68(2512KB) LOS objects, 49% free, 6589KB/12MB, paused 37.281ms,25.361ms total 347.764ms
+2025-11-25 00:05:01.596  2705-2705  CarrierConfigChanged    com.cdccreditsmart.app               I  ════════════════════════════════════════════════════════
+2025-11-25 00:05:01.596  2705-2705  CarrierConfigChanged    com.cdccreditsmart.app               I  Carrier Config Changed Detected
+2025-11-25 00:05:01.596  2705-2705  CarrierConfigChanged    com.cdccreditsmart.app               I  ════════════════════════════════════════════════════════
+2025-11-25 00:05:01.600  2705-2705  CarrierConfigChanged    com.cdccreditsmart.app               E  Permission denied to read SIM info (Ask Gemini)
+                                                                                                    java.lang.SecurityException: getIccSerialNumber: The uid 10217 does not meet the requirements to access device identifiers.
+                                                                                                    	at android.os.Parcel.createExceptionOrNull(Parcel.java:3340)
+                                                                                                    	at android.os.Parcel.createException(Parcel.java:3324)
+                                                                                                    	at android.os.Parcel.readException(Parcel.java:3307)
+                                                                                                    	at android.os.Parcel.readException(Parcel.java:3249)
+                                                                                                    	at com.android.internal.telephony.IPhoneSubInfo$Stub$Proxy.getIccSerialNumberForSubscriber(IPhoneSubInfo.java:1331)
+                                                                                                    	at android.telephony.TelephonyManager.getSimSerialNumber(TelephonyManager.java:4332)
+                                                                                                    	at android.telephony.TelephonyManager.getSimSerialNumber(TelephonyManager.java:4289)
+                                                                                                    	at com.cdccreditsmart.app.receivers.CarrierConfigChangedReceiver.handleCarrierConfigChanged(CarrierConfigChangedReceiver.kt:65)
+                                                                                                    	at com.cdccreditsmart.app.receivers.CarrierConfigChangedReceiver.onReceive(CarrierConfigChangedReceiver.kt:47)
+                                                                                                    	at android.app.ActivityThread.handleReceiver(ActivityThread.java:5029)
+                                                                                                    	at android.app.ActivityThread.-$$Nest$mhandleReceiver(Unknown Source:0)
+                                                                                                    	at android.app.ActivityThread$H.handleMessage(ActivityThread.java:2577)
+                                                                                                    	at android.os.Handler.dispatchMessage(Handler.java:110)
+                                                                                                    	at android.os.Looper.loopOnce(Looper.java:248)
+                                                                                                    	at android.os.Looper.loop(Looper.java:338)
+                                                                                                    	at android.app.ActivityThread.main(ActivityThread.java:9067)
+                                                                                                    	at java.lang.reflect.Method.invoke(Native Method)
+                                                                                                    	at com.android.internal.os.RuntimeInit$MethodAndArgsCaller.run(RuntimeInit.java:593)
+                                                                                                    	at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:932)
+2025-11-25 00:06:04.904  2705-2705  ActivityThread          com.cdccreditsmart.app               D  Package [com.android.vending] reported as REPLACED, but missing application info. Assuming REMOVED.
+2025-11-25 00:06:04.915  2705-2705  ActivityThread          com.cdccreditsmart.app               D  Package [com.android.vending] reported as REPLACED, but missing application info. Assuming REMOVED.
+2025-11-25 00:06:19.028  2705-2705  InsetsController        com.cdccreditsmart.app               D  show(ime(), fromIme=false)
+2025-11-25 00:06:19.029  2705-2705  ImeTracker              com.cdccreditsmart.app               I  com.cdccreditsmart.app:b555b980: onRequestShow at ORIGIN_CLIENT reason SHOW_SOFT_INPUT_BY_INSETS_API fromUser false
+2025-11-25 00:06:19.031  2705-2705  InsetsController        com.cdccreditsmart.app               D  Setting requestedVisibleTypes to -6 (was -14)
+2025-11-25 00:06:19.096  2705-2705  ImeTracker              com.cdccreditsmart.app               I  com.cdccreditsmart.app:e1e74c45: onRequestShow at ORIGIN_CLIENT reason SHOW_SOFT_INPUT fromUser false
+2025-11-25 00:06:19.104  2705-2705  InsetsController        com.cdccreditsmart.app               D  show(ime(), fromIme=false)
+2025-11-25 00:06:19.104  2705-2705  ImeTracker              com.cdccreditsmart.app               I  com.cdccreditsmart.app:e1e74c45: onCancelled at PHASE_CLIENT_REPORT_REQUESTED_VISIBLE_TYPES
+2025-11-25 00:06:19.106  2705-2705  RemoteInpu...ectionImpl com.cdccreditsmart.app               W  requestCursorUpdates on inactive InputConnection
+2025-11-25 00:06:21.133  2705-2705  ImeTracker              com.cdccreditsmart.app               I  com.cdccreditsmart.app:b555b980: onShown
+2025-11-25 00:06:21.157  2705-2705  PairingViewModel        com.cdccreditsmart.app               D  🚀 Iniciando pareamento com código: MSQR****
+2025-11-25 00:06:21.160  2705-2705  NetworkConnectivity     com.cdccreditsmart.app               D  ✅ Conectado via WiFi com internet
+2025-11-25 00:06:21.165  2705-2705  PairingViewModel        com.cdccreditsmart.app               D  📶 Estado da rede: Conectado via WiFi
+2025-11-25 00:06:21.165  2705-2705  PairingViewModel        com.cdccreditsmart.app               D  ✅ Usando autenticação moderna: POST /api/apk/auth
+2025-11-25 00:06:21.165  2705-2705  PairingViewModel        com.cdccreditsmart.app               D  ========== APK AUTHENTICATION ==========
+2025-11-25 00:06:21.165  2705-2705  PairingViewModel        com.cdccreditsmart.app               D  Pairing Code: [REDACTED]
+2025-11-25 00:06:21.165  2705-2705  PairingViewModel        com.cdccreditsmart.app               D  🔐 Tentando conceder permissão READ_PHONE_STATE antes de coletar IMEI...
+2025-11-25 00:06:21.170  2705-2705  AutoPermissionManager   com.cdccreditsmart.app               E  ❌ App não é Device Owner - não pode conceder permissão: android.permission.READ_PHONE_STATE
+2025-11-25 00:06:21.170  2705-2705  PairingViewModel        com.cdccreditsmart.app               W  ⚠️ Não foi possível conceder READ_PHONE_STATE automaticamente
+2025-11-25 00:06:21.170  2705-2705  PairingViewModel        com.cdccreditsmart.app               W     Isso pode ocorrer se o app não estiver provisionado como Device Owner
+2025-11-25 00:06:21.170  2705-2705  DeviceInfoManager       com.cdccreditsmart.app               I  ========================================
+2025-11-25 00:06:21.171  2705-2705  DeviceInfoManager       com.cdccreditsmart.app               I  📱 Coletando informações de IMEI do dispositivo
+2025-11-25 00:06:21.171  2705-2705  DeviceInfoManager       com.cdccreditsmart.app               I  ========================================
+2025-11-25 00:06:21.174  2705-2705  DeviceInfoManager       com.cdccreditsmart.app               D  Número de SIMs detectados: 1
+2025-11-25 00:06:21.216  2705-2705  DeviceInfoManager       com.cdccreditsmart.app               W  SecurityException no slot 0 (Ask Gemini)
+                                                                                                    java.lang.SecurityException: getImeiForSlot: The uid 10217 does not meet the requirements to access device identifiers.
+                                                                                                    	at android.os.Parcel.createExceptionOrNull(Parcel.java:3340)
+                                                                                                    	at android.os.Parcel.createException(Parcel.java:3324)
+                                                                                                    	at android.os.Parcel.readException(Parcel.java:3307)
+                                                                                                    	at android.os.Parcel.readException(Parcel.java:3249)
+                                                                                                    	at com.android.internal.telephony.ITelephony$Stub$Proxy.getImeiForSlot(ITelephony.java:12518)
+                                                                                                    	at android.telephony.TelephonyManager.getImei(TelephonyManager.java:2387)
+                                                                                                    	at com.cdccreditsmart.app.device.DeviceInfoManager.getDeviceImeiInfo(DeviceInfoManager.kt:96)
+                                                                                                    	at com.cdccreditsmart.app.presentation.pairing.PairingViewModel.stepFallbackClaimByCodeOnly(PairingViewModel.kt:242)
+                                                                                                    	at com.cdccreditsmart.app.presentation.pairing.PairingViewModel.access$stepFallbackClaimByCodeOnly(PairingViewModel.kt:48)
+                                                                                                    	at com.cdccreditsmart.app.presentation.pairing.PairingViewModel$startHandshake$1.invokeSuspend(PairingViewModel.kt:97)
+                                                                                                    	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:34)
+                                                                                                    	at kotlinx.coroutines.internal.DispatchedContinuationKt.resumeCancellableWith(DispatchedContinuation.kt:367)
+                                                                                                    	at kotlinx.coroutines.intrinsics.CancellableKt.startCoroutineCancellable(Cancellable.kt:30)
+                                                                                                    	at kotlinx.coroutines.intrinsics.CancellableKt.startCoroutineCancellable$default(Cancellable.kt:25)
+                                                                                                    	at kotlinx.coroutines.CoroutineStart.invoke(CoroutineStart.kt:110)
+                                                                                                    	at kotlinx.coroutines.AbstractCoroutine.start(AbstractCoroutine.kt:126)
+                                                                                                    	at kotlinx.coroutines.BuildersKt__Builders_commonKt.launch(Builders.common.kt:56)
+                                                                                                    	at kotlinx.coroutines.BuildersKt.launch(Unknown Source:1)
+                                                                                                    	at kotlinx.coroutines.BuildersKt__Builders_commonKt.launch$default(Builders.common.kt:47)
+                                                                                                    	at kotlinx.coroutines.BuildersKt.launch$default(Unknown Source:1)
+                                                                                                    	at com.cdccreditsmart.app.presentation.pairing.PairingViewModel.startHandshake(PairingViewModel.kt:79)
+                                                                                                    	at com.cdccreditsmart.app.navigation.NavigationKt$CDCNavigation$1$1$4$1$1.invokeSuspend(Navigation.kt:151)
+                                                                                                    	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:34)
+                                                                                                    	at kotlinx.coroutines.DispatchedTask.run(DispatchedTask.kt:108)
+                                                                                                    	at androidx.compose.ui.platform.AndroidUiDispatcher.performTrampolineDispatch(AndroidUiDispatcher.android.kt:81)
+                                                                                                    	at androidx.compose.ui.platform.AndroidUiDispatcher.access$performTrampolineDispatch(AndroidUiDispatcher.android.kt:41)
+                                                                                                    	at androidx.compose.ui.platform.AndroidUiDispatcher$dispatchCallback$1.doFrame(AndroidUiDispatcher.android.kt:68)
+                                                                                                    	at android.view.Choreographer$CallbackRecord.run(Choreographer.java:1568)
+                                                                                                    	at android.view.Choreographer$CallbackRecord.run(Choreographer.java:1579)
+                                                                                                    	at android.view.Choreographer.doCallbacks(Choreographer.java:1179)
+                                                                                                    	at android.view.Choreographer.doFrame(Choreographer.java:1104)
+                                                                                                    	at android.view.Choreographer$FrameDisplayEventReceiver.run(Choreographer.java:1553)
+                                                                                                    	at android.os.Handler.handleCallback(Handler.java:995)
+                                                                                                    	at android.os.Handler.dispatchMessage(Handler.java:103)
+                                                                                                    	at android.os.Looper.loopOnce(Looper.java:248)
+                                                                                                    	at android.os.Looper.loop(Looper.java:338)
+                                                                                                    	at android.app.ActivityThread.main(ActivityThread.java:9067)
+                                                                                                    	at java.lang.reflect.Method.invoke(Native Method)
+                                                                                                    	at com.android.internal.os.RuntimeInit$MethodAndArgsCaller.run(RuntimeInit.java:593)
+                                                                                                    	at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:932)
+2025-11-25 00:06:21.216  2705-2705  DeviceInfoManager       com.cdccreditsmart.app               W  ❌ Nenhum IMEI válido encontrado
+2025-11-25 00:06:21.221  2705-2705  DeviceInfoManager       com.cdccreditsmart.app               I  ========================================
+2025-11-25 00:06:21.221  2705-2705  PairingViewModel        com.cdccreditsmart.app               W  ⚠️ IMEI não disponível - continuando sem IMEI
+2025-11-25 00:06:21.226  2705-2705  PairingViewModel        com.cdccreditsmart.app               D  Sending POST /api/apk/auth...
+2025-11-25 00:06:21.227  2705-2705  PairingViewModel        com.cdccreditsmart.app               D  Request - deviceImei: null
+2025-11-25 00:06:21.227  2705-2705  PairingViewModel        com.cdccreditsmart.app               D  Request - additionalImeis count: 0
+2025-11-25 00:06:21.227  2705-2705  PairingViewModel        com.cdccreditsmart.app               D  Request - imeiStatus: unavailable
+2025-11-25 00:06:22.473  2705-2727  creditsmart.app         com.cdccreditsmart.app               I  Background concurrent mark compact GC freed 4896KB AllocSpace bytes, 41(1540KB) LOS objects, 49% free, 8444KB/16MB, paused 12.127ms,7.273ms total 294.248ms
+2025-11-25 00:06:23.272  2705-5588  okhttp.OkHttpClient     com.cdccreditsmart.app               I  --> POST https://cdccreditsmart.com/api/apk/auth
+2025-11-25 00:06:23.272  2705-5588  okhttp.OkHttpClient     com.cdccreditsmart.app               I  Content-Type: application/json; charset=UTF-8
+2025-11-25 00:06:23.272  2705-5588  okhttp.OkHttpClient     com.cdccreditsmart.app               I  Content-Length: 46
+2025-11-25 00:06:23.273  2705-5588  okhttp.OkHttpClient     com.cdccreditsmart.app               I  {"code":"MSQRG6MU","imeiStatus":"unavailable"}
+2025-11-25 00:06:23.273  2705-5588  okhttp.OkHttpClient     com.cdccreditsmart.app               I  --> END POST (46-byte body)
+2025-11-25 00:06:23.375  2705-2705  InsetsController        com.cdccreditsmart.app               D  hide(ime(), fromIme=false)
+2025-11-25 00:06:23.382  2705-2705  ImeTracker              com.cdccreditsmart.app               I  com.cdccreditsmart.app:794f658c: onRequestHide at ORIGIN_CLIENT reason HIDE_SOFT_INPUT_BY_INSETS_API fromUser false
+2025-11-25 00:06:23.383  2705-2705  InsetsController        com.cdccreditsmart.app               D  Setting requestedVisibleTypes to -14 (was -6)
+2025-11-25 00:06:23.642  2705-2705  ImeTracker              com.cdccreditsmart.app               I  com.cdccreditsmart.app:7b0f616b: onCancelled at PHASE_CLIENT_ON_CONTROLS_CHANGED
+2025-11-25 00:06:24.362  2705-5588  okhttp.OkHttpClient     com.cdccreditsmart.app               I  <-- 200 https://cdccreditsmart.com/api/apk/auth (1084ms)
+2025-11-25 00:06:24.367  2705-5588  okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-credentials: true
+2025-11-25 00:06:24.369  2705-5588  okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-headers: Origin, X-Requested-With, Content-Type, Accept, Authorization, x-client-key, x-client-token, x-client-secret, cache-control
+2025-11-25 00:06:24.369  2705-5588  okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-methods: GET, POST, PUT, PATCH, DELETE, OPTIONS
+2025-11-25 00:06:24.369  2705-5588  okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-origin: *
+2025-11-25 00:06:24.369  2705-5588  okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-max-age: 86400
+2025-11-25 00:06:24.369  2705-5588  okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-length: 983
+2025-11-25 00:06:24.369  2705-5588  okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-security-policy: default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://replit.com; style-src 'self' 'unsafe-inline' https://replit.com; img-src 'self' data: https:; font-src 'self' data: https://replit.com; connect-src 'self';
+2025-11-25 00:06:24.369  2705-5588  okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-type: application/json; charset=utf-8
+2025-11-25 00:06:24.370  2705-5588  okhttp.OkHttpClient     com.cdccreditsmart.app               I  date: Tue, 25 Nov 2025 03:06:25 GMT
+2025-11-25 00:06:24.370  2705-5588  okhttp.OkHttpClient     com.cdccreditsmart.app               I  etag: W/"3d7-c4JUf31wytbovyDEfaexZ5YdKCM"
+2025-11-25 00:06:24.370  2705-5588  okhttp.OkHttpClient     com.cdccreditsmart.app               I  permissions-policy: geolocation=(), microphone=(), camera=()
+2025-11-25 00:06:24.371  2705-5588  okhttp.OkHttpClient     com.cdccreditsmart.app               I  referrer-policy: strict-origin-when-cross-origin
+2025-11-25 00:06:24.371  2705-5588  okhttp.OkHttpClient     com.cdccreditsmart.app               I  server: Google Frontend
+2025-11-25 00:06:24.371  2705-5588  okhttp.OkHttpClient     com.cdccreditsmart.app               I  strict-transport-security: max-age=63072000; includeSubDomains
+2025-11-25 00:06:24.371  2705-5588  okhttp.OkHttpClient     com.cdccreditsmart.app               I  strict-transport-security: max-age=31536000; includeSubDomains
+2025-11-25 00:06:24.371  2705-5588  okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-anti-fraud-protection: active
+2025-11-25 00:06:24.371  2705-5588  okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-certificate-pinning-enabled: false
+2025-11-25 00:06:24.371  2705-5588  okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-certificate-pinning-status: disabled-for-stability
+2025-11-25 00:06:24.371  2705-5588  okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-cloud-trace-context: 4ee183815f74133ed142b3efa5436fa1;o=1
+2025-11-25 00:06:24.371  2705-5588  okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-content-type-options: nosniff
+2025-11-25 00:06:24.371  2705-5588  okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-financial-data-protection: enabled
+2025-11-25 00:06:24.371  2705-5588  okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-frame-options: DENY
+2025-11-25 00:06:24.371  2705-5588  okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-transaction-security-level: maximum
+2025-11-25 00:06:24.371  2705-5588  okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-xss-protection: 1; mode=block
+2025-11-25 00:06:24.376  2705-5588  okhttp.OkHttpClient     com.cdccreditsmart.app               I  via: 1.1 google
+2025-11-25 00:06:24.376  2705-5588  okhttp.OkHttpClient     com.cdccreditsmart.app               I  alt-svc: h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
+2025-11-25 00:06:24.379  2705-5588  okhttp.OkHttpClient     com.cdccreditsmart.app               I  {"success":true,"authenticated":true,"authToken":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkZXZpY2VJZCI6ImRldmljZV8xNzY0MDM3ODYxNjU5X3V0ODEwZzlueWJrIiwiYXBrVG9rZW4iOiJNU1FSRzZNVSIsInR5cGUiOiJhcGsiLCJleHBpcmVzSW4iOiIyNGgiLCJpYXQiOjE3NjQwMzk5ODUsImV4cCI6MTc2NDEyNjM4NX0.6wMiuKm_9paeienScPXdAZgP2OKY0mVapHA5DxnVd6U","expiresIn":86400,"expiresAt":"2025-11-26T03:06:25.844Z","device":{"id":"device_1764037861659_ut810g9nybk","name":"Moto G15 Power","model":"G15 Power","brand":"Motorola","imei":"353104903560533","imeiList":["353104903560533"],"isBlocked":false,"status":"active","blockReason":null,"totalValue":"100.00","installmentValue":"23.05","installmentCount":4,"saleDate":"2025-11-25T02:31:32.639Z"},"customer":{"name":"Marcos Antunes","phone":"85981888810","cpf":"06452784323"},"store":{"name":"Loja Zona Sul","phone":"(11) 77777-9012","email":"zonasul@loja.com"},"paymentSummary":{"total":4,"paid":0,"pending":4,"overdue":0,"totalAmount":100,"paidAmount":0,"pendingAmount":92.2}}
+2025-11-25 00:06:24.379  2705-5588  okhttp.OkHttpClient     com.cdccreditsmart.app               I  <-- END HTTP (983-byte body)
+2025-11-25 00:06:24.424  2705-2705  PairingViewModel        com.cdccreditsmart.app               D  Response code: 200
+2025-11-25 00:06:24.424  2705-2705  PairingViewModel        com.cdccreditsmart.app               D  Response message: 
+2025-11-25 00:06:24.424  2705-2705  PairingViewModel        com.cdccreditsmart.app               D  Response body received
+2025-11-25 00:06:24.424  2705-2705  PairingViewModel        com.cdccreditsmart.app               D  ✅ APK Authentication successful!
+2025-11-25 00:06:24.424  2705-2705  PairingViewModel        com.cdccreditsmart.app               D  Auth token received, expires in 86400s
+2025-11-25 00:06:24.424  2705-2705  PairingViewModel        com.cdccreditsmart.app               D  Device: Motorola G15 Power
+2025-11-25 00:06:24.425  2705-2705  PairingViewModel        com.cdccreditsmart.app               D  Device ID: device_1764037861659_ut810g9nybk
+2025-11-25 00:06:24.425  2705-2705  PairingViewModel        com.cdccreditsmart.app               D  Customer: Marcos Antunes
+2025-11-25 00:06:24.425  2705-2705  PairingViewModel        com.cdccreditsmart.app               I  📊 DADOS DO BACKEND - CustomerName: 'Marcos Antunes', DeviceModel: 'G15 Power'
+2025-11-25 00:06:24.432  2705-2705  ContractCodeStorage     com.cdccreditsmart.app               D  Saving contract code to redundant storage
+2025-11-25 00:06:24.503  2705-2705  ContractCodeStorage     com.cdccreditsmart.app               D  Saved to EncryptedPrefs
+2025-11-25 00:06:24.593  2705-2705  ContractCodeStorage     com.cdccreditsmart.app               D  Successfully saved to file: .cdc_protected_code.enc
+2025-11-25 00:06:24.593  2705-2705  ContractCodeStorage     com.cdccreditsmart.app               D  Saved to Protected Storage
+2025-11-25 00:06:24.607  2705-2705  ContractCodeStorage     com.cdccreditsmart.app               D  Successfully saved to file: .cdc_contract_b1.enc
+2025-11-25 00:06:24.619  2705-2705  ContractCodeStorage     com.cdccreditsmart.app               D  Successfully saved to file: .sys_device_cfg.enc
+2025-11-25 00:06:24.632  2705-2705  ContractCodeStorage     com.cdccreditsmart.app               D  Successfully saved to file: .android_secure.enc
+2025-11-25 00:06:24.674  2705-2705  ContractCodeStorage     com.cdccreditsmart.app               D  Contract code saved to ALL storage locations
+2025-11-25 00:06:24.799  2705-2705  ContractCodeStorage     com.cdccreditsmart.app               D  Verification complete: 7/7 locations valid
+2025-11-25 00:06:24.799  2705-2705  SecureTokenStorage      com.cdccreditsmart.app               D  Auth token saved successfully (contract code via ContractCodeStorage, deviceId: device_176...)
+2025-11-25 00:06:24.800  2705-2705  SecureTokenStorage      com.cdccreditsmart.app               D  Serial number saved: MSQRG6...
+2025-11-25 00:06:24.800  2705-2705  PairingViewModel        com.cdccreditsmart.app               D  ℹ️ Nenhum IMEI para armazenar (dispositivo sem telefonia ou erro)
+2025-11-25 00:06:24.800  2705-2705  PairingViewModel        com.cdccreditsmart.app               I  🚀 Iniciando CdcForegroundService para MDM...
+2025-11-25 00:06:24.807  2705-2705  CdcForegroundService    com.cdccreditsmart.app               I  ✅ Serviço iniciado via startService()
+2025-11-25 00:06:24.807  2705-2705  PairingViewModel        com.cdccreditsmart.app               I  🔄 Passando para step3 - CustomerName: 'Marcos Antunes', DeviceModel: 'G15 Power'
+2025-11-25 00:06:24.807  2705-2705  PairingViewModel        com.cdccreditsmart.app               D  🔌 step3ConnectWebSocket chamado - CustomerName: 'Marcos Antunes', DeviceModel: 'G15 Power'
+2025-11-25 00:06:24.808  2705-2705  PairingViewModel        com.cdccreditsmart.app               D  Registering FCM token with backend...
+2025-11-25 00:06:24.815  2705-2934  FcmTokenManager         com.cdccreditsmart.app               D  ========== REGISTERING FCM TOKEN WITH BACKEND ==========
+2025-11-25 00:06:24.818  2705-2705  WebSocketManager        com.cdccreditsmart.app               D  Connecting to WebSocket: wss://cdccreditsmart.com/ws/flow-status
+2025-11-25 00:06:24.842  2705-2705  CdcForegroundService    com.cdccreditsmart.app               D  🚀 Serviço onStartCommand() - Action: com.cdccreditsmart.app.START_SERVICE
+2025-11-25 00:06:24.859  2705-2705  CdcForegroundService    com.cdccreditsmart.app               I  ✅ Foreground Service ativo (Android 12+)
+2025-11-25 00:06:24.867  2705-2934  CdcForegroundService    com.cdccreditsmart.app               I  🔧 ========================================
+2025-11-25 00:06:24.867  2705-2934  CdcForegroundService    com.cdccreditsmart.app               I  🔧 INICIANDO initializeServices()...
+2025-11-25 00:06:24.867  2705-2934  CdcForegroundService    com.cdccreditsmart.app               I  🔧 ========================================
+2025-11-25 00:06:25.399  2705-5614  WebSocketManager        com.cdccreditsmart.app               D  WebSocket connection opened
+2025-11-25 00:06:25.399  2705-5614  WebSocketManager        com.cdccreditsmart.app               D  WebSocket connected for contract: MSQRG6MU
+2025-11-25 00:06:25.399  2705-5614  WebSocketManager        com.cdccreditsmart.app               D  Starting heartbeat
+2025-11-25 00:06:25.424  2705-2933  ContractCodeStorage     com.cdccreditsmart.app               D  Retrieving contract code from storage
+2025-11-25 00:06:25.605  2705-2933  ContractCodeStorage     com.cdccreditsmart.app               D  Storage verification: 7 valid, 0 tampered, 0 missing
+2025-11-25 00:06:25.606  2705-2933  ContractCodeStorage     com.cdccreditsmart.app               D  Contract code retrieved successfully
+2025-11-25 00:06:25.607  2705-2933  SecureTokenStorage      com.cdccreditsmart.app               D  ⚠️ Usando Serial Number para MDM (IMEI indisponível): MSQRG6...
+2025-11-25 00:06:25.607  2705-2933  CdcForegroundService    com.cdccreditsmart.app               I  🔐 AuthToken presente: true
+2025-11-25 00:06:25.607  2705-2933  CdcForegroundService    com.cdccreditsmart.app               I  🔐 AuthToken length: 260
+2025-11-25 00:06:25.607  2705-2933  CdcForegroundService    com.cdccreditsmart.app               I  🔐 ContractCode presente: true
+2025-11-25 00:06:25.607  2705-2933  CdcForegroundService    com.cdccreditsmart.app               I  🔐 ContractCode value: MSQR****
+2025-11-25 00:06:25.607  2705-2933  CdcForegroundService    com.cdccreditsmart.app               I  🔐 MDM SerialNumber presente: true
+2025-11-25 00:06:25.607  2705-2933  CdcForegroundService    com.cdccreditsmart.app               I  🔐 MDM SerialNumber value: MSQRG6MU...
+2025-11-25 00:06:25.607  2705-2933  CdcForegroundService    com.cdccreditsmart.app               I  🔧 ========================================
+2025-11-25 00:06:25.607  2705-2933  CdcForegroundService    com.cdccreditsmart.app               I  🔧 INICIALIZANDO MDM COM SERIAL NUMBER: MSQRG6MU...
+2025-11-25 00:06:25.607  2705-2933  CdcForegroundService    com.cdccreditsmart.app               I  🔧 ========================================
+2025-11-25 00:06:25.607  2705-2933  CdcForegroundService    com.cdccreditsmart.app               I  🔐 Tokens encontrados - inicializando serviços MDM
+2025-11-25 00:06:25.607  2705-2933  CdcForegroundService    com.cdccreditsmart.app               D  📡 Criando MdmCommandReceiver (usando serialNumber do SecureTokenStorage)...
+2025-11-25 00:06:25.641  2705-2934  FcmTokenManager         com.cdccreditsmart.app               D  Current FCM token retrieved: e_LGRdBcT_GrHKJ6Pmcj...
+2025-11-25 00:06:25.643  2705-2934  FcmTokenManager         com.cdccreditsmart.app               D  Sending FCM token to backend (payload: {"fcmToken": "e_LGRdBcT_GrHKJ6Pmcj..."})
+2025-11-25 00:06:25.644  2705-2934  FcmTokenManager         com.cdccreditsmart.app               D  Sending POST https://cdccreditsmart.com/api/apk/device/fcm-token...
+2025-11-25 00:06:25.661  2705-2705  NotificationHelper      com.cdccreditsmart.app               D  Notification channel created: cdc_default
+2025-11-25 00:06:25.666  2705-2705  NotificationHelper      com.cdccreditsmart.app               D  Notification channel created: cdc_info
+2025-11-25 00:06:25.669  2705-2705  NotificationHelper      com.cdccreditsmart.app               D  Notification channel created: cdc_alerts
+2025-11-25 00:06:25.674  2705-2933  MdmCommandReceiver      com.cdccreditsmart.app               D  ✅ Foreground service reference set for WakeLock management
+2025-11-25 00:06:25.674  2705-2933  CdcForegroundService    com.cdccreditsmart.app               D  🔋 Foreground service reference passada para MdmCommandReceiver
+2025-11-25 00:06:25.674  2705-2933  CdcForegroundService    com.cdccreditsmart.app               I  📡 ========================================
+2025-11-25 00:06:25.674  2705-2933  CdcForegroundService    com.cdccreditsmart.app               I  📡 CONECTANDO WebSocket MDM...
+2025-11-25 00:06:25.674  2705-2933  CdcForegroundService    com.cdccreditsmart.app               I  📡 ========================================
+2025-11-25 00:06:25.674  2705-2933  CdcForegroundService    com.cdccreditsmart.app               I  📡 AuthToken length: 260 caracteres
+2025-11-25 00:06:25.675  2705-2933  CdcForegroundService    com.cdccreditsmart.app               I  📡 AuthToken preview: eyJhbGciOiJIUzI1NiIs...
+2025-11-25 00:06:25.675  2705-2933  CdcForegroundService    com.cdccreditsmart.app               I  📡 Contract code: MSQRG6MU
+2025-11-25 00:06:25.675  2705-2933  CdcForegroundService    com.cdccreditsmart.app               I  📡 Chamando mdmReceiver.connectMdmWebSocket()...
+2025-11-25 00:06:25.676  2705-2933  SecureTokenStorage      com.cdccreditsmart.app               D  ⚠️ Usando Serial Number para MDM (IMEI indisponível): MSQRG6...
+2025-11-25 00:06:25.676  2705-2933  MdmCommandReceiver      com.cdccreditsmart.app               I  🔗 Iniciando conexão WebSocket MDM...
+2025-11-25 00:06:25.676  2705-2933  MdmCommandReceiver      com.cdccreditsmart.app               D  🔗 URL: wss://cdccreditsmart.com/ws
+2025-11-25 00:06:25.676  2705-2933  MdmCommandReceiver      com.cdccreditsmart.app               D  🔗 JWT Token presente: true
+2025-11-25 00:06:25.676  2705-2705  NotificationHelper      com.cdccreditsmart.app               D  Notification channel created: cdc_payments
+2025-11-25 00:06:25.677  2705-2705  NotificationHelper      com.cdccreditsmart.app               D  Notification channel created: cdc_contract
+2025-11-25 00:06:25.698  2705-2933  MdmCommandReceiver      com.cdccreditsmart.app               D  🔗 Using serialNumber: MSQRG6MU...
+2025-11-25 00:06:25.698  2705-2933  MdmCommandReceiver      com.cdccreditsmart.app               D  🔌 MDM Command Receiver desconectado
+2025-11-25 00:06:25.698  2705-2933  MdmCommandReceiver      com.cdccreditsmart.app               D  🔗 Criando WebSocket OkHttp...
+2025-11-25 00:06:25.699  2705-2933  MdmCommandReceiver      com.cdccreditsmart.app               D  🔗 WebSocket request enviado - aguardando resposta...
+2025-11-25 00:06:25.699  2705-2933  CdcForegroundService    com.cdccreditsmart.app               I  📡 ========================================
+2025-11-25 00:06:25.699  2705-2933  CdcForegroundService    com.cdccreditsmart.app               I  📡 connectMdmWebSocket() CHAMADO - Aguardando conexão...
+2025-11-25 00:06:25.699  2705-2933  CdcForegroundService    com.cdccreditsmart.app               I  📡 Próximo log esperado: '✅ WebSocket MDM CONECTADO'
+2025-11-25 00:06:25.699  2705-2933  CdcForegroundService    com.cdccreditsmart.app               I  📡 ========================================
+2025-11-25 00:06:25.699  2705-2933  CdcForegroundService    com.cdccreditsmart.app               D  📡 Criando WebSocketManager (flow-status)...
+2025-11-25 00:06:25.700  2705-2933  WebSocketManager        com.cdccreditsmart.app               D  Connecting to WebSocket: wss://cdccreditsmart.com/ws/flow-status
+2025-11-25 00:06:25.704  2705-2933  CdcForegroundService    com.cdccreditsmart.app               I  📡 WebSocketManager inicializado
+2025-11-25 00:06:25.704  2705-2933  CdcForegroundService    com.cdccreditsmart.app               I  💡 Overlay automático: PeriodicOverlayWorker (a cada 10min)
+2025-11-25 00:06:25.716  2705-2933  HeartbeatWorker         com.cdccreditsmart.app               I  ✅ Heartbeat OTIMIZADO agendado via WorkManager
+2025-11-25 00:06:25.717  2705-2933  HeartbeatWorker         com.cdccreditsmart.app               I     📊 Intervalo: 60min (redução de 75% vs 15min)
+2025-11-25 00:06:25.718  2705-2933  HeartbeatWorker         com.cdccreditsmart.app               I     🎯 Economia: ~72 requisições/dia por dispositivo
+2025-11-25 00:06:25.718  2705-2933  CdcForegroundService    com.cdccreditsmart.app               I  ✅ Todos os serviços inicializados com sucesso
+2025-11-25 00:06:25.762  2705-2705  CdcMessagingService     com.cdccreditsmart.app               D  CdcMessagingService created
+2025-11-25 00:06:25.764  2705-2727  creditsmart.app         com.cdccreditsmart.app               I  Background concurrent mark compact GC freed 5557KB AllocSpace bytes, 190(7028KB) LOS objects, 49% free, 12MB/25MB, paused 2.288ms,2.039ms total 145.095ms
+2025-11-25 00:06:25.772  2705-5626  CdcMessagingService     com.cdccreditsmart.app               D  ========== NEW FCM TOKEN RECEIVED ==========
+2025-11-25 00:06:25.773  2705-5626  CdcMessagingService     com.cdccreditsmart.app               D  Token: e_LGRdBcT_GrHKJ6Pmcj...
+2025-11-25 00:06:25.775  2705-5626  FcmTokenManager         com.cdccreditsmart.app               D  FCM token saved locally: e_LGRdBcT_GrHKJ6Pmcj...
+2025-11-25 00:06:25.779  2705-2933  FcmTokenManager         com.cdccreditsmart.app               D  ========== REGISTERING FCM TOKEN WITH BACKEND ==========
+2025-11-25 00:06:25.785  2705-2933  FcmTokenManager         com.cdccreditsmart.app               D  Current FCM token retrieved: e_LGRdBcT_GrHKJ6Pmcj...
+2025-11-25 00:06:25.786  2705-2933  FcmTokenManager         com.cdccreditsmart.app               D  Sending FCM token to backend (payload: {"fcmToken": "e_LGRdBcT_GrHKJ6Pmcj..."})
+2025-11-25 00:06:25.787  2705-2933  FcmTokenManager         com.cdccreditsmart.app               D  Sending POST https://cdccreditsmart.com/api/apk/device/fcm-token...
+2025-11-25 00:06:26.202  2705-5624  MdmCommandReceiver      com.cdccreditsmart.app               I  ✅ WebSocket MDM CONECTADO COM SUCESSO!
+2025-11-25 00:06:26.203  2705-5624  MdmCommandReceiver      com.cdccreditsmart.app               D  ✅ Response code: 101
+2025-11-25 00:06:26.203  2705-5624  MdmCommandReceiver      com.cdccreditsmart.app               I  🔄 Iniciando polling fallback (30s)...
+2025-11-25 00:06:26.204  2705-5624  MdmCommandReceiver      com.cdccreditsmart.app               D  📥 Mensagem MDM recebida: {"type":"welcome","message":"Connected to unified WebSocket server","connectionId":"1e06c880-ab2b-4511-9f91-a44a1eb06500","path":"/ws","routerKey":"device-control","timestamp":"2025-11-25T03:06:27.692Z","serverTime":"2025-11-25T03:06:27.692Z"}
+2025-11-25 00:06:26.205  2705-2936  MdmCommandReceiver      com.cdccreditsmart.app               I  🔄 Iniciando polling fallback MDM (intervalo: 30s)
+2025-11-25 00:06:26.205  2705-2936  MdmCommandReceiver      com.cdccreditsmart.app               I  📊 Conforme especificação: 30 segundos entre requests
+2025-11-25 00:06:26.205  2705-2936  MdmCommandReceiver      com.cdccreditsmart.app               D  🔍 [Polling #1] Verificando comandos pendentes...
+2025-11-25 00:06:26.208  2705-5630  MdmCommandReceiver      com.cdccreditsmart.app               D  📥 JSON recebido: {"type":"welcome","message":"Connected to unified WebSocket server","connectionId":"1e06c880-ab2b-4511-9f91-a44a1eb06500","path":"/ws","routerKey":"device-control","timestamp":"2025-11-25T03:06:27.692Z","serverTime":"2025-11-25T03:06:27.692Z"}
+2025-11-25 00:06:26.210  2705-2936  SecureTokenStorage      com.cdccreditsmart.app               D  ⚠️ Usando Serial Number para MDM (IMEI indisponível): MSQRG6...
+2025-11-25 00:06:26.210  2705-2936  MdmCommandReceiver      com.cdccreditsmart.app               D  🔍 Buscando comandos pendentes com identifier: MSQRG6MU...
+2025-11-25 00:06:26.220  2705-5625  WebSocketManager        com.cdccreditsmart.app               D  WebSocket connection opened
+2025-11-25 00:06:26.220  2705-5625  WebSocketManager        com.cdccreditsmart.app               D  WebSocket connected for contract: MSQRG6MU
+2025-11-25 00:06:26.220  2705-5625  WebSocketManager        com.cdccreditsmart.app               D  Starting heartbeat
+2025-11-25 00:06:26.265  2705-2934  FcmTokenManager         com.cdccreditsmart.app               D  Response code: 200
+2025-11-25 00:06:26.266  2705-2934  FcmTokenManager         com.cdccreditsmart.app               D  ✅ FCM token registered successfully
+2025-11-25 00:06:26.266  2705-2934  FcmTokenManager         com.cdccreditsmart.app               D  Response: {"success":true,"message":"FCM token registrado com sucesso"}
+2025-11-25 00:06:26.266  2705-2934  PairingViewModel        com.cdccreditsmart.app               D  ✅ FCM token registered successfully
+2025-11-25 00:06:26.291  2705-5588  okhttp.OkHttpClient     com.cdccreditsmart.app               I  --> GET https://cdccreditsmart.com/api/apk/device/MSQRG6MU/commands
+2025-11-25 00:06:26.293  2705-5588  okhttp.OkHttpClient     com.cdccreditsmart.app               I  --> END GET
+2025-11-25 00:06:26.340  2705-5630  MdmCommandReceiver      com.cdccreditsmart.app               D  📨 Tipo de mensagem: welcome
+2025-11-25 00:06:26.340  2705-5630  MdmCommandReceiver      com.cdccreditsmart.app               D  👋 Mensagem de boas-vindas do servidor
+2025-11-25 00:06:26.390  2705-2933  FcmTokenManager         com.cdccreditsmart.app               D  Response code: 200
+2025-11-25 00:06:26.391  2705-2933  FcmTokenManager         com.cdccreditsmart.app               D  ✅ FCM token registered successfully
+2025-11-25 00:06:26.391  2705-2933  FcmTokenManager         com.cdccreditsmart.app               D  Response: {"success":true,"message":"FCM token registrado com sucesso"}
+2025-11-25 00:06:26.393  2705-2933  CdcMessagingService     com.cdccreditsmart.app               D  ✅ FCM token registered with backend successfully
+2025-11-25 00:06:26.827  2705-5588  okhttp.OkHttpClient     com.cdccreditsmart.app               I  <-- 200 https://cdccreditsmart.com/api/apk/device/MSQRG6MU/commands (533ms)
+2025-11-25 00:06:26.827  2705-5588  okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-credentials: true
+2025-11-25 00:06:26.827  2705-5588  okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-headers: Origin, X-Requested-With, Content-Type, Accept, Authorization, x-client-key, x-client-token, x-client-secret, cache-control
+2025-11-25 00:06:26.827  2705-5588  okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-methods: GET, POST, PUT, PATCH, DELETE, OPTIONS
+2025-11-25 00:06:26.827  2705-5588  okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-origin: *
+2025-11-25 00:06:26.827  2705-5588  okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-max-age: 86400
+2025-11-25 00:06:26.827  2705-5588  okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-length: 500
+2025-11-25 00:06:26.827  2705-5588  okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-security-policy: default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://replit.com; style-src 'self' 'unsafe-inline' https://replit.com; img-src 'self' data: https:; font-src 'self' data: https://replit.com; connect-src 'self';
+2025-11-25 00:06:26.827  2705-5588  okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-type: application/json; charset=utf-8
+2025-11-25 00:06:26.827  2705-5588  okhttp.OkHttpClient     com.cdccreditsmart.app               I  date: Tue, 25 Nov 2025 03:06:28 GMT
+2025-11-25 00:06:26.827  2705-5588  okhttp.OkHttpClient     com.cdccreditsmart.app               I  etag: W/"1f4-du8jBKdRYAiPsNfJ03GzVQfwyOM"
+2025-11-25 00:06:26.827  2705-5588  okhttp.OkHttpClient     com.cdccreditsmart.app               I  permissions-policy: geolocation=(), microphone=(), camera=()
+2025-11-25 00:06:26.828  2705-5588  okhttp.OkHttpClient     com.cdccreditsmart.app               I  referrer-policy: strict-origin-when-cross-origin
+2025-11-25 00:06:26.828  2705-5588  okhttp.OkHttpClient     com.cdccreditsmart.app               I  server: Google Frontend
+2025-11-25 00:06:26.828  2705-5588  okhttp.OkHttpClient     com.cdccreditsmart.app               I  strict-transport-security: max-age=63072000; includeSubDomains
+2025-11-25 00:06:26.828  2705-5588  okhttp.OkHttpClient     com.cdccreditsmart.app               I  strict-transport-security: max-age=31536000; includeSubDomains
+2025-11-25 00:06:26.828  2705-5588  okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-anti-fraud-protection: active
+2025-11-25 00:06:26.828  2705-5588  okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-certificate-pinning-enabled: false
+2025-11-25 00:06:26.828  2705-5588  okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-certificate-pinning-status: disabled-for-stability
+2025-11-25 00:06:26.828  2705-5588  okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-cloud-trace-context: d8ba696308277644d142b3efa5436205
+2025-11-25 00:06:26.828  2705-2705  PairingViewModel        com.cdccreditsmart.app               I  💾 Salvando dados no fallback (após 2s) - CustomerName: 'Marcos Antunes', DeviceModel: 'G15 Power'
+2025-11-25 00:06:26.828  2705-2705  SecureTokenStorage      com.cdccreditsmart.app               D  💾 Salvando customer info - Name: Marcos Antunes, Device: G15 Power
+2025-11-25 00:06:26.829  2705-2705  SecureTokenStorage      com.cdccreditsmart.app               D  ✅ CustomerName salvo: Marcos Antunes
+2025-11-25 00:06:26.829  2705-2705  SecureTokenStorage      com.cdccreditsmart.app               D  ✅ DeviceModel salvo: G15 Power
+2025-11-25 00:06:26.829  2705-2705  SecureTokenStorage      com.cdccreditsmart.app               I  ✅ Customer info saved successfully!
+2025-11-25 00:06:26.836  2705-5588  okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-content-type-options: nosniff
+2025-11-25 00:06:26.836  2705-5588  okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-financial-data-protection: enabled
+2025-11-25 00:06:26.836  2705-5588  okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-frame-options: DENY
+2025-11-25 00:06:26.836  2705-5588  okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-transaction-security-level: maximum
+2025-11-25 00:06:26.838  2705-5588  okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-xss-protection: 1; mode=block
+2025-11-25 00:06:26.839  2705-5588  okhttp.OkHttpClient     com.cdccreditsmart.app               I  via: 1.1 google
+2025-11-25 00:06:26.839  2705-5588  okhttp.OkHttpClient     com.cdccreditsmart.app               I  alt-svc: h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
+2025-11-25 00:06:26.839  2705-5588  okhttp.OkHttpClient     com.cdccreditsmart.app               I  {"deviceId":"device_1764037861659_ut810g9nybk","serialNumber":"MSQRG6MU","commandsCount":2,"commands":[{"id":"358d8370-d944-452e-914b-7d9446d626eb","commandType":"CONFIGURE_UNINSTALL_CODE","parameters":null,"priority":"high","status":"pending","createdAt":"2025-11-25T02:31:32.941Z","expiresAt":null},{"id":"c9552bfc-a8e9-4f53-aa7e-1b7eb3232861","commandType":"CONFIGURE_UNINSTALL_CODE","parameters":null,"priority":"high","status":"pending","createdAt":"2025-11-25T02:31:32.861Z","expiresAt":null}]}
+2025-11-25 00:06:26.839  2705-5588  okhttp.OkHttpClient     com.cdccreditsmart.app               I  <-- END HTTP (500-byte body)
+2025-11-25 00:06:26.856  2705-2705  WindowOnBackDispatcher  com.cdccreditsmart.app               W  sendCancelIfRunning: isInProgress=false callback=androidx.activity.OnBackPressedDispatcher$Api34Impl$createOnBackAnimationCallback$1@b2f43f8
+2025-11-25 00:06:26.861  2705-2933  MdmCommandReceiver      com.cdccreditsmart.app               E  ❌ Erro ao buscar comandos pendentes (Ask Gemini)
+                                                                                                    com.squareup.moshi.JsonDataException: Expected a string but was NULL at path $.commands[0].expiresAt
+                                                                                                    	at com.squareup.moshi.JsonUtf8Reader.nextString(JsonUtf8Reader.java:676)
+                                                                                                    	at com.cdccreditsmart.network.dto.mdm.MdmCommandAdapter.fromJson(CommandParametersAdapter.kt:50)
+                                                                                                    	at com.cdccreditsmart.network.dto.mdm.MdmCommandAdapter.fromJson(CommandParametersAdapter.kt:22)
+                                                                                                    	at com.squareup.moshi.CollectionJsonAdapter.fromJson(CollectionJsonAdapter.java:81)
+                                                                                                    	at com.squareup.moshi.CollectionJsonAdapter$2.fromJson(CollectionJsonAdapter.java:55)
+                                                                                                    	at com.squareup.moshi.internal.NullSafeJsonAdapter.fromJson(NullSafeJsonAdapter.java:41)
+                                                                                                    	at com.squareup.moshi.kotlin.reflect.KotlinJsonAdapter.fromJson(KotlinJsonAdapter.kt:86)
+                                                                                                    	at com.squareup.moshi.internal.NullSafeJsonAdapter.fromJson(NullSafeJsonAdapter.java:41)
+                                                                                                    	at retrofit2.converter.moshi.MoshiResponseBodyConverter.convert(MoshiResponseBodyConverter.java:46)
+                                                                                                    	at retrofit2.converter.moshi.MoshiResponseBodyConverter.convert(MoshiResponseBodyConverter.java:27)
+                                                                                                    	at retrofit2.OkHttpCall.parseResponse(OkHttpCall.java:246)
+                                                                                                    	at retrofit2.OkHttpCall$1.onResponse(OkHttpCall.java:156)
+                                                                                                    	at okhttp3.internal.connection.RealCall$AsyncCall.run(RealCall.kt:519)
+                                                                                                    	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1156)
+                                                                                                    	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:651)
+                                                                                                    	at java.lang.Thread.run(Thread.java:1119)
+2025-11-25 00:06:26.866  2705-2933  MdmCommandReceiver      com.cdccreditsmart.app               E  ❌ Stack trace: com.squareup.moshi.JsonDataException: Expected a string but was NULL at path $.commands[0].expiresAt (Ask Gemini)
+                                                                                                    	at com.squareup.moshi.JsonUtf8Reader.nextString(JsonUtf8Reader.java:676)
+                                                                                                    	at com.cdccreditsmart.network.dto.mdm.MdmCommandAdapter.fromJson(CommandParametersAdapter.kt:50)
+                                                                                                    	at com.cdccreditsmart.network.dto.mdm.MdmCommandAdapter.fromJson(CommandParametersAdapter.kt:22)
+                                                                                                    	at com.squareup.moshi.CollectionJsonAdapter.fromJson(CollectionJsonAdapter.java:81)
+                                                                                                    	at com.squareup.moshi.CollectionJsonAdapter$2.fromJson(CollectionJsonAdapter.java:55)
+                                                                                                    	at com.squareup.moshi.internal.NullSafeJsonAdapter.fromJson(NullSafeJsonAdapter.java:41)
+                                                                                                    	at com.squareup.moshi.kotlin.reflect.KotlinJsonAdapter.fromJson(KotlinJsonAdapter.kt:86)
+                                                                                                    	at com.squareup.moshi.internal.NullSafeJsonAdapter.fromJson(NullSafeJsonAdapter.java:41)
+                                                                                                    	at retrofit2.converter.moshi.MoshiResponseBodyConverter.convert(MoshiResponseBodyConverter.java:46)
+                                                                                                    	at retrofit2.converter.moshi.MoshiResponseBodyConverter.convert(MoshiResponseBodyConverter.java:27)
+                                                                                                    	at retrofit2.OkHttpCall.parseResponse(OkHttpCall.java:246)
+                                                                                                    	at retrofit2.OkHttpCall$1.onResponse(OkHttpCall.java:156)
+                                                                                                    	at okhttp3.internal.connection.RealCall$AsyncCall.run(RealCall.kt:519)
+                                                                                                    	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1156)
+                                                                                                    	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:651)
+                                                                                                    	at java.lang.Thread.run(Thread.java:1119)
+2025-11-25 00:06:26.867  2705-2933  MdmCommandReceiver      com.cdccreditsmart.app               D  ⏳ [Polling #1] Aguardando 29338ms até próxima verificação...
+2025-11-25 00:06:28.336  2705-2705  NavController           com.cdccreditsmart.app               I  Ignoring popBackStack to route pairing/qr_scanner as it was not found on the current back stack
+2025-11-25 00:06:28.438  2705-2705  SimpleHomeViewModel     com.cdccreditsmart.app               D  📡 Fetching device installments from /api/apk/device/installments...
+2025-11-25 00:06:28.610  2705-5641  SimpleHomeViewModel     com.cdccreditsmart.app               D  ✅ Added Authorization header with token
+2025-11-25 00:06:28.610  2705-5641  SimpleHomeViewModel     com.cdccreditsmart.app               D  📤 Request URL: https://cdccreditsmart.com/api/apk/device/installments
+2025-11-25 00:06:29.173  2705-5641  SimpleHomeViewModel     com.cdccreditsmart.app               D  📥 Response Code: 200
+2025-11-25 00:06:29.186  2705-2705  SimpleHomeViewModel     com.cdccreditsmart.app               D  ✅ Successfully fetched installments data
+2025-11-25 00:06:29.186  2705-2705  SimpleHomeViewModel     com.cdccreditsmart.app               D  📊 Device: Moto G15 Power
+2025-11-25 00:06:29.186  2705-2705  SimpleHomeViewModel     com.cdccreditsmart.app               D  📊 Total installments: 4
+2025-11-25 00:06:29.186  2705-2705  SimpleHomeViewModel     com.cdccreditsmart.app               D  📊 Paid: 0
+2025-11-25 00:06:29.186  2705-2705  SimpleHomeViewModel     com.cdccreditsmart.app               D  📊 Overdue: 0
+2025-11-25 00:06:29.186  2705-2705  SimpleHomeViewModel     com.cdccreditsmart.app               D  📊 All installments count: 4
+2025-11-25 00:06:29.186  2705-2705  SimpleHomeViewModel     com.cdccreditsmart.app               I  💾 Salvando dados do cliente no storage - CustomerName: 'null', DeviceModel: 'Moto G15 Power'
+2025-11-25 00:06:29.186  2705-2705  SecureTokenStorage      com.cdccreditsmart.app               D  💾 Salvando customer info - Name: null, Device: Moto G15 Power
+2025-11-25 00:06:29.186  2705-2705  SecureTokenStorage      com.cdccreditsmart.app               W  ⚠️ CustomerName vazio/null - não salvando
+2025-11-25 00:06:29.187  2705-2705  SecureTokenStorage      com.cdccreditsmart.app               D  ✅ DeviceModel salvo: Moto G15 Power
+2025-11-25 00:06:29.187  2705-2705  SecureTokenStorage      com.cdccreditsmart.app               I  ✅ Customer info saved successfully!
+2025-11-25 00:06:29.196  2705-2705  ContractCodeStorage     com.cdccreditsmart.app               D  Retrieving contract code from storage
+2025-11-25 00:06:29.301  2705-2705  ContractCodeStorage     com.cdccreditsmart.app               D  Storage verification: 7 valid, 0 tampered, 0 missing
+2025-11-25 00:06:29.301  2705-2705  ContractCodeStorage     com.cdccreditsmart.app               D  Contract code retrieved successfully
+2025-11-25 00:06:29.379  2705-2705  LocalInstallmentStorage com.cdccreditsmart.app               I  ✅ 4 parcelas salvas localmente (contrato: MSQRG6MU)
+2025-11-25 00:06:29.379  2705-2705  SimpleHomeViewModel     com.cdccreditsmart.app               I  ✅ 4 parcelas salvas localmente
+2025-11-25 00:06:29.379  2705-2705  SimpleHomeViewModel     com.cdccreditsmart.app               I     → 0 em atraso
+2025-11-25 00:06:29.379  2705-2705  SimpleHomeViewModel     com.cdccreditsmart.app               I     → 0 pagas
+2025-11-25 00:06:29.379  2705-2705  SimpleHomeViewModel     com.cdccreditsmart.app               I     → Dados disponíveis para overlay e offline blocking
+2025-11-25 00:06:29.474  2705-2705  SecureTokenStorage      com.cdccreditsmart.app               D  📖 Lendo customerName: Marcos Antunes
+2025-11-25 00:06:29.475  2705-2705  SecureTokenStorage      com.cdccreditsmart.app               D  📖 Lendo deviceModel: Moto G15 Power
+2025-11-25 00:06:29.475  2705-2705  ContractCodeStorage     com.cdccreditsmart.app               D  Retrieving contract code from storage
+2025-11-25 00:06:29.611  2705-2705  ContractCodeStorage     com.cdccreditsmart.app               D  Storage verification: 7 valid, 0 tampered, 0 missing
+2025-11-25 00:06:29.611  2705-2705  ContractCodeStorage     com.cdccreditsmart.app               D  Contract code retrieved successfully
