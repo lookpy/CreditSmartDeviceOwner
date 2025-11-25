@@ -97,19 +97,46 @@ class LockScreenActivity : ComponentActivity() {
         val parametersJson = intent.getStringExtra(EXTRA_LOCK_SCREEN_PARAMS)
         
         if (parametersJson == null) {
-            Log.e(TAG, "❌ Parâmetros de bloqueio não encontrados no Intent!")
-            throw IllegalStateException("LockScreenParameters não fornecidos")
+            Log.e(TAG, "❌ Parâmetros de bloqueio não encontrados no Intent - usando fallback")
+            return createFallbackParameters()
         }
         
         return try {
             val moshi = MoshiProvider.getMoshi()
             val adapter = moshi.adapter(LockScreenParameters::class.java)
-            adapter.fromJson(parametersJson) 
-                ?: throw IllegalStateException("Falha ao parsear LockScreenParameters")
+            adapter.fromJson(parametersJson) ?: run {
+                Log.e(TAG, "❌ Falha ao parsear LockScreenParameters - usando fallback")
+                createFallbackParameters()
+            }
         } catch (e: Exception) {
-            Log.e(TAG, "❌ Erro ao parsear LockScreenParameters", e)
-            throw e
+            Log.e(TAG, "❌ Erro ao parsear LockScreenParameters - usando fallback", e)
+            createFallbackParameters()
         }
+    }
+    
+    private fun createFallbackParameters(): LockScreenParameters {
+        Log.w(TAG, "⚠️ Criando parâmetros de fallback para LockScreen")
+        return LockScreenParameters(
+            lockType = "PAYMENT_OVERDUE",
+            severity = "HIGH",
+            contractInfo = com.cdccreditsmart.network.dto.mdm.ContractInfo(
+                contractNumber = "N/A",
+                customerName = "Cliente",
+                daysOverdue = 0,
+                totalInstallments = 0,
+                paidInstallments = 0,
+                remainingInstallments = 0
+            ),
+            paymentInfo = com.cdccreditsmart.network.dto.mdm.PaymentInfo(
+                totalDue = 0.0,
+                currency = "BRL",
+                dueDate = "",
+                paymentOptions = emptyList()
+            ),
+            message = "Dispositivo bloqueado. Entre em contato com o suporte.",
+            allowEmergencyCalls = true,
+            showPaymentOptions = false
+        )
     }
     
     private fun setupLockScreenMode() {

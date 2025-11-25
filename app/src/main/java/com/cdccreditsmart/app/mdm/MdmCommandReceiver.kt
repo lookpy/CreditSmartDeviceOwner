@@ -260,6 +260,9 @@ class MdmCommandReceiver(private val context: Context) {
                     Log.i(TAG, "🔒 Lock type: ${parameters.lockScreenData.lockType}")
                     Log.i(TAG, "🔒 Severity: ${parameters.lockScreenData.severity}")
                     
+                    var lockScreenSuccess = false
+                    var lockScreenError: String? = null
+                    
                     withContext(Dispatchers.Main) {
                         try {
                             Log.d(TAG, "🔒 [1/4] Criando Intent para LockScreenActivity...")
@@ -274,20 +277,21 @@ class MdmCommandReceiver(private val context: Context) {
                             
                             Log.i(TAG, "🔒 [4/4] ✅ LockScreenActivity iniciada COM SUCESSO!")
                             Log.i(TAG, "🔒 ========================================")
+                            lockScreenSuccess = true
                         } catch (e: android.content.ActivityNotFoundException) {
                             Log.e(TAG, "❌ ========================================")
                             Log.e(TAG, "❌ ERRO CRÍTICO: LockScreenActivity NÃO ENCONTRADA!")
                             Log.e(TAG, "❌ ========================================")
                             Log.e(TAG, "❌ Verifique se a Activity está declarada no AndroidManifest.xml")
                             Log.e(TAG, "❌ Stack trace:", e)
-                            throw e
+                            lockScreenError = "ActivityNotFoundException: ${e.message}"
                         } catch (e: SecurityException) {
                             Log.e(TAG, "❌ ========================================")
                             Log.e(TAG, "❌ ERRO DE SEGURANÇA ao iniciar LockScreenActivity!")
                             Log.e(TAG, "❌ ========================================")
                             Log.e(TAG, "❌ App pode estar sem permissões necessárias")
                             Log.e(TAG, "❌ Stack trace:", e)
-                            throw e
+                            lockScreenError = "SecurityException: ${e.message}"
                         } catch (e: Exception) {
                             Log.e(TAG, "❌ ========================================")
                             Log.e(TAG, "❌ ERRO ao iniciar LockScreenActivity!")
@@ -295,17 +299,17 @@ class MdmCommandReceiver(private val context: Context) {
                             Log.e(TAG, "❌ Mensagem: ${e.message}")
                             Log.e(TAG, "❌ ========================================")
                             Log.e(TAG, "❌ Stack trace:", e)
-                            throw e
+                            lockScreenError = "${e.javaClass.simpleName}: ${e.message}"
                         }
                     }
                     
-                    Log.d(TAG, "🔒 Enviando confirmação de sucesso ao backend...")
+                    Log.d(TAG, "🔒 Enviando confirmação ao backend...")
                     sendCommandResponse(
                         commandId = commandId,
-                        success = true,
-                        errorMessage = null
+                        success = lockScreenSuccess,
+                        errorMessage = lockScreenError
                     )
-                    Log.i(TAG, "🔒 Comando LOCK_SCREEN processado completamente ✅")
+                    Log.i(TAG, "🔒 Comando LOCK_SCREEN processado completamente (success=$lockScreenSuccess)")
                 }
                 is CommandParameters.UninstallAppParameters -> {
                     Log.i(TAG, "🚨 UNINSTALL_APP - Iniciando auto-destruição")
