@@ -1,0 +1,51 @@
+
+2025-11-25 00:35:45.520  6161-6161  TamperDetection         com.cdccreditsmart.app               I  ╔════════════════════════════════════════════════════════╗
+2025-11-25 00:35:45.520  6161-6161  TamperDetection         com.cdccreditsmart.app               I  ║    📡 REPORTAR BOOT AO BACKEND                        ║
+2025-11-25 00:35:45.522  6161-6161  TamperDetection         com.cdccreditsmart.app               I  ╠════════════════════════════════════════════════════════╣
+2025-11-25 00:35:45.526  6161-6161  TamperDetection         com.cdccreditsmart.app               I  ║  Device Fingerprint: CDC_17401782****      ║
+2025-11-25 00:35:45.526  6161-6161  TamperDetection         com.cdccreditsmart.app               I  ║  Boot Timestamp: 1764041745526          ║
+2025-11-25 00:35:45.526  6161-6161  TamperDetection         com.cdccreditsmart.app               I  ║                                                        ║
+2025-11-25 00:35:45.526  6161-6161  TamperDetection         com.cdccreditsmart.app               I  ║  Backend detectará factory reset comparando:          ║
+2025-11-25 00:35:45.526  6161-6161  TamperDetection         com.cdccreditsmart.app               I  ║  • Fingerprint histórico vs atual                     ║
+2025-11-25 00:35:45.526  6161-6161  TamperDetection         com.cdccreditsmart.app               I  ║  • Timestamp do último boot vs agora                  ║
+2025-11-25 00:35:45.526  6161-6161  TamperDetection         com.cdccreditsmart.app               I  ║  • Token válido vs ausente                            ║
+2025-11-25 00:35:45.526  6161-6161  TamperDetection         com.cdccreditsmart.app               I  ╚════════════════════════════════════════════════════════╝
+2025-11-25 00:35:45.526  6161-6161  TamperDetection         com.cdccreditsmart.app               I  
+2025-11-25 00:35:45.526  6161-6161  TamperDetection         com.cdccreditsmart.app               I  ⚠️ TODO: Implementar POST /api/security/device-boot
+2025-11-25 00:35:45.530  6161-6428  creditsmart.app         com.cdccreditsmart.app               E  No package ID 6a found for resource ID 0x6a0b0013.
+2025-11-25 00:35:45.540  6161-6428  FA                      com.cdccreditsmart.app               I  App measurement initialized, version: 145001
+2025-11-25 00:35:45.540  6161-6428  FA                      com.cdccreditsmart.app               I  To enable debug logging run: adb shell setprop log.tag.FA VERBOSE
+2025-11-25 00:35:45.541  6161-6428  FA                      com.cdccreditsmart.app               I  To enable faster debug mode event logging run:
+                                                                                                      adb shell setprop debug.firebase.analytics.app com.cdccreditsmart.app
+2025-11-25 00:35:45.548  6161-6431  PhClient                com.cdccreditsmart.app               I  Unable to retrieve flag snapshot for com.google.android.gms.measurement#com.cdccreditsmart.app, using defaults.
+2025-11-25 00:35:45.631  6161-6161  creditsmart.app         com.cdccreditsmart.app               W  Verification of void kotlin.random.Random.<clinit>() took 104.350ms (162.91 bytecodes/s) (0B arena alloc)
+2025-11-25 00:35:45.661  6161-6437  CDCApplication          com.cdccreditsmart.app               I  🔒 Verificando status do SIM no boot da aplicação...
+2025-11-25 00:35:45.678  6161-6437  SimSwapManager          com.cdccreditsmart.app               I  ========================================
+2025-11-25 00:35:45.678  6161-6437  SimSwapManager          com.cdccreditsmart.app               I  🔒 SIM SWAP: Iniciando verificação de status do SIM
+2025-11-25 00:35:45.678  6161-6437  SimSwapManager          com.cdccreditsmart.app               I  ========================================
+2025-11-25 00:35:45.750  6161-6437  SimSwapDetector         com.cdccreditsmart.app               W  🔒 SIM SWAP: ICCID vazio no SubscriptionInfo
+2025-11-25 00:35:45.781  6161-6437  SimSwapDetector         com.cdccreditsmart.app               E  🔒 SIM SWAP: SecurityException no fallback (Ask Gemini)
+                                                                                                    java.lang.SecurityException: getIccSerialNumber: The uid 10217 does not meet the requirements to access device identifiers.
+                                                                                                    	at android.os.Parcel.createExceptionOrNull(Parcel.java:3340)
+                                                                                                    	at android.os.Parcel.createException(Parcel.java:3324)
+                                                                                                    	at android.os.Parcel.readException(Parcel.java:3307)
+                                                                                                    	at android.os.Parcel.readException(Parcel.java:3249)
+                                                                                                    	at com.android.internal.telephony.IPhoneSubInfo$Stub$Proxy.getIccSerialNumberForSubscriber(IPhoneSubInfo.java:1331)
+                                                                                                    	at android.telephony.TelephonyManager.getSimSerialNumber(TelephonyManager.java:4332)
+                                                                                                    	at android.telephony.TelephonyManager.getSimSerialNumber(TelephonyManager.java:4289)
+                                                                                                    	at com.cdccreditsmart.app.security.SimSwapDetector.getSimSerialFallback(SimSwapDetector.kt:123)
+                                                                                                    	at com.cdccreditsmart.app.security.SimSwapDetector.getCurrentSimSerial(SimSwapDetector.kt:95)
+                                                                                                    	at com.cdccreditsmart.app.security.SimSwapDetector.getSimInfo(SimSwapDetector.kt:256)
+                                                                                                    	at com.cdccreditsmart.app.security.SimSwapManager$checkSimStatus$2.invokeSuspend(SimSwapManager.kt:143)
+                                                                                                    	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:34)
+                                                                                                    	at kotlinx.coroutines.DispatchedTask.run(DispatchedTask.kt:108)
+                                                                                                    	at kotlinx.coroutines.internal.LimitedDispatcher$Worker.run(LimitedDispatcher.kt:115)
+                                                                                                    	at kotlinx.coroutines.scheduling.TaskImpl.run(Tasks.kt:103)
+                                                                                                    	at kotlinx.coroutines.scheduling.CoroutineScheduler.runSafely(CoroutineScheduler.kt:584)
+                                                                                                    	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.executeTask(CoroutineScheduler.kt:793)
+                                                                                                    	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.runWorker(CoroutineScheduler.kt:697)
+                                                                                                    	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.run(CoroutineScheduler.kt:684)
+2025-11-25 00:35:45.802  6161-6437  SimSwapDetector         com.cdccreditsmart.app               D  🔒 SIM SWAP: Operadora: T-Mobile
+2025-11-25 00:35:45.802  6161-6437  SimSwapDetector         com.cdccreditsmart.app               I  🔒 SIM SWAP: Informações do SIM coletadas:
+2025-11-25 00:35:45.803  6161-6437  SimSwapDetector         com.cdccreditsmart.app               I     Serial: não disponível...
+2025-11-25 00:35:45.804  6161-6437  SimSwapDetector         com.cdccreditsmart.app               I     Operadora: T-Mobile
