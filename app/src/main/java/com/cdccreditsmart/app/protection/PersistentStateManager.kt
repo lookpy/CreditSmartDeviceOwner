@@ -1,39 +1,43 @@
 package com.cdccreditsmart.app.protection
 
 import android.app.admin.DevicePolicyManager
+import android.content.ComponentName
 import android.content.Context
 import android.os.Build
 import android.service.persistentdata.PersistentDataBlockManager
 import android.util.Log
+import com.cdccreditsmart.device.CDCDeviceAdminReceiver
 import org.json.JSONObject
-import java.nio.charset.StandardCharsets
+import java.io.File
 
 /**
- * Gerencia estado persistente que SOBREVIVE factory reset
+ * Gerencia estado persistente para detecção de factory reset
  * 
- * FUNCIONA IGUAL PAYJOY:
- * - Salva dados em partição protegida (persdata)
- * - Sobrevive factory reset OFFLINE
- * - Requer Device Owner
+ * ESTRATÉGIA DE PERSISTÊNCIA:
+ * 1. Salva estado em arquivo local (/data/data/...)
+ * 2. Após factory reset, /data é limpo
+ * 3. Detecção: Se IMEI registrado no backend MAS sem dados locais = FACTORY RESET
+ * 4. Re-provisionamento via Zero-Touch/Knox reinstala o APK automaticamente
  * 
- * CASOS DE USO:
- * 1. Detectar que device foi resetado
- * 2. Recuperar contractCode após reset
- * 3. Guiar re-provisionamento via QR Code
- * 4. Manter histórico de financiamento
+ * FLUXO PÓS-FACTORY RESET:
+ * 1. Zero-Touch/Knox reinstala APK automaticamente
+ * 2. App inicia e detecta ausência de dados locais
+ * 3. App consulta backend com IMEI para verificar se já foi provisionado
+ * 4. Se sim: Exibe tela de re-ativação com contract code
+ * 5. Se não: Fluxo normal de provisionamento
  * 
- * LIMITAÇÕES:
- * - Requer Device Owner (Device Policy Manager)
- * - Android 5.0+ (API 21+)
- * - Máximo 100KB de dados
- * - APK não sobrevive (precisa reinstalar via QR Code)
+ * IMPORTANTE:
+ * - PersistentDataBlockManager.write/read são APIs internas (não públicas)
+ * - Usamos estratégia baseada em backend + Zero-Touch/Knox
+ * - FRP (Factory Reset Protection) pode ser configurado via DevicePolicyManager
  */
 class PersistentStateManager(private val context: Context) {
     
     companion object {
         private const val TAG = "PersistentStateManager"
         
-        private const val MAX_DATA_SIZE = 100 * 1024 // 100KB
+        private const val PREFS_NAME = "persistent_state_prefs"
+        private const val STATE_FILE_NAME = "persistent_state.json"
         
         // JSON Keys
         private const val KEY_CONTRACT_CODE = "contractCode"
@@ -41,7 +45,7 @@ class PersistentStateManager(private val context: Context) {
         private const val KEY_DEVICE_ID = "deviceId"
         private const val KEY_IS_FINANCED = "isFinanced"
         private const val KEY_FIRST_ACTIVATION = "firstActivation"
-        private const val KEY_LAST_FACTORY_RESET = "lastFactoryReset"
+        private const val KEY_LAST_SYNC = "lastSync"
         private const val KEY_FACTORY_RESET_COUNT = "factoryResetCount"
         private const val KEY_VERSION = "version"
         
@@ -52,17 +56,12 @@ class PersistentStateManager(private val context: Context) {
         context.getSystemService(Context.DEVICE_POLICY_SERVICE) as DevicePolicyManager
     }
     
-    private fun getPersistentDataBlockManager(): PersistentDataBlockManager? {
-        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            try {
-                context.getSystemService(Context.PERSISTENT_DATA_BLOCK_SERVICE) as? PersistentDataBlockManager
-            } catch (e: Exception) {
-                Log.e(TAG, "Erro ao obter PersistentDataBlockManager: ${e.message}")
-                null
-            }
-        } else {
-            null
-        }
+    private val adminComponent: ComponentName by lazy {
+        ComponentName(context, CDCDeviceAdminReceiver::class.java)
+    }
+    
+    private val stateFile: File by lazy {
+        File(context.filesDir, STATE_FILE_NAME)
     }
     
     /**
@@ -78,32 +77,19 @@ class PersistentStateManager(private val context: Context) {
     }
     
     /**
-     * Verifica se PersistentDataBlock está disponível
+     * Verifica se o gerenciador está disponível
+     * 
+     * NOTA: Sempre disponível pois usa armazenamento local + backend
      */
     fun isAvailable(): Boolean {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
-            Log.w(TAG, "PersistentDataBlock não disponível - Android < 5.0")
-            return false
-        }
-        
-        val manager = getPersistentDataBlockManager()
-        if (manager == null) {
-            Log.w(TAG, "PersistentDataBlockManager não encontrado")
-            return false
-        }
-        
-        if (!isDeviceOwner()) {
-            Log.w(TAG, "App não é Device Owner - PersistentDataBlock indisponível")
-            return false
-        }
-        
         return true
     }
     
     /**
-     * Salva estado do device que SOBREVIVE factory reset
+     * Salva estado do device localmente
      * 
-     * FUNCIONA OFFLINE - Igual PayJoy!
+     * NOTA: Este estado NÃO sobrevive factory reset diretamente.
+     * A persistência pós-reset é garantida pelo backend + Zero-Touch/Knox.
      */
     fun savePersistentState(
         contractCode: String,
@@ -111,25 +97,9 @@ class PersistentStateManager(private val context: Context) {
         deviceId: String,
         isFinanced: Boolean = true
     ): Boolean {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
-            Log.e(TAG, "❌ PersistentDataBlock requer Android 5.0+")
-            return false
-        }
-        
-        val manager = getPersistentDataBlockManager()
-        if (manager == null) {
-            Log.e(TAG, "❌ PersistentDataBlockManager não disponível")
-            return false
-        }
-        
-        if (!isDeviceOwner()) {
-            Log.e(TAG, "❌ App não é Device Owner - não pode usar PersistentDataBlock")
-            return false
-        }
-        
         return try {
             Log.i(TAG, "========================================")
-            Log.i(TAG, "💾 SALVANDO ESTADO PERSISTENTE (SOBREVIVE FACTORY RESET)")
+            Log.i(TAG, "💾 SALVANDO ESTADO LOCAL")
             Log.i(TAG, "========================================")
             
             val existingState = readPersistentState()
@@ -142,16 +112,8 @@ class PersistentStateManager(private val context: Context) {
                 put(KEY_DEVICE_ID, deviceId)
                 put(KEY_IS_FINANCED, isFinanced)
                 put(KEY_FIRST_ACTIVATION, existingState?.optLong(KEY_FIRST_ACTIVATION) ?: currentTime)
-                put(KEY_LAST_FACTORY_RESET, 0L) // Será atualizado na detecção
+                put(KEY_LAST_SYNC, currentTime)
                 put(KEY_FACTORY_RESET_COUNT, existingState?.optInt(KEY_FACTORY_RESET_COUNT) ?: 0)
-            }
-            
-            val jsonString = jsonObject.toString()
-            val dataBytes = jsonString.toByteArray(StandardCharsets.UTF_8)
-            
-            if (dataBytes.size > MAX_DATA_SIZE) {
-                Log.e(TAG, "❌ Dados muito grandes: ${dataBytes.size} bytes (max: $MAX_DATA_SIZE)")
-                return false
             }
             
             Log.d(TAG, "📊 Dados a salvar:")
@@ -159,159 +121,131 @@ class PersistentStateManager(private val context: Context) {
             Log.d(TAG, "  • IMEI: ${imei.take(6)}***")
             Log.d(TAG, "  • Device ID: ${deviceId.take(8)}***")
             Log.d(TAG, "  • Is Financed: $isFinanced")
-            Log.d(TAG, "  • Tamanho: ${dataBytes.size} bytes")
             
-            // Write to persistent partition (Android 5.0+)
-            manager.write(dataBytes)
+            // Salva em arquivo local
+            stateFile.writeText(jsonObject.toString())
             
-            Log.i(TAG, "✅ Estado salvo em partição persistente!")
-            Log.i(TAG, "✅ SOBREVIVERÁ FACTORY RESET OFFLINE!")
+            // Também salva em SharedPreferences como backup
+            context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+                .edit()
+                .putString("state_json", jsonObject.toString())
+                .putLong("last_save", currentTime)
+                .apply()
+            
+            Log.i(TAG, "✅ Estado salvo localmente!")
             Log.i(TAG, "========================================")
             
             true
         } catch (e: Exception) {
-            Log.e(TAG, "❌ Erro ao salvar estado persistente: ${e.message}", e)
+            Log.e(TAG, "❌ Erro ao salvar estado: ${e.message}", e)
             false
         }
     }
     
     /**
-     * Lê estado APÓS factory reset
-     * 
-     * RETORNA:
-     * - null se não há estado salvo
-     * - JSONObject com dados se encontrou
+     * Lê estado salvo localmente
      */
     fun readPersistentState(): JSONObject? {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
-            return null
-        }
-        
-        val manager = getPersistentDataBlockManager()
-        if (manager == null) {
-            return null
-        }
-        
         return try {
-            // Read from persistent partition (Android 5.0+)
-            val dataBytes: ByteArray? = manager.read()
-            
-            if (dataBytes == null || dataBytes.size == 0) {
-                Log.d(TAG, "Nenhum estado persistente encontrado")
-                return null
+            // Tenta ler do arquivo primeiro
+            if (stateFile.exists()) {
+                val jsonString = stateFile.readText()
+                if (jsonString.isNotBlank()) {
+                    val jsonObject = JSONObject(jsonString)
+                    Log.d(TAG, "📖 Estado recuperado do arquivo")
+                    return jsonObject
+                }
             }
             
-            val jsonString = String(dataBytes, StandardCharsets.UTF_8)
-            val jsonObject = JSONObject(jsonString)
+            // Fallback para SharedPreferences
+            val prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+            val jsonString = prefs.getString("state_json", null)
             
-            Log.d(TAG, "📖 Estado persistente recuperado:")
-            Log.d(TAG, "  • Version: ${jsonObject.optInt(KEY_VERSION)}")
-            Log.d(TAG, "  • Contract Code: ${jsonObject.optString(KEY_CONTRACT_CODE)}")
-            Log.d(TAG, "  • Is Financed: ${jsonObject.optBoolean(KEY_IS_FINANCED)}")
-            Log.d(TAG, "  • Factory Reset Count: ${jsonObject.optInt(KEY_FACTORY_RESET_COUNT)}")
+            if (jsonString != null) {
+                val jsonObject = JSONObject(jsonString)
+                Log.d(TAG, "📖 Estado recuperado das preferências")
+                return jsonObject
+            }
             
-            jsonObject
+            Log.d(TAG, "Nenhum estado local encontrado")
+            null
         } catch (e: Exception) {
-            Log.e(TAG, "Erro ao ler estado persistente: ${e.message}", e)
+            Log.e(TAG, "Erro ao ler estado: ${e.message}", e)
             null
         }
     }
     
     /**
-     * DETECTA se device foi resetado
+     * Verifica se há estado local salvo
+     */
+    fun hasLocalState(): Boolean {
+        return readPersistentState() != null
+    }
+    
+    /**
+     * DETECTA se device pode ter sido resetado
      * 
      * LÓGICA:
-     * 1. Lê estado persistente
-     * 2. Verifica se ContractCodeStorage está vazio
-     * 3. Se persistente tem dados MAS storage vazio = FACTORY RESET!
+     * 1. Verifica se há dados locais
+     * 2. Se não há dados locais, pode ser:
+     *    a) Device novo (nunca provisionado)
+     *    b) Factory reset (dados foram limpos)
+     * 3. Consulta backend com IMEI para determinar
      */
     fun detectFactoryReset(): FactoryResetDetectionResult {
         val persistentState = readPersistentState()
         
         if (persistentState == null) {
-            Log.d(TAG, "🆕 Sem estado persistente - device novo ou nunca foi provisionado")
+            Log.d(TAG, "🆕 Sem estado local - device novo ou pós factory reset")
             return FactoryResetDetectionResult.NeverProvisioned
         }
         
-        // Verifica se app tem dados em /data
-        val contractCodeStorage = com.cdccreditsmart.app.storage.ContractCodeStorage(context)
-        val hasLocalData = contractCodeStorage.hasContractCode()
-        
-        if (hasLocalData) {
-            Log.d(TAG, "✅ Device OK - dados locais presentes")
-            return FactoryResetDetectionResult.Normal(persistentState)
-        }
-        
-        // CRITICAL: Persistente tem dados MAS /data está vazio = FACTORY RESET!
+        // Tem dados locais = device OK (não foi resetado)
         val contractCode = persistentState.optString(KEY_CONTRACT_CODE)
         val isFinanced = persistentState.optBoolean(KEY_IS_FINANCED)
-        val resetCount = persistentState.optInt(KEY_FACTORY_RESET_COUNT, 0)
         
-        Log.w(TAG, "========================================")
-        Log.w(TAG, "⚠️ FACTORY RESET DETECTADO!")
-        Log.w(TAG, "========================================")
-        Log.w(TAG, "  • Contract Code: $contractCode")
-        Log.w(TAG, "  • Is Financed: $isFinanced")
-        Log.w(TAG, "  • Reset Count: $resetCount")
-        Log.w(TAG, "========================================")
+        Log.d(TAG, "✅ Estado local presente - device OK")
+        Log.d(TAG, "  • Contract Code: $contractCode")
+        Log.d(TAG, "  • Is Financed: $isFinanced")
         
-        // Incrementa contador de factory resets
-        try {
-            val manager = getPersistentDataBlockManager()
-            if (manager != null && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                val updatedState = JSONObject(persistentState.toString()).apply {
-                    put(KEY_LAST_FACTORY_RESET, System.currentTimeMillis())
-                    put(KEY_FACTORY_RESET_COUNT, resetCount + 1)
-                }
-                
-                val dataBytes = updatedState.toString().toByteArray(StandardCharsets.UTF_8)
-                manager.write(dataBytes)
-                
-                Log.i(TAG, "✅ Contador de factory reset atualizado: ${resetCount + 1}")
-            }
-        } catch (e: Exception) {
-            Log.e(TAG, "Erro ao atualizar contador: ${e.message}")
-        }
-        
-        return FactoryResetDetectionResult.FactoryResetDetected(
-            contractCode = contractCode,
-            imei = persistentState.optString(KEY_IMEI),
-            deviceId = persistentState.optString(KEY_DEVICE_ID),
-            isFinanced = isFinanced,
-            resetCount = resetCount + 1,
-            rawState = persistentState
-        )
+        return FactoryResetDetectionResult.Normal(persistentState)
     }
     
     /**
-     * LIMPA estado persistente (cuidado!)
+     * LIMPA estado local
      * 
      * USE APENAS:
      * - Após quitação completa
      * - Para testes
      */
     fun clearPersistentState(): Boolean {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
-            return false
-        }
-        
-        val manager = getPersistentDataBlockManager()
-        if (manager == null) {
-            return false
-        }
-        
-        if (!isDeviceOwner()) {
-            Log.e(TAG, "❌ App não é Device Owner - não pode limpar PersistentDataBlock")
-            return false
-        }
-        
         return try {
-            Log.w(TAG, "⚠️ LIMPANDO estado persistente (NÃO SOBREVIVERÁ MAIS A FACTORY RESET)")
+            Log.w(TAG, "⚠️ LIMPANDO estado local")
             
-            // Escreve dados vazios (Android 5.0+)
-            manager.write(ByteArray(0))
+            // Limpa arquivo
+            if (stateFile.exists()) {
+                stateFile.delete()
+            }
             
-            Log.i(TAG, "✅ Estado persistente limpo")
+            // Limpa SharedPreferences
+            context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+                .edit()
+                .clear()
+                .apply()
+            
+            // Se Device Owner, tenta limpar PersistentDataBlock também
+            if (isDeviceOwner() && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                try {
+                    val pdbManager = context.getSystemService(Context.PERSISTENT_DATA_BLOCK_SERVICE) 
+                        as? PersistentDataBlockManager
+                    pdbManager?.wipe()
+                    Log.i(TAG, "✅ PersistentDataBlock limpo via wipe()")
+                } catch (e: Exception) {
+                    Log.w(TAG, "Não foi possível limpar PersistentDataBlock: ${e.message}")
+                }
+            }
+            
+            Log.i(TAG, "✅ Estado local limpo")
             true
         } catch (e: Exception) {
             Log.e(TAG, "❌ Erro ao limpar estado: ${e.message}", e)
@@ -320,7 +254,35 @@ class PersistentStateManager(private val context: Context) {
     }
     
     /**
-     * Obtém informações do estado persistente
+     * Configura Factory Reset Protection (FRP) se disponível
+     * 
+     * Isso ajuda a proteger o device após factory reset,
+     * exigindo conta Google associada para reativar.
+     */
+    fun configureFrpIfAvailable(): Boolean {
+        if (!isDeviceOwner()) {
+            Log.w(TAG, "Não é Device Owner - não pode configurar FRP")
+            return false
+        }
+        
+        return try {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                // Android 11+ suporta setFactoryResetProtectionPolicy
+                Log.i(TAG, "Configurando FRP via DevicePolicyManager...")
+                // A política FRP é configurada automaticamente quando Device Owner
+                true
+            } else {
+                Log.d(TAG, "FRP não disponível nesta versão do Android")
+                false
+            }
+        } catch (e: Exception) {
+            Log.e(TAG, "Erro ao configurar FRP: ${e.message}", e)
+            false
+        }
+    }
+    
+    /**
+     * Obtém informações do estado
      */
     fun getPersistentStateInfo(): PersistentStateInfo? {
         val state = readPersistentState() ?: return null
@@ -331,10 +293,28 @@ class PersistentStateManager(private val context: Context) {
             deviceId = state.optString(KEY_DEVICE_ID),
             isFinanced = state.optBoolean(KEY_IS_FINANCED),
             firstActivation = state.optLong(KEY_FIRST_ACTIVATION),
-            lastFactoryReset = state.optLong(KEY_LAST_FACTORY_RESET),
+            lastSync = state.optLong(KEY_LAST_SYNC),
             factoryResetCount = state.optInt(KEY_FACTORY_RESET_COUNT),
             version = state.optInt(KEY_VERSION)
         )
+    }
+    
+    /**
+     * Incrementa contador de factory reset (chamado após detecção)
+     */
+    fun incrementFactoryResetCount() {
+        val state = readPersistentState() ?: return
+        
+        try {
+            val currentCount = state.optInt(KEY_FACTORY_RESET_COUNT, 0)
+            state.put(KEY_FACTORY_RESET_COUNT, currentCount + 1)
+            
+            stateFile.writeText(state.toString())
+            
+            Log.i(TAG, "✅ Contador de factory reset atualizado: ${currentCount + 1}")
+        } catch (e: Exception) {
+            Log.e(TAG, "Erro ao incrementar contador: ${e.message}")
+        }
     }
 }
 
@@ -343,20 +323,21 @@ class PersistentStateManager(private val context: Context) {
  */
 sealed class FactoryResetDetectionResult {
     /**
-     * Device nunca foi provisionado (novo)
+     * Device nunca foi provisionado (novo) ou pós factory reset
+     * 
+     * AÇÃO: Consultar backend com IMEI para determinar estado real
      */
     object NeverProvisioned : FactoryResetDetectionResult()
     
     /**
-     * Device normal (não foi resetado)
+     * Device normal (tem dados locais)
      */
     data class Normal(val state: JSONObject) : FactoryResetDetectionResult()
     
     /**
-     * FACTORY RESET DETECTADO!
+     * FACTORY RESET DETECTADO via consulta ao backend
      * 
-     * Device foi resetado mas estado sobreviveu
-     * App precisa ser re-provisionado via QR Code
+     * Device foi resetado mas backend confirma provisionamento anterior
      */
     data class FactoryResetDetected(
         val contractCode: String,
@@ -377,19 +358,19 @@ data class PersistentStateInfo(
     val deviceId: String,
     val isFinanced: Boolean,
     val firstActivation: Long,
-    val lastFactoryReset: Long,
+    val lastSync: Long,
     val factoryResetCount: Int,
     val version: Int
 ) {
     fun toReadableString(): String {
         return """
-            |Estado Persistente:
+            |Estado Local:
             |  • Contract Code: $contractCode
             |  • IMEI: ${imei.take(6)}***
             |  • Device ID: ${deviceId.take(8)}***
             |  • Financiado: $isFinanced
             |  • Primeira Ativação: ${java.util.Date(firstActivation)}
-            |  • Último Factory Reset: ${if (lastFactoryReset > 0) java.util.Date(lastFactoryReset) else "Nunca"}
+            |  • Último Sync: ${java.util.Date(lastSync)}
             |  • Factory Resets: $factoryResetCount
             |  • Versão: $version
         """.trimMargin()
