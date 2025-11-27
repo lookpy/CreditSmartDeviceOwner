@@ -2,6 +2,7 @@ package com.cdccreditsmart.app.service
 
 import android.app.*
 import android.content.Context
+import android.app.ForegroundServiceStartNotAllowedException
 import android.content.Intent
 import android.content.IntentFilter
 import android.content.pm.ServiceInfo
@@ -31,16 +32,42 @@ class CdcForegroundService : Service(), ScreenStateListener {
         const val ACTION_START = "com.cdccreditsmart.app.START_SERVICE"
         const val ACTION_STOP = "com.cdccreditsmart.app.STOP_SERVICE"
         
-        fun startService(context: Context) {
-            val intent = Intent(context, CdcForegroundService::class.java).apply {
-                action = ACTION_START
+        /**
+         * Inicia o ForegroundService de forma segura para Android 12+
+         * 
+         * Android 12 (API 31) introduziu restrições para iniciar foreground services
+         * do background. Esta função trata a exceção ForegroundServiceStartNotAllowedException
+         * silenciosamente para evitar crashes.
+         * 
+         * @return true se o serviço foi iniciado com sucesso, false caso contrário
+         */
+        fun startService(context: Context): Boolean {
+            return try {
+                val intent = Intent(context, CdcForegroundService::class.java).apply {
+                    action = ACTION_START
+                }
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    context.startForegroundService(intent)
+                } else {
+                    context.startService(intent)
+                }
+                Log.i(TAG, "✅ Serviço iniciado via startService()")
+                true
+            } catch (e: Exception) {
+                when {
+                    Build.VERSION.SDK_INT >= Build.VERSION_CODES.S && 
+                        e is ForegroundServiceStartNotAllowedException -> {
+                        Log.w(TAG, "⚠️ Não é possível iniciar ForegroundService do background (Android 12+)")
+                        Log.w(TAG, "   Isso é esperado quando o app inicia em background")
+                        Log.i(TAG, "   O serviço será iniciado quando o app estiver em foreground")
+                        false
+                    }
+                    else -> {
+                        Log.e(TAG, "❌ Erro ao iniciar serviço: ${e.message}")
+                        false
+                    }
+                }
             }
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                context.startForegroundService(intent)
-            } else {
-                context.startService(intent)
-            }
-            Log.i(TAG, "✅ Serviço iniciado via startService()")
         }
         
         fun stopService(context: Context) {

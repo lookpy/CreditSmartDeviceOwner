@@ -1,0 +1,129 @@
+2025-11-27 18:49:07.494  9773-9773  TamperDetection         com.cdccreditsmart.app               I  ✅ Integridade OK - app pareado e tokens válidos
+2025-11-27 18:49:07.495  9773-9773  TamperDetection         com.cdccreditsmart.app               I  ========================================
+2025-11-27 18:49:07.498  9773-9773  TamperDetection         com.cdccreditsmart.app               I  
+2025-11-27 18:49:07.498  9773-9773  TamperDetection         com.cdccreditsmart.app               I  ╔════════════════════════════════════════════════════════╗
+2025-11-27 18:49:07.498  9773-9773  TamperDetection         com.cdccreditsmart.app               I  ║    📡 REPORTAR BOOT AO BACKEND                        ║
+2025-11-27 18:49:07.498  9773-9773  TamperDetection         com.cdccreditsmart.app               I  ╠════════════════════════════════════════════════════════╣
+2025-11-27 18:49:07.499  9773-9773  TamperDetection         com.cdccreditsmart.app               I  ║  Device Fingerprint: CDC_-3877655****      ║
+2025-11-27 18:49:07.499  9773-9773  TamperDetection         com.cdccreditsmart.app               I  ║  Boot Timestamp: 1764280147499          ║
+2025-11-27 18:49:07.499  9773-9773  TamperDetection         com.cdccreditsmart.app               I  ║                                                        ║
+2025-11-27 18:49:07.499  9773-9773  TamperDetection         com.cdccreditsmart.app               I  ║  Backend detectará factory reset comparando:          ║
+2025-11-27 18:49:07.499  9773-9773  TamperDetection         com.cdccreditsmart.app               I  ║  • Fingerprint histórico vs atual                     ║
+2025-11-27 18:49:07.499  9773-9773  TamperDetection         com.cdccreditsmart.app               I  ║  • Timestamp do último boot vs agora                  ║
+2025-11-27 18:49:07.499  9773-9773  TamperDetection         com.cdccreditsmart.app               I  ║  • Token válido vs ausente                            ║
+2025-11-27 18:49:07.499  9773-9773  TamperDetection         com.cdccreditsmart.app               I  ╚════════════════════════════════════════════════════════╝
+2025-11-27 18:49:07.499  9773-9773  TamperDetection         com.cdccreditsmart.app               I  
+2025-11-27 18:49:07.499  9773-9773  TamperDetection         com.cdccreditsmart.app               I  ⚠️ TODO: Implementar POST /api/security/device-boot
+2025-11-27 18:49:07.507  9773-9913  CDCApplication          com.cdccreditsmart.app               I  🔒 Verificando status do SIM no boot da aplicação...
+2025-11-27 18:49:07.509  9773-9913  SimSwapManager          com.cdccreditsmart.app               I  ========================================
+2025-11-27 18:49:07.509  9773-9913  SimSwapManager          com.cdccreditsmart.app               I  🔒 SIM SWAP: Iniciando verificação de status do SIM
+2025-11-27 18:49:07.509  9773-9913  SimSwapManager          com.cdccreditsmart.app               I  ========================================
+2025-11-27 18:49:07.548  9773-9910  creditsmart.app         com.cdccreditsmart.app               E  No package ID 6a found for resource ID 0x6a0b0013.
+2025-11-27 18:49:07.549  9773-9910  FA                      com.cdccreditsmart.app               I  App measurement initialized, version: 145001
+2025-11-27 18:49:07.549  9773-9910  FA                      com.cdccreditsmart.app               I  To enable debug logging run: adb shell setprop log.tag.FA VERBOSE
+2025-11-27 18:49:07.549  9773-9910  FA                      com.cdccreditsmart.app               I  To enable faster debug mode event logging run:
+                                                                                                      adb shell setprop debug.firebase.analytics.app com.cdccreditsmart.app
+2025-11-27 18:49:07.550  9773-9914  SimSwapDetector         com.cdccreditsmart.app               W  🔒 SIM SWAP: ICCID vazio no SubscriptionInfo
+2025-11-27 18:49:07.557  9773-9914  SimSwapDetector         com.cdccreditsmart.app               E  🔒 SIM SWAP: SecurityException no fallback (Ask Gemini)
+                                                                                                    java.lang.SecurityException: getIccSerialNumber: The uid 10217 does not meet the requirements to access device identifiers.
+                                                                                                    	at android.os.Parcel.createExceptionOrNull(Parcel.java:3340)
+                                                                                                    	at android.os.Parcel.createException(Parcel.java:3324)
+                                                                                                    	at android.os.Parcel.readException(Parcel.java:3307)
+                                                                                                    	at android.os.Parcel.readException(Parcel.java:3249)
+                                                                                                    	at com.android.internal.telephony.IPhoneSubInfo$Stub$Proxy.getIccSerialNumberForSubscriber(IPhoneSubInfo.java:1331)
+                                                                                                    	at android.telephony.TelephonyManager.getSimSerialNumber(TelephonyManager.java:4332)
+                                                                                                    	at android.telephony.TelephonyManager.getSimSerialNumber(TelephonyManager.java:4289)
+                                                                                                    	at com.cdccreditsmart.app.security.SimSwapDetector.getSimSerialFallback(SimSwapDetector.kt:123)
+                                                                                                    	at com.cdccreditsmart.app.security.SimSwapDetector.getCurrentSimSerial(SimSwapDetector.kt:95)
+                                                                                                    	at com.cdccreditsmart.app.security.SimSwapDetector.getSimInfo(SimSwapDetector.kt:256)
+                                                                                                    	at com.cdccreditsmart.app.security.SimSwapManager$checkSimStatus$2.invokeSuspend(SimSwapManager.kt:143)
+                                                                                                    	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:34)
+                                                                                                    	at kotlinx.coroutines.DispatchedTask.run(DispatchedTask.kt:108)
+                                                                                                    	at kotlinx.coroutines.internal.LimitedDispatcher$Worker.run(LimitedDispatcher.kt:115)
+                                                                                                    	at kotlinx.coroutines.scheduling.TaskImpl.run(Tasks.kt:103)
+                                                                                                    	at kotlinx.coroutines.scheduling.CoroutineScheduler.runSafely(CoroutineScheduler.kt:584)
+                                                                                                    	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.executeTask(CoroutineScheduler.kt:793)
+                                                                                                    	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.runWorker(CoroutineScheduler.kt:697)
+                                                                                                    	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.run(CoroutineScheduler.kt:684)
+2025-11-27 18:49:07.565  9773-9914  SimSwapDetector         com.cdccreditsmart.app               D  🔒 SIM SWAP: Operadora: T-Mobile
+2025-11-27 18:49:07.565  9773-9914  SimSwapDetector         com.cdccreditsmart.app               I  🔒 SIM SWAP: Informações do SIM coletadas:
+2025-11-27 18:49:07.565  9773-9914  SimSwapDetector         com.cdccreditsmart.app               I     Serial: não disponível...
+2025-11-27 18:49:07.565  9773-9914  SimSwapDetector         com.cdccreditsmart.app               I     Operadora: T-Mobile
+2025-11-27 18:49:07.565  9773-9914  SimSwapDetector         com.cdccreditsmart.app               I     SIM ativo: false
+2025-11-27 18:49:07.565  9773-9914  SimSwapManager          com.cdccreditsmart.app               W  🔒 SIM SWAP: Nenhum SIM ativo detectado - sem ação necessária
+2025-11-27 18:49:07.565  9773-9914  SimSwapManager          com.cdccreditsmart.app               I  ========================================
+2025-11-27 18:49:07.566  9773-9914  CDCApplication          com.cdccreditsmart.app               I  ✅ Verificação de SIM swap concluída com sucesso
+2025-11-27 18:49:07.594  9773-9773  ContractCodeStorage     com.cdccreditsmart.app               D  Retrieving contract code from storage
+2025-11-27 18:49:07.850  9773-9773  ContractCodeStorage     com.cdccreditsmart.app               D  Storage verification: 7 valid, 0 tampered, 0 missing
+2025-11-27 18:49:07.851  9773-9773  ContractCodeStorage     com.cdccreditsmart.app               D  Contract code retrieved successfully
+2025-11-27 18:49:07.851  9773-9773  CDCApplication          com.cdccreditsmart.app               I  ✅ Tokens encontrados - iniciando CdcForegroundService
+2025-11-27 18:49:07.860  9773-9773  AndroidRuntime          com.cdccreditsmart.app               D  Shutting down VM
+2025-11-27 18:49:07.863  9773-9773  AndroidRuntime          com.cdccreditsmart.app               E  FATAL EXCEPTION: main (Ask Gemini)
+                                                                                                    Process: com.cdccreditsmart.app, PID: 9773
+                                                                                                    java.lang.RuntimeException: Unable to create application com.cdccreditsmart.app.CDCApplication: android.app.ForegroundServiceStartNotAllowedException: startForegroundService() not allowed due to mAllowStartForeground false: service com.cdccreditsmart.app/.service.CdcForegroundService
+                                                                                                    	at android.app.ActivityThread.handleBindApplication(ActivityThread.java:7836)
+                                                                                                    	at android.app.ActivityThread.-$$Nest$mhandleBindApplication(Unknown Source:0)
+                                                                                                    	at android.app.ActivityThread$H.handleMessage(ActivityThread.java:2546)
+                                                                                                    	at android.os.Handler.dispatchMessage(Handler.java:110)
+                                                                                                    	at android.os.Looper.loopOnce(Looper.java:248)
+                                                                                                    	at android.os.Looper.loop(Looper.java:338)
+                                                                                                    	at android.app.ActivityThread.main(ActivityThread.java:9067)
+                                                                                                    	at java.lang.reflect.Method.invoke(Native Method)
+                                                                                                    	at com.android.internal.os.RuntimeInit$MethodAndArgsCaller.run(RuntimeInit.java:593)
+                                                                                                    	at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:932)
+                                                                                                    Caused by: android.app.ForegroundServiceStartNotAllowedException: startForegroundService() not allowed due to mAllowStartForeground false: service com.cdccreditsmart.app/.service.CdcForegroundService
+                                                                                                    	at android.app.ForegroundServiceStartNotAllowedException$1.createFromParcel(ForegroundServiceStartNotAllowedException.java:54)
+                                                                                                    	at android.app.ForegroundServiceStartNotAllowedException$1.createFromParcel(ForegroundServiceStartNotAllowedException.java:50)
+                                                                                                    	at android.os.Parcel.readParcelableInternal(Parcel.java:5215)
+                                                                                                    	at android.os.Parcel.readParcelable(Parcel.java:5197)
+                                                                                                    	at android.os.Parcel.createExceptionOrNull(Parcel.java:3335)
+                                                                                                    	at android.os.Parcel.createException(Parcel.java:3324)
+                                                                                                    	at android.os.Parcel.readException(Parcel.java:3307)
+                                                                                                    	at android.os.Parcel.readException(Parcel.java:3249)
+                                                                                                    	at android.app.IActivityManager$Stub$Proxy.startService(IActivityManager.java:6475)
+                                                                                                    	at android.app.ContextImpl.startServiceCommon(ContextImpl.java:2034)
+                                                                                                    	at android.app.ContextImpl.startForegroundService(ContextImpl.java:2009)
+                                                                                                    	at android.content.ContextWrapper.startForegroundService(ContextWrapper.java:860)
+                                                                                                    	at com.cdccreditsmart.app.service.CdcForegroundService$Companion.startService(CdcForegroundService.kt:39)
+                                                                                                    	at com.cdccreditsmart.app.CDCApplication.onCreate(CDCApplication.kt:48)
+                                                                                                    	at android.app.Instrumentation.callApplicationOnCreate(Instrumentation.java:1381)
+                                                                                                    	at android.app.ActivityThread.handleBindApplication(ActivityThread.java:7830)
+                                                                                                    	... 9 more
+2025-11-27 18:49:07.863  9773-9773  CrashHandler            com.cdccreditsmart.app               E  
+2025-11-27 18:49:07.863  9773-9773  CrashHandler            com.cdccreditsmart.app               E  💥💥💥 APP CRASH DETECTADO 💥💥💥
+2025-11-27 18:49:07.863  9773-9773  CrashHandler            com.cdccreditsmart.app               E  Thread: main
+2025-11-27 18:49:07.863  9773-9773  CrashHandler            com.cdccreditsmart.app               E  Exception: RuntimeException
+2025-11-27 18:49:07.863  9773-9773  CrashHandler            com.cdccreditsmart.app               E  Message: Unable to create application com.cdccreditsmart.app.CDCApplication: android.app.ForegroundServiceStartNotAllowedException: startForegroundService() not allowed due to mAllowStartForeground false: service com.cdccreditsmart.app/.service.CdcForegroundService
+2025-11-27 18:49:07.863  9773-9773  CrashHandler            com.cdccreditsmart.app               E  
+2025-11-27 18:49:07.866  9773-9773  CrashHandler            com.cdccreditsmart.app               E  Stack trace:
+2025-11-27 18:49:07.866  9773-9773  CrashHandler            com.cdccreditsmart.app               E  java.lang.RuntimeException: Unable to create application com.cdccreditsmart.app.CDCApplication: android.app.ForegroundServiceStartNotAllowedException: startForegroundService() not allowed due to mAllowStartForeground false: service com.cdccreditsmart.app/.service.CdcForegroundService (Ask Gemini)
+                                                                                                    	at android.app.ActivityThread.handleBindApplication(ActivityThread.java:7836)
+                                                                                                    	at android.app.ActivityThread.-$$Nest$mhandleBindApplication(Unknown Source:0)
+                                                                                                    	at android.app.ActivityThread$H.handleMessage(ActivityThread.java:2546)
+                                                                                                    	at android.os.Handler.dispatchMessage(Handler.java:110)
+                                                                                                    	at android.os.Looper.loopOnce(Looper.java:248)
+                                                                                                    	at android.os.Looper.loop(Looper.java:338)
+                                                                                                    	at android.app.ActivityThread.main(ActivityThread.java:9067)
+                                                                                                    	at java.lang.reflect.Method.invoke(Native Method)
+                                                                                                    	at com.android.internal.os.RuntimeInit$MethodAndArgsCaller.run(RuntimeInit.java:593)
+                                                                                                    	at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:932)
+                                                                                                    Caused by: android.app.ForegroundServiceStartNotAllowedException: startForegroundService() not allowed due to mAllowStartForeground false: service com.cdccreditsmart.app/.service.CdcForegroundService
+                                                                                                    	at android.app.ForegroundServiceStartNotAllowedException$1.createFromParcel(ForegroundServiceStartNotAllowedException.java:54)
+                                                                                                    	at android.app.ForegroundServiceStartNotAllowedException$1.createFromParcel(ForegroundServiceStartNotAllowedException.java:50)
+                                                                                                    	at android.os.Parcel.readParcelableInternal(Parcel.java:5215)
+                                                                                                    	at android.os.Parcel.readParcelable(Parcel.java:5197)
+                                                                                                    	at android.os.Parcel.createExceptionOrNull(Parcel.java:3335)
+                                                                                                    	at android.os.Parcel.createException(Parcel.java:3324)
+                                                                                                    	at android.os.Parcel.readException(Parcel.java:3307)
+                                                                                                    	at android.os.Parcel.readException(Parcel.java:3249)
+                                                                                                    	at android.app.IActivityManager$Stub$Proxy.startService(IActivityManager.java:6475)
+                                                                                                    	at android.app.ContextImpl.startServiceCommon(ContextImpl.java:2034)
+                                                                                                    	at android.app.ContextImpl.startForegroundService(ContextImpl.java:2009)
+                                                                                                    	at android.content.ContextWrapper.startForegroundService(ContextWrapper.java:860)
+                                                                                                    	at com.cdccreditsmart.app.service.CdcForegroundService$Companion.startService(CdcForegroundService.kt:39)
+                                                                                                    	at com.cdccreditsmart.app.CDCApplication.onCreate(CDCApplication.kt:48)
+                                                                                                    	at android.app.Instrumentation.callApplicationOnCreate(Instrumentation.java:1381)
+                                                                                                    	at android.app.ActivityThread.handleBindApplication(ActivityThread.java:7830)
+                                                                                                    	... 9 more
+2025-11-27 18:49:07.867  9773-9773  CrashHandler            com.cdccreditsmart.app               I  🤖 Sistema autônomo processando crash...
+2025-11-27 18:49:07.873  9773-9773  AppRestartManager       com.cdccreditsmart.app               D  🔍 Verificando limite de restarts: 1/5 na janela de 10min

@@ -14,6 +14,7 @@ import com.cdccreditsmart.app.workers.AutoBlockingWorker
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 class CDCApplication : Application() {
@@ -45,7 +46,7 @@ class CDCApplication : Application() {
         
         if (hasTokens) {
             Log.i(TAG, "✅ Tokens encontrados - iniciando CdcForegroundService")
-            CdcForegroundService.startService(applicationContext)
+            startForegroundServiceSafely()
         } else {
             Log.i(TAG, "⏸️ Sem tokens - aguardando pairing para iniciar serviço MDM")
         }
@@ -58,6 +59,37 @@ class CDCApplication : Application() {
         // NOVO: Agendar overlay automático periódico com INTERVALO PROGRESSIVO
         Log.i(TAG, "📅 Agendando overlay automático com intervalo progressivo...")
         com.cdccreditsmart.app.workers.PeriodicOverlayWorker.schedule(applicationContext)
+    }
+    
+    /**
+     * Inicia o ForegroundService de forma segura para Android 12+
+     * 
+     * A proteção contra ForegroundServiceStartNotAllowedException está no próprio
+     * método CdcForegroundService.startService() que retorna false se não conseguir.
+     * Nesse caso, agendamos uma tentativa posterior.
+     */
+    private fun startForegroundServiceSafely() {
+        val started = CdcForegroundService.startService(applicationContext)
+        
+        if (!started) {
+            Log.i(TAG, "📅 Agendando início do serviço para quando app estiver em foreground...")
+            scheduleServiceStart()
+        }
+    }
+    
+    /**
+     * Agenda o início do serviço para quando o app estiver em foreground
+     * Usa uma coroutine com delay para dar tempo do app ficar visível
+     */
+    private fun scheduleServiceStart() {
+        applicationScope.launch {
+            delay(2000)
+            
+            val started = CdcForegroundService.startService(applicationContext)
+            if (!started) {
+                Log.w(TAG, "   O serviço será iniciado quando o usuário abrir o app")
+            }
+        }
     }
     
     private fun grantPermissionsIfDeviceOwner() {
