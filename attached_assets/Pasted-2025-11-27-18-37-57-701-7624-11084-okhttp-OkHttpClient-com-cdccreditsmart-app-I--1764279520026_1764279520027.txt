@@ -1,0 +1,51 @@
+2025-11-27 18:37:57.701  7624-11084 okhttp.OkHttpClient     com.cdccreditsmart.app               I  date: Thu, 27 Nov 2025 21:38:01 GMT
+2025-11-27 18:37:57.701  7624-11084 okhttp.OkHttpClient     com.cdccreditsmart.app               I  etag: W/"87-WMi3emPyx8sd4D1rSTdlqG1WZek"
+2025-11-27 18:37:57.701  7624-11084 okhttp.OkHttpClient     com.cdccreditsmart.app               I  permissions-policy: geolocation=(), microphone=(), camera=()
+2025-11-27 18:37:57.701  7624-11084 okhttp.OkHttpClient     com.cdccreditsmart.app               I  referrer-policy: strict-origin-when-cross-origin
+2025-11-27 18:37:57.701  7624-11084 okhttp.OkHttpClient     com.cdccreditsmart.app               I  server: Google Frontend
+2025-11-27 18:37:57.701  7624-11084 okhttp.OkHttpClient     com.cdccreditsmart.app               I  strict-transport-security: max-age=63072000; includeSubDomains
+2025-11-27 18:37:57.701  7624-11084 okhttp.OkHttpClient     com.cdccreditsmart.app               I  strict-transport-security: max-age=31536000; includeSubDomains
+2025-11-27 18:37:57.701  7624-11084 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-anti-fraud-protection: active
+2025-11-27 18:37:57.701  7624-11084 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-certificate-pinning-enabled: false
+2025-11-27 18:37:57.701  7624-11084 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-certificate-pinning-status: disabled-for-stability
+2025-11-27 18:37:57.701  7624-11084 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-cloud-trace-context: 298a3544e5a731336d48e3050be4d836
+2025-11-27 18:37:57.701  7624-11084 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-content-type-options: nosniff
+2025-11-27 18:37:57.701  7624-11084 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-financial-data-protection: enabled
+2025-11-27 18:37:57.701  7624-11084 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-frame-options: DENY
+2025-11-27 18:37:57.701  7624-11084 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-transaction-security-level: maximum
+2025-11-27 18:37:57.701  7624-11084 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-xss-protection: 1; mode=block
+2025-11-27 18:37:57.701  7624-11084 okhttp.OkHttpClient     com.cdccreditsmart.app               I  via: 1.1 google
+2025-11-27 18:37:57.701  7624-11084 okhttp.OkHttpClient     com.cdccreditsmart.app               I  alt-svc: h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
+2025-11-27 18:37:57.701  7624-11084 okhttp.OkHttpClient     com.cdccreditsmart.app               I  {"error":"Dispositivo não cadastrado","hint":"Este aparelho não está cadastrado no sistema. Cadastre-o primeiro na plataforma web."}
+2025-11-27 18:37:57.702  7624-11084 okhttp.OkHttpClient     com.cdccreditsmart.app               I  <-- END HTTP (135-byte body)
+2025-11-27 18:37:57.703  7624-11082 AuthOrchestrator        com.cdccreditsmart.app               W  ❌ Dispositivo não cadastrado (404)
+2025-11-27 18:37:57.703  7624-11082 AuthOrchestrator        com.cdccreditsmart.app               D     → Backend não encontrou este IMEI
+2025-11-27 18:37:57.703  7624-11082 AuthOrchestrator        com.cdccreditsmart.app               D     → Será necessário pareamento manual
+2025-11-27 18:37:57.703  7624-11082 ContractCodeStorage     com.cdccreditsmart.app               D  Retrieving contract code from storage
+2025-11-27 18:37:57.765  7624-11082 ContractCodeStorage     com.cdccreditsmart.app               D  Storage verification: 7 valid, 0 tampered, 0 missing
+2025-11-27 18:37:57.766  7624-11082 ContractCodeStorage     com.cdccreditsmart.app               D  Contract code retrieved successfully
+2025-11-27 18:37:57.766  7624-11082 AuthOrchestrator        com.cdccreditsmart.app               D  ✅ Código de pareamento encontrado: MSQR****
+2025-11-27 18:37:57.767  7624-11082 AuthOrchestrator        com.cdccreditsmart.app               D  🔑 Token existente encontrado - validando no servidor...
+2025-11-27 18:37:57.767  7624-11084 okhttp.OkHttpClient     com.cdccreditsmart.app               I  --> GET https://cdccreditsmart.com/api/apk/device/status
+2025-11-27 18:37:57.768  7624-11084 okhttp.OkHttpClient     com.cdccreditsmart.app               I  Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkZXZpY2VJZCI6ImRldmljZV8xNzY0MDM3ODYxNjU5X3V0ODEwZzlueWJrIiwiYXBrVG9rZW4iOiJNU1FSRzZNVSIsInR5cGUiOiJhcGsiLCJleHBpcmVzSW4iOiIyNGgiLCJpYXQiOjE3NjQyNzk0NTQsImV4cCI6MTc2NDM2NTg1NH0.lbhpQOHGEWJbWpKHRaX2W_xZDjIQ4IU-k0djr4HwKeM
+2025-11-27 18:37:57.768  7624-11084 okhttp.OkHttpClient     com.cdccreditsmart.app               I  --> END GET
+2025-11-27 18:37:58.111  7624-11084 okhttp.OkHttpClient     com.cdccreditsmart.app               I  <-- HTTP FAILED: java.io.IOException: Canceled
+2025-11-27 18:37:58.114  7624-11082 AuthOrchestrator        com.cdccreditsmart.app               E  Erro ao validar token no servidor
+                                                                                                    kotlinx.coroutines.JobCancellationException: Job was cancelled; job=SupervisorJobImpl{Cancelling}@ea63b31
+2025-11-27 18:37:58.114  7624-11082 AuthOrchestrator        com.cdccreditsmart.app               W  ⚠️ Token inválido/expirado - renovando autenticação...
+2025-11-27 18:37:58.114  7624-11082 AuthOrchestrator        com.cdccreditsmart.app               D  🔐 Autenticando silenciosamente com código salvo...
+2025-11-27 18:37:58.117  7624-11082 AuthOrchestrator        com.cdccreditsmart.app               E  ❌ Exceção durante autenticação silenciosa
+                                                                                                    kotlinx.coroutines.JobCancellationException: Job was cancelled; job=SupervisorJobImpl{Cancelling}@ea63b31
+2025-11-27 18:37:58.117  7624-11084 okhttp.OkHttpClient     com.cdccreditsmart.app               I  --> POST https://cdccreditsmart.com/api/apk/auth
+2025-11-27 18:37:58.117  7624-11084 okhttp.OkHttpClient     com.cdccreditsmart.app               I  Content-Type: application/json; charset=UTF-8
+2025-11-27 18:37:58.117  7624-11084 okhttp.OkHttpClient     com.cdccreditsmart.app               I  Content-Length: 19
+2025-11-27 18:37:58.117  7624-11084 okhttp.OkHttpClient     com.cdccreditsmart.app               I  {"code":"MSQRG6MU"}
+2025-11-27 18:37:58.117  7624-11084 okhttp.OkHttpClient     com.cdccreditsmart.app               I  --> END POST (19-byte body)
+2025-11-27 18:37:58.117  7624-11084 okhttp.OkHttpClient     com.cdccreditsmart.app               I  <-- HTTP FAILED: java.io.IOException: Canceled
+2025-11-27 18:37:58.119  7624-7624  RouterViewModel         com.cdccreditsmart.app               E  ❌ Erro inesperado ao verificar autenticação
+                                                                                                    kotlinx.coroutines.JobCancellationException: Job was cancelled; job=SupervisorJobImpl{Cancelling}@ea63b31
+2025-11-27 18:38:01.642  7624-11082 MdmCommandReceiver      com.cdccreditsmart.app               D  🔍 [Polling #2] Verificando comandos pendentes...
+2025-11-27 18:38:01.643  7624-11082 SecureTokenStorage      com.cdccreditsmart.app               D  ⚠️ Usando Serial Number para MDM (IMEI indisponível): MSQRG6...
+2025-11-27 18:38:01.643  7624-11082 MdmCommandReceiver      com.cdccreditsmart.app               D  🔍 Buscando comandos pendentes com identifier: MSQRG6MU...
+2025-11-27 18:38:01.644  7624-11084 okhttp.OkHttpClient     com.cdccreditsmart.app               I  --> GET https://cdccreditsmart.com/api/apk/device/MSQRG6MU/commands
+2025-11-27 18:38:01.644  7624-11084 okhttp.OkHttpClient     com.cdccreditsmart.app               I  --> END GET

@@ -1,0 +1,114 @@
+                                                                                                    	at okhttp3.internal.ws.RealWebSocket.loopReader(RealWebSocket.kt:293)
+                                                                                                    	at okhttp3.internal.ws.RealWebSocket$connect$1.onResponse(RealWebSocket.kt:195)
+                                                                                                    	at okhttp3.internal.connection.RealCall$AsyncCall.run(RealCall.kt:519)
+                                                                                                    	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1156)
+                                                                                                    	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:651)
+                                                                                                    	at java.lang.Thread.run(Thread.java:1119)
+2025-11-27 18:37:01.084  7624-7808  CdcForegroundService    com.cdccreditsmart.app               E  ❌ Erro no WebSocket Flow: Connection failed: Connection reset
+2025-11-27 18:37:01.084  7624-7808  WebSocketManager        com.cdccreditsmart.app               D  Scheduling reconnection in 5000ms
+2025-11-27 18:37:01.088  7624-7806  MdmCommandReceiver      com.cdccreditsmart.app               E  ❌ Erro: Connection reset
+2025-11-27 18:37:01.088  7624-7806  MdmCommandReceiver      com.cdccreditsmart.app               E  ❌ Stack trace: java.net.SocketException: Connection reset (Ask Gemini)
+                                                                                                    	at java.net.SocketInputStream.read(SocketInputStream.java:191)
+                                                                                                    	at java.net.SocketInputStream.read(SocketInputStream.java:143)
+                                                                                                    	at com.android.org.conscrypt.ConscryptEngineSocket$SSLInputStream.readFromSocket(ConscryptEngineSocket.java:994)
+                                                                                                    	at com.android.org.conscrypt.ConscryptEngineSocket$SSLInputStream.processDataFromSocket(ConscryptEngineSocket.java:958)
+                                                                                                    	at com.android.org.conscrypt.ConscryptEngineSocket$SSLInputStream.readUntilDataAvailable(ConscryptEngineSocket.java:873)
+                                                                                                    	at com.android.org.conscrypt.ConscryptEngineSocket$SSLInputStream.read(ConscryptEngineSocket.java:846)
+                                                                                                    	at okio.InputStreamSource.read(JvmOkio.kt:93)
+                                                                                                    	at okio.AsyncTimeout$source$1.read(AsyncTimeout.kt:153)
+                                                                                                    	at okio.RealBufferedSource.request(RealBufferedSource.kt:209)
+                                                                                                    	at okio.RealBufferedSource.require(RealBufferedSource.kt:202)
+                                                                                                    	at okio.RealBufferedSource.readByte(RealBufferedSource.kt:212)
+                                                                                                    	at okhttp3.internal.ws.WebSocketReader.readHeader(WebSocketReader.kt:119)
+                                                                                                    	at okhttp3.internal.ws.WebSocketReader.processNextFrame(WebSocketReader.kt:102)
+                                                                                                    	at okhttp3.internal.ws.RealWebSocket.loopReader(RealWebSocket.kt:293)
+                                                                                                    	at okhttp3.internal.ws.RealWebSocket$connect$1.onResponse(RealWebSocket.kt:195)
+                                                                                                    	at okhttp3.internal.connection.RealCall$AsyncCall.run(RealCall.kt:519)
+                                                                                                    	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1156)
+                                                                                                    	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:651)
+                                                                                                    	at java.lang.Thread.run(Thread.java:1119)
+2025-11-27 18:37:01.089  7624-7806  MdmCommandReceiver      com.cdccreditsmart.app               E  ❌ Response code: null
+2025-11-27 18:37:01.089  7624-7806  MdmCommandReceiver      com.cdccreditsmart.app               E  ❌ Response body: null
+2025-11-27 18:37:01.089  7624-7806  MdmCommandReceiver      com.cdccreditsmart.app               W  🔄 Agendando reconexão em 5 segundos...
+2025-11-27 18:37:01.090  7624-7806  MdmCommandReceiver      com.cdccreditsmart.app               W  🔄 Iniciando polling fallback...
+2025-11-27 18:37:01.098  7624-11081 MdmCommandReceiver      com.cdccreditsmart.app               D  🔗 WebSocket request enviado - aguardando resposta...
+2025-11-27 18:37:01.114  7624-10898 MdmCommandReceiver      com.cdccreditsmart.app               E  ❌ Erro ao buscar comandos pendentes
+                                                                                                    kotlinx.coroutines.JobCancellationException: StandaloneCoroutine was cancelled; job=StandaloneCoroutine{Cancelling}@aa46b85
+2025-11-27 18:37:01.114  7624-10898 MdmCommandReceiver      com.cdccreditsmart.app               E  ❌ Stack trace: kotlinx.coroutines.JobCancellationException: StandaloneCoroutine was cancelled; job=StandaloneCoroutine{Cancelling}@aa46b85
+2025-11-27 18:37:01.114  7624-10898 MdmCommandReceiver      com.cdccreditsmart.app               D  ⏳ [Polling #10] Aguardando 29233ms até próxima verificação...
+2025-11-27 18:37:01.114  7624-10898 MdmCommandReceiver      com.cdccreditsmart.app               I  🔄 Iniciando polling fallback MDM (intervalo: 30s)
+2025-11-27 18:37:01.114  7624-10898 MdmCommandReceiver      com.cdccreditsmart.app               I  📊 Conforme especificação: 30 segundos entre requests
+2025-11-27 18:37:01.114  7624-10898 MdmCommandReceiver      com.cdccreditsmart.app               D  🔍 [Polling #1] Verificando comandos pendentes...
+2025-11-27 18:37:01.116  7624-10898 SecureTokenStorage      com.cdccreditsmart.app               D  ⚠️ Usando Serial Number para MDM (IMEI indisponível): MSQRG6...
+2025-11-27 18:37:01.116  7624-10898 MdmCommandReceiver      com.cdccreditsmart.app               D  🔍 Buscando comandos pendentes com identifier: MSQRG6MU...
+2025-11-27 18:37:01.164  7624-7972  WebSocketManager        com.cdccreditsmart.app               E  WebSocket failure: Connection reset (Ask Gemini)
+                                                                                                    java.net.SocketException: Connection reset
+                                                                                                    	at java.net.SocketInputStream.read(SocketInputStream.java:191)
+                                                                                                    	at java.net.SocketInputStream.read(SocketInputStream.java:143)
+                                                                                                    	at com.android.org.conscrypt.ConscryptEngineSocket$SSLInputStream.readFromSocket(ConscryptEngineSocket.java:994)
+                                                                                                    	at com.android.org.conscrypt.ConscryptEngineSocket$SSLInputStream.processDataFromSocket(ConscryptEngineSocket.java:958)
+                                                                                                    	at com.android.org.conscrypt.ConscryptEngineSocket$SSLInputStream.readUntilDataAvailable(ConscryptEngineSocket.java:873)
+                                                                                                    	at com.android.org.conscrypt.ConscryptEngineSocket$SSLInputStream.read(ConscryptEngineSocket.java:846)
+                                                                                                    	at okio.InputStreamSource.read(JvmOkio.kt:93)
+                                                                                                    	at okio.AsyncTimeout$source$1.read(AsyncTimeout.kt:153)
+                                                                                                    	at okio.RealBufferedSource.request(RealBufferedSource.kt:209)
+                                                                                                    	at okio.RealBufferedSource.require(RealBufferedSource.kt:202)
+                                                                                                    	at okio.RealBufferedSource.readByte(RealBufferedSource.kt:212)
+                                                                                                    	at okhttp3.internal.ws.WebSocketReader.readHeader(WebSocketReader.kt:119)
+                                                                                                    	at okhttp3.internal.ws.WebSocketReader.processNextFrame(WebSocketReader.kt:102)
+                                                                                                    	at okhttp3.internal.ws.RealWebSocket.loopReader(RealWebSocket.kt:293)
+                                                                                                    	at okhttp3.internal.ws.RealWebSocket$connect$1.onResponse(RealWebSocket.kt:195)
+                                                                                                    	at okhttp3.internal.connection.RealCall$AsyncCall.run(RealCall.kt:519)
+                                                                                                    	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1156)
+                                                                                                    	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:651)
+                                                                                                    	at java.lang.Thread.run(Thread.java:1119)
+2025-11-27 18:37:01.164  7624-7972  CdcForegroundService    com.cdccreditsmart.app               E  ❌ Erro no WebSocket Flow: Connection failed: Connection reset
+2025-11-27 18:37:01.164  7624-7972  WebSocketManager        com.cdccreditsmart.app               D  Scheduling reconnection in 5000ms
+2025-11-27 18:37:01.216  7624-11080 MdmCommandReceiver      com.cdccreditsmart.app               D  🔍 [Polling #10] Verificando comandos pendentes...
+2025-11-27 18:37:01.217  7624-11080 SecureTokenStorage      com.cdccreditsmart.app               D  ⚠️ Usando Serial Number para MDM (IMEI indisponível): MSQRG6...
+2025-11-27 18:37:01.217  7624-11080 MdmCommandReceiver      com.cdccreditsmart.app               D  🔍 Buscando comandos pendentes com identifier: MSQRG6MU...
+2025-11-27 18:37:01.312  7624-10832 okhttp.OkHttpClient     com.cdccreditsmart.app               I  <-- HTTP FAILED: java.io.IOException: Canceled
+2025-11-27 18:37:01.317  7624-7971  MdmCommandReceiver      com.cdccreditsmart.app               E  ❌ WebSocket MDM FALHOU!
+2025-11-27 18:37:01.325  7624-7971  MdmCommandReceiver      com.cdccreditsmart.app               E  ❌ Erro: Connection reset
+2025-11-27 18:37:01.325  7624-7971  MdmCommandReceiver      com.cdccreditsmart.app               E  ❌ Stack trace: java.net.SocketException: Connection reset (Ask Gemini)
+                                                                                                    	at java.net.SocketInputStream.read(SocketInputStream.java:191)
+                                                                                                    	at java.net.SocketInputStream.read(SocketInputStream.java:143)
+                                                                                                    	at com.android.org.conscrypt.ConscryptEngineSocket$SSLInputStream.readFromSocket(ConscryptEngineSocket.java:994)
+                                                                                                    	at com.android.org.conscrypt.ConscryptEngineSocket$SSLInputStream.processDataFromSocket(ConscryptEngineSocket.java:958)
+                                                                                                    	at com.android.org.conscrypt.ConscryptEngineSocket$SSLInputStream.readUntilDataAvailable(ConscryptEngineSocket.java:873)
+                                                                                                    	at com.android.org.conscrypt.ConscryptEngineSocket$SSLInputStream.read(ConscryptEngineSocket.java:846)
+                                                                                                    	at okio.InputStreamSource.read(JvmOkio.kt:93)
+                                                                                                    	at okio.AsyncTimeout$source$1.read(AsyncTimeout.kt:153)
+                                                                                                    	at okio.RealBufferedSource.request(RealBufferedSource.kt:209)
+                                                                                                    	at okio.RealBufferedSource.require(RealBufferedSource.kt:202)
+                                                                                                    	at okio.RealBufferedSource.readByte(RealBufferedSource.kt:212)
+                                                                                                    	at okhttp3.internal.ws.WebSocketReader.readHeader(WebSocketReader.kt:119)
+                                                                                                    	at okhttp3.internal.ws.WebSocketReader.processNextFrame(WebSocketReader.kt:102)
+                                                                                                    	at okhttp3.internal.ws.RealWebSocket.loopReader(RealWebSocket.kt:293)
+                                                                                                    	at okhttp3.internal.ws.RealWebSocket$connect$1.onResponse(RealWebSocket.kt:195)
+                                                                                                    	at okhttp3.internal.connection.RealCall$AsyncCall.run(RealCall.kt:519)
+                                                                                                    	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1156)
+                                                                                                    	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:651)
+                                                                                                    	at java.lang.Thread.run(Thread.java:1119)
+2025-11-27 18:37:01.325  7624-7971  MdmCommandReceiver      com.cdccreditsmart.app               E  ❌ Response code: null
+2025-11-27 18:37:01.325  7624-7971  MdmCommandReceiver      com.cdccreditsmart.app               E  ❌ Response body: null
+2025-11-27 18:37:01.325  7624-7971  MdmCommandReceiver      com.cdccreditsmart.app               W  🔄 Agendando reconexão em 5 segundos...
+2025-11-27 18:37:01.383  7624-7971  MdmCommandReceiver      com.cdccreditsmart.app               W  🔄 Iniciando polling fallback...
+2025-11-27 18:37:01.461  7624-11079 MdmCommandReceiver      com.cdccreditsmart.app               I  🔄 Iniciando polling fallback MDM (intervalo: 30s)
+2025-11-27 18:37:01.461  7624-11079 MdmCommandReceiver      com.cdccreditsmart.app               I  📊 Conforme especificação: 30 segundos entre requests
+2025-11-27 18:37:01.461  7624-11079 MdmCommandReceiver      com.cdccreditsmart.app               D  🔍 [Polling #1] Verificando comandos pendentes...
+2025-11-27 18:37:01.505  7624-11081 MdmCommandReceiver      com.cdccreditsmart.app               E  ❌ Erro ao buscar comandos pendentes
+                                                                                                    kotlinx.coroutines.JobCancellationException: StandaloneCoroutine was cancelled; job=StandaloneCoroutine{Cancelling}@f4b91eb
+2025-11-27 18:37:01.505  7624-11081 MdmCommandReceiver      com.cdccreditsmart.app               E  ❌ Stack trace: kotlinx.coroutines.JobCancellationException: StandaloneCoroutine was cancelled; job=StandaloneCoroutine{Cancelling}@f4b91eb
+2025-11-27 18:37:01.505  7624-11081 MdmCommandReceiver      com.cdccreditsmart.app               D  ⏳ [Polling #10] Aguardando 29711ms até próxima verificação...
+2025-11-27 18:37:01.576  7624-11079 SecureTokenStorage      com.cdccreditsmart.app               D  ⚠️ Usando Serial Number para MDM (IMEI indisponível): MSQRG6...
+2025-11-27 18:37:01.576  7624-11079 MdmCommandReceiver      com.cdccreditsmart.app               D  🔍 Buscando comandos pendentes com identifier: MSQRG6MU...
+2025-11-27 18:37:01.605  7624-11102 okhttp.OkHttpClient     com.cdccreditsmart.app               I  --> GET https://cdccreditsmart.com/api/apk/device/MSQRG6MU/commands
+2025-11-27 18:37:01.605  7624-11102 okhttp.OkHttpClient     com.cdccreditsmart.app               I  --> END GET
+2025-11-27 18:37:01.615  7624-7676  SurfaceSyncGroup        com.cdccreditsmart.app               E  Failed to receive transaction ready in 1000ms. Marking SurfaceSyncGroup(wmsSync-VRI[MainActivity]#4) as ready
+2025-11-27 18:37:01.687  7624-7676  SurfaceSyncGroup        com.cdccreditsmart.app               E  Failed to receive transaction ready in 1000ms. Marking SurfaceSyncGroup(VRI[MainActivity]#5) as ready
+2025-11-27 18:37:01.699  7624-7624  Choreographer           com.cdccreditsmart.app               I  Skipped 628 frames!  The application may be doing too much work on its main thread.
+2025-11-27 18:37:01.811  7624-7635  HWUI                    com.cdccreditsmart.app               I  Davey! duration=10572ms; Flags=0, FrameTimelineVsyncId=44445, IntendedVsync=3361871163077, Vsync=3372337829325, InputEventId=0, HandleInputStart=3372353926065, AnimationStart=3372353926664, PerformTraversalsStart=3372427357820, DrawStart=3372427451839, FrameDeadline=3366871162877, FrameStartTime=3372353783965, FrameInterval=16666666, WorkloadTarget=16666666, SyncQueued=3372431933202, SyncStart=3372440972644, IssueDrawCommandsStart=3372441115865, SwapBuffers=3372444174290, FrameCompleted=3372452436175, DequeueBufferDuration=2521, QueueBufferDuration=7766825, GpuCompleted=3372452400783, SwapBuffersCompleted=3372452436175, DisplayPresentTime=0, CommandSubmissionCompleted=3372444174290, 
+2025-11-27 18:37:01.915  7624-7624  WebSocketManager        com.cdccreditsmart.app               D  Connecting to WebSocket: wss://cdccreditsmart.com/ws/flow-status
+2025-11-27 18:37:02.015  7624-7633  HWUI                    com.cdccreditsmart.app               I  Davey! duration=10778ms; Flags=0, FrameTimelineVsyncId=44445, IntendedVsync=3361871163077, Vsync=3372337829325, InputEventId=0, HandleInputStart=3372353926065, AnimationStart=3372353926664, PerformTraversalsStart=3372427357820, DrawStart=3372444381030, FrameDeadline=3361887829743, FrameStartTime=3372353783965, FrameInterval=16666666, WorkloadTarget=16666666, SyncQueued=3372445220696, SyncStart=3372452705914, IssueDrawCommandsStart=3372452861830, SwapBuffers=3372638290536, FrameCompleted=3372656825343, DequeueBufferDuration=2000, QueueBufferDuration=110991, GpuCompleted=3372656825343, SwapBuffersCompleted=3372638867337, DisplayPresentTime=28992399349842023, CommandSubmissionCompleted=3372638290536, 
+2025-11-27 18:37:02.051  7624-11084 okhttp.OkHttpClient     com.cdccreditsmart.app               I  <-- HTTP FAILED: java.io.IOException: Canceled
