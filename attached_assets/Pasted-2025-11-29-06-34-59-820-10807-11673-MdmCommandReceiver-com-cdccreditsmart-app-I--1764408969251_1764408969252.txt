@@ -1,0 +1,15 @@
+2025-11-29 06:34:59.820 10807-11673 MdmCommandReceiver      com.cdccreditsmart.app               I      Confirmation code: ausente
+2025-11-29 06:34:59.826 10807-11673 SelfDestructManager     com.cdccreditsmart.app               I  ========================================
+2025-11-29 06:34:59.826 10807-11673 SelfDestructManager     com.cdccreditsmart.app               I  🚨 INICIANDO SEQUÊNCIA DE AUTO-DESTRUIÇÃO
+2025-11-29 06:34:59.826 10807-11673 SelfDestructManager     com.cdccreditsmart.app               I  ========================================
+2025-11-29 06:34:59.826 10807-11673 SelfDestructManager     com.cdccreditsmart.app               I  📋 Motivo: Admin requested uninstall
+2025-11-29 06:34:59.826 10807-11673 SelfDestructManager     com.cdccreditsmart.app               I  📋 Wipe data: true
+2025-11-29 06:34:59.827 10807-11673 SelfDestructManager     com.cdccreditsmart.app               I  📋 Confirmation code: ausente
+2025-11-29 06:34:59.827 10807-11673 SelfDestructManager     com.cdccreditsmart.app               I  🔐 [1/7] Validando código de confirmação...
+2025-11-29 06:34:59.873 10807-11673 SelfDestructManager     com.cdccreditsmart.app               E  ❌ Nenhum hash de confirmação armazenado - rejeitar comando
+2025-11-29 06:34:59.873 10807-11673 SelfDestructManager     com.cdccreditsmart.app               E  ❌ Código de confirmação inválido - abortando auto-destruição
+2025-11-29 06:34:59.874 10807-11673 MdmCommandReceiver      com.cdccreditsmart.app               E  ❌ Erro na auto-destruição: Invalid confirmation code
+2025-11-29 06:34:59.875 10807-11673 SecureTokenStorage      com.cdccreditsmart.app               D  ⚠️ Usando Serial Number para MDM (IMEI indisponível): MSQRG6...
+2025-11-29 06:34:59.875 10807-11673 MdmCommandReceiver      com.cdccreditsmart.app               D  📡 Enviando response usando identifier: MSQRG6MU****
+2025-11-29 06:34:59.879 10807-11871 okhttp.OkHttpClient     com.cdccreditsmart.app               I  --> POST https://cdccreditsmart.com/api/apk/device/MSQRG6MU/command-response
+2025-11-29 06:34:59.879 10807-11871 okhttp.OkHttpClient     com.cdccreditsmart.app               I  Content-Type: application/json; charset=UTF-8
