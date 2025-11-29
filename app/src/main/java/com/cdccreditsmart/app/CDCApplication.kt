@@ -177,7 +177,6 @@ class CDCApplication : Application() {
             val protectionManager = AppProtectionManager(applicationContext)
             protectionManager.applyMaximumProtection()
             protectionManager.makeAppPersistent()
-            protectionManager.enableKioskMode()
             
             val protections = protectionManager.verifyProtections()
             Log.i(TAG, "🛡️ Proteções verificadas: $protections")

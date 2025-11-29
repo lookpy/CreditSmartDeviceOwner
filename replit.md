@@ -33,7 +33,7 @@ The UI uses Jetpack Compose and Material 3 with a CDC institutional dark theme. 
 - **SIM Swap Detection:** Offline system to detect SIM card changes and apply blocking policies automatically based on last backend decision.
 - **Secure Device Pairing:** Implements a 3-step handshake for device pairing and auto-discovery via IMEI, with manual contract code fallback.
 - **Real-time Communication & MDM:** Utilizes a dual WebSocket system for real-time pairing status and MDM command push, processing commands like blocking, unblocking, and remote uninstall.
-- **Progressive Blocking System:** Dynamically blocks applications based on overdue levels using `setPackagesSuspended()`, intelligently filtering system and user apps.
+- **Progressive Blocking System:** Dynamically blocks applications based on overdue levels using `setPackagesSuspended()`, intelligently filtering system and user apps. Follows TJMG legal precedent - never blocks: phone calls, SMS, gig economy apps (Uber, 99, Rappi, iFood, Loggi), government apps, digital documents, or financial institution apps.
 - **Overlay Systems:** Features a universal dismissible overlay for any foreground app when installments are overdue, and a periodic overlay worker for payment reminders using progressive timers, without requiring Accessibility Service.
 - **Offline Blocking:** Operates offline using local storage for overdue calculations and block application, with daily checks and online synchronization.
 - **Managed Secondary User:** Automatically creates a managed secondary user for corporate isolation during auto-provisioning to protect against app removal and data access.

@@ -121,6 +121,12 @@ class CategoryMapper(private val context: Context) {
     }
     
     private fun isProtectedApp(packageName: String, exceptions: List<String>): Boolean {
+        if (LegalWhitelist.isLegallyProtected(packageName)) {
+            val reason = LegalWhitelist.getProtectionReason(packageName)
+            Log.d(TAG, "⚖️ App protegido por lei (TJMG): $packageName - $reason")
+            return true
+        }
+        
         if (packageName in CRITICAL_SYSTEM_PACKAGES) {
             return true
         }
