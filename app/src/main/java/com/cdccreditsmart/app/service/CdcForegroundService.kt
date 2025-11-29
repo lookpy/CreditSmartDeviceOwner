@@ -543,6 +543,9 @@ class CdcForegroundService : Service(), ScreenStateListener {
                 
                 HeartbeatWorker.schedule(applicationContext)
                 
+                com.cdccreditsmart.app.blocking.BlockingNotificationWorker.schedule(applicationContext)
+                Log.i(TAG, "📱 Worker de notificações de bloqueio agendado")
+                
                 Log.i(TAG, "✅ Todos os serviços inicializados com sucesso")
                 
             } catch (e: Exception) {

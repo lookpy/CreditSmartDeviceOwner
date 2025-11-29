@@ -149,9 +149,9 @@ Quando um app protegido é detectado, o sistema registra:
 
 | Nível | Dias de Atraso | Categorias Bloqueadas |
 |-------|----------------|----------------------|
-| 1 | 1-7 dias | Redes Sociais, Jogos |
-| 2 | 8-14 dias | + Entretenimento, Compras |
-| 3 | 15+ dias | + Navegadores, Câmeras |
+| 1 | 7-14 dias | Redes Sociais, Jogos |
+| 2 | 15-29 dias | + Entretenimento, Compras |
+| 3 | 30+ dias | + Produtividade |
 
 **Nunca bloqueado em nenhum nível:**
 - Chamadas e SMS
@@ -160,6 +160,39 @@ Quando um app protegido é detectado, o sistema registra:
 - Documentos digitais
 - Instituições financeiras
 - App Credit Smart
+
+---
+
+## Sistema de Notificações
+
+### Notificações de Aviso (2 dias antes)
+
+O sistema envia notificações **2 dias antes** de cada mudança de nível:
+
+| Notificação | Quando é enviada |
+|-------------|------------------|
+| Aviso Nível 1 | 5 dias de atraso |
+| Aviso Nível 2 | 13 dias de atraso |
+| Aviso Nível 3 | 28 dias de atraso |
+
+### Notificações Durante Bloqueio
+
+Quando um nível de bloqueio é **ativado**, o cliente recebe:
+1. Notificação informando quais apps foram restringidos
+2. Lembretes periódicos para pagamento via PIX
+
+### Limites de Notificações
+
+- Máximo de **3 notificações por dia** para evitar spam
+- Notificações de aviso são enviadas **uma única vez** por nível
+- Lembretes de pagamento são enviados **a cada 6 horas**
+
+### Implementação Técnica
+
+O sistema usa:
+- `BlockingNotificationManager` - Gerencia lógica de notificações
+- `BlockingNotificationWorker` - Worker que roda a cada 6 horas
+- Integração com `OfflineBlockingEngine` para sincronização
 
 ---
 

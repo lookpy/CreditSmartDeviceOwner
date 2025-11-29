@@ -8,12 +8,17 @@ import com.cdccreditsmart.network.dto.mdm.CommandParameters
 /**
  * Motor inteligente de bloqueio offline
  * Calcula nível de bloqueio baseado em dias de atraso (SEM depender do backend)
+ * Integrado com sistema de notificações para alertar cliente antes e durante bloqueios
  */
 class OfflineBlockingEngine(
     private val context: Context,
     private val appBlockingManager: AppBlockingManager,
     private val installmentStorage: LocalInstallmentStorage
 ) {
+    
+    private val notificationManager by lazy {
+        BlockingNotificationManager(context)
+    }
     
     companion object {
         private const val TAG = "OfflineBlockingEngine"
@@ -76,6 +81,17 @@ class OfflineBlockingEngine(
             val blockingResult = appBlockingManager.applyProgressiveBlock(blockParams)
             
             Log.i(TAG, "✅ Bloqueio automático aplicado - Nível $targetLevel")
+            
+            try {
+                Log.i(TAG, "📱 Verificando notificações de bloqueio...")
+                val notifResult = notificationManager.checkAndSendNotifications()
+                
+                if (notifResult.warningSent || notifResult.activeSent) {
+                    Log.i(TAG, "📬 Notificações enviadas: aviso=${notifResult.warningSent}, bloqueio=${notifResult.activeSent}")
+                }
+            } catch (e: Exception) {
+                Log.w(TAG, "⚠️ Erro ao enviar notificações (bloqueio aplicado normalmente)", e)
+            }
             
             return AutoBlockingResult(
                 blockingApplied = true,
