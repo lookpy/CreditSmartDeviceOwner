@@ -28,6 +28,7 @@ The UI uses Jetpack Compose and Material 3 with a CDC institutional dark theme. 
 - **Voluntary Uninstall System:** Allows users to uninstall after all installments are paid, protected by a two-step confirmation with a backend-issued code.
 - **Remote Uninstall System:** Backend can command remote uninstall with confirmationCode = SHA256(serialNumber + YYYY-MM-DD). Accepts today or yesterday's date (UTC) for timezone tolerance.
 - **WorkPolicyManager:** Unified protection system that applies enterprise security policies based on privilege level (Device Owner > Device Admin > Basic). Applied automatically in CdcForegroundService after enrollment.
+- **Keep Alive System:** Multi-layered system to keep the app always active using WorkManager (ServiceWatchdogWorker every 15min), AlarmManager (exact wakeup every 10min), and automatic escalation to AppRestartManager after 3 consecutive failures.
 - **Anti-Tampering & Persistence:** Includes time synchronization with server for tamper detection, app continuity management, and a Persistent State Manager to survive factory resets by storing critical data in a protected partition (similar to PayJoy).
 - **SIM Swap Detection:** Offline system to detect SIM card changes and apply blocking policies automatically based on last backend decision.
 - **Secure Device Pairing:** Implements a 3-step handshake for device pairing and auto-discovery via IMEI, with manual contract code fallback.
