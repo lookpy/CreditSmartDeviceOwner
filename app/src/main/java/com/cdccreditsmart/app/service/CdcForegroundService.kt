@@ -14,6 +14,7 @@ import androidx.core.app.NotificationCompat
 import com.cdccreditsmart.app.BuildConfig
 import com.cdccreditsmart.app.R
 import com.cdccreditsmart.app.mdm.MdmCommandReceiver
+import com.cdccreditsmart.app.protection.WorkPolicyManager
 import com.cdccreditsmart.app.receivers.ScreenStateListener
 import com.cdccreditsmart.app.receivers.ScreenStateReceiver
 import com.cdccreditsmart.app.security.SecureTokenStorage
@@ -398,6 +399,30 @@ class CdcForegroundService : Service(), ScreenStateListener {
         }
     }
     
+    private fun applyWorkPolicies() {
+        try {
+            Log.i(TAG, "🏢 ========================================")
+            Log.i(TAG, "🏢 APLICANDO POLÍTICAS DE AMBIENTE DE TRABALHO")
+            Log.i(TAG, "🏢 ========================================")
+            
+            val workPolicyManager = WorkPolicyManager(applicationContext)
+            val result = workPolicyManager.applyAllWorkPolicies()
+            
+            Log.i(TAG, "🏢 Resultado: ${result.protectionLevel.name}")
+            Log.i(TAG, "🏢 Políticas aplicadas: ${result.appliedPolicies}/${result.totalPolicies}")
+            
+            if (result.warnings.isNotEmpty()) {
+                result.warnings.forEach { warning ->
+                    Log.w(TAG, "🏢 $warning")
+                }
+            }
+            
+            Log.i(TAG, "🏢 ========================================")
+        } catch (e: Exception) {
+            Log.e(TAG, "❌ Erro ao aplicar políticas de trabalho: ${e.message}", e)
+        }
+    }
+    
     private fun initializeServices() {
         serviceScope.launch {
             try {
@@ -414,6 +439,8 @@ class CdcForegroundService : Service(), ScreenStateListener {
                     Log.i(TAG, "🔧 ========================================")
                     return@launch
                 }
+                
+                applyWorkPolicies()
                 
                 delay(500)
                 
