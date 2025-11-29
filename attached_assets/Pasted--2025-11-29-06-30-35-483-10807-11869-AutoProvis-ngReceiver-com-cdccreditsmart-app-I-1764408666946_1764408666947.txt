@@ -1,0 +1,33 @@
+
+2025-11-29 06:30:35.483 10807-11869 AutoProvis...ngReceiver com.cdccreditsmart.app               I  
+2025-11-29 06:30:35.483 10807-11869 AutoProvis...ngReceiver com.cdccreditsmart.app               I  ╔═══════════════════════════════════════════════════════════════════╗
+2025-11-29 06:30:35.483 10807-11869 AutoProvis...ngReceiver com.cdccreditsmart.app               I  ║  ✅ WORK PROFILE CRIADO COM SUCESSO!                              ║
+2025-11-29 06:30:35.483 10807-11869 AutoProvis...ngReceiver com.cdccreditsmart.app               I  ╠═══════════════════════════════════════════════════════════════════╣
+2025-11-29 06:30:35.483 10807-11869 AutoProvis...ngReceiver com.cdccreditsmart.app               I  ║  O dispositivo agora tem um usuário secundário gerenciado         ║
+2025-11-29 06:30:35.483 10807-11869 AutoProvis...ngReceiver com.cdccreditsmart.app               I  ║  separado para isolamento de apps e dados corporativos.          ║
+2025-11-29 06:30:35.483 10807-11869 AutoProvis...ngReceiver com.cdccreditsmart.app               I  ║                                                                   ║
+2025-11-29 06:30:35.483 10807-11869 AutoProvis...ngReceiver com.cdccreditsmart.app               I  ║  IMPORTANTE: Este NÃO é um work profile tradicional com badging! ║
+2025-11-29 06:30:35.483 10807-11869 AutoProvis...ngReceiver com.cdccreditsmart.app               I  ║  É um usuário secundário completo (como contas do Windows).      ║
+2025-11-29 06:30:35.483 10807-11869 AutoProvis...ngReceiver com.cdccreditsmart.app               I  ║                                                                   ║
+2025-11-29 06:30:35.483 10807-11869 AutoProvis...ngReceiver com.cdccreditsmart.app               I  ║  Para verificar:                                                  ║
+2025-11-29 06:30:35.483 10807-11869 AutoProvis...ngReceiver com.cdccreditsmart.app               I  ║  adb shell pm list users                                          ║
+2025-11-29 06:30:35.483 10807-11869 AutoProvis...ngReceiver com.cdccreditsmart.app               I  ╚═══════════════════════════════════════════════════════════════════╝
+2025-11-29 06:30:35.483 10807-11869 AutoProvis...ngReceiver com.cdccreditsmart.app               I  
+2025-11-29 06:30:35.492 10807-11869 WorkProfileManager      com.cdccreditsmart.app               W  ⚠️ Erro ao usar getUserHandles, tentando método alternativo: null
+2025-11-29 06:30:35.492 10807-11869 creditsmart.app         com.cdccreditsmart.app               I  hiddenapi: Accessing hidden method Landroid/os/UserManager;->getUsers()Ljava/util/List; (runtime_flags=0, domain=platform, api=unsupported,test-api) from Lcom/cdccreditsmart/app/protection/WorkProfileManager; (domain=app) using reflection: allowed
+2025-11-29 06:30:35.493 10807-11869 WorkProfileManager      com.cdccreditsmart.app               E  ❌ Erro ao acessar lista de usuários via reflection: null
+2025-11-29 06:30:35.493 10807-11869 WorkProfileManager      com.cdccreditsmart.app               W  ⚠️ Usuário com ID 10 não encontrado no sistema
+2025-11-29 06:30:35.495 10807-11869 AutoProvis...ngReceiver com.cdccreditsmart.app               I  ⚠️ Usuário Secundário Gerenciado (INCONSISTENTE):
+                                                                                                    - User ID Salvo: 10
+                                                                                                    - Status: NÃO existe mais no sistema
+                                                                                                    - Possível causa: Removido manualmente via Settings
+                                                                                                    - Ação: Execute removeWorkProfile() para limpar referências
+2025-11-29 06:30:35.495 10807-11869 AutoProvis...ngReceiver com.cdccreditsmart.app               I  
+2025-11-29 06:30:35.495 10807-11869 AutoProvis...ngReceiver com.cdccreditsmart.app               I  📋 [3/6] Tornando o app persistente...
+2025-11-29 06:30:35.495 10807-11869 AppProtectionManager    com.cdccreditsmart.app               I  ========================================
+2025-11-29 06:30:35.495 10807-11869 AppProtectionManager    com.cdccreditsmart.app               I  🔒 TORNANDO APP PERSISTENTE
+2025-11-29 06:30:35.495 10807-11869 AppProtectionManager    com.cdccreditsmart.app               I  ========================================
+2025-11-29 06:30:35.503 10807-11869 AppProtectionManager    com.cdccreditsmart.app               I  ✅ App já está visível
+2025-11-29 06:30:35.509 10807-11869 AppProtectionManager    com.cdccreditsmart.app               I  ✅ Atualizações de sistema adiadas (proteção contra reset)
+2025-11-29 06:30:35.512 10807-11869 AppProtectionManager    com.cdccreditsmart.app               I  ✅ Tela permanece ligada quando conectado
+2025-11-29 06:30:35.512 10807-11869 AppProtectionManager    com.cdccreditsmart.app               I  ========================================

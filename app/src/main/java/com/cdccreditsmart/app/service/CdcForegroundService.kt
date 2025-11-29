@@ -374,12 +374,46 @@ class CdcForegroundService : Service(), ScreenStateListener {
         }
     }
     
+    /**
+     * Verifica se o app está rodando em um usuário secundário gerenciado
+     * 
+     * Usuários secundários gerenciados (criados via createAndManageUser) não possuem
+     * dados de pairing/enrollment - esses dados existem apenas no usuário primário (Device Owner).
+     * Portanto, o serviço MDM não deve inicializar nesses usuários.
+     */
+    private fun isSecondaryManagedUser(): Boolean {
+        return try {
+            val userHandle = android.os.Process.myUserHandle()
+            val userId = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                userHandle.hashCode()
+            } else {
+                0
+            }
+            // User ID 0 é sempre o usuário primário
+            // Qualquer outro ID indica usuário secundário
+            userId != 0
+        } catch (e: Exception) {
+            Log.e(TAG, "Erro ao verificar user ID: ${e.message}")
+            false
+        }
+    }
+    
     private fun initializeServices() {
         serviceScope.launch {
             try {
                 Log.i(TAG, "🔧 ========================================")
                 Log.i(TAG, "🔧 INICIANDO initializeServices()...")
                 Log.i(TAG, "🔧 ========================================")
+                
+                // Verificar se está em usuário secundário gerenciado
+                if (isSecondaryManagedUser()) {
+                    val userId = android.os.Process.myUserHandle().hashCode()
+                    Log.i(TAG, "📱 Rodando em usuário secundário gerenciado (User ID: $userId)")
+                    Log.i(TAG, "📱 Dados de enrollment existem apenas no usuário primário")
+                    Log.i(TAG, "📱 Serviço MDM não será inicializado neste usuário")
+                    Log.i(TAG, "🔧 ========================================")
+                    return@launch
+                }
                 
                 delay(500)
                 
@@ -396,11 +430,11 @@ class CdcForegroundService : Service(), ScreenStateListener {
                 Log.i(TAG, "🔐 MDM SerialNumber value: ${mdmDeviceId?.take(8) ?: "..."}...")
                 
                 if (authToken.isNullOrBlank() || contractCode.isNullOrBlank()) {
-                    Log.w(TAG, "⚠️ ========================================")
-                    Log.w(TAG, "⚠️ SEM TOKENS - SERVIÇO EM STANDBY")
-                    Log.w(TAG, "⚠️ AuthToken isNull: ${authToken == null}, isEmpty: ${authToken?.isEmpty()}")
-                    Log.w(TAG, "⚠️ ContractCode isNull: ${contractCode == null}, isEmpty: ${contractCode?.isEmpty()}")
-                    Log.w(TAG, "⚠️ ========================================")
+                    Log.i(TAG, "📱 ========================================")
+                    Log.i(TAG, "📱 AGUARDANDO PAIRING - SERVIÇO EM STANDBY")
+                    Log.i(TAG, "📱 O usuário ainda não fez o pareamento inicial")
+                    Log.i(TAG, "📱 Serviços MDM serão ativados após inserir código do contrato")
+                    Log.i(TAG, "📱 ========================================")
                     return@launch
                 }
                 

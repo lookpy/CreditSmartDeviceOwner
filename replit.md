@@ -43,6 +43,7 @@ The UI uses Jetpack Compose and Material 3 with a CDC institutional dark theme. 
 - **Notifications & Security:** Uses Firebase FCM for push notifications and `EncryptedSharedPreferences` for sensitive data, JWT authentication, and permanent device blocking on security violations.
 - **Networking:** Employs Retrofit and OkHttp with retry logic, exponential backoff, and Certificate Pinning.
 - **Crash Prevention:** Global CrashHandler installed first in Application.onCreate() captures all unhandled exceptions, logs details, and schedules auto-restart. All critical code paths use try-catch with fallback values instead of throwing exceptions. SecurityExceptions (IMEI/ICCID access) are expected when not Device Owner and handled gracefully. ForegroundServiceStartNotAllowedException (Android 12+) is handled gracefully with automatic retry when app is in foreground.
+- **Secondary Managed User Detection:** CdcForegroundService and SecureTokenStorage detect when running in a secondary managed user (created via createAndManageUser) and skip MDM initialization, since enrollment data exists only in the primary Device Owner user. This eliminates unnecessary error logs and avoids duplicate MDM polling.
 - **Settings Access:** com.android.settings is NEVER blocked - users can access device Settings normally. Factory reset is blocked via DISALLOW_FACTORY_RESET policy (production only).
 
 ## External Dependencies

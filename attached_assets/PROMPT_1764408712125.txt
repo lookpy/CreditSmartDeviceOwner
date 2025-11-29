@@ -1,0 +1,94 @@
+025-11-29 09:30:57.943] [PID:12534] [TID:2|main]    👤 User setup complete: true
+2025-11-29 06:30:57.945 12534-12534 CDCDeviceAdminReceiver  com.cdccreditsmart.app               I  [2025-11-29 09:30:57.944] [PID:12534] [TID:2|main] 🔍 DEVICE CAPABILITIES ANALYSIS (Critical for work profile):
+2025-11-29 06:30:57.946 12534-12534 CDCDeviceAdminReceiver  com.cdccreditsmart.app               I  [2025-11-29 09:30:57.946] [PID:12534] [TID:2|main]    📷 Camera permission grant state: 0
+2025-11-29 06:30:57.947 12534-12534 CDCDeviceAdminReceiver  com.cdccreditsmart.app               W  [2025-11-29 09:30:57.947] [PID:12534] [TID:2|main]    🔒 Could not check lock task packages
+2025-11-29 06:30:57.954 12534-12534 CDCDeviceAdminReceiver  com.cdccreditsmart.app               W  Exception details: (Ask Gemini)
+                                                                                                    java.lang.SecurityException: User 10 is not allowed to use lock task
+                                                                                                    	at android.os.Parcel.createExceptionOrNull(Parcel.java:3340)
+                                                                                                    	at android.os.Parcel.createException(Parcel.java:3324)
+                                                                                                    	at android.os.Parcel.readException(Parcel.java:3307)
+                                                                                                    	at android.os.Parcel.readException(Parcel.java:3249)
+                                                                                                    	at android.app.admin.IDevicePolicyManager$Stub$Proxy.getLockTaskPackages(IDevicePolicyManager.java:9915)
+                                                                                                    	at android.app.admin.DevicePolicyManager.getLockTaskPackages(DevicePolicyManager.java:13097)
+                                                                                                    	at com.cdccreditsmart.device.CDCDeviceAdminReceiver.logDeviceCapabilities(CDCDeviceAdminReceiver.kt:787)
+                                                                                                    	at com.cdccreditsmart.device.CDCDeviceAdminReceiver.onEnabled(CDCDeviceAdminReceiver.kt:383)
+                                                                                                    	at android.app.admin.DeviceAdminReceiver.onReceive(DeviceAdminReceiver.java:1195)
+                                                                                                    	at android.app.ActivityThread.handleReceiver(ActivityThread.java:5029)
+                                                                                                    	at android.app.ActivityThread.-$$Nest$mhandleReceiver(Unknown Source:0)
+                                                                                                    	at android.app.ActivityThread$H.handleMessage(ActivityThread.java:2577)
+                                                                                                    	at android.os.Handler.dispatchMessage(Handler.java:110)
+                                                                                                    	at android.os.Looper.loopOnce(Looper.java:248)
+                                                                                                    	at android.os.Looper.loop(Looper.java:338)
+                                                                                                    	at android.app.ActivityThread.main(ActivityThread.java:9067)
+                                                                                                    	at java.lang.reflect.Method.invoke(Native Method)
+                                                                                                    	at com.android.internal.os.RuntimeInit$MethodAndArgsCaller.run(RuntimeInit.java:593)
+                                                                                                    	at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:932)
+2025-11-29 06:30:57.973 12534-12534 CDCDeviceAdminReceiver  com.cdccreditsmart.app               I  [2025-11-29 09:30:57.972] [PID:12534] [TID:2|main]    💾 Storage encryption status: false
+2025-11-29 06:30:57.974 12534-12534 CDCDeviceAdminReceiver  com.cdccreditsmart.app               I  [2025-11-29 09:30:57.973] [PID:12534] [TID:2|main] ✅ Device capabilities analysis completed
+2025-11-29 06:30:57.977 12534-12534 CDC_PROVISIONING_DEBUG  com.cdccreditsmart.app               I  [2025-11-29 09:30:57.976] [PID:12534] [TID:2|main] 📋 CALLBACK SEQUENCE (1 callbacks):
+2025-11-29 06:30:57.977 12534-12534 CDC_PROVISIONING_DEBUG  com.cdccreditsmart.app               I  [2025-11-29 09:30:57.977] [PID:12534] [TID:2|main]    1. 2025-11-29 09:30:57.870 - onEnabled
+2025-11-29 06:30:57.978 12534-12534 CDC_PROVISIONING_DEBUG  com.cdccreditsmart.app               I  [2025-11-29 09:30:57.977] [PID:12534] [TID:2|main] 🔍 HANG DETECTION CHECK:
+2025-11-29 06:30:57.979 12534-12534 CDC_PROVISIONING_DEBUG  com.cdccreditsmart.app               I  [2025-11-29 09:30:57.978] [PID:12534] [TID:2|main]    ⏱️ Time since provisioning start: 107ms
+2025-11-29 06:30:57.982 12534-12534 CDC_PROVISIONING_DEBUG  com.cdccreditsmart.app               I  [2025-11-29 09:30:57.982] [PID:12534] [TID:2|main]    ⏱️ Time since last callback: 107ms
+2025-11-29 06:30:57.983 12534-12534 CDCDeviceAdminReceiver  com.cdccreditsmart.app               I  [2025-11-29 09:30:57.982] [PID:12534] [TID:2|main] ✅ Admin enablement verification completed successfully
+2025-11-29 06:30:57.983 12534-12534 CDCDeviceAdminReceiver  com.cdccreditsmart.app               I  [2025-11-29 09:30:57.983] [PID:12534] [TID:2|main] 🏁 onEnabled callback completed - work profile preparation should continue
+2025-11-29 06:30:57.983 12534-12534 CDCDeviceAdminReceiver  com.cdccreditsmart.app               I  [2025-11-29 09:30:57.983] [PID:12534] [TID:2|main] 🔑 =================================================================
+2025-11-29 06:30:57.987 12534-12534 Choreographer           com.cdccreditsmart.app               I  Skipped 214 frames!  The application may be doing too much work on its main thread.
+2025-11-29 06:30:58.001 12534-12534 CDCDeviceAdminService   com.cdccreditsmart.app               I  ✅ Device Admin Service created - System is communicating with CDC DPC
+2025-11-29 06:30:58.004 12534-12534 CDCDeviceAdminService   com.cdccreditsmart.app               I  Device Admin Service destroyed
+2025-11-29 06:30:58.004 12534-12534 CDCDeviceAdminService   com.cdccreditsmart.app               I  ✅ Device Admin Service created - System is communicating with CDC DPC
+2025-11-29 06:30:58.056 12534-12534 ActivityThread          com.cdccreditsmart.app               W  getPackageInfo() called with an older ApplicationInfo than the cached version for package com.cdccreditsmart.app
+2025-11-29 06:30:58.058 12534-12534 BootReceiver            com.cdccreditsmart.app               I  🚀 Dispositivo iniciado - starting CdcForegroundService
+2025-11-29 06:30:58.113 12534-12534 CdcForegroundService    com.cdccreditsmart.app               I  ✅ Serviço iniciado via startService()
+2025-11-29 06:30:58.172 12534-12534 CdcForegroundService    com.cdccreditsmart.app               D  📱 Serviço onCreate()
+2025-11-29 06:30:58.190 12534-12534 CdcForegroundService    com.cdccreditsmart.app               D  ✅ Canal de notificação criado
+2025-11-29 06:30:58.200 12534-12534 CdcForegroundService    com.cdccreditsmart.app               I  ✅ ScreenStateReceiver registrado
+2025-11-29 06:30:58.200 12534-12534 CdcForegroundService    com.cdccreditsmart.app               D  🚀 Serviço onStartCommand() - Action: com.cdccreditsmart.app.START_SERVICE
+2025-11-29 06:30:58.340 12534-12534 CdcForegroundService    com.cdccreditsmart.app               I  ✅ Foreground Service ativo (Android 12+)
+2025-11-29 06:30:58.365 12534-12534 BootReceiver            com.cdccreditsmart.app               I  🚀 Dispositivo iniciado - starting CdcForegroundService
+2025-11-29 06:30:58.367 12534-13267 CdcForegroundService    com.cdccreditsmart.app               I  🔧 ========================================
+2025-11-29 06:30:58.367 12534-13267 CdcForegroundService    com.cdccreditsmart.app               I  🔧 INICIANDO initializeServices()...
+2025-11-29 06:30:58.367 12534-13267 CdcForegroundService    com.cdccreditsmart.app               I  🔧 ========================================
+2025-11-29 06:30:58.372 12534-12534 CdcForegroundService    com.cdccreditsmart.app               I  ✅ Serviço iniciado via startService()
+2025-11-29 06:30:58.402 12534-12534 CdcForegroundService    com.cdccreditsmart.app               D  🚀 Serviço onStartCommand() - Action: com.cdccreditsmart.app.START_SERVICE
+2025-11-29 06:30:58.418 12534-13153 FirebaseMessaging       com.cdccreditsmart.app               E  Failed to get FIS auth token (Ask Gemini)
+                                                                                                    java.util.concurrent.ExecutionException: com.google.firebase.installations.FirebaseInstallationsException: Firebase Installations Service is unavailable. Please try again later.
+                                                                                                    	at com.google.android.gms.tasks.Tasks.zza(com.google.android.gms:play-services-tasks@@18.1.0:5)
+                                                                                                    	at com.google.android.gms.tasks.Tasks.await(com.google.android.gms:play-services-tasks@@18.1.0:9)
+                                                                                                    	at com.google.firebase.messaging.GmsRpc.setDefaultAttributesToBundle(GmsRpc.java:283)
+                                                                                                    	at com.google.firebase.messaging.GmsRpc.startRpc(GmsRpc.java:245)
+                                                                                                    	at com.google.firebase.messaging.GmsRpc.getToken(GmsRpc.java:195)
+                                                                                                    	at com.google.firebase.messaging.FirebaseMessaging.lambda$blockingGetToken$14$com-google-firebase-messaging-FirebaseMessaging(FirebaseMessaging.java:650)
+                                                                                                    	at com.google.firebase.messaging.FirebaseMessaging$$ExternalSyntheticLambda14.start(D8$$SyntheticClass:0)
+                                                                                                    	at com.google.firebase.messaging.RequestDeduplicator.getOrStartGetTokenRequest(RequestDeduplicator.java:67)
+                                                                                                    	at com.google.firebase.messaging.FirebaseMessaging.blockingGetToken(FirebaseMessaging.java:646)
+                                                                                                    	at com.google.firebase.messaging.SyncTask.maybeRefreshToken(SyncTask.java:123)
+                                                                                                    	at com.google.firebase.messaging.SyncTask.run(SyncTask.java:93)
+                                                                                                    	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:524)
+                                                                                                    	at java.util.concurrent.FutureTask.run(FutureTask.java:317)
+                                                                                                    	at java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.run(ScheduledThreadPoolExecutor.java:348)
+                                                                                                    	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1156)
+                                                                                                    	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:651)
+                                                                                                    	at com.google.android.gms.common.util.concurrent.zza.run(com.google.android.gms:play-services-basement@@18.3.0:2)
+                                                                                                    	at java.lang.Thread.run(Thread.java:1119)
+                                                                                                    Caused by: com.google.firebase.installations.FirebaseInstallationsException: Firebase Installations Service is unavailable. Please try again later.
+                                                                                                    	at com.google.firebase.installations.remote.FirebaseInstallationServiceClient.createFirebaseInstallation(FirebaseInstallationServiceClient.java:209)
+                                                                                                    	at com.google.firebase.installations.FirebaseInstallations.registerFidWithServer(FirebaseInstallations.java:533)
+                                                                                                    	at com.google.firebase.installations.FirebaseInstallations.doNetworkCallIfNecessary(FirebaseInstallations.java:387)
+                                                                                                    	at com.google.firebase.installations.FirebaseInstallations.lambda$doRegistrationOrRefresh$3$com-google-firebase-installations-FirebaseInstallations(FirebaseInstallations.java:372)
+                                                                                                    	at com.google.firebase.installations.FirebaseInstallations$$ExternalSyntheticLambda1.run(D8$$SyntheticClass:0)
+                                                                                                    	at com.google.firebase.concurrent.SequentialExecutor$1.run(SequentialExecutor.java:117)
+                                                                                                    	at com.google.firebase.concurrent.SequentialExecutor$QueueWorker.workOnQueue(SequentialExecutor.java:229)
+                                                                                                    	at com.google.firebase.concurrent.SequentialExecutor$QueueWorker.run(SequentialExecutor.java:174)
+                                                                                                    	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1156)
+                                                                                                    	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:651)
+                                                                                                    	at com.google.firebase.concurrent.CustomThreadFactory.lambda$newThread$0$com-google-firebase-concurrent-CustomThreadFactory(CustomThreadFactory.java:47)
+                                                                                                    	at com.google.firebase.concurrent.CustomThreadFactory$$ExternalSyntheticLambda0.run(D8$$SyntheticClass:0)
+                                                                                                    	... 1 more
+2025-11-29 06:30:58.454 12534-12534 CdcForegroundService    com.cdccreditsmart.app               I  ✅ Foreground Service ativo (Android 12+)
+2025-11-29 06:30:58.471 12534-13267 CdcForegroundService    com.cdccreditsmart.app               I  🔧 ========================================
+2025-11-29 06:30:58.471 12534-13267 CdcForegroundService    com.cdccreditsmart.app               I  🔧 INICIANDO initializeServices()...
+2025-11-29 06:30:58.471 12534-13267 CdcForegroundService    com.cdccreditsmart.app               I  🔧 ========================================
+2025-11-29 06:30:58.491 12534-12534 BootInterceptor         com.cdccreditsmart.app               I  ========================================
+2025-11-29 06:30:58.505 12534-12534 BootInterceptor         com.cdccreditsmart.app               I  🔄 BOOT EVENT DETECTADO
+2025-11-29 06:30:58.505 12534-12534 BootInterceptor         com.cdccreditsmart.app               I  ========================================

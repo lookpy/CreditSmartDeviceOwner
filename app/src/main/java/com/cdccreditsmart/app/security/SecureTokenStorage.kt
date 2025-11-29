@@ -1,6 +1,7 @@
 package com.cdccreditsmart.app.security
 
 import android.content.Context
+import android.os.Build
 import android.util.Base64
 import android.util.Log
 import androidx.security.crypto.EncryptedSharedPreferences
@@ -9,7 +10,7 @@ import com.cdccreditsmart.app.storage.ContractCodeStorage
 import java.security.MessageDigest
 import java.security.SecureRandom
 
-class SecureTokenStorage(context: Context) {
+class SecureTokenStorage(private val context: Context) {
 
     companion object {
         private const val TAG = "SecureTokenStorage"
@@ -157,6 +158,24 @@ class SecureTokenStorage(context: Context) {
      * 
      * Retorna null se nenhum identificador disponível
      */
+    /**
+     * Verifica se o app está rodando em um usuário secundário gerenciado
+     * Usuários secundários não possuem dados de enrollment (existem apenas no usuário primário)
+     */
+    private fun isSecondaryManagedUser(): Boolean {
+        return try {
+            val userHandle = android.os.Process.myUserHandle()
+            val userId = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                userHandle.hashCode()
+            } else {
+                0
+            }
+            userId != 0
+        } catch (e: Exception) {
+            false
+        }
+    }
+    
     fun getMdmIdentifier(): String? {
         return try {
             // 1ª prioridade: IMEI
@@ -180,7 +199,12 @@ class SecureTokenStorage(context: Context) {
                 return deviceId
             }
             
-            Log.e(TAG, "❌ Nenhum identificador MDM disponível!")
+            // Em usuário secundário, é esperado não ter identificadores (dados estão no usuário primário)
+            if (isSecondaryManagedUser()) {
+                Log.d(TAG, "📱 Usuário secundário gerenciado - identificadores MDM no usuário primário")
+            } else {
+                Log.e(TAG, "❌ Nenhum identificador MDM disponível!")
+            }
             null
         } catch (e: Exception) {
             Log.e(TAG, "Error getting MDM identifier", e)
