@@ -183,24 +183,107 @@ class SelfDestructManager(private val context: Context) {
         }
     }
     
+    /**
+     * Valida o código de confirmação para desinstalação remota
+     * 
+     * Aceita dois modos de validação:
+     * 
+     * 1. MODO SIMPLIFICADO (1 passo) - Recomendado:
+     *    - Backend gera: SHA256(serialNumber + "YYYY-MM-DD")
+     *    - App valida usando a mesma fórmula
+     *    - Aceita data atual ou dia anterior (para evitar problemas de timezone)
+     * 
+     * 2. MODO LEGACY (2 passos):
+     *    - Backend primeiro envia CONFIGURE_UNINSTALL_CODE
+     *    - Depois envia UNINSTALL_APP com o mesmo código
+     */
     private fun validateConfirmationCode(code: String): Boolean {
         try {
-            val storedHash = tokenStorage.getUninstallConfirmationHash()
-            
-            if (storedHash == null) {
-                Log.e(TAG, "❌ Nenhum hash de confirmação armazenado - rejeitar comando")
-                return false
+            // Primeiro, tentar validação simplificada (1 passo)
+            if (validateSimplifiedCode(code)) {
+                Log.i(TAG, "✅ Código validado via modo simplificado (1 passo)")
+                return true
             }
             
-            val receivedHash = MessageDigest.getInstance("SHA-256")
-                .digest(code.toByteArray())
-                .joinToString("") { "%02x".format(it) }
+            // Fallback: validação legacy (2 passos)
+            val storedHash = tokenStorage.getUninstallConfirmationHash()
             
-            return constantTimeStringEquals(storedHash, receivedHash)
+            if (storedHash != null) {
+                val receivedHash = MessageDigest.getInstance("SHA-256")
+                    .digest(code.toByteArray())
+                    .joinToString("") { "%02x".format(it) }
+                
+                if (constantTimeStringEquals(storedHash, receivedHash)) {
+                    Log.i(TAG, "✅ Código validado via modo legacy (2 passos)")
+                    return true
+                }
+            }
+            
+            Log.e(TAG, "❌ Código de confirmação inválido")
+            Log.e(TAG, "   Modo simplificado: falhou")
+            Log.e(TAG, "   Modo legacy: ${if (storedHash != null) "hash não corresponde" else "nenhum hash armazenado"}")
+            return false
+            
         } catch (e: Exception) {
             Log.e(TAG, "❌ Erro na validação do código de confirmação", e)
             return false
         }
+    }
+    
+    /**
+     * Validação simplificada: SHA256(serialNumber + "YYYY-MM-DD")
+     * 
+     * Aceita data atual ou dia anterior para evitar problemas de timezone
+     */
+    private fun validateSimplifiedCode(code: String): Boolean {
+        try {
+            if (code.isEmpty()) {
+                return false
+            }
+            
+            val serialNumber = tokenStorage.getMdmIdentifier()
+            if (serialNumber.isNullOrEmpty()) {
+                Log.w(TAG, "⚠️ SerialNumber não disponível para validação simplificada")
+                return false
+            }
+            
+            val dateFormat = java.text.SimpleDateFormat("yyyy-MM-dd", java.util.Locale.US)
+            dateFormat.timeZone = java.util.TimeZone.getTimeZone("UTC")
+            
+            // Tentar data atual
+            val today = dateFormat.format(java.util.Date())
+            val expectedHashToday = generateSimplifiedHash(serialNumber, today)
+            
+            if (constantTimeStringEquals(code.lowercase(), expectedHashToday)) {
+                Log.d(TAG, "✅ Código corresponde à data de hoje ($today)")
+                return true
+            }
+            
+            // Tentar dia anterior (para evitar problemas de timezone)
+            val yesterday = dateFormat.format(java.util.Date(System.currentTimeMillis() - 24 * 60 * 60 * 1000))
+            val expectedHashYesterday = generateSimplifiedHash(serialNumber, yesterday)
+            
+            if (constantTimeStringEquals(code.lowercase(), expectedHashYesterday)) {
+                Log.d(TAG, "✅ Código corresponde à data de ontem ($yesterday)")
+                return true
+            }
+            
+            return false
+            
+        } catch (e: Exception) {
+            Log.e(TAG, "Erro na validação simplificada: ${e.message}")
+            return false
+        }
+    }
+    
+    /**
+     * Gera hash simplificado: SHA256(serialNumber + date)
+     */
+    private fun generateSimplifiedHash(serialNumber: String, date: String): String {
+        val input = "$serialNumber$date"
+        return MessageDigest.getInstance("SHA-256")
+            .digest(input.toByteArray())
+            .joinToString("") { "%02x".format(it) }
     }
     
     private fun constantTimeStringEquals(a: String, b: String): Boolean {
