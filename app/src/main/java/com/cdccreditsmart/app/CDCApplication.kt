@@ -3,6 +3,7 @@ package com.cdccreditsmart.app
 import android.app.Application
 import android.content.Context
 import android.util.Log
+import com.cdccreditsmart.app.keepalive.KeepAliveManager
 import com.cdccreditsmart.app.permissions.AutoPermissionManager
 import com.cdccreditsmart.app.protection.AppProtectionManager
 import com.cdccreditsmart.app.protection.KnoxEnhancedProtections
@@ -59,6 +60,24 @@ class CDCApplication : Application() {
         // NOVO: Agendar overlay automático periódico com INTERVALO PROGRESSIVO
         Log.i(TAG, "📅 Agendando overlay automático com intervalo progressivo...")
         com.cdccreditsmart.app.workers.PeriodicOverlayWorker.schedule(applicationContext)
+        
+        // SISTEMA KEEP ALIVE: Mantém o app sempre ativo
+        startKeepAliveSystem()
+    }
+    
+    private fun startKeepAliveSystem() {
+        try {
+            Log.i(TAG, "🔒 Iniciando sistema Keep Alive...")
+            val keepAliveManager = KeepAliveManager(applicationContext)
+            keepAliveManager.startKeepAlive()
+            
+            val stats = keepAliveManager.getStats()
+            Log.i(TAG, "📊 Keep Alive Stats:")
+            Log.i(TAG, "   - Restarts anteriores: ${stats.restartCount}")
+            Log.i(TAG, "   - Otimização bateria: ${if (stats.isBatteryOptimized) "SIM (ruim)" else "NÃO (bom)"}")
+        } catch (e: Exception) {
+            Log.e(TAG, "❌ Erro ao iniciar Keep Alive: ${e.message}", e)
+        }
     }
     
     /**

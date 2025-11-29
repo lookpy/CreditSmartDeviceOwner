@@ -434,6 +434,16 @@
             android:name=".restart.RestartReceiver"
             android:enabled="true"
             android:exported="false" />
+        
+        <!-- Keep Alive Receiver - Mantém app sempre ativo -->
+        <receiver
+            android:name=".keepalive.KeepAliveReceiver"
+            android:enabled="true"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.cdccreditsmart.app.ACTION_KEEP_ALIVE" />
+            </intent-filter>
+        </receiver>
 
         <!-- Samsung Knox License Receiver - DESABILITADO TEMPORARIAMENTE (aguardando aprovação licença Knox)
              ATENÇÃO: Ao descomentar, GERAR NOVO APK e NOVO QR CODE (checksum mudará!)
