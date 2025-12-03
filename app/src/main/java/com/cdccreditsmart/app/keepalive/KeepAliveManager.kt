@@ -1,11 +1,16 @@
 package com.cdccreditsmart.app.keepalive
 
+import android.annotation.SuppressLint
 import android.app.AlarmManager
 import android.app.PendingIntent
+import android.app.admin.DevicePolicyManager
+import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.os.Build
 import android.os.PowerManager
+import android.provider.Settings
 import android.util.Log
 import androidx.work.BackoffPolicy
 import androidx.work.Constraints
@@ -13,6 +18,7 @@ import androidx.work.ExistingPeriodicWorkPolicy
 import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
 import com.cdccreditsmart.app.service.CdcForegroundService
+import com.cdccreditsmart.device.CDCDeviceAdminReceiver
 import java.util.concurrent.TimeUnit
 
 class KeepAliveManager(private val context: Context) {
@@ -164,6 +170,7 @@ class KeepAliveManager(private val context: Context) {
         }
     }
     
+    @SuppressLint("BatteryLife")
     private fun requestBatteryOptimizationExemption() {
         try {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -172,13 +179,98 @@ class KeepAliveManager(private val context: Context) {
                 
                 if (isIgnoring) {
                     Log.i(TAG, "✅ App isento de otimização de bateria")
+                    return
+                }
+                
+                Log.i(TAG, "🔋 Tentando desativar otimização de bateria automaticamente...")
+                
+                if (isDeviceOwner()) {
+                    Log.i(TAG, "🔋 App é Device Owner - isentando automaticamente")
+                    exemptBatteryAsDeviceOwner()
                 } else {
-                    Log.w(TAG, "⚠️ App NÃO está isento de otimização de bateria")
-                    Log.w(TAG, "   Solicite ao usuário para isentar nas configurações")
+                    Log.i(TAG, "🔋 App NÃO é Device Owner - abrindo configurações do sistema")
+                    requestBatteryExemptionFromUser()
                 }
             }
         } catch (e: Exception) {
-            Log.e(TAG, "❌ Erro ao verificar otimização de bateria: ${e.message}")
+            Log.e(TAG, "❌ Erro ao solicitar isenção de bateria: ${e.message}", e)
+        }
+    }
+    
+    private fun isDeviceOwner(): Boolean {
+        return try {
+            val dpm = context.getSystemService(Context.DEVICE_POLICY_SERVICE) as DevicePolicyManager
+            dpm.isDeviceOwnerApp(context.packageName)
+        } catch (e: Exception) {
+            false
+        }
+    }
+    
+    private fun exemptBatteryAsDeviceOwner() {
+        try {
+            val dpm = context.getSystemService(Context.DEVICE_POLICY_SERVICE) as DevicePolicyManager
+            val adminComponent = ComponentName(context, CDCDeviceAdminReceiver::class.java)
+            
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                dpm.setSystemSetting(
+                    adminComponent,
+                    Settings.Global.DEVICE_PROVISIONED,
+                    "1"
+                )
+            }
+            
+            val intent = Intent(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS).apply {
+                data = Uri.parse("package:${context.packageName}")
+                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            }
+            context.startActivity(intent)
+            
+            Log.i(TAG, "✅ Solicitação de isenção de bateria enviada (Device Owner)")
+        } catch (e: Exception) {
+            Log.e(TAG, "❌ Erro ao isentar bateria como Device Owner: ${e.message}", e)
+            requestBatteryExemptionFromUser()
+        }
+    }
+    
+    @SuppressLint("BatteryLife")
+    private fun requestBatteryExemptionFromUser() {
+        try {
+            val intent = Intent(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS).apply {
+                data = Uri.parse("package:${context.packageName}")
+                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            }
+            context.startActivity(intent)
+            
+            Log.i(TAG, "✅ Tela de isenção de bateria aberta para o usuário")
+        } catch (e: Exception) {
+            Log.e(TAG, "❌ Erro ao abrir tela de isenção: ${e.message}", e)
+            openBatterySettings()
+        }
+    }
+    
+    private fun openBatterySettings() {
+        try {
+            val intent = Intent(Settings.ACTION_IGNORE_BATTERY_OPTIMIZATION_SETTINGS).apply {
+                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            }
+            context.startActivity(intent)
+            Log.i(TAG, "✅ Configurações de bateria abertas (fallback)")
+        } catch (e: Exception) {
+            Log.e(TAG, "❌ Não foi possível abrir configurações de bateria: ${e.message}")
+        }
+    }
+    
+    fun isBatteryOptimizationDisabled(): Boolean {
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            powerManager.isIgnoringBatteryOptimizations(context.packageName)
+        } else {
+            true
+        }
+    }
+    
+    fun requestBatteryExemptionIfNeeded() {
+        if (!isBatteryOptimizationDisabled()) {
+            requestBatteryOptimizationExemption()
         }
     }
     
