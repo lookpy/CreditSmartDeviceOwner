@@ -277,8 +277,8 @@ class CdcForegroundService : Service(), ScreenStateListener {
     
     private fun createNotificationChannel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val name = "Credit Smart - Serviço"
-            val descriptionText = "Mantém o app rodando em segundo plano"
+            val name = "Credit Smart - Proteção"
+            val descriptionText = "Proteção ativa do seu dispositivo"
             val importance = NotificationManager.IMPORTANCE_LOW
             
             val channel = NotificationChannel(CHANNEL_ID, name, importance).apply {
@@ -304,8 +304,8 @@ class CdcForegroundService : Service(), ScreenStateListener {
         )
         
         return NotificationCompat.Builder(this, CHANNEL_ID)
-            .setContentTitle("Credit Smart Ativo")
-            .setContentText("Monitorando dispositivo em segundo plano")
+            .setContentTitle("Credit Smart")
+            .setContentText("Protegendo seu dispositivo")
             .setSmallIcon(android.R.drawable.ic_dialog_info)
             .setOngoing(true)
             .setPriority(NotificationCompat.PRIORITY_LOW)
