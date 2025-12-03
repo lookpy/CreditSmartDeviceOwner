@@ -1,0 +1,284 @@
+--------- beginning of crash
+--------- beginning of system
+--------- beginning of main
+---------------------------- PROCESS STARTED (6953) for package com.cdccreditsmart.app ----------------------------
+2025-12-03 10:39:02.122  6953-6953  nativeloader            com.cdccreditsmart.app               D  Configuring clns-7 for other apk /data/app/~~uborrdFBLn5KmSH_e-rtCQ==/com.cdccreditsmart.app-k5rmd5BKLz4jOXXRrYyiRg==/base.apk. target_sdk_version=35, uses_libraries=, library_path=/data/app/~~uborrdFBLn5KmSH_e-rtCQ==/com.cdccreditsmart.app-k5rmd5BKLz4jOXXRrYyiRg==/lib/arm64:/data/app/~~uborrdFBLn5KmSH_e-rtCQ==/com.cdccreditsmart.app-k5rmd5BKLz4jOXXRrYyiRg==/base.apk!/lib/arm64-v8a, permitted_path=/data:/mnt/expand:/data/user/0/com.cdccreditsmart.app
+2025-12-03 10:39:02.135  6953-6953  CompatChangeReporter    com.cdccreditsmart.app               D  Compat change id reported: 279646685; UID 10266; state: ENABLED
+2025-12-03 10:39:02.136  6953-6953  GraphicsEnvironment     com.cdccreditsmart.app               V  Currently set values for:
+2025-12-03 10:39:02.136  6953-6953  GraphicsEnvironment     com.cdccreditsmart.app               V    angle_gl_driver_selection_pkgs=[]
+2025-12-03 10:39:02.136  6953-6953  GraphicsEnvironment     com.cdccreditsmart.app               V    angle_gl_driver_selection_values=[]
+2025-12-03 10:39:02.136  6953-6953  GraphicsEnvironment     com.cdccreditsmart.app               V  Global.Settings values are invalid: number of packages: 0, number of values: 0
+2025-12-03 10:39:02.136  6953-6953  GraphicsEnvironment     com.cdccreditsmart.app               V  Neither updatable production driver nor prerelease driver is supported.
+2025-12-03 10:39:02.141  6953-6953  LoadedApk               com.cdccreditsmart.app               I  No resource references to update in package com.transsion.theme.icon
+2025-12-03 10:39:02.175  6953-6953  os.SingleLiceFactory    com.cdccreditsmart.app               D  using android.app.IActivityThreadLice$DefaultImpl@be697b3 instead of com.transsion.activityembedding.ActivityEmbeddingLiceFactory  from android.app.IActivityThreadLice
+2025-12-03 10:39:02.240  6953-6953  FirebaseApp             com.cdccreditsmart.app               I  Device unlocked: initializing all Firebase APIs for app [DEFAULT]
+2025-12-03 10:39:02.275  6953-6953  FirebaseInitProvider    com.cdccreditsmart.app               I  FirebaseApp initialization successful
+2025-12-03 10:39:02.294  6953-6953  MbrainDebugManagerImpl  com.cdccreditsmart.app               D  getService failed
+2025-12-03 10:39:02.296  6953-6953  WM-WrkMgrInitializer    com.cdccreditsmart.app               D  Initializing WorkManager with default configuration.
+2025-12-03 10:39:02.306  6953-18575 creditsmart.app         com.cdccreditsmart.app               W  ClassLoaderContext classpath size mismatch. expected=1, found=0 (DLC[];PCL[base.apk*1653684527]{PCL[/system/framework/org.apache.http.legacy.jar*437079508]#PCL[/system/framework/com.android.media.remotedisplay.jar*2042759013]#PCL[/system/framework/com.android.location.provider.jar*3414091812]#PCL[/system_ext/framework/androidx.window.extensions.jar*982563657]#PCL[/system_ext/framework/androidx.window.sidecar.jar*391518838]} | DLC[];PCL[])
+2025-12-03 10:39:02.313  6953-18575 DynamiteModule          com.cdccreditsmart.app               I  Considering local module com.google.android.gms.measurement.dynamite:127 and remote module com.google.android.gms.measurement.dynamite:167
+2025-12-03 10:39:02.313  6953-18575 DynamiteModule          com.cdccreditsmart.app               I  Selected remote version of com.google.android.gms.measurement.dynamite, version >= 167
+2025-12-03 10:39:02.313  6953-18575 DynamiteModule          com.cdccreditsmart.app               V  Dynamite loader version >= 2, using loadModule2NoCrashUtils
+2025-12-03 10:39:02.343  6953-18575 System                  com.cdccreditsmart.app               W  ClassLoader referenced unknown path: 
+2025-12-03 10:39:02.344  6953-18575 nativeloader            com.cdccreditsmart.app               D  Configuring clns-8 for other apk . target_sdk_version=36, uses_libraries=, library_path=/data/app/~~Vy2q4UVBTGGfjmyq3j_-SQ==/com.google.android.gms-95BWGBdBs06teY1kmvy6nA==/lib/arm64:/data/app/~~Vy2q4UVBTGGfjmyq3j_-SQ==/com.google.android.gms-95BWGBdBs06teY1kmvy6nA==/base.apk!/lib/arm64-v8a, permitted_path=/data:/mnt/expand:/data/user/0/com.google.android.gms
+2025-12-03 10:39:02.363  6953-18575 creditsmart.app         com.cdccreditsmart.app               W  ClassLoaderContext classpath element checksum mismatch. expected=1653684527, found=1014345431 (DLC[];PCL[base.apk*1653684527]{PCL[/system/framework/org.apache.http.legacy.jar*437079508]#PCL[/system/framework/com.android.media.remotedisplay.jar*2042759013]#PCL[/system/framework/com.android.location.provider.jar*3414091812]#PCL[/system_ext/framework/androidx.window.extensions.jar*982563657]#PCL[/system_ext/framework/androidx.window.sidecar.jar*391518838]} | DLC[];PCL[/data/app/~~uborrdFBLn5KmSH_e-rtCQ==/com.cdccreditsmart.app-k5rmd5BKLz4jOXXRrYyiRg==/base.apk*1014345431])
+2025-12-03 10:39:02.364  6953-6953  WM-PackageManagerHelper com.cdccreditsmart.app               D  androidx.work.impl.background.systemjob.SystemJobService enabled
+2025-12-03 10:39:02.364  6953-6953  WM-Schedulers           com.cdccreditsmart.app               D  Created SystemJobScheduler and enabled SystemJobService
+2025-12-03 10:39:02.373  6953-6953  CrashHandler            com.cdccreditsmart.app               I  ✅ Global crash handler instalado
+2025-12-03 10:39:02.373  6953-6953  CDCApplication          com.cdccreditsmart.app               I  🚀 CDC Credit Smart Application iniciando...
+2025-12-03 10:39:02.373  6953-6953  CDCApplication          com.cdccreditsmart.app               I  ========================================
+2025-12-03 10:39:02.373  6953-6953  CDCApplication          com.cdccreditsmart.app               I  🔐 Verificando status de Device Owner...
+2025-12-03 10:39:02.376  6953-6953  CompatChangeReporter    com.cdccreditsmart.app               D  Compat change id reported: 307233716; UID 10266; state: ENABLED
+2025-12-03 10:39:02.376  6953-6953  CDCApplication          com.cdccreditsmart.app               I  Device Owner Status: ❌ NÃO
+2025-12-03 10:39:02.377  6953-6953  CDCApplication          com.cdccreditsmart.app               I  Package Name: com.cdccreditsmart.app
+2025-12-03 10:39:02.377  6953-6953  CDCApplication          com.cdccreditsmart.app               E  
+2025-12-03 10:39:02.377  6953-6953  CDCApplication          com.cdccreditsmart.app               E  ╔════════════════════════════════════════════════════════╗
+2025-12-03 10:39:02.377  6953-6953  CDCApplication          com.cdccreditsmart.app               E  ║  ⚠️  APP NÃO ESTÁ PROVISIONADO COMO DEVICE OWNER  ⚠️   ║
+2025-12-03 10:39:02.377  6953-6953  CDCApplication          com.cdccreditsmart.app               E  ╠════════════════════════════════════════════════════════╣
+2025-12-03 10:39:02.377  6953-6953  CDCApplication          com.cdccreditsmart.app               E  ║  O app precisa ser provisionado como Device Owner      ║
+2025-12-03 10:39:02.377  6953-6953  CDCApplication          com.cdccreditsmart.app               E  ║  ANTES de poder conceder permissões automaticamente.   ║
+2025-12-03 10:39:02.377  6953-6953  CDCApplication          com.cdccreditsmart.app               E  ║                                                        ║
+2025-12-03 10:39:02.377  6953-6953  CDCApplication          com.cdccreditsmart.app               E  ║  Provisione o dispositivo usando um dos métodos:       ║
+2025-12-03 10:39:02.377  6953-6953  CDCApplication          com.cdccreditsmart.app               E  ║  1. ADB: adb shell dpm set-device-owner ...           ║
+2025-12-03 10:39:02.377  6953-6953  CDCApplication          com.cdccreditsmart.app               E  ║  2. QR Code durante setup inicial                      ║
+2025-12-03 10:39:02.377  6953-6953  CDCApplication          com.cdccreditsmart.app               E  ║  3. NFC durante setup inicial                          ║
+2025-12-03 10:39:02.377  6953-6953  CDCApplication          com.cdccreditsmart.app               E  ║  4. Samsung Knox Mobile Enrollment                     ║
+2025-12-03 10:39:02.377  6953-6953  CDCApplication          com.cdccreditsmart.app               E  ╚════════════════════════════════════════════════════════╝
+2025-12-03 10:39:02.377  6953-6953  CDCApplication          com.cdccreditsmart.app               E  
+2025-12-03 10:39:02.377  6953-6953  CDCApplication          com.cdccreditsmart.app               I  ========================================
+2025-12-03 10:39:02.377  6953-6953  CDCApplication          com.cdccreditsmart.app               E  
+2025-12-03 10:39:02.377  6953-6953  CDCApplication          com.cdccreditsmart.app               E  ╔════════════════════════════════════════════════════════════╗
+2025-12-03 10:39:02.377  6953-6953  CDCApplication          com.cdccreditsmart.app               E  ║  ⚠️  CRÍTICO: APP NÃO É DEVICE OWNER!                     ║
+2025-12-03 10:39:02.377  6953-6953  CDCApplication          com.cdccreditsmart.app               E  ║  PROTEÇÕES NÃO SERÃO APLICADAS!                            ║
+2025-12-03 10:39:02.377  6953-6953  CDCApplication          com.cdccreditsmart.app               E  ║  Factory reset, desinstalação, etc DESBLOQUEADOS          ║
+2025-12-03 10:39:02.377  6953-6953  CDCApplication          com.cdccreditsmart.app               E  ╚════════════════════════════════════════════════════════════╝
+2025-12-03 10:39:02.377  6953-6953  CDCApplication          com.cdccreditsmart.app               E  
+2025-12-03 10:39:02.378  6953-6953  TamperDetection         com.cdccreditsmart.app               I  ========================================
+2025-12-03 10:39:02.378  6953-6953  TamperDetection         com.cdccreditsmart.app               I  🔍 VERIFICANDO INTEGRIDADE DO DISPOSITIVO
+2025-12-03 10:39:02.378  6953-6953  TamperDetection         com.cdccreditsmart.app               I  ========================================
+2025-12-03 10:39:02.379  6953-18595 CompatChangeReporter    com.cdccreditsmart.app               D  Compat change id reported: 312399441; UID 10266; state: ENABLED
+2025-12-03 10:39:02.405  6953-18595 TranClassInfo           com.cdccreditsmart.app               D  instance successfully. com.transsion.hubcore.database.sqlite.TranSQLiteDatabaseImpl@1c9092f from com.transsion.hubcore.database.sqlite.ITranSQLiteDatabase
+2025-12-03 10:39:02.406  6953-18595 TranClassInfo           com.cdccreditsmart.app               D  instance successfully. com.transsion.hubcore.spdopts.others.implement.TranSQLiteDatabaseComponentImpl@cbf6b3c from com.transsion.hubcore.spdcomponent.ITranSQLiteDatabaseComponent
+2025-12-03 10:39:02.428  6953-18599 creditsmart.app         com.cdccreditsmart.app               I  hiddenapi: Accessing hidden method Ldalvik/system/VMStack;->getStackClass2()Ljava/lang/Class; (runtime_flags=0, domain=core-platform, api=unsupported) from Lm7/aox; (domain=app) using reflection: allowed
+2025-12-03 10:39:02.459  6953-18598 creditsmart.app         com.cdccreditsmart.app               E  No package ID 6a found for resource ID 0x6a0b0013.
+2025-12-03 10:39:02.461  6953-18598 FA                      com.cdccreditsmart.app               I  App measurement initialized, version: 145001
+2025-12-03 10:39:02.461  6953-18598 FA                      com.cdccreditsmart.app               I  To enable debug logging run: adb shell setprop log.tag.FA VERBOSE
+2025-12-03 10:39:02.461  6953-18598 FA                      com.cdccreditsmart.app               I  To enable faster debug mode event logging run:
+                                                                                                      adb shell setprop debug.firebase.analytics.app com.cdccreditsmart.app
+2025-12-03 10:39:02.517  6953-18598 FA                      com.cdccreditsmart.app               I  Tag Manager is not found and thus will not be used
+2025-12-03 10:39:02.608  6953-6953  TamperDetection         com.cdccreditsmart.app               I  ✅ Primeira instalação detectada
+2025-12-03 10:39:02.608  6953-6953  TamperDetection         com.cdccreditsmart.app               I     Token e deviceId não existem - app nunca foi pareado
+2025-12-03 10:39:02.608  6953-6953  TamperDetection         com.cdccreditsmart.app               I  ========================================
+2025-12-03 10:39:02.617  6953-6953  TamperDetection         com.cdccreditsmart.app               I  ✅ Device fingerprint criado: CDC_4533****
+2025-12-03 10:39:02.617  6953-6953  TamperDetection         com.cdccreditsmart.app               I  
+2025-12-03 10:39:02.617  6953-6953  TamperDetection         com.cdccreditsmart.app               I  ╔════════════════════════════════════════════════════════╗
+2025-12-03 10:39:02.617  6953-6953  TamperDetection         com.cdccreditsmart.app               I  ║    📡 REPORTAR BOOT AO BACKEND                        ║
+2025-12-03 10:39:02.617  6953-6953  TamperDetection         com.cdccreditsmart.app               I  ╠════════════════════════════════════════════════════════╣
+2025-12-03 10:39:02.617  6953-6953  TamperDetection         com.cdccreditsmart.app               I  ║  Device Fingerprint: CDC_45331707****      ║
+2025-12-03 10:39:02.617  6953-6953  TamperDetection         com.cdccreditsmart.app               I  ║  Boot Timestamp: 1764769142617          ║
+2025-12-03 10:39:02.617  6953-6953  TamperDetection         com.cdccreditsmart.app               I  ║                                                        ║
+2025-12-03 10:39:02.617  6953-6953  TamperDetection         com.cdccreditsmart.app               I  ║  Backend detectará factory reset comparando:          ║
+2025-12-03 10:39:02.617  6953-6953  TamperDetection         com.cdccreditsmart.app               I  ║  • Fingerprint histórico vs atual                     ║
+2025-12-03 10:39:02.617  6953-6953  TamperDetection         com.cdccreditsmart.app               I  ║  • Timestamp do último boot vs agora                  ║
+2025-12-03 10:39:02.617  6953-6953  TamperDetection         com.cdccreditsmart.app               I  ║  • Token válido vs ausente                            ║
+2025-12-03 10:39:02.617  6953-6953  TamperDetection         com.cdccreditsmart.app               I  ╚════════════════════════════════════════════════════════╝
+2025-12-03 10:39:02.617  6953-6953  TamperDetection         com.cdccreditsmart.app               I  
+2025-12-03 10:39:02.617  6953-6953  TamperDetection         com.cdccreditsmart.app               I  ⚠️ TODO: Implementar POST /api/security/device-boot
+2025-12-03 10:39:02.620  6953-18604 CDCApplication          com.cdccreditsmart.app               I  🔒 Verificando status do SIM no boot da aplicação...
+2025-12-03 10:39:02.624  6953-18604 SimSwapManager          com.cdccreditsmart.app               I  ========================================
+2025-12-03 10:39:02.624  6953-18604 SimSwapManager          com.cdccreditsmart.app               I  🔒 SIM SWAP: Iniciando verificação de status do SIM
+2025-12-03 10:39:02.624  6953-18604 SimSwapManager          com.cdccreditsmart.app               I  ========================================
+2025-12-03 10:39:02.629  6953-18604 SimSwapDetector         com.cdccreditsmart.app               E  🔒 SIM SWAP: Permissão READ_PHONE_STATE NÃO CONCEDIDA!
+2025-12-03 10:39:02.629  6953-18604 SimSwapManager          com.cdccreditsmart.app               E  🔒 SIM SWAP: Sem permissão READ_PHONE_STATE - verificação cancelada
+2025-12-03 10:39:02.629  6953-18604 SimSwapManager          com.cdccreditsmart.app               I  ========================================
+2025-12-03 10:39:02.630  6953-18606 CDCApplication          com.cdccreditsmart.app               W  ⚠️ Verificação de SIM swap falhou ou encontrou problemas
+2025-12-03 10:39:02.681  6953-6953  ContractCodeStorage     com.cdccreditsmart.app               D  Retrieving contract code from storage
+2025-12-03 10:39:02.851  6953-6953  ContractCodeStorage     com.cdccreditsmart.app               D  Storage verification: 0 valid, 0 tampered, 7 missing
+2025-12-03 10:39:02.851  6953-6953  ContractCodeStorage     com.cdccreditsmart.app               W  No valid contract code found in any location
+2025-12-03 10:39:02.852  6953-6953  CDCApplication          com.cdccreditsmart.app               I  ⏸️ Sem tokens - aguardando pairing para iniciar serviço MDM
+2025-12-03 10:39:02.868  6953-6953  AutoBlockingWorker      com.cdccreditsmart.app               I  ✅ Verificação automática de bloqueio agendada (diariamente às 00:00)
+2025-12-03 10:39:02.868  6953-6953  AutoBlockingWorker      com.cdccreditsmart.app               I     Próxima execução em: 800 minutos
+2025-12-03 10:39:02.868  6953-6953  CDCApplication          com.cdccreditsmart.app               I  📅 Agendando overlay automático com intervalo progressivo...
+2025-12-03 10:39:02.871  6953-6953  PeriodicOverlayWorker   com.cdccreditsmart.app               I  📅 Agendando overlay automático com INTERVALO PROGRESSIVO
+2025-12-03 10:39:02.871  6953-6953  PeriodicOverlayWorker   com.cdccreditsmart.app               I     1-4 dias de atraso: a cada 10 minutos
+2025-12-03 10:39:02.871  6953-6953  PeriodicOverlayWorker   com.cdccreditsmart.app               I     5-14 dias de atraso: a cada 5 minutos
+2025-12-03 10:39:02.871  6953-6953  PeriodicOverlayWorker   com.cdccreditsmart.app               I     15+ dias de atraso: a cada 3 minutos
+2025-12-03 10:39:02.871  6953-6953  WM-WorkSpec             com.cdccreditsmart.app               W  Interval duration lesser than minimum allowed value; Changed to 900000
+2025-12-03 10:39:02.871  6953-6953  WM-WorkSpec             com.cdccreditsmart.app               W  Flex duration lesser than minimum allowed value; Changed to 300000
+2025-12-03 10:39:02.872  6953-6953  PeriodicOverlayWorker   com.cdccreditsmart.app               I  ✅ Overlay automático agendado com sucesso
+2025-12-03 10:39:02.872  6953-6953  CDCApplication          com.cdccreditsmart.app               I  🔒 Iniciando sistema Keep Alive...
+2025-12-03 10:39:02.872  6953-6953  KeepAliveManager        com.cdccreditsmart.app               I  🔒 ========================================
+2025-12-03 10:39:02.872  6953-6953  KeepAliveManager        com.cdccreditsmart.app               I  🔒 INICIANDO SISTEMA KEEP ALIVE
+2025-12-03 10:39:02.872  6953-6953  KeepAliveManager        com.cdccreditsmart.app               I  🔒 ========================================
+2025-12-03 10:39:02.873  6953-6953  KeepAliveManager        com.cdccreditsmart.app               I  ✅ ServiceWatchdogWorker agendado (15min)
+2025-12-03 10:39:02.875  6953-6953  KeepAliveManager        com.cdccreditsmart.app               I  ✅ AlarmManager wakeup agendado (10min)
+2025-12-03 10:39:02.876  6953-6953  KeepAliveManager        com.cdccreditsmart.app               W  ⚠️ App NÃO está isento de otimização de bateria
+2025-12-03 10:39:02.876  6953-6953  KeepAliveManager        com.cdccreditsmart.app               W     Solicite ao usuário para isentar nas configurações
+2025-12-03 10:39:02.876  6953-6953  KeepAliveManager        com.cdccreditsmart.app               I  🔒 Sistema Keep Alive ativo
+2025-12-03 10:39:02.876  6953-6953  KeepAliveManager        com.cdccreditsmart.app               I  🔒 - WorkManager: verificação a cada 15min
+2025-12-03 10:39:02.876  6953-6953  KeepAliveManager        com.cdccreditsmart.app               I  🔒 - AlarmManager: wakeup a cada 10min
+2025-12-03 10:39:02.876  6953-6953  KeepAliveManager        com.cdccreditsmart.app               I  🔒 ========================================
+2025-12-03 10:39:02.877  6953-6953  CDCApplication          com.cdccreditsmart.app               I  📊 Keep Alive Stats:
+2025-12-03 10:39:02.877  6953-6953  CDCApplication          com.cdccreditsmart.app               I     - Restarts anteriores: 0
+2025-12-03 10:39:02.877  6953-6953  CDCApplication          com.cdccreditsmart.app               I     - Otimização bateria: SIM (ruim)
+2025-12-03 10:39:02.893  6953-6953  nativeloader            com.cdccreditsmart.app               D  Load libpowerhalwrap_jni.so using system ns (caller=/system_ext/framework/mediatek-framework.jar): ok
+2025-12-03 10:39:02.893  6953-6953  PowerHalWrapper         com.cdccreditsmart.app               I  PowerHalWrapper.getInstance 
+2025-12-03 10:39:02.893  6953-6953  M-ProMotion             com.cdccreditsmart.app               I  M-ProMotion is disabled
+2025-12-03 10:39:02.899  6953-6953  TranVersion             com.cdccreditsmart.app               I  TranVersion static initializer: default = 35.3.9.1
+                                                                                                     debug = false, debug_version = 35.3.9.1
+2025-12-03 10:39:02.903  6953-6953  Choreographer           com.cdccreditsmart.app               I  Skipped 35 frames!  The application may be doing too much work on its main thread.
+2025-12-03 10:39:02.909  6953-18608 CompatChangeReporter    com.cdccreditsmart.app               D  Compat change id reported: 311402873; UID 10266; state: ENABLED
+2025-12-03 10:39:02.909  6953-18608 CompatChangeReporter    com.cdccreditsmart.app               D  Compat change id reported: 323349338; UID 10266; state: ENABLED
+2025-12-03 10:39:02.910  6953-18612 libMEOW                 com.cdccreditsmart.app               D  meow new tls: 0xb400007672b730e0
+2025-12-03 10:39:02.911  6953-18612 libMEOW                 com.cdccreditsmart.app               D  meow reload base cfg path: na
+2025-12-03 10:39:02.911  6953-18612 libMEOW                 com.cdccreditsmart.app               D  meow reload overlay cfg path: na
+2025-12-03 10:39:02.911  6953-18612 QT                      com.cdccreditsmart.app               W  qt_process_init() called
+2025-12-03 10:39:02.911  6953-18612 QT                      com.cdccreditsmart.app               E  [QT]file does not exist
+2025-12-03 10:39:02.911  6953-18612 QT                      com.cdccreditsmart.app               W  Support!!
+2025-12-03 10:39:02.914  6953-18612 libMEOW_gift            com.cdccreditsmart.app               I  open /data/performance/gift/arc.ini
+2025-12-03 10:39:02.915  6953-18612 QT                      com.cdccreditsmart.app               E  [QT]file does not exist
+2025-12-03 10:39:02.915  6953-18612 libMEOW                 com.cdccreditsmart.app               D  applied 1 plugins for [com.cdccreditsmart.app]:
+2025-12-03 10:39:02.915  6953-18612 libMEOW                 com.cdccreditsmart.app               D    plugin 1: [libMEOW_gift.so]: 0xb400007592aab840
+2025-12-03 10:39:02.916  6953-18612 libMEOW                 com.cdccreditsmart.app               D  rebuild call chain: 0xb400007672bb3120
+2025-12-03 10:39:02.916  6953-18612 libMEOW                 com.cdccreditsmart.app               D  meow delete tls: 0xb400007672b730e0
+2025-12-03 10:39:02.934  6953-6953  ActivityThread          com.cdccreditsmart.app               D  ++ activityComponent:com.cdccreditsmart.app/com.cdccreditsmart.app.presentation.MainActivity counts:1 ALEAK_CLEAR_SUPPORT:true
+2025-12-03 10:39:02.951  6953-6953  CompatChangeReporter    com.cdccreditsmart.app               D  Compat change id reported: 309578419; UID 10266; state: ENABLED
+2025-12-03 10:39:02.952  6953-6953  TranClassInfo           com.cdccreditsmart.app               D  instance successfully. com.transsion.hubcore.internal.TranInternalViewImpl@ef168ab from com.transsion.hubcore.internal.ITranInternalView
+2025-12-03 10:39:02.952  6953-6953  os.SingleLice           com.cdccreditsmart.app               D  instance successfully. com.transsion.whitenavigation.v1.WhiteNavigationLice@9efdb08 from com.transsion.whitenavigation.WhiteNavigationLiceFactory
+2025-12-03 10:39:02.952  6953-6953  os.SingleLiceFactory    com.cdccreditsmart.app               D  instance successfully. com.transsion.whitenavigation.v1.WhiteNavigationLice@9efdb08 from com.android.internal.IInternalViewLice
+2025-12-03 10:39:02.953  6953-6953  os.SingleLice           com.cdccreditsmart.app               D  instance successfully. com.transsion.screenshothelper.v1.ScreenShotHelperImplLice@ce2a1 from com.transsion.screenshothelper.ScreenShotHelperImplLiceFactory
+2025-12-03 10:39:02.953  6953-6953  os.SingleLiceFactory    com.cdccreditsmart.app               D  instance successfully. com.transsion.screenshothelper.v1.ScreenShotHelperImplLice@ce2a1 from com.android.internal.IInternalViewLice
+2025-12-03 10:39:02.953  6953-6953  os.SingleLiceFactory    com.cdccreditsmart.app               D  using com.android.internal.IInternalViewLice$DefaultImpl@c0fbcc6 instead of com.transsion.flamboyant.FlamboyantLiceFactory  from com.android.internal.IInternalViewLice
+2025-12-03 10:39:02.953  6953-6953  os.LiceInfo             com.cdccreditsmart.app               D  instance successfully. com.transsion.internal.InternalViewLice@55be487 from com.android.internal.IInternalViewLice
+2025-12-03 10:39:02.965  6953-6953  MainActivity            com.cdccreditsmart.app               I  ========================================
+2025-12-03 10:39:02.965  6953-6953  MainActivity            com.cdccreditsmart.app               I  📱 SOLICITANDO PERMISSÕES (NÃO DEVICE OWNER)
+2025-12-03 10:39:02.965  6953-6953  MainActivity            com.cdccreditsmart.app               I  ========================================
+2025-12-03 10:39:02.967  6953-18606 PersistentStateManager  com.cdccreditsmart.app               D  Nenhum estado local encontrado
+2025-12-03 10:39:02.967  6953-18606 PersistentStateManager  com.cdccreditsmart.app               D  🆕 Sem estado local - device novo ou pós factory reset
+2025-12-03 10:39:02.967  6953-18606 MainActivity            com.cdccreditsmart.app               I  🆕 Device nunca foi provisionado
+2025-12-03 10:39:02.969  6953-6953  MainActivity            com.cdccreditsmart.app               I  📋 Permissões a solicitar: 9
+2025-12-03 10:39:02.969  6953-6953  MainActivity            com.cdccreditsmart.app               D    • android.permission.READ_PHONE_STATE
+2025-12-03 10:39:02.969  6953-6953  MainActivity            com.cdccreditsmart.app               D    • android.permission.READ_CALL_LOG
+2025-12-03 10:39:02.969  6953-6953  MainActivity            com.cdccreditsmart.app               D    • android.permission.CALL_PHONE
+2025-12-03 10:39:02.969  6953-6953  MainActivity            com.cdccreditsmart.app               D    • android.permission.RECEIVE_SMS
+2025-12-03 10:39:02.969  6953-6953  MainActivity            com.cdccreditsmart.app               D    • android.permission.READ_SMS
+2025-12-03 10:39:02.969  6953-6953  MainActivity            com.cdccreditsmart.app               D    • android.permission.READ_CONTACTS
+2025-12-03 10:39:02.969  6953-6953  MainActivity            com.cdccreditsmart.app               D    • android.permission.ANSWER_PHONE_CALLS
+2025-12-03 10:39:02.969  6953-6953  MainActivity            com.cdccreditsmart.app               D    • android.permission.READ_PHONE_NUMBERS
+2025-12-03 10:39:02.969  6953-6953  MainActivity            com.cdccreditsmart.app               D    • android.permission.POST_NOTIFICATIONS
+2025-12-03 10:39:02.995  6953-18474 ActivityThreadLice      com.cdccreditsmart.app               D  received OSMessage 110001
+2025-12-03 10:39:02.995  6953-18474 ActivityThreadLice      com.cdccreditsmart.app               D  send OSMessage 110001 to [-1]
+2025-12-03 10:39:02.997  6953-18474 OSServiceManager        com.cdccreditsmart.app               D  update local os service os.activity from null to android.os.BinderProxy@aaba24d
+2025-12-03 10:39:03.014  6953-6953  TranClassInfo           com.cdccreditsmart.app               D  instance successfully. com.transsion.connectivity.linkbooming.TranMultilinkComponentImpl@db9fdf3 from com.transsion.hubcore.linkbooming.ITranMultilinkComponent
+2025-12-03 10:39:03.014  6953-18609 PowerHalWrapper         com.cdccreditsmart.app               I  PowerHalWrapper.getInstance 
+2025-12-03 10:39:03.016  6953-6953  ActivityThread          com.cdccreditsmart.app               D  handleResumeActivity#3 r.window=nulla.mFinished = falsewillBeVisible = true
+2025-12-03 10:39:03.016  6953-6953  ActivityThread          com.cdccreditsmart.app               D  handleResumeActivity#4 addView a.mVisibleFromClient=truea.mWindowAdded=falsedecor=DecorView@1aa28ae[]
+2025-12-03 10:39:03.016  6953-6953  ActivityThread          com.cdccreditsmart.app               D  handleResumeActivity#5 addView decor=DecorView@1aa28ae[]
+2025-12-03 10:39:03.020  6953-6953  libc                    com.cdccreditsmart.app               W  Access denied finding property "ro.vendor.tgpa_resolution_tuner"
+2025-12-03 10:39:03.023  6953-6953  libc                    com.cdccreditsmart.app               W  Access denied finding property "ro.vendor.scaler_version"
+2025-12-03 10:39:03.024  6953-6953  libc                    com.cdccreditsmart.app               W  Access denied finding property "ro.vendor.scaler_version"
+2025-12-03 10:39:03.032  6953-6953  VRI[MainActivity]       com.cdccreditsmart.app               D  hardware acceleration = true, forceHwAccelerated = false
+2025-12-03 10:39:03.033  6953-6953  ViewRootImpl            com.cdccreditsmart.app               D  setView appearance:24 com.cdccreditsmart.app/com.cdccreditsmart.app.presentation.MainActivity
+2025-12-03 10:39:03.038  6953-6953  os.SingleLiceFactory    com.cdccreditsmart.app               D  instance successfully. com.transsion.widget.v3.FloatingToolbarLice@af8a904 from com.android.internal.IInternalViewLice
+2025-12-03 10:39:03.039  6953-6953  InputEventReceiver      com.cdccreditsmart.app               D  Input log is disabled in InputEventReceiver.
+2025-12-03 10:39:03.409  6953-6953  DeviceOwnerCheckVM      com.cdccreditsmart.app               I  ========================================
+2025-12-03 10:39:03.409  6953-6953  DeviceOwnerCheckVM      com.cdccreditsmart.app               I  🔐 Verificando status de Device Owner...
+2025-12-03 10:39:03.446  6953-6953  BufferQueueConsumer     com.cdccreditsmart.app               D  [](id:1b2900000000,api:0,p:-1,c:6953) connect: controlledByApp=false
+2025-12-03 10:39:03.447  6953-6953  BLASTBufferQueue        com.cdccreditsmart.app               D  [VRI[MainActivity]#0](f:0,a:0) constructor()
+2025-12-03 10:39:03.447  6953-6953  BLASTBufferQueue        com.cdccreditsmart.app               D  [VRI[MainActivity]#0](f:0,a:0) update width=1080 height=2436 format=-3 mTransformHint=0
+2025-12-03 10:39:03.453  6953-18610 libMEOW                 com.cdccreditsmart.app               D  meow new tls: 0xb400007672b630d0
+2025-12-03 10:39:03.453  6953-18610 libMEOW                 com.cdccreditsmart.app               D  applied 1 plugins for [com.cdccreditsmart.app]:
+2025-12-03 10:39:03.453  6953-18610 libMEOW                 com.cdccreditsmart.app               D    plugin 1: [libMEOW_gift.so]: 0xb400007592aab840
+2025-12-03 10:39:03.454  6953-18610 libMEOW                 com.cdccreditsmart.app               D  rebuild call chain: 0xb400007672b93100
+2025-12-03 10:39:03.480  6953-18610 MAGT_SYNC_FRAME         com.cdccreditsmart.app               D  MAGT Sync: MAGT is not supported. Disabling Sync.
+2025-12-03 10:39:03.480  6953-18610 libc                    com.cdccreditsmart.app               W  Access denied finding property "vendor.mbrain.enabled"
+2025-12-03 10:39:03.480  6953-18610 creditsmart.app         com.cdccreditsmart.app               D  MBrain is disabled
+2025-12-03 10:39:03.480  6953-18610 creditsmart.app         com.cdccreditsmart.app               D  initMbrain failed
+2025-12-03 10:39:03.491  6953-18610 mali                    com.cdccreditsmart.app               I  [DebugProp] GPU Debug-Mechanism Disable !
+2025-12-03 10:39:03.518  6953-18610 GrallocExtra            com.cdccreditsmart.app               I  gralloc_extra_query:is_SW3D 0
+2025-12-03 10:39:03.519  6953-18610 BLASTBufferQueue        com.cdccreditsmart.app               D  [VRI[MainActivity]#0](f:0,a:1) acquireNextBufferLocked size=1080x2436 mFrameNumber=1 applyTransaction=true mTimestamp=46731291773938(auto) mPendingTransactions.size=0 graphicBufferId=29862907609088 transform=0
+2025-12-03 10:39:03.519  6953-18610 BLASTBufferQueue        com.cdccreditsmart.app               D  MS: debug.sf.msleep=0, bufferCount=2, ratio=0.900000
+2025-12-03 10:39:03.519  6953-18610 libc                    com.cdccreditsmart.app               W  Access denied finding property "vendor.mbrain.enabled"
+2025-12-03 10:39:03.519  6953-18610 creditsmart.app         com.cdccreditsmart.app               D  MBrain is disabled
+2025-12-03 10:39:03.519  6953-18610 creditsmart.app         com.cdccreditsmart.app               D  initMbrain failed
+2025-12-03 10:39:03.521  6953-6953  DisplayEventDispatcher  com.cdccreditsmart.app               W  Vsync time out! vsyncScheduleDelay=441ms
+2025-12-03 10:39:03.521  6953-6953  Choreographer           com.cdccreditsmart.app               W  Already have a pending vsync event.  There should only be one at a time.
+2025-12-03 10:39:03.522  6953-6953  Choreographer           com.cdccreditsmart.app               W  Already have a pending vsync event.  There should only be one at a time.
+2025-12-03 10:39:03.578  6953-6953  InsetsController        com.cdccreditsmart.app               I  Insets animation onAnimationStart mShow:false, mDurationMs:340, types:statusBars
+2025-12-03 10:39:03.590  6953-6953  InsetsController        com.cdccreditsmart.app               I  Insets animation onAnimationCancel
+2025-12-03 10:39:03.592  6953-6953  InteractionJankMonitor  com.cdccreditsmart.app               W  Initializing without READ_DEVICE_CONFIG permission. enabled=false, interval=1, missedFrameThreshold=3, frameTimeThreshold=64, package=com.cdccreditsmart.app
+2025-12-03 10:39:03.592  6953-6953  InsetsController        com.cdccreditsmart.app               I  Insets animation onAnimationEnd
+2025-12-03 10:39:03.639  6953-6953  InsetsController        com.cdccreditsmart.app               I  Insets animation onAnimationStart mShow:false, mDurationMs:340, types:statusBars
+2025-12-03 10:39:03.942  6953-6953  DeviceUtils             com.cdccreditsmart.app               D  Device Owner check: false
+2025-12-03 10:39:03.942  6953-6953  DeviceUtils             com.cdccreditsmart.app               D  Samsung device: false (Manufacturer: INFINIX)
+2025-12-03 10:39:03.943  6953-6953  DeviceOwnerCheckVM      com.cdccreditsmart.app               W  ❌ Dispositivo NÃO é Device Owner
+2025-12-03 10:39:03.943  6953-6953  DeviceOwnerCheckVM      com.cdccreditsmart.app               W  Dispositivo: INFINIX Infinix X6880 (Android 15)
+2025-12-03 10:39:03.943  6953-6953  DeviceOwnerCheckVM      com.cdccreditsmart.app               W  Samsung: false
+2025-12-03 10:39:03.943  6953-6953  DeviceOwnerCheckVM      com.cdccreditsmart.app               I  ========================================
+2025-12-03 10:39:04.021  6953-6953  os.FrameworkDoorMan     com.cdccreditsmart.app               D  add field mTypefaceNative to class android.graphics.Paint by source-modified.
+2025-12-03 10:39:04.021  6953-6953  os.FrameworkDoorMan     com.cdccreditsmart.app               D  add field mOSTypefaceFlag to class android.graphics.Paint by source-modified.
+2025-12-03 10:39:04.115  6953-6953  InsetsController        com.cdccreditsmart.app               I  Insets animation onAnimationEnd
+2025-12-03 10:39:04.205  6953-6953  NotificationHelper      com.cdccreditsmart.app               D  Notification channel created: cdc_default
+2025-12-03 10:39:04.206  6953-6953  NotificationHelper      com.cdccreditsmart.app               D  Notification channel created: cdc_info
+2025-12-03 10:39:04.207  6953-6953  NotificationHelper      com.cdccreditsmart.app               D  Notification channel created: cdc_alerts
+2025-12-03 10:39:04.208  6953-6953  NotificationHelper      com.cdccreditsmart.app               D  Notification channel created: cdc_payments
+2025-12-03 10:39:04.209  6953-6953  NotificationHelper      com.cdccreditsmart.app               D  Notification channel created: cdc_contract
+2025-12-03 10:39:04.347  6953-6953  CdcMessagingService     com.cdccreditsmart.app               D  CdcMessagingService created
+2025-12-03 10:39:04.349  6953-18660 CdcMessagingService     com.cdccreditsmart.app               D  ========== NEW FCM TOKEN RECEIVED ==========
+2025-12-03 10:39:04.350  6953-18660 CdcMessagingService     com.cdccreditsmart.app               D  Token: dDlsdsRpQ46bQNyVW0pD...
+2025-12-03 10:39:04.353  6953-18660 FcmTokenManager         com.cdccreditsmart.app               D  FCM token saved locally: dDlsdsRpQ46bQNyVW0pD...
+2025-12-03 10:39:04.355  6953-18606 FcmTokenManager         com.cdccreditsmart.app               D  ========== REGISTERING FCM TOKEN WITH BACKEND ==========
+2025-12-03 10:39:04.357  6953-18606 FcmTokenManager         com.cdccreditsmart.app               D  Current FCM token retrieved: dDlsdsRpQ46bQNyVW0pD...
+2025-12-03 10:39:04.361  6953-18606 FcmTokenManager         com.cdccreditsmart.app               E  Cannot register: Auth token not available
+2025-12-03 10:39:04.361  6953-18606 CdcMessagingService     com.cdccreditsmart.app               E  ❌ Failed to register FCM token with backend: User not authenticated
+2025-12-03 10:39:04.743  6953-18467 creditsmart.app         com.cdccreditsmart.app               I  Compiler allocated 6816KB to compile void android.view.ViewRootImpl.performTraversals()
+2025-12-03 10:39:05.531  6953-18598 FA                      com.cdccreditsmart.app               I  Application backgrounded at: timestamp_millis: 1764769143528
+2025-12-03 10:39:06.501  6953-18474 FdLeakLice              com.cdccreditsmart.app               D  FdLeakCheck app is not systemapp!!!
+2025-12-03 10:39:07.990  6953-18687 ProfileInstaller        com.cdccreditsmart.app               D  Installing profile for com.cdccreditsmart.app
+2025-12-03 10:39:10.284  6953-6953  MainActivity            com.cdccreditsmart.app               W  ⚠️ Algumas permissões foram NEGADAS pelo usuário:
+2025-12-03 10:39:10.284  6953-6953  MainActivity            com.cdccreditsmart.app               D    ✅ CONCEDIDA - android.permission.READ_PHONE_STATE
+2025-12-03 10:39:10.284  6953-6953  MainActivity            com.cdccreditsmart.app               D    ✅ CONCEDIDA - android.permission.READ_CALL_LOG
+2025-12-03 10:39:10.284  6953-6953  MainActivity            com.cdccreditsmart.app               D    ✅ CONCEDIDA - android.permission.CALL_PHONE
+2025-12-03 10:39:10.284  6953-6953  MainActivity            com.cdccreditsmart.app               D    ❌ NEGADA - android.permission.RECEIVE_SMS
+2025-12-03 10:39:10.284  6953-6953  MainActivity            com.cdccreditsmart.app               D    ❌ NEGADA - android.permission.READ_SMS
+2025-12-03 10:39:10.284  6953-6953  MainActivity            com.cdccreditsmart.app               D    ✅ CONCEDIDA - android.permission.READ_CONTACTS
+2025-12-03 10:39:10.284  6953-6953  MainActivity            com.cdccreditsmart.app               D    ✅ CONCEDIDA - android.permission.ANSWER_PHONE_CALLS
+2025-12-03 10:39:10.285  6953-6953  MainActivity            com.cdccreditsmart.app               D    ✅ CONCEDIDA - android.permission.READ_PHONE_NUMBERS
+2025-12-03 10:39:10.285  6953-6953  MainActivity            com.cdccreditsmart.app               D    ✅ CONCEDIDA - android.permission.POST_NOTIFICATIONS
+2025-12-03 10:39:10.286  6953-6953  ActivityThread          com.cdccreditsmart.app               D  handleResumeActivity#3 r.window=com.android.internal.policy.PhoneWindow@75c2c26a.mFinished = falsewillBeVisible = true
+2025-12-03 10:39:10.440  6953-6953  os.LiceInfo             com.cdccreditsmart.app               D  instance successfully. com.transsion.message.bank.v1.MessageBankLice@7450e14 from com.transsion.message.bank.IMessageBankLice
+2025-12-03 10:39:10.440  6953-6953  TextSelection           com.cdccreditsmart.app               D  call hasMessage cause invalidateCache
+2025-12-03 10:39:10.976  6953-6953  TextSelection           com.cdccreditsmart.app               D  onUseCache cache=false
+2025-12-03 10:39:11.075  6953-6953  DeviceOwnerCheckVM      com.cdccreditsmart.app               W  ⚠️ MODO DEBUG: Pulando verificação de Device Owner
+2025-12-03 10:39:11.075  6953-6953  DeviceOwnerCheckVM      com.cdccreditsmart.app               W  ⚠️ ATENÇÃO: App pode não funcionar corretamente sem Device Owner
+2025-12-03 10:39:11.249  6953-6953  RouterViewModel         com.cdccreditsmart.app               D  🚀 Iniciando verificação de autenticação...
+2025-12-03 10:39:11.250  6953-18606 AuthOrchestrator        com.cdccreditsmart.app               D  🔐 Verificando autenticação...
+2025-12-03 10:39:11.250  6953-18606 AuthOrchestrator        com.cdccreditsmart.app               D  🔄 ========== AUTO-DISCOVERY INICIADO ==========
+2025-12-03 10:39:11.263  6953-18606 DeviceUtils             com.cdccreditsmart.app               E  SecurityException reading IMEI - permission denied (Ask Gemini)
+                                                                                                    java.lang.SecurityException: getImeiForSlot: The uid 10266 does not meet the requirements to access device identifiers.
+                                                                                                    	at android.os.Parcel.createExceptionOrNull(Parcel.java:3252)
+                                                                                                    	at android.os.Parcel.createException(Parcel.java:3236)
+                                                                                                    	at android.os.Parcel.readException(Parcel.java:3219)
+                                                                                                    	at android.os.Parcel.readException(Parcel.java:3161)
+                                                                                                    	at com.android.internal.telephony.ITelephony$Stub$Proxy.getImeiForSlot(ITelephony.java:12102)
+                                                                                                    	at android.telephony.TelephonyManager.getImei(TelephonyManager.java:2356)
+                                                                                                    	at android.telephony.TelephonyManager.getImei(TelephonyManager.java:2307)
+                                                                                                    	at com.cdccreditsmart.app.utils.DeviceUtils.getDeviceImei(DeviceUtils.kt:106)
+                                                                                                    	at com.cdccreditsmart.app.auth.AuthenticationOrchestrator.attemptAutoConnection(AuthenticationOrchestrator.kt:56)
+                                                                                                    	at com.cdccreditsmart.app.auth.AuthenticationOrchestrator.access$attemptAutoConnection(AuthenticationOrchestrator.kt:25)
+                                                                                                    	at com.cdccreditsmart.app.auth.AuthenticationOrchestrator$ensureAuthenticated$2.invokeSuspend(AuthenticationOrchestrator.kt:167)
+                                                                                                    	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:34)
+                                                                                                    	at kotlinx.coroutines.DispatchedTask.run(DispatchedTask.kt:108)
+                                                                                                    	at kotlinx.coroutines.internal.LimitedDispatcher$Worker.run(LimitedDispatcher.kt:115)
+                                                                                                    	at kotlinx.coroutines.scheduling.TaskImpl.run(Tasks.kt:103)
+                                                                                                    	at kotlinx.coroutines.scheduling.CoroutineScheduler.runSafely(CoroutineScheduler.kt:584)
+                                                                                                    	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.executeTask(CoroutineScheduler.kt:793)
+                                                                                                    	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.runWorker(CoroutineScheduler.kt:697)
+                                                                                                    	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.run(CoroutineScheduler.kt:684)
+2025-12-03 10:39:11.263  6953-18606 AuthOrchestrator        com.cdccreditsmart.app               W  ⚠️ IMEI não disponível (permissão negada ou emulador)
+2025-12-03 10:39:11.263  6953-18606 AuthOrchestrator        com.cdccreditsmart.app               D     → Fallback para pareamento manual
+2025-12-03 10:39:11.263  6953-18606 ContractCodeStorage     com.cdccreditsmart.app               D  Retrieving contract code from storage
+2025-12-03 10:39:11.407  6953-18606 ContractCodeStorage     com.cdccreditsmart.app               D  Storage verification: 0 valid, 0 tampered, 7 missing
+2025-12-03 10:39:11.407  6953-18606 ContractCodeStorage     com.cdccreditsmart.app               W  No valid contract code found in any location
+2025-12-03 10:39:11.407  6953-18606 AuthOrchestrator        com.cdccreditsmart.app               D  ❌ Código de pareamento não encontrado - precisa de novo código
+2025-12-03 10:39:11.408  6953-6953  RouterViewModel         com.cdccreditsmart.app               D  ❌ Código de pareamento necessário - Ir para QR Scanner
