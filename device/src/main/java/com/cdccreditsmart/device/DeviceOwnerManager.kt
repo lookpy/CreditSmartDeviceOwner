@@ -166,6 +166,7 @@ class DeviceOwnerManager /* @Inject */ constructor(
     private fun removeStandardDeviceOwner(): DeviceOwnerResult {
         return try {
             if (devicePolicyManager.isDeviceOwnerApp(context.packageName)) {
+                Log.i(TAG, "🔓 App é Device Owner - removendo status...")
                 devicePolicyManager.clearDeviceOwnerApp(context.packageName)
                 
                 // TODO: Implementar fallbacks OEM para casos onde clearDeviceOwnerApp() falha
@@ -202,7 +203,8 @@ class DeviceOwnerManager /* @Inject */ constructor(
                 
                 DeviceOwnerResult.Success("Device owner removed successfully")
             } else {
-                DeviceOwnerResult.Error("App is not device owner")
+                Log.i(TAG, "✅ App NÃO é Device Owner - nada a remover, prosseguindo")
+                DeviceOwnerResult.Success("App was not device owner - nothing to remove")
             }
         } catch (e: Exception) {
             DeviceOwnerResult.Error("Failed to remove device owner: ${e.message}")
