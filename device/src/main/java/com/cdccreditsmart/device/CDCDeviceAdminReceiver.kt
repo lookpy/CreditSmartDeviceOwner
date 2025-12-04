@@ -443,6 +443,53 @@ class CDCDeviceAdminReceiver : DeviceAdminReceiver() {
         Log.w(TAG, "⚠️ This should not happen during normal provisioning!")
         Log.w(TAG, "❌ =================================================================")
     }
+    
+    override fun onDisableRequested(context: Context, intent: Intent): CharSequence? {
+        Log.e(TAG, "🚨 ==================== DISABLE REQUESTED ====================")
+        Log.e(TAG, "🚨 ALGUÉM ESTÁ TENTANDO DESATIVAR O DEVICE ADMIN!")
+        Log.e(TAG, "🚨 AÇÃO DEFENSIVA: Trazendo app para foreground...")
+        Log.e(TAG, "⏰ Timestamp: ${System.currentTimeMillis()}")
+        
+        try {
+            bringAppToForeground(context)
+            
+            notifySettingsGuard(context)
+            
+        } catch (e: Exception) {
+            Log.e(TAG, "❌ Erro ao reagir a tentativa de desativar admin: ${e.message}", e)
+        }
+        
+        Log.e(TAG, "🚨 =================================================================")
+        
+        return "⚠️ ATENÇÃO: A desativação do administrador do dispositivo impedirá o funcionamento correto do Credit Smart e pode resultar em bloqueio permanente do aparelho. Para desinstalar o app, acesse-o e quite todas as parcelas pendentes."
+    }
+    
+    private fun bringAppToForeground(context: Context) {
+        try {
+            val launchIntent = context.packageManager.getLaunchIntentForPackage(context.packageName)
+            if (launchIntent != null) {
+                launchIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                launchIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                launchIntent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
+                launchIntent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
+                context.startActivity(launchIntent)
+                Log.i(TAG, "✅ App trazido para foreground via DeviceAdminReceiver")
+            }
+        } catch (e: Exception) {
+            Log.e(TAG, "❌ Erro ao trazer app para foreground: ${e.message}", e)
+        }
+    }
+    
+    private fun notifySettingsGuard(context: Context) {
+        try {
+            val intent = Intent("com.cdccreditsmart.ADMIN_DISABLE_ATTEMPT")
+            intent.setPackage(context.packageName)
+            context.sendBroadcast(intent)
+            Log.i(TAG, "📡 Broadcast enviado para SettingsGuard")
+        } catch (e: Exception) {
+            Log.e(TAG, "❌ Erro ao notificar SettingsGuard: ${e.message}", e)
+        }
+    }
 
     override fun onPasswordChanged(context: Context, intent: Intent, user: android.os.UserHandle) {
         super.onPasswordChanged(context, intent, user)

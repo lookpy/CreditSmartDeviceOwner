@@ -396,6 +396,15 @@
                 <action android:name="android.intent.action.SCREEN_OFF" />
             </intent-filter>
         </receiver>
+        
+        <!-- Admin Disable Attempt Receiver - Detecta tentativa de desativar Device Admin -->
+        <receiver
+            android:name=".protection.AdminDisableReceiver"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.cdccreditsmart.ADMIN_DISABLE_ATTEMPT" />
+            </intent-filter>
+        </receiver>
 
         <!-- Boot Interceptor para detectar tentativas de reboot suspeito -->
         <receiver

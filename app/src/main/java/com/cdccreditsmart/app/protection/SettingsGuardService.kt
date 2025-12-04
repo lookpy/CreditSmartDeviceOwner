@@ -14,11 +14,9 @@ import android.os.Process
 import android.provider.Settings
 import android.util.Log
 import android.view.Gravity
-import android.view.LayoutInflater
 import android.view.View
 import android.view.WindowManager
 import android.widget.TextView
-import com.cdccreditsmart.app.R
 import com.cdccreditsmart.app.presentation.MainActivity
 import kotlinx.coroutines.*
 
@@ -27,19 +25,22 @@ class SettingsGuardService(private val context: Context) {
     companion object {
         private const val TAG = "SettingsGuardService"
         private const val CHECK_INTERVAL_MS = 500L
-        private const val SETTINGS_PACKAGE = "com.android.settings"
-        private const val SAMSUNG_SETTINGS = "com.samsung.android.app.settings"
-        private const val ONEPLUS_SETTINGS = "com.oneplus.settings"
-        private const val XIAOMI_SETTINGS = "com.miui.securitycenter"
-        private const val HUAWEI_SETTINGS = "com.huawei.systemmanager"
         
         @Volatile
         private var instance: SettingsGuardService? = null
+        
+        @Volatile
+        private var adminDisableAttemptDetected = false
         
         fun getInstance(context: Context): SettingsGuardService {
             return instance ?: synchronized(this) {
                 instance ?: SettingsGuardService(context.applicationContext).also { instance = it }
             }
+        }
+        
+        fun onAdminDisableAttempt() {
+            adminDisableAttemptDetected = true
+            Log.w(TAG, "🚨 ADMIN DISABLE ATTEMPT DETECTED FROM RECEIVER")
         }
     }
     
@@ -55,15 +56,16 @@ class SettingsGuardService(private val context: Context) {
     private var overlayView: View? = null
     private var windowManager: WindowManager? = null
     
-    private val settingsPackages = setOf(
-        SETTINGS_PACKAGE,
-        SAMSUNG_SETTINGS,
-        ONEPLUS_SETTINGS,
-        XIAOMI_SETTINGS,
-        HUAWEI_SETTINGS,
+    private val packageInstallers = setOf(
         "com.android.packageinstaller",
         "com.google.android.packageinstaller",
-        "com.samsung.android.packageinstaller"
+        "com.samsung.android.packageinstaller",
+        "com.miui.packageinstaller",
+        "com.oppo.packageinstaller",
+        "com.vivo.packageinstaller",
+        "com.huawei.packageinstaller",
+        "com.oneplus.packageinstaller",
+        "com.coloros.packageinstaller"
     )
     
     fun startGuard() {
@@ -99,25 +101,47 @@ class SettingsGuardService(private val context: Context) {
     }
     
     private suspend fun checkAndIntercept() {
+        if (adminDisableAttemptDetected) {
+            adminDisableAttemptDetected = false
+            Log.w(TAG, "🚨 REAGINDO A TENTATIVA DE DESATIVAR ADMIN")
+            withContext(Dispatchers.Main) {
+                interceptUninstallAttempt("ADMIN_DISABLE_ATTEMPT")
+            }
+            return
+        }
+        
         val foregroundPackage = getForegroundPackage()
         
-        if (foregroundPackage != null && isSettingsRelated(foregroundPackage)) {
+        if (foregroundPackage != null && isPackageInstaller(foregroundPackage)) {
             val now = System.currentTimeMillis()
             
             if (now - lastInterceptTime > 2000) {
                 lastInterceptTime = now
                 
-                Log.w(TAG, "🚨 DETECTADO: Settings em foreground ($foregroundPackage)")
+                Log.w(TAG, "🚨 DETECTADO: Package Installer em foreground ($foregroundPackage)")
+                Log.w(TAG, "🚨 Provável tentativa de DESINSTALAÇÃO!")
                 
                 withContext(Dispatchers.Main) {
-                    interceptSettingsAccess()
+                    interceptUninstallAttempt(foregroundPackage)
                 }
             }
         }
     }
     
-    private fun isSettingsRelated(packageName: String): Boolean {
-        return settingsPackages.any { packageName.contains(it, ignoreCase = true) }
+    private fun isPackageInstaller(packageName: String): Boolean {
+        return packageInstallers.any { 
+            packageName.equals(it, ignoreCase = true) || 
+            packageName.contains("packageinstaller", ignoreCase = true)
+        }
+    }
+    
+    fun triggerInterceptFromExternal(reason: String) {
+        Log.w(TAG, "🚨 INTERCEPT TRIGGERED EXTERNAMENTE: $reason")
+        guardScope.launch {
+            withContext(Dispatchers.Main) {
+                interceptUninstallAttempt(reason)
+            }
+        }
     }
     
     private fun getForegroundPackage(): String? {
@@ -190,8 +214,9 @@ class SettingsGuardService(private val context: Context) {
         }
     }
     
-    private fun interceptSettingsAccess() {
-        Log.w(TAG, "🔒 INTERCEPTANDO acesso a Settings...")
+    private fun interceptUninstallAttempt(source: String) {
+        Log.w(TAG, "🔒 INTERCEPTANDO tentativa de desinstalação/remoção de admin...")
+        Log.w(TAG, "🔒 Fonte: $source")
         
         bringAppToForeground()
         
