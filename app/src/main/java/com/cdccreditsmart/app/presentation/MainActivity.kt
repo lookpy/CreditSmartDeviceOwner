@@ -23,6 +23,7 @@ import androidx.navigation.compose.rememberNavController
 import com.cdccreditsmart.app.navigation.CDCNavigation
 import com.cdccreditsmart.app.navigation.Routes
 import com.cdccreditsmart.app.permissions.AutoPermissionManager
+import com.cdccreditsmart.app.permissions.SpecialPermissionRequester
 import com.cdccreditsmart.app.protection.FactoryResetDetectionResult
 import com.cdccreditsmart.app.protection.PersistentStateManager
 import com.cdccreditsmart.app.ui.theme.CDCCreditSmartTheme
@@ -152,20 +153,45 @@ class MainActivity : ComponentActivity() {
             val permissionsToRequest = AutoPermissionManager.getAllRuntimePermissions(this)
             
             if (permissionsToRequest.isEmpty()) {
-                Log.i(TAG, "✅ Todas as permissões já foram concedidas!")
-                return
+                Log.i(TAG, "✅ Todas as runtime permissions já foram concedidas!")
+            } else {
+                Log.i(TAG, "📋 Runtime permissions a solicitar: ${permissionsToRequest.size}")
+                permissionsToRequest.forEach { permission ->
+                    Log.d(TAG, "  • $permission")
+                }
+                requestPermissionsLauncher.launch(permissionsToRequest.toTypedArray())
             }
             
-            Log.i(TAG, "📋 Permissões a solicitar: ${permissionsToRequest.size}")
-            permissionsToRequest.forEach { permission ->
-                Log.d(TAG, "  • $permission")
-            }
-            
-            requestPermissionsLauncher.launch(permissionsToRequest.toTypedArray())
+            requestSpecialPermissionsIfNeeded()
             
         } catch (e: Exception) {
             Log.e(TAG, "❌ Erro ao solicitar permissões: ${e.message}", e)
         }
+    }
+    
+    private fun requestSpecialPermissionsIfNeeded() {
+        val specialPermissionRequester = SpecialPermissionRequester(this)
+        
+        specialPermissionRequester.logPermissionStatus()
+        
+        val missingPermissions = specialPermissionRequester.getMissingPermissions()
+        
+        if (missingPermissions.isEmpty()) {
+            Log.i(TAG, "✅ Todas as permissões especiais já foram concedidas!")
+            return
+        }
+        
+        Log.w(TAG, "========================================")
+        Log.w(TAG, "⚠️ PERMISSÕES ESPECIAIS NECESSÁRIAS")
+        Log.w(TAG, "========================================")
+        Log.w(TAG, "Para proteção anti-desinstalação funcionar:")
+        missingPermissions.forEach { permission ->
+            Log.w(TAG, "  ❌ ${permission.displayName}")
+            Log.w(TAG, "     ${permission.description}")
+        }
+        Log.w(TAG, "========================================")
+        Log.w(TAG, "O app solicitará essas permissões na próxima interação")
+        Log.w(TAG, "========================================")
     }
 
     override fun onNewIntent(intent: Intent) {

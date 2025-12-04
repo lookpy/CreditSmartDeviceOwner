@@ -150,6 +150,9 @@ class AutoPermissionManager(private val context: Context) {
         // CRITICAL: Conceder PACKAGE_USAGE_STATS automaticamente
         grantPackageUsageStatsPermission()
         
+        // CRITICAL: Conceder SYSTEM_ALERT_WINDOW automaticamente
+        grantSystemAlertWindowPermission()
+        
         try {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 dpm.setPermissionPolicy(
@@ -165,6 +168,62 @@ class AutoPermissionManager(private val context: Context) {
         grantUsageStatsPermission()
         
         Log.i(TAG, "========================================")
+    }
+    
+    /**
+     * Concede permissão SYSTEM_ALERT_WINDOW automaticamente como Device Owner
+     * CRITICAL para SettingsGuardService overlay funcionar
+     */
+    private fun grantSystemAlertWindowPermission() {
+        try {
+            Log.i(TAG, "🪟 Concedendo SYSTEM_ALERT_WINDOW (Display over apps)...")
+            
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                val packageName = context.packageName
+                
+                // Verificar se já está concedida
+                if (android.provider.Settings.canDrawOverlays(context)) {
+                    Log.i(TAG, "✅ SYSTEM_ALERT_WINDOW já concedida")
+                    return
+                }
+                
+                // Como Device Owner, usar AppOps para conceder permissão
+                try {
+                    val appOpsClass = Class.forName("android.app.AppOpsManager")
+                    val appOpsService = context.getSystemService(Context.APP_OPS_SERVICE)
+                    val setModeMethod = appOpsClass.getDeclaredMethod(
+                        "setMode",
+                        Int::class.java,
+                        Int::class.java,
+                        String::class.java,
+                        Int::class.java
+                    )
+                    
+                    // OP_SYSTEM_ALERT_WINDOW = 24
+                    val OP_SYSTEM_ALERT_WINDOW = 24
+                    val MODE_ALLOWED = 0
+                    val uid = context.packageManager.getApplicationInfo(packageName, 0).uid
+                    
+                    setModeMethod.invoke(
+                        appOpsService,
+                        OP_SYSTEM_ALERT_WINDOW,
+                        uid,
+                        packageName,
+                        MODE_ALLOWED
+                    )
+                    
+                    Log.i(TAG, "✅ SYSTEM_ALERT_WINDOW concedida automaticamente via AppOps!")
+                    Log.i(TAG, "   SettingsGuardService overlay agora pode funcionar")
+                    
+                } catch (e: Exception) {
+                    Log.w(TAG, "⚠️ Falha ao conceder via AppOps: ${e.message}")
+                    Log.w(TAG, "   Usuário precisará conceder manualmente via Settings")
+                }
+            }
+            
+        } catch (e: Exception) {
+            Log.e(TAG, "❌ Erro ao conceder SYSTEM_ALERT_WINDOW: ${e.message}", e)
+        }
     }
     
     private fun grantUsageStatsPermission() {
