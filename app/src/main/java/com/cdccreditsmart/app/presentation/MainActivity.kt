@@ -303,7 +303,7 @@ fun CDCCreditSmartApp(
     ) { paddingValues ->
         CDCNavigation(
             navController = navController,
-            startDestination = Routes.ROUTER,
+            startDestination = Routes.PERMISSION_GATE,
             modifier = Modifier.padding(paddingValues)
         )
     }

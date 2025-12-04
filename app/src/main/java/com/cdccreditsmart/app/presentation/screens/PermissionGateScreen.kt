@@ -7,6 +7,7 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.provider.Settings
+import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.*
@@ -35,6 +36,8 @@ import com.cdccreditsmart.app.permissions.PermissionGateManager
 import com.cdccreditsmart.device.CDCDeviceAdminReceiver
 import kotlinx.coroutines.delay
 
+private const val TAG = "PermissionGateScreen"
+
 @Composable
 fun PermissionGateScreen(
     onAllPermissionsGranted: () -> Unit
@@ -48,6 +51,22 @@ fun PermissionGateScreen(
     var showInsistentDialog by remember { mutableStateOf(false) }
     var pendingPermissionType by remember { mutableStateOf<PermissionGateManager.PermissionType?>(null) }
     var insistenceCount by remember { mutableStateOf(0) }
+    
+    LaunchedEffect(Unit) {
+        Log.i(TAG, "========================================")
+        Log.i(TAG, "🚪 PERMISSION GATE SCREEN INICIADO")
+        Log.i(TAG, "========================================")
+        Log.i(TAG, "Nível de privilégio: ${gateStatus.privilegeLevel}")
+        Log.i(TAG, "Permissões concedidas: ${gateStatus.grantedPermissions.size}")
+        Log.i(TAG, "Permissões faltando: ${gateStatus.missingPermissions.size}")
+        gateStatus.missingPermissions.forEach {
+            Log.w(TAG, "  ❌ ${it.displayName}")
+        }
+        gateStatus.grantedPermissions.forEach {
+            Log.i(TAG, "  ✅ ${it.displayName}")
+        }
+        Log.i(TAG, "========================================")
+    }
     
     val runtimePermissionLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.RequestMultiplePermissions()
@@ -77,6 +96,7 @@ fun PermissionGateScreen(
     }
     
     LaunchedEffect(Unit) {
+        Log.d(TAG, "⏰ Iniciando loop de verificação de permissões...")
         delay(2000)
         
         while (true) {
@@ -84,13 +104,16 @@ fun PermissionGateScreen(
             gateStatus = newStatus
             
             if (newStatus.allRequiredPermissionsGranted) {
+                Log.i(TAG, "✅ TODAS AS PERMISSÕES CONCEDIDAS! Prosseguindo para o app...")
                 delay(300)
                 onAllPermissionsGranted()
                 break
             }
             
             if (newStatus.missingPermissions.isNotEmpty() && !showInsistentDialog) {
-                pendingPermissionType = newStatus.missingPermissions.first().type
+                val firstMissing = newStatus.missingPermissions.first()
+                Log.w(TAG, "⚠️ Mostrando dialog insistente para: ${firstMissing.displayName} (tentativa $insistenceCount)")
+                pendingPermissionType = firstMissing.type
                 insistenceCount++
                 showInsistentDialog = true
             }
