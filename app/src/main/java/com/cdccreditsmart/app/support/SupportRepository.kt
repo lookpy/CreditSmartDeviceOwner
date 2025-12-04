@@ -17,7 +17,8 @@ class SupportRepository(private val context: Context) {
     companion object {
         private const val TAG = "SupportRepository"
         private const val PREFS_NAME = "support_cache"
-        private const val CACHE_EXPIRY_MS = 24 * 60 * 60 * 1000L
+        private const val CONTACT_CACHE_EXPIRY_MS = 24 * 60 * 60 * 1000L
+        private const val TERMS_CACHE_EXPIRY_MS = 24 * 60 * 60 * 1000L
         
         private const val KEY_CONTACT_PHONE = "contact_phone"
         private const val KEY_CONTACT_WHATSAPP = "contact_whatsapp"
@@ -95,9 +96,13 @@ class SupportRepository(private val context: Context) {
         try {
             val cached = getCachedTerms()
             
-            if (!forceRefresh && cached != null && version == "latest") {
+            if (!forceRefresh && cached != null && version == "latest" && !isTermsCacheExpired()) {
                 Log.d(TAG, "✅ Retornando termos do cache local (v${cached.version})")
                 return@withContext Result.success(cached)
+            }
+            
+            if (cached != null && isTermsCacheExpired()) {
+                Log.i(TAG, "⏰ Cache de termos expirado - buscando atualização...")
             }
             
             Log.i(TAG, "📡 Buscando termos do servidor (version=$version)...")
@@ -200,7 +205,12 @@ class SupportRepository(private val context: Context) {
     
     private fun isContactCacheExpired(): Boolean {
         val lastUpdated = prefs.getLong(KEY_CONTACT_LAST_UPDATED, 0)
-        return System.currentTimeMillis() - lastUpdated > CACHE_EXPIRY_MS
+        return System.currentTimeMillis() - lastUpdated > CONTACT_CACHE_EXPIRY_MS
+    }
+    
+    private fun isTermsCacheExpired(): Boolean {
+        val lastUpdated = prefs.getLong(KEY_TERMS_LAST_UPDATED, 0)
+        return System.currentTimeMillis() - lastUpdated > TERMS_CACHE_EXPIRY_MS
     }
     
     private fun getCachedTerms(): ContractTermsData? {

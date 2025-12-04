@@ -43,6 +43,9 @@ The UI uses Jetpack Compose and Material 3 with a CDC institutional dark theme. 
 - **Full Device Lock & App Blocker:** Implements kiosk mode with whitelisted apps and blocks dangerous app installations from unknown sources or blacklisted apps.
 - **Enhanced Protections:** Additional layers like parental control app blocking, curated popular app blocking, system update blocking, and power saving mode restrictions.
 - **PIX Payment System:** Integrates PIX payment for overdue installments, including QR code generation and real-time status verification.
+- **Dynamic Support Contact:** Fetches support contact data (phone, WhatsApp, contact link) from backend via GET /v1/support/contact. Implements 24h cache with offline fallback.
+- **Dynamic Terms and Conditions:** Fetches terms from backend via GET /v1/contract/terms with SHA-256 hash validation for integrity. Supports Markdown rendering and 24h cache with offline fallback to static terms.
+- **Battery Optimization Exemption:** Automatically requests battery optimization exemption on app start via system dialog (non-Device Owner) or DevicePolicyManager (Device Owner).
 - **Notifications & Security:** Uses Firebase FCM for push notifications and `EncryptedSharedPreferences` for sensitive data, JWT authentication, and permanent device blocking on security violations.
 - **Networking:** Employs Retrofit and OkHttp with retry logic, exponential backoff, and Certificate Pinning.
 - **Crash Prevention:** Global CrashHandler installed first in Application.onCreate() captures all unhandled exceptions, logs details, and schedules auto-restart. All critical code paths use try-catch with fallback values instead of throwing exceptions. SecurityExceptions (IMEI/ICCID access) are expected when not Device Owner and handled gracefully. ForegroundServiceStartNotAllowedException (Android 12+) is handled gracefully with automatic retry when app is in foreground.
