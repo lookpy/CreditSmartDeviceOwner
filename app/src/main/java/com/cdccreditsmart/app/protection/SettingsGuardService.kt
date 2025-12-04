@@ -93,7 +93,7 @@ class SettingsGuardService(private val context: Context) {
     
     fun stopGuard() {
         isGuardActive = false
-        guardScope.coroutineContext.cancelChildren()
+        guardScope.cancel()
         hideOverlay()
         Log.i(TAG, "🛑 SettingsGuard PARADO")
     }
