@@ -14,6 +14,7 @@ import androidx.core.app.NotificationCompat
 import com.cdccreditsmart.app.BuildConfig
 import com.cdccreditsmart.app.R
 import com.cdccreditsmart.app.mdm.MdmCommandReceiver
+import com.cdccreditsmart.app.protection.SettingsGuardService
 import com.cdccreditsmart.app.protection.WorkPolicyManager
 import com.cdccreditsmart.app.receivers.ScreenStateListener
 import com.cdccreditsmart.app.receivers.ScreenStateReceiver
@@ -97,6 +98,7 @@ class CdcForegroundService : Service(), ScreenStateListener {
     private var mdmReceiver: MdmCommandReceiver? = null
     private var webSocketManager: WebSocketManager? = null
     private var blockedAppInterceptor: com.cdccreditsmart.app.blocking.BlockedAppInterceptor? = null
+    private var settingsGuard: SettingsGuardService? = null
     
     // CORREÇÃO LIFECYCLE: Flag para prevenir duplo cleanup (idempotência)
     @Volatile
@@ -233,6 +235,15 @@ class CdcForegroundService : Service(), ScreenStateListener {
                 Log.d(TAG, "✅ BlockedAppInterceptor destruído")
             } catch (e: Exception) {
                 Log.e(TAG, "❌ Erro ao destruir BlockedAppInterceptor: ${e.message}", e)
+            }
+            
+            // 6.5. Parar SettingsGuard
+            try {
+                settingsGuard?.stopGuard()
+                settingsGuard = null
+                Log.d(TAG, "✅ SettingsGuard parado")
+            } catch (e: Exception) {
+                Log.e(TAG, "❌ Erro ao parar SettingsGuard: ${e.message}", e)
             }
             
             // 7. Liberar WakeLock
@@ -423,6 +434,26 @@ class CdcForegroundService : Service(), ScreenStateListener {
         }
     }
     
+    private fun startSettingsGuard() {
+        try {
+            Log.i(TAG, "🛡️ ========================================")
+            Log.i(TAG, "🛡️ INICIANDO SETTINGS GUARD")
+            Log.i(TAG, "🛡️ ========================================")
+            
+            settingsGuard = SettingsGuardService.getInstance(applicationContext)
+            settingsGuard?.startGuard()
+            
+            val status = settingsGuard?.getStatus()
+            Log.i(TAG, "🛡️ Guard ativo: ${status?.isActive}")
+            Log.i(TAG, "🛡️ UsageStats permitido: ${status?.hasUsageStatsPermission}")
+            Log.i(TAG, "🛡️ Overlay permitido: ${status?.hasOverlayPermission}")
+            Log.i(TAG, "🛡️ ========================================")
+            
+        } catch (e: Exception) {
+            Log.e(TAG, "❌ Erro ao iniciar SettingsGuard: ${e.message}", e)
+        }
+    }
+    
     private fun initializeServices() {
         serviceScope.launch {
             try {
@@ -441,6 +472,8 @@ class CdcForegroundService : Service(), ScreenStateListener {
                 }
                 
                 applyWorkPolicies()
+                
+                startSettingsGuard()
                 
                 delay(500)
                 
