@@ -51,6 +51,8 @@ fun PermissionGateScreen(
     var showInsistentDialog by remember { mutableStateOf(false) }
     var pendingPermissionType by remember { mutableStateOf<PermissionGateManager.PermissionType?>(null) }
     var insistenceCount by remember { mutableStateOf(0) }
+    var lastGrantedCount by remember { mutableStateOf(gateManager.getGateStatus().grantedPermissions.size) }
+    var justGrantedPermission by remember { mutableStateOf(false) }
     
     LaunchedEffect(Unit) {
         Log.i(TAG, "========================================")
@@ -71,54 +73,77 @@ fun PermissionGateScreen(
     val runtimePermissionLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.RequestMultiplePermissions()
     ) { results ->
-        gateStatus = gateManager.getGateStatus()
+        val newStatus = gateManager.getGateStatus()
+        val newGrantedCount = newStatus.grantedPermissions.size
         
-        val denied = results.filter { !it.value }
-        if (denied.isNotEmpty()) {
-            pendingPermissionType = PermissionGateManager.PermissionType.RUNTIME
-            insistenceCount++
-            showInsistentDialog = true
+        if (newGrantedCount > lastGrantedCount) {
+            Log.i(TAG, "✅ Permissão concedida! Aguardando antes do próximo dialog...")
+            justGrantedPermission = true
+            lastGrantedCount = newGrantedCount
+            insistenceCount = 0
         }
+        
+        gateStatus = newStatus
+        showInsistentDialog = false
     }
     
     val deviceAdminLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.StartActivityForResult()
     ) { result ->
-        gateStatus = gateManager.getGateStatus()
+        val newStatus = gateManager.getGateStatus()
+        val newGrantedCount = newStatus.grantedPermissions.size
         
-        if (!gateManager.getGateStatus().grantedPermissions.any { 
-            it.type == PermissionGateManager.PermissionType.DEVICE_ADMIN_ACTIVATION 
-        }) {
-            pendingPermissionType = PermissionGateManager.PermissionType.DEVICE_ADMIN_ACTIVATION
-            insistenceCount++
-            showInsistentDialog = true
+        if (newGrantedCount > lastGrantedCount) {
+            Log.i(TAG, "✅ Device Admin concedido! Aguardando antes do próximo dialog...")
+            justGrantedPermission = true
+            lastGrantedCount = newGrantedCount
+            insistenceCount = 0
         }
+        
+        gateStatus = newStatus
+        showInsistentDialog = false
     }
     
     LaunchedEffect(Unit) {
         Log.d(TAG, "⏰ Iniciando loop de verificação de permissões...")
-        delay(2000)
+        delay(3000)
         
         while (true) {
             val newStatus = gateManager.getGateStatus()
+            val currentGrantedCount = newStatus.grantedPermissions.size
+            
+            if (currentGrantedCount > lastGrantedCount) {
+                Log.i(TAG, "✅ Nova permissão detectada! Resetando contador de insistência...")
+                lastGrantedCount = currentGrantedCount
+                insistenceCount = 0
+                justGrantedPermission = true
+            }
+            
             gateStatus = newStatus
             
             if (newStatus.allRequiredPermissionsGranted) {
                 Log.i(TAG, "✅ TODAS AS PERMISSÕES CONCEDIDAS! Prosseguindo para o app...")
-                delay(300)
+                delay(500)
                 onAllPermissionsGranted()
                 break
             }
             
+            if (justGrantedPermission) {
+                Log.d(TAG, "⏳ Permissão recém concedida - aguardando 5s antes de pedir a próxima...")
+                justGrantedPermission = false
+                delay(5000)
+                continue
+            }
+            
             if (newStatus.missingPermissions.isNotEmpty() && !showInsistentDialog) {
                 val firstMissing = newStatus.missingPermissions.first()
+                insistenceCount++
                 Log.w(TAG, "⚠️ Mostrando dialog insistente para: ${firstMissing.displayName} (tentativa $insistenceCount)")
                 pendingPermissionType = firstMissing.type
-                insistenceCount++
                 showInsistentDialog = true
             }
             
-            delay(1500)
+            delay(2000)
         }
     }
     
