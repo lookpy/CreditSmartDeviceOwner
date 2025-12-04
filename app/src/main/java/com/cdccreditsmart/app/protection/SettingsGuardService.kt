@@ -57,7 +57,8 @@ class SettingsGuardService(private val context: Context) {
         
         fun onAdminDisableAttempt() {
             Log.w(TAG, "🚨 ADMIN DISABLE ATTEMPT DETECTED FROM RECEIVER")
-            instance?.triggerInterceptFromExternal("ADMIN_DISABLE_ATTEMPT")
+            Log.w(TAG, "🚨 Forçando intercept - tentativa de desativar admin é crítica!")
+            instance?.forceInterceptCritical("ADMIN_DISABLE_ATTEMPT")
         }
     }
     
@@ -252,6 +253,24 @@ class SettingsGuardService(private val context: Context) {
         
         lastInterceptTime = now
         Log.w(TAG, "🚨 INTERCEPT TRIGGERED: $reason")
+        
+        mainHandler.post {
+            bringAppToForeground()
+            showFullScreenBlockOverlay()
+        }
+    }
+    
+    fun forceInterceptCritical(reason: String) {
+        val now = System.currentTimeMillis()
+        
+        if (now - lastInterceptTime < 500) {
+            Log.d(TAG, "Ignorando intercept crítico duplicado (< 500ms)")
+            return
+        }
+        
+        lastInterceptTime = now
+        Log.e(TAG, "🚨🚨 CRITICAL INTERCEPT FORCED: $reason")
+        Log.e(TAG, "🚨🚨 Ignorando flag de permissões - esta ação é crítica!")
         
         mainHandler.post {
             bringAppToForeground()
