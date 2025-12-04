@@ -30,8 +30,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.compose.ui.window.Dialog
-import androidx.compose.ui.window.DialogProperties
 import com.cdccreditsmart.app.permissions.PermissionGateManager
 import com.cdccreditsmart.device.CDCDeviceAdminReceiver
 import kotlinx.coroutines.delay
@@ -48,11 +46,6 @@ fun PermissionGateScreen(
     
     var gateStatus by remember { mutableStateOf(gateManager.getGateStatus()) }
     var isLoading by remember { mutableStateOf(false) }
-    var showInsistentDialog by remember { mutableStateOf(false) }
-    var pendingPermissionType by remember { mutableStateOf<PermissionGateManager.PermissionType?>(null) }
-    var insistenceCount by remember { mutableStateOf(0) }
-    var lastGrantedCount by remember { mutableStateOf(gateManager.getGateStatus().grantedPermissions.size) }
-    var justGrantedPermission by remember { mutableStateOf(false) }
     
     LaunchedEffect(Unit) {
         Log.i(TAG, "========================================")
@@ -73,52 +66,23 @@ fun PermissionGateScreen(
     val runtimePermissionLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.RequestMultiplePermissions()
     ) { results ->
-        val newStatus = gateManager.getGateStatus()
-        val newGrantedCount = newStatus.grantedPermissions.size
-        
-        if (newGrantedCount > lastGrantedCount) {
-            Log.i(TAG, "✅ Permissão concedida! Aguardando antes do próximo dialog...")
-            justGrantedPermission = true
-            lastGrantedCount = newGrantedCount
-            insistenceCount = 0
-        }
-        
-        gateStatus = newStatus
-        showInsistentDialog = false
+        gateStatus = gateManager.getGateStatus()
+        Log.i(TAG, "✅ Runtime permissions atualizadas")
     }
     
     val deviceAdminLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.StartActivityForResult()
     ) { result ->
-        val newStatus = gateManager.getGateStatus()
-        val newGrantedCount = newStatus.grantedPermissions.size
-        
-        if (newGrantedCount > lastGrantedCount) {
-            Log.i(TAG, "✅ Device Admin concedido! Aguardando antes do próximo dialog...")
-            justGrantedPermission = true
-            lastGrantedCount = newGrantedCount
-            insistenceCount = 0
-        }
-        
-        gateStatus = newStatus
-        showInsistentDialog = false
+        gateStatus = gateManager.getGateStatus()
+        Log.i(TAG, "✅ Device Admin status atualizado")
     }
     
     LaunchedEffect(Unit) {
-        Log.d(TAG, "⏰ Iniciando loop de verificação de permissões...")
-        delay(3000)
+        Log.d(TAG, "⏰ Iniciando verificação periódica de permissões...")
         
         while (true) {
+            delay(1000)
             val newStatus = gateManager.getGateStatus()
-            val currentGrantedCount = newStatus.grantedPermissions.size
-            
-            if (currentGrantedCount > lastGrantedCount) {
-                Log.i(TAG, "✅ Nova permissão detectada! Resetando contador de insistência...")
-                lastGrantedCount = currentGrantedCount
-                insistenceCount = 0
-                justGrantedPermission = true
-            }
-            
             gateStatus = newStatus
             
             if (newStatus.allRequiredPermissionsGranted) {
@@ -127,23 +91,6 @@ fun PermissionGateScreen(
                 onAllPermissionsGranted()
                 break
             }
-            
-            if (justGrantedPermission) {
-                Log.d(TAG, "⏳ Permissão recém concedida - aguardando 5s antes de pedir a próxima...")
-                justGrantedPermission = false
-                delay(5000)
-                continue
-            }
-            
-            if (newStatus.missingPermissions.isNotEmpty() && !showInsistentDialog) {
-                val firstMissing = newStatus.missingPermissions.first()
-                insistenceCount++
-                Log.w(TAG, "⚠️ Mostrando dialog insistente para: ${firstMissing.displayName} (tentativa $insistenceCount)")
-                pendingPermissionType = firstMissing.type
-                showInsistentDialog = true
-            }
-            
-            delay(2000)
         }
     }
     
@@ -158,26 +105,6 @@ fun PermissionGateScreen(
         return
     }
     
-    if (showInsistentDialog && pendingPermissionType != null) {
-        InsistentPermissionDialog(
-            permissionType = pendingPermissionType!!,
-            insistenceCount = insistenceCount,
-            onRequestAgain = {
-                showInsistentDialog = false
-                requestPermission(
-                    context = context,
-                    activity = activity,
-                    permissionType = pendingPermissionType!!,
-                    gateManager = gateManager,
-                    runtimePermissionLauncher = runtimePermissionLauncher,
-                    deviceAdminLauncher = deviceAdminLauncher
-                )
-            },
-            onDismiss = {
-                showInsistentDialog = false
-            }
-        )
-    }
     
     Column(
         modifier = Modifier
@@ -359,117 +286,6 @@ fun PermissionGateScreen(
         }
         
         Spacer(modifier = Modifier.height(24.dp))
-    }
-}
-
-@Composable
-private fun InsistentPermissionDialog(
-    permissionType: PermissionGateManager.PermissionType,
-    insistenceCount: Int,
-    onRequestAgain: () -> Unit,
-    onDismiss: () -> Unit
-) {
-    val (title, message) = getInsistentMessage(permissionType, insistenceCount)
-    
-    LaunchedEffect(Unit) {
-        delay(8000)
-        onRequestAgain()
-    }
-    
-    Dialog(
-        onDismissRequest = { },
-        properties = DialogProperties(
-            dismissOnBackPress = false,
-            dismissOnClickOutside = false
-        )
-    ) {
-        Card(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp),
-            shape = RoundedCornerShape(16.dp),
-            colors = CardDefaults.cardColors(
-                containerColor = MaterialTheme.colorScheme.surface
-            )
-        ) {
-            Column(
-                modifier = Modifier.padding(24.dp),
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                Icon(
-                    imageVector = Icons.Default.Warning,
-                    contentDescription = null,
-                    modifier = Modifier.size(48.dp),
-                    tint = Color(0xFFE65100)
-                )
-                
-                Spacer(modifier = Modifier.height(16.dp))
-                
-                Text(
-                    text = title,
-                    fontSize = 18.sp,
-                    fontWeight = FontWeight.Bold,
-                    color = MaterialTheme.colorScheme.onSurface,
-                    textAlign = TextAlign.Center
-                )
-                
-                Spacer(modifier = Modifier.height(12.dp))
-                
-                Text(
-                    text = message,
-                    fontSize = 14.sp,
-                    color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f),
-                    textAlign = TextAlign.Center
-                )
-                
-                Spacer(modifier = Modifier.height(24.dp))
-                
-                Button(
-                    onClick = onRequestAgain,
-                    modifier = Modifier.fillMaxWidth(),
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = MaterialTheme.colorScheme.primary
-                    ),
-                    shape = RoundedCornerShape(8.dp)
-                ) {
-                    Text(
-                        text = "Conceder Agora",
-                        fontWeight = FontWeight.SemiBold
-                    )
-                }
-            }
-        }
-    }
-}
-
-private fun getInsistentMessage(
-    permissionType: PermissionGateManager.PermissionType,
-    count: Int
-): Pair<String, String> {
-    val permissionName = when (permissionType) {
-        PermissionGateManager.PermissionType.DEVICE_ADMIN_ACTIVATION -> "Administrador do Dispositivo"
-        PermissionGateManager.PermissionType.RUNTIME -> "Permissões do Sistema"
-        PermissionGateManager.PermissionType.USAGE_STATS -> "Acesso ao Uso de Apps"
-        PermissionGateManager.PermissionType.OVERLAY -> "Exibir sobre outros apps"
-    }
-    
-    return when {
-        count <= 1 -> Pair(
-            "Permissão Necessária",
-            "A permissão \"$permissionName\" é obrigatória para o funcionamento do app. Por favor, conceda para continuar."
-        )
-        count == 2 -> Pair(
-            "Permissão Ainda Pendente",
-            "Você ainda não concedeu \"$permissionName\". Esta permissão é ESSENCIAL e o app não funcionará sem ela."
-        )
-        count == 3 -> Pair(
-            "Atenção: Permissão Obrigatória",
-            "Sem a permissão \"$permissionName\", você NÃO PODERÁ usar este aplicativo. Conceda agora para continuar."
-        )
-        else -> Pair(
-            "ÚLTIMA CHANCE",
-            "A permissão \"$permissionName\" é OBRIGATÓRIA. O app ficará bloqueado até que você conceda esta permissão."
-        )
     }
 }
 
