@@ -48,7 +48,6 @@ fun PermissionGateScreen(
     var showInsistentDialog by remember { mutableStateOf(false) }
     var pendingPermissionType by remember { mutableStateOf<PermissionGateManager.PermissionType?>(null) }
     var insistenceCount by remember { mutableStateOf(0) }
-    var lastMissingCount by remember { mutableStateOf(gateManager.getGateStatus().missingPermissions.size) }
     
     val runtimePermissionLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.RequestMultiplePermissions()
@@ -78,19 +77,10 @@ fun PermissionGateScreen(
     }
     
     LaunchedEffect(Unit) {
+        delay(2000)
+        
         while (true) {
-            delay(800)
             val newStatus = gateManager.getGateStatus()
-            val newMissingCount = newStatus.missingPermissions.size
-            
-            if (newMissingCount > 0 && newMissingCount == lastMissingCount && pendingPermissionType != null) {
-                if (!showInsistentDialog) {
-                    insistenceCount++
-                    showInsistentDialog = true
-                }
-            }
-            
-            lastMissingCount = newMissingCount
             gateStatus = newStatus
             
             if (newStatus.allRequiredPermissionsGranted) {
@@ -98,16 +88,14 @@ fun PermissionGateScreen(
                 onAllPermissionsGranted()
                 break
             }
-        }
-    }
-    
-    LaunchedEffect(gateStatus.missingPermissions) {
-        if (gateStatus.missingPermissions.isNotEmpty() && !showInsistentDialog) {
-            delay(5000)
-            if (gateStatus.missingPermissions.isNotEmpty()) {
-                pendingPermissionType = gateStatus.missingPermissions.first().type
+            
+            if (newStatus.missingPermissions.isNotEmpty() && !showInsistentDialog) {
+                pendingPermissionType = newStatus.missingPermissions.first().type
+                insistenceCount++
                 showInsistentDialog = true
             }
+            
+            delay(1500)
         }
     }
     
@@ -335,6 +323,11 @@ private fun InsistentPermissionDialog(
 ) {
     val (title, message) = getInsistentMessage(permissionType, insistenceCount)
     
+    LaunchedEffect(Unit) {
+        delay(8000)
+        onRequestAgain()
+    }
+    
     Dialog(
         onDismissRequest = { },
         properties = DialogProperties(
@@ -395,17 +388,6 @@ private fun InsistentPermissionDialog(
                         text = "Conceder Agora",
                         fontWeight = FontWeight.SemiBold
                     )
-                }
-                
-                if (insistenceCount < 3) {
-                    Spacer(modifier = Modifier.height(8.dp))
-                    
-                    TextButton(onClick = onDismiss) {
-                        Text(
-                            text = "Depois",
-                            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f)
-                        )
-                    }
                 }
             }
         }
