@@ -192,11 +192,10 @@ class SettingsGuardService(private val context: Context) {
                 
                 Log.w(TAG, "🚨 SETTINGS DETECTADO! (count: $settingsOpenCount, dangerous: $isDangerousSettings)")
                 Log.w(TAG, "   Pacote: $foregroundPackage")
-                Log.w(TAG, "   Modo AGRESSIVO ativado!")
+                Log.w(TAG, "   Chamando app para foreground...")
                 
                 withContext(Dispatchers.Main) {
                     bringAppToForeground()
-                    showFullScreenBlockOverlay()
                 }
             }
         } else if (foregroundPackage == context.packageName) {
@@ -393,7 +392,6 @@ class SettingsGuardService(private val context: Context) {
         
         mainHandler.post {
             bringAppToForeground()
-            showFullScreenBlockOverlay()
         }
     }
     
@@ -411,7 +409,6 @@ class SettingsGuardService(private val context: Context) {
         
         mainHandler.post {
             bringAppToForeground()
-            showFullScreenBlockOverlay()
         }
     }
     
