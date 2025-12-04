@@ -8,6 +8,7 @@ import android.net.Uri
 import android.util.Log
 import com.cdccreditsmart.app.network.RetrofitProvider
 import com.cdccreditsmart.app.protection.AppProtectionManager
+import com.cdccreditsmart.app.protection.SettingsGuardService
 import com.cdccreditsmart.app.blocking.EnhancedProtectionsManager
 import com.cdccreditsmart.app.security.SecureTokenStorage
 import com.cdccreditsmart.device.CDCDeviceAdminReceiver
@@ -71,6 +72,10 @@ class SelfDestructManager(private val context: Context) {
             Log.i(TAG, "📋 Motivo: ${params.reason}")
             Log.i(TAG, "📋 Wipe data: ${params.wipeData}")
             Log.i(TAG, "📋 Confirmation code: ${if (params.confirmationCode.isNotEmpty()) "presente" else "ausente"}")
+            
+            Log.i(TAG, "⏸️ Pausando proteção do SettingsGuard...")
+            SettingsGuardService.pauseForVoluntaryUninstall()
+            Log.i(TAG, "✅ Proteção pausada - desinstalação autorizada")
             
             Log.i(TAG, "🔐 [1/7] Validando código de confirmação...")
             if (!validateConfirmationCode(params.confirmationCode)) {
