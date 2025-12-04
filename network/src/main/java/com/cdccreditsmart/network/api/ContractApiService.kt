@@ -51,15 +51,13 @@ interface ContractApiService {
 }
 
 // Request/Response Data Classes
-//@JsonClass(generateAdapter = true) // Temporarily disabled to fix build
 data class ContractTermsResponse(
+    val id: Int,
     val version: String,
+    val termsText: String,
     val hash: String,
-    val text: String,
-    val effectiveDate: String,
-    val expiryDate: String?,
-    val language: String = "pt-BR",
-    val sections: List<ContractSection>
+    val isActive: Boolean,
+    val createdAt: String
 )
 
 //@JsonClass(generateAdapter = true) // Temporarily disabled to fix build

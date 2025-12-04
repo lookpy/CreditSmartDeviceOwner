@@ -1,0 +1,487 @@
+# Documentação API para APK - CDC CreditSmart
+
+## Visão Geral
+
+Esta documentação descreve os endpoints disponíveis para o APK Android da CDC CreditSmart buscar configurações dinâmicas do painel admin, incluindo dados de contato e termos e condições.
+
+**Base URL:** `https://seu-dominio.com` (substitua pelo domínio correto)
+
+---
+
+## 1. Buscar Dados de Contato
+
+### Endpoint
+```
+GET /v1/support/contact
+```
+
+### Descrição
+Retorna os dados de contato configurados pelo administrador no painel. O APK deve usar este endpoint para exibir informações de suporte ao usuário.
+
+### Autenticação
+❌ **Não requer autenticação** (endpoint público)
+
+### Parâmetros
+Nenhum
+
+### Response (200 OK)
+
+```json
+{
+  "phone": "11999999999",
+  "whatsapp": "11999999999",
+  "contactLink": "https://seu-site.com/contato"
+}
+```
+
+### Campos da Resposta
+
+| Campo | Tipo | Descrição |
+|-------|------|-----------|
+| `phone` | string | Número de telefone para contato (pode ser vazio "") |
+| `whatsapp` | string | Número do WhatsApp para contato (pode ser vazio "") |
+| `contactLink` | string | URL para página de contato ou formulário (pode ser vazio "") |
+
+### Comportamento Esperado
+
+- **Valores vazios**: Se o admin não configurou algum campo, ele retornará string vazia `""` (não null)
+- **Tratamento no APK**: O APK deve verificar se os valores estão vazios antes de exibir
+- **Caching**: Recomenda-se fazer cache local e atualizar periodicamente (ex: a cada 24h)
+
+### Exemplos de Uso
+
+#### Exemplo 1: Todos os campos configurados
+```bash
+curl -X GET https://seu-dominio.com/v1/support/contact
+```
+
+**Response:**
+```json
+{
+  "phone": "1134567890",
+  "whatsapp": "11987654321",
+  "contactLink": "https://cdccreditsmart.com/contato"
+}
+```
+
+#### Exemplo 2: Apenas alguns campos configurados
+```bash
+curl -X GET https://seu-dominio.com/v1/support/contact
+```
+
+**Response:**
+```json
+{
+  "phone": "1134567890",
+  "whatsapp": "",
+  "contactLink": ""
+}
+```
+
+### Erros Possíveis
+
+| Código | Descrição |
+|--------|-----------|
+| 500 | Erro interno do servidor ao buscar configurações |
+
+**Erro 500 - Response:**
+```json
+{
+  "error": "Erro ao buscar dados de contato"
+}
+```
+
+---
+
+## 2. Buscar Termos e Condições
+
+### Endpoint
+```
+GET /v1/contract/terms
+```
+
+### Descrição
+Retorna os termos e condições do contrato configurados pelo administrador. O APK deve usar este endpoint para exibir os termos antes da assinatura do contrato.
+
+### Autenticação
+❌ **Não requer autenticação** (endpoint público)
+
+### Query Parameters
+
+| Parâmetro | Tipo | Obrigatório | Padrão | Descrição |
+|-----------|------|-------------|---------|-----------|
+| `version` | string | Não | `"latest"` | Versão específica dos termos. Use `"latest"` para versão mais recente |
+
+### Response (200 OK)
+
+```json
+{
+  "id": 1,
+  "version": "v1.0",
+  "termsText": "# TERMOS DE USO E CONTRATO...",
+  "hash": "a1b2c3d4e5f6...",
+  "isActive": true,
+  "createdAt": "2024-12-01T10:00:00.000Z"
+}
+```
+
+### Campos da Resposta
+
+| Campo | Tipo | Descrição |
+|-------|------|-----------|
+| `id` | number | ID único dos termos |
+| `version` | string | Versão dos termos (ex: "v1.0", "v1.1") |
+| `termsText` | string | Texto completo dos termos em Markdown |
+| `hash` | string | Hash SHA-256 do texto dos termos para validação de integridade |
+| `isActive` | boolean | Indica se esta é a versão ativa atual |
+| `createdAt` | string | Data/hora de criação (ISO 8601 UTC) |
+
+### Comportamento do Sistema
+
+#### Versioning System
+- O sistema mantém apenas **uma versão ativa** por vez
+- Quando uma nova versão é criada, a anterior é automaticamente desativada
+- Versões antigas permanecem no banco para auditoria e histórico
+
+#### Hash de Integridade (SHA-256)
+- Cada versão dos termos tem um hash SHA-256 único
+- O APK pode validar a integridade do texto recebido
+- Algoritmo: `SHA-256(termsText)`
+
+### Exemplos de Uso
+
+#### Exemplo 1: Buscar versão mais recente
+```bash
+curl -X GET "https://seu-dominio.com/v1/contract/terms?version=latest"
+```
+ou simplesmente:
+```bash
+curl -X GET "https://seu-dominio.com/v1/contract/terms"
+```
+
+**Response:**
+```json
+{
+  "id": 3,
+  "version": "v1.2",
+  "termsText": "# TERMOS DE USO E CONTRATO DE FINANCIAMENTO...",
+  "hash": "d4e5f6a7b8c9...",
+  "isActive": true,
+  "createdAt": "2024-12-03T15:30:00.000Z"
+}
+```
+
+#### Exemplo 2: Buscar versão específica
+```bash
+curl -X GET "https://seu-dominio.com/v1/contract/terms?version=v1.0"
+```
+
+**Response:**
+```json
+{
+  "id": 1,
+  "version": "v1.0",
+  "termsText": "# TERMOS DE USO (versão antiga)...",
+  "hash": "a1b2c3d4e5f6...",
+  "isActive": false,
+  "createdAt": "2024-11-01T10:00:00.000Z"
+}
+```
+
+### Erros Possíveis
+
+| Código | Descrição |
+|--------|-----------|
+| 200 | Sucesso, mesmo se nenhum termo for encontrado (cria termos padrão automaticamente) |
+| 500 | Erro interno do servidor |
+
+**Nota:** Se nenhum termo for encontrado, o sistema cria automaticamente uma versão padrão v1.0 e retorna com sucesso (200).
+
+---
+
+## Fluxo de Implementação no APK
+
+### 1. Ao Iniciar o APK
+
+```kotlin
+// Exemplo em Kotlin
+class AppInitializer {
+    suspend fun initialize() {
+        // Buscar dados de contato
+        val contactData = api.getSupportContact()
+        if (contactData.phone.isNotEmpty()) {
+            // Salvar localmente
+            preferences.saveContactPhone(contactData.phone)
+        }
+        if (contactData.whatsapp.isNotEmpty()) {
+            preferences.saveContactWhatsapp(contactData.whatsapp)
+        }
+        if (contactData.contactLink.isNotEmpty()) {
+            preferences.saveContactLink(contactData.contactLink)
+        }
+        
+        // Buscar termos mais recentes
+        val terms = api.getContractTerms("latest")
+        
+        // Validar integridade
+        val calculatedHash = calculateSHA256(terms.termsText)
+        if (calculatedHash == terms.hash) {
+            preferences.saveTerms(terms.termsText, terms.version, terms.hash)
+        } else {
+            // Erro de integridade!
+            Log.e("APK", "Hash dos termos não confere!")
+        }
+    }
+}
+```
+
+### 2. Exibir Tela de Suporte
+
+```kotlin
+class SupportActivity : AppCompatActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        
+        val phone = preferences.getContactPhone()
+        val whatsapp = preferences.getContactWhatsapp()
+        val link = preferences.getContactLink()
+        
+        // Exibir apenas campos configurados
+        if (phone.isNotEmpty()) {
+            btnCallSupport.visibility = View.VISIBLE
+            btnCallSupport.setOnClickListener {
+                val intent = Intent(Intent.ACTION_DIAL)
+                intent.data = Uri.parse("tel:$phone")
+                startActivity(intent)
+            }
+        }
+        
+        if (whatsapp.isNotEmpty()) {
+            btnWhatsapp.visibility = View.VISIBLE
+            btnWhatsapp.setOnClickListener {
+                val intent = Intent(Intent.ACTION_VIEW)
+                intent.data = Uri.parse("https://wa.me/$whatsapp")
+                startActivity(intent)
+            }
+        }
+        
+        if (link.isNotEmpty()) {
+            btnContactPage.visibility = View.VISIBLE
+            btnContactPage.setOnClickListener {
+                val intent = Intent(Intent.ACTION_VIEW)
+                intent.data = Uri.parse(link)
+                startActivity(intent)
+            }
+        }
+    }
+}
+```
+
+### 3. Exibir Termos Antes da Assinatura
+
+```kotlin
+class ContractSignActivity : AppCompatActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        
+        // Carregar termos salvos localmente
+        val termsText = preferences.getTermsText()
+        val termsVersion = preferences.getTermsVersion()
+        
+        // Renderizar Markdown
+        val markwon = Markwon.create(this)
+        markwon.setMarkdown(tvTerms, termsText)
+        
+        // Exibir versão
+        tvVersion.text = "Versão: $termsVersion"
+    }
+}
+```
+
+### 4. Validar Integridade SHA-256
+
+```kotlin
+import java.security.MessageDigest
+
+fun calculateSHA256(input: String): String {
+    val bytes = input.toByteArray()
+    val digest = MessageDigest.getInstance("SHA-256")
+    val hashBytes = digest.digest(bytes)
+    
+    return hashBytes.joinToString("") { "%02x".format(it) }
+}
+
+// Uso
+suspend fun validateTermsIntegrity(terms: ContractTerms): Boolean {
+    val calculatedHash = calculateSHA256(terms.termsText)
+    return calculatedHash == terms.hash
+}
+```
+
+---
+
+## Cache e Atualização
+
+### Recomendações de Cache
+
+| Endpoint | Estratégia de Cache | Tempo de Validade |
+|----------|---------------------|-------------------|
+| `/v1/support/contact` | Cache local com atualização periódica | 24 horas |
+| `/v1/contract/terms` | Cache local, sempre validar antes de exibir | Sem expiração (validar hash) |
+
+### Quando Atualizar
+
+#### Dados de Contato
+- Ao iniciar o app (se cache expirou)
+- Ao abrir tela de suporte
+- Opcionalmente: a cada 24 horas em background
+
+#### Termos e Condições
+- Ao iniciar o app
+- **SEMPRE** antes de exibir para assinatura
+- Verificar se versão local == versão mais recente do servidor
+- Se versão diferente, baixar nova versão
+
+---
+
+## Segurança
+
+### Validação de Integridade
+
+✅ **OBRIGATÓRIO** validar hash SHA-256 dos termos:
+
+```kotlin
+fun validateTerms(terms: ContractTerms): Boolean {
+    val calculatedHash = calculateSHA256(terms.termsText)
+    
+    if (calculatedHash != terms.hash) {
+        // CRÍTICO: Termos corrompidos ou adulterados!
+        Log.e("SECURITY", "Termos com integridade comprometida!")
+        // Não permitir assinatura
+        return false
+    }
+    
+    return true
+}
+```
+
+### HTTPS Obrigatório
+
+- ✅ Todos os endpoints devem usar HTTPS em produção
+- ✅ Validar certificado SSL
+- ✅ Não aceitar certificados auto-assinados em produção
+
+---
+
+## Tratamento de Erros
+
+### Network Error
+```kotlin
+try {
+    val contact = api.getSupportContact()
+} catch (e: IOException) {
+    // Sem conexão - usar cache local
+    val cachedContact = cache.getContact()
+    if (cachedContact != null) {
+        // Usar cache
+    } else {
+        // Exibir erro: "Sem conexão. Tente novamente."
+    }
+}
+```
+
+### Server Error (500)
+```kotlin
+try {
+    val terms = api.getContractTerms()
+} catch (e: HttpException) {
+    if (e.code() == 500) {
+        // Erro no servidor
+        // Tentar novamente em alguns segundos
+        delay(3000)
+        retry()
+    }
+}
+```
+
+---
+
+## Exemplos Completos de Retrofit (Android)
+
+### Interface API
+
+```kotlin
+interface CdcApi {
+    @GET("/v1/support/contact")
+    suspend fun getSupportContact(): SupportContactResponse
+    
+    @GET("/v1/contract/terms")
+    suspend fun getContractTerms(
+        @Query("version") version: String = "latest"
+    ): ContractTermsResponse
+}
+
+// Data classes
+data class SupportContactResponse(
+    val phone: String,
+    val whatsapp: String,
+    val contactLink: String
+)
+
+data class ContractTermsResponse(
+    val id: Int,
+    val version: String,
+    val termsText: String,
+    val hash: String,
+    val isActive: Boolean,
+    val createdAt: String
+)
+```
+
+### Repository
+
+```kotlin
+class CdcRepository(private val api: CdcApi) {
+    
+    suspend fun getSupportContact(): Result<SupportContactResponse> {
+        return try {
+            val response = api.getSupportContact()
+            Result.success(response)
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+    
+    suspend fun getLatestTerms(): Result<ContractTermsResponse> {
+        return try {
+            val response = api.getContractTerms("latest")
+            
+            // Validar hash
+            val calculatedHash = calculateSHA256(response.termsText)
+            if (calculatedHash != response.hash) {
+                return Result.failure(
+                    SecurityException("Integridade dos termos comprometida")
+                )
+            }
+            
+            Result.success(response)
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+}
+```
+
+---
+
+## Changelog
+
+| Data | Versão | Mudanças |
+|------|--------|----------|
+| 2024-12-03 | 1.0 | Documentação inicial: endpoints de contato e termos |
+
+---
+
+## Suporte
+
+Para dúvidas sobre a API ou problemas de integração, entre em contato com a equipe de desenvolvimento backend da CDC CreditSmart.
