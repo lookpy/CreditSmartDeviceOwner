@@ -238,6 +238,11 @@ class SettingsGuardService(private val context: Context) {
     }
     
     fun triggerInterceptFromExternal(reason: String) {
+        if (isPermissionGrantFlowActive) {
+            Log.d(TAG, "⏸️ Intercept ignorado - fluxo de permissões ativo")
+            return
+        }
+        
         val now = System.currentTimeMillis()
         
         if (now - lastInterceptTime < 1000) {

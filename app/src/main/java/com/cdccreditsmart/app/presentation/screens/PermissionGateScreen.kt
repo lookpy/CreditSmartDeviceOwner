@@ -31,6 +31,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.cdccreditsmart.app.permissions.PermissionGateManager
+import com.cdccreditsmart.app.protection.SettingsGuardService
 import com.cdccreditsmart.device.CDCDeviceAdminReceiver
 import kotlinx.coroutines.delay
 
@@ -87,10 +88,17 @@ fun PermissionGateScreen(
             
             if (newStatus.allRequiredPermissionsGranted) {
                 Log.i(TAG, "✅ TODAS AS PERMISSÕES CONCEDIDAS! Prosseguindo para o app...")
+                SettingsGuardService.resumeAfterPermissionGrant()
                 delay(500)
                 onAllPermissionsGranted()
                 break
             }
+        }
+    }
+    
+    DisposableEffect(Unit) {
+        onDispose {
+            SettingsGuardService.resumeAfterPermissionGrant()
         }
     }
     
@@ -318,6 +326,7 @@ private fun requestPermission(
         }
         
         PermissionGateManager.PermissionType.USAGE_STATS -> {
+            SettingsGuardService.pauseForPermissionGrant()
             val intent = Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS).apply {
                 addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             }
@@ -325,6 +334,7 @@ private fun requestPermission(
         }
         
         PermissionGateManager.PermissionType.OVERLAY -> {
+            SettingsGuardService.pauseForPermissionGrant()
             val intent = Intent(
                 Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
                 Uri.parse("package:${context.packageName}")
