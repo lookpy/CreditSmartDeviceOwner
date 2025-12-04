@@ -1,16 +1,11 @@
 package com.cdccreditsmart.app.protection
 
-import android.app.ActivityManager
-import android.app.AppOpsManager
-import android.app.usage.UsageEvents
-import android.app.usage.UsageStatsManager
 import android.content.Context
 import android.content.Intent
 import android.graphics.PixelFormat
 import android.os.Build
 import android.os.Handler
 import android.os.Looper
-import android.os.Process
 import android.provider.Settings
 import android.util.Log
 import android.view.Gravity
@@ -18,19 +13,14 @@ import android.view.View
 import android.view.WindowManager
 import android.widget.TextView
 import com.cdccreditsmart.app.presentation.MainActivity
-import kotlinx.coroutines.*
 
 class SettingsGuardService(private val context: Context) {
     
     companion object {
         private const val TAG = "SettingsGuardService"
-        private const val CHECK_INTERVAL_MS = 500L
         
         @Volatile
         private var instance: SettingsGuardService? = null
-        
-        @Volatile
-        private var adminDisableAttemptDetected = false
         
         fun getInstance(context: Context): SettingsGuardService {
             return instance ?: synchronized(this) {
@@ -39,16 +29,12 @@ class SettingsGuardService(private val context: Context) {
         }
         
         fun onAdminDisableAttempt() {
-            adminDisableAttemptDetected = true
             Log.w(TAG, "🚨 ADMIN DISABLE ATTEMPT DETECTED FROM RECEIVER")
+            instance?.triggerInterceptFromExternal("ADMIN_DISABLE_ATTEMPT")
         }
     }
     
-    private val guardScope = CoroutineScope(Dispatchers.Default + SupervisorJob())
     private val mainHandler = Handler(Looper.getMainLooper())
-    
-    @Volatile
-    private var isGuardActive = false
     
     @Volatile
     private var lastInterceptTime = 0L
@@ -56,166 +42,34 @@ class SettingsGuardService(private val context: Context) {
     private var overlayView: View? = null
     private var windowManager: WindowManager? = null
     
-    private val packageInstallers = setOf(
-        "com.android.packageinstaller",
-        "com.google.android.packageinstaller",
-        "com.samsung.android.packageinstaller",
-        "com.miui.packageinstaller",
-        "com.oppo.packageinstaller",
-        "com.vivo.packageinstaller",
-        "com.huawei.packageinstaller",
-        "com.oneplus.packageinstaller",
-        "com.coloros.packageinstaller"
-    )
-    
     fun startGuard() {
-        if (isGuardActive) {
-            Log.d(TAG, "Guard já está ativo")
-            return
-        }
-        
-        if (!hasUsageStatsPermission()) {
-            Log.w(TAG, "⚠️ Sem permissão PACKAGE_USAGE_STATS - guard limitado")
-        }
-        
-        isGuardActive = true
-        Log.i(TAG, "🛡️ SettingsGuard INICIADO")
-        
-        guardScope.launch {
-            while (isGuardActive && isActive) {
-                try {
-                    checkAndIntercept()
-                } catch (e: Exception) {
-                    Log.e(TAG, "Erro no guard loop: ${e.message}")
-                }
-                delay(CHECK_INTERVAL_MS)
-            }
-        }
+        Log.i(TAG, "🛡️ SettingsGuard INICIADO (modo passivo)")
+        Log.i(TAG, "   Aguardando eventos de onDisableRequested...")
     }
     
     fun stopGuard() {
-        isGuardActive = false
-        guardScope.cancel()
         hideOverlay()
         Log.i(TAG, "🛑 SettingsGuard PARADO")
     }
     
-    private suspend fun checkAndIntercept() {
-        if (adminDisableAttemptDetected) {
-            adminDisableAttemptDetected = false
-            Log.w(TAG, "🚨 REAGINDO A TENTATIVA DE DESATIVAR ADMIN")
-            withContext(Dispatchers.Main) {
-                interceptUninstallAttempt("ADMIN_DISABLE_ATTEMPT")
-            }
+    fun triggerInterceptFromExternal(reason: String) {
+        val now = System.currentTimeMillis()
+        
+        if (now - lastInterceptTime < 2000) {
+            Log.d(TAG, "Ignorando intercept duplicado (< 2s)")
             return
         }
         
-        val foregroundPackage = getForegroundPackage()
+        lastInterceptTime = now
+        Log.w(TAG, "🚨 INTERCEPT TRIGGERED: $reason")
         
-        if (foregroundPackage != null && isPackageInstaller(foregroundPackage)) {
-            val now = System.currentTimeMillis()
-            
-            if (now - lastInterceptTime > 2000) {
-                lastInterceptTime = now
-                
-                Log.w(TAG, "🚨 DETECTADO: Package Installer em foreground ($foregroundPackage)")
-                Log.w(TAG, "🚨 Provável tentativa de DESINSTALAÇÃO!")
-                
-                withContext(Dispatchers.Main) {
-                    interceptUninstallAttempt(foregroundPackage)
-                }
-            }
+        mainHandler.post {
+            interceptAttempt(reason)
         }
     }
     
-    private fun isPackageInstaller(packageName: String): Boolean {
-        return packageInstallers.any { 
-            packageName.equals(it, ignoreCase = true) || 
-            packageName.contains("packageinstaller", ignoreCase = true)
-        }
-    }
-    
-    fun triggerInterceptFromExternal(reason: String) {
-        Log.w(TAG, "🚨 INTERCEPT TRIGGERED EXTERNAMENTE: $reason")
-        guardScope.launch {
-            withContext(Dispatchers.Main) {
-                interceptUninstallAttempt(reason)
-            }
-        }
-    }
-    
-    private fun getForegroundPackage(): String? {
-        return try {
-            if (hasUsageStatsPermission()) {
-                getForegroundPackageViaUsageStats()
-            } else {
-                getForegroundPackageViaActivityManager()
-            }
-        } catch (e: Exception) {
-            Log.e(TAG, "Erro ao obter foreground package: ${e.message}")
-            null
-        }
-    }
-    
-    private fun getForegroundPackageViaUsageStats(): String? {
-        val usageStatsManager = context.getSystemService(Context.USAGE_STATS_SERVICE) as? UsageStatsManager
-            ?: return null
-            
-        val endTime = System.currentTimeMillis()
-        val beginTime = endTime - 1000
-        
-        val usageEvents = usageStatsManager.queryEvents(beginTime, endTime)
-        var lastPackage: String? = null
-        
-        val event = UsageEvents.Event()
-        while (usageEvents.hasNextEvent()) {
-            usageEvents.getNextEvent(event)
-            if (event.eventType == UsageEvents.Event.ACTIVITY_RESUMED || 
-                event.eventType == UsageEvents.Event.MOVE_TO_FOREGROUND) {
-                lastPackage = event.packageName
-            }
-        }
-        
-        return lastPackage
-    }
-    
-    @Suppress("DEPRECATION")
-    private fun getForegroundPackageViaActivityManager(): String? {
-        val activityManager = context.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
-        
-        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            val appProcesses = activityManager.runningAppProcesses
-            appProcesses?.find { it.importance == ActivityManager.RunningAppProcessInfo.IMPORTANCE_FOREGROUND }?.processName
-        } else {
-            activityManager.getRunningTasks(1)?.firstOrNull()?.topActivity?.packageName
-        }
-    }
-    
-    private fun hasUsageStatsPermission(): Boolean {
-        return try {
-            val appOps = context.getSystemService(Context.APP_OPS_SERVICE) as AppOpsManager
-            val mode = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                appOps.unsafeCheckOpNoThrow(
-                    AppOpsManager.OPSTR_GET_USAGE_STATS,
-                    Process.myUid(),
-                    context.packageName
-                )
-            } else {
-                @Suppress("DEPRECATION")
-                appOps.checkOpNoThrow(
-                    AppOpsManager.OPSTR_GET_USAGE_STATS,
-                    Process.myUid(),
-                    context.packageName
-                )
-            }
-            mode == AppOpsManager.MODE_ALLOWED
-        } catch (e: Exception) {
-            false
-        }
-    }
-    
-    private fun interceptUninstallAttempt(source: String) {
-        Log.w(TAG, "🔒 INTERCEPTANDO tentativa de desinstalação/remoção de admin...")
+    private fun interceptAttempt(source: String) {
+        Log.w(TAG, "🔒 INTERCEPTANDO tentativa de remoção de admin...")
         Log.w(TAG, "🔒 Fonte: $source")
         
         bringAppToForeground()
@@ -286,7 +140,7 @@ class SettingsGuardService(private val context: Context) {
     
     private fun createOverlayView(): View {
         val textView = TextView(context).apply {
-            text = "🔒 Desinstalação Bloqueada\n\nEste aplicativo está protegido.\nPara desinstalar, acesse o app e\nquite todas as parcelas."
+            text = "🔒 Administrador Protegido\n\nEste aplicativo gerencia seu dispositivo.\nPara desinstalar, acesse o app e\nquite todas as parcelas pendentes."
             textSize = 16f
             setTextColor(android.graphics.Color.WHITE)
             setBackgroundColor(android.graphics.Color.parseColor("#CC1A1A1A"))
@@ -310,26 +164,11 @@ class SettingsGuardService(private val context: Context) {
         }
     }
     
-    fun requestUsageStatsPermission() {
-        if (!hasUsageStatsPermission()) {
-            try {
-                val intent = Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS).apply {
-                    addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                }
-                context.startActivity(intent)
-                Log.i(TAG, "Abrindo configurações de acesso a uso")
-            } catch (e: Exception) {
-                Log.e(TAG, "Erro ao abrir configurações: ${e.message}")
-            }
-        }
-    }
-    
-    fun isGuardRunning(): Boolean = isGuardActive
+    fun isGuardRunning(): Boolean = true
     
     fun getStatus(): GuardStatus {
         return GuardStatus(
-            isActive = isGuardActive,
-            hasUsageStatsPermission = hasUsageStatsPermission(),
+            isActive = true,
             hasOverlayPermission = Settings.canDrawOverlays(context),
             lastInterceptTime = lastInterceptTime
         )
@@ -337,7 +176,6 @@ class SettingsGuardService(private val context: Context) {
     
     data class GuardStatus(
         val isActive: Boolean,
-        val hasUsageStatsPermission: Boolean,
         val hasOverlayPermission: Boolean,
         val lastInterceptTime: Long
     )
