@@ -212,11 +212,33 @@ class SettingsGuardService(private val context: Context) {
     }
     
     private fun isDangerousSettingsScreen(packageName: String): Boolean {
-        return packageName.contains("deviceadmin", ignoreCase = true) ||
-               packageName.contains("device_admin", ignoreCase = true) ||
-               packageName.contains("packageinstaller", ignoreCase = true) ||
-               packageName.contains("securitycenter", ignoreCase = true) ||
-               packageName.contains("appmanager", ignoreCase = true)
+        val dangerousKeywords = listOf(
+            "deviceadmin",
+            "device_admin",
+            "packageinstaller",
+            "securitycenter",
+            "appmanager",
+            "factoryreset",
+            "factory_reset",
+            "masterreset",
+            "master_reset",
+            "masterclear",
+            "master_clear",
+            "erasereset",
+            "erase_reset",
+            "wipe",
+            "resetoptions",
+            "reset_options",
+            "backupreset",
+            "backup_reset",
+            "resetnetwork",
+            "generalmanagement",
+            "uninstall"
+        )
+        
+        return dangerousKeywords.any { keyword ->
+            packageName.contains(keyword, ignoreCase = true)
+        }
     }
     
     private fun isSettingsApp(packageName: String): Boolean {
