@@ -38,6 +38,7 @@ import com.cdccreditsmart.app.presentation.screens.pix.InstallmentsScreen
 import com.cdccreditsmart.app.presentation.screens.pix.PixQRCodeScreen
 import com.cdccreditsmart.app.presentation.pix.PixPaymentViewModel
 import com.cdccreditsmart.app.presentation.screens.terms.TermsAndConditionsScreen
+import com.cdccreditsmart.app.presentation.screens.terms.TermsAcceptanceScreen
 
 object Routes {
     const val ROUTER = "router"
@@ -46,6 +47,7 @@ object Routes {
     const val PAIRING_PENDING = "pairing/pending/{message}/{contractCode}"
     const val PAIRING_SUCCESS = "pairing/success/{contractCode}/{customerName}/{deviceModel}"
     const val PAIRING_ERROR = "pairing/error/{errorMessage}/{attemptsRemaining}/{securityViolation}/{canRetry}"
+    const val TERMS_ACCEPTANCE = "terms/acceptance/{contractCode}"
     const val HOME = "home"
     const val BLOCKING_WARNING = "blocking/warning"
     const val BLOCKED_APP = "blocked_app/{appPackage}/{daysOverdue}"
@@ -55,6 +57,8 @@ object Routes {
     const val INSTALLMENTS = "pix/installments"
     const val PIX_QR_CODE = "pix/qr_code/{installmentId}"
     const val TERMS = "terms"
+    
+    fun createTermsAcceptanceRoute(contractCode: String) = "terms/acceptance/${Uri.encode(contractCode)}"
     
     fun createPairingProgressRoute(contractId: String) = "pairing/progress/$contractId"
     
@@ -114,6 +118,11 @@ fun CDCNavigation(
                 },
                 onNavigateToHome = {
                     navController.navigate(Routes.HOME) {
+                        popUpTo(Routes.ROUTER) { inclusive = true }
+                    }
+                },
+                onNavigateToTermsAcceptance = { contractCode ->
+                    navController.navigate(Routes.createTermsAcceptanceRoute(contractCode)) {
                         popUpTo(Routes.ROUTER) { inclusive = true }
                     }
                 }
@@ -281,8 +290,26 @@ fun CDCNavigation(
                 customerName = customerName,
                 deviceModel = deviceModel,
                 onContinue = {
-                    navController.navigate(Routes.HOME) {
+                    navController.navigate(Routes.createTermsAcceptanceRoute(contractCode)) {
                         popUpTo(Routes.QR_SCANNER) { inclusive = true }
+                    }
+                }
+            )
+        }
+        
+        composable(
+            route = Routes.TERMS_ACCEPTANCE,
+            arguments = listOf(
+                navArgument("contractCode") { type = NavType.StringType }
+            )
+        ) {
+            val contractCode = it.arguments?.getString("contractCode") ?: ""
+            
+            TermsAcceptanceScreen(
+                contractCode = contractCode,
+                onTermsAccepted = {
+                    navController.navigate(Routes.HOME) {
+                        popUpTo(Routes.TERMS_ACCEPTANCE) { inclusive = true }
                     }
                 }
             )

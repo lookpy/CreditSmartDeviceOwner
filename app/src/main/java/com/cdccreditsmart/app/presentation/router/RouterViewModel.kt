@@ -8,11 +8,13 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.cdccreditsmart.app.auth.AuthenticationOrchestrator
 import com.cdccreditsmart.app.auth.AuthenticationResult
+import com.cdccreditsmart.app.storage.TermsAcceptanceStorage
 import kotlinx.coroutines.launch
 
 sealed class RouterDestination {
     object Loading : RouterDestination()
     object QRScanner : RouterDestination()
+    data class TermsAcceptance(val contractCode: String) : RouterDestination()
     object Home : RouterDestination()
     data class Error(val message: String) : RouterDestination()
 }
@@ -25,6 +27,7 @@ class RouterViewModel(
     val destination: State<RouterDestination> = _destination
 
     private val authOrchestrator = AuthenticationOrchestrator(context)
+    private val termsAcceptanceStorage = TermsAcceptanceStorage(context)
 
     companion object {
         private const val TAG = "RouterViewModel"
@@ -37,8 +40,17 @@ class RouterViewModel(
                 
                 when (val result = authOrchestrator.ensureAuthenticated()) {
                     is AuthenticationResult.Authenticated -> {
-                        Log.d(TAG, "✅ Autenticado com sucesso - Ir para HOME")
-                        _destination.value = RouterDestination.Home
+                        Log.d(TAG, "✅ Autenticado com sucesso")
+                        
+                        val hasAcceptedTerms = termsAcceptanceStorage.hasAcceptedTermsForContract(result.contractCode)
+                        
+                        if (hasAcceptedTerms) {
+                            Log.d(TAG, "✅ Termos já aceitos - Ir para HOME")
+                            _destination.value = RouterDestination.Home
+                        } else {
+                            Log.d(TAG, "📄 Termos NÃO aceitos - Ir para TERMS_ACCEPTANCE")
+                            _destination.value = RouterDestination.TermsAcceptance(result.contractCode)
+                        }
                     }
                     
                     is AuthenticationResult.NeedsNewCode -> {

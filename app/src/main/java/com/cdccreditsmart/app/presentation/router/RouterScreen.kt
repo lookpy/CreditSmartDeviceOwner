@@ -21,7 +21,8 @@ import com.cdccreditsmart.app.presentation.deviceowner.ProvisioningWizardScreen
 @Composable
 fun RouterScreen(
     onNavigateToQRScanner: () -> Unit,
-    onNavigateToHome: () -> Unit
+    onNavigateToHome: () -> Unit,
+    onNavigateToTermsAcceptance: (String) -> Unit = {}
 ) {
     val context = LocalContext.current.applicationContext
     val factory = remember { DeviceOwnerCheckViewModelFactory(context) }
@@ -65,7 +66,8 @@ fun RouterScreen(
         is ProvisioningStep.DeviceOwnerFound -> {
             RouterScreenContent(
                 onNavigateToQRScanner = onNavigateToQRScanner,
-                onNavigateToHome = onNavigateToHome
+                onNavigateToHome = onNavigateToHome,
+                onNavigateToTermsAcceptance = onNavigateToTermsAcceptance
             )
         }
     }
@@ -74,7 +76,8 @@ fun RouterScreen(
 @Composable
 private fun RouterScreenContent(
     onNavigateToQRScanner: () -> Unit,
-    onNavigateToHome: () -> Unit
+    onNavigateToHome: () -> Unit,
+    onNavigateToTermsAcceptance: (String) -> Unit
 ) {
     val context = LocalContext.current
     val viewModel: RouterViewModel = viewModel(
@@ -93,9 +96,10 @@ private fun RouterScreenContent(
     }
 
     LaunchedEffect(destination) {
-        when (destination) {
+        when (val dest = destination) {
             is RouterDestination.QRScanner -> onNavigateToQRScanner()
             is RouterDestination.Home -> onNavigateToHome()
+            is RouterDestination.TermsAcceptance -> onNavigateToTermsAcceptance(dest.contractCode)
             is RouterDestination.Error -> {
                 onNavigateToQRScanner()
             }
