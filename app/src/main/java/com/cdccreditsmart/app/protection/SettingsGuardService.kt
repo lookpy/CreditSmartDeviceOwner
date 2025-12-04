@@ -184,10 +184,13 @@ class SettingsGuardService(private val context: Context) {
         if (isSettingsApp(foregroundPackage)) {
             settingsOpenCount++
             
-            if (settingsOpenCount >= 2) {
+            val isDangerousSettings = isDangerousSettingsScreen(foregroundPackage)
+            val threshold = if (isDangerousSettings) 1 else 2
+            
+            if (settingsOpenCount >= threshold) {
                 isInAggressiveMode = true
                 
-                Log.w(TAG, "🚨 SETTINGS DETECTADO! (count: $settingsOpenCount)")
+                Log.w(TAG, "🚨 SETTINGS DETECTADO! (count: $settingsOpenCount, dangerous: $isDangerousSettings)")
                 Log.w(TAG, "   Pacote: $foregroundPackage")
                 Log.w(TAG, "   Modo AGRESSIVO ativado!")
                 
@@ -206,6 +209,14 @@ class SettingsGuardService(private val context: Context) {
         } else {
             settingsOpenCount = 0
         }
+    }
+    
+    private fun isDangerousSettingsScreen(packageName: String): Boolean {
+        return packageName.contains("deviceadmin", ignoreCase = true) ||
+               packageName.contains("device_admin", ignoreCase = true) ||
+               packageName.contains("packageinstaller", ignoreCase = true) ||
+               packageName.contains("securitycenter", ignoreCase = true) ||
+               packageName.contains("appmanager", ignoreCase = true)
     }
     
     private fun isSettingsApp(packageName: String): Boolean {
