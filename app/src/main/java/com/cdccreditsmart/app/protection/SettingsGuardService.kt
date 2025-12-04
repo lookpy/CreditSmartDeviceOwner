@@ -39,6 +39,10 @@ class SettingsGuardService(private val context: Context) {
         var isPermissionGrantFlowActive: Boolean = false
             private set
         
+        @Volatile
+        var isVoluntaryUninstallActive: Boolean = false
+            private set
+        
         fun pauseForPermissionGrant() {
             isPermissionGrantFlowActive = true
             Log.i(TAG, "⏸️ Guard PAUSADO para fluxo de permissões")
@@ -47,6 +51,17 @@ class SettingsGuardService(private val context: Context) {
         fun resumeAfterPermissionGrant() {
             isPermissionGrantFlowActive = false
             Log.i(TAG, "▶️ Guard RETOMADO após fluxo de permissões")
+        }
+        
+        fun pauseForVoluntaryUninstall() {
+            isVoluntaryUninstallActive = true
+            Log.i(TAG, "🗑️ Guard PAUSADO para desinstalação voluntária")
+            Log.i(TAG, "   Proteção desativada - usuário pode desinstalar")
+        }
+        
+        fun resumeAfterVoluntaryUninstall() {
+            isVoluntaryUninstallActive = false
+            Log.i(TAG, "▶️ Guard RETOMADO após desinstalação cancelada")
         }
         
         fun getInstance(context: Context): SettingsGuardService {
@@ -175,7 +190,7 @@ class SettingsGuardService(private val context: Context) {
     }
     
     private suspend fun checkSettingsAccessAggressively() {
-        if (isPermissionGrantFlowActive) {
+        if (isPermissionGrantFlowActive || isVoluntaryUninstallActive) {
             return
         }
         
@@ -380,6 +395,11 @@ class SettingsGuardService(private val context: Context) {
             return
         }
         
+        if (isVoluntaryUninstallActive) {
+            Log.d(TAG, "🗑️ Intercept ignorado - desinstalação voluntária ativa")
+            return
+        }
+        
         val now = System.currentTimeMillis()
         
         if (now - lastInterceptTime < 1000) {
@@ -396,6 +416,11 @@ class SettingsGuardService(private val context: Context) {
     }
     
     fun forceInterceptCritical(reason: String) {
+        if (isVoluntaryUninstallActive) {
+            Log.d(TAG, "🗑️ Intercept crítico ignorado - desinstalação voluntária ativa")
+            return
+        }
+        
         val now = System.currentTimeMillis()
         
         if (now - lastInterceptTime < 500) {

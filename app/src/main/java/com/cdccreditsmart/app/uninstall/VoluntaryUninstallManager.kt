@@ -5,6 +5,7 @@ import android.util.Log
 import com.cdccreditsmart.app.mdm.SelfDestructManager
 import com.cdccreditsmart.app.mdm.SelfDestructResult
 import com.cdccreditsmart.app.network.RetrofitProvider
+import com.cdccreditsmart.app.protection.SettingsGuardService
 import com.cdccreditsmart.app.security.SecureTokenStorage
 import com.cdccreditsmart.network.api.DeviceApiService
 import com.cdccreditsmart.network.dto.mdm.CommandParameters
@@ -290,6 +291,11 @@ class VoluntaryUninstallManager(private val context: Context) {
             Log.i(TAG, "")
             Log.i(TAG, "📝 Razão: Todas as parcelas pagas - cliente solicitou desinstalação")
             Log.i(TAG, "🔑 Código fornecido: ${confirmationCode.take(3)}***")
+            Log.i(TAG, "")
+            
+            Log.i(TAG, "⏸️ Pausando proteção do SettingsGuard para permitir desinstalação...")
+            SettingsGuardService.pauseForVoluntaryUninstall()
+            Log.i(TAG, "✅ Proteção pausada - usuário pode prosseguir com desinstalação")
             Log.i(TAG, "")
             
             // Verificar novamente se pode desinstalar
