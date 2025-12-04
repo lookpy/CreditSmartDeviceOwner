@@ -52,9 +52,10 @@ interface ContractApiService {
 
 // Request/Response Data Classes
 data class ContractTermsResponse(
-    val id: Int,
+    val success: Boolean,
+    val id: String,
     val version: String,
-    val termsText: String,
+    val text: String,
     val hash: String,
     val isActive: Boolean,
     val createdAt: String

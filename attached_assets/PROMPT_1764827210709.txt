@@ -1,0 +1,331 @@
+# Briefing de Integração - APK CDC CreditSmart
+
+## Contexto
+
+O APK Android da CDC CreditSmart precisa buscar configurações dinâmicas do servidor backend. Este documento descreve os endpoints disponíveis e requisitos de implementação.
+
+---
+
+## Endpoints Disponíveis
+
+### Base URL
+- **Produção**: `https://cdccreditsmart.com/`
+- **Desenvolvimento**: `https://a4bce526-b203-4033-aa78-b63372425272-00-1ftij2ojlf9qz.kirk.replit.dev`
+
+---
+
+## 1. Dados de Contato
+
+### Endpoint
+```
+GET /v1/support/contact
+```
+
+### Autenticação
+Não requer autenticação (endpoint público)
+
+### Response (200 OK)
+```json
+{
+  "phone": "11999999999",
+  "whatsapp": "11999999999",
+  "contactLink": "https://site.com/contato"
+}
+```
+
+### Campos
+| Campo | Tipo | Descrição |
+|-------|------|-----------|
+| `phone` | string | Telefone para contato (pode ser vazio `""`) |
+| `whatsapp` | string | WhatsApp para contato (pode ser vazio `""`) |
+| `contactLink` | string | URL para página de contato (pode ser vazio `""`) |
+
+### Comportamento no APK
+- Buscar ao iniciar o app
+- Fazer cache local (atualizar a cada 24h)
+- Exibir botões apenas se valores não estiverem vazios
+
+### Exemplo Kotlin
+```kotlin
+interface CdcApi {
+    @GET("/v1/support/contact")
+    suspend fun getSupportContact(): SupportContactResponse
+}
+
+data class SupportContactResponse(
+    val phone: String,
+    val whatsapp: String,
+    val contactLink: String
+)
+
+// Uso
+val contact = api.getSupportContact()
+if (contact.phone.isNotEmpty()) {
+    // Exibir botão de telefone
+}
+if (contact.whatsapp.isNotEmpty()) {
+    // Exibir botão de WhatsApp
+}
+```
+
+---
+
+## 2. Termos e Condições do Contrato
+
+### Endpoint
+```
+GET /v1/contract/terms
+GET /v1/contract/terms?version=latest
+GET /v1/contract/terms?version=v2.1
+```
+
+### Autenticação
+Não requer autenticação (endpoint público)
+
+### Query Parameters
+| Parâmetro | Tipo | Obrigatório | Padrão | Descrição |
+|-----------|------|-------------|--------|-----------|
+| `version` | string | Não | `"latest"` | Versão específica ou `"latest"` para mais recente |
+
+### Response (200 OK)
+```json
+{
+  "success": true,
+  "id": "54a62376-e9dd-4b7c-b474-8ecaa4c26cfc",
+  "version": "v2.1",
+  "text": "# CONTRATO DE FINANCIAMENTO COM ALIENAÇÃO FIDUCIÁRIA...",
+  "hash": "4215f4fceb20e0b159751d4736df53f904cb6d601077a32589661175b32eb12b",
+  "isActive": true,
+  "createdAt": "2025-12-04T05:14:55.546Z"
+}
+```
+
+### Campos
+| Campo | Tipo | Descrição |
+|-------|------|-----------|
+| `success` | boolean | Indica sucesso da operação |
+| `id` | string | UUID único da versão |
+| `version` | string | Versão dos termos (ex: "v2.1") |
+| `text` | string | Texto completo em Markdown |
+| `hash` | string | Hash SHA-256 do texto para validação |
+| `isActive` | boolean | Se é a versão ativa atual |
+| `createdAt` | string | Data de criação (ISO 8601) |
+
+### Versão Atual
+```
+Versão: v2.1
+Cláusulas: 24
+Hash SHA-256: 4215f4fceb20e0b159751d4736df53f904cb6d601077a32589661175b32eb12b
+Tamanho: ~44.000 caracteres
+Formato: Markdown
+```
+
+### Exemplo Kotlin
+```kotlin
+interface CdcApi {
+    @GET("/v1/contract/terms")
+    suspend fun getContractTerms(
+        @Query("version") version: String = "latest"
+    ): ContractTermsResponse
+}
+
+data class ContractTermsResponse(
+    val success: Boolean,
+    val id: String,
+    val version: String,
+    val text: String,
+    val hash: String,
+    val isActive: Boolean,
+    val createdAt: String
+)
+```
+
+---
+
+## 3. Validação de Integridade (OBRIGATÓRIO)
+
+### Requisito de Segurança
+O APK DEVE validar o hash SHA-256 do texto dos termos antes de exibir ao usuário. Isso garante que o conteúdo não foi adulterado durante a transmissão.
+
+### Implementação
+```kotlin
+import java.security.MessageDigest
+
+fun calculateSHA256(text: String): String {
+    val digest = MessageDigest.getInstance("SHA-256")
+    val hashBytes = digest.digest(text.toByteArray(Charsets.UTF_8))
+    return hashBytes.joinToString("") { "%02x".format(it) }
+}
+
+// Validação antes de exibir
+fun validateAndDisplayTerms(terms: ContractTermsResponse) {
+    val calculatedHash = calculateSHA256(terms.text)
+    
+    if (calculatedHash != terms.hash) {
+        // CRÍTICO: Hash não confere - possível adulteração
+        Log.e("SECURITY", "Hash mismatch! Expected: ${terms.hash}, Got: $calculatedHash")
+        throw SecurityException("Integridade dos termos comprometida")
+    }
+    
+    // Hash válido - exibir termos
+    displayTermsMarkdown(terms.text)
+}
+```
+
+### O que fazer se o hash não conferir
+1. NÃO exibir os termos ao usuário
+2. Registrar log de segurança
+3. Tentar buscar novamente do servidor
+4. Se persistir, exibir mensagem de erro e bloquear assinatura
+
+---
+
+## 4. Renderização de Markdown
+
+O texto dos termos está em formato Markdown. Recomendamos usar a biblioteca **Markwon** para Android:
+
+### Dependência (build.gradle)
+```gradle
+implementation 'io.noties.markwon:core:4.6.2'
+```
+
+### Uso
+```kotlin
+val markwon = Markwon.create(context)
+markwon.setMarkdown(textView, terms.text)
+```
+
+### Estrutura do Documento
+O contrato possui:
+- Cabeçalho com identificação das partes
+- 24 cláusulas numeradas
+- Subcláusulas com numeração hierárquica (ex: 5.1, 5.2)
+- Listas com marcadores
+- Texto em negrito para destaques importantes
+- Foro e assinaturas no final
+
+---
+
+## 5. Fluxo Recomendado
+
+### Ao Iniciar o App
+```
+1. GET /v1/support/contact
+2. Salvar dados em SharedPreferences/DataStore
+3. Atualizar UI com botões de contato (se não vazios)
+```
+
+### Antes de Assinar Contrato
+```
+1. GET /v1/contract/terms?version=latest
+2. Validar hash SHA-256
+3. Se válido → Exibir Markdown
+4. Se inválido → Bloquear e reportar erro
+5. Usuário lê e aceita
+6. Registrar aceite com versão e hash
+```
+
+---
+
+## 6. Tratamento de Erros
+
+### Erros de Rede
+```kotlin
+try {
+    val terms = api.getContractTerms()
+    // processar
+} catch (e: IOException) {
+    // Sem conexão - usar cache local se disponível
+    val cachedTerms = preferences.getCachedTerms()
+    if (cachedTerms != null) {
+        displayTerms(cachedTerms)
+    } else {
+        showError("Sem conexão. Tente novamente.")
+    }
+}
+```
+
+### Erros HTTP
+| Código | Ação |
+|--------|------|
+| 200 | Sucesso - processar resposta |
+| 500 | Erro servidor - tentar novamente ou usar cache |
+
+---
+
+## 7. Checklist de Implementação
+
+### Dados de Contato
+- [ ] Criar interface Retrofit para `/v1/support/contact`
+- [ ] Criar data class `SupportContactResponse`
+- [ ] Buscar dados ao iniciar app
+- [ ] Salvar em SharedPreferences/DataStore
+- [ ] Exibir botões condicionalmente (se não vazios)
+- [ ] Implementar cache de 24h
+
+### Termos e Condições
+- [ ] Criar interface Retrofit para `/v1/contract/terms`
+- [ ] Criar data class `ContractTermsResponse`
+- [ ] Implementar função `calculateSHA256()`
+- [ ] Validar hash ANTES de exibir
+- [ ] Adicionar biblioteca Markwon
+- [ ] Renderizar Markdown na UI
+- [ ] Registrar versão/hash no aceite do contrato
+- [ ] Implementar fallback para cache local
+
+### Segurança
+- [ ] Usar HTTPS em produção
+- [ ] Validar certificado SSL
+- [ ] Não aceitar certificados auto-assinados
+- [ ] Logar tentativas de adulteração
+
+---
+
+## 8. Informações Adicionais
+
+### Contrato v2.1 - Estrutura de Cláusulas
+
+| # | Cláusula |
+|---|----------|
+| 1 | Definições e Interpretação |
+| 2 | Objeto do Contrato |
+| 3 | Valor e Forma de Pagamento |
+| 4 | Juros e Encargos |
+| 5 | Alienação Fiduciária |
+| 6 | Obrigações do Cliente |
+| 7 | Obrigações da Financiadora |
+| 8 | Sistema de Bloqueio Progressivo |
+| 9 | Mora e Inadimplência |
+| 10 | Rescisão do Contrato |
+| 11 | Proteção de Dados (LGPD) |
+| 12 | Comunicações e Notificações |
+| 13 | Transferência do Contrato |
+| 14 | Garantias e Seguros |
+| 15 | Quitação Antecipada |
+| 16 | Declarações do Cliente |
+| 17 | Limitação de Responsabilidade da Financiadora |
+| 18 | Obrigação de Indenização pelo Cliente |
+| 19 | Força Maior e Caso Fortuito |
+| 20 | Propriedade Intelectual e Tecnologia |
+| 21 | Fraude e Responsabilidade Criminal |
+| 22 | Cessão de Créditos e Direitos |
+| 23 | Custas Processuais e Honorários |
+| 24 | Disposições Finais |
+
+### Base Legal
+- Lei 9.514/1997 (Alienação Fiduciária)
+- CDC - Código de Defesa do Consumidor
+- LGPD - Lei Geral de Proteção de Dados
+- Precedente TJMG (Bloqueio Progressivo)
+
+---
+
+## 9. Contato para Dúvidas
+
+Para dúvidas técnicas sobre a integração, entre em contato com a equipe de backend.
+
+---
+
+**Documento gerado em**: 04/12/2025
+**Versão do contrato**: v2.1
+**Hash de referência**: `4215f4fceb20e0b159751d4736df53f904cb6d601077a32589661175b32eb12b`

@@ -78,7 +78,7 @@ class ContractRepositoryImpl constructor(
                 val terms = Terms(
                     version = responseBody.version,
                     hash = responseBody.hash,
-                    text = responseBody.termsText,
+                    text = responseBody.text,
                     effectiveDate = LocalDateTime.parse(responseBody.createdAt.take(19)),
                     fetchedAt = LocalDateTime.now()
                 )

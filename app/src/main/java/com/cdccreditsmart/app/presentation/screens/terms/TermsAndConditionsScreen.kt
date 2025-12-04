@@ -160,7 +160,7 @@ fun TermsAndConditionsScreen(
                         }
                     }
                     
-                    MarkdownText(termsText = terms.termsText)
+                    MarkdownText(termsText = terms.text)
                     
                     Divider(
                         modifier = Modifier.padding(vertical = 8.dp),

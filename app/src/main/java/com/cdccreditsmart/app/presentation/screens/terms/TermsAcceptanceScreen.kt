@@ -192,9 +192,9 @@ fun TermsAcceptanceScreen(
                             TextButton(
                                 onClick = {
                                     terms = ContractTermsData(
-                                        id = 0,
+                                        id = "default",
                                         version = "1.0",
-                                        termsText = getDefaultTermsText(),
+                                        text = getDefaultTermsText(),
                                         hash = "",
                                         isActive = true,
                                         createdAt = ""
@@ -256,7 +256,7 @@ fun TermsAcceptanceScreen(
                                     .weight(1f)
                                     .verticalScroll(scrollState)
                             ) {
-                                MarkdownTermsText(termsText = terms!!.termsText)
+                                MarkdownTermsText(termsText = terms!!.text)
                             }
                         }
                     }

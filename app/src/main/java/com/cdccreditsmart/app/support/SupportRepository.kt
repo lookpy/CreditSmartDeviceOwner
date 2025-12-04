@@ -112,7 +112,12 @@ class SupportRepository(private val context: Context) {
             if (response.isSuccessful && response.body() != null) {
                 val termsResponse = response.body()!!
                 
-                val calculatedHash = calculateSHA256(termsResponse.termsText)
+                if (!termsResponse.success) {
+                    Log.w(TAG, "⚠️ Servidor retornou success=false para termos")
+                    return@withContext Result.failure(Exception("Servidor retornou erro ao buscar termos"))
+                }
+                
+                val calculatedHash = calculateSHA256(termsResponse.text)
                 if (calculatedHash != termsResponse.hash) {
                     Log.e(TAG, "❌ SEGURANÇA: Hash dos termos não confere!")
                     Log.e(TAG, "   Hash esperado: ${termsResponse.hash}")
@@ -125,7 +130,7 @@ class SupportRepository(private val context: Context) {
                 val termsData = ContractTermsData(
                     id = termsResponse.id,
                     version = termsResponse.version,
-                    termsText = termsResponse.termsText,
+                    text = termsResponse.text,
                     hash = termsResponse.hash,
                     isActive = termsResponse.isActive,
                     createdAt = termsResponse.createdAt
@@ -214,18 +219,18 @@ class SupportRepository(private val context: Context) {
     }
     
     private fun getCachedTerms(): ContractTermsData? {
-        val id = prefs.getInt(KEY_TERMS_ID, -1)
+        val id = prefs.getString(KEY_TERMS_ID, null)
         val version = prefs.getString(KEY_TERMS_VERSION, null)
-        val text = prefs.getString(KEY_TERMS_TEXT, null)
+        val termsText = prefs.getString(KEY_TERMS_TEXT, null)
         val hash = prefs.getString(KEY_TERMS_HASH, null)
         val isActive = prefs.getBoolean(KEY_TERMS_IS_ACTIVE, false)
         val createdAt = prefs.getString(KEY_TERMS_CREATED_AT, null)
         
-        if (id == -1 || version == null || text == null || hash == null || createdAt == null) {
+        if (id == null || version == null || termsText == null || hash == null || createdAt == null) {
             return null
         }
         
-        val isValid = validateTermsIntegrity(text, hash)
+        val isValid = validateTermsIntegrity(termsText, hash)
         if (!isValid) {
             Log.e(TAG, "❌ Termos em cache corrompidos - limpando cache")
             clearTermsCache()
@@ -235,7 +240,7 @@ class SupportRepository(private val context: Context) {
         return ContractTermsData(
             id = id,
             version = version,
-            termsText = text,
+            text = termsText,
             hash = hash,
             isActive = isActive,
             createdAt = createdAt
@@ -244,9 +249,9 @@ class SupportRepository(private val context: Context) {
     
     private fun cacheTerms(terms: ContractTermsData) {
         prefs.edit()
-            .putInt(KEY_TERMS_ID, terms.id)
+            .putString(KEY_TERMS_ID, terms.id)
             .putString(KEY_TERMS_VERSION, terms.version)
-            .putString(KEY_TERMS_TEXT, terms.termsText)
+            .putString(KEY_TERMS_TEXT, terms.text)
             .putString(KEY_TERMS_HASH, terms.hash)
             .putBoolean(KEY_TERMS_IS_ACTIVE, terms.isActive)
             .putString(KEY_TERMS_CREATED_AT, terms.createdAt)
@@ -292,9 +297,9 @@ data class SupportContactData(
 }
 
 data class ContractTermsData(
-    val id: Int,
+    val id: String,
     val version: String,
-    val termsText: String,
+    val text: String,
     val hash: String,
     val isActive: Boolean,
     val createdAt: String

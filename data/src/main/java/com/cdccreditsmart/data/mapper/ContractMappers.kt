@@ -69,13 +69,13 @@ fun ContractResponse.toDomain(): Contract = try {
 /**
  * Converts ContractTermsResponse to Terms domain model.
  * Maps contract terms information with proper date conversion.
- * API fields: id, version, termsText, hash, isActive, createdAt
+ * API fields: success, id, version, text, hash, isActive, createdAt
  */
 fun ContractTermsResponse.toDomain(): Terms = try {
     Terms(
         version = this.version.safeString(),
         hash = this.hash.safeString(),
-        text = this.termsText.safeString(),
+        text = this.text.safeString(),
         effectiveDate = this.createdAt?.toLocalDateTime() ?: LocalDateTime.now(),
         fetchedAt = null // Server doesn't provide fetch timestamp
     )
@@ -83,7 +83,7 @@ fun ContractTermsResponse.toDomain(): Terms = try {
     Terms(
         version = this.version ?: "1.0",
         hash = this.hash ?: "",
-        text = this.termsText ?: "",
+        text = this.text ?: "",
         effectiveDate = LocalDateTime.now(),
         fetchedAt = null
     )
