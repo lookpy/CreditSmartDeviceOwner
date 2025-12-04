@@ -34,8 +34,8 @@ class UninstallFlowActivity : Activity() {
     private lateinit var dpm: DevicePolicyManager
     private lateinit var adminComponent: ComponentName
     private var uninstallType: String = TYPE_NOT_ACTIVATED
-    private var protectionsRemoved = false
     private var wasDeviceOwner = false
+    private var wasDeviceAdmin = false
     
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,10 +45,12 @@ class UninstallFlowActivity : Activity() {
         adminComponent = ComponentName(this, CDCDeviceAdminReceiver::class.java)
         uninstallType = intent.getStringExtra(EXTRA_UNINSTALL_TYPE) ?: TYPE_NOT_ACTIVATED
         
-        Log.i(TAG, "========================================")
-        Log.i(TAG, "FLUXO DE DESINSTALACAO SEGURA INICIADO")
-        Log.i(TAG, "========================================")
-        Log.i(TAG, "Tipo: $uninstallType")
+        Log.i(TAG, "")
+        Log.i(TAG, "╔════════════════════════════════════════════════════════════╗")
+        Log.i(TAG, "║     FLUXO DE DESINSTALAÇÃO SEGURA - CREDIT SMART          ║")
+        Log.i(TAG, "╚════════════════════════════════════════════════════════════╝")
+        Log.i(TAG, "")
+        Log.i(TAG, "Tipo de desinstalação: $uninstallType")
         
         executeUninstallFlow()
     }
@@ -59,60 +61,63 @@ class UninstallFlowActivity : Activity() {
             val isDeviceOwner = dpm.isDeviceOwnerApp(packageName)
             val isDeviceAdmin = dpm.isAdminActive(adminComponent)
             
-            Log.i(TAG, "[1/4] Verificando privilegios...")
-            Log.i(TAG, "   Device Owner: $isDeviceOwner")
-            Log.i(TAG, "   Device Admin: $isDeviceAdmin")
+            wasDeviceOwner = isDeviceOwner
+            wasDeviceAdmin = isDeviceAdmin
+            
+            Log.i(TAG, "")
+            Log.i(TAG, "[PASSO 1/4] Verificando privilégios...")
+            Log.i(TAG, "   Device Owner: ${if (isDeviceOwner) "SIM" else "NÃO"}")
+            Log.i(TAG, "   Device Admin: ${if (isDeviceAdmin) "SIM" else "NÃO"}")
             
             if (isDeviceOwner) {
-                Log.i(TAG, "[2/4] Removendo bloqueios para permitir desinstalacao...")
+                Log.i(TAG, "")
+                Log.i(TAG, "[PASSO 2/4] Removendo bloqueios de Device Owner...")
                 
                 try {
                     dpm.setUninstallBlocked(adminComponent, packageName, false)
-                    Log.i(TAG, "   Bloqueio de desinstalacao removido")
-                    protectionsRemoved = true
+                    Log.i(TAG, "   OK: Bloqueio de desinstalação removido")
                 } catch (e: Exception) {
-                    Log.w(TAG, "   Aviso ao remover bloqueio: ${e.message}")
+                    Log.w(TAG, "   AVISO: ${e.message}")
                 }
                 
                 try {
                     if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.R) {
                         dpm.setUserControlDisabledPackages(adminComponent, emptyList())
-                        Log.i(TAG, "   User control disabled packages limpo")
+                        Log.i(TAG, "   OK: User control disabled packages limpo")
                     }
                 } catch (e: Exception) {
-                    Log.w(TAG, "   Aviso ao limpar user control: ${e.message}")
+                    Log.w(TAG, "   AVISO: ${e.message}")
                 }
                 
-                Log.i(TAG, "[3/4] Removendo Device Owner para permitir desinstalacao...")
+                Log.i(TAG, "")
+                Log.i(TAG, "[PASSO 3/4] Removendo Device Owner...")
                 try {
                     dpm.clearDeviceOwnerApp(packageName)
-                    Log.i(TAG, "   Device Owner removido com sucesso")
-                    wasDeviceOwner = true
+                    Log.i(TAG, "   OK: Device Owner removido com sucesso")
                 } catch (e: Exception) {
-                    Log.e(TAG, "   ERRO ao remover Device Owner: ${e.message}")
-                    reapplyProtectionsIfNeeded()
+                    Log.e(TAG, "   ERRO: ${e.message}")
+                    Log.e(TAG, "   Abortando desinstalação - Device Owner não removido")
                     finish()
                     return
                 }
             } else if (isDeviceAdmin) {
-                Log.i(TAG, "[2/4] App e Device Admin - removendo admin...")
+                Log.i(TAG, "")
+                Log.i(TAG, "[PASSO 2/4] App é Device Admin...")
+                Log.i(TAG, "[PASSO 3/4] Removendo Device Admin...")
                 try {
                     dpm.removeActiveAdmin(adminComponent)
-                    Log.i(TAG, "   Device Admin removido")
-                    protectionsRemoved = true
+                    Log.i(TAG, "   OK: Device Admin removido")
                 } catch (e: Exception) {
-                    Log.w(TAG, "   Aviso ao remover admin: ${e.message}")
+                    Log.w(TAG, "   AVISO: ${e.message}")
                 }
-                Log.i(TAG, "[3/4] Pulando - nao era Device Owner")
             } else {
-                Log.i(TAG, "[2/4] App nao tem privilegios especiais")
-                Log.i(TAG, "[3/4] Pulando - nao era Device Owner")
+                Log.i(TAG, "")
+                Log.i(TAG, "[PASSO 2/4] App sem privilégios especiais")
+                Log.i(TAG, "[PASSO 3/4] Nenhuma proteção a remover")
             }
             
-            Log.i(TAG, "[4/4] Iniciando intent de desinstalacao...")
             Log.i(TAG, "")
-            Log.i(TAG, "ATENCAO: Se usuario cancelar, protecoes NAO podem ser reaplicadas")
-            Log.i(TAG, "         pois Device Owner foi removido permanentemente.")
+            Log.i(TAG, "[PASSO 4/4] Iniciando desinstalação do sistema...")
             Log.i(TAG, "")
             
             val uninstallIntent = Intent(Intent.ACTION_DELETE).apply {
@@ -122,8 +127,8 @@ class UninstallFlowActivity : Activity() {
             startActivityForResult(uninstallIntent, REQUEST_UNINSTALL)
             
         } catch (e: Exception) {
-            Log.e(TAG, "ERRO durante fluxo de desinstalacao: ${e.message}", e)
-            reapplyProtectionsIfNeeded()
+            Log.e(TAG, "ERRO durante fluxo: ${e.message}", e)
+            reapplyProtectionsIfPossible()
             finish()
         }
     }
@@ -132,29 +137,25 @@ class UninstallFlowActivity : Activity() {
         super.onActivityResult(requestCode, resultCode, data)
         
         if (requestCode == REQUEST_UNINSTALL) {
-            Log.i(TAG, "========================================")
-            Log.i(TAG, "RETORNO DO DIALOG DE DESINSTALACAO")
-            Log.i(TAG, "========================================")
-            Log.i(TAG, "Result code: $resultCode")
+            Log.i(TAG, "")
+            Log.i(TAG, "╔════════════════════════════════════════════════════════════╗")
+            Log.i(TAG, "║     RETORNO DO DIÁLOGO DE DESINSTALAÇÃO                   ║")
+            Log.i(TAG, "╚════════════════════════════════════════════════════════════╝")
+            Log.i(TAG, "")
             
             if (isPackageInstalled(packageName)) {
-                Log.w(TAG, "App ainda esta instalado - usuario CANCELOU a desinstalacao")
-                Log.i(TAG, "Reaplicando protecoes...")
-                
-                reapplyProtectionsIfNeeded()
+                Log.w(TAG, "RESULTADO: Usuário CANCELOU a desinstalação")
+                Log.w(TAG, "")
+                Log.w(TAG, "ATENÇÃO: Proteções foram removidas e NÃO podem ser reaplicadas!")
+                Log.w(TAG, "   O app não é mais Device Owner/Admin")
+                Log.w(TAG, "   Para restaurar proteções, reprovisionar via:")
+                Log.w(TAG, "     1. Factory reset + QR Code de provisionamento")
+                Log.w(TAG, "     2. ADB: dpm set-device-owner")
             } else {
-                Log.i(TAG, "App foi desinstalado com sucesso")
+                Log.i(TAG, "RESULTADO: App desinstalado com sucesso")
             }
             
             finish()
-        }
-    }
-    
-    override fun onResume() {
-        super.onResume()
-        
-        if (protectionsRemoved && isPackageInstalled(packageName)) {
-            Log.w(TAG, "onResume: App ainda instalado apos protecoes removidas")
         }
     }
     
@@ -162,48 +163,27 @@ class UninstallFlowActivity : Activity() {
         super.onDestroy()
         
         if (isPackageInstalled(packageName)) {
-            Log.i(TAG, "onDestroy: Verificando se protecoes precisam ser reaplicadas")
-            reapplyProtectionsIfNeeded()
+            Log.i(TAG, "onDestroy: App ainda instalado após tentativa de desinstalação")
         }
     }
     
-    private fun reapplyProtectionsIfNeeded() {
-        Log.i(TAG, "========================================")
-        Log.i(TAG, "VERIFICANDO REAPLICACAO DE PROTECOES")
-        Log.i(TAG, "========================================")
+    private fun reapplyProtectionsIfPossible() {
+        Log.i(TAG, "")
+        Log.i(TAG, "Tentando reaplicar proteções...")
         
         try {
             val packageName = packageName
             val isDeviceOwner = dpm.isDeviceOwnerApp(packageName)
             
-            Log.i(TAG, "   protectionsRemoved: $protectionsRemoved")
-            Log.i(TAG, "   wasDeviceOwner: $wasDeviceOwner")
-            Log.i(TAG, "   isDeviceOwner agora: $isDeviceOwner")
-            
             if (isDeviceOwner) {
-                Log.i(TAG, "App ainda e Device Owner - reaplicando protecoes...")
+                Log.i(TAG, "App ainda é Device Owner - reaplicando proteções...")
                 protectionManager.applyMaximumProtection()
-                Log.i(TAG, "Protecoes reaplicadas com sucesso")
-            } else if (wasDeviceOwner) {
-                Log.w(TAG, "========================================")
-                Log.w(TAG, "ATENCAO: DEVICE OWNER FOI REMOVIDO")
-                Log.w(TAG, "========================================")
-                Log.w(TAG, "O usuario cancelou a desinstalacao, mas o Device Owner")
-                Log.w(TAG, "ja havia sido removido. As protecoes NAO podem ser")
-                Log.w(TAG, "reaplicadas sem Device Owner.")
-                Log.w(TAG, "")
-                Log.w(TAG, "Para restaurar protecoes, o dispositivo precisa ser")
-                Log.w(TAG, "provisionado novamente como Device Owner via:")
-                Log.w(TAG, "  1. Factory reset + QR Code de provisionamento")
-                Log.w(TAG, "  2. ADB: dpm set-device-owner")
-                Log.w(TAG, "========================================")
-            } else if (!protectionsRemoved) {
-                Log.i(TAG, "Protecoes nao foram removidas - nada a reaplicar")
+                Log.i(TAG, "OK: Proteções reaplicadas")
             } else {
-                Log.i(TAG, "App nao era Device Owner - nada a reaplicar")
+                Log.w(TAG, "App não é mais Device Owner - proteções não podem ser reaplicadas")
             }
         } catch (e: Exception) {
-            Log.e(TAG, "ERRO ao reaplicar protecoes: ${e.message}", e)
+            Log.e(TAG, "ERRO ao reaplicar proteções: ${e.message}", e)
         }
     }
     

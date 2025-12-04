@@ -125,13 +125,148 @@ class AppProtectionManager(private val context: Context) {
         ParentalControlBlocker(context)
     }
     
+    enum class ProtectionLevel {
+        DEVICE_OWNER,
+        DEVICE_ADMIN,
+        BASIC,
+        NONE
+    }
+    
+    data class ProtectionResult(
+        val level: ProtectionLevel,
+        val protectionsApplied: Int,
+        val needsDeviceAdminActivation: Boolean = false
+    )
+    
+    fun getCurrentProtectionLevel(): ProtectionLevel {
+        return when {
+            isDeviceOwner() -> ProtectionLevel.DEVICE_OWNER
+            isDeviceAdmin() -> ProtectionLevel.DEVICE_ADMIN
+            else -> ProtectionLevel.NONE
+        }
+    }
+    
+    fun isDeviceAdmin(): Boolean {
+        return try {
+            dpm.isAdminActive(adminComponent)
+        } catch (e: Exception) {
+            Log.e(TAG, "Erro ao verificar Device Admin: ${e.message}")
+            false
+        }
+    }
+    
+    fun applyBestAvailableProtection(): ProtectionResult {
+        Log.i(TAG, "")
+        Log.i(TAG, "╔════════════════════════════════════════════════════════════════╗")
+        Log.i(TAG, "║     🛡️ APLICANDO MELHOR PROTEÇÃO DISPONÍVEL                    ║")
+        Log.i(TAG, "║           CDC CREDIT SMART - PROTEÇÃO EM CAMADAS              ║")
+        Log.i(TAG, "╚════════════════════════════════════════════════════════════════╝")
+        Log.i(TAG, "")
+        
+        val isDeviceOwner = isDeviceOwner()
+        val isDeviceAdmin = isDeviceAdmin()
+        
+        Log.i(TAG, "📋 STATUS ATUAL:")
+        Log.i(TAG, "   Device Owner: ${if (isDeviceOwner) "SIM" else "NÃO"}")
+        Log.i(TAG, "   Device Admin: ${if (isDeviceAdmin) "SIM" else "NÃO"}")
+        Log.i(TAG, "")
+        
+        return when {
+            isDeviceOwner -> {
+                Log.i(TAG, "🔒 NÍVEL: DEVICE OWNER (Proteção Máxima)")
+                applyMaximumProtection()
+                ProtectionResult(ProtectionLevel.DEVICE_OWNER, 15)
+            }
+            isDeviceAdmin -> {
+                Log.i(TAG, "🔐 NÍVEL: DEVICE ADMIN (Proteção Parcial)")
+                val count = applyDeviceAdminProtection()
+                ProtectionResult(ProtectionLevel.DEVICE_ADMIN, count)
+            }
+            else -> {
+                Log.w(TAG, "⚠️ NÍVEL: SEM PRIVILÉGIOS")
+                Log.w(TAG, "   App precisa ser ativado como Device Admin ou Device Owner")
+                Log.w(TAG, "   para aplicar proteções contra desinstalação.")
+                Log.w(TAG, "")
+                applyBasicPersistence()
+                ProtectionResult(ProtectionLevel.NONE, 0, needsDeviceAdminActivation = true)
+            }
+        }
+    }
+    
+    private fun applyDeviceAdminProtection(): Int {
+        Log.i(TAG, "========================================")
+        Log.i(TAG, "🔐 APLICANDO PROTEÇÕES DE DEVICE ADMIN")
+        Log.i(TAG, "========================================")
+        
+        var count = 0
+        
+        Log.i(TAG, "[1/3] Device Admin ativo - desinstalação requer desativar admin primeiro")
+        Log.i(TAG, "      → Usuário precisa ir em Settings > Security > Device Admins")
+        Log.i(TAG, "      → Desativar 'CDC Credit Smart' antes de desinstalar")
+        count++
+        
+        Log.i(TAG, "")
+        Log.i(TAG, "[2/3] Aplicando persistência básica...")
+        applyBasicPersistence()
+        count++
+        
+        Log.i(TAG, "")
+        Log.i(TAG, "[3/3] Proteções de Device Admin limitadas:")
+        Log.i(TAG, "      ❌ setUninstallBlocked: Requer Device Owner")
+        Log.i(TAG, "      ❌ setUserControlDisabledPackages: Requer Device Owner")
+        Log.i(TAG, "      ❌ addUserRestriction: Requer Device Owner")
+        Log.i(TAG, "      ✅ Desinstalação requer desativar admin primeiro")
+        Log.i(TAG, "      ✅ Foreground Service mantém app ativo")
+        Log.i(TAG, "      ✅ WorkManager mantém tarefas executando")
+        
+        Log.i(TAG, "========================================")
+        Log.i(TAG, "📊 RESUMO: Device Admin ativo com proteções parciais")
+        Log.i(TAG, "========================================")
+        Log.i(TAG, "")
+        
+        return count
+    }
+    
+    private fun applyBasicPersistence() {
+        Log.i(TAG, "   Iniciando serviços de persistência...")
+        
+        try {
+            val serviceIntent = android.content.Intent(context, com.cdccreditsmart.app.service.CdcForegroundService::class.java)
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                context.startForegroundService(serviceIntent)
+            } else {
+                context.startService(serviceIntent)
+            }
+            Log.i(TAG, "   ✅ Foreground Service iniciado")
+        } catch (e: Exception) {
+            Log.e(TAG, "   ❌ Erro ao iniciar Foreground Service: ${e.message}")
+        }
+        
+        try {
+            val workRequest = androidx.work.PeriodicWorkRequestBuilder<com.cdccreditsmart.app.workers.ServiceWatchdogWorker>(
+                15, java.util.concurrent.TimeUnit.MINUTES
+            ).build()
+            
+            androidx.work.WorkManager.getInstance(context).enqueueUniquePeriodicWork(
+                "service_watchdog",
+                androidx.work.ExistingPeriodicWorkPolicy.KEEP,
+                workRequest
+            )
+            Log.i(TAG, "   ✅ ServiceWatchdog agendado (15 min)")
+        } catch (e: Exception) {
+            Log.e(TAG, "   ❌ Erro ao agendar ServiceWatchdog: ${e.message}")
+        }
+    }
+    
     fun applyMaximumProtection() {
         Log.i(TAG, "========================================")
         Log.i(TAG, "🛡️ APLICANDO PROTEÇÃO MÁXIMA ANTI-REMOÇÃO")
         Log.i(TAG, "========================================")
         
         if (!isDeviceOwner()) {
-            Log.e(TAG, "❌ App NÃO é Device Owner - proteções não podem ser aplicadas")
+            Log.e(TAG, "❌ App NÃO é Device Owner - proteções máximas não podem ser aplicadas")
+            Log.i(TAG, "   Tentando aplicar proteções disponíveis...")
+            applyBestAvailableProtection()
             return
         }
         

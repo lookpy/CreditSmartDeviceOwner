@@ -2,22 +2,19 @@ package com.cdccreditsmart.app.presentation.scanner
 
 import android.app.admin.DevicePolicyManager
 import android.content.Context
-import android.content.Intent
-import android.net.Uri
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
-import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import com.cdccreditsmart.app.uninstall.UninstallFlowActivity
 
 @Composable
 fun NotActivatedUninstallDialog(
@@ -35,53 +32,7 @@ fun NotActivatedUninstallDialog(
         }
     }
     
-    if (isDeviceOwner) {
-        AlertDialog(
-            onDismissRequest = onDismiss,
-            icon = {
-                Icon(
-                    imageVector = Icons.Default.Lock,
-                    contentDescription = null,
-                    tint = Color(0xFF4CAF50),
-                    modifier = Modifier.size(48.dp)
-                )
-            },
-            title = {
-                Text(
-                    text = "Dispositivo Protegido",
-                    style = MaterialTheme.typography.titleLarge,
-                    fontWeight = FontWeight.Bold
-                )
-            },
-            text = {
-                Column(
-                    verticalArrangement = Arrangement.spacedBy(12.dp)
-                ) {
-                    Text(
-                        text = "O Credit Smart está configurado como administrador do dispositivo e não pode ser desinstalado.",
-                        style = MaterialTheme.typography.bodyLarge
-                    )
-                    
-                    Surface(
-                        color = MaterialTheme.colorScheme.primaryContainer,
-                        shape = MaterialTheme.shapes.small
-                    ) {
-                        Text(
-                            text = "As políticas de proteção estão ativas. Para desinstalar, entre em contato com o suporte.",
-                            style = MaterialTheme.typography.bodySmall,
-                            color = MaterialTheme.colorScheme.onPrimaryContainer,
-                            modifier = Modifier.padding(12.dp)
-                        )
-                    }
-                }
-            },
-            confirmButton = {
-                TextButton(onClick = onDismiss) {
-                    Text("Entendi")
-                }
-            }
-        )
-    } else if (!showConfirmation) {
+    if (!showConfirmation) {
         AlertDialog(
             onDismissRequest = onDismiss,
             icon = {
@@ -172,23 +123,38 @@ fun NotActivatedUninstallDialog(
                         textAlign = TextAlign.Center
                     )
                     
-                    Text(
-                        text = "Esta ação não pode ser desfeita.",
-                        style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.error,
-                        textAlign = TextAlign.Center,
-                        modifier = Modifier.fillMaxWidth()
-                    )
+                    if (isDeviceOwner) {
+                        Surface(
+                            color = MaterialTheme.colorScheme.errorContainer,
+                            shape = MaterialTheme.shapes.small
+                        ) {
+                            Text(
+                                text = "IMPORTANTE: As proteções do dispositivo serão removidas. " +
+                                       "Esta ação não pode ser desfeita.",
+                                style = MaterialTheme.typography.bodySmall,
+                                color = MaterialTheme.colorScheme.onErrorContainer,
+                                modifier = Modifier.padding(12.dp)
+                            )
+                        }
+                    } else {
+                        Text(
+                            text = "Esta ação não pode ser desfeita.",
+                            style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.error,
+                            textAlign = TextAlign.Center,
+                            modifier = Modifier.fillMaxWidth()
+                        )
+                    }
                 }
             },
             confirmButton = {
                 Button(
                     onClick = {
-                        val uninstallIntent = Intent(Intent.ACTION_DELETE).apply {
-                            data = Uri.parse("package:${context.packageName}")
-                            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                        }
-                        context.startActivity(uninstallIntent)
+                        val intent = UninstallFlowActivity.createIntent(
+                            context = context,
+                            uninstallType = UninstallFlowActivity.TYPE_NOT_ACTIVATED
+                        )
+                        context.startActivity(intent)
                         onDismiss()
                     },
                     colors = ButtonDefaults.buttonColors(

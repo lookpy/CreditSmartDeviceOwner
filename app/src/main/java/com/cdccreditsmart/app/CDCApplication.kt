@@ -157,50 +157,67 @@ class CDCApplication : Application() {
     
     private fun applyMaximumProtectionIfDeviceOwner() {
         try {
-            // VERIFICAR SE É DEVICE OWNER ANTES DE APLICAR PROTEÇÕES
-            val dpm = applicationContext.getSystemService(Context.DEVICE_POLICY_SERVICE) as android.app.admin.DevicePolicyManager
-            val isDeviceOwner = dpm.isDeviceOwnerApp(applicationContext.packageName)
-            
-            if (!isDeviceOwner) {
-                Log.e(TAG, "")
-                Log.e(TAG, "╔════════════════════════════════════════════════════════════╗")
-                Log.e(TAG, "║  ⚠️  CRÍTICO: APP NÃO É DEVICE OWNER!                     ║")
-                Log.e(TAG, "║  PROTEÇÕES NÃO SERÃO APLICADAS!                            ║")
-                Log.e(TAG, "║  Factory reset, desinstalação, etc DESBLOQUEADOS          ║")
-                Log.e(TAG, "╚════════════════════════════════════════════════════════════╝")
-                Log.e(TAG, "")
-                return
-            }
-            
-            Log.i(TAG, "✅ App é Device Owner - aplicando proteções...")
-            
             val protectionManager = AppProtectionManager(applicationContext)
-            protectionManager.applyMaximumProtection()
-            protectionManager.makeAppPersistent()
             
-            val protections = protectionManager.verifyProtections()
-            Log.i(TAG, "🛡️ Proteções verificadas: $protections")
+            val result = protectionManager.applyBestAvailableProtection()
             
-            // RODAR DIAGNÓSTICO COMPLETO
             Log.i(TAG, "")
-            Log.i(TAG, "🔍 Executando diagnóstico completo de proteções...")
-            val diagnostic = com.cdccreditsmart.app.utils.ProtectionDiagnostics.runCompleteDiagnostic(applicationContext)
+            Log.i(TAG, "╔════════════════════════════════════════════════════════════╗")
+            Log.i(TAG, "║     RESULTADO DA APLICAÇÃO DE PROTEÇÕES                    ║")
+            Log.i(TAG, "╚════════════════════════════════════════════════════════════╝")
+            Log.i(TAG, "   Nível: ${result.level}")
+            Log.i(TAG, "   Proteções aplicadas: ${result.protectionsApplied}")
             
-            if (diagnostic.criticalIssues.isNotEmpty()) {
-                Log.e(TAG, "⚠️ ISSUES CRÍTICOS ENCONTRADOS:")
-                diagnostic.criticalIssues.forEach { issue ->
-                    Log.e(TAG, "   - $issue")
+            when (result.level) {
+                AppProtectionManager.ProtectionLevel.DEVICE_OWNER -> {
+                    Log.i(TAG, "   Status: PROTEÇÃO MÁXIMA ATIVA")
+                    
+                    protectionManager.makeAppPersistent()
+                    
+                    val protections = protectionManager.verifyProtections()
+                    Log.i(TAG, "   Verificação: $protections")
+                    
+                    Log.i(TAG, "")
+                    Log.i(TAG, "🔍 Executando diagnóstico completo...")
+                    val diagnostic = com.cdccreditsmart.app.utils.ProtectionDiagnostics.runCompleteDiagnostic(applicationContext)
+                    
+                    if (diagnostic.criticalIssues.isNotEmpty()) {
+                        Log.e(TAG, "⚠️ ISSUES CRÍTICOS ENCONTRADOS:")
+                        diagnostic.criticalIssues.forEach { issue ->
+                            Log.e(TAG, "   - $issue")
+                        }
+                    } else {
+                        Log.i(TAG, "✅ Todas as proteções estão ativas!")
+                    }
+                    
+                    try {
+                        val knoxEnhanced = KnoxEnhancedProtections(applicationContext)
+                        knoxEnhanced.applyAllEnhancedProtections()
+                    } catch (e: Exception) {
+                        Log.e(TAG, "Erro ao aplicar Knox Enhanced Protections: ${e.message}")
+                    }
                 }
-            } else {
-                Log.i(TAG, "✅ Todas as proteções estão ativas!")
+                AppProtectionManager.ProtectionLevel.DEVICE_ADMIN -> {
+                    Log.i(TAG, "   Status: PROTEÇÃO PARCIAL (Device Admin)")
+                    Log.i(TAG, "   Desinstalação requer desativar admin primeiro")
+                }
+                AppProtectionManager.ProtectionLevel.BASIC -> {
+                    Log.w(TAG, "   Status: PROTEÇÃO BÁSICA")
+                    Log.w(TAG, "   App vulnerável a desinstalação")
+                }
+                AppProtectionManager.ProtectionLevel.NONE -> {
+                    Log.e(TAG, "   Status: SEM PROTEÇÃO")
+                    Log.e(TAG, "   App precisa ser provisionado como Device Owner")
+                    Log.e(TAG, "")
+                    Log.e(TAG, "   Provisione o dispositivo usando:")
+                    Log.e(TAG, "   1. QR Code durante setup inicial")
+                    Log.e(TAG, "   2. ADB: adb shell dpm set-device-owner ...")
+                    Log.e(TAG, "   3. Samsung Knox Mobile Enrollment")
+                }
             }
+            Log.i(TAG, "╚════════════════════════════════════════════════════════════╝")
+            Log.i(TAG, "")
             
-            try {
-                val knoxEnhanced = KnoxEnhancedProtections(applicationContext)
-                knoxEnhanced.applyAllEnhancedProtections()
-            } catch (e: Exception) {
-                Log.e(TAG, "Erro ao aplicar Knox Enhanced Protections: ${e.message}")
-            }
         } catch (e: Exception) {
             Log.e(TAG, "❌ Erro ao aplicar proteções: ${e.message}", e)
         }
