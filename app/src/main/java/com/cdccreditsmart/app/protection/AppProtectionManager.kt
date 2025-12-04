@@ -243,7 +243,7 @@ class AppProtectionManager(private val context: Context) {
         }
         
         try {
-            val workRequest = androidx.work.PeriodicWorkRequestBuilder<com.cdccreditsmart.app.workers.ServiceWatchdogWorker>(
+            val workRequest = androidx.work.PeriodicWorkRequestBuilder<com.cdccreditsmart.app.keepalive.ServiceWatchdogWorker>(
                 15, java.util.concurrent.TimeUnit.MINUTES
             ).build()
             
