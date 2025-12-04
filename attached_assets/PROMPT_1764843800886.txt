@@ -1,0 +1,33 @@
+2025-12-04 07:23:02.104 14845-14886 SettingsGuardService    com.cdccreditsmart.app               W  🚨 SETTINGS DETECTADO! (count: 2, dangerous: false)
+2025-12-04 07:23:02.108 14845-14886 SettingsGuardService    com.cdccreditsmart.app               W     Pacote: com.android.settings
+2025-12-04 07:23:02.108 14845-14886 SettingsGuardService    com.cdccreditsmart.app               W     Chamando app para foreground...
+2025-12-04 07:23:02.349 14845-14845 SettingsGuardService    com.cdccreditsmart.app               I  ✅ App trazido para foreground
+2025-12-04 07:23:02.442 14845-14886 SettingsGuardService    com.cdccreditsmart.app               W  🚨 SETTINGS DETECTADO! (count: 3, dangerous: false)
+2025-12-04 07:23:02.442 14845-14886 SettingsGuardService    com.cdccreditsmart.app               W     Pacote: com.android.settings
+2025-12-04 07:23:02.442 14845-14886 SettingsGuardService    com.cdccreditsmart.app               W     Chamando app para foreground...
+2025-12-04 07:23:02.500 14845-14845 SettingsGuardService    com.cdccreditsmart.app               I  ✅ App trazido para foreground
+2025-12-04 07:23:02.714 14845-14845 PermissionGateScreen    com.cdccreditsmart.app               I  ✅ Device Admin status atualizado
+2025-12-04 07:23:02.771 14845-14886 SettingsGuardService    com.cdccreditsmart.app               I  ✅ App CDC em foreground - resetando contador
+2025-12-04 07:23:02.989 14845-14845 ImeTracker              com.cdccreditsmart.app               I  com.cdccreditsmart.app:ee451452: onCancelled at PHASE_CLIENT_ALREADY_HIDDEN
+2025-12-04 07:23:04.582 14845-14886 SettingsGuardService    com.cdccreditsmart.app               W  🚨 SETTINGS DETECTADO! (count: 2, dangerous: false)
+2025-12-04 07:23:04.582 14845-14886 SettingsGuardService    com.cdccreditsmart.app               W     Pacote: com.android.settings
+2025-12-04 07:23:04.582 14845-14886 SettingsGuardService    com.cdccreditsmart.app               W     Chamando app para foreground...
+2025-12-04 07:23:04.595 14845-14845 SettingsGuardService    com.cdccreditsmart.app               I  ✅ App trazido para foreground
+2025-12-04 07:23:04.749 14845-14886 SettingsGuardService    com.cdccreditsmart.app               W  🚨 SETTINGS DETECTADO! (count: 3, dangerous: false)
+2025-12-04 07:23:04.749 14845-14886 SettingsGuardService    com.cdccreditsmart.app               W     Pacote: com.android.settings
+2025-12-04 07:23:04.750 14845-14886 SettingsGuardService    com.cdccreditsmart.app               W     Chamando app para foreground...
+2025-12-04 07:23:04.754 14845-14845 SettingsGuardService    com.cdccreditsmart.app               I  ✅ App trazido para foreground
+2025-12-04 07:23:04.866 14845-14845 PermissionGateScreen    com.cdccreditsmart.app               I  ✅ Device Admin status atualizado
+2025-12-04 07:23:05.010 14845-14886 SettingsGuardService    com.cdccreditsmart.app               I  ✅ App CDC em foreground - resetando contador
+2025-12-04 07:23:05.231 14845-14845 ImeTracker              com.cdccreditsmart.app               I  com.cdccreditsmart.app:d351cffd: onCancelled at PHASE_CLIENT_ALREADY_HIDDEN
+2025-12-04 07:23:06.370 14845-14886 SettingsGuardService    com.cdccreditsmart.app               W  🚨 SETTINGS DETECTADO! (count: 2, dangerous: false)
+2025-12-04 07:23:06.370 14845-14886 SettingsGuardService    com.cdccreditsmart.app               W     Pacote: com.android.settings
+2025-12-04 07:23:06.370 14845-14886 SettingsGuardService    com.cdccreditsmart.app               W     Chamando app para foreground...
+2025-12-04 07:23:06.523 14845-14845 SettingsGuardService    com.cdccreditsmart.app               I  ✅ App trazido para foreground
+2025-12-04 07:23:06.821 14845-14886 SettingsGuardService    com.cdccreditsmart.app               W  🚨 SETTINGS DETECTADO! (count: 3, dangerous: false)
+2025-12-04 07:23:06.821 14845-14886 SettingsGuardService    com.cdccreditsmart.app               W     Pacote: com.android.settings
+2025-12-04 07:23:06.821 14845-14886 SettingsGuardService    com.cdccreditsmart.app               W     Chamando app para foreground...
+2025-12-04 07:23:06.826 14845-14845 SettingsGuardService    com.cdccreditsmart.app               I  ✅ App trazido para foreground
+2025-12-04 07:23:06.864 14845-14845 PermissionGateScreen    com.cdccreditsmart.app               I  ✅ Device Admin status atualizado
+2025-12-04 07:23:06.928 14845-14886 SettingsGuardService    com.cdccreditsmart.app               I  ✅ App CDC em foreground - resetando contador
+2025-12-04 07:23:07.047 14845-14845 ImeTracker              com.cdccreditsmart.app               I  com.cdccreditsmart.app:37e540cc: onCancelled at PHASE_CLIENT_ALREADY_HIDDEN

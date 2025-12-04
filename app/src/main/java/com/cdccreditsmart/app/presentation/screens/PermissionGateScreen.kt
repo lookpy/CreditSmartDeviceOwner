@@ -340,6 +340,9 @@ private fun requestPermission(
             missing.forEach { Log.i(TAG, "   - $it") }
             
             if (missing.isNotEmpty()) {
+                SettingsGuardService.pauseForPermissionGrant()
+                Log.i(TAG, "⏸️ Proteção pausada para fluxo de permissões runtime")
+                
                 val permanentlyDenied = activity?.let { act ->
                     missing.filter { permission ->
                         !androidx.core.app.ActivityCompat.shouldShowRequestPermissionRationale(act, permission)
@@ -368,7 +371,6 @@ private fun requestPermission(
                     } catch (e: Exception) {
                         Log.e(TAG, "❌ Erro ao lançar permissões: ${e.message}")
                         Log.i(TAG, "🔧 Abrindo configurações do app como fallback")
-                        SettingsGuardService.pauseForPermissionGrant()
                         val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
                             data = Uri.parse("package:${context.packageName}")
                             addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
@@ -377,7 +379,6 @@ private fun requestPermission(
                     }
                 } else {
                     Log.i(TAG, "🔧 Todas as permissões faltantes foram negadas permanentemente - abrindo configurações")
-                    SettingsGuardService.pauseForPermissionGrant()
                     val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
                         data = Uri.parse("package:${context.packageName}")
                         addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
