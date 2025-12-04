@@ -59,6 +59,67 @@ O `SettingsGuardService` adapta seu comportamento automaticamente:
 
 ---
 
+## 🚪 SISTEMA DE PERMISSION GATE (TELA OBRIGATÓRIA)
+
+O app implementa um sistema de "gate" que **INSISTE** em obter as permissões necessárias antes de prosseguir para a ativação. O sistema é **INTELIGENTE** e sabe quais permissões pode obter em cada nível de privilégio.
+
+### Fluxo de Navegação
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│                     APP INICIADO                            │
+└─────────────────────────────────────────────────────────────┘
+                              │
+                              ▼
+┌─────────────────────────────────────────────────────────────┐
+│                  PERMISSION GATE SCREEN                     │
+│                                                             │
+│  Detecta nível de privilégio:                               │
+│  • Device Owner → Permissões automáticas → Prossegue        │
+│  • Device Admin → Solicita permissões obtíveis              │
+│  • Básico → Solicita permissões obtíveis                    │
+│                                                             │
+│  ⛔ BLOQUEIA até TODAS as permissões serem concedidas!      │
+└─────────────────────────────────────────────────────────────┘
+                              │
+                              ▼
+┌─────────────────────────────────────────────────────────────┐
+│                      ROUTER SCREEN                          │
+│         (Decide para onde navegar: Home, QR, etc)           │
+└─────────────────────────────────────────────────────────────┘
+```
+
+### Permissões Solicitadas por Nível
+
+| Permissão | Device Owner | Device Admin | Básico |
+|-----------|:------------:|:------------:|:------:|
+| **Runtime Permissions** | ✅ Automático | 🔔 Popup | 🔔 Popup |
+| **Device Admin Activation** | N/A | 🔔 Solicitar | 🔔 Solicitar |
+| **USAGE_STATS** | ✅ Automático | 🔧 Settings | 🔧 Settings |
+| **OVERLAY** | ✅ Automático | 🔧 Settings | 🔧 Settings |
+
+**Legenda:**
+- ✅ Automático: Concedido automaticamente sem interação do usuário
+- 🔔 Popup: Sistema Android mostra popup de permissão
+- 🔧 Settings: Usuário precisa ir nas Configurações e ativar manualmente
+
+### Comportamento do Permission Gate
+
+1. **Detecta o nível de privilégio** (Device Owner, Device Admin, Básico)
+2. **Lista apenas as permissões OBTÍVEIS** naquele nível (não insiste no impossível)
+3. **Mostra progresso** (X de Y permissões concedidas)
+4. **Verifica a cada 1 segundo** se as permissões foram concedidas
+5. **Só permite prosseguir** quando TODAS as permissões necessárias estão OK
+6. **Device Owner**: Pula automaticamente (permissões concedidas via API)
+
+### Arquivos Relevantes
+
+- `PermissionGateManager.kt` - Lógica de detecção de nível e verificação de permissões
+- `PermissionGateScreen.kt` - UI da tela de solicitação de permissões
+- `Navigation.kt` - Rota PERMISSION_GATE como startDestination
+
+---
+
 ## 🔒 PROTEÇÕES IMPLEMENTADAS (10 CAMADAS)
 
 ### **1️⃣ BLOQUEIO DE DESINSTALAÇÃO**

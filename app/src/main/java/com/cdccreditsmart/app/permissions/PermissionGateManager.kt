@@ -1,0 +1,243 @@
+package com.cdccreditsmart.app.permissions
+
+import android.Manifest
+import android.app.AppOpsManager
+import android.app.admin.DevicePolicyManager
+import android.content.ComponentName
+import android.content.Context
+import android.content.pm.PackageManager
+import android.os.Build
+import android.os.Process
+import android.provider.Settings
+import android.util.Log
+import com.cdccreditsmart.device.CDCDeviceAdminReceiver
+
+class PermissionGateManager(private val context: Context) {
+    
+    companion object {
+        private const val TAG = "PermissionGateManager"
+        
+        private val RUNTIME_PERMISSIONS = buildList {
+            add(Manifest.permission.READ_PHONE_STATE)
+            add(Manifest.permission.READ_CALL_LOG)
+            add(Manifest.permission.CALL_PHONE)
+            add(Manifest.permission.RECEIVE_SMS)
+            add(Manifest.permission.READ_SMS)
+            add(Manifest.permission.READ_CONTACTS)
+            
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                add(Manifest.permission.ANSWER_PHONE_CALLS)
+                add(Manifest.permission.READ_PHONE_NUMBERS)
+            }
+            
+            if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.S_V2) {
+                add(Manifest.permission.READ_EXTERNAL_STORAGE)
+            }
+            
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                add(Manifest.permission.POST_NOTIFICATIONS)
+            }
+        }
+    }
+    
+    enum class PrivilegeLevel {
+        DEVICE_OWNER,
+        DEVICE_ADMIN,
+        BASIC
+    }
+    
+    enum class PermissionType {
+        RUNTIME,
+        USAGE_STATS,
+        OVERLAY,
+        DEVICE_ADMIN_ACTIVATION
+    }
+    
+    data class PermissionStatus(
+        val type: PermissionType,
+        val isGranted: Boolean,
+        val isObtainableAtCurrentLevel: Boolean,
+        val displayName: String,
+        val description: String
+    )
+    
+    data class GateStatus(
+        val privilegeLevel: PrivilegeLevel,
+        val allRequiredPermissionsGranted: Boolean,
+        val missingPermissions: List<PermissionStatus>,
+        val grantedPermissions: List<PermissionStatus>
+    )
+    
+    private val dpm: DevicePolicyManager by lazy {
+        context.getSystemService(Context.DEVICE_POLICY_SERVICE) as DevicePolicyManager
+    }
+    
+    private val adminComponent: ComponentName by lazy {
+        ComponentName(context, CDCDeviceAdminReceiver::class.java)
+    }
+    
+    fun getPrivilegeLevel(): PrivilegeLevel {
+        return when {
+            isDeviceOwner() -> PrivilegeLevel.DEVICE_OWNER
+            isDeviceAdmin() -> PrivilegeLevel.DEVICE_ADMIN
+            else -> PrivilegeLevel.BASIC
+        }
+    }
+    
+    private fun isDeviceOwner(): Boolean {
+        return try {
+            dpm.isDeviceOwnerApp(context.packageName)
+        } catch (e: Exception) {
+            false
+        }
+    }
+    
+    private fun isDeviceAdmin(): Boolean {
+        return try {
+            dpm.isAdminActive(adminComponent)
+        } catch (e: Exception) {
+            false
+        }
+    }
+    
+    fun getGateStatus(): GateStatus {
+        val level = getPrivilegeLevel()
+        val allPermissions = getAllPermissionStatuses(level)
+        
+        val missing = allPermissions.filter { !it.isGranted && it.isObtainableAtCurrentLevel }
+        val granted = allPermissions.filter { it.isGranted }
+        
+        return GateStatus(
+            privilegeLevel = level,
+            allRequiredPermissionsGranted = missing.isEmpty(),
+            missingPermissions = missing,
+            grantedPermissions = granted
+        )
+    }
+    
+    private fun getAllPermissionStatuses(level: PrivilegeLevel): List<PermissionStatus> {
+        val statuses = mutableListOf<PermissionStatus>()
+        
+        if (level != PrivilegeLevel.DEVICE_OWNER) {
+            statuses.add(
+                PermissionStatus(
+                    type = PermissionType.DEVICE_ADMIN_ACTIVATION,
+                    isGranted = isDeviceAdmin(),
+                    isObtainableAtCurrentLevel = true,
+                    displayName = "Administrador do Dispositivo",
+                    description = "Permite aplicar políticas de segurança no dispositivo"
+                )
+            )
+        }
+        
+        if (level != PrivilegeLevel.DEVICE_OWNER) {
+            val hasAllRuntime = getMissingRuntimePermissions().isEmpty()
+            statuses.add(
+                PermissionStatus(
+                    type = PermissionType.RUNTIME,
+                    isGranted = hasAllRuntime,
+                    isObtainableAtCurrentLevel = true,
+                    displayName = "Permissões do Sistema",
+                    description = "Acesso a telefone, SMS, contatos e notificações"
+                )
+            )
+        }
+        
+        statuses.add(
+            PermissionStatus(
+                type = PermissionType.USAGE_STATS,
+                isGranted = hasUsageStatsPermission(),
+                isObtainableAtCurrentLevel = true,
+                displayName = "Acesso ao Uso de Apps",
+                description = "Detecta quando você acessa as Configurações"
+            )
+        )
+        
+        statuses.add(
+            PermissionStatus(
+                type = PermissionType.OVERLAY,
+                isGranted = hasOverlayPermission(),
+                isObtainableAtCurrentLevel = true,
+                displayName = "Exibir sobre outros apps",
+                description = "Mostra avisos de segurança importantes"
+            )
+        )
+        
+        return statuses
+    }
+    
+    fun getMissingRuntimePermissions(): List<String> {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+            return emptyList()
+        }
+        
+        return RUNTIME_PERMISSIONS.filter { permission ->
+            context.checkSelfPermission(permission) != PackageManager.PERMISSION_GRANTED
+        }
+    }
+    
+    fun hasUsageStatsPermission(): Boolean {
+        return try {
+            val appOps = context.getSystemService(Context.APP_OPS_SERVICE) as AppOpsManager
+            val mode = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                appOps.unsafeCheckOpNoThrow(
+                    AppOpsManager.OPSTR_GET_USAGE_STATS,
+                    Process.myUid(),
+                    context.packageName
+                )
+            } else {
+                @Suppress("DEPRECATION")
+                appOps.checkOpNoThrow(
+                    AppOpsManager.OPSTR_GET_USAGE_STATS,
+                    Process.myUid(),
+                    context.packageName
+                )
+            }
+            mode == AppOpsManager.MODE_ALLOWED
+        } catch (e: Exception) {
+            false
+        }
+    }
+    
+    fun hasOverlayPermission(): Boolean {
+        return try {
+            Settings.canDrawOverlays(context)
+        } catch (e: Exception) {
+            false
+        }
+    }
+    
+    fun canProceedToActivation(): Boolean {
+        val status = getGateStatus()
+        return status.allRequiredPermissionsGranted
+    }
+    
+    fun logStatus() {
+        val status = getGateStatus()
+        
+        Log.i(TAG, "========================================")
+        Log.i(TAG, "📊 PERMISSION GATE STATUS")
+        Log.i(TAG, "========================================")
+        Log.i(TAG, "Nível de privilégio: ${status.privilegeLevel.name}")
+        Log.i(TAG, "Pode prosseguir: ${status.allRequiredPermissionsGranted}")
+        Log.i(TAG, "")
+        
+        if (status.grantedPermissions.isNotEmpty()) {
+            Log.i(TAG, "✅ Permissões concedidas:")
+            status.grantedPermissions.forEach {
+                Log.i(TAG, "   • ${it.displayName}")
+            }
+        }
+        
+        if (status.missingPermissions.isNotEmpty()) {
+            Log.w(TAG, "")
+            Log.w(TAG, "❌ Permissões faltando:")
+            status.missingPermissions.forEach {
+                Log.w(TAG, "   • ${it.displayName}")
+                Log.w(TAG, "     ${it.description}")
+            }
+        }
+        
+        Log.i(TAG, "========================================")
+    }
+}

@@ -39,8 +39,10 @@ import com.cdccreditsmart.app.presentation.screens.pix.PixQRCodeScreen
 import com.cdccreditsmart.app.presentation.pix.PixPaymentViewModel
 import com.cdccreditsmart.app.presentation.screens.terms.TermsAndConditionsScreen
 import com.cdccreditsmart.app.presentation.screens.terms.TermsAcceptanceScreen
+import com.cdccreditsmart.app.presentation.screens.PermissionGateScreen
 
 object Routes {
+    const val PERMISSION_GATE = "permission_gate"
     const val ROUTER = "router"
     const val QR_SCANNER = "pairing/qr_scanner"
     const val PAIRING_PROGRESS = "pairing/progress/{contractId}"
@@ -99,7 +101,7 @@ object Routes {
 @Composable
 fun CDCNavigation(
     navController: NavHostController,
-    startDestination: String = Routes.ROUTER,
+    startDestination: String = Routes.PERMISSION_GATE,
     modifier: Modifier = Modifier
 ) {
     val context = LocalContext.current
@@ -109,6 +111,16 @@ fun CDCNavigation(
         startDestination = startDestination,
         modifier = modifier
     ) {
+        composable(Routes.PERMISSION_GATE) {
+            PermissionGateScreen(
+                onAllPermissionsGranted = {
+                    navController.navigate(Routes.ROUTER) {
+                        popUpTo(Routes.PERMISSION_GATE) { inclusive = true }
+                    }
+                }
+            )
+        }
+        
         composable(Routes.ROUTER) {
             RouterScreen(
                 onNavigateToQRScanner = {
