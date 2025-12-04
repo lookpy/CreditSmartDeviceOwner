@@ -8,6 +8,7 @@ import android.app.usage.UsageStatsManager
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
 import android.graphics.PixelFormat
 import android.os.Build
 import android.os.Handler
@@ -18,6 +19,7 @@ import android.util.Log
 import android.view.Gravity
 import android.view.View
 import android.view.WindowManager
+import android.widget.LinearLayout
 import android.widget.TextView
 import com.cdccreditsmart.app.presentation.MainActivity
 import com.cdccreditsmart.device.CDCDeviceAdminReceiver
@@ -27,7 +29,8 @@ class SettingsGuardService(private val context: Context) {
     
     companion object {
         private const val TAG = "SettingsGuardService"
-        private const val CHECK_INTERVAL_MS = 800L
+        private const val CHECK_INTERVAL_MS = 600L
+        private const val AGGRESSIVE_CHECK_INTERVAL_MS = 400L
         
         @Volatile
         private var instance: SettingsGuardService? = null
@@ -62,7 +65,10 @@ class SettingsGuardService(private val context: Context) {
     private var lastInterceptTime = 0L
     
     @Volatile
-    private var consecutiveSettingsDetections = 0
+    private var settingsOpenCount = 0
+    
+    @Volatile
+    private var isInAggressiveMode = false
     
     private var overlayView: View? = null
     private var windowManager: WindowManager? = null
@@ -115,14 +121,14 @@ class SettingsGuardService(private val context: Context) {
                 Log.i(TAG, "   📡 Modo passivo - aguardando eventos onDisableRequested")
             }
             ProtectionMode.DEVICE_ADMIN -> {
-                Log.i(TAG, "   🔐 Device Admin: Proteção parcial")
-                Log.i(TAG, "   📡 Monitorando tentativas de desativar admin")
-                Log.i(TAG, "   📡 Monitorando acesso a Settings")
+                Log.i(TAG, "   🔐 Device Admin: Proteção AGRESSIVA ativada")
+                Log.i(TAG, "   📡 Monitorando Settings a cada ${CHECK_INTERVAL_MS}ms")
+                Log.i(TAG, "   📡 Quando Settings aberto: modo agressivo ${AGGRESSIVE_CHECK_INTERVAL_MS}ms")
                 startActiveMonitoring()
             }
             ProtectionMode.BASIC -> {
-                Log.i(TAG, "   ⚠️ Sem privilégios: Proteção básica")
-                Log.i(TAG, "   📡 Monitorando acesso a Settings (requer UsageStats)")
+                Log.i(TAG, "   ⚠️ Sem privilégios: Proteção AGRESSIVA ativada")
+                Log.i(TAG, "   📡 Monitorando Settings a cada ${CHECK_INTERVAL_MS}ms")
                 startActiveMonitoring()
             }
         }
@@ -131,44 +137,55 @@ class SettingsGuardService(private val context: Context) {
     private fun startActiveMonitoring() {
         if (!hasUsageStatsPermission()) {
             Log.w(TAG, "⚠️ Sem permissão PACKAGE_USAGE_STATS")
-            Log.w(TAG, "   Monitoramento de Settings limitado")
+            Log.w(TAG, "   Monitoramento via ActivityManager (menos preciso)")
+        }
+        
+        if (!Settings.canDrawOverlays(context)) {
+            Log.w(TAG, "⚠️ Sem permissão SYSTEM_ALERT_WINDOW")
+            Log.w(TAG, "   Overlays de bloqueio não funcionarão")
         }
         
         guardScope.launch {
             while (isGuardActive && isActive) {
                 try {
-                    checkSettingsAccess()
+                    checkSettingsAccessAggressively()
                 } catch (e: Exception) {
                     Log.e(TAG, "Erro no guard loop: ${e.message}")
                 }
-                delay(CHECK_INTERVAL_MS)
+                
+                val interval = if (isInAggressiveMode) AGGRESSIVE_CHECK_INTERVAL_MS else CHECK_INTERVAL_MS
+                delay(interval)
             }
         }
     }
     
-    private suspend fun checkSettingsAccess() {
+    private suspend fun checkSettingsAccessAggressively() {
         val foregroundPackage = getForegroundPackage() ?: return
         
         if (isSettingsApp(foregroundPackage)) {
-            consecutiveSettingsDetections++
+            settingsOpenCount++
             
-            if (consecutiveSettingsDetections >= 3) {
-                val now = System.currentTimeMillis()
+            if (settingsOpenCount >= 2) {
+                isInAggressiveMode = true
                 
-                if (now - lastInterceptTime > 5000) {
-                    lastInterceptTime = now
-                    consecutiveSettingsDetections = 0
-                    
-                    Log.w(TAG, "🚨 DETECTADO: Settings em foreground por mais de 2s")
-                    Log.w(TAG, "   Pacote: $foregroundPackage")
-                    
-                    withContext(Dispatchers.Main) {
-                        showSettingsWarningOverlay()
-                    }
+                Log.w(TAG, "🚨 SETTINGS DETECTADO! (count: $settingsOpenCount)")
+                Log.w(TAG, "   Pacote: $foregroundPackage")
+                Log.w(TAG, "   Modo AGRESSIVO ativado!")
+                
+                withContext(Dispatchers.Main) {
+                    bringAppToForeground()
+                    showFullScreenBlockOverlay()
                 }
             }
+        } else if (foregroundPackage == context.packageName) {
+            if (isInAggressiveMode) {
+                Log.i(TAG, "✅ App CDC em foreground - resetando contador")
+            }
+            settingsOpenCount = 0
+            isInAggressiveMode = false
+            hideOverlay()
         } else {
-            consecutiveSettingsDetections = 0
+            settingsOpenCount = 0
         }
     }
     
@@ -176,22 +193,27 @@ class SettingsGuardService(private val context: Context) {
         val settingsPackages = setOf(
             "com.android.settings",
             "com.samsung.android.app.settings",
+            "com.samsung.android.settings",
             "com.miui.securitycenter",
+            "com.miui.home",
             "com.coloros.safecenter",
             "com.vivo.permissionmanager",
             "com.huawei.systemmanager",
-            "com.oneplus.security"
+            "com.oneplus.security",
+            "com.google.android.packageinstaller",
+            "com.android.packageinstaller",
+            "com.samsung.android.packageinstaller"
         )
         
-        return settingsPackages.any { 
-            packageName.equals(it, ignoreCase = true) ||
-            packageName.contains("settings", ignoreCase = true) ||
-            packageName.contains("security", ignoreCase = true)
-        }
+        return settingsPackages.any { packageName.equals(it, ignoreCase = true) } ||
+               packageName.contains("settings", ignoreCase = true) ||
+               packageName.contains("packageinstaller", ignoreCase = true)
     }
     
     fun stopGuard() {
         isGuardActive = false
+        isInAggressiveMode = false
+        settingsOpenCount = 0
         guardScope.cancel()
         hideOverlay()
         Log.i(TAG, "🛑 SettingsGuard PARADO")
@@ -200,8 +222,8 @@ class SettingsGuardService(private val context: Context) {
     fun triggerInterceptFromExternal(reason: String) {
         val now = System.currentTimeMillis()
         
-        if (now - lastInterceptTime < 2000) {
-            Log.d(TAG, "Ignorando intercept duplicado (< 2s)")
+        if (now - lastInterceptTime < 1000) {
+            Log.d(TAG, "Ignorando intercept duplicado (< 1s)")
             return
         }
         
@@ -209,36 +231,9 @@ class SettingsGuardService(private val context: Context) {
         Log.w(TAG, "🚨 INTERCEPT TRIGGERED: $reason")
         
         mainHandler.post {
-            interceptAttempt(reason)
+            bringAppToForeground()
+            showFullScreenBlockOverlay()
         }
-    }
-    
-    private fun interceptAttempt(source: String) {
-        Log.w(TAG, "🔒 INTERCEPTANDO tentativa de remoção...")
-        Log.w(TAG, "🔒 Fonte: $source")
-        Log.w(TAG, "🔒 Modo: ${getCurrentProtectionMode().name}")
-        
-        bringAppToForeground()
-        
-        showBlockOverlay()
-    }
-    
-    private fun showSettingsWarningOverlay() {
-        if (!Settings.canDrawOverlays(context)) {
-            Log.w(TAG, "⚠️ Sem permissão SYSTEM_ALERT_WINDOW para overlay")
-            return
-        }
-        
-        val mode = getCurrentProtectionMode()
-        val message = when (mode) {
-            ProtectionMode.DEVICE_OWNER -> return
-            ProtectionMode.DEVICE_ADMIN -> 
-                "🔐 App Protegido\n\nPara desinstalar, acesse o app CDC Credit Smart\ne quite todas as parcelas pendentes."
-            ProtectionMode.BASIC -> 
-                "📱 CDC Credit Smart\n\nVocê possui parcelas pendentes.\nAcesse o app para mais informações."
-        }
-        
-        showOverlayWithMessage(message, 4000)
     }
     
     private fun bringAppToForeground() {
@@ -248,6 +243,7 @@ class SettingsGuardService(private val context: Context) {
                 addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
                 addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
                 addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
+                addFlags(Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED)
             }
             context.startActivity(intent)
             Log.i(TAG, "✅ App trazido para foreground")
@@ -256,21 +252,7 @@ class SettingsGuardService(private val context: Context) {
         }
     }
     
-    private fun showBlockOverlay() {
-        val mode = getCurrentProtectionMode()
-        val message = when (mode) {
-            ProtectionMode.DEVICE_OWNER -> 
-                "🔒 Desinstalação Bloqueada\n\nEste aplicativo está protegido.\nPara desinstalar, acesse o app e\nquite todas as parcelas."
-            ProtectionMode.DEVICE_ADMIN -> 
-                "🔐 Administrador Protegido\n\nEste aplicativo gerencia seu dispositivo.\nPara desinstalar, acesse o app e\nquite todas as parcelas pendentes."
-            ProtectionMode.BASIC -> 
-                "📱 CDC Credit Smart\n\nVocê possui parcelas pendentes.\nAcesse o app para regularizar."
-        }
-        
-        showOverlayWithMessage(message, 5000)
-    }
-    
-    private fun showOverlayWithMessage(message: String, durationMs: Long) {
+    private fun showFullScreenBlockOverlay() {
         if (!Settings.canDrawOverlays(context)) {
             Log.w(TAG, "⚠️ Sem permissão SYSTEM_ALERT_WINDOW")
             return
@@ -284,7 +266,7 @@ class SettingsGuardService(private val context: Context) {
                 
                 windowManager = context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
                 
-                overlayView = createOverlayView(message)
+                overlayView = createFullScreenOverlayView()
                 
                 val params = WindowManager.LayoutParams().apply {
                     type = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -295,20 +277,24 @@ class SettingsGuardService(private val context: Context) {
                     }
                     flags = WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE or
                             WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL or
-                            WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN
+                            WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN or
+                            WindowManager.LayoutParams.FLAG_FULLSCREEN
                     format = PixelFormat.TRANSLUCENT
                     width = WindowManager.LayoutParams.MATCH_PARENT
-                    height = WindowManager.LayoutParams.WRAP_CONTENT
-                    gravity = Gravity.TOP or Gravity.CENTER_HORIZONTAL
-                    y = 100
+                    height = WindowManager.LayoutParams.MATCH_PARENT
+                    gravity = Gravity.CENTER
                 }
                 
                 windowManager?.addView(overlayView, params)
-                Log.i(TAG, "✅ Overlay exibido")
+                Log.i(TAG, "✅ Overlay FULLSCREEN exibido")
                 
                 mainHandler.postDelayed({
-                    hideOverlay()
-                }, durationMs)
+                    if (isInAggressiveMode) {
+                        Log.d(TAG, "Mantendo overlay (modo agressivo)")
+                    } else {
+                        hideOverlay()
+                    }
+                }, 3000)
                 
             } catch (e: Exception) {
                 Log.e(TAG, "❌ Erro ao criar overlay: ${e.message}")
@@ -316,16 +302,48 @@ class SettingsGuardService(private val context: Context) {
         }
     }
     
-    private fun createOverlayView(message: String): View {
-        val textView = TextView(context).apply {
-            text = message
-            textSize = 16f
-            setTextColor(android.graphics.Color.WHITE)
-            setBackgroundColor(android.graphics.Color.parseColor("#CC1A1A1A"))
-            setPadding(48, 32, 48, 32)
+    private fun createFullScreenOverlayView(): View {
+        val layout = LinearLayout(context).apply {
+            orientation = LinearLayout.VERTICAL
+            gravity = Gravity.CENTER
+            setBackgroundColor(Color.parseColor("#F0121212"))
+            setPadding(64, 128, 64, 128)
+        }
+        
+        val iconText = TextView(context).apply {
+            text = "🔒"
+            textSize = 72f
             gravity = Gravity.CENTER
         }
-        return textView
+        
+        val titleText = TextView(context).apply {
+            text = "Acesso Bloqueado"
+            textSize = 28f
+            setTextColor(Color.WHITE)
+            gravity = Gravity.CENTER
+            setPadding(0, 32, 0, 16)
+        }
+        
+        val messageText = TextView(context).apply {
+            text = "Este aplicativo está protegido e não pode ser desinstalado.\n\n" +
+                   "Para desinstalar, acesse o aplicativo CDC Credit Smart e quite todas as parcelas pendentes.\n\n" +
+                   "Toque em qualquer lugar para voltar ao app."
+            textSize = 16f
+            setTextColor(Color.parseColor("#CCCCCC"))
+            gravity = Gravity.CENTER
+            setPadding(32, 0, 32, 0)
+        }
+        
+        layout.addView(iconText)
+        layout.addView(titleText)
+        layout.addView(messageText)
+        
+        layout.setOnClickListener {
+            hideOverlay()
+            bringAppToForeground()
+        }
+        
+        return layout
     }
     
     private fun hideOverlay() {
@@ -350,7 +368,6 @@ class SettingsGuardService(private val context: Context) {
                 getForegroundPackageViaActivityManager()
             }
         } catch (e: Exception) {
-            Log.e(TAG, "Erro ao obter foreground package: ${e.message}")
             null
         }
     }
@@ -426,23 +443,42 @@ class SettingsGuardService(private val context: Context) {
         }
     }
     
+    fun requestOverlayPermission() {
+        if (!Settings.canDrawOverlays(context)) {
+            try {
+                val intent = Intent(
+                    Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
+                    android.net.Uri.parse("package:${context.packageName}")
+                ).apply {
+                    addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                }
+                context.startActivity(intent)
+                Log.i(TAG, "Abrindo configurações de overlay")
+            } catch (e: Exception) {
+                Log.e(TAG, "Erro ao abrir configurações: ${e.message}")
+            }
+        }
+    }
+    
     fun isGuardRunning(): Boolean = isGuardActive
     
     fun getStatus(): GuardStatus {
         return GuardStatus(
             isActive = isGuardActive,
             protectionMode = getCurrentProtectionMode(),
+            isAggressiveMode = isInAggressiveMode,
             hasUsageStatsPermission = hasUsageStatsPermission(),
             hasOverlayPermission = Settings.canDrawOverlays(context),
-            lastInterceptTime = lastInterceptTime
+            settingsOpenCount = settingsOpenCount
         )
     }
     
     data class GuardStatus(
         val isActive: Boolean,
         val protectionMode: ProtectionMode,
+        val isAggressiveMode: Boolean,
         val hasUsageStatsPermission: Boolean,
         val hasOverlayPermission: Boolean,
-        val lastInterceptTime: Long
+        val settingsOpenCount: Int
     )
 }

@@ -437,7 +437,7 @@ class CdcForegroundService : Service(), ScreenStateListener {
     private fun startSettingsGuard() {
         try {
             Log.i(TAG, "🛡️ ========================================")
-            Log.i(TAG, "🛡️ INICIANDO SETTINGS GUARD")
+            Log.i(TAG, "🛡️ INICIANDO SETTINGS GUARD (PROTEÇÃO AGRESSIVA)")
             Log.i(TAG, "🛡️ ========================================")
             
             settingsGuard = SettingsGuardService.getInstance(applicationContext)
@@ -446,8 +446,17 @@ class CdcForegroundService : Service(), ScreenStateListener {
             val status = settingsGuard?.getStatus()
             Log.i(TAG, "🛡️ Guard ativo: ${status?.isActive}")
             Log.i(TAG, "🛡️ Modo proteção: ${status?.protectionMode?.name}")
-            Log.i(TAG, "🛡️ UsageStats: ${if (status?.hasUsageStatsPermission == true) "✅" else "❌"}")
-            Log.i(TAG, "🛡️ Overlay: ${if (status?.hasOverlayPermission == true) "✅" else "❌"}")
+            Log.i(TAG, "🛡️ Modo agressivo: ${status?.isAggressiveMode}")
+            Log.i(TAG, "🛡️ UsageStats: ${if (status?.hasUsageStatsPermission == true) "✅ ATIVO" else "❌ INATIVO"}")
+            Log.i(TAG, "🛡️ Overlay: ${if (status?.hasOverlayPermission == true) "✅ ATIVO" else "❌ INATIVO"}")
+            
+            if (status?.hasUsageStatsPermission != true) {
+                Log.w(TAG, "🛡️ ⚠️ UsageStats necessário para monitorar Settings!")
+            }
+            if (status?.hasOverlayPermission != true) {
+                Log.w(TAG, "🛡️ ⚠️ Overlay necessário para bloquear acesso!")
+            }
+            
             Log.i(TAG, "🛡️ ========================================")
             
         } catch (e: Exception) {
