@@ -337,20 +337,32 @@ private fun requestPermission(
         PermissionGateManager.PermissionType.RUNTIME -> {
             val missing = gateManager.getMissingRuntimePermissions()
             Log.i(TAG, "📋 Permissões runtime faltando: ${missing.size}")
-            Log.i(TAG, "   runtimeAlreadyAsked: $runtimeAlreadyAsked")
             missing.forEach { Log.i(TAG, "   - $it") }
             
             if (missing.isNotEmpty()) {
-                if (runtimeAlreadyAsked) {
-                    Log.i(TAG, "🔧 Já pedimos antes - abrindo configurações do app")
-                    SettingsGuardService.pauseForPermissionGrant()
-                    val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
-                        data = Uri.parse("package:${context.packageName}")
-                        addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                val permanentlyDenied = activity?.let { act ->
+                    missing.filter { permission ->
+                        !androidx.core.app.ActivityCompat.shouldShowRequestPermissionRationale(act, permission)
                     }
-                    context.startActivity(intent)
-                } else {
-                    Log.i(TAG, "📱 Primeira vez - lançando diálogo de permissões runtime")
+                } ?: emptyList()
+                
+                Log.i(TAG, "   Negadas permanentemente: ${permanentlyDenied.size}")
+                permanentlyDenied.forEach { Log.w(TAG, "   ⛔ $it") }
+                
+                val canAskViaDialog = missing.any { permission ->
+                    activity?.let { act ->
+                        androidx.core.app.ActivityCompat.shouldShowRequestPermissionRationale(act, permission)
+                    } ?: true
+                }
+                
+                val neverAskedBefore = !runtimeAlreadyAsked
+                
+                Log.i(TAG, "   runtimeAlreadyAsked: $runtimeAlreadyAsked")
+                Log.i(TAG, "   canAskViaDialog: $canAskViaDialog")
+                Log.i(TAG, "   neverAskedBefore: $neverAskedBefore")
+                
+                if (neverAskedBefore || canAskViaDialog) {
+                    Log.i(TAG, "📱 Lançando diálogo de permissões runtime")
                     try {
                         runtimePermissionLauncher.launch(missing.toTypedArray())
                     } catch (e: Exception) {
@@ -363,6 +375,14 @@ private fun requestPermission(
                         }
                         context.startActivity(intent)
                     }
+                } else {
+                    Log.i(TAG, "🔧 Todas as permissões faltantes foram negadas permanentemente - abrindo configurações")
+                    SettingsGuardService.pauseForPermissionGrant()
+                    val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
+                        data = Uri.parse("package:${context.packageName}")
+                        addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                    }
+                    context.startActivity(intent)
                 }
             } else {
                 Log.i(TAG, "✅ Todas as permissões runtime já concedidas")
