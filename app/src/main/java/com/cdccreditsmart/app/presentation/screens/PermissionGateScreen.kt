@@ -172,7 +172,6 @@ fun PermissionGateScreen(
             PermissionItem(
                 permission = permission,
                 onRequestPermission = {
-                    pendingPermissionType = permission.type
                     requestPermission(
                         context = context,
                         activity = activity,
@@ -225,7 +224,6 @@ fun PermissionGateScreen(
                 onClick = {
                     val firstMissing = gateStatus.missingPermissions.firstOrNull()
                     if (firstMissing != null) {
-                        pendingPermissionType = firstMissing.type
                         requestPermission(
                             context = context,
                             activity = activity,
