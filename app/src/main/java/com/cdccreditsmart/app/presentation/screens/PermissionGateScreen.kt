@@ -47,6 +47,7 @@ fun PermissionGateScreen(
     
     var gateStatus by remember { mutableStateOf(gateManager.getGateStatus()) }
     var isLoading by remember { mutableStateOf(false) }
+    var runtimePermissionAskedOnce by remember { mutableStateOf(false) }
     
     LaunchedEffect(Unit) {
         Log.i(TAG, "========================================")
@@ -71,6 +72,7 @@ fun PermissionGateScreen(
         results.forEach { (permission, granted) ->
             Log.i(TAG, "   ${if (granted) "✅" else "❌"} $permission")
         }
+        runtimePermissionAskedOnce = true
         gateStatus = gateManager.getGateStatus()
         Log.i(TAG, "✅ Runtime permissions atualizadas - faltam: ${gateStatus.missingPermissions.size}")
     }
@@ -190,7 +192,8 @@ fun PermissionGateScreen(
                         permissionType = permission.type,
                         gateManager = gateManager,
                         runtimePermissionLauncher = runtimePermissionLauncher,
-                        deviceAdminLauncher = deviceAdminLauncher
+                        deviceAdminLauncher = deviceAdminLauncher,
+                        runtimeAlreadyAsked = runtimePermissionAskedOnce
                     )
                 }
             )
@@ -242,7 +245,8 @@ fun PermissionGateScreen(
                             permissionType = firstMissing.type,
                             gateManager = gateManager,
                             runtimePermissionLauncher = runtimePermissionLauncher,
-                            deviceAdminLauncher = deviceAdminLauncher
+                            deviceAdminLauncher = deviceAdminLauncher,
+                            runtimeAlreadyAsked = runtimePermissionAskedOnce
                         )
                     }
                 },
@@ -305,7 +309,8 @@ private fun requestPermission(
     permissionType: PermissionGateManager.PermissionType,
     gateManager: PermissionGateManager,
     runtimePermissionLauncher: androidx.activity.result.ActivityResultLauncher<Array<String>>,
-    deviceAdminLauncher: androidx.activity.result.ActivityResultLauncher<Intent>
+    deviceAdminLauncher: androidx.activity.result.ActivityResultLauncher<Intent>,
+    runtimeAlreadyAsked: Boolean = false
 ) {
     when (permissionType) {
         PermissionGateManager.PermissionType.DEVICE_ADMIN_ACTIVATION -> {
@@ -325,20 +330,30 @@ private fun requestPermission(
         PermissionGateManager.PermissionType.RUNTIME -> {
             val missing = gateManager.getMissingRuntimePermissions()
             Log.i(TAG, "📋 Permissões runtime faltando: ${missing.size}")
+            Log.i(TAG, "   runtimeAlreadyAsked: $runtimeAlreadyAsked")
             missing.forEach { Log.i(TAG, "   - $it") }
             
             if (missing.isNotEmpty()) {
-                Log.i(TAG, "📱 Lançando diálogo de permissões runtime")
-                try {
-                    runtimePermissionLauncher.launch(missing.toTypedArray())
-                } catch (e: Exception) {
-                    Log.e(TAG, "❌ Erro ao lançar permissões: ${e.message}")
-                    Log.i(TAG, "🔧 Abrindo configurações do app como fallback")
+                if (runtimeAlreadyAsked) {
+                    Log.i(TAG, "🔧 Já pedimos antes - abrindo configurações do app")
                     val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
                         data = Uri.parse("package:${context.packageName}")
                         addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                     }
                     context.startActivity(intent)
+                } else {
+                    Log.i(TAG, "📱 Primeira vez - lançando diálogo de permissões runtime")
+                    try {
+                        runtimePermissionLauncher.launch(missing.toTypedArray())
+                    } catch (e: Exception) {
+                        Log.e(TAG, "❌ Erro ao lançar permissões: ${e.message}")
+                        Log.i(TAG, "🔧 Abrindo configurações do app como fallback")
+                        val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
+                            data = Uri.parse("package:${context.packageName}")
+                            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                        }
+                        context.startActivity(intent)
+                    }
                 }
             } else {
                 Log.i(TAG, "✅ Todas as permissões runtime já concedidas")
