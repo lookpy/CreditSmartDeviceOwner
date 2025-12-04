@@ -2,9 +2,12 @@ package com.cdccreditsmart.app.presentation.scanner
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Smartphone
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -22,6 +25,13 @@ fun QRCodeScannerScreen(
     onCancel: () -> Unit
 ) {
     var contractId by remember { mutableStateOf("") }
+    var showUninstallDialog by remember { mutableStateOf(false) }
+    
+    if (showUninstallDialog) {
+        NotActivatedUninstallDialog(
+            onDismiss = { showUninstallDialog = false }
+        )
+    }
 
     Surface(
         modifier = Modifier.fillMaxSize(),
@@ -31,6 +41,7 @@ fun QRCodeScannerScreen(
             Column(
                 modifier = Modifier
                     .fillMaxSize()
+                    .verticalScroll(rememberScrollState())
                     .padding(32.dp),
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center
@@ -128,6 +139,51 @@ fun QRCodeScannerScreen(
                         }
                     }
                 }
+                
+                Spacer(modifier = Modifier.height(48.dp))
+                
+                Divider(
+                    modifier = Modifier.fillMaxWidth(0.6f),
+                    color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.2f)
+                )
+                
+                Spacer(modifier = Modifier.height(24.dp))
+                
+                Text(
+                    text = "Não deseja ativar o dispositivo?",
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.6f),
+                    textAlign = TextAlign.Center
+                )
+                
+                Spacer(modifier = Modifier.height(12.dp))
+                
+                OutlinedButton(
+                    onClick = { showUninstallDialog = true },
+                    modifier = Modifier.fillMaxWidth(0.7f),
+                    colors = ButtonDefaults.outlinedButtonColors(
+                        contentColor = MaterialTheme.colorScheme.error
+                    ),
+                    border = ButtonDefaults.outlinedButtonBorder(enabled = true).copy(
+                        brush = androidx.compose.ui.graphics.SolidColor(
+                            MaterialTheme.colorScheme.error.copy(alpha = 0.5f)
+                        )
+                    ),
+                    shape = RoundedCornerShape(12.dp)
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Delete,
+                        contentDescription = null,
+                        modifier = Modifier.size(18.dp)
+                    )
+                    Spacer(modifier = Modifier.width(8.dp))
+                    Text(
+                        "Desinstalar App",
+                        style = MaterialTheme.typography.bodyMedium
+                    )
+                }
+                
+                Spacer(modifier = Modifier.height(32.dp))
             }
             
             IconButton(
