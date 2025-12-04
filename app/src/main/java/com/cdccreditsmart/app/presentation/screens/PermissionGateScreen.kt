@@ -147,7 +147,7 @@ fun PermissionGateScreen(
         Spacer(modifier = Modifier.height(16.dp))
         
         Text(
-            text = "Configuração Obrigatória",
+            text = "Configuração Inicial",
             fontSize = 22.sp,
             fontWeight = FontWeight.Bold,
             color = MaterialTheme.colorScheme.onBackground
@@ -156,7 +156,7 @@ fun PermissionGateScreen(
         Spacer(modifier = Modifier.height(8.dp))
         
         Text(
-            text = "Para continuar usando o app, você DEVE conceder todas as permissões abaixo:",
+            text = "Ative todas as permissões abaixo para continuar:",
             fontSize = 14.sp,
             color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.7f),
             textAlign = TextAlign.Center
@@ -187,7 +187,7 @@ fun PermissionGateScreen(
         
         Spacer(modifier = Modifier.height(24.dp))
         
-        val allPermissions = gateStatus.grantedPermissions + gateStatus.missingPermissions
+        val allPermissions = gateStatus.missingPermissions + gateStatus.grantedPermissions
         
         allPermissions.forEach { permission ->
             PermissionItem(
@@ -232,7 +232,7 @@ fun PermissionGateScreen(
                     Spacer(modifier = Modifier.width(12.dp))
                     
                     Text(
-                        text = "Você NÃO poderá usar o aplicativo sem conceder TODAS as permissões acima. Isso é obrigatório para o funcionamento correto do sistema.",
+                        text = "Todas as permissões são obrigatórias para o funcionamento do app.",
                         fontSize = 13.sp,
                         color = Color(0xFFC62828),
                         fontWeight = FontWeight.Medium

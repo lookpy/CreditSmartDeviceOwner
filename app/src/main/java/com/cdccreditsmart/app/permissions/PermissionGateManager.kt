@@ -135,8 +135,8 @@ class PermissionGateManager(private val context: Context) {
                     type = PermissionType.RUNTIME,
                     isGranted = hasAllRuntime,
                     isObtainableAtCurrentLevel = true,
-                    displayName = "Permissões do Sistema",
-                    description = "Acesso a telefone, SMS, contatos e notificações"
+                    displayName = "Permissões Básicas",
+                    description = "Telefone, contatos e notificações"
                 )
             )
         }
@@ -146,8 +146,8 @@ class PermissionGateManager(private val context: Context) {
                 type = PermissionType.USAGE_STATS,
                 isGranted = hasUsageStatsPermission(),
                 isObtainableAtCurrentLevel = true,
-                displayName = "Acesso ao Uso de Apps",
-                description = "Detecta quando você acessa as Configurações"
+                displayName = "Monitoramento de Apps",
+                description = "Necessário para funcionamento do sistema"
             )
         )
         
@@ -156,8 +156,8 @@ class PermissionGateManager(private val context: Context) {
                 type = PermissionType.OVERLAY,
                 isGranted = hasOverlayPermission(),
                 isObtainableAtCurrentLevel = true,
-                displayName = "Exibir sobre outros apps",
-                description = "Mostra avisos de segurança importantes"
+                displayName = "Mostrar Alertas",
+                description = "Exibe avisos importantes na tela"
             )
         )
         

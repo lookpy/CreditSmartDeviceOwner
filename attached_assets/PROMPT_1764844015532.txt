@@ -1,0 +1,587 @@
+2025-12-04 07:23:02.104 14845-14886 SettingsGuardService    com.cdccreditsmart.app               W  🚨 SETTINGS DETECTADO! (count: 2, dangerous: false)
+2025-12-04 07:23:02.108 14845-14886 SettingsGuardService    com.cdccreditsmart.app               W     Pacote: com.android.settings
+2025-12-04 07:23:02.108 14845-14886 SettingsGuardService    com.cdccreditsmart.app               W     Chamando app para foreground...
+2025-12-04 07:23:02.349 14845-14845 SettingsGuardService    com.cdccreditsmart.app               I  ✅ App trazido para foreground
+2025-12-04 07:23:02.442 14845-14886 SettingsGuardService    com.cdccreditsmart.app               W  🚨 SETTINGS DETECTADO! (count: 3, dangerous: false)
+2025-12-04 07:23:02.442 14845-14886 SettingsGuardService    com.cdccreditsmart.app               W     Pacote: com.android.settings
+2025-12-04 07:23:02.442 14845-14886 SettingsGuardService    com.cdccreditsmart.app               W     Chamando app para foreground...
+2025-12-04 07:23:02.500 14845-14845 SettingsGuardService    com.cdccreditsmart.app               I  ✅ App trazido para foreground
+2025-12-04 07:23:02.714 14845-14845 PermissionGateScreen    com.cdccreditsmart.app               I  ✅ Device Admin status atualizado
+2025-12-04 07:23:02.771 14845-14886 SettingsGuardService    com.cdccreditsmart.app               I  ✅ App CDC em foreground - resetando contador
+2025-12-04 07:23:02.989 14845-14845 ImeTracker              com.cdccreditsmart.app               I  com.cdccreditsmart.app:ee451452: onCancelled at PHASE_CLIENT_ALREADY_HIDDEN
+2025-12-04 07:23:04.582 14845-14886 SettingsGuardService    com.cdccreditsmart.app               W  🚨 SETTINGS DETECTADO! (count: 2, dangerous: false)
+2025-12-04 07:23:04.582 14845-14886 SettingsGuardService    com.cdccreditsmart.app               W     Pacote: com.android.settings
+2025-12-04 07:23:04.582 14845-14886 SettingsGuardService    com.cdccreditsmart.app               W     Chamando app para foreground...
+2025-12-04 07:23:04.595 14845-14845 SettingsGuardService    com.cdccreditsmart.app               I  ✅ App trazido para foreground
+2025-12-04 07:23:04.749 14845-14886 SettingsGuardService    com.cdccreditsmart.app               W  🚨 SETTINGS DETECTADO! (count: 3, dangerous: false)
+2025-12-04 07:23:04.749 14845-14886 SettingsGuardService    com.cdccreditsmart.app               W     Pacote: com.android.settings
+2025-12-04 07:23:04.750 14845-14886 SettingsGuardService    com.cdccreditsmart.app               W     Chamando app para foreground...
+2025-12-04 07:23:04.754 14845-14845 SettingsGuardService    com.cdccreditsmart.app               I  ✅ App trazido para foreground
+2025-12-04 07:23:04.866 14845-14845 PermissionGateScreen    com.cdccreditsmart.app               I  ✅ Device Admin status atualizado
+2025-12-04 07:23:05.010 14845-14886 SettingsGuardService    com.cdccreditsmart.app               I  ✅ App CDC em foreground - resetando contador
+2025-12-04 07:23:05.231 14845-14845 ImeTracker              com.cdccreditsmart.app               I  com.cdccreditsmart.app:d351cffd: onCancelled at PHASE_CLIENT_ALREADY_HIDDEN
+2025-12-04 07:23:06.370 14845-14886 SettingsGuardService    com.cdccreditsmart.app               W  🚨 SETTINGS DETECTADO! (count: 2, dangerous: false)
+2025-12-04 07:23:06.370 14845-14886 SettingsGuardService    com.cdccreditsmart.app               W     Pacote: com.android.settings
+2025-12-04 07:23:06.370 14845-14886 SettingsGuardService    com.cdccreditsmart.app               W     Chamando app para foreground...
+2025-12-04 07:23:06.523 14845-14845 SettingsGuardService    com.cdccreditsmart.app               I  ✅ App trazido para foreground
+2025-12-04 07:23:06.821 14845-14886 SettingsGuardService    com.cdccreditsmart.app               W  🚨 SETTINGS DETECTADO! (count: 3, dangerous: false)
+2025-12-04 07:23:06.821 14845-14886 SettingsGuardService    com.cdccreditsmart.app               W     Pacote: com.android.settings
+2025-12-04 07:23:06.821 14845-14886 SettingsGuardService    com.cdccreditsmart.app               W     Chamando app para foreground...
+2025-12-04 07:23:06.826 14845-14845 SettingsGuardService    com.cdccreditsmart.app               I  ✅ App trazido para foreground
+2025-12-04 07:23:06.864 14845-14845 PermissionGateScreen    com.cdccreditsmart.app               I  ✅ Device Admin status atualizado
+2025-12-04 07:23:06.928 14845-14886 SettingsGuardService    com.cdccreditsmart.app               I  ✅ App CDC em foreground - resetando contador
+2025-12-04 07:23:07.047 14845-14845 ImeTracker              com.cdccreditsmart.app               I  com.cdccreditsmart.app:37e540cc: onCancelled at PHASE_CLIENT_ALREADY_HIDDEN
+---------------------------- PROCESS ENDED (14845) for package com.cdccreditsmart.app ----------------------------
+---------------------------- PROCESS STARTED (14996) for package com.cdccreditsmart.app ----------------------------
+2025-12-04 07:26:15.272 14996-14996 re-initialized>         com.cdccreditsmart.app               W  type=1400 audit(0.0:2050): avc:  granted  { execute } for  path="/data/data/com.cdccreditsmart.app/code_cache/startup_agents/5b4f70e9-agent.so" dev="dm-55" ino=360503 scontext=u:r:untrusted_app:s0:c229,c256,c512,c768 tcontext=u:object_r:app_data_file:s0:c229,c256,c512,c768 tclass=file app=com.cdccreditsmart.app
+2025-12-04 07:26:15.379 14996-14996 creditsmart.app         com.cdccreditsmart.app               W  Redefining intrinsic method java.lang.Thread java.lang.Thread.currentThread(). This may cause the unexpected use of the original definition of java.lang.Thread java.lang.Thread.currentThread()in methods that have already been compiled.
+2025-12-04 07:26:15.379 14996-14996 creditsmart.app         com.cdccreditsmart.app               W  Redefining intrinsic method boolean java.lang.Thread.interrupted(). This may cause the unexpected use of the original definition of boolean java.lang.Thread.interrupted()in methods that have already been compiled.
+2025-12-04 07:26:15.903 14996-14996 creditsmart.app         com.cdccreditsmart.app               I  AssetManager2(0x7978a5e9b7b8) locale list changing from [] to [en-US]
+2025-12-04 07:26:15.907 14996-14996 creditsmart.app         com.cdccreditsmart.app               I  AssetManager2(0x7978a5e972f8) locale list changing from [] to [en-US]
+2025-12-04 07:26:16.014 14996-14996 FirebaseApp             com.cdccreditsmart.app               I  Device unlocked: initializing all Firebase APIs for app [DEFAULT]
+2025-12-04 07:26:16.056 14996-14996 FirebaseInitProvider    com.cdccreditsmart.app               I  FirebaseApp initialization successful
+2025-12-04 07:26:16.113 14996-15012 creditsmart.app         com.cdccreditsmart.app               W  ClassLoaderContext classpath size mismatch. expected=1, found=0 (DLC[];PCL[base.apk*630649996]{PCL[/system/framework/org.apache.http.legacy.jar*4247870504]#PCL[/system/framework/com.android.media.remotedisplay.jar*487574312]#PCL[/system/framework/com.android.location.provider.jar*1570284764]#PCL[/system_ext/framework/androidx.window.extensions.jar*1030441313]#PCL[/system_ext/framework/androidx.window.sidecar.jar*3860983653]} | DLC[];PCL[])
+2025-12-04 07:26:16.116 14996-15012 DynamiteModule          com.cdccreditsmart.app               I  Considering local module com.google.android.gms.measurement.dynamite:127 and remote module com.google.android.gms.measurement.dynamite:170
+2025-12-04 07:26:16.117 14996-15012 DynamiteModule          com.cdccreditsmart.app               I  Selected remote version of com.google.android.gms.measurement.dynamite, version >= 170
+2025-12-04 07:26:16.140 14996-15012 System                  com.cdccreditsmart.app               W  ClassLoader referenced unknown path: 
+2025-12-04 07:26:16.150 14996-15012 creditsmart.app         com.cdccreditsmart.app               I  AssetManager2(0x7978a5e9e058) locale list changing from [] to [en-US]
+2025-12-04 07:26:16.163 14996-15012 creditsmart.app         com.cdccreditsmart.app               W  ClassLoaderContext classpath size mismatch. expected=1, found=4 (DLC[];PCL[base.apk*630649996]{PCL[/system/framework/org.apache.http.legacy.jar*4247870504]#PCL[/system/framework/com.android.media.remotedisplay.jar*487574312]#PCL[/system/framework/com.android.location.provider.jar*1570284764]#PCL[/system_ext/framework/androidx.window.extensions.jar*1030441313]#PCL[/system_ext/framework/androidx.window.sidecar.jar*3860983653]} | DLC[];PCL[/data/data/com.cdccreditsmart.app/code_cache/.overlay/base.apk/classes19.dex*3731760029:/data/data/com.cdccreditsmart.app/code_cache/.overlay/base.apk/classes28.dex*3563307222:/data/data/com.cdccreditsmart.app/code_cache/.overlay/base.apk/classes29.dex*481315545:/data/app/~~_dsVVpQnOgaY_oGwlFx3NA==/com.cdccreditsmart.app-HRo0-s5xIm-hmSth_Ei4Fw==/base.apk*1313724985])
+2025-12-04 07:26:16.166 14996-14996 CrashHandler            com.cdccreditsmart.app               I  ✅ Global crash handler instalado
+2025-12-04 07:26:16.166 14996-14996 CDCApplication          com.cdccreditsmart.app               I  🚀 CDC Credit Smart Application iniciando...
+2025-12-04 07:26:16.166 14996-14996 CDCApplication          com.cdccreditsmart.app               I  ========================================
+2025-12-04 07:26:16.166 14996-14996 CDCApplication          com.cdccreditsmart.app               I  🔐 Verificando status de Device Owner...
+2025-12-04 07:26:16.171 14996-14996 CDCApplication          com.cdccreditsmart.app               I  Device Owner Status: ❌ NÃO
+2025-12-04 07:26:16.172 14996-14996 CDCApplication          com.cdccreditsmart.app               I  Package Name: com.cdccreditsmart.app
+2025-12-04 07:26:16.172 14996-14996 CDCApplication          com.cdccreditsmart.app               E  
+2025-12-04 07:26:16.173 14996-14996 CDCApplication          com.cdccreditsmart.app               E  ╔════════════════════════════════════════════════════════╗
+2025-12-04 07:26:16.173 14996-14996 CDCApplication          com.cdccreditsmart.app               E  ║  ⚠️  APP NÃO ESTÁ PROVISIONADO COMO DEVICE OWNER  ⚠️   ║
+2025-12-04 07:26:16.173 14996-14996 CDCApplication          com.cdccreditsmart.app               E  ╠════════════════════════════════════════════════════════╣
+2025-12-04 07:26:16.173 14996-14996 CDCApplication          com.cdccreditsmart.app               E  ║  O app precisa ser provisionado como Device Owner      ║
+2025-12-04 07:26:16.173 14996-14996 CDCApplication          com.cdccreditsmart.app               E  ║  ANTES de poder conceder permissões automaticamente.   ║
+2025-12-04 07:26:16.173 14996-14996 CDCApplication          com.cdccreditsmart.app               E  ║                                                        ║
+2025-12-04 07:26:16.173 14996-14996 CDCApplication          com.cdccreditsmart.app               E  ║  Provisione o dispositivo usando um dos métodos:       ║
+2025-12-04 07:26:16.173 14996-14996 CDCApplication          com.cdccreditsmart.app               E  ║  1. ADB: adb shell dpm set-device-owner ...           ║
+2025-12-04 07:26:16.173 14996-14996 CDCApplication          com.cdccreditsmart.app               E  ║  2. QR Code durante setup inicial                      ║
+2025-12-04 07:26:16.173 14996-14996 CDCApplication          com.cdccreditsmart.app               E  ║  3. NFC durante setup inicial                          ║
+2025-12-04 07:26:16.173 14996-14996 CDCApplication          com.cdccreditsmart.app               E  ║  4. Samsung Knox Mobile Enrollment                     ║
+2025-12-04 07:26:16.173 14996-14996 CDCApplication          com.cdccreditsmart.app               E  ╚════════════════════════════════════════════════════════╝
+2025-12-04 07:26:16.173 14996-14996 CDCApplication          com.cdccreditsmart.app               E  
+2025-12-04 07:26:16.173 14996-14996 CDCApplication          com.cdccreditsmart.app               I  ========================================
+2025-12-04 07:26:16.177 14996-14996 AppProtectionManager    com.cdccreditsmart.app               I  
+2025-12-04 07:26:16.178 14996-14996 AppProtectionManager    com.cdccreditsmart.app               I  ╔════════════════════════════════════════════════════════════════╗
+2025-12-04 07:26:16.178 14996-14996 AppProtectionManager    com.cdccreditsmart.app               I  ║     🛡️ APLICANDO MELHOR PROTEÇÃO DISPONÍVEL                    ║
+2025-12-04 07:26:16.178 14996-14996 AppProtectionManager    com.cdccreditsmart.app               I  ║           CDC CREDIT SMART - PROTEÇÃO EM CAMADAS              ║
+2025-12-04 07:26:16.178 14996-14996 AppProtectionManager    com.cdccreditsmart.app               I  ╚════════════════════════════════════════════════════════════════╝
+2025-12-04 07:26:16.178 14996-14996 AppProtectionManager    com.cdccreditsmart.app               I  
+2025-12-04 07:26:16.183 14996-14996 AppProtectionManager    com.cdccreditsmart.app               I  📋 STATUS ATUAL:
+2025-12-04 07:26:16.184 14996-14996 AppProtectionManager    com.cdccreditsmart.app               I     Device Owner: NÃO
+2025-12-04 07:26:16.184 14996-14996 AppProtectionManager    com.cdccreditsmart.app               I     Device Admin: NÃO
+2025-12-04 07:26:16.184 14996-14996 AppProtectionManager    com.cdccreditsmart.app               I  
+2025-12-04 07:26:16.184 14996-14996 AppProtectionManager    com.cdccreditsmart.app               W  ⚠️ NÍVEL: SEM PRIVILÉGIOS
+2025-12-04 07:26:16.184 14996-14996 AppProtectionManager    com.cdccreditsmart.app               W     App precisa ser ativado como Device Admin ou Device Owner
+2025-12-04 07:26:16.184 14996-14996 AppProtectionManager    com.cdccreditsmart.app               W     para aplicar proteções contra desinstalação.
+2025-12-04 07:26:16.184 14996-14996 AppProtectionManager    com.cdccreditsmart.app               W  
+2025-12-04 07:26:16.184 14996-14996 AppProtectionManager    com.cdccreditsmart.app               I     Iniciando serviços de persistência...
+2025-12-04 07:26:16.201 14996-14996 AppProtectionManager    com.cdccreditsmart.app               I     ✅ Foreground Service iniciado
+2025-12-04 07:26:16.213 14996-15012 creditsmart.app         com.cdccreditsmart.app               I  AssetManager2(0x7978a5e9f958) locale list changing from [] to [en-US]
+2025-12-04 07:26:16.215 14996-15012 creditsmart.app         com.cdccreditsmart.app               I  AssetManager2(0x7978a5ea0c18) locale list changing from [] to [en-US]
+2025-12-04 07:26:16.231 14996-14996 AppProtectionManager    com.cdccreditsmart.app               I     ✅ ServiceWatchdog agendado (15 min)
+2025-12-04 07:26:16.231 14996-14996 CDCApplication          com.cdccreditsmart.app               I  
+2025-12-04 07:26:16.231 14996-14996 CDCApplication          com.cdccreditsmart.app               I  ╔════════════════════════════════════════════════════════════╗
+2025-12-04 07:26:16.231 14996-14996 CDCApplication          com.cdccreditsmart.app               I  ║     RESULTADO DA APLICAÇÃO DE PROTEÇÕES                    ║
+2025-12-04 07:26:16.231 14996-14996 CDCApplication          com.cdccreditsmart.app               I  ╚════════════════════════════════════════════════════════════╝
+2025-12-04 07:26:16.231 14996-14996 CDCApplication          com.cdccreditsmart.app               I     Nível: NONE
+2025-12-04 07:26:16.231 14996-14996 CDCApplication          com.cdccreditsmart.app               I     Proteções aplicadas: 0
+2025-12-04 07:26:16.231 14996-14996 CDCApplication          com.cdccreditsmart.app               E     Status: SEM PROTEÇÃO
+2025-12-04 07:26:16.231 14996-14996 CDCApplication          com.cdccreditsmart.app               E     App precisa ser provisionado como Device Owner
+2025-12-04 07:26:16.231 14996-14996 CDCApplication          com.cdccreditsmart.app               E  
+2025-12-04 07:26:16.231 14996-14996 CDCApplication          com.cdccreditsmart.app               E     Provisione o dispositivo usando:
+2025-12-04 07:26:16.231 14996-14996 CDCApplication          com.cdccreditsmart.app               E     1. QR Code durante setup inicial
+2025-12-04 07:26:16.231 14996-14996 CDCApplication          com.cdccreditsmart.app               E     2. ADB: adb shell dpm set-device-owner ...
+2025-12-04 07:26:16.231 14996-14996 CDCApplication          com.cdccreditsmart.app               E     3. Samsung Knox Mobile Enrollment
+2025-12-04 07:26:16.231 14996-14996 CDCApplication          com.cdccreditsmart.app               I  ╚════════════════════════════════════════════════════════════╝
+2025-12-04 07:26:16.231 14996-14996 CDCApplication          com.cdccreditsmart.app               I  
+2025-12-04 07:26:16.231 14996-14996 TamperDetection         com.cdccreditsmart.app               I  ========================================
+2025-12-04 07:26:16.231 14996-14996 TamperDetection         com.cdccreditsmart.app               I  🔍 VERIFICANDO INTEGRIDADE DO DISPOSITIVO
+2025-12-04 07:26:16.231 14996-14996 TamperDetection         com.cdccreditsmart.app               I  ========================================
+2025-12-04 07:26:16.255 14996-15019 ashmem                  com.cdccreditsmart.app               E  Pinning is deprecated since Android Q. Please use trim or other methods.
+2025-12-04 07:26:16.312 14996-15023 creditsmart.app         com.cdccreditsmart.app               I  hiddenapi: Accessing hidden method Ldalvik/system/VMStack;->getStackClass2()Ljava/lang/Class; (runtime_flags=0, domain=core-platform, api=unsupported) from Lm7/aox; (domain=app) using reflection: allowed
+2025-12-04 07:26:16.326 14996-15023 PhClient                com.cdccreditsmart.app               I  Unable to retrieve flag snapshot for com.google.android.gms.measurement#com.cdccreditsmart.app, using defaults.
+2025-12-04 07:26:16.333 14996-15022 creditsmart.app         com.cdccreditsmart.app               E  No package ID 6a found for resource ID 0x6a0b0013.
+2025-12-04 07:26:16.334 14996-15022 FA                      com.cdccreditsmart.app               I  App measurement initialized, version: 146007
+2025-12-04 07:26:16.335 14996-15022 FA                      com.cdccreditsmart.app               I  To enable debug logging run: adb shell setprop log.tag.FA VERBOSE
+2025-12-04 07:26:16.335 14996-15022 FA                      com.cdccreditsmart.app               I  To enable faster debug mode event logging run:
+                                                                                                      adb shell setprop debug.firebase.analytics.app com.cdccreditsmart.app
+2025-12-04 07:26:16.387 14996-15019 JobInfo                 com.cdccreditsmart.app               W  Requested important-while-foreground flag for job5 is ignored and takes no effect
+2025-12-04 07:26:16.439 14996-14996 TamperDetection         com.cdccreditsmart.app               I  ✅ Primeira instalação detectada
+2025-12-04 07:26:16.439 14996-14996 TamperDetection         com.cdccreditsmart.app               I     Token e deviceId não existem - app nunca foi pareado
+2025-12-04 07:26:16.439 14996-14996 TamperDetection         com.cdccreditsmart.app               I  ========================================
+2025-12-04 07:26:16.441 14996-14996 TamperDetection         com.cdccreditsmart.app               I  
+2025-12-04 07:26:16.441 14996-14996 TamperDetection         com.cdccreditsmart.app               I  ╔════════════════════════════════════════════════════════╗
+2025-12-04 07:26:16.441 14996-14996 TamperDetection         com.cdccreditsmart.app               I  ║    📡 REPORTAR BOOT AO BACKEND                        ║
+2025-12-04 07:26:16.441 14996-14996 TamperDetection         com.cdccreditsmart.app               I  ╠════════════════════════════════════════════════════════╣
+2025-12-04 07:26:16.442 14996-14996 TamperDetection         com.cdccreditsmart.app               I  ║  Device Fingerprint: CDC_-1244237****      ║
+2025-12-04 07:26:16.442 14996-14996 TamperDetection         com.cdccreditsmart.app               I  ║  Boot Timestamp: 1764843976442          ║
+2025-12-04 07:26:16.442 14996-14996 TamperDetection         com.cdccreditsmart.app               I  ║                                                        ║
+2025-12-04 07:26:16.443 14996-14996 TamperDetection         com.cdccreditsmart.app               I  ║  Backend detectará factory reset comparando:          ║
+2025-12-04 07:26:16.443 14996-14996 TamperDetection         com.cdccreditsmart.app               I  ║  • Fingerprint histórico vs atual                     ║
+2025-12-04 07:26:16.443 14996-14996 TamperDetection         com.cdccreditsmart.app               I  ║  • Timestamp do último boot vs agora                  ║
+2025-12-04 07:26:16.443 14996-14996 TamperDetection         com.cdccreditsmart.app               I  ║  • Token válido vs ausente                            ║
+2025-12-04 07:26:16.443 14996-14996 TamperDetection         com.cdccreditsmart.app               I  ╚════════════════════════════════════════════════════════╝
+2025-12-04 07:26:16.443 14996-14996 TamperDetection         com.cdccreditsmart.app               I  
+2025-12-04 07:26:16.443 14996-14996 TamperDetection         com.cdccreditsmart.app               I  ⚠️ TODO: Implementar POST /api/security/device-boot
+2025-12-04 07:26:16.447 14996-15029 CDCApplication          com.cdccreditsmart.app               I  🔒 Verificando status do SIM no boot da aplicação...
+2025-12-04 07:26:16.462 14996-15029 SimSwapManager          com.cdccreditsmart.app               I  ========================================
+2025-12-04 07:26:16.462 14996-15029 SimSwapManager          com.cdccreditsmart.app               I  🔒 SIM SWAP: Iniciando verificação de status do SIM
+2025-12-04 07:26:16.462 14996-15029 SimSwapManager          com.cdccreditsmart.app               I  ========================================
+2025-12-04 07:26:16.513 14996-15029 SimSwapDetector         com.cdccreditsmart.app               W  🔒 SIM SWAP: ICCID vazio no SubscriptionInfo
+2025-12-04 07:26:16.524 14996-15029 SimSwapDetector         com.cdccreditsmart.app               E  🔒 SIM SWAP: SecurityException no fallback (Ask Gemini)
+                                                                                                    java.lang.SecurityException: getIccSerialNumber: The uid 10229 does not meet the requirements to access device identifiers.
+                                                                                                    	at android.os.Parcel.createExceptionOrNull(Parcel.java:3340)
+                                                                                                    	at android.os.Parcel.createException(Parcel.java:3324)
+                                                                                                    	at android.os.Parcel.readException(Parcel.java:3307)
+                                                                                                    	at android.os.Parcel.readException(Parcel.java:3249)
+                                                                                                    	at com.android.internal.telephony.IPhoneSubInfo$Stub$Proxy.getIccSerialNumberForSubscriber(IPhoneSubInfo.java:1331)
+                                                                                                    	at android.telephony.TelephonyManager.getSimSerialNumber(TelephonyManager.java:4332)
+                                                                                                    	at android.telephony.TelephonyManager.getSimSerialNumber(TelephonyManager.java:4289)
+                                                                                                    	at com.cdccreditsmart.app.security.SimSwapDetector.getSimSerialFallback(SimSwapDetector.kt:123)
+                                                                                                    	at com.cdccreditsmart.app.security.SimSwapDetector.getCurrentSimSerial(SimSwapDetector.kt:95)
+                                                                                                    	at com.cdccreditsmart.app.security.SimSwapDetector.getSimInfo(SimSwapDetector.kt:256)
+                                                                                                    	at com.cdccreditsmart.app.security.SimSwapManager$checkSimStatus$2.invokeSuspend(SimSwapManager.kt:143)
+                                                                                                    	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:34)
+                                                                                                    	at kotlinx.coroutines.DispatchedTask.run(DispatchedTask.kt:108)
+                                                                                                    	at kotlinx.coroutines.internal.LimitedDispatcher$Worker.run(LimitedDispatcher.kt:115)
+                                                                                                    	at kotlinx.coroutines.scheduling.TaskImpl.run(Tasks.kt:103)
+                                                                                                    	at kotlinx.coroutines.scheduling.CoroutineScheduler.runSafely(CoroutineScheduler.kt:584)
+                                                                                                    	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.executeTask(CoroutineScheduler.kt:793)
+                                                                                                    	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.runWorker(CoroutineScheduler.kt:697)
+                                                                                                    	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.run(CoroutineScheduler.kt:684)
+2025-12-04 07:26:16.533 14996-15029 SimSwapDetector         com.cdccreditsmart.app               I  🔒 SIM SWAP: Informações do SIM coletadas:
+2025-12-04 07:26:16.533 14996-15029 SimSwapDetector         com.cdccreditsmart.app               I     Serial: não disponível...
+2025-12-04 07:26:16.533 14996-15029 SimSwapDetector         com.cdccreditsmart.app               I     Operadora: T-Mobile
+2025-12-04 07:26:16.533 14996-15029 SimSwapDetector         com.cdccreditsmart.app               I     SIM ativo: false
+2025-12-04 07:26:16.533 14996-15029 SimSwapManager          com.cdccreditsmart.app               W  🔒 SIM SWAP: Nenhum SIM ativo detectado - sem ação necessária
+2025-12-04 07:26:16.533 14996-15029 SimSwapManager          com.cdccreditsmart.app               I  ========================================
+2025-12-04 07:26:16.533 14996-15029 CDCApplication          com.cdccreditsmart.app               I  ✅ Verificação de SIM swap concluída com sucesso
+2025-12-04 07:26:16.626 14996-14996 ContractCodeStorage     com.cdccreditsmart.app               W  No valid contract code found in any location
+2025-12-04 07:26:16.627 14996-14996 CDCApplication          com.cdccreditsmart.app               I  ⏸️ Sem tokens - aguardando pairing para iniciar serviço MDM
+2025-12-04 07:26:16.631 14996-14996 AutoBlockingWorker      com.cdccreditsmart.app               I  ✅ Verificação automática de bloqueio agendada (diariamente às 00:00)
+2025-12-04 07:26:16.632 14996-14996 AutoBlockingWorker      com.cdccreditsmart.app               I     Próxima execução em: 813 minutos
+2025-12-04 07:26:16.632 14996-14996 CDCApplication          com.cdccreditsmart.app               I  📅 Agendando overlay automático com intervalo progressivo...
+2025-12-04 07:26:16.633 14996-14996 PeriodicOverlayWorker   com.cdccreditsmart.app               I  📅 Agendando overlay automático com INTERVALO PROGRESSIVO
+2025-12-04 07:26:16.633 14996-14996 PeriodicOverlayWorker   com.cdccreditsmart.app               I     1-4 dias de atraso: a cada 10 minutos
+2025-12-04 07:26:16.633 14996-14996 PeriodicOverlayWorker   com.cdccreditsmart.app               I     5-14 dias de atraso: a cada 5 minutos
+2025-12-04 07:26:16.633 14996-14996 PeriodicOverlayWorker   com.cdccreditsmart.app               I     15+ dias de atraso: a cada 3 minutos
+2025-12-04 07:26:16.634 14996-14996 WM-WorkSpec             com.cdccreditsmart.app               W  Interval duration lesser than minimum allowed value; Changed to 900000
+2025-12-04 07:26:16.634 14996-14996 WM-WorkSpec             com.cdccreditsmart.app               W  Flex duration lesser than minimum allowed value; Changed to 300000
+2025-12-04 07:26:16.637 14996-14996 PeriodicOverlayWorker   com.cdccreditsmart.app               I  ✅ Overlay automático agendado com sucesso
+2025-12-04 07:26:16.637 14996-14996 CDCApplication          com.cdccreditsmart.app               I  🔒 Iniciando sistema Keep Alive...
+2025-12-04 07:26:16.638 14996-14996 KeepAliveManager        com.cdccreditsmart.app               I  🔒 ========================================
+2025-12-04 07:26:16.639 14996-14996 KeepAliveManager        com.cdccreditsmart.app               I  🔒 INICIANDO SISTEMA KEEP ALIVE
+2025-12-04 07:26:16.639 14996-14996 KeepAliveManager        com.cdccreditsmart.app               I  🔒 ========================================
+2025-12-04 07:26:16.640 14996-14996 KeepAliveManager        com.cdccreditsmart.app               I  ✅ ServiceWatchdogWorker agendado (15min)
+2025-12-04 07:26:16.641 14996-14996 KeepAliveManager        com.cdccreditsmart.app               I  ✅ AlarmManager wakeup agendado (10min)
+2025-12-04 07:26:16.642 14996-14996 KeepAliveManager        com.cdccreditsmart.app               I  🔋 Tentando desativar otimização de bateria automaticamente...
+2025-12-04 07:26:16.642 14996-14996 KeepAliveManager        com.cdccreditsmart.app               I  🔋 App NÃO é Device Owner - abrindo configurações do sistema
+2025-12-04 07:26:16.659 14996-14996 KeepAliveManager        com.cdccreditsmart.app               I  ✅ Tela de isenção de bateria aberta para o usuário
+2025-12-04 07:26:16.659 14996-14996 KeepAliveManager        com.cdccreditsmart.app               I  🔒 Sistema Keep Alive ativo
+2025-12-04 07:26:16.662 14996-14996 KeepAliveManager        com.cdccreditsmart.app               I  🔒 - WorkManager: verificação a cada 15min
+2025-12-04 07:26:16.662 14996-14996 KeepAliveManager        com.cdccreditsmart.app               I  🔒 - AlarmManager: wakeup a cada 10min
+2025-12-04 07:26:16.662 14996-14996 KeepAliveManager        com.cdccreditsmart.app               I  🔒 ========================================
+2025-12-04 07:26:16.662 14996-14996 CDCApplication          com.cdccreditsmart.app               I  📊 Keep Alive Stats:
+2025-12-04 07:26:16.663 14996-14996 CDCApplication          com.cdccreditsmart.app               I     - Restarts anteriores: 0
+2025-12-04 07:26:16.663 14996-14996 CDCApplication          com.cdccreditsmart.app               I     - Otimização bateria: SIM (ruim)
+2025-12-04 07:26:16.678 14996-14996 BootReceiver            com.cdccreditsmart.app               I  🚀 Dispositivo iniciado - starting CdcForegroundService
+2025-12-04 07:26:16.681 14996-14996 CdcForegroundService    com.cdccreditsmart.app               I  ✅ Serviço iniciado via startService()
+2025-12-04 07:26:16.690 14996-15034 DisplayManager          com.cdccreditsmart.app               I  Choreographer implicitly registered for the refresh rate.
+2025-12-04 07:26:16.703 14996-14996 creditsmart.app         com.cdccreditsmart.app               I  AssetManager2(0x7978a5ea3198) locale list changing from [] to [en-US]
+2025-12-04 07:26:16.769 14996-15034 EGL_emulation           com.cdccreditsmart.app               I  Opening libGLESv1_CM_emulation.so
+2025-12-04 07:26:16.770 14996-15034 EGL_emulation           com.cdccreditsmart.app               I  Opening libGLESv2_emulation.so
+2025-12-04 07:26:16.789 14996-15034 HWUI                    com.cdccreditsmart.app               W  Failed to choose config with EGL_SWAP_BEHAVIOR_PRESERVED, retrying without...
+2025-12-04 07:26:16.798 14996-15034 HWUI                    com.cdccreditsmart.app               W  Failed to initialize 101010-2 format, error = EGL_SUCCESS
+2025-12-04 07:26:16.798 14996-15030 MainActivity            com.cdccreditsmart.app               I  🆕 Device nunca foi provisionado
+2025-12-04 07:26:16.802 14996-14996 MainActivity            com.cdccreditsmart.app               I  ========================================
+2025-12-04 07:26:16.802 14996-14996 MainActivity            com.cdccreditsmart.app               I  📱 SOLICITANDO PERMISSÕES (NÃO DEVICE OWNER)
+2025-12-04 07:26:16.802 14996-14996 MainActivity            com.cdccreditsmart.app               I  ========================================
+2025-12-04 07:26:16.807 14996-14996 MainActivity            com.cdccreditsmart.app               I  ✅ Todas as runtime permissions já foram concedidas!
+2025-12-04 07:26:16.807 14996-14996 SpecialPermissionReq    com.cdccreditsmart.app               I  ========================================
+2025-12-04 07:26:16.807 14996-14996 SpecialPermissionReq    com.cdccreditsmart.app               I  📊 STATUS DAS PERMISSÕES ESPECIAIS
+2025-12-04 07:26:16.807 14996-14996 SpecialPermissionReq    com.cdccreditsmart.app               I  ========================================
+2025-12-04 07:26:16.808 14996-14996 SpecialPermissionReq    com.cdccreditsmart.app               I    USAGE_STATS: ✅ CONCEDIDA
+2025-12-04 07:26:16.809 14996-14996 SpecialPermissionReq    com.cdccreditsmart.app               I    OVERLAY: ✅ CONCEDIDA
+2025-12-04 07:26:16.809 14996-14996 SpecialPermissionReq    com.cdccreditsmart.app               I  
+2025-12-04 07:26:16.809 14996-14996 SpecialPermissionReq    com.cdccreditsmart.app               I  ✅ Todas as permissões especiais concedidas!
+2025-12-04 07:26:16.809 14996-14996 SpecialPermissionReq    com.cdccreditsmart.app               I     Proteção anti-desinstalação ativa.
+2025-12-04 07:26:16.809 14996-14996 SpecialPermissionReq    com.cdccreditsmart.app               I  ========================================
+2025-12-04 07:26:16.809 14996-14996 MainActivity            com.cdccreditsmart.app               I  ✅ Todas as permissões especiais já foram concedidas!
+2025-12-04 07:26:16.851 14996-14996 HWUI                    com.cdccreditsmart.app               W  Unknown dataspace 0
+2025-12-04 07:26:16.863 14996-15022 FA                      com.cdccreditsmart.app               I  Tag Manager is not found and thus will not be used
+2025-12-04 07:26:17.493 14996-14996 Choreographer           com.cdccreditsmart.app               I  Skipped 85 frames!  The application may be doing too much work on its main thread.
+2025-12-04 07:26:17.953 14996-15000 creditsmart.app         com.cdccreditsmart.app               I  Compiler allocated 5042KB to compile void android.view.ViewRootImpl.performTraversals()
+2025-12-04 07:26:18.079 14996-14996 creditsmart.app         com.cdccreditsmart.app               W  Verification of boolean androidx.navigation.NavController.handleDeepLink(android.content.Intent) took 152.240ms (4013.39 bytecodes/s) (0B arena alloc)
+2025-12-04 07:26:19.390 14996-14996 CdcForegroundService    com.cdccreditsmart.app               I  ✅ ScreenStateReceiver registrado
+2025-12-04 07:26:19.421 14996-14996 CdcForegroundService    com.cdccreditsmart.app               I  ✅ Foreground Service ativo (Android 12+)
+2025-12-04 07:26:19.430 14996-15029 CdcForegroundService    com.cdccreditsmart.app               I  🔧 ========================================
+2025-12-04 07:26:19.430 14996-15029 CdcForegroundService    com.cdccreditsmart.app               I  🔧 INICIANDO initializeServices()...
+2025-12-04 07:26:19.430 14996-15029 CdcForegroundService    com.cdccreditsmart.app               I  🔧 ========================================
+2025-12-04 07:26:19.430 14996-15029 CdcForegroundService    com.cdccreditsmart.app               I  🏢 ========================================
+2025-12-04 07:26:19.430 14996-15029 CdcForegroundService    com.cdccreditsmart.app               I  🏢 APLICANDO POLÍTICAS DE AMBIENTE DE TRABALHO
+2025-12-04 07:26:19.430 14996-15029 CdcForegroundService    com.cdccreditsmart.app               I  🏢 ========================================
+2025-12-04 07:26:19.430 14996-15029 WorkPolicyManager       com.cdccreditsmart.app               I  
+2025-12-04 07:26:19.430 14996-15029 WorkPolicyManager       com.cdccreditsmart.app               I  ╔════════════════════════════════════════════════════════════════╗
+2025-12-04 07:26:19.430 14996-15029 WorkPolicyManager       com.cdccreditsmart.app               I  ║  🏢 APLICANDO POLÍTICAS DE AMBIENTE DE TRABALHO                ║
+2025-12-04 07:26:19.430 14996-15029 WorkPolicyManager       com.cdccreditsmart.app               I  ║     CDC CREDIT SMART - PROTEÇÃO EMPRESARIAL                    ║
+2025-12-04 07:26:19.430 14996-15029 WorkPolicyManager       com.cdccreditsmart.app               I  ╚════════════════════════════════════════════════════════════════╝
+2025-12-04 07:26:19.430 14996-15029 WorkPolicyManager       com.cdccreditsmart.app               I  
+2025-12-04 07:26:19.432 14996-15029 WorkPolicyManager       com.cdccreditsmart.app               I  📋 STATUS DO DISPOSITIVO:
+2025-12-04 07:26:19.432 14996-15029 WorkPolicyManager       com.cdccreditsmart.app               I     Device Owner: ❌ NÃO
+2025-12-04 07:26:19.432 14996-15029 WorkPolicyManager       com.cdccreditsmart.app               I     Device Admin: ❌ NÃO
+2025-12-04 07:26:19.432 14996-15029 WorkPolicyManager       com.cdccreditsmart.app               I  
+2025-12-04 07:26:19.432 14996-15029 WorkPolicyManager       com.cdccreditsmart.app               I  ═══════════════════════════════════════════════════════════════
+2025-12-04 07:26:19.432 14996-15029 WorkPolicyManager       com.cdccreditsmart.app               I  ⚠️ MODO BÁSICO - PROTEÇÃO MÍNIMA
+2025-12-04 07:26:19.432 14996-15029 WorkPolicyManager       com.cdccreditsmart.app               I  ═══════════════════════════════════════════════════════════════
+2025-12-04 07:26:19.432 14996-15029 WorkPolicyManager       com.cdccreditsmart.app               I  
+2025-12-04 07:26:19.432 14996-15029 WorkPolicyManager       com.cdccreditsmart.app               E  ❌ ATENÇÃO: App NÃO é Device Owner nem Device Admin!
+2025-12-04 07:26:19.432 14996-15029 WorkPolicyManager       com.cdccreditsmart.app               E     • Proteções MDM não disponíveis
+2025-12-04 07:26:19.432 14996-15029 WorkPolicyManager       com.cdccreditsmart.app               E     • Usuário pode desinstalar o app livremente
+2025-12-04 07:26:19.432 14996-15029 WorkPolicyManager       com.cdccreditsmart.app               E     • Factory Reset não é bloqueável
+2025-12-04 07:26:19.432 14996-15029 WorkPolicyManager       com.cdccreditsmart.app               E     • Aplicando proteções alternativas mínimas...
+2025-12-04 07:26:19.432 14996-15029 WorkPolicyManager       com.cdccreditsmart.app               I  
+2025-12-04 07:26:19.432 14996-15029 WorkPolicyManager       com.cdccreditsmart.app               I  🔄 [1/3] PERSISTÊNCIA DO APP
+2025-12-04 07:26:19.432 14996-15029 WorkPolicyManager       com.cdccreditsmart.app               I  ───────────────────────────────────────────────────────────────
+2025-12-04 07:26:19.433 14996-15029 WorkPolicyManager       com.cdccreditsmart.app               I     ℹ️ Solicitando isenção de otimização de bateria...
+2025-12-04 07:26:19.433 14996-15029 WorkPolicyManager       com.cdccreditsmart.app               I     ℹ️ Usuário precisa conceder manualmente em Settings
+2025-12-04 07:26:19.433 14996-15029 WorkPolicyManager       com.cdccreditsmart.app               I     ✅ Foreground Service configurado via CdcForegroundService
+2025-12-04 07:26:19.433 14996-15029 WorkPolicyManager       com.cdccreditsmart.app               I  
+2025-12-04 07:26:19.433 14996-15029 WorkPolicyManager       com.cdccreditsmart.app               I  📊 [2/3] MONITORAMENTO BÁSICO
+2025-12-04 07:26:19.433 14996-15029 WorkPolicyManager       com.cdccreditsmart.app               I  ───────────────────────────────────────────────────────────────
+2025-12-04 07:26:19.433 14996-15029 WorkPolicyManager       com.cdccreditsmart.app               I     ✅ WorkManager health check agendado
+2025-12-04 07:26:19.433 14996-15029 WorkPolicyManager       com.cdccreditsmart.app               I  
+2025-12-04 07:26:19.433 14996-15029 WorkPolicyManager       com.cdccreditsmart.app               I  🔔 [3/3] NOTIFICAÇÕES
+2025-12-04 07:26:19.433 14996-15029 WorkPolicyManager       com.cdccreditsmart.app               I  ───────────────────────────────────────────────────────────────
+2025-12-04 07:26:19.433 14996-15029 WorkPolicyManager       com.cdccreditsmart.app               I     ✅ Canal de notificação persistente criado
+2025-12-04 07:26:19.445 14996-15029 WorkPolicyManager       com.cdccreditsmart.app               I  
+2025-12-04 07:26:19.445 14996-15029 WorkPolicyManager       com.cdccreditsmart.app               I  ╔════════════════════════════════════════════════════════════════╗
+2025-12-04 07:26:19.445 14996-15029 WorkPolicyManager       com.cdccreditsmart.app               I  ║  📊 RESUMO DAS POLÍTICAS DE TRABALHO                           ║
+2025-12-04 07:26:19.445 14996-15029 WorkPolicyManager       com.cdccreditsmart.app               I  ╠════════════════════════════════════════════════════════════════╣
+2025-12-04 07:26:19.445 14996-15029 WorkPolicyManager       com.cdccreditsmart.app               I  ║  ⚠️ Nível de proteção: BASIC
+2025-12-04 07:26:19.445 14996-15029 WorkPolicyManager       com.cdccreditsmart.app               I  ║  📋 Políticas aplicadas: 4
+2025-12-04 07:26:19.445 14996-15029 WorkPolicyManager       com.cdccreditsmart.app               I  ╠════════════════════════════════════════════════════════════════╣
+2025-12-04 07:26:19.445 14996-15029 WorkPolicyManager       com.cdccreditsmart.app               I  ║  ✅ PROTEÇÕES ATIVAS:
+2025-12-04 07:26:19.445 14996-15029 WorkPolicyManager       com.cdccreditsmart.app               I  ║     ✅ Isenção de otimização de bateria
+2025-12-04 07:26:19.445 14996-15029 WorkPolicyManager       com.cdccreditsmart.app               I  ║     ✅ Foreground Service persistente
+2025-12-04 07:26:19.445 14996-15029 WorkPolicyManager       com.cdccreditsmart.app               I  ║     ✅ Health check periódico agendado
+2025-12-04 07:26:19.445 14996-15029 WorkPolicyManager       com.cdccreditsmart.app               I  ║     ✅ Canal de notificação persistente criado
+2025-12-04 07:26:19.445 14996-15029 WorkPolicyManager       com.cdccreditsmart.app               I  ╠════════════════════════════════════════════════════════════════╣
+2025-12-04 07:26:19.445 14996-15029 WorkPolicyManager       com.cdccreditsmart.app               I  ║  ⚠️ AVISOS:
+2025-12-04 07:26:19.445 14996-15029 WorkPolicyManager       com.cdccreditsmart.app               W  ║     ❌ CRÍTICO: Desinstalação NÃO bloqueável
+2025-12-04 07:26:19.445 14996-15029 WorkPolicyManager       com.cdccreditsmart.app               W  ║     ❌ CRÍTICO: Factory Reset NÃO bloqueável
+2025-12-04 07:26:19.445 14996-15029 WorkPolicyManager       com.cdccreditsmart.app               W  ║     ❌ CRÍTICO: Force Stop NÃO bloqueável
+2025-12-04 07:26:19.445 14996-15029 WorkPolicyManager       com.cdccreditsmart.app               W  ║     ❌ CRÍTICO: Clear Data NÃO bloqueável
+2025-12-04 07:26:19.445 14996-15029 WorkPolicyManager       com.cdccreditsmart.app               W  ║     ⚠️ Recomendação: Configurar como Device Owner via QR Code ou ADB
+2025-12-04 07:26:19.445 14996-15029 WorkPolicyManager       com.cdccreditsmart.app               I  ╚════════════════════════════════════════════════════════════════╝
+2025-12-04 07:26:19.445 14996-15029 WorkPolicyManager       com.cdccreditsmart.app               I  
+2025-12-04 07:26:19.446 14996-15029 CdcForegroundService    com.cdccreditsmart.app               I  🏢 Resultado: BASIC
+2025-12-04 07:26:19.446 14996-15029 CdcForegroundService    com.cdccreditsmart.app               I  🏢 Políticas aplicadas: 4/5
+2025-12-04 07:26:19.446 14996-15029 CdcForegroundService    com.cdccreditsmart.app               W  🏢 ❌ CRÍTICO: Desinstalação NÃO bloqueável
+2025-12-04 07:26:19.446 14996-15029 CdcForegroundService    com.cdccreditsmart.app               W  🏢 ❌ CRÍTICO: Factory Reset NÃO bloqueável
+2025-12-04 07:26:19.446 14996-15029 CdcForegroundService    com.cdccreditsmart.app               W  🏢 ❌ CRÍTICO: Force Stop NÃO bloqueável
+2025-12-04 07:26:19.446 14996-15029 CdcForegroundService    com.cdccreditsmart.app               W  🏢 ❌ CRÍTICO: Clear Data NÃO bloqueável
+2025-12-04 07:26:19.446 14996-15029 CdcForegroundService    com.cdccreditsmart.app               W  🏢 ⚠️ Recomendação: Configurar como Device Owner via QR Code ou ADB
+2025-12-04 07:26:19.446 14996-15029 CdcForegroundService    com.cdccreditsmart.app               I  🏢 ========================================
+2025-12-04 07:26:19.446 14996-15029 CdcForegroundService    com.cdccreditsmart.app               I  🛡️ ========================================
+2025-12-04 07:26:19.446 14996-15029 CdcForegroundService    com.cdccreditsmart.app               I  🛡️ INICIANDO SETTINGS GUARD (PROTEÇÃO AGRESSIVA)
+2025-12-04 07:26:19.446 14996-15029 CdcForegroundService    com.cdccreditsmart.app               I  🛡️ ========================================
+2025-12-04 07:26:19.447 14996-15029 SettingsGuardService    com.cdccreditsmart.app               I  🛡️ SettingsGuard INICIADO
+2025-12-04 07:26:19.447 14996-15029 SettingsGuardService    com.cdccreditsmart.app               I     Modo de proteção: BASIC
+2025-12-04 07:26:19.447 14996-15029 SettingsGuardService    com.cdccreditsmart.app               I     ⚠️ Sem privilégios: Proteção AGRESSIVA ativada
+2025-12-04 07:26:19.447 14996-15029 SettingsGuardService    com.cdccreditsmart.app               I     📡 Monitorando Settings a cada 600ms
+2025-12-04 07:26:19.450 14996-15029 CdcForegroundService    com.cdccreditsmart.app               I  🛡️ Guard ativo: true
+2025-12-04 07:26:19.450 14996-15029 CdcForegroundService    com.cdccreditsmart.app               I  🛡️ Modo proteção: BASIC
+2025-12-04 07:26:19.450 14996-15029 CdcForegroundService    com.cdccreditsmart.app               I  🛡️ Modo agressivo: false
+2025-12-04 07:26:19.450 14996-15029 CdcForegroundService    com.cdccreditsmart.app               I  🛡️ UsageStats: ✅ ATIVO
+2025-12-04 07:26:19.450 14996-15029 CdcForegroundService    com.cdccreditsmart.app               I  🛡️ Overlay: ✅ ATIVO
+2025-12-04 07:26:19.450 14996-15029 CdcForegroundService    com.cdccreditsmart.app               I  🛡️ ========================================
+2025-12-04 07:26:19.542 14996-14996 CdcForegroundService    com.cdccreditsmart.app               I  ✅ Foreground Service ativo (Android 12+)
+2025-12-04 07:26:19.549 14996-15029 CdcForegroundService    com.cdccreditsmart.app               I  🔧 ========================================
+2025-12-04 07:26:19.550 14996-15029 CdcForegroundService    com.cdccreditsmart.app               I  🔧 INICIANDO initializeServices()...
+2025-12-04 07:26:19.550 14996-15029 CdcForegroundService    com.cdccreditsmart.app               I  🔧 ========================================
+2025-12-04 07:26:19.550 14996-15029 CdcForegroundService    com.cdccreditsmart.app               I  🏢 ========================================
+2025-12-04 07:26:19.550 14996-15029 CdcForegroundService    com.cdccreditsmart.app               I  🏢 APLICANDO POLÍTICAS DE AMBIENTE DE TRABALHO
+2025-12-04 07:26:19.550 14996-15029 CdcForegroundService    com.cdccreditsmart.app               I  🏢 ========================================
+2025-12-04 07:26:19.550 14996-15029 WorkPolicyManager       com.cdccreditsmart.app               I  
+2025-12-04 07:26:19.550 14996-15029 WorkPolicyManager       com.cdccreditsmart.app               I  ╔════════════════════════════════════════════════════════════════╗
+2025-12-04 07:26:19.550 14996-15029 WorkPolicyManager       com.cdccreditsmart.app               I  ║  🏢 APLICANDO POLÍTICAS DE AMBIENTE DE TRABALHO                ║
+2025-12-04 07:26:19.550 14996-15029 WorkPolicyManager       com.cdccreditsmart.app               I  ║     CDC CREDIT SMART - PROTEÇÃO EMPRESARIAL                    ║
+2025-12-04 07:26:19.550 14996-15029 WorkPolicyManager       com.cdccreditsmart.app               I  ╚════════════════════════════════════════════════════════════════╝
+2025-12-04 07:26:19.550 14996-15029 WorkPolicyManager       com.cdccreditsmart.app               I  
+2025-12-04 07:26:19.556 14996-14996 BootReceiver            com.cdccreditsmart.app               I  🚀 Dispositivo iniciado - starting CdcForegroundService
+2025-12-04 07:26:19.559 14996-15029 WorkPolicyManager       com.cdccreditsmart.app               I  📋 STATUS DO DISPOSITIVO:
+2025-12-04 07:26:19.571 14996-14996 CdcForegroundService    com.cdccreditsmart.app               I  ✅ Serviço iniciado via startService()
+2025-12-04 07:26:19.572 14996-15029 WorkPolicyManager       com.cdccreditsmart.app               I     Device Owner: ❌ NÃO
+2025-12-04 07:26:19.573 14996-15029 WorkPolicyManager       com.cdccreditsmart.app               I     Device Admin: ❌ NÃO
+2025-12-04 07:26:19.573 14996-15029 WorkPolicyManager       com.cdccreditsmart.app               I  
+2025-12-04 07:26:19.573 14996-15029 WorkPolicyManager       com.cdccreditsmart.app               I  ═══════════════════════════════════════════════════════════════
+2025-12-04 07:26:19.573 14996-15029 WorkPolicyManager       com.cdccreditsmart.app               I  ⚠️ MODO BÁSICO - PROTEÇÃO MÍNIMA
+2025-12-04 07:26:19.573 14996-15029 WorkPolicyManager       com.cdccreditsmart.app               I  ═══════════════════════════════════════════════════════════════
+2025-12-04 07:26:19.573 14996-15029 WorkPolicyManager       com.cdccreditsmart.app               I  
+2025-12-04 07:26:19.573 14996-15029 WorkPolicyManager       com.cdccreditsmart.app               E  ❌ ATENÇÃO: App NÃO é Device Owner nem Device Admin!
+2025-12-04 07:26:19.573 14996-15029 WorkPolicyManager       com.cdccreditsmart.app               E     • Proteções MDM não disponíveis
+2025-12-04 07:26:19.573 14996-15029 WorkPolicyManager       com.cdccreditsmart.app               E     • Usuário pode desinstalar o app livremente
+2025-12-04 07:26:19.573 14996-15029 WorkPolicyManager       com.cdccreditsmart.app               E     • Factory Reset não é bloqueável
+2025-12-04 07:26:19.573 14996-15029 WorkPolicyManager       com.cdccreditsmart.app               E     • Aplicando proteções alternativas mínimas...
+2025-12-04 07:26:19.573 14996-15029 WorkPolicyManager       com.cdccreditsmart.app               I  
+2025-12-04 07:26:19.573 14996-15029 WorkPolicyManager       com.cdccreditsmart.app               I  🔄 [1/3] PERSISTÊNCIA DO APP
+2025-12-04 07:26:19.573 14996-15029 WorkPolicyManager       com.cdccreditsmart.app               I  ───────────────────────────────────────────────────────────────
+2025-12-04 07:26:19.583 14996-15029 WorkPolicyManager       com.cdccreditsmart.app               I     ℹ️ Solicitando isenção de otimização de bateria...
+2025-12-04 07:26:19.583 14996-15029 WorkPolicyManager       com.cdccreditsmart.app               I     ℹ️ Usuário precisa conceder manualmente em Settings
+2025-12-04 07:26:19.583 14996-15029 WorkPolicyManager       com.cdccreditsmart.app               I     ✅ Foreground Service configurado via CdcForegroundService
+2025-12-04 07:26:19.583 14996-15029 WorkPolicyManager       com.cdccreditsmart.app               I  
+2025-12-04 07:26:19.583 14996-15029 WorkPolicyManager       com.cdccreditsmart.app               I  📊 [2/3] MONITORAMENTO BÁSICO
+2025-12-04 07:26:19.583 14996-15029 WorkPolicyManager       com.cdccreditsmart.app               I  ───────────────────────────────────────────────────────────────
+2025-12-04 07:26:19.583 14996-15029 WorkPolicyManager       com.cdccreditsmart.app               I     ✅ WorkManager health check agendado
+2025-12-04 07:26:19.583 14996-15029 WorkPolicyManager       com.cdccreditsmart.app               I  
+2025-12-04 07:26:19.583 14996-15029 WorkPolicyManager       com.cdccreditsmart.app               I  🔔 [3/3] NOTIFICAÇÕES
+2025-12-04 07:26:19.583 14996-15029 WorkPolicyManager       com.cdccreditsmart.app               I  ───────────────────────────────────────────────────────────────
+2025-12-04 07:26:19.583 14996-15029 WorkPolicyManager       com.cdccreditsmart.app               I     ✅ Canal de notificação persistente criado
+2025-12-04 07:26:19.583 14996-15029 WorkPolicyManager       com.cdccreditsmart.app               I  
+2025-12-04 07:26:19.583 14996-15029 WorkPolicyManager       com.cdccreditsmart.app               I  ╔════════════════════════════════════════════════════════════════╗
+2025-12-04 07:26:19.583 14996-15029 WorkPolicyManager       com.cdccreditsmart.app               I  ║  📊 RESUMO DAS POLÍTICAS DE TRABALHO                           ║
+2025-12-04 07:26:19.583 14996-15029 WorkPolicyManager       com.cdccreditsmart.app               I  ╠════════════════════════════════════════════════════════════════╣
+2025-12-04 07:26:19.583 14996-15029 WorkPolicyManager       com.cdccreditsmart.app               I  ║  ⚠️ Nível de proteção: BASIC
+2025-12-04 07:26:19.583 14996-15029 WorkPolicyManager       com.cdccreditsmart.app               I  ║  📋 Políticas aplicadas: 4
+2025-12-04 07:26:19.583 14996-15029 WorkPolicyManager       com.cdccreditsmart.app               I  ╠════════════════════════════════════════════════════════════════╣
+2025-12-04 07:26:19.583 14996-15029 WorkPolicyManager       com.cdccreditsmart.app               I  ║  ✅ PROTEÇÕES ATIVAS:
+2025-12-04 07:26:19.583 14996-15029 WorkPolicyManager       com.cdccreditsmart.app               I  ║     ✅ Isenção de otimização de bateria
+2025-12-04 07:26:19.583 14996-15029 WorkPolicyManager       com.cdccreditsmart.app               I  ║     ✅ Foreground Service persistente
+2025-12-04 07:26:19.583 14996-15029 WorkPolicyManager       com.cdccreditsmart.app               I  ║     ✅ Health check periódico agendado
+2025-12-04 07:26:19.583 14996-15029 WorkPolicyManager       com.cdccreditsmart.app               I  ║     ✅ Canal de notificação persistente criado
+2025-12-04 07:26:19.583 14996-15029 WorkPolicyManager       com.cdccreditsmart.app               I  ╠════════════════════════════════════════════════════════════════╣
+2025-12-04 07:26:19.583 14996-15029 WorkPolicyManager       com.cdccreditsmart.app               I  ║  ⚠️ AVISOS:
+2025-12-04 07:26:19.583 14996-15029 WorkPolicyManager       com.cdccreditsmart.app               W  ║     ❌ CRÍTICO: Desinstalação NÃO bloqueável
+2025-12-04 07:26:19.583 14996-15029 WorkPolicyManager       com.cdccreditsmart.app               W  ║     ❌ CRÍTICO: Factory Reset NÃO bloqueável
+2025-12-04 07:26:19.583 14996-15029 WorkPolicyManager       com.cdccreditsmart.app               W  ║     ❌ CRÍTICO: Force Stop NÃO bloqueável
+2025-12-04 07:26:19.583 14996-15029 WorkPolicyManager       com.cdccreditsmart.app               W  ║     ❌ CRÍTICO: Clear Data NÃO bloqueável
+2025-12-04 07:26:19.583 14996-15029 WorkPolicyManager       com.cdccreditsmart.app               W  ║     ⚠️ Recomendação: Configurar como Device Owner via QR Code ou ADB
+2025-12-04 07:26:19.583 14996-15029 WorkPolicyManager       com.cdccreditsmart.app               I  ╚════════════════════════════════════════════════════════════════╝
+2025-12-04 07:26:19.583 14996-15029 WorkPolicyManager       com.cdccreditsmart.app               I  
+2025-12-04 07:26:19.583 14996-15029 CdcForegroundService    com.cdccreditsmart.app               I  🏢 Resultado: BASIC
+2025-12-04 07:26:19.583 14996-15029 CdcForegroundService    com.cdccreditsmart.app               I  🏢 Políticas aplicadas: 4/5
+2025-12-04 07:26:19.583 14996-15029 CdcForegroundService    com.cdccreditsmart.app               W  🏢 ❌ CRÍTICO: Desinstalação NÃO bloqueável
+2025-12-04 07:26:19.583 14996-15029 CdcForegroundService    com.cdccreditsmart.app               W  🏢 ❌ CRÍTICO: Factory Reset NÃO bloqueável
+2025-12-04 07:26:19.583 14996-15029 CdcForegroundService    com.cdccreditsmart.app               W  🏢 ❌ CRÍTICO: Force Stop NÃO bloqueável
+2025-12-04 07:26:19.583 14996-15029 CdcForegroundService    com.cdccreditsmart.app               W  🏢 ❌ CRÍTICO: Clear Data NÃO bloqueável
+2025-12-04 07:26:19.583 14996-15029 CdcForegroundService    com.cdccreditsmart.app               W  🏢 ⚠️ Recomendação: Configurar como Device Owner via QR Code ou ADB
+2025-12-04 07:26:19.583 14996-15029 CdcForegroundService    com.cdccreditsmart.app               I  🏢 ========================================
+2025-12-04 07:26:19.583 14996-15029 CdcForegroundService    com.cdccreditsmart.app               I  🛡️ ========================================
+2025-12-04 07:26:19.583 14996-15029 CdcForegroundService    com.cdccreditsmart.app               I  🛡️ INICIANDO SETTINGS GUARD (PROTEÇÃO AGRESSIVA)
+2025-12-04 07:26:19.583 14996-15029 CdcForegroundService    com.cdccreditsmart.app               I  🛡️ ========================================
+2025-12-04 07:26:19.596 14996-15029 CdcForegroundService    com.cdccreditsmart.app               I  🛡️ Guard ativo: true
+2025-12-04 07:26:19.596 14996-15029 CdcForegroundService    com.cdccreditsmart.app               I  🛡️ Modo proteção: BASIC
+2025-12-04 07:26:19.596 14996-15029 CdcForegroundService    com.cdccreditsmart.app               I  🛡️ Modo agressivo: false
+2025-12-04 07:26:19.596 14996-15029 CdcForegroundService    com.cdccreditsmart.app               I  🛡️ UsageStats: ✅ ATIVO
+2025-12-04 07:26:19.596 14996-15029 CdcForegroundService    com.cdccreditsmart.app               I  🛡️ Overlay: ✅ ATIVO
+2025-12-04 07:26:19.596 14996-15029 CdcForegroundService    com.cdccreditsmart.app               I  🛡️ ========================================
+2025-12-04 07:26:19.678 14996-14996 PermissionGateScreen    com.cdccreditsmart.app               I  ========================================
+2025-12-04 07:26:19.679 14996-14996 PermissionGateScreen    com.cdccreditsmart.app               I  🚪 PERMISSION GATE SCREEN INICIADO
+2025-12-04 07:26:19.679 14996-14996 PermissionGateScreen    com.cdccreditsmart.app               I  ========================================
+2025-12-04 07:26:19.679 14996-14996 PermissionGateScreen    com.cdccreditsmart.app               I  Nível de privilégio: BASIC
+2025-12-04 07:26:19.679 14996-14996 PermissionGateScreen    com.cdccreditsmart.app               I  Permissões concedidas: 3
+2025-12-04 07:26:19.679 14996-14996 PermissionGateScreen    com.cdccreditsmart.app               I  Permissões faltando: 1
+2025-12-04 07:26:19.680 14996-14996 PermissionGateScreen    com.cdccreditsmart.app               W    ❌ Administrador do Dispositivo
+2025-12-04 07:26:19.680 14996-14996 PermissionGateScreen    com.cdccreditsmart.app               I    ✅ Permissões do Sistema
+2025-12-04 07:26:19.681 14996-14996 PermissionGateScreen    com.cdccreditsmart.app               I    ✅ Acesso ao Uso de Apps
+2025-12-04 07:26:19.681 14996-14996 PermissionGateScreen    com.cdccreditsmart.app               I    ✅ Exibir sobre outros apps
+2025-12-04 07:26:19.681 14996-14996 PermissionGateScreen    com.cdccreditsmart.app               I  ========================================
+2025-12-04 07:26:19.694 14996-14996 Choreographer           com.cdccreditsmart.app               I  Skipped 126 frames!  The application may be doing too much work on its main thread.
+2025-12-04 07:26:19.922 14996-15030 ServiceWatchdogWorker   com.cdccreditsmart.app               I  🔍 ========================================
+2025-12-04 07:26:19.923 14996-15030 ServiceWatchdogWorker   com.cdccreditsmart.app               I  🔍 WATCHDOG: Verificando CdcForegroundService
+2025-12-04 07:26:19.923 14996-15030 ServiceWatchdogWorker   com.cdccreditsmart.app               I  🔍 ========================================
+2025-12-04 07:26:19.928 14996-15030 ServiceWatchdogWorker   com.cdccreditsmart.app               I  📊 Estatísticas Keep Alive:
+2025-12-04 07:26:19.928 14996-15030 ServiceWatchdogWorker   com.cdccreditsmart.app               I     - Serviço ativo: true
+2025-12-04 07:26:19.929 14996-15030 ServiceWatchdogWorker   com.cdccreditsmart.app               I     - Restarts: 0
+2025-12-04 07:26:19.929 14996-15030 ServiceWatchdogWorker   com.cdccreditsmart.app               I     - Otimização bateria: SIM (ruim)
+2025-12-04 07:26:19.929 14996-15030 ServiceWatchdogWorker   com.cdccreditsmart.app               I  🔍 ========================================
+2025-12-04 07:26:19.929 14996-15030 ServiceWatchdogWorker   com.cdccreditsmart.app               I  ✅ WATCHDOG: Serviço verificado/reiniciado com sucesso
+2025-12-04 07:26:19.953 14996-15031 WM-WorkerWrapper        com.cdccreditsmart.app               I  Worker result SUCCESS for Work [ id=56f140b7-d0ea-4eec-a7fa-77b65dd38b74, tags={ com.cdccreditsmart.app.keepalive.ServiceWatchdogWorker } ]
+2025-12-04 07:26:19.954 14996-14996 CdcForegroundService    com.cdccreditsmart.app               I  ✅ Foreground Service ativo (Android 12+)
+2025-12-04 07:26:19.955 14996-15029 CdcForegroundService    com.cdccreditsmart.app               I  🔧 ========================================
+2025-12-04 07:26:19.955 14996-15029 CdcForegroundService    com.cdccreditsmart.app               I  🔧 INICIANDO initializeServices()...
+2025-12-04 07:26:19.955 14996-15029 CdcForegroundService    com.cdccreditsmart.app               I  🔧 ========================================
+2025-12-04 07:26:19.955 14996-15029 CdcForegroundService    com.cdccreditsmart.app               I  🏢 ========================================
+2025-12-04 07:26:19.955 14996-15029 CdcForegroundService    com.cdccreditsmart.app               I  🏢 APLICANDO POLÍTICAS DE AMBIENTE DE TRABALHO
+2025-12-04 07:26:19.955 14996-15029 CdcForegroundService    com.cdccreditsmart.app               I  🏢 ========================================
+2025-12-04 07:26:19.955 14996-15029 WorkPolicyManager       com.cdccreditsmart.app               I  
+2025-12-04 07:26:19.955 14996-15029 WorkPolicyManager       com.cdccreditsmart.app               I  ╔════════════════════════════════════════════════════════════════╗
+2025-12-04 07:26:19.955 14996-15029 WorkPolicyManager       com.cdccreditsmart.app               I  ║  🏢 APLICANDO POLÍTICAS DE AMBIENTE DE TRABALHO                ║
+2025-12-04 07:26:19.955 14996-15029 WorkPolicyManager       com.cdccreditsmart.app               I  ║     CDC CREDIT SMART - PROTEÇÃO EMPRESARIAL                    ║
+2025-12-04 07:26:19.956 14996-15029 WorkPolicyManager       com.cdccreditsmart.app               I  ╚════════════════════════════════════════════════════════════════╝
+2025-12-04 07:26:19.956 14996-15029 WorkPolicyManager       com.cdccreditsmart.app               I  
+2025-12-04 07:26:19.960 14996-15029 WorkPolicyManager       com.cdccreditsmart.app               I  📋 STATUS DO DISPOSITIVO:
+2025-12-04 07:26:19.960 14996-15029 WorkPolicyManager       com.cdccreditsmart.app               I     Device Owner: ❌ NÃO
+2025-12-04 07:26:19.960 14996-15029 WorkPolicyManager       com.cdccreditsmart.app               I     Device Admin: ❌ NÃO
+2025-12-04 07:26:19.960 14996-15029 WorkPolicyManager       com.cdccreditsmart.app               I  
+2025-12-04 07:26:19.960 14996-15029 WorkPolicyManager       com.cdccreditsmart.app               I  ═══════════════════════════════════════════════════════════════
+2025-12-04 07:26:19.960 14996-15029 WorkPolicyManager       com.cdccreditsmart.app               I  ⚠️ MODO BÁSICO - PROTEÇÃO MÍNIMA
+2025-12-04 07:26:19.960 14996-15029 WorkPolicyManager       com.cdccreditsmart.app               I  ═══════════════════════════════════════════════════════════════
+2025-12-04 07:26:19.960 14996-15029 WorkPolicyManager       com.cdccreditsmart.app               I  
+2025-12-04 07:26:19.960 14996-15029 WorkPolicyManager       com.cdccreditsmart.app               E  ❌ ATENÇÃO: App NÃO é Device Owner nem Device Admin!
+2025-12-04 07:26:19.960 14996-15029 WorkPolicyManager       com.cdccreditsmart.app               E     • Proteções MDM não disponíveis
+2025-12-04 07:26:19.960 14996-15029 WorkPolicyManager       com.cdccreditsmart.app               E     • Usuário pode desinstalar o app livremente
+2025-12-04 07:26:19.960 14996-15029 WorkPolicyManager       com.cdccreditsmart.app               E     • Factory Reset não é bloqueável
+2025-12-04 07:26:19.960 14996-15029 WorkPolicyManager       com.cdccreditsmart.app               E     • Aplicando proteções alternativas mínimas...
+2025-12-04 07:26:19.960 14996-15029 WorkPolicyManager       com.cdccreditsmart.app               I  
+2025-12-04 07:26:19.960 14996-15029 WorkPolicyManager       com.cdccreditsmart.app               I  🔄 [1/3] PERSISTÊNCIA DO APP
+2025-12-04 07:26:19.960 14996-15029 WorkPolicyManager       com.cdccreditsmart.app               I  ───────────────────────────────────────────────────────────────
+2025-12-04 07:26:19.961 14996-15029 WorkPolicyManager       com.cdccreditsmart.app               I     ℹ️ Solicitando isenção de otimização de bateria...
+2025-12-04 07:26:19.961 14996-15029 WorkPolicyManager       com.cdccreditsmart.app               I     ℹ️ Usuário precisa conceder manualmente em Settings
+2025-12-04 07:26:19.962 14996-15029 WorkPolicyManager       com.cdccreditsmart.app               I     ✅ Foreground Service configurado via CdcForegroundService
+2025-12-04 07:26:19.962 14996-15029 WorkPolicyManager       com.cdccreditsmart.app               I  
+2025-12-04 07:26:19.962 14996-15029 WorkPolicyManager       com.cdccreditsmart.app               I  📊 [2/3] MONITORAMENTO BÁSICO
+2025-12-04 07:26:19.962 14996-15029 WorkPolicyManager       com.cdccreditsmart.app               I  ───────────────────────────────────────────────────────────────
+2025-12-04 07:26:19.962 14996-15029 WorkPolicyManager       com.cdccreditsmart.app               I     ✅ WorkManager health check agendado
+2025-12-04 07:26:19.962 14996-15029 WorkPolicyManager       com.cdccreditsmart.app               I  
+2025-12-04 07:26:19.962 14996-15029 WorkPolicyManager       com.cdccreditsmart.app               I  🔔 [3/3] NOTIFICAÇÕES
+2025-12-04 07:26:19.962 14996-15029 WorkPolicyManager       com.cdccreditsmart.app               I  ───────────────────────────────────────────────────────────────
+2025-12-04 07:26:19.962 14996-15029 WorkPolicyManager       com.cdccreditsmart.app               I     ✅ Canal de notificação persistente criado
+2025-12-04 07:26:19.962 14996-15029 WorkPolicyManager       com.cdccreditsmart.app               I  
+2025-12-04 07:26:19.962 14996-15029 WorkPolicyManager       com.cdccreditsmart.app               I  ╔════════════════════════════════════════════════════════════════╗
+2025-12-04 07:26:19.962 14996-15029 WorkPolicyManager       com.cdccreditsmart.app               I  ║  📊 RESUMO DAS POLÍTICAS DE TRABALHO                           ║
+2025-12-04 07:26:19.962 14996-15029 WorkPolicyManager       com.cdccreditsmart.app               I  ╠════════════════════════════════════════════════════════════════╣
+2025-12-04 07:26:19.962 14996-15029 WorkPolicyManager       com.cdccreditsmart.app               I  ║  ⚠️ Nível de proteção: BASIC
+2025-12-04 07:26:19.962 14996-15029 WorkPolicyManager       com.cdccreditsmart.app               I  ║  📋 Políticas aplicadas: 4
+2025-12-04 07:26:19.962 14996-15029 WorkPolicyManager       com.cdccreditsmart.app               I  ╠════════════════════════════════════════════════════════════════╣
+2025-12-04 07:26:19.962 14996-15029 WorkPolicyManager       com.cdccreditsmart.app               I  ║  ✅ PROTEÇÕES ATIVAS:
+2025-12-04 07:26:19.962 14996-15029 WorkPolicyManager       com.cdccreditsmart.app               I  ║     ✅ Isenção de otimização de bateria
+2025-12-04 07:26:19.962 14996-15029 WorkPolicyManager       com.cdccreditsmart.app               I  ║     ✅ Foreground Service persistente
+2025-12-04 07:26:19.962 14996-15029 WorkPolicyManager       com.cdccreditsmart.app               I  ║     ✅ Health check periódico agendado
+2025-12-04 07:26:19.962 14996-15029 WorkPolicyManager       com.cdccreditsmart.app               I  ║     ✅ Canal de notificação persistente criado
+2025-12-04 07:26:19.962 14996-15029 WorkPolicyManager       com.cdccreditsmart.app               I  ╠════════════════════════════════════════════════════════════════╣
+2025-12-04 07:26:19.962 14996-15029 WorkPolicyManager       com.cdccreditsmart.app               I  ║  ⚠️ AVISOS:
+2025-12-04 07:26:19.962 14996-15029 WorkPolicyManager       com.cdccreditsmart.app               W  ║     ❌ CRÍTICO: Desinstalação NÃO bloqueável
+2025-12-04 07:26:19.962 14996-15029 WorkPolicyManager       com.cdccreditsmart.app               W  ║     ❌ CRÍTICO: Factory Reset NÃO bloqueável
+2025-12-04 07:26:19.962 14996-15029 WorkPolicyManager       com.cdccreditsmart.app               W  ║     ❌ CRÍTICO: Force Stop NÃO bloqueável
+2025-12-04 07:26:19.962 14996-15029 WorkPolicyManager       com.cdccreditsmart.app               W  ║     ❌ CRÍTICO: Clear Data NÃO bloqueável
+2025-12-04 07:26:19.962 14996-15029 WorkPolicyManager       com.cdccreditsmart.app               W  ║     ⚠️ Recomendação: Configurar como Device Owner via QR Code ou ADB
+2025-12-04 07:26:19.962 14996-15029 WorkPolicyManager       com.cdccreditsmart.app               I  ╚════════════════════════════════════════════════════════════════╝
+2025-12-04 07:26:19.962 14996-15029 WorkPolicyManager       com.cdccreditsmart.app               I  
+2025-12-04 07:26:19.962 14996-15029 CdcForegroundService    com.cdccreditsmart.app               I  🏢 Resultado: BASIC
+2025-12-04 07:26:19.962 14996-15029 CdcForegroundService    com.cdccreditsmart.app               I  🏢 Políticas aplicadas: 4/5
+2025-12-04 07:26:19.962 14996-15029 CdcForegroundService    com.cdccreditsmart.app               W  🏢 ❌ CRÍTICO: Desinstalação NÃO bloqueável
+2025-12-04 07:26:19.962 14996-15029 CdcForegroundService    com.cdccreditsmart.app               W  🏢 ❌ CRÍTICO: Factory Reset NÃO bloqueável
+2025-12-04 07:26:19.962 14996-15029 CdcForegroundService    com.cdccreditsmart.app               W  🏢 ❌ CRÍTICO: Force Stop NÃO bloqueável
+2025-12-04 07:26:19.962 14996-15029 CdcForegroundService    com.cdccreditsmart.app               W  🏢 ❌ CRÍTICO: Clear Data NÃO bloqueável
+2025-12-04 07:26:19.962 14996-15029 CdcForegroundService    com.cdccreditsmart.app               W  🏢 ⚠️ Recomendação: Configurar como Device Owner via QR Code ou ADB
+2025-12-04 07:26:19.962 14996-15029 CdcForegroundService    com.cdccreditsmart.app               I  🏢 ========================================
+2025-12-04 07:26:19.962 14996-15029 CdcForegroundService    com.cdccreditsmart.app               I  🛡️ ========================================
+2025-12-04 07:26:19.962 14996-15029 CdcForegroundService    com.cdccreditsmart.app               I  🛡️ INICIANDO SETTINGS GUARD (PROTEÇÃO AGRESSIVA)
+2025-12-04 07:26:19.962 14996-15029 CdcForegroundService    com.cdccreditsmart.app               I  🛡️ ========================================
+2025-12-04 07:26:19.982 14996-15029 CdcForegroundService    com.cdccreditsmart.app               I  🛡️ Guard ativo: true
+2025-12-04 07:26:19.983 14996-15029 CdcForegroundService    com.cdccreditsmart.app               I  🛡️ Modo proteção: BASIC
+2025-12-04 07:26:19.983 14996-15029 CdcForegroundService    com.cdccreditsmart.app               I  🛡️ Modo agressivo: false
+2025-12-04 07:26:19.983 14996-15029 CdcForegroundService    com.cdccreditsmart.app               I  🛡️ UsageStats: ✅ ATIVO
+2025-12-04 07:26:19.983 14996-15029 CdcForegroundService    com.cdccreditsmart.app               I  🛡️ Overlay: ✅ ATIVO
+2025-12-04 07:26:19.983 14996-15029 CdcForegroundService    com.cdccreditsmart.app               I  🛡️ ========================================
+2025-12-04 07:26:20.002 14996-14996 BootInterceptor         com.cdccreditsmart.app               I  ========================================
+2025-12-04 07:26:20.002 14996-14996 BootInterceptor         com.cdccreditsmart.app               I  🔄 BOOT EVENT DETECTADO
+2025-12-04 07:26:20.002 14996-14996 BootInterceptor         com.cdccreditsmart.app               I  ========================================
+2025-12-04 07:26:20.002 14996-14996 BootInterceptor         com.cdccreditsmart.app               I  ✅ BOOT COMPLETO DETECTADO
+2025-12-04 07:26:20.002 14996-14996 BootInterceptor         com.cdccreditsmart.app               I     Sistema Android iniciado com sucesso
+2025-12-04 07:26:20.003 14996-14996 BootInterceptor         com.cdccreditsmart.app               I     Device Fingerprint: CDC_-1244237****
+2025-12-04 07:26:20.003 14996-14996 TamperDetection         com.cdccreditsmart.app               I  
+2025-12-04 07:26:20.003 14996-14996 TamperDetection         com.cdccreditsmart.app               I  ╔════════════════════════════════════════════════════════╗
+2025-12-04 07:26:20.003 14996-14996 TamperDetection         com.cdccreditsmart.app               I  ║    📡 REPORTAR BOOT AO BACKEND                        ║
+2025-12-04 07:26:20.003 14996-14996 TamperDetection         com.cdccreditsmart.app               I  ╠════════════════════════════════════════════════════════╣
+2025-12-04 07:26:20.003 14996-14996 TamperDetection         com.cdccreditsmart.app               I  ║  Device Fingerprint: CDC_-1244237****      ║
+2025-12-04 07:26:20.003 14996-14996 TamperDetection         com.cdccreditsmart.app               I  ║  Boot Timestamp: 1764843980003          ║
+2025-12-04 07:26:20.003 14996-14996 TamperDetection         com.cdccreditsmart.app               I  ║                                                        ║
+2025-12-04 07:26:20.003 14996-14996 TamperDetection         com.cdccreditsmart.app               I  ║  Backend detectará factory reset comparando:          ║
+2025-12-04 07:26:20.003 14996-14996 TamperDetection         com.cdccreditsmart.app               I  ║  • Fingerprint histórico vs atual                     ║
+2025-12-04 07:26:20.003 14996-14996 TamperDetection         com.cdccreditsmart.app               I  ║  • Timestamp do último boot vs agora                  ║
+2025-12-04 07:26:20.003 14996-14996 TamperDetection         com.cdccreditsmart.app               I  ║  • Token válido vs ausente                            ║
+2025-12-04 07:26:20.003 14996-14996 TamperDetection         com.cdccreditsmart.app               I  ╚════════════════════════════════════════════════════════╝
+2025-12-04 07:26:20.003 14996-14996 TamperDetection         com.cdccreditsmart.app               I  
+2025-12-04 07:26:20.003 14996-14996 TamperDetection         com.cdccreditsmart.app               I  ⚠️ TODO: Implementar POST /api/security/device-boot
+2025-12-04 07:26:20.003 14996-14996 BootInterceptor         com.cdccreditsmart.app               I  ========================================
+2025-12-04 07:26:20.482 14996-15029 ContractCodeStorage     com.cdccreditsmart.app               W  No valid contract code found in any location
+2025-12-04 07:26:20.483 14996-15029 SecureTokenStorage      com.cdccreditsmart.app               E  ❌ Nenhum identificador MDM disponível!
+2025-12-04 07:26:20.483 14996-15029 CdcForegroundService    com.cdccreditsmart.app               I  🔐 AuthToken presente: false
+2025-12-04 07:26:20.484 14996-15029 CdcForegroundService    com.cdccreditsmart.app               I  🔐 AuthToken length: 0
+2025-12-04 07:26:20.484 14996-15029 CdcForegroundService    com.cdccreditsmart.app               I  🔐 ContractCode presente: false
+2025-12-04 07:26:20.484 14996-15029 CdcForegroundService    com.cdccreditsmart.app               I  🔐 ContractCode value: null****
+2025-12-04 07:26:20.484 14996-15029 CdcForegroundService    com.cdccreditsmart.app               I  🔐 MDM SerialNumber presente: false
+2025-12-04 07:26:20.484 14996-15029 CdcForegroundService    com.cdccreditsmart.app               I  🔐 MDM SerialNumber value: ......
+2025-12-04 07:26:20.484 14996-15029 CdcForegroundService    com.cdccreditsmart.app               I  📱 ========================================
+2025-12-04 07:26:20.484 14996-15029 CdcForegroundService    com.cdccreditsmart.app               I  📱 AGUARDANDO PAIRING - SERVIÇO EM STANDBY
+2025-12-04 07:26:20.484 14996-15029 CdcForegroundService    com.cdccreditsmart.app               I  📱 O usuário ainda não fez o pareamento inicial
+2025-12-04 07:26:20.484 14996-15029 CdcForegroundService    com.cdccreditsmart.app               I  📱 Serviços MDM serão ativados após inserir código do contrato
+2025-12-04 07:26:20.484 14996-15029 CdcForegroundService    com.cdccreditsmart.app               I  📱 ========================================
+2025-12-04 07:26:20.559 14996-15030 ContractCodeStorage     com.cdccreditsmart.app               W  No valid contract code found in any location
+2025-12-04 07:26:20.579 14996-15030 SecureTokenStorage      com.cdccreditsmart.app               E  ❌ Nenhum identificador MDM disponível!
+2025-12-04 07:26:20.588 14996-15030 CdcForegroundService    com.cdccreditsmart.app               I  🔐 AuthToken presente: false
+2025-12-04 07:26:20.589 14996-15030 CdcForegroundService    com.cdccreditsmart.app               I  🔐 AuthToken length: 0
+2025-12-04 07:26:20.589 14996-15030 CdcForegroundService    com.cdccreditsmart.app               I  🔐 ContractCode presente: false
+2025-12-04 07:26:20.590 14996-15030 CdcForegroundService    com.cdccreditsmart.app               I  🔐 ContractCode value: null****
+2025-12-04 07:26:20.590 14996-15030 CdcForegroundService    com.cdccreditsmart.app               I  🔐 MDM SerialNumber presente: false
+2025-12-04 07:26:20.591 14996-15030 CdcForegroundService    com.cdccreditsmart.app               I  🔐 MDM SerialNumber value: ......
+2025-12-04 07:26:20.591 14996-15030 CdcForegroundService    com.cdccreditsmart.app               I  📱 ========================================
+2025-12-04 07:26:20.591 14996-15030 CdcForegroundService    com.cdccreditsmart.app               I  📱 AGUARDANDO PAIRING - SERVIÇO EM STANDBY
+2025-12-04 07:26:20.591 14996-15030 CdcForegroundService    com.cdccreditsmart.app               I  📱 O usuário ainda não fez o pareamento inicial
+2025-12-04 07:26:20.591 14996-15030 CdcForegroundService    com.cdccreditsmart.app               I  📱 Serviços MDM serão ativados após inserir código do contrato
+2025-12-04 07:26:20.591 14996-15030 CdcForegroundService    com.cdccreditsmart.app               I  📱 ========================================
+2025-12-04 07:26:20.738 14996-15029 ContractCodeStorage     com.cdccreditsmart.app               W  No valid contract code found in any location
+2025-12-04 07:26:20.738 14996-15029 SecureTokenStorage      com.cdccreditsmart.app               E  ❌ Nenhum identificador MDM disponível!
+2025-12-04 07:26:20.739 14996-15029 CdcForegroundService    com.cdccreditsmart.app               I  🔐 AuthToken presente: false
+2025-12-04 07:26:20.739 14996-15029 CdcForegroundService    com.cdccreditsmart.app               I  🔐 AuthToken length: 0
+2025-12-04 07:26:20.739 14996-15029 CdcForegroundService    com.cdccreditsmart.app               I  🔐 ContractCode presente: false
+2025-12-04 07:26:20.739 14996-15029 CdcForegroundService    com.cdccreditsmart.app               I  🔐 ContractCode value: null****
+2025-12-04 07:26:20.739 14996-15029 CdcForegroundService    com.cdccreditsmart.app               I  🔐 MDM SerialNumber presente: false
+2025-12-04 07:26:20.739 14996-15029 CdcForegroundService    com.cdccreditsmart.app               I  🔐 MDM SerialNumber value: ......
+2025-12-04 07:26:20.739 14996-15029 CdcForegroundService    com.cdccreditsmart.app               I  📱 ========================================
+2025-12-04 07:26:20.739 14996-15029 CdcForegroundService    com.cdccreditsmart.app               I  📱 AGUARDANDO PAIRING - SERVIÇO EM STANDBY
+2025-12-04 07:26:20.739 14996-15029 CdcForegroundService    com.cdccreditsmart.app               I  📱 O usuário ainda não fez o pareamento inicial
+2025-12-04 07:26:20.739 14996-15029 CdcForegroundService    com.cdccreditsmart.app               I  📱 Serviços MDM serão ativados após inserir código do contrato
+2025-12-04 07:26:20.739 14996-15029 CdcForegroundService    com.cdccreditsmart.app               I  📱 ========================================
+2025-12-04 07:26:21.398 14996-15022 FA                      com.cdccreditsmart.app               I  Application backgrounded at: timestamp_millis: 1764843979397
+2025-12-04 07:26:24.411 14996-15030 SettingsGuardService    com.cdccreditsmart.app               W  🚨 SETTINGS DETECTADO! (count: 2, dangerous: false)
+2025-12-04 07:26:24.414 14996-15030 SettingsGuardService    com.cdccreditsmart.app               W     Pacote: com.android.settings
+2025-12-04 07:26:24.414 14996-15030 SettingsGuardService    com.cdccreditsmart.app               W     Chamando app para foreground...
+2025-12-04 07:26:24.434 14996-14996 SettingsGuardService    com.cdccreditsmart.app               I  ✅ App trazido para foreground
+2025-12-04 07:26:24.849 14996-15030 SettingsGuardService    com.cdccreditsmart.app               I  ✅ App CDC em foreground - resetando contador
+2025-12-04 07:26:25.648 14996-15001 creditsmart.app         com.cdccreditsmart.app               I  Background concurrent mark compact GC freed 10MB AllocSpace bytes, 204(7088KB) LOS objects, 49% free, 6255KB/12MB, paused 188us,2.098ms total 147.912ms
+2025-12-04 07:26:25.893 14996-15056 SurfaceSyncGroup        com.cdccreditsmart.app               E  Failed to receive transaction ready in 1000ms. Marking SurfaceSyncGroup(wmsSync-VRI[MainActivity]#0) as ready
+2025-12-04 07:26:25.895 14996-15056 SurfaceSyncGroup        com.cdccreditsmart.app               E  Failed to receive transaction ready in 1000ms. Marking SurfaceSyncGroup(VRI[MainActivity]#1) as ready
+2025-12-04 07:26:25.961 14996-14996 Choreographer           com.cdccreditsmart.app               I  Skipped 65 frames!  The application may be doing too much work on its main thread.
+2025-12-04 07:26:26.269 14996-15007 HWUI                    com.cdccreditsmart.app               I  Davey! duration=1033ms; Flags=1, FrameTimelineVsyncId=487282, IntendedVsync=15796372588483, Vsync=15796372588483, InputEventId=0, HandleInputStart=15796374042292, AnimationStart=15796374043173, PerformTraversalsStart=15796374043740, DrawStart=15797011489078, FrameDeadline=15796389255149, FrameStartTime=15796374039740, FrameInterval=16666666, WorkloadTarget=16666666, SyncQueued=15797133993865, SyncStart=15797213275262, IssueDrawCommandsStart=15797213919405, SwapBuffers=15797447406576, FrameCompleted=15797485551167, DequeueBufferDuration=3537, QueueBufferDuration=177579, GpuCompleted=15797485551167, SwapBuffersCompleted=15797480745434, DisplayPresentTime=0, CommandSubmissionCompleted=15797447406576, 
+2025-12-04 07:26:26.270 14996-15007 HWUI                    com.cdccreditsmart.app               I  Davey! duration=1192ms; Flags=0, FrameTimelineVsyncId=487324, IntendedVsync=15796389255149, Vsync=15797472588439, InputEventId=0, HandleInputStart=15797482733300, AnimationStart=15797482734003, PerformTraversalsStart=15797507911000, DrawStart=15797508013097, FrameDeadline=15797505921771, FrameStartTime=15797482471130, FrameInterval=16666666, WorkloadTarget=16666666, SyncQueued=15797518896715, SyncStart=15797518934512, IssueDrawCommandsStart=15797518986496, SwapBuffers=15797520196308, FrameCompleted=15797581767958, DequeueBufferDuration=2489, QueueBufferDuration=263496, GpuCompleted=15797581767958, SwapBuffersCompleted=15797543340372, DisplayPresentTime=0, CommandSubmissionCompleted=15797520196308, 
+2025-12-04 07:26:26.733 14996-14996 ImeTracker              com.cdccreditsmart.app               I  com.cdccreditsmart.app:19529b3f: onCancelled at PHASE_CLIENT_ALREADY_HIDDEN
+2025-12-04 07:26:26.757 14996-14996 InteractionJankMonitor  com.cdccreditsmart.app               W  Initializing without READ_DEVICE_CONFIG permission. enabled=false, interval=1, missedFrameThreshold=3, frameTimeThreshold=64, package=com.cdccreditsmart.app
+2025-12-04 07:26:29.201 14996-15030 SettingsGuardService    com.cdccreditsmart.app               W  🚨 SETTINGS DETECTADO! (count: 2, dangerous: false)
+2025-12-04 07:26:29.201 14996-15030 SettingsGuardService    com.cdccreditsmart.app               W     Pacote: com.android.settings
+2025-12-04 07:26:29.201 14996-15030 SettingsGuardService    com.cdccreditsmart.app               W     Chamando app para foreground...
+2025-12-04 07:26:29.359 14996-14996 SettingsGuardService    com.cdccreditsmart.app               I  ✅ App trazido para foreground
+2025-12-04 07:26:29.617 14996-14996 PermissionGateScreen    com.cdccreditsmart.app               I  ✅ Device Admin status atualizado
+2025-12-04 07:26:29.849 14996-15030 SettingsGuardService    com.cdccreditsmart.app               I  ✅ App CDC em foreground - resetando contador
+2025-12-04 07:26:30.179 14996-15007 FrameEvents             com.cdccreditsmart.app               E  addRelease: Did not find frame.
+2025-12-04 07:26:30.725 14996-14996 ImeTracker              com.cdccreditsmart.app               I  com.cdccreditsmart.app:71d33a26: onCancelled at PHASE_CLIENT_ALREADY_HIDDEN
+2025-12-04 07:26:36.491 14996-15030 SettingsGuardService    com.cdccreditsmart.app               W  🚨 SETTINGS DETECTADO! (count: 2, dangerous: false)
+2025-12-04 07:26:36.491 14996-15030 SettingsGuardService    com.cdccreditsmart.app               W     Pacote: com.android.settings
+2025-12-04 07:26:36.491 14996-15030 SettingsGuardService    com.cdccreditsmart.app               W     Chamando app para foreground...
+2025-12-04 07:26:36.549 14996-14996 SettingsGuardService    com.cdccreditsmart.app               I  ✅ App trazido para foreground
+2025-12-04 07:26:36.652 14996-14996 PermissionGateScreen    com.cdccreditsmart.app               I  ✅ Device Admin status atualizado
+2025-12-04 07:26:36.837 14996-14996 ImeTracker              com.cdccreditsmart.app               I  com.cdccreditsmart.app:2a725298: onCancelled at PHASE_CLIENT_ALREADY_HIDDEN
+2025-12-04 07:26:36.978 14996-15030 SettingsGuardService    com.cdccreditsmart.app               I  ✅ App CDC em foreground - resetando contador
+2025-12-04 07:26:38.797 14996-15030 SettingsGuardService    com.cdccreditsmart.app               W  🚨 SETTINGS DETECTADO! (count: 2, dangerous: false)
+2025-12-04 07:26:38.797 14996-15030 SettingsGuardService    com.cdccreditsmart.app               W     Pacote: com.android.settings
+2025-12-04 07:26:38.797 14996-15030 SettingsGuardService    com.cdccreditsmart.app               W     Chamando app para foreground...
+2025-12-04 07:26:38.960 14996-14996 SettingsGuardService    com.cdccreditsmart.app               I  ✅ App trazido para foreground
+2025-12-04 07:26:39.035 14996-14996 PermissionGateScreen    com.cdccreditsmart.app               I  ✅ Device Admin status atualizado
+2025-12-04 07:26:39.358 14996-14996 ImeTracker              com.cdccreditsmart.app               I  com.cdccreditsmart.app:7ddb6c80: onCancelled at PHASE_CLIENT_ALREADY_HIDDEN
+2025-12-04 07:26:39.365 14996-15030 SettingsGuardService    com.cdccreditsmart.app               I  ✅ App CDC em foreground - resetando contador
+2025-12-04 07:26:41.810 14996-15030 SettingsGuardService    com.cdccreditsmart.app               W  🚨 SETTINGS DETECTADO! (count: 2, dangerous: false)
+2025-12-04 07:26:41.810 14996-15030 SettingsGuardService    com.cdccreditsmart.app               W     Pacote: com.android.settings
+2025-12-04 07:26:41.810 14996-15030 SettingsGuardService    com.cdccreditsmart.app               W     Chamando app para foreground...
+2025-12-04 07:26:41.882 14996-14996 SettingsGuardService    com.cdccreditsmart.app               I  ✅ App trazido para foreground
+2025-12-04 07:26:41.972 14996-14996 PermissionGateScreen    com.cdccreditsmart.app               I  ✅ Device Admin status atualizado
+2025-12-04 07:26:42.285 14996-15030 SettingsGuardService    com.cdccreditsmart.app               I  ✅ App CDC em foreground - resetando contador
+2025-12-04 07:26:42.571 14996-14996 ImeTracker              com.cdccreditsmart.app               I  com.cdccreditsmart.app:c3d0b304: onCancelled at PHASE_CLIENT_ALREADY_HIDDEN
