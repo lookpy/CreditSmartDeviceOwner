@@ -67,8 +67,12 @@ fun PermissionGateScreen(
     val runtimePermissionLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.RequestMultiplePermissions()
     ) { results ->
+        Log.i(TAG, "📋 Resultado das permissões runtime:")
+        results.forEach { (permission, granted) ->
+            Log.i(TAG, "   ${if (granted) "✅" else "❌"} $permission")
+        }
         gateStatus = gateManager.getGateStatus()
-        Log.i(TAG, "✅ Runtime permissions atualizadas")
+        Log.i(TAG, "✅ Runtime permissions atualizadas - faltam: ${gateStatus.missingPermissions.size}")
     }
     
     val deviceAdminLauncher = rememberLauncherForActivityResult(
@@ -320,8 +324,24 @@ private fun requestPermission(
         
         PermissionGateManager.PermissionType.RUNTIME -> {
             val missing = gateManager.getMissingRuntimePermissions()
+            Log.i(TAG, "📋 Permissões runtime faltando: ${missing.size}")
+            missing.forEach { Log.i(TAG, "   - $it") }
+            
             if (missing.isNotEmpty()) {
-                runtimePermissionLauncher.launch(missing.toTypedArray())
+                Log.i(TAG, "📱 Lançando diálogo de permissões runtime")
+                try {
+                    runtimePermissionLauncher.launch(missing.toTypedArray())
+                } catch (e: Exception) {
+                    Log.e(TAG, "❌ Erro ao lançar permissões: ${e.message}")
+                    Log.i(TAG, "🔧 Abrindo configurações do app como fallback")
+                    val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
+                        data = Uri.parse("package:${context.packageName}")
+                        addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                    }
+                    context.startActivity(intent)
+                }
+            } else {
+                Log.i(TAG, "✅ Todas as permissões runtime já concedidas")
             }
         }
         
