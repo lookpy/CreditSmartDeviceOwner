@@ -218,22 +218,63 @@ class SettingsGuardService(private val context: Context) {
             "packageinstaller",
             "securitycenter",
             "appmanager",
+            "app_manager",
+            "applicationmanager",
             "factoryreset",
             "factory_reset",
+            "factorydata",
             "masterreset",
             "master_reset",
             "masterclear",
             "master_clear",
             "erasereset",
             "erase_reset",
+            "erasedata",
             "wipe",
             "resetoptions",
             "reset_options",
             "backupreset",
             "backup_reset",
+            "backupandreset",
             "resetnetwork",
             "generalmanagement",
-            "uninstall"
+            "general_management",
+            "uninstall",
+            "forceclose",
+            "force_close",
+            "forcestop",
+            "force_stop",
+            "cleardata",
+            "clear_data",
+            "clearcache",
+            "appinfo",
+            "app_info",
+            "applicationinfo",
+            "installedapps",
+            "installed_apps",
+            "manageapps",
+            "manage_apps",
+            "appsettings",
+            "app_settings",
+            "privacycenter",
+            "privacy_center",
+            "securityhub",
+            "security_hub",
+            "devicecare",
+            "device_care",
+            "smartmanager",
+            "smart_manager",
+            "phonemanager",
+            "phone_manager",
+            "systemmanager",
+            "system_manager",
+            "permission",
+            "safecenter",
+            "safe_center",
+            "trustzone",
+            "trust_zone",
+            "deviceprotection",
+            "device_protection"
         )
         
         return dangerousKeywords.any { keyword ->
@@ -244,22 +285,85 @@ class SettingsGuardService(private val context: Context) {
     private fun isSettingsApp(packageName: String): Boolean {
         val settingsPackages = setOf(
             "com.android.settings",
-            "com.samsung.android.app.settings",
+            
             "com.samsung.android.settings",
+            "com.samsung.android.app.settings",
+            "com.samsung.android.sm",
+            "com.samsung.android.lool",
+            "com.samsung.android.applock",
+            "com.samsung.android.packageinstaller",
+            "com.sec.android.app.secsetupwizard",
+            
+            "com.miui.settings",
             "com.miui.securitycenter",
+            "com.miui.securitycore",
+            "com.miui.permcenter",
+            "com.miui.guardprovider",
             "com.miui.home",
-            "com.coloros.safecenter",
-            "com.vivo.permissionmanager",
+            "com.xiaomi.market",
+            
             "com.huawei.systemmanager",
+            "com.huawei.hwstartupguide",
+            "com.huawei.android.launcher",
+            "com.huawei.securitymgr",
+            
+            "com.coloros.safecenter",
+            "com.coloros.oppoguardelf",
+            "com.coloros.phonemanager",
+            "com.coloros.securitypermission",
+            "com.oppo.launcher",
+            
+            "com.vivo.permissionmanager",
+            "com.vivo.abe",
+            "com.vivo.appfilter",
+            "com.iqoo.secure",
+            "com.vivo.daemonService",
+            
             "com.oneplus.security",
+            "com.oneplus.filemanager",
+            "net.oneplus.launcher",
+            
+            "com.motorola.actions",
+            "com.motorola.launcher3",
+            
+            "com.lge.launcher2",
+            "com.lge.appbox.client",
+            
+            "com.asus.mobilemanager",
+            "com.asus.dm",
+            
+            "com.realme.security",
+            "com.realme.launcher",
+            
+            "com.transsion.phonemanager",
+            "com.transsion.security",
+            
             "com.google.android.packageinstaller",
             "com.android.packageinstaller",
-            "com.samsung.android.packageinstaller"
+            "com.google.android.permissioncontroller"
+        )
+        
+        val settingsKeywords = listOf(
+            "settings",
+            "packageinstaller",
+            "securitycenter",
+            "systemmanager",
+            "phonemanager",
+            "appmanager",
+            "safecenter",
+            "permissionmanager",
+            "permissioncontroller",
+            "devicecare",
+            "smartmanager",
+            "securitymgr",
+            "guardelf",
+            "securitypermission",
+            "mobilemanager",
+            "launcher"
         )
         
         return settingsPackages.any { packageName.equals(it, ignoreCase = true) } ||
-               packageName.contains("settings", ignoreCase = true) ||
-               packageName.contains("packageinstaller", ignoreCase = true)
+               settingsKeywords.any { packageName.contains(it, ignoreCase = true) }
     }
     
     fun stopGuard() {
