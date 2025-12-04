@@ -72,9 +72,16 @@ fun PermissionGateScreen(
         results.forEach { (permission, granted) ->
             Log.i(TAG, "   ${if (granted) "✅" else "❌"} $permission")
         }
-        runtimePermissionAskedOnce = true
+        
+        val stillMissing = gateManager.getMissingRuntimePermissions()
+        Log.i(TAG, "📋 Permissões runtime ainda faltando: ${stillMissing.size}")
+        stillMissing.forEach { Log.w(TAG, "   ❌ Ainda falta: $it") }
+        
+        runtimePermissionAskedOnce = stillMissing.isNotEmpty()
+        Log.i(TAG, "   runtimePermissionAskedOnce = $runtimePermissionAskedOnce")
+        
         gateStatus = gateManager.getGateStatus()
-        Log.i(TAG, "✅ Runtime permissions atualizadas - faltam: ${gateStatus.missingPermissions.size}")
+        Log.i(TAG, "✅ Runtime permissions atualizadas - faltam total: ${gateStatus.missingPermissions.size}")
     }
     
     val deviceAdminLauncher = rememberLauncherForActivityResult(
