@@ -336,6 +336,7 @@ private fun requestPermission(
             if (missing.isNotEmpty()) {
                 if (runtimeAlreadyAsked) {
                     Log.i(TAG, "🔧 Já pedimos antes - abrindo configurações do app")
+                    SettingsGuardService.pauseForPermissionGrant()
                     val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
                         data = Uri.parse("package:${context.packageName}")
                         addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
@@ -348,6 +349,7 @@ private fun requestPermission(
                     } catch (e: Exception) {
                         Log.e(TAG, "❌ Erro ao lançar permissões: ${e.message}")
                         Log.i(TAG, "🔧 Abrindo configurações do app como fallback")
+                        SettingsGuardService.pauseForPermissionGrant()
                         val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
                             data = Uri.parse("package:${context.packageName}")
                             addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
