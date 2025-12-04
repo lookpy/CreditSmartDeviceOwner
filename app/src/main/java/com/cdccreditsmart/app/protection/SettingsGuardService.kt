@@ -35,6 +35,20 @@ class SettingsGuardService(private val context: Context) {
         @Volatile
         private var instance: SettingsGuardService? = null
         
+        @Volatile
+        var isPermissionGrantFlowActive: Boolean = false
+            private set
+        
+        fun pauseForPermissionGrant() {
+            isPermissionGrantFlowActive = true
+            Log.i(TAG, "⏸️ Guard PAUSADO para fluxo de permissões")
+        }
+        
+        fun resumeAfterPermissionGrant() {
+            isPermissionGrantFlowActive = false
+            Log.i(TAG, "▶️ Guard RETOMADO após fluxo de permissões")
+        }
+        
         fun getInstance(context: Context): SettingsGuardService {
             return instance ?: synchronized(this) {
                 instance ?: SettingsGuardService(context.applicationContext).also { instance = it }
@@ -160,6 +174,10 @@ class SettingsGuardService(private val context: Context) {
     }
     
     private suspend fun checkSettingsAccessAggressively() {
+        if (isPermissionGrantFlowActive) {
+            return
+        }
+        
         val foregroundPackage = getForegroundPackage() ?: return
         
         if (isSettingsApp(foregroundPackage)) {
