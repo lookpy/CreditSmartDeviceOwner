@@ -33,6 +33,7 @@ import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.first
 import java.time.LocalDateTime
 import java.time.ZoneOffset
+import java.security.MessageDigest
 // import javax.inject.Inject
 // import javax.inject.Singleton
 
@@ -75,6 +76,24 @@ class ContractRepositoryImpl constructor(
             
             if (response.isSuccessful && response.body() != null) {
                 val responseBody = response.body()!!
+                
+                if (!responseBody.success) {
+                    val exception = networkErrorMapper.mapToCdcException(
+                        RuntimeException("Servidor retornou erro ao buscar termos")
+                    )
+                    emit(Resource.Error(exception))
+                    return@flow
+                }
+                
+                val calculatedHash = calculateSHA256(responseBody.text)
+                if (calculatedHash != responseBody.hash) {
+                    val exception = networkErrorMapper.mapToCdcException(
+                        SecurityException("Integridade dos termos comprometida - hash inválido")
+                    )
+                    emit(Resource.Error(exception))
+                    return@flow
+                }
+                
                 val terms = Terms(
                     version = responseBody.version,
                     hash = responseBody.hash,
@@ -482,5 +501,12 @@ class ContractRepositoryImpl constructor(
             // Save the updated contract
             contractDao.insertContract(updatedContract.toEntityModel())
         }
+    }
+    
+    private fun calculateSHA256(input: String): String {
+        val bytes = input.toByteArray(Charsets.UTF_8)
+        val digest = MessageDigest.getInstance("SHA-256")
+        val hashBytes = digest.digest(bytes)
+        return hashBytes.joinToString("") { "%02x".format(it) }
     }
 }
