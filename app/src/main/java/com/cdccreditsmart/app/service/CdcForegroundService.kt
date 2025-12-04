@@ -445,8 +445,9 @@ class CdcForegroundService : Service(), ScreenStateListener {
             
             val status = settingsGuard?.getStatus()
             Log.i(TAG, "🛡️ Guard ativo: ${status?.isActive}")
-            Log.i(TAG, "🛡️ UsageStats permitido: ${status?.hasUsageStatsPermission}")
-            Log.i(TAG, "🛡️ Overlay permitido: ${status?.hasOverlayPermission}")
+            Log.i(TAG, "🛡️ Modo proteção: ${status?.protectionMode?.name}")
+            Log.i(TAG, "🛡️ UsageStats: ${if (status?.hasUsageStatsPermission == true) "✅" else "❌"}")
+            Log.i(TAG, "🛡️ Overlay: ${if (status?.hasOverlayPermission == true) "✅" else "❌"}")
             Log.i(TAG, "🛡️ ========================================")
             
         } catch (e: Exception) {

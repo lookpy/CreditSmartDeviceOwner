@@ -8,6 +8,57 @@ O app CDC Credit Smart é um **bloqueador de dispositivos** para cobrança de d�
 
 ---
 
+## 📊 PROTEÇÃO EM 3 NÍVEIS (FUNCIONA MESMO SEM DEVICE OWNER!)
+
+O app implementa proteção em **3 níveis** que funcionam automaticamente de acordo com o privilégio disponível:
+
+### **NÍVEL 1: DEVICE OWNER (Proteção Máxima) 🔒**
+
+| Proteção | API | Resultado |
+|----------|-----|-----------|
+| Desinstalação | `setUninstallBlocked` | Botão **DESABILITADO** |
+| Force Stop | `setUserControlDisabledPackages` | Botão **DESABILITADO** |
+| Clear Data | `setUserControlDisabledPackages` | Botão **DESABILITADO** |
+| Factory Reset | `DISALLOW_FACTORY_RESET` | Opção **REMOVIDA** |
+| Desativar Admin | Device Owner automático | **IMPOSSÍVEL** (não aparece) |
+| Modo | SettingsGuard passivo | Aguardando eventos |
+
+### **NÍVEL 2: DEVICE ADMIN (Proteção Parcial) 🔐**
+
+| Proteção | Método | Resultado |
+|----------|--------|-----------|
+| Desinstalação | Requer desativar admin | **ETAPA EXTRA** necessária |
+| Desativar Admin | `onDisableRequested` | **DETECTADO** + overlay + app trazido para foreground |
+| Settings Acesso | UsageStats monitoring | **MONITORADO** ativamente |
+| Force Stop | Foreground Service | App **REINICIA** automaticamente |
+| Overlay | SYSTEM_ALERT_WINDOW | **AVISO** exibido ao usuário |
+
+### **NÍVEL 3: SEM PRIVILÉGIOS (Proteção Básica) ⚠️**
+
+| Proteção | Método | Resultado |
+|----------|--------|-----------|
+| Settings Acesso | UsageStats monitoring | **MONITORADO** (requer permissão) |
+| Overlay | SYSTEM_ALERT_WINDOW | **AVISO** exibido quando Settings aberto |
+| Persistência | Foreground Service + WorkManager | App **ATIVO** 24/7 |
+| Boot | BOOT_COMPLETED receiver | **REINICIA** no boot |
+
+### **DETECÇÃO AUTOMÁTICA DE NÍVEL:**
+
+```kotlin
+when {
+    dpm.isDeviceOwnerApp(packageName) -> ProtectionMode.DEVICE_OWNER
+    dpm.isAdminActive(adminComponent) -> ProtectionMode.DEVICE_ADMIN
+    else -> ProtectionMode.BASIC
+}
+```
+
+O `SettingsGuardService` adapta seu comportamento automaticamente:
+- **Device Owner**: Modo passivo (já está protegido por APIs do sistema)
+- **Device Admin**: Monitoramento ativo + overlay quando Settings aberto
+- **Básico**: Monitoramento ativo + overlay informativo
+
+---
+
 ## 🔒 PROTEÇÕES IMPLEMENTADAS (10 CAMADAS)
 
 ### **1️⃣ BLOQUEIO DE DESINSTALAÇÃO**
