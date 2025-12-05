@@ -98,7 +98,9 @@ class ContractRepositoryImpl constructor(
                     version = responseBody.version,
                     hash = responseBody.hash,
                     text = responseBody.text,
-                    effectiveDate = LocalDateTime.parse(responseBody.createdAt.take(19)),
+                    effectiveDate = responseBody.createdAt?.let { 
+                        try { LocalDateTime.parse(it.take(19)) } catch (e: Exception) { LocalDateTime.now() }
+                    } ?: LocalDateTime.now(),
                     fetchedAt = LocalDateTime.now()
                 )
                 
