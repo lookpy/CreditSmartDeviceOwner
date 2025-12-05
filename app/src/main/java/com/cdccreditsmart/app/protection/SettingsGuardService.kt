@@ -21,6 +21,7 @@ import android.view.View
 import android.view.WindowManager
 import android.widget.LinearLayout
 import android.widget.TextView
+import com.cdccreditsmart.app.BuildConfig
 import com.cdccreditsmart.app.presentation.MainActivity
 import com.cdccreditsmart.device.CDCDeviceAdminReceiver
 import kotlinx.coroutines.*
@@ -31,6 +32,10 @@ class SettingsGuardService(private val context: Context) {
         private const val TAG = "SettingsGuardService"
         private const val CHECK_INTERVAL_MS = 600L
         private const val AGGRESSIVE_CHECK_INTERVAL_MS = 400L
+        
+        // DEBUG: Throttle muito maior para não atrapalhar desenvolvimento
+        private val INTERCEPT_THROTTLE_MS = if (BuildConfig.DEBUG) 30_000L else 1_000L
+        private val CRITICAL_THROTTLE_MS = if (BuildConfig.DEBUG) 15_000L else 500L
         
         @Volatile
         private var instance: SettingsGuardService? = null
@@ -401,9 +406,10 @@ class SettingsGuardService(private val context: Context) {
         }
         
         val now = System.currentTimeMillis()
+        val timeSinceLast = now - lastInterceptTime
         
-        if (now - lastInterceptTime < 1000) {
-            Log.d(TAG, "Ignorando intercept duplicado (< 1s)")
+        if (timeSinceLast < INTERCEPT_THROTTLE_MS) {
+            Log.d(TAG, "Ignorando intercept duplicado (${timeSinceLast}ms < ${INTERCEPT_THROTTLE_MS}ms)")
             return
         }
         
@@ -422,9 +428,10 @@ class SettingsGuardService(private val context: Context) {
         }
         
         val now = System.currentTimeMillis()
+        val timeSinceLast = now - lastInterceptTime
         
-        if (now - lastInterceptTime < 500) {
-            Log.d(TAG, "Ignorando intercept crítico duplicado (< 500ms)")
+        if (timeSinceLast < CRITICAL_THROTTLE_MS) {
+            Log.d(TAG, "Ignorando intercept crítico duplicado (${timeSinceLast}ms < ${CRITICAL_THROTTLE_MS}ms)")
             return
         }
         
