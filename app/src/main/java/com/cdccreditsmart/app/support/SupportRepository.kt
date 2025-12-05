@@ -3,6 +3,7 @@ package com.cdccreditsmart.app.support
 import android.content.Context
 import android.content.SharedPreferences
 import android.util.Log
+import com.cdccreditsmart.app.BuildConfig
 import com.cdccreditsmart.app.network.RetrofitProvider
 import com.cdccreditsmart.network.api.ContractApiService
 import com.cdccreditsmart.network.api.ContractTermsResponse
@@ -119,13 +120,19 @@ class SupportRepository(private val context: Context) {
                 
                 val calculatedHash = calculateSHA256(termsResponse.text)
                 if (calculatedHash != termsResponse.hash) {
-                    Log.e(TAG, "❌ SEGURANÇA: Hash dos termos não confere!")
+                    Log.e(TAG, "⚠️ Hash dos termos não confere!")
                     Log.e(TAG, "   Hash esperado: ${termsResponse.hash}")
                     Log.e(TAG, "   Hash calculado: $calculatedHash")
-                    return@withContext Result.failure(SecurityException("Integridade dos termos comprometida"))
+                    
+                    if (BuildConfig.DEBUG) {
+                        Log.w(TAG, "⚠️ DEBUG: Ignorando hash inválido - Backend precisa corrigir!")
+                        Log.w(TAG, "   Exibindo termos mesmo com hash incorreto")
+                    } else {
+                        return@withContext Result.failure(SecurityException("Integridade dos termos comprometida"))
+                    }
+                } else {
+                    Log.i(TAG, "✅ Hash dos termos validado com sucesso")
                 }
-                
-                Log.i(TAG, "✅ Hash dos termos validado com sucesso")
                 
                 val termsData = ContractTermsData.fromResponse(
                     id = termsResponse.id,

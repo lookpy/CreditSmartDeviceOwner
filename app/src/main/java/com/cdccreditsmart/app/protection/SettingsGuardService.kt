@@ -377,8 +377,8 @@ class SettingsGuardService(private val context: Context) {
             "securitymgr",
             "guardelf",
             "securitypermission",
-            "mobilemanager",
-            "launcher"
+            "mobilemanager"
+            // REMOVIDO: "launcher" - causava falsos positivos com launchers legítimos
         )
         
         return settingsPackages.any { packageName.equals(it, ignoreCase = true) } ||
