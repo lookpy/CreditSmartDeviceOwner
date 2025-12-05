@@ -127,7 +127,7 @@ class SupportRepository(private val context: Context) {
                 
                 Log.i(TAG, "✅ Hash dos termos validado com sucesso")
                 
-                val termsData = ContractTermsData(
+                val termsData = ContractTermsData.fromResponse(
                     id = termsResponse.id,
                     version = termsResponse.version,
                     text = termsResponse.text,
@@ -303,4 +303,24 @@ data class ContractTermsData(
     val hash: String,
     val isActive: Boolean,
     val createdAt: String
-)
+) {
+    companion object {
+        fun fromResponse(
+            id: String?,
+            version: String,
+            text: String,
+            hash: String,
+            isActive: Boolean?,
+            createdAt: String?
+        ): ContractTermsData {
+            return ContractTermsData(
+                id = id ?: "",
+                version = version,
+                text = text,
+                hash = hash,
+                isActive = isActive ?: true,
+                createdAt = createdAt ?: ""
+            )
+        }
+    }
+}
