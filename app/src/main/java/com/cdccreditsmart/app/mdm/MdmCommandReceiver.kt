@@ -28,6 +28,10 @@ class MdmCommandReceiver(private val context: Context) {
     private var pollingJob: Job? = null
     private val scope = CoroutineScope(Dispatchers.IO + SupervisorJob())
     
+    @Volatile private var isWebSocketConnecting = false
+    @Volatile private var isPollingActive = false
+    private val connectionLock = Any()
+    
     private val blockingManager by lazy {
         AppBlockingManager(context)
     }
@@ -48,6 +52,14 @@ class MdmCommandReceiver(private val context: Context) {
         .build()
     
     fun connectMdmWebSocket(jwtToken: String) {
+        synchronized(connectionLock) {
+            if (isWebSocketConnecting) {
+                Log.d(TAG, "⏳ Conexão WebSocket já em andamento - ignorando chamada duplicada")
+                return
+            }
+            isWebSocketConnecting = true
+        }
+        
         val deviceId = getDeviceIdentifier()
         
         Log.i(TAG, "🔗 Iniciando conexão WebSocket MDM...")
@@ -57,10 +69,12 @@ class MdmCommandReceiver(private val context: Context) {
         
         if (deviceId == null) {
             Log.e(TAG, "❌ SerialNumber não encontrado - impossível conectar MDM WebSocket")
+            isWebSocketConnecting = false
             return
         }
         
-        disconnect()
+        webSocket?.close(1000, "Reconnecting")
+        webSocket = null
         
         val wsUrl = "$WS_URL?token=$jwtToken"
         
@@ -72,12 +86,12 @@ class MdmCommandReceiver(private val context: Context) {
         webSocket = okHttpClient.newWebSocket(request, object : WebSocketListener() {
             
             override fun onOpen(webSocket: WebSocket, response: Response) {
+                isWebSocketConnecting = false
                 Log.i(TAG, "✅ WebSocket MDM CONECTADO COM SUCESSO!")
                 Log.d(TAG, "✅ Response code: ${response.code}")
                 reconnectJob?.cancel()
                 
-                Log.i(TAG, "🔄 Iniciando polling fallback (30s)...")
-                startPollingFallback()
+                startPollingFallbackIfNeeded()
             }
             
             override fun onMessage(webSocket: WebSocket, text: String) {
@@ -86,41 +100,31 @@ class MdmCommandReceiver(private val context: Context) {
             }
             
             override fun onFailure(webSocket: WebSocket, t: Throwable, response: Response?) {
+                isWebSocketConnecting = false
                 Log.e(TAG, "❌ WebSocket MDM FALHOU!")
                 
                 if (networkHelper.isNetworkException(t)) {
                     val networkState = networkHelper.getCurrentNetworkState()
                     if (!networkState.isConnected) {
-                        Log.e(TAG, "❌ CAUSA: SEM CONEXÃO COM A INTERNET")
-                        Log.e(TAG, "📶 ${networkState.userMessage}")
-                        Log.w(TAG, "⏸️  WebSocket será reconectado automaticamente quando a internet voltar")
+                        Log.w(TAG, "⏸️ Sem internet - WebSocket será reconectado quando a internet voltar")
                     } else {
-                        Log.e(TAG, "❌ CAUSA: Erro de rede (internet disponível, mas servidor pode estar offline)")
-                        Log.e(TAG, "❌ Erro: ${t.message}")
+                        Log.w(TAG, "⚠️ Erro de rede: ${t.message?.take(50)}...")
                     }
                 } else {
-                    Log.e(TAG, "❌ Erro: ${t.message}")
-                    Log.e(TAG, "❌ Stack trace: ${t.stackTraceToString()}")
+                    Log.w(TAG, "⚠️ Erro WebSocket: ${t.message?.take(50)}...")
                 }
                 
-                Log.e(TAG, "❌ Response code: ${response?.code}")
-                Log.e(TAG, "❌ Response body: ${response?.body?.string()}")
-                
-                Log.w(TAG, "🔄 Agendando reconexão em 5 segundos...")
                 scheduleReconnect(jwtToken)
-                
-                Log.w(TAG, "🔄 Iniciando polling fallback...")
-                startPollingFallback()
+                startPollingFallbackIfNeeded()
             }
             
             override fun onClosing(webSocket: WebSocket, code: Int, reason: String) {
-                Log.w(TAG, "⚠️ WebSocket MDM fechando...")
-                Log.w(TAG, "⚠️ Code: $code, Reason: $reason")
+                Log.w(TAG, "⚠️ WebSocket MDM fechando (code=$code)")
             }
             
             override fun onClosed(webSocket: WebSocket, code: Int, reason: String) {
-                Log.w(TAG, "🔌 WebSocket MDM fechado")
-                Log.w(TAG, "🔌 Code: $code, Reason: $reason")
+                isWebSocketConnecting = false
+                Log.w(TAG, "🔌 WebSocket MDM fechado (code=$code)")
                 scheduleReconnect(jwtToken)
             }
         })
@@ -494,6 +498,13 @@ class MdmCommandReceiver(private val context: Context) {
     }
     
     private fun scheduleReconnect(jwtToken: String) {
+        synchronized(connectionLock) {
+            if (isWebSocketConnecting) {
+                Log.d(TAG, "⏳ Reconexão já agendada - ignorando")
+                return
+            }
+        }
+        
         reconnectJob?.cancel()
         
         reconnectJob = scope.launch {
@@ -503,50 +514,49 @@ class MdmCommandReceiver(private val context: Context) {
         }
     }
     
-    private fun startPollingFallback() {
+    private fun startPollingFallbackIfNeeded() {
+        synchronized(connectionLock) {
+            if (isPollingActive) {
+                Log.d(TAG, "⏳ Polling já está ativo - ignorando chamada duplicada")
+                return
+            }
+            isPollingActive = true
+        }
+        
         pollingJob?.cancel()
         
         pollingJob = scope.launch {
             Log.i(TAG, "🔄 Iniciando polling fallback MDM (intervalo: 30s)")
-            Log.i(TAG, "📊 Conforme especificação: 30 segundos entre requests")
             
             var loopCount = 0L
-            var successCount = 0L
-            var errorCount = 0L
             
-            while (isActive) {
-                val startTime = System.currentTimeMillis()
-                loopCount++
-                
-                try {
-                    Log.d(TAG, "🔍 [Polling #$loopCount] Verificando comandos pendentes...")
-                    fetchPendingCommands()
-                    successCount++
+            try {
+                while (isActive) {
+                    val startTime = System.currentTimeMillis()
+                    loopCount++
                     
-                } catch (e: CancellationException) {
-                    Log.i(TAG, "⏸️ Polling cancelado (job cancelled)")
-                    throw e
+                    try {
+                        Log.d(TAG, "🔍 [Polling #$loopCount] Verificando comandos pendentes...")
+                        fetchPendingCommands()
+                        
+                    } catch (e: CancellationException) {
+                        throw e
+                        
+                    } catch (e: Exception) {
+                        Log.w(TAG, "⚠️ [Polling #$loopCount] Erro: ${e.message?.take(30)}...")
+                    }
                     
-                } catch (e: Exception) {
-                    errorCount++
-                    Log.e(TAG, "❌ [Polling #$loopCount] Erro no polling: ${e.message}")
-                    Log.e(TAG, "   Estatísticas: ${successCount} sucessos, ${errorCount} erros")
-                    
-                } finally {
                     val elapsed = System.currentTimeMillis() - startTime
                     val remainingDelay = 30_000L - elapsed
                     
                     if (remainingDelay > 0) {
-                        Log.d(TAG, "⏳ [Polling #$loopCount] Aguardando ${remainingDelay}ms até próxima verificação...")
                         delay(remainingDelay)
-                    } else {
-                        Log.w(TAG, "⏱️ [Polling #$loopCount] Request levou ${elapsed}ms (>30s!) - próximo imediato")
                     }
                 }
+            } finally {
+                isPollingActive = false
+                Log.i(TAG, "🛑 Polling encerrado após $loopCount iterações")
             }
-            
-            Log.i(TAG, "🛑 Polling fallback encerrado")
-            Log.i(TAG, "   Total loops: $loopCount, Sucessos: $successCount, Erros: $errorCount")
         }
     }
     
@@ -595,6 +605,10 @@ class MdmCommandReceiver(private val context: Context) {
     }
     
     fun disconnect() {
+        synchronized(connectionLock) {
+            isWebSocketConnecting = false
+            isPollingActive = false
+        }
         webSocket?.close(1000, "Disconnecting")
         webSocket = null
         reconnectJob?.cancel()
