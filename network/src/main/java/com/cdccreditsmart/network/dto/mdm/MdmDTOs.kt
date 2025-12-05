@@ -44,7 +44,7 @@ sealed class CommandParameters {
     
     @JsonClass(generateAdapter = true)
     data class ConfigureUninstallCodeParameters(
-        @Json(name = "confirmationCode") val confirmationCode: String
+        @Json(name = "confirmationCode") val confirmationCode: String = ""
     ) : CommandParameters()
     
     object EmptyParameters : CommandParameters()

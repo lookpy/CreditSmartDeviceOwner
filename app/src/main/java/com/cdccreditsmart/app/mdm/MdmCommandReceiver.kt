@@ -362,6 +362,14 @@ class MdmCommandReceiver(private val context: Context) {
                                 errorMessage = null
                             )
                         }
+                        "CONFIGURE_UNINSTALL_CODE" -> {
+                            Log.w(TAG, "⚠️ CONFIGURE_UNINSTALL_CODE recebido sem código - ignorando")
+                            sendCommandResponse(
+                                commandId = commandId,
+                                success = true,
+                                errorMessage = null
+                            )
+                        }
                         else -> {
                             Log.w(TAG, "⚠️ Comando vazio não implementado: $commandType")
                             sendCommandResponse(
