@@ -104,6 +104,11 @@ class CdcForegroundService : Service(), ScreenStateListener {
     @Volatile
     private var isShuttingDown = false
     
+    // CORREÇÃO: Flag para prevenir múltiplas inicializações
+    @Volatile
+    private var isServicesInitialized = false
+    private val initializationLock = Any()
+    
     override fun onCreate() {
         super.onCreate()
         Log.d(TAG, "📱 Serviço onCreate()")
@@ -176,6 +181,7 @@ class CdcForegroundService : Service(), ScreenStateListener {
                 return
             }
             isShuttingDown = true
+            isServicesInitialized = false  // Resetar para permitir reinicialização após cleanup
         }
         
         Log.i(TAG, "🧹 Iniciando cleanup seguro de todos os componentes...")
@@ -465,6 +471,14 @@ class CdcForegroundService : Service(), ScreenStateListener {
     }
     
     private fun initializeServices() {
+        synchronized(initializationLock) {
+            if (isServicesInitialized) {
+                Log.d(TAG, "⏳ Serviços já inicializados - ignorando chamada duplicada")
+                return
+            }
+            isServicesInitialized = true
+        }
+        
         serviceScope.launch {
             try {
                 Log.i(TAG, "🔧 ========================================")

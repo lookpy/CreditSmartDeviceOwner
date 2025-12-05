@@ -1,0 +1,645 @@
+2025-12-04 21:24:23.576 17631-22455 WebSocketManager        com.cdccreditsmart.app               E  WebSocket failure: Software caused connection abort (Ask Gemini)
+                                                                                                    java.net.SocketException: Software caused connection abort
+                                                                                                    	at java.net.SocketInputStream.socketRead0(Native Method)
+                                                                                                    	at java.net.SocketInputStream.socketRead(SocketInputStream.java:118)
+                                                                                                    	at java.net.SocketInputStream.read(SocketInputStream.java:173)
+                                                                                                    	at java.net.SocketInputStream.read(SocketInputStream.java:143)
+                                                                                                    	at com.android.org.conscrypt.ConscryptEngineSocket$SSLInputStream.readFromSocket(ConscryptEngineSocket.java:994)
+                                                                                                    	at com.android.org.conscrypt.ConscryptEngineSocket$SSLInputStream.processDataFromSocket(ConscryptEngineSocket.java:958)
+                                                                                                    	at com.android.org.conscrypt.ConscryptEngineSocket$SSLInputStream.readUntilDataAvailable(ConscryptEngineSocket.java:873)
+                                                                                                    	at com.android.org.conscrypt.ConscryptEngineSocket$SSLInputStream.read(ConscryptEngineSocket.java:846)
+                                                                                                    	at okio.InputStreamSource.read(JvmOkio.kt:93)
+                                                                                                    	at okio.AsyncTimeout$source$1.read(AsyncTimeout.kt:153)
+                                                                                                    	at okio.RealBufferedSource.request(RealBufferedSource.kt:209)
+                                                                                                    	at okio.RealBufferedSource.require(RealBufferedSource.kt:202)
+                                                                                                    	at okio.RealBufferedSource.readByte(RealBufferedSource.kt:212)
+                                                                                                    	at okhttp3.internal.ws.WebSocketReader.readHeader(WebSocketReader.kt:119)
+                                                                                                    	at okhttp3.internal.ws.WebSocketReader.processNextFrame(WebSocketReader.kt:102)
+                                                                                                    	at okhttp3.internal.ws.RealWebSocket.loopReader(RealWebSocket.kt:293)
+                                                                                                    	at okhttp3.internal.ws.RealWebSocket$connect$1.onResponse(RealWebSocket.kt:195)
+                                                                                                    	at okhttp3.internal.connection.RealCall$AsyncCall.run(RealCall.kt:519)
+                                                                                                    	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1156)
+                                                                                                    	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:651)
+                                                                                                    	at java.lang.Thread.run(Thread.java:1119)
+2025-12-04 21:24:23.576 17631-22454 MdmCommandReceiver      com.cdccreditsmart.app               E  ❌ WebSocket MDM FALHOU!
+2025-12-04 21:24:23.576 17631-22454 MdmCommandReceiver      com.cdccreditsmart.app               E  ❌ Erro: Software caused connection abort
+2025-12-04 21:24:23.577 17631-22455 CdcForegroundService    com.cdccreditsmart.app               E  ❌ Erro no WebSocket Flow: Connection failed: Software caused connection abort
+2025-12-04 21:24:23.579 17631-22449 WebSocketManager        com.cdccreditsmart.app               E  WebSocket failure: Software caused connection abort (Ask Gemini)
+                                                                                                    java.net.SocketException: Software caused connection abort
+                                                                                                    	at java.net.SocketInputStream.socketRead0(Native Method)
+                                                                                                    	at java.net.SocketInputStream.socketRead(SocketInputStream.java:118)
+                                                                                                    	at java.net.SocketInputStream.read(SocketInputStream.java:173)
+                                                                                                    	at java.net.SocketInputStream.read(SocketInputStream.java:143)
+                                                                                                    	at com.android.org.conscrypt.ConscryptEngineSocket$SSLInputStream.readFromSocket(ConscryptEngineSocket.java:994)
+                                                                                                    	at com.android.org.conscrypt.ConscryptEngineSocket$SSLInputStream.processDataFromSocket(ConscryptEngineSocket.java:958)
+                                                                                                    	at com.android.org.conscrypt.ConscryptEngineSocket$SSLInputStream.readUntilDataAvailable(ConscryptEngineSocket.java:873)
+                                                                                                    	at com.android.org.conscrypt.ConscryptEngineSocket$SSLInputStream.read(ConscryptEngineSocket.java:846)
+                                                                                                    	at okio.InputStreamSource.read(JvmOkio.kt:93)
+                                                                                                    	at okio.AsyncTimeout$source$1.read(AsyncTimeout.kt:153)
+                                                                                                    	at okio.RealBufferedSource.request(RealBufferedSource.kt:209)
+                                                                                                    	at okio.RealBufferedSource.require(RealBufferedSource.kt:202)
+                                                                                                    	at okio.RealBufferedSource.readByte(RealBufferedSource.kt:212)
+                                                                                                    	at okhttp3.internal.ws.WebSocketReader.readHeader(WebSocketReader.kt:119)
+                                                                                                    	at okhttp3.internal.ws.WebSocketReader.processNextFrame(WebSocketReader.kt:102)
+                                                                                                    	at okhttp3.internal.ws.RealWebSocket.loopReader(RealWebSocket.kt:293)
+                                                                                                    	at okhttp3.internal.ws.RealWebSocket$connect$1.onResponse(RealWebSocket.kt:195)
+                                                                                                    	at okhttp3.internal.connection.RealCall$AsyncCall.run(RealCall.kt:519)
+                                                                                                    	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1156)
+                                                                                                    	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:651)
+                                                                                                    	at java.lang.Thread.run(Thread.java:1119)
+2025-12-04 21:24:23.583 17631-22457 WebSocketManager        com.cdccreditsmart.app               E  WebSocket failure: Software caused connection abort (Ask Gemini)
+                                                                                                    java.net.SocketException: Software caused connection abort
+                                                                                                    	at java.net.SocketInputStream.socketRead0(Native Method)
+                                                                                                    	at java.net.SocketInputStream.socketRead(SocketInputStream.java:118)
+                                                                                                    	at java.net.SocketInputStream.read(SocketInputStream.java:173)
+                                                                                                    	at java.net.SocketInputStream.read(SocketInputStream.java:143)
+                                                                                                    	at com.android.org.conscrypt.ConscryptEngineSocket$SSLInputStream.readFromSocket(ConscryptEngineSocket.java:994)
+                                                                                                    	at com.android.org.conscrypt.ConscryptEngineSocket$SSLInputStream.processDataFromSocket(ConscryptEngineSocket.java:958)
+                                                                                                    	at com.android.org.conscrypt.ConscryptEngineSocket$SSLInputStream.readUntilDataAvailable(ConscryptEngineSocket.java:873)
+                                                                                                    	at com.android.org.conscrypt.ConscryptEngineSocket$SSLInputStream.read(ConscryptEngineSocket.java:846)
+                                                                                                    	at okio.InputStreamSource.read(JvmOkio.kt:93)
+                                                                                                    	at okio.AsyncTimeout$source$1.read(AsyncTimeout.kt:153)
+                                                                                                    	at okio.RealBufferedSource.request(RealBufferedSource.kt:209)
+                                                                                                    	at okio.RealBufferedSource.require(RealBufferedSource.kt:202)
+                                                                                                    	at okio.RealBufferedSource.readByte(RealBufferedSource.kt:212)
+                                                                                                    	at okhttp3.internal.ws.WebSocketReader.readHeader(WebSocketReader.kt:119)
+                                                                                                    	at okhttp3.internal.ws.WebSocketReader.processNextFrame(WebSocketReader.kt:102)
+                                                                                                    	at okhttp3.internal.ws.RealWebSocket.loopReader(RealWebSocket.kt:293)
+                                                                                                    	at okhttp3.internal.ws.RealWebSocket$connect$1.onResponse(RealWebSocket.kt:195)
+                                                                                                    	at okhttp3.internal.connection.RealCall$AsyncCall.run(RealCall.kt:519)
+                                                                                                    	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1156)
+                                                                                                    	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:651)
+                                                                                                    	at java.lang.Thread.run(Thread.java:1119)
+2025-12-04 21:24:23.583 17631-22452 MdmCommandReceiver      com.cdccreditsmart.app               E  ❌ WebSocket MDM FALHOU!
+2025-12-04 21:24:23.584 17631-22452 MdmCommandReceiver      com.cdccreditsmart.app               E  ❌ Erro: Software caused connection abort
+2025-12-04 21:24:23.585 17631-22452 MdmCommandReceiver      com.cdccreditsmart.app               E  ❌ Stack trace: java.net.SocketException: Software caused connection abort (Ask Gemini)
+                                                                                                    	at java.net.SocketInputStream.socketRead0(Native Method)
+                                                                                                    	at java.net.SocketInputStream.socketRead(SocketInputStream.java:118)
+                                                                                                    	at java.net.SocketInputStream.read(SocketInputStream.java:173)
+                                                                                                    	at java.net.SocketInputStream.read(SocketInputStream.java:143)
+                                                                                                    	at com.android.org.conscrypt.ConscryptEngineSocket$SSLInputStream.readFromSocket(ConscryptEngineSocket.java:994)
+                                                                                                    	at com.android.org.conscrypt.ConscryptEngineSocket$SSLInputStream.processDataFromSocket(ConscryptEngineSocket.java:958)
+                                                                                                    	at com.android.org.conscrypt.ConscryptEngineSocket$SSLInputStream.readUntilDataAvailable(ConscryptEngineSocket.java:873)
+                                                                                                    	at com.android.org.conscrypt.ConscryptEngineSocket$SSLInputStream.read(ConscryptEngineSocket.java:846)
+                                                                                                    	at okio.InputStreamSource.read(JvmOkio.kt:93)
+                                                                                                    	at okio.AsyncTimeout$source$1.read(AsyncTimeout.kt:153)
+                                                                                                    	at okio.RealBufferedSource.request(RealBufferedSource.kt:209)
+                                                                                                    	at okio.RealBufferedSource.require(RealBufferedSource.kt:202)
+                                                                                                    	at okio.RealBufferedSource.readByte(RealBufferedSource.kt:212)
+                                                                                                    	at okhttp3.internal.ws.WebSocketReader.readHeader(WebSocketReader.kt:119)
+                                                                                                    	at okhttp3.internal.ws.WebSocketReader.processNextFrame(WebSocketReader.kt:102)
+                                                                                                    	at okhttp3.internal.ws.RealWebSocket.loopReader(RealWebSocket.kt:293)
+                                                                                                    	at okhttp3.internal.ws.RealWebSocket$connect$1.onResponse(RealWebSocket.kt:195)
+                                                                                                    	at okhttp3.internal.connection.RealCall$AsyncCall.run(RealCall.kt:519)
+                                                                                                    	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1156)
+                                                                                                    	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:651)
+                                                                                                    	at java.lang.Thread.run(Thread.java:1119)
+2025-12-04 21:24:23.585 17631-22452 MdmCommandReceiver      com.cdccreditsmart.app               E  ❌ Response code: null
+2025-12-04 21:24:23.586 17631-22452 MdmCommandReceiver      com.cdccreditsmart.app               E  ❌ Response body: null
+2025-12-04 21:24:23.586 17631-22452 MdmCommandReceiver      com.cdccreditsmart.app               W  🔄 Agendando reconexão em 5 segundos...
+2025-12-04 21:24:23.588 17631-22453 WebSocketManager        com.cdccreditsmart.app               E  WebSocket failure: Software caused connection abort (Ask Gemini)
+                                                                                                    java.net.SocketException: Software caused connection abort
+                                                                                                    	at java.net.SocketInputStream.socketRead0(Native Method)
+                                                                                                    	at java.net.SocketInputStream.socketRead(SocketInputStream.java:118)
+                                                                                                    	at java.net.SocketInputStream.read(SocketInputStream.java:173)
+                                                                                                    	at java.net.SocketInputStream.read(SocketInputStream.java:143)
+                                                                                                    	at com.android.org.conscrypt.ConscryptEngineSocket$SSLInputStream.readFromSocket(ConscryptEngineSocket.java:994)
+                                                                                                    	at com.android.org.conscrypt.ConscryptEngineSocket$SSLInputStream.processDataFromSocket(ConscryptEngineSocket.java:958)
+                                                                                                    	at com.android.org.conscrypt.ConscryptEngineSocket$SSLInputStream.readUntilDataAvailable(ConscryptEngineSocket.java:873)
+                                                                                                    	at com.android.org.conscrypt.ConscryptEngineSocket$SSLInputStream.read(ConscryptEngineSocket.java:846)
+                                                                                                    	at okio.InputStreamSource.read(JvmOkio.kt:93)
+                                                                                                    	at okio.AsyncTimeout$source$1.read(AsyncTimeout.kt:153)
+                                                                                                    	at okio.RealBufferedSource.request(RealBufferedSource.kt:209)
+                                                                                                    	at okio.RealBufferedSource.require(RealBufferedSource.kt:202)
+                                                                                                    	at okio.RealBufferedSource.readByte(RealBufferedSource.kt:212)
+                                                                                                    	at okhttp3.internal.ws.WebSocketReader.readHeader(WebSocketReader.kt:119)
+                                                                                                    	at okhttp3.internal.ws.WebSocketReader.processNextFrame(WebSocketReader.kt:102)
+                                                                                                    	at okhttp3.internal.ws.RealWebSocket.loopReader(RealWebSocket.kt:293)
+                                                                                                    	at okhttp3.internal.ws.RealWebSocket$connect$1.onResponse(RealWebSocket.kt:195)
+                                                                                                    	at okhttp3.internal.connection.RealCall$AsyncCall.run(RealCall.kt:519)
+                                                                                                    	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1156)
+                                                                                                    	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:651)
+                                                                                                    	at java.lang.Thread.run(Thread.java:1119)
+2025-12-04 21:24:23.588 17631-22453 CdcForegroundService    com.cdccreditsmart.app               E  ❌ Erro no WebSocket Flow: Connection failed: Software caused connection abort
+2025-12-04 21:24:23.588 17631-22453 WebSocketManager        com.cdccreditsmart.app               D  Scheduling reconnection in 5000ms
+2025-12-04 21:24:23.589 17631-22454 MdmCommandReceiver      com.cdccreditsmart.app               E  ❌ Stack trace: java.net.SocketException: Software caused connection abort (Ask Gemini)
+                                                                                                    	at java.net.SocketInputStream.socketRead0(Native Method)
+                                                                                                    	at java.net.SocketInputStream.socketRead(SocketInputStream.java:118)
+                                                                                                    	at java.net.SocketInputStream.read(SocketInputStream.java:173)
+                                                                                                    	at java.net.SocketInputStream.read(SocketInputStream.java:143)
+                                                                                                    	at com.android.org.conscrypt.ConscryptEngineSocket$SSLInputStream.readFromSocket(ConscryptEngineSocket.java:994)
+                                                                                                    	at com.android.org.conscrypt.ConscryptEngineSocket$SSLInputStream.processDataFromSocket(ConscryptEngineSocket.java:958)
+                                                                                                    	at com.android.org.conscrypt.ConscryptEngineSocket$SSLInputStream.readUntilDataAvailable(ConscryptEngineSocket.java:873)
+                                                                                                    	at com.android.org.conscrypt.ConscryptEngineSocket$SSLInputStream.read(ConscryptEngineSocket.java:846)
+                                                                                                    	at okio.InputStreamSource.read(JvmOkio.kt:93)
+                                                                                                    	at okio.AsyncTimeout$source$1.read(AsyncTimeout.kt:153)
+                                                                                                    	at okio.RealBufferedSource.request(RealBufferedSource.kt:209)
+                                                                                                    	at okio.RealBufferedSource.require(RealBufferedSource.kt:202)
+                                                                                                    	at okio.RealBufferedSource.readByte(RealBufferedSource.kt:212)
+                                                                                                    	at okhttp3.internal.ws.WebSocketReader.readHeader(WebSocketReader.kt:119)
+                                                                                                    	at okhttp3.internal.ws.WebSocketReader.processNextFrame(WebSocketReader.kt:102)
+                                                                                                    	at okhttp3.internal.ws.RealWebSocket.loopReader(RealWebSocket.kt:293)
+                                                                                                    	at okhttp3.internal.ws.RealWebSocket$connect$1.onResponse(RealWebSocket.kt:195)
+                                                                                                    	at okhttp3.internal.connection.RealCall$AsyncCall.run(RealCall.kt:519)
+                                                                                                    	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1156)
+                                                                                                    	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:651)
+                                                                                                    	at java.lang.Thread.run(Thread.java:1119)
+2025-12-04 21:24:23.590 17631-22448 MdmCommandReceiver      com.cdccreditsmart.app               E  ❌ WebSocket MDM FALHOU!
+2025-12-04 21:24:23.591 17631-22448 MdmCommandReceiver      com.cdccreditsmart.app               E  ❌ Erro: Software caused connection abort
+2025-12-04 21:24:23.592 17631-22456 MdmCommandReceiver      com.cdccreditsmart.app               E  ❌ WebSocket MDM FALHOU!
+2025-12-04 21:24:23.593 17631-22456 MdmCommandReceiver      com.cdccreditsmart.app               E  ❌ Erro: Software caused connection abort
+2025-12-04 21:24:23.609 17631-22455 WebSocketManager        com.cdccreditsmart.app               D  Scheduling reconnection in 5000ms
+2025-12-04 21:24:23.609 17631-22454 MdmCommandReceiver      com.cdccreditsmart.app               E  ❌ Response code: null
+2025-12-04 21:24:23.610 17631-22457 CdcForegroundService    com.cdccreditsmart.app               E  ❌ Erro no WebSocket Flow: Connection failed: Software caused connection abort
+2025-12-04 21:24:23.610 17631-22457 WebSocketManager        com.cdccreditsmart.app               D  Scheduling reconnection in 5000ms
+2025-12-04 21:24:23.611 17631-22449 CdcForegroundService    com.cdccreditsmart.app               E  ❌ Erro no WebSocket Flow: Connection failed: Software caused connection abort
+2025-12-04 21:24:23.612 17631-22449 WebSocketManager        com.cdccreditsmart.app               D  Scheduling reconnection in 5000ms
+2025-12-04 21:24:23.616 17631-22452 MdmCommandReceiver      com.cdccreditsmart.app               W  🔄 Iniciando polling fallback...
+2025-12-04 21:24:23.616 17631-22454 MdmCommandReceiver      com.cdccreditsmart.app               E  ❌ Response body: null
+2025-12-04 21:24:23.616 17631-22454 MdmCommandReceiver      com.cdccreditsmart.app               W  🔄 Agendando reconexão em 5 segundos...
+2025-12-04 21:24:23.618 17631-22456 MdmCommandReceiver      com.cdccreditsmart.app               E  ❌ Stack trace: java.net.SocketException: Software caused connection abort (Ask Gemini)
+                                                                                                    	at java.net.SocketInputStream.socketRead0(Native Method)
+                                                                                                    	at java.net.SocketInputStream.socketRead(SocketInputStream.java:118)
+                                                                                                    	at java.net.SocketInputStream.read(SocketInputStream.java:173)
+                                                                                                    	at java.net.SocketInputStream.read(SocketInputStream.java:143)
+                                                                                                    	at com.android.org.conscrypt.ConscryptEngineSocket$SSLInputStream.readFromSocket(ConscryptEngineSocket.java:994)
+                                                                                                    	at com.android.org.conscrypt.ConscryptEngineSocket$SSLInputStream.processDataFromSocket(ConscryptEngineSocket.java:958)
+                                                                                                    	at com.android.org.conscrypt.ConscryptEngineSocket$SSLInputStream.readUntilDataAvailable(ConscryptEngineSocket.java:873)
+                                                                                                    	at com.android.org.conscrypt.ConscryptEngineSocket$SSLInputStream.read(ConscryptEngineSocket.java:846)
+                                                                                                    	at okio.InputStreamSource.read(JvmOkio.kt:93)
+                                                                                                    	at okio.AsyncTimeout$source$1.read(AsyncTimeout.kt:153)
+                                                                                                    	at okio.RealBufferedSource.request(RealBufferedSource.kt:209)
+                                                                                                    	at okio.RealBufferedSource.require(RealBufferedSource.kt:202)
+                                                                                                    	at okio.RealBufferedSource.readByte(RealBufferedSource.kt:212)
+                                                                                                    	at okhttp3.internal.ws.WebSocketReader.readHeader(WebSocketReader.kt:119)
+                                                                                                    	at okhttp3.internal.ws.WebSocketReader.processNextFrame(WebSocketReader.kt:102)
+                                                                                                    	at okhttp3.internal.ws.RealWebSocket.loopReader(RealWebSocket.kt:293)
+                                                                                                    	at okhttp3.internal.ws.RealWebSocket$connect$1.onResponse(RealWebSocket.kt:195)
+                                                                                                    	at okhttp3.internal.connection.RealCall$AsyncCall.run(RealCall.kt:519)
+                                                                                                    	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1156)
+                                                                                                    	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:651)
+                                                                                                    	at java.lang.Thread.run(Thread.java:1119)
+2025-12-04 21:24:23.618 17631-22456 MdmCommandReceiver      com.cdccreditsmart.app               E  ❌ Response code: null
+2025-12-04 21:24:23.618 17631-22456 MdmCommandReceiver      com.cdccreditsmart.app               E  ❌ Response body: null
+2025-12-04 21:24:23.618 17631-22456 MdmCommandReceiver      com.cdccreditsmart.app               W  🔄 Agendando reconexão em 5 segundos...
+2025-12-04 21:24:23.620 17631-22448 MdmCommandReceiver      com.cdccreditsmart.app               E  ❌ Stack trace: java.net.SocketException: Software caused connection abort (Ask Gemini)
+                                                                                                    	at java.net.SocketInputStream.socketRead0(Native Method)
+                                                                                                    	at java.net.SocketInputStream.socketRead(SocketInputStream.java:118)
+                                                                                                    	at java.net.SocketInputStream.read(SocketInputStream.java:173)
+                                                                                                    	at java.net.SocketInputStream.read(SocketInputStream.java:143)
+                                                                                                    	at com.android.org.conscrypt.ConscryptEngineSocket$SSLInputStream.readFromSocket(ConscryptEngineSocket.java:994)
+                                                                                                    	at com.android.org.conscrypt.ConscryptEngineSocket$SSLInputStream.processDataFromSocket(ConscryptEngineSocket.java:958)
+                                                                                                    	at com.android.org.conscrypt.ConscryptEngineSocket$SSLInputStream.readUntilDataAvailable(ConscryptEngineSocket.java:873)
+                                                                                                    	at com.android.org.conscrypt.ConscryptEngineSocket$SSLInputStream.read(ConscryptEngineSocket.java:846)
+                                                                                                    	at okio.InputStreamSource.read(JvmOkio.kt:93)
+                                                                                                    	at okio.AsyncTimeout$source$1.read(AsyncTimeout.kt:153)
+                                                                                                    	at okio.RealBufferedSource.request(RealBufferedSource.kt:209)
+                                                                                                    	at okio.RealBufferedSource.require(RealBufferedSource.kt:202)
+                                                                                                    	at okio.RealBufferedSource.readByte(RealBufferedSource.kt:212)
+                                                                                                    	at okhttp3.internal.ws.WebSocketReader.readHeader(WebSocketReader.kt:119)
+                                                                                                    	at okhttp3.internal.ws.WebSocketReader.processNextFrame(WebSocketReader.kt:102)
+                                                                                                    	at okhttp3.internal.ws.RealWebSocket.loopReader(RealWebSocket.kt:293)
+                                                                                                    	at okhttp3.internal.ws.RealWebSocket$connect$1.onResponse(RealWebSocket.kt:195)
+                                                                                                    	at okhttp3.internal.connection.RealCall$AsyncCall.run(RealCall.kt:519)
+                                                                                                    	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1156)
+                                                                                                    	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:651)
+                                                                                                    	at java.lang.Thread.run(Thread.java:1119)
+2025-12-04 21:24:23.620 17631-22448 MdmCommandReceiver      com.cdccreditsmart.app               E  ❌ Response code: null
+2025-12-04 21:24:23.620 17631-22448 MdmCommandReceiver      com.cdccreditsmart.app               E  ❌ Response body: null
+2025-12-04 21:24:23.620 17631-22448 MdmCommandReceiver      com.cdccreditsmart.app               W  🔄 Agendando reconexão em 5 segundos...
+2025-12-04 21:24:23.622 17631-22448 MdmCommandReceiver      com.cdccreditsmart.app               W  🔄 Iniciando polling fallback...
+2025-12-04 21:24:23.638 17631-22454 MdmCommandReceiver      com.cdccreditsmart.app               W  🔄 Iniciando polling fallback...
+2025-12-04 21:24:23.645 17631-22456 MdmCommandReceiver      com.cdccreditsmart.app               W  🔄 Iniciando polling fallback...
+2025-12-04 21:24:23.648 17631-22958 MdmCommandReceiver      com.cdccreditsmart.app               I  🔄 Iniciando polling fallback MDM (intervalo: 30s)
+2025-12-04 21:24:23.649 17631-22958 MdmCommandReceiver      com.cdccreditsmart.app               I  📊 Conforme especificação: 30 segundos entre requests
+2025-12-04 21:24:23.652 17631-22958 MdmCommandReceiver      com.cdccreditsmart.app               D  🔍 [Polling #1] Verificando comandos pendentes...
+2025-12-04 21:24:23.665 17631-22963 MdmCommandReceiver      com.cdccreditsmart.app               I  🔄 Iniciando polling fallback MDM (intervalo: 30s)
+2025-12-04 21:24:23.665 17631-22963 MdmCommandReceiver      com.cdccreditsmart.app               I  📊 Conforme especificação: 30 segundos entre requests
+2025-12-04 21:24:23.666 17631-22963 MdmCommandReceiver      com.cdccreditsmart.app               D  🔍 [Polling #1] Verificando comandos pendentes...
+2025-12-04 21:24:23.674 17631-22958 SecureTokenStorage      com.cdccreditsmart.app               D  ⚠️ Usando Serial Number para MDM (IMEI indisponível): VY9DB9...
+2025-12-04 21:24:23.675 17631-22958 MdmCommandReceiver      com.cdccreditsmart.app               D  🔍 Buscando comandos pendentes com identifier: VY9DB9EC...
+2025-12-04 21:24:23.677 17631-24079 MdmCommandReceiver      com.cdccreditsmart.app               I  🔄 Iniciando polling fallback MDM (intervalo: 30s)
+2025-12-04 21:24:23.677 17631-24079 MdmCommandReceiver      com.cdccreditsmart.app               I  📊 Conforme especificação: 30 segundos entre requests
+2025-12-04 21:24:23.677 17631-24079 MdmCommandReceiver      com.cdccreditsmart.app               D  🔍 [Polling #1] Verificando comandos pendentes...
+2025-12-04 21:24:23.678 17631-22411 MdmCommandReceiver      com.cdccreditsmart.app               I  🔄 Iniciando polling fallback MDM (intervalo: 30s)
+2025-12-04 21:24:23.678 17631-22411 MdmCommandReceiver      com.cdccreditsmart.app               I  📊 Conforme especificação: 30 segundos entre requests
+2025-12-04 21:24:23.678 17631-22411 MdmCommandReceiver      com.cdccreditsmart.app               D  🔍 [Polling #1] Verificando comandos pendentes...
+2025-12-04 21:24:23.679 17631-22963 SecureTokenStorage      com.cdccreditsmart.app               D  ⚠️ Usando Serial Number para MDM (IMEI indisponível): VY9DB9...
+2025-12-04 21:24:23.680 17631-22963 MdmCommandReceiver      com.cdccreditsmart.app               D  🔍 Buscando comandos pendentes com identifier: VY9DB9EC...
+2025-12-04 21:24:23.681 17631-24079 SecureTokenStorage      com.cdccreditsmart.app               D  ⚠️ Usando Serial Number para MDM (IMEI indisponível): VY9DB9...
+2025-12-04 21:24:23.681 17631-24079 MdmCommandReceiver      com.cdccreditsmart.app               D  🔍 Buscando comandos pendentes com identifier: VY9DB9EC...
+2025-12-04 21:24:23.689 17631-22411 SecureTokenStorage      com.cdccreditsmart.app               D  ⚠️ Usando Serial Number para MDM (IMEI indisponível): VY9DB9...
+2025-12-04 21:24:23.692 17631-22970 okhttp.OkHttpClient     com.cdccreditsmart.app               I  --> GET https://cdccreditsmart.com/api/apk/device/VY9DB9EC/commands
+2025-12-04 21:24:23.693 17631-22411 MdmCommandReceiver      com.cdccreditsmart.app               D  🔍 Buscando comandos pendentes com identifier: VY9DB9EC...
+2025-12-04 21:24:23.693 17631-22970 okhttp.OkHttpClient     com.cdccreditsmart.app               I  --> END GET
+2025-12-04 21:24:23.695 17631-23501 okhttp.OkHttpClient     com.cdccreditsmart.app               I  --> GET https://cdccreditsmart.com/api/apk/device/VY9DB9EC/commands
+2025-12-04 21:24:23.695 17631-23501 okhttp.OkHttpClient     com.cdccreditsmart.app               I  --> END GET
+2025-12-04 21:24:23.697 17631-22972 okhttp.OkHttpClient     com.cdccreditsmart.app               I  --> GET https://cdccreditsmart.com/api/apk/device/VY9DB9EC/commands
+2025-12-04 21:24:23.698 17631-22972 okhttp.OkHttpClient     com.cdccreditsmart.app               I  --> END GET
+2025-12-04 21:24:23.703 17631-23601 okhttp.OkHttpClient     com.cdccreditsmart.app               I  --> GET https://cdccreditsmart.com/api/apk/device/VY9DB9EC/commands
+2025-12-04 21:24:23.703 17631-23601 okhttp.OkHttpClient     com.cdccreditsmart.app               I  --> END GET
+2025-12-04 21:24:24.338 17631-17631 ScreenStateReceiver     com.cdccreditsmart.app               I  📱 Tela LIGADA - Aumentando frequência de monitoramento
+2025-12-04 21:24:24.339 17631-17631 CdcForegroundService    com.cdccreditsmart.app               D  🔋 Estado da tela mudou: LIGADA
+2025-12-04 21:24:25.229 17631-22970 okhttp.OkHttpClient     com.cdccreditsmart.app               I  <-- 200 https://cdccreditsmart.com/api/apk/device/VY9DB9EC/commands (1534ms)
+2025-12-04 21:24:25.229 17631-22970 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-credentials: true
+2025-12-04 21:24:25.229 17631-22970 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-headers: Origin, X-Requested-With, Content-Type, Accept, Authorization, x-client-key, x-client-token, x-client-secret, cache-control
+2025-12-04 21:24:25.229 17631-22970 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-methods: GET, POST, PUT, PATCH, DELETE, OPTIONS
+2025-12-04 21:24:25.230 17631-22970 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-origin: *
+2025-12-04 21:24:25.230 17631-22970 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-max-age: 86400
+2025-12-04 21:24:25.230 17631-22970 okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-length: 105
+2025-12-04 21:24:25.230 17631-22970 okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-security-policy: default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://replit.com; style-src 'self' 'unsafe-inline' https://replit.com; img-src 'self' data: https:; font-src 'self' data: https://replit.com; connect-src 'self';
+2025-12-04 21:24:25.230 17631-22970 okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-type: application/json; charset=utf-8
+2025-12-04 21:24:25.231 17631-22970 okhttp.OkHttpClient     com.cdccreditsmart.app               I  date: Fri, 05 Dec 2025 00:24:25 GMT
+2025-12-04 21:24:25.231 17631-22970 okhttp.OkHttpClient     com.cdccreditsmart.app               I  etag: W/"69-8PetbeOP93W4v5dDvyWeYZadaf8"
+2025-12-04 21:24:25.231 17631-22970 okhttp.OkHttpClient     com.cdccreditsmart.app               I  permissions-policy: geolocation=(), microphone=(), camera=()
+2025-12-04 21:24:25.231 17631-22970 okhttp.OkHttpClient     com.cdccreditsmart.app               I  referrer-policy: strict-origin-when-cross-origin
+2025-12-04 21:24:25.231 17631-22970 okhttp.OkHttpClient     com.cdccreditsmart.app               I  server: Google Frontend
+2025-12-04 21:24:25.231 17631-22970 okhttp.OkHttpClient     com.cdccreditsmart.app               I  strict-transport-security: max-age=63072000; includeSubDomains
+2025-12-04 21:24:25.232 17631-22970 okhttp.OkHttpClient     com.cdccreditsmart.app               I  strict-transport-security: max-age=31536000; includeSubDomains
+2025-12-04 21:24:25.232 17631-22970 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-anti-fraud-protection: active
+2025-12-04 21:24:25.232 17631-22970 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-certificate-pinning-enabled: false
+2025-12-04 21:24:25.232 17631-22970 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-certificate-pinning-status: disabled-for-stability
+2025-12-04 21:24:25.233 17631-22970 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-cloud-trace-context: c50d9fb4d90a093b7fe1561495b3dd54;o=1
+2025-12-04 21:24:25.233 17631-22970 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-content-type-options: nosniff
+2025-12-04 21:24:25.233 17631-22970 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-financial-data-protection: enabled
+2025-12-04 21:24:25.233 17631-22970 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-frame-options: DENY
+2025-12-04 21:24:25.233 17631-22970 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-transaction-security-level: maximum
+2025-12-04 21:24:25.233 17631-22970 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-xss-protection: 1; mode=block
+2025-12-04 21:24:25.234 17631-22970 okhttp.OkHttpClient     com.cdccreditsmart.app               I  via: 1.1 google
+2025-12-04 21:24:25.234 17631-22970 okhttp.OkHttpClient     com.cdccreditsmart.app               I  alt-svc: h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
+2025-12-04 21:24:25.235 17631-22970 okhttp.OkHttpClient     com.cdccreditsmart.app               I  {"deviceId":"device_1764893130549_6se9ihqrhok","serialNumber":"VY9DB9EC","commandsCount":0,"commands":[]}
+2025-12-04 21:24:25.235 17631-22970 okhttp.OkHttpClient     com.cdccreditsmart.app               I  <-- END HTTP (105-byte body)
+2025-12-04 21:24:25.238 17631-22958 MdmCommandReceiver      com.cdccreditsmart.app               D  ✅ Nenhum comando pendente
+2025-12-04 21:24:25.238 17631-22958 MdmCommandReceiver      com.cdccreditsmart.app               D  📊 Fetch duration: 1557ms
+2025-12-04 21:24:25.238 17631-22958 MdmCommandReceiver      com.cdccreditsmart.app               D  ⏳ [Polling #1] Aguardando 28439ms até próxima verificação...
+2025-12-04 21:24:25.301 17631-23501 okhttp.OkHttpClient     com.cdccreditsmart.app               I  <-- 200 https://cdccreditsmart.com/api/apk/device/VY9DB9EC/commands (1605ms)
+2025-12-04 21:24:25.301 17631-23501 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-credentials: true
+2025-12-04 21:24:25.301 17631-23501 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-headers: Origin, X-Requested-With, Content-Type, Accept, Authorization, x-client-key, x-client-token, x-client-secret, cache-control
+2025-12-04 21:24:25.301 17631-23501 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-methods: GET, POST, PUT, PATCH, DELETE, OPTIONS
+2025-12-04 21:24:25.301 17631-23501 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-origin: *
+2025-12-04 21:24:25.301 17631-23501 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-max-age: 86400
+2025-12-04 21:24:25.301 17631-23501 okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-length: 105
+2025-12-04 21:24:25.301 17631-23501 okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-security-policy: default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://replit.com; style-src 'self' 'unsafe-inline' https://replit.com; img-src 'self' data: https:; font-src 'self' data: https://replit.com; connect-src 'self';
+2025-12-04 21:24:25.301 17631-23501 okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-type: application/json; charset=utf-8
+2025-12-04 21:24:25.301 17631-23501 okhttp.OkHttpClient     com.cdccreditsmart.app               I  date: Fri, 05 Dec 2025 00:24:25 GMT
+2025-12-04 21:24:25.301 17631-23501 okhttp.OkHttpClient     com.cdccreditsmart.app               I  etag: W/"69-8PetbeOP93W4v5dDvyWeYZadaf8"
+2025-12-04 21:24:25.301 17631-23501 okhttp.OkHttpClient     com.cdccreditsmart.app               I  permissions-policy: geolocation=(), microphone=(), camera=()
+2025-12-04 21:24:25.301 17631-23501 okhttp.OkHttpClient     com.cdccreditsmart.app               I  referrer-policy: strict-origin-when-cross-origin
+2025-12-04 21:24:25.301 17631-23501 okhttp.OkHttpClient     com.cdccreditsmart.app               I  server: Google Frontend
+2025-12-04 21:24:25.301 17631-23501 okhttp.OkHttpClient     com.cdccreditsmart.app               I  strict-transport-security: max-age=63072000; includeSubDomains
+2025-12-04 21:24:25.301 17631-23501 okhttp.OkHttpClient     com.cdccreditsmart.app               I  strict-transport-security: max-age=31536000; includeSubDomains
+2025-12-04 21:24:25.301 17631-23501 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-anti-fraud-protection: active
+2025-12-04 21:24:25.301 17631-23501 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-certificate-pinning-enabled: false
+2025-12-04 21:24:25.301 17631-23501 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-certificate-pinning-status: disabled-for-stability
+2025-12-04 21:24:25.301 17631-23501 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-cloud-trace-context: 9332bf67c57515be7fe1561495b3d19a
+2025-12-04 21:24:25.301 17631-23501 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-content-type-options: nosniff
+2025-12-04 21:24:25.301 17631-23501 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-financial-data-protection: enabled
+2025-12-04 21:24:25.301 17631-23501 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-frame-options: DENY
+2025-12-04 21:24:25.302 17631-23501 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-transaction-security-level: maximum
+2025-12-04 21:24:25.302 17631-23501 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-xss-protection: 1; mode=block
+2025-12-04 21:24:25.302 17631-23501 okhttp.OkHttpClient     com.cdccreditsmart.app               I  via: 1.1 google
+2025-12-04 21:24:25.302 17631-23501 okhttp.OkHttpClient     com.cdccreditsmart.app               I  alt-svc: h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
+2025-12-04 21:24:25.302 17631-23501 okhttp.OkHttpClient     com.cdccreditsmart.app               I  {"deviceId":"device_1764893130549_6se9ihqrhok","serialNumber":"VY9DB9EC","commandsCount":0,"commands":[]}
+2025-12-04 21:24:25.302 17631-23501 okhttp.OkHttpClient     com.cdccreditsmart.app               I  <-- END HTTP (105-byte body)
+2025-12-04 21:24:25.304 17631-22958 MdmCommandReceiver      com.cdccreditsmart.app               D  ✅ Nenhum comando pendente
+2025-12-04 21:24:25.304 17631-22958 MdmCommandReceiver      com.cdccreditsmart.app               D  📊 Fetch duration: 1624ms
+2025-12-04 21:24:25.304 17631-22958 MdmCommandReceiver      com.cdccreditsmart.app               D  ⏳ [Polling #1] Aguardando 28361ms até próxima verificação...
+2025-12-04 21:24:25.305 17631-23601 okhttp.OkHttpClient     com.cdccreditsmart.app               I  <-- 200 https://cdccreditsmart.com/api/apk/device/VY9DB9EC/commands (1601ms)
+2025-12-04 21:24:25.306 17631-23601 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-credentials: true
+2025-12-04 21:24:25.306 17631-23601 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-headers: Origin, X-Requested-With, Content-Type, Accept, Authorization, x-client-key, x-client-token, x-client-secret, cache-control
+2025-12-04 21:24:25.307 17631-23601 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-methods: GET, POST, PUT, PATCH, DELETE, OPTIONS
+2025-12-04 21:24:25.307 17631-23601 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-origin: *
+2025-12-04 21:24:25.307 17631-23601 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-max-age: 86400
+2025-12-04 21:24:25.307 17631-23601 okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-length: 105
+2025-12-04 21:24:25.308 17631-23601 okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-security-policy: default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://replit.com; style-src 'self' 'unsafe-inline' https://replit.com; img-src 'self' data: https:; font-src 'self' data: https://replit.com; connect-src 'self';
+2025-12-04 21:24:25.308 17631-23601 okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-type: application/json; charset=utf-8
+2025-12-04 21:24:25.308 17631-23601 okhttp.OkHttpClient     com.cdccreditsmart.app               I  date: Fri, 05 Dec 2025 00:24:25 GMT
+2025-12-04 21:24:25.308 17631-23601 okhttp.OkHttpClient     com.cdccreditsmart.app               I  etag: W/"69-8PetbeOP93W4v5dDvyWeYZadaf8"
+2025-12-04 21:24:25.308 17631-23601 okhttp.OkHttpClient     com.cdccreditsmart.app               I  permissions-policy: geolocation=(), microphone=(), camera=()
+2025-12-04 21:24:25.309 17631-23601 okhttp.OkHttpClient     com.cdccreditsmart.app               I  referrer-policy: strict-origin-when-cross-origin
+2025-12-04 21:24:25.309 17631-23601 okhttp.OkHttpClient     com.cdccreditsmart.app               I  server: Google Frontend
+2025-12-04 21:24:25.309 17631-23601 okhttp.OkHttpClient     com.cdccreditsmart.app               I  strict-transport-security: max-age=63072000; includeSubDomains
+2025-12-04 21:24:25.309 17631-23601 okhttp.OkHttpClient     com.cdccreditsmart.app               I  strict-transport-security: max-age=31536000; includeSubDomains
+2025-12-04 21:24:25.309 17631-22972 okhttp.OkHttpClient     com.cdccreditsmart.app               I  <-- 200 https://cdccreditsmart.com/api/apk/device/VY9DB9EC/commands (1610ms)
+2025-12-04 21:24:25.309 17631-22972 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-credentials: true
+2025-12-04 21:24:25.309 17631-22972 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-headers: Origin, X-Requested-With, Content-Type, Accept, Authorization, x-client-key, x-client-token, x-client-secret, cache-control
+2025-12-04 21:24:25.309 17631-22972 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-methods: GET, POST, PUT, PATCH, DELETE, OPTIONS
+2025-12-04 21:24:25.310 17631-22972 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-origin: *
+2025-12-04 21:24:25.310 17631-23601 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-anti-fraud-protection: active
+2025-12-04 21:24:25.310 17631-23601 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-certificate-pinning-enabled: false
+2025-12-04 21:24:25.310 17631-22972 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-max-age: 86400
+2025-12-04 21:24:25.310 17631-22972 okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-length: 105
+2025-12-04 21:24:25.310 17631-22972 okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-security-policy: default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://replit.com; style-src 'self' 'unsafe-inline' https://replit.com; img-src 'self' data: https:; font-src 'self' data: https://replit.com; connect-src 'self';
+2025-12-04 21:24:25.310 17631-22972 okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-type: application/json; charset=utf-8
+2025-12-04 21:24:25.310 17631-22972 okhttp.OkHttpClient     com.cdccreditsmart.app               I  date: Fri, 05 Dec 2025 00:24:25 GMT
+2025-12-04 21:24:25.310 17631-22972 okhttp.OkHttpClient     com.cdccreditsmart.app               I  etag: W/"69-8PetbeOP93W4v5dDvyWeYZadaf8"
+2025-12-04 21:24:25.310 17631-22972 okhttp.OkHttpClient     com.cdccreditsmart.app               I  permissions-policy: geolocation=(), microphone=(), camera=()
+2025-12-04 21:24:25.310 17631-22972 okhttp.OkHttpClient     com.cdccreditsmart.app               I  referrer-policy: strict-origin-when-cross-origin
+2025-12-04 21:24:25.310 17631-23601 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-certificate-pinning-status: disabled-for-stability
+2025-12-04 21:24:25.310 17631-22972 okhttp.OkHttpClient     com.cdccreditsmart.app               I  server: Google Frontend
+2025-12-04 21:24:25.311 17631-22972 okhttp.OkHttpClient     com.cdccreditsmart.app               I  strict-transport-security: max-age=63072000; includeSubDomains
+2025-12-04 21:24:25.311 17631-22972 okhttp.OkHttpClient     com.cdccreditsmart.app               I  strict-transport-security: max-age=31536000; includeSubDomains
+2025-12-04 21:24:25.311 17631-22972 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-anti-fraud-protection: active
+2025-12-04 21:24:25.311 17631-22972 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-certificate-pinning-enabled: false
+2025-12-04 21:24:25.311 17631-23601 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-cloud-trace-context: 04d050635a64e00e7fe1561495b3d777
+2025-12-04 21:24:25.311 17631-23601 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-content-type-options: nosniff
+2025-12-04 21:24:25.311 17631-22972 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-certificate-pinning-status: disabled-for-stability
+2025-12-04 21:24:25.312 17631-23601 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-financial-data-protection: enabled
+2025-12-04 21:24:25.312 17631-22972 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-cloud-trace-context: 68898643b8f4dd967fe1561495b3dbbd
+2025-12-04 21:24:25.312 17631-23601 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-frame-options: DENY
+2025-12-04 21:24:25.312 17631-22972 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-content-type-options: nosniff
+2025-12-04 21:24:25.312 17631-23601 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-transaction-security-level: maximum
+2025-12-04 21:24:25.312 17631-22972 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-financial-data-protection: enabled
+2025-12-04 21:24:25.312 17631-23601 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-xss-protection: 1; mode=block
+2025-12-04 21:24:25.312 17631-22972 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-frame-options: DENY
+2025-12-04 21:24:25.312 17631-22972 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-transaction-security-level: maximum
+2025-12-04 21:24:25.313 17631-22972 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-xss-protection: 1; mode=block
+2025-12-04 21:24:25.313 17631-23601 okhttp.OkHttpClient     com.cdccreditsmart.app               I  via: 1.1 google
+2025-12-04 21:24:25.313 17631-23601 okhttp.OkHttpClient     com.cdccreditsmart.app               I  alt-svc: h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
+2025-12-04 21:24:25.313 17631-22972 okhttp.OkHttpClient     com.cdccreditsmart.app               I  via: 1.1 google
+2025-12-04 21:24:25.313 17631-22972 okhttp.OkHttpClient     com.cdccreditsmart.app               I  alt-svc: h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
+2025-12-04 21:24:25.314 17631-22972 okhttp.OkHttpClient     com.cdccreditsmart.app               I  {"deviceId":"device_1764893130549_6se9ihqrhok","serialNumber":"VY9DB9EC","commandsCount":0,"commands":[]}
+2025-12-04 21:24:25.315 17631-23601 okhttp.OkHttpClient     com.cdccreditsmart.app               I  {"deviceId":"device_1764893130549_6se9ihqrhok","serialNumber":"VY9DB9EC","commandsCount":0,"commands":[]}
+2025-12-04 21:24:25.315 17631-22972 okhttp.OkHttpClient     com.cdccreditsmart.app               I  <-- END HTTP (105-byte body)
+2025-12-04 21:24:25.315 17631-23601 okhttp.OkHttpClient     com.cdccreditsmart.app               I  <-- END HTTP (105-byte body)
+2025-12-04 21:24:25.317 17631-22958 MdmCommandReceiver      com.cdccreditsmart.app               D  ✅ Nenhum comando pendente
+2025-12-04 21:24:25.317 17631-22411 MdmCommandReceiver      com.cdccreditsmart.app               D  ✅ Nenhum comando pendente
+2025-12-04 21:24:25.318 17631-22958 MdmCommandReceiver      com.cdccreditsmart.app               D  📊 Fetch duration: 1642ms
+2025-12-04 21:24:25.318 17631-22411 MdmCommandReceiver      com.cdccreditsmart.app               D  📊 Fetch duration: 1625ms
+2025-12-04 21:24:25.318 17631-22958 MdmCommandReceiver      com.cdccreditsmart.app               D  ⏳ [Polling #1] Aguardando 28333ms até próxima verificação...
+2025-12-04 21:24:25.318 17631-22411 MdmCommandReceiver      com.cdccreditsmart.app               D  ⏳ [Polling #1] Aguardando 28360ms até próxima verificação...
+2025-12-04 21:24:25.538 17631-17631 ActivityThread          com.cdccreditsmart.app               D  handleResumeActivity#3 r.window=com.android.internal.policy.PhoneWindow@c8723c5a.mFinished = falsewillBeVisible = true
+2025-12-04 21:24:25.545 17631-17631 BufferQueueConsumer     com.cdccreditsmart.app               D  [](id:44df00000006,api:0,p:-1,c:17631) connect: controlledByApp=false
+2025-12-04 21:24:25.546 17631-17631 BLASTBufferQueue        com.cdccreditsmart.app               D  [VRI[MainActivity]#6](f:0,a:0) constructor()
+2025-12-04 21:24:25.546 17631-17631 BLASTBufferQueue        com.cdccreditsmart.app               D  [VRI[MainActivity]#6](f:0,a:0) update width=1080 height=2436 format=-3 mTransformHint=0
+2025-12-04 21:24:25.573 17631-22421 BLASTBufferQueue        com.cdccreditsmart.app               D  [VRI[MainActivity]#6](f:0,a:1) acquireNextBufferLocked size=1080x2436 mFrameNumber=1 applyTransaction=true mTimestamp=63302789701926(auto) mPendingTransactions.size=0 graphicBufferId=75724568395817 transform=0
+2025-12-04 21:24:25.575 17631-17631 Choreographer           com.cdccreditsmart.app               W  Already have a pending vsync event.  There should only be one at a time.
+2025-12-04 21:24:25.669 17631-17631 InsetsSourceConsumer    com.cdccreditsmart.app               W  setControl isNavigationBarPositonChanged
+2025-12-04 21:24:25.681 17631-17631 InsetsController        com.cdccreditsmart.app               I  Insets animation onAnimationStart mShow:false, mDurationMs:340, types:statusBars
+2025-12-04 21:24:26.040 17631-17631 InsetsController        com.cdccreditsmart.app               I  Insets animation onAnimationEnd
+2025-12-04 21:24:26.726 17631-17631 TextSelection           com.cdccreditsmart.app               D  onUseCache cache=false
+2025-12-04 21:24:26.770 17631-23199 ScrollPolicy            com.cdccreditsmart.app               I  BOOST_KSWAPD; duration: 3000
+2025-12-04 21:24:26.785 17631-23199 PowerHalMgrImpl         com.cdccreditsmart.app               I  hdl:35569, pid:17631 
+2025-12-04 21:24:26.795 17631-23199 PowerHalMgrImpl         com.cdccreditsmart.app               I  hdl:35572, pid:17631 
+2025-12-04 21:24:26.857 17631-23199 ScrollPolicy            com.cdccreditsmart.app               I  BOOST_SCENE_4; duration: 0
+2025-12-04 21:24:26.861 17631-23199 PowerHalMgrImpl         com.cdccreditsmart.app               I  hdl:35577, pid:17631 
+2025-12-04 21:24:27.235 17631-22958 SettingsGuardService    com.cdccreditsmart.app               W  🚨 SETTINGS DETECTADO! (count: 2, dangerous: false)
+2025-12-04 21:24:27.235 17631-22958 SettingsGuardService    com.cdccreditsmart.app               W     Pacote: com.transsion.XOSLauncher
+2025-12-04 21:24:27.235 17631-22958 SettingsGuardService    com.cdccreditsmart.app               W     Chamando app para foreground...
+2025-12-04 21:24:27.254 17631-17631 SettingsGuardService    com.cdccreditsmart.app               I  ✅ App trazido para foreground
+2025-12-04 21:24:27.254 17631-17631 MainActivity            com.cdccreditsmart.app               D  ========== NEW INTENT RECEIVED ==========
+2025-12-04 21:24:27.257 17631-17631 ActivityThread          com.cdccreditsmart.app               D  handleResumeActivity#3 r.window=com.android.internal.policy.PhoneWindow@c8723c5a.mFinished = falsewillBeVisible = true
+2025-12-04 21:24:27.270 17631-17631 InsetsController        com.cdccreditsmart.app               I  Insets animation onAnimationStart mShow:false, mDurationMs:340, types:statusBars
+2025-12-04 21:24:27.618 17631-17631 InsetsController        com.cdccreditsmart.app               I  Insets animation onAnimationEnd
+2025-12-04 21:24:27.663 17631-22958 SettingsGuardService    com.cdccreditsmart.app               I  ✅ App CDC em foreground - resetando contador
+2025-12-04 21:24:27.972 17631-17631 TextSelection           com.cdccreditsmart.app               D  onUseCache cache=false
+2025-12-04 21:24:28.040 17631-23199 ScrollPolicy            com.cdccreditsmart.app               I  BOOST_KSWAPD; duration: 3000
+2025-12-04 21:24:28.044 17631-23199 PowerHalMgrImpl         com.cdccreditsmart.app               I  hdl:35592, pid:17631 
+2025-12-04 21:24:28.061 17631-23199 PowerHalMgrImpl         com.cdccreditsmart.app               I  hdl:35595, pid:17631 
+2025-12-04 21:24:28.117 17631-23199 ScrollPolicy            com.cdccreditsmart.app               I  BOOST_SCENE_4; duration: 0
+2025-12-04 21:24:28.120 17631-23199 PowerHalMgrImpl         com.cdccreditsmart.app               I  hdl:35599, pid:17631 
+2025-12-04 21:24:28.435 17631-22958 SettingsGuardService    com.cdccreditsmart.app               W  🚨 SETTINGS DETECTADO! (count: 2, dangerous: false)
+2025-12-04 21:24:28.435 17631-22958 SettingsGuardService    com.cdccreditsmart.app               W     Pacote: com.transsion.XOSLauncher
+2025-12-04 21:24:28.435 17631-22958 SettingsGuardService    com.cdccreditsmart.app               W     Chamando app para foreground...
+2025-12-04 21:24:28.454 17631-17631 SettingsGuardService    com.cdccreditsmart.app               I  ✅ App trazido para foreground
+2025-12-04 21:24:28.454 17631-17631 MainActivity            com.cdccreditsmart.app               D  ========== NEW INTENT RECEIVED ==========
+2025-12-04 21:24:28.456 17631-17631 ActivityThread          com.cdccreditsmart.app               D  handleResumeActivity#3 r.window=com.android.internal.policy.PhoneWindow@c8723c5a.mFinished = falsewillBeVisible = true
+2025-12-04 21:24:28.472 17631-17631 InsetsController        com.cdccreditsmart.app               I  Insets animation onAnimationStart mShow:false, mDurationMs:340, types:statusBars
+2025-12-04 21:24:28.607 17631-22958 MdmCommandReceiver      com.cdccreditsmart.app               I  🔄 Tentando reconectar WebSocket MDM...
+2025-12-04 21:24:28.615 17631-22958 SecureTokenStorage      com.cdccreditsmart.app               D  ⚠️ Usando Serial Number para MDM (IMEI indisponível): VY9DB9...
+2025-12-04 21:24:28.615 17631-22958 MdmCommandReceiver      com.cdccreditsmart.app               I  🔗 Iniciando conexão WebSocket MDM...
+2025-12-04 21:24:28.615 17631-22958 MdmCommandReceiver      com.cdccreditsmart.app               D  🔗 URL: wss://cdccreditsmart.com/ws
+2025-12-04 21:24:28.615 17631-22958 MdmCommandReceiver      com.cdccreditsmart.app               D  🔗 JWT Token presente: true
+2025-12-04 21:24:28.615 17631-22958 MdmCommandReceiver      com.cdccreditsmart.app               D  🔗 Using serialNumber: VY9DB9EC...
+2025-12-04 21:24:28.617 17631-22958 MdmCommandReceiver      com.cdccreditsmart.app               D  🔌 MDM Command Receiver desconectado
+2025-12-04 21:24:28.624 17631-22958 MdmCommandReceiver      com.cdccreditsmart.app               D  🔗 Criando WebSocket OkHttp...
+2025-12-04 21:24:28.625 17631-17631 WebSocketManager        com.cdccreditsmart.app               D  Connecting to WebSocket: wss://cdccreditsmart.com/ws/flow-status
+2025-12-04 21:24:28.628 17631-22958 MdmCommandReceiver      com.cdccreditsmart.app               D  🔗 WebSocket request enviado - aguardando resposta...
+2025-12-04 21:24:28.632 17631-17631 WebSocketManager        com.cdccreditsmart.app               D  Connecting to WebSocket: wss://cdccreditsmart.com/ws/flow-status
+2025-12-04 21:24:28.634 17631-17631 WebSocketManager        com.cdccreditsmart.app               D  Connecting to WebSocket: wss://cdccreditsmart.com/ws/flow-status
+2025-12-04 21:24:28.638 17631-22958 MdmCommandReceiver      com.cdccreditsmart.app               I  🔄 Tentando reconectar WebSocket MDM...
+2025-12-04 21:24:28.641 17631-22958 SecureTokenStorage      com.cdccreditsmart.app               D  ⚠️ Usando Serial Number para MDM (IMEI indisponível): VY9DB9...
+2025-12-04 21:24:28.641 17631-22958 MdmCommandReceiver      com.cdccreditsmart.app               I  🔗 Iniciando conexão WebSocket MDM...
+2025-12-04 21:24:28.641 17631-22958 MdmCommandReceiver      com.cdccreditsmart.app               D  🔗 URL: wss://cdccreditsmart.com/ws
+2025-12-04 21:24:28.641 17631-22958 MdmCommandReceiver      com.cdccreditsmart.app               D  🔗 JWT Token presente: true
+2025-12-04 21:24:28.641 17631-22958 MdmCommandReceiver      com.cdccreditsmart.app               D  🔗 Using serialNumber: VY9DB9EC...
+2025-12-04 21:24:28.641 17631-22958 MdmCommandReceiver      com.cdccreditsmart.app               D  🔌 MDM Command Receiver desconectado
+2025-12-04 21:24:28.642 17631-24083 MdmCommandReceiver      com.cdccreditsmart.app               I  🔄 Tentando reconectar WebSocket MDM...
+2025-12-04 21:24:28.643 17631-22958 MdmCommandReceiver      com.cdccreditsmart.app               D  🔗 Criando WebSocket OkHttp...
+2025-12-04 21:24:28.643 17631-24079 MdmCommandReceiver      com.cdccreditsmart.app               I  🔄 Tentando reconectar WebSocket MDM...
+2025-12-04 21:24:28.646 17631-24079 SecureTokenStorage      com.cdccreditsmart.app               D  ⚠️ Usando Serial Number para MDM (IMEI indisponível): VY9DB9...
+2025-12-04 21:24:28.646 17631-24079 MdmCommandReceiver      com.cdccreditsmart.app               I  🔗 Iniciando conexão WebSocket MDM...
+2025-12-04 21:24:28.646 17631-24079 MdmCommandReceiver      com.cdccreditsmart.app               D  🔗 URL: wss://cdccreditsmart.com/ws
+2025-12-04 21:24:28.646 17631-24079 MdmCommandReceiver      com.cdccreditsmart.app               D  🔗 JWT Token presente: true
+2025-12-04 21:24:28.646 17631-24079 MdmCommandReceiver      com.cdccreditsmart.app               D  🔗 Using serialNumber: VY9DB9EC...
+2025-12-04 21:24:28.646 17631-17631 WebSocketManager        com.cdccreditsmart.app               D  Connecting to WebSocket: wss://cdccreditsmart.com/ws/flow-status
+2025-12-04 21:24:28.648 17631-24079 MdmCommandReceiver      com.cdccreditsmart.app               D  🔌 MDM Command Receiver desconectado
+2025-12-04 21:24:28.651 17631-24083 SecureTokenStorage      com.cdccreditsmart.app               D  ⚠️ Usando Serial Number para MDM (IMEI indisponível): VY9DB9...
+2025-12-04 21:24:28.651 17631-24083 MdmCommandReceiver      com.cdccreditsmart.app               I  🔗 Iniciando conexão WebSocket MDM...
+2025-12-04 21:24:28.651 17631-24083 MdmCommandReceiver      com.cdccreditsmart.app               D  🔗 URL: wss://cdccreditsmart.com/ws
+2025-12-04 21:24:28.651 17631-24083 MdmCommandReceiver      com.cdccreditsmart.app               D  🔗 JWT Token presente: true
+2025-12-04 21:24:28.651 17631-24083 MdmCommandReceiver      com.cdccreditsmart.app               D  🔗 Using serialNumber: VY9DB9EC...
+2025-12-04 21:24:28.656 17631-22958 MdmCommandReceiver      com.cdccreditsmart.app               D  🔗 WebSocket request enviado - aguardando resposta...
+2025-12-04 21:24:28.657 17631-24083 MdmCommandReceiver      com.cdccreditsmart.app               D  🔌 MDM Command Receiver desconectado
+2025-12-04 21:24:28.660 17631-24083 MdmCommandReceiver      com.cdccreditsmart.app               D  🔗 Criando WebSocket OkHttp...
+2025-12-04 21:24:28.660 17631-24079 MdmCommandReceiver      com.cdccreditsmart.app               D  🔗 Criando WebSocket OkHttp...
+2025-12-04 21:24:28.661 17631-24083 MdmCommandReceiver      com.cdccreditsmart.app               D  🔗 WebSocket request enviado - aguardando resposta...
+2025-12-04 21:24:28.662 17631-24079 MdmCommandReceiver      com.cdccreditsmart.app               D  🔗 WebSocket request enviado - aguardando resposta...
+2025-12-04 21:24:28.829 17631-17631 InsetsController        com.cdccreditsmart.app               I  Insets animation onAnimationEnd
+2025-12-04 21:24:28.856 17631-24079 SettingsGuardService    com.cdccreditsmart.app               I  ✅ App CDC em foreground - resetando contador
+2025-12-04 21:24:29.136 17631-22448 MdmCommandReceiver      com.cdccreditsmart.app               I  ✅ WebSocket MDM CONECTADO COM SUCESSO!
+2025-12-04 21:24:29.136 17631-22448 MdmCommandReceiver      com.cdccreditsmart.app               D  ✅ Response code: 101
+2025-12-04 21:24:29.136 17631-22448 MdmCommandReceiver      com.cdccreditsmart.app               I  🔄 Iniciando polling fallback (30s)...
+2025-12-04 21:24:29.137 17631-22448 MdmCommandReceiver      com.cdccreditsmart.app               D  📥 Mensagem MDM recebida: {"type":"welcome","message":"Connected to unified WebSocket server","connectionId":"33423864-5ace-4b03-b631-44afd617b01e","path":"/ws","routerKey":"device-control","timestamp":"2025-12-05T00:24:29.510Z","serverTime":"2025-12-05T00:24:29.510Z"}
+2025-12-04 21:24:29.137 17631-24079 MdmCommandReceiver      com.cdccreditsmart.app               I  🔄 Iniciando polling fallback MDM (intervalo: 30s)
+2025-12-04 21:24:29.137 17631-24079 MdmCommandReceiver      com.cdccreditsmart.app               I  📊 Conforme especificação: 30 segundos entre requests
+2025-12-04 21:24:29.137 17631-24079 MdmCommandReceiver      com.cdccreditsmart.app               D  🔍 [Polling #1] Verificando comandos pendentes...
+2025-12-04 21:24:29.137 17631-24083 MdmCommandReceiver      com.cdccreditsmart.app               D  📥 JSON recebido: {"type":"welcome","message":"Connected to unified WebSocket server","connectionId":"33423864-5ace-4b03-b631-44afd617b01e","path":"/ws","routerKey":"device-control","timestamp":"2025-12-05T00:24:29.510Z","serverTime":"2025-12-05T00:24:29.510Z"}
+2025-12-04 21:24:29.137 17631-22457 WebSocketManager        com.cdccreditsmart.app               D  WebSocket connection opened
+2025-12-04 21:24:29.137 17631-22457 WebSocketManager        com.cdccreditsmart.app               D  WebSocket connected for contract: VY9DB9EC
+2025-12-04 21:24:29.137 17631-22457 WebSocketManager        com.cdccreditsmart.app               D  Starting heartbeat
+2025-12-04 21:24:29.138 17631-24083 MdmCommandReceiver      com.cdccreditsmart.app               D  📨 Tipo de mensagem: welcome
+2025-12-04 21:24:29.138 17631-24083 MdmCommandReceiver      com.cdccreditsmart.app               D  👋 Mensagem de boas-vindas do servidor
+2025-12-04 21:24:29.139 17631-24079 SecureTokenStorage      com.cdccreditsmart.app               D  ⚠️ Usando Serial Number para MDM (IMEI indisponível): VY9DB9...
+2025-12-04 21:24:29.139 17631-24079 MdmCommandReceiver      com.cdccreditsmart.app               D  🔍 Buscando comandos pendentes com identifier: VY9DB9EC...
+2025-12-04 21:24:29.139 17631-22454 MdmCommandReceiver      com.cdccreditsmart.app               I  ✅ WebSocket MDM CONECTADO COM SUCESSO!
+2025-12-04 21:24:29.139 17631-22454 MdmCommandReceiver      com.cdccreditsmart.app               D  ✅ Response code: 101
+2025-12-04 21:24:29.139 17631-22454 MdmCommandReceiver      com.cdccreditsmart.app               I  🔄 Iniciando polling fallback (30s)...
+2025-12-04 21:24:29.140 17631-22454 MdmCommandReceiver      com.cdccreditsmart.app               D  📥 Mensagem MDM recebida: {"type":"welcome","message":"Connected to unified WebSocket server","connectionId":"8cef481c-7014-4859-97e3-6c6277478d90","path":"/ws","routerKey":"device-control","timestamp":"2025-12-05T00:24:29.512Z","serverTime":"2025-12-05T00:24:29.512Z"}
+2025-12-04 21:24:29.140 17631-24083 MdmCommandReceiver      com.cdccreditsmart.app               I  🔄 Iniciando polling fallback MDM (intervalo: 30s)
+2025-12-04 21:24:29.140 17631-24083 MdmCommandReceiver      com.cdccreditsmart.app               I  📊 Conforme especificação: 30 segundos entre requests
+2025-12-04 21:24:29.140 17631-24083 MdmCommandReceiver      com.cdccreditsmart.app               D  🔍 [Polling #1] Verificando comandos pendentes...
+2025-12-04 21:24:29.140 17631-22963 MdmCommandReceiver      com.cdccreditsmart.app               D  📥 JSON recebido: {"type":"welcome","message":"Connected to unified WebSocket server","connectionId":"8cef481c-7014-4859-97e3-6c6277478d90","path":"/ws","routerKey":"device-control","timestamp":"2025-12-05T00:24:29.512Z","serverTime":"2025-12-05T00:24:29.512Z"}
+2025-12-04 21:24:29.142 17631-24083 SecureTokenStorage      com.cdccreditsmart.app               D  ⚠️ Usando Serial Number para MDM (IMEI indisponível): VY9DB9...
+2025-12-04 21:24:29.142 17631-24083 MdmCommandReceiver      com.cdccreditsmart.app               D  🔍 Buscando comandos pendentes com identifier: VY9DB9EC...
+2025-12-04 21:24:29.142 17631-22963 MdmCommandReceiver      com.cdccreditsmart.app               D  📨 Tipo de mensagem: welcome
+2025-12-04 21:24:29.142 17631-22963 MdmCommandReceiver      com.cdccreditsmart.app               D  👋 Mensagem de boas-vindas do servidor
+2025-12-04 21:24:29.143 17631-22972 okhttp.OkHttpClient     com.cdccreditsmart.app               I  --> GET https://cdccreditsmart.com/api/apk/device/VY9DB9EC/commands
+2025-12-04 21:24:29.143 17631-22972 okhttp.OkHttpClient     com.cdccreditsmart.app               I  --> END GET
+2025-12-04 21:24:29.144 17631-22453 WebSocketManager        com.cdccreditsmart.app               D  WebSocket connection opened
+2025-12-04 21:24:29.144 17631-22453 WebSocketManager        com.cdccreditsmart.app               D  WebSocket connected for contract: VY9DB9EC
+2025-12-04 21:24:29.144 17631-22453 WebSocketManager        com.cdccreditsmart.app               D  Starting heartbeat
+2025-12-04 21:24:29.145 17631-23601 okhttp.OkHttpClient     com.cdccreditsmart.app               I  --> GET https://cdccreditsmart.com/api/apk/device/VY9DB9EC/commands
+2025-12-04 21:24:29.145 17631-23601 okhttp.OkHttpClient     com.cdccreditsmart.app               I  --> END GET
+2025-12-04 21:24:29.146 17631-22449 WebSocketManager        com.cdccreditsmart.app               D  WebSocket connection opened
+2025-12-04 21:24:29.146 17631-22449 WebSocketManager        com.cdccreditsmart.app               D  WebSocket connected for contract: VY9DB9EC
+2025-12-04 21:24:29.146 17631-22449 WebSocketManager        com.cdccreditsmart.app               D  Starting heartbeat
+2025-12-04 21:24:29.148 17631-22456 MdmCommandReceiver      com.cdccreditsmart.app               I  ✅ WebSocket MDM CONECTADO COM SUCESSO!
+2025-12-04 21:24:29.148 17631-22456 MdmCommandReceiver      com.cdccreditsmart.app               D  ✅ Response code: 101
+2025-12-04 21:24:29.149 17631-22456 MdmCommandReceiver      com.cdccreditsmart.app               I  🔄 Iniciando polling fallback (30s)...
+2025-12-04 21:24:29.149 17631-22455 WebSocketManager        com.cdccreditsmart.app               D  WebSocket connection opened
+2025-12-04 21:24:29.149 17631-22455 WebSocketManager        com.cdccreditsmart.app               D  WebSocket connected for contract: VY9DB9EC
+2025-12-04 21:24:29.149 17631-22455 WebSocketManager        com.cdccreditsmart.app               D  Starting heartbeat
+2025-12-04 21:24:29.149 17631-22456 MdmCommandReceiver      com.cdccreditsmart.app               D  📥 Mensagem MDM recebida: {"type":"welcome","message":"Connected to unified WebSocket server","connectionId":"e5c6a188-bef6-4e25-8310-d79b25527db8","path":"/ws","routerKey":"device-control","timestamp":"2025-12-05T00:24:29.518Z","serverTime":"2025-12-05T00:24:29.518Z"}
+2025-12-04 21:24:29.149 17631-24083 MdmCommandReceiver      com.cdccreditsmart.app               I  🔄 Iniciando polling fallback MDM (intervalo: 30s)
+2025-12-04 21:24:29.149 17631-24083 MdmCommandReceiver      com.cdccreditsmart.app               I  📊 Conforme especificação: 30 segundos entre requests
+2025-12-04 21:24:29.150 17631-24083 MdmCommandReceiver      com.cdccreditsmart.app               D  🔍 [Polling #1] Verificando comandos pendentes...
+2025-12-04 21:24:29.150 17631-22963 MdmCommandReceiver      com.cdccreditsmart.app               D  📥 JSON recebido: {"type":"welcome","message":"Connected to unified WebSocket server","connectionId":"e5c6a188-bef6-4e25-8310-d79b25527db8","path":"/ws","routerKey":"device-control","timestamp":"2025-12-05T00:24:29.518Z","serverTime":"2025-12-05T00:24:29.518Z"}
+2025-12-04 21:24:29.151 17631-22963 MdmCommandReceiver      com.cdccreditsmart.app               D  📨 Tipo de mensagem: welcome
+2025-12-04 21:24:29.151 17631-22963 MdmCommandReceiver      com.cdccreditsmart.app               D  👋 Mensagem de boas-vindas do servidor
+2025-12-04 21:24:29.152 17631-24083 SecureTokenStorage      com.cdccreditsmart.app               D  ⚠️ Usando Serial Number para MDM (IMEI indisponível): VY9DB9...
+2025-12-04 21:24:29.153 17631-24083 MdmCommandReceiver      com.cdccreditsmart.app               D  🔍 Buscando comandos pendentes com identifier: VY9DB9EC...
+2025-12-04 21:24:29.155 17631-23501 okhttp.OkHttpClient     com.cdccreditsmart.app               I  --> GET https://cdccreditsmart.com/api/apk/device/VY9DB9EC/commands
+2025-12-04 21:24:29.155 17631-23501 okhttp.OkHttpClient     com.cdccreditsmart.app               I  --> END GET
+2025-12-04 21:24:29.628 17631-22972 okhttp.OkHttpClient     com.cdccreditsmart.app               I  <-- 200 https://cdccreditsmart.com/api/apk/device/VY9DB9EC/commands (484ms)
+2025-12-04 21:24:29.628 17631-22972 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-credentials: true
+2025-12-04 21:24:29.628 17631-22972 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-headers: Origin, X-Requested-With, Content-Type, Accept, Authorization, x-client-key, x-client-token, x-client-secret, cache-control
+2025-12-04 21:24:29.628 17631-22972 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-methods: GET, POST, PUT, PATCH, DELETE, OPTIONS
+2025-12-04 21:24:29.628 17631-22972 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-origin: *
+2025-12-04 21:24:29.628 17631-22972 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-max-age: 86400
+2025-12-04 21:24:29.628 17631-22972 okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-length: 105
+2025-12-04 21:24:29.628 17631-22972 okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-security-policy: default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://replit.com; style-src 'self' 'unsafe-inline' https://replit.com; img-src 'self' data: https:; font-src 'self' data: https://replit.com; connect-src 'self';
+2025-12-04 21:24:29.628 17631-22972 okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-type: application/json; charset=utf-8
+2025-12-04 21:24:29.628 17631-22972 okhttp.OkHttpClient     com.cdccreditsmart.app               I  date: Fri, 05 Dec 2025 00:24:30 GMT
+2025-12-04 21:24:29.628 17631-22972 okhttp.OkHttpClient     com.cdccreditsmart.app               I  etag: W/"69-8PetbeOP93W4v5dDvyWeYZadaf8"
+2025-12-04 21:24:29.628 17631-22972 okhttp.OkHttpClient     com.cdccreditsmart.app               I  permissions-policy: geolocation=(), microphone=(), camera=()
+2025-12-04 21:24:29.628 17631-22972 okhttp.OkHttpClient     com.cdccreditsmart.app               I  referrer-policy: strict-origin-when-cross-origin
+2025-12-04 21:24:29.628 17631-22972 okhttp.OkHttpClient     com.cdccreditsmart.app               I  server: Google Frontend
+2025-12-04 21:24:29.628 17631-22972 okhttp.OkHttpClient     com.cdccreditsmart.app               I  strict-transport-security: max-age=63072000; includeSubDomains
+2025-12-04 21:24:29.628 17631-22972 okhttp.OkHttpClient     com.cdccreditsmart.app               I  strict-transport-security: max-age=31536000; includeSubDomains
+2025-12-04 21:24:29.628 17631-22972 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-anti-fraud-protection: active
+2025-12-04 21:24:29.628 17631-22972 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-certificate-pinning-enabled: false
+2025-12-04 21:24:29.628 17631-22972 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-certificate-pinning-status: disabled-for-stability
+2025-12-04 21:24:29.628 17631-22972 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-cloud-trace-context: cd6e387182fcdd317fe1561495b3d52f
+2025-12-04 21:24:29.628 17631-22972 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-content-type-options: nosniff
+2025-12-04 21:24:29.628 17631-22972 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-financial-data-protection: enabled
+2025-12-04 21:24:29.628 17631-22972 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-frame-options: DENY
+2025-12-04 21:24:29.629 17631-22972 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-transaction-security-level: maximum
+2025-12-04 21:24:29.629 17631-22972 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-xss-protection: 1; mode=block
+2025-12-04 21:24:29.629 17631-22972 okhttp.OkHttpClient     com.cdccreditsmart.app               I  via: 1.1 google
+2025-12-04 21:24:29.629 17631-22972 okhttp.OkHttpClient     com.cdccreditsmart.app               I  alt-svc: h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
+2025-12-04 21:24:29.629 17631-22972 okhttp.OkHttpClient     com.cdccreditsmart.app               I  {"deviceId":"device_1764893130549_6se9ihqrhok","serialNumber":"VY9DB9EC","commandsCount":0,"commands":[]}
+2025-12-04 21:24:29.629 17631-22972 okhttp.OkHttpClient     com.cdccreditsmart.app               I  <-- END HTTP (105-byte body)
+2025-12-04 21:24:29.630 17631-24083 MdmCommandReceiver      com.cdccreditsmart.app               D  ✅ Nenhum comando pendente
+2025-12-04 21:24:29.630 17631-24083 MdmCommandReceiver      com.cdccreditsmart.app               D  📊 Fetch duration: 491ms
+2025-12-04 21:24:29.630 17631-24083 MdmCommandReceiver      com.cdccreditsmart.app               D  ⏳ [Polling #1] Aguardando 29507ms até próxima verificação...
+2025-12-04 21:24:29.664 17631-23601 okhttp.OkHttpClient     com.cdccreditsmart.app               I  <-- 200 https://cdccreditsmart.com/api/apk/device/VY9DB9EC/commands (518ms)
+2025-12-04 21:24:29.664 17631-23601 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-credentials: true
+2025-12-04 21:24:29.664 17631-23601 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-headers: Origin, X-Requested-With, Content-Type, Accept, Authorization, x-client-key, x-client-token, x-client-secret, cache-control
+2025-12-04 21:24:29.664 17631-23601 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-methods: GET, POST, PUT, PATCH, DELETE, OPTIONS
+2025-12-04 21:24:29.665 17631-23601 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-origin: *
+2025-12-04 21:24:29.665 17631-23601 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-max-age: 86400
+2025-12-04 21:24:29.665 17631-23601 okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-length: 105
+2025-12-04 21:24:29.665 17631-23601 okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-security-policy: default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://replit.com; style-src 'self' 'unsafe-inline' https://replit.com; img-src 'self' data: https:; font-src 'self' data: https://replit.com; connect-src 'self';
+2025-12-04 21:24:29.665 17631-23601 okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-type: application/json; charset=utf-8
+2025-12-04 21:24:29.665 17631-23601 okhttp.OkHttpClient     com.cdccreditsmart.app               I  date: Fri, 05 Dec 2025 00:24:30 GMT
+2025-12-04 21:24:29.665 17631-23601 okhttp.OkHttpClient     com.cdccreditsmart.app               I  etag: W/"69-8PetbeOP93W4v5dDvyWeYZadaf8"
+2025-12-04 21:24:29.665 17631-23601 okhttp.OkHttpClient     com.cdccreditsmart.app               I  permissions-policy: geolocation=(), microphone=(), camera=()
+2025-12-04 21:24:29.665 17631-23601 okhttp.OkHttpClient     com.cdccreditsmart.app               I  referrer-policy: strict-origin-when-cross-origin
+2025-12-04 21:24:29.665 17631-23601 okhttp.OkHttpClient     com.cdccreditsmart.app               I  server: Google Frontend
+2025-12-04 21:24:29.665 17631-23601 okhttp.OkHttpClient     com.cdccreditsmart.app               I  strict-transport-security: max-age=63072000; includeSubDomains
+2025-12-04 21:24:29.666 17631-23601 okhttp.OkHttpClient     com.cdccreditsmart.app               I  strict-transport-security: max-age=31536000; includeSubDomains
+2025-12-04 21:24:29.666 17631-23601 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-anti-fraud-protection: active
+2025-12-04 21:24:29.666 17631-23601 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-certificate-pinning-enabled: false
+2025-12-04 21:24:29.666 17631-23601 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-certificate-pinning-status: disabled-for-stability
+2025-12-04 21:24:29.666 17631-23601 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-cloud-trace-context: 4f52c491b9e8052a7fe1561495b3d29a
+2025-12-04 21:24:29.666 17631-23601 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-content-type-options: nosniff
+2025-12-04 21:24:29.666 17631-23601 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-financial-data-protection: enabled
+2025-12-04 21:24:29.666 17631-23601 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-frame-options: DENY
+2025-12-04 21:24:29.666 17631-23601 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-transaction-security-level: maximum
+2025-12-04 21:24:29.666 17631-23601 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-xss-protection: 1; mode=block
+2025-12-04 21:24:29.666 17631-23601 okhttp.OkHttpClient     com.cdccreditsmart.app               I  via: 1.1 google
+2025-12-04 21:24:29.666 17631-23601 okhttp.OkHttpClient     com.cdccreditsmart.app               I  alt-svc: h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
+2025-12-04 21:24:29.667 17631-23601 okhttp.OkHttpClient     com.cdccreditsmart.app               I  {"deviceId":"device_1764893130549_6se9ihqrhok","serialNumber":"VY9DB9EC","commandsCount":0,"commands":[]}
+2025-12-04 21:24:29.667 17631-23601 okhttp.OkHttpClient     com.cdccreditsmart.app               I  <-- END HTTP (105-byte body)
+2025-12-04 21:24:29.668 17631-24083 MdmCommandReceiver      com.cdccreditsmart.app               D  ✅ Nenhum comando pendente
+2025-12-04 21:24:29.669 17631-24083 MdmCommandReceiver      com.cdccreditsmart.app               D  📊 Fetch duration: 527ms
+2025-12-04 21:24:29.669 17631-24083 MdmCommandReceiver      com.cdccreditsmart.app               D  ⏳ [Polling #1] Aguardando 29471ms até próxima verificação...
+2025-12-04 21:24:29.746 17631-23501 okhttp.OkHttpClient     com.cdccreditsmart.app               I  <-- 200 https://cdccreditsmart.com/api/apk/device/VY9DB9EC/commands (591ms)
+2025-12-04 21:24:29.747 17631-23501 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-credentials: true
+2025-12-04 21:24:29.747 17631-23501 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-headers: Origin, X-Requested-With, Content-Type, Accept, Authorization, x-client-key, x-client-token, x-client-secret, cache-control
+2025-12-04 21:24:29.747 17631-23501 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-methods: GET, POST, PUT, PATCH, DELETE, OPTIONS
+2025-12-04 21:24:29.747 17631-23501 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-origin: *
+2025-12-04 21:24:29.747 17631-23501 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-max-age: 86400
+2025-12-04 21:24:29.747 17631-23501 okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-length: 105
+2025-12-04 21:24:29.747 17631-23501 okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-security-policy: default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://replit.com; style-src 'self' 'unsafe-inline' https://replit.com; img-src 'self' data: https:; font-src 'self' data: https://replit.com; connect-src 'self';
+2025-12-04 21:24:29.747 17631-23501 okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-type: application/json; charset=utf-8
+2025-12-04 21:24:29.747 17631-23501 okhttp.OkHttpClient     com.cdccreditsmart.app               I  date: Fri, 05 Dec 2025 00:24:30 GMT
+2025-12-04 21:24:29.747 17631-23501 okhttp.OkHttpClient     com.cdccreditsmart.app               I  etag: W/"69-8PetbeOP93W4v5dDvyWeYZadaf8"
+2025-12-04 21:24:29.747 17631-23501 okhttp.OkHttpClient     com.cdccreditsmart.app               I  permissions-policy: geolocation=(), microphone=(), camera=()
+2025-12-04 21:24:29.747 17631-23501 okhttp.OkHttpClient     com.cdccreditsmart.app               I  referrer-policy: strict-origin-when-cross-origin
+2025-12-04 21:24:29.747 17631-23501 okhttp.OkHttpClient     com.cdccreditsmart.app               I  server: Google Frontend
+2025-12-04 21:24:29.747 17631-23501 okhttp.OkHttpClient     com.cdccreditsmart.app               I  strict-transport-security: max-age=63072000; includeSubDomains
+2025-12-04 21:24:29.747 17631-23501 okhttp.OkHttpClient     com.cdccreditsmart.app               I  strict-transport-security: max-age=31536000; includeSubDomains
+2025-12-04 21:24:29.747 17631-23501 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-anti-fraud-protection: active
+2025-12-04 21:24:29.747 17631-23501 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-certificate-pinning-enabled: false
+2025-12-04 21:24:29.747 17631-23501 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-certificate-pinning-status: disabled-for-stability
+2025-12-04 21:24:29.747 17631-23501 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-cloud-trace-context: 2296453bcefca6717fe1561495b3d67b
+2025-12-04 21:24:29.747 17631-23501 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-content-type-options: nosniff
+2025-12-04 21:24:29.747 17631-23501 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-financial-data-protection: enabled
+2025-12-04 21:24:29.747 17631-23501 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-frame-options: DENY
+2025-12-04 21:24:29.747 17631-23501 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-transaction-security-level: maximum
+2025-12-04 21:24:29.747 17631-23501 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-xss-protection: 1; mode=block
+2025-12-04 21:24:29.747 17631-23501 okhttp.OkHttpClient     com.cdccreditsmart.app               I  via: 1.1 google
+2025-12-04 21:24:29.747 17631-23501 okhttp.OkHttpClient     com.cdccreditsmart.app               I  alt-svc: h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
+2025-12-04 21:24:29.748 17631-23501 okhttp.OkHttpClient     com.cdccreditsmart.app               I  {"deviceId":"device_1764893130549_6se9ihqrhok","serialNumber":"VY9DB9EC","commandsCount":0,"commands":[]}
+2025-12-04 21:24:29.748 17631-23501 okhttp.OkHttpClient     com.cdccreditsmart.app               I  <-- END HTTP (105-byte body)
+2025-12-04 21:24:29.749 17631-24083 MdmCommandReceiver      com.cdccreditsmart.app               D  ✅ Nenhum comando pendente
+2025-12-04 21:24:29.749 17631-24083 MdmCommandReceiver      com.cdccreditsmart.app               D  📊 Fetch duration: 596ms
+2025-12-04 21:24:29.749 17631-24083 MdmCommandReceiver      com.cdccreditsmart.app               D  ⏳ [Polling #1] Aguardando 29401ms até próxima verificação...
+2025-12-04 21:24:30.131 17631-22452 MdmCommandReceiver      com.cdccreditsmart.app               I  ✅ WebSocket MDM CONECTADO COM SUCESSO!
+2025-12-04 21:24:30.132 17631-22452 MdmCommandReceiver      com.cdccreditsmart.app               D  ✅ Response code: 101
+2025-12-04 21:24:30.132 17631-22452 MdmCommandReceiver      com.cdccreditsmart.app               I  🔄 Iniciando polling fallback (30s)...
+2025-12-04 21:24:30.134 17631-22452 MdmCommandReceiver      com.cdccreditsmart.app               D  📥 Mensagem MDM recebida: {"type":"welcome","message":"Connected to unified WebSocket server","connectionId":"66854cc6-653a-4703-b589-099c4d21f6d7","path":"/ws","routerKey":"device-control","timestamp":"2025-12-05T00:24:30.472Z","serverTime":"2025-12-05T00:24:30.472Z"}
+2025-12-04 21:24:30.135 17631-24083 MdmCommandReceiver      com.cdccreditsmart.app               I  🔄 Iniciando polling fallback MDM (intervalo: 30s)
+2025-12-04 21:24:30.135 17631-24083 MdmCommandReceiver      com.cdccreditsmart.app               I  📊 Conforme especificação: 30 segundos entre requests
+2025-12-04 21:24:30.135 17631-24083 MdmCommandReceiver      com.cdccreditsmart.app               D  🔍 [Polling #1] Verificando comandos pendentes...
+2025-12-04 21:24:30.136 17631-22963 MdmCommandReceiver      com.cdccreditsmart.app               D  📥 JSON recebido: {"type":"welcome","message":"Connected to unified WebSocket server","connectionId":"66854cc6-653a-4703-b589-099c4d21f6d7","path":"/ws","routerKey":"device-control","timestamp":"2025-12-05T00:24:30.472Z","serverTime":"2025-12-05T00:24:30.472Z"}
+2025-12-04 21:24:30.138 17631-22963 MdmCommandReceiver      com.cdccreditsmart.app               D  📨 Tipo de mensagem: welcome
+2025-12-04 21:24:30.139 17631-22963 MdmCommandReceiver      com.cdccreditsmart.app               D  👋 Mensagem de boas-vindas do servidor
+2025-12-04 21:24:30.143 17631-24083 SecureTokenStorage      com.cdccreditsmart.app               D  ⚠️ Usando Serial Number para MDM (IMEI indisponível): VY9DB9...
+2025-12-04 21:24:30.143 17631-24083 MdmCommandReceiver      com.cdccreditsmart.app               D  🔍 Buscando comandos pendentes com identifier: VY9DB9EC...
+2025-12-04 21:24:30.154 17631-23501 okhttp.OkHttpClient     com.cdccreditsmart.app               I  --> GET https://cdccreditsmart.com/api/apk/device/VY9DB9EC/commands
+2025-12-04 21:24:30.154 17631-23501 okhttp.OkHttpClient     com.cdccreditsmart.app               I  --> END GET
+2025-12-04 21:24:30.847 17631-23501 okhttp.OkHttpClient     com.cdccreditsmart.app               I  <-- 200 https://cdccreditsmart.com/api/apk/device/VY9DB9EC/commands (691ms)
+2025-12-04 21:24:30.847 17631-23501 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-credentials: true
+2025-12-04 21:24:30.847 17631-23501 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-headers: Origin, X-Requested-With, Content-Type, Accept, Authorization, x-client-key, x-client-token, x-client-secret, cache-control
+2025-12-04 21:24:30.847 17631-23501 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-methods: GET, POST, PUT, PATCH, DELETE, OPTIONS
+2025-12-04 21:24:30.847 17631-23501 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-origin: *
+2025-12-04 21:24:30.847 17631-23501 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-max-age: 86400
+2025-12-04 21:24:30.847 17631-23501 okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-length: 105
+2025-12-04 21:24:30.848 17631-23501 okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-security-policy: default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://replit.com; style-src 'self' 'unsafe-inline' https://replit.com; img-src 'self' data: https:; font-src 'self' data: https://replit.com; connect-src 'self';
+2025-12-04 21:24:30.848 17631-23501 okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-type: application/json; charset=utf-8
+2025-12-04 21:24:30.848 17631-23501 okhttp.OkHttpClient     com.cdccreditsmart.app               I  date: Fri, 05 Dec 2025 00:24:31 GMT
+2025-12-04 21:24:30.848 17631-23501 okhttp.OkHttpClient     com.cdccreditsmart.app               I  etag: W/"69-8PetbeOP93W4v5dDvyWeYZadaf8"
+2025-12-04 21:24:30.848 17631-23501 okhttp.OkHttpClient     com.cdccreditsmart.app               I  permissions-policy: geolocation=(), microphone=(), camera=()
+2025-12-04 21:24:30.848 17631-23501 okhttp.OkHttpClient     com.cdccreditsmart.app               I  referrer-policy: strict-origin-when-cross-origin
+2025-12-04 21:24:30.848 17631-23501 okhttp.OkHttpClient     com.cdccreditsmart.app               I  server: Google Frontend
+2025-12-04 21:24:30.848 17631-23501 okhttp.OkHttpClient     com.cdccreditsmart.app               I  strict-transport-security: max-age=63072000; includeSubDomains
+2025-12-04 21:24:30.848 17631-23501 okhttp.OkHttpClient     com.cdccreditsmart.app               I  strict-transport-security: max-age=31536000; includeSubDomains
+2025-12-04 21:24:30.849 17631-23501 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-anti-fraud-protection: active
+2025-12-04 21:24:30.849 17631-23501 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-certificate-pinning-enabled: false
+2025-12-04 21:24:30.849 17631-23501 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-certificate-pinning-status: disabled-for-stability
+2025-12-04 21:24:30.849 17631-23501 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-cloud-trace-context: ed21b04a724221897fe1561495b3d4a5
+2025-12-04 21:24:30.849 17631-23501 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-content-type-options: nosniff
+2025-12-04 21:24:30.849 17631-23501 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-financial-data-protection: enabled
+2025-12-04 21:24:30.849 17631-23501 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-frame-options: DENY
+2025-12-04 21:24:30.849 17631-23501 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-transaction-security-level: maximum
+2025-12-04 21:24:30.850 17631-23501 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-xss-protection: 1; mode=block
+2025-12-04 21:24:30.850 17631-23501 okhttp.OkHttpClient     com.cdccreditsmart.app               I  via: 1.1 google
+2025-12-04 21:24:30.850 17631-23501 okhttp.OkHttpClient     com.cdccreditsmart.app               I  alt-svc: h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
+2025-12-04 21:24:30.851 17631-23501 okhttp.OkHttpClient     com.cdccreditsmart.app               I  {"deviceId":"device_1764893130549_6se9ihqrhok","serialNumber":"VY9DB9EC","commandsCount":0,"commands":[]}
+2025-12-04 21:24:30.851 17631-23501 okhttp.OkHttpClient     com.cdccreditsmart.app               I  <-- END HTTP (105-byte body)
+2025-12-04 21:24:30.853 17631-24083 MdmCommandReceiver      com.cdccreditsmart.app               D  ✅ Nenhum comando pendente
+2025-12-04 21:24:30.853 17631-24083 MdmCommandReceiver      com.cdccreditsmart.app               D  📊 Fetch duration: 709ms
+2025-12-04 21:24:30.853 17631-24083 MdmCommandReceiver      com.cdccreditsmart.app               D  ⏳ [Polling #1] Aguardando 29282ms até próxima verificação...
