@@ -9,6 +9,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import com.cdccreditsmart.app.protection.AppProtectionManager
+import com.cdccreditsmart.app.protection.SettingsGuardService
 import com.cdccreditsmart.device.CDCDeviceAdminReceiver
 
 class UninstallFlowActivity : Activity() {
@@ -36,6 +37,7 @@ class UninstallFlowActivity : Activity() {
     private var uninstallType: String = TYPE_NOT_ACTIVATED
     private var wasDeviceOwner = false
     private var wasDeviceAdmin = false
+    private var guardWasPaused = false
     
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,6 +53,14 @@ class UninstallFlowActivity : Activity() {
         Log.i(TAG, "╚════════════════════════════════════════════════════════════╝")
         Log.i(TAG, "")
         Log.i(TAG, "Tipo de desinstalação: $uninstallType")
+        
+        try {
+            SettingsGuardService.pauseForVoluntaryUninstall()
+            guardWasPaused = true
+            Log.i(TAG, "⏸️ SettingsGuard pausado para desinstalação")
+        } catch (e: Exception) {
+            Log.w(TAG, "⚠️ Erro ao pausar SettingsGuard: ${e.message}")
+        }
         
         executeUninstallFlow()
     }
@@ -97,6 +107,8 @@ class UninstallFlowActivity : Activity() {
                 } catch (e: Exception) {
                     Log.e(TAG, "   ERRO: ${e.message}")
                     Log.e(TAG, "   Abortando desinstalação - Device Owner não removido")
+                    reapplyProtectionsIfPossible()
+                    resumeGuardSafely()
                     finish()
                     return
                 }
@@ -129,7 +141,19 @@ class UninstallFlowActivity : Activity() {
         } catch (e: Exception) {
             Log.e(TAG, "ERRO durante fluxo: ${e.message}", e)
             reapplyProtectionsIfPossible()
+            resumeGuardSafely()
             finish()
+        }
+    }
+    
+    private fun resumeGuardSafely() {
+        if (guardWasPaused) {
+            try {
+                SettingsGuardService.resumeAfterVoluntaryUninstall()
+                Log.i(TAG, "▶️ SettingsGuard retomado")
+            } catch (e: Exception) {
+                Log.w(TAG, "⚠️ Erro ao retomar SettingsGuard: ${e.message}")
+            }
         }
     }
     
@@ -145,12 +169,26 @@ class UninstallFlowActivity : Activity() {
             
             if (isPackageInstalled(packageName)) {
                 Log.w(TAG, "RESULTADO: Usuário CANCELOU a desinstalação")
-                Log.w(TAG, "")
-                Log.w(TAG, "ATENÇÃO: Proteções foram removidas e NÃO podem ser reaplicadas!")
-                Log.w(TAG, "   O app não é mais Device Owner/Admin")
-                Log.w(TAG, "   Para restaurar proteções, reprovisionar via:")
-                Log.w(TAG, "     1. Factory reset + QR Code de provisionamento")
-                Log.w(TAG, "     2. ADB: dpm set-device-owner")
+                
+                val isStillDeviceOwner = try {
+                    dpm.isDeviceOwnerApp(packageName)
+                } catch (e: Exception) { false }
+                
+                if (isStillDeviceOwner) {
+                    Log.i(TAG, "App ainda é Device Owner - reaplicando proteções...")
+                    reapplyProtectionsIfPossible()
+                    Log.i(TAG, "OK: Proteções restauradas")
+                } else {
+                    Log.w(TAG, "")
+                    Log.w(TAG, "ATENÇÃO: Proteções foram removidas e NÃO podem ser reaplicadas!")
+                    Log.w(TAG, "   O app não é mais Device Owner/Admin")
+                    Log.w(TAG, "   Para restaurar proteções, reprovisionar via:")
+                    Log.w(TAG, "     1. Factory reset + QR Code de provisionamento")
+                    Log.w(TAG, "     2. ADB: dpm set-device-owner")
+                }
+                
+                resumeGuardSafely()
+                Log.i(TAG, "▶️ SettingsGuard retomado após cancelamento")
             } else {
                 Log.i(TAG, "RESULTADO: App desinstalado com sucesso")
             }

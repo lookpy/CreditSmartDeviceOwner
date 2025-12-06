@@ -65,6 +65,8 @@ class SelfDestructManager(private val context: Context) {
     }
     
     suspend fun executeSelfDestruct(params: CommandParameters.UninstallAppParameters): SelfDestructResult {
+        var guardWasPaused = false
+        
         return try {
             Log.i(TAG, "========================================")
             Log.i(TAG, "🚨 INICIANDO SEQUÊNCIA DE AUTO-DESTRUIÇÃO")
@@ -74,12 +76,18 @@ class SelfDestructManager(private val context: Context) {
             Log.i(TAG, "📋 Confirmation code: ${if (params.confirmationCode.isNotEmpty()) "presente" else "ausente"}")
             
             Log.i(TAG, "⏸️ Pausando proteção do SettingsGuard...")
-            SettingsGuardService.pauseForVoluntaryUninstall()
-            Log.i(TAG, "✅ Proteção pausada - desinstalação autorizada")
+            try {
+                SettingsGuardService.pauseForVoluntaryUninstall()
+                guardWasPaused = true
+                Log.i(TAG, "✅ Proteção pausada - desinstalação autorizada")
+            } catch (e: Exception) {
+                Log.w(TAG, "⚠️ Erro ao pausar SettingsGuard (continuando): ${e.message}")
+            }
             
             Log.i(TAG, "🔐 [1/7] Validando código de confirmação...")
             if (!validateConfirmationCode(params.confirmationCode)) {
                 Log.e(TAG, "❌ Código de confirmação inválido - abortando auto-destruição")
+                resumeGuardSafely(guardWasPaused)
                 return SelfDestructResult.Error("Invalid confirmation code")
             }
             Log.i(TAG, "✅ [1/9] Código de confirmação validado com sucesso")
@@ -115,6 +123,7 @@ class SelfDestructManager(private val context: Context) {
                     Log.e(TAG, "❌ [4/9] ERRO CRÍTICO ao remover proteções: ${disableResult.message}")
                     Log.e(TAG, "❌ Auto-destruição ABORTADA - app ainda está protegido")
                     sendFailureTelemetry(params.reason, "Protection removal failed: ${disableResult.message}")
+                    resumeGuardSafely(guardWasPaused)
                     return SelfDestructResult.Error("Failed to remove protections: ${disableResult.message}")
                 }
                 is com.cdccreditsmart.app.protection.DisableProtectionsResult.NotDeviceOwner -> {
@@ -136,24 +145,28 @@ class SelfDestructManager(private val context: Context) {
                     Log.e(TAG, "❌ [6/9] ERRO CRÍTICO - Falha ao remover Device Owner: ${removeResult.message}")
                     Log.e(TAG, "❌ Auto-destruição ABORTADA - app ainda é Device Owner")
                     sendFailureTelemetry(params.reason, "Device Owner removal failed: ${removeResult.message}")
+                    resumeGuardSafely(guardWasPaused)
                     return SelfDestructResult.Error("Failed to remove Device Owner: ${removeResult.message}")
                 }
                 is DeviceOwnerResult.RequiresManualSetup -> {
                     Log.e(TAG, "❌ [6/9] ERRO CRÍTICO - Device Owner requer ação manual: ${removeResult.instructions}")
                     Log.e(TAG, "❌ Auto-destruição ABORTADA - intervenção manual necessária")
                     sendFailureTelemetry(params.reason, "Manual setup required: ${removeResult.instructions}")
+                    resumeGuardSafely(guardWasPaused)
                     return SelfDestructResult.Error("Manual setup required: ${removeResult.instructions}")
                 }
                 is DeviceOwnerResult.RequiresPermissions -> {
                     Log.e(TAG, "❌ [6/9] ERRO CRÍTICO - Permissões faltando: ${removeResult.permissions}")
                     Log.e(TAG, "❌ Auto-destruição ABORTADA - permissões necessárias")
                     sendFailureTelemetry(params.reason, "Missing permissions: ${removeResult.permissions.joinToString()}")
+                    resumeGuardSafely(guardWasPaused)
                     return SelfDestructResult.Error("Missing permissions: ${removeResult.permissions.joinToString()}")
                 }
                 is DeviceOwnerResult.NotSupported -> {
                     Log.e(TAG, "❌ [6/9] ERRO CRÍTICO - Remoção não suportada: ${removeResult.reason}")
                     Log.e(TAG, "❌ Auto-destruição ABORTADA - fabricante não suporta")
                     sendFailureTelemetry(params.reason, "Not supported: ${removeResult.reason}")
+                    resumeGuardSafely(guardWasPaused)
                     return SelfDestructResult.Error("Device Owner removal not supported: ${removeResult.reason}")
                 }
             }
@@ -184,7 +197,19 @@ class SelfDestructManager(private val context: Context) {
         } catch (e: Exception) {
             Log.e(TAG, "❌ ERRO CRÍTICO na auto-destruição: ${e.message}", e)
             Log.e(TAG, "Stack trace: ${e.stackTraceToString()}")
+            resumeGuardSafely(guardWasPaused)
             SelfDestructResult.Error("Self-destruct failed: ${e.message}")
+        }
+    }
+    
+    private fun resumeGuardSafely(guardWasPaused: Boolean) {
+        if (guardWasPaused) {
+            try {
+                SettingsGuardService.resumeAfterVoluntaryUninstall()
+                Log.i(TAG, "▶️ Proteção retomada após erro")
+            } catch (e: Exception) {
+                Log.w(TAG, "⚠️ Erro ao retomar SettingsGuard: ${e.message}")
+            }
         }
     }
     

@@ -5,7 +5,6 @@ import android.util.Log
 import com.cdccreditsmart.app.mdm.SelfDestructManager
 import com.cdccreditsmart.app.mdm.SelfDestructResult
 import com.cdccreditsmart.app.network.RetrofitProvider
-import com.cdccreditsmart.app.protection.SettingsGuardService
 import com.cdccreditsmart.app.security.SecureTokenStorage
 import com.cdccreditsmart.network.api.DeviceApiService
 import com.cdccreditsmart.network.dto.mdm.CommandParameters
@@ -293,12 +292,7 @@ class VoluntaryUninstallManager(private val context: Context) {
             Log.i(TAG, "🔑 Código fornecido: ${confirmationCode.take(3)}***")
             Log.i(TAG, "")
             
-            Log.i(TAG, "⏸️ Pausando proteção do SettingsGuard para permitir desinstalação...")
-            SettingsGuardService.pauseForVoluntaryUninstall()
-            Log.i(TAG, "✅ Proteção pausada - usuário pode prosseguir com desinstalação")
-            Log.i(TAG, "")
-            
-            // Verificar novamente se pode desinstalar
+            // Verificar novamente se pode desinstalar ANTES de pausar guard
             Log.i(TAG, "🔍 Verificando elegibilidade...")
             val canUninstall = canUninstall()
             if (canUninstall !is CanUninstallResult.Eligible) {
@@ -309,7 +303,12 @@ class VoluntaryUninstallManager(private val context: Context) {
             Log.i(TAG, "")
             
             // Executar auto-destruição via SelfDestructManager
-            // SelfDestructManager vai validar o código contra o hash armazenado
+            // SelfDestructManager vai:
+            // 1. Pausar o SettingsGuard internamente
+            // 2. Validar o código contra o hash armazenado
+            // 3. Remover todas as proteções
+            // 4. Solicitar desinstalação
+            // 5. Retomar SettingsGuard em caso de erro
             val params = CommandParameters.UninstallAppParameters(
                 reason = "Voluntary uninstall - all installments paid (customer request)",
                 confirmationCode = confirmationCode.trim(),
@@ -317,9 +316,11 @@ class VoluntaryUninstallManager(private val context: Context) {
             )
             
             Log.i(TAG, "🚀 Delegando para SelfDestructManager...")
-            Log.i(TAG, "   → SelfDestructManager validará código contra hash armazenado")
+            Log.i(TAG, "   → SelfDestructManager pausará SettingsGuard")
+            Log.i(TAG, "   → Validará código contra hash armazenado")
             Log.i(TAG, "   → Se válido, removerá TODAS as proteções")
-            Log.i(TAG, "   → E solicitará desinstalação do app")
+            Log.i(TAG, "   → Solicitará desinstalação do app")
+            Log.i(TAG, "   → Em caso de erro, retomará SettingsGuard automaticamente")
             Log.i(TAG, "")
             
             val result = selfDestructManager.executeSelfDestruct(params)
