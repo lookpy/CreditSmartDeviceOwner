@@ -1,0 +1,216 @@
+2025-12-06 08:39:32.379 21614-21614 ScreenStateReceiver     com.cdccreditsmart.app               I  📱 Tela LIGADA - Aumentando frequência de monitoramento
+2025-12-06 08:39:32.379 21614-21614 CdcForegroundService    com.cdccreditsmart.app               D  🔋 Estado da tela mudou: LIGADA
+2025-12-06 08:39:32.684 21614-24691 MdmCommandReceiver      com.cdccreditsmart.app               D  🔍 [Polling #3] Verificando comandos pendentes...
+2025-12-06 08:39:32.693 21614-24691 SecureTokenStorage      com.cdccreditsmart.app               D  ⚠️ Usando Serial Number para MDM (IMEI indisponível): VY9DB9...
+2025-12-06 08:39:32.693 21614-24691 MdmCommandReceiver      com.cdccreditsmart.app               D  🔍 Buscando comandos pendentes com identifier: VY9DB9EC...
+2025-12-06 08:39:32.708 21614-21614 WebSocketManager        com.cdccreditsmart.app               D  Heartbeat ping sent
+2025-12-06 08:39:32.714 21614-25025 okhttp.OkHttpClient     com.cdccreditsmart.app               I  --> GET https://cdccreditsmart.com/api/apk/device/VY9DB9EC/commands
+2025-12-06 08:39:32.715 21614-25025 okhttp.OkHttpClient     com.cdccreditsmart.app               I  --> END GET
+2025-12-06 08:39:32.980 21614-24771 WebSocketManager        com.cdccreditsmart.app               D  Message received: {"type":"pong","timestamp":"2025-12-06T11:39:33.353Z"}...
+2025-12-06 08:39:32.980 21614-24771 WebSocketManager        com.cdccreditsmart.app               D  Received message type: pong
+2025-12-06 08:39:32.983 21614-24771 WebSocketManager        com.cdccreditsmart.app               D  Pong received
+2025-12-06 08:39:33.410 21614-21614 ActivityThread          com.cdccreditsmart.app               D  handleResumeActivity#3 r.window=com.android.internal.policy.PhoneWindow@d2d491aa.mFinished = falsewillBeVisible = true
+2025-12-06 08:39:33.439 21614-21614 BufferQueueConsumer     com.cdccreditsmart.app               D  [](id:546e00000004,api:0,p:-1,c:21614) connect: controlledByApp=false
+2025-12-06 08:39:33.439 21614-21614 BLASTBufferQueue        com.cdccreditsmart.app               D  [VRI[MainActivity]#4](f:0,a:0) constructor()
+2025-12-06 08:39:33.440 21614-21614 BLASTBufferQueue        com.cdccreditsmart.app               D  [VRI[MainActivity]#4](f:0,a:0) update width=1080 height=2436 format=-3 mTransformHint=0
+2025-12-06 08:39:33.467 21614-24735 BLASTBufferQueue        com.cdccreditsmart.app               D  [VRI[MainActivity]#4](f:0,a:1) acquireNextBufferLocked size=1080x2436 mFrameNumber=1 applyTransaction=true mTimestamp=96513439308598(auto) mPendingTransactions.size=0 graphicBufferId=92831423135768 transform=0
+2025-12-06 08:39:33.470 21614-21614 Choreographer           com.cdccreditsmart.app               W  Already have a pending vsync event.  There should only be one at a time.
+2025-12-06 08:39:33.597 21614-21614 InsetsController        com.cdccreditsmart.app               I  Insets animation onAnimationStart mShow:false, mDurationMs:340, types:statusBars
+2025-12-06 08:39:33.599 21614-21614 TranClassInfo           com.cdccreditsmart.app               D  instance successfully. com.transsion.hubcore.internal.jank.TranFrameTrackerImpl@d3aa2be from com.transsion.hubcore.internal.jank.ITranFrameTracker
+2025-12-06 08:39:33.646 21614-21614 InsetsSourceConsumer    com.cdccreditsmart.app               W  setControl isNavigationBarPositonChanged
+2025-12-06 08:39:33.773 21614-21614 TextSelection           com.cdccreditsmart.app               D  onUseCache cache=false
+2025-12-06 08:39:33.853 21614-25057 ScrollPolicy            com.cdccreditsmart.app               I  BOOST_KSWAPD; duration: 3000
+2025-12-06 08:39:33.859 21614-25057 PowerHalMgrImpl         com.cdccreditsmart.app               I  hdl:59344, pid:21614 
+2025-12-06 08:39:33.867 21614-25057 PowerHalMgrImpl         com.cdccreditsmart.app               I  hdl:59346, pid:21614 
+2025-12-06 08:39:33.935 21614-21614 ScrollIdentify          com.cdccreditsmart.app               I  on fling
+2025-12-06 08:39:33.941 21614-25057 PowerHalMgrImpl         com.cdccreditsmart.app               I  hdl:59348, pid:21614 
+2025-12-06 08:39:33.967 21614-21614 InsetsController        com.cdccreditsmart.app               I  Insets animation onAnimationEnd
+2025-12-06 08:39:34.058 21614-25025 okhttp.OkHttpClient     com.cdccreditsmart.app               I  <-- 200 https://cdccreditsmart.com/api/apk/device/VY9DB9EC/commands (1342ms)
+2025-12-06 08:39:34.058 21614-25025 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-credentials: true
+2025-12-06 08:39:34.059 21614-25025 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-headers: Origin, X-Requested-With, Content-Type, Accept, Authorization, x-client-key, x-client-token, x-client-secret, cache-control
+2025-12-06 08:39:34.074 21614-25025 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-methods: GET, POST, PUT, PATCH, DELETE, OPTIONS
+2025-12-06 08:39:34.074 21614-25025 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-origin: *
+2025-12-06 08:39:34.074 21614-25025 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-max-age: 86400
+2025-12-06 08:39:34.075 21614-25025 okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-length: 105
+2025-12-06 08:39:34.075 21614-25025 okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-security-policy: default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://replit.com; style-src 'self' 'unsafe-inline' https://replit.com; img-src 'self' data: https:; font-src 'self' data: https://replit.com; connect-src 'self';
+2025-12-06 08:39:34.075 21614-25025 okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-type: application/json; charset=utf-8
+2025-12-06 08:39:34.075 21614-25025 okhttp.OkHttpClient     com.cdccreditsmart.app               I  date: Sat, 06 Dec 2025 11:39:34 GMT
+2025-12-06 08:39:34.075 21614-25025 okhttp.OkHttpClient     com.cdccreditsmart.app               I  etag: W/"69-8PetbeOP93W4v5dDvyWeYZadaf8"
+2025-12-06 08:39:34.075 21614-25025 okhttp.OkHttpClient     com.cdccreditsmart.app               I  permissions-policy: geolocation=(), microphone=(), camera=()
+2025-12-06 08:39:34.075 21614-25025 okhttp.OkHttpClient     com.cdccreditsmart.app               I  referrer-policy: strict-origin-when-cross-origin
+2025-12-06 08:39:34.075 21614-25025 okhttp.OkHttpClient     com.cdccreditsmart.app               I  server: Google Frontend
+2025-12-06 08:39:34.076 21614-25025 okhttp.OkHttpClient     com.cdccreditsmart.app               I  strict-transport-security: max-age=63072000; includeSubDomains
+2025-12-06 08:39:34.076 21614-25025 okhttp.OkHttpClient     com.cdccreditsmart.app               I  strict-transport-security: max-age=31536000; includeSubDomains
+2025-12-06 08:39:34.076 21614-25025 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-anti-fraud-protection: active
+2025-12-06 08:39:34.076 21614-25025 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-certificate-pinning-enabled: false
+2025-12-06 08:39:34.076 21614-25025 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-certificate-pinning-status: disabled-for-stability
+2025-12-06 08:39:34.076 21614-25025 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-cloud-trace-context: 78babaa2af7999e35f2fbceea5387f45;o=1
+2025-12-06 08:39:34.076 21614-25025 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-content-type-options: nosniff
+2025-12-06 08:39:34.076 21614-25025 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-financial-data-protection: enabled
+2025-12-06 08:39:34.076 21614-25025 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-frame-options: DENY
+2025-12-06 08:39:34.077 21614-25025 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-transaction-security-level: maximum
+2025-12-06 08:39:34.081 21614-25025 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-xss-protection: 1; mode=block
+2025-12-06 08:39:34.081 21614-25025 okhttp.OkHttpClient     com.cdccreditsmart.app               I  via: 1.1 google
+2025-12-06 08:39:34.081 21614-25025 okhttp.OkHttpClient     com.cdccreditsmart.app               I  alt-svc: h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
+2025-12-06 08:39:34.089 21614-25025 okhttp.OkHttpClient     com.cdccreditsmart.app               I  {"deviceId":"device_1764893130549_6se9ihqrhok","serialNumber":"VY9DB9EC","commandsCount":0,"commands":[]}
+2025-12-06 08:39:34.090 21614-25025 okhttp.OkHttpClient     com.cdccreditsmart.app               I  <-- END HTTP (105-byte body)
+2025-12-06 08:39:34.094 21614-24691 MdmCommandReceiver      com.cdccreditsmart.app               D  ✅ Nenhum comando pendente
+2025-12-06 08:39:34.097 21614-24691 MdmCommandReceiver      com.cdccreditsmart.app               D  📊 Fetch duration: 1404ms
+2025-12-06 08:39:34.469 21614-21614 VRI[MainActivity]       com.cdccreditsmart.app               D  visibilityChanged oldVisibility=true newVisibility=false
+2025-12-06 08:39:34.501 21614-21614 BLASTBufferQueue        com.cdccreditsmart.app               D  [VRI[MainActivity]#4](f:0,a:1) destructor()
+2025-12-06 08:39:34.501 21614-21614 BufferQueueConsumer     com.cdccreditsmart.app               D  [VRI[MainActivity]#4(BLAST Consumer)4](id:546e00000004,api:0,p:-1,c:21614) disconnect
+2025-12-06 08:39:34.945 21614-24691 SettingsGuardService    com.cdccreditsmart.app               W  🎯 Settings Home DETECTADO - POTENCIALMENTE PERIGOSO!
+2025-12-06 08:39:34.945 21614-24691 SettingsGuardService    com.cdccreditsmart.app               W     Pacote: com.android.settings
+2025-12-06 08:39:34.945 21614-24691 SettingsGuardService    com.cdccreditsmart.app               W     Activity: com.transsion.settings.homepage.SettingsHomeActivity
+2025-12-06 08:39:34.945 21614-24691 SettingsGuardService    com.cdccreditsmart.app               W  🚨 ÁREA PERIGOSA DETECTADA!
+2025-12-06 08:39:34.945 21614-24691 SettingsGuardService    com.cdccreditsmart.app               W     Pacote: com.android.settings
+2025-12-06 08:39:34.945 21614-24691 SettingsGuardService    com.cdccreditsmart.app               W     Atividade: com.transsion.settings.homepage.SettingsHomeActivity
+2025-12-06 08:39:34.945 21614-24691 SettingsGuardService    com.cdccreditsmart.app               W     Chamando app para foreground...
+2025-12-06 08:39:34.984 21614-21614 SettingsGuardService    com.cdccreditsmart.app               D  🏠 Enviado para Home primeiro (fecha Settings)
+2025-12-06 08:39:35.161 21614-21614 SettingsGuardService    com.cdccreditsmart.app               I  ✅ App trazido para foreground
+2025-12-06 08:39:35.161 21614-21614 ActivityThread          com.cdccreditsmart.app               D  mToDestroying.remove:ActivityRecord{62520a5 token=android.os.BinderProxy@46a791 {com.cdccreditsmart.app/com.cdccreditsmart.app.presentation.MainActivity}}
+2025-12-06 08:39:35.184 21614-21614 WindowOnBackDispatcher  com.cdccreditsmart.app               W  sendCancelIfRunning: isInProgress=false callback=android.app.Activity$$ExternalSyntheticLambda0@2d450d7
+2025-12-06 08:39:35.188 21614-21614 View                    com.cdccreditsmart.app               D  [Warning] assignParent to null: this = DecorView@fef9818[MainActivity]
+2025-12-06 08:39:35.202 21614-25428 libMEOW                 com.cdccreditsmart.app               D  meow new tls: 0xb400007672cb3220
+2025-12-06 08:39:35.202 21614-25428 libMEOW                 com.cdccreditsmart.app               D  applied 1 plugins for [com.cdccreditsmart.app]:
+2025-12-06 08:39:35.202 21614-25428 libMEOW                 com.cdccreditsmart.app               D    plugin 1: [libMEOW_gift.so]: 0xb400007592aab840
+2025-12-06 08:39:35.203 21614-25428 libMEOW                 com.cdccreditsmart.app               D  rebuild call chain: 0xb400007672c731e0
+2025-12-06 08:39:35.203 21614-25428 libMEOW                 com.cdccreditsmart.app               D  meow delete tls: 0xb400007672cb3220
+2025-12-06 08:39:35.216 21614-21614 ActivityThread          com.cdccreditsmart.app               D  ++ activityComponent:com.cdccreditsmart.app/com.cdccreditsmart.app.presentation.MainActivity counts:1 ALEAK_CLEAR_SUPPORT:true
+2025-12-06 08:39:35.230 21614-21614 MainActivity            com.cdccreditsmart.app               I  ========================================
+2025-12-06 08:39:35.230 21614-21614 MainActivity            com.cdccreditsmart.app               I  📱 SOLICITANDO PERMISSÕES (NÃO DEVICE OWNER)
+2025-12-06 08:39:35.230 21614-21614 MainActivity            com.cdccreditsmart.app               I  ========================================
+2025-12-06 08:39:35.230 21614-21614 MainActivity            com.cdccreditsmart.app               I  ✅ Todas as runtime permissions já foram concedidas!
+2025-12-06 08:39:35.230 21614-21614 SpecialPermissionReq    com.cdccreditsmart.app               I  ========================================
+2025-12-06 08:39:35.230 21614-21614 SpecialPermissionReq    com.cdccreditsmart.app               I  📊 STATUS DAS PERMISSÕES ESPECIAIS
+2025-12-06 08:39:35.230 21614-21614 SpecialPermissionReq    com.cdccreditsmart.app               I  ========================================
+2025-12-06 08:39:35.231 21614-21614 SpecialPermissionReq    com.cdccreditsmart.app               I    USAGE_STATS: ✅ CONCEDIDA
+2025-12-06 08:39:35.231 21614-21614 SpecialPermissionReq    com.cdccreditsmart.app               I    OVERLAY: ✅ CONCEDIDA
+2025-12-06 08:39:35.232 21614-21614 SpecialPermissionReq    com.cdccreditsmart.app               I  
+2025-12-06 08:39:35.232 21614-21614 SpecialPermissionReq    com.cdccreditsmart.app               I  ✅ Todas as permissões especiais concedidas!
+2025-12-06 08:39:35.232 21614-21614 SpecialPermissionReq    com.cdccreditsmart.app               I     Proteção anti-desinstalação ativa.
+2025-12-06 08:39:35.232 21614-21614 SpecialPermissionReq    com.cdccreditsmart.app               I  ========================================
+2025-12-06 08:39:35.233 21614-21614 MainActivity            com.cdccreditsmart.app               I  ✅ Todas as permissões especiais já foram concedidas!
+2025-12-06 08:39:35.233 21614-24691 PersistentStateManager  com.cdccreditsmart.app               D  Nenhum estado local encontrado
+2025-12-06 08:39:35.233 21614-24691 PersistentStateManager  com.cdccreditsmart.app               D  🆕 Sem estado local - device novo ou pós factory reset
+2025-12-06 08:39:35.233 21614-24691 MainActivity            com.cdccreditsmart.app               I  🆕 Device nunca foi provisionado
+2025-12-06 08:39:35.239 21614-21614 ActivityThread          com.cdccreditsmart.app               D  handleResumeActivity#3 r.window=nulla.mFinished = falsewillBeVisible = true
+2025-12-06 08:39:35.239 21614-21614 ActivityThread          com.cdccreditsmart.app               D  handleResumeActivity#4 addView a.mVisibleFromClient=truea.mWindowAdded=falsedecor=DecorView@fc8cae8[]
+2025-12-06 08:39:35.239 21614-21614 ActivityThread          com.cdccreditsmart.app               D  handleResumeActivity#5 addView decor=DecorView@fc8cae8[]
+2025-12-06 08:39:35.245 21614-21614 VRI[MainActivity]       com.cdccreditsmart.app               D  hardware acceleration = true, forceHwAccelerated = false
+2025-12-06 08:39:35.249 21614-21614 ViewRootImpl            com.cdccreditsmart.app               D  setView appearance:24 com.cdccreditsmart.app/com.cdccreditsmart.app.presentation.MainActivity
+2025-12-06 08:39:35.253 21614-21614 InputEventReceiver      com.cdccreditsmart.app               D  Input log is disabled in InputEventReceiver.
+2025-12-06 08:39:35.380 21614-21614 BufferQueueConsumer     com.cdccreditsmart.app               D  [](id:546e00000005,api:0,p:-1,c:21614) connect: controlledByApp=false
+2025-12-06 08:39:35.380 21614-21614 BLASTBufferQueue        com.cdccreditsmart.app               D  [VRI[MainActivity]#5](f:0,a:0) constructor()
+2025-12-06 08:39:35.380 21614-21614 BLASTBufferQueue        com.cdccreditsmart.app               D  [VRI[MainActivity]#5](f:0,a:0) update width=1080 height=2436 format=-3 mTransformHint=0
+2025-12-06 08:39:35.402 21614-24691 SettingsGuardService    com.cdccreditsmart.app               I  ✅ App CDC em foreground - resetando contador
+2025-12-06 08:39:35.403 21614-24735 BLASTBufferQueue        com.cdccreditsmart.app               D  [VRI[MainActivity]#5](f:0,a:1) acquireNextBufferLocked size=1080x2436 mFrameNumber=1 applyTransaction=true mTimestamp=96515375998060(auto) mPendingTransactions.size=0 graphicBufferId=92831423135779 transform=0
+2025-12-06 08:39:35.405 21614-21614 Choreographer           com.cdccreditsmart.app               W  Already have a pending vsync event.  There should only be one at a time.
+2025-12-06 08:39:35.409 21614-21614 PermissionGateScreen    com.cdccreditsmart.app               I  🔍 VERIFICAÇÃO INICIAL DE PERMISSÕES:
+2025-12-06 08:39:35.409 21614-21614 PermissionGateScreen    com.cdccreditsmart.app               I     Nível: DEVICE_ADMIN
+2025-12-06 08:39:35.409 21614-21614 PermissionGateScreen    com.cdccreditsmart.app               I     Todas concedidas: true
+2025-12-06 08:39:35.410 21614-21614 PermissionGateScreen    com.cdccreditsmart.app               I     Bateria isenta: true
+2025-12-06 08:39:35.410 21614-21614 PermissionGateScreen    com.cdccreditsmart.app               I     ✅ OK: Administrador do Dispositivo
+2025-12-06 08:39:35.410 21614-21614 PermissionGateScreen    com.cdccreditsmart.app               I     ✅ OK: Permissões Básicas
+2025-12-06 08:39:35.410 21614-21614 PermissionGateScreen    com.cdccreditsmart.app               I     ✅ OK: Monitoramento de Apps
+2025-12-06 08:39:35.410 21614-21614 PermissionGateScreen    com.cdccreditsmart.app               I     ✅ OK: Mostrar Alertas
+2025-12-06 08:39:35.410 21614-21614 PermissionGateScreen    com.cdccreditsmart.app               I     ✅ OK: Execução em Segundo Plano
+2025-12-06 08:39:35.410 21614-21614 PermissionGateScreen    com.cdccreditsmart.app               I  ✅ TODAS AS PERMISSÕES JÁ CONCEDIDAS - navegando imediatamente
+2025-12-06 08:39:35.410 21614-21614 SettingsGuardService    com.cdccreditsmart.app               I  ▶️ Guard RETOMADO após fluxo de permissões
+2025-12-06 08:39:35.477 21614-21614 DeviceOwnerCheckVM      com.cdccreditsmart.app               I  ========================================
+2025-12-06 08:39:35.477 21614-21614 DeviceOwnerCheckVM      com.cdccreditsmart.app               I  🔐 Verificando status de Device Owner...
+2025-12-06 08:39:35.521 21614-21614 InsetsController        com.cdccreditsmart.app               I  Insets animation onAnimationStart mShow:false, mDurationMs:340, types:statusBars
+2025-12-06 08:39:35.678 21614-24660 creditsmart.app         com.cdccreditsmart.app               W  Cleared Reference was only reachable from finalizer (only reported once)
+2025-12-06 08:39:35.741 21614-24660 creditsmart.app         com.cdccreditsmart.app               I  Background young concurrent mark compact GC freed 9494KB AllocSpace bytes, 60(2224KB) LOS objects, 44% free, 14MB/25MB, paused 1.897ms,6.227ms total 138.123ms
+2025-12-06 08:39:35.893 21614-21614 InsetsController        com.cdccreditsmart.app               I  Insets animation onAnimationEnd
+2025-12-06 08:39:35.977 21614-21614 DeviceUtils             com.cdccreditsmart.app               D  Device Owner check: false
+2025-12-06 08:39:35.978 21614-21614 DeviceUtils             com.cdccreditsmart.app               D  Samsung device: false (Manufacturer: INFINIX)
+2025-12-06 08:39:35.978 21614-21614 DeviceOwnerCheckVM      com.cdccreditsmart.app               W  ❌ Dispositivo NÃO é Device Owner
+2025-12-06 08:39:35.978 21614-21614 DeviceOwnerCheckVM      com.cdccreditsmart.app               W  Dispositivo: INFINIX Infinix X6880 (Android 15)
+2025-12-06 08:39:35.978 21614-21614 DeviceOwnerCheckVM      com.cdccreditsmart.app               W  Samsung: false
+2025-12-06 08:39:35.978 21614-21614 DeviceOwnerCheckVM      com.cdccreditsmart.app               I  ========================================
+2025-12-06 08:39:36.171 21614-21614 TextSelection           com.cdccreditsmart.app               D  onUseCache cache=false
+2025-12-06 08:39:36.242 21614-25057 PowerHalMgrImpl         com.cdccreditsmart.app               I  hdl:59385, pid:21614 
+2025-12-06 08:39:36.258 21614-25057 PowerHalMgrImpl         com.cdccreditsmart.app               I  hdl:59387, pid:21614 
+2025-12-06 08:39:36.311 21614-25057 ScrollPolicy            com.cdccreditsmart.app               I  BOOST_SCENE_4; duration: 0
+2025-12-06 08:39:36.316 21614-25057 PowerHalMgrImpl         com.cdccreditsmart.app               I  hdl:59392, pid:21614 
+2025-12-06 08:39:36.835 21614-21614 VRI[MainActivity]       com.cdccreditsmart.app               D  visibilityChanged oldVisibility=true newVisibility=false
+2025-12-06 08:39:36.863 21614-21614 BLASTBufferQueue        com.cdccreditsmart.app               D  [VRI[MainActivity]#5](f:0,a:1) destructor()
+2025-12-06 08:39:36.863 21614-21614 BufferQueueConsumer     com.cdccreditsmart.app               D  [VRI[MainActivity]#5(BLAST Consumer)5](id:546e00000005,api:0,p:-1,c:21614) disconnect
+2025-12-06 08:39:37.248 21614-24691 SettingsGuardService    com.cdccreditsmart.app               W  🎯 Settings Home DETECTADO - POTENCIALMENTE PERIGOSO!
+2025-12-06 08:39:37.248 21614-24691 SettingsGuardService    com.cdccreditsmart.app               W     Pacote: com.android.settings
+2025-12-06 08:39:37.248 21614-24691 SettingsGuardService    com.cdccreditsmart.app               W     Activity: com.transsion.settings.homepage.SettingsHomeActivity
+2025-12-06 08:39:37.248 21614-24691 SettingsGuardService    com.cdccreditsmart.app               W  🚨 ÁREA PERIGOSA DETECTADA!
+2025-12-06 08:39:37.248 21614-24691 SettingsGuardService    com.cdccreditsmart.app               W     Pacote: com.android.settings
+2025-12-06 08:39:37.249 21614-24691 SettingsGuardService    com.cdccreditsmart.app               W     Atividade: com.transsion.settings.homepage.SettingsHomeActivity
+2025-12-06 08:39:37.249 21614-24691 SettingsGuardService    com.cdccreditsmart.app               W     Chamando app para foreground...
+2025-12-06 08:39:37.295 21614-21614 SettingsGuardService    com.cdccreditsmart.app               D  🏠 Enviado para Home primeiro (fecha Settings)
+2025-12-06 08:39:37.473 21614-21614 SettingsGuardService    com.cdccreditsmart.app               I  ✅ App trazido para foreground
+2025-12-06 08:39:37.473 21614-21614 ActivityThread          com.cdccreditsmart.app               D  mToDestroying.remove:ActivityRecord{4a154e5 token=android.os.BinderProxy@3ec2221 {com.cdccreditsmart.app/com.cdccreditsmart.app.presentation.MainActivity}}
+2025-12-06 08:39:37.489 21614-21614 WindowOnBackDispatcher  com.cdccreditsmart.app               W  sendCancelIfRunning: isInProgress=false callback=android.app.Activity$$ExternalSyntheticLambda0@d7c303d
+2025-12-06 08:39:37.491 21614-21614 View                    com.cdccreditsmart.app               D  [Warning] assignParent to null: this = DecorView@fc8cae8[MainActivity]
+2025-12-06 08:39:37.510 21614-25671 libMEOW                 com.cdccreditsmart.app               D  meow new tls: 0xb400007672c731e0
+2025-12-06 08:39:37.510 21614-25671 libMEOW                 com.cdccreditsmart.app               D  applied 1 plugins for [com.cdccreditsmart.app]:
+2025-12-06 08:39:37.510 21614-25671 libMEOW                 com.cdccreditsmart.app               D    plugin 1: [libMEOW_gift.so]: 0xb400007592aab840
+2025-12-06 08:39:37.511 21614-25671 libMEOW                 com.cdccreditsmart.app               D  rebuild call chain: 0xb400007672c431b0
+2025-12-06 08:39:37.511 21614-25671 libMEOW                 com.cdccreditsmart.app               D  meow delete tls: 0xb400007672c731e0
+2025-12-06 08:39:37.522 21614-21614 ActivityThread          com.cdccreditsmart.app               D  ++ activityComponent:com.cdccreditsmart.app/com.cdccreditsmart.app.presentation.MainActivity counts:1 ALEAK_CLEAR_SUPPORT:true
+2025-12-06 08:39:37.536 21614-21614 MainActivity            com.cdccreditsmart.app               I  ========================================
+2025-12-06 08:39:37.536 21614-21614 MainActivity            com.cdccreditsmart.app               I  📱 SOLICITANDO PERMISSÕES (NÃO DEVICE OWNER)
+2025-12-06 08:39:37.536 21614-21614 MainActivity            com.cdccreditsmart.app               I  ========================================
+2025-12-06 08:39:37.536 21614-21614 MainActivity            com.cdccreditsmart.app               I  ✅ Todas as runtime permissions já foram concedidas!
+2025-12-06 08:39:37.536 21614-21614 SpecialPermissionReq    com.cdccreditsmart.app               I  ========================================
+2025-12-06 08:39:37.536 21614-21614 SpecialPermissionReq    com.cdccreditsmart.app               I  📊 STATUS DAS PERMISSÕES ESPECIAIS
+2025-12-06 08:39:37.536 21614-21614 SpecialPermissionReq    com.cdccreditsmart.app               I  ========================================
+2025-12-06 08:39:37.537 21614-21614 SpecialPermissionReq    com.cdccreditsmart.app               I    USAGE_STATS: ✅ CONCEDIDA
+2025-12-06 08:39:37.537 21614-24691 PersistentStateManager  com.cdccreditsmart.app               D  Nenhum estado local encontrado
+2025-12-06 08:39:37.537 21614-24691 PersistentStateManager  com.cdccreditsmart.app               D  🆕 Sem estado local - device novo ou pós factory reset
+2025-12-06 08:39:37.537 21614-24691 MainActivity            com.cdccreditsmart.app               I  🆕 Device nunca foi provisionado
+2025-12-06 08:39:37.538 21614-21614 SpecialPermissionReq    com.cdccreditsmart.app               I    OVERLAY: ✅ CONCEDIDA
+2025-12-06 08:39:37.538 21614-21614 SpecialPermissionReq    com.cdccreditsmart.app               I  
+2025-12-06 08:39:37.538 21614-21614 SpecialPermissionReq    com.cdccreditsmart.app               I  ✅ Todas as permissões especiais concedidas!
+2025-12-06 08:39:37.538 21614-21614 SpecialPermissionReq    com.cdccreditsmart.app               I     Proteção anti-desinstalação ativa.
+2025-12-06 08:39:37.538 21614-21614 SpecialPermissionReq    com.cdccreditsmart.app               I  ========================================
+2025-12-06 08:39:37.539 21614-21614 MainActivity            com.cdccreditsmart.app               I  ✅ Todas as permissões especiais já foram concedidas!
+2025-12-06 08:39:37.545 21614-21614 ActivityThread          com.cdccreditsmart.app               D  handleResumeActivity#3 r.window=nulla.mFinished = falsewillBeVisible = true
+2025-12-06 08:39:37.545 21614-21614 ActivityThread          com.cdccreditsmart.app               D  handleResumeActivity#4 addView a.mVisibleFromClient=truea.mWindowAdded=falsedecor=DecorView@ddd7d1f[]
+2025-12-06 08:39:37.545 21614-21614 ActivityThread          com.cdccreditsmart.app               D  handleResumeActivity#5 addView decor=DecorView@ddd7d1f[]
+2025-12-06 08:39:37.550 21614-21614 VRI[MainActivity]       com.cdccreditsmart.app               D  hardware acceleration = true, forceHwAccelerated = false
+2025-12-06 08:39:37.552 21614-21614 ViewRootImpl            com.cdccreditsmart.app               D  setView appearance:24 com.cdccreditsmart.app/com.cdccreditsmart.app.presentation.MainActivity
+2025-12-06 08:39:37.560 21614-21614 InputEventReceiver      com.cdccreditsmart.app               D  Input log is disabled in InputEventReceiver.
+2025-12-06 08:39:37.686 21614-21614 BufferQueueConsumer     com.cdccreditsmart.app               D  [](id:546e00000006,api:0,p:-1,c:21614) connect: controlledByApp=false
+2025-12-06 08:39:37.686 21614-21614 BLASTBufferQueue        com.cdccreditsmart.app               D  [VRI[MainActivity]#6](f:0,a:0) constructor()
+2025-12-06 08:39:37.686 21614-21614 BLASTBufferQueue        com.cdccreditsmart.app               D  [VRI[MainActivity]#6](f:0,a:0) update width=1080 height=2436 format=-3 mTransformHint=0
+2025-12-06 08:39:37.703 21614-24735 BLASTBufferQueue        com.cdccreditsmart.app               D  [VRI[MainActivity]#6](f:0,a:1) acquireNextBufferLocked size=1080x2436 mFrameNumber=1 applyTransaction=true mTimestamp=96517676137829(auto) mPendingTransactions.size=0 graphicBufferId=92831423135784 transform=0
+2025-12-06 08:39:37.704 21614-21614 Choreographer           com.cdccreditsmart.app               W  Already have a pending vsync event.  There should only be one at a time.
+2025-12-06 08:39:37.706 21614-24691 SettingsGuardService    com.cdccreditsmart.app               I  ✅ App CDC em foreground - resetando contador
+2025-12-06 08:39:37.709 21614-21614 PermissionGateScreen    com.cdccreditsmart.app               I  🔍 VERIFICAÇÃO INICIAL DE PERMISSÕES:
+2025-12-06 08:39:37.709 21614-21614 PermissionGateScreen    com.cdccreditsmart.app               I     Nível: DEVICE_ADMIN
+2025-12-06 08:39:37.709 21614-21614 PermissionGateScreen    com.cdccreditsmart.app               I     Todas concedidas: true
+2025-12-06 08:39:37.710 21614-21614 PermissionGateScreen    com.cdccreditsmart.app               I     Bateria isenta: true
+2025-12-06 08:39:37.710 21614-21614 PermissionGateScreen    com.cdccreditsmart.app               I     ✅ OK: Administrador do Dispositivo
+2025-12-06 08:39:37.710 21614-21614 PermissionGateScreen    com.cdccreditsmart.app               I     ✅ OK: Permissões Básicas
+2025-12-06 08:39:37.710 21614-21614 PermissionGateScreen    com.cdccreditsmart.app               I     ✅ OK: Monitoramento de Apps
+2025-12-06 08:39:37.710 21614-21614 PermissionGateScreen    com.cdccreditsmart.app               I     ✅ OK: Mostrar Alertas
+2025-12-06 08:39:37.710 21614-21614 PermissionGateScreen    com.cdccreditsmart.app               I     ✅ OK: Execução em Segundo Plano
+2025-12-06 08:39:37.710 21614-21614 PermissionGateScreen    com.cdccreditsmart.app               I  ✅ TODAS AS PERMISSÕES JÁ CONCEDIDAS - navegando imediatamente
+2025-12-06 08:39:37.710 21614-21614 SettingsGuardService    com.cdccreditsmart.app               I  ▶️ Guard RETOMADO após fluxo de permissões
+2025-12-06 08:39:37.769 21614-21614 DeviceOwnerCheckVM      com.cdccreditsmart.app               I  ========================================
+2025-12-06 08:39:37.769 21614-21614 DeviceOwnerCheckVM      com.cdccreditsmart.app               I  🔐 Verificando status de Device Owner...
+2025-12-06 08:39:37.813 21614-21614 InsetsController        com.cdccreditsmart.app               I  Insets animation onAnimationStart mShow:false, mDurationMs:340, types:statusBars
+2025-12-06 08:39:38.157 21614-21614 TextSelection           com.cdccreditsmart.app               D  onUseCache cache=false
+2025-12-06 08:39:38.192 21614-21614 InsetsController        com.cdccreditsmart.app               I  Insets animation onAnimationEnd
+2025-12-06 08:39:38.194 21614-25057 ScrollPolicy            com.cdccreditsmart.app               I  BOOST_KSWAPD; duration: 3000
+2025-12-06 08:39:38.209 21614-25057 PowerHalMgrImpl         com.cdccreditsmart.app               I  hdl:59423, pid:21614 
+2025-12-06 08:39:38.224 21614-25057 PowerHalMgrImpl         com.cdccreditsmart.app               I  hdl:59426, pid:21614 
+2025-12-06 08:39:38.297 21614-25057 ScrollPolicy            com.cdccreditsmart.app               I  BOOST_SCENE_4; duration: 0
+2025-12-06 08:39:38.302 21614-25057 PowerHalMgrImpl         com.cdccreditsmart.app               I  hdl:59431, pid:21614 
+2025-12-06 08:39:38.305 21614-21614 DeviceUtils             com.cdccreditsmart.app               D  Device Owner check: false
+2025-12-06 08:39:38.305 21614-21614 DeviceUtils             com.cdccreditsmart.app               D  Samsung device: false (Manufacturer: INFINIX)
+2025-12-06 08:39:38.305 21614-21614 DeviceOwnerCheckVM      com.cdccreditsmart.app               W  ❌ Dispositivo NÃO é Device Owner
+2025-12-06 08:39:38.305 21614-21614 DeviceOwnerCheckVM      com.cdccreditsmart.app               W  Dispositivo: INFINIX Infinix X6880 (Android 15)
+2025-12-06 08:39:38.305 21614-21614 DeviceOwnerCheckVM      com.cdccreditsmart.app               W  Samsung: false
+2025-12-06 08:39:38.305 21614-21614 DeviceOwnerCheckVM      com.cdccreditsmart.app               I  ========================================
+2025-12-06 08:39:38.845 21614-21614 VRI[MainActivity]       com.cdccreditsmart.app               D  visibilityChanged oldVisibility=true newVisibility=false
+2025-12-06 08:39:38.899 21614-21614 BLASTBufferQueue        com.cdccreditsmart.app               D  [VRI[MainActivity]#6](f:0,a:1) destructor()
+2025-12-06 08:39:38.899 21614-21614 BufferQueueConsumer     com.cdccreditsmart.app               D  [VRI[MainActivity]#6(BLAST Consumer)6](id:546e00000006,api:0,p:-1,c:21614) disconnect

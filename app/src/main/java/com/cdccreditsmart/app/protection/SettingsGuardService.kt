@@ -644,8 +644,9 @@ class SettingsGuardService(private val context: Context) {
                     "SecurityHubMainActivity",
                     
                     // Xiaomi/MIUI - CRÍTICO: XHide, XClone, App Lock podem ocultar o app!
+                    // NOTA: MainTabActivity é a tela PRINCIPAL do SecurityCenter - permitir navegação
+                    // Só bloquear quando entrar nas sub-telas específicas perigosas
                     "SecurityCenterMainActivity",
-                    "MainTabActivity",
                     "PrivacyPasswordActivity",
                     "XHideActivity",
                     "XCloneActivity",
@@ -936,60 +937,50 @@ class SettingsGuardService(private val context: Context) {
                 }
                 
                 // ═══════════════════════════════════════════════════════════════════════════════
-                // CRÍTICO: SubSettings é o wrapper genérico usado pelo Android/MIUI para
-                // TODAS as sub-telas de configuração, incluindo Factory Reset!
-                // BLOQUEAR SEMPRE que for SubSettings de qualquer pacote de Settings
+                // NOTA: SubSettings é um wrapper genérico que pode conter telas seguras
+                // (Wi-Fi, Bluetooth) ou perigosas (Factory Reset, App Info).
+                // 
+                // ESTRATÉGIA: Só bloquear SubSettings de pacotes de SEGURANÇA (SecurityCenter)
+                // Para com.android.settings, confiamos na detecção de activities específicas
                 // ═══════════════════════════════════════════════════════════════════════════════
-                val settingsSubPagesPackages = setOf(
-                    // Android padrão - CRÍTICO: SubSettings é usado para Factory Reset, App Info, etc
-                    "com.android.settings",
-                    "com.google.android.settings",
-                    // Xiaomi/MIUI
-                    "com.miui.settings",
-                    "com.xiaomi.misettings",
-                    // Samsung
-                    "com.samsung.android.settings",
-                    // Huawei
-                    "com.huawei.settings",
-                    // OPPO/ColorOS
-                    "com.coloros.settings",
-                    "com.oppo.settings",
-                    // Vivo
-                    "com.vivo.settings",
-                    // OnePlus
-                    "com.oneplus.settings",
-                    // Realme
-                    "com.realme.settings",
-                    // Tecno/Infinix/iTel (Transsion)
-                    "com.transsion.settings"
+                val alwaysBlockSubSettingsPackages = setOf(
+                    // Xiaomi/MIUI Security Center - SubSettings aqui é SEMPRE perigoso
+                    "com.miui.securitycenter",
+                    "com.miui.securitycore",
+                    // Samsung Security
+                    "com.samsung.android.sm.devicesecurity",
+                    // Huawei System Manager
+                    "com.huawei.systemmanager",
+                    // OPPO/ColorOS Safe Center
+                    "com.coloros.safecenter",
+                    // Vivo Security
+                    "com.iqoo.secure",
+                    // OnePlus Security
+                    "com.oneplus.security"
                 )
                 
-                // BLOQUEAR SubSettings imediatamente - é a tela de Factory Reset, App Info, etc
-                if (settingsSubPagesPackages.contains(packageName) && 
+                // BLOQUEAR SubSettings APENAS de pacotes de Security Center
+                if (alwaysBlockSubSettingsPackages.contains(packageName) && 
                     activityName.contains("SubSettings", ignoreCase = true)) {
-                    Log.w(TAG, "🎯 SubSettings DETECTADO - WRAPPER PERIGOSO!")
-                    Log.w(TAG, "   Pacote: $packageName")
-                    Log.w(TAG, "   Activity: $activityName")
-                    Log.w(TAG, "   MOTIVO: SubSettings é usado para Factory Reset, App Info, Device Admin")
-                    return SettingsCheckResult.DANGEROUS_IMMEDIATE
-                }
-                
-                // SystemDashboardActivity também pode levar a telas perigosas
-                if (packageName == "com.android.settings" && 
-                    activityName.contains("SystemDashboardActivity", ignoreCase = true)) {
-                    Log.w(TAG, "🎯 SystemDashboardActivity DETECTADO - CAMINHO PARA FACTORY RESET!")
-                    Log.w(TAG, "   Activity: $activityName")
-                    return SettingsCheckResult.DANGEROUS_IMMEDIATE
-                }
-                
-                // Transsion SettingsHomeActivity (usado em Tecno/Infinix)
-                if (activityName.contains("SettingsHomeActivity", ignoreCase = true) ||
-                    activityName.contains("MainTabActivity", ignoreCase = true)) {
-                    Log.w(TAG, "🎯 Settings Home DETECTADO - POTENCIALMENTE PERIGOSO!")
+                    Log.w(TAG, "🎯 SubSettings de SecurityCenter DETECTADO!")
                     Log.w(TAG, "   Pacote: $packageName")
                     Log.w(TAG, "   Activity: $activityName")
                     return SettingsCheckResult.DANGEROUS_IMMEDIATE
                 }
+                
+                // Para com.android.settings SubSettings, NÃO bloquear aqui
+                // Confiamos na detecção de activities específicas (dangerousActivities)
+                // Isso permite navegação normal no Settings
+                if (activityName.contains("SubSettings", ignoreCase = true)) {
+                    Log.d(TAG, "📋 SubSettings detectado (navegação permitida)")
+                    Log.d(TAG, "   Pacote: $packageName")
+                    Log.d(TAG, "   NOTA: Detecção de telas perigosas específicas está ativa")
+                    // NÃO retornar aqui - deixar passar para verificação de tela principal
+                }
+                
+                // NOTA: SettingsHomeActivity e MainTabActivity são as telas PRINCIPAIS do Settings
+                // NÃO bloquear essas - permitir navegação normal
+                // Só bloquear quando entrar em SubSettings (telas específicas perigosas)
                 
                 Log.d(TAG, "📋 Activity em Settings (permitida): $activityName")
                 Log.d(TAG, "   Pacote: $packageName")
