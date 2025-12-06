@@ -627,7 +627,8 @@ class SettingsGuardService(private val context: Context) {
                     "NotificationManagerActivity",
                     
                     // ═══════════════════════════════════════════════════════════════════════════════
-                    // CATEGORIA 7: SECURITY / PRIVACY HUBS
+                    // CATEGORIA 7: SECURITY / PRIVACY HUBS - CRÍTICO para MIUI!
+                    // Inclui XHide, XClone, App Lock, etc. que podem ocultar o app
                     // ═══════════════════════════════════════════════════════════════════════════════
                     
                     // Android Stock
@@ -636,23 +637,52 @@ class SettingsGuardService(private val context: Context) {
                     "PrivacyDashboard",
                     "PrivacyDashboardActivity",
                     "SecuritySettings",
+                    "PrivacySettings",
+                    "PrivacySettingsActivity",
                     
                     // Samsung
                     "SecurityHubMainActivity",
                     
-                    // Xiaomi/MIUI
+                    // Xiaomi/MIUI - CRÍTICO: XHide, XClone, App Lock podem ocultar o app!
                     "SecurityCenterMainActivity",
                     "MainTabActivity",
+                    "PrivacyPasswordActivity",
+                    "XHideActivity",
+                    "XCloneActivity",
+                    "AppLockActivity",
+                    "AppLockSettings",
+                    "PrivacyProtectionActivity",
+                    "HideAppActivity",
+                    "DualAppsActivity",
+                    "SecondSpaceActivity",
+                    "PrivacyDashboardActivity",
+                    "PermissionsPrivacyActivity",
+                    "PrivacyAndSecurityActivity",
+                    "DataBlankActivity",
+                    "AppHideActivity",
+                    "HiddenAppsActivity",
+                    "SecureKeyboardActivity",
+                    "RepairModeActivity",
                     
                     // Huawei/Honor
                     "SecurityCenterActivity",
                     "SystemManagerActivity",
+                    "PrivateSpaceActivity",
+                    "AppTwinActivity",
                     
                     // OPPO/ColorOS
                     "SafeCenterMainActivity",
+                    "PrivateSpaceActivity",
+                    "CloneAppsActivity",
                     
                     // Vivo
                     "SecurityPrivacyActivity",
+                    "PrivacyAndAppsEncryptionActivity",
+                    "HideAppsActivity",
+                    
+                    // OnePlus
+                    "HiddenSpaceActivity",
+                    "ParallelAppsActivity",
                     
                     // ═══════════════════════════════════════════════════════════════════════════════
                     // CATEGORIA 8: DEVELOPER OPTIONS
@@ -817,6 +847,27 @@ class SettingsGuardService(private val context: Context) {
                     "SecurityHub",
                     "TrustAgent",
                     
+                    // CRÍTICO: App Hide / Clone / Dual Apps patterns (MIUI, Huawei, etc.)
+                    "XHide",
+                    "XClone",
+                    "HideApp",
+                    "AppHide",
+                    "HiddenApp",
+                    "SecondSpace",
+                    "PrivateSpace",
+                    "DualApp",
+                    "CloneApp",
+                    "AppClone",
+                    "TwinApp",
+                    "AppTwin",
+                    "ParallelApp",
+                    "DataBlank",
+                    "RepairMode",
+                    "SecureKeyboard",
+                    "PrivacyProtection",
+                    "PermissionsPrivacy",
+                    "PrivacyAndSecurity",
+                    
                     // Storage / Clear Data patterns
                     "ClearData",
                     "ClearCache",
@@ -884,28 +935,63 @@ class SettingsGuardService(private val context: Context) {
                     return SettingsCheckResult.DANGEROUS_IMMEDIATE
                 }
                 
-                // SubSettings/SettingsActivity de pacotes de Settings podem ser perigosos
+                // ═══════════════════════════════════════════════════════════════════════════════
+                // CRÍTICO: SubSettings é o wrapper genérico usado pelo Android/MIUI para
+                // TODAS as sub-telas de configuração, incluindo Factory Reset!
+                // BLOQUEAR SEMPRE que for SubSettings de qualquer pacote de Settings
+                // ═══════════════════════════════════════════════════════════════════════════════
                 val settingsSubPagesPackages = setOf(
+                    // Android padrão - CRÍTICO: SubSettings é usado para Factory Reset, App Info, etc
+                    "com.android.settings",
+                    "com.google.android.settings",
+                    // Xiaomi/MIUI
                     "com.miui.settings",
                     "com.xiaomi.misettings",
+                    // Samsung
                     "com.samsung.android.settings",
+                    // Huawei
                     "com.huawei.settings",
+                    // OPPO/ColorOS
                     "com.coloros.settings",
                     "com.oppo.settings",
+                    // Vivo
                     "com.vivo.settings",
+                    // OnePlus
                     "com.oneplus.settings",
-                    "com.realme.settings"
+                    // Realme
+                    "com.realme.settings",
+                    // Tecno/Infinix/iTel (Transsion)
+                    "com.transsion.settings"
                 )
+                
+                // BLOQUEAR SubSettings imediatamente - é a tela de Factory Reset, App Info, etc
                 if (settingsSubPagesPackages.contains(packageName) && 
-                    (activityName.contains("SubSettings", ignoreCase = true) ||
-                     activityName.contains("MainTabActivity", ignoreCase = true))) {
-                    Log.w(TAG, "🎯 Settings SubPage DETECTADO - POTENCIALMENTE PERIGOSO!")
+                    activityName.contains("SubSettings", ignoreCase = true)) {
+                    Log.w(TAG, "🎯 SubSettings DETECTADO - WRAPPER PERIGOSO!")
+                    Log.w(TAG, "   Pacote: $packageName")
+                    Log.w(TAG, "   Activity: $activityName")
+                    Log.w(TAG, "   MOTIVO: SubSettings é usado para Factory Reset, App Info, Device Admin")
+                    return SettingsCheckResult.DANGEROUS_IMMEDIATE
+                }
+                
+                // SystemDashboardActivity também pode levar a telas perigosas
+                if (packageName == "com.android.settings" && 
+                    activityName.contains("SystemDashboardActivity", ignoreCase = true)) {
+                    Log.w(TAG, "🎯 SystemDashboardActivity DETECTADO - CAMINHO PARA FACTORY RESET!")
+                    Log.w(TAG, "   Activity: $activityName")
+                    return SettingsCheckResult.DANGEROUS_IMMEDIATE
+                }
+                
+                // Transsion SettingsHomeActivity (usado em Tecno/Infinix)
+                if (activityName.contains("SettingsHomeActivity", ignoreCase = true) ||
+                    activityName.contains("MainTabActivity", ignoreCase = true)) {
+                    Log.w(TAG, "🎯 Settings Home DETECTADO - POTENCIALMENTE PERIGOSO!")
                     Log.w(TAG, "   Pacote: $packageName")
                     Log.w(TAG, "   Activity: $activityName")
                     return SettingsCheckResult.DANGEROUS_IMMEDIATE
                 }
                 
-                Log.d(TAG, "📋 Activity em Settings (não perigosa): $activityName")
+                Log.d(TAG, "📋 Activity em Settings (permitida): $activityName")
                 Log.d(TAG, "   Pacote: $packageName")
             } else {
                 val alwaysDangerousSettingsPackages = setOf(
