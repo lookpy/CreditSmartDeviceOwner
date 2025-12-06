@@ -389,34 +389,52 @@ class AppProtectionManager(private val context: Context) {
      * - Factory reset (que já bloqueamos)
      * - ADB em modo desenvolvedor (que bloqueamos via USB debugging)
      * - Bootloader/Fastboot (opera abaixo do Android - não pode ser bloqueado)
+     * 
+     * NOTA: Restrições de contas (DISALLOW_MODIFY_ACCOUNTS) são aplicadas APENAS após
+     * o pareamento ser concluído para evitar bloquear Play Store/FCM durante ativação.
      */
     private fun blockDeviceAdminRemoval(): Int {
         var count = 0
         
         Log.i(TAG, "🔐 [2/10] BLOQUEANDO REMOÇÃO DO DEVICE ADMIN")
         
-        // 1. Bloquear modificação de contas
-        try {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                dpm.addUserRestriction(adminComponent, UserManager.DISALLOW_MODIFY_ACCOUNTS)
-                Log.i(TAG, "        ✅ Modificação de contas bloqueada")
-                Log.i(TAG, "           → Previne adicionar conta Google que poderia remover Device Owner")
-                count++
+        // CRÍTICO: Verificar se pareamento foi concluído ANTES de bloquear contas
+        // Bloquear contas ANTES do pareamento causa crash no FCM e impede Play Store
+        val tokenStorage = com.cdccreditsmart.app.security.SecureTokenStorage(context)
+        val isPaired = !tokenStorage.getAuthToken().isNullOrBlank() && 
+                       !tokenStorage.getContractCode().isNullOrBlank()
+        
+        // 1. Bloquear modificação de contas - APENAS APÓS PAREAMENTO
+        if (isPaired) {
+            try {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    dpm.addUserRestriction(adminComponent, UserManager.DISALLOW_MODIFY_ACCOUNTS)
+                    Log.i(TAG, "        ✅ Modificação de contas bloqueada")
+                    Log.i(TAG, "           → Previne adicionar conta Google que poderia remover Device Owner")
+                    count++
+                }
+            } catch (e: Exception) {
+                Log.w(TAG, "        ⚠️ Não foi possível bloquear modificação de contas: ${e.message}")
             }
-        } catch (e: Exception) {
-            Log.w(TAG, "        ⚠️ Não foi possível bloquear modificação de contas: ${e.message}")
+        } else {
+            Log.w(TAG, "        ⏸️ DISALLOW_MODIFY_ACCOUNTS adiado - pareamento não concluído")
+            Log.w(TAG, "           → Será aplicado após ativação para permitir Play Store/FCM")
         }
         
-        // 2. Bloquear adição/remoção de usuários
-        try {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
-                dpm.addUserRestriction(adminComponent, UserManager.DISALLOW_ADD_USER)
-                Log.i(TAG, "        ✅ Adição de usuários bloqueada")
-                Log.i(TAG, "           → Previne criar usuário secundário com privilégios de remoção")
-                count++
+        // 2. Bloquear adição/remoção de usuários - APENAS APÓS PAREAMENTO
+        if (isPaired) {
+            try {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
+                    dpm.addUserRestriction(adminComponent, UserManager.DISALLOW_ADD_USER)
+                    Log.i(TAG, "        ✅ Adição de usuários bloqueada")
+                    Log.i(TAG, "           → Previne criar usuário secundário com privilégios de remoção")
+                    count++
+                }
+            } catch (e: Exception) {
+                Log.w(TAG, "        ⚠️ Não foi possível bloquear adição de usuários: ${e.message}")
             }
-        } catch (e: Exception) {
-            Log.w(TAG, "        ⚠️ Não foi possível bloquear adição de usuários: ${e.message}")
+        } else {
+            Log.w(TAG, "        ⏸️ DISALLOW_ADD_USER adiado - pareamento não concluído")
         }
         
         try {
@@ -577,14 +595,23 @@ class AppProtectionManager(private val context: Context) {
             Log.d(TAG, "   Mount media block não aplicado")
         }
         
-        try {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                dpm.addUserRestriction(adminComponent, UserManager.DISALLOW_MODIFY_ACCOUNTS)
-                Log.i(TAG, "        → Modificação de contas bloqueada")
-                count++
+        // CRÍTICO: Verificar se pareamento foi concluído ANTES de bloquear contas
+        val tokenStorage = com.cdccreditsmart.app.security.SecureTokenStorage(context)
+        val isPaired = !tokenStorage.getAuthToken().isNullOrBlank() && 
+                       !tokenStorage.getContractCode().isNullOrBlank()
+        
+        if (isPaired) {
+            try {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    dpm.addUserRestriction(adminComponent, UserManager.DISALLOW_MODIFY_ACCOUNTS)
+                    Log.i(TAG, "        → Modificação de contas bloqueada")
+                    count++
+                }
+            } catch (e: Exception) {
+                Log.d(TAG, "   Modify accounts block não aplicado")
             }
-        } catch (e: Exception) {
-            Log.d(TAG, "   Modify accounts block não aplicado")
+        } else {
+            Log.w(TAG, "        → DISALLOW_MODIFY_ACCOUNTS adiado (pareamento pendente)")
         }
         
         // 3 restrições extras para proteção robusta (especialmente para Motorola)

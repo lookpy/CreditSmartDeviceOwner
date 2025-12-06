@@ -758,6 +758,17 @@ class WorkPolicyManager(private val context: Context) {
     }
     
     private fun blockAddUser(): Boolean {
+        // CRÍTICO: Verificar se pareamento foi concluído ANTES de bloquear
+        // Bloquear ANTES do pareamento impede Play Store e causa crash no FCM
+        val tokenStorage = com.cdccreditsmart.app.security.SecureTokenStorage(context)
+        val isPaired = !tokenStorage.getAuthToken().isNullOrBlank() && 
+                       !tokenStorage.getContractCode().isNullOrBlank()
+        
+        if (!isPaired) {
+            Log.w(TAG, "   ⏸️ DISALLOW_ADD_USER adiado - pareamento não concluído")
+            return false
+        }
+        
         return try {
             dpm.addUserRestriction(adminComponent, UserManager.DISALLOW_ADD_USER)
             Log.i(TAG, "   ✅ DISALLOW_ADD_USER")
@@ -791,6 +802,18 @@ class WorkPolicyManager(private val context: Context) {
     }
     
     private fun blockModifyAccounts(): Boolean {
+        // CRÍTICO: Verificar se pareamento foi concluído ANTES de bloquear
+        // Bloquear ANTES do pareamento impede Play Store e causa crash no FCM
+        val tokenStorage = com.cdccreditsmart.app.security.SecureTokenStorage(context)
+        val isPaired = !tokenStorage.getAuthToken().isNullOrBlank() && 
+                       !tokenStorage.getContractCode().isNullOrBlank()
+        
+        if (!isPaired) {
+            Log.w(TAG, "   ⏸️ DISALLOW_MODIFY_ACCOUNTS adiado - pareamento não concluído")
+            Log.w(TAG, "      → Será aplicado após ativação para permitir Play Store/FCM")
+            return false
+        }
+        
         return try {
             dpm.addUserRestriction(adminComponent, UserManager.DISALLOW_MODIFY_ACCOUNTS)
             Log.i(TAG, "   ✅ DISALLOW_MODIFY_ACCOUNTS")

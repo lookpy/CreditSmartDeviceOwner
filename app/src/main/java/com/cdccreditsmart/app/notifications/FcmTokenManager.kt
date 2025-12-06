@@ -56,8 +56,15 @@ class FcmTokenManager(private val context: Context) {
         .writeTimeout(30, TimeUnit.SECONDS)
         .build()
 
-    private suspend fun getCurrentToken(): String {
-        return FirebaseMessaging.getInstance().token.await()
+    private suspend fun getCurrentToken(): String? {
+        return try {
+            FirebaseMessaging.getInstance().token.await()
+        } catch (e: Exception) {
+            Log.e(TAG, "❌ Erro ao obter FCM token: ${e.message}")
+            Log.w(TAG, "   Isso pode ocorrer se Google Play Services não está acessível")
+            Log.w(TAG, "   (ex: DISALLOW_MODIFY_ACCOUNTS ativo ou conta Google bloqueada)")
+            null
+        }
     }
 
     fun saveToken(token: String) {
@@ -101,6 +108,12 @@ class FcmTokenManager(private val context: Context) {
                 Log.d(TAG, "========== REGISTERING FCM TOKEN WITH BACKEND ==========")
                 
                 val token = getCurrentToken()
+                if (token == null) {
+                    Log.w(TAG, "⚠️ FCM token não disponível - registro adiado")
+                    Log.w(TAG, "   Push notifications não funcionarão até token ser obtido")
+                    onError("FCM token unavailable")
+                    return@withContext
+                }
                 Log.d(TAG, "Current FCM token retrieved: ${token.take(20)}...")
 
                 if (isTokenRegistered()) {
