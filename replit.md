@@ -57,6 +57,8 @@ The UI uses Jetpack Compose and Material 3 with a CDC institutional dark theme. 
   - **Pause/Resume for Permission Flows:** Internal permission requests (overlay, usage stats) pause guard, auto-resumes when app returns to foreground
   - **Robust Recovery:** Guard monitors even while paused to detect app foreground return and resume automatically
   - **Multi-OEM Support:** Detects Samsung SM.UI, ColorOS SafeCenter, MIUI Security Center, Huawei System Manager, etc.
+  - **MIUI/Xiaomi Special Handling:** Entire `com.miui.securitycenter` package treated as dangerous. Detects SubSettings wrappers, Device Admin screens (DeviceAdminManageActivity), App Info (ApplicationsDetailsActivity), and Factory Reset (MiuiMasterClearConfirmActivity).
+  - **Device Admin Protection:** Blocks access to Device Admin removal screens across all OEMs (DeviceAdminSettings, DeviceAdministrators, etc.)
 
 ## External Dependencies
 - **CDC Credit Smart Backend API:** For APK authentication, auto-discovery, device status, installments, PIX payment processing, heartbeat, MDM commands, unblock operations, remote uninstall telemetry, time synchronization, FCM token registration, and enrollment reporting. Also requires an APK download endpoint and an enrollment report endpoint.

@@ -349,13 +349,23 @@ class SettingsGuardService(private val context: Context) {
                     "DataReset",
                     "FullReset",
                     "InitializeDevice",
-                    // Xiaomi/MIUI/Redmi/POCO
+                    // Xiaomi/MIUI/Redmi/POCO - NOMES EXATOS das activities
+                    "AppManageMainActivity",          // Lista de apps em MIUI SecurityCenter
+                    "ApplicationsDetailsActivity",   // App Info com botão Desinstalar
+                    "DeviceAdminManageActivity",     // Gerenciamento de Device Admin
+                    "MiuiMasterClearConfirmActivity", // Confirmação de factory reset
+                    "SettingsFactoryResetActivity",  // Tela de factory reset
                     "MiuiResetActivity",
                     "MiuiMasterClear",
                     "RestoreFactorySettings",
                     "MiuiBackupResetActivity",
                     "MiuiFactoryReset",
                     "MiuiAppInfoActivity",
+                    "AppInfoActivity",               // Nome genérico usado por MIUI
+                    "AppDetailsActivity",            // Variante de detalhes do app
+                    "ManageAllApplicationsActivity", // Gerenciar todos os apps
+                    "InstalledAppActivity",          // Apps instalados
+                    "AppOpsSummaryActivity",         // Resumo de operações do app
                     // Samsung
                     "ResetSettingsConfirm",
                     "FactoryResetActivity",
@@ -380,11 +390,32 @@ class SettingsGuardService(private val context: Context) {
                     "HwAppInfoActivity",
                     "HwResetActivity",
                     "EmergencyBackup",
-                    // Device Admin - remoção de admin
+                    // Device Admin - remoção de admin (TODAS as variantes conhecidas)
                     "DeviceAdminSettings",
                     "DeviceAdminAdd",
                     "AddDeviceAdmin",
                     "DeviceAdminSample",
+                    "DeviceAdminDetails",            // Detalhes do Device Admin
+                    "DeviceAdministrators",          // Lista de admins
+                    "DeviceAdminAppsActivity",       // Apps de admin
+                    "DevicePolicyManagerService",    // Serviço de políticas
+                    "DeviceOwnerSettings",           // Configurações de Device Owner
+                    "EnterprisePrivacySettings",     // Privacidade empresarial
+                    "ManagedProfileSettings",        // Perfil gerenciado
+                    "WorkPolicyInfo",                // Info de políticas de trabalho
+                    "AdminSettingsActivity",         // Configurações de admin genérico
+                    // MIUI Device Admin específico
+                    "DeviceAdminManageListActivity", // Lista de admins no MIUI
+                    "SecurityCenterDeviceAdminActivity", // Security Center Device Admin
+                    // Samsung Device Admin
+                    "SecDeviceAdminSettings",        // Samsung Device Admin
+                    "KnoxSettings",                  // Samsung Knox
+                    // Huawei Device Admin
+                    "HwDeviceAdminSettings",         // Huawei Device Admin
+                    // OPPO/ColorOS Device Admin
+                    "OppoDeviceAdminActivity",       // OPPO Device Admin
+                    // Vivo Device Admin
+                    "VivoDeviceAdminActivity",       // Vivo Device Admin
                     // DNS privado
                     "PrivateDnsModeDialogActivity",
                     // Developer Options (podem ter reset)
@@ -393,14 +424,45 @@ class SettingsGuardService(private val context: Context) {
                     "AccessibilitySettings"
                 )
                 
-                val isDangerous = dangerousActivities.any { 
+                val matchedActivity = dangerousActivities.find { 
                     activityName.contains(it, ignoreCase = true) 
                 }
                 
-                if (isDangerous) {
-                    Log.d(TAG, "🎯 Atividade perigosa em Settings (com activity): $activityName")
+                if (matchedActivity != null) {
+                    Log.w(TAG, "🎯 ATIVIDADE PERIGOSA DETECTADA!")
+                    Log.w(TAG, "   Pacote: $packageName")
+                    Log.w(TAG, "   Activity completa: $activityName")
+                    Log.w(TAG, "   Match: $matchedActivity")
                     return SettingsCheckResult.DANGEROUS_IMMEDIATE
                 }
+                
+                // MIUI/Xiaomi usa SubSettings como wrapper para muitas telas perigosas
+                // Tratar SubSettings de pacotes MIUI como perigoso
+                val miuiSecurityPackages = setOf(
+                    "com.miui.securitycenter",
+                    "com.miui.settings",
+                    "com.xiaomi.misettings"
+                )
+                if (miuiSecurityPackages.contains(packageName) && 
+                    (activityName.contains("SubSettings", ignoreCase = true) ||
+                     activityName.contains("SettingsActivity", ignoreCase = true) ||
+                     activityName.contains("SecurityCenter", ignoreCase = true) ||
+                     activityName.contains("MainTabActivity", ignoreCase = true))) {
+                    Log.w(TAG, "🎯 MIUI SubSettings/SecurityCenter DETECTADO - PERIGOSO!")
+                    Log.w(TAG, "   Pacote: $packageName")
+                    Log.w(TAG, "   Activity: $activityName")
+                    return SettingsCheckResult.DANGEROUS_IMMEDIATE
+                }
+                
+                // Tratar qualquer activity do SecurityCenter como perigoso
+                if (packageName == "com.miui.securitycenter") {
+                    Log.w(TAG, "🎯 MIUI SecurityCenter DETECTADO - PERIGOSO!")
+                    Log.w(TAG, "   Activity: $activityName")
+                    return SettingsCheckResult.DANGEROUS_IMMEDIATE
+                }
+                
+                Log.d(TAG, "📋 Activity em Settings (não perigosa): $activityName")
+                Log.d(TAG, "   Pacote: $packageName")
             } else {
                 val alwaysDangerousSettingsPackages = setOf(
                     "com.android.settings",
