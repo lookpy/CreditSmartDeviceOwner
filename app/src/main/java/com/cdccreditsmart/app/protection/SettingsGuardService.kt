@@ -318,7 +318,11 @@ class SettingsGuardService(private val context: Context) {
         if (settingsPackages.contains(packageName)) {
             if (activityName != null) {
                 val dangerousActivities = listOf(
-                    // App Info - bloqueio de desinstalação (genérico)
+                    // ═══════════════════════════════════════════════════════════════════════════════
+                    // CATEGORIA 1: APP INFO / UNINSTALL - Telas onde botão Desinstalar aparece
+                    // ═══════════════════════════════════════════════════════════════════════════════
+                    
+                    // Android Stock / AOSP
                     "InstalledAppDetails",
                     "InstalledAppDetailsTop",
                     "AppInfoDashboard",
@@ -331,97 +335,379 @@ class SettingsGuardService(private val context: Context) {
                     "AppDetailsActivity",
                     "AppManagementActivity",
                     "PackageInfoActivity",
-                    // Factory Reset - bloqueio de reset (genérico)
+                    "AppInfoActivity",
+                    "InstalledAppActivity",
+                    "ManageAllApplicationsActivity",
+                    "AppOpsSummaryActivity",
+                    
+                    // Samsung (OneUI)
+                    "AppInfoPoliciesPreference",
+                    "SecAppInfo",
+                    "SmartManagerApplication",
+                    
+                    // Xiaomi/MIUI/Redmi/POCO
+                    "AppManageMainActivity",
+                    "ApplicationsDetailsActivity",
+                    "MiuiAppInfoActivity",
+                    
+                    // Huawei/Honor (EMUI/HarmonyOS)
+                    "InstalledAppDetailsActivity",
+                    "HwAppInfoActivity",
+                    "ProtectedAppsActivity",
+                    
+                    // OPPO/ColorOS
+                    "ApplicationDetailsActivity",
+                    "ColorOsAppManagementActivity",
+                    "OppoAppInfoActivity",
+                    
+                    // Realme (RealmeUI)
+                    "PhoneManagerActivity",
+                    "SecurityCheckActivity",
+                    "AppFreezeManagerActivity",
+                    
+                    // Vivo (FuntouchOS/OriginOS)
+                    "VivoAppDetailActivity",
+                    "iManagerMainActivity",
+                    
+                    // OnePlus (OxygenOS)
+                    "OPAppDetailsActivity",
+                    
+                    // Motorola/Lenovo
+                    "MotoAppDetailsActivity",
+                    "DeviceHelpActivity",
+                    
+                    // LG
+                    "LGAppInfoActivity",
+                    "SmartDoctorActivity",
+                    
+                    // Asus (ZenFone/ROG)
+                    "MobileManagerMainActivity",
+                    "SecurityScanActivity",
+                    
+                    // Sony (Xperia)
+                    "XperiaCareActivity",
+                    
+                    // Tecno/Infinix/iTel (Transsion)
+                    "HiManagerActivity",
+                    
+                    // ZTE/Nubia
+                    "NubiaSecurityActivity",
+                    
+                    // Alcatel/TCL
+                    "SmartSuiteActivity",
+                    
+                    // Meizu (Flyme)
+                    "SafeCenterActivity",
+                    
+                    // ═══════════════════════════════════════════════════════════════════════════════
+                    // CATEGORIA 2: FORCE STOP / KILL APP - Telas onde pode forçar parada
+                    // ═══════════════════════════════════════════════════════════════════════════════
+                    
+                    "ForceStopActivity",
+                    "KillAppActivity",
+                    "StopAppActivity",
+                    "AppHibernationActivity",
+                    "HibernateAppsActivity",
+                    "SleepingAppsActivity",
+                    "AppSleepActivity",
+                    "UnusedAppsActivity",
+                    "BackgroundAppsActivity",
+                    
+                    // Samsung
+                    "SleepingApps",
+                    "DeepSleepingApps",
+                    "AppPowerSaving",
+                    
+                    // Xiaomi/MIUI
+                    "BackgroundRunningActivity",
+                    
+                    // Huawei/Honor
+                    "BackgroundActivityManager",
+                    
+                    // OPPO/ColorOS
+                    "BackgroundFreezeActivity",
+                    
+                    // ═══════════════════════════════════════════════════════════════════════════════
+                    // CATEGORIA 3: FACTORY RESET / WIPE DATA - Todas as telas de reset
+                    // ═══════════════════════════════════════════════════════════════════════════════
+                    
+                    // Android Stock / AOSP
                     "MasterClear",
+                    "MasterClearConfirm",
                     "ResetDashboard",
                     "FactoryReset",
+                    "FactoryResetActivity",
+                    "FactoryResetConfirm",
+                    "FactoryResetConfirmActivity",
                     "BackupReset",
+                    "BackupResetActivity",
                     "ResetPhone",
+                    "ResetPhoneActivity",
                     "EraseData",
                     "WipeData",
+                    "WipeDataActivity",
                     "ResetSettings",
                     "ClearData",
                     "RestoreFactory",
-                    "MasterClearConfirm",
+                    "RestoreFactorySettings",
                     "ResetConfirm",
                     "ResetOptions",
                     "SystemReset",
                     "DataReset",
                     "FullReset",
                     "InitializeDevice",
-                    // Xiaomi/MIUI/Redmi/POCO - NOMES EXATOS das activities
-                    "AppManageMainActivity",          // Lista de apps em MIUI SecurityCenter
-                    "ApplicationsDetailsActivity",   // App Info com botão Desinstalar
-                    "DeviceAdminManageActivity",     // Gerenciamento de Device Admin
-                    "MiuiMasterClearConfirmActivity", // Confirmação de factory reset
-                    "SettingsFactoryResetActivity",  // Tela de factory reset
+                    "FactoryDataReset",
+                    "FactoryDataResetActivity",
+                    
+                    // Samsung (OneUI)
+                    "ResetSettingsConfirm",
+                    
+                    // Xiaomi/MIUI/Redmi/POCO
+                    "MiuiMasterClearConfirmActivity",
+                    "SettingsFactoryResetActivity",
                     "MiuiResetActivity",
                     "MiuiMasterClear",
-                    "RestoreFactorySettings",
                     "MiuiBackupResetActivity",
                     "MiuiFactoryReset",
-                    "MiuiAppInfoActivity",
-                    "AppInfoActivity",               // Nome genérico usado por MIUI
-                    "AppDetailsActivity",            // Variante de detalhes do app
-                    "ManageAllApplicationsActivity", // Gerenciar todos os apps
-                    "InstalledAppActivity",          // Apps instalados
-                    "AppOpsSummaryActivity",         // Resumo de operações do app
-                    // Samsung
-                    "ResetSettingsConfirm",
-                    "FactoryResetActivity",
-                    "SecAppInfo",
-                    // OPPO/ColorOS/Realme
+                    
+                    // Huawei/Honor
+                    "HwResetActivity",
+                    "EmergencyBackup",
+                    
+                    // OPPO/ColorOS
                     "ColorOsResetActivity",
-                    "OppoAppInfoActivity",
+                    
+                    // Realme
                     "RealmeResetActivity",
-                    // Vivo/FuntouchOS/OriginOS
-                    "VivoAppDetailActivity",
+                    
+                    // Vivo
                     "VivoResetActivity",
-                    // OnePlus/OxygenOS
+                    
+                    // OnePlus
                     "OnePlusResetActivity",
-                    "OPAppDetailsActivity",
+                    
                     // LG
                     "LGResetActivity",
-                    "LGAppInfoActivity",
+                    "ResetSettingsActivity",
+                    
                     // Motorola/Lenovo
                     "MotoResetActivity",
                     "LenovoResetActivity",
-                    // Huawei/Honor
-                    "HwAppInfoActivity",
-                    "HwResetActivity",
-                    "EmergencyBackup",
-                    // Device Admin - remoção de admin (TODAS as variantes conhecidas)
+                    
+                    // ═══════════════════════════════════════════════════════════════════════════════
+                    // CATEGORIA 4: DEVICE ADMIN / MDM REMOVAL - Gerenciamento de admins
+                    // ═══════════════════════════════════════════════════════════════════════════════
+                    
+                    // Android Stock / AOSP
                     "DeviceAdminSettings",
                     "DeviceAdminAdd",
                     "AddDeviceAdmin",
                     "DeviceAdminSample",
-                    "DeviceAdminDetails",            // Detalhes do Device Admin
-                    "DeviceAdministrators",          // Lista de admins
-                    "DeviceAdminAppsActivity",       // Apps de admin
-                    "DevicePolicyManagerService",    // Serviço de políticas
-                    "DeviceOwnerSettings",           // Configurações de Device Owner
-                    "EnterprisePrivacySettings",     // Privacidade empresarial
-                    "ManagedProfileSettings",        // Perfil gerenciado
-                    "WorkPolicyInfo",                // Info de políticas de trabalho
-                    "AdminSettingsActivity",         // Configurações de admin genérico
-                    // MIUI Device Admin específico
-                    "DeviceAdminManageListActivity", // Lista de admins no MIUI
-                    "SecurityCenterDeviceAdminActivity", // Security Center Device Admin
-                    // Samsung Device Admin
-                    "SecDeviceAdminSettings",        // Samsung Device Admin
-                    "KnoxSettings",                  // Samsung Knox
+                    "DeviceAdminDetails",
+                    "DeviceAdministrators",
+                    "DeviceAdminAppsActivity",
+                    "DevicePolicyManagerService",
+                    "DeviceOwnerSettings",
+                    "EnterprisePrivacySettings",
+                    "ManagedProfileSettings",
+                    "WorkPolicyInfo",
+                    "AdminSettingsActivity",
+                    "AdminManagerActivity",
+                    "AdminReceiver",
+                    "DeviceAdminManageActivity",
+                    "DeviceAdminSettingsActivity",
+                    
+                    // Samsung (OneUI) - Knox/MDM
+                    "SecDeviceAdminSettings",
+                    "KnoxSettings",
+                    "MDMAdminSettings",
+                    "DeviceSecurityActivity",
+                    "SecurityHubActivity",
+                    
+                    // Xiaomi/MIUI Device Admin
+                    "DeviceAdminManageListActivity",
+                    "SecurityCenterDeviceAdminActivity",
+                    
                     // Huawei Device Admin
-                    "HwDeviceAdminSettings",         // Huawei Device Admin
+                    "HwDeviceAdminSettings",
+                    
                     // OPPO/ColorOS Device Admin
-                    "OppoDeviceAdminActivity",       // OPPO Device Admin
+                    "OppoDeviceAdminActivity",
+                    "AdminSettings",
+                    
                     // Vivo Device Admin
-                    "VivoDeviceAdminActivity",       // Vivo Device Admin
-                    // DNS privado
-                    "PrivateDnsModeDialogActivity",
-                    // Developer Options (podem ter reset)
+                    "VivoDeviceAdminActivity",
+                    
+                    // Asus Device Admin
+                    "DeviceAdminManage",
+                    
+                    // ═══════════════════════════════════════════════════════════════════════════════
+                    // CATEGORIA 5: BATTERY OPTIMIZATION / POWER MANAGEMENT
+                    // ═══════════════════════════════════════════════════════════════════════════════
+                    
+                    // Android Stock / AOSP
+                    "BatteryOptimization",
+                    "BatteryOptimizationActivity",
+                    "HighPowerApplications",
+                    "HighPowerApplicationsActivity",
+                    "BatterySaverSettings",
+                    "BatterySaverActivity",
+                    "PowerUsageSummary",
+                    "AdaptiveBattery",
+                    "AdaptiveBatteryActivity",
+                    
+                    // Samsung (OneUI)
+                    "SmartManagerBattery",
+                    
+                    // Xiaomi/MIUI
+                    "BatteryOptimizeActivity",
+                    "PowerSaveActivity",
+                    "AutoStartManagementActivity",
+                    
+                    // Huawei/Honor
+                    "PowerSavingActivity",
+                    "StartupManagerActivity",
+                    
+                    // OPPO/ColorOS
+                    "AutoLaunchActivity",
+                    
+                    // Vivo
+                    "BackgroundHighPowerWhiteListActivity",
+                    "AutostartManagerActivity",
+                    "BatteryManagerActivity",
+                    "PowerManagerActivity",
+                    
+                    // OnePlus
+                    "BackgroundOptimization",
+                    
+                    // LG
+                    
+                    // Asus
+                    "PowerSaverActivity",
+                    "AutoStartActivity",
+                    
+                    // Sony (Xperia)
+                    "StaminaModeActivity",
+                    
+                    // Motorola
+                    "SmartActionsActivity",
+                    
+                    // Meizu
+                    "MeizuPowerSaveActivity",
+                    
+                    // ═══════════════════════════════════════════════════════════════════════════════
+                    // CATEGORIA 6: PERMISSIONS MANAGEMENT
+                    // ═══════════════════════════════════════════════════════════════════════════════
+                    
+                    // Android Stock / AOSP
+                    "PermissionController",
+                    "PermissionManagerActivity",
+                    "AppPermissionsActivity",
+                    "ManagePermissionsActivity",
+                    "AllAppPermissionsActivity",
+                    "PermissionAppsActivity",
+                    "SpecialAccessSettings",
+                    "SpecialAccessActivity",
+                    "WriteSettingsActivity",
+                    "ManageOverlayActivity",
+                    "UsageAccessSettings",
+                    "UsageAccessActivity",
+                    "NotificationAccessSettings",
+                    "NotificationAccessSettingsActivity",
+                    
+                    // Xiaomi/MIUI
+                    "PermissionTopActivity",
+                    
+                    // Huawei/Honor
+                    
+                    // OPPO/ColorOS
+                    "PrivacyManagerActivity",
+                    
+                    // Vivo
+                    "NotificationManagerActivity",
+                    
+                    // ═══════════════════════════════════════════════════════════════════════════════
+                    // CATEGORIA 7: SECURITY / PRIVACY HUBS
+                    // ═══════════════════════════════════════════════════════════════════════════════
+                    
+                    // Android Stock
+                    "SecurityDashboard",
+                    "SecurityDashboardActivity",
+                    "PrivacyDashboard",
+                    "PrivacyDashboardActivity",
+                    "SecuritySettings",
+                    
+                    // Samsung
+                    "SecurityHubMainActivity",
+                    
+                    // Xiaomi/MIUI
+                    "SecurityCenterMainActivity",
+                    "MainTabActivity",
+                    
+                    // Huawei/Honor
+                    "SecurityCenterActivity",
+                    "SystemManagerActivity",
+                    
+                    // OPPO/ColorOS
+                    "SafeCenterMainActivity",
+                    
+                    // Vivo
+                    "SecurityPrivacyActivity",
+                    
+                    // ═══════════════════════════════════════════════════════════════════════════════
+                    // CATEGORIA 8: DEVELOPER OPTIONS
+                    // ═══════════════════════════════════════════════════════════════════════════════
+                    
                     "DevelopmentSettings",
-                    // Acessibilidade (pode desativar serviços)
-                    "AccessibilitySettings"
+                    "DevelopmentSettingsActivity",
+                    "DeveloperOptionsActivity",
+                    "OemUnlockActivity",
+                    "AdbSettings",
+                    "UsbDebuggingActivity",
+                    
+                    // ═══════════════════════════════════════════════════════════════════════════════
+                    // CATEGORIA 9: CLEAR DATA / STORAGE
+                    // ═══════════════════════════════════════════════════════════════════════════════
+                    
+                    "ClearDataActivity",
+                    "ClearCacheActivity",
+                    "ClearStorageActivity",
+                    "StorageInfoActivity",
+                    "AppStorageSettings",
+                    "ManageApplicationsSettings",
+                    "ManageSpaceActivity",
+                    
+                    // ═══════════════════════════════════════════════════════════════════════════════
+                    // CATEGORIA 10: NOTIFICATIONS MANAGEMENT
+                    // ═══════════════════════════════════════════════════════════════════════════════
+                    
+                    "AppNotificationSettings",
+                    "NotificationSettingsActivity",
+                    "ConfigureNotifications",
+                    "NotificationStation",
+                    "ChannelNotificationSettings",
+                    
+                    // Huawei/Honor
+                    "NotificationCenterActivity",
+                    "AppNotificationActivity",
+                    
+                    // ═══════════════════════════════════════════════════════════════════════════════
+                    // CATEGORIA 11: ACCESSIBILITY (pode desativar serviços)
+                    // ═══════════════════════════════════════════════════════════════════════════════
+                    
+                    "AccessibilitySettings",
+                    "AccessibilitySettingsActivity",
+                    "AccessibilityDetailsSettings",
+                    "AccessibilityServiceSettings",
+                    
+                    // ═══════════════════════════════════════════════════════════════════════════════
+                    // CATEGORIA 12: DNS / NETWORK (pode bloquear comunicação)
+                    // ═══════════════════════════════════════════════════════════════════════════════
+                    
+                    "PrivateDnsModeDialogActivity",
+                    "PrivateDnsSettings",
+                    "NetworkSettings",
+                    "VpnSettings"
                 )
                 
                 val matchedActivity = dangerousActivities.find { 
@@ -436,27 +722,185 @@ class SettingsGuardService(private val context: Context) {
                     return SettingsCheckResult.DANGEROUS_IMMEDIATE
                 }
                 
-                // MIUI/Xiaomi usa SubSettings como wrapper para muitas telas perigosas
-                // Tratar SubSettings de pacotes MIUI como perigoso
-                val miuiSecurityPackages = setOf(
-                    "com.miui.securitycenter",
-                    "com.miui.settings",
-                    "com.xiaomi.misettings"
+                // ═══════════════════════════════════════════════════════════════════════════════
+                // PADRÕES GENÉRICOS - Capturam variantes não listadas explicitamente
+                // ═══════════════════════════════════════════════════════════════════════════════
+                val dangerousPatterns = listOf(
+                    // App Info / Uninstall patterns
+                    "AppInfo",
+                    "AppDetails",
+                    "InstalledApp",
+                    "Uninstall",
+                    "UninstallApp",
+                    "RemoveApp",
+                    "DeleteApp",
+                    "PackageInfo",
+                    "ApplicationInfo",
+                    "ApplicationDetails",
+                    
+                    // Force Stop / Kill App patterns
+                    "ForceStop",
+                    "KillApp",
+                    "StopApp",
+                    "Hibernate",
+                    "AppSleep",
+                    "SleepingApp",
+                    "UnusedApp",
+                    "BackgroundApp",
+                    "BackgroundLimit",
+                    
+                    // Factory Reset patterns
+                    "FactoryReset",
+                    "MasterClear",
+                    "WipeData",
+                    "EraseData",
+                    "DataErase",
+                    "ResetPhone",
+                    "PhoneReset",
+                    "ResetDevice",
+                    "DeviceReset",
+                    "RestoreFactory",
+                    "FactoryRestore",
+                    "ResetAll",
+                    "InitDevice",
+                    
+                    // Device Admin / MDM patterns
+                    "DeviceAdmin",
+                    "Administrator",
+                    "AdminSetting",
+                    "AdminManager",
+                    "MDM",
+                    "Enterprise",
+                    "DeviceOwner",
+                    "ProfileOwner",
+                    "ManagedProfile",
+                    "WorkProfile",
+                    "Knox",
+                    
+                    // Battery Optimization patterns
+                    "BatteryOptimiz",
+                    "PowerSav",
+                    "Stamina",
+                    "DeepSleep",
+                    "AppDoze",
+                    "DozeMode",
+                    "BackgroundRestrict",
+                    "BackgroundLimit",
+                    "AutoStart",
+                    "AutoLaunch",
+                    "StartupManager",
+                    "ProtectedApp",
+                    "HighPower",
+                    "PowerWhiteList",
+                    "WhiteListApp",
+                    
+                    // Permissions patterns
+                    "PermissionManager",
+                    "AppPermission",
+                    "ManagePermission",
+                    "SpecialAccess",
+                    "UsageAccess",
+                    "OverlayPermission",
+                    "DrawOverlay",
+                    "SystemAlert",
+                    "NotificationAccess",
+                    "AccessibilityService",
+                    
+                    // Security / Privacy patterns
+                    "SecurityCenter",
+                    "SafeCenter",
+                    "PhoneManager",
+                    "SystemManager",
+                    "PrivacyCenter",
+                    "PrivacyDashboard",
+                    "SecurityDashboard",
+                    "SecurityHub",
+                    "TrustAgent",
+                    
+                    // Storage / Clear Data patterns
+                    "ClearData",
+                    "ClearCache",
+                    "ClearStorage",
+                    "ManageSpace",
+                    "AppStorage",
+                    "StorageManager",
+                    
+                    // Developer Options patterns
+                    "DeveloperOption",
+                    "DevelopmentSetting",
+                    "OemUnlock",
+                    "UsbDebug",
+                    "AdbSetting"
                 )
-                if (miuiSecurityPackages.contains(packageName) && 
-                    (activityName.contains("SubSettings", ignoreCase = true) ||
-                     activityName.contains("SettingsActivity", ignoreCase = true) ||
-                     activityName.contains("SecurityCenter", ignoreCase = true) ||
-                     activityName.contains("MainTabActivity", ignoreCase = true))) {
-                    Log.w(TAG, "🎯 MIUI SubSettings/SecurityCenter DETECTADO - PERIGOSO!")
+                
+                val matchedPattern = dangerousPatterns.find { pattern ->
+                    activityName.contains(pattern, ignoreCase = true)
+                }
+                
+                if (matchedPattern != null) {
+                    Log.w(TAG, "🎯 PADRÃO PERIGOSO DETECTADO!")
+                    Log.w(TAG, "   Pacote: $packageName")
+                    Log.w(TAG, "   Activity completa: $activityName")
+                    Log.w(TAG, "   Padrão match: $matchedPattern")
+                    return SettingsCheckResult.DANGEROUS_IMMEDIATE
+                }
+                
+                // ═══════════════════════════════════════════════════════════════════════════════
+                // PACOTES DE SEGURANÇA - Sempre perigosos (qualquer activity)
+                // ═══════════════════════════════════════════════════════════════════════════════
+                val alwaysDangerousSecurityPackages = setOf(
+                    // Xiaomi/MIUI
+                    "com.miui.securitycenter",
+                    "com.miui.securitycore",
+                    // Samsung
+                    "com.samsung.android.sm.devicesecurity",
+                    "com.samsung.android.lool",
+                    // Huawei
+                    "com.huawei.systemmanager",
+                    // OPPO/ColorOS
+                    "com.coloros.safecenter",
+                    "com.coloros.phonemanager",
+                    // Vivo
+                    "com.iqoo.secure",
+                    // OnePlus
+                    "com.oneplus.security",
+                    // Realme
+                    "com.heytap.usercenter",
+                    // Asus
+                    "com.asus.mobilemanager",
+                    // Tecno/Infinix/iTel
+                    "com.transsion.phonemanager",
+                    "com.transsion.security",
+                    // ZTE/Nubia
+                    "cn.nubia.security",
+                    // Meizu
+                    "com.meizu.safe"
+                )
+                
+                if (alwaysDangerousSecurityPackages.contains(packageName)) {
+                    Log.w(TAG, "🎯 PACOTE DE SEGURANÇA DETECTADO - SEMPRE PERIGOSO!")
                     Log.w(TAG, "   Pacote: $packageName")
                     Log.w(TAG, "   Activity: $activityName")
                     return SettingsCheckResult.DANGEROUS_IMMEDIATE
                 }
                 
-                // Tratar qualquer activity do SecurityCenter como perigoso
-                if (packageName == "com.miui.securitycenter") {
-                    Log.w(TAG, "🎯 MIUI SecurityCenter DETECTADO - PERIGOSO!")
+                // SubSettings/SettingsActivity de pacotes de Settings podem ser perigosos
+                val settingsSubPagesPackages = setOf(
+                    "com.miui.settings",
+                    "com.xiaomi.misettings",
+                    "com.samsung.android.settings",
+                    "com.huawei.settings",
+                    "com.coloros.settings",
+                    "com.oppo.settings",
+                    "com.vivo.settings",
+                    "com.oneplus.settings",
+                    "com.realme.settings"
+                )
+                if (settingsSubPagesPackages.contains(packageName) && 
+                    (activityName.contains("SubSettings", ignoreCase = true) ||
+                     activityName.contains("MainTabActivity", ignoreCase = true))) {
+                    Log.w(TAG, "🎯 Settings SubPage DETECTADO - POTENCIALMENTE PERIGOSO!")
+                    Log.w(TAG, "   Pacote: $packageName")
                     Log.w(TAG, "   Activity: $activityName")
                     return SettingsCheckResult.DANGEROUS_IMMEDIATE
                 }
@@ -465,17 +909,51 @@ class SettingsGuardService(private val context: Context) {
                 Log.d(TAG, "   Pacote: $packageName")
             } else {
                 val alwaysDangerousSettingsPackages = setOf(
+                    // Android padrão
                     "com.android.settings",
+                    "com.google.android.settings",
+                    // Xiaomi/MIUI/Redmi/POCO
                     "com.miui.settings",
                     "com.miui.securitycenter",
+                    "com.xiaomi.misettings",
+                    // Samsung
                     "com.samsung.android.settings",
                     "com.samsung.android.sm.ui",
+                    "com.samsung.android.sm",
+                    // Huawei/Honor
                     "com.huawei.systemmanager",
+                    "com.huawei.settings",
+                    // OPPO/ColorOS
                     "com.coloros.settings",
                     "com.coloros.safecenter",
+                    "com.oppo.settings",
+                    // Vivo
                     "com.vivo.settings",
+                    "com.iqoo.secure",
+                    // OnePlus
                     "com.oneplus.settings",
-                    "com.google.android.settings"
+                    "com.oneplus.security",
+                    // Realme
+                    "com.realme.settings",
+                    "com.heytap.usercenter",
+                    // LG
+                    "com.lge.settings",
+                    // Motorola/Lenovo
+                    "com.motorola.settings",
+                    "com.lenovo.settings",
+                    // Sony
+                    "com.sonymobile.settings",
+                    // Asus
+                    "com.asus.settings",
+                    "com.asus.mobilemanager",
+                    // Tecno/Infinix/iTel
+                    "com.transsion.phonemanager",
+                    // ZTE/Nubia
+                    "com.zte.settings",
+                    "cn.nubia.security",
+                    // Meizu
+                    "com.meizu.settings",
+                    "com.meizu.safe"
                 )
                 
                 if (alwaysDangerousSettingsPackages.contains(packageName)) {
