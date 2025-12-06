@@ -129,12 +129,14 @@ class SettingsGuardService(private val context: Context) {
     )
     
     // Activities de confirmação que são perigosas APENAS quando vêm de caminho perigoso
+    // NOTA: ConfirmLockPassword/Pattern/Pin são usados TANTO para Factory Reset
+    // quanto para configuração normal de senha. Só bloqueamos quando vêm de caminho perigoso.
+    // ChooseLockGeneric foi REMOVIDO pois é uma tela legítima de configuração de senha.
     private val confirmationActivities = setOf(
         "ConfirmLockPassword",          // Confirmação de senha antes de Factory Reset
         "ConfirmLockPattern",           // Confirmação de padrão
         "ConfirmLockPin",               // Confirmação de PIN
         "ConfirmDeviceCredential",      // Confirmação de credencial
-        "ChooseLockGeneric",            // Escolha de bloqueio
         "MiuiConfirmAccessControl",     // MIUI confirmação
         "MasterClearConfirmActivity",   // Confirmação de Factory Reset (direto)
         "MiuiMasterClearConfirmActivity" // MIUI confirmação de Factory Reset
@@ -293,6 +295,60 @@ class SettingsGuardService(private val context: Context) {
         // ═══════════════════════════════════════════════════════════════════════════════
         if (activityName?.contains("GrantPermissionsActivity", ignoreCase = true) == true) {
             Log.d(TAG, "✅ GrantPermissionsActivity permitida (diálogo de permissões do sistema)")
+            return SettingsCheckResult.SAFE
+        }
+        
+        // ═══════════════════════════════════════════════════════════════════════════════
+        // EXCEÇÃO IMPORTANTE: Telas de Senha e Segurança do dispositivo
+        // O usuário PRECISA poder alterar senha/PIN/padrão/biometria do dispositivo
+        // NÃO bloquear essas telas - são necessárias para uso normal do dispositivo
+        // ═══════════════════════════════════════════════════════════════════════════════
+        val allowedSecurityActivities = listOf(
+            // Android Stock - Configurações de bloqueio de tela
+            "ScreenLockSettings",
+            "ChooseLockPassword",
+            "ChooseLockPattern",
+            "ChooseLockPin",
+            "SetupChooseLockPassword",
+            "SetupChooseLockPattern",
+            "SetupChooseLockPin",
+            "SecuritySettings",
+            "LockScreenSettings",
+            "BiometricSettings",
+            "FingerprintSettings",
+            "FingerprintEnrollIntro",
+            "FingerprintEnrollFindSensor",
+            "FingerprintEnrollFinish",
+            "FaceSettings",
+            "FaceEnrollIntro",
+            // Samsung
+            "BiometricsAndSecuritySettings",
+            "LockscreenSettings",
+            "FingerprintSettingsActivity",
+            "FaceRecognitionSettings",
+            "IrisSettings",
+            // Xiaomi/MIUI
+            "MiuiSecuritySettings",
+            "MiuiPasswordSettings",
+            "MiuiFingerprintActivity",
+            "MiuiFaceUnlockActivity",
+            // Huawei
+            "FingerprintUnlockSettingsActivity",
+            "FaceRecognitionActivity",
+            // OPPO/Realme/Vivo/OnePlus
+            "FingerprintActivity",
+            "FaceUnlockActivity",
+            "ScreenLockActivity",
+            "PasswordSettings"
+        )
+        
+        val isAllowedSecurityActivity = activityName != null && allowedSecurityActivities.any { allowed ->
+            activityName.contains(allowed, ignoreCase = true)
+        }
+        
+        if (isAllowedSecurityActivity) {
+            Log.d(TAG, "✅ Tela de Senha/Segurança permitida: $activityName")
+            Log.d(TAG, "   Usuário pode alterar senha/biometria do dispositivo")
             return SettingsCheckResult.SAFE
         }
         

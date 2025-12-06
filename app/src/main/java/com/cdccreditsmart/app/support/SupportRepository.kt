@@ -19,7 +19,7 @@ class SupportRepository(private val context: Context) {
         private const val TAG = "SupportRepository"
         private const val PREFS_NAME = "support_cache"
         private const val CONTACT_CACHE_EXPIRY_MS = 24 * 60 * 60 * 1000L
-        private const val TERMS_CACHE_EXPIRY_MS = 24 * 60 * 60 * 1000L
+        private const val TERMS_CACHE_EXPIRY_MS = 7 * 24 * 60 * 60 * 1000L // 7 dias - termos mudam raramente
         
         private const val KEY_CONTACT_PHONE = "contact_phone"
         private const val KEY_CONTACT_WHATSAPP = "contact_whatsapp"
@@ -96,7 +96,16 @@ class SupportRepository(private val context: Context) {
     suspend fun getContractTerms(version: String = "latest", forceRefresh: Boolean = false): Result<ContractTermsData> = withContext(Dispatchers.IO) {
         try {
             val cached = getCachedTerms()
+            val networkHelper = com.cdccreditsmart.app.network.NetworkConnectivityHelper(context)
+            val isOnline = networkHelper.isConnectedToInternet()
             
+            // OFFLINE: Sempre usar cache, independente de expiração
+            if (!isOnline && cached != null) {
+                Log.i(TAG, "📴 Offline - usando termos do cache local (v${cached.version})")
+                return@withContext Result.success(cached)
+            }
+            
+            // ONLINE: Usar cache se não expirou e não forçou refresh
             if (!forceRefresh && cached != null && version == "latest" && !isTermsCacheExpired()) {
                 Log.d(TAG, "✅ Retornando termos do cache local (v${cached.version})")
                 return@withContext Result.success(cached)

@@ -1,0 +1,23 @@
+ I  <-- END HTTP (59-byte body)
+2025-12-06 13:11:45.756  9955-12364 MdmCommandReceiver      com.cdccreditsmart.app               I  ✅ ACK enviado para comando 250e99b5-8c6d-4051-8208-23f9b56489ce
+2025-12-06 13:11:45.757  9955-12364 MdmCommandReceiver      com.cdccreditsmart.app               I  📍 ========================================
+2025-12-06 13:11:45.757  9955-12364 MdmCommandReceiver      com.cdccreditsmart.app               I  📍 COMANDO LOCATE_DEVICE RECEBIDO!
+2025-12-06 13:11:45.757  9955-12364 MdmCommandReceiver      com.cdccreditsmart.app               I  📍 ========================================
+2025-12-06 13:11:45.757  9955-12364 MdmCommandReceiver      com.cdccreditsmart.app               I  📍 High accuracy: true
+2025-12-06 13:11:45.757  9955-12364 MdmCommandReceiver      com.cdccreditsmart.app               I  📍 Timeout: 30000ms
+2025-12-06 13:11:45.760  9955-12364 MdmCommandReceiver      com.cdccreditsmart.app               I  📍 Obtendo localização (timeout: 30s)...
+2025-12-06 13:11:45.762  9955-12364 LocationProvider        com.cdccreditsmart.app               I  📍 ========================================
+2025-12-06 13:11:45.762  9955-12364 LocationProvider        com.cdccreditsmart.app               I  📍 INICIANDO OBTENÇÃO DE LOCALIZAÇÃO
+2025-12-06 13:11:45.762  9955-12364 LocationProvider        com.cdccreditsmart.app               I  📍 ========================================
+2025-12-06 13:11:45.764  9955-12364 LocationProvider        com.cdccreditsmart.app               D  📍 Permission check - Fine: false, Coarse: false
+2025-12-06 13:11:45.765  9955-12364 LocationProvider        com.cdccreditsmart.app               E  ❌ Permissões de localização não disponíveis
+2025-12-06 13:11:45.765  9955-12364 MdmCommandReceiver      com.cdccreditsmart.app               E  📍 ❌ Erro ao obter localização: PERMISSION_DENIED
+2025-12-06 13:11:45.766  9955-12364 MdmCommandReceiver      com.cdccreditsmart.app               E  📍 Mensagem: Location permissions not granted
+2025-12-06 13:11:45.769  9955-12364 SecureTokenStorage      com.cdccreditsmart.app               D  ⚠️ Usando Serial Number para MDM (IMEI indisponível): VY9DB9...
+2025-12-06 13:11:45.769  9955-12364 MdmCommandReceiver      com.cdccreditsmart.app               D  📍 Enviando location response usando identifier: VY9DB9EC****
+2025-12-06 13:11:45.771  9955-12364 MdmCommandReceiver      com.cdccreditsmart.app               D  📍 Request JSON schema: commandId=250e99b5-8c6d-4051-8208-23f9b56489ce, status=failed
+2025-12-06 13:11:45.771  9955-12364 MdmCommandReceiver      com.cdccreditsmart.app               D  📍 Response payload: success=false, location=null
+2025-12-06 13:11:45.781  9955-12439 okhttp.OkHttpClient     com.cdccreditsmart.app               I  --> POST https://cdccreditsmart.com/api/apk/device/VY9DB9EC/command-response
+2025-12-06 13:11:45.781  9955-12439 okhttp.OkHttpClient     com.cdccreditsmart.app               I  Content-Type: application/json; charset=UTF-8
+2025-12-06 13:11:45.781  9955-12439 okhttp.OkHttpClient     com.cdccreditsmart.app               I  Content-Length: 207
+2025-12-06 13:11:45.782  9955-12439 okhttp.OkHttpClient     com.cdccreditsmart.app               I  {"commandId":"250e99b5-8c6d-4051-8208-23f9b56489ce","status":"failed"
