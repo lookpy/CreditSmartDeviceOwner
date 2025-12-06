@@ -51,6 +51,12 @@ The UI uses Jetpack Compose and Material 3 with a CDC institutional dark theme. 
 - **Crash Prevention:** Global CrashHandler installed first in Application.onCreate() captures all unhandled exceptions, logs details, and schedules auto-restart. All critical code paths use try-catch with fallback values instead of throwing exceptions. SecurityExceptions (IMEI/ICCID access) are expected when not Device Owner and handled gracefully. ForegroundServiceStartNotAllowedException (Android 12+) is handled gracefully with automatic retry when app is in foreground.
 - **Secondary Managed User Detection:** CdcForegroundService and SecureTokenStorage detect when running in a secondary managed user (created via createAndManageUser) and skip MDM initialization, since enrollment data exists only in the primary Device Owner user. This eliminates unnecessary error logs and avoids duplicate MDM polling.
 - **Settings Access:** com.android.settings is NEVER blocked - users can access device Settings normally. Factory reset is blocked via DISALLOW_FACTORY_RESET policy (production only).
+- **SettingsGuard System:** Active monitoring in ALL modes (Device Owner, Device Admin, Basic) to prevent access to App Info screens where uninstall button resides. Uses UsageStats for accurate activity detection when available, with package-level fallback. Key features:
+  - **Always Active Monitoring:** Polls foreground app every 600ms (aggressive mode: 400ms) regardless of privilege level
+  - **Immediate Blocking:** Blocks Settings/App Info access immediately without grace period when UsageStats unavailable
+  - **Pause/Resume for Permission Flows:** Internal permission requests (overlay, usage stats) pause guard, auto-resumes when app returns to foreground
+  - **Robust Recovery:** Guard monitors even while paused to detect app foreground return and resume automatically
+  - **Multi-OEM Support:** Detects Samsung SM.UI, ColorOS SafeCenter, MIUI Security Center, Huawei System Manager, etc.
 
 ## External Dependencies
 - **CDC Credit Smart Backend API:** For APK authentication, auto-discovery, device status, installments, PIX payment processing, heartbeat, MDM commands, unblock operations, remote uninstall telemetry, time synchronization, FCM token registration, and enrollment reporting. Also requires an APK download endpoint and an enrollment report endpoint.
