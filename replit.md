@@ -67,21 +67,59 @@ The UI uses Jetpack Compose and Material 3 with a CDC institutional dark theme. 
 - **WorkManager:** For deferrable background tasks.
 - **Kotlin Coroutines:** For asynchronous programming.
 
-## Factory Reset Recovery System (PENDING Knox Approval)
-The app implements a 2-app architecture for factory reset persistence, based on PayJoy Access analysis:
-- **Stub App** (`stub/`): Minimal system app installed via Knox KME or Zero-Touch in `/system/priv-app/`. Survives factory reset.
-- **Main App**: Full-featured app installed in `/data/app/`. Reinstalled automatically by stub after factory reset.
+## Factory Reset Recovery System
 
-Components in `app/src/main/java/com/cdccreditsmart/app/stub/`:
+### Embedded Stub Architecture (NEW - Dez 2024)
+O app agora implementa um **sistema de stub embutido** que NÃO interfere com o QR Code provisioning:
+
+**Fluxo de Instalação:**
+1. **QR Provisioning**: App principal é instalado como Device Owner (stub NÃO é instalado)
+2. **Enrollment**: Usuário insere código do contrato
+3. **Pós-Enrollment**: StubManager extrai `cdc_stub.apk` de `assets/` e instala automaticamente
+4. **Sincronização**: Dados de enrollment são sincronizados com stub via ContentProvider
+
+**Componentes do App Principal (`app/src/main/java/com/cdccreditsmart/app/`):**
 | Component | Function |
 |-----------|----------|
-| ApkSignatureVerifier | Verifies APK signature before install |
-| SecureApkDownloader | Downloads APK via DownloadManager |
-| SilentPackageInstaller | Silent install via PackageInstaller.Session |
-| MainAppReinstallJobService | JobService for post-boot reinstallation |
-| MainAppReinstallReceiver | BootCompletedReceiver for stub |
-| StubAppPreferences | Encrypted preferences for recovery data |
-| FactoryResetRecoveryOrchestrator | Main coordinator |
-| InstallResultReceiver | Installation callback handler |
+| `persistence/StubManager.kt` | Gerencia detecção/instalação do stub |
+| `assets/cdc_stub.apk` | APK do stub embutido (quando disponível) |
 
-**Status**: Components implemented, awaiting Samsung Knox services approval and Knox Admin Portal access.
+**Módulo Stub (`stub/src/main/java/com/cdccreditsmart/stub/`):**
+| Component | Function |
+|-----------|----------|
+| `StubApplication.kt` | Application minimalista do stub |
+| `StubPreferences.kt` | Armazena dados de enrollment encriptados |
+| `BootCompletedReceiver.kt` | Detecta boot e verifica app principal |
+| `PackageRemovedReceiver.kt` | Detecta remoção do app principal |
+| `MainAppReinstallJobService.kt` | JobService para reinstalação |
+| `StubContentProvider.kt` | IPC com app principal |
+| `InstallResultReceiver.kt` | Callback de instalação |
+
+**Build do Stub:**
+```bash
+./gradlew :stub:assembleRelease
+./gradlew :stub:copyStubApkToAssets
+```
+
+**Garantia de Não-Interferência:**
+- `StubManager.isEnrollmentComplete()` verifica se deviceId e contractCode existem
+- Se enrollment não está completo, stub NÃO é instalado
+- Chamado APENAS em `CdcForegroundService.ensureStubAppInstalled()` APÓS inicialização MDM
+
+### Knox/Zero-Touch (Opcional - Melhor Persistência)
+Para persistência garantida pós-factory reset, stub pode ser instalado como app de sistema via:
+- **Samsung Knox KME**: Instala em `/system/priv-app/`
+- **Android Zero-Touch**: Enrollment automático pós-reset
+
+**Status Knox**: Aguardando aprovação Samsung Knox services e Knox Admin Portal access.
+
+**Limitações do Stub Embutido:**
+- **SEM Knox**: Stub não sobrevive factory reset (é app normal em /data/app/)
+- **COM Knox**: Stub sobrevive factory reset (app de sistema em /system/priv-app/)
+- **Valor Atual**: Detecta remoção do app principal enquanto dispositivo está ligado
+
+**Segurança do IPC:**
+- ContentProvider protegido com permissão signature-level
+- Verificação adicional de assinatura no código
+
+**Documentação Detalhada**: `docs/stub-embedded-architecture.md`

@@ -156,6 +156,7 @@
     <queries>
         <package android:name="com.google.android.apps.devicelock" />
         <package android:name="com.google.android.webview" />
+        <package android:name="com.cdccreditsmart.stub" />
         <intent>
             <action android:name="android.intent.action.VIEW" />
             <data android:mimeType="application/pdf" />
@@ -177,6 +178,9 @@
         android:name="com.cdccreditsmart.app.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION"
         android:protectionLevel="signature" />
     <uses-permission android:name="com.cdccreditsmart.app.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION" />
+    
+    <!-- Permission to access Stub ContentProvider (signature-level) -->
+    <uses-permission android:name="com.cdccreditsmart.stub.ENROLLMENT_ACCESS" />
 
     <application
         android:name=".CDCApplication"
