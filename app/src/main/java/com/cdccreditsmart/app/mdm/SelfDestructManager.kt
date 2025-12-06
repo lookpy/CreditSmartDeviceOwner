@@ -19,6 +19,7 @@ import com.cdccreditsmart.device.ManufacturerCompatibilityService
 import com.cdccreditsmart.app.uninstall.UninstallAttemptTracker
 import com.cdccreditsmart.network.api.MdmApiService
 import com.cdccreditsmart.network.dto.mdm.CommandParameters
+import com.cdccreditsmart.network.dto.mdm.TelemetryRequest
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.security.MessageDigest
@@ -448,23 +449,24 @@ class SelfDestructManager(private val context: Context) {
         try {
             Log.i(TAG, "📊 Enviando telemetria de FALHA ao backend...")
             
-            val telemetryData = mapOf(
-                "event" to "APP_UNINSTALL_FAILED",
-                "reason" to reason,
-                "error" to errorMessage,
-                "timestamp" to System.currentTimeMillis(),
-                "deviceId" to (tokenStorage.getDeviceId() ?: "unknown"),
-                "contractCode" to (tokenStorage.getContractCode() ?: "unknown"),
-                "manufacturer" to android.os.Build.MANUFACTURER,
-                "model" to android.os.Build.MODEL,
-                "androidVersion" to android.os.Build.VERSION.RELEASE
+            val telemetryRequest = TelemetryRequest(
+                event = "APP_UNINSTALL_FAILED",
+                reason = reason,
+                errorMessage = errorMessage,
+                timestamp = System.currentTimeMillis(),
+                deviceId = tokenStorage.getDeviceId() ?: "unknown",
+                contractCode = tokenStorage.getContractCode() ?: "unknown",
+                manufacturer = android.os.Build.MANUFACTURER,
+                model = android.os.Build.MODEL,
+                androidVersion = android.os.Build.VERSION.RELEASE,
+                isDeviceOwner = dpm.isDeviceOwnerApp(context.packageName)
             )
             
             withContext(Dispatchers.IO) {
                 val retrofit = RetrofitProvider.createAuthenticatedRetrofit(context)
                 val api = retrofit.create(MdmApiService::class.java)
                 
-                val response = api.sendTelemetry(telemetryData)
+                val response = api.sendTelemetry(telemetryRequest)
                 
                 if (response.isSuccessful) {
                     Log.i(TAG, "✅ Telemetria de falha enviada com sucesso")
@@ -484,22 +486,23 @@ class SelfDestructManager(private val context: Context) {
         try {
             Log.i(TAG, "📊 Enviando telemetria final ao backend...")
             
-            val telemetryData = mapOf(
-                "event" to "APP_UNINSTALL",
-                "reason" to reason,
-                "timestamp" to System.currentTimeMillis(),
-                "deviceId" to (tokenStorage.getDeviceId() ?: "unknown"),
-                "contractCode" to (tokenStorage.getContractCode() ?: "unknown"),
-                "manufacturer" to android.os.Build.MANUFACTURER,
-                "model" to android.os.Build.MODEL,
-                "androidVersion" to android.os.Build.VERSION.RELEASE
+            val telemetryRequest = TelemetryRequest(
+                event = "APP_UNINSTALL",
+                reason = reason,
+                timestamp = System.currentTimeMillis(),
+                deviceId = tokenStorage.getDeviceId() ?: "unknown",
+                contractCode = tokenStorage.getContractCode() ?: "unknown",
+                manufacturer = android.os.Build.MANUFACTURER,
+                model = android.os.Build.MODEL,
+                androidVersion = android.os.Build.VERSION.RELEASE,
+                isDeviceOwner = dpm.isDeviceOwnerApp(context.packageName)
             )
             
             withContext(Dispatchers.IO) {
                 val retrofit = RetrofitProvider.createAuthenticatedRetrofit(context)
                 val api = retrofit.create(MdmApiService::class.java)
                 
-                val response = api.sendTelemetry(telemetryData)
+                val response = api.sendTelemetry(telemetryRequest)
                 
                 if (response.isSuccessful) {
                     Log.i(TAG, "✅ Telemetria final enviada com sucesso")
@@ -523,18 +526,36 @@ class SelfDestructManager(private val context: Context) {
             val packageName = context.packageName
             
             Log.i(TAG, "🗑️ Iniciando desinstalação do pacote: $packageName")
+            Log.i(TAG, "   ⚠️ NOTA: Android não permite auto-desinstalação silenciosa")
+            Log.i(TAG, "   ⚠️ Uma confirmação do usuário será exibida")
             
-            val intent = Intent(Intent.ACTION_DELETE).apply {
+            val intent = Intent(Intent.ACTION_UNINSTALL_PACKAGE).apply {
                 data = Uri.parse("package:$packageName")
                 addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                putExtra(Intent.EXTRA_RETURN_RESULT, false)
             }
             
             context.startActivity(intent)
             
-            Log.i(TAG, "✅ Intent de desinstalação enviado - aguardando confirmação do usuário")
+            Log.i(TAG, "✅ Intent de desinstalação enviado")
+            Log.i(TAG, "   → Tela de confirmação será exibida ao usuário")
+            Log.i(TAG, "   → Usuário deve clicar 'OK' ou 'Desinstalar' para concluir")
             
         } catch (e: Exception) {
             Log.e(TAG, "❌ Erro ao solicitar desinstalação: ${e.message}", e)
+            
+            try {
+                Log.i(TAG, "🔄 Tentando método alternativo (ACTION_DELETE)...")
+                val fallbackIntent = Intent(Intent.ACTION_DELETE).apply {
+                    data = Uri.parse("package:${context.packageName}")
+                    addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                }
+                context.startActivity(fallbackIntent)
+                Log.i(TAG, "✅ Fallback executado - aguardando confirmação do usuário")
+            } catch (e2: Exception) {
+                Log.e(TAG, "❌ Todos os métodos de desinstalação falharam: ${e2.message}", e2)
+            }
         }
     }
 }

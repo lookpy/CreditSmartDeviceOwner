@@ -185,3 +185,19 @@ data class MdmCommandFull(
     val priority: String,
     val expiresAt: String?
 )
+
+@JsonClass(generateAdapter = true)
+data class TelemetryRequest(
+    val event: String,
+    val reason: String? = null,
+    @Json(name = "error") val errorMessage: String? = null,
+    val timestamp: Long = System.currentTimeMillis(),
+    val deviceId: String? = null,
+    val contractCode: String? = null,
+    val manufacturer: String? = null,
+    val model: String? = null,
+    val androidVersion: String? = null,
+    val appVersion: String? = null,
+    val isDeviceOwner: Boolean? = null,
+    val additionalData: Map<String, String>? = null
+)

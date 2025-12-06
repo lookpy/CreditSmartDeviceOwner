@@ -70,10 +70,11 @@ interface MdmApiService {
     /**
      * Enviar telemetria para o backend
      * Endpoint: POST /api/apk/device/telemetry
+     * Aceita resposta vazia (Unit) para compatibilidade com backends simples
      */
     @POST("api/apk/device/telemetry")
     suspend fun sendTelemetry(
-        @Body telemetry: Map<String, Any?>
+        @Body telemetry: TelemetryRequest
     ): Response<Unit>
     
 }
