@@ -187,21 +187,44 @@ class SelfDestructManager(private val context: Context) {
                 }
             }
             
-            Log.i(TAG, "📡 [7/9] Enviando telemetria final ao backend...")
-            sendFinalTelemetry(params.reason)
-            Log.i(TAG, "✅ [7/9] Telemetria final enviada")
-            
-            if (params.shouldWipeData()) {
-                Log.i(TAG, "🧹 [8/9] Limpando dados da aplicação...")
-                clearAppData()
-                Log.i(TAG, "✅ [8/9] Dados limpos com sucesso")
-            } else {
-                Log.i(TAG, "⏭️ [8/9] Wipe data = false - mantendo dados")
+            // CRÍTICO: Remover Device Admin se ainda estiver ativo
+            // Isso é necessário porque:
+            // 1. Se era Device Owner, clearDeviceOwnerApp() também remove Device Admin
+            // 2. Se era apenas Device Admin (não Device Owner), precisa remover manualmente
+            // 3. Android BLOQUEIA desinstalação de apps com Device Admin ativo
+            Log.i(TAG, "🔓 [7/10] Verificando e removendo Device Admin se necessário...")
+            when (val adminResult = removeDeviceAdminIfActive()) {
+                is RemoveAdminResult.Removed -> {
+                    Log.i(TAG, "✅ [7/10] Device Admin removido com sucesso")
+                }
+                is RemoveAdminResult.NotRequired -> {
+                    Log.i(TAG, "✅ [7/10] Device Admin não estava ativo - continuando")
+                }
+                is RemoveAdminResult.Failed -> {
+                    Log.e(TAG, "❌ [7/10] ERRO CRÍTICO - Falha ao remover Device Admin")
+                    Log.e(TAG, "❌ ${adminResult.message}")
+                    Log.e(TAG, "❌ Auto-destruição ABORTADA - desinstalação falhará se continuar")
+                    sendFailureTelemetry(params.reason, "Device Admin removal failed: ${adminResult.message}")
+                    resumeGuardSafely(guardWasPaused)
+                    return SelfDestructResult.Error("Failed to remove Device Admin: ${adminResult.message}")
+                }
             }
             
-            Log.i(TAG, "🗑️ [9/9] Solicitando desinstalação do aplicativo...")
+            Log.i(TAG, "📡 [8/10] Enviando telemetria final ao backend...")
+            sendFinalTelemetry(params.reason)
+            Log.i(TAG, "✅ [8/10] Telemetria final enviada")
+            
+            if (params.shouldWipeData()) {
+                Log.i(TAG, "🧹 [9/10] Limpando dados da aplicação...")
+                clearAppData()
+                Log.i(TAG, "✅ [9/10] Dados limpos com sucesso")
+            } else {
+                Log.i(TAG, "⏭️ [9/10] Wipe data = false - mantendo dados")
+            }
+            
+            Log.i(TAG, "🗑️ [10/10] Solicitando desinstalação do aplicativo...")
             requestUninstall()
-            Log.i(TAG, "✅ [9/9] Solicitação de desinstalação enviada")
+            Log.i(TAG, "✅ [10/10] Solicitação de desinstalação enviada")
             
             Log.i(TAG, "========================================")
             Log.i(TAG, "✅ AUTO-DESTRUIÇÃO COMPLETA")
@@ -422,6 +445,90 @@ class SelfDestructManager(private val context: Context) {
         } catch (e: Exception) {
             Log.e(TAG, "❌ Erro ao remover bloqueio de desinstalação: ${e.message}", e)
         }
+    }
+    
+    /**
+     * Remove Device Admin se ainda estiver ativo.
+     * 
+     * CRÍTICO: Android BLOQUEIA desinstalação de apps com Device Admin ativo.
+     * Esta função deve ser chamada DEPOIS de remover Device Owner, porque:
+     * 1. Se era Device Owner, clearDeviceOwnerApp() também remove Device Admin
+     * 2. Se era apenas Device Admin (não Device Owner), precisa chamar removeActiveAdmin()
+     * 
+     * @return RemoveAdminResult indicando sucesso, falha, ou não necessário
+     */
+    private suspend fun removeDeviceAdminIfActive(): RemoveAdminResult {
+        return try {
+            val packageName = context.packageName
+            
+            // Verificar se ainda é Device Admin
+            if (!dpm.isAdminActive(adminComponent)) {
+                Log.i(TAG, "✅ App não é Device Admin - nada a remover")
+                return RemoveAdminResult.NotRequired
+            }
+            
+            Log.i(TAG, "🔓 App ainda é Device Admin - removendo...")
+            
+            // Verificar se também é Device Owner (não deveria ser neste ponto)
+            if (dpm.isDeviceOwnerApp(packageName)) {
+                Log.w(TAG, "⚠️ App ainda é Device Owner! Isso não deveria acontecer aqui.")
+                Log.w(TAG, "⚠️ A remoção do Device Owner pode ter falhado silenciosamente.")
+                // Tentar remover Device Owner novamente
+                try {
+                    dpm.clearDeviceOwnerApp(packageName)
+                    Log.i(TAG, "✅ Device Owner removido na segunda tentativa")
+                } catch (e: Exception) {
+                    Log.e(TAG, "❌ Falha ao remover Device Owner: ${e.message}")
+                    return RemoveAdminResult.Failed("Device Owner ainda ativo e não pode ser removido: ${e.message}")
+                }
+            }
+            
+            // Remover Device Admin
+            // NOTA: removeActiveAdmin() é assíncrono - o callback onDisabled() será chamado
+            dpm.removeActiveAdmin(adminComponent)
+            Log.i(TAG, "✅ removeActiveAdmin() chamado - aguardando processamento...")
+            
+            // Polling com timeout para aguardar remoção do Device Admin
+            // O sistema pode demorar alguns segundos para processar
+            val maxWaitMs = 5000L  // 5 segundos máximo
+            val pollIntervalMs = 200L
+            var elapsedMs = 0L
+            
+            while (elapsedMs < maxWaitMs) {
+                kotlinx.coroutines.delay(pollIntervalMs)
+                elapsedMs += pollIntervalMs
+                
+                if (!dpm.isAdminActive(adminComponent)) {
+                    Log.i(TAG, "✅ Device Admin removido com sucesso após ${elapsedMs}ms")
+                    return RemoveAdminResult.Removed
+                }
+                
+                if (elapsedMs % 1000 == 0L) {
+                    Log.d(TAG, "⏳ Aguardando remoção do Device Admin... ${elapsedMs/1000}s")
+                }
+            }
+            
+            // Timeout - Device Admin ainda ativo
+            Log.e(TAG, "❌ TIMEOUT: Device Admin ainda ativo após ${maxWaitMs}ms")
+            Log.e(TAG, "❌ A desinstalação FALHARÁ porque Android bloqueia apps com Device Admin ativo")
+            RemoveAdminResult.Failed(
+                "Device Admin não foi removido após ${maxWaitMs/1000}s. " +
+                "Acesse Configurações > Segurança > Administradores do dispositivo e desative o app manualmente."
+            )
+            
+        } catch (e: Exception) {
+            Log.e(TAG, "❌ Erro ao remover Device Admin: ${e.message}", e)
+            RemoveAdminResult.Failed("Erro ao remover Device Admin: ${e.message}")
+        }
+    }
+    
+    /**
+     * Resultado da remoção do Device Admin
+     */
+    sealed class RemoveAdminResult {
+        object Removed : RemoveAdminResult()
+        object NotRequired : RemoveAdminResult()
+        data class Failed(val message: String) : RemoveAdminResult()
     }
     
     private fun clearAppData() {
