@@ -62,10 +62,14 @@ class MdmCommandReceiver(private val context: Context) {
         
         val deviceId = getDeviceIdentifier()
         
-        Log.i(TAG, "🔗 Iniciando conexão WebSocket MDM...")
-        Log.d(TAG, "🔗 URL: $WS_URL")
-        Log.d(TAG, "🔗 JWT Token presente: ${jwtToken.isNotBlank()}")
-        Log.d(TAG, "🔗 Using serialNumber: ${deviceId?.take(10)}...")
+        Log.i(TAG, "🔗 ========================================")
+        Log.i(TAG, "🔗 INICIANDO CONEXÃO WEBSOCKET MDM")
+        Log.i(TAG, "🔗 ========================================")
+        Log.i(TAG, "🔗 URL base: $WS_URL")
+        Log.i(TAG, "🔗 JWT Token presente: ${jwtToken.isNotBlank()}")
+        Log.i(TAG, "🔗 JWT Token length: ${jwtToken.length}")
+        Log.i(TAG, "🔗 JWT Token preview: ${jwtToken.take(30)}...")
+        Log.i(TAG, "🔗 Device identifier: ${deviceId ?: "NULO!"}")
         
         if (deviceId == null) {
             Log.e(TAG, "❌ SerialNumber não encontrado - impossível conectar MDM WebSocket")
@@ -83,6 +87,12 @@ class MdmCommandReceiver(private val context: Context) {
             .build()
         
         Log.d(TAG, "🔗 Criando WebSocket OkHttp...")
+        
+        // CORREÇÃO CRÍTICA: Iniciar polling IMEDIATAMENTE, não esperar WebSocket
+        // O WebSocket pode ficar "travado" conectando se o servidor não completar o upgrade
+        Log.i(TAG, "🔄 Iniciando polling IMEDIATAMENTE (não esperar WebSocket)")
+        startPollingFallbackIfNeeded()
+        
         webSocket = okHttpClient.newWebSocket(request, object : WebSocketListener() {
             
             override fun onOpen(webSocket: WebSocket, response: Response) {
@@ -91,6 +101,7 @@ class MdmCommandReceiver(private val context: Context) {
                 Log.d(TAG, "✅ Response code: ${response.code}")
                 reconnectJob?.cancel()
                 
+                // Polling já foi iniciado antes - esta chamada é redundante mas segura
                 startPollingFallbackIfNeeded()
             }
             
@@ -535,7 +546,18 @@ class MdmCommandReceiver(private val context: Context) {
         pollingJob?.cancel()
         
         pollingJob = scope.launch {
-            Log.i(TAG, "🔄 Iniciando polling fallback MDM (intervalo: 30s)")
+            Log.i(TAG, "🔄 ========================================")
+            Log.i(TAG, "🔄 INICIANDO POLLING FALLBACK MDM")
+            Log.i(TAG, "🔄 ========================================")
+            Log.i(TAG, "🔄 Intervalo: 30 segundos")
+            Log.i(TAG, "🔄 Endpoint: GET /api/apk/device/{identifier}/commands")
+            
+            Log.i(TAG, "🔄 Executando verificação IMEDIATA de comandos...")
+            try {
+                fetchPendingCommands()
+            } catch (e: Exception) {
+                Log.w(TAG, "⚠️ Erro na verificação imediata: ${e.message}")
+            }
             
             var loopCount = 0L
             
@@ -545,7 +567,7 @@ class MdmCommandReceiver(private val context: Context) {
                     loopCount++
                     
                     try {
-                        Log.d(TAG, "🔍 [Polling #$loopCount] Verificando comandos pendentes...")
+                        Log.i(TAG, "🔍 [Polling #$loopCount] Verificando comandos pendentes...")
                         fetchPendingCommands()
                         
                     } catch (e: CancellationException) {
@@ -575,41 +597,80 @@ class MdmCommandReceiver(private val context: Context) {
             
             if (identifier == null) {
                 Log.e(TAG, "❌ Nenhum identificador MDM disponível - impossível buscar comandos")
+                Log.e(TAG, "   Verifique se o device foi pareado corretamente")
                 return
             }
             
-            Log.d(TAG, "🔍 Buscando comandos pendentes com identifier: ${identifier.take(10)}...")
+            Log.i(TAG, "🔍 ========================================")
+            Log.i(TAG, "🔍 BUSCANDO COMANDOS PENDENTES")
+            Log.i(TAG, "🔍 ========================================")
+            Log.i(TAG, "🔍 Identifier: $identifier")
+            Log.i(TAG, "🔍 Endpoint: GET /api/apk/device/$identifier/commands")
             val fetchStartTime = System.currentTimeMillis()
             
             val retrofit = RetrofitProvider.createAuthenticatedRetrofit(context)
             val api = retrofit.create(MdmApiService::class.java)
             
+            Log.d(TAG, "🔍 Executando requisição HTTP...")
             val response = api.getPendingCommands(identifier)
+            
+            Log.i(TAG, "🔍 HTTP Response code: ${response.code()}")
+            Log.i(TAG, "🔍 HTTP isSuccessful: ${response.isSuccessful}")
             
             if (response.isSuccessful) {
                 val body = response.body()
                 val commands = body?.commands ?: emptyList()
                 
+                Log.i(TAG, "🔍 Response body deviceId: ${body?.deviceId}")
+                Log.i(TAG, "🔍 Response body serialNumber: ${body?.serialNumber}")
+                Log.i(TAG, "🔍 Total de comandos: ${commands.size}")
+                
                 if (commands.isNotEmpty()) {
-                    Log.i(TAG, "📋 ${commands.size} comandos pendentes encontrados")
-                    commands.forEach { command ->
-                        Log.i(TAG, "📋 Processando comando pendente: ${command.commandType} (${command.id})")
+                    Log.i(TAG, "📋 ========================================")
+                    Log.i(TAG, "📋 ${commands.size} COMANDOS PENDENTES ENCONTRADOS!")
+                    Log.i(TAG, "📋 ========================================")
+                    commands.forEachIndexed { index, command ->
+                        Log.i(TAG, "📋 [$index] ID: ${command.id}")
+                        Log.i(TAG, "📋 [$index] Tipo: ${command.commandType}")
+                        Log.i(TAG, "📋 [$index] Status: ${command.status}")
+                        Log.i(TAG, "📋 [$index] Prioridade: ${command.priority}")
+                        Log.i(TAG, "📋 [$index] Parameters class: ${command.parameters::class.simpleName}")
+                        Log.i(TAG, "📋 Processando comando...")
                         processMdmCommand(command.id, command.commandType, command.parameters)
                     }
+                    Log.i(TAG, "📋 ========================================")
                 } else {
-                    Log.d(TAG, "✅ Nenhum comando pendente")
+                    Log.d(TAG, "✅ Nenhum comando pendente no servidor")
                 }
                 
                 val fetchDuration = System.currentTimeMillis() - fetchStartTime
                 Log.d(TAG, "📊 Fetch duration: ${fetchDuration}ms")
             } else {
-                Log.e(TAG, "❌ Erro ao buscar comandos pendentes - HTTP ${response.code()}")
-                Log.e(TAG, "❌ Response body: ${response.errorBody()?.string()}")
+                Log.e(TAG, "❌ ========================================")
+                Log.e(TAG, "❌ ERRO AO BUSCAR COMANDOS PENDENTES")
+                Log.e(TAG, "❌ ========================================")
+                Log.e(TAG, "❌ HTTP Status: ${response.code()}")
+                Log.e(TAG, "❌ HTTP Message: ${response.message()}")
+                val errorBody = response.errorBody()?.string()
+                Log.e(TAG, "❌ Error body: $errorBody")
+                Log.e(TAG, "❌ ========================================")
+                
+                if (response.code() == 401) {
+                    Log.e(TAG, "❌ Token JWT expirado ou inválido!")
+                } else if (response.code() == 404) {
+                    Log.e(TAG, "❌ Device não encontrado no backend!")
+                    Log.e(TAG, "❌ Identifier usado: $identifier")
+                }
             }
             
         } catch (e: Exception) {
-            Log.e(TAG, "❌ Erro ao buscar comandos pendentes", e)
+            Log.e(TAG, "❌ ========================================")
+            Log.e(TAG, "❌ EXCEÇÃO AO BUSCAR COMANDOS")
+            Log.e(TAG, "❌ ========================================")
+            Log.e(TAG, "❌ Tipo: ${e::class.simpleName}")
+            Log.e(TAG, "❌ Mensagem: ${e.message}")
             Log.e(TAG, "❌ Stack trace: ${e.stackTraceToString()}")
+            Log.e(TAG, "❌ ========================================")
         }
     }
     
