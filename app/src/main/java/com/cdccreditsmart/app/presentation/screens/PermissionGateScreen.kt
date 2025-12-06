@@ -555,5 +555,6 @@ private fun getIconForPermission(type: PermissionGateManager.PermissionType): Im
         PermissionGateManager.PermissionType.RUNTIME -> Icons.Default.PermDeviceInformation
         PermissionGateManager.PermissionType.USAGE_STATS -> Icons.Default.Analytics
         PermissionGateManager.PermissionType.OVERLAY -> Icons.Default.Layers
+        PermissionGateManager.PermissionType.BATTERY_OPTIMIZATION -> Icons.Default.BatteryChargingFull
     }
 }
