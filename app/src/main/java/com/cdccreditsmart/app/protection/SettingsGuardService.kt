@@ -371,6 +371,17 @@ class SettingsGuardService(private val context: Context) {
         
         if (settingsPackages.contains(packageName)) {
             if (activityName != null) {
+                // ═══════════════════════════════════════════════════════════════════════════════
+                // EXTRAÇÃO DO NOME LIMPO DA ACTIVITY
+                // Para inner classes como Settings$ResetDashboardActivity, extrair apenas 
+                // ResetDashboardActivity. Isso garante matching correto com TODOS os padrões.
+                // ═══════════════════════════════════════════════════════════════════════════════
+                val activitySimpleName = when {
+                    activityName.contains("\$") -> activityName.substringAfterLast("\$")
+                    activityName.contains(".") -> activityName.substringAfterLast(".")
+                    else -> activityName
+                }
+                
                 val dangerousActivities = listOf(
                     // ═══════════════════════════════════════════════════════════════════════════════
                     // CATEGORIA 1: APP INFO / UNINSTALL - Telas onde botão Desinstalar aparece
@@ -790,6 +801,18 @@ class SettingsGuardService(private val context: Context) {
                     "SpecialAccessListActivity",
                     "SpecialAppAccessActivity",
                     
+                    // XOS/Infinix/Tecno - "Permissões e privacidade" 
+                    // Tela MUITO perigosa - dá acesso a XHide, XClone, Sistema duplo, Modo de reparo
+                    "PermissionsAndPrivacyActivity",
+                    "PrivacyProtectionActivity",
+                    "PrivacyControlCenterActivity",
+                    "XosPrivacyDashboardActivity",
+                    "TranssionPrivacyDashboardActivity",
+                    "InfinixPrivacyDashboardActivity",
+                    "SecurityPrivacyMainActivity",
+                    "PrivacyProtectionDashboardActivity",
+                    "XosSecurityPrivacyActivity",
+                    
                     // Huawei/Honor
                     "SecurityCenterActivity",
                     "SystemManagerActivity",
@@ -867,13 +890,15 @@ class SettingsGuardService(private val context: Context) {
                 )
                 
                 val matchedActivity = dangerousActivities.find { 
-                    activityName.contains(it, ignoreCase = true) 
+                    activityName.contains(it, ignoreCase = true) || 
+                    activitySimpleName.contains(it, ignoreCase = true)
                 }
                 
                 if (matchedActivity != null) {
                     Log.w(TAG, "🎯 ATIVIDADE PERIGOSA DETECTADA!")
                     Log.w(TAG, "   Pacote: $packageName")
                     Log.w(TAG, "   Activity completa: $activityName")
+                    Log.w(TAG, "   Activity simplificada: $activitySimpleName")
                     Log.w(TAG, "   Match: $matchedActivity")
                     return SettingsCheckResult.DANGEROUS_IMMEDIATE
                 }
@@ -919,6 +944,15 @@ class SettingsGuardService(private val context: Context) {
                     "FactoryRestore",
                     "ResetAll",
                     "InitDevice",
+                    "ResetDashboard",         // Settings$ResetDashboardActivity
+                    "ResetOptions",           // ResetOptionsActivity (XOS/Transsion)
+                    "ResetSettings",          // ResetSettingsActivity
+                    "BackupReset",            // BackupResetActivity
+                    "SystemReset",            // System reset
+                    "DataReset",              // Data reset
+                    "FullReset",              // Full device reset
+                    "ErasureActivity",        // Variante de reset
+                    "MasterClearConfirm",     // Confirmação de Factory Reset
                     
                     // Device Admin / MDM patterns
                     "DeviceAdmin",
@@ -1014,6 +1048,11 @@ class SettingsGuardService(private val context: Context) {
                     "SmartPower",
                     "TranssionApp",
                     "TranssionSecurity",
+                    "PermissoesPrivacidade",    // XOS: Nome exato em português
+                    "PermissoesEPrivacidade",   // XOS: Variante
+                    "PrivacidadePermissoes",    // XOS: Variante invertida
+                    "ProtecaoPrivacidade",      // XOS: "Proteção de privacidade"
+                    "EstrategiaPrivacidade",    // XOS: "Estratégias" submenu
                     
                     // Storage / Clear Data patterns
                     "ClearData",
@@ -1032,13 +1071,15 @@ class SettingsGuardService(private val context: Context) {
                 )
                 
                 val matchedPattern = dangerousPatterns.find { pattern ->
-                    activityName.contains(pattern, ignoreCase = true)
+                    activityName.contains(pattern, ignoreCase = true) ||
+                    activitySimpleName.contains(pattern, ignoreCase = true)
                 }
                 
                 if (matchedPattern != null) {
                     Log.w(TAG, "🎯 PADRÃO PERIGOSO DETECTADO!")
                     Log.w(TAG, "   Pacote: $packageName")
                     Log.w(TAG, "   Activity completa: $activityName")
+                    Log.w(TAG, "   Activity simplificada: $activitySimpleName")
                     Log.w(TAG, "   Padrão match: $matchedPattern")
                     return SettingsCheckResult.DANGEROUS_IMMEDIATE
                 }
@@ -1154,22 +1195,81 @@ class SettingsGuardService(private val context: Context) {
                 }
                 
                 // ═══════════════════════════════════════════════════════════════════════════════
+                // DETECÇÃO DE INNER CLASSES PERIGOSAS (Settings$XxxActivity)
+                // Android/OEMs usam inner classes para telas específicas, ex:
+                // com.android.settings.Settings$FactoryResetActivity
+                // com.android.settings.Settings$ResetDashboardActivity
+                // ═══════════════════════════════════════════════════════════════════════════════
+                if (activityName.contains("\$", ignoreCase = false)) {
+                    val innerClassName = activityName.substringAfterLast("\$")
+                    
+                    // Lista de inner classes que são SEMPRE perigosas
+                    val dangerousInnerClasses = listOf(
+                        // Factory Reset
+                        "FactoryReset",
+                        "MasterClear",
+                        "ResetDashboard",
+                        "ResetOptions",
+                        "ResetSettings",
+                        "BackupReset",
+                        "WipeData",
+                        "EraseData",
+                        "ResetPhone",
+                        "SystemReset",
+                        "MasterClearConfirm",
+                        // Device Admin
+                        "DeviceAdmin",
+                        "DeviceAdminAdd",
+                        "DeviceAdminSettings",
+                        "DeviceAdministrators",
+                        // App Info
+                        "InstalledAppDetails",
+                        "AppInfo",
+                        "ManageApplications",
+                        // Permissions
+                        "SpecialAccess",
+                        "ManagePermissions",
+                        "PermissionApps",
+                        // Developer Options
+                        "DevelopmentSettings",
+                        "DeveloperOptions",
+                        // Battery
+                        "BatterySaver",
+                        "HighPowerApplications"
+                    )
+                    
+                    val matchedInnerClass = dangerousInnerClasses.find { pattern ->
+                        innerClassName.contains(pattern, ignoreCase = true)
+                    }
+                    
+                    if (matchedInnerClass != null) {
+                        Log.w(TAG, "🎯 INNER CLASS PERIGOSA DETECTADA!")
+                        Log.w(TAG, "   Pacote: $packageName")
+                        Log.w(TAG, "   Activity completa: $activityName")
+                        Log.w(TAG, "   Inner class: $innerClassName")
+                        Log.w(TAG, "   Padrão match: $matchedInnerClass")
+                        return SettingsCheckResult.DANGEROUS_IMMEDIATE
+                    }
+                }
+                
+                // ═══════════════════════════════════════════════════════════════════════════════
                 // TRACKING DE ESTADO: Verificar se a activity atual é um caminho perigoso
                 // Se sim, lembrar para bloquear SubSettings que vier depois
                 // ═══════════════════════════════════════════════════════════════════════════════
-                val simpleActivityName = activityName.substringAfterLast(".")
                 val currentTime = System.currentTimeMillis()
                 
                 // Verificar se esta activity é um caminho para telas perigosas
+                // Usa activitySimpleName (já definido no início) para matching correto de inner classes
                 val isDangerousPath = dangerousPathActivities.any { pattern ->
-                    simpleActivityName.contains(pattern, ignoreCase = true)
+                    activitySimpleName.contains(pattern, ignoreCase = true) ||
+                    activityName.contains(pattern, ignoreCase = true)
                 }
                 
                 if (isDangerousPath) {
                     // Lembrar que estamos num caminho perigoso
-                    lastDangerousPathActivity = simpleActivityName
+                    lastDangerousPathActivity = activitySimpleName
                     lastDangerousPathTime = currentTime
-                    Log.w(TAG, "⚠️ Caminho perigoso detectado: $simpleActivityName")
+                    Log.w(TAG, "⚠️ Caminho perigoso detectado: $activitySimpleName")
                     Log.w(TAG, "   SubSettings que vier agora será BLOQUEADO!")
                 }
                 
@@ -1199,7 +1299,8 @@ class SettingsGuardService(private val context: Context) {
                 // ConfirmLockPassword aparece quando usuário vai fazer Factory Reset
                 // ═══════════════════════════════════════════════════════════════════════════════
                 val isConfirmationActivity = confirmationActivities.any { pattern ->
-                    simpleActivityName.contains(pattern, ignoreCase = true)
+                    activitySimpleName.contains(pattern, ignoreCase = true) ||
+                    activityName.contains(pattern, ignoreCase = true)
                 }
                 
                 if (isConfirmationActivity) {
@@ -1209,14 +1310,14 @@ class SettingsGuardService(private val context: Context) {
                     
                     if (recentlyOnDangerousPath) {
                         Log.w(TAG, "🎯 CONFIRMAÇÃO após caminho perigoso!")
-                        Log.w(TAG, "   Activity: $simpleActivityName")
+                        Log.w(TAG, "   Activity: $activitySimpleName")
                         Log.w(TAG, "   Caminho: $lastDangerousPathActivity")
                         Log.w(TAG, "   Tempo desde: ${timeSinceDangerousPath}ms")
                         Log.w(TAG, "   BLOQUEANDO - Provável confirmação de Factory Reset!")
                         return SettingsCheckResult.DANGEROUS_IMMEDIATE
                     } else {
                         Log.d(TAG, "📋 Confirmação detectada (sem caminho perigoso anterior)")
-                        Log.d(TAG, "   Activity: $simpleActivityName")
+                        Log.d(TAG, "   Activity: $activitySimpleName")
                         Log.d(TAG, "   NOTA: Provavelmente desbloqueio normal")
                     }
                 }
@@ -1224,12 +1325,27 @@ class SettingsGuardService(private val context: Context) {
                 // NOTA: SettingsHomeActivity e MainTabActivity são as telas PRINCIPAIS do Settings
                 // NÃO bloquear essas - permitir navegação normal
                 // Resetar tracking quando voltar para tela principal (navegação segura)
-                if (simpleActivityName.contains("SettingsHomeActivity", ignoreCase = true) ||
-                    simpleActivityName.contains("MainTabActivity", ignoreCase = true) ||
-                    simpleActivityName.contains("Settings\$", ignoreCase = false)) {
+                // 
+                // CRÍTICO: Inner classes perigosas usam formato Settings$XxxActivity
+                // NÃO resetar tracking para Settings$ porque inclui:
+                // - Settings$FactoryResetActivity, Settings$ResetDashboardActivity
+                // - Settings$MasterClearActivity, Settings$ResetOptionsActivity
+                // Apenas resetar para telas de entrada seguras
+                val safeEntryActivities = listOf(
+                    "SettingsHomeActivity",
+                    "MainTabActivity",
+                    "SettingsGateway",
+                    "SettingsLauncherActivity"
+                )
+                
+                val isSafeEntryActivity = safeEntryActivities.any { safe ->
+                    activitySimpleName.equals(safe, ignoreCase = true)
+                }
+                
+                if (isSafeEntryActivity) {
                     // Reset tracking - usuário voltou para área segura
                     if (lastDangerousPathActivity != null) {
-                        Log.d(TAG, "🔄 Reset tracking - voltou para área segura")
+                        Log.d(TAG, "🔄 Reset tracking - voltou para área segura: $activitySimpleName")
                         lastDangerousPathActivity = null
                         lastDangerousPathTime = 0L
                     }
