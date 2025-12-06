@@ -1,0 +1,41 @@
+2025-12-06 08:52:46.608 24739-26736 SettingsGuardService    com.cdccreditsmart.app               D  📋 Activity em Settings (permitida): com.android.settings.Settings$SystemDashboardActivity
+2025-12-06 08:52:46.608 24739-26736 SettingsGuardService    com.cdccreditsmart.app               D     Pacote: com.android.settings
+2025-12-06 08:52:47.213 24739-26736 SettingsGuardService    com.cdccreditsmart.app               D  📋 Activity em Settings (permitida): com.android.settings.Settings$SystemDashboardActivity
+2025-12-06 08:52:47.213 24739-26736 SettingsGuardService    com.cdccreditsmart.app               D     Pacote: com.android.settings
+2025-12-06 08:52:47.820 24739-26736 SettingsGuardService    com.cdccreditsmart.app               D  📋 Activity em Settings (permitida): com.android.settings.Settings$SystemDashboardActivity
+2025-12-06 08:52:47.820 24739-26736 SettingsGuardService    com.cdccreditsmart.app               D     Pacote: com.android.settings
+2025-12-06 08:52:49.107 24739-24739 WebSocketManager        com.cdccreditsmart.app               D  Heartbeat ping sent
+2025-12-06 08:52:49.995 24739-26720 WebSocketManager        com.cdccreditsmart.app               D  Message received: {"type":"pong","timestamp":"2025-12-06T11:52:50.314Z"}...
+2025-12-06 08:52:49.995 24739-26720 WebSocketManager        com.cdccreditsmart.app               D  Received message type: pong
+2025-12-06 08:52:49.995 24739-26720 WebSocketManager        com.cdccreditsmart.app               D  Pong received
+2025-12-06 08:52:50.239 24739-26736 SettingsGuardService    com.cdccreditsmart.app               D  📋 SubSettings detectado (navegação permitida)
+2025-12-06 08:52:50.239 24739-26736 SettingsGuardService    com.cdccreditsmart.app               D     Pacote: com.android.settings
+2025-12-06 08:52:50.239 24739-26736 SettingsGuardService    com.cdccreditsmart.app               D     NOTA: Detecção de telas perigosas específicas está ativa
+2025-12-06 08:52:50.239 24739-26736 SettingsGuardService    com.cdccreditsmart.app               D  📋 Activity em Settings (permitida): com.android.settings.SubSettings
+2025-12-06 08:52:50.239 24739-26736 SettingsGuardService    com.cdccreditsmart.app               D     Pacote: com.android.settings
+2025-12-06 08:52:50.843 24739-26736 SettingsGuardService    com.cdccreditsmart.app               D  📋 SubSettings detectado (navegação permitida)
+2025-12-06 08:52:50.843 24739-26736 SettingsGuardService    com.cdccreditsmart.app               D     Pacote: com.android.settings
+2025-12-06 08:52:50.843 24739-26736 SettingsGuardService    com.cdccreditsmart.app               D     NOTA: Detecção de telas perigosas específicas está ativa
+2025-12-06 08:52:50.843 24739-26736 SettingsGuardService    com.cdccreditsmart.app               D  📋 Activity em Settings (permitida): com.android.settings.SubSettings
+2025-12-06 08:52:50.843 24739-26736 SettingsGuardService    com.cdccreditsmart.app               D     Pacote: com.android.settings
+2025-12-06 08:52:51.457 24739-26736 SettingsGuardService    com.cdccreditsmart.app               D  📋 SubSettings detectado (navegação permitida)
+2025-12-06 08:52:51.457 24739-26736 SettingsGuardService    com.cdccreditsmart.app               D     Pacote: com.android.settings
+2025-12-06 08:52:51.458 24739-26736 SettingsGuardService    com.cdccreditsmart.app               D     NOTA: Detecção de telas perigosas específicas está ativa
+2025-12-06 08:52:51.458 24739-26736 SettingsGuardService    com.cdccreditsmart.app               D  📋 Activity em Settings (permitida): com.android.settings.SubSettings
+2025-12-06 08:52:51.458 24739-26736 SettingsGuardService    com.cdccreditsmart.app               D     Pacote: com.android.settings
+2025-12-06 08:52:52.073 24739-26736 SettingsGuardService    com.cdccreditsmart.app               D  📋 SubSettings detectado (navegação permitida)
+2025-12-06 08:52:52.073 24739-26736 SettingsGuardService    com.cdccreditsmart.app               D     Pacote: com.android.settings
+2025-12-06 08:52:52.073 24739-26736 SettingsGuardService    com.cdccreditsmart.app               D     NOTA: Detecção de telas perigosas específicas está ativa
+2025-12-06 08:52:52.073 24739-26736 SettingsGuardService    com.cdccreditsmart.app               D  📋 Activity em Settings (permitida): com.android.settings.SubSettings
+2025-12-06 08:52:52.073 24739-26736 SettingsGuardService    com.cdccreditsmart.app               D     Pacote: com.android.settings
+2025-12-06 08:52:52.687 24739-26736 SettingsGuardService    com.cdccreditsmart.app               D  📋 SubSettings detectado (navegação permitida)
+2025-12-06 08:52:52.687 24739-26736 SettingsGuardService    com.cdccreditsmart.app               D     Pacote: com.android.settings
+2025-12-06 08:52:52.687 24739-26736 SettingsGuardService    com.cdccreditsmart.app               D     NOTA: Detecção de telas perigosas específicas está ativa
+2025-12-06 08:52:52.687 24739-26736 SettingsGuardService    com.cdccreditsmart.app               D  📋 Activity em Settings (permitida): com.android.settings.SubSettings
+2025-12-06 08:52:52.687 24739-26736 SettingsGuardService    com.cdccreditsmart.app               D     Pacote: com.android.settings
+2025-12-06 08:52:53.303 24739-26736 SettingsGuardService    com.cdccreditsmart.app               D  📋 Activity em Settings (permitida): com.android.settings.password.ConfirmLockPassword
+2025-12-06 08:52:53.303 24739-26736 SettingsGuardService    com.cdccreditsmart.app               D     Pacote: com.android.settings
+2025-12-06 08:52:53.908 24739-26736 SettingsGuardService    com.cdccreditsmart.app               D  📋 Activity em Settings (permitida): com.android.settings.password.ConfirmLockPassword
+2025-12-06 08:52:53.908 24739-26736 SettingsGuardService    com.cdccreditsmart.app               D     Pacote: com.android.settings
+2025-12-06 08:52:54.514 24739-26736 SettingsGuardService    com.cdccreditsmart.app               D  📋 Activity em Settings (permitida): com.android.settings.password.ConfirmLockPassword
+2025-12-06 08:52:54.514 24739-26736 SettingsGuardService    com.cdccreditsmart.app               D     Pacote: com.android.settings

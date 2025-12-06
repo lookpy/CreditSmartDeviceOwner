@@ -105,6 +105,41 @@ class SettingsGuardService(private val context: Context) {
     @Volatile
     private var isInAggressiveMode = false
     
+    // ═══════════════════════════════════════════════════════════════════════════════
+    // TRACKING DE ESTADO: Lembrar última activity que pode levar a telas perigosas
+    // Usado para bloquear SubSettings quando vier de SystemDashboardActivity, etc.
+    // ═══════════════════════════════════════════════════════════════════════════════
+    @Volatile
+    private var lastDangerousPathActivity: String? = null
+    
+    @Volatile
+    private var lastDangerousPathTime: Long = 0L
+    
+    // Activities que levam a telas perigosas (Factory Reset, etc.)
+    private val dangerousPathActivities = setOf(
+        "SystemDashboardActivity",      // Caminho para Factory Reset
+        "SystemUpdateActivity",         // Atualizações do sistema
+        "ResetDashboardActivity",       // Reset direto
+        "PrivateDnsSettings",           // DNS privado
+        "DeveloperOptionsActivity",     // Opções de desenvolvedor
+        "DataUsageSummaryActivity",     // Pode levar a reset de rede
+        "ResetOptionsActivity",         // Opções de redefinição
+        "ResetSettingsActivity",        // Configurações de reset
+        "BackupResetActivity"           // Backup e reset
+    )
+    
+    // Activities de confirmação que são perigosas APENAS quando vêm de caminho perigoso
+    private val confirmationActivities = setOf(
+        "ConfirmLockPassword",          // Confirmação de senha antes de Factory Reset
+        "ConfirmLockPattern",           // Confirmação de padrão
+        "ConfirmLockPin",               // Confirmação de PIN
+        "ConfirmDeviceCredential",      // Confirmação de credencial
+        "ChooseLockGeneric",            // Escolha de bloqueio
+        "MiuiConfirmAccessControl",     // MIUI confirmação
+        "MasterClearConfirmActivity",   // Confirmação de Factory Reset (direto)
+        "MiuiMasterClearConfirmActivity" // MIUI confirmação de Factory Reset
+    )
+    
     private var overlayView: View? = null
     private var windowManager: WindowManager? = null
     
@@ -968,19 +1003,87 @@ class SettingsGuardService(private val context: Context) {
                     return SettingsCheckResult.DANGEROUS_IMMEDIATE
                 }
                 
-                // Para com.android.settings SubSettings, NÃO bloquear aqui
-                // Confiamos na detecção de activities específicas (dangerousActivities)
-                // Isso permite navegação normal no Settings
+                // ═══════════════════════════════════════════════════════════════════════════════
+                // TRACKING DE ESTADO: Verificar se a activity atual é um caminho perigoso
+                // Se sim, lembrar para bloquear SubSettings que vier depois
+                // ═══════════════════════════════════════════════════════════════════════════════
+                val simpleActivityName = activityName.substringAfterLast(".")
+                val currentTime = System.currentTimeMillis()
+                
+                // Verificar se esta activity é um caminho para telas perigosas
+                val isDangerousPath = dangerousPathActivities.any { pattern ->
+                    simpleActivityName.contains(pattern, ignoreCase = true)
+                }
+                
+                if (isDangerousPath) {
+                    // Lembrar que estamos num caminho perigoso
+                    lastDangerousPathActivity = simpleActivityName
+                    lastDangerousPathTime = currentTime
+                    Log.w(TAG, "⚠️ Caminho perigoso detectado: $simpleActivityName")
+                    Log.w(TAG, "   SubSettings que vier agora será BLOQUEADO!")
+                }
+                
+                // Para com.android.settings SubSettings, verificar se veio de caminho perigoso
                 if (activityName.contains("SubSettings", ignoreCase = true)) {
-                    Log.d(TAG, "📋 SubSettings detectado (navegação permitida)")
-                    Log.d(TAG, "   Pacote: $packageName")
-                    Log.d(TAG, "   NOTA: Detecção de telas perigosas específicas está ativa")
-                    // NÃO retornar aqui - deixar passar para verificação de tela principal
+                    // Verificar se recentemente passamos por uma activity de caminho perigoso
+                    // (dentro de 30 segundos = tempo razoável para navegar até Factory Reset)
+                    val timeSinceDangerousPath = currentTime - lastDangerousPathTime
+                    val recentlyOnDangerousPath = lastDangerousPathActivity != null && 
+                                                   timeSinceDangerousPath < 30_000L
+                    
+                    if (recentlyOnDangerousPath) {
+                        Log.w(TAG, "🎯 SubSettings após caminho perigoso!")
+                        Log.w(TAG, "   Última activity perigosa: $lastDangerousPathActivity")
+                        Log.w(TAG, "   Tempo desde: ${timeSinceDangerousPath}ms")
+                        Log.w(TAG, "   BLOQUEANDO por segurança (possível Factory Reset)!")
+                        return SettingsCheckResult.DANGEROUS_IMMEDIATE
+                    } else {
+                        Log.d(TAG, "📋 SubSettings detectado (navegação permitida)")
+                        Log.d(TAG, "   Pacote: $packageName")
+                        Log.d(TAG, "   NOTA: Não veio de caminho perigoso")
+                    }
+                }
+                
+                // ═══════════════════════════════════════════════════════════════════════════════
+                // DETECÇÃO DE CONFIRMAÇÃO: ConfirmLockPassword após caminho perigoso = Factory Reset!
+                // ConfirmLockPassword aparece quando usuário vai fazer Factory Reset
+                // ═══════════════════════════════════════════════════════════════════════════════
+                val isConfirmationActivity = confirmationActivities.any { pattern ->
+                    simpleActivityName.contains(pattern, ignoreCase = true)
+                }
+                
+                if (isConfirmationActivity) {
+                    val timeSinceDangerousPath = currentTime - lastDangerousPathTime
+                    val recentlyOnDangerousPath = lastDangerousPathActivity != null && 
+                                                   timeSinceDangerousPath < 60_000L // 60 segundos para confirmação
+                    
+                    if (recentlyOnDangerousPath) {
+                        Log.w(TAG, "🎯 CONFIRMAÇÃO após caminho perigoso!")
+                        Log.w(TAG, "   Activity: $simpleActivityName")
+                        Log.w(TAG, "   Caminho: $lastDangerousPathActivity")
+                        Log.w(TAG, "   Tempo desde: ${timeSinceDangerousPath}ms")
+                        Log.w(TAG, "   BLOQUEANDO - Provável confirmação de Factory Reset!")
+                        return SettingsCheckResult.DANGEROUS_IMMEDIATE
+                    } else {
+                        Log.d(TAG, "📋 Confirmação detectada (sem caminho perigoso anterior)")
+                        Log.d(TAG, "   Activity: $simpleActivityName")
+                        Log.d(TAG, "   NOTA: Provavelmente desbloqueio normal")
+                    }
                 }
                 
                 // NOTA: SettingsHomeActivity e MainTabActivity são as telas PRINCIPAIS do Settings
                 // NÃO bloquear essas - permitir navegação normal
-                // Só bloquear quando entrar em SubSettings (telas específicas perigosas)
+                // Resetar tracking quando voltar para tela principal (navegação segura)
+                if (simpleActivityName.contains("SettingsHomeActivity", ignoreCase = true) ||
+                    simpleActivityName.contains("MainTabActivity", ignoreCase = true) ||
+                    simpleActivityName.contains("Settings\$", ignoreCase = false)) {
+                    // Reset tracking - usuário voltou para área segura
+                    if (lastDangerousPathActivity != null) {
+                        Log.d(TAG, "🔄 Reset tracking - voltou para área segura")
+                        lastDangerousPathActivity = null
+                        lastDangerousPathTime = 0L
+                    }
+                }
                 
                 Log.d(TAG, "📋 Activity em Settings (permitida): $activityName")
                 Log.d(TAG, "   Pacote: $packageName")
