@@ -1,6 +1,6 @@
 package com.cdccreditsmart.network.interceptors
 
-import androidx.security.crypto.EncryptedSharedPreferences
+import android.content.SharedPreferences
 // HILT REMOVED
 // import com.cdccreditsmart.network.di.NetworkModule
 import okhttp3.Interceptor
@@ -15,10 +15,13 @@ import java.io.IOException
  * Handles X-Client authentication method for CDC Credit Smart API
  * Adds x-client-key, x-client-token, and x-client-secret headers
  * Alternative to Bearer token authentication
+ * 
+ * Accepts SharedPreferences (base interface) to support both
+ * EncryptedSharedPreferences and fallback SharedPreferences
  */
 // HILT REMOVED - @Singleton
 class XClientAuthInterceptor /* @Inject */ constructor(
-    /* @NetworkModule.NetworkEncryptedPrefs */ private val encryptedSharedPreferences: EncryptedSharedPreferences
+    /* @NetworkModule.NetworkEncryptedPrefs */ private val encryptedSharedPreferences: SharedPreferences
 ) : Interceptor {
     
     companion object {

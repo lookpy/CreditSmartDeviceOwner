@@ -1,6 +1,6 @@
 package com.cdccreditsmart.network.interceptors
 
-import androidx.security.crypto.EncryptedSharedPreferences
+import android.content.SharedPreferences
 // HILT REMOVED
 // import com.cdccreditsmart.network.di.NetworkModule
 import okhttp3.Interceptor
@@ -21,10 +21,13 @@ import okhttp3.RequestBody.Companion.toRequestBody
  * Handles JWT authentication with automatic token refresh
  * Adds Bearer token to Authorization header
  * Refreshes token automatically on 401 responses
+ * 
+ * Accepts SharedPreferences (base interface) to support both
+ * EncryptedSharedPreferences and fallback SharedPreferences
  */
 // HILT REMOVED - @Singleton
 class JwtInterceptor /* @Inject */ constructor(
-    /* @NetworkModule.NetworkEncryptedPrefs */ private val encryptedSharedPreferences: EncryptedSharedPreferences
+    /* @NetworkModule.NetworkEncryptedPrefs */ private val encryptedSharedPreferences: SharedPreferences
 ) : Interceptor {
     
     companion object {
