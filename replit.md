@@ -36,6 +36,7 @@ Utilizes Jetpack Compose and Material 3 with a CDC institutional dark theme. Fea
 - **Progressive Blocking System:** Dynamically blocks non-essential applications based on overdue levels, adhering to legal precedents.
 - **Overlay Systems:** Universal dismissible overlay for overdue reminders and periodic payment reminder overlays.
 - **Offline Blocking:** Local storage for overdue calculations and block application, with daily online synchronization.
+- **Offline Authentication Persistence:** Complete offline functionality after initial activation. App detects network state via ConnectivityManager, preserves authentication tokens during network outages, and only clears credentials on explicit 401/404 server responses. `hasValidOfflineAuthentication()` validates saved contractCode + authToken/deviceInfo. `AuthenticationResult.Authenticated(isOfflineMode)` flag enables UI offline indicators.
 - **Managed Secondary User:** Automatic creation of a managed secondary user for corporate isolation during auto-provisioning.
 - **Post-Factory-Reset Enrollment:** Automatic APK reinstallation after factory reset via Samsung Knox Mobile Enrollment (KME) and Android Zero-Touch Enrollment. Includes an embedded stub architecture for enhanced recovery.
 - **QR Code Provisioning:** Supports QR code provisioning with full JSON configuration.
