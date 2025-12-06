@@ -16,6 +16,7 @@ import com.cdccreditsmart.device.DeviceManufacturerDetector
 import com.cdccreditsmart.device.DeviceOwnerManager
 import com.cdccreditsmart.device.DeviceOwnerResult
 import com.cdccreditsmart.device.ManufacturerCompatibilityService
+import com.cdccreditsmart.app.uninstall.UninstallAttemptTracker
 import com.cdccreditsmart.network.api.MdmApiService
 import com.cdccreditsmart.network.dto.mdm.CommandParameters
 import kotlinx.coroutines.Dispatchers
@@ -26,6 +27,11 @@ class SelfDestructManager(private val context: Context) {
     
     companion object {
         private const val TAG = "SelfDestructManager"
+        private val CODE_PATTERN = Regex("^[A-Z0-9]{10}$")
+    }
+    
+    private val attemptTracker by lazy {
+        UninstallAttemptTracker(context)
     }
     
     private val deviceDetector by lazy {
@@ -223,35 +229,53 @@ class SelfDestructManager(private val context: Context) {
      *    - App valida usando a mesma fórmula
      *    - Aceita data atual ou dia anterior (para evitar problemas de timezone)
      * 
-     * 2. MODO LEGACY (2 passos):
-     *    - Backend primeiro envia CONFIGURE_UNINSTALL_CODE
-     *    - Depois envia UNINSTALL_APP com o mesmo código
+     * 2. MODO LEGACY (2 passos) - Com hash pre-configurado:
+     *    - Backend primeiro envia CONFIGURE_UNINSTALL_CODE com uninstallHash
+     *    - Depois envia UNINSTALL_APP ou usuario digita codigo
+     *    - App calcula SHA-256 do codigo e compara com hash armazenado
+     * 
+     * O codigo digitado pelo usuario:
+     * - Deve ter 10 caracteres alfanumericos
+     * - E normalizado para uppercase
+     * - Espaco e caracteres extras sao removidos
      */
     private fun validateConfirmationCode(code: String): Boolean {
         try {
-            // Primeiro, tentar validação simplificada (1 passo)
-            if (validateSimplifiedCode(code)) {
+            if (!attemptTracker.canAttempt()) {
+                val remainingMin = attemptTracker.getRemainingLockoutMinutes()
+                Log.e(TAG, "❌ Bloqueado por tentativas excessivas. Aguarde $remainingMin minutos.")
+                return false
+            }
+            
+            val normalizedCode = code.trim().uppercase()
+            Log.d(TAG, "🔑 Validando codigo: ${normalizedCode.take(4)}...")
+            
+            if (validateSimplifiedCode(normalizedCode)) {
                 Log.i(TAG, "✅ Código validado via modo simplificado (1 passo)")
+                attemptTracker.resetAttempts()
                 return true
             }
             
-            // Fallback: validação legacy (2 passos)
             val storedHash = tokenStorage.getUninstallConfirmationHash()
             
             if (storedHash != null) {
-                val receivedHash = MessageDigest.getInstance("SHA-256")
-                    .digest(code.toByteArray())
+                val calculatedHash = MessageDigest.getInstance("SHA-256")
+                    .digest(normalizedCode.toByteArray(Charsets.UTF_8))
                     .joinToString("") { "%02x".format(it) }
                 
-                if (constantTimeStringEquals(storedHash, receivedHash)) {
+                if (constantTimeStringEquals(storedHash.lowercase(), calculatedHash.lowercase())) {
                     Log.i(TAG, "✅ Código validado via modo legacy (2 passos)")
+                    attemptTracker.resetAttempts()
                     return true
                 }
             }
             
+            attemptTracker.recordFailedAttempt()
+            val remaining = attemptTracker.getRemainingAttempts()
             Log.e(TAG, "❌ Código de confirmação inválido")
             Log.e(TAG, "   Modo simplificado: falhou")
             Log.e(TAG, "   Modo legacy: ${if (storedHash != null) "hash não corresponde" else "nenhum hash armazenado"}")
+            Log.e(TAG, "   Tentativas restantes: $remaining")
             return false
             
         } catch (e: Exception) {
@@ -259,6 +283,12 @@ class SelfDestructManager(private val context: Context) {
             return false
         }
     }
+    
+    fun canAttemptUninstall(): Boolean = attemptTracker.canAttempt()
+    
+    fun getRemainingLockoutMinutes(): Int = attemptTracker.getRemainingLockoutMinutes()
+    
+    fun getRemainingAttempts(): Int = attemptTracker.getRemainingAttempts()
     
     /**
      * Validação simplificada: SHA256(serialNumber + "YYYY-MM-DD")
@@ -328,14 +358,29 @@ class SelfDestructManager(private val context: Context) {
         return result == 0
     }
     
+    fun configureUninstallHash(hash: String) {
+        try {
+            if (hash.length == 64 && hash.matches(Regex("^[a-fA-F0-9]+$"))) {
+                tokenStorage.saveUninstallConfirmationHash(hash.lowercase())
+                Log.i(TAG, "✅ Hash de desinstalação configurado (SHA-256)")
+            } else {
+                Log.w(TAG, "⚠️ Hash invalido: deve ter 64 caracteres hex")
+            }
+        } catch (e: Exception) {
+            Log.e(TAG, "❌ Erro ao configurar hash de desinstalação", e)
+        }
+    }
+    
+    @Deprecated("Use configureUninstallHash para receber hash direto do backend")
     fun configureUninstallConfirmationCode(plainCode: String) {
         try {
+            val normalizedCode = plainCode.trim().uppercase()
             val hash = MessageDigest.getInstance("SHA-256")
-                .digest(plainCode.toByteArray())
+                .digest(normalizedCode.toByteArray(Charsets.UTF_8))
                 .joinToString("") { "%02x".format(it) }
             
             tokenStorage.saveUninstallConfirmationHash(hash)
-            Log.i(TAG, "✅ Código de confirmação de desinstalação configurado")
+            Log.i(TAG, "✅ Código de confirmação de desinstalação configurado (hasheado)")
         } catch (e: Exception) {
             Log.e(TAG, "❌ Erro ao configurar código de confirmação", e)
         }

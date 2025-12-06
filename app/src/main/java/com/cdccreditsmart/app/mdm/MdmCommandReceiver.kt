@@ -188,8 +188,8 @@ class MdmCommandReceiver(private val context: Context) {
                                 Log.i(TAG, "🚨 UNINSTALL_APP - Confirmation code: ${if (params.getCode().isNotEmpty()) "presente (${params.getCode().take(4)}...)" else "ausente"}")
                             }
                             is CommandParameters.ConfigureUninstallCodeParameters -> {
-                                Log.i(TAG, "🔐 CONFIGURE_UNINSTALL_CODE - Configurando código de confirmação")
-                                Log.i(TAG, "🔐 Código presente: ${params.confirmationCode.isNotEmpty()}")
+                                Log.i(TAG, "🔐 CONFIGURE_UNINSTALL_CODE - Configurando hash de desinstalação")
+                                Log.i(TAG, "🔐 Hash presente: ${params.getHash().isNotEmpty()}")
                             }
                             is CommandParameters.EmptyParameters -> {
                                 Log.i(TAG, "📋 Comando sem parâmetros (${command.commandType})")
@@ -344,16 +344,24 @@ class MdmCommandReceiver(private val context: Context) {
                     }
                 }
                 is CommandParameters.ConfigureUninstallCodeParameters -> {
-                    Log.i(TAG, "🔐 Configurando código de desinstalação...")
-                    val selfDestructManager = SelfDestructManager(context)
-                    selfDestructManager.configureUninstallConfirmationCode(parameters.confirmationCode)
-                    
-                    sendCommandResponse(
-                        commandId = commandId,
-                        success = true,
-                        errorMessage = null
-                    )
-                    Log.i(TAG, "✅ Código de confirmação configurado com sucesso")
+                    Log.i(TAG, "🔐 Configurando hash de desinstalação...")
+                    val hash = parameters.getHash()
+                    if (hash.isNotEmpty()) {
+                        tokenStorage.saveUninstallConfirmationHash(hash)
+                        sendCommandResponse(
+                            commandId = commandId,
+                            success = true,
+                            errorMessage = null
+                        )
+                        Log.i(TAG, "✅ Hash de desinstalação configurado com sucesso")
+                    } else {
+                        Log.w(TAG, "⚠️ CONFIGURE_UNINSTALL_CODE recebido sem hash")
+                        sendCommandResponse(
+                            commandId = commandId,
+                            success = false,
+                            errorMessage = "Hash de desinstalação não fornecido"
+                        )
+                    }
                 }
                 is CommandParameters.EmptyParameters -> {
                     Log.i(TAG, "⚙️ Processando comando sem parâmetros: $commandType")

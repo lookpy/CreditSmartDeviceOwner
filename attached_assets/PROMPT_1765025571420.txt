@@ -1,0 +1,464 @@
+# Documentação: Validação do Código de Desinstalação do APK
+
+## Visão Geral
+
+O sistema utiliza um código de 10 caracteres alfanuméricos com validação via hash SHA-256 para autorizar a desinstalação do APK CDC CreditSmart.
+
+---
+
+## 1. Fluxo de Configuração (Servidor → APK)
+
+Quando um dispositivo é vendido pelo PDV, o servidor automaticamente:
+
+1. **Gera código único de 10 caracteres** (ex: `K7G2M9P4X1`)
+2. **Calcula hash SHA-256** do código
+3. **Envia comando MDM** `CONFIGURE_UNINSTALL_CODE` para o APK
+
+### Comando MDM recebido pelo APK:
+
+```json
+{
+  "commandType": "CONFIGURE_UNINSTALL_CODE",
+  "payload": {
+    "uninstallHash": "a1b2c3d4e5f6789... (64 caracteres hexadecimais SHA-256)"
+  }
+}
+```
+
+### O APK deve:
+
+- Armazenar o `uninstallHash` em local seguro (SharedPreferences criptografado ou Android Keystore)
+- Este hash NUNCA é exibido ao usuário
+- Persistir mesmo após reinicializações do dispositivo
+
+---
+
+## 2. Validação Local no APK
+
+Quando o usuário solicita desinstalação e digita o código:
+
+### Implementação em Kotlin:
+
+```kotlin
+import java.security.MessageDigest
+
+/**
+ * Valida o código de desinstalação digitado pelo usuário
+ * @param userInputCode Código digitado pelo usuário (10 caracteres)
+ * @param storedHash Hash SHA-256 recebido via comando MDM
+ * @return true se código válido, false caso contrário
+ */
+fun validateUninstallCode(userInputCode: String, storedHash: String): Boolean {
+    // 1. Normalizar código (uppercase, sem espaços)
+    val normalizedCode = userInputCode.trim().uppercase()
+    
+    // 2. Validar formato (10 caracteres alfanuméricos)
+    if (!normalizedCode.matches(Regex("^[A-Z0-9]{10}$"))) {
+        return false
+    }
+    
+    // 3. Calcular SHA-256 do código digitado
+    val digest = MessageDigest.getInstance("SHA-256")
+    val hashBytes = digest.digest(normalizedCode.toByteArray(Charsets.UTF_8))
+    val calculatedHash = hashBytes.joinToString("") { "%02x".format(it) }
+    
+    // 4. Comparar com hash armazenado (case-insensitive para segurança)
+    return calculatedHash.equals(storedHash, ignoreCase = true)
+}
+```
+
+### Implementação em Java:
+
+```java
+import java.security.MessageDigest;
+import java.nio.charset.StandardCharsets;
+
+public class UninstallCodeValidator {
+    
+    /**
+     * Valida o código de desinstalação digitado pelo usuário
+     * @param userInputCode Código digitado pelo usuário (10 caracteres)
+     * @param storedHash Hash SHA-256 recebido via comando MDM
+     * @return true se código válido, false caso contrário
+     */
+    public static boolean validateUninstallCode(String userInputCode, String storedHash) {
+        try {
+            // 1. Normalizar código (uppercase, sem espaços)
+            String normalizedCode = userInputCode.trim().toUpperCase();
+            
+            // 2. Validar formato (10 caracteres alfanuméricos)
+            if (!normalizedCode.matches("^[A-Z0-9]{10}$")) {
+                return false;
+            }
+            
+            // 3. Calcular SHA-256 do código digitado
+            MessageDigest digest = MessageDigest.getInstance("SHA-256");
+            byte[] hashBytes = digest.digest(normalizedCode.getBytes(StandardCharsets.UTF_8));
+            
+            // 4. Converter para hexadecimal
+            StringBuilder hexString = new StringBuilder();
+            for (byte b : hashBytes) {
+                String hex = Integer.toHexString(0xff & b);
+                if (hex.length() == 1) hexString.append('0');
+                hexString.append(hex);
+            }
+            String calculatedHash = hexString.toString();
+            
+            // 5. Comparar com hash armazenado
+            return calculatedHash.equalsIgnoreCase(storedHash);
+            
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+}
+```
+
+### Exemplo de Uso:
+
+```kotlin
+// Código digitado pelo usuário na tela de desinstalação
+val userCode = "K7G2M9P4X1"
+
+// Hash armazenado localmente (recebido via MDM)
+val storedHash = getStoredUninstallHash()  // Ex: "a1b2c3d4e5f6..."
+
+// Validar
+val isValid = validateUninstallCode(userCode, storedHash)
+
+if (isValid) {
+    // Permitir desinstalação
+    proceedWithUninstall()
+} else {
+    // Exibir erro
+    showError("Código de desinstalação inválido")
+    incrementFailedAttempts()  // Para rate limiting
+}
+```
+
+---
+
+## 3. Diagrama de Fluxo Completo
+
+```
+┌─────────────────┐     ┌──────────────────┐     ┌─────────────┐
+│   SERVIDOR      │     │      APK         │     │   USUÁRIO   │
+└────────┬────────┘     └────────┬─────────┘     └──────┬──────┘
+         │                       │                      │
+         │ 1. Venda PDV          │                      │
+         │    Gera código        │                      │
+         │    "K7G2M9P4X1"       │                      │
+         │                       │                      │
+         │ 2. Calcula SHA-256    │                      │
+         │    → "a1b2c3d4..."    │                      │
+         │                       │                      │
+         │ 3. MDM Command        │                      │
+         │ ───────────────────►  │                      │
+         │ CONFIGURE_UNINSTALL   │                      │
+         │ {uninstallHash:...}   │                      │
+         │                       │                      │
+         │                       │ 4. Armazena hash     │
+         │                       │    no Keystore       │
+         │                       │                      │
+         │                       │                      │
+         │   [... tempo passa, cliente quita ...]       │
+         │                       │                      │
+         │                       │                      │ 5. Solicita desinstalação
+         │                       │ ◄──────────────────── │
+         │                       │                      │
+         │                       │ 6. Exibe tela de     │
+         │                       │    entrada de código │
+         │                       │                      │
+         │                       │                      │ 7. Digita código
+         │                       │ ◄──────────────────── │    "K7G2M9P4X1"
+         │                       │                      │
+         │                       │ 8. Calcula:          │
+         │                       │    SHA-256(código)   │
+         │                       │                      │
+         │                       │ 9. Compara:          │
+         │                       │    hash == stored?   │
+         │                       │                      │
+         │                       │ 10. SE VÁLIDO:       │
+         │                       │     - Desinstala APK │
+         │                       │     - Limpa dados    │
+         │                       │     - Remove Device  │
+         │                       │       Owner          │
+         │                       │                      │
+```
+
+---
+
+## 4. Casos de Uso
+
+### 4.1. Desinstalação Voluntária (Cliente Quitou Financiamento)
+
+1. Cliente entra em contato com suporte CDC CreditSmart
+2. Suporte verifica que todas as parcelas estão pagas
+3. Suporte fornece o código de 10 caracteres ao cliente
+4. Cliente digita código no APK
+5. APK valida localmente (SHA-256)
+6. APK executa desinstalação e limpa dados
+
+### 4.2. Desinstalação Remota (Administrador)
+
+1. Admin solicita desinstalação via painel administrativo
+2. Admin digita código de confirmação no painel
+3. Servidor valida código e envia comando `UNINSTALL_APP`
+4. APK recebe comando via polling/WebSocket
+5. APK executa desinstalação automaticamente (sem input do usuário)
+
+### 4.3. Auto-Desinstalação (Parcelas Quitadas)
+
+1. APK detecta que todas as parcelas foram pagas
+2. APK solicita auto-desinstalação ao servidor
+3. Servidor valida pagamentos e aprova
+4. APK solicita código ao usuário ou desinstala automaticamente
+
+---
+
+## 5. Endpoints de API
+
+### 5.1. Polling para Comandos MDM Pendentes
+
+**GET** `/api/apk/mdm/pending-commands`
+
+**Headers:**
+```
+Authorization: Bearer {deviceToken}
+```
+
+**Resposta de Sucesso (200):**
+```json
+{
+  "success": true,
+  "commands": [
+    {
+      "id": "cmd_abc123",
+      "commandType": "CONFIGURE_UNINSTALL_CODE",
+      "payload": {
+        "uninstallHash": "a1b2c3d4e5f6789012345678901234567890123456789012345678901234"
+      },
+      "priority": "high",
+      "createdAt": "2025-01-15T10:00:00Z",
+      "expiresAt": "2025-01-22T10:00:00Z"
+    }
+  ]
+}
+```
+
+### 5.2. Confirmação de Execução de Comando
+
+**POST** `/api/apk/mdm/command/{commandId}/ack`
+
+**Headers:**
+```
+Authorization: Bearer {deviceToken}
+```
+
+**Body:**
+```json
+{
+  "status": "executed",
+  "executedAt": "2025-01-15T14:30:00Z",
+  "result": {
+    "success": true,
+    "message": "Uninstall code configured successfully"
+  }
+}
+```
+
+### 5.3. Solicitar Auto-Desinstalação (Parcelas Quitadas)
+
+**POST** `/api/apk/device/request-self-uninstall`
+
+**Headers:**
+```
+Authorization: Bearer {deviceToken}
+```
+
+**Body:**
+```json
+{
+  "reason": "all_installments_paid",
+  "requestedAt": "2025-01-15T14:30:00Z"
+}
+```
+
+**Resposta de Sucesso (200):**
+```json
+{
+  "success": true,
+  "message": "Self-uninstall approved - all installments are paid",
+  "serialNumber": "ABC123XYZ",
+  "deviceId": "device_123456"
+}
+```
+
+---
+
+## 6. Armazenamento Seguro do Hash
+
+### Usando EncryptedSharedPreferences (Recomendado):
+
+```kotlin
+import androidx.security.crypto.EncryptedSharedPreferences
+import androidx.security.crypto.MasterKey
+
+class SecureStorage(context: Context) {
+    
+    private val masterKey = MasterKey.Builder(context)
+        .setKeyScheme(MasterKey.KeyScheme.AES256_GCM)
+        .build()
+    
+    private val sharedPreferences = EncryptedSharedPreferences.create(
+        context,
+        "cdc_secure_prefs",
+        masterKey,
+        EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
+        EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
+    )
+    
+    fun saveUninstallHash(hash: String) {
+        sharedPreferences.edit()
+            .putString("uninstall_hash", hash)
+            .apply()
+    }
+    
+    fun getUninstallHash(): String? {
+        return sharedPreferences.getString("uninstall_hash", null)
+    }
+    
+    fun clearUninstallHash() {
+        sharedPreferences.edit()
+            .remove("uninstall_hash")
+            .apply()
+    }
+}
+```
+
+---
+
+## 7. Rate Limiting (Proteção contra Brute Force)
+
+```kotlin
+class UninstallAttemptTracker(private val context: Context) {
+    
+    private val prefs = context.getSharedPreferences("attempt_tracker", Context.MODE_PRIVATE)
+    
+    companion object {
+        const val MAX_ATTEMPTS = 5
+        const val LOCKOUT_DURATION_MS = 30 * 60 * 1000L  // 30 minutos
+    }
+    
+    fun canAttempt(): Boolean {
+        val lockoutEnd = prefs.getLong("lockout_end", 0)
+        if (System.currentTimeMillis() < lockoutEnd) {
+            return false  // Ainda em lockout
+        }
+        
+        // Reset se lockout expirou
+        if (lockoutEnd > 0) {
+            resetAttempts()
+        }
+        
+        return getAttempts() < MAX_ATTEMPTS
+    }
+    
+    fun getRemainingLockoutTime(): Long {
+        val lockoutEnd = prefs.getLong("lockout_end", 0)
+        val remaining = lockoutEnd - System.currentTimeMillis()
+        return if (remaining > 0) remaining else 0
+    }
+    
+    fun recordFailedAttempt() {
+        val attempts = getAttempts() + 1
+        prefs.edit().putInt("attempts", attempts).apply()
+        
+        if (attempts >= MAX_ATTEMPTS) {
+            val lockoutEnd = System.currentTimeMillis() + LOCKOUT_DURATION_MS
+            prefs.edit().putLong("lockout_end", lockoutEnd).apply()
+        }
+    }
+    
+    fun resetAttempts() {
+        prefs.edit()
+            .putInt("attempts", 0)
+            .putLong("lockout_end", 0)
+            .apply()
+    }
+    
+    private fun getAttempts(): Int {
+        return prefs.getInt("attempts", 0)
+    }
+}
+```
+
+---
+
+## 8. Logs de Auditoria
+
+O APK deve registrar todas as tentativas de desinstalação:
+
+```kotlin
+data class UninstallAttemptLog(
+    val timestamp: Long,
+    val codeEntered: String,  // Mascarado: "K7G2******"
+    val success: Boolean,
+    val deviceId: String,
+    val geoLocation: String?  // Se disponível
+)
+
+fun logUninstallAttempt(code: String, success: Boolean) {
+    val maskedCode = code.take(4) + "******"
+    
+    val log = UninstallAttemptLog(
+        timestamp = System.currentTimeMillis(),
+        codeEntered = maskedCode,
+        success = success,
+        deviceId = getDeviceId(),
+        geoLocation = getCurrentLocation()
+    )
+    
+    // Enviar para servidor
+    sendAuditLog(log)
+    
+    // Salvar localmente também
+    saveLocalAuditLog(log)
+}
+```
+
+---
+
+## 9. Tratamento de Erros
+
+| Código | Mensagem | Ação Sugerida |
+|--------|----------|---------------|
+| `INVALID_CODE` | Código inválido | Exibir erro, incrementar tentativas |
+| `CODE_EXPIRED` | Código expirado | Solicitar novo código ao suporte |
+| `LOCKOUT_ACTIVE` | Muitas tentativas | Aguardar X minutos |
+| `NO_HASH_STORED` | Hash não configurado | Contatar suporte |
+| `NETWORK_ERROR` | Erro de conexão | Validação funciona offline |
+
+---
+
+## 10. Checklist de Implementação
+
+- [ ] Receber e processar comando `CONFIGURE_UNINSTALL_CODE`
+- [ ] Armazenar hash em EncryptedSharedPreferences ou Keystore
+- [ ] Implementar tela de entrada de código (10 caracteres)
+- [ ] Implementar validação SHA-256 local
+- [ ] Implementar rate limiting (5 tentativas, 30 min lockout)
+- [ ] Implementar logs de auditoria
+- [ ] Testar validação offline
+- [ ] Testar processo de desinstalação completo
+- [ ] Confirmar execução de comando via API
+
+---
+
+## Contato
+
+Para dúvidas técnicas, contate a equipe de backend CDC CreditSmart.
+
+**Versão do Documento:** 1.0  
+**Última Atualização:** Dezembro 2025

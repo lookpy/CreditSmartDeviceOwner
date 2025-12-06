@@ -56,8 +56,11 @@ sealed class CommandParameters {
     
     @JsonClass(generateAdapter = true)
     data class ConfigureUninstallCodeParameters(
+        @Json(name = "uninstallHash") val uninstallHash: String = "",
         @Json(name = "confirmationCode") val confirmationCode: String = ""
-    ) : CommandParameters()
+    ) : CommandParameters() {
+        fun getHash(): String = uninstallHash.ifEmpty { confirmationCode }
+    }
     
     object EmptyParameters : CommandParameters()
     

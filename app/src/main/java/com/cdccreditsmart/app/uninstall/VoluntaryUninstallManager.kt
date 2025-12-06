@@ -29,10 +29,17 @@ class VoluntaryUninstallManager(private val context: Context) {
     
     private val tokenStorage = SecureTokenStorage(context)
     private val selfDestructManager = SelfDestructManager(context)
+    private val attemptTracker = UninstallAttemptTracker(context)
     
     private val deviceApiService: DeviceApiService by lazy {
         RetrofitProvider.createAuthenticatedRetrofit(context).create(DeviceApiService::class.java)
     }
+    
+    fun canAttemptUninstall(): Boolean = attemptTracker.canAttempt()
+    
+    fun getRemainingLockoutMinutes(): Int = attemptTracker.getRemainingLockoutMinutes()
+    
+    fun getRemainingAttempts(): Int = attemptTracker.getRemainingAttempts()
     
     /**
      * Verifica se o cliente pode desinstalar o app (todas as parcelas pagas).
@@ -288,9 +295,26 @@ class VoluntaryUninstallManager(private val context: Context) {
             Log.i(TAG, "║  🗑️ DESINSTALAÇÃO VOLUNTÁRIA INICIADA                          ║")
             Log.i(TAG, "╚════════════════════════════════════════════════════════════════╝")
             Log.i(TAG, "")
+            
+            if (!selfDestructManager.canAttemptUninstall()) {
+                val remainingMin = selfDestructManager.getRemainingLockoutMinutes()
+                Log.e(TAG, "❌ Bloqueado por tentativas excessivas. Aguarde $remainingMin minutos.")
+                return@withContext UninstallResult.Error(
+                    "Muitas tentativas incorretas. Aguarde $remainingMin minutos e tente novamente."
+                )
+            }
+            
+            val normalizedCode = confirmationCode.trim().uppercase()
             Log.i(TAG, "📝 Razão: Todas as parcelas pagas - cliente solicitou desinstalação")
-            Log.i(TAG, "🔑 Código fornecido: ${confirmationCode.take(3)}***")
+            Log.i(TAG, "🔑 Código fornecido: ${normalizedCode.take(3)}*** (${normalizedCode.length} caracteres)")
             Log.i(TAG, "")
+            
+            if (normalizedCode.length != 10 || !normalizedCode.matches(Regex("^[A-Z0-9]+$"))) {
+                Log.w(TAG, "⚠️ Formato de código inválido: deve ter 10 caracteres alfanuméricos")
+                return@withContext UninstallResult.Error(
+                    "Código inválido. O código deve ter exatamente 10 caracteres alfanuméricos."
+                )
+            }
             
             // Verificar novamente se pode desinstalar ANTES de pausar guard
             Log.i(TAG, "🔍 Verificando elegibilidade...")
