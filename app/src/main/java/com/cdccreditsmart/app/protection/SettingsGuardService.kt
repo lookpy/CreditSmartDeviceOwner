@@ -114,6 +114,11 @@ class SettingsGuardService(private val context: Context) {
         BASIC
     }
     
+    enum class SettingsCheckResult {
+        SAFE,
+        DANGEROUS_IMMEDIATE
+    }
+    
     private fun getCurrentProtectionMode(): ProtectionMode {
         return when {
             isDeviceOwner() -> ProtectionMode.DEVICE_OWNER
@@ -153,7 +158,9 @@ class SettingsGuardService(private val context: Context) {
         when (mode) {
             ProtectionMode.DEVICE_OWNER -> {
                 Log.i(TAG, "   ✅ Device Owner: Proteção máxima ativa (setUninstallBlocked)")
-                Log.i(TAG, "   📡 Modo passivo - aguardando eventos onDisableRequested")
+                Log.i(TAG, "   📡 MONITORAMENTO ATIVO - protegendo telas de Settings/App Info")
+                Log.i(TAG, "   📡 Mesmo com setUninstallBlocked, usuário não pode ver telas de admin")
+                startActiveMonitoring()
             }
             ProtectionMode.DEVICE_ADMIN -> {
                 Log.i(TAG, "   🔐 Device Admin: Proteção AGRESSIVA ativada")
@@ -170,9 +177,12 @@ class SettingsGuardService(private val context: Context) {
     }
     
     private fun startActiveMonitoring() {
+        Log.i(TAG, "🔍 Iniciando monitoramento ativo de Settings...")
+        
         if (!hasUsageStatsPermission()) {
             Log.w(TAG, "⚠️ Sem permissão PACKAGE_USAGE_STATS")
             Log.w(TAG, "   Monitoramento via ActivityManager (menos preciso)")
+            Log.w(TAG, "   IMPORTANTE: Conceda permissão em Configurações > Apps > Credit Smart > Acesso especial > Acesso uso")
         }
         
         if (!Settings.canDrawOverlays(context)) {
@@ -195,18 +205,25 @@ class SettingsGuardService(private val context: Context) {
     }
     
     private suspend fun checkSettingsAccessAggressively() {
-        if (isPermissionGrantFlowActive || isVoluntaryUninstallActive) {
-            return
-        }
-        
         val foregroundInfo = getForegroundPackageAndActivity() ?: return
         val foregroundPackage = foregroundInfo.first
         val foregroundActivity = foregroundInfo.second
         
-        if (isDangerousSettingsActivity(foregroundPackage, foregroundActivity)) {
-            settingsOpenCount++
-            
-            if (settingsOpenCount >= 1) {
+        if (isPermissionGrantFlowActive) {
+            if (foregroundPackage == context.packageName) {
+                Log.i(TAG, "▶️ App voltou ao foreground durante fluxo de permissão - retomando guard")
+                resumeAfterPermissionGrant()
+            }
+            return
+        }
+        
+        if (isVoluntaryUninstallActive) {
+            return
+        }
+        
+        when (checkSettingsActivity(foregroundPackage, foregroundActivity)) {
+            SettingsCheckResult.DANGEROUS_IMMEDIATE -> {
+                settingsOpenCount++
                 isInAggressiveMode = true
                 
                 Log.w(TAG, "🚨 ÁREA PERIGOSA DETECTADA!")
@@ -218,20 +235,23 @@ class SettingsGuardService(private val context: Context) {
                     bringAppToForeground()
                 }
             }
-        } else if (foregroundPackage == context.packageName) {
-            if (isInAggressiveMode) {
-                Log.i(TAG, "✅ App CDC em foreground - resetando contador")
+            SettingsCheckResult.SAFE -> {
+                if (foregroundPackage == context.packageName) {
+                    if (isInAggressiveMode) {
+                        Log.i(TAG, "✅ App CDC em foreground - resetando contador")
+                    }
+                    settingsOpenCount = 0
+                    isInAggressiveMode = false
+                    hideOverlay()
+                } else {
+                    settingsOpenCount = 0
+                    isInAggressiveMode = false
+                }
             }
-            settingsOpenCount = 0
-            isInAggressiveMode = false
-            hideOverlay()
-        } else {
-            settingsOpenCount = 0
-            isInAggressiveMode = false
         }
     }
     
-    private fun isDangerousSettingsActivity(packageName: String, activityName: String?): Boolean {
+    private fun checkSettingsActivity(packageName: String, activityName: String?): SettingsCheckResult {
         val settingsPackages = setOf(
             // Android padrão
             "com.android.settings",
@@ -295,90 +315,115 @@ class SettingsGuardService(private val context: Context) {
             "com.meizu.safe"
         )
         
-        if (settingsPackages.contains(packageName) && activityName != null) {
-            val dangerousActivities = listOf(
-                // App Info - bloqueio de desinstalação (genérico)
-                "InstalledAppDetails",
-                "InstalledAppDetailsTop",
-                "AppInfoDashboard",
-                "ManageApplications",
-                "RunningServices",
-                "AdvancedApps",
-                "AllApplications",
-                "ManageAssist",
-                "ApplicationsSettings",
-                "AppDetailsActivity",
-                "AppManagementActivity",
-                "PackageInfoActivity",
-                // Factory Reset - bloqueio de reset (genérico)
-                "MasterClear",
-                "ResetDashboard",
-                "FactoryReset",
-                "BackupReset",
-                "ResetPhone",
-                "EraseData",
-                "WipeData",
-                "ResetSettings",
-                "ClearData",
-                "RestoreFactory",
-                "MasterClearConfirm",
-                "ResetConfirm",
-                "ResetOptions",
-                "SystemReset",
-                "DataReset",
-                "FullReset",
-                "InitializeDevice",
-                // Xiaomi/MIUI/Redmi/POCO
-                "MiuiResetActivity",
-                "MiuiMasterClear",
-                "RestoreFactorySettings",
-                "MiuiBackupResetActivity",
-                "MiuiFactoryReset",
-                "MiuiAppInfoActivity",
-                // Samsung
-                "ResetSettingsConfirm",
-                "FactoryResetActivity",
-                "SecAppInfo",
-                // OPPO/ColorOS/Realme
-                "ColorOsResetActivity",
-                "OppoAppInfoActivity",
-                "RealmeResetActivity",
-                // Vivo/FuntouchOS/OriginOS
-                "VivoAppDetailActivity",
-                "VivoResetActivity",
-                // OnePlus/OxygenOS
-                "OnePlusResetActivity",
-                "OPAppDetailsActivity",
-                // LG
-                "LGResetActivity",
-                "LGAppInfoActivity",
-                // Motorola/Lenovo
-                "MotoResetActivity",
-                "LenovoResetActivity",
-                // Huawei/Honor
-                "HwAppInfoActivity",
-                "HwResetActivity",
-                "EmergencyBackup",
-                // Device Admin - remoção de admin
-                "DeviceAdminSettings",
-                "DeviceAdminAdd",
-                "AddDeviceAdmin",
-                "DeviceAdminSample",
-                // DNS privado
-                "PrivateDnsModeDialogActivity",
-                // Developer Options (podem ter reset)
-                "DevelopmentSettings",
-                // Acessibilidade (pode desativar serviços)
-                "AccessibilitySettings"
-            )
-            
-            val isDangerous = dangerousActivities.any { 
-                activityName.contains(it, ignoreCase = true) 
-            }
-            
-            if (isDangerous) {
-                Log.d(TAG, "🎯 Atividade perigosa em Settings: $activityName")
-                return true
+        if (settingsPackages.contains(packageName)) {
+            if (activityName != null) {
+                val dangerousActivities = listOf(
+                    // App Info - bloqueio de desinstalação (genérico)
+                    "InstalledAppDetails",
+                    "InstalledAppDetailsTop",
+                    "AppInfoDashboard",
+                    "ManageApplications",
+                    "RunningServices",
+                    "AdvancedApps",
+                    "AllApplications",
+                    "ManageAssist",
+                    "ApplicationsSettings",
+                    "AppDetailsActivity",
+                    "AppManagementActivity",
+                    "PackageInfoActivity",
+                    // Factory Reset - bloqueio de reset (genérico)
+                    "MasterClear",
+                    "ResetDashboard",
+                    "FactoryReset",
+                    "BackupReset",
+                    "ResetPhone",
+                    "EraseData",
+                    "WipeData",
+                    "ResetSettings",
+                    "ClearData",
+                    "RestoreFactory",
+                    "MasterClearConfirm",
+                    "ResetConfirm",
+                    "ResetOptions",
+                    "SystemReset",
+                    "DataReset",
+                    "FullReset",
+                    "InitializeDevice",
+                    // Xiaomi/MIUI/Redmi/POCO
+                    "MiuiResetActivity",
+                    "MiuiMasterClear",
+                    "RestoreFactorySettings",
+                    "MiuiBackupResetActivity",
+                    "MiuiFactoryReset",
+                    "MiuiAppInfoActivity",
+                    // Samsung
+                    "ResetSettingsConfirm",
+                    "FactoryResetActivity",
+                    "SecAppInfo",
+                    // OPPO/ColorOS/Realme
+                    "ColorOsResetActivity",
+                    "OppoAppInfoActivity",
+                    "RealmeResetActivity",
+                    // Vivo/FuntouchOS/OriginOS
+                    "VivoAppDetailActivity",
+                    "VivoResetActivity",
+                    // OnePlus/OxygenOS
+                    "OnePlusResetActivity",
+                    "OPAppDetailsActivity",
+                    // LG
+                    "LGResetActivity",
+                    "LGAppInfoActivity",
+                    // Motorola/Lenovo
+                    "MotoResetActivity",
+                    "LenovoResetActivity",
+                    // Huawei/Honor
+                    "HwAppInfoActivity",
+                    "HwResetActivity",
+                    "EmergencyBackup",
+                    // Device Admin - remoção de admin
+                    "DeviceAdminSettings",
+                    "DeviceAdminAdd",
+                    "AddDeviceAdmin",
+                    "DeviceAdminSample",
+                    // DNS privado
+                    "PrivateDnsModeDialogActivity",
+                    // Developer Options (podem ter reset)
+                    "DevelopmentSettings",
+                    // Acessibilidade (pode desativar serviços)
+                    "AccessibilitySettings"
+                )
+                
+                val isDangerous = dangerousActivities.any { 
+                    activityName.contains(it, ignoreCase = true) 
+                }
+                
+                if (isDangerous) {
+                    Log.d(TAG, "🎯 Atividade perigosa em Settings (com activity): $activityName")
+                    return SettingsCheckResult.DANGEROUS_IMMEDIATE
+                }
+            } else {
+                val alwaysDangerousSettingsPackages = setOf(
+                    "com.android.settings",
+                    "com.miui.settings",
+                    "com.miui.securitycenter",
+                    "com.samsung.android.settings",
+                    "com.samsung.android.sm.ui",
+                    "com.huawei.systemmanager",
+                    "com.coloros.settings",
+                    "com.coloros.safecenter",
+                    "com.vivo.settings",
+                    "com.oneplus.settings",
+                    "com.google.android.settings"
+                )
+                
+                if (alwaysDangerousSettingsPackages.contains(packageName)) {
+                    Log.w(TAG, "🚨 Settings PRINCIPAL sem activity: $packageName")
+                    Log.w(TAG, "   Sem UsageStats - BLOQUEANDO IMEDIATAMENTE por segurança!")
+                    Log.w(TAG, "   NOTA: Fluxos internos devem usar pauseForPermissionGrant()")
+                    return SettingsCheckResult.DANGEROUS_IMMEDIATE
+                } else {
+                    Log.d(TAG, "🔍 Settings secundário sem activity: $packageName")
+                }
             }
         }
         
@@ -389,15 +434,16 @@ class SettingsGuardService(private val context: Context) {
             val isResetActivity = resetKeywords.any { activityName.contains(it, ignoreCase = true) }
             if (isResetActivity) {
                 Log.d(TAG, "🎯 Atividade de reset detectada: $packageName / $activityName")
-                return true
+                return SettingsCheckResult.DANGEROUS_IMMEDIATE
             }
         }
         
         if (isDangerousSettingsPackage(packageName)) {
-            return true
+            Log.d(TAG, "🎯 Package perigoso detectado: $packageName")
+            return SettingsCheckResult.DANGEROUS_IMMEDIATE
         }
         
-        return false
+        return SettingsCheckResult.SAFE
     }
     
     private fun isDangerousSettingsPackage(packageName: String): Boolean {

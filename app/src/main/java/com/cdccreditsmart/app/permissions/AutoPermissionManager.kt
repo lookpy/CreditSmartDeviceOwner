@@ -351,10 +351,14 @@ class AutoPermissionManager(private val context: Context) {
     fun requestUsageStatsPermission(activityContext: android.app.Activity) {
         Log.i(TAG, "📱 Redirecionando usuário para conceder PACKAGE_USAGE_STATS...")
         try {
+            com.cdccreditsmart.app.protection.SettingsGuardService.pauseForPermissionGrant()
+            
             val intent = android.content.Intent(android.provider.Settings.ACTION_USAGE_ACCESS_SETTINGS)
             activityContext.startActivity(intent)
+            Log.i(TAG, "✅ Settings aberto (guard pausado)")
         } catch (e: Exception) {
             Log.e(TAG, "❌ Erro ao abrir Settings: ${e.message}", e)
+            com.cdccreditsmart.app.protection.SettingsGuardService.resumeAfterPermissionGrant()
         }
     }
     

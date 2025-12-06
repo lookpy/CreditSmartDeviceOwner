@@ -9,6 +9,7 @@ import android.os.Build
 import android.os.Process
 import android.provider.Settings
 import android.util.Log
+import com.cdccreditsmart.app.protection.SettingsGuardService
 
 class SpecialPermissionRequester(private val context: Context) {
     
@@ -69,6 +70,8 @@ class SpecialPermissionRequester(private val context: Context) {
     
     fun requestUsageStatsPermission(activity: Activity? = null) {
         try {
+            SettingsGuardService.pauseForPermissionGrant()
+            
             val intent = Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS).apply {
                 addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             }
@@ -79,14 +82,17 @@ class SpecialPermissionRequester(private val context: Context) {
                 context.startActivity(intent)
             }
             
-            Log.i(TAG, "📱 Abrindo tela de Usage Access")
+            Log.i(TAG, "📱 Abrindo tela de Usage Access (guard pausado)")
         } catch (e: Exception) {
             Log.e(TAG, "❌ Erro ao abrir Usage Access: ${e.message}")
+            SettingsGuardService.resumeAfterPermissionGrant()
         }
     }
     
     fun requestOverlayPermission(activity: Activity? = null) {
         try {
+            SettingsGuardService.pauseForPermissionGrant()
+            
             val intent = Intent(
                 Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
                 Uri.parse("package:${context.packageName}")
@@ -100,9 +106,10 @@ class SpecialPermissionRequester(private val context: Context) {
                 context.startActivity(intent)
             }
             
-            Log.i(TAG, "📱 Abrindo tela de Overlay Permission")
+            Log.i(TAG, "📱 Abrindo tela de Overlay Permission (guard pausado)")
         } catch (e: Exception) {
             Log.e(TAG, "❌ Erro ao abrir Overlay Permission: ${e.message}")
+            SettingsGuardService.resumeAfterPermissionGrant()
         }
     }
     
