@@ -403,7 +403,7 @@ class AppProtectionManager(private val context: Context) {
         // IMPORTANTE: Usar try/catch porque durante direct-boot (provisionamento),
         // EncryptedSharedPreferences não está disponível e lança exceção
         val isPaired = try {
-            val userManager = context.getSystemService(Context.USER_SERVICE) as? android.os.UserManager
+            val userManager = context.getSystemService(Context.USER_SERVICE) as? UserManager
             val isUserUnlocked = userManager?.isUserUnlocked ?: false
             
             if (!isUserUnlocked) {
@@ -415,7 +415,7 @@ class AppProtectionManager(private val context: Context) {
                 !tokenStorage.getContractCode().isNullOrBlank()
             }
         } catch (e: Exception) {
-            Log.w(TAG, "        ⚠️ Erro ao verificar pareamento (direct-boot?): ${e.message}")
+            Log.w(TAG, "        ⚠️ Erro ao verificar pareamento: ${e.message}")
             false
         }
         
@@ -614,7 +614,7 @@ class AppProtectionManager(private val context: Context) {
         // IMPORTANTE: Usar try/catch porque durante direct-boot (provisionamento),
         // EncryptedSharedPreferences não está disponível e lança exceção
         val isPairedForFactoryReset = try {
-            val userManager = context.getSystemService(Context.USER_SERVICE) as? android.os.UserManager
+            val userManager = context.getSystemService(Context.USER_SERVICE) as? UserManager
             val isUserUnlocked = userManager?.isUserUnlocked ?: false
             
             if (!isUserUnlocked) {
@@ -625,7 +625,7 @@ class AppProtectionManager(private val context: Context) {
                 !tokenStorage.getContractCode().isNullOrBlank()
             }
         } catch (e: Exception) {
-            Log.w(TAG, "        ⚠️ Erro ao verificar pareamento (direct-boot?): ${e.message}")
+            Log.w(TAG, "        ⚠️ Erro ao verificar pareamento: ${e.message}")
             false
         }
         
