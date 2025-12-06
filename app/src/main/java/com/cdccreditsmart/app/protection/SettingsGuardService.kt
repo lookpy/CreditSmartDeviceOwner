@@ -336,10 +336,21 @@ class SettingsGuardService(private val context: Context) {
             // Asus/ZenFone/ROG
             "com.asus.settings",
             "com.asus.mobilemanager",
-            // Tecno/Infinix/iTel (Transsion)
+            // Tecno/Infinix/iTel (Transsion) - XOS
+            // NOTA: NÃO incluir launchers aqui (xos.launcher, hilauncher) - causam falso positivo!
             "com.transsion.phonemanager",
             "com.transsion.security",
             "com.transsion.systemmanager",
+            "com.transsion.permissionmanager",
+            "com.transsion.applock",
+            "com.transsion.xovsettings",      // XOS Settings overlay
+            "com.transsion.xos.batteryoptimizer",  // XOS Battery optimizer
+            "com.transsion.xos.settings.quickpanel",  // XOS Quick Panel - PERIGOSO!
+            "com.infinix.xhide",              // Infinix XHide - oculta apps!
+            "com.infinix.smartpower",         // Gerenciador de bateria
+            "com.infinix.phonemaster",        // Infinix Phone Master
+            "com.tecno.phonemaster",          // Tecno Phone Master
+            "com.itel.phonemaster",           // iTel Phone Master
             // ZTE/Nubia
             "cn.nubia.security",
             "com.zte.settings",
@@ -425,8 +436,22 @@ class SettingsGuardService(private val context: Context) {
                     // Sony (Xperia)
                     "XperiaCareActivity",
                     
-                    // Tecno/Infinix/iTel (Transsion)
+                    // Tecno/Infinix/iTel (Transsion) - XOS
                     "HiManagerActivity",
+                    "PhoneMasterActivity",
+                    "PhoneMasterMainActivity",
+                    "TranssionAppManagerActivity",
+                    "XHideActivity",                  // Infinix XHide - oculta apps!
+                    "XHideMainActivity",
+                    "HideAppsActivity",
+                    "AppHiderActivity",
+                    "SmartPowerActivity",
+                    "PowerSaveActivity",
+                    "BatteryManagerActivity",
+                    "AutoStartManagerActivity",
+                    "PermissionManagerActivity",
+                    "AppLockActivity",
+                    "SecurityCenterActivity",
                     
                     // ZTE/Nubia
                     "NubiaSecurityActivity",
@@ -918,11 +943,12 @@ class SettingsGuardService(private val context: Context) {
                     "SecurityHub",
                     "TrustAgent",
                     
-                    // CRÍTICO: App Hide / Clone / Dual Apps patterns (MIUI, Huawei, etc.)
+                    // CRÍTICO: App Hide / Clone / Dual Apps patterns (MIUI, Huawei, Infinix, etc.)
                     "XHide",
                     "XClone",
                     "HideApp",
                     "AppHide",
+                    "AppHider",
                     "HiddenApp",
                     "SecondSpace",
                     "PrivateSpace",
@@ -938,6 +964,13 @@ class SettingsGuardService(private val context: Context) {
                     "PrivacyProtection",
                     "PermissionsPrivacy",
                     "PrivacyAndSecurity",
+                    
+                    // Transsion (Infinix/Tecno/iTel) - XOS patterns
+                    "PhoneMaster",
+                    "HiManager",
+                    "SmartPower",
+                    "TranssionApp",
+                    "TranssionSecurity",
                     
                     // Storage / Clear Data patterns
                     "ClearData",
@@ -992,9 +1025,20 @@ class SettingsGuardService(private val context: Context) {
                     "com.heytap.usercenter",
                     // Asus
                     "com.asus.mobilemanager",
-                    // Tecno/Infinix/iTel
+                    // Tecno/Infinix/iTel (Transsion) - XOS
                     "com.transsion.phonemanager",
                     "com.transsion.security",
+                    "com.transsion.systemmanager",
+                    "com.transsion.permissionmanager",
+                    "com.transsion.applock",
+                    "com.transsion.xovsettings",
+                    "com.transsion.xos.batteryoptimizer",
+                    "com.transsion.xos.settings.quickpanel",  // XOS Quick Panel
+                    "com.infinix.xhide",              // Infinix XHide - oculta apps!
+                    "com.infinix.smartpower",
+                    "com.infinix.phonemaster",
+                    "com.tecno.phonemaster",
+                    "com.itel.phonemaster",
                     // ZTE/Nubia
                     "cn.nubia.security",
                     // Meizu
@@ -1030,7 +1074,21 @@ class SettingsGuardService(private val context: Context) {
                     // Vivo Security
                     "com.iqoo.secure",
                     // OnePlus Security
-                    "com.oneplus.security"
+                    "com.oneplus.security",
+                    // Tecno/Infinix/iTel (Transsion) - XOS
+                    "com.transsion.phonemanager",
+                    "com.transsion.security",
+                    "com.transsion.systemmanager",
+                    "com.transsion.permissionmanager",
+                    "com.transsion.applock",
+                    "com.transsion.xovsettings",
+                    "com.transsion.xos.batteryoptimizer",
+                    "com.transsion.xos.settings.quickpanel",  // XOS Quick Panel
+                    "com.infinix.xhide",          // Infinix XHide - oculta apps!
+                    "com.infinix.smartpower",
+                    "com.infinix.phonemaster",
+                    "com.tecno.phonemaster",
+                    "com.itel.phonemaster"
                 )
                 
                 // BLOQUEAR SubSettings APENAS de pacotes de Security Center
@@ -1252,10 +1310,20 @@ class SettingsGuardService(private val context: Context) {
             // Asus/ZenFone/ROG
             "com.asus.mobilemanager",
             "com.asus.dm",
-            // Tecno/Infinix/iTel (Transsion)
+            // Tecno/Infinix/iTel (Transsion) - XOS
             "com.transsion.phonemanager",
             "com.transsion.security",
             "com.transsion.systemmanager",
+            "com.transsion.permissionmanager",
+            "com.transsion.applock",
+            "com.transsion.xovsettings",      // XOS Settings overlay
+            "com.transsion.xos.batteryoptimizer",  // XOS Battery optimizer
+            "com.transsion.xos.settings.quickpanel",  // XOS Quick Panel
+            "com.infinix.xhide",              // Infinix XHide - oculta apps!
+            "com.infinix.smartpower",
+            "com.infinix.phonemaster",
+            "com.tecno.phonemaster",
+            "com.itel.phonemaster",
             // ZTE/Nubia
             "cn.nubia.security",
             "com.zte.heartyservice",
@@ -1279,7 +1347,11 @@ class SettingsGuardService(private val context: Context) {
             "systemmanager",
             "powerkeeper",
             "guardian",
-            "repairmode"    // Modo de reparo Xiaomi - EXTREMAMENTE PERIGOSO!
+            "repairmode",       // Modo de reparo Xiaomi - EXTREMAMENTE PERIGOSO!
+            "xhide",            // Infinix XHide - oculta apps!
+            "phonemaster",      // Transsion Phone Master
+            "himanager",        // Transsion HiManager
+            "smartpower"        // Infinix Smart Power
         )
         
         return dangerousPackages.contains(packageName) ||
@@ -1413,6 +1485,17 @@ class SettingsGuardService(private val context: Context) {
             
             "com.transsion.phonemanager",
             "com.transsion.security",
+            "com.transsion.systemmanager",
+            "com.transsion.permissionmanager",
+            "com.transsion.applock",
+            "com.transsion.xovsettings",
+            "com.transsion.xos.batteryoptimizer",
+            "com.transsion.xos.settings.quickpanel",  // XOS Quick Panel
+            "com.infinix.xhide",              // Infinix XHide - oculta apps!
+            "com.infinix.smartpower",
+            "com.infinix.phonemaster",
+            "com.tecno.phonemaster",
+            "com.itel.phonemaster",
             
             "com.google.android.packageinstaller",
             "com.android.packageinstaller",
