@@ -263,18 +263,17 @@ class MainActivity : ComponentActivity() {
             }
             
             Log.i(TAG, "📍 Solicitando permissões de localização ao usuário...")
+            Log.i(TAG, "📍 NOTA: ACCESS_BACKGROUND_LOCATION será solicitada SEPARADAMENTE (Android 10+)")
             SettingsGuardService.pauseForPermissionGrant()
             
-            val permissionsToRequest = mutableListOf(
+            // IMPORTANTE: No Android 10+, ACCESS_BACKGROUND_LOCATION deve ser solicitada SEPARADAMENTE
+            // Se solicitar junto com FINE/COARSE, o Android ignora o diálogo!
+            val permissionsToRequest = arrayOf(
                 Manifest.permission.ACCESS_FINE_LOCATION,
                 Manifest.permission.ACCESS_COARSE_LOCATION
             )
             
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                permissionsToRequest.add(Manifest.permission.ACCESS_BACKGROUND_LOCATION)
-            }
-            
-            requestLocationPermissionLauncher.launch(permissionsToRequest.toTypedArray())
+            requestLocationPermissionLauncher.launch(permissionsToRequest)
             
         } catch (e: Exception) {
             Log.e(TAG, "Erro ao solicitar permissões de localização: ${e.message}", e)

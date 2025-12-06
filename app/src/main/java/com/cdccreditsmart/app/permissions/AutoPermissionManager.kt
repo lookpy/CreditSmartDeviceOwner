@@ -59,9 +59,20 @@ class AutoPermissionManager(private val context: Context) {
         /**
          * Retorna a lista de permissões runtime que o app precisa
          * Para ser usado ao solicitar permissões manualmente quando não é Device Owner
+         * 
+         * IMPORTANTE: ACCESS_BACKGROUND_LOCATION é EXCLUÍDA desta lista!
+         * No Android 10+, esta permissão deve ser solicitada SEPARADAMENTE
+         * após o usuário conceder ACCESS_FINE_LOCATION ou ACCESS_COARSE_LOCATION.
+         * Se solicitada junto, o Android ignora o diálogo completamente!
          */
         fun getAllRuntimePermissions(context: Context): List<String> {
             return RUNTIME_PERMISSIONS.filter { permission ->
+                // Excluir ACCESS_BACKGROUND_LOCATION - deve ser solicitada separadamente
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q && 
+                    permission == Manifest.permission.ACCESS_BACKGROUND_LOCATION) {
+                    return@filter false
+                }
+                
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                     context.checkSelfPermission(permission) != PackageManager.PERMISSION_GRANTED
                 } else {
