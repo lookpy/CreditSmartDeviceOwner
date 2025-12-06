@@ -71,16 +71,41 @@ class SelfDestructManager(private val context: Context) {
         ComponentName(context, CDCDeviceAdminReceiver::class.java)
     }
     
+    /**
+     * Nível de privilégio do app no dispositivo
+     */
+    enum class PrivilegeLevel {
+        DEVICE_OWNER,    // Máximo privilégio - Device Owner + Device Admin
+        DEVICE_ADMIN,    // Privilégio médio - apenas Device Admin
+        NONE             // Sem privilégios especiais
+    }
+    
+    /**
+     * Detecta o nível de privilégio atual do app
+     */
+    private fun detectPrivilegeLevel(): PrivilegeLevel {
+        val packageName = context.packageName
+        return when {
+            dpm.isDeviceOwnerApp(packageName) -> PrivilegeLevel.DEVICE_OWNER
+            dpm.isAdminActive(adminComponent) -> PrivilegeLevel.DEVICE_ADMIN
+            else -> PrivilegeLevel.NONE
+        }
+    }
+    
     suspend fun executeSelfDestruct(params: CommandParameters.UninstallAppParameters): SelfDestructResult {
         var guardWasPaused = false
         
         return try {
+            // Detectar nível de privilégio ANTES de iniciar
+            val privilegeLevel = detectPrivilegeLevel()
+            
             Log.i(TAG, "========================================")
             Log.i(TAG, "🚨 INICIANDO SEQUÊNCIA DE AUTO-DESTRUIÇÃO")
             Log.i(TAG, "========================================")
             Log.i(TAG, "📋 Motivo: ${params.reason}")
             Log.i(TAG, "📋 Wipe data: ${params.shouldWipeData()}")
             Log.i(TAG, "📋 Confirmation code: ${if (params.getCode().isNotEmpty()) "presente (${params.getCode().take(4)}...)" else "ausente"}")
+            Log.i(TAG, "👑 Nível de privilégio: $privilegeLevel")
             
             Log.i(TAG, "⏸️ Pausando proteção do SettingsGuard...")
             try {
@@ -91,140 +116,174 @@ class SelfDestructManager(private val context: Context) {
                 Log.w(TAG, "⚠️ Erro ao pausar SettingsGuard (continuando): ${e.message}")
             }
             
-            Log.i(TAG, "🔐 [1/9] Verificando autorização...")
+            // ========== PASSO 1: AUTORIZAÇÃO ==========
+            Log.i(TAG, "🔐 [1/8] Verificando autorização...")
             if (params.isAdminAuthorized()) {
-                Log.i(TAG, "✅ [1/9] Desinstalação autorizada pelo admin (validada no servidor)")
+                Log.i(TAG, "✅ [1/8] Desinstalação autorizada pelo admin (validada no servidor)")
             } else if (params.getCode().isNotEmpty()) {
-                Log.i(TAG, "🔑 [1/9] Validando código de confirmação...")
+                Log.i(TAG, "🔑 [1/8] Validando código de confirmação...")
                 if (!validateConfirmationCode(params.getCode())) {
                     Log.e(TAG, "❌ Código de confirmação inválido - abortando auto-destruição")
                     resumeGuardSafely(guardWasPaused)
                     return SelfDestructResult.Error("Invalid confirmation code")
                 }
-                Log.i(TAG, "✅ [1/9] Código de confirmação validado com sucesso")
+                Log.i(TAG, "✅ [1/8] Código de confirmação validado com sucesso")
             } else {
                 Log.e(TAG, "❌ Nenhuma autorização válida - código ausente e não é admin")
                 resumeGuardSafely(guardWasPaused)
                 return SelfDestructResult.Error("No valid authorization provided")
             }
             
-            Log.i(TAG, "📝 [2/9] Registrando início da auto-destruição...")
+            // ========== PASSO 2: LOG INICIAL ==========
+            Log.i(TAG, "📝 [2/8] Registrando início da auto-destruição...")
             logSelfDestructStart(params.reason)
-            Log.i(TAG, "✅ [2/9] Log inicial registrado")
+            Log.i(TAG, "✅ [2/8] Log inicial registrado")
             
-            Log.i(TAG, "🔓 [3/9] Removendo proteções avançadas do EnhancedProtectionsManager...")
-            val enhancedResult = enhancedProtectionsManager.applyEnhancedProtections(false)
-            if (enhancedResult.success) {
-                Log.i(TAG, "✅ [3/9] Proteções avançadas removidas: ${enhancedResult.message}")
-            } else {
-                Log.w(TAG, "⚠️ [3/9] Remoção parcial de proteções avançadas: ${enhancedResult.message}")
+            // ========== PASSO 3: PROTEÇÕES AVANÇADAS (todos os níveis) ==========
+            // NOTA: Executar para TODOS os níveis - as funções já tratam internamente
+            // quando não é Device Owner e fazem limpeza de proteções locais
+            Log.i(TAG, "🔓 [3/8] Removendo proteções avançadas...")
+            try {
+                val enhancedResult = enhancedProtectionsManager.applyEnhancedProtections(false)
+                if (enhancedResult.success) {
+                    Log.i(TAG, "✅ [3/8] Proteções avançadas removidas: ${enhancedResult.message}")
+                } else {
+                    Log.w(TAG, "⚠️ [3/8] Remoção parcial de proteções avançadas: ${enhancedResult.message}")
+                }
+            } catch (e: Exception) {
+                Log.w(TAG, "⚠️ [3/8] Erro ao remover proteções avançadas (continuando): ${e.message}")
             }
             
-            Log.i(TAG, "🔓 [4/9] Removendo TODAS as proteções do AppProtectionManager...")
-            val disableResult = appProtectionManager.disableAllProtections()
-            when (disableResult) {
-                is com.cdccreditsmart.app.protection.DisableProtectionsResult.Success -> {
-                    Log.i(TAG, "✅ [4/9] Todas as proteções removidas com sucesso")
-                    disableResult.details.take(5).forEach { Log.i(TAG, "   $it") }
-                    if (disableResult.details.size > 5) {
-                        Log.i(TAG, "   ... e mais ${disableResult.details.size - 5} proteções")
+            // ========== PASSO 4: PROTEÇÕES DO APP (todos os níveis) ==========
+            // NOTA: Executar para TODOS os níveis
+            // - NotDeviceOwner: Esperado quando não é Device Owner - continuar
+            // - Error: Falha crítica em qualquer nível - abortar sempre
+            Log.i(TAG, "🔓 [4/8] Removendo proteções do AppProtectionManager...")
+            try {
+                val disableResult = appProtectionManager.disableAllProtections()
+                when (disableResult) {
+                    is com.cdccreditsmart.app.protection.DisableProtectionsResult.Success -> {
+                        Log.i(TAG, "✅ [4/8] Todas as proteções removidas com sucesso")
+                        disableResult.details.take(5).forEach { Log.i(TAG, "   $it") }
+                        if (disableResult.details.size > 5) {
+                            Log.i(TAG, "   ... e mais ${disableResult.details.size - 5} proteções")
+                        }
+                    }
+                    is com.cdccreditsmart.app.protection.DisableProtectionsResult.PartialSuccess -> {
+                        Log.w(TAG, "⚠️ [4/8] Remoção parcial - ${disableResult.errorCount} proteções falharam")
+                        Log.w(TAG, "⚠️ Continuando mesmo assim...")
+                        disableResult.details.filter { it.startsWith("❌") }.forEach { Log.w(TAG, "   $it") }
+                    }
+                    is com.cdccreditsmart.app.protection.DisableProtectionsResult.Error -> {
+                        // Error indica falha crítica - abortar em TODOS os níveis
+                        Log.e(TAG, "❌ [4/8] ERRO CRÍTICO ao remover proteções: ${disableResult.message}")
+                        Log.e(TAG, "❌ Auto-destruição ABORTADA - proteções não removidas")
+                        sendFailureTelemetry(params.reason, "Protection removal failed: ${disableResult.message}")
+                        resumeGuardSafely(guardWasPaused)
+                        return SelfDestructResult.Error("Failed to remove protections: ${disableResult.message}")
+                    }
+                    is com.cdccreditsmart.app.protection.DisableProtectionsResult.NotDeviceOwner -> {
+                        // NotDeviceOwner é esperado - significa que proteções DPM não foram aplicadas
+                        Log.i(TAG, "ℹ️ [4/8] App não é Device Owner - proteções DPM não aplicadas, continuando...")
                     }
                 }
-                is com.cdccreditsmart.app.protection.DisableProtectionsResult.PartialSuccess -> {
-                    Log.w(TAG, "⚠️ [4/9] Remoção parcial - ${disableResult.errorCount} proteções falharam")
-                    Log.w(TAG, "⚠️ App pode permanecer parcialmente protegido")
-                    disableResult.details.filter { it.startsWith("❌") }.forEach { Log.w(TAG, "   $it") }
+            } catch (e: Exception) {
+                Log.e(TAG, "❌ [4/8] EXCEÇÃO ao remover proteções: ${e.message}")
+                sendFailureTelemetry(params.reason, "Protection removal exception: ${e.message}")
+                resumeGuardSafely(guardWasPaused)
+                return SelfDestructResult.Error("Exception removing protections: ${e.message}")
+            }
+            
+            // ========== PASSO 5: BLOQUEIO DE DESINSTALAÇÃO (apenas Device Owner) ==========
+            Log.i(TAG, "🔓 [5/8] Removendo bloqueio de desinstalação...")
+            try {
+                removeUninstallBlock()
+                if (privilegeLevel == PrivilegeLevel.DEVICE_OWNER) {
+                    Log.i(TAG, "✅ [5/8] Bloqueio de desinstalação removido")
+                } else {
+                    Log.i(TAG, "ℹ️ [5/8] Não é Device Owner - bloqueio DPM não aplicado")
                 }
-                is com.cdccreditsmart.app.protection.DisableProtectionsResult.Error -> {
-                    Log.e(TAG, "❌ [4/9] ERRO CRÍTICO ao remover proteções: ${disableResult.message}")
-                    Log.e(TAG, "❌ Auto-destruição ABORTADA - app ainda está protegido")
-                    sendFailureTelemetry(params.reason, "Protection removal failed: ${disableResult.message}")
-                    resumeGuardSafely(guardWasPaused)
-                    return SelfDestructResult.Error("Failed to remove protections: ${disableResult.message}")
+            } catch (e: Exception) {
+                Log.w(TAG, "⚠️ [5/8] Erro ao remover bloqueio (continuando): ${e.message}")
+            }
+            
+            // ========== PASSO 6: REMOVER DEVICE OWNER (se aplicável) ==========
+            Log.i(TAG, "👑 [6/8] Removendo privilégios de Device Owner/Admin...")
+            when (privilegeLevel) {
+                PrivilegeLevel.DEVICE_OWNER -> {
+                    Log.i(TAG, "🔓 Removendo Device Owner status...")
+                    val removeResult = deviceOwnerManager.removeDeviceOwner()
+                    when (removeResult) {
+                        is DeviceOwnerResult.Success -> {
+                            Log.i(TAG, "✅ [6/8] Device Owner removido: ${removeResult.message}")
+                        }
+                        is DeviceOwnerResult.Error -> {
+                            // Tentar continuar mesmo com erro - o Device Admin removal pode funcionar
+                            Log.w(TAG, "⚠️ [6/8] Erro ao remover Device Owner: ${removeResult.message}")
+                            Log.w(TAG, "⚠️ Tentando remover Device Admin diretamente...")
+                        }
+                        is DeviceOwnerResult.RequiresManualSetup -> {
+                            Log.w(TAG, "⚠️ [6/8] Device Owner requer ação manual: ${removeResult.instructions}")
+                            Log.w(TAG, "⚠️ Tentando remover Device Admin diretamente...")
+                        }
+                        is DeviceOwnerResult.RequiresPermissions -> {
+                            Log.w(TAG, "⚠️ [6/8] Permissões faltando: ${removeResult.permissions}")
+                            Log.w(TAG, "⚠️ Tentando remover Device Admin diretamente...")
+                        }
+                        is DeviceOwnerResult.NotSupported -> {
+                            Log.w(TAG, "⚠️ [6/8] Remoção não suportada: ${removeResult.reason}")
+                            Log.w(TAG, "⚠️ Tentando remover Device Admin diretamente...")
+                        }
+                    }
                 }
-                is com.cdccreditsmart.app.protection.DisableProtectionsResult.NotDeviceOwner -> {
-                    Log.w(TAG, "⚠️ [4/9] App não é Device Owner - proteções não aplicadas")
+                PrivilegeLevel.DEVICE_ADMIN -> {
+                    Log.i(TAG, "⏭️ [6/8] Não é Device Owner - pulando para remoção de Device Admin")
+                }
+                PrivilegeLevel.NONE -> {
+                    Log.i(TAG, "✅ [6/8] Sem privilégios especiais - nada a remover")
                 }
             }
             
-            Log.i(TAG, "🔓 [5/9] Removendo bloqueio de desinstalação adicional...")
-            removeUninstallBlock()
-            Log.i(TAG, "✅ [5/9] Bloqueio de desinstalação confirmado removido")
-            
-            Log.i(TAG, "👑 [6/9] Removendo Device Owner status...")
-            val removeResult = deviceOwnerManager.removeDeviceOwner()
-            when (removeResult) {
-                is DeviceOwnerResult.Success -> {
-                    Log.i(TAG, "✅ [6/9] Device Owner removido com sucesso: ${removeResult.message}")
+            // ========== PASSO 7: REMOVER DEVICE ADMIN (se aplicável) ==========
+            // CRÍTICO: Android BLOQUEIA desinstalação de apps com Device Admin ativo
+            Log.i(TAG, "🔓 [7/8] Verificando e removendo Device Admin...")
+            if (privilegeLevel != PrivilegeLevel.NONE) {
+                when (val adminResult = removeDeviceAdminIfActive()) {
+                    is RemoveAdminResult.Removed -> {
+                        Log.i(TAG, "✅ [7/8] Device Admin removido com sucesso")
+                    }
+                    is RemoveAdminResult.NotRequired -> {
+                        Log.i(TAG, "✅ [7/8] Device Admin não estava ativo")
+                    }
+                    is RemoveAdminResult.Failed -> {
+                        Log.e(TAG, "❌ [7/8] ERRO CRÍTICO - Falha ao remover Device Admin")
+                        Log.e(TAG, "❌ ${adminResult.message}")
+                        Log.e(TAG, "❌ Auto-destruição ABORTADA - desinstalação falhará")
+                        sendFailureTelemetry(params.reason, "Device Admin removal failed: ${adminResult.message}")
+                        resumeGuardSafely(guardWasPaused)
+                        return SelfDestructResult.Error("Failed to remove Device Admin: ${adminResult.message}")
+                    }
                 }
-                is DeviceOwnerResult.Error -> {
-                    Log.e(TAG, "❌ [6/9] ERRO CRÍTICO - Falha ao remover Device Owner: ${removeResult.message}")
-                    Log.e(TAG, "❌ Auto-destruição ABORTADA - app ainda é Device Owner")
-                    sendFailureTelemetry(params.reason, "Device Owner removal failed: ${removeResult.message}")
-                    resumeGuardSafely(guardWasPaused)
-                    return SelfDestructResult.Error("Failed to remove Device Owner: ${removeResult.message}")
-                }
-                is DeviceOwnerResult.RequiresManualSetup -> {
-                    Log.e(TAG, "❌ [6/9] ERRO CRÍTICO - Device Owner requer ação manual: ${removeResult.instructions}")
-                    Log.e(TAG, "❌ Auto-destruição ABORTADA - intervenção manual necessária")
-                    sendFailureTelemetry(params.reason, "Manual setup required: ${removeResult.instructions}")
-                    resumeGuardSafely(guardWasPaused)
-                    return SelfDestructResult.Error("Manual setup required: ${removeResult.instructions}")
-                }
-                is DeviceOwnerResult.RequiresPermissions -> {
-                    Log.e(TAG, "❌ [6/9] ERRO CRÍTICO - Permissões faltando: ${removeResult.permissions}")
-                    Log.e(TAG, "❌ Auto-destruição ABORTADA - permissões necessárias")
-                    sendFailureTelemetry(params.reason, "Missing permissions: ${removeResult.permissions.joinToString()}")
-                    resumeGuardSafely(guardWasPaused)
-                    return SelfDestructResult.Error("Missing permissions: ${removeResult.permissions.joinToString()}")
-                }
-                is DeviceOwnerResult.NotSupported -> {
-                    Log.e(TAG, "❌ [6/9] ERRO CRÍTICO - Remoção não suportada: ${removeResult.reason}")
-                    Log.e(TAG, "❌ Auto-destruição ABORTADA - fabricante não suporta")
-                    sendFailureTelemetry(params.reason, "Not supported: ${removeResult.reason}")
-                    resumeGuardSafely(guardWasPaused)
-                    return SelfDestructResult.Error("Device Owner removal not supported: ${removeResult.reason}")
-                }
+            } else {
+                Log.i(TAG, "✅ [7/8] Sem privilégios - nada a remover")
             }
             
-            // CRÍTICO: Remover Device Admin se ainda estiver ativo
-            // Isso é necessário porque:
-            // 1. Se era Device Owner, clearDeviceOwnerApp() também remove Device Admin
-            // 2. Se era apenas Device Admin (não Device Owner), precisa remover manualmente
-            // 3. Android BLOQUEIA desinstalação de apps com Device Admin ativo
-            Log.i(TAG, "🔓 [7/10] Verificando e removendo Device Admin se necessário...")
-            when (val adminResult = removeDeviceAdminIfActive()) {
-                is RemoveAdminResult.Removed -> {
-                    Log.i(TAG, "✅ [7/10] Device Admin removido com sucesso")
-                }
-                is RemoveAdminResult.NotRequired -> {
-                    Log.i(TAG, "✅ [7/10] Device Admin não estava ativo - continuando")
-                }
-                is RemoveAdminResult.Failed -> {
-                    Log.e(TAG, "❌ [7/10] ERRO CRÍTICO - Falha ao remover Device Admin")
-                    Log.e(TAG, "❌ ${adminResult.message}")
-                    Log.e(TAG, "❌ Auto-destruição ABORTADA - desinstalação falhará se continuar")
-                    sendFailureTelemetry(params.reason, "Device Admin removal failed: ${adminResult.message}")
-                    resumeGuardSafely(guardWasPaused)
-                    return SelfDestructResult.Error("Failed to remove Device Admin: ${adminResult.message}")
-                }
-            }
-            
-            Log.i(TAG, "📡 [8/10] Enviando telemetria final ao backend...")
+            // ========== PASSO 8: FINALIZAÇÃO ==========
+            Log.i(TAG, "📡 Enviando telemetria final ao backend...")
             sendFinalTelemetry(params.reason)
-            Log.i(TAG, "✅ [8/10] Telemetria final enviada")
+            Log.i(TAG, "✅ Telemetria final enviada")
             
             if (params.shouldWipeData()) {
-                Log.i(TAG, "🧹 [9/10] Limpando dados da aplicação...")
+                Log.i(TAG, "🧹 Limpando dados da aplicação...")
                 clearAppData()
-                Log.i(TAG, "✅ [9/10] Dados limpos com sucesso")
+                Log.i(TAG, "✅ Dados limpos com sucesso")
             } else {
-                Log.i(TAG, "⏭️ [9/10] Wipe data = false - mantendo dados")
+                Log.i(TAG, "⏭️ Wipe data = false - mantendo dados")
             }
             
-            Log.i(TAG, "🗑️ [10/10] Solicitando desinstalação do aplicativo...")
+            Log.i(TAG, "🗑️ [8/8] Solicitando desinstalação do aplicativo...")
             requestUninstall()
-            Log.i(TAG, "✅ [10/10] Solicitação de desinstalação enviada")
+            Log.i(TAG, "✅ [8/8] Solicitação de desinstalação enviada")
             
             Log.i(TAG, "========================================")
             Log.i(TAG, "✅ AUTO-DESTRUIÇÃO COMPLETA")
