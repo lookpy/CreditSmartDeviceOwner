@@ -1,0 +1,34 @@
+hdl:74649, pid:405 
+2025-12-06 15:19:53.666   405-405   TextSelection           com.cdccreditsmart.app               D  onUseCache cache=false
+2025-12-06 15:19:53.734   405-4910  PowerHalMgrImpl         com.cdccreditsmart.app               I  hdl:74653, pid:405 
+2025-12-06 15:19:53.743   405-4910  PowerHalMgrImpl         com.cdccreditsmart.app               I  hdl:74656, pid:405 
+2025-12-06 15:19:54.121   405-405   ScrollIdentify          com.cdccreditsmart.app               I  on fling
+2025-12-06 15:19:54.122   405-4910  PowerHalMgrImpl         com.cdccreditsmart.app               I  hdl:74658, pid:405 
+2025-12-06 15:19:54.627   405-4910  ScrollPolicy            com.cdccreditsmart.app               I  BOOST_KSWAPD; duration: 0
+2025-12-06 15:19:54.630   405-4910  PowerHalMgrImpl         com.cdccreditsmart.app               I  hdl:74660, pid:405 
+2025-12-06 15:19:55.666   405-405   TextSelection           com.cdccreditsmart.app               D  onUseCache cache=false
+2025-12-06 15:19:55.751   405-4453  SupportRepository       com.cdccreditsmart.app               E  ❌ Validação de integridade falhou!
+2025-12-06 15:19:55.751   405-4453  SupportRepository       com.cdccreditsmart.app               E     Hash esperado: 7483075c4bb2d28284b9b45fee2c4927d032014a3cadf1115e13c3d766577796
+2025-12-06 15:19:55.751   405-4453  SupportRepository       com.cdccreditsmart.app               E     Hash calculado: 80b3c191ee6f0f4ecb54f4b75e05d34e727df97a787ea47d8d0612ed3b578e11
+2025-12-06 15:19:55.752   405-4453  SupportRepository       com.cdccreditsmart.app               E  ❌ Termos em cache corrompidos - limpando cache
+2025-12-06 15:19:55.753   405-4453  NetworkConnectivity     com.cdccreditsmart.app               D  ✅ Conectado via WiFi com internet
+2025-12-06 15:19:55.754   405-4453  SupportRepository       com.cdccreditsmart.app               I  📡 Buscando termos do servidor (version=latest)...
+2025-12-06 15:19:55.815   405-4473  okhttp.OkHttpClient     com.cdccreditsmart.app               I  --> GET https://cdccreditsmart.com/v1/contract/terms?version=latest
+2025-12-06 15:19:55.815   405-4473  okhttp.OkHttpClient     com.cdccreditsmart.app               I  --> END GET
+2025-12-06 15:19:57.300   405-4473  okhttp.OkHttpClient     com.cdccreditsmart.app               I  <-- 200 https://cdccreditsmart.com/v1/contract/terms?version=latest (1484ms)
+2025-12-06 15:19:57.300   405-4473  okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-credentials: true
+2025-12-06 15:19:57.300   405-4473  okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-headers: Origin, X-Requested-With, Content-Type, Accept, Authorization, x-client-key, x-client-token, x-client-secret, cache-control
+2025-12-06 15:19:57.300   405-4473  okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-methods: GET, POST, PUT, PATCH, DELETE, OPTIONS
+2025-12-06 15:19:57.300   405-4473  okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-origin: *
+2025-12-06 15:19:57.300   405-4473  okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-max-age: 86400
+2025-12-06 15:19:57.301   405-4473  okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-length: 44554
+2025-12-06 15:19:57.301   405-4473  okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-security-policy: default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://replit.com; style-src 'self' 'unsafe-inline' https://replit.com; img-src 'self' data: https:; font-src 'self' data: https://replit.com; connect-src 'self';
+2025-12-06 15:19:57.301   405-4473  okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-type: application/json; charset=utf-8
+2025-12-06 15:19:57.301   405-4473  okhttp.OkHttpClient     com.cdccreditsmart.app               I  date: Sat, 06 Dec 2025 18:19:57 GMT
+2025-12-06 15:19:57.301   405-4473  okhttp.OkHttpClient     com.cdccreditsmart.app               I  etag: W/"ae0a-le6yW/ZqQJvxrk2ukKu8dB/cTTE"
+2025-12-06 15:19:57.301   405-4473  okhttp.OkHttpClient     com.cdccreditsmart.app               I  permissions-policy: geolocation=(), microphone=(), camera=()
+2025-12-06 15:19:57.301   405-4473  okhttp.OkHttpClient     com.cdccreditsmart.app               I  referrer-policy: strict-origin-when-cross-origin
+2025-12-06 15:19:57.301   405-4473  okhttp.OkHttpClient     com.cdccreditsmart.app               I  server: Google Frontend
+2025-12-06 15:19:57.302   405-4473  okhttp.OkHttpClient     com.cdccreditsmart.app               I  strict-transport-security: max-age=63072000; includeSubDomains
+2025-12-06 15:19:57.302   405-4473  okhttp.OkHttpClient     com.cdccreditsmart.app               I  strict-transport-security: max-age=31536000; includeSubDomains
+2025-12-06 15:19:57.302   405-4473  okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-anti-fraud-protection: active
