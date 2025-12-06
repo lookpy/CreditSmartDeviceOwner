@@ -496,16 +496,26 @@ private fun PayNextInstallmentButton(installment: InstallmentItem) {
     }
 }
 
+private val currencyFormatter: java.text.NumberFormat by lazy {
+    java.text.NumberFormat.getCurrencyInstance(Locale("pt", "BR"))
+}
+
+private val inputDateFormat: SimpleDateFormat by lazy {
+    SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+}
+
+private val outputDateFormat: SimpleDateFormat by lazy {
+    SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+}
+
 private fun formatCurrency(value: Double): String {
-    return "R$ %.2f".format(value)
+    return currencyFormatter.format(value)
 }
 
 private fun formatDate(dateString: String): String {
     return try {
-        val inputFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
-        val outputFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
-        val date = inputFormat.parse(dateString)
-        date?.let { outputFormat.format(it) } ?: dateString
+        val date = inputDateFormat.parse(dateString)
+        date?.let { outputDateFormat.format(it) } ?: dateString
     } catch (e: Exception) {
         dateString
     }

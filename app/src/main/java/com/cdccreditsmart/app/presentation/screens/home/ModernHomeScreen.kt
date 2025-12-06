@@ -232,7 +232,10 @@ private fun HomeContent(
                 )
             }
             
-            items(paidInstallments.take(3)) { installment ->
+            items(
+                items = paidInstallments.take(3),
+                key = { it.number }
+            ) { installment ->
                 PaidInstallmentCard(installment = installment)
             }
         }
@@ -246,7 +249,10 @@ private fun HomeContent(
                 )
             }
             
-            items(pendingInstallments) { installment ->
+            items(
+                items = pendingInstallments,
+                key = { it.number }
+            ) { installment ->
                 InstallmentCard(
                     installment = installment,
                     onPay = { onPayInstallment(installment) }
@@ -822,16 +828,26 @@ private fun PaymentOption(
     }
 }
 
+private val currencyFormatter: java.text.NumberFormat by lazy {
+    NumberFormat.getCurrencyInstance(Locale("pt", "BR"))
+}
+
+private val inputDateFormat: SimpleDateFormat by lazy {
+    SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+}
+
+private val outputDateFormat: SimpleDateFormat by lazy {
+    SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+}
+
 private fun formatCurrency(value: Double): String {
-    return NumberFormat.getCurrencyInstance(Locale("pt", "BR")).format(value)
+    return currencyFormatter.format(value)
 }
 
 private fun formatDate(dateString: String): String {
     return try {
-        val inputFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
-        val outputFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
-        val date = inputFormat.parse(dateString)
-        outputFormat.format(date ?: Date())
+        val date = inputDateFormat.parse(dateString)
+        outputDateFormat.format(date ?: Date())
     } catch (e: Exception) {
         dateString
     }
