@@ -121,7 +121,7 @@ class SilentPackageInstaller(private val context: Context) {
                 PackageInstaller.SessionParams.MODE_FULL_INSTALL
             ).apply {
                 setAppPackageName(null) // Será detectado do APK
-                setInstallLocation(PackageInstaller.SessionParams.INSTALL_LOCATION_AUTO)
+                setInstallLocation(0)
                 
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                     setOriginatingUid(android.os.Process.myUid())

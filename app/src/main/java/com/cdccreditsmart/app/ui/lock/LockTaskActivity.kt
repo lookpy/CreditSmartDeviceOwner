@@ -25,7 +25,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.cdccreditsmart.app.protection.WorkPolicyManager
-import com.cdccreditsmart.app.ui.theme.CdcCreditSmartTheme
 
 class LockTaskActivity : ComponentActivity() {
     
@@ -78,7 +77,16 @@ class LockTaskActivity : ComponentActivity() {
             val isKioskActive by _isInLockTaskMode
             val isDeviceOwner by _isDeviceOwnerAvailable
             
-            CdcCreditSmartTheme {
+            MaterialTheme(
+                colorScheme = darkColorScheme(
+                    primary = Color(0xFF1E88E5),
+                    onPrimary = Color.White,
+                    surface = Color(0xFF121212),
+                    onSurface = Color.White,
+                    background = Color(0xFF0A0A0A),
+                    onBackground = Color.White
+                )
+            ) {
                 LockTaskScreen(
                     overdueAmount = overdueAmount,
                     overdueDays = overdueDays,

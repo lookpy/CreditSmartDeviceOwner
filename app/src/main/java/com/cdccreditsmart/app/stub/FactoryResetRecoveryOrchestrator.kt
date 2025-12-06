@@ -43,7 +43,7 @@ object FactoryResetRecoveryOrchestrator {
             val contractStorage = ContractCodeStorage(context)
             
             val deviceSerial = getDeviceSerialSafe(context)
-            val enrollmentId = tokenStorage.getEnrollmentId()
+            val enrollmentId = tokenStorage.getDeviceId()
             val contractCode = contractStorage.getContractCode()
             
             if (contractCode == null && enrollmentId == null) {
