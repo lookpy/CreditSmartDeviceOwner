@@ -414,10 +414,90 @@ class WorkPolicyManager(private val context: Context) {
     private fun blockUninstallation(): Boolean {
         return try {
             dpm.setUninstallBlocked(adminComponent, context.packageName, true)
-            Log.i(TAG, "   ✅ setUninstallBlocked(true)")
+            Log.i(TAG, "   ✅ setUninstallBlocked(true) para ${context.packageName}")
+            
+            blockCriticalPackagesUninstall()
+            
             true
         } catch (e: Exception) {
             Log.e(TAG, "   ❌ Erro ao bloquear desinstalação: ${e.message}")
+            false
+        }
+    }
+    
+    private fun blockCriticalPackagesUninstall(): Boolean {
+        val criticalPackages = listOf(
+            "com.android.providers.downloads",
+            "com.android.providers.telephony",
+            "com.android.phone",
+            "com.google.android.gms"
+        )
+        
+        var successCount = 0
+        for (packageName in criticalPackages) {
+            try {
+                if (isPackageInstalled(packageName)) {
+                    dpm.setUninstallBlocked(adminComponent, packageName, true)
+                    Log.i(TAG, "   ✅ setUninstallBlocked(true) para $packageName")
+                    successCount++
+                }
+            } catch (e: Exception) {
+                Log.w(TAG, "   ⚠️ Não foi possível bloquear desinstalação de $packageName: ${e.message}")
+            }
+        }
+        
+        Log.i(TAG, "   ℹ️ $successCount/${criticalPackages.size} pacotes críticos protegidos")
+        return successCount > 0
+    }
+    
+    @Suppress("DEPRECATION")
+    private fun isPackageInstalled(packageName: String): Boolean {
+        return try {
+            context.packageManager.getPackageInfo(packageName, 0)
+            true
+        } catch (e: PackageManager.NameNotFoundException) {
+            false
+        }
+    }
+    
+    fun verifyAndReapplyPoliciesIfNeeded(): Boolean {
+        val lastCheck = prefs.getLong(KEY_LAST_POLICY_CHECK, 0)
+        val now = System.currentTimeMillis()
+        val checkIntervalMs = 24 * 60 * 60 * 1000L
+        
+        if (now - lastCheck > checkIntervalMs) {
+            Log.i(TAG, "🔄 Verificando e reaplicando políticas após reconexão...")
+            val result = applyAllWorkPolicies()
+            Log.i(TAG, "   Políticas reaplicadas: ${result.appliedPolicies}")
+            return result.success
+        }
+        
+        return true
+    }
+    
+    fun ensurePoliciesIntact(): Boolean {
+        if (!isDeviceOwner()) {
+            return false
+        }
+        
+        return try {
+            var isUninstallBlocked = dpm.isUninstallBlocked(adminComponent, context.packageName)
+            
+            if (!isUninstallBlocked) {
+                Log.w(TAG, "⚠️ Política de desinstalação foi removida! Reaplicando...")
+                val result = applyAllWorkPolicies()
+                
+                if (result.success) {
+                    isUninstallBlocked = dpm.isUninstallBlocked(adminComponent, context.packageName)
+                    Log.i(TAG, "✅ Políticas reaplicadas. Status: ${if (isUninstallBlocked) "PROTEGIDO" else "FALHOU"}")
+                } else {
+                    Log.e(TAG, "❌ Falha ao reaplicar políticas")
+                }
+            }
+            
+            isUninstallBlocked
+        } catch (e: Exception) {
+            Log.e(TAG, "Erro ao verificar políticas: ${e.message}")
             false
         }
     }
