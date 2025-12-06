@@ -287,6 +287,15 @@ class SettingsGuardService(private val context: Context) {
     }
     
     private fun checkSettingsActivity(packageName: String, activityName: String?): SettingsCheckResult {
+        // ═══════════════════════════════════════════════════════════════════════════════
+        // EXCEÇÃO IMPORTANTE: GrantPermissionsActivity é o diálogo do sistema para
+        // conceder permissões quando NOSSO app solicita. NÃO bloquear!
+        // ═══════════════════════════════════════════════════════════════════════════════
+        if (activityName?.contains("GrantPermissionsActivity", ignoreCase = true) == true) {
+            Log.d(TAG, "✅ GrantPermissionsActivity permitida (diálogo de permissões do sistema)")
+            return SettingsCheckResult.SAFE
+        }
+        
         val settingsPackages = setOf(
             // Android padrão
             "com.android.settings",

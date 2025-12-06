@@ -26,6 +26,7 @@ import com.cdccreditsmart.app.permissions.AutoPermissionManager
 import com.cdccreditsmart.app.permissions.SpecialPermissionRequester
 import com.cdccreditsmart.app.protection.FactoryResetDetectionResult
 import com.cdccreditsmart.app.protection.PersistentStateManager
+import com.cdccreditsmart.app.protection.SettingsGuardService
 import com.cdccreditsmart.app.ui.theme.CDCCreditSmartTheme
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -44,6 +45,8 @@ class MainActivity : ComponentActivity() {
     private val requestPermissionsLauncher = registerForActivityResult(
         ActivityResultContracts.RequestMultiplePermissions()
     ) { permissions ->
+        SettingsGuardService.resumeAfterPermissionGrant()
+        
         val allGranted = permissions.entries.all { it.value }
         
         if (allGranted) {
@@ -159,6 +162,7 @@ class MainActivity : ComponentActivity() {
                 permissionsToRequest.forEach { permission ->
                     Log.d(TAG, "  • $permission")
                 }
+                SettingsGuardService.pauseForPermissionGrant()
                 requestPermissionsLauncher.launch(permissionsToRequest.toTypedArray())
             }
             

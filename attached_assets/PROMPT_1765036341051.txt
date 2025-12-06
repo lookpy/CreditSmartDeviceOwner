@@ -1,0 +1,466 @@
+2025-12-06 12:51:52.143  4021-4021  TextSelection           com.cdccreditsmart.app               D  onUseCache cache=false
+2025-12-06 12:51:53.124  4021-4021  TextSelection           com.cdccreditsmart.app               D  onUseCache cache=false
+2025-12-06 12:51:53.185  4021-10547 TranClassInfo           com.cdccreditsmart.app               D  instance successfully. com.transsion.hubcore.view.TranSurfaceControlImpl@9168a42 from com.transsion.hubcore.view.ITranSurfaceControl
+2025-12-06 12:51:53.188  4021-10547 ScrollPolicy            com.cdccreditsmart.app               I  BOOST_KSWAPD; duration: 3000
+2025-12-06 12:51:53.221  4021-10547 PowerHalMgrImpl         com.cdccreditsmart.app               I  hdl:68807, pid:4021 
+2025-12-06 12:51:53.231  4021-10547 PowerHalMgrImpl         com.cdccreditsmart.app               I  hdl:68809, pid:4021 
+2025-12-06 12:51:53.291  4021-10547 ScrollPolicy            com.cdccreditsmart.app               I  BOOST_SCENE_4; duration: 0
+2025-12-06 12:51:53.296  4021-10547 PowerHalMgrImpl         com.cdccreditsmart.app               I  hdl:68812, pid:4021 
+2025-12-06 12:51:53.854  4021-4021  VRI[MainActivity]       com.cdccreditsmart.app               D  visibilityChanged oldVisibility=true newVisibility=false
+2025-12-06 12:51:53.898  4021-4021  BLASTBufferQueue        com.cdccreditsmart.app               D  [VRI[MainActivity]#12](f:0,a:1) destructor()
+2025-12-06 12:51:53.898  4021-4021  BufferQueueConsumer     com.cdccreditsmart.app               D  [VRI[MainActivity]#12(BLAST Consumer)12](id:fb50000000c,api:0,p:-1,c:4021) disconnect
+2025-12-06 12:51:54.148  4021-4021  ActivityThread          com.cdccreditsmart.app               D  mToDestroying.remove:ActivityRecord{a7b93d8 token=android.os.BinderProxy@6b09e42 {com.cdccreditsmart.app/com.cdccreditsmart.app.presentation.MainActivity}}
+2025-12-06 12:51:54.171  4021-4021  WindowOnBackDispatcher  com.cdccreditsmart.app               W  sendCancelIfRunning: isInProgress=false callback=android.app.Activity$$ExternalSyntheticLambda0@59c54ab
+2025-12-06 12:51:54.174  4021-4021  View                    com.cdccreditsmart.app               D  [Warning] assignParent to null: this = DecorView@471756d[MainActivity]
+2025-12-06 12:51:54.177  4021-4021  CdcForegroundService    com.cdccreditsmart.app               W  ⚠️ Task removida - mantendo serviço ativo
+2025-12-06 12:51:55.350  4021-9872  FA                      com.cdccreditsmart.app               I  Application backgrounded at: timestamp_millis: 1765036313348
+2025-12-06 12:51:55.959  4021-10635 libMEOW                 com.cdccreditsmart.app               D  meow new tls: 0xb400007672c531c0
+2025-12-06 12:51:55.959  4021-10635 libMEOW                 com.cdccreditsmart.app               D  applied 1 plugins for [com.cdccreditsmart.app]:
+2025-12-06 12:51:55.959  4021-10635 libMEOW                 com.cdccreditsmart.app               D    plugin 1: [libMEOW_gift.so]: 0xb400007592aab840
+2025-12-06 12:51:55.960  4021-10635 libMEOW                 com.cdccreditsmart.app               D  rebuild call chain: 0xb400007672c831f0
+2025-12-06 12:51:55.960  4021-10635 libMEOW                 com.cdccreditsmart.app               D  meow delete tls: 0xb400007672c531c0
+2025-12-06 12:51:55.978  4021-4021  ActivityThread          com.cdccreditsmart.app               D  ++ activityComponent:com.cdccreditsmart.app/com.cdccreditsmart.app.presentation.MainActivity counts:1 ALEAK_CLEAR_SUPPORT:true
+2025-12-06 12:51:55.990  4021-9922  PersistentStateManager  com.cdccreditsmart.app               D  Nenhum estado local encontrado
+2025-12-06 12:51:55.990  4021-9922  PersistentStateManager  com.cdccreditsmart.app               D  🆕 Sem estado local - device novo ou pós factory reset
+2025-12-06 12:51:55.990  4021-9922  MainActivity            com.cdccreditsmart.app               I  🆕 Device nunca foi provisionado
+2025-12-06 12:51:55.990  4021-4021  MainActivity            com.cdccreditsmart.app               I  ========================================
+2025-12-06 12:51:55.990  4021-4021  MainActivity            com.cdccreditsmart.app               I  📱 SOLICITANDO PERMISSÕES (NÃO DEVICE OWNER)
+2025-12-06 12:51:55.990  4021-4021  MainActivity            com.cdccreditsmart.app               I  ========================================
+2025-12-06 12:51:55.990  4021-4021  MainActivity            com.cdccreditsmart.app               I  📋 Runtime permissions a solicitar: 3
+2025-12-06 12:51:55.990  4021-4021  MainActivity            com.cdccreditsmart.app               D    • android.permission.ACCESS_FINE_LOCATION
+2025-12-06 12:51:55.990  4021-4021  MainActivity            com.cdccreditsmart.app               D    • android.permission.ACCESS_COARSE_LOCATION
+2025-12-06 12:51:55.990  4021-4021  MainActivity            com.cdccreditsmart.app               D    • android.permission.ACCESS_BACKGROUND_LOCATION
+2025-12-06 12:51:56.002  4021-4021  SpecialPermissionReq    com.cdccreditsmart.app               I  ========================================
+2025-12-06 12:51:56.002  4021-4021  SpecialPermissionReq    com.cdccreditsmart.app               I  📊 STATUS DAS PERMISSÕES ESPECIAIS
+2025-12-06 12:51:56.002  4021-4021  SpecialPermissionReq    com.cdccreditsmart.app               I  ========================================
+2025-12-06 12:51:56.002  4021-4021  SpecialPermissionReq    com.cdccreditsmart.app               I    USAGE_STATS: ✅ CONCEDIDA
+2025-12-06 12:51:56.003  4021-4021  SpecialPermissionReq    com.cdccreditsmart.app               I    OVERLAY: ✅ CONCEDIDA
+2025-12-06 12:51:56.004  4021-4021  SpecialPermissionReq    com.cdccreditsmart.app               I  
+2025-12-06 12:51:56.004  4021-4021  SpecialPermissionReq    com.cdccreditsmart.app               I  ✅ Todas as permissões especiais concedidas!
+2025-12-06 12:51:56.004  4021-4021  SpecialPermissionReq    com.cdccreditsmart.app               I     Proteção anti-desinstalação ativa.
+2025-12-06 12:51:56.004  4021-4021  SpecialPermissionReq    com.cdccreditsmart.app               I  ========================================
+2025-12-06 12:51:56.005  4021-4021  MainActivity            com.cdccreditsmart.app               I  ✅ Todas as permissões especiais já foram concedidas!
+2025-12-06 12:51:56.010  4021-4021  ActivityThread          com.cdccreditsmart.app               D  handleResumeActivity#3 r.window=nulla.mFinished = falsewillBeVisible = true
+2025-12-06 12:51:56.010  4021-4021  ActivityThread          com.cdccreditsmart.app               D  handleResumeActivity#4 addView a.mVisibleFromClient=truea.mWindowAdded=falsedecor=DecorView@c706d81[]
+2025-12-06 12:51:56.010  4021-4021  ActivityThread          com.cdccreditsmart.app               D  handleResumeActivity#5 addView decor=DecorView@c706d81[]
+2025-12-06 12:51:56.013  4021-4021  VRI[MainActivity]       com.cdccreditsmart.app               D  hardware acceleration = true, forceHwAccelerated = false
+2025-12-06 12:51:56.013  4021-4021  ViewRootImpl            com.cdccreditsmart.app               D  setView appearance:24 com.cdccreditsmart.app/com.cdccreditsmart.app.presentation.MainActivity
+2025-12-06 12:51:56.017  4021-4021  InputEventReceiver      com.cdccreditsmart.app               D  Input log is disabled in InputEventReceiver.
+2025-12-06 12:51:56.090  4021-4021  BufferQueueConsumer     com.cdccreditsmart.app               D  [](id:fb50000000d,api:0,p:-1,c:4021) connect: controlledByApp=false
+2025-12-06 12:51:56.090  4021-4021  BLASTBufferQueue        com.cdccreditsmart.app               D  [VRI[MainActivity]#13](f:0,a:0) constructor()
+2025-12-06 12:51:56.090  4021-4021  BLASTBufferQueue        com.cdccreditsmart.app               D  [VRI[MainActivity]#13](f:0,a:0) update width=1080 height=2436 format=-3 mTransformHint=0
+2025-12-06 12:51:56.106  4021-9893  BLASTBufferQueue        com.cdccreditsmart.app               D  [VRI[MainActivity]#13](f:0,a:1) acquireNextBufferLocked size=1080x2436 mFrameNumber=1 applyTransaction=true mTimestamp=111599155695574(auto) mPendingTransactions.size=0 graphicBufferId=17270063497299 transform=0
+2025-12-06 12:51:56.108  4021-4021  Choreographer           com.cdccreditsmart.app               W  Already have a pending vsync event.  There should only be one at a time.
+2025-12-06 12:51:56.148  4021-4021  PermissionGateScreen    com.cdccreditsmart.app               I  🔍 VERIFICAÇÃO INICIAL DE PERMISSÕES:
+2025-12-06 12:51:56.148  4021-4021  PermissionGateScreen    com.cdccreditsmart.app               I     Nível: DEVICE_ADMIN
+2025-12-06 12:51:56.148  4021-4021  PermissionGateScreen    com.cdccreditsmart.app               I     Todas concedidas: true
+2025-12-06 12:51:56.148  4021-4021  PermissionGateScreen    com.cdccreditsmart.app               I     Bateria isenta: true
+2025-12-06 12:51:56.148  4021-4021  PermissionGateScreen    com.cdccreditsmart.app               I     ✅ OK: Administrador do Dispositivo
+2025-12-06 12:51:56.148  4021-4021  PermissionGateScreen    com.cdccreditsmart.app               I     ✅ OK: Permissões Básicas
+2025-12-06 12:51:56.148  4021-4021  PermissionGateScreen    com.cdccreditsmart.app               I     ✅ OK: Monitoramento de Apps
+2025-12-06 12:51:56.149  4021-4021  PermissionGateScreen    com.cdccreditsmart.app               I     ✅ OK: Mostrar Alertas
+2025-12-06 12:51:56.149  4021-4021  PermissionGateScreen    com.cdccreditsmart.app               I     ✅ OK: Execução em Segundo Plano
+2025-12-06 12:51:56.149  4021-4021  PermissionGateScreen    com.cdccreditsmart.app               I  ✅ TODAS AS PERMISSÕES JÁ CONCEDIDAS - navegando imediatamente
+2025-12-06 12:51:56.149  4021-4021  SettingsGuardService    com.cdccreditsmart.app               I  ▶️ Guard RETOMADO após fluxo de permissões
+2025-12-06 12:51:56.191  4021-4021  DeviceOwnerCheckVM      com.cdccreditsmart.app               I  ========================================
+2025-12-06 12:51:56.192  4021-4021  DeviceOwnerCheckVM      com.cdccreditsmart.app               I  🔐 Verificando status de Device Owner...
+2025-12-06 12:51:56.270  4021-4021  InsetsController        com.cdccreditsmart.app               I  Insets animation onAnimationStart mShow:false, mDurationMs:340, types:statusBars
+2025-12-06 12:51:56.369  4021-9922  SettingsGuardService    com.cdccreditsmart.app               D  🎯 Package perigoso detectado: com.google.android.permissioncontroller
+2025-12-06 12:51:56.369  4021-9922  SettingsGuardService    com.cdccreditsmart.app               W  🚨 ÁREA PERIGOSA DETECTADA!
+2025-12-06 12:51:56.369  4021-9922  SettingsGuardService    com.cdccreditsmart.app               W     Pacote: com.google.android.permissioncontroller
+2025-12-06 12:51:56.369  4021-9922  SettingsGuardService    com.cdccreditsmart.app               W     Atividade: com.android.permissioncontroller.permission.ui.GrantPermissionsActivity
+2025-12-06 12:51:56.369  4021-9922  SettingsGuardService    com.cdccreditsmart.app               W     Chamando app para foreground...
+2025-12-06 12:51:56.382  4021-4021  MainActivity            com.cdccreditsmart.app               W  ⚠️ Algumas permissões foram NEGADAS pelo usuário:
+2025-12-06 12:51:56.383  4021-4021  MainActivity            com.cdccreditsmart.app               D    ❌ NEGADA - android.permission.ACCESS_FINE_LOCATION
+2025-12-06 12:51:56.383  4021-4021  MainActivity            com.cdccreditsmart.app               D    ❌ NEGADA - android.permission.ACCESS_COARSE_LOCATION
+2025-12-06 12:51:56.383  4021-4021  MainActivity            com.cdccreditsmart.app               D    ❌ NEGADA - android.permission.ACCESS_BACKGROUND_LOCATION
+2025-12-06 12:51:56.384  4021-4021  ActivityThread          com.cdccreditsmart.app               D  handleResumeActivity#3 r.window=com.android.internal.policy.PhoneWindow@5a96f4ba.mFinished = falsewillBeVisible = true
+2025-12-06 12:51:56.427  4021-4021  SettingsGuardService    com.cdccreditsmart.app               D  🏠 Enviado para Home primeiro (fecha Settings)
+2025-12-06 12:51:56.492  4021-4021  InsetsController        com.cdccreditsmart.app               I  Insets animation onAnimationCancel
+2025-12-06 12:51:56.492  4021-4021  InsetsController        com.cdccreditsmart.app               I  Insets animation onAnimationEnd
+2025-12-06 12:51:56.603  4021-4021  SettingsGuardService    com.cdccreditsmart.app               I  ✅ App trazido para foreground
+2025-12-06 12:51:56.634  4021-4021  ActivityThread          com.cdccreditsmart.app               D  ++ activityComponent:com.cdccreditsmart.app/com.cdccreditsmart.app.presentation.MainActivity counts:2 ALEAK_CLEAR_SUPPORT:true
+2025-12-06 12:51:56.637  4021-10657 libMEOW                 com.cdccreditsmart.app               D  meow new tls: 0xb400007672c731e0
+2025-12-06 12:51:56.637  4021-10657 libMEOW                 com.cdccreditsmart.app               D  applied 1 plugins for [com.cdccreditsmart.app]:
+2025-12-06 12:51:56.637  4021-10657 libMEOW                 com.cdccreditsmart.app               D    plugin 1: [libMEOW_gift.so]: 0xb400007592aab840
+2025-12-06 12:51:56.637  4021-10657 libMEOW                 com.cdccreditsmart.app               D  rebuild call chain: 0xb400007672c93200
+2025-12-06 12:51:56.637  4021-10657 libMEOW                 com.cdccreditsmart.app               D  meow delete tls: 0xb400007672c731e0
+2025-12-06 12:51:56.660  4021-4021  MainActivity            com.cdccreditsmart.app               I  ========================================
+2025-12-06 12:51:56.660  4021-4021  MainActivity            com.cdccreditsmart.app               I  📱 SOLICITANDO PERMISSÕES (NÃO DEVICE OWNER)
+2025-12-06 12:51:56.660  4021-4021  MainActivity            com.cdccreditsmart.app               I  ========================================
+2025-12-06 12:51:56.660  4021-4021  MainActivity            com.cdccreditsmart.app               I  📋 Runtime permissions a solicitar: 3
+2025-12-06 12:51:56.660  4021-4021  MainActivity            com.cdccreditsmart.app               D    • android.permission.ACCESS_FINE_LOCATION
+2025-12-06 12:51:56.660  4021-4021  MainActivity            com.cdccreditsmart.app               D    • android.permission.ACCESS_COARSE_LOCATION
+2025-12-06 12:51:56.660  4021-4021  MainActivity            com.cdccreditsmart.app               D    • android.permission.ACCESS_BACKGROUND_LOCATION
+2025-12-06 12:51:56.660  4021-9922  PersistentStateManager  com.cdccreditsmart.app               D  Nenhum estado local encontrado
+2025-12-06 12:51:56.661  4021-9922  PersistentStateManager  com.cdccreditsmart.app               D  🆕 Sem estado local - device novo ou pós factory reset
+2025-12-06 12:51:56.662  4021-9922  MainActivity            com.cdccreditsmart.app               I  🆕 Device nunca foi provisionado
+2025-12-06 12:51:56.676  4021-4021  SpecialPermissionReq    com.cdccreditsmart.app               I  ========================================
+2025-12-06 12:51:56.676  4021-4021  SpecialPermissionReq    com.cdccreditsmart.app               I  📊 STATUS DAS PERMISSÕES ESPECIAIS
+2025-12-06 12:51:56.676  4021-4021  SpecialPermissionReq    com.cdccreditsmart.app               I  ========================================
+2025-12-06 12:51:56.677  4021-4021  SpecialPermissionReq    com.cdccreditsmart.app               I    USAGE_STATS: ✅ CONCEDIDA
+2025-12-06 12:51:56.677  4021-4021  SpecialPermissionReq    com.cdccreditsmart.app               I    OVERLAY: ✅ CONCEDIDA
+2025-12-06 12:51:56.678  4021-4021  SpecialPermissionReq    com.cdccreditsmart.app               I  
+2025-12-06 12:51:56.678  4021-4021  SpecialPermissionReq    com.cdccreditsmart.app               I  ✅ Todas as permissões especiais concedidas!
+2025-12-06 12:51:56.678  4021-4021  SpecialPermissionReq    com.cdccreditsmart.app               I     Proteção anti-desinstalação ativa.
+2025-12-06 12:51:56.678  4021-4021  SpecialPermissionReq    com.cdccreditsmart.app               I  ========================================
+2025-12-06 12:51:56.679  4021-4021  MainActivity            com.cdccreditsmart.app               I  ✅ Todas as permissões especiais já foram concedidas!
+2025-12-06 12:51:56.682  4021-4021  ActivityThread          com.cdccreditsmart.app               D  handleResumeActivity#3 r.window=nulla.mFinished = falsewillBeVisible = true
+2025-12-06 12:51:56.682  4021-4021  ActivityThread          com.cdccreditsmart.app               D  handleResumeActivity#4 addView a.mVisibleFromClient=truea.mWindowAdded=falsedecor=DecorView@9ccd307[]
+2025-12-06 12:51:56.682  4021-4021  ActivityThread          com.cdccreditsmart.app               D  handleResumeActivity#5 addView decor=DecorView@9ccd307[]
+2025-12-06 12:51:56.685  4021-4021  VRI[MainActivity]       com.cdccreditsmart.app               D  hardware acceleration = true, forceHwAccelerated = false
+2025-12-06 12:51:56.686  4021-4021  ViewRootImpl            com.cdccreditsmart.app               D  setView appearance:24 com.cdccreditsmart.app/com.cdccreditsmart.app.presentation.MainActivity
+2025-12-06 12:51:56.701  4021-4021  InputEventReceiver      com.cdccreditsmart.app               D  Input log is disabled in InputEventReceiver.
+2025-12-06 12:51:56.790  4021-4021  BufferQueueConsumer     com.cdccreditsmart.app               D  [](id:fb50000000e,api:0,p:-1,c:4021) connect: controlledByApp=false
+2025-12-06 12:51:56.791  4021-4021  BLASTBufferQueue        com.cdccreditsmart.app               D  [VRI[MainActivity]#14](f:0,a:0) constructor()
+2025-12-06 12:51:56.791  4021-4021  BLASTBufferQueue        com.cdccreditsmart.app               D  [VRI[MainActivity]#14](f:0,a:0) update width=1080 height=2436 format=-3 mTransformHint=0
+2025-12-06 12:51:56.806  4021-9893  BLASTBufferQueue        com.cdccreditsmart.app               D  [VRI[MainActivity]#14](f:0,a:1) acquireNextBufferLocked size=1080x2436 mFrameNumber=1 applyTransaction=true mTimestamp=111599855100190(auto) mPendingTransactions.size=0 graphicBufferId=17270063497302 transform=0
+2025-12-06 12:51:56.828  4021-4021  DeviceUtils             com.cdccreditsmart.app               D  Device Owner check: false
+2025-12-06 12:51:56.828  4021-4021  DeviceUtils             com.cdccreditsmart.app               D  Samsung device: false (Manufacturer: INFINIX)
+2025-12-06 12:51:56.828  4021-4021  DeviceOwnerCheckVM      com.cdccreditsmart.app               W  ⚠️ MODO DEBUG: Usuário já pulou provisionamento anteriormente
+2025-12-06 12:51:56.828  4021-4021  DeviceOwnerCheckVM      com.cdccreditsmart.app               W  ⚠️ Permitindo acesso sem Device Owner (decisão memorizada)
+2025-12-06 12:51:56.829  4021-4021  DeviceOwnerCheckVM      com.cdccreditsmart.app               I  ========================================
+2025-12-06 12:51:56.833  4021-4021  PermissionGateScreen    com.cdccreditsmart.app               I  🔍 VERIFICAÇÃO INICIAL DE PERMISSÕES:
+2025-12-06 12:51:56.833  4021-4021  PermissionGateScreen    com.cdccreditsmart.app               I     Nível: DEVICE_ADMIN
+2025-12-06 12:51:56.833  4021-4021  PermissionGateScreen    com.cdccreditsmart.app               I     Todas concedidas: true
+2025-12-06 12:51:56.834  4021-4021  PermissionGateScreen    com.cdccreditsmart.app               I     Bateria isenta: true
+2025-12-06 12:51:56.834  4021-4021  PermissionGateScreen    com.cdccreditsmart.app               I     ✅ OK: Administrador do Dispositivo
+2025-12-06 12:51:56.834  4021-4021  PermissionGateScreen    com.cdccreditsmart.app               I     ✅ OK: Permissões Básicas
+2025-12-06 12:51:56.834  4021-4021  PermissionGateScreen    com.cdccreditsmart.app               I     ✅ OK: Monitoramento de Apps
+2025-12-06 12:51:56.834  4021-4021  PermissionGateScreen    com.cdccreditsmart.app               I     ✅ OK: Mostrar Alertas
+2025-12-06 12:51:56.834  4021-4021  PermissionGateScreen    com.cdccreditsmart.app               I     ✅ OK: Execução em Segundo Plano
+2025-12-06 12:51:56.834  4021-4021  PermissionGateScreen    com.cdccreditsmart.app               I  ✅ TODAS AS PERMISSÕES JÁ CONCEDIDAS - navegando imediatamente
+2025-12-06 12:51:56.834  4021-4021  SettingsGuardService    com.cdccreditsmart.app               I  ▶️ Guard RETOMADO após fluxo de permissões
+2025-12-06 12:51:56.838  4021-9922  SettingsGuardService    com.cdccreditsmart.app               D  🎯 Package perigoso detectado: com.google.android.permissioncontroller
+2025-12-06 12:51:56.838  4021-9922  SettingsGuardService    com.cdccreditsmart.app               W  🚨 ÁREA PERIGOSA DETECTADA!
+2025-12-06 12:51:56.838  4021-9922  SettingsGuardService    com.cdccreditsmart.app               W     Pacote: com.google.android.permissioncontroller
+2025-12-06 12:51:56.838  4021-9922  SettingsGuardService    com.cdccreditsmart.app               W     Atividade: com.android.permissioncontroller.permission.ui.GrantPermissionsActivity
+2025-12-06 12:51:56.838  4021-9922  SettingsGuardService    com.cdccreditsmart.app               W     Chamando app para foreground...
+2025-12-06 12:51:57.126  4021-4021  InsetsController        com.cdccreditsmart.app               I  Insets animation onAnimationStart mShow:false, mDurationMs:340, types:statusBars
+2025-12-06 12:51:57.169  4021-4021  InsetsController        com.cdccreditsmart.app               I  Insets animation onAnimationCancel
+2025-12-06 12:51:57.169  4021-4021  InsetsController        com.cdccreditsmart.app               I  Insets animation onAnimationEnd
+2025-12-06 12:51:57.201  4021-4021  SettingsGuardService    com.cdccreditsmart.app               D  🏠 Enviado para Home primeiro (fecha Settings)
+2025-12-06 12:51:57.203  4021-4021  RouterViewModel         com.cdccreditsmart.app               D  🚀 Iniciando verificação de autenticação...
+2025-12-06 12:51:57.204  4021-9922  AuthOrchestrator        com.cdccreditsmart.app               D  🔐 Verificando autenticação...
+2025-12-06 12:51:57.205  4021-4021  Choreographer           com.cdccreditsmart.app               I  Skipped 43 frames!  The application may be doing too much work on its main thread.
+2025-12-06 12:51:57.224  4021-9922  AuthOrchestrator        com.cdccreditsmart.app               D  🌐 Conectividade: ONLINE
+2025-12-06 12:51:57.225  4021-9922  AuthOrchestrator        com.cdccreditsmart.app               D  🔄 ========== AUTO-DISCOVERY INICIADO ==========
+2025-12-06 12:51:57.225  4021-4021  DeviceOwnerCheckVM      com.cdccreditsmart.app               I  ========================================
+2025-12-06 12:51:57.225  4021-4021  DeviceOwnerCheckVM      com.cdccreditsmart.app               I  🔐 Verificando status de Device Owner...
+2025-12-06 12:51:57.235  4021-9922  DeviceUtils             com.cdccreditsmart.app               E  SecurityException reading IMEI - permission denied (Ask Gemini)
+                                                                                                    java.lang.SecurityException: getImeiForSlot: The uid 10301 does not meet the requirements to access device identifiers.
+                                                                                                    	at android.os.Parcel.createExceptionOrNull(Parcel.java:3252)
+                                                                                                    	at android.os.Parcel.createException(Parcel.java:3236)
+                                                                                                    	at android.os.Parcel.readException(Parcel.java:3219)
+                                                                                                    	at android.os.Parcel.readException(Parcel.java:3161)
+                                                                                                    	at com.android.internal.telephony.ITelephony$Stub$Proxy.getImeiForSlot(ITelephony.java:12102)
+                                                                                                    	at android.telephony.TelephonyManager.getImei(TelephonyManager.java:2356)
+                                                                                                    	at android.telephony.TelephonyManager.getImei(TelephonyManager.java:2307)
+                                                                                                    	at com.cdccreditsmart.app.utils.DeviceUtils.getDeviceImei(DeviceUtils.kt:106)
+                                                                                                    	at com.cdccreditsmart.app.auth.AuthenticationOrchestrator.attemptAutoConnection(AuthenticationOrchestrator.kt:96)
+                                                                                                    	at com.cdccreditsmart.app.auth.AuthenticationOrchestrator.access$attemptAutoConnection(AuthenticationOrchestrator.kt:28)
+                                                                                                    	at com.cdccreditsmart.app.auth.AuthenticationOrchestrator$ensureAuthenticated$2.invokeSuspend(AuthenticationOrchestrator.kt:228)
+                                                                                                    	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:34)
+                                                                                                    	at kotlinx.coroutines.DispatchedTask.run(DispatchedTask.kt:108)
+                                                                                                    	at kotlinx.coroutines.internal.LimitedDispatcher$Worker.run(LimitedDispatcher.kt:115)
+                                                                                                    	at kotlinx.coroutines.scheduling.TaskImpl.run(Tasks.kt:103)
+                                                                                                    	at kotlinx.coroutines.scheduling.CoroutineScheduler.runSafely(CoroutineScheduler.kt:584)
+                                                                                                    	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.executeTask(CoroutineScheduler.kt:793)
+                                                                                                    	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.runWorker(CoroutineScheduler.kt:697)
+                                                                                                    	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.run(CoroutineScheduler.kt:684)
+2025-12-06 12:51:57.235  4021-9922  AuthOrchestrator        com.cdccreditsmart.app               W  ⚠️ IMEI não disponível (permissão negada ou emulador)
+2025-12-06 12:51:57.235  4021-9922  AuthOrchestrator        com.cdccreditsmart.app               D     → Fallback para pareamento manual
+2025-12-06 12:51:57.235  4021-9922  ContractCodeStorage     com.cdccreditsmart.app               D  Retrieving contract code from storage
+2025-12-06 12:51:57.250  4021-4021  VRI[MainActivity]       com.cdccreditsmart.app               D  visibilityChanged oldVisibility=true newVisibility=false
+2025-12-06 12:51:57.252  4021-4021  MainActivity            com.cdccreditsmart.app               W  ⚠️ Algumas permissões foram NEGADAS pelo usuário:
+2025-12-06 12:51:57.252  4021-4021  MainActivity            com.cdccreditsmart.app               D    ❌ NEGADA - android.permission.ACCESS_FINE_LOCATION
+2025-12-06 12:51:57.252  4021-4021  MainActivity            com.cdccreditsmart.app               D    ❌ NEGADA - android.permission.ACCESS_COARSE_LOCATION
+2025-12-06 12:51:57.252  4021-4021  MainActivity            com.cdccreditsmart.app               D    ❌ NEGADA - android.permission.ACCESS_BACKGROUND_LOCATION
+2025-12-06 12:51:57.253  4021-4021  ActivityThread          com.cdccreditsmart.app               D  handleResumeActivity#3 r.window=com.android.internal.policy.PhoneWindow@b344589a.mFinished = falsewillBeVisible = true
+2025-12-06 12:51:57.267  4021-4021  ActivityThread          com.cdccreditsmart.app               D  mToDestroying.remove:ActivityRecord{fdf3c66 token=android.os.BinderProxy@e5e5ee {com.cdccreditsmart.app/com.cdccreditsmart.app.presentation.MainActivity}}
+2025-12-06 12:51:57.275  4021-4021  WindowOnBackDispatcher  com.cdccreditsmart.app               W  sendCancelIfRunning: isInProgress=false callback=android.app.Activity$$ExternalSyntheticLambda0@ae95014
+2025-12-06 12:51:57.277  4021-9893  BLASTBufferQueue        com.cdccreditsmart.app               D  [VRI[MainActivity]#13](f:0,a:1) destructor()
+2025-12-06 12:51:57.277  4021-9893  BufferQueueConsumer     com.cdccreditsmart.app               D  [VRI[MainActivity]#13(BLAST Consumer)13](id:fb50000000d,api:0,p:-1,c:4021) disconnect
+2025-12-06 12:51:57.279  4021-4021  View                    com.cdccreditsmart.app               D  [Warning] assignParent to null: this = DecorView@c706d81[MainActivity]
+2025-12-06 12:51:57.302  4021-4021  InsetsController        com.cdccreditsmart.app               I  Insets animation onAnimationStart mShow:false, mDurationMs:340, types:statusBars
+2025-12-06 12:51:57.316  4021-4021  InsetsController        com.cdccreditsmart.app               I  Insets animation onAnimationCancel
+2025-12-06 12:51:57.316  4021-4021  InsetsController        com.cdccreditsmart.app               I  Insets animation onAnimationEnd
+2025-12-06 12:51:57.465  4021-4021  SettingsGuardService    com.cdccreditsmart.app               I  ✅ App trazido para foreground
+2025-12-06 12:51:57.554  4021-10681 libMEOW                 com.cdccreditsmart.app               D  meow new tls: 0xb400007672c93200
+2025-12-06 12:51:57.554  4021-10681 libMEOW                 com.cdccreditsmart.app               D  applied 1 plugins for [com.cdccreditsmart.app]:
+2025-12-06 12:51:57.554  4021-10681 libMEOW                 com.cdccreditsmart.app               D    plugin 1: [libMEOW_gift.so]: 0xb400007592aab840
+2025-12-06 12:51:57.555  4021-10681 libMEOW                 com.cdccreditsmart.app               D  rebuild call chain: 0xb400007672c531c0
+2025-12-06 12:51:57.555  4021-10681 libMEOW                 com.cdccreditsmart.app               D  meow delete tls: 0xb400007672c93200
+2025-12-06 12:51:57.557  4021-4021  ActivityThread          com.cdccreditsmart.app               D  ++ activityComponent:com.cdccreditsmart.app/com.cdccreditsmart.app.presentation.MainActivity counts:2 ALEAK_CLEAR_SUPPORT:true
+2025-12-06 12:51:57.571  4021-4021  MainActivity            com.cdccreditsmart.app               I  ========================================
+2025-12-06 12:51:57.571  4021-4021  MainActivity            com.cdccreditsmart.app               I  📱 SOLICITANDO PERMISSÕES (NÃO DEVICE OWNER)
+2025-12-06 12:51:57.571  4021-4021  MainActivity            com.cdccreditsmart.app               I  ========================================
+2025-12-06 12:51:57.571  4021-4021  MainActivity            com.cdccreditsmart.app               I  📋 Runtime permissions a solicitar: 3
+2025-12-06 12:51:57.571  4021-4021  MainActivity            com.cdccreditsmart.app               D    • android.permission.ACCESS_FINE_LOCATION
+2025-12-06 12:51:57.571  4021-4021  MainActivity            com.cdccreditsmart.app               D    • android.permission.ACCESS_COARSE_LOCATION
+2025-12-06 12:51:57.571  4021-4021  MainActivity            com.cdccreditsmart.app               D    • android.permission.ACCESS_BACKGROUND_LOCATION
+2025-12-06 12:51:57.572  4021-9925  PersistentStateManager  com.cdccreditsmart.app               D  Nenhum estado local encontrado
+2025-12-06 12:51:57.572  4021-9925  PersistentStateManager  com.cdccreditsmart.app               D  🆕 Sem estado local - device novo ou pós factory reset
+2025-12-06 12:51:57.572  4021-9925  MainActivity            com.cdccreditsmart.app               I  🆕 Device nunca foi provisionado
+2025-12-06 12:51:57.603  4021-4021  SpecialPermissionReq    com.cdccreditsmart.app               I  ========================================
+2025-12-06 12:51:57.603  4021-4021  SpecialPermissionReq    com.cdccreditsmart.app               I  📊 STATUS DAS PERMISSÕES ESPECIAIS
+2025-12-06 12:51:57.603  4021-4021  SpecialPermissionReq    com.cdccreditsmart.app               I  ========================================
+2025-12-06 12:51:57.605  4021-4021  SpecialPermissionReq    com.cdccreditsmart.app               I    USAGE_STATS: ✅ CONCEDIDA
+2025-12-06 12:51:57.606  4021-4021  SpecialPermissionReq    com.cdccreditsmart.app               I    OVERLAY: ✅ CONCEDIDA
+2025-12-06 12:51:57.606  4021-4021  SpecialPermissionReq    com.cdccreditsmart.app               I  
+2025-12-06 12:51:57.606  4021-4021  SpecialPermissionReq    com.cdccreditsmart.app               I  ✅ Todas as permissões especiais concedidas!
+2025-12-06 12:51:57.606  4021-4021  SpecialPermissionReq    com.cdccreditsmart.app               I     Proteção anti-desinstalação ativa.
+2025-12-06 12:51:57.606  4021-4021  SpecialPermissionReq    com.cdccreditsmart.app               I  ========================================
+2025-12-06 12:51:57.607  4021-4021  MainActivity            com.cdccreditsmart.app               I  ✅ Todas as permissões especiais já foram concedidas!
+2025-12-06 12:51:57.612  4021-4021  ActivityThread          com.cdccreditsmart.app               D  handleResumeActivity#3 r.window=nulla.mFinished = falsewillBeVisible = true
+2025-12-06 12:51:57.612  4021-4021  ActivityThread          com.cdccreditsmart.app               D  handleResumeActivity#4 addView a.mVisibleFromClient=truea.mWindowAdded=falsedecor=DecorView@8d8379b[]
+2025-12-06 12:51:57.612  4021-4021  ActivityThread          com.cdccreditsmart.app               D  handleResumeActivity#5 addView decor=DecorView@8d8379b[]
+2025-12-06 12:51:57.616  4021-4021  VRI[MainActivity]       com.cdccreditsmart.app               D  hardware acceleration = true, forceHwAccelerated = false
+2025-12-06 12:51:57.617  4021-4021  ViewRootImpl            com.cdccreditsmart.app               D  setView appearance:24 com.cdccreditsmart.app/com.cdccreditsmart.app.presentation.MainActivity
+2025-12-06 12:51:57.638  4021-4021  InputEventReceiver      com.cdccreditsmart.app               D  Input log is disabled in InputEventReceiver.
+2025-12-06 12:51:57.729  4021-4021  BufferQueueConsumer     com.cdccreditsmart.app               D  [](id:fb50000000f,api:0,p:-1,c:4021) connect: controlledByApp=false
+2025-12-06 12:51:57.729  4021-4021  BLASTBufferQueue        com.cdccreditsmart.app               D  [VRI[MainActivity]#15](f:0,a:0) constructor()
+2025-12-06 12:51:57.729  4021-4021  BLASTBufferQueue        com.cdccreditsmart.app               D  [VRI[MainActivity]#15](f:0,a:0) update width=1080 height=2436 format=-3 mTransformHint=0
+2025-12-06 12:51:57.765  4021-9893  BLASTBufferQueue        com.cdccreditsmart.app               D  [VRI[MainActivity]#15](f:0,a:1) acquireNextBufferLocked size=1080x2436 mFrameNumber=1 applyTransaction=true mTimestamp=111600814570728(auto) mPendingTransactions.size=0 graphicBufferId=17270063497311 transform=0
+2025-12-06 12:51:57.797  4021-4021  PermissionGateScreen    com.cdccreditsmart.app               I  🔍 VERIFICAÇÃO INICIAL DE PERMISSÕES:
+2025-12-06 12:51:57.797  4021-4021  PermissionGateScreen    com.cdccreditsmart.app               I     Nível: DEVICE_ADMIN
+2025-12-06 12:51:57.797  4021-4021  PermissionGateScreen    com.cdccreditsmart.app               I     Todas concedidas: true
+2025-12-06 12:51:57.797  4021-4021  PermissionGateScreen    com.cdccreditsmart.app               I     Bateria isenta: true
+2025-12-06 12:51:57.797  4021-4021  PermissionGateScreen    com.cdccreditsmart.app               I     ✅ OK: Administrador do Dispositivo
+2025-12-06 12:51:57.797  4021-4021  PermissionGateScreen    com.cdccreditsmart.app               I     ✅ OK: Permissões Básicas
+2025-12-06 12:51:57.797  4021-4021  PermissionGateScreen    com.cdccreditsmart.app               I     ✅ OK: Monitoramento de Apps
+2025-12-06 12:51:57.797  4021-4021  PermissionGateScreen    com.cdccreditsmart.app               I     ✅ OK: Mostrar Alertas
+2025-12-06 12:51:57.797  4021-4021  PermissionGateScreen    com.cdccreditsmart.app               I     ✅ OK: Execução em Segundo Plano
+2025-12-06 12:51:57.797  4021-4021  PermissionGateScreen    com.cdccreditsmart.app               I  ✅ TODAS AS PERMISSÕES JÁ CONCEDIDAS - navegando imediatamente
+2025-12-06 12:51:57.797  4021-4021  SettingsGuardService    com.cdccreditsmart.app               I  ▶️ Guard RETOMADO após fluxo de permissões
+2025-12-06 12:51:57.802  4021-9853  creditsmart.app         com.cdccreditsmart.app               I  Background young concurrent mark compact GC freed 8177KB AllocSpace bytes, 204(7472KB) LOS objects, 45% free, 17MB/31MB, paused 2.080ms,7.236ms total 164.774ms
+2025-12-06 12:51:57.816  4021-4021  InsetsController        com.cdccreditsmart.app               I  Insets animation onAnimationStart mShow:false, mDurationMs:340, types:statusBars
+2025-12-06 12:51:57.850  4021-4021  VRI[MainActivity]       com.cdccreditsmart.app               D  visibilityChanged oldVisibility=true newVisibility=false
+2025-12-06 12:51:57.851  4021-4021  DeviceUtils             com.cdccreditsmart.app               D  Device Owner check: false
+2025-12-06 12:51:57.851  4021-4021  DeviceUtils             com.cdccreditsmart.app               D  Samsung device: false (Manufacturer: INFINIX)
+2025-12-06 12:51:57.851  4021-4021  DeviceOwnerCheckVM      com.cdccreditsmart.app               W  ⚠️ MODO DEBUG: Usuário já pulou provisionamento anteriormente
+2025-12-06 12:51:57.851  4021-4021  DeviceOwnerCheckVM      com.cdccreditsmart.app               W  ⚠️ Permitindo acesso sem Device Owner (decisão memorizada)
+2025-12-06 12:51:57.851  4021-4021  DeviceOwnerCheckVM      com.cdccreditsmart.app               I  ========================================
+2025-12-06 12:51:57.854  4021-4021  InsetsController        com.cdccreditsmart.app               I  Insets animation onAnimationCancel
+2025-12-06 12:51:57.854  4021-4021  InsetsController        com.cdccreditsmart.app               I  Insets animation onAnimationEnd
+2025-12-06 12:51:58.243  4021-9922  ContractCodeStorage     com.cdccreditsmart.app               D  Storage verification: 7 valid, 0 tampered, 0 missing
+2025-12-06 12:51:58.244  4021-9922  ContractCodeStorage     com.cdccreditsmart.app               D  Contract code retrieved successfully
+2025-12-06 12:51:58.244  4021-9922  AuthOrchestrator        com.cdccreditsmart.app               D  ✅ Código de pareamento encontrado: VY9D****
+2025-12-06 12:51:58.247  4021-9922  AuthOrchestrator        com.cdccreditsmart.app               D  🔑 Token existente encontrado - validando no servidor...
+2025-12-06 12:51:58.250  4021-9922  AuthOrchestrator        com.cdccreditsmart.app               E  Erro ao validar token no servidor
+                                                                                                    kotlinx.coroutines.JobCancellationException: Job was cancelled; job=SupervisorJobImpl{Cancelling}@fe01d25
+2025-12-06 12:51:58.250  4021-9922  AuthOrchestrator        com.cdccreditsmart.app               W  ⚠️ Token inválido/expirado - renovando autenticação...
+2025-12-06 12:51:58.250  4021-9922  AuthOrchestrator        com.cdccreditsmart.app               D  🔐 Autenticando silenciosamente com código salvo...
+2025-12-06 12:51:58.251  4021-10594 okhttp.OkHttpClient     com.cdccreditsmart.app               I  --> GET https://cdccreditsmart.com/api/apk/device/status
+2025-12-06 12:51:58.251  4021-10594 okhttp.OkHttpClient     com.cdccreditsmart.app               I  Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkZXZpY2VJZCI6ImRldmljZV8xNzY0ODkzMTMwNTQ5XzZzZTlpaHFyaG9rIiwiYXBrVG9rZW4iOiJWWTlEQjlFQyIsInR5cGUiOiJhcGsiLCJleHBpcmVzSW4iOiIyNGgiLCJpYXQiOjE3NjUwMjgxMTUsImV4cCI6MTc2NTExNDUxNX0.Zs1ApE_ghWMSOnPsS-3zjgPVCpgd2_neKm4JY71uQb4
+2025-12-06 12:51:58.251  4021-10594 okhttp.OkHttpClient     com.cdccreditsmart.app               I  --> END GET
+2025-12-06 12:51:58.252  4021-9922  AuthOrchestrator        com.cdccreditsmart.app               E  ❌ Exceção durante autenticação silenciosa
+                                                                                                    kotlinx.coroutines.JobCancellationException: Job was cancelled; job=SupervisorJobImpl{Cancelling}@fe01d25
+2025-12-06 12:51:58.252  4021-10594 okhttp.OkHttpClient     com.cdccreditsmart.app               I  <-- HTTP FAILED: java.io.IOException: Canceled
+2025-12-06 12:51:58.253  4021-10243 okhttp.OkHttpClient     com.cdccreditsmart.app               I  --> POST https://cdccreditsmart.com/api/apk/auth
+2025-12-06 12:51:58.253  4021-10243 okhttp.OkHttpClient     com.cdccreditsmart.app               I  Content-Type: application/json; charset=UTF-8
+2025-12-06 12:51:58.253  4021-10243 okhttp.OkHttpClient     com.cdccreditsmart.app               I  Content-Length: 19
+2025-12-06 12:51:58.254  4021-10243 okhttp.OkHttpClient     com.cdccreditsmart.app               I  {"code":"VY9DB9EC"}
+2025-12-06 12:51:58.254  4021-10243 okhttp.OkHttpClient     com.cdccreditsmart.app               I  --> END POST (19-byte body)
+2025-12-06 12:51:58.255  4021-10243 okhttp.OkHttpClient     com.cdccreditsmart.app               I  <-- HTTP FAILED: java.io.IOException: Canceled
+2025-12-06 12:51:58.282  4021-4021  DeviceOwnerCheckVM      com.cdccreditsmart.app               I  ========================================
+2025-12-06 12:51:58.282  4021-4021  DeviceOwnerCheckVM      com.cdccreditsmart.app               I  🔐 Verificando status de Device Owner...
+2025-12-06 12:51:58.297  4021-4021  BLASTBufferQueue        com.cdccreditsmart.app               D  [VRI[MainActivity]#14](f:0,a:1) destructor()
+2025-12-06 12:51:58.297  4021-4021  BufferQueueConsumer     com.cdccreditsmart.app               D  [VRI[MainActivity]#14(BLAST Consumer)14](id:fb50000000e,api:0,p:-1,c:4021) disconnect
+2025-12-06 12:51:58.308  4021-4021  RouterViewModel         com.cdccreditsmart.app               D  🚀 Iniciando verificação de autenticação...
+2025-12-06 12:51:58.308  4021-9925  AuthOrchestrator        com.cdccreditsmart.app               D  🔐 Verificando autenticação...
+2025-12-06 12:51:58.310  4021-9925  AuthOrchestrator        com.cdccreditsmart.app               D  🌐 Conectividade: ONLINE
+2025-12-06 12:51:58.311  4021-9925  AuthOrchestrator        com.cdccreditsmart.app               D  🔄 ========== AUTO-DISCOVERY INICIADO ==========
+2025-12-06 12:51:58.313  4021-4021  Choreographer           com.cdccreditsmart.app               I  Skipped 53 frames!  The application may be doing too much work on its main thread.
+2025-12-06 12:51:58.316  4021-9925  DeviceUtils             com.cdccreditsmart.app               E  SecurityException reading IMEI - permission denied (Ask Gemini)
+                                                                                                    java.lang.SecurityException: getImeiForSlot: The uid 10301 does not meet the requirements to access device identifiers.
+                                                                                                    	at android.os.Parcel.createExceptionOrNull(Parcel.java:3252)
+                                                                                                    	at android.os.Parcel.createException(Parcel.java:3236)
+                                                                                                    	at android.os.Parcel.readException(Parcel.java:3219)
+                                                                                                    	at android.os.Parcel.readException(Parcel.java:3161)
+                                                                                                    	at com.android.internal.telephony.ITelephony$Stub$Proxy.getImeiForSlot(ITelephony.java:12102)
+                                                                                                    	at android.telephony.TelephonyManager.getImei(TelephonyManager.java:2356)
+                                                                                                    	at android.telephony.TelephonyManager.getImei(TelephonyManager.java:2307)
+                                                                                                    	at com.cdccreditsmart.app.utils.DeviceUtils.getDeviceImei(DeviceUtils.kt:106)
+                                                                                                    	at com.cdccreditsmart.app.auth.AuthenticationOrchestrator.attemptAutoConnection(AuthenticationOrchestrator.kt:96)
+                                                                                                    	at com.cdccreditsmart.app.auth.AuthenticationOrchestrator.access$attemptAutoConnection(AuthenticationOrchestrator.kt:28)
+                                                                                                    	at com.cdccreditsmart.app.auth.AuthenticationOrchestrator$ensureAuthenticated$2.invokeSuspend(AuthenticationOrchestrator.kt:228)
+                                                                                                    	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:34)
+                                                                                                    	at kotlinx.coroutines.DispatchedTask.run(DispatchedTask.kt:108)
+                                                                                                    	at kotlinx.coroutines.internal.LimitedDispatcher$Worker.run(LimitedDispatcher.kt:115)
+                                                                                                    	at kotlinx.coroutines.scheduling.TaskImpl.run(Tasks.kt:103)
+                                                                                                    	at kotlinx.coroutines.scheduling.CoroutineScheduler.runSafely(CoroutineScheduler.kt:584)
+                                                                                                    	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.executeTask(CoroutineScheduler.kt:793)
+                                                                                                    	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.runWorker(CoroutineScheduler.kt:697)
+                                                                                                    	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.run(CoroutineScheduler.kt:684)
+2025-12-06 12:51:58.316  4021-9925  AuthOrchestrator        com.cdccreditsmart.app               W  ⚠️ IMEI não disponível (permissão negada ou emulador)
+2025-12-06 12:51:58.316  4021-9925  AuthOrchestrator        com.cdccreditsmart.app               D     → Fallback para pareamento manual
+2025-12-06 12:51:58.316  4021-9925  ContractCodeStorage     com.cdccreditsmart.app               D  Retrieving contract code from storage
+2025-12-06 12:51:58.332  4021-4021  MainActivity            com.cdccreditsmart.app               W  ⚠️ Algumas permissões foram NEGADAS pelo usuário:
+2025-12-06 12:51:58.332  4021-4021  MainActivity            com.cdccreditsmart.app               D    ❌ NEGADA - android.permission.ACCESS_FINE_LOCATION
+2025-12-06 12:51:58.332  4021-4021  MainActivity            com.cdccreditsmart.app               D    ❌ NEGADA - android.permission.ACCESS_COARSE_LOCATION
+2025-12-06 12:51:58.332  4021-4021  MainActivity            com.cdccreditsmart.app               D    ❌ NEGADA - android.permission.ACCESS_BACKGROUND_LOCATION
+2025-12-06 12:51:58.333  4021-4021  ActivityThread          com.cdccreditsmart.app               D  handleResumeActivity#3 r.window=com.android.internal.policy.PhoneWindow@62f8ce6a.mFinished = falsewillBeVisible = true
+2025-12-06 12:51:58.340  4021-4021  ActivityThread          com.cdccreditsmart.app               D  mToDestroying.remove:ActivityRecord{18952be token=android.os.BinderProxy@58233d4 {com.cdccreditsmart.app/com.cdccreditsmart.app.presentation.MainActivity}}
+2025-12-06 12:51:58.346  4021-4021  WindowOnBackDispatcher  com.cdccreditsmart.app               W  sendCancelIfRunning: isInProgress=false callback=android.app.Activity$$ExternalSyntheticLambda0@b29372a
+2025-12-06 12:51:58.347  4021-4021  View                    com.cdccreditsmart.app               D  [Warning] assignParent to null: this = DecorView@9ccd307[MainActivity]
+2025-12-06 12:51:58.350  4021-4021  RouterViewModel         com.cdccreditsmart.app               E  ❌ Erro inesperado ao verificar autenticação
+                                                                                                    kotlinx.coroutines.JobCancellationException: Job was cancelled; job=SupervisorJobImpl{Cancelling}@fe01d25
+2025-12-06 12:51:58.358  4021-4021  InsetsController        com.cdccreditsmart.app               I  Insets animation onAnimationStart mShow:false, mDurationMs:340, types:statusBars
+2025-12-06 12:51:58.711  4021-9925  ContractCodeStorage     com.cdccreditsmart.app               D  Storage verification: 7 valid, 0 tampered, 0 missing
+2025-12-06 12:51:58.711  4021-9925  ContractCodeStorage     com.cdccreditsmart.app               D  Contract code retrieved successfully
+2025-12-06 12:51:58.712  4021-9925  AuthOrchestrator        com.cdccreditsmart.app               D  ✅ Código de pareamento encontrado: VY9D****
+2025-12-06 12:51:58.714  4021-9925  AuthOrchestrator        com.cdccreditsmart.app               D  🔑 Token existente encontrado - validando no servidor...
+2025-12-06 12:51:58.719  4021-9925  AuthOrchestrator        com.cdccreditsmart.app               E  Erro ao validar token no servidor
+                                                                                                    kotlinx.coroutines.JobCancellationException: Job was cancelled; job=SupervisorJobImpl{Cancelling}@3642e9c
+2025-12-06 12:51:58.719  4021-9925  AuthOrchestrator        com.cdccreditsmart.app               W  ⚠️ Token inválido/expirado - renovando autenticação...
+2025-12-06 12:51:58.719  4021-9925  AuthOrchestrator        com.cdccreditsmart.app               D  🔐 Autenticando silenciosamente com código salvo...
+2025-12-06 12:51:58.720  4021-10243 okhttp.OkHttpClient     com.cdccreditsmart.app               I  --> GET https://cdccreditsmart.com/api/apk/device/status
+2025-12-06 12:51:58.720  4021-10243 okhttp.OkHttpClient     com.cdccreditsmart.app               I  Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkZXZpY2VJZCI6ImRldmljZV8xNzY0ODkzMTMwNTQ5XzZzZTlpaHFyaG9rIiwiYXBrVG9rZW4iOiJWWTlEQjlFQyIsInR5cGUiOiJhcGsiLCJleHBpcmVzSW4iOiIyNGgiLCJpYXQiOjE3NjUwMjgxMTUsImV4cCI6MTc2NTExNDUxNX0.Zs1ApE_ghWMSOnPsS-3zjgPVCpgd2_neKm4JY71uQb4
+2025-12-06 12:51:58.720  4021-10243 okhttp.OkHttpClient     com.cdccreditsmart.app               I  --> END GET
+2025-12-06 12:51:58.721  4021-10594 okhttp.OkHttpClient     com.cdccreditsmart.app               I  --> POST https://cdccreditsmart.com/api/apk/auth
+2025-12-06 12:51:58.721  4021-10594 okhttp.OkHttpClient     com.cdccreditsmart.app               I  Content-Type: application/json; charset=UTF-8
+2025-12-06 12:51:58.721  4021-10243 okhttp.OkHttpClient     com.cdccreditsmart.app               I  <-- HTTP FAILED: java.io.IOException: Canceled
+2025-12-06 12:51:58.721  4021-10594 okhttp.OkHttpClient     com.cdccreditsmart.app               I  Content-Length: 19
+2025-12-06 12:51:58.721  4021-9922  AuthOrchestrator        com.cdccreditsmart.app               E  ❌ Exceção durante autenticação silenciosa
+                                                                                                    kotlinx.coroutines.JobCancellationException: Job was cancelled; job=SupervisorJobImpl{Cancelling}@3642e9c
+2025-12-06 12:51:58.721  4021-10594 okhttp.OkHttpClient     com.cdccreditsmart.app               I  {"code":"VY9DB9EC"}
+2025-12-06 12:51:58.722  4021-10594 okhttp.OkHttpClient     com.cdccreditsmart.app               I  --> END POST (19-byte body)
+2025-12-06 12:51:58.722  4021-10594 okhttp.OkHttpClient     com.cdccreditsmart.app               I  <-- HTTP FAILED: java.io.IOException: Canceled
+2025-12-06 12:51:58.722  4021-4021  RouterViewModel         com.cdccreditsmart.app               E  ❌ Erro inesperado ao verificar autenticação
+                                                                                                    kotlinx.coroutines.JobCancellationException: Job was cancelled; job=SupervisorJobImpl{Cancelling}@3642e9c
+2025-12-06 12:51:58.725  4021-4021  InsetsController        com.cdccreditsmart.app               I  Insets animation onAnimationEnd
+2025-12-06 12:51:58.783  4021-4021  DeviceUtils             com.cdccreditsmart.app               D  Device Owner check: false
+2025-12-06 12:51:58.783  4021-4021  DeviceUtils             com.cdccreditsmart.app               D  Samsung device: false (Manufacturer: INFINIX)
+2025-12-06 12:51:58.783  4021-4021  DeviceOwnerCheckVM      com.cdccreditsmart.app               W  ⚠️ MODO DEBUG: Usuário já pulou provisionamento anteriormente
+2025-12-06 12:51:58.783  4021-4021  DeviceOwnerCheckVM      com.cdccreditsmart.app               W  ⚠️ Permitindo acesso sem Device Owner (decisão memorizada)
+2025-12-06 12:51:58.783  4021-4021  DeviceOwnerCheckVM      com.cdccreditsmart.app               I  ========================================
+2025-12-06 12:51:58.930  4021-4021  RouterViewModel         com.cdccreditsmart.app               D  🚀 Iniciando verificação de autenticação...
+2025-12-06 12:51:58.931  4021-9922  AuthOrchestrator        com.cdccreditsmart.app               D  🔐 Verificando autenticação...
+2025-12-06 12:51:58.932  4021-9922  AuthOrchestrator        com.cdccreditsmart.app               D  🌐 Conectividade: ONLINE
+2025-12-06 12:51:58.932  4021-9922  AuthOrchestrator        com.cdccreditsmart.app               D  🔄 ========== AUTO-DISCOVERY INICIADO ==========
+2025-12-06 12:51:58.937  4021-9922  DeviceUtils             com.cdccreditsmart.app               E  SecurityException reading IMEI - permission denied (Ask Gemini)
+                                                                                                    java.lang.SecurityException: getImeiForSlot: The uid 10301 does not meet the requirements to access device identifiers.
+                                                                                                    	at android.os.Parcel.createExceptionOrNull(Parcel.java:3252)
+                                                                                                    	at android.os.Parcel.createException(Parcel.java:3236)
+                                                                                                    	at android.os.Parcel.readException(Parcel.java:3219)
+                                                                                                    	at android.os.Parcel.readException(Parcel.java:3161)
+                                                                                                    	at com.android.internal.telephony.ITelephony$Stub$Proxy.getImeiForSlot(ITelephony.java:12102)
+                                                                                                    	at android.telephony.TelephonyManager.getImei(TelephonyManager.java:2356)
+                                                                                                    	at android.telephony.TelephonyManager.getImei(TelephonyManager.java:2307)
+                                                                                                    	at com.cdccreditsmart.app.utils.DeviceUtils.getDeviceImei(DeviceUtils.kt:106)
+                                                                                                    	at com.cdccreditsmart.app.auth.AuthenticationOrchestrator.attemptAutoConnection(AuthenticationOrchestrator.kt:96)
+                                                                                                    	at com.cdccreditsmart.app.auth.AuthenticationOrchestrator.access$attemptAutoConnection(AuthenticationOrchestrator.kt:28)
+                                                                                                    	at com.cdccreditsmart.app.auth.AuthenticationOrchestrator$ensureAuthenticated$2.invokeSuspend(AuthenticationOrchestrator.kt:228)
+                                                                                                    	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:34)
+                                                                                                    	at kotlinx.coroutines.DispatchedTask.run(DispatchedTask.kt:108)
+                                                                                                    	at kotlinx.coroutines.internal.LimitedDispatcher$Worker.run(LimitedDispatcher.kt:115)
+                                                                                                    	at kotlinx.coroutines.scheduling.TaskImpl.run(Tasks.kt:103)
+                                                                                                    	at kotlinx.coroutines.scheduling.CoroutineScheduler.runSafely(CoroutineScheduler.kt:584)
+                                                                                                    	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.executeTask(CoroutineScheduler.kt:793)
+                                                                                                    	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.runWorker(CoroutineScheduler.kt:697)
+                                                                                                    	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.run(CoroutineScheduler.kt:684)
+2025-12-06 12:51:58.937  4021-9922  AuthOrchestrator        com.cdccreditsmart.app               W  ⚠️ IMEI não disponível (permissão negada ou emulador)
+2025-12-06 12:51:58.937  4021-9922  AuthOrchestrator        com.cdccreditsmart.app               D     → Fallback para pareamento manual
+2025-12-06 12:51:58.937  4021-9922  ContractCodeStorage     com.cdccreditsmart.app               D  Retrieving contract code from storage
+2025-12-06 12:51:59.182  4021-4021  CdcForegroundService    com.cdccreditsmart.app               D  🚀 Serviço onStartCommand() - Action: com.cdccreditsmart.app.START_SERVICE
+2025-12-06 12:51:59.185  4021-4021  CdcForegroundService    com.cdccreditsmart.app               I  ✅ Foreground Service ativo (Android 12+)
+2025-12-06 12:51:59.185  4021-4021  CdcForegroundService    com.cdccreditsmart.app               D  ⏳ Serviços já inicializados - ignorando chamada duplicada
+2025-12-06 12:51:59.366  4021-9922  ContractCodeStorage     com.cdccreditsmart.app               D  Storage verification: 7 valid, 0 tampered, 0 missing
+2025-12-06 12:51:59.367  4021-9922  ContractCodeStorage     com.cdccreditsmart.app               D  Contract code retrieved successfully
+2025-12-06 12:51:59.367  4021-9922  AuthOrchestrator        com.cdccreditsmart.app               D  ✅ Código de pareamento encontrado: VY9D****
+2025-12-06 12:51:59.368  4021-9922  AuthOrchestrator        com.cdccreditsmart.app               D  🔑 Token existente encontrado - validando no servidor...
+2025-12-06 12:51:59.370  4021-10594 okhttp.OkHttpClient     com.cdccreditsmart.app               I  --> GET https://cdccreditsmart.com/api/apk/device/status
+2025-12-06 12:51:59.371  4021-10594 okhttp.OkHttpClient     com.cdccreditsmart.app               I  Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkZXZpY2VJZCI6ImRldmljZV8xNzY0ODkzMTMwNTQ5XzZzZTlpaHFyaG9rIiwiYXBrVG9rZW4iOiJWWTlEQjlFQyIsInR5cGUiOiJhcGsiLCJleHBpcmVzSW4iOiIyNGgiLCJpYXQiOjE3NjUwMjgxMTUsImV4cCI6MTc2NTExNDUxNX0.Zs1ApE_ghWMSOnPsS-3zjgPVCpgd2_neKm4JY71uQb4
+2025-12-06 12:51:59.371  4021-10594 okhttp.OkHttpClient     com.cdccreditsmart.app               I  --> END GET
+2025-12-06 12:52:00.668  4021-10594 okhttp.OkHttpClient     com.cdccreditsmart.app               I  <-- 200 https://cdccreditsmart.com/api/apk/device/status (1296ms)
+2025-12-06 12:52:00.669  4021-10594 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-credentials: true
+2025-12-06 12:52:00.669  4021-10594 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-headers: Origin, X-Requested-With, Content-Type, Accept, Authorization, x-client-key, x-client-token, x-client-secret, cache-control
+2025-12-06 12:52:00.671  4021-10594 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-methods: GET, POST, PUT, PATCH, DELETE, OPTIONS
+2025-12-06 12:52:00.671  4021-10594 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-origin: *
+2025-12-06 12:52:00.672  4021-10594 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-max-age: 86400
+2025-12-06 12:52:00.672  4021-10594 okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-length: 625
+2025-12-06 12:52:00.672  4021-10594 okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-security-policy: default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://replit.com; style-src 'self' 'unsafe-inline' https://replit.com; img-src 'self' data: https:; font-src 'self' data: https://replit.com; connect-src 'self';
+2025-12-06 12:52:00.672  4021-10594 okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-type: application/json; charset=utf-8
+2025-12-06 12:52:00.672  4021-10594 okhttp.OkHttpClient     com.cdccreditsmart.app               I  date: Sat, 06 Dec 2025 15:52:00 GMT
+2025-12-06 12:52:00.672  4021-10594 okhttp.OkHttpClient     com.cdccreditsmart.app               I  etag: W/"271-t7EgepjZy15D1ccOF9JLUcFmP4w"
+2025-12-06 12:52:00.673  4021-10594 okhttp.OkHttpClient     com.cdccreditsmart.app               I  permissions-policy: geolocation=(), microphone=(), camera=()
+2025-12-06 12:52:00.673  4021-10594 okhttp.OkHttpClient     com.cdccreditsmart.app               I  referrer-policy: strict-origin-when-cross-origin
+2025-12-06 12:52:00.673  4021-10594 okhttp.OkHttpClient     com.cdccreditsmart.app               I  server: Google Frontend
+2025-12-06 12:52:00.673  4021-10594 okhttp.OkHttpClient     com.cdccreditsmart.app               I  strict-transport-security: max-age=63072000; includeSubDomains
+2025-12-06 12:52:00.673  4021-10594 okhttp.OkHttpClient     com.cdccreditsmart.app               I  strict-transport-security: max-age=31536000; includeSubDomains
+2025-12-06 12:52:00.674  4021-10594 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-anti-fraud-protection: active
+2025-12-06 12:52:00.674  4021-10594 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-certificate-pinning-enabled: false
+2025-12-06 12:52:00.674  4021-10594 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-certificate-pinning-status: disabled-for-stability
+2025-12-06 12:52:00.674  4021-10594 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-cloud-trace-context: 320104d4f609994b9036f3b19467ad6b
+2025-12-06 12:52:00.674  4021-10594 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-content-type-options: nosniff
+2025-12-06 12:52:00.674  4021-10594 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-financial-data-protection: enabled
+2025-12-06 12:52:00.674  4021-10594 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-frame-options: DENY
+2025-12-06 12:52:00.675  4021-10594 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-transaction-security-level: maximum
+2025-12-06 12:52:00.675  4021-10594 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-xss-protection: 1; mode=block
+2025-12-06 12:52:00.675  4021-10594 okhttp.OkHttpClient     com.cdccreditsmart.app               I  via: 1.1 google
+2025-12-06 12:52:00.675  4021-10594 okhttp.OkHttpClient     com.cdccreditsmart.app               I  alt-svc: h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
+2025-12-06 12:52:00.676  4021-10594 okhttp.OkHttpClient     com.cdccreditsmart.app               I  {"device":{"id":"device_1764893130549_6se9ihqrhok","serialNumber":"VY9DB9EC","name":"Moto G15 Power","isBlocked":false,"blockReason":null,"status":"active"},"shouldBlock":false,"overdueCount":0,"daysSinceOverdue":0,"pdvSession":{"status":"completed","currentStage":"completed","isActive":false,"lastHeartbeat":"2025-12-05T00:05:44.194Z","heartbeatAge":143176.759,"sessionStarted":"2025-12-05T00:05:32.879Z","sessionCompleted":"2025-12-05T00:05:44.194Z","shouldWait":false},"paymentInfo":{"totalInstallments":24,"paidInstallments":1,"remainingInstallments":23,"overdueInstallments":0,"allPaid":false,"canSelfUninstall":false}}
+2025-12-06 12:52:00.676  4021-10594 okhttp.OkHttpClient     com.cdccreditsmart.app               I  <-- END HTTP (625-byte body)
+2025-12-06 12:52:00.679  4021-9922  ContractCodeStorage     com.cdccreditsmart.app               D  Retrieving contract code from storage
+2025-12-06 12:52:01.265  4021-9922  ContractCodeStorage     com.cdccreditsmart.app               D  Storage verification: 7 valid, 0 tampered, 0 missing
+2025-12-06 12:52:01.266  4021-9922  ContractCodeStorage     com.cdccreditsmart.app               D  Contract code retrieved successfully
+2025-12-06 12:52:01.277  4021-9922  ContractCodeStorage     com.cdccreditsmart.app               D  Saving contract code to redundant storage
+2025-12-06 12:52:01.443  4021-9853  creditsmart.app         com.cdccreditsmart.app               I  Background concurrent mark compact GC freed 7383KB AllocSpace bytes, 255(9324KB) LOS objects, 49% free, 15MB/31MB, paused 1.807ms,3.087ms total 105.608ms
+2025-12-06 12:52:01.455  4021-9922  ContractCodeStorage     com.cdccreditsmart.app               D  Saved to EncryptedPrefs
+2025-12-06 12:52:01.456  4021-9855  System                  com.cdccreditsmart.app               W  A resource failed to call release. 
+2025-12-06 12:52:01.608  4021-9922  ContractCodeStorage     com.cdccreditsmart.app               D  Deleted existing file: .cdc_protected_code.enc
+2025-12-06 12:52:01.696  4021-9922  ContractCodeStorage     com.cdccreditsmart.app               D  Successfully saved to file: .cdc_protected_code.enc
+2025-12-06 12:52:01.697  4021-9922  ContractCodeStorage     com.cdccreditsmart.app               D  Saved to Protected Storage
+2025-12-06 12:52:01.698  4021-9922  ContractCodeStorage     com.cdccreditsmart.app               D  Deleted existing file: .cdc_contract_b1.enc
+2025-12-06 12:52:01.775  4021-9922  ContractCodeStorage     com.cdccreditsmart.app               D  Successfully saved to file: .cdc_contract_b1.enc
+2025-12-06 12:52:01.776  4021-9922  ContractCodeStorage     com.cdccreditsmart.app               D  Deleted existing file: .sys_device_cfg.enc
+2025-12-06 12:52:01.869  4021-9922  ContractCodeStorage     com.cdccreditsmart.app               D  Successfully saved to file: .sys_device_cfg.enc
+2025-12-06 12:52:01.870  4021-9922  ContractCodeStorage     com.cdccreditsmart.app               D  Deleted existing file: .android_secure.enc
+2025-12-06 12:52:01.963  4021-9922  ContractCodeStorage     com.cdccreditsmart.app               D  Successfully saved to file: .android_secure.enc
+2025-12-06 12:52:02.033  4021-9922  ContractCodeStorage     com.cdccreditsmart.app               D  Contract code saved to ALL storage locations
+2025-12-06 12:52:02.496  4021-9922  ContractCodeStorage     com.cdccreditsmart.app               D  Verification complete: 7/7 locations valid
+2025-12-06 12:52:02.497  4021-9922  SecureTokenStorage      com.cdccreditsmart.app               D  Auth token saved successfully (contract code via ContractCodeStorage, deviceId: device_176...)
+2025-12-06 12:52:02.497  4021-9922  AuthOrchestrator        com.cdccreditsmart.app               D  💾 DeviceId salvo: device_176...
+2025-12-06 12:52:02.499  4021-9922  AuthOrchestrator        com.cdccreditsmart.app               D  Validação do token no servidor: SUCESSO
+2025-12-06 12:52:02.499  4021-9922  AuthOrchestrator        com.cdccreditsmart.app               D  ✅ Token válido - autenticação OK!
+2025-12-06 12:52:02.500  4021-9923  AuthOrchestrator        com.cdccreditsmart.app               D  🔔 Registrando FCM token após validação de authToken...
+2025-12-06 12:52:02.501  4021-9923  FcmTokenManager         com.cdccreditsmart.app               D  ========== REGISTERING FCM TOKEN WITH BACKEND ==========
+2025-12-06 12:52:02.503  4021-4021  RouterViewModel         com.cdccreditsmart.app               D  ✅ Autenticado com sucesso
+2025-12-06 12:52:02.507  4021-9923  FcmTokenManager         com.cdccreditsmart.app               D  Current FCM token retrieved: dAvz1R25RMO8E_jGWWoG...
+2025-12-06 12:52:02.516  4021-9923  FcmTokenManager         com.cdccreditsmart.app               D  Token already registered and cache is valid, skipping...
+2025-12-06 12:52:02.516  4021-9923  AuthOrchestrator        com.cdccreditsmart.app               D  ✅ FCM token registrado após validação
+2025-12-06 12:52:02.633  4021-4021  TermsAcceptanceStorage  com.cdccreditsmart.app               D  hasAcceptedTermsForContract(VY9DB9EC): true (saved: VY9DB9EC)
+2025-12-06 12:52:02.633  4021-4021  RouterViewModel         com.cdccreditsmart.app               D  ✅ Termos já aceitos - Ir para HOME
+2025-12-06 12:52:02.796  4021-4021  NetworkConnectivity     com.cdccreditsmart.app               D  ✅ Conectado via WiFi com internet
+2025-12-06 12:52:02.796  4021-4021  SimpleHomeViewModel     com.cdccreditsmart.app               D  📡 Fetching device installments from /api/apk/device/installments...
+2025-12-06 12:52:02.808  4021-10696 SimpleHomeViewModel     com.cdccreditsmart.app               D  ✅ Added Authorization header with token
+2025-12-06 12:52:02.809  4021-10696 SimpleHomeViewModel     com.cdccreditsmart.app               D  📤 Request URL: https://cdccreditsmart.com/api/apk/device/installments
+2025-12-06 12:52:03.424  4021-10696 SimpleHomeViewModel     com.cdccreditsmart.app               D  📥 Response Code: 200
+2025-12-06 12:52:03.438  4021-4021  SimpleHomeViewModel     com.cdccreditsmart.app               D  ✅ Successfully fetched installments data
+2025-12-06 12:52:03.438  4021-4021  SimpleHomeViewModel     com.cdccreditsmart.app               D  📊 Device: Moto G15 Power
+2025-12-06 12:52:03.438  4021-4021  SimpleHomeViewModel     com.cdccreditsmart.app               D  📊 Total installments: 24
+2025-12-06 12:52:03.438  4021-4021  SimpleHomeViewModel     com.cdccreditsmart.app               D  📊 Paid: 1
+2025-12-06 12:52:03.438  4021-4021  SimpleHomeViewModel     com.cdccreditsmart.app               D  📊 Overdue: 0
+2025-12-06 12:52:03.438  4021-4021  SimpleHomeViewModel     com.cdccreditsmart.app               D  📊 All installments count: 24
+2025-12-06 12:52:03.438  4021-4021  SimpleHomeViewModel     com.cdccreditsmart.app               I  💾 Salvando dados do cliente no storage - CustomerName: 'null', DeviceModel: 'Moto G15 Power'
+2025-12-06 12:52:03.438  4021-4021  SecureTokenStorage      com.cdccreditsmart.app               D  💾 Salvando customer info - Name: null, Device: Moto G15 Power
+2025-12-06 12:52:03.438  4021-4021  SecureTokenStorage      com.cdccreditsmart.app               W  ⚠️ CustomerName vazio/null - não salvando
+2025-12-06 12:52:03.440  4021-4021  SecureTokenStorage      com.cdccreditsmart.app               D  ✅ DeviceModel salvo: Moto G15 Power
+2025-12-06 12:52:03.440  4021-4021  SecureTokenStorage      com.cdccreditsmart.app               I  ✅ Customer info saved successfully!
+2025-12-06 12:52:03.441  4021-4021  ContractCodeStorage     com.cdccreditsmart.app               D  Retrieving contract code from storage
+2025-12-06 12:52:03.995  4021-4021  ContractCodeStorage     com.cdccreditsmart.app               D  Storage verification: 7 valid, 0 tampered, 0 missing
+2025-12-06 12:52:03.995  4021-4021  ContractCodeStorage     com.cdccreditsmart.app               D  Contract code retrieved successfully
+2025-12-06 12:52:04.139  4021-4021  LocalInstallmentStorage com.cdccreditsmart.app               I  ✅ 24 parcelas salvas localmente (contrato: VY9DB9EC)
+2025-12-06 12:52:04.140  4021-4021  SimpleHomeViewModel     com.cdccreditsmart.app               I  ✅ 24 parcelas salvas localmente
+2025-12-06 12:52:04.140  4021-4021  SimpleHomeViewModel     com.cdccreditsmart.app               I     → 0 em atraso
+2025-12-06 12:52:04.140  4021-4021  SimpleHomeViewModel     com.cdccreditsmart.app               I     → 1 pagas
+2025-12-06 12:52:04.140  4021-4021  SimpleHomeViewModel     com.cdccreditsmart.app               I     → Dados disponíveis para overlay e offline blocking
+2025-12-06 12:52:04.141  4021-4021  Choreographer           com.cdccreditsmart.app               I  Skipped 41 frames!  The application may be doing too much work on its main thread.
+2025-12-06 12:52:04.275  4021-4021  SecureTokenStorage      com.cdccreditsmart.app               D  📖 Lendo customerName: Marcos Antunes
+2025-12-06 12:52:04.277  4021-4021  SecureTokenStorage      com.cdccreditsmart.app               D  📖 Lendo deviceModel: Moto G15 Power
+2025-12-06 12:52:04.277  4021-4021  ContractCodeStorage     com.cdccreditsmart.app               D  Retrieving contract code from storage
+2025-12-06 12:52:04.874  4021-4021  ContractCodeStorage     com.cdccreditsmart.app               D  Storage verification: 7 valid, 0 tampered, 0 missing
+2025-12-06 12:52:04.874  4021-4021  ContractCodeStorage     com.cdccreditsmart.app               D  Contract code retrieved successfully
+2025-12-06 12:52:05.032  4021-4021  Choreographer           com.cdccreditsmart.app               I  Skipped 52 frames!  The application may be doing too much work on its main thread.
+2025-12-06 12:52:05.040  4021-10078 HWUI                    com.cdccreditsmart.app               I  Davey! duration=1589ms; Flags=0, FrameTimelineVsyncId=14629404, IntendedVsync=111606499706569, Vsync=111607184577580, InputEventId=0, HandleInputStart=111607191159267, AnimationStart=111607191162113, PerformTraversalsStart=111607205795882, DrawStart=111607205868805, FrameDeadline=111606553322317, FrameInterval=111607190304882, FrameStartTime=16704171, SyncQueued=111608077697498, SyncStart=111608077756882, IssueDrawCommandsStart=111608077910344, SwapBuffers=111608081635652, FrameCompleted=111608088895344, DequeueBufferDuration=21000, QueueBufferDuration=325615, GpuCompleted=111608088895344, SwapBuffersCompleted=111608083206036, DisplayPresentTime=111604292390344, CommandSubmissionCompleted=111608081635652, 
