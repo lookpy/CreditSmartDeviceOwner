@@ -293,6 +293,9 @@ class SettingsGuardService(private val context: Context) {
             // Xiaomi/MIUI/Redmi/POCO
             "com.miui.settings",
             "com.miui.securitycenter",
+            "com.miui.securitycore",
+            "com.miui.permcenter",          // Central de permissões - PERIGOSO!
+            "com.miui.repairmode",          // Modo de reparo - EXTREMAMENTE PERIGOSO!
             "com.xiaomi.misettings",
             // Samsung
             "com.samsung.android.settings",
@@ -698,7 +701,34 @@ class SettingsGuardService(private val context: Context) {
                     "AppHideActivity",
                     "HiddenAppsActivity",
                     "SecureKeyboardActivity",
+                    
+                    // MIUI - "Modo de reparo" (Repair Mode) - EXTREMAMENTE PERIGOSO!
+                    // Cria espaço isolado que pode fazer bypass do Device Owner
                     "RepairModeActivity",
+                    "RepairModeEnterActivity",
+                    "MiuiRepairModeActivity",
+                    "RepairModeConfirmActivity",
+                    "RepairModeMainActivity",
+                    "EnterRepairModeActivity",
+                    "RepairModeSettingsActivity",
+                    
+                    // MIUI - "Permissões e privacidade" - Tela principal de permissões
+                    // Contém "Permissões especiais" que permite revogar Device Admin
+                    "PrivacyAndPermissionActivity",
+                    "PermissionAndPrivacyActivity",
+                    "PrivacyPermissionActivity",
+                    "SpecialPermissionEnterActivity",
+                    "SpecialPermissionActivity",
+                    "SpecialPermissionsActivity",
+                    "AppPermissionsTabActivity",
+                    "PermissionsTabActivity",
+                    "PrivatePermissionActivity",
+                    "PrivacySettingsMainActivity",
+                    "MiuiPrivacySettingsActivity",
+                    "MiuiPermissionActivity",
+                    "PermissionManagerMainActivity",
+                    "SpecialAccessListActivity",
+                    "SpecialAppAccessActivity",
                     
                     // Huawei/Honor
                     "SecurityCenterActivity",
@@ -865,6 +895,11 @@ class SettingsGuardService(private val context: Context) {
                     "AppPermission",
                     "ManagePermission",
                     "SpecialAccess",
+                    "SpecialPermission",        // MIUI: "Permissões especiais"
+                    "PrivacyPermission",        // MIUI: "Permissões e privacidade"
+                    "PrivacyAndPermission",     // Variante
+                    "PermissionAndPrivacy",     // Variante
+                    "PermissionsTab",           // Tab de permissões
                     "UsageAccess",
                     "OverlayPermission",
                     "DrawOverlay",
@@ -939,6 +974,8 @@ class SettingsGuardService(private val context: Context) {
                     // Xiaomi/MIUI
                     "com.miui.securitycenter",
                     "com.miui.securitycore",
+                    "com.miui.repairmode",      // Modo de reparo - EXTREMAMENTE PERIGOSO!
+                    "com.miui.permcenter",      // Central de permissões
                     // Samsung
                     "com.samsung.android.sm.devicesecurity",
                     "com.samsung.android.lool",
@@ -982,6 +1019,8 @@ class SettingsGuardService(private val context: Context) {
                     // Xiaomi/MIUI Security Center - SubSettings aqui é SEMPRE perigoso
                     "com.miui.securitycenter",
                     "com.miui.securitycore",
+                    "com.miui.repairmode",      // Modo de reparo - EXTREMAMENTE PERIGOSO!
+                    "com.miui.permcenter",      // Central de permissões
                     // Samsung Security
                     "com.samsung.android.sm.devicesecurity",
                     // Huawei System Manager
@@ -1182,6 +1221,7 @@ class SettingsGuardService(private val context: Context) {
             "com.miui.securitycore",
             "com.miui.permcenter",
             "com.miui.powerkeeper",
+            "com.miui.repairmode",      // Modo de reparo - EXTREMAMENTE PERIGOSO!
             // Huawei/Honor
             "com.huawei.systemmanager",
             "com.huawei.permissionmanager",
@@ -1238,7 +1278,8 @@ class SettingsGuardService(private val context: Context) {
             "devicemanagement",
             "systemmanager",
             "powerkeeper",
-            "guardian"
+            "guardian",
+            "repairmode"    // Modo de reparo Xiaomi - EXTREMAMENTE PERIGOSO!
         )
         
         return dangerousPackages.contains(packageName) ||
@@ -1332,6 +1373,7 @@ class SettingsGuardService(private val context: Context) {
             "com.miui.securitycenter",
             "com.miui.securitycore",
             "com.miui.permcenter",
+            "com.miui.repairmode",          // Modo de reparo - EXTREMAMENTE PERIGOSO!
             "com.miui.guardprovider",
             "com.miui.home",
             "com.xiaomi.market",
