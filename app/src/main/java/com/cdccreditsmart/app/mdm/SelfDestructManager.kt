@@ -90,13 +90,22 @@ class SelfDestructManager(private val context: Context) {
                 Log.w(TAG, "⚠️ Erro ao pausar SettingsGuard (continuando): ${e.message}")
             }
             
-            Log.i(TAG, "🔐 [1/7] Validando código de confirmação...")
-            if (!validateConfirmationCode(params.getCode())) {
-                Log.e(TAG, "❌ Código de confirmação inválido - abortando auto-destruição")
+            Log.i(TAG, "🔐 [1/9] Verificando autorização...")
+            if (params.isAdminAuthorized()) {
+                Log.i(TAG, "✅ [1/9] Desinstalação autorizada pelo admin (validada no servidor)")
+            } else if (params.getCode().isNotEmpty()) {
+                Log.i(TAG, "🔑 [1/9] Validando código de confirmação...")
+                if (!validateConfirmationCode(params.getCode())) {
+                    Log.e(TAG, "❌ Código de confirmação inválido - abortando auto-destruição")
+                    resumeGuardSafely(guardWasPaused)
+                    return SelfDestructResult.Error("Invalid confirmation code")
+                }
+                Log.i(TAG, "✅ [1/9] Código de confirmação validado com sucesso")
+            } else {
+                Log.e(TAG, "❌ Nenhuma autorização válida - código ausente e não é admin")
                 resumeGuardSafely(guardWasPaused)
-                return SelfDestructResult.Error("Invalid confirmation code")
+                return SelfDestructResult.Error("No valid authorization provided")
             }
-            Log.i(TAG, "✅ [1/9] Código de confirmação validado com sucesso")
             
             Log.i(TAG, "📝 [2/9] Registrando início da auto-destruição...")
             logSelfDestructStart(params.reason)

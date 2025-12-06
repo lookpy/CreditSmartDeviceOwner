@@ -185,6 +185,7 @@ class MdmCommandReceiver(private val context: Context) {
                             is CommandParameters.UninstallAppParameters -> {
                                 Log.i(TAG, "🚨 UNINSTALL_APP - Motivo: ${params.reason}")
                                 Log.i(TAG, "🚨 UNINSTALL_APP - Wipe data: ${params.shouldWipeData()}")
+                                Log.i(TAG, "🚨 UNINSTALL_APP - Admin authorized: ${params.isAdminAuthorized()}")
                                 Log.i(TAG, "🚨 UNINSTALL_APP - Confirmation code: ${if (params.getCode().isNotEmpty()) "presente (${params.getCode().take(4)}...)" else "ausente"}")
                             }
                             is CommandParameters.ConfigureUninstallCodeParameters -> {

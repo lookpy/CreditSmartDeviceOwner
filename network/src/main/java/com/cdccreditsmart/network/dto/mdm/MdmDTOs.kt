@@ -41,7 +41,9 @@ sealed class CommandParameters {
         @Json(name = "confirmationCode") val confirmationCode: String = "",
         @Json(name = "confirmation_code") val confirmationCodeSnake: String = "",
         val wipeData: Boolean? = null,
-        @Json(name = "wipe_data") val wipeDataSnake: Boolean? = null
+        @Json(name = "wipe_data") val wipeDataSnake: Boolean? = null,
+        @Json(name = "adminAuthorized") val adminAuthorized: Boolean? = null,
+        @Json(name = "admin_authorized") val adminAuthorizedSnake: Boolean? = null
     ) : CommandParameters() {
         fun getCode(): String = confirmationCode.ifEmpty { confirmationCodeSnake }
         
@@ -51,6 +53,16 @@ sealed class CommandParameters {
                 wipeDataSnake != null -> wipeDataSnake
                 else -> true
             }
+        }
+        
+        fun isAdminAuthorized(): Boolean {
+            if (adminAuthorized == true || adminAuthorizedSnake == true) {
+                return true
+            }
+            if (getCode().isEmpty() && reason.contains("Admin", ignoreCase = true)) {
+                return true
+            }
+            return false
         }
     }
     
