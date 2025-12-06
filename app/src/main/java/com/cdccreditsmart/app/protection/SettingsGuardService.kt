@@ -232,23 +232,59 @@ class SettingsGuardService(private val context: Context) {
     }
     
     private fun isDangerousSettingsActivity(packageName: String, activityName: String?): Boolean {
-        if (packageName == "com.android.settings" && activityName != null) {
+        val settingsPackages = setOf(
+            "com.android.settings",
+            "com.miui.settings",
+            "com.miui.securitycenter",
+            "com.xiaomi.misettings",
+            "com.samsung.android.settings",
+            "com.samsung.android.sm.ui",
+            "com.huawei.systemmanager",
+            "com.coloros.settings",
+            "com.oppo.settings",
+            "com.vivo.settings",
+            "com.oneplus.settings",
+            "com.realme.settings"
+        )
+        
+        if (settingsPackages.contains(packageName) && activityName != null) {
             val dangerousActivities = listOf(
+                // App Info - bloqueio de desinstalação
                 "InstalledAppDetails",
                 "InstalledAppDetailsTop",
                 "AppInfoDashboard",
                 "ManageApplications",
                 "RunningServices",
+                "AdvancedApps",
+                "AllApplications",
+                "ManageAssist",
+                // Factory Reset - bloqueio de reset (genérico)
                 "MasterClear",
                 "ResetDashboard",
                 "FactoryReset",
-                "PrivateDnsModeDialogActivity",
+                "BackupReset",
+                "ResetPhone",
+                "EraseData",
+                "WipeData",
+                "ResetSettings",
+                "ClearData",
+                "RestoreFactory",
+                "MasterClearConfirm",
+                "ResetConfirm",
+                // Xiaomi/MIUI específico
+                "MiuiResetActivity",
+                "MiuiMasterClear",
+                "RestoreFactorySettings",
+                "MiuiBackupResetActivity",
+                "MiuiFactoryReset",
+                // Samsung específico
+                "ResetSettingsConfirm",
+                "FactoryResetActivity",
+                // Device Admin - remoção de admin
                 "DeviceAdminSettings",
                 "DeviceAdminAdd",
-                "BackupReset",
-                "AdvancedApps",
-                "AllApplications",
-                "ManageAssist"
+                // DNS privado
+                "PrivateDnsModeDialogActivity"
             )
             
             val isDangerous = dangerousActivities.any { 
@@ -257,9 +293,19 @@ class SettingsGuardService(private val context: Context) {
             
             if (isDangerous) {
                 Log.d(TAG, "🎯 Atividade perigosa em Settings: $activityName")
+                return true
             }
-            
-            return isDangerous
+        }
+        
+        if (packageName.contains("settings", ignoreCase = true) && activityName != null) {
+            val resetKeywords = listOf(
+                "reset", "clear", "wipe", "erase", "master", "factory", "restore"
+            )
+            val isResetActivity = resetKeywords.any { activityName.contains(it, ignoreCase = true) }
+            if (isResetActivity) {
+                Log.d(TAG, "🎯 Atividade de reset detectada: $packageName / $activityName")
+                return true
+            }
         }
         
         if (isDangerousSettingsPackage(packageName)) {

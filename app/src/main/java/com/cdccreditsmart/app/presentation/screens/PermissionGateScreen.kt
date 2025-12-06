@@ -45,9 +45,33 @@ fun PermissionGateScreen(
     val activity = context as? Activity
     val gateManager = remember { PermissionGateManager(context) }
     
-    var gateStatus by remember { mutableStateOf(gateManager.getGateStatus()) }
+    val initialStatus = remember { gateManager.getGateStatus() }
+    var gateStatus by remember { mutableStateOf(initialStatus) }
     var isLoading by remember { mutableStateOf(false) }
     var runtimePermissionAskedOnce by remember { mutableStateOf(false) }
+    
+    LaunchedEffect(Unit) {
+        Log.i(TAG, "🔍 VERIFICAÇÃO INICIAL DE PERMISSÕES:")
+        Log.i(TAG, "   Nível: ${initialStatus.privilegeLevel}")
+        Log.i(TAG, "   Todas concedidas: ${initialStatus.allRequiredPermissionsGranted}")
+        Log.i(TAG, "   Bateria isenta: ${gateManager.hasBatteryOptimizationExemption()}")
+        initialStatus.missingPermissions.forEach {
+            Log.w(TAG, "   ❌ FALTA: ${it.displayName}")
+        }
+        initialStatus.grantedPermissions.forEach {
+            Log.i(TAG, "   ✅ OK: ${it.displayName}")
+        }
+    }
+    
+    if (initialStatus.allRequiredPermissionsGranted) {
+        LaunchedEffect(Unit) {
+            Log.i(TAG, "✅ TODAS AS PERMISSÕES JÁ CONCEDIDAS - navegando imediatamente")
+            SettingsGuardService.resumeAfterPermissionGrant()
+            onAllPermissionsGranted()
+        }
+        LoadingScreen()
+        return
+    }
     
     LaunchedEffect(Unit) {
         Log.i(TAG, "========================================")
