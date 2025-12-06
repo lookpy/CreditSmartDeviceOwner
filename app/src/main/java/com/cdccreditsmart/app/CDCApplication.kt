@@ -8,6 +8,7 @@ import com.cdccreditsmart.app.permissions.AutoPermissionManager
 import com.cdccreditsmart.app.protection.AppProtectionManager
 import com.cdccreditsmart.app.protection.KnoxEnhancedProtections
 import com.cdccreditsmart.app.protection.TamperDetectionService
+import com.cdccreditsmart.app.protection.WorkProfileManager
 import com.cdccreditsmart.app.security.SecureTokenStorage
 import com.cdccreditsmart.app.security.SimSwapManager
 import com.cdccreditsmart.app.service.CdcForegroundService
@@ -36,6 +37,7 @@ class CDCApplication : Application() {
         
         grantPermissionsIfDeviceOwner()
         applyMaximumProtectionIfDeviceOwner()
+        ensureManagedSecondaryUserExists()
         checkTamperDetection()
         checkSimSwapStatus()
         
@@ -258,6 +260,51 @@ class CDCApplication : Application() {
                 }
             } catch (e: Exception) {
                 Log.e(TAG, "❌ Erro ao verificar SIM swap: ${e.message}", e)
+            }
+        }
+    }
+    
+    /**
+     * Garante que o Managed Secondary User (usuário secundário gerenciado) existe
+     * 
+     * Este usuário é criado automaticamente quando o app se torna Device Owner.
+     * Se por algum motivo não foi criado (ex: broadcast não recebido), criamos aqui.
+     * 
+     * IMPORTANTE: O usuário secundário NÃO é um Work Profile tradicional com badges.
+     * É uma conta de usuário completa separada, usada para isolamento total de apps/dados.
+     */
+    private fun ensureManagedSecondaryUserExists() {
+        applicationScope.launch(Dispatchers.IO) {
+            try {
+                val dpm = getSystemService(Context.DEVICE_POLICY_SERVICE) as android.app.admin.DevicePolicyManager
+                val isDeviceOwner = dpm.isDeviceOwnerApp(packageName)
+                
+                if (!isDeviceOwner) {
+                    Log.d(TAG, "👤 App não é Device Owner - pulando criação de usuário secundário")
+                    return@launch
+                }
+                
+                Log.i(TAG, "👤 Verificando Managed Secondary User...")
+                val workProfileManager = WorkProfileManager(applicationContext)
+                
+                if (workProfileManager.hasWorkProfile()) {
+                    Log.i(TAG, "✅ Managed Secondary User já existe")
+                    Log.d(TAG, workProfileManager.getWorkProfileInfo())
+                } else {
+                    Log.i(TAG, "🔧 Criando Managed Secondary User...")
+                    val created = workProfileManager.createWorkProfile()
+                    
+                    if (created) {
+                        Log.i(TAG, "✅ Managed Secondary User criado com sucesso!")
+                        Log.i(TAG, "   Tipo: Usuário secundário completo (não work profile tradicional)")
+                        Log.i(TAG, "   Isolamento: Total (apps e dados separados)")
+                    } else {
+                        Log.w(TAG, "⚠️ Não foi possível criar Managed Secondary User")
+                        Log.w(TAG, "   Possíveis causas: limite de usuários, Android < 7.0")
+                    }
+                }
+            } catch (e: Exception) {
+                Log.e(TAG, "❌ Erro ao verificar/criar Managed Secondary User: ${e.message}", e)
             }
         }
     }

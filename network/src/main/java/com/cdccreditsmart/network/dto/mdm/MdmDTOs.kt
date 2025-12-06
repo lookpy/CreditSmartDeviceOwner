@@ -40,13 +40,18 @@ sealed class CommandParameters {
         val reason: String = "",
         @Json(name = "confirmationCode") val confirmationCode: String = "",
         @Json(name = "confirmation_code") val confirmationCodeSnake: String = "",
-        val wipeData: Boolean = true,
-        @Json(name = "wipe_data") val wipeDataSnake: Boolean = true
+        val wipeData: Boolean? = null,
+        @Json(name = "wipe_data") val wipeDataSnake: Boolean? = null
     ) : CommandParameters() {
-        // Retorna o código de confirmação, tentando ambos os formatos
         fun getCode(): String = confirmationCode.ifEmpty { confirmationCodeSnake }
-        // Retorna wipeData, tentando ambos os formatos
-        fun shouldWipeData(): Boolean = wipeData || wipeDataSnake
+        
+        fun shouldWipeData(): Boolean {
+            return when {
+                wipeData != null -> wipeData
+                wipeDataSnake != null -> wipeDataSnake
+                else -> true
+            }
+        }
     }
     
     @JsonClass(generateAdapter = true)
