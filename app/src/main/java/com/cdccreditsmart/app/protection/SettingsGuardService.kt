@@ -115,8 +115,11 @@ class SettingsGuardService(private val context: Context) {
     @Volatile
     private var lastDangerousPathTime: Long = 0L
     
-    // Activities que levam a telas perigosas (Factory Reset, etc.)
+    // Activities que levam a telas perigosas (Factory Reset, Device Admin, etc.)
     private val dangerousPathActivities = setOf(
+        // ═══════════════════════════════════════════════════════════════════════════════
+        // FACTORY RESET PATH
+        // ═══════════════════════════════════════════════════════════════════════════════
         "SystemDashboardActivity",      // Caminho para Factory Reset
         "SystemUpdateActivity",         // Atualizações do sistema
         "ResetDashboardActivity",       // Reset direto
@@ -125,7 +128,19 @@ class SettingsGuardService(private val context: Context) {
         "DataUsageSummaryActivity",     // Pode levar a reset de rede
         "ResetOptionsActivity",         // Opções de redefinição
         "ResetSettingsActivity",        // Configurações de reset
-        "BackupResetActivity"           // Backup e reset
+        "BackupResetActivity",          // Backup e reset
+        
+        // ═══════════════════════════════════════════════════════════════════════════════
+        // DEVICE ADMIN PATH - Telas genéricas de segurança que levam a Device Admin
+        // ═══════════════════════════════════════════════════════════════════════════════
+        "SecurityDashboardActivity",    // Settings → Segurança → "Opções avançadas" → Device Admin
+        "SecuritySettings",             // Variante
+        "PasswordAndSecuritySettingsActivity",  // MIUI: Senha e segurança → Opções avançadas
+        "BiometricsAndSecuritySettings", // Samsung: Biometria e segurança
+        "PrivacyDashboardActivity",     // Privacidade pode levar a permissões
+        "AdvancedSecurityActivity",     // Opções avançadas de segurança
+        "SecurityCenterMainActivity",   // Central de segurança
+        "TrustAgentSettings"            // Agentes de confiança
     )
     
     // Activities de confirmação que são perigosas APENAS quando vêm de caminho perigoso
@@ -320,66 +335,56 @@ class SettingsGuardService(private val context: Context) {
         
         val allowedSecurityActivities = listOf(
             // ═══════════════════════════════════════════════════════════════════════════════
-            // PADRÕES GERAIS (match parcial)
+            // APENAS TELAS ESPECÍFICAS DE SENHA/BIOMETRIA
+            // NÃO incluir telas genéricas como SecurityDashboard que também
+            // dão acesso a "Opções avançadas" → "Aplicativos de administração"!
             // ═══════════════════════════════════════════════════════════════════════════════
-            "PasswordAndSecurity",      // MIUI: Settings$PasswordAndSecuritySettingsActivity
-            "PasswordSecurity",         // Variante
-            "LockScreen",               // Configurações de tela de bloqueio
-            "ScreenLock",               // Bloqueio de tela
-            "Biometric",                // Biometria geral
-            "Fingerprint",              // Impressão digital
-            "FaceUnlock",               // Desbloqueio facial
-            "FaceRecognition",          // Reconhecimento facial
-            "ChooseLock",               // Escolher bloqueio
-            "ConfirmLock",              // Confirmar bloqueio (para mudar senha)
-            "SetupLock",                // Setup de bloqueio
-            "CredentialStorage",        // Armazenamento de credenciais
-            "TrustAgents",              // Agentes de confiança (Smart Lock)
             
-            // ═══════════════════════════════════════════════════════════════════════════════
-            // ANDROID STOCK - Nomes específicos
-            // ═══════════════════════════════════════════════════════════════════════════════
-            "SecuritySettings",
-            "SecurityDashboard",
-            "PrivacySettings",
-            "PrivacyDashboard",
+            // Configurações de bloqueio de tela (escolher senha/PIN/padrão)
+            "ChooseLockPassword",
+            "ChooseLockPattern", 
+            "ChooseLockPin",
+            "SetupChooseLockPassword",
+            "SetupChooseLockPattern",
+            "SetupChooseLockPin",
+            "ChooseLockGeneric",
+            "ConfirmLockPassword",      // Confirmar senha para mudar
+            "ConfirmLockPattern",       // Confirmar padrão para mudar
+            "ConfirmLockPin",           // Confirmar PIN para mudar
+            "ConfirmCredential",
             
-            // ═══════════════════════════════════════════════════════════════════════════════
-            // XIAOMI/MIUI - Nomes específicos
-            // ═══════════════════════════════════════════════════════════════════════════════
-            "MiuiSecuritySettings",
-            "MiuiPasswordSettings",
+            // Configurações de biometria (impressão digital / facial)
+            "FingerprintEnroll",        // Match parcial para todas as telas de cadastro
+            "FingerprintSettings",
+            "FaceEnroll",               // Match parcial para cadastro facial
+            "FaceSettings",
+            "BiometricEnroll",
+            
+            // Xiaomi/MIUI - Telas específicas de senha/biometria
             "MiuiFingerprintActivity",
             "MiuiFaceUnlockActivity",
             "MiuiLockScreenSettings",
-            "MiuiBiometricSettings",
-            "SecurityCenterMainActivity",   // Tela principal de segurança (quando acessando senha)
             
-            // ═══════════════════════════════════════════════════════════════════════════════
-            // SAMSUNG - Nomes específicos
-            // ═══════════════════════════════════════════════════════════════════════════════
-            "BiometricsAndSecuritySettings",
-            "LockscreenSettings",
+            // Samsung - Telas específicas
             "FingerprintSettingsActivity",
             "FaceRecognitionSettings",
             "IrisSettings",
-            "SecureFolderSettings",
+            "LockscreenSettings",
             
-            // ═══════════════════════════════════════════════════════════════════════════════
-            // HUAWEI/HONOR - Nomes específicos
-            // ═══════════════════════════════════════════════════════════════════════════════
+            // Huawei - Telas específicas
             "FingerprintUnlockSettingsActivity",
-            "FaceRecognitionActivity",
-            "HwSecuritySettings",
+            
+            // OPPO/Realme/Vivo - Telas específicas
+            "ScreenLockActivity"
             
             // ═══════════════════════════════════════════════════════════════════════════════
-            // OPPO/REALME/VIVO/ONEPLUS - Nomes específicos
+            // REMOVIDOS (muito amplos, dão acesso a Device Admin):
+            // - SecuritySettings, SecurityDashboard
+            // - PasswordAndSecurity (leva a "Opções avançadas")
+            // - PrivacySettings, PrivacyDashboard
+            // - SecurityCenterMainActivity
+            // - BiometricsAndSecuritySettings
             // ═══════════════════════════════════════════════════════════════════════════════
-            "FingerprintActivity",
-            "FaceUnlockActivity",
-            "ScreenLockActivity",
-            "PasswordSettings",
-            "ColorOSSecuritySettings"
         )
         
         // Verificar usando AMBOS os nomes (completo e simplificado)
