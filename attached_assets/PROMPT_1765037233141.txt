@@ -1,0 +1,344 @@
+
+2025-12-06 13:06:30.588  9955-12526 PowerHalMgrImpl         com.cdccreditsmart.app               I  hdl:69039, pid:9955 
+2025-12-06 13:06:31.098  9955-9955  TextSelection           com.cdccreditsmart.app               D  onUseCache cache=false
+2025-12-06 13:06:31.200  9955-12526 PowerHalMgrImpl         com.cdccreditsmart.app               I  hdl:69047, pid:9955 
+2025-12-06 13:06:31.214  9955-12526 PowerHalMgrImpl         com.cdccreditsmart.app               I  hdl:69047, pid:9955 
+2025-12-06 13:06:31.271  9955-12526 ScrollPolicy            com.cdccreditsmart.app               I  BOOST_SCENE_4; duration: 0
+2025-12-06 13:06:31.276  9955-12526 PowerHalMgrImpl         com.cdccreditsmart.app               I  hdl:69053, pid:9955 
+2025-12-06 13:06:31.789  9955-9955  VRI[MainActivity]       com.cdccreditsmart.app               D  visibilityChanged oldVisibility=true newVisibility=false
+2025-12-06 13:06:31.821  9955-9955  BLASTBufferQueue        com.cdccreditsmart.app               D  [VRI[MainActivity]#1](f:0,a:1) destructor()
+2025-12-06 13:06:31.825  9955-9955  BufferQueueConsumer     com.cdccreditsmart.app               D  [VRI[MainActivity]#1(BLAST Consumer)1](id:26e300000001,api:0,p:-1,c:9955) disconnect
+2025-12-06 13:06:33.295  9955-12280 FA                      com.cdccreditsmart.app               I  Application backgrounded at: timestamp_millis: 1765037191294
+2025-12-06 13:06:33.684  9955-12373 WebSocketManager        com.cdccreditsmart.app               E  WebSocket failure: Software caused connection abort (Ask Gemini)
+                                                                                                    java.net.SocketException: Software caused connection abort
+                                                                                                    	at java.net.SocketInputStream.socketRead0(Native Method)
+                                                                                                    	at java.net.SocketInputStream.socketRead(SocketInputStream.java:118)
+                                                                                                    	at java.net.SocketInputStream.read(SocketInputStream.java:173)
+                                                                                                    	at java.net.SocketInputStream.read(SocketInputStream.java:143)
+                                                                                                    	at com.android.org.conscrypt.ConscryptEngineSocket$SSLInputStream.readFromSocket(ConscryptEngineSocket.java:994)
+                                                                                                    	at com.android.org.conscrypt.ConscryptEngineSocket$SSLInputStream.processDataFromSocket(ConscryptEngineSocket.java:958)
+                                                                                                    	at com.android.org.conscrypt.ConscryptEngineSocket$SSLInputStream.readUntilDataAvailable(ConscryptEngineSocket.java:873)
+                                                                                                    	at com.android.org.conscrypt.ConscryptEngineSocket$SSLInputStream.read(ConscryptEngineSocket.java:846)
+                                                                                                    	at okio.InputStreamSource.read(JvmOkio.kt:93)
+                                                                                                    	at okio.AsyncTimeout$source$1.read(AsyncTimeout.kt:153)
+                                                                                                    	at okio.RealBufferedSource.request(RealBufferedSource.kt:209)
+                                                                                                    	at okio.RealBufferedSource.require(RealBufferedSource.kt:202)
+                                                                                                    	at okio.RealBufferedSource.readByte(RealBufferedSource.kt:212)
+                                                                                                    	at okhttp3.internal.ws.WebSocketReader.readHeader(WebSocketReader.kt:119)
+                                                                                                    	at okhttp3.internal.ws.WebSocketReader.processNextFrame(WebSocketReader.kt:102)
+                                                                                                    	at okhttp3.internal.ws.RealWebSocket.loopReader(RealWebSocket.kt:293)
+                                                                                                    	at okhttp3.internal.ws.RealWebSocket$connect$1.onResponse(RealWebSocket.kt:195)
+                                                                                                    	at okhttp3.internal.connection.RealCall$AsyncCall.run(RealCall.kt:519)
+                                                                                                    	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1156)
+                                                                                                    	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:651)
+                                                                                                    	at java.lang.Thread.run(Thread.java:1119)
+2025-12-06 13:06:33.685  9955-12373 CdcForegroundService    com.cdccreditsmart.app               E  ❌ Erro no WebSocket Flow: Connection failed: Software caused connection abort
+2025-12-06 13:06:33.685  9955-12373 WebSocketManager        com.cdccreditsmart.app               D  Scheduling reconnection in 5000ms
+2025-12-06 13:06:33.686  9955-12372 MdmCommandReceiver      com.cdccreditsmart.app               E  ❌ WebSocket MDM FALHOU!
+2025-12-06 13:06:33.687  9955-12372 MdmCommandReceiver      com.cdccreditsmart.app               W  ⚠️ Erro WebSocket: Software caused connection abort...
+2025-12-06 13:06:33.689  9955-12372 MdmCommandReceiver      com.cdccreditsmart.app               D  ⏳ Polling já está ativo - ignorando chamada duplicada
+2025-12-06 13:06:35.562  9955-9955  MainActivity            com.cdccreditsmart.app               D  ========== NEW INTENT RECEIVED ==========
+2025-12-06 13:06:35.563  9955-9955  ActivityThread          com.cdccreditsmart.app               D  handleResumeActivity#3 r.window=com.android.internal.policy.PhoneWindow@2c533eea.mFinished = falsewillBeVisible = true
+2025-12-06 13:06:35.584  9955-9955  BufferQueueConsumer     com.cdccreditsmart.app               D  [](id:26e300000002,api:0,p:-1,c:9955) connect: controlledByApp=false
+2025-12-06 13:06:35.584  9955-9955  BLASTBufferQueue        com.cdccreditsmart.app               D  [VRI[MainActivity]#2](f:0,a:0) constructor()
+2025-12-06 13:06:35.584  9955-9955  BLASTBufferQueue        com.cdccreditsmart.app               D  [VRI[MainActivity]#2](f:0,a:0) update width=1080 height=2436 format=-3 mTransformHint=0
+2025-12-06 13:06:35.587  9955-9955  InsetsController        com.cdccreditsmart.app               I  Insets animation onAnimationStart mShow:false, mDurationMs:340, types:statusBars
+2025-12-06 13:06:35.640  9955-12332 BLASTBufferQueue        com.cdccreditsmart.app               D  [VRI[MainActivity]#2](f:0,a:1) acquireNextBufferLocked size=1080x2436 mFrameNumber=1 applyTransaction=true mTimestamp=112478689057165(auto) mPendingTransactions.size=0 graphicBufferId=42756399431697 transform=0
+2025-12-06 13:06:35.986  9955-9955  InsetsController        com.cdccreditsmart.app               I  Insets animation onAnimationEnd
+2025-12-06 13:06:36.461  9955-9955  TextSelection           com.cdccreditsmart.app               D  onUseCache cache=false
+2025-12-06 13:06:36.515  9955-12526 ScrollPolicy            com.cdccreditsmart.app               I  BOOST_KSWAPD; duration: 3000
+2025-12-06 13:06:36.517  9955-12526 PowerHalMgrImpl         com.cdccreditsmart.app               I  hdl:69112, pid:9955 
+2025-12-06 13:06:36.523  9955-12526 PowerHalMgrImpl         com.cdccreditsmart.app               I  hdl:69115, pid:9955 
+2025-12-06 13:06:36.578  9955-9955  ScrollIdentify          com.cdccreditsmart.app               I  on fling
+2025-12-06 13:06:36.580  9955-12526 PowerHalMgrImpl         com.cdccreditsmart.app               I  hdl:69117, pid:9955 
+2025-12-06 13:06:37.360  9955-9955  TextSelection           com.cdccreditsmart.app               D  onUseCache cache=false
+2025-12-06 13:06:37.979  9955-9955  Choreographer           com.cdccreditsmart.app               I  Skipped 72 frames!  The application may be doing too much work on its main thread.
+2025-12-06 13:06:37.981  9955-12411 HWUI                    com.cdccreditsmart.app               I  Davey! duration=1019ms; Flags=0, FrameTimelineVsyncId=14682675, IntendedVsync=112480004090946, Vsync=112480404976602, InputEventId=1120769550, HandleInputStart=112480417159396, AnimationStart=112480417160857, PerformTraversalsStart=112480952141550, DrawStart=112480952196319, FrameDeadline=112480441680171, FrameInterval=112480416909857, FrameStartTime=16703569, SyncQueued=112481014923319, SyncStart=112481015011934, IssueDrawCommandsStart=112481015280011, SwapBuffers=112481019658781, FrameCompleted=112481023938088, DequeueBufferDuration=20307, QueueBufferDuration=292000, GpuCompleted=112481023938088, SwapBuffersCompleted=112481020687011, DisplayPresentTime=112472752015703, CommandSubmissionCompleted=112481019658781, 
+2025-12-06 13:06:38.170  9955-9955  VRI[MainActivity]       com.cdccreditsmart.app               D  visibilityChanged oldVisibility=true newVisibility=false
+2025-12-06 13:06:38.208  9955-12332 BLASTBufferQueue        com.cdccreditsmart.app               D  [VRI[MainActivity]#2](f:0,a:1) destructor()
+2025-12-06 13:06:38.208  9955-12332 BufferQueueConsumer     com.cdccreditsmart.app               D  [VRI[MainActivity]#2(BLAST Consumer)2](id:26e300000002,api:0,p:-1,c:9955) disconnect
+2025-12-06 13:06:38.214  9955-9955  ActivityThread          com.cdccreditsmart.app               D  mToDestroying.remove:ActivityRecord{1199e8d token=android.os.BinderProxy@842ccec {com.cdccreditsmart.app/com.cdccreditsmart.app.presentation.MainActivity}}
+2025-12-06 13:06:38.281  9955-9955  WindowOnBackDispatcher  com.cdccreditsmart.app               W  sendCancelIfRunning: isInProgress=false callback=android.app.Activity$$ExternalSyntheticLambda0@8ad0a0c
+2025-12-06 13:06:38.288  9955-9955  View                    com.cdccreditsmart.app               D  [Warning] assignParent to null: this = DecorView@3fbcfc8[MainActivity]
+2025-12-06 13:06:38.294  9955-9955  CdcForegroundService    com.cdccreditsmart.app               W  ⚠️ Task removida - mantendo serviço ativo
+2025-12-06 13:06:38.688  9955-9955  WebSocketManager        com.cdccreditsmart.app               D  Connecting to WebSocket: wss://cdccreditsmart.com/ws/flow-status
+2025-12-06 13:06:38.690  9955-12364 MdmCommandReceiver      com.cdccreditsmart.app               I  🔄 Tentando reconectar WebSocket MDM...
+2025-12-06 13:06:38.693  9955-12364 SecureTokenStorage      com.cdccreditsmart.app               D  ⚠️ Usando Serial Number para MDM (IMEI indisponível): VY9DB9...
+2025-12-06 13:06:38.693  9955-12364 MdmCommandReceiver      com.cdccreditsmart.app               I  🔗 ========================================
+2025-12-06 13:06:38.693  9955-12364 MdmCommandReceiver      com.cdccreditsmart.app               I  🔗 INICIANDO CONEXÃO WEBSOCKET MDM
+2025-12-06 13:06:38.693  9955-12364 MdmCommandReceiver      com.cdccreditsmart.app               I  🔗 ========================================
+2025-12-06 13:06:38.693  9955-12364 MdmCommandReceiver      com.cdccreditsmart.app               I  🔗 URL base: wss://cdccreditsmart.com/ws
+2025-12-06 13:06:38.693  9955-12364 MdmCommandReceiver      com.cdccreditsmart.app               I  🔗 JWT Token presente: true
+2025-12-06 13:06:38.693  9955-12364 MdmCommandReceiver      com.cdccreditsmart.app               I  🔗 JWT Token length: 260
+2025-12-06 13:06:38.693  9955-12364 MdmCommandReceiver      com.cdccreditsmart.app               I  🔗 JWT Token preview: eyJhbGciOiJIUzI1NiIsInR5cCI6Ik...
+2025-12-06 13:06:38.695  9955-12364 MdmCommandReceiver      com.cdccreditsmart.app               I  🔗 Device identifier: VY9DB9EC
+2025-12-06 13:06:38.695  9955-12373 WebSocketManager        com.cdccreditsmart.app               E  WebSocket failure: Unable to resolve host "cdccreditsmart.com": No address associated with hostname
+2025-12-06 13:06:38.697  9955-12373 NetworkConnectivity     com.cdccreditsmart.app               W  ❌ Sem rede ativa
+2025-12-06 13:06:38.697  9955-12373 WebSocketManager        com.cdccreditsmart.app               E  ❌ CAUSA: SEM CONEXÃO COM A INTERNET
+2025-12-06 13:06:38.697  9955-12373 WebSocketManager        com.cdccreditsmart.app               E  📶 Sem conexão com a internet.
+                                                                                                    
+                                                                                                    Por favor, conecte-se ao WiFi ou ative seus dados móveis (5G/4G).
+2025-12-06 13:06:38.697  9955-12373 CdcForegroundService    com.cdccreditsmart.app               E  ❌ Erro no WebSocket Flow: Sem conexão com a internet.
+                                                                                                    
+                                                                                                    Por favor, conecte-se ao WiFi ou ative seus dados móveis (5G/4G).
+2025-12-06 13:06:38.697  9955-12373 WebSocketManager        com.cdccreditsmart.app               D  Scheduling reconnection in 5000ms
+2025-12-06 13:06:38.698  9955-12364 MdmCommandReceiver      com.cdccreditsmart.app               D  🔗 Criando WebSocket OkHttp...
+2025-12-06 13:06:38.698  9955-12364 MdmCommandReceiver      com.cdccreditsmart.app               I  🔄 Iniciando polling IMEDIATAMENTE (não esperar WebSocket)
+2025-12-06 13:06:38.698  9955-12364 MdmCommandReceiver      com.cdccreditsmart.app               D  ⏳ Polling já está ativo - ignorando chamada duplicada
+2025-12-06 13:06:38.700  9955-12364 MdmCommandReceiver      com.cdccreditsmart.app               D  🔗 WebSocket request enviado - aguardando resposta...
+2025-12-06 13:06:38.703  9955-12372 MdmCommandReceiver      com.cdccreditsmart.app               E  ❌ WebSocket MDM FALHOU!
+2025-12-06 13:06:38.703  9955-12364 MdmCommandReceiver      com.cdccreditsmart.app               D  ⏰ Watchdog cancelado (conexão resolvida)
+2025-12-06 13:06:38.704  9955-12372 NetworkConnectivity     com.cdccreditsmart.app               W  ❌ Sem rede ativa
+2025-12-06 13:06:38.704  9955-12372 MdmCommandReceiver      com.cdccreditsmart.app               W  ⏸️ Sem internet - WebSocket será reconectado quando a internet voltar
+2025-12-06 13:06:38.704  9955-12372 MdmCommandReceiver      com.cdccreditsmart.app               D  ⏳ Polling já está ativo - ignorando chamada duplicada
+2025-12-06 13:06:39.534  9955-12526 ScrollPolicy            com.cdccreditsmart.app               I  BOOST_KSWAPD; duration: 3000
+2025-12-06 13:06:39.583  9955-12526 ScrollPolicy            com.cdccreditsmart.app               I  BOOST_KSWAPD; duration: 0
+2025-12-06 13:06:39.584  9955-12526 PowerHalMgrImpl         com.cdccreditsmart.app               I  hdl:69144, pid:9955 
+2025-12-06 13:06:39.851  9955-12255 creditsmart.app         com.cdccreditsmart.app               W  Cleared Reference was only reachable from finalizer (only reported once)
+2025-12-06 13:06:39.997  9955-12280 FA                      com.cdccreditsmart.app               I  Application backgrounded at: timestamp_millis: 1765037197993
+2025-12-06 13:06:41.109  9955-12677 libMEOW                 com.cdccreditsmart.app               D  meow new tls: 0xb400007672ca3210
+2025-12-06 13:06:41.109  9955-12677 libMEOW                 com.cdccreditsmart.app               D  applied 1 plugins for [com.cdccreditsmart.app]:
+2025-12-06 13:06:41.109  9955-12677 libMEOW                 com.cdccreditsmart.app               D    plugin 1: [libMEOW_gift.so]: 0xb400007592aab840
+2025-12-06 13:06:41.109  9955-12677 libMEOW                 com.cdccreditsmart.app               D  rebuild call chain: 0xb400007672cc3230
+2025-12-06 13:06:41.109  9955-12677 libMEOW                 com.cdccreditsmart.app               D  meow delete tls: 0xb400007672ca3210
+2025-12-06 13:06:41.114  9955-9955  ActivityThread          com.cdccreditsmart.app               D  ++ activityComponent:com.cdccreditsmart.app/com.cdccreditsmart.app.presentation.MainActivity counts:1 ALEAK_CLEAR_SUPPORT:true
+2025-12-06 13:06:41.132  9955-9955  MainActivity            com.cdccreditsmart.app               I  ========================================
+2025-12-06 13:06:41.132  9955-9955  MainActivity            com.cdccreditsmart.app               I  📱 SOLICITANDO PERMISSÕES (NÃO DEVICE OWNER)
+2025-12-06 13:06:41.132  9955-9955  MainActivity            com.cdccreditsmart.app               I  ========================================
+2025-12-06 13:06:41.133  9955-12364 PersistentStateManager  com.cdccreditsmart.app               D  Nenhum estado local encontrado
+2025-12-06 13:06:41.133  9955-12364 PersistentStateManager  com.cdccreditsmart.app               D  🆕 Sem estado local - device novo ou pós factory reset
+2025-12-06 13:06:41.133  9955-12364 MainActivity            com.cdccreditsmart.app               I  🆕 Device nunca foi provisionado
+2025-12-06 13:06:41.137  9955-9955  MainActivity            com.cdccreditsmart.app               I  📋 Runtime permissions a solicitar: 3
+2025-12-06 13:06:41.137  9955-9955  MainActivity            com.cdccreditsmart.app               D    • android.permission.ACCESS_FINE_LOCATION
+2025-12-06 13:06:41.137  9955-9955  MainActivity            com.cdccreditsmart.app               D    • android.permission.ACCESS_COARSE_LOCATION
+2025-12-06 13:06:41.137  9955-9955  MainActivity            com.cdccreditsmart.app               D    • android.permission.ACCESS_BACKGROUND_LOCATION
+2025-12-06 13:06:41.137  9955-9955  SettingsGuardService    com.cdccreditsmart.app               I  ⏸️ Guard PAUSADO para fluxo de permissões
+2025-12-06 13:06:41.149  9955-9955  SpecialPermissionReq    com.cdccreditsmart.app               I  ========================================
+2025-12-06 13:06:41.149  9955-9955  SpecialPermissionReq    com.cdccreditsmart.app               I  📊 STATUS DAS PERMISSÕES ESPECIAIS
+2025-12-06 13:06:41.149  9955-9955  SpecialPermissionReq    com.cdccreditsmart.app               I  ========================================
+2025-12-06 13:06:41.149  9955-9955  SpecialPermissionReq    com.cdccreditsmart.app               I    USAGE_STATS: ✅ CONCEDIDA
+2025-12-06 13:06:41.150  9955-9955  SpecialPermissionReq    com.cdccreditsmart.app               I    OVERLAY: ✅ CONCEDIDA
+2025-12-06 13:06:41.150  9955-9955  SpecialPermissionReq    com.cdccreditsmart.app               I  
+2025-12-06 13:06:41.150  9955-9955  SpecialPermissionReq    com.cdccreditsmart.app               I  ✅ Todas as permissões especiais concedidas!
+2025-12-06 13:06:41.150  9955-9955  SpecialPermissionReq    com.cdccreditsmart.app               I     Proteção anti-desinstalação ativa.
+2025-12-06 13:06:41.150  9955-9955  SpecialPermissionReq    com.cdccreditsmart.app               I  ========================================
+2025-12-06 13:06:41.151  9955-9955  MainActivity            com.cdccreditsmart.app               I  ✅ Todas as permissões especiais já foram concedidas!
+2025-12-06 13:06:41.156  9955-9955  ActivityThread          com.cdccreditsmart.app               D  handleResumeActivity#3 r.window=nulla.mFinished = falsewillBeVisible = true
+2025-12-06 13:06:41.156  9955-9955  ActivityThread          com.cdccreditsmart.app               D  handleResumeActivity#4 addView a.mVisibleFromClient=truea.mWindowAdded=falsedecor=DecorView@6476c38[]
+2025-12-06 13:06:41.156  9955-9955  ActivityThread          com.cdccreditsmart.app               D  handleResumeActivity#5 addView decor=DecorView@6476c38[]
+2025-12-06 13:06:41.159  9955-9955  VRI[MainActivity]       com.cdccreditsmart.app               D  hardware acceleration = true, forceHwAccelerated = false
+2025-12-06 13:06:41.161  9955-9955  ViewRootImpl            com.cdccreditsmart.app               D  setView appearance:24 com.cdccreditsmart.app/com.cdccreditsmart.app.presentation.MainActivity
+2025-12-06 13:06:41.176  9955-9955  InputEventReceiver      com.cdccreditsmart.app               D  Input log is disabled in InputEventReceiver.
+2025-12-06 13:06:41.275  9955-9955  BufferQueueConsumer     com.cdccreditsmart.app               D  [](id:26e300000003,api:0,p:-1,c:9955) connect: controlledByApp=false
+2025-12-06 13:06:41.275  9955-9955  BLASTBufferQueue        com.cdccreditsmart.app               D  [VRI[MainActivity]#3](f:0,a:0) constructor()
+2025-12-06 13:06:41.275  9955-9955  BLASTBufferQueue        com.cdccreditsmart.app               D  [VRI[MainActivity]#3](f:0,a:0) update width=1080 height=2436 format=-3 mTransformHint=0
+2025-12-06 13:06:41.293  9955-12332 BLASTBufferQueue        com.cdccreditsmart.app               D  [VRI[MainActivity]#3](f:0,a:1) acquireNextBufferLocked size=1080x2436 mFrameNumber=1 applyTransaction=true mTimestamp=112484342209242(auto) mPendingTransactions.size=0 graphicBufferId=42756399431702 transform=0
+2025-12-06 13:06:41.295  9955-9955  Choreographer           com.cdccreditsmart.app               W  Already have a pending vsync event.  There should only be one at a time.
+2025-12-06 13:06:41.327  9955-9955  PermissionGateScreen    com.cdccreditsmart.app               I  🔍 VERIFICAÇÃO INICIAL DE PERMISSÕES:
+2025-12-06 13:06:41.327  9955-9955  PermissionGateScreen    com.cdccreditsmart.app               I     Nível: DEVICE_ADMIN
+2025-12-06 13:06:41.327  9955-9955  PermissionGateScreen    com.cdccreditsmart.app               I     Todas concedidas: true
+2025-12-06 13:06:41.328  9955-9955  PermissionGateScreen    com.cdccreditsmart.app               I     Bateria isenta: true
+2025-12-06 13:06:41.328  9955-9955  PermissionGateScreen    com.cdccreditsmart.app               I     ✅ OK: Administrador do Dispositivo
+2025-12-06 13:06:41.328  9955-9955  PermissionGateScreen    com.cdccreditsmart.app               I     ✅ OK: Permissões Básicas
+2025-12-06 13:06:41.328  9955-9955  PermissionGateScreen    com.cdccreditsmart.app               I     ✅ OK: Monitoramento de Apps
+2025-12-06 13:06:41.328  9955-9955  PermissionGateScreen    com.cdccreditsmart.app               I     ✅ OK: Mostrar Alertas
+2025-12-06 13:06:41.328  9955-9955  PermissionGateScreen    com.cdccreditsmart.app               I     ✅ OK: Execução em Segundo Plano
+2025-12-06 13:06:41.328  9955-9955  PermissionGateScreen    com.cdccreditsmart.app               I  ✅ TODAS AS PERMISSÕES JÁ CONCEDIDAS - navegando imediatamente
+2025-12-06 13:06:41.328  9955-9955  SettingsGuardService    com.cdccreditsmart.app               I  ▶️ Guard RETOMADO após fluxo de permissões
+2025-12-06 13:06:41.385  9955-9955  DeviceOwnerCheckVM      com.cdccreditsmart.app               I  ========================================
+2025-12-06 13:06:41.385  9955-9955  DeviceOwnerCheckVM      com.cdccreditsmart.app               I  🔐 Verificando status de Device Owner...
+2025-12-06 13:06:41.437  9955-9955  InsetsController        com.cdccreditsmart.app               I  Insets animation onAnimationStart mShow:false, mDurationMs:340, types:statusBars
+2025-12-06 13:06:41.640  9955-12364 SettingsGuardService    com.cdccreditsmart.app               D  ✅ GrantPermissionsActivity permitida (diálogo de permissões do sistema)
+2025-12-06 13:06:41.664  9955-9955  SettingsGuardService    com.cdccreditsmart.app               I  ▶️ Guard RETOMADO após fluxo de permissões
+2025-12-06 13:06:41.664  9955-9955  MainActivity            com.cdccreditsmart.app               W  ⚠️ Algumas permissões foram NEGADAS pelo usuário:
+2025-12-06 13:06:41.665  9955-9955  MainActivity            com.cdccreditsmart.app               D    ❌ NEGADA - android.permission.ACCESS_FINE_LOCATION
+2025-12-06 13:06:41.665  9955-9955  MainActivity            com.cdccreditsmart.app               D    ❌ NEGADA - android.permission.ACCESS_COARSE_LOCATION
+2025-12-06 13:06:41.665  9955-9955  MainActivity            com.cdccreditsmart.app               D    ❌ NEGADA - android.permission.ACCESS_BACKGROUND_LOCATION
+2025-12-06 13:06:41.666  9955-9955  ActivityThread          com.cdccreditsmart.app               D  handleResumeActivity#3 r.window=com.android.internal.policy.PhoneWindow@32fe30ca.mFinished = falsewillBeVisible = true
+2025-12-06 13:06:41.818  9955-9955  InsetsController        com.cdccreditsmart.app               I  Insets animation onAnimationEnd
+2025-12-06 13:06:41.890  9955-9955  DeviceUtils             com.cdccreditsmart.app               D  Device Owner check: false
+2025-12-06 13:06:41.890  9955-9955  DeviceUtils             com.cdccreditsmart.app               D  Samsung device: false (Manufacturer: INFINIX)
+2025-12-06 13:06:41.890  9955-9955  DeviceOwnerCheckVM      com.cdccreditsmart.app               W  ⚠️ MODO DEBUG: Usuário já pulou provisionamento anteriormente
+2025-12-06 13:06:41.890  9955-9955  DeviceOwnerCheckVM      com.cdccreditsmart.app               W  ⚠️ Permitindo acesso sem Device Owner (decisão memorizada)
+2025-12-06 13:06:41.890  9955-9955  DeviceOwnerCheckVM      com.cdccreditsmart.app               I  ========================================
+2025-12-06 13:06:42.047  9955-9955  RouterViewModel         com.cdccreditsmart.app               D  🚀 Iniciando verificação de autenticação...
+2025-12-06 13:06:42.047  9955-12364 AuthOrchestrator        com.cdccreditsmart.app               D  🔐 Verificando autenticação...
+2025-12-06 13:06:42.048  9955-12364 AuthOrchestrator        com.cdccreditsmart.app               D  🌐 Conectividade: OFFLINE
+2025-12-06 13:06:42.048  9955-12364 ContractCodeStorage     com.cdccreditsmart.app               D  Retrieving contract code from storage
+2025-12-06 13:06:42.367  9955-12364 ContractCodeStorage     com.cdccreditsmart.app               D  Storage verification: 7 valid, 0 tampered, 0 missing
+2025-12-06 13:06:42.367  9955-12364 ContractCodeStorage     com.cdccreditsmart.app               D  Contract code retrieved successfully
+2025-12-06 13:06:42.371  9955-12364 AuthOrchestrator        com.cdccreditsmart.app               D  📦 Verificação offline:
+2025-12-06 13:06:42.371  9955-12364 AuthOrchestrator        com.cdccreditsmart.app               D     ContractCode: presente
+2025-12-06 13:06:42.371  9955-12364 AuthOrchestrator        com.cdccreditsmart.app               D     AuthToken: presente
+2025-12-06 13:06:42.371  9955-12364 AuthOrchestrator        com.cdccreditsmart.app               D     DeviceInfo: presente
+2025-12-06 13:06:42.371  9955-12364 AuthOrchestrator        com.cdccreditsmart.app               D     → Autenticação offline válida: true
+2025-12-06 13:06:42.371  9955-12364 ContractCodeStorage     com.cdccreditsmart.app               D  Retrieving contract code from storage
+2025-12-06 13:06:42.552  9955-12364 ContractCodeStorage     com.cdccreditsmart.app               D  Storage verification: 7 valid, 0 tampered, 0 missing
+2025-12-06 13:06:42.552  9955-12364 ContractCodeStorage     com.cdccreditsmart.app               D  Contract code retrieved successfully
+2025-12-06 13:06:42.553  9955-12364 AuthOrchestrator        com.cdccreditsmart.app               I  📴 MODO OFFLINE ATIVADO
+2025-12-06 13:06:42.553  9955-12364 AuthOrchestrator        com.cdccreditsmart.app               I     Dispositivo já autenticado - usando dados salvos
+2025-12-06 13:06:42.553  9955-12364 AuthOrchestrator        com.cdccreditsmart.app               I     ContractCode: VY9D****
+2025-12-06 13:06:42.554  9955-9955  RouterViewModel         com.cdccreditsmart.app               D  ✅ Autenticado com sucesso
+2025-12-06 13:06:42.600  9955-9955  TermsAcceptanceStorage  com.cdccreditsmart.app               D  hasAcceptedTermsForContract(VY9DB9EC): true (saved: VY9DB9EC)
+2025-12-06 13:06:42.600  9955-9955  RouterViewModel         com.cdccreditsmart.app               D  ✅ Termos já aceitos - Ir para HOME
+2025-12-06 13:06:42.738  9955-9955  NetworkConnectivity     com.cdccreditsmart.app               W  ❌ Sem rede ativa
+2025-12-06 13:06:42.739  9955-9955  SimpleHomeViewModel     com.cdccreditsmart.app               W  📴 Sem internet - tentando carregar dados do cache local...
+2025-12-06 13:06:42.882  9955-9955  SimpleHomeViewModel     com.cdccreditsmart.app               I  ✅ Carregados 24 parcelas do cache local
+2025-12-06 13:06:42.883  9955-9955  SimpleHomeViewModel     com.cdccreditsmart.app               I  📅 Última sincronização: 06/12/2025 13:06
+2025-12-06 13:06:42.884  9955-9955  SecureTokenStorage      com.cdccreditsmart.app               D  📖 Lendo customerName: Marcos Antunes
+2025-12-06 13:06:42.885  9955-9955  SecureTokenStorage      com.cdccreditsmart.app               D  📖 Lendo deviceModel: Moto G15 Power
+2025-12-06 13:06:42.885  9955-9955  SimpleHomeViewModel     com.cdccreditsmart.app               I  📴 Modo offline ativo - exibindo dados do cache
+2025-12-06 13:06:43.036  9955-9955  SecureTokenStorage      com.cdccreditsmart.app               D  📖 Lendo customerName: Marcos Antunes
+2025-12-06 13:06:43.038  9955-9955  SecureTokenStorage      com.cdccreditsmart.app               D  📖 Lendo deviceModel: Moto G15 Power
+2025-12-06 13:06:43.038  9955-9955  ContractCodeStorage     com.cdccreditsmart.app               D  Retrieving contract code from storage
+2025-12-06 13:06:43.351  9955-12255 creditsmart.app         com.cdccreditsmart.app               I  Background young concurrent mark compact GC freed 5602KB AllocSpace bytes, 199(7228KB) LOS objects, 46% free, 13MB/26MB, paused 567us,5.945ms total 63.692ms
+2025-12-06 13:06:43.587  9955-9955  ContractCodeStorage     com.cdccreditsmart.app               D  Storage verification: 7 valid, 0 tampered, 0 missing
+2025-12-06 13:06:43.588  9955-9955  ContractCodeStorage     com.cdccreditsmart.app               D  Contract code retrieved successfully
+2025-12-06 13:06:43.707  9955-12364 MdmCommandReceiver      com.cdccreditsmart.app               I  🔄 Tentando reconectar WebSocket MDM...
+2025-12-06 13:06:43.712  9955-12364 SecureTokenStorage      com.cdccreditsmart.app               D  ⚠️ Usando Serial Number para MDM (IMEI indisponível): VY9DB9...
+2025-12-06 13:06:43.713  9955-12364 MdmCommandReceiver      com.cdccreditsmart.app               I  🔗 ========================================
+2025-12-06 13:06:43.713  9955-12364 MdmCommandReceiver      com.cdccreditsmart.app               I  🔗 INICIANDO CONEXÃO WEBSOCKET MDM
+2025-12-06 13:06:43.713  9955-12364 MdmCommandReceiver      com.cdccreditsmart.app               I  🔗 ========================================
+2025-12-06 13:06:43.713  9955-12364 MdmCommandReceiver      com.cdccreditsmart.app               I  🔗 URL base: wss://cdccreditsmart.com/ws
+2025-12-06 13:06:43.713  9955-12364 MdmCommandReceiver      com.cdccreditsmart.app               I  🔗 JWT Token presente: true
+2025-12-06 13:06:43.713  9955-12364 MdmCommandReceiver      com.cdccreditsmart.app               I  🔗 JWT Token length: 260
+2025-12-06 13:06:43.713  9955-12364 MdmCommandReceiver      com.cdccreditsmart.app               I  🔗 JWT Token preview: eyJhbGciOiJIUzI1NiIsInR5cCI6Ik...
+2025-12-06 13:06:43.713  9955-12364 MdmCommandReceiver      com.cdccreditsmart.app               I  🔗 Device identifier: VY9DB9EC
+2025-12-06 13:06:43.722  9955-12364 MdmCommandReceiver      com.cdccreditsmart.app               D  🔗 Criando WebSocket OkHttp...
+2025-12-06 13:06:43.723  9955-12364 MdmCommandReceiver      com.cdccreditsmart.app               I  🔄 Iniciando polling IMEDIATAMENTE (não esperar WebSocket)
+2025-12-06 13:06:43.723  9955-12364 MdmCommandReceiver      com.cdccreditsmart.app               D  ⏳ Polling já está ativo - ignorando chamada duplicada
+2025-12-06 13:06:43.728  9955-12364 MdmCommandReceiver      com.cdccreditsmart.app               D  🔗 WebSocket request enviado - aguardando resposta...
+2025-12-06 13:06:43.731  9955-12372 MdmCommandReceiver      com.cdccreditsmart.app               E  ❌ WebSocket MDM FALHOU!
+2025-12-06 13:06:43.732  9955-12364 MdmCommandReceiver      com.cdccreditsmart.app               D  ⏰ Watchdog cancelado (conexão resolvida)
+2025-12-06 13:06:43.732  9955-12372 NetworkConnectivity     com.cdccreditsmart.app               W  ❌ Sem rede ativa
+2025-12-06 13:06:43.733  9955-12372 MdmCommandReceiver      com.cdccreditsmart.app               W  ⏸️ Sem internet - WebSocket será reconectado quando a internet voltar
+2025-12-06 13:06:43.734  9955-12372 MdmCommandReceiver      com.cdccreditsmart.app               D  ⏳ Polling já está ativo - ignorando chamada duplicada
+2025-12-06 13:06:43.805  9955-9955  Choreographer           com.cdccreditsmart.app               I  Skipped 69 frames!  The application may be doing too much work on its main thread.
+2025-12-06 13:06:43.811  9955-12259 HWUI                    com.cdccreditsmart.app               I  Davey! duration=1167ms; Flags=0, FrameTimelineVsyncId=14689989, IntendedVsync=112485683578822, Vsync=112485683578822, InputEventId=0, HandleInputStart=112485684591396, AnimationStart=112485684592935, PerformTraversalsStart=112485946236550, DrawStart=112485946291704, FrameDeadline=112485703578822, FrameInterval=112485684582088, FrameStartTime=16705012, SyncQueued=112486847285858, SyncStart=112486847348550, IssueDrawCommandsStart=112486847565242, SwapBuffers=112486848560319, FrameCompleted=112486851481550, DequeueBufferDuration=21538, QueueBufferDuration=285308, GpuCompleted=112486851481550, SwapBuffersCompleted=112486849387935, DisplayPresentTime=112473528702472, CommandSubmissionCompleted=112486848560319, 
+2025-12-06 13:06:43.816  9955-9955  CdcForegroundService    com.cdccreditsmart.app               D  🚀 Serviço onStartCommand() - Action: com.cdccreditsmart.app.START_SERVICE
+2025-12-06 13:06:43.829  9955-9955  CdcForegroundService    com.cdccreditsmart.app               I  ✅ Foreground Service ativo (Android 12+)
+2025-12-06 13:06:43.829  9955-9955  CdcForegroundService    com.cdccreditsmart.app               D  ⏳ Serviços já inicializados - ignorando chamada duplicada
+2025-12-06 13:06:43.830  9955-9955  WebSocketManager        com.cdccreditsmart.app               D  Connecting to WebSocket: wss://cdccreditsmart.com/ws/flow-status
+2025-12-06 13:06:43.840  9955-12373 WebSocketManager        com.cdccreditsmart.app               E  WebSocket failure: Unable to resolve host "cdccreditsmart.com": No address associated with hostname
+2025-12-06 13:06:43.841  9955-12373 NetworkConnectivity     com.cdccreditsmart.app               W  ❌ Sem rede ativa
+2025-12-06 13:06:43.841  9955-12373 WebSocketManager        com.cdccreditsmart.app               E  ❌ CAUSA: SEM CONEXÃO COM A INTERNET
+2025-12-06 13:06:43.841  9955-12373 WebSocketManager        com.cdccreditsmart.app               E  📶 Sem conexão com a internet.
+                                                                                                    
+                                                                                                    Por favor, conecte-se ao WiFi ou ative seus dados móveis (5G/4G).
+2025-12-06 13:06:43.841  9955-12373 CdcForegroundService    com.cdccreditsmart.app               E  ❌ Erro no WebSocket Flow: Sem conexão com a internet.
+                                                                                                    
+                                                                                                    Por favor, conecte-se ao WiFi ou ative seus dados móveis (5G/4G).
+2025-12-06 13:06:43.841  9955-12373 WebSocketManager        com.cdccreditsmart.app               D  Scheduling reconnection in 5000ms
+2025-12-06 13:06:43.842  9955-12259 HWUI                    com.cdccreditsmart.app               I  Davey! duration=1177ms; Flags=0, FrameTimelineVsyncId=14690004, IntendedVsync=112485700295627, Vsync=112486852941455, InputEventId=0, HandleInputStart=112486855605550, AnimationStart=112486855607319, PerformTraversalsStart=112486863200550, DrawStart=112486863258473, FrameDeadline=112486872929662, FrameInterval=112486854867704, FrameStartTime=16705012, SyncQueued=112486865509781, SyncStart=112486865664935, IssueDrawCommandsStart=112486865761165, SwapBuffers=112486869994396, FrameCompleted=112486877462473, DequeueBufferDuration=21308, QueueBufferDuration=207461, GpuCompleted=112486877462473, SwapBuffersCompleted=112486871395935, DisplayPresentTime=112473537053857, CommandSubmissionCompleted=112486869994396, 
+2025-12-06 13:06:44.468  9955-9955  TextSelection           com.cdccreditsmart.app               D  onUseCache cache=false
+2025-12-06 13:06:44.519  9955-12526 ScrollPolicy            com.cdccreditsmart.app               I  BOOST_KSWAPD; duration: 3000
+2025-12-06 13:06:44.521  9955-12526 PowerHalMgrImpl         com.cdccreditsmart.app               I  hdl:69181, pid:9955 
+2025-12-06 13:06:44.530  9955-12526 PowerHalMgrImpl         com.cdccreditsmart.app               I  hdl:69183, pid:9955 
+2025-12-06 13:06:44.628  9955-9955  ScrollIdentify          com.cdccreditsmart.app               I  on fling
+2025-12-06 13:06:44.632  9955-12526 PowerHalMgrImpl         com.cdccreditsmart.app               I  hdl:69187, pid:9955 
+2025-12-06 13:06:44.909  9955-9955  TextSelection           com.cdccreditsmart.app               D  onUseCache cache=false
+2025-12-06 13:06:44.954  9955-12526 PowerHalMgrImpl         com.cdccreditsmart.app               I  hdl:69191, pid:9955 
+2025-12-06 13:06:44.956  9955-12526 PowerHalMgrImpl         com.cdccreditsmart.app               I  hdl:69193, pid:9955 
+2025-12-06 13:06:45.228  9955-9955  ScrollIdentify          com.cdccreditsmart.app               I  on fling
+2025-12-06 13:06:45.230  9955-12526 PowerHalMgrImpl         com.cdccreditsmart.app               I  hdl:69194, pid:9955 
+2025-12-06 13:06:45.530  9955-9955  SecureTokenStorage      com.cdccreditsmart.app               D  📖 Lendo customerName: Marcos Antunes
+2025-12-06 13:06:45.531  9955-9955  SecureTokenStorage      com.cdccreditsmart.app               D  📖 Lendo deviceModel: Moto G15 Power
+2025-12-06 13:06:45.531  9955-9955  ContractCodeStorage     com.cdccreditsmart.app               D  Retrieving contract code from storage
+2025-12-06 13:06:45.826  9955-9955  ContractCodeStorage     com.cdccreditsmart.app               D  Storage verification: 7 valid, 0 tampered, 0 missing
+2025-12-06 13:06:45.826  9955-9955  ContractCodeStorage     com.cdccreditsmart.app               D  Contract code retrieved successfully
+2025-12-06 13:06:45.853  9955-9955  Choreographer           com.cdccreditsmart.app               I  Skipped 45 frames!  The application may be doing too much work on its main thread.
+2025-12-06 13:06:46.915  9955-9955  TextSelection           com.cdccreditsmart.app               D  onUseCache cache=false
+2025-12-06 13:06:46.989  9955-12526 PowerHalMgrImpl         com.cdccreditsmart.app               I  hdl:69200, pid:9955 
+2025-12-06 13:06:46.992  9955-12526 PowerHalMgrImpl         com.cdccreditsmart.app               I  hdl:69201, pid:9955 
+2025-12-06 13:06:47.537  9955-12526 ScrollPolicy            com.cdccreditsmart.app               I  BOOST_KSWAPD; duration: 3000
+2025-12-06 13:06:47.658  9955-9955  ScrollIdentify          com.cdccreditsmart.app               I  on fling
+2025-12-06 13:06:47.661  9955-12526 PowerHalMgrImpl         com.cdccreditsmart.app               I  hdl:69205, pid:9955 
+2025-12-06 13:06:48.163  9955-12526 ScrollPolicy            com.cdccreditsmart.app               I  BOOST_KSWAPD; duration: 0
+2025-12-06 13:06:48.167  9955-12526 PowerHalMgrImpl         com.cdccreditsmart.app               I  hdl:69207, pid:9955 
+2025-12-06 13:06:48.476  9955-9955  TextSelection           com.cdccreditsmart.app               D  onUseCache cache=false
+2025-12-06 13:06:48.527  9955-12526 ScrollPolicy            com.cdccreditsmart.app               I  BOOST_KSWAPD; duration: 3000
+2025-12-06 13:06:48.531  9955-12526 PowerHalMgrImpl         com.cdccreditsmart.app               I  hdl:69212, pid:9955 
+2025-12-06 13:06:48.542  9955-12526 PowerHalMgrImpl         com.cdccreditsmart.app               I  hdl:69214, pid:9955 
+2025-12-06 13:06:48.658  9955-9955  ScrollIdentify          com.cdccreditsmart.app               I  on fling
+2025-12-06 13:06:48.660  9955-12526 PowerHalMgrImpl         com.cdccreditsmart.app               I  hdl:69216, pid:9955 
+2025-12-06 13:06:48.681  9955-12363 MdmCommandReceiver      com.cdccreditsmart.app               I  🔍 [Polling #2] Verificando comandos pendentes...
+2025-12-06 13:06:48.683  9955-12363 SecureTokenStorage      com.cdccreditsmart.app               D  ⚠️ Usando Serial Number para MDM (IMEI indisponível): VY9DB9...
+2025-12-06 13:06:48.683  9955-12363 MdmCommandReceiver      com.cdccreditsmart.app               I  🔍 ========================================
+2025-12-06 13:06:48.683  9955-12363 MdmCommandReceiver      com.cdccreditsmart.app               I  🔍 BUSCANDO COMANDOS PENDENTES
+2025-12-06 13:06:48.684  9955-12363 MdmCommandReceiver      com.cdccreditsmart.app               I  🔍 ========================================
+2025-12-06 13:06:48.684  9955-12363 MdmCommandReceiver      com.cdccreditsmart.app               I  🔍 Identifier: VY9DB9EC
+2025-12-06 13:06:48.684  9955-12363 MdmCommandReceiver      com.cdccreditsmart.app               I  🔍 Endpoint: GET /api/apk/device/VY9DB9EC/commands
+2025-12-06 13:06:48.692  9955-12363 MdmCommandReceiver      com.cdccreditsmart.app               D  🔍 Executando requisição HTTP (timeout: 15s)...
+2025-12-06 13:06:48.705  9955-12439 okhttp.OkHttpClient     com.cdccreditsmart.app               I  --> GET https://cdccreditsmart.com/api/apk/device/VY9DB9EC/commands
+2025-12-06 13:06:48.705  9955-12439 okhttp.OkHttpClient     com.cdccreditsmart.app               I  --> END GET
+2025-12-06 13:06:48.735  9955-12363 MdmCommandReceiver      com.cdccreditsmart.app               I  🔄 Tentando reconectar WebSocket MDM...
+2025-12-06 13:06:48.737  9955-12363 SecureTokenStorage      com.cdccreditsmart.app               D  ⚠️ Usando Serial Number para MDM (IMEI indisponível): VY9DB9...
+2025-12-06 13:06:48.737  9955-12363 MdmCommandReceiver      com.cdccreditsmart.app               I  🔗 ========================================
+2025-12-06 13:06:48.737  9955-12363 MdmCommandReceiver      com.cdccreditsmart.app               I  🔗 INICIANDO CONEXÃO WEBSOCKET MDM
+2025-12-06 13:06:48.737  9955-12363 MdmCommandReceiver      com.cdccreditsmart.app               I  🔗 ========================================
+2025-12-06 13:06:48.737  9955-12363 MdmCommandReceiver      com.cdccreditsmart.app               I  🔗 URL base: wss://cdccreditsmart.com/ws
+2025-12-06 13:06:48.737  9955-12363 MdmCommandReceiver      com.cdccreditsmart.app               I  🔗 JWT Token presente: true
+2025-12-06 13:06:48.737  9955-12363 MdmCommandReceiver      com.cdccreditsmart.app               I  🔗 JWT Token length: 260
+2025-12-06 13:06:48.737  9955-12363 MdmCommandReceiver      com.cdccreditsmart.app               I  🔗 JWT Token preview: eyJhbGciOiJIUzI1NiIsInR5cCI6Ik...
+2025-12-06 13:06:48.737  9955-12363 MdmCommandReceiver      com.cdccreditsmart.app               I  🔗 Device identifier: VY9DB9EC
+2025-12-06 13:06:48.739  9955-12363 MdmCommandReceiver      com.cdccreditsmart.app               D  🔗 Criando WebSocket OkHttp...
+2025-12-06 13:06:48.740  9955-12363 MdmCommandReceiver      com.cdccreditsmart.app               I  🔄 Iniciando polling IMEDIATAMENTE (não esperar WebSocket)
+2025-12-06 13:06:48.740  9955-12363 MdmCommandReceiver      com.cdccreditsmart.app               D  ⏳ Polling já está ativo - ignorando chamada duplicada
+2025-12-06 13:06:48.741  9955-12363 MdmCommandReceiver      com.cdccreditsmart.app               D  🔗 WebSocket request enviado - aguardando resposta...
+2025-12-06 13:06:48.749  9955-12372 MdmCommandReceiver      com.cdccreditsmart.app               E  ❌ WebSocket MDM FALHOU!
+2025-12-06 13:06:48.749  9955-12364 MdmCommandReceiver      com.cdccreditsmart.app               D  ⏰ Watchdog cancelado (conexão resolvida)
+2025-12-06 13:06:48.750  9955-12372 NetworkConnectivity     com.cdccreditsmart.app               W  ❌ Sem rede ativa
+2025-12-06 13:06:48.750  9955-12372 MdmCommandReceiver      com.cdccreditsmart.app               W  ⏸️ Sem internet - WebSocket será reconectado quando a internet voltar
+2025-12-06 13:06:48.752  9955-12372 MdmCommandReceiver      com.cdccreditsmart.app               D  ⏳ Polling já está ativo - ignorando chamada duplicada
+2025-12-06 13:06:48.784  9955-12439 okhttp.OkHttpClient     com.cdccreditsmart.app               I  <-- HTTP FAILED: java.net.UnknownHostException: Unable to resolve host "cdccreditsmart.com": No address associated with hostname
+2025-12-06 13:06:48.784  9955-12363 MdmCommandReceiver      com.cdccreditsmart.app               E  ❌ ========================================
+2025-12-06 13:06:48.784  9955-12363 MdmCommandReceiver      com.cdccreditsmart.app               E  ❌ EXCEÇÃO AO BUSCAR COMANDOS
+2025-12-06 13:06:48.784  9955-12363 MdmCommandReceiver      com.cdccreditsmart.app               E  ❌ ========================================
+2025-12-06 13:06:48.785  9955-12363 MdmCommandReceiver      com.cdccreditsmart.app               E  ❌ Tipo: UnknownHostException
+2025-12-06 13:06:48.785  9955-12363 MdmCommandReceiver      com.cdccreditsmart.app               E  ❌ Mensagem: Unable to resolve host "cdccreditsmart.com": No address associated with hostname
+2025-12-06 13:06:48.785  9955-12363 MdmCommandReceiver      com.cdccreditsmart.app               E  ❌ Continuando normalmente - próxima tentativa em 30s
+2025-12-06 13:06:48.785  9955-12363 MdmCommandReceiver      com.cdccreditsmart.app               E  ❌ ========================================
+2025-12-06 13:06:48.861  9955-9955  WebSocketManager        com.cdccreditsmart.app               D  Connecting to WebSocket: wss://cdccreditsmart.com/ws/flow-status
+2025-12-06 13:06:48.865  9955-12373 WebSocketManager        com.cdccreditsmart.app               E  WebSocket failure: Unable to resolve host "cdccreditsmart.com": No address associated with hostname
+2025-12-06 13:06:48.866  9955-12373 NetworkConnectivity     com.cdccreditsmart.app               W  ❌ Sem rede ativa
+2025-12-06 13:06:48.866  9955-12373 WebSocketManager        com.cdccreditsmart.app               E  ❌ CAUSA: SEM CONEXÃO COM A INTERNET
+2025-12-06 13:06:48.866  9955-12373 WebSocketManager        com.cdccreditsmart.app               E  📶 Sem conexão com a internet.
+                                                                                                    
+                                                                                                    Por favor, conecte-se ao WiFi ou ative seus dados móveis (5G/4G).
+2025-12-06 13:06:48.866  9955-12373 CdcForegroundService    com.cdccreditsmart.app               E  ❌ Erro no WebSocket Flow: Sem conexão com a internet.
+                                                                                                    
+                                                                                                    Por favor, conecte-se ao WiFi ou ative seus dados móveis (5G/4G).
+2025-12-06 13:06:48.866  9955-12373 WebSocketManager        com.cdccreditsmart.app               D  Scheduling reconnection in 5000ms
+2025-12-06 13:06:51.547  9955-12526 ScrollPolicy            com.cdccreditsmart.app               I  BOOST_KSWAPD; duration: 3000
+2025-12-06 13:06:51.663  9955-12526 ScrollPolicy            com.cdccreditsmart.app               I  BOOST_KSWAPD; duration: 0
+2025-12-06 13:06:51.674  9955-12526 PowerHalMgrImpl         com.cdccreditsmart.app               I  hdl:69219, pid:9955 
+2025-12-06 13:06:53.759  9955-12363 MdmCommandReceiver      com.cdccreditsmart.app               I  🔄 Tentando reconectar WebSocket MDM...
+2025-12-06 13:06:53.772  9955-12363 SecureTokenStorage      com.cdccreditsmart.app               D  ⚠️ Usando Serial Number para MDM (IMEI indisponível): VY9DB9...
+2025-12-06 13:06:53.773  9955-12363 MdmCommandReceiver      com.cdccreditsmart.app               I  🔗 ========================================
+2025-12-06 13:06:53.773  9955-12363 MdmCommandReceiver      com.cdccreditsmart.app               I  🔗 INICIANDO CONEXÃO WEBSOCKET MDM
+2025-12-06 13:06:53.774  9955-12363 MdmCommandReceiver      com.cdccreditsmart.app               I  🔗 ========================================
+2025-12-06 13:06:53.774  9955-12363 MdmCommandReceiver      com.cdccreditsmart.app               I  🔗 URL base: wss://cdccreditsmart.com/ws
+2025-12-06 13:06:53.774  9955-12363 MdmCommandReceiver      com.cdccreditsmart.app               I  🔗 JWT Token presente: true
+2025-12-06 13:06:53.775  9955-12363 MdmCommandReceiver      com.cdccreditsmart.app               I  🔗 JWT Token length: 260
+2025-12-06 13:06:53.775  9955-12363 MdmCommandReceiver      com.cdccreditsmart.app               I  🔗 JWT Token preview: eyJhbGciOiJIUzI1NiIsInR5cCI6Ik...
+2025-12-06 13:06:53.775  9955-12363 MdmCommandReceiver      com.cdccreditsmart.app               I  🔗 Device identifier: VY9DB9EC
+2025-12-06 13:06:53.786  9955-12363 MdmCommandReceiver      com.cdccreditsmart.app               D  🔗 Criando WebSocket OkHttp...
+2025-12-06 13:06:53.786  9955-12363 MdmCommandReceiver      com.cdccreditsmart.app               I  🔄 Iniciando polling IMEDIATAMENTE (não esperar WebSocket)
+2025-12-06 13:06:53.786  9955-12363 MdmCommandReceiver      com.cdccreditsmart.app               D  ⏳ Polling já está ativo - ignorando chamada duplicada
+2025-12-06 13:06:53.789  9955-12363 MdmCommandReceiver      com.cdccreditsmart.app               D  🔗 WebSocket request enviado - aguardando resposta...
+2025-12-06 13:06:53.804  9955-12372 MdmCommandReceiver      com.cdccreditsmart.app               E  ❌ WebSocket MDM FALHOU!
+2025-12-06 13:06:53.805  9955-12364 MdmCommandReceiver      com.cdccreditsmart.app               D  ⏰ Watchdog cancelado (conexão resolvida)
+2025-12-06 13:06:53.806  9955-12372 NetworkConnectivity     com.cdccreditsmart.app               W  ❌ Sem rede ativa
+2025-12-06 13:06:53.806  9955-12372 MdmCommandReceiver      com.cdccreditsmart.app               W  ⏸️ Sem internet - WebSocket será reconectado quando a internet voltar
+2025-12-06 13:06:53.809  9955-12372 MdmCommandReceiver      com.cdccreditsmart.app               D  ⏳ Polling já está ativo - ignorando chamada duplicada
+2025-12-06 13:06:53.866  9955-9955  WebSocketManager        com.cdccreditsmart.app               D  Connecting to WebSocket: wss://cdccreditsmart.com/ws/flow-status
+2025-12-06 13:06:53.879  9955-12373 WebSocketManager        com.cdccreditsmart.app               E  WebSocket failure: Unable to resolve host "cdccreditsmart.com": No address associated with hostname
+2025-12-06 13:06:53.881  9955-12373 NetworkConnectivity     com.cdccreditsmart.app               W  ❌ Sem rede ativa
+2025-12-06 13:06:53.881  9955-12373 WebSocketManager        com.cdccreditsmart.app               E  ❌ CAUSA: SEM CONEXÃO COM A INTERNET
+2025-12-06 13:06:53.882  9955-12373 WebSocketManager        com.cdccreditsmart.app               E  📶 Sem conexão com a internet.
+                                                                                                    
+                                                                                                    Por favor, conecte-se ao WiFi ou ative seus dados móveis (5G/4G).
+2025-12-06 13:06:53.882  9955-12373 CdcForegroundService    com.cdccreditsmart.app               E  ❌ Erro no WebSocket Flow: Sem conexão com a internet.
+                                                                                                    
+                                                                                                    Por favor, conecte-se ao WiFi ou ative seus dados móveis (5G/4G).
+2025-12-06 13:06:53.882  9955-12373 WebSocketManager        com.cdccreditsmart.app               D  Scheduling reconnection in 5000ms

@@ -137,6 +137,10 @@ class SimpleHomeViewModel(
                     Log.d(TAG, "📊 Overdue: ${data.summary?.overdue ?: 0}")
                     Log.d(TAG, "📊 All installments count: ${data.allInstallments?.size ?: 0}")
                     
+                    data.allInstallments?.forEach { item ->
+                        Log.d(TAG, "📋 Parcela #${item.number}: status=${item.status}, isPaid=${item.isPaid}, dueDate=${item.dueDate}")
+                    }
+                    
                     val deviceModel = data.device?.name
                     val customerName = data.customer?.name
                     
@@ -324,9 +328,14 @@ class SimpleHomeViewModel(
             localStorage.saveInstallments(contractCode, localInstallments)
             
             Log.i(TAG, "✅ ${localInstallments.size} parcelas salvas localmente")
-            Log.i(TAG, "   → ${localInstallments.count { it.status == "OVERDUE" }} em atraso")
             Log.i(TAG, "   → ${localInstallments.count { it.status == "PAID" }} pagas")
+            Log.i(TAG, "   → ${localInstallments.count { it.status == "PENDING" }} pendentes")
+            Log.i(TAG, "   → ${localInstallments.count { it.status == "OVERDUE" }} em atraso")
             Log.i(TAG, "   → Dados disponíveis para overlay e offline blocking")
+            
+            localInstallments.filter { it.status == "PAID" }.take(3).forEach { item ->
+                Log.d(TAG, "   💰 Paga: #${item.number} - ${item.dueDate}")
+            }
             
         } catch (e: Exception) {
             Log.e(TAG, "❌ Erro ao salvar parcelas localmente: ${e.message}", e)
