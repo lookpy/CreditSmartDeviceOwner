@@ -194,11 +194,12 @@ class KeepAliveManager(private val context: Context) {
                 if (isDeviceOwner()) {
                     Log.i(TAG, "🔋 App é Device Owner - isentando automaticamente")
                     exemptBatteryAsDeviceOwner()
-                    prefs.edit().putLong("battery_optimization_request", now).apply()
                 } else {
-                    Log.i(TAG, "🔋 App NÃO é Device Owner - NÃO abrindo tela automaticamente")
-                    Log.i(TAG, "🔋 Usuário pode habilitar manualmente nas configurações de bateria")
+                    Log.i(TAG, "🔋 App NÃO é Device Owner - solicitando permissão ao usuário")
+                    requestBatteryExemptionFromUser()
                 }
+                
+                prefs.edit().putLong("battery_optimization_request", now).apply()
             }
         } catch (e: Exception) {
             Log.e(TAG, "❌ Erro ao solicitar isenção de bateria: ${e.message}", e)
