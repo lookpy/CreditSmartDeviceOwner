@@ -38,9 +38,16 @@ sealed class CommandParameters {
     @JsonClass(generateAdapter = true)
     data class UninstallAppParameters(
         val reason: String = "",
-        val confirmationCode: String = "",
-        val wipeData: Boolean = true
-    ) : CommandParameters()
+        @Json(name = "confirmationCode") val confirmationCode: String = "",
+        @Json(name = "confirmation_code") val confirmationCodeSnake: String = "",
+        val wipeData: Boolean = true,
+        @Json(name = "wipe_data") val wipeDataSnake: Boolean = true
+    ) : CommandParameters() {
+        // Retorna o código de confirmação, tentando ambos os formatos
+        fun getCode(): String = confirmationCode.ifEmpty { confirmationCodeSnake }
+        // Retorna wipeData, tentando ambos os formatos
+        fun shouldWipeData(): Boolean = wipeData || wipeDataSnake
+    }
     
     @JsonClass(generateAdapter = true)
     data class ConfigureUninstallCodeParameters(

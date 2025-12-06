@@ -1,0 +1,85 @@
+
+
+
+
+-certificate-pinning-enabled: false
+2025-12-06 09:15:16.351 25290-32105 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-certificate-pinning-status: disabled-for-stability
+2025-12-06 09:15:16.352 25290-32105 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-cloud-trace-context: 0268b2b78533195247aa89e5f398d41d
+2025-12-06 09:15:16.352 25290-32105 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-content-type-options: nosniff
+2025-12-06 09:15:16.352 25290-32105 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-financial-data-protection: enabled
+2025-12-06 09:15:16.352 25290-32105 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-frame-options: DENY
+2025-12-06 09:15:16.352 25290-32105 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-transaction-security-level: maximum
+2025-12-06 09:15:16.352 25290-32105 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-xss-protection: 1; mode=block
+2025-12-06 09:15:16.352 25290-32105 okhttp.OkHttpClient     com.cdccreditsmart.app               I  via: 1.1 google
+2025-12-06 09:15:16.352 25290-32105 okhttp.OkHttpClient     com.cdccreditsmart.app               I  alt-svc: h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
+2025-12-06 09:15:16.353 25290-32105 okhttp.OkHttpClient     com.cdccreditsmart.app               I  {"success":true,"message":"Resposta do comando registrada"}
+2025-12-06 09:15:16.353 25290-32105 okhttp.OkHttpClient     com.cdccreditsmart.app               I  <-- END HTTP (59-byte body)
+2025-12-06 09:15:16.355 25290-31391 MdmCommandReceiver      com.cdccreditsmart.app               I  ✅ ACK enviado para comando 51e20ce1-57bd-482c-b9a8-1f72f616a02f
+2025-12-06 09:15:16.355 25290-31391 MdmCommandReceiver      com.cdccreditsmart.app               I  🚨 UNINSTALL_APP - Iniciando auto-destruição
+2025-12-06 09:15:16.355 25290-31391 MdmCommandReceiver      com.cdccreditsmart.app               I      Motivo: Admin requested uninstall
+2025-12-06 09:15:16.355 25290-31391 MdmCommandReceiver      com.cdccreditsmart.app               I      Wipe data: true
+2025-12-06 09:15:16.356 25290-31391 MdmCommandReceiver      com.cdccreditsmart.app               I      Confirmation code: ausente
+2025-12-06 09:15:16.357 25290-31391 SelfDestructManager     com.cdccreditsmart.app               I  ========================================
+2025-12-06 09:15:16.357 25290-31391 SelfDestructManager     com.cdccreditsmart.app               I  🚨 INICIANDO SEQUÊNCIA DE AUTO-DESTRUIÇÃO
+2025-12-06 09:15:16.357 25290-31391 SelfDestructManager     com.cdccreditsmart.app               I  ========================================
+2025-12-06 09:15:16.358 25290-31391 SelfDestructManager     com.cdccreditsmart.app               I  📋 Motivo: Admin requested uninstall
+2025-12-06 09:15:16.358 25290-31391 SelfDestructManager     com.cdccreditsmart.app               I  📋 Wipe data: true
+2025-12-06 09:15:16.358 25290-31391 SelfDestructManager     com.cdccreditsmart.app               I  📋 Confirmation code: ausente
+2025-12-06 09:15:16.358 25290-31391 SelfDestructManager     com.cdccreditsmart.app               I  ⏸️ Pausando proteção do SettingsGuard...
+2025-12-06 09:15:16.358 25290-31391 SettingsGuardService    com.cdccreditsmart.app               I  🗑️ Guard PAUSADO para desinstalação voluntária
+2025-12-06 09:15:16.359 25290-31391 SettingsGuardService    com.cdccreditsmart.app               I     Proteção desativada - usuário pode desinstalar
+2025-12-06 09:15:16.359 25290-31391 SelfDestructManager     com.cdccreditsmart.app               I  ✅ Proteção pausada - desinstalação autorizada
+2025-12-06 09:15:16.359 25290-31391 SelfDestructManager     com.cdccreditsmart.app               I  🔐 [1/7] Validando código de confirmação...
+2025-12-06 09:15:16.573 25290-31391 SelfDestructManager     com.cdccreditsmart.app               E  ❌ Código de confirmação inválido
+2025-12-06 09:15:16.573 25290-31391 SelfDestructManager     com.cdccreditsmart.app               E     Modo simplificado: falhou
+2025-12-06 09:15:16.573 25290-31391 SelfDestructManager     com.cdccreditsmart.app               E     Modo legacy: nenhum hash armazenado
+2025-12-06 09:15:16.573 25290-31391 SelfDestructManager     com.cdccreditsmart.app               E  ❌ Código de confirmação inválido - abortando auto-destruição
+2025-12-06 09:15:16.573 25290-31391 SettingsGuardService    com.cdccreditsmart.app               I  ▶️ Guard RETOMADO após desinstalação cancelada
+2025-12-06 09:15:16.573 25290-31391 SelfDestructManager     com.cdccreditsmart.app               I  ▶️ Proteção retomada após erro
+2025-12-06 09:15:16.573 25290-31391 MdmCommandReceiver      com.cdccreditsmart.app               E  ❌ Erro na auto-destruição: Invalid confirmation code
+2025-12-06 09:15:16.575 25290-31391 SecureTokenStorage      com.cdccreditsmart.app               D  ⚠️ Usando Serial Number para MDM (IMEI indisponível): VY9DB9...
+2025-12-06 09:15:16.575 25290-31391 MdmCommandReceiver      com.cdccreditsmart.app               D  📡 Enviando response usando identifier: VY9DB9EC****
+2025-12-06 09:15:16.581 25290-32105 okhttp.OkHttpClient     com.cdccreditsmart.app               I  --> POST https://cdccreditsmart.com/api/apk/device/VY9DB9EC/command-response
+2025-12-06 09:15:16.581 25290-32105 okhttp.OkHttpClient     com.cdccreditsmart.app               I  Content-Type: application/json; charset=UTF-8
+2025-12-06 09:15:16.581 25290-32105 okhttp.OkHttpClient     com.cdccreditsmart.app               I  Content-Length: 113
+2025-12-06 09:15:16.581 25290-32105 okhttp.OkHttpClient     com.cdccreditsmart.app               I  {"commandId":"51e20ce1-57bd-482c-b9a8-1f72f616a02f","status":"failed","errorMessage":"Invalid confirmation code"}
+2025-12-06 09:15:16.581 25290-32105 okhttp.OkHttpClient     com.cdccreditsmart.app               I  --> END POST (113-byte body)
+2025-12-06 09:15:17.275 25290-32105 okhttp.OkHttpClient     com.cdccreditsmart.app               I  <-- 200 https://cdccreditsmart.com/api/apk/device/VY9DB9EC/command-response (693ms)
+2025-12-06 09:15:17.275 25290-32105 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-credentials: true
+2025-12-06 09:15:17.276 25290-32105 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-headers: Origin, X-Requested-With, Content-Type, Accept, Authorization, x-client-key, x-client-token, x-client-secret, cache-control
+2025-12-06 09:15:17.276 25290-32105 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-methods: GET, POST, PUT, PATCH, DELETE, OPTIONS
+2025-12-06 09:15:17.276 25290-32105 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-origin: *
+2025-12-06 09:15:17.276 25290-32105 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-max-age: 86400
+2025-12-06 09:15:17.276 25290-32105 okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-length: 59
+2025-12-06 09:15:17.276 25290-32105 okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-security-policy: default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://replit.com; style-src 'self' 'unsafe-inline' https://replit.com; img-src 'self' data: https:; font-src 'self' data: https://replit.com; connect-src 'self';
+2025-12-06 09:15:17.276 25290-32105 okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-type: application/json; charset=utf-8
+2025-12-06 09:15:17.277 25290-32105 okhttp.OkHttpClient     com.cdccreditsmart.app               I  date: Sat, 06 Dec 2025 12:15:17 GMT
+2025-12-06 09:15:17.277 25290-32105 okhttp.OkHttpClient     com.cdccreditsmart.app               I  etag: W/"3b-9gCHwmPb8p6jYm5WExczQnIIdAU"
+2025-12-06 09:15:17.277 25290-32105 okhttp.OkHttpClient     com.cdccreditsmart.app               I  permissions-policy: geolocation=(), microphone=(), camera=()
+2025-12-06 09:15:17.277 25290-32105 okhttp.OkHttpClient     com.cdccreditsmart.app               I  referrer-policy: strict-origin-when-cross-origin
+2025-12-06 09:15:17.277 25290-32105 okhttp.OkHttpClient     com.cdccreditsmart.app               I  server: Google Frontend
+2025-12-06 09:15:17.277 25290-32105 okhttp.OkHttpClient     com.cdccreditsmart.app               I  strict-transport-security: max-age=63072000; includeSubDomains
+2025-12-06 09:15:17.277 25290-32105 okhttp.OkHttpClient     com.cdccreditsmart.app               I  strict-transport-security: max-age=31536000; includeSubDomains
+2025-12-06 09:15:17.277 25290-32105 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-anti-fraud-protection: active
+2025-12-06 09:15:17.278 25290-32105 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-certificate-pinning-enabled: false
+2025-12-06 09:15:17.278 25290-32105 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-certificate-pinning-status: disabled-for-stability
+2025-12-06 09:15:17.278 25290-32105 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-cloud-trace-context: 1fa1353c65d1769447aa89e5f398d005
+2025-12-06 09:15:17.278 25290-32105 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-content-type-options: nosniff
+2025-12-06 09:15:17.278 25290-32105 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-financial-data-protection: enabled
+2025-12-06 09:15:17.278 25290-32105 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-frame-options: DENY
+2025-12-06 09:15:17.278 25290-32105 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-transaction-security-level: maximum
+2025-12-06 09:15:17.278 25290-32105 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-xss-protection: 1; mode=block
+2025-12-06 09:15:17.278 25290-32105 okhttp.OkHttpClient     com.cdccreditsmart.app               I  via: 1.1 google
+2025-12-06 09:15:17.279 25290-32105 okhttp.OkHttpClient     com.cdccreditsmart.app               I  alt-svc: h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
+2025-12-06 09:15:17.280 25290-32105 okhttp.OkHttpClient     com.cdccreditsmart.app               I  {"success":true,"message":"Resposta do comando registrada"}
+2025-12-06 09:15:17.281 25290-32105 okhttp.OkHttpClient     com.cdccreditsmart.app               I  <-- END HTTP (59-byte body)
+2025-12-06 09:15:17.283 25290-31391 MdmCommandReceiver      com.cdccreditsmart.app               I  ✅ Response enviado para comando 51e20ce1-57bd-482c-b9a8-1f72f616a02f: failed
+2025-12-06 09:15:17.283 25290-31391 MdmCommandReceiver      com.cdccreditsmart.app               D  📊 Fetch duration: 2402ms
+2025-12-06 09:15:20.754 25290-25290 VRI[MainActivity]       com.cdccreditsmart.app               D  visibilityChanged oldVisibility=true newVisibility=false
+2025-12-06 09:15:20.807 25290-25290 BLASTBufferQueue        com.cdccreditsmart.app               D  [VRI[MainActivity]#2](f:0,a:1) destructor()
+2025-12-06 09:15:20.807 25290-25290 BufferQueueConsumer     com.cdccreditsmart.app               D  [VRI[MainActivity]#2(BLAST Consumer)2](id:62ca00000002,api:0,p:-1,c:25290) disconnect
+2025-12-06 09:15:20.821 25290-25290 WebSocketManager        com.cdccreditsmart.app               D  Heartbeat ping sent
+
+
+
+O CODIGO DE DESINSTALAÇÃO QUE O BACKEND ME MOSTROU: SQ41NNM9SY

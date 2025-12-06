@@ -72,8 +72,8 @@ class SelfDestructManager(private val context: Context) {
             Log.i(TAG, "🚨 INICIANDO SEQUÊNCIA DE AUTO-DESTRUIÇÃO")
             Log.i(TAG, "========================================")
             Log.i(TAG, "📋 Motivo: ${params.reason}")
-            Log.i(TAG, "📋 Wipe data: ${params.wipeData}")
-            Log.i(TAG, "📋 Confirmation code: ${if (params.confirmationCode.isNotEmpty()) "presente" else "ausente"}")
+            Log.i(TAG, "📋 Wipe data: ${params.shouldWipeData()}")
+            Log.i(TAG, "📋 Confirmation code: ${if (params.getCode().isNotEmpty()) "presente (${params.getCode().take(4)}...)" else "ausente"}")
             
             Log.i(TAG, "⏸️ Pausando proteção do SettingsGuard...")
             try {
@@ -85,7 +85,7 @@ class SelfDestructManager(private val context: Context) {
             }
             
             Log.i(TAG, "🔐 [1/7] Validando código de confirmação...")
-            if (!validateConfirmationCode(params.confirmationCode)) {
+            if (!validateConfirmationCode(params.getCode())) {
                 Log.e(TAG, "❌ Código de confirmação inválido - abortando auto-destruição")
                 resumeGuardSafely(guardWasPaused)
                 return SelfDestructResult.Error("Invalid confirmation code")
@@ -175,7 +175,7 @@ class SelfDestructManager(private val context: Context) {
             sendFinalTelemetry(params.reason)
             Log.i(TAG, "✅ [7/9] Telemetria final enviada")
             
-            if (params.wipeData) {
+            if (params.shouldWipeData()) {
                 Log.i(TAG, "🧹 [8/9] Limpando dados da aplicação...")
                 clearAppData()
                 Log.i(TAG, "✅ [8/9] Dados limpos com sucesso")

@@ -184,8 +184,8 @@ class MdmCommandReceiver(private val context: Context) {
                             }
                             is CommandParameters.UninstallAppParameters -> {
                                 Log.i(TAG, "🚨 UNINSTALL_APP - Motivo: ${params.reason}")
-                                Log.i(TAG, "🚨 UNINSTALL_APP - Wipe data: ${params.wipeData}")
-                                Log.i(TAG, "🚨 UNINSTALL_APP - Confirmation code: ${if (params.confirmationCode.isNotEmpty()) "presente" else "ausente"}")
+                                Log.i(TAG, "🚨 UNINSTALL_APP - Wipe data: ${params.shouldWipeData()}")
+                                Log.i(TAG, "🚨 UNINSTALL_APP - Confirmation code: ${if (params.getCode().isNotEmpty()) "presente (${params.getCode().take(4)}...)" else "ausente"}")
                             }
                             is CommandParameters.ConfigureUninstallCodeParameters -> {
                                 Log.i(TAG, "🔐 CONFIGURE_UNINSTALL_CODE - Configurando código de confirmação")
@@ -318,8 +318,8 @@ class MdmCommandReceiver(private val context: Context) {
                 is CommandParameters.UninstallAppParameters -> {
                     Log.i(TAG, "🚨 UNINSTALL_APP - Iniciando auto-destruição")
                     Log.i(TAG, "    Motivo: ${parameters.reason}")
-                    Log.i(TAG, "    Wipe data: ${parameters.wipeData}")
-                    Log.i(TAG, "    Confirmation code: ${if (parameters.confirmationCode.isNotEmpty()) "presente" else "ausente"}")
+                    Log.i(TAG, "    Wipe data: ${parameters.shouldWipeData()}")
+                    Log.i(TAG, "    Confirmation code: ${if (parameters.getCode().isNotEmpty()) "presente (${parameters.getCode().take(4)}...)" else "ausente"}")
                     
                     val selfDestructManager = SelfDestructManager(context)
                     val result = selfDestructManager.executeSelfDestruct(parameters)
