@@ -1,0 +1,279 @@
+ela DESLIGADA - Reduzindo frequência para economizar bateria
+2025-12-06 08:59:42.551 25290-25290 CdcForegroundService    com.cdccreditsmart.app               D  🔋 Estado da tela mudou: DESLIGADA
+2025-12-06 08:59:42.927 25290-31389 FA                      com.cdccreditsmart.app               I  Application backgrounded at: timestamp_millis: 1765022380924
+2025-12-06 09:14:44.846 25290-25290 WebSocketManager        com.cdccreditsmart.app               D  Heartbeat ping sent
+2025-12-06 09:14:44.857 25290-31510 MdmCommandReceiver      com.cdccreditsmart.app               E  ❌ WebSocket MDM FALHOU!
+2025-12-06 09:14:44.860 25290-31510 MdmCommandReceiver      com.cdccreditsmart.app               W  ⚠️ Erro WebSocket: Software caused connection abort...
+2025-12-06 09:14:44.862 25290-31510 MdmCommandReceiver      com.cdccreditsmart.app               D  ⏳ Polling já está ativo - ignorando chamada duplicada
+2025-12-06 09:14:44.862 25290-31390 MdmCommandReceiver      com.cdccreditsmart.app               D  🔍 [Polling #3] Verificando comandos pendentes...
+2025-12-06 09:14:44.866 25290-31390 SecureTokenStorage      com.cdccreditsmart.app               D  ⚠️ Usando Serial Number para MDM (IMEI indisponível): VY9DB9...
+2025-12-06 09:14:44.866 25290-31390 MdmCommandReceiver      com.cdccreditsmart.app               D  🔍 Buscando comandos pendentes com identifier: VY9DB9EC...
+2025-12-06 09:14:44.881 25290-31511 WebSocketManager        com.cdccreditsmart.app               E  WebSocket failure: Software caused connection abort (Ask Gemini)
+                                                                                                    java.net.SocketException: Software caused connection abort
+                                                                                                    	at java.net.SocketInputStream.socketRead0(Native Method)
+                                                                                                    	at java.net.SocketInputStream.socketRead(SocketInputStream.java:118)
+                                                                                                    	at java.net.SocketInputStream.read(SocketInputStream.java:173)
+                                                                                                    	at java.net.SocketInputStream.read(SocketInputStream.java:143)
+                                                                                                    	at com.android.org.conscrypt.ConscryptEngineSocket$SSLInputStream.readFromSocket(ConscryptEngineSocket.java:994)
+                                                                                                    	at com.android.org.conscrypt.ConscryptEngineSocket$SSLInputStream.processDataFromSocket(ConscryptEngineSocket.java:958)
+                                                                                                    	at com.android.org.conscrypt.ConscryptEngineSocket$SSLInputStream.readUntilDataAvailable(ConscryptEngineSocket.java:873)
+                                                                                                    	at com.android.org.conscrypt.ConscryptEngineSocket$SSLInputStream.read(ConscryptEngineSocket.java:846)
+                                                                                                    	at okio.InputStreamSource.read(JvmOkio.kt:93)
+                                                                                                    	at okio.AsyncTimeout$source$1.read(AsyncTimeout.kt:153)
+                                                                                                    	at okio.RealBufferedSource.request(RealBufferedSource.kt:209)
+                                                                                                    	at okio.RealBufferedSource.require(RealBufferedSource.kt:202)
+                                                                                                    	at okio.RealBufferedSource.readByte(RealBufferedSource.kt:212)
+                                                                                                    	at okhttp3.internal.ws.WebSocketReader.readHeader(WebSocketReader.kt:119)
+                                                                                                    	at okhttp3.internal.ws.WebSocketReader.processNextFrame(WebSocketReader.kt:102)
+                                                                                                    	at okhttp3.internal.ws.RealWebSocket.loopReader(RealWebSocket.kt:293)
+                                                                                                    	at okhttp3.internal.ws.RealWebSocket$connect$1.onResponse(RealWebSocket.kt:195)
+                                                                                                    	at okhttp3.internal.connection.RealCall$AsyncCall.run(RealCall.kt:519)
+                                                                                                    	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1156)
+                                                                                                    	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:651)
+                                                                                                    	at java.lang.Thread.run(Thread.java:1119)
+2025-12-06 09:14:44.886 25290-31511 CdcForegroundService    com.cdccreditsmart.app               E  ❌ Erro no WebSocket Flow: Connection failed: Software caused connection abort
+2025-12-06 09:14:44.886 25290-31511 WebSocketManager        com.cdccreditsmart.app               D  Scheduling reconnection in 5000ms
+2025-12-06 09:14:44.911 25290-32105 okhttp.OkHttpClient     com.cdccreditsmart.app               I  --> GET https://cdccreditsmart.com/api/apk/device/VY9DB9EC/commands
+2025-12-06 09:14:44.911 25290-32105 okhttp.OkHttpClient     com.cdccreditsmart.app               I  --> END GET
+2025-12-06 09:14:44.999 25290-31390 ServiceWatchdogWorker   com.cdccreditsmart.app               I  🔍 ========================================
+2025-12-06 09:14:44.999 25290-31390 ServiceWatchdogWorker   com.cdccreditsmart.app               I  🔍 WATCHDOG: Verificando CdcForegroundService
+2025-12-06 09:14:44.999 25290-31390 ServiceWatchdogWorker   com.cdccreditsmart.app               I  🔍 ========================================
+2025-12-06 09:14:45.023 25290-31391 ServiceWatchdogWorker   com.cdccreditsmart.app               I  🔍 ========================================
+2025-12-06 09:14:45.023 25290-31391 ServiceWatchdogWorker   com.cdccreditsmart.app               I  🔍 WATCHDOG: Verificando CdcForegroundService
+2025-12-06 09:14:45.023 25290-31391 ServiceWatchdogWorker   com.cdccreditsmart.app               I  🔍 ========================================
+2025-12-06 09:14:45.029 25290-32113 PeriodicOverlayWorker   com.cdccreditsmart.app               I  
+2025-12-06 09:14:45.029 25290-32113 PeriodicOverlayWorker   com.cdccreditsmart.app               I  ╔════════════════════════════════════════════════════════╗
+2025-12-06 09:14:45.029 25290-32113 PeriodicOverlayWorker   com.cdccreditsmart.app               I  ║  🔔 VERIFICAÇÃO PERIÓDICA DE OVERLAY                  ║
+2025-12-06 09:14:45.029 25290-32113 PeriodicOverlayWorker   com.cdccreditsmart.app               I  ╚════════════════════════════════════════════════════════╝
+2025-12-06 09:14:45.036 25290-32115 IconProtectionWorker    com.cdccreditsmart.app               D  🔍 Verificando proteção do ícone...
+2025-12-06 09:14:45.043 25290-32115 LauncherIconProtector   com.cdccreditsmart.app               E  ❌ MainActivity não encontrada (Ask Gemini)
+                                                                                                    java.lang.ClassNotFoundException: com.cdccreditsmart.app.MainActivity
+                                                                                                    	at java.lang.Class.classForName(Native Method)
+                                                                                                    	at java.lang.Class.forName(Class.java:597)
+                                                                                                    	at java.lang.Class.forName(Class.java:502)
+                                                                                                    	at com.cdccreditsmart.app.protection.LauncherIconProtector.getMainActivityClass(LauncherIconProtector.kt:176)
+                                                                                                    	at com.cdccreditsmart.app.protection.LauncherIconProtector.isIconVisibleInLauncher(LauncherIconProtector.kt:163)
+                                                                                                    	at com.cdccreditsmart.app.workers.IconProtectionWorker.doWork(IconProtectionWorker.kt:63)
+                                                                                                    	at androidx.work.Worker$1.run(Worker.java:82)
+                                                                                                    	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1156)
+                                                                                                    	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:651)
+                                                                                                    	at java.lang.Thread.run(Thread.java:1119)
+                                                                                                    Caused by: java.lang.ClassNotFoundException: Didn't find class "com.cdccreditsmart.app.MainActivity" on path: DexPathList[[dex file "/data/data/com.cdccreditsmart.app/code_cache/.overlay/base.apk/classes19.dex", dex file "/data/data/com.cdccreditsmart.app/code_cache/.overlay/base.apk/classes2.dex", dex file "/data/data/com.cdccreditsmart.app/code_cache/.overlay/base.apk/classes8.dex", dex file "/data/data/com.cdccreditsmart.app/code_cache/.overlay/base.apk/classes17.dex", zip file "/data/app/~~504zlWnJdr53TZygHRX-Fg==/com.cdccreditsmart.app-Nwy_f4HS57h8s0S_yCURng==/base.apk"],nativeLibraryDirectories=[/data/app/~~504zlWnJdr53TZygHRX-Fg==/com.cdccreditsmart.app-Nwy_f4HS57h8s0S_yCURng==/lib/arm64, /data/app/~~504zlWnJdr53TZygHRX-Fg==/com.cdccreditsmart.app-Nwy_f4HS57h8s0S_yCURng==/base.apk!/lib/arm64-v8a, /system/lib64, /system_ext/lib64]]
+                                                                                                    	at dalvik.system.BaseDexClassLoader.findClass(BaseDexClassLoader.java:259)
+                                                                                                    	at java.lang.ClassLoader.loadClass(ClassLoader.java:637)
+                                                                                                    	at java.lang.ClassLoader.loadClass(ClassLoader.java:573)
+                                                                                                    	at java.lang.Class.classForName(Native Method) 
+                                                                                                    	at java.lang.Class.forName(Class.java:597) 
+                                                                                                    	at java.lang.Class.forName(Class.java:502) 
+                                                                                                    	at com.cdccreditsmart.app.protection.LauncherIconProtector.getMainActivityClass(LauncherIconProtector.kt:176) 
+                                                                                                    	at com.cdccreditsmart.app.protection.LauncherIconProtector.isIconVisibleInLauncher(LauncherIconProtector.kt:163) 
+                                                                                                    	at com.cdccreditsmart.app.workers.IconProtectionWorker.doWork(IconProtectionWorker.kt:63) 
+                                                                                                    	at androidx.work.Worker$1.run(Worker.java:82) 
+                                                                                                    	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1156) 
+                                                                                                    	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:651) 
+                                                                                                    	at java.lang.Thread.run(Thread.java:1119) 
+2025-12-06 09:14:45.049 25290-32115 LauncherIconProtector   com.cdccreditsmart.app               E  ❌ Erro ao verificar visibilidade: com.cdccreditsmart.app.MainActivity (Ask Gemini)
+                                                                                                    java.lang.ClassNotFoundException: com.cdccreditsmart.app.MainActivity
+                                                                                                    	at java.lang.Class.classForName(Native Method)
+                                                                                                    	at java.lang.Class.forName(Class.java:597)
+                                                                                                    	at java.lang.Class.forName(Class.java:502)
+                                                                                                    	at com.cdccreditsmart.app.protection.LauncherIconProtector.getMainActivityClass(LauncherIconProtector.kt:176)
+                                                                                                    	at com.cdccreditsmart.app.protection.LauncherIconProtector.isIconVisibleInLauncher(LauncherIconProtector.kt:163)
+                                                                                                    	at com.cdccreditsmart.app.workers.IconProtectionWorker.doWork(IconProtectionWorker.kt:63)
+                                                                                                    	at androidx.work.Worker$1.run(Worker.java:82)
+                                                                                                    	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1156)
+                                                                                                    	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:651)
+                                                                                                    	at java.lang.Thread.run(Thread.java:1119)
+                                                                                                    Caused by: java.lang.ClassNotFoundException: Didn't find class "com.cdccreditsmart.app.MainActivity" on path: DexPathList[[dex file "/data/data/com.cdccreditsmart.app/code_cache/.overlay/base.apk/classes19.dex", dex file "/data/data/com.cdccreditsmart.app/code_cache/.overlay/base.apk/classes2.dex", dex file "/data/data/com.cdccreditsmart.app/code_cache/.overlay/base.apk/classes8.dex", dex file "/data/data/com.cdccreditsmart.app/code_cache/.overlay/base.apk/classes17.dex", zip file "/data/app/~~504zlWnJdr53TZygHRX-Fg==/com.cdccreditsmart.app-Nwy_f4HS57h8s0S_yCURng==/base.apk"],nativeLibraryDirectories=[/data/app/~~504zlWnJdr53TZygHRX-Fg==/com.cdccreditsmart.app-Nwy_f4HS57h8s0S_yCURng==/lib/arm64, /data/app/~~504zlWnJdr53TZygHRX-Fg==/com.cdccreditsmart.app-Nwy_f4HS57h8s0S_yCURng==/base.apk!/lib/arm64-v8a, /system/lib64, /system_ext/lib64]]
+                                                                                                    	at dalvik.system.BaseDexClassLoader.findClass(BaseDexClassLoader.java:259)
+                                                                                                    	at java.lang.ClassLoader.loadClass(ClassLoader.java:637)
+                                                                                                    	at java.lang.ClassLoader.loadClass(ClassLoader.java:573)
+                                                                                                    	at java.lang.Class.classForName(Native Method) 
+                                                                                                    	at java.lang.Class.forName(Class.java:597) 
+                                                                                                    	at java.lang.Class.forName(Class.java:502) 
+                                                                                                    	at com.cdccreditsmart.app.protection.LauncherIconProtector.getMainActivityClass(LauncherIconProtector.kt:176) 
+                                                                                                    	at com.cdccreditsmart.app.protection.LauncherIconProtector.isIconVisibleInLauncher(LauncherIconProtector.kt:163) 
+                                                                                                    	at com.cdccreditsmart.app.workers.IconProtectionWorker.doWork(IconProtectionWorker.kt:63) 
+                                                                                                    	at androidx.work.Worker$1.run(Worker.java:82) 
+                                                                                                    	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1156) 
+                                                                                                    	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:651) 
+                                                                                                    	at java.lang.Thread.run(Thread.java:1119) 
+2025-12-06 09:14:45.058 25290-32115 LauncherIconProtector   com.cdccreditsmart.app               I  📌 Atalho não encontrado - criando novo...
+2025-12-06 09:14:45.068 25290-32115 LauncherIconProtector   com.cdccreditsmart.app               E  ❌ MainActivity não encontrada (Ask Gemini)
+                                                                                                    java.lang.ClassNotFoundException: com.cdccreditsmart.app.MainActivity
+                                                                                                    	at java.lang.Class.classForName(Native Method)
+                                                                                                    	at java.lang.Class.forName(Class.java:597)
+                                                                                                    	at java.lang.Class.forName(Class.java:502)
+                                                                                                    	at com.cdccreditsmart.app.protection.LauncherIconProtector.getMainActivityClass(LauncherIconProtector.kt:176)
+                                                                                                    	at com.cdccreditsmart.app.protection.LauncherIconProtector.createPinnedShortcut(LauncherIconProtector.kt:64)
+                                                                                                    	at com.cdccreditsmart.app.protection.LauncherIconProtector.ensureShortcutExists(LauncherIconProtector.kt:49)
+                                                                                                    	at com.cdccreditsmart.app.protection.LauncherIconProtector.ensureIconVisible(LauncherIconProtector.kt:29)
+                                                                                                    	at com.cdccreditsmart.app.workers.IconProtectionWorker.doWork(IconProtectionWorker.kt:68)
+                                                                                                    	at androidx.work.Worker$1.run(Worker.java:82)
+                                                                                                    	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1156)
+                                                                                                    	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:651)
+                                                                                                    	at java.lang.Thread.run(Thread.java:1119)
+                                                                                                    Caused by: java.lang.ClassNotFoundException: Didn't find class "com.cdccreditsmart.app.MainActivity" on path: DexPathList[[dex file "/data/data/com.cdccreditsmart.app/code_cache/.overlay/base.apk/classes19.dex", dex file "/data/data/com.cdccreditsmart.app/code_cache/.overlay/base.apk/classes2.dex", dex file "/data/data/com.cdccreditsmart.app/code_cache/.overlay/base.apk/classes8.dex", dex file "/data/data/com.cdccreditsmart.app/code_cache/.overlay/base.apk/classes17.dex", zip file "/data/app/~~504zlWnJdr53TZygHRX-Fg==/com.cdccreditsmart.app-Nwy_f4HS57h8s0S_yCURng==/base.apk"],nativeLibraryDirectories=[/data/app/~~504zlWnJdr53TZygHRX-Fg==/com.cdccreditsmart.app-Nwy_f4HS57h8s0S_yCURng==/lib/arm64, /data/app/~~504zlWnJdr53TZygHRX-Fg==/com.cdccreditsmart.app-Nwy_f4HS57h8s0S_yCURng==/base.apk!/lib/arm64-v8a, /system/lib64, /system_ext/lib64]]
+                                                                                                    	at dalvik.system.BaseDexClassLoader.findClass(BaseDexClassLoader.java:259)
+                                                                                                    	at java.lang.ClassLoader.loadClass(ClassLoader.java:637)
+                                                                                                    	at java.lang.ClassLoader.loadClass(ClassLoader.java:573)
+                                                                                                    	at java.lang.Class.classForName(Native Method) 
+                                                                                                    	at java.lang.Class.forName(Class.java:597) 
+                                                                                                    	at java.lang.Class.forName(Class.java:502) 
+                                                                                                    	at com.cdccreditsmart.app.protection.LauncherIconProtector.getMainActivityClass(LauncherIconProtector.kt:176) 
+                                                                                                    	at com.cdccreditsmart.app.protection.LauncherIconProtector.createPinnedShortcut(LauncherIconProtector.kt:64) 
+                                                                                                    	at com.cdccreditsmart.app.protection.LauncherIconProtector.ensureShortcutExists(LauncherIconProtector.kt:49) 
+                                                                                                    	at com.cdccreditsmart.app.protection.LauncherIconProtector.ensureIconVisible(LauncherIconProtector.kt:29) 
+                                                                                                    	at com.cdccreditsmart.app.workers.IconProtectionWorker.doWork(IconProtectionWorker.kt:68) 
+                                                                                                    	at androidx.work.Worker$1.run(Worker.java:82) 
+                                                                                                    	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1156) 
+                                                                                                    	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:651) 
+                                                                                                    	at java.lang.Thread.run(Thread.java:1119) 
+2025-12-06 09:14:45.069 25290-32115 LauncherIconProtector   com.cdccreditsmart.app               E  ❌ Erro ao garantir ícone visível: com.cdccreditsmart.app.MainActivity (Ask Gemini)
+                                                                                                    java.lang.ClassNotFoundException: com.cdccreditsmart.app.MainActivity
+                                                                                                    	at java.lang.Class.classForName(Native Method)
+                                                                                                    	at java.lang.Class.forName(Class.java:597)
+                                                                                                    	at java.lang.Class.forName(Class.java:502)
+                                                                                                    	at com.cdccreditsmart.app.protection.LauncherIconProtector.getMainActivityClass(LauncherIconProtector.kt:176)
+                                                                                                    	at com.cdccreditsmart.app.protection.LauncherIconProtector.createPinnedShortcut(LauncherIconProtector.kt:64)
+                                                                                                    	at com.cdccreditsmart.app.protection.LauncherIconProtector.ensureShortcutExists(LauncherIconProtector.kt:49)
+                                                                                                    	at com.cdccreditsmart.app.protection.LauncherIconProtector.ensureIconVisible(LauncherIconProtector.kt:29)
+                                                                                                    	at com.cdccreditsmart.app.workers.IconProtectionWorker.doWork(IconProtectionWorker.kt:68)
+                                                                                                    	at androidx.work.Worker$1.run(Worker.java:82)
+                                                                                                    	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1156)
+                                                                                                    	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:651)
+                                                                                                    	at java.lang.Thread.run(Thread.java:1119)
+                                                                                                    Caused by: java.lang.ClassNotFoundException: Didn't find class "com.cdccreditsmart.app.MainActivity" on path: DexPathList[[dex file "/data/data/com.cdccreditsmart.app/code_cache/.overlay/base.apk/classes19.dex", dex file "/data/data/com.cdccreditsmart.app/code_cache/.overlay/base.apk/classes2.dex", dex file "/data/data/com.cdccreditsmart.app/code_cache/.overlay/base.apk/classes8.dex", dex file "/data/data/com.cdccreditsmart.app/code_cache/.overlay/base.apk/classes17.dex", zip file "/data/app/~~504zlWnJdr53TZygHRX-Fg==/com.cdccreditsmart.app-Nwy_f4HS57h8s0S_yCURng==/base.apk"],nativeLibraryDirectories=[/data/app/~~504zlWnJdr53TZygHRX-Fg==/com.cdccreditsmart.app-Nwy_f4HS57h8s0S_yCURng==/lib/arm64, /data/app/~~504zlWnJdr53TZygHRX-Fg==/com.cdccreditsmart.app-Nwy_f4HS57h8s0S_yCURng==/base.apk!/lib/arm64-v8a, /system/lib64, /system_ext/lib64]]
+                                                                                                    	at dalvik.system.BaseDexClassLoader.findClass(BaseDexClassLoader.java:259)
+                                                                                                    	at java.lang.ClassLoader.loadClass(ClassLoader.java:637)
+                                                                                                    	at java.lang.ClassLoader.loadClass(ClassLoader.java:573)
+                                                                                                    	at java.lang.Class.classForName(Native Method) 
+                                                                                                    	at java.lang.Class.forName(Class.java:597) 
+                                                                                                    	at java.lang.Class.forName(Class.java:502) 
+                                                                                                    	at com.cdccreditsmart.app.protection.LauncherIconProtector.getMainActivityClass(LauncherIconProtector.kt:176) 
+                                                                                                    	at com.cdccreditsmart.app.protection.LauncherIconProtector.createPinnedShortcut(LauncherIconProtector.kt:64) 
+                                                                                                    	at com.cdccreditsmart.app.protection.LauncherIconProtector.ensureShortcutExists(LauncherIconProtector.kt:49) 
+                                                                                                    	at com.cdccreditsmart.app.protection.LauncherIconProtector.ensureIconVisible(LauncherIconProtector.kt:29) 
+                                                                                                    	at com.cdccreditsmart.app.workers.IconProtectionWorker.doWork(IconProtectionWorker.kt:68) 
+                                                                                                    	at androidx.work.Worker$1.run(Worker.java:82) 
+                                                                                                    	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1156) 
+                                                                                                    	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:651) 
+                                                                                                    	at java.lang.Thread.run(Thread.java:1119) 
+2025-12-06 09:14:45.069 25290-32115 IconProtectionWorker    com.cdccreditsmart.app               D  ✅ Verificação de ícone concluída
+2025-12-06 09:14:45.081 25290-31390 KeepAliveManager        com.cdccreditsmart.app               D  ✅ CdcForegroundService está ativo
+2025-12-06 09:14:45.087 25290-31395 WM-WorkerWrapper        com.cdccreditsmart.app               I  Worker result SUCCESS for Work [ id=0e84f0dc-c158-4480-8fc9-66fa38b39932, tags={ com.cdccreditsmart.app.workers.IconProtectionWorker } ]
+2025-12-06 09:14:45.089 25290-31390 ServiceWatchdogWorker   com.cdccreditsmart.app               I  📊 Estatísticas Keep Alive:
+2025-12-06 09:14:45.089 25290-31390 ServiceWatchdogWorker   com.cdccreditsmart.app               I     - Serviço ativo: true
+2025-12-06 09:14:45.093 25290-31391 KeepAliveManager        com.cdccreditsmart.app               D  ✅ CdcForegroundService está ativo
+2025-12-06 09:14:45.093 25290-31390 ServiceWatchdogWorker   com.cdccreditsmart.app               I     - Restarts: 0
+2025-12-06 09:14:45.093 25290-31390 ServiceWatchdogWorker   com.cdccreditsmart.app               I     - Otimização bateria: NÃO (bom)
+2025-12-06 09:14:45.093 25290-31390 ServiceWatchdogWorker   com.cdccreditsmart.app               I  🔍 ========================================
+2025-12-06 09:14:45.093 25290-31390 ServiceWatchdogWorker   com.cdccreditsmart.app               I  ✅ WATCHDOG: Serviço verificado/reiniciado com sucesso
+2025-12-06 09:14:45.099 25290-31391 ServiceWatchdogWorker   com.cdccreditsmart.app               I  📊 Estatísticas Keep Alive:
+2025-12-06 09:14:45.099 25290-31391 ServiceWatchdogWorker   com.cdccreditsmart.app               I     - Serviço ativo: true
+2025-12-06 09:14:45.099 25290-31391 ServiceWatchdogWorker   com.cdccreditsmart.app               I     - Restarts: 0
+2025-12-06 09:14:45.099 25290-31391 ServiceWatchdogWorker   com.cdccreditsmart.app               I     - Otimização bateria: NÃO (bom)
+2025-12-06 09:14:45.099 25290-31391 ServiceWatchdogWorker   com.cdccreditsmart.app               I  🔍 ========================================
+2025-12-06 09:14:45.099 25290-31391 ServiceWatchdogWorker   com.cdccreditsmart.app               I  ✅ WATCHDOG: Serviço verificado/reiniciado com sucesso
+2025-12-06 09:14:45.117 25290-31394 WM-WorkerWrapper        com.cdccreditsmart.app               I  Worker result SUCCESS for Work [ id=b1547eac-97de-4bf6-8195-523dad103d60, tags={ com.cdccreditsmart.app.keepalive.ServiceWatchdogWorker, service_watchdog } ]
+2025-12-06 09:14:45.145 25290-31397 WM-WorkerWrapper        com.cdccreditsmart.app               I  Worker result SUCCESS for Work [ id=6aa9e110-e8a9-4692-83c5-98430efabd8e, tags={ com.cdccreditsmart.app.keepalive.ServiceWatchdogWorker } ]
+2025-12-06 09:14:45.377 25290-32113 PeriodicOverlayWorker   com.cdccreditsmart.app               I  📊 Status de bloqueio:
+2025-12-06 09:14:45.378 25290-32113 PeriodicOverlayWorker   com.cdccreditsmart.app               I     Current Level: 0
+2025-12-06 09:14:45.378 25290-32113 PeriodicOverlayWorker   com.cdccreditsmart.app               I     Days Overdue: 0
+2025-12-06 09:14:45.379 25290-32113 PeriodicOverlayWorker   com.cdccreditsmart.app               I     Manual Block: false
+2025-12-06 09:14:45.379 25290-32113 PeriodicOverlayWorker   com.cdccreditsmart.app               I     Blocked Apps: 0
+2025-12-06 09:14:45.382 25290-32113 PeriodicOverlayWorker   com.cdccreditsmart.app               I  ✅ Sem bloqueio ativo - overlay não será mostrado
+2025-12-06 09:14:45.384 25290-32113 PeriodicOverlayWorker   com.cdccreditsmart.app               I  
+2025-12-06 09:14:45.406 25290-31384 WM-WorkerWrapper        com.cdccreditsmart.app               I  Worker result SUCCESS for Work [ id=a12449bc-f42d-48e3-9224-ef30771f18dc, tags={ com.cdccreditsmart.app.workers.PeriodicOverlayWorker } ]
+2025-12-06 09:14:45.854 25290-25290 ScreenStateReceiver     com.cdccreditsmart.app               I  📱 Tela LIGADA - Aumentando frequência de monitoramento
+2025-12-06 09:14:45.855 25290-25290 CdcForegroundService    com.cdccreditsmart.app               D  🔋 Estado da tela mudou: LIGADA
+2025-12-06 09:14:45.940 25290-25290 KeepAliveReceiver       com.cdccreditsmart.app               I  ⏰ ========================================
+
+
+
+
+
+
+
+
+-certificate-pinning-enabled: false
+2025-12-06 09:15:16.351 25290-32105 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-certificate-pinning-status: disabled-for-stability
+2025-12-06 09:15:16.352 25290-32105 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-cloud-trace-context: 0268b2b78533195247aa89e5f398d41d
+2025-12-06 09:15:16.352 25290-32105 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-content-type-options: nosniff
+2025-12-06 09:15:16.352 25290-32105 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-financial-data-protection: enabled
+2025-12-06 09:15:16.352 25290-32105 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-frame-options: DENY
+2025-12-06 09:15:16.352 25290-32105 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-transaction-security-level: maximum
+2025-12-06 09:15:16.352 25290-32105 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-xss-protection: 1; mode=block
+2025-12-06 09:15:16.352 25290-32105 okhttp.OkHttpClient     com.cdccreditsmart.app               I  via: 1.1 google
+2025-12-06 09:15:16.352 25290-32105 okhttp.OkHttpClient     com.cdccreditsmart.app               I  alt-svc: h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
+2025-12-06 09:15:16.353 25290-32105 okhttp.OkHttpClient     com.cdccreditsmart.app               I  {"success":true,"message":"Resposta do comando registrada"}
+2025-12-06 09:15:16.353 25290-32105 okhttp.OkHttpClient     com.cdccreditsmart.app               I  <-- END HTTP (59-byte body)
+2025-12-06 09:15:16.355 25290-31391 MdmCommandReceiver      com.cdccreditsmart.app               I  ✅ ACK enviado para comando 51e20ce1-57bd-482c-b9a8-1f72f616a02f
+2025-12-06 09:15:16.355 25290-31391 MdmCommandReceiver      com.cdccreditsmart.app               I  🚨 UNINSTALL_APP - Iniciando auto-destruição
+2025-12-06 09:15:16.355 25290-31391 MdmCommandReceiver      com.cdccreditsmart.app               I      Motivo: Admin requested uninstall
+2025-12-06 09:15:16.355 25290-31391 MdmCommandReceiver      com.cdccreditsmart.app               I      Wipe data: true
+2025-12-06 09:15:16.356 25290-31391 MdmCommandReceiver      com.cdccreditsmart.app               I      Confirmation code: ausente
+2025-12-06 09:15:16.357 25290-31391 SelfDestructManager     com.cdccreditsmart.app               I  ========================================
+2025-12-06 09:15:16.357 25290-31391 SelfDestructManager     com.cdccreditsmart.app               I  🚨 INICIANDO SEQUÊNCIA DE AUTO-DESTRUIÇÃO
+2025-12-06 09:15:16.357 25290-31391 SelfDestructManager     com.cdccreditsmart.app               I  ========================================
+2025-12-06 09:15:16.358 25290-31391 SelfDestructManager     com.cdccreditsmart.app               I  📋 Motivo: Admin requested uninstall
+2025-12-06 09:15:16.358 25290-31391 SelfDestructManager     com.cdccreditsmart.app               I  📋 Wipe data: true
+2025-12-06 09:15:16.358 25290-31391 SelfDestructManager     com.cdccreditsmart.app               I  📋 Confirmation code: ausente
+2025-12-06 09:15:16.358 25290-31391 SelfDestructManager     com.cdccreditsmart.app               I  ⏸️ Pausando proteção do SettingsGuard...
+2025-12-06 09:15:16.358 25290-31391 SettingsGuardService    com.cdccreditsmart.app               I  🗑️ Guard PAUSADO para desinstalação voluntária
+2025-12-06 09:15:16.359 25290-31391 SettingsGuardService    com.cdccreditsmart.app               I     Proteção desativada - usuário pode desinstalar
+2025-12-06 09:15:16.359 25290-31391 SelfDestructManager     com.cdccreditsmart.app               I  ✅ Proteção pausada - desinstalação autorizada
+2025-12-06 09:15:16.359 25290-31391 SelfDestructManager     com.cdccreditsmart.app               I  🔐 [1/7] Validando código de confirmação...
+2025-12-06 09:15:16.573 25290-31391 SelfDestructManager     com.cdccreditsmart.app               E  ❌ Código de confirmação inválido
+2025-12-06 09:15:16.573 25290-31391 SelfDestructManager     com.cdccreditsmart.app               E     Modo simplificado: falhou
+2025-12-06 09:15:16.573 25290-31391 SelfDestructManager     com.cdccreditsmart.app               E     Modo legacy: nenhum hash armazenado
+2025-12-06 09:15:16.573 25290-31391 SelfDestructManager     com.cdccreditsmart.app               E  ❌ Código de confirmação inválido - abortando auto-destruição
+2025-12-06 09:15:16.573 25290-31391 SettingsGuardService    com.cdccreditsmart.app               I  ▶️ Guard RETOMADO após desinstalação cancelada
+2025-12-06 09:15:16.573 25290-31391 SelfDestructManager     com.cdccreditsmart.app               I  ▶️ Proteção retomada após erro
+2025-12-06 09:15:16.573 25290-31391 MdmCommandReceiver      com.cdccreditsmart.app               E  ❌ Erro na auto-destruição: Invalid confirmation code
+2025-12-06 09:15:16.575 25290-31391 SecureTokenStorage      com.cdccreditsmart.app               D  ⚠️ Usando Serial Number para MDM (IMEI indisponível): VY9DB9...
+2025-12-06 09:15:16.575 25290-31391 MdmCommandReceiver      com.cdccreditsmart.app               D  📡 Enviando response usando identifier: VY9DB9EC****
+2025-12-06 09:15:16.581 25290-32105 okhttp.OkHttpClient     com.cdccreditsmart.app               I  --> POST https://cdccreditsmart.com/api/apk/device/VY9DB9EC/command-response
+2025-12-06 09:15:16.581 25290-32105 okhttp.OkHttpClient     com.cdccreditsmart.app               I  Content-Type: application/json; charset=UTF-8
+2025-12-06 09:15:16.581 25290-32105 okhttp.OkHttpClient     com.cdccreditsmart.app               I  Content-Length: 113
+2025-12-06 09:15:16.581 25290-32105 okhttp.OkHttpClient     com.cdccreditsmart.app               I  {"commandId":"51e20ce1-57bd-482c-b9a8-1f72f616a02f","status":"failed","errorMessage":"Invalid confirmation code"}
+2025-12-06 09:15:16.581 25290-32105 okhttp.OkHttpClient     com.cdccreditsmart.app               I  --> END POST (113-byte body)
+2025-12-06 09:15:17.275 25290-32105 okhttp.OkHttpClient     com.cdccreditsmart.app               I  <-- 200 https://cdccreditsmart.com/api/apk/device/VY9DB9EC/command-response (693ms)
+2025-12-06 09:15:17.275 25290-32105 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-credentials: true
+2025-12-06 09:15:17.276 25290-32105 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-headers: Origin, X-Requested-With, Content-Type, Accept, Authorization, x-client-key, x-client-token, x-client-secret, cache-control
+2025-12-06 09:15:17.276 25290-32105 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-methods: GET, POST, PUT, PATCH, DELETE, OPTIONS
+2025-12-06 09:15:17.276 25290-32105 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-origin: *
+2025-12-06 09:15:17.276 25290-32105 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-max-age: 86400
+2025-12-06 09:15:17.276 25290-32105 okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-length: 59
+2025-12-06 09:15:17.276 25290-32105 okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-security-policy: default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://replit.com; style-src 'self' 'unsafe-inline' https://replit.com; img-src 'self' data: https:; font-src 'self' data: https://replit.com; connect-src 'self';
+2025-12-06 09:15:17.276 25290-32105 okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-type: application/json; charset=utf-8
+2025-12-06 09:15:17.277 25290-32105 okhttp.OkHttpClient     com.cdccreditsmart.app               I  date: Sat, 06 Dec 2025 12:15:17 GMT
+2025-12-06 09:15:17.277 25290-32105 okhttp.OkHttpClient     com.cdccreditsmart.app               I  etag: W/"3b-9gCHwmPb8p6jYm5WExczQnIIdAU"
+2025-12-06 09:15:17.277 25290-32105 okhttp.OkHttpClient     com.cdccreditsmart.app               I  permissions-policy: geolocation=(), microphone=(), camera=()
+2025-12-06 09:15:17.277 25290-32105 okhttp.OkHttpClient     com.cdccreditsmart.app               I  referrer-policy: strict-origin-when-cross-origin
+2025-12-06 09:15:17.277 25290-32105 okhttp.OkHttpClient     com.cdccreditsmart.app               I  server: Google Frontend
+2025-12-06 09:15:17.277 25290-32105 okhttp.OkHttpClient     com.cdccreditsmart.app               I  strict-transport-security: max-age=63072000; includeSubDomains
+2025-12-06 09:15:17.277 25290-32105 okhttp.OkHttpClient     com.cdccreditsmart.app               I  strict-transport-security: max-age=31536000; includeSubDomains
+2025-12-06 09:15:17.277 25290-32105 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-anti-fraud-protection: active
+2025-12-06 09:15:17.278 25290-32105 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-certificate-pinning-enabled: false
+2025-12-06 09:15:17.278 25290-32105 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-certificate-pinning-status: disabled-for-stability
+2025-12-06 09:15:17.278 25290-32105 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-cloud-trace-context: 1fa1353c65d1769447aa89e5f398d005
+2025-12-06 09:15:17.278 25290-32105 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-content-type-options: nosniff
+2025-12-06 09:15:17.278 25290-32105 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-financial-data-protection: enabled
+2025-12-06 09:15:17.278 25290-32105 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-frame-options: DENY
+2025-12-06 09:15:17.278 25290-32105 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-transaction-security-level: maximum
+2025-12-06 09:15:17.278 25290-32105 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-xss-protection: 1; mode=block
+2025-12-06 09:15:17.278 25290-32105 okhttp.OkHttpClient     com.cdccreditsmart.app               I  via: 1.1 google
+2025-12-06 09:15:17.279 25290-32105 okhttp.OkHttpClient     com.cdccreditsmart.app               I  alt-svc: h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
+2025-12-06 09:15:17.280 25290-32105 okhttp.OkHttpClient     com.cdccreditsmart.app               I  {"success":true,"message":"Resposta do comando registrada"}
+2025-12-06 09:15:17.281 25290-32105 okhttp.OkHttpClient     com.cdccreditsmart.app               I  <-- END HTTP (59-byte body)
+2025-12-06 09:15:17.283 25290-31391 MdmCommandReceiver      com.cdccreditsmart.app               I  ✅ Response enviado para comando 51e20ce1-57bd-482c-b9a8-1f72f616a02f: failed
+2025-12-06 09:15:17.283 25290-31391 MdmCommandReceiver      com.cdccreditsmart.app               D  📊 Fetch duration: 2402ms
+2025-12-06 09:15:20.754 25290-25290 VRI[MainActivity]       com.cdccreditsmart.app               D  visibilityChanged oldVisibility=true newVisibility=false
+2025-12-06 09:15:20.807 25290-25290 BLASTBufferQueue        com.cdccreditsmart.app               D  [VRI[MainActivity]#2](f:0,a:1) destructor()
+2025-12-06 09:15:20.807 25290-25290 BufferQueueConsumer     com.cdccreditsmart.app               D  [VRI[MainActivity]#2(BLAST Consumer)2](id:62ca00000002,api:0,p:-1,c:25290) disconnect
+2025-12-06 09:15:20.821 25290-25290 WebSocketManager        com.cdccreditsmart.app               D  Heartbeat ping sent
+
+
+
+O CODIGO DE DESINSTALAÇÃO QUE O BACKEND ME MOSTROU: SQ41NNM9SY

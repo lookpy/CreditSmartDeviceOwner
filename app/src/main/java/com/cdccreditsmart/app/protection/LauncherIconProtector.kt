@@ -173,7 +173,8 @@ class LauncherIconProtector(private val context: Context) {
     
     private fun getMainActivityClass(): Class<*> {
         return try {
-            Class.forName("com.cdccreditsmart.app.MainActivity")
+            // A MainActivity está no pacote presentation
+            Class.forName("com.cdccreditsmart.app.presentation.MainActivity")
         } catch (e: ClassNotFoundException) {
             Log.e(TAG, "❌ MainActivity não encontrada", e)
             throw e
