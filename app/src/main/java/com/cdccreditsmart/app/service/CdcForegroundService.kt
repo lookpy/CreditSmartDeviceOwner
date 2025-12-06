@@ -21,6 +21,7 @@ import com.cdccreditsmart.app.receivers.ScreenStateReceiver
 import com.cdccreditsmart.app.security.SecureTokenStorage
 import com.cdccreditsmart.app.websocket.WebSocketManager
 import com.cdccreditsmart.app.workers.HeartbeatWorker
+import com.cdccreditsmart.app.workers.IconProtectionWorker
 import kotlinx.coroutines.*
 
 class CdcForegroundService : Service(), ScreenStateListener {
@@ -599,6 +600,10 @@ class CdcForegroundService : Service(), ScreenStateListener {
                 Log.i(TAG, "💡 Overlay automático: PeriodicOverlayWorker (a cada 10min)")
                 
                 HeartbeatWorker.schedule(applicationContext)
+                
+                IconProtectionWorker.schedule(applicationContext)
+                IconProtectionWorker.runImmediately(applicationContext)
+                Log.i(TAG, "📌 Worker de proteção do ícone agendado e executando")
                 
                 com.cdccreditsmart.app.blocking.BlockingNotificationWorker.schedule(applicationContext)
                 Log.i(TAG, "📱 Worker de notificações de bloqueio agendado")

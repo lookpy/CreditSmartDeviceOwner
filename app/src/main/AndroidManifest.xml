@@ -41,6 +41,9 @@
     <!-- Battery optimization exemption (Keep-Alive) -->
     <uses-permission android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS" />
     
+    <!-- Shortcut creation for icon protection -->
+    <uses-permission android:name="com.android.launcher.permission.INSTALL_SHORTCUT" />
+    
     <!-- Boot Interceptor Permissions -->
     <uses-permission android:name="android.permission.REBOOT" />
     
