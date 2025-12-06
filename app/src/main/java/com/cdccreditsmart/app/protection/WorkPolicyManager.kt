@@ -760,12 +760,27 @@ class WorkPolicyManager(private val context: Context) {
     private fun blockAddUser(): Boolean {
         // CRÍTICO: Verificar se pareamento foi concluído ANTES de bloquear
         // Bloquear ANTES do pareamento impede Play Store e causa crash no FCM
-        val tokenStorage = com.cdccreditsmart.app.security.SecureTokenStorage(context)
-        val isPaired = !tokenStorage.getAuthToken().isNullOrBlank() && 
-                       !tokenStorage.getContractCode().isNullOrBlank()
+        // IMPORTANTE: Usar try/catch porque durante direct-boot (provisionamento),
+        // EncryptedSharedPreferences não está disponível e lança exceção
+        val isPaired = try {
+            val userManager = context.getSystemService(Context.USER_SERVICE) as? android.os.UserManager
+            val isUserUnlocked = userManager?.isUserUnlocked ?: false
+            
+            if (!isUserUnlocked) {
+                Log.w(TAG, "   ⏸️ Direct-boot mode detectado - tratando como não pareado")
+                false
+            } else {
+                val tokenStorage = com.cdccreditsmart.app.security.SecureTokenStorage(context)
+                !tokenStorage.getAuthToken().isNullOrBlank() && 
+                !tokenStorage.getContractCode().isNullOrBlank()
+            }
+        } catch (e: Exception) {
+            Log.w(TAG, "   ⚠️ Erro ao verificar pareamento (direct-boot?): ${e.message}")
+            false
+        }
         
         if (!isPaired) {
-            Log.w(TAG, "   ⏸️ DISALLOW_ADD_USER adiado - pareamento não concluído")
+            Log.w(TAG, "   ⏸️ DISALLOW_ADD_USER adiado - pareamento não concluído ou direct-boot")
             return false
         }
         
@@ -804,12 +819,27 @@ class WorkPolicyManager(private val context: Context) {
     private fun blockModifyAccounts(): Boolean {
         // CRÍTICO: Verificar se pareamento foi concluído ANTES de bloquear
         // Bloquear ANTES do pareamento impede Play Store e causa crash no FCM
-        val tokenStorage = com.cdccreditsmart.app.security.SecureTokenStorage(context)
-        val isPaired = !tokenStorage.getAuthToken().isNullOrBlank() && 
-                       !tokenStorage.getContractCode().isNullOrBlank()
+        // IMPORTANTE: Usar try/catch porque durante direct-boot (provisionamento),
+        // EncryptedSharedPreferences não está disponível e lança exceção
+        val isPaired = try {
+            val userManager = context.getSystemService(Context.USER_SERVICE) as? android.os.UserManager
+            val isUserUnlocked = userManager?.isUserUnlocked ?: false
+            
+            if (!isUserUnlocked) {
+                Log.w(TAG, "   ⏸️ Direct-boot mode detectado - tratando como não pareado")
+                false
+            } else {
+                val tokenStorage = com.cdccreditsmart.app.security.SecureTokenStorage(context)
+                !tokenStorage.getAuthToken().isNullOrBlank() && 
+                !tokenStorage.getContractCode().isNullOrBlank()
+            }
+        } catch (e: Exception) {
+            Log.w(TAG, "   ⚠️ Erro ao verificar pareamento (direct-boot?): ${e.message}")
+            false
+        }
         
         if (!isPaired) {
-            Log.w(TAG, "   ⏸️ DISALLOW_MODIFY_ACCOUNTS adiado - pareamento não concluído")
+            Log.w(TAG, "   ⏸️ DISALLOW_MODIFY_ACCOUNTS adiado - pareamento não concluído ou direct-boot")
             Log.w(TAG, "      → Será aplicado após ativação para permitir Play Store/FCM")
             return false
         }

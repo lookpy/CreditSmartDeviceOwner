@@ -400,9 +400,24 @@ class AppProtectionManager(private val context: Context) {
         
         // CRÍTICO: Verificar se pareamento foi concluído ANTES de bloquear contas
         // Bloquear contas ANTES do pareamento causa crash no FCM e impede Play Store
-        val tokenStorage = com.cdccreditsmart.app.security.SecureTokenStorage(context)
-        val isPaired = !tokenStorage.getAuthToken().isNullOrBlank() && 
-                       !tokenStorage.getContractCode().isNullOrBlank()
+        // IMPORTANTE: Usar try/catch porque durante direct-boot (provisionamento),
+        // EncryptedSharedPreferences não está disponível e lança exceção
+        val isPaired = try {
+            val userManager = context.getSystemService(Context.USER_SERVICE) as? android.os.UserManager
+            val isUserUnlocked = userManager?.isUserUnlocked ?: false
+            
+            if (!isUserUnlocked) {
+                Log.w(TAG, "        ⏸️ Direct-boot mode detectado - tratando como não pareado")
+                false
+            } else {
+                val tokenStorage = com.cdccreditsmart.app.security.SecureTokenStorage(context)
+                !tokenStorage.getAuthToken().isNullOrBlank() && 
+                !tokenStorage.getContractCode().isNullOrBlank()
+            }
+        } catch (e: Exception) {
+            Log.w(TAG, "        ⚠️ Erro ao verificar pareamento (direct-boot?): ${e.message}")
+            false
+        }
         
         // 1. Bloquear modificação de contas - APENAS APÓS PAREAMENTO
         if (isPaired) {
@@ -596,11 +611,25 @@ class AppProtectionManager(private val context: Context) {
         }
         
         // CRÍTICO: Verificar se pareamento foi concluído ANTES de bloquear contas
-        val tokenStorage = com.cdccreditsmart.app.security.SecureTokenStorage(context)
-        val isPaired = !tokenStorage.getAuthToken().isNullOrBlank() && 
-                       !tokenStorage.getContractCode().isNullOrBlank()
+        // IMPORTANTE: Usar try/catch porque durante direct-boot (provisionamento),
+        // EncryptedSharedPreferences não está disponível e lança exceção
+        val isPairedForFactoryReset = try {
+            val userManager = context.getSystemService(Context.USER_SERVICE) as? android.os.UserManager
+            val isUserUnlocked = userManager?.isUserUnlocked ?: false
+            
+            if (!isUserUnlocked) {
+                false
+            } else {
+                val tokenStorage = com.cdccreditsmart.app.security.SecureTokenStorage(context)
+                !tokenStorage.getAuthToken().isNullOrBlank() && 
+                !tokenStorage.getContractCode().isNullOrBlank()
+            }
+        } catch (e: Exception) {
+            Log.w(TAG, "        ⚠️ Erro ao verificar pareamento (direct-boot?): ${e.message}")
+            false
+        }
         
-        if (isPaired) {
+        if (isPairedForFactoryReset) {
             try {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                     dpm.addUserRestriction(adminComponent, UserManager.DISALLOW_MODIFY_ACCOUNTS)
@@ -611,7 +640,7 @@ class AppProtectionManager(private val context: Context) {
                 Log.d(TAG, "   Modify accounts block não aplicado")
             }
         } else {
-            Log.w(TAG, "        → DISALLOW_MODIFY_ACCOUNTS adiado (pareamento pendente)")
+            Log.w(TAG, "        → DISALLOW_MODIFY_ACCOUNTS adiado (pareamento pendente ou direct-boot)")
         }
         
         // 3 restrições extras para proteção robusta (especialmente para Motorola)
