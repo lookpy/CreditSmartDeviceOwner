@@ -119,30 +119,9 @@ class LocalInstallmentStorage(private val context: Context) {
             )
         }
         
-        val today = serverTimeManager.getAuthoritativeLocalDate()
-        
-        if (today == null) {
-            Log.e(TAG, "🚨 TEMPO AUTORITATIVO INDISPONÍVEL - assumindo PIOR CENÁRIO")
-            Log.e(TAG, "   Forçando bloqueio conservador até sincronização")
-            
-            // FALLBACK CONSERVADOR: Assumir que TODAS as parcelas estão vencidas
-            val conservativeOverdue = installments
-                .filter { it.status == "PENDING" || it.status == "OVERDUE" }
-                .map { installment ->
-                    InstallmentOverdue(
-                        number = installment.number,
-                        dueDate = installment.dueDate,
-                        amount = installment.amount,
-                        daysOverdue = 999 // Valor alto para forçar bloqueio máximo
-                    )
-                }
-            
-            return OverdueCalculation(
-                hasOverdueInstallments = conservativeOverdue.isNotEmpty(),
-                maxDaysOverdue = 999,
-                overdueInstallments = conservativeOverdue,
-                totalOverdueAmount = conservativeOverdue.sumOf { it.amount }
-            )
+        val today = serverTimeManager.getAuthoritativeLocalDate() ?: run {
+            Log.w(TAG, "⚠️ Tempo autoritativo indisponível - usando data local do dispositivo")
+            LocalDate.now()
         }
         
         Log.i(TAG, "📅 Usando tempo autoritativo para cálculo: $today")

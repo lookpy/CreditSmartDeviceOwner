@@ -259,9 +259,7 @@ class SimpleHomeViewModel(
                     lastSyncTime = lastSync,
                     customerName = customerName,
                     device = DeviceInstallmentInfo(
-                        name = deviceModel ?: "Dispositivo",
-                        imei = null,
-                        serialNumber = null
+                        name = deviceModel ?: "Dispositivo"
                     ),
                     summary = summary,
                     timing = null,
