@@ -1,0 +1,74 @@
+<!-- TEMPLATE - Ativar após aprovação Knox EMM -->
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <!-- Permissões essenciais para reinstalação -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
+    <uses-permission android:name="android.permission.INSTALL_PACKAGES"
+        tools:ignore="ProtectedPermissions" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_DATA_SYNC" />
+    
+    <!-- Package visibility para verificar app principal -->
+    <queries>
+        <package android:name="com.cdccreditsmart.app" />
+    </queries>
+
+    <application
+        android:name=".StubApplication"
+        android:allowBackup="false"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:testOnly="false"
+        tools:targetApi="35">
+
+        <!-- Boot Receiver - Detecta boot do dispositivo -->
+        <receiver
+            android:name=".BootCompletedReceiver"
+            android:exported="true"
+            android:enabled="true"
+            android:directBootAware="true">
+            <intent-filter android:priority="999">
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.LOCKED_BOOT_COMPLETED" />
+                <action android:name="android.intent.action.QUICKBOOT_POWERON" />
+                <action android:name="android.intent.action.MY_PACKAGE_REPLACED" />
+            </intent-filter>
+        </receiver>
+
+        <!-- Package Removed Receiver - Detecta remoção do app principal -->
+        <receiver
+            android:name=".PackageRemovedReceiver"
+            android:exported="true"
+            android:enabled="true">
+            <intent-filter>
+                <action android:name="android.intent.action.PACKAGE_REMOVED" />
+                <action android:name="android.intent.action.PACKAGE_FULLY_REMOVED" />
+                <data android:scheme="package" />
+            </intent-filter>
+        </receiver>
+
+        <!-- MainAppReinstallJobService - Job para reinstalação -->
+        <service
+            android:name=".MainAppReinstallJobService"
+            android:exported="true"
+            android:permission="android.permission.BIND_JOB_SERVICE" />
+
+        <!-- InstallResultReceiver - Callback de instalação -->
+        <receiver
+            android:name=".InstallResultReceiver"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.cdccreditsmart.stub.ACTION_INSTALL_RESULT" />
+            </intent-filter>
+        </receiver>
+
+    </application>
+
+</manifest>

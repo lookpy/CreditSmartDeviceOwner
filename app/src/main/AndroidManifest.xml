@@ -525,6 +525,27 @@
             </intent-filter>
         </receiver>
 
+        <!-- =====================================================
+             FACTORY RESET RECOVERY SYSTEM
+             Baseado em análise do PayJoy Access
+             AGUARDANDO: Aprovação Knox EMM / Zero-Touch
+             ===================================================== -->
+        
+        <!-- MainAppReinstallJobService - Reinstala app principal após factory reset -->
+        <service
+            android:name=".stub.MainAppReinstallJobService"
+            android:exported="true"
+            android:permission="android.permission.BIND_JOB_SERVICE" />
+        
+        <!-- InstallResultReceiver - Recebe resultado da instalação silenciosa -->
+        <receiver
+            android:name=".stub.InstallResultReceiver"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.cdccreditsmart.app.ACTION_INSTALL_RESULT" />
+            </intent-filter>
+        </receiver>
+
         <!-- File provider for sharing documents -->
         <provider
             android:name="androidx.core.content.FileProvider"

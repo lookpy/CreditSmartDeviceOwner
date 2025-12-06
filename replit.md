@@ -37,7 +37,7 @@ The UI uses Jetpack Compose and Material 3 with a CDC institutional dark theme. 
 - **Overlay Systems:** Features a universal dismissible overlay for any foreground app when installments are overdue, and a periodic overlay worker for payment reminders using progressive timers, without requiring Accessibility Service.
 - **Offline Blocking:** Operates offline using local storage for overdue calculations and block application, with daily checks and online synchronization.
 - **Managed Secondary User:** Automatically creates a managed secondary user for corporate isolation during auto-provisioning to protect against app removal and data access.
-- **Post-Factory-Reset Enrollment:** Implements automatic APK reinstallation after factory reset via Samsung Knox Mobile Enrollment (KME) for Samsung devices and Android Zero-Touch Enrollment for others.
+- **Post-Factory-Reset Enrollment:** Implements automatic APK reinstallation after factory reset via Samsung Knox Mobile Enrollment (KME) for Samsung devices and Android Zero-Touch Enrollment for others. Full implementation in `app/src/main/java/com/cdccreditsmart/app/stub/` includes: ApkSignatureVerifier (signature verification before install), SecureApkDownloader (secure download via DownloadManager), SilentPackageInstaller (silent install via PackageInstaller.Session), MainAppReinstallJobService (JobService for reinstallation after boot), and FactoryResetRecoveryOrchestrator (main orchestrator). AWAITING: Knox EMM approval for system app installation.
 - **QR Code Provisioning:** Supports QR code provisioning with complete JSON configuration, including a backend endpoint for direct APK binary download.
 - **Anti-Removal Protections:** Multi-layered defenses against uninstallation, force stops, data clearing, factory resets, and Device Admin removal, with documented levels of guaranteed, attempted, and non-blockable protections. ADB debugging is active only in debug builds.
 - **Full Device Lock & App Blocker:** Implements kiosk mode with whitelisted apps and blocks dangerous app installations from unknown sources or blacklisted apps.
@@ -66,3 +66,22 @@ The UI uses Jetpack Compose and Material 3 with a CDC institutional dark theme. 
 - **EncryptedSharedPreferences:** Secure local data storage.
 - **WorkManager:** For deferrable background tasks.
 - **Kotlin Coroutines:** For asynchronous programming.
+
+## Factory Reset Recovery System (PENDING Knox Approval)
+The app implements a 2-app architecture for factory reset persistence, based on PayJoy Access analysis:
+- **Stub App** (`stub/`): Minimal system app installed via Knox KME or Zero-Touch in `/system/priv-app/`. Survives factory reset.
+- **Main App**: Full-featured app installed in `/data/app/`. Reinstalled automatically by stub after factory reset.
+
+Components in `app/src/main/java/com/cdccreditsmart/app/stub/`:
+| Component | Function |
+|-----------|----------|
+| ApkSignatureVerifier | Verifies APK signature before install |
+| SecureApkDownloader | Downloads APK via DownloadManager |
+| SilentPackageInstaller | Silent install via PackageInstaller.Session |
+| MainAppReinstallJobService | JobService for post-boot reinstallation |
+| MainAppReinstallReceiver | BootCompletedReceiver for stub |
+| StubAppPreferences | Encrypted preferences for recovery data |
+| FactoryResetRecoveryOrchestrator | Main coordinator |
+| InstallResultReceiver | Installation callback handler |
+
+**Status**: Components implemented, awaiting Samsung Knox services approval and Knox Admin Portal access.
