@@ -57,7 +57,7 @@ Utilizes Jetpack Compose and Material 3 with a CDC institutional dark theme. Fea
   - **SubSettings Detection:** Blocks SubSettings wrappers from OEM Settings packages
 
 ## External Dependencies
-- **CDC Credit Smart Backend API:** For authentication, device status, installments, PIX processing, heartbeat, MDM commands, unblock operations, remote uninstall telemetry, time synchronization, FCM token registration, and enrollment reporting.
+- **CDC Credit Smart Backend API:** For authentication, device status, installments, PIX processing, heartbeat, MDM commands, unblock operations, remote uninstall telemetry, time synchronization, FCM token registration, enrollment reporting, and contract terms metadata (GET /api/apk/device/contract-terms returns termsHash, signedAt, biometrySessionId, geoLocation, receiptHash, termsVersion).
 - **Meio de Pagamento API:** External payment gateway for PIX transactions (via CDC backend).
 - **WebSocket Server:** For real-time pairing status and MDM command push.
 - **Firebase Cloud Messaging (FCM):** Push notification infrastructure and analytics.

@@ -266,3 +266,35 @@ data class SystemInfo(
     val bootMode: String = "normal", // "normal", "recovery", "fastboot"
     val kernelVersion: String? = null
 )
+
+/**
+ * Contract Terms Metadata Response
+ * GET /api/apk/device/contract-terms
+ * 
+ * Retorna metadados da assinatura do contrato vinculado ao dispositivo,
+ * incluindo hash dos termos, data de assinatura, sessão de biometria,
+ * geolocalização, e versão dos termos.
+ */
+//@JsonClass(generateAdapter = true)
+data class ContractTermsMetadataResponse(
+    val success: Boolean,
+    val data: ContractTermsData? = null,
+    val error: String? = null
+)
+
+//@JsonClass(generateAdapter = true)
+data class ContractTermsData(
+    val termsHash: String,
+    val signedAt: String,
+    val biometrySessionId: String? = null,
+    val geoLocation: ContractGeoLocation? = null,
+    val receiptHash: String? = null,
+    val termsVersion: String? = null
+)
+
+//@JsonClass(generateAdapter = true)
+data class ContractGeoLocation(
+    val latitude: Double,
+    val longitude: Double,
+    val accuracy: Double? = null
+)

@@ -318,6 +318,25 @@ interface DeviceApiService {
     suspend fun requestUninstallCode(
         @Header("Authorization") authorization: String
     ): Response<UninstallCodeResponse>
+    
+    /**
+     * Obter metadados da assinatura do contrato
+     * GET /api/apk/device/contract-terms
+     * 
+     * Retorna metadados completos da assinatura do contrato vinculado ao dispositivo:
+     * - termsHash: SHA256 do contrato assinado
+     * - signedAt: Data/hora da assinatura
+     * - biometrySessionId: ID da sessão de verificação biométrica Didit
+     * - geoLocation: Latitude, longitude e precisão da assinatura
+     * - receiptHash: SHA256 do comprovante (se disponível)
+     * - termsVersion: Versão dos termos assinados
+     * 
+     * Resposta 404 indica que não há contrato vinculado ao dispositivo
+     */
+    @GET("api/apk/device/contract-terms")
+    suspend fun getContractTermsMetadata(
+        @Header("Authorization") authorization: String? = null
+    ): Response<com.cdccreditsmart.network.dto.cdc.ContractTermsMetadataResponse>
 }
 
 // Request/Response Data Classes
