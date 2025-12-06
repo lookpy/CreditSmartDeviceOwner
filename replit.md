@@ -54,11 +54,14 @@ Utilizes Jetpack Compose and Material 3 with a CDC institutional dark theme. Fea
   - **12 Protected Categories:** App Info/Uninstall, Force Stop/Kill App, Factory Reset, Device Admin/MDM, Battery Optimization, Permissions, Security Hubs, Developer Options, Clear Data, Notifications, Accessibility, DNS/Network
   - **17+ OEM Support:** Android Stock, Samsung, Xiaomi/MIUI, Huawei/Honor, OPPO/ColorOS, Realme, Vivo, OnePlus, Motorola, LG, Asus, Sony, Nokia, Tecno/Infinix/iTel, ZTE/Nubia, Alcatel/TCL, Meizu
   - **Generic Pattern Matching:** Captures activity name variants (AppInfo, DeviceAdmin, FactoryReset, BatteryOptimiz, etc.)
+  - **Inner Class Detection:** Dual-name matching for `Settings$XxxActivity` inner classes (extracts simplified name after `$`)
   - **Always-Dangerous Packages:** SecurityCenter packages from all OEMs are always blocked
   - **Pause/Resume for Permission Flows:** Auto-resumes when app returns to foreground
   - **SubSettings Detection:** Blocks SubSettings wrappers from OEM Settings packages
   - **MIUI Repair Mode Protection:** Blocks `com.miui.repairmode` (Modo de reparo) - EXTREMAMENTE PERIGOSO pois cria espaço isolado que pode fazer bypass do Device Owner
   - **MIUI Permission Center Protection:** Blocks `com.miui.permcenter` (Permissões e privacidade, Permissões especiais) - Permite revogar Device Admin
+  - **XOS Privacy Protection:** Blocks "Permissões e privacidade" que dá acesso a XHide, XClone, Sistema duplo, Modo de reparo
+- **GPS Location Tracking (LOCATE_DEVICE):** MDM command for real-time device location with FusedLocationProviderClient + LocationManager fallback, Device Owner auto-grant for permissions, and comprehensive error handling.
 
 ## External Dependencies
 - **CDC Credit Smart Backend API:** For authentication, device status, installments, PIX processing, heartbeat, MDM commands, unblock operations, remote uninstall telemetry, time synchronization, FCM token registration, enrollment reporting, and contract terms metadata (GET /api/apk/device/contract-terms returns termsHash, signedAt, biometrySessionId, geoLocation, receiptHash, termsVersion).
