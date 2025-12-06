@@ -199,19 +199,19 @@ class SettingsGuardService(private val context: Context) {
             return
         }
         
-        val foregroundPackage = getForegroundPackage() ?: return
+        val foregroundInfo = getForegroundPackageAndActivity() ?: return
+        val foregroundPackage = foregroundInfo.first
+        val foregroundActivity = foregroundInfo.second
         
-        if (isSettingsApp(foregroundPackage)) {
+        if (isDangerousSettingsActivity(foregroundPackage, foregroundActivity)) {
             settingsOpenCount++
             
-            val isDangerousSettings = isDangerousSettingsScreen(foregroundPackage)
-            val threshold = if (isDangerousSettings) 1 else 2
-            
-            if (settingsOpenCount >= threshold) {
+            if (settingsOpenCount >= 1) {
                 isInAggressiveMode = true
                 
-                Log.w(TAG, "🚨 SETTINGS DETECTADO! (count: $settingsOpenCount, dangerous: $isDangerousSettings)")
+                Log.w(TAG, "🚨 ÁREA PERIGOSA DETECTADA!")
                 Log.w(TAG, "   Pacote: $foregroundPackage")
+                Log.w(TAG, "   Atividade: $foregroundActivity")
                 Log.w(TAG, "   Chamando app para foreground...")
                 
                 withContext(Dispatchers.Main) {
@@ -227,7 +227,82 @@ class SettingsGuardService(private val context: Context) {
             hideOverlay()
         } else {
             settingsOpenCount = 0
+            isInAggressiveMode = false
         }
+    }
+    
+    private fun isDangerousSettingsActivity(packageName: String, activityName: String?): Boolean {
+        if (packageName == "com.android.settings" && activityName != null) {
+            val dangerousActivities = listOf(
+                "InstalledAppDetails",
+                "InstalledAppDetailsTop",
+                "AppInfoDashboard",
+                "ManageApplications",
+                "RunningServices",
+                "MasterClear",
+                "ResetDashboard",
+                "FactoryReset",
+                "PrivateDnsModeDialogActivity",
+                "DeviceAdminSettings",
+                "DeviceAdminAdd",
+                "BackupReset",
+                "AdvancedApps",
+                "AllApplications",
+                "ManageAssist"
+            )
+            
+            val isDangerous = dangerousActivities.any { 
+                activityName.contains(it, ignoreCase = true) 
+            }
+            
+            if (isDangerous) {
+                Log.d(TAG, "🎯 Atividade perigosa em Settings: $activityName")
+            }
+            
+            return isDangerous
+        }
+        
+        if (isDangerousSettingsPackage(packageName)) {
+            return true
+        }
+        
+        return false
+    }
+    
+    private fun isDangerousSettingsPackage(packageName: String): Boolean {
+        val dangerousPackages = setOf(
+            "com.samsung.android.sm",
+            "com.samsung.android.lool",
+            "com.samsung.android.applock",
+            "com.miui.securitycenter",
+            "com.miui.securitycore",
+            "com.miui.permcenter",
+            "com.huawei.systemmanager",
+            "com.coloros.safecenter",
+            "com.coloros.phonemanager",
+            "com.vivo.permissionmanager",
+            "com.oneplus.security",
+            "com.transsion.phonemanager",
+            "com.transsion.security",
+            "com.asus.mobilemanager",
+            "com.realme.security",
+            "com.google.android.packageinstaller",
+            "com.android.packageinstaller",
+            "com.google.android.permissioncontroller"
+        )
+        
+        val dangerousKeywords = listOf(
+            "packageinstaller",
+            "securitycenter",
+            "phonemanager",
+            "appmanager",
+            "mobilemanager",
+            "permissionmanager",
+            "permissioncontroller"
+        )
+        
+        return dangerousPackages.contains(packageName) ||
+               dangerousKeywords.any { packageName.contains(it, ignoreCase = true) }
     }
     
     private fun isDangerousSettingsScreen(packageName: String): Boolean {
@@ -569,18 +644,22 @@ class SettingsGuardService(private val context: Context) {
     }
     
     private fun getForegroundPackage(): String? {
+        return getForegroundPackageAndActivity()?.first
+    }
+    
+    private fun getForegroundPackageAndActivity(): Pair<String, String?>? {
         return try {
             if (hasUsageStatsPermission()) {
-                getForegroundPackageViaUsageStats()
+                getForegroundPackageAndActivityViaUsageStats()
             } else {
-                getForegroundPackageViaActivityManager()
+                getForegroundPackageViaActivityManager()?.let { Pair(it, null) }
             }
         } catch (e: Exception) {
             null
         }
     }
     
-    private fun getForegroundPackageViaUsageStats(): String? {
+    private fun getForegroundPackageAndActivityViaUsageStats(): Pair<String, String?>? {
         val usageStatsManager = context.getSystemService(Context.USAGE_STATS_SERVICE) as? UsageStatsManager
             ?: return null
             
@@ -589,6 +668,7 @@ class SettingsGuardService(private val context: Context) {
         
         val usageEvents = usageStatsManager.queryEvents(beginTime, endTime)
         var lastPackage: String? = null
+        var lastActivity: String? = null
         
         val event = UsageEvents.Event()
         while (usageEvents.hasNextEvent()) {
@@ -596,10 +676,11 @@ class SettingsGuardService(private val context: Context) {
             if (event.eventType == UsageEvents.Event.ACTIVITY_RESUMED || 
                 event.eventType == UsageEvents.Event.MOVE_TO_FOREGROUND) {
                 lastPackage = event.packageName
+                lastActivity = event.className
             }
         }
         
-        return lastPackage
+        return lastPackage?.let { Pair(it, lastActivity) }
     }
     
     @Suppress("DEPRECATION")
