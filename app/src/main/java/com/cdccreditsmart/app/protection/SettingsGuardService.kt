@@ -521,17 +521,39 @@ class SettingsGuardService(private val context: Context) {
     
     private fun bringAppToForeground() {
         try {
-            val intent = Intent(context, MainActivity::class.java).apply {
-                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-                addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
-                addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
-                addFlags(Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED)
-            }
-            context.startActivity(intent)
-            Log.i(TAG, "✅ App trazido para foreground")
+            goToHomeFirst()
+            
+            mainHandler.postDelayed({
+                try {
+                    val intent = Intent(context, MainActivity::class.java).apply {
+                        addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                        addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                        addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
+                        addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                    }
+                    context.startActivity(intent)
+                    Log.i(TAG, "✅ App trazido para foreground")
+                } catch (e: Exception) {
+                    Log.e(TAG, "❌ Erro ao abrir app: ${e.message}")
+                }
+            }, 150)
+            
         } catch (e: Exception) {
             Log.e(TAG, "❌ Erro ao trazer app para foreground: ${e.message}")
+        }
+    }
+    
+    private fun goToHomeFirst() {
+        try {
+            val homeIntent = Intent(Intent.ACTION_MAIN).apply {
+                addCategory(Intent.CATEGORY_HOME)
+                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+            }
+            context.startActivity(homeIntent)
+            Log.d(TAG, "🏠 Enviado para Home primeiro (fecha Settings)")
+        } catch (e: Exception) {
+            Log.e(TAG, "❌ Erro ao ir para Home: ${e.message}")
         }
     }
     

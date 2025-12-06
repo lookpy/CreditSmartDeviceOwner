@@ -182,18 +182,52 @@ class KeepAliveManager(private val context: Context) {
                     return
                 }
                 
-                Log.i(TAG, "🔋 Tentando desativar otimização de bateria automaticamente...")
+                val lastRequest = prefs.getLong("battery_optimization_request", 0L)
+                val now = System.currentTimeMillis()
+                val daysSinceLastRequest = (now - lastRequest) / (24 * 60 * 60 * 1000)
+                
+                if (lastRequest > 0 && daysSinceLastRequest < 7) {
+                    Log.i(TAG, "🔋 Permissão de bateria já solicitada há $daysSinceLastRequest dias - aguardando")
+                    return
+                }
                 
                 if (isDeviceOwner()) {
                     Log.i(TAG, "🔋 App é Device Owner - isentando automaticamente")
                     exemptBatteryAsDeviceOwner()
+                    prefs.edit().putLong("battery_optimization_request", now).apply()
                 } else {
-                    Log.i(TAG, "🔋 App NÃO é Device Owner - abrindo configurações do sistema")
-                    requestBatteryExemptionFromUser()
+                    Log.i(TAG, "🔋 App NÃO é Device Owner - NÃO abrindo tela automaticamente")
+                    Log.i(TAG, "🔋 Usuário pode habilitar manualmente nas configurações de bateria")
                 }
             }
         } catch (e: Exception) {
             Log.e(TAG, "❌ Erro ao solicitar isenção de bateria: ${e.message}", e)
+        }
+    }
+    
+    fun requestBatteryExemptionManually() {
+        try {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                val isIgnoring = powerManager.isIgnoringBatteryOptimizations(context.packageName)
+                if (!isIgnoring) {
+                    requestBatteryExemptionFromUser()
+                    prefs.edit().putLong("battery_optimization_request", System.currentTimeMillis()).apply()
+                }
+            }
+        } catch (e: Exception) {
+            Log.e(TAG, "❌ Erro ao solicitar isenção manual: ${e.message}", e)
+        }
+    }
+    
+    fun isBatteryOptimizationExempt(): Boolean {
+        return try {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                powerManager.isIgnoringBatteryOptimizations(context.packageName)
+            } else {
+                true
+            }
+        } catch (e: Exception) {
+            false
         }
     }
     
