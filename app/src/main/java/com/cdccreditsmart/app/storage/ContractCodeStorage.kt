@@ -63,13 +63,18 @@ class ContractCodeStorage(private val context: Context) {
     }
     
     private val encryptedPrefs by lazy {
-        EncryptedSharedPreferences.create(
-            context,
-            PREFS_NAME,
-            masterKey,
-            EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
-            EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
-        )
+        try {
+            EncryptedSharedPreferences.create(
+                context,
+                PREFS_NAME,
+                masterKey,
+                EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
+                EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
+            )
+        } catch (e: Exception) {
+            Log.e(TAG, "Failed to create EncryptedSharedPreferences, using fallback", e)
+            context.getSharedPreferences("${PREFS_NAME}_fallback", Context.MODE_PRIVATE)
+        }
     }
     
     private val deviceProtectedContext: Context by lazy {

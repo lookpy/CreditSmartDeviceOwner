@@ -84,8 +84,13 @@ object RetrofitProvider {
     
     private fun createAuthInterceptor(context: Context): Interceptor {
         return Interceptor { chain ->
-            val tokenStorage = SecureTokenStorage(context)
-            val authToken = tokenStorage.getAuthToken()
+            val authToken = try {
+                val tokenStorage = SecureTokenStorage(context)
+                tokenStorage.getAuthToken()
+            } catch (e: Exception) {
+                Log.e(TAG, "❌ Erro ao acessar SecureTokenStorage", e)
+                null
+            }
             
             val request = chain.request()
             val authenticatedRequest = if (!authToken.isNullOrEmpty()) {

@@ -32,8 +32,8 @@ class BlockingNotificationManager(private val context: Context) {
         const val MAX_NOTIFICATIONS_PER_DAY = 3
     }
     
-    private val notificationHelper = NotificationHelper(context)
-    private val installmentStorage = LocalInstallmentStorage(context)
+    private val notificationHelper by lazy { NotificationHelper(context) }
+    private val installmentStorage by lazy { LocalInstallmentStorage(context) }
     
     private val prefs: SharedPreferences by lazy {
         try {

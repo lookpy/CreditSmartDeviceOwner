@@ -504,10 +504,16 @@ class CdcForegroundService : Service(), ScreenStateListener {
                 
                 delay(500)
                 
-                val secureStorage = SecureTokenStorage(applicationContext)
-                val authToken = secureStorage.getAuthToken()
-                val contractCode = secureStorage.getContractCode()
-                var mdmDeviceId = secureStorage.getSerialNumberForMdm()
+                val secureStorage = try {
+                    SecureTokenStorage(applicationContext)
+                } catch (e: Exception) {
+                    Log.e(TAG, "❌ Erro ao criar SecureTokenStorage - aguardando próxima tentativa", e)
+                    return@launch
+                }
+                
+                val authToken = try { secureStorage.getAuthToken() } catch (e: Exception) { null }
+                val contractCode = try { secureStorage.getContractCode() } catch (e: Exception) { null }
+                var mdmDeviceId = try { secureStorage.getSerialNumberForMdm() } catch (e: Exception) { null }
                 
                 Log.i(TAG, "🔐 AuthToken presente: ${!authToken.isNullOrBlank()}")
                 Log.i(TAG, "🔐 AuthToken length: ${authToken?.length ?: 0}")

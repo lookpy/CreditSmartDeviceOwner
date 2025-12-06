@@ -452,8 +452,9 @@ class EnrollmentManager(private val context: Context) {
     
     /**
      * Creates EncryptedSharedPreferences for secure storage
+     * Returns fallback SharedPreferences if encryption fails
      */
-    private fun createEncryptedSharedPreferences(): EncryptedSharedPreferences {
+    private fun createEncryptedSharedPreferences(): android.content.SharedPreferences {
         return try {
             val masterKey = MasterKey.Builder(context)
                 .setKeyScheme(MasterKey.KeyScheme.AES256_GCM)
@@ -465,10 +466,10 @@ class EnrollmentManager(private val context: Context) {
                 masterKey,
                 EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
                 EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
-            ) as EncryptedSharedPreferences
+            )
         } catch (e: Exception) {
-            Log.e(TAG, "Error creating EncryptedSharedPreferences: ${e.message}", e)
-            throw e
+            Log.e(TAG, "Error creating EncryptedSharedPreferences, using fallback: ${e.message}", e)
+            context.getSharedPreferences("${ENCRYPTED_PREFS_NAME}_fallback", Context.MODE_PRIVATE)
         }
     }
     

@@ -15,6 +15,7 @@ class SecureTokenStorage(private val context: Context) {
     companion object {
         private const val TAG = "SecureTokenStorage"
         private const val PREFS_FILE_NAME = "cdc_secure_tokens"
+        private const val FALLBACK_PREFS_FILE_NAME = "cdc_secure_tokens_fallback"
         
         private const val KEY_DEVICE_TOKEN = "device_token"
         private const val KEY_APK_TOKEN = "apk_token"
@@ -30,21 +31,37 @@ class SecureTokenStorage(private val context: Context) {
         private const val KEY_CUSTOMER_NAME = "customer_name"
         private const val KEY_DEVICE_MODEL = "device_model"
         private const val KEY_UNINSTALL_CONFIRMATION_HASH = "uninstall_confirmation_hash"
+        
+        @Volatile
+        private var encryptionAvailable: Boolean? = null
     }
 
-    private val masterKey = MasterKey.Builder(context)
-        .setKeyScheme(MasterKey.KeyScheme.AES256_GCM)
-        .build()
+    private val masterKey: MasterKey by lazy {
+        MasterKey.Builder(context)
+            .setKeyScheme(MasterKey.KeyScheme.AES256_GCM)
+            .build()
+    }
 
-    private val encryptedPrefs = EncryptedSharedPreferences.create(
-        context,
-        PREFS_FILE_NAME,
-        masterKey,
-        EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
-        EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
-    )
+    private val encryptedPrefs by lazy {
+        try {
+            val prefs = EncryptedSharedPreferences.create(
+                context,
+                PREFS_FILE_NAME,
+                masterKey,
+                EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
+                EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
+            )
+            encryptionAvailable = true
+            Log.d(TAG, "EncryptedSharedPreferences initialized successfully")
+            prefs
+        } catch (e: Exception) {
+            Log.e(TAG, "Failed to create EncryptedSharedPreferences, using fallback", e)
+            encryptionAvailable = false
+            context.getSharedPreferences(FALLBACK_PREFS_FILE_NAME, Context.MODE_PRIVATE)
+        }
+    }
 
-    private val contractCodeStorage = ContractCodeStorage(context)
+    private val contractCodeStorage by lazy { ContractCodeStorage(context) }
 
     fun saveTokens(
         deviceToken: String,
