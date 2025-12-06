@@ -7,6 +7,7 @@ import android.content.ComponentName
 import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Build
+import android.os.PowerManager
 import android.os.Process
 import android.provider.Settings
 import android.util.Log
@@ -48,6 +49,7 @@ class PermissionGateManager(private val context: Context) {
         RUNTIME,
         USAGE_STATS,
         OVERLAY,
+        BATTERY_OPTIMIZATION,
         DEVICE_ADMIN_ACTIVATION
     }
     
@@ -161,6 +163,18 @@ class PermissionGateManager(private val context: Context) {
             )
         )
         
+        if (level != PrivilegeLevel.DEVICE_OWNER) {
+            statuses.add(
+                PermissionStatus(
+                    type = PermissionType.BATTERY_OPTIMIZATION,
+                    isGranted = hasBatteryOptimizationExemption(),
+                    isObtainableAtCurrentLevel = true,
+                    displayName = "Execução em Segundo Plano",
+                    description = "Permite funcionamento contínuo do app"
+                )
+            )
+        }
+        
         return statuses
     }
     
@@ -200,6 +214,19 @@ class PermissionGateManager(private val context: Context) {
     fun hasOverlayPermission(): Boolean {
         return try {
             Settings.canDrawOverlays(context)
+        } catch (e: Exception) {
+            false
+        }
+    }
+    
+    fun hasBatteryOptimizationExemption(): Boolean {
+        return try {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                val powerManager = context.getSystemService(Context.POWER_SERVICE) as PowerManager
+                powerManager.isIgnoringBatteryOptimizations(context.packageName)
+            } else {
+                true
+            }
         } catch (e: Exception) {
             false
         }

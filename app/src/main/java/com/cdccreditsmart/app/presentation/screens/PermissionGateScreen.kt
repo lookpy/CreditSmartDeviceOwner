@@ -408,6 +408,15 @@ private fun requestPermission(
             }
             context.startActivity(intent)
         }
+        
+        PermissionGateManager.PermissionType.BATTERY_OPTIMIZATION -> {
+            SettingsGuardService.pauseForPermissionGrant()
+            val intent = Intent(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS).apply {
+                data = Uri.parse("package:${context.packageName}")
+                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            }
+            context.startActivity(intent)
+        }
     }
 }
 
