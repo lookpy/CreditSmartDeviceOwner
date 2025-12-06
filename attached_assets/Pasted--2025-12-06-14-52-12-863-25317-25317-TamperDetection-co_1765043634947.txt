@@ -1,0 +1,32 @@
+
+2025-12-06 14:52:12.863 25317-25317 TamperDetection         com.cdccreditsmart.app               I  ⚠️ TODO: Implementar POST /api/security/device-boot
+2025-12-06 14:52:12.864 25317-28459 CDCApplication          com.cdccreditsmart.app               I  🔒 Verificando status do SIM no boot da aplicação...
+2025-12-06 14:52:12.865 25317-28459 SimSwapManager          com.cdccreditsmart.app               I  ========================================
+2025-12-06 14:52:12.866 25317-28459 SimSwapManager          com.cdccreditsmart.app               I  🔒 SIM SWAP: Iniciando verificação de status do SIM
+2025-12-06 14:52:12.866 25317-28459 SimSwapManager          com.cdccreditsmart.app               I  ========================================
+2025-12-06 14:52:12.890 25317-28459 SimSwapDetector         com.cdccreditsmart.app               W  🔒 SIM SWAP: ICCID vazio no SubscriptionInfo
+2025-12-06 14:52:12.903 25317-28459 SimSwapDetector         com.cdccreditsmart.app               E  🔒 SIM SWAP: SecurityException no fallback (Ask Gemini)
+                                                                                                    java.lang.SecurityException: getIccSerialNumber: The uid 10302 does not meet the requirements to access device identifiers.
+                                                                                                    	at android.os.Parcel.createExceptionOrNull(Parcel.java:3252)
+                                                                                                    	at android.os.Parcel.createException(Parcel.java:3236)
+                                                                                                    	at android.os.Parcel.readException(Parcel.java:3219)
+                                                                                                    	at android.os.Parcel.readException(Parcel.java:3161)
+                                                                                                    	at com.android.internal.telephony.IPhoneSubInfo$Stub$Proxy.getIccSerialNumberForSubscriber(IPhoneSubInfo.java:1255)
+                                                                                                    	at android.telephony.TelephonyManager.getSimSerialNumber(TelephonyManager.java:4256)
+                                                                                                    	at android.telephony.TelephonyManager.getSimSerialNumber(TelephonyManager.java:4213)
+                                                                                                    	at com.cdccreditsmart.app.security.SimSwapDetector.getSimSerialFallback(SimSwapDetector.kt:123)
+                                                                                                    	at com.cdccreditsmart.app.security.SimSwapDetector.getCurrentSimSerial(SimSwapDetector.kt:95)
+                                                                                                    	at com.cdccreditsmart.app.security.SimSwapDetector.getSimInfo(SimSwapDetector.kt:256)
+                                                                                                    	at com.cdccreditsmart.app.security.SimSwapManager$checkSimStatus$2.invokeSuspend(SimSwapManager.kt:143)
+                                                                                                    	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:34)
+                                                                                                    	at kotlinx.coroutines.DispatchedTask.run(DispatchedTask.kt:108)
+                                                                                                    	at kotlinx.coroutines.internal.LimitedDispatcher$Worker.run(LimitedDispatcher.kt:115)
+                                                                                                    	at kotlinx.coroutines.scheduling.TaskImpl.run(Tasks.kt:103)
+                                                                                                    	at kotlinx.coroutines.scheduling.CoroutineScheduler.runSafely(CoroutineScheduler.kt:584)
+                                                                                                    	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.executeTask(CoroutineScheduler.kt:793)
+                                                                                                    	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.runWorker(CoroutineScheduler.kt:697)
+                                                                                                    	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.run(CoroutineScheduler.kt:684)
+2025-12-06 14:52:12.916 25317-28459 SimSwapDetector         com.cdccreditsmart.app               D  🔒 SIM SWAP: Operadora: Apenas chamadas de emergência
+2025-12-06 14:52:12.916 25317-28459 SimSwapDetector         com.cdccreditsmart.app               I  🔒 SIM SWAP: Informações do SIM coletadas:
+2025-12-06 14:52:12.916 25317-28459 SimSwapDetector         com.cdccreditsmart.app               I     Serial: não disponível...
+2025-12-06 14:52:12.916 25317-28459 SimSwapDetector         com.cdccreditsmart.app               I     Operadora: Apenas chamadas de emergência
