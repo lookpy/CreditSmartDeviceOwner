@@ -34,9 +34,17 @@ class AutoPermissionManager(private val context: Context) {
             add(Manifest.permission.CALL_PHONE)
             add(Manifest.permission.READ_CONTACTS)
             
+            // Location permissions for MDM LOCATE_DEVICE command
+            add(Manifest.permission.ACCESS_FINE_LOCATION)
+            add(Manifest.permission.ACCESS_COARSE_LOCATION)
+            
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 add(Manifest.permission.ANSWER_PHONE_CALLS)
                 add(Manifest.permission.READ_PHONE_NUMBERS)
+            }
+            
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                add(Manifest.permission.ACCESS_BACKGROUND_LOCATION)
             }
             
             if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.S_V2) {

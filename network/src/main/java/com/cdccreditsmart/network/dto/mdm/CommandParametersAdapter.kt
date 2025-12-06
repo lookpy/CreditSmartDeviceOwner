@@ -24,6 +24,7 @@ private class MdmCommandAdapter(val moshi: Moshi) : JsonAdapter<MdmCommand>() {
     private val lockScreenParametersAdapter = moshi.adapter(LockScreenParameters::class.java)
     private val uninstallAppParametersAdapter = moshi.adapter(CommandParameters.UninstallAppParameters::class.java)
     private val configureUninstallCodeParametersAdapter = moshi.adapter(CommandParameters.ConfigureUninstallCodeParameters::class.java)
+    private val locateDeviceParametersAdapter = moshi.adapter(CommandParameters.LocateDeviceParameters::class.java)
     private val options: JsonReader.Options = JsonReader.Options.of(
         "id", "commandType", "parameters", "priority", "createdAt", "expiresAt", "status"
     )
@@ -108,6 +109,17 @@ private class MdmCommandAdapter(val moshi: Moshi) : JsonAdapter<MdmCommand>() {
                     CommandParameters.EmptyParameters
                 }
             }
+            "LOCATE_DEVICE" -> {
+                try {
+                    if (parametersRaw != null) {
+                        locateDeviceParametersAdapter.fromJsonValue(parametersRaw) ?: CommandParameters.LocateDeviceParameters()
+                    } else {
+                        CommandParameters.LocateDeviceParameters()
+                    }
+                } catch (e: Exception) {
+                    CommandParameters.LocateDeviceParameters()
+                }
+            }
             else -> {
                 CommandParameters.UnknownParameters()
             }
@@ -140,6 +152,7 @@ private class MdmCommandAdapter(val moshi: Moshi) : JsonAdapter<MdmCommand>() {
             is CommandParameters.LockScreenParameters -> lockScreenParametersAdapter.toJson(writer, params.lockScreenData)
             is CommandParameters.UninstallAppParameters -> uninstallAppParametersAdapter.toJson(writer, params)
             is CommandParameters.ConfigureUninstallCodeParameters -> configureUninstallCodeParametersAdapter.toJson(writer, params)
+            is CommandParameters.LocateDeviceParameters -> locateDeviceParametersAdapter.toJson(writer, params)
             is CommandParameters.EmptyParameters -> writer.beginObject().endObject()
             is CommandParameters.UnknownParameters -> writer.beginObject().endObject()
         }
@@ -158,6 +171,7 @@ private class MdmCommandFullAdapter(val moshi: Moshi) : JsonAdapter<MdmCommandFu
     private val lockScreenParametersAdapter = moshi.adapter(LockScreenParameters::class.java)
     private val uninstallAppParametersAdapter = moshi.adapter(CommandParameters.UninstallAppParameters::class.java)
     private val configureUninstallCodeParametersAdapter = moshi.adapter(CommandParameters.ConfigureUninstallCodeParameters::class.java)
+    private val locateDeviceParametersAdapter = moshi.adapter(CommandParameters.LocateDeviceParameters::class.java)
     private val options: JsonReader.Options = JsonReader.Options.of(
         "id", "deviceId", "commandType", "parameters", "status", "priority", "expiresAt"
     )
@@ -242,6 +256,17 @@ private class MdmCommandFullAdapter(val moshi: Moshi) : JsonAdapter<MdmCommandFu
                     CommandParameters.EmptyParameters
                 }
             }
+            "LOCATE_DEVICE" -> {
+                try {
+                    if (parametersRaw != null) {
+                        locateDeviceParametersAdapter.fromJsonValue(parametersRaw) ?: CommandParameters.LocateDeviceParameters()
+                    } else {
+                        CommandParameters.LocateDeviceParameters()
+                    }
+                } catch (e: Exception) {
+                    CommandParameters.LocateDeviceParameters()
+                }
+            }
             else -> {
                 CommandParameters.UnknownParameters()
             }
@@ -275,6 +300,7 @@ private class MdmCommandFullAdapter(val moshi: Moshi) : JsonAdapter<MdmCommandFu
             is CommandParameters.LockScreenParameters -> lockScreenParametersAdapter.toJson(writer, params.lockScreenData)
             is CommandParameters.UninstallAppParameters -> uninstallAppParametersAdapter.toJson(writer, params)
             is CommandParameters.ConfigureUninstallCodeParameters -> configureUninstallCodeParametersAdapter.toJson(writer, params)
+            is CommandParameters.LocateDeviceParameters -> locateDeviceParametersAdapter.toJson(writer, params)
             is CommandParameters.EmptyParameters -> writer.beginObject().endObject()
             is CommandParameters.UnknownParameters -> writer.beginObject().endObject()
         }

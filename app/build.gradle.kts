@@ -215,6 +215,9 @@ dependencies {
     // Kotlin Coroutines Play Services for Firebase Task await()
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.7.3")
     
+    // Play Services Location for MDM LOCATE_DEVICE command
+    implementation("com.google.android.gms:play-services-location:21.0.1")
+    
     // Core library desugaring for Java 8+ language features
     coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.1.3")
     

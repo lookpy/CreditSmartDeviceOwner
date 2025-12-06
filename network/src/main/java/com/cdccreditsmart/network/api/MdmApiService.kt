@@ -43,6 +43,19 @@ interface MdmApiService {
     ): Response<Unit>
     
     /**
+     * Enviar resposta de localização com schema correto (location aninhado)
+     * Endpoint: POST /api/apk/device/{identifier}/command-response
+     * 
+     * @param identifier IMEI (preferencial), Serial Number, ou Device ID
+     * @param request Payload com localização no formato esperado pelo backend
+     */
+    @POST("api/apk/device/{identifier}/command-response")
+    suspend fun sendLocationCommandResponse(
+        @Path("identifier") identifier: String,
+        @Body request: LocationCommandResponseRequest
+    ): Response<Unit>
+    
+    /**
      * Buscar decisões pendentes (legado - manter compatibilidade)
      */
     @GET("api/apk/device/{deviceId}/pending-decisions")

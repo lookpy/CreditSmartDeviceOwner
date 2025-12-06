@@ -10,7 +10,18 @@ import com.cdccreditsmart.app.utils.DeviceInfoHelper
 import com.cdccreditsmart.network.api.MdmApiService
 import com.cdccreditsmart.network.dto.mdm.*
 import com.cdccreditsmart.network.client.MoshiProvider
-import kotlinx.coroutines.*
+import com.cdccreditsmart.app.location.LocationProvider
+import com.cdccreditsmart.app.location.LocationResultData
+import kotlinx.coroutines.CancellationException
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.TimeoutCancellationException
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import kotlinx.coroutines.withTimeout
 import okhttp3.*
 import java.util.concurrent.TimeUnit
 
@@ -222,6 +233,11 @@ class MdmCommandReceiver(private val context: Context) {
                                 Log.i(TAG, "🔐 CONFIGURE_UNINSTALL_CODE - Configurando hash de desinstalação")
                                 Log.i(TAG, "🔐 Hash presente: ${params.getHash().isNotEmpty()}")
                             }
+                            is CommandParameters.LocateDeviceParameters -> {
+                                Log.i(TAG, "📍 LOCATE_DEVICE - Solicitando localização GPS")
+                                Log.i(TAG, "📍 High accuracy: ${params.highAccuracy}")
+                                Log.i(TAG, "📍 Timeout: ${params.timeout}ms")
+                            }
                             is CommandParameters.EmptyParameters -> {
                                 Log.i(TAG, "📋 Comando sem parâmetros (${command.commandType})")
                             }
@@ -402,6 +418,75 @@ class MdmCommandReceiver(private val context: Context) {
                         )
                     }
                 }
+                is CommandParameters.LocateDeviceParameters -> {
+                    Log.i(TAG, "📍 ========================================")
+                    Log.i(TAG, "📍 COMANDO LOCATE_DEVICE RECEBIDO!")
+                    Log.i(TAG, "📍 ========================================")
+                    Log.i(TAG, "📍 High accuracy: ${parameters.highAccuracy}")
+                    Log.i(TAG, "📍 Timeout: ${parameters.timeout}ms")
+                    
+                    try {
+                        val locationProvider = LocationProvider(context)
+                        val timeoutMs = parameters.timeout.toLong().coerceIn(5000L, 60000L)
+                        
+                        Log.i(TAG, "📍 Obtendo localização (timeout: ${timeoutMs/1000}s)...")
+                        
+                        val locationResult = withTimeout(timeoutMs) {
+                            locationProvider.getCurrentLocation()
+                        }
+                        
+                        when (locationResult) {
+                            is LocationResultData.Success -> {
+                                Log.i(TAG, "📍 ✅ Localização obtida com sucesso!")
+                                Log.i(TAG, "📍 Lat: ${locationResult.latitude}, Lon: ${locationResult.longitude}")
+                                Log.i(TAG, "📍 Accuracy: ${locationResult.accuracy}m, Provider: ${locationResult.provider}")
+                                
+                                sendLocationCommandResponse(
+                                    commandId = commandId,
+                                    success = true,
+                                    latitude = locationResult.latitude,
+                                    longitude = locationResult.longitude,
+                                    accuracy = locationResult.accuracy,
+                                    timestamp = locationResult.timestamp,
+                                    provider = locationResult.provider,
+                                    altitude = locationResult.altitude,
+                                    speed = locationResult.speed,
+                                    bearing = locationResult.bearing
+                                )
+                            }
+                            is LocationResultData.Error -> {
+                                Log.e(TAG, "📍 ❌ Erro ao obter localização: ${locationResult.errorCode}")
+                                Log.e(TAG, "📍 Mensagem: ${locationResult.message}")
+                                
+                                sendLocationCommandResponse(
+                                    commandId = commandId,
+                                    success = false,
+                                    errorCode = locationResult.errorCode,
+                                    errorMessage = locationResult.message
+                                )
+                            }
+                        }
+                        
+                    } catch (e: TimeoutCancellationException) {
+                        Log.e(TAG, "📍 ❌ TIMEOUT ao obter localização após ${parameters.timeout}ms")
+                        sendLocationCommandResponse(
+                            commandId = commandId,
+                            success = false,
+                            errorCode = "LOCATION_TIMEOUT",
+                            errorMessage = "Location request timed out after ${parameters.timeout}ms"
+                        )
+                    } catch (e: Exception) {
+                        Log.e(TAG, "📍 ❌ Erro inesperado ao obter localização: ${e.message}", e)
+                        sendLocationCommandResponse(
+                            commandId = commandId,
+                            success = false,
+                            errorCode = "LOCATION_ERROR",
+                            errorMessage = e.message ?: "Unknown error getting location"
+                        )
+                    }
+                    
+                    Log.i(TAG, "📍 Comando LOCATE_DEVICE processado completamente")
+                }
                 is CommandParameters.EmptyParameters -> {
                     Log.i(TAG, "⚙️ Processando comando sem parâmetros: $commandType")
                     when (commandType) {
@@ -541,6 +626,75 @@ class MdmCommandReceiver(private val context: Context) {
             
         } catch (e: Exception) {
             Log.e(TAG, "❌ Erro ao enviar command response: ${e.message}")
+        }
+    }
+    
+    private suspend fun sendLocationCommandResponse(
+        commandId: String,
+        success: Boolean,
+        latitude: Double? = null,
+        longitude: Double? = null,
+        accuracy: Float? = null,
+        timestamp: String? = null,
+        provider: String? = null,
+        altitude: Double? = null,
+        speed: Float? = null,
+        bearing: Float? = null,
+        errorCode: String? = null,
+        errorMessage: String? = null
+    ) {
+        try {
+            val identifier = tokenStorage.getMdmIdentifier()
+            
+            if (identifier == null) {
+                Log.e(TAG, "❌ Nenhum identificador MDM disponível para enviar location response")
+                return
+            }
+            
+            Log.d(TAG, "📍 Enviando location response usando identifier: ${identifier.take(8)}****")
+            
+            val retrofit = RetrofitProvider.createAuthenticatedRetrofit(context)
+            val api = retrofit.create(MdmApiService::class.java)
+            
+            val payload = if (success && latitude != null && longitude != null) {
+                val locationData = LocationResponse(
+                    latitude = latitude,
+                    longitude = longitude,
+                    accuracy = accuracy,
+                    timestamp = timestamp ?: java.time.Instant.now().toString(),
+                    provider = provider ?: "unknown",
+                    altitude = altitude,
+                    speed = speed,
+                    bearing = bearing
+                )
+                LocationCommandResponsePayload.success(locationData)
+            } else {
+                LocationCommandResponsePayload.failure(errorCode ?: "UNKNOWN_ERROR")
+            }
+            
+            val request = LocationCommandResponseRequest(
+                commandId = commandId,
+                status = if (success) "completed" else "failed",
+                response = payload,
+                errorMessage = if (success) null else errorMessage
+            )
+            
+            Log.d(TAG, "📍 Request JSON schema: commandId=${commandId}, status=${request.status}")
+            Log.d(TAG, "📍 Response payload: success=${payload.success}, location=${if (payload.location != null) "present" else "null"}")
+            
+            val response = api.sendLocationCommandResponse(identifier, request)
+            
+            if (response.isSuccessful) {
+                Log.i(TAG, "📍 ✅ Location response enviado para comando $commandId: ${request.status}")
+                if (success) {
+                    Log.i(TAG, "📍    Localização: $latitude, $longitude (accuracy: ${accuracy}m)")
+                }
+            } else {
+                Log.e(TAG, "📍 ❌ Erro ao enviar location response: ${response.code()}")
+            }
+            
+        } catch (e: Exception) {
+            Log.e(TAG, "📍 ❌ Erro ao enviar location command response: ${e.message}")
         }
     }
     

@@ -74,6 +74,12 @@ sealed class CommandParameters {
         fun getHash(): String = uninstallHash.ifEmpty { confirmationCode }
     }
     
+    @JsonClass(generateAdapter = true)
+    data class LocateDeviceParameters(
+        val highAccuracy: Boolean = true,
+        val timeout: Int = 30000
+    ) : CommandParameters()
+    
     object EmptyParameters : CommandParameters()
     
     data class UnknownParameters(
@@ -106,6 +112,38 @@ data class CommandResponse(
     val appliedLevel: Int? = null,
     val timestamp: Long
 )
+
+@JsonClass(generateAdapter = true)
+data class LocationCommandResponseRequest(
+    val commandId: String,
+    val status: String,
+    val response: LocationCommandResponsePayload,
+    val errorMessage: String? = null
+)
+
+@JsonClass(generateAdapter = true)
+data class LocationCommandResponsePayload(
+    val success: Boolean,
+    val location: LocationResponse? = null,
+    val timestamp: Long = System.currentTimeMillis(),
+    val errorCode: String? = null
+) {
+    companion object {
+        fun success(location: LocationResponse) = LocationCommandResponsePayload(
+            success = true,
+            location = location,
+            timestamp = System.currentTimeMillis(),
+            errorCode = null
+        )
+        
+        fun failure(errorCode: String) = LocationCommandResponsePayload(
+            success = false,
+            location = null,
+            timestamp = System.currentTimeMillis(),
+            errorCode = errorCode
+        )
+    }
+}
 
 @JsonClass(generateAdapter = true)
 data class PendingDecisionsResponse(
@@ -200,4 +238,16 @@ data class TelemetryRequest(
     val appVersion: String? = null,
     val isDeviceOwner: Boolean? = null,
     val additionalData: Map<String, String>? = null
+)
+
+@JsonClass(generateAdapter = true)
+data class LocationResponse(
+    val latitude: Double,
+    val longitude: Double,
+    val accuracy: Float?,
+    val timestamp: String,
+    val provider: String,
+    val altitude: Double? = null,
+    val speed: Float? = null,
+    val bearing: Float? = null
 )
