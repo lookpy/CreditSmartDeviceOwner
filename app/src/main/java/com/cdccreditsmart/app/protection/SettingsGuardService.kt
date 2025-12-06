@@ -303,51 +303,94 @@ class SettingsGuardService(private val context: Context) {
         // O usuário PRECISA poder alterar senha/PIN/padrão/biometria do dispositivo
         // NÃO bloquear essas telas - são necessárias para uso normal do dispositivo
         // ═══════════════════════════════════════════════════════════════════════════════
+        
+        // Primeiro, extrair o nome simplificado da activity (sem pacote, sem inner-class prefix)
+        val activitySimpleName = activityName?.let { name ->
+            // Remove package prefix (ex: com.android.settings.Settings$XxxActivity -> Settings$XxxActivity)
+            val withoutPackage = name.substringAfterLast(".")
+            // Remove inner-class prefix (ex: Settings$PasswordAndSecuritySettingsActivity -> PasswordAndSecuritySettingsActivity)
+            if (withoutPackage.contains("$")) {
+                withoutPackage.substringAfterLast("$")
+            } else {
+                withoutPackage
+            }
+        }
+        
+        Log.d(TAG, "📋 Activity check - Full: $activityName, Simple: $activitySimpleName")
+        
         val allowedSecurityActivities = listOf(
-            // Android Stock - Configurações de bloqueio de tela
-            "ScreenLockSettings",
-            "ChooseLockPassword",
-            "ChooseLockPattern",
-            "ChooseLockPin",
-            "SetupChooseLockPassword",
-            "SetupChooseLockPattern",
-            "SetupChooseLockPin",
+            // ═══════════════════════════════════════════════════════════════════════════════
+            // PADRÕES GERAIS (match parcial)
+            // ═══════════════════════════════════════════════════════════════════════════════
+            "PasswordAndSecurity",      // MIUI: Settings$PasswordAndSecuritySettingsActivity
+            "PasswordSecurity",         // Variante
+            "LockScreen",               // Configurações de tela de bloqueio
+            "ScreenLock",               // Bloqueio de tela
+            "Biometric",                // Biometria geral
+            "Fingerprint",              // Impressão digital
+            "FaceUnlock",               // Desbloqueio facial
+            "FaceRecognition",          // Reconhecimento facial
+            "ChooseLock",               // Escolher bloqueio
+            "ConfirmLock",              // Confirmar bloqueio (para mudar senha)
+            "SetupLock",                // Setup de bloqueio
+            "CredentialStorage",        // Armazenamento de credenciais
+            "TrustAgents",              // Agentes de confiança (Smart Lock)
+            
+            // ═══════════════════════════════════════════════════════════════════════════════
+            // ANDROID STOCK - Nomes específicos
+            // ═══════════════════════════════════════════════════════════════════════════════
             "SecuritySettings",
-            "LockScreenSettings",
-            "BiometricSettings",
-            "FingerprintSettings",
-            "FingerprintEnrollIntro",
-            "FingerprintEnrollFindSensor",
-            "FingerprintEnrollFinish",
-            "FaceSettings",
-            "FaceEnrollIntro",
-            // Samsung
+            "SecurityDashboard",
+            "PrivacySettings",
+            "PrivacyDashboard",
+            
+            // ═══════════════════════════════════════════════════════════════════════════════
+            // XIAOMI/MIUI - Nomes específicos
+            // ═══════════════════════════════════════════════════════════════════════════════
+            "MiuiSecuritySettings",
+            "MiuiPasswordSettings",
+            "MiuiFingerprintActivity",
+            "MiuiFaceUnlockActivity",
+            "MiuiLockScreenSettings",
+            "MiuiBiometricSettings",
+            "SecurityCenterMainActivity",   // Tela principal de segurança (quando acessando senha)
+            
+            // ═══════════════════════════════════════════════════════════════════════════════
+            // SAMSUNG - Nomes específicos
+            // ═══════════════════════════════════════════════════════════════════════════════
             "BiometricsAndSecuritySettings",
             "LockscreenSettings",
             "FingerprintSettingsActivity",
             "FaceRecognitionSettings",
             "IrisSettings",
-            // Xiaomi/MIUI
-            "MiuiSecuritySettings",
-            "MiuiPasswordSettings",
-            "MiuiFingerprintActivity",
-            "MiuiFaceUnlockActivity",
-            // Huawei
+            "SecureFolderSettings",
+            
+            // ═══════════════════════════════════════════════════════════════════════════════
+            // HUAWEI/HONOR - Nomes específicos
+            // ═══════════════════════════════════════════════════════════════════════════════
             "FingerprintUnlockSettingsActivity",
             "FaceRecognitionActivity",
-            // OPPO/Realme/Vivo/OnePlus
+            "HwSecuritySettings",
+            
+            // ═══════════════════════════════════════════════════════════════════════════════
+            // OPPO/REALME/VIVO/ONEPLUS - Nomes específicos
+            // ═══════════════════════════════════════════════════════════════════════════════
             "FingerprintActivity",
             "FaceUnlockActivity",
             "ScreenLockActivity",
-            "PasswordSettings"
+            "PasswordSettings",
+            "ColorOSSecuritySettings"
         )
         
-        val isAllowedSecurityActivity = activityName != null && allowedSecurityActivities.any { allowed ->
-            activityName.contains(allowed, ignoreCase = true)
+        // Verificar usando AMBOS os nomes (completo e simplificado)
+        val isAllowedSecurityActivity = activitySimpleName != null && allowedSecurityActivities.any { allowed ->
+            activitySimpleName.contains(allowed, ignoreCase = true) ||
+            (activityName?.contains(allowed, ignoreCase = true) == true)
         }
         
         if (isAllowedSecurityActivity) {
-            Log.d(TAG, "✅ Tela de Senha/Segurança permitida: $activityName")
+            Log.i(TAG, "✅ Tela de Senha/Segurança PERMITIDA: $activitySimpleName")
+            Log.d(TAG, "   Activity completa: $activityName")
             Log.d(TAG, "   Usuário pode alterar senha/biometria do dispositivo")
             return SettingsCheckResult.SAFE
         }
