@@ -34,10 +34,11 @@ class BlockingViewModel(private val context: Context) : ViewModel() {
     private val _blockingState = mutableStateOf(BlockingUiState())
     val blockingState: State<BlockingUiState> = _blockingState
     
-    private val tokenStorage = SecureTokenStorage(context)
-    private val blockingStateRepository = BlockingStateRepository(context)
-    private val packageMapper = PackageCategoryMapper(context)
-    private val appBlockingManager = AppBlockingManager(context)
+    // CRÍTICO: Usar lazy para evitar crash durante inicialização
+    private val tokenStorage: SecureTokenStorage by lazy { SecureTokenStorage(context) }
+    private val blockingStateRepository by lazy { BlockingStateRepository(context) }
+    private val packageMapper by lazy { PackageCategoryMapper(context) }
+    private val appBlockingManager by lazy { AppBlockingManager(context) }
     
     private val deviceApiService: DeviceApiService by lazy {
         createDeviceApiService()

@@ -26,8 +26,15 @@ class RouterViewModel(
     private val _destination = mutableStateOf<RouterDestination>(RouterDestination.Loading)
     val destination: State<RouterDestination> = _destination
 
-    private val authOrchestrator = AuthenticationOrchestrator(context)
-    private val termsAcceptanceStorage = TermsAcceptanceStorage(context)
+    // CRÍTICO: Usar lazy para evitar crash durante inicialização
+    // EncryptedSharedPreferences pode falhar em certos estados do dispositivo
+    private val authOrchestrator: AuthenticationOrchestrator by lazy {
+        AuthenticationOrchestrator(context)
+    }
+    
+    private val termsAcceptanceStorage: TermsAcceptanceStorage by lazy {
+        TermsAcceptanceStorage(context)
+    }
 
     companion object {
         private const val TAG = "RouterViewModel"

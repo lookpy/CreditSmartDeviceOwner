@@ -48,7 +48,8 @@ class PixPaymentViewModel(
     private val _uiState = mutableStateOf(PixPaymentUiState())
     val uiState: State<PixPaymentUiState> = _uiState
 
-    private val secureTokenStorage = SecureTokenStorage(context)
+    // CRÍTICO: Usar lazy para evitar crash durante inicialização
+    private val secureTokenStorage: SecureTokenStorage by lazy { SecureTokenStorage(context) }
     private val apiService: DeviceApiService by lazy {
         RetrofitProvider.createPixRetrofit().create(DeviceApiService::class.java)
     }

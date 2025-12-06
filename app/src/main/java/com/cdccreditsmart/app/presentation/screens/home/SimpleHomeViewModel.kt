@@ -39,9 +39,10 @@ class SimpleHomeViewModel(
     private val _homeState = mutableStateOf(HomeState())
     val homeState: State<HomeState> = _homeState
 
-    private val tokenStorage = SecureTokenStorage(context)
-    private val networkHelper = com.cdccreditsmart.app.network.NetworkConnectivityHelper(context)
-    private val localStorage = com.cdccreditsmart.app.storage.LocalInstallmentStorage(context)
+    // CRÍTICO: Usar lazy para evitar crash durante inicialização
+    private val tokenStorage: SecureTokenStorage by lazy { SecureTokenStorage(context) }
+    private val networkHelper by lazy { com.cdccreditsmart.app.network.NetworkConnectivityHelper(context) }
+    private val localStorage by lazy { com.cdccreditsmart.app.storage.LocalInstallmentStorage(context) }
     
     private val deviceApiService: DeviceApiService by lazy {
         createDeviceApiService()

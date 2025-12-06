@@ -27,9 +27,29 @@ sealed class AuthenticationResult {
 
 class AuthenticationOrchestrator(private val context: Context) {
 
-    private val tokenStorage = SecureTokenStorage(context)
-    private val contractCodeStorage = ContractCodeStorage(context)
-    private val fcmTokenManager = FcmTokenManager(context)
+    // CRÍTICO: Usar lazy para evitar crash durante inicialização
+    // EncryptedSharedPreferences pode falhar em certos estados do dispositivo
+    private val tokenStorage: SecureTokenStorage by lazy {
+        try {
+            SecureTokenStorage(context)
+        } catch (e: Exception) {
+            Log.e(TAG, "❌ Erro ao criar SecureTokenStorage: ${e.message}")
+            throw e
+        }
+    }
+    
+    private val contractCodeStorage: ContractCodeStorage by lazy {
+        try {
+            ContractCodeStorage(context)
+        } catch (e: Exception) {
+            Log.e(TAG, "❌ Erro ao criar ContractCodeStorage: ${e.message}")
+            throw e
+        }
+    }
+    
+    private val fcmTokenManager: FcmTokenManager by lazy {
+        FcmTokenManager(context)
+    }
     
     private val deviceApi: DeviceApiService by lazy {
         createDeviceApiService()

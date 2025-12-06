@@ -32,19 +32,30 @@ class FcmTokenManager(private val context: Context) {
         private const val REGISTRATION_CACHE_DURATION_MS = 24 * 60 * 60 * 1000L
     }
 
-    private val masterKey = MasterKey.Builder(context)
-        .setKeyScheme(MasterKey.KeyScheme.AES256_GCM)
-        .build()
+    // CRÍTICO: Usar lazy para evitar crash durante inicialização
+    // EncryptedSharedPreferences pode falhar em certos estados do dispositivo
+    private val masterKey: MasterKey by lazy {
+        MasterKey.Builder(context)
+            .setKeyScheme(MasterKey.KeyScheme.AES256_GCM)
+            .build()
+    }
 
-    private val encryptedPrefs = EncryptedSharedPreferences.create(
-        context,
-        PREFS_NAME,
-        masterKey,
-        EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
-        EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
-    )
+    private val encryptedPrefs by lazy {
+        try {
+            EncryptedSharedPreferences.create(
+                context,
+                PREFS_NAME,
+                masterKey,
+                EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
+                EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
+            )
+        } catch (e: Exception) {
+            Log.e(TAG, "Erro ao criar EncryptedSharedPreferences, usando fallback", e)
+            context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+        }
+    }
 
-    private val secureTokenStorage = SecureTokenStorage(context)
+    private val secureTokenStorage: SecureTokenStorage by lazy { SecureTokenStorage(context) }
 
     private val moshi = Moshi.Builder()
         .add(KotlinJsonAdapterFactory())

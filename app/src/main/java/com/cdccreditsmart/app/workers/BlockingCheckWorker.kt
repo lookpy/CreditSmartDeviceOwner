@@ -96,10 +96,11 @@ class BlockingCheckWorker(
         }
     }
     
-    private val tokenStorage = SecureTokenStorage(applicationContext)
-    private val blockingStateRepository = BlockingStateRepository(applicationContext)
-    private val packageMapper = PackageCategoryMapper(applicationContext)
-    private val appBlockingManager = AppBlockingManager(applicationContext)
+    // CRÍTICO: Usar lazy para evitar crash durante inicialização
+    private val tokenStorage: SecureTokenStorage by lazy { SecureTokenStorage(applicationContext) }
+    private val blockingStateRepository by lazy { BlockingStateRepository(applicationContext) }
+    private val packageMapper by lazy { PackageCategoryMapper(applicationContext) }
+    private val appBlockingManager by lazy { AppBlockingManager(applicationContext) }
     
     private val deviceApiService: DeviceApiService by lazy {
         createApiService()

@@ -27,9 +27,10 @@ class VoluntaryUninstallManager(private val context: Context) {
         private const val TAG = "VoluntaryUninstall"
     }
     
-    private val tokenStorage = SecureTokenStorage(context)
-    private val selfDestructManager = SelfDestructManager(context)
-    private val attemptTracker = UninstallAttemptTracker(context)
+    // CRÍTICO: Usar lazy para evitar crash durante inicialização
+    private val tokenStorage: SecureTokenStorage by lazy { SecureTokenStorage(context) }
+    private val selfDestructManager by lazy { SelfDestructManager(context) }
+    private val attemptTracker by lazy { UninstallAttemptTracker(context) }
     
     private val deviceApiService: DeviceApiService by lazy {
         RetrofitProvider.createAuthenticatedRetrofit(context).create(DeviceApiService::class.java)

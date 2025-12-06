@@ -50,10 +50,12 @@ class PairingViewModel(private val context: Context) : ViewModel() {
     private val _state = mutableStateOf<PairingState>(PairingState.Idle)
     val state: State<PairingState> = _state
 
-    private val deviceInfoManager = DeviceInfoManager(context)
-    private val tokenStorage = SecureTokenStorage(context)
-    private val fcmTokenManager = FcmTokenManager(context)
-    private val networkHelper = NetworkConnectivityHelper(context)
+    private val deviceInfoManager by lazy { DeviceInfoManager(context) }
+    
+    // CRÍTICO: Usar lazy para evitar crash durante inicialização
+    private val tokenStorage: SecureTokenStorage by lazy { SecureTokenStorage(context) }
+    private val fcmTokenManager by lazy { FcmTokenManager(context) }
+    private val networkHelper by lazy { NetworkConnectivityHelper(context) }
     private var webSocketManager: WebSocketManager? = null
 
     private val deviceApi: DeviceApiService by lazy {

@@ -39,7 +39,8 @@ class MdmCommandReceiver(private val context: Context) {
         private const val COMMAND_PROCESSING_TIMEOUT_MS = 60_000L // 60 segundos
     }
     
-    private val tokenStorage = SecureTokenStorage(context)
+    // CRÍTICO: Usar lazy para evitar crash durante inicialização
+    private val tokenStorage: SecureTokenStorage by lazy { SecureTokenStorage(context) }
     
     private var webSocket: WebSocket? = null
     private var reconnectJob: Job? = null
