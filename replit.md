@@ -48,7 +48,13 @@ Utilizes Jetpack Compose and Material 3 with a CDC institutional dark theme. Fea
 - **Networking:** Retrofit and OkHttp with retry logic, exponential backoff, and Certificate Pinning.
 - **Crash Prevention:** Global `CrashHandler` for logging unhandled exceptions and scheduling auto-restarts, with graceful handling of expected exceptions.
 - **Secondary Managed User Detection:** `CdcForegroundService` and `SecureTokenStorage` prevent MDM initialization in managed secondary users.
-- **SettingsGuard System:** Active monitoring to prevent access to App Info screens and Device Admin removal screens, with robust recovery, multi-OEM support, and special handling for MIUI/Xiaomi.
+- **SettingsGuard System:** Active monitoring in ALL modes (Device Owner, Device Admin, Basic) to prevent access to dangerous Settings screens. Polls foreground app every 600ms (400ms in aggressive mode). Key features:
+  - **12 Protected Categories:** App Info/Uninstall, Force Stop/Kill App, Factory Reset, Device Admin/MDM, Battery Optimization, Permissions, Security Hubs, Developer Options, Clear Data, Notifications, Accessibility, DNS/Network
+  - **17+ OEM Support:** Android Stock, Samsung, Xiaomi/MIUI, Huawei/Honor, OPPO/ColorOS, Realme, Vivo, OnePlus, Motorola, LG, Asus, Sony, Nokia, Tecno/Infinix/iTel, ZTE/Nubia, Alcatel/TCL, Meizu
+  - **Generic Pattern Matching:** Captures activity name variants (AppInfo, DeviceAdmin, FactoryReset, BatteryOptimiz, etc.)
+  - **Always-Dangerous Packages:** SecurityCenter packages from all OEMs are always blocked
+  - **Pause/Resume for Permission Flows:** Auto-resumes when app returns to foreground
+  - **SubSettings Detection:** Blocks SubSettings wrappers from OEM Settings packages
 
 ## External Dependencies
 - **CDC Credit Smart Backend API:** For authentication, device status, installments, PIX processing, heartbeat, MDM commands, unblock operations, remote uninstall telemetry, time synchronization, FCM token registration, and enrollment reporting.
