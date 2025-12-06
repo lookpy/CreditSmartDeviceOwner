@@ -17,10 +17,38 @@ class DeviceOwnerCheckViewModel(private val context: Context) : ViewModel() {
     
     companion object {
         private const val TAG = "DeviceOwnerCheckVM"
+        private const val PREFS_NAME = "device_owner_prefs"
+        private const val KEY_SKIP_PROVISIONING = "skip_provisioning_debug"
     }
+    
+    private val prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
     
     init {
         checkDeviceOwner()
+    }
+    
+    /**
+     * Verifica se o usuário já pulou o provisionamento anteriormente (apenas DEBUG)
+     */
+    private fun hasSkippedProvisioning(): Boolean {
+        return com.cdccreditsmart.app.BuildConfig.DEBUG && 
+               prefs.getBoolean(KEY_SKIP_PROVISIONING, false)
+    }
+    
+    /**
+     * Salva a decisão de pular o provisionamento
+     */
+    private fun saveSkipDecision() {
+        prefs.edit().putBoolean(KEY_SKIP_PROVISIONING, true).apply()
+        Log.i(TAG, "💾 Decisão de pular provisionamento SALVA")
+    }
+    
+    /**
+     * Limpa a decisão de pular (para reset se necessário)
+     */
+    fun clearSkipDecision() {
+        prefs.edit().remove(KEY_SKIP_PROVISIONING).apply()
+        Log.i(TAG, "🗑️ Decisão de pular provisionamento REMOVIDA")
     }
     
     fun checkDeviceOwner() {
@@ -36,8 +64,14 @@ class DeviceOwnerCheckViewModel(private val context: Context) : ViewModel() {
             val isSamsung = DeviceUtils.isSamsung()
             val deviceInfo = DeviceUtils.getDeviceInfo()
             
+            // Verificar se é Device Owner OU se já pulou anteriormente (DEBUG)
             if (isDeviceOwner) {
                 Log.i(TAG, "✅ Dispositivo é Device Owner - permitindo acesso ao app")
+                Log.i(TAG, "========================================")
+                _state.value = ProvisioningStep.DeviceOwnerFound
+            } else if (hasSkippedProvisioning()) {
+                Log.w(TAG, "⚠️ MODO DEBUG: Usuário já pulou provisionamento anteriormente")
+                Log.w(TAG, "⚠️ Permitindo acesso sem Device Owner (decisão memorizada)")
                 Log.i(TAG, "========================================")
                 _state.value = ProvisioningStep.DeviceOwnerFound
             } else {
@@ -57,6 +91,10 @@ class DeviceOwnerCheckViewModel(private val context: Context) : ViewModel() {
         if (com.cdccreditsmart.app.BuildConfig.DEBUG) {
             Log.w(TAG, "⚠️ MODO DEBUG: Pulando verificação de Device Owner")
             Log.w(TAG, "⚠️ ATENÇÃO: App pode não funcionar corretamente sem Device Owner")
+            
+            // SALVAR a decisão para não pedir novamente
+            saveSkipDecision()
+            
             _state.value = ProvisioningStep.DeviceOwnerFound
         } else {
             Log.e(TAG, "❌ skipProvisioning() chamado em modo RELEASE - ignorando")
