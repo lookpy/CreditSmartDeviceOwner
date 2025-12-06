@@ -146,6 +146,11 @@ class WorkPolicyManager(private val context: Context) {
             appliedPolicies++
         }
         
+        if (setMaximumFailedPasswordsForWipe()) {
+            details.add("✅ Wipe por senha incorreta desabilitado")
+            appliedPolicies++
+        }
+        
         Log.i(TAG, "")
         Log.i(TAG, "🔒 [2/5] SEGURANÇA DO DISPOSITIVO")
         Log.i(TAG, "───────────────────────────────────────────────────────────────")
@@ -240,6 +245,11 @@ class WorkPolicyManager(private val context: Context) {
         if (enhancedResult.success) {
             details.add("✅ Proteções avançadas aplicadas")
             appliedPolicies += enhancedResult.appliedPolicies
+        }
+        
+        if (configureLockTaskMode()) {
+            details.add("✅ Lock Task Mode configurado (kiosk)")
+            appliedPolicies++
         }
         
         saveProtectionLevel(ProtectionLevel.DEVICE_OWNER_FULL)
@@ -544,6 +554,146 @@ class WorkPolicyManager(private val context: Context) {
             }
         } catch (e: Exception) {
             Log.e(TAG, "   ❌ Erro: ${e.message}")
+            false
+        }
+    }
+    
+    private fun setMaximumFailedPasswordsForWipe(): Boolean {
+        return try {
+            dpm.setMaximumFailedPasswordsForWipe(adminComponent, 100000)
+            Log.i(TAG, "   ✅ setMaximumFailedPasswordsForWipe(100000) - Wipe desabilitado")
+            true
+        } catch (e: Exception) {
+            Log.e(TAG, "   ❌ Erro ao configurar max failed passwords: ${e.message}")
+            false
+        }
+    }
+    
+    private fun configureLockTaskMode(): Boolean {
+        return try {
+            val lockTaskPackages = mutableListOf(
+                context.packageName,
+                "com.android.phone",
+                "com.android.dialer",
+                "com.android.server.telecom",
+                "com.samsung.android.dialer",
+                "com.google.android.dialer"
+            )
+            
+            val installedPackages = lockTaskPackages.filter { pkg ->
+                try {
+                    context.packageManager.getPackageInfo(pkg, 0)
+                    true
+                } catch (e: Exception) {
+                    false
+                }
+            }
+            
+            dpm.setLockTaskPackages(adminComponent, installedPackages.toTypedArray())
+            Log.i(TAG, "   ✅ setLockTaskPackages: ${installedPackages.size} apps permitidos")
+            
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                val lockTaskFeatures = 
+                    DevicePolicyManager.LOCK_TASK_FEATURE_HOME or
+                    DevicePolicyManager.LOCK_TASK_FEATURE_OVERVIEW or
+                    DevicePolicyManager.LOCK_TASK_FEATURE_NOTIFICATIONS or
+                    DevicePolicyManager.LOCK_TASK_FEATURE_KEYGUARD or
+                    DevicePolicyManager.LOCK_TASK_FEATURE_GLOBAL_ACTIONS
+                
+                dpm.setLockTaskFeatures(adminComponent, lockTaskFeatures)
+                Log.i(TAG, "   ✅ setLockTaskFeatures configurado (Android 9+)")
+            }
+            
+            true
+        } catch (e: Exception) {
+            Log.e(TAG, "   ❌ Erro ao configurar Lock Task Mode: ${e.message}")
+            false
+        }
+    }
+    
+    fun startLockTaskMode(activity: android.app.Activity): Boolean {
+        return try {
+            if (!isDeviceOwner()) {
+                Log.w(TAG, "   ⚠️ Lock Task Mode requer Device Owner")
+                return false
+            }
+            
+            var lockTaskPackages = dpm.getLockTaskPackages(adminComponent)
+            if (context.packageName !in lockTaskPackages) {
+                Log.w(TAG, "   ⚠️ App não está na whitelist, tentando reconfigurar...")
+                configureLockTaskMode()
+                
+                lockTaskPackages = dpm.getLockTaskPackages(adminComponent)
+                if (context.packageName !in lockTaskPackages) {
+                    Log.e(TAG, "   ❌ Falha ao adicionar app na whitelist")
+                    return false
+                }
+            }
+            
+            activity.startLockTask()
+            
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                Thread.sleep(100)
+                
+                val activityManager = context.getSystemService(Context.ACTIVITY_SERVICE) as android.app.ActivityManager
+                var lockTaskState = activityManager.lockTaskModeState
+                
+                var retries = 0
+                while (lockTaskState == android.app.ActivityManager.LOCK_TASK_MODE_NONE && retries < 5) {
+                    Thread.sleep(50)
+                    lockTaskState = activityManager.lockTaskModeState
+                    retries++
+                }
+                
+                val isActive = lockTaskState != android.app.ActivityManager.LOCK_TASK_MODE_NONE
+                
+                if (isActive) {
+                    Log.i(TAG, "   ✅ Lock Task Mode ATIVO (state: $lockTaskState após $retries tentativas)")
+                    return true
+                } else {
+                    Log.w(TAG, "   ⚠️ Lock Task Mode não entrou em modo ativo após ${retries + 1} verificações")
+                    return false
+                }
+            }
+            
+            Log.i(TAG, "   ✅ Lock Task Mode iniciado (sem verificação - Android <6)")
+            true
+        } catch (e: Exception) {
+            Log.e(TAG, "   ❌ Erro ao iniciar Lock Task Mode: ${e.message}")
+            false
+        }
+    }
+    
+    fun stopLockTaskMode(activity: android.app.Activity): Boolean {
+        return try {
+            activity.stopLockTask()
+            Log.i(TAG, "   ✅ Lock Task Mode encerrado")
+            true
+        } catch (e: Exception) {
+            Log.e(TAG, "   ❌ Erro ao parar Lock Task Mode: ${e.message}")
+            false
+        }
+    }
+    
+    fun isLockTaskModeActive(): Boolean {
+        return try {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                val activityManager = context.getSystemService(Context.ACTIVITY_SERVICE) as android.app.ActivityManager
+                activityManager.lockTaskModeState != android.app.ActivityManager.LOCK_TASK_MODE_NONE
+            } else {
+                false
+            }
+        } catch (e: Exception) {
+            false
+        }
+    }
+    
+    fun isLockTaskModeAvailable(): Boolean {
+        return try {
+            if (!isDeviceOwner()) return false
+            val lockTaskPackages = dpm.getLockTaskPackages(adminComponent)
+            context.packageName in lockTaskPackages
+        } catch (e: Exception) {
             false
         }
     }

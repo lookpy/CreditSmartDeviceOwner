@@ -245,6 +245,19 @@
             android:excludeFromRecents="false"
             android:directBootAware="true" />
         
+        <!-- Lock Task Activity - Kiosk Mode for Severe Blocking (PayJoy-style) -->
+        <activity
+            android:name=".ui.lock.LockTaskActivity"
+            android:exported="false"
+            android:launchMode="singleTask"
+            android:lockTaskMode="if_whitelisted"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.CDCCreditSmart"
+            android:excludeFromRecents="true"
+            android:showWhenLocked="true"
+            android:turnScreenOn="true"
+            android:directBootAware="true" />
+        
         <!-- Protection Status Diagnostic Activity -->
         <activity
             android:name=".presentation.diagnostic.ProtectionStatusActivity"

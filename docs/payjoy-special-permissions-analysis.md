@@ -314,8 +314,8 @@ KnoxContainerManager.activateLicense(licenseKey)
 | addUserRestriction | 7 | 10+ | **CDC melhor** |
 | setPermissionGrantState | ✅ | ✅ | Auto-conceder |
 | setPackagesSuspended | ✅ | ✅ | Bloquear apps |
-| setLockTaskPackages | ✅ | ⚠️ | CDC parcial |
-| setMaximumFailedPasswords | ✅ | ❌ | Baixa prioridade |
+| setLockTaskPackages | ✅ | ✅ | **CDC implementado** |
+| setMaximumFailedPasswords | ✅ | ✅ | **CDC implementado (100000)** |
 | Knox APIs | ✅ | ⏳ | Aguardando |
 | DISALLOW_SMS | ✅ | ❌ | **TJMG proíbe** |
 | DISALLOW_OUTGOING_CALLS | ✅ | ❌ | **TJMG proíbe** |
@@ -363,7 +363,12 @@ KnoxContainerManager.activateLicense(licenseKey)
 ### O que o PayJoy faz que CDC NÃO faz (por design):
 1. **DISALLOW_SMS** - Proibido por TJMG
 2. **DISALLOW_OUTGOING_CALLS** - Proibido por TJMG
-3. **setMaximumFailedPasswordsForWipe** - Baixa prioridade
+
+### O que o CDC AGORA TAMBÉM faz (Dez 2024):
+1. **setMaximumFailedPasswordsForWipe(100000)** - ✅ Implementado
+2. **setLockTaskPackages** - ✅ Implementado (modo kiosk)
+3. **setLockTaskFeatures** - ✅ Implementado (Android 9+)
+4. **LockTaskActivity** - ✅ Implementado (bloqueio severo)
 
 ### O que o CDC faz MELHOR que PayJoy:
 1. **Mais pacotes protegidos** (5 vs 2)
