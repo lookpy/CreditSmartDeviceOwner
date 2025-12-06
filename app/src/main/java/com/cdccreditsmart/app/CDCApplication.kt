@@ -2,6 +2,7 @@ package com.cdccreditsmart.app
 
 import android.app.Application
 import android.content.Context
+import android.os.UserManager
 import android.util.Log
 import com.cdccreditsmart.app.keepalive.KeepAliveManager
 import com.cdccreditsmart.app.permissions.AutoPermissionManager
@@ -35,17 +36,37 @@ class CDCApplication : Application() {
         
         Log.i(TAG, "🚀 CDC Credit Smart Application iniciando...")
         
+        // CRÍTICO: Verificar se usuário está desbloqueado (direct-boot mode)
+        // Durante provisionamento Device Owner, EncryptedSharedPreferences NÃO está disponível
+        val userManager = getSystemService(Context.USER_SERVICE) as? UserManager
+        val isUserUnlocked = userManager?.isUserUnlocked ?: false
+        
+        if (!isUserUnlocked) {
+            Log.w(TAG, "⏸️ DIRECT-BOOT MODE - Usuário não desbloqueado")
+            Log.w(TAG, "   → Adiando inicialização completa para após desbloqueio")
+            Log.w(TAG, "   → EncryptedSharedPreferences não disponível neste estado")
+            // Apenas aplicar proteções básicas que não dependem de storage
+            grantPermissionsIfDeviceOwner()
+            applyMaximumProtectionIfDeviceOwner()
+            return
+        }
+        
         grantPermissionsIfDeviceOwner()
         applyMaximumProtectionIfDeviceOwner()
         ensureManagedSecondaryUserExists()
         checkTamperDetection()
         checkSimSwapStatus()
         
-        val secureStorage = SecureTokenStorage(applicationContext)
-        val authToken = secureStorage.getAuthToken()
-        val contractCode = secureStorage.getContractCode()
-        
-        val hasTokens = !authToken.isNullOrBlank() && !contractCode.isNullOrBlank()
+        // PROTEÇÃO: Envolver acesso ao SecureTokenStorage em try/catch
+        val hasTokens = try {
+            val secureStorage = SecureTokenStorage(applicationContext)
+            val authToken = secureStorage.getAuthToken()
+            val contractCode = secureStorage.getContractCode()
+            !authToken.isNullOrBlank() && !contractCode.isNullOrBlank()
+        } catch (e: Exception) {
+            Log.e(TAG, "⚠️ Erro ao acessar SecureTokenStorage: ${e.message}")
+            false
+        }
         
         if (hasTokens) {
             Log.i(TAG, "✅ Tokens encontrados - iniciando CdcForegroundService")
