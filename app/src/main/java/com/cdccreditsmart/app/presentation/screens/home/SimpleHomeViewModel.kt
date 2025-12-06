@@ -26,7 +26,10 @@ data class HomeState(
     val timing: TimingInfo? = null,
     val nextInstallment: InstallmentItem? = null,
     val mostOverdueInstallment: InstallmentItem? = null,
-    val allInstallments: List<InstallmentItem> = emptyList()
+    val allInstallments: List<InstallmentItem> = emptyList(),
+    val isOfflineMode: Boolean = false,
+    val lastSyncTime: Long = 0L,
+    val customerName: String? = null
 )
 
 class SimpleHomeViewModel(
@@ -37,6 +40,8 @@ class SimpleHomeViewModel(
     val homeState: State<HomeState> = _homeState
 
     private val tokenStorage = SecureTokenStorage(context)
+    private val networkHelper = com.cdccreditsmart.app.network.NetworkConnectivityHelper(context)
+    private val localStorage = com.cdccreditsmart.app.storage.LocalInstallmentStorage(context)
     
     private val deviceApiService: DeviceApiService by lazy {
         createDeviceApiService()
@@ -110,6 +115,15 @@ class SimpleHomeViewModel(
                     return@launch
                 }
 
+                // VERIFICAR CONECTIVIDADE ANTES DE FAZER REQUEST
+                val isOnline = networkHelper.isConnectedToInternet()
+                
+                if (!isOnline) {
+                    Log.w(TAG, "📴 Sem internet - tentando carregar dados do cache local...")
+                    loadFromLocalCache(isOffline = true)
+                    return@launch
+                }
+
                 Log.d(TAG, "📡 Fetching device installments from /api/apk/device/installments...")
                 val response = deviceApiService.getDeviceInstallments()
 
@@ -142,6 +156,9 @@ class SimpleHomeViewModel(
                     _homeState.value = _homeState.value.copy(
                         isLoading = false,
                         isError = false,
+                        isOfflineMode = false,
+                        lastSyncTime = System.currentTimeMillis(),
+                        customerName = customerName,
                         device = data.device,
                         summary = data.summary,
                         timing = data.timing,
@@ -154,20 +171,130 @@ class SimpleHomeViewModel(
                     Log.e(TAG, "❌ API error: ${response.code()}")
                     Log.e(TAG, "❌ Error body: $errorBody")
                     
-                    _homeState.value = _homeState.value.copy(
-                        isLoading = false,
-                        isError = true,
-                        errorMessage = "Erro ao carregar dados: ${response.code()}"
-                    )
+                    // Tentar carregar do cache em caso de erro da API
+                    loadFromLocalCache(isOffline = false, fallbackError = "Erro ao carregar dados: ${response.code()}")
                 }
             } catch (e: Exception) {
                 Log.e(TAG, "❌ Exception loading installments", e)
+                
+                // Se for erro de rede, tentar carregar do cache
+                if (networkHelper.isNetworkException(e)) {
+                    Log.w(TAG, "🔄 Erro de rede detectado - tentando carregar do cache local...")
+                    loadFromLocalCache(isOffline = true)
+                } else {
+                    // Para outros erros, também tentar cache antes de mostrar erro
+                    loadFromLocalCache(isOffline = false, fallbackError = "Erro de conexão: ${e.message}")
+                }
+            }
+        }
+    }
+    
+    /**
+     * Carrega dados do cache local (modo offline)
+     */
+    private fun loadFromLocalCache(isOffline: Boolean, fallbackError: String? = null) {
+        try {
+            val cachedInstallments = localStorage.getInstallments()
+            val lastSync = localStorage.getLastSyncTimestamp()
+            
+            if (cachedInstallments != null && cachedInstallments.isNotEmpty()) {
+                Log.i(TAG, "✅ Carregados ${cachedInstallments.size} parcelas do cache local")
+                Log.i(TAG, "📅 Última sincronização: ${java.text.SimpleDateFormat("dd/MM/yyyy HH:mm", java.util.Locale.getDefault()).format(java.util.Date(lastSync))}")
+                
+                // Converter LocalInstallment para InstallmentItem para exibição
+                val installmentItems = cachedInstallments.map { local ->
+                    InstallmentItem(
+                        number = local.number,
+                        dueDate = local.dueDate,
+                        value = local.amount.toDouble(),
+                        status = local.status.lowercase(),
+                        isPaid = local.status == "PAID",
+                        isOverdue = local.status == "OVERDUE"
+                    )
+                }
+                
+                // Calcular valores monetários
+                val paidItems = installmentItems.filter { it.isPaid }
+                val pendingItems = installmentItems.filter { !it.isPaid && !it.isOverdue }
+                val overdueItems = installmentItems.filter { it.isOverdue }
+                
+                val totalAmount = installmentItems.sumOf { it.value }
+                val paidAmount = paidItems.sumOf { it.value }
+                val pendingAmount = pendingItems.sumOf { it.value }
+                val overdueAmount = overdueItems.sumOf { it.value }
+                
+                // Calcular resumo completo a partir dos dados em cache
+                val summary = InstallmentsSummary(
+                    total = installmentItems.size,
+                    paid = paidItems.size,
+                    pending = pendingItems.size,
+                    overdue = overdueItems.size,
+                    totalAmount = totalAmount,
+                    paidAmount = paidAmount,
+                    pendingAmount = pendingAmount,
+                    overdueAmount = overdueAmount,
+                    completionPercentage = if (installmentItems.isNotEmpty()) {
+                        (paidItems.size * 100) / installmentItems.size
+                    } else 0
+                )
+                
+                // Encontrar próxima parcela a vencer
+                val nextInstallment = installmentItems
+                    .filter { !it.isPaid }
+                    .minByOrNull { it.dueDate }
+                
+                // Encontrar parcela mais atrasada
+                val mostOverdue = installmentItems
+                    .filter { it.isOverdue }
+                    .minByOrNull { it.dueDate }
+                
+                // Recuperar info do cliente do storage
+                val customerName = tokenStorage.getCustomerName()
+                val deviceModel = tokenStorage.getDeviceModel()
+                
+                _homeState.value = _homeState.value.copy(
+                    isLoading = false,
+                    isError = false,
+                    isOfflineMode = isOffline,
+                    lastSyncTime = lastSync,
+                    customerName = customerName,
+                    device = DeviceInstallmentInfo(
+                        name = deviceModel ?: "Dispositivo",
+                        imei = null,
+                        serialNumber = null
+                    ),
+                    summary = summary,
+                    timing = null,
+                    nextInstallment = nextInstallment,
+                    mostOverdueInstallment = mostOverdue,
+                    allInstallments = installmentItems
+                )
+                
+                if (isOffline) {
+                    Log.i(TAG, "📴 Modo offline ativo - exibindo dados do cache")
+                }
+            } else {
+                // Sem dados em cache - mostrar erro
+                Log.w(TAG, "⚠️ Sem dados em cache disponíveis")
                 _homeState.value = _homeState.value.copy(
                     isLoading = false,
                     isError = true,
-                    errorMessage = "Erro de conexão: ${e.message}"
+                    isOfflineMode = isOffline,
+                    errorMessage = if (isOffline) {
+                        "Sem conexão com a internet.\n\nConecte-se à internet pelo menos uma vez para carregar seus dados."
+                    } else {
+                        fallbackError ?: "Erro ao carregar dados. Verifique sua conexão."
+                    }
                 )
             }
+        } catch (e: Exception) {
+            Log.e(TAG, "❌ Erro ao carregar cache local", e)
+            _homeState.value = _homeState.value.copy(
+                isLoading = false,
+                isError = true,
+                isOfflineMode = isOffline,
+                errorMessage = fallbackError ?: "Erro ao carregar dados offline."
+            )
         }
     }
 

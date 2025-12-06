@@ -1,0 +1,841 @@
+# Documentação Completa de Comandos MDM - CDC CreditSmart
+
+## Visão Geral
+
+Este documento descreve todos os comandos MDM (Mobile Device Management) disponíveis no sistema CDC CreditSmart para gerenciamento remoto de dispositivos Android.
+
+**Base URL:** `https://cdccreditsmart.com` (produção) ou `http://localhost:5000` (desenvolvimento)
+
+---
+
+## Fluxo de Comunicação MDM
+
+```
+┌─────────────────┐                    ┌─────────────────┐
+│     SERVIDOR    │                    │       APK       │
+└────────┬────────┘                    └────────┬────────┘
+         │                                      │
+         │  1. Admin cria comando MDM           │
+         │     (via painel ou automático)       │
+         │                                      │
+         │  2. Notificação WebSocket            │
+         │  ─────────────────────────────────►  │
+         │  (NEW_COMMAND)                       │
+         │                                      │
+         │  3. OU: APK faz polling              │
+         │  ◄─────────────────────────────────  │
+         │  GET /commands                       │
+         │                                      │
+         │  4. APK executa comando              │
+         │                                      │
+         │  5. APK envia resposta               │
+         │  ◄─────────────────────────────────  │
+         │  POST /command-response              │
+         │                                      │
+         │  6. Servidor atualiza status         │
+         │                                      │
+```
+
+---
+
+## 1. Polling de Comandos Pendentes
+
+### Endpoint Principal (Autenticação JWT)
+
+```
+GET /api/apk/device/commands
+```
+
+**Headers:**
+```
+Authorization: Bearer {JWT_TOKEN}
+Content-Type: application/json
+```
+
+**Resposta (200 OK):**
+```json
+{
+  "success": true,
+  "deviceId": "device_uuid_123",
+  "serialNumber": "ABCD1234",
+  "commandsCount": 2,
+  "commands": [
+    {
+      "id": "cmd_abc123",
+      "commandType": "LOCK_SCREEN",
+      "parameters": {
+        "lockMessage": "Dispositivo bloqueado - Entre em contato com CDC CreditSmart",
+        "contactPhone": "11999999999"
+      },
+      "priority": "high",
+      "status": "pending",
+      "createdAt": "2025-01-15T10:00:00.000Z",
+      "expiresAt": "2025-01-15T11:00:00.000Z"
+    },
+    {
+      "id": "cmd_def456",
+      "commandType": "SET_PROGRESSIVE_BLOCK",
+      "parameters": {
+        "targetLevel": 3,
+        "categories": ["social_media", "games", "streaming"],
+        "exceptions": ["whatsapp", "uber", "ifood", "mercado_pago"],
+        "reason": "Pagamento em atraso há 10 dias"
+      },
+      "priority": "medium",
+      "status": "pending",
+      "createdAt": "2025-01-15T09:00:00.000Z",
+      "expiresAt": "2025-01-16T09:00:00.000Z"
+    }
+  ]
+}
+```
+
+### Endpoint Alternativo (Por Identificador)
+
+```
+GET /api/apk/device/{identifier}/commands
+```
+
+**Identificador pode ser:**
+- `deviceId` (UUID)
+- `serialNumber`
+- `IMEI`
+
+---
+
+## 2. Resposta de Execução de Comando
+
+### Endpoint Principal (Autenticação JWT)
+
+```
+POST /api/apk/device/command-response
+```
+
+**Headers:**
+```
+Authorization: Bearer {JWT_TOKEN}
+Content-Type: application/json
+```
+
+**Body:**
+```json
+{
+  "commandId": "cmd_abc123",
+  "status": "completed",
+  "response": {
+    "success": true,
+    "message": "Comando executado com sucesso",
+    "executedAt": "2025-01-15T10:05:00.000Z"
+  },
+  "errorMessage": null
+}
+```
+
+### Endpoint Alternativo (Por Identificador)
+
+```
+POST /api/apk/device/{identifier}/command-response
+```
+
+**Status Possíveis:**
+| Status | Descrição |
+|--------|-----------|
+| `completed` | Comando executado com sucesso |
+| `failed` | Falha na execução |
+| `partial` | Execução parcial |
+| `rejected` | Comando rejeitado pelo dispositivo |
+
+---
+
+## 3. Tipos de Comandos MDM
+
+### 3.1 LOCK_SCREEN
+
+Bloqueia a tela do dispositivo com mensagem personalizada.
+
+**Parâmetros:**
+```json
+{
+  "commandType": "LOCK_SCREEN",
+  "parameters": {
+    "lockMessage": "Dispositivo bloqueado - Entre em contato",
+    "contactPhone": "11999999999",
+    "allowEmergencyCalls": true
+  }
+}
+```
+
+**Ação do APK:**
+- Exibir overlay de bloqueio sobre todas as apps
+- Mostrar mensagem e telefone de contato
+- Permitir chamadas de emergência (190, 192, 193)
+
+---
+
+### 3.2 WIPE_DATA
+
+Limpa dados do dispositivo (reset de fábrica).
+
+**Parâmetros:**
+```json
+{
+  "commandType": "WIPE_DATA",
+  "parameters": {
+    "wipeReason": "Dispositivo recuperado por inadimplência",
+    "wipeExternalStorage": false,
+    "wipeFactoryResetProtection": true
+  }
+}
+```
+
+**IMPORTANTE:** Este comando é destrutivo e irreversível.
+
+---
+
+### 3.3 FACTORY_RESET
+
+Reset completo de fábrica do dispositivo.
+
+**Parâmetros:**
+```json
+{
+  "commandType": "FACTORY_RESET",
+  "parameters": {
+    "reason": "Solicitação de reset pelo administrador",
+    "preserveFrp": false
+  }
+}
+```
+
+---
+
+### 3.4 LOCATE_DEVICE
+
+Solicita a localização GPS atual do dispositivo.
+
+**Parâmetros:**
+```json
+{
+  "commandType": "LOCATE_DEVICE",
+  "parameters": {
+    "highAccuracy": true,
+    "timeout": 30000
+  }
+}
+```
+
+**Resposta Esperada do APK:**
+```json
+{
+  "commandId": "cmd_xyz789",
+  "status": "completed",
+  "response": {
+    "latitude": -23.550520,
+    "longitude": -46.633308,
+    "accuracy": 15.5,
+    "timestamp": "2025-01-15T10:30:00.000Z",
+    "provider": "gps",
+    "altitude": 760.5,
+    "speed": 0
+  }
+}
+```
+
+---
+
+### 3.5 RING_DEVICE
+
+Faz o dispositivo tocar em volume máximo.
+
+**Parâmetros:**
+```json
+{
+  "commandType": "RING_DEVICE",
+  "parameters": {
+    "duration": 30,
+    "volume": 100,
+    "vibrate": true
+  }
+}
+```
+
+**Ação do APK:**
+- Tocar som em volume máximo por X segundos
+- Vibrar dispositivo
+- Ignorar configurações de silencioso
+
+---
+
+### 3.6 REBOOT_DEVICE
+
+Reinicia o dispositivo remotamente.
+
+**Parâmetros:**
+```json
+{
+  "commandType": "REBOOT_DEVICE",
+  "parameters": {
+    "reason": "Atualização de configuração"
+  }
+}
+```
+
+---
+
+### 3.7 DISABLE_CAMERA
+
+Desabilita a câmera do dispositivo.
+
+**Parâmetros:**
+```json
+{
+  "commandType": "DISABLE_CAMERA",
+  "parameters": {
+    "disable": true,
+    "reason": "Restrição por política de segurança"
+  }
+}
+```
+
+---
+
+### 3.8 DISABLE_USB
+
+Desabilita transferência de dados via USB.
+
+**Parâmetros:**
+```json
+{
+  "commandType": "DISABLE_USB",
+  "parameters": {
+    "disableDataTransfer": true,
+    "allowCharging": true
+  }
+}
+```
+
+---
+
+### 3.9 SET_PROGRESSIVE_BLOCK (Sistema de Bloqueio Progressivo)
+
+⚠️ **CRÍTICO: COMPLIANCE LEGAL**
+
+Este comando implementa o sistema de bloqueio progressivo conforme precedente do TJMG (Tribunal de Justiça de Minas Gerais).
+
+**NUNCA bloquear funcionalidades essenciais:**
+- Chamadas telefônicas (incluindo emergência)
+- SMS
+- Apps de trabalho (Uber, 99, Rappi, iFood, Loggi)
+- Apps governamentais (SUS, INSS, Gov.br)
+- Apps bancários e financeiros
+- Documentos digitais (CNH, RG, CPF Digital)
+
+**Parâmetros:**
+```json
+{
+  "commandType": "SET_PROGRESSIVE_BLOCK",
+  "parameters": {
+    "targetLevel": 4,
+    "daysOverdue": 12,
+    "categories": [
+      "entertainment",
+      "social_media",
+      "games",
+      "streaming",
+      "dating"
+    ],
+    "exceptions": [
+      "whatsapp",
+      "uber",
+      "99",
+      "ifood",
+      "rappi",
+      "loggi",
+      "nubank",
+      "inter",
+      "c6",
+      "picpay",
+      "mercadopago",
+      "bb",
+      "caixa",
+      "itau",
+      "bradesco",
+      "santander",
+      "gov_br",
+      "inss",
+      "sus",
+      "cnh_digital"
+    ],
+    "rules": [
+      {
+        "level": 1,
+        "daysRange": "3-5",
+        "description": "Bloqueio de apps de entretenimento não essenciais"
+      },
+      {
+        "level": 2,
+        "daysRange": "6-8",
+        "description": "Bloqueio de jogos e redes sociais (exceto WhatsApp)"
+      },
+      {
+        "level": 3,
+        "daysRange": "9-11",
+        "description": "Bloqueio de streaming e apps adicionais"
+      },
+      {
+        "level": 4,
+        "daysRange": "12-14",
+        "description": "Bloqueio pesado - maioria dos apps não essenciais"
+      },
+      {
+        "level": 5,
+        "daysRange": "15-17",
+        "description": "Bloqueio severo"
+      },
+      {
+        "level": 6,
+        "daysRange": "18+",
+        "description": "Máximo - apenas funções essenciais"
+      }
+    ],
+    "reason": "Pagamento em atraso há 12 dias",
+    "isManual": false
+  }
+}
+```
+
+**Implementação no APK:**
+
+```kotlin
+// Lista de packages que NUNCA devem ser bloqueados
+val ESSENTIAL_APPS = listOf(
+    // Telefone e Comunicação
+    "com.android.phone",
+    "com.android.dialer",
+    "com.android.mms",
+    "com.android.messaging",
+    "com.samsung.android.messaging",
+    
+    // WhatsApp (comunicação de trabalho)
+    "com.whatsapp",
+    "com.whatsapp.w4b",
+    
+    // Apps de Trabalho/Delivery
+    "com.ubercab.driver",
+    "com.ubercab",
+    "com.taxis99",
+    "com.rappi",
+    "com.loggi.courier",
+    "br.com.brainweb.ifood.courier",
+    "br.com.brainweb.ifood",
+    
+    // Apps Governamentais
+    "br.gov.meugovbr",
+    "br.gov.dataprev.meuinss",
+    "br.gov.caixa.auxilio",
+    "br.gov.serpro.cnh",
+    
+    // Apps Bancários
+    "com.nu.production",           // Nubank
+    "br.com.intermedium",           // Inter
+    "com.c6bank.app",               // C6
+    "com.mercadopago.wallet",       // Mercado Pago
+    "com.picpay",                   // PicPay
+    "br.com.bb.android",            // Banco do Brasil
+    "com.itau",                     // Itaú
+    "com.bradesco",                 // Bradesco
+    "br.com.santander.way",         // Santander
+    "br.com.gabba.caixa",           // Caixa
+    
+    // Emergência
+    "com.android.emergency",
+    
+    // Sistema Android essenciais
+    "com.android.settings",
+    "com.android.systemui"
+)
+
+fun shouldBlockApp(packageName: String, blockLevel: Int): Boolean {
+    // NUNCA bloquear apps essenciais
+    if (ESSENTIAL_APPS.any { packageName.startsWith(it) }) {
+        return false
+    }
+    
+    // Lógica de bloqueio por nível
+    return when (blockLevel) {
+        0 -> false  // Sem bloqueio
+        1 -> isEntertainmentApp(packageName)
+        2 -> isEntertainmentApp(packageName) || isGameApp(packageName) || isSocialMediaApp(packageName)
+        3 -> blockLevel >= 2 || isStreamingApp(packageName)
+        4 -> blockLevel >= 3 || isNonEssentialApp(packageName)
+        5 -> blockLevel >= 4 || !isWorkApp(packageName)
+        6 -> !isEssentialApp(packageName)
+        else -> false
+    }
+}
+```
+
+---
+
+### 3.10 UNINSTALL_APP
+
+Desinstala o APK CDC CreditSmart do dispositivo.
+
+**Parâmetros:**
+```json
+{
+  "commandType": "UNINSTALL_APP",
+  "parameters": {
+    "wipeData": true,
+    "reason": "Financiamento quitado - liberação do dispositivo",
+    "confirmationCode": "a1b2c3d4e5f6..." // SHA-256 hash para confirmação
+  }
+}
+```
+
+**Cálculo do Confirmation Code:**
+```kotlin
+// O código é calculado como SHA-256(serialNumber + YYYY-MM-DD)
+// Com tolerância de ±1 dia para diferenças de timezone
+
+fun calculateConfirmationCode(serialNumber: String, date: LocalDate): String {
+    val input = serialNumber + date.format(DateTimeFormatter.ISO_LOCAL_DATE)
+    val digest = MessageDigest.getInstance("SHA-256")
+    val hashBytes = digest.digest(input.toByteArray(Charsets.UTF_8))
+    return hashBytes.joinToString("") { "%02x".format(it) }
+}
+
+fun validateUninstallCommand(serialNumber: String, receivedCode: String): Boolean {
+    val today = LocalDate.now()
+    
+    // Verificar hoje, ontem e amanhã (tolerância de timezone)
+    val validCodes = listOf(
+        calculateConfirmationCode(serialNumber, today),
+        calculateConfirmationCode(serialNumber, today.minusDays(1)),
+        calculateConfirmationCode(serialNumber, today.plusDays(1))
+    )
+    
+    return validCodes.any { it.equals(receivedCode, ignoreCase = true) }
+}
+```
+
+---
+
+### 3.11 CONFIGURE_UNINSTALL_CODE
+
+Configura o hash do código de desinstalação no dispositivo.
+
+**Parâmetros:**
+```json
+{
+  "commandType": "CONFIGURE_UNINSTALL_CODE",
+  "parameters": {
+    "uninstallHash": "a1b2c3d4e5f6789012345678901234567890123456789012345678901234"
+  }
+}
+```
+
+**Ação do APK:**
+1. Armazenar o hash em EncryptedSharedPreferences
+2. Usar para validação local quando usuário digitar código de desinstalação
+3. Ver documentação completa em `docs/apk-uninstall-code-validation.md`
+
+---
+
+### 3.12 INSTALL_APP
+
+Instala um aplicativo no dispositivo.
+
+**Parâmetros:**
+```json
+{
+  "commandType": "INSTALL_APP",
+  "parameters": {
+    "packageUrl": "https://example.com/app.apk",
+    "packageChecksum": "sha256:abc123...",
+    "packageName": "com.example.app",
+    "silentInstall": true
+  }
+}
+```
+
+---
+
+## 4. Comunicação em Tempo Real (WebSocket)
+
+### Conexão
+
+```javascript
+// URL de conexão
+const ws = new WebSocket('wss://cdccreditsmart.com/ws');
+
+// Autenticar após conexão
+ws.onopen = () => {
+    ws.send(JSON.stringify({
+        type: 'authenticate',
+        token: 'JWT_TOKEN_HERE',
+        serialNumber: 'ABCD1234'
+    }));
+};
+```
+
+### Receber Comandos MDM
+
+```javascript
+ws.onmessage = (event) => {
+    const data = JSON.parse(event.data);
+    
+    if (data.type === 'NEW_COMMAND') {
+        const command = data.payload.data;
+        console.log('Novo comando MDM:', command.commandType);
+        
+        // Processar comando
+        handleMdmCommand(command);
+    }
+};
+
+function handleMdmCommand(command) {
+    switch (command.commandType) {
+        case 'LOCK_SCREEN':
+            lockScreen(command.parameters);
+            break;
+        case 'SET_PROGRESSIVE_BLOCK':
+            applyProgressiveBlock(command.parameters);
+            break;
+        case 'LOCATE_DEVICE':
+            sendLocation(command.id);
+            break;
+        // ... outros comandos
+    }
+}
+```
+
+### Mensagem de Novo Comando
+
+```json
+{
+  "type": "NEW_COMMAND",
+  "payload": {
+    "commandId": "cmd_abc123",
+    "data": {
+      "commandType": "SET_PROGRESSIVE_BLOCK",
+      "priority": "high",
+      "parameters": {
+        "targetLevel": 4,
+        "categories": ["games", "social_media"],
+        "exceptions": ["whatsapp", "uber"]
+      },
+      "expiresAt": "2025-01-16T10:00:00.000Z",
+      "issuedBy": "admin@cdccreditsmart.com",
+      "issuedAt": "2025-01-15T10:00:00.000Z"
+    },
+    "timestamp": "2025-01-15T10:00:00.000Z"
+  }
+}
+```
+
+---
+
+## 5. Polling Recomendado
+
+O APK deve fazer polling de comandos a cada 30 segundos:
+
+```kotlin
+class MdmPollingService : Service() {
+    
+    private val handler = Handler(Looper.getMainLooper())
+    private val pollInterval = 30_000L // 30 segundos
+    
+    private val pollRunnable = object : Runnable {
+        override fun run() {
+            fetchPendingCommands()
+            handler.postDelayed(this, pollInterval)
+        }
+    }
+    
+    override fun onCreate() {
+        super.onCreate()
+        handler.post(pollRunnable)
+    }
+    
+    private fun fetchPendingCommands() {
+        CoroutineScope(Dispatchers.IO).launch {
+            try {
+                val response = api.getPendingCommands()
+                
+                if (response.success && response.commands.isNotEmpty()) {
+                    response.commands.forEach { command ->
+                        processCommand(command)
+                    }
+                }
+            } catch (e: Exception) {
+                Log.e("MDM", "Erro ao buscar comandos: ${e.message}")
+            }
+        }
+    }
+    
+    private suspend fun processCommand(command: MdmCommand) {
+        try {
+            val result = executeCommand(command)
+            
+            // Enviar resposta ao servidor
+            api.sendCommandResponse(
+                commandId = command.id,
+                status = if (result.success) "completed" else "failed",
+                response = result,
+                errorMessage = result.errorMessage
+            )
+        } catch (e: Exception) {
+            api.sendCommandResponse(
+                commandId = command.id,
+                status = "failed",
+                errorMessage = e.message
+            )
+        }
+    }
+}
+```
+
+---
+
+## 6. Prioridades de Comando
+
+| Prioridade | Descrição | Tempo Máximo de Execução |
+|------------|-----------|--------------------------|
+| `critical` | Execução imediata | 10 segundos |
+| `high` | Alta prioridade | 30 segundos |
+| `medium` | Prioridade normal | 5 minutos |
+| `low` | Baixa prioridade | 30 minutos |
+
+---
+
+## 7. Códigos de Erro
+
+| Código | Descrição |
+|--------|-----------|
+| `CMD_NOT_FOUND` | Comando não encontrado |
+| `CMD_EXPIRED` | Comando expirado |
+| `CMD_ALREADY_PROCESSED` | Comando já foi processado |
+| `DEVICE_NOT_FOUND` | Dispositivo não encontrado |
+| `UNAUTHORIZED` | Token inválido ou expirado |
+| `INVALID_PARAMETERS` | Parâmetros inválidos |
+| `PERMISSION_DENIED` | Sem permissão para executar |
+| `EXECUTION_FAILED` | Falha na execução |
+
+---
+
+## 8. Fluxo Completo de Implementação
+
+### Inicialização do APK
+
+```kotlin
+class CdcApplication : Application() {
+    
+    override fun onCreate() {
+        super.onCreate()
+        
+        // 1. Iniciar serviço de polling MDM
+        startMdmPollingService()
+        
+        // 2. Conectar WebSocket para comandos em tempo real
+        connectWebSocket()
+        
+        // 3. Verificar comandos pendentes imediatamente
+        fetchPendingCommands()
+    }
+    
+    private fun startMdmPollingService() {
+        val intent = Intent(this, MdmPollingService::class.java)
+        startForegroundService(intent)
+    }
+    
+    private fun connectWebSocket() {
+        WebSocketManager.connect(
+            url = "wss://cdccreditsmart.com/ws",
+            token = getDeviceToken(),
+            serialNumber = getSerialNumber()
+        )
+    }
+}
+```
+
+### Modelo de Dados
+
+```kotlin
+data class MdmCommand(
+    val id: String,
+    val commandType: String,
+    val parameters: Map<String, Any>,
+    val priority: String,
+    val status: String,
+    val createdAt: String,
+    val expiresAt: String?
+)
+
+data class CommandResponse(
+    val commandId: String,
+    val status: String,  // completed, failed, partial, rejected
+    val response: Any?,
+    val errorMessage: String?
+)
+
+data class ProgressiveBlockParams(
+    val targetLevel: Int,
+    val daysOverdue: Int,
+    val categories: List<String>,
+    val exceptions: List<String>,
+    val reason: String,
+    val isManual: Boolean
+)
+```
+
+---
+
+## 9. Logs de Auditoria
+
+Todos os comandos MDM são registrados no sistema de auditoria:
+
+```json
+{
+  "action": "mdm_command_executed",
+  "entityType": "device",
+  "entityId": "device_uuid_123",
+  "details": {
+    "commandId": "cmd_abc123",
+    "commandType": "SET_PROGRESSIVE_BLOCK",
+    "status": "completed",
+    "executedAt": "2025-01-15T10:05:00.000Z",
+    "parameters": {
+      "targetLevel": 4
+    }
+  },
+  "timestamp": "2025-01-15T10:05:00.000Z"
+}
+```
+
+---
+
+## 10. Checklist de Implementação
+
+- [ ] Implementar serviço de polling (30 segundos)
+- [ ] Conectar WebSocket para comandos em tempo real
+- [ ] Processar comando LOCK_SCREEN
+- [ ] Processar comando SET_PROGRESSIVE_BLOCK com compliance legal
+- [ ] Processar comando LOCATE_DEVICE
+- [ ] Processar comando RING_DEVICE
+- [ ] Processar comando WIPE_DATA
+- [ ] Processar comando CONFIGURE_UNINSTALL_CODE
+- [ ] Processar comando UNINSTALL_APP
+- [ ] Implementar envio de resposta de comando
+- [ ] Implementar reconexão automática do WebSocket
+- [ ] Testar todos os comandos em ambiente de desenvolvimento
+- [ ] Validar compliance legal do bloqueio progressivo
+
+---
+
+## Contato
+
+Para dúvidas técnicas, contate a equipe de backend CDC CreditSmart.
+
+**Versão do Documento:** 1.0  
+**Última Atualização:** Dezembro 2025

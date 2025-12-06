@@ -147,8 +147,14 @@ private fun HomeContent(
             .padding(16.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
+        // Banner de modo offline
+        if (state.isOfflineMode) {
+            OfflineBanner(lastSyncTime = state.lastSyncTime)
+        }
+        
+        // Usar customerName do estado se disponível, senão fallback para device name
         HeaderSection(
-            customerName = state.device?.name ?: "Cliente"
+            customerName = state.customerName ?: state.device?.name ?: "Cliente"
         )
         
         val nextInstallment = state.allInstallments.firstOrNull { 
@@ -520,5 +526,46 @@ private fun formatPhone(phone: String): String {
         11 -> "(${digits.substring(0, 2)}) ${digits.substring(2, 7)}-${digits.substring(7, 11)}"
         10 -> "(${digits.substring(0, 2)}) ${digits.substring(2, 6)}-${digits.substring(6, 10)}"
         else -> phone
+    }
+}
+
+@Composable
+private fun OfflineBanner(lastSyncTime: Long) {
+    val lastSyncFormatted = if (lastSyncTime > 0) {
+        SimpleDateFormat("dd/MM/yyyy 'às' HH:mm", Locale.getDefault()).format(Date(lastSyncTime))
+    } else {
+        "desconhecido"
+    }
+    
+    Surface(
+        modifier = Modifier.fillMaxWidth(),
+        color = Color(0xFFFFA726).copy(alpha = 0.15f),
+        shape = MaterialTheme.shapes.medium
+    ) {
+        Row(
+            modifier = Modifier.padding(12.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(12.dp)
+        ) {
+            Icon(
+                imageVector = Icons.Default.CloudOff,
+                contentDescription = null,
+                tint = Color(0xFFFFA726),
+                modifier = Modifier.size(24.dp)
+            )
+            Column(modifier = Modifier.weight(1f)) {
+                Text(
+                    text = "Modo Offline",
+                    style = MaterialTheme.typography.titleSmall,
+                    fontWeight = FontWeight.SemiBold,
+                    color = Color(0xFFFFA726)
+                )
+                Text(
+                    text = "Última sincronização: $lastSyncFormatted",
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+            }
+        }
     }
 }
