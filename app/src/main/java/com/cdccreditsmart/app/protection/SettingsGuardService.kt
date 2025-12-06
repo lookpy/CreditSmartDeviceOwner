@@ -233,23 +233,71 @@ class SettingsGuardService(private val context: Context) {
     
     private fun isDangerousSettingsActivity(packageName: String, activityName: String?): Boolean {
         val settingsPackages = setOf(
+            // Android padrão
             "com.android.settings",
+            // Xiaomi/MIUI/Redmi/POCO
             "com.miui.settings",
             "com.miui.securitycenter",
             "com.xiaomi.misettings",
+            // Samsung
             "com.samsung.android.settings",
             "com.samsung.android.sm.ui",
+            "com.sec.android.app.launcher",
+            // Huawei/Honor
             "com.huawei.systemmanager",
+            "com.huawei.android.launcher",
+            // OPPO/ColorOS
             "com.coloros.settings",
             "com.oppo.settings",
+            "com.coloros.safecenter",
+            // Vivo/FuntouchOS/OriginOS
             "com.vivo.settings",
+            "com.iqoo.secure",
+            "com.vivo.permissionmanager",
+            // OnePlus/OxygenOS
             "com.oneplus.settings",
-            "com.realme.settings"
+            "com.oneplus.security",
+            // Realme/RealmeUI
+            "com.realme.settings",
+            "com.heytap.usercenter",
+            "com.coloros.phonemanager",
+            // LG
+            "com.lge.settings",
+            "com.lge.lgdrmservice",
+            "com.lge.appbox.client",
+            // Motorola/Lenovo
+            "com.motorola.settings",
+            "com.motorola.launcher3",
+            "com.lenovo.settings",
+            // Nokia/HMD
+            "com.evenwell.powersaving.g3",
+            "com.hmd.deviceinfo",
+            // Sony/Xperia
+            "com.sonymobile.settings",
+            "com.sonyericsson.home",
+            // Asus/ZenFone/ROG
+            "com.asus.settings",
+            "com.asus.mobilemanager",
+            // Tecno/Infinix/iTel (Transsion)
+            "com.transsion.phonemanager",
+            "com.transsion.security",
+            "com.transsion.systemmanager",
+            // ZTE/Nubia
+            "cn.nubia.security",
+            "com.zte.settings",
+            // Alcatel/TCL
+            "com.tcl.settings",
+            "com.alcatel.settings",
+            // Google Pixel
+            "com.google.android.settings",
+            // Meizu/Flyme
+            "com.meizu.settings",
+            "com.meizu.safe"
         )
         
         if (settingsPackages.contains(packageName) && activityName != null) {
             val dangerousActivities = listOf(
-                // App Info - bloqueio de desinstalação
+                // App Info - bloqueio de desinstalação (genérico)
                 "InstalledAppDetails",
                 "InstalledAppDetailsTop",
                 "AppInfoDashboard",
@@ -258,6 +306,10 @@ class SettingsGuardService(private val context: Context) {
                 "AdvancedApps",
                 "AllApplications",
                 "ManageAssist",
+                "ApplicationsSettings",
+                "AppDetailsActivity",
+                "AppManagementActivity",
+                "PackageInfoActivity",
                 // Factory Reset - bloqueio de reset (genérico)
                 "MasterClear",
                 "ResetDashboard",
@@ -271,20 +323,53 @@ class SettingsGuardService(private val context: Context) {
                 "RestoreFactory",
                 "MasterClearConfirm",
                 "ResetConfirm",
-                // Xiaomi/MIUI específico
+                "ResetOptions",
+                "SystemReset",
+                "DataReset",
+                "FullReset",
+                "InitializeDevice",
+                // Xiaomi/MIUI/Redmi/POCO
                 "MiuiResetActivity",
                 "MiuiMasterClear",
                 "RestoreFactorySettings",
                 "MiuiBackupResetActivity",
                 "MiuiFactoryReset",
-                // Samsung específico
+                "MiuiAppInfoActivity",
+                // Samsung
                 "ResetSettingsConfirm",
                 "FactoryResetActivity",
+                "SecAppInfo",
+                // OPPO/ColorOS/Realme
+                "ColorOsResetActivity",
+                "OppoAppInfoActivity",
+                "RealmeResetActivity",
+                // Vivo/FuntouchOS/OriginOS
+                "VivoAppDetailActivity",
+                "VivoResetActivity",
+                // OnePlus/OxygenOS
+                "OnePlusResetActivity",
+                "OPAppDetailsActivity",
+                // LG
+                "LGResetActivity",
+                "LGAppInfoActivity",
+                // Motorola/Lenovo
+                "MotoResetActivity",
+                "LenovoResetActivity",
+                // Huawei/Honor
+                "HwAppInfoActivity",
+                "HwResetActivity",
+                "EmergencyBackup",
                 // Device Admin - remoção de admin
                 "DeviceAdminSettings",
                 "DeviceAdminAdd",
+                "AddDeviceAdmin",
+                "DeviceAdminSample",
                 // DNS privado
-                "PrivateDnsModeDialogActivity"
+                "PrivateDnsModeDialogActivity",
+                // Developer Options (podem ter reset)
+                "DevelopmentSettings",
+                // Acessibilidade (pode desativar serviços)
+                "AccessibilitySettings"
             )
             
             val isDangerous = dangerousActivities.any { 
@@ -317,24 +402,62 @@ class SettingsGuardService(private val context: Context) {
     
     private fun isDangerousSettingsPackage(packageName: String): Boolean {
         val dangerousPackages = setOf(
+            // Package Installers
+            "com.google.android.packageinstaller",
+            "com.android.packageinstaller",
+            "com.google.android.permissioncontroller",
+            // Samsung
             "com.samsung.android.sm",
             "com.samsung.android.lool",
             "com.samsung.android.applock",
+            "com.samsung.android.sm.devicesecurity",
+            // Xiaomi/MIUI/Redmi/POCO
             "com.miui.securitycenter",
             "com.miui.securitycore",
             "com.miui.permcenter",
+            "com.miui.powerkeeper",
+            // Huawei/Honor
             "com.huawei.systemmanager",
+            "com.huawei.permissionmanager",
+            // OPPO/ColorOS
             "com.coloros.safecenter",
             "com.coloros.phonemanager",
+            "com.coloros.oppoguardelf",
+            // Vivo/FuntouchOS/OriginOS
             "com.vivo.permissionmanager",
+            "com.iqoo.secure",
+            "com.vivo.abe",
+            // OnePlus/OxygenOS
             "com.oneplus.security",
+            // Realme/RealmeUI
+            "com.realme.security",
+            "com.heytap.usercenter",
+            // LG
+            "com.lge.appbox.client",
+            "com.lge.lgdrmservice",
+            "com.lge.sizechangable.musicwidget.widget",
+            // Motorola/Lenovo
+            "com.motorola.ccc.devicemanagement",
+            "com.lenovo.safecenter",
+            // Nokia/HMD
+            "com.evenwell.powersaving.g3",
+            // Sony/Xperia
+            "com.sonymobile.cta",
+            // Asus/ZenFone/ROG
+            "com.asus.mobilemanager",
+            "com.asus.dm",
+            // Tecno/Infinix/iTel (Transsion)
             "com.transsion.phonemanager",
             "com.transsion.security",
-            "com.asus.mobilemanager",
-            "com.realme.security",
-            "com.google.android.packageinstaller",
-            "com.android.packageinstaller",
-            "com.google.android.permissioncontroller"
+            "com.transsion.systemmanager",
+            // ZTE/Nubia
+            "cn.nubia.security",
+            "com.zte.heartyservice",
+            // Alcatel/TCL
+            "com.tcl.guardian",
+            // Meizu/Flyme
+            "com.meizu.safe",
+            "com.meizu.flyme.update"
         )
         
         val dangerousKeywords = listOf(
@@ -344,7 +467,12 @@ class SettingsGuardService(private val context: Context) {
             "appmanager",
             "mobilemanager",
             "permissionmanager",
-            "permissioncontroller"
+            "permissioncontroller",
+            "safecenter",
+            "devicemanagement",
+            "systemmanager",
+            "powerkeeper",
+            "guardian"
         )
         
         return dangerousPackages.contains(packageName) ||
