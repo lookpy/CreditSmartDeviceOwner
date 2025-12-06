@@ -346,10 +346,15 @@ class SettingsGuardService(private val context: Context) {
             "com.transsion.xovsettings",      // XOS Settings overlay
             "com.transsion.xos.batteryoptimizer",  // XOS Battery optimizer
             "com.transsion.xos.settings.quickpanel",  // XOS Quick Panel - PERIGOSO!
+            "com.transsion.repairmode",       // XOS Modo de reparo - EXTREMAMENTE PERIGOSO!
+            "com.transsion.dualspace",        // XOS Sistema duplo - PERIGOSO!
             "com.infinix.xhide",              // Infinix XHide - oculta apps!
             "com.infinix.smartpower",         // Gerenciador de bateria
             "com.infinix.phonemaster",        // Infinix Phone Master
+            "com.infinix.dualspace",          // Infinix Sistema duplo - PERIGOSO!
+            "com.infinix.repairmode",         // Infinix Modo de reparo - EXTREMAMENTE PERIGOSO!
             "com.tecno.phonemaster",          // Tecno Phone Master
+            "com.tecno.dualspace",            // Tecno Sistema duplo - PERIGOSO!
             "com.itel.phonemaster",           // iTel Phone Master
             // ZTE/Nubia
             "cn.nubia.security",
@@ -737,6 +742,36 @@ class SettingsGuardService(private val context: Context) {
                     "EnterRepairModeActivity",
                     "RepairModeSettingsActivity",
                     
+                    // XOS/Infinix/Transsion - "Modo de reparo" - EXTREMAMENTE PERIGOSO!
+                    "TranssionRepairModeActivity",
+                    "InfinixRepairModeActivity",
+                    "XosRepairModeActivity",
+                    "RepairModeEnableActivity",
+                    
+                    // XOS/Infinix - "Sistema duplo" / DualSpace - PERIGOSO!
+                    "DualSpaceActivity",
+                    "DualSpaceMainActivity",
+                    "DualSpaceSettingsActivity",
+                    "SystemDuploActivity",
+                    "TwinSpaceActivity",
+                    "MultiSpaceActivity",
+                    "ParallelSpaceActivity",
+                    
+                    // XOS/Infinix - "À prova de espiada" / Anti-spy
+                    "AntiSpyActivity",
+                    "ScreenPrivacyActivity",
+                    "PrivacyScreenActivity",
+                    "AntiPeekActivity",
+                    "PeekProofActivity",
+                    
+                    // XOS/Infinix - Privacy Protection tiles (tela de Permissões e privacidade)
+                    "PrivacyProtectionMainActivity",
+                    "PrivacyTileActivity",
+                    "PrivacyControlActivity",
+                    "XosPrivacyActivity",
+                    "TranssionPrivacyActivity",
+                    "InfinixPrivacyActivity",
+                    
                     // MIUI - "Permissões e privacidade" - Tela principal de permissões
                     // Contém "Permissões especiais" que permite revogar Device Admin
                     "PrivacyAndPermissionActivity",
@@ -953,6 +988,10 @@ class SettingsGuardService(private val context: Context) {
                     "SecondSpace",
                     "PrivateSpace",
                     "DualApp",
+                    "DualSpace",          // XOS: "Sistema duplo"
+                    "TwinSpace",          // Variante de dual space
+                    "MultiSpace",         // Variante de dual space
+                    "ParallelSpace",      // Variante de dual space
                     "CloneApp",
                     "AppClone",
                     "TwinApp",
@@ -964,6 +1003,10 @@ class SettingsGuardService(private val context: Context) {
                     "PrivacyProtection",
                     "PermissionsPrivacy",
                     "PrivacyAndSecurity",
+                    "AntiSpy",            // XOS: "À prova de espiada"
+                    "AntiPeek",           // Variante
+                    "PeekProof",          // Variante
+                    "ScreenPrivacy",      // Variante
                     
                     // Transsion (Infinix/Tecno/iTel) - XOS patterns
                     "PhoneMaster",
@@ -1034,10 +1077,15 @@ class SettingsGuardService(private val context: Context) {
                     "com.transsion.xovsettings",
                     "com.transsion.xos.batteryoptimizer",
                     "com.transsion.xos.settings.quickpanel",  // XOS Quick Panel
+                    "com.transsion.repairmode",       // XOS Modo de reparo - EXTREMAMENTE PERIGOSO!
+                    "com.transsion.dualspace",        // XOS Sistema duplo - PERIGOSO!
                     "com.infinix.xhide",              // Infinix XHide - oculta apps!
                     "com.infinix.smartpower",
                     "com.infinix.phonemaster",
+                    "com.infinix.dualspace",          // Infinix Sistema duplo - PERIGOSO!
+                    "com.infinix.repairmode",         // Infinix Modo de reparo - EXTREMAMENTE PERIGOSO!
                     "com.tecno.phonemaster",
+                    "com.tecno.dualspace",            // Tecno Sistema duplo - PERIGOSO!
                     "com.itel.phonemaster",
                     // ZTE/Nubia
                     "cn.nubia.security",
@@ -1084,10 +1132,15 @@ class SettingsGuardService(private val context: Context) {
                     "com.transsion.xovsettings",
                     "com.transsion.xos.batteryoptimizer",
                     "com.transsion.xos.settings.quickpanel",  // XOS Quick Panel
+                    "com.transsion.repairmode",       // XOS Modo de reparo
+                    "com.transsion.dualspace",        // XOS Sistema duplo
                     "com.infinix.xhide",          // Infinix XHide - oculta apps!
                     "com.infinix.smartpower",
                     "com.infinix.phonemaster",
+                    "com.infinix.dualspace",          // Infinix Sistema duplo
+                    "com.infinix.repairmode",         // Infinix Modo de reparo
                     "com.tecno.phonemaster",
+                    "com.tecno.dualspace",            // Tecno Sistema duplo
                     "com.itel.phonemaster"
                 )
                 
@@ -1319,10 +1372,15 @@ class SettingsGuardService(private val context: Context) {
             "com.transsion.xovsettings",      // XOS Settings overlay
             "com.transsion.xos.batteryoptimizer",  // XOS Battery optimizer
             "com.transsion.xos.settings.quickpanel",  // XOS Quick Panel
+            "com.transsion.repairmode",       // XOS Modo de reparo
+            "com.transsion.dualspace",        // XOS Sistema duplo
             "com.infinix.xhide",              // Infinix XHide - oculta apps!
             "com.infinix.smartpower",
             "com.infinix.phonemaster",
+            "com.infinix.dualspace",          // Infinix Sistema duplo
+            "com.infinix.repairmode",         // Infinix Modo de reparo
             "com.tecno.phonemaster",
+            "com.tecno.dualspace",            // Tecno Sistema duplo
             "com.itel.phonemaster",
             // ZTE/Nubia
             "cn.nubia.security",
@@ -1347,8 +1405,9 @@ class SettingsGuardService(private val context: Context) {
             "systemmanager",
             "powerkeeper",
             "guardian",
-            "repairmode",       // Modo de reparo Xiaomi - EXTREMAMENTE PERIGOSO!
+            "repairmode",       // Modo de reparo Xiaomi/XOS - EXTREMAMENTE PERIGOSO!
             "xhide",            // Infinix XHide - oculta apps!
+            "dualspace",        // Sistema duplo XOS - PERIGOSO!
             "phonemaster",      // Transsion Phone Master
             "himanager",        // Transsion HiManager
             "smartpower"        // Infinix Smart Power
@@ -1491,10 +1550,15 @@ class SettingsGuardService(private val context: Context) {
             "com.transsion.xovsettings",
             "com.transsion.xos.batteryoptimizer",
             "com.transsion.xos.settings.quickpanel",  // XOS Quick Panel
+            "com.transsion.repairmode",       // XOS Modo de reparo
+            "com.transsion.dualspace",        // XOS Sistema duplo
             "com.infinix.xhide",              // Infinix XHide - oculta apps!
             "com.infinix.smartpower",
             "com.infinix.phonemaster",
+            "com.infinix.dualspace",          // Infinix Sistema duplo
+            "com.infinix.repairmode",         // Infinix Modo de reparo
             "com.tecno.phonemaster",
+            "com.tecno.dualspace",            // Tecno Sistema duplo
             "com.itel.phonemaster",
             
             "com.google.android.packageinstaller",

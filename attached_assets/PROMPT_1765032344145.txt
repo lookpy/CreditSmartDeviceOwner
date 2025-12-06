@@ -1,0 +1,76 @@
+2025-12-06 11:45:16.239 25097-25097 WebSocketManager        com.cdccreditsmart.app               D  Connecting to WebSocket: wss://cdccreditsmart.com/ws/flow-status
+2025-12-06 11:45:16.256 25097-31171 WebSocketManager        com.cdccreditsmart.app               E  WebSocket failure: Unable to resolve host "cdccreditsmart.com": No address associated with hostname
+2025-12-06 11:45:16.257 25097-31171 NetworkConnectivity     com.cdccreditsmart.app               W  ❌ Sem rede ativa
+2025-12-06 11:45:16.257 25097-31171 WebSocketManager        com.cdccreditsmart.app               E  ❌ CAUSA: SEM CONEXÃO COM A INTERNET
+2025-12-06 11:45:16.257 25097-31171 WebSocketManager        com.cdccreditsmart.app               E  📶 Sem conexão com a internet.
+                                                                                                    
+                                                                                                    Por favor, conecte-se ao WiFi ou ative seus dados móveis (5G/4G).
+2025-12-06 11:45:16.258 25097-31171 CdcForegroundService    com.cdccreditsmart.app               E  ❌ Erro no WebSocket Flow: Sem conexão com a internet.
+                                                                                                    
+                                                                                                    Por favor, conecte-se ao WiFi ou ative seus dados móveis (5G/4G).
+2025-12-06 11:45:16.258 25097-31171 WebSocketManager        com.cdccreditsmart.app               D  Scheduling reconnection in 5000ms
+2025-12-06 11:45:16.285 25097-31102 MdmCommandReceiver      com.cdccreditsmart.app               I  🔄 Tentando reconectar WebSocket MDM...
+2025-12-06 11:45:16.297 25097-31102 SecureTokenStorage      com.cdccreditsmart.app               D  ⚠️ Usando Serial Number para MDM (IMEI indisponível): VY9DB9...
+2025-12-06 11:45:16.298 25097-31102 MdmCommandReceiver      com.cdccreditsmart.app               I  🔗 ========================================
+2025-12-06 11:45:16.298 25097-31102 MdmCommandReceiver      com.cdccreditsmart.app               I  🔗 INICIANDO CONEXÃO WEBSOCKET MDM
+2025-12-06 11:45:16.299 25097-31102 MdmCommandReceiver      com.cdccreditsmart.app               I  🔗 ========================================
+2025-12-06 11:45:16.299 25097-31102 MdmCommandReceiver      com.cdccreditsmart.app               I  🔗 URL base: wss://cdccreditsmart.com/ws
+2025-12-06 11:45:16.299 25097-31102 MdmCommandReceiver      com.cdccreditsmart.app               I  🔗 JWT Token presente: true
+2025-12-06 11:45:16.300 25097-31102 MdmCommandReceiver      com.cdccreditsmart.app               I  🔗 JWT Token length: 260
+2025-12-06 11:45:16.300 25097-31102 MdmCommandReceiver      com.cdccreditsmart.app               I  🔗 JWT Token preview: eyJhbGciOiJIUzI1NiIsInR5cCI6Ik...
+2025-12-06 11:45:16.300 25097-31102 MdmCommandReceiver      com.cdccreditsmart.app               I  🔗 Device identifier: VY9DB9EC
+2025-12-06 11:45:16.309 25097-31102 MdmCommandReceiver      com.cdccreditsmart.app               D  🔗 Criando WebSocket OkHttp...
+2025-12-06 11:45:16.309 25097-31102 MdmCommandReceiver      com.cdccreditsmart.app               I  🔄 Iniciando polling IMEDIATAMENTE (não esperar WebSocket)
+2025-12-06 11:45:16.309 25097-31102 MdmCommandReceiver      com.cdccreditsmart.app               D  ⏳ Polling já está ativo - ignorando chamada duplicada
+2025-12-06 11:45:16.312 25097-31102 MdmCommandReceiver      com.cdccreditsmart.app               D  🔗 WebSocket request enviado - aguardando resposta...
+2025-12-06 11:45:16.323 25097-31170 MdmCommandReceiver      com.cdccreditsmart.app               E  ❌ WebSocket MDM FALHOU!
+2025-12-06 11:45:16.324 25097-31102 MdmCommandReceiver      com.cdccreditsmart.app               D  ⏰ Watchdog cancelado (conexão resolvida)
+2025-12-06 11:45:16.324 25097-31170 NetworkConnectivity     com.cdccreditsmart.app               W  ❌ Sem rede ativa
+2025-12-06 11:45:16.325 25097-31170 MdmCommandReceiver      com.cdccreditsmart.app               W  ⏸️ Sem internet - WebSocket será reconectado quando a internet voltar
+2025-12-06 11:45:16.327 25097-31170 MdmCommandReceiver      com.cdccreditsmart.app               D  ⏳ Polling já está ativo - ignorando chamada duplicada
+2025-12-06 11:45:16.437 25097-25097 TextSelection           com.cdccreditsmart.app               D  onUseCache cache=false
+2025-12-06 11:45:16.508 25097-25097 SimpleHomeViewModel     com.cdccreditsmart.app               D  🔄 Refreshing installments data...
+2025-12-06 11:45:16.510 25097-25097 SimpleHomeViewModel     com.cdccreditsmart.app               D  📡 Fetching device installments from /api/apk/device/installments...
+2025-12-06 11:45:16.513 25097-31678 SimpleHomeViewModel     com.cdccreditsmart.app               D  ✅ Added Authorization header with token
+2025-12-06 11:45:16.513 25097-31678 SimpleHomeViewModel     com.cdccreditsmart.app               D  📤 Request URL: https://cdccreditsmart.com/api/apk/device/installments
+2025-12-06 11:45:16.515 25097-25097 SimpleHomeViewModel     com.cdccreditsmart.app               E  ❌ Exception loading installments
+2025-12-06 11:45:17.019 25097-25097 TextSelection           com.cdccreditsmart.app               D  onUseCache cache=false
+2025-12-06 11:45:17.094 25097-25097 SimpleHomeViewModel     com.cdccreditsmart.app               D  🔄 Refreshing installments data...
+2025-12-06 11:45:17.097 25097-25097 SimpleHomeViewModel     com.cdccreditsmart.app               D  📡 Fetching device installments from /api/apk/device/installments...
+2025-12-06 11:45:17.106 25097-31678 SimpleHomeViewModel     com.cdccreditsmart.app               D  ✅ Added Authorization header with token
+2025-12-06 11:45:17.106 25097-31678 SimpleHomeViewModel     com.cdccreditsmart.app               D  📤 Request URL: https://cdccreditsmart.com/api/apk/device/installments
+2025-12-06 11:45:17.123 25097-25097 SimpleHomeViewModel     com.cdccreditsmart.app               E  ❌ Exception loading installments
+2025-12-06 11:45:17.424 25097-25097 TextSelection           com.cdccreditsmart.app               D  onUseCache cache=false
+2025-12-06 11:45:17.478 25097-25097 SimpleHomeViewModel     com.cdccreditsmart.app               D  🔄 Refreshing installments data...
+2025-12-06 11:45:17.480 25097-25097 SimpleHomeViewModel     com.cdccreditsmart.app               D  📡 Fetching device installments from /api/apk/device/installments...
+2025-12-06 11:45:17.483 25097-31678 SimpleHomeViewModel     com.cdccreditsmart.app               D  ✅ Added Authorization header with token
+2025-12-06 11:45:17.483 25097-31678 SimpleHomeViewModel     com.cdccreditsmart.app               D  📤 Request URL: https://cdccreditsmart.com/api/apk/device/installments
+2025-12-06 11:45:17.501 25097-25097 SimpleHomeViewModel     com.cdccreditsmart.app               E  ❌ Exception loading installments
+2025-12-06 11:45:17.673 25097-25097 TextSelection           com.cdccreditsmart.app               D  onUseCache cache=false
+2025-12-06 11:45:17.741 25097-25097 SimpleHomeViewModel     com.cdccreditsmart.app               D  🔄 Refreshing installments data...
+2025-12-06 11:45:17.742 25097-25097 SimpleHomeViewModel     com.cdccreditsmart.app               D  📡 Fetching device installments from /api/apk/device/installments...
+2025-12-06 11:45:17.746 25097-31678 SimpleHomeViewModel     com.cdccreditsmart.app               D  ✅ Added Authorization header with token
+2025-12-06 11:45:17.746 25097-31678 SimpleHomeViewModel     com.cdccreditsmart.app               D  📤 Request URL: https://cdccreditsmart.com/api/apk/device/installments
+2025-12-06 11:45:17.747 25097-25097 SimpleHomeViewModel     com.cdccreditsmart.app               E  ❌ Exception loading installments
+2025-12-06 11:45:17.871 25097-25097 TextSelection           com.cdccreditsmart.app               D  onUseCache cache=false
+2025-12-06 11:45:17.939 25097-25097 SimpleHomeViewModel     com.cdccreditsmart.app               D  🔄 Refreshing installments data...
+2025-12-06 11:45:17.942 25097-25097 SimpleHomeViewModel     com.cdccreditsmart.app               D  📡 Fetching device installments from /api/apk/device/installments...
+2025-12-06 11:45:17.949 25097-31678 SimpleHomeViewModel     com.cdccreditsmart.app               D  ✅ Added Authorization header with token
+2025-12-06 11:45:17.949 25097-31678 SimpleHomeViewModel     com.cdccreditsmart.app               D  📤 Request URL: https://cdccreditsmart.com/api/apk/device/installments
+2025-12-06 11:45:17.967 25097-25097 SimpleHomeViewModel     com.cdccreditsmart.app               E  ❌ Exception loading installments
+2025-12-06 11:45:18.031 25097-25097 TextSelection           com.cdccreditsmart.app               D  onUseCache cache=false
+2025-12-06 11:45:18.092 25097-25097 SimpleHomeViewModel     com.cdccreditsmart.app               D  🔄 Refreshing installments data...
+2025-12-06 11:45:18.094 25097-25097 SimpleHomeViewModel     com.cdccreditsmart.app               D  📡 Fetching device installments from /api/apk/device/installments...
+2025-12-06 11:45:18.100 25097-31678 SimpleHomeViewModel     com.cdccreditsmart.app               D  ✅ Added Authorization header with token
+2025-12-06 11:45:18.101 25097-31678 SimpleHomeViewModel     com.cdccreditsmart.app               D  📤 Request URL: https://cdccreditsmart.com/api/apk/device/installments
+2025-12-06 11:45:18.119 25097-25097 SimpleHomeViewModel     com.cdccreditsmart.app               E  ❌ Exception loading installments
+2025-12-06 11:45:18.186 25097-25097 TextSelection           com.cdccreditsmart.app               D  onUseCache cache=false
+2025-12-06 11:45:18.251 25097-25097 SimpleHomeViewModel     com.cdccreditsmart.app               D  🔄 Refreshing installments data...
+2025-12-06 11:45:18.254 25097-25097 SimpleHomeViewModel     com.cdccreditsmart.app               D  📡 Fetching device installments from /api/apk/device/installments...
+2025-12-06 11:45:18.264 25097-31678 SimpleHomeViewModel     com.cdccreditsmart.app               D  ✅ Added Authorization header with token
+2025-12-06 11:45:18.264 25097-31678 SimpleHomeViewModel     com.cdccreditsmart.app               D  📤 Request URL: https://cdccreditsmart.com/api/apk/device/installments
+2025-12-06 11:45:18.281 25097-25097 SimpleHomeViewModel     com.cdccreditsmart.app               E  ❌ Exception loading installments
+2025-12-06 11:45:19.498 25097-25097 VRI[MainActivity]       com.cdccreditsmart.app               D  visibilityChanged oldVisibility=true newVisibility=false
+2025-12-06 11:45:19.547 25097-31132 HWUI                    com.cdccreditsmart.app               D  endAllActiveAnimators on 0xb4000074f2b2e110 (UnprojectedRipple) with handle 0xb400007572afad90
+2025-12-06 11:45:19.560 25097-25097 BLASTBufferQueue        com.cdccreditsmart.app               D  [VRI[MainActivity]#5](f:0,a:3) destructor()
+2025-12-06 11:45:19.560 25097-25097 BufferQueueConsumer     com.cdccreditsmart.app               D  [VRI[MainActivity]#5(BLAST Consumer)5](id:620900000005,api:0,p:-1,c:25097) disconnect
