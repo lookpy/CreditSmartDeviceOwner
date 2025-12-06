@@ -31,6 +31,7 @@ Utilizes Jetpack Compose and Material 3 with a CDC institutional dark theme. Fea
 - **Anti-Tampering & Persistence:** Time synchronization for tamper detection, app continuity, and a Persistent State Manager for factory reset survival.
 - **SIM Swap Detection:** Offline system for SIM change detection and blocking policy application.
 - **Secure Device Pairing:** 3-step handshake with IMEI auto-discovery and manual contract code fallback.
+- **Multi-Slot Device Identifier System:** Collects IMEI/MEID from all SIM slots with automatic fallback (IMEI → MEID → Android ID → Fingerprint). Supports Zero-Touch and Knox enrollment as Device Owner.
 - **Real-time Communication & MDM:** Dual WebSocket system for pairing status and MDM command push (blocking, unblocking, remote uninstall).
 - **Progressive Blocking System:** Dynamically blocks non-essential applications based on overdue levels, adhering to legal precedents.
 - **Overlay Systems:** Universal dismissible overlay for overdue reminders and periodic payment reminder overlays.
