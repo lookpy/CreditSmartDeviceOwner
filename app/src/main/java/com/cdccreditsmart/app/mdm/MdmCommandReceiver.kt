@@ -19,6 +19,12 @@ class MdmCommandReceiver(private val context: Context) {
     companion object {
         private const val TAG = "MdmCommandReceiver"
         private const val WS_URL = "wss://cdccreditsmart.com/ws"
+        
+        // TIMEOUTS ANTI-TRAVAMENTO
+        private const val WEBSOCKET_CONNECT_TIMEOUT_MS = 20_000L  // 20 segundos
+        private const val HTTP_TIMEOUT_MS = 15_000L               // 15 segundos
+        private const val POLLING_INTERVAL_MS = 30_000L           // 30 segundos
+        private const val COMMAND_PROCESSING_TIMEOUT_MS = 60_000L // 60 segundos
     }
     
     private val tokenStorage = SecureTokenStorage(context)
@@ -26,10 +32,12 @@ class MdmCommandReceiver(private val context: Context) {
     private var webSocket: WebSocket? = null
     private var reconnectJob: Job? = null
     private var pollingJob: Job? = null
+    private var watchdogJob: Job? = null  // Watchdog para WebSocket timeout
     private val scope = CoroutineScope(Dispatchers.IO + SupervisorJob())
     
     @Volatile private var isWebSocketConnecting = false
     @Volatile private var isPollingActive = false
+    @Volatile private var webSocketConnected = false
     private val connectionLock = Any()
     
     private val blockingManager by lazy {
@@ -58,6 +66,7 @@ class MdmCommandReceiver(private val context: Context) {
                 return
             }
             isWebSocketConnecting = true
+            webSocketConnected = false  // CRÍTICO: Reset para watchdog funcionar em reconexões
         }
         
         val deviceId = getDeviceIdentifier()
@@ -93,10 +102,16 @@ class MdmCommandReceiver(private val context: Context) {
         Log.i(TAG, "🔄 Iniciando polling IMEDIATAMENTE (não esperar WebSocket)")
         startPollingFallbackIfNeeded()
         
+        // WATCHDOG: Timeout para WebSocket connect - NUNCA TRAVAR
+        startWebSocketWatchdog(jwtToken)
+        
         webSocket = okHttpClient.newWebSocket(request, object : WebSocketListener() {
             
             override fun onOpen(webSocket: WebSocket, response: Response) {
                 isWebSocketConnecting = false
+                webSocketConnected = true
+                watchdogJob?.cancel()  // Cancelar watchdog - conexão OK
+                watchdogJob = null     // Limpar referência
                 Log.i(TAG, "✅ WebSocket MDM CONECTADO COM SUCESSO!")
                 Log.d(TAG, "✅ Response code: ${response.code}")
                 reconnectJob?.cancel()
@@ -112,6 +127,9 @@ class MdmCommandReceiver(private val context: Context) {
             
             override fun onFailure(webSocket: WebSocket, t: Throwable, response: Response?) {
                 isWebSocketConnecting = false
+                webSocketConnected = false
+                watchdogJob?.cancel()  // Cancelar watchdog - já falhou
+                watchdogJob = null     // Limpar referência
                 Log.e(TAG, "❌ WebSocket MDM FALHOU!")
                 
                 if (networkHelper.isNetworkException(t)) {
@@ -135,6 +153,7 @@ class MdmCommandReceiver(private val context: Context) {
             
             override fun onClosed(webSocket: WebSocket, code: Int, reason: String) {
                 isWebSocketConnecting = false
+                webSocketConnected = false  // Reset para watchdog funcionar na reconexão
                 Log.w(TAG, "🔌 WebSocket MDM fechado (code=$code)")
                 scheduleReconnect(jwtToken)
             }
@@ -169,7 +188,7 @@ class MdmCommandReceiver(private val context: Context) {
                     }
                     
                     "NEW_COMMAND" -> {
-                        Log.i(TAG, "📋 Novo comando MDM recebido")
+                        Log.i(TAG, "📋 Novo comando MDM recebido via WebSocket")
                         
                         val payload = message.payload
                         if (payload == null) {
@@ -211,7 +230,15 @@ class MdmCommandReceiver(private val context: Context) {
                             }
                         }
                         
-                        processMdmCommand(command.id, command.commandType, command.parameters)
+                        // ANTI-TRAVAMENTO: Timeout no processamento de comando via WebSocket
+                        Log.i(TAG, "📋 Processando comando (timeout: ${COMMAND_PROCESSING_TIMEOUT_MS/1000}s)...")
+                        try {
+                            withTimeout(COMMAND_PROCESSING_TIMEOUT_MS) {
+                                processMdmCommand(command.id, command.commandType, command.parameters)
+                            }
+                        } catch (e: TimeoutCancellationException) {
+                            Log.e(TAG, "⏰ TIMEOUT ao processar comando ${command.id} via WebSocket")
+                        }
                     }
                     
                     "pong" -> {
@@ -517,6 +544,55 @@ class MdmCommandReceiver(private val context: Context) {
         }
     }
     
+    /**
+     * WATCHDOG: Garante que WebSocket nunca fica travado conectando
+     * Se após 20 segundos não conectou nem falhou, força reconexão
+     */
+    private fun startWebSocketWatchdog(jwtToken: String) {
+        // Guard: só permite um watchdog ativo por vez
+        if (watchdogJob?.isActive == true) {
+            Log.d(TAG, "⏰ Watchdog já ativo - ignorando nova instância")
+            return
+        }
+        
+        watchdogJob?.cancel()
+        watchdogJob = null
+        
+        watchdogJob = scope.launch {
+            try {
+                delay(WEBSOCKET_CONNECT_TIMEOUT_MS)
+                
+                // Se chegou aqui, timeout expirou
+                if (isWebSocketConnecting && !webSocketConnected) {
+                    Log.w(TAG, "⏰ ========================================")
+                    Log.w(TAG, "⏰ WATCHDOG: WebSocket travado por ${WEBSOCKET_CONNECT_TIMEOUT_MS/1000}s")
+                    Log.w(TAG, "⏰ Forçando cancelamento e reconexão...")
+                    Log.w(TAG, "⏰ ========================================")
+                    
+                    // Forçar fechamento do WebSocket travado
+                    try {
+                        webSocket?.cancel()
+                        webSocket = null
+                    } catch (e: Exception) {
+                        Log.w(TAG, "⚠️ Erro ao cancelar WebSocket: ${e.message}")
+                    }
+                    
+                    // Reset flags ANTES de agendar reconexão
+                    isWebSocketConnecting = false
+                    webSocketConnected = false
+                    watchdogJob = null
+                    
+                    // Usar scheduleReconnect para evitar chamada recursiva
+                    Log.i(TAG, "🔄 Watchdog: Agendando reconexão via scheduleReconnect...")
+                    scheduleReconnect(jwtToken)
+                }
+            } catch (e: CancellationException) {
+                // Watchdog cancelado - conexão OK ou falhou normalmente
+                Log.d(TAG, "⏰ Watchdog cancelado (conexão resolvida)")
+            }
+        }
+    }
+    
     private fun scheduleReconnect(jwtToken: String) {
         synchronized(connectionLock) {
             if (isWebSocketConnecting) {
@@ -611,8 +687,12 @@ class MdmCommandReceiver(private val context: Context) {
             val retrofit = RetrofitProvider.createAuthenticatedRetrofit(context)
             val api = retrofit.create(MdmApiService::class.java)
             
-            Log.d(TAG, "🔍 Executando requisição HTTP...")
-            val response = api.getPendingCommands(identifier)
+            Log.d(TAG, "🔍 Executando requisição HTTP (timeout: ${HTTP_TIMEOUT_MS/1000}s)...")
+            
+            // ANTI-TRAVAMENTO: Timeout na chamada HTTP
+            val response = withTimeout(HTTP_TIMEOUT_MS) {
+                api.getPendingCommands(identifier)
+            }
             
             Log.i(TAG, "🔍 HTTP Response code: ${response.code()}")
             Log.i(TAG, "🔍 HTTP isSuccessful: ${response.isSuccessful}")
@@ -635,8 +715,16 @@ class MdmCommandReceiver(private val context: Context) {
                         Log.i(TAG, "📋 [$index] Status: ${command.status}")
                         Log.i(TAG, "📋 [$index] Prioridade: ${command.priority}")
                         Log.i(TAG, "📋 [$index] Parameters class: ${command.parameters::class.simpleName}")
-                        Log.i(TAG, "📋 Processando comando...")
-                        processMdmCommand(command.id, command.commandType, command.parameters)
+                        Log.i(TAG, "📋 Processando comando (timeout: ${COMMAND_PROCESSING_TIMEOUT_MS/1000}s)...")
+                        
+                        // ANTI-TRAVAMENTO: Timeout no processamento de comando
+                        try {
+                            withTimeout(COMMAND_PROCESSING_TIMEOUT_MS) {
+                                processMdmCommand(command.id, command.commandType, command.parameters)
+                            }
+                        } catch (e: TimeoutCancellationException) {
+                            Log.e(TAG, "⏰ TIMEOUT ao processar comando ${command.id} - continuando com próximo")
+                        }
                     }
                     Log.i(TAG, "📋 ========================================")
                 } else {
@@ -663,27 +751,53 @@ class MdmCommandReceiver(private val context: Context) {
                 }
             }
             
+        } catch (e: TimeoutCancellationException) {
+            Log.w(TAG, "⏰ ========================================")
+            Log.w(TAG, "⏰ TIMEOUT AO BUSCAR COMANDOS (${HTTP_TIMEOUT_MS/1000}s)")
+            Log.w(TAG, "⏰ ========================================")
+            Log.w(TAG, "⏰ Continuando normalmente - próxima tentativa em 30s")
+        } catch (e: CancellationException) {
+            // Coroutine cancelada - propagar
+            throw e
         } catch (e: Exception) {
             Log.e(TAG, "❌ ========================================")
             Log.e(TAG, "❌ EXCEÇÃO AO BUSCAR COMANDOS")
             Log.e(TAG, "❌ ========================================")
             Log.e(TAG, "❌ Tipo: ${e::class.simpleName}")
             Log.e(TAG, "❌ Mensagem: ${e.message}")
-            Log.e(TAG, "❌ Stack trace: ${e.stackTraceToString()}")
+            Log.e(TAG, "❌ Continuando normalmente - próxima tentativa em 30s")
             Log.e(TAG, "❌ ========================================")
         }
     }
     
     fun disconnect() {
+        Log.i(TAG, "🔌 Desconectando MDM Command Receiver...")
+        
         synchronized(connectionLock) {
             isWebSocketConnecting = false
             isPollingActive = false
+            webSocketConnected = false
         }
-        webSocket?.close(1000, "Disconnecting")
-        webSocket = null
+        
+        // Cancelar todos os jobs
+        watchdogJob?.cancel()
+        watchdogJob = null
+        
         reconnectJob?.cancel()
+        reconnectJob = null
+        
         pollingJob?.cancel()
-        Log.d(TAG, "🔌 MDM Command Receiver desconectado")
+        pollingJob = null
+        
+        // Fechar WebSocket
+        try {
+            webSocket?.close(1000, "Disconnecting")
+        } catch (e: Exception) {
+            Log.w(TAG, "⚠️ Erro ao fechar WebSocket: ${e.message}")
+        }
+        webSocket = null
+        
+        Log.i(TAG, "🔌 MDM Command Receiver desconectado")
     }
     
     /**
