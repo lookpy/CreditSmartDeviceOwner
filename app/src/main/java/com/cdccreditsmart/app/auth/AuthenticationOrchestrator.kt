@@ -1,6 +1,8 @@
 package com.cdccreditsmart.app.auth
 
 import android.content.Context
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
 import android.os.Build
 import android.util.Log
 import com.cdccreditsmart.app.network.RetrofitProvider
@@ -15,9 +17,10 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import kotlinx.coroutines.CoroutineScope
+import java.io.IOException
 
 sealed class AuthenticationResult {
-    data class Authenticated(val contractCode: String) : AuthenticationResult()
+    data class Authenticated(val contractCode: String, val isOfflineMode: Boolean = false) : AuthenticationResult()
     object NeedsNewCode : AuthenticationResult()
     data class Error(val message: String, val canRetry: Boolean = true) : AuthenticationResult()
 }
@@ -39,6 +42,43 @@ class AuthenticationOrchestrator(private val context: Context) {
     private fun createDeviceApiService(): DeviceApiService {
         return RetrofitProvider.createRetrofit()
             .create(DeviceApiService::class.java)
+    }
+    
+    private fun isNetworkAvailable(): Boolean {
+        return try {
+            val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as? ConnectivityManager
+                ?: return false
+            
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                val network = connectivityManager.activeNetwork ?: return false
+                val capabilities = connectivityManager.getNetworkCapabilities(network) ?: return false
+                capabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET) &&
+                    capabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_VALIDATED)
+            } else {
+                @Suppress("DEPRECATION")
+                val networkInfo = connectivityManager.activeNetworkInfo
+                networkInfo?.isConnected == true
+            }
+        } catch (e: Exception) {
+            Log.w(TAG, "Erro ao verificar conectividade: ${e.message}")
+            false
+        }
+    }
+    
+    fun hasValidOfflineAuthentication(): Boolean {
+        val contractCode = contractCodeStorage.getContractCode()
+        val authToken = tokenStorage.getAuthToken()
+        val hasDeviceInfo = tokenStorage.getSerialNumber() != null || tokenStorage.getDeviceId() != null
+        
+        val isValid = !contractCode.isNullOrBlank() && (!authToken.isNullOrBlank() || hasDeviceInfo)
+        
+        Log.d(TAG, "📦 Verificação offline:")
+        Log.d(TAG, "   ContractCode: ${if (!contractCode.isNullOrBlank()) "presente" else "ausente"}")
+        Log.d(TAG, "   AuthToken: ${if (!authToken.isNullOrBlank()) "presente" else "ausente"}")
+        Log.d(TAG, "   DeviceInfo: ${if (hasDeviceInfo) "presente" else "ausente"}")
+        Log.d(TAG, "   → Autenticação offline válida: $isValid")
+        
+        return isValid
     }
     
     /**
@@ -163,7 +203,28 @@ class AuthenticationOrchestrator(private val context: Context) {
         try {
             Log.d(TAG, "🔐 Verificando autenticação...")
             
-            // 🎯 NOVO: Tentar auto-conexão PRIMEIRO (IMEI, S/N, código de ativação)
+            val isOnline = isNetworkAvailable()
+            Log.d(TAG, "🌐 Conectividade: ${if (isOnline) "ONLINE" else "OFFLINE"}")
+            
+            // 🔒 MODO OFFLINE: Se não tem internet mas já está autenticado, continua offline
+            if (!isOnline) {
+                if (hasValidOfflineAuthentication()) {
+                    val contractCode = contractCodeStorage.getContractCode()!!
+                    Log.i(TAG, "📴 MODO OFFLINE ATIVADO")
+                    Log.i(TAG, "   Dispositivo já autenticado - usando dados salvos")
+                    Log.i(TAG, "   ContractCode: ${contractCode.take(4)}****")
+                    return@withContext AuthenticationResult.Authenticated(contractCode, isOfflineMode = true)
+                } else {
+                    Log.w(TAG, "📴 Sem internet e sem autenticação prévia")
+                    Log.w(TAG, "   → Precisa de internet para primeira ativação")
+                    return@withContext AuthenticationResult.Error(
+                        message = "Sem conexão com a internet. Conecte-se para ativar o dispositivo.",
+                        canRetry = true
+                    )
+                }
+            }
+            
+            // 🎯 ONLINE: Tentar auto-conexão PRIMEIRO (IMEI, S/N, código de ativação)
             val autoConnectionResult = attemptAutoConnection()
             if (autoConnectionResult != null) {
                 Log.d(TAG, "✅ Auto-conexão bem-sucedida - autenticação OK!")
@@ -199,8 +260,30 @@ class AuthenticationOrchestrator(private val context: Context) {
             
             performSilentAuthentication(contractCode)
             
+        } catch (e: IOException) {
+            Log.e(TAG, "❌ Erro de rede na autenticação", e)
+            
+            // Se tiver dados offline, continua em modo offline
+            if (hasValidOfflineAuthentication()) {
+                val contractCode = contractCodeStorage.getContractCode()!!
+                Log.i(TAG, "📴 Erro de rede - entrando em MODO OFFLINE")
+                return@withContext AuthenticationResult.Authenticated(contractCode, isOfflineMode = true)
+            }
+            
+            AuthenticationResult.Error(
+                message = "Erro de conexão: ${e.message}",
+                canRetry = true
+            )
         } catch (e: Exception) {
             Log.e(TAG, "❌ Erro na autenticação", e)
+            
+            // Se tiver dados offline, continua em modo offline
+            if (hasValidOfflineAuthentication()) {
+                val contractCode = contractCodeStorage.getContractCode()!!
+                Log.i(TAG, "📴 Erro genérico - entrando em MODO OFFLINE")
+                return@withContext AuthenticationResult.Authenticated(contractCode, isOfflineMode = true)
+            }
+            
             AuthenticationResult.Error(
                 message = "Erro ao autenticar: ${e.message}",
                 canRetry = true

@@ -1,0 +1,17 @@
+     D  Retrieving contract code from storage
+2025-12-06 10:16:02.900 12156-17648 creditsmart.app         com.cdccreditsmart.app               W  Cleared Reference was only reachable from finalizer (only reported once)
+2025-12-06 10:16:02.901 12156-12156 ContractCodeStorage     com.cdccreditsmart.app               D  Storage verification: 7 valid, 0 tampered, 0 missing
+2025-12-06 10:16:02.902 12156-12156 ContractCodeStorage     com.cdccreditsmart.app               D  Contract code retrieved successfully
+2025-12-06 10:16:03.163 12156-12156 Choreographer           com.cdccreditsmart.app               I  Skipped 58 frames!  The application may be doing too much work on its main thread.
+2025-12-06 10:16:03.167 12156-17696 HWUI                    com.cdccreditsmart.app               I  Davey! duration=1726ms; Flags=0, FrameTimelineVsyncId=13576890, IntendedVsync=102244490487402, Vsync=102245208865526, InputEventId=0, HandleInputStart=102245225104555, AnimationStart=102245225106709, PerformTraversalsStart=102245248268555, DrawStart=102245248502709, FrameDeadline=102244543885257, FrameInterval=102245224319632, FrameStartTime=16706468, SyncQueued=102246206604632, SyncStart=102246206663401, IssueDrawCommandsStart=102246206811940, SwapBuffers=102246210145478, FrameCompleted=102246216843632, DequeueBufferDuration=29230, QueueBufferDuration=468846, GpuCompleted=102246216843632, SwapBuffersCompleted=102246211649247, DisplayPresentTime=102242299599401, CommandSubmissionCompleted=102246210145478, 
+2025-12-06 10:16:05.879 12156-12156 TextSelection           com.cdccreditsmart.app               D  onUseCache cache=false
+2025-12-06 10:16:05.965 12156-17670 SupportRepository       com.cdccreditsmart.app               E  ❌ Validação de integridade falhou!
+2025-12-06 10:16:05.966 12156-17670 SupportRepository       com.cdccreditsmart.app               E     Hash esperado: 7483075c4bb2d28284b9b45fee2c4927d032014a3cadf1115e13c3d766577796
+2025-12-06 10:16:05.966 12156-17670 SupportRepository       com.cdccreditsmart.app               E     Hash calculado: 80b3c191ee6f0f4ecb54f4b75e05d34e727df97a787ea47d8d0612ed3b578e11
+2025-12-06 10:16:05.966 12156-17670 SupportRepository       com.cdccreditsmart.app               E  ❌ Termos em cache corrompidos - limpando cache
+2025-12-06 10:16:05.966 12156-17670 SupportRepository       com.cdccreditsmart.app               I  📡 Buscando termos do servidor (version=latest)...
+2025-12-06 10:16:06.034 12156-17759 okhttp.OkHttpClient     com.cdccreditsmart.app               I  --> GET https://cdccreditsmart.com/v1/contract/terms?version=latest
+2025-12-06 10:16:06.034 12156-17759 okhttp.OkHttpClient     com.cdccreditsmart.app               I  --> END GET
+2025-12-06 10:16:06.349 12156-17759 okhttp.OkHttpClient     com.cdccreditsmart.app               I  <-- 200 https://cdccreditsmart.com/v1/contract/terms?version=latest (314ms)
+2025-12-06 10:16:06.349 12156-17759 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-credentials: true
+2025-12-06 10:16:06.349 12156-17759 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-headers: Origin, X-Requested-With, Content-Type, Acce
