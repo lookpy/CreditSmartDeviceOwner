@@ -1,8 +1,12 @@
 package com.cdccreditsmart.app.presentation
 
+import android.Manifest
 import android.app.admin.DevicePolicyManager
+import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import android.content.IntentFilter
+import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -19,6 +23,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.core.content.ContextCompat
 import androidx.navigation.compose.rememberNavController
 import com.cdccreditsmart.app.navigation.CDCNavigation
 import com.cdccreditsmart.app.navigation.Routes
@@ -36,11 +41,39 @@ class MainActivity : ComponentActivity() {
 
     companion object {
         private const val TAG = "MainActivity"
+        const val ACTION_REQUEST_LOCATION_PERMISSION = "com.cdccreditsmart.app.REQUEST_LOCATION_PERMISSION"
     }
 
     private val deepLinkChannel = mutableStateOf<String?>(null)
     private val factoryResetDetected = mutableStateOf(false)
     private val persistentStateManager by lazy { PersistentStateManager(this) }
+    
+    private val requestLocationPermissionLauncher = registerForActivityResult(
+        ActivityResultContracts.RequestMultiplePermissions()
+    ) { permissions ->
+        SettingsGuardService.resumeAfterPermissionGrant()
+        
+        val fineGranted = permissions[Manifest.permission.ACCESS_FINE_LOCATION] == true
+        val coarseGranted = permissions[Manifest.permission.ACCESS_COARSE_LOCATION] == true
+        
+        if (fineGranted || coarseGranted) {
+            Log.i(TAG, "📍 ✅ Permissões de localização concedidas!")
+            if (fineGranted) Log.d(TAG, "  ✅ ACCESS_FINE_LOCATION")
+            if (coarseGranted) Log.d(TAG, "  ✅ ACCESS_COARSE_LOCATION")
+        } else {
+            Log.w(TAG, "📍 ❌ Permissões de localização NEGADAS pelo usuário")
+            Log.w(TAG, "   Comando LOCATE_DEVICE não funcionará até que as permissões sejam concedidas")
+        }
+    }
+    
+    private val locationPermissionReceiver = object : BroadcastReceiver() {
+        override fun onReceive(context: Context?, intent: Intent?) {
+            if (intent?.action == ACTION_REQUEST_LOCATION_PERMISSION) {
+                Log.i(TAG, "📍 Broadcast recebido - solicitando permissões de localização...")
+                requestLocationPermissions()
+            }
+        }
+    }
 
     private val requestPermissionsLauncher = registerForActivityResult(
         ActivityResultContracts.RequestMultiplePermissions()
@@ -66,6 +99,8 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+        
+        registerLocationPermissionReceiver()
         
         checkFactoryReset()
         requestAllPermissionsIfNotDeviceOwner()
@@ -196,6 +231,65 @@ class MainActivity : ComponentActivity() {
         Log.w(TAG, "========================================")
         Log.w(TAG, "O app solicitará essas permissões na próxima interação")
         Log.w(TAG, "========================================")
+    }
+    
+    private fun registerLocationPermissionReceiver() {
+        try {
+            val filter = IntentFilter(ACTION_REQUEST_LOCATION_PERMISSION)
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                registerReceiver(locationPermissionReceiver, filter, Context.RECEIVER_NOT_EXPORTED)
+            } else {
+                registerReceiver(locationPermissionReceiver, filter)
+            }
+            Log.d(TAG, "📍 BroadcastReceiver de localização registrado")
+        } catch (e: Exception) {
+            Log.e(TAG, "Erro ao registrar receiver de localização: ${e.message}")
+        }
+    }
+    
+    private fun requestLocationPermissions() {
+        try {
+            val hasFineLocation = ContextCompat.checkSelfPermission(
+                this, Manifest.permission.ACCESS_FINE_LOCATION
+            ) == PackageManager.PERMISSION_GRANTED
+            
+            val hasCoarseLocation = ContextCompat.checkSelfPermission(
+                this, Manifest.permission.ACCESS_COARSE_LOCATION
+            ) == PackageManager.PERMISSION_GRANTED
+            
+            if (hasFineLocation || hasCoarseLocation) {
+                Log.i(TAG, "📍 Permissões de localização já concedidas")
+                return
+            }
+            
+            Log.i(TAG, "📍 Solicitando permissões de localização ao usuário...")
+            SettingsGuardService.pauseForPermissionGrant()
+            
+            val permissionsToRequest = mutableListOf(
+                Manifest.permission.ACCESS_FINE_LOCATION,
+                Manifest.permission.ACCESS_COARSE_LOCATION
+            )
+            
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                permissionsToRequest.add(Manifest.permission.ACCESS_BACKGROUND_LOCATION)
+            }
+            
+            requestLocationPermissionLauncher.launch(permissionsToRequest.toTypedArray())
+            
+        } catch (e: Exception) {
+            Log.e(TAG, "Erro ao solicitar permissões de localização: ${e.message}", e)
+            SettingsGuardService.resumeAfterPermissionGrant()
+        }
+    }
+    
+    override fun onDestroy() {
+        try {
+            unregisterReceiver(locationPermissionReceiver)
+            Log.d(TAG, "📍 BroadcastReceiver de localização desregistrado")
+        } catch (e: Exception) {
+            Log.w(TAG, "Erro ao desregistrar receiver: ${e.message}")
+        }
+        super.onDestroy()
     }
 
     override fun onNewIntent(intent: Intent) {

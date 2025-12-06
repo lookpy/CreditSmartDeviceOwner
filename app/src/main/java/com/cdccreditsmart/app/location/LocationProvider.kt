@@ -146,12 +146,50 @@ class LocationProvider(private val context: Context) {
             return true
         }
         
+        // Tentar auto-grant se for Device Owner
         if (isDeviceOwner()) {
             Log.i(TAG, "📍 App é Device Owner - tentando conceder permissões automaticamente...")
-            return tryAutoGrantLocationPermissions()
+            val granted = tryAutoGrantLocationPermissions()
+            if (granted) {
+                return true
+            }
         }
         
+        // Tentar auto-grant se for Device Admin (pode funcionar em alguns casos)
+        if (isDeviceAdmin()) {
+            Log.i(TAG, "📍 App é Device Admin - tentando conceder permissões...")
+            val granted = tryAutoGrantLocationPermissions()
+            if (granted) {
+                return true
+            }
+            Log.w(TAG, "⚠️ Device Admin não pode auto-conceder permissões de localização")
+            Log.w(TAG, "   Usuário precisa conceder manualmente nas Configurações")
+        }
+        
+        // Disparar solicitação de permissão via broadcast
+        requestLocationPermissionViaUI()
+        
         return false
+    }
+    
+    private fun isDeviceAdmin(): Boolean {
+        return try {
+            dpm.isAdminActive(adminComponent)
+        } catch (e: Exception) {
+            Log.e(TAG, "Erro ao verificar Device Admin: ${e.message}")
+            false
+        }
+    }
+    
+    private fun requestLocationPermissionViaUI() {
+        try {
+            Log.i(TAG, "📍 Enviando broadcast para solicitar permissão de localização...")
+            val intent = android.content.Intent("com.cdccreditsmart.app.REQUEST_LOCATION_PERMISSION")
+            intent.setPackage(context.packageName)
+            context.sendBroadcast(intent)
+        } catch (e: Exception) {
+            Log.e(TAG, "Erro ao enviar broadcast de permissão: ${e.message}")
+        }
     }
     
     private fun isDeviceOwner(): Boolean {
