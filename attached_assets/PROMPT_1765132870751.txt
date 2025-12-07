@@ -1,0 +1,105 @@
+2025-12-07 15:39:28.108  1556-1877  TranDynami...rollerImpl pid-1556                             E  TranDynamicBarAnimControllerImpl setSimplifyAnimByLauncherType pkgName:com.cdccreditsmart.app
+2025-12-07 15:39:28.108  1556-1877  TranDynami...rollerImpl pid-1556                             E  end setSimplifyAnimByLauncherType mSimplifyAnimOpenPkgName:com.cdccreditsmart.app simplifyAnimByLauncherType:0
+2025-12-07 15:39:28.147  1556-4441  TranDynami...rollerImpl pid-1556                             E  TranDynamicBarAnimControllerImpl setSimplifyAnimByLauncherType pkgName:com.cdccreditsmart.app
+2025-12-07 15:39:28.147  1556-4441  TranDynami...rollerImpl pid-1556                             E  end setSimplifyAnimByLauncherType mSimplifyAnimOpenPkgName:com.cdccreditsmart.app simplifyAnimByLauncherType:1
+2025-12-07 15:39:28.274  1556-3772  PayJoyActivityRecord    pid-1556                             E  activity resuming com.cdccreditsmart.app
+2025-12-07 15:39:28.274  1556-3772  PayJoyAccessService     pid-1556                             E  activity resuming com.cdccreditsmart.app
+2025-12-07 15:39:51.624  1556-3260  PayJoyActivityRecord    pid-1556                             E  activity resuming com.cdccreditsmart.app
+2025-12-07 15:39:51.624  1556-3260  PayJoyAccessService     pid-1556                             E  activity resuming com.cdccreditsmart.app
+2025-12-07 15:39:57.953  1556-1877  TranDynami...rollerImpl pid-1556                             E  TranDynamicBarAnimControllerImpl setSimplifyAnimByLauncherType pkgName:com.cdccreditsmart.app
+2025-12-07 15:39:57.953  1556-1877  TranDynami...rollerImpl pid-1556                             E  end setSimplifyAnimByLauncherType mSimplifyAnimOpenPkgName:com.cdccreditsmart.app simplifyAnimByLauncherType:0
+2025-12-07 15:39:57.998  1556-3260  TranDynami...rollerImpl pid-1556                             E  TranDynamicBarAnimControllerImpl setSimplifyAnimByLauncherType pkgName:com.cdccreditsmart.app
+2025-12-07 15:39:57.998  1556-3260  TranDynami...rollerImpl pid-1556                             E  end setSimplifyAnimByLauncherType mSimplifyAnimOpenPkgName:com.cdccreditsmart.app simplifyAnimByLauncherType:1
+2025-12-07 15:39:58.048  1556-3322  PayJoyActivityRecord    pid-1556                             E  activity resuming com.cdccreditsmart.app
+2025-12-07 15:39:58.048  1556-3322  PayJoyAccessService     pid-1556                             E  activity resuming com.cdccreditsmart.app
+2025-12-07 15:39:58.650  1556-2019  TranDynami...rollerImpl pid-1556                             E  TranDynamicBarAnimControllerImpl setFromDynamicIslandToWindow pkgName:com.cdccreditsmart.app
+2025-12-07 15:39:58.650  1556-2019  TranDynami...rollerImpl pid-1556                             E  end setFromDynamicIslandToWindow mDynamicIslandPkgName:com.cdccreditsmart.app mStartFromDynamicIsland:false
+2025-12-07 15:39:58.671  1556-1820  NotificationService     pid-1556                             E  Suppressing notification from package com.cdccreditsmart.app by user request, key: 0|com.cdccreditsmart.app|1001|null|10287
+2025-12-07 15:40:35.171 12907-12907 CrashHandler            pid-12907                            E  java.lang.NoClassDefFoundError: Failed resolution of: Lcom/cdccreditsmart/network/client/MoshiProvider; (Ask Gemini)
+                                                                                                    	at com.cdccreditsmart.app.network.RetrofitProvider.<clinit>(RetrofitProvider.kt:21)
+                                                                                                    	at com.cdccreditsmart.app.presentation.pairing.PairingViewModel.createDeviceApiService(PairingViewModel.kt:76)
+                                                                                                    	at com.cdccreditsmart.app.presentation.pairing.PairingViewModel.deviceApi_delegate$lambda$0(PairingViewModel.kt:62)
+                                                                                                    	at com.cdccreditsmart.app.presentation.pairing.PairingViewModel.$r8$lambda$YGRorHGrk92-1Qe7ecy7jsk3DbA(Unknown Source:0)
+                                                                                                    	at com.cdccreditsmart.app.presentation.pairing.PairingViewModel$$ExternalSyntheticLambda4.invoke(D8$$SyntheticClass:0)
+                                                                                                    	at kotlin.SynchronizedLazyImpl.getValue(LazyJVM.kt:86)
+                                                                                                    	at com.cdccreditsmart.app.presentation.pairing.PairingViewModel.getDeviceApi(PairingViewModel.kt:61)
+                                                                                                    	at com.cdccreditsmart.app.presentation.pairing.PairingViewModel.access$getDeviceApi(PairingViewModel.kt:48)
+                                                                                                    	at com.cdccreditsmart.app.presentation.pairing.PairingViewModel$stepFallbackClaimByCodeOnly$2.invokeSuspend(PairingViewModel.kt:339)
+                                                                                                    	at com.cdccreditsmart.app.presentation.pairing.PairingViewModel$stepFallbackClaimByCodeOnly$2.invoke(Unknown Source:8)
+                                                                                                    	at com.cdccreditsmart.app.presentation.pairing.PairingViewModel$stepFallbackClaimByCodeOnly$2.invoke(Unknown Source:2)
+                                                                                                    	at com.cdccreditsmart.app.presentation.pairing.PairingViewModel.retryWithBackoff(PairingViewModel.kt:610)
+                                                                                                    	at com.cdccreditsmart.app.presentation.pairing.PairingViewModel.stepFallbackClaimByCodeOnly(PairingViewModel.kt:338)
+                                                                                                    	at com.cdccreditsmart.app.presentation.pairing.PairingViewModel.access$stepFallbackClaimByCodeOnly(PairingViewModel.kt:48)
+                                                                                                    	at com.cdccreditsmart.app.presentation.pairing.PairingViewModel$startHandshake$1.invokeSuspend(PairingViewModel.kt:99)
+                                                                                                    	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:34)
+                                                                                                    	at kotlinx.coroutines.internal.DispatchedContinuationKt.resumeCancellableWith(DispatchedContinuation.kt:367)
+                                                                                                    	at kotlinx.coroutines.intrinsics.CancellableKt.startCoroutineCancellable(Cancellable.kt:30)
+                                                                                                    	at kotlinx.coroutines.intrinsics.CancellableKt.startCoroutineCancellable$default(Cancellable.kt:25)
+                                                                                                    	at kotlinx.coroutines.CoroutineStart.invoke(CoroutineStart.kt:110)
+                                                                                                    	at kotlinx.coroutines.AbstractCoroutine.start(AbstractCoroutine.kt:126)
+                                                                                                    	at kotlinx.coroutines.BuildersKt__Builders_commonKt.launch(Builders.common.kt:56)
+                                                                                                    	at kotlinx.coroutines.BuildersKt.launch(Unknown Source:1)
+                                                                                                    	at kotlinx.coroutines.BuildersKt__Builders_commonKt.launch$default(Builders.common.kt:47)
+                                                                                                    	at kotlinx.coroutines.BuildersKt.launch$default(Unknown Source:1)
+                                                                                                    	at com.cdccreditsmart.app.presentation.pairing.PairingViewModel.startHandshake(PairingViewModel.kt:81)
+                                                                                                    	at com.cdccreditsmart.app.navigation.NavigationKt$CDCNavigation$1$1$5$1$1.invokeSuspend(Navigation.kt:172)
+                                                                                                    	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:34)
+                                                                                                    	at kotlinx.coroutines.DispatchedTask.run(DispatchedTask.kt:108)
+                                                                                                    	at androidx.compose.ui.platform.AndroidUiDispatcher.performTrampolineDispatch(AndroidUiDispatcher.android.kt:81)
+                                                                                                    	at androidx.compose.ui.platform.AndroidUiDispatcher.access$performTrampolineDispatch(AndroidUiDispatcher.android.kt:41)
+                                                                                                    	at androidx.compose.ui.platform.AndroidUiDispatcher$dispatchCallback$1.run(AndroidUiDispatcher.android.kt:57)
+                                                                                                    	at android.os.Handler.handleCallback(Handler.java:959)
+                                                                                                    	at android.os.Handler.dispatchMessage(Handler.java:100)
+                                                                                                    	at android.os.Looper.loopOnce(Looper.java:311)
+                                                                                                    	at android.os.Looper.loop(Looper.java:408)
+                                                                                                    	at android.app.ActivityThread.main(ActivityThread.java:9119)
+                                                                                                    	at java.lang.reflect.Method.invoke(Native Method)
+                                                                                                    	at com.android.internal.os.RuntimeInit$MethodAndArgsCaller.run(RuntimeInit.java:627)
+                                                                                                    	at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:970)
+                                                                                                    	Suppressed: kotlinx.coroutines.internal.DiagnosticCoroutineContextException: [StandaloneCoroutine{Cancelling}@ea6ff93, Dispatchers.Main.immediate]
+2025-12-07 15:40:37.194 12907-12907 AndroidRuntime          pid-12907                            E  FATAL EXCEPTION: main (Ask Gemini)
+                                                                                                    Process: com.cdccreditsmart.app, PID: 12907
+                                                                                                    java.lang.NoClassDefFoundError: Failed resolution of: Lcom/cdccreditsmart/network/client/MoshiProvider;
+                                                                                                    	at com.cdccreditsmart.app.network.RetrofitProvider.<clinit>(RetrofitProvider.kt:21)
+                                                                                                    	at com.cdccreditsmart.app.presentation.pairing.PairingViewModel.createDeviceApiService(PairingViewModel.kt:76)
+                                                                                                    	at com.cdccreditsmart.app.presentation.pairing.PairingViewModel.deviceApi_delegate$lambda$0(PairingViewModel.kt:62)
+                                                                                                    	at com.cdccreditsmart.app.presentation.pairing.PairingViewModel.$r8$lambda$YGRorHGrk92-1Qe7ecy7jsk3DbA(Unknown Source:0)
+                                                                                                    	at com.cdccreditsmart.app.presentation.pairing.PairingViewModel$$ExternalSyntheticLambda4.invoke(D8$$SyntheticClass:0)
+                                                                                                    	at kotlin.SynchronizedLazyImpl.getValue(LazyJVM.kt:86)
+                                                                                                    	at com.cdccreditsmart.app.presentation.pairing.PairingViewModel.getDeviceApi(PairingViewModel.kt:61)
+                                                                                                    	at com.cdccreditsmart.app.presentation.pairing.PairingViewModel.access$getDeviceApi(PairingViewModel.kt:48)
+                                                                                                    	at com.cdccreditsmart.app.presentation.pairing.PairingViewModel$stepFallbackClaimByCodeOnly$2.invokeSuspend(PairingViewModel.kt:339)
+                                                                                                    	at com.cdccreditsmart.app.presentation.pairing.PairingViewModel$stepFallbackClaimByCodeOnly$2.invoke(Unknown Source:8)
+                                                                                                    	at com.cdccreditsmart.app.presentation.pairing.PairingViewModel$stepFallbackClaimByCodeOnly$2.invoke(Unknown Source:2)
+                                                                                                    	at com.cdccreditsmart.app.presentation.pairing.PairingViewModel.retryWithBackoff(PairingViewModel.kt:610)
+                                                                                                    	at com.cdccreditsmart.app.presentation.pairing.PairingViewModel.stepFallbackClaimByCodeOnly(PairingViewModel.kt:338)
+                                                                                                    	at com.cdccreditsmart.app.presentation.pairing.PairingViewModel.access$stepFallbackClaimByCodeOnly(PairingViewModel.kt:48)
+                                                                                                    	at com.cdccreditsmart.app.presentation.pairing.PairingViewModel$startHandshake$1.invokeSuspend(PairingViewModel.kt:99)
+                                                                                                    	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:34)
+                                                                                                    	at kotlinx.coroutines.internal.DispatchedContinuationKt.resumeCancellableWith(DispatchedContinuation.kt:367)
+                                                                                                    	at kotlinx.coroutines.intrinsics.CancellableKt.startCoroutineCancellable(Cancellable.kt:30)
+                                                                                                    	at kotlinx.coroutines.intrinsics.CancellableKt.startCoroutineCancellable$default(Cancellable.kt:25)
+                                                                                                    	at kotlinx.coroutines.CoroutineStart.invoke(CoroutineStart.kt:110)
+                                                                                                    	at kotlinx.coroutines.AbstractCoroutine.start(AbstractCoroutine.kt:126)
+                                                                                                    	at kotlinx.coroutines.BuildersKt__Builders_commonKt.launch(Builders.common.kt:56)
+                                                                                                    	at kotlinx.coroutines.BuildersKt.launch(Unknown Source:1)
+                                                                                                    	at kotlinx.coroutines.BuildersKt__Builders_commonKt.launch$default(Builders.common.kt:47)
+                                                                                                    	at kotlinx.coroutines.BuildersKt.launch$default(Unknown Source:1)
+                                                                                                    	at com.cdccreditsmart.app.presentation.pairing.PairingViewModel.startHandshake(PairingViewModel.kt:81)
+                                                                                                    	at com.cdccreditsmart.app.navigation.NavigationKt$CDCNavigation$1$1$5$1$1.invokeSuspend(Navigation.kt:172)
+                                                                                                    	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:34)
+                                                                                                    	at kotlinx.coroutines.DispatchedTask.run(DispatchedTask.kt:108)
+                                                                                                    	at androidx.compose.ui.platform.AndroidUiDispatcher.performTrampolineDispatch(AndroidUiDispatcher.android.kt:81)
+                                                                                                    	at androidx.compose.ui.platform.AndroidUiDispatcher.access$performTrampolineDispatch(AndroidUiDispatcher.android.kt:41)
+                                                                                                    	at androidx.compose.ui.platform.AndroidUiDispatcher$dispatchCallback$1.run(AndroidUiDispatcher.android.kt:57)
+                                                                                                    	at android.os.Handler.handleCallback(Handler.java:959)
+                                                                                                    	at android.os.Handler.dispatchMessage(Handler.java:100)
+                                                                                                    	at android.os.Looper.loopOnce(Looper.java:311)
+                                                                                                    	at android.os.Looper.loop(Looper.java:408)
+                                                                                                    	at android.app.ActivityThread.main(ActivityThread.java:9119)
+                                                                                                    	at java.lang.reflect.Method.invoke(Native Method)
+                                                                                                    	at com.android.internal.os.RuntimeInit$MethodAndArgsCaller.run(RuntimeInit.java:627)
+                                                                                                    	at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:970)
+                                                                                                    	Suppressed: kotlinx.coroutines.internal.DiagnosticCoroutineContextException: [StandaloneCoroutine{Cancelling}@ea6ff93, Dispatchers.Main.immediate]
+2025-12-07 15:40:40.179  1556-2019  TranDynami...rollerImpl pid-1556                             E  TranDynamicBarAnimControllerImpl setFromDynamicIslandToWindow pkgName:com.cdccreditsmart.app
+2025-12-07 15:40:40.180  1556-2019  TranDynami...rollerImpl pid-1556                             E  end setFromDynamicIslandToWindow mDynamicIslandPkgName:com.cdccreditsmart.app mStartFromDynamicIsland:false

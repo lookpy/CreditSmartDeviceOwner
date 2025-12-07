@@ -44,6 +44,33 @@
 -keep class com.cdccreditsmart.data.remote.dto.** { *; }
 -keep class com.cdccreditsmart.domain.model.** { *; }
 
+# ===== CRITICAL: Keep network module classes =====
+# MoshiProvider is accessed statically from RetrofitProvider
+-keep class com.cdccreditsmart.network.client.** { *; }
+-keep class com.cdccreditsmart.network.client.MoshiProvider { *; }
+-keepclassmembers class com.cdccreditsmart.network.client.MoshiProvider {
+    public static ** getMoshi();
+    public static ** createMoshi();
+    private static <fields>;
+}
+
+# Keep Moshi adapters for JSON serialization
+-keep class com.cdccreditsmart.network.dto.** { *; }
+-keep class com.cdccreditsmart.network.api.** { *; }
+-keep class com.cdccreditsmart.network.interceptors.** { *; }
+
+# Moshi-kotlin-reflect needs these
+-keep class kotlin.reflect.jvm.internal.** { *; }
+-keep class kotlin.Metadata { *; }
+-keepclassmembers class * {
+    @com.squareup.moshi.Json <fields>;
+    @com.squareup.moshi.JsonClass <fields>;
+}
+
+# Keep Moshi's KotlinJsonAdapterFactory
+-keep class com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory { *; }
+-keep class com.squareup.moshi.** { *; }
+
 # Keep security-sensitive classes
 -keep class com.cdccreditsmart.device.security.** { *; }
 -keep class com.cdccreditsmart.device.attestation.** { *; }

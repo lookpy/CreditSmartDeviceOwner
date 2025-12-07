@@ -1,6 +1,21 @@
 # Network Module ProGuard Rules
 # Critical: Keep WebSocket classes for dependent modules
 
+# ===== CRITICAL: MoshiProvider and Client Classes =====
+# These MUST be preserved - they are used by app module via static reference
+-keep class com.cdccreditsmart.network.client.** { *; }
+-keep class com.cdccreditsmart.network.client.MoshiProvider { *; }
+-keepclassmembers class com.cdccreditsmart.network.client.MoshiProvider {
+    public static ** getMoshi();
+    public static ** createMoshi();
+}
+
+# Keep Moshi adapters
+-keep class com.cdccreditsmart.network.dto.mdm.CommandParametersAdapter { *; }
+
+# Keep all network interceptors
+-keep class com.cdccreditsmart.network.interceptors.** { *; }
+
 # ===== CRITICAL: WebSocket Command Classes =====
 # These MUST be preserved for device module and other dependent modules
 -keep class com.cdccreditsmart.network.websocket.** { *; }

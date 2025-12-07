@@ -1,6 +1,22 @@
 # Network module consumer ProGuard rules
 # Add any consumer-specific ProGuard rules here
 
+# ===== CRITICAL: MoshiProvider and Client Classes =====
+# These MUST be preserved - they are accessed statically from app module
+-keep class com.cdccreditsmart.network.client.** { *; }
+-keep class com.cdccreditsmart.network.client.MoshiProvider { *; }
+-keepclassmembers class com.cdccreditsmart.network.client.MoshiProvider {
+    public static ** getMoshi();
+    public static ** createMoshi();
+    private static <fields>;
+}
+
+# Keep Moshi adapters
+-keep class com.cdccreditsmart.network.dto.mdm.CommandParametersAdapter { *; }
+
+# Keep all network interceptors
+-keep class com.cdccreditsmart.network.interceptors.** { *; }
+
 # Keep all network DTOs for JSON serialization
 -keep class com.cdccreditsmart.network.api.** { *; }
 -keep class com.cdccreditsmart.network.dto.** { *; }
