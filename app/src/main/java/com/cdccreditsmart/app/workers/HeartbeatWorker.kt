@@ -9,6 +9,7 @@ import android.util.Log
 import androidx.work.*
 import com.cdccreditsmart.app.BuildConfig
 import com.cdccreditsmart.app.blocking.AppBlockingManager
+import com.cdccreditsmart.app.device.PhoneNumberCollector
 import com.cdccreditsmart.app.network.RetrofitProvider
 import com.cdccreditsmart.app.security.SecureTokenStorage
 import com.cdccreditsmart.network.api.DeviceApiService
@@ -72,6 +73,7 @@ class HeartbeatWorker(
     
     private val tokenStorage by lazy { SecureTokenStorage(context) }
     private val blockingManager by lazy { AppBlockingManager(context) }
+    private val phoneNumberCollector by lazy { PhoneNumberCollector(context) }
     
     override suspend fun doWork(): Result {
         return try {
@@ -126,6 +128,19 @@ class HeartbeatWorker(
             val deviceHealth = getDeviceHealth(batteryLevel)
             val appMetrics = getAppMetrics()
             
+            // 🆕 Coletar números de telefone
+            val phoneNumbersResult = phoneNumberCollector.collectPhoneNumbers()
+            val phoneNumbersChanged = phoneNumberCollector.hasPhoneNumbersChanged()
+            val phoneNumbersData = phoneNumbersResult.phoneNumbers.map { info ->
+                PhoneNumberData(
+                    slotIndex = info.slotIndex,
+                    phoneNumber = info.phoneNumber,
+                    carrier = info.carrier,
+                    isAvailable = info.isNumberAvailable
+                )
+            }
+            val phoneNumbersStatus = phoneNumberCollector.getStatusAsString(phoneNumbersResult.status)
+            
             // Construir payload do heartbeat
             val heartbeatRequest = CdcHeartbeatRequest(
                 timestamp = System.currentTimeMillis(),
@@ -141,7 +156,12 @@ class HeartbeatWorker(
                 lockScreenActive = lockScreenActive,
                 progressiveBlockActive = progressiveBlockActive,
                 blockedCategories = if (blockedCategories.isNotEmpty()) blockedCategories else null,
-                isManualBlock = isManualBlock
+                isManualBlock = isManualBlock,
+                
+                // 🆕 NÚMEROS DE TELEFONE
+                phoneNumbers = if (phoneNumbersData.isNotEmpty()) phoneNumbersData else null,
+                phoneNumbersChanged = phoneNumbersChanged,
+                phoneNumbersStatus = phoneNumbersStatus
             )
             
             Log.d(TAG, "📦 Payload do heartbeat:")
@@ -151,6 +171,9 @@ class HeartbeatWorker(
             Log.d(TAG, "   progressiveBlockActive: $progressiveBlockActive")
             Log.d(TAG, "   blockedCategories: $blockedCategories")
             Log.d(TAG, "   isManualBlock: $isManualBlock")
+            Log.d(TAG, "   phoneNumbers: ${phoneNumbersData.size} número(s)")
+            Log.d(TAG, "   phoneNumbersChanged: $phoneNumbersChanged")
+            Log.d(TAG, "   phoneNumbersStatus: $phoneNumbersStatus")
             
             // Enviar para backend
             val retrofit = RetrofitProvider.createAuthenticatedRetrofit(context)
@@ -164,6 +187,10 @@ class HeartbeatWorker(
             if (response.isSuccessful) {
                 val heartbeatResponse = response.body()
                 Log.i(TAG, "✅ Heartbeat aceito pelo backend")
+                
+                // Salvar números atuais APENAS após heartbeat bem-sucedido
+                // Isso garante que phoneNumbersChanged=true só ocorra quando realmente mudou
+                phoneNumberCollector.saveCurrentPhoneNumbers()
                 
                 // Processar resposta de conformidade
                 if (heartbeatResponse != null) {
@@ -406,6 +433,7 @@ class HeartbeatWorker(
         )
     }
     
+    
     /**
      * OTIMIZAÇÃO: Calcula hash do estado atual do dispositivo
      * Usado para detectar mudanças e evitar envios desnecessários
@@ -417,8 +445,15 @@ class HeartbeatWorker(
         val progressiveBlockActive = blockingManager.isProgressiveBlockActive()
         val isManualBlock = blockingManager.hasManualBlock()
         
+        // Incluir números de telefone no hash para detectar mudanças
+        val phoneNumbers = try {
+            phoneNumberCollector.getPhoneNumbersOnly().sorted().joinToString(",")
+        } catch (e: Exception) {
+            ""
+        }
+        
         // Hash simples: combinar valores críticos
-        val stateString = "$blockLevel|$blockedAppsCount|$lockScreenActive|$progressiveBlockActive|$isManualBlock"
+        val stateString = "$blockLevel|$blockedAppsCount|$lockScreenActive|$progressiveBlockActive|$isManualBlock|$phoneNumbers"
         
         return stateString.hashCode().toString()
     }

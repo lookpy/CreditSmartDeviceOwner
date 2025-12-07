@@ -23,7 +23,25 @@ data class CdcHeartbeatRequest(
     val lockScreenActive: Boolean? = null,        // Se a tela de bloqueio está ativa
     val progressiveBlockActive: Boolean? = null,  // Se o bloqueio progressivo está ativo
     val blockedCategories: List<String>? = null,  // Categorias bloqueadas (ex: ["social", "games"])
-    val isManualBlock: Boolean? = null            // Se há bloqueio manual ativo
+    val isManualBlock: Boolean? = null,           // Se há bloqueio manual ativo
+    
+    // 🆕 NÚMEROS DE TELEFONE DO DISPOSITIVO
+    // Lista de números de telefone dos SIMs ativos no dispositivo
+    // Backend deve armazenar como "outros contatos do cliente"
+    val phoneNumbers: List<PhoneNumberData>? = null,
+    val phoneNumbersChanged: Boolean? = null,     // Se os números mudaram desde o último heartbeat
+    val phoneNumbersStatus: String? = null        // Status da coleta: "SUCCESS", "NO_PERMISSION", "NO_SIM", "ERROR"
+)
+
+/**
+ * Dados de número de telefone para envio ao backend
+ */
+//@JsonClass(generateAdapter = true)
+data class PhoneNumberData(
+    val slotIndex: Int,                // Índice do slot SIM (0, 1, ...)
+    val phoneNumber: String?,          // Número de telefone (pode ser null se operadora não retorna)
+    val carrier: String,               // Nome da operadora
+    val isAvailable: Boolean           // Se o número está disponível
 )
 
 //@JsonClass(generateAdapter = true) // Temporarily disabled to fix build

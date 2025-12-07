@@ -102,6 +102,14 @@ Utilizes Jetpack Compose and Material 3 with a CDC institutional dark theme. Fea
   - **XOS Privacy Protection:** Blocks "Permissões e privacidade" que dá acesso a XHide, XClone, Sistema duplo, Modo de reparo
 - **GPS Location Tracking (LOCATE_DEVICE):** MDM command for real-time device location with FusedLocationProviderClient + LocationManager fallback, Device Owner auto-grant for permissions, and comprehensive error handling.
 - **Localização Sempre Ativa (REGRA):** Como Device Owner, o app força GPS/localização a estar sempre ativo via `setLocationEnabled()` (Android 9+), aplica restrição `DISALLOW_CONFIG_LOCATION` para impedir usuário de desativar, e auto-reativa GPS se detectar desativação. LocationProvider verifica e força ativação antes de cada requisição de localização.
+- **Coleta de Números de Telefone (PhoneNumberCollector):** Sistema para coletar e enviar números de telefone do dispositivo para o backend:
+  - Coleta números de TODOS os SIMs ativos (suporte dual SIM)
+  - Usa SubscriptionManager (Android 5.1+) com fallback para TelephonyManager
+  - Detecta mudanças de número comparando com último estado salvo
+  - Envia no heartbeat: `phoneNumbers` (lista) e `phoneNumbersChanged` (boolean)
+  - Backend deve armazenar como "outros contatos do cliente dispositivo"
+  - Dados enviados: slotIndex, phoneNumber, carrier, isAvailable
+  - Nota: Muitas operadoras não retornam número via API; campo pode ser null
 
 ## External Dependencies
 - **CDC Credit Smart Backend API:** For authentication, device status, installments, PIX processing, heartbeat, MDM commands, unblock operations, remote uninstall telemetry, time synchronization, FCM token registration, enrollment reporting, and contract terms metadata (GET /api/apk/device/contract-terms returns termsHash, signedAt, biometrySessionId, geoLocation, receiptHash, termsVersion).
