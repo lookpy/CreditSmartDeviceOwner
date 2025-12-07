@@ -33,9 +33,8 @@ class SettingsGuardService(private val context: Context) {
         private const val CHECK_INTERVAL_MS = 600L
         private const val AGGRESSIVE_CHECK_INTERVAL_MS = 400L
         
-        // ⚠️ TEMPORARIAMENTE ATIVADO PARA DEBUG DO CRASH
-        // TODO: Mudar para false após identificar o crash
-        private const val TEMPORARY_ALLOW_DEVELOPER_OPTIONS = true
+        // Flag para permitir Developer Options (apenas para debug)
+        private const val TEMPORARY_ALLOW_DEVELOPER_OPTIONS = false
         
         // DEBUG: Throttle muito maior para não atrapalhar desenvolvimento
         private val INTERCEPT_THROTTLE_MS = if (BuildConfig.DEBUG) 30_000L else 1_000L
@@ -128,7 +127,7 @@ class SettingsGuardService(private val context: Context) {
         "SystemUpdateActivity",         // Atualizações do sistema
         "ResetDashboardActivity",       // Reset direto
         "PrivateDnsSettings",           // DNS privado
-        // "DeveloperOptionsActivity",  // ⚠️ TEMPORARIAMENTE PERMITIDO - DEBUG DO CRASH
+        "DeveloperOptionsActivity",     // Opções de desenvolvedor
         "DataUsageSummaryActivity",     // Pode levar a reset de rede
         "ResetOptionsActivity",         // Opções de redefinição
         "ResetSettingsActivity",        // Configurações de reset
@@ -952,15 +951,14 @@ class SettingsGuardService(private val context: Context) {
                     
                     // ═══════════════════════════════════════════════════════════════════════════════
                     // CATEGORIA 8: DEVELOPER OPTIONS
-                    // ⚠️ TEMPORARIAMENTE DESATIVADO PARA DEBUG DO CRASH (ver TEMPORARY_ALLOW_DEVELOPER_OPTIONS)
                     // ═══════════════════════════════════════════════════════════════════════════════
                     
-                    // "DevelopmentSettings",           // TEMPORARIAMENTE PERMITIDO
-                    // "DevelopmentSettingsActivity",   // TEMPORARIAMENTE PERMITIDO
-                    // "DeveloperOptionsActivity",      // TEMPORARIAMENTE PERMITIDO
-                    // "OemUnlockActivity",             // TEMPORARIAMENTE PERMITIDO
-                    // "AdbSettings",                   // TEMPORARIAMENTE PERMITIDO
-                    // "UsbDebuggingActivity",          // TEMPORARIAMENTE PERMITIDO
+                    "DevelopmentSettings",
+                    "DevelopmentSettingsActivity",
+                    "DeveloperOptionsActivity",
+                    "OemUnlockActivity",
+                    "AdbSettings",
+                    "UsbDebuggingActivity",
                     
                     // ═══════════════════════════════════════════════════════════════════════════════
                     // CATEGORIA 9: CLEAR DATA / STORAGE
@@ -1181,12 +1179,11 @@ class SettingsGuardService(private val context: Context) {
                     "StorageManager",
                     
                     // Developer Options patterns
-                    // ⚠️ TEMPORARIAMENTE PERMITIDO - DEBUG DO CRASH
-                    // "DeveloperOption",
-                    // "DevelopmentSetting",
-                    // "OemUnlock",
-                    // "UsbDebug",
-                    // "AdbSetting"
+                    "DeveloperOption",
+                    "DevelopmentSetting",
+                    "OemUnlock",
+                    "UsbDebug",
+                    "AdbSetting"
                 )
                 
                 val matchedPattern = dangerousPatterns.find { pattern ->
@@ -1350,9 +1347,8 @@ class SettingsGuardService(private val context: Context) {
                         "ManagePermissions",
                         "PermissionApps",
                         // Developer Options
-                        // ⚠️ TEMPORARIAMENTE PERMITIDO - DEBUG DO CRASH
-                        // "DevelopmentSettings",
-                        // "DeveloperOptions",
+                        "DevelopmentSettings",
+                        "DeveloperOptions",
                         // Battery
                         "BatterySaver",
                         "HighPowerApplications"

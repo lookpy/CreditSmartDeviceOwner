@@ -726,11 +726,6 @@ class WorkPolicyManager(private val context: Context) {
     }
     
     private fun blockDebugging(): Boolean {
-        // ⚠️ TEMPORARIAMENTE DESATIVADO PARA DEBUG DO CRASH
-        // TODO: Reativar após identificar o crash
-        Log.w(TAG, "   ⚠️ DISALLOW_DEBUGGING_FEATURES TEMPORARIAMENTE DESATIVADO (debug do crash)")
-        return false
-        /*
         return try {
             if (!BuildConfig.DEBUG) {
                 dpm.addUserRestriction(adminComponent, UserManager.DISALLOW_DEBUGGING_FEATURES)
@@ -744,15 +739,9 @@ class WorkPolicyManager(private val context: Context) {
             Log.e(TAG, "   ❌ Erro: ${e.message}")
             false
         }
-        */
     }
     
     private fun blockUsbTransfer(): Boolean {
-        // ⚠️ TEMPORARIAMENTE DESATIVADO PARA DEBUG DO CRASH
-        // TODO: Reativar após identificar o crash
-        Log.w(TAG, "   ⚠️ DISALLOW_USB_FILE_TRANSFER TEMPORARIAMENTE DESATIVADO (debug do crash)")
-        return false
-        /*
         return try {
             if (!BuildConfig.DEBUG) {
                 dpm.addUserRestriction(adminComponent, UserManager.DISALLOW_USB_FILE_TRANSFER)
@@ -766,7 +755,6 @@ class WorkPolicyManager(private val context: Context) {
             Log.e(TAG, "   ❌ Erro: ${e.message}")
             false
         }
-        */
     }
     
     private fun blockAddUser(): Boolean {
