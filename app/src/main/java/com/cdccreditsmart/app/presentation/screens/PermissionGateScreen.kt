@@ -446,20 +446,18 @@ private fun requestPermission(
 
 @Composable
 private fun LoadingScreen() {
-    Log.d(TAG, "🔄 LoadingScreen sendo exibida...")
-    
-    Surface(
-        modifier = Modifier.fillMaxSize(),
-        color = Color(0xFF121212)
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(MaterialTheme.colorScheme.background),
+        contentAlignment = Alignment.Center
     ) {
         Column(
-            modifier = Modifier.fillMaxSize(),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
             CircularProgressIndicator(
-                modifier = Modifier.size(64.dp),
-                color = Color(0xFFFF7A1A)
+                modifier = Modifier.size(48.dp),
+                color = MaterialTheme.colorScheme.primary
             )
             
             Spacer(modifier = Modifier.height(24.dp))
@@ -467,15 +465,15 @@ private fun LoadingScreen() {
             Text(
                 text = "Configurando permissões...",
                 fontSize = 16.sp,
-                color = Color.White
+                color = MaterialTheme.colorScheme.onBackground
             )
             
             Spacer(modifier = Modifier.height(8.dp))
             
             Text(
-                text = "Aguarde...",
+                text = "Device Owner ativo - permissões automáticas",
                 fontSize = 12.sp,
-                color = Color(0xFFFF7A1A)
+                color = MaterialTheme.colorScheme.primary
             )
         }
     }

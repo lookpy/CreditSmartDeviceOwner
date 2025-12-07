@@ -31,8 +31,6 @@ class SecureTokenStorage(private val context: Context) {
         private const val KEY_CUSTOMER_NAME = "customer_name"
         private const val KEY_DEVICE_MODEL = "device_model"
         private const val KEY_UNINSTALL_CONFIRMATION_HASH = "uninstall_confirmation_hash"
-        private const val KEY_ALLOWED_IMEI_HASHES = "allowed_imei_hashes_pdv"
-        private const val KEY_REQUIRES_BACKEND_REVALIDATION = "requires_backend_revalidation"
         
         @Volatile
         private var encryptionAvailable: Boolean? = null
@@ -301,54 +299,6 @@ class SecureTokenStorage(private val context: Context) {
         }
     }
     
-    /**
-     * Salva apenas o código do contrato.
-     * Usado pelo FactoryResetRecoveryReceiver durante auto-reativação.
-     */
-    fun saveContractCode(contractCode: String) {
-        try {
-            contractCodeStorage.saveContractCode(contractCode)
-            Log.d(TAG, "Contract code saved: ${contractCode.take(10)}...")
-        } catch (e: Exception) {
-            Log.e(TAG, "Error saving contract code", e)
-            throw TokenStorageException("Failed to save contract code", e)
-        }
-    }
-    
-    /**
-     * Salva apenas o device ID.
-     * Usado pelo FactoryResetRecoveryReceiver durante auto-reativação.
-     */
-    fun saveDeviceId(deviceId: String) {
-        try {
-            encryptedPrefs.edit().apply {
-                putString(KEY_DEVICE_ID, deviceId)
-                apply()
-            }
-            Log.d(TAG, "Device ID saved: ${deviceId.take(10)}...")
-        } catch (e: Exception) {
-            Log.e(TAG, "Error saving device ID", e)
-            throw TokenStorageException("Failed to save device ID", e)
-        }
-    }
-    
-    /**
-     * Salva apenas o token de autenticação.
-     * Usado pelo FactoryResetRecoveryReceiver durante auto-reativação.
-     */
-    fun saveToken(authToken: String) {
-        try {
-            encryptedPrefs.edit().apply {
-                putString(KEY_AUTH_TOKEN, authToken)
-                apply()
-            }
-            Log.d(TAG, "Auth token saved successfully")
-        } catch (e: Exception) {
-            Log.e(TAG, "Error saving auth token", e)
-            throw TokenStorageException("Failed to save auth token", e)
-        }
-    }
-    
     fun saveSerialNumber(serialNumber: String) {
         try {
             encryptedPrefs.edit().apply {
@@ -377,106 +327,6 @@ class SecureTokenStorage(private val context: Context) {
             Log.e(TAG, "Error saving IMEI for MDM", e)
             throw TokenStorageException("Failed to save IMEI for MDM", e)
         }
-    }
-    
-    /**
-     * Salva os hashes de IMEIs permitidos recebidos do PDV/backend durante pareamento.
-     * Estes são os IMEIs que foram registrados na venda e devem corresponder ao dispositivo.
-     * Os IMEIs são convertidos para hashes SHA-256 antes de serem salvos para segurança.
-     * @param imeis Lista de IMEIs permitidos (raw, não hasheados)
-     */
-    fun saveAllowedImeiHashesFromPdv(imeis: List<String>) {
-        try {
-            if (imeis.isEmpty()) {
-                Log.w(TAG, "⚠️ Tentando salvar lista vazia de IMEIs permitidos do PDV")
-                return
-            }
-            
-            val hashes = imeis.map { imei ->
-                hashImei(imei)
-            }
-            
-            val hashesJson = hashes.joinToString(",")
-            encryptedPrefs.edit().apply {
-                putString(KEY_ALLOWED_IMEI_HASHES, hashesJson)
-                apply()
-            }
-            Log.i(TAG, "✅ ${hashes.size} hash(es) de IMEIs permitidos do PDV salvos com sucesso")
-        } catch (e: Exception) {
-            Log.e(TAG, "❌ Erro ao salvar hashes de IMEIs permitidos do PDV", e)
-            throw TokenStorageException("Failed to save allowed IMEI hashes from PDV", e)
-        }
-    }
-    
-    /**
-     * Recupera os hashes de IMEIs permitidos salvos durante pareamento com PDV.
-     * @return Lista de hashes SHA-256 dos IMEIs permitidos, ou lista vazia se não houver
-     */
-    fun getAllowedImeiHashesFromPdv(): List<String> {
-        return try {
-            val hashesJson = encryptedPrefs.getString(KEY_ALLOWED_IMEI_HASHES, null)
-            if (hashesJson.isNullOrBlank()) {
-                Log.d(TAG, "Nenhum hash de IMEI permitido do PDV encontrado")
-                emptyList()
-            } else {
-                val hashes = hashesJson.split(",").filter { it.isNotBlank() }
-                Log.d(TAG, "✅ Recuperados ${hashes.size} hash(es) de IMEIs permitidos do PDV")
-                hashes
-            }
-        } catch (e: Exception) {
-            Log.e(TAG, "❌ Erro ao recuperar hashes de IMEIs permitidos do PDV", e)
-            emptyList()
-        }
-    }
-    
-    /**
-     * Verifica se há hashes de IMEIs permitidos salvos do PDV
-     */
-    fun hasAllowedImeiHashesFromPdv(): Boolean {
-        return getAllowedImeiHashesFromPdv().isNotEmpty()
-    }
-    
-    /**
-     * Marca que o app precisa de revalidação do backend na próxima conexão.
-     * Usado quando o recovery acontece com IMEI diferente (fallback por contractCode).
-     * O backend decidirá se aceita ou rejeita o dispositivo.
-     */
-    fun markRequiresBackendRevalidation(requires: Boolean) {
-        try {
-            encryptedPrefs.edit().apply {
-                putBoolean(KEY_REQUIRES_BACKEND_REVALIDATION, requires)
-                apply()
-            }
-            if (requires) {
-                Log.i(TAG, "⚠️ App marcado para revalidação do backend (IMEI diferente)")
-            } else {
-                Log.d(TAG, "✅ Flag de revalidação do backend removida")
-            }
-        } catch (e: Exception) {
-            Log.e(TAG, "Erro ao marcar revalidação do backend", e)
-        }
-    }
-    
-    /**
-     * Verifica se o app precisa de revalidação do backend.
-     * Retorna true se o recovery foi feito com IMEI diferente do PDV.
-     */
-    fun requiresBackendRevalidation(): Boolean {
-        return try {
-            encryptedPrefs.getBoolean(KEY_REQUIRES_BACKEND_REVALIDATION, false)
-        } catch (e: Exception) {
-            Log.e(TAG, "Erro ao verificar flag de revalidação", e)
-            false
-        }
-    }
-    
-    /**
-     * Cria hash SHA-256 de um IMEI para armazenamento seguro
-     */
-    private fun hashImei(imei: String): String {
-        val digest = MessageDigest.getInstance("SHA-256")
-        val hashBytes = digest.digest(imei.toByteArray(Charsets.UTF_8))
-        return hashBytes.joinToString("") { "%02x".format(it) }
     }
     
     fun getSerialNumber(): String? {

@@ -44,12 +44,6 @@ Utilizes Jetpack Compose and Material 3 with a CDC institutional dark theme. Fea
 - **Anti-Tampering & Persistence:** Time synchronization for tamper detection, app continuity, and a Persistent State Manager for factory reset survival.
 - **SIM Swap Detection:** Offline system for SIM change detection and blocking policy application.
 - **Secure Device Pairing:** 3-step handshake with IMEI auto-discovery and manual contract code fallback.
-- **Validação Híbrida de IMEI (PDV):** Sistema de dupla validação para garantir que apenas o dispositivo vendido seja ativado:
-  - **Backend (primária):** Valida IMEI do dispositivo contra IMEIs registrados na venda do PDV antes de retornar sucesso
-  - **App (secundária):** Valida localmente como redundância e para suportar recovery offline
-  - **Bloqueio no pareamento:** Ativação BLOQUEADA se: (1) backend não retornar `imeiList`, (2) dispositivo não tiver IMEI acessível, (3) IMEI não corresponder ao PDV
-  - **Recovery com fallback:** Após factory reset, SEMPRE ressuscita o app. Se IMEI diferente, usa fallback por código do contrato e marca `requiresBackendRevalidation` para backend decidir
-  - Documentação completa em `docs/imei-validation-hybrid.md`
 - **Multi-Slot Device Identifier System:** Collects IMEI/MEID from all SIM slots with automatic fallback (IMEI → MEID → Android ID → Fingerprint). Supports Zero-Touch and Knox enrollment as Device Owner.
 - **Real-time Communication & MDM:** Dual WebSocket system for pairing status and MDM command push (blocking, unblocking, remote uninstall).
 - **Progressive Blocking System:** Dynamically blocks non-essential applications based on overdue levels, adhering to legal precedents.
@@ -71,12 +65,6 @@ Utilizes Jetpack Compose and Material 3 with a CDC institutional dark theme. Fea
   - Meizu: `/data/flyme/preload/`
   - AOSP/outros: `/data/preloads/apps/`, `/data/system/device_owner_data/preloads/`
   O sistema reinstala automaticamente no primeiro boot, mesmo offline, e usa o IMEI para auto-reativação.
-- **Proteção Anti-Deleção do Preload:** Após copiar APK e manifesto para o preload, aplica proteções contra manipulação via ADB:
-  - `chattr +i` (imutável): Impede modificação/deleção mesmo com root
-  - `chmod 444/555`: Somente leitura para arquivos e diretórios
-  - Proteção de diretórios pais para dificultar acesso
-  - `verifyAndRestorePreload()`: Verifica integridade e restaura se arquivos foram deletados
-  - `removePreloadProtections()`: Remove proteções apenas quando necessário para atualização
 - **Auto-Reativação Baseada em IMEI (FactoryResetRecoveryReceiver):** Após factory reset, o app detecta BOOT_COMPLETED, lê o manifesto de enrollment do preload, verifica o IMEI do dispositivo e restaura automaticamente o contractCode e credenciais sem interação do usuário.
 - **QR Code Provisioning:** Supports QR code provisioning with full JSON configuration.
 - **Anti-Removal Protections:** Multi-layered defenses against uninstallation, force stops, data clearing, and factory resets.
@@ -102,14 +90,6 @@ Utilizes Jetpack Compose and Material 3 with a CDC institutional dark theme. Fea
   - **XOS Privacy Protection:** Blocks "Permissões e privacidade" que dá acesso a XHide, XClone, Sistema duplo, Modo de reparo
 - **GPS Location Tracking (LOCATE_DEVICE):** MDM command for real-time device location with FusedLocationProviderClient + LocationManager fallback, Device Owner auto-grant for permissions, and comprehensive error handling.
 - **Localização Sempre Ativa (REGRA):** Como Device Owner, o app força GPS/localização a estar sempre ativo via `setLocationEnabled()` (Android 9+), aplica restrição `DISALLOW_CONFIG_LOCATION` para impedir usuário de desativar, e auto-reativa GPS se detectar desativação. LocationProvider verifica e força ativação antes de cada requisição de localização.
-- **Coleta de Números de Telefone (PhoneNumberCollector):** Sistema para coletar e enviar números de telefone do dispositivo para o backend:
-  - Coleta números de TODOS os SIMs ativos (suporte dual SIM)
-  - Usa SubscriptionManager (Android 5.1+) com fallback para TelephonyManager
-  - Detecta mudanças de número comparando com último estado salvo
-  - Envia no heartbeat: `phoneNumbers` (lista) e `phoneNumbersChanged` (boolean)
-  - Backend deve armazenar como "outros contatos do cliente dispositivo"
-  - Dados enviados: slotIndex, phoneNumber, carrier, isAvailable
-  - Nota: Muitas operadoras não retornam número via API; campo pode ser null
 
 ## External Dependencies
 - **CDC Credit Smart Backend API:** For authentication, device status, installments, PIX processing, heartbeat, MDM commands, unblock operations, remote uninstall telemetry, time synchronization, FCM token registration, enrollment reporting, and contract terms metadata (GET /api/apk/device/contract-terms returns termsHash, signedAt, biometrySessionId, geoLocation, receiptHash, termsVersion).

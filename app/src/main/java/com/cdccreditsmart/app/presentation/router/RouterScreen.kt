@@ -1,6 +1,5 @@
 package com.cdccreditsmart.app.presentation.router
 
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
@@ -19,8 +18,6 @@ import com.cdccreditsmart.app.presentation.deviceowner.DeviceOwnerCheckViewModel
 import com.cdccreditsmart.app.presentation.deviceowner.ProvisioningStep
 import com.cdccreditsmart.app.presentation.deviceowner.ProvisioningWizardScreen
 
-private const val TAG = "RouterScreen"
-
 @Composable
 fun RouterScreen(
     onNavigateToQRScanner: () -> Unit,
@@ -33,38 +30,17 @@ fun RouterScreen(
     
     val deviceOwnerState = deviceOwnerViewModel.state.value
     
-    LaunchedEffect(deviceOwnerState) {
-        Log.i(TAG, "📱 RouterScreen - Estado atual: $deviceOwnerState")
-    }
-    
     when (deviceOwnerState) {
         is ProvisioningStep.Checking -> {
-            Log.d(TAG, "🔄 Mostrando tela de verificação...")
-            Surface(
+            Box(
                 modifier = Modifier.fillMaxSize(),
-                color = Color(0xFF121212)
+                contentAlignment = Alignment.Center
             ) {
-                Column(
-                    modifier = Modifier.fillMaxSize(),
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.Center
-                ) {
-                    CircularProgressIndicator(
-                        color = Color(0xFFFF7A1A),
-                        modifier = Modifier.size(64.dp)
-                    )
-                    Spacer(modifier = Modifier.height(24.dp))
-                    Text(
-                        text = "Verificando dispositivo...",
-                        color = Color.White,
-                        style = MaterialTheme.typography.bodyLarge
-                    )
-                }
+                CircularProgressIndicator(color = Color(0xFFFF7A1A))
             }
         }
         
         is ProvisioningStep.NeedsProvisioning -> {
-            Log.d(TAG, "⚠️ NeedsProvisioning - Mostrando tela de verificação de Device Owner")
             var showWizard by remember { mutableStateOf(false) }
             
             if (showWizard) {
@@ -81,18 +57,13 @@ fun RouterScreen(
                 DeviceOwnerCheckScreen(
                     viewModel = deviceOwnerViewModel,
                     onDeviceOwnerConfirmed = {
-                        Log.i(TAG, "✅ Device Owner confirmado!")
                     },
-                    onNeedsProvisioning = { 
-                        Log.i(TAG, "📱 Iniciando wizard de provisionamento")
-                        showWizard = true 
-                    }
+                    onNeedsProvisioning = { showWizard = true }
                 )
             }
         }
         
         is ProvisioningStep.DeviceOwnerFound -> {
-            Log.d(TAG, "✅ DeviceOwnerFound - Mostrando RouterScreenContent")
             RouterScreenContent(
                 onNavigateToQRScanner = onNavigateToQRScanner,
                 onNavigateToHome = onNavigateToHome,

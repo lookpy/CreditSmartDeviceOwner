@@ -8,9 +8,6 @@ import android.util.Log
 import com.cdccreditsmart.app.persistence.ApkPreloadManager
 import com.cdccreditsmart.app.persistence.EnrollmentManifestData
 import com.cdccreditsmart.app.security.SecureTokenStorage
-import com.cdccreditsmart.app.validation.ImeiValidationResult
-import com.cdccreditsmart.app.validation.ImeiValidator
-import com.cdccreditsmart.app.service.CdcForegroundService
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -89,7 +86,6 @@ class FactoryResetRecoveryReceiver : BroadcastReceiver() {
         Log.i(TAG, "   ContractCode: ${manifest.contractCode.take(10)}...")
         Log.i(TAG, "   DeviceId: ${manifest.deviceId.take(10)}...")
         Log.i(TAG, "   IMEI Hash: ${manifest.imeiHash.take(16)}...")
-        Log.i(TAG, "   Allowed IMEI Hashes: ${manifest.allowedImeiHashes.size}")
         
         attemptAutoReactivation(context, manifest, tokenStorage)
     }
@@ -110,51 +106,6 @@ class FactoryResetRecoveryReceiver : BroadcastReceiver() {
         Log.i(TAG, "   IMEI: ${if (currentImei.isNotEmpty()) "${currentImei.take(6)}..." else "N/A"}")
         Log.i(TAG, "   Android ID: ${currentAndroidId.take(10)}...")
         
-        val allCurrentImeis = getAllCurrentImeis(context)
-        Log.i(TAG, "   IMEIs locais disponíveis: ${allCurrentImeis.size}")
-        
-        var imeiMatchedPdv = false
-        var requiresBackendRevalidation = false
-        
-        if (manifest.allowedImeiHashes.isNotEmpty()) {
-            Log.i(TAG, "")
-            Log.i(TAG, "🔐 VALIDAÇÃO DE IMEI (PDV)")
-            Log.i(TAG, "   Manifesto contém ${manifest.allowedImeiHashes.size} hash(es) de IMEI permitido(s)")
-            
-            val imeiValidationResult = ImeiValidator.validateImeiWithHashes(
-                localImeis = allCurrentImeis,
-                allowedImeiHashes = manifest.allowedImeiHashes
-            )
-            
-            when (imeiValidationResult) {
-                is ImeiValidationResult.NotMatched -> {
-                    Log.w(TAG, "")
-                    Log.w(TAG, "⚠️ IMEI DIFERENTE DETECTADO!")
-                    Log.w(TAG, "   ${imeiValidationResult.message}")
-                    Log.w(TAG, "   Possível troca de chip ou dispositivo diferente")
-                    Log.w(TAG, "   🔄 USANDO FALLBACK: Recuperação via código do contrato")
-                    Log.w(TAG, "   O backend validará se este dispositivo pode usar o contrato")
-                    Log.w(TAG, "========================================")
-                    requiresBackendRevalidation = true
-                }
-                is ImeiValidationResult.Matched -> {
-                    Log.i(TAG, "✅ IMEI validado com sucesso: ${imeiValidationResult.matchedImei.take(6)}...")
-                    imeiMatchedPdv = true
-                }
-                is ImeiValidationResult.NoAllowedImeis -> {
-                    Log.w(TAG, "⚠️ Manifesto sem IMEIs permitidos - usando fallback por contrato")
-                    requiresBackendRevalidation = true
-                }
-            }
-        } else {
-            Log.w(TAG, "")
-            Log.w(TAG, "⚠️ MANIFESTO SEM ALLOWED IMEI HASHES")
-            Log.w(TAG, "   Manifesto antigo ou sem validação de IMEI")
-            Log.w(TAG, "   🔄 USANDO FALLBACK: Recuperação via código do contrato")
-            Log.w(TAG, "========================================")
-            requiresBackendRevalidation = true
-        }
-        
         val recoveryManager = ImeiBasedRecoveryManager(context)
         
         val result = recoveryManager.attemptRecovery(
@@ -163,9 +114,7 @@ class FactoryResetRecoveryReceiver : BroadcastReceiver() {
             manifestImeiHash = manifest.imeiHash,
             manifestAndroidId = manifest.androidId,
             currentImei = currentImei,
-            currentAndroidId = currentAndroidId,
-            allowedImeiHashes = manifest.allowedImeiHashes,
-            allCurrentImeis = allCurrentImeis
+            currentAndroidId = currentAndroidId
         )
         
         when (result) {
@@ -179,71 +128,26 @@ class FactoryResetRecoveryReceiver : BroadcastReceiver() {
                     tokenStorage.saveToken(result.authToken)
                 }
                 
-                if (requiresBackendRevalidation) {
-                    Log.i(TAG, "⚠️ IMEI diferente - backend revalidará na próxima conexão")
-                    tokenStorage.markRequiresBackendRevalidation(true)
-                }
-                
                 Log.i(TAG, "✅ Credenciais salvas - app reativado automaticamente")
                 Log.i(TAG, "========================================")
-                
-                startCdcForegroundService(context)
             }
             is RecoveryResult.NeedBackendConfirmation -> {
                 Log.i(TAG, "📡 Aguardando confirmação do backend...")
                 tokenStorage.saveContractCode(manifest.contractCode)
                 tokenStorage.saveDeviceId(manifest.deviceId)
-                
-                if (requiresBackendRevalidation) {
-                    tokenStorage.markRequiresBackendRevalidation(true)
-                }
-                
                 Log.i(TAG, "   Dados do manifesto salvos temporariamente")
                 Log.i(TAG, "   Backend confirmará na próxima sincronização")
-                
-                startCdcForegroundService(context)
             }
             is RecoveryResult.ImeiMismatch -> {
-                Log.w(TAG, "")
-                Log.w(TAG, "🔄 IMEI diferente - usando FALLBACK por código do contrato")
-                Log.w(TAG, "   ContractCode do manifesto: ${manifest.contractCode.take(10)}...")
-                Log.w(TAG, "   App será ressuscitado e tentará reconectar com backend")
-                Log.w(TAG, "========================================")
-                
-                tokenStorage.saveContractCode(manifest.contractCode)
-                tokenStorage.saveDeviceId(manifest.deviceId)
-                tokenStorage.markRequiresBackendRevalidation(true)
-                
-                Log.i(TAG, "✅ ContractCode salvo para fallback")
-                Log.i(TAG, "   O backend decidirá se aceita este dispositivo")
-                
-                startCdcForegroundService(context)
+                Log.w(TAG, "⚠️ IMEI atual não corresponde ao manifesto")
+                Log.w(TAG, "   Isso pode indicar troca de chip ou dispositivo clonado")
+                Log.w(TAG, "   App iniciará em modo de novo pareamento")
             }
             is RecoveryResult.ManifestExpired -> {
-                Log.w(TAG, "")
-                Log.w(TAG, "🔄 Manifesto expirado - tentando fallback por código do contrato")
-                
-                tokenStorage.saveContractCode(manifest.contractCode)
-                tokenStorage.saveDeviceId(manifest.deviceId)
-                tokenStorage.markRequiresBackendRevalidation(true)
-                
-                Log.i(TAG, "   ContractCode salvo - backend revalidará")
-                
-                startCdcForegroundService(context)
+                Log.w(TAG, "⚠️ Manifesto expirado - pareamento necessário")
             }
             is RecoveryResult.Failed -> {
                 Log.e(TAG, "❌ Falha na recuperação: ${result.reason}")
-                Log.w(TAG, "🔄 Tentando fallback por código do contrato mesmo assim...")
-                
-                if (manifest.contractCode.isNotEmpty()) {
-                    tokenStorage.saveContractCode(manifest.contractCode)
-                    tokenStorage.saveDeviceId(manifest.deviceId)
-                    tokenStorage.markRequiresBackendRevalidation(true)
-                    
-                    Log.i(TAG, "   ContractCode salvo - backend revalidará")
-                    
-                    startCdcForegroundService(context)
-                }
             }
         }
     }
@@ -304,57 +208,6 @@ class FactoryResetRecoveryReceiver : BroadcastReceiver() {
             ""
         }
     }
-    
-    private fun startCdcForegroundService(context: Context) {
-        try {
-            Log.i(TAG, "🚀 Iniciando CdcForegroundService após recovery...")
-            CdcForegroundService.startService(context.applicationContext)
-            Log.i(TAG, "✅ CdcForegroundService iniciado - app ressuscitado!")
-        } catch (e: Exception) {
-            Log.e(TAG, "❌ Erro ao iniciar CdcForegroundService: ${e.message}", e)
-        }
-    }
-    
-    private fun getAllCurrentImeis(context: Context): List<String> {
-        val imeis = mutableListOf<String>()
-        
-        try {
-            tryGrantPhoneStatePermission(context)
-            
-            val telephonyManager = context.getSystemService(Context.TELEPHONY_SERVICE) as? android.telephony.TelephonyManager
-            
-            if (telephonyManager != null) {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    val phoneCount = telephonyManager.phoneCount
-                    for (slotIndex in 0 until phoneCount) {
-                        try {
-                            val imei = telephonyManager.getImei(slotIndex)
-                            if (!imei.isNullOrBlank()) {
-                                imeis.add(imei)
-                                Log.d(TAG, "   IMEI slot $slotIndex: ${imei.take(6)}...")
-                            }
-                        } catch (e: SecurityException) {
-                            Log.w(TAG, "   Sem permissão para IMEI slot $slotIndex")
-                        } catch (e: Exception) {
-                            Log.w(TAG, "   Erro ao obter IMEI slot $slotIndex: ${e.message}")
-                        }
-                    }
-                } else {
-                    @Suppress("DEPRECATION")
-                    val imei = telephonyManager.deviceId
-                    if (!imei.isNullOrBlank()) {
-                        imeis.add(imei)
-                    }
-                }
-            }
-        } catch (e: SecurityException) {
-            Log.w(TAG, "⚠️ Sem permissão READ_PHONE_STATE para obter IMEIs")
-        } catch (e: Exception) {
-            Log.e(TAG, "❌ Erro ao obter IMEIs: ${e.message}")
-        }
-        
-        return imeis
-    }
 }
 
 /**
@@ -373,43 +226,11 @@ class ImeiBasedRecoveryManager(private val context: Context) {
         manifestImeiHash: String,
         manifestAndroidId: String,
         currentImei: String,
-        currentAndroidId: String,
-        allowedImeiHashes: List<String> = emptyList(),
-        allCurrentImeis: List<String> = emptyList()
+        currentAndroidId: String
     ): RecoveryResult {
         
         if (manifestContractCode.isEmpty()) {
             return RecoveryResult.Failed("ContractCode vazio no manifesto")
-        }
-        
-        if (allowedImeiHashes.isNotEmpty()) {
-            Log.i(TAG, "🔐 Validando IMEI contra lista de IMEIs permitidos do PDV...")
-            Log.i(TAG, "   IMEIs permitidos (hashes): ${allowedImeiHashes.size}")
-            Log.i(TAG, "   IMEIs locais disponíveis: ${allCurrentImeis.size}")
-            
-            val imeiValidationResult = ImeiValidator.validateImeiWithHashes(
-                localImeis = allCurrentImeis,
-                allowedImeiHashes = allowedImeiHashes
-            )
-            
-            when (imeiValidationResult) {
-                is ImeiValidationResult.Matched -> {
-                    Log.i(TAG, "✅ IMEI validado contra PDV - auto-reativação autorizada")
-                    return RecoveryResult.Success(
-                        contractCode = manifestContractCode,
-                        deviceId = manifestDeviceId,
-                        authToken = ""
-                    )
-                }
-                is ImeiValidationResult.NotMatched -> {
-                    Log.e(TAG, "❌ IMEI NÃO CORRESPONDE AO PDV!")
-                    Log.e(TAG, "   ${imeiValidationResult.message}")
-                    return RecoveryResult.ImeiMismatch
-                }
-                is ImeiValidationResult.NoAllowedImeis -> {
-                    Log.w(TAG, "⚠️ Sem IMEIs permitidos - fallback para validação padrão")
-                }
-            }
         }
         
         val imeiMatches = if (manifestImeiHash.isNotEmpty() && currentImei.isNotEmpty()) {
@@ -421,7 +242,7 @@ class ImeiBasedRecoveryManager(private val context: Context) {
         
         val androidIdMatches = manifestAndroidId == currentAndroidId
         
-        Log.i(TAG, "🔍 Verificação de identidade (padrão):")
+        Log.i(TAG, "🔍 Verificação de identidade:")
         Log.i(TAG, "   IMEI match: ${imeiMatches ?: "N/A (sem IMEI)"}")
         Log.i(TAG, "   Android ID match: $androidIdMatches")
         

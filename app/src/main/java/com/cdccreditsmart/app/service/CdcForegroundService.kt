@@ -772,26 +772,17 @@ class CdcForegroundService : Service(), ScreenStateListener {
             ) ?: ""
             val serialNumber = tokenStorage.getSerialNumber() ?: ""
             
-            val allowedImeiHashes = tokenStorage.getAllowedImeiHashesFromPdv()
-            
             Log.i(TAG, "📦 Construindo manifesto:")
             Log.i(TAG, "   ContractCode: ${contractCode.take(10)}...")
             Log.i(TAG, "   DeviceId: ${deviceId.take(10)}...")
             Log.i(TAG, "   IMEI: ${if (imei.isNotEmpty()) "${imei.take(6)}..." else "N/A"}")
-            Log.i(TAG, "   AllowedImeiHashes: ${allowedImeiHashes.size} hash(es)")
-            
-            if (allowedImeiHashes.isEmpty()) {
-                Log.w(TAG, "⚠️ ATENÇÃO: Manifesto sendo criado SEM allowedImeiHashes!")
-                Log.w(TAG, "   Isso pode causar falha na recuperação após factory reset")
-            }
             
             EnrollmentManifestData(
                 imei = imei,
                 contractCode = contractCode,
                 deviceId = deviceId,
                 serialNumber = serialNumber,
-                androidId = androidId,
-                allowedImeiHashes = allowedImeiHashes
+                androidId = androidId
             )
         } catch (e: Exception) {
             Log.e(TAG, "📦 Erro ao construir manifesto: ${e.message}")

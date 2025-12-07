@@ -15,8 +15,6 @@ import com.cdccreditsmart.app.permissions.AutoPermissionManager
 import com.cdccreditsmart.app.security.FingerprintCalculator
 import com.cdccreditsmart.app.security.SecureTokenStorage
 import com.cdccreditsmart.app.service.CdcForegroundService
-import com.cdccreditsmart.app.validation.ImeiValidationResult
-import com.cdccreditsmart.app.validation.ImeiValidator
 import com.cdccreditsmart.app.websocket.WebSocketManager
 import com.cdccreditsmart.network.api.DeviceApiService
 import com.cdccreditsmart.network.dto.cdc.ClaimRequest
@@ -360,83 +358,6 @@ class PairingViewModel(private val context: Context) : ViewModel() {
                         Log.d(TAG, "Device ID: ${body.device?.id}")
                         Log.d(TAG, "Customer: ${body.customer?.name}")
                         Log.i(TAG, "📊 DADOS DO BACKEND - CustomerName: '${body.customer?.name}', DeviceModel: '${body.device?.model}'")
-                        
-                        val allowedImeis = body.device?.imeiList ?: emptyList()
-                        Log.i(TAG, "🔐 IMEIs permitidos do backend (PDV): ${allowedImeis.size}")
-                        
-                        Log.i(TAG, "========================================")
-                        Log.i(TAG, "🔐 VALIDAÇÃO OBRIGATÓRIA DE IMEI DO PDV")
-                        Log.i(TAG, "========================================")
-                        
-                        if (allowedImeis.isEmpty()) {
-                            Log.e(TAG, "❌ ERRO CRÍTICO: Backend não retornou IMEIs permitidos do PDV!")
-                            Log.e(TAG, "   PAREAMENTO BLOQUEADO - Sem IMEIs autorizados para validar")
-                            Log.e(TAG, "========================================")
-                            
-                            _state.value = PairingState.Error(
-                                message = "Erro de configuração: Nenhum IMEI registrado na venda.\n\nEntre em contato com a loja para regularizar.",
-                                securityViolation = true,
-                                canRetry = false
-                            )
-                            return@retryWithBackoff
-                        }
-                        
-                        if (!imeiInfo.hasValidImei()) {
-                            Log.e(TAG, "❌ ERRO CRÍTICO: Não foi possível obter IMEI do dispositivo!")
-                            Log.e(TAG, "   PAREAMENTO BLOQUEADO - Sem IMEI para validar")
-                            Log.e(TAG, "========================================")
-                            
-                            _state.value = PairingState.Error(
-                                message = "Não foi possível obter o IMEI do dispositivo.\n\nVerifique se o SIM está inserido corretamente.",
-                                securityViolation = false,
-                                canRetry = true
-                            )
-                            return@retryWithBackoff
-                        }
-                        
-                        val localImeis = imeiInfo.getAllImeis()
-                        Log.i(TAG, "   IMEIs locais: ${localImeis.size}")
-                        Log.i(TAG, "   IMEIs do PDV: ${allowedImeis.size}")
-                        
-                        val validationResult = ImeiValidator.validateImei(localImeis, allowedImeis)
-                        
-                        when (validationResult) {
-                            is ImeiValidationResult.NotMatched -> {
-                                Log.e(TAG, "")
-                                Log.e(TAG, "❌ VALIDAÇÃO DE IMEI FALHOU!")
-                                Log.e(TAG, "   ${validationResult.message}")
-                                Log.e(TAG, "   PAREAMENTO BLOQUEADO - Dispositivo não autorizado")
-                                Log.e(TAG, "========================================")
-                                
-                                _state.value = PairingState.Error(
-                                    message = "IMEI do dispositivo não corresponde ao registrado na venda.\n\nEntre em contato com a loja.",
-                                    securityViolation = true,
-                                    canRetry = false
-                                )
-                                return@retryWithBackoff
-                            }
-                            is ImeiValidationResult.Matched -> {
-                                Log.i(TAG, "")
-                                Log.i(TAG, "✅ IMEI VALIDADO COM SUCESSO!")
-                                Log.i(TAG, "   IMEI correspondente: ${validationResult.matchedImei.take(6)}...")
-                                Log.i(TAG, "========================================")
-                            }
-                            is ImeiValidationResult.NoAllowedImeis -> {
-                                Log.e(TAG, "❌ ERRO: Estado inesperado NoAllowedImeis após verificação")
-                                Log.e(TAG, "   PAREAMENTO BLOQUEADO por segurança")
-                                Log.e(TAG, "========================================")
-                                
-                                _state.value = PairingState.Error(
-                                    message = "Erro interno de validação.\n\nEntre em contato com o suporte.",
-                                    securityViolation = true,
-                                    canRetry = false
-                                )
-                                return@retryWithBackoff
-                            }
-                        }
-                        
-                        tokenStorage.saveAllowedImeiHashesFromPdv(allowedImeis)
-                        Log.i(TAG, "✅ Hashes de IMEIs permitidos salvos para recuperação após factory reset")
                         
                         val authToken = body.authToken ?: ""
                         val deviceId = body.device?.id
