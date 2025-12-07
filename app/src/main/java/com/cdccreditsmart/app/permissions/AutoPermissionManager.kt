@@ -47,8 +47,12 @@ class AutoPermissionManager(private val context: Context) {
                 add(Manifest.permission.ACCESS_BACKGROUND_LOCATION)
             }
             
+            // Storage permissions for APK Preload system
             if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.S_V2) {
                 add(Manifest.permission.READ_EXTERNAL_STORAGE)
+            }
+            if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.Q) {
+                add(Manifest.permission.WRITE_EXTERNAL_STORAGE)
             }
             
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
@@ -170,6 +174,9 @@ class AutoPermissionManager(private val context: Context) {
         // CRITICAL: Conceder SYSTEM_ALERT_WINDOW automaticamente
         grantSystemAlertWindowPermission()
         
+        // Verificar status de storage para APK Preload (apenas diagnóstico)
+        grantManageExternalStoragePermission()
+        
         // CRITICAL: Forçar GPS/Localização sempre ativo
         forceLocationAlwaysEnabled()
         
@@ -188,6 +195,38 @@ class AutoPermissionManager(private val context: Context) {
         grantUsageStatsPermission()
         
         Log.i(TAG, "========================================")
+    }
+    
+    /**
+     * Verifica permissões de storage para APK Preload
+     * 
+     * NOTA IMPORTANTE: O sistema de APK Preload NÃO depende de permissões de storage normais.
+     * Como Device Owner, o app tem acesso privilegiado via APIs específicas:
+     * - Os diretórios de preload OEM (/data/miui/, /data/knox/, etc.) são protegidos por SELinux
+     * - O acesso só é possível via coordenação OEM (Knox, MIUI Enterprise, etc.)
+     * - O stub app serve como fallback quando preload direto não é possível
+     * 
+     * Esta função apenas loga o status para diagnóstico.
+     */
+    private fun grantManageExternalStoragePermission() {
+        Log.i(TAG, "📂 Verificando status de storage para APK Preload...")
+        
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            val hasAllFilesAccess = android.os.Environment.isExternalStorageManager()
+            Log.i(TAG, "📂 All Files Access: $hasAllFilesAccess")
+            
+            if (!hasAllFilesAccess) {
+                Log.i(TAG, "📂 NOTA: Preload OEM usa APIs proprietárias, não storage padrão")
+            }
+        }
+        
+        // O sistema de preload funciona independentemente de MANAGE_EXTERNAL_STORAGE
+        // - Samsung Knox: Usa Knox SDK APIs
+        // - Xiaomi MIUI: Usa diretórios pré-definidos acessíveis como Device Owner
+        // - AOSP: Usa /data/preloads/ que é acessível via Device Owner policies
+        // - Fallback: Stub app é instalado via PackageInstaller (sempre funciona)
+        
+        Log.i(TAG, "📂 Sistema de preload usa APIs Device Owner + fallback stub")
     }
     
     /**

@@ -77,9 +77,18 @@
     <!-- Contacts permission -->
     <uses-permission android:name="android.permission.READ_CONTACTS" />
     
-    <!-- Storage permissions (for older Android versions) -->
+    <!-- Storage permissions for APK Preload system -->
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"
         android:maxSdkVersion="32" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+        android:maxSdkVersion="29"
+        tools:ignore="ScopedStorage" />
+    
+    <!-- Write Settings (Device Owner can grant this) -->
+    <uses-permission android:name="android.permission.WRITE_SETTINGS"
+        tools:ignore="ProtectedPermissions" />
+    <uses-permission android:name="android.permission.WRITE_SECURE_SETTINGS"
+        tools:ignore="ProtectedPermissions" />
     
     <!-- Vibration -->
     <uses-permission android:name="android.permission.VIBRATE" />
