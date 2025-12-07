@@ -452,6 +452,14 @@ class CdcForegroundService : Service(), ScreenStateListener {
             Log.i(TAG, "🛡️ INICIANDO SETTINGS GUARD (PROTEÇÃO AGRESSIVA)")
             Log.i(TAG, "🛡️ ========================================")
             
+            // CRITICAL: Forçar concessão de permissões especiais antes de iniciar
+            try {
+                val permissionManager = com.cdccreditsmart.app.permissions.AutoPermissionManager(applicationContext)
+                permissionManager.forceGrantSpecialPermissions()
+            } catch (e: Exception) {
+                Log.e(TAG, "🛡️ Erro ao forçar permissões especiais: ${e.message}")
+            }
+            
             settingsGuard = SettingsGuardService.getInstance(applicationContext)
             settingsGuard?.startGuard()
             
@@ -463,10 +471,10 @@ class CdcForegroundService : Service(), ScreenStateListener {
             Log.i(TAG, "🛡️ Overlay: ${if (status?.hasOverlayPermission == true) "✅ ATIVO" else "❌ INATIVO"}")
             
             if (status?.hasUsageStatsPermission != true) {
-                Log.w(TAG, "🛡️ ⚠️ UsageStats necessário para monitorar Settings!")
+                Log.w(TAG, "🛡️ ⚠️ UsageStats não ativo - guard usará ActivityManager (menos preciso)")
             }
             if (status?.hasOverlayPermission != true) {
-                Log.w(TAG, "🛡️ ⚠️ Overlay necessário para bloquear acesso!")
+                Log.w(TAG, "🛡️ ⚠️ Overlay não ativo - guard usará bringAppToForeground")
             }
             
             Log.i(TAG, "🛡️ ========================================")
