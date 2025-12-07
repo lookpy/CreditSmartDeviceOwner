@@ -1,0 +1,344 @@
+2025-12-07 20:14:22.907 11818-11818 MainActivity            com.cdccreditsmart.app               D  📍 BroadcastReceiver de localização registrado
+2025-12-07 20:14:22.908 11818-11818 MainActivity            com.cdccreditsmart.app               I  ========================================
+2025-12-07 20:14:22.908 11818-11818 MainActivity            com.cdccreditsmart.app               I  📱 SOLICITANDO PERMISSÕES (NÃO DEVICE OWNER)
+2025-12-07 20:14:22.908 11818-11818 MainActivity            com.cdccreditsmart.app               I  ========================================
+2025-12-07 20:14:22.911 11818-11818 MainActivity            com.cdccreditsmart.app               I  ✅ Todas as runtime permissions já foram concedidas!
+2025-12-07 20:14:22.911 11818-11818 SpecialPermissionReq    com.cdccreditsmart.app               I  ========================================
+2025-12-07 20:14:22.911 11818-11818 SpecialPermissionReq    com.cdccreditsmart.app               I  📊 STATUS DAS PERMISSÕES ESPECIAIS
+2025-12-07 20:14:22.911 11818-11818 SpecialPermissionReq    com.cdccreditsmart.app               I  ========================================
+2025-12-07 20:14:22.911 11818-11818 SpecialPermissionReq    com.cdccreditsmart.app               I    USAGE_STATS: ✅ CONCEDIDA
+2025-12-07 20:14:22.911 11818-11818 SpecialPermissionReq    com.cdccreditsmart.app               I    OVERLAY: ✅ CONCEDIDA
+2025-12-07 20:14:22.911 11818-11818 SpecialPermissionReq    com.cdccreditsmart.app               I  
+2025-12-07 20:14:22.911 11818-11818 SpecialPermissionReq    com.cdccreditsmart.app               I  ✅ Todas as permissões especiais concedidas!
+2025-12-07 20:14:22.911 11818-11818 SpecialPermissionReq    com.cdccreditsmart.app               I     Proteção anti-desinstalação ativa.
+2025-12-07 20:14:22.911 11818-11818 SpecialPermissionReq    com.cdccreditsmart.app               I  ========================================
+2025-12-07 20:14:22.911 11818-11818 MainActivity            com.cdccreditsmart.app               I  ✅ Todas as permissões especiais já foram concedidas!
+2025-12-07 20:14:22.920 11818-11818 InsetsController        com.cdccreditsmart.app               D  Setting requestedVisibleTypes to -14 (was -9)
+2025-12-07 20:14:22.933 11818-11895 PersistentStateManager  com.cdccreditsmart.app               D  Nenhum estado local encontrado
+2025-12-07 20:14:22.933 11818-11895 PersistentStateManager  com.cdccreditsmart.app               D  🆕 Sem estado local - device novo ou pós factory reset
+2025-12-07 20:14:22.933 11818-11895 MainActivity            com.cdccreditsmart.app               I  🆕 Device nunca foi provisionado
+2025-12-07 20:14:23.196 11818-11818 PermissionGateScreen    com.cdccreditsmart.app               I  🔍 VERIFICAÇÃO INICIAL DE PERMISSÕES:
+2025-12-07 20:14:23.196 11818-11818 PermissionGateScreen    com.cdccreditsmart.app               I     Nível: DEVICE_ADMIN
+2025-12-07 20:14:23.196 11818-11818 PermissionGateScreen    com.cdccreditsmart.app               I     Todas concedidas: true
+2025-12-07 20:14:23.198 11818-11818 PermissionGateScreen    com.cdccreditsmart.app               I     Bateria isenta: true
+2025-12-07 20:14:23.198 11818-11818 PermissionGateScreen    com.cdccreditsmart.app               I     ✅ OK: Administrador do Dispositivo
+2025-12-07 20:14:23.198 11818-11818 PermissionGateScreen    com.cdccreditsmart.app               I     ✅ OK: Permissões Básicas
+2025-12-07 20:14:23.198 11818-11818 PermissionGateScreen    com.cdccreditsmart.app               I     ✅ OK: Monitoramento de Apps
+2025-12-07 20:14:23.198 11818-11818 PermissionGateScreen    com.cdccreditsmart.app               I     ✅ OK: Mostrar Alertas
+2025-12-07 20:14:23.198 11818-11818 PermissionGateScreen    com.cdccreditsmart.app               I     ✅ OK: Execução em Segundo Plano
+2025-12-07 20:14:23.198 11818-11818 PermissionGateScreen    com.cdccreditsmart.app               I  ✅ TODAS AS PERMISSÕES JÁ CONCEDIDAS - navegando imediatamente
+2025-12-07 20:14:23.198 11818-11818 SettingsGuardService    com.cdccreditsmart.app               I  ▶️ Guard RETOMADO após fluxo de permissões
+2025-12-07 20:14:23.222 11818-11818 DeviceOwnerCheckVM      com.cdccreditsmart.app               I  ========================================
+2025-12-07 20:14:23.222 11818-11818 DeviceOwnerCheckVM      com.cdccreditsmart.app               I  🔐 Verificando status de Device Owner...
+2025-12-07 20:14:23.285 11818-11896 SettingsGuardService    com.cdccreditsmart.app               D  📋 Activity check - Full: com.cdccreditsmart.app.presentation.MainActivity, Simple: MainActivity
+2025-12-07 20:14:23.725 11818-11818 DeviceUtils             com.cdccreditsmart.app               D  Device Owner check: false
+2025-12-07 20:14:23.725 11818-11818 DeviceUtils             com.cdccreditsmart.app               D  Samsung device: false (Manufacturer: Google)
+2025-12-07 20:14:23.725 11818-11818 DeviceOwnerCheckVM      com.cdccreditsmart.app               W  ⚠️ MODO DEBUG: Usuário já pulou provisionamento anteriormente
+2025-12-07 20:14:23.725 11818-11818 DeviceOwnerCheckVM      com.cdccreditsmart.app               W  ⚠️ Permitindo acesso sem Device Owner (decisão memorizada)
+2025-12-07 20:14:23.725 11818-11818 DeviceOwnerCheckVM      com.cdccreditsmart.app               I  ========================================
+2025-12-07 20:14:23.747 11818-11818 RouterViewModel         com.cdccreditsmart.app               D  🚀 Iniciando verificação de autenticação...
+2025-12-07 20:14:23.754 11818-11896 AuthOrchestrator        com.cdccreditsmart.app               D  🔐 Verificando autenticação...
+2025-12-07 20:14:23.757 11818-11896 AuthOrchestrator        com.cdccreditsmart.app               D  🌐 Conectividade: ONLINE
+2025-12-07 20:14:23.759 11818-11896 AuthOrchestrator        com.cdccreditsmart.app               D  🔄 ========== AUTO-DISCOVERY INICIADO ==========
+2025-12-07 20:14:23.766 11818-11896 DeviceUtils             com.cdccreditsmart.app               E  SecurityException reading IMEI - permission denied (Ask Gemini)
+                                                                                                    java.lang.SecurityException: getImeiForSlot: The uid 10217 does not meet the requirements to access device identifiers.
+                                                                                                    	at android.os.Parcel.createExceptionOrNull(Parcel.java:3340)
+                                                                                                    	at android.os.Parcel.createException(Parcel.java:3324)
+                                                                                                    	at android.os.Parcel.readException(Parcel.java:3307)
+                                                                                                    	at android.os.Parcel.readException(Parcel.java:3249)
+                                                                                                    	at com.android.internal.telephony.ITelephony$Stub$Proxy.getImeiForSlot(ITelephony.java:12518)
+                                                                                                    	at android.telephony.TelephonyManager.getImei(TelephonyManager.java:2387)
+                                                                                                    	at android.telephony.TelephonyManager.getImei(TelephonyManager.java:2342)
+                                                                                                    	at com.cdccreditsmart.app.utils.DeviceUtils.getDeviceImei(DeviceUtils.kt:106)
+                                                                                                    	at com.cdccreditsmart.app.auth.AuthenticationOrchestrator.attemptAutoConnection(AuthenticationOrchestrator.kt:116)
+                                                                                                    	at com.cdccreditsmart.app.auth.AuthenticationOrchestrator.access$attemptAutoConnection(AuthenticationOrchestrator.kt:28)
+                                                                                                    	at com.cdccreditsmart.app.auth.AuthenticationOrchestrator$ensureAuthenticated$2.invokeSuspend(AuthenticationOrchestrator.kt:248)
+                                                                                                    	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:34)
+                                                                                                    	at kotlinx.coroutines.DispatchedTask.run(DispatchedTask.kt:108)
+                                                                                                    	at kotlinx.coroutines.internal.LimitedDispatcher$Worker.run(LimitedDispatcher.kt:115)
+                                                                                                    	at kotlinx.coroutines.scheduling.TaskImpl.run(Tasks.kt:103)
+                                                                                                    	at kotlinx.coroutines.scheduling.CoroutineScheduler.runSafely(CoroutineScheduler.kt:584)
+                                                                                                    	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.executeTask(CoroutineScheduler.kt:793)
+                                                                                                    	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.runWorker(CoroutineScheduler.kt:697)
+                                                                                                    	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.run(CoroutineScheduler.kt:684)
+2025-12-07 20:14:23.766 11818-11896 AuthOrchestrator        com.cdccreditsmart.app               W  ⚠️ IMEI não disponível (permissão negada ou emulador)
+2025-12-07 20:14:23.766 11818-11896 AuthOrchestrator        com.cdccreditsmart.app               D     → Fallback para pareamento manual
+2025-12-07 20:14:23.766 11818-11896 ContractCodeStorage     com.cdccreditsmart.app               D  Retrieving contract code from storage
+2025-12-07 20:14:23.841 11818-11896 ContractCodeStorage     com.cdccreditsmart.app               D  Storage verification: 7 valid, 0 tampered, 0 missing
+2025-12-07 20:14:23.841 11818-11896 ContractCodeStorage     com.cdccreditsmart.app               D  Contract code retrieved successfully
+2025-12-07 20:14:23.841 11818-11896 AuthOrchestrator        com.cdccreditsmart.app               D  ✅ Código de pareamento encontrado: XV8W****
+2025-12-07 20:14:23.857 11818-11896 SecureTokenStorage      com.cdccreditsmart.app               D  EncryptedSharedPreferences initialized successfully
+2025-12-07 20:14:23.858 11818-11896 AuthOrchestrator        com.cdccreditsmart.app               D  🔑 Token existente encontrado - validando no servidor...
+2025-12-07 20:14:23.891 11818-11895 SettingsGuardService    com.cdccreditsmart.app               D  📋 Activity check - Full: com.cdccreditsmart.app.presentation.MainActivity, Simple: MainActivity
+2025-12-07 20:14:23.896 11818-12845 okhttp.OkHttpClient     com.cdccreditsmart.app               I  --> GET https://cdccreditsmart.com/api/apk/device/status
+2025-12-07 20:14:23.896 11818-12845 okhttp.OkHttpClient     com.cdccreditsmart.app               I  Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkZXZpY2VJZCI6ImRldmljZV8xNzY1MTQ4NzcxNDYyXzR0ZXd3NDJwMTE0IiwiYXBrVG9rZW4iOiJYVjhXNTc2NiIsInR5cGUiOiJhcGsiLCJleHBpcmVzSW4iOiIyNGgiLCJpYXQiOjE3NjUxNDkxNjAsImV4cCI6MTc2NTIzNTU2MH0.aucAcNLG322BdbdArUKL1LYNdtUVuFgcN9m0r5vUDwI
+2025-12-07 20:14:23.896 11818-12845 okhttp.OkHttpClient     com.cdccreditsmart.app               I  --> END GET
+2025-12-07 20:14:23.999 11818-11818 Choreographer           com.cdccreditsmart.app               W  Frame time is 0.348977 ms in the future!  Check that graphics HAL is generating vsync timestamps using the correct timebase.
+2025-12-07 20:14:24.149 11818-11818 Choreographer           com.cdccreditsmart.app               W  Frame time is 0.128313 ms in the future!  Check that graphics HAL is generating vsync timestamps using the correct timebase.
+2025-12-07 20:14:24.496 11818-11896 SettingsGuardService    com.cdccreditsmart.app               D  📋 Activity check - Full: com.cdccreditsmart.app.presentation.MainActivity, Simple: MainActivity
+2025-12-07 20:14:24.696 11818-12845 okhttp.OkHttpClient     com.cdccreditsmart.app               I  <-- 200 https://cdccreditsmart.com/api/apk/device/status (799ms)
+2025-12-07 20:14:24.696 11818-12845 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-credentials: true
+2025-12-07 20:14:24.696 11818-12845 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-headers: Origin, X-Requested-With, Content-Type, Accept, Authorization, x-client-key, x-client-token, x-client-secret, cache-control
+2025-12-07 20:14:24.696 11818-12845 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-methods: GET, POST, PUT, PATCH, DELETE, OPTIONS
+2025-12-07 20:14:24.696 11818-12845 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-origin: *
+2025-12-07 20:14:24.696 11818-12845 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-max-age: 86400
+2025-12-07 20:14:24.696 11818-12845 okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-length: 622
+2025-12-07 20:14:24.696 11818-12845 okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-security-policy: default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://replit.com; style-src 'self' 'unsafe-inline' https://replit.com; img-src 'self' data: https:; font-src 'self' data: https://replit.com; connect-src 'self';
+2025-12-07 20:14:24.696 11818-12845 okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-type: application/json; charset=utf-8
+2025-12-07 20:14:24.696 11818-12845 okhttp.OkHttpClient     com.cdccreditsmart.app               I  date: Sun, 07 Dec 2025 23:14:26 GMT
+2025-12-07 20:14:24.696 11818-12845 okhttp.OkHttpClient     com.cdccreditsmart.app               I  etag: W/"26e-KluInfXUfGQGXWo9Pi1h67H+yRQ"
+2025-12-07 20:14:24.696 11818-12845 okhttp.OkHttpClient     com.cdccreditsmart.app               I  permissions-policy: geolocation=(), microphone=(), camera=()
+2025-12-07 20:14:24.696 11818-12845 okhttp.OkHttpClient     com.cdccreditsmart.app               I  referrer-policy: strict-origin-when-cross-origin
+2025-12-07 20:14:24.696 11818-12845 okhttp.OkHttpClient     com.cdccreditsmart.app               I  strict-transport-security: max-age=63072000; includeSubDomains
+2025-12-07 20:14:24.696 11818-12845 okhttp.OkHttpClient     com.cdccreditsmart.app               I  strict-transport-security: max-age=31536000; includeSubDomains
+2025-12-07 20:14:24.697 11818-12845 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-anti-fraud-protection: active
+2025-12-07 20:14:24.697 11818-12845 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-certificate-pinning-enabled: false
+2025-12-07 20:14:24.697 11818-12845 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-certificate-pinning-status: disabled-for-stability
+2025-12-07 20:14:24.697 11818-12845 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-content-type-options: nosniff
+2025-12-07 20:14:24.697 11818-12845 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-financial-data-protection: enabled
+2025-12-07 20:14:24.697 11818-12845 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-frame-options: DENY
+2025-12-07 20:14:24.697 11818-12845 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-transaction-security-level: maximum
+2025-12-07 20:14:24.697 11818-12845 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-xss-protection: 1; mode=block
+2025-12-07 20:14:24.697 11818-12845 okhttp.OkHttpClient     com.cdccreditsmart.app               I  via: 1.1 google
+2025-12-07 20:14:24.697 11818-12845 okhttp.OkHttpClient     com.cdccreditsmart.app               I  alt-svc: h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
+2025-12-07 20:14:24.899 11818-12845 okhttp.OkHttpClient     com.cdccreditsmart.app               I  {"device":{"id":"device_1765148771462_4teww42p114","serialNumber":"XV8W5766","name":"Moto G15 Power","isBlocked":false,"blockReason":null,"status":"active"},"shouldBlock":false,"overdueCount":0,"daysSinceOverdue":0,"pdvSession":{"status":"completed","currentStage":"completed","isActive":false,"lastHeartbeat":"2025-12-07T23:10:32.721Z","heartbeatAge":233.622,"sessionStarted":"2025-12-07T23:06:14.113Z","sessionCompleted":"2025-12-07T23:10:32.721Z","shouldWait":false},"paymentInfo":{"totalInstallments":24,"paidInstallments":0,"remainingInstallments":24,"overdueInstallments":0,"allPaid":false,"canSelfUninstall":false}}
+2025-12-07 20:14:24.899 11818-12845 okhttp.OkHttpClient     com.cdccreditsmart.app               I  <-- END HTTP (622-byte body)
+2025-12-07 20:14:24.901 11818-11896 ContractCodeStorage     com.cdccreditsmart.app               D  Retrieving contract code from storage
+2025-12-07 20:14:24.941 11818-11896 ContractCodeStorage     com.cdccreditsmart.app               D  Storage verification: 7 valid, 0 tampered, 0 missing
+2025-12-07 20:14:24.941 11818-11896 ContractCodeStorage     com.cdccreditsmart.app               D  Contract code retrieved successfully
+2025-12-07 20:14:24.942 11818-11896 ContractCodeStorage     com.cdccreditsmart.app               D  Saving contract code to redundant storage
+2025-12-07 20:14:24.964 11818-11896 ContractCodeStorage     com.cdccreditsmart.app               D  Saved to EncryptedPrefs
+2025-12-07 20:14:24.990 11818-11896 ContractCodeStorage     com.cdccreditsmart.app               D  Deleted existing file: .cdc_protected_code.enc
+2025-12-07 20:14:24.998 11818-11896 ContractCodeStorage     com.cdccreditsmart.app               D  Successfully saved to file: .cdc_protected_code.enc
+2025-12-07 20:14:24.998 11818-11896 ContractCodeStorage     com.cdccreditsmart.app               D  Saved to Protected Storage
+2025-12-07 20:14:24.998 11818-11896 ContractCodeStorage     com.cdccreditsmart.app               D  Deleted existing file: .cdc_contract_b1.enc
+2025-12-07 20:14:25.005 11818-11896 ContractCodeStorage     com.cdccreditsmart.app               D  Successfully saved to file: .cdc_contract_b1.enc
+2025-12-07 20:14:25.005 11818-11896 ContractCodeStorage     com.cdccreditsmart.app               D  Deleted existing file: .sys_device_cfg.enc
+2025-12-07 20:14:25.012 11818-11896 ContractCodeStorage     com.cdccreditsmart.app               D  Successfully saved to file: .sys_device_cfg.enc
+2025-12-07 20:14:25.012 11818-11896 ContractCodeStorage     com.cdccreditsmart.app               D  Deleted existing file: .android_secure.enc
+2025-12-07 20:14:25.019 11818-11896 ContractCodeStorage     com.cdccreditsmart.app               D  Successfully saved to file: .android_secure.enc
+2025-12-07 20:14:25.023 11818-11896 ContractCodeStorage     com.cdccreditsmart.app               D  Contract code saved to ALL storage locations
+2025-12-07 20:14:25.056 11818-11896 ContractCodeStorage     com.cdccreditsmart.app               D  Verification complete: 7/7 locations valid
+2025-12-07 20:14:25.057 11818-11896 SecureTokenStorage      com.cdccreditsmart.app               D  Auth token saved successfully (contract code via ContractCodeStorage, deviceId: device_176...)
+2025-12-07 20:14:25.057 11818-11896 AuthOrchestrator        com.cdccreditsmart.app               D  💾 DeviceId salvo: device_176...
+2025-12-07 20:14:25.058 11818-11896 AuthOrchestrator        com.cdccreditsmart.app               D  Validação do token no servidor: SUCESSO
+2025-12-07 20:14:25.058 11818-11896 AuthOrchestrator        com.cdccreditsmart.app               D  ✅ Token válido - autenticação OK!
+2025-12-07 20:14:25.058 11818-11896 AuthOrchestrator        com.cdccreditsmart.app               D  🔔 Registrando FCM token após validação de authToken...
+2025-12-07 20:14:25.057 11818-11818 RouterViewModel         com.cdccreditsmart.app               D  ✅ Autenticado com sucesso
+2025-12-07 20:14:25.058 11818-11896 FcmTokenManager         com.cdccreditsmart.app               D  ========== REGISTERING FCM TOKEN WITH BACKEND ==========
+2025-12-07 20:14:25.061 11818-11895 FcmTokenManager         com.cdccreditsmart.app               D  Current FCM token retrieved: cishjzO_RqGY9YnhtnnE...
+2025-12-07 20:14:25.074 11818-11818 TermsAcceptanceStorage  com.cdccreditsmart.app               D  hasAcceptedTermsForContract(XV8W5766): true (saved: XV8W5766)
+2025-12-07 20:14:25.074 11818-11818 RouterViewModel         com.cdccreditsmart.app               D  ✅ Termos já aceitos - Ir para HOME
+2025-12-07 20:14:25.092 11818-11895 FcmTokenManager         com.cdccreditsmart.app               D  Token already registered and cache is valid, skipping...
+2025-12-07 20:14:25.092 11818-11895 AuthOrchestrator        com.cdccreditsmart.app               D  ✅ FCM token registrado após validação
+2025-12-07 20:14:25.125 11818-11818 SecureTokenStorage      com.cdccreditsmart.app               D  EncryptedSharedPreferences initialized successfully
+2025-12-07 20:14:25.126 11818-11818 NetworkConnectivity     com.cdccreditsmart.app               D  ✅ Conectado via WiFi com internet
+2025-12-07 20:14:25.126 11818-11818 SimpleHomeViewModel     com.cdccreditsmart.app               D  📡 Fetching device installments from /api/apk/device/installments...
+2025-12-07 20:14:25.129 11818-12846 SimpleHomeViewModel     com.cdccreditsmart.app               D  ✅ Added Authorization header with token
+2025-12-07 20:14:25.129 11818-12846 SimpleHomeViewModel     com.cdccreditsmart.app               D  📤 Request URL: https://cdccreditsmart.com/api/apk/device/installments
+2025-12-07 20:14:25.198 11818-11818 Choreographer           com.cdccreditsmart.app               W  Frame time is 0.686101 ms in the future!  Check that graphics HAL is generating vsync timestamps using the correct timebase.
+2025-12-07 20:14:25.232 11818-11818 Choreographer           com.cdccreditsmart.app               W  Frame time is 0.315469 ms in the future!  Check that graphics HAL is generating vsync timestamps using the correct timebase.
+2025-12-07 20:14:25.265 11818-11818 Choreographer           com.cdccreditsmart.app               W  Frame time is 0.335547 ms in the future!  Check that graphics HAL is generating vsync timestamps using the correct timebase.
+2025-12-07 20:14:25.399 11818-11818 Choreographer           com.cdccreditsmart.app               W  Frame time is 0.007861 ms in the future!  Check that graphics HAL is generating vsync timestamps using the correct timebase.
+2025-12-07 20:14:25.415 11818-11818 Choreographer           com.cdccreditsmart.app               W  Frame time is 0.14291 ms in the future!  Check that graphics HAL is generating vsync timestamps using the correct timebase.
+2025-12-07 20:14:25.449 11818-11818 Choreographer           com.cdccreditsmart.app               W  Frame time is 0.274425 ms in the future!  Check that graphics HAL is generating vsync timestamps using the correct timebase.
+2025-12-07 20:14:25.516 11818-11818 Choreographer           com.cdccreditsmart.app               W  Frame time is 0.082333 ms in the future!  Check that graphics HAL is generating vsync timestamps using the correct timebase.
+2025-12-07 20:14:26.262 11818-12846 SimpleHomeViewModel     com.cdccreditsmart.app               D  📥 Response Code: 200
+2025-12-07 20:14:26.422 11818-11818 SimpleHomeViewModel     com.cdccreditsmart.app               D  ✅ Successfully fetched installments data
+2025-12-07 20:14:26.422 11818-11818 SimpleHomeViewModel     com.cdccreditsmart.app               D  📊 Device: Moto G15 Power
+2025-12-07 20:14:26.422 11818-11818 SimpleHomeViewModel     com.cdccreditsmart.app               D  📊 Total installments: 24
+2025-12-07 20:14:26.422 11818-11818 SimpleHomeViewModel     com.cdccreditsmart.app               D  📊 Paid: 0
+2025-12-07 20:14:26.422 11818-11818 SimpleHomeViewModel     com.cdccreditsmart.app               D  📊 Overdue: 0
+2025-12-07 20:14:26.422 11818-11818 SimpleHomeViewModel     com.cdccreditsmart.app               D  📊 All installments count: 24
+2025-12-07 20:14:26.422 11818-11818 SimpleHomeViewModel     com.cdccreditsmart.app               D  📋 Parcela #1: status=pending, isPaid=false, dueDate=2025-12-22T23:10:29.071Z
+2025-12-07 20:14:26.422 11818-11818 SimpleHomeViewModel     com.cdccreditsmart.app               D  📋 Parcela #2: status=pending, isPaid=false, dueDate=2026-01-06T23:10:29.071Z
+2025-12-07 20:14:26.422 11818-11818 SimpleHomeViewModel     com.cdccreditsmart.app               D  📋 Parcela #3: status=pending, isPaid=false, dueDate=2026-01-21T23:10:29.071Z
+2025-12-07 20:14:26.422 11818-11818 SimpleHomeViewModel     com.cdccreditsmart.app               D  📋 Parcela #4: status=pending, isPaid=false, dueDate=2026-02-05T23:10:29.071Z
+2025-12-07 20:14:26.422 11818-11818 SimpleHomeViewModel     com.cdccreditsmart.app               D  📋 Parcela #5: status=pending, isPaid=false, dueDate=2026-02-20T23:10:29.071Z
+2025-12-07 20:14:26.422 11818-11818 SimpleHomeViewModel     com.cdccreditsmart.app               D  📋 Parcela #6: status=pending, isPaid=false, dueDate=2026-03-07T23:10:29.071Z
+2025-12-07 20:14:26.422 11818-11818 SimpleHomeViewModel     com.cdccreditsmart.app               D  📋 Parcela #7: status=pending, isPaid=false, dueDate=2026-03-22T23:10:29.071Z
+2025-12-07 20:14:26.422 11818-11818 SimpleHomeViewModel     com.cdccreditsmart.app               D  📋 Parcela #8: status=pending, isPaid=false, dueDate=2026-04-06T23:10:29.071Z
+2025-12-07 20:14:26.422 11818-11818 SimpleHomeViewModel     com.cdccreditsmart.app               D  📋 Parcela #9: status=pending, isPaid=false, dueDate=2026-04-21T23:10:29.071Z
+2025-12-07 20:14:26.422 11818-11818 SimpleHomeViewModel     com.cdccreditsmart.app               D  📋 Parcela #10: status=pending, isPaid=false, dueDate=2026-05-06T23:10:29.071Z
+2025-12-07 20:14:26.422 11818-11818 SimpleHomeViewModel     com.cdccreditsmart.app               D  📋 Parcela #11: status=pending, isPaid=false, dueDate=2026-05-21T23:10:29.071Z
+2025-12-07 20:14:26.422 11818-11818 SimpleHomeViewModel     com.cdccreditsmart.app               D  📋 Parcela #12: status=pending, isPaid=false, dueDate=2026-06-05T23:10:29.071Z
+2025-12-07 20:14:26.422 11818-11818 SimpleHomeViewModel     com.cdccreditsmart.app               D  📋 Parcela #13: status=pending, isPaid=false, dueDate=2026-06-20T23:10:29.071Z
+2025-12-07 20:14:26.422 11818-11818 SimpleHomeViewModel     com.cdccreditsmart.app               D  📋 Parcela #14: status=pending, isPaid=false, dueDate=2026-07-05T23:10:29.071Z
+2025-12-07 20:14:26.422 11818-11818 SimpleHomeViewModel     com.cdccreditsmart.app               D  📋 Parcela #15: status=pending, isPaid=false, dueDate=2026-07-20T23:10:29.071Z
+2025-12-07 20:14:26.422 11818-11818 SimpleHomeViewModel     com.cdccreditsmart.app               D  📋 Parcela #16: status=pending, isPaid=false, dueDate=2026-08-04T23:10:29.071Z
+2025-12-07 20:14:26.422 11818-11818 SimpleHomeViewModel     com.cdccreditsmart.app               D  📋 Parcela #17: status=pending, isPaid=false, dueDate=2026-08-19T23:10:29.071Z
+2025-12-07 20:14:26.422 11818-11818 SimpleHomeViewModel     com.cdccreditsmart.app               D  📋 Parcela #18: status=pending, isPaid=false, dueDate=2026-09-03T23:10:29.071Z
+2025-12-07 20:14:26.422 11818-11818 SimpleHomeViewModel     com.cdccreditsmart.app               D  📋 Parcela #19: status=pending, isPaid=false, dueDate=2026-09-18T23:10:29.071Z
+2025-12-07 20:14:26.422 11818-11818 SimpleHomeViewModel     com.cdccreditsmart.app               D  📋 Parcela #20: status=pending, isPaid=false, dueDate=2026-10-03T23:10:29.071Z
+2025-12-07 20:14:26.422 11818-11818 SimpleHomeViewModel     com.cdccreditsmart.app               D  📋 Parcela #21: status=pending, isPaid=false, dueDate=2026-10-18T23:10:29.071Z
+2025-12-07 20:14:26.422 11818-11818 SimpleHomeViewModel     com.cdccreditsmart.app               D  📋 Parcela #22: status=pending, isPaid=false, dueDate=2026-11-02T23:10:29.071Z
+2025-12-07 20:14:26.422 11818-11818 SimpleHomeViewModel     com.cdccreditsmart.app               D  📋 Parcela #23: status=pending, isPaid=false, dueDate=2026-11-17T23:10:29.071Z
+2025-12-07 20:14:26.422 11818-11818 SimpleHomeViewModel     com.cdccreditsmart.app               D  📋 Parcela #24: status=pending, isPaid=false, dueDate=2026-12-02T23:10:29.071Z
+2025-12-07 20:14:26.422 11818-11818 SimpleHomeViewModel     com.cdccreditsmart.app               I  💾 Salvando dados do cliente no storage - CustomerName: 'null', DeviceModel: 'Moto G15 Power'
+2025-12-07 20:14:26.422 11818-11818 SecureTokenStorage      com.cdccreditsmart.app               D  💾 Salvando customer info - Name: null, Device: Moto G15 Power
+2025-12-07 20:14:26.422 11818-11818 SecureTokenStorage      com.cdccreditsmart.app               W  ⚠️ CustomerName vazio/null - não salvando
+2025-12-07 20:14:26.422 11818-11818 SecureTokenStorage      com.cdccreditsmart.app               D  ✅ DeviceModel salvo: Moto G15 Power
+2025-12-07 20:14:26.422 11818-11818 SecureTokenStorage      com.cdccreditsmart.app               I  ✅ Customer info saved successfully!
+2025-12-07 20:14:26.423 11818-11818 ContractCodeStorage     com.cdccreditsmart.app               D  Retrieving contract code from storage
+2025-12-07 20:14:26.486 11818-11818 ContractCodeStorage     com.cdccreditsmart.app               D  Storage verification: 7 valid, 0 tampered, 0 missing
+2025-12-07 20:14:26.486 11818-11818 ContractCodeStorage     com.cdccreditsmart.app               D  Contract code retrieved successfully
+2025-12-07 20:14:26.504 11818-11818 LocalInstallmentStorage com.cdccreditsmart.app               I  ✅ 24 parcelas salvas localmente (contrato: XV8W5766)
+2025-12-07 20:14:26.504 11818-11818 SimpleHomeViewModel     com.cdccreditsmart.app               I  ✅ 24 parcelas salvas localmente
+2025-12-07 20:14:26.504 11818-11818 SimpleHomeViewModel     com.cdccreditsmart.app               I     → 0 pagas
+2025-12-07 20:14:26.504 11818-11818 SimpleHomeViewModel     com.cdccreditsmart.app               I     → 24 pendentes
+2025-12-07 20:14:26.504 11818-11818 SimpleHomeViewModel     com.cdccreditsmart.app               I     → 0 em atraso
+2025-12-07 20:14:26.504 11818-11818 SimpleHomeViewModel     com.cdccreditsmart.app               I     → Dados disponíveis para overlay e offline blocking
+2025-12-07 20:14:26.523 11818-11818 SecureTokenStorage      com.cdccreditsmart.app               D  EncryptedSharedPreferences initialized successfully
+2025-12-07 20:14:26.524 11818-11818 SecureTokenStorage      com.cdccreditsmart.app               D  📖 Lendo customerName: Marcos Antunes
+2025-12-07 20:14:26.524 11818-11818 SecureTokenStorage      com.cdccreditsmart.app               D  📖 Lendo deviceModel: Moto G15 Power
+2025-12-07 20:14:26.524 11818-11818 ContractCodeStorage     com.cdccreditsmart.app               D  Retrieving contract code from storage
+2025-12-07 20:14:26.580 11818-11818 ContractCodeStorage     com.cdccreditsmart.app               D  Storage verification: 7 valid, 0 tampered, 0 missing
+2025-12-07 20:14:26.580 11818-11818 ContractCodeStorage     com.cdccreditsmart.app               D  Contract code retrieved successfully
+2025-12-07 20:14:40.188 11818-11818 WebSocketManager        com.cdccreditsmart.app               D  Heartbeat ping sent
+2025-12-07 20:14:40.642 11818-12456 WebSocketManager        com.cdccreditsmart.app               D  Message received: {"type":"pong","timestamp":"2025-12-07T23:14:42.151Z"}...
+2025-12-07 20:14:40.642 11818-12456 WebSocketManager        com.cdccreditsmart.app               D  Received message type: pong
+2025-12-07 20:14:40.642 11818-12456 WebSocketManager        com.cdccreditsmart.app               D  Pong received
+2025-12-07 20:14:55.251 11818-11895 SettingsGuardService    com.cdccreditsmart.app               D  📋 Activity check - Full: com.google.android.apps.nexuslauncher.NexusLauncherActivity, Simple: NexusLauncherActivity
+2025-12-07 20:14:55.854 11818-11895 SettingsGuardService    com.cdccreditsmart.app               D  📋 Activity check - Full: com.google.android.apps.nexuslauncher.NexusLauncherActivity, Simple: NexusLauncherActivity
+2025-12-07 20:14:56.078 11818-11818 VRI[MainActivity]       com.cdccreditsmart.app               D  visibilityChanged oldVisibility=true newVisibility=false
+2025-12-07 20:14:56.455 11818-11895 SettingsGuardService    com.cdccreditsmart.app               D  📋 Activity check - Full: com.google.android.apps.nexuslauncher.NexusLauncherActivity, Simple: NexusLauncherActivity
+2025-12-07 20:14:57.176 11818-11818 ViewRootImpl            com.cdccreditsmart.app               D  Skipping stats log for color mode
+2025-12-07 20:14:57.176 11818-11818 MainActivity            com.cdccreditsmart.app               D  ========== NEW INTENT RECEIVED ==========
+2025-12-07 20:14:57.389 11818-11818 InsetsController        com.cdccreditsmart.app               D  hide(ime(), fromIme=false)
+2025-12-07 20:14:57.390 11818-11818 ImeTracker              com.cdccreditsmart.app               I  com.cdccreditsmart.app:c11ba406: onCancelled at PHASE_CLIENT_ALREADY_HIDDEN
+2025-12-07 20:14:57.399 11818-11818 Choreographer           com.cdccreditsmart.app               W  Frame time is 0.213405 ms in the future!  Check that graphics HAL is generating vsync timestamps using the correct timebase.
+2025-12-07 20:14:57.659 11818-11895 SettingsGuardService    com.cdccreditsmart.app               D  📋 Activity check - Full: com.cdccreditsmart.app.presentation.MainActivity, Simple: MainActivity
+2025-12-07 20:14:58.261 11818-11895 SettingsGuardService    com.cdccreditsmart.app               D  📋 Activity check - Full: com.cdccreditsmart.app.presentation.MainActivity, Simple: MainActivity
+2025-12-07 20:14:58.841 11818-11818 SecureTokenStorage      com.cdccreditsmart.app               D  EncryptedSharedPreferences initialized successfully
+2025-12-07 20:14:58.842 11818-11818 SecureTokenStorage      com.cdccreditsmart.app               D  📖 Lendo customerName: Marcos Antunes
+2025-12-07 20:14:58.842 11818-11818 SecureTokenStorage      com.cdccreditsmart.app               D  📖 Lendo deviceModel: Moto G15 Power
+2025-12-07 20:14:58.842 11818-11818 ContractCodeStorage     com.cdccreditsmart.app               D  Retrieving contract code from storage
+2025-12-07 20:14:58.863 11818-11895 SettingsGuardService    com.cdccreditsmart.app               D  📋 Activity check - Full: com.cdccreditsmart.app.presentation.MainActivity, Simple: MainActivity
+2025-12-07 20:14:58.905 11818-11818 ContractCodeStorage     com.cdccreditsmart.app               D  Storage verification: 7 valid, 0 tampered, 0 missing
+2025-12-07 20:14:58.905 11818-11818 ContractCodeStorage     com.cdccreditsmart.app               D  Contract code retrieved successfully
+2025-12-07 20:14:59.315 11818-11818 Choreographer           com.cdccreditsmart.app               W  Frame time is 0.581373 ms in the future!  Check that graphics HAL is generating vsync timestamps using the correct timebase.
+2025-12-07 20:14:59.382 11818-11818 Choreographer           com.cdccreditsmart.app               W  Frame time is 0.575198 ms in the future!  Check that graphics HAL is generating vsync timestamps using the correct timebase.
+2025-12-07 20:14:59.449 11818-11818 Choreographer           com.cdccreditsmart.app               W  Frame time is 0.111653 ms in the future!  Check that graphics HAL is generating vsync timestamps using the correct timebase.
+2025-12-07 20:15:00.098 11818-11818 Choreographer           com.cdccreditsmart.app               W  Frame time is 0.746632 ms in the future!  Check that graphics HAL is generating vsync timestamps using the correct timebase.
+2025-12-07 20:15:00.432 11818-11818 Choreographer           com.cdccreditsmart.app               W  Frame time is 0.327677 ms in the future!  Check that graphics HAL is generating vsync timestamps using the correct timebase.
+2025-12-07 20:15:00.549 11818-11818 Choreographer           com.cdccreditsmart.app               W  Frame time is 0.382698 ms in the future!  Check that graphics HAL is generating vsync timestamps using the correct timebase.
+2025-12-07 20:15:00.748 11818-11818 Choreographer           com.cdccreditsmart.app               W  Frame time is 0.526 ms in the future!  Check that graphics HAL is generating vsync timestamps using the correct timebase.
+2025-12-07 20:15:00.766 11818-11818 Choreographer           com.cdccreditsmart.app               W  Frame time is 0.033462 ms in the future!  Check that graphics HAL is generating vsync timestamps using the correct timebase.
+2025-12-07 20:15:00.882 11818-11818 Choreographer           com.cdccreditsmart.app               W  Frame time is 0.443592 ms in the future!  Check that graphics HAL is generating vsync timestamps using the correct timebase.
+2025-12-07 20:15:00.915 11818-11818 Choreographer           com.cdccreditsmart.app               W  Frame time is 0.185572 ms in the future!  Check that graphics HAL is generating vsync timestamps using the correct timebase.
+2025-12-07 20:15:00.932 11818-11818 Choreographer           com.cdccreditsmart.app               W  Frame time is 0.235884 ms in the future!  Check that graphics HAL is generating vsync timestamps using the correct timebase.
+2025-12-07 20:15:00.966 11818-11818 Choreographer           com.cdccreditsmart.app               W  Frame time is 0.002011 ms in the future!  Check that graphics HAL is generating vsync timestamps using the correct timebase.
+2025-12-07 20:15:01.015 11818-11818 Choreographer           com.cdccreditsmart.app               W  Frame time is 0.136067 ms in the future!  Check that graphics HAL is generating vsync timestamps using the correct timebase.
+2025-12-07 20:15:01.082 11818-11818 Choreographer           com.cdccreditsmart.app               W  Frame time is 0.433145 ms in the future!  Check that graphics HAL is generating vsync timestamps using the correct timebase.
+2025-12-07 20:15:01.282 11818-11818 Choreographer           com.cdccreditsmart.app               W  Frame time is 0.192655 ms in the future!  Check that graphics HAL is generating vsync timestamps using the correct timebase.
+2025-12-07 20:15:01.316 11818-11818 Choreographer           com.cdccreditsmart.app               W  Frame time is 0.089758 ms in the future!  Check that graphics HAL is generating vsync timestamps using the correct timebase.
+2025-12-07 20:15:01.349 11818-11818 Choreographer           com.cdccreditsmart.app               W  Frame time is 0.131134 ms in the future!  Check that graphics HAL is generating vsync timestamps using the correct timebase.
+2025-12-07 20:15:01.416 11818-11818 Choreographer           com.cdccreditsmart.app               W  Frame time is 0.075125 ms in the future!  Check that graphics HAL is generating vsync timestamps using the correct timebase.
+2025-12-07 20:15:01.449 11818-11818 Choreographer           com.cdccreditsmart.app               W  Frame time is 0.114613 ms in the future!  Check that graphics HAL is generating vsync timestamps using the correct timebase.
+2025-12-07 20:15:01.482 11818-11818 Choreographer           com.cdccreditsmart.app               W  Frame time is 0.631794 ms in the future!  Check that graphics HAL is generating vsync timestamps using the correct timebase.
+2025-12-07 20:15:01.649 11818-11818 Choreographer           com.cdccreditsmart.app               W  Frame time is 0.208282 ms in the future!  Check that graphics HAL is generating vsync timestamps using the correct timebase.
+2025-12-07 20:15:01.682 11818-11818 Choreographer           com.cdccreditsmart.app               W  Frame time is 0.098946 ms in the future!  Check that graphics HAL is generating vsync timestamps using the correct timebase.
+2025-12-07 20:15:01.699 11818-11818 Choreographer           com.cdccreditsmart.app               W  Frame time is 3.19E-4 ms in the future!  Check that graphics HAL is generating vsync timestamps using the correct timebase.
+2025-12-07 20:15:01.715 11818-11818 Choreographer           com.cdccreditsmart.app               W  Frame time is 0.192461 ms in the future!  Check that graphics HAL is generating vsync timestamps using the correct timebase.
+2025-12-07 20:15:01.732 11818-11818 Choreographer           com.cdccreditsmart.app               W  Frame time is 0.516645 ms in the future!  Check that graphics HAL is generating vsync timestamps using the correct timebase.
+2025-12-07 20:15:01.766 11818-11818 Choreographer           com.cdccreditsmart.app               W  Frame time is 0.014896 ms in the future!  Check that graphics HAL is generating vsync timestamps using the correct timebase.
+2025-12-07 20:15:01.782 11818-11818 Choreographer           com.cdccreditsmart.app               W  Frame time is 0.599822 ms in the future!  Check that graphics HAL is generating vsync timestamps using the correct timebase.
+2025-12-07 20:15:01.815 11818-11818 Choreographer           com.cdccreditsmart.app               W  Frame time is 0.34171098 ms in the future!  Check that graphics HAL is generating vsync timestamps using the correct timebase.
+2025-12-07 20:15:01.882 11818-11818 Choreographer           com.cdccreditsmart.app               W  Frame time is 0.553995 ms in the future!  Check that graphics HAL is generating vsync timestamps using the correct timebase.
+2025-12-07 20:15:01.999 11818-11818 Choreographer           com.cdccreditsmart.app               W  Frame time is 0.447873 ms in the future!  Check that graphics HAL is generating vsync timestamps using the correct timebase.
+2025-12-07 20:15:02.015 11818-11818 Choreographer           com.cdccreditsmart.app               W  Frame time is 0.487064 ms in the future!  Check that graphics HAL is generating vsync timestamps using the correct timebase.
+2025-12-07 20:15:02.048 11818-11818 Choreographer           com.cdccreditsmart.app               W  Frame time is 0.732541 ms in the future!  Check that graphics HAL is generating vsync timestamps using the correct timebase.
+2025-12-07 20:15:02.082 11818-11818 Choreographer           com.cdccreditsmart.app               W  Frame time is 0.496231 ms in the future!  Check that graphics HAL is generating vsync timestamps using the correct timebase.
+2025-12-07 20:15:02.131 11818-11818 Choreographer           com.cdccreditsmart.app               W  Frame time is 1.000129 ms in the future!  Check that graphics HAL is generating vsync timestamps using the correct timebase.
+2025-12-07 20:15:02.215 11818-11818 Choreographer           com.cdccreditsmart.app               W  Frame time is 0.291872 ms in the future!  Check that graphics HAL is generating vsync timestamps using the correct timebase.
+2025-12-07 20:15:02.266 11818-11818 Choreographer           com.cdccreditsmart.app               W  Frame time is 0.075757 ms in the future!  Check that graphics HAL is generating vsync timestamps using the correct timebase.
+2025-12-07 20:15:02.282 11818-11818 Choreographer           com.cdccreditsmart.app               W  Frame time is 0.363466 ms in the future!  Check that graphics HAL is generating vsync timestamps using the correct timebase.
+2025-12-07 20:15:02.315 11818-11818 Choreographer           com.cdccreditsmart.app               W  Frame time is 0.392111 ms in the future!  Check that graphics HAL is generating vsync timestamps using the correct timebase.
+2025-12-07 20:15:02.531 11818-11818 Choreographer           com.cdccreditsmart.app               W  Frame time is 1.054461 ms in the future!  Check that graphics HAL is generating vsync timestamps using the correct timebase.
+2025-12-07 20:15:02.649 11818-11818 Choreographer           com.cdccreditsmart.app               W  Frame time is 0.28776 ms in the future!  Check that graphics HAL is generating vsync timestamps using the correct timebase.
+2025-12-07 20:15:03.666 11818-11818 Choreographer           com.cdccreditsmart.app               W  Frame time is 0.075668 ms in the future!  Check that graphics HAL is generating vsync timestamps using the correct timebase.
+2025-12-07 20:15:03.682 11818-11818 Choreographer           com.cdccreditsmart.app               W  Frame time is 0.373436 ms in the future!  Check that graphics HAL is generating vsync timestamps using the correct timebase.
+2025-12-07 20:15:03.716 11818-11818 Choreographer           com.cdccreditsmart.app               W  Frame time is 0.002394 ms in the future!  Check that graphics HAL is generating vsync timestamps using the correct timebase.
+2025-12-07 20:15:03.749 11818-11818 Choreographer           com.cdccreditsmart.app               W  Frame time is 0.046918 ms in the future!  Check that graphics HAL is generating vsync timestamps using the correct timebase.
+2025-12-07 20:15:03.815 11818-11818 Choreographer           com.cdccreditsmart.app               W  Frame time is 0.699498 ms in the future!  Check that graphics HAL is generating vsync timestamps using the correct timebase.
+2025-12-07 20:15:03.832 11818-11818 Choreographer           com.cdccreditsmart.app               W  Frame time is 0.770832 ms in the future!  Check that graphics HAL is generating vsync timestamps using the correct timebase.
+2025-12-07 20:15:04.032 11818-11818 Choreographer           com.cdccreditsmart.app               W  Frame time is 0.286888 ms in the future!  Check that graphics HAL is generating vsync timestamps using the correct timebase.
+2025-12-07 20:15:04.166 11818-11818 Choreographer           com.cdccreditsmart.app               W  Frame time is 0.025528999 ms in the future!  Check that graphics HAL is generating vsync timestamps using the correct timebase.
+2025-12-07 20:15:04.215 11818-11818 Choreographer           com.cdccreditsmart.app               W  Frame time is 0.611929 ms in the future!  Check that graphics HAL is generating vsync timestamps using the correct timebase.
+2025-12-07 20:15:05.948 11818-11818 Choreographer           com.cdccreditsmart.app               W  Frame time is 0.864789 ms in the future!  Check that graphics HAL is generating vsync timestamps using the correct timebase.
+2025-12-07 20:15:06.032 11818-11818 Choreographer           com.cdccreditsmart.app               W  Frame time is 0.112863 ms in the future!  Check that graphics HAL is generating vsync timestamps using the correct timebase.
+2025-12-07 20:15:06.165 11818-11818 Choreographer           com.cdccreditsmart.app               W  Frame time is 0.217707 ms in the future!  Check that graphics HAL is generating vsync timestamps using the correct timebase.
+2025-12-07 20:15:08.866 11818-11818 Choreographer           com.cdccreditsmart.app               W  Frame time is 0.045646 ms in the future!  Check that graphics HAL is generating vsync timestamps using the correct timebase.
+2025-12-07 20:15:08.915 11818-11818 Choreographer           com.cdccreditsmart.app               W  Frame time is 0.145427 ms in the future!  Check that graphics HAL is generating vsync timestamps using the correct timebase.
+2025-12-07 20:15:09.266 11818-11818 Choreographer           com.cdccreditsmart.app               W  Frame time is 0.075313 ms in the future!  Check that graphics HAL is generating vsync timestamps using the correct timebase.
+2025-12-07 20:15:10.189 11818-11818 WebSocketManager        com.cdccreditsmart.app               D  Heartbeat ping sent
+2025-12-07 20:15:10.643 11818-12456 WebSocketManager        com.cdccreditsmart.app               D  Message received: {"type":"pong","timestamp":"2025-12-07T23:15:12.155Z"}...
+2025-12-07 20:15:10.643 11818-12456 WebSocketManager        com.cdccreditsmart.app               D  Received message type: pong
+2025-12-07 20:15:10.644 11818-12456 WebSocketManager        com.cdccreditsmart.app               D  Pong received
+2025-12-07 20:15:11.515 11818-11818 Choreographer           com.cdccreditsmart.app               W  Frame time is 0.340402 ms in the future!  Check that graphics HAL is generating vsync timestamps using the correct timebase.
+2025-12-07 20:15:11.566 11818-11818 Choreographer           com.cdccreditsmart.app               W  Frame time is 0.075167 ms in the future!  Check that graphics HAL is generating vsync timestamps using the correct timebase.
+2025-12-07 20:15:12.399 11818-11818 Choreographer           com.cdccreditsmart.app               W  Frame time is 0.078317 ms in the future!  Check that graphics HAL is generating vsync timestamps using the correct timebase.
+2025-12-07 20:15:17.782 11818-11818 Choreographer           com.cdccreditsmart.app               W  Frame time is 0.127551 ms in the future!  Check that graphics HAL is generating vsync timestamps using the correct timebase.
+2025-12-07 20:15:20.399 11818-11818 Choreographer           com.cdccreditsmart.app               W  Frame time is 0.295966 ms in the future!  Check that graphics HAL is generating vsync timestamps using the correct timebase.
+2025-12-07 20:15:20.415 11818-11818 Choreographer           com.cdccreditsmart.app               W  Frame time is 0.297628 ms in the future!  Check that graphics HAL is generating vsync timestamps using the correct timebase.
+2025-12-07 20:15:21.199 11818-11818 Choreographer           com.cdccreditsmart.app               W  Frame time is 0.019399 ms in the future!  Check that graphics HAL is generating vsync timestamps using the correct timebase.
+2025-12-07 20:15:21.232 11818-11818 Choreographer           com.cdccreditsmart.app               W  Frame time is 0.170074 ms in the future!  Check that graphics HAL is generating vsync timestamps using the correct timebase.
+2025-12-07 20:15:21.566 11818-11818 Choreographer           com.cdccreditsmart.app               W  Frame time is 0.001421 ms in the future!  Check that graphics HAL is generating vsync timestamps using the correct timebase.
+2025-12-07 20:15:22.192 11818-12886 creditsmart.app         com.cdccreditsmart.app               I  hiddenapi: Accessing hidden method Landroid/os/WorkSource;->add(I)Z (runtime_flags=0, domain=platform, api=unsupported,test-api) from Lcom/google/android/gms/common/util/WorkSourceUtil; (domain=app) using reflection: allowed
+2025-12-07 20:15:22.192 11818-12886 creditsmart.app         com.cdccreditsmart.app               I  hiddenapi: Accessing hidden method Landroid/os/WorkSource;->add(ILjava/lang/String;)Z (runtime_flags=0, domain=platform, api=unsupported,test-api) from Lcom/google/android/gms/common/util/WorkSourceUtil; (domain=app) using reflection: allowed
+2025-12-07 20:15:22.192 11818-12886 creditsmart.app         com.cdccreditsmart.app               I  hiddenapi: Accessing hidden method Landroid/os/WorkSource;->get(I)I (runtime_flags=0, domain=platform, api=unsupported) from Lcom/google/android/gms/common/util/WorkSourceUtil; (domain=app) using reflection: allowed
+2025-12-07 20:15:22.192 11818-12886 creditsmart.app         com.cdccreditsmart.app               I  hiddenapi: Accessing hidden method Landroid/os/WorkSource;->getName(I)Ljava/lang/String; (runtime_flags=0, domain=platform, api=unsupported) from Lcom/google/android/gms/common/util/WorkSourceUtil; (domain=app) using reflection: allowed
+2025-12-07 20:15:22.208 11818-12890 CdcMessagingService     com.cdccreditsmart.app               D  ========== FCM MESSAGE RECEIVED ==========
+2025-12-07 20:15:22.208 11818-12890 CdcMessagingService     com.cdccreditsmart.app               D  From: 1002498413771
+2025-12-07 20:15:22.208 11818-12890 CdcMessagingService     com.cdccreditsmart.app               D  Message ID: 0:1765149323848389%af61f6ceaf61f6ce
+2025-12-07 20:15:22.208 11818-12890 CdcMessagingService     com.cdccreditsmart.app               D  Sent Time: 1765149323843
+2025-12-07 20:15:22.208 11818-12890 CdcMessagingService     com.cdccreditsmart.app               D  Data payload: {deep_link=cdc://home, daysOverdue=0, contract_code=, type=progressive_blocking, level=0, installment_id=}
+2025-12-07 20:15:22.208 11818-12890 CdcMessagingService     com.cdccreditsmart.app               D  Notification Title: ✅ Sem Restrições
+2025-12-07 20:15:22.208 11818-12890 CdcMessagingService     com.cdccreditsmart.app               D  Notification Body: Seu dispositivo está funcionando normalmente. Todas as parcelas estão em dia.
+2025-12-07 20:15:22.208 11818-12890 CdcMessagingService     com.cdccreditsmart.app               W  Unknown notification type: PROGRESSIVE_BLOCKING, defaulting to INFO
+2025-12-07 20:15:22.209 11818-12890 CdcMessagingService     com.cdccreditsmart.app               D  ========== NOTIFICATION PAYLOAD ANALYSIS ==========
+2025-12-07 20:15:22.209 11818-12890 CdcMessagingService     com.cdccreditsmart.app               D  Type: INFO
+2025-12-07 20:15:22.209 11818-12890 CdcMessagingService     com.cdccreditsmart.app               D  Title: ✅ Sem Restrições
+2025-12-07 20:15:22.209 11818-12890 CdcMessagingService     com.cdccreditsmart.app               D  Message: Seu dispositivo está funcionando normalmente. Todas as parcelas estão em dia.
+2025-12-07 20:15:22.209 11818-12890 CdcMessagingService     com.cdccreditsmart.app               D  Deep Link: cdc://home
+2025-12-07 20:15:22.209 11818-12890 CdcMessagingService     com.cdccreditsmart.app               D  Image URL from data[image_url]: NULL
+2025-12-07 20:15:22.209 11818-12890 CdcMessagingService     com.cdccreditsmart.app               D  Image URL from notification.imageUrl: NULL
+2025-12-07 20:15:22.209 11818-12890 CdcMessagingService     com.cdccreditsmart.app               D  Final imageUrl: NULL - NO IMAGE WILL BE SHOWN
+2025-12-07 20:15:22.209 11818-12890 CdcMessagingService     com.cdccreditsmart.app               D  ====================================================
+2025-12-07 20:15:22.209 11818-12890 NotificationHelper      com.cdccreditsmart.app               D  ========== SHOWING NOTIFICATION ==========
+2025-12-07 20:15:22.209 11818-12890 NotificationHelper      com.cdccreditsmart.app               D  Type: INFO
+2025-12-07 20:15:22.209 11818-12890 NotificationHelper      com.cdccreditsmart.app               D  Title: ✅ Sem Restrições
+2025-12-07 20:15:22.209 11818-12890 NotificationHelper      com.cdccreditsmart.app               D  Message: Seu dispositivo está funcionando normalmente. Todas as parcelas estão em dia.
+2025-12-07 20:15:22.209 11818-12890 NotificationHelper      com.cdccreditsmart.app               D  ImageURL: NULL (no image)
+2025-12-07 20:15:22.209 11818-12890 NotificationHelper      com.cdccreditsmart.app               D  =========================================
+2025-12-07 20:15:22.209 11818-12890 NotificationHelper      com.cdccreditsmart.app               D  ℹ️ Nenhuma URL de imagem fornecida - mostrando notificação sem imagem
+2025-12-07 20:15:22.223 11818-12890 NotificationHelper      com.cdccreditsmart.app               D  Notification displayed successfully - ID: -82236447
+2025-12-07 20:15:22.227 11818-12890 CdcMessagingService     com.cdccreditsmart.app               D  ========== NOTIFICATION PROCESSED ==========
+2025-12-07 20:15:22.227 11818-12890 CdcMessagingService     com.cdccreditsmart.app               D  Type: INFO
+2025-12-07 20:15:22.227 11818-12890 CdcMessagingService     com.cdccreditsmart.app               D  Title: ✅ Sem Restrições
+2025-12-07 20:15:22.227 11818-12890 CdcMessagingService     com.cdccreditsmart.app               D  Status: Displayed to user
+2025-12-07 20:15:22.227 11818-12890 CdcMessagingService     com.cdccreditsmart.app               D  ==========================================
+2025-12-07 20:15:22.532 11818-11818 Choreographer           com.cdccreditsmart.app               W  Frame time is 0.201015 ms in the future!  Check that graphics HAL is generating vsync timestamps using the correct timebase.
+2025-12-07 20:15:22.665 11818-11818 Choreographer           com.cdccreditsmart.app               W  Frame time is 0.367472 ms in the future!  Check that graphics HAL is generating vsync timestamps using the correct timebase.
+2025-12-07 20:15:22.732 11818-11818 Choreographer           com.cdccreditsmart.app               W  Frame time is 0.397447 ms in the future!  Check that graphics HAL is generating vsync timestamps using the correct timebase.
+2025-12-07 20:15:22.765 11818-11818 Choreographer           com.cdccreditsmart.app               W  Frame time is 0.275038 ms in the future!  Check that graphics HAL is generating vsync timestamps using the correct timebase.
+2025-12-07 20:15:22.798 11818-11818 Choreographer           com.cdccreditsmart.app               W  Frame time is 0.60075897 ms in the future!  Check that graphics HAL is generating vsync timestamps using the correct timebase.
+2025-12-07 20:15:22.815 11818-11818 Choreographer           com.cdccreditsmart.app               W  Frame time is 0.502671 ms in the future!  Check that graphics HAL is generating vsync timestamps using the correct timebase.
+2025-12-07 20:15:22.832 11818-11818 Choreographer           com.cdccreditsmart.app               W  Frame time is 0.570743 ms in the future!  Check that graphics HAL is generating vsync timestamps using the correct timebase.
+2025-12-07 20:15:22.849 11818-11818 Choreographer           com.cdccreditsmart.app               W  Frame time is 0.425998 ms in the future!  Check that graphics HAL is generating vsync timestamps using the correct timebase.
+2025-12-07 20:15:23.015 11818-11818 Choreographer           com.cdccreditsmart.app               W  Frame time is 0.452379 ms in the future!  Check that graphics HAL is generating vsync timestamps using the correct timebase.
+2025-12-07 20:15:23.348 11818-11818 Choreographer           com.cdccreditsmart.app               W  Frame time is 0.590369 ms in the future!  Check that graphics HAL is generating vsync timestamps using the correct timebase.
+2025-12-07 20:15:23.366 11818-11818 Choreographer           com.cdccreditsmart.app               W  Frame time is 0.074419 ms in the future!  Check that graphics HAL is generating vsync timestamps using the correct timebase.
+2025-12-07 20:15:28.849 11818-11818 Choreographer           com.cdccreditsmart.app               W  Frame time is 0.039761 ms in the future!  Check that graphics HAL is generating vsync timestamps using the correct timebase.
+2025-12-07 20:15:29.149 11818-11818 Choreographer           com.cdccreditsmart.app               W  Frame time is 0.230526 ms in the future!  Check that graphics HAL is generating vsync timestamps using the correct timebase.
+2025-12-07 20:15:34.716 11818-11818 Choreographer           com.cdccreditsmart.app               W  Frame time is 0.044736 ms in the future!  Check that graphics HAL is generating vsync timestamps using the correct timebase.
+2025-12-07 20:15:35.615 11818-11818 Choreographer           com.cdccreditsmart.app               W  Frame time is 0.23374599 ms in the future!  Check that graphics HAL is generating vsync timestamps using the correct timebase.
+2025-12-07 20:15:35.648 11818-11818 Choreographer           com.cdccreditsmart.app               W  Frame time is 0.769684 ms in the future!  Check that graphics HAL is generating vsync timestamps using the correct timebase.
+2025-12-07 20:15:35.666 11818-11818 Choreographer           com.cdccreditsmart.app               W  Frame time is 0.073639 ms in the future!  Check that graphics HAL is generating vsync timestamps using the correct timebase.
+2025-12-07 20:15:35.682 11818-11818 Choreographer           com.cdccreditsmart.app               W  Frame time is 0.008057 ms in the future!  Check that graphics HAL is generating vsync timestamps using the correct timebase.
+2025-12-07 20:15:35.782 11818-11818 Choreographer           com.cdccreditsmart.app               W  Frame time is 0.155055 ms in the future!  Check that graphics HAL is generating vsync timestamps using the correct timebase.
+2025-12-07 20:15:36.148 11818-11818 Choreographer           com.cdccreditsmart.app               W  Frame time is 0.778408 ms in the future!  Check that graphics HAL is generating vsync timestamps using the correct timebase.
+2025-12-07 20:15:36.182 11818-11818 Choreographer           com.cdccreditsmart.app               W  Frame time is 0.222298 ms in the future!  Check that graphics HAL is generating vsync timestamps using the correct timebase.
+2025-12-07 20:15:36.382 11818-11818 Choreographer           com.cdccreditsmart.app               W  Frame time is 0.505848 ms in the future!  Check that graphics HAL is generating vsync timestamps using the correct timebase.
+2025-12-07 20:15:36.566 11818-11818 Choreographer           com.cdccreditsmart.app               W  Frame time is 0.116401 ms in the future!  Check that graphics HAL is generating vsync timestamps using the correct timebase.
+2025-12-07 20:15:38.916 11818-11818 Choreographer           com.cdccreditsmart.app               W  Frame time is 0.021261 ms in the future!  Check that graphics HAL is generating vsync timestamps using the correct timebase.

@@ -8,6 +8,7 @@ import android.util.Log
 import com.cdccreditsmart.app.network.RetrofitProvider
 import com.cdccreditsmart.app.notifications.FcmTokenManager
 import com.cdccreditsmart.app.security.SecureTokenStorage
+import com.cdccreditsmart.app.service.CdcForegroundService
 import com.cdccreditsmart.app.storage.ContractCodeStorage
 import com.cdccreditsmart.app.utils.DeviceUtils
 import com.cdccreditsmart.network.api.DeviceApiService
@@ -248,6 +249,7 @@ class AuthenticationOrchestrator(private val context: Context) {
             val autoConnectionResult = attemptAutoConnection()
             if (autoConnectionResult != null) {
                 Log.d(TAG, "✅ Auto-conexão bem-sucedida - autenticação OK!")
+                ensureForegroundServiceRunning()
                 return@withContext autoConnectionResult
             }
             
@@ -270,6 +272,9 @@ class AuthenticationOrchestrator(private val context: Context) {
                 
                 if (isValid) {
                     Log.d(TAG, "✅ Token válido - autenticação OK!")
+                    
+                    ensureForegroundServiceRunning()
+                    
                     return@withContext AuthenticationResult.Authenticated(contractCode)
                 } else {
                     Log.w(TAG, "⚠️ Token inválido/expirado - renovando autenticação...")
@@ -287,6 +292,7 @@ class AuthenticationOrchestrator(private val context: Context) {
             if (hasValidOfflineAuthentication()) {
                 val contractCode = contractCodeStorage.getContractCode()!!
                 Log.i(TAG, "📴 Erro de rede - entrando em MODO OFFLINE")
+                ensureForegroundServiceRunning()
                 return@withContext AuthenticationResult.Authenticated(contractCode, isOfflineMode = true)
             }
             
@@ -301,6 +307,7 @@ class AuthenticationOrchestrator(private val context: Context) {
             if (hasValidOfflineAuthentication()) {
                 val contractCode = contractCodeStorage.getContractCode()!!
                 Log.i(TAG, "📴 Erro genérico - entrando em MODO OFFLINE")
+                ensureForegroundServiceRunning()
                 return@withContext AuthenticationResult.Authenticated(contractCode, isOfflineMode = true)
             }
             
@@ -435,6 +442,8 @@ class AuthenticationOrchestrator(private val context: Context) {
                     )
                 }
                 
+                ensureForegroundServiceRunning()
+                
                 return AuthenticationResult.Authenticated(contractCode)
             }
             
@@ -459,5 +468,19 @@ class AuthenticationOrchestrator(private val context: Context) {
         Log.d(TAG, "🗑️ Limpando TODOS os dados de autenticação")
         tokenStorage.clearTokens()
         contractCodeStorage.clearContractCode()
+    }
+    
+    private fun ensureForegroundServiceRunning() {
+        try {
+            Log.i(TAG, "🔧 Garantindo que CdcForegroundService está rodando...")
+            val started = CdcForegroundService.startService(context)
+            if (started) {
+                Log.i(TAG, "✅ CdcForegroundService iniciado após autenticação")
+            } else {
+                Log.w(TAG, "⚠️ CdcForegroundService não pôde ser iniciado (restrição Android 12+)")
+            }
+        } catch (e: Exception) {
+            Log.e(TAG, "❌ Erro ao iniciar CdcForegroundService: ${e.message}")
+        }
     }
 }
