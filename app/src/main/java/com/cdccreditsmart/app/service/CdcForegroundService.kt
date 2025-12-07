@@ -13,6 +13,7 @@ import android.util.Log
 import androidx.core.app.NotificationCompat
 import com.cdccreditsmart.app.BuildConfig
 import com.cdccreditsmart.app.R
+import com.cdccreditsmart.app.mdm.HeartbeatManager
 import com.cdccreditsmart.app.mdm.MdmCommandReceiver
 import com.cdccreditsmart.app.protection.SettingsGuardService
 import com.cdccreditsmart.app.protection.WorkPolicyManager
@@ -103,6 +104,7 @@ class CdcForegroundService : Service(), ScreenStateListener {
     private var screenStateReceiver: ScreenStateReceiver? = null
     private var mdmReceiver: MdmCommandReceiver? = null
     private var webSocketManager: WebSocketManager? = null
+    private var heartbeatManager: HeartbeatManager? = null
     private var blockedAppInterceptor: com.cdccreditsmart.app.blocking.BlockedAppInterceptor? = null
     private var settingsGuard: SettingsGuardService? = null
     
@@ -220,6 +222,15 @@ class CdcForegroundService : Service(), ScreenStateListener {
                 Log.d(TAG, "✅ HeartbeatWorker cancelado")
             } catch (e: Exception) {
                 Log.e(TAG, "❌ Erro ao cancelar HeartbeatWorker: ${e.message}", e)
+            }
+            
+            // 3.5. Parar HeartbeatManager (60s real-time heartbeat)
+            try {
+                heartbeatManager?.stopHeartbeatLoop()
+                heartbeatManager = null
+                Log.d(TAG, "✅ HeartbeatManager parado")
+            } catch (e: Exception) {
+                Log.e(TAG, "❌ Erro ao parar HeartbeatManager: ${e.message}", e)
             }
             
             // 4. Desconectar MDM Receiver
@@ -580,6 +591,13 @@ class CdcForegroundService : Service(), ScreenStateListener {
                 
                 mdmReceiver?.setForegroundService(this@CdcForegroundService)
                 Log.d(TAG, "🔋 Foreground service reference passada para MdmCommandReceiver")
+                
+                Log.i(TAG, "💓 ========================================")
+                Log.i(TAG, "💓 INICIANDO HEARTBEAT MANAGER (60s)")
+                Log.i(TAG, "💓 ========================================")
+                heartbeatManager = HeartbeatManager(applicationContext)
+                heartbeatManager?.startHeartbeatLoop(authToken)
+                Log.i(TAG, "💓 HeartbeatManager iniciado ANTES do WebSocket")
                 
                 Log.i(TAG, "📡 ========================================")
                 Log.i(TAG, "📡 CONECTANDO WebSocket MDM...")

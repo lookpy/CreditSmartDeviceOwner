@@ -90,4 +90,17 @@ interface MdmApiService {
         @Body telemetry: TelemetryRequest
     ): Response<Unit>
     
+    /**
+     * Confirmar execução de comando MDM (NOVO - Conforme documentação)
+     * Endpoint: POST /api/apk/device/commands/{commandId}/status
+     * 
+     * @param commandId ID único do comando
+     * @param request Payload com status e resultado da execução
+     */
+    @POST("api/apk/device/commands/{commandId}/status")
+    suspend fun confirmCommandStatus(
+        @Path("commandId") commandId: String,
+        @Body request: CommandStatusRequest
+    ): Response<Unit>
+    
 }

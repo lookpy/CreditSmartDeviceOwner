@@ -146,6 +146,19 @@ interface DeviceApiService {
     ): Response<CdcHeartbeatResponse>
     
     /**
+     * Real-time heartbeat endpoint - HeartbeatManager (60 segundos)
+     * POST /api/apk/device/heartbeat
+     * 
+     * Usa RealTimeHeartbeatRequest com campos da documentação oficial:
+     * deviceToken, currentBlockLevel, batteryLevel, isCharging, currentSimImei
+     */
+    @POST("api/apk/device/heartbeat")
+    suspend fun sendRealTimeHeartbeat(
+        @Body request: RealTimeHeartbeatRequest,
+        @Header("Authorization") authorization: String
+    ): Response<CdcHeartbeatResponse>
+    
+    /**
      * Get server time - CDC Credit Smart specific
      * GET /api/apk/time/now
      */

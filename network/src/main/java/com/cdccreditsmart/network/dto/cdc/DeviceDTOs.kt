@@ -30,7 +30,7 @@ data class CdcHeartbeatRequest(
 data class CdcHeartbeatResponse(
     val success: Boolean,
     val message: String? = null,
-    val serverTimestamp: Long,
+    val serverTimestamp: Long = System.currentTimeMillis(),
     val nextHeartbeatInterval: Long? = null,
     val commands: List<DeviceCommand>? = null,
     val policies: List<SecurityPolicy>? = null,
@@ -40,7 +40,27 @@ data class CdcHeartbeatResponse(
     // Backend retorna se o dispositivo está conforme com o bloqueio esperado
     val complianceStatus: String? = null,        // "OK" | "NON_COMPLIANT" | "UNKNOWN"
     val expectedBlockLevel: Int? = null,         // Nível de bloqueio que o backend espera
-    val correctionRequired: Boolean? = null      // Se o APK precisa corrigir o bloqueio
+    val correctionRequired: Boolean? = null,     // Se o APK precisa corrigir o bloqueio
+    
+    // 🆕 FLAG DE REVALIDAÇÃO DO BACKEND
+    val requiresBackendRevalidation: Boolean? = null  // Se backend exige revalidação de IMEI
+)
+
+/**
+ * Real-time heartbeat request (60 segundos)
+ * POST /api/apk/device/heartbeat
+ * 
+ * Usado pelo HeartbeatManager para enviar heartbeats em tempo real
+ * com os campos especificados na documentação oficial.
+ */
+//@JsonClass(generateAdapter = true)
+data class RealTimeHeartbeatRequest(
+    val deviceToken: String,                     // Token imutável do dispositivo
+    val currentBlockLevel: Int,                  // Nível atual de bloqueio (0-6)
+    val batteryLevel: Int,                       // Nível de bateria (0-100 ou -1 se indisponível)
+    val isCharging: Boolean,                     // Se está carregando
+    val currentSimImei: String? = null,          // IMEI atual do SIM
+    val timestamp: Long = System.currentTimeMillis()  // Timestamp do heartbeat
 )
 
 //@JsonClass(generateAdapter = true) // Temporarily disabled to fix build

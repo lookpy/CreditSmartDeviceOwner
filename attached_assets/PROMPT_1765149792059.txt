@@ -1,0 +1,381 @@
+# APK Heartbeat e MDM Integration Guide
+
+## Problema Identificado
+
+O APK estava fazendo apenas **ping/pong via WebSocket** para manter a conexão viva, mas isso **NÃO atualiza o banco de dados**. O backend precisa de dois fluxos separados:
+
+1. **HTTP POST Heartbeat** - Atualiza o timestamp no banco de dados
+2. **WebSocket Registration** - Registra o dispositivo para receber comandos MDM em tempo real
+
+---
+
+## 1. HTTP POST Heartbeat (OBRIGATÓRIO)
+
+O APK deve fazer POST periodicamente (recomendado: a cada 60 segundos) para informar o backend que está online.
+
+### Endpoint
+```
+POST /api/apk/device/heartbeat
+Authorization: Bearer <jwt-token>
+Content-Type: application/json
+```
+
+### Request Body
+```json
+{
+  "deviceToken": "immutable-token-do-dispositivo",
+  "currentBlockLevel": 0,
+  "batteryLevel": 85,
+  "isCharging": false,
+  "currentSimImei": "353104903560533",
+  "phoneNumbers": [
+    {
+      "slotIndex": 0,
+      "phoneNumber": "+5511999999999",
+      "carrier": "Vivo",
+      "isAvailable": true
+    },
+    {
+      "slotIndex": 1,
+      "phoneNumber": null,
+      "carrier": "TIM",
+      "isAvailable": false
+    }
+  ],
+  "phoneNumbersChanged": true,
+  "phoneNumbersStatus": "partial"
+}
+```
+
+### Campos Obrigatórios
+| Campo | Tipo | Descrição |
+|-------|------|-----------|
+| `deviceToken` | string | Token imutável do dispositivo (recebido no pairing) |
+| `currentBlockLevel` | number | Nível de bloqueio atual aplicado no dispositivo (0-6) |
+
+### Campos Opcionais
+| Campo | Tipo | Descrição |
+|-------|------|-----------|
+| `batteryLevel` | number | Nível de bateria (0-100) |
+| `isCharging` | boolean | Se está carregando |
+| `currentSimImei` | string | IMEI atual do SIM (para validação híbrida) |
+| `phoneNumbers` | array | Lista de números de telefone dos SIMs |
+| `phoneNumbersChanged` | boolean | Se os números mudaram desde o último heartbeat |
+| `phoneNumbersStatus` | string | Status da coleta: "full", "partial", "none", "unknown" |
+
+### Response (200 OK)
+```json
+{
+  "success": true,
+  "requiresBackendRevalidation": false,
+  "phoneNumbersProcessed": true,
+  "complianceStatus": "OK",
+  "expectedBlockLevel": 0,
+  "message": "Heartbeat received",
+  "complianceConfig": {
+    "verificationEnabled": true,
+    "maxMismatchCount": 3
+  }
+}
+```
+
+### Campos Importantes da Response
+| Campo | Tipo | Descrição |
+|-------|------|-----------|
+| `requiresBackendRevalidation` | boolean | Se `true`, o APK deve refazer o processo de validação de IMEI |
+| `expectedBlockLevel` | number | Nível de bloqueio esperado pelo backend |
+| `complianceStatus` | string | "OK", "NON_COMPLIANT", ou "UNKNOWN" |
+
+---
+
+## 2. WebSocket Registration (OBRIGATÓRIO para receber comandos)
+
+Após conectar ao WebSocket, o APK **DEVE** enviar uma mensagem de autenticação para se registrar na "room" do dispositivo.
+
+### Conexão WebSocket
+```
+wss://cdccreditsmart.com/ws/mdm-policies
+```
+
+ou (legacy):
+```
+wss://cdccreditsmart.com/ws
+```
+
+### Mensagem de Autenticação (enviar logo após conectar)
+```json
+{
+  "type": "device-control",
+  "action": "authenticate",
+  "serialNumber": "XV8W5766",
+  "deviceToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+  "deviceFingerprint": "optional-fingerprint"
+}
+```
+
+### Response do Servidor
+```json
+{
+  "type": "device-control",
+  "action": "authenticated",
+  "deviceId": "device_1765148771462_4teww42p114",
+  "message": "Device connected successfully"
+}
+```
+
+---
+
+## 3. Recebendo Comandos MDM via WebSocket
+
+Após o registro, o servidor enviará comandos MDM automaticamente:
+
+### Formato do Comando
+```json
+{
+  "type": "NEW_COMMAND",
+  "command": {
+    "id": "6544d7da-7d28-437f-a01f-554cd0a86295",
+    "type": "SET_PROGRESSIVE_BLOCK",
+    "parameters": {
+      "targetLevel": 0,
+      "previousLevel": 6,
+      "categories": [],
+      "exceptions": ["com.android.dialer", "com.whatsapp", ...],
+      "messageTitle": "Sem Restrições",
+      "messageBody": "Seu dispositivo está funcionando normalmente."
+    }
+  },
+  "timestamp": "2025-12-07T23:15:23.420Z"
+}
+```
+
+### Tipos de Comando
+| Tipo | Descrição |
+|------|-----------|
+| `SET_PROGRESSIVE_BLOCK` | Define nível de bloqueio progressivo |
+| `UNBLOCK_APPS_PROGRESSIVE` | Desbloqueia apps progressivamente |
+| `BLOCK_DEVICE` | Bloqueia dispositivo |
+| `UNBLOCK_DEVICE` | Desbloqueia dispositivo |
+| `REMOTE_UNINSTALL` | Desinstalação remota do APK |
+| `SEND_MESSAGE` | Envia mensagem para o usuário |
+
+---
+
+## 4. Confirmando Execução de Comandos
+
+Após executar um comando, o APK deve confirmar a execução:
+
+### Endpoint
+```
+POST /api/apk/device/commands/{commandId}/status
+Authorization: Bearer <jwt-token>
+Content-Type: application/json
+```
+
+### Request Body
+```json
+{
+  "status": "completed",
+  "result": {
+    "appliedLevel": 0,
+    "blockedApps": [],
+    "unblockedApps": ["com.instagram.android", "com.facebook.katana"]
+  }
+}
+```
+
+### Status Possíveis
+| Status | Descrição |
+|--------|-----------|
+| `completed` | Comando executado com sucesso |
+| `failed` | Falha na execução |
+| `acknowledged` | Comando recebido, aguardando execução |
+
+---
+
+## 5. Polling de Comandos Pendentes (Fallback)
+
+Se o WebSocket falhar, o APK pode buscar comandos pendentes via HTTP:
+
+### Endpoint
+```
+GET /api/apk/device/commands
+Authorization: Bearer <jwt-token>
+```
+
+### Response
+```json
+{
+  "commands": [
+    {
+      "id": "6544d7da-7d28-437f-a01f-554cd0a86295",
+      "type": "SET_PROGRESSIVE_BLOCK",
+      "parameters": {...},
+      "status": "pending",
+      "createdAt": "2025-12-07T23:15:23.420Z"
+    }
+  ]
+}
+```
+
+---
+
+## 6. Fluxo Completo Recomendado
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│                     INICIALIZAÇÃO                            │
+├─────────────────────────────────────────────────────────────┤
+│ 1. APK inicia                                                │
+│ 2. Valida token JWT (GET /api/apk/device/status)            │
+│ 3. Conecta WebSocket (wss://.../ws/mdm-policies)            │
+│ 4. Envia mensagem de autenticação                            │
+│ 5. Aguarda confirmação "authenticated"                       │
+└─────────────────────────────────────────────────────────────┘
+                              │
+                              ▼
+┌─────────────────────────────────────────────────────────────┐
+│                     LOOP PRINCIPAL                           │
+├─────────────────────────────────────────────────────────────┤
+│ A cada 60 segundos:                                          │
+│   → POST /api/apk/device/heartbeat                          │
+│   → Verificar response.requiresBackendRevalidation          │
+│   → Verificar response.expectedBlockLevel                    │
+│                                                              │
+│ Ao receber mensagem WebSocket type="NEW_COMMAND":           │
+│   → Processar comando                                        │
+│   → POST /api/apk/device/commands/{id}/status               │
+│                                                              │
+│ Se WebSocket desconectar:                                    │
+│   → Reconectar automaticamente                               │
+│   → Reenviar mensagem de autenticação                        │
+│   → Fazer polling GET /api/apk/device/commands (fallback)   │
+└─────────────────────────────────────────────────────────────┘
+```
+
+---
+
+## 7. Exemplo de Implementação (Kotlin/Android)
+
+### HeartbeatService.kt
+```kotlin
+class HeartbeatService {
+    private val interval = 60_000L // 60 segundos
+    
+    fun startHeartbeatLoop() {
+        CoroutineScope(Dispatchers.IO).launch {
+            while (true) {
+                sendHeartbeat()
+                delay(interval)
+            }
+        }
+    }
+    
+    private suspend fun sendHeartbeat() {
+        val payload = HeartbeatPayload(
+            deviceToken = SecureTokenStorage.getDeviceToken(),
+            currentBlockLevel = BlockingManager.getCurrentLevel(),
+            batteryLevel = BatteryUtils.getLevel(),
+            isCharging = BatteryUtils.isCharging(),
+            currentSimImei = DeviceUtils.getCurrentSimImei(),
+            phoneNumbers = PhoneNumberCollector.collect(),
+            phoneNumbersChanged = PhoneNumberCollector.hasChanged(),
+            phoneNumbersStatus = PhoneNumberCollector.getStatus()
+        )
+        
+        val response = api.postHeartbeat(payload)
+        
+        if (response.requiresBackendRevalidation) {
+            // Refazer validação de IMEI
+            AuthOrchestrator.revalidateImei()
+        }
+        
+        if (response.expectedBlockLevel != BlockingManager.getCurrentLevel()) {
+            // Aplicar nível de bloqueio esperado
+            BlockingManager.applyLevel(response.expectedBlockLevel)
+        }
+    }
+}
+```
+
+### WebSocketManager.kt
+```kotlin
+class MdmWebSocketManager {
+    private var webSocket: WebSocket? = null
+    
+    fun connect() {
+        val request = Request.Builder()
+            .url("wss://cdccreditsmart.com/ws/mdm-policies")
+            .build()
+            
+        webSocket = client.newWebSocket(request, object : WebSocketListener() {
+            override fun onOpen(webSocket: WebSocket, response: Response) {
+                // Enviar autenticação imediatamente após conectar
+                sendAuthentication()
+            }
+            
+            override fun onMessage(webSocket: WebSocket, text: String) {
+                val message = Json.decodeFromString<WsMessage>(text)
+                when (message.type) {
+                    "NEW_COMMAND" -> handleCommand(message.command)
+                    "pong" -> { /* Keep-alive OK */ }
+                }
+            }
+            
+            override fun onClosed(webSocket: WebSocket, code: Int, reason: String) {
+                // Reconectar automaticamente após 5 segundos
+                reconnectWithDelay(5000)
+            }
+        })
+    }
+    
+    private fun sendAuthentication() {
+        val authMessage = """
+        {
+            "type": "device-control",
+            "action": "authenticate",
+            "serialNumber": "${DeviceUtils.getSerialNumber()}",
+            "deviceToken": "${SecureTokenStorage.getToken()}"
+        }
+        """.trimIndent()
+        
+        webSocket?.send(authMessage)
+    }
+    
+    private fun handleCommand(command: MdmCommand) {
+        // Processar comando
+        val result = MdmCommandExecutor.execute(command)
+        
+        // Confirmar execução
+        api.confirmCommandStatus(command.id, result)
+    }
+}
+```
+
+---
+
+## 8. Diagnóstico de Problemas
+
+### Dispositivo não recebe comandos
+1. Verificar se POST heartbeat está sendo feito (não apenas ping/pong WebSocket)
+2. Verificar se mensagem de autenticação foi enviada após conectar WebSocket
+3. Verificar logs do servidor: `⏭️ Device XXX: Sem heartbeat recente, pulando...`
+
+### Comandos ficam "pending" no banco
+1. WebSocket não está conectado ou autenticado
+2. APK não está fazendo polling em `/api/apk/device/commands`
+3. APK não está confirmando execução em `/api/apk/device/commands/{id}/status`
+
+### requiresBackendRevalidation = true
+1. IMEI do SIM atual não corresponde ao IMEI registrado
+2. Primeiro heartbeat após factory reset
+3. Dispositivo foi pareado novamente
+
+---
+
+## Contato
+
+Para dúvidas sobre integração, consulte a documentação adicional em:
+- `/docs/mdm-commands-documentation.md`
+- `/attached_assets/BACKEND_INTEGRATION_GUIDE.md`
+- `/attached_assets/MULTI_IMEI_MEID_SUPPORT.md`

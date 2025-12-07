@@ -251,3 +251,46 @@ data class LocationResponse(
     val speed: Float? = null,
     val bearing: Float? = null
 )
+
+/**
+ * Request para confirmar status de comando MDM
+ * Conforme documentação: POST /api/apk/device/commands/{commandId}/status
+ */
+@JsonClass(generateAdapter = true)
+data class CommandStatusRequest(
+    val status: String,
+    val result: CommandResultPayload? = null
+) {
+    companion object {
+        fun completed(result: CommandResultPayload) = CommandStatusRequest(
+            status = "completed",
+            result = result
+        )
+        
+        fun failed(errorMessage: String) = CommandStatusRequest(
+            status = "failed",
+            result = CommandResultPayload(
+                success = false,
+                errorMessage = errorMessage
+            )
+        )
+        
+        fun acknowledged() = CommandStatusRequest(
+            status = "acknowledged",
+            result = null
+        )
+    }
+}
+
+/**
+ * Payload de resultado do comando
+ */
+@JsonClass(generateAdapter = true)
+data class CommandResultPayload(
+    val success: Boolean = true,
+    val appliedLevel: Int? = null,
+    val blockedApps: List<String>? = null,
+    val unblockedApps: List<String>? = null,
+    val errorMessage: String? = null,
+    val timestamp: Long = System.currentTimeMillis()
+)
