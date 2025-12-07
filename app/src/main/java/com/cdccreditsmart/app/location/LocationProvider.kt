@@ -249,10 +249,45 @@ class LocationProvider(private val context: Context) {
             
             Log.d(TAG, "📍 GPS enabled: $gpsEnabled, Network enabled: $networkEnabled")
             
+            // REGRA: Localização deve estar SEMPRE ativa
+            // Se desativada e somos Device Owner, forçar ativação
+            if (!gpsEnabled && !networkEnabled) {
+                Log.w(TAG, "📍 Localização desativada - tentando forçar ativação...")
+                forceEnableLocation()
+                
+                // Verificar novamente após forçar
+                val gpsAfter = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
+                val networkAfter = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)
+                Log.d(TAG, "📍 Após forçar - GPS: $gpsAfter, Network: $networkAfter")
+                
+                return gpsAfter || networkAfter
+            }
+            
             gpsEnabled || networkEnabled
         } catch (e: Exception) {
             Log.e(TAG, "Erro ao verificar status de localização: ${e.message}")
             false
+        }
+    }
+    
+    /**
+     * Força a ativação da localização como Device Owner
+     * Suporta Android 9+ (API 28+)
+     */
+    private fun forceEnableLocation() {
+        try {
+            if (!isDeviceOwner()) {
+                Log.w(TAG, "📍 Não é Device Owner - não pode forçar localização")
+                return
+            }
+            
+            // setLocationEnabled existe desde Android 9 (API 28)
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                dpm.setLocationEnabled(adminComponent, true)
+                Log.i(TAG, "✅ Localização forçada via setLocationEnabled (Android 9+)")
+            }
+        } catch (e: Exception) {
+            Log.e(TAG, "❌ Erro ao forçar localização: ${e.message}")
         }
     }
     

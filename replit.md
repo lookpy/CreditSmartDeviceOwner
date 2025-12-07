@@ -62,6 +62,7 @@ Utilizes Jetpack Compose and Material 3 with a CDC institutional dark theme. Fea
   - **MIUI Permission Center Protection:** Blocks `com.miui.permcenter` (Permissões e privacidade, Permissões especiais) - Permite revogar Device Admin
   - **XOS Privacy Protection:** Blocks "Permissões e privacidade" que dá acesso a XHide, XClone, Sistema duplo, Modo de reparo
 - **GPS Location Tracking (LOCATE_DEVICE):** MDM command for real-time device location with FusedLocationProviderClient + LocationManager fallback, Device Owner auto-grant for permissions, and comprehensive error handling.
+- **Localização Sempre Ativa (REGRA):** Como Device Owner, o app força GPS/localização a estar sempre ativo via `setLocationEnabled()` (Android 9+), aplica restrição `DISALLOW_CONFIG_LOCATION` para impedir usuário de desativar, e auto-reativa GPS se detectar desativação. LocationProvider verifica e força ativação antes de cada requisição de localização.
 
 ## External Dependencies
 - **CDC Credit Smart Backend API:** For authentication, device status, installments, PIX processing, heartbeat, MDM commands, unblock operations, remote uninstall telemetry, time synchronization, FCM token registration, enrollment reporting, and contract terms metadata (GET /api/apk/device/contract-terms returns termsHash, signedAt, biometrySessionId, geoLocation, receiptHash, termsVersion).

@@ -170,6 +170,9 @@ class AutoPermissionManager(private val context: Context) {
         // CRITICAL: Conceder SYSTEM_ALERT_WINDOW automaticamente
         grantSystemAlertWindowPermission()
         
+        // CRITICAL: Forçar GPS/Localização sempre ativo
+        forceLocationAlwaysEnabled()
+        
         try {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 dpm.setPermissionPolicy(
@@ -185,6 +188,90 @@ class AutoPermissionManager(private val context: Context) {
         grantUsageStatsPermission()
         
         Log.i(TAG, "========================================")
+    }
+    
+    /**
+     * Força a ativação do GPS/Localização no dispositivo como Device Owner
+     * REGRA: Localização deve estar SEMPRE ativa
+     */
+    private fun forceLocationAlwaysEnabled() {
+        try {
+            Log.i(TAG, "📍 Forçando GPS/Localização sempre ativo...")
+            
+            // Android 9+ (API 28): Usar setLocationEnabled
+            // A API existe desde Android 9, não apenas Android 11
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                try {
+                    dpm.setLocationEnabled(adminComponent, true)
+                    Log.i(TAG, "✅ Localização forçada via setLocationEnabled (Android 9+)")
+                } catch (e: Exception) {
+                    Log.w(TAG, "⚠️ setLocationEnabled falhou: ${e.message}")
+                }
+            }
+            
+            // SEMPRE aplicar restrição para impedir desativação (não apenas quando GPS está desativado)
+            blockLocationSettingsChange()
+            
+            // Verificar se GPS está ativo
+            val locationManager = context.getSystemService(Context.LOCATION_SERVICE) as android.location.LocationManager
+            val gpsEnabled = locationManager.isProviderEnabled(android.location.LocationManager.GPS_PROVIDER)
+            val networkEnabled = locationManager.isProviderEnabled(android.location.LocationManager.NETWORK_PROVIDER)
+            
+            Log.i(TAG, "📍 Status atual - GPS: $gpsEnabled, Network: $networkEnabled")
+            
+            if (!gpsEnabled) {
+                Log.w(TAG, "⚠️ GPS ainda desativado após forçar - pode ser limitação OEM")
+            }
+            
+            Log.i(TAG, "📍 Configuração de localização concluída")
+            
+        } catch (e: Exception) {
+            Log.e(TAG, "❌ Erro ao forçar localização ativa: ${e.message}", e)
+        }
+    }
+    
+    /**
+     * Bloqueia o usuário de alterar configurações de localização
+     * Impede desativação do GPS - aplicado SEMPRE como Device Owner
+     */
+    private fun blockLocationSettingsChange() {
+        try {
+            // DISALLOW_CONFIG_LOCATION impede usuário de mudar configurações de localização
+            // Aplicar SEMPRE, não apenas quando GPS está desativado
+            dpm.addUserRestriction(adminComponent, android.os.UserManager.DISALLOW_CONFIG_LOCATION)
+            Log.i(TAG, "✅ Restrição DISALLOW_CONFIG_LOCATION aplicada")
+            Log.i(TAG, "   Usuário não pode desativar GPS/Localização")
+            
+        } catch (e: Exception) {
+            Log.w(TAG, "⚠️ Não foi possível bloquear alterações de localização: ${e.message}")
+        }
+    }
+    
+    /**
+     * Verifica se a localização está ativa e tenta ativar se necessário
+     * Pode ser chamado periodicamente para garantir que GPS está sempre ativo
+     */
+    fun ensureLocationEnabled(): Boolean {
+        if (!isDeviceOwner()) {
+            Log.w(TAG, "⚠️ Não é Device Owner - não pode forçar localização")
+            return false
+        }
+        
+        try {
+            val locationManager = context.getSystemService(Context.LOCATION_SERVICE) as android.location.LocationManager
+            val gpsEnabled = locationManager.isProviderEnabled(android.location.LocationManager.GPS_PROVIDER)
+            
+            if (!gpsEnabled && Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                dpm.setLocationEnabled(adminComponent, true)
+                Log.i(TAG, "📍 GPS reativado via Device Owner")
+                return true
+            }
+            
+            return gpsEnabled
+        } catch (e: Exception) {
+            Log.e(TAG, "❌ Erro ao verificar/ativar localização: ${e.message}")
+            return false
+        }
     }
     
     /**
