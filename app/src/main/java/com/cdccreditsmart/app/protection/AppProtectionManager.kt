@@ -463,7 +463,10 @@ class AppProtectionManager(private val context: Context) {
         }
         
         // 3. Bloquear debugging features (previne remoção via ADB)
-        // EXCEÇÃO: Manter ADB ativo em builds de DEBUG/desenvolvimento
+        // ⚠️ TEMPORARIAMENTE DESATIVADO PARA DEBUG DO CRASH
+        // TODO: Reativar após identificar o crash
+        Log.w(TAG, "        ⚠️ DISALLOW_DEBUGGING_FEATURES TEMPORARIAMENTE DESATIVADO (debug do crash)")
+        /*
         try {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 if (!com.cdccreditsmart.app.BuildConfig.DEBUG) {
@@ -479,9 +482,13 @@ class AppProtectionManager(private val context: Context) {
         } catch (e: Exception) {
             Log.w(TAG, "        ⚠️ Não foi possível bloquear debugging: ${e.message}")
         }
+        */
         
         // 4. Bloquear USB file transfer (camada extra de segurança)
-        // EXCEÇÃO: Manter USB transfer ativo em builds de DEBUG/desenvolvimento
+        // ⚠️ TEMPORARIAMENTE DESATIVADO PARA DEBUG DO CRASH
+        // TODO: Reativar após identificar o crash
+        Log.w(TAG, "        ⚠️ DISALLOW_USB_FILE_TRANSFER TEMPORARIAMENTE DESATIVADO (debug do crash)")
+        /*
         try {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 if (!com.cdccreditsmart.app.BuildConfig.DEBUG) {
@@ -497,6 +504,7 @@ class AppProtectionManager(private val context: Context) {
         } catch (e: Exception) {
             Log.w(TAG, "        ⚠️ Não foi possível bloquear USB transfer: ${e.message}")
         }
+        */
         
         // 5. Como Device Owner, o app JÁ ESTÁ protegido contra remoção via Settings
         Log.i(TAG, "        ℹ️ Device Owner NÃO pode ser desativado via Settings")
@@ -750,6 +758,10 @@ class AppProtectionManager(private val context: Context) {
         }
         
         // DEBUG BUILD: Manter ADB/USB ativo para desenvolvimento
+        // ⚠️ TEMPORARIAMENTE DESATIVADO PARA DEBUG DO CRASH
+        // TODO: Reativar após identificar o crash
+        Log.w(TAG, "        → DISALLOW_DEBUGGING_FEATURES TEMPORARIAMENTE DESATIVADO (debug do crash)")
+        /*
         try {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 if (!com.cdccreditsmart.app.BuildConfig.DEBUG) {
@@ -763,7 +775,12 @@ class AppProtectionManager(private val context: Context) {
         } catch (e: Exception) {
             Log.d(TAG, "   Debug block não aplicado")
         }
+        */
         
+        // ⚠️ TEMPORARIAMENTE DESATIVADO PARA DEBUG DO CRASH
+        // TODO: Reativar após identificar o crash
+        Log.w(TAG, "        → DISALLOW_USB_FILE_TRANSFER TEMPORARIAMENTE DESATIVADO (debug do crash)")
+        /*
         try {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 if (!com.cdccreditsmart.app.BuildConfig.DEBUG) {
@@ -777,6 +794,7 @@ class AppProtectionManager(private val context: Context) {
         } catch (e: Exception) {
             Log.d(TAG, "   USB transfer block não aplicado")
         }
+        */
         
         return count
     }
