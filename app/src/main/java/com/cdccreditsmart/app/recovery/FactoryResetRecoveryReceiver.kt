@@ -54,6 +54,14 @@ class FactoryResetRecoveryReceiver : BroadcastReceiver() {
             return
         }
         
+        // CRITICAL: Do NOT run during initial provisioning!
+        // This can cause "Getting ready for work setup..." loop
+        if (isDeviceInProvisioningMode(context)) {
+            Log.w(TAG, "⏳ Device em modo de provisionamento - ignorando recovery")
+            Log.w(TAG, "   Recovery será executado após setup completo")
+            return
+        }
+        
         Log.i(TAG, "========================================")
         Log.i(TAG, "🔄 BOOT DETECTADO (${intent.action}) - Verificando recuperação")
         Log.i(TAG, "========================================")
@@ -64,6 +72,56 @@ class FactoryResetRecoveryReceiver : BroadcastReceiver() {
             } catch (e: Exception) {
                 Log.e(TAG, "❌ Erro na recuperação: ${e.message}", e)
             }
+        }
+    }
+    
+    /**
+     * Verifica se o dispositivo ainda está em modo de provisionamento.
+     * Durante o provisionamento QR Code, o setup wizard ainda não terminou.
+     */
+    private fun isDeviceInProvisioningMode(context: Context): Boolean {
+        try {
+            // Check if user setup is complete
+            val userSetupComplete = android.provider.Settings.Secure.getInt(
+                context.contentResolver,
+                "user_setup_complete",
+                0
+            ) == 1
+            
+            // Check if device is provisioned
+            val deviceProvisioned = android.provider.Settings.Global.getInt(
+                context.contentResolver,
+                android.provider.Settings.Global.DEVICE_PROVISIONED,
+                0
+            ) == 1
+            
+            Log.d(TAG, "🔍 Provisioning check: userSetupComplete=$userSetupComplete, deviceProvisioned=$deviceProvisioned")
+            
+            // If device is not fully provisioned, we're still in setup wizard
+            if (!userSetupComplete || !deviceProvisioned) {
+                return true
+            }
+            
+            // Additional check: if we're Device Owner but app was just installed,
+            // the setup wizard might still be running
+            val dpm = context.getSystemService(Context.DEVICE_POLICY_SERVICE) as? android.app.admin.DevicePolicyManager
+            if (dpm?.isDeviceOwnerApp(context.packageName) == true) {
+                // Check if this is a fresh provisioning (no auth data yet)
+                val prefs = context.getSharedPreferences("cdc_provisioning", Context.MODE_PRIVATE)
+                val provisioningCompleted = prefs.getBoolean("auto_provisioning_completed", false)
+                
+                if (!provisioningCompleted) {
+                    Log.d(TAG, "🔍 Device Owner mas provisionamento não completado ainda")
+                    return true
+                }
+            }
+            
+            return false
+            
+        } catch (e: Exception) {
+            Log.e(TAG, "❌ Erro ao verificar modo de provisionamento: ${e.message}")
+            // Em caso de erro, assume que está em modo de provisionamento por segurança
+            return true
         }
     }
     

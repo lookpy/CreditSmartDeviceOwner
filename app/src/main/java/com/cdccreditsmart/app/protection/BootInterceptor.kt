@@ -102,6 +102,14 @@ class BootInterceptor : BroadcastReceiver() {
         Log.i(TAG, "✅ BOOT COMPLETO DETECTADO")
         Log.i(TAG, "   Sistema Android iniciado com sucesso")
         
+        // CRITICAL: Do NOT run heavy operations during provisioning!
+        // This can cause "Getting ready for work setup..." loop
+        if (isDeviceInProvisioningMode(context)) {
+            Log.w(TAG, "⏳ Device em modo de provisionamento - ignorando tamper detection")
+            Log.w(TAG, "   Tamper detection será executado após setup completo")
+            return
+        }
+        
         try {
             val tamperDetection = TamperDetectionService(context.applicationContext)
             val deviceFingerprint = tamperDetection.getOrCreateDeviceFingerprint()
@@ -112,6 +120,30 @@ class BootInterceptor : BroadcastReceiver() {
             
         } catch (e: Exception) {
             Log.e(TAG, "❌ Erro ao verificar integridade pós-boot: ${e.message}")
+        }
+    }
+    
+    /**
+     * Verifica se o dispositivo ainda está em modo de provisionamento.
+     */
+    private fun isDeviceInProvisioningMode(context: Context): Boolean {
+        return try {
+            val userSetupComplete = android.provider.Settings.Secure.getInt(
+                context.contentResolver,
+                "user_setup_complete",
+                0
+            ) == 1
+            
+            val deviceProvisioned = android.provider.Settings.Global.getInt(
+                context.contentResolver,
+                android.provider.Settings.Global.DEVICE_PROVISIONED,
+                0
+            ) == 1
+            
+            !userSetupComplete || !deviceProvisioned
+        } catch (e: Exception) {
+            Log.e(TAG, "❌ Erro ao verificar modo de provisionamento: ${e.message}")
+            true // Assume provisioning mode on error
         }
     }
     

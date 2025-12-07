@@ -40,34 +40,31 @@ class ProvisioningSuccessActivity : Activity() {
         Log.i(TAG, "Intent action: ${intent?.action}")
         Log.i(TAG, "Intent extras: ${intent?.extras}")
         
-        // This activity has no UI - Theme.NoDisplay
-        // Just finish and launch main app
-        finish()
+        // CRITICAL FIX: Mark provisioning as completed so other components know
+        // the setup wizard finished successfully
+        markProvisioningCompleted()
         
-        // Launch MainActivity to complete initial setup
-        launchMainActivity()
+        // CRITICAL FIX: DO NOT launch MainActivity here!
+        // The Android system will automatically launch the app after we finish.
+        // Launching here can cause the "Getting ready for work setup..." loop
+        // because it interferes with the setup wizard flow.
+        Log.i(TAG, "⏳ Finalizando - sistema lançará o app automaticamente")
+        
+        // This activity has no UI - Theme.NoDisplay
+        // Just finish and let the system complete the setup wizard
+        finish()
     }
-
-    private fun launchMainActivity() {
+    
+    private fun markProvisioningCompleted() {
         try {
-            val mainIntent = Intent(this, com.cdccreditsmart.app.presentation.MainActivity::class.java).apply {
-                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
-                putExtra("provisioning_completed", true)
-            }
-            
-            Log.i(TAG, "Launching MainActivity after successful provisioning")
-            startActivity(mainIntent)
-            
+            val prefs = getSharedPreferences("cdc_provisioning", MODE_PRIVATE)
+            prefs.edit()
+                .putBoolean("auto_provisioning_completed", true)
+                .putLong("provisioning_timestamp", System.currentTimeMillis())
+                .apply()
+            Log.i(TAG, "✅ Flag de provisionamento marcada como completa")
         } catch (e: Exception) {
-            Log.e(TAG, "Error launching MainActivity", e)
-            
-            // Fallback: try to launch via package manager
-            val fallbackIntent = packageManager.getLaunchIntentForPackage(packageName)
-            fallbackIntent?.let {
-                it.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
-                it.putExtra("provisioning_completed", true)
-                startActivity(it)
-            }
+            Log.e(TAG, "Erro ao marcar provisionamento: ${e.message}")
         }
     }
 }
