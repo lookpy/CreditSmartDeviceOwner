@@ -20,6 +20,9 @@ Especificações de API, endpoints e integração com backend CDC.
 
 | Documento | Descrição |
 |-----------|-----------|
+| **BACKEND_INTEGRATION_GUIDE.md** | ⭐ **NOVO** Guia completo de integração (IMEI + Telefones) |
+| **IMEI_VALIDATION_SPEC.md** | ⭐ **NOVO** Validação híbrida de IMEI |
+| **PHONE_NUMBER_COLLECTION_SPEC.md** | ⭐ **NOVO** Coleta de números de telefone |
 | **BACKEND_REQUIREMENTS.md** | Requisitos do backend |
 | **API_BACKEND_REQUIREMENTS.md** | Especificação de APIs |
 | **INTEGRACAO_BACKEND_OFICIAL.md** | Guia completo de integração |
@@ -91,9 +94,12 @@ Documentos obsoletos mantidos para referência histórica.
 3. **QR Code não funciona?** → `qr-code/QR_CODE_TROUBLESHOOTING.md`
 
 ### Para Backend:
-1. **Implementar QR Code?** → `qr-code/QR_CODE_BACKEND_INTEGRATION.md`
-2. **APIs necessárias?** → `backend/API_BACKEND_REQUIREMENTS.md`
-3. **Push notifications?** → `backend/BACKEND_PUSH_NOTIFICATIONS_DOCUMENTATION.md`
+1. **Novas funcionalidades?** → `backend/BACKEND_INTEGRATION_GUIDE.md` ⭐
+2. **Validação IMEI?** → `backend/IMEI_VALIDATION_SPEC.md` ⭐
+3. **Coleta de telefones?** → `backend/PHONE_NUMBER_COLLECTION_SPEC.md` ⭐
+4. **Implementar QR Code?** → `qr-code/QR_CODE_BACKEND_INTEGRATION.md`
+5. **APIs necessárias?** → `backend/API_BACKEND_REQUIREMENTS.md`
+6. **Push notifications?** → `backend/BACKEND_PUSH_NOTIFICATIONS_DOCUMENTATION.md`
 
 ### Para Testes:
 1. **Testar Device Owner?** → `features/DEVICE_OWNER_COMPLETO.md`
@@ -124,5 +130,5 @@ adb logcat | grep CDC
 
 ---
 
-**Última atualização:** 20 de Novembro de 2025  
+**Última atualização:** 07 de Dezembro de 2024  
 **Versão do App:** 1.0.0
