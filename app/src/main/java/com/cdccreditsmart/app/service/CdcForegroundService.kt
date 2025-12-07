@@ -112,9 +112,11 @@ class CdcForegroundService : Service(), ScreenStateListener {
     @Volatile
     private var isShuttingDown = false
     
-    // CORREÇÃO: Flag para prevenir múltiplas inicializações
+    // CORREÇÃO: Flags separadas para diferentes estágios de inicialização
     @Volatile
-    private var isServicesInitialized = false
+    private var isBaseServicesInitialized = false  // SettingsGuard, WorkPolicies
+    @Volatile
+    private var isMdmInitialized = false           // MdmCommandReceiver, HeartbeatManager, WebSocket
     private val initializationLock = Any()
     
     override fun onCreate() {
@@ -189,7 +191,8 @@ class CdcForegroundService : Service(), ScreenStateListener {
                 return
             }
             isShuttingDown = true
-            isServicesInitialized = false  // Resetar para permitir reinicialização após cleanup
+            isBaseServicesInitialized = false  // Resetar para permitir reinicialização após cleanup
+            isMdmInitialized = false
         }
         
         Log.i(TAG, "🧹 Iniciando cleanup seguro de todos os componentes...")
@@ -496,14 +499,6 @@ class CdcForegroundService : Service(), ScreenStateListener {
     }
     
     private fun initializeServices() {
-        synchronized(initializationLock) {
-            if (isServicesInitialized) {
-                Log.d(TAG, "⏳ Serviços já inicializados - ignorando chamada duplicada")
-                return
-            }
-            isServicesInitialized = true
-        }
-        
         serviceScope.launch {
             try {
                 Log.i(TAG, "🔧 ========================================")
@@ -520,9 +515,32 @@ class CdcForegroundService : Service(), ScreenStateListener {
                     return@launch
                 }
                 
-                applyWorkPolicies()
+                // ═══════════════════════════════════════════════════════════════════════════════
+                // FASE 1: SERVIÇOS BASE (SettingsGuard, WorkPolicies) - Sempre inicializar
+                // ═══════════════════════════════════════════════════════════════════════════════
+                synchronized(initializationLock) {
+                    if (!isBaseServicesInitialized) {
+                        isBaseServicesInitialized = true
+                        Log.i(TAG, "🔧 Inicializando serviços base (SettingsGuard, WorkPolicies)...")
+                    } else {
+                        Log.d(TAG, "✅ Serviços base já inicializados")
+                    }
+                }
                 
-                startSettingsGuard()
+                if (isBaseServicesInitialized && settingsGuard == null) {
+                    applyWorkPolicies()
+                    startSettingsGuard()
+                }
+                
+                // ═══════════════════════════════════════════════════════════════════════════════
+                // FASE 2: SERVIÇOS MDM (dependem de autenticação)
+                // ═══════════════════════════════════════════════════════════════════════════════
+                synchronized(initializationLock) {
+                    if (isMdmInitialized) {
+                        Log.d(TAG, "✅ MDM já inicializado - ignorando chamada duplicada")
+                        return@launch
+                    }
+                }
                 
                 delay(500)
                 
@@ -546,9 +564,10 @@ class CdcForegroundService : Service(), ScreenStateListener {
                 
                 if (authToken.isNullOrBlank() || contractCode.isNullOrBlank()) {
                     Log.i(TAG, "📱 ========================================")
-                    Log.i(TAG, "📱 AGUARDANDO PAIRING - SERVIÇO EM STANDBY")
+                    Log.i(TAG, "📱 AGUARDANDO PAIRING - MDM EM STANDBY")
                     Log.i(TAG, "📱 O usuário ainda não fez o pareamento inicial")
                     Log.i(TAG, "📱 Serviços MDM serão ativados após inserir código do contrato")
+                    Log.i(TAG, "📱 NOTA: isMdmInitialized permanece FALSE para permitir reinicialização")
                     Log.i(TAG, "📱 ========================================")
                     return@launch
                 }
@@ -577,6 +596,15 @@ class CdcForegroundService : Service(), ScreenStateListener {
                         Log.e(TAG, "⚠️ MDM será inicializado quando identificador estiver disponível")
                         return@launch
                     }
+                }
+                
+                // Marcar MDM como inicializado AGORA (após validar tokens)
+                synchronized(initializationLock) {
+                    if (isMdmInitialized) {
+                        Log.d(TAG, "✅ MDM foi inicializado por outra thread - ignorando")
+                        return@launch
+                    }
+                    isMdmInitialized = true
                 }
                 
                 Log.i(TAG, "🔧 ========================================")
@@ -649,11 +677,19 @@ class CdcForegroundService : Service(), ScreenStateListener {
                 
                 ensureApkPreloaded()
                 
-                Log.i(TAG, "✅ Todos os serviços inicializados com sucesso")
+                Log.i(TAG, "✅ Todos os serviços MDM inicializados com sucesso")
                 
             } catch (e: Exception) {
                 Log.e(TAG, "❌ Erro ao inicializar serviços", e)
                 Log.e(TAG, "❌ Stack trace: ${e.stackTraceToString()}")
+                
+                // CORREÇÃO: Resetar flag para permitir retry em caso de falha
+                synchronized(initializationLock) {
+                    if (mdmReceiver == null && heartbeatManager == null) {
+                        Log.w(TAG, "⚠️ MDM não foi inicializado - resetando flag para retry")
+                        isMdmInitialized = false
+                    }
+                }
             }
         }
     }

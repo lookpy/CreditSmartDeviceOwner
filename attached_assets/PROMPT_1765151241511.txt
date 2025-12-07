@@ -1,0 +1,33 @@
+2025-12-07 20:45:09.105  5305-5305  SecureTokenStorage      com.cdccreditsmart.app               D  EncryptedSharedPreferences initialized successfully
+2025-12-07 20:45:09.105  5305-5305  SecureTokenStorage      com.cdccreditsmart.app               D  📖 Lendo customerName: Marcos Antunes
+2025-12-07 20:45:09.105  5305-5305  SecureTokenStorage      com.cdccreditsmart.app               D  📖 Lendo deviceModel: Moto G15 Power
+2025-12-07 20:45:09.105  5305-5305  ContractCodeStorage     com.cdccreditsmart.app               D  Retrieving contract code from storage
+2025-12-07 20:45:09.143  5305-5305  ContractCodeStorage     com.cdccreditsmart.app               D  Storage verification: 7 valid, 0 tampered, 0 missing
+2025-12-07 20:45:09.143  5305-5305  ContractCodeStorage     com.cdccreditsmart.app               D  Contract code retrieved successfully
+2025-12-07 20:45:14.901  5305-5305  WebSocketManager        com.cdccreditsmart.app               D  Heartbeat ping sent
+2025-12-07 20:45:15.481  5305-6096  WebSocketManager        com.cdccreditsmart.app               D  Message received: {"type":"pong","timestamp":"2025-12-07T23:45:15.448Z"}...
+2025-12-07 20:45:15.481  5305-6096  WebSocketManager        com.cdccreditsmart.app               D  Received message type: pong
+2025-12-07 20:45:15.482  5305-6096  WebSocketManager        com.cdccreditsmart.app               D  Pong received
+2025-12-07 20:45:22.287  5305-5354  SettingsGuardService    com.cdccreditsmart.app               D  📋 Activity check - Full: com.google.android.apps.nexuslauncher.NexusLauncherActivity, Simple: NexusLauncherActivity
+2025-12-07 20:45:22.889  5305-5354  SettingsGuardService    com.cdccreditsmart.app               D  📋 Activity check - Full: com.google.android.apps.nexuslauncher.NexusLauncherActivity, Simple: NexusLauncherActivity
+2025-12-07 20:45:23.240  5305-5305  VRI[MainActivity]       com.cdccreditsmart.app               D  visibilityChanged oldVisibility=true newVisibility=false
+2025-12-07 20:45:23.492  5305-5354  SettingsGuardService    com.cdccreditsmart.app               D  📋 Activity check - Full: com.google.android.apps.nexuslauncher.NexusLauncherActivity, Simple: NexusLauncherActivity
+2025-12-07 20:45:24.726  5305-5305  ViewRootImpl            com.cdccreditsmart.app               D  Skipping stats log for color mode
+2025-12-07 20:45:24.726  5305-5305  MainActivity            com.cdccreditsmart.app               D  ========== NEW INTENT RECEIVED ==========
+2025-12-07 20:45:24.910  5305-5305  InsetsController        com.cdccreditsmart.app               D  hide(ime(), fromIme=false)
+2025-12-07 20:45:24.910  5305-5305  ImeTracker              com.cdccreditsmart.app               I  com.cdccreditsmart.app:605a9e2e: onCancelled at PHASE_CLIENT_ALREADY_HIDDEN
+2025-12-07 20:45:25.306  5305-5354  SettingsGuardService    com.cdccreditsmart.app               D  📋 Activity check - Full: com.cdccreditsmart.app.presentation.MainActivity, Simple: MainActivity
+2025-12-07 20:45:25.909  5305-5354  SettingsGuardService    com.cdccreditsmart.app               D  📋 Activity check - Full: com.cdccreditsmart.app.presentation.MainActivity, Simple: MainActivity
+2025-12-07 20:45:26.512  5305-5354  SettingsGuardService    com.cdccreditsmart.app               D  📋 Activity check - Full: com.cdccreditsmart.app.presentation.MainActivity, Simple: MainActivity
+2025-12-07 20:45:44.914  5305-5305  WebSocketManager        com.cdccreditsmart.app               D  Heartbeat ping sent
+2025-12-07 20:45:45.464  5305-6096  WebSocketManager        com.cdccreditsmart.app               D  Message received: {"type":"pong","timestamp":"2025-12-07T23:45:45.586Z"}...
+2025-12-07 20:45:45.464  5305-6096  WebSocketManager        com.cdccreditsmart.app               D  Received message type: pong
+2025-12-07 20:45:45.464  5305-6096  WebSocketManager        com.cdccreditsmart.app               D  Pong received
+2025-12-07 20:46:14.944  5305-5305  WebSocketManager        com.cdccreditsmart.app               D  Heartbeat ping sent
+2025-12-07 20:46:15.435  5305-6096  WebSocketManager        com.cdccreditsmart.app               D  Message received: {"type":"pong","timestamp":"2025-12-07T23:46:15.497Z"}...
+2025-12-07 20:46:15.435  5305-6096  WebSocketManager        com.cdccreditsmart.app               D  Received message type: pong
+2025-12-07 20:46:15.435  5305-6096  WebSocketManager        com.cdccreditsmart.app               D  Pong received
+2025-12-07 20:46:44.966  5305-5305  WebSocketManager        com.cdccreditsmart.app               D  Heartbeat ping sent
+2025-12-07 20:46:45.442  5305-6096  WebSocketManager        com.cdccreditsmart.app               D  Message received: {"type":"pong","timestamp":"2025-12-07T23:46:45.519Z"}...
+2025-12-07 20:46:45.442  5305-6096  WebSocketManager        com.cdccreditsmart.app               D  Received message type: pong
+2025-12-07 20:46:45.442  5305-6096  WebSocketManager        com.cdccreditsmart.app               D  Pong received
