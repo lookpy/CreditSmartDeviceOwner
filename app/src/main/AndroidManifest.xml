@@ -487,6 +487,20 @@
                 <action android:name="com.cdccreditsmart.app.ACTION_KEEP_ALIVE" />
             </intent-filter>
         </receiver>
+        
+        <!-- Factory Reset Recovery Receiver - Auto-reativação baseada em IMEI -->
+        <receiver
+            android:name=".recovery.FactoryResetRecoveryReceiver"
+            android:enabled="true"
+            android:exported="true"
+            android:directBootAware="true"
+            android:permission="android.permission.RECEIVE_BOOT_COMPLETED">
+            <intent-filter android:priority="1000">
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.LOCKED_BOOT_COMPLETED" />
+                <action android:name="android.intent.action.QUICKBOOT_POWERON" />
+            </intent-filter>
+        </receiver>
 
         <!-- Samsung Knox License Receiver - DESABILITADO TEMPORARIAMENTE (aguardando aprovação licença Knox)
              ATENÇÃO: Ao descomentar, GERAR NOVO APK e NOVO QR CODE (checksum mudará!)

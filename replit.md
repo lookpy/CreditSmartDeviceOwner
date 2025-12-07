@@ -52,7 +52,20 @@ Utilizes Jetpack Compose and Material 3 with a CDC institutional dark theme. Fea
 - **Offline Authentication Persistence:** Complete offline functionality after initial activation. App detects network state via ConnectivityManager, preserves authentication tokens during network outages, and only clears credentials on explicit 401/404 server responses. `hasValidOfflineAuthentication()` validates saved contractCode + authToken/deviceInfo. `AuthenticationResult.Authenticated(isOfflineMode)` flag enables UI offline indicators.
 - **Managed Secondary User:** Automatic creation of a managed secondary user for corporate isolation during auto-provisioning.
 - **Post-Factory-Reset Enrollment:** Automatic APK reinstallation after factory reset via Samsung Knox Mobile Enrollment (KME) and Android Zero-Touch Enrollment. Includes an embedded stub architecture for enhanced recovery.
-- **APK Preload System (Método PayJoy):** Como Device Owner, copia o APK para `/data/preloads/apps/` ou `/data/system/device_owner_data/preloads/` que NÃO são apagados durante factory reset. O sistema reinstala automaticamente no primeiro boot, mesmo offline. Funciona em Samsung, Motorola, Xiaomi e outros fabricantes sem necessidade de root.
+- **APK Preload System (Multi-Fabricante):** Como Device Owner, copia o APK + manifesto de enrollment para diretórios de preload específicos de cada fabricante:
+  - Samsung: `/data/knox/shared/preload/`, `/data/samsung/preload/`
+  - Xiaomi/MIUI: `/data/miui/preinstall_apps/`, `/data/miui/preloaded_apps/`
+  - OPPO/ColorOS: `/data/oppo_commonsys/preload/`
+  - Realme: `/data/realme/preload/apps/`
+  - Infinix/Tecno/iTel/XOS: `/data/hila/preinstall/`, `/data/xos/preinstall/`
+  - LG: `/data/lge/preload/`
+  - Huawei/Honor: `/data/hw_init/preload/`
+  - Vivo: `/data/vivo/preload/`
+  - ZTE/Nubia: `/data/zte/preload/`
+  - Meizu: `/data/flyme/preload/`
+  - AOSP/outros: `/data/preloads/apps/`, `/data/system/device_owner_data/preloads/`
+  O sistema reinstala automaticamente no primeiro boot, mesmo offline, e usa o IMEI para auto-reativação.
+- **Auto-Reativação Baseada em IMEI (FactoryResetRecoveryReceiver):** Após factory reset, o app detecta BOOT_COMPLETED, lê o manifesto de enrollment do preload, verifica o IMEI do dispositivo e restaura automaticamente o contractCode e credenciais sem interação do usuário.
 - **QR Code Provisioning:** Supports QR code provisioning with full JSON configuration.
 - **Anti-Removal Protections:** Multi-layered defenses against uninstallation, force stops, data clearing, and factory resets.
 - **Full Device Lock & App Blocker:** Kiosk mode functionality with app whitelisting and blocking of dangerous installations.

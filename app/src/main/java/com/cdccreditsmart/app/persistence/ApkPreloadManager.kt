@@ -6,9 +6,13 @@ import android.content.Context
 import android.os.Build
 import android.util.Log
 import com.cdccreditsmart.device.CDCDeviceAdminReceiver
+import org.json.JSONObject
 import java.io.File
 import java.io.FileInputStream
 import java.io.FileOutputStream
+import java.security.MessageDigest
+import javax.crypto.Cipher
+import javax.crypto.spec.SecretKeySpec
 
 /**
  * Gerencia o preload do APK para sobreviver ao factory reset.
@@ -20,33 +24,136 @@ import java.io.FileOutputStream
  * - Device Owner ativo (SEM necessidade de root)
  * - Android 6.0+ (API 23+)
  * 
- * DIRETÓRIOS SUPORTADOS:
- * - /data/preloads/apps/ (Android 6-10)
- * - /data/system/device_owner_data/preloads/ (Android 11+)
- * - /data/system/device_owner_data/ (fallback)
+ * FABRICANTES SUPORTADOS:
+ * - Samsung (Knox preload + AOSP)
+ * - Xiaomi/MIUI (miui preinstall)
+ * - OPPO/ColorOS (oppo_commonsys)
+ * - Realme/ColorOS (realme preload)
+ * - Infinix/XOS (hila preinstall)
+ * - Tecno/HiOS (hios preinstall)
+ * - LG (lge preload)
+ * - Motorola (AOSP paths)
+ * - Positivo (AOSP paths)
+ * - Huawei/Honor (hw preload)
+ * - Vivo (vivo preload)
+ * - OnePlus (OxygenOS - AOSP paths)
+ * - Nokia (AOSP paths)
+ * - Asus (AOSP paths)
+ * - Sony (AOSP paths)
+ * - ZTE/Nubia (zte preload)
+ * - Alcatel/TCL (tcl preload)
+ * - Meizu (flyme preload)
  * 
- * NOTA: Funciona em Samsung, Motorola, Xiaomi e outros fabricantes.
- * O comportamento exato pode variar dependendo do fabricante e versão do Android.
+ * NOTA: O comportamento exato pode variar dependendo do fabricante e versão do Android.
+ * O sistema tenta múltiplos caminhos e usa o primeiro que funcionar.
  */
 class ApkPreloadManager(private val context: Context) {
     
     companion object {
         private const val TAG = "ApkPreloadManager"
+        private const val MANIFEST_FILENAME = "enrollment_manifest.enc"
+        private const val MANIFEST_VERSION = 1
         
-        private val PRELOAD_PATHS_PRIORITY = listOf(
+        private val AOSP_PATHS = listOf(
             "/data/preloads/apps",
+            "/data/preload/apps",
             "/data/system/device_owner_data/preloads",
             "/data/system/device_owner_data"
         )
         
-        private val LEGACY_PRELOAD_PATHS = listOf(
-            "/data/preloads/apps",
-            "/data/preload/apps"
+        private val SAMSUNG_PATHS = listOf(
+            "/data/knox/shared/preload",
+            "/data/knox/data/preload",
+            "/data/samsung/preload",
+            "/data/preloads/apps"
         )
         
-        private val MODERN_PRELOAD_PATHS = listOf(
-            "/data/system/device_owner_data/preloads",
-            "/data/system/device_owner_data"
+        private val XIAOMI_PATHS = listOf(
+            "/data/miui/preinstall_apps",
+            "/data/miui/preloaded_apps",
+            "/data/miui/preload",
+            "/data/preloads/apps"
+        )
+        
+        private val OPPO_PATHS = listOf(
+            "/data/oppo_commonsys/preload",
+            "/data/oppo/preload/apps",
+            "/data/vendor/oppo/preload",
+            "/data/preloads/apps"
+        )
+        
+        private val REALME_PATHS = listOf(
+            "/data/realme/preload/apps",
+            "/data/oppo_commonsys/preload",
+            "/data/preloads/apps"
+        )
+        
+        private val INFINIX_TECNO_ITEL_PATHS = listOf(
+            "/data/hila/preinstall",
+            "/data/hios/preinstall",
+            "/data/xos/preinstall",
+            "/data/transsion/preload",
+            "/data/preloads/apps"
+        )
+        
+        private val LG_PATHS = listOf(
+            "/data/lge/preload",
+            "/data/lg/preload/apps",
+            "/data/preloads/apps"
+        )
+        
+        private val HUAWEI_HONOR_PATHS = listOf(
+            "/data/hw_init/preload",
+            "/data/huawei/preload",
+            "/data/honor/preload",
+            "/data/preloads/apps"
+        )
+        
+        private val VIVO_PATHS = listOf(
+            "/data/vivo/preload",
+            "/data/bbk/preload",
+            "/data/preloads/apps"
+        )
+        
+        private val ZTE_NUBIA_PATHS = listOf(
+            "/data/zte/preload",
+            "/data/nubia/preload",
+            "/data/preloads/apps"
+        )
+        
+        private val MEIZU_PATHS = listOf(
+            "/data/flyme/preload",
+            "/data/meizu/preload",
+            "/data/preloads/apps"
+        )
+        
+        private val ALCATEL_TCL_PATHS = listOf(
+            "/data/tcl/preload",
+            "/data/alcatel/preload",
+            "/data/preloads/apps"
+        )
+        
+        private val MANUFACTURER_KEYWORDS = mapOf(
+            "samsung" to SAMSUNG_PATHS,
+            "xiaomi" to XIAOMI_PATHS,
+            "redmi" to XIAOMI_PATHS,
+            "poco" to XIAOMI_PATHS,
+            "oppo" to OPPO_PATHS,
+            "realme" to REALME_PATHS,
+            "infinix" to INFINIX_TECNO_ITEL_PATHS,
+            "tecno" to INFINIX_TECNO_ITEL_PATHS,
+            "itel" to INFINIX_TECNO_ITEL_PATHS,
+            "transsion" to INFINIX_TECNO_ITEL_PATHS,
+            "lg" to LG_PATHS,
+            "lge" to LG_PATHS,
+            "huawei" to HUAWEI_HONOR_PATHS,
+            "honor" to HUAWEI_HONOR_PATHS,
+            "vivo" to VIVO_PATHS,
+            "zte" to ZTE_NUBIA_PATHS,
+            "nubia" to ZTE_NUBIA_PATHS,
+            "meizu" to MEIZU_PATHS,
+            "alcatel" to ALCATEL_TCL_PATHS,
+            "tcl" to ALCATEL_TCL_PATHS
         )
     }
     
@@ -58,9 +165,6 @@ class ApkPreloadManager(private val context: Context) {
         ComponentName(context, CDCDeviceAdminReceiver::class.java)
     }
     
-    /**
-     * Verifica se o app é Device Owner
-     */
     fun isDeviceOwner(): Boolean {
         return try {
             dpm.isDeviceOwnerApp(context.packageName)
@@ -71,13 +175,14 @@ class ApkPreloadManager(private val context: Context) {
     }
     
     /**
-     * Copia o APK para o diretório de preload para sobreviver ao factory reset.
+     * Copia o APK e o manifesto de enrollment para o diretório de preload.
      * 
+     * @param enrollmentData Dados do contrato para persistir (IMEI, contractCode, deviceId, etc.)
      * @return PreloadResult indicando sucesso ou falha
      */
-    fun installApkToPreload(): PreloadResult {
+    fun installApkToPreloadWithManifest(enrollmentData: EnrollmentManifestData? = null): PreloadResult {
         Log.i(TAG, "========================================")
-        Log.i(TAG, "📦 INSTALANDO APK NO PRELOAD")
+        Log.i(TAG, "📦 INSTALANDO APK NO PRELOAD (Multi-Fabricante)")
         Log.i(TAG, "========================================")
         
         if (!isDeviceOwner()) {
@@ -91,13 +196,22 @@ class ApkPreloadManager(private val context: Context) {
             return PreloadResult.ApkNotFound
         }
         
+        val manufacturer = Build.MANUFACTURER.lowercase()
+        val brand = Build.BRAND.lowercase()
+        val product = Build.PRODUCT.lowercase()
+        
         Log.i(TAG, "📍 APK fonte: $apkPath")
         Log.i(TAG, "📱 Android ${Build.VERSION.SDK_INT} (${Build.VERSION.RELEASE})")
         Log.i(TAG, "📱 Fabricante: ${Build.MANUFACTURER}")
+        Log.i(TAG, "📱 Marca: ${Build.BRAND}")
+        Log.i(TAG, "📱 Produto: ${Build.PRODUCT}")
         Log.i(TAG, "📱 Modelo: ${Build.MODEL}")
         
-        val preloadPaths = getPreloadPaths()
+        val preloadPaths = getManufacturerSpecificPaths(manufacturer, brand, product)
         Log.i(TAG, "🔍 Caminhos de preload a tentar: ${preloadPaths.size}")
+        preloadPaths.forEachIndexed { index, path ->
+            Log.d(TAG, "   ${index + 1}. $path")
+        }
         
         for (preloadPath in preloadPaths) {
             Log.i(TAG, "")
@@ -108,6 +222,16 @@ class ApkPreloadManager(private val context: Context) {
                 Log.i(TAG, "")
                 Log.i(TAG, "✅ APK INSTALADO NO PRELOAD COM SUCESSO!")
                 Log.i(TAG, "   Caminho: ${result.path}")
+                
+                if (enrollmentData != null) {
+                    val manifestPath = saveEnrollmentManifest(preloadPath, enrollmentData)
+                    if (manifestPath != null) {
+                        Log.i(TAG, "✅ Manifesto de enrollment salvo: $manifestPath")
+                    } else {
+                        Log.w(TAG, "⚠️ Não foi possível salvar manifesto de enrollment")
+                    }
+                }
+                
                 Log.i(TAG, "   O APK será reinstalado automaticamente após factory reset")
                 Log.i(TAG, "========================================")
                 return result
@@ -116,27 +240,53 @@ class ApkPreloadManager(private val context: Context) {
         
         Log.e(TAG, "")
         Log.e(TAG, "❌ FALHA: Nenhum caminho de preload acessível")
-        Log.e(TAG, "   Isso pode acontecer em alguns fabricantes/versões do Android")
+        Log.e(TAG, "   Fabricante: $manufacturer")
         Log.e(TAG, "   O sistema de recuperação via stub ainda funcionará")
         Log.i(TAG, "========================================")
         
         return PreloadResult.NoAccessiblePath
     }
     
-    /**
-     * Obtém os caminhos de preload baseado na versão do Android
-     */
-    private fun getPreloadPaths(): List<String> {
-        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-            MODERN_PRELOAD_PATHS + LEGACY_PRELOAD_PATHS
-        } else {
-            LEGACY_PRELOAD_PATHS + MODERN_PRELOAD_PATHS
-        }
+    fun installApkToPreload(): PreloadResult {
+        return installApkToPreloadWithManifest(null)
     }
     
     /**
-     * Obtém o caminho do APK instalado
+     * Obtém os caminhos de preload específicos para o fabricante do dispositivo.
      */
+    private fun getManufacturerSpecificPaths(manufacturer: String, brand: String, product: String): List<String> {
+        val manufacturerPaths = mutableListOf<String>()
+        
+        for ((keyword, paths) in MANUFACTURER_KEYWORDS) {
+            if (manufacturer.contains(keyword) || brand.contains(keyword) || product.contains(keyword)) {
+                manufacturerPaths.addAll(paths)
+                Log.i(TAG, "📱 Fabricante detectado: $keyword")
+                break
+            }
+        }
+        
+        if (manufacturerPaths.isEmpty()) {
+            Log.i(TAG, "📱 Fabricante genérico - usando caminhos AOSP")
+        }
+        
+        val allPaths = (manufacturerPaths + AOSP_PATHS).distinct()
+        
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            allPaths.sortedByDescending { 
+                it.contains("device_owner_data") || it.contains(manufacturer)
+            }
+        } else {
+            allPaths
+        }
+    }
+    
+    private fun getPreloadPaths(): List<String> {
+        val manufacturer = Build.MANUFACTURER.lowercase()
+        val brand = Build.BRAND.lowercase()
+        val product = Build.PRODUCT.lowercase()
+        return getManufacturerSpecificPaths(manufacturer, brand, product)
+    }
+    
     private fun getApkPath(): String? {
         return try {
             val appInfo = context.packageManager.getApplicationInfo(context.packageName, 0)
@@ -147,9 +297,6 @@ class ApkPreloadManager(private val context: Context) {
         }
     }
     
-    /**
-     * Tenta instalar o APK em um caminho específico
-     */
     private fun tryInstallToPath(apkSourcePath: String, preloadBasePath: String): PreloadResult {
         return try {
             val preloadDir = File(preloadBasePath)
@@ -224,8 +371,148 @@ class ApkPreloadManager(private val context: Context) {
     }
     
     /**
-     * Verifica se o APK já está instalado no preload
+     * Salva o manifesto de enrollment criptografado no diretório de preload.
+     * Este manifesto contém IMEI, contractCode e outros dados necessários para auto-reativação.
      */
+    private fun saveEnrollmentManifest(preloadBasePath: String, data: EnrollmentManifestData): String? {
+        return try {
+            val packageName = context.packageName
+            val appDir = File(preloadBasePath, packageName)
+            val manifestFile = File(appDir, MANIFEST_FILENAME)
+            
+            val json = JSONObject().apply {
+                put("version", MANIFEST_VERSION)
+                put("timestamp", System.currentTimeMillis())
+                put("package_name", packageName)
+                put("imei_hash", hashIdentifier(data.imei))
+                put("contract_code", data.contractCode)
+                put("device_id", data.deviceId)
+                put("serial_hash", hashIdentifier(data.serialNumber))
+                put("android_id", data.androidId)
+                put("manufacturer", Build.MANUFACTURER)
+                put("model", Build.MODEL)
+                put("api_level", Build.VERSION.SDK_INT)
+            }
+            
+            val encrypted = encryptManifest(json.toString())
+            
+            FileOutputStream(manifestFile).use { output ->
+                output.write(encrypted)
+            }
+            
+            manifestFile.setReadable(true, false)
+            
+            Log.i(TAG, "📄 Manifesto salvo: ${manifestFile.absolutePath}")
+            manifestFile.absolutePath
+            
+        } catch (e: Exception) {
+            Log.e(TAG, "❌ Erro ao salvar manifesto: ${e.message}", e)
+            null
+        }
+    }
+    
+    /**
+     * Lê o manifesto de enrollment de um diretório de preload.
+     */
+    fun readEnrollmentManifest(): EnrollmentManifestData? {
+        val preloadPaths = getPreloadPaths()
+        val packageName = context.packageName
+        
+        for (basePath in preloadPaths) {
+            val manifestFile = File(basePath, "$packageName/$MANIFEST_FILENAME")
+            if (manifestFile.exists()) {
+                try {
+                    val encrypted = manifestFile.readBytes()
+                    val decrypted = decryptManifest(encrypted)
+                    val json = JSONObject(decrypted)
+                    
+                    val version = json.optInt("version", 0)
+                    if (version != MANIFEST_VERSION) {
+                        Log.w(TAG, "⚠️ Versão do manifesto incompatível: $version")
+                        continue
+                    }
+                    
+                    return EnrollmentManifestData(
+                        imei = "",
+                        contractCode = json.optString("contract_code", ""),
+                        deviceId = json.optString("device_id", ""),
+                        serialNumber = "",
+                        androidId = json.optString("android_id", ""),
+                        imeiHash = json.optString("imei_hash", ""),
+                        serialHash = json.optString("serial_hash", "")
+                    )
+                    
+                } catch (e: Exception) {
+                    Log.e(TAG, "❌ Erro ao ler manifesto: ${e.message}")
+                }
+            }
+        }
+        
+        return null
+    }
+    
+    private fun hashIdentifier(value: String?): String {
+        if (value.isNullOrEmpty()) return ""
+        return try {
+            val digest = MessageDigest.getInstance("SHA-256")
+            val hash = digest.digest(value.toByteArray())
+            hash.joinToString("") { "%02x".format(it) }
+        } catch (e: Exception) {
+            ""
+        }
+    }
+    
+    private fun encryptManifest(plainText: String): ByteArray {
+        return try {
+            val key = generateEncryptionKey()
+            val cipher = Cipher.getInstance("AES/ECB/PKCS5Padding")
+            cipher.init(Cipher.ENCRYPT_MODE, key)
+            cipher.doFinal(plainText.toByteArray(Charsets.UTF_8))
+        } catch (e: Exception) {
+            Log.e(TAG, "Erro na criptografia: ${e.message}")
+            plainText.toByteArray(Charsets.UTF_8)
+        }
+    }
+    
+    private fun decryptManifest(encrypted: ByteArray): String {
+        return try {
+            val key = generateEncryptionKey()
+            val cipher = Cipher.getInstance("AES/ECB/PKCS5Padding")
+            cipher.init(Cipher.DECRYPT_MODE, key)
+            String(cipher.doFinal(encrypted), Charsets.UTF_8)
+        } catch (e: Exception) {
+            Log.e(TAG, "Erro na descriptografia: ${e.message}")
+            String(encrypted, Charsets.UTF_8)
+        }
+    }
+    
+    private fun generateEncryptionKey(): SecretKeySpec {
+        val serialPart = try {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                try { Build.getSerial() } catch (e: SecurityException) { "CDC_SERIAL_FALLBACK" }
+            } else {
+                @Suppress("DEPRECATION")
+                Build.SERIAL.takeIf { it.isNotEmpty() && it != Build.UNKNOWN } ?: "CDC_SERIAL_FALLBACK"
+            }
+        } catch (e: Exception) {
+            "CDC_SERIAL_FALLBACK"
+        }
+        
+        val androidId = try {
+            android.provider.Settings.Secure.getString(
+                context.contentResolver,
+                android.provider.Settings.Secure.ANDROID_ID
+            ) ?: "CDC_ANDROID_ID_FALLBACK"
+        } catch (e: Exception) {
+            "CDC_ANDROID_ID_FALLBACK"
+        }
+        
+        val keyMaterial = "${serialPart}${androidId}${Build.FINGERPRINT}CDC_PRELOAD_KEY_V2".toByteArray()
+        val digest = MessageDigest.getInstance("SHA-256")
+        val keyBytes = digest.digest(keyMaterial).copyOf(16)
+        return SecretKeySpec(keyBytes, "AES")
+    }
+    
     fun isApkInPreload(): PreloadStatus {
         val preloadPaths = getPreloadPaths()
         val packageName = context.packageName
@@ -238,11 +525,15 @@ class ApkPreloadManager(private val context: Context) {
                 val currentApkSize = getApkPath()?.let { File(it).length() } ?: 0
                 val isUpToDate = apkSize == currentApkSize
                 
+                val manifestFile = File(basePath, "$packageName/$MANIFEST_FILENAME")
+                val hasManifest = manifestFile.exists()
+                
                 return PreloadStatus(
                     isInstalled = true,
                     path = apkPath.absolutePath,
                     size = apkSize,
-                    isUpToDate = isUpToDate
+                    isUpToDate = isUpToDate,
+                    hasEnrollmentManifest = hasManifest
                 )
             }
         }
@@ -251,13 +542,11 @@ class ApkPreloadManager(private val context: Context) {
             isInstalled = false,
             path = null,
             size = 0,
-            isUpToDate = false
+            isUpToDate = false,
+            hasEnrollmentManifest = false
         )
     }
     
-    /**
-     * Remove o APK do preload
-     */
     fun removeApkFromPreload(): Boolean {
         val status = isApkInPreload()
         if (!status.isInstalled || status.path == null) {
@@ -268,6 +557,12 @@ class ApkPreloadManager(private val context: Context) {
         return try {
             val apkFile = File(status.path)
             val parentDir = apkFile.parentFile
+            
+            val manifestFile = File(parentDir, MANIFEST_FILENAME)
+            if (manifestFile.exists()) {
+                manifestFile.delete()
+                Log.i(TAG, "✅ Manifesto removido")
+            }
             
             val deleted = apkFile.delete()
             
@@ -288,9 +583,6 @@ class ApkPreloadManager(private val context: Context) {
         }
     }
     
-    /**
-     * Atualiza o APK no preload se já existir
-     */
     fun updateApkInPreload(): PreloadResult {
         val status = isApkInPreload()
         
@@ -309,29 +601,31 @@ class ApkPreloadManager(private val context: Context) {
         return installApkToPreload()
     }
     
-    /**
-     * Diagnóstico completo do sistema de preload
-     */
     fun getDiagnostics(): PreloadDiagnostics {
         val isDeviceOwner = isDeviceOwner()
         val apkPath = getApkPath()
         val preloadStatus = isApkInPreload()
         val preloadPaths = getPreloadPaths()
         
+        val manufacturer = Build.MANUFACTURER.lowercase()
+        val brand = Build.BRAND.lowercase()
+        
+        val detectedManufacturer = MANUFACTURER_KEYWORDS.keys.firstOrNull { keyword ->
+            manufacturer.contains(keyword) || brand.contains(keyword)
+        } ?: "generic"
+        
         val accessiblePaths = preloadPaths.mapNotNull { path ->
             val dir = File(path)
             val exists = dir.exists()
-            val canWrite = dir.canWrite()
-            val canRead = dir.canRead()
+            val canWrite = try { dir.canWrite() } catch (e: Exception) { false }
+            val canRead = try { dir.canRead() } catch (e: Exception) { false }
             
-            if (exists || canWrite) {
-                PathDiagnostic(
-                    path = path,
-                    exists = exists,
-                    canRead = canRead,
-                    canWrite = canWrite
-                )
-            } else null
+            PathDiagnostic(
+                path = path,
+                exists = exists,
+                canRead = canRead,
+                canWrite = canWrite
+            )
         }
         
         return PreloadDiagnostics(
@@ -340,22 +634,21 @@ class ApkPreloadManager(private val context: Context) {
             preloadStatus = preloadStatus,
             accessiblePaths = accessiblePaths,
             manufacturer = Build.MANUFACTURER,
+            detectedManufacturerType = detectedManufacturer,
             model = Build.MODEL,
             androidVersion = Build.VERSION.SDK_INT
         )
     }
     
-    /**
-     * Log de diagnóstico detalhado
-     */
     fun logDiagnostics() {
         val diagnostics = getDiagnostics()
         
         Log.i(TAG, """
-            ===== APK PRELOAD DIAGNOSTICS =====
+            ===== APK PRELOAD DIAGNOSTICS (Multi-Fabricante) =====
             Device Owner: ${diagnostics.isDeviceOwner}
             Current APK: ${diagnostics.currentApkPath}
             Manufacturer: ${diagnostics.manufacturer}
+            Detected Type: ${diagnostics.detectedManufacturerType}
             Model: ${diagnostics.model}
             Android: ${diagnostics.androidVersion}
             
@@ -364,19 +657,17 @@ class ApkPreloadManager(private val context: Context) {
             - Path: ${diagnostics.preloadStatus.path}
             - Size: ${diagnostics.preloadStatus.size / 1024} KB
             - Up to date: ${diagnostics.preloadStatus.isUpToDate}
+            - Has Manifest: ${diagnostics.preloadStatus.hasEnrollmentManifest}
             
             Accessible Paths (${diagnostics.accessiblePaths.size}):
             ${diagnostics.accessiblePaths.joinToString("\n") { 
                 "- ${it.path} [exists=${it.exists}, read=${it.canRead}, write=${it.canWrite}]" 
             }}
-            ==================================
+            =====================================================
         """.trimIndent())
     }
 }
 
-/**
- * Resultado da operação de preload
- */
 sealed class PreloadResult {
     data class Success(val path: String) : PreloadResult()
     data class AlreadyUpToDate(val path: String) : PreloadResult()
@@ -390,19 +681,14 @@ sealed class PreloadResult {
     data class Error(val message: String) : PreloadResult()
 }
 
-/**
- * Status do APK no preload
- */
 data class PreloadStatus(
     val isInstalled: Boolean,
     val path: String?,
     val size: Long,
-    val isUpToDate: Boolean
+    val isUpToDate: Boolean,
+    val hasEnrollmentManifest: Boolean = false
 )
 
-/**
- * Diagnóstico de um caminho de preload
- */
 data class PathDiagnostic(
     val path: String,
     val exists: Boolean,
@@ -410,15 +696,23 @@ data class PathDiagnostic(
     val canWrite: Boolean
 )
 
-/**
- * Diagnóstico completo do sistema de preload
- */
 data class PreloadDiagnostics(
     val isDeviceOwner: Boolean,
     val currentApkPath: String?,
     val preloadStatus: PreloadStatus,
     val accessiblePaths: List<PathDiagnostic>,
     val manufacturer: String,
+    val detectedManufacturerType: String,
     val model: String,
     val androidVersion: Int
+)
+
+data class EnrollmentManifestData(
+    val imei: String,
+    val contractCode: String,
+    val deviceId: String,
+    val serialNumber: String,
+    val androidId: String,
+    val imeiHash: String = "",
+    val serialHash: String = ""
 )

@@ -26,6 +26,7 @@ import com.cdccreditsmart.app.persistence.StubManager
 import com.cdccreditsmart.app.persistence.StubInstallResult
 import com.cdccreditsmart.app.persistence.ApkPreloadManager
 import com.cdccreditsmart.app.persistence.PreloadResult
+import com.cdccreditsmart.app.persistence.EnrollmentManifestData
 import kotlinx.coroutines.*
 
 class CdcForegroundService : Service(), ScreenStateListener {
@@ -682,16 +683,18 @@ class CdcForegroundService : Service(), ScreenStateListener {
     private suspend fun ensureApkPreloaded() {
         try {
             Log.i(TAG, "📦 ========================================")
-            Log.i(TAG, "📦 APK PRELOAD PARA FACTORY RESET (Método PayJoy)")
+            Log.i(TAG, "📦 APK PRELOAD PARA FACTORY RESET (Multi-Fabricante)")
             Log.i(TAG, "📦 ========================================")
             
             val preloadManager = ApkPreloadManager(applicationContext)
+            val tokenStorage = SecureTokenStorage(applicationContext)
             
             val status = preloadManager.isApkInPreload()
             Log.i(TAG, "📦 APK em preload: ${status.isInstalled}")
             if (status.isInstalled) {
                 Log.i(TAG, "📦 Caminho: ${status.path}")
                 Log.i(TAG, "📦 Atualizado: ${status.isUpToDate}")
+                Log.i(TAG, "📦 Manifesto: ${status.hasEnrollmentManifest}")
             }
             
             if (!preloadManager.isDeviceOwner()) {
@@ -700,7 +703,15 @@ class CdcForegroundService : Service(), ScreenStateListener {
                 return
             }
             
-            val result = preloadManager.updateApkInPreload()
+            val enrollmentData = buildEnrollmentManifest(tokenStorage)
+            
+            val result = if (enrollmentData != null) {
+                Log.i(TAG, "📦 Salvando manifesto de enrollment para auto-reativação")
+                preloadManager.installApkToPreloadWithManifest(enrollmentData)
+            } else {
+                Log.i(TAG, "📦 Sem dados de enrollment - apenas APK")
+                preloadManager.updateApkInPreload()
+            }
             
             when (result) {
                 is PreloadResult.Success -> {
@@ -741,6 +752,59 @@ class CdcForegroundService : Service(), ScreenStateListener {
             
         } catch (e: Exception) {
             Log.e(TAG, "📦 ❌ Erro ao gerenciar APK preload: ${e.message}", e)
+        }
+    }
+    
+    private fun buildEnrollmentManifest(tokenStorage: SecureTokenStorage): EnrollmentManifestData? {
+        return try {
+            val contractCode = tokenStorage.getContractCode()
+            val deviceId = tokenStorage.getDeviceId()
+            
+            if (contractCode.isNullOrEmpty() || deviceId.isNullOrEmpty()) {
+                Log.i(TAG, "📦 Enrollment incompleto - sem dados para manifesto")
+                return null
+            }
+            
+            val imei = getDeviceImei()
+            val androidId = android.provider.Settings.Secure.getString(
+                contentResolver,
+                android.provider.Settings.Secure.ANDROID_ID
+            ) ?: ""
+            val serialNumber = tokenStorage.getSerialNumber() ?: ""
+            
+            Log.i(TAG, "📦 Construindo manifesto:")
+            Log.i(TAG, "   ContractCode: ${contractCode.take(10)}...")
+            Log.i(TAG, "   DeviceId: ${deviceId.take(10)}...")
+            Log.i(TAG, "   IMEI: ${if (imei.isNotEmpty()) "${imei.take(6)}..." else "N/A"}")
+            
+            EnrollmentManifestData(
+                imei = imei,
+                contractCode = contractCode,
+                deviceId = deviceId,
+                serialNumber = serialNumber,
+                androidId = androidId
+            )
+        } catch (e: Exception) {
+            Log.e(TAG, "📦 Erro ao construir manifesto: ${e.message}")
+            null
+        }
+    }
+    
+    private fun getDeviceImei(): String {
+        return try {
+            val telephonyManager = getSystemService(Context.TELEPHONY_SERVICE) as? android.telephony.TelephonyManager
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+                telephonyManager?.imei ?: ""
+            } else {
+                @Suppress("DEPRECATION")
+                telephonyManager?.deviceId ?: ""
+            }
+        } catch (e: SecurityException) {
+            Log.w(TAG, "📦 Sem permissão para IMEI")
+            ""
+        } catch (e: Exception) {
+            Log.e(TAG, "📦 Erro ao obter IMEI: ${e.message}")
+            ""
         }
     }
     
