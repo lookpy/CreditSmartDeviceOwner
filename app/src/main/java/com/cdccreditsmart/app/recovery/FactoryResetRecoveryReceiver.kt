@@ -10,6 +10,7 @@ import com.cdccreditsmart.app.persistence.EnrollmentManifestData
 import com.cdccreditsmart.app.security.SecureTokenStorage
 import com.cdccreditsmart.app.validation.ImeiValidationResult
 import com.cdccreditsmart.app.validation.ImeiValidator
+import com.cdccreditsmart.app.service.CdcForegroundService
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -112,9 +113,12 @@ class FactoryResetRecoveryReceiver : BroadcastReceiver() {
         val allCurrentImeis = getAllCurrentImeis(context)
         Log.i(TAG, "   IMEIs locais disponíveis: ${allCurrentImeis.size}")
         
+        var imeiMatchedPdv = false
+        var requiresBackendRevalidation = false
+        
         if (manifest.allowedImeiHashes.isNotEmpty()) {
             Log.i(TAG, "")
-            Log.i(TAG, "🔐 VALIDAÇÃO DE IMEI OBRIGATÓRIA (PDV)")
+            Log.i(TAG, "🔐 VALIDAÇÃO DE IMEI (PDV)")
             Log.i(TAG, "   Manifesto contém ${manifest.allowedImeiHashes.size} hash(es) de IMEI permitido(s)")
             
             val imeiValidationResult = ImeiValidator.validateImeiWithHashes(
@@ -124,32 +128,31 @@ class FactoryResetRecoveryReceiver : BroadcastReceiver() {
             
             when (imeiValidationResult) {
                 is ImeiValidationResult.NotMatched -> {
-                    Log.e(TAG, "")
-                    Log.e(TAG, "❌ VALIDAÇÃO DE IMEI FALHOU!")
-                    Log.e(TAG, "   ${imeiValidationResult.message}")
-                    Log.e(TAG, "   RECUPERAÇÃO BLOQUEADA - Dispositivo não autorizado")
-                    Log.e(TAG, "========================================")
-                    return
+                    Log.w(TAG, "")
+                    Log.w(TAG, "⚠️ IMEI DIFERENTE DETECTADO!")
+                    Log.w(TAG, "   ${imeiValidationResult.message}")
+                    Log.w(TAG, "   Possível troca de chip ou dispositivo diferente")
+                    Log.w(TAG, "   🔄 USANDO FALLBACK: Recuperação via código do contrato")
+                    Log.w(TAG, "   O backend validará se este dispositivo pode usar o contrato")
+                    Log.w(TAG, "========================================")
+                    requiresBackendRevalidation = true
                 }
                 is ImeiValidationResult.Matched -> {
                     Log.i(TAG, "✅ IMEI validado com sucesso: ${imeiValidationResult.matchedImei.take(6)}...")
+                    imeiMatchedPdv = true
                 }
                 is ImeiValidationResult.NoAllowedImeis -> {
-                    Log.e(TAG, "")
-                    Log.e(TAG, "❌ MANIFESTO INVÁLIDO - SEM IMEIs PERMITIDOS!")
-                    Log.e(TAG, "   Manifesto antigo ou corrompido detectado")
-                    Log.e(TAG, "   RECUPERAÇÃO BLOQUEADA - Novo pareamento necessário")
-                    Log.e(TAG, "========================================")
-                    return
+                    Log.w(TAG, "⚠️ Manifesto sem IMEIs permitidos - usando fallback por contrato")
+                    requiresBackendRevalidation = true
                 }
             }
         } else {
-            Log.e(TAG, "")
-            Log.e(TAG, "❌ MANIFESTO SEM ALLOWED IMEI HASHES!")
-            Log.e(TAG, "   Manifesto inválido - não contém lista de IMEIs permitidos")
-            Log.e(TAG, "   RECUPERAÇÃO BLOQUEADA - Novo pareamento necessário")
-            Log.e(TAG, "========================================")
-            return
+            Log.w(TAG, "")
+            Log.w(TAG, "⚠️ MANIFESTO SEM ALLOWED IMEI HASHES")
+            Log.w(TAG, "   Manifesto antigo ou sem validação de IMEI")
+            Log.w(TAG, "   🔄 USANDO FALLBACK: Recuperação via código do contrato")
+            Log.w(TAG, "========================================")
+            requiresBackendRevalidation = true
         }
         
         val recoveryManager = ImeiBasedRecoveryManager(context)
@@ -176,26 +179,71 @@ class FactoryResetRecoveryReceiver : BroadcastReceiver() {
                     tokenStorage.saveToken(result.authToken)
                 }
                 
+                if (requiresBackendRevalidation) {
+                    Log.i(TAG, "⚠️ IMEI diferente - backend revalidará na próxima conexão")
+                    tokenStorage.markRequiresBackendRevalidation(true)
+                }
+                
                 Log.i(TAG, "✅ Credenciais salvas - app reativado automaticamente")
                 Log.i(TAG, "========================================")
+                
+                startCdcForegroundService(context)
             }
             is RecoveryResult.NeedBackendConfirmation -> {
                 Log.i(TAG, "📡 Aguardando confirmação do backend...")
                 tokenStorage.saveContractCode(manifest.contractCode)
                 tokenStorage.saveDeviceId(manifest.deviceId)
+                
+                if (requiresBackendRevalidation) {
+                    tokenStorage.markRequiresBackendRevalidation(true)
+                }
+                
                 Log.i(TAG, "   Dados do manifesto salvos temporariamente")
                 Log.i(TAG, "   Backend confirmará na próxima sincronização")
+                
+                startCdcForegroundService(context)
             }
             is RecoveryResult.ImeiMismatch -> {
-                Log.w(TAG, "⚠️ IMEI atual não corresponde ao manifesto")
-                Log.w(TAG, "   Isso pode indicar troca de chip ou dispositivo clonado")
-                Log.w(TAG, "   App iniciará em modo de novo pareamento")
+                Log.w(TAG, "")
+                Log.w(TAG, "🔄 IMEI diferente - usando FALLBACK por código do contrato")
+                Log.w(TAG, "   ContractCode do manifesto: ${manifest.contractCode.take(10)}...")
+                Log.w(TAG, "   App será ressuscitado e tentará reconectar com backend")
+                Log.w(TAG, "========================================")
+                
+                tokenStorage.saveContractCode(manifest.contractCode)
+                tokenStorage.saveDeviceId(manifest.deviceId)
+                tokenStorage.markRequiresBackendRevalidation(true)
+                
+                Log.i(TAG, "✅ ContractCode salvo para fallback")
+                Log.i(TAG, "   O backend decidirá se aceita este dispositivo")
+                
+                startCdcForegroundService(context)
             }
             is RecoveryResult.ManifestExpired -> {
-                Log.w(TAG, "⚠️ Manifesto expirado - pareamento necessário")
+                Log.w(TAG, "")
+                Log.w(TAG, "🔄 Manifesto expirado - tentando fallback por código do contrato")
+                
+                tokenStorage.saveContractCode(manifest.contractCode)
+                tokenStorage.saveDeviceId(manifest.deviceId)
+                tokenStorage.markRequiresBackendRevalidation(true)
+                
+                Log.i(TAG, "   ContractCode salvo - backend revalidará")
+                
+                startCdcForegroundService(context)
             }
             is RecoveryResult.Failed -> {
                 Log.e(TAG, "❌ Falha na recuperação: ${result.reason}")
+                Log.w(TAG, "🔄 Tentando fallback por código do contrato mesmo assim...")
+                
+                if (manifest.contractCode.isNotEmpty()) {
+                    tokenStorage.saveContractCode(manifest.contractCode)
+                    tokenStorage.saveDeviceId(manifest.deviceId)
+                    tokenStorage.markRequiresBackendRevalidation(true)
+                    
+                    Log.i(TAG, "   ContractCode salvo - backend revalidará")
+                    
+                    startCdcForegroundService(context)
+                }
             }
         }
     }
@@ -254,6 +302,16 @@ class FactoryResetRecoveryReceiver : BroadcastReceiver() {
         } catch (e: Exception) {
             Log.e(TAG, "❌ Erro ao obter Android ID: ${e.message}")
             ""
+        }
+    }
+    
+    private fun startCdcForegroundService(context: Context) {
+        try {
+            Log.i(TAG, "🚀 Iniciando CdcForegroundService após recovery...")
+            CdcForegroundService.startService(context.applicationContext)
+            Log.i(TAG, "✅ CdcForegroundService iniciado - app ressuscitado!")
+        } catch (e: Exception) {
+            Log.e(TAG, "❌ Erro ao iniciar CdcForegroundService: ${e.message}", e)
         }
     }
     

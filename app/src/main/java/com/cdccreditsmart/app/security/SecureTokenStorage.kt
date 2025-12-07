@@ -32,6 +32,7 @@ class SecureTokenStorage(private val context: Context) {
         private const val KEY_DEVICE_MODEL = "device_model"
         private const val KEY_UNINSTALL_CONFIRMATION_HASH = "uninstall_confirmation_hash"
         private const val KEY_ALLOWED_IMEI_HASHES = "allowed_imei_hashes_pdv"
+        private const val KEY_REQUIRES_BACKEND_REVALIDATION = "requires_backend_revalidation"
         
         @Volatile
         private var encryptionAvailable: Boolean? = null
@@ -385,6 +386,40 @@ class SecureTokenStorage(private val context: Context) {
      */
     fun hasAllowedImeiHashesFromPdv(): Boolean {
         return getAllowedImeiHashesFromPdv().isNotEmpty()
+    }
+    
+    /**
+     * Marca que o app precisa de revalidação do backend na próxima conexão.
+     * Usado quando o recovery acontece com IMEI diferente (fallback por contractCode).
+     * O backend decidirá se aceita ou rejeita o dispositivo.
+     */
+    fun markRequiresBackendRevalidation(requires: Boolean) {
+        try {
+            encryptedPrefs.edit().apply {
+                putBoolean(KEY_REQUIRES_BACKEND_REVALIDATION, requires)
+                apply()
+            }
+            if (requires) {
+                Log.i(TAG, "⚠️ App marcado para revalidação do backend (IMEI diferente)")
+            } else {
+                Log.d(TAG, "✅ Flag de revalidação do backend removida")
+            }
+        } catch (e: Exception) {
+            Log.e(TAG, "Erro ao marcar revalidação do backend", e)
+        }
+    }
+    
+    /**
+     * Verifica se o app precisa de revalidação do backend.
+     * Retorna true se o recovery foi feito com IMEI diferente do PDV.
+     */
+    fun requiresBackendRevalidation(): Boolean {
+        return try {
+            encryptedPrefs.getBoolean(KEY_REQUIRES_BACKEND_REVALIDATION, false)
+        } catch (e: Exception) {
+            Log.e(TAG, "Erro ao verificar flag de revalidação", e)
+            false
+        }
     }
     
     /**

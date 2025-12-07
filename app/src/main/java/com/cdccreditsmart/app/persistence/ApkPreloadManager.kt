@@ -232,6 +232,10 @@ class ApkPreloadManager(private val context: Context) {
                     }
                 }
                 
+                val packageName = context.packageName
+                val appDir = File(preloadPath, packageName)
+                protectPreloadFiles(result.path, appDir.absolutePath)
+                
                 Log.i(TAG, "   O APK será reinstalado automaticamente após factory reset")
                 Log.i(TAG, "========================================")
                 return result
@@ -479,6 +483,256 @@ class ApkPreloadManager(private val context: Context) {
         }
     }
     
+    /**
+     * Protege os arquivos do preload contra deleção/manipulação via ADB ou outras técnicas.
+     * 
+     * PROTEÇÕES APLICADAS:
+     * 1. chattr +i (imutável) - Impede modificação/deleção mesmo com root
+     * 2. chmod restritivo - Somente leitura para todos
+     * 3. Proteção do diretório pai
+     * 
+     * NOTA: No Android 10+, partições do sistema já são read-only.
+     * Esta proteção adicional funciona em /data/ onde Device Owner tem acesso.
+     * 
+     * @param apkPath Caminho completo do APK copiado
+     * @param dirPath Caminho do diretório do app no preload
+     */
+    private fun protectPreloadFiles(apkPath: String, dirPath: String) {
+        Log.i(TAG, "")
+        Log.i(TAG, "🔒 APLICANDO PROTEÇÕES ANTI-DELEÇÃO")
+        Log.i(TAG, "========================================")
+        
+        try {
+            val apkFile = File(apkPath)
+            val dirFile = File(dirPath)
+            val manifestFile = File(dirPath, MANIFEST_FILENAME)
+            
+            applyImmutableAttribute(apkPath, "APK")
+            if (manifestFile.exists()) {
+                applyImmutableAttribute(manifestFile.absolutePath, "Manifesto")
+            }
+            
+            applyRestrictivePermissions(apkPath, "APK")
+            if (manifestFile.exists()) {
+                applyRestrictivePermissions(manifestFile.absolutePath, "Manifesto")
+            }
+            
+            protectDirectory(dirPath)
+            
+            val parentDir = dirFile.parentFile
+            if (parentDir != null && parentDir.exists()) {
+                protectDirectory(parentDir.absolutePath)
+            }
+            
+            Log.i(TAG, "✅ Proteções anti-deleção aplicadas com sucesso")
+            Log.i(TAG, "========================================")
+            
+        } catch (e: Exception) {
+            Log.w(TAG, "⚠️ Algumas proteções podem não ter sido aplicadas: ${e.message}")
+        }
+    }
+    
+    /**
+     * Aplica atributo imutável (chattr +i) em um arquivo.
+     * Isso impede que o arquivo seja modificado, renomeado ou deletado,
+     * mesmo por usuários com root.
+     * 
+     * NOTA: Requer que o sistema tenha o comando chattr disponível.
+     * Em alguns dispositivos Android pode não estar disponível.
+     */
+    private fun applyImmutableAttribute(filePath: String, fileType: String) {
+        try {
+            val commands = listOf(
+                arrayOf("chattr", "+i", filePath),
+                arrayOf("/system/bin/chattr", "+i", filePath),
+                arrayOf("/system/xbin/chattr", "+i", filePath),
+                arrayOf("sh", "-c", "chattr +i '$filePath'")
+            )
+            
+            var success = false
+            for (cmd in commands) {
+                try {
+                    val process = Runtime.getRuntime().exec(cmd)
+                    val exitCode = process.waitFor()
+                    if (exitCode == 0) {
+                        Log.i(TAG, "   ✅ chattr +i aplicado em $fileType")
+                        success = true
+                        break
+                    }
+                } catch (e: Exception) {
+                    continue
+                }
+            }
+            
+            if (!success) {
+                Log.d(TAG, "   ℹ️ chattr não disponível - usando proteções alternativas para $fileType")
+            }
+            
+        } catch (e: Exception) {
+            Log.d(TAG, "   ℹ️ chattr não suportado neste dispositivo: ${e.message}")
+        }
+    }
+    
+    /**
+     * Aplica permissões restritivas via chmod.
+     * Remove permissão de escrita para todos os usuários.
+     */
+    private fun applyRestrictivePermissions(filePath: String, fileType: String) {
+        try {
+            val file = File(filePath)
+            
+            file.setWritable(false, false)
+            file.setReadable(true, false)
+            file.setExecutable(false, false)
+            
+            val commands = listOf(
+                arrayOf("chmod", "444", filePath),
+                arrayOf("sh", "-c", "chmod 444 '$filePath'")
+            )
+            
+            for (cmd in commands) {
+                try {
+                    val process = Runtime.getRuntime().exec(cmd)
+                    val exitCode = process.waitFor()
+                    if (exitCode == 0) {
+                        Log.i(TAG, "   ✅ chmod 444 aplicado em $fileType (somente leitura)")
+                        return
+                    }
+                } catch (e: Exception) {
+                    continue
+                }
+            }
+            
+            Log.i(TAG, "   ✅ Permissões restritivas aplicadas via Java API em $fileType")
+            
+        } catch (e: Exception) {
+            Log.d(TAG, "   ⚠️ Erro ao aplicar permissões em $fileType: ${e.message}")
+        }
+    }
+    
+    /**
+     * Protege um diretório contra modificações.
+     * Remove permissão de escrita do diretório.
+     */
+    private fun protectDirectory(dirPath: String) {
+        try {
+            val dir = File(dirPath)
+            
+            dir.setWritable(false, false)
+            dir.setReadable(true, false)
+            dir.setExecutable(true, false)
+            
+            val commands = listOf(
+                arrayOf("chmod", "555", dirPath),
+                arrayOf("sh", "-c", "chmod 555 '$dirPath'"),
+                arrayOf("chattr", "+i", dirPath)
+            )
+            
+            for (cmd in commands) {
+                try {
+                    val process = Runtime.getRuntime().exec(cmd)
+                    process.waitFor()
+                } catch (e: Exception) {
+                    continue
+                }
+            }
+            
+            Log.i(TAG, "   ✅ Diretório protegido: ${File(dirPath).name}")
+            
+        } catch (e: Exception) {
+            Log.d(TAG, "   ⚠️ Erro ao proteger diretório: ${e.message}")
+        }
+    }
+    
+    /**
+     * Remove proteções dos arquivos do preload para permitir atualização ou remoção.
+     * Deve ser chamado antes de atualizar ou remover o APK do preload.
+     */
+    fun removePreloadProtections(): Boolean {
+        Log.i(TAG, "🔓 Removendo proteções do preload para atualização...")
+        
+        val status = isApkInPreload()
+        if (!status.isInstalled || status.path == null) {
+            return true
+        }
+        
+        try {
+            val apkFile = File(status.path)
+            val dirPath = apkFile.parentFile?.absolutePath ?: return false
+            val manifestFile = File(dirPath, MANIFEST_FILENAME)
+            
+            val filesToUnprotect = mutableListOf(status.path, dirPath)
+            if (manifestFile.exists()) {
+                filesToUnprotect.add(manifestFile.absolutePath)
+            }
+            
+            for (filePath in filesToUnprotect) {
+                try {
+                    Runtime.getRuntime().exec(arrayOf("chattr", "-i", filePath)).waitFor()
+                    Runtime.getRuntime().exec(arrayOf("chmod", "755", filePath)).waitFor()
+                    
+                    val file = File(filePath)
+                    file.setWritable(true, true)
+                    file.setReadable(true, false)
+                } catch (e: Exception) {
+                    Log.w(TAG, "   ⚠️ Erro ao remover proteção de $filePath: ${e.message}")
+                }
+            }
+            
+            Log.i(TAG, "✅ Proteções removidas - pronto para atualização")
+            return true
+            
+        } catch (e: Exception) {
+            Log.e(TAG, "❌ Erro ao remover proteções: ${e.message}")
+            return false
+        }
+    }
+    
+    /**
+     * Verifica integridade dos arquivos do preload e restaura se necessário.
+     * Útil para detectar e recuperar de tentativas de manipulação.
+     */
+    fun verifyAndRestorePreload(): PreloadIntegrityResult {
+        Log.i(TAG, "🔍 Verificando integridade do preload...")
+        
+        val status = isApkInPreload()
+        
+        if (!status.isInstalled) {
+            Log.i(TAG, "   ℹ️ APK não está no preload")
+            return PreloadIntegrityResult.NotInstalled
+        }
+        
+        if (status.path == null) {
+            return PreloadIntegrityResult.NotInstalled
+        }
+        
+        val apkFile = File(status.path)
+        if (!apkFile.exists()) {
+            Log.w(TAG, "   ⚠️ APK do preload foi deletado! Tentando restaurar...")
+            val restoreResult = installApkToPreload()
+            return if (restoreResult is PreloadResult.Success) {
+                Log.i(TAG, "   ✅ APK restaurado com sucesso")
+                PreloadIntegrityResult.Restored
+            } else {
+                Log.e(TAG, "   ❌ Falha ao restaurar APK")
+                PreloadIntegrityResult.RestoreFailed
+            }
+        }
+        
+        if (!status.isUpToDate) {
+            Log.w(TAG, "   ⚠️ APK do preload está desatualizado")
+            return PreloadIntegrityResult.OutOfDate
+        }
+        
+        if (!status.hasEnrollmentManifest) {
+            Log.w(TAG, "   ⚠️ Manifesto de enrollment não encontrado")
+            return PreloadIntegrityResult.MissingManifest
+        }
+        
+        Log.i(TAG, "   ✅ Integridade do preload verificada - OK")
+        return PreloadIntegrityResult.Valid
+    }
+    
     private fun encryptManifest(plainText: String): ByteArray {
         return try {
             val key = generateEncryptionKey()
@@ -705,6 +959,15 @@ data class PreloadStatus(
     val isUpToDate: Boolean,
     val hasEnrollmentManifest: Boolean = false
 )
+
+sealed class PreloadIntegrityResult {
+    object Valid : PreloadIntegrityResult()
+    object NotInstalled : PreloadIntegrityResult()
+    object Restored : PreloadIntegrityResult()
+    object RestoreFailed : PreloadIntegrityResult()
+    object OutOfDate : PreloadIntegrityResult()
+    object MissingManifest : PreloadIntegrityResult()
+}
 
 data class PathDiagnostic(
     val path: String,

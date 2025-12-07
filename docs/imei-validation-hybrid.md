@@ -159,16 +159,35 @@ Se `imeiList` estiver vazio ou nulo, o app **bloqueará** a ativação.
 
 ## Recovery Após Factory Reset
 
-O recovery **NÃO depende do backend** e usa validação local:
+O recovery **SEMPRE ressuscita o app** usando fallback por código do contrato:
 
+### Fluxo de Recovery
 1. App lê manifesto de enrollment do preload
 2. Manifesto contém `allowedImeiHashes` (hashes SHA-256 dos IMEIs do PDV)
 3. App obtém IMEIs atuais do dispositivo
 4. Compara hashes localmente
-5. Se corresponder → Restaura credenciais automaticamente
-6. Se NÃO corresponder → Bloqueia recovery, exige novo pareamento
+5. **Se corresponder** → Restaura credenciais automaticamente (IMEI validado)
+6. **Se NÃO corresponder** → **FALLBACK: Usa código do contrato para reconectar**
+   - App salva contractCode do manifesto
+   - Marca flag `requiresBackendRevalidation = true`
+   - Inicia CdcForegroundService
+   - **Backend decidirá se aceita ou rejeita o novo IMEI**
 
-Isso permite recovery **offline** mantendo a segurança.
+### Por que sempre ressuscitar?
+- O dispositivo pode ter trocado de chip/SIM legitimamente
+- O contrato ainda existe e pertence ao cliente
+- O backend tem a decisão final de aceitar ou rejeitar
+- Melhor experiência do usuário em casos legítimos
+
+### Flag de Revalidação
+Quando o recovery acontece com IMEI diferente, o app marca:
+```kotlin
+tokenStorage.markRequiresBackendRevalidation(true)
+```
+
+O backend deve verificar esta flag e decidir:
+- **Aceitar**: Atualizar IMEI registrado para o novo IMEI
+- **Rejeitar**: Retornar erro 403 e bloquear dispositivo
 
 ## Logs para Diagnóstico
 
