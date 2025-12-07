@@ -312,6 +312,23 @@ class SecureTokenStorage(private val context: Context) {
         }
     }
     
+    /**
+     * Salva o IMEI principal para uso no MDM polling
+     * Este é o identificador prioritário conforme documentação
+     */
+    fun saveImeiForMdm(imei: String) {
+        try {
+            encryptedPrefs.edit().apply {
+                putString(KEY_IMEI, imei)
+                apply()
+            }
+            Log.i(TAG, "✅ IMEI salvo para MDM: ${imei.take(4)}***${imei.takeLast(3)}")
+        } catch (e: Exception) {
+            Log.e(TAG, "Error saving IMEI for MDM", e)
+            throw TokenStorageException("Failed to save IMEI for MDM", e)
+        }
+    }
+    
     fun getSerialNumber(): String? {
         return try {
             encryptedPrefs.getString(KEY_SERIAL_NUMBER, null)

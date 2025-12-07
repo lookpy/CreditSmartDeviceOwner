@@ -554,6 +554,26 @@ class PairingViewModel(private val context: Context) : ViewModel() {
                                     deviceId = deviceId
                                 )
                                 
+                                // CORREÇÃO CRÍTICA: Salvar serialNumber ANTES de iniciar CdcForegroundService
+                                // Isso permite que getMdmIdentifier() encontre o identificador para polling MDM
+                                tokenStorage.saveSerialNumber(contractCode)
+                                Log.i(TAG, "✅ SerialNumber salvo para MDM: ${contractCode.take(4)}****")
+                                
+                                // Tentar salvar IMEI se disponível
+                                try {
+                                    val imeiInfo = deviceInfoManager.getDeviceImeiInfo()
+                                    if (imeiInfo.hasValidImei()) {
+                                        val primaryImei = imeiInfo.primaryImei
+                                        if (primaryImei != null) {
+                                            tokenStorage.saveImeiForMdm(primaryImei)
+                                        }
+                                        tokenStorage.saveValidatedImeis(imeiInfo.getAllImeis())
+                                        Log.i(TAG, "✅ IMEI(s) salvo(s) para MDM")
+                                    }
+                                } catch (e: Exception) {
+                                    Log.w(TAG, "⚠️ Não foi possível salvar IMEI: ${e.message}")
+                                }
+                                
                                 Log.i(TAG, "🚀 Iniciando CdcForegroundService para MDM...")
                                 CdcForegroundService.startService(context.applicationContext)
                                 
