@@ -8,6 +8,8 @@ import android.util.Log
 import com.cdccreditsmart.app.persistence.ApkPreloadManager
 import com.cdccreditsmart.app.persistence.EnrollmentManifestData
 import com.cdccreditsmart.app.security.SecureTokenStorage
+import com.cdccreditsmart.app.validation.ImeiValidationResult
+import com.cdccreditsmart.app.validation.ImeiValidator
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -86,6 +88,7 @@ class FactoryResetRecoveryReceiver : BroadcastReceiver() {
         Log.i(TAG, "   ContractCode: ${manifest.contractCode.take(10)}...")
         Log.i(TAG, "   DeviceId: ${manifest.deviceId.take(10)}...")
         Log.i(TAG, "   IMEI Hash: ${manifest.imeiHash.take(16)}...")
+        Log.i(TAG, "   Allowed IMEI Hashes: ${manifest.allowedImeiHashes.size}")
         
         attemptAutoReactivation(context, manifest, tokenStorage)
     }
@@ -106,6 +109,49 @@ class FactoryResetRecoveryReceiver : BroadcastReceiver() {
         Log.i(TAG, "   IMEI: ${if (currentImei.isNotEmpty()) "${currentImei.take(6)}..." else "N/A"}")
         Log.i(TAG, "   Android ID: ${currentAndroidId.take(10)}...")
         
+        val allCurrentImeis = getAllCurrentImeis(context)
+        Log.i(TAG, "   IMEIs locais disponíveis: ${allCurrentImeis.size}")
+        
+        if (manifest.allowedImeiHashes.isNotEmpty()) {
+            Log.i(TAG, "")
+            Log.i(TAG, "🔐 VALIDAÇÃO DE IMEI OBRIGATÓRIA (PDV)")
+            Log.i(TAG, "   Manifesto contém ${manifest.allowedImeiHashes.size} hash(es) de IMEI permitido(s)")
+            
+            val imeiValidationResult = ImeiValidator.validateImeiWithHashes(
+                localImeis = allCurrentImeis,
+                allowedImeiHashes = manifest.allowedImeiHashes
+            )
+            
+            when (imeiValidationResult) {
+                is ImeiValidationResult.NotMatched -> {
+                    Log.e(TAG, "")
+                    Log.e(TAG, "❌ VALIDAÇÃO DE IMEI FALHOU!")
+                    Log.e(TAG, "   ${imeiValidationResult.message}")
+                    Log.e(TAG, "   RECUPERAÇÃO BLOQUEADA - Dispositivo não autorizado")
+                    Log.e(TAG, "========================================")
+                    return
+                }
+                is ImeiValidationResult.Matched -> {
+                    Log.i(TAG, "✅ IMEI validado com sucesso: ${imeiValidationResult.matchedImei.take(6)}...")
+                }
+                is ImeiValidationResult.NoAllowedImeis -> {
+                    Log.e(TAG, "")
+                    Log.e(TAG, "❌ MANIFESTO INVÁLIDO - SEM IMEIs PERMITIDOS!")
+                    Log.e(TAG, "   Manifesto antigo ou corrompido detectado")
+                    Log.e(TAG, "   RECUPERAÇÃO BLOQUEADA - Novo pareamento necessário")
+                    Log.e(TAG, "========================================")
+                    return
+                }
+            }
+        } else {
+            Log.e(TAG, "")
+            Log.e(TAG, "❌ MANIFESTO SEM ALLOWED IMEI HASHES!")
+            Log.e(TAG, "   Manifesto inválido - não contém lista de IMEIs permitidos")
+            Log.e(TAG, "   RECUPERAÇÃO BLOQUEADA - Novo pareamento necessário")
+            Log.e(TAG, "========================================")
+            return
+        }
+        
         val recoveryManager = ImeiBasedRecoveryManager(context)
         
         val result = recoveryManager.attemptRecovery(
@@ -114,7 +160,9 @@ class FactoryResetRecoveryReceiver : BroadcastReceiver() {
             manifestImeiHash = manifest.imeiHash,
             manifestAndroidId = manifest.androidId,
             currentImei = currentImei,
-            currentAndroidId = currentAndroidId
+            currentAndroidId = currentAndroidId,
+            allowedImeiHashes = manifest.allowedImeiHashes,
+            allCurrentImeis = allCurrentImeis
         )
         
         when (result) {
@@ -208,6 +256,47 @@ class FactoryResetRecoveryReceiver : BroadcastReceiver() {
             ""
         }
     }
+    
+    private fun getAllCurrentImeis(context: Context): List<String> {
+        val imeis = mutableListOf<String>()
+        
+        try {
+            tryGrantPhoneStatePermission(context)
+            
+            val telephonyManager = context.getSystemService(Context.TELEPHONY_SERVICE) as? android.telephony.TelephonyManager
+            
+            if (telephonyManager != null) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    val phoneCount = telephonyManager.phoneCount
+                    for (slotIndex in 0 until phoneCount) {
+                        try {
+                            val imei = telephonyManager.getImei(slotIndex)
+                            if (!imei.isNullOrBlank()) {
+                                imeis.add(imei)
+                                Log.d(TAG, "   IMEI slot $slotIndex: ${imei.take(6)}...")
+                            }
+                        } catch (e: SecurityException) {
+                            Log.w(TAG, "   Sem permissão para IMEI slot $slotIndex")
+                        } catch (e: Exception) {
+                            Log.w(TAG, "   Erro ao obter IMEI slot $slotIndex: ${e.message}")
+                        }
+                    }
+                } else {
+                    @Suppress("DEPRECATION")
+                    val imei = telephonyManager.deviceId
+                    if (!imei.isNullOrBlank()) {
+                        imeis.add(imei)
+                    }
+                }
+            }
+        } catch (e: SecurityException) {
+            Log.w(TAG, "⚠️ Sem permissão READ_PHONE_STATE para obter IMEIs")
+        } catch (e: Exception) {
+            Log.e(TAG, "❌ Erro ao obter IMEIs: ${e.message}")
+        }
+        
+        return imeis
+    }
 }
 
 /**
@@ -226,11 +315,43 @@ class ImeiBasedRecoveryManager(private val context: Context) {
         manifestImeiHash: String,
         manifestAndroidId: String,
         currentImei: String,
-        currentAndroidId: String
+        currentAndroidId: String,
+        allowedImeiHashes: List<String> = emptyList(),
+        allCurrentImeis: List<String> = emptyList()
     ): RecoveryResult {
         
         if (manifestContractCode.isEmpty()) {
             return RecoveryResult.Failed("ContractCode vazio no manifesto")
+        }
+        
+        if (allowedImeiHashes.isNotEmpty()) {
+            Log.i(TAG, "🔐 Validando IMEI contra lista de IMEIs permitidos do PDV...")
+            Log.i(TAG, "   IMEIs permitidos (hashes): ${allowedImeiHashes.size}")
+            Log.i(TAG, "   IMEIs locais disponíveis: ${allCurrentImeis.size}")
+            
+            val imeiValidationResult = ImeiValidator.validateImeiWithHashes(
+                localImeis = allCurrentImeis,
+                allowedImeiHashes = allowedImeiHashes
+            )
+            
+            when (imeiValidationResult) {
+                is ImeiValidationResult.Matched -> {
+                    Log.i(TAG, "✅ IMEI validado contra PDV - auto-reativação autorizada")
+                    return RecoveryResult.Success(
+                        contractCode = manifestContractCode,
+                        deviceId = manifestDeviceId,
+                        authToken = ""
+                    )
+                }
+                is ImeiValidationResult.NotMatched -> {
+                    Log.e(TAG, "❌ IMEI NÃO CORRESPONDE AO PDV!")
+                    Log.e(TAG, "   ${imeiValidationResult.message}")
+                    return RecoveryResult.ImeiMismatch
+                }
+                is ImeiValidationResult.NoAllowedImeis -> {
+                    Log.w(TAG, "⚠️ Sem IMEIs permitidos - fallback para validação padrão")
+                }
+            }
         }
         
         val imeiMatches = if (manifestImeiHash.isNotEmpty() && currentImei.isNotEmpty()) {
@@ -242,7 +363,7 @@ class ImeiBasedRecoveryManager(private val context: Context) {
         
         val androidIdMatches = manifestAndroidId == currentAndroidId
         
-        Log.i(TAG, "🔍 Verificação de identidade:")
+        Log.i(TAG, "🔍 Verificação de identidade (padrão):")
         Log.i(TAG, "   IMEI match: ${imeiMatches ?: "N/A (sem IMEI)"}")
         Log.i(TAG, "   Android ID match: $androidIdMatches")
         

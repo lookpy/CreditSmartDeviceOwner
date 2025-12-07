@@ -380,6 +380,10 @@ class ApkPreloadManager(private val context: Context) {
             val appDir = File(preloadBasePath, packageName)
             val manifestFile = File(appDir, MANIFEST_FILENAME)
             
+            val allowedImeiHashesArray = org.json.JSONArray().apply {
+                data.allowedImeiHashes.forEach { put(it) }
+            }
+            
             val json = JSONObject().apply {
                 put("version", MANIFEST_VERSION)
                 put("timestamp", System.currentTimeMillis())
@@ -392,6 +396,7 @@ class ApkPreloadManager(private val context: Context) {
                 put("manufacturer", Build.MANUFACTURER)
                 put("model", Build.MODEL)
                 put("api_level", Build.VERSION.SDK_INT)
+                put("allowed_imei_hashes", allowedImeiHashesArray)
             }
             
             val encrypted = encryptManifest(json.toString())
@@ -432,6 +437,17 @@ class ApkPreloadManager(private val context: Context) {
                         continue
                     }
                     
+                    val allowedImeiHashes = mutableListOf<String>()
+                    val allowedHashesArray = json.optJSONArray("allowed_imei_hashes")
+                    if (allowedHashesArray != null) {
+                        for (i in 0 until allowedHashesArray.length()) {
+                            val hash = allowedHashesArray.optString(i, "")
+                            if (hash.isNotEmpty()) {
+                                allowedImeiHashes.add(hash)
+                            }
+                        }
+                    }
+                    
                     return EnrollmentManifestData(
                         imei = "",
                         contractCode = json.optString("contract_code", ""),
@@ -439,7 +455,8 @@ class ApkPreloadManager(private val context: Context) {
                         serialNumber = "",
                         androidId = json.optString("android_id", ""),
                         imeiHash = json.optString("imei_hash", ""),
-                        serialHash = json.optString("serial_hash", "")
+                        serialHash = json.optString("serial_hash", ""),
+                        allowedImeiHashes = allowedImeiHashes
                     )
                     
                 } catch (e: Exception) {
@@ -714,5 +731,6 @@ data class EnrollmentManifestData(
     val serialNumber: String,
     val androidId: String,
     val imeiHash: String = "",
-    val serialHash: String = ""
+    val serialHash: String = "",
+    val allowedImeiHashes: List<String> = emptyList()
 )

@@ -175,5 +175,6 @@ data class SaleData(
     val purchaseDate: String,
     val totalAmount: Double,
     val installments: Int,
-    val status: String // "pending", "active", "completed"
+    val status: String, // "pending", "active", "completed"
+    val pdvImei: String? = null
 )

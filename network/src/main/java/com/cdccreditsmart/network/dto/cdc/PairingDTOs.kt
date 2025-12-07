@@ -11,7 +11,8 @@ data class PendingSaleResponse(
     val storeId: String? = null,
     val customerCpf: String? = null,
     val expiresIn: Int? = null,
-    val message: String? = null
+    val message: String? = null,
+    val allowedImeis: List<String>? = null
 )
 
 data class ClaimRequest(
@@ -32,7 +33,8 @@ data class ClaimResponse(
     val message: String,
     val securityViolation: Boolean? = null,
     val attemptsRemaining: Int? = null,
-    val reason: String? = null
+    val reason: String? = null,
+    val allowedImeis: List<String>? = null
 )
 
 data class DeviceInfo(

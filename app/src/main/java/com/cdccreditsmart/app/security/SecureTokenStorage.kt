@@ -31,6 +31,7 @@ class SecureTokenStorage(private val context: Context) {
         private const val KEY_CUSTOMER_NAME = "customer_name"
         private const val KEY_DEVICE_MODEL = "device_model"
         private const val KEY_UNINSTALL_CONFIRMATION_HASH = "uninstall_confirmation_hash"
+        private const val KEY_ALLOWED_IMEI_HASHES = "allowed_imei_hashes_pdv"
         
         @Volatile
         private var encryptionAvailable: Boolean? = null
@@ -327,6 +328,72 @@ class SecureTokenStorage(private val context: Context) {
             Log.e(TAG, "Error saving IMEI for MDM", e)
             throw TokenStorageException("Failed to save IMEI for MDM", e)
         }
+    }
+    
+    /**
+     * Salva os hashes de IMEIs permitidos recebidos do PDV/backend durante pareamento.
+     * Estes são os IMEIs que foram registrados na venda e devem corresponder ao dispositivo.
+     * Os IMEIs são convertidos para hashes SHA-256 antes de serem salvos para segurança.
+     * @param imeis Lista de IMEIs permitidos (raw, não hasheados)
+     */
+    fun saveAllowedImeiHashesFromPdv(imeis: List<String>) {
+        try {
+            if (imeis.isEmpty()) {
+                Log.w(TAG, "⚠️ Tentando salvar lista vazia de IMEIs permitidos do PDV")
+                return
+            }
+            
+            val hashes = imeis.map { imei ->
+                hashImei(imei)
+            }
+            
+            val hashesJson = hashes.joinToString(",")
+            encryptedPrefs.edit().apply {
+                putString(KEY_ALLOWED_IMEI_HASHES, hashesJson)
+                apply()
+            }
+            Log.i(TAG, "✅ ${hashes.size} hash(es) de IMEIs permitidos do PDV salvos com sucesso")
+        } catch (e: Exception) {
+            Log.e(TAG, "❌ Erro ao salvar hashes de IMEIs permitidos do PDV", e)
+            throw TokenStorageException("Failed to save allowed IMEI hashes from PDV", e)
+        }
+    }
+    
+    /**
+     * Recupera os hashes de IMEIs permitidos salvos durante pareamento com PDV.
+     * @return Lista de hashes SHA-256 dos IMEIs permitidos, ou lista vazia se não houver
+     */
+    fun getAllowedImeiHashesFromPdv(): List<String> {
+        return try {
+            val hashesJson = encryptedPrefs.getString(KEY_ALLOWED_IMEI_HASHES, null)
+            if (hashesJson.isNullOrBlank()) {
+                Log.d(TAG, "Nenhum hash de IMEI permitido do PDV encontrado")
+                emptyList()
+            } else {
+                val hashes = hashesJson.split(",").filter { it.isNotBlank() }
+                Log.d(TAG, "✅ Recuperados ${hashes.size} hash(es) de IMEIs permitidos do PDV")
+                hashes
+            }
+        } catch (e: Exception) {
+            Log.e(TAG, "❌ Erro ao recuperar hashes de IMEIs permitidos do PDV", e)
+            emptyList()
+        }
+    }
+    
+    /**
+     * Verifica se há hashes de IMEIs permitidos salvos do PDV
+     */
+    fun hasAllowedImeiHashesFromPdv(): Boolean {
+        return getAllowedImeiHashesFromPdv().isNotEmpty()
+    }
+    
+    /**
+     * Cria hash SHA-256 de um IMEI para armazenamento seguro
+     */
+    private fun hashImei(imei: String): String {
+        val digest = MessageDigest.getInstance("SHA-256")
+        val hashBytes = digest.digest(imei.toByteArray(Charsets.UTF_8))
+        return hashBytes.joinToString("") { "%02x".format(it) }
     }
     
     fun getSerialNumber(): String? {
