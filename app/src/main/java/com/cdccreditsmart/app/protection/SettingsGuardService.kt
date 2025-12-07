@@ -33,6 +33,10 @@ class SettingsGuardService(private val context: Context) {
         private const val CHECK_INTERVAL_MS = 600L
         private const val AGGRESSIVE_CHECK_INTERVAL_MS = 400L
         
+        // ⚠️ TEMPORARIAMENTE ATIVADO PARA DEBUG DO CRASH
+        // TODO: Mudar para false após identificar o crash
+        private const val TEMPORARY_ALLOW_DEVELOPER_OPTIONS = true
+        
         // DEBUG: Throttle muito maior para não atrapalhar desenvolvimento
         private val INTERCEPT_THROTTLE_MS = if (BuildConfig.DEBUG) 30_000L else 1_000L
         private val CRITICAL_THROTTLE_MS = if (BuildConfig.DEBUG) 15_000L else 500L
@@ -124,7 +128,7 @@ class SettingsGuardService(private val context: Context) {
         "SystemUpdateActivity",         // Atualizações do sistema
         "ResetDashboardActivity",       // Reset direto
         "PrivateDnsSettings",           // DNS privado
-        "DeveloperOptionsActivity",     // Opções de desenvolvedor
+        // "DeveloperOptionsActivity",  // ⚠️ TEMPORARIAMENTE PERMITIDO - DEBUG DO CRASH
         "DataUsageSummaryActivity",     // Pode levar a reset de rede
         "ResetOptionsActivity",         // Opções de redefinição
         "ResetSettingsActivity",        // Configurações de reset
@@ -948,14 +952,15 @@ class SettingsGuardService(private val context: Context) {
                     
                     // ═══════════════════════════════════════════════════════════════════════════════
                     // CATEGORIA 8: DEVELOPER OPTIONS
+                    // ⚠️ TEMPORARIAMENTE DESATIVADO PARA DEBUG DO CRASH (ver TEMPORARY_ALLOW_DEVELOPER_OPTIONS)
                     // ═══════════════════════════════════════════════════════════════════════════════
                     
-                    "DevelopmentSettings",
-                    "DevelopmentSettingsActivity",
-                    "DeveloperOptionsActivity",
-                    "OemUnlockActivity",
-                    "AdbSettings",
-                    "UsbDebuggingActivity",
+                    // "DevelopmentSettings",           // TEMPORARIAMENTE PERMITIDO
+                    // "DevelopmentSettingsActivity",   // TEMPORARIAMENTE PERMITIDO
+                    // "DeveloperOptionsActivity",      // TEMPORARIAMENTE PERMITIDO
+                    // "OemUnlockActivity",             // TEMPORARIAMENTE PERMITIDO
+                    // "AdbSettings",                   // TEMPORARIAMENTE PERMITIDO
+                    // "UsbDebuggingActivity",          // TEMPORARIAMENTE PERMITIDO
                     
                     // ═══════════════════════════════════════════════════════════════════════════════
                     // CATEGORIA 9: CLEAR DATA / STORAGE
@@ -1176,11 +1181,12 @@ class SettingsGuardService(private val context: Context) {
                     "StorageManager",
                     
                     // Developer Options patterns
-                    "DeveloperOption",
-                    "DevelopmentSetting",
-                    "OemUnlock",
-                    "UsbDebug",
-                    "AdbSetting"
+                    // ⚠️ TEMPORARIAMENTE PERMITIDO - DEBUG DO CRASH
+                    // "DeveloperOption",
+                    // "DevelopmentSetting",
+                    // "OemUnlock",
+                    // "UsbDebug",
+                    // "AdbSetting"
                 )
                 
                 val matchedPattern = dangerousPatterns.find { pattern ->
@@ -1344,8 +1350,9 @@ class SettingsGuardService(private val context: Context) {
                         "ManagePermissions",
                         "PermissionApps",
                         // Developer Options
-                        "DevelopmentSettings",
-                        "DeveloperOptions",
+                        // ⚠️ TEMPORARIAMENTE PERMITIDO - DEBUG DO CRASH
+                        // "DevelopmentSettings",
+                        // "DeveloperOptions",
                         // Battery
                         "BatterySaver",
                         "HighPowerApplications"
