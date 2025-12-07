@@ -194,6 +194,11 @@ class PairingViewModel(private val context: Context) : ViewModel() {
                         serialNumber = contractId  // Usar contractId como serialNumber
                     )
                     
+                    // CORREÇÃO: Salvar IMEI principal em KEY_IMEI para getMdmIdentifier()
+                    if (imei.isNotBlank()) {
+                        tokenStorage.saveImeiForMdm(imei)
+                    }
+                    
                     Log.i(TAG, "🚀 Iniciando CdcForegroundService para MDM...")
                     CdcForegroundService.startService(context.applicationContext)
                     
@@ -367,6 +372,12 @@ class PairingViewModel(private val context: Context) : ViewModel() {
                         tokenStorage.saveSerialNumber(contractId)  // Usar contractId como serialNumber
                         
                         if (imeiInfo.hasValidImei()) {
+                            // CORREÇÃO: Salvar IMEI principal em KEY_IMEI para getMdmIdentifier()
+                            val primaryImei = imeiInfo.primaryImei
+                            if (primaryImei != null) {
+                                tokenStorage.saveImeiForMdm(primaryImei)
+                            }
+                            
                             val imeisToSave = imeiInfo.getAllImeis()
                             tokenStorage.saveValidatedImeis(imeisToSave)
                             Log.i(TAG, "✅ ${imeisToSave.size} IMEI(s) validado(s) e armazenado(s) com segurança")
