@@ -397,18 +397,16 @@ class CDCDeviceAdminReceiver : DeviceAdminReceiver() {
             
             logDetailed("I", TAG, "✅ Admin enablement verification completed successfully")
             
-            // CRITICAL FIX: DO NOT apply policies during onEnabled callback!
-            // This happens DURING the setup wizard, and applying policies here will cause
-            // the "Getting ready for work setup..." loop.
-            // 
-            // Policies will be applied when:
-            // 1. App starts for the first time (MainActivity detects Device Owner)
-            // 2. CdcForegroundService starts and calls WorkPolicyManager
+            // AUTO-APLICAÇÃO DE POLÍTICAS: Se o app for Device Owner, aplica políticas automaticamente
             if (isDeviceOwner) {
                 logDetailed("I", TAG, "")
-                logDetailed("I", TAG, "🎯 App detectado como Device Owner durante setup")
-                logDetailed("I", TAG, "⏳ Políticas serão aplicadas após o setup wizard completar")
-                logDetailed("I", TAG, "⏳ Não interferindo com o processo de provisionamento do sistema...")
+                logDetailed("I", TAG, "🚀 ==================== AUTO-CONFIGURAÇÃO INICIADA ====================")
+                logDetailed("I", TAG, "🎯 App detectado como Device Owner - aplicando políticas automaticamente...")
+                
+                // Usar Handler para executar após o callback ser concluído (não bloquear o sistema)
+                Handler(Looper.getMainLooper()).postDelayed({
+                    applyWorkPoliciesAutomatically(context)
+                }, 2000) // Espera 2 segundos para garantir que o provisionamento foi concluído
             }
             
         } catch (e: Exception) {
@@ -667,15 +665,9 @@ class CDCDeviceAdminReceiver : DeviceAdminReceiver() {
             if (isDeviceOwner || isProfileOwner) {
                 logDetailed("I", TAG, "✅ Successfully confirmed device management capabilities!")
                 
-                // CRITICAL FIX: DO NOT launch app or apply policies during provisioning!
-                // The Android setup wizard MUST complete first, otherwise it will loop on
-                // "Getting ready for work setup..." screen.
-                // 
-                // The app will be launched automatically by the system after provisioning completes.
-                // Policies will be applied when the app starts (in MainActivity or CdcForegroundService).
-                logDetailed("I", TAG, "⏳ Aguardando setup wizard do sistema completar...")
-                logDetailed("I", TAG, "⏳ App será iniciado automaticamente pelo sistema após provisioning")
-                logDetailed("I", TAG, "⏳ Políticas serão aplicadas na inicialização do app")
+                // Set up policies and launch app
+                setupBasicPolicies(context, devicePolicyManager, adminComponent)
+                launchMainApp(context)
                 
             } else {
                 logDetailed("E", TAG, "❌ CRITICAL: Failed to become Device Owner or Profile Owner!")
