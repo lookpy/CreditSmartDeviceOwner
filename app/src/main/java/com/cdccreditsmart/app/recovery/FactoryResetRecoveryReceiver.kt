@@ -122,19 +122,28 @@ class FactoryResetRecoveryReceiver : BroadcastReceiver() {
                 Log.i(TAG, "✅ AUTO-REATIVAÇÃO BEM SUCEDIDA!")
                 Log.i(TAG, "   ContractCode restaurado: ${result.contractCode.take(10)}...")
                 
-                tokenStorage.saveContractCode(result.contractCode)
-                tokenStorage.saveDeviceId(result.deviceId)
-                if (result.authToken.isNotEmpty()) {
-                    tokenStorage.saveToken(result.authToken)
-                }
+                saveRecoveredCredentials(
+                    tokenStorage = tokenStorage,
+                    contractCode = result.contractCode,
+                    deviceId = result.deviceId,
+                    authToken = result.authToken,
+                    imei = currentImei,
+                    serialNumber = manifest.serialNumber
+                )
                 
                 Log.i(TAG, "✅ Credenciais salvas - app reativado automaticamente")
                 Log.i(TAG, "========================================")
             }
             is RecoveryResult.NeedBackendConfirmation -> {
                 Log.i(TAG, "📡 Aguardando confirmação do backend...")
-                tokenStorage.saveContractCode(manifest.contractCode)
-                tokenStorage.saveDeviceId(manifest.deviceId)
+                saveRecoveredCredentials(
+                    tokenStorage = tokenStorage,
+                    contractCode = manifest.contractCode,
+                    deviceId = manifest.deviceId,
+                    authToken = "",
+                    imei = currentImei,
+                    serialNumber = manifest.serialNumber
+                )
                 Log.i(TAG, "   Dados do manifesto salvos temporariamente")
                 Log.i(TAG, "   Backend confirmará na próxima sincronização")
             }
@@ -149,6 +158,38 @@ class FactoryResetRecoveryReceiver : BroadcastReceiver() {
             is RecoveryResult.Failed -> {
                 Log.e(TAG, "❌ Falha na recuperação: ${result.reason}")
             }
+        }
+    }
+    
+    private fun saveRecoveredCredentials(
+        tokenStorage: SecureTokenStorage,
+        contractCode: String,
+        deviceId: String,
+        authToken: String,
+        imei: String,
+        serialNumber: String
+    ) {
+        try {
+            tokenStorage.saveDeviceInfo(
+                deviceId = deviceId,
+                serialNumber = serialNumber,
+                imei = imei,
+                contractCode = contractCode,
+                customerName = null,
+                deviceModel = Build.MODEL
+            )
+            
+            if (authToken.isNotEmpty()) {
+                tokenStorage.saveAuthToken(
+                    authToken = authToken,
+                    contractCode = contractCode,
+                    deviceId = deviceId
+                )
+            }
+            
+            Log.i(TAG, "✅ Credenciais de recovery salvas via saveDeviceInfo")
+        } catch (e: Exception) {
+            Log.e(TAG, "❌ Erro ao salvar credenciais: ${e.message}", e)
         }
     }
     
