@@ -301,6 +301,54 @@ class SecureTokenStorage(private val context: Context) {
         }
     }
     
+    /**
+     * Salva apenas o código do contrato.
+     * Usado pelo FactoryResetRecoveryReceiver durante auto-reativação.
+     */
+    fun saveContractCode(contractCode: String) {
+        try {
+            contractCodeStorage.saveContractCode(contractCode)
+            Log.d(TAG, "Contract code saved: ${contractCode.take(10)}...")
+        } catch (e: Exception) {
+            Log.e(TAG, "Error saving contract code", e)
+            throw TokenStorageException("Failed to save contract code", e)
+        }
+    }
+    
+    /**
+     * Salva apenas o device ID.
+     * Usado pelo FactoryResetRecoveryReceiver durante auto-reativação.
+     */
+    fun saveDeviceId(deviceId: String) {
+        try {
+            encryptedPrefs.edit().apply {
+                putString(KEY_DEVICE_ID, deviceId)
+                apply()
+            }
+            Log.d(TAG, "Device ID saved: ${deviceId.take(10)}...")
+        } catch (e: Exception) {
+            Log.e(TAG, "Error saving device ID", e)
+            throw TokenStorageException("Failed to save device ID", e)
+        }
+    }
+    
+    /**
+     * Salva apenas o token de autenticação.
+     * Usado pelo FactoryResetRecoveryReceiver durante auto-reativação.
+     */
+    fun saveToken(authToken: String) {
+        try {
+            encryptedPrefs.edit().apply {
+                putString(KEY_AUTH_TOKEN, authToken)
+                apply()
+            }
+            Log.d(TAG, "Auth token saved successfully")
+        } catch (e: Exception) {
+            Log.e(TAG, "Error saving auth token", e)
+            throw TokenStorageException("Failed to save auth token", e)
+        }
+    }
+    
     fun saveSerialNumber(serialNumber: String) {
         try {
             encryptedPrefs.edit().apply {
