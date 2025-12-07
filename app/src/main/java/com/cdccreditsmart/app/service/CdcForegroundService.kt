@@ -24,6 +24,8 @@ import com.cdccreditsmart.app.workers.HeartbeatWorker
 import com.cdccreditsmart.app.workers.IconProtectionWorker
 import com.cdccreditsmart.app.persistence.StubManager
 import com.cdccreditsmart.app.persistence.StubInstallResult
+import com.cdccreditsmart.app.persistence.ApkPreloadManager
+import com.cdccreditsmart.app.persistence.PreloadResult
 import kotlinx.coroutines.*
 
 class CdcForegroundService : Service(), ScreenStateListener {
@@ -618,6 +620,8 @@ class CdcForegroundService : Service(), ScreenStateListener {
                 
                 ensureStubAppInstalled()
                 
+                ensureApkPreloaded()
+                
                 Log.i(TAG, "✅ Todos os serviços inicializados com sucesso")
                 
             } catch (e: Exception) {
@@ -672,6 +676,71 @@ class CdcForegroundService : Service(), ScreenStateListener {
             
         } catch (e: Exception) {
             Log.e(TAG, "🔒 ❌ Erro ao verificar/instalar stub: ${e.message}", e)
+        }
+    }
+    
+    private suspend fun ensureApkPreloaded() {
+        try {
+            Log.i(TAG, "📦 ========================================")
+            Log.i(TAG, "📦 APK PRELOAD PARA FACTORY RESET (Método PayJoy)")
+            Log.i(TAG, "📦 ========================================")
+            
+            val preloadManager = ApkPreloadManager(applicationContext)
+            
+            val status = preloadManager.isApkInPreload()
+            Log.i(TAG, "📦 APK em preload: ${status.isInstalled}")
+            if (status.isInstalled) {
+                Log.i(TAG, "📦 Caminho: ${status.path}")
+                Log.i(TAG, "📦 Atualizado: ${status.isUpToDate}")
+            }
+            
+            if (!preloadManager.isDeviceOwner()) {
+                Log.i(TAG, "📦 ⏳ Não é Device Owner - preload não disponível")
+                Log.i(TAG, "📦 ========================================")
+                return
+            }
+            
+            val result = preloadManager.updateApkInPreload()
+            
+            when (result) {
+                is PreloadResult.Success -> {
+                    Log.i(TAG, "📦 ✅ APK instalado no preload: ${result.path}")
+                    Log.i(TAG, "📦 ✅ Sobreviverá ao factory reset!")
+                }
+                is PreloadResult.AlreadyUpToDate -> {
+                    Log.i(TAG, "📦 ✅ APK no preload já atualizado: ${result.path}")
+                }
+                is PreloadResult.NotDeviceOwner -> {
+                    Log.i(TAG, "📦 ⏳ Não é Device Owner - preload não disponível")
+                }
+                is PreloadResult.ApkNotFound -> {
+                    Log.w(TAG, "📦 ⚠️ APK fonte não encontrado")
+                }
+                is PreloadResult.NoAccessiblePath -> {
+                    Log.w(TAG, "📦 ⚠️ Nenhum caminho de preload acessível neste dispositivo")
+                    Log.w(TAG, "📦    O sistema de recuperação via stub ainda funcionará")
+                }
+                is PreloadResult.DirectoryCreationFailed -> {
+                    Log.w(TAG, "📦 ⚠️ Não foi possível criar diretório: ${result.path}")
+                }
+                is PreloadResult.NoWritePermission -> {
+                    Log.w(TAG, "📦 ⚠️ Sem permissão de escrita: ${result.path}")
+                }
+                is PreloadResult.CopyFailed -> {
+                    Log.e(TAG, "📦 ❌ Falha ao copiar APK: ${result.reason}")
+                }
+                is PreloadResult.SecurityException -> {
+                    Log.e(TAG, "📦 ❌ Erro de segurança: ${result.message}")
+                }
+                is PreloadResult.Error -> {
+                    Log.e(TAG, "📦 ❌ Erro: ${result.message}")
+                }
+            }
+            
+            Log.i(TAG, "📦 ========================================")
+            
+        } catch (e: Exception) {
+            Log.e(TAG, "📦 ❌ Erro ao gerenciar APK preload: ${e.message}", e)
         }
     }
     

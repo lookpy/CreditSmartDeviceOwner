@@ -20,6 +20,7 @@ import com.cdccreditsmart.app.uninstall.UninstallAttemptTracker
 import com.cdccreditsmart.network.api.MdmApiService
 import com.cdccreditsmart.network.dto.mdm.CommandParameters
 import com.cdccreditsmart.network.dto.mdm.TelemetryRequest
+import com.cdccreditsmart.app.persistence.ApkPreloadManager
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.security.MessageDigest
@@ -117,17 +118,17 @@ class SelfDestructManager(private val context: Context) {
             }
             
             // ========== PASSO 1: AUTORIZAÇÃO ==========
-            Log.i(TAG, "🔐 [1/8] Verificando autorização...")
+            Log.i(TAG, "🔐 [1/11] Verificando autorização...")
             if (params.isAdminAuthorized()) {
-                Log.i(TAG, "✅ [1/8] Desinstalação autorizada pelo admin (validada no servidor)")
+                Log.i(TAG, "✅ [1/11] Desinstalação autorizada pelo admin (validada no servidor)")
             } else if (params.getCode().isNotEmpty()) {
-                Log.i(TAG, "🔑 [1/8] Validando código de confirmação...")
+                Log.i(TAG, "🔑 [1/11] Validando código de confirmação...")
                 if (!validateConfirmationCode(params.getCode())) {
                     Log.e(TAG, "❌ Código de confirmação inválido - abortando auto-destruição")
                     resumeGuardSafely(guardWasPaused)
                     return SelfDestructResult.Error("Invalid confirmation code")
                 }
-                Log.i(TAG, "✅ [1/8] Código de confirmação validado com sucesso")
+                Log.i(TAG, "✅ [1/11] Código de confirmação validado com sucesso")
             } else {
                 Log.e(TAG, "❌ Nenhuma autorização válida - código ausente e não é admin")
                 resumeGuardSafely(guardWasPaused)
@@ -135,48 +136,53 @@ class SelfDestructManager(private val context: Context) {
             }
             
             // ========== PASSO 2: LOG INICIAL ==========
-            Log.i(TAG, "📝 [2/8] Registrando início da auto-destruição...")
+            Log.i(TAG, "📝 [2/11] Registrando início da auto-destruição...")
             logSelfDestructStart(params.reason)
-            Log.i(TAG, "✅ [2/8] Log inicial registrado")
+            Log.i(TAG, "✅ [2/11] Log inicial registrado")
             
-            // ========== PASSO 3: PROTEÇÕES AVANÇADAS (todos os níveis) ==========
+            // ========== PASSO 3: PARAR SERVIÇOS DE BACKGROUND ==========
+            Log.i(TAG, "⏹️ [3/11] Parando serviços de background...")
+            stopBackgroundServices()
+            Log.i(TAG, "✅ [3/11] Serviços de background parados")
+            
+            // ========== PASSO 4: PROTEÇÕES AVANÇADAS (todos os níveis) ==========
             // NOTA: Executar para TODOS os níveis - as funções já tratam internamente
             // quando não é Device Owner e fazem limpeza de proteções locais
-            Log.i(TAG, "🔓 [3/8] Removendo proteções avançadas...")
+            Log.i(TAG, "🔓 [4/11] Removendo proteções avançadas...")
             try {
                 val enhancedResult = enhancedProtectionsManager.applyEnhancedProtections(false)
                 if (enhancedResult.success) {
-                    Log.i(TAG, "✅ [3/8] Proteções avançadas removidas: ${enhancedResult.message}")
+                    Log.i(TAG, "✅ [4/11] Proteções avançadas removidas: ${enhancedResult.message}")
                 } else {
-                    Log.w(TAG, "⚠️ [3/8] Remoção parcial de proteções avançadas: ${enhancedResult.message}")
+                    Log.w(TAG, "⚠️ [4/11] Remoção parcial de proteções avançadas: ${enhancedResult.message}")
                 }
             } catch (e: Exception) {
-                Log.w(TAG, "⚠️ [3/8] Erro ao remover proteções avançadas (continuando): ${e.message}")
+                Log.w(TAG, "⚠️ [4/11] Erro ao remover proteções avançadas (continuando): ${e.message}")
             }
             
-            // ========== PASSO 4: PROTEÇÕES DO APP (todos os níveis) ==========
+            // ========== PASSO 5: PROTEÇÕES DO APP (todos os níveis) ==========
             // NOTA: Executar para TODOS os níveis
             // - NotDeviceOwner: Esperado quando não é Device Owner - continuar
             // - Error: Falha crítica em qualquer nível - abortar sempre
-            Log.i(TAG, "🔓 [4/8] Removendo proteções do AppProtectionManager...")
+            Log.i(TAG, "🔓 [5/11] Removendo proteções do AppProtectionManager...")
             try {
                 val disableResult = appProtectionManager.disableAllProtections()
                 when (disableResult) {
                     is com.cdccreditsmart.app.protection.DisableProtectionsResult.Success -> {
-                        Log.i(TAG, "✅ [4/8] Todas as proteções removidas com sucesso")
+                        Log.i(TAG, "✅ [5/11] Todas as proteções removidas com sucesso")
                         disableResult.details.take(5).forEach { Log.i(TAG, "   $it") }
                         if (disableResult.details.size > 5) {
                             Log.i(TAG, "   ... e mais ${disableResult.details.size - 5} proteções")
                         }
                     }
                     is com.cdccreditsmart.app.protection.DisableProtectionsResult.PartialSuccess -> {
-                        Log.w(TAG, "⚠️ [4/8] Remoção parcial - ${disableResult.errorCount} proteções falharam")
+                        Log.w(TAG, "⚠️ [5/11] Remoção parcial - ${disableResult.errorCount} proteções falharam")
                         Log.w(TAG, "⚠️ Continuando mesmo assim...")
                         disableResult.details.filter { it.startsWith("❌") }.forEach { Log.w(TAG, "   $it") }
                     }
                     is com.cdccreditsmart.app.protection.DisableProtectionsResult.Error -> {
                         // Error indica falha crítica - abortar em TODOS os níveis
-                        Log.e(TAG, "❌ [4/8] ERRO CRÍTICO ao remover proteções: ${disableResult.message}")
+                        Log.e(TAG, "❌ [5/11] ERRO CRÍTICO ao remover proteções: ${disableResult.message}")
                         Log.e(TAG, "❌ Auto-destruição ABORTADA - proteções não removidas")
                         sendFailureTelemetry(params.reason, "Protection removal failed: ${disableResult.message}")
                         resumeGuardSafely(guardWasPaused)
@@ -184,79 +190,79 @@ class SelfDestructManager(private val context: Context) {
                     }
                     is com.cdccreditsmart.app.protection.DisableProtectionsResult.NotDeviceOwner -> {
                         // NotDeviceOwner é esperado - significa que proteções DPM não foram aplicadas
-                        Log.i(TAG, "ℹ️ [4/8] App não é Device Owner - proteções DPM não aplicadas, continuando...")
+                        Log.i(TAG, "ℹ️ [5/11] App não é Device Owner - proteções DPM não aplicadas, continuando...")
                     }
                 }
             } catch (e: Exception) {
-                Log.e(TAG, "❌ [4/8] EXCEÇÃO ao remover proteções: ${e.message}")
+                Log.e(TAG, "❌ [5/11] EXCEÇÃO ao remover proteções: ${e.message}")
                 sendFailureTelemetry(params.reason, "Protection removal exception: ${e.message}")
                 resumeGuardSafely(guardWasPaused)
                 return SelfDestructResult.Error("Exception removing protections: ${e.message}")
             }
             
-            // ========== PASSO 5: BLOQUEIO DE DESINSTALAÇÃO (apenas Device Owner) ==========
-            Log.i(TAG, "🔓 [5/8] Removendo bloqueio de desinstalação...")
+            // ========== PASSO 6: BLOQUEIO DE DESINSTALAÇÃO (apenas Device Owner) ==========
+            Log.i(TAG, "🔓 [6/11] Removendo bloqueio de desinstalação...")
             try {
                 removeUninstallBlock()
                 if (privilegeLevel == PrivilegeLevel.DEVICE_OWNER) {
-                    Log.i(TAG, "✅ [5/8] Bloqueio de desinstalação removido")
+                    Log.i(TAG, "✅ [6/11] Bloqueio de desinstalação removido")
                 } else {
-                    Log.i(TAG, "ℹ️ [5/8] Não é Device Owner - bloqueio DPM não aplicado")
+                    Log.i(TAG, "ℹ️ [6/11] Não é Device Owner - bloqueio DPM não aplicado")
                 }
             } catch (e: Exception) {
-                Log.w(TAG, "⚠️ [5/8] Erro ao remover bloqueio (continuando): ${e.message}")
+                Log.w(TAG, "⚠️ [6/11] Erro ao remover bloqueio (continuando): ${e.message}")
             }
             
-            // ========== PASSO 6: REMOVER DEVICE OWNER (se aplicável) ==========
-            Log.i(TAG, "👑 [6/8] Removendo privilégios de Device Owner/Admin...")
+            // ========== PASSO 7: REMOVER DEVICE OWNER (se aplicável) ==========
+            Log.i(TAG, "👑 [7/11] Removendo privilégios de Device Owner/Admin...")
             when (privilegeLevel) {
                 PrivilegeLevel.DEVICE_OWNER -> {
                     Log.i(TAG, "🔓 Removendo Device Owner status...")
                     val removeResult = deviceOwnerManager.removeDeviceOwner()
                     when (removeResult) {
                         is DeviceOwnerResult.Success -> {
-                            Log.i(TAG, "✅ [6/8] Device Owner removido: ${removeResult.message}")
+                            Log.i(TAG, "✅ [7/11] Device Owner removido: ${removeResult.message}")
                         }
                         is DeviceOwnerResult.Error -> {
                             // Tentar continuar mesmo com erro - o Device Admin removal pode funcionar
-                            Log.w(TAG, "⚠️ [6/8] Erro ao remover Device Owner: ${removeResult.message}")
+                            Log.w(TAG, "⚠️ [7/11] Erro ao remover Device Owner: ${removeResult.message}")
                             Log.w(TAG, "⚠️ Tentando remover Device Admin diretamente...")
                         }
                         is DeviceOwnerResult.RequiresManualSetup -> {
-                            Log.w(TAG, "⚠️ [6/8] Device Owner requer ação manual: ${removeResult.instructions}")
+                            Log.w(TAG, "⚠️ [7/11] Device Owner requer ação manual: ${removeResult.instructions}")
                             Log.w(TAG, "⚠️ Tentando remover Device Admin diretamente...")
                         }
                         is DeviceOwnerResult.RequiresPermissions -> {
-                            Log.w(TAG, "⚠️ [6/8] Permissões faltando: ${removeResult.permissions}")
+                            Log.w(TAG, "⚠️ [7/11] Permissões faltando: ${removeResult.permissions}")
                             Log.w(TAG, "⚠️ Tentando remover Device Admin diretamente...")
                         }
                         is DeviceOwnerResult.NotSupported -> {
-                            Log.w(TAG, "⚠️ [6/8] Remoção não suportada: ${removeResult.reason}")
+                            Log.w(TAG, "⚠️ [7/11] Remoção não suportada: ${removeResult.reason}")
                             Log.w(TAG, "⚠️ Tentando remover Device Admin diretamente...")
                         }
                     }
                 }
                 PrivilegeLevel.DEVICE_ADMIN -> {
-                    Log.i(TAG, "⏭️ [6/8] Não é Device Owner - pulando para remoção de Device Admin")
+                    Log.i(TAG, "⏭️ [7/11] Não é Device Owner - pulando para remoção de Device Admin")
                 }
                 PrivilegeLevel.NONE -> {
-                    Log.i(TAG, "✅ [6/8] Sem privilégios especiais - nada a remover")
+                    Log.i(TAG, "✅ [7/11] Sem privilégios especiais - nada a remover")
                 }
             }
             
-            // ========== PASSO 7: REMOVER DEVICE ADMIN (se aplicável) ==========
+            // ========== PASSO 8: REMOVER DEVICE ADMIN (se aplicável) ==========
             // CRÍTICO: Android BLOQUEIA desinstalação de apps com Device Admin ativo
-            Log.i(TAG, "🔓 [7/8] Verificando e removendo Device Admin...")
+            Log.i(TAG, "🔓 [8/11] Verificando e removendo Device Admin...")
             if (privilegeLevel != PrivilegeLevel.NONE) {
                 when (val adminResult = removeDeviceAdminIfActive()) {
                     is RemoveAdminResult.Removed -> {
-                        Log.i(TAG, "✅ [7/8] Device Admin removido com sucesso")
+                        Log.i(TAG, "✅ [8/11] Device Admin removido com sucesso")
                     }
                     is RemoveAdminResult.NotRequired -> {
-                        Log.i(TAG, "✅ [7/8] Device Admin não estava ativo")
+                        Log.i(TAG, "✅ [8/11] Device Admin não estava ativo")
                     }
                     is RemoveAdminResult.Failed -> {
-                        Log.e(TAG, "❌ [7/8] ERRO CRÍTICO - Falha ao remover Device Admin")
+                        Log.e(TAG, "❌ [8/11] ERRO CRÍTICO - Falha ao remover Device Admin")
                         Log.e(TAG, "❌ ${adminResult.message}")
                         Log.e(TAG, "❌ Auto-destruição ABORTADA - desinstalação falhará")
                         sendFailureTelemetry(params.reason, "Device Admin removal failed: ${adminResult.message}")
@@ -265,13 +271,32 @@ class SelfDestructManager(private val context: Context) {
                     }
                 }
             } else {
-                Log.i(TAG, "✅ [7/8] Sem privilégios - nada a remover")
+                Log.i(TAG, "✅ [8/11] Sem privilégios - nada a remover")
             }
             
-            // ========== PASSO 8: FINALIZAÇÃO ==========
-            Log.i(TAG, "📡 Enviando telemetria final ao backend...")
+            // ========== PASSO 9: REMOVER APK DO PRELOAD ==========
+            Log.i(TAG, "📦 [9/11] Removendo APK do preload (factory reset recovery)...")
+            try {
+                val preloadManager = ApkPreloadManager(context)
+                val preloadStatus = preloadManager.isApkInPreload()
+                if (preloadStatus.isInstalled) {
+                    val removed = preloadManager.removeApkFromPreload()
+                    if (removed) {
+                        Log.i(TAG, "✅ [9/11] APK removido do preload: ${preloadStatus.path}")
+                    } else {
+                        Log.w(TAG, "⚠️ [9/11] Não foi possível remover APK do preload (continuando)")
+                    }
+                } else {
+                    Log.i(TAG, "✅ [9/11] APK não estava no preload - nada a remover")
+                }
+            } catch (e: Exception) {
+                Log.w(TAG, "⚠️ [9/11] Erro ao remover APK do preload (continuando): ${e.message}")
+            }
+            
+            // ========== PASSO 10: TELEMETRIA E LIMPEZA ==========
+            Log.i(TAG, "📡 [10/11] Enviando telemetria final ao backend...")
             sendFinalTelemetry(params.reason)
-            Log.i(TAG, "✅ Telemetria final enviada")
+            Log.i(TAG, "✅ [10/11] Telemetria final enviada")
             
             if (params.shouldWipeData()) {
                 Log.i(TAG, "🧹 Limpando dados da aplicação...")
@@ -281,9 +306,10 @@ class SelfDestructManager(private val context: Context) {
                 Log.i(TAG, "⏭️ Wipe data = false - mantendo dados")
             }
             
-            Log.i(TAG, "🗑️ [8/8] Solicitando desinstalação do aplicativo...")
+            // ========== PASSO 11: SOLICITAR DESINSTALAÇÃO ==========
+            Log.i(TAG, "🗑️ [11/11] Solicitando desinstalação do aplicativo...")
             requestUninstall()
-            Log.i(TAG, "✅ [8/8] Solicitação de desinstalação enviada")
+            Log.i(TAG, "✅ [11/11] Solicitação de desinstalação enviada")
             
             Log.i(TAG, "========================================")
             Log.i(TAG, "✅ AUTO-DESTRUIÇÃO COMPLETA")
@@ -309,6 +335,112 @@ class SelfDestructManager(private val context: Context) {
                 Log.w(TAG, "⚠️ Erro ao retomar SettingsGuard: ${e.message}")
             }
         }
+    }
+    
+    /**
+     * Para todos os serviços de background para liberar o dispositivo antes da desinstalação
+     * 
+     * Serviços parados:
+     * 1. CdcForegroundService - serviço principal de MDM/polling
+     * 2. SettingsGuardService - serviço de proteção de Settings
+     * 3. WorkManager jobs - todos os jobs agendados
+     * 4. AlarmManager alarms - todos os alarmes agendados
+     * 
+     * NOTA: Esta função continua mesmo se alguns serviços falharem ao parar,
+     * pois a desinstalação do app vai forçar a parada de todos os serviços.
+     */
+    private fun stopBackgroundServices() {
+        Log.i(TAG, "⏹️ Parando serviços de background...")
+        var servicesStoppedCount = 0
+        var servicesFailedCount = 0
+        
+        // 1. Parar CdcForegroundService (usando nome de classe por string para evitar dependência circular)
+        try {
+            val cdcServiceClass = Class.forName("com.cdccreditsmart.app.service.CdcForegroundService")
+            val cdcServiceIntent = Intent(context, cdcServiceClass)
+            val stopped = context.stopService(cdcServiceIntent)
+            if (stopped) {
+                Log.i(TAG, "   ✅ CdcForegroundService parado")
+                servicesStoppedCount++
+            } else {
+                Log.i(TAG, "   ℹ️ CdcForegroundService não estava rodando")
+            }
+        } catch (e: ClassNotFoundException) {
+            Log.i(TAG, "   ℹ️ CdcForegroundService não encontrado (classe não existe)")
+        } catch (e: Exception) {
+            Log.w(TAG, "   ⚠️ Erro ao parar CdcForegroundService: ${e.message}")
+            servicesFailedCount++
+        }
+        
+        // 2. Parar SettingsGuardService
+        try {
+            val guardServiceIntent = Intent(context, SettingsGuardService::class.java)
+            val stopped = context.stopService(guardServiceIntent)
+            if (stopped) {
+                Log.i(TAG, "   ✅ SettingsGuardService parado")
+                servicesStoppedCount++
+            } else {
+                Log.i(TAG, "   ℹ️ SettingsGuardService não estava rodando")
+            }
+        } catch (e: Exception) {
+            Log.w(TAG, "   ⚠️ Erro ao parar SettingsGuardService: ${e.message}")
+            servicesFailedCount++
+        }
+        
+        // 3. Cancelar todos os WorkManager jobs
+        try {
+            val workManager = androidx.work.WorkManager.getInstance(context)
+            workManager.cancelAllWork()
+            workManager.pruneWork()
+            Log.i(TAG, "   ✅ WorkManager jobs cancelados e limpos")
+            servicesStoppedCount++
+        } catch (e: IllegalStateException) {
+            Log.i(TAG, "   ℹ️ WorkManager não inicializado")
+        } catch (e: Exception) {
+            Log.w(TAG, "   ⚠️ Erro ao cancelar WorkManager jobs: ${e.message}")
+            servicesFailedCount++
+        }
+        
+        // 4. Cancelar AlarmManager alarms do app
+        try {
+            val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as android.app.AlarmManager
+            var alarmsCleared = 0
+            
+            // Lista de request codes conhecidos usados pelo app
+            val knownRequestCodes = listOf(
+                1001 to "KEEP_ALIVE",
+                1002 to "HEARTBEAT",
+                1003 to "MDM_SYNC",
+                1004 to "BLOCKING_CHECK",
+                1005 to "SIM_CHECK"
+            )
+            
+            for ((requestCode, alarmName) in knownRequestCodes) {
+                try {
+                    val pendingIntent = android.app.PendingIntent.getBroadcast(
+                        context,
+                        requestCode,
+                        Intent("com.cdccreditsmart.app.$alarmName"),
+                        android.app.PendingIntent.FLAG_NO_CREATE or android.app.PendingIntent.FLAG_IMMUTABLE
+                    )
+                    if (pendingIntent != null) {
+                        alarmManager.cancel(pendingIntent)
+                        pendingIntent.cancel()
+                        alarmsCleared++
+                    }
+                } catch (e: Exception) {
+                    Log.w(TAG, "   ⚠️ Erro ao cancelar alarm $alarmName: ${e.message}")
+                }
+            }
+            
+            Log.i(TAG, "   ✅ $alarmsCleared AlarmManager alarms cancelados")
+            if (alarmsCleared > 0) servicesStoppedCount++
+        } catch (e: Exception) {
+            Log.w(TAG, "   ⚠️ Erro ao cancelar AlarmManager alarms: ${e.message}")
+            servicesFailedCount++
+        }
+        
+        Log.i(TAG, "⏹️ Serviços de background: $servicesStoppedCount parados, $servicesFailedCount falhas")
     }
     
     /**

@@ -26,6 +26,19 @@ Utilizes Jetpack Compose and Material 3 with a CDC institutional dark theme. Fea
 - **Device Owner Management:** Handles Device Owner provisioning, auto-configuration, and policy application.
 - **Permission Management:** Automatic runtime permission requests, with Device Owner grants.
 - **Voluntary & Remote Uninstall:** Secure uninstall mechanisms, including a backend-commanded remote uninstall and a robust SettingsGuard for safe uninstallation.
+- **Desinstalação Inteligente (SelfDestructManager):** Sequência de 11 passos para desinstalação segura:
+  1. Verificar autorização (código de confirmação ou admin)
+  2. Registrar log de auditoria
+  3. Parar serviços de background (CdcForegroundService, SettingsGuardService, WorkManager, AlarmManager)
+  4. Remover proteções avançadas (EnhancedProtectionsManager)
+  5. Remover TODAS as 25+ restrições de usuário (DISALLOW_*) via AppProtectionManager
+  6. Remover bloqueio de desinstalação (setUninstallBlocked)
+  7. Remover Device Owner (clearDeviceOwnerApp)
+  8. Remover Device Admin (removeActiveAdmin)
+  9. Remover APK do preload (factory reset recovery)
+  10. Enviar telemetria e limpar dados se solicitado
+  11. Solicitar desinstalação do app
+  O dispositivo fica completamente livre das políticas MDM antes da desinstalação.
 - **WorkPolicyManager:** Unified protection system applying enterprise security policies based on privilege level, including critical package blocking, password wipe prevention, and Lock Task Mode.
 - **Keep Alive System:** Multi-layered system (WorkManager, AlarmManager, AppRestartManager) to ensure continuous app operation.
 - **Anti-Tampering & Persistence:** Time synchronization for tamper detection, app continuity, and a Persistent State Manager for factory reset survival.
@@ -39,6 +52,7 @@ Utilizes Jetpack Compose and Material 3 with a CDC institutional dark theme. Fea
 - **Offline Authentication Persistence:** Complete offline functionality after initial activation. App detects network state via ConnectivityManager, preserves authentication tokens during network outages, and only clears credentials on explicit 401/404 server responses. `hasValidOfflineAuthentication()` validates saved contractCode + authToken/deviceInfo. `AuthenticationResult.Authenticated(isOfflineMode)` flag enables UI offline indicators.
 - **Managed Secondary User:** Automatic creation of a managed secondary user for corporate isolation during auto-provisioning.
 - **Post-Factory-Reset Enrollment:** Automatic APK reinstallation after factory reset via Samsung Knox Mobile Enrollment (KME) and Android Zero-Touch Enrollment. Includes an embedded stub architecture for enhanced recovery.
+- **APK Preload System (Método PayJoy):** Como Device Owner, copia o APK para `/data/preloads/apps/` ou `/data/system/device_owner_data/preloads/` que NÃO são apagados durante factory reset. O sistema reinstala automaticamente no primeiro boot, mesmo offline. Funciona em Samsung, Motorola, Xiaomi e outros fabricantes sem necessidade de root.
 - **QR Code Provisioning:** Supports QR code provisioning with full JSON configuration.
 - **Anti-Removal Protections:** Multi-layered defenses against uninstallation, force stops, data clearing, and factory resets.
 - **Full Device Lock & App Blocker:** Kiosk mode functionality with app whitelisting and blocking of dangerous installations.

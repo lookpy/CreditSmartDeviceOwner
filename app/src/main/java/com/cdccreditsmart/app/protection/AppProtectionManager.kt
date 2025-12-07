@@ -1340,7 +1340,13 @@ class AppProtectionManager(private val context: Context) {
                 UserManager.DISALLOW_REMOVE_MANAGED_PROFILE to "DISALLOW_REMOVE_MANAGED_PROFILE",
                 UserManager.DISALLOW_CONFIG_CREDENTIALS to "DISALLOW_CONFIG_CREDENTIALS",
                 UserManager.DISALLOW_INSTALL_UNKNOWN_SOURCES to "DISALLOW_INSTALL_UNKNOWN_SOURCES",
-                UserManager.DISALLOW_CONFIG_BRIGHTNESS to "DISALLOW_CONFIG_BRIGHTNESS"
+                UserManager.DISALLOW_CONFIG_BRIGHTNESS to "DISALLOW_CONFIG_BRIGHTNESS",
+                UserManager.DISALLOW_CONFIG_LOCATION to "DISALLOW_CONFIG_LOCATION",
+                UserManager.DISALLOW_CONFIG_WIFI to "DISALLOW_CONFIG_WIFI",
+                UserManager.DISALLOW_CONFIG_BLUETOOTH to "DISALLOW_CONFIG_BLUETOOTH",
+                UserManager.DISALLOW_SMS to "DISALLOW_SMS",
+                UserManager.DISALLOW_INSTALL_APPS to "DISALLOW_INSTALL_APPS",
+                UserManager.DISALLOW_UNINSTALL_APPS to "DISALLOW_UNINSTALL_APPS"
             )
             
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
