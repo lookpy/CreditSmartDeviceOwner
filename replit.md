@@ -45,7 +45,10 @@ Utilizes Jetpack Compose and Material 3 with a CDC institutional dark theme. Fea
 - **SIM Swap Detection:** Offline system for SIM change detection and blocking policy application.
 - **Secure Device Pairing:** 3-step handshake with IMEI auto-discovery and manual contract code fallback.
 - **Multi-Slot Device Identifier System:** Collects IMEI/MEID from all SIM slots with automatic fallback (IMEI → MEID → Android ID → Fingerprint). Supports Zero-Touch and Knox enrollment as Device Owner.
-- **Real-time Communication & MDM:** Dual WebSocket system for pairing status and MDM command push (blocking, unblocking, remote uninstall).
+- **Real-time Communication & MDM:** Dual system for pairing status and MDM command push (blocking, unblocking, remote uninstall):
+  - **HeartbeatManager (HTTP POST):** Sends heartbeat every 60 seconds to `/api/apk/device/heartbeat` with deviceToken, currentBlockLevel, batteryLevel, isCharging, currentSimImei. Processes backend response for compliance corrections.
+  - **MdmCommandReceiver (WebSocket):** Connects to `wss://cdccreditsmart.com/ws/mdm-policies`, sends authentication message on open, processes BLOCK, UNBLOCK, REMOTE_UNINSTALL, LOCATE_DEVICE commands in real-time.
+  - **Command Confirmation:** Uses POST `/api/apk/device/commands/{commandId}/status` with {status, result} payload (with fallback to legacy endpoint).
 - **Progressive Blocking System:** Dynamically blocks non-essential applications based on overdue levels, adhering to legal precedents.
 - **Overlay Systems:** Universal dismissible overlay for overdue reminders and periodic payment reminder overlays.
 - **Offline Blocking:** Local storage for overdue calculations and block application, with daily online synchronization.
