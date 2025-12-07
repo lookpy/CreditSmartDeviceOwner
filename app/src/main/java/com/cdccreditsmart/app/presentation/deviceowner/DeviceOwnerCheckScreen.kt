@@ -1,5 +1,6 @@
 package com.cdccreditsmart.app.presentation.deviceowner
 
+import android.util.Log
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
@@ -12,6 +13,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.cdccreditsmart.app.BuildConfig
 
+private const val TAG = "DeviceOwnerCheckScreen"
+
 @Composable
 fun DeviceOwnerCheckScreen(
     viewModel: DeviceOwnerCheckViewModel,
@@ -21,17 +24,26 @@ fun DeviceOwnerCheckScreen(
     val state = viewModel.state.value
     
     LaunchedEffect(state) {
+        Log.i(TAG, "📱 DeviceOwnerCheckScreen - Estado: $state")
         when (state) {
             is ProvisioningStep.DeviceOwnerFound -> {
+                Log.i(TAG, "✅ Device Owner encontrado - chamando callback")
                 onDeviceOwnerConfirmed()
             }
-            else -> {}
+            is ProvisioningStep.NeedsProvisioning -> {
+                Log.w(TAG, "⚠️ Dispositivo precisa de provisionamento")
+                Log.w(TAG, "   Samsung: ${state.isSamsung}")
+                Log.w(TAG, "   DeviceInfo: ${state.deviceInfo}")
+            }
+            is ProvisioningStep.Checking -> {
+                Log.d(TAG, "🔄 Verificando status de Device Owner...")
+            }
         }
     }
     
     Surface(
         modifier = Modifier.fillMaxSize(),
-        color = MaterialTheme.colorScheme.background
+        color = Color(0xFF121212)
     ) {
         Box(
             modifier = Modifier.fillMaxSize(),
@@ -47,15 +59,21 @@ fun DeviceOwnerCheckScreen(
                         isSamsung = state.isSamsung,
                         deviceInfo = state.deviceInfo,
                         onProvisionNow = {
+                            Log.i(TAG, "👆 Botão 'Provisionar Agora' clicado")
                             onNeedsProvisioning(state.isSamsung)
                         },
                         onSkip = if (BuildConfig.DEBUG) {
-                            { viewModel.skipProvisioning() }
+                            { 
+                                Log.w(TAG, "⚠️ Botão 'Pular' clicado (DEBUG)")
+                                viewModel.skipProvisioning() 
+                            }
                         } else null
                     )
                 }
                 
-                else -> {}
+                is ProvisioningStep.DeviceOwnerFound -> {
+                    Log.d(TAG, "✅ Device Owner encontrado - aguardando navegação...")
+                }
             }
         }
     }

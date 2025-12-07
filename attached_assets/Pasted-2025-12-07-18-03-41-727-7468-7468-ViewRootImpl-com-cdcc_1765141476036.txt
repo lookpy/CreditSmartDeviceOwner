@@ -1,0 +1,25 @@
+2025-12-07 18:03:41.727  7468-7468  ViewRootImpl            com.cdccreditsmart.app               D  Skipping stats log for color mode
+2025-12-07 18:03:41.728  7468-7468  MainActivity            com.cdccreditsmart.app               D  ========== NEW INTENT RECEIVED ==========
+2025-12-07 18:03:42.273  7468-7504  SettingsGuardService    com.cdccreditsmart.app               D  📋 Activity check - Full: com.cdccreditsmart.app.presentation.MainActivity, Simple: MainActivity
+2025-12-07 18:03:42.884  7468-7504  SettingsGuardService    com.cdccreditsmart.app               D  📋 Activity check - Full: com.cdccreditsmart.app.presentation.MainActivity, Simple: MainActivity
+2025-12-07 18:03:43.486  7468-7504  SettingsGuardService    com.cdccreditsmart.app               D  📋 Activity check - Full: com.cdccreditsmart.app.presentation.MainActivity, Simple: MainActivity
+2025-12-07 18:03:53.777  7468-7504  SettingsGuardService    com.cdccreditsmart.app               D  📋 Activity check - Full: com.google.android.apps.nexuslauncher.NexusLauncherActivity, Simple: NexusLauncherActivity
+2025-12-07 18:03:54.382  7468-7504  SettingsGuardService    com.cdccreditsmart.app               D  📋 Activity check - Full: com.google.android.apps.nexuslauncher.NexusLauncherActivity, Simple: NexusLauncherActivity
+2025-12-07 18:03:54.781  7468-7468  VRI[MainActivity]       com.cdccreditsmart.app               D  visibilityChanged oldVisibility=true newVisibility=false
+2025-12-07 18:03:54.987  7468-7504  SettingsGuardService    com.cdccreditsmart.app               D  📋 Activity check - Full: com.google.android.apps.nexuslauncher.NexusLauncherActivity, Simple: NexusLauncherActivity
+2025-12-07 18:03:55.070  7468-7468  ViewRootImpl            com.cdccreditsmart.app               D  Skipping stats log for color mode
+2025-12-07 18:03:55.071  7468-7468  MainActivity            com.cdccreditsmart.app               D  ========== NEW INTENT RECEIVED ==========
+2025-12-07 18:03:55.591  7468-7504  SettingsGuardService    com.cdccreditsmart.app               D  📋 Activity check - Full: com.cdccreditsmart.app.presentation.MainActivity, Simple: MainActivity
+2025-12-07 18:03:56.194  7468-7504  SettingsGuardService    com.cdccreditsmart.app               D  📋 Activity check - Full: com.cdccreditsmart.app.presentation.MainActivity, Simple: MainActivity
+2025-12-07 18:03:56.796  7468-7504  SettingsGuardService    com.cdccreditsmart.app               D  📋 Activity check - Full: com.cdccreditsmart.app.presentation.MainActivity, Simple: MainActivity
+2025-12-07 18:04:02.224  7468-7504  SettingsGuardService    com.cdccreditsmart.app               D  📋 Activity check - Full: com.google.android.apps.nexuslauncher.NexusLauncherActivity, Simple: NexusLauncherActivity
+2025-12-07 18:04:02.831  7468-7504  SettingsGuardService    com.cdccreditsmart.app               D  📋 Activity check - Full: com.google.android.apps.nexuslauncher.NexusLauncherActivity, Simple: NexusLauncherActivity
+2025-12-07 18:04:03.107  7468-7468  VRI[MainActivity]       com.cdccreditsmart.app               D  visibilityChanged oldVisibility=true newVisibility=false
+2025-12-07 18:04:03.435  7468-7504  SettingsGuardService    com.cdccreditsmart.app               D  📋 Activity check - Full: com.google.android.apps.nexuslauncher.NexusLauncherActivity, Simple: NexusLauncherActivity
+2025-12-07 18:04:04.281  7468-7468  ViewRootImpl            com.cdccreditsmart.app               D  Skipping stats log for color mode
+2025-12-07 18:04:04.283  7468-7468  MainActivity            com.cdccreditsmart.app               D  ========== NEW INTENT RECEIVED ==========
+2025-12-07 18:04:04.293  7468-7468  Choreographer           com.cdccreditsmart.app               W  Frame time is 0.011624 ms in the future!  Check that graphics HAL is generating vsync timestamps using the correct timebase.
+2025-12-07 18:04:04.642  7468-7504  SettingsGuardService    com.cdccreditsmart.app               D  📋 Activity check - Full: com.cdccreditsmart.app.presentation.MainActivity, Simple: MainActivity
+2025-12-07 18:04:05.245  7468-7504  SettingsGuardService    com.cdccreditsmart.app               D  📋 Activity check - Full: com.cdccreditsmart.app.presentation.MainActivity, Simple: MainActivity
+2025-12-07 18:04:05.849  7468-7504  SettingsGuardService    com.cdccreditsmart.app               D  📋 Activity check - Full: com.cdccreditsmart.app.presentation.MainActivity, Simple: MainActivity
+2025-12-07 18:04:14.310  7468-7468  Choreographer           com.cdccreditsmart.app               W  Frame time is 0.472384 ms in the future!  Check that graphics HAL is generating vsync timestamps using the correct timebase.
