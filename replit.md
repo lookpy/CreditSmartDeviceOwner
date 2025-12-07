@@ -44,6 +44,12 @@ Utilizes Jetpack Compose and Material 3 with a CDC institutional dark theme. Fea
 - **Anti-Tampering & Persistence:** Time synchronization for tamper detection, app continuity, and a Persistent State Manager for factory reset survival.
 - **SIM Swap Detection:** Offline system for SIM change detection and blocking policy application.
 - **Secure Device Pairing:** 3-step handshake with IMEI auto-discovery and manual contract code fallback.
+- **Validação Híbrida de IMEI (PDV):** Sistema de dupla validação para garantir que apenas o dispositivo vendido seja ativado:
+  - **Backend (primária):** Valida IMEI do dispositivo contra IMEIs registrados na venda do PDV antes de retornar sucesso
+  - **App (secundária):** Valida localmente como redundância e para suportar recovery offline
+  - **Bloqueio obrigatório:** Ativação BLOQUEADA se: (1) backend não retornar `imeiList`, (2) dispositivo não tiver IMEI acessível, (3) IMEI não corresponder ao PDV
+  - **Recovery seguro:** Após factory reset, valida IMEI contra hashes salvos no manifesto antes de restaurar credenciais
+  - Documentação completa em `docs/imei-validation-hybrid.md`
 - **Multi-Slot Device Identifier System:** Collects IMEI/MEID from all SIM slots with automatic fallback (IMEI → MEID → Android ID → Fingerprint). Supports Zero-Touch and Knox enrollment as Device Owner.
 - **Real-time Communication & MDM:** Dual WebSocket system for pairing status and MDM command push (blocking, unblocking, remote uninstall).
 - **Progressive Blocking System:** Dynamically blocks non-essential applications based on overdue levels, adhering to legal precedents.
