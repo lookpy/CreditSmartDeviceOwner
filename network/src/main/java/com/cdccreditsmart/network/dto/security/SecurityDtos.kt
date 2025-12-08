@@ -130,7 +130,7 @@ data class DeviceBootRequest(
  * - message: String
  * - deviceId: String?
  * - serialNumber: String?
- * - pendingCommands: Int
+ * - pendingCommands: List<Any> (array de comandos pendentes)
  * - serverTime: String?
  * - config: BootConfig?
  */
@@ -140,7 +140,7 @@ data class DeviceBootResponse(
     val message: String = "",
     val deviceId: String? = null,
     val serialNumber: String? = null,
-    val pendingCommands: Int = 0,
+    val pendingCommands: List<Any>? = null,
     val serverTime: String? = null,
     val config: BootConfig? = null,
     val factoryResetDetected: Boolean = false,

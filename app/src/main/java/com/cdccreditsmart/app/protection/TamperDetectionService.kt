@@ -216,7 +216,8 @@ class TamperDetectionService(private val context: Context) {
                     Log.i(TAG, "   Message: ${body?.message}")
                     Log.i(TAG, "   Device ID: ${body?.deviceId}")
                     Log.i(TAG, "   Serial Number: ${body?.serialNumber}")
-                    Log.i(TAG, "   Pending Commands: ${body?.pendingCommands}")
+                    val pendingCommandsCount = body?.pendingCommands?.size ?: 0
+                    Log.i(TAG, "   Pending Commands: $pendingCommandsCount")
                     Log.i(TAG, "   Server Time: ${body?.serverTime}")
                     
                     body?.config?.let { config ->
@@ -233,9 +234,9 @@ class TamperDetectionService(private val context: Context) {
                     }
                     
                     // Se há comandos pendentes, buscar imediatamente
-                    if ((body?.pendingCommands ?: 0) > 0) {
+                    if (pendingCommandsCount > 0) {
                         Log.i(TAG, "📋 ========================================")
-                        Log.i(TAG, "📋 ${body?.pendingCommands} comandos pendentes detectados!")
+                        Log.i(TAG, "📋 $pendingCommandsCount comandos pendentes detectados!")
                         Log.i(TAG, "📋 Disparando busca de comandos...")
                         Log.i(TAG, "📋 ========================================")
                         triggerPendingCommandsFetch()

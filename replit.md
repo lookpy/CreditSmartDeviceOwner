@@ -94,3 +94,9 @@ The UI uses Jetpack Compose and Material 3 with a CDC institutional dark theme. 
 - **Keywords Checked**: AppInfo, InstalledApp, AppDetails, ApplicationDetails
 - **Enhanced Logging**: Now logs when any Settings activity passes ALL verifications (helps debug missed activities)
 - **Impact**: Any App Info activity that escapes normal detection will be caught by catch-all
+
+### 2025-12-08: Device Boot Response DTO Fix
+- **Fixed JSON Parse Error**: Backend returns `pendingCommands` as array `[]`, but DTO expected `Int`
+- **Changed Type**: `pendingCommands: Int = 0` → `pendingCommands: List<Any>? = null`
+- **Updated TamperDetectionService**: Now uses `.size` to count pending commands from array
+- **Impact**: Eliminates `JsonDataException: Expected an int but was BEGIN_ARRAY` error
