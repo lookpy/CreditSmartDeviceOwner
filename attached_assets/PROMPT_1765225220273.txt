@@ -1,0 +1,371 @@
+# Sistema de Limitação Progressiva - Documentação Técnica para APK
+
+## 1. Visão Geral
+
+O sistema de **Limitação Progressiva** implementa um modelo de restrição escalonada de aplicativos não-essenciais em dispositivos com pagamentos em atraso. O sistema opera em **7 níveis (0-6)** de forma **CUMULATIVA**, onde cada nível adiciona novas restrições mantendo as anteriores.
+
+### 1.1 Conformidade Legal (TJMG)
+- **NUNCA** bloquear o dispositivo completamente
+- **SEMPRE** manter acesso a apps essenciais (WhatsApp, telefone, SMS, bancos, apps de trabalho)
+- Usar terminologia "limitação/limitado" (NUNCA "bloqueio/bloqueado")
+
+---
+
+## 2. Níveis de Limitação (CUMULATIVO)
+
+| Nível | Dias em Atraso | Apps Limitados (ACUMULATIVO) |
+|-------|----------------|------------------------------|
+| 0 | 0-2 dias | Nenhuma restrição |
+| 1 | 3-5 dias | Câmera, Galeria, Fotos, Gerenciadores de Arquivos, Players de Vídeo |
+| 2 | 6-8 dias | **Nível 1** + Navegadores, YouTube, TikTok |
+| 3 | 9-11 dias | **Níveis 1-2** + Redes Sociais (Instagram, Facebook, Twitter, Snapchat), Shopping (Shopee, Mercado Livre, Amazon) |
+| 4 | 12-14 dias | **Níveis 1-3** + Jogos, Apps de Música (Spotify, Deezer) |
+| 5 | 15-17 dias | **Níveis 1-4** + Play Store, Outras Lojas de Apps |
+| 6 | 18+ dias | **Níveis 1-5** + Todos os apps não-essenciais |
+
+### 2.1 Modelo Cumulativo - IMPORTANTE
+
+```
+Nível 2 = Nível 1 + Nível 2 específico
+Nível 3 = Nível 1 + Nível 2 + Nível 3 específico
+...
+Nível 6 = TODOS os níveis anteriores + apps não-essenciais restantes
+```
+
+---
+
+## 3. Categorias de Apps (13 Categorias)
+
+O sistema organiza apps em 13 categorias:
+
+| Categoria | Descrição | Nível Inicial |
+|-----------|-----------|---------------|
+| `camera` | Apps de câmera | 1 |
+| `gallery_photos` | Galeria, fotos | 1 |
+| `file_manager` | Gerenciadores de arquivos | 1 |
+| `video_players` | Players de vídeo | 1 |
+| `browsers` | Navegadores web | 2 |
+| `youtube_tiktok` | YouTube, TikTok | 2 |
+| `social_media` | Redes sociais | 3 |
+| `shopping` | Apps de compras | 3 |
+| `games` | Jogos (~250 títulos listados) | 4 |
+| `music` | Apps de música/streaming | 4 |
+| `play_store` | Google Play Store | 5 |
+| `other_app_stores` | Outras lojas de apps | 5 |
+| `non_essential_apps` | Demais apps não-essenciais | 6 |
+
+---
+
+## 4. Flags blockAll (NOVO)
+
+O backend envia flags booleanas para bloquear **TODOS** os apps de uma categoria, não apenas os listados:
+
+```json
+{
+  "blockAllFlags": {
+    "blockAllCamera": true,
+    "blockAllGalleryPhotos": true,
+    "blockAllFileManager": true,
+    "blockAllVideoPlayers": true,
+    "blockAllBrowsers": true,
+    "blockAllYoutubeTiktok": true,
+    "blockAllSocialMedia": true,
+    "blockAllShopping": true,
+    "blockAllGames": true,
+    "blockAllMusic": true,
+    "blockAllPlayStore": true,
+    "blockAllOtherAppStores": true,
+    "blockAllNonEssentialApps": true
+  }
+}
+```
+
+### 4.1 Comportamento Esperado no APK
+
+Quando `blockAllGames: true`:
+1. Bloquear TODOS os packages listados em `blockedPackages`
+2. **ADICIONALMENTE**: Detectar qualquer app instalado que seja um jogo e bloqueá-lo
+3. Usar categoria do app (via PackageManager) para identificar jogos não listados
+
+---
+
+## 5. Apps Essenciais (NUNCA BLOQUEAR)
+
+Lista de packages que **NUNCA** devem ser limitados, independente do nível:
+
+### 5.1 Comunicação Básica
+```
+com.whatsapp
+com.whatsapp.w4b
+org.telegram.messenger
+com.google.android.dialer
+com.samsung.android.dialer
+com.android.phone
+com.google.android.apps.messaging
+com.samsung.android.messaging
+com.android.mms
+```
+
+### 5.2 Apps de Trabalho/Renda
+```
+com.ubercab.driver
+com.ubercab
+br.com.ifood.driver
+br.com.ifood
+com.ninety9.driver
+com.ninety9
+br.com.loggi.driver
+com.rappi.courier
+```
+
+### 5.3 Apps Bancários
+```
+com.itau
+com.bradesco
+br.com.bb.android
+com.santander.app
+com.nu.production
+br.com.caixa.tem
+com.picpay
+com.mercadopago.wallet
+```
+
+### 5.4 Apps Governamentais
+```
+br.gov.meugovbr
+br.gov.caixa.auxilio
+br.gov.caixa.tem
+br.gov.dataprev.meulnss
+br.gov.serpro.cpf
+br.gov.sp.poupatempo
+```
+
+### 5.5 Sistema/Essenciais
+```
+com.android.settings
+com.android.systemui
+com.google.android.gms
+com.android.vending (Play Store - exceto nível 5+)
+```
+
+---
+
+## 6. Endpoint de Políticas MDM
+
+### 6.1 GET /api/apk/mdm/policies
+
+**Headers Obrigatórios:**
+```
+Authorization: Bearer <deviceUniqueToken>
+X-Device-Android-Id: <androidId>
+```
+
+**Resposta de Sucesso (200):**
+```json
+{
+  "success": true,
+  "policies": {
+    "targetLevel": 3,
+    "currentLevel": 2,
+    "daysOverdue": 10,
+    "blockCategories": ["camera", "gallery_photos", "file_manager", "video_players", "browsers", "youtube_tiktok", "social_media", "shopping"],
+    "blockedPackages": [
+      "com.google.android.camera",
+      "com.instagram.android",
+      "com.facebook.katana",
+      ...
+    ],
+    "blockAllFlags": {
+      "blockAllCamera": true,
+      "blockAllGalleryPhotos": true,
+      "blockAllFileManager": true,
+      "blockAllVideoPlayers": true,
+      "blockAllBrowsers": true,
+      "blockAllYoutubeTiktok": true,
+      "blockAllSocialMedia": true,
+      "blockAllShopping": true,
+      "blockAllGames": false,
+      "blockAllMusic": false,
+      "blockAllPlayStore": false,
+      "blockAllOtherAppStores": false,
+      "blockAllNonEssentialApps": false
+    },
+    "alwaysAllowedPackages": [
+      "com.whatsapp",
+      "com.android.phone",
+      ...
+    ],
+    "message": "Parcela em atraso há 10 dias. Regularize para liberar seu dispositivo.",
+    "timestamp": "2024-12-08T19:00:00.000Z"
+  }
+}
+```
+
+---
+
+## 7. WebSocket MDM (/ws/mdm-policies)
+
+### 7.1 Conexão e Autenticação
+
+```javascript
+// Conectar ao WebSocket
+const ws = new WebSocket('wss://servidor/ws/mdm-policies');
+
+// Autenticar após conexão
+ws.onopen = () => {
+  ws.send(JSON.stringify({
+    type: 'AUTH',
+    payload: {
+      deviceUniqueToken: '<token>',
+      // OU
+      androidId: '<android_id_lowercase>'
+    }
+  }));
+};
+```
+
+**IMPORTANTE**: O `androidId` deve ser enviado em **minúsculas**.
+
+### 7.2 Comandos Recebidos
+
+#### PROGRESSIVE_BLOCK
+```json
+{
+  "type": "PROGRESSIVE_BLOCK",
+  "payload": {
+    "level": 3,
+    "reason": "payment_overdue",
+    "daysOverdue": 10,
+    "blockCategories": ["camera", "gallery_photos", ...],
+    "blockedPackages": ["com.instagram.android", ...],
+    "blockAllFlags": { ... },
+    "alwaysAllowedPackages": ["com.whatsapp", ...],
+    "message": "Regularize seu pagamento",
+    "timestamp": "2024-12-08T19:00:00.000Z"
+  }
+}
+```
+
+#### UNBLOCK_PROGRESSIVE
+```json
+{
+  "type": "UNBLOCK_PROGRESSIVE",
+  "payload": {
+    "reason": "payment_received",
+    "timestamp": "2024-12-08T19:00:00.000Z"
+  }
+}
+```
+
+### 7.3 Heartbeat (APK -> Backend)
+
+O APK deve enviar heartbeats regulares:
+```json
+{
+  "type": "HEARTBEAT",
+  "payload": {
+    "currentBlockLevel": 3,
+    "blockedAppsCount": 45,
+    "batteryLevel": 85,
+    "isCharging": false
+  }
+}
+```
+
+---
+
+## 8. Ajustes Necessários no APK
+
+### 8.1 Autenticação WebSocket
+- [ ] Normalizar `androidId` para **minúsculas** antes de enviar
+- [ ] Implementar retry com backoff exponencial em caso de falha
+- [ ] Manter conexão persistente com ping/pong
+
+### 8.2 Sistema de Limitação Cumulativo
+- [ ] Ao receber nível N, bloquear TODOS os packages dos níveis 0 até N
+- [ ] Manter cache local dos níveis e packages bloqueados
+- [ ] Verificar `blockCategories` array para saber quais categorias limitar
+
+### 8.3 Flags blockAll
+- [ ] Implementar detecção de categoria de apps via PackageManager
+- [ ] Quando `blockAllGames: true`, bloquear qualquer app com categoria GAME
+- [ ] Quando `blockAllBrowsers: true`, bloquear qualquer app com categoria BROWSER
+- [ ] Aplicar mesma lógica para todas as 13 categorias
+
+### 8.4 Lista de Apps Essenciais
+- [ ] Manter lista local de `alwaysAllowedPackages`
+- [ ] Atualizar lista quando receber do backend
+- [ ] **NUNCA** bloquear packages desta lista, mesmo no nível 6
+- [ ] Incluir validação extra antes de qualquer bloqueio
+
+### 8.5 Heartbeat com Nível Atual
+- [ ] Enviar heartbeat a cada 5 minutos (ou configurável)
+- [ ] Incluir `currentBlockLevel` no heartbeat
+- [ ] Incluir contagem de apps bloqueados
+- [ ] Incluir confirmação de execução de comandos
+
+### 8.6 Tela de Limitação (Nível 6)
+- [ ] Ao atingir nível 6, exibir tela informativa
+- [ ] Tela deve permitir acesso a apps essenciais via botões dedicados
+- [ ] Mostrar mensagem sobre regularização do pagamento
+- [ ] Exibir contato de suporte
+
+### 8.7 Confirmação de Comandos
+- [ ] Após executar PROGRESSIVE_BLOCK, enviar confirmação:
+```json
+{
+  "type": "COMMAND_EXECUTED",
+  "payload": {
+    "commandType": "PROGRESSIVE_BLOCK",
+    "level": 3,
+    "success": true,
+    "blockedCount": 45,
+    "timestamp": "2024-12-08T19:00:00.000Z"
+  }
+}
+```
+
+### 8.8 Persistência Local
+- [ ] Salvar último estado de limitação em SharedPreferences
+- [ ] Ao reiniciar, aplicar limitação salva imediatamente
+- [ ] Sincronizar com backend após reconexão
+
+---
+
+## 9. Fluxo de Transição de Níveis
+
+```
+Dia 0-2:   Nível 0 (sem restrições)
+Dia 3:     Nível 1 → Limitar câmera, galeria, arquivos, vídeos
+Dia 6:     Nível 2 → Manter 1 + limitar navegadores, YouTube, TikTok
+Dia 9:     Nível 3 → Manter 1-2 + limitar redes sociais, shopping
+Dia 12:    Nível 4 → Manter 1-3 + limitar jogos, música
+Dia 15:    Nível 5 → Manter 1-4 + limitar Play Store, lojas
+Dia 18:    Nível 6 → Manter 1-5 + limitar todos não-essenciais
+```
+
+**Ao pagar:**
+```
+Pagamento recebido → UNBLOCK_PROGRESSIVE → Remover TODAS as limitações
+```
+
+---
+
+## 10. Terminologia Obrigatória
+
+| Usar | NÃO Usar |
+|------|----------|
+| Limitação | Bloqueio |
+| Limitado | Bloqueado |
+| Limitar | Bloquear |
+| Liberação | Desbloqueio |
+| Liberado | Desbloqueado |
+| Liberar | Desbloquear |
+
+---
+
+## 11. Contato e Suporte
+
+Para dúvidas sobre a implementação, entre em contato com o time de backend.
+
+**Última atualização:** 08/12/2024

@@ -289,12 +289,28 @@ class SettingsGuardService(private val context: Context) {
     }
     
     fun startGuard() {
+        Log.i(TAG, "")
+        Log.i(TAG, "╔════════════════════════════════════════════════════════╗")
+        Log.i(TAG, "║   🛡️ SETTINGSGUARD - INICIALIZAÇÃO                    ║")
+        Log.i(TAG, "╠════════════════════════════════════════════════════════╣")
+        
         if (isGuardActive) {
-            Log.d(TAG, "Guard já está ativo")
+            Log.i(TAG, "║   ℹ️ Guard já está ativo - ignorando chamada         ║")
+            Log.i(TAG, "╚════════════════════════════════════════════════════════╝")
             return
         }
         
         val mode = getCurrentProtectionMode()
+        val hasUsageStats = hasUsageStatsPermission()
+        val hasOverlay = Settings.canDrawOverlays(context)
+        
+        Log.i(TAG, "║   📱 Modo proteção: ${mode.name.padEnd(32)}║")
+        Log.i(TAG, "║   📊 UsageStats: ${if (hasUsageStats) "✅ CONCEDIDA" else "❌ NEGADA   "}              ║")
+        Log.i(TAG, "║   🪟 Overlay: ${if (hasOverlay) "✅ CONCEDIDA" else "❌ NEGADA   "}                 ║")
+        Log.i(TAG, "║   🔒 Device Owner: ${if (isDeviceOwner()) "✅ SIM" else "❌ NÃO"}                   ║")
+        Log.i(TAG, "║   🔐 Device Admin: ${if (isDeviceAdmin()) "✅ SIM" else "❌ NÃO"}                   ║")
+        Log.i(TAG, "╚════════════════════════════════════════════════════════╝")
+        
         isGuardActive = true
         
         Log.i(TAG, "🛡️ SettingsGuard INICIADO")
@@ -322,27 +338,47 @@ class SettingsGuardService(private val context: Context) {
     }
     
     private fun startActiveMonitoring() {
-        Log.i(TAG, "🔍 Iniciando monitoramento ativo de Settings...")
+        Log.i(TAG, "🔍 ========================================")
+        Log.i(TAG, "🔍 INICIANDO MONITORAMENTO ATIVO DE SETTINGS")
+        Log.i(TAG, "🔍 ========================================")
         
-        if (!hasUsageStatsPermission()) {
+        val hasUsageStats = hasUsageStatsPermission()
+        val hasOverlay = Settings.canDrawOverlays(context)
+        
+        if (!hasUsageStats) {
             Log.w(TAG, "⚠️ Sem permissão PACKAGE_USAGE_STATS")
             Log.w(TAG, "   Monitoramento via ActivityManager (menos preciso)")
             Log.w(TAG, "   IMPORTANTE: Conceda permissão em Configurações > Apps > Credit Smart > Acesso especial > Acesso uso")
             showUsageStatsRequiredNotification()
             usageStatsNotificationShown = true
         } else {
+            Log.i(TAG, "✅ USAGE_STATS concedida - monitoramento preciso ativo")
             cancelUsageStatsNotification()
             usageStatsNotificationShown = false
         }
         
-        if (!Settings.canDrawOverlays(context)) {
+        if (!hasOverlay) {
             Log.w(TAG, "⚠️ Sem permissão SYSTEM_ALERT_WINDOW")
             Log.w(TAG, "   Overlays de bloqueio não funcionarão")
+        } else {
+            Log.i(TAG, "✅ OVERLAY concedida - overlays funcionarão")
         }
         
+        Log.i(TAG, "🔍 Intervalo normal: ${CHECK_INTERVAL_MS}ms")
+        Log.i(TAG, "🔍 Intervalo agressivo: ${AGGRESSIVE_CHECK_INTERVAL_MS}ms")
+        Log.i(TAG, "🔍 ========================================")
+        
         guardScope.launch {
+            var iterationCount = 0L
             while (isGuardActive && isActive) {
                 try {
+                    iterationCount++
+                    
+                    // Log periódico a cada 100 iterações (~1 minuto) para confirmar que está rodando
+                    if (iterationCount % 100 == 0L) {
+                        Log.d(TAG, "🔍 Guard loop ativo - iteração #$iterationCount (modo: ${if (isInAggressiveMode) "AGRESSIVO" else "normal"})")
+                    }
+                    
                     if (usageStatsNotificationShown && hasUsageStatsPermission()) {
                         Log.i(TAG, "✅ Permissão USAGE_STATS concedida - cancelando notificação")
                         cancelUsageStatsNotification()
@@ -351,12 +387,14 @@ class SettingsGuardService(private val context: Context) {
                     
                     checkSettingsAccessAggressively()
                 } catch (e: Exception) {
-                    Log.e(TAG, "Erro no guard loop: ${e.message}")
+                    Log.e(TAG, "❌ Erro no guard loop: ${e.message}")
                 }
                 
                 val interval = if (isInAggressiveMode) AGGRESSIVE_CHECK_INTERVAL_MS else CHECK_INTERVAL_MS
                 delay(interval)
             }
+            
+            Log.w(TAG, "⚠️ Guard loop ENCERRADO - isGuardActive=$isGuardActive, isActive=$isActive")
         }
     }
     

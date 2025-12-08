@@ -59,8 +59,9 @@ private class MdmCommandAdapter(val moshi: Moshi) : JsonAdapter<MdmCommand>() {
         reader.endObject()
         
         val parameters = when (commandType) {
-            "BLOCK_APPS_PROGRESSIVE", "UNBLOCK_APPS_PROGRESSIVE", "BLOCK_APPS", "UNBLOCK_APPS" -> {
-                // IMPORTANTE: UNBLOCK_APPS_PROGRESSIVE também usa BlockParameters com targetLevel=0
+            "PROGRESSIVE_BLOCK", "BLOCK_APPS_PROGRESSIVE", "UNBLOCK_APPS_PROGRESSIVE", "BLOCK_APPS", "UNBLOCK_APPS" -> {
+                // IMPORTANTE: PROGRESSIVE_BLOCK é o novo formato do backend v2.5 com campo "rules"
+                // UNBLOCK_APPS_PROGRESSIVE também usa BlockParameters com targetLevel=0
                 try {
                     if (parametersRaw != null) {
                         blockParametersAdapter.fromJsonValue(parametersRaw) ?: CommandParameters.EmptyParameters
@@ -206,8 +207,9 @@ private class MdmCommandFullAdapter(val moshi: Moshi) : JsonAdapter<MdmCommandFu
         reader.endObject()
         
         val parameters = when (commandType) {
-            "BLOCK_APPS_PROGRESSIVE", "UNBLOCK_APPS_PROGRESSIVE", "BLOCK_APPS", "UNBLOCK_APPS" -> {
-                // IMPORTANTE: UNBLOCK_APPS_PROGRESSIVE também usa BlockParameters com targetLevel=0
+            "PROGRESSIVE_BLOCK", "BLOCK_APPS_PROGRESSIVE", "UNBLOCK_APPS_PROGRESSIVE", "BLOCK_APPS", "UNBLOCK_APPS" -> {
+                // IMPORTANTE: PROGRESSIVE_BLOCK é o novo formato do backend v2.5 com campo "rules"
+                // UNBLOCK_APPS_PROGRESSIVE também usa BlockParameters com targetLevel=0
                 try {
                     if (parametersRaw != null) {
                         blockParametersAdapter.fromJsonValue(parametersRaw) ?: CommandParameters.EmptyParameters

@@ -34,7 +34,8 @@ class AppBlockingManager(private val context: Context) {
         Log.i(TAG, "🔒 Aplicando bloqueio progressivo - Nível ${parameters.targetLevel}")
         Log.d(TAG, "Dias de atraso: ${parameters.daysOverdue}")
         Log.d(TAG, "Razão: ${parameters.reason}")
-        Log.d(TAG, "Categorias recebidas: ${parameters.categories}")
+        Log.d(TAG, "Rules presentes: ${parameters.rules?.size ?: 0}")
+        Log.d(TAG, "Categorias diretas: ${parameters.categories}")
         
         if (!isDeviceOwner()) {
             val error = "App não é Device Owner - não pode bloquear apps"
@@ -52,8 +53,11 @@ class AppBlockingManager(private val context: Context) {
             val previousLevel = getCurrentBlockingLevel()
             val previousCategories = getBlockedCategories()
             
+            // PROGRESSIVE_BLOCK v2.5: Extrair categorias e exceptions das rules baseado em daysOverdue
+            val (extractedCategories, extractedExceptions) = extractCategoriesFromRules(parameters)
+            
             Log.d(TAG, "Estado anterior - Nível: $previousLevel, Categorias: $previousCategories")
-            Log.d(TAG, "Novo comando - Nível: ${parameters.targetLevel}, Categorias: ${parameters.categories}")
+            Log.d(TAG, "Novo comando - Nível: ${parameters.targetLevel}, Categorias: $extractedCategories")
             
             if (parameters.targetLevel == 0) {
                 Log.i(TAG, "💰 CLIENTE PAGOU! Nível = 0 → DESBLOQUEIO TOTAL")
@@ -70,12 +74,12 @@ class AppBlockingManager(private val context: Context) {
             }
             
             val finalCategories = if (parameters.targetLevel > previousLevel) {
-                val accumulated = (previousCategories + parameters.categories).distinct()
+                val accumulated = (previousCategories + extractedCategories).distinct()
                 Log.i(TAG, "✅ Nível aumentou ($previousLevel → ${parameters.targetLevel}): ACUMULANDO categorias")
                 Log.i(TAG, "   Categorias CUMULATIVAS: $accumulated")
                 accumulated
             } else if (parameters.targetLevel == previousLevel) {
-                val accumulated = (previousCategories + parameters.categories).distinct()
+                val accumulated = (previousCategories + extractedCategories).distinct()
                 Log.i(TAG, "➡️ Nível manteve ($previousLevel): ACUMULANDO categorias")
                 Log.i(TAG, "   Categorias CUMULATIVAS: $accumulated")
                 accumulated
@@ -83,14 +87,14 @@ class AppBlockingManager(private val context: Context) {
                 Log.w(TAG, "⚠️ Nível diminuiu mas não zerou ($previousLevel → ${parameters.targetLevel})")
                 Log.w(TAG, "   Isso não deveria acontecer! Cliente deveria ir direto para nível 0 ao pagar.")
                 Log.w(TAG, "   Usando categorias do comando atual (não cumulativo)")
-                parameters.categories
+                extractedCategories
             }
             
             saveBlockedCategories(finalCategories)
             
             val appsToBlock = categoryMapper.getAppsToBlock(
                 finalCategories,
-                parameters.exceptions
+                extractedExceptions
             )
             
             saveBlockedPackages(appsToBlock)
@@ -198,6 +202,95 @@ class AppBlockingManager(private val context: Context) {
                 errorMessage = error
             )
         }
+    }
+    
+    /**
+     * Extrai categorias e exceptions das rules baseado nos dias de atraso.
+     * 
+     * PROGRESSIVE_BLOCK v2.5 envia regras progressivas:
+     * - Cada rule tem: days, level, categories, exceptions
+     * - Devemos acumular categorias de TODAS as rules onde days <= daysOverdue
+     * - Exceptions são combinadas de todas as rules aplicáveis
+     * - Se daysOverdue excede todas as rules, aplica a última regra (clamp)
+     * 
+     * Fallback: Se rules não existe ou está vazio, usa categories/exceptions diretos
+     */
+    private fun extractCategoriesFromRules(
+        parameters: CommandParameters.BlockParameters
+    ): Pair<List<String>, List<String>> {
+        val rules = parameters.rules
+        
+        // Fallback: Se não tem rules, usar categorias diretas (backward compatibility)
+        if (rules.isNullOrEmpty()) {
+            Log.d(TAG, "📋 Sem rules - usando categorias diretas do comando (backward compatibility)")
+            Log.d(TAG, "📋 Categorias diretas: ${parameters.categories.size}")
+            Log.d(TAG, "📋 Exceptions diretas: ${parameters.exceptions.size}")
+            return Pair(parameters.categories, parameters.exceptions)
+        }
+        
+        Log.i(TAG, "📋 ========================================")
+        Log.i(TAG, "📋 PROCESSANDO PROGRESSIVE_BLOCK v2.5")
+        Log.i(TAG, "📋 ========================================")
+        Log.i(TAG, "📋 Total de rules: ${rules.size}")
+        Log.i(TAG, "📋 Dias de atraso: ${parameters.daysOverdue}")
+        Log.i(TAG, "📋 Target level: ${parameters.targetLevel}")
+        
+        // Acumular categorias e exceptions de todas as rules aplicáveis
+        val accumulatedCategories = mutableSetOf<String>()
+        val accumulatedExceptions = mutableSetOf<String>()
+        
+        // Ordenar rules por dias (menor para maior) e aplicar progressivamente
+        // Filtrar rules inválidas (null days) para evitar crashes
+        val sortedRules = rules
+            .filter { it.days >= 0 }
+            .sortedBy { it.days }
+        
+        if (sortedRules.isEmpty()) {
+            Log.w(TAG, "📋 ⚠️ Todas as rules são inválidas - usando fallback")
+            return Pair(parameters.categories, parameters.exceptions)
+        }
+        
+        // Encontrar a maior regra aplicável (clamp se daysOverdue excede todas as rules)
+        val maxRuleDays = sortedRules.maxOfOrNull { it.days } ?: 0
+        val effectiveDaysOverdue = if (parameters.daysOverdue > maxRuleDays && maxRuleDays > 0) {
+            Log.i(TAG, "📋 daysOverdue (${parameters.daysOverdue}) excede rules - clamping para $maxRuleDays")
+            maxRuleDays
+        } else {
+            parameters.daysOverdue
+        }
+        
+        var rulesApplied = 0
+        for (rule in sortedRules) {
+            if (rule.days <= effectiveDaysOverdue) {
+                Log.d(TAG, "📋 Aplicando rule: days=${rule.days}, level=${rule.level}")
+                val categoriesPreview = rule.categories.take(3).joinToString()
+                val exceptionsPreview = rule.exceptions.take(3).joinToString()
+                Log.d(TAG, "   → Categorias: $categoriesPreview${if (rule.categories.size > 3) "... (+${rule.categories.size - 3})" else ""}")
+                Log.d(TAG, "   → Exceptions: $exceptionsPreview${if (rule.exceptions.size > 3) "... (+${rule.exceptions.size - 3})" else ""}")
+                
+                accumulatedCategories.addAll(rule.categories)
+                accumulatedExceptions.addAll(rule.exceptions)
+                rulesApplied++
+            } else {
+                Log.d(TAG, "📋 Ignorando rule: days=${rule.days} > effectiveDaysOverdue=$effectiveDaysOverdue")
+            }
+        }
+        
+        Log.i(TAG, "📋 ========================================")
+        Log.i(TAG, "📋 RESULTADO FINAL:")
+        Log.i(TAG, "📋 Rules aplicadas: $rulesApplied de ${sortedRules.size}")
+        Log.i(TAG, "📋 Categorias acumuladas: ${accumulatedCategories.size}")
+        Log.i(TAG, "📋 Exceptions acumuladas: ${accumulatedExceptions.size}")
+        Log.i(TAG, "📋 ========================================")
+        
+        // Se nenhuma regra foi aplicada (daysOverdue = 0 e primeira rule tem days > 0),
+        // usar fallback para categorias diretas
+        if (accumulatedCategories.isEmpty() && parameters.categories.isNotEmpty()) {
+            Log.w(TAG, "📋 ⚠️ Nenhuma rule aplicada mas há categorias diretas - usando fallback")
+            return Pair(parameters.categories, parameters.exceptions)
+        }
+        
+        return Pair(accumulatedCategories.toList(), accumulatedExceptions.toList())
     }
     
     fun unblockAllApps(): UnblockResult {
