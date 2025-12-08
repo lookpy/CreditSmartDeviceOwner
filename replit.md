@@ -194,3 +194,23 @@ O time de backend forneceu documentação técnica completa para o sistema de Li
 5. Filtra por exceções semânticas (bancos_allowed, emails_allowed)
 6. Aplica setApplicationHidden() em cada package
 7. Persiste estado para Heartbeat reportar nível correto
+
+### 2025-12-08: Correção de Autenticação WebSocket (v2.5)
+
+**Problema Identificado:**
+- MdmCommandReceiver esperava mensagem `auth_required` do servidor antes de enviar autenticação
+- Backend v2.5 NÃO envia mais `auth_required`, então autenticação nunca acontecia
+- Comandos MDM nunca eram processados
+- SettingsGuardService nunca era iniciado (depende de MDM autenticado)
+
+**Correção Implementada:**
+- Autenticação enviada IMEDIATAMENTE em `onOpen()` (não mais espera `auth_required`)
+- Fallback para `auth_required` mantido para compatibilidade com servidores legados
+- Logs atualizados para indicar autenticação v2.5
+
+**Fluxo Corrigido:**
+1. WebSocket conecta ao backend
+2. `onOpen()` dispara → envia autenticação imediatamente
+3. Backend responde com `authenticated` 
+4. Comandos MDM são processados normalmente
+5. SettingsGuardService é iniciado após autenticação bem-sucedida
