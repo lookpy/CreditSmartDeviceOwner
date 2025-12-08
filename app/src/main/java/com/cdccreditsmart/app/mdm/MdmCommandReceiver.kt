@@ -117,7 +117,9 @@ class MdmCommandReceiver(private val context: Context) {
         webSocket?.close(1000, "Reconnecting")
         webSocket = null
         
-        val wsUrl = "$WS_URL?token=$jwtToken"
+        // SEGURANÇA: NÃO passar token na URL (exposto em logs/proxies)
+        // A autenticação é feita via sendAuthenticationMessage() após conexão
+        val wsUrl = WS_URL
         
         val request = Request.Builder()
             .url(wsUrl)

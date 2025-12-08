@@ -99,11 +99,13 @@ class HeartbeatManager(private val context: Context) {
                 return
             }
             
-            val deviceToken = tokenStorage.getDeviceToken()
+            // Usar deviceToken se disponível, senão usar authToken como fallback
+            val deviceToken = tokenStorage.getDeviceToken()?.takeIf { it.isNotBlank() } ?: authToken
             if (deviceToken.isNullOrBlank()) {
-                Log.w(TAG, "⚠️ Sem device token - pulando heartbeat")
+                Log.w(TAG, "⚠️ Sem device token e sem auth token - pulando heartbeat")
                 return
             }
+            Log.d(TAG, "💓 Usando ${if (tokenStorage.getDeviceToken()?.isNotBlank() == true) "deviceToken" else "authToken (fallback)"}")
             
             val currentBlockLevel = blockingManager.getCurrentBlockLevel()
             val batteryInfo = getBatteryInfo()
