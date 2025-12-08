@@ -108,3 +108,54 @@ The UI leverages Jetpack Compose and Material 3, incorporating a CDC institution
 - Removida categoria HOME e DEFAULT do intent-filter da MainActivity
 - Mantido apenas MAIN + LAUNCHER (comportamento normal de app)
 - LockTaskActivity continua com `lockTaskMode="if_whitelisted"` para modo Kiosk quando necessário
+
+### 2025-12-08: Suporte Completo ao Backend v2.5 - Sistema de Limitação Progressiva
+
+**Nova Documentação do Backend:**
+O time de backend forneceu documentação técnica completa para o sistema de Limitação Progressiva v2.5.
+
+**Principais Mudanças Implementadas:**
+
+**1. Novos DTOs (MdmDTOs.kt):**
+- Nova data class `BlockAllFlags` com 13 campos booleanos para bloquear categorias inteiras
+- `BlockParameters` atualizado com campos v2.5:
+  - `level` (0-6): nível de limitação
+  - `blockCategories`: array de categorias a limitar
+  - `blockedPackages`: packages específicos a limitar
+  - `blockAllFlags`: flags para limitar TODOS os apps de uma categoria
+  - `alwaysAllowedPackages`: packages que NUNCA devem ser limitados
+- Métodos helper: `isV25Format()`, `isLegacyFormat()`, `getEffectiveLevel()`
+- Annotations @Json usando snake_case para compatibilidade com backend
+
+**2. BlockAllFlagsResolver.kt (novo componente):**
+- 13 métodos de detecção para cada categoria via PackageManager
+- Detecta apps por Intent, ApplicationInfo.category, e packages conhecidos
+- Categorias: camera, gallery, file_manager, video_players, browsers, youtube_tiktok, social_media, shopping, games, music, play_store, other_app_stores, non_essential_apps
+- Integra com LegalWhitelist para proteção de apps essenciais
+
+**3. AppBlockingManager.applyProgressiveBlock() refatorado:**
+- Suporta tanto formato v2.5 quanto legacy (rules)
+- Modo v2.5: usa EXATAMENTE o payload do backend (confia no cálculo do backend)
+- Modo legacy: mantém lógica existente de extractCategoriesFromRules()
+- NUNCA limita packages protegidos (alwaysAllowedPackages + LegalWhitelist)
+- Rollback funciona quando backend envia lista reduzida
+- Logs detalhados de diagnóstico
+
+**4. Sistema de 7 Níveis (0-6) CUMULATIVO:**
+- Nível 0: Sem restrições
+- Nível 1: camera, gallery, file_manager, video_players
+- Nível 2: Nível 1 + browsers, youtube_tiktok
+- Nível 3: Níveis 1-2 + social_media, shopping
+- Nível 4: Níveis 1-3 + games, music
+- Nível 5: Níveis 1-4 + play_store, other_app_stores
+- Nível 6: Níveis 1-5 + non_essential_apps
+
+**5. SettingsGuardService - Logs diagnósticos:**
+- Logs de inicialização mostrando status de permissões
+- Log periódico confirmando que guard loop está ativo
+- Mostra UsageStats, Overlay, Device Owner/Admin status
+
+**Terminologia (TJMG):**
+- Usar "limitação/limitado" em vez de "bloqueio/bloqueado"
+- NUNCA limitar dispositivo completamente
+- SEMPRE manter acesso a apps essenciais
