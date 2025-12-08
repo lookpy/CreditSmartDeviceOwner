@@ -2186,7 +2186,7 @@ class SettingsGuardService(private val context: Context) {
             )
             
             val notification = NotificationCompat.Builder(context, channelId)
-                .setSmallIcon(R.drawable.ic_launcher_foreground)
+                .setSmallIcon(android.R.drawable.ic_dialog_alert)
                 .setContentTitle("Permissão Necessária")
                 .setContentText("Toque para ativar proteção do dispositivo")
                 .setStyle(NotificationCompat.BigTextStyle()
