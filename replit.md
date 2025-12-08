@@ -54,7 +54,7 @@ Utilizes Jetpack Compose and Material 3 with a CDC institutional dark theme. Fea
 - **Multi-Slot Device Identifier System:** Collects IMEI/MEID from all SIM slots with automatic fallback (IMEI → MEID → Android ID → Fingerprint). Supports Zero-Touch and Knox enrollment as Device Owner.
 - **Real-time Communication & MDM:** Dual system for pairing status and MDM command push (blocking, unblocking, remote uninstall):
   - **HeartbeatManager (HTTP POST):** Sends heartbeat every 60 seconds to `/api/apk/device/heartbeat` with deviceToken, currentBlockLevel, batteryLevel, isCharging, currentSimImei. Processes backend response for compliance corrections.
-  - **MdmCommandReceiver (WebSocket):** Connects to `wss://cdccreditsmart.com/ws/mdm-policies`, sends authentication message on open, processes BLOCK, UNBLOCK, REMOTE_UNINSTALL, LOCATE_DEVICE commands in real-time.
+  - **MdmCommandReceiver (WebSocket):** Connects to `wss://cdccreditsmart.com/ws/mdm-policies`, sends **full authentication message** with 7 campos obrigatórios (type, action, serialNumber, deviceToken, deviceFingerprint, imei, androidId, apkVersion), processes `authenticated`/`authentication_failed` responses, and handles BLOCK, UNBLOCK, REMOTE_UNINSTALL, LOCATE_DEVICE commands via `NEW_COMMAND` messages.
   - **Command Confirmation:** Uses POST `/api/apk/device/commands/{commandId}/status` with {status, result} payload (with fallback to legacy endpoint).
 - **Progressive Blocking System:** Dynamically blocks non-essential applications based on overdue levels, adhering to legal precedents.
 - **Overlay Systems:** Universal dismissible overlay for overdue reminders and periodic payment reminder overlays.
@@ -87,7 +87,7 @@ Utilizes Jetpack Compose and Material 3 with a CDC institutional dark theme. Fea
 - **Networking:** Retrofit and OkHttp with retry logic, exponential backoff, and Certificate Pinning.
 - **Crash Prevention:** Global `CrashHandler` for logging unhandled exceptions and scheduling auto-restarts, with graceful handling of expected exceptions.
 - **Secondary Managed User Detection:** `CdcForegroundService` and `SecureTokenStorage` prevent MDM initialization in managed secondary users.
-- **SettingsGuard System:** Active monitoring in ALL modes (Device Owner, Device Admin, Basic) to prevent access to dangerous Settings screens. Polls foreground app every 600ms (400ms in aggressive mode). Key features:
+- **SettingsGuard System:** Active monitoring in ALL modes (Device Owner, Device Admin, Basic) to prevent access to dangerous Settings screens. Polls foreground app every 600ms (400ms in aggressive mode). **IMPORTANTE: Requer permissão PACKAGE_USAGE_STATS que NÃO pode ser concedida programaticamente - o app exibe notificação persistente pedindo ao usuário para conceder manualmente via Configurações > Apps > Credit Smart > Acesso especial > Acesso ao uso.** Key features:
   - **12 Protected Categories:** App Info/Uninstall, Force Stop/Kill App, Factory Reset, Device Admin/MDM, Battery Optimization, Permissions, Security Hubs, Developer Options, Clear Data, Notifications, Accessibility, DNS/Network
   - **17+ OEM Support:** Android Stock, Samsung, Xiaomi/MIUI, Huawei/Honor, OPPO/ColorOS, Realme, Vivo, OnePlus, Motorola, LG, Asus, Sony, Nokia, Tecno/Infinix/iTel, ZTE/Nubia, Alcatel/TCL, Meizu
   - **Generic Pattern Matching:** Captures activity name variants (AppInfo, DeviceAdmin, FactoryReset, BatteryOptimiz, etc.)

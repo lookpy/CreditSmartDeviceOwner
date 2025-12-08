@@ -2,6 +2,9 @@ package com.cdccreditsmart.app.protection
 
 import android.app.ActivityManager
 import android.app.AppOpsManager
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.app.PendingIntent
 import android.app.admin.DevicePolicyManager
 import android.app.usage.UsageEvents
 import android.app.usage.UsageStatsManager
@@ -21,7 +24,9 @@ import android.view.View
 import android.view.WindowManager
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.core.app.NotificationCompat
 import com.cdccreditsmart.app.BuildConfig
+import com.cdccreditsmart.app.R
 import com.cdccreditsmart.app.presentation.MainActivity
 import com.cdccreditsmart.device.CDCDeviceAdminReceiver
 import kotlinx.coroutines.*
@@ -56,6 +61,9 @@ class SettingsGuardService(private val context: Context) {
         
         // Timeout para assumir que desinstalação foi cancelada (2 minutos)
         private const val UNINSTALL_TIMEOUT_MS = 2 * 60 * 1000L
+        
+        // ID da notificação persistente para solicitar permissão USAGE_STATS
+        private const val USAGE_STATS_NOTIFICATION_ID = 9999
         
         fun pauseForPermissionGrant() {
             isPermissionGrantFlowActive = true
@@ -137,6 +145,9 @@ class SettingsGuardService(private val context: Context) {
     
     @Volatile
     private var isInAggressiveMode = false
+    
+    @Volatile
+    private var usageStatsNotificationShown = false
     
     // ═══════════════════════════════════════════════════════════════════════════════
     // TRACKING DE ESTADO: Lembrar última activity que pode levar a telas perigosas
@@ -268,6 +279,11 @@ class SettingsGuardService(private val context: Context) {
             Log.w(TAG, "⚠️ Sem permissão PACKAGE_USAGE_STATS")
             Log.w(TAG, "   Monitoramento via ActivityManager (menos preciso)")
             Log.w(TAG, "   IMPORTANTE: Conceda permissão em Configurações > Apps > Credit Smart > Acesso especial > Acesso uso")
+            showUsageStatsRequiredNotification()
+            usageStatsNotificationShown = true
+        } else {
+            cancelUsageStatsNotification()
+            usageStatsNotificationShown = false
         }
         
         if (!Settings.canDrawOverlays(context)) {
@@ -278,6 +294,12 @@ class SettingsGuardService(private val context: Context) {
         guardScope.launch {
             while (isGuardActive && isActive) {
                 try {
+                    if (usageStatsNotificationShown && hasUsageStatsPermission()) {
+                        Log.i(TAG, "✅ Permissão USAGE_STATS concedida - cancelando notificação")
+                        cancelUsageStatsNotification()
+                        usageStatsNotificationShown = false
+                    }
+                    
                     checkSettingsAccessAggressively()
                 } catch (e: Exception) {
                     Log.e(TAG, "Erro no guard loop: ${e.message}")
@@ -2130,6 +2152,65 @@ class SettingsGuardService(private val context: Context) {
             mode == AppOpsManager.MODE_ALLOWED
         } catch (e: Exception) {
             false
+        }
+    }
+    
+    private fun showUsageStatsRequiredNotification() {
+        if (usageStatsNotificationShown) {
+            Log.d(TAG, "📢 Notificação USAGE_STATS já está visível - ignorando")
+            return
+        }
+        
+        try {
+            val channelId = "cdc_settings_guard"
+            val notificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+            
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                val channel = NotificationChannel(
+                    channelId,
+                    "Proteção do Dispositivo",
+                    NotificationManager.IMPORTANCE_HIGH
+                ).apply {
+                    description = "Notificações de segurança do Credit Smart"
+                    setShowBadge(true)
+                }
+                notificationManager.createNotificationChannel(channel)
+            }
+            
+            val intent = Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS).apply {
+                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            }
+            val pendingIntent = PendingIntent.getActivity(
+                context, 0, intent,
+                PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+            )
+            
+            val notification = NotificationCompat.Builder(context, channelId)
+                .setSmallIcon(R.drawable.ic_launcher_foreground)
+                .setContentTitle("Permissão Necessária")
+                .setContentText("Toque para ativar proteção do dispositivo")
+                .setStyle(NotificationCompat.BigTextStyle()
+                    .bigText("O Credit Smart precisa da permissão 'Acesso ao uso' para proteger seu dispositivo. Toque aqui para ativar."))
+                .setPriority(NotificationCompat.PRIORITY_HIGH)
+                .setOngoing(true)
+                .setAutoCancel(false)
+                .setContentIntent(pendingIntent)
+                .build()
+            
+            notificationManager.notify(USAGE_STATS_NOTIFICATION_ID, notification)
+            Log.i(TAG, "📢 Notificação de permissão USAGE_STATS exibida")
+        } catch (e: Exception) {
+            Log.e(TAG, "Erro ao exibir notificação: ${e.message}")
+        }
+    }
+    
+    private fun cancelUsageStatsNotification() {
+        try {
+            val notificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+            notificationManager.cancel(USAGE_STATS_NOTIFICATION_ID)
+            Log.i(TAG, "📢 Notificação de permissão USAGE_STATS cancelada")
+        } catch (e: Exception) {
+            Log.e(TAG, "Erro ao cancelar notificação: ${e.message}")
         }
     }
     
