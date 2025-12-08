@@ -87,22 +87,71 @@ data class SecurityEventResponse(
 /**
  * Device Boot Request - Reportar boot do dispositivo para detecção de factory reset
  * Endpoint: POST /api/security/device-boot
+ * 
+ * Campos completos conforme especificação do backend CDC:
+ * - bootTimestamp: Long
+ * - bootReason: String ("reboot", "power_on", "crash", etc)
+ * - isFirstBootAfterInstall: Boolean
+ * - wasFactoryReset: Boolean
+ * - androidVersion: String
+ * - apkVersion: String
+ * - securityPatchLevel: String?
+ * - encryptionStatus: String ("encrypted", "encrypted_default", "unknown")
+ * - deviceOwnerActive: Boolean
+ * - imei: String?
+ * - meid: String?
+ * - androidId: String?
+ * - deviceFingerprint: String?
  */
 data class DeviceBootRequest(
-    val deviceFingerprint: String,
+    val deviceFingerprint: String?,
     val bootTimestamp: Long,
-    val hasAuthToken: Boolean,
-    val hasDeviceToken: Boolean,
+    val bootReason: String,
+    val isFirstBootAfterInstall: Boolean,
+    val wasFactoryReset: Boolean,
+    val androidVersion: String,
+    val apkVersion: String,
+    val securityPatchLevel: String?,
+    val encryptionStatus: String,
+    val deviceOwnerActive: Boolean,
+    val imei: String?,
+    val meid: String?,
+    val androidId: String?,
     val buildFingerprint: String,
-    val androidVersion: String
+    val hasAuthToken: Boolean,
+    val hasDeviceToken: Boolean
 )
 
 /**
  * Device Boot Response
+ * 
+ * Campos completos conforme especificação do backend CDC:
+ * - success: Boolean
+ * - message: String
+ * - deviceId: String?
+ * - serialNumber: String?
+ * - pendingCommands: Int
+ * - serverTime: String?
+ * - config: BootConfig?
  */
 data class DeviceBootResponse(
-    val status: String,
-    val message: String? = null,
+    val success: Boolean = false,
+    val status: String = "",
+    val message: String = "",
+    val deviceId: String? = null,
+    val serialNumber: String? = null,
+    val pendingCommands: Int = 0,
+    val serverTime: String? = null,
+    val config: BootConfig? = null,
     val factoryResetDetected: Boolean = false,
     val action: String? = null
+)
+
+/**
+ * Configurações retornadas no boot
+ */
+data class BootConfig(
+    val heartbeatIntervalMs: Long = 60000,
+    val enableDebugLogs: Boolean = false,
+    val complianceCheckEnabled: Boolean = true
 )

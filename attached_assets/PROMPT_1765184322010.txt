@@ -1,0 +1,688 @@
+# CDC CreditSmart - Feedback de Correções para Equipe APK
+
+**Data:** 2025-12-08
+**Versão Backend:** 2.0
+**Status:** URGENTE - Correções Necessárias
+
+---
+
+## Resumo Executivo
+
+Este documento responde ao feedback da equipe APK e fornece instruções detalhadas para corrigir os problemas identificados.
+
+---
+
+## 1. ENDPOINTS 404 - RESOLVIDO
+
+### Problema Reportado
+```
+⚠️ Novo endpoint falhou (404), tentando endpoint legado...
+⚠️ Novo endpoint ACK falhou (404), tentando legado...
+```
+
+### Causa
+O APK está usando `/api/apk/device/commands/{commandId}/status` que requer **Play Integrity**.
+Se o Play Integrity não está disponível ou falha, o middleware retorna 404/403.
+
+### Solução: Usar Endpoint Alternativo
+
+O backend tem um endpoint **alternativo** que usa apenas o token JWT (sem Play Integrity):
+
+```
+POST /api/apk/commands/{commandId}/ack
+Authorization: Bearer <deviceToken>
+Content-Type: application/json
+```
+
+#### Request Body
+```json
+{
+  "status": "completed",
+  "response": {
+    "appliedLevel": 3,
+    "blockedApps": ["com.instagram.android", "com.facebook.katana"]
+  },
+  "errorMessage": null
+}
+```
+
+#### Response
+```json
+{
+  "success": true,
+  "message": "Status do comando atualizado com sucesso",
+  "commandId": "6544d7da-7d28-437f-a01f-554cd0a86295",
+  "status": "completed"
+}
+```
+
+### Código Kotlin Sugerido
+
+```kotlin
+class MdmCommandAckService(
+    private val api: CdcApiService,
+    private val tokenStorage: SecureTokenStorage
+) {
+    suspend fun acknowledgeCommand(
+        commandId: String,
+        status: String,
+        response: Map<String, Any>? = null,
+        errorMessage: String? = null
+    ): Result<AckResponse> {
+        return try {
+            // Usar endpoint alternativo (sem Play Integrity)
+            val result = api.acknowledgeCommandAlternative(
+                commandId = commandId,
+                token = "Bearer ${tokenStorage.getDeviceToken()}",
+                body = AckRequest(
+                    status = status,
+                    response = response,
+                    errorMessage = errorMessage
+                )
+            )
+            
+            if (result.isSuccessful) {
+                Result.success(result.body()!!)
+            } else {
+                // Fallback para endpoint legado se alternativo falhar
+                tryLegacyEndpoint(commandId, status, response, errorMessage)
+            }
+        } catch (e: Exception) {
+            Log.e(TAG, "Failed to ack command", e)
+            Result.failure(e)
+        }
+    }
+    
+    companion object {
+        private const val TAG = "MdmCommandAckService"
+    }
+}
+
+// Retrofit interface
+interface CdcApiService {
+    // USAR ESTE ENDPOINT (SEM PLAY INTEGRITY)
+    @POST("/api/apk/commands/{commandId}/ack")
+    suspend fun acknowledgeCommandAlternative(
+        @Path("commandId") commandId: String,
+        @Header("Authorization") token: String,
+        @Body body: AckRequest
+    ): Response<AckResponse>
+    
+    // Endpoint antigo (com Play Integrity) - fallback
+    @POST("/api/apk/device/commands/{commandId}/status")
+    suspend fun acknowledgeCommand(
+        @Path("commandId") commandId: String,
+        @Header("Authorization") token: String,
+        @Header("X-Play-Integrity-Token") integrityToken: String?,
+        @Body body: AckRequest
+    ): Response<AckResponse>
+}
+
+data class AckRequest(
+    val status: String,
+    val response: Map<String, Any>?,
+    val errorMessage: String?
+)
+
+data class AckResponse(
+    val success: Boolean,
+    val message: String,
+    val commandId: String?,
+    val status: String?
+)
+```
+
+---
+
+## 2. POST /api/security/device-boot - JÁ IMPLEMENTADO
+
+### Problema Reportado
+```
+⚠️ TODO: Implementar POST /api/security/device-boot
+```
+
+### Status: ✅ ENDPOINT JÁ EXISTE
+
+O endpoint está implementado e funcional:
+
+```
+POST /api/security/device-boot
+Authorization: Bearer <deviceToken>
+Content-Type: application/json
+```
+
+#### Request Body
+```json
+{
+  "bootTimestamp": 1702000000000,
+  "bootReason": "reboot",
+  "isFirstBootAfterInstall": false,
+  "wasFactoryReset": false,
+  "androidVersion": "14",
+  "apkVersion": "2.1.0",
+  "securityPatchLevel": "2024-01-01",
+  "encryptionStatus": "encrypted",
+  "deviceOwnerActive": true,
+  "imei": "353104903560533",
+  "meid": "35310490356053",
+  "androidId": "a1b2c3d4e5f6g7h8",
+  "deviceFingerprint": "samsung/a52/a52:14/..."
+}
+```
+
+#### Response
+```json
+{
+  "success": true,
+  "message": "Boot registrado com sucesso",
+  "deviceId": "device_1765148771462_4teww42p114",
+  "serialNumber": "XV8W5766",
+  "pendingCommands": 2,
+  "serverTime": "2025-12-08T00:00:00.000Z",
+  "config": {
+    "heartbeatIntervalMs": 60000,
+    "enableDebugLogs": false,
+    "complianceCheckEnabled": true
+  }
+}
+```
+
+### Código Kotlin Sugerido
+
+```kotlin
+class DeviceBootReporter(
+    private val api: CdcApiService,
+    private val tokenStorage: SecureTokenStorage,
+    private val deviceInfo: DeviceInfoProvider
+) {
+    suspend fun reportBoot(
+        bootReason: String,
+        isFirstBootAfterInstall: Boolean,
+        wasFactoryReset: Boolean
+    ) {
+        try {
+            val token = tokenStorage.getDeviceToken() ?: run {
+                Log.w(TAG, "No device token, skipping boot report")
+                return
+            }
+            
+            val response = api.reportDeviceBoot(
+                token = "Bearer $token",
+                body = DeviceBootRequest(
+                    bootTimestamp = System.currentTimeMillis(),
+                    bootReason = bootReason,
+                    isFirstBootAfterInstall = isFirstBootAfterInstall,
+                    wasFactoryReset = wasFactoryReset,
+                    androidVersion = Build.VERSION.RELEASE,
+                    apkVersion = BuildConfig.VERSION_NAME,
+                    securityPatchLevel = Build.VERSION.SECURITY_PATCH,
+                    encryptionStatus = getEncryptionStatus(),
+                    deviceOwnerActive = deviceInfo.isDeviceOwner(),
+                    imei = deviceInfo.getPrimaryImei(),
+                    meid = deviceInfo.getPrimaryMeid(),
+                    androidId = deviceInfo.getAndroidId(),
+                    deviceFingerprint = Build.FINGERPRINT
+                )
+            )
+            
+            if (response.isSuccessful) {
+                val body = response.body()!!
+                Log.i(TAG, "Boot reported successfully. Pending commands: ${body.pendingCommands}")
+                
+                // Se há comandos pendentes, buscar imediatamente
+                if (body.pendingCommands > 0) {
+                    CommandFetcher.fetchPendingCommands()
+                }
+            } else {
+                Log.e(TAG, "Boot report failed: ${response.code()}")
+            }
+        } catch (e: Exception) {
+            Log.e(TAG, "Failed to report boot", e)
+        }
+    }
+    
+    private fun getEncryptionStatus(): String {
+        return try {
+            val dm = context.getSystemService(Context.DEVICE_POLICY_SERVICE) as DevicePolicyManager
+            when (dm.storageEncryptionStatus) {
+                DevicePolicyManager.ENCRYPTION_STATUS_ACTIVE -> "encrypted"
+                DevicePolicyManager.ENCRYPTION_STATUS_ACTIVE_DEFAULT_KEY -> "encrypted_default"
+                else -> "unknown"
+            }
+        } catch (e: Exception) {
+            "unknown"
+        }
+    }
+    
+    companion object {
+        private const val TAG = "DeviceBootReporter"
+    }
+}
+
+// Retrofit interface
+interface CdcApiService {
+    @POST("/api/security/device-boot")
+    suspend fun reportDeviceBoot(
+        @Header("Authorization") token: String,
+        @Body body: DeviceBootRequest
+    ): Response<DeviceBootResponse>
+}
+
+data class DeviceBootRequest(
+    val bootTimestamp: Long,
+    val bootReason: String,
+    val isFirstBootAfterInstall: Boolean,
+    val wasFactoryReset: Boolean,
+    val androidVersion: String,
+    val apkVersion: String,
+    val securityPatchLevel: String?,
+    val encryptionStatus: String,
+    val deviceOwnerActive: Boolean,
+    val imei: String?,
+    val meid: String?,
+    val androidId: String?,
+    val deviceFingerprint: String?
+)
+
+data class DeviceBootResponse(
+    val success: Boolean,
+    val message: String,
+    val deviceId: String,
+    val serialNumber: String,
+    val pendingCommands: Int,
+    val serverTime: String,
+    val config: BootConfig
+)
+
+data class BootConfig(
+    val heartbeatIntervalMs: Long,
+    val enableDebugLogs: Boolean,
+    val complianceCheckEnabled: Boolean
+)
+```
+
+---
+
+## 3. WEBSOCKET MDM CAINDO - CORREÇÕES
+
+### Problema Reportado
+```
+❌ WebSocket MDM FALHOU!
+⚠️ Erro WebSocket: unexpected end of stream on https://cdccreditsmart...
+```
+
+### Possíveis Causas
+
+1. **Rede móvel instável** - Redes 3G/4G têm alta latência e desconexões frequentes
+2. **Proxy/NAT timeout** - Alguns provedores fecham conexões idle após 30-60s
+3. **Doze mode Android** - O sistema pode fechar conexões para economizar bateria
+4. **APK não enviando ping** - O servidor espera ping a cada 30s
+
+### Soluções
+
+#### 3.1 Implementar Ping/Pong no WebSocket
+
+O servidor espera mensagens de ping para manter a conexão viva.
+
+```kotlin
+class MdmWebSocketManager(
+    private val tokenStorage: SecureTokenStorage,
+    private val deviceInfo: DeviceInfoProvider
+) {
+    private var webSocket: WebSocket? = null
+    private var pingJob: Job? = null
+    private val scope = CoroutineScope(Dispatchers.IO + SupervisorJob())
+    
+    private val client = OkHttpClient.Builder()
+        .readTimeout(0, TimeUnit.MINUTES) // Sem timeout de leitura
+        .pingInterval(25, TimeUnit.SECONDS) // OkHttp envia ping automaticamente
+        .connectTimeout(30, TimeUnit.SECONDS)
+        .retryOnConnectionFailure(true)
+        .build()
+    
+    fun connect() {
+        val wsUrl = "${BuildConfig.WS_BASE_URL}/ws/mdm-policies"
+        
+        val request = Request.Builder()
+            .url(wsUrl)
+            .build()
+        
+        webSocket = client.newWebSocket(request, object : WebSocketListener() {
+            override fun onOpen(webSocket: WebSocket, response: Response) {
+                Log.i(TAG, "WebSocket connected")
+                sendAuthentication()
+                startPingLoop()
+            }
+            
+            override fun onMessage(webSocket: WebSocket, text: String) {
+                handleMessage(text)
+            }
+            
+            override fun onClosing(webSocket: WebSocket, code: Int, reason: String) {
+                Log.w(TAG, "WebSocket closing: $code - $reason")
+            }
+            
+            override fun onClosed(webSocket: WebSocket, code: Int, reason: String) {
+                Log.w(TAG, "WebSocket closed: $code - $reason")
+                stopPingLoop()
+                scheduleReconnect()
+            }
+            
+            override fun onFailure(webSocket: WebSocket, t: Throwable, response: Response?) {
+                Log.e(TAG, "WebSocket failure", t)
+                stopPingLoop()
+                scheduleReconnect()
+            }
+        })
+    }
+    
+    private fun startPingLoop() {
+        pingJob?.cancel()
+        pingJob = scope.launch {
+            while (isActive) {
+                delay(25_000) // 25 segundos
+                sendPing()
+            }
+        }
+    }
+    
+    private fun stopPingLoop() {
+        pingJob?.cancel()
+        pingJob = null
+    }
+    
+    private fun sendPing() {
+        val pingMessage = JSONObject().apply {
+            put("type", "ping")
+            put("timestamp", System.currentTimeMillis())
+        }
+        webSocket?.send(pingMessage.toString())
+    }
+    
+    private fun sendAuthentication() {
+        val authMessage = JSONObject().apply {
+            put("type", "device-control")
+            put("action", "authenticate")
+            put("serialNumber", deviceInfo.getSerialNumber())
+            put("deviceToken", tokenStorage.getDeviceToken())
+            put("deviceFingerprint", deviceInfo.getDeviceFingerprint())
+            put("imei", deviceInfo.getPrimaryImei())
+            put("androidId", deviceInfo.getAndroidId())
+            put("apkVersion", BuildConfig.VERSION_NAME)
+        }
+        
+        webSocket?.send(authMessage.toString())
+        Log.i(TAG, "Sent authentication message")
+    }
+    
+    companion object {
+        private const val TAG = "MdmWebSocketManager"
+    }
+}
+```
+
+#### 3.2 Usar HTTP Polling como Fallback
+
+Quando o WebSocket falha, use polling HTTP:
+
+```kotlin
+class CommandPollingService(
+    private val api: CdcApiService,
+    private val tokenStorage: SecureTokenStorage,
+    private val commandProcessor: MdmCommandProcessor
+) {
+    private var pollingJob: Job? = null
+    private val scope = CoroutineScope(Dispatchers.IO + SupervisorJob())
+    
+    fun startPolling(intervalMs: Long = 30_000) {
+        pollingJob?.cancel()
+        pollingJob = scope.launch {
+            while (isActive) {
+                try {
+                    fetchAndProcessCommands()
+                } catch (e: Exception) {
+                    Log.e(TAG, "Polling failed", e)
+                }
+                delay(intervalMs)
+            }
+        }
+    }
+    
+    fun stopPolling() {
+        pollingJob?.cancel()
+        pollingJob = null
+    }
+    
+    private suspend fun fetchAndProcessCommands() {
+        val token = tokenStorage.getDeviceToken() ?: return
+        val serialNumber = tokenStorage.getSerialNumber() ?: return
+        
+        val response = api.getPendingCommands(
+            identifier = serialNumber,
+            token = "Bearer $token"
+        )
+        
+        if (response.isSuccessful) {
+            val commands = response.body()?.commands ?: emptyList()
+            
+            for (command in commands) {
+                try {
+                    commandProcessor.process(command)
+                } catch (e: Exception) {
+                    Log.e(TAG, "Failed to process command ${command.id}", e)
+                }
+            }
+        }
+    }
+    
+    companion object {
+        private const val TAG = "CommandPollingService"
+    }
+}
+
+// Retrofit
+interface CdcApiService {
+    @GET("/api/apk/device/{identifier}/commands")
+    suspend fun getPendingCommands(
+        @Path("identifier") identifier: String,
+        @Header("Authorization") token: String,
+        @Query("status") status: String = "pending"
+    ): Response<CommandsResponse>
+}
+
+data class CommandsResponse(
+    val commands: List<MdmCommand>,
+    val hasMore: Boolean,
+    val total: Int
+)
+```
+
+#### 3.3 Estratégia de Reconexão com Exponential Backoff
+
+```kotlin
+class ReconnectionManager {
+    private var reconnectAttempts = 0
+    private val maxReconnectAttempts = 10
+    private val baseDelayMs = 1000L
+    private val maxDelayMs = 60_000L
+    
+    fun getNextDelay(): Long {
+        if (reconnectAttempts >= maxReconnectAttempts) {
+            return -1 // Desistir
+        }
+        
+        val delay = (baseDelayMs * (1 shl reconnectAttempts)).coerceAtMost(maxDelayMs)
+        reconnectAttempts++
+        return delay
+    }
+    
+    fun reset() {
+        reconnectAttempts = 0
+    }
+    
+    fun shouldGiveUp(): Boolean = reconnectAttempts >= maxReconnectAttempts
+}
+```
+
+---
+
+## 4. LISTA COMPLETA DE ENDPOINTS APK
+
+### Autenticação e Pairing
+
+| Método | Endpoint | Auth | Descrição |
+|--------|----------|------|-----------|
+| POST | `/api/apk/device/pair` | Nenhuma | Parear dispositivo (inicial) |
+| POST | `/api/apk/device-owner/validate` | Nenhuma | Validar IMEI para Device Owner |
+| POST | `/api/apk/device-owner/activate` | Nenhuma | Ativar Device Owner |
+
+### Heartbeat e Status
+
+| Método | Endpoint | Auth | Descrição |
+|--------|----------|------|-----------|
+| POST | `/api/apk/device/heartbeat` | JWT Token | Enviar heartbeat periódico |
+| POST | `/api/security/device-boot` | JWT Token | Reportar boot do dispositivo |
+| GET | `/api/apk/device/status` | JWT Token | Obter status atual |
+
+### Comandos MDM
+
+| Método | Endpoint | Auth | Descrição |
+|--------|----------|------|-----------|
+| GET | `/api/apk/device/{id}/commands` | JWT Token | Listar comandos pendentes |
+| POST | `/api/apk/commands/{id}/ack` | JWT Token | **ACK de comando (PREFERIDO)** |
+| POST | `/api/apk/device/commands/{id}/status` | Play Integrity | ACK de comando (alternativo) |
+
+### Políticas
+
+| Método | Endpoint | Auth | Descrição |
+|--------|----------|------|-----------|
+| GET | `/api/apk/device/{id}/policies` | JWT Token | Obter políticas |
+| POST | `/api/apk/device/{id}/policy-status` | JWT Token | Reportar status de política |
+
+### FCM
+
+| Método | Endpoint | Auth | Descrição |
+|--------|----------|------|-----------|
+| POST | `/api/apk/device/fcm-token` | JWT Token | Registrar token FCM |
+
+### Uninstall
+
+| Método | Endpoint | Auth | Descrição |
+|--------|----------|------|-----------|
+| POST | `/api/apk/device/uninstall/initiate` | JWT Token | Iniciar desinstalação |
+| POST | `/api/apk/device/uninstall/confirm` | JWT Token | Confirmar desinstalação |
+
+---
+
+## 5. WEBSOCKET PATHS
+
+| Path | Descrição |
+|------|-----------|
+| `/ws/mdm-policies` | Canal principal para comandos MDM |
+| `/ws/flow-status` | Status de fluxos (PDV) |
+| `/ws/notifications` | Notificações gerais |
+
+### Autenticação WebSocket
+
+Após conectar, enviar imediatamente:
+
+```json
+{
+  "type": "device-control",
+  "action": "authenticate",
+  "serialNumber": "XV8W5766",
+  "deviceToken": "eyJhbGciOiJIUzI1NiIs...",
+  "deviceFingerprint": "samsung/a52/a52:14/...",
+  "imei": "353104903560533",
+  "androidId": "a1b2c3d4e5f6g7h8",
+  "apkVersion": "2.1.0"
+}
+```
+
+Resposta esperada:
+```json
+{
+  "type": "device-control",
+  "action": "authenticated",
+  "deviceId": "device_1765148771462_4teww42p114",
+  "message": "Device connected successfully",
+  "serverTime": "2025-12-08T00:00:00.000Z"
+}
+```
+
+---
+
+## 6. CHECKLIST DE CORREÇÕES
+
+### Prioridade 1: Endpoints 404
+- [ ] Trocar chamadas de `/api/apk/device/commands/{id}/status` para `/api/apk/commands/{id}/ack`
+- [ ] Remover dependência de Play Integrity para ACK de comandos
+- [ ] Implementar fallback para endpoint legado
+
+### Prioridade 2: Device Boot
+- [ ] Verificar se TamperDetection está chamando `/api/security/device-boot`
+- [ ] Garantir que o token JWT é enviado no header `Authorization: Bearer <token>`
+- [ ] Processar resposta com `pendingCommands` para buscar comandos
+
+### Prioridade 3: WebSocket Stability
+- [ ] Implementar ping/pong a cada 25 segundos
+- [ ] Adicionar `pingInterval(25, TimeUnit.SECONDS)` no OkHttpClient
+- [ ] Implementar reconexão com exponential backoff
+- [ ] Usar polling HTTP como fallback quando WebSocket falha
+
+### Prioridade 4: Heartbeat HTTP
+- [ ] Confirmar que POST `/api/apk/device/heartbeat` é chamado a cada 60s
+- [ ] Incluir `currentBlockLevel` no body
+- [ ] Processar `expectedBlockLevel` da resposta
+- [ ] Processar `requiresBackendRevalidation` se true
+
+---
+
+## 7. TESTES RECOMENDADOS
+
+### Teste 1: ACK de Comando
+```bash
+curl -X POST https://cdccreditsmart.replit.app/api/apk/commands/test-cmd-id/ack \
+  -H "Authorization: Bearer <deviceToken>" \
+  -H "Content-Type: application/json" \
+  -d '{"status": "completed", "response": {"test": true}}'
+```
+
+### Teste 2: Device Boot
+```bash
+curl -X POST https://cdccreditsmart.replit.app/api/security/device-boot \
+  -H "Authorization: Bearer <deviceToken>" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "bootTimestamp": 1702000000000,
+    "bootReason": "reboot",
+    "isFirstBootAfterInstall": false,
+    "wasFactoryReset": false,
+    "androidVersion": "14",
+    "apkVersion": "2.1.0"
+  }'
+```
+
+### Teste 3: Heartbeat
+```bash
+curl -X POST https://cdccreditsmart.replit.app/api/apk/device/heartbeat \
+  -H "Authorization: Bearer <deviceToken>" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "currentBlockLevel": 0,
+    "batteryLevel": 85,
+    "isCharging": false,
+    "networkType": "wifi"
+  }'
+```
+
+---
+
+## Contato
+
+Em caso de dúvidas, consulte:
+- `/docs/APK_BACKEND_INTEGRATION_COMPLETE.md` - Documentação completa
+- `/docs/APK_HEARTBEAT_AND_MDM_INTEGRATION.md` - Integração MDM
+
+**Versão:** 1.0
+**Última Atualização:** 2025-12-08

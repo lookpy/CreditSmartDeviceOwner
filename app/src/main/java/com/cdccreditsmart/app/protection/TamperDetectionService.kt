@@ -133,22 +133,50 @@ class TamperDetectionService(private val context: Context) {
         val hasDeviceToken = storage.getDeviceToken() != null
         val buildFingerprint = Build.FINGERPRINT ?: "UNKNOWN"
         val androidVersion = Build.VERSION.RELEASE ?: "UNKNOWN"
+        val apkVersion = try {
+            context.packageManager.getPackageInfo(context.packageName, 0).versionName ?: "UNKNOWN"
+        } catch (e: Exception) {
+            "UNKNOWN"
+        }
+        val securityPatchLevel = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            Build.VERSION.SECURITY_PATCH
+        } else {
+            null
+        }
+        val encryptionStatus = getEncryptionStatus()
+        val deviceOwnerActive = isDeviceOwnerActive()
+        val imei = storage.getImei()
+        val meid = getMeid()
+        val androidId = try {
+            android.provider.Settings.Secure.getString(
+                context.contentResolver,
+                android.provider.Settings.Secure.ANDROID_ID
+            )
+        } catch (e: Exception) {
+            null
+        }
+        val bootReason = getBootReason()
+        val isFirstBootAfterInstall = isFirstBoot()
+        val wasFactoryReset = detectFactoryResetByTokens()
         
         Log.i(TAG, "")
         Log.i(TAG, "╔════════════════════════════════════════════════════════╗")
-        Log.i(TAG, "║    📡 REPORTAR BOOT AO BACKEND                        ║")
+        Log.i(TAG, "║    📡 REPORTAR BOOT AO BACKEND (CAMPOS COMPLETOS)     ║")
         Log.i(TAG, "╠════════════════════════════════════════════════════════╣")
-        Log.i(TAG, "║  Device Fingerprint: ${deviceFingerprint.take(12)}****      ║")
-        Log.i(TAG, "║  Boot Timestamp: $bootTimestamp          ║")
-        Log.i(TAG, "║  Has Auth Token: $hasAuthToken                         ║")
-        Log.i(TAG, "║  Has Device Token: $hasDeviceToken                     ║")
-        Log.i(TAG, "║  Build Fingerprint: ${buildFingerprint.take(20)}...    ║")
-        Log.i(TAG, "║  Android Version: $androidVersion                      ║")
-        Log.i(TAG, "║                                                        ║")
-        Log.i(TAG, "║  Backend detectará factory reset comparando:          ║")
-        Log.i(TAG, "║  • Fingerprint histórico vs atual                     ║")
-        Log.i(TAG, "║  • Timestamp do último boot vs agora                  ║")
-        Log.i(TAG, "║  • Token válido vs ausente                            ║")
+        Log.i(TAG, "║  Device Fingerprint: ${deviceFingerprint.take(12)}****")
+        Log.i(TAG, "║  Boot Timestamp: $bootTimestamp")
+        Log.i(TAG, "║  Boot Reason: $bootReason")
+        Log.i(TAG, "║  Is First Boot After Install: $isFirstBootAfterInstall")
+        Log.i(TAG, "║  Was Factory Reset: $wasFactoryReset")
+        Log.i(TAG, "║  Android Version: $androidVersion")
+        Log.i(TAG, "║  APK Version: $apkVersion")
+        Log.i(TAG, "║  Security Patch Level: ${securityPatchLevel ?: "N/A"}")
+        Log.i(TAG, "║  Encryption Status: $encryptionStatus")
+        Log.i(TAG, "║  Device Owner Active: $deviceOwnerActive")
+        Log.i(TAG, "║  Has Auth Token: $hasAuthToken")
+        Log.i(TAG, "║  Has Device Token: $hasDeviceToken")
+        Log.i(TAG, "║  IMEI: ${imei?.take(4) ?: "N/A"}***")
+        Log.i(TAG, "║  Android ID: ${androidId?.take(8) ?: "N/A"}...")
         Log.i(TAG, "╚════════════════════════════════════════════════════════╝")
         Log.i(TAG, "")
         
@@ -162,10 +190,20 @@ class TamperDetectionService(private val context: Context) {
                 val request = DeviceBootRequest(
                     deviceFingerprint = deviceFingerprint,
                     bootTimestamp = bootTimestamp,
-                    hasAuthToken = hasAuthToken,
-                    hasDeviceToken = hasDeviceToken,
+                    bootReason = bootReason,
+                    isFirstBootAfterInstall = isFirstBootAfterInstall,
+                    wasFactoryReset = wasFactoryReset,
+                    androidVersion = androidVersion,
+                    apkVersion = apkVersion,
+                    securityPatchLevel = securityPatchLevel,
+                    encryptionStatus = encryptionStatus,
+                    deviceOwnerActive = deviceOwnerActive,
+                    imei = imei,
+                    meid = meid,
+                    androidId = androidId,
                     buildFingerprint = buildFingerprint,
-                    androidVersion = androidVersion
+                    hasAuthToken = hasAuthToken,
+                    hasDeviceToken = hasDeviceToken
                 )
                 
                 val response = api.reportDeviceBoot(request)
@@ -173,14 +211,34 @@ class TamperDetectionService(private val context: Context) {
                 if (response.isSuccessful) {
                     val body = response.body()
                     Log.i(TAG, "✅ Boot reportado ao backend com sucesso!")
+                    Log.i(TAG, "   Success: ${body?.success}")
                     Log.i(TAG, "   Status: ${body?.status}")
                     Log.i(TAG, "   Message: ${body?.message}")
+                    Log.i(TAG, "   Device ID: ${body?.deviceId}")
+                    Log.i(TAG, "   Serial Number: ${body?.serialNumber}")
+                    Log.i(TAG, "   Pending Commands: ${body?.pendingCommands}")
+                    Log.i(TAG, "   Server Time: ${body?.serverTime}")
+                    
+                    body?.config?.let { config ->
+                        Log.i(TAG, "   Config - Heartbeat Interval: ${config.heartbeatIntervalMs}ms")
+                        Log.i(TAG, "   Config - Debug Logs: ${config.enableDebugLogs}")
+                        Log.i(TAG, "   Config - Compliance Check: ${config.complianceCheckEnabled}")
+                    }
                     
                     if (body?.factoryResetDetected == true) {
                         Log.w(TAG, "⚠️ ========================================")
                         Log.w(TAG, "⚠️ FACTORY RESET DETECTADO PELO BACKEND!")
                         Log.w(TAG, "⚠️ Ação recomendada: ${body.action}")
                         Log.w(TAG, "⚠️ ========================================")
+                    }
+                    
+                    // Se há comandos pendentes, buscar imediatamente
+                    if ((body?.pendingCommands ?: 0) > 0) {
+                        Log.i(TAG, "📋 ========================================")
+                        Log.i(TAG, "📋 ${body?.pendingCommands} comandos pendentes detectados!")
+                        Log.i(TAG, "📋 Disparando busca de comandos...")
+                        Log.i(TAG, "📋 ========================================")
+                        triggerPendingCommandsFetch()
                     }
                 } else {
                     Log.e(TAG, "❌ Erro ao reportar boot ao backend")
@@ -196,6 +254,87 @@ class TamperDetectionService(private val context: Context) {
                 Log.e(TAG, "❌ Exceção ao reportar boot ao backend: ${e.message}")
                 Log.e(TAG, "   Tipo: ${e::class.simpleName}")
             }
+        }
+    }
+    
+    private fun getEncryptionStatus(): String {
+        return try {
+            val dm = context.getSystemService(android.content.Context.DEVICE_POLICY_SERVICE) as? android.app.admin.DevicePolicyManager
+            when (dm?.storageEncryptionStatus) {
+                android.app.admin.DevicePolicyManager.ENCRYPTION_STATUS_ACTIVE -> "encrypted"
+                android.app.admin.DevicePolicyManager.ENCRYPTION_STATUS_ACTIVE_DEFAULT_KEY -> "encrypted_default"
+                android.app.admin.DevicePolicyManager.ENCRYPTION_STATUS_INACTIVE -> "inactive"
+                android.app.admin.DevicePolicyManager.ENCRYPTION_STATUS_UNSUPPORTED -> "unsupported"
+                else -> "unknown"
+            }
+        } catch (e: Exception) {
+            "unknown"
+        }
+    }
+    
+    private fun isDeviceOwnerActive(): Boolean {
+        return try {
+            val dm = context.getSystemService(android.content.Context.DEVICE_POLICY_SERVICE) as? android.app.admin.DevicePolicyManager
+            dm?.isDeviceOwnerApp(context.packageName) == true
+        } catch (e: Exception) {
+            false
+        }
+    }
+    
+    private fun getMeid(): String? {
+        return try {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                val tm = context.getSystemService(android.content.Context.TELEPHONY_SERVICE) as? android.telephony.TelephonyManager
+                tm?.meid
+            } else {
+                null
+            }
+        } catch (e: Exception) {
+            null
+        }
+    }
+    
+    private fun getBootReason(): String {
+        return try {
+            val bootReason = android.os.SystemProperties.get("ro.boot.bootreason", "unknown")
+            when {
+                bootReason.contains("reboot", ignoreCase = true) -> "reboot"
+                bootReason.contains("shutdown", ignoreCase = true) -> "power_on"
+                bootReason.contains("panic", ignoreCase = true) -> "crash"
+                bootReason.contains("watchdog", ignoreCase = true) -> "crash"
+                bootReason.contains("oem", ignoreCase = true) -> "oem"
+                bootReason == "unknown" || bootReason.isBlank() -> "power_on"
+                else -> bootReason
+            }
+        } catch (e: Exception) {
+            "power_on"
+        }
+    }
+    
+    private fun isFirstBoot(): Boolean {
+        val prefs = context.getSharedPreferences("cdc_device_prefs", android.content.Context.MODE_PRIVATE)
+        val hasBooted = prefs.getBoolean("has_booted_before", false)
+        if (!hasBooted) {
+            prefs.edit().putBoolean("has_booted_before", true).apply()
+            return true
+        }
+        return false
+    }
+    
+    private fun detectFactoryResetByTokens(): Boolean {
+        val hasAuthToken = storage.getAuthToken() != null
+        val hasDeviceToken = storage.getDeviceToken() != null
+        return !hasAuthToken && !hasDeviceToken
+    }
+    
+    private fun triggerPendingCommandsFetch() {
+        try {
+            val intent = android.content.Intent("com.cdccreditsmart.app.FETCH_PENDING_COMMANDS")
+            intent.setPackage(context.packageName)
+            context.sendBroadcast(intent)
+            Log.d(TAG, "📋 Broadcast enviado para buscar comandos pendentes")
+        } catch (e: Exception) {
+            Log.w(TAG, "⚠️ Erro ao disparar busca de comandos: ${e.message}")
         }
     }
     

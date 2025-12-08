@@ -103,4 +103,21 @@ interface MdmApiService {
         @Body request: CommandStatusRequest
     ): Response<Unit>
     
+    /**
+     * ACK de comando MDM SEM Play Integrity
+     * Endpoint: POST /api/apk/commands/{commandId}/ack
+     * Auth: Bearer JWT token (SEM Play Integrity)
+     * 
+     * @param commandId ID único do comando
+     * @param authorization Bearer JWT token
+     * @param body Payload com status e resposta da execução
+     * @return Response com sucesso e status do comando
+     */
+    @POST("api/apk/commands/{commandId}/ack")
+    suspend fun acknowledgeCommand(
+        @Path("commandId") commandId: String,
+        @Header("Authorization") authorization: String,
+        @Body body: CommandAckRequest
+    ): Response<CommandAckResponse>
+    
 }
