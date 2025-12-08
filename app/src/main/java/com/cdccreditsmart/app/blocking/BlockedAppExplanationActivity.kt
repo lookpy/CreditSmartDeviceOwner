@@ -36,6 +36,7 @@ class BlockedAppExplanationActivity : ComponentActivity() {
         val blockingLevel = intent.getIntExtra("blocking_level", 0)
         val daysOverdue = intent.getIntExtra("days_overdue", 0)
         val isManualBlock = intent.getBooleanExtra("is_manual_block", false)
+        val isOffline = intent.getBooleanExtra("is_offline", false)
         
         setContent {
             CDCCreditSmartTheme {
@@ -45,6 +46,7 @@ class BlockedAppExplanationActivity : ComponentActivity() {
                     daysOverdue = daysOverdue,
                     isManualBlock = isManualBlock,
                     manualBlockReason = intent.getStringExtra("manual_block_reason"),
+                    isOffline = isOffline,
                     onClose = { finish() }
                 )
             }
@@ -63,6 +65,7 @@ fun ModernBlockedAppScreen(
     daysOverdue: Int,
     isManualBlock: Boolean,
     manualBlockReason: String? = null,
+    isOffline: Boolean = false,
     onClose: () -> Unit
 ) {
     val context = androidx.compose.ui.platform.LocalContext.current
@@ -82,6 +85,36 @@ fun ModernBlockedAppScreen(
                 .padding(24.dp)
         ) {
             Spacer(modifier = Modifier.height(16.dp))
+            
+            // Indicador de Modo Offline
+            if (isOffline) {
+                Card(
+                    modifier = Modifier.fillMaxWidth(),
+                    colors = CardDefaults.cardColors(
+                        containerColor = Color(0xFFFFF3E0)
+                    ),
+                    shape = RoundedCornerShape(8.dp)
+                ) {
+                    Row(
+                        modifier = Modifier.padding(12.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.CloudOff,
+                            contentDescription = null,
+                            tint = Color(0xFFE65100),
+                            modifier = Modifier.size(20.dp)
+                        )
+                        Spacer(modifier = Modifier.width(8.dp))
+                        Text(
+                            text = "Dados offline - última atualização pode estar desatualizada",
+                            style = MaterialTheme.typography.bodySmall,
+                            color = Color(0xFFE65100)
+                        )
+                    }
+                }
+                Spacer(modifier = Modifier.height(16.dp))
+            }
             
             // Hero Header com Ícone de Cadeado
             Box(
@@ -108,7 +141,7 @@ fun ModernBlockedAppScreen(
             
             // Título Principal
             Text(
-                text = "App Temporariamente Bloqueado",
+                text = if (isOffline) "App Temporariamente Bloqueado (Dados offline)" else "App Temporariamente Bloqueado",
                 style = MaterialTheme.typography.headlineSmall,
                 fontWeight = FontWeight.Bold,
                 textAlign = TextAlign.Center,
@@ -120,6 +153,8 @@ fun ModernBlockedAppScreen(
             Text(
                 text = if (isManualBlock && !manualBlockReason.isNullOrBlank()) {
                     "Bloqueio administrativo ativo"
+                } else if (isOffline) {
+                    "Pagamento em atraso. Regularize para liberar seu dispositivo."
                 } else {
                     "Regularize suas parcelas para desbloquear"
                 },

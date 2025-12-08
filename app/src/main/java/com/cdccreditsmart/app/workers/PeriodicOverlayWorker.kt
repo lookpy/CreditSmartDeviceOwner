@@ -7,7 +7,9 @@ import androidx.work.*
 import com.cdccreditsmart.app.blocking.AppBlockingManager
 import com.cdccreditsmart.app.blocking.BlockingInfo
 import com.cdccreditsmart.app.blocking.BlockedAppExplanationActivity
+import com.cdccreditsmart.app.offline.DebtAgingCalculator
 import com.cdccreditsmart.app.security.SecureTokenStorage
+import com.cdccreditsmart.data.storage.LocalAccountState
 import java.util.concurrent.TimeUnit
 
 /**
@@ -162,15 +164,56 @@ class PeriodicOverlayWorker(
             Log.i(TAG, "   Manual Block: $hasManualBlock")
             Log.i(TAG, "   Blocked Apps: ${blockingInfo.blockedAppsCount}")
             
-            // Verificar se há bloqueio ativo
+            // Verificar se há bloqueio ativo OU se temos dados offline válidos
+            var isOfflineMode = false
+            var effectiveBlockingInfo = blockingInfo
+            
             if (blockingInfo.currentLevel == 0 && !hasManualBlock) {
-                Log.i(TAG, "✅ Sem bloqueio ativo - overlay não será mostrado")
-                Log.i(TAG, "")
-                return Result.success()
+                // Tentar fallback offline
+                val localState = LocalAccountState(context)
+                
+                if (localState.hasOfflineData() && localState.hasBlockingState()) {
+                    Log.w(TAG, "⚠️ Sem bloqueio do servidor - tentando dados offline...")
+                    
+                    // Calcular dias de atraso localmente
+                    val debtCalculator = DebtAgingCalculator(context)
+                    val calculatedDaysOverdue = debtCalculator.calculateDaysOverdue()
+                    
+                    if (calculatedDaysOverdue > 0 || localState.currentLevel > 0) {
+                        isOfflineMode = true
+                        
+                        // Usar dados do cache local
+                        val offlineLevel = if (localState.currentLevel > 0) {
+                            localState.currentLevel
+                        } else {
+                            debtCalculator.calculateBlockLevel(calculatedDaysOverdue)
+                        }
+                        
+                        effectiveBlockingInfo = BlockingInfo(
+                            currentLevel = offlineLevel,
+                            daysOverdue = maxOf(calculatedDaysOverdue, localState.daysOverdue),
+                            blockedAppsCount = localState.blockedPackages.size,
+                            manualBlockReason = null
+                        )
+                        
+                        Log.i(TAG, "📱 Usando dados OFFLINE para overlay:")
+                        Log.i(TAG, "   Offline Level: ${effectiveBlockingInfo.currentLevel}")
+                        Log.i(TAG, "   Offline Days: ${effectiveBlockingInfo.daysOverdue}")
+                        Log.i(TAG, "   Cached message: ${localState.lastOverlayMessage.take(50)}...")
+                    } else {
+                        Log.i(TAG, "✅ Sem bloqueio ativo (online ou offline) - overlay não será mostrado")
+                        Log.i(TAG, "")
+                        return Result.success()
+                    }
+                } else {
+                    Log.i(TAG, "✅ Sem bloqueio ativo e sem dados offline - overlay não será mostrado")
+                    Log.i(TAG, "")
+                    return Result.success()
+                }
             }
             
             // Calcular cooldown progressivo baseado em dias de atraso
-            val requiredCooldownMinutes = calculateCooldownMinutes(blockingInfo.daysOverdue)
+            val requiredCooldownMinutes = calculateCooldownMinutes(effectiveBlockingInfo.daysOverdue)
             val requiredCooldownMs = requiredCooldownMinutes * 60 * 1000L
             
             // Verificar se já passou tempo suficiente desde o último overlay
@@ -197,13 +240,13 @@ class PeriodicOverlayWorker(
             
             if (timeSinceLastNotification >= notificationCooldown) {
                 Log.i(TAG, "📢 Mostrando notificação prévia (1 minuto antes do overlay)")
-                showPreOverlayNotification(context, blockingInfo)
+                showPreOverlayNotification(context, effectiveBlockingInfo, isOfflineMode)
                 
                 // Atualizar timestamp da notificação
                 prefs.edit().putLong(KEY_LAST_NOTIFICATION, now).apply()
                 
                 // Agendar overlay para 1 minuto depois
-                scheduleOverlayIn1Minute(context, blockingInfo, hasManualBlock)
+                scheduleOverlayIn1Minute(context, effectiveBlockingInfo, hasManualBlock, isOfflineMode)
                 
                 Log.i(TAG, "⏰ Overlay será mostrado em 1 minuto")
                 Log.i(TAG, "")
@@ -212,11 +255,12 @@ class PeriodicOverlayWorker(
             
             // Se já passou 1 minuto desde a notificação, mostrar overlay
             Log.i(TAG, "🚨 BLOQUEIO ATIVO - Mostrando overlay de cobrança!")
-            Log.i(TAG, "   Nível: ${blockingInfo.currentLevel}")
-            Log.i(TAG, "   Dias de atraso: ${blockingInfo.daysOverdue}")
+            Log.i(TAG, "   Nível: ${effectiveBlockingInfo.currentLevel}")
+            Log.i(TAG, "   Dias de atraso: ${effectiveBlockingInfo.daysOverdue}")
             Log.i(TAG, "   Cooldown atual: $requiredCooldownMinutes minutos")
+            Log.i(TAG, "   Modo Offline: $isOfflineMode")
             
-            showOverlay(blockingInfo, hasManualBlock)
+            showOverlay(effectiveBlockingInfo, hasManualBlock, isOfflineMode)
             
             // Atualizar timestamp e contador
             val showCount = prefs.getInt(KEY_SHOW_COUNT, 0) + 1
@@ -240,7 +284,7 @@ class PeriodicOverlayWorker(
         }
     }
     
-    private fun showPreOverlayNotification(context: Context, blockingInfo: BlockingInfo) {
+    private fun showPreOverlayNotification(context: Context, blockingInfo: BlockingInfo, isOffline: Boolean = false) {
         try {
             val notificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) 
                 as? android.app.NotificationManager ?: return
@@ -259,13 +303,16 @@ class PeriodicOverlayWorker(
                 notificationManager.createNotificationChannel(channel)
             }
             
+            val offlineText = if (isOffline) " (dados offline)" else ""
+            
             val notification = androidx.core.app.NotificationCompat.Builder(context, "overlay_reminder")
                 .setSmallIcon(android.R.drawable.ic_dialog_info)
-                .setContentTitle("⚠️ Lembrete de Pagamento")
+                .setContentTitle("⚠️ Lembrete de Pagamento$offlineText")
                 .setContentText("Você tem parcelas vencidas. Regularize sua situação.")
                 .setStyle(androidx.core.app.NotificationCompat.BigTextStyle()
                     .bigText("Você tem ${blockingInfo.daysOverdue} dia(s) de atraso. " +
-                            "Por favor, regularize sua situação para continuar usando o dispositivo normalmente."))
+                            "Por favor, regularize sua situação para continuar usando o dispositivo normalmente." +
+                            if (isOffline) "\n\n📱 Dados offline - última atualização pode estar desatualizada." else ""))
                 .setPriority(androidx.core.app.NotificationCompat.PRIORITY_HIGH)
                 .setAutoCancel(true)
                 .setVibrate(longArrayOf(0, 500, 250, 500))
@@ -274,7 +321,7 @@ class PeriodicOverlayWorker(
             
             notificationManager.notify(9999, notification)
             
-            Log.i(TAG, "📢 Notificação enviada: 'Lembrete: você tem parcelas vencidas'")
+            Log.i(TAG, "📢 Notificação enviada: 'Lembrete: você tem parcelas vencidas' (offline=$isOffline)")
             
         } catch (e: Exception) {
             Log.e(TAG, "❌ Erro ao mostrar notificação", e)
@@ -284,7 +331,8 @@ class PeriodicOverlayWorker(
     private fun scheduleOverlayIn1Minute(
         context: Context, 
         blockingInfo: BlockingInfo,
-        hasManualBlock: Boolean
+        hasManualBlock: Boolean,
+        isOffline: Boolean = false
     ) {
         try {
             val data = androidx.work.workDataOf(
@@ -292,7 +340,8 @@ class PeriodicOverlayWorker(
                 "days_overdue" to blockingInfo.daysOverdue,
                 "blocked_apps_count" to blockingInfo.blockedAppsCount,
                 "is_manual_block" to hasManualBlock,
-                "manual_block_reason" to (blockingInfo.manualBlockReason ?: "")
+                "manual_block_reason" to (blockingInfo.manualBlockReason ?: ""),
+                "is_offline" to isOffline
             )
             
             val overlayRequest = OneTimeWorkRequestBuilder<DelayedOverlayWorker>()
@@ -313,7 +362,7 @@ class PeriodicOverlayWorker(
         }
     }
     
-    private fun showOverlay(blockingInfo: BlockingInfo, hasManualBlock: Boolean) {
+    private fun showOverlay(blockingInfo: BlockingInfo, hasManualBlock: Boolean, isOffline: Boolean = false) {
         try {
             val intent = Intent(context, BlockedAppExplanationActivity::class.java).apply {
                 addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
@@ -329,11 +378,12 @@ class PeriodicOverlayWorker(
                 putExtra("is_manual_block", hasManualBlock)
                 putExtra("manual_block_reason", blockingInfo.manualBlockReason)
                 putExtra("is_periodic", true) // Flag para indicar que é overlay periódico
+                putExtra("is_offline", isOffline) // Flag para indicar modo offline
             }
             
             context.startActivity(intent)
             
-            Log.i(TAG, "📱 Intent enviado - BlockedAppExplanationActivity deve aparecer")
+            Log.i(TAG, "📱 Intent enviado - BlockedAppExplanationActivity deve aparecer (offline=$isOffline)")
             
         } catch (e: Exception) {
             Log.e(TAG, "❌ Erro ao mostrar overlay", e)
@@ -393,6 +443,7 @@ class DelayedOverlayWorker(
             val blockedAppsCount = inputData.getInt("blocked_apps_count", 0)
             val isManualBlock = inputData.getBoolean("is_manual_block", false)
             val manualBlockReason = inputData.getString("manual_block_reason")
+            val isOffline = inputData.getBoolean("is_offline", false)
             
             val intent = Intent(context, BlockedAppExplanationActivity::class.java).apply {
                 addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
@@ -407,11 +458,12 @@ class DelayedOverlayWorker(
                 putExtra("is_manual_block", isManualBlock)
                 putExtra("manual_block_reason", manualBlockReason)
                 putExtra("is_periodic", true)
+                putExtra("is_offline", isOffline)
             }
             
             context.startActivity(intent)
             
-            Log.i(TAG, "✅ Overlay exibido após notificação prévia")
+            Log.i(TAG, "✅ Overlay exibido após notificação prévia (offline=$isOffline)")
             
             Result.success()
             

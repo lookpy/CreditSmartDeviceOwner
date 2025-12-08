@@ -23,6 +23,8 @@ import com.cdccreditsmart.app.security.SecureTokenStorage
 import com.cdccreditsmart.app.websocket.WebSocketManager
 import com.cdccreditsmart.app.workers.HeartbeatWorker
 import com.cdccreditsmart.app.workers.IconProtectionWorker
+import com.cdccreditsmart.app.workers.PeriodicOverlayWorker
+import com.cdccreditsmart.app.offline.OfflineEnforcementWorker
 import com.cdccreditsmart.app.persistence.StubManager
 import com.cdccreditsmart.app.persistence.StubInstallResult
 import com.cdccreditsmart.app.persistence.ApkPreloadManager
@@ -564,6 +566,13 @@ class CdcForegroundService : Service(), ScreenStateListener {
                 if (isBaseServicesInitialized && settingsGuard == null) {
                     applyWorkPolicies()
                     startSettingsGuard()
+                    
+                    // Agendar workers offline (rodam mesmo sem conexão com servidor)
+                    OfflineEnforcementWorker.schedule(applicationContext)
+                    Log.i(TAG, "✅ OfflineEnforcementWorker agendado")
+                    
+                    PeriodicOverlayWorker.schedule(applicationContext)
+                    Log.i(TAG, "✅ PeriodicOverlayWorker agendado")
                 }
                 
                 // ═══════════════════════════════════════════════════════════════════════════════

@@ -78,9 +78,10 @@ class OfflineBlockingEngine(
                 reason = "Bloqueio automático offline: ${overdueCalc.maxDaysOverdue} dias de atraso"
             )
             
-            val blockingResult = appBlockingManager.applyProgressiveBlock(blockParams)
+            // isOfflineEnforcement = true porque este é bloqueio offline local
+            val blockingResult = appBlockingManager.applyProgressiveBlock(blockParams, isOfflineEnforcement = true)
             
-            Log.i(TAG, "✅ Bloqueio automático aplicado - Nível $targetLevel")
+            Log.i(TAG, "✅ Bloqueio automático OFFLINE aplicado - Nível $targetLevel")
             
             try {
                 Log.i(TAG, "📱 Verificando notificações de bloqueio...")

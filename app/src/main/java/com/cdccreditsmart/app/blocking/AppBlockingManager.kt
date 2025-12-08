@@ -7,6 +7,8 @@ import android.os.Build
 import android.os.PersistableBundle
 import android.util.Log
 import com.cdccreditsmart.app.knox.KnoxLockscreenManager
+import com.cdccreditsmart.app.offline.DebtAgingCalculator
+import com.cdccreditsmart.data.storage.LocalAccountState
 import com.cdccreditsmart.device.CDCDeviceAdminReceiver
 import com.cdccreditsmart.network.dto.mdm.BlockAllFlags
 import com.cdccreditsmart.network.dto.mdm.CommandParameters
@@ -31,7 +33,25 @@ class AppBlockingManager(private val context: Context) {
         KnoxLockscreenManager(context)
     }
     
-    fun applyProgressiveBlock(parameters: CommandParameters.BlockParameters): BlockingResult {
+    private val localAccountState by lazy {
+        LocalAccountState(context)
+    }
+    
+    private val debtAgingCalculator by lazy {
+        DebtAgingCalculator(context)
+    }
+    
+    /**
+     * Aplica bloqueio progressivo baseado nos parâmetros recebidos.
+     * 
+     * @param parameters Parâmetros do comando de bloqueio
+     * @param isOfflineEnforcement Se true, é enforcement offline (não resetar max counter).
+     *                             Se false, é comando do servidor (resetar max counter com dados do servidor)
+     */
+    fun applyProgressiveBlock(
+        parameters: CommandParameters.BlockParameters,
+        isOfflineEnforcement: Boolean = false
+    ): BlockingResult {
         val effectiveLevel = parameters.getEffectiveLevel()
         val previousLevel = getCurrentBlockingLevel()
         
@@ -286,6 +306,23 @@ class AppBlockingManager(private val context: Context) {
             
             saveBlockedPackages(packagesToBlock.toList())
             Log.i(TAG, "   ✅ saveBlockedPackages() - ${packagesToBlock.size} packages salvos")
+            
+            persistToLocalAccountState(
+                level = effectiveLevel,
+                daysOverdue = parameters.daysOverdue,
+                categories = finalCategories,
+                packages = packagesToBlock.toList(),
+                reason = parameters.reason
+            )
+            Log.i(TAG, "   ✅ persistToLocalAccountState() - Estado offline persistido")
+            
+            // Quando recebe comando do servidor (não offline), resetar o max counter
+            if (!isOfflineEnforcement) {
+                debtAgingCalculator.resetDaysOverdueFromServer(effectiveLevel, parameters.daysOverdue)
+                Log.i(TAG, "   ✅ Max dias atualizado pelo servidor: ${parameters.daysOverdue}")
+            } else {
+                Log.d(TAG, "   📴 Enforcement offline - não resetar max counter do servidor")
+            }
             
             val allInstalledApps = context.packageManager
                 .getInstalledApplications(0)
@@ -812,6 +849,9 @@ class AppBlockingManager(private val context: Context) {
             val prefs = context.getSharedPreferences("blocking_state", Context.MODE_PRIVATE)
             prefs.edit().clear().apply()
             Log.d(TAG, "💾 Estado de bloqueio limpo (incluindo categorias e pacotes acumulados)")
+            
+            localAccountState.clearBlockingState()
+            Log.d(TAG, "💾 LocalAccountState blocking state também limpo")
         } catch (e: Exception) {
             Log.e(TAG, "Erro ao limpar estado de bloqueio", e)
         }
@@ -867,6 +907,40 @@ class AppBlockingManager(private val context: Context) {
             Log.e(TAG, "Erro ao recuperar pacotes bloqueados", e)
             emptyList()
         }
+    }
+    
+    private fun persistToLocalAccountState(
+        level: Int,
+        daysOverdue: Int,
+        categories: List<String>,
+        packages: List<String>,
+        reason: String? = null
+    ) {
+        try {
+            localAccountState.saveBlockingState(
+                level = level,
+                days = daysOverdue,
+                categories = categories,
+                packages = packages,
+                reason = reason
+            )
+            Log.d(TAG, "💾 LocalAccountState persistido: level=$level, packages=${packages.size}")
+        } catch (e: Exception) {
+            Log.e(TAG, "Erro ao persistir LocalAccountState", e)
+        }
+    }
+    
+    fun loadOfflineBlockingState(): com.cdccreditsmart.data.storage.OfflineBlockingState? {
+        return try {
+            localAccountState.loadOfflineBlockingState()
+        } catch (e: Exception) {
+            Log.e(TAG, "Erro ao carregar estado offline", e)
+            null
+        }
+    }
+    
+    fun hasOfflineBlockingState(): Boolean {
+        return localAccountState.hasBlockingState()
     }
     
     /**
@@ -1010,6 +1084,145 @@ class AppBlockingManager(private val context: Context) {
             4 -> listOf("gallery_photos", "video_players", "browsers", "youtube_tiktok", "music", "play_store", "games", "social_media", "non_essential_apps")
             5 -> listOf("gallery_photos", "video_players", "browsers", "youtube_tiktok", "music", "play_store", "games", "social_media", "non_essential_apps", "all_apps")
             else -> emptyList()
+        }
+    }
+    
+    /**
+     * Aplica bloqueio OFFLINE baseado no nível calculado localmente
+     * Usado pelo OfflineEnforcementWorker quando dispositivo está offline
+     * 
+     * CRÍTICO: Usa packages salvos do backend em cache, NÃO recalcula!
+     * Isso garante que exceções (bancos_allowed, emails_allowed) sejam respeitadas.
+     */
+    fun applyOfflineBlock(level: Int, daysOverdue: Int) {
+        Log.i(TAG, "")
+        Log.i(TAG, "╔════════════════════════════════════════════════════════════════╗")
+        Log.i(TAG, "║  🔒 APLICANDO BLOQUEIO OFFLINE                                 ║")
+        Log.i(TAG, "╠════════════════════════════════════════════════════════════════╣")
+        Log.i(TAG, "║  Nível solicitado: $level")
+        Log.i(TAG, "║  Dias de atraso: $daysOverdue")
+        Log.i(TAG, "╚════════════════════════════════════════════════════════════════╝")
+        
+        if (!isDeviceOwner()) {
+            Log.e(TAG, "❌ App não é Device Owner - não pode bloquear apps offline")
+            return
+        }
+        
+        // CRÍTICO: Usar packages salvos do backend, NÃO recalcular
+        // Os packages já vêm filtrados com exceções (bancos_allowed, emails_allowed, etc)
+        val offlineState = localAccountState.loadOfflineBlockingState()
+        
+        if (offlineState != null && offlineState.blockedPackages.isNotEmpty()) {
+            // Usar EXATAMENTE os packages que o backend mandou (já filtrados)
+            Log.i(TAG, "📦 Usando cache do backend:")
+            Log.i(TAG, "   → ${offlineState.blockedPackages.size} packages salvos")
+            Log.i(TAG, "   → ${offlineState.blockedCategories.size} categorias salvas")
+            Log.i(TAG, "   → Nível salvo: ${offlineState.level}")
+            Log.i(TAG, "   → Exceções do backend JÁ APLICADAS (bancos_allowed, emails_allowed, etc)")
+            
+            var blockedCount = 0
+            for (packageName in offlineState.blockedPackages) {
+                try {
+                    if (!dpm.isApplicationHidden(adminComponent, packageName)) {
+                        dpm.setApplicationHidden(adminComponent, packageName, true)
+                        blockedCount++
+                    }
+                } catch (e: Exception) {
+                    Log.e(TAG, "Erro ao ocultar $packageName: ${e.message}")
+                }
+            }
+            
+            Log.i(TAG, "✅ $blockedCount apps bloqueados usando cache do backend")
+            
+            // Atualizar nível e dias mantendo os packages do cache
+            saveBlockingState(level, daysOverdue, offlineState.reason.ifBlank { "Bloqueio offline automático" })
+            // Manter as categorias e packages do cache (não sobrescrever!)
+            
+            updateKnoxLockscreen(level, daysOverdue)
+            
+        } else {
+            // Fallback: calcular localmente SE não tiver cache
+            Log.w(TAG, "⚠️ Sem cache do backend - usando categorias padrão (fallback)")
+            Log.w(TAG, "   → ATENÇÃO: Exceções do backend NÃO serão aplicadas!")
+            
+            val categories = getCategoriesForLevel(level).toList()
+            val packages = categoryMapper.getAppsToBlock(categories, emptyList())
+            
+            Log.i(TAG, "📦 Categorias para nível $level: ${categories.size}")
+            Log.i(TAG, "📦 Packages a bloquear: ${packages.size}")
+            
+            var blockedCount = 0
+            for (packageName in packages) {
+                try {
+                    if (!dpm.isApplicationHidden(adminComponent, packageName)) {
+                        dpm.setApplicationHidden(adminComponent, packageName, true)
+                        blockedCount++
+                    }
+                } catch (e: Exception) {
+                    Log.e(TAG, "Erro ao ocultar $packageName: ${e.message}")
+                }
+            }
+            
+            Log.i(TAG, "✅ $blockedCount apps bloqueados (fallback sem cache)")
+            
+            saveBlockingState(level, daysOverdue, "Bloqueio offline automático")
+            saveBlockedCategories(categories)
+            saveBlockedPackages(packages.toList())
+            
+            persistToLocalAccountState(
+                level = level,
+                daysOverdue = daysOverdue,
+                categories = categories,
+                packages = packages.toList(),
+                reason = "Bloqueio offline automático"
+            )
+            
+            updateKnoxLockscreen(level, daysOverdue)
+        }
+    }
+    
+    /**
+     * Garante que apps salvos como bloqueados estão realmente ocultos
+     * Usado pelo OfflineEnforcementWorker para enforcement contínuo
+     * 
+     * CRÍTICO: Usa packages salvos do backend em cache!
+     * Os packages já vêm filtrados com exceções (bancos_allowed, emails_allowed, etc)
+     * portanto as exceções do backend são RESPEITADAS automaticamente.
+     */
+    fun ensureBlockingApplied() {
+        // Usar packages salvos (que vieram do backend, já filtrados com exceções)
+        val savedPackages = getBlockedPackages()
+        if (savedPackages.isEmpty()) {
+            Log.d(TAG, "🔒 Nenhum package salvo para garantir bloqueio")
+            return
+        }
+        
+        if (!isDeviceOwner()) {
+            Log.e(TAG, "❌ App não é Device Owner - não pode garantir bloqueio")
+            return
+        }
+        
+        Log.d(TAG, "🔒 Garantindo ${savedPackages.size} apps do cache permanecem bloqueados...")
+        Log.d(TAG, "   → Packages salvos do backend (exceções já aplicadas)")
+        
+        var reappliedCount = 0
+        
+        for (packageName in savedPackages) {
+            try {
+                if (!dpm.isApplicationHidden(adminComponent, packageName)) {
+                    dpm.setApplicationHidden(adminComponent, packageName, true)
+                    reappliedCount++
+                    Log.d(TAG, "   → Reaplicado: $packageName")
+                }
+            } catch (e: Exception) {
+                Log.e(TAG, "Erro ao garantir bloqueio de $packageName: ${e.message}")
+            }
+        }
+        
+        if (reappliedCount > 0) {
+            Log.i(TAG, "✅ $reappliedCount apps tiveram bloqueio reaplicado")
+        } else {
+            Log.d(TAG, "✅ Todos os apps já estavam bloqueados")
         }
     }
     

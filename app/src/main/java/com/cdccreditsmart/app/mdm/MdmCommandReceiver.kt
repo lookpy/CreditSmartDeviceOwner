@@ -9,6 +9,7 @@ import com.cdccreditsmart.app.network.NetworkConnectivityHelper
 import com.cdccreditsmart.app.network.RetrofitProvider
 import com.cdccreditsmart.app.security.SecureTokenStorage
 import com.cdccreditsmart.app.utils.DeviceInfoHelper
+import com.cdccreditsmart.data.storage.LocalAccountState
 import com.cdccreditsmart.network.api.MdmApiService
 import com.cdccreditsmart.network.dto.mdm.*
 import com.cdccreditsmart.network.client.MoshiProvider
@@ -69,6 +70,10 @@ class MdmCommandReceiver(private val context: Context) {
     
     private val networkHelper by lazy {
         NetworkConnectivityHelper(context)
+    }
+    
+    private val localAccountState by lazy {
+        LocalAccountState(context)
     }
     
     private var foregroundService: com.cdccreditsmart.app.service.CdcForegroundService? = null
@@ -498,6 +503,10 @@ class MdmCommandReceiver(private val context: Context) {
                 is CommandParameters.BlockParameters -> {
                     Log.i(TAG, "⚙️ Level: ${parameters.targetLevel}, Days: ${parameters.daysOverdue}")
                     
+                    // CRÍTICO: Salvar timestamp confiável do servidor para proteção contra clock forward
+                    localAccountState.lastTrustedServerTimestamp = System.currentTimeMillis()
+                    Log.i(TAG, "🕐 Timestamp confiável do servidor salvo")
+                    
                     if (parameters.targetLevel == 0) {
                         Log.i(TAG, "🔓 NÍVEL 0 DETECTADO - Desbloqueando TODOS os apps...")
                         val result = blockingManager.unblockAllApps()
@@ -510,7 +519,8 @@ class MdmCommandReceiver(private val context: Context) {
                         )
                     } else {
                         Log.i(TAG, "🔒 Aplicando bloqueio progressivo...")
-                        val result = blockingManager.applyProgressiveBlock(parameters)
+                        // isOfflineEnforcement = false porque este é comando do servidor
+                        val result = blockingManager.applyProgressiveBlock(parameters, isOfflineEnforcement = false)
                         Log.i(TAG, "✅ Bloqueio aplicado - Success: ${result.success}, Apps: ${result.blockedAppsCount}")
                         sendCommandResponse(commandId, result)
                     }
