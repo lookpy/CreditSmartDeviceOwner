@@ -749,42 +749,34 @@ class MdmCommandReceiver(private val context: Context) {
             val retrofit = RetrofitProvider.createAuthenticatedRetrofit(context)
             val api = retrofit.create(MdmApiService::class.java)
             
-            // NOVO ENDPOINT PRIMEIRO: POST /api/apk/commands/{commandId}/ack (SEM Play Integrity)
-            Log.d(TAG, "📡 Tentando ACK via NOVO endpoint: POST /api/apk/commands/$commandId/ack")
+            // ENDPOINT CORRETO: POST /api/apk/device/commands/{commandId}/status
+            Log.d(TAG, "📡 Enviando ACK: POST /api/apk/device/commands/$commandId/status")
             
-            val jwtToken = tokenStorage.getDeviceToken() ?: currentJwtToken
-            if (!jwtToken.isNullOrBlank()) {
-                try {
-                    val ackRequest = CommandAckRequest.acknowledged()
-                    val ackResponse = api.acknowledgeCommand(
-                        commandId = commandId,
-                        authorization = "Bearer $jwtToken",
-                        body = ackRequest
-                    )
-                    
-                    if (ackResponse.isSuccessful) {
-                        val body = ackResponse.body()
-                        Log.i(TAG, "✅ ACK enviado via NOVO endpoint para comando $commandId")
-                        Log.d(TAG, "   Success: ${body?.success}, Message: ${body?.message}")
-                        return  // Sucesso - não precisa do fallback
-                    } else {
-                        Log.w(TAG, "⚠️ NOVO endpoint falhou (HTTP ${ackResponse.code()}), tentando fallback...")
-                    }
-                } catch (e: Exception) {
-                    Log.w(TAG, "⚠️ NOVO endpoint falhou (${e.message}), tentando fallback...")
+            try {
+                val statusRequest = CommandStatusRequest.acknowledged()
+                val statusResponse = api.confirmCommandStatus(
+                    commandId = commandId,
+                    request = statusRequest
+                )
+                
+                if (statusResponse.isSuccessful) {
+                    Log.i(TAG, "✅ ACK enviado para comando $commandId")
+                    return  // Sucesso - não precisa do fallback
+                } else {
+                    Log.w(TAG, "⚠️ Endpoint status falhou (HTTP ${statusResponse.code()}), tentando fallback...")
                 }
-            } else {
-                Log.w(TAG, "⚠️ JWT token não disponível para novo endpoint, usando fallback")
+            } catch (e: Exception) {
+                Log.w(TAG, "⚠️ Endpoint status falhou (${e.message}), tentando fallback...")
             }
             
-            // FALLBACK: Endpoint legado
+            // FALLBACK: Endpoint legado command-response
             val identifier = tokenStorage.getMdmIdentifier()
             if (identifier == null) {
                 Log.e(TAG, "❌ Nenhum identificador MDM disponível para enviar ACK (fallback)")
                 return
             }
             
-            Log.d(TAG, "📡 Fallback: Usando endpoint legado: POST /api/apk/device/$identifier/command-response")
+            Log.d(TAG, "📡 Fallback: POST /api/apk/device/$identifier/command-response")
             
             val request = CommandResponseRequest(
                 commandId = commandId,
@@ -834,40 +826,39 @@ class MdmCommandReceiver(private val context: Context) {
             Log.d(TAG, "📡 Enviando response para comando: $commandId")
             Log.d(TAG, "📡 Status: $status")
             
-            // NOVO ENDPOINT PRIMEIRO: POST /api/apk/commands/{commandId}/ack (SEM Play Integrity)
-            Log.d(TAG, "📡 Tentando via NOVO endpoint: POST /api/apk/commands/$commandId/ack")
+            // ENDPOINT CORRETO: POST /api/apk/device/commands/{commandId}/status
+            Log.d(TAG, "📡 Enviando: POST /api/apk/device/commands/$commandId/status")
             
-            val jwtToken = tokenStorage.getDeviceToken() ?: currentJwtToken
-            if (!jwtToken.isNullOrBlank()) {
-                try {
-                    val ackRequest = if (success) {
-                        CommandAckRequest.completed(appliedLevel = appliedLevel, blockedApps = blockedApps)
-                    } else {
-                        CommandAckRequest.failed(errorMessage ?: "Unknown error")
-                    }
-                    
-                    val ackResponse = api.acknowledgeCommand(
-                        commandId = commandId,
-                        authorization = "Bearer $jwtToken",
-                        body = ackRequest
+            try {
+                val statusRequest = if (success) {
+                    CommandStatusRequest.completed(
+                        CommandResultPayload(
+                            success = true,
+                            appliedLevel = appliedLevel,
+                            blockedApps = blockedApps,
+                            unblockedApps = unblockedApps
+                        )
                     )
-                    
-                    if (ackResponse.isSuccessful) {
-                        val body = ackResponse.body()
-                        Log.i(TAG, "✅ Response enviado via NOVO endpoint para comando $commandId: $status")
-                        Log.d(TAG, "   Success: ${body?.success}, Message: ${body?.message}")
-                        return  // Sucesso - não precisa do fallback
-                    } else {
-                        Log.w(TAG, "⚠️ NOVO endpoint falhou (HTTP ${ackResponse.code()}), tentando fallback...")
-                    }
-                } catch (e: Exception) {
-                    Log.w(TAG, "⚠️ NOVO endpoint falhou (${e.message}), tentando fallback...")
+                } else {
+                    CommandStatusRequest.failed(errorMessage ?: "Unknown error")
                 }
-            } else {
-                Log.w(TAG, "⚠️ JWT token não disponível para novo endpoint, usando fallback")
+                
+                val statusResponse = api.confirmCommandStatus(
+                    commandId = commandId,
+                    request = statusRequest
+                )
+                
+                if (statusResponse.isSuccessful) {
+                    Log.i(TAG, "✅ Response enviado para comando $commandId: $status")
+                    return  // Sucesso - não precisa do fallback
+                } else {
+                    Log.w(TAG, "⚠️ Endpoint status falhou (HTTP ${statusResponse.code()}), tentando fallback...")
+                }
+            } catch (e: Exception) {
+                Log.w(TAG, "⚠️ Endpoint status falhou (${e.message}), tentando fallback...")
             }
             
-            // FALLBACK: Endpoint legado
+            // FALLBACK: Endpoint legado command-response
             val identifier = tokenStorage.getMdmIdentifier()
             if (identifier == null) {
                 Log.e(TAG, "❌ Nenhum identificador MDM disponível para enviar response (fallback)")

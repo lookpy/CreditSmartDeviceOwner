@@ -66,3 +66,12 @@ The UI uses Jetpack Compose and Material 3 with a CDC institutional dark theme. 
 - **EncryptedSharedPreferences:** For secure local data storage.
 - **WorkManager:** For deferrable background tasks.
 - **Kotlin Coroutines:** For asynchronous programming.
+
+## Recent Changes
+
+### 2025-12-08: MDM Command Status Endpoint Fix
+- **Fixed 404 Error**: Replaced non-existent endpoint `/api/apk/commands/{commandId}/ack` with correct endpoint `/api/apk/device/commands/{commandId}/status`
+- **Removed Obsolete Code**: Deleted `acknowledgeCommand()` from MdmApiService and unused DTOs (`CommandAckRequest`, `CommandAckResponse`, `CommandAckResponsePayload`)
+- **Updated MdmCommandReceiver**: Now uses `confirmCommandStatus()` with `CommandStatusRequest`/`CommandResultPayload` for all command acknowledgments
+- **Fallback Preserved**: `sendCommandResponse()` still falls back to `/api/apk/device/{identifier}/command-response` if primary endpoint fails
+- **Impact**: Eliminates ~320ms latency per command caused by failed 404 requests

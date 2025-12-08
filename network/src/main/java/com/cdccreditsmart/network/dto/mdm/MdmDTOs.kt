@@ -284,6 +284,7 @@ data class CommandStatusRequest(
 
 /**
  * Payload de resultado do comando
+ * Usado com CommandStatusRequest para enviar status de execução ao backend
  */
 @JsonClass(generateAdapter = true)
 data class CommandResultPayload(
@@ -293,58 +294,4 @@ data class CommandResultPayload(
     val unblockedApps: List<String>? = null,
     val errorMessage: String? = null,
     val timestamp: Long = System.currentTimeMillis()
-)
-
-/**
- * Request para ACK de comando MDM (SEM Play Integrity)
- * Conforme documentação: POST /api/apk/commands/{commandId}/ack
- */
-@JsonClass(generateAdapter = true)
-data class CommandAckRequest(
-    val status: String,
-    val response: CommandAckResponsePayload? = null,
-    val errorMessage: String? = null
-) {
-    companion object {
-        fun acknowledged() = CommandAckRequest(
-            status = "acknowledged",
-            response = null,
-            errorMessage = null
-        )
-        
-        fun completed(appliedLevel: Int? = null, blockedApps: List<String>? = null) = CommandAckRequest(
-            status = "completed",
-            response = CommandAckResponsePayload(
-                appliedLevel = appliedLevel,
-                blockedApps = blockedApps
-            ),
-            errorMessage = null
-        )
-        
-        fun failed(errorMessage: String) = CommandAckRequest(
-            status = "failed",
-            response = null,
-            errorMessage = errorMessage
-        )
-    }
-}
-
-/**
- * Payload de resposta para ACK de comando
- */
-@JsonClass(generateAdapter = true)
-data class CommandAckResponsePayload(
-    val appliedLevel: Int? = null,
-    val blockedApps: List<String>? = null
-)
-
-/**
- * Response do servidor para ACK de comando
- */
-@JsonClass(generateAdapter = true)
-data class CommandAckResponse(
-    val success: Boolean = false,
-    val message: String = "",
-    val commandId: String = "",
-    val status: String = ""
 )
