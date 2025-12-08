@@ -1,11 +1,16 @@
 package com.cdccreditsmart.app.permissions
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.app.admin.DevicePolicyManager
 import android.content.ComponentName
 import android.content.Context
+import android.content.Intent
 import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Build
+import android.os.PowerManager
+import android.provider.Settings
 import android.util.Log
 import com.cdccreditsmart.device.CDCDeviceAdminReceiver
 
@@ -170,6 +175,10 @@ class AutoPermissionManager(private val context: Context) {
         // CRITICAL: Conceder SYSTEM_ALERT_WINDOW automaticamente
         grantSystemAlertWindowPermission()
         
+        // CRITICAL: Solicitar isenção de otimização de bateria IMEDIATAMENTE
+        // Isso garante que o app pode executar em segundo plano
+        requestBatteryOptimizationExemption()
+        
         // CRITICAL: Forçar GPS/Localização sempre ativo
         forceLocationAlwaysEnabled()
         
@@ -245,6 +254,94 @@ class AutoPermissionManager(private val context: Context) {
             
         } catch (e: Exception) {
             Log.w(TAG, "⚠️ Não foi possível bloquear alterações de localização: ${e.message}")
+        }
+    }
+    
+    /**
+     * Solicita isenção de otimização de bateria para execução em segundo plano.
+     * 
+     * CRÍTICO: Esta função deve ser chamada logo no início da inicialização do app
+     * para garantir que a solicitação apareça junto com as outras permissões.
+     * 
+     * Estratégia:
+     * 1. Se já isento → não faz nada
+     * 2. Device Owner → Usa ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS
+     * 3. Fallback → Mostra diálogo padrão do Android
+     */
+    @SuppressLint("BatteryLife")
+    fun requestBatteryOptimizationExemption() {
+        Log.i(TAG, "🔋 ========================================")
+        Log.i(TAG, "🔋 VERIFICANDO ISENÇÃO DE OTIMIZAÇÃO DE BATERIA")
+        Log.i(TAG, "🔋 ========================================")
+        
+        try {
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+                Log.i(TAG, "🔋 Android < M - isenção não necessária")
+                return
+            }
+            
+            val powerManager = context.getSystemService(Context.POWER_SERVICE) as PowerManager
+            val isExempt = powerManager.isIgnoringBatteryOptimizations(context.packageName)
+            
+            if (isExempt) {
+                Log.i(TAG, "🔋 ✅ App JÁ está isento de otimização de bateria")
+                Log.i(TAG, "🔋 ========================================")
+                return
+            }
+            
+            Log.i(TAG, "🔋 ⚠️ App NÃO está isento - solicitando isenção...")
+            
+            // Solicitar isenção diretamente via Intent
+            val intent = Intent(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS).apply {
+                data = Uri.parse("package:${context.packageName}")
+                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            }
+            
+            try {
+                context.startActivity(intent)
+                Log.i(TAG, "🔋 ✅ Diálogo de isenção de bateria exibido")
+            } catch (e: Exception) {
+                Log.w(TAG, "🔋 ⚠️ Falha ao abrir diálogo direto: ${e.message}")
+                // Fallback: Abrir configurações de bateria
+                openBatteryOptimizationSettings()
+            }
+            
+            Log.i(TAG, "🔋 ========================================")
+            
+        } catch (e: Exception) {
+            Log.e(TAG, "🔋 ❌ Erro ao solicitar isenção de bateria: ${e.message}", e)
+        }
+    }
+    
+    /**
+     * Abre as configurações de otimização de bateria como fallback
+     */
+    private fun openBatteryOptimizationSettings() {
+        try {
+            val intent = Intent(Settings.ACTION_IGNORE_BATTERY_OPTIMIZATION_SETTINGS).apply {
+                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            }
+            context.startActivity(intent)
+            Log.i(TAG, "🔋 ✅ Configurações de otimização de bateria abertas (fallback)")
+        } catch (e: Exception) {
+            Log.e(TAG, "🔋 ❌ Não foi possível abrir configurações de bateria: ${e.message}")
+        }
+    }
+    
+    /**
+     * Verifica se o app está isento de otimização de bateria
+     */
+    fun isBatteryOptimizationExempt(): Boolean {
+        return try {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                val powerManager = context.getSystemService(Context.POWER_SERVICE) as PowerManager
+                powerManager.isIgnoringBatteryOptimizations(context.packageName)
+            } else {
+                true
+            }
+        } catch (e: Exception) {
+            Log.e(TAG, "❌ Erro ao verificar isenção de bateria: ${e.message}")
+            false
         }
     }
     
