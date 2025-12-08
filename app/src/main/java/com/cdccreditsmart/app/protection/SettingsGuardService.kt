@@ -406,10 +406,13 @@ class SettingsGuardService(private val context: Context) {
             SettingsCheckResult.SAFE -> {
                 if (foregroundPackage == context.packageName) {
                     if (isInAggressiveMode) {
-                        Log.i(TAG, "✅ App CDC em foreground - resetando contador")
+                        Log.i(TAG, "✅ App CDC em foreground - resetando contador e throttle")
                     }
                     settingsOpenCount = 0
                     isInAggressiveMode = false
+                    // CRÍTICO: Resetar throttle quando app CDC está em foreground
+                    // Isso permite re-interceptar imediatamente se usuário voltar para tela perigosa
+                    lastInterceptTime = 0L
                     hideOverlay()
                 } else {
                     settingsOpenCount = 0
