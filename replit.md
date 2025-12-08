@@ -88,3 +88,9 @@ The UI uses Jetpack Compose and Material 3 with a CDC institutional dark theme. 
 - **Dangerous Screen Blocking**: App Info, ManageApplications, and other dangerous screens are now blocked even during permission flow
 - **Allowed Activities**: DeviceAdminAdd, GrantPermissionsActivity, UsageAccessSettings, ManageOverlayPermission, etc.
 - **Impact**: Users cannot exploit permission flow to access dangerous settings
+
+### 2025-12-08: SettingsGuard App Info Catch-All
+- **Added Catch-All**: Extra verification layer at end of Settings activity check
+- **Keywords Checked**: AppInfo, InstalledApp, AppDetails, ApplicationDetails
+- **Enhanced Logging**: Now logs when any Settings activity passes ALL verifications (helps debug missed activities)
+- **Impact**: Any App Info activity that escapes normal detection will be caught by catch-all

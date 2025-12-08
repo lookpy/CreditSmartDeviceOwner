@@ -1580,8 +1580,27 @@ class SettingsGuardService(private val context: Context) {
                     }
                 }
                 
-                Log.d(TAG, "📋 Activity em Settings (permitida): $activityName")
-                Log.d(TAG, "   Pacote: $packageName")
+                // ═══════════════════════════════════════════════════════════════════════════════
+                // DEBUG: Esta activity passou por TODAS as verificações sem ser bloqueada
+                // Se você ver AppInfo/InstalledAppDetails aqui, há um bug na detecção!
+                // ═══════════════════════════════════════════════════════════════════════════════
+                Log.w(TAG, "⚠️ Activity em Settings passou por TODAS verificações:")
+                Log.w(TAG, "   Pacote: $packageName")
+                Log.w(TAG, "   Activity completa: $activityName")
+                Log.w(TAG, "   Activity simplificada: $activitySimpleName")
+                
+                // VERIFICAÇÃO EXTRA: Se contém palavras-chave de App Info, bloquear por segurança
+                val appInfoKeywords = listOf("AppInfo", "InstalledApp", "AppDetails", "ApplicationDetails")
+                val containsAppInfoKeyword = appInfoKeywords.any { keyword ->
+                    activityName.contains(keyword, ignoreCase = true) ||
+                    activitySimpleName.contains(keyword, ignoreCase = true)
+                }
+                
+                if (containsAppInfoKeyword) {
+                    Log.w(TAG, "🚨 CATCH-ALL: Activity contém palavras-chave de App Info!")
+                    Log.w(TAG, "   Bloqueando por segurança!")
+                    return SettingsCheckResult.DANGEROUS_IMMEDIATE
+                }
             } else {
                 val alwaysDangerousSettingsPackages = setOf(
                     // Android padrão
