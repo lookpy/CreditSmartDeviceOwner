@@ -25,9 +25,14 @@ private class MdmCommandAdapter(val moshi: Moshi) : JsonAdapter<MdmCommand>() {
     private val uninstallAppParametersAdapter = moshi.adapter(CommandParameters.UninstallAppParameters::class.java)
     private val configureUninstallCodeParametersAdapter = moshi.adapter(CommandParameters.ConfigureUninstallCodeParameters::class.java)
     private val locateDeviceParametersAdapter = moshi.adapter(CommandParameters.LocateDeviceParameters::class.java)
+    private val blockAllFlagsAdapter = moshi.adapter(BlockAllFlags::class.java)
     private val options: JsonReader.Options = JsonReader.Options.of(
         "id", "commandType", "parameters", "priority", "createdAt", "expiresAt", "status"
     )
+    
+    companion object {
+        private const val TAG = "MdmCommandAdapter"
+    }
     
     override fun fromJson(reader: JsonReader): MdmCommand? {
         var id: String? = null
@@ -60,15 +65,27 @@ private class MdmCommandAdapter(val moshi: Moshi) : JsonAdapter<MdmCommand>() {
         
         val parameters = when (commandType) {
             "PROGRESSIVE_BLOCK", "BLOCK_APPS_PROGRESSIVE", "UNBLOCK_APPS_PROGRESSIVE", "BLOCK_APPS", "UNBLOCK_APPS" -> {
-                // IMPORTANTE: PROGRESSIVE_BLOCK é o novo formato do backend v2.5 com campo "rules"
-                // UNBLOCK_APPS_PROGRESSIVE também usa BlockParameters com targetLevel=0
                 try {
                     if (parametersRaw != null) {
-                        blockParametersAdapter.fromJsonValue(parametersRaw) ?: CommandParameters.EmptyParameters
+                        val blockParams = blockParametersAdapter.fromJsonValue(parametersRaw)
+                        if (blockParams != null) {
+                            android.util.Log.d(TAG, "PROGRESSIVE_BLOCK parsed - Format: ${blockParams.getFormatDescription()}, " +
+                                "Level: ${blockParams.getEffectiveLevel()}, " +
+                                "BlockCategories: ${blockParams.blockCategories.size}, " +
+                                "BlockedPackages: ${blockParams.blockedPackages.size}, " +
+                                "HasBlockAllFlags: ${blockParams.blockAllFlags != null}, " +
+                                "AlwaysAllowed: ${blockParams.alwaysAllowedPackages.size}")
+                            blockParams
+                        } else {
+                            android.util.Log.w(TAG, "PROGRESSIVE_BLOCK parameters returned null")
+                            CommandParameters.EmptyParameters
+                        }
                     } else {
+                        android.util.Log.w(TAG, "PROGRESSIVE_BLOCK parametersRaw is null")
                         CommandParameters.EmptyParameters
                     }
                 } catch (e: Exception) {
+                    android.util.Log.e(TAG, "Error parsing PROGRESSIVE_BLOCK parameters", e)
                     CommandParameters.EmptyParameters
                 }
             }
@@ -173,9 +190,14 @@ private class MdmCommandFullAdapter(val moshi: Moshi) : JsonAdapter<MdmCommandFu
     private val uninstallAppParametersAdapter = moshi.adapter(CommandParameters.UninstallAppParameters::class.java)
     private val configureUninstallCodeParametersAdapter = moshi.adapter(CommandParameters.ConfigureUninstallCodeParameters::class.java)
     private val locateDeviceParametersAdapter = moshi.adapter(CommandParameters.LocateDeviceParameters::class.java)
+    private val blockAllFlagsAdapter = moshi.adapter(BlockAllFlags::class.java)
     private val options: JsonReader.Options = JsonReader.Options.of(
         "id", "deviceId", "commandType", "parameters", "status", "priority", "expiresAt"
     )
+    
+    companion object {
+        private const val TAG = "MdmCommandFullAdapter"
+    }
     
     override fun fromJson(reader: JsonReader): MdmCommandFull? {
         var id: String? = null
@@ -208,15 +230,27 @@ private class MdmCommandFullAdapter(val moshi: Moshi) : JsonAdapter<MdmCommandFu
         
         val parameters = when (commandType) {
             "PROGRESSIVE_BLOCK", "BLOCK_APPS_PROGRESSIVE", "UNBLOCK_APPS_PROGRESSIVE", "BLOCK_APPS", "UNBLOCK_APPS" -> {
-                // IMPORTANTE: PROGRESSIVE_BLOCK é o novo formato do backend v2.5 com campo "rules"
-                // UNBLOCK_APPS_PROGRESSIVE também usa BlockParameters com targetLevel=0
                 try {
                     if (parametersRaw != null) {
-                        blockParametersAdapter.fromJsonValue(parametersRaw) ?: CommandParameters.EmptyParameters
+                        val blockParams = blockParametersAdapter.fromJsonValue(parametersRaw)
+                        if (blockParams != null) {
+                            android.util.Log.d(TAG, "PROGRESSIVE_BLOCK parsed (Full) - Format: ${blockParams.getFormatDescription()}, " +
+                                "Level: ${blockParams.getEffectiveLevel()}, " +
+                                "BlockCategories: ${blockParams.blockCategories.size}, " +
+                                "BlockedPackages: ${blockParams.blockedPackages.size}, " +
+                                "HasBlockAllFlags: ${blockParams.blockAllFlags != null}, " +
+                                "AlwaysAllowed: ${blockParams.alwaysAllowedPackages.size}")
+                            blockParams
+                        } else {
+                            android.util.Log.w(TAG, "PROGRESSIVE_BLOCK parameters returned null")
+                            CommandParameters.EmptyParameters
+                        }
                     } else {
+                        android.util.Log.w(TAG, "PROGRESSIVE_BLOCK parametersRaw is null")
                         CommandParameters.EmptyParameters
                     }
                 } catch (e: Exception) {
+                    android.util.Log.e(TAG, "Error parsing PROGRESSIVE_BLOCK parameters", e)
                     CommandParameters.EmptyParameters
                 }
             }

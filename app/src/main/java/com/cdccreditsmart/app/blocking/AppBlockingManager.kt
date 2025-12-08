@@ -8,6 +8,7 @@ import android.os.PersistableBundle
 import android.util.Log
 import com.cdccreditsmart.app.knox.KnoxLockscreenManager
 import com.cdccreditsmart.device.CDCDeviceAdminReceiver
+import com.cdccreditsmart.network.dto.mdm.BlockAllFlags
 import com.cdccreditsmart.network.dto.mdm.CommandParameters
 
 class AppBlockingManager(private val context: Context) {
@@ -31,11 +32,33 @@ class AppBlockingManager(private val context: Context) {
     }
     
     fun applyProgressiveBlock(parameters: CommandParameters.BlockParameters): BlockingResult {
-        Log.i(TAG, "🔒 Aplicando bloqueio progressivo - Nível ${parameters.targetLevel}")
-        Log.d(TAG, "Dias de atraso: ${parameters.daysOverdue}")
-        Log.d(TAG, "Razão: ${parameters.reason}")
-        Log.d(TAG, "Rules presentes: ${parameters.rules?.size ?: 0}")
-        Log.d(TAG, "Categorias diretas: ${parameters.categories}")
+        val effectiveLevel = parameters.getEffectiveLevel()
+        val previousLevel = getCurrentBlockingLevel()
+        
+        Log.i(TAG, "")
+        Log.i(TAG, "╔════════════════════════════════════════════════════════════════╗")
+        Log.i(TAG, "║  🔒 APLICANDO BLOQUEIO PROGRESSIVO                             ║")
+        Log.i(TAG, "╠════════════════════════════════════════════════════════════════╣")
+        Log.i(TAG, "║  Nível efetivo: $effectiveLevel (target=${parameters.targetLevel}, level=${parameters.level})")
+        Log.i(TAG, "║  Nível anterior: $previousLevel")
+        Log.i(TAG, "║  Transição: ${getTransitionDescription(previousLevel, effectiveLevel)}")
+        Log.i(TAG, "║  Dias de atraso: ${parameters.daysOverdue}")
+        Log.i(TAG, "║  Formato: ${parameters.getFormatDescription()}")
+        Log.i(TAG, "╚════════════════════════════════════════════════════════════════╝")
+        
+        val isV25 = parameters.isV25Format()
+        Log.i(TAG, "📋 Formato detectado: ${if (isV25) "v2.5 (blockCategories/blockAllFlags/blockedPackages)" else "Legacy (rules/categories)"}")
+        
+        if (isV25) {
+            Log.d(TAG, "   v2.5 - blockedPackages: ${parameters.blockedPackages.size}")
+            Log.d(TAG, "   v2.5 - blockCategories: ${parameters.blockCategories.size}")
+            Log.d(TAG, "   v2.5 - blockAllFlags: ${parameters.blockAllFlags?.getActiveFlags()?.size ?: 0} flags ativas")
+            Log.d(TAG, "   v2.5 - alwaysAllowedPackages: ${parameters.alwaysAllowedPackages.size}")
+        } else {
+            Log.d(TAG, "   Legacy - rules: ${parameters.rules?.size ?: 0}")
+            Log.d(TAG, "   Legacy - categories: ${parameters.categories.size}")
+            Log.d(TAG, "   Legacy - exceptions: ${parameters.exceptions.size}")
+        }
         
         if (!isDeviceOwner()) {
             val error = "App não é Device Owner - não pode bloquear apps"
@@ -44,23 +67,18 @@ class AppBlockingManager(private val context: Context) {
                 success = false,
                 blockedAppsCount = 0,
                 unblockedAppsCount = 0,
-                appliedLevel = parameters.targetLevel,
+                appliedLevel = effectiveLevel,
                 errorMessage = error
             )
         }
         
         try {
-            val previousLevel = getCurrentBlockingLevel()
             val previousCategories = getBlockedCategories()
             
-            // PROGRESSIVE_BLOCK v2.5: Extrair categorias e exceptions das rules baseado em daysOverdue
-            val (extractedCategories, extractedExceptions) = extractCategoriesFromRules(parameters)
+            Log.d(TAG, "Estado anterior - Nível: $previousLevel, Categorias: ${previousCategories.size}")
             
-            Log.d(TAG, "Estado anterior - Nível: $previousLevel, Categorias: $previousCategories")
-            Log.d(TAG, "Novo comando - Nível: ${parameters.targetLevel}, Categorias: $extractedCategories")
-            
-            if (parameters.targetLevel == 0) {
-                Log.i(TAG, "💰 CLIENTE PAGOU! Nível = 0 → DESBLOQUEIO TOTAL")
+            if (effectiveLevel == 0) {
+                Log.i(TAG, "💰 CLIENTE PAGOU! Nível efetivo = 0 → DESBLOQUEIO TOTAL")
                 val unblockResult = unblockAllApps()
                 return BlockingResult(
                     success = unblockResult.success,
@@ -73,31 +91,113 @@ class AppBlockingManager(private val context: Context) {
                 )
             }
             
-            val finalCategories = if (parameters.targetLevel > previousLevel) {
-                val accumulated = (previousCategories + extractedCategories).distinct()
-                Log.i(TAG, "✅ Nível aumentou ($previousLevel → ${parameters.targetLevel}): ACUMULANDO categorias")
-                Log.i(TAG, "   Categorias CUMULATIVAS: $accumulated")
-                accumulated
-            } else if (parameters.targetLevel == previousLevel) {
-                val accumulated = (previousCategories + extractedCategories).distinct()
-                Log.i(TAG, "➡️ Nível manteve ($previousLevel): ACUMULANDO categorias")
-                Log.i(TAG, "   Categorias CUMULATIVAS: $accumulated")
-                accumulated
+            val allowedCategoriesForLevel = getCategoriesForLevel(effectiveLevel)
+            Log.d(TAG, "📊 [Referência/Legacy] Categorias do getCategoriesForLevel($effectiveLevel): ${allowedCategoriesForLevel.size}")
+            
+            val packagesToBlock = mutableSetOf<String>()
+            var finalCategories: List<String>
+            
+            if (isV25) {
+                Log.i(TAG, "📦 MODO v2.5: Usando EXATAMENTE o payload do backend (confiando no backend)...")
+                Log.i(TAG, "   🎯 v2.5: Backend já calculou categorias corretas para o nível")
+                
+                packagesToBlock.addAll(parameters.blockedPackages)
+                Log.i(TAG, "   ✅ blockedPackages diretos do backend: ${parameters.blockedPackages.size}")
+                
+                parameters.blockAllFlags?.let { flags ->
+                    if (flags.hasAnyBlockEnabled()) {
+                        val activeFlags = flags.getActiveFlags()
+                        Log.i(TAG, "   🎯 v2.5: Usando blockAllFlags do backend SEM filtro: $activeFlags")
+                        
+                        val resolver = BlockAllFlagsResolver(context)
+                        val resolvedPackages = resolver.resolvePackagesForFlags(flags)
+                        packagesToBlock.addAll(resolvedPackages)
+                        Log.i(TAG, "   ✅ blockAllFlags expandidos: ${resolvedPackages.size} packages")
+                    } else {
+                        Log.i(TAG, "   ℹ️ Nenhuma blockAllFlag ativa no payload do backend")
+                    }
+                }
+                
+                if (parameters.blockCategories.isNotEmpty()) {
+                    Log.i(TAG, "   🎯 v2.5: Usando blockCategories do backend SEM filtro (${parameters.blockCategories.size})")
+                    Log.d(TAG, "   📂 Categorias do backend: ${parameters.blockCategories}")
+                    
+                    val categoryPackages = categoryMapper.getAppsToBlock(
+                        parameters.blockCategories,
+                        emptyList()
+                    )
+                    packagesToBlock.addAll(categoryPackages)
+                    Log.i(TAG, "   ✅ blockCategories expandidos: ${categoryPackages.size} packages")
+                } else {
+                    Log.i(TAG, "   ℹ️ Backend enviou blockCategories vazio (rollback ou sem categorias)")
+                }
+                
+                finalCategories = if (parameters.blockCategories.isNotEmpty()) {
+                    Log.i(TAG, "   📋 v2.5: finalCategories = blockCategories do backend")
+                    parameters.blockCategories
+                } else {
+                    Log.i(TAG, "   📋 v2.5: blockCategories vazio - usando FALLBACK getCategoriesForLevel($effectiveLevel)")
+                    getCategoriesForLevel(effectiveLevel).toList()
+                }
+                
             } else {
-                Log.w(TAG, "⚠️ Nível diminuiu mas não zerou ($previousLevel → ${parameters.targetLevel})")
-                Log.w(TAG, "   Isso não deveria acontecer! Cliente deveria ir direto para nível 0 ao pagar.")
-                Log.w(TAG, "   Usando categorias do comando atual (não cumulativo)")
-                extractedCategories
+                Log.i(TAG, "📦 MODO LEGACY: Usando extractCategoriesFromRules...")
+                
+                val (extractedCategories, extractedExceptions) = extractCategoriesFromRules(parameters)
+                
+                val filteredExtractedCategories = extractedCategories.filter {
+                    it.lowercase() in allowedCategoriesForLevel.map { c -> c.lowercase() }
+                }
+                Log.i(TAG, "   📂 Categorias extraídas: ${extractedCategories.size}, filtradas para nível: ${filteredExtractedCategories.size}")
+                
+                finalCategories = if (effectiveLevel > previousLevel) {
+                    val accumulated = (previousCategories + filteredExtractedCategories).distinct()
+                        .filter { it.lowercase() in allowedCategoriesForLevel.map { c -> c.lowercase() } }
+                    Log.i(TAG, "⬆️ Nível AUMENTOU ($previousLevel → $effectiveLevel): ACUMULANDO categorias")
+                    accumulated
+                } else if (effectiveLevel == previousLevel) {
+                    val accumulated = (previousCategories + filteredExtractedCategories).distinct()
+                        .filter { it.lowercase() in allowedCategoriesForLevel.map { c -> c.lowercase() } }
+                    Log.i(TAG, "➡️ Nível MANTEVE ($previousLevel): Mantendo categorias")
+                    accumulated
+                } else {
+                    Log.w(TAG, "⬇️ Nível DIMINUIU ($previousLevel → $effectiveLevel): Ajustando categorias para novo nível")
+                    filteredExtractedCategories.filter { 
+                        it.lowercase() in allowedCategoriesForLevel.map { c -> c.lowercase() }
+                    }
+                }
+                
+                val legacyAppsToBlock = categoryMapper.getAppsToBlock(
+                    finalCategories,
+                    extractedExceptions
+                )
+                packagesToBlock.addAll(legacyAppsToBlock)
+                
+                Log.i(TAG, "   ✅ Legacy packages: ${legacyAppsToBlock.size}")
             }
             
+            Log.i(TAG, "")
+            Log.i(TAG, "🛡️ FILTRANDO PACKAGES PROTEGIDOS...")
+            val totalBeforeFiltering = packagesToBlock.size
+            
+            val protectedPackages = mutableSetOf<String>()
+            
+            val effectiveExceptions = parameters.getEffectiveExceptions()
+            protectedPackages.addAll(effectiveExceptions)
+            Log.d(TAG, "   → Exceptions (${if (isV25) "alwaysAllowedPackages" else "exceptions"}): ${effectiveExceptions.size}")
+            
+            val legalWhitelistPackages = LegalWhitelist.getAllProtectedPackages()
+            protectedPackages.addAll(legalWhitelistPackages)
+            Log.d(TAG, "   → LegalWhitelist (TJMG): ${legalWhitelistPackages.size}")
+            
+            packagesToBlock.removeAll(protectedPackages)
+            
+            val removedCount = totalBeforeFiltering - packagesToBlock.size
+            Log.i(TAG, "   ✅ Removidos $removedCount packages protegidos")
+            Log.i(TAG, "   📊 Total a bloquear: ${packagesToBlock.size}")
+            
             saveBlockedCategories(finalCategories)
-            
-            val appsToBlock = categoryMapper.getAppsToBlock(
-                finalCategories,
-                extractedExceptions
-            )
-            
-            saveBlockedPackages(appsToBlock)
+            saveBlockedPackages(packagesToBlock.toList())
             
             val allInstalledApps = context.packageManager
                 .getInstalledApplications(0)
@@ -106,49 +206,34 @@ class AppBlockingManager(private val context: Context) {
             var blockedCount = 0
             var unblockedCount = 0
             
-            // ESTRATÉGIA: Bloqueio progressivo + Overlay universal
-            // 1. Apps são bloqueados via setPackagesSuspended()
-            //    → Ícones permanecem VISÍVEIS (incentivo visual)
-            //    → Apps bloqueados não abrem
-            //
-            // 2. BlockedAppInterceptor monitora TODOS os apps
-            //    → Quando cliente abre QUALQUER app (bloqueado ou não)
-            //    → Se há bloqueio ativo (parcelas atrasadas)
-            //    → Mostra overlay com informações de pagamento
-            //
-            // Resultado:
-            // ✅ Apps específicos bloqueados (navegadores, câmeras, etc.)
-            // ✅ Overlay aparece em TODOS os apps quando há atraso
-            // ✅ Cliente sempre vê informações de pagamento
-            // ✅ Funciona automaticamente
-            
-            Log.i(TAG, "🎯 BLOQUEIO PROGRESSIVO + OVERLAY UNIVERSAL")
-            Log.i(TAG, "   1️⃣ Apps bloqueados via setPackagesSuspended()")
-            Log.i(TAG, "   2️⃣ Overlay em TODOS os apps via BlockedAppInterceptor")
+            Log.i(TAG, "")
+            Log.i(TAG, "🎯 APLICANDO BLOQUEIO via setPackagesSuspended()...")
             
             try {
-                val packagesToBlock = appsToBlock.toTypedArray()
+                val packagesArray = packagesToBlock.toTypedArray()
                 
-                // Bloquear apps com setPackagesSuspended
                 val failedToBlock = dpm.setPackagesSuspended(
                     adminComponent,
-                    packagesToBlock,
+                    packagesArray,
                     true
                 )
                 
-                blockedCount = packagesToBlock.size - (failedToBlock?.size ?: 0)
+                blockedCount = packagesArray.size - (failedToBlock?.size ?: 0)
                 
-                if (failedToBlock == null) {
-                    Log.i(TAG, "✅ Todos os ${packagesToBlock.size} apps bloqueados instantaneamente")
+                if (failedToBlock == null || failedToBlock.isEmpty()) {
+                    Log.i(TAG, "   ✅ Todos os ${packagesArray.size} apps bloqueados!")
                 } else {
-                    Log.i(TAG, "✅ ${blockedCount} apps bloqueados")
-                    failedToBlock.forEach { pkg ->
-                        Log.w(TAG, "  ⚠️ Falhou ao bloquear: $pkg")
+                    Log.i(TAG, "   ✅ ${blockedCount} apps bloqueados")
+                    Log.w(TAG, "   ⚠️ ${failedToBlock.size} falharam:")
+                    failedToBlock.take(5).forEach { pkg ->
+                        Log.w(TAG, "      → $pkg")
+                    }
+                    if (failedToBlock.size > 5) {
+                        Log.w(TAG, "      ... e mais ${failedToBlock.size - 5}")
                     }
                 }
                 
-                // Desbloquear apps que não estão na lista
-                val appsToUnblock = allInstalledApps.filter { it !in appsToBlock }
+                val appsToUnblock = allInstalledApps.filter { it !in packagesToBlock }
                 val packagesToUnblock = appsToUnblock.toTypedArray()
                 val failedToUnblock = dpm.setPackagesSuspended(
                     adminComponent,
@@ -157,37 +242,42 @@ class AppBlockingManager(private val context: Context) {
                 )
                 
                 unblockedCount = packagesToUnblock.size - (failedToUnblock?.size ?: 0)
-                
-                Log.i(TAG, "✅ ${unblockedCount} apps desbloqueados")
+                Log.i(TAG, "   ✅ ${unblockedCount} apps desbloqueados")
                 
             } catch (e: Exception) {
-                Log.e(TAG, "❌ Erro ao aplicar bloqueio híbrido: ${e.message}")
+                Log.e(TAG, "❌ Erro ao aplicar bloqueio: ${e.message}")
             }
             
-            // A lista de apps bloqueados também foi salva para o BlockedAppInterceptor
-            // Quando cliente clicar no app:
-            // → Dialog Android aparece (setPackagesSuspended)
-            // → BlockedAppInterceptor detecta e mostra tela CDC (1-2s depois)
+            saveBlockingState(effectiveLevel, parameters.daysOverdue, parameters.reason)
             
-            saveBlockingState(parameters.targetLevel, parameters.daysOverdue, parameters.reason)
+            updateKnoxLockscreen(effectiveLevel, parameters.daysOverdue)
             
-            updateKnoxLockscreen(parameters.targetLevel, parameters.daysOverdue)
-            
-            // NOVO: Mostrar overlay IMEDIATAMENTE quando bloqueio é aplicado
-            if (parameters.targetLevel > 0 && parameters.targetLevel > previousLevel) {
+            if (effectiveLevel > 0 && effectiveLevel > previousLevel) {
                 Log.i(TAG, "🚨 NOVO BLOQUEIO APLICADO - Mostrando overlay imediatamente!")
-                showImmediateOverlay(parameters.targetLevel, parameters.daysOverdue, blockedCount, parameters.reason)
-            } else if (parameters.targetLevel > 0 && previousLevel == 0) {
+                showImmediateOverlay(effectiveLevel, parameters.daysOverdue, blockedCount, parameters.reason)
+            } else if (effectiveLevel > 0 && previousLevel == 0) {
                 Log.i(TAG, "🚨 PRIMEIRO BLOQUEIO - Mostrando overlay imediatamente!")
-                showImmediateOverlay(parameters.targetLevel, parameters.daysOverdue, blockedCount, parameters.reason)
+                showImmediateOverlay(effectiveLevel, parameters.daysOverdue, blockedCount, parameters.reason)
             }
+            
+            Log.i(TAG, "")
+            Log.i(TAG, "╔════════════════════════════════════════════════════════════════╗")
+            Log.i(TAG, "║  ✅ BLOQUEIO PROGRESSIVO CONCLUÍDO                             ║")
+            Log.i(TAG, "╠════════════════════════════════════════════════════════════════╣")
+            Log.i(TAG, "║  Formato: ${parameters.getFormatDescription()}")
+            Log.i(TAG, "║  Nível efetivo aplicado: $effectiveLevel")
+            Log.i(TAG, "║  Nível anterior: $previousLevel")
+            Log.i(TAG, "║  Apps bloqueados: $blockedCount")
+            Log.i(TAG, "║  Apps desbloqueados: $unblockedCount")
+            Log.i(TAG, "║  Packages protegidos removidos: $removedCount")
+            Log.i(TAG, "╚════════════════════════════════════════════════════════════════╝")
             
             return BlockingResult(
                 success = true,
                 blockedAppsCount = blockedCount,
                 unblockedAppsCount = unblockedCount,
-                appliedLevel = parameters.targetLevel,
-                blockedPackages = appsToBlock,
+                appliedLevel = effectiveLevel,
+                blockedPackages = packagesToBlock.toList(),
                 lockscreenUpdated = true
             )
             
@@ -198,7 +288,7 @@ class AppBlockingManager(private val context: Context) {
                 success = false,
                 blockedAppsCount = 0,
                 unblockedAppsCount = 0,
-                appliedLevel = parameters.targetLevel,
+                appliedLevel = effectiveLevel,
                 errorMessage = error
             )
         }
@@ -291,6 +381,52 @@ class AppBlockingManager(private val context: Context) {
         }
         
         return Pair(accumulatedCategories.toList(), accumulatedExceptions.toList())
+    }
+    
+    private fun getCategoriesForLevel(level: Int): Set<String> {
+        val categories = mutableSetOf<String>()
+        
+        if (level >= 1) categories.addAll(listOf("camera", "gallery_photos", "file_manager", "video_players"))
+        if (level >= 2) categories.addAll(listOf("browsers", "youtube_tiktok"))
+        if (level >= 3) categories.addAll(listOf("social_media", "shopping"))
+        if (level >= 4) categories.addAll(listOf("games", "music"))
+        if (level >= 5) categories.addAll(listOf("play_store", "other_app_stores"))
+        if (level >= 6) categories.add("non_essential_apps")
+        
+        return categories
+    }
+    
+    private fun filterBlockAllFlagsForLevel(
+        flags: BlockAllFlags,
+        level: Int
+    ): BlockAllFlags {
+        val allowedCategories = getCategoriesForLevel(level)
+        
+        return BlockAllFlags(
+            blockAllCamera = flags.blockAllCamera && "camera" in allowedCategories,
+            blockAllGalleryPhotos = flags.blockAllGalleryPhotos && "gallery_photos" in allowedCategories,
+            blockAllFileManager = flags.blockAllFileManager && "file_manager" in allowedCategories,
+            blockAllVideoPlayers = flags.blockAllVideoPlayers && "video_players" in allowedCategories,
+            blockAllBrowsers = flags.blockAllBrowsers && "browsers" in allowedCategories,
+            blockAllYoutubeTiktok = flags.blockAllYoutubeTiktok && "youtube_tiktok" in allowedCategories,
+            blockAllSocialMedia = flags.blockAllSocialMedia && "social_media" in allowedCategories,
+            blockAllShopping = flags.blockAllShopping && "shopping" in allowedCategories,
+            blockAllGames = flags.blockAllGames && "games" in allowedCategories,
+            blockAllMusic = flags.blockAllMusic && "music" in allowedCategories,
+            blockAllPlayStore = flags.blockAllPlayStore && "play_store" in allowedCategories,
+            blockAllOtherAppStores = flags.blockAllOtherAppStores && "other_app_stores" in allowedCategories,
+            blockAllNonEssentialApps = flags.blockAllNonEssentialApps && "non_essential_apps" in allowedCategories
+        )
+    }
+    
+    private fun getTransitionDescription(previousLevel: Int, currentLevel: Int): String {
+        return when {
+            currentLevel == 0 -> "DESBLOQUEIO TOTAL (nível 0)"
+            previousLevel == 0 && currentLevel > 0 -> "PRIMEIRO BLOQUEIO (0 → $currentLevel)"
+            currentLevel > previousLevel -> "ESCALANDO ($previousLevel → $currentLevel)"
+            currentLevel < previousLevel -> "DESESCALANDO ($previousLevel → $currentLevel)"
+            else -> "MANTENDO ($currentLevel)"
+        }
     }
     
     fun unblockAllApps(): UnblockResult {

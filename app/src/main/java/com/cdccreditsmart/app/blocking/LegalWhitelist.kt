@@ -372,4 +372,8 @@ object LegalWhitelist {
         val packageName: String,
         val reason: String
     )
+    
+    fun getAllProtectedPackages(): Set<String> {
+        return ALL_LEGALLY_PROTECTED_APPS.toSet()
+    }
 }

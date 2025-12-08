@@ -22,14 +22,40 @@ data class MdmCommand(
 sealed class CommandParameters {
     @JsonClass(generateAdapter = true)
     data class BlockParameters(
-        val targetLevel: Int,
-        val daysOverdue: Int,
+        val targetLevel: Int = 0,
+        @Json(name = "level") val level: Int = 0,
+        val daysOverdue: Int = 0,
         val categories: List<String> = emptyList(),
         val exceptions: List<String> = emptyList(),
         val reason: String = "",
         val isManual: Boolean = false,
-        val rules: List<BlockingRule>? = null
-    ) : CommandParameters()
+        val rules: List<BlockingRule>? = null,
+        @Json(name = "blockCategories") val blockCategories: List<String> = emptyList(),
+        @Json(name = "blockedPackages") val blockedPackages: List<String> = emptyList(),
+        @Json(name = "blockAllFlags") val blockAllFlags: BlockAllFlags? = null,
+        @Json(name = "alwaysAllowedPackages") val alwaysAllowedPackages: List<String> = emptyList(),
+        val message: String = "",
+        val timestamp: String? = null
+    ) : CommandParameters() {
+        fun getEffectiveLevel(): Int = if (level > 0) level else targetLevel
+        
+        fun isV25Format(): Boolean = blockCategories.isNotEmpty() || blockAllFlags != null || blockedPackages.isNotEmpty()
+        
+        fun isLegacyFormat(): Boolean = rules != null && rules.isNotEmpty()
+        
+        fun getEffectiveBlockedCategories(): List<String> = 
+            if (blockCategories.isNotEmpty()) blockCategories else categories
+        
+        fun getEffectiveExceptions(): List<String> = 
+            if (alwaysAllowedPackages.isNotEmpty()) alwaysAllowedPackages else exceptions
+        
+        fun getFormatDescription(): String = when {
+            isV25Format() -> "v2.5 (blockCategories/blockAllFlags)"
+            isLegacyFormat() -> "legacy (rules)"
+            categories.isNotEmpty() -> "legacy (categories)"
+            else -> "unknown"
+        }
+    }
     
     data class LockScreenParameters(
         val lockScreenData: com.cdccreditsmart.network.dto.mdm.LockScreenParameters
@@ -96,6 +122,48 @@ data class BlockingRule(
     @Json(name = "message_title") val messageTitle: String = "",
     @Json(name = "message_body") val messageBody: String = ""
 )
+
+@JsonClass(generateAdapter = true)
+data class BlockAllFlags(
+    @Json(name = "block_all_camera") val blockAllCamera: Boolean = false,
+    @Json(name = "block_all_gallery_photos") val blockAllGalleryPhotos: Boolean = false,
+    @Json(name = "block_all_file_manager") val blockAllFileManager: Boolean = false,
+    @Json(name = "block_all_video_players") val blockAllVideoPlayers: Boolean = false,
+    @Json(name = "block_all_browsers") val blockAllBrowsers: Boolean = false,
+    @Json(name = "block_all_youtube_tiktok") val blockAllYoutubeTiktok: Boolean = false,
+    @Json(name = "block_all_social_media") val blockAllSocialMedia: Boolean = false,
+    @Json(name = "block_all_shopping") val blockAllShopping: Boolean = false,
+    @Json(name = "block_all_games") val blockAllGames: Boolean = false,
+    @Json(name = "block_all_music") val blockAllMusic: Boolean = false,
+    @Json(name = "block_all_play_store") val blockAllPlayStore: Boolean = false,
+    @Json(name = "block_all_other_app_stores") val blockAllOtherAppStores: Boolean = false,
+    @Json(name = "block_all_non_essential_apps") val blockAllNonEssentialApps: Boolean = false
+) {
+    fun getActiveFlags(): List<String> {
+        val flags = mutableListOf<String>()
+        if (blockAllCamera) flags.add("camera")
+        if (blockAllGalleryPhotos) flags.add("gallery_photos")
+        if (blockAllFileManager) flags.add("file_manager")
+        if (blockAllVideoPlayers) flags.add("video_players")
+        if (blockAllBrowsers) flags.add("browsers")
+        if (blockAllYoutubeTiktok) flags.add("youtube_tiktok")
+        if (blockAllSocialMedia) flags.add("social_media")
+        if (blockAllShopping) flags.add("shopping")
+        if (blockAllGames) flags.add("games")
+        if (blockAllMusic) flags.add("music")
+        if (blockAllPlayStore) flags.add("play_store")
+        if (blockAllOtherAppStores) flags.add("other_app_stores")
+        if (blockAllNonEssentialApps) flags.add("non_essential_apps")
+        return flags
+    }
+    
+    fun hasAnyBlockEnabled(): Boolean = 
+        blockAllCamera || blockAllGalleryPhotos || blockAllFileManager ||
+        blockAllVideoPlayers || blockAllBrowsers || blockAllYoutubeTiktok ||
+        blockAllSocialMedia || blockAllShopping || blockAllGames ||
+        blockAllMusic || blockAllPlayStore || blockAllOtherAppStores ||
+        blockAllNonEssentialApps
+}
 
 @JsonClass(generateAdapter = true)
 data class CommandResponseRequest(
