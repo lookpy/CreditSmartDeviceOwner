@@ -28,6 +28,10 @@ import com.cdccreditsmart.app.persistence.StubInstallResult
 import com.cdccreditsmart.app.persistence.ApkPreloadManager
 import com.cdccreditsmart.app.persistence.PreloadResult
 import com.cdccreditsmart.app.persistence.EnrollmentManifestData
+import com.cdccreditsmart.app.network.RetrofitProvider
+import com.cdccreditsmart.app.blocking.AppBlockingManager
+import com.cdccreditsmart.network.api.DeviceApiService
+import com.cdccreditsmart.network.dto.mdm.CommandParameters
 import kotlinx.coroutines.*
 
 class CdcForegroundService : Service(), ScreenStateListener {
@@ -707,6 +711,13 @@ class CdcForegroundService : Service(), ScreenStateListener {
                 
                 ensureApkPreloaded()
                 
+                // ═══════════════════════════════════════════════════════════════════════════════
+                // SINCRONIZAÇÃO IMEDIATA DE BLOQUEIO
+                // Após reinstalação, o backend pode ter um nível de bloqueio definido
+                // Buscar status imediatamente para aplicar bloqueio se necessário
+                // ═══════════════════════════════════════════════════════════════════════════════
+                syncBlockingStatusFromBackend(authToken)
+                
                 Log.i(TAG, "✅ Todos os serviços MDM inicializados com sucesso")
                 
             } catch (e: Exception) {
@@ -898,6 +909,195 @@ class CdcForegroundService : Service(), ScreenStateListener {
             Log.e(TAG, "📦 Erro ao obter IMEI: ${e.message}")
             ""
         }
+    }
+    
+    /**
+     * SINCRONIZAÇÃO IMEDIATA DE BLOQUEIO
+     * 
+     * Após reinstalação, o app inicia com nível 0 (desbloqueado) por padrão.
+     * Esta função busca o status atual do backend e aplica o bloqueio se necessário.
+     * 
+     * Isso resolve o problema de reinstalação onde o backend tem um nível de bloqueio
+     * definido mas o app local não o aplica até o próximo BlockingCheckWorker (15min).
+     */
+    private suspend fun syncBlockingStatusFromBackend(authToken: String) {
+        Log.i(TAG, "🔄 ========================================")
+        Log.i(TAG, "🔄 SINCRONIZAÇÃO IMEDIATA DE BLOQUEIO")
+        Log.i(TAG, "🔄 ========================================")
+        
+        try {
+            val appBlockingManager = AppBlockingManager(applicationContext)
+            
+            if (!appBlockingManager.isDeviceOwner()) {
+                Log.w(TAG, "🔄 ⚠️ Não é Device Owner - sincronização ignorada")
+                return
+            }
+            
+            val currentLocalLevel = appBlockingManager.getCurrentBlockingLevel()
+            Log.i(TAG, "🔄 Nível de bloqueio LOCAL atual: $currentLocalLevel")
+            
+            // Buscar status do backend via heartbeat
+            val retrofit = RetrofitProvider.createAuthenticatedRetrofit(applicationContext)
+            val deviceApiService = retrofit.create(DeviceApiService::class.java)
+            
+            // Preparar dados para heartbeat de sincronização
+            val blockingInfo = appBlockingManager.getBlockingInfo()
+            val secureStorage = SecureTokenStorage(applicationContext)
+            val serialNumber = secureStorage.getSerialNumber() ?: ""
+            val fingerprint = secureStorage.getFingerprint() ?: ""
+            
+            val heartbeatRequest = com.cdccreditsmart.network.dto.cdc.RealTimeHeartbeatRequest(
+                timestamp = System.currentTimeMillis(),
+                deviceId = serialNumber,
+                appVersion = BuildConfig.VERSION_NAME,
+                appVersionCode = BuildConfig.VERSION_CODE,
+                batteryLevel = getBatteryLevel(),
+                isCharging = isDeviceCharging(),
+                networkType = getNetworkType(),
+                screenOn = isScreenOn(),
+                freeStorageMb = getFreeStorageMb(),
+                totalStorageMb = getTotalStorageMb(),
+                isDeviceOwner = true,
+                isDeviceAdmin = true,
+                currentBlockLevel = currentLocalLevel,
+                blockedAppsCount = blockingInfo.blockedAppsCount,
+                isManualBlock = blockingInfo.isManualBlock,
+                androidVersion = android.os.Build.VERSION.RELEASE,
+                fingerprint = fingerprint
+            )
+            
+            Log.i(TAG, "🔄 Enviando heartbeat de sincronização...")
+            
+            val response = deviceApiService.sendDeviceHeartbeat(
+                request = heartbeatRequest,
+                authorization = "Bearer $authToken"
+            )
+            
+            if (response.isSuccessful) {
+                val heartbeatResponse = response.body()
+                
+                if (heartbeatResponse != null) {
+                    val expectedLevel = heartbeatResponse.expectedBlockLevel ?: 0
+                    val complianceStatus = heartbeatResponse.complianceStatus
+                    
+                    Log.i(TAG, "🔄 Resposta do backend:")
+                    Log.i(TAG, "🔄    complianceStatus: $complianceStatus")
+                    Log.i(TAG, "🔄    expectedBlockLevel: $expectedLevel")
+                    Log.i(TAG, "🔄    currentLocalLevel: $currentLocalLevel")
+                    
+                    // Se backend espera um nível maior que o atual, aplicar bloqueio
+                    if (expectedLevel > currentLocalLevel) {
+                        Log.w(TAG, "🔄 ⚠️ DISCREPÂNCIA DETECTADA!")
+                        Log.w(TAG, "🔄    Backend espera: $expectedLevel, Local: $currentLocalLevel")
+                        Log.i(TAG, "🔄 📦 Aplicando bloqueio nível $expectedLevel...")
+                        
+                        // Buscar categorias do nível de bloqueio
+                        val categories = getBlockingCategoriesForLevel(expectedLevel)
+                        
+                        val blockParams = CommandParameters.BlockParameters(
+                            targetLevel = expectedLevel,
+                            daysOverdue = 0, // Será atualizado pelo backend
+                            reason = "Sincronização automática após reinstalação",
+                            categories = categories,
+                            startTime = System.currentTimeMillis()
+                        )
+                        
+                        val result = appBlockingManager.applyProgressiveBlock(blockParams)
+                        
+                        if (result.success) {
+                            Log.i(TAG, "🔄 ✅ Bloqueio aplicado com sucesso!")
+                            Log.i(TAG, "🔄    Apps bloqueados: ${result.blockedAppsCount}")
+                        } else {
+                            Log.e(TAG, "🔄 ❌ Falha ao aplicar bloqueio: ${result.errorMessage}")
+                        }
+                    } else if (expectedLevel == currentLocalLevel) {
+                        Log.i(TAG, "🔄 ✅ Dispositivo CONFORME - nível correto ($expectedLevel)")
+                    } else {
+                        // expectedLevel < currentLocalLevel - não deveria desbloquear automaticamente
+                        Log.w(TAG, "🔄 ⚠️ Backend espera nível menor - mantendo local")
+                        Log.w(TAG, "🔄    Desbloqueio só via comando explícito")
+                    }
+                } else {
+                    Log.w(TAG, "🔄 ⚠️ Resposta do heartbeat vazia")
+                }
+            } else {
+                Log.e(TAG, "🔄 ❌ Erro no heartbeat de sincronização: HTTP ${response.code()}")
+                Log.e(TAG, "🔄    ${response.errorBody()?.string()?.take(200)}")
+            }
+            
+        } catch (e: Exception) {
+            Log.e(TAG, "🔄 ❌ Erro na sincronização de bloqueio: ${e.message}", e)
+        }
+        
+        Log.i(TAG, "🔄 ========================================")
+    }
+    
+    /**
+     * Mapeia nível de bloqueio para categorias padrão.
+     * Em caso de sincronização, usa categorias default por nível.
+     */
+    private fun getBlockingCategoriesForLevel(level: Int): List<String> {
+        return when (level) {
+            1 -> listOf("games")
+            2 -> listOf("games", "streaming")
+            3 -> listOf("games", "streaming", "social")
+            4 -> listOf("games", "streaming", "social", "shopping")
+            5 -> listOf("games", "streaming", "social", "shopping", "productivity")
+            6 -> listOf("games", "streaming", "social", "shopping", "productivity", "finance")
+            else -> if (level >= 7) {
+                listOf("games", "streaming", "social", "shopping", "productivity", "finance", "communication")
+            } else {
+                emptyList()
+            }
+        }
+    }
+    
+    private fun getBatteryLevel(): Int {
+        return try {
+            val batteryManager = getSystemService(Context.BATTERY_SERVICE) as? android.os.BatteryManager
+            batteryManager?.getIntProperty(android.os.BatteryManager.BATTERY_PROPERTY_CAPACITY) ?: -1
+        } catch (e: Exception) { -1 }
+    }
+    
+    private fun isDeviceCharging(): Boolean {
+        return try {
+            val batteryManager = getSystemService(Context.BATTERY_SERVICE) as? android.os.BatteryManager
+            batteryManager?.isCharging ?: false
+        } catch (e: Exception) { false }
+    }
+    
+    private fun getNetworkType(): String {
+        return try {
+            val connectivityManager = getSystemService(Context.CONNECTIVITY_SERVICE) as? android.net.ConnectivityManager
+            val network = connectivityManager?.activeNetwork
+            val capabilities = connectivityManager?.getNetworkCapabilities(network)
+            when {
+                capabilities?.hasTransport(android.net.NetworkCapabilities.TRANSPORT_WIFI) == true -> "wifi"
+                capabilities?.hasTransport(android.net.NetworkCapabilities.TRANSPORT_CELLULAR) == true -> "cellular"
+                else -> "unknown"
+            }
+        } catch (e: Exception) { "unknown" }
+    }
+    
+    private fun isScreenOn(): Boolean {
+        return try {
+            val powerManager = getSystemService(Context.POWER_SERVICE) as? PowerManager
+            powerManager?.isInteractive ?: true
+        } catch (e: Exception) { true }
+    }
+    
+    private fun getFreeStorageMb(): Long {
+        return try {
+            val stat = android.os.StatFs(android.os.Environment.getDataDirectory().path)
+            stat.availableBytes / (1024 * 1024)
+        } catch (e: Exception) { 0L }
+    }
+    
+    private fun getTotalStorageMb(): Long {
+        return try {
+            val stat = android.os.StatFs(android.os.Environment.getDataDirectory().path)
+            stat.totalBytes / (1024 * 1024)
+        } catch (e: Exception) { 0L }
     }
     
     private fun updateNotification(text: String) {

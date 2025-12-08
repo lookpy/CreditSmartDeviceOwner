@@ -100,3 +100,12 @@ The UI uses Jetpack Compose and Material 3 with a CDC institutional dark theme. 
 - **Changed Type**: `pendingCommands: Int = 0` → `pendingCommands: List<Any>? = null`
 - **Updated TamperDetectionService**: Now uses `.size` to count pending commands from array
 - **Impact**: Eliminates `JsonDataException: Expected an int but was BEGIN_ARRAY` error
+
+### 2025-12-08: Immediate Blocking Sync After Reinstallation
+- **Problem**: After reinstalling the app, device started unblocked (level 0) even if backend had blocking level defined
+- **Root Cause**: App only synced blocking status every 15 minutes via BlockingCheckWorker
+- **Solution**: Added `syncBlockingStatusFromBackend()` function called immediately after MDM initialization
+- **New Function**: Sends heartbeat to backend, compares `expectedBlockLevel` with local level, applies blocking if needed
+- **Category Mapping**: Automatic mapping of blocking level to categories (1=games, 2=+streaming, 3=+social, etc.)
+- **Safety**: Will NOT automatically unblock - only increase blocking level. Unblocking requires explicit command.
+- **Impact**: After reinstallation, blocking is applied within seconds instead of waiting 15 minutes
