@@ -50,4 +50,30 @@ The UI leverages Jetpack Compose and Material 3, incorporating a CDC institution
 - **EncryptedSharedPreferences:** For secure local data storage.
 - **WorkManager:** Manages background tasks.
 - **Kotlin Coroutines:** For asynchronous programming.
-```
+
+## Recent Changes
+
+### 2025-12-08: Correção de Crash do WorkManager
+
+**Problema Identificado:**
+- `PeriodicOverlayWorker.schedule()` usava intervalo de 3 minutos
+- WorkManager exige mínimo de **15 minutos** para `PeriodicWorkRequest`
+- Isso causava `IllegalArgumentException` e crash imediato na inicialização
+
+**Correção Implementada:**
+
+**PeriodicOverlayWorker.kt:**
+- Alterado `INTERVAL_DAYS_15_PLUS = 3L` para `WORKMANAGER_MIN_INTERVAL = 15L`
+- Renomeado conceito de "interval" para "cooldown" para clareza
+- Cooldowns progressivos (3, 5, 10 min) são controlados via SharedPreferences internamente
+- WorkManager executa a cada 15 min, worker verifica cooldown e decide se mostra overlay
+
+**MainActivity.kt:**
+- Alterado `CoroutineScope(Dispatchers.IO).launch` para `lifecycleScope.launch(Dispatchers.IO)`
+- Coroutine agora é cancelada automaticamente quando Activity é destruída
+- Previne vazamento de memória e crashes por contexto inválido
+
+**Sistema de Cache (já existente):**
+- `SimpleHomeViewModel` tem cache de 5 minutos para dados de parcelas
+- `AppBlockingManager` usa SharedPreferences para persistir estado de bloqueio
+- Workers usam cache local, não fazem chamadas repetidas ao servidor
