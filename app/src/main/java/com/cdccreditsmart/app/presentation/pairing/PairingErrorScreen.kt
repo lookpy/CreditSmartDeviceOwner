@@ -55,7 +55,7 @@ fun PairingErrorScreen(
             Spacer(modifier = Modifier.height(32.dp))
             
             Text(
-                text = if (isBlocked) "Dispositivo Bloqueado" else "Erro no Pareamento",
+                text = if (isBlocked) "Acesso Restrito" else "Erro no Pareamento",
                 style = MaterialTheme.typography.headlineMedium,
                 fontWeight = FontWeight.Bold,
                 textAlign = TextAlign.Center,

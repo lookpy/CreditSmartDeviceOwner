@@ -57,7 +57,7 @@ fun LockOverlayScreen(
                 ) {
                     Icon(
                         imageVector = Icons.Default.Lock,
-                        contentDescription = "Dispositivo Bloqueado",
+                        contentDescription = "Aplicativos Restritos",
                         tint = MaterialTheme.colorScheme.error,
                         modifier = Modifier.size(40.dp)
                     )
@@ -71,7 +71,7 @@ fun LockOverlayScreen(
                 
                 // Main warning title
                 Text(
-                    text = "DISPOSITIVO BLOQUEADO",
+                    text = "APLICATIVOS RESTRITOS",
                     style = MaterialTheme.typography.headlineMedium,
                     fontWeight = FontWeight.Bold,
                     color = MaterialTheme.colorScheme.error,
@@ -89,7 +89,7 @@ fun LockOverlayScreen(
                 
                 // Detailed explanation
                 Text(
-                    text = "Este dispositivo foi bloqueado devido ao atraso no pagamento das parcelas. Para desbloquear e continuar usando, é necessário regularizar sua situação financeira.",
+                    text = "Alguns aplicativos foram restritos devido ao atraso no pagamento das parcelas. Para liberar o acesso aos seus apps, regularize sua situação financeira.",
                     style = MaterialTheme.typography.bodyLarge,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                     textAlign = TextAlign.Center,
@@ -104,7 +104,7 @@ fun LockOverlayScreen(
                     )
                 ) {
                     Text(
-                        text = "⚠️ Este dispositivo não pode ser usado até a regularização do pagamento. Funcionalidade de Device Owner ativa.",
+                        text = "⚠️ Alguns aplicativos estão restritos até a regularização do pagamento.",
                         style = MaterialTheme.typography.bodyMedium,
                         color = MaterialTheme.colorScheme.onErrorContainer,
                         textAlign = TextAlign.Center,

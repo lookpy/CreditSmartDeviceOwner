@@ -231,7 +231,7 @@ fun LockTaskScreen(
             Spacer(modifier = Modifier.height(24.dp))
             
             Text(
-                text = "DISPOSITIVO BLOQUEADO",
+                text = "APLICATIVOS RESTRITOS",
                 fontSize = 24.sp,
                 fontWeight = FontWeight.Bold,
                 color = Color.White,
@@ -292,7 +292,7 @@ fun LockTaskScreen(
             
             Text(
                 text = if (message.isNotEmpty()) message else 
-                    "Regularize sua situação para desbloquear o dispositivo.",
+                    "Regularize sua situação para liberar seus aplicativos.",
                 fontSize = 16.sp,
                 color = Color(0xFFB0B0B0),
                 textAlign = TextAlign.Center

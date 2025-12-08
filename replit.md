@@ -90,3 +90,9 @@ Utilizes Jetpack Compose and Material 3 with a CDC institutional dark theme. Fea
 - Added explicit exception for SafetyCenterActivity BEFORE the dangerous package check
 - Now: `com.google.android.permissioncontroller` + `SafetyCenterActivity` = SAFE (allowed)
 - Still blocked: Other activities from same package (like permission grant dialogs used in App Info)
+
+**Fix: Terminology Update - "DISPOSITIVO BLOQUEADO" → "APLICATIVOS RESTRITOS":**
+- Replaced all instances of "DISPOSITIVO BLOQUEADO" with "APLICATIVOS RESTRITOS" in UI
+- Updated LockTaskActivity, LockOverlayScreen, LockScreenContent, LockScreenActivity, PairingErrorScreen, SuccessViewModel
+- New messaging clarifies that the system restricts app usage, NOT device blocking
+- Note: Backend FCM push notifications may still show old text - requires backend update

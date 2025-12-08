@@ -121,9 +121,9 @@ class LockScreenActivity : ComponentActivity() {
             severity = "HIGH",
             allowUnlock = false,
             message = com.cdccreditsmart.network.dto.mdm.MessageInfo(
-                title = "Dispositivo Bloqueado",
+                title = "Aplicativos Restritos",
                 subtitle = "Pagamento em atraso",
-                body = "Entre em contato com o suporte para regularizar sua situação.",
+                body = "Entre em contato com o suporte para regularizar sua situação e liberar seus aplicativos.",
                 footer = "Credit Smart"
             ),
             contractInfo = com.cdccreditsmart.network.dto.mdm.ContractInfo(

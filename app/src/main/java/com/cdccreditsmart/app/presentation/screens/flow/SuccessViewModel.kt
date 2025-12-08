@@ -220,7 +220,7 @@ class SuccessViewModel(
             
             // Estados de dispositivo
             SaleState.DEVICE_BLOCKED -> 
-                "🚫 Dispositivo bloqueado.\n\nContate o suporte Credit Smart."
+                "🚫 Acesso restrito.\n\nContate o suporte Credit Smart."
             
             SaleState.DEVICE_INACTIVE -> 
                 "⏸️ Dispositivo inativo.\n\nReative o dispositivo para continuar."

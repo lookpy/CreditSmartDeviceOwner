@@ -92,7 +92,7 @@ private fun LockScreenHeader(params: LockScreenParameters, textColor: Color) {
             textAlign = TextAlign.Center
         )
         Text(
-            text = "Dispositivo Bloqueado",
+            text = "Aplicativos Restritos",
             style = MaterialTheme.typography.titleMedium,
             color = textColor.copy(alpha = 0.8f),
             textAlign = TextAlign.Center
