@@ -145,12 +145,12 @@ class MdmCommandReceiver(private val context: Context) {
                 watchdogJob = null     // Limpar referência
                 Log.i(TAG, "✅ WebSocket MDM CONECTADO COM SUCESSO!")
                 Log.d(TAG, "✅ Response code: ${response.code}")
-                Log.i(TAG, "⏳ Aguardando 'auth_required' do servidor...")
                 reconnectJob?.cancel()
                 
-                // Backend v2.5: NÃO enviar auth imediatamente
-                // Esperar mensagem 'auth_required' do servidor (timeout 60s)
-                // sendAuthenticationMessage será chamado no handler de auth_required
+                // Backend v2.5: Enviar autenticação IMEDIATAMENTE após conexão
+                // O backend não envia mais 'auth_required', então precisamos autenticar proativamente
+                Log.i(TAG, "🔐 Enviando autenticação WebSocket imediatamente (v2.5)...")
+                sendAuthenticationMessage(webSocket)
                 
                 // Iniciar ping manual JSON a cada 25 segundos
                 startPingJob(webSocket)
