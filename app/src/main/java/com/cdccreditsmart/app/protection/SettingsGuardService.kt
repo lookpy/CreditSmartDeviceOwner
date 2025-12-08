@@ -82,7 +82,14 @@ class SettingsGuardService(private val context: Context) {
             "ManageOverlayPermission",
             "DrawOverlayDetails",
             "HighPowerApplicationsActivity",
-            "RequestIgnoreBatteryOptimizations"
+            "RequestIgnoreBatteryOptimizations",
+            // Android 14+ Motorola/AOSP: SpaActivity é usada para telas de permissão
+            // NOTA: Esta activity é genérica, mas o fluxo de permissões só é ativado
+            // quando o app chama pauseForPermissionGrant(), então é seguro permitir
+            // durante esse fluxo controlado (timeout 30s)
+            "SpaActivity",
+            "SettingsSpaActivity",
+            "AppListActivity"
         )
         
         fun pauseForPermissionGrant() {

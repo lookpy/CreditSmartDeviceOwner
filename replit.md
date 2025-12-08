@@ -127,3 +127,11 @@ The UI uses Jetpack Compose and Material 3 with a CDC institutional dark theme. 
 - **Root Cause**: `lastInterceptTime` throttle (30s debug/1s release) wasn't reset when CDC app came to foreground
 - **Solution**: Added `lastInterceptTime = 0L` reset when CDC app is detected in foreground
 - **Impact**: Re-accessing dangerous screens after returning to CDC app is now properly intercepted
+
+### 2025-12-08: SpaActivity Detection & Permission Flow Fix
+- **Problem 1**: App Info screen on Motorola Android 14+ wasn't being blocked because it uses `SpaActivity` (generic SPA activity)
+- **Solution 1**: Added `SpaActivity`, `SettingsSpaActivity`, `AppListActivity` to dangerous activities list
+- **Problem 2**: Permission granting was blocked because `SpaActivity` is also used for Overlay permission screen
+- **Solution 2**: Added `SpaActivity` to `ALLOWED_PERMISSION_ACTIVITIES` list - only allowed during permission flow (30s timeout)
+- **Security**: Permission flow is only activated when app calls `pauseForPermissionGrant()`, preventing exploitation
+- **Impact**: App Info is blocked, but users can still grant Overlay/UsageStats permissions normally

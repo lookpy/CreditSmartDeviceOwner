@@ -1,0 +1,337 @@
+2025-12-08 08:35:56.227 12185-12185 SettingsGuardService    com.cdccreditsmart.app               I  ⏸️ Guard PAUSADO para fluxo de permissões (timeout: 30s)
+2025-12-08 08:35:56.754 12185-12244 SettingsGuardService    com.cdccreditsmart.app               D  📋 Activity check - Full: com.android.settings.spa.SpaActivity, Simple: SpaActivity
+2025-12-08 08:35:56.755 12185-12244 SettingsGuardService    com.cdccreditsmart.app               W  🎯 ATIVIDADE PERIGOSA DETECTADA!
+2025-12-08 08:35:56.755 12185-12244 SettingsGuardService    com.cdccreditsmart.app               W     Pacote: com.android.settings
+2025-12-08 08:35:56.755 12185-12244 SettingsGuardService    com.cdccreditsmart.app               W     Activity completa: com.android.settings.spa.SpaActivity
+2025-12-08 08:35:56.755 12185-12244 SettingsGuardService    com.cdccreditsmart.app               W     Activity simplificada: SpaActivity
+2025-12-08 08:35:56.755 12185-12244 SettingsGuardService    com.cdccreditsmart.app               W     Match: SpaActivity
+2025-12-08 08:35:56.755 12185-12244 SettingsGuardService    com.cdccreditsmart.app               W  🚨 ÁREA PERIGOSA durante fluxo de permissões!
+2025-12-08 08:35:56.755 12185-12244 SettingsGuardService    com.cdccreditsmart.app               W     Atividade: com.android.settings.spa.SpaActivity
+2025-12-08 08:35:56.755 12185-12244 SettingsGuardService    com.cdccreditsmart.app               W     Retomando guard e bloqueando...
+2025-12-08 08:35:56.755 12185-12244 SettingsGuardService    com.cdccreditsmart.app               I  ▶️ Guard RETOMADO após fluxo de permissões
+2025-12-08 08:35:56.756 12185-12244 SettingsGuardService    com.cdccreditsmart.app               D  📋 Activity check - Full: com.android.settings.spa.SpaActivity, Simple: SpaActivity
+2025-12-08 08:35:56.759 12185-12244 SettingsGuardService    com.cdccreditsmart.app               W  🎯 ATIVIDADE PERIGOSA DETECTADA!
+2025-12-08 08:35:56.759 12185-12244 SettingsGuardService    com.cdccreditsmart.app               W     Pacote: com.android.settings
+2025-12-08 08:35:56.759 12185-12244 SettingsGuardService    com.cdccreditsmart.app               W     Activity completa: com.android.settings.spa.SpaActivity
+2025-12-08 08:35:56.759 12185-12244 SettingsGuardService    com.cdccreditsmart.app               W     Activity simplificada: SpaActivity
+2025-12-08 08:35:56.759 12185-12244 SettingsGuardService    com.cdccreditsmart.app               W     Match: SpaActivity
+2025-12-08 08:35:56.759 12185-12244 SettingsGuardService    com.cdccreditsmart.app               W  🚨 ÁREA PERIGOSA DETECTADA!
+2025-12-08 08:35:56.759 12185-12244 SettingsGuardService    com.cdccreditsmart.app               W     Pacote: com.android.settings
+2025-12-08 08:35:56.759 12185-12244 SettingsGuardService    com.cdccreditsmart.app               W     Atividade: com.android.settings.spa.SpaActivity
+2025-12-08 08:35:56.759 12185-12244 SettingsGuardService    com.cdccreditsmart.app               W     Chamando app para foreground...
+2025-12-08 08:35:56.789 12185-12185 SettingsGuardService    com.cdccreditsmart.app               D  🏠 Enviado para Home primeiro (fecha Settings)
+2025-12-08 08:35:56.954 12185-12185 SettingsGuardService    com.cdccreditsmart.app               I  ✅ App trazido para foreground
+2025-12-08 08:35:57.010 12185-12185 MainActivity            com.cdccreditsmart.app               D  📍 BroadcastReceiver de localização registrado
+2025-12-08 08:35:57.011 12185-12244 PersistentStateManager  com.cdccreditsmart.app               D  Nenhum estado local encontrado
+2025-12-08 08:35:57.011 12185-12244 PersistentStateManager  com.cdccreditsmart.app               D  🆕 Sem estado local - device novo ou pós factory reset
+2025-12-08 08:35:57.011 12185-12244 MainActivity            com.cdccreditsmart.app               I  🆕 Device nunca foi provisionado
+2025-12-08 08:35:57.011 12185-12185 MainActivity            com.cdccreditsmart.app               I  ========================================
+2025-12-08 08:35:57.011 12185-12185 MainActivity            com.cdccreditsmart.app               I  📱 SOLICITANDO PERMISSÕES (NÃO DEVICE OWNER)
+2025-12-08 08:35:57.011 12185-12185 MainActivity            com.cdccreditsmart.app               I  ========================================
+2025-12-08 08:35:57.011 12185-12185 MainActivity            com.cdccreditsmart.app               I  ✅ Todas as runtime permissions já foram concedidas!
+2025-12-08 08:35:57.011 12185-12185 SpecialPermissionReq    com.cdccreditsmart.app               I  ========================================
+2025-12-08 08:35:57.011 12185-12185 SpecialPermissionReq    com.cdccreditsmart.app               I  📊 STATUS DAS PERMISSÕES ESPECIAIS
+2025-12-08 08:35:57.011 12185-12185 SpecialPermissionReq    com.cdccreditsmart.app               I  ========================================
+2025-12-08 08:35:57.011 12185-12185 SpecialPermissionReq    com.cdccreditsmart.app               I    USAGE_STATS: ✅ CONCEDIDA
+2025-12-08 08:35:57.011 12185-12185 SpecialPermissionReq    com.cdccreditsmart.app               I    OVERLAY: ❌ NÃO CONCEDIDA
+2025-12-08 08:35:57.011 12185-12185 SpecialPermissionReq    com.cdccreditsmart.app               W  
+2025-12-08 08:35:57.011 12185-12185 SpecialPermissionReq    com.cdccreditsmart.app               W  ⚠️ PROTEÇÃO ANTI-DESINSTALAÇÃO COMPROMETIDA!
+2025-12-08 08:35:57.011 12185-12185 SpecialPermissionReq    com.cdccreditsmart.app               W     Sem essas permissões, a proteção via overlay não funciona.
+2025-12-08 08:35:57.011 12185-12185 SpecialPermissionReq    com.cdccreditsmart.app               W     O usuário conseguirá acessar App Info e desinstalar.
+2025-12-08 08:35:57.011 12185-12185 SpecialPermissionReq    com.cdccreditsmart.app               I  ========================================
+2025-12-08 08:35:57.011 12185-12185 MainActivity            com.cdccreditsmart.app               W  ========================================
+2025-12-08 08:35:57.011 12185-12185 MainActivity            com.cdccreditsmart.app               W  ⚠️ PERMISSÕES ESPECIAIS NECESSÁRIAS
+2025-12-08 08:35:57.011 12185-12185 MainActivity            com.cdccreditsmart.app               W  ========================================
+2025-12-08 08:35:57.011 12185-12185 MainActivity            com.cdccreditsmart.app               W  Para proteção anti-desinstalação funcionar:
+2025-12-08 08:35:57.011 12185-12185 MainActivity            com.cdccreditsmart.app               W    ❌ Exibir sobre outros apps
+2025-12-08 08:35:57.011 12185-12185 MainActivity            com.cdccreditsmart.app               W       Permite mostrar avisos de proteção sobre outros aplicativos
+2025-12-08 08:35:57.011 12185-12185 MainActivity            com.cdccreditsmart.app               W  ========================================
+2025-12-08 08:35:57.011 12185-12185 MainActivity            com.cdccreditsmart.app               W  O app solicitará essas permissões na próxima interação
+2025-12-08 08:35:57.011 12185-12185 MainActivity            com.cdccreditsmart.app               W  ========================================
+2025-12-08 08:35:57.073 12185-12185 InsetsController        com.cdccreditsmart.app               D  Setting requestedVisibleTypes to -14 (was -9)
+2025-12-08 08:35:57.203 12185-12244 SettingsGuardService    com.cdccreditsmart.app               D  📋 Activity check - Full: com.cdccreditsmart.app.presentation.MainActivity, Simple: MainActivity
+2025-12-08 08:35:57.203 12185-12244 SettingsGuardService    com.cdccreditsmart.app               I  ✅ App CDC em foreground - resetando contador e throttle
+2025-12-08 08:35:57.525 12185-12185 PermissionGateScreen    com.cdccreditsmart.app               I  🔍 VERIFICAÇÃO INICIAL DE PERMISSÕES:
+2025-12-08 08:35:57.526 12185-12185 PermissionGateScreen    com.cdccreditsmart.app               I     Nível: DEVICE_ADMIN
+2025-12-08 08:35:57.526 12185-12185 PermissionGateScreen    com.cdccreditsmart.app               I     Todas concedidas: false
+2025-12-08 08:35:57.526 12185-12185 PermissionGateScreen    com.cdccreditsmart.app               I     Bateria isenta: true
+2025-12-08 08:35:57.526 12185-12185 PermissionGateScreen    com.cdccreditsmart.app               W     ❌ FALTA: Mostrar Alertas
+2025-12-08 08:35:57.543 12185-12185 PermissionGateScreen    com.cdccreditsmart.app               I     ✅ OK: Administrador do Dispositivo
+2025-12-08 08:35:57.543 12185-12185 PermissionGateScreen    com.cdccreditsmart.app               I     ✅ OK: Permissões Básicas
+2025-12-08 08:35:57.543 12185-12185 PermissionGateScreen    com.cdccreditsmart.app               I     ✅ OK: Monitoramento de Apps
+2025-12-08 08:35:57.543 12185-12185 PermissionGateScreen    com.cdccreditsmart.app               I     ✅ OK: Execução em Segundo Plano
+2025-12-08 08:35:57.543 12185-12185 PermissionGateScreen    com.cdccreditsmart.app               I  ========================================
+2025-12-08 08:35:57.543 12185-12185 PermissionGateScreen    com.cdccreditsmart.app               I  🚪 PERMISSION GATE SCREEN INICIADO
+2025-12-08 08:35:57.543 12185-12185 PermissionGateScreen    com.cdccreditsmart.app               I  ========================================
+2025-12-08 08:35:57.544 12185-12185 PermissionGateScreen    com.cdccreditsmart.app               I  Nível de privilégio: DEVICE_ADMIN
+2025-12-08 08:35:57.544 12185-12185 PermissionGateScreen    com.cdccreditsmart.app               I  Permissões concedidas: 4
+2025-12-08 08:35:57.544 12185-12185 PermissionGateScreen    com.cdccreditsmart.app               I  Permissões faltando: 1
+2025-12-08 08:35:57.544 12185-12185 PermissionGateScreen    com.cdccreditsmart.app               W    ❌ Mostrar Alertas
+2025-12-08 08:35:57.544 12185-12185 PermissionGateScreen    com.cdccreditsmart.app               I    ✅ Administrador do Dispositivo
+2025-12-08 08:35:57.544 12185-12185 PermissionGateScreen    com.cdccreditsmart.app               I    ✅ Permissões Básicas
+2025-12-08 08:35:57.544 12185-12185 PermissionGateScreen    com.cdccreditsmart.app               I    ✅ Monitoramento de Apps
+2025-12-08 08:35:57.544 12185-12185 PermissionGateScreen    com.cdccreditsmart.app               I    ✅ Execução em Segundo Plano
+2025-12-08 08:35:57.544 12185-12185 PermissionGateScreen    com.cdccreditsmart.app               I  ========================================
+2025-12-08 08:35:57.544 12185-12185 PermissionGateScreen    com.cdccreditsmart.app               D  ⏰ Iniciando verificação periódica de permissões...
+2025-12-08 08:35:57.554 12185-12185 VRI[MainActivity]       com.cdccreditsmart.app               D  visibilityChanged oldVisibility=true newVisibility=false
+2025-12-08 08:35:57.577 12185-12185 InsetsController        com.cdccreditsmart.app               D  hide(ime(), fromIme=false)
+2025-12-08 08:35:57.577 12185-12185 ImeTracker              com.cdccreditsmart.app               I  com.cdccreditsmart.app:d737bf3c: onCancelled at PHASE_CLIENT_ALREADY_HIDDEN
+2025-12-08 08:35:57.805 12185-12244 SettingsGuardService    com.cdccreditsmart.app               D  📋 Activity check - Full: com.cdccreditsmart.app.presentation.MainActivity, Simple: MainActivity
+2025-12-08 08:35:57.826 12185-12185 SettingsGuardService    com.cdccreditsmart.app               I  ▶️ Guard RETOMADO após fluxo de permissões
+2025-12-08 08:35:57.831 12185-12185 MainActivity            com.cdccreditsmart.app               D  📍 BroadcastReceiver de localização desregistrado
+2025-12-08 08:35:57.831 12185-12185 WindowOnBackDispatcher  com.cdccreditsmart.app               W  sendCancelIfRunning: isInProgress=false callback=android.app.Activity$$ExternalSyntheticLambda0@f90b33a
+2025-12-08 08:35:57.833 12185-12185 ViewRootImpl            com.cdccreditsmart.app               D  Skipping stats log for color mode
+2025-12-08 08:35:58.228 12185-12185 SettingsGuardService    com.cdccreditsmart.app               I  ⏸️ Guard PAUSADO para fluxo de permissões (timeout: 30s)
+2025-12-08 08:35:58.428 12185-12244 SettingsGuardService    com.cdccreditsmart.app               D  📋 Activity check - Full: com.android.settings.spa.SpaActivity, Simple: SpaActivity
+2025-12-08 08:35:58.429 12185-12244 SettingsGuardService    com.cdccreditsmart.app               W  🎯 ATIVIDADE PERIGOSA DETECTADA!
+2025-12-08 08:35:58.429 12185-12244 SettingsGuardService    com.cdccreditsmart.app               W     Pacote: com.android.settings
+2025-12-08 08:35:58.429 12185-12244 SettingsGuardService    com.cdccreditsmart.app               W     Activity completa: com.android.settings.spa.SpaActivity
+2025-12-08 08:35:58.429 12185-12244 SettingsGuardService    com.cdccreditsmart.app               W     Activity simplificada: SpaActivity
+2025-12-08 08:35:58.429 12185-12244 SettingsGuardService    com.cdccreditsmart.app               W     Match: SpaActivity
+2025-12-08 08:35:58.429 12185-12244 SettingsGuardService    com.cdccreditsmart.app               W  🚨 ÁREA PERIGOSA durante fluxo de permissões!
+2025-12-08 08:35:58.429 12185-12244 SettingsGuardService    com.cdccreditsmart.app               W     Atividade: com.android.settings.spa.SpaActivity
+2025-12-08 08:35:58.429 12185-12244 SettingsGuardService    com.cdccreditsmart.app               W     Retomando guard e bloqueando...
+2025-12-08 08:35:58.429 12185-12244 SettingsGuardService    com.cdccreditsmart.app               I  ▶️ Guard RETOMADO após fluxo de permissões
+2025-12-08 08:35:58.430 12185-12244 SettingsGuardService    com.cdccreditsmart.app               D  📋 Activity check - Full: com.android.settings.spa.SpaActivity, Simple: SpaActivity
+2025-12-08 08:35:58.430 12185-12244 SettingsGuardService    com.cdccreditsmart.app               W  🎯 ATIVIDADE PERIGOSA DETECTADA!
+2025-12-08 08:35:58.430 12185-12244 SettingsGuardService    com.cdccreditsmart.app               W     Pacote: com.android.settings
+2025-12-08 08:35:58.430 12185-12244 SettingsGuardService    com.cdccreditsmart.app               W     Activity completa: com.android.settings.spa.SpaActivity
+2025-12-08 08:35:58.430 12185-12244 SettingsGuardService    com.cdccreditsmart.app               W     Activity simplificada: SpaActivity
+2025-12-08 08:35:58.430 12185-12244 SettingsGuardService    com.cdccreditsmart.app               W     Match: SpaActivity
+2025-12-08 08:35:58.430 12185-12244 SettingsGuardService    com.cdccreditsmart.app               W  🚨 ÁREA PERIGOSA DETECTADA!
+2025-12-08 08:35:58.430 12185-12244 SettingsGuardService    com.cdccreditsmart.app               W     Pacote: com.android.settings
+2025-12-08 08:35:58.430 12185-12244 SettingsGuardService    com.cdccreditsmart.app               W     Atividade: com.android.settings.spa.SpaActivity
+2025-12-08 08:35:58.430 12185-12244 SettingsGuardService    com.cdccreditsmart.app               W     Chamando app para foreground...
+2025-12-08 08:35:58.687 12185-12185 SettingsGuardService    com.cdccreditsmart.app               D  🏠 Enviado para Home primeiro (fecha Settings)
+2025-12-08 08:35:58.918 12185-12185 SettingsGuardService    com.cdccreditsmart.app               I  ✅ App trazido para foreground
+2025-12-08 08:35:58.918 12185-12185 VRI[MainActivity]       com.cdccreditsmart.app               D  visibilityChanged oldVisibility=true newVisibility=false
+2025-12-08 08:35:58.963 12185-12232 HWUI                    com.cdccreditsmart.app               D  endAllActiveAnimators on 0x7ee67a1746a0 (UnprojectedRipple) with handle 0x7ee57a18c8f0
+2025-12-08 08:35:58.997 12185-12185 MainActivity            com.cdccreditsmart.app               D  📍 BroadcastReceiver de localização registrado
+2025-12-08 08:35:59.000 12185-12185 MainActivity            com.cdccreditsmart.app               I  ========================================
+2025-12-08 08:35:59.000 12185-12185 MainActivity            com.cdccreditsmart.app               I  📱 SOLICITANDO PERMISSÕES (NÃO DEVICE OWNER)
+2025-12-08 08:35:59.000 12185-12185 MainActivity            com.cdccreditsmart.app               I  ========================================
+2025-12-08 08:35:59.000 12185-12185 MainActivity            com.cdccreditsmart.app               I  ✅ Todas as runtime permissions já foram concedidas!
+2025-12-08 08:35:59.000 12185-12185 SpecialPermissionReq    com.cdccreditsmart.app               I  ========================================
+2025-12-08 08:35:59.000 12185-12185 SpecialPermissionReq    com.cdccreditsmart.app               I  📊 STATUS DAS PERMISSÕES ESPECIAIS
+2025-12-08 08:35:59.000 12185-12185 SpecialPermissionReq    com.cdccreditsmart.app               I  ========================================
+2025-12-08 08:35:59.000 12185-12185 SpecialPermissionReq    com.cdccreditsmart.app               I    USAGE_STATS: ✅ CONCEDIDA
+2025-12-08 08:35:59.000 12185-12185 SpecialPermissionReq    com.cdccreditsmart.app               I    OVERLAY: ❌ NÃO CONCEDIDA
+2025-12-08 08:35:59.000 12185-12185 SpecialPermissionReq    com.cdccreditsmart.app               W  
+2025-12-08 08:35:59.000 12185-12185 SpecialPermissionReq    com.cdccreditsmart.app               W  ⚠️ PROTEÇÃO ANTI-DESINSTALAÇÃO COMPROMETIDA!
+2025-12-08 08:35:59.000 12185-12185 SpecialPermissionReq    com.cdccreditsmart.app               W     Sem essas permissões, a proteção via overlay não funciona.
+2025-12-08 08:35:59.000 12185-12185 SpecialPermissionReq    com.cdccreditsmart.app               W     O usuário conseguirá acessar App Info e desinstalar.
+2025-12-08 08:35:59.000 12185-12185 SpecialPermissionReq    com.cdccreditsmart.app               I  ========================================
+2025-12-08 08:35:59.001 12185-12185 MainActivity            com.cdccreditsmart.app               W  ========================================
+2025-12-08 08:35:59.001 12185-12185 MainActivity            com.cdccreditsmart.app               W  ⚠️ PERMISSÕES ESPECIAIS NECESSÁRIAS
+2025-12-08 08:35:59.001 12185-12185 MainActivity            com.cdccreditsmart.app               W  ========================================
+2025-12-08 08:35:59.001 12185-12185 MainActivity            com.cdccreditsmart.app               W  Para proteção anti-desinstalação funcionar:
+2025-12-08 08:35:59.001 12185-12185 MainActivity            com.cdccreditsmart.app               W    ❌ Exibir sobre outros apps
+2025-12-08 08:35:59.001 12185-12185 MainActivity            com.cdccreditsmart.app               W       Permite mostrar avisos de proteção sobre outros aplicativos
+2025-12-08 08:35:59.001 12185-12185 MainActivity            com.cdccreditsmart.app               W  ========================================
+2025-12-08 08:35:59.001 12185-12185 MainActivity            com.cdccreditsmart.app               W  O app solicitará essas permissões na próxima interação
+2025-12-08 08:35:59.001 12185-12185 MainActivity            com.cdccreditsmart.app               W  ========================================
+2025-12-08 08:35:59.003 12185-12244 PersistentStateManager  com.cdccreditsmart.app               D  Nenhum estado local encontrado
+2025-12-08 08:35:59.003 12185-12244 PersistentStateManager  com.cdccreditsmart.app               D  🆕 Sem estado local - device novo ou pós factory reset
+2025-12-08 08:35:59.003 12185-12244 MainActivity            com.cdccreditsmart.app               I  🆕 Device nunca foi provisionado
+2025-12-08 08:35:59.059 12185-12185 InsetsController        com.cdccreditsmart.app               D  Setting requestedVisibleTypes to -14 (was -9)
+2025-12-08 08:35:59.131 12185-12220 SettingsGuardService    com.cdccreditsmart.app               D  📋 Activity check - Full: com.cdccreditsmart.app.presentation.MainActivity, Simple: MainActivity
+2025-12-08 08:35:59.132 12185-12220 SettingsGuardService    com.cdccreditsmart.app               I  ✅ App CDC em foreground - resetando contador e throttle
+2025-12-08 08:35:59.421 12185-12185 PermissionGateScreen    com.cdccreditsmart.app               I  🔍 VERIFICAÇÃO INICIAL DE PERMISSÕES:
+2025-12-08 08:35:59.421 12185-12185 PermissionGateScreen    com.cdccreditsmart.app               I     Nível: DEVICE_ADMIN
+2025-12-08 08:35:59.421 12185-12185 PermissionGateScreen    com.cdccreditsmart.app               I     Todas concedidas: false
+2025-12-08 08:35:59.423 12185-12185 PermissionGateScreen    com.cdccreditsmart.app               I     Bateria isenta: true
+2025-12-08 08:35:59.423 12185-12185 PermissionGateScreen    com.cdccreditsmart.app               W     ❌ FALTA: Mostrar Alertas
+2025-12-08 08:35:59.423 12185-12185 PermissionGateScreen    com.cdccreditsmart.app               I     ✅ OK: Administrador do Dispositivo
+2025-12-08 08:35:59.423 12185-12185 PermissionGateScreen    com.cdccreditsmart.app               I     ✅ OK: Permissões Básicas
+2025-12-08 08:35:59.423 12185-12185 PermissionGateScreen    com.cdccreditsmart.app               I     ✅ OK: Monitoramento de Apps
+2025-12-08 08:35:59.423 12185-12185 PermissionGateScreen    com.cdccreditsmart.app               I     ✅ OK: Execução em Segundo Plano
+2025-12-08 08:35:59.423 12185-12185 PermissionGateScreen    com.cdccreditsmart.app               I  ========================================
+2025-12-08 08:35:59.423 12185-12185 PermissionGateScreen    com.cdccreditsmart.app               I  🚪 PERMISSION GATE SCREEN INICIADO
+2025-12-08 08:35:59.423 12185-12185 PermissionGateScreen    com.cdccreditsmart.app               I  ========================================
+2025-12-08 08:35:59.423 12185-12185 PermissionGateScreen    com.cdccreditsmart.app               I  Nível de privilégio: DEVICE_ADMIN
+2025-12-08 08:35:59.423 12185-12185 PermissionGateScreen    com.cdccreditsmart.app               I  Permissões concedidas: 4
+2025-12-08 08:35:59.423 12185-12185 PermissionGateScreen    com.cdccreditsmart.app               I  Permissões faltando: 1
+2025-12-08 08:35:59.423 12185-12185 PermissionGateScreen    com.cdccreditsmart.app               W    ❌ Mostrar Alertas
+2025-12-08 08:35:59.423 12185-12185 PermissionGateScreen    com.cdccreditsmart.app               I    ✅ Administrador do Dispositivo
+2025-12-08 08:35:59.424 12185-12185 PermissionGateScreen    com.cdccreditsmart.app               I    ✅ Permissões Básicas
+2025-12-08 08:35:59.424 12185-12185 PermissionGateScreen    com.cdccreditsmart.app               I    ✅ Monitoramento de Apps
+2025-12-08 08:35:59.424 12185-12185 PermissionGateScreen    com.cdccreditsmart.app               I    ✅ Execução em Segundo Plano
+2025-12-08 08:35:59.424 12185-12185 PermissionGateScreen    com.cdccreditsmart.app               I  ========================================
+2025-12-08 08:35:59.424 12185-12185 PermissionGateScreen    com.cdccreditsmart.app               D  ⏰ Iniciando verificação periódica de permissões...
+2025-12-08 08:35:59.509 12185-12185 InsetsController        com.cdccreditsmart.app               D  hide(ime(), fromIme=false)
+2025-12-08 08:35:59.510 12185-12185 ImeTracker              com.cdccreditsmart.app               I  com.cdccreditsmart.app:2df4c79e: onCancelled at PHASE_CLIENT_ALREADY_HIDDEN
+2025-12-08 08:35:59.739 12185-12220 SettingsGuardService    com.cdccreditsmart.app               D  📋 Activity check - Full: com.cdccreditsmart.app.presentation.MainActivity, Simple: MainActivity
+2025-12-08 08:35:59.788 12185-12185 SettingsGuardService    com.cdccreditsmart.app               I  ▶️ Guard RETOMADO após fluxo de permissões
+2025-12-08 08:35:59.791 12185-12185 MainActivity            com.cdccreditsmart.app               D  📍 BroadcastReceiver de localização desregistrado
+2025-12-08 08:35:59.792 12185-12185 WindowOnBackDispatcher  com.cdccreditsmart.app               W  sendCancelIfRunning: isInProgress=false callback=android.app.Activity$$ExternalSyntheticLambda0@6e0ab4d
+2025-12-08 08:35:59.795 12185-12185 ViewRootImpl            com.cdccreditsmart.app               D  Skipping stats log for color mode
+2025-12-08 08:36:00.079 12185-12185 SettingsGuardService    com.cdccreditsmart.app               I  ⏸️ Guard PAUSADO para fluxo de permissões (timeout: 30s)
+2025-12-08 08:36:00.369 12185-12220 SettingsGuardService    com.cdccreditsmart.app               D  📋 Activity check - Full: com.android.settings.spa.SpaActivity, Simple: SpaActivity
+2025-12-08 08:36:00.370 12185-12220 SettingsGuardService    com.cdccreditsmart.app               W  🎯 ATIVIDADE PERIGOSA DETECTADA!
+2025-12-08 08:36:00.370 12185-12220 SettingsGuardService    com.cdccreditsmart.app               W     Pacote: com.android.settings
+2025-12-08 08:36:00.370 12185-12220 SettingsGuardService    com.cdccreditsmart.app               W     Activity completa: com.android.settings.spa.SpaActivity
+2025-12-08 08:36:00.370 12185-12220 SettingsGuardService    com.cdccreditsmart.app               W     Activity simplificada: SpaActivity
+2025-12-08 08:36:00.370 12185-12220 SettingsGuardService    com.cdccreditsmart.app               W     Match: SpaActivity
+2025-12-08 08:36:00.370 12185-12220 SettingsGuardService    com.cdccreditsmart.app               W  🚨 ÁREA PERIGOSA durante fluxo de permissões!
+2025-12-08 08:36:00.370 12185-12220 SettingsGuardService    com.cdccreditsmart.app               W     Atividade: com.android.settings.spa.SpaActivity
+2025-12-08 08:36:00.370 12185-12220 SettingsGuardService    com.cdccreditsmart.app               W     Retomando guard e bloqueando...
+2025-12-08 08:36:00.370 12185-12220 SettingsGuardService    com.cdccreditsmart.app               I  ▶️ Guard RETOMADO após fluxo de permissões
+2025-12-08 08:36:00.370 12185-12220 SettingsGuardService    com.cdccreditsmart.app               D  📋 Activity check - Full: com.android.settings.spa.SpaActivity, Simple: SpaActivity
+2025-12-08 08:36:00.371 12185-12220 SettingsGuardService    com.cdccreditsmart.app               W  🎯 ATIVIDADE PERIGOSA DETECTADA!
+2025-12-08 08:36:00.371 12185-12220 SettingsGuardService    com.cdccreditsmart.app               W     Pacote: com.android.settings
+2025-12-08 08:36:00.371 12185-12220 SettingsGuardService    com.cdccreditsmart.app               W     Activity completa: com.android.settings.spa.SpaActivity
+2025-12-08 08:36:00.371 12185-12220 SettingsGuardService    com.cdccreditsmart.app               W     Activity simplificada: SpaActivity
+2025-12-08 08:36:00.371 12185-12220 SettingsGuardService    com.cdccreditsmart.app               W     Match: SpaActivity
+2025-12-08 08:36:00.371 12185-12220 SettingsGuardService    com.cdccreditsmart.app               W  🚨 ÁREA PERIGOSA DETECTADA!
+2025-12-08 08:36:00.371 12185-12220 SettingsGuardService    com.cdccreditsmart.app               W     Pacote: com.android.settings
+2025-12-08 08:36:00.371 12185-12220 SettingsGuardService    com.cdccreditsmart.app               W     Atividade: com.android.settings.spa.SpaActivity
+2025-12-08 08:36:00.371 12185-12220 SettingsGuardService    com.cdccreditsmart.app               W     Chamando app para foreground...
+2025-12-08 08:36:00.471 12185-12185 SettingsGuardService    com.cdccreditsmart.app               D  🏠 Enviado para Home primeiro (fecha Settings)
+2025-12-08 08:36:00.715 12185-12185 SettingsGuardService    com.cdccreditsmart.app               I  ✅ App trazido para foreground
+2025-12-08 08:36:00.715 12185-12185 VRI[MainActivity]       com.cdccreditsmart.app               D  visibilityChanged oldVisibility=true newVisibility=false
+2025-12-08 08:36:00.794 12185-12185 SettingsGuardService    com.cdccreditsmart.app               I  ▶️ Guard RETOMADO após fluxo de permissões
+2025-12-08 08:36:00.803 12185-12185 MainActivity            com.cdccreditsmart.app               D  📍 BroadcastReceiver de localização desregistrado
+2025-12-08 08:36:00.804 12185-12185 WindowOnBackDispatcher  com.cdccreditsmart.app               W  sendCancelIfRunning: isInProgress=false callback=android.app.Activity$$ExternalSyntheticLambda0@3601136
+2025-12-08 08:36:00.810 12185-12232 HWUI                    com.cdccreditsmart.app               D  endAllActiveAnimators on 0x7ee67a15d140 (UnprojectedRipple) with handle 0x7ee57a194ed0
+2025-12-08 08:36:00.825 12185-12185 ViewRootImpl            com.cdccreditsmart.app               D  Skipping stats log for color mode
+2025-12-08 08:36:00.827 12185-12190 creditsmart.app         com.cdccreditsmart.app               I  CollectorTransition concurrent mark compact GC freed 6056KB AllocSpace bytes, 22(1032KB) LOS objects, 49% free, 13MB/26MB, paused 1.073ms,2.808ms total 104.860ms
+2025-12-08 08:36:00.842 12185-12185 MainActivity            com.cdccreditsmart.app               D  📍 BroadcastReceiver de localização registrado
+2025-12-08 08:36:00.843 12185-12185 MainActivity            com.cdccreditsmart.app               I  ========================================
+2025-12-08 08:36:00.843 12185-12185 MainActivity            com.cdccreditsmart.app               I  📱 SOLICITANDO PERMISSÕES (NÃO DEVICE OWNER)
+2025-12-08 08:36:00.843 12185-12185 MainActivity            com.cdccreditsmart.app               I  ========================================
+2025-12-08 08:36:00.843 12185-12185 MainActivity            com.cdccreditsmart.app               I  ✅ Todas as runtime permissions já foram concedidas!
+2025-12-08 08:36:00.843 12185-12185 SpecialPermissionReq    com.cdccreditsmart.app               I  ========================================
+2025-12-08 08:36:00.843 12185-12185 SpecialPermissionReq    com.cdccreditsmart.app               I  📊 STATUS DAS PERMISSÕES ESPECIAIS
+2025-12-08 08:36:00.843 12185-12185 SpecialPermissionReq    com.cdccreditsmart.app               I  ========================================
+2025-12-08 08:36:00.843 12185-12185 SpecialPermissionReq    com.cdccreditsmart.app               I    USAGE_STATS: ✅ CONCEDIDA
+2025-12-08 08:36:00.843 12185-12185 SpecialPermissionReq    com.cdccreditsmart.app               I    OVERLAY: ❌ NÃO CONCEDIDA
+2025-12-08 08:36:00.843 12185-12185 SpecialPermissionReq    com.cdccreditsmart.app               W  
+2025-12-08 08:36:00.843 12185-12185 SpecialPermissionReq    com.cdccreditsmart.app               W  ⚠️ PROTEÇÃO ANTI-DESINSTALAÇÃO COMPROMETIDA!
+2025-12-08 08:36:00.843 12185-12185 SpecialPermissionReq    com.cdccreditsmart.app               W     Sem essas permissões, a proteção via overlay não funciona.
+2025-12-08 08:36:00.843 12185-12185 SpecialPermissionReq    com.cdccreditsmart.app               W     O usuário conseguirá acessar App Info e desinstalar.
+2025-12-08 08:36:00.843 12185-12185 SpecialPermissionReq    com.cdccreditsmart.app               I  ========================================
+2025-12-08 08:36:00.843 12185-12185 MainActivity            com.cdccreditsmart.app               W  ========================================
+2025-12-08 08:36:00.843 12185-12185 MainActivity            com.cdccreditsmart.app               W  ⚠️ PERMISSÕES ESPECIAIS NECESSÁRIAS
+2025-12-08 08:36:00.843 12185-12185 MainActivity            com.cdccreditsmart.app               W  ========================================
+2025-12-08 08:36:00.843 12185-12185 MainActivity            com.cdccreditsmart.app               W  Para proteção anti-desinstalação funcionar:
+2025-12-08 08:36:00.843 12185-12185 MainActivity            com.cdccreditsmart.app               W    ❌ Exibir sobre outros apps
+2025-12-08 08:36:00.843 12185-12185 MainActivity            com.cdccreditsmart.app               W       Permite mostrar avisos de proteção sobre outros aplicativos
+2025-12-08 08:36:00.843 12185-12185 MainActivity            com.cdccreditsmart.app               W  ========================================
+2025-12-08 08:36:00.843 12185-12185 MainActivity            com.cdccreditsmart.app               W  O app solicitará essas permissões na próxima interação
+2025-12-08 08:36:00.843 12185-12185 MainActivity            com.cdccreditsmart.app               W  ========================================
+2025-12-08 08:36:00.851 12185-12220 PersistentStateManager  com.cdccreditsmart.app               D  Nenhum estado local encontrado
+2025-12-08 08:36:00.855 12185-12220 PersistentStateManager  com.cdccreditsmart.app               D  🆕 Sem estado local - device novo ou pós factory reset
+2025-12-08 08:36:00.863 12185-12220 MainActivity            com.cdccreditsmart.app               I  🆕 Device nunca foi provisionado
+2025-12-08 08:36:00.864 12185-12185 InsetsController        com.cdccreditsmart.app               D  Setting requestedVisibleTypes to -14 (was -9)
+2025-12-08 08:36:00.875 12185-12220 SettingsGuardService    com.cdccreditsmart.app               D  📋 Activity check - Full: com.cdccreditsmart.app.presentation.MainActivity, Simple: MainActivity
+2025-12-08 08:36:00.875 12185-12220 SettingsGuardService    com.cdccreditsmart.app               I  ✅ App CDC em foreground - resetando contador e throttle
+2025-12-08 08:36:00.888 12185-12192 System                  com.cdccreditsmart.app               W  A resource failed to call release. 
+2025-12-08 08:36:01.086 12185-12185 PermissionGateScreen    com.cdccreditsmart.app               I  🔍 VERIFICAÇÃO INICIAL DE PERMISSÕES:
+2025-12-08 08:36:01.089 12185-12185 PermissionGateScreen    com.cdccreditsmart.app               I     Nível: DEVICE_ADMIN
+2025-12-08 08:36:01.090 12185-12185 PermissionGateScreen    com.cdccreditsmart.app               I     Todas concedidas: false
+2025-12-08 08:36:01.100 12185-12185 PermissionGateScreen    com.cdccreditsmart.app               I     Bateria isenta: true
+2025-12-08 08:36:01.100 12185-12185 PermissionGateScreen    com.cdccreditsmart.app               W     ❌ FALTA: Mostrar Alertas
+2025-12-08 08:36:01.100 12185-12185 PermissionGateScreen    com.cdccreditsmart.app               I     ✅ OK: Administrador do Dispositivo
+2025-12-08 08:36:01.100 12185-12185 PermissionGateScreen    com.cdccreditsmart.app               I     ✅ OK: Permissões Básicas
+2025-12-08 08:36:01.100 12185-12185 PermissionGateScreen    com.cdccreditsmart.app               I     ✅ OK: Monitoramento de Apps
+2025-12-08 08:36:01.100 12185-12185 PermissionGateScreen    com.cdccreditsmart.app               I     ✅ OK: Execução em Segundo Plano
+2025-12-08 08:36:01.100 12185-12185 PermissionGateScreen    com.cdccreditsmart.app               I  ========================================
+2025-12-08 08:36:01.100 12185-12185 PermissionGateScreen    com.cdccreditsmart.app               I  🚪 PERMISSION GATE SCREEN INICIADO
+2025-12-08 08:36:01.100 12185-12185 PermissionGateScreen    com.cdccreditsmart.app               I  ========================================
+2025-12-08 08:36:01.101 12185-12185 PermissionGateScreen    com.cdccreditsmart.app               I  Nível de privilégio: DEVICE_ADMIN
+2025-12-08 08:36:01.101 12185-12185 PermissionGateScreen    com.cdccreditsmart.app               I  Permissões concedidas: 4
+2025-12-08 08:36:01.101 12185-12185 PermissionGateScreen    com.cdccreditsmart.app               I  Permissões faltando: 1
+2025-12-08 08:36:01.101 12185-12185 PermissionGateScreen    com.cdccreditsmart.app               W    ❌ Mostrar Alertas
+2025-12-08 08:36:01.101 12185-12185 PermissionGateScreen    com.cdccreditsmart.app               I    ✅ Administrador do Dispositivo
+2025-12-08 08:36:01.101 12185-12185 PermissionGateScreen    com.cdccreditsmart.app               I    ✅ Permissões Básicas
+2025-12-08 08:36:01.101 12185-12185 PermissionGateScreen    com.cdccreditsmart.app               I    ✅ Monitoramento de Apps
+2025-12-08 08:36:01.101 12185-12185 PermissionGateScreen    com.cdccreditsmart.app               I    ✅ Execução em Segundo Plano
+2025-12-08 08:36:01.101 12185-12185 PermissionGateScreen    com.cdccreditsmart.app               I  ========================================
+2025-12-08 08:36:01.101 12185-12185 PermissionGateScreen    com.cdccreditsmart.app               D  ⏰ Iniciando verificação periódica de permissões...
+2025-12-08 08:36:01.189 12185-12185 InsetsController        com.cdccreditsmart.app               D  hide(ime(), fromIme=false)
+2025-12-08 08:36:01.189 12185-12185 ImeTracker              com.cdccreditsmart.app               I  com.cdccreditsmart.app:7861c157: onCancelled at PHASE_CLIENT_ALREADY_HIDDEN
+2025-12-08 08:36:01.479 12185-12220 SettingsGuardService    com.cdccreditsmart.app               D  📋 Activity check - Full: com.cdccreditsmart.app.presentation.MainActivity, Simple: MainActivity
+2025-12-08 08:36:01.841 12185-12185 SettingsGuardService    com.cdccreditsmart.app               I  ⏸️ Guard PAUSADO para fluxo de permissões (timeout: 30s)
+2025-12-08 08:36:02.084 12185-12220 SettingsGuardService    com.cdccreditsmart.app               D  📋 Activity check - Full: com.android.settings.spa.SpaActivity, Simple: SpaActivity
+2025-12-08 08:36:02.085 12185-12220 SettingsGuardService    com.cdccreditsmart.app               W  🎯 ATIVIDADE PERIGOSA DETECTADA!
+2025-12-08 08:36:02.086 12185-12220 SettingsGuardService    com.cdccreditsmart.app               W     Pacote: com.android.settings
+2025-12-08 08:36:02.086 12185-12220 SettingsGuardService    com.cdccreditsmart.app               W     Activity completa: com.android.settings.spa.SpaActivity
+2025-12-08 08:36:02.086 12185-12220 SettingsGuardService    com.cdccreditsmart.app               W     Activity simplificada: SpaActivity
+2025-12-08 08:36:02.086 12185-12220 SettingsGuardService    com.cdccreditsmart.app               W     Match: SpaActivity
+2025-12-08 08:36:02.086 12185-12220 SettingsGuardService    com.cdccreditsmart.app               W  🚨 ÁREA PERIGOSA durante fluxo de permissões!
+2025-12-08 08:36:02.086 12185-12220 SettingsGuardService    com.cdccreditsmart.app               W     Atividade: com.android.settings.spa.SpaActivity
+2025-12-08 08:36:02.086 12185-12220 SettingsGuardService    com.cdccreditsmart.app               W     Retomando guard e bloqueando...
+2025-12-08 08:36:02.086 12185-12220 SettingsGuardService    com.cdccreditsmart.app               I  ▶️ Guard RETOMADO após fluxo de permissões
+2025-12-08 08:36:02.086 12185-12220 SettingsGuardService    com.cdccreditsmart.app               D  📋 Activity check - Full: com.android.settings.spa.SpaActivity, Simple: SpaActivity
+2025-12-08 08:36:02.087 12185-12220 SettingsGuardService    com.cdccreditsmart.app               W  🎯 ATIVIDADE PERIGOSA DETECTADA!
+2025-12-08 08:36:02.087 12185-12220 SettingsGuardService    com.cdccreditsmart.app               W     Pacote: com.android.settings
+2025-12-08 08:36:02.087 12185-12220 SettingsGuardService    com.cdccreditsmart.app               W     Activity completa: com.android.settings.spa.SpaActivity
+2025-12-08 08:36:02.087 12185-12220 SettingsGuardService    com.cdccreditsmart.app               W     Activity simplificada: SpaActivity
+2025-12-08 08:36:02.087 12185-12220 SettingsGuardService    com.cdccreditsmart.app               W     Match: SpaActivity
+2025-12-08 08:36:02.088 12185-12220 SettingsGuardService    com.cdccreditsmart.app               W  🚨 ÁREA PERIGOSA DETECTADA!
+2025-12-08 08:36:02.088 12185-12220 SettingsGuardService    com.cdccreditsmart.app               W     Pacote: com.android.settings
+2025-12-08 08:36:02.088 12185-12220 SettingsGuardService    com.cdccreditsmart.app               W     Atividade: com.android.settings.spa.SpaActivity
+2025-12-08 08:36:02.088 12185-12220 SettingsGuardService    com.cdccreditsmart.app               W     Chamando app para foreground...
+2025-12-08 08:36:02.306 12185-12185 SettingsGuardService    com.cdccreditsmart.app               D  🏠 Enviado para Home primeiro (fecha Settings)
+2025-12-08 08:36:02.470 12185-12185 SettingsGuardService    com.cdccreditsmart.app               I  ✅ App trazido para foreground
+2025-12-08 08:36:02.558 12185-12185 MainActivity            com.cdccreditsmart.app               D  📍 BroadcastReceiver de localização registrado
+2025-12-08 08:36:02.559 12185-12185 MainActivity            com.cdccreditsmart.app               I  ========================================
+2025-12-08 08:36:02.559 12185-12185 MainActivity            com.cdccreditsmart.app               I  📱 SOLICITANDO PERMISSÕES (NÃO DEVICE OWNER)
+2025-12-08 08:36:02.559 12185-12185 MainActivity            com.cdccreditsmart.app               I  ========================================
+2025-12-08 08:36:02.559 12185-12185 MainActivity            com.cdccreditsmart.app               I  ✅ Todas as runtime permissions já foram concedidas!
+2025-12-08 08:36:02.559 12185-12185 SpecialPermissionReq    com.cdccreditsmart.app               I  ========================================
+2025-12-08 08:36:02.559 12185-12185 SpecialPermissionReq    com.cdccreditsmart.app               I  📊 STATUS DAS PERMISSÕES ESPECIAIS
+2025-12-08 08:36:02.559 12185-12185 SpecialPermissionReq    com.cdccreditsmart.app               I  ========================================
+2025-12-08 08:36:02.560 12185-12185 SpecialPermissionReq    com.cdccreditsmart.app               I    USAGE_STATS: ✅ CONCEDIDA
+2025-12-08 08:36:02.560 12185-12185 SpecialPermissionReq    com.cdccreditsmart.app               I    OVERLAY: ❌ NÃO CONCEDIDA
+2025-12-08 08:36:02.560 12185-12185 SpecialPermissionReq    com.cdccreditsmart.app               W  
+2025-12-08 08:36:02.560 12185-12185 SpecialPermissionReq    com.cdccreditsmart.app               W  ⚠️ PROTEÇÃO ANTI-DESINSTALAÇÃO COMPROMETIDA!
+2025-12-08 08:36:02.560 12185-12185 SpecialPermissionReq    com.cdccreditsmart.app               W     Sem essas permissões, a proteção via overlay não funciona.
+2025-12-08 08:36:02.560 12185-12185 SpecialPermissionReq    com.cdccreditsmart.app               W     O usuário conseguirá acessar App Info e desinstalar.
+2025-12-08 08:36:02.560 12185-12185 SpecialPermissionReq    com.cdccreditsmart.app               I  ========================================
+2025-12-08 08:36:02.560 12185-12185 MainActivity            com.cdccreditsmart.app               W  ========================================
+2025-12-08 08:36:02.560 12185-12185 MainActivity            com.cdccreditsmart.app               W  ⚠️ PERMISSÕES ESPECIAIS NECESSÁRIAS
+2025-12-08 08:36:02.560 12185-12185 MainActivity            com.cdccreditsmart.app               W  ========================================
+2025-12-08 08:36:02.560 12185-12185 MainActivity            com.cdccreditsmart.app               W  Para proteção anti-desinstalação funcionar:
+2025-12-08 08:36:02.560 12185-12185 MainActivity            com.cdccreditsmart.app               W    ❌ Exibir sobre outros apps
+2025-12-08 08:36:02.560 12185-12185 MainActivity            com.cdccreditsmart.app               W       Permite mostrar avisos de proteção sobre outros aplicativos
+2025-12-08 08:36:02.560 12185-12185 MainActivity            com.cdccreditsmart.app               W  ========================================
+2025-12-08 08:36:02.560 12185-12185 MainActivity            com.cdccreditsmart.app               W  O app solicitará essas permissões na próxima interação
+2025-12-08 08:36:02.560 12185-12185 MainActivity            com.cdccreditsmart.app               W  ========================================
+2025-12-08 08:36:02.580 12185-12220 PersistentStateManager  com.cdccreditsmart.app               D  Nenhum estado local encontrado
+2025-12-08 08:36:02.580 12185-12220 PersistentStateManager  com.cdccreditsmart.app               D  🆕 Sem estado local - device novo ou pós factory reset
+2025-12-08 08:36:02.580 12185-12220 MainActivity            com.cdccreditsmart.app               I  🆕 Device nunca foi provisionado
+2025-12-08 08:36:02.710 12185-12185 InsetsController        com.cdccreditsmart.app               D  Setting requestedVisibleTypes to -14 (was -9)
+2025-12-08 08:36:02.749 12185-12244 SettingsGuardService    com.cdccreditsmart.app               D  📋 Activity check - Full: com.cdccreditsmart.app.presentation.MainActivity, Simple: MainActivity
+2025-12-08 08:36:02.750 12185-12244 SettingsGuardService    com.cdccreditsmart.app               I  ✅ App CDC em foreground - resetando contador e throttle
+2025-12-08 08:36:03.033 12185-12185 VRI[MainActivity]       com.cdccreditsmart.app               D  visibilityChanged oldVisibility=true newVisibility=false
+2025-12-08 08:36:03.035 12185-12185 PermissionGateScreen    com.cdccreditsmart.app               I  🔍 VERIFICAÇÃO INICIAL DE PERMISSÕES:
+2025-12-08 08:36:03.036 12185-12185 PermissionGateScreen    com.cdccreditsmart.app               I     Nível: DEVICE_ADMIN
+2025-12-08 08:36:03.036 12185-12185 PermissionGateScreen    com.cdccreditsmart.app               I     Todas concedidas: false
+2025-12-08 08:36:03.037 12185-12185 PermissionGateScreen    com.cdccreditsmart.app               I     Bateria isenta: true
+2025-12-08 08:36:03.038 12185-12185 PermissionGateScreen    com.cdccreditsmart.app               W     ❌ FALTA: Mostrar Alertas
+2025-12-08 08:36:03.038 12185-12185 PermissionGateScreen    com.cdccreditsmart.app               I     ✅ OK: Administrador do Dispositivo
+2025-12-08 08:36:03.038 12185-12185 PermissionGateScreen    com.cdccreditsmart.app               I     ✅ OK: Permissões Básicas
+2025-12-08 08:36:03.038 12185-12185 PermissionGateScreen    com.cdccreditsmart.app               I     ✅ OK: Monitoramento de Apps
+2025-12-08 08:36:03.038 12185-12185 PermissionGateScreen    com.cdccreditsmart.app               I     ✅ OK: Execução em Segundo Plano
+2025-12-08 08:36:03.039 12185-12185 PermissionGateScreen    com.cdccreditsmart.app               I  ========================================
+2025-12-08 08:36:03.039 12185-12185 PermissionGateScreen    com.cdccreditsmart.app               I  🚪 PERMISSION GATE SCREEN INICIADO
+2025-12-08 08:36:03.039 12185-12185 PermissionGateScreen    com.cdccreditsmart.app               I  ========================================
+2025-12-08 08:36:03.043 12185-12185 PermissionGateScreen    com.cdccreditsmart.app               I  Nível de privilégio: DEVICE_ADMIN
+2025-12-08 08:36:03.043 12185-12185 PermissionGateScreen    com.cdccreditsmart.app               I  Permissões concedidas: 4
+2025-12-08 08:36:03.043 12185-12185 PermissionGateScreen    com.cdccreditsmart.app               I  Permissões faltando: 1
+2025-12-08 08:36:03.043 12185-12185 PermissionGateScreen    com.cdccreditsmart.app               W    ❌ Mostrar Alertas
+2025-12-08 08:36:03.043 12185-12185 PermissionGateScreen    com.cdccreditsmart.app               I    ✅ Administrador do Dispositivo
+2025-12-08 08:36:03.043 12185-12185 PermissionGateScreen    com.cdccreditsmart.app               I    ✅ Permissões Básicas
+2025-12-08 08:36:03.043 12185-12185 PermissionGateScreen    com.cdccreditsmart.app               I    ✅ Monitoramento de Apps
+2025-12-08 08:36:03.044 12185-12185 PermissionGateScreen    com.cdccreditsmart.app               I    ✅ Execução em Segundo Plano
+2025-12-08 08:36:03.044 12185-12185 PermissionGateScreen    com.cdccreditsmart.app               I  ========================================
+2025-12-08 08:36:03.044 12185-12185 PermissionGateScreen    com.cdccreditsmart.app               D  ⏰ Iniciando verificação periódica de permissões...
+2025-12-08 08:36:03.063 12185-12232 HWUI                    com.cdccreditsmart.app               D  endAllActiveAnimators on 0x7ee67a181b10 (UnprojectedRipple) with handle 0x7ee57a16ded0
+2025-12-08 08:36:03.106 12185-12185 InsetsController        com.cdccreditsmart.app               D  hide(ime(), fromIme=false)
+2025-12-08 08:36:03.106 12185-12185 ImeTracker              com.cdccreditsmart.app               I  com.cdccreditsmart.app:f71dfc9f: onCancelled at PHASE_CLIENT_ALREADY_HIDDEN
+2025-12-08 08:36:03.318 12185-12185 SettingsGuardService    com.cdccreditsmart.app               I  ▶️ Guard RETOMADO após fluxo de permissões
+2025-12-08 08:36:03.324 12185-12185 MainActivity            com.cdccreditsmart.app               D  📍 BroadcastReceiver de localização desregistrado
+2025-12-08 08:36:03.325 12185-12185 WindowOnBackDispatcher  com.cdccreditsmart.app               W  sendCancelIfRunning: isInProgress=false callback=android.app.Activity$$ExternalSyntheticLambda0@5348a83
+2025-12-08 08:36:03.335 12185-12185 ViewRootImpl            com.cdccreditsmart.app               D  Skipping stats log for color mode
+2025-12-08 08:36:03.360 12185-12244 SettingsGuardService    com.cdccreditsmart.app               D  📋 Activity check - Full: com.cdccreditsmart.app.presentation.MainActivity, Simple: MainActivity
