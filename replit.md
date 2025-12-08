@@ -1,7 +1,7 @@
 # Credit Smart Android App
 
 ## Overview
-The Credit Smart Android App is a Device Owner application providing a secure and efficient mobile experience for financial transactions for Credit Smart clients. It offers advanced security, robust device pairing, real-time communication, and payment processing (PIX and Boleto). The app implements progressive blocking policies, comprehensive anti-tampering, post-factory-reset enrollment, and offline functionality. The business vision is to deliver a highly secure and reliable financial management tool, expanding market potential through robust device control and user-friendly financial services.
+The Credit Smart Android App is a Device Owner application designed for secure and efficient mobile financial transactions for Credit Smart clients. It offers advanced security features, robust device pairing, real-time communication, and payment processing (PIX and Boleto). The app implements progressive blocking policies, comprehensive anti-tampering measures, post-factory-reset enrollment, and offline functionality. The primary goal is to provide a highly secure and reliable financial management tool, expanding market potential through strong device control and user-friendly financial services.
 
 ## User Preferences
 - Linguagem simples e clara em português
@@ -17,101 +17,52 @@ The Credit Smart Android App is a Device Owner application providing a secure an
 - **ADB mantido ativo em builds DEBUG** para desenvolvimento/testes (bloqueado apenas em produção)
 
 ## System Architecture
-The application uses Clean Architecture, MVVM, and Jetpack Compose for the UI. It is structured into modular components: `app`, `data`, `network`, `domain`, `device`, `payments`, and `biometry`.
+The application adheres to Clean Architecture, MVVM, and utilizes Jetpack Compose for the UI. It is structured into modular components: `app`, `data`, `network`, `domain`, `device`, `payments`, and `biometry`.
 
 **UI/UX Decisions:**
-Utilizes Jetpack Compose and Material 3 with a CDC institutional dark theme. Features a navigation system and a `ModernHomeScreen` displaying customer information, device details, contract code, and access to "Termos e Condições de Uso". Prioritizes installment history with PIX payment options for pending/overdue installments.
+The UI uses Jetpack Compose and Material 3 with a CDC institutional dark theme. It includes a navigation system and a `ModernHomeScreen` that displays customer information, device details, contract code, and access to "Termos e Condições de Uso", prioritizing installment history with PIX payment options.
 
 **Technical Implementations:**
-- **Device Owner Management:** Handles Device Owner provisioning, auto-configuration, and policy application.
-- **Permission Management:** Automatic runtime permission requests, with Device Owner grants.
-- **Voluntary & Remote Uninstall:** Secure uninstall mechanisms, including a backend-commanded remote uninstall and a robust SettingsGuard for safe uninstallation.
-- **Desinstalação Inteligente (SelfDestructManager):** Sequência de 11 passos para desinstalação segura:
-  1. Verificar autorização (código de confirmação ou admin)
-  2. Registrar log de auditoria
-  3. Parar serviços de background (CdcForegroundService, SettingsGuardService, WorkManager, AlarmManager)
-  4. Remover proteções avançadas (EnhancedProtectionsManager)
-  5. Remover TODAS as 25+ restrições de usuário (DISALLOW_*) via AppProtectionManager
-  6. Remover bloqueio de desinstalação (setUninstallBlocked)
-  7. Remover Device Owner (clearDeviceOwnerApp)
-  8. Remover Device Admin (removeActiveAdmin)
-  9. Remover APK do preload (factory reset recovery)
-  10. Enviar telemetria e limpar dados se solicitado
-  11. Solicitar desinstalação do app
-  O dispositivo fica completamente livre das políticas MDM antes da desinstalação.
-- **Recuperação de Desinstalação Cancelada:** Sistema robusto de timeout-based recovery (2 minutos):
-  - CdcForegroundService.onStartCommand(): Retorna START_NOT_STICKY durante desinstalação, mas verifica timeout antes de bloquear
-  - startSettingsGuard() e applyWorkPolicies(): Pulam inicialização durante desinstalação (exceto se timeout expirou)
-  - MainActivity.onResume(): Recuperação imediata quando usuário abre o app após cancelar
-  - CDCApplication.onCreate(): Recuperação quando processo reinicia na mesma sessão
-  - checkUninstallTimeout(): Após 2 minutos sem desinstalação, assume cancelamento e restaura proteções
-  - KeepAliveManager/AlarmManager: Tentativas de restart do serviço detectam timeout e retomam operação normal
-- **WorkPolicyManager:** Unified protection system applying enterprise security policies based on privilege level, including critical package blocking, password wipe prevention, and Lock Task Mode.
-- **Keep Alive System:** Multi-layered system (WorkManager, AlarmManager, AppRestartManager) to ensure continuous app operation.
+- **Device Owner Management:** Handles provisioning, auto-configuration, and policy enforcement.
+- **Permission Management:** Automatic runtime permission requests, including Device Owner grants.
+- **Secure Uninstall:** Features remote and voluntary uninstall mechanisms, including a multi-step "Desinstalação Inteligente" process (SelfDestructManager) that fully removes MDM policies before app uninstallation.
+- **Uninstall Recovery:** Robust timeout-based recovery system (2 minutes) to restore protections if an uninstall is cancelled.
+- **WorkPolicyManager:** Unified system for applying enterprise security policies, including package blocking and Lock Task Mode.
+- **Keep Alive System:** Multi-layered approach (WorkManager, AlarmManager, AppRestartManager) to ensure continuous app operation and persistence.
 - **Anti-Tampering & Persistence:** Time synchronization for tamper detection, app continuity, and a Persistent State Manager for factory reset survival.
-- **SIM Swap Detection:** Offline system for SIM change detection and blocking policy application.
+- **SIM Swap Detection:** Offline system for detecting SIM changes and applying blocking policies.
 - **Secure Device Pairing:** 3-step handshake with IMEI auto-discovery and manual contract code fallback.
-- **Multi-Slot Device Identifier System:** Collects IMEI/MEID from all SIM slots with automatic fallback (IMEI → MEID → Android ID → Fingerprint). Supports Zero-Touch and Knox enrollment as Device Owner.
-- **Real-time Communication & MDM:** Dual system for pairing status and MDM command push (blocking, unblocking, remote uninstall):
-  - **HeartbeatManager (HTTP POST):** Sends heartbeat every 60 seconds to `/api/apk/device/heartbeat` with deviceToken, currentBlockLevel, batteryLevel, isCharging, currentSimImei. Processes backend response for compliance corrections.
-  - **MdmCommandReceiver (WebSocket):** Connects to `wss://cdccreditsmart.com/ws/mdm-policies`, sends **full authentication message** with 7 campos obrigatórios (type, action, serialNumber, deviceToken, deviceFingerprint, imei, androidId, apkVersion), processes `authenticated`/`authentication_failed` responses, and handles BLOCK, UNBLOCK, REMOTE_UNINSTALL, LOCATE_DEVICE commands via `NEW_COMMAND` messages.
-  - **Command Confirmation:** Uses POST `/api/apk/device/commands/{commandId}/status` with {status, result} payload (with fallback to legacy endpoint).
-- **Progressive Blocking System:** Dynamically blocks non-essential applications based on overdue levels, adhering to legal precedents.
-- **Overlay Systems:** Universal dismissible overlay for overdue reminders and periodic payment reminder overlays.
-- **Offline Blocking:** Local storage for overdue calculations and block application, with daily online synchronization.
-- **Offline Authentication Persistence:** Complete offline functionality after initial activation. App detects network state via ConnectivityManager, preserves authentication tokens during network outages, and only clears credentials on explicit 401/404 server responses. `hasValidOfflineAuthentication()` validates saved contractCode + authToken/deviceInfo. `AuthenticationResult.Authenticated(isOfflineMode)` flag enables UI offline indicators.
+- **Multi-Slot Device Identifier:** Collects IMEI/MEID from all SIM slots with automatic fallback.
+- **Real-time Communication & MDM:** Dual system using `HeartbeatManager` (HTTP POST) for periodic status updates and `MdmCommandReceiver` (WebSocket) for real-time MDM command push (BLOCK, UNBLOCK, REMOTE_UNINSTALL, LOCATE_DEVICE). Includes command confirmation and device boot reporting.
+- **Progressive Blocking System:** Dynamically blocks non-essential applications based on overdue payment levels.
+- **Overlay Systems:** Universal dismissible overlay for overdue reminders and periodic payment reminders.
+- **Offline Functionality:** Local storage for overdue calculations, block application, and authentication persistence, allowing full offline operation after initial activation.
 - **Managed Secondary User:** Automatic creation of a managed secondary user for corporate isolation during auto-provisioning.
-- **Post-Factory-Reset Enrollment:** Automatic APK reinstallation after factory reset via Samsung Knox Mobile Enrollment (KME) and Android Zero-Touch Enrollment. Includes an embedded stub architecture for enhanced recovery.
-- **APK Preload System (Multi-Fabricante):** Como Device Owner, copia o APK + manifesto de enrollment para diretórios de preload específicos de cada fabricante:
-  - Samsung: `/data/knox/shared/preload/`, `/data/samsung/preload/`
-  - Xiaomi/MIUI: `/data/miui/preinstall_apps/`, `/data/miui/preloaded_apps/`
-  - OPPO/ColorOS: `/data/oppo_commonsys/preload/`
-  - Realme: `/data/realme/preload/apps/`
-  - Infinix/Tecno/iTel/XOS: `/data/hila/preinstall/`, `/data/xos/preinstall/`
-  - LG: `/data/lge/preload/`
-  - Huawei/Honor: `/data/hw_init/preload/`
-  - Vivo: `/data/vivo/preload/`
-  - ZTE/Nubia: `/data/zte/preload/`
-  - Meizu: `/data/flyme/preload/`
-  - AOSP/outros: `/data/preloads/apps/`, `/data/system/device_owner_data/preloads/`
-  O sistema reinstala automaticamente no primeiro boot, mesmo offline, e usa o IMEI para auto-reativação.
-- **Auto-Reativação Baseada em IMEI (FactoryResetRecoveryReceiver):** Após factory reset, o app detecta BOOT_COMPLETED, lê o manifesto de enrollment do preload, verifica o IMEI do dispositivo e restaura automaticamente o contractCode e credenciais sem interação do usuário.
-- **QR Code Provisioning:** Supports QR code provisioning with full JSON configuration.
+- **Post-Factory-Reset Enrollment:** Automatic APK reinstallation via Samsung Knox Mobile Enrollment (KME) and Android Zero-Touch Enrollment, including an embedded stub architecture and APK Preload System for multi-manufacturer support and IMEI-based auto-reactivation.
 - **Anti-Removal Protections:** Multi-layered defenses against uninstallation, force stops, data clearing, and factory resets.
-- **Full Device Lock & App Blocker:** Kiosk mode functionality with app whitelisting and blocking of dangerous installations.
-- **Enhanced Protections:** Parental control app blocking, curated popular app blocking, system update blocking, and power saving mode restrictions.
+- **Full Device Lock & App Blocker:** Kiosk mode functionality with app whitelisting and blocking dangerous installations.
+- **Enhanced Protections:** Blocking of parental control apps, popular apps, system updates, and restriction of power saving modes.
 - **PIX Payment System:** Integration for PIX payments with QR code generation and real-time status verification.
 - **Dynamic Support Contact & Terms and Conditions:** Fetches and caches support contact and terms from the backend with integrity validation.
 - **Battery Optimization Exemption:** Automatic request for battery optimization exemption.
 - **Notifications & Security:** Firebase FCM for push notifications, `EncryptedSharedPreferences` for sensitive data, JWT authentication, and permanent device blocking on security violations.
 - **Networking:** Retrofit and OkHttp with retry logic, exponential backoff, and Certificate Pinning.
-- **Crash Prevention:** Global `CrashHandler` for logging unhandled exceptions and scheduling auto-restarts, with graceful handling of expected exceptions.
+- **Crash Prevention:** Global `CrashHandler` for logging unhandled exceptions and scheduling auto-restarts.
 - **Secondary Managed User Detection:** `CdcForegroundService` and `SecureTokenStorage` prevent MDM initialization in managed secondary users.
-- **SettingsGuard System:** Active monitoring in ALL modes (Device Owner, Device Admin, Basic) to prevent access to dangerous Settings screens. Polls foreground app every 600ms (400ms in aggressive mode). **IMPORTANTE: Requer permissão PACKAGE_USAGE_STATS que NÃO pode ser concedida programaticamente - o app exibe notificação persistente pedindo ao usuário para conceder manualmente via Configurações > Apps > Credit Smart > Acesso especial > Acesso ao uso.** Key features:
-  - **12 Protected Categories:** App Info/Uninstall, Force Stop/Kill App, Factory Reset, Device Admin/MDM, Battery Optimization, Permissions, Security Hubs, Developer Options, Clear Data, Notifications, Accessibility, DNS/Network
-  - **17+ OEM Support:** Android Stock, Samsung, Xiaomi/MIUI, Huawei/Honor, OPPO/ColorOS, Realme, Vivo, OnePlus, Motorola, LG, Asus, Sony, Nokia, Tecno/Infinix/iTel, ZTE/Nubia, Alcatel/TCL, Meizu
-  - **Generic Pattern Matching:** Captures activity name variants (AppInfo, DeviceAdmin, FactoryReset, BatteryOptimiz, etc.)
-  - **Inner Class Detection:** Dual-name matching for `Settings$XxxActivity` inner classes (extracts simplified name after `$`)
-  - **Always-Dangerous Packages:** SecurityCenter packages from all OEMs are always blocked
-  - **Pause/Resume for Permission Flows:** Auto-resumes when app returns to foreground
-  - **SubSettings Detection:** Blocks SubSettings wrappers from OEM Settings packages
-  - **MIUI Repair Mode Protection:** Blocks `com.miui.repairmode` (Modo de reparo) - EXTREMAMENTE PERIGOSO pois cria espaço isolado que pode fazer bypass do Device Owner
-  - **MIUI Permission Center Protection:** Blocks `com.miui.permcenter` (Permissões e privacidade, Permissões especiais) - Permite revogar Device Admin
-  - **XOS Privacy Protection:** Blocks "Permissões e privacidade" que dá acesso a XHide, XClone, Sistema duplo, Modo de reparo
-- **GPS Location Tracking (LOCATE_DEVICE):** MDM command for real-time device location with FusedLocationProviderClient + LocationManager fallback, Device Owner auto-grant for permissions, and comprehensive error handling.
-- **Localização Sempre Ativa (REGRA):** Como Device Owner, o app força GPS/localização a estar sempre ativo via `setLocationEnabled()` (Android 9+), aplica restrição `DISALLOW_CONFIG_LOCATION` para impedir usuário de desativar, e auto-reativa GPS se detectar desativação. LocationProvider verifica e força ativação antes de cada requisição de localização.
+- **SettingsGuard System:** Actively monitors and prevents access to dangerous Android Settings screens across 17+ OEMs and specific MIUI protections (e.g., Repair Mode, Permission Center). Requires manual user permission for `PACKAGE_USAGE_STATS`.
+- **GPS Location Tracking:** MDM command for real-time device location with FusedLocationProviderClient + LocationManager fallback. As Device Owner, the app forces GPS to be always active and applies `DISALLOW_CONFIG_LOCATION`.
 
 ## External Dependencies
-- **CDC Credit Smart Backend API:** For authentication, device status, installments, PIX processing, heartbeat, MDM commands, unblock operations, remote uninstall telemetry, time synchronization, FCM token registration, enrollment reporting, and contract terms metadata (GET /api/apk/device/contract-terms returns termsHash, signedAt, biometrySessionId, geoLocation, receiptHash, termsVersion).
-- **Meio de Pagamento API:** External payment gateway for PIX transactions (via CDC backend).
+- **CDC Credit Smart Backend API:** For authentication, device status, installments, PIX processing, heartbeat, MDM commands, unblock operations, remote uninstall telemetry, time synchronization, FCM token registration, enrollment reporting, and contract terms metadata.
+- **Meio de Pagamento API:** External payment gateway for PIX transactions.
 - **WebSocket Server:** For real-time pairing status and MDM command push.
 - **Firebase Cloud Messaging (FCM):** Push notification infrastructure and analytics.
-- **Samsung Knox Enterprise SDK:** Advanced device management and security on Samsung devices.
-- **Samsung Knox Mobile Enrollment (KME):** Enterprise enrollment for automatic app reinstallation on Samsung devices.
-- **Android Zero-Touch Enrollment:** Google's enterprise enrollment for automatic app reinstallation on non-Samsung devices.
-- **Google Play Integrity API:** Device integrity verification.
-- **Jetpack Compose, Material 3, Compose Navigation:** UI framework.
+- **Samsung Knox Enterprise SDK:** For advanced device management and security on Samsung devices.
+- **Samsung Knox Mobile Enrollment (KME):** For enterprise enrollment and automatic app reinstallation on Samsung devices.
+- **Android Zero-Touch Enrollment:** For enterprise enrollment and automatic app reinstallation on non-Samsung devices.
+- **Google Play Integrity API:** For device integrity verification.
+- **Jetpack Compose, Material 3, Compose Navigation:** UI framework components.
 - **Retrofit, OkHttp:** HTTP client and WebSocket support.
-- **EncryptedSharedPreferences:** Secure local data storage.
-- **WorkManager:** Deferrable background tasks.
-- **Kotlin Coroutines:** Asynchronous programming.
+- **EncryptedSharedPreferences:** For secure local data storage.
+- **WorkManager:** For deferrable background tasks.
+- **Kotlin Coroutines:** For asynchronous programming.
