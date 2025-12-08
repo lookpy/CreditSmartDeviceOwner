@@ -141,14 +141,13 @@ O time de backend forneceu documentação técnica completa para o sistema de Li
 - Rollback funciona quando backend envia lista reduzida
 - Logs detalhados de diagnóstico
 
-**4. Sistema de 7 Níveis (0-6) CUMULATIVO:**
-- Nível 0: Sem restrições
-- Nível 1: camera, gallery, file_manager, video_players
-- Nível 2: Nível 1 + browsers, youtube_tiktok
-- Nível 3: Níveis 1-2 + social_media, shopping
-- Nível 4: Níveis 1-3 + games, music
-- Nível 5: Níveis 1-4 + play_store, other_app_stores
-- Nível 6: Níveis 1-5 + non_essential_apps
+**4. Sistema de 6 Níveis (0-5) conforme Backend v2.5:**
+- Nível 0 (0-6 dias): Sem restrições
+- Nível 1 (7-14 dias): gallery_photos, video_players, browsers
+- Nível 2 (15-29 dias): + youtube_tiktok, music, play_store, games
+- Nível 3 (30-44 dias): + social_media
+- Nível 4 (45-59 dias): + non_essential_apps (quase tudo, WhatsApp liberado)
+- Nível 5 (60+ dias): + all_apps (tudo bloqueado, apenas bancos/telefone/email)
 
 **5. SettingsGuardService - Logs diagnósticos:**
 - Logs de inicialização mostrando status de permissões
@@ -159,3 +158,39 @@ O time de backend forneceu documentação técnica completa para o sistema de Li
 - Usar "limitação/limitado" em vez de "bloqueio/bloqueado"
 - NUNCA limitar dispositivo completamente
 - SEMPRE manter acesso a apps essenciais
+
+### 2025-12-08: Compatibilidade Total com Backend v2.5 (ATUALIZAÇÃO)
+
+**Correções baseadas no feedback do backend:**
+
+**1. CommandType reconhecido:**
+- "BLOCK_APPS_PROGRESSIVE" (novo) e "PROGRESSIVE_BLOCK" (legacy) ambos funcionam
+
+**2. CategoryMapper.kt - Normalização de categorias:**
+- BACKEND_CATEGORY_MAPPING: Converte nomes do backend para APK
+  - "photos" → "gallery_photos"
+  - "web_browsers" → "browsers"
+  - "youtube" → "youtube_tiktok"
+  - "music_players" → "music"
+- normalizeBackendCategories(): Normaliza lista de categorias
+- isYouTubeTikTokApp(): Detecta apps YouTube/TikTok
+
+**3. Exceções semânticas (bancos_allowed, emails_allowed):**
+- isProtectedByException(): Verifica se package está protegido por exceção
+- isBankingApp(): Detecta apps bancários por keywords
+- isEmailApp(): Detecta apps de email
+- Apps bancários NUNCA bloqueados quando "bancos_allowed" nas exceções
+- Apps de email NUNCA bloqueados quando "emails_allowed" nas exceções
+
+**4. Método de bloqueio:**
+- setApplicationHidden() em vez de setPackagesSuspended()
+- Mais determinístico, não revertido por reboots em alguns OEMs
+
+**5. Fluxo v2.5 completo:**
+1. Recebe comando BLOCK_APPS_PROGRESSIVE via WebSocket
+2. Normaliza categorias do backend (photos → gallery_photos)
+3. Resolve packages via CategoryMapper e BlockAllFlagsResolver
+4. Filtra packages protegidos (alwaysAllowedPackages + LegalWhitelist)
+5. Filtra por exceções semânticas (bancos_allowed, emails_allowed)
+6. Aplica setApplicationHidden() em cada package
+7. Persiste estado para Heartbeat reportar nível correto
