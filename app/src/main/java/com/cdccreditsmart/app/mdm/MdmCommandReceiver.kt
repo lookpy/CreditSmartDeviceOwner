@@ -56,6 +56,7 @@ class MdmCommandReceiver(private val context: Context) {
     @Volatile private var isWebSocketConnecting = false
     @Volatile private var isPollingActive = false
     @Volatile private var webSocketConnected = false
+    @Volatile private var isAuthenticated = false
     private val connectionLock = Any()
     
     private val blockingManager by lazy {
@@ -265,6 +266,41 @@ class MdmCommandReceiver(private val context: Context) {
                 when (message.type) {
                     "welcome" -> {
                         Log.d(TAG, "👋 Mensagem de boas-vindas do servidor")
+                    }
+                    
+                    "device-control" -> {
+                        val jsonObj = JSONObject(json)
+                        val action = jsonObj.optString("action", "")
+                        
+                        when (action) {
+                            "authenticated" -> {
+                                val deviceId = jsonObj.optString("deviceId", "")
+                                val serverMessage = jsonObj.optString("message", "")
+                                val serverTime = jsonObj.optString("serverTime", "")
+                                Log.i(TAG, "✅ ========================================")
+                                Log.i(TAG, "✅ AUTENTICAÇÃO WEBSOCKET CONFIRMADA!")
+                                Log.i(TAG, "✅ ========================================")
+                                Log.i(TAG, "✅ Device ID: $deviceId")
+                                Log.i(TAG, "✅ Mensagem: $serverMessage")
+                                Log.i(TAG, "✅ Server Time: $serverTime")
+                                webSocketConnected = true
+                                isAuthenticated = true
+                            }
+                            "authentication_failed" -> {
+                                val error = jsonObj.optString("error", "Unknown error")
+                                val code = jsonObj.optString("code", "")
+                                Log.e(TAG, "❌ ========================================")
+                                Log.e(TAG, "❌ FALHA NA AUTENTICAÇÃO WEBSOCKET!")
+                                Log.e(TAG, "❌ ========================================")
+                                Log.e(TAG, "❌ Erro: $error")
+                                Log.e(TAG, "❌ Código: $code")
+                                webSocketConnected = false
+                                isAuthenticated = false
+                            }
+                            else -> {
+                                Log.d(TAG, "📨 Ação device-control desconhecida: $action")
+                            }
+                        }
                     }
                     
                     "NEW_COMMAND" -> {
@@ -1071,6 +1107,7 @@ class MdmCommandReceiver(private val context: Context) {
             isWebSocketConnecting = false
             isPollingActive = false
             webSocketConnected = false
+            isAuthenticated = false
         }
         
         // Cancelar todos os jobs
