@@ -542,6 +542,16 @@ class SettingsGuardService(private val context: Context) {
             // ═══════════════════════════════════════════════════════════════════════════════
             
             // ═══════════════════════════════════════════════════════════════════════════════
+            // GOOGLE SAFETY CENTER (Android 13+) - Central de Segurança do Google
+            // Pacote: com.google.android.permissioncontroller
+            // ═══════════════════════════════════════════════════════════════════════════════
+            "SafetyCenter",                 // Match parcial para todas as telas
+            "SafetyCenterActivity",
+            "SafetyCenterDashboard",
+            "SafetyCenterSettings",
+            "PrivacySafetyCenter",
+            
+            // ═══════════════════════════════════════════════════════════════════════════════
             // TELAS PRINCIPAIS DE SEGURANÇA E PRIVACIDADE (AGORA PERMITIDAS)
             // ═══════════════════════════════════════════════════════════════════════════════
             "SecuritySettings",

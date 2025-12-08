@@ -1,0 +1,170 @@
+2025-12-08 09:01:09.618 14117-14117 CdcForegroundService    com.cdccreditsmart.app               D  🚀 Serviço onStartCommand() - Action: com.cdccreditsmart.app.START_SERVICE
+2025-12-08 09:01:09.621 14117-14117 CdcForegroundService    com.cdccreditsmart.app               I  ✅ Foreground Service ativo (Android 12+)
+2025-12-08 09:01:09.622 14117-14152 CdcForegroundService    com.cdccreditsmart.app               I  🔧 ========================================
+2025-12-08 09:01:09.622 14117-14152 CdcForegroundService    com.cdccreditsmart.app               I  🔧 INICIANDO initializeServices()...
+2025-12-08 09:01:09.622 14117-14152 CdcForegroundService    com.cdccreditsmart.app               I  🔧 ========================================
+2025-12-08 09:01:09.622 14117-14152 CdcForegroundService    com.cdccreditsmart.app               D  ✅ Serviços base já inicializados
+2025-12-08 09:01:09.622 14117-14152 CdcForegroundService    com.cdccreditsmart.app               D  ✅ MDM já inicializado - ignorando chamada duplicada
+2025-12-08 09:01:10.711 14117-14152 SettingsGuardService    com.cdccreditsmart.app               D  📋 Activity check - Full: com.android.permissioncontroller.safetycenter.ui.SafetyCenterActivity, Simple: SafetyCenterActivity
+2025-12-08 09:01:10.711 14117-14152 SettingsGuardService    com.cdccreditsmart.app               D  🎯 Package perigoso detectado: com.google.android.permissioncontroller
+2025-12-08 09:01:10.711 14117-14152 SettingsGuardService    com.cdccreditsmart.app               W  🚨 ÁREA PERIGOSA DETECTADA!
+2025-12-08 09:01:10.711 14117-14152 SettingsGuardService    com.cdccreditsmart.app               W     Pacote: com.google.android.permissioncontroller
+2025-12-08 09:01:10.711 14117-14152 SettingsGuardService    com.cdccreditsmart.app               W     Atividade: com.android.permissioncontroller.safetycenter.ui.SafetyCenterActivity
+2025-12-08 09:01:10.712 14117-14152 SettingsGuardService    com.cdccreditsmart.app               W     Chamando app para foreground...
+2025-12-08 09:01:10.713 14117-14117 SettingsGuardService    com.cdccreditsmart.app               D  📱 Não é Device Owner - usando método alternativo
+2025-12-08 09:01:10.714 14117-14117 SettingsGuardService    com.cdccreditsmart.app               W  ⚠️ Não foi possível matar processo Settings: Permission Denial: killBackgroundProcesses() from pid=14117, uid=10219 requires android.permission.KILL_BACKGROUND_PROCESSES
+2025-12-08 09:01:10.884 14117-14117 SettingsGuardService    com.cdccreditsmart.app               D  🏠 Enviado para Home (fecha Settings)
+2025-12-08 09:01:11.027 14117-14117 SettingsGuardService    com.cdccreditsmart.app               I  ✅ App trazido para foreground
+2025-12-08 09:01:11.116 14117-14152 SettingsGuardService    com.cdccreditsmart.app               D  📋 Activity check - Full: com.google.android.apps.nexuslauncher.NexusLauncherActivity, Simple: NexusLauncherActivity
+2025-12-08 09:01:11.698 14117-14117 MainActivity            com.cdccreditsmart.app               D  📍 BroadcastReceiver de localização registrado
+2025-12-08 09:01:11.701 14117-14152 PersistentStateManager  com.cdccreditsmart.app               D  Nenhum estado local encontrado
+2025-12-08 09:01:11.706 14117-14117 MainActivity            com.cdccreditsmart.app               I  ========================================
+2025-12-08 09:01:11.706 14117-14117 MainActivity            com.cdccreditsmart.app               I  📱 SOLICITANDO PERMISSÕES (NÃO DEVICE OWNER)
+2025-12-08 09:01:11.706 14117-14117 MainActivity            com.cdccreditsmart.app               I  ========================================
+2025-12-08 09:01:11.706 14117-14117 MainActivity            com.cdccreditsmart.app               I  ✅ Todas as runtime permissions já foram concedidas!
+2025-12-08 09:01:11.706 14117-14117 SpecialPermissionReq    com.cdccreditsmart.app               I  ========================================
+2025-12-08 09:01:11.706 14117-14117 SpecialPermissionReq    com.cdccreditsmart.app               I  📊 STATUS DAS PERMISSÕES ESPECIAIS
+2025-12-08 09:01:11.706 14117-14117 SpecialPermissionReq    com.cdccreditsmart.app               I  ========================================
+2025-12-08 09:01:11.706 14117-14117 SpecialPermissionReq    com.cdccreditsmart.app               I    USAGE_STATS: ✅ CONCEDIDA
+2025-12-08 09:01:11.706 14117-14117 SpecialPermissionReq    com.cdccreditsmart.app               I    OVERLAY: ✅ CONCEDIDA
+2025-12-08 09:01:11.706 14117-14117 SpecialPermissionReq    com.cdccreditsmart.app               I  
+2025-12-08 09:01:11.706 14117-14117 SpecialPermissionReq    com.cdccreditsmart.app               I  ✅ Todas as permissões especiais concedidas!
+2025-12-08 09:01:11.706 14117-14117 SpecialPermissionReq    com.cdccreditsmart.app               I     Proteção anti-desinstalação ativa.
+2025-12-08 09:01:11.706 14117-14117 SpecialPermissionReq    com.cdccreditsmart.app               I  ========================================
+2025-12-08 09:01:11.706 14117-14117 MainActivity            com.cdccreditsmart.app               I  ✅ Todas as permissões especiais já foram concedidas!
+2025-12-08 09:01:11.707 14117-14152 PersistentStateManager  com.cdccreditsmart.app               D  🆕 Sem estado local - device novo ou pós factory reset
+2025-12-08 09:01:11.707 14117-14152 MainActivity            com.cdccreditsmart.app               I  🆕 Device nunca foi provisionado
+2025-12-08 09:01:11.711 14117-14117 InsetsController        com.cdccreditsmart.app               D  Setting requestedVisibleTypes to -14 (was -9)
+2025-12-08 09:01:11.721 14117-14152 SettingsGuardService    com.cdccreditsmart.app               D  📋 Activity check - Full: com.cdccreditsmart.app.presentation.MainActivity, Simple: MainActivity
+2025-12-08 09:01:12.163 14117-14117 PermissionGateScreen    com.cdccreditsmart.app               I  🔍 VERIFICAÇÃO INICIAL DE PERMISSÕES:
+2025-12-08 09:01:12.164 14117-14117 PermissionGateScreen    com.cdccreditsmart.app               I     Nível: DEVICE_ADMIN
+2025-12-08 09:01:12.164 14117-14117 PermissionGateScreen    com.cdccreditsmart.app               I     Todas concedidas: true
+2025-12-08 09:01:12.164 14117-14117 PermissionGateScreen    com.cdccreditsmart.app               I     Bateria isenta: true
+2025-12-08 09:01:12.165 14117-14117 PermissionGateScreen    com.cdccreditsmart.app               I     ✅ OK: Administrador do Dispositivo
+2025-12-08 09:01:12.165 14117-14117 PermissionGateScreen    com.cdccreditsmart.app               I     ✅ OK: Permissões Básicas
+2025-12-08 09:01:12.165 14117-14117 PermissionGateScreen    com.cdccreditsmart.app               I     ✅ OK: Monitoramento de Apps
+2025-12-08 09:01:12.165 14117-14117 PermissionGateScreen    com.cdccreditsmart.app               I     ✅ OK: Mostrar Alertas
+2025-12-08 09:01:12.165 14117-14117 PermissionGateScreen    com.cdccreditsmart.app               I     ✅ OK: Execução em Segundo Plano
+2025-12-08 09:01:12.165 14117-14117 PermissionGateScreen    com.cdccreditsmart.app               I  ✅ TODAS AS PERMISSÕES JÁ CONCEDIDAS - navegando imediatamente
+2025-12-08 09:01:12.165 14117-14117 SettingsGuardService    com.cdccreditsmart.app               I  ▶️ Guard RETOMADO após fluxo de permissões
+2025-12-08 09:01:12.195 14117-14117 DeviceOwnerCheckVM      com.cdccreditsmart.app               I  ========================================
+2025-12-08 09:01:12.196 14117-14117 DeviceOwnerCheckVM      com.cdccreditsmart.app               I  🔐 Verificando status de Device Owner...
+2025-12-08 09:01:12.330 14117-14152 SettingsGuardService    com.cdccreditsmart.app               D  📋 Activity check - Full: com.cdccreditsmart.app.presentation.MainActivity, Simple: MainActivity
+2025-12-08 09:01:12.573 14117-14117 InsetsController        com.cdccreditsmart.app               D  hide(ime(), fromIme=false)
+2025-12-08 09:01:12.574 14117-14117 ImeTracker              com.cdccreditsmart.app               I  com.cdccreditsmart.app:ffba8152: onCancelled at PHASE_CLIENT_ALREADY_HIDDEN
+2025-12-08 09:01:12.878 14117-14117 DeviceUtils             com.cdccreditsmart.app               D  Device Owner check: false
+2025-12-08 09:01:12.878 14117-14117 DeviceUtils             com.cdccreditsmart.app               D  Samsung device: false (Manufacturer: Google)
+2025-12-08 09:01:12.878 14117-14117 DeviceOwnerCheckVM      com.cdccreditsmart.app               W  ⚠️ MODO DEBUG: Usuário já pulou provisionamento anteriormente
+2025-12-08 09:01:12.878 14117-14117 DeviceOwnerCheckVM      com.cdccreditsmart.app               W  ⚠️ Permitindo acesso sem Device Owner (decisão memorizada)
+2025-12-08 09:01:12.878 14117-14117 DeviceOwnerCheckVM      com.cdccreditsmart.app               I  ========================================
+2025-12-08 09:01:12.896 14117-14117 RouterViewModel         com.cdccreditsmart.app               D  🚀 Iniciando verificação de autenticação...
+2025-12-08 09:01:12.899 14117-14152 AuthOrchestrator        com.cdccreditsmart.app               D  🔐 Verificando autenticação...
+2025-12-08 09:01:12.910 14117-14152 AuthOrchestrator        com.cdccreditsmart.app               D  🌐 Conectividade: ONLINE
+2025-12-08 09:01:12.910 14117-14152 AuthOrchestrator        com.cdccreditsmart.app               D  🔄 ========== AUTO-DISCOVERY INICIADO ==========
+2025-12-08 09:01:12.913 14117-14152 DeviceUtils             com.cdccreditsmart.app               E  SecurityException reading IMEI - permission denied (Ask Gemini)
+                                                                                                    java.lang.SecurityException: getImeiForSlot: The uid 10219 does not meet the requirements to access device identifiers.
+                                                                                                    	at android.os.Parcel.createExceptionOrNull(Parcel.java:3340)
+                                                                                                    	at android.os.Parcel.createException(Parcel.java:3324)
+                                                                                                    	at android.os.Parcel.readException(Parcel.java:3307)
+                                                                                                    	at android.os.Parcel.readException(Parcel.java:3249)
+                                                                                                    	at com.android.internal.telephony.ITelephony$Stub$Proxy.getImeiForSlot(ITelephony.java:12518)
+                                                                                                    	at android.telephony.TelephonyManager.getImei(TelephonyManager.java:2387)
+                                                                                                    	at android.telephony.TelephonyManager.getImei(TelephonyManager.java:2342)
+                                                                                                    	at com.cdccreditsmart.app.utils.DeviceUtils.getDeviceImei(DeviceUtils.kt:106)
+                                                                                                    	at com.cdccreditsmart.app.auth.AuthenticationOrchestrator.attemptAutoConnection(AuthenticationOrchestrator.kt:117)
+                                                                                                    	at com.cdccreditsmart.app.auth.AuthenticationOrchestrator.access$attemptAutoConnection(AuthenticationOrchestrator.kt:29)
+                                                                                                    	at com.cdccreditsmart.app.auth.AuthenticationOrchestrator$ensureAuthenticated$2.invokeSuspend(AuthenticationOrchestrator.kt:249)
+                                                                                                    	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:34)
+                                                                                                    	at kotlinx.coroutines.DispatchedTask.run(DispatchedTask.kt:108)
+                                                                                                    	at kotlinx.coroutines.internal.LimitedDispatcher$Worker.run(LimitedDispatcher.kt:115)
+                                                                                                    	at kotlinx.coroutines.scheduling.TaskImpl.run(Tasks.kt:103)
+                                                                                                    	at kotlinx.coroutines.scheduling.CoroutineScheduler.runSafely(CoroutineScheduler.kt:584)
+                                                                                                    	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.executeTask(CoroutineScheduler.kt:793)
+                                                                                                    	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.runWorker(CoroutineScheduler.kt:697)
+                                                                                                    	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.run(CoroutineScheduler.kt:684)
+2025-12-08 09:01:12.913 14117-14152 AuthOrchestrator        com.cdccreditsmart.app               W  ⚠️ IMEI não disponível (permissão negada ou emulador)
+2025-12-08 09:01:12.913 14117-14152 AuthOrchestrator        com.cdccreditsmart.app               D     → Fallback para pareamento manual
+2025-12-08 09:01:12.914 14117-14152 ContractCodeStorage     com.cdccreditsmart.app               D  Retrieving contract code from storage
+2025-12-08 09:01:12.934 14117-14158 SettingsGuardService    com.cdccreditsmart.app               D  📋 Activity check - Full: com.cdccreditsmart.app.presentation.MainActivity, Simple: MainActivity
+2025-12-08 09:01:12.989 14117-14152 ContractCodeStorage     com.cdccreditsmart.app               D  Storage verification: 7 valid, 0 tampered, 0 missing
+2025-12-08 09:01:12.990 14117-14152 ContractCodeStorage     com.cdccreditsmart.app               D  Contract code retrieved successfully
+2025-12-08 09:01:12.991 14117-14152 AuthOrchestrator        com.cdccreditsmart.app               D  ✅ Código de pareamento encontrado: XV8W****
+2025-12-08 09:01:13.003 14117-14152 SecureTokenStorage      com.cdccreditsmart.app               D  EncryptedSharedPreferences initialized successfully
+2025-12-08 09:01:13.004 14117-14152 AuthOrchestrator        com.cdccreditsmart.app               D  🔑 Token existente encontrado - validando no servidor...
+2025-12-08 09:01:13.007 14117-14168 okhttp.OkHttpClient     com.cdccreditsmart.app               I  --> GET https://cdccreditsmart.com/api/apk/device/status
+2025-12-08 09:01:13.007 14117-14168 okhttp.OkHttpClient     com.cdccreditsmart.app               I  Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkZXZpY2VJZCI6ImRldmljZV8xNzY1MTQ4NzcxNDYyXzR0ZXd3NDJwMTE0IiwiYXBrVG9rZW4iOiJYVjhXNTc2NiIsInR5cGUiOiJhcGsiLCJleHBpcmVzSW4iOiIyNGgiLCJpYXQiOjE3NjUxOTQwNzYsImV4cCI6MTc2NTI4MDQ3Nn0.ls9aMXKyIbifUwDJ2K3gFXFn750Dv9Swbrj1yl5ls5Y
+2025-12-08 09:01:13.007 14117-14168 okhttp.OkHttpClient     com.cdccreditsmart.app               I  --> END GET
+2025-12-08 09:01:13.543 14117-14152 SettingsGuardService    com.cdccreditsmart.app               D  📋 Activity check - Full: com.cdccreditsmart.app.presentation.MainActivity, Simple: MainActivity
+2025-12-08 09:01:13.784 14117-14168 okhttp.OkHttpClient     com.cdccreditsmart.app               I  <-- 200 https://cdccreditsmart.com/api/apk/device/status (777ms)
+2025-12-08 09:01:13.785 14117-14168 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-credentials: true
+2025-12-08 09:01:13.785 14117-14168 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-headers: Origin, X-Requested-With, Content-Type, Accept, Authorization, x-client-key, x-client-token, x-client-secret, cache-control
+2025-12-08 09:01:13.785 14117-14168 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-methods: GET, POST, PUT, PATCH, DELETE, OPTIONS
+2025-12-08 09:01:13.785 14117-14168 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-origin: *
+2025-12-08 09:01:13.786 14117-14168 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-max-age: 86400
+2025-12-08 09:01:13.786 14117-14168 okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-length: 624
+2025-12-08 09:01:13.786 14117-14168 okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-security-policy: default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://replit.com; style-src 'self' 'unsafe-inline' https://replit.com; img-src 'self' data: https:; font-src 'self' data: https://replit.com; connect-src 'self';
+2025-12-08 09:01:13.786 14117-14168 okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-type: application/json; charset=utf-8
+2025-12-08 09:01:13.786 14117-14168 okhttp.OkHttpClient     com.cdccreditsmart.app               I  date: Mon, 08 Dec 2025 12:01:14 GMT
+2025-12-08 09:01:13.786 14117-14168 okhttp.OkHttpClient     com.cdccreditsmart.app               I  etag: W/"270-+e7IN2J0g3PEW3NgFZaf3Cpvfy0"
+2025-12-08 09:01:13.786 14117-14168 okhttp.OkHttpClient     com.cdccreditsmart.app               I  permissions-policy: geolocation=(), microphone=(), camera=()
+2025-12-08 09:01:13.786 14117-14168 okhttp.OkHttpClient     com.cdccreditsmart.app               I  referrer-policy: strict-origin-when-cross-origin
+2025-12-08 09:01:13.786 14117-14168 okhttp.OkHttpClient     com.cdccreditsmart.app               I  strict-transport-security: max-age=63072000; includeSubDomains
+2025-12-08 09:01:13.786 14117-14168 okhttp.OkHttpClient     com.cdccreditsmart.app               I  strict-transport-security: max-age=31536000; includeSubDomains
+2025-12-08 09:01:13.786 14117-14168 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-anti-fraud-protection: active
+2025-12-08 09:01:13.786 14117-14168 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-certificate-pinning-enabled: false
+2025-12-08 09:01:13.786 14117-14168 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-certificate-pinning-status: disabled-for-stability
+2025-12-08 09:01:13.786 14117-14168 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-content-type-options: nosniff
+2025-12-08 09:01:13.787 14117-14168 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-financial-data-protection: enabled
+2025-12-08 09:01:13.787 14117-14168 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-frame-options: DENY
+2025-12-08 09:01:13.787 14117-14168 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-transaction-security-level: maximum
+2025-12-08 09:01:13.787 14117-14168 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-xss-protection: 1; mode=block
+2025-12-08 09:01:13.787 14117-14168 okhttp.OkHttpClient     com.cdccreditsmart.app               I  via: 1.1 google
+2025-12-08 09:01:13.787 14117-14168 okhttp.OkHttpClient     com.cdccreditsmart.app               I  alt-svc: h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
+2025-12-08 09:01:13.788 14117-14168 okhttp.OkHttpClient     com.cdccreditsmart.app               I  {"device":{"id":"device_1765148771462_4teww42p114","serialNumber":"XV8W5766","name":"Moto G15 Power","isBlocked":false,"blockReason":null,"status":"active"},"shouldBlock":false,"overdueCount":0,"daysSinceOverdue":0,"pdvSession":{"status":"completed","currentStage":"completed","isActive":false,"lastHeartbeat":"2025-12-07T23:10:32.721Z","heartbeatAge":46241.338,"sessionStarted":"2025-12-07T23:06:14.113Z","sessionCompleted":"2025-12-07T23:10:32.721Z","shouldWait":false},"paymentInfo":{"totalInstallments":24,"paidInstallments":0,"remainingInstallments":24,"overdueInstallments":0,"allPaid":false,"canSelfUninstall":false}}
+2025-12-08 09:01:13.788 14117-14168 okhttp.OkHttpClient     com.cdccreditsmart.app               I  <-- END HTTP (624-byte body)
+2025-12-08 09:01:13.791 14117-14152 ContractCodeStorage     com.cdccreditsmart.app               D  Retrieving contract code from storage
+2025-12-08 09:01:13.873 14117-14152 ContractCodeStorage     com.cdccreditsmart.app               D  Storage verification: 7 valid, 0 tampered, 0 missing
+2025-12-08 09:01:13.873 14117-14152 ContractCodeStorage     com.cdccreditsmart.app               D  Contract code retrieved successfully
+2025-12-08 09:01:13.874 14117-14152 ContractCodeStorage     com.cdccreditsmart.app               D  Saving contract code to redundant storage
+2025-12-08 09:01:13.899 14117-14152 ContractCodeStorage     com.cdccreditsmart.app               D  Saved to EncryptedPrefs
+2025-12-08 09:01:13.921 14117-14152 ContractCodeStorage     com.cdccreditsmart.app               D  Deleted existing file: .cdc_protected_code.enc
+2025-12-08 09:01:13.935 14117-14152 ContractCodeStorage     com.cdccreditsmart.app               D  Successfully saved to file: .cdc_protected_code.enc
+2025-12-08 09:01:13.935 14117-14152 ContractCodeStorage     com.cdccreditsmart.app               D  Saved to Protected Storage
+2025-12-08 09:01:13.936 14117-14152 ContractCodeStorage     com.cdccreditsmart.app               D  Deleted existing file: .cdc_contract_b1.enc
+2025-12-08 09:01:13.950 14117-14152 ContractCodeStorage     com.cdccreditsmart.app               D  Successfully saved to file: .cdc_contract_b1.enc
+2025-12-08 09:01:13.951 14117-14152 ContractCodeStorage     com.cdccreditsmart.app               D  Deleted existing file: .sys_device_cfg.enc
+2025-12-08 09:01:13.984 14117-14152 ContractCodeStorage     com.cdccreditsmart.app               D  Successfully saved to file: .sys_device_cfg.enc
+2025-12-08 09:01:13.984 14117-14152 ContractCodeStorage     com.cdccreditsmart.app               D  Deleted existing file: .android_secure.enc
+2025-12-08 09:01:14.002 14117-14152 ContractCodeStorage     com.cdccreditsmart.app               D  Successfully saved to file: .android_secure.enc
+2025-12-08 09:01:14.010 14117-14152 ContractCodeStorage     com.cdccreditsmart.app               D  Contract code saved to ALL storage locations
+2025-12-08 09:01:14.081 14117-14152 ContractCodeStorage     com.cdccreditsmart.app               D  Verification complete: 7/7 locations valid
+2025-12-08 09:01:14.081 14117-14152 SecureTokenStorage      com.cdccreditsmart.app               D  Auth token saved successfully (contract code via ContractCodeStorage, deviceId: device_176...)
+2025-12-08 09:01:14.081 14117-14152 AuthOrchestrator        com.cdccreditsmart.app               D  💾 DeviceId salvo: device_176...
+2025-12-08 09:01:14.082 14117-14158 AuthOrchestrator        com.cdccreditsmart.app               D  🔔 Registrando FCM token após validação de authToken...
+2025-12-08 09:01:14.082 14117-14152 AuthOrchestrator        com.cdccreditsmart.app               D  Validação do token no servidor: SUCESSO
+2025-12-08 09:01:14.082 14117-14152 AuthOrchestrator        com.cdccreditsmart.app               D  ✅ Token válido - autenticação OK!
+2025-12-08 09:01:14.082 14117-14152 AuthOrchestrator        com.cdccreditsmart.app               I  🔧 Garantindo que CdcForegroundService está rodando...
+2025-12-08 09:01:14.083 14117-14158 FcmTokenManager         com.cdccreditsmart.app               D  ========== REGISTERING FCM TOKEN WITH BACKEND ==========
+2025-12-08 09:01:14.086 14117-14152 CdcForegroundService    com.cdccreditsmart.app               I  ✅ Serviço iniciado via startService()
+2025-12-08 09:01:14.086 14117-14158 FcmTokenManager         com.cdccreditsmart.app               D  Current FCM token retrieved: eS8QBFpvRyip9Pg5wFcy...
+2025-12-08 09:01:14.086 14117-14152 AuthOrchestrator        com.cdccreditsmart.app               I  ✅ CdcForegroundService iniciado após autenticação
+2025-12-08 09:01:14.122 14117-14158 FcmTokenManager         com.cdccreditsmart.app               D  Token already registered and cache is valid, skipping...
+2025-12-08 09:01:14.123 14117-14158 AuthOrchestrator        com.cdccreditsmart.app               D  ✅ FCM token registrado após validação
+2025-12-08 09:01:14.145 14117-14117 RouterViewModel         com.cdccreditsmart.app               D  ✅ Autenticado com sucesso
+2025-12-08 09:01:14.178 14117-14117 TermsAcceptanceStorage  com.cdccreditsmart.app               D  hasAcceptedTermsForContract(XV8W5766): true (saved: XV8W5766)
+2025-12-08 09:01:14.178 14117-14117 RouterViewModel         com.cdccreditsmart.app               D  ✅ Termos já aceitos - Ir para HOME
+2025-12-08 09:01:14.179 14117-14117 CdcForegroundService    com.cdccreditsmart.app               D  🚀 Serviço onStartCommand() - Action: com.cdccreditsmart.app.START_SERVICE
+2025-12-08 09:01:14.186 14117-14117 CdcForegroundService    com.cdccreditsmart.app               I  ✅ Foreground Service ativo (Android 12+)
+2025-12-08 09:01:14.188 14117-14158 CdcForegroundService    com.cdccreditsmart.app               I  🔧 ========================================
+2025-12-08 09:01:14.188 14117-14158 CdcForegroundService    com.cdccreditsmart.app               I  🔧 INICIANDO initializeServices()...
+2025-12-08 09:01:14.188 14117-14158 CdcForegroundService    com.cdccreditsmart.app               I  🔧 ========================================
+2025-12-08 09:01:14.188 14117-14158 CdcForegroundService    com.cdccreditsmart.app               D  ✅ Serviços base já inicializados
+2025-12-08 09:01:14.188 14117-14158 CdcForegroundService    com.cdccreditsmart.app               D  ✅ MDM já inicializado - ignorando chamada duplicada
+2025-12-08 09:01:14.248 14117-14117 SimpleHomeViewModel     com.cdccreditsmart.app               I  ✅ Usando cache válido (110s < 300s)
+2025-12-08 09:01:14.248 14117-14117 SimpleHomeViewModel     com.cdccreditsmart.app               I     📊 24 parcelas em cache
+2025-12-08 09:01:14.290 14117-14117 SecureTokenStorage      com.cdccreditsmart.app               D  EncryptedSharedPreferences initialized successfully
+2025-12-08 09:01:14.290 14117-14117 SecureTokenStorage      com.cdccreditsmart.app               D  📖 Lendo customerName: Marcos Antunes
+2025-12-08 09:01:14.290 14117-14117 SecureTokenStorage      com.cdccreditsmart.app               D  📖 Lendo deviceModel: Moto G15 Power
+2025-12-08 09:01:14.290 14117-14117 ContractCodeStorage     com.cdccreditsmart.app               D  Retrieving contract code from storage
+2025-12-08 09:01:14.378 14117-14117 ContractCodeStorage     com.cdccreditsmart.app               D  Storage verification: 7 valid, 0 tampered, 0 missing
+2025-12-08 09:01:14.378 14117-14117 ContractCodeStorage     com.cdccreditsmart.app               D  Contract code retrieved successfully

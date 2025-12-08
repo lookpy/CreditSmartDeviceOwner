@@ -79,5 +79,6 @@ Utilizes Jetpack Compose and Material 3 with a CDC institutional dark theme. Fea
 **Security & Privacy Settings Now Allowed:**
 - Expanded `allowedSecurityActivities` to include main security/privacy screens
 - Now Allowed: SecuritySettings, SecurityDashboard, PrivacySettings, PrivacyDashboard, BiometricsAndSecuritySettings, LockScreenSettings, all password/PIN/pattern screens, all biometric enrollment screens
+- **Added Google Safety Center (Android 13+)**: SafetyCenterActivity from `com.google.android.permissioncontroller` - this is the main Security/Privacy hub on Pixel and other Android 13+ devices
 - Still Blocked: Device Admin screens (DeviceAdminSettings, DeviceAdminAdd, etc.)
 - Impact: Customers can change passwords and biometrics while app protection remains active
