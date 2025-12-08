@@ -11,6 +11,7 @@ import androidx.core.app.NotificationCompat
 import com.cdccreditsmart.app.R
 import com.cdccreditsmart.app.enrollment.EnrollmentManager
 import com.cdccreditsmart.app.protection.AppProtectionManager
+import com.cdccreditsmart.app.protection.TranssionPersistenceManager
 import com.cdccreditsmart.app.protection.WorkProfileManager
 import com.cdccreditsmart.app.service.CdcForegroundService
 import kotlinx.coroutines.CoroutineScope
@@ -200,6 +201,33 @@ class AutoProvisioningReceiver : BroadcastReceiver() {
                 Log.i(TAG, "✅ Proteções Knox aplicadas")
             } catch (e: Exception) {
                 Log.w(TAG, "⚠️ Proteções Knox não disponíveis (dispositivo não-Samsung ou Knox não suportado)")
+            }
+            
+            // 4.5. Aplicar persistência Transsion se for Infinix/Tecno/itel
+            try {
+                val transsionManager = TranssionPersistenceManager(context)
+                if (transsionManager.isTranssionDevice()) {
+                    Log.i(TAG, "")
+                    Log.i(TAG, "📱 Dispositivo Transsion detectado! Aplicando persistência...")
+                    
+                    val result = transsionManager.executePersistencePipeline(dryRun = false)
+                    
+                    if (result.success) {
+                        Log.i(TAG, "✅ Persistência Transsion configurada com sucesso!")
+                        Log.i(TAG, "   APK copiado para: ${result.apkPath}")
+                        Log.i(TAG, "   → Após factory reset, o app será reinstalado automaticamente")
+                    } else {
+                        Log.w(TAG, "⚠️ Persistência Transsion não aplicada: ${result.message}")
+                        result.steps.forEach { step ->
+                            val icon = if (step.success) "✅" else "❌"
+                            Log.d(TAG, "   $icon ${step.name}: ${step.message}")
+                        }
+                    }
+                } else {
+                    Log.d(TAG, "📱 Dispositivo não é Transsion - persistência alternativa não aplicável")
+                }
+            } catch (e: Exception) {
+                Log.w(TAG, "⚠️ Erro ao aplicar persistência Transsion: ${e.message}")
             }
             
             // 5. Garantir que o serviço de foreground está rodando

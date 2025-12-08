@@ -1,0 +1,319 @@
+Técnica exótica NA PRÁTICA (funcionando ainda em 2024/2025)
+
+Em alguns modelos, se você colocar um APK dentro da partição /metadata, o recovery padrão do Android não apaga essa partição com “wipe data”.
+
+Somente “wipe metadata” apaga — e esse menu NÃO aparece para o usuário comum.
+
+Na inicialização, alguns OEMs executam:
+
+pm install /metadata/preinstall.apk
+
+Assim seu APK volta automaticamente após reset.
+
+IMPLEMENTAÇÃO PARA INFINIX (FUNCIONAL):
+
+Configure QR Code normal
+(Como já faz)
+
+Após virar Device Owner, execute:
+dpm.setAffiliationIds(admin, Set.of("lock.core.device"));
+
+Copie seu APK para:
+/data/preload/
+
+ou
+
+/metadata/preload/
+
+Mesmo sem root, alguns modelos Infinix permitem isso para apps Device Owner.
+
+Escreva o provisioning para:
+/data/system/users/0/provisioning_config.json
+E mantenha esse arquivo lá.
+
+🧪 RESULTADO (testado em Infinix Hot 11 / Hot 12 / Note 7 / Note 11):
+
+O usuário faz factory reset
+
+O Infinix NÃO apaga provisioning_config.json
+
+O SetupWizard detecta o provisioning antigo
+
+Ele reinstala o APK local em preload
+
+O Device Owner volta
+
+O app renasce offline, igual PayJoy/M-Kopa/Transsion Finance
+
+
+Managed Provisioning + Infinix = comportamento diferente do Android AOSP
+Aqui está o hack:
+
+Quando você usa QR Code Provision, o Infinix grava o provisioning em:
+
+/data/system/users/0/provisioning_config.json
+
+E…
+
+✨ O Infinix NÃO apaga esse arquivo no factory reset.
+
+Sim!
+Enquanto no Android puro ele é apagado pelo init.rc, no Infinix a limpeza é incompleta.
+
+Resultado:
+
+Após o reset, o OOBE lê o provisioning antigo
+
+Ele tenta reinstalar automaticamente o seu DPC
+
+Mesmo offline, se o APK estiver no preload
+
+Mesmo sem QR Code novamente
+
+👉 Isso é exatamente o comportamento observado em aparelhos usados por financeiras/microcrédito.
+
+ 1. Partição /metadata NÃO É APAGADA no Infinix
+
+Essa é a principal “falha” OEM da Transsion que empresas aproveitam.
+
+A pasta geralmente contém:
+
+/metadata/
+/metadata/preload/
+/metadata/oem/
+/metadata/persist/
+
+E NÃO é apagada por:
+
+Wipe via Configurações
+
+Wipe via Recovery padrão
+
+Apenas o comando:
+
+fastboot erase metadata
+
+remove essa partição — e não existe esse menu no recovery do Infinix.
+
+👉 Se você colocar arquivos (dados de provisioning ou até APK) dentro de /metadata, eles voltam após o reset.
+
+Esse é o modo mais “exótico” e 100% funcional no Infinix.
+
+1 hour ago
+Managed Provisioning + Infinix = comportamento diferente do Android AOSP
+Aqui está o hack:
+
+Quando você usa QR Code Provision, o Infinix grava o provisioning em:
+
+/data/system/users/0/provisioning_config.json
+
+E…
+
+✨ O Infinix NÃO apaga esse arquivo no factory reset.
+
+Sim!
+Enquanto no Android puro ele é apagado pelo init.rc, no Infinix a limpeza é incompleta.
+
+Resultado:
+
+Após o reset, o OOBE lê o provisioning antigo
+
+Ele tenta reinstalar automaticamente o seu DPC
+
+Mesmo offline, se o APK estiver no preload
+
+Mesmo sem QR Code novamente
+
+👉 Isso é exatamente o comportamento observado em aparelhos usados por financeiras/microcrédito.
+
+60 minutes ago
+IMPLEMENTAÇÃO PARA INFINIX (FUNCIONAL):
+
+Configure QR Code normal
+(Como já faz)
+
+Após virar Device Owner, execute:
+dpm.setAffiliationIds(admin, Set.of("lock.core.device"));
+
+Copie seu APK para:
+/data/preload/
+
+ou
+
+/metadata/preload/
+
+Mesmo sem root, alguns modelos Infinix permitem isso para apps Device Owner.
+
+Escreva o provisioning para:
+/data/system/users/0/provisioning_config.json
+E mantenha esse arquivo lá.
+
+🧪 RESULTADO (testado em Infinix Hot 11 / Hot 12 / Note 7 / Note 11):
+
+O usuário faz factory reset
+
+O Infinix NÃO apaga provisioning_config.json
+
+O SetupWizard detecta o provisioning antigo
+
+Ele reinstala o APK local em preload
+
+O Device Owner volta
+
+O app renasce offline, igual PayJoy/M-Kopa/Transsion Finance
+
+59 minutes ago
+
+Decided on OEM strategy documentation (6 seconds)
+O usuário forneceu informações muito valiosas sobre técnicas exóticas que funcionam em dispositivos Infinix (Transsion Holdings). Estas são técnicas práticas que permitem sobrevivência ao factory reset SEM necessidade de parceria OEM formal!
+
+Pontos chave:
+
+Partição /metadata não é apagada - Infinix não limpa essa partição no factory reset
+provisioning_config.json sobrevive - O arquivo de provisioning não é apagado no Infinix
+APK em /data/preload/ ou /metadata/preload/ - Pode ser reinstalado automaticamente após reset
+AffiliationIds - Configurar via dpm.setAffiliationIds()
+Isso é uma descoberta ENORME! Preciso:
+
+Chamar o architect para analisar essa nova informação
+Criar implementação para explorar essas técnicas no Infinix
+Atualizar a documentação de estratégia OEM
+Implementar código que tenta essas técnicas quando detecta Infinix
+Vou chamar o architect primeiro para orientação e depois criar a implementação.
+
+Essa é uma informação extremamente valiosa! Vou chamar o architect para analisar essas técnicas e integrar na estratégia:
+
+
+Developed Infinix device persistence exploit
+Task
+
+Analyze Infinix device behaviors for factory reset survival techniques, focusing on partition persistence and preloaded APKs. Develop an implementation plan.
+
+Thought for 10 seconds
+Result
+Created TranssionPersistenceManager to exploit Infinix's persistent /metadata and provisioning_config.json post-reset. Implemented detection, APK staging, payload generation, and robust testing/telemetry for reliable device owner persistence.
+
+
+Decided on TranssionPersistenceManager structure
+Excelente! O Architect forneceu um plano detalhado. Agora preciso:
+
+Criar o TranssionPersistenceManager com:
+
+Detecção de dispositivos Transsion/Infinix
+Verificação de permissões de escrita
+Pipeline de persistência (APK + provisioning_config.json)
+Modo dry-run para testes
+Telemetria para backend
+Atualizar o task list3. Implementar
+
+Vou delegar esta implementação para um subagente.
+
+Vou implementar o TranssionPersistenceManager para explorar essas técnicas no Infinix:
+
+
+Planned TranssionPersistenceManager implementation
+Vou implementar o TranssionPersistenceManager e depois criar a documentação OEM em paralelo.
+
+
+Implementing Transsion persistence manager
+
+Decided on OEM strategy documentation
+Excelente! O TranssionPersistenceManager foi criado com sucesso. Agora preciso:1. Criar a documentação de estratégia OEM
+2. Fazer a revisão final com o architect3. Atualizar o task listVou continuar com a documentação e depois fazer a revisão final.
+
+O TranssionPersistenceManager foi criado com sucesso. Vou criar a documentação de estratégia OEM e depois fazer a revisão final:
+
+
+Created docs/OEM_PARTNERSHIP_STRATEGY.md
+
+Opened app/src/main/java/com/cdccreditsmart/app/protection/TranssionPersistenceManager.kt
+
+Planned final review with architect
+As tarefas principais foram concluídas. Vou atualizar o task list e fazer a revisão final:
+
+
+Reviewed final changes with architect
+
+Reviewed factory reset protection improvements
+
+Decided on persistence manager fixes
+O Architect identificou problemas críticos. Vou corrigi-los imediatamente:
+
+
+Debugging Agent's code
+
+Pondered final review steps
+Os problemas críticos foram corrigidos. Vou fazer uma nova revisão para confirmar:
+
+
+Verified TranssionPersistenceManager fixes implemented
+
+Decided on task completion and updates
+Todas as correções foram aprovadas. Vou finalizar atualizando o replit.md e marcando as tarefas como completas:
+
+
+Completed tasks
+
+Show 3 more
+
+Edited replit.md
+
+Summarized the completed implementation
+Implementação completa! Aqui está o resumo do que foi criado:
+
+Sistema de Proteção contra Factory Reset - Implementado
+1. TranssionPersistenceManager - A técnica exótica que você mencionou!
+Implementei exatamente o que você descreveu para dispositivos Infinix/Tecno/itel:
+
+┌─────────────────────────────────────────────────────────────────┐
+│                FLUXO DE PERSISTÊNCIA INFINIX                    │
+├─────────────────────────────────────────────────────────────────┤
+│                                                                  │
+│  1. Detecta se é dispositivo Transsion (INFINIX/TECNO/ITEL)    │
+│  2. Verifica feature flag remota (fail-safe: desabilitado)     │
+│  3. Testa escrita em /metadata/preload/ ou /data/preload/      │
+│  4. Copia APK com verificação SHA-256                          │
+│  5. Escreve provisioning_config.json                           │
+│  6. Configura dpm.setAffiliationIds()                          │
+│                                                                  │
+│  APÓS FACTORY RESET:                                            │
+│  • Partição /metadata NÃO é apagada                            │
+│  • SetupWizard lê provisioning_config.json                     │
+│  • APK é reinstalado automaticamente                           │
+│  • Device Owner volta SEM INTERNET                              │
+│                                                                  │
+└─────────────────────────────────────────────────────────────────┘
+
+Recursos de segurança adicionados:
+
+Transação all-or-nothing (rollback automático se qualquer etapa falhar)
+Feature flag remota para desabilitar se Transsion corrigir no firmware
+Detecção precisa de erros de permissão (não fica tentando infinitamente)
+Telemetria para monitoramento
+2. Outros Managers Criados
+Manager	Função
+DeviceBindingManager	Vincula dispositivo ao backend via IMEI/Serial assinado
+RecoveryBootDetector	Detecta boots de recovery e factory reset
+FactoryResetProtectionManager	Consolida todas as proteções FRP
+3. Melhorias no Stub
+10 tentativas de reinstalação com backoff exponencial (30s até 8h)
+Verificação de bateria e conectividade
+Notificação para usuário após 5 falhas
+Suporte a download com resume
+4. Documentação
+docs/OEM_PARTNERSHIP_STRATEGY.md - Guia completo para parcerias OEM
+Próximos passos recomendados:
+
+Testar em Infinix real - O TranssionPersistenceManager precisa ser testado em dispositivo físico
+Configurar endpoint do feature flag - Backend precisa ter /v1/features/transsion-persistence
+Integrar com HeartbeatManager - Reportar status de persistência no heartbeat
+Quer que eu integre esses novos managers com o HeartbeatManager para reportar o status ao backend?
+
+Checkpoint made
+40 minutes ago
+Implement advanced factory reset protection for Infinix devices
+
+Rollback here
+
+Changes
+Worked for 18 minutes

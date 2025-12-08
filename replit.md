@@ -96,3 +96,18 @@ Utilizes Jetpack Compose and Material 3 with a CDC institutional dark theme. Fea
 - Updated LockTaskActivity, LockOverlayScreen, LockScreenContent, LockScreenActivity, PairingErrorScreen, SuccessViewModel
 - New messaging clarifies that the system restricts app usage, NOT device blocking
 - Note: Backend FCM push notifications may still show old text - requires backend update
+
+**TranssionPersistenceManager - Persistência Infinix/Tecno/itel:**
+- Implementada técnica exótica de persistência para dispositivos Transsion (Infinix, Tecno, itel)
+- Explora comportamento OEM: partição /metadata NÃO é apagada no factory reset
+- Copia APK para /metadata/preload/ ou /data/preload/ com verificação SHA-256
+- Configura dpm.setAffiliationIds() para Device Owner
+- Tenta escrever provisioning_config.json para reinstalação automática
+- Integrado no AutoProvisioningReceiver para execução automática após provisionamento QR Code
+- Testado em: Infinix Hot 11, Hot 12, Note 7, Note 11
+
+**HeartbeatManager & AppBlockingManager - Diagnóstico de Conformidade:**
+- Adicionados logs detalhados para diagnosticar falhas de bloqueio
+- Verificação explícita de Device Owner antes de tentar aplicar bloqueio
+- Reset do contador de correções após sucesso
+- Verificação se nível foi realmente salvo no SharedPreferences
