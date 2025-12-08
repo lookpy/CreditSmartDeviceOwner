@@ -184,10 +184,14 @@ class PairingViewModel(private val context: Context) : ViewModel() {
                     Log.d(TAG, "Claim successful! Device paired")
                     Log.d(TAG, "Saving pairing code: ${contractId.take(4)}****")
                     
+                    val effectiveToken = body.getEffectiveDeviceToken() ?: ""
+                    Log.d(TAG, "DeviceToken sources: deviceToken=${body.deviceToken != null}, authToken=${body.authToken != null}, immutableToken=${body.immutableToken != null}")
+                    Log.d(TAG, "Using effective token: ${if (effectiveToken.isNotBlank()) "${effectiveToken.take(20)}..." else "EMPTY!"}")
+                    
                     // IMPORTANTE: contractId (ex: RSKUS3G7) É o Serial Number do contrato
                     // Isso permite que getMdmIdentifier() use RSKUS3G7 para polling MDM
                     tokenStorage.saveTokens(
-                        deviceToken = body.deviceToken ?: "",
+                        deviceToken = effectiveToken,
                         apkToken = body.apkToken ?: "",
                         fingerprint = fingerprint,
                         contractCode = contractId,

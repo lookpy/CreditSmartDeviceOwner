@@ -1,0 +1,287 @@
+# Feedback Backend → Time APK
+**Data:** 2025-12-08
+**Versão Backend:** 2.5
+
+---
+
+## Respostas ao Feedback Recebido
+
+### 1. WebSocket MDM - Token na URL
+
+**Pergunta:** O backend realmente não aceita token na query string do WebSocket?
+
+**Resposta:** O backend ACEITA token na query string, MAS ele é usado apenas para verificação adicional. O problema era que o backend EXIGIA `serialNumber` ou `fingerprint` na URL para permitir a conexão.
+
+**Correção Aplicada no Backend:**
+- O WebSocket agora aceita conexões SEM parâmetros na URL
+- A autenticação pode ser feita via mensagem JSON após a conexão
+- Timeout de 60 segundos para autenticar após conectar
+
+**Nova Forma de Autenticar (Recomendada):**
+```kotlin
+// 1. Conectar sem parâmetros
+val ws = WebSocket("wss://cdccreditsmart.com/ws/mdm-policies")
+
+// 2. Após conexão aberta, enviar mensagem de autenticação
+val authMessage = JSONObject().apply {
+    put("type", "device-control")  // ou "authenticate"
+    put("action", "authenticate")
+    put("serialNumber", "XV8W5766")
+    put("deviceToken", "eyJhbGciOiJIUzI1NiIs...")  // opcional
+    put("deviceFingerprint", "samsung/a52/...")     // opcional
+    put("androidId", "a1b2c3d4e5f6g7h8")           // opcional
+}
+ws.send(authMessage.toString())
+```
+
+**Resposta Esperada:**
+```json
+{
+  "type": "authenticated",
+  "deviceId": "device_1765148771462_4teww42p114",
+  "serialNumber": "XV8W5766",
+  "message": "Device authenticated successfully",
+  "timestamp": "2025-12-08T09:30:00.000Z"
+}
+```
+
+---
+
+### 2. DeviceToken não retornado no Pairing
+
+**Pergunta:** O deviceToken deveria ser retornado no pairing?
+
+**Resposta:** SIM! O `deviceToken` DEVE ser retornado.
+
+**Problema Identificado:** O endpoint antigo `/api/device/claim-sale` retorna `immutableToken` mas não `deviceToken` explicitamente.
+
+**Correção Aplicada - NOVO ENDPOINT:**
+
+```
+POST /api/apk/device/pair
+```
+
+Este novo endpoint retorna `deviceToken` explicitamente:
+
+**Request:**
+```json
+{
+  "imei": "353104903560533",
+  "hardwareImei": "353104903560533",
+  "deviceFingerprint": "samsung/a52/a52:14/...",
+  "androidId": "a1b2c3d4e5f6g7h8",
+  "deviceModel": "SM-A526B",
+  "deviceBrand": "samsung",
+  "androidVersion": "14"
+}
+```
+
+**Response:**
+```json
+{
+  "success": true,
+  "deviceToken": "eyJhbGciOiJIUzI1NiIs...",
+  "authToken": "eyJhbGciOiJIUzI1NiIs...",
+  "immutableToken": "eyJhbGciOiJIUzI1NiIs...",
+  "deviceId": "device_1765148771462_4teww42p114",
+  "serialNumber": "XV8W5766",
+  "saleId": "sale_123",
+  "biometrySessionId": "bio_456",
+  "storeId": "store_789",
+  "imei": "353104903560533",
+  "imeiList": ["353104903560533", "353104903560534"],
+  "meidList": ["35310490356053"],
+  "androidId": "a1b2c3d4e5f6g7h8",
+  "deviceFingerprint": "samsung/a52/a52:14/...",
+  "requiresBackendRevalidation": true,
+  "message": "Device successfully paired",
+  "__version": "v2.5-APK-PAIR"
+}
+```
+
+**Nota:** Os campos `deviceToken`, `authToken` e `immutableToken` contêm o mesmo valor - use qualquer um deles.
+
+---
+
+### 3. Confirmações das Implementações
+
+| Feature | Status Backend |
+|---------|----------------|
+| Endpoint ACK `/api/apk/commands/{id}/ack` | ✅ Funcionando |
+| Device Boot `/api/security/device-boot` | ✅ Funcionando |
+| WebSocket ping JSON | ✅ Aceito (type: "ping") |
+| Polling fallback | ✅ Suportado |
+
+---
+
+## Resumo das Mudanças no Backend
+
+### Novos Recursos
+
+1. **Novo Endpoint de Pairing:**
+   ```
+   POST /api/apk/device/pair
+   ```
+   - Retorna `deviceToken` explicitamente
+   - Mais simples que `/api/device/claim-sale`
+
+2. **WebSocket MDM Flexibilizado:**
+   - Aceita conexão SEM parâmetros na URL
+   - Autenticação via mensagem JSON após conexão
+   - Suporta `type: "device-control"` ou `type: "authenticate"`
+   - Timeout de 60s para autenticar
+
+3. **Ping/Pong WebSocket:**
+   - Backend responde a `{"type": "ping"}` com `{"type": "pong"}`
+   - Também aceita ping via OkHttp (ping interval)
+
+---
+
+## Código Kotlin Atualizado
+
+### WebSocket MDM com Autenticação via Mensagem
+
+```kotlin
+class MdmWebSocketManager(
+    private val tokenStorage: SecureTokenStorage,
+    private val deviceInfo: DeviceInfoProvider
+) {
+    private var webSocket: WebSocket? = null
+    
+    private val client = OkHttpClient.Builder()
+        .readTimeout(0, TimeUnit.MINUTES)
+        .pingInterval(25, TimeUnit.SECONDS)
+        .connectTimeout(30, TimeUnit.SECONDS)
+        .build()
+    
+    fun connect() {
+        // Conectar SEM parâmetros na URL
+        val request = Request.Builder()
+            .url("wss://cdccreditsmart.com/ws/mdm-policies")
+            .build()
+        
+        webSocket = client.newWebSocket(request, object : WebSocketListener() {
+            override fun onOpen(webSocket: WebSocket, response: Response) {
+                Log.i(TAG, "WebSocket connected - sending auth message")
+                sendAuthMessage()
+            }
+            
+            override fun onMessage(webSocket: WebSocket, text: String) {
+                val json = JSONObject(text)
+                when (json.optString("type")) {
+                    "authenticated" -> {
+                        Log.i(TAG, "✅ Authenticated: ${json.optString("deviceId")}")
+                    }
+                    "auth_required" -> {
+                        Log.w(TAG, "Auth required - sending auth message")
+                        sendAuthMessage()
+                    }
+                    "auth_error" -> {
+                        Log.e(TAG, "❌ Auth error: ${json.optString("message")}")
+                    }
+                    // ... handle other message types
+                }
+            }
+            
+            override fun onFailure(webSocket: WebSocket, t: Throwable, response: Response?) {
+                Log.e(TAG, "WebSocket failure", t)
+                scheduleReconnect()
+            }
+        })
+    }
+    
+    private fun sendAuthMessage() {
+        val authMessage = JSONObject().apply {
+            put("type", "device-control")
+            put("action", "authenticate")
+            put("serialNumber", tokenStorage.getSerialNumber())
+            put("deviceToken", tokenStorage.getDeviceToken())
+            put("deviceFingerprint", deviceInfo.getDeviceFingerprint())
+            put("androidId", deviceInfo.getAndroidId())
+            put("apkVersion", BuildConfig.VERSION_NAME)
+        }
+        webSocket?.send(authMessage.toString())
+    }
+    
+    companion object {
+        private const val TAG = "MdmWebSocketManager"
+    }
+}
+```
+
+### Pairing com Novo Endpoint
+
+```kotlin
+interface CdcApiService {
+    @POST("/api/apk/device/pair")
+    suspend fun pairDevice(
+        @Body body: PairRequest
+    ): Response<PairResponse>
+}
+
+data class PairRequest(
+    val imei: String,
+    val hardwareImei: String,
+    val deviceFingerprint: String?,
+    val androidId: String?,
+    val deviceModel: String?,
+    val deviceBrand: String?,
+    val androidVersion: String?
+)
+
+data class PairResponse(
+    val success: Boolean,
+    val deviceToken: String?,  // <-- USAR ESTE
+    val authToken: String?,
+    val immutableToken: String?,
+    val deviceId: String?,
+    val serialNumber: String?,
+    val saleId: String?,
+    val biometrySessionId: String?,
+    val storeId: String?,
+    val imei: String?,
+    val imeiList: List<String>?,
+    val meidList: List<String>?,
+    val androidId: String?,
+    val deviceFingerprint: String?,
+    val requiresBackendRevalidation: Boolean?,
+    val message: String?,
+    val error: String?,
+    val code: String?
+)
+```
+
+---
+
+## Testes curl
+
+### Teste Pairing
+```bash
+curl -X POST https://cdccreditsmart.com/api/apk/device/pair \
+  -H "Content-Type: application/json" \
+  -d '{"imei": "353104903560533", "hardwareImei": "353104903560533"}'
+```
+
+### Teste WebSocket (wscat)
+```bash
+wscat -c "wss://cdccreditsmart.com/ws/mdm-policies"
+
+# Após conectar, enviar:
+{"type": "device-control", "action": "authenticate", "serialNumber": "XV8W5766"}
+```
+
+---
+
+## Checklist para o APK
+
+- [ ] Usar novo endpoint `/api/apk/device/pair` para pairing
+- [ ] Armazenar `deviceToken` da resposta do pairing
+- [ ] WebSocket: Conectar sem parâmetros na URL
+- [ ] WebSocket: Enviar mensagem de autenticação após conexão
+- [ ] WebSocket: Tratar resposta `auth_required` reenviando auth
+- [ ] Manter ping a cada 25 segundos
+
+---
+
+**Versão:** 1.0
+**Contato:** Backend Team

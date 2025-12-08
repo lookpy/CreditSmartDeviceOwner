@@ -298,6 +298,45 @@ class MdmCommandReceiver(private val context: Context) {
                         Log.d(TAG, "👋 Mensagem de boas-vindas do servidor")
                     }
                     
+                    // Novos tipos de resposta de autenticação (v2.5)
+                    "authenticated" -> {
+                        val jsonObj = JSONObject(json)
+                        val deviceId = jsonObj.optString("deviceId", "")
+                        val serialNumber = jsonObj.optString("serialNumber", "")
+                        val serverMessage = jsonObj.optString("message", "")
+                        val timestamp = jsonObj.optString("timestamp", "")
+                        Log.i(TAG, "✅ ========================================")
+                        Log.i(TAG, "✅ AUTENTICAÇÃO WEBSOCKET CONFIRMADA! (v2.5)")
+                        Log.i(TAG, "✅ ========================================")
+                        Log.i(TAG, "✅ Device ID: $deviceId")
+                        Log.i(TAG, "✅ Serial Number: $serialNumber")
+                        Log.i(TAG, "✅ Mensagem: $serverMessage")
+                        Log.i(TAG, "✅ Timestamp: $timestamp")
+                        webSocketConnected = true
+                        isAuthenticated = true
+                    }
+                    
+                    "auth_required" -> {
+                        Log.w(TAG, "⚠️ ========================================")
+                        Log.w(TAG, "⚠️ AUTENTICAÇÃO REQUERIDA PELO SERVIDOR")
+                        Log.w(TAG, "⚠️ ========================================")
+                        Log.w(TAG, "⚠️ Reenviando mensagem de autenticação...")
+                        webSocket?.let { sendAuthenticationMessage(it) }
+                    }
+                    
+                    "auth_error" -> {
+                        val jsonObj = JSONObject(json)
+                        val error = jsonObj.optString("message", "Unknown error")
+                        val code = jsonObj.optString("code", "")
+                        Log.e(TAG, "❌ ========================================")
+                        Log.e(TAG, "❌ ERRO DE AUTENTICAÇÃO WEBSOCKET!")
+                        Log.e(TAG, "❌ ========================================")
+                        Log.e(TAG, "❌ Erro: $error")
+                        Log.e(TAG, "❌ Código: $code")
+                        webSocketConnected = false
+                        isAuthenticated = false
+                    }
+                    
                     "device-control" -> {
                         val jsonObj = JSONObject(json)
                         val action = jsonObj.optString("action", "")
