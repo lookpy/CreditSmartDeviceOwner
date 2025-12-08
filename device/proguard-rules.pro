@@ -187,13 +187,28 @@
 -keep class com.cdccreditsmart.network.websocket.WebSocketError { *; }
 
 # General rules for manufacturer-specific features
+# NOTE: Keep Warning and Error logs for debugging critical MDM issues
+# Only remove Verbose and Debug logs in release builds
 -assumenosideeffects class android.util.Log {
     public static boolean isLoggable(java.lang.String, int);
     public static int v(...);
     public static int d(...);
-    public static int i(...);
-    public static int w(...);
-    public static int e(...);
+}
+
+# ===== ADDITIONAL DEVICE OWNER CLASSES =====
+# Keep all DeviceAdminReceiver callbacks
+-keepclassmembers class * extends android.app.admin.DeviceAdminReceiver {
+    public void onEnabled(...);
+    public void onDisabled(...);
+    public void onPasswordChanged(...);
+    public void onPasswordFailed(...);
+    public void onPasswordSucceeded(...);
+    public void onProfileProvisioningComplete(...);
+    public void onTransferOwnershipComplete(...);
+    public void onLockTaskModeEntering(...);
+    public void onLockTaskModeExiting(...);
+    public void onChoosePrivateKeyAlias(...);
+    public void onReceive(...);
 }
 
 # Keep enum classes used in device management

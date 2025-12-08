@@ -10,8 +10,50 @@
     public static ** createMoshi();
 }
 
-# Keep Moshi adapters
+# ===== CRITICAL: Moshi Adapters for MDM Commands =====
 -keep class com.cdccreditsmart.network.dto.mdm.CommandParametersAdapter { *; }
+
+# ===== CRITICAL: CommandParameters sealed class and all subclasses =====
+# These classes are used for MDM command processing (BLOCK, UNBLOCK, etc.)
+-keep class com.cdccreditsmart.network.dto.mdm.CommandParameters { *; }
+-keep class com.cdccreditsmart.network.dto.mdm.CommandParameters$* { *; }
+-keep class com.cdccreditsmart.network.dto.mdm.CommandParameters$BlockParameters { *; }
+-keep class com.cdccreditsmart.network.dto.mdm.CommandParameters$UninstallAppParameters { *; }
+-keep class com.cdccreditsmart.network.dto.mdm.CommandParameters$LockScreenParameters { *; }
+-keep class com.cdccreditsmart.network.dto.mdm.CommandParameters$ConfigureUninstallCodeParameters { *; }
+-keep class com.cdccreditsmart.network.dto.mdm.CommandParameters$LocateDeviceParameters { *; }
+-keep class com.cdccreditsmart.network.dto.mdm.CommandParameters$EmptyParameters { *; }
+-keep class com.cdccreditsmart.network.dto.mdm.CommandParameters$UnknownParameters { *; }
+
+# Keep all methods on CommandParameters subclasses (getCode, shouldWipeData, isAdminAuthorized)
+-keepclassmembers class com.cdccreditsmart.network.dto.mdm.CommandParameters$* {
+    public *;
+    private *;
+    <init>(...);
+}
+
+# ===== CRITICAL: MdmCommand and related DTOs =====
+-keep class com.cdccreditsmart.network.dto.mdm.MdmCommand { *; }
+-keep class com.cdccreditsmart.network.dto.mdm.MdmCommandFull { *; }
+-keep class com.cdccreditsmart.network.dto.mdm.BlockingRule { *; }
+-keep class com.cdccreditsmart.network.dto.mdm.PendingCommandsResponse { *; }
+-keep class com.cdccreditsmart.network.dto.mdm.CommandResponseRequest { *; }
+-keep class com.cdccreditsmart.network.dto.mdm.CommandResponse { *; }
+-keep class com.cdccreditsmart.network.dto.mdm.LockScreenParameters { *; }
+
+# Keep Moshi-generated adapters for CommandParameters
+-keep class com.cdccreditsmart.network.dto.mdm.*JsonAdapter { *; }
+-keep class com.cdccreditsmart.network.dto.mdm.**$*JsonAdapter { *; }
+
+# Keep MdmCommandAdapter and MdmCommandFullAdapter (private classes used by Moshi)
+-keep class com.cdccreditsmart.network.dto.mdm.MdmCommandAdapter { *; }
+-keep class com.cdccreditsmart.network.dto.mdm.MdmCommandFullAdapter { *; }
+
+# Prevent obfuscation of MDM DTO field names (critical for JSON parsing)
+-keepclassmembers class com.cdccreditsmart.network.dto.mdm.** {
+    @com.squareup.moshi.Json <fields>;
+    public <fields>;
+}
 
 # Keep all network interceptors
 -keep class com.cdccreditsmart.network.interceptors.** { *; }

@@ -111,3 +111,33 @@ Utilizes Jetpack Compose and Material 3 with a CDC institutional dark theme. Fea
 - Verificação explícita de Device Owner antes de tentar aplicar bloqueio
 - Reset do contador de correções após sucesso
 - Verificação se nível foi realmente salvo no SharedPreferences
+
+**ProGuard Rules Fix - Preservação de Classes MDM Críticas (ATUALIZADO):**
+- Corrigido problema crítico: ProGuard/R8 estava removendo classes de proteção MDM e comandos de bloqueio progressivo
+- Adicionadas regras -keep em 3 arquivos: `app/proguard-rules.pro`, `network/proguard-rules.pro`, `device/proguard-rules.pro`
+
+**Classes Preservadas no app module:**
+  - `protection/**` (SettingsGuard, TranssionPersistence, WorkPolicyManager, AppProtectionManager)
+  - `blocking/**` (AppBlockingManager, CategoryMapper, OfflineBlockingEngine, EnhancedProtectionsManager, PopularAppsDefinitions, KnoxLockscreenManager)
+  - `mdm/**` (MdmCommandReceiver, HeartbeatManager, SelfDestructManager, PendingDecisionsService, UnblockService)
+  - `security/**` (SecureTokenStorage, SimSwapManager)
+  - `network/**` (RetrofitProvider, NetworkConnectivityHelper)
+  - `receivers/**`, `recovery/**`, `keepalive/**`, `enrollment/**`, `service/**`
+
+**Classes Preservadas no network module (CRÍTICO para comandos MDM):**
+  - `CommandParameters` sealed class e TODAS as subclasses:
+    - `CommandParameters.BlockParameters` (targetLevel, daysOverdue, categories)
+    - `CommandParameters.UninstallAppParameters` (getCode(), shouldWipeData(), isAdminAuthorized())
+    - `CommandParameters.LockScreenParameters`, `LocateDeviceParameters`, etc.
+  - `MdmCommand`, `MdmCommandFull`, `BlockingRule`
+  - `CommandParametersAdapter` (Moshi custom adapter)
+  - Todos os campos @Json preservados para parsing correto
+
+**Classes Preservadas no device module:**
+  - `CDCDeviceAdminReceiver` com TODOS os callbacks (onEnabled, onProfileProvisioningComplete, etc.)
+  - WebSocket command classes
+
+**Configurações de Otimização:**
+- `optimizationpasses 2` (reduzido de 5)
+- `!method/inlining/*` desabilitado (causava remoção de métodos)
+- Logs W/E/I mantidos em produção, apenas V/D removidos
