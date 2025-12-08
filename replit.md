@@ -52,3 +52,32 @@ Utilizes Jetpack Compose and Material 3 with a CDC institutional dark theme. Fea
 - **EncryptedSharedPreferences:** Secure local storage.
 - **WorkManager:** Background tasks.
 - **Kotlin Coroutines:** Asynchronous programming.
+
+## Recent Changes
+
+### 2025-12-08: SettingsGuard Improvements
+
+**SpaActivity Detection & Permission Flow Fix:**
+- Added `SpaActivity`, `SettingsSpaActivity`, `AppListActivity` to dangerous activities list (blocks App Info on Motorola Android 14+)
+- Added `SpaActivity` to `ALLOWED_PERMISSION_ACTIVITIES` - only allowed during permission flow (30s timeout)
+- Security: Permission flow is only activated when app calls `pauseForPermissionGrant()`, preventing exploitation
+
+**Force Close Settings Before Bringing App to Foreground:**
+- Implemented `forceCloseSettings()` that runs BEFORE bringing app to foreground
+- Device Owner Mode: Uses `setPackagesSuspended()` to temporarily suspend Settings (forces closure)
+- Fallback Mode: Uses `killBackgroundProcesses()` when not Device Owner
+- Sequence: Force close → Home → Open CDC app
+
+**SettingsGuard Flow Reorganization (Loop Fix):**
+- Reorganized `checkSettingsAccessAggressively()` into three clear functions:
+  1. `checkSettingsAccessAggressively()`: Main dispatcher
+  2. `handlePermissionFlowCheck()`: Handles permission flow logic
+  3. `handleNormalProtectionCheck()`: Handles normal protection mode
+- Priority: Voluntary uninstall → Permission flow → Normal protection
+- Each path has clear return points - no more loops
+
+**Security & Privacy Settings Now Allowed:**
+- Expanded `allowedSecurityActivities` to include main security/privacy screens
+- Now Allowed: SecuritySettings, SecurityDashboard, PrivacySettings, PrivacyDashboard, BiometricsAndSecuritySettings, LockScreenSettings, all password/PIN/pattern screens, all biometric enrollment screens
+- Still Blocked: Device Admin screens (DeviceAdminSettings, DeviceAdminAdd, etc.)
+- Impact: Customers can change passwords and biometrics while app protection remains active

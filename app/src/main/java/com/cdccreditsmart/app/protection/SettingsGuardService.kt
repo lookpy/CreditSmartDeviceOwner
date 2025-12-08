@@ -537,12 +537,31 @@ class SettingsGuardService(private val context: Context) {
         
         val allowedSecurityActivities = listOf(
             // ═══════════════════════════════════════════════════════════════════════════════
-            // APENAS TELAS ESPECÍFICAS DE SENHA/BIOMETRIA
-            // NÃO incluir telas genéricas como SecurityDashboard que também
-            // dão acesso a "Opções avançadas" → "Aplicativos de administração"!
+            // TELAS DE SEGURANÇA E PRIVACIDADE PERMITIDAS
+            // Cliente precisa poder: trocar senha, definir biometria, acessar privacidade
             // ═══════════════════════════════════════════════════════════════════════════════
             
-            // Configurações de bloqueio de tela (escolher senha/PIN/padrão)
+            // ═══════════════════════════════════════════════════════════════════════════════
+            // TELAS PRINCIPAIS DE SEGURANÇA E PRIVACIDADE (AGORA PERMITIDAS)
+            // ═══════════════════════════════════════════════════════════════════════════════
+            "SecuritySettings",
+            "SecuritySettingsActivity",
+            "SecurityDashboard",
+            "SecurityDashboardActivity",
+            "PrivacySettings",
+            "PrivacySettingsActivity", 
+            "PrivacyDashboard",
+            "PrivacyDashboardActivity",
+            "PrivacyControlsActivity",
+            "BiometricsAndSecuritySettings",
+            "BiometricsSecurity",
+            "PasswordAndSecuritySettings",  // Samsung
+            "LockScreenSettings",
+            "LockScreenSettingsActivity",
+            
+            // ═══════════════════════════════════════════════════════════════════════════════
+            // CONFIGURAÇÕES DE BLOQUEIO DE TELA (escolher senha/PIN/padrão)
+            // ═══════════════════════════════════════════════════════════════════════════════
             "ChooseLockPassword",
             "ChooseLockPattern", 
             "ChooseLockPin",
@@ -550,42 +569,65 @@ class SettingsGuardService(private val context: Context) {
             "SetupChooseLockPattern",
             "SetupChooseLockPin",
             "ChooseLockGeneric",
-            "ConfirmLockPassword",      // Confirmar senha para mudar
-            "ConfirmLockPattern",       // Confirmar padrão para mudar
-            "ConfirmLockPin",           // Confirmar PIN para mudar
+            "ConfirmLockPassword",
+            "ConfirmLockPattern",
+            "ConfirmLockPin",
             "ConfirmCredential",
+            "ScreenLockSettings",
+            "ScreenLockType",
+            "SetNewPassword",
             
-            // Configurações de biometria (impressão digital / facial)
-            "FingerprintEnroll",        // Match parcial para todas as telas de cadastro
+            // ═══════════════════════════════════════════════════════════════════════════════
+            // CONFIGURAÇÕES DE BIOMETRIA (impressão digital / facial)
+            // ═══════════════════════════════════════════════════════════════════════════════
+            "FingerprintEnroll",
             "FingerprintSettings",
-            "FaceEnroll",               // Match parcial para cadastro facial
+            "FingerprintSettingsActivity",
+            "FaceEnroll",
             "FaceSettings",
+            "FaceRecognitionSettings",
             "BiometricEnroll",
+            "BiometricSettings",
+            "IrisSettings",
             
-            // Xiaomi/MIUI - Telas específicas de senha/biometria
+            // ═══════════════════════════════════════════════════════════════════════════════
+            // XIAOMI/MIUI - Telas de segurança/privacidade
+            // ═══════════════════════════════════════════════════════════════════════════════
             "MiuiFingerprintActivity",
             "MiuiFaceUnlockActivity",
             "MiuiLockScreenSettings",
-            
-            // Samsung - Telas específicas
-            "FingerprintSettingsActivity",
-            "FaceRecognitionSettings",
-            "IrisSettings",
-            "LockscreenSettings",
-            
-            // Huawei - Telas específicas
-            "FingerprintUnlockSettingsActivity",
-            
-            // OPPO/Realme/Vivo - Telas específicas
-            "ScreenLockActivity"
+            "MiuiSecuritySettings",
+            "MiuiPrivacySettings",
             
             // ═══════════════════════════════════════════════════════════════════════════════
-            // REMOVIDOS (muito amplos, dão acesso a Device Admin):
-            // - SecuritySettings, SecurityDashboard
-            // - PasswordAndSecurity (leva a "Opções avançadas")
-            // - PrivacySettings, PrivacyDashboard
-            // - SecurityCenterMainActivity
-            // - BiometricsAndSecuritySettings
+            // SAMSUNG - Telas de segurança/privacidade
+            // ═══════════════════════════════════════════════════════════════════════════════
+            "LockscreenSettings",
+            "BiometricsSettings",
+            "PrivacyDashboardActivity",
+            
+            // ═══════════════════════════════════════════════════════════════════════════════
+            // HUAWEI/HONOR - Telas de segurança
+            // ═══════════════════════════════════════════════════════════════════════════════
+            "FingerprintUnlockSettingsActivity",
+            "HwSecuritySettings",
+            
+            // ═══════════════════════════════════════════════════════════════════════════════
+            // OPPO/REALME/VIVO - Telas de segurança
+            // ═══════════════════════════════════════════════════════════════════════════════
+            "ScreenLockActivity",
+            "ColorOSSecuritySettings",
+            "VivoSecuritySettings",
+            
+            // ═══════════════════════════════════════════════════════════════════════════════
+            // MOTOROLA/LENOVO - Telas de segurança
+            // ═══════════════════════════════════════════════════════════════════════════════
+            "MotoSecuritySettings",
+            "MotoPrivacySettings"
+            
+            // ═══════════════════════════════════════════════════════════════════════════════
+            // NOTA: Device Admin é bloqueado SEPARADAMENTE pela lista de atividades perigosas
+            // DeviceAdminSettings, DeviceAdminAdd, etc. continuam bloqueados
             // ═══════════════════════════════════════════════════════════════════════════════
         )
         
