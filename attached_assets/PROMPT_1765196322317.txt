@@ -1,0 +1,162 @@
+rtificate-pinning-enabled: false
+2025-12-08 09:15:16.547 15191-15261 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-certificate-pinning-status: disabled-for-stability
+2025-12-08 09:15:16.547 15191-15261 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-content-type-options: nosniff
+2025-12-08 09:15:16.547 15191-15261 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-financial-data-protection: enabled
+2025-12-08 09:15:16.547 15191-15261 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-frame-options: DENY
+2025-12-08 09:15:16.547 15191-15261 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-transaction-security-level: maximum
+2025-12-08 09:15:16.547 15191-15261 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-xss-protection: 1; mode=block
+2025-12-08 09:15:16.547 15191-15261 okhttp.OkHttpClient     com.cdccreditsmart.app               I  via: 1.1 google
+2025-12-08 09:15:16.547 15191-15261 okhttp.OkHttpClient     com.cdccreditsmart.app               I  alt-svc: h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
+2025-12-08 09:15:16.547 15191-15261 okhttp.OkHttpClient     com.cdccreditsmart.app               I  {"error":"Token de autorização obrigatório"}
+2025-12-08 09:15:16.547 15191-15261 okhttp.OkHttpClient     com.cdccreditsmart.app               I  <-- END HTTP (47-byte body)
+2025-12-08 09:15:16.565 15191-15232 TamperDetection         com.cdccreditsmart.app               E  ❌ Erro ao reportar boot ao backend
+2025-12-08 09:15:16.565 15191-15232 TamperDetection         com.cdccreditsmart.app               E     HTTP Status: 401
+2025-12-08 09:15:16.565 15191-15232 TamperDetection         com.cdccreditsmart.app               E     HTTP Message: 
+2025-12-08 09:15:16.587 15191-15232 TamperDetection         com.cdccreditsmart.app               E     Error body: {"error":"Token de autorização obrigatório"}
+2025-12-08 09:15:16.774 15191-15279 FcmTokenManager         com.cdccreditsmart.app               D  FCM token saved locally: eB3TwAa8SbWAOt6GfdEO...
+2025-12-08 09:15:16.778 15191-15232 FcmTokenManager         com.cdccreditsmart.app               D  ========== REGISTERING FCM TOKEN WITH BACKEND ==========
+2025-12-08 09:15:16.781 15191-15232 FcmTokenManager         com.cdccreditsmart.app               D  Current FCM token retrieved: eB3TwAa8SbWAOt6GfdEO...
+2025-12-08 09:15:16.926 15191-15232 SecureTokenStorage      com.cdccreditsmart.app               D  EncryptedSharedPreferences initialized successfully
+2025-12-08 09:15:16.929 15191-15232 FcmTokenManager         com.cdccreditsmart.app               E  Cannot register: Auth token not available
+2025-12-08 09:15:16.929 15191-15232 CdcMessagingService     com.cdccreditsmart.app               E  ❌ Failed to register FCM token with backend: User not authenticated
+2025-12-08 09:15:17.026 15191-15239 FA                      com.cdccreditsmart.app               I  Application backgrounded at: timestamp_millis: 1765196113888
+2025-12-08 09:15:17.103 15191-15232 SettingsGuardService    com.cdccreditsmart.app               D  📋 Activity check - Full: null, Simple: null
+2025-12-08 09:15:17.342 15191-15200 creditsmart.app         com.cdccreditsmart.app               I  Compiler allocated 5042KB to compile void android.view.ViewRootImpl.performTraversals()
+2025-12-08 09:15:17.342 15191-15191 InteractionJankMonitor  com.cdccreditsmart.app               W  Initializing without READ_DEVICE_CONFIG permission. enabled=false, interval=1, missedFrameThreshold=3, frameTimeThreshold=64, package=com.cdccreditsmart.app
+2025-12-08 09:15:17.705 15191-15232 SettingsGuardService    com.cdccreditsmart.app               D  📋 Activity check - Full: null, Simple: null
+2025-12-08 09:15:18.310 15191-15232 SettingsGuardService    com.cdccreditsmart.app               D  📋 Activity check - Full: null, Simple: null
+2025-12-08 09:15:18.730 15191-15287 ProfileInstaller        com.cdccreditsmart.app               D  Installing profile for com.cdccreditsmart.app
+2025-12-08 09:15:18.913 15191-15232 SettingsGuardService    com.cdccreditsmart.app               D  📋 Activity check - Full: null, Simple: null
+2025-12-08 09:15:19.515 15191-15232 SettingsGuardService    com.cdccreditsmart.app               D  📋 Activity check - Full: null, Simple: null
+2025-12-08 09:15:20.119 15191-15232 SettingsGuardService    com.cdccreditsmart.app               D  📋 Activity check - Full: null, Simple: null
+2025-12-08 09:15:20.724 15191-15232 SettingsGuardService    com.cdccreditsmart.app               D  📋 Activity check - Full: null, Simple: null
+2025-12-08 09:15:21.328 15191-15232 SettingsGuardService    com.cdccreditsmart.app               D  📋 Activity check - Full: null, Simple: null
+2025-12-08 09:15:21.935 15191-15232 SettingsGuardService    com.cdccreditsmart.app               D  📋 Activity check - Full: null, Simple: null
+2025-12-08 09:15:22.541 15191-15232 SettingsGuardService    com.cdccreditsmart.app               D  📋 Activity check - Full: null, Simple: null
+2025-12-08 09:15:23.147 15191-15232 SettingsGuardService    com.cdccreditsmart.app               D  📋 Activity check - Full: null, Simple: null
+2025-12-08 09:15:23.752 15191-15232 SettingsGuardService    com.cdccreditsmart.app               D  📋 Activity check - Full: null, Simple: null
+2025-12-08 09:15:24.355 15191-15232 SettingsGuardService    com.cdccreditsmart.app               D  📋 Activity check - Full: null, Simple: null
+2025-12-08 09:15:24.967 15191-15232 SettingsGuardService    com.cdccreditsmart.app               D  📋 Activity check - Full: null, Simple: null
+2025-12-08 09:15:25.569 15191-15232 SettingsGuardService    com.cdccreditsmart.app               D  📋 Activity check - Full: null, Simple: null
+2025-12-08 09:15:26.173 15191-15232 SettingsGuardService    com.cdccreditsmart.app               D  📋 Activity check - Full: null, Simple: null
+2025-12-08 09:15:26.777 15191-15232 SettingsGuardService    com.cdccreditsmart.app               D  📋 Activity check - Full: null, Simple: null
+2025-12-08 09:15:26.883 15191-15191 SettingsGuardService    com.cdccreditsmart.app               I  ▶️ Guard RETOMADO após fluxo de permissões
+2025-12-08 09:15:26.883 15191-15191 MainActivity            com.cdccreditsmart.app               I  ✅ TODAS as permissões foram concedidas pelo usuário!
+2025-12-08 09:15:26.883 15191-15191 MainActivity            com.cdccreditsmart.app               D    ✅ android.permission.READ_PHONE_STATE
+2025-12-08 09:15:26.883 15191-15191 MainActivity            com.cdccreditsmart.app               D    ✅ android.permission.READ_CALL_LOG
+2025-12-08 09:15:26.883 15191-15191 MainActivity            com.cdccreditsmart.app               D    ✅ android.permission.CALL_PHONE
+2025-12-08 09:15:26.883 15191-15191 MainActivity            com.cdccreditsmart.app               D    ✅ android.permission.READ_CONTACTS
+2025-12-08 09:15:26.883 15191-15191 MainActivity            com.cdccreditsmart.app               D    ✅ android.permission.ACCESS_FINE_LOCATION
+2025-12-08 09:15:26.883 15191-15191 MainActivity            com.cdccreditsmart.app               D    ✅ android.permission.ACCESS_COARSE_LOCATION
+2025-12-08 09:15:26.883 15191-15191 MainActivity            com.cdccreditsmart.app               D    ✅ android.permission.ANSWER_PHONE_CALLS
+2025-12-08 09:15:26.883 15191-15191 MainActivity            com.cdccreditsmart.app               D    ✅ android.permission.READ_PHONE_NUMBERS
+2025-12-08 09:15:26.883 15191-15191 MainActivity            com.cdccreditsmart.app               D    ✅ android.permission.POST_NOTIFICATIONS
+2025-12-08 09:15:26.965 15191-15191 InsetsController        com.cdccreditsmart.app               D  hide(ime(), fromIme=false)
+2025-12-08 09:15:26.966 15191-15191 ImeTracker              com.cdccreditsmart.app               I  com.cdccreditsmart.app:48cb4075: onCancelled at PHASE_CLIENT_ALREADY_HIDDEN
+2025-12-08 09:15:27.395 15191-15232 SettingsGuardService    com.cdccreditsmart.app               D  📋 Activity check - Full: null, Simple: null
+2025-12-08 09:15:27.998 15191-15232 SettingsGuardService    com.cdccreditsmart.app               D  📋 Activity check - Full: null, Simple: null
+2025-12-08 09:15:28.228 15191-15191 SettingsGuardService    com.cdccreditsmart.app               I  ⏸️ Guard PAUSADO para fluxo de permissões (timeout: 30s)
+2025-12-08 09:15:28.607 15191-15232 SettingsGuardService    com.cdccreditsmart.app               I  ▶️ App CDC em foreground - fluxo de permissão concluído
+2025-12-08 09:15:28.607 15191-15232 SettingsGuardService    com.cdccreditsmart.app               I  ▶️ Guard RETOMADO após fluxo de permissões
+2025-12-08 09:15:29.244 15191-15232 SettingsGuardService    com.cdccreditsmart.app               D  📋 Activity check - Full: null, Simple: null
+2025-12-08 09:15:29.467 15191-15191 VRI[MainActivity]       com.cdccreditsmart.app               D  visibilityChanged oldVisibility=true newVisibility=false
+2025-12-08 09:15:30.287 15191-15239 FA                      com.cdccreditsmart.app               I  Application backgrounded at: timestamp_millis: 1765196128284
+2025-12-08 09:15:36.113 15191-15191 ViewRootImpl            com.cdccreditsmart.app               D  Skipping stats log for color mode
+2025-12-08 09:15:36.510 15191-15232 SettingsGuardService    com.cdccreditsmart.app               D  📋 Activity check - Full: null, Simple: null
+2025-12-08 09:15:37.065 15191-15191 InsetsController        com.cdccreditsmart.app               D  hide(ime(), fromIme=false)
+2025-12-08 09:15:37.066 15191-15191 ImeTracker              com.cdccreditsmart.app               I  com.cdccreditsmart.app:8a9396fa: onCancelled at PHASE_CLIENT_ALREADY_HIDDEN
+2025-12-08 09:15:37.118 15191-15232 SettingsGuardService    com.cdccreditsmart.app               D  📋 Activity check - Full: null, Simple: null
+2025-12-08 09:15:37.720 15191-15232 SettingsGuardService    com.cdccreditsmart.app               D  📋 Activity check - Full: null, Simple: null
+2025-12-08 09:15:38.075 15191-15191 SettingsGuardService    com.cdccreditsmart.app               I  ⏸️ Guard PAUSADO para fluxo de permissões (timeout: 30s)
+2025-12-08 09:15:38.075 15191-15191 PermissionGateScreen    com.cdccreditsmart.app               I  ⏸️ Proteção pausada para fluxo de Device Admin
+2025-12-08 09:15:38.346 15191-15232 SettingsGuardService    com.cdccreditsmart.app               I  ▶️ App CDC em foreground - fluxo de permissão concluído
+2025-12-08 09:15:38.346 15191-15232 SettingsGuardService    com.cdccreditsmart.app               I  ▶️ Guard RETOMADO após fluxo de permissões
+2025-12-08 09:15:38.974 15191-15232 SettingsGuardService    com.cdccreditsmart.app               D  📋 Activity check - Full: null, Simple: null
+2025-12-08 09:15:39.087 15191-15191 VRI[MainActivity]       com.cdccreditsmart.app               D  visibilityChanged oldVisibility=true newVisibility=false
+2025-12-08 09:15:40.213 15191-15239 FA                      com.cdccreditsmart.app               I  Application backgrounded at: timestamp_millis: 1765196138200
+2025-12-08 09:15:41.095 15191-15191 CDC_PROVISIONING_DEBUG  com.cdccreditsmart.app               I  [2025-12-08 12:15:41.095] [PID:15191] [TID:2|main] 🏁 PROVISIONING STARTED: Timer started for hang detection
+2025-12-08 09:15:41.096 15191-15191 CDC_PROVISIONING_DEBUG  com.cdccreditsmart.app               I  [2025-12-08 12:15:41.095] [PID:15191] [TID:2|main] 📈 CALLBACK PROGRESS: 1/3 completed
+2025-12-08 09:15:41.096 15191-15191 CDC_PROVISIONING_DEBUG  com.cdccreditsmart.app               I  [2025-12-08 12:15:41.096] [PID:15191] [TID:2|main] 📈 Completed: onEnabled
+2025-12-08 09:15:41.096 15191-15191 CDC_PROVISIONING_DEBUG  com.cdccreditsmart.app               I  [2025-12-08 12:15:41.096] [PID:15191] [TID:2|main] ⏳ Remaining: onProfileProvisioningComplete, onReadyForUserInitialization
+2025-12-08 09:15:41.096 15191-15191 CDCDeviceAdminReceiver  com.cdccreditsmart.app               I  [2025-12-08 12:15:41.096] [PID:15191] [TID:2|main] 🔑 ==================== DEVICE ADMIN ENABLED ====================
+2025-12-08 09:15:41.097 15191-15191 CDCDeviceAdminReceiver  com.cdccreditsmart.app               I  [2025-12-08 12:15:41.096] [PID:15191] [TID:2|main] ✅ Device Admin enabled successfully - CRITICAL CALLBACK FOR WORK PROFILE PREPARATION
+2025-12-08 09:15:41.097 15191-15191 CDCDeviceAdminReceiver  com.cdccreditsmart.app               I  [2025-12-08 12:15:41.097] [PID:15191] [TID:2|main] ⏰ Raw timestamp: 1765196141097
+2025-12-08 09:15:41.097 15191-15191 CDCDeviceAdminReceiver  com.cdccreditsmart.app               I  [2025-12-08 12:15:41.097] [PID:15191] [TID:2|main] 🔍 Starting comprehensive admin enablement verification...
+2025-12-08 09:15:41.098 15191-15191 CDCDeviceAdminReceiver  com.cdccreditsmart.app               I  [2025-12-08 12:15:41.097] [PID:15191] [TID:2|main] 📋 Admin component: ComponentInfo{com.cdccreditsmart.app/com.cdccreditsmart.device.CDCDeviceAdminReceiver}
+2025-12-08 09:15:41.098 15191-15191 CDCDeviceAdminReceiver  com.cdccreditsmart.app               I  [2025-12-08 12:15:41.098] [PID:15191] [TID:2|main] 📱 Package name: com.cdccreditsmart.app
+2025-12-08 09:15:41.098 15191-15191 CDCDeviceAdminReceiver  com.cdccreditsmart.app               I  [2025-12-08 12:15:41.098] [PID:15191] [TID:2|main] 👤 Current user: UserHandle{0}
+2025-12-08 09:15:41.099 15191-15191 CDCDeviceAdminReceiver  com.cdccreditsmart.app               I  [2025-12-08 12:15:41.098] [PID:15191] [TID:2|main] 🎯 Current user handle: UserHandle{0}
+2025-12-08 09:15:41.100 15191-15191 CDCDeviceAdminReceiver  com.cdccreditsmart.app               I  [2025-12-08 12:15:41.099] [PID:15191] [TID:2|main] 🔒 Device administration status:
+2025-12-08 09:15:41.101 15191-15191 CDCDeviceAdminReceiver  com.cdccreditsmart.app               I  [2025-12-08 12:15:41.100] [PID:15191] [TID:2|main]    🔑 Admin active: true
+2025-12-08 09:15:41.101 15191-15191 CDCDeviceAdminReceiver  com.cdccreditsmart.app               I  [2025-12-08 12:15:41.101] [PID:15191] [TID:2|main]    🏭 Device owner: false
+2025-12-08 09:15:41.102 15191-15191 CDCDeviceAdminReceiver  com.cdccreditsmart.app               I  [2025-12-08 12:15:41.102] [PID:15191] [TID:2|main]    📋 Profile owner: false
+2025-12-08 09:15:41.107 15191-15191 CDCDeviceAdminReceiver  com.cdccreditsmart.app               I  [2025-12-08 12:15:41.105] [PID:15191] [TID:2|main] 🏢 Work Profile status (CRITICAL FOR PREPARATION):
+2025-12-08 09:15:41.107 15191-15191 CDCDeviceAdminReceiver  com.cdccreditsmart.app               I  [2025-12-08 12:15:41.107] [PID:15191] [TID:2|main]    🏢 Is managed profile: false
+2025-12-08 09:15:41.107 15191-15191 CDCDeviceAdminReceiver  com.cdccreditsmart.app               I  [2025-12-08 12:15:41.107] [PID:15191] [TID:2|main]    🔧 Is system user: true
+2025-12-08 09:15:41.108 15191-15191 CDCDeviceAdminReceiver  com.cdccreditsmart.app               I  [2025-12-08 12:15:41.108] [PID:15191] [TID:2|main]    🔓 Is user unlocked: true
+2025-12-08 09:15:41.109 15191-15191 CDCDeviceAdminReceiver  com.cdccreditsmart.app               I  [2025-12-08 12:15:41.109] [PID:15191] [TID:2|main]    📱 Device provisioned: true
+2025-12-08 09:15:41.110 15191-15191 CDCDeviceAdminReceiver  com.cdccreditsmart.app               I  [2025-12-08 12:15:41.109] [PID:15191] [TID:2|main]    👤 User setup complete: true
+2025-12-08 09:15:41.110 15191-15191 CDCDeviceAdminReceiver  com.cdccreditsmart.app               I  [2025-12-08 12:15:41.110] [PID:15191] [TID:2|main] 🔍 DEVICE CAPABILITIES ANALYSIS (Critical for work profile):
+2025-12-08 09:15:41.115 15191-15191 CDCDeviceAdminReceiver  com.cdccreditsmart.app               W  [2025-12-08 12:15:41.115] [PID:15191] [TID:2|main]    📷 Could not check camera permission state
+2025-12-08 09:15:41.120 15191-15191 CDCDeviceAdminReceiver  com.cdccreditsmart.app               W  Exception details: (Ask Gemini)
+                                                                                                    java.lang.SecurityException: Calling identity is not authorized
+                                                                                                    	at android.os.Parcel.createExceptionOrNull(Parcel.java:3340)
+                                                                                                    	at android.os.Parcel.createException(Parcel.java:3324)
+                                                                                                    	at android.os.Parcel.readException(Parcel.java:3307)
+                                                                                                    	at android.os.Parcel.readException(Parcel.java:3249)
+                                                                                                    	at android.app.admin.IDevicePolicyManager$Stub$Proxy.getPermissionGrantState(IDevicePolicyManager.java:11082)
+                                                                                                    	at android.app.admin.DevicePolicyManager.getPermissionGrantState(DevicePolicyManager.java:14317)
+                                                                                                    	at com.cdccreditsmart.device.CDCDeviceAdminReceiver.logDeviceCapabilities(CDCDeviceAdminReceiver.kt:821)
+                                                                                                    	at com.cdccreditsmart.device.CDCDeviceAdminReceiver.onEnabled(CDCDeviceAdminReceiver.kt:383)
+                                                                                                    	at android.app.admin.DeviceAdminReceiver.onReceive(DeviceAdminReceiver.java:1195)
+                                                                                                    	at android.app.ActivityThread.handleReceiver(ActivityThread.java:5029)
+                                                                                                    	at android.app.ActivityThread.-$$Nest$mhandleReceiver(Unknown Source:0)
+                                                                                                    	at android.app.ActivityThread$H.handleMessage(ActivityThread.java:2577)
+                                                                                                    	at android.os.Handler.dispatchMessage(Handler.java:110)
+                                                                                                    	at android.os.Looper.loopOnce(Looper.java:248)
+                                                                                                    	at android.os.Looper.loop(Looper.java:338)
+                                                                                                    	at android.app.ActivityThread.main(ActivityThread.java:9067)
+                                                                                                    	at java.lang.reflect.Method.invoke(Native Method)
+                                                                                                    	at com.android.internal.os.RuntimeInit$MethodAndArgsCaller.run(RuntimeInit.java:593)
+                                                                                                    	at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:932)
+                                                                                                    Caused by: android.os.RemoteException: Remote stack trace:
+                                                                                                    	at com.android.internal.util.Preconditions.checkCallAuthorization(Preconditions.java:254)
+                                                                                                    	at com.android.server.devicepolicy.DevicePolicyManagerService.getPermissionGrantState(DevicePolicyManagerService.java:17004)
+                                                                                                    	at android.app.admin.IDevicePolicyManager$Stub.onTransact$getPermissionGrantState$(IDevicePolicyManager.java:15758)
+                                                                                                    	at android.app.admin.IDevicePolicyManager$Stub.onTransact(IDevicePolicyManager.java:5121)
+                                                                                                    	at android.os.Binder.execTransactInternal(Binder.java:1421)
+                                                                                                    
+2025-12-08 09:15:41.127 15191-15191 CDCDeviceAdminReceiver  com.cdccreditsmart.app               W  [2025-12-08 12:15:41.126] [PID:15191] [TID:2|main]    🔒 Could not check lock task packages
+2025-12-08 09:15:41.127 15191-15191 CDCDeviceAdminReceiver  com.cdccreditsmart.app               W  Exception details: (Ask Gemini)
+                                                                                                    java.lang.SecurityException: Caller does not have the required permissions for this user. Permission required: android.permission.MANAGE_DEVICE_POLICY_LOCK_TASK.
+                                                                                                    	at android.os.Parcel.createExceptionOrNull(Parcel.java:3340)
+                                                                                                    	at android.os.Parcel.createException(Parcel.java:3324)
+                                                                                                    	at android.os.Parcel.readException(Parcel.java:3307)
+                                                                                                    	at android.os.Parcel.readException(Parcel.java:3249)
+                                                                                                    	at android.app.admin.IDevicePolicyManager$Stub$Proxy.getLockTaskPackages(IDevicePolicyManager.java:9915)
+                                                                                                    	at android.app.admin.DevicePolicyManager.getLockTaskPackages(DevicePolicyManager.java:13097)
+                                                                                                    	at com.cdccreditsmart.device.CDCDeviceAdminReceiver.logDeviceCapabilities(CDCDeviceAdminReceiver.kt:834)
+                                                                                                    	at com.cdccreditsmart.device.CDCDeviceAdminReceiver.onEnabled(CDCDeviceAdminReceiver.kt:383)
+                                                                                                    	at android.app.admin.DeviceAdminReceiver.onReceive(DeviceAdminReceiver.java:1195)
+                                                                                                    	at android.app.ActivityThread.handleReceiver(ActivityThread.java:5029)
+                                                                                                    	at android.app.ActivityThread.-$$Nest$mhandleReceiver(Unknown Source:0)
+                                                                                                    	at android.app.ActivityThread$H.handleMessage(ActivityThread.java:2577)
+                                                                                                    	at android.os.Handler.dispatchMessage(Handler.java:110)
+                                                                                                    	at android.os.Looper.loopOnce(Looper.java:248)
+                                                                                                    	at android.os.Looper.loop(Looper.java:338)
+                                                                                                    	at android.app.ActivityThread.main(ActivityThread.java:9067)
+                                                                                                    	at java.lang.reflect.Method.invoke(Native Method)
+                                                                                                    	at com.android.internal.os.RuntimeInit$MethodAndArgsCaller.run(RuntimeInit.java:593)
+                                                                                                    	at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:932)
+2025-12-08 09:15:41.128 15191-15191 CDCDeviceAdminReceiver  com.cdccreditsmart.app               I  [2025-12-08 12:15:41.128] [PID:15191] [TID:2|main]    💾 Storage encryption status: false
+2025-12-08 09:15:41.129 15191-15191 CDCDeviceAdminReceiver  com.cdccreditsmart.app               I  [2025-12-08 12:15:41.128] [PID:15191] [TID:2|main] ✅ Device capabilities analysis completed
+2025-12-08 09:15:41.130 15191-15191 CDC_PROVISIONING_DEBUG  com.cdccreditsmart.app               I  [2025-12-08 12:15:41.129] [PID:15191] [TID:2|main] 📋 CALLBACK SEQUENCE (1 callbacks):
+2025-12-08 09:15:41.130 15191-15191 CDC_PROVISIONING_DEBUG  com.cdccreditsmart.app               I  [2025-12-08 12:15:41.130] [PID:15191] [TID:2|main]    1. 2025-12-08 12:15:41.063 - onEnabled
+2025-12-08 09:15:41.131 15191-15191 CDC_PROVISIONING_DEBUG  com.cdccreditsmart.app               I  [2025-12-08 12:15:41.130] [PID:15191] [TID:2|main] 🔍 HANG DETECTION CHECK:
+2025-12-08 09:15:41.131 15191-15191 CDC_PROVISIONING_DEBUG  com.cdccreditsmart.app               I  [2025-12-08 12:15:41.131] [PID:15191] [TID:2|main]    ⏱️ Time since provisioning start: 67ms
+2025-12-08 09:15:41.131 15191-15191 CDC_PROVISIONING_DEBUG  com.cdccreditsmart.app               I  [2025-12-08 12:15:41.131] [PID:15191] [TID:2|main]    ⏱️ Time since last callback: 67ms
+2025-12-08 09:15:41.132 15191-15191 CDCDeviceAdminReceiver  com.cdccreditsmart.app               I  [2025-12-08 12:15:41.132] [PID:15191] [TID:2|main] ✅ Admin enablement verification completed successfully
+2025-12-08 09:15:41.132 15191-15191 CDCDeviceAdminReceiver  com.cdccreditsmart.app               I  [2025-12-08 12:15:41.132] [PID:15191] [TID:2|main] 🏁 onEnabled callback completed - work profile preparation should continue
+2025-12-08 09:15:41.133 15191-15191 CDCDeviceAdminReceiver  com.cdccreditsmart.app               I  [2025-12-08 12:15:41.132] [PID:15191] [TID:2|main] 🔑 =================================================================
+2025-12-08 09:15:41.139 15191-15191 PermissionGateScreen    com.cdccreditsmart.app               I  ✅ Device Admin status atualizado
+2025-12-08 09:15:41.429 15191-15232 SettingsGuardService    com.cdccreditsmart.app               D  📋 Activity check - Full: null, Simple: null
