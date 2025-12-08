@@ -59,20 +59,62 @@ class SettingsGuardService(private val context: Context) {
         @Volatile
         private var uninstallPauseTimestamp: Long = 0L
         
+        @Volatile
+        private var permissionPauseTimestamp: Long = 0L
+        
         // Timeout para assumir que desinstalação foi cancelada (2 minutos)
         private const val UNINSTALL_TIMEOUT_MS = 2 * 60 * 1000L
+        
+        // Timeout para fluxo de permissões (30 segundos)
+        private const val PERMISSION_FLOW_TIMEOUT_MS = 30_000L
         
         // ID da notificação persistente para solicitar permissão USAGE_STATS
         private const val USAGE_STATS_NOTIFICATION_ID = 9999
         
+        // Atividades permitidas durante fluxo de permissões
+        private val ALLOWED_PERMISSION_ACTIVITIES = setOf(
+            "DeviceAdminAdd",
+            "AddDeviceAdmin",
+            "GrantPermissionsActivity",
+            "UsageAccessSettings",
+            "UsageStatsAccess",
+            "AppOpsSettings",
+            "ManageOverlayPermission",
+            "DrawOverlayDetails",
+            "HighPowerApplicationsActivity",
+            "RequestIgnoreBatteryOptimizations"
+        )
+        
         fun pauseForPermissionGrant() {
             isPermissionGrantFlowActive = true
-            Log.i(TAG, "⏸️ Guard PAUSADO para fluxo de permissões")
+            permissionPauseTimestamp = System.currentTimeMillis()
+            Log.i(TAG, "⏸️ Guard PAUSADO para fluxo de permissões (timeout: ${PERMISSION_FLOW_TIMEOUT_MS / 1000}s)")
         }
         
         fun resumeAfterPermissionGrant() {
             isPermissionGrantFlowActive = false
+            permissionPauseTimestamp = 0L
             Log.i(TAG, "▶️ Guard RETOMADO após fluxo de permissões")
+        }
+        
+        fun checkPermissionFlowTimeout(): Boolean {
+            if (!isPermissionGrantFlowActive) return false
+            if (permissionPauseTimestamp == 0L) return false
+            
+            val elapsed = System.currentTimeMillis() - permissionPauseTimestamp
+            if (elapsed > PERMISSION_FLOW_TIMEOUT_MS) {
+                Log.w(TAG, "⏰ TIMEOUT de fluxo de permissões (${elapsed / 1000}s) - retomando guard")
+                resumeAfterPermissionGrant()
+                return true
+            }
+            return false
+        }
+        
+        fun isActivityAllowedDuringPermissionFlow(activityName: String?): Boolean {
+            if (activityName == null) return false
+            return ALLOWED_PERMISSION_ACTIVITIES.any { allowed ->
+                activityName.contains(allowed, ignoreCase = true)
+            }
         }
         
         fun pauseForVoluntaryUninstall() {
@@ -317,11 +359,28 @@ class SettingsGuardService(private val context: Context) {
         val foregroundActivity = foregroundInfo.second
         
         if (isPermissionGrantFlowActive) {
+            checkPermissionFlowTimeout()
+            
             if (foregroundPackage == context.packageName) {
                 Log.i(TAG, "▶️ App voltou ao foreground durante fluxo de permissão - retomando guard")
                 resumeAfterPermissionGrant()
+                return
             }
-            return
+            
+            if (isActivityAllowedDuringPermissionFlow(foregroundActivity)) {
+                Log.d(TAG, "✅ Atividade permitida durante fluxo de permissões: $foregroundActivity")
+                return
+            }
+            
+            val checkResult = checkSettingsActivity(foregroundPackage, foregroundActivity)
+            if (checkResult == SettingsCheckResult.DANGEROUS_IMMEDIATE) {
+                Log.w(TAG, "🚨 ÁREA PERIGOSA durante fluxo de permissões!")
+                Log.w(TAG, "   Atividade: $foregroundActivity")
+                Log.w(TAG, "   Retomando guard e bloqueando...")
+                resumeAfterPermissionGrant()
+            } else {
+                return
+            }
         }
         
         if (isVoluntaryUninstallActive) {

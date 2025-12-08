@@ -80,3 +80,11 @@ The UI uses Jetpack Compose and Material 3 with a CDC institutional dark theme. 
 - **Fixed SettingsGuard Blocking**: Device Admin permission screen was being blocked by SettingsGuard because `pauseForPermissionGrant()` was not called
 - **Updated PermissionGateScreen.kt**: Now calls `SettingsGuardService.pauseForPermissionGrant()` before opening Device Admin activation screen
 - **Impact**: Users can now properly grant Device Admin permission after reinstalling the app
+
+### 2025-12-08: SettingsGuard Security Hardening
+- **Fixed Security Gap**: Permission flow pause was allowing access to ALL screens (including App Info)
+- **Added Timeout**: 30-second auto-reset for permission flow (prevents indefinite pause exploitation)
+- **Added Allowlist**: Only specific permission-related activities are now allowed during permission flow
+- **Dangerous Screen Blocking**: App Info, ManageApplications, and other dangerous screens are now blocked even during permission flow
+- **Allowed Activities**: DeviceAdminAdd, GrantPermissionsActivity, UsageAccessSettings, ManageOverlayPermission, etc.
+- **Impact**: Users cannot exploit permission flow to access dangerous settings
