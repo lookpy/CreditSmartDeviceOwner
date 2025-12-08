@@ -299,7 +299,7 @@ class MainActivity : ComponentActivity() {
             
             // Reiniciar o serviço de foreground para restaurar MDM
             try {
-                com.cdccreditsmart.app.service.CdcForegroundService.ensureForegroundServiceRunning(this)
+                com.cdccreditsmart.app.service.CdcForegroundService.startService(this)
                 Log.i(TAG, "🔄 ✅ CdcForegroundService reiniciado")
             } catch (e: Exception) {
                 Log.e(TAG, "🔄 ❌ Erro ao reiniciar CdcForegroundService: ${e.message}", e)
