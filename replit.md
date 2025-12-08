@@ -133,3 +133,51 @@ Utilizes Jetpack Compose and Material 3 with a CDC institutional dark theme. Fea
 - Flow: QR Code → onProfileProvisioningComplete → Save enrollment data → Schedule reinstall (if auto_install=true)
 - Post-reset flow: User scans QR Code again → Stub reinstalled as Device Owner → Downloads main app from Supabase URL
 - All four scenarios verified: QR with data, auto-discovery, auto_install=false, post-reset re-enrollment
+
+### 2025-12-08: Factory Reset Protection System Overhaul
+
+**New Protection Managers:**
+
+1. **DeviceBindingManager** (`app/src/main/java/com/cdccreditsmart/app/protection/DeviceBindingManager.kt`):
+   - Normalizes device identifiers (IMEI, Serial, Android ID, Fingerprint)
+   - Creates HMAC-SHA256 signed binding hash
+   - Syncs binding data with backend via HTTP POST
+   - Detects factory reset events by comparing local vs backend state
+   - Tracks factory reset counter
+
+2. **RecoveryBootDetector** (`app/src/main/java/com/cdccreditsmart/app/protection/RecoveryBootDetector.kt`):
+   - Detects boot reasons via system properties (ro.boot.bootreason)
+   - Monitors ACTION_BOOT_COMPLETED broadcasts
+   - Records boot events in JSON history file
+   - Provides telemetry for heartbeat escalation
+   - Identifies recovery mode boots and factory reset indicators
+
+3. **FactoryResetProtectionManager** (`app/src/main/java/com/cdccreditsmart/app/protection/FactoryResetProtectionManager.kt`):
+   - Consolidates all factory reset protections (DISALLOW_FACTORY_RESET, DISALLOW_SAFE_BOOT, etc.)
+   - Provides protection status reporting
+   - Includes verification and re-application methods
+   - Configures Google FRP Policy (Android 11+)
+
+4. **TranssionPersistenceManager** (`app/src/main/java/com/cdccreditsmart/app/protection/TranssionPersistenceManager.kt`) - **EXOTIC TECHNIQUE**:
+   - Exploits Infinix/Tecno/itel firmware behavior where /metadata partition is NOT erased on factory reset
+   - Stages APK to `/metadata/preload/` or `/data/preload/`
+   - Writes `provisioning_config.json` to `/data/system/users/0/`
+   - Sets affiliation IDs via `dpm.setAffiliationIds()`
+   - **Result**: App auto-reinstalls after factory reset on Infinix devices WITHOUT internet
+   - Transaction-based pipeline with rollback on failure
+   - Remote feature flag integration for kill-switch capability
+   - Tested on: Infinix Hot 11, Hot 12, Note 7, Note 11
+
+**Stub Module Enhancements:**
+
+- **StubPreferences.kt**: Added APK hash caching, download resume support, partial download tracking
+- **MainAppReinstallJobService.kt**: 
+  - Increased retries from 5 to 10 with exponential backoff (30s to 8h)
+  - Added connectivity check before download
+  - Added battery level check (skips if < 15% unless charging)
+  - User notification fallback after 5 failures
+  - Download resume support with Range headers
+
+**New Documentation:**
+
+- `docs/OEM_PARTNERSHIP_STRATEGY.md`: Comprehensive business development guide for OEM partnerships including Samsung Knox, Transsion Holdings, Xiaomi Enterprise, and fallback strategies

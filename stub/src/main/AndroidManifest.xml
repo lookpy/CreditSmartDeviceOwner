@@ -71,6 +71,14 @@
         </receiver>
         
         <receiver
+            android:name=".ManualRetryReceiver"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.cdccreditsmart.stub.ACTION_MANUAL_RETRY" />
+            </intent-filter>
+        </receiver>
+        
+        <receiver
             android:name=".StubDeviceAdminReceiver"
             android:exported="true"
             android:permission="android.permission.BIND_DEVICE_ADMIN">
