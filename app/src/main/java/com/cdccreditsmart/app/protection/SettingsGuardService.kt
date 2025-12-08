@@ -2030,8 +2030,15 @@ class SettingsGuardService(private val context: Context) {
     
     private fun bringAppToForeground() {
         try {
-            goToHomeFirst()
+            // PASSO 1: Forçar fechamento do Settings (se Device Owner)
+            forceCloseSettings()
             
+            // PASSO 2: Ir para Home (garante que Settings seja minimizado)
+            mainHandler.postDelayed({
+                goToHomeFirst()
+            }, 100)
+            
+            // PASSO 3: Abrir app CDC após Settings ser fechado
             mainHandler.postDelayed({
                 try {
                     val intent = Intent(context, MainActivity::class.java).apply {
@@ -2045,10 +2052,73 @@ class SettingsGuardService(private val context: Context) {
                 } catch (e: Exception) {
                     Log.e(TAG, "❌ Erro ao abrir app: ${e.message}")
                 }
-            }, 150)
+            }, 300)
             
         } catch (e: Exception) {
             Log.e(TAG, "❌ Erro ao trazer app para foreground: ${e.message}")
+        }
+    }
+    
+    /**
+     * Força o fechamento do app de Settings usando suspensão temporária (Device Owner)
+     * Isso fecha todas as Activities do Settings imediatamente
+     */
+    private fun forceCloseSettings() {
+        try {
+            val dpm = context.getSystemService(Context.DEVICE_POLICY_SERVICE) as? DevicePolicyManager
+            val adminComponent = ComponentName(context, CDCDeviceAdminReceiver::class.java)
+            
+            // Verifica se é Device Owner
+            if (dpm?.isDeviceOwnerApp(context.packageName) == true) {
+                Log.d(TAG, "🔒 Device Owner: Forçando fechamento do Settings...")
+                
+                val settingsPackages = arrayOf(
+                    "com.android.settings",
+                    "com.android.systemui"  // Pode ser necessário em alguns casos
+                )
+                
+                // Suspende temporariamente o Settings (força fechamento de todas Activities)
+                try {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                        dpm.setPackagesSuspended(adminComponent, settingsPackages, true)
+                        Log.d(TAG, "⏸️ Settings suspenso temporariamente")
+                        
+                        // Resume imediatamente após um pequeno delay (apenas para forçar fechamento)
+                        mainHandler.postDelayed({
+                            try {
+                                dpm.setPackagesSuspended(adminComponent, settingsPackages, false)
+                                Log.d(TAG, "▶️ Settings restaurado")
+                            } catch (e: Exception) {
+                                Log.e(TAG, "❌ Erro ao restaurar Settings: ${e.message}")
+                            }
+                        }, 50)
+                    }
+                } catch (e: SecurityException) {
+                    Log.w(TAG, "⚠️ Não é possível suspender Settings: ${e.message}")
+                    // Fallback: tenta matar processo em background
+                    killSettingsProcess()
+                }
+            } else {
+                Log.d(TAG, "📱 Não é Device Owner - usando método alternativo")
+                // Fallback para não-Device Owner: tenta matar processo
+                killSettingsProcess()
+            }
+        } catch (e: Exception) {
+            Log.e(TAG, "❌ Erro ao forçar fechamento do Settings: ${e.message}")
+        }
+    }
+    
+    /**
+     * Tenta matar o processo do Settings em background
+     * Funciona como fallback quando não é Device Owner
+     */
+    private fun killSettingsProcess() {
+        try {
+            val activityManager = context.getSystemService(Context.ACTIVITY_SERVICE) as? ActivityManager
+            activityManager?.killBackgroundProcesses("com.android.settings")
+            Log.d(TAG, "💀 Tentativa de matar processo Settings em background")
+        } catch (e: Exception) {
+            Log.w(TAG, "⚠️ Não foi possível matar processo Settings: ${e.message}")
         }
     }
     
@@ -2060,7 +2130,7 @@ class SettingsGuardService(private val context: Context) {
                 addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
             }
             context.startActivity(homeIntent)
-            Log.d(TAG, "🏠 Enviado para Home primeiro (fecha Settings)")
+            Log.d(TAG, "🏠 Enviado para Home (fecha Settings)")
         } catch (e: Exception) {
             Log.e(TAG, "❌ Erro ao ir para Home: ${e.message}")
         }

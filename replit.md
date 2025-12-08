@@ -135,3 +135,17 @@ The UI uses Jetpack Compose and Material 3 with a CDC institutional dark theme. 
 - **Solution 2**: Added `SpaActivity` to `ALLOWED_PERMISSION_ACTIVITIES` list - only allowed during permission flow (30s timeout)
 - **Security**: Permission flow is only activated when app calls `pauseForPermissionGrant()`, preventing exploitation
 - **Impact**: App Info is blocked, but users can still grant Overlay/UsageStats permissions normally
+
+### 2025-12-08: Force Close Settings Before Bringing App to Foreground
+- **Problem**: When SettingsGuard detected a dangerous screen, it brought CDC app to foreground but left Settings open in background
+- **Solution**: Implemented `forceCloseSettings()` that runs BEFORE bringing app to foreground
+- **Device Owner Mode**: Uses `setPackagesSuspended()` to temporarily suspend Settings (forces immediate closure of all Activities)
+- **Fallback Mode**: Uses `killBackgroundProcesses()` when not Device Owner
+- **Sequence**: 
+  1. Force close Settings (suspend/kill)
+  2. Wait 100ms
+  3. Go to Home (ensures Settings is minimized)
+  4. Wait 300ms
+  5. Open CDC app
+- **Safety**: Settings is resumed (unsuspended) after 50ms to avoid breaking device
+- **Impact**: Settings is completely closed before CDC app opens, preventing user from returning to dangerous screen
