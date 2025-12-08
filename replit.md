@@ -75,3 +75,8 @@ The UI uses Jetpack Compose and Material 3 with a CDC institutional dark theme. 
 - **Updated MdmCommandReceiver**: Now uses `confirmCommandStatus()` with `CommandStatusRequest`/`CommandResultPayload` for all command acknowledgments
 - **Fallback Preserved**: `sendCommandResponse()` still falls back to `/api/apk/device/{identifier}/command-response` if primary endpoint fails
 - **Impact**: Eliminates ~320ms latency per command caused by failed 404 requests
+
+### 2025-12-08: Device Admin Permission Flow Fix
+- **Fixed SettingsGuard Blocking**: Device Admin permission screen was being blocked by SettingsGuard because `pauseForPermissionGrant()` was not called
+- **Updated PermissionGateScreen.kt**: Now calls `SettingsGuardService.pauseForPermissionGrant()` before opening Device Admin activation screen
+- **Impact**: Users can now properly grant Device Admin permission after reinstalling the app

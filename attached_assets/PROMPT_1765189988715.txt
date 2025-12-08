@@ -1,0 +1,321 @@
+2025-12-08 07:32:51.298  8777-8803  SettingsGuardService    com.cdccreditsmart.app               D  📋 Activity check - Full: com.android.settings.applications.specialaccess.deviceadmin.DeviceAdminAdd, Simple: DeviceAdminAdd
+2025-12-08 07:32:51.301  8777-8803  SettingsGuardService    com.cdccreditsmart.app               W  🎯 ATIVIDADE PERIGOSA DETECTADA!
+2025-12-08 07:32:51.301  8777-8803  SettingsGuardService    com.cdccreditsmart.app               W     Pacote: com.android.settings
+2025-12-08 07:32:51.301  8777-8803  SettingsGuardService    com.cdccreditsmart.app               W     Activity completa: com.android.settings.applications.specialaccess.deviceadmin.DeviceAdminAdd
+2025-12-08 07:32:51.301  8777-8803  SettingsGuardService    com.cdccreditsmart.app               W     Activity simplificada: DeviceAdminAdd
+2025-12-08 07:32:51.301  8777-8803  SettingsGuardService    com.cdccreditsmart.app               W     Match: DeviceAdminAdd
+2025-12-08 07:32:51.301  8777-8803  SettingsGuardService    com.cdccreditsmart.app               W  🚨 ÁREA PERIGOSA DETECTADA!
+2025-12-08 07:32:51.301  8777-8803  SettingsGuardService    com.cdccreditsmart.app               W     Pacote: com.android.settings
+2025-12-08 07:32:51.301  8777-8803  SettingsGuardService    com.cdccreditsmart.app               W     Atividade: com.android.settings.applications.specialaccess.deviceadmin.DeviceAdminAdd
+2025-12-08 07:32:51.301  8777-8803  SettingsGuardService    com.cdccreditsmart.app               W     Chamando app para foreground...
+2025-12-08 07:32:51.316  8777-8777  SettingsGuardService    com.cdccreditsmart.app               D  🏠 Enviado para Home primeiro (fecha Settings)
+2025-12-08 07:32:51.455  8777-8777  VRI[MainActivity]       com.cdccreditsmart.app               D  visibilityChanged oldVisibility=true newVisibility=false
+2025-12-08 07:32:51.488  8777-8818  HWUI                    com.cdccreditsmart.app               D  endAllActiveAnimators on 0x7ee67a16d930 (UnprojectedRipple) with handle 0x7ee57a189a10
+2025-12-08 07:32:51.540  8777-8777  SettingsGuardService    com.cdccreditsmart.app               I  ✅ App trazido para foreground
+2025-12-08 07:32:51.580  8777-8777  SettingsGuardService    com.cdccreditsmart.app               I  ▶️ Guard RETOMADO após fluxo de permissões
+2025-12-08 07:32:51.588  8777-8782  creditsmart.app         com.cdccreditsmart.app               I  CollectorTransition concurrent mark compact GC freed 4183KB AllocSpace bytes, 30(1056KB) LOS objects, 49% free, 13MB/26MB, paused 2.565ms,4.478ms total 133.985ms
+2025-12-08 07:32:51.588  8777-8777  MainActivity            com.cdccreditsmart.app               D  📍 BroadcastReceiver de localização desregistrado
+2025-12-08 07:32:51.589  8777-8777  WindowOnBackDispatcher  com.cdccreditsmart.app               W  sendCancelIfRunning: isInProgress=false callback=android.app.Activity$$ExternalSyntheticLambda0@c010e26
+2025-12-08 07:32:51.614  8777-8784  System                  com.cdccreditsmart.app               W  A resource failed to call release. 
+2025-12-08 07:32:51.617  8777-8777  MainActivity            com.cdccreditsmart.app               D  📍 BroadcastReceiver de localização registrado
+2025-12-08 07:32:51.618  8777-8803  PersistentStateManager  com.cdccreditsmart.app               D  Nenhum estado local encontrado
+2025-12-08 07:32:51.618  8777-8803  PersistentStateManager  com.cdccreditsmart.app               D  🆕 Sem estado local - device novo ou pós factory reset
+2025-12-08 07:32:51.618  8777-8803  MainActivity            com.cdccreditsmart.app               I  🆕 Device nunca foi provisionado
+2025-12-08 07:32:51.620  8777-8777  MainActivity            com.cdccreditsmart.app               I  ========================================
+2025-12-08 07:32:51.621  8777-8777  MainActivity            com.cdccreditsmart.app               I  📱 SOLICITANDO PERMISSÕES (NÃO DEVICE OWNER)
+2025-12-08 07:32:51.621  8777-8777  MainActivity            com.cdccreditsmart.app               I  ========================================
+2025-12-08 07:32:51.621  8777-8777  MainActivity            com.cdccreditsmart.app               I  ✅ Todas as runtime permissions já foram concedidas!
+2025-12-08 07:32:51.621  8777-8777  SpecialPermissionReq    com.cdccreditsmart.app               I  ========================================
+2025-12-08 07:32:51.621  8777-8777  SpecialPermissionReq    com.cdccreditsmart.app               I  📊 STATUS DAS PERMISSÕES ESPECIAIS
+2025-12-08 07:32:51.621  8777-8777  SpecialPermissionReq    com.cdccreditsmart.app               I  ========================================
+2025-12-08 07:32:51.622  8777-8777  SpecialPermissionReq    com.cdccreditsmart.app               I    USAGE_STATS: ✅ CONCEDIDA
+2025-12-08 07:32:51.623  8777-8777  SpecialPermissionReq    com.cdccreditsmart.app               I    OVERLAY: ✅ CONCEDIDA
+2025-12-08 07:32:51.623  8777-8777  SpecialPermissionReq    com.cdccreditsmart.app               I  
+2025-12-08 07:32:51.623  8777-8777  SpecialPermissionReq    com.cdccreditsmart.app               I  ✅ Todas as permissões especiais concedidas!
+2025-12-08 07:32:51.623  8777-8777  SpecialPermissionReq    com.cdccreditsmart.app               I     Proteção anti-desinstalação ativa.
+2025-12-08 07:32:51.623  8777-8777  SpecialPermissionReq    com.cdccreditsmart.app               I  ========================================
+2025-12-08 07:32:51.623  8777-8777  MainActivity            com.cdccreditsmart.app               I  ✅ Todas as permissões especiais já foram concedidas!
+2025-12-08 07:32:51.629  8777-8777  InsetsController        com.cdccreditsmart.app               D  Setting requestedVisibleTypes to -14 (was -9)
+2025-12-08 07:32:51.733  8777-8804  SettingsGuardService    com.cdccreditsmart.app               D  📋 Activity check - Full: com.cdccreditsmart.app.presentation.MainActivity, Simple: MainActivity
+2025-12-08 07:32:51.733  8777-8804  SettingsGuardService    com.cdccreditsmart.app               I  ✅ App CDC em foreground - resetando contador
+2025-12-08 07:32:51.866  8777-8777  PermissionGateScreen    com.cdccreditsmart.app               I  🔍 VERIFICAÇÃO INICIAL DE PERMISSÕES:
+2025-12-08 07:32:51.866  8777-8777  PermissionGateScreen    com.cdccreditsmart.app               I     Nível: BASIC
+2025-12-08 07:32:51.866  8777-8777  PermissionGateScreen    com.cdccreditsmart.app               I     Todas concedidas: false
+2025-12-08 07:32:51.866  8777-8777  PermissionGateScreen    com.cdccreditsmart.app               I     Bateria isenta: true
+2025-12-08 07:32:51.866  8777-8777  PermissionGateScreen    com.cdccreditsmart.app               W     ❌ FALTA: Administrador do Dispositivo
+2025-12-08 07:32:51.866  8777-8777  PermissionGateScreen    com.cdccreditsmart.app               I     ✅ OK: Permissões Básicas
+2025-12-08 07:32:51.866  8777-8777  PermissionGateScreen    com.cdccreditsmart.app               I     ✅ OK: Monitoramento de Apps
+2025-12-08 07:32:51.866  8777-8777  PermissionGateScreen    com.cdccreditsmart.app               I     ✅ OK: Mostrar Alertas
+2025-12-08 07:32:51.866  8777-8777  PermissionGateScreen    com.cdccreditsmart.app               I     ✅ OK: Execução em Segundo Plano
+2025-12-08 07:32:51.867  8777-8777  PermissionGateScreen    com.cdccreditsmart.app               I  ========================================
+2025-12-08 07:32:51.867  8777-8777  PermissionGateScreen    com.cdccreditsmart.app               I  🚪 PERMISSION GATE SCREEN INICIADO
+2025-12-08 07:32:51.867  8777-8777  PermissionGateScreen    com.cdccreditsmart.app               I  ========================================
+2025-12-08 07:32:51.867  8777-8777  PermissionGateScreen    com.cdccreditsmart.app               I  Nível de privilégio: BASIC
+2025-12-08 07:32:51.867  8777-8777  PermissionGateScreen    com.cdccreditsmart.app               I  Permissões concedidas: 4
+2025-12-08 07:32:51.867  8777-8777  PermissionGateScreen    com.cdccreditsmart.app               I  Permissões faltando: 1
+2025-12-08 07:32:51.867  8777-8777  PermissionGateScreen    com.cdccreditsmart.app               W    ❌ Administrador do Dispositivo
+2025-12-08 07:32:51.867  8777-8777  PermissionGateScreen    com.cdccreditsmart.app               I    ✅ Permissões Básicas
+2025-12-08 07:32:51.867  8777-8777  PermissionGateScreen    com.cdccreditsmart.app               I    ✅ Monitoramento de Apps
+2025-12-08 07:32:51.867  8777-8777  PermissionGateScreen    com.cdccreditsmart.app               I    ✅ Mostrar Alertas
+2025-12-08 07:32:51.867  8777-8777  PermissionGateScreen    com.cdccreditsmart.app               I    ✅ Execução em Segundo Plano
+2025-12-08 07:32:51.867  8777-8777  PermissionGateScreen    com.cdccreditsmart.app               I  ========================================
+2025-12-08 07:32:51.867  8777-8777  PermissionGateScreen    com.cdccreditsmart.app               D  ⏰ Iniciando verificação periódica de permissões...
+2025-12-08 07:32:51.919  8777-8777  InsetsController        com.cdccreditsmart.app               D  hide(ime(), fromIme=false)
+2025-12-08 07:32:51.920  8777-8777  ImeTracker              com.cdccreditsmart.app               I  com.cdccreditsmart.app:b64b1dc1: onCancelled at PHASE_CLIENT_ALREADY_HIDDEN
+2025-12-08 07:32:52.342  8777-8804  SettingsGuardService    com.cdccreditsmart.app               D  📋 Activity check - Full: com.cdccreditsmart.app.presentation.MainActivity, Simple: MainActivity
+2025-12-08 07:32:52.952  8777-8804  SettingsGuardService    com.cdccreditsmart.app               D  📋 Activity check - Full: com.android.settings.applications.specialaccess.deviceadmin.DeviceAdminAdd, Simple: DeviceAdminAdd
+2025-12-08 07:32:52.954  8777-8804  SettingsGuardService    com.cdccreditsmart.app               W  🎯 ATIVIDADE PERIGOSA DETECTADA!
+2025-12-08 07:32:52.954  8777-8804  SettingsGuardService    com.cdccreditsmart.app               W     Pacote: com.android.settings
+2025-12-08 07:32:52.955  8777-8804  SettingsGuardService    com.cdccreditsmart.app               W     Activity completa: com.android.settings.applications.specialaccess.deviceadmin.DeviceAdminAdd
+2025-12-08 07:32:52.955  8777-8804  SettingsGuardService    com.cdccreditsmart.app               W     Activity simplificada: DeviceAdminAdd
+2025-12-08 07:32:52.955  8777-8804  SettingsGuardService    com.cdccreditsmart.app               W     Match: DeviceAdminAdd
+2025-12-08 07:32:52.955  8777-8804  SettingsGuardService    com.cdccreditsmart.app               W  🚨 ÁREA PERIGOSA DETECTADA!
+2025-12-08 07:32:52.955  8777-8804  SettingsGuardService    com.cdccreditsmart.app               W     Pacote: com.android.settings
+2025-12-08 07:32:52.955  8777-8804  SettingsGuardService    com.cdccreditsmart.app               W     Atividade: com.android.settings.applications.specialaccess.deviceadmin.DeviceAdminAdd
+2025-12-08 07:32:52.955  8777-8804  SettingsGuardService    com.cdccreditsmart.app               W     Chamando app para foreground...
+2025-12-08 07:32:52.986  8777-8777  SettingsGuardService    com.cdccreditsmart.app               D  🏠 Enviado para Home primeiro (fecha Settings)
+2025-12-08 07:32:53.122  8777-8777  VRI[MainActivity]       com.cdccreditsmart.app               D  visibilityChanged oldVisibility=true newVisibility=false
+2025-12-08 07:32:53.151  8777-8818  HWUI                    com.cdccreditsmart.app               D  endAllActiveAnimators on 0x7ee67a188210 (UnprojectedRipple) with handle 0x7ee57a18d5e0
+2025-12-08 07:32:53.172  8777-8777  SettingsGuardService    com.cdccreditsmart.app               I  ✅ App trazido para foreground
+2025-12-08 07:32:53.196  8777-8777  SettingsGuardService    com.cdccreditsmart.app               I  ▶️ Guard RETOMADO após fluxo de permissões
+2025-12-08 07:32:53.204  8777-8777  MainActivity            com.cdccreditsmart.app               D  📍 BroadcastReceiver de localização desregistrado
+2025-12-08 07:32:53.204  8777-8777  WindowOnBackDispatcher  com.cdccreditsmart.app               W  sendCancelIfRunning: isInProgress=false callback=android.app.Activity$$ExternalSyntheticLambda0@cf881ef
+2025-12-08 07:32:53.238  8777-8777  MainActivity            com.cdccreditsmart.app               D  📍 BroadcastReceiver de localização registrado
+2025-12-08 07:32:53.238  8777-8804  PersistentStateManager  com.cdccreditsmart.app               D  Nenhum estado local encontrado
+2025-12-08 07:32:53.238  8777-8804  PersistentStateManager  com.cdccreditsmart.app               D  🆕 Sem estado local - device novo ou pós factory reset
+2025-12-08 07:32:53.238  8777-8804  MainActivity            com.cdccreditsmart.app               I  🆕 Device nunca foi provisionado
+2025-12-08 07:32:53.239  8777-8777  MainActivity            com.cdccreditsmart.app               I  ========================================
+2025-12-08 07:32:53.239  8777-8777  MainActivity            com.cdccreditsmart.app               I  📱 SOLICITANDO PERMISSÕES (NÃO DEVICE OWNER)
+2025-12-08 07:32:53.239  8777-8777  MainActivity            com.cdccreditsmart.app               I  ========================================
+2025-12-08 07:32:53.240  8777-8777  MainActivity            com.cdccreditsmart.app               I  ✅ Todas as runtime permissions já foram concedidas!
+2025-12-08 07:32:53.240  8777-8777  SpecialPermissionReq    com.cdccreditsmart.app               I  ========================================
+2025-12-08 07:32:53.240  8777-8777  SpecialPermissionReq    com.cdccreditsmart.app               I  📊 STATUS DAS PERMISSÕES ESPECIAIS
+2025-12-08 07:32:53.240  8777-8777  SpecialPermissionReq    com.cdccreditsmart.app               I  ========================================
+2025-12-08 07:32:53.240  8777-8777  SpecialPermissionReq    com.cdccreditsmart.app               I    USAGE_STATS: ✅ CONCEDIDA
+2025-12-08 07:32:53.244  8777-8777  SpecialPermissionReq    com.cdccreditsmart.app               I    OVERLAY: ✅ CONCEDIDA
+2025-12-08 07:32:53.246  8777-8777  SpecialPermissionReq    com.cdccreditsmart.app               I  
+2025-12-08 07:32:53.246  8777-8777  SpecialPermissionReq    com.cdccreditsmart.app               I  ✅ Todas as permissões especiais concedidas!
+2025-12-08 07:32:53.246  8777-8777  SpecialPermissionReq    com.cdccreditsmart.app               I     Proteção anti-desinstalação ativa.
+2025-12-08 07:32:53.246  8777-8777  SpecialPermissionReq    com.cdccreditsmart.app               I  ========================================
+2025-12-08 07:32:53.246  8777-8777  MainActivity            com.cdccreditsmart.app               I  ✅ Todas as permissões especiais já foram concedidas!
+2025-12-08 07:32:53.252  8777-8777  InsetsController        com.cdccreditsmart.app               D  Setting requestedVisibleTypes to -14 (was -9)
+2025-12-08 07:32:53.391  8777-8803  SettingsGuardService    com.cdccreditsmart.app               D  📋 Activity check - Full: com.cdccreditsmart.app.presentation.MainActivity, Simple: MainActivity
+2025-12-08 07:32:53.391  8777-8803  SettingsGuardService    com.cdccreditsmart.app               I  ✅ App CDC em foreground - resetando contador
+2025-12-08 07:32:53.473  8777-8777  PermissionGateScreen    com.cdccreditsmart.app               I  🔍 VERIFICAÇÃO INICIAL DE PERMISSÕES:
+2025-12-08 07:32:53.473  8777-8777  PermissionGateScreen    com.cdccreditsmart.app               I     Nível: BASIC
+2025-12-08 07:32:53.473  8777-8777  PermissionGateScreen    com.cdccreditsmart.app               I     Todas concedidas: false
+2025-12-08 07:32:53.473  8777-8777  PermissionGateScreen    com.cdccreditsmart.app               I     Bateria isenta: true
+2025-12-08 07:32:53.474  8777-8777  PermissionGateScreen    com.cdccreditsmart.app               W     ❌ FALTA: Administrador do Dispositivo
+2025-12-08 07:32:53.474  8777-8777  PermissionGateScreen    com.cdccreditsmart.app               I     ✅ OK: Permissões Básicas
+2025-12-08 07:32:53.474  8777-8777  PermissionGateScreen    com.cdccreditsmart.app               I     ✅ OK: Monitoramento de Apps
+2025-12-08 07:32:53.474  8777-8777  PermissionGateScreen    com.cdccreditsmart.app               I     ✅ OK: Mostrar Alertas
+2025-12-08 07:32:53.474  8777-8777  PermissionGateScreen    com.cdccreditsmart.app               I     ✅ OK: Execução em Segundo Plano
+2025-12-08 07:32:53.474  8777-8777  PermissionGateScreen    com.cdccreditsmart.app               I  ========================================
+2025-12-08 07:32:53.474  8777-8777  PermissionGateScreen    com.cdccreditsmart.app               I  🚪 PERMISSION GATE SCREEN INICIADO
+2025-12-08 07:32:53.474  8777-8777  PermissionGateScreen    com.cdccreditsmart.app               I  ========================================
+2025-12-08 07:32:53.474  8777-8777  PermissionGateScreen    com.cdccreditsmart.app               I  Nível de privilégio: BASIC
+2025-12-08 07:32:53.474  8777-8777  PermissionGateScreen    com.cdccreditsmart.app               I  Permissões concedidas: 4
+2025-12-08 07:32:53.474  8777-8777  PermissionGateScreen    com.cdccreditsmart.app               I  Permissões faltando: 1
+2025-12-08 07:32:53.474  8777-8777  PermissionGateScreen    com.cdccreditsmart.app               W    ❌ Administrador do Dispositivo
+2025-12-08 07:32:53.474  8777-8777  PermissionGateScreen    com.cdccreditsmart.app               I    ✅ Permissões Básicas
+2025-12-08 07:32:53.474  8777-8777  PermissionGateScreen    com.cdccreditsmart.app               I    ✅ Monitoramento de Apps
+2025-12-08 07:32:53.474  8777-8777  PermissionGateScreen    com.cdccreditsmart.app               I    ✅ Mostrar Alertas
+2025-12-08 07:32:53.474  8777-8777  PermissionGateScreen    com.cdccreditsmart.app               I    ✅ Execução em Segundo Plano
+2025-12-08 07:32:53.475  8777-8777  PermissionGateScreen    com.cdccreditsmart.app               I  ========================================
+2025-12-08 07:32:53.475  8777-8777  PermissionGateScreen    com.cdccreditsmart.app               D  ⏰ Iniciando verificação periódica de permissões...
+2025-12-08 07:32:53.503  8777-8777  InsetsController        com.cdccreditsmart.app               D  hide(ime(), fromIme=false)
+2025-12-08 07:32:53.503  8777-8777  ImeTracker              com.cdccreditsmart.app               I  com.cdccreditsmart.app:66dbc675: onCancelled at PHASE_CLIENT_ALREADY_HIDDEN
+2025-12-08 07:32:53.994  8777-8803  SettingsGuardService    com.cdccreditsmart.app               D  📋 Activity check - Full: com.cdccreditsmart.app.presentation.MainActivity, Simple: MainActivity
+2025-12-08 07:32:54.597  8777-8803  SettingsGuardService    com.cdccreditsmart.app               D  📋 Activity check - Full: com.android.settings.applications.specialaccess.deviceadmin.DeviceAdminAdd, Simple: DeviceAdminAdd
+2025-12-08 07:32:54.599  8777-8803  SettingsGuardService    com.cdccreditsmart.app               W  🎯 ATIVIDADE PERIGOSA DETECTADA!
+2025-12-08 07:32:54.599  8777-8803  SettingsGuardService    com.cdccreditsmart.app               W     Pacote: com.android.settings
+2025-12-08 07:32:54.599  8777-8803  SettingsGuardService    com.cdccreditsmart.app               W     Activity completa: com.android.settings.applications.specialaccess.deviceadmin.DeviceAdminAdd
+2025-12-08 07:32:54.599  8777-8803  SettingsGuardService    com.cdccreditsmart.app               W     Activity simplificada: DeviceAdminAdd
+2025-12-08 07:32:54.599  8777-8803  SettingsGuardService    com.cdccreditsmart.app               W     Match: DeviceAdminAdd
+2025-12-08 07:32:54.599  8777-8803  SettingsGuardService    com.cdccreditsmart.app               W  🚨 ÁREA PERIGOSA DETECTADA!
+2025-12-08 07:32:54.599  8777-8803  SettingsGuardService    com.cdccreditsmart.app               W     Pacote: com.android.settings
+2025-12-08 07:32:54.599  8777-8803  SettingsGuardService    com.cdccreditsmart.app               W     Atividade: com.android.settings.applications.specialaccess.deviceadmin.DeviceAdminAdd
+2025-12-08 07:32:54.599  8777-8803  SettingsGuardService    com.cdccreditsmart.app               W     Chamando app para foreground...
+2025-12-08 07:32:54.617  8777-8777  SettingsGuardService    com.cdccreditsmart.app               D  🏠 Enviado para Home primeiro (fecha Settings)
+2025-12-08 07:32:54.759  8777-8777  VRI[MainActivity]       com.cdccreditsmart.app               D  visibilityChanged oldVisibility=true newVisibility=false
+2025-12-08 07:32:54.785  8777-8818  HWUI                    com.cdccreditsmart.app               D  endAllActiveAnimators on 0x7ee67a1570b0 (UnprojectedRipple) with handle 0x7ee57a16bd70
+2025-12-08 07:32:54.839  8777-8777  SettingsGuardService    com.cdccreditsmart.app               I  ✅ App trazido para foreground
+2025-12-08 07:32:54.902  8777-8777  SettingsGuardService    com.cdccreditsmart.app               I  ▶️ Guard RETOMADO após fluxo de permissões
+2025-12-08 07:32:54.907  8777-8777  MainActivity            com.cdccreditsmart.app               D  📍 BroadcastReceiver de localização desregistrado
+2025-12-08 07:32:54.907  8777-8777  WindowOnBackDispatcher  com.cdccreditsmart.app               W  sendCancelIfRunning: isInProgress=false callback=android.app.Activity$$ExternalSyntheticLambda0@88bc149
+2025-12-08 07:32:54.908  8777-8782  creditsmart.app         com.cdccreditsmart.app               I  CollectorTransition concurrent mark compact GC freed 3935KB AllocSpace bytes, 16(584KB) LOS objects, 49% free, 13MB/26MB, paused 7.680ms,15.061ms total 138.385ms
+2025-12-08 07:32:54.918  8777-8777  ViewRootImpl            com.cdccreditsmart.app               D  Skipping stats log for color mode
+2025-12-08 07:32:54.942  8777-8777  MainActivity            com.cdccreditsmart.app               D  📍 BroadcastReceiver de localização registrado
+2025-12-08 07:32:54.943  8777-8803  PersistentStateManager  com.cdccreditsmart.app               D  Nenhum estado local encontrado
+2025-12-08 07:32:54.943  8777-8803  PersistentStateManager  com.cdccreditsmart.app               D  🆕 Sem estado local - device novo ou pós factory reset
+2025-12-08 07:32:54.945  8777-8803  MainActivity            com.cdccreditsmart.app               I  🆕 Device nunca foi provisionado
+2025-12-08 07:32:54.946  8777-8777  MainActivity            com.cdccreditsmart.app               I  ========================================
+2025-12-08 07:32:54.946  8777-8777  MainActivity            com.cdccreditsmart.app               I  📱 SOLICITANDO PERMISSÕES (NÃO DEVICE OWNER)
+2025-12-08 07:32:54.946  8777-8777  MainActivity            com.cdccreditsmart.app               I  ========================================
+2025-12-08 07:32:54.946  8777-8777  MainActivity            com.cdccreditsmart.app               I  ✅ Todas as runtime permissions já foram concedidas!
+2025-12-08 07:32:54.946  8777-8777  SpecialPermissionReq    com.cdccreditsmart.app               I  ========================================
+2025-12-08 07:32:54.946  8777-8777  SpecialPermissionReq    com.cdccreditsmart.app               I  📊 STATUS DAS PERMISSÕES ESPECIAIS
+2025-12-08 07:32:54.946  8777-8777  SpecialPermissionReq    com.cdccreditsmart.app               I  ========================================
+2025-12-08 07:32:54.946  8777-8777  SpecialPermissionReq    com.cdccreditsmart.app               I    USAGE_STATS: ✅ CONCEDIDA
+2025-12-08 07:32:54.950  8777-8777  SpecialPermissionReq    com.cdccreditsmart.app               I    OVERLAY: ✅ CONCEDIDA
+2025-12-08 07:32:54.950  8777-8777  SpecialPermissionReq    com.cdccreditsmart.app               I  
+2025-12-08 07:32:54.950  8777-8777  SpecialPermissionReq    com.cdccreditsmart.app               I  ✅ Todas as permissões especiais concedidas!
+2025-12-08 07:32:54.950  8777-8777  SpecialPermissionReq    com.cdccreditsmart.app               I     Proteção anti-desinstalação ativa.
+2025-12-08 07:32:54.951  8777-8777  SpecialPermissionReq    com.cdccreditsmart.app               I  ========================================
+2025-12-08 07:32:54.951  8777-8777  MainActivity            com.cdccreditsmart.app               I  ✅ Todas as permissões especiais já foram concedidas!
+2025-12-08 07:32:54.962  8777-8777  InsetsController        com.cdccreditsmart.app               D  Setting requestedVisibleTypes to -14 (was -9)
+2025-12-08 07:32:55.025  8777-8803  SettingsGuardService    com.cdccreditsmart.app               D  📋 Activity check - Full: com.cdccreditsmart.app.presentation.MainActivity, Simple: MainActivity
+2025-12-08 07:32:55.025  8777-8803  SettingsGuardService    com.cdccreditsmart.app               I  ✅ App CDC em foreground - resetando contador
+2025-12-08 07:32:55.174  8777-8777  PermissionGateScreen    com.cdccreditsmart.app               I  🔍 VERIFICAÇÃO INICIAL DE PERMISSÕES:
+2025-12-08 07:32:55.174  8777-8777  PermissionGateScreen    com.cdccreditsmart.app               I     Nível: BASIC
+2025-12-08 07:32:55.174  8777-8777  PermissionGateScreen    com.cdccreditsmart.app               I     Todas concedidas: false
+2025-12-08 07:32:55.175  8777-8777  PermissionGateScreen    com.cdccreditsmart.app               I     Bateria isenta: true
+2025-12-08 07:32:55.175  8777-8777  PermissionGateScreen    com.cdccreditsmart.app               W     ❌ FALTA: Administrador do Dispositivo
+2025-12-08 07:32:55.175  8777-8777  PermissionGateScreen    com.cdccreditsmart.app               I     ✅ OK: Permissões Básicas
+2025-12-08 07:32:55.175  8777-8777  PermissionGateScreen    com.cdccreditsmart.app               I     ✅ OK: Monitoramento de Apps
+2025-12-08 07:32:55.175  8777-8777  PermissionGateScreen    com.cdccreditsmart.app               I     ✅ OK: Mostrar Alertas
+2025-12-08 07:32:55.175  8777-8777  PermissionGateScreen    com.cdccreditsmart.app               I     ✅ OK: Execução em Segundo Plano
+2025-12-08 07:32:55.175  8777-8777  PermissionGateScreen    com.cdccreditsmart.app               I  ========================================
+2025-12-08 07:32:55.175  8777-8777  PermissionGateScreen    com.cdccreditsmart.app               I  🚪 PERMISSION GATE SCREEN INICIADO
+2025-12-08 07:32:55.175  8777-8777  PermissionGateScreen    com.cdccreditsmart.app               I  ========================================
+2025-12-08 07:32:55.175  8777-8777  PermissionGateScreen    com.cdccreditsmart.app               I  Nível de privilégio: BASIC
+2025-12-08 07:32:55.175  8777-8777  PermissionGateScreen    com.cdccreditsmart.app               I  Permissões concedidas: 4
+2025-12-08 07:32:55.175  8777-8777  PermissionGateScreen    com.cdccreditsmart.app               I  Permissões faltando: 1
+2025-12-08 07:32:55.175  8777-8777  PermissionGateScreen    com.cdccreditsmart.app               W    ❌ Administrador do Dispositivo
+2025-12-08 07:32:55.176  8777-8777  PermissionGateScreen    com.cdccreditsmart.app               I    ✅ Permissões Básicas
+2025-12-08 07:32:55.176  8777-8777  PermissionGateScreen    com.cdccreditsmart.app               I    ✅ Monitoramento de Apps
+2025-12-08 07:32:55.176  8777-8777  PermissionGateScreen    com.cdccreditsmart.app               I    ✅ Mostrar Alertas
+2025-12-08 07:32:55.176  8777-8777  PermissionGateScreen    com.cdccreditsmart.app               I    ✅ Execução em Segundo Plano
+2025-12-08 07:32:55.176  8777-8777  PermissionGateScreen    com.cdccreditsmart.app               I  ========================================
+2025-12-08 07:32:55.176  8777-8777  PermissionGateScreen    com.cdccreditsmart.app               D  ⏰ Iniciando verificação periódica de permissões...
+2025-12-08 07:32:55.200  8777-8777  InsetsController        com.cdccreditsmart.app               D  hide(ime(), fromIme=false)
+2025-12-08 07:32:55.200  8777-8777  ImeTracker              com.cdccreditsmart.app               I  com.cdccreditsmart.app:4ce99c63: onCancelled at PHASE_CLIENT_ALREADY_HIDDEN
+2025-12-08 07:32:55.629  8777-8803  SettingsGuardService    com.cdccreditsmart.app               D  📋 Activity check - Full: com.cdccreditsmart.app.presentation.MainActivity, Simple: MainActivity
+2025-12-08 07:32:56.232  8777-8803  SettingsGuardService    com.cdccreditsmart.app               D  📋 Activity check - Full: com.android.settings.applications.specialaccess.deviceadmin.DeviceAdminAdd, Simple: DeviceAdminAdd
+2025-12-08 07:32:56.233  8777-8803  SettingsGuardService    com.cdccreditsmart.app               W  🎯 ATIVIDADE PERIGOSA DETECTADA!
+2025-12-08 07:32:56.233  8777-8803  SettingsGuardService    com.cdccreditsmart.app               W     Pacote: com.android.settings
+2025-12-08 07:32:56.233  8777-8803  SettingsGuardService    com.cdccreditsmart.app               W     Activity completa: com.android.settings.applications.specialaccess.deviceadmin.DeviceAdminAdd
+2025-12-08 07:32:56.233  8777-8803  SettingsGuardService    com.cdccreditsmart.app               W     Activity simplificada: DeviceAdminAdd
+2025-12-08 07:32:56.233  8777-8803  SettingsGuardService    com.cdccreditsmart.app               W     Match: DeviceAdminAdd
+2025-12-08 07:32:56.233  8777-8803  SettingsGuardService    com.cdccreditsmart.app               W  🚨 ÁREA PERIGOSA DETECTADA!
+2025-12-08 07:32:56.233  8777-8803  SettingsGuardService    com.cdccreditsmart.app               W     Pacote: com.android.settings
+2025-12-08 07:32:56.234  8777-8803  SettingsGuardService    com.cdccreditsmart.app               W     Atividade: com.android.settings.applications.specialaccess.deviceadmin.DeviceAdminAdd
+2025-12-08 07:32:56.234  8777-8803  SettingsGuardService    com.cdccreditsmart.app               W     Chamando app para foreground...
+2025-12-08 07:32:56.246  8777-8777  SettingsGuardService    com.cdccreditsmart.app               D  🏠 Enviado para Home primeiro (fecha Settings)
+2025-12-08 07:32:56.382  8777-8777  VRI[MainActivity]       com.cdccreditsmart.app               D  visibilityChanged oldVisibility=true newVisibility=false
+2025-12-08 07:32:56.399  8777-8818  HWUI                    com.cdccreditsmart.app               D  endAllActiveAnimators on 0x7ee67a182e60 (UnprojectedRipple) with handle 0x7ee57a171860
+2025-12-08 07:32:56.423  8777-8777  SettingsGuardService    com.cdccreditsmart.app               I  ✅ App trazido para foreground
+2025-12-08 07:32:56.457  8777-8777  SettingsGuardService    com.cdccreditsmart.app               I  ▶️ Guard RETOMADO após fluxo de permissões
+2025-12-08 07:32:56.465  8777-8777  MainActivity            com.cdccreditsmart.app               D  📍 BroadcastReceiver de localização desregistrado
+2025-12-08 07:32:56.465  8777-8777  WindowOnBackDispatcher  com.cdccreditsmart.app               W  sendCancelIfRunning: isInProgress=false callback=android.app.Activity$$ExternalSyntheticLambda0@6a1d1d2
+2025-12-08 07:32:56.488  8777-8777  MainActivity            com.cdccreditsmart.app               D  📍 BroadcastReceiver de localização registrado
+2025-12-08 07:32:56.490  8777-8777  MainActivity            com.cdccreditsmart.app               I  ========================================
+2025-12-08 07:32:56.490  8777-8777  MainActivity            com.cdccreditsmart.app               I  📱 SOLICITANDO PERMISSÕES (NÃO DEVICE OWNER)
+2025-12-08 07:32:56.491  8777-8777  MainActivity            com.cdccreditsmart.app               I  ========================================
+2025-12-08 07:32:56.491  8777-8777  MainActivity            com.cdccreditsmart.app               I  ✅ Todas as runtime permissions já foram concedidas!
+2025-12-08 07:32:56.491  8777-8777  SpecialPermissionReq    com.cdccreditsmart.app               I  ========================================
+2025-12-08 07:32:56.491  8777-8777  SpecialPermissionReq    com.cdccreditsmart.app               I  📊 STATUS DAS PERMISSÕES ESPECIAIS
+2025-12-08 07:32:56.491  8777-8777  SpecialPermissionReq    com.cdccreditsmart.app               I  ========================================
+2025-12-08 07:32:56.492  8777-8803  PersistentStateManager  com.cdccreditsmart.app               D  Nenhum estado local encontrado
+2025-12-08 07:32:56.493  8777-8803  PersistentStateManager  com.cdccreditsmart.app               D  🆕 Sem estado local - device novo ou pós factory reset
+2025-12-08 07:32:56.493  8777-8803  MainActivity            com.cdccreditsmart.app               I  🆕 Device nunca foi provisionado
+2025-12-08 07:32:56.495  8777-8777  SpecialPermissionReq    com.cdccreditsmart.app               I    USAGE_STATS: ✅ CONCEDIDA
+2025-12-08 07:32:56.495  8777-8777  SpecialPermissionReq    com.cdccreditsmart.app               I    OVERLAY: ✅ CONCEDIDA
+2025-12-08 07:32:56.496  8777-8777  SpecialPermissionReq    com.cdccreditsmart.app               I  
+2025-12-08 07:32:56.496  8777-8777  SpecialPermissionReq    com.cdccreditsmart.app               I  ✅ Todas as permissões especiais concedidas!
+2025-12-08 07:32:56.496  8777-8777  SpecialPermissionReq    com.cdccreditsmart.app               I     Proteção anti-desinstalação ativa.
+2025-12-08 07:32:56.496  8777-8777  SpecialPermissionReq    com.cdccreditsmart.app               I  ========================================
+2025-12-08 07:32:56.496  8777-8777  MainActivity            com.cdccreditsmart.app               I  ✅ Todas as permissões especiais já foram concedidas!
+2025-12-08 07:32:56.506  8777-8777  InsetsController        com.cdccreditsmart.app               D  Setting requestedVisibleTypes to -14 (was -9)
+2025-12-08 07:32:56.654  8777-8803  SettingsGuardService    com.cdccreditsmart.app               D  📋 Activity check - Full: com.cdccreditsmart.app.presentation.MainActivity, Simple: MainActivity
+2025-12-08 07:32:56.654  8777-8803  SettingsGuardService    com.cdccreditsmart.app               I  ✅ App CDC em foreground - resetando contador
+2025-12-08 07:32:56.742  8777-8777  PermissionGateScreen    com.cdccreditsmart.app               I  🔍 VERIFICAÇÃO INICIAL DE PERMISSÕES:
+2025-12-08 07:32:56.742  8777-8777  PermissionGateScreen    com.cdccreditsmart.app               I     Nível: BASIC
+2025-12-08 07:32:56.742  8777-8777  PermissionGateScreen    com.cdccreditsmart.app               I     Todas concedidas: false
+2025-12-08 07:32:56.743  8777-8777  PermissionGateScreen    com.cdccreditsmart.app               I     Bateria isenta: true
+2025-12-08 07:32:56.743  8777-8777  PermissionGateScreen    com.cdccreditsmart.app               W     ❌ FALTA: Administrador do Dispositivo
+2025-12-08 07:32:56.743  8777-8777  PermissionGateScreen    com.cdccreditsmart.app               I     ✅ OK: Permissões Básicas
+2025-12-08 07:32:56.743  8777-8777  PermissionGateScreen    com.cdccreditsmart.app               I     ✅ OK: Monitoramento de Apps
+2025-12-08 07:32:56.743  8777-8777  PermissionGateScreen    com.cdccreditsmart.app               I     ✅ OK: Mostrar Alertas
+2025-12-08 07:32:56.743  8777-8777  PermissionGateScreen    com.cdccreditsmart.app               I     ✅ OK: Execução em Segundo Plano
+2025-12-08 07:32:56.743  8777-8777  PermissionGateScreen    com.cdccreditsmart.app               I  ========================================
+2025-12-08 07:32:56.743  8777-8777  PermissionGateScreen    com.cdccreditsmart.app               I  🚪 PERMISSION GATE SCREEN INICIADO
+2025-12-08 07:32:56.743  8777-8777  PermissionGateScreen    com.cdccreditsmart.app               I  ========================================
+2025-12-08 07:32:56.743  8777-8777  PermissionGateScreen    com.cdccreditsmart.app               I  Nível de privilégio: BASIC
+2025-12-08 07:32:56.743  8777-8777  PermissionGateScreen    com.cdccreditsmart.app               I  Permissões concedidas: 4
+2025-12-08 07:32:56.743  8777-8777  PermissionGateScreen    com.cdccreditsmart.app               I  Permissões faltando: 1
+2025-12-08 07:32:56.743  8777-8777  PermissionGateScreen    com.cdccreditsmart.app               W    ❌ Administrador do Dispositivo
+2025-12-08 07:32:56.743  8777-8777  PermissionGateScreen    com.cdccreditsmart.app               I    ✅ Permissões Básicas
+2025-12-08 07:32:56.743  8777-8777  PermissionGateScreen    com.cdccreditsmart.app               I    ✅ Monitoramento de Apps
+2025-12-08 07:32:56.743  8777-8777  PermissionGateScreen    com.cdccreditsmart.app               I    ✅ Mostrar Alertas
+2025-12-08 07:32:56.743  8777-8777  PermissionGateScreen    com.cdccreditsmart.app               I    ✅ Execução em Segundo Plano
+2025-12-08 07:32:56.743  8777-8777  PermissionGateScreen    com.cdccreditsmart.app               I  ========================================
+2025-12-08 07:32:56.743  8777-8777  PermissionGateScreen    com.cdccreditsmart.app               D  ⏰ Iniciando verificação periódica de permissões...
+2025-12-08 07:32:56.793  8777-8777  InsetsController        com.cdccreditsmart.app               D  hide(ime(), fromIme=false)
+2025-12-08 07:32:56.793  8777-8777  ImeTracker              com.cdccreditsmart.app               I  com.cdccreditsmart.app:9bdd26c0: onCancelled at PHASE_CLIENT_ALREADY_HIDDEN
+2025-12-08 07:32:57.256  8777-8803  SettingsGuardService    com.cdccreditsmart.app               D  📋 Activity check - Full: com.cdccreditsmart.app.presentation.MainActivity, Simple: MainActivity
+2025-12-08 07:32:57.860  8777-8803  SettingsGuardService    com.cdccreditsmart.app               D  📋 Activity check - Full: com.android.settings.applications.specialaccess.deviceadmin.DeviceAdminAdd, Simple: DeviceAdminAdd
+2025-12-08 07:32:57.863  8777-8803  SettingsGuardService    com.cdccreditsmart.app               W  🎯 ATIVIDADE PERIGOSA DETECTADA!
+2025-12-08 07:32:57.863  8777-8803  SettingsGuardService    com.cdccreditsmart.app               W     Pacote: com.android.settings
+2025-12-08 07:32:57.863  8777-8803  SettingsGuardService    com.cdccreditsmart.app               W     Activity completa: com.android.settings.applications.specialaccess.deviceadmin.DeviceAdminAdd
+2025-12-08 07:32:57.863  8777-8803  SettingsGuardService    com.cdccreditsmart.app               W     Activity simplificada: DeviceAdminAdd
+2025-12-08 07:32:57.863  8777-8803  SettingsGuardService    com.cdccreditsmart.app               W     Match: DeviceAdminAdd
+2025-12-08 07:32:57.863  8777-8803  SettingsGuardService    com.cdccreditsmart.app               W  🚨 ÁREA PERIGOSA DETECTADA!
+2025-12-08 07:32:57.863  8777-8803  SettingsGuardService    com.cdccreditsmart.app               W     Pacote: com.android.settings
+2025-12-08 07:32:57.863  8777-8803  SettingsGuardService    com.cdccreditsmart.app               W     Atividade: com.android.settings.applications.specialaccess.deviceadmin.DeviceAdminAdd
+2025-12-08 07:32:57.863  8777-8803  SettingsGuardService    com.cdccreditsmart.app               W     Chamando app para foreground...
+2025-12-08 07:32:57.883  8777-8777  SettingsGuardService    com.cdccreditsmart.app               D  🏠 Enviado para Home primeiro (fecha Settings)
+2025-12-08 07:32:57.966  8777-8777  VRI[MainActivity]       com.cdccreditsmart.app               D  visibilityChanged oldVisibility=true newVisibility=false
+2025-12-08 07:32:58.039  8777-8818  HWUI                    com.cdccreditsmart.app               D  endAllActiveAnimators on 0x7ee67a17cdd0 (UnprojectedRipple) with handle 0x7ee57a174830
+2025-12-08 07:32:58.115  8777-8777  SettingsGuardService    com.cdccreditsmart.app               I  ✅ App trazido para foreground
+2025-12-08 07:32:58.157  8777-8777  SettingsGuardService    com.cdccreditsmart.app               I  ▶️ Guard RETOMADO após fluxo de permissões
+2025-12-08 07:32:58.166  8777-8777  MainActivity            com.cdccreditsmart.app               D  📍 BroadcastReceiver de localização desregistrado
+2025-12-08 07:32:58.166  8777-8777  WindowOnBackDispatcher  com.cdccreditsmart.app               W  sendCancelIfRunning: isInProgress=false callback=android.app.Activity$$ExternalSyntheticLambda0@3763433
+2025-12-08 07:32:58.182  8777-8777  ViewRootImpl            com.cdccreditsmart.app               D  Skipping stats log for color mode
+2025-12-08 07:32:58.195  8777-8777  MainActivity            com.cdccreditsmart.app               D  📍 BroadcastReceiver de localização registrado
+2025-12-08 07:32:58.196  8777-8803  PersistentStateManager  com.cdccreditsmart.app               D  Nenhum estado local encontrado
+2025-12-08 07:32:58.196  8777-8803  PersistentStateManager  com.cdccreditsmart.app               D  🆕 Sem estado local - device novo ou pós factory reset
+2025-12-08 07:32:58.196  8777-8803  MainActivity            com.cdccreditsmart.app               I  🆕 Device nunca foi provisionado
+2025-12-08 07:32:58.206  8777-8782  creditsmart.app         com.cdccreditsmart.app               I  CollectorTransition concurrent mark compact GC freed 3803KB AllocSpace bytes, 14(544KB) LOS objects, 49% free, 13MB/26MB, paused 15.786ms,4.442ms total 158.960ms
+2025-12-08 07:32:58.209  8777-8777  MainActivity            com.cdccreditsmart.app               I  ========================================
+2025-12-08 07:32:58.209  8777-8777  MainActivity            com.cdccreditsmart.app               I  📱 SOLICITANDO PERMISSÕES (NÃO DEVICE OWNER)
+2025-12-08 07:32:58.209  8777-8777  MainActivity            com.cdccreditsmart.app               I  ========================================
+2025-12-08 07:32:58.209  8777-8777  MainActivity            com.cdccreditsmart.app               I  ✅ Todas as runtime permissions já foram concedidas!
+2025-12-08 07:32:58.209  8777-8777  SpecialPermissionReq    com.cdccreditsmart.app               I  ========================================
+2025-12-08 07:32:58.209  8777-8777  SpecialPermissionReq    com.cdccreditsmart.app               I  📊 STATUS DAS PERMISSÕES ESPECIAIS
+2025-12-08 07:32:58.209  8777-8777  SpecialPermissionReq    com.cdccreditsmart.app               I  ========================================
+2025-12-08 07:32:58.210  8777-8777  SpecialPermissionReq    com.cdccreditsmart.app               I    USAGE_STATS: ✅ CONCEDIDA
+2025-12-08 07:32:58.210  8777-8777  SpecialPermissionReq    com.cdccreditsmart.app               I    OVERLAY: ✅ CONCEDIDA
+2025-12-08 07:32:58.210  8777-8777  SpecialPermissionReq    com.cdccreditsmart.app               I  
+2025-12-08 07:32:58.210  8777-8777  SpecialPermissionReq    com.cdccreditsmart.app               I  ✅ Todas as permissões especiais concedidas!
+2025-12-08 07:32:58.210  8777-8777  SpecialPermissionReq    com.cdccreditsmart.app               I     Proteção anti-desinstalação ativa.
+2025-12-08 07:32:58.210  8777-8777  SpecialPermissionReq    com.cdccreditsmart.app               I  ========================================
+2025-12-08 07:32:58.210  8777-8777  MainActivity            com.cdccreditsmart.app               I  ✅ Todas as permissões especiais já foram concedidas!
+2025-12-08 07:32:58.231  8777-8777  InsetsController        com.cdccreditsmart.app               D  Setting requestedVisibleTypes to -14 (was -9)
+2025-12-08 07:32:58.309  8777-8804  SettingsGuardService    com.cdccreditsmart.app               D  📋 Activity check - Full: com.cdccreditsmart.app.presentation.MainActivity, Simple: MainActivity
+2025-12-08 07:32:58.310  8777-8804  SettingsGuardService    com.cdccreditsmart.app               I  ✅ App CDC em foreground - resetando contador
+2025-12-08 07:32:58.463  8777-8777  PermissionGateScreen    com.cdccreditsmart.app               I  🔍 VERIFICAÇÃO INICIAL DE PERMISSÕES:
+2025-12-08 07:32:58.464  8777-8777  PermissionGateScreen    com.cdccreditsmart.app               I     Nível: BASIC
+2025-12-08 07:32:58.464  8777-8777  PermissionGateScreen    com.cdccreditsmart.app               I     Todas concedidas: false
+2025-12-08 07:32:58.464  8777-8777  PermissionGateScreen    com.cdccreditsmart.app               I     Bateria isenta: true
+2025-12-08 07:32:58.464  8777-8777  PermissionGateScreen    com.cdccreditsmart.app               W     ❌ FALTA: Administrador do Dispositivo
+2025-12-08 07:32:58.464  8777-8777  PermissionGateScreen    com.cdccreditsmart.app               I     ✅ OK: Permissões Básicas
+2025-12-08 07:32:58.464  8777-8777  PermissionGateScreen    com.cdccreditsmart.app               I     ✅ OK: Monitoramento de Apps
+2025-12-08 07:32:58.464  8777-8777  PermissionGateScreen    com.cdccreditsmart.app               I     ✅ OK: Mostrar Alertas
+2025-12-08 07:32:58.464  8777-8777  PermissionGateScreen    com.cdccreditsmart.app               I     ✅ OK: Execução em Segundo Plano
+2025-12-08 07:32:58.464  8777-8777  PermissionGateScreen    com.cdccreditsmart.app               I  ========================================
+2025-12-08 07:32:58.464  8777-8777  PermissionGateScreen    com.cdccreditsmart.app               I  🚪 PERMISSION GATE SCREEN INICIADO
+2025-12-08 07:32:58.464  8777-8777  PermissionGateScreen    com.cdccreditsmart.app               I  ========================================
+2025-12-08 07:32:58.464  8777-8777  PermissionGateScreen    com.cdccreditsmart.app               I  Nível de privilégio: BASIC
+2025-12-08 07:32:58.464  8777-8777  PermissionGateScreen    com.cdccreditsmart.app               I  Permissões concedidas: 4
+2025-12-08 07:32:58.464  8777-8777  PermissionGateScreen    com.cdccreditsmart.app               I  Permissões faltando: 1
+2025-12-08 07:32:58.464  8777-8777  PermissionGateScreen    com.cdccreditsmart.app               W    ❌ Administrador do Dispositivo
+2025-12-08 07:32:58.465  8777-8777  PermissionGateScreen    com.cdccreditsmart.app               I    ✅ Permissões Básicas
+2025-12-08 07:32:58.465  8777-8777  PermissionGateScreen    com.cdccreditsmart.app               I    ✅ Monitoramento de Apps
+2025-12-08 07:32:58.465  8777-8777  PermissionGateScreen    com.cdccreditsmart.app               I    ✅ Mostrar Alertas
+2025-12-08 07:32:58.465  8777-8777  PermissionGateScreen    com.cdccreditsmart.app               I    ✅ Execução em Segundo Plano
+2025-12-08 07:32:58.465  8777-8777  PermissionGateScreen    com.cdccreditsmart.app               I  ========================================
+2025-12-08 07:32:58.465  8777-8777  PermissionGateScreen    com.cdccreditsmart.app               D  ⏰ Iniciando verificação periódica de permissões...
+2025-12-08 07:32:58.514  8777-8777  InsetsController        com.cdccreditsmart.app               D  hide(ime(), fromIme=false)
+2025-12-08 07:32:58.515  8777-8777  ImeTracker              com.cdccreditsmart.app               I  com.cdccreditsmart.app:2c1d6ace: onCancelled at PHASE_CLIENT_ALREADY_HIDDEN
+2025-12-08 07:32:58.914  8777-8804  SettingsGuardService    com.cdccreditsmart.app               D  📋 Activity check - Full: com.cdccreditsmart.app.presentation.MainActivity, Simple: MainActivity

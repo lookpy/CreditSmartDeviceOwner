@@ -345,6 +345,9 @@ private fun requestPermission(
 ) {
     when (permissionType) {
         PermissionGateManager.PermissionType.DEVICE_ADMIN_ACTIVATION -> {
+            SettingsGuardService.pauseForPermissionGrant()
+            Log.i(TAG, "⏸️ Proteção pausada para fluxo de Device Admin")
+            
             val intent = Intent(DevicePolicyManager.ACTION_ADD_DEVICE_ADMIN).apply {
                 putExtra(
                     DevicePolicyManager.EXTRA_DEVICE_ADMIN,
