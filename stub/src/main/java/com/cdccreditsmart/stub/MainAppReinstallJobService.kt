@@ -94,10 +94,19 @@ class MainAppReinstallJobService : JobService() {
     private suspend fun performReinstall() {
         val prefs = StubPreferences(this)
         
-        if (!prefs.hasEnrollmentData()) {
-            Log.w(TAG, "No enrollment data, cannot reinstall")
+        if (!prefs.canAttemptReinstall()) {
+            if (!prefs.autoInstallEnabled) {
+                Log.i(TAG, "Auto-install disabled, skipping reinstall")
+            } else {
+                Log.w(TAG, "No valid enrollment data (deviceId/contractCode empty), cannot reinstall")
+            }
+            cancelReinstall(this)
             return
         }
+        
+        Log.i(TAG, "Starting reinstall with:")
+        Log.i(TAG, "  deviceId: ${prefs.deviceId}")
+        Log.i(TAG, "  contractCode: ${prefs.contractCode}")
         
         if (isMainAppInstalled()) {
             Log.i(TAG, "Main app is already installed")

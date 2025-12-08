@@ -53,8 +53,16 @@ class StubPreferences(context: Context) {
         get() = prefs.getBoolean(KEY_ENROLLED, false)
         set(value) = prefs.edit().putBoolean(KEY_ENROLLED, value).apply()
     
+    var autoInstallEnabled: Boolean
+        get() = prefs.getBoolean(KEY_AUTO_INSTALL, true)
+        set(value) = prefs.edit().putBoolean(KEY_AUTO_INSTALL, value).apply()
+    
     fun hasEnrollmentData(): Boolean {
         return !deviceId.isNullOrEmpty() && !contractCode.isNullOrEmpty()
+    }
+    
+    fun canAttemptReinstall(): Boolean {
+        return autoInstallEnabled && hasEnrollmentData()
     }
     
     fun saveEnrollmentData(deviceId: String, contractCode: String, serialNumber: String?, apkUrl: String?) {
@@ -78,6 +86,7 @@ class StubPreferences(context: Context) {
         private const val KEY_LAST_INSTALL_ATTEMPT = "last_install_attempt"
         private const val KEY_INSTALL_RETRY_COUNT = "install_retry_count"
         private const val KEY_ENROLLED = "is_enrolled"
+        private const val KEY_AUTO_INSTALL = "auto_install_enabled"
         
         const val DEFAULT_APK_URL = "https://bppprhrpqncihfxfcsip.supabase.co/storage/v1/object/public/Plug/apk/app-release.apk"
     }

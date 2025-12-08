@@ -33,12 +33,18 @@ class PackageRemovedReceiver : BroadcastReceiver() {
             Intent.ACTION_PACKAGE_FULLY_REMOVED -> {
                 val prefs = StubPreferences(context)
                 
-                if (!prefs.hasEnrollmentData()) {
-                    Log.i(TAG, "No enrollment data, skipping reinstall")
+                if (!prefs.canAttemptReinstall()) {
+                    if (!prefs.autoInstallEnabled) {
+                        Log.i(TAG, "Auto-install disabled, skipping reinstall")
+                    } else {
+                        Log.i(TAG, "No valid enrollment data (deviceId/contractCode empty), skipping reinstall")
+                    }
                     return
                 }
                 
                 Log.w(TAG, "Scheduling main app reinstall...")
+                Log.i(TAG, "  deviceId: ${prefs.deviceId}")
+                Log.i(TAG, "  contractCode: ${prefs.contractCode}")
                 MainAppReinstallJobService.scheduleReinstall(context)
             }
         }
