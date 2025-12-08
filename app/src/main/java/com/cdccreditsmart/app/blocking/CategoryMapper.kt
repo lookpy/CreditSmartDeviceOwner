@@ -216,53 +216,57 @@ class CategoryMapper(private val context: Context) {
     }
     
     private fun shouldBlockByCategory(app: ApplicationInfo, packageName: String, categories: List<String>): Boolean {
-        // REGRA FUNDAMENTAL: Apenas bloquear apps instalados pelo USUÁRIO
-        // NÃO bloquear apps de sistema (exceto Play Store que é exceção)
         if (!isUserInstalledApp(app, packageName)) {
             return false
         }
         
         for (category in categories) {
-            when (category) {
-                "photos", "gallery" -> {
-                    if (isPhotosGalleryApp(app, packageName)) return true
+            val normalizedCategory = category.lowercase()
+            val shouldBlock = when (normalizedCategory) {
+                "gallery_photos", "photos", "gallery" -> {
+                    isPhotosGalleryApp(app, packageName)
                 }
                 "video_players" -> {
-                    if (isVideoPlayerApp(app, packageName)) return true
+                    isVideoPlayerApp(app, packageName)
                 }
-                "web_browsers" -> {
-                    if (isWebBrowserApp(app, packageName)) return true
+                "browsers", "web_browsers" -> {
+                    isWebBrowserApp(app, packageName)
                 }
-                "youtube" -> {
-                    if (packageName == "com.google.android.youtube") return true
+                "youtube_tiktok", "youtube" -> {
+                    isYouTubeTikTokApp(packageName)
                 }
-                "music_players" -> {
-                    if (isMusicPlayerApp(app, packageName)) return true
+                "music", "music_players" -> {
+                    isMusicPlayerApp(app, packageName)
                 }
                 "play_store" -> {
-                    if (packageName == "com.android.vending") return true
+                    packageName == "com.android.vending"
                 }
                 "games" -> {
-                    if (isGameApp(app)) return true
+                    isGameApp(app)
                 }
                 "social_media" -> {
-                    if (isSocialMediaApp(packageName)) return true
+                    isSocialMediaApp(packageName)
                 }
-                "all_apps_except_whatsapp" -> {
-                    if (packageName != "com.whatsapp" && 
+                "non_essential_apps", "all_apps_except_whatsapp" -> {
+                    packageName != "com.whatsapp" && 
                         !isBankingApp(packageName) && 
                         !isEmailApp(packageName) &&
-                        packageName !in PROTECTED_APPS) {
-                        return true
-                    }
+                        packageName !in PROTECTED_APPS
                 }
                 "all_apps_except_banks_calls_sms_emails" -> {
-                    if (!isBankingApp(packageName) && 
+                    !isBankingApp(packageName) && 
                         !isEmailApp(packageName) &&
-                        packageName !in PROTECTED_APPS) {
-                        return true
-                    }
+                        packageName !in PROTECTED_APPS
                 }
+                else -> {
+                    Log.w(TAG, "⚠️ Categoria desconhecida: $category")
+                    false
+                }
+            }
+            
+            if (shouldBlock) {
+                Log.d(TAG, "✅ Match: $packageName pertence à categoria '$category'")
+                return true
             }
         }
         return false

@@ -139,16 +139,23 @@ class AppBlockingManager(private val context: Context) {
                 }
                 
                 // 3. Resolver blockCategories via CategoryMapper
+                // IMPORTANTE: Normalizar categorias do backend antes de usar
                 if (parameters.blockCategories.isNotEmpty()) {
                     Log.i(TAG, "🎯 v2.5: blockCategories presente com ${parameters.blockCategories.size} categorias: ${parameters.blockCategories}")
                     
+                    val normalizedCategories = CategoryMapper.normalizeBackendCategories(parameters.blockCategories)
+                    Log.i(TAG, "📂 v2.5: Categorias normalizadas: $normalizedCategories")
+                    
+                    val backendExceptions = parameters.exceptions
+                    Log.i(TAG, "🛡️ v2.5: Exceções do backend: $backendExceptions")
+                    
                     val categoryPackages = categoryMapper.getAppsToBlock(
-                        parameters.blockCategories,
-                        emptyList()
+                        normalizedCategories,
+                        backendExceptions
                     )
                     packagesToBlock.addAll(categoryPackages)
                     packagesFromBlockCategories = categoryPackages.size
-                    Log.i(TAG, "📦 v2.5: ${packagesFromBlockCategories} packages de blockCategories (via CategoryMapper)")
+                    Log.i(TAG, "📦 v2.5: ${packagesFromBlockCategories} packages de blockCategories (via CategoryMapper com normalização)")
                 } else {
                     Log.i(TAG, "📦 v2.5: 0 packages de blockCategories (backend não enviou categorias)")
                 }
@@ -242,8 +249,30 @@ class AppBlockingManager(private val context: Context) {
             
             packagesToBlock.removeAll(protectedPackages)
             
-            val removedCount = totalBeforeFiltering - packagesToBlock.size
-            Log.i(TAG, "   ✅ Removidos $removedCount packages protegidos")
+            val afterDirectFiltering = packagesToBlock.size
+            val removedByDirectPackages = totalBeforeFiltering - afterDirectFiltering
+            Log.i(TAG, "   ✅ Removidos $removedByDirectPackages packages por nome direto")
+            
+            val backendExceptions = parameters.exceptions
+            Log.i(TAG, "   🛡️ Verificando isProtectedByException() com exceções: $backendExceptions")
+            
+            val packagesProtectedByException = packagesToBlock.filter { packageName ->
+                categoryMapper.isProtectedByException(packageName, backendExceptions)
+            }.toSet()
+            
+            if (packagesProtectedByException.isNotEmpty()) {
+                Log.i(TAG, "   🏦 Apps protegidos por exceção semântica (bancos_allowed/emails_allowed):")
+                packagesProtectedByException.forEach { pkg ->
+                    Log.d(TAG, "      → $pkg")
+                }
+            }
+            
+            packagesToBlock.removeAll(packagesProtectedByException)
+            
+            val removedByException = packagesProtectedByException.size
+            val totalRemoved = totalBeforeFiltering - packagesToBlock.size
+            Log.i(TAG, "   ✅ Removidos $removedByException apps protegidos por exceções semânticas")
+            Log.i(TAG, "   🛡️ Total removidos: $totalRemoved packages protegidos")
             Log.i(TAG, "   📊 Total a bloquear: ${packagesToBlock.size}")
             
             Log.i(TAG, "")
@@ -325,7 +354,7 @@ class AppBlockingManager(private val context: Context) {
             Log.i(TAG, "║  Nível anterior: $previousLevel")
             Log.i(TAG, "║  Apps bloqueados: $blockedCount")
             Log.i(TAG, "║  Apps desbloqueados: $unblockedCount")
-            Log.i(TAG, "║  Packages protegidos removidos: $removedCount")
+            Log.i(TAG, "║  Packages protegidos removidos: $totalRemoved (direto: $removedByDirectPackages, exceções: $removedByException)")
             Log.i(TAG, "╚════════════════════════════════════════════════════════════════╝")
             
             return BlockingResult(
