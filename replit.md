@@ -96,3 +96,15 @@ The UI leverages Jetpack Compose and Material 3, incorporating a CDC institution
 3. Serviços MDM ficam em standby aguardando pareamento
 4. Usuário insere código do contrato → autenticação → token obtido
 5. Serviços MDM são ativados e começam a funcionar
+
+### 2025-12-08: Removido Prompt de Seleção de Launcher
+
+**Problema Identificado:**
+- MainActivity tinha `android.intent.category.HOME` no intent-filter
+- Isso fazia Android perguntar "Qual app usar como Home?" após provisionamento
+- Comportamento indesejado - categoria HOME só é necessária para modo Kiosk
+
+**Correção Implementada:**
+- Removida categoria HOME e DEFAULT do intent-filter da MainActivity
+- Mantido apenas MAIN + LAUNCHER (comportamento normal de app)
+- LockTaskActivity continua com `lockTaskMode="if_whitelisted"` para modo Kiosk quando necessário
