@@ -7,6 +7,7 @@ import androidx.work.*
 import com.cdccreditsmart.app.blocking.AppBlockingManager
 import com.cdccreditsmart.app.blocking.BlockingInfo
 import com.cdccreditsmart.app.blocking.BlockedAppExplanationActivity
+import com.cdccreditsmart.app.security.SecureTokenStorage
 import java.util.concurrent.TimeUnit
 
 /**
@@ -125,6 +126,16 @@ class PeriodicOverlayWorker(
             Log.i(TAG, "╔════════════════════════════════════════════════════════╗")
             Log.i(TAG, "║  🔔 VERIFICAÇÃO PERIÓDICA DE OVERLAY                  ║")
             Log.i(TAG, "╚════════════════════════════════════════════════════════╝")
+            
+            // CRÍTICO: Verificar se dispositivo está pareado antes de mostrar overlay
+            // Evita mostrar tela de bloqueio durante ativação inicial
+            val isPaired = isDevicePaired()
+            if (!isPaired) {
+                Log.i(TAG, "⏸️ Dispositivo NÃO PAREADO - overlay NÃO será mostrado")
+                Log.i(TAG, "   Aguardando pareamento completo para ativar overlay")
+                Log.i(TAG, "")
+                return Result.success()
+            }
             
             val blockingManager = AppBlockingManager(context)
             val blockingInfo = blockingManager.getBlockingInfo()
@@ -312,6 +323,36 @@ class PeriodicOverlayWorker(
         } catch (e: Exception) {
             Log.e(TAG, "❌ Erro ao mostrar overlay", e)
             Log.e(TAG, "   Exception: ${e.message}")
+        }
+    }
+    
+    /**
+     * Verifica se o dispositivo está pareado (tem tokens de autenticação)
+     * 
+     * Um dispositivo é considerado pareado quando:
+     * 1. Tem authToken válido (não vazio)
+     * 2. Tem contractCode válido (não vazio)
+     * 
+     * Isso evita mostrar overlay de bloqueio durante a ativação inicial
+     * quando o dispositivo ainda não completou o pareamento.
+     */
+    private fun isDevicePaired(): Boolean {
+        return try {
+            val tokenStorage = SecureTokenStorage(context)
+            val authToken = tokenStorage.getAuthToken()
+            val contractCode = tokenStorage.getContractCode()
+            
+            val isPaired = !authToken.isNullOrBlank() && !contractCode.isNullOrBlank()
+            
+            Log.i(TAG, "🔐 Verificação de pareamento:")
+            Log.i(TAG, "   AuthToken presente: ${!authToken.isNullOrBlank()}")
+            Log.i(TAG, "   ContractCode presente: ${!contractCode.isNullOrBlank()}")
+            Log.i(TAG, "   Dispositivo pareado: $isPaired")
+            
+            isPaired
+        } catch (e: Exception) {
+            Log.e(TAG, "❌ Erro ao verificar pareamento: ${e.message}")
+            false
         }
     }
 }

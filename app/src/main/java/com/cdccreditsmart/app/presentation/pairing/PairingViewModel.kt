@@ -16,6 +16,8 @@ import com.cdccreditsmart.app.security.FingerprintCalculator
 import com.cdccreditsmart.app.security.SecureTokenStorage
 import com.cdccreditsmart.app.service.CdcForegroundService
 import com.cdccreditsmart.app.websocket.WebSocketManager
+import com.cdccreditsmart.app.workers.AutoBlockingWorker
+import com.cdccreditsmart.app.workers.PeriodicOverlayWorker
 import com.cdccreditsmart.network.api.DeviceApiService
 import com.cdccreditsmart.network.dto.cdc.ClaimRequest
 import kotlinx.coroutines.delay
@@ -478,6 +480,8 @@ class PairingViewModel(private val context: Context) : ViewModel() {
                         customerName = customerName,
                         deviceModel = deviceModel
                     )
+                    // CRÍTICO: Agendar workers de bloqueio agora que pareamento completou
+                    schedulePairingCompletedWorkers()
                 }
             },
             onSaleCompleted = { data ->
@@ -500,6 +504,8 @@ class PairingViewModel(private val context: Context) : ViewModel() {
                     customerName = customerName,
                     deviceModel = deviceModel
                 )
+                // CRÍTICO: Agendar workers de bloqueio agora que pareamento completou
+                schedulePairingCompletedWorkers()
             }
         }
     }
@@ -632,6 +638,39 @@ class PairingViewModel(private val context: Context) : ViewModel() {
         if (isPolling) {
             Log.d(TAG, "Stopping automatic polling")
             isPolling = false
+        }
+    }
+    
+    /**
+     * Agenda workers de bloqueio e overlay após pareamento completar com sucesso.
+     * 
+     * IMPORTANTE: Estes workers NÃO são agendados no CDCApplication.onCreate() quando
+     * o dispositivo não tem tokens de pareamento. Portanto, precisamos agendá-los aqui
+     * imediatamente após o pareamento ser bem-sucedido.
+     * 
+     * Workers agendados:
+     * 1. AutoBlockingWorker - Verifica status de bloqueio diariamente
+     * 2. PeriodicOverlayWorker - Mostra overlay de pagamento em atraso
+     */
+    private fun schedulePairingCompletedWorkers() {
+        Log.i(TAG, "📅 ========================================")
+        Log.i(TAG, "📅 AGENDANDO WORKERS PÓS-PAREAMENTO")
+        Log.i(TAG, "📅 ========================================")
+        
+        try {
+            // Agendar AutoBlockingWorker para verificação diária
+            AutoBlockingWorker.scheduleDailyCheck(context.applicationContext)
+            Log.i(TAG, "📅 ✅ AutoBlockingWorker agendado")
+            
+            // Agendar PeriodicOverlayWorker para overlay de cobrança
+            PeriodicOverlayWorker.schedule(context.applicationContext)
+            Log.i(TAG, "📅 ✅ PeriodicOverlayWorker agendado")
+            
+            Log.i(TAG, "📅 ========================================")
+            Log.i(TAG, "📅 ✅ WORKERS AGENDADOS COM SUCESSO")
+            Log.i(TAG, "📅 ========================================")
+        } catch (e: Exception) {
+            Log.e(TAG, "📅 ❌ Erro ao agendar workers: ${e.message}", e)
         }
     }
 

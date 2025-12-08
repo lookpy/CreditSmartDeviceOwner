@@ -15,6 +15,7 @@ import com.cdccreditsmart.app.security.SimSwapManager
 import com.cdccreditsmart.app.service.CdcForegroundService
 import com.cdccreditsmart.app.workers.AutoBlockingWorker
 import com.cdccreditsmart.app.protection.SettingsGuardService
+import com.cdccreditsmart.app.blocking.AppBlockingManager
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -79,18 +80,20 @@ class CDCApplication : Application() {
         if (hasTokens) {
             Log.i(TAG, "✅ Tokens encontrados - iniciando CdcForegroundService")
             startForegroundServiceSafely()
+            
+            // APENAS agendar overlay e blocking se dispositivo está pareado
+            AutoBlockingWorker.scheduleDailyCheck(applicationContext)
+            
+            Log.i(TAG, "📅 Agendando overlay automático com intervalo progressivo...")
+            com.cdccreditsmart.app.workers.PeriodicOverlayWorker.schedule(applicationContext)
         } else {
             Log.i(TAG, "⏸️ Sem tokens - aguardando pairing para iniciar serviço MDM")
+            
+            // CRÍTICO: Limpar estado de bloqueio se não há tokens
+            // Isso previne tela de bloqueio aparecendo durante ativação
+            // O bloqueio pode ter sido persistido de uma instalação anterior
+            clearStaleBlockingStateIfNotPaired()
         }
-        
-        // REMOVIDO: BlockingCheckWorker (redundante - HeartbeatWorker já envia dados de bloqueio)
-        // Economia: ~192 requisições/dia por dispositivo
-        
-        AutoBlockingWorker.scheduleDailyCheck(applicationContext)
-        
-        // NOVO: Agendar overlay automático periódico com INTERVALO PROGRESSIVO
-        Log.i(TAG, "📅 Agendando overlay automático com intervalo progressivo...")
-        com.cdccreditsmart.app.workers.PeriodicOverlayWorker.schedule(applicationContext)
         
         // SISTEMA KEEP ALIVE: Mantém o app sempre ativo
         startKeepAliveSystem()
@@ -364,6 +367,79 @@ class CDCApplication : Application() {
                 }
             } catch (e: Exception) {
                 Log.e(TAG, "❌ Erro ao verificar/criar Managed Secondary User: ${e.message}", e)
+            }
+        }
+    }
+    
+    /**
+     * Limpa estado de bloqueio persistido quando não há tokens de pareamento.
+     * 
+     * Isso previne a tela de bloqueio aparecer durante a ativação inicial do dispositivo.
+     * O bloqueio pode ter sido persistido de uma instalação anterior (antes de factory reset)
+     * ou de um pairing anterior que foi cancelado.
+     * 
+     * CENÁRIOS:
+     * 1. Dispositivo novo sendo ativado pela primeira vez
+     * 2. Dispositivo foi resetado e está sendo reativado
+     * 3. APK foi reinstalado mas o pairing ainda não foi feito
+     * 
+     * AÇÃO:
+     * - Limpa SharedPreferences de "blocking_state"
+     * - Chama unblockAllApps() para remover suspensão de apps no DevicePolicyManager
+     */
+    private fun clearStaleBlockingStateIfNotPaired() {
+        applicationScope.launch(Dispatchers.IO) {
+            try {
+                Log.i(TAG, "🧹 ========================================")
+                Log.i(TAG, "🧹 LIMPANDO ESTADO DE BLOQUEIO OBSOLETO")
+                Log.i(TAG, "🧹 ========================================")
+                Log.i(TAG, "🧹 Dispositivo não está pareado - bloqueio anterior será removido")
+                
+                // 1. Limpar SharedPreferences de bloqueio
+                val prefs = getSharedPreferences("blocking_state", Context.MODE_PRIVATE)
+                val previousLevel = prefs.getInt("current_level", 0)
+                val previousManualBlock = prefs.getBoolean("is_manual_block", false)
+                
+                Log.i(TAG, "🧹 Estado anterior encontrado:")
+                Log.i(TAG, "   Nível: $previousLevel")
+                Log.i(TAG, "   Bloqueio manual: $previousManualBlock")
+                
+                if (previousLevel == 0 && !previousManualBlock) {
+                    Log.i(TAG, "🧹 Nenhum bloqueio ativo - nada a limpar")
+                    Log.i(TAG, "🧹 ========================================")
+                    return@launch
+                }
+                
+                // Limpar SharedPreferences
+                prefs.edit().clear().apply()
+                Log.i(TAG, "🧹 ✅ SharedPreferences de bloqueio limpo")
+                
+                // 2. Desbloquear apps no DevicePolicyManager (se Device Owner)
+                val blockingManager = AppBlockingManager(applicationContext)
+                if (blockingManager.isDeviceOwner()) {
+                    Log.i(TAG, "🧹 Desbloqueando apps no DevicePolicyManager...")
+                    val result = blockingManager.unblockAllApps()
+                    
+                    if (result.success) {
+                        Log.i(TAG, "🧹 ✅ ${result.unblockedCount} apps desbloqueados")
+                    } else {
+                        Log.w(TAG, "🧹 ⚠️ Erro ao desbloquear apps: ${result.errorMessage}")
+                    }
+                } else {
+                    Log.i(TAG, "🧹 Não é Device Owner - apenas SharedPreferences limpo")
+                }
+                
+                // 3. Cancelar workers de bloqueio
+                Log.i(TAG, "🧹 Cancelando workers de overlay...")
+                com.cdccreditsmart.app.workers.PeriodicOverlayWorker.cancel(applicationContext)
+                
+                Log.i(TAG, "🧹 ========================================")
+                Log.i(TAG, "🧹 ✅ LIMPEZA DE BLOQUEIO CONCLUÍDA")
+                Log.i(TAG, "🧹 Dispositivo pronto para pareamento")
+                Log.i(TAG, "🧹 ========================================")
+                
+            } catch (e: Exception) {
+                Log.e(TAG, "🧹 ❌ Erro ao limpar estado de bloqueio: ${e.message}", e)
             }
         }
     }

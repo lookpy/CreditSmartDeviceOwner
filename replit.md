@@ -141,3 +141,41 @@ Utilizes Jetpack Compose and Material 3 with a CDC institutional dark theme. Fea
 - `optimizationpasses 2` (reduzido de 5)
 - `!method/inlining/*` desabilitado (causava remoção de métodos)
 - Logs W/E/I mantidos em produção, apenas V/D removidos
+
+### 2025-12-08: Correção Crítica - Tela de Bloqueio Durante Ativação
+
+**Problema Identificado:**
+- Tela "app temporariamente bloqueado" aparecia durante ativação inicial do dispositivo
+- Workers de bloqueio (AutoBlockingWorker, PeriodicOverlayWorker) rodavam antes do pareamento
+- Estado de bloqueio anterior (de instalação/factory reset anterior) persistia em SharedPreferences
+
+**Correções Implementadas:**
+
+**1. CDCApplication.kt - Lógica de Inicialização Condicional:**
+- Workers de bloqueio APENAS agendados se dispositivo tem tokens de pareamento
+- Nova função `clearStaleBlockingStateIfNotPaired()` que:
+  - Limpa SharedPreferences "blocking_state"
+  - Chama `unblockAllApps()` para remover suspensão de apps no DevicePolicyManager
+  - Cancela workers de overlay pendentes
+- Fluxo: Se `hasTokens` → agenda workers, Se não → limpa estado de bloqueio
+
+**2. PeriodicOverlayWorker.kt - Verificação de Pareamento:**
+- Nova função `isDevicePaired()` verifica tokens antes de mostrar overlay
+- Worker retorna `Result.success()` silenciosamente se não pareado
+- Previne overlay aparecer durante provisionamento Device Owner
+
+**3. PairingViewModel.kt - Agendamento Pós-Pareamento:**
+- Nova função `schedulePairingCompletedWorkers()` agenda workers após pareamento
+- Chamada em todos os pontos onde `PairingState.Success` é emitido
+- Garante que workers são agendados mesmo que CDCApplication.onCreate() não re-execute
+
+**4. ProGuard Rules - Workers Preservados:**
+- Adicionadas regras keep para PeriodicOverlayWorker, DelayedOverlayWorker
+- Adicionadas regras keep para BlockingNotificationWorker, AutoBlockingWorker
+- Preservado SettingsGuardService.Companion para constantes
+
+**Fluxo Corrigido:**
+1. App inicia → Sem tokens → Limpa bloqueio anterior → NÃO agenda workers
+2. Usuário faz pareamento → PairingState.Success → Agenda workers imediatamente
+3. Workers verificam `isDevicePaired()` antes de qualquer ação de bloqueio
+4. Factory reset → App reinstala → Sem tokens → Limpa bloqueio → Aguarda pareamento

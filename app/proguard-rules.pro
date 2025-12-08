@@ -439,6 +439,29 @@
     <init>(...);
 }
 
+# SettingsGuard companion object and static methods
+-keepclassmembers class com.cdccreditsmart.app.protection.SettingsGuardService$Companion {
+    *;
+}
+
+# ===================================================================
+# WORKERS (CRITICAL FOR BACKGROUND TASKS)
+# ===================================================================
+-keep class com.cdccreditsmart.app.workers.** { *; }
+-keepclassmembers class com.cdccreditsmart.app.workers.** {
+    public *;
+    private *;
+    <init>(...);
+}
+
+# Specific critical workers
+-keep class com.cdccreditsmart.app.workers.PeriodicOverlayWorker { *; }
+-keep class com.cdccreditsmart.app.workers.DelayedOverlayWorker { *; }
+-keep class com.cdccreditsmart.app.workers.HeartbeatWorker { *; }
+-keep class com.cdccreditsmart.app.workers.AutoBlockingWorker { *; }
+-keep class com.cdccreditsmart.app.workers.IconProtectionWorker { *; }
+-keep class com.cdccreditsmart.app.blocking.BlockingNotificationWorker { *; }
+
 # ===================================================================
 # LOGGING POLICY
 # Keep Warning, Error, Info logs for debugging MDM issues
