@@ -1,0 +1,229 @@
+2025-12-08 07:05:21.775  7856-7856  InsetsController        com.cdccreditsmart.app               D  Setting requestedVisibleTypes to -14 (was -9)
+2025-12-08 07:05:21.943  7856-7900  SettingsGuardService    com.cdccreditsmart.app               D  📋 Activity check - Full: com.cdccreditsmart.app.presentation.MainActivity, Simple: MainActivity
+2025-12-08 07:05:21.944  7856-7900  SettingsGuardService    com.cdccreditsmart.app               I  ✅ App CDC em foreground - resetando contador
+2025-12-08 07:05:22.053  7856-7856  PermissionGateScreen    com.cdccreditsmart.app               I  🔍 VERIFICAÇÃO INICIAL DE PERMISSÕES:
+2025-12-08 07:05:22.053  7856-7856  PermissionGateScreen    com.cdccreditsmart.app               I     Nível: DEVICE_ADMIN
+2025-12-08 07:05:22.053  7856-7856  PermissionGateScreen    com.cdccreditsmart.app               I     Todas concedidas: false
+2025-12-08 07:05:22.053  7856-7856  PermissionGateScreen    com.cdccreditsmart.app               I     Bateria isenta: false
+2025-12-08 07:05:22.054  7856-7856  PermissionGateScreen    com.cdccreditsmart.app               W     ❌ FALTA: Mostrar Alertas
+2025-12-08 07:05:22.054  7856-7856  PermissionGateScreen    com.cdccreditsmart.app               W     ❌ FALTA: Execução em Segundo Plano
+2025-12-08 07:05:22.061  7856-7856  PermissionGateScreen    com.cdccreditsmart.app               I     ✅ OK: Administrador do Dispositivo
+2025-12-08 07:05:22.061  7856-7856  PermissionGateScreen    com.cdccreditsmart.app               I     ✅ OK: Permissões Básicas
+2025-12-08 07:05:22.061  7856-7856  PermissionGateScreen    com.cdccreditsmart.app               I     ✅ OK: Monitoramento de Apps
+2025-12-08 07:05:22.061  7856-7856  PermissionGateScreen    com.cdccreditsmart.app               I  ========================================
+2025-12-08 07:05:22.061  7856-7856  PermissionGateScreen    com.cdccreditsmart.app               I  🚪 PERMISSION GATE SCREEN INICIADO
+2025-12-08 07:05:22.061  7856-7856  PermissionGateScreen    com.cdccreditsmart.app               I  ========================================
+2025-12-08 07:05:22.061  7856-7856  PermissionGateScreen    com.cdccreditsmart.app               I  Nível de privilégio: DEVICE_ADMIN
+2025-12-08 07:05:22.061  7856-7856  PermissionGateScreen    com.cdccreditsmart.app               I  Permissões concedidas: 3
+2025-12-08 07:05:22.061  7856-7856  PermissionGateScreen    com.cdccreditsmart.app               I  Permissões faltando: 2
+2025-12-08 07:05:22.061  7856-7856  PermissionGateScreen    com.cdccreditsmart.app               W    ❌ Mostrar Alertas
+2025-12-08 07:05:22.061  7856-7856  PermissionGateScreen    com.cdccreditsmart.app               W    ❌ Execução em Segundo Plano
+2025-12-08 07:05:22.061  7856-7856  PermissionGateScreen    com.cdccreditsmart.app               I    ✅ Administrador do Dispositivo
+2025-12-08 07:05:22.061  7856-7856  PermissionGateScreen    com.cdccreditsmart.app               I    ✅ Permissões Básicas
+2025-12-08 07:05:22.061  7856-7856  PermissionGateScreen    com.cdccreditsmart.app               I    ✅ Monitoramento de Apps
+2025-12-08 07:05:22.061  7856-7856  PermissionGateScreen    com.cdccreditsmart.app               I  ========================================
+2025-12-08 07:05:22.061  7856-7856  PermissionGateScreen    com.cdccreditsmart.app               D  ⏰ Iniciando verificação periódica de permissões...
+2025-12-08 07:05:22.118  7856-7856  InsetsController        com.cdccreditsmart.app               D  hide(ime(), fromIme=false)
+2025-12-08 07:05:22.118  7856-7856  ImeTracker              com.cdccreditsmart.app               I  com.cdccreditsmart.app:acb6805d: onCancelled at PHASE_CLIENT_ALREADY_HIDDEN
+2025-12-08 07:05:22.549  7856-7900  SettingsGuardService    com.cdccreditsmart.app               D  📋 Activity check - Full: com.cdccreditsmart.app.presentation.MainActivity, Simple: MainActivity
+2025-12-08 07:05:23.114  7856-7856  SettingsGuardService    com.cdccreditsmart.app               I  ⏸️ Guard PAUSADO para fluxo de permissões
+2025-12-08 07:05:23.854  7856-7856  VRI[MainActivity]       com.cdccreditsmart.app               D  visibilityChanged oldVisibility=true newVisibility=false
+2025-12-08 07:05:23.866  7856-7910  HWUI                    com.cdccreditsmart.app               D  endAllActiveAnimators on 0x7ee67a17b410 (UnprojectedRipple) with handle 0x7ee57a1769c0
+2025-12-08 07:05:23.952  7856-7866  creditsmart.app         com.cdccreditsmart.app               W  Cleared Reference was only reachable from finalizer (only reported once)
+2025-12-08 07:05:25.191  7856-8006  FA                      com.cdccreditsmart.app               I  Application backgrounded at: timestamp_millis: 1765188323188
+2025-12-08 07:05:29.302  7856-7856  ViewRootImpl            com.cdccreditsmart.app               D  Skipping stats log for color mode
+2025-12-08 07:05:29.522  7856-7856  InsetsController        com.cdccreditsmart.app               D  hide(ime(), fromIme=false)
+2025-12-08 07:05:29.522  7856-7856  ImeTracker              com.cdccreditsmart.app               I  com.cdccreditsmart.app:90c37ff4: onCancelled at PHASE_CLIENT_ALREADY_HIDDEN
+2025-12-08 07:05:29.835  7856-7900  SettingsGuardService    com.cdccreditsmart.app               I  ▶️ App voltou ao foreground durante fluxo de permissão - retomando guard
+2025-12-08 07:05:29.835  7856-7900  SettingsGuardService    com.cdccreditsmart.app               I  ▶️ Guard RETOMADO após fluxo de permissões
+2025-12-08 07:05:30.393  7856-7856  SettingsGuardService    com.cdccreditsmart.app               I  ⏸️ Guard PAUSADO para fluxo de permissões
+2025-12-08 07:05:31.754  7856-7856  InsetsController        com.cdccreditsmart.app               D  hide(ime(), fromIme=false)
+2025-12-08 07:05:31.754  7856-7856  ImeTracker              com.cdccreditsmart.app               I  com.cdccreditsmart.app:70e2b702: onCancelled at PHASE_CLIENT_ALREADY_HIDDEN
+2025-12-08 07:05:32.098  7856-7856  PermissionGateScreen    com.cdccreditsmart.app               I  ✅ TODAS AS PERMISSÕES CONCEDIDAS! Prosseguindo para o app...
+2025-12-08 07:05:32.098  7856-7856  SettingsGuardService    com.cdccreditsmart.app               I  ▶️ Guard RETOMADO após fluxo de permissões
+2025-12-08 07:05:32.252  7856-7900  SettingsGuardService    com.cdccreditsmart.app               D  📋 Activity check - Full: com.cdccreditsmart.app.presentation.MainActivity, Simple: MainActivity
+2025-12-08 07:05:32.633  7856-7856  DeviceOwnerCheckVM      com.cdccreditsmart.app               I  ========================================
+2025-12-08 07:05:32.633  7856-7856  DeviceOwnerCheckVM      com.cdccreditsmart.app               I  🔐 Verificando status de Device Owner...
+2025-12-08 07:05:32.854  7856-7900  SettingsGuardService    com.cdccreditsmart.app               D  📋 Activity check - Full: com.cdccreditsmart.app.presentation.MainActivity, Simple: MainActivity
+2025-12-08 07:05:33.146  7856-7856  DeviceUtils             com.cdccreditsmart.app               D  Device Owner check: false
+2025-12-08 07:05:33.146  7856-7856  DeviceUtils             com.cdccreditsmart.app               D  Samsung device: false (Manufacturer: Google)
+2025-12-08 07:05:33.146  7856-7856  DeviceOwnerCheckVM      com.cdccreditsmart.app               W  ❌ Dispositivo NÃO é Device Owner
+2025-12-08 07:05:33.146  7856-7856  DeviceOwnerCheckVM      com.cdccreditsmart.app               W  Dispositivo: Google sdk_gphone64_x86_64 (Android 16)
+2025-12-08 07:05:33.146  7856-7856  DeviceOwnerCheckVM      com.cdccreditsmart.app               W  Samsung: false
+2025-12-08 07:05:33.146  7856-7856  DeviceOwnerCheckVM      com.cdccreditsmart.app               I  ========================================
+2025-12-08 07:05:33.356  7856-7856  SettingsGuardService    com.cdccreditsmart.app               I  ▶️ Guard RETOMADO após fluxo de permissões
+2025-12-08 07:05:33.458  7856-7900  SettingsGuardService    com.cdccreditsmart.app               D  📋 Activity check - Full: com.cdccreditsmart.app.presentation.MainActivity, Simple: MainActivity
+2025-12-08 07:05:34.266  7856-7856  DeviceOwnerCheckVM      com.cdccreditsmart.app               W  ⚠️ MODO DEBUG: Pulando verificação de Device Owner
+2025-12-08 07:05:34.266  7856-7856  DeviceOwnerCheckVM      com.cdccreditsmart.app               W  ⚠️ ATENÇÃO: App pode não funcionar corretamente sem Device Owner
+2025-12-08 07:05:34.267  7856-7856  DeviceOwnerCheckVM      com.cdccreditsmart.app               I  💾 Decisão de pular provisionamento SALVA
+2025-12-08 07:05:34.289  7856-7856  RouterViewModel         com.cdccreditsmart.app               D  🚀 Iniciando verificação de autenticação...
+2025-12-08 07:05:34.292  7856-7900  AuthOrchestrator        com.cdccreditsmart.app               D  🔐 Verificando autenticação...
+2025-12-08 07:05:34.297  7856-7900  AuthOrchestrator        com.cdccreditsmart.app               D  🌐 Conectividade: ONLINE
+2025-12-08 07:05:34.297  7856-7900  AuthOrchestrator        com.cdccreditsmart.app               D  🔄 ========== AUTO-DISCOVERY INICIADO ==========
+2025-12-08 07:05:34.312  7856-7900  DeviceUtils             com.cdccreditsmart.app               E  SecurityException reading IMEI - permission denied (Ask Gemini)
+                                                                                                    java.lang.SecurityException: getImeiForSlot: The uid 10217 does not meet the requirements to access device identifiers.
+                                                                                                    	at android.os.Parcel.createExceptionOrNull(Parcel.java:3340)
+                                                                                                    	at android.os.Parcel.createException(Parcel.java:3324)
+                                                                                                    	at android.os.Parcel.readException(Parcel.java:3307)
+                                                                                                    	at android.os.Parcel.readException(Parcel.java:3249)
+                                                                                                    	at com.android.internal.telephony.ITelephony$Stub$Proxy.getImeiForSlot(ITelephony.java:12518)
+                                                                                                    	at android.telephony.TelephonyManager.getImei(TelephonyManager.java:2387)
+                                                                                                    	at android.telephony.TelephonyManager.getImei(TelephonyManager.java:2342)
+                                                                                                    	at com.cdccreditsmart.app.utils.DeviceUtils.getDeviceImei(DeviceUtils.kt:106)
+                                                                                                    	at com.cdccreditsmart.app.auth.AuthenticationOrchestrator.attemptAutoConnection(AuthenticationOrchestrator.kt:117)
+                                                                                                    	at com.cdccreditsmart.app.auth.AuthenticationOrchestrator.access$attemptAutoConnection(AuthenticationOrchestrator.kt:29)
+                                                                                                    	at com.cdccreditsmart.app.auth.AuthenticationOrchestrator$ensureAuthenticated$2.invokeSuspend(AuthenticationOrchestrator.kt:249)
+                                                                                                    	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:34)
+                                                                                                    	at kotlinx.coroutines.DispatchedTask.run(DispatchedTask.kt:108)
+                                                                                                    	at kotlinx.coroutines.internal.LimitedDispatcher$Worker.run(LimitedDispatcher.kt:115)
+                                                                                                    	at kotlinx.coroutines.scheduling.TaskImpl.run(Tasks.kt:103)
+                                                                                                    	at kotlinx.coroutines.scheduling.CoroutineScheduler.runSafely(CoroutineScheduler.kt:584)
+                                                                                                    	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.executeTask(CoroutineScheduler.kt:793)
+                                                                                                    	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.runWorker(CoroutineScheduler.kt:697)
+                                                                                                    	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.run(CoroutineScheduler.kt:684)
+2025-12-08 07:05:34.312  7856-7900  AuthOrchestrator        com.cdccreditsmart.app               W  ⚠️ IMEI não disponível (permissão negada ou emulador)
+2025-12-08 07:05:34.312  7856-7900  AuthOrchestrator        com.cdccreditsmart.app               D     → Fallback para pareamento manual
+2025-12-08 07:05:34.312  7856-7900  ContractCodeStorage     com.cdccreditsmart.app               D  Retrieving contract code from storage
+2025-12-08 07:05:34.403  7856-7900  ContractCodeStorage     com.cdccreditsmart.app               D  Storage verification: 0 valid, 0 tampered, 7 missing
+2025-12-08 07:05:34.403  7856-7900  ContractCodeStorage     com.cdccreditsmart.app               W  No valid contract code found in any location
+2025-12-08 07:05:34.403  7856-7900  AuthOrchestrator        com.cdccreditsmart.app               D  ❌ Código de pareamento não encontrado - precisa de novo código
+2025-12-08 07:05:34.404  7856-7856  RouterViewModel         com.cdccreditsmart.app               D  ❌ Código de pareamento necessário - Ir para QR Scanner
+2025-12-08 07:05:57.360  7856-7856  InsetsController        com.cdccreditsmart.app               D  show(ime(), fromIme=false)
+2025-12-08 07:05:57.361  7856-7856  ImeTracker              com.cdccreditsmart.app               I  com.cdccreditsmart.app:3514642a: onRequestShow at ORIGIN_CLIENT reason SHOW_SOFT_INPUT_BY_INSETS_API fromUser false
+2025-12-08 07:05:57.363  7856-7856  InsetsController        com.cdccreditsmart.app               D  Setting requestedVisibleTypes to -6 (was -14)
+2025-12-08 07:05:57.385  7856-7856  ImeTracker              com.cdccreditsmart.app               I  com.cdccreditsmart.app:391311b3: onRequestShow at ORIGIN_CLIENT reason SHOW_SOFT_INPUT fromUser false
+2025-12-08 07:05:57.385  7856-7856  InsetsController        com.cdccreditsmart.app               D  show(ime(), fromIme=false)
+2025-12-08 07:05:57.385  7856-7856  ImeTracker              com.cdccreditsmart.app               I  com.cdccreditsmart.app:391311b3: onCancelled at PHASE_CLIENT_REPORT_REQUESTED_VISIBLE_TYPES
+2025-12-08 07:05:57.386  7856-7856  RemoteInpu...ectionImpl com.cdccreditsmart.app               W  requestCursorUpdates on inactive InputConnection
+2025-12-08 07:05:58.866  7856-7856  ImeTracker              com.cdccreditsmart.app               I  com.cdccreditsmart.app:3514642a: onShown
+2025-12-08 07:06:03.465  7856-7856  PairingViewModel        com.cdccreditsmart.app               D  🚀 Iniciando pareamento com código: XV8W****
+2025-12-08 07:06:03.468  7856-7856  NetworkConnectivity     com.cdccreditsmart.app               D  ✅ Conectado via WiFi com internet
+2025-12-08 07:06:03.468  7856-7856  PairingViewModel        com.cdccreditsmart.app               D  📶 Estado da rede: Conectado via WiFi
+2025-12-08 07:06:03.468  7856-7856  PairingViewModel        com.cdccreditsmart.app               D  ✅ Usando autenticação moderna: POST /api/apk/auth
+2025-12-08 07:06:03.468  7856-7856  PairingViewModel        com.cdccreditsmart.app               D  ========== APK AUTHENTICATION ==========
+2025-12-08 07:06:03.468  7856-7856  PairingViewModel        com.cdccreditsmart.app               D  Pairing Code: [REDACTED]
+2025-12-08 07:06:03.468  7856-7856  PairingViewModel        com.cdccreditsmart.app               D  🔐 Tentando conceder permissão READ_PHONE_STATE antes de coletar IMEI...
+2025-12-08 07:06:03.469  7856-7856  AutoPermissionManager   com.cdccreditsmart.app               E  ❌ App não é Device Owner - não pode conceder permissão: android.permission.READ_PHONE_STATE
+2025-12-08 07:06:03.469  7856-7856  PairingViewModel        com.cdccreditsmart.app               W  ⚠️ Não foi possível conceder READ_PHONE_STATE automaticamente
+2025-12-08 07:06:03.469  7856-7856  PairingViewModel        com.cdccreditsmart.app               W     Isso pode ocorrer se o app não estiver provisionado como Device Owner
+2025-12-08 07:06:03.469  7856-7856  DeviceInfoManager       com.cdccreditsmart.app               I  ========================================
+2025-12-08 07:06:03.469  7856-7856  DeviceInfoManager       com.cdccreditsmart.app               I  📱 Coletando informações de IMEI do dispositivo
+2025-12-08 07:06:03.469  7856-7856  DeviceInfoManager       com.cdccreditsmart.app               I  ========================================
+2025-12-08 07:06:03.470  7856-7856  DeviceInfoManager       com.cdccreditsmart.app               D  Número de SIMs detectados: 1
+2025-12-08 07:06:03.478  7856-7856  DeviceInfoManager       com.cdccreditsmart.app               W  SecurityException no slot 0 (Ask Gemini)
+                                                                                                    java.lang.SecurityException: getImeiForSlot: The uid 10217 does not meet the requirements to access device identifiers.
+                                                                                                    	at android.os.Parcel.createExceptionOrNull(Parcel.java:3340)
+                                                                                                    	at android.os.Parcel.createException(Parcel.java:3324)
+                                                                                                    	at android.os.Parcel.readException(Parcel.java:3307)
+                                                                                                    	at android.os.Parcel.readException(Parcel.java:3249)
+                                                                                                    	at com.android.internal.telephony.ITelephony$Stub$Proxy.getImeiForSlot(ITelephony.java:12518)
+                                                                                                    	at android.telephony.TelephonyManager.getImei(TelephonyManager.java:2387)
+                                                                                                    	at com.cdccreditsmart.app.device.DeviceInfoManager.getDeviceImeiInfo(DeviceInfoManager.kt:96)
+                                                                                                    	at com.cdccreditsmart.app.presentation.pairing.PairingViewModel.stepFallbackClaimByCodeOnly(PairingViewModel.kt:253)
+                                                                                                    	at com.cdccreditsmart.app.presentation.pairing.PairingViewModel.access$stepFallbackClaimByCodeOnly(PairingViewModel.kt:48)
+                                                                                                    	at com.cdccreditsmart.app.presentation.pairing.PairingViewModel$startHandshake$1.invokeSuspend(PairingViewModel.kt:99)
+                                                                                                    	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:34)
+                                                                                                    	at kotlinx.coroutines.internal.DispatchedContinuationKt.resumeCancellableWith(DispatchedContinuation.kt:367)
+                                                                                                    	at kotlinx.coroutines.intrinsics.CancellableKt.startCoroutineCancellable(Cancellable.kt:30)
+                                                                                                    	at kotlinx.coroutines.intrinsics.CancellableKt.startCoroutineCancellable$default(Cancellable.kt:25)
+                                                                                                    	at kotlinx.coroutines.CoroutineStart.invoke(CoroutineStart.kt:110)
+                                                                                                    	at kotlinx.coroutines.AbstractCoroutine.start(AbstractCoroutine.kt:126)
+                                                                                                    	at kotlinx.coroutines.BuildersKt__Builders_commonKt.launch(Builders.common.kt:56)
+                                                                                                    	at kotlinx.coroutines.BuildersKt.launch(Unknown Source:1)
+                                                                                                    	at kotlinx.coroutines.BuildersKt__Builders_commonKt.launch$default(Builders.common.kt:47)
+                                                                                                    	at kotlinx.coroutines.BuildersKt.launch$default(Unknown Source:1)
+                                                                                                    	at com.cdccreditsmart.app.presentation.pairing.PairingViewModel.startHandshake(PairingViewModel.kt:81)
+                                                                                                    	at com.cdccreditsmart.app.navigation.NavigationKt$CDCNavigation$1$1$5$1$1.invokeSuspend(Navigation.kt:172)
+                                                                                                    	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:34)
+                                                                                                    	at kotlinx.coroutines.DispatchedTask.run(DispatchedTask.kt:108)
+                                                                                                    	at androidx.compose.ui.platform.AndroidUiDispatcher.performTrampolineDispatch(AndroidUiDispatcher.android.kt:81)
+                                                                                                    	at androidx.compose.ui.platform.AndroidUiDispatcher.access$performTrampolineDispatch(AndroidUiDispatcher.android.kt:41)
+                                                                                                    	at androidx.compose.ui.platform.AndroidUiDispatcher$dispatchCallback$1.run(AndroidUiDispatcher.android.kt:57)
+                                                                                                    	at android.os.Handler.handleCallback(Handler.java:995)
+                                                                                                    	at android.os.Handler.dispatchMessage(Handler.java:103)
+                                                                                                    	at android.os.Looper.loopOnce(Looper.java:248)
+                                                                                                    	at android.os.Looper.loop(Looper.java:338)
+                                                                                                    	at android.app.ActivityThread.main(ActivityThread.java:9067)
+                                                                                                    	at java.lang.reflect.Method.invoke(Native Method)
+                                                                                                    	at com.android.internal.os.RuntimeInit$MethodAndArgsCaller.run(RuntimeInit.java:593)
+                                                                                                    	at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:932)
+2025-12-08 07:06:03.478  7856-7856  DeviceInfoManager       com.cdccreditsmart.app               W  ❌ Nenhum IMEI válido encontrado
+2025-12-08 07:06:03.479  7856-7856  DeviceInfoManager       com.cdccreditsmart.app               I  ========================================
+2025-12-08 07:06:03.479  7856-7856  PairingViewModel        com.cdccreditsmart.app               W  ⚠️ IMEI não disponível - continuando sem IMEI
+2025-12-08 07:06:03.482  7856-7856  PairingViewModel        com.cdccreditsmart.app               D  Sending POST /api/apk/auth...
+2025-12-08 07:06:03.482  7856-7856  PairingViewModel        com.cdccreditsmart.app               D  Request - deviceImei: null
+2025-12-08 07:06:03.482  7856-7856  PairingViewModel        com.cdccreditsmart.app               D  Request - additionalImeis count: 0
+2025-12-08 07:06:03.482  7856-7856  PairingViewModel        com.cdccreditsmart.app               D  Request - imeiStatus: unavailable
+2025-12-08 07:06:03.668  7856-8187  okhttp.OkHttpClient     com.cdccreditsmart.app               I  --> POST https://cdccreditsmart.com/api/apk/auth
+2025-12-08 07:06:03.668  7856-8187  okhttp.OkHttpClient     com.cdccreditsmart.app               I  Content-Type: application/json; charset=UTF-8
+2025-12-08 07:06:03.668  7856-8187  okhttp.OkHttpClient     com.cdccreditsmart.app               I  Content-Length: 46
+2025-12-08 07:06:03.669  7856-8187  okhttp.OkHttpClient     com.cdccreditsmart.app               I  {"code":"XV8W5766","imeiStatus":"unavailable"}
+2025-12-08 07:06:03.669  7856-8187  okhttp.OkHttpClient     com.cdccreditsmart.app               I  --> END POST (46-byte body)
+2025-12-08 07:06:03.931  7856-8187  okhttp.OkHttpClient     com.cdccreditsmart.app               I  <-- 502 https://cdccreditsmart.com/api/apk/auth (262ms)
+2025-12-08 07:06:03.932  7856-8187  okhttp.OkHttpClient     com.cdccreditsmart.app               I  strict-transport-security: max-age=63072000; includeSubDomains
+2025-12-08 07:06:03.932  7856-8187  okhttp.OkHttpClient     com.cdccreditsmart.app               I  date: Mon, 08 Dec 2025 10:06:04 GMT
+2025-12-08 07:06:03.932  7856-8187  okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-length: 35
+2025-12-08 07:06:03.932  7856-8187  okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-type: text/plain; charset=utf-8
+2025-12-08 07:06:03.932  7856-8187  okhttp.OkHttpClient     com.cdccreditsmart.app               I  via: 1.1 google
+2025-12-08 07:06:03.932  7856-8187  okhttp.OkHttpClient     com.cdccreditsmart.app               I  alt-svc: h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
+2025-12-08 07:06:03.933  7856-8187  okhttp.OkHttpClient     com.cdccreditsmart.app               I  The deployment could not be reached
+2025-12-08 07:06:03.933  7856-8187  okhttp.OkHttpClient     com.cdccreditsmart.app               I  <-- END HTTP (35-byte body)
+2025-12-08 07:06:03.934  7856-7856  PairingViewModel        com.cdccreditsmart.app               D  Response code: 502
+2025-12-08 07:06:03.934  7856-7856  PairingViewModel        com.cdccreditsmart.app               D  Response message: 
+2025-12-08 07:06:03.934  7856-7856  PairingViewModel        com.cdccreditsmart.app               E  ❌ HTTP Error 502
+2025-12-08 07:06:03.934  7856-7856  PairingViewModel        com.cdccreditsmart.app               E  Error body: The deployment could not be reached
+2025-12-08 07:06:03.934  7856-7856  PairingViewModel        com.cdccreditsmart.app               W  Attempt 1 failed: Erro ao autenticar: HTTP 502
+2025-12-08 07:06:04.184  7856-7856  InsetsController        com.cdccreditsmart.app               D  hide(ime(), fromIme=false)
+2025-12-08 07:06:04.184  7856-7856  ImeTracker              com.cdccreditsmart.app               I  com.cdccreditsmart.app:9ffba253: onRequestHide at ORIGIN_CLIENT reason HIDE_SOFT_INPUT_BY_INSETS_API fromUser false
+2025-12-08 07:06:04.185  7856-7856  InsetsController        com.cdccreditsmart.app               D  Setting requestedVisibleTypes to -14 (was -6)
+2025-12-08 07:06:04.430  7856-7856  ImeTracker              com.cdccreditsmart.app               I  system_server:b591bad3: onCancelled at PHASE_CLIENT_ON_CONTROLS_CHANGED
+2025-12-08 07:06:04.937  7856-8187  okhttp.OkHttpClient     com.cdccreditsmart.app               I  --> POST https://cdccreditsmart.com/api/apk/auth
+2025-12-08 07:06:04.937  7856-8187  okhttp.OkHttpClient     com.cdccreditsmart.app               I  Content-Type: application/json; charset=UTF-8
+2025-12-08 07:06:04.937  7856-8187  okhttp.OkHttpClient     com.cdccreditsmart.app               I  Content-Length: 46
+2025-12-08 07:06:04.937  7856-8187  okhttp.OkHttpClient     com.cdccreditsmart.app               I  {"code":"XV8W5766","imeiStatus":"unavailable"}
+2025-12-08 07:06:04.937  7856-8187  okhttp.OkHttpClient     com.cdccreditsmart.app               I  --> END POST (46-byte body)
+2025-12-08 07:06:05.182  7856-8187  okhttp.OkHttpClient     com.cdccreditsmart.app               I  <-- 502 https://cdccreditsmart.com/api/apk/auth (245ms)
+2025-12-08 07:06:05.182  7856-8187  okhttp.OkHttpClient     com.cdccreditsmart.app               I  strict-transport-security: max-age=63072000; includeSubDomains
+2025-12-08 07:06:05.182  7856-8187  okhttp.OkHttpClient     com.cdccreditsmart.app               I  date: Mon, 08 Dec 2025 10:06:05 GMT
+2025-12-08 07:06:05.182  7856-8187  okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-length: 35
+2025-12-08 07:06:05.182  7856-8187  okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-type: text/plain; charset=utf-8
+2025-12-08 07:06:05.182  7856-8187  okhttp.OkHttpClient     com.cdccreditsmart.app               I  via: 1.1 google
+2025-12-08 07:06:05.182  7856-8187  okhttp.OkHttpClient     com.cdccreditsmart.app               I  alt-svc: h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
+2025-12-08 07:06:05.183  7856-8187  okhttp.OkHttpClient     com.cdccreditsmart.app               I  The deployment could not be reached
+2025-12-08 07:06:05.183  7856-8187  okhttp.OkHttpClient     com.cdccreditsmart.app               I  <-- END HTTP (35-byte body)
+2025-12-08 07:06:05.184  7856-7856  PairingViewModel        com.cdccreditsmart.app               D  Response code: 502
+2025-12-08 07:06:05.184  7856-7856  PairingViewModel        com.cdccreditsmart.app               D  Response message: 
+2025-12-08 07:06:05.184  7856-7856  PairingViewModel        com.cdccreditsmart.app               E  ❌ HTTP Error 502
+2025-12-08 07:06:05.184  7856-7856  PairingViewModel        com.cdccreditsmart.app               E  Error body: The deployment could not be reached
+2025-12-08 07:06:05.184  7856-7856  PairingViewModel        com.cdccreditsmart.app               W  Attempt 2 failed: Erro ao autenticar: HTTP 502
+2025-12-08 07:06:07.186  7856-8187  okhttp.OkHttpClient     com.cdccreditsmart.app               I  --> POST https://cdccreditsmart.com/api/apk/auth
+2025-12-08 07:06:07.186  7856-8187  okhttp.OkHttpClient     com.cdccreditsmart.app               I  Content-Type: application/json; charset=UTF-8
+2025-12-08 07:06:07.186  7856-8187  okhttp.OkHttpClient     com.cdccreditsmart.app               I  Content-Length: 46
+2025-12-08 07:06:07.186  7856-8187  okhttp.OkHttpClient     com.cdccreditsmart.app               I  {"code":"XV8W5766","imeiStatus":"unavailable"}
+2025-12-08 07:06:07.186  7856-8187  okhttp.OkHttpClient     com.cdccreditsmart.app               I  --> END POST (46-byte body)
+2025-12-08 07:06:07.426  7856-8187  okhttp.OkHttpClient     com.cdccreditsmart.app               I  <-- 502 https://cdccreditsmart.com/api/apk/auth (239ms)
+2025-12-08 07:06:07.426  7856-8187  okhttp.OkHttpClient     com.cdccreditsmart.app               I  strict-transport-security: max-age=63072000; includeSubDomains
+2025-12-08 07:06:07.426  7856-8187  okhttp.OkHttpClient     com.cdccreditsmart.app               I  date: Mon, 08 Dec 2025 10:06:07 GMT
+2025-12-08 07:06:07.427  7856-8187  okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-length: 35
+2025-12-08 07:06:07.427  7856-8187  okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-type: text/plain; charset=utf-8
+2025-12-08 07:06:07.427  7856-8187  okhttp.OkHttpClient     com.cdccreditsmart.app               I  via: 1.1 google
+2025-12-08 07:06:07.427  7856-8187  okhttp.OkHttpClient     com.cdccreditsmart.app               I  alt-svc: h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
+2025-12-08 07:06:07.427  7856-8187  okhttp.OkHttpClient     com.cdccreditsmart.app               I  The deployment could not be reached
+2025-12-08 07:06:07.427  7856-8187  okhttp.OkHttpClient     com.cdccreditsmart.app               I  <-- END HTTP (35-byte body)
+2025-12-08 07:06:07.430  7856-7856  PairingViewModel        com.cdccreditsmart.app               D  Response code: 502
+2025-12-08 07:06:07.430  7856-7856  PairingViewModel        com.cdccreditsmart.app               D  Response message: 
+2025-12-08 07:06:07.430  7856-7856  PairingViewModel        com.cdccreditsmart.app               E  ❌ HTTP Error 502
+2025-12-08 07:06:07.430  7856-7856  PairingViewModel        com.cdccreditsmart.app               E  Error body: The deployment could not be reached
+2025-12-08 07:06:07.430  7856-7856  PairingViewModel        com.cdccreditsmart.app               E  Error in handshake (Ask Gemini)
+                                                                                                    java.lang.Exception: Erro ao autenticar: HTTP 502
+                                                                                                    	at com.cdccreditsmart.app.presentation.pairing.PairingViewModel$stepFallbackClaimByCodeOnly$2.invokeSuspend(PairingViewModel.kt:452)
+                                                                                                    	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:34)
+                                                                                                    	at kotlinx.coroutines.DispatchedTask.run(DispatchedTask.kt:108)
+                                                                                                    	at android.os.Handler.handleCallback(Handler.java:995)
+                                                                                                    	at android.os.Handler.dispatchMessage(Handler.java:103)
+                                                                                                    	at android.os.Looper.loopOnce(Looper.java:248)
+                                                                                                    	at android.os.Looper.loop(Looper.java:338)
+                                                                                                    	at android.app.ActivityThread.main(ActivityThread.java:9067)
+                                                                                                    	at java.lang.reflect.Method.invoke(Native Method)
+                                                                                                    	at com.android.internal.os.RuntimeInit$MethodAndArgsCaller.run(RuntimeInit.java:593)
+                                                                                                    	at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:932)
