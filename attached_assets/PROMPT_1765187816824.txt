@@ -1,0 +1,301 @@
+# Resposta Backend → Time APK (v2)
+**Data:** 2025-12-08 09:55 UTC
+**Status:** TODAS AS PENDÊNCIAS CORRIGIDAS
+
+---
+
+## Resumo das Correções Aplicadas
+
+| Pendência | Status | Correção |
+|-----------|--------|----------|
+| deviceToken não retornado no claim-sale | ✅ CORRIGIDO | Adicionado `deviceToken` e `authToken` |
+| WebSocket retorna 401 | ✅ CORRIGIDO | Conexão não fecha mais - envia `auth_required` |
+| Endpoint /api/apk/device/pair | ✅ FUNCIONAL | Disponível em produção |
+
+---
+
+## 1. CORRIGIDO: /api/device/claim-sale agora retorna deviceToken
+
+A resposta do endpoint foi atualizada para incluir `deviceToken` e `authToken`:
+
+**Response Atualizada:**
+```json
+{
+  "success": true,
+  "deviceToken": "eyJhbGciOiJIUzI1NiIs...",   // ✅ ADICIONADO
+  "authToken": "eyJhbGciOiJIUzI1NiIs...",     // ✅ ADICIONADO
+  "immutableToken": "eyJhbGciOiJIUzI1NiIs...",
+  "deviceId": "device_123",
+  "serialNumber": "XV8W5766",
+  "saleId": "sale_456",
+  "biometrySessionId": "bio_789",
+  "storeId": "store_abc",
+  "customerCpf": "12345678901",
+  "imei": "353104903560533",
+  "imeiList": ["353104903560533"],
+  "meidList": [],
+  "androidId": "a1b2c3d4e5f6g7h8",
+  "deviceFingerprint": "samsung/a52/...",
+  "requiresBackendRevalidation": true,
+  "message": "Device successfully paired to sale"
+}
+```
+
+**Todos os três campos (`deviceToken`, `authToken`, `immutableToken`) contêm o mesmo valor.**
+
+---
+
+## 2. CORRIGIDO: WebSocket MDM não retorna mais 401
+
+**Problema anterior:** WebSocket fechava com código 4001 se autenticação via URL falhasse.
+
+**Novo comportamento:**
+
+1. Conexão aceita SEM parâmetros na URL
+2. Backend envia `auth_required` (NÃO `auth_error`)
+3. APK tem 60 segundos para autenticar via mensagem
+4. Se não autenticar em 60s, fecha com código 4002
+
+**Mensagem que o APK recebe ao conectar sem params:**
+```json
+{
+  "type": "auth_required",
+  "message": "Please authenticate via message with serialNumber, deviceFingerprint or androidId",
+  "timeout": 60,
+  "timestamp": "2025-12-08T09:55:00.000Z"
+}
+```
+
+**Ação do APK:** Enviar mensagem de autenticação imediatamente:
+```json
+{
+  "type": "device-control",
+  "action": "authenticate",
+  "serialNumber": "XV8W5766",
+  "deviceToken": "eyJhbGciOiJIUzI1NiIs...",
+  "deviceFingerprint": "samsung/a52/...",
+  "androidId": "a1b2c3d4e5f6g7h8"
+}
+```
+
+**Resposta de sucesso:**
+```json
+{
+  "type": "authenticated",
+  "deviceId": "device_123",
+  "serialNumber": "XV8W5766",
+  "message": "Device authenticated successfully",
+  "timestamp": "2025-12-08T09:55:01.000Z"
+}
+```
+
+---
+
+## 3. Endpoint /api/apk/device/pair está em PRODUÇÃO
+
+O endpoint alternativo está disponível e funcional:
+
+```
+POST /api/apk/device/pair
+```
+
+**Request:**
+```json
+{
+  "imei": "353104903560533",
+  "hardwareImei": "353104903560533",
+  "deviceFingerprint": "samsung/a52/...",
+  "androidId": "a1b2c3d4e5f6g7h8"
+}
+```
+
+**Response:**
+```json
+{
+  "success": true,
+  "deviceToken": "eyJhbGciOiJIUzI1NiIs...",
+  "authToken": "eyJhbGciOiJIUzI1NiIs...",
+  "immutableToken": "eyJhbGciOiJIUzI1NiIs...",
+  "deviceId": "device_123",
+  "serialNumber": "XV8W5766",
+  ...
+}
+```
+
+---
+
+## 4. Confirmação: WebSocket NÃO precisa de header Authorization
+
+**Resposta:** CONFIRMADO - WebSocket aceita conexão anônima.
+
+- **NÃO precisa** de header `Authorization: Bearer <token>` no handshake
+- Autenticação é feita via mensagem JSON após conexão
+- URL simples: `wss://cdccreditsmart.com/ws/mdm-policies`
+
+---
+
+## 5. Tabela de Status Atualizada
+
+| Feature | APK | Backend | Status |
+|---------|-----|---------|--------|
+| WebSocket sem token na URL | ✅ | ✅ | **OK** |
+| Auth via mensagem JSON | ✅ | ✅ | **OK** |
+| Handler authenticated | ✅ | ✅ | **OK** |
+| Handler auth_required | ✅ | ✅ | **OK** |
+| Handler auth_error | ✅ | ✅ | **OK** |
+| Ping JSON a cada 25s | ✅ | ✅ | **OK** |
+| Polling fallback 30s | ✅ | ✅ | **OK** |
+| Endpoint ACK | ✅ | ✅ | **OK** |
+| Device Boot 16 campos | ✅ | ✅ | **OK** |
+| DeviceToken no claim-sale | ✅ | ✅ | **CORRIGIDO** |
+| WebSocket sem 401 | ✅ | ✅ | **CORRIGIDO** |
+
+---
+
+## 6. Testes de Validação
+
+### Teste 1: Verificar deviceToken no claim-sale
+```bash
+curl -X POST https://cdccreditsmart.com/api/device/claim-sale \
+  -H "Content-Type: application/json" \
+  -d '{"validationId": "...", "hardwareImei": "353104903560533", "fingerprint": "..."}'
+
+# Esperar na resposta:
+# "deviceToken": "eyJ...",
+# "authToken": "eyJ...",
+# "immutableToken": "eyJ..."
+```
+
+### Teste 2: WebSocket sem header Authorization
+```bash
+# wscat (ou similar) - conectar SEM header de auth
+wscat -c "wss://cdccreditsmart.com/ws/mdm-policies"
+
+# Esperar mensagem:
+# {"type": "auth_required", "timeout": 60, ...}
+
+# Enviar autenticação:
+{"type": "device-control", "action": "authenticate", "serialNumber": "XV8W5766"}
+
+# Esperar resposta:
+# {"type": "authenticated", "deviceId": "...", ...}
+```
+
+### Teste 3: Novo endpoint de pairing
+```bash
+curl -X POST https://cdccreditsmart.com/api/apk/device/pair \
+  -H "Content-Type: application/json" \
+  -d '{"imei": "353104903560533", "hardwareImei": "353104903560533"}'
+```
+
+---
+
+## 7. Código Kotlin para WebSocket
+
+```kotlin
+class MdmWebSocketClient(
+    private val context: Context,
+    private val tokenStorage: TokenStorage
+) {
+    private var webSocket: WebSocket? = null
+    private var isAuthenticated = false
+    
+    private val client = OkHttpClient.Builder()
+        .readTimeout(0, TimeUnit.MILLISECONDS)
+        .pingInterval(25, TimeUnit.SECONDS)
+        .build()
+    
+    fun connect() {
+        // Conectar SEM Authorization header
+        val request = Request.Builder()
+            .url("wss://cdccreditsmart.com/ws/mdm-policies")
+            .build()
+        
+        webSocket = client.newWebSocket(request, object : WebSocketListener() {
+            
+            override fun onOpen(webSocket: WebSocket, response: Response) {
+                Log.i(TAG, "WebSocket connected")
+                // NÃO enviar auth imediatamente - esperar auth_required
+            }
+            
+            override fun onMessage(webSocket: WebSocket, text: String) {
+                try {
+                    val json = JSONObject(text)
+                    when (json.optString("type")) {
+                        "welcome" -> {
+                            Log.d(TAG, "Welcome received")
+                        }
+                        "auth_required" -> {
+                            Log.i(TAG, "Auth required - sending authentication")
+                            sendAuthentication()
+                        }
+                        "authenticated" -> {
+                            isAuthenticated = true
+                            Log.i(TAG, "✅ Authenticated successfully")
+                        }
+                        "auth_error", "auth_timeout" -> {
+                            Log.e(TAG, "❌ Auth failed: ${json.optString("message")}")
+                            isAuthenticated = false
+                        }
+                        // Handle other message types...
+                    }
+                } catch (e: Exception) {
+                    Log.e(TAG, "Error parsing message", e)
+                }
+            }
+            
+            override fun onFailure(webSocket: WebSocket, t: Throwable, response: Response?) {
+                Log.e(TAG, "WebSocket failure", t)
+                isAuthenticated = false
+                scheduleReconnect()
+            }
+            
+            override fun onClosed(webSocket: WebSocket, code: Int, reason: String) {
+                Log.w(TAG, "WebSocket closed: $code - $reason")
+                isAuthenticated = false
+                if (code == 4002) {
+                    // Auth timeout - reconnect and try again
+                    scheduleReconnect()
+                }
+            }
+        })
+    }
+    
+    private fun sendAuthentication() {
+        val authMessage = JSONObject().apply {
+            put("type", "device-control")
+            put("action", "authenticate")
+            put("serialNumber", tokenStorage.getSerialNumber())
+            put("deviceToken", tokenStorage.getDeviceToken())
+            put("deviceFingerprint", DeviceInfo.getFingerprint())
+            put("androidId", DeviceInfo.getAndroidId(context))
+        }
+        webSocket?.send(authMessage.toString())
+    }
+    
+    companion object {
+        private const val TAG = "MdmWebSocket"
+    }
+}
+```
+
+---
+
+## 8. Checklist Final para APK
+
+- [x] WebSocket conecta sem parâmetros na URL ✅
+- [x] APK envia auth ao receber `auth_required` ✅
+- [x] APK trata `auth_timeout` (código 4002) ✅
+- [x] Usar deviceToken do claim-sale ✅ (agora retornado!)
+- [x] Fallback para authToken ou immutableToken ✅
+- [x] Ping a cada 25 segundos ✅
+- [x] Reconexão em caso de falha ✅
+
+---
+
+**Status: PRONTO PARA TESTE**
+
+Todas as pendências foram resolvidas. O APK pode ser testado com o backend atual.
+
+**Versão:** 2.0
+**Contato:** Backend Team
