@@ -17,6 +17,41 @@ class AppBlockingManager(private val context: Context) {
     
     companion object {
         private const val TAG = "AppBlockingManager"
+        
+        private val CRITICAL_NEVER_BLOCK_PACKAGES = listOf(
+            "android",
+            "com.android.systemui",
+            "com.android.settings",
+            "com.android.providers.settings",
+            "com.android.shell",
+            "com.android.keychain",
+            "com.google.android.gms",
+            "com.google.android.gsf",
+            "com.cdccreditsmart.app",
+            "com.google.android.apps.nexuslauncher",
+            "com.android.launcher3",
+            "com.sec.android.app.launcher",
+            "com.miui.home",
+            "com.huawei.android.launcher",
+            "com.oppo.launcher",
+            "com.oneplus.launcher",
+            "com.vivo.launcher",
+            "com.realme.launcher",
+            "com.sonymobile.home",
+            "com.motorola.launcher3",
+            "com.lge.launcher2",
+            "com.lge.launcher3",
+            "net.oneplus.launcher",
+            "com.tcl.launcher",
+            "com.positivo.launcher",
+            "com.asus.launcher",
+            "com.nokia.launcher",
+            "com.lenovo.launcher",
+            "com.transsion.launcher",
+            "com.infinix.launcher",
+            "com.tecno.launcher",
+            "com.itel.launcher"
+        )
     }
     
     private val dpm: DevicePolicyManager by lazy {
@@ -39,6 +74,29 @@ class AppBlockingManager(private val context: Context) {
     
     private val debtAgingCalculator by lazy {
         DebtAgingCalculator(context)
+    }
+    
+    private fun isCriticalSystemPackage(packageName: String): Boolean {
+        if (packageName in CRITICAL_NEVER_BLOCK_PACKAGES) return true
+        
+        if (packageName.contains("launcher", ignoreCase = true)) return true
+        if (packageName.contains("systemui", ignoreCase = true)) return true
+        
+        return false
+    }
+    
+    private fun safeSetApplicationHidden(packageName: String, hidden: Boolean): Boolean {
+        if (hidden && isCriticalSystemPackage(packageName)) {
+            Log.w(TAG, "🚨 BLOQUEIO SEGURO: Recusando bloquear package crítico: $packageName")
+            return false
+        }
+        
+        return try {
+            dpm.setApplicationHidden(adminComponent, packageName, hidden)
+        } catch (e: Exception) {
+            Log.e(TAG, "Erro em setApplicationHidden: ${e.message}")
+            false
+        }
     }
     
     /**
@@ -343,7 +401,7 @@ class AppBlockingManager(private val context: Context) {
             for (packageName in packagesToBlock) {
                 try {
                     if (!dpm.isApplicationHidden(adminComponent, packageName)) {
-                        val hidden = dpm.setApplicationHidden(adminComponent, packageName, true)
+                        val hidden = safeSetApplicationHidden(packageName, true)
                         if (hidden) {
                             blockedCount++
                             Log.d(TAG, "✅ App oculto: $packageName")
@@ -1124,8 +1182,9 @@ class AppBlockingManager(private val context: Context) {
             for (packageName in offlineState.blockedPackages) {
                 try {
                     if (!dpm.isApplicationHidden(adminComponent, packageName)) {
-                        dpm.setApplicationHidden(adminComponent, packageName, true)
-                        blockedCount++
+                        if (safeSetApplicationHidden(packageName, true)) {
+                            blockedCount++
+                        }
                     }
                 } catch (e: Exception) {
                     Log.e(TAG, "Erro ao ocultar $packageName: ${e.message}")
@@ -1155,8 +1214,9 @@ class AppBlockingManager(private val context: Context) {
             for (packageName in packages) {
                 try {
                     if (!dpm.isApplicationHidden(adminComponent, packageName)) {
-                        dpm.setApplicationHidden(adminComponent, packageName, true)
-                        blockedCount++
+                        if (safeSetApplicationHidden(packageName, true)) {
+                            blockedCount++
+                        }
                     }
                 } catch (e: Exception) {
                     Log.e(TAG, "Erro ao ocultar $packageName: ${e.message}")
@@ -1210,9 +1270,10 @@ class AppBlockingManager(private val context: Context) {
         for (packageName in savedPackages) {
             try {
                 if (!dpm.isApplicationHidden(adminComponent, packageName)) {
-                    dpm.setApplicationHidden(adminComponent, packageName, true)
-                    reappliedCount++
-                    Log.d(TAG, "   → Reaplicado: $packageName")
+                    if (safeSetApplicationHidden(packageName, true)) {
+                        reappliedCount++
+                        Log.d(TAG, "   → Reaplicado: $packageName")
+                    }
                 }
             } catch (e: Exception) {
                 Log.e(TAG, "Erro ao garantir bloqueio de $packageName: ${e.message}")

@@ -193,6 +193,7 @@ class PeriodicOverlayWorker(
                             currentLevel = offlineLevel,
                             daysOverdue = maxOf(calculatedDaysOverdue, localState.daysOverdue),
                             blockedAppsCount = localState.blockedPackages.size,
+                            blockedPackages = localState.blockedPackages,
                             manualBlockReason = null
                         )
                         

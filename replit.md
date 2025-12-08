@@ -49,3 +49,41 @@ The UI leverages Jetpack Compose and Material 3, incorporating a CDC institution
 - **Retrofit, OkHttp:** HTTP client libraries.
 - **WorkManager:** Manages background tasks.
 - **Kotlin Coroutines:** For asynchronous programming.
+
+## Recent Changes
+
+### 2025-12-08: Correção de Tela Preta (Bloqueio de Packages Críticos)
+
+**Problema Identificado:**
+O enforcement offline reaplicava packages do cache diretamente via setApplicationHidden() sem verificar se eram packages críticos do sistema. Se o cache incluísse launcher ou SystemUI, causava tela preta e travamento total do dispositivo.
+
+**Correção Implementada:**
+
+**1. Lista CRITICAL_NEVER_BLOCK_PACKAGES (32 packages):**
+- Packages do sistema: `android`, `com.android.systemui`, `com.android.settings`
+- Google Play Services: `com.google.android.gms`, `com.google.android.gsf`
+- Nosso app: `com.cdccreditsmart.app`
+- Launchers de todas as marcas: Samsung, Xiaomi, Huawei, Oppo, OnePlus, Vivo, Sony, LG, etc.
+
+**2. Função isCriticalSystemPackage():**
+- Verifica lista de packages críticos
+- Detecta launchers genéricos via pattern matching (`contains("launcher")`)
+- Detecta SystemUI genérico via pattern matching (`contains("systemui")`)
+
+**3. Função safeSetApplicationHidden():**
+- Wrapper de segurança para setApplicationHidden()
+- Se tentativa de bloqueio + package crítico → recusa e loga warning
+- Aplicada em TODOS os 4 pontos de bloqueio do AppBlockingManager
+
+**Garantias:**
+- NUNCA bloqueia launcher, SystemUI, Settings
+- Log de warning quando tentativa é recusada
+- Aplicativo não causa mais tela preta
+
+### 2025-12-08: Proteção contra Manipulação de Relógio v2.9
+
+**DebtAgingCalculator** usa contador monotônico para prevenir bypass via manipulação de relógio:
+- Rollback para antes do vencimento: Mantém maxRecorded quando já há dias registrados
+- elapsedRealtime() como base monotônica (imune a manipulação)
+- AND lógico: AMBAS referências (elapsed E wall-clock) devem concordar ≥20h
+- Reset apenas pelo servidor via `resetDaysOverdueFromServer()`
