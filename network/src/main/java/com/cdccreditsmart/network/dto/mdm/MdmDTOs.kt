@@ -39,7 +39,23 @@ sealed class CommandParameters {
     ) : CommandParameters() {
         fun getEffectiveLevel(): Int = if (level > 0) level else targetLevel
         
-        fun isV25Format(): Boolean = blockCategories.isNotEmpty() || blockAllFlags != null || blockedPackages.isNotEmpty()
+        fun isV25Format(): Boolean {
+            return blockedPackages.isNotEmpty() ||
+                   blockAllFlags != null ||
+                   blockCategories.isNotEmpty() ||
+                   alwaysAllowedPackages.isNotEmpty() ||
+                   level > 0
+        }
+        
+        fun hasV25Data(): String {
+            val parts = mutableListOf<String>()
+            if (blockedPackages.isNotEmpty()) parts.add("blockedPackages=${blockedPackages.size}")
+            if (blockAllFlags != null) parts.add("blockAllFlags")
+            if (blockCategories.isNotEmpty()) parts.add("blockCategories=${blockCategories.size}")
+            if (alwaysAllowedPackages.isNotEmpty()) parts.add("alwaysAllowedPackages=${alwaysAllowedPackages.size}")
+            if (level > 0) parts.add("level=$level")
+            return if (parts.isEmpty()) "none" else parts.joinToString(", ")
+        }
         
         fun isLegacyFormat(): Boolean = rules != null && rules.isNotEmpty()
         

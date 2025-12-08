@@ -142,29 +142,26 @@ class AppBlockingManager(private val context: Context) {
                 
             } else {
                 Log.i(TAG, "📦 MODO LEGACY: Usando extractCategoriesFromRules...")
+                Log.i(TAG, "   🎯 Legacy: Usando TODAS as categorias do backend SEM filtro de nível")
                 
                 val (extractedCategories, extractedExceptions) = extractCategoriesFromRules(parameters)
                 
-                val filteredExtractedCategories = extractedCategories.filter {
-                    it.lowercase() in allowedCategoriesForLevel.map { c -> c.lowercase() }
-                }
-                Log.i(TAG, "   📂 Categorias extraídas: ${extractedCategories.size}, filtradas para nível: ${filteredExtractedCategories.size}")
+                Log.i(TAG, "   📂 Categorias extraídas: ${extractedCategories.size}")
+                Log.d(TAG, "   📂 Categorias: $extractedCategories")
                 
                 finalCategories = if (effectiveLevel > previousLevel) {
-                    val accumulated = (previousCategories + filteredExtractedCategories).distinct()
-                        .filter { it.lowercase() in allowedCategoriesForLevel.map { c -> c.lowercase() } }
+                    val accumulated = (previousCategories + extractedCategories).distinct()
                     Log.i(TAG, "⬆️ Nível AUMENTOU ($previousLevel → $effectiveLevel): ACUMULANDO categorias")
+                    Log.d(TAG, "   📊 Categorias acumuladas: ${accumulated.size}")
                     accumulated
                 } else if (effectiveLevel == previousLevel) {
-                    val accumulated = (previousCategories + filteredExtractedCategories).distinct()
-                        .filter { it.lowercase() in allowedCategoriesForLevel.map { c -> c.lowercase() } }
+                    val accumulated = (previousCategories + extractedCategories).distinct()
                     Log.i(TAG, "➡️ Nível MANTEVE ($previousLevel): Mantendo categorias")
+                    Log.d(TAG, "   📊 Categorias acumuladas: ${accumulated.size}")
                     accumulated
                 } else {
-                    Log.w(TAG, "⬇️ Nível DIMINUIU ($previousLevel → $effectiveLevel): Ajustando categorias para novo nível")
-                    filteredExtractedCategories.filter { 
-                        it.lowercase() in allowedCategoriesForLevel.map { c -> c.lowercase() }
-                    }
+                    Log.w(TAG, "⬇️ Nível DIMINUIU ($previousLevel → $effectiveLevel): Usando categorias do backend diretamente")
+                    extractedCategories
                 }
                 
                 val legacyAppsToBlock = categoryMapper.getAppsToBlock(

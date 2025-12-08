@@ -8,6 +8,48 @@ object LegalWhitelist {
     
     private const val TAG = "LegalWhitelist"
     
+    private val SYSTEM_PACKAGES_NEVER_PROTECTED = setOf(
+        "com.android.internal",
+        "com.android.systemui.emulation",
+        "com.android.companiondevicemanager",
+        "com.android.internal.display.cutout",
+        "com.google.android.overlay",
+        "com.android.providers",
+        "com.android.settings",
+        "com.android.shell",
+        "com.android.inputmethod",
+        "com.android.keychain",
+        "com.android.location",
+        "com.android.nfc",
+        "com.android.bluetooth",
+        "com.android.wifi",
+        "com.android.carrierconfig",
+        "com.android.cellbroadcastreceiver",
+        "com.android.documentsui",
+        "com.android.externalstorage",
+        "com.android.htmlviewer",
+        "com.android.managedprovisioning",
+        "com.android.packageinstaller",
+        "com.android.permissioncontroller",
+        "com.android.printspooler",
+        "com.android.proxyhandler",
+        "com.android.se",
+        "com.android.sharedstoragebackup",
+        "com.android.simappdialog",
+        "com.android.statementservice",
+        "com.android.storagemanager",
+        "com.android.theme",
+        "com.android.traceur",
+        "com.android.vpndialogs",
+        "com.android.wallpaper",
+        "com.android.wallpaperbackup",
+        "com.android.webview"
+    )
+    
+    private fun isSystemPackageExcluded(packageName: String): Boolean {
+        return SYSTEM_PACKAGES_NEVER_PROTECTED.any { packageName.startsWith(it) }
+    }
+    
     val PHONE_CALL_APPS = listOf(
         "com.android.dialer",
         "com.android.phone",
@@ -268,14 +310,17 @@ object LegalWhitelist {
     )
     
     val BANKING_KEYWORDS = listOf(
-        "nubank", "nu.production", "inter", "itau", "bradesco", "santander",
-        "caixa", "banco", "bank", "picpay", "mercadopago", "paypal",
-        "bb.android", "sicoob", "sicredi", "next", "c6bank",
-        "original", "neon", "agibank", "safra", "pan", "stone",
-        "pagseguro", "cielo", "getnet", "rede", "vero", "sumup",
-        "izettle", "recargapay", "ame", "pagbank", "creditas",
-        "digio", "will.app", "crefisa", "ole", "midway", "carrefour.bank",
-        "spay", "wallet", "pay", "pix"
+        "nubank", "nu.production", "bancointer", "intermedium", "itau", "bradesco", "santander",
+        "caixa.tem", "caixa.auxilio", "caixa.fgts", "picpay", "mercadopago", "paypal",
+        "bb.android", "sicoob", "sicredi", "c6bank",
+        "mobile.original", "neon", "agibank", "safra.android", "activeclient.safra",
+        "bancopan", "stone.cliente", "pagseguro", "cielo.app", "getnet.comercio",
+        "rede.app", "vero.mpv", "sumup.android", "izettle.android", "recargapay",
+        "ame.amesp", "pagbank", "creditas", "digio.digio", "will.app", "crefisa.app",
+        "ole.cliente", "midway", "carrefour.bank", "samsung.android.spay",
+        "apps.walletnfcrel", "banestes", "banrisul", "bancobmg", "brb.app",
+        "dock.superdigital", "pernambucanas.digital", "btgpactual", "nuinvest",
+        "daycoval", "modalmais", "xpinvestimentos", "totvs.eleve"
     )
     
     fun isLegallyProtected(packageName: String): Boolean {
@@ -302,17 +347,26 @@ object LegalWhitelist {
     }
     
     private fun isGigEconomyApp(packageName: String): Boolean {
+        if (isSystemPackageExcluded(packageName)) {
+            return false
+        }
         return packageName in GIG_ECONOMY_APPS ||
                GIG_ECONOMY_KEYWORDS.any { packageName.contains(it, ignoreCase = true) }
     }
     
     private fun isGovernmentApp(packageName: String): Boolean {
+        if (isSystemPackageExcluded(packageName)) {
+            return false
+        }
         return packageName in GOVERNMENT_APPS ||
                packageName in DIGITAL_DOCUMENTS_APPS ||
                GOVERNMENT_KEYWORDS.any { packageName.contains(it, ignoreCase = true) }
     }
     
     private fun isBankingFinancialApp(packageName: String): Boolean {
+        if (isSystemPackageExcluded(packageName)) {
+            return false
+        }
         return packageName in BANKING_FINANCIAL_APPS ||
                BANKING_KEYWORDS.any { packageName.contains(it, ignoreCase = true) }
     }
