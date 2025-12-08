@@ -1,0 +1,60 @@
+Mensagem MDM recebida: {"type":"pong","timestamp":"2025-12-08T12:46:54.656Z"}
+2025-12-08 09:46:54.338 16314-16361 MdmCommandReceiver      com.cdccreditsmart.app               D  📥 JSON recebido: {"type":"pong","timestamp":"2025-12-08T12:46:54.656Z"}
+2025-12-08 09:46:54.339 16314-16361 MdmCommandReceiver      com.cdccreditsmart.app               D  📨 Tipo de mensagem: pong
+2025-12-08 09:46:54.339 16314-16361 MdmCommandReceiver      com.cdccreditsmart.app               D  💓 Pong recebido (latency: N/A)
+2025-12-08 09:47:09.271 16314-16314 WebSocketManager        com.cdccreditsmart.app               D  Heartbeat ping sent
+2025-12-08 09:47:09.614 16314-16361 MdmCommandReceiver      com.cdccreditsmart.app               I  🔍 [Polling #9] Verificando comandos pendentes...
+2025-12-08 09:47:09.618 16314-16361 SecureTokenStorage      com.cdccreditsmart.app               D  ⚠️ Usando Serial Number para MDM (IMEI indisponível): XV8W57...
+2025-12-08 09:47:09.619 16314-16361 MdmCommandReceiver      com.cdccreditsmart.app               I  🔍 ========================================
+2025-12-08 09:47:09.619 16314-16361 MdmCommandReceiver      com.cdccreditsmart.app               I  🔍 BUSCANDO COMANDOS PENDENTES
+2025-12-08 09:47:09.619 16314-16361 MdmCommandReceiver      com.cdccreditsmart.app               I  🔍 ========================================
+2025-12-08 09:47:09.619 16314-16361 MdmCommandReceiver      com.cdccreditsmart.app               I  🔍 Identifier: XV8W5766
+2025-12-08 09:47:09.619 16314-16361 MdmCommandReceiver      com.cdccreditsmart.app               I  🔍 Endpoint: GET /api/apk/device/XV8W5766/commands
+2025-12-08 09:47:09.620 16314-16361 MdmCommandReceiver      com.cdccreditsmart.app               D  🔍 Executando requisição HTTP (timeout: 15s)...
+2025-12-08 09:47:09.623 16314-16366 okhttp.OkHttpClient     com.cdccreditsmart.app               I  --> GET https://cdccreditsmart.com/api/apk/device/XV8W5766/commands
+2025-12-08 09:47:09.623 16314-16366 okhttp.OkHttpClient     com.cdccreditsmart.app               I  --> END GET
+2025-12-08 09:47:09.634 16314-16366 SecureTokenStorage      com.cdccreditsmart.app               D  EncryptedSharedPreferences initialized successfully
+2025-12-08 09:47:09.943 16314-16366 okhttp.OkHttpClient     com.cdccreditsmart.app               I  <-- 500 https://cdccreditsmart.com/api/apk/device/XV8W5766/commands (319ms)
+2025-12-08 09:47:09.944 16314-16366 okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-length: 21
+2025-12-08 09:47:09.944 16314-16366 okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-type: text/plain; charset=utf-8
+2025-12-08 09:47:09.944 16314-16366 okhttp.OkHttpClient     com.cdccreditsmart.app               I  date: Mon, 08 Dec 2025 12:47:09 GMT
+2025-12-08 09:47:09.944 16314-16366 okhttp.OkHttpClient     com.cdccreditsmart.app               I  strict-transport-security: max-age=63072000; includeSubDomains
+2025-12-08 09:47:09.944 16314-16366 okhttp.OkHttpClient     com.cdccreditsmart.app               I  via: 1.1 google
+2025-12-08 09:47:09.946 16314-16366 okhttp.OkHttpClient     com.cdccreditsmart.app               I  alt-svc: h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
+2025-12-08 09:47:09.948 16314-16366 okhttp.OkHttpClient     com.cdccreditsmart.app               I  Internal Server Error
+2025-12-08 09:47:09.949 16314-16366 okhttp.OkHttpClient     com.cdccreditsmart.app               I  <-- END HTTP (21-byte body)
+2025-12-08 09:47:09.951 16314-16361 MdmCommandReceiver      com.cdccreditsmart.app               I  🔍 HTTP Response code: 500
+2025-12-08 09:47:09.951 16314-16361 MdmCommandReceiver      com.cdccreditsmart.app               I  🔍 HTTP isSuccessful: false
+2025-12-08 09:47:09.951 16314-16361 MdmCommandReceiver      com.cdccreditsmart.app               E  ❌ ========================================
+2025-12-08 09:47:09.951 16314-16361 MdmCommandReceiver      com.cdccreditsmart.app               E  ❌ ERRO AO BUSCAR COMANDOS PENDENTES
+2025-12-08 09:47:09.951 16314-16361 MdmCommandReceiver      com.cdccreditsmart.app               E  ❌ ========================================
+2025-12-08 09:47:09.951 16314-16361 MdmCommandReceiver      com.cdccreditsmart.app               E  ❌ HTTP Status: 500
+2025-12-08 09:47:09.952 16314-16361 MdmCommandReceiver      com.cdccreditsmart.app               E  ❌ HTTP Message: 
+2025-12-08 09:47:09.952 16314-16361 MdmCommandReceiver      com.cdccreditsmart.app               E  ❌ Error body: Internal Server Error
+2025-12-08 09:47:09.952 16314-16361 MdmCommandReceiver      com.cdccreditsmart.app               E  ❌ ========================================
+2025-12-08 09:47:11.817 16314-16361 HeartbeatManager        com.cdccreditsmart.app               D  💓 Usando authToken (fallback)
+2025-12-08 09:47:11.820 16314-16361 HeartbeatManager        com.cdccreditsmart.app               D  💓 Payload do heartbeat:
+2025-12-08 09:47:11.820 16314-16361 HeartbeatManager        com.cdccreditsmart.app               D     deviceToken: eyJhbGciOiJIUzI1NiIs...
+2025-12-08 09:47:11.820 16314-16361 HeartbeatManager        com.cdccreditsmart.app               D     currentBlockLevel: 0
+2025-12-08 09:47:11.820 16314-16361 HeartbeatManager        com.cdccreditsmart.app               D     batteryLevel: 100
+2025-12-08 09:47:11.820 16314-16361 HeartbeatManager        com.cdccreditsmart.app               D     isCharging: false
+2025-12-08 09:47:11.820 16314-16361 HeartbeatManager        com.cdccreditsmart.app               D     currentSimImei: N/A...
+2025-12-08 09:47:11.823 16314-16366 okhttp.OkHttpClient     com.cdccreditsmart.app               I  --> POST https://cdccreditsmart.com/api/apk/device/heartbeat
+2025-12-08 09:47:11.823 16314-16366 okhttp.OkHttpClient     com.cdccreditsmart.app               I  Content-Type: application/json; charset=UTF-8
+2025-12-08 09:47:11.823 16314-16366 okhttp.OkHttpClient     com.cdccreditsmart.app               I  Content-Length: 364
+2025-12-08 09:47:11.823 16314-16366 okhttp.OkHttpClient     com.cdccreditsmart.app               I  Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkZXZpY2VJZCI6ImRldmljZV8xNzY1MTQ4NzcxNDYyXzR0ZXd3NDJwMTE0IiwiYXBrVG9rZW4iOiJYVjhXNTc2NiIsInR5cGUiOiJhcGsiLCJleHBpcmVzSW4iOiIyNGgiLCJpYXQiOjE3NjUxOTY1NTgsImV4cCI6MTc2NTI4Mjk1OH0.pEdu6ZPEIxbRNslRXkAUiNFy3FBdIsLghjdmilVEFpo
+2025-12-08 09:47:11.824 16314-16366 okhttp.OkHttpClient     com.cdccreditsmart.app               I  {"deviceToken":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkZXZpY2VJZCI6ImRldmljZV8xNzY1MTQ4NzcxNDYyXzR0ZXd3NDJwMTE0IiwiYXBrVG9rZW4iOiJYVjhXNTc2NiIsInR5cGUiOiJhcGsiLCJleHBpcmVzSW4iOiIyNGgiLCJpYXQiOjE3NjUxOTY1NTgsImV4cCI6MTc2NTI4Mjk1OH0.pEdu6ZPEIxbRNslRXkAUiNFy3FBdIsLghjdmilVEFpo","currentBlockLevel":0,"batteryLevel":100,"isCharging":false,"timestamp":1765198031820}
+2025-12-08 09:47:11.824 16314-16366 okhttp.OkHttpClient     com.cdccreditsmart.app               I  --> END POST (364-byte body)
+2025-12-08 09:47:11.842 16314-16366 SecureTokenStorage      com.cdccreditsmart.app               D  EncryptedSharedPreferences initialized successfully
+2025-12-08 09:47:12.161 16314-16366 okhttp.OkHttpClient     com.cdccreditsmart.app               I  <-- 500 https://cdccreditsmart.com/api/apk/device/heartbeat (336ms)
+2025-12-08 09:47:12.161 16314-16366 okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-length: 21
+2025-12-08 09:47:12.161 16314-16366 okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-type: text/plain; charset=utf-8
+2025-12-08 09:47:12.161 16314-16366 okhttp.OkHttpClient     com.cdccreditsmart.app               I  date: Mon, 08 Dec 2025 12:47:11 GMT
+2025-12-08 09:47:12.161 16314-16366 okhttp.OkHttpClient     com.cdccreditsmart.app               I  strict-transport-security: max-age=63072000; includeSubDomains
+2025-12-08 09:47:12.161 16314-16366 okhttp.OkHttpClient     com.cdccreditsmart.app               I  via: 1.1 google
+2025-12-08 09:47:12.161 16314-16366 okhttp.OkHttpClient     com.cdccreditsmart.app               I  alt-svc: h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
+2025-12-08 09:47:12.162 16314-16366 okhttp.OkHttpClient     com.cdccreditsmart.app               I  Internal Server Error
+2025-12-08 09:47:12.162 16314-16366 okhttp.OkHttpClient     com.cdccreditsmart.app               I  <-- END HTTP (21-byte body)
+2025-12-08 09:47:12.163 16314-16361 HeartbeatManager        com.cdccreditsmart.app               E  ❌ Erro ao enviar heartbeat: HTTP 500
+2025-12-08 09:47:12.163 16314-16361 HeartbeatManager        com.cdccreditsmart.app               E     Resposta: Internal Server Error
+2025-12-08 09:47:19.124 16314-16361 MdmCommandReceiver      com.cdccreditsmart.app               D  💓 Ping JSON enviado (timestamp: 1765198039124)

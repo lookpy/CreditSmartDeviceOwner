@@ -177,14 +177,23 @@ class HeartbeatManager(private val context: Context) {
             
             "NON_COMPLIANT" -> {
                 if (expectedLevel != null) {
-                    if (complianceCorrectionCount >= MAX_COMPLIANCE_CORRECTIONS) {
-                        Log.e(TAG, "❌ LIMITE DE CORREÇÕES ATINGIDO ($complianceCorrectionCount tentativas)")
-                        Log.e(TAG, "   Parando para evitar loop infinito")
+                    val currentLevel = blockingManager.getCurrentBlockLevel()
+                    
+                    // Se o nível já está correto, resetar contador e não fazer nada
+                    if (currentLevel == expectedLevel) {
+                        Log.i(TAG, "✅ Nível já está correto: $currentLevel (backend pode ter dados desatualizados)")
                         complianceCorrectionCount = 0
                         return
                     }
                     
-                    val currentLevel = blockingManager.getCurrentBlockLevel()
+                    if (complianceCorrectionCount >= MAX_COMPLIANCE_CORRECTIONS) {
+                        Log.e(TAG, "❌ LIMITE DE CORREÇÕES ATINGIDO ($complianceCorrectionCount tentativas)")
+                        Log.e(TAG, "   Parando para evitar loop infinito")
+                        Log.e(TAG, "   Próximo heartbeat tentará novamente")
+                        complianceCorrectionCount = 0
+                        return
+                    }
+                    
                     Log.w(TAG, "")
                     Log.w(TAG, "╔════════════════════════════════════════════════════╗")
                     Log.w(TAG, "║  ⚠️ DISPOSITIVO NÃO-CONFORME DETECTADO!          ║")
@@ -197,12 +206,21 @@ class HeartbeatManager(private val context: Context) {
                     
                     complianceCorrectionCount++
                     
+                    Log.i(TAG, "🔧 Chamando forceComplianceCorrection($expectedLevel)...")
                     val correctionSuccess = blockingManager.forceComplianceCorrection(expectedLevel)
                     
                     if (correctionSuccess) {
                         Log.i(TAG, "✅ Bloqueio corrigido para nível $expectedLevel")
+                        // Verificar se realmente aplicou
+                        val newLevel = blockingManager.getCurrentBlockLevel()
+                        if (newLevel == expectedLevel) {
+                            Log.i(TAG, "✅ CONFIRMADO: Nível agora é $newLevel")
+                            complianceCorrectionCount = 0 // Resetar após sucesso
+                        } else {
+                            Log.e(TAG, "⚠️ INCONSISTÊNCIA: forceComplianceCorrection retornou true mas nível é $newLevel (esperado $expectedLevel)")
+                        }
                     } else {
-                        Log.e(TAG, "❌ Falha ao corrigir bloqueio")
+                        Log.e(TAG, "❌ Falha ao corrigir bloqueio (forceComplianceCorrection retornou false)")
                     }
                 }
             }

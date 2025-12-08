@@ -619,31 +619,61 @@ class AppBlockingManager(private val context: Context) {
      * @return true se correção bem-sucedida, false se falhou
      */
     fun forceComplianceCorrection(expectedLevel: Int): Boolean {
+        val currentLevel = getCurrentBlockingLevel()
         Log.w(TAG, "⚠️ NÃO-CONFORMIDADE DETECTADA pelo backend!")
-        Log.w(TAG, "   Nível atual: ${getCurrentBlockingLevel()}")
+        Log.w(TAG, "   Nível atual (SharedPrefs): $currentLevel")
         Log.w(TAG, "   Nível esperado: $expectedLevel")
-        Log.i(TAG, "🔧 Corrigindo bloqueio para nível $expectedLevel...")
+        Log.i(TAG, "🔧 Iniciando correção para nível $expectedLevel...")
+        
+        // Verificar se é Device Owner antes de continuar
+        if (!isDeviceOwner()) {
+            Log.e(TAG, "❌ CRÍTICO: App NÃO é Device Owner!")
+            Log.e(TAG, "   Não é possível aplicar bloqueio sem permissões de Device Owner")
+            Log.e(TAG, "   Para corrigir: provisionar app como Device Owner via ADB ou QR Code")
+            return false
+        }
+        
+        Log.i(TAG, "✅ App é Device Owner - prosseguindo com correção")
         
         return try {
             val result = if (expectedLevel == 0) {
                 // Desbloqueio total
+                Log.i(TAG, "   → Executando desbloqueio total (nível 0)")
                 val unblockResult = unblockAllApps()
+                Log.i(TAG, "   → unblockAllApps() retornou: success=${unblockResult.success}")
                 unblockResult.success
             } else {
                 // Aplicar bloqueio com categorias padrão do nível
+                val categories = getDefaultCategoriesForLevel(expectedLevel)
+                Log.i(TAG, "   → Categorias para nível $expectedLevel: $categories")
+                
                 val blockParams = CommandParameters.BlockParameters(
                     targetLevel = expectedLevel,
                     daysOverdue = 0, // Backend já calculou
-                    categories = getDefaultCategoriesForLevel(expectedLevel),
+                    categories = categories,
                     exceptions = emptyList(),
                     reason = "Correção automática de conformidade"
                 )
+                
+                Log.i(TAG, "   → Chamando applyProgressiveBlock()...")
                 val blockResult = applyProgressiveBlock(blockParams)
+                Log.i(TAG, "   → applyProgressiveBlock() retornou: success=${blockResult.success}, blockedApps=${blockResult.blockedAppsCount}")
+                
+                if (!blockResult.success) {
+                    Log.e(TAG, "   → Erro: ${blockResult.errorMessage}")
+                }
+                
                 blockResult.success
             }
             
-            if (result) {
-                Log.i(TAG, "✅ Conformidade corrigida - Nível $expectedLevel aplicado")
+            // Verificar se o nível foi realmente salvo
+            val newLevel = getCurrentBlockingLevel()
+            Log.i(TAG, "   → Nível após correção (SharedPrefs): $newLevel")
+            
+            if (result && newLevel == expectedLevel) {
+                Log.i(TAG, "✅ Conformidade corrigida - Nível $expectedLevel aplicado e VERIFICADO")
+            } else if (result) {
+                Log.w(TAG, "⚠️ applyProgressiveBlock retornou true, mas nível é $newLevel (esperado $expectedLevel)")
             } else {
                 Log.e(TAG, "❌ Falha ao corrigir conformidade para nível $expectedLevel")
             }
@@ -651,6 +681,7 @@ class AppBlockingManager(private val context: Context) {
             result
         } catch (e: Exception) {
             Log.e(TAG, "❌ Exceção ao corrigir conformidade: ${e.message}", e)
+            e.printStackTrace()
             false
         }
     }
