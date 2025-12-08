@@ -281,6 +281,32 @@ class MainActivity : ComponentActivity() {
         }
     }
     
+    override fun onResume() {
+        super.onResume()
+        
+        // RECUPERAÇÃO DE DESINSTALAÇÃO CANCELADA
+        // Se o flag de desinstalação está ativo e o app voltou ao foreground,
+        // significa que o usuário cancelou a desinstalação
+        if (SettingsGuardService.isVoluntaryUninstallActive) {
+            Log.i(TAG, "🔄 ========================================")
+            Log.i(TAG, "🔄 DESINSTALAÇÃO CANCELADA DETECTADA")
+            Log.i(TAG, "🔄 MainActivity.onResume() com flag de uninstall ativo")
+            Log.i(TAG, "🔄 Retomando proteções e serviços MDM...")
+            Log.i(TAG, "🔄 ========================================")
+            
+            // Resetar o flag de desinstalação
+            SettingsGuardService.resumeAfterVoluntaryUninstall()
+            
+            // Reiniciar o serviço de foreground para restaurar MDM
+            try {
+                com.cdccreditsmart.app.service.CdcForegroundService.ensureForegroundServiceRunning(this)
+                Log.i(TAG, "🔄 ✅ CdcForegroundService reiniciado")
+            } catch (e: Exception) {
+                Log.e(TAG, "🔄 ❌ Erro ao reiniciar CdcForegroundService: ${e.message}", e)
+            }
+        }
+    }
+    
     override fun onDestroy() {
         try {
             unregisterReceiver(locationPermissionReceiver)

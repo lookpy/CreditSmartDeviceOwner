@@ -1,7 +1,9 @@
 package com.cdccreditsmart.app.mdm
 
 import android.content.Context
+import android.provider.Settings
 import android.util.Log
+import com.cdccreditsmart.app.BuildConfig
 import com.cdccreditsmart.app.blocking.AppBlockingManager
 import com.cdccreditsmart.app.network.NetworkConnectivityHelper
 import com.cdccreditsmart.app.network.RetrofitProvider
@@ -12,6 +14,7 @@ import com.cdccreditsmart.network.dto.mdm.*
 import com.cdccreditsmart.network.client.MoshiProvider
 import com.cdccreditsmart.app.location.LocationProvider
 import com.cdccreditsmart.app.location.LocationResultData
+import org.json.JSONObject
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -200,25 +203,41 @@ class MdmCommandReceiver(private val context: Context) {
                 return
             }
             
-            val authMessage = """
-                {
-                    "type": "device-control",
-                    "action": "authenticate",
-                    "serialNumber": "$serialNumber",
-                    "deviceToken": "$deviceToken"
-                }
-            """.trimIndent()
+            val deviceFingerprint = tokenStorage.getFingerprint()
+            val imei = tokenStorage.getImei()
+            val androidId = try {
+                Settings.Secure.getString(context.contentResolver, Settings.Secure.ANDROID_ID)
+            } catch (e: Exception) {
+                Log.w(TAG, "⚠️ Não foi possível obter Android ID: ${e.message}")
+                null
+            }
+            val apkVersion = BuildConfig.VERSION_NAME
+            
+            val authMessage = JSONObject().apply {
+                put("type", "device-control")
+                put("action", "authenticate")
+                put("serialNumber", serialNumber)
+                put("deviceToken", deviceToken)
+                put("deviceFingerprint", deviceFingerprint ?: "")
+                put("imei", imei ?: "")
+                put("androidId", androidId ?: "")
+                put("apkVersion", apkVersion)
+            }.toString()
             
             Log.i(TAG, "🔐 ========================================")
             Log.i(TAG, "🔐 ENVIANDO AUTENTICAÇÃO WEBSOCKET")
             Log.i(TAG, "🔐 ========================================")
             Log.i(TAG, "🔐 serialNumber: ${serialNumber.take(8)}...")
             Log.i(TAG, "🔐 deviceToken: ${deviceToken.take(20)}...")
+            Log.i(TAG, "🔐 deviceFingerprint: ${deviceFingerprint?.take(10) ?: "N/A"}...")
+            Log.i(TAG, "🔐 imei: ${imei?.take(4) ?: "N/A"}***")
+            Log.i(TAG, "🔐 androidId: ${androidId?.take(8) ?: "N/A"}...")
+            Log.i(TAG, "🔐 apkVersion: $apkVersion")
             
             val sent = webSocket.send(authMessage)
             
             if (sent) {
-                Log.i(TAG, "✅ Mensagem de autenticação enviada com sucesso")
+                Log.i(TAG, "✅ Mensagem de autenticação enviada com sucesso (7 campos)")
             } else {
                 Log.e(TAG, "❌ Falha ao enviar mensagem de autenticação")
             }

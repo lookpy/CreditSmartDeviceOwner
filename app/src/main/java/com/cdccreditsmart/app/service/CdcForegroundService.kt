@@ -130,6 +130,20 @@ class CdcForegroundService : Service(), ScreenStateListener {
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         Log.d(TAG, "🚀 Serviço onStartCommand() - Action: ${intent?.action}")
         
+        // CRÍTICO: Se auto-destruição está em andamento, verificar timeout
+        if (SettingsGuardService.isVoluntaryUninstallActive) {
+            // Verificar se o timeout expirou (>2 minutos = desinstalação cancelada)
+            if (SettingsGuardService.checkUninstallTimeout()) {
+                Log.i(TAG, "🔄 Timeout de desinstalação expirou - continuando inicialização normal")
+                // Continuar com inicialização normal abaixo
+            } else {
+                Log.w(TAG, "🗑️ AUTO-DESTRUIÇÃO EM ANDAMENTO - serviço não será reiniciado")
+                Log.w(TAG, "🗑️ Retornando START_NOT_STICKY para permitir desinstalação")
+                stopSelf()
+                return START_NOT_STICKY
+            }
+        }
+        
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
             val notification = createNotification()
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
@@ -438,6 +452,12 @@ class CdcForegroundService : Service(), ScreenStateListener {
     
     private fun applyWorkPolicies() {
         try {
+            // CRÍTICO: Não reaplicar políticas se auto-destruição está em andamento (a menos que timeout)
+            if (SettingsGuardService.isVoluntaryUninstallActive && !SettingsGuardService.checkUninstallTimeout()) {
+                Log.w(TAG, "🏢 POLÍTICAS NÃO APLICADAS - AUTO-DESTRUIÇÃO EM ANDAMENTO")
+                return
+            }
+            
             Log.i(TAG, "🏢 ========================================")
             Log.i(TAG, "🏢 APLICANDO POLÍTICAS DE AMBIENTE DE TRABALHO")
             Log.i(TAG, "🏢 ========================================")
@@ -462,6 +482,16 @@ class CdcForegroundService : Service(), ScreenStateListener {
     
     private fun startSettingsGuard() {
         try {
+            // CRÍTICO: Não iniciar guard se auto-destruição está em andamento (a menos que timeout)
+            if (SettingsGuardService.isVoluntaryUninstallActive && !SettingsGuardService.checkUninstallTimeout()) {
+                Log.w(TAG, "🛡️ ========================================")
+                Log.w(TAG, "🛡️ GUARD NÃO INICIADO - AUTO-DESTRUIÇÃO EM ANDAMENTO")
+                Log.w(TAG, "🛡️ isVoluntaryUninstallActive = true")
+                Log.w(TAG, "🛡️ Permitindo desinstalação prosseguir...")
+                Log.w(TAG, "🛡️ ========================================")
+                return
+            }
+            
             Log.i(TAG, "🛡️ ========================================")
             Log.i(TAG, "🛡️ INICIANDO SETTINGS GUARD (PROTEÇÃO AGRESSIVA)")
             Log.i(TAG, "🛡️ ========================================")

@@ -51,6 +51,12 @@ class SettingsGuardService(private val context: Context) {
         var isVoluntaryUninstallActive: Boolean = false
             private set
         
+        @Volatile
+        private var uninstallPauseTimestamp: Long = 0L
+        
+        // Timeout para assumir que desinstalação foi cancelada (2 minutos)
+        private const val UNINSTALL_TIMEOUT_MS = 2 * 60 * 1000L
+        
         fun pauseForPermissionGrant() {
             isPermissionGrantFlowActive = true
             Log.i(TAG, "⏸️ Guard PAUSADO para fluxo de permissões")
@@ -63,13 +69,37 @@ class SettingsGuardService(private val context: Context) {
         
         fun pauseForVoluntaryUninstall() {
             isVoluntaryUninstallActive = true
+            uninstallPauseTimestamp = System.currentTimeMillis()
             Log.i(TAG, "🗑️ Guard PAUSADO para desinstalação voluntária")
             Log.i(TAG, "   Proteção desativada - usuário pode desinstalar")
+            Log.i(TAG, "   Timeout: ${UNINSTALL_TIMEOUT_MS / 1000}s para auto-recuperação")
         }
         
         fun resumeAfterVoluntaryUninstall() {
             isVoluntaryUninstallActive = false
+            uninstallPauseTimestamp = 0L
             Log.i(TAG, "▶️ Guard RETOMADO após desinstalação cancelada")
+        }
+        
+        /**
+         * Verifica se o timeout da desinstalação expirou
+         * Se passou mais de 2 minutos desde que o flag foi ativado, assume que foi cancelado
+         */
+        fun checkUninstallTimeout(): Boolean {
+            if (!isVoluntaryUninstallActive) return false
+            if (uninstallPauseTimestamp == 0L) return false
+            
+            val elapsed = System.currentTimeMillis() - uninstallPauseTimestamp
+            if (elapsed > UNINSTALL_TIMEOUT_MS) {
+                Log.i(TAG, "🔄 ========================================")
+                Log.i(TAG, "🔄 TIMEOUT DE DESINSTALAÇÃO EXPIRADO")
+                Log.i(TAG, "🔄 Tempo desde pausa: ${elapsed / 1000}s (timeout: ${UNINSTALL_TIMEOUT_MS / 1000}s)")
+                Log.i(TAG, "🔄 Assumindo desinstalação cancelada - retomando proteções")
+                Log.i(TAG, "🔄 ========================================")
+                resumeAfterVoluntaryUninstall()
+                return true
+            }
+            return false
         }
         
         fun getInstance(context: Context): SettingsGuardService {
@@ -273,6 +303,8 @@ class SettingsGuardService(private val context: Context) {
         }
         
         if (isVoluntaryUninstallActive) {
+            // Guard pausado para desinstalação - não fazer nada
+            // A recuperação é tratada pela MainActivity.onResume()
             return
         }
         

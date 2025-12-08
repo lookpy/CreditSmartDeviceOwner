@@ -14,6 +14,7 @@ import com.cdccreditsmart.app.security.SecureTokenStorage
 import com.cdccreditsmart.app.security.SimSwapManager
 import com.cdccreditsmart.app.service.CdcForegroundService
 import com.cdccreditsmart.app.workers.AutoBlockingWorker
+import com.cdccreditsmart.app.protection.SettingsGuardService
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -51,6 +52,13 @@ class CDCApplication : Application() {
             return
         }
         
+        // RECUPERAÇÃO DE DESINSTALAÇÃO CANCELADA
+        // Se o flag está ativo quando o app inicia, significa que:
+        // 1. A desinstalação foi cancelada pelo usuário
+        // 2. O processo foi morto e reiniciado
+        // Em ambos os casos, precisamos resetar e restaurar as proteções
+        recoverFromCancelledUninstall()
+        
         grantPermissionsIfDeviceOwner()
         applyMaximumProtectionIfDeviceOwner()
         ensureManagedSecondaryUserExists()
@@ -86,6 +94,36 @@ class CDCApplication : Application() {
         
         // SISTEMA KEEP ALIVE: Mantém o app sempre ativo
         startKeepAliveSystem()
+    }
+    
+    /**
+     * Recuperação de desinstalação cancelada
+     * 
+     * Se o flag isVoluntaryUninstallActive está true quando o app inicia,
+     * significa que a desinstalação foi cancelada e precisamos restaurar as proteções.
+     * 
+     * Cenários:
+     * 1. Usuário cancelou a desinstalação (clicou em "Cancelar" ou pressionou back)
+     * 2. Processo foi morto durante a tela de desinstalação e reiniciado
+     * 3. Sistema reiniciou o processo automaticamente
+     * 
+     * Em todos os casos, o flag volatile permanece false após process death,
+     * então esta verificação só pega o caso de reinício do processo durante
+     * a mesma sessão. Para recuperação completa, usamos MainActivity.onResume()
+     * e também verificamos quando o serviço tenta iniciar.
+     */
+    private fun recoverFromCancelledUninstall() {
+        if (SettingsGuardService.isVoluntaryUninstallActive) {
+            Log.i(TAG, "🔄 ========================================")
+            Log.i(TAG, "🔄 RECUPERAÇÃO DE DESINSTALAÇÃO CANCELADA")
+            Log.i(TAG, "🔄 Flag isVoluntaryUninstallActive detectado no onCreate")
+            Log.i(TAG, "🔄 Restaurando proteções e serviços...")
+            Log.i(TAG, "🔄 ========================================")
+            
+            // Resetar o flag
+            SettingsGuardService.resumeAfterVoluntaryUninstall()
+            Log.i(TAG, "🔄 ✅ Flag resetado - proteções podem ser reaplicadas")
+        }
     }
     
     private fun startKeepAliveSystem() {

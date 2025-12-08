@@ -39,6 +39,13 @@ Utilizes Jetpack Compose and Material 3 with a CDC institutional dark theme. Fea
   10. Enviar telemetria e limpar dados se solicitado
   11. Solicitar desinstalação do app
   O dispositivo fica completamente livre das políticas MDM antes da desinstalação.
+- **Recuperação de Desinstalação Cancelada:** Sistema robusto de timeout-based recovery (2 minutos):
+  - CdcForegroundService.onStartCommand(): Retorna START_NOT_STICKY durante desinstalação, mas verifica timeout antes de bloquear
+  - startSettingsGuard() e applyWorkPolicies(): Pulam inicialização durante desinstalação (exceto se timeout expirou)
+  - MainActivity.onResume(): Recuperação imediata quando usuário abre o app após cancelar
+  - CDCApplication.onCreate(): Recuperação quando processo reinicia na mesma sessão
+  - checkUninstallTimeout(): Após 2 minutos sem desinstalação, assume cancelamento e restaura proteções
+  - KeepAliveManager/AlarmManager: Tentativas de restart do serviço detectam timeout e retomam operação normal
 - **WorkPolicyManager:** Unified protection system applying enterprise security policies based on privilege level, including critical package blocking, password wipe prevention, and Lock Task Mode.
 - **Keep Alive System:** Multi-layered system (WorkManager, AlarmManager, AppRestartManager) to ensure continuous app operation.
 - **Anti-Tampering & Persistence:** Time synchronization for tamper detection, app continuity, and a Persistent State Manager for factory reset survival.

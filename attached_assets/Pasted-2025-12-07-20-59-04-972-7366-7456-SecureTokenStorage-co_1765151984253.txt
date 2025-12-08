@@ -1,0 +1,64 @@
+2025-12-07 20:59:04.972  7366-7456  SecureTokenStorage      com.cdccreditsmart.app               D  EncryptedSharedPreferences initialized successfully
+2025-12-07 20:59:04.975  7366-7456  ContractCodeStorage     com.cdccreditsmart.app               D  Retrieving contract code from storage
+2025-12-07 20:59:05.133  7366-7456  ContractCodeStorage     com.cdccreditsmart.app               D  Storage verification: 7 valid, 0 tampered, 0 missing
+2025-12-07 20:59:05.133  7366-7456  ContractCodeStorage     com.cdccreditsmart.app               D  Contract code retrieved successfully
+2025-12-07 20:59:05.135  7366-7456  SelfDestructManager     com.cdccreditsmart.app               E  ❌ Erro ao enviar telemetria final
+                                                                                                    kotlinx.coroutines.JobCancellationException: StandaloneCoroutine was cancelled; job=StandaloneCoroutine{Cancelling}@caf7cca
+2025-12-07 20:59:05.135  7366-7456  SelfDestructManager     com.cdccreditsmart.app               E     Backend pode não receber notificação de desinstalação
+2025-12-07 20:59:05.135  7366-7456  SelfDestructManager     com.cdccreditsmart.app               E     Stack trace: kotlinx.coroutines.JobCancellationException: StandaloneCoroutine was cancelled; job=StandaloneCoroutine{Cancelling}@caf7cca
+2025-12-07 20:59:05.135  7366-7456  SelfDestructManager     com.cdccreditsmart.app               I  ✅ [10/11] Telemetria final enviada
+2025-12-07 20:59:05.135  7366-7456  SelfDestructManager     com.cdccreditsmart.app               I  🧹 Limpando dados da aplicação...
+2025-12-07 20:59:05.135  7366-7456  SelfDestructManager     com.cdccreditsmart.app               I  🧹 Limpando SharedPreferences...
+2025-12-07 20:59:05.137  7366-7456  SelfDestructManager     com.cdccreditsmart.app               I  🧹 Limpando cache...
+2025-12-07 20:59:05.147  7366-7456  SelfDestructManager     com.cdccreditsmart.app               I  🧹 Limpando arquivos internos...
+2025-12-07 20:59:05.148  7366-7456  SelfDestructManager     com.cdccreditsmart.app               I  ✅ Dados limpos com sucesso
+2025-12-07 20:59:05.148  7366-7456  SelfDestructManager     com.cdccreditsmart.app               I  ✅ Dados limpos com sucesso
+2025-12-07 20:59:05.148  7366-7456  SelfDestructManager     com.cdccreditsmart.app               I  🗑️ [11/11] Solicitando desinstalação do aplicativo...
+2025-12-07 20:59:05.149  7366-7456  SelfDestructManager     com.cdccreditsmart.app               I  🗑️ Iniciando desinstalação do pacote: com.cdccreditsmart.app
+2025-12-07 20:59:05.149  7366-7456  SelfDestructManager     com.cdccreditsmart.app               I     ⚠️ NOTA: Android não permite auto-desinstalação silenciosa
+2025-12-07 20:59:05.149  7366-7456  SelfDestructManager     com.cdccreditsmart.app               I     ⚠️ Uma confirmação do usuário será exibida
+2025-12-07 20:59:05.184  7366-7456  SelfDestructManager     com.cdccreditsmart.app               I  ✅ Intent de desinstalação enviado
+2025-12-07 20:59:05.184  7366-7456  SelfDestructManager     com.cdccreditsmart.app               I     → Tela de confirmação será exibida ao usuário
+2025-12-07 20:59:05.184  7366-7456  SelfDestructManager     com.cdccreditsmart.app               I     → Usuário deve clicar 'OK' ou 'Desinstalar' para concluir
+2025-12-07 20:59:05.184  7366-7456  SelfDestructManager     com.cdccreditsmart.app               I  ✅ [11/11] Solicitação de desinstalação enviada
+2025-12-07 20:59:05.184  7366-7456  SelfDestructManager     com.cdccreditsmart.app               I  ========================================
+2025-12-07 20:59:05.184  7366-7456  SelfDestructManager     com.cdccreditsmart.app               I  ✅ AUTO-DESTRUIÇÃO COMPLETA
+2025-12-07 20:59:05.184  7366-7456  SelfDestructManager     com.cdccreditsmart.app               I     App será desinstalado em instantes
+2025-12-07 20:59:05.184  7366-7456  SelfDestructManager     com.cdccreditsmart.app               I  ========================================
+2025-12-07 20:59:05.185  7366-7456  MdmCommandReceiver      com.cdccreditsmart.app               I  ✅ Auto-destruição executada com sucesso
+2025-12-07 20:59:05.185  7366-7456  MdmCommandReceiver      com.cdccreditsmart.app               D  📡 Enviando response para comando: 8361ce30-bd3c-4654-ad7b-cea2beac80d0
+2025-12-07 20:59:05.186  7366-7456  MdmCommandReceiver      com.cdccreditsmart.app               D  📡 Usando endpoint: POST /api/apk/device/commands/8361ce30-bd3c-4654-ad7b-cea2beac80d0/status
+2025-12-07 20:59:05.186  7366-7456  MdmCommandReceiver      com.cdccreditsmart.app               D  📡 Status: completed
+2025-12-07 20:59:05.188  7366-7456  MdmCommandReceiver      com.cdccreditsmart.app               E  ❌ Erro ao enviar command response: StandaloneCoroutine was cancelled
+2025-12-07 20:59:05.189  7366-7589  okhttp.OkHttpClient     com.cdccreditsmart.app               I  --> POST https://cdccreditsmart.com/api/apk/device/commands/8361ce30-bd3c-4654-ad7b-cea2beac80d0/status
+2025-12-07 20:59:05.189  7366-7589  okhttp.OkHttpClient     com.cdccreditsmart.app               I  Content-Type: application/json; charset=UTF-8
+2025-12-07 20:59:05.189  7366-7589  okhttp.OkHttpClient     com.cdccreditsmart.app               I  Content-Length: 74
+2025-12-07 20:59:05.189  7366-7589  okhttp.OkHttpClient     com.cdccreditsmart.app               I  {"status":"completed","result":{"success":true,"timestamp":1765151945186}}
+2025-12-07 20:59:05.189  7366-7456  SecureTokenStorage      com.cdccreditsmart.app               D  ⚠️ Usando Serial Number para MDM (IMEI indisponível): XV8W57...
+2025-12-07 20:59:05.189  7366-7456  MdmCommandReceiver      com.cdccreditsmart.app               D  📡 [LEGADO] Enviando response usando identifier: XV8W5766****
+2025-12-07 20:59:05.189  7366-7589  okhttp.OkHttpClient     com.cdccreditsmart.app               I  --> END POST (74-byte body)
+2025-12-07 20:59:05.193  7366-7456  MdmCommandReceiver      com.cdccreditsmart.app               E  ❌ Também falhou no endpoint legado: StandaloneCoroutine was cancelled
+2025-12-07 20:59:05.194  7366-7456  MdmCommandReceiver      com.cdccreditsmart.app               W  ⚠️ Erro na verificação imediata: StandaloneCoroutine was cancelled
+2025-12-07 20:59:05.194  7366-7456  MdmCommandReceiver      com.cdccreditsmart.app               I  🛑 Polling encerrado após 0 iterações
+2025-12-07 20:59:05.199  7366-7643  okhttp.OkHttpClient     com.cdccreditsmart.app               I  --> POST https://cdccreditsmart.com/api/apk/device/XV8W5766/command-response
+2025-12-07 20:59:05.199  7366-7643  okhttp.OkHttpClient     com.cdccreditsmart.app               I  Content-Type: application/json; charset=UTF-8
+2025-12-07 20:59:05.200  7366-7643  okhttp.OkHttpClient     com.cdccreditsmart.app               I  Content-Length: 127
+2025-12-07 20:59:05.200  7366-7643  okhttp.OkHttpClient     com.cdccreditsmart.app               I  {"commandId":"8361ce30-bd3c-4654-ad7b-cea2beac80d0","status":"completed","response":{"success":true,"timestamp":1765151945191}}
+2025-12-07 20:59:05.200  7366-7643  okhttp.OkHttpClient     com.cdccreditsmart.app               I  --> END POST (127-byte body)
+2025-12-07 20:59:05.214  7366-7507  WebSocketManager        com.cdccreditsmart.app               E  WebSocket failure: null (Ask Gemini)
+                                                                                                    java.io.EOFException
+                                                                                                    	at okio.RealBufferedSource.require(RealBufferedSource.kt:202)
+                                                                                                    	at okio.RealBufferedSource.readByte(RealBufferedSource.kt:212)
+                                                                                                    	at okhttp3.internal.ws.WebSocketReader.readHeader(WebSocketReader.kt:119)
+                                                                                                    	at okhttp3.internal.ws.WebSocketReader.processNextFrame(WebSocketReader.kt:102)
+                                                                                                    	at okhttp3.internal.ws.RealWebSocket.loopReader(RealWebSocket.kt:293)
+                                                                                                    	at okhttp3.internal.ws.RealWebSocket$connect$1.onResponse(RealWebSocket.kt:195)
+                                                                                                    	at okhttp3.internal.connection.RealCall$AsyncCall.run(RealCall.kt:519)
+                                                                                                    	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1156)
+                                                                                                    	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:651)
+                                                                                                    	at java.lang.Thread.run(Thread.java:1119)
+2025-12-07 20:59:05.214  7366-7507  CdcForegroundService    com.cdccreditsmart.app               E  ❌ Erro no WebSocket Flow: Connection failed: null
+2025-12-07 20:59:05.260  7366-7589  SecureTokenStorage      com.cdccreditsmart.app               D  EncryptedSharedPreferences initialized successfully
+2025-12-07 20:59:05.261  7366-7589  okhttp.OkHttpClient     com.cdccreditsmart.app               I  <-- HTTP FAILED: java.io.IOException: Canceled
+2025-12-07 20:59:05.307  7366-7643  SecureTokenStorage      com.cdccreditsmart.app               D  EncryptedSharedPreferences initialized successfully
+2025-12-07 20:59:05.308  7366-7643  okhttp.OkHttpClient     com.cdccreditsmart.app               I  <-- HTTP FAILED: java.io.IOException: Canceled
