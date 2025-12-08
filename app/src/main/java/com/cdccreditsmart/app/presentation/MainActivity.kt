@@ -33,7 +33,7 @@ import com.cdccreditsmart.app.protection.FactoryResetDetectionResult
 import com.cdccreditsmart.app.protection.PersistentStateManager
 import com.cdccreditsmart.app.protection.SettingsGuardService
 import com.cdccreditsmart.app.ui.theme.CDCCreditSmartTheme
-import kotlinx.coroutines.CoroutineScope
+import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
@@ -131,7 +131,7 @@ class MainActivity : ComponentActivity() {
             return
         }
         
-        CoroutineScope(Dispatchers.IO).launch {
+        lifecycleScope.launch(Dispatchers.IO) {
             try {
                 val result = persistentStateManager.detectFactoryReset()
                 
