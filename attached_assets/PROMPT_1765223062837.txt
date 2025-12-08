@@ -1,0 +1,55 @@
+2025-12-08 16:43:38.152 10901-10951 okhttp.OkHttpClient     com.cdccreditsmart.app               I  via: 1.1 google
+2025-12-08 16:43:38.152 10901-10951 okhttp.OkHttpClient     com.cdccreditsmart.app               I  alt-svc: h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
+2025-12-08 16:43:38.153 10901-10951 okhttp.OkHttpClient     com.cdccreditsmart.app               I  {"error":"Token de autorização obrigatório"}
+2025-12-08 16:43:38.153 10901-10951 okhttp.OkHttpClient     com.cdccreditsmart.app               I  <-- END HTTP (47-byte body)
+2025-12-08 16:43:38.154 10901-10936 TamperDetection         com.cdccreditsmart.app               E  ❌ Erro ao reportar boot ao backend
+2025-12-08 16:43:38.155 10901-10936 TamperDetection         com.cdccreditsmart.app               E     HTTP Status: 401
+2025-12-08 16:43:38.155 10901-10936 TamperDetection         com.cdccreditsmart.app               E     HTTP Message: 
+2025-12-08 16:43:38.156 10901-10936 TamperDetection         com.cdccreditsmart.app               E     Error body: {"error":"Token de autorização obrigatório"}
+2025-12-08 16:43:38.184 10901-10927 ContractCodeStorage     com.cdccreditsmart.app               D  Storage verification: 0 valid, 0 tampered, 7 missing
+2025-12-08 16:43:38.184 10901-10927 ContractCodeStorage     com.cdccreditsmart.app               W  No valid contract code found in any location
+2025-12-08 16:43:38.185 10901-10927 SecureTokenStorage      com.cdccreditsmart.app               E  ❌ Nenhum identificador MDM disponível!
+2025-12-08 16:43:38.185 10901-10927 CdcForegroundService    com.cdccreditsmart.app               I  🔐 AuthToken presente: false
+2025-12-08 16:43:38.185 10901-10927 CdcForegroundService    com.cdccreditsmart.app               I  🔐 AuthToken length: 0
+2025-12-08 16:43:38.185 10901-10927 CdcForegroundService    com.cdccreditsmart.app               I  🔐 ContractCode presente: false
+2025-12-08 16:43:38.185 10901-10927 CdcForegroundService    com.cdccreditsmart.app               I  🔐 ContractCode value: null****
+2025-12-08 16:43:38.185 10901-10927 CdcForegroundService    com.cdccreditsmart.app               I  🔐 MDM SerialNumber presente: false
+2025-12-08 16:43:38.185 10901-10927 CdcForegroundService    com.cdccreditsmart.app               I  🔐 MDM SerialNumber value: ......
+2025-12-08 16:43:38.185 10901-10927 CdcForegroundService    com.cdccreditsmart.app               I  📱 ========================================
+2025-12-08 16:43:38.185 10901-10927 CdcForegroundService    com.cdccreditsmart.app               I  📱 AGUARDANDO PAIRING - MDM EM STANDBY
+2025-12-08 16:43:38.185 10901-10927 CdcForegroundService    com.cdccreditsmart.app               I  📱 O usuário ainda não fez o pareamento inicial
+2025-12-08 16:43:38.185 10901-10927 CdcForegroundService    com.cdccreditsmart.app               I  📱 Serviços MDM serão ativados após inserir código do contrato
+2025-12-08 16:43:38.185 10901-10927 CdcForegroundService    com.cdccreditsmart.app               I  📱 NOTA: isMdmInitialized permanece FALSE para permitir reinicialização
+2025-12-08 16:43:38.185 10901-10927 CdcForegroundService    com.cdccreditsmart.app               I  📱 ========================================
+2025-12-08 16:43:38.350 10901-10961 okhttp.OkHttpClient     com.cdccreditsmart.app               I  <-- 401 https://cdccreditsmart.com/api/security/device-boot (686ms)
+2025-12-08 16:43:38.350 10901-10961 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-credentials: true
+2025-12-08 16:43:38.350 10901-10961 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-headers: Origin, X-Requested-With, Content-Type, Accept, Authorization, x-client-key, x-client-token, x-client-secret, cache-control
+2025-12-08 16:43:38.351 10901-10961 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-methods: GET, POST, PUT, PATCH, DELETE, OPTIONS
+2025-12-08 16:43:38.351 10901-10961 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-origin: *
+2025-12-08 16:43:38.351 10901-10961 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-max-age: 86400
+2025-12-08 16:43:38.351 10901-10961 okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-length: 47
+2025-12-08 16:43:38.351 10901-10961 okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-security-policy: default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://replit.com; style-src 'self' 'unsafe-inline' https://replit.com; img-src 'self' data: https:; font-src 'self' data: https://replit.com; connect-src 'self';
+2025-12-08 16:43:38.351 10901-10961 okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-type: application/json; charset=utf-8
+2025-12-08 16:43:38.351 10901-10961 okhttp.OkHttpClient     com.cdccreditsmart.app               I  date: Mon, 08 Dec 2025 19:43:39 GMT
+2025-12-08 16:43:38.351 10901-10961 okhttp.OkHttpClient     com.cdccreditsmart.app               I  etag: W/"2f-UfTNmpWAAYs7O6B1cAxVd8HwkNk"
+2025-12-08 16:43:38.351 10901-10961 okhttp.OkHttpClient     com.cdccreditsmart.app               I  permissions-policy: geolocation=(), microphone=(), camera=()
+2025-12-08 16:43:38.351 10901-10961 okhttp.OkHttpClient     com.cdccreditsmart.app               I  referrer-policy: strict-origin-when-cross-origin
+2025-12-08 16:43:38.351 10901-10961 okhttp.OkHttpClient     com.cdccreditsmart.app               I  strict-transport-security: max-age=63072000; includeSubDomains
+2025-12-08 16:43:38.351 10901-10961 okhttp.OkHttpClient     com.cdccreditsmart.app               I  strict-transport-security: max-age=31536000; includeSubDomains
+2025-12-08 16:43:38.351 10901-10961 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-anti-fraud-protection: active
+2025-12-08 16:43:38.351 10901-10961 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-certificate-pinning-enabled: false
+2025-12-08 16:43:38.351 10901-10961 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-certificate-pinning-status: disabled-for-stability
+2025-12-08 16:43:38.351 10901-10961 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-content-type-options: nosniff
+2025-12-08 16:43:38.351 10901-10961 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-financial-data-protection: enabled
+2025-12-08 16:43:38.351 10901-10961 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-frame-options: DENY
+2025-12-08 16:43:38.351 10901-10961 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-transaction-security-level: maximum
+2025-12-08 16:43:38.351 10901-10961 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-xss-protection: 1; mode=block
+2025-12-08 16:43:38.351 10901-10961 okhttp.OkHttpClient     com.cdccreditsmart.app               I  via: 1.1 google
+2025-12-08 16:43:38.351 10901-10961 okhttp.OkHttpClient     com.cdccreditsmart.app               I  alt-svc: h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
+2025-12-08 16:43:38.351 10901-10961 okhttp.OkHttpClient     com.cdccreditsmart.app               I  {"error":"Token de autorização obrigatório"}
+2025-12-08 16:43:38.351 10901-10961 okhttp.OkHttpClient     com.cdccreditsmart.app               I  <-- END HTTP (47-byte body)
+2025-12-08 16:43:38.352 10901-10927 TamperDetection         com.cdccreditsmart.app               E  ❌ Erro ao reportar boot ao backend
+2025-12-08 16:43:38.352 10901-10927 TamperDetection         com.cdccreditsmart.app               E     HTTP Status: 401
+2025-12-08 16:43:38.352 10901-10927 TamperDetection         com.cdccreditsmart.app               E     HTTP Message: 
+2025-12-08 16:43:38.352 10901-10927 TamperDetection         com.cdccreditsmart.app               E     Error body: {"error":"Token de autorização obrigatório"}
+2025-12-08 16:43:41.991 10901-10977 ProfileInstaller        com.cdccreditsmart.app               D  Installing profile for com.cdccreditsmart.app

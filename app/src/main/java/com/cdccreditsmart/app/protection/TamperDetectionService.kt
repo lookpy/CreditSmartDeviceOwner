@@ -131,6 +131,21 @@ class TamperDetectionService(private val context: Context) {
         val bootTimestamp = System.currentTimeMillis()
         val hasAuthToken = storage.getAuthToken() != null
         val hasDeviceToken = storage.getDeviceToken() != null
+        
+        // CRITICAL: Não fazer chamada ao backend se não houver token de autenticação
+        // Isso é esperado antes do pareamento inicial do dispositivo
+        if (!hasAuthToken) {
+            Log.i(TAG, "")
+            Log.i(TAG, "╔════════════════════════════════════════════════════════╗")
+            Log.i(TAG, "║    📡 BOOT REPORT ADIADO - AGUARDANDO PAREAMENTO      ║")
+            Log.i(TAG, "╠════════════════════════════════════════════════════════╣")
+            Log.i(TAG, "║  ⏳ Device ainda não pareado com contrato              ║")
+            Log.i(TAG, "║  ⏳ Boot será reportado após autenticação              ║")
+            Log.i(TAG, "║  ℹ️  Isso é comportamento NORMAL antes do pareamento   ║")
+            Log.i(TAG, "╚════════════════════════════════════════════════════════╝")
+            Log.i(TAG, "")
+            return
+        }
         val buildFingerprint = Build.FINGERPRINT ?: "UNKNOWN"
         val androidVersion = Build.VERSION.RELEASE ?: "UNKNOWN"
         val apkVersion = try {

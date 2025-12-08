@@ -77,3 +77,22 @@ The UI leverages Jetpack Compose and Material 3, incorporating a CDC institution
 - `SimpleHomeViewModel` tem cache de 5 minutos para dados de parcelas
 - `AppBlockingManager` usa SharedPreferences para persistir estado de bloqueio
 - Workers usam cache local, não fazem chamadas repetidas ao servidor
+
+### 2025-12-08: Correção de Chamadas HTTP Sem Autenticação
+
+**Problema Identificado:**
+- `TamperDetectionService.reportDeviceBootToBackend()` fazia chamadas ao backend sem verificar se havia token
+- Isso causava erros 401 nos logs após provisionamento (antes do pareamento)
+- Os erros eram confundidos com "erro de provisionamento"
+
+**Correção Implementada:**
+- Adicionada verificação de `hasAuthToken` no início de `reportDeviceBootToBackend()`
+- Se não houver token, retorna imediatamente com log informativo
+- Mensagem clara: "BOOT REPORT ADIADO - AGUARDANDO PAREAMENTO"
+
+**Fluxo Correto:**
+1. Provisionamento via QR code (Device Owner)
+2. App inicia mas **ainda não tem token** (normal)
+3. Serviços MDM ficam em standby aguardando pareamento
+4. Usuário insere código do contrato → autenticação → token obtido
+5. Serviços MDM são ativados e começam a funcionar
