@@ -75,6 +75,48 @@
 -keep class com.cdccreditsmart.device.security.** { *; }
 -keep class com.cdccreditsmart.device.attestation.** { *; }
 
+# ===== CRITICAL: Keep protection classes for SettingsGuard =====
+# These classes use reflection and coroutines - must be preserved
+-keep class com.cdccreditsmart.app.protection.** { *; }
+-keepclassmembers class com.cdccreditsmart.app.protection.** { *; }
+
+# Keep SettingsGuardService singleton pattern
+-keepclassmembers class com.cdccreditsmart.app.protection.SettingsGuardService {
+    private static volatile <fields>;
+    public static ** getInstance(android.content.Context);
+    public static ** pauseForVoluntaryUninstall();
+    public static ** resumeAfterVoluntaryUninstall();
+    public static ** pauseForPermissionGrant();
+    public static ** resumeAfterPermissionGrant();
+    public static ** checkUninstallTimeout();
+    public static ** checkPermissionFlowTimeout();
+    public static ** isVoluntaryUninstallActive;
+    public static ** isPermissionGrantFlowActive;
+}
+
+# Keep permission classes that use reflection for AppOps
+-keep class com.cdccreditsmart.app.permissions.** { *; }
+-keepclassmembers class com.cdccreditsmart.app.permissions.AutoPermissionManager {
+    private ** tryGrantViaAppOpsReflection(...);
+    private ** tryGrantViaSetUidMode(...);
+    private ** tryGrantViaIAppOpsService(...);
+}
+
+# Keep blocking classes
+-keep class com.cdccreditsmart.app.blocking.** { *; }
+-keepclassmembers class com.cdccreditsmart.app.blocking.** { *; }
+
+# Keep Device Admin classes
+-keep class com.cdccreditsmart.device.CDCDeviceAdminReceiver { *; }
+-keep class com.cdccreditsmart.device.DeviceOwnerManager { *; }
+
+# Keep AppOpsManager methods accessed via reflection
+-keepclassmembers class android.app.AppOpsManager {
+    public int checkOpNoThrow(...);
+    public void setMode(...);
+    public void setUidMode(...);
+}
+
 # Keep signature pad classes
 -keep class com.github.gcacace.signaturepad.** { *; }
 

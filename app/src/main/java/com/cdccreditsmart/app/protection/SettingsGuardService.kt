@@ -290,15 +290,20 @@ class SettingsGuardService(private val context: Context) {
     
     fun startGuard() {
         if (isGuardActive) {
-            Log.d(TAG, "Guard já está ativo")
+            Log.i(TAG, "🛡️ Guard já está ativo - ignorando chamada duplicada")
             return
         }
         
         val mode = getCurrentProtectionMode()
         isGuardActive = true
         
-        Log.i(TAG, "🛡️ SettingsGuard INICIADO")
-        Log.i(TAG, "   Modo de proteção: ${mode.name}")
+        Log.i(TAG, "🛡️ ════════════════════════════════════════════════════════")
+        Log.i(TAG, "🛡️ SETTINGSGUARD INICIADO")
+        Log.i(TAG, "🛡️ ════════════════════════════════════════════════════════")
+        Log.i(TAG, "🛡️ Fabricante: ${Build.MANUFACTURER}")
+        Log.i(TAG, "🛡️ Modelo: ${Build.MODEL}")
+        Log.i(TAG, "🛡️ Android: ${Build.VERSION.SDK_INT}")
+        Log.i(TAG, "🛡️ Modo de proteção: ${mode.name}")
         
         when (mode) {
             ProtectionMode.DEVICE_OWNER -> {
@@ -324,10 +329,18 @@ class SettingsGuardService(private val context: Context) {
     private fun startActiveMonitoring() {
         Log.i(TAG, "🔍 Iniciando monitoramento ativo de Settings...")
         
-        if (!hasUsageStatsPermission()) {
-            Log.w(TAG, "⚠️ Sem permissão PACKAGE_USAGE_STATS")
-            Log.w(TAG, "   Monitoramento via ActivityManager (menos preciso)")
-            Log.w(TAG, "   IMPORTANTE: Conceda permissão em Configurações > Apps > Credit Smart > Acesso especial > Acesso uso")
+        val hasUsageStats = hasUsageStatsPermission()
+        val hasOverlay = Settings.canDrawOverlays(context)
+        
+        Log.i(TAG, "🔍 ════════════════════════════════════════════════════════")
+        Log.i(TAG, "🔍 PERMISSÕES:")
+        Log.i(TAG, "🔍   USAGE_STATS: ${if (hasUsageStats) "✅ CONCEDIDA" else "❌ NÃO CONCEDIDA"}")
+        Log.i(TAG, "🔍   OVERLAY: ${if (hasOverlay) "✅ CONCEDIDA" else "❌ NÃO CONCEDIDA"}")
+        Log.i(TAG, "🔍 ════════════════════════════════════════════════════════")
+        
+        if (!hasUsageStats) {
+            Log.w(TAG, "⚠️ Sem USAGE_STATS - monitoramento via ActivityManager (MENOS PRECISO)")
+            Log.w(TAG, "⚠️ ISSO PODE CAUSAR FALHAS NA DETECÇÃO DE TELAS PERIGOSAS!")
             showUsageStatsRequiredNotification()
             usageStatsNotificationShown = true
         } else {
@@ -335,14 +348,22 @@ class SettingsGuardService(private val context: Context) {
             usageStatsNotificationShown = false
         }
         
-        if (!Settings.canDrawOverlays(context)) {
-            Log.w(TAG, "⚠️ Sem permissão SYSTEM_ALERT_WINDOW")
-            Log.w(TAG, "   Overlays de bloqueio não funcionarão")
+        if (!hasOverlay) {
+            Log.w(TAG, "⚠️ Sem OVERLAY - overlays de bloqueio não funcionarão")
         }
         
+        Log.i(TAG, "🔍 Iniciando loop de monitoramento...")
+        
         guardScope.launch {
+            var loopCount = 0L
             while (isGuardActive && isActive) {
                 try {
+                    loopCount++
+                    
+                    if (loopCount == 1L || loopCount % 1000 == 0L) {
+                        Log.i(TAG, "🔄 Guard loop ativo (iteração $loopCount)")
+                    }
+                    
                     if (usageStatsNotificationShown && hasUsageStatsPermission()) {
                         Log.i(TAG, "✅ Permissão USAGE_STATS concedida - cancelando notificação")
                         cancelUsageStatsNotification()
@@ -351,12 +372,14 @@ class SettingsGuardService(private val context: Context) {
                     
                     checkSettingsAccessAggressively()
                 } catch (e: Exception) {
-                    Log.e(TAG, "Erro no guard loop: ${e.message}")
+                    Log.e(TAG, "❌ ERRO no guard loop: ${e.message}", e)
                 }
                 
                 val interval = if (isInAggressiveMode) AGGRESSIVE_CHECK_INTERVAL_MS else CHECK_INTERVAL_MS
                 delay(interval)
             }
+            
+            Log.e(TAG, "❌ GUARD LOOP ENCERRADO! isGuardActive=$isGuardActive, isActive=$isActive")
         }
     }
     
@@ -715,14 +738,23 @@ class SettingsGuardService(private val context: Context) {
             "com.transsion.xos.settings.quickpanel",  // XOS Quick Panel - PERIGOSO!
             "com.transsion.repairmode",       // XOS Modo de reparo - EXTREMAMENTE PERIGOSO!
             "com.transsion.dualspace",        // XOS Sistema duplo - PERIGOSO!
+            "com.transsion.xos.settings",     // XOS Settings principal
+            "com.transsion.hi",               // HiOS (Tecno)
+            "com.transsion.hilauncher",       // HiLauncher Settings (quando abre app info)
             "com.infinix.xhide",              // Infinix XHide - oculta apps!
             "com.infinix.smartpower",         // Gerenciador de bateria
             "com.infinix.phonemaster",        // Infinix Phone Master
             "com.infinix.dualspace",          // Infinix Sistema duplo - PERIGOSO!
             "com.infinix.repairmode",         // Infinix Modo de reparo - EXTREMAMENTE PERIGOSO!
+            "com.infinix.xos.launcher",       // XOS Launcher (quando abre app info via long press)
+            "com.infinix.xos.launcher.settings", // XOS Launcher Settings
+            "com.infinix.devicecare",         // Infinix Device Care
+            "com.infinix.xclub",              // Infinix XClub
             "com.tecno.phonemaster",          // Tecno Phone Master
             "com.tecno.dualspace",            // Tecno Sistema duplo - PERIGOSO!
+            "com.tecno.devicecare",           // Tecno Device Care
             "com.itel.phonemaster",           // iTel Phone Master
+            "com.itel.devicecare",            // iTel Device Care
             // ZTE/Nubia
             "cn.nubia.security",
             "com.zte.settings",
@@ -736,7 +768,16 @@ class SettingsGuardService(private val context: Context) {
             "com.meizu.safe"
         )
         
-        if (settingsPackages.contains(packageName)) {
+        val isSettingsPackage = settingsPackages.contains(packageName) || 
+            packageName.contains("settings", ignoreCase = true) ||
+            packageName.contains("phonemaster", ignoreCase = true) ||
+            packageName.contains("devicecare", ignoreCase = true) ||
+            packageName.contains("security", ignoreCase = true)
+        
+        if (isSettingsPackage) {
+            Log.i(TAG, "📦 Settings package detectado: $packageName")
+            Log.i(TAG, "📦 Activity: $activityName")
+            
             if (activityName != null) {
                 // ═══════════════════════════════════════════════════════════════════════════════
                 // EXTRAÇÃO DO NOME LIMPO DA ACTIVITY
@@ -748,6 +789,8 @@ class SettingsGuardService(private val context: Context) {
                     activityName.contains(".") -> activityName.substringAfterLast(".")
                     else -> activityName
                 }
+                
+                Log.i(TAG, "📦 Activity simplificada: $activitySimpleName")
                 
                 val dangerousActivities = listOf(
                     // ═══════════════════════════════════════════════════════════════════════════════
@@ -1909,14 +1952,21 @@ class SettingsGuardService(private val context: Context) {
             "com.transsion.xos.settings.quickpanel",  // XOS Quick Panel
             "com.transsion.repairmode",       // XOS Modo de reparo
             "com.transsion.dualspace",        // XOS Sistema duplo
+            "com.transsion.xos.settings",     // XOS Settings principal
+            "com.transsion.hi",               // HiOS (Tecno)
             "com.infinix.xhide",              // Infinix XHide - oculta apps!
             "com.infinix.smartpower",
             "com.infinix.phonemaster",
             "com.infinix.dualspace",          // Infinix Sistema duplo
             "com.infinix.repairmode",         // Infinix Modo de reparo
+            "com.infinix.xos.launcher",       // XOS Launcher (app info)
+            "com.infinix.devicecare",         // Infinix Device Care
+            "com.infinix.xclub",              // Infinix XClub
             "com.tecno.phonemaster",
             "com.tecno.dualspace",            // Tecno Sistema duplo
+            "com.tecno.devicecare",           // Tecno Device Care
             "com.itel.phonemaster",
+            "com.itel.devicecare",            // iTel Device Care
             // ZTE/Nubia
             "cn.nubia.security",
             "com.zte.heartyservice",

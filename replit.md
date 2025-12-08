@@ -111,3 +111,13 @@ Utilizes Jetpack Compose and Material 3 with a CDC institutional dark theme. Fea
 - Reset correction counter after successful fix
 - Added check for matching block level before attempting correction
 - Enhanced logging for debugging compliance issues
+
+**SettingsGuard Release Build Fix (2025-12-08):**
+- Added ProGuard rules to preserve protection classes (SettingsGuardService, AutoPermissionManager, blocking)
+- Added ProGuard rules to preserve AppOpsManager reflection methods used for USAGE_STATS grant
+- Changed critical logs from Log.d (removed in release) to Log.w (preserved in release)
+- Added device info logging (Manufacturer, Model, Android version) on guard start
+- Added guard loop counter logging every 100 iterations for monitoring
+- Added extended Infinix/Transsion/XOS package detection (devicecare, xclub, xos.launcher, etc.)
+- Added dynamic package detection for "settings", "phonemaster", "devicecare", "security" keywords
+- Added verbose logging when Settings package is detected to debug OEM-specific issues
