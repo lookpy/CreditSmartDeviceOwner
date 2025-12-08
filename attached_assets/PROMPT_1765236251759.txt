@@ -1,0 +1,480 @@
+---------------------------- PROCESS STARTED (7801) for package com.cdccreditsmart.app ----------------------------
+2025-12-08 20:23:38.020  7801-7801  nativeloader            com.cdccreditsmart.app               D  Load libframework-connectivity-tiramisu-jni.so using APEX ns com_android_tethering for caller /apex/com.android.tethering/javalib/framework-connectivity-t.jar: ok
+2025-12-08 20:23:38.401  7801-7801  nativeloader            com.cdccreditsmart.app               D  Configuring clns-9 for other apk /data/app/~~fgyX2nF_2TQnXdqf-euLWA==/com.cdccreditsmart.app-WDwOxm0aLx6JDf_cVAJmRw==/base.apk. target_sdk_version=35, uses_libraries=, library_path=/data/app/~~fgyX2nF_2TQnXdqf-euLWA==/com.cdccreditsmart.app-WDwOxm0aLx6JDf_cVAJmRw==/lib/x86_64:/data/app/~~fgyX2nF_2TQnXdqf-euLWA==/com.cdccreditsmart.app-WDwOxm0aLx6JDf_cVAJmRw==/base.apk!/lib/x86_64, permitted_path=/data:/mnt/expand:/data/user/0/com.cdccreditsmart.app
+2025-12-08 20:23:38.403  7801-7801  CompatChangeReporter    com.cdccreditsmart.app               D  Compat change id reported: 202956589; UID 10217; state: ENABLED
+2025-12-08 20:23:38.405  7801-7801  creditsmart.app         com.cdccreditsmart.app               I  AssetManager2(0x74cdc551d318) locale list changing from [] to [en-US]
+2025-12-08 20:23:38.411  7801-7801  GraphicsEnvironment     com.cdccreditsmart.app               V  Currently set values for:
+2025-12-08 20:23:38.411  7801-7801  GraphicsEnvironment     com.cdccreditsmart.app               V    angle_gl_driver_selection_pkgs=[]
+2025-12-08 20:23:38.411  7801-7801  GraphicsEnvironment     com.cdccreditsmart.app               V    angle_gl_driver_selection_values=[]
+2025-12-08 20:23:38.411  7801-7801  GraphicsEnvironment     com.cdccreditsmart.app               V  com.cdccreditsmart.app is not listed in per-application setting
+2025-12-08 20:23:38.411  7801-7801  GraphicsEnvironment     com.cdccreditsmart.app               V  ANGLE allowlist from config: com.dreamgames.royalmatch com.dts.freefiremax com.dxx.firenow com.gramgames.mergedragons com.ludo.king com.mojang.minecraftpe com.my.defense com.nintendo.zaka com.os.airforce com.playrix.fishdomdd.gplay io.teslatech.callbreak jp.konami.prospia net.peakgames.toonblast
+2025-12-08 20:23:38.411  7801-7801  GraphicsEnvironment     com.cdccreditsmart.app               V  com.cdccreditsmart.app is not listed in ANGLE allowlist or settings, returning default
+2025-12-08 20:23:38.411  7801-7801  GraphicsEnvironment     com.cdccreditsmart.app               V  Neither updatable production driver nor prerelease driver is supported.
+2025-12-08 20:23:38.479  7801-7801  FirebaseApp             com.cdccreditsmart.app               I  Device unlocked: initializing all Firebase APIs for app [DEFAULT]
+2025-12-08 20:23:38.503  7801-7801  FirebaseInitProvider    com.cdccreditsmart.app               I  FirebaseApp initialization successful
+2025-12-08 20:23:38.507  7801-7801  WM-WrkMgrInitializer    com.cdccreditsmart.app               D  Initializing WorkManager with default configuration.
+2025-12-08 20:23:38.586  7801-7801  WM-PackageManagerHelper com.cdccreditsmart.app               D  androidx.work.impl.background.systemjob.SystemJobService enabled
+2025-12-08 20:23:38.586  7801-7801  WM-Schedulers           com.cdccreditsmart.app               D  Created SystemJobScheduler and enabled SystemJobService
+2025-12-08 20:23:38.590  7801-7845  creditsmart.app         com.cdccreditsmart.app               W  ClassLoaderContext classpath size mismatch. expected=1, found=0 (DLC[];PCL[base.apk*630649996]{PCL[/system/framework/org.apache.http.legacy.jar*4247870504]#PCL[/system/framework/com.android.media.remotedisplay.jar*487574312]#PCL[/system/framework/com.android.location.provider.jar*1570284764]#PCL[/system_ext/framework/androidx.window.extensions.jar*1030441313]#PCL[/system_ext/framework/androidx.window.sidecar.jar*3860983653]} | DLC[];PCL[])
+2025-12-08 20:23:38.597  7801-7801  CompatChangeReporter    com.cdccreditsmart.app               D  Compat change id reported: 279646685; UID 10217; state: ENABLED
+2025-12-08 20:23:38.598  7801-7855  CompatChangeReporter    com.cdccreditsmart.app               D  Compat change id reported: 312399441; UID 10217; state: ENABLED
+2025-12-08 20:23:38.600  7801-7845  DynamiteModule          com.cdccreditsmart.app               I  Considering local module com.google.android.gms.measurement.dynamite:127 and remote module com.google.android.gms.measurement.dynamite:170
+2025-12-08 20:23:38.600  7801-7845  DynamiteModule          com.cdccreditsmart.app               I  Selected remote version of com.google.android.gms.measurement.dynamite, version >= 170
+2025-12-08 20:23:38.600  7801-7845  DynamiteModule          com.cdccreditsmart.app               V  Dynamite loader version >= 2, using loadModule2NoCrashUtils
+2025-12-08 20:23:38.609  7801-7855  ashmem                  com.cdccreditsmart.app               E  Pinning is deprecated since Android Q. Please use trim or other methods.
+2025-12-08 20:23:38.609  7801-7801  CrashHandler            com.cdccreditsmart.app               I  ✅ Global crash handler instalado
+2025-12-08 20:23:38.609  7801-7801  CDCApplication          com.cdccreditsmart.app               I  🚀 CDC Credit Smart Application iniciando...
+2025-12-08 20:23:38.619  7801-7845  System                  com.cdccreditsmart.app               W  ClassLoader referenced unknown path: 
+2025-12-08 20:23:38.621  7801-7845  nativeloader            com.cdccreditsmart.app               D  Configuring clns-10 for other apk . target_sdk_version=36, uses_libraries=, library_path=/data/app/~~1iaiyI3ni70pEfdcSo1KGQ==/com.google.android.gms-T0OHkmAjMyJFA0U1fHeAmA==/lib/x86_64:/data/app/~~1iaiyI3ni70pEfdcSo1KGQ==/com.google.android.gms-T0OHkmAjMyJFA0U1fHeAmA==/base.apk!/lib/x86_64, permitted_path=/data:/mnt/expand:/data/user/0/com.google.android.gms
+2025-12-08 20:23:38.623  7801-7801  CDCApplication          com.cdccreditsmart.app               I  ========================================
+2025-12-08 20:23:38.623  7801-7801  CDCApplication          com.cdccreditsmart.app               I  🔐 Verificando status de Device Owner...
+2025-12-08 20:23:38.627  7801-7801  CompatChangeReporter    com.cdccreditsmart.app               D  Compat change id reported: 307233716; UID 10217; state: ENABLED
+2025-12-08 20:23:38.628  7801-7801  CDCApplication          com.cdccreditsmart.app               I  Device Owner Status: ❌ NÃO
+2025-12-08 20:23:38.628  7801-7801  CDCApplication          com.cdccreditsmart.app               I  Package Name: com.cdccreditsmart.app
+2025-12-08 20:23:38.628  7801-7801  CDCApplication          com.cdccreditsmart.app               E  
+2025-12-08 20:23:38.628  7801-7801  CDCApplication          com.cdccreditsmart.app               E  ╔════════════════════════════════════════════════════════╗
+2025-12-08 20:23:38.628  7801-7801  CDCApplication          com.cdccreditsmart.app               E  ║  ⚠️  APP NÃO ESTÁ PROVISIONADO COMO DEVICE OWNER  ⚠️   ║
+2025-12-08 20:23:38.628  7801-7801  CDCApplication          com.cdccreditsmart.app               E  ╠════════════════════════════════════════════════════════╣
+2025-12-08 20:23:38.628  7801-7801  CDCApplication          com.cdccreditsmart.app               E  ║  O app precisa ser provisionado como Device Owner      ║
+2025-12-08 20:23:38.628  7801-7801  CDCApplication          com.cdccreditsmart.app               E  ║  ANTES de poder conceder permissões automaticamente.   ║
+2025-12-08 20:23:38.628  7801-7801  CDCApplication          com.cdccreditsmart.app               E  ║                                                        ║
+2025-12-08 20:23:38.628  7801-7801  CDCApplication          com.cdccreditsmart.app               E  ║  Provisione o dispositivo usando um dos métodos:       ║
+2025-12-08 20:23:38.628  7801-7801  CDCApplication          com.cdccreditsmart.app               E  ║  1. ADB: adb shell dpm set-device-owner ...           ║
+2025-12-08 20:23:38.628  7801-7801  CDCApplication          com.cdccreditsmart.app               E  ║  2. QR Code durante setup inicial                      ║
+2025-12-08 20:23:38.628  7801-7801  CDCApplication          com.cdccreditsmart.app               E  ║  3. NFC durante setup inicial                          ║
+2025-12-08 20:23:38.628  7801-7801  CDCApplication          com.cdccreditsmart.app               E  ║  4. Samsung Knox Mobile Enrollment                     ║
+2025-12-08 20:23:38.628  7801-7801  CDCApplication          com.cdccreditsmart.app               E  ╚════════════════════════════════════════════════════════╝
+2025-12-08 20:23:38.628  7801-7801  CDCApplication          com.cdccreditsmart.app               E  
+2025-12-08 20:23:38.628  7801-7801  CDCApplication          com.cdccreditsmart.app               I  ========================================
+2025-12-08 20:23:38.631  7801-7801  AppProtectionManager    com.cdccreditsmart.app               I  
+2025-12-08 20:23:38.631  7801-7801  AppProtectionManager    com.cdccreditsmart.app               I  ╔════════════════════════════════════════════════════════════════╗
+2025-12-08 20:23:38.631  7801-7801  AppProtectionManager    com.cdccreditsmart.app               I  ║     🛡️ APLICANDO MELHOR PROTEÇÃO DISPONÍVEL                    ║
+2025-12-08 20:23:38.631  7801-7801  AppProtectionManager    com.cdccreditsmart.app               I  ║           CDC CREDIT SMART - PROTEÇÃO EM CAMADAS              ║
+2025-12-08 20:23:38.631  7801-7801  AppProtectionManager    com.cdccreditsmart.app               I  ╚════════════════════════════════════════════════════════════════╝
+2025-12-08 20:23:38.631  7801-7801  AppProtectionManager    com.cdccreditsmart.app               I  
+2025-12-08 20:23:38.634  7801-7801  AppProtectionManager    com.cdccreditsmart.app               I  📋 STATUS ATUAL:
+2025-12-08 20:23:38.634  7801-7845  creditsmart.app         com.cdccreditsmart.app               I  AssetManager2(0x74cdc5522458) locale list changing from [] to [en-US]
+2025-12-08 20:23:38.634  7801-7801  AppProtectionManager    com.cdccreditsmart.app               I     Device Owner: NÃO
+2025-12-08 20:23:38.634  7801-7801  AppProtectionManager    com.cdccreditsmart.app               I     Device Admin: NÃO
+2025-12-08 20:23:38.634  7801-7801  AppProtectionManager    com.cdccreditsmart.app               I  
+2025-12-08 20:23:38.634  7801-7801  AppProtectionManager    com.cdccreditsmart.app               W  ⚠️ NÍVEL: SEM PRIVILÉGIOS
+2025-12-08 20:23:38.634  7801-7801  AppProtectionManager    com.cdccreditsmart.app               W     App precisa ser ativado como Device Admin ou Device Owner
+2025-12-08 20:23:38.634  7801-7801  AppProtectionManager    com.cdccreditsmart.app               W     para aplicar proteções contra desinstalação.
+2025-12-08 20:23:38.634  7801-7801  AppProtectionManager    com.cdccreditsmart.app               W  
+2025-12-08 20:23:38.634  7801-7801  AppProtectionManager    com.cdccreditsmart.app               I     Iniciando serviços de persistência...
+2025-12-08 20:23:38.638  7801-7801  AppProtectionManager    com.cdccreditsmart.app               I     ✅ Foreground Service iniciado
+2025-12-08 20:23:38.646  7801-7801  AppProtectionManager    com.cdccreditsmart.app               I     ✅ ServiceWatchdog agendado (15 min)
+2025-12-08 20:23:38.646  7801-7801  CDCApplication          com.cdccreditsmart.app               I  
+2025-12-08 20:23:38.646  7801-7801  CDCApplication          com.cdccreditsmart.app               I  ╔════════════════════════════════════════════════════════════╗
+2025-12-08 20:23:38.646  7801-7801  CDCApplication          com.cdccreditsmart.app               I  ║     RESULTADO DA APLICAÇÃO DE PROTEÇÕES                    ║
+2025-12-08 20:23:38.646  7801-7801  CDCApplication          com.cdccreditsmart.app               I  ╚════════════════════════════════════════════════════════════╝
+2025-12-08 20:23:38.646  7801-7801  CDCApplication          com.cdccreditsmart.app               I     Nível: NONE
+2025-12-08 20:23:38.646  7801-7801  CDCApplication          com.cdccreditsmart.app               I     Proteções aplicadas: 0
+2025-12-08 20:23:38.647  7801-7801  CDCApplication          com.cdccreditsmart.app               E     Status: SEM PROTEÇÃO
+2025-12-08 20:23:38.647  7801-7801  CDCApplication          com.cdccreditsmart.app               E     App precisa ser provisionado como Device Owner
+2025-12-08 20:23:38.647  7801-7801  CDCApplication          com.cdccreditsmart.app               E  
+2025-12-08 20:23:38.647  7801-7801  CDCApplication          com.cdccreditsmart.app               E     Provisione o dispositivo usando:
+2025-12-08 20:23:38.647  7801-7801  CDCApplication          com.cdccreditsmart.app               E     1. QR Code durante setup inicial
+2025-12-08 20:23:38.647  7801-7801  CDCApplication          com.cdccreditsmart.app               E     2. ADB: adb shell dpm set-device-owner ...
+2025-12-08 20:23:38.647  7801-7801  CDCApplication          com.cdccreditsmart.app               E     3. Samsung Knox Mobile Enrollment
+2025-12-08 20:23:38.647  7801-7801  CDCApplication          com.cdccreditsmart.app               I  ╚════════════════════════════════════════════════════════════╝
+2025-12-08 20:23:38.647  7801-7801  CDCApplication          com.cdccreditsmart.app               I  
+2025-12-08 20:23:38.663  7801-7801  TamperDetection         com.cdccreditsmart.app               I  ========================================
+2025-12-08 20:23:38.663  7801-7801  TamperDetection         com.cdccreditsmart.app               I  🔍 VERIFICANDO INTEGRIDADE DO DISPOSITIVO
+2025-12-08 20:23:38.663  7801-7801  TamperDetection         com.cdccreditsmart.app               I  ========================================
+2025-12-08 20:23:38.665  7801-7857  CDCApplication          com.cdccreditsmart.app               D  👤 App não é Device Owner - pulando criação de usuário secundário
+2025-12-08 20:23:38.678  7801-7845  creditsmart.app         com.cdccreditsmart.app               W  ClassLoaderContext classpath element checksum mismatch. expected=630649996, found=2215709538 (DLC[];PCL[base.apk*630649996]{PCL[/system/framework/org.apache.http.legacy.jar*4247870504]#PCL[/system/framework/com.android.media.remotedisplay.jar*487574312]#PCL[/system/framework/com.android.location.provider.jar*1570284764]#PCL[/system_ext/framework/androidx.window.extensions.jar*1030441313]#PCL[/system_ext/framework/androidx.window.sidecar.jar*3860983653]} | DLC[];PCL[/data/app/~~fgyX2nF_2TQnXdqf-euLWA==/com.cdccreditsmart.app-WDwOxm0aLx6JDf_cVAJmRw==/base.apk*2215709538])
+2025-12-08 20:23:38.723  7801-7845  creditsmart.app         com.cdccreditsmart.app               I  AssetManager2(0x74cdc5515618) locale list changing from [] to [en-US]
+2025-12-08 20:23:38.756  7801-7845  creditsmart.app         com.cdccreditsmart.app               I  AssetManager2(0x74cdc551f578) locale list changing from [] to [en-US]
+2025-12-08 20:23:38.887  7801-7869  JobInfo                 com.cdccreditsmart.app               W  Requested important-while-foreground flag for job0 is ignored and takes no effect
+2025-12-08 20:23:38.887  7801-7869  CompatChangeReporter    com.cdccreditsmart.app               D  Compat change id reported: 311402873; UID 10217; state: ENABLED
+2025-12-08 20:23:38.888  7801-7869  CompatChangeReporter    com.cdccreditsmart.app               D  Compat change id reported: 323349338; UID 10217; state: ENABLED
+2025-12-08 20:23:38.911  7801-7801  SecureTokenStorage      com.cdccreditsmart.app               D  EncryptedSharedPreferences initialized successfully
+2025-12-08 20:23:38.913  7801-7801  TamperDetection         com.cdccreditsmart.app               I  ✅ Primeira instalação detectada
+2025-12-08 20:23:38.913  7801-7801  TamperDetection         com.cdccreditsmart.app               I     Token e deviceId não existem - app nunca foi pareado
+2025-12-08 20:23:38.913  7801-7801  TamperDetection         com.cdccreditsmart.app               I  ========================================
+2025-12-08 20:23:38.920  7801-7874  creditsmart.app         com.cdccreditsmart.app               I  hiddenapi: Accessing hidden method Ldalvik/system/VMStack;->getStackClass2()Ljava/lang/Class; (runtime_flags=0, domain=core-platform, api=unsupported) from Lm7/aox; (domain=app) using reflection: allowed
+2025-12-08 20:23:38.924  7801-7801  TamperDetection         com.cdccreditsmart.app               I  ✅ Device fingerprint criado: CDC_-160****
+2025-12-08 20:23:38.927  7801-7801  TamperDetection         com.cdccreditsmart.app               I  
+2025-12-08 20:23:38.927  7801-7801  TamperDetection         com.cdccreditsmart.app               I  ╔════════════════════════════════════════════════════════╗
+2025-12-08 20:23:38.927  7801-7801  TamperDetection         com.cdccreditsmart.app               I  ║    📡 BOOT REPORT ADIADO - AGUARDANDO PAREAMENTO      ║
+2025-12-08 20:23:38.927  7801-7801  TamperDetection         com.cdccreditsmart.app               I  ╠════════════════════════════════════════════════════════╣
+2025-12-08 20:23:38.927  7801-7801  TamperDetection         com.cdccreditsmart.app               I  ║  ⏳ Device ainda não pareado com contrato              ║
+2025-12-08 20:23:38.927  7801-7801  TamperDetection         com.cdccreditsmart.app               I  ║  ⏳ Boot será reportado após autenticação              ║
+2025-12-08 20:23:38.927  7801-7801  TamperDetection         com.cdccreditsmart.app               I  ║  ℹ️  Isso é comportamento NORMAL antes do pareamento   ║
+2025-12-08 20:23:38.927  7801-7801  TamperDetection         com.cdccreditsmart.app               I  ╚════════════════════════════════════════════════════════╝
+2025-12-08 20:23:38.927  7801-7801  TamperDetection         com.cdccreditsmart.app               I  
+2025-12-08 20:23:38.930  7801-7857  CDCApplication          com.cdccreditsmart.app               I  🔒 Verificando status do SIM no boot da aplicação...
+2025-12-08 20:23:38.935  7801-7857  SimSwapManager          com.cdccreditsmart.app               I  ========================================
+2025-12-08 20:23:38.935  7801-7857  SimSwapManager          com.cdccreditsmart.app               I  🔒 SIM SWAP: Iniciando verificação de status do SIM
+2025-12-08 20:23:38.935  7801-7857  SimSwapManager          com.cdccreditsmart.app               I  ========================================
+2025-12-08 20:23:38.937  7801-7857  SimSwapDetector         com.cdccreditsmart.app               E  🔒 SIM SWAP: Permissão READ_PHONE_STATE NÃO CONCEDIDA!
+2025-12-08 20:23:38.937  7801-7857  SimSwapManager          com.cdccreditsmart.app               E  🔒 SIM SWAP: Sem permissão READ_PHONE_STATE - verificação cancelada
+2025-12-08 20:23:38.937  7801-7857  SimSwapManager          com.cdccreditsmart.app               I  ========================================
+2025-12-08 20:23:38.937  7801-7857  CDCApplication          com.cdccreditsmart.app               W  ⚠️ Verificação de SIM swap falhou ou encontrou problemas
+2025-12-08 20:23:38.964  7801-7874  PhClient                com.cdccreditsmart.app               I  Unable to retrieve flag snapshot for com.google.android.gms.measurement#com.cdccreditsmart.app, using defaults.
+2025-12-08 20:23:38.979  7801-7866  creditsmart.app         com.cdccreditsmart.app               E  No package ID 6a found for resource ID 0x6a0b0013.
+2025-12-08 20:23:38.979  7801-7866  FA                      com.cdccreditsmart.app               I  App measurement initialized, version: 146007
+2025-12-08 20:23:38.980  7801-7866  FA                      com.cdccreditsmart.app               I  To enable debug logging run: adb shell setprop log.tag.FA VERBOSE
+2025-12-08 20:23:38.980  7801-7866  FA                      com.cdccreditsmart.app               I  To enable faster debug mode event logging run:
+                                                                                                      adb shell setprop debug.firebase.analytics.app com.cdccreditsmart.app
+2025-12-08 20:23:38.988  7801-7801  SecureTokenStorage      com.cdccreditsmart.app               D  EncryptedSharedPreferences initialized successfully
+2025-12-08 20:23:38.990  7801-7801  ContractCodeStorage     com.cdccreditsmart.app               D  Retrieving contract code from storage
+2025-12-08 20:23:39.112  7801-7801  ContractCodeStorage     com.cdccreditsmart.app               D  Storage verification: 0 valid, 0 tampered, 7 missing
+2025-12-08 20:23:39.112  7801-7801  ContractCodeStorage     com.cdccreditsmart.app               W  No valid contract code found in any location
+2025-12-08 20:23:39.112  7801-7801  CDCApplication          com.cdccreditsmart.app               I  ⏸️ Sem tokens - aguardando pairing para iniciar serviço MDM
+2025-12-08 20:23:39.113  7801-7801  CDCApplication          com.cdccreditsmart.app               I  🔒 Iniciando sistema Keep Alive...
+2025-12-08 20:23:39.113  7801-7801  KeepAliveManager        com.cdccreditsmart.app               I  🔒 ========================================
+2025-12-08 20:23:39.113  7801-7801  KeepAliveManager        com.cdccreditsmart.app               I  🔒 INICIANDO SISTEMA KEEP ALIVE
+2025-12-08 20:23:39.113  7801-7801  KeepAliveManager        com.cdccreditsmart.app               I  🔒 ========================================
+2025-12-08 20:23:39.114  7801-7801  KeepAliveManager        com.cdccreditsmart.app               I  ✅ ServiceWatchdogWorker agendado (15min)
+2025-12-08 20:23:39.115  7801-7801  KeepAliveManager        com.cdccreditsmart.app               I  ✅ AlarmManager wakeup agendado (10min)
+2025-12-08 20:23:39.117  7801-7859  CDCApplication          com.cdccreditsmart.app               I  🧹 ========================================
+2025-12-08 20:23:39.117  7801-7859  CDCApplication          com.cdccreditsmart.app               I  🧹 LIMPANDO ESTADO DE BLOQUEIO OBSOLETO
+2025-12-08 20:23:39.117  7801-7859  CDCApplication          com.cdccreditsmart.app               I  🧹 ========================================
+2025-12-08 20:23:39.117  7801-7859  CDCApplication          com.cdccreditsmart.app               I  🧹 Dispositivo não está pareado - bloqueio anterior será removido
+2025-12-08 20:23:39.117  7801-7801  KeepAliveManager        com.cdccreditsmart.app               I  🔋 App NÃO é Device Owner - permissão será solicitada na tela de permissões
+2025-12-08 20:23:39.117  7801-7801  KeepAliveManager        com.cdccreditsmart.app               I  🔒 Sistema Keep Alive ativo
+2025-12-08 20:23:39.117  7801-7801  KeepAliveManager        com.cdccreditsmart.app               I  🔒 - WorkManager: verificação a cada 15min
+2025-12-08 20:23:39.117  7801-7801  KeepAliveManager        com.cdccreditsmart.app               I  🔒 - AlarmManager: wakeup a cada 10min
+2025-12-08 20:23:39.117  7801-7801  KeepAliveManager        com.cdccreditsmart.app               I  🔒 ========================================
+2025-12-08 20:23:39.118  7801-7801  CDCApplication          com.cdccreditsmart.app               I  📊 Keep Alive Stats:
+2025-12-08 20:23:39.118  7801-7801  CDCApplication          com.cdccreditsmart.app               I     - Restarts anteriores: 0
+2025-12-08 20:23:39.118  7801-7801  CDCApplication          com.cdccreditsmart.app               I     - Otimização bateria: SIM (ruim)
+2025-12-08 20:23:39.124  7801-7859  CDCApplication          com.cdccreditsmart.app               I  🧹 Estado anterior encontrado:
+2025-12-08 20:23:39.124  7801-7859  CDCApplication          com.cdccreditsmart.app               I     Nível: 0
+2025-12-08 20:23:39.124  7801-7859  CDCApplication          com.cdccreditsmart.app               I     Bloqueio manual: false
+2025-12-08 20:23:39.124  7801-7859  CDCApplication          com.cdccreditsmart.app               I  🧹 Nenhum bloqueio ativo - nada a limpar
+2025-12-08 20:23:39.124  7801-7859  CDCApplication          com.cdccreditsmart.app               I  🧹 ========================================
+2025-12-08 20:23:39.130  7801-7801  Choreographer           com.cdccreditsmart.app               I  Skipped 31 frames!  The application may be doing too much work on its main thread.
+2025-12-08 20:23:39.137  7801-7890  DisplayManager          com.cdccreditsmart.app               I  Choreographer implicitly registered for the refresh rate.
+2025-12-08 20:23:39.144  7801-7801  creditsmart.app         com.cdccreditsmart.app               I  AssetManager2(0x74cdc5520b58) locale list changing from [] to [en-US]
+2025-12-08 20:23:39.196  7801-7801  CompatChangeReporter    com.cdccreditsmart.app               D  Compat change id reported: 309578419; UID 10217; state: ENABLED
+2025-12-08 20:23:39.197  7801-7890  EGL_emulation           com.cdccreditsmart.app               I  Opening libGLESv1_CM_emulation.so
+2025-12-08 20:23:39.197  7801-7890  EGL_emulation           com.cdccreditsmart.app               I  Opening libGLESv2_emulation.so
+2025-12-08 20:23:39.199  7801-7801  DesktopModeFlags        com.cdccreditsmart.app               D  Toggle override initialized to: OVERRIDE_UNSET
+2025-12-08 20:23:39.212  7801-7890  HWUI                    com.cdccreditsmart.app               W  Failed to choose config with EGL_SWAP_BEHAVIOR_PRESERVED, retrying without...
+2025-12-08 20:23:39.212  7801-7890  HWUI                    com.cdccreditsmart.app               W  Failed to initialize 101010-2 format, error = EGL_SUCCESS
+2025-12-08 20:23:39.214  7801-7801  MainActivity            com.cdccreditsmart.app               D  📍 BroadcastReceiver de localização registrado
+2025-12-08 20:23:39.224  7801-7801  MainActivity            com.cdccreditsmart.app               I  ========================================
+2025-12-08 20:23:39.224  7801-7801  MainActivity            com.cdccreditsmart.app               I  📱 SOLICITANDO PERMISSÕES (NÃO DEVICE OWNER)
+2025-12-08 20:23:39.224  7801-7801  MainActivity            com.cdccreditsmart.app               I  ========================================
+2025-12-08 20:23:39.227  7801-7801  MainActivity            com.cdccreditsmart.app               I  📋 Runtime permissions a solicitar: 9
+2025-12-08 20:23:39.227  7801-7801  MainActivity            com.cdccreditsmart.app               D    • android.permission.READ_PHONE_STATE
+2025-12-08 20:23:39.227  7801-7801  MainActivity            com.cdccreditsmart.app               D    • android.permission.READ_CALL_LOG
+2025-12-08 20:23:39.227  7801-7801  MainActivity            com.cdccreditsmart.app               D    • android.permission.CALL_PHONE
+2025-12-08 20:23:39.227  7801-7801  MainActivity            com.cdccreditsmart.app               D    • android.permission.READ_CONTACTS
+2025-12-08 20:23:39.227  7801-7801  MainActivity            com.cdccreditsmart.app               D    • android.permission.ACCESS_FINE_LOCATION
+2025-12-08 20:23:39.227  7801-7801  MainActivity            com.cdccreditsmart.app               D    • android.permission.ACCESS_COARSE_LOCATION
+2025-12-08 20:23:39.227  7801-7801  MainActivity            com.cdccreditsmart.app               D    • android.permission.ANSWER_PHONE_CALLS
+2025-12-08 20:23:39.227  7801-7801  MainActivity            com.cdccreditsmart.app               D    • android.permission.READ_PHONE_NUMBERS
+2025-12-08 20:23:39.227  7801-7801  MainActivity            com.cdccreditsmart.app               D    • android.permission.POST_NOTIFICATIONS
+2025-12-08 20:23:39.227  7801-7801  SettingsGuardService    com.cdccreditsmart.app               I  ⏸️ Guard PAUSADO para fluxo de permissões (timeout: 30s)
+2025-12-08 20:23:39.230  7801-7859  PersistentStateManager  com.cdccreditsmart.app               D  Nenhum estado local encontrado
+2025-12-08 20:23:39.230  7801-7859  PersistentStateManager  com.cdccreditsmart.app               D  🆕 Sem estado local - device novo ou pós factory reset
+2025-12-08 20:23:39.230  7801-7859  MainActivity            com.cdccreditsmart.app               I  🆕 Device nunca foi provisionado
+2025-12-08 20:23:39.252  7801-7801  SpecialPermissionReq    com.cdccreditsmart.app               I  ========================================
+2025-12-08 20:23:39.252  7801-7801  SpecialPermissionReq    com.cdccreditsmart.app               I  📊 STATUS DAS PERMISSÕES ESPECIAIS
+2025-12-08 20:23:39.252  7801-7801  SpecialPermissionReq    com.cdccreditsmart.app               I  ========================================
+2025-12-08 20:23:39.253  7801-7801  SpecialPermissionReq    com.cdccreditsmart.app               I    USAGE_STATS: ❌ NÃO CONCEDIDA
+2025-12-08 20:23:39.260  7801-7801  SpecialPermissionReq    com.cdccreditsmart.app               I    OVERLAY: ❌ NÃO CONCEDIDA
+2025-12-08 20:23:39.260  7801-7801  SpecialPermissionReq    com.cdccreditsmart.app               W  
+2025-12-08 20:23:39.260  7801-7801  SpecialPermissionReq    com.cdccreditsmart.app               W  ⚠️ PROTEÇÃO ANTI-DESINSTALAÇÃO COMPROMETIDA!
+2025-12-08 20:23:39.260  7801-7801  SpecialPermissionReq    com.cdccreditsmart.app               W     Sem essas permissões, a proteção via overlay não funciona.
+2025-12-08 20:23:39.260  7801-7801  SpecialPermissionReq    com.cdccreditsmart.app               W     O usuário conseguirá acessar App Info e desinstalar.
+2025-12-08 20:23:39.260  7801-7801  SpecialPermissionReq    com.cdccreditsmart.app               I  ========================================
+2025-12-08 20:23:39.261  7801-7801  MainActivity            com.cdccreditsmart.app               W  ========================================
+2025-12-08 20:23:39.261  7801-7801  MainActivity            com.cdccreditsmart.app               W  ⚠️ PERMISSÕES ESPECIAIS NECESSÁRIAS
+2025-12-08 20:23:39.261  7801-7801  MainActivity            com.cdccreditsmart.app               W  ========================================
+2025-12-08 20:23:39.261  7801-7801  MainActivity            com.cdccreditsmart.app               W  Para proteção anti-desinstalação funcionar:
+2025-12-08 20:23:39.261  7801-7801  MainActivity            com.cdccreditsmart.app               W    ❌ Acesso ao Uso de Apps
+2025-12-08 20:23:39.261  7801-7801  MainActivity            com.cdccreditsmart.app               W       Permite detectar quando você abre as Configurações para aplicar proteção
+2025-12-08 20:23:39.261  7801-7801  MainActivity            com.cdccreditsmart.app               W    ❌ Exibir sobre outros apps
+2025-12-08 20:23:39.261  7801-7801  MainActivity            com.cdccreditsmart.app               W       Permite mostrar avisos de proteção sobre outros aplicativos
+2025-12-08 20:23:39.261  7801-7801  MainActivity            com.cdccreditsmart.app               W  ========================================
+2025-12-08 20:23:39.261  7801-7801  MainActivity            com.cdccreditsmart.app               W  O app solicitará essas permissões na próxima interação
+2025-12-08 20:23:39.261  7801-7801  MainActivity            com.cdccreditsmart.app               W  ========================================
+2025-12-08 20:23:39.299  7801-7801  CompatChangeReporter    com.cdccreditsmart.app               D  Compat change id reported: 352594277; UID 10217; state: ENABLED
+2025-12-08 20:23:39.322  7801-7866  FA                      com.cdccreditsmart.app               I  Tag Manager is not found and thus will not be used
+2025-12-08 20:23:39.325  7801-7801  CompatChangeReporter    com.cdccreditsmart.app               D  Compat change id reported: 349153669; UID 10217; state: ENABLED
+2025-12-08 20:23:39.338  7801-7801  HWUI                    com.cdccreditsmart.app               W  Unknown dataspace 0
+2025-12-08 20:23:39.345  7801-7801  InsetsController        com.cdccreditsmart.app               D  Setting requestedVisibleTypes to -14 (was -9)
+2025-12-08 20:23:39.367  7801-7801  CdcForegroundService    com.cdccreditsmart.app               D  📱 Serviço onCreate()
+2025-12-08 20:23:39.371  7801-7801  CdcForegroundService    com.cdccreditsmart.app               D  ✅ Canal de notificação criado
+2025-12-08 20:23:39.374  7801-7801  CdcForegroundService    com.cdccreditsmart.app               I  ✅ ScreenStateReceiver registrado
+2025-12-08 20:23:39.374  7801-7801  CdcForegroundService    com.cdccreditsmart.app               D  🚀 Serviço onStartCommand() - Action: null
+2025-12-08 20:23:39.388  7801-7801  CdcForegroundService    com.cdccreditsmart.app               I  ✅ Foreground Service ativo (Android 12+)
+2025-12-08 20:23:39.401  7801-7859  CdcForegroundService    com.cdccreditsmart.app               I  🔧 ========================================
+2025-12-08 20:23:39.401  7801-7859  CdcForegroundService    com.cdccreditsmart.app               I  🔧 INICIANDO initializeServices()...
+2025-12-08 20:23:39.401  7801-7859  CdcForegroundService    com.cdccreditsmart.app               I  🔧 ========================================
+2025-12-08 20:23:39.401  7801-7859  CdcForegroundService    com.cdccreditsmart.app               I  🔧 Inicializando serviços base (SettingsGuard, WorkPolicies)...
+2025-12-08 20:23:39.401  7801-7859  CdcForegroundService    com.cdccreditsmart.app               I  🏢 ========================================
+2025-12-08 20:23:39.401  7801-7859  CdcForegroundService    com.cdccreditsmart.app               I  🏢 APLICANDO POLÍTICAS DE AMBIENTE DE TRABALHO
+2025-12-08 20:23:39.401  7801-7859  CdcForegroundService    com.cdccreditsmart.app               I  🏢 ========================================
+2025-12-08 20:23:39.410  7801-7859  WorkPolicyManager       com.cdccreditsmart.app               I  
+2025-12-08 20:23:39.410  7801-7859  WorkPolicyManager       com.cdccreditsmart.app               I  ╔════════════════════════════════════════════════════════════════╗
+2025-12-08 20:23:39.410  7801-7859  WorkPolicyManager       com.cdccreditsmart.app               I  ║  🏢 APLICANDO POLÍTICAS DE AMBIENTE DE TRABALHO                ║
+2025-12-08 20:23:39.410  7801-7859  WorkPolicyManager       com.cdccreditsmart.app               I  ║     CDC CREDIT SMART - PROTEÇÃO EMPRESARIAL                    ║
+2025-12-08 20:23:39.410  7801-7859  WorkPolicyManager       com.cdccreditsmart.app               I  ╚════════════════════════════════════════════════════════════════╝
+2025-12-08 20:23:39.410  7801-7859  WorkPolicyManager       com.cdccreditsmart.app               I  
+2025-12-08 20:23:39.417  7801-7859  WorkPolicyManager       com.cdccreditsmart.app               I  📋 STATUS DO DISPOSITIVO:
+2025-12-08 20:23:39.417  7801-7859  WorkPolicyManager       com.cdccreditsmart.app               I     Device Owner: ❌ NÃO
+2025-12-08 20:23:39.417  7801-7859  WorkPolicyManager       com.cdccreditsmart.app               I     Device Admin: ❌ NÃO
+2025-12-08 20:23:39.417  7801-7859  WorkPolicyManager       com.cdccreditsmart.app               I  
+2025-12-08 20:23:39.422  7801-7858  ServiceWatchdogWorker   com.cdccreditsmart.app               I  🔍 ========================================
+2025-12-08 20:23:39.422  7801-7858  ServiceWatchdogWorker   com.cdccreditsmart.app               I  🔍 WATCHDOG: Verificando CdcForegroundService
+2025-12-08 20:23:39.422  7801-7858  ServiceWatchdogWorker   com.cdccreditsmart.app               I  🔍 ========================================
+2025-12-08 20:23:39.422  7801-7859  WorkPolicyManager       com.cdccreditsmart.app               I  ═══════════════════════════════════════════════════════════════
+2025-12-08 20:23:39.422  7801-7859  WorkPolicyManager       com.cdccreditsmart.app               I  ⚠️ MODO BÁSICO - PROTEÇÃO MÍNIMA
+2025-12-08 20:23:39.422  7801-7859  WorkPolicyManager       com.cdccreditsmart.app               I  ═══════════════════════════════════════════════════════════════
+2025-12-08 20:23:39.422  7801-7859  WorkPolicyManager       com.cdccreditsmart.app               I  
+2025-12-08 20:23:39.422  7801-7859  WorkPolicyManager       com.cdccreditsmart.app               E  ❌ ATENÇÃO: App NÃO é Device Owner nem Device Admin!
+2025-12-08 20:23:39.422  7801-7859  WorkPolicyManager       com.cdccreditsmart.app               E     • Proteções MDM não disponíveis
+2025-12-08 20:23:39.422  7801-7859  WorkPolicyManager       com.cdccreditsmart.app               E     • Usuário pode desinstalar o app livremente
+2025-12-08 20:23:39.422  7801-7859  WorkPolicyManager       com.cdccreditsmart.app               E     • Factory Reset não é bloqueável
+2025-12-08 20:23:39.422  7801-7859  WorkPolicyManager       com.cdccreditsmart.app               E     • Aplicando proteções alternativas mínimas...
+2025-12-08 20:23:39.422  7801-7859  WorkPolicyManager       com.cdccreditsmart.app               I  
+2025-12-08 20:23:39.422  7801-7859  WorkPolicyManager       com.cdccreditsmart.app               I  🔄 [1/3] PERSISTÊNCIA DO APP
+2025-12-08 20:23:39.422  7801-7859  WorkPolicyManager       com.cdccreditsmart.app               I  ───────────────────────────────────────────────────────────────
+2025-12-08 20:23:39.426  7801-7859  WorkPolicyManager       com.cdccreditsmart.app               I     ℹ️ Solicitando isenção de otimização de bateria...
+2025-12-08 20:23:39.426  7801-7859  WorkPolicyManager       com.cdccreditsmart.app               I     ℹ️ Usuário precisa conceder manualmente em Settings
+2025-12-08 20:23:39.426  7801-7859  WorkPolicyManager       com.cdccreditsmart.app               I     ✅ Foreground Service configurado via CdcForegroundService
+2025-12-08 20:23:39.426  7801-7859  WorkPolicyManager       com.cdccreditsmart.app               I  
+2025-12-08 20:23:39.426  7801-7859  WorkPolicyManager       com.cdccreditsmart.app               I  📊 [2/3] MONITORAMENTO BÁSICO
+2025-12-08 20:23:39.426  7801-7859  WorkPolicyManager       com.cdccreditsmart.app               I  ───────────────────────────────────────────────────────────────
+2025-12-08 20:23:39.426  7801-7859  WorkPolicyManager       com.cdccreditsmart.app               I     ✅ WorkManager health check agendado
+2025-12-08 20:23:39.426  7801-7859  WorkPolicyManager       com.cdccreditsmart.app               I  
+2025-12-08 20:23:39.426  7801-7859  WorkPolicyManager       com.cdccreditsmart.app               I  🔔 [3/3] NOTIFICAÇÕES
+2025-12-08 20:23:39.426  7801-7859  WorkPolicyManager       com.cdccreditsmart.app               I  ───────────────────────────────────────────────────────────────
+2025-12-08 20:23:39.426  7801-7859  WorkPolicyManager       com.cdccreditsmart.app               I     ✅ Canal de notificação persistente criado
+2025-12-08 20:23:39.428  7801-7858  KeepAliveManager        com.cdccreditsmart.app               D  ✅ CdcForegroundService está ativo
+2025-12-08 20:23:39.439  7801-7858  ServiceWatchdogWorker   com.cdccreditsmart.app               I  📊 Estatísticas Keep Alive:
+2025-12-08 20:23:39.440  7801-7858  ServiceWatchdogWorker   com.cdccreditsmart.app               I     - Serviço ativo: true
+2025-12-08 20:23:39.440  7801-7858  ServiceWatchdogWorker   com.cdccreditsmart.app               I     - Restarts: 0
+2025-12-08 20:23:39.440  7801-7858  ServiceWatchdogWorker   com.cdccreditsmart.app               I     - Otimização bateria: SIM (ruim)
+2025-12-08 20:23:39.440  7801-7858  ServiceWatchdogWorker   com.cdccreditsmart.app               I  🔍 ========================================
+2025-12-08 20:23:39.440  7801-7858  ServiceWatchdogWorker   com.cdccreditsmart.app               I  ✅ WATCHDOG: Serviço verificado/reiniciado com sucesso
+2025-12-08 20:23:39.451  7801-7870  WM-WorkerWrapper        com.cdccreditsmart.app               I  Worker result SUCCESS for Work [ id=15b3699b-7df4-455f-ba28-8161d70baa48, tags={ com.cdccreditsmart.app.keepalive.ServiceWatchdogWorker } ]
+2025-12-08 20:23:39.474  7801-7859  WorkPolicyManager       com.cdccreditsmart.app               I  
+2025-12-08 20:23:39.474  7801-7859  WorkPolicyManager       com.cdccreditsmart.app               I  ╔════════════════════════════════════════════════════════════════╗
+2025-12-08 20:23:39.474  7801-7859  WorkPolicyManager       com.cdccreditsmart.app               I  ║  📊 RESUMO DAS POLÍTICAS DE TRABALHO                           ║
+2025-12-08 20:23:39.474  7801-7859  WorkPolicyManager       com.cdccreditsmart.app               I  ╠════════════════════════════════════════════════════════════════╣
+2025-12-08 20:23:39.488  7801-7859  WorkPolicyManager       com.cdccreditsmart.app               I  ║  ⚠️ Nível de proteção: BASIC
+2025-12-08 20:23:39.488  7801-7859  WorkPolicyManager       com.cdccreditsmart.app               I  ║  📋 Políticas aplicadas: 4
+2025-12-08 20:23:39.488  7801-7859  WorkPolicyManager       com.cdccreditsmart.app               I  ╠════════════════════════════════════════════════════════════════╣
+2025-12-08 20:23:39.488  7801-7859  WorkPolicyManager       com.cdccreditsmart.app               I  ║  ✅ PROTEÇÕES ATIVAS:
+2025-12-08 20:23:39.488  7801-7859  WorkPolicyManager       com.cdccreditsmart.app               I  ║     ✅ Isenção de otimização de bateria
+2025-12-08 20:23:39.488  7801-7859  WorkPolicyManager       com.cdccreditsmart.app               I  ║     ✅ Foreground Service persistente
+2025-12-08 20:23:39.488  7801-7859  WorkPolicyManager       com.cdccreditsmart.app               I  ║     ✅ Health check periódico agendado
+2025-12-08 20:23:39.488  7801-7859  WorkPolicyManager       com.cdccreditsmart.app               I  ║     ✅ Canal de notificação persistente criado
+2025-12-08 20:23:39.488  7801-7859  WorkPolicyManager       com.cdccreditsmart.app               I  ╠════════════════════════════════════════════════════════════════╣
+2025-12-08 20:23:39.488  7801-7859  WorkPolicyManager       com.cdccreditsmart.app               I  ║  ⚠️ AVISOS:
+2025-12-08 20:23:39.488  7801-7859  WorkPolicyManager       com.cdccreditsmart.app               W  ║     ❌ CRÍTICO: Desinstalação NÃO bloqueável
+2025-12-08 20:23:39.488  7801-7859  WorkPolicyManager       com.cdccreditsmart.app               W  ║     ❌ CRÍTICO: Factory Reset NÃO bloqueável
+2025-12-08 20:23:39.488  7801-7859  WorkPolicyManager       com.cdccreditsmart.app               W  ║     ❌ CRÍTICO: Force Stop NÃO bloqueável
+2025-12-08 20:23:39.488  7801-7859  WorkPolicyManager       com.cdccreditsmart.app               W  ║     ❌ CRÍTICO: Clear Data NÃO bloqueável
+2025-12-08 20:23:39.488  7801-7859  WorkPolicyManager       com.cdccreditsmart.app               W  ║     ⚠️ Recomendação: Configurar como Device Owner via QR Code ou ADB
+2025-12-08 20:23:39.488  7801-7859  WorkPolicyManager       com.cdccreditsmart.app               I  ╚════════════════════════════════════════════════════════════════╝
+2025-12-08 20:23:39.488  7801-7859  WorkPolicyManager       com.cdccreditsmart.app               I  
+2025-12-08 20:23:39.488  7801-7859  CdcForegroundService    com.cdccreditsmart.app               I  🏢 Resultado: BASIC
+2025-12-08 20:23:39.488  7801-7859  CdcForegroundService    com.cdccreditsmart.app               I  🏢 Políticas aplicadas: 4/5
+2025-12-08 20:23:39.488  7801-7859  CdcForegroundService    com.cdccreditsmart.app               W  🏢 ❌ CRÍTICO: Desinstalação NÃO bloqueável
+2025-12-08 20:23:39.488  7801-7859  CdcForegroundService    com.cdccreditsmart.app               W  🏢 ❌ CRÍTICO: Factory Reset NÃO bloqueável
+2025-12-08 20:23:39.488  7801-7859  CdcForegroundService    com.cdccreditsmart.app               W  🏢 ❌ CRÍTICO: Force Stop NÃO bloqueável
+2025-12-08 20:23:39.488  7801-7859  CdcForegroundService    com.cdccreditsmart.app               W  🏢 ❌ CRÍTICO: Clear Data NÃO bloqueável
+2025-12-08 20:23:39.488  7801-7859  CdcForegroundService    com.cdccreditsmart.app               W  🏢 ⚠️ Recomendação: Configurar como Device Owner via QR Code ou ADB
+2025-12-08 20:23:39.488  7801-7859  CdcForegroundService    com.cdccreditsmart.app               I  🏢 ========================================
+2025-12-08 20:23:39.488  7801-7859  CdcForegroundService    com.cdccreditsmart.app               I  🛡️ ========================================
+2025-12-08 20:23:39.488  7801-7859  CdcForegroundService    com.cdccreditsmart.app               I  🛡️ INICIANDO SETTINGS GUARD (PROTEÇÃO AGRESSIVA)
+2025-12-08 20:23:39.488  7801-7859  CdcForegroundService    com.cdccreditsmart.app               I  🛡️ ========================================
+2025-12-08 20:23:39.490  7801-7859  AutoPermissionManager   com.cdccreditsmart.app               W  ⚠️ Não é Device Owner - não pode conceder permissões especiais
+2025-12-08 20:23:39.490  7801-7859  SettingsGuardService    com.cdccreditsmart.app               I  
+2025-12-08 20:23:39.490  7801-7859  SettingsGuardService    com.cdccreditsmart.app               I  ╔════════════════════════════════════════════════════════╗
+2025-12-08 20:23:39.490  7801-7859  SettingsGuardService    com.cdccreditsmart.app               I  ║   🛡️ SETTINGSGUARD - INICIALIZAÇÃO                    ║
+2025-12-08 20:23:39.490  7801-7859  SettingsGuardService    com.cdccreditsmart.app               I  ╠════════════════════════════════════════════════════════╣
+2025-12-08 20:23:39.496  7801-7859  SettingsGuardService    com.cdccreditsmart.app               I  ║   📱 Modo proteção: BASIC                           ║
+2025-12-08 20:23:39.496  7801-7859  SettingsGuardService    com.cdccreditsmart.app               I  ║   📊 UsageStats: ❌ NEGADA                 ║
+2025-12-08 20:23:39.496  7801-7859  SettingsGuardService    com.cdccreditsmart.app               I  ║   🪟 Overlay: ❌ NEGADA                    ║
+2025-12-08 20:23:39.512  7801-7859  SettingsGuardService    com.cdccreditsmart.app               I  ║   🔒 Device Owner: ❌ NÃO                   ║
+2025-12-08 20:23:39.517  7801-7859  SettingsGuardService    com.cdccreditsmart.app               I  ║   🔐 Device Admin: ❌ NÃO                   ║
+2025-12-08 20:23:39.517  7801-7859  SettingsGuardService    com.cdccreditsmart.app               I  ╚════════════════════════════════════════════════════════╝
+2025-12-08 20:23:39.517  7801-7859  SettingsGuardService    com.cdccreditsmart.app               I  🛡️ SettingsGuard INICIADO
+2025-12-08 20:23:39.517  7801-7859  SettingsGuardService    com.cdccreditsmart.app               I     Modo de proteção: BASIC
+2025-12-08 20:23:39.517  7801-7859  SettingsGuardService    com.cdccreditsmart.app               I     ⚠️ Sem privilégios: Proteção AGRESSIVA ativada
+2025-12-08 20:23:39.517  7801-7859  SettingsGuardService    com.cdccreditsmart.app               I     📡 Monitorando Settings a cada 600ms
+2025-12-08 20:23:39.517  7801-7859  SettingsGuardService    com.cdccreditsmart.app               I  🔍 ========================================
+2025-12-08 20:23:39.517  7801-7859  SettingsGuardService    com.cdccreditsmart.app               I  🔍 INICIANDO MONITORAMENTO ATIVO DE SETTINGS
+2025-12-08 20:23:39.517  7801-7859  SettingsGuardService    com.cdccreditsmart.app               I  🔍 ========================================
+2025-12-08 20:23:39.517  7801-7859  SettingsGuardService    com.cdccreditsmart.app               W  ⚠️ Sem permissão PACKAGE_USAGE_STATS
+2025-12-08 20:23:39.517  7801-7859  SettingsGuardService    com.cdccreditsmart.app               W     Monitoramento via ActivityManager (menos preciso)
+2025-12-08 20:23:39.517  7801-7859  SettingsGuardService    com.cdccreditsmart.app               W     IMPORTANTE: Conceda permissão em Configurações > Apps > Credit Smart > Acesso especial > Acesso uso
+2025-12-08 20:23:39.566  7801-7859  SettingsGuardService    com.cdccreditsmart.app               I  📢 Notificação de permissão USAGE_STATS exibida
+2025-12-08 20:23:39.566  7801-7859  SettingsGuardService    com.cdccreditsmart.app               W  ⚠️ Sem permissão SYSTEM_ALERT_WINDOW
+2025-12-08 20:23:39.566  7801-7859  SettingsGuardService    com.cdccreditsmart.app               W     Overlays de bloqueio não funcionarão
+2025-12-08 20:23:39.566  7801-7859  SettingsGuardService    com.cdccreditsmart.app               I  🔍 Intervalo normal: 600ms
+2025-12-08 20:23:39.566  7801-7859  SettingsGuardService    com.cdccreditsmart.app               I  🔍 Intervalo agressivo: 400ms
+2025-12-08 20:23:39.566  7801-7859  SettingsGuardService    com.cdccreditsmart.app               I  🔍 ========================================
+2025-12-08 20:23:39.567  7801-7858  SettingsGuardService    com.cdccreditsmart.app               I  ▶️ App CDC em foreground - fluxo de permissão concluído
+2025-12-08 20:23:39.568  7801-7858  SettingsGuardService    com.cdccreditsmart.app               I  ▶️ Guard RETOMADO após fluxo de permissões
+2025-12-08 20:23:39.568  7801-7859  CdcForegroundService    com.cdccreditsmart.app               I  🛡️ Guard ativo: true
+2025-12-08 20:23:39.568  7801-7859  CdcForegroundService    com.cdccreditsmart.app               I  🛡️ Modo proteção: BASIC
+2025-12-08 20:23:39.568  7801-7859  CdcForegroundService    com.cdccreditsmart.app               I  🛡️ Modo agressivo: false
+2025-12-08 20:23:39.568  7801-7859  CdcForegroundService    com.cdccreditsmart.app               I  🛡️ UsageStats: ❌ INATIVO
+2025-12-08 20:23:39.568  7801-7859  CdcForegroundService    com.cdccreditsmart.app               I  🛡️ Overlay: ❌ INATIVO
+2025-12-08 20:23:39.568  7801-7859  CdcForegroundService    com.cdccreditsmart.app               W  🛡️ ⚠️ UsageStats não ativo - guard usará ActivityManager (menos preciso)
+2025-12-08 20:23:39.568  7801-7859  CdcForegroundService    com.cdccreditsmart.app               W  🛡️ ⚠️ Overlay não ativo - guard usará bringAppToForeground
+2025-12-08 20:23:39.568  7801-7859  CdcForegroundService    com.cdccreditsmart.app               I  🛡️ ========================================
+2025-12-08 20:23:39.572  7801-7859  OfflineEnf...mentWorker com.cdccreditsmart.app               I  ✅ OfflineEnforcementWorker agendado
+2025-12-08 20:23:39.572  7801-7859  CdcForegroundService    com.cdccreditsmart.app               I  ✅ OfflineEnforcementWorker agendado
+2025-12-08 20:23:39.572  7801-7859  PeriodicOverlayWorker   com.cdccreditsmart.app               I  📅 Agendando overlay automático
+2025-12-08 20:23:39.572  7801-7859  PeriodicOverlayWorker   com.cdccreditsmart.app               I     WorkManager interval: 15 minutos (mínimo obrigatório)
+2025-12-08 20:23:39.572  7801-7859  PeriodicOverlayWorker   com.cdccreditsmart.app               I     Cooldowns progressivos controlados internamente pelo worker
+2025-12-08 20:23:39.573  7801-7859  PeriodicOverlayWorker   com.cdccreditsmart.app               I  ✅ Overlay automático agendado com sucesso
+2025-12-08 20:23:39.575  7801-7859  CdcForegroundService    com.cdccreditsmart.app               I  ✅ PeriodicOverlayWorker agendado
+2025-12-08 20:23:39.680  7801-7869  JobInfo                 com.cdccreditsmart.app               W  Requested important-while-foreground flag for job2 is ignored and takes no effect
+2025-12-08 20:23:40.195  7801-7858  SettingsGuardService    com.cdccreditsmart.app               D  📋 Activity check - Full: null, Simple: null
+2025-12-08 20:23:40.259  7801-7859  SecureTokenStorage      com.cdccreditsmart.app               D  EncryptedSharedPreferences initialized successfully
+2025-12-08 20:23:40.260  7801-7859  ContractCodeStorage     com.cdccreditsmart.app               D  Retrieving contract code from storage
+2025-12-08 20:23:40.473  7801-7859  ContractCodeStorage     com.cdccreditsmart.app               D  Storage verification: 0 valid, 0 tampered, 7 missing
+2025-12-08 20:23:40.473  7801-7859  ContractCodeStorage     com.cdccreditsmart.app               W  No valid contract code found in any location
+2025-12-08 20:23:40.475  7801-7859  SecureTokenStorage      com.cdccreditsmart.app               E  ❌ Nenhum identificador MDM disponível!
+2025-12-08 20:23:40.475  7801-7859  CdcForegroundService    com.cdccreditsmart.app               I  🔐 AuthToken presente: false
+2025-12-08 20:23:40.475  7801-7859  CdcForegroundService    com.cdccreditsmart.app               I  🔐 AuthToken length: 0
+2025-12-08 20:23:40.475  7801-7859  CdcForegroundService    com.cdccreditsmart.app               I  🔐 ContractCode presente: false
+2025-12-08 20:23:40.475  7801-7859  CdcForegroundService    com.cdccreditsmart.app               I  🔐 ContractCode value: null****
+2025-12-08 20:23:40.475  7801-7859  CdcForegroundService    com.cdccreditsmart.app               I  🔐 MDM SerialNumber presente: false
+2025-12-08 20:23:40.475  7801-7859  CdcForegroundService    com.cdccreditsmart.app               I  🔐 MDM SerialNumber value: ......
+2025-12-08 20:23:40.475  7801-7859  CdcForegroundService    com.cdccreditsmart.app               I  📱 ========================================
+2025-12-08 20:23:40.475  7801-7859  CdcForegroundService    com.cdccreditsmart.app               I  📱 AGUARDANDO PAIRING - MDM EM STANDBY
+2025-12-08 20:23:40.475  7801-7859  CdcForegroundService    com.cdccreditsmart.app               I  📱 O usuário ainda não fez o pareamento inicial
+2025-12-08 20:23:40.475  7801-7859  CdcForegroundService    com.cdccreditsmart.app               I  📱 Serviços MDM serão ativados após inserir código do contrato
+2025-12-08 20:23:40.475  7801-7859  CdcForegroundService    com.cdccreditsmart.app               I  📱 NOTA: isMdmInitialized permanece FALSE para permitir reinicialização
+2025-12-08 20:23:40.475  7801-7859  CdcForegroundService    com.cdccreditsmart.app               I  📱 ========================================
+2025-12-08 20:23:40.627  7801-7815  HWUI                    com.cdccreditsmart.app               I  Davey! duration=1199ms; Flags=1, FrameTimelineVsyncId=16996, IntendedVsync=665818699208, Vsync=665902032538, InputEventId=0, HandleInputStart=665902297425, AnimationStart=665902299128, PerformTraversalsStart=665902300757, DrawStart=666910498350, FrameDeadline=665835365874, FrameStartTime=665902272714, FrameInterval=16666666, WorkloadTarget=16666666, SyncQueued=666951286019, SyncStart=667019095110, IssueDrawCommandsStart=667019311292, SwapBuffers=667075987718, FrameCompleted=667085727481, DequeueBufferDuration=2788, QueueBufferDuration=184881, GpuCompleted=667085727481, SwapBuffersCompleted=667078828469, DisplayPresentTime=0, CommandSubmissionCompleted=667075987718, 
+2025-12-08 20:23:40.653  7801-7801  PermissionGateScreen    com.cdccreditsmart.app               I  🔍 VERIFICAÇÃO INICIAL DE PERMISSÕES:
+2025-12-08 20:23:40.654  7801-7801  PermissionGateScreen    com.cdccreditsmart.app               I     Nível: BASIC
+2025-12-08 20:23:40.654  7801-7801  PermissionGateScreen    com.cdccreditsmart.app               I     Todas concedidas: false
+2025-12-08 20:23:40.654  7801-7801  PermissionGateScreen    com.cdccreditsmart.app               I     Bateria isenta: false
+2025-12-08 20:23:40.655  7801-7801  PermissionGateScreen    com.cdccreditsmart.app               W     ❌ FALTA: Administrador do Dispositivo
+2025-12-08 20:23:40.655  7801-7801  PermissionGateScreen    com.cdccreditsmart.app               W     ❌ FALTA: Permissões Básicas
+2025-12-08 20:23:40.655  7801-7801  PermissionGateScreen    com.cdccreditsmart.app               W     ❌ FALTA: Monitoramento de Apps
+2025-12-08 20:23:40.655  7801-7801  PermissionGateScreen    com.cdccreditsmart.app               W     ❌ FALTA: Mostrar Alertas
+2025-12-08 20:23:40.655  7801-7801  PermissionGateScreen    com.cdccreditsmart.app               W     ❌ FALTA: Execução em Segundo Plano
+2025-12-08 20:23:40.655  7801-7801  PermissionGateScreen    com.cdccreditsmart.app               I  ========================================
+2025-12-08 20:23:40.655  7801-7801  PermissionGateScreen    com.cdccreditsmart.app               I  🚪 PERMISSION GATE SCREEN INICIADO
+2025-12-08 20:23:40.655  7801-7801  PermissionGateScreen    com.cdccreditsmart.app               I  ========================================
+2025-12-08 20:23:40.655  7801-7801  PermissionGateScreen    com.cdccreditsmart.app               I  Nível de privilégio: BASIC
+2025-12-08 20:23:40.655  7801-7801  PermissionGateScreen    com.cdccreditsmart.app               I  Permissões concedidas: 0
+2025-12-08 20:23:40.655  7801-7801  PermissionGateScreen    com.cdccreditsmart.app               I  Permissões faltando: 5
+2025-12-08 20:23:40.655  7801-7801  PermissionGateScreen    com.cdccreditsmart.app               W    ❌ Administrador do Dispositivo
+2025-12-08 20:23:40.655  7801-7801  PermissionGateScreen    com.cdccreditsmart.app               W    ❌ Permissões Básicas
+2025-12-08 20:23:40.655  7801-7801  PermissionGateScreen    com.cdccreditsmart.app               W    ❌ Monitoramento de Apps
+2025-12-08 20:23:40.655  7801-7801  PermissionGateScreen    com.cdccreditsmart.app               W    ❌ Mostrar Alertas
+2025-12-08 20:23:40.655  7801-7801  PermissionGateScreen    com.cdccreditsmart.app               W    ❌ Execução em Segundo Plano
+2025-12-08 20:23:40.655  7801-7801  PermissionGateScreen    com.cdccreditsmart.app               I  ========================================
+2025-12-08 20:23:40.655  7801-7801  PermissionGateScreen    com.cdccreditsmart.app               D  ⏰ Iniciando verificação periódica de permissões...
+2025-12-08 20:23:40.671  7801-7801  Choreographer           com.cdccreditsmart.app               I  Skipped 70 frames!  The application may be doing too much work on its main thread.
+2025-12-08 20:23:40.705  7801-7859  OfflineEnf...mentWorker com.cdccreditsmart.app               I  🔄 ========================================
+2025-12-08 20:23:40.706  7801-7859  OfflineEnf...mentWorker com.cdccreditsmart.app               I  🔄 OFFLINE ENFORCEMENT - EXECUTANDO
+2025-12-08 20:23:40.709  7801-7859  OfflineEnf...mentWorker com.cdccreditsmart.app               I  🔄 ========================================
+2025-12-08 20:23:40.799  7801-7858  SettingsGuardService    com.cdccreditsmart.app               D  📋 Activity check - Full: null, Simple: null
+2025-12-08 20:23:40.830  7801-7859  OfflineEnf...mentWorker com.cdccreditsmart.app               I  ℹ️ Sem dados offline - nada a fazer
+2025-12-08 20:23:40.831  7801-7869  WM-WorkerWrapper        com.cdccreditsmart.app               I  Worker result SUCCESS for Work [ id=5ae1f8d6-dd3c-4c9a-8055-b6551377ca43, tags={ com.cdccreditsmart.app.offline.OfflineEnforcementWorker } ]
+2025-12-08 20:23:41.404  7801-7859  SettingsGuardService    com.cdccreditsmart.app               D  📋 Activity check - Full: null, Simple: null
+2025-12-08 20:23:41.405  7801-7809  creditsmart.app         com.cdccreditsmart.app               I  Compiler allocated 5042KB to compile void android.view.ViewRootImpl.performTraversals()
+2025-12-08 20:23:41.407  7801-7801  InteractionJankMonitor  com.cdccreditsmart.app               W  Initializing without READ_DEVICE_CONFIG permission. enabled=false, interval=1, missedFrameThreshold=3, frameTimeThreshold=64, package=com.cdccreditsmart.app
+2025-12-08 20:23:41.607  7801-7866  FA                      com.cdccreditsmart.app               I  Application backgrounded at: timestamp_millis: 1765236219604
+2025-12-08 20:23:41.850  7801-7801  NotificationHelper      com.cdccreditsmart.app               D  Notification channel created: cdc_default
+2025-12-08 20:23:41.851  7801-7801  NotificationHelper      com.cdccreditsmart.app               D  Notification channel created: cdc_info
+2025-12-08 20:23:41.852  7801-7801  NotificationHelper      com.cdccreditsmart.app               D  Notification channel created: cdc_alerts
+2025-12-08 20:23:41.852  7801-7801  NotificationHelper      com.cdccreditsmart.app               D  Notification channel created: cdc_payments
+2025-12-08 20:23:41.853  7801-7801  NotificationHelper      com.cdccreditsmart.app               D  Notification channel created: cdc_contract
+2025-12-08 20:23:41.871  7801-7801  CdcMessagingService     com.cdccreditsmart.app               D  CdcMessagingService created
+2025-12-08 20:23:41.872  7801-8090  CdcMessagingService     com.cdccreditsmart.app               D  ========== NEW FCM TOKEN RECEIVED ==========
+2025-12-08 20:23:41.872  7801-8090  CdcMessagingService     com.cdccreditsmart.app               D  Token: eWftkJrLRFGIRzEVJ4Qu...
+2025-12-08 20:23:41.912  7801-8090  FcmTokenManager         com.cdccreditsmart.app               D  FCM token saved locally: eWftkJrLRFGIRzEVJ4Qu...
+2025-12-08 20:23:41.914  7801-7859  FcmTokenManager         com.cdccreditsmart.app               D  ========== REGISTERING FCM TOKEN WITH BACKEND ==========
+2025-12-08 20:23:41.915  7801-7859  FcmTokenManager         com.cdccreditsmart.app               D  Current FCM token retrieved: eWftkJrLRFGIRzEVJ4Qu...
+2025-12-08 20:23:41.930  7801-7859  SecureTokenStorage      com.cdccreditsmart.app               D  EncryptedSharedPreferences initialized successfully
+2025-12-08 20:23:41.930  7801-7859  FcmTokenManager         com.cdccreditsmart.app               E  Cannot register: Auth token not available
+2025-12-08 20:23:41.930  7801-7859  CdcMessagingService     com.cdccreditsmart.app               E  ❌ Failed to register FCM token with backend: User not authenticated
+2025-12-08 20:23:42.008  7801-7859  SettingsGuardService    com.cdccreditsmart.app               D  📋 Activity check - Full: null, Simple: null
+2025-12-08 20:23:42.611  7801-7859  SettingsGuardService    com.cdccreditsmart.app               D  📋 Activity check - Full: null, Simple: null
+2025-12-08 20:23:43.523  7801-7859  SettingsGuardService    com.cdccreditsmart.app               D  📋 Activity check - Full: null, Simple: null
+2025-12-08 20:23:44.127  7801-7859  SettingsGuardService    com.cdccreditsmart.app               D  📋 Activity check - Full: null, Simple: null
+2025-12-08 20:23:44.730  7801-7859  SettingsGuardService    com.cdccreditsmart.app               D  📋 Activity check - Full: null, Simple: null
+2025-12-08 20:23:45.099  7801-8139  ProfileInstaller        com.cdccreditsmart.app               D  Installing profile for com.cdccreditsmart.app
+2025-12-08 20:23:45.334  7801-7859  SettingsGuardService    com.cdccreditsmart.app               D  📋 Activity check - Full: null, Simple: null
+2025-12-08 20:23:45.498  7801-7801  SettingsGuardService    com.cdccreditsmart.app               I  ▶️ Guard RETOMADO após fluxo de permissões
+2025-12-08 20:23:45.498  7801-7801  MainActivity            com.cdccreditsmart.app               W  ⚠️ Algumas permissões foram NEGADAS pelo usuário:
+2025-12-08 20:23:45.498  7801-7801  MainActivity            com.cdccreditsmart.app               D    ✅ CONCEDIDA - android.permission.READ_PHONE_STATE
+2025-12-08 20:23:45.498  7801-7801  MainActivity            com.cdccreditsmart.app               D    ❌ NEGADA - android.permission.READ_CALL_LOG
+2025-12-08 20:23:45.498  7801-7801  MainActivity            com.cdccreditsmart.app               D    ✅ CONCEDIDA - android.permission.CALL_PHONE
+2025-12-08 20:23:45.498  7801-7801  MainActivity            com.cdccreditsmart.app               D    ✅ CONCEDIDA - android.permission.READ_CONTACTS
+2025-12-08 20:23:45.498  7801-7801  MainActivity            com.cdccreditsmart.app               D    ✅ CONCEDIDA - android.permission.ACCESS_FINE_LOCATION
+2025-12-08 20:23:45.498  7801-7801  MainActivity            com.cdccreditsmart.app               D    ✅ CONCEDIDA - android.permission.ACCESS_COARSE_LOCATION
+2025-12-08 20:23:45.498  7801-7801  MainActivity            com.cdccreditsmart.app               D    ✅ CONCEDIDA - android.permission.ANSWER_PHONE_CALLS
+2025-12-08 20:23:45.498  7801-7801  MainActivity            com.cdccreditsmart.app               D    ✅ CONCEDIDA - android.permission.READ_PHONE_NUMBERS
+2025-12-08 20:23:45.498  7801-7801  MainActivity            com.cdccreditsmart.app               D    ✅ CONCEDIDA - android.permission.POST_NOTIFICATIONS
+2025-12-08 20:23:45.547  7801-7801  InsetsController        com.cdccreditsmart.app               D  hide(ime(), fromIme=false)
+2025-12-08 20:23:45.548  7801-7801  ImeTracker              com.cdccreditsmart.app               I  com.cdccreditsmart.app:d198b1ca: onCancelled at PHASE_CLIENT_ALREADY_HIDDEN
+2025-12-08 20:23:45.936  7801-7859  SettingsGuardService    com.cdccreditsmart.app               D  📋 Activity check - Full: null, Simple: null
+2025-12-08 20:23:46.537  7801-7859  SettingsGuardService    com.cdccreditsmart.app               D  📋 Activity check - Full: null, Simple: null
+2025-12-08 20:23:47.681  7801-7801  IPCThreadState          com.cdccreditsmart.app               E  Binder transaction failure. id: 567214, BR_*: 29189, error: -3 (No such process)
+2025-12-08 20:23:47.684  7801-7801  IPCThreadState          com.cdccreditsmart.app               E  Binder transaction failure. id: 567215, BR_*: 29189, error: -3 (No such process)
+2025-12-08 20:23:47.684  7801-7801  ActivityThread          com.cdccreditsmart.app               D  Too many transaction errors, throttling freezer binder callback.
+2025-12-08 20:23:47.685  7801-7801  creditsmart.app         com.cdccreditsmart.app               A  java_vm_ext.cc:616] JNI DETECTED ERROR IN APPLICATION: JNI NewStringUTF called with pending exception android.os.DeadSystemRuntimeException: android.os.DeadSystemException
+                                                                                                    java_vm_ext.cc:616]   at void android.app.ActivityThread$3.onTransactionError(int, int, int, int) (ActivityThread.java:7888)
+                                                                                                    java_vm_ext.cc:616]   at void android.os.Binder.transactionCallback(int, int, int, int) (Binder.java:706)
+                                                                                                    java_vm_ext.cc:616]   at boolean android.os.BinderProxy.transactNative(int, android.os.Parcel, android.os.Parcel, int) (BinderProxy.java:-2)
+                                                                                                    java_vm_ext.cc:616]   at boolean android.os.BinderProxy.transact(int, android.os.Parcel, android.os.Parcel, int) (BinderProxy.java:592)
+                                                                                                    java_vm_ext.cc:616]   at android.content.ComponentName android.app.admin.IDevicePolicyManager$Stub$Proxy.getDeviceOwnerComponentOnUser(int) (IDevicePolicyManager.java:8051)
+                                                                                                    java_vm_ext.cc:616]   at boolean android.app.admin.DevicePolicyManager.isDeviceOwnerAppOnContextUser(java.lang.String) (DevicePolicyManager.java:9833)
+                                                                                                    java_vm_ext.cc:616]   at boolean android.app.admin.DevicePolicyManager.isDeviceOwnerApp(java.lang.String) (DevicePolicyManager.java:9764)
+                                                                                                    java_vm_ext.cc:616]   at boolean com.cdccreditsmart.app.permissions.PermissionGateManager.isDeviceOwner() (PermissionGateManager.kt:89)
+                                                                                                    java_vm_ext.cc:616]   at com.cdccreditsmart.app.permissions.PermissionGateManager$PrivilegeLevel com.cdccreditsmart.app.permissions.PermissionGateManager.getPrivilegeLevel() (PermissionGateManager.kt:81)
+                                                                                                    java_vm_ext.cc:616]   at com.cdccreditsmart.app.permissions.PermissionGateManager$GateStatus com.cdccreditsmart.app.permissions.PermissionGateManager.getGateStatus() (PermissionGateManager.kt:104)
+                                                                                                    java_vm_ext.cc:616]   at java.lang.Object com.cdccreditsmart.app.presentation.screens.PermissionGateScreenKt$PermissionGateScreen$5$1.invokeSuspend(java.lang.Object) (PermissionGateScreen.kt:123)
+                                                                                                    java_vm_ext.cc:616]   at void kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(java.lang.Object) (ContinuationImpl.kt:34)
+                                                                                                    java_vm_ext.cc:616]   at void kotlinx.coroutines.DispatchedTask.run() (DispatchedTask.kt:108)
+                                                                                                    java_vm_ext.cc:616]   at void androidx.compose.ui.platform.AndroidUiDispatcher.performTrampolineDispatch() (AndroidUiDispatcher.android.kt:81)
+                                                                                                    java_vm_ext.cc:616]   at void androidx.compose.ui.platform.AndroidUiDispatcher.access$performTrampolineDispatch(androidx.compose.ui.platform.AndroidUiDispatcher) (AndroidUiDispatcher.android.kt:41)
+                                                                                                    java_vm_ext.cc:616]   at void androidx.compose.ui.platform.AndroidUiDispatcher$dispatchCallback$1.run() (AndroidUiDispatcher.android.kt:57)
+                                                                                                    java_vm_ext.cc:616]   at void android.os.Handler.handleCallback(android.os.Message) (Handler.java:995)
+                                                                                                    java_vm_ext.cc:616]   at void android.os.Handler.dispatchMessage(android.os.Message) (Handler.java:103)
+                                                                                                    java_vm_ext.cc:616]   at boolean android.os.Looper.loopOnce(android.os.Looper, long, int) (Looper.java:248)
+                                                                                                    java_vm_ext.cc:616]   at void android.os.Looper.loop() (Looper.java:338)
+                                                                                                    java_vm_ext.cc:616]   at void android.app.ActivityThread.main(java.lang.String[]) (ActivityThread.java:9067)
+                                                                                                    java_vm_ext.cc:616]   at java.lang.Object java.lang.reflect.Method.invoke(java.lang.Object, java.lang.Object[]) (Method.java:-2)
+                                                                                                    java_vm_ext.cc:616]   at void com.android.internal.os.RuntimeInit$MethodAndArgsCaller.run() (RuntimeInit.java:593)
+                                                                                                    java_vm_ext.cc:616]   at void com.android.internal.os.ZygoteInit.main(java.lang.String[]) (ZygoteInit.java:932)
+                                                                                                    java_vm_ext.cc:616] Caused by: android.os.DeadSystemException: 
+                                                                                                    java_vm_ext.cc:616]   at void android.app.ActivityThread$3.onTransactionError(int, int, int, int) (ActivityThread.java:7888)
+                                                                                                    java_vm_ext.cc:616]   at void android.os.Binder.transactionCallback(int, int, int, int) (Binder.java:706)
+                                                                                                    java_vm_ext.cc:616]   at boolean android.os.BinderProxy.transactNative(int, android.os.Parcel, android.os.Parcel, int) (BinderProxy.java:-2)
+                                                                                                    java_vm_ext.cc:616]   at boolean android.os.BinderProxy.transact(int, android.os.Parcel, android.os.Parcel, int) (BinderProxy.java:592)
+2025-12-08 20:23:47.685  7801-7801  creditsmart.app         com.cdccreditsmart.app               A  java_vm_ext.cc:616]   at android.content.ComponentName android.app.admin.IDevicePolicyManager$Stub$Proxy.getDeviceOwnerComponentOnUser(int) (IDevicePolicyManager.java:8051)
+                                                                                                    java_vm_ext.cc:616]   at boolean android.app.admin.DevicePolicyManager.isDeviceOwnerAppOnContextUser(java.lang.String) (DevicePolicyManager.java:9833)
+                                                                                                    java_vm_ext.cc:616]   at boolean android.app.admin.DevicePolicyManager.isDeviceOwnerApp(java.lang.String) (DevicePolicyManager.java:9764)
+                                                                                                    java_vm_ext.cc:616]   at boolean com.cdccreditsmart.app.permissions.PermissionGateManager.isDeviceOwner() (PermissionGateManager.kt:89)
+                                                                                                    java_vm_ext.cc:616]   at com.cdccreditsmart.app.permissions.PermissionGateManager$PrivilegeLevel com.cdccreditsmart.app.permissions.PermissionGateManager.getPrivilegeLevel() (PermissionGateManager.kt:81)
+                                                                                                    java_vm_ext.cc:616]   at com.cdccreditsmart.app.permissions.PermissionGateManager$GateStatus com.cdccreditsmart.app.permissions.PermissionGateManager.getGateStatus() (PermissionGateManager.kt:104)
+                                                                                                    java_vm_ext.cc:616]   at java.lang.Object com.cdccreditsmart.app.presentation.screens.PermissionGateScreenKt$PermissionGateScreen$5$1.invokeSuspend(java.lang.Object) (PermissionGateScreen.kt:123)
+                                                                                                    java_vm_ext.cc:616]   at void kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(java.lang.Object) (ContinuationImpl.kt:34)
+                                                                                                    java_vm_ext.cc:616]   at void kotlinx.coroutines.DispatchedTask.run() (DispatchedTask.kt:108)
+                                                                                                    java_vm_ext.cc:616]   at void androidx.compose.ui.platform.AndroidUiDispatcher.performTrampolineDispatch() (AndroidUiDispatcher.android.kt:81)
+                                                                                                    java_vm_ext.cc:616]   at void androidx.compose.ui.platform.AndroidUiDispatcher.access$performTrampolineDispatch(androidx.compose.ui.platform.AndroidUiDispatcher) (AndroidUiDispatcher.android.kt:41)
+                                                                                                    java_vm_ext.cc:616]   at void androidx.compose.ui.platform.AndroidUiDispatcher$dispatchCallback$1.run() (AndroidUiDispatcher.android.kt:57)
+                                                                                                    java_vm_ext.cc:616]   at void android.os.Handler.handleCallback(android.os.Message) (Handler.java:995)
+                                                                                                    java_vm_ext.cc:616]   at void android.os.Handler.dispatchMessage(android.os.Message) (Handler.java:103)
+                                                                                                    java_vm_ext.cc:616]   at boolean android.os.Looper.loopOnce(android.os.Looper, long, int) (Looper.java:248)
+                                                                                                    java_vm_ext.cc:616]   at void android.os.Looper.loop() (Looper.java:338)
+                                                                                                    java_vm_ext.cc:616]   at void android.app.ActivityThread.main(java.lang.String[]) (ActivityThread.java:9067)
+                                                                                                    java_vm_ext.cc:616]   at java.lang.Object java.lang.reflect.Method.invoke(java.lang.Object, java.lang.Object[]) (Method.java:-2)
+                                                                                                    java_vm_ext.cc:616]   at void com.android.internal.os.RuntimeInit$MethodAndArgsCaller.run() (RuntimeInit.java:593)
+                                                                                                    java_vm_ext.cc:616]   at void com.android.internal.os.ZygoteInit.main(java.lang.String[]) (ZygoteInit.java:932)
+                                                                                                    java_vm_ext.cc:616] 
+                                                                                                    java_vm_ext.cc:616]     in call to NewStringUTF
+                                                                                                    java_vm_ext.cc:616]     from boolean android.os.BinderProxy.transactNative(int, android.os.Parcel, android.os.Parcel, int)
+2025-12-08 20:23:47.892  7801-7859  ActivityThread          com.cdccreditsmart.app               D  Too many transaction errors, throttling freezer binder callback.
+---------------------------- PROCESS ENDED (7801) for package com.cdccreditsmart.app ----------------------------
