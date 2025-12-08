@@ -82,3 +82,11 @@ Utilizes Jetpack Compose and Material 3 with a CDC institutional dark theme. Fea
 - **Added Google Safety Center (Android 13+)**: SafetyCenterActivity from `com.google.android.permissioncontroller` - this is the main Security/Privacy hub on Pixel and other Android 13+ devices
 - Still Blocked: Device Admin screens (DeviceAdminSettings, DeviceAdminAdd, etc.)
 - Impact: Customers can change passwords and biometrics while app protection remains active
+
+**Fix: Duplicate Package Blocking Logic:**
+- Discovered TWO separate functions were checking for dangerous packages
+- `checkSettingsActivity()` had SafetyCenterActivity in `allowedSecurityActivities` list
+- But another function was calling `isDangerousSettingsPackage()` which had `com.google.android.permissioncontroller` as dangerous
+- Added explicit exception for SafetyCenterActivity BEFORE the dangerous package check
+- Now: `com.google.android.permissioncontroller` + `SafetyCenterActivity` = SAFE (allowed)
+- Still blocked: Other activities from same package (like permission grant dialogs used in App Info)

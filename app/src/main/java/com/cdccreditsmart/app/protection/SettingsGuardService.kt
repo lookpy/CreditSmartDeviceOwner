@@ -1816,6 +1816,33 @@ class SettingsGuardService(private val context: Context) {
             }
         }
         
+        // ═══════════════════════════════════════════════════════════════════════════════
+        // EXCEÇÃO: Google Safety Center (Android 13+) - Central de Segurança do Google
+        // O pacote com.google.android.permissioncontroller é normalmente perigoso,
+        // MAS SafetyCenterActivity é a tela de Segurança/Privacidade que o cliente
+        // deve poder acessar para trocar senha/biometria.
+        // ═══════════════════════════════════════════════════════════════════════════════
+        if (packageName == "com.google.android.permissioncontroller" && activityName != null) {
+            val activitySimple = activityName.substringAfterLast(".")
+            val safetyCenterActivities = listOf(
+                "SafetyCenter",
+                "SafetyCenterActivity",
+                "SafetyCenterDashboard",
+                "PrivacyDashboard",
+                "SecurityDashboard"
+            )
+            val isSafetyCenterAllowed = safetyCenterActivities.any { allowed ->
+                activitySimple.contains(allowed, ignoreCase = true) ||
+                activityName.contains(allowed, ignoreCase = true)
+            }
+            if (isSafetyCenterAllowed) {
+                Log.i(TAG, "✅ Google Safety Center PERMITIDO: $activitySimple")
+                Log.d(TAG, "   Activity completa: $activityName")
+                Log.d(TAG, "   Cliente pode acessar Segurança/Privacidade do dispositivo")
+                return SettingsCheckResult.SAFE
+            }
+        }
+        
         if (isDangerousSettingsPackage(packageName)) {
             Log.d(TAG, "🎯 Package perigoso detectado: $packageName")
             return SettingsCheckResult.DANGEROUS_IMMEDIATE
