@@ -672,6 +672,12 @@ class SettingsGuardService(private val context: Context) {
                     // Motorola/Lenovo
                     "MotoAppDetailsActivity",
                     "DeviceHelpActivity",
+                    "SpaActivity",                    // Android 14+ Motorola: Single Page App para App Info
+                    
+                    // Android 14+ SPA (Single Page Application) Activities
+                    // Usadas por vários OEMs para renderizar App Info e outras telas perigosas
+                    "SettingsSpaActivity",
+                    "AppListActivity",
                     
                     // LG
                     "LGAppInfoActivity",
