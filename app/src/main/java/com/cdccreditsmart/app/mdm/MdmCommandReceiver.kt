@@ -71,11 +71,15 @@ class MdmCommandReceiver(private val context: Context) {
     
     private val moshi = MoshiProvider.getMoshi()
     
+    private var reconnectAttempt = 0
+    private val maxReconnectDelay = 120_000L  // Máximo 2 minutos
+    private val baseReconnectDelay = 2_000L   // Base 2 segundos
+    
     private val okHttpClient = OkHttpClient.Builder()
         .connectTimeout(30, TimeUnit.SECONDS)
         .readTimeout(30, TimeUnit.SECONDS)
         .writeTimeout(30, TimeUnit.SECONDS)
-        .pingInterval(30, TimeUnit.SECONDS)
+        .pingInterval(25, TimeUnit.SECONDS)  // Reduzido de 30s para 25s para manter conexão viva
         .build()
     
     fun connectMdmWebSocket(jwtToken: String) {
@@ -130,6 +134,7 @@ class MdmCommandReceiver(private val context: Context) {
             override fun onOpen(webSocket: WebSocket, response: Response) {
                 isWebSocketConnecting = false
                 webSocketConnected = true
+                reconnectAttempt = 0   // Reset backoff ao conectar com sucesso
                 watchdogJob?.cancel()  // Cancelar watchdog - conexão OK
                 watchdogJob = null     // Limpar referência
                 Log.i(TAG, "✅ WebSocket MDM CONECTADO COM SUCESSO!")
@@ -152,18 +157,32 @@ class MdmCommandReceiver(private val context: Context) {
                 webSocketConnected = false
                 watchdogJob?.cancel()  // Cancelar watchdog - já falhou
                 watchdogJob = null     // Limpar referência
-                Log.e(TAG, "❌ WebSocket MDM FALHOU!")
+                
+                Log.e(TAG, "❌ ========================================")
+                Log.e(TAG, "❌ WEBSOCKET MDM FALHOU!")
+                Log.e(TAG, "❌ ========================================")
+                Log.e(TAG, "❌ Reconexões anteriores: $reconnectAttempt")
+                Log.e(TAG, "❌ Tipo de erro: ${t::class.simpleName}")
+                Log.e(TAG, "❌ Mensagem: ${t.message}")
+                Log.e(TAG, "❌ Response code: ${response?.code}")
+                Log.e(TAG, "❌ Response message: ${response?.message}")
+                
+                val isUnexpectedEndOfStream = t.message?.contains("unexpected end of stream", ignoreCase = true) == true
+                if (isUnexpectedEndOfStream) {
+                    Log.w(TAG, "⚠️ 'unexpected end of stream' detectado - servidor fechou conexão abruptamente")
+                    Log.w(TAG, "⚠️ Possíveis causas: timeout do servidor, proxy intermediário, ou problema de rede")
+                    Log.w(TAG, "⚠️ Polling fallback garantirá recebimento de comandos")
+                }
                 
                 if (networkHelper.isNetworkException(t)) {
                     val networkState = networkHelper.getCurrentNetworkState()
                     if (!networkState.isConnected) {
                         Log.w(TAG, "⏸️ Sem internet - WebSocket será reconectado quando a internet voltar")
                     } else {
-                        Log.w(TAG, "⚠️ Erro de rede: ${t.message?.take(50)}...")
+                        Log.w(TAG, "⚠️ Erro de rede (com conexão): ${t.message}")
                     }
-                } else {
-                    Log.w(TAG, "⚠️ Erro WebSocket: ${t.message?.take(50)}...")
                 }
+                Log.e(TAG, "❌ ========================================")
                 
                 scheduleReconnect(jwtToken)
                 startPollingFallbackIfNeeded()
@@ -644,58 +663,39 @@ class MdmCommandReceiver(private val context: Context) {
     
     private suspend fun sendAcknowledgement(commandId: String) {
         try {
+            val identifier = tokenStorage.getMdmIdentifier()
+            
+            if (identifier == null) {
+                Log.e(TAG, "❌ Nenhum identificador MDM disponível para enviar ACK")
+                return
+            }
+            
             Log.d(TAG, "📡 Enviando ACK para comando: $commandId")
+            Log.d(TAG, "📡 Usando endpoint: POST /api/apk/device/$identifier/command-response")
             
             val retrofit = RetrofitProvider.createAuthenticatedRetrofit(context)
             val api = retrofit.create(MdmApiService::class.java)
             
-            val ackRequest = CommandStatusRequest.acknowledged()
+            val request = CommandResponseRequest(
+                commandId = commandId,
+                status = "acknowledged"
+            )
             
-            Log.d(TAG, "📡 Usando endpoint: POST /api/apk/device/commands/$commandId/status")
-            
-            val response = api.confirmCommandStatus(commandId, ackRequest)
+            val response = api.sendCommandResponse(identifier, request)
             
             if (response.isSuccessful) {
                 Log.i(TAG, "✅ ACK enviado para comando $commandId")
             } else {
-                Log.w(TAG, "⚠️ Novo endpoint ACK falhou (${response.code()}), tentando legado...")
-                sendAcknowledgementLegacy(commandId)
+                Log.e(TAG, "❌ Erro ao enviar ACK: HTTP ${response.code()}")
             }
+            
+            // TODO: Quando backend implementar novo endpoint, descomentar abaixo:
+            // val ackRequest = CommandStatusRequest.acknowledged()
+            // Log.d(TAG, "📡 Usando endpoint: POST /api/apk/device/commands/$commandId/status")
+            // val response = api.confirmCommandStatus(commandId, ackRequest)
             
         } catch (e: Exception) {
             Log.e(TAG, "❌ Erro ao enviar ACK: ${e.message}")
-            try {
-                sendAcknowledgementLegacy(commandId)
-            } catch (e2: Exception) {
-                Log.e(TAG, "❌ Também falhou ACK legado: ${e2.message}")
-            }
-        }
-    }
-    
-    private suspend fun sendAcknowledgementLegacy(commandId: String) {
-        val identifier = tokenStorage.getMdmIdentifier()
-        
-        if (identifier == null) {
-            Log.e(TAG, "❌ Nenhum identificador MDM disponível para enviar ACK legado")
-            return
-        }
-        
-        Log.d(TAG, "📡 [LEGADO] Enviando ACK usando identifier: ${identifier.take(8)}****")
-        
-        val retrofit = RetrofitProvider.createAuthenticatedRetrofit(context)
-        val api = retrofit.create(MdmApiService::class.java)
-        
-        val request = CommandResponseRequest(
-            commandId = commandId,
-            status = "acknowledged"
-        )
-        
-        val response = api.sendCommandResponse(identifier, request)
-        
-        if (response.isSuccessful) {
-            Log.i(TAG, "✅ [LEGADO] ACK enviado para comando $commandId")
-        } else {
-            Log.e(TAG, "❌ [LEGADO] Erro ao enviar ACK: ${response.code()}")
         }
     }
     
@@ -722,86 +722,63 @@ class MdmCommandReceiver(private val context: Context) {
         unblockedApps: List<String>? = null
     ) {
         try {
+            val identifier = tokenStorage.getMdmIdentifier()
+            
+            if (identifier == null) {
+                Log.e(TAG, "❌ Nenhum identificador MDM disponível para enviar response")
+                return
+            }
+            
+            val status = if (success) "completed" else "failed"
+            
             Log.d(TAG, "📡 Enviando response para comando: $commandId")
+            Log.d(TAG, "📡 Usando endpoint: POST /api/apk/device/$identifier/command-response")
+            Log.d(TAG, "📡 Status: $status")
             
             val retrofit = RetrofitProvider.createAuthenticatedRetrofit(context)
             val api = retrofit.create(MdmApiService::class.java)
             
-            val statusRequest = if (success) {
-                CommandStatusRequest.completed(
-                    CommandResultPayload(
+            val request = CommandResponseRequest(
+                commandId = commandId,
+                status = status,
+                response = if (success) {
+                    CommandResponse(
                         success = true,
+                        blockedAppsCount = blockedAppsCount,
                         appliedLevel = appliedLevel,
-                        blockedApps = blockedApps,
-                        unblockedApps = unblockedApps,
                         timestamp = System.currentTimeMillis()
                     )
-                )
-            } else {
-                CommandStatusRequest.failed(errorMessage ?: "Unknown error")
-            }
+                } else null,
+                errorMessage = errorMessage
+            )
             
-            Log.d(TAG, "📡 Usando endpoint: POST /api/apk/device/commands/$commandId/status")
-            Log.d(TAG, "📡 Status: ${statusRequest.status}")
-            
-            val response = api.confirmCommandStatus(commandId, statusRequest)
+            val response = api.sendCommandResponse(identifier, request)
             
             if (response.isSuccessful) {
-                Log.i(TAG, "✅ Response enviado para comando $commandId: ${statusRequest.status}")
+                Log.i(TAG, "✅ Response enviado para comando $commandId: $status")
             } else {
-                Log.w(TAG, "⚠️ Novo endpoint falhou (${response.code()}), tentando endpoint legado...")
-                sendCommandResponseLegacy(commandId, success, blockedAppsCount, appliedLevel, errorMessage)
+                Log.e(TAG, "❌ Erro ao enviar response: HTTP ${response.code()}")
             }
+            
+            // TODO: Quando backend implementar novo endpoint, descomentar abaixo:
+            // val statusRequest = if (success) {
+            //     CommandStatusRequest.completed(
+            //         CommandResultPayload(
+            //             success = true,
+            //             appliedLevel = appliedLevel,
+            //             blockedApps = blockedApps,
+            //             unblockedApps = unblockedApps,
+            //             timestamp = System.currentTimeMillis()
+            //         )
+            //     )
+            // } else {
+            //     CommandStatusRequest.failed(errorMessage ?: "Unknown error")
+            // }
+            // Log.d(TAG, "📡 Usando endpoint: POST /api/apk/device/commands/$commandId/status")
+            // val response = api.confirmCommandStatus(commandId, statusRequest)
             
         } catch (e: Exception) {
             Log.e(TAG, "❌ Erro ao enviar command response: ${e.message}")
-            try {
-                sendCommandResponseLegacy(commandId, success, blockedAppsCount, appliedLevel, errorMessage)
-            } catch (e2: Exception) {
-                Log.e(TAG, "❌ Também falhou no endpoint legado: ${e2.message}")
-            }
-        }
-    }
-    
-    private suspend fun sendCommandResponseLegacy(
-        commandId: String,
-        success: Boolean,
-        blockedAppsCount: Int? = null,
-        appliedLevel: Int? = null,
-        errorMessage: String? = null
-    ) {
-        val identifier = tokenStorage.getMdmIdentifier()
-        
-        if (identifier == null) {
-            Log.e(TAG, "❌ Nenhum identificador MDM disponível para enviar response legado")
-            return
-        }
-        
-        Log.d(TAG, "📡 [LEGADO] Enviando response usando identifier: ${identifier.take(8)}****")
-        
-        val retrofit = RetrofitProvider.createAuthenticatedRetrofit(context)
-        val api = retrofit.create(MdmApiService::class.java)
-        
-        val request = CommandResponseRequest(
-            commandId = commandId,
-            status = if (success) "completed" else "failed",
-            response = if (success) {
-                CommandResponse(
-                    success = true,
-                    blockedAppsCount = blockedAppsCount,
-                    appliedLevel = appliedLevel,
-                    timestamp = System.currentTimeMillis()
-                )
-            } else null,
-            errorMessage = errorMessage
-        )
-        
-        val response = api.sendCommandResponse(identifier, request)
-        
-        if (response.isSuccessful) {
-            Log.i(TAG, "✅ [LEGADO] Response enviado para comando $commandId: ${request.status}")
-        } else {
-            Log.e(TAG, "❌ [LEGADO] Erro ao enviar response: ${response.code()}")
         }
     }
     
@@ -934,8 +911,24 @@ class MdmCommandReceiver(private val context: Context) {
         reconnectJob?.cancel()
         
         reconnectJob = scope.launch {
-            delay(5000)
-            Log.i(TAG, "🔄 Tentando reconectar WebSocket MDM...")
+            reconnectAttempt++
+            
+            // Backoff exponencial: 2s, 4s, 8s, 16s, 32s, 64s, 120s (máximo)
+            val delay = minOf(
+                baseReconnectDelay * (1L shl minOf(reconnectAttempt - 1, 6)),
+                maxReconnectDelay
+            )
+            
+            Log.i(TAG, "🔄 ========================================")
+            Log.i(TAG, "🔄 AGENDANDO RECONEXÃO WEBSOCKET MDM")
+            Log.i(TAG, "🔄 ========================================")
+            Log.i(TAG, "🔄 Tentativa #$reconnectAttempt")
+            Log.i(TAG, "🔄 Delay: ${delay/1000}s (backoff exponencial)")
+            Log.i(TAG, "🔄 Máximo delay: ${maxReconnectDelay/1000}s")
+            Log.i(TAG, "🔄 ========================================")
+            
+            delay(delay)
+            Log.i(TAG, "🔄 Tentando reconectar WebSocket MDM (tentativa #$reconnectAttempt)...")
             connectMdmWebSocket(jwtToken)
         }
     }

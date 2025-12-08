@@ -83,3 +83,26 @@ data class SecurityEventResponse(
     val eventId: String? = null,
     val message: String? = null
 )
+
+/**
+ * Device Boot Request - Reportar boot do dispositivo para detecção de factory reset
+ * Endpoint: POST /api/security/device-boot
+ */
+data class DeviceBootRequest(
+    val deviceFingerprint: String,
+    val bootTimestamp: Long,
+    val hasAuthToken: Boolean,
+    val hasDeviceToken: Boolean,
+    val buildFingerprint: String,
+    val androidVersion: String
+)
+
+/**
+ * Device Boot Response
+ */
+data class DeviceBootResponse(
+    val status: String,
+    val message: String? = null,
+    val factoryResetDetected: Boolean = false,
+    val action: String? = null
+)

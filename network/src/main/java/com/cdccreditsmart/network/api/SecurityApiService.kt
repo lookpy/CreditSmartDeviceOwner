@@ -54,4 +54,22 @@ interface SecurityApiService {
         @Body request: SecurityEventRequest,
         @Header("Authorization") authorization: String? = null
     ): Response<SecurityEventResponse>
+    
+    /**
+     * Reportar boot do dispositivo para detecção de factory reset
+     * Endpoint: POST /api/security/device-boot
+     * 
+     * Backend compara:
+     * - deviceFingerprint atual vs histórico
+     * - Timestamp do último boot vs timestamp atual
+     * - Se diferença > 24h e fingerprint mudou = FACTORY RESET
+     * 
+     * @param request Dados do boot do dispositivo
+     * @param authorization JWT token Bearer (opcional se device token presente)
+     */
+    @POST("api/security/device-boot")
+    suspend fun reportDeviceBoot(
+        @Body request: DeviceBootRequest,
+        @Header("Authorization") authorization: String? = null
+    ): Response<DeviceBootResponse>
 }

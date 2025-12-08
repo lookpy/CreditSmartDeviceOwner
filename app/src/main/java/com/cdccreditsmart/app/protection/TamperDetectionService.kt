@@ -3,7 +3,14 @@ package com.cdccreditsmart.app.protection
 import android.content.Context
 import android.os.Build
 import android.util.Log
+import com.cdccreditsmart.app.network.RetrofitProvider
 import com.cdccreditsmart.app.security.SecureTokenStorage
+import com.cdccreditsmart.network.api.SecurityApiService
+import com.cdccreditsmart.network.dto.security.DeviceBootRequest
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.launch
 import java.util.UUID
 
 class TamperDetectionService(private val context: Context) {
@@ -17,6 +24,7 @@ class TamperDetectionService(private val context: Context) {
     private val serverTimeManager by lazy { 
         com.cdccreditsmart.app.time.ServerTimeManager(context) 
     }
+    private val scope = CoroutineScope(Dispatchers.IO + SupervisorJob())
     
     fun checkFactoryResetAttempt(): Boolean {
         Log.i(TAG, "========================================")
@@ -120,18 +128,22 @@ class TamperDetectionService(private val context: Context) {
     }
     
     fun reportDeviceBootToBackend(deviceFingerprint: String) {
-        // Backend-based tamper detection
-        // Backend compara:
-        // 1. deviceFingerprint atual vs histórico
-        // 2. Timestamp do último boot vs timestamp atual
-        // 3. Se diferença > 24h e fingerprint mudou = FACTORY RESET
+        val bootTimestamp = System.currentTimeMillis()
+        val hasAuthToken = storage.getAuthToken() != null
+        val hasDeviceToken = storage.getDeviceToken() != null
+        val buildFingerprint = Build.FINGERPRINT ?: "UNKNOWN"
+        val androidVersion = Build.VERSION.RELEASE ?: "UNKNOWN"
         
         Log.i(TAG, "")
         Log.i(TAG, "╔════════════════════════════════════════════════════════╗")
         Log.i(TAG, "║    📡 REPORTAR BOOT AO BACKEND                        ║")
         Log.i(TAG, "╠════════════════════════════════════════════════════════╣")
         Log.i(TAG, "║  Device Fingerprint: ${deviceFingerprint.take(12)}****      ║")
-        Log.i(TAG, "║  Boot Timestamp: ${System.currentTimeMillis()}          ║")
+        Log.i(TAG, "║  Boot Timestamp: $bootTimestamp          ║")
+        Log.i(TAG, "║  Has Auth Token: $hasAuthToken                         ║")
+        Log.i(TAG, "║  Has Device Token: $hasDeviceToken                     ║")
+        Log.i(TAG, "║  Build Fingerprint: ${buildFingerprint.take(20)}...    ║")
+        Log.i(TAG, "║  Android Version: $androidVersion                      ║")
         Log.i(TAG, "║                                                        ║")
         Log.i(TAG, "║  Backend detectará factory reset comparando:          ║")
         Log.i(TAG, "║  • Fingerprint histórico vs atual                     ║")
@@ -140,18 +152,51 @@ class TamperDetectionService(private val context: Context) {
         Log.i(TAG, "╚════════════════════════════════════════════════════════╝")
         Log.i(TAG, "")
         
-        // TODO: Implementar chamada ao backend
-        // POST /api/security/device-boot
-        // {
-        //   deviceFingerprint: string,
-        //   bootTimestamp: number,
-        //   hasAuthToken: boolean,
-        //   hasDeviceToken: boolean,
-        //   buildFingerprint: string,
-        //   androidVersion: string
-        // }
-        
-        Log.i(TAG, "⚠️ TODO: Implementar POST /api/security/device-boot")
+        scope.launch {
+            try {
+                Log.i(TAG, "📡 Enviando POST /api/security/device-boot...")
+                
+                val retrofit = RetrofitProvider.createAuthenticatedRetrofit(context)
+                val api = retrofit.create(SecurityApiService::class.java)
+                
+                val request = DeviceBootRequest(
+                    deviceFingerprint = deviceFingerprint,
+                    bootTimestamp = bootTimestamp,
+                    hasAuthToken = hasAuthToken,
+                    hasDeviceToken = hasDeviceToken,
+                    buildFingerprint = buildFingerprint,
+                    androidVersion = androidVersion
+                )
+                
+                val response = api.reportDeviceBoot(request)
+                
+                if (response.isSuccessful) {
+                    val body = response.body()
+                    Log.i(TAG, "✅ Boot reportado ao backend com sucesso!")
+                    Log.i(TAG, "   Status: ${body?.status}")
+                    Log.i(TAG, "   Message: ${body?.message}")
+                    
+                    if (body?.factoryResetDetected == true) {
+                        Log.w(TAG, "⚠️ ========================================")
+                        Log.w(TAG, "⚠️ FACTORY RESET DETECTADO PELO BACKEND!")
+                        Log.w(TAG, "⚠️ Ação recomendada: ${body.action}")
+                        Log.w(TAG, "⚠️ ========================================")
+                    }
+                } else {
+                    Log.e(TAG, "❌ Erro ao reportar boot ao backend")
+                    Log.e(TAG, "   HTTP Status: ${response.code()}")
+                    Log.e(TAG, "   HTTP Message: ${response.message()}")
+                    val errorBody = response.errorBody()?.string()
+                    if (!errorBody.isNullOrBlank()) {
+                        Log.e(TAG, "   Error body: ${errorBody.take(200)}")
+                    }
+                }
+                
+            } catch (e: Exception) {
+                Log.e(TAG, "❌ Exceção ao reportar boot ao backend: ${e.message}")
+                Log.e(TAG, "   Tipo: ${e::class.simpleName}")
+            }
+        }
     }
     
     fun detectTimeManipulation(): com.cdccreditsmart.app.time.TamperDetectionResult {
