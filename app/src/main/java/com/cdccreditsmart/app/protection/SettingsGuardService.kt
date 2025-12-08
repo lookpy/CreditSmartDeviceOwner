@@ -360,42 +360,118 @@ class SettingsGuardService(private val context: Context) {
         }
     }
     
+    /**
+     * ═══════════════════════════════════════════════════════════════════════════════
+     * FLUXO PRINCIPAL DO SETTINGSGUARD - ORGANIZADO PARA EVITAR LOOPS
+     * ═══════════════════════════════════════════════════════════════════════════════
+     * 
+     * ORDEM DE VERIFICAÇÃO (cada retorno evita loops):
+     * 
+     * 1. DESINSTALAÇÃO VOLUNTÁRIA ATIVA → retorna (não faz nada)
+     * 2. FLUXO DE PERMISSÕES ATIVO:
+     *    a. Verifica timeout (30s) → se expirou, retoma guard
+     *    b. App CDC em foreground → retoma guard e retorna
+     *    c. Atividade PERMITIDA (SpaActivity, etc.) → retorna (não bloqueia)
+     *    d. Atividade PERIGOSA → retoma guard, bloqueia e retorna
+     *    e. Qualquer outra → retorna (permite)
+     * 3. MODO NORMAL:
+     *    a. Verifica se é Settings perigoso → bloqueia
+     *    b. App CDC em foreground → reseta contadores
+     *    c. Outro app → ignora
+     * 
+     * ═══════════════════════════════════════════════════════════════════════════════
+     */
     private suspend fun checkSettingsAccessAggressively() {
         val foregroundInfo = getForegroundPackageAndActivity() ?: return
         val foregroundPackage = foregroundInfo.first
         val foregroundActivity = foregroundInfo.second
         
-        if (isPermissionGrantFlowActive) {
-            checkPermissionFlowTimeout()
-            
-            if (foregroundPackage == context.packageName) {
-                Log.i(TAG, "▶️ App voltou ao foreground durante fluxo de permissão - retomando guard")
-                resumeAfterPermissionGrant()
-                return
-            }
-            
-            if (isActivityAllowedDuringPermissionFlow(foregroundActivity)) {
-                Log.d(TAG, "✅ Atividade permitida durante fluxo de permissões: $foregroundActivity")
-                return
-            }
-            
-            val checkResult = checkSettingsActivity(foregroundPackage, foregroundActivity)
-            if (checkResult == SettingsCheckResult.DANGEROUS_IMMEDIATE) {
-                Log.w(TAG, "🚨 ÁREA PERIGOSA durante fluxo de permissões!")
-                Log.w(TAG, "   Atividade: $foregroundActivity")
-                Log.w(TAG, "   Retomando guard e bloqueando...")
-                resumeAfterPermissionGrant()
-            } else {
-                return
-            }
-        }
-        
+        // ═══════════════════════════════════════════════════════════════════════════════
+        // PRIORIDADE 1: DESINSTALAÇÃO VOLUNTÁRIA
+        // Guard completamente desativado - não fazer NADA
+        // ═══════════════════════════════════════════════════════════════════════════════
         if (isVoluntaryUninstallActive) {
-            // Guard pausado para desinstalação - não fazer nada
-            // A recuperação é tratada pela MainActivity.onResume()
             return
         }
         
+        // ═══════════════════════════════════════════════════════════════════════════════
+        // PRIORIDADE 2: FLUXO DE PERMISSÕES ATIVO
+        // Usuário está tentando ativar permissões do app
+        // ═══════════════════════════════════════════════════════════════════════════════
+        if (isPermissionGrantFlowActive) {
+            handlePermissionFlowCheck(foregroundPackage, foregroundActivity)
+            return  // SEMPRE retorna após tratar fluxo de permissões
+        }
+        
+        // ═══════════════════════════════════════════════════════════════════════════════
+        // PRIORIDADE 3: MODO NORMAL DE PROTEÇÃO
+        // Verificar Settings e telas perigosas
+        // ═══════════════════════════════════════════════════════════════════════════════
+        handleNormalProtectionCheck(foregroundPackage, foregroundActivity)
+    }
+    
+    /**
+     * Trata verificações durante o fluxo de permissões
+     * Permite telas de permissão, bloqueia telas perigosas
+     */
+    private suspend fun handlePermissionFlowCheck(foregroundPackage: String, foregroundActivity: String?) {
+        // Verificar timeout primeiro
+        checkPermissionFlowTimeout()
+        
+        // Se o fluxo expirou, não estamos mais em fluxo de permissões
+        if (!isPermissionGrantFlowActive) {
+            Log.d(TAG, "⏰ Fluxo de permissões expirou - voltando ao modo normal")
+            handleNormalProtectionCheck(foregroundPackage, foregroundActivity)
+            return
+        }
+        
+        // App CDC voltou ao foreground - usuário concluiu (ou cancelou) a permissão
+        if (foregroundPackage == context.packageName) {
+            Log.i(TAG, "▶️ App CDC em foreground - fluxo de permissão concluído")
+            resumeAfterPermissionGrant()
+            return
+        }
+        
+        // Verificar se é uma atividade PERMITIDA durante fluxo de permissões
+        // (ex: SpaActivity para Overlay, UsageAccessSettings, etc.)
+        if (isActivityAllowedDuringPermissionFlow(foregroundActivity)) {
+            Log.d(TAG, "✅ Atividade permitida durante fluxo de permissões: $foregroundActivity")
+            return  // Não bloqueia - permite o usuário ativar a permissão
+        }
+        
+        // Verificar se é o pacote de Settings mas NÃO uma tela perigosa
+        val checkResult = checkSettingsActivity(foregroundPackage, foregroundActivity)
+        
+        when (checkResult) {
+            SettingsCheckResult.DANGEROUS_IMMEDIATE -> {
+                // TELA PERIGOSA detectada durante fluxo de permissões!
+                // Isso significa que o usuário navegou para App Info ou similar
+                Log.w(TAG, "🚨 ÁREA PERIGOSA durante fluxo de permissões!")
+                Log.w(TAG, "   Atividade: $foregroundActivity")
+                Log.w(TAG, "   Interrompendo fluxo e bloqueando...")
+                
+                resumeAfterPermissionGrant()
+                
+                // Bloquear imediatamente
+                settingsOpenCount++
+                isInAggressiveMode = true
+                withContext(Dispatchers.Main) {
+                    bringAppToForeground()
+                }
+            }
+            SettingsCheckResult.SAFE -> {
+                // Tela de Settings mas não perigosa (ex: tela principal de Settings)
+                // Permitir navegação durante fluxo de permissões
+                Log.d(TAG, "✅ Settings não-perigoso durante fluxo de permissões: $foregroundActivity")
+            }
+        }
+    }
+    
+    /**
+     * Trata verificações no modo normal de proteção
+     * Bloqueia telas perigosas, ignora o resto
+     */
+    private suspend fun handleNormalProtectionCheck(foregroundPackage: String, foregroundActivity: String?) {
         when (checkSettingsActivity(foregroundPackage, foregroundActivity)) {
             SettingsCheckResult.DANGEROUS_IMMEDIATE -> {
                 settingsOpenCount++
