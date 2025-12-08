@@ -1,0 +1,638 @@
+# Integração APK - Sistema de Bloqueio Progressivo
+
+## 📋 Visão Geral
+
+O sistema de **Bloqueio Progressivo** do CDC CreditSmart aplica restrições automáticas em dispositivos com base em dias de atraso no pagamento. Este documento descreve a integração completa para o APK Android (Kotlin).
+
+**Servidor Backend:** `https://cdccreditsmart.com`
+
+---
+
+## 🎯 Níveis de Bloqueio Progressivo
+
+O backend define **6 níveis** de bloqueio (0-5) baseados em dias de atraso:
+
+### Nível 0 - Sem Bloqueio ✅
+- **Dias de atraso:** 0-6 dias
+- **Descrição:** Todos os apps liberados
+- **Ação:** Nenhuma restrição
+
+### Nível 1 - Bloqueio Leve (7 dias) ⚠️
+- **Dias de atraso:** 7-14 dias
+- **Bloqueados:** Fotos, galeria, vídeos, navegadores
+- **Categorias:** `photos`, `gallery`, `video_players`, `web_browsers`
+- **Exceções:** WhatsApp, telefone, SMS, bancos, emails
+- **Notificação:**
+  - **Título:** "Atenção: limite de apps reduzido"
+  - **Mensagem:** "Seu aparelho está com atraso de 7 dias. Aplicativos de fotos, galeria, vídeos e navegadores foram temporariamente bloqueados até a regularização."
+
+### Nível 2 - Bloqueio Médio (15 dias) 🟡
+- **Dias de atraso:** 15-29 dias
+- **Bloqueados:** + YouTube, música, Play Store, jogos
+- **Categorias:** `youtube`, `music_players`, `play_store`, `games`
+- **Exceções:** WhatsApp, telefone, SMS, bancos, emails
+- **Notificação:**
+  - **Título:** "Atenção: restrição ampliada"
+  - **Mensagem:** "Atraso de 15 dias. YouTube, apps de música, Play Store e jogos foram bloqueados além das restrições anteriores."
+
+### Nível 3 - Bloqueio Avançado (30 dias) 🟠
+- **Dias de atraso:** 30-44 dias
+- **Bloqueados:** + Redes sociais (exceto WhatsApp)
+- **Categorias:** `social_media`
+- **Exceções:** WhatsApp, telefone, SMS, bancos, emails
+- **Notificação:**
+  - **Título:** "Atenção: redes sociais bloqueadas"
+  - **Mensagem:** "Atraso de 30 dias. Todas as redes sociais foram bloqueadas, exceto WhatsApp."
+
+### Nível 4 - Bloqueio Severo (45 dias) 🔴
+- **Dias de atraso:** 45-59 dias
+- **Bloqueados:** Quase tudo (WhatsApp ainda liberado)
+- **Categorias:** `all_apps_except_whatsapp`
+- **Exceções:** WhatsApp, telefone, SMS, bancos, emails
+- **Notificação:**
+  - **Título:** "Atenção: restrição severa"
+  - **Mensagem:** "Atraso de 45 dias. Quase todos os aplicativos estão bloqueados, WhatsApp continua liberado."
+
+### Nível 5 - Bloqueio Máximo (60+ dias) ⛔
+- **Dias de atraso:** 60+ dias
+- **Bloqueados:** TUDO (exceto bancos, telefone, SMS, email)
+- **Categorias:** `all_apps_except_banks_calls_sms_emails`
+- **Exceções:** APENAS bancos, telefone, SMS, emails (WhatsApp BLOQUEADO)
+- **Notificação:**
+  - **Título:** "Atenção: restrição máxima"
+  - **Mensagem:** "Atraso de 60 dias. Apenas apps bancários, de e-mail, telefone e SMS permanecerão disponíveis. Demais apps foram bloqueados."
+
+---
+
+## 🛡️ Apps NUNCA Bloqueados (Proteção Permanente)
+
+**CRÍTICO:** Os seguintes apps **JAMAIS** devem ser bloqueados em NENHUM nível:
+
+### 🏦 Banking & Finance
+- **Categoria:** `bancos_allowed`
+- **Exemplos:**
+  - `com.santander.app`
+  - `br.com.bb.android`
+  - `com.itau`
+  - `com.bradesco`
+  - `com.nubank.nu`
+  - Qualquer app com "banco", "nubank", "inter", "picpay", "mercadopago" no package name
+
+### ☎️ Comunicação de Emergência
+- `com.android.dialer` (telefone)
+- `com.android.messaging` (SMS)
+- `com.android.contacts` (contatos)
+
+### 📧 Email
+- **Categoria:** `emails_allowed`
+- **Exemplos:**
+  - `com.google.android.gm` (Gmail)
+  - `com.microsoft.office.outlook` (Outlook)
+
+### ⚙️ Sistema
+- `com.android.settings` (configurações)
+- Apps do sistema Android
+- Apps de segurança
+
+---
+
+## 🔄 Fluxos de Integração
+
+### **Opção 1: Comandos MDM via WebSocket (Recomendado)** 🚀
+
+Este é o método **preferencial** para receber comandos de bloqueio em tempo real.
+
+#### 1.1. Conectar ao WebSocket
+
+```kotlin
+val wsUrl = "wss://cdccreditsmart.com/ws?token=${jwtToken}"
+val webSocket = OkHttpClient().newWebSocket(
+    Request.Builder().url(wsUrl).build(),
+    object : WebSocketListener() {
+        override fun onMessage(webSocket: WebSocket, text: String) {
+            handleWebSocketMessage(text)
+        }
+    }
+)
+```
+
+#### 1.2. Receber Comando de Bloqueio
+
+```json
+{
+  "type": "NEW_COMMAND",
+  "payload": {
+    "commandId": "cmd_uuid_123",
+    "data": {
+      "command": {
+        "id": "cmd_uuid_123",
+        "deviceId": "device_xxx",
+        "commandType": "BLOCK_APPS_PROGRESSIVE",
+        "parameters": {
+          "targetLevel": 2,
+          "daysOverdue": 15,
+          "categories": [
+            "photos",
+            "gallery",
+            "video_players",
+            "web_browsers",
+            "youtube",
+            "music_players",
+            "play_store",
+            "games"
+          ],
+          "exceptions": [
+            "com.whatsapp",
+            "com.android.dialer",
+            "com.android.messaging",
+            "bancos_allowed",
+            "emails_allowed"
+          ],
+          "reason": "Pagamento em atraso há 15 dias",
+          "isManual": false
+        },
+        "status": "sent",
+        "priority": "high",
+        "expiresAt": "2025-11-12T00:00:00.000Z"
+      }
+    }
+  }
+}
+```
+
+#### 1.3. Enviar Acknowledgement (Imediatamente)
+
+**Endpoint:** `POST /api/apk/device/{serialNumber}/command-response`
+
+```kotlin
+val acknowledgePayload = JSONObject().apply {
+    put("commandId", commandId)
+    put("status", "acknowledged")
+}
+
+client.post("https://cdccreditsmart.com/api/apk/device/${serialNumber}/command-response") {
+    contentType(ContentType.Application.Json)
+    setBody(acknowledgePayload.toString())
+}
+```
+
+#### 1.4. Aplicar Bloqueio
+
+```kotlin
+fun applyProgressiveBlock(params: BlockParameters) {
+    val dpm = getSystemService(Context.DEVICE_POLICY_SERVICE) as DevicePolicyManager
+    val adminComponent = ComponentName(this, DeviceAdminReceiver::class.java)
+    
+    // Coletar apps instalados
+    val installedApps = packageManager.getInstalledApplications(0)
+    val appsToBlock = mutableListOf<String>()
+    
+    for (app in installedApps) {
+        val packageName = app.packageName
+        
+        // NUNCA bloquear exceções
+        if (isProtectedApp(packageName, params.exceptions)) {
+            continue
+        }
+        
+        // Verificar se está em categoria bloqueada
+        if (shouldBlockApp(app, params.categories)) {
+            appsToBlock.add(packageName)
+        }
+    }
+    
+    // Bloquear apps
+    for (packageName in appsToBlock) {
+        try {
+            dpm.setApplicationHidden(adminComponent, packageName, true)
+            Log.i("ProgressiveBlock", "✅ Bloqueado: $packageName")
+        } catch (e: Exception) {
+            Log.e("ProgressiveBlock", "❌ Erro ao bloquear $packageName: ${e.message}")
+        }
+    }
+}
+
+fun isProtectedApp(packageName: String, exceptions: List<String>): Boolean {
+    // Apps críticos SEMPRE protegidos
+    val criticalApps = listOf(
+        "com.android.dialer",
+        "com.android.messaging",
+        "com.android.settings",
+        "com.android.contacts"
+    )
+    
+    if (packageName in criticalApps) return true
+    
+    // Verificar bancos
+    if ("bancos_allowed" in exceptions && isBankingApp(packageName)) return true
+    
+    // Verificar emails
+    if ("emails_allowed" in exceptions && isEmailApp(packageName)) return true
+    
+    // Verificar WhatsApp
+    if ("com.whatsapp" in exceptions && packageName == "com.whatsapp") return true
+    
+    return false
+}
+
+fun isBankingApp(packageName: String): Boolean {
+    val bankingKeywords = listOf(
+        "nubank", "inter", "itau", "bradesco", "santander",
+        "caixa", "banco", "picpay", "mercadopago", "paypal",
+        "bb.android", "sicoob", "sicredi", "next", "c6bank"
+    )
+    return bankingKeywords.any { packageName.contains(it, ignoreCase = true) }
+}
+```
+
+#### 1.5. Enviar Confirmação de Execução
+
+**Endpoint:** `POST /api/apk/device/{serialNumber}/command-response`
+
+```kotlin
+// SUCESSO
+val successPayload = JSONObject().apply {
+    put("commandId", commandId)
+    put("status", "completed")
+    put("response", JSONObject().apply {
+        put("success", true)
+        put("blockedAppsCount", appsToBlock.size)
+        put("appliedLevel", params.targetLevel)
+        put("timestamp", System.currentTimeMillis())
+    })
+}
+
+// ERRO
+val errorPayload = JSONObject().apply {
+    put("commandId", commandId)
+    put("status", "failed")
+    put("errorMessage", "Descrição do erro")
+    put("response", JSONObject().apply {
+        put("success", false)
+        put("errorCode", "BLOCK_FAILED")
+        put("timestamp", System.currentTimeMillis())
+    })
+}
+
+client.post("https://cdccreditsmart.com/api/apk/device/${serialNumber}/command-response") {
+    contentType(ContentType.Application.Json)
+    setBody(payload.toString())
+}
+```
+
+---
+
+### **Opção 2: Polling de Comandos Pendentes (Fallback)** 🔄
+
+Se o WebSocket falhar, use polling a cada **30-60 segundos**.
+
+#### 2.1. Buscar Comandos Pendentes
+
+**Endpoint:** `GET /api/apk/device/{serialNumber}/commands`
+
+**Headers:** Não precisa (Play Integrity automático)
+
+**Response:**
+
+```json
+{
+  "deviceId": "device_xxx",
+  "serialNumber": "ABC123456",
+  "commands": [
+    {
+      "id": "cmd_uuid_123",
+      "commandType": "BLOCK_APPS_PROGRESSIVE",
+      "parameters": {
+        "targetLevel": 2,
+        "daysOverdue": 15,
+        "categories": ["photos", "gallery", "games"],
+        "exceptions": ["com.whatsapp", "bancos_allowed"],
+        "reason": "Atraso de 15 dias"
+      },
+      "priority": "high",
+      "createdAt": "2025-11-10T10:00:00.000Z",
+      "expiresAt": "2025-11-11T10:00:00.000Z"
+    }
+  ]
+}
+```
+
+#### 2.2. Processar Cada Comando
+
+Para cada comando na lista:
+1. Verificar se já foi processado (evitar duplicação)
+2. Aplicar bloqueio (mesmo código da Opção 1.4)
+3. Enviar acknowledgement
+4. Enviar confirmação de execução
+
+---
+
+### **Opção 3: Sistema de Decisões Pendentes** 📋
+
+Este sistema complementar permite consultar decisões de bloqueio administrativas.
+
+#### 3.1. Consultar Decisões Pendentes
+
+**Endpoint:** `GET /api/apk/device/{serialNumber}/pending-decisions`
+
+**Headers:** Não precisa (Play Integrity automático)
+
+**Response:**
+
+```json
+{
+  "serialNumber": "ABC123456",
+  "deviceId": "device_xxx",
+  "pendingDecisions": [
+    {
+      "id": "decision_uuid_456",
+      "action": "block",
+      "reason": "Pagamento em atraso há 15 dias",
+      "priority": "high",
+      "requestedAt": "2025-11-10T10:00:00.000Z",
+      "metadata": {
+        "daysOverdue": 15,
+        "suggestedLevel": 2
+      }
+    }
+  ],
+  "hasAnyPending": true,
+  "lastChecked": "2025-11-10T12:00:00.000Z"
+}
+```
+
+#### 3.2. Confirmar Decisão Processada
+
+**Endpoint:** `POST /api/apk/device/{serialNumber}/acknowledge-decision`
+
+**Headers:** Não precisa (Play Integrity automático)
+
+**Request:**
+
+```json
+{
+  "decisionId": "decision_uuid_456",
+  "response": {
+    "success": true,
+    "processedAt": "2025-11-10T12:05:00.000Z"
+  }
+}
+```
+
+**Response:**
+
+```json
+{
+  "success": true,
+  "decisionId": "decision_uuid_456",
+  "message": "Decision acknowledged successfully",
+  "processedAt": "2025-11-10T12:05:00.000Z"
+}
+```
+
+---
+
+## 🔓 Desbloqueio de Dispositivo
+
+### Quando Desbloquear?
+
+- Cliente regularizou o pagamento
+- Administrador solicitou desbloqueio manual
+- Recebeu comando `UNBLOCK_APPS_PROGRESSIVE`
+
+### Desbloquear via API
+
+**Endpoint:** `POST /api/apk/device/{serialNumber}/unblock`
+
+**Headers:** Não precisa (Play Integrity automático)
+
+**Response:**
+
+```json
+{
+  "success": true,
+  "serialNumber": "ABC123456",
+  "deviceId": "device_xxx",
+  "isBlocked": false,
+  "blockReason": null,
+  "message": "Device unblocked successfully"
+}
+```
+
+### Desbloquear Apps Localmente
+
+```kotlin
+fun unblockAllApps() {
+    val dpm = getSystemService(Context.DEVICE_POLICY_SERVICE) as DevicePolicyManager
+    val adminComponent = ComponentName(this, DeviceAdminReceiver::class.java)
+    
+    val installedApps = packageManager.getInstalledApplications(0)
+    
+    for (app in installedApps) {
+        try {
+            if (dpm.isApplicationHidden(adminComponent, app.packageName)) {
+                dpm.setApplicationHidden(adminComponent, app.packageName, false)
+                Log.i("ProgressiveBlock", "🔓 Desbloqueado: ${app.packageName}")
+            }
+        } catch (e: Exception) {
+            Log.e("ProgressiveBlock", "❌ Erro ao desbloquear: ${e.message}")
+        }
+    }
+}
+```
+
+---
+
+## ⏰ WorkManager - Tarefa Agendada
+
+### Configurar Worker
+
+```kotlin
+class BlockingCheckWorker(context: Context, params: WorkerParameters) : Worker(context, params) {
+    override fun doWork(): Result {
+        try {
+            // 1. Buscar comandos pendentes
+            val commands = fetchPendingCommands()
+            
+            // 2. Processar cada comando
+            for (command in commands) {
+                processBlockingCommand(command)
+            }
+            
+            // 3. Verificar decisões pendentes (opcional)
+            val decisions = fetchPendingDecisions()
+            for (decision in decisions) {
+                processDecision(decision)
+            }
+            
+            return Result.success()
+        } catch (e: Exception) {
+            Log.e("BlockingCheckWorker", "Erro: ${e.message}")
+            return Result.retry()
+        }
+    }
+}
+
+// Agendar execução a cada 6 horas
+val workRequest = PeriodicWorkRequestBuilder<BlockingCheckWorker>(6, TimeUnit.HOURS)
+    .setConstraints(
+        Constraints.Builder()
+            .setRequiredNetworkType(NetworkType.CONNECTED)
+            .build()
+    )
+    .build()
+
+WorkManager.getInstance(context).enqueueUniquePeriodicWork(
+    "blocking_check",
+    ExistingPeriodicWorkPolicy.KEEP,
+    workRequest
+)
+```
+
+---
+
+## 📊 Logs e Auditoria
+
+### Logs Obrigatórios
+
+```kotlin
+// Comando recebido
+Log.i("ProgressiveBlock", "📩 Comando recebido - ID: $commandId, Nível: $targetLevel")
+
+// Acknowledgement enviado
+Log.i("ProgressiveBlock", "✅ Acknowledgement enviado - ID: $commandId")
+
+// Bloqueio aplicado
+Log.i("ProgressiveBlock", "🔒 Bloqueando ${appsToBlock.size} apps (Nível $targetLevel)")
+Log.d("ProgressiveBlock", "Apps bloqueados: $appsToBlock")
+
+// Apps protegidos
+Log.d("ProgressiveBlock", "🛡️ Apps protegidos: $protectedApps")
+
+// Conclusão
+Log.i("ProgressiveBlock", "✅ Bloqueio nível $targetLevel aplicado com sucesso")
+```
+
+---
+
+## 🧪 Testes Recomendados
+
+### Teste 1: Nível 0 → Nível 1
+1. Simular 7 dias de atraso
+2. Receber comando de bloqueio nível 1
+3. Verificar: Galeria, navegador bloqueados
+4. Verificar: Bancos, telefone, SMS **NÃO** bloqueados
+
+### Teste 2: Nível 1 → Nível 5
+1. Simular 60 dias de atraso
+2. Receber comando de bloqueio nível 5
+3. Verificar: Quase tudo bloqueado (incluindo WhatsApp)
+4. Verificar: Bancos, telefone, SMS, email **NÃO** bloqueados
+
+### Teste 3: Nível 5 → Nível 0 (Desbloqueio)
+1. Simular pagamento regularizado
+2. Receber comando de desbloqueio
+3. Verificar: Todos os apps desbloqueados
+
+### Teste 4: Proteção de Apps Críticos
+1. Aplicar nível 5 (máximo)
+2. Tentar bloquear `com.android.dialer`
+3. Verificar: Telefone **NÃO** bloqueado
+4. Verificar log: "App crítico protegido"
+
+---
+
+## 🔐 Segurança
+
+### 1. Play Integrity
+- Todos os endpoints APK (`/api/apk/device/...`) validam automaticamente via Play Integrity
+- **NÃO** é necessário enviar token JWT nos headers
+
+### 2. Serial Number
+- Use sempre `serialNumber` do dispositivo (não `deviceId`)
+- O `serialNumber` é o identificador primário para o APK
+
+### 3. Certificate Pinning
+```kotlin
+val certificatePinner = CertificatePinner.Builder()
+    .add("cdccreditsmart.com", "sha256/AAAAAAAAAA...")
+    .build()
+
+val client = OkHttpClient.Builder()
+    .certificatePinner(certificatePinner)
+    .build()
+```
+
+### 4. Armazenamento Seguro
+```kotlin
+val masterKey = MasterKey.Builder(context)
+    .setKeyScheme(MasterKey.KeyScheme.AES256_GCM)
+    .build()
+
+val sharedPreferences = EncryptedSharedPreferences.create(
+    context,
+    "secure_prefs",
+    masterKey,
+    EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
+    EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
+)
+```
+
+---
+
+## 📞 Suporte e Debugging
+
+### Endpoints de Teste
+
+```bash
+# Buscar comandos pendentes
+curl -X GET https://cdccreditsmart.com/api/apk/device/ABC123456/commands
+
+# Buscar decisões pendentes
+curl -X GET https://cdccreditsmart.com/api/apk/device/ABC123456/pending-decisions
+
+# Enviar resposta de comando
+curl -X POST https://cdccreditsmart.com/api/apk/device/ABC123456/command-response \
+  -H "Content-Type: application/json" \
+  -d '{"commandId":"cmd_123","status":"completed"}'
+```
+
+### Debug Checklist
+
+- [ ] Device Owner ativo? (`dpm.isDeviceOwnerApp()`)
+- [ ] Play Integrity configurado?
+- [ ] WebSocket conectado?
+- [ ] Serial number correto?
+- [ ] Apps críticos na lista de exceções?
+- [ ] Logs habilitados?
+
+---
+
+## 📚 Referências
+
+- **Documentação MDM Completa:** `DOCUMENTACAO_MDM_APK.md`
+- **Documentação de Integração:** `APK_INTEGRATION_DOCUMENTATION.md`
+- **Endpoint Admin:** `POST /api/devices/:id/progressive-block` (apenas admin)
+
+---
+
+**Versão:** 2.0  
+**Última atualização:** 10 de novembro de 2025  
+**Compatibilidade:** Android 5.0+ (API 21+) com Device Owner Mode
+
+---
+
+## 📝 Changelog
+
+### v2.0 (10/11/2025)
+- 🎉 Documentação consolidada com todas as opções de integração
+- ✅ Endpoints corretos (`/api/apk/device/{serialNumber}/...`)
+- ✅ Adicionado sistema de decisões pendentes
+- ✅ Código Kotlin completo para implementação
+- ✅ Testes e debugging detalhados
+
+### v1.1 (10/11/2025)
+- ✅ Correção de endpoints MDM
+
+### v1.0 (10/11/2025)
+- 🎉 Versão inicial

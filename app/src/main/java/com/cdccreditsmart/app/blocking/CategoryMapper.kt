@@ -89,8 +89,31 @@ class CategoryMapper(private val context: Context) {
             "com.google.android.gm",
             "com.microsoft.office.outlook",
             "com.yahoo.mobile.client.android.mail",
+            "com.samsung.android.email.provider",
             "br.com.uol.mail"
         )
+        
+        val BACKEND_CATEGORY_MAPPING = mapOf(
+            "photos" to "gallery_photos",
+            "gallery" to "gallery_photos",
+            "video_players" to "video_players",
+            "web_browsers" to "browsers",
+            "youtube" to "youtube_tiktok",
+            "music_players" to "music",
+            "play_store" to "play_store",
+            "games" to "games",
+            "social_media" to "social_media",
+            "all_apps_except_whatsapp" to "non_essential_apps",
+            "all_apps_except_banks_calls_sms_emails" to "non_essential_apps"
+        )
+        
+        fun normalizeBackendCategory(backendCategory: String): String {
+            return BACKEND_CATEGORY_MAPPING[backendCategory.lowercase()] ?: backendCategory
+        }
+        
+        fun normalizeBackendCategories(categories: List<String>): List<String> {
+            return categories.map { normalizeBackendCategory(it) }.distinct()
+        }
     }
     
     fun getAppsToBlock(categories: List<String>, exceptions: List<String>): List<String> {
@@ -118,6 +141,17 @@ class CategoryMapper(private val context: Context) {
         
         Log.i(TAG, "📊 Total de apps marcados para bloqueio: ${appsToBlock.size}")
         return appsToBlock.toList()
+    }
+    
+    fun isProtectedByException(packageName: String, exceptions: List<String>): Boolean {
+        for (exception in exceptions) {
+            when (exception) {
+                "bancos_allowed" -> if (isBankingApp(packageName)) return true
+                "emails_allowed" -> if (isEmailApp(packageName)) return true
+                else -> if (packageName == exception) return true
+            }
+        }
+        return false
     }
     
     private fun isProtectedApp(packageName: String, exceptions: List<String>): Boolean {

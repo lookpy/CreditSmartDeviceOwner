@@ -98,46 +98,99 @@ class AppBlockingManager(private val context: Context) {
             var finalCategories: List<String>
             
             if (isV25) {
-                Log.i(TAG, "📦 MODO v2.5: Usando EXATAMENTE o payload do backend (confiando no backend)...")
-                Log.i(TAG, "   🎯 v2.5: Backend já calculou categorias corretas para o nível")
+                Log.i(TAG, "")
+                Log.i(TAG, "╔════════════════════════════════════════════════════╗")
+                Log.i(TAG, "║  📦 MODO v2.5: COLETANDO PACKAGES DO BACKEND      ║")
+                Log.i(TAG, "╚════════════════════════════════════════════════════╝")
                 
-                packagesToBlock.addAll(parameters.blockedPackages)
-                Log.i(TAG, "   ✅ blockedPackages diretos do backend: ${parameters.blockedPackages.size}")
+                var packagesFromBlockedPackages = 0
+                var packagesFromBlockAllFlags = 0
+                var packagesFromBlockCategories = 0
                 
-                parameters.blockAllFlags?.let { flags ->
-                    if (flags.hasAnyBlockEnabled()) {
-                        val activeFlags = flags.getActiveFlags()
-                        Log.i(TAG, "   🎯 v2.5: Usando blockAllFlags do backend SEM filtro: $activeFlags")
-                        
-                        val resolver = BlockAllFlagsResolver(context)
-                        val resolvedPackages = resolver.resolvePackagesForFlags(flags)
-                        packagesToBlock.addAll(resolvedPackages)
-                        Log.i(TAG, "   ✅ blockAllFlags expandidos: ${resolvedPackages.size} packages")
+                // 1. Usar blockedPackages DIRETAMENTE do backend
+                if (parameters.blockedPackages.isNotEmpty()) {
+                    packagesToBlock.addAll(parameters.blockedPackages)
+                    packagesFromBlockedPackages = parameters.blockedPackages.size
+                    Log.i(TAG, "📦 v2.5: ${packagesFromBlockedPackages} packages de blockedPackages (direto do backend)")
+                    if (packagesFromBlockedPackages <= 10) {
+                        Log.d(TAG, "   → Packages: ${parameters.blockedPackages}")
                     } else {
-                        Log.i(TAG, "   ℹ️ Nenhuma blockAllFlag ativa no payload do backend")
+                        Log.d(TAG, "   → Primeiros 10: ${parameters.blockedPackages.take(10)}")
                     }
+                } else {
+                    Log.i(TAG, "📦 v2.5: 0 packages de blockedPackages (backend enviou lista vazia)")
                 }
                 
+                // 2. Resolver blockAllFlags via BlockAllFlagsResolver
+                // CRÍTICO: Sempre chamar o resolver se blockAllFlags existir
+                // O resolver internamente verifica hasAnyBlockEnabled()
+                if (parameters.blockAllFlags != null) {
+                    val flags = parameters.blockAllFlags
+                    val activeFlags = flags.getActiveFlags()
+                    Log.i(TAG, "🎯 v2.5: blockAllFlags presente com ${activeFlags.size} flags ativas: $activeFlags")
+                    
+                    val resolver = BlockAllFlagsResolver(context)
+                    val resolvedPackages = resolver.resolvePackagesForFlags(flags)
+                    packagesToBlock.addAll(resolvedPackages)
+                    packagesFromBlockAllFlags = resolvedPackages.size
+                    Log.i(TAG, "📦 v2.5: ${packagesFromBlockAllFlags} packages de blockAllFlags (via BlockAllFlagsResolver)")
+                } else {
+                    Log.i(TAG, "📦 v2.5: 0 packages de blockAllFlags (backend não enviou flags)")
+                }
+                
+                // 3. Resolver blockCategories via CategoryMapper
                 if (parameters.blockCategories.isNotEmpty()) {
-                    Log.i(TAG, "   🎯 v2.5: Usando blockCategories do backend SEM filtro (${parameters.blockCategories.size})")
-                    Log.d(TAG, "   📂 Categorias do backend: ${parameters.blockCategories}")
+                    Log.i(TAG, "🎯 v2.5: blockCategories presente com ${parameters.blockCategories.size} categorias: ${parameters.blockCategories}")
                     
                     val categoryPackages = categoryMapper.getAppsToBlock(
                         parameters.blockCategories,
                         emptyList()
                     )
                     packagesToBlock.addAll(categoryPackages)
-                    Log.i(TAG, "   ✅ blockCategories expandidos: ${categoryPackages.size} packages")
+                    packagesFromBlockCategories = categoryPackages.size
+                    Log.i(TAG, "📦 v2.5: ${packagesFromBlockCategories} packages de blockCategories (via CategoryMapper)")
                 } else {
-                    Log.i(TAG, "   ℹ️ Backend enviou blockCategories vazio (rollback ou sem categorias)")
+                    Log.i(TAG, "📦 v2.5: 0 packages de blockCategories (backend não enviou categorias)")
                 }
                 
-                finalCategories = if (parameters.blockCategories.isNotEmpty()) {
-                    Log.i(TAG, "   📋 v2.5: finalCategories = blockCategories do backend")
-                    parameters.blockCategories
-                } else {
-                    Log.i(TAG, "   📋 v2.5: blockCategories vazio - usando FALLBACK getCategoriesForLevel($effectiveLevel)")
-                    getCategoriesForLevel(effectiveLevel).toList()
+                // RESUMO: Total de packages coletados ANTES de filtrar protegidos
+                val totalCollected = packagesToBlock.size
+                Log.i(TAG, "")
+                Log.i(TAG, "╔════════════════════════════════════════════════════╗")
+                Log.i(TAG, "║  📊 RESUMO v2.5 - PACKAGES COLETADOS              ║")
+                Log.i(TAG, "╠════════════════════════════════════════════════════╣")
+                Log.i(TAG, "║  blockedPackages:   $packagesFromBlockedPackages packages")
+                Log.i(TAG, "║  blockAllFlags:     $packagesFromBlockAllFlags packages")
+                Log.i(TAG, "║  blockCategories:   $packagesFromBlockCategories packages")
+                Log.i(TAG, "║  ─────────────────────────────────────────────────")
+                Log.i(TAG, "║  TOTAL (único):     $totalCollected packages")
+                Log.i(TAG, "╚════════════════════════════════════════════════════╝")
+                
+                if (totalCollected == 0) {
+                    Log.w(TAG, "⚠️ ATENÇÃO: Nenhum package coletado do backend!")
+                    Log.w(TAG, "   → blockedPackages vazio, blockAllFlags null/inativo, blockCategories vazio")
+                    Log.w(TAG, "   → Isso resultará em NENHUM app bloqueado!")
+                }
+                
+                // Determinar finalCategories para persistência
+                finalCategories = when {
+                    parameters.blockCategories.isNotEmpty() -> {
+                        Log.d(TAG, "   📋 v2.5: finalCategories = blockCategories do backend")
+                        parameters.blockCategories
+                    }
+                    parameters.blockAllFlags?.hasAnyBlockEnabled() == true -> {
+                        val activeFlagsAsCategories = parameters.blockAllFlags.getActiveFlags()
+                        Log.d(TAG, "   📋 v2.5: finalCategories derivadas de blockAllFlags: $activeFlagsAsCategories")
+                        activeFlagsAsCategories
+                    }
+                    parameters.blockedPackages.isNotEmpty() -> {
+                        Log.d(TAG, "   📋 v2.5: finalCategories derivadas do nível $effectiveLevel (blockedPackages presente)")
+                        getCategoriesForLevel(effectiveLevel).toList()
+                    }
+                    else -> {
+                        Log.d(TAG, "   📋 v2.5: finalCategories fallback do nível $effectiveLevel")
+                        getCategoriesForLevel(effectiveLevel).toList()
+                    }
                 }
                 
             } else {
@@ -193,8 +246,16 @@ class AppBlockingManager(private val context: Context) {
             Log.i(TAG, "   ✅ Removidos $removedCount packages protegidos")
             Log.i(TAG, "   📊 Total a bloquear: ${packagesToBlock.size}")
             
+            Log.i(TAG, "")
+            Log.i(TAG, "💾 PERSISTINDO ESTADO ANTES DO BLOQUEIO...")
+            saveBlockingState(effectiveLevel, parameters.daysOverdue, parameters.reason)
+            Log.i(TAG, "   ✅ saveBlockingState() - Nível $effectiveLevel salvo")
+            
             saveBlockedCategories(finalCategories)
+            Log.i(TAG, "   ✅ saveBlockedCategories() - ${finalCategories.size} categorias salvas")
+            
             saveBlockedPackages(packagesToBlock.toList())
+            Log.i(TAG, "   ✅ saveBlockedPackages() - ${packagesToBlock.size} packages salvos")
             
             val allInstalledApps = context.packageManager
                 .getInstalledApplications(0)
@@ -204,48 +265,46 @@ class AppBlockingManager(private val context: Context) {
             var unblockedCount = 0
             
             Log.i(TAG, "")
-            Log.i(TAG, "🎯 APLICANDO BLOQUEIO via setPackagesSuspended()...")
-            
-            try {
-                val packagesArray = packagesToBlock.toTypedArray()
-                
-                val failedToBlock = dpm.setPackagesSuspended(
-                    adminComponent,
-                    packagesArray,
-                    true
-                )
-                
-                blockedCount = packagesArray.size - (failedToBlock?.size ?: 0)
-                
-                if (failedToBlock == null || failedToBlock.isEmpty()) {
-                    Log.i(TAG, "   ✅ Todos os ${packagesArray.size} apps bloqueados!")
-                } else {
-                    Log.i(TAG, "   ✅ ${blockedCount} apps bloqueados")
-                    Log.w(TAG, "   ⚠️ ${failedToBlock.size} falharam:")
-                    failedToBlock.take(5).forEach { pkg ->
-                        Log.w(TAG, "      → $pkg")
-                    }
-                    if (failedToBlock.size > 5) {
-                        Log.w(TAG, "      ... e mais ${failedToBlock.size - 5}")
-                    }
-                }
-                
-                val appsToUnblock = allInstalledApps.filter { it !in packagesToBlock }
-                val packagesToUnblock = appsToUnblock.toTypedArray()
-                val failedToUnblock = dpm.setPackagesSuspended(
-                    adminComponent,
-                    packagesToUnblock,
-                    false
-                )
-                
-                unblockedCount = packagesToUnblock.size - (failedToUnblock?.size ?: 0)
-                Log.i(TAG, "   ✅ ${unblockedCount} apps desbloqueados")
-                
-            } catch (e: Exception) {
-                Log.e(TAG, "❌ Erro ao aplicar bloqueio: ${e.message}")
+            Log.i(TAG, "🎯 APLICANDO BLOQUEIO via setApplicationHidden()...")
+            Log.i(TAG, "   🔒 Chamando setApplicationHidden() com ${packagesToBlock.size} packages")
+            if (packagesToBlock.isEmpty()) {
+                Log.w(TAG, "   ⚠️ ATENÇÃO: Lista de packages a bloquear está VAZIA!")
             }
             
-            saveBlockingState(effectiveLevel, parameters.daysOverdue, parameters.reason)
+            Log.d(TAG, "   📋 Primeiros 10 packages: ${packagesToBlock.take(10)}")
+            
+            for (packageName in packagesToBlock) {
+                try {
+                    if (!dpm.isApplicationHidden(adminComponent, packageName)) {
+                        val hidden = dpm.setApplicationHidden(adminComponent, packageName, true)
+                        if (hidden) {
+                            blockedCount++
+                            Log.d(TAG, "✅ App oculto: $packageName")
+                        }
+                    } else {
+                        blockedCount++
+                    }
+                } catch (e: Exception) {
+                    Log.e(TAG, "❌ Erro ao ocultar $packageName: ${e.message}")
+                }
+            }
+            
+            Log.i(TAG, "   ✅ ${blockedCount} apps bloqueados via setApplicationHidden()")
+            
+            val appsToUnblock = allInstalledApps.filter { it !in packagesToBlock }
+            for (packageName in appsToUnblock) {
+                try {
+                    if (dpm.isApplicationHidden(adminComponent, packageName)) {
+                        dpm.setApplicationHidden(adminComponent, packageName, false)
+                        unblockedCount++
+                        Log.d(TAG, "✅ App restaurado: $packageName")
+                    }
+                } catch (e: Exception) {
+                    Log.e(TAG, "❌ Erro ao restaurar $packageName: ${e.message}")
+                }
+            }
+            
+            Log.i(TAG, "   ✅ ${unblockedCount} apps desbloqueados via setApplicationHidden()")
             
             updateKnoxLockscreen(effectiveLevel, parameters.daysOverdue)
             
@@ -383,12 +442,21 @@ class AppBlockingManager(private val context: Context) {
     private fun getCategoriesForLevel(level: Int): Set<String> {
         val categories = mutableSetOf<String>()
         
-        if (level >= 1) categories.addAll(listOf("camera", "gallery_photos", "file_manager", "video_players"))
-        if (level >= 2) categories.addAll(listOf("browsers", "youtube_tiktok"))
-        if (level >= 3) categories.addAll(listOf("social_media", "shopping"))
-        if (level >= 4) categories.addAll(listOf("games", "music"))
-        if (level >= 5) categories.addAll(listOf("play_store", "other_app_stores"))
-        if (level >= 6) categories.add("non_essential_apps")
+        if (level >= 1) {
+            categories.addAll(listOf("gallery_photos", "video_players", "browsers"))
+        }
+        if (level >= 2) {
+            categories.addAll(listOf("youtube_tiktok", "music", "play_store", "games"))
+        }
+        if (level >= 3) {
+            categories.add("social_media")
+        }
+        if (level >= 4) {
+            categories.add("non_essential_apps")
+        }
+        if (level >= 5) {
+            categories.add("all_apps")
+        }
         
         return categories
     }
@@ -460,36 +528,24 @@ class AppBlockingManager(private val context: Context) {
             val installedApps = context.packageManager.getInstalledApplications(0)
             var unblockedCount = 0
             
-            // DESBLOQUEIO TOTAL: Remove suspensão de TODOS os apps
-            Log.i(TAG, "🎯 Desbloqueando TODOS os apps (setPackagesSuspended)...")
+            Log.i(TAG, "🎯 Desbloqueando TODOS os apps (setApplicationHidden)...")
             
-            try {
-                val allPackages = installedApps.map { it.packageName }.toTypedArray()
-                
-                Log.d(TAG, "📊 Total de apps instalados: ${allPackages.size}")
-                
-                val failedPackages = dpm.setPackagesSuspended(
-                    adminComponent,
-                    allPackages,
-                    false  // suspended = false → DESBLOQUEIA
-                )
-                
-                if (failedPackages == null) {
-                    unblockedCount = allPackages.size
-                    Log.i(TAG, "✅ TODOS os ${allPackages.size} apps desbloqueados!")
-                } else {
-                    unblockedCount = allPackages.size - failedPackages.size
-                    Log.i(TAG, "✅ ${unblockedCount} apps desbloqueados")
-                    failedPackages.forEach { pkg ->
-                        Log.w(TAG, "  ⚠️ Falhou ao desbloquear: $pkg")
+            val allPackages = installedApps.map { it.packageName }
+            Log.d(TAG, "📊 Total de apps instalados: ${allPackages.size}")
+            
+            for (packageName in allPackages) {
+                try {
+                    if (dpm.isApplicationHidden(adminComponent, packageName)) {
+                        dpm.setApplicationHidden(adminComponent, packageName, false)
+                        unblockedCount++
+                        Log.d(TAG, "✅ App restaurado: $packageName")
                     }
+                } catch (e: Exception) {
+                    Log.e(TAG, "❌ Erro ao restaurar $packageName: ${e.message}")
                 }
-                
-            } catch (e: Exception) {
-                Log.e(TAG, "❌ Erro ao desbloquear apps: ${e.message}")
             }
             
-            Log.i(TAG, "✅ Desbloqueio completo - $unblockedCount apps")
+            Log.i(TAG, "✅ Desbloqueio completo - $unblockedCount apps via setApplicationHidden()")
             Log.i(TAG, "✅ BlockedAppInterceptor também não vai mais interceptar")
             
             Log.i(TAG, "")
@@ -796,7 +852,7 @@ class AppBlockingManager(private val context: Context) {
     // ═══════════════════════════════════════════════════════════════════════════
     
     /**
-     * Obtém o nível atual de bloqueio progressivo (0-6)
+     * Obtém o nível atual de bloqueio progressivo (0-5)
      * Usado pelo HeartbeatWorker para reportar ao backend
      */
     fun getCurrentBlockLevel(): Int {
@@ -913,17 +969,16 @@ class AppBlockingManager(private val context: Context) {
     }
     
     /**
-     * Retorna categorias padrão para um nível de bloqueio
+     * Retorna categorias padrão para um nível de bloqueio (0-5)
      * Usado para correção de conformidade
      */
     private fun getDefaultCategoriesForLevel(level: Int): List<String> {
         return when (level) {
-            1 -> listOf("SOCIAL_MEDIA")
-            2 -> listOf("SOCIAL_MEDIA", "GAMING")
-            3 -> listOf("SOCIAL_MEDIA", "GAMING", "ENTERTAINMENT")
-            4 -> listOf("SOCIAL_MEDIA", "GAMING", "ENTERTAINMENT", "SHOPPING")
-            5 -> listOf("SOCIAL_MEDIA", "GAMING", "ENTERTAINMENT", "SHOPPING", "PRODUCTIVITY")
-            6 -> listOf("SOCIAL_MEDIA", "GAMING", "ENTERTAINMENT", "SHOPPING", "PRODUCTIVITY", "BROWSERS", "CAMERAS")
+            1 -> listOf("gallery_photos", "video_players", "browsers")
+            2 -> listOf("gallery_photos", "video_players", "browsers", "youtube_tiktok", "music", "play_store", "games")
+            3 -> listOf("gallery_photos", "video_players", "browsers", "youtube_tiktok", "music", "play_store", "games", "social_media")
+            4 -> listOf("gallery_photos", "video_players", "browsers", "youtube_tiktok", "music", "play_store", "games", "social_media", "non_essential_apps")
+            5 -> listOf("gallery_photos", "video_players", "browsers", "youtube_tiktok", "music", "play_store", "games", "social_media", "non_essential_apps", "all_apps")
             else -> emptyList()
         }
     }
