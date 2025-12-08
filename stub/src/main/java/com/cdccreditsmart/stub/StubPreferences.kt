@@ -8,6 +8,18 @@ import androidx.security.crypto.MasterKey
 
 class StubPreferences(context: Context) {
     
+    companion object {
+        private const val TAG = "StubPreferences"
+        private const val PREFS_NAME = "cdc_stub_prefs"
+        private const val KEY_DEVICE_ID = "device_id"
+        private const val KEY_CONTRACT_CODE = "contract_code"
+        private const val KEY_SERIAL_NUMBER = "serial_number"
+        private const val KEY_APK_URL = "apk_url"
+        private const val KEY_LAST_INSTALL_ATTEMPT = "last_install_attempt"
+        private const val KEY_INSTALL_RETRY_COUNT = "install_retry_count"
+        private const val KEY_ENROLLED = "is_enrolled"
+    }
+    
     private val prefs: SharedPreferences = try {
         val masterKey = MasterKey.Builder(context)
             .setKeyScheme(MasterKey.KeyScheme.AES256_GCM)
@@ -53,45 +65,8 @@ class StubPreferences(context: Context) {
         get() = prefs.getBoolean(KEY_ENROLLED, false)
         set(value) = prefs.edit().putBoolean(KEY_ENROLLED, value).apply()
     
-    var autoInstallEnabled: Boolean
-        get() = prefs.getBoolean(KEY_AUTO_INSTALL, true)
-        set(value) = prefs.edit().putBoolean(KEY_AUTO_INSTALL, value).apply()
-    
-    var lastApkHash: String?
-        get() = prefs.getString(KEY_LAST_APK_HASH, null)
-        set(value) = prefs.edit().putString(KEY_LAST_APK_HASH, value).apply()
-    
-    var lastSuccessfulDownloadTimestamp: Long
-        get() = prefs.getLong(KEY_LAST_DOWNLOAD_TIMESTAMP, 0)
-        set(value) = prefs.edit().putLong(KEY_LAST_DOWNLOAD_TIMESTAMP, value).apply()
-    
-    var partialDownloadSize: Long
-        get() = prefs.getLong(KEY_PARTIAL_DOWNLOAD_SIZE, 0)
-        set(value) = prefs.edit().putLong(KEY_PARTIAL_DOWNLOAD_SIZE, value).apply()
-    
-    var userNotificationShown: Boolean
-        get() = prefs.getBoolean(KEY_USER_NOTIFICATION_SHOWN, false)
-        set(value) = prefs.edit().putBoolean(KEY_USER_NOTIFICATION_SHOWN, value).apply()
-    
-    fun saveApkMetadata(hash: String, timestamp: Long) {
-        prefs.edit().apply {
-            putString(KEY_LAST_APK_HASH, hash)
-            putLong(KEY_LAST_DOWNLOAD_TIMESTAMP, timestamp)
-        }.apply()
-        Log.i(TAG, "APK metadata saved: hash=$hash, timestamp=$timestamp")
-    }
-    
-    fun clearPartialDownload() {
-        partialDownloadSize = 0
-        Log.d(TAG, "Partial download data cleared")
-    }
-    
     fun hasEnrollmentData(): Boolean {
         return !deviceId.isNullOrEmpty() && !contractCode.isNullOrEmpty()
-    }
-    
-    fun canAttemptReinstall(): Boolean {
-        return autoInstallEnabled && hasEnrollmentData()
     }
     
     fun saveEnrollmentData(deviceId: String, contractCode: String, serialNumber: String?, apkUrl: String?) {
@@ -99,29 +74,10 @@ class StubPreferences(context: Context) {
             putString(KEY_DEVICE_ID, deviceId)
             putString(KEY_CONTRACT_CODE, contractCode)
             putString(KEY_SERIAL_NUMBER, serialNumber)
-            putString(KEY_APK_URL, apkUrl ?: DEFAULT_APK_URL)
+            putString(KEY_APK_URL, apkUrl ?: "https://cdccreditsmart.com.br/api/v1/apk/download")
             putBoolean(KEY_ENROLLED, true)
         }.apply()
         Log.i(TAG, "Enrollment data saved: deviceId=$deviceId, contractCode=$contractCode")
-    }
-    
-    companion object {
-        private const val TAG = "StubPreferences"
-        private const val PREFS_NAME = "cdc_stub_prefs"
-        private const val KEY_DEVICE_ID = "device_id"
-        private const val KEY_CONTRACT_CODE = "contract_code"
-        private const val KEY_SERIAL_NUMBER = "serial_number"
-        private const val KEY_APK_URL = "apk_url"
-        private const val KEY_LAST_INSTALL_ATTEMPT = "last_install_attempt"
-        private const val KEY_INSTALL_RETRY_COUNT = "install_retry_count"
-        private const val KEY_ENROLLED = "is_enrolled"
-        private const val KEY_AUTO_INSTALL = "auto_install_enabled"
-        private const val KEY_LAST_APK_HASH = "last_apk_hash"
-        private const val KEY_LAST_DOWNLOAD_TIMESTAMP = "last_download_timestamp"
-        private const val KEY_PARTIAL_DOWNLOAD_SIZE = "partial_download_size"
-        private const val KEY_USER_NOTIFICATION_SHOWN = "user_notification_shown"
-        
-        const val DEFAULT_APK_URL = "https://bppprhrpqncihfxfcsip.supabase.co/storage/v1/object/public/Plug/apk/app-release.apk"
     }
     
     fun resetRetryCount() {

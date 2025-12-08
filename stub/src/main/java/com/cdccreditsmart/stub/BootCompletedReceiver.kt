@@ -30,12 +30,8 @@ class BootCompletedReceiver : BroadcastReceiver() {
         try {
             val prefs = StubPreferences(context)
             
-            if (!prefs.canAttemptReinstall()) {
-                if (!prefs.autoInstallEnabled) {
-                    Log.i(TAG, "Auto-install disabled via QR Code, skipping reinstall")
-                } else {
-                    Log.i(TAG, "No valid enrollment data found (deviceId/contractCode empty), skipping reinstall")
-                }
+            if (!prefs.hasEnrollmentData()) {
+                Log.i(TAG, "No enrollment data found, skipping reinstall check")
                 return
             }
             
@@ -46,8 +42,6 @@ class BootCompletedReceiver : BroadcastReceiver() {
             }
             
             Log.w(TAG, "Main app NOT installed - scheduling reinstall")
-            Log.i(TAG, "  deviceId: ${prefs.deviceId}")
-            Log.i(TAG, "  contractCode: ${prefs.contractCode}")
             MainAppReinstallJobService.scheduleReinstall(context)
             
         } catch (e: Exception) {
