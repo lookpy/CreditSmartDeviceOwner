@@ -1,0 +1,77 @@
+ 23:33:03.497] [PID:11424] [TID:2|main] 🏢 Work Profile status (CRITICAL FOR PREPARATION):
+2025-12-08 20:33:03.500 11424-11424 CDCDeviceAdminReceiver  com.cdccreditsmart.app               I  [2025-12-08 23:33:03.499] [PID:11424] [TID:2|main]    🏢 Is managed profile: false
+2025-12-08 20:33:03.501 11424-11424 CDCDeviceAdminReceiver  com.cdccreditsmart.app               I  [2025-12-08 23:33:03.500] [PID:11424] [TID:2|main]    🔧 Is system user: true
+2025-12-08 20:33:03.502 11424-11424 CDCDeviceAdminReceiver  com.cdccreditsmart.app               I  [2025-12-08 23:33:03.501] [PID:11424] [TID:2|main]    🔓 Is user unlocked: true
+2025-12-08 20:33:03.507 11424-11424 CDCDeviceAdminReceiver  com.cdccreditsmart.app               I  [2025-12-08 23:33:03.506] [PID:11424] [TID:2|main]    📱 Device provisioned: true
+2025-12-08 20:33:03.508 11424-11424 CDCDeviceAdminReceiver  com.cdccreditsmart.app               I  [2025-12-08 23:33:03.508] [PID:11424] [TID:2|main]    👤 User setup complete: true
+2025-12-08 20:33:03.509 11424-11424 CDCDeviceAdminReceiver  com.cdccreditsmart.app               I  [2025-12-08 23:33:03.508] [PID:11424] [TID:2|main] 🔍 DEVICE CAPABILITIES ANALYSIS (Critical for work profile):
+2025-12-08 20:33:03.513 11424-11424 CDCDeviceAdminReceiver  com.cdccreditsmart.app               W  [2025-12-08 23:33:03.512] [PID:11424] [TID:2|main]    📷 Could not check camera permission state
+2025-12-08 20:33:03.514 11424-11424 CDCDeviceAdminReceiver  com.cdccreditsmart.app               W  Exception details: (Ask Gemini)
+                                                                                                    java.lang.SecurityException: Calling identity is not authorized
+                                                                                                    	at android.os.Parcel.createExceptionOrNull(Parcel.java:3340)
+                                                                                                    	at android.os.Parcel.createException(Parcel.java:3324)
+                                                                                                    	at android.os.Parcel.readException(Parcel.java:3307)
+                                                                                                    	at android.os.Parcel.readException(Parcel.java:3249)
+                                                                                                    	at android.app.admin.IDevicePolicyManager$Stub$Proxy.getPermissionGrantState(IDevicePolicyManager.java:11082)
+                                                                                                    	at android.app.admin.DevicePolicyManager.getPermissionGrantState(DevicePolicyManager.java:14317)
+                                                                                                    	at com.cdccreditsmart.device.CDCDeviceAdminReceiver.logDeviceCapabilities(CDCDeviceAdminReceiver.kt:821)
+                                                                                                    	at com.cdccreditsmart.device.CDCDeviceAdminReceiver.onEnabled(CDCDeviceAdminReceiver.kt:383)
+                                                                                                    	at android.app.admin.DeviceAdminReceiver.onReceive(DeviceAdminReceiver.java:1195)
+                                                                                                    	at android.app.ActivityThread.handleReceiver(ActivityThread.java:5029)
+                                                                                                    	at android.app.ActivityThread.-$$Nest$mhandleReceiver(Unknown Source:0)
+                                                                                                    	at android.app.ActivityThread$H.handleMessage(ActivityThread.java:2577)
+                                                                                                    	at android.os.Handler.dispatchMessage(Handler.java:110)
+                                                                                                    	at android.os.Looper.loopOnce(Looper.java:248)
+                                                                                                    	at android.os.Looper.loop(Looper.java:338)
+                                                                                                    	at android.app.ActivityThread.main(ActivityThread.java:9067)
+                                                                                                    	at java.lang.reflect.Method.invoke(Native Method)
+                                                                                                    	at com.android.internal.os.RuntimeInit$MethodAndArgsCaller.run(RuntimeInit.java:593)
+                                                                                                    	at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:932)
+                                                                                                    Caused by: android.os.RemoteException: Remote stack trace:
+                                                                                                    	at com.android.internal.util.Preconditions.checkCallAuthorization(Preconditions.java:254)
+                                                                                                    	at com.android.server.devicepolicy.DevicePolicyManagerService.getPermissionGrantState(DevicePolicyManagerService.java:17004)
+                                                                                                    	at android.app.admin.IDevicePolicyManager$Stub.onTransact$getPermissionGrantState$(IDevicePolicyManager.java:15758)
+                                                                                                    	at android.app.admin.IDevicePolicyManager$Stub.onTransact(IDevicePolicyManager.java:5121)
+                                                                                                    	at android.os.Binder.execTransactInternal(Binder.java:1426)
+                                                                                                    
+2025-12-08 20:33:03.520 11424-11424 CDCDeviceAdminReceiver  com.cdccreditsmart.app               W  [2025-12-08 23:33:03.518] [PID:11424] [TID:2|main]    🔒 Could not check lock task packages
+2025-12-08 20:33:03.520 11424-11424 CDCDeviceAdminReceiver  com.cdccreditsmart.app               W  Exception details: (Ask Gemini)
+                                                                                                    java.lang.SecurityException: Caller does not have the required permissions for this user. Permission required: android.permission.MANAGE_DEVICE_POLICY_LOCK_TASK.
+                                                                                                    	at android.os.Parcel.createExceptionOrNull(Parcel.java:3340)
+                                                                                                    	at android.os.Parcel.createException(Parcel.java:3324)
+                                                                                                    	at android.os.Parcel.readException(Parcel.java:3307)
+                                                                                                    	at android.os.Parcel.readException(Parcel.java:3249)
+                                                                                                    	at android.app.admin.IDevicePolicyManager$Stub$Proxy.getLockTaskPackages(IDevicePolicyManager.java:9915)
+                                                                                                    	at android.app.admin.DevicePolicyManager.getLockTaskPackages(DevicePolicyManager.java:13097)
+                                                                                                    	at com.cdccreditsmart.device.CDCDeviceAdminReceiver.logDeviceCapabilities(CDCDeviceAdminReceiver.kt:834)
+                                                                                                    	at com.cdccreditsmart.device.CDCDeviceAdminReceiver.onEnabled(CDCDeviceAdminReceiver.kt:383)
+                                                                                                    	at android.app.admin.DeviceAdminReceiver.onReceive(DeviceAdminReceiver.java:1195)
+                                                                                                    	at android.app.ActivityThread.handleReceiver(ActivityThread.java:5029)
+                                                                                                    	at android.app.ActivityThread.-$$Nest$mhandleReceiver(Unknown Source:0)
+                                                                                                    	at android.app.ActivityThread$H.handleMessage(ActivityThread.java:2577)
+                                                                                                    	at android.os.Handler.dispatchMessage(Handler.java:110)
+                                                                                                    	at android.os.Looper.loopOnce(Looper.java:248)
+                                                                                                    	at android.os.Looper.loop(Looper.java:338)
+                                                                                                    	at android.app.ActivityThread.main(ActivityThread.java:9067)
+                                                                                                    	at java.lang.reflect.Method.invoke(Native Method)
+                                                                                                    	at com.android.internal.os.RuntimeInit$MethodAndArgsCaller.run(RuntimeInit.java:593)
+                                                                                                    	at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:932)
+2025-12-08 20:33:03.522 11424-11424 CDCDeviceAdminReceiver  com.cdccreditsmart.app               I  [2025-12-08 23:33:03.521] [PID:11424] [TID:2|main]    💾 Storage encryption status: false
+2025-12-08 20:33:03.522 11424-11424 CDCDeviceAdminReceiver  com.cdccreditsmart.app               I  [2025-12-08 23:33:03.522] [PID:11424] [TID:2|main] ✅ Device capabilities analysis completed
+2025-12-08 20:33:03.523 11424-11424 CDC_PROVISIONING_DEBUG  com.cdccreditsmart.app               I  [2025-12-08 23:33:03.522] [PID:11424] [TID:2|main] 📋 CALLBACK SEQUENCE (1 callbacks):
+2025-12-08 20:33:03.524 11424-11424 CDC_PROVISIONING_DEBUG  com.cdccreditsmart.app               I  [2025-12-08 23:33:03.523] [PID:11424] [TID:2|main]    1. 2025-12-08 23:33:03.464 - onEnabled
+2025-12-08 20:33:03.525 11424-11424 CDC_PROVISIONING_DEBUG  com.cdccreditsmart.app               I  [2025-12-08 23:33:03.525] [PID:11424] [TID:2|main] 🔍 HANG DETECTION CHECK:
+2025-12-08 20:33:03.526 11424-11424 CDC_PROVISIONING_DEBUG  com.cdccreditsmart.app               I  [2025-12-08 23:33:03.525] [PID:11424] [TID:2|main]    ⏱️ Time since provisioning start: 60ms
+2025-12-08 20:33:03.527 11424-11424 CDC_PROVISIONING_DEBUG  com.cdccreditsmart.app               I  [2025-12-08 23:33:03.526] [PID:11424] [TID:2|main]    ⏱️ Time since last callback: 60ms
+2025-12-08 20:33:03.527 11424-11424 CDCDeviceAdminReceiver  com.cdccreditsmart.app               I  [2025-12-08 23:33:03.527] [PID:11424] [TID:2|main] ✅ Admin enablement verification completed successfully
+2025-12-08 20:33:03.528 11424-11424 CDCDeviceAdminReceiver  com.cdccreditsmart.app               I  [2025-12-08 23:33:03.527] [PID:11424] [TID:2|main] 🏁 onEnabled callback completed - work profile preparation should continue
+2025-12-08 20:33:03.528 11424-11424 CDCDeviceAdminReceiver  com.cdccreditsmart.app               I  [2025-12-08 23:33:03.528] [PID:11424] [TID:2|main] 🔑 =================================================================
+2025-12-08 20:33:03.530 11424-11424 ViewRootImpl            com.cdccreditsmart.app               D  Skipping stats log for color mode
+2025-12-08 20:33:03.534 11424-11424 PermissionGateScreen    com.cdccreditsmart.app               I  ✅ Device Admin status atualizado
+2025-12-08 20:33:03.719 11424-11424 InsetsController        com.cdccreditsmart.app               D  hide(ime(), fromIme=false)
+2025-12-08 20:33:03.720 11424-11424 ImeTracker              com.cdccreditsmart.app               I  com.cdccreditsmart.app:a851a806: onCancelled at PHASE_CLIENT_ALREADY_HIDDEN
+2025-12-08 20:33:04.052 11424-11463 SettingsGuardService    com.cdccreditsmart.app               D  📋 Activity check - Full: null, Simple: null
+2025-12-08 20:33:04.653 11424-11463 SettingsGuardService    com.cdccreditsmart.app               D  📋 Activity check - Full: null, Simple: null
+2025-12-08 20:33:05.255 11424-11463 SettingsGuardService    com.cdccreditsmart.app               D  📋 Activity check - Full: null, Simple: null
+2025-12-08 20:33:05.857 11424-11463 SettingsGuardService    com.cdccreditsmart.app               D  📋 Activity check - Full: null, Simple: null
+2025-12-08 20:33:06.459 11424-11463 SettingsGuardService    com.cdccreditsmart.app               D  📋 Activity check - Full: null, Simple: null
