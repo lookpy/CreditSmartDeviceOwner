@@ -125,7 +125,11 @@ Utilizes Jetpack Compose and Material 3 with a CDC institutional dark theme. Fea
 **Stub Factory Reset Recovery (2025-12-08):**
 - Enhanced `StubDeviceAdminReceiver` to extract data from QR Code `ADMIN_EXTRAS_BUNDLE`
 - Added auto-discovery mode: generates deviceId from ANDROID_ID when not provided in QR Code
-- Added `autoInstallEnabled` property to StubPreferences
+- Added `autoInstallEnabled` property to StubPreferences for QR Code control
+- Added `canAttemptReinstall()` unified gate for all reinstall scheduling
+- Fixed race condition: deferred scheduling to `onProfileProvisioningComplete()` to ensure QR extras are processed first
+- Added blank string coercion (`takeIf { it.isNotBlank() }`) to handle empty QR fields
 - Created comprehensive QR Code provisioning documentation (`docs/QR_CODE_PROVISIONING.md`)
-- Flow: QR Code → Stub installed as Device Owner → Extracts enrollment data → Downloads & installs main app
-- Post-reset flow: User scans QR Code again → Stub reinstalled → Downloads main app from Supabase URL
+- Flow: QR Code → onProfileProvisioningComplete → Save enrollment data → Schedule reinstall (if auto_install=true)
+- Post-reset flow: User scans QR Code again → Stub reinstalled as Device Owner → Downloads main app from Supabase URL
+- All four scenarios verified: QR with data, auto-discovery, auto_install=false, post-reset re-enrollment
