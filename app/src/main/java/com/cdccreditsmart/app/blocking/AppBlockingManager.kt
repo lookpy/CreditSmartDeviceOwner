@@ -295,7 +295,7 @@ class AppBlockingManager(private val context: Context) {
         }
     }
     
-    private fun isDeviceOwner(): Boolean {
+    fun isDeviceOwner(): Boolean {
         return try {
             dpm.isDeviceOwnerApp(context.packageName)
         } catch (e: Exception) {
@@ -403,7 +403,7 @@ class AppBlockingManager(private val context: Context) {
         }
     }
     
-    private fun getCurrentBlockingLevel(): Int {
+    fun getCurrentBlockingLevel(): Int {
         val prefs = context.getSharedPreferences("blocking_state", Context.MODE_PRIVATE)
         return prefs.getInt("current_level", 0)
     }

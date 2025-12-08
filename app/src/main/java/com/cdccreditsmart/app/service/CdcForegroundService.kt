@@ -942,28 +942,15 @@ class CdcForegroundService : Service(), ScreenStateListener {
             
             // Preparar dados para heartbeat de sincronização
             val blockingInfo = appBlockingManager.getBlockingInfo()
-            val secureStorage = SecureTokenStorage(applicationContext)
-            val serialNumber = secureStorage.getSerialNumber() ?: ""
-            val fingerprint = secureStorage.getFingerprint() ?: ""
             
-            val heartbeatRequest = com.cdccreditsmart.network.dto.cdc.RealTimeHeartbeatRequest(
+            val heartbeatRequest = com.cdccreditsmart.network.dto.cdc.CdcHeartbeatRequest(
                 timestamp = System.currentTimeMillis(),
-                deviceId = serialNumber,
-                appVersion = BuildConfig.VERSION_NAME,
-                appVersionCode = BuildConfig.VERSION_CODE,
+                status = "active",
                 batteryLevel = getBatteryLevel(),
-                isCharging = isDeviceCharging(),
-                networkType = getNetworkType(),
-                screenOn = isScreenOn(),
-                freeStorageMb = getFreeStorageMb(),
-                totalStorageMb = getTotalStorageMb(),
-                isDeviceOwner = true,
-                isDeviceAdmin = true,
                 currentBlockLevel = currentLocalLevel,
                 blockedAppsCount = blockingInfo.blockedAppsCount,
                 isManualBlock = blockingInfo.isManualBlock,
-                androidVersion = android.os.Build.VERSION.RELEASE,
-                fingerprint = fingerprint
+                progressiveBlockActive = currentLocalLevel > 0
             )
             
             Log.i(TAG, "🔄 Enviando heartbeat de sincronização...")
@@ -996,10 +983,9 @@ class CdcForegroundService : Service(), ScreenStateListener {
                         
                         val blockParams = CommandParameters.BlockParameters(
                             targetLevel = expectedLevel,
-                            daysOverdue = 0, // Será atualizado pelo backend
+                            daysOverdue = 0,
                             reason = "Sincronização automática após reinstalação",
-                            categories = categories,
-                            startTime = System.currentTimeMillis()
+                            categories = categories
                         )
                         
                         val result = appBlockingManager.applyProgressiveBlock(blockParams)
@@ -1057,47 +1043,6 @@ class CdcForegroundService : Service(), ScreenStateListener {
             val batteryManager = getSystemService(Context.BATTERY_SERVICE) as? android.os.BatteryManager
             batteryManager?.getIntProperty(android.os.BatteryManager.BATTERY_PROPERTY_CAPACITY) ?: -1
         } catch (e: Exception) { -1 }
-    }
-    
-    private fun isDeviceCharging(): Boolean {
-        return try {
-            val batteryManager = getSystemService(Context.BATTERY_SERVICE) as? android.os.BatteryManager
-            batteryManager?.isCharging ?: false
-        } catch (e: Exception) { false }
-    }
-    
-    private fun getNetworkType(): String {
-        return try {
-            val connectivityManager = getSystemService(Context.CONNECTIVITY_SERVICE) as? android.net.ConnectivityManager
-            val network = connectivityManager?.activeNetwork
-            val capabilities = connectivityManager?.getNetworkCapabilities(network)
-            when {
-                capabilities?.hasTransport(android.net.NetworkCapabilities.TRANSPORT_WIFI) == true -> "wifi"
-                capabilities?.hasTransport(android.net.NetworkCapabilities.TRANSPORT_CELLULAR) == true -> "cellular"
-                else -> "unknown"
-            }
-        } catch (e: Exception) { "unknown" }
-    }
-    
-    private fun isScreenOn(): Boolean {
-        return try {
-            val powerManager = getSystemService(Context.POWER_SERVICE) as? PowerManager
-            powerManager?.isInteractive ?: true
-        } catch (e: Exception) { true }
-    }
-    
-    private fun getFreeStorageMb(): Long {
-        return try {
-            val stat = android.os.StatFs(android.os.Environment.getDataDirectory().path)
-            stat.availableBytes / (1024 * 1024)
-        } catch (e: Exception) { 0L }
-    }
-    
-    private fun getTotalStorageMb(): Long {
-        return try {
-            val stat = android.os.StatFs(android.os.Environment.getDataDirectory().path)
-            stat.totalBytes / (1024 * 1024)
-        } catch (e: Exception) { 0L }
     }
     
     private fun updateNotification(text: String) {
