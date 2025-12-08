@@ -87,3 +87,24 @@ O enforcement offline reaplicava packages do cache diretamente via setApplicatio
 - elapsedRealtime() como base monotônica (imune a manipulação)
 - AND lógico: AMBAS referências (elapsed E wall-clock) devem concordar ≥20h
 - Reset apenas pelo servidor via `resetDaysOverdueFromServer()`
+
+### 2025-12-08: Correção CDCApplication e CDCDeviceAdminReceiver
+
+**Problema Identificado:**
+- CDCApplication chamava `SettingsGuardService.startService()` que não existia
+- CDCDeviceAdminReceiver tentava iniciar SettingsGuardService como Android Service, mas é uma classe normal
+
+**Correção Implementada:**
+
+**1. CDCApplication.kt:**
+- Instancia `SettingsGuardService(applicationContext)` diretamente
+- Chama `startGuard()` para iniciar monitoramento
+
+**2. CDCDeviceAdminReceiver.kt:**
+- Função `startSettingsGuardServiceImmediately()` agora usa `sendBroadcast()` 
+- Envia action `com.cdccreditsmart.START_SETTINGS_GUARD`
+- CDCApplication recebe e inicia o guard via onCreate() quando Device Owner
+
+**Garantias:**
+- SettingsGuard inicia corretamente no boot quando Device Owner
+- Não há mais tentativa de startService em classe que não é Service
