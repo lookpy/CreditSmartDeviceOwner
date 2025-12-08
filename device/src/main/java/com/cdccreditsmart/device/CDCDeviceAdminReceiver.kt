@@ -1524,47 +1524,33 @@ class CDCDeviceAdminReceiver : DeviceAdminReceiver() {
     }
     
     /**
-     * Inicia SettingsGuardService IMEDIATAMENTE após Device Owner ser ativado
+     * Notifica o app para iniciar o SettingsGuardService IMEDIATAMENTE.
      * 
      * CRÍTICO: O SettingsGuard deve iniciar o mais rápido possível para
      * proteger o dispositivo contra acesso às configurações.
      * 
-     * Esta função usa Intent explícito para iniciar o serviço sem
-     * depender de imports do módulo app.
+     * NOTA: SettingsGuardService não é um Android Service, é uma classe normal
+     * que monitora acesso às Settings via UsageStatsManager. Por isso, enviamos
+     * um broadcast para que o módulo app inicie o guard.
      */
     private fun startSettingsGuardServiceImmediately(context: Context) {
         try {
             logDetailed("I", TAG, "🛡️ ========================================")
-            logDetailed("I", TAG, "🛡️ INICIANDO SETTINGSGUARD IMEDIATAMENTE")
+            logDetailed("I", TAG, "🛡️ NOTIFICANDO APP PARA INICIAR SETTINGSGUARD")
             logDetailed("I", TAG, "🛡️ ========================================")
             
-            // Criar Intent explícito para o SettingsGuardService
-            val serviceIntent = Intent()
-            serviceIntent.setClassName(
-                context.packageName,
-                "com.cdccreditsmart.app.protection.SettingsGuardService"
-            )
-            serviceIntent.action = "START_FROM_DEVICE_ADMIN"
+            // Enviar broadcast para o app iniciar o SettingsGuard
+            val broadcastIntent = Intent("com.cdccreditsmart.START_SETTINGS_GUARD")
+            broadcastIntent.setPackage(context.packageName)
+            context.sendBroadcast(broadcastIntent)
             
-            // Tentar iniciar como foreground service (Android O+)
-            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-                try {
-                    context.startForegroundService(serviceIntent)
-                    logDetailed("I", TAG, "🛡️ ✅ SettingsGuardService iniciado via startForegroundService()")
-                } catch (e: Exception) {
-                    logDetailed("W", TAG, "🛡️ ⚠️ startForegroundService falhou, tentando startService()")
-                    context.startService(serviceIntent)
-                }
-            } else {
-                context.startService(serviceIntent)
-                logDetailed("I", TAG, "🛡️ ✅ SettingsGuardService iniciado via startService()")
-            }
-            
+            logDetailed("I", TAG, "🛡️ ✅ Broadcast enviado para iniciar SettingsGuard")
+            logDetailed("I", TAG, "🛡️    O CDCApplication vai receber e iniciar o guard")
             logDetailed("I", TAG, "🛡️ ========================================")
             
         } catch (e: Exception) {
-            logDetailed("E", TAG, "❌ Erro ao iniciar SettingsGuardService: ${e.message}", e)
-            logDetailed("W", TAG, "⚠️ SettingsGuard será iniciado posteriormente pela CDCApplication")
+            logDetailed("E", TAG, "❌ Erro ao enviar broadcast: ${e.message}", e)
+            logDetailed("W", TAG, "⚠️ SettingsGuard será iniciado pela CDCApplication no onCreate()")
         }
     }
 }

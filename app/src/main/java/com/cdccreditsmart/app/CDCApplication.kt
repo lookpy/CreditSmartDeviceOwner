@@ -321,15 +321,13 @@ class CDCApplication : Application() {
             Log.i(TAG, "🛡️ Device Owner detectado - proteção máxima iniciando...")
             
             // Iniciar SettingsGuardService imediatamente
-            val started = SettingsGuardService.startService(applicationContext)
+            // SettingsGuardService não é um Android Service, é uma classe normal
+            // que monitora acesso às Settings via UsageStatsManager
+            val settingsGuard = SettingsGuardService(applicationContext)
+            settingsGuard.startGuard()
             
-            if (started) {
-                Log.i(TAG, "🛡️ ✅ SettingsGuardService iniciado com sucesso!")
-                Log.i(TAG, "🛡️    Dispositivo protegido contra acesso a Settings")
-            } else {
-                Log.w(TAG, "🛡️ ⚠️ SettingsGuardService não pôde ser iniciado agora")
-                Log.w(TAG, "🛡️    Será tentado novamente quando app estiver em foreground")
-            }
+            Log.i(TAG, "🛡️ ✅ SettingsGuardService iniciado com sucesso!")
+            Log.i(TAG, "🛡️    Dispositivo protegido contra acesso a Settings")
             
             Log.i(TAG, "🛡️ ========================================")
             
