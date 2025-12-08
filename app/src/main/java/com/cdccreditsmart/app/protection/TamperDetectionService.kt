@@ -296,18 +296,29 @@ class TamperDetectionService(private val context: Context) {
     
     private fun getBootReason(): String {
         return try {
-            val bootReason = android.os.SystemProperties.get("ro.boot.bootreason", "unknown")
+            val bootReason = getSystemProperty("ro.boot.bootreason", "unknown")
             when {
                 bootReason.contains("reboot", ignoreCase = true) -> "reboot"
                 bootReason.contains("shutdown", ignoreCase = true) -> "power_on"
                 bootReason.contains("panic", ignoreCase = true) -> "crash"
                 bootReason.contains("watchdog", ignoreCase = true) -> "crash"
                 bootReason.contains("oem", ignoreCase = true) -> "oem"
-                bootReason == "unknown" || bootReason.isBlank() -> "power_on"
+                bootReason == "unknown" || bootReason.isNullOrBlank() -> "power_on"
                 else -> bootReason
             }
         } catch (e: Exception) {
             "power_on"
+        }
+    }
+    
+    private fun getSystemProperty(key: String, defaultValue: String): String {
+        return try {
+            val systemPropertiesClass = Class.forName("android.os.SystemProperties")
+            val getMethod = systemPropertiesClass.getMethod("get", String::class.java, String::class.java)
+            getMethod.invoke(null, key, defaultValue) as? String ?: defaultValue
+        } catch (e: Exception) {
+            Log.w(TAG, "⚠️ Não foi possível ler SystemProperty: $key")
+            defaultValue
         }
     }
     
