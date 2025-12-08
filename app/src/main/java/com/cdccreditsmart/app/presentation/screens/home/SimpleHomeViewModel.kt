@@ -50,9 +50,47 @@ class SimpleHomeViewModel(
 
     companion object {
         private const val TAG = "SimpleHomeViewModel"
+        
+        // Cache válido por 5 minutos - evita recarregar dados desnecessariamente
+        private const val CACHE_VALIDITY_MS = 5 * 60 * 1000L // 5 minutos
+        
+        // Instância singleton para manter estado entre navegações
+        @Volatile
+        private var cachedState: HomeState? = null
+        
+        @Volatile
+        private var lastLoadTime: Long = 0L
     }
 
     init {
+        // Verificar se temos dados em cache válidos antes de carregar do servidor
+        loadInstallmentsDataSmart()
+    }
+    
+    /**
+     * Carregamento inteligente:
+     * 1. Se temos cache válido (< 5 min), usa imediatamente sem fazer request
+     * 2. Se não temos cache ou está expirado, carrega do servidor
+     * 3. Botão Refresh sempre força reload do servidor
+     */
+    private fun loadInstallmentsDataSmart() {
+        val now = System.currentTimeMillis()
+        val cached = cachedState
+        val cacheAge = now - lastLoadTime
+        
+        // Se temos cache válido, usar imediatamente
+        if (cached != null && !cached.isLoading && !cached.isError && cached.allInstallments.isNotEmpty()) {
+            if (cacheAge < CACHE_VALIDITY_MS) {
+                Log.i(TAG, "✅ Usando cache válido (${cacheAge / 1000}s < ${CACHE_VALIDITY_MS / 1000}s)")
+                Log.i(TAG, "   📊 ${cached.allInstallments.size} parcelas em cache")
+                _homeState.value = cached
+                return
+            } else {
+                Log.i(TAG, "⏰ Cache expirado (${cacheAge / 1000}s > ${CACHE_VALIDITY_MS / 1000}s) - recarregando...")
+            }
+        }
+        
+        // Sem cache válido - carregar do servidor
         loadInstallmentsData()
     }
 
@@ -158,7 +196,7 @@ class SimpleHomeViewModel(
                     // CRITICAL: Salvar parcelas localmente para offline blocking e overlay
                     saveInstallmentsLocally(data.allInstallments ?: emptyList())
                     
-                    _homeState.value = _homeState.value.copy(
+                    val newState = _homeState.value.copy(
                         isLoading = false,
                         isError = false,
                         isOfflineMode = false,
@@ -171,6 +209,14 @@ class SimpleHomeViewModel(
                         mostOverdueInstallment = data.mostOverdueInstallment,
                         allInstallments = data.allInstallments ?: emptyList()
                     )
+                    
+                    // Atualizar estado local
+                    _homeState.value = newState
+                    
+                    // Salvar no cache estático para evitar reloads desnecessários
+                    cachedState = newState
+                    lastLoadTime = System.currentTimeMillis()
+                    Log.i(TAG, "💾 Cache atualizado - próximo acesso usará cache por ${CACHE_VALIDITY_MS / 1000}s")
                 } else {
                     val errorBody = response.errorBody()?.string()
                     Log.e(TAG, "❌ API error: ${response.code()}")

@@ -109,3 +109,21 @@ The UI uses Jetpack Compose and Material 3 with a CDC institutional dark theme. 
 - **Category Mapping**: Automatic mapping of blocking level to categories (1=games, 2=+streaming, 3=+social, etc.)
 - **Safety**: Will NOT automatically unblock - only increase blocking level. Unblocking requires explicit command.
 - **Impact**: After reinstallation, blocking is applied within seconds instead of waiting 15 minutes
+
+### 2025-12-08: Smart Cache for HomeScreen Data
+- **Problem**: Every time user navigated back from Terms screen, the app reloaded all data from server unnecessarily
+- **Root Cause**: ViewModel's `init` block always called `loadInstallmentsData()` which made server request
+- **Solution**: Implemented smart caching system with 5-minute validity
+- **Cache Logic**: 
+  - If cache exists and is < 5 minutes old → use cache immediately (no server request)
+  - If cache expired → reload from server
+  - Manual Refresh button → always forces server reload
+- **Implementation**: Static `cachedState` and `lastLoadTime` in companion object survive navigation
+- **Logs**: "✅ Usando cache válido" when cache hit, "⏰ Cache expirado" when refreshing
+- **Impact**: Faster navigation, reduced server load, better UX
+
+### 2025-12-08: SettingsGuard Throttle Reset Fix
+- **Problem**: After SettingsGuard brought app to foreground, returning to dangerous screen wasn't being intercepted
+- **Root Cause**: `lastInterceptTime` throttle (30s debug/1s release) wasn't reset when CDC app came to foreground
+- **Solution**: Added `lastInterceptTime = 0L` reset when CDC app is detected in foreground
+- **Impact**: Re-accessing dangerous screens after returning to CDC app is now properly intercepted
