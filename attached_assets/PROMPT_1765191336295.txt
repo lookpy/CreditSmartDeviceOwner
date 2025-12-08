@@ -1,0 +1,956 @@
+2025-12-08 07:54:56.485 10413-10413 WebSocketManager        com.cdccreditsmart.app               D  Heartbeat ping sent
+2025-12-08 07:54:56.694 10413-10472 WebSocketManager        com.cdccreditsmart.app               D  Message received: {"type":"pong","timestamp":"2025-12-08T10:54:56.944Z"}...
+2025-12-08 07:54:56.694 10413-10472 WebSocketManager        com.cdccreditsmart.app               D  Received message type: pong
+2025-12-08 07:54:56.694 10413-10472 WebSocketManager        com.cdccreditsmart.app               D  Pong received
+2025-12-08 07:54:56.868 10413-10453 MdmCommandReceiver      com.cdccreditsmart.app               I  🔍 [Polling #2] Verificando comandos pendentes...
+2025-12-08 07:54:56.868 10413-10453 SecureTokenStorage      com.cdccreditsmart.app               D  ⚠️ Usando Serial Number para MDM (IMEI indisponível): XV8W57...
+2025-12-08 07:54:56.868 10413-10453 MdmCommandReceiver      com.cdccreditsmart.app               I  🔍 ========================================
+2025-12-08 07:54:56.868 10413-10453 MdmCommandReceiver      com.cdccreditsmart.app               I  🔍 BUSCANDO COMANDOS PENDENTES
+2025-12-08 07:54:56.868 10413-10453 MdmCommandReceiver      com.cdccreditsmart.app               I  🔍 ========================================
+2025-12-08 07:54:56.868 10413-10453 MdmCommandReceiver      com.cdccreditsmart.app               I  🔍 Identifier: XV8W5766
+2025-12-08 07:54:56.868 10413-10453 MdmCommandReceiver      com.cdccreditsmart.app               I  🔍 Endpoint: GET /api/apk/device/XV8W5766/commands
+2025-12-08 07:54:56.869 10413-10453 MdmCommandReceiver      com.cdccreditsmart.app               D  🔍 Executando requisição HTTP (timeout: 15s)...
+2025-12-08 07:54:56.870 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  --> GET https://cdccreditsmart.com/api/apk/device/XV8W5766/commands
+2025-12-08 07:54:56.870 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  --> END GET
+2025-12-08 07:54:56.887 10413-10464 SecureTokenStorage      com.cdccreditsmart.app               D  EncryptedSharedPreferences initialized successfully
+2025-12-08 07:54:57.337 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  <-- 200 https://cdccreditsmart.com/api/apk/device/XV8W5766/commands (466ms)
+2025-12-08 07:54:57.337 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-credentials: true
+2025-12-08 07:54:57.337 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-headers: Origin, X-Requested-With, Content-Type, Accept, Authorization, x-client-key, x-client-token, x-client-secret, cache-control
+2025-12-08 07:54:57.338 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-methods: GET, POST, PUT, PATCH, DELETE, OPTIONS
+2025-12-08 07:54:57.338 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-origin: *
+2025-12-08 07:54:57.338 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-max-age: 86400
+2025-12-08 07:54:57.338 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-length: 454
+2025-12-08 07:54:57.338 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-security-policy: default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://replit.com; style-src 'self' 'unsafe-inline' https://replit.com; img-src 'self' data: https:; font-src 'self' data: https://replit.com; connect-src 'self';
+2025-12-08 07:54:57.338 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-type: application/json; charset=utf-8
+2025-12-08 07:54:57.338 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  date: Mon, 08 Dec 2025 10:54:57 GMT
+2025-12-08 07:54:57.338 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  etag: W/"1c6-O5il3yoSYKgr9hR1ITC4zpukPew"
+2025-12-08 07:54:57.338 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  permissions-policy: geolocation=(), microphone=(), camera=()
+2025-12-08 07:54:57.339 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  referrer-policy: strict-origin-when-cross-origin
+2025-12-08 07:54:57.339 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  strict-transport-security: max-age=63072000; includeSubDomains
+2025-12-08 07:54:57.339 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  strict-transport-security: max-age=31536000; includeSubDomains
+2025-12-08 07:54:57.339 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-anti-fraud-protection: active
+2025-12-08 07:54:57.339 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-certificate-pinning-enabled: false
+2025-12-08 07:54:57.339 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-certificate-pinning-status: disabled-for-stability
+2025-12-08 07:54:57.339 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-content-type-options: nosniff
+2025-12-08 07:54:57.339 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-financial-data-protection: enabled
+2025-12-08 07:54:57.339 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-frame-options: DENY
+2025-12-08 07:54:57.340 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-transaction-security-level: maximum
+2025-12-08 07:54:57.340 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-xss-protection: 1; mode=block
+2025-12-08 07:54:57.340 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  via: 1.1 google
+2025-12-08 07:54:57.340 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  alt-svc: h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
+2025-12-08 07:54:57.340 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  {"deviceId":"device_1765148771462_4teww42p114","serialNumber":"XV8W5766","commandsCount":1,"commands":[{"id":"3da7a04c-13ae-424b-a2bd-d1ffb52e800a","commandType":"UNINSTALL_APP","parameters":{"reason":"Admin requested uninstall","requestedAt":"2025-12-08T10:54:49.293Z","requestedBy":"admin@admin.com","uninstallCodeValidated":true},"priority":"critical","status":"pending","createdAt":"2025-12-08T10:54:49.331Z","expiresAt":"2025-12-09T10:54:49.292Z"}]}
+2025-12-08 07:54:57.340 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  <-- END HTTP (454-byte body)
+2025-12-08 07:54:57.346 10413-10453 MdmCommandReceiver      com.cdccreditsmart.app               I  🔍 HTTP Response code: 200
+2025-12-08 07:54:57.346 10413-10453 MdmCommandReceiver      com.cdccreditsmart.app               I  🔍 HTTP isSuccessful: true
+2025-12-08 07:54:57.346 10413-10453 MdmCommandReceiver      com.cdccreditsmart.app               I  🔍 Response body deviceId: device_1765148771462_4teww42p114
+2025-12-08 07:54:57.346 10413-10453 MdmCommandReceiver      com.cdccreditsmart.app               I  🔍 Response body serialNumber: XV8W5766
+2025-12-08 07:54:57.346 10413-10453 MdmCommandReceiver      com.cdccreditsmart.app               I  🔍 Total de comandos: 1
+2025-12-08 07:54:57.346 10413-10453 MdmCommandReceiver      com.cdccreditsmart.app               I  📋 ========================================
+2025-12-08 07:54:57.346 10413-10453 MdmCommandReceiver      com.cdccreditsmart.app               I  📋 1 COMANDOS PENDENTES ENCONTRADOS!
+2025-12-08 07:54:57.346 10413-10453 MdmCommandReceiver      com.cdccreditsmart.app               I  📋 ========================================
+2025-12-08 07:54:57.347 10413-10453 MdmCommandReceiver      com.cdccreditsmart.app               I  📋 [0] ID: 3da7a04c-13ae-424b-a2bd-d1ffb52e800a
+2025-12-08 07:54:57.347 10413-10453 MdmCommandReceiver      com.cdccreditsmart.app               I  📋 [0] Tipo: UNINSTALL_APP
+2025-12-08 07:54:57.347 10413-10453 MdmCommandReceiver      com.cdccreditsmart.app               I  📋 [0] Status: pending
+2025-12-08 07:54:57.347 10413-10453 MdmCommandReceiver      com.cdccreditsmart.app               I  📋 [0] Prioridade: critical
+2025-12-08 07:54:57.347 10413-10453 MdmCommandReceiver      com.cdccreditsmart.app               I  📋 [0] Parameters class: UninstallAppParameters
+2025-12-08 07:54:57.347 10413-10453 MdmCommandReceiver      com.cdccreditsmart.app               I  📋 Processando comando (timeout: 60s)...
+2025-12-08 07:54:57.348 10413-10453 MdmCommandReceiver      com.cdccreditsmart.app               I  ⚙️ Processando comando 3da7a04c-13ae-424b-a2bd-d1ffb52e800a (tipo: UNINSTALL_APP)
+2025-12-08 07:54:57.351 10413-10453 CdcForegroundService    com.cdccreditsmart.app               D  🔋 WakeLock adquirido para comando (30s timeout)
+2025-12-08 07:54:57.351 10413-10453 MdmCommandReceiver      com.cdccreditsmart.app               D  🔋 WakeLock adquirido para comando MDM 3da7a04c-13ae-424b-a2bd-d1ffb52e800a
+2025-12-08 07:54:57.353 10413-10453 MdmCommandReceiver      com.cdccreditsmart.app               D  📡 Enviando ACK: POST /api/apk/device/commands/3da7a04c-13ae-424b-a2bd-d1ffb52e800a/status
+2025-12-08 07:54:57.358 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  --> POST https://cdccreditsmart.com/api/apk/device/commands/3da7a04c-13ae-424b-a2bd-d1ffb52e800a/status
+2025-12-08 07:54:57.358 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  Content-Type: application/json; charset=UTF-8
+2025-12-08 07:54:57.358 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  Content-Length: 25
+2025-12-08 07:54:57.358 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  {"status":"acknowledged"}
+2025-12-08 07:54:57.358 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  --> END POST (25-byte body)
+2025-12-08 07:54:57.376 10413-10464 SecureTokenStorage      com.cdccreditsmart.app               D  EncryptedSharedPreferences initialized successfully
+2025-12-08 07:54:57.678 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  <-- 404 https://cdccreditsmart.com/api/apk/device/commands/3da7a04c-13ae-424b-a2bd-d1ffb52e800a/status (319ms)
+2025-12-08 07:54:57.678 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-credentials: true
+2025-12-08 07:54:57.678 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-headers: Origin, X-Requested-With, Content-Type, Accept, Authorization, x-client-key, x-client-token, x-client-secret, cache-control
+2025-12-08 07:54:57.678 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-methods: GET, POST, PUT, PATCH, DELETE, OPTIONS
+2025-12-08 07:54:57.678 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-origin: *
+2025-12-08 07:54:57.678 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-max-age: 86400
+2025-12-08 07:54:57.679 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-length: 497
+2025-12-08 07:54:57.679 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-security-policy: default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://replit.com; style-src 'self' 'unsafe-inline' https://replit.com; img-src 'self' data: https:; font-src 'self' data: https://replit.com; connect-src 'self';
+2025-12-08 07:54:57.679 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-type: application/json; charset=utf-8
+2025-12-08 07:54:57.679 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  date: Mon, 08 Dec 2025 10:54:57 GMT
+2025-12-08 07:54:57.679 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  etag: W/"1f1-J9DVbjH2x1oGDugpAtNNGUslOMI"
+2025-12-08 07:54:57.679 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  permissions-policy: geolocation=(), microphone=(), camera=()
+2025-12-08 07:54:57.680 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  referrer-policy: strict-origin-when-cross-origin
+2025-12-08 07:54:57.680 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  strict-transport-security: max-age=63072000; includeSubDomains
+2025-12-08 07:54:57.680 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  strict-transport-security: max-age=31536000; includeSubDomains
+2025-12-08 07:54:57.680 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-anti-fraud-protection: active
+2025-12-08 07:54:57.680 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-certificate-pinning-enabled: false
+2025-12-08 07:54:57.681 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-certificate-pinning-status: disabled-for-stability
+2025-12-08 07:54:57.681 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-content-type-options: nosniff
+2025-12-08 07:54:57.681 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-financial-data-protection: enabled
+2025-12-08 07:54:57.681 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-frame-options: DENY
+2025-12-08 07:54:57.681 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-transaction-security-level: maximum
+2025-12-08 07:54:57.681 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-xss-protection: 1; mode=block
+2025-12-08 07:54:57.681 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  via: 1.1 google
+2025-12-08 07:54:57.681 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  alt-svc: h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
+2025-12-08 07:54:57.683 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  {"error":"API endpoint not found","message":"Rota APK não encontrada","path":"/","method":"POST","timestamp":"2025-12-08T10:54:57.929Z","available_endpoints":["GET /api/apk/device/{serial}/status","POST /api/apk/device/{fingerprint}/sync","POST /api/apk/device/{fingerprint}/register-info","POST /api/apk/auth","GET /api/apk/device/{identifier}/commands","POST /api/apk/device/commands/{commandId}/status","POST /api/apk/device/{identifier}/command-response","GET /api/apk/device/commands/test"]}
+2025-12-08 07:54:57.684 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  <-- END HTTP (497-byte body)
+2025-12-08 07:54:57.687 10413-10453 MdmCommandReceiver      com.cdccreditsmart.app               W  ⚠️ Endpoint status falhou (HTTP 404), tentando fallback...
+2025-12-08 07:54:57.688 10413-10453 SecureTokenStorage      com.cdccreditsmart.app               D  ⚠️ Usando Serial Number para MDM (IMEI indisponível): XV8W57...
+2025-12-08 07:54:57.688 10413-10453 MdmCommandReceiver      com.cdccreditsmart.app               D  📡 Fallback: POST /api/apk/device/XV8W5766/command-response
+2025-12-08 07:54:57.691 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  --> POST https://cdccreditsmart.com/api/apk/device/XV8W5766/command-response
+2025-12-08 07:54:57.691 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  Content-Type: application/json; charset=UTF-8
+2025-12-08 07:54:57.691 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  Content-Length: 76
+2025-12-08 07:54:57.692 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  {"commandId":"3da7a04c-13ae-424b-a2bd-d1ffb52e800a","status":"acknowledged"}
+2025-12-08 07:54:57.692 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  --> END POST (76-byte body)
+2025-12-08 07:54:57.712 10413-10464 SecureTokenStorage      com.cdccreditsmart.app               D  EncryptedSharedPreferences initialized successfully
+2025-12-08 07:54:58.107 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  <-- 200 https://cdccreditsmart.com/api/apk/device/XV8W5766/command-response (414ms)
+2025-12-08 07:54:58.107 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-credentials: true
+2025-12-08 07:54:58.107 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-headers: Origin, X-Requested-With, Content-Type, Accept, Authorization, x-client-key, x-client-token, x-client-secret, cache-control
+2025-12-08 07:54:58.108 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-methods: GET, POST, PUT, PATCH, DELETE, OPTIONS
+2025-12-08 07:54:58.108 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-origin: *
+2025-12-08 07:54:58.108 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-max-age: 86400
+2025-12-08 07:54:58.108 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-length: 59
+2025-12-08 07:54:58.108 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-security-policy: default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://replit.com; style-src 'self' 'unsafe-inline' https://replit.com; img-src 'self' data: https:; font-src 'self' data: https://replit.com; connect-src 'self';
+2025-12-08 07:54:58.109 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-type: application/json; charset=utf-8
+2025-12-08 07:54:58.110 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  date: Mon, 08 Dec 2025 10:54:58 GMT
+2025-12-08 07:54:58.110 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  etag: W/"3b-9gCHwmPb8p6jYm5WExczQnIIdAU"
+2025-12-08 07:54:58.110 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  permissions-policy: geolocation=(), microphone=(), camera=()
+2025-12-08 07:54:58.110 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  referrer-policy: strict-origin-when-cross-origin
+2025-12-08 07:54:58.110 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  strict-transport-security: max-age=63072000; includeSubDomains
+2025-12-08 07:54:58.110 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  strict-transport-security: max-age=31536000; includeSubDomains
+2025-12-08 07:54:58.111 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-anti-fraud-protection: active
+2025-12-08 07:54:58.111 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-certificate-pinning-enabled: false
+2025-12-08 07:54:58.111 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-certificate-pinning-status: disabled-for-stability
+2025-12-08 07:54:58.111 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-content-type-options: nosniff
+2025-12-08 07:54:58.111 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-financial-data-protection: enabled
+2025-12-08 07:54:58.111 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-frame-options: DENY
+2025-12-08 07:54:58.112 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-transaction-security-level: maximum
+2025-12-08 07:54:58.112 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-xss-protection: 1; mode=block
+2025-12-08 07:54:58.113 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  via: 1.1 google
+2025-12-08 07:54:58.113 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  alt-svc: h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
+2025-12-08 07:54:58.114 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  {"success":true,"message":"Resposta do comando registrada"}
+2025-12-08 07:54:58.114 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  <-- END HTTP (59-byte body)
+2025-12-08 07:54:58.115 10413-10453 MdmCommandReceiver      com.cdccreditsmart.app               I  ✅ ACK enviado via fallback para comando 3da7a04c-13ae-424b-a2bd-d1ffb52e800a
+2025-12-08 07:54:58.115 10413-10453 MdmCommandReceiver      com.cdccreditsmart.app               I  🚨 UNINSTALL_APP - Iniciando auto-destruição
+2025-12-08 07:54:58.115 10413-10453 MdmCommandReceiver      com.cdccreditsmart.app               I      Motivo: Admin requested uninstall
+2025-12-08 07:54:58.116 10413-10453 MdmCommandReceiver      com.cdccreditsmart.app               I      Wipe data: true
+2025-12-08 07:54:58.116 10413-10453 MdmCommandReceiver      com.cdccreditsmart.app               I      Confirmation code: ausente
+2025-12-08 07:54:58.124 10413-10453 SelfDestructManager     com.cdccreditsmart.app               I  ========================================
+2025-12-08 07:54:58.124 10413-10453 SelfDestructManager     com.cdccreditsmart.app               I  🚨 INICIANDO SEQUÊNCIA DE AUTO-DESTRUIÇÃO
+2025-12-08 07:54:58.124 10413-10453 SelfDestructManager     com.cdccreditsmart.app               I  ========================================
+2025-12-08 07:54:58.124 10413-10453 SelfDestructManager     com.cdccreditsmart.app               I  📋 Motivo: Admin requested uninstall
+2025-12-08 07:54:58.124 10413-10453 SelfDestructManager     com.cdccreditsmart.app               I  📋 Wipe data: true
+2025-12-08 07:54:58.124 10413-10453 SelfDestructManager     com.cdccreditsmart.app               I  📋 Confirmation code: ausente
+2025-12-08 07:54:58.124 10413-10453 SelfDestructManager     com.cdccreditsmart.app               I  👑 Nível de privilégio: DEVICE_ADMIN
+2025-12-08 07:54:58.124 10413-10453 SelfDestructManager     com.cdccreditsmart.app               I  ⏸️ Pausando proteção do SettingsGuard...
+2025-12-08 07:54:58.124 10413-10453 SettingsGuardService    com.cdccreditsmart.app               I  🗑️ Guard PAUSADO para desinstalação voluntária
+2025-12-08 07:54:58.124 10413-10453 SettingsGuardService    com.cdccreditsmart.app               I     Proteção desativada - usuário pode desinstalar
+2025-12-08 07:54:58.124 10413-10453 SettingsGuardService    com.cdccreditsmart.app               I     Timeout: 120s para auto-recuperação
+2025-12-08 07:54:58.124 10413-10453 SelfDestructManager     com.cdccreditsmart.app               I  ✅ Proteção pausada - desinstalação autorizada
+2025-12-08 07:54:58.124 10413-10453 SelfDestructManager     com.cdccreditsmart.app               I  🔐 [1/11] Verificando autorização...
+2025-12-08 07:54:58.124 10413-10453 SelfDestructManager     com.cdccreditsmart.app               I  ✅ [1/11] Desinstalação autorizada pelo admin (validada no servidor)
+2025-12-08 07:54:58.124 10413-10453 SelfDestructManager     com.cdccreditsmart.app               I  📝 [2/11] Registrando início da auto-destruição...
+2025-12-08 07:54:58.125 10413-10453 SelfDestructManager     com.cdccreditsmart.app               I  📝 AUDIT LOG: Self-destruct initiated
+2025-12-08 07:54:58.125 10413-10453 SelfDestructManager     com.cdccreditsmart.app               I     Reason: Admin requested uninstall
+2025-12-08 07:54:58.125 10413-10453 SelfDestructManager     com.cdccreditsmart.app               I     Timestamp: 1765191298125
+2025-12-08 07:54:58.125 10413-10453 SelfDestructManager     com.cdccreditsmart.app               I     Package: com.cdccreditsmart.app
+2025-12-08 07:54:58.125 10413-10453 SelfDestructManager     com.cdccreditsmart.app               I     Device: Google sdk_gphone64_x86_64
+2025-12-08 07:54:58.125 10413-10453 SelfDestructManager     com.cdccreditsmart.app               I  ✅ [2/11] Log inicial registrado
+2025-12-08 07:54:58.125 10413-10453 SelfDestructManager     com.cdccreditsmart.app               I  ⏹️ [3/11] Parando serviços de background...
+2025-12-08 07:54:58.125 10413-10453 SelfDestructManager     com.cdccreditsmart.app               I  ⏹️ Parando serviços de background...
+2025-12-08 07:54:58.132 10413-10413 CdcForegroundService    com.cdccreditsmart.app               W  ⚠️ Serviço onDestroy() - limpando recursos e reiniciando automaticamente...
+2025-12-08 07:54:58.132 10413-10413 CdcForegroundService    com.cdccreditsmart.app               I  🧹 Iniciando cleanup seguro de todos os componentes...
+2025-12-08 07:54:58.132 10413-10413 CdcForegroundService    com.cdccreditsmart.app               D  ✅ ScreenStateReceiver listener removido
+2025-12-08 07:54:58.132 10413-10453 SelfDestructManager     com.cdccreditsmart.app               I     ✅ CdcForegroundService parado
+2025-12-08 07:54:58.133 10413-10453 SelfDestructManager     com.cdccreditsmart.app               I     ℹ️ SettingsGuardService não estava rodando
+2025-12-08 07:54:58.133 10413-10413 CdcForegroundService    com.cdccreditsmart.app               D  ✅ ScreenStateReceiver desregistrado
+2025-12-08 07:54:58.133 10413-10413 HeartbeatWorker         com.cdccreditsmart.app               I  🛑 Heartbeat cancelado
+2025-12-08 07:54:58.133 10413-10413 CdcForegroundService    com.cdccreditsmart.app               D  ✅ HeartbeatWorker cancelado
+2025-12-08 07:54:58.133 10413-10413 HeartbeatManager        com.cdccreditsmart.app               I  🛑 Parando HeartbeatManager...
+2025-12-08 07:54:58.134 10413-10413 HeartbeatManager        com.cdccreditsmart.app               I  ✅ HeartbeatManager parado
+2025-12-08 07:54:58.134 10413-10413 CdcForegroundService    com.cdccreditsmart.app               D  ✅ HeartbeatManager parado
+2025-12-08 07:54:58.134 10413-10413 MdmCommandReceiver      com.cdccreditsmart.app               I  🔌 Desconectando MDM Command Receiver...
+2025-12-08 07:54:58.134 10413-10453 SelfDestructManager     com.cdccreditsmart.app               I     ✅ WorkManager jobs cancelados e limpos
+2025-12-08 07:54:58.135 10413-10413 MdmCommandReceiver      com.cdccreditsmart.app               I  🔌 MDM Command Receiver desconectado
+2025-12-08 07:54:58.135 10413-10413 CdcForegroundService    com.cdccreditsmart.app               D  ✅ MDM Receiver desconectado
+2025-12-08 07:54:58.135 10413-10413 WebSocketManager        com.cdccreditsmart.app               D  Disconnecting WebSocket
+2025-12-08 07:54:58.135 10413-10413 CdcForegroundService    com.cdccreditsmart.app               D  ✅ WebSocket desconectado
+2025-12-08 07:54:58.135 10413-10413 CdcForegroundService    com.cdccreditsmart.app               D  ✅ BlockedAppInterceptor destruído
+2025-12-08 07:54:58.137 10413-10413 SettingsGuardService    com.cdccreditsmart.app               I  🛑 SettingsGuard PARADO
+2025-12-08 07:54:58.139 10413-10413 CdcForegroundService    com.cdccreditsmart.app               D  ✅ SettingsGuard parado
+2025-12-08 07:54:58.142 10413-10413 CdcForegroundService    com.cdccreditsmart.app               D  🔋 WakeLock liberado
+2025-12-08 07:54:58.142 10413-10413 CdcForegroundService    com.cdccreditsmart.app               D  ✅ WakeLock liberado
+2025-12-08 07:54:58.142 10413-10413 CdcForegroundService    com.cdccreditsmart.app               D  ✅ CoroutineScope cancelado
+2025-12-08 07:54:58.147 10413-10453 SelfDestructManager     com.cdccreditsmart.app               I     ✅ 0 AlarmManager alarms cancelados
+2025-12-08 07:54:58.147 10413-10453 SelfDestructManager     com.cdccreditsmart.app               I  ⏹️ Serviços de background: 2 parados, 0 falhas
+2025-12-08 07:54:58.148 10413-10453 SelfDestructManager     com.cdccreditsmart.app               I  ✅ [3/11] Serviços de background parados
+2025-12-08 07:54:58.148 10413-10453 SelfDestructManager     com.cdccreditsmart.app               I  🔓 [4/11] Removendo proteções avançadas...
+2025-12-08 07:54:58.149 10413-10413 CdcForegroundService    com.cdccreditsmart.app               D  ✅ Foreground notification removida
+2025-12-08 07:54:58.157 10413-10453 EnhancedProtections     com.cdccreditsmart.app               I  
+2025-12-08 07:54:58.157 10413-10453 EnhancedProtections     com.cdccreditsmart.app               I  ╔════════════════════════════════════════════════════════════════╗
+2025-12-08 07:54:58.157 10413-10453 EnhancedProtections     com.cdccreditsmart.app               I  ║  🚀 APLICANDO PROTEÇÕES AVANÇADAS CREDIT SMART                 ║
+2025-12-08 07:54:58.157 10413-10453 EnhancedProtections     com.cdccreditsmart.app               I  ╚════════════════════════════════════════════════════════════════╝
+2025-12-08 07:54:58.157 10413-10453 EnhancedProtections     com.cdccreditsmart.app               I  
+2025-12-08 07:54:58.158 10413-10413 CdcForegroundService    com.cdccreditsmart.app               I  ✅ Cleanup completo finalizado com sucesso
+2025-12-08 07:54:58.158 10413-10453 EnhancedProtections     com.cdccreditsmart.app               E  ❌ App não é Device Owner - proteções não podem ser aplicadas
+2025-12-08 07:54:58.159 10413-10453 SelfDestructManager     com.cdccreditsmart.app               W  ⚠️ [4/11] Remoção parcial de proteções avançadas: App não é Device Owner - proteções não podem ser aplicadas
+2025-12-08 07:54:58.159 10413-10453 SelfDestructManager     com.cdccreditsmart.app               I  🔓 [5/11] Removendo proteções do AppProtectionManager...
+2025-12-08 07:54:58.159 10413-10453 AppProtectionManager    com.cdccreditsmart.app               I  
+2025-12-08 07:54:58.159 10413-10453 AppProtectionManager    com.cdccreditsmart.app               I  ╔════════════════════════════════════════════════════════════════╗
+2025-12-08 07:54:58.159 10413-10453 AppProtectionManager    com.cdccreditsmart.app               I  ║                                                                ║
+2025-12-08 07:54:58.159 10413-10453 AppProtectionManager    com.cdccreditsmart.app               I  ║   🔓 REMOVENDO TODAS AS PROTEÇÕES PARA AUTO-DESINSTALAÇÃO     ║
+2025-12-08 07:54:58.159 10413-10453 AppProtectionManager    com.cdccreditsmart.app               I  ║                                                                ║
+2025-12-08 07:54:58.159 10413-10453 AppProtectionManager    com.cdccreditsmart.app               I  ╚════════════════════════════════════════════════════════════════╝
+2025-12-08 07:54:58.159 10413-10453 AppProtectionManager    com.cdccreditsmart.app               I  
+2025-12-08 07:54:58.160 10413-10453 AppProtectionManager    com.cdccreditsmart.app               W  ⚠️ App não é Device Owner - proteções não podem ser removidas
+2025-12-08 07:54:58.161 10413-10453 SelfDestructManager     com.cdccreditsmart.app               I  ℹ️ [5/11] App não é Device Owner - proteções DPM não aplicadas, continuando...
+2025-12-08 07:54:58.162 10413-10453 SelfDestructManager     com.cdccreditsmart.app               I  🔓 [6/11] Removendo bloqueio de desinstalação...
+2025-12-08 07:54:58.162 10413-10453 SelfDestructManager     com.cdccreditsmart.app               W  ⚠️ App não é Device Owner - bloqueio não pode ser removido
+2025-12-08 07:54:58.163 10413-10453 SelfDestructManager     com.cdccreditsmart.app               I  ℹ️ [6/11] Não é Device Owner - bloqueio DPM não aplicado
+2025-12-08 07:54:58.163 10413-10453 SelfDestructManager     com.cdccreditsmart.app               I  👑 [7/11] Removendo privilégios de Device Owner/Admin...
+2025-12-08 07:54:58.163 10413-10453 SelfDestructManager     com.cdccreditsmart.app               I  ⏭️ [7/11] Não é Device Owner - pulando para remoção de Device Admin
+2025-12-08 07:54:58.163 10413-10453 SelfDestructManager     com.cdccreditsmart.app               I  🔓 [8/11] Verificando e removendo Device Admin...
+2025-12-08 07:54:58.165 10413-10413 CdcForegroundService    com.cdccreditsmart.app               I  ✅ Restart agendado via AlarmManager (1 segundo)
+2025-12-08 07:54:58.166 10413-10453 SelfDestructManager     com.cdccreditsmart.app               I  🔓 App ainda é Device Admin - removendo...
+2025-12-08 07:54:58.171 10413-10453 SelfDestructManager     com.cdccreditsmart.app               I  ✅ removeActiveAdmin() chamado - aguardando processamento...
+2025-12-08 07:54:58.172 10413-10453 SelfDestructManager     com.cdccreditsmart.app               E  ❌ Erro ao remover Device Admin: StandaloneCoroutine was cancelled
+                                                                                                    kotlinx.coroutines.JobCancellationException: StandaloneCoroutine was cancelled; job=StandaloneCoroutine{Cancelling}@9cd254b
+2025-12-08 07:54:58.173 10413-10413 CDCDeviceAdminReceiver  com.cdccreditsmart.app               W  ❌ ==================== DEVICE ADMIN DISABLED ====================
+2025-12-08 07:54:58.173 10413-10413 CDCDeviceAdminReceiver  com.cdccreditsmart.app               W  ❌ Device Admin has been disabled
+2025-12-08 07:54:58.173 10413-10413 CDCDeviceAdminReceiver  com.cdccreditsmart.app               W  ⏰ Timestamp: 1765191298173
+2025-12-08 07:54:58.173 10413-10413 CDCDeviceAdminReceiver  com.cdccreditsmart.app               W  ⚠️ This should not happen during normal provisioning!
+2025-12-08 07:54:58.173 10413-10413 CDCDeviceAdminReceiver  com.cdccreditsmart.app               W  ❌ =================================================================
+2025-12-08 07:54:58.174 10413-10453 SelfDestructManager     com.cdccreditsmart.app               E  ❌ [8/11] ERRO CRÍTICO - Falha ao remover Device Admin
+2025-12-08 07:54:58.174 10413-10453 SelfDestructManager     com.cdccreditsmart.app               E  ❌ Erro ao remover Device Admin: StandaloneCoroutine was cancelled
+2025-12-08 07:54:58.174 10413-10453 SelfDestructManager     com.cdccreditsmart.app               E  ❌ Auto-destruição ABORTADA - desinstalação falhará
+2025-12-08 07:54:58.174 10413-10453 SelfDestructManager     com.cdccreditsmart.app               I  📊 Enviando telemetria de FALHA ao backend...
+2025-12-08 07:54:58.239 10413-10453 SecureTokenStorage      com.cdccreditsmart.app               D  EncryptedSharedPreferences initialized successfully
+2025-12-08 07:54:58.241 10413-10453 ContractCodeStorage     com.cdccreditsmart.app               D  Retrieving contract code from storage
+2025-12-08 07:54:58.339 10413-10468 MdmCommandReceiver      com.cdccreditsmart.app               E  ❌ ========================================
+2025-12-08 07:54:58.339 10413-10468 MdmCommandReceiver      com.cdccreditsmart.app               E  ❌ WEBSOCKET MDM FALHOU!
+2025-12-08 07:54:58.339 10413-10468 MdmCommandReceiver      com.cdccreditsmart.app               E  ❌ ========================================
+2025-12-08 07:54:58.339 10413-10468 MdmCommandReceiver      com.cdccreditsmart.app               E  ❌ Reconexões anteriores: 0
+2025-12-08 07:54:58.339 10413-10468 MdmCommandReceiver      com.cdccreditsmart.app               E  ❌ Tipo de erro: EOFException
+2025-12-08 07:54:58.339 10413-10468 MdmCommandReceiver      com.cdccreditsmart.app               E  ❌ Mensagem: null
+2025-12-08 07:54:58.339 10413-10468 MdmCommandReceiver      com.cdccreditsmart.app               E  ❌ Response code: null
+2025-12-08 07:54:58.339 10413-10468 MdmCommandReceiver      com.cdccreditsmart.app               E  ❌ Response message: null
+2025-12-08 07:54:58.340 10413-10468 MdmCommandReceiver      com.cdccreditsmart.app               E  ❌ ========================================
+2025-12-08 07:54:58.342 10413-10447 MdmCommandReceiver      com.cdccreditsmart.app               I  🔄 ========================================
+2025-12-08 07:54:58.342 10413-10447 MdmCommandReceiver      com.cdccreditsmart.app               I  🔄 AGENDANDO RECONEXÃO WEBSOCKET MDM
+2025-12-08 07:54:58.342 10413-10447 MdmCommandReceiver      com.cdccreditsmart.app               I  🔄 ========================================
+2025-12-08 07:54:58.342 10413-10447 MdmCommandReceiver      com.cdccreditsmart.app               I  🔄 Tentativa #1
+2025-12-08 07:54:58.342 10413-10447 MdmCommandReceiver      com.cdccreditsmart.app               I  🔄 Delay: 2s (backoff exponencial)
+2025-12-08 07:54:58.342 10413-10447 MdmCommandReceiver      com.cdccreditsmart.app               I  🔄 Máximo delay: 120s
+2025-12-08 07:54:58.342 10413-10447 MdmCommandReceiver      com.cdccreditsmart.app               I  🔄 ========================================
+2025-12-08 07:54:58.342 10413-10460 MdmCommandReceiver      com.cdccreditsmart.app               I  🔄 ========================================
+2025-12-08 07:54:58.343 10413-10460 MdmCommandReceiver      com.cdccreditsmart.app               I  🔄 INICIANDO POLLING FALLBACK MDM
+2025-12-08 07:54:58.343 10413-10460 MdmCommandReceiver      com.cdccreditsmart.app               I  🔄 ========================================
+2025-12-08 07:54:58.343 10413-10460 MdmCommandReceiver      com.cdccreditsmart.app               I  🔄 Intervalo: 30 segundos
+2025-12-08 07:54:58.343 10413-10460 MdmCommandReceiver      com.cdccreditsmart.app               I  🔄 Endpoint: GET /api/apk/device/{identifier}/commands
+2025-12-08 07:54:58.343 10413-10460 MdmCommandReceiver      com.cdccreditsmart.app               I  🔄 Executando verificação IMEDIATA de comandos...
+2025-12-08 07:54:58.348 10413-10460 SecureTokenStorage      com.cdccreditsmart.app               D  ⚠️ Usando Serial Number para MDM (IMEI indisponível): XV8W57...
+2025-12-08 07:54:58.348 10413-10460 MdmCommandReceiver      com.cdccreditsmart.app               I  🔍 ========================================
+2025-12-08 07:54:58.348 10413-10460 MdmCommandReceiver      com.cdccreditsmart.app               I  🔍 BUSCANDO COMANDOS PENDENTES
+2025-12-08 07:54:58.348 10413-10460 MdmCommandReceiver      com.cdccreditsmart.app               I  🔍 ========================================
+2025-12-08 07:54:58.348 10413-10460 MdmCommandReceiver      com.cdccreditsmart.app               I  🔍 Identifier: XV8W5766
+2025-12-08 07:54:58.348 10413-10460 MdmCommandReceiver      com.cdccreditsmart.app               I  🔍 Endpoint: GET /api/apk/device/XV8W5766/commands
+2025-12-08 07:54:58.349 10413-10460 MdmCommandReceiver      com.cdccreditsmart.app               D  🔍 Executando requisição HTTP (timeout: 15s)...
+2025-12-08 07:54:58.351 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  --> GET https://cdccreditsmart.com/api/apk/device/XV8W5766/commands
+2025-12-08 07:54:58.352 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  --> END GET
+2025-12-08 07:54:58.357 10413-10472 WebSocketManager        com.cdccreditsmart.app               D  WebSocket closed. Code: 1000, Reason: Client disconnect
+2025-12-08 07:54:58.382 10413-10464 SecureTokenStorage      com.cdccreditsmart.app               D  EncryptedSharedPreferences initialized successfully
+2025-12-08 07:54:58.398 10413-10453 ContractCodeStorage     com.cdccreditsmart.app               D  Storage verification: 7 valid, 0 tampered, 0 missing
+2025-12-08 07:54:58.398 10413-10453 ContractCodeStorage     com.cdccreditsmart.app               D  Contract code retrieved successfully
+2025-12-08 07:54:58.399 10413-10453 SelfDestructManager     com.cdccreditsmart.app               E  ❌ Erro ao enviar telemetria de falha
+                                                                                                    kotlinx.coroutines.JobCancellationException: StandaloneCoroutine was cancelled; job=StandaloneCoroutine{Cancelling}@9cd254b
+2025-12-08 07:54:58.399 10413-10453 SettingsGuardService    com.cdccreditsmart.app               I  ▶️ Guard RETOMADO após desinstalação cancelada
+2025-12-08 07:54:58.399 10413-10453 SelfDestructManager     com.cdccreditsmart.app               I  ▶️ Proteção retomada após erro
+2025-12-08 07:54:58.399 10413-10453 MdmCommandReceiver      com.cdccreditsmart.app               E  ❌ Erro na auto-destruição: Failed to remove Device Admin: Erro ao remover Device Admin: StandaloneCoroutine was cancelled
+2025-12-08 07:54:58.400 10413-10453 MdmCommandReceiver      com.cdccreditsmart.app               D  📡 Enviando response para comando: 3da7a04c-13ae-424b-a2bd-d1ffb52e800a
+2025-12-08 07:54:58.400 10413-10453 MdmCommandReceiver      com.cdccreditsmart.app               D  📡 Status: failed
+2025-12-08 07:54:58.400 10413-10453 MdmCommandReceiver      com.cdccreditsmart.app               D  📡 Enviando: POST /api/apk/device/commands/3da7a04c-13ae-424b-a2bd-d1ffb52e800a/status
+2025-12-08 07:54:58.403 10413-10477 okhttp.OkHttpClient     com.cdccreditsmart.app               I  --> POST https://cdccreditsmart.com/api/apk/device/commands/3da7a04c-13ae-424b-a2bd-d1ffb52e800a/status
+2025-12-08 07:54:58.403 10413-10477 okhttp.OkHttpClient     com.cdccreditsmart.app               I  Content-Type: application/json; charset=UTF-8
+2025-12-08 07:54:58.403 10413-10477 okhttp.OkHttpClient     com.cdccreditsmart.app               I  Content-Length: 184
+2025-12-08 07:54:58.404 10413-10477 okhttp.OkHttpClient     com.cdccreditsmart.app               I  {"status":"failed","result":{"success":false,"errorMessage":"Failed to remove Device Admin: Erro ao remover Device Admin: StandaloneCoroutine was cancelled","timestamp":1765191298400}}
+2025-12-08 07:54:58.404 10413-10477 okhttp.OkHttpClient     com.cdccreditsmart.app               I  --> END POST (184-byte body)
+2025-12-08 07:54:58.404 10413-10453 MdmCommandReceiver      com.cdccreditsmart.app               W  ⚠️ Endpoint status falhou (StandaloneCoroutine was cancelled), tentando fallback...
+2025-12-08 07:54:58.405 10413-10453 SecureTokenStorage      com.cdccreditsmart.app               D  ⚠️ Usando Serial Number para MDM (IMEI indisponível): XV8W57...
+2025-12-08 07:54:58.406 10413-10453 MdmCommandReceiver      com.cdccreditsmart.app               D  📡 Fallback: Usando endpoint legado: POST /api/apk/device/XV8W5766/command-response
+2025-12-08 07:54:58.408 10413-10476 okhttp.OkHttpClient     com.cdccreditsmart.app               I  --> POST https://cdccreditsmart.com/api/apk/device/XV8W5766/command-response
+2025-12-08 07:54:58.408 10413-10476 okhttp.OkHttpClient     com.cdccreditsmart.app               I  Content-Type: application/json; charset=UTF-8
+2025-12-08 07:54:58.408 10413-10476 okhttp.OkHttpClient     com.cdccreditsmart.app               I  Content-Length: 182
+2025-12-08 07:54:58.409 10413-10476 okhttp.OkHttpClient     com.cdccreditsmart.app               I  {"commandId":"3da7a04c-13ae-424b-a2bd-d1ffb52e800a","status":"failed","errorMessage":"Failed to remove Device Admin: Erro ao remover Device Admin: StandaloneCoroutine was cancelled"}
+2025-12-08 07:54:58.409 10413-10476 okhttp.OkHttpClient     com.cdccreditsmart.app               I  --> END POST (182-byte body)
+2025-12-08 07:54:58.409 10413-10449 MdmCommandReceiver      com.cdccreditsmart.app               E  ❌ Erro ao enviar command response: StandaloneCoroutine was cancelled
+2025-12-08 07:54:58.409 10413-10449 MdmCommandReceiver      com.cdccreditsmart.app               I  🛑 Polling encerrado após 2 iterações
+2025-12-08 07:54:58.423 10413-10477 SecureTokenStorage      com.cdccreditsmart.app               D  EncryptedSharedPreferences initialized successfully
+2025-12-08 07:54:58.424 10413-10477 okhttp.OkHttpClient     com.cdccreditsmart.app               I  <-- HTTP FAILED: java.io.IOException: Canceled
+2025-12-08 07:54:58.435 10413-10476 SecureTokenStorage      com.cdccreditsmart.app               D  EncryptedSharedPreferences initialized successfully
+2025-12-08 07:54:58.436 10413-10476 okhttp.OkHttpClient     com.cdccreditsmart.app               I  <-- HTTP FAILED: java.io.IOException: Canceled
+2025-12-08 07:54:58.834 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  <-- 200 https://cdccreditsmart.com/api/apk/device/XV8W5766/commands (482ms)
+2025-12-08 07:54:58.834 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-credentials: true
+2025-12-08 07:54:58.834 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-headers: Origin, X-Requested-With, Content-Type, Accept, Authorization, x-client-key, x-client-token, x-client-secret, cache-control
+2025-12-08 07:54:58.834 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-methods: GET, POST, PUT, PATCH, DELETE, OPTIONS
+2025-12-08 07:54:58.834 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-origin: *
+2025-12-08 07:54:58.835 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-max-age: 86400
+2025-12-08 07:54:58.835 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-length: 105
+2025-12-08 07:54:58.835 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-security-policy: default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://replit.com; style-src 'self' 'unsafe-inline' https://replit.com; img-src 'self' data: https:; font-src 'self' data: https://replit.com; connect-src 'self';
+2025-12-08 07:54:58.835 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-type: application/json; charset=utf-8
+2025-12-08 07:54:58.835 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  date: Mon, 08 Dec 2025 10:54:59 GMT
+2025-12-08 07:54:58.835 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  etag: W/"69-JnxUXIkeOJE9HbxGWOIXIkjIGm0"
+2025-12-08 07:54:58.835 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  permissions-policy: geolocation=(), microphone=(), camera=()
+2025-12-08 07:54:58.835 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  referrer-policy: strict-origin-when-cross-origin
+2025-12-08 07:54:58.835 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  strict-transport-security: max-age=63072000; includeSubDomains
+2025-12-08 07:54:58.835 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  strict-transport-security: max-age=31536000; includeSubDomains
+2025-12-08 07:54:58.835 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-anti-fraud-protection: active
+2025-12-08 07:54:58.835 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-certificate-pinning-enabled: false
+2025-12-08 07:54:58.835 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-certificate-pinning-status: disabled-for-stability
+2025-12-08 07:54:58.835 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-content-type-options: nosniff
+2025-12-08 07:54:58.835 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-financial-data-protection: enabled
+2025-12-08 07:54:58.835 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-frame-options: DENY
+2025-12-08 07:54:58.835 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-transaction-security-level: maximum
+2025-12-08 07:54:58.835 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-xss-protection: 1; mode=block
+2025-12-08 07:54:58.835 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  via: 1.1 google
+2025-12-08 07:54:58.835 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  alt-svc: h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
+2025-12-08 07:54:58.837 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  {"deviceId":"device_1765148771462_4teww42p114","serialNumber":"XV8W5766","commandsCount":0,"commands":[]}
+2025-12-08 07:54:58.837 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  <-- END HTTP (105-byte body)
+2025-12-08 07:54:58.839 10413-10449 MdmCommandReceiver      com.cdccreditsmart.app               I  🔍 HTTP Response code: 200
+2025-12-08 07:54:58.840 10413-10449 MdmCommandReceiver      com.cdccreditsmart.app               I  🔍 HTTP isSuccessful: true
+2025-12-08 07:54:58.840 10413-10449 MdmCommandReceiver      com.cdccreditsmart.app               I  🔍 Response body deviceId: device_1765148771462_4teww42p114
+2025-12-08 07:54:58.840 10413-10449 MdmCommandReceiver      com.cdccreditsmart.app               I  🔍 Response body serialNumber: XV8W5766
+2025-12-08 07:54:58.840 10413-10449 MdmCommandReceiver      com.cdccreditsmart.app               I  🔍 Total de comandos: 0
+2025-12-08 07:54:58.840 10413-10449 MdmCommandReceiver      com.cdccreditsmart.app               D  ✅ Nenhum comando pendente no servidor
+2025-12-08 07:54:58.840 10413-10449 MdmCommandReceiver      com.cdccreditsmart.app               D  📊 Fetch duration: 492ms
+2025-12-08 07:54:58.840 10413-10449 MdmCommandReceiver      com.cdccreditsmart.app               I  🔍 [Polling #1] Verificando comandos pendentes...
+2025-12-08 07:54:58.841 10413-10449 SecureTokenStorage      com.cdccreditsmart.app               D  ⚠️ Usando Serial Number para MDM (IMEI indisponível): XV8W57...
+2025-12-08 07:54:58.841 10413-10449 MdmCommandReceiver      com.cdccreditsmart.app               I  🔍 ========================================
+2025-12-08 07:54:58.843 10413-10449 MdmCommandReceiver      com.cdccreditsmart.app               I  🔍 BUSCANDO COMANDOS PENDENTES
+2025-12-08 07:54:58.843 10413-10449 MdmCommandReceiver      com.cdccreditsmart.app               I  🔍 ========================================
+2025-12-08 07:54:58.843 10413-10449 MdmCommandReceiver      com.cdccreditsmart.app               I  🔍 Identifier: XV8W5766
+2025-12-08 07:54:58.843 10413-10449 MdmCommandReceiver      com.cdccreditsmart.app               I  🔍 Endpoint: GET /api/apk/device/XV8W5766/commands
+2025-12-08 07:54:58.843 10413-10449 MdmCommandReceiver      com.cdccreditsmart.app               D  🔍 Executando requisição HTTP (timeout: 15s)...
+2025-12-08 07:54:58.845 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  --> GET https://cdccreditsmart.com/api/apk/device/XV8W5766/commands
+2025-12-08 07:54:58.845 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  --> END GET
+2025-12-08 07:54:58.863 10413-10464 SecureTokenStorage      com.cdccreditsmart.app               D  EncryptedSharedPreferences initialized successfully
+2025-12-08 07:54:59.220 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  <-- 200 https://cdccreditsmart.com/api/apk/device/XV8W5766/commands (374ms)
+2025-12-08 07:54:59.222 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-credentials: true
+2025-12-08 07:54:59.222 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-headers: Origin, X-Requested-With, Content-Type, Accept, Authorization, x-client-key, x-client-token, x-client-secret, cache-control
+2025-12-08 07:54:59.222 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-methods: GET, POST, PUT, PATCH, DELETE, OPTIONS
+2025-12-08 07:54:59.223 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-origin: *
+2025-12-08 07:54:59.224 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-max-age: 86400
+2025-12-08 07:54:59.224 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-length: 105
+2025-12-08 07:54:59.224 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-security-policy: default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://replit.com; style-src 'self' 'unsafe-inline' https://replit.com; img-src 'self' data: https:; font-src 'self' data: https://replit.com; connect-src 'self';
+2025-12-08 07:54:59.225 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-type: application/json; charset=utf-8
+2025-12-08 07:54:59.226 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  date: Mon, 08 Dec 2025 10:54:59 GMT
+2025-12-08 07:54:59.226 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  etag: W/"69-JnxUXIkeOJE9HbxGWOIXIkjIGm0"
+2025-12-08 07:54:59.227 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  permissions-policy: geolocation=(), microphone=(), camera=()
+2025-12-08 07:54:59.227 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  referrer-policy: strict-origin-when-cross-origin
+2025-12-08 07:54:59.227 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  strict-transport-security: max-age=63072000; includeSubDomains
+2025-12-08 07:54:59.228 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  strict-transport-security: max-age=31536000; includeSubDomains
+2025-12-08 07:54:59.228 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-anti-fraud-protection: active
+2025-12-08 07:54:59.228 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-certificate-pinning-enabled: false
+2025-12-08 07:54:59.229 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-certificate-pinning-status: disabled-for-stability
+2025-12-08 07:54:59.229 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-content-type-options: nosniff
+2025-12-08 07:54:59.229 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-financial-data-protection: enabled
+2025-12-08 07:54:59.231 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-frame-options: DENY
+2025-12-08 07:54:59.231 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-transaction-security-level: maximum
+2025-12-08 07:54:59.231 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-xss-protection: 1; mode=block
+2025-12-08 07:54:59.231 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  via: 1.1 google
+2025-12-08 07:54:59.231 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  alt-svc: h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
+2025-12-08 07:54:59.231 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  {"deviceId":"device_1765148771462_4teww42p114","serialNumber":"XV8W5766","commandsCount":0,"commands":[]}
+2025-12-08 07:54:59.231 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  <-- END HTTP (105-byte body)
+2025-12-08 07:54:59.235 10413-10449 MdmCommandReceiver      com.cdccreditsmart.app               I  🔍 HTTP Response code: 200
+2025-12-08 07:54:59.236 10413-10449 MdmCommandReceiver      com.cdccreditsmart.app               I  🔍 HTTP isSuccessful: true
+2025-12-08 07:54:59.236 10413-10449 MdmCommandReceiver      com.cdccreditsmart.app               I  🔍 Response body deviceId: device_1765148771462_4teww42p114
+2025-12-08 07:54:59.236 10413-10449 MdmCommandReceiver      com.cdccreditsmart.app               I  🔍 Response body serialNumber: XV8W5766
+2025-12-08 07:54:59.236 10413-10449 MdmCommandReceiver      com.cdccreditsmart.app               I  🔍 Total de comandos: 0
+2025-12-08 07:54:59.236 10413-10449 MdmCommandReceiver      com.cdccreditsmart.app               D  ✅ Nenhum comando pendente no servidor
+2025-12-08 07:54:59.236 10413-10449 MdmCommandReceiver      com.cdccreditsmart.app               D  📊 Fetch duration: 393ms
+2025-12-08 07:55:00.344 10413-10449 MdmCommandReceiver      com.cdccreditsmart.app               I  🔄 Tentando reconectar WebSocket MDM (tentativa #1)...
+2025-12-08 07:55:00.346 10413-10449 SecureTokenStorage      com.cdccreditsmart.app               D  ⚠️ Usando Serial Number para MDM (IMEI indisponível): XV8W57...
+2025-12-08 07:55:00.346 10413-10449 MdmCommandReceiver      com.cdccreditsmart.app               I  🔗 ========================================
+2025-12-08 07:55:00.346 10413-10449 MdmCommandReceiver      com.cdccreditsmart.app               I  🔗 INICIANDO CONEXÃO WEBSOCKET MDM
+2025-12-08 07:55:00.346 10413-10449 MdmCommandReceiver      com.cdccreditsmart.app               I  🔗 ========================================
+2025-12-08 07:55:00.346 10413-10449 MdmCommandReceiver      com.cdccreditsmart.app               I  🔗 URL base: wss://cdccreditsmart.com/ws/mdm-policies
+2025-12-08 07:55:00.346 10413-10449 MdmCommandReceiver      com.cdccreditsmart.app               I  🔗 JWT Token presente: true
+2025-12-08 07:55:00.346 10413-10449 MdmCommandReceiver      com.cdccreditsmart.app               I  🔗 JWT Token length: 260
+2025-12-08 07:55:00.346 10413-10449 MdmCommandReceiver      com.cdccreditsmart.app               I  🔗 JWT Token preview: eyJhbGciOiJIUzI1NiIsInR5cCI6Ik...
+2025-12-08 07:55:00.346 10413-10449 MdmCommandReceiver      com.cdccreditsmart.app               I  🔗 Device identifier: XV8W5766
+2025-12-08 07:55:00.346 10413-10449 MdmCommandReceiver      com.cdccreditsmart.app               D  🔗 Criando WebSocket OkHttp...
+2025-12-08 07:55:00.346 10413-10449 MdmCommandReceiver      com.cdccreditsmart.app               I  🔄 Iniciando polling IMEDIATAMENTE (não esperar WebSocket)
+2025-12-08 07:55:00.347 10413-10447 MdmCommandReceiver      com.cdccreditsmart.app               I  🛑 Polling encerrado após 1 iterações
+2025-12-08 07:55:00.348 10413-10453 MdmCommandReceiver      com.cdccreditsmart.app               I  🔄 ========================================
+2025-12-08 07:55:00.348 10413-10453 MdmCommandReceiver      com.cdccreditsmart.app               I  🔄 INICIANDO POLLING FALLBACK MDM
+2025-12-08 07:55:00.348 10413-10453 MdmCommandReceiver      com.cdccreditsmart.app               I  🔄 ========================================
+2025-12-08 07:55:00.348 10413-10453 MdmCommandReceiver      com.cdccreditsmart.app               I  🔄 Intervalo: 30 segundos
+2025-12-08 07:55:00.348 10413-10453 MdmCommandReceiver      com.cdccreditsmart.app               I  🔄 Endpoint: GET /api/apk/device/{identifier}/commands
+2025-12-08 07:55:00.348 10413-10453 MdmCommandReceiver      com.cdccreditsmart.app               I  🔄 Executando verificação IMEDIATA de comandos...
+2025-12-08 07:55:00.349 10413-10449 MdmCommandReceiver      com.cdccreditsmart.app               D  🔗 WebSocket request enviado - aguardando resposta...
+2025-12-08 07:55:00.350 10413-10453 SecureTokenStorage      com.cdccreditsmart.app               D  ⚠️ Usando Serial Number para MDM (IMEI indisponível): XV8W57...
+2025-12-08 07:55:00.350 10413-10453 MdmCommandReceiver      com.cdccreditsmart.app               I  🔍 ========================================
+2025-12-08 07:55:00.350 10413-10453 MdmCommandReceiver      com.cdccreditsmart.app               I  🔍 BUSCANDO COMANDOS PENDENTES
+2025-12-08 07:55:00.350 10413-10453 MdmCommandReceiver      com.cdccreditsmart.app               I  🔍 ========================================
+2025-12-08 07:55:00.350 10413-10453 MdmCommandReceiver      com.cdccreditsmart.app               I  🔍 Identifier: XV8W5766
+2025-12-08 07:55:00.350 10413-10453 MdmCommandReceiver      com.cdccreditsmart.app               I  🔍 Endpoint: GET /api/apk/device/XV8W5766/commands
+2025-12-08 07:55:00.350 10413-10453 MdmCommandReceiver      com.cdccreditsmart.app               D  🔍 Executando requisição HTTP (timeout: 15s)...
+2025-12-08 07:55:00.356 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  --> GET https://cdccreditsmart.com/api/apk/device/XV8W5766/commands
+2025-12-08 07:55:00.356 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  --> END GET
+2025-12-08 07:55:00.376 10413-10464 SecureTokenStorage      com.cdccreditsmart.app               D  EncryptedSharedPreferences initialized successfully
+2025-12-08 07:55:00.743 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  <-- 200 https://cdccreditsmart.com/api/apk/device/XV8W5766/commands (386ms)
+2025-12-08 07:55:00.743 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-credentials: true
+2025-12-08 07:55:00.744 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-headers: Origin, X-Requested-With, Content-Type, Accept, Authorization, x-client-key, x-client-token, x-client-secret, cache-control
+2025-12-08 07:55:00.744 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-methods: GET, POST, PUT, PATCH, DELETE, OPTIONS
+2025-12-08 07:55:00.746 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-origin: *
+2025-12-08 07:55:00.746 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-max-age: 86400
+2025-12-08 07:55:00.746 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-length: 105
+2025-12-08 07:55:00.746 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-security-policy: default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://replit.com; style-src 'self' 'unsafe-inline' https://replit.com; img-src 'self' data: https:; font-src 'self' data: https://replit.com; connect-src 'self';
+2025-12-08 07:55:00.747 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-type: application/json; charset=utf-8
+2025-12-08 07:55:00.748 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  date: Mon, 08 Dec 2025 10:55:00 GMT
+2025-12-08 07:55:00.748 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  etag: W/"69-JnxUXIkeOJE9HbxGWOIXIkjIGm0"
+2025-12-08 07:55:00.748 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  permissions-policy: geolocation=(), microphone=(), camera=()
+2025-12-08 07:55:00.748 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  referrer-policy: strict-origin-when-cross-origin
+2025-12-08 07:55:00.750 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  strict-transport-security: max-age=63072000; includeSubDomains
+2025-12-08 07:55:00.750 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  strict-transport-security: max-age=31536000; includeSubDomains
+2025-12-08 07:55:00.750 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-anti-fraud-protection: active
+2025-12-08 07:55:00.750 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-certificate-pinning-enabled: false
+2025-12-08 07:55:00.750 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-certificate-pinning-status: disabled-for-stability
+2025-12-08 07:55:00.750 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-content-type-options: nosniff
+2025-12-08 07:55:00.750 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-financial-data-protection: enabled
+2025-12-08 07:55:00.750 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-frame-options: DENY
+2025-12-08 07:55:00.750 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-transaction-security-level: maximum
+2025-12-08 07:55:00.750 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-xss-protection: 1; mode=block
+2025-12-08 07:55:00.750 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  via: 1.1 google
+2025-12-08 07:55:00.750 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  alt-svc: h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
+2025-12-08 07:55:00.752 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  {"deviceId":"device_1765148771462_4teww42p114","serialNumber":"XV8W5766","commandsCount":0,"commands":[]}
+2025-12-08 07:55:00.752 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  <-- END HTTP (105-byte body)
+2025-12-08 07:55:00.755 10413-10453 MdmCommandReceiver      com.cdccreditsmart.app               I  🔍 HTTP Response code: 200
+2025-12-08 07:55:00.755 10413-10453 MdmCommandReceiver      com.cdccreditsmart.app               I  🔍 HTTP isSuccessful: true
+2025-12-08 07:55:00.755 10413-10453 MdmCommandReceiver      com.cdccreditsmart.app               I  🔍 Response body deviceId: device_1765148771462_4teww42p114
+2025-12-08 07:55:00.755 10413-10453 MdmCommandReceiver      com.cdccreditsmart.app               I  🔍 Response body serialNumber: XV8W5766
+2025-12-08 07:55:00.755 10413-10453 MdmCommandReceiver      com.cdccreditsmart.app               I  🔍 Total de comandos: 0
+2025-12-08 07:55:00.755 10413-10453 MdmCommandReceiver      com.cdccreditsmart.app               D  ✅ Nenhum comando pendente no servidor
+2025-12-08 07:55:00.755 10413-10453 MdmCommandReceiver      com.cdccreditsmart.app               D  📊 Fetch duration: 405ms
+2025-12-08 07:55:00.755 10413-10453 MdmCommandReceiver      com.cdccreditsmart.app               I  🔍 [Polling #1] Verificando comandos pendentes...
+2025-12-08 07:55:00.759 10413-10453 SecureTokenStorage      com.cdccreditsmart.app               D  ⚠️ Usando Serial Number para MDM (IMEI indisponível): XV8W57...
+2025-12-08 07:55:00.760 10413-10453 MdmCommandReceiver      com.cdccreditsmart.app               I  🔍 ========================================
+2025-12-08 07:55:00.760 10413-10453 MdmCommandReceiver      com.cdccreditsmart.app               I  🔍 BUSCANDO COMANDOS PENDENTES
+2025-12-08 07:55:00.760 10413-10453 MdmCommandReceiver      com.cdccreditsmart.app               I  🔍 ========================================
+2025-12-08 07:55:00.760 10413-10453 MdmCommandReceiver      com.cdccreditsmart.app               I  🔍 Identifier: XV8W5766
+2025-12-08 07:55:00.760 10413-10453 MdmCommandReceiver      com.cdccreditsmart.app               I  🔍 Endpoint: GET /api/apk/device/XV8W5766/commands
+2025-12-08 07:55:00.762 10413-10453 MdmCommandReceiver      com.cdccreditsmart.app               D  🔍 Executando requisição HTTP (timeout: 15s)...
+2025-12-08 07:55:00.767 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  --> GET https://cdccreditsmart.com/api/apk/device/XV8W5766/commands
+2025-12-08 07:55:00.767 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  --> END GET
+2025-12-08 07:55:00.793 10413-10464 SecureTokenStorage      com.cdccreditsmart.app               D  EncryptedSharedPreferences initialized successfully
+2025-12-08 07:55:00.824 10413-10468 MdmCommandReceiver      com.cdccreditsmart.app               I  ✅ WebSocket MDM CONECTADO COM SUCESSO!
+2025-12-08 07:55:00.824 10413-10468 MdmCommandReceiver      com.cdccreditsmart.app               D  ✅ Response code: 101
+2025-12-08 07:55:00.824 10413-10468 MdmCommandReceiver      com.cdccreditsmart.app               I  ⏳ Aguardando 'auth_required' do servidor...
+2025-12-08 07:55:00.824 10413-10453 MdmCommandReceiver      com.cdccreditsmart.app               D  ⏰ Watchdog cancelado (conexão resolvida)
+2025-12-08 07:55:00.824 10413-10453 MdmCommandReceiver      com.cdccreditsmart.app               I  💓 Iniciando ping manual JSON (intervalo: 25s)
+2025-12-08 07:55:00.824 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  <-- HTTP FAILED: java.io.IOException: Canceled
+2025-12-08 07:55:00.824 10413-10447 MdmCommandReceiver      com.cdccreditsmart.app               I  🛑 Polling encerrado após 1 iterações
+2025-12-08 07:55:00.825 10413-10449 MdmCommandReceiver      com.cdccreditsmart.app               I  🔄 ========================================
+2025-12-08 07:55:00.825 10413-10449 MdmCommandReceiver      com.cdccreditsmart.app               I  🔄 INICIANDO POLLING FALLBACK MDM
+2025-12-08 07:55:00.826 10413-10449 MdmCommandReceiver      com.cdccreditsmart.app               I  🔄 ========================================
+2025-12-08 07:55:00.826 10413-10449 MdmCommandReceiver      com.cdccreditsmart.app               I  🔄 Intervalo: 30 segundos
+2025-12-08 07:55:00.826 10413-10449 MdmCommandReceiver      com.cdccreditsmart.app               I  🔄 Endpoint: GET /api/apk/device/{identifier}/commands
+2025-12-08 07:55:00.826 10413-10449 MdmCommandReceiver      com.cdccreditsmart.app               I  🔄 Executando verificação IMEDIATA de comandos...
+2025-12-08 07:55:00.826 10413-10468 MdmCommandReceiver      com.cdccreditsmart.app               D  📥 Mensagem MDM recebida: {"type":"welcome","message":"Connected to unified WebSocket server","connectionId":"ab67143e-1034-4e95-844b-40e4be38312a","path":"/ws/mdm-policies","routerKey":"mdm-policies","timestamp":"2025-12-08T10:55:01.072Z","serverTime":"2025-12-08T10:55:01.072Z"}
+2025-12-08 07:55:00.826 10413-10447 MdmCommandReceiver      com.cdccreditsmart.app               D  📥 JSON recebido: {"type":"welcome","message":"Connected to unified WebSocket server","connectionId":"ab67143e-1034-4e95-844b-40e4be38312a","path":"/ws/mdm-policies","routerKey":"mdm-policies","timestamp":"2025-12-08T10:55:01.072Z","serverTime":"2025-12-08T10:55:01.072Z"}
+2025-12-08 07:55:00.826 10413-10468 MdmCommandReceiver      com.cdccreditsmart.app               D  📥 Mensagem MDM recebida: {"type":"auth_required","message":"Please authenticate via message with serialNumber, deviceFingerprint or androidId","timeout":60,"timestamp":"2025-12-08T10:55:01.073Z"}
+2025-12-08 07:55:00.827 10413-10449 SecureTokenStorage      com.cdccreditsmart.app               D  ⚠️ Usando Serial Number para MDM (IMEI indisponível): XV8W57...
+2025-12-08 07:55:00.827 10413-10449 MdmCommandReceiver      com.cdccreditsmart.app               I  🔍 ========================================
+2025-12-08 07:55:00.827 10413-10449 MdmCommandReceiver      com.cdccreditsmart.app               I  🔍 BUSCANDO COMANDOS PENDENTES
+2025-12-08 07:55:00.827 10413-10449 MdmCommandReceiver      com.cdccreditsmart.app               I  🔍 ========================================
+2025-12-08 07:55:00.827 10413-10449 MdmCommandReceiver      com.cdccreditsmart.app               I  🔍 Identifier: XV8W5766
+2025-12-08 07:55:00.827 10413-10461 MdmCommandReceiver      com.cdccreditsmart.app               D  📥 JSON recebido: {"type":"auth_required","message":"Please authenticate via message with serialNumber, deviceFingerprint or androidId","timeout":60,"timestamp":"2025-12-08T10:55:01.073Z"}
+2025-12-08 07:55:00.827 10413-10449 MdmCommandReceiver      com.cdccreditsmart.app               I  🔍 Endpoint: GET /api/apk/device/XV8W5766/commands
+2025-12-08 07:55:00.827 10413-10447 MdmCommandReceiver      com.cdccreditsmart.app               D  📨 Tipo de mensagem: welcome
+2025-12-08 07:55:00.827 10413-10447 MdmCommandReceiver      com.cdccreditsmart.app               D  👋 Mensagem de boas-vindas do servidor
+2025-12-08 07:55:00.827 10413-10449 MdmCommandReceiver      com.cdccreditsmart.app               D  🔍 Executando requisição HTTP (timeout: 15s)...
+2025-12-08 07:55:00.828 10413-10461 MdmCommandReceiver      com.cdccreditsmart.app               D  📨 Tipo de mensagem: auth_required
+2025-12-08 07:55:00.828 10413-10461 MdmCommandReceiver      com.cdccreditsmart.app               W  ⚠️ ========================================
+2025-12-08 07:55:00.828 10413-10461 MdmCommandReceiver      com.cdccreditsmart.app               W  ⚠️ AUTENTICAÇÃO REQUERIDA PELO SERVIDOR
+2025-12-08 07:55:00.828 10413-10461 MdmCommandReceiver      com.cdccreditsmart.app               W  ⚠️ ========================================
+2025-12-08 07:55:00.828 10413-10461 MdmCommandReceiver      com.cdccreditsmart.app               W  ⚠️ Reenviando mensagem de autenticação...
+2025-12-08 07:55:00.829 10413-10461 SecureTokenStorage      com.cdccreditsmart.app               D  ⚠️ Usando Serial Number para MDM (IMEI indisponível): XV8W57...
+2025-12-08 07:55:00.830 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  --> GET https://cdccreditsmart.com/api/apk/device/XV8W5766/commands
+2025-12-08 07:55:00.830 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  --> END GET
+2025-12-08 07:55:00.830 10413-10461 MdmCommandReceiver      com.cdccreditsmart.app               I  🔐 ========================================
+2025-12-08 07:55:00.830 10413-10461 MdmCommandReceiver      com.cdccreditsmart.app               I  🔐 ENVIANDO AUTENTICAÇÃO WEBSOCKET
+2025-12-08 07:55:00.830 10413-10461 MdmCommandReceiver      com.cdccreditsmart.app               I  🔐 ========================================
+2025-12-08 07:55:00.830 10413-10461 MdmCommandReceiver      com.cdccreditsmart.app               I  🔐 serialNumber: XV8W5766...
+2025-12-08 07:55:00.830 10413-10461 MdmCommandReceiver      com.cdccreditsmart.app               I  🔐 deviceToken: eyJhbGciOiJIUzI1NiIs...
+2025-12-08 07:55:00.830 10413-10461 MdmCommandReceiver      com.cdccreditsmart.app               I  🔐 deviceFingerprint: N/A...
+2025-12-08 07:55:00.830 10413-10461 MdmCommandReceiver      com.cdccreditsmart.app               I  🔐 imei: N/A***
+2025-12-08 07:55:00.830 10413-10461 MdmCommandReceiver      com.cdccreditsmart.app               I  🔐 androidId: 555298e3...
+2025-12-08 07:55:00.830 10413-10461 MdmCommandReceiver      com.cdccreditsmart.app               I  🔐 apkVersion: 1.0.0-debug
+2025-12-08 07:55:00.831 10413-10461 MdmCommandReceiver      com.cdccreditsmart.app               I  ✅ Mensagem de autenticação enviada com sucesso (7 campos)
+2025-12-08 07:55:00.856 10413-10464 SecureTokenStorage      com.cdccreditsmart.app               D  EncryptedSharedPreferences initialized successfully
+2025-12-08 07:55:01.126 10413-10468 MdmCommandReceiver      com.cdccreditsmart.app               D  📥 Mensagem MDM recebida: {"type":"authenticated","deviceId":"device_1765148771462_4teww42p114","serialNumber":"XV8W5766","message":"Device authenticated successfully","timestamp":"2025-12-08T10:55:01.363Z"}
+2025-12-08 07:55:01.128 10413-10461 MdmCommandReceiver      com.cdccreditsmart.app               D  📥 JSON recebido: {"type":"authenticated","deviceId":"device_1765148771462_4teww42p114","serialNumber":"XV8W5766","message":"Device authenticated successfully","timestamp":"2025-12-08T10:55:01.363Z"}
+2025-12-08 07:55:01.129 10413-10461 MdmCommandReceiver      com.cdccreditsmart.app               D  📨 Tipo de mensagem: authenticated
+2025-12-08 07:55:01.129 10413-10461 MdmCommandReceiver      com.cdccreditsmart.app               I  ✅ ========================================
+2025-12-08 07:55:01.129 10413-10461 MdmCommandReceiver      com.cdccreditsmart.app               I  ✅ AUTENTICAÇÃO WEBSOCKET CONFIRMADA! (v2.5)
+2025-12-08 07:55:01.129 10413-10461 MdmCommandReceiver      com.cdccreditsmart.app               I  ✅ ========================================
+2025-12-08 07:55:01.129 10413-10461 MdmCommandReceiver      com.cdccreditsmart.app               I  ✅ Device ID: device_1765148771462_4teww42p114
+2025-12-08 07:55:01.129 10413-10461 MdmCommandReceiver      com.cdccreditsmart.app               I  ✅ Serial Number: XV8W5766
+2025-12-08 07:55:01.129 10413-10461 MdmCommandReceiver      com.cdccreditsmart.app               I  ✅ Mensagem: Device authenticated successfully
+2025-12-08 07:55:01.129 10413-10461 MdmCommandReceiver      com.cdccreditsmart.app               I  ✅ Timestamp: 2025-12-08T10:55:01.363Z
+2025-12-08 07:55:01.308 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  <-- 200 https://cdccreditsmart.com/api/apk/device/XV8W5766/commands (477ms)
+2025-12-08 07:55:01.308 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-credentials: true
+2025-12-08 07:55:01.310 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-headers: Origin, X-Requested-With, Content-Type, Accept, Authorization, x-client-key, x-client-token, x-client-secret, cache-control
+2025-12-08 07:55:01.310 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-methods: GET, POST, PUT, PATCH, DELETE, OPTIONS
+2025-12-08 07:55:01.310 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-origin: *
+2025-12-08 07:55:01.310 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-max-age: 86400
+2025-12-08 07:55:01.311 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-length: 105
+2025-12-08 07:55:01.311 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-security-policy: default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://replit.com; style-src 'self' 'unsafe-inline' https://replit.com; img-src 'self' data: https:; font-src 'self' data: https://replit.com; connect-src 'self';
+2025-12-08 07:55:01.311 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-type: application/json; charset=utf-8
+2025-12-08 07:55:01.312 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  date: Mon, 08 Dec 2025 10:55:01 GMT
+2025-12-08 07:55:01.312 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  etag: W/"69-JnxUXIkeOJE9HbxGWOIXIkjIGm0"
+2025-12-08 07:55:01.312 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  permissions-policy: geolocation=(), microphone=(), camera=()
+2025-12-08 07:55:01.313 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  referrer-policy: strict-origin-when-cross-origin
+2025-12-08 07:55:01.314 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  strict-transport-security: max-age=63072000; includeSubDomains
+2025-12-08 07:55:01.314 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  strict-transport-security: max-age=31536000; includeSubDomains
+2025-12-08 07:55:01.315 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-anti-fraud-protection: active
+2025-12-08 07:55:01.315 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-certificate-pinning-enabled: false
+2025-12-08 07:55:01.316 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-certificate-pinning-status: disabled-for-stability
+2025-12-08 07:55:01.316 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-content-type-options: nosniff
+2025-12-08 07:55:01.316 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-financial-data-protection: enabled
+2025-12-08 07:55:01.316 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-frame-options: DENY
+2025-12-08 07:55:01.316 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-transaction-security-level: maximum
+2025-12-08 07:55:01.317 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-xss-protection: 1; mode=block
+2025-12-08 07:55:01.318 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  via: 1.1 google
+2025-12-08 07:55:01.318 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  alt-svc: h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
+2025-12-08 07:55:01.319 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  {"deviceId":"device_1765148771462_4teww42p114","serialNumber":"XV8W5766","commandsCount":0,"commands":[]}
+2025-12-08 07:55:01.320 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  <-- END HTTP (105-byte body)
+2025-12-08 07:55:01.322 10413-10461 MdmCommandReceiver      com.cdccreditsmart.app               I  🔍 HTTP Response code: 200
+2025-12-08 07:55:01.322 10413-10461 MdmCommandReceiver      com.cdccreditsmart.app               I  🔍 HTTP isSuccessful: true
+2025-12-08 07:55:01.322 10413-10461 MdmCommandReceiver      com.cdccreditsmart.app               I  🔍 Response body deviceId: device_1765148771462_4teww42p114
+2025-12-08 07:55:01.322 10413-10461 MdmCommandReceiver      com.cdccreditsmart.app               I  🔍 Response body serialNumber: XV8W5766
+2025-12-08 07:55:01.322 10413-10461 MdmCommandReceiver      com.cdccreditsmart.app               I  🔍 Total de comandos: 0
+2025-12-08 07:55:01.322 10413-10461 MdmCommandReceiver      com.cdccreditsmart.app               D  ✅ Nenhum comando pendente no servidor
+2025-12-08 07:55:01.322 10413-10461 MdmCommandReceiver      com.cdccreditsmart.app               D  📊 Fetch duration: 495ms
+2025-12-08 07:55:01.322 10413-10461 MdmCommandReceiver      com.cdccreditsmart.app               I  🔍 [Polling #1] Verificando comandos pendentes...
+2025-12-08 07:55:01.323 10413-10461 SecureTokenStorage      com.cdccreditsmart.app               D  ⚠️ Usando Serial Number para MDM (IMEI indisponível): XV8W57...
+2025-12-08 07:55:01.323 10413-10461 MdmCommandReceiver      com.cdccreditsmart.app               I  🔍 ========================================
+2025-12-08 07:55:01.323 10413-10461 MdmCommandReceiver      com.cdccreditsmart.app               I  🔍 BUSCANDO COMANDOS PENDENTES
+2025-12-08 07:55:01.323 10413-10461 MdmCommandReceiver      com.cdccreditsmart.app               I  🔍 ========================================
+2025-12-08 07:55:01.323 10413-10461 MdmCommandReceiver      com.cdccreditsmart.app               I  🔍 Identifier: XV8W5766
+2025-12-08 07:55:01.323 10413-10461 MdmCommandReceiver      com.cdccreditsmart.app               I  🔍 Endpoint: GET /api/apk/device/XV8W5766/commands
+2025-12-08 07:55:01.323 10413-10461 MdmCommandReceiver      com.cdccreditsmart.app               D  🔍 Executando requisição HTTP (timeout: 15s)...
+2025-12-08 07:55:01.327 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  --> GET https://cdccreditsmart.com/api/apk/device/XV8W5766/commands
+2025-12-08 07:55:01.327 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  --> END GET
+2025-12-08 07:55:01.347 10413-10464 SecureTokenStorage      com.cdccreditsmart.app               D  EncryptedSharedPreferences initialized successfully
+2025-12-08 07:55:01.712 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  <-- 200 https://cdccreditsmart.com/api/apk/device/XV8W5766/commands (384ms)
+2025-12-08 07:55:01.712 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-credentials: true
+2025-12-08 07:55:01.713 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-headers: Origin, X-Requested-With, Content-Type, Accept, Authorization, x-client-key, x-client-token, x-client-secret, cache-control
+2025-12-08 07:55:01.714 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-methods: GET, POST, PUT, PATCH, DELETE, OPTIONS
+2025-12-08 07:55:01.714 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-origin: *
+2025-12-08 07:55:01.715 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-max-age: 86400
+2025-12-08 07:55:01.715 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-length: 105
+2025-12-08 07:55:01.715 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-security-policy: default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://replit.com; style-src 'self' 'unsafe-inline' https://replit.com; img-src 'self' data: https:; font-src 'self' data: https://replit.com; connect-src 'self';
+2025-12-08 07:55:01.715 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-type: application/json; charset=utf-8
+2025-12-08 07:55:01.716 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  date: Mon, 08 Dec 2025 10:55:01 GMT
+2025-12-08 07:55:01.716 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  etag: W/"69-JnxUXIkeOJE9HbxGWOIXIkjIGm0"
+2025-12-08 07:55:01.716 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  permissions-policy: geolocation=(), microphone=(), camera=()
+2025-12-08 07:55:01.716 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  referrer-policy: strict-origin-when-cross-origin
+2025-12-08 07:55:01.716 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  strict-transport-security: max-age=63072000; includeSubDomains
+2025-12-08 07:55:01.717 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  strict-transport-security: max-age=31536000; includeSubDomains
+2025-12-08 07:55:01.717 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-anti-fraud-protection: active
+2025-12-08 07:55:01.717 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-certificate-pinning-enabled: false
+2025-12-08 07:55:01.717 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-certificate-pinning-status: disabled-for-stability
+2025-12-08 07:55:01.717 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-content-type-options: nosniff
+2025-12-08 07:55:01.717 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-financial-data-protection: enabled
+2025-12-08 07:55:01.717 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-frame-options: DENY
+2025-12-08 07:55:01.717 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-transaction-security-level: maximum
+2025-12-08 07:55:01.717 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-xss-protection: 1; mode=block
+2025-12-08 07:55:01.717 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  via: 1.1 google
+2025-12-08 07:55:01.717 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  alt-svc: h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
+2025-12-08 07:55:01.718 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  {"deviceId":"device_1765148771462_4teww42p114","serialNumber":"XV8W5766","commandsCount":0,"commands":[]}
+2025-12-08 07:55:01.718 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  <-- END HTTP (105-byte body)
+2025-12-08 07:55:01.719 10413-10461 MdmCommandReceiver      com.cdccreditsmart.app               I  🔍 HTTP Response code: 200
+2025-12-08 07:55:01.719 10413-10461 MdmCommandReceiver      com.cdccreditsmart.app               I  🔍 HTTP isSuccessful: true
+2025-12-08 07:55:01.719 10413-10461 MdmCommandReceiver      com.cdccreditsmart.app               I  🔍 Response body deviceId: device_1765148771462_4teww42p114
+2025-12-08 07:55:01.719 10413-10461 MdmCommandReceiver      com.cdccreditsmart.app               I  🔍 Response body serialNumber: XV8W5766
+2025-12-08 07:55:01.719 10413-10461 MdmCommandReceiver      com.cdccreditsmart.app               I  🔍 Total de comandos: 0
+2025-12-08 07:55:01.719 10413-10461 MdmCommandReceiver      com.cdccreditsmart.app               D  ✅ Nenhum comando pendente no servidor
+2025-12-08 07:55:01.719 10413-10461 MdmCommandReceiver      com.cdccreditsmart.app               D  📊 Fetch duration: 396ms
+2025-12-08 07:55:03.166 10413-10413 CdcForegroundService    com.cdccreditsmart.app               D  📱 Serviço onCreate()
+2025-12-08 07:55:03.167 10413-10413 CdcForegroundService    com.cdccreditsmart.app               D  ✅ Canal de notificação criado
+2025-12-08 07:55:03.168 10413-10413 CdcForegroundService    com.cdccreditsmart.app               I  ✅ ScreenStateReceiver registrado
+2025-12-08 07:55:03.172 10413-10413 CdcForegroundService    com.cdccreditsmart.app               D  🚀 Serviço onStartCommand() - Action: com.cdccreditsmart.app.START_SERVICE
+2025-12-08 07:55:03.192 10413-10413 CdcForegroundService    com.cdccreditsmart.app               I  ✅ Foreground Service ativo (Android 12+)
+2025-12-08 07:55:03.195 10413-10461 CdcForegroundService    com.cdccreditsmart.app               I  🔧 ========================================
+2025-12-08 07:55:03.195 10413-10461 CdcForegroundService    com.cdccreditsmart.app               I  🔧 INICIANDO initializeServices()...
+2025-12-08 07:55:03.195 10413-10461 CdcForegroundService    com.cdccreditsmart.app               I  🔧 ========================================
+2025-12-08 07:55:03.196 10413-10461 CdcForegroundService    com.cdccreditsmart.app               I  🔧 Inicializando serviços base (SettingsGuard, WorkPolicies)...
+2025-12-08 07:55:03.197 10413-10461 CdcForegroundService    com.cdccreditsmart.app               I  🏢 ========================================
+2025-12-08 07:55:03.197 10413-10461 CdcForegroundService    com.cdccreditsmart.app               I  🏢 APLICANDO POLÍTICAS DE AMBIENTE DE TRABALHO
+2025-12-08 07:55:03.197 10413-10461 CdcForegroundService    com.cdccreditsmart.app               I  🏢 ========================================
+2025-12-08 07:55:03.197 10413-10461 WorkPolicyManager       com.cdccreditsmart.app               I  
+2025-12-08 07:55:03.197 10413-10461 WorkPolicyManager       com.cdccreditsmart.app               I  ╔════════════════════════════════════════════════════════════════╗
+2025-12-08 07:55:03.197 10413-10461 WorkPolicyManager       com.cdccreditsmart.app               I  ║  🏢 APLICANDO POLÍTICAS DE AMBIENTE DE TRABALHO                ║
+2025-12-08 07:55:03.197 10413-10461 WorkPolicyManager       com.cdccreditsmart.app               I  ║     CDC CREDIT SMART - PROTEÇÃO EMPRESARIAL                    ║
+2025-12-08 07:55:03.197 10413-10461 WorkPolicyManager       com.cdccreditsmart.app               I  ╚════════════════════════════════════════════════════════════════╝
+2025-12-08 07:55:03.197 10413-10461 WorkPolicyManager       com.cdccreditsmart.app               I  
+2025-12-08 07:55:03.200 10413-10461 WorkPolicyManager       com.cdccreditsmart.app               I  📋 STATUS DO DISPOSITIVO:
+2025-12-08 07:55:03.200 10413-10461 WorkPolicyManager       com.cdccreditsmart.app               I     Device Owner: ❌ NÃO
+2025-12-08 07:55:03.200 10413-10461 WorkPolicyManager       com.cdccreditsmart.app               I     Device Admin: ❌ NÃO
+2025-12-08 07:55:03.200 10413-10461 WorkPolicyManager       com.cdccreditsmart.app               I  
+2025-12-08 07:55:03.200 10413-10461 WorkPolicyManager       com.cdccreditsmart.app               I  ═══════════════════════════════════════════════════════════════
+2025-12-08 07:55:03.200 10413-10461 WorkPolicyManager       com.cdccreditsmart.app               I  ⚠️ MODO BÁSICO - PROTEÇÃO MÍNIMA
+2025-12-08 07:55:03.200 10413-10461 WorkPolicyManager       com.cdccreditsmart.app               I  ═══════════════════════════════════════════════════════════════
+2025-12-08 07:55:03.200 10413-10461 WorkPolicyManager       com.cdccreditsmart.app               I  
+2025-12-08 07:55:03.200 10413-10461 WorkPolicyManager       com.cdccreditsmart.app               E  ❌ ATENÇÃO: App NÃO é Device Owner nem Device Admin!
+2025-12-08 07:55:03.200 10413-10461 WorkPolicyManager       com.cdccreditsmart.app               E     • Proteções MDM não disponíveis
+2025-12-08 07:55:03.201 10413-10461 WorkPolicyManager       com.cdccreditsmart.app               E     • Usuário pode desinstalar o app livremente
+2025-12-08 07:55:03.201 10413-10461 WorkPolicyManager       com.cdccreditsmart.app               E     • Factory Reset não é bloqueável
+2025-12-08 07:55:03.201 10413-10461 WorkPolicyManager       com.cdccreditsmart.app               E     • Aplicando proteções alternativas mínimas...
+2025-12-08 07:55:03.201 10413-10461 WorkPolicyManager       com.cdccreditsmart.app               I  
+2025-12-08 07:55:03.201 10413-10461 WorkPolicyManager       com.cdccreditsmart.app               I  🔄 [1/3] PERSISTÊNCIA DO APP
+2025-12-08 07:55:03.201 10413-10461 WorkPolicyManager       com.cdccreditsmart.app               I  ───────────────────────────────────────────────────────────────
+2025-12-08 07:55:03.202 10413-10461 WorkPolicyManager       com.cdccreditsmart.app               I     ✅ Já isento de otimização de bateria
+2025-12-08 07:55:03.202 10413-10461 WorkPolicyManager       com.cdccreditsmart.app               I     ✅ Foreground Service configurado via CdcForegroundService
+2025-12-08 07:55:03.202 10413-10461 WorkPolicyManager       com.cdccreditsmart.app               I  
+2025-12-08 07:55:03.202 10413-10461 WorkPolicyManager       com.cdccreditsmart.app               I  📊 [2/3] MONITORAMENTO BÁSICO
+2025-12-08 07:55:03.203 10413-10461 WorkPolicyManager       com.cdccreditsmart.app               I  ───────────────────────────────────────────────────────────────
+2025-12-08 07:55:03.203 10413-10461 WorkPolicyManager       com.cdccreditsmart.app               I     ✅ WorkManager health check agendado
+2025-12-08 07:55:03.203 10413-10461 WorkPolicyManager       com.cdccreditsmart.app               I  
+2025-12-08 07:55:03.203 10413-10461 WorkPolicyManager       com.cdccreditsmart.app               I  🔔 [3/3] NOTIFICAÇÕES
+2025-12-08 07:55:03.203 10413-10461 WorkPolicyManager       com.cdccreditsmart.app               I  ───────────────────────────────────────────────────────────────
+2025-12-08 07:55:03.203 10413-10461 WorkPolicyManager       com.cdccreditsmart.app               I     ✅ Canal de notificação persistente criado
+2025-12-08 07:55:03.203 10413-10461 WorkPolicyManager       com.cdccreditsmart.app               I  
+2025-12-08 07:55:03.203 10413-10461 WorkPolicyManager       com.cdccreditsmart.app               I  ╔════════════════════════════════════════════════════════════════╗
+2025-12-08 07:55:03.203 10413-10461 WorkPolicyManager       com.cdccreditsmart.app               I  ║  📊 RESUMO DAS POLÍTICAS DE TRABALHO                           ║
+2025-12-08 07:55:03.203 10413-10461 WorkPolicyManager       com.cdccreditsmart.app               I  ╠════════════════════════════════════════════════════════════════╣
+2025-12-08 07:55:03.204 10413-10461 WorkPolicyManager       com.cdccreditsmart.app               I  ║  ⚠️ Nível de proteção: BASIC
+2025-12-08 07:55:03.204 10413-10461 WorkPolicyManager       com.cdccreditsmart.app               I  ║  📋 Políticas aplicadas: 4
+2025-12-08 07:55:03.204 10413-10461 WorkPolicyManager       com.cdccreditsmart.app               I  ╠════════════════════════════════════════════════════════════════╣
+2025-12-08 07:55:03.204 10413-10461 WorkPolicyManager       com.cdccreditsmart.app               I  ║  ✅ PROTEÇÕES ATIVAS:
+2025-12-08 07:55:03.204 10413-10461 WorkPolicyManager       com.cdccreditsmart.app               I  ║     ✅ Isenção de otimização de bateria
+2025-12-08 07:55:03.204 10413-10461 WorkPolicyManager       com.cdccreditsmart.app               I  ║     ✅ Foreground Service persistente
+2025-12-08 07:55:03.204 10413-10461 WorkPolicyManager       com.cdccreditsmart.app               I  ║     ✅ Health check periódico agendado
+2025-12-08 07:55:03.205 10413-10461 WorkPolicyManager       com.cdccreditsmart.app               I  ║     ✅ Canal de notificação persistente criado
+2025-12-08 07:55:03.205 10413-10461 WorkPolicyManager       com.cdccreditsmart.app               I  ╠════════════════════════════════════════════════════════════════╣
+2025-12-08 07:55:03.205 10413-10461 WorkPolicyManager       com.cdccreditsmart.app               I  ║  ⚠️ AVISOS:
+2025-12-08 07:55:03.205 10413-10461 WorkPolicyManager       com.cdccreditsmart.app               W  ║     ❌ CRÍTICO: Desinstalação NÃO bloqueável
+2025-12-08 07:55:03.205 10413-10461 WorkPolicyManager       com.cdccreditsmart.app               W  ║     ❌ CRÍTICO: Factory Reset NÃO bloqueável
+2025-12-08 07:55:03.205 10413-10461 WorkPolicyManager       com.cdccreditsmart.app               W  ║     ❌ CRÍTICO: Force Stop NÃO bloqueável
+2025-12-08 07:55:03.205 10413-10461 WorkPolicyManager       com.cdccreditsmart.app               W  ║     ❌ CRÍTICO: Clear Data NÃO bloqueável
+2025-12-08 07:55:03.205 10413-10461 WorkPolicyManager       com.cdccreditsmart.app               W  ║     ⚠️ Recomendação: Configurar como Device Owner via QR Code ou ADB
+2025-12-08 07:55:03.205 10413-10461 WorkPolicyManager       com.cdccreditsmart.app               I  ╚════════════════════════════════════════════════════════════════╝
+2025-12-08 07:55:03.206 10413-10461 WorkPolicyManager       com.cdccreditsmart.app               I  
+2025-12-08 07:55:03.206 10413-10461 CdcForegroundService    com.cdccreditsmart.app               I  🏢 Resultado: BASIC
+2025-12-08 07:55:03.206 10413-10461 CdcForegroundService    com.cdccreditsmart.app               I  🏢 Políticas aplicadas: 4/5
+2025-12-08 07:55:03.206 10413-10461 CdcForegroundService    com.cdccreditsmart.app               W  🏢 ❌ CRÍTICO: Desinstalação NÃO bloqueável
+2025-12-08 07:55:03.206 10413-10461 CdcForegroundService    com.cdccreditsmart.app               W  🏢 ❌ CRÍTICO: Factory Reset NÃO bloqueável
+2025-12-08 07:55:03.206 10413-10461 CdcForegroundService    com.cdccreditsmart.app               W  🏢 ❌ CRÍTICO: Force Stop NÃO bloqueável
+2025-12-08 07:55:03.206 10413-10461 CdcForegroundService    com.cdccreditsmart.app               W  🏢 ❌ CRÍTICO: Clear Data NÃO bloqueável
+2025-12-08 07:55:03.206 10413-10461 CdcForegroundService    com.cdccreditsmart.app               W  🏢 ⚠️ Recomendação: Configurar como Device Owner via QR Code ou ADB
+2025-12-08 07:55:03.206 10413-10461 CdcForegroundService    com.cdccreditsmart.app               I  🏢 ========================================
+2025-12-08 07:55:03.206 10413-10461 CdcForegroundService    com.cdccreditsmart.app               I  🛡️ ========================================
+2025-12-08 07:55:03.206 10413-10461 CdcForegroundService    com.cdccreditsmart.app               I  🛡️ INICIANDO SETTINGS GUARD (PROTEÇÃO AGRESSIVA)
+2025-12-08 07:55:03.206 10413-10461 CdcForegroundService    com.cdccreditsmart.app               I  🛡️ ========================================
+2025-12-08 07:55:03.208 10413-10461 AutoPermissionManager   com.cdccreditsmart.app               W  ⚠️ Não é Device Owner - não pode conceder permissões especiais
+2025-12-08 07:55:03.210 10413-10461 SettingsGuardService    com.cdccreditsmart.app               I  🛡️ SettingsGuard INICIADO
+2025-12-08 07:55:03.210 10413-10461 SettingsGuardService    com.cdccreditsmart.app               I     Modo de proteção: BASIC
+2025-12-08 07:55:03.210 10413-10461 SettingsGuardService    com.cdccreditsmart.app               I     ⚠️ Sem privilégios: Proteção AGRESSIVA ativada
+2025-12-08 07:55:03.210 10413-10461 SettingsGuardService    com.cdccreditsmart.app               I     📡 Monitorando Settings a cada 600ms
+2025-12-08 07:55:03.210 10413-10461 SettingsGuardService    com.cdccreditsmart.app               I  🔍 Iniciando monitoramento ativo de Settings...
+2025-12-08 07:55:03.212 10413-10461 SettingsGuardService    com.cdccreditsmart.app               I  📢 Notificação de permissão USAGE_STATS cancelada
+2025-12-08 07:55:03.215 10413-10461 CdcForegroundService    com.cdccreditsmart.app               I  🛡️ Guard ativo: true
+2025-12-08 07:55:03.215 10413-10461 CdcForegroundService    com.cdccreditsmart.app               I  🛡️ Modo proteção: BASIC
+2025-12-08 07:55:03.215 10413-10461 CdcForegroundService    com.cdccreditsmart.app               I  🛡️ Modo agressivo: false
+2025-12-08 07:55:03.215 10413-10461 CdcForegroundService    com.cdccreditsmart.app               I  🛡️ UsageStats: ✅ ATIVO
+2025-12-08 07:55:03.215 10413-10461 CdcForegroundService    com.cdccreditsmart.app               I  🛡️ Overlay: ✅ ATIVO
+2025-12-08 07:55:03.215 10413-10461 CdcForegroundService    com.cdccreditsmart.app               I  🛡️ ========================================
+2025-12-08 07:55:03.733 10413-10461 SecureTokenStorage      com.cdccreditsmart.app               D  EncryptedSharedPreferences initialized successfully
+2025-12-08 07:55:03.734 10413-10461 ContractCodeStorage     com.cdccreditsmart.app               D  Retrieving contract code from storage
+2025-12-08 07:55:03.843 10413-10461 ContractCodeStorage     com.cdccreditsmart.app               D  Storage verification: 7 valid, 0 tampered, 0 missing
+2025-12-08 07:55:03.843 10413-10461 ContractCodeStorage     com.cdccreditsmart.app               D  Contract code retrieved successfully
+2025-12-08 07:55:03.843 10413-10461 SecureTokenStorage      com.cdccreditsmart.app               D  ⚠️ Usando Serial Number para MDM (IMEI indisponível): XV8W57...
+2025-12-08 07:55:03.843 10413-10461 CdcForegroundService    com.cdccreditsmart.app               I  🔐 AuthToken presente: true
+2025-12-08 07:55:03.843 10413-10461 CdcForegroundService    com.cdccreditsmart.app               I  🔐 AuthToken length: 260
+2025-12-08 07:55:03.843 10413-10461 CdcForegroundService    com.cdccreditsmart.app               I  🔐 ContractCode presente: true
+2025-12-08 07:55:03.844 10413-10461 CdcForegroundService    com.cdccreditsmart.app               I  🔐 ContractCode value: XV8W****
+2025-12-08 07:55:03.844 10413-10461 CdcForegroundService    com.cdccreditsmart.app               I  🔐 MDM SerialNumber presente: true
+2025-12-08 07:55:03.844 10413-10461 CdcForegroundService    com.cdccreditsmart.app               I  🔐 MDM SerialNumber value: XV8W5766...
+2025-12-08 07:55:03.844 10413-10461 CdcForegroundService    com.cdccreditsmart.app               I  🔧 ========================================
+2025-12-08 07:55:03.844 10413-10461 CdcForegroundService    com.cdccreditsmart.app               I  🔧 INICIALIZANDO MDM COM SERIAL NUMBER: XV8W5766...
+2025-12-08 07:55:03.844 10413-10461 CdcForegroundService    com.cdccreditsmart.app               I  🔧 ========================================
+2025-12-08 07:55:03.844 10413-10461 CdcForegroundService    com.cdccreditsmart.app               I  🔐 Tokens encontrados - inicializando serviços MDM
+2025-12-08 07:55:03.844 10413-10461 CdcForegroundService    com.cdccreditsmart.app               D  📡 Criando MdmCommandReceiver (usando serialNumber do SecureTokenStorage)...
+2025-12-08 07:55:03.844 10413-10461 MdmCommandReceiver      com.cdccreditsmart.app               D  ✅ Foreground service reference set for WakeLock management
+2025-12-08 07:55:03.844 10413-10461 CdcForegroundService    com.cdccreditsmart.app               D  🔋 Foreground service reference passada para MdmCommandReceiver
+2025-12-08 07:55:03.844 10413-10461 CdcForegroundService    com.cdccreditsmart.app               I  💓 ========================================
+2025-12-08 07:55:03.844 10413-10461 CdcForegroundService    com.cdccreditsmart.app               I  💓 INICIANDO HEARTBEAT MANAGER (60s)
+2025-12-08 07:55:03.844 10413-10461 CdcForegroundService    com.cdccreditsmart.app               I  💓 ========================================
+2025-12-08 07:55:03.844 10413-10461 HeartbeatManager        com.cdccreditsmart.app               I  💓 ========================================
+2025-12-08 07:55:03.844 10413-10461 HeartbeatManager        com.cdccreditsmart.app               I  💓 INICIANDO HEARTBEAT MANAGER (60s)
+2025-12-08 07:55:03.844 10413-10461 HeartbeatManager        com.cdccreditsmart.app               I  💓 ========================================
+2025-12-08 07:55:03.844 10413-10461 HeartbeatManager        com.cdccreditsmart.app               I  💓 Intervalo: 60 segundos
+2025-12-08 07:55:03.844 10413-10461 HeartbeatManager        com.cdccreditsmart.app               I  💓 Endpoint: POST /api/apk/device/heartbeat
+2025-12-08 07:55:03.844 10413-10461 CdcForegroundService    com.cdccreditsmart.app               I  💓 HeartbeatManager iniciado ANTES do WebSocket
+2025-12-08 07:55:03.844 10413-10461 CdcForegroundService    com.cdccreditsmart.app               I  📡 ========================================
+2025-12-08 07:55:03.844 10413-10461 CdcForegroundService    com.cdccreditsmart.app               I  📡 CONECTANDO WebSocket MDM...
+2025-12-08 07:55:03.844 10413-10461 CdcForegroundService    com.cdccreditsmart.app               I  📡 ========================================
+2025-12-08 07:55:03.844 10413-10461 CdcForegroundService    com.cdccreditsmart.app               I  📡 AuthToken length: 260 caracteres
+2025-12-08 07:55:03.844 10413-10461 CdcForegroundService    com.cdccreditsmart.app               I  📡 AuthToken preview: eyJhbGciOiJIUzI1NiIs...
+2025-12-08 07:55:03.844 10413-10461 CdcForegroundService    com.cdccreditsmart.app               I  📡 Contract code: XV8W5766
+2025-12-08 07:55:03.844 10413-10461 CdcForegroundService    com.cdccreditsmart.app               I  📡 Chamando mdmReceiver.connectMdmWebSocket()...
+2025-12-08 07:55:03.844 10413-10449 HeartbeatManager        com.cdccreditsmart.app               I  💓 Enviando heartbeat IMEDIATO...
+2025-12-08 07:55:03.868 10413-10461 SecureTokenStorage      com.cdccreditsmart.app               D  EncryptedSharedPreferences initialized successfully
+2025-12-08 07:55:03.868 10413-10461 SecureTokenStorage      com.cdccreditsmart.app               D  ⚠️ Usando Serial Number para MDM (IMEI indisponível): XV8W57...
+2025-12-08 07:55:03.868 10413-10461 MdmCommandReceiver      com.cdccreditsmart.app               I  🔗 ========================================
+2025-12-08 07:55:03.868 10413-10461 MdmCommandReceiver      com.cdccreditsmart.app               I  🔗 INICIANDO CONEXÃO WEBSOCKET MDM
+2025-12-08 07:55:03.868 10413-10461 MdmCommandReceiver      com.cdccreditsmart.app               I  🔗 ========================================
+2025-12-08 07:55:03.868 10413-10461 MdmCommandReceiver      com.cdccreditsmart.app               I  🔗 URL base: wss://cdccreditsmart.com/ws/mdm-policies
+2025-12-08 07:55:03.868 10413-10461 MdmCommandReceiver      com.cdccreditsmart.app               I  🔗 JWT Token presente: true
+2025-12-08 07:55:03.868 10413-10461 MdmCommandReceiver      com.cdccreditsmart.app               I  🔗 JWT Token length: 260
+2025-12-08 07:55:03.868 10413-10461 MdmCommandReceiver      com.cdccreditsmart.app               I  🔗 JWT Token preview: eyJhbGciOiJIUzI1NiIsInR5cCI6Ik...
+2025-12-08 07:55:03.868 10413-10461 MdmCommandReceiver      com.cdccreditsmart.app               I  🔗 Device identifier: XV8W5766
+2025-12-08 07:55:03.869 10413-10461 MdmCommandReceiver      com.cdccreditsmart.app               D  🔗 Criando WebSocket OkHttp...
+2025-12-08 07:55:03.869 10413-10461 MdmCommandReceiver      com.cdccreditsmart.app               I  🔄 Iniciando polling IMEDIATAMENTE (não esperar WebSocket)
+2025-12-08 07:55:03.869 10413-10447 MdmCommandReceiver      com.cdccreditsmart.app               I  🔄 ========================================
+2025-12-08 07:55:03.869 10413-10447 MdmCommandReceiver      com.cdccreditsmart.app               I  🔄 INICIANDO POLLING FALLBACK MDM
+2025-12-08 07:55:03.869 10413-10447 MdmCommandReceiver      com.cdccreditsmart.app               I  🔄 ========================================
+2025-12-08 07:55:03.869 10413-10447 MdmCommandReceiver      com.cdccreditsmart.app               I  🔄 Intervalo: 30 segundos
+2025-12-08 07:55:03.869 10413-10447 MdmCommandReceiver      com.cdccreditsmart.app               I  🔄 Endpoint: GET /api/apk/device/{identifier}/commands
+2025-12-08 07:55:03.869 10413-10447 MdmCommandReceiver      com.cdccreditsmart.app               I  🔄 Executando verificação IMEDIATA de comandos...
+2025-12-08 07:55:03.870 10413-10447 SecureTokenStorage      com.cdccreditsmart.app               D  ⚠️ Usando Serial Number para MDM (IMEI indisponível): XV8W57...
+2025-12-08 07:55:03.870 10413-10447 MdmCommandReceiver      com.cdccreditsmart.app               I  🔍 ========================================
+2025-12-08 07:55:03.870 10413-10447 MdmCommandReceiver      com.cdccreditsmart.app               I  🔍 BUSCANDO COMANDOS PENDENTES
+2025-12-08 07:55:03.870 10413-10447 MdmCommandReceiver      com.cdccreditsmart.app               I  🔍 ========================================
+2025-12-08 07:55:03.870 10413-10447 MdmCommandReceiver      com.cdccreditsmart.app               I  🔍 Identifier: XV8W5766
+2025-12-08 07:55:03.870 10413-10447 MdmCommandReceiver      com.cdccreditsmart.app               I  🔍 Endpoint: GET /api/apk/device/XV8W5766/commands
+2025-12-08 07:55:03.870 10413-10447 MdmCommandReceiver      com.cdccreditsmart.app               D  🔍 Executando requisição HTTP (timeout: 15s)...
+2025-12-08 07:55:03.871 10413-10461 MdmCommandReceiver      com.cdccreditsmart.app               D  🔗 WebSocket request enviado - aguardando resposta...
+2025-12-08 07:55:03.871 10413-10461 CdcForegroundService    com.cdccreditsmart.app               I  📡 ========================================
+2025-12-08 07:55:03.871 10413-10461 CdcForegroundService    com.cdccreditsmart.app               I  📡 connectMdmWebSocket() CHAMADO - Aguardando conexão...
+2025-12-08 07:55:03.871 10413-10461 CdcForegroundService    com.cdccreditsmart.app               I  📡 Próximo log esperado: '✅ WebSocket MDM CONECTADO'
+2025-12-08 07:55:03.871 10413-10461 CdcForegroundService    com.cdccreditsmart.app               I  📡 ========================================
+2025-12-08 07:55:03.871 10413-10461 CdcForegroundService    com.cdccreditsmart.app               D  📡 Criando WebSocketManager (flow-status)...
+2025-12-08 07:55:03.872 10413-10461 WebSocketManager        com.cdccreditsmart.app               D  Connecting to WebSocket: wss://cdccreditsmart.com/ws/flow-status
+2025-12-08 07:55:03.873 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  --> GET https://cdccreditsmart.com/api/apk/device/XV8W5766/commands
+2025-12-08 07:55:03.873 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  --> END GET
+2025-12-08 07:55:03.874 10413-10461 CdcForegroundService    com.cdccreditsmart.app               I  📡 WebSocketManager inicializado
+2025-12-08 07:55:03.874 10413-10461 CdcForegroundService    com.cdccreditsmart.app               I  💡 Overlay automático: PeriodicOverlayWorker (a cada 10min)
+2025-12-08 07:55:03.876 10413-10461 HeartbeatWorker         com.cdccreditsmart.app               I  ✅ Heartbeat OTIMIZADO agendado via WorkManager
+2025-12-08 07:55:03.876 10413-10461 HeartbeatWorker         com.cdccreditsmart.app               I     📊 Intervalo: 60min (redução de 75% vs 15min)
+2025-12-08 07:55:03.876 10413-10461 HeartbeatWorker         com.cdccreditsmart.app               I     🎯 Economia: ~72 requisições/dia por dispositivo
+2025-12-08 07:55:03.876 10413-10461 IconProtectionWorker    com.cdccreditsmart.app               I  📌 IconProtectionWorker agendado (15 min)
+2025-12-08 07:55:03.877 10413-10461 IconProtectionWorker    com.cdccreditsmart.app               I  📌 IconProtectionWorker executando agora
+2025-12-08 07:55:03.877 10413-10461 CdcForegroundService    com.cdccreditsmart.app               I  📌 Worker de proteção do ícone agendado e executando
+2025-12-08 07:55:03.877 10413-10461 BlockingNotifWorker     com.cdccreditsmart.app               I  📅 Agendando verificação de notificações de bloqueio...
+2025-12-08 07:55:03.879 10413-10461 BlockingNotifWorker     com.cdccreditsmart.app               I  ✅ Worker agendado para executar a cada 6h
+2025-12-08 07:55:03.879 10413-10461 CdcForegroundService    com.cdccreditsmart.app               I  📱 Worker de notificações de bloqueio agendado
+2025-12-08 07:55:03.879 10413-10461 CdcForegroundService    com.cdccreditsmart.app               I  🔒 ========================================
+2025-12-08 07:55:03.879 10413-10461 CdcForegroundService    com.cdccreditsmart.app               I  🔒 VERIFICANDO STUB PARA PERSISTÊNCIA
+2025-12-08 07:55:03.879 10413-10461 CdcForegroundService    com.cdccreditsmart.app               I  🔒 ========================================
+2025-12-08 07:55:03.881 10413-10461 StubManager             com.cdccreditsmart.app               D  Stub is NOT installed
+2025-12-08 07:55:03.882 10413-10461 ContractCodeStorage     com.cdccreditsmart.app               D  Retrieving contract code from storage
+2025-12-08 07:55:03.886 10413-10449 SecureTokenStorage      com.cdccreditsmart.app               D  EncryptedSharedPreferences initialized successfully
+2025-12-08 07:55:03.886 10413-10449 HeartbeatManager        com.cdccreditsmart.app               D  💓 Usando authToken (fallback)
+2025-12-08 07:55:03.886 10413-10449 HeartbeatManager        com.cdccreditsmart.app               D  💓 Payload do heartbeat:
+2025-12-08 07:55:03.886 10413-10449 HeartbeatManager        com.cdccreditsmart.app               D     deviceToken: eyJhbGciOiJIUzI1NiIs...
+2025-12-08 07:55:03.886 10413-10449 HeartbeatManager        com.cdccreditsmart.app               D     currentBlockLevel: 0
+2025-12-08 07:55:03.886 10413-10449 HeartbeatManager        com.cdccreditsmart.app               D     batteryLevel: 100
+2025-12-08 07:55:03.886 10413-10449 HeartbeatManager        com.cdccreditsmart.app               D     isCharging: false
+2025-12-08 07:55:03.886 10413-10449 HeartbeatManager        com.cdccreditsmart.app               D     currentSimImei: N/A...
+2025-12-08 07:55:03.892 10413-10476 okhttp.OkHttpClient     com.cdccreditsmart.app               I  --> POST https://cdccreditsmart.com/api/apk/device/heartbeat
+2025-12-08 07:55:03.892 10413-10476 okhttp.OkHttpClient     com.cdccreditsmart.app               I  Content-Type: application/json; charset=UTF-8
+2025-12-08 07:55:03.893 10413-10476 okhttp.OkHttpClient     com.cdccreditsmart.app               I  Content-Length: 364
+2025-12-08 07:55:03.893 10413-10476 okhttp.OkHttpClient     com.cdccreditsmart.app               I  Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkZXZpY2VJZCI6ImRldmljZV8xNzY1MTQ4NzcxNDYyXzR0ZXd3NDJwMTE0IiwiYXBrVG9rZW4iOiJYVjhXNTc2NiIsInR5cGUiOiJhcGsiLCJleHBpcmVzSW4iOiIyNGgiLCJpYXQiOjE3NjUxODg5ODMsImV4cCI6MTc2NTI3NTM4M30.muLfUOtUV3uQb4dj2-L5ojkEN6Jt4v2gQtGjUtDe1-Y
+2025-12-08 07:55:03.894 10413-10476 okhttp.OkHttpClient     com.cdccreditsmart.app               I  {"deviceToken":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkZXZpY2VJZCI6ImRldmljZV8xNzY1MTQ4NzcxNDYyXzR0ZXd3NDJwMTE0IiwiYXBrVG9rZW4iOiJYVjhXNTc2NiIsInR5cGUiOiJhcGsiLCJleHBpcmVzSW4iOiIyNGgiLCJpYXQiOjE3NjUxODg5ODMsImV4cCI6MTc2NTI3NTM4M30.muLfUOtUV3uQb4dj2-L5ojkEN6Jt4v2gQtGjUtDe1-Y","currentBlockLevel":0,"batteryLevel":100,"isCharging":false,"timestamp":1765191303886}
+2025-12-08 07:55:03.894 10413-10476 okhttp.OkHttpClient     com.cdccreditsmart.app               I  --> END POST (364-byte body)
+2025-12-08 07:55:03.904 10413-10452 JobInfo                 com.cdccreditsmart.app               W  Requested important-while-foreground flag for job57 is ignored and takes no effect
+2025-12-08 07:55:03.920 10413-10527 IconProtectionWorker    com.cdccreditsmart.app               D  🔍 Verificando proteção do ícone...
+2025-12-08 07:55:03.921 10413-10527 LauncherIconProtector   com.cdccreditsmart.app               D  ✅ Atalho já existe na home screen
+2025-12-08 07:55:03.921 10413-10527 IconProtectionWorker    com.cdccreditsmart.app               I  📊 Estatísticas: ícone restaurado 1 vezes
+2025-12-08 07:55:03.921 10413-10527 IconProtectionWorker    com.cdccreditsmart.app               D  ✅ Verificação de ícone concluída
+2025-12-08 07:55:03.923 10413-10450 WM-WorkerWrapper        com.cdccreditsmart.app               I  Worker result SUCCESS for Work [ id=17401d58-ffc2-4177-bc34-739c4134af4b, tags={ com.cdccreditsmart.app.workers.IconProtectionWorker } ]
+2025-12-08 07:55:03.929 10413-10464 SecureTokenStorage      com.cdccreditsmart.app               D  EncryptedSharedPreferences initialized successfully
+2025-12-08 07:55:03.947 10413-10476 SecureTokenStorage      com.cdccreditsmart.app               D  EncryptedSharedPreferences initialized successfully
+2025-12-08 07:55:03.965 10413-10461 ContractCodeStorage     com.cdccreditsmart.app               D  Storage verification: 7 valid, 0 tampered, 0 missing
+2025-12-08 07:55:03.965 10413-10461 ContractCodeStorage     com.cdccreditsmart.app               D  Contract code retrieved successfully
+2025-12-08 07:55:03.965 10413-10461 StubManager             com.cdccreditsmart.app               D  Enrollment complete: true (deviceId=device_176..., contractCode=XV8W57...)
+2025-12-08 07:55:03.965 10413-10461 StubManager             com.cdccreditsmart.app               D  Stub APK not found in assets: cdc_stub.apk
+2025-12-08 07:55:03.966 10413-10461 CdcForegroundService    com.cdccreditsmart.app               I  🔒 Stub instalado: false
+2025-12-08 07:55:03.966 10413-10461 CdcForegroundService    com.cdccreditsmart.app               I  🔒 Enrollment completo: true
+2025-12-08 07:55:03.966 10413-10461 CdcForegroundService    com.cdccreditsmart.app               I  🔒 APK em assets: false
+2025-12-08 07:55:03.966 10413-10461 CdcForegroundService    com.cdccreditsmart.app               I  🔒 Device Owner: false
+2025-12-08 07:55:03.966 10413-10461 CdcForegroundService    com.cdccreditsmart.app               I  🔒 Pode instalar: false
+2025-12-08 07:55:03.966 10413-10461 ContractCodeStorage     com.cdccreditsmart.app               D  Retrieving contract code from storage
+2025-12-08 07:55:04.016 10413-10461 ContractCodeStorage     com.cdccreditsmart.app               D  Storage verification: 7 valid, 0 tampered, 0 missing
+2025-12-08 07:55:04.016 10413-10461 ContractCodeStorage     com.cdccreditsmart.app               D  Contract code retrieved successfully
+2025-12-08 07:55:04.016 10413-10461 StubManager             com.cdccreditsmart.app               D  Enrollment complete: true (deviceId=device_176..., contractCode=XV8W57...)
+2025-12-08 07:55:04.017 10413-10461 StubManager             com.cdccreditsmart.app               D  Stub is NOT installed
+2025-12-08 07:55:04.017 10413-10461 StubManager             com.cdccreditsmart.app               D  Stub APK not found in assets: cdc_stub.apk
+2025-12-08 07:55:04.017 10413-10461 StubManager             com.cdccreditsmart.app               W  Stub APK not found in assets - skipping installation
+2025-12-08 07:55:04.017 10413-10461 CdcForegroundService    com.cdccreditsmart.app               W  🔒 ⚠️ Stub APK não encontrado em assets/
+2025-12-08 07:55:04.017 10413-10461 CdcForegroundService    com.cdccreditsmart.app               I  🔒 ========================================
+2025-12-08 07:55:04.017 10413-10461 CdcForegroundService    com.cdccreditsmart.app               I  📦 ========================================
+2025-12-08 07:55:04.017 10413-10461 CdcForegroundService    com.cdccreditsmart.app               I  📦 APK PRELOAD PARA FACTORY RESET (Multi-Fabricante)
+2025-12-08 07:55:04.017 10413-10461 CdcForegroundService    com.cdccreditsmart.app               I  📦 ========================================
+2025-12-08 07:55:04.017 10413-10461 ApkPreloadManager       com.cdccreditsmart.app               I  📱 Fabricante genérico - usando caminhos AOSP
+2025-12-08 07:55:04.018 10413-10461 CdcForegroundService    com.cdccreditsmart.app               I  📦 APK em preload: false
+2025-12-08 07:55:04.018 10413-10461 CdcForegroundService    com.cdccreditsmart.app               I  📦 ⏳ Não é Device Owner - preload não disponível
+2025-12-08 07:55:04.018 10413-10461 CdcForegroundService    com.cdccreditsmart.app               I  📦 ========================================
+2025-12-08 07:55:04.018 10413-10461 CdcForegroundService    com.cdccreditsmart.app               I  ✅ Todos os serviços MDM inicializados com sucesso
+2025-12-08 07:55:04.290 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  <-- 200 https://cdccreditsmart.com/api/apk/device/XV8W5766/commands (416ms)
+2025-12-08 07:55:04.290 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-credentials: true
+2025-12-08 07:55:04.291 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-headers: Origin, X-Requested-With, Content-Type, Accept, Authorization, x-client-key, x-client-token, x-client-secret, cache-control
+2025-12-08 07:55:04.292 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-methods: GET, POST, PUT, PATCH, DELETE, OPTIONS
+2025-12-08 07:55:04.292 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-origin: *
+2025-12-08 07:55:04.292 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-max-age: 86400
+2025-12-08 07:55:04.292 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-length: 105
+2025-12-08 07:55:04.293 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-security-policy: default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://replit.com; style-src 'self' 'unsafe-inline' https://replit.com; img-src 'self' data: https:; font-src 'self' data: https://replit.com; connect-src 'self';
+2025-12-08 07:55:04.293 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-type: application/json; charset=utf-8
+2025-12-08 07:55:04.293 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  date: Mon, 08 Dec 2025 10:55:04 GMT
+2025-12-08 07:55:04.293 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  etag: W/"69-JnxUXIkeOJE9HbxGWOIXIkjIGm0"
+2025-12-08 07:55:04.293 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  permissions-policy: geolocation=(), microphone=(), camera=()
+2025-12-08 07:55:04.293 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  referrer-policy: strict-origin-when-cross-origin
+2025-12-08 07:55:04.293 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  strict-transport-security: max-age=63072000; includeSubDomains
+2025-12-08 07:55:04.293 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  strict-transport-security: max-age=31536000; includeSubDomains
+2025-12-08 07:55:04.293 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-anti-fraud-protection: active
+2025-12-08 07:55:04.293 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-certificate-pinning-enabled: false
+2025-12-08 07:55:04.293 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-certificate-pinning-status: disabled-for-stability
+2025-12-08 07:55:04.294 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-content-type-options: nosniff
+2025-12-08 07:55:04.294 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-financial-data-protection: enabled
+2025-12-08 07:55:04.294 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-frame-options: DENY
+2025-12-08 07:55:04.294 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-transaction-security-level: maximum
+2025-12-08 07:55:04.294 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-xss-protection: 1; mode=block
+2025-12-08 07:55:04.294 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  via: 1.1 google
+2025-12-08 07:55:04.294 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  alt-svc: h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
+2025-12-08 07:55:04.295 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  {"deviceId":"device_1765148771462_4teww42p114","serialNumber":"XV8W5766","commandsCount":0,"commands":[]}
+2025-12-08 07:55:04.296 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  <-- END HTTP (105-byte body)
+2025-12-08 07:55:04.297 10413-10461 MdmCommandReceiver      com.cdccreditsmart.app               I  🔍 HTTP Response code: 200
+2025-12-08 07:55:04.297 10413-10461 MdmCommandReceiver      com.cdccreditsmart.app               I  🔍 HTTP isSuccessful: true
+2025-12-08 07:55:04.297 10413-10461 MdmCommandReceiver      com.cdccreditsmart.app               I  🔍 Response body deviceId: device_1765148771462_4teww42p114
+2025-12-08 07:55:04.297 10413-10461 MdmCommandReceiver      com.cdccreditsmart.app               I  🔍 Response body serialNumber: XV8W5766
+2025-12-08 07:55:04.297 10413-10461 MdmCommandReceiver      com.cdccreditsmart.app               I  🔍 Total de comandos: 0
+2025-12-08 07:55:04.297 10413-10461 MdmCommandReceiver      com.cdccreditsmart.app               D  ✅ Nenhum comando pendente no servidor
+2025-12-08 07:55:04.297 10413-10461 MdmCommandReceiver      com.cdccreditsmart.app               D  📊 Fetch duration: 427ms
+2025-12-08 07:55:04.298 10413-10461 MdmCommandReceiver      com.cdccreditsmart.app               I  🔍 [Polling #1] Verificando comandos pendentes...
+2025-12-08 07:55:04.299 10413-10461 SecureTokenStorage      com.cdccreditsmart.app               D  ⚠️ Usando Serial Number para MDM (IMEI indisponível): XV8W57...
+2025-12-08 07:55:04.300 10413-10461 MdmCommandReceiver      com.cdccreditsmart.app               I  🔍 ========================================
+2025-12-08 07:55:04.300 10413-10461 MdmCommandReceiver      com.cdccreditsmart.app               I  🔍 BUSCANDO COMANDOS PENDENTES
+2025-12-08 07:55:04.300 10413-10461 MdmCommandReceiver      com.cdccreditsmart.app               I  🔍 ========================================
+2025-12-08 07:55:04.300 10413-10461 MdmCommandReceiver      com.cdccreditsmart.app               I  🔍 Identifier: XV8W5766
+2025-12-08 07:55:04.300 10413-10461 MdmCommandReceiver      com.cdccreditsmart.app               I  🔍 Endpoint: GET /api/apk/device/XV8W5766/commands
+2025-12-08 07:55:04.301 10413-10461 MdmCommandReceiver      com.cdccreditsmart.app               D  🔍 Executando requisição HTTP (timeout: 15s)...
+2025-12-08 07:55:04.304 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  --> GET https://cdccreditsmart.com/api/apk/device/XV8W5766/commands
+2025-12-08 07:55:04.305 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  --> END GET
+2025-12-08 07:55:04.326 10413-10464 SecureTokenStorage      com.cdccreditsmart.app               D  EncryptedSharedPreferences initialized successfully
+2025-12-08 07:55:04.334 10413-10519 MdmCommandReceiver      com.cdccreditsmart.app               I  ✅ WebSocket MDM CONECTADO COM SUCESSO!
+2025-12-08 07:55:04.334 10413-10519 MdmCommandReceiver      com.cdccreditsmart.app               D  ✅ Response code: 101
+2025-12-08 07:55:04.334 10413-10519 MdmCommandReceiver      com.cdccreditsmart.app               I  ⏳ Aguardando 'auth_required' do servidor...
+2025-12-08 07:55:04.334 10413-10461 MdmCommandReceiver      com.cdccreditsmart.app               D  ⏰ Watchdog cancelado (conexão resolvida)
+2025-12-08 07:55:04.334 10413-10519 MdmCommandReceiver      com.cdccreditsmart.app               D  ⏳ Polling já está ativo - ignorando chamada duplicada
+2025-12-08 07:55:04.334 10413-10449 MdmCommandReceiver      com.cdccreditsmart.app               I  💓 Iniciando ping manual JSON (intervalo: 25s)
+2025-12-08 07:55:04.334 10413-10519 MdmCommandReceiver      com.cdccreditsmart.app               D  📥 Mensagem MDM recebida: {"type":"welcome","message":"Connected to unified WebSocket server","connectionId":"ec2468e4-93d4-4f88-98cd-77e9de259363","path":"/ws/mdm-policies","routerKey":"mdm-policies","timestamp":"2025-12-08T10:55:04.587Z","serverTime":"2025-12-08T10:55:04.587Z"}
+2025-12-08 07:55:04.334 10413-10519 MdmCommandReceiver      com.cdccreditsmart.app               D  📥 Mensagem MDM recebida: {"type":"auth_required","message":"Please authenticate via message with serialNumber, deviceFingerprint or androidId","timeout":60,"timestamp":"2025-12-08T10:55:04.588Z"}
+2025-12-08 07:55:04.335 10413-10449 MdmCommandReceiver      com.cdccreditsmart.app               D  📥 JSON recebido: {"type":"welcome","message":"Connected to unified WebSocket server","connectionId":"ec2468e4-93d4-4f88-98cd-77e9de259363","path":"/ws/mdm-policies","routerKey":"mdm-policies","timestamp":"2025-12-08T10:55:04.587Z","serverTime":"2025-12-08T10:55:04.587Z"}
+2025-12-08 07:55:04.335 10413-10462 MdmCommandReceiver      com.cdccreditsmart.app               D  📥 JSON recebido: {"type":"auth_required","message":"Please authenticate via message with serialNumber, deviceFingerprint or androidId","timeout":60,"timestamp":"2025-12-08T10:55:04.588Z"}
+2025-12-08 07:55:04.335 10413-10449 MdmCommandReceiver      com.cdccreditsmart.app               D  📨 Tipo de mensagem: welcome
+2025-12-08 07:55:04.335 10413-10449 MdmCommandReceiver      com.cdccreditsmart.app               D  👋 Mensagem de boas-vindas do servidor
+2025-12-08 07:55:04.335 10413-10462 MdmCommandReceiver      com.cdccreditsmart.app               D  📨 Tipo de mensagem: auth_required
+2025-12-08 07:55:04.335 10413-10462 MdmCommandReceiver      com.cdccreditsmart.app               W  ⚠️ ========================================
+2025-12-08 07:55:04.335 10413-10462 MdmCommandReceiver      com.cdccreditsmart.app               W  ⚠️ AUTENTICAÇÃO REQUERIDA PELO SERVIDOR
+2025-12-08 07:55:04.335 10413-10462 MdmCommandReceiver      com.cdccreditsmart.app               W  ⚠️ ========================================
+2025-12-08 07:55:04.335 10413-10462 MdmCommandReceiver      com.cdccreditsmart.app               W  ⚠️ Reenviando mensagem de autenticação...
+2025-12-08 07:55:04.337 10413-10462 SecureTokenStorage      com.cdccreditsmart.app               D  ⚠️ Usando Serial Number para MDM (IMEI indisponível): XV8W57...
+2025-12-08 07:55:04.338 10413-10462 MdmCommandReceiver      com.cdccreditsmart.app               I  🔐 ========================================
+2025-12-08 07:55:04.338 10413-10462 MdmCommandReceiver      com.cdccreditsmart.app               I  🔐 ENVIANDO AUTENTICAÇÃO WEBSOCKET
+2025-12-08 07:55:04.338 10413-10462 MdmCommandReceiver      com.cdccreditsmart.app               I  🔐 ========================================
+2025-12-08 07:55:04.339 10413-10462 MdmCommandReceiver      com.cdccreditsmart.app               I  🔐 serialNumber: XV8W5766...
+2025-12-08 07:55:04.339 10413-10462 MdmCommandReceiver      com.cdccreditsmart.app               I  🔐 deviceToken: eyJhbGciOiJIUzI1NiIs...
+2025-12-08 07:55:04.339 10413-10462 MdmCommandReceiver      com.cdccreditsmart.app               I  🔐 deviceFingerprint: N/A...
+2025-12-08 07:55:04.339 10413-10462 MdmCommandReceiver      com.cdccreditsmart.app               I  🔐 imei: N/A***
+2025-12-08 07:55:04.339 10413-10462 MdmCommandReceiver      com.cdccreditsmart.app               I  🔐 androidId: 555298e3...
+2025-12-08 07:55:04.339 10413-10462 MdmCommandReceiver      com.cdccreditsmart.app               I  🔐 apkVersion: 1.0.0-debug
+2025-12-08 07:55:04.339 10413-10462 MdmCommandReceiver      com.cdccreditsmart.app               I  ✅ Mensagem de autenticação enviada com sucesso (7 campos)
+2025-12-08 07:55:04.348 10413-10521 WebSocketManager        com.cdccreditsmart.app               D  WebSocket connection opened
+2025-12-08 07:55:04.348 10413-10521 WebSocketManager        com.cdccreditsmart.app               D  WebSocket connected for contract: XV8W5766
+2025-12-08 07:55:04.348 10413-10521 WebSocketManager        com.cdccreditsmart.app               D  Starting heartbeat
+2025-12-08 07:55:04.612 10413-10519 MdmCommandReceiver      com.cdccreditsmart.app               D  📥 Mensagem MDM recebida: {"type":"authenticated","deviceId":"device_1765148771462_4teww42p114","serialNumber":"XV8W5766","message":"Device authenticated successfully","timestamp":"2025-12-08T10:55:04.867Z"}
+2025-12-08 07:55:04.613 10413-10462 MdmCommandReceiver      com.cdccreditsmart.app               D  📥 JSON recebido: {"type":"authenticated","deviceId":"device_1765148771462_4teww42p114","serialNumber":"XV8W5766","message":"Device authenticated successfully","timestamp":"2025-12-08T10:55:04.867Z"}
+2025-12-08 07:55:04.614 10413-10462 MdmCommandReceiver      com.cdccreditsmart.app               D  📨 Tipo de mensagem: authenticated
+2025-12-08 07:55:04.614 10413-10462 MdmCommandReceiver      com.cdccreditsmart.app               I  ✅ ========================================
+2025-12-08 07:55:04.614 10413-10462 MdmCommandReceiver      com.cdccreditsmart.app               I  ✅ AUTENTICAÇÃO WEBSOCKET CONFIRMADA! (v2.5)
+2025-12-08 07:55:04.614 10413-10462 MdmCommandReceiver      com.cdccreditsmart.app               I  ✅ ========================================
+2025-12-08 07:55:04.614 10413-10462 MdmCommandReceiver      com.cdccreditsmart.app               I  ✅ Device ID: device_1765148771462_4teww42p114
+2025-12-08 07:55:04.614 10413-10462 MdmCommandReceiver      com.cdccreditsmart.app               I  ✅ Serial Number: XV8W5766
+2025-12-08 07:55:04.615 10413-10462 MdmCommandReceiver      com.cdccreditsmart.app               I  ✅ Mensagem: Device authenticated successfully
+2025-12-08 07:55:04.615 10413-10462 MdmCommandReceiver      com.cdccreditsmart.app               I  ✅ Timestamp: 2025-12-08T10:55:04.867Z
+2025-12-08 07:55:04.618 10413-10476 okhttp.OkHttpClient     com.cdccreditsmart.app               I  <-- 200 https://cdccreditsmart.com/api/apk/device/heartbeat (723ms)
+2025-12-08 07:55:04.618 10413-10476 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-credentials: true
+2025-12-08 07:55:04.618 10413-10476 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-headers: Origin, X-Requested-With, Content-Type, Accept, Authorization, x-client-key, x-client-token, x-client-secret, cache-control
+2025-12-08 07:55:04.618 10413-10476 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-methods: GET, POST, PUT, PATCH, DELETE, OPTIONS
+2025-12-08 07:55:04.619 10413-10476 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-origin: *
+2025-12-08 07:55:04.619 10413-10476 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-max-age: 86400
+2025-12-08 07:55:04.619 10413-10476 okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-length: 328
+2025-12-08 07:55:04.619 10413-10476 okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-security-policy: default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://replit.com; style-src 'self' 'unsafe-inline' https://replit.com; img-src 'self' data: https:; font-src 'self' data: https://replit.com; connect-src 'self';
+2025-12-08 07:55:04.619 10413-10476 okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-type: application/json; charset=utf-8
+2025-12-08 07:55:04.619 10413-10476 okhttp.OkHttpClient     com.cdccreditsmart.app               I  date: Mon, 08 Dec 2025 10:55:04 GMT
+2025-12-08 07:55:04.619 10413-10476 okhttp.OkHttpClient     com.cdccreditsmart.app               I  etag: W/"148-W5J1oUTiXm4EEqWTCSllQ09Pt1c"
+2025-12-08 07:55:04.619 10413-10476 okhttp.OkHttpClient     com.cdccreditsmart.app               I  permissions-policy: geolocation=(), microphone=(), camera=()
+2025-12-08 07:55:04.619 10413-10476 okhttp.OkHttpClient     com.cdccreditsmart.app               I  referrer-policy: strict-origin-when-cross-origin
+2025-12-08 07:55:04.619 10413-10476 okhttp.OkHttpClient     com.cdccreditsmart.app               I  strict-transport-security: max-age=63072000; includeSubDomains
+2025-12-08 07:55:04.619 10413-10476 okhttp.OkHttpClient     com.cdccreditsmart.app               I  strict-transport-security: max-age=31536000; includeSubDomains
+2025-12-08 07:55:04.620 10413-10476 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-anti-fraud-protection: active
+2025-12-08 07:55:04.620 10413-10476 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-certificate-pinning-enabled: false
+2025-12-08 07:55:04.620 10413-10476 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-certificate-pinning-status: disabled-for-stability
+2025-12-08 07:55:04.620 10413-10476 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-content-type-options: nosniff
+2025-12-08 07:55:04.620 10413-10476 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-financial-data-protection: enabled
+2025-12-08 07:55:04.620 10413-10476 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-frame-options: DENY
+2025-12-08 07:55:04.620 10413-10476 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-transaction-security-level: maximum
+2025-12-08 07:55:04.620 10413-10476 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-xss-protection: 1; mode=block
+2025-12-08 07:55:04.620 10413-10476 okhttp.OkHttpClient     com.cdccreditsmart.app               I  via: 1.1 google
+2025-12-08 07:55:04.620 10413-10476 okhttp.OkHttpClient     com.cdccreditsmart.app               I  alt-svc: h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
+2025-12-08 07:55:04.621 10413-10476 okhttp.OkHttpClient     com.cdccreditsmart.app               I  {"success":true,"requiresBackendRevalidation":false,"phoneNumbersProcessed":false,"complianceStatus":"OK","expectedBlockLevel":0,"message":"Device compliant","complianceConfig":{"maxComplianceCorrections":3,"correctionWindowMinutes":30,"autoBlockOnLimitReached":true,"enableDetailedTelemetry":true,"telemetryIntervalMinutes":5}}
+2025-12-08 07:55:04.621 10413-10476 okhttp.OkHttpClient     com.cdccreditsmart.app               I  <-- END HTTP (328-byte body)
+2025-12-08 07:55:04.623 10413-10462 HeartbeatManager        com.cdccreditsmart.app               I  ✅ Heartbeat aceito pelo backend (HTTP 200)
+2025-12-08 07:55:04.623 10413-10462 HeartbeatManager        com.cdccreditsmart.app               D  📊 Resposta do heartbeat:
+2025-12-08 07:55:04.623 10413-10462 HeartbeatManager        com.cdccreditsmart.app               D     success: true
+2025-12-08 07:55:04.623 10413-10462 HeartbeatManager        com.cdccreditsmart.app               D     complianceStatus: OK
+2025-12-08 07:55:04.623 10413-10462 HeartbeatManager        com.cdccreditsmart.app               D     expectedBlockLevel: 0
+2025-12-08 07:55:04.623 10413-10462 HeartbeatManager        com.cdccreditsmart.app               D     requiresBackendRevalidation: false
+2025-12-08 07:55:04.623 10413-10462 HeartbeatManager        com.cdccreditsmart.app               I  ✅ Dispositivo CONFORME - Nível 0
+2025-12-08 07:55:04.786 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  <-- 200 https://cdccreditsmart.com/api/apk/device/XV8W5766/commands (480ms)
+2025-12-08 07:55:04.786 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-credentials: true
+2025-12-08 07:55:04.786 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-headers: Origin, X-Requested-With, Content-Type, Accept, Authorization, x-client-key, x-client-token, x-client-secret, cache-control
+2025-12-08 07:55:04.786 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-methods: GET, POST, PUT, PATCH, DELETE, OPTIONS
+2025-12-08 07:55:04.787 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-origin: *
+2025-12-08 07:55:04.788 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-max-age: 86400
+2025-12-08 07:55:04.788 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-length: 105
+2025-12-08 07:55:04.788 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-security-policy: default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://replit.com; style-src 'self' 'unsafe-inline' https://replit.com; img-src 'self' data: https:; font-src 'self' data: https://replit.com; connect-src 'self';
+2025-12-08 07:55:04.788 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-type: application/json; charset=utf-8
+2025-12-08 07:55:04.788 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  date: Mon, 08 Dec 2025 10:55:05 GMT
+2025-12-08 07:55:04.788 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  etag: W/"69-JnxUXIkeOJE9HbxGWOIXIkjIGm0"
+2025-12-08 07:55:04.788 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  permissions-policy: geolocation=(), microphone=(), camera=()
+2025-12-08 07:55:04.788 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  referrer-policy: strict-origin-when-cross-origin
+2025-12-08 07:55:04.788 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  strict-transport-security: max-age=63072000; includeSubDomains
+2025-12-08 07:55:04.788 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  strict-transport-security: max-age=31536000; includeSubDomains
+2025-12-08 07:55:04.788 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-anti-fraud-protection: active
+2025-12-08 07:55:04.788 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-certificate-pinning-enabled: false
+2025-12-08 07:55:04.789 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-certificate-pinning-status: disabled-for-stability
+2025-12-08 07:55:04.790 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-content-type-options: nosniff
+2025-12-08 07:55:04.790 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-financial-data-protection: enabled
+2025-12-08 07:55:04.790 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-frame-options: DENY
+2025-12-08 07:55:04.790 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-transaction-security-level: maximum
+2025-12-08 07:55:04.790 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-xss-protection: 1; mode=block
+2025-12-08 07:55:04.791 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  via: 1.1 google
+2025-12-08 07:55:04.791 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  alt-svc: h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
+2025-12-08 07:55:04.791 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  {"deviceId":"device_1765148771462_4teww42p114","serialNumber":"XV8W5766","commandsCount":0,"commands":[]}
+2025-12-08 07:55:04.791 10413-10464 okhttp.OkHttpClient     com.cdccreditsmart.app               I  <-- END HTTP (105-byte body)
+2025-12-08 07:55:04.793 10413-10462 MdmCommandReceiver      com.cdccreditsmart.app               I  🔍 HTTP Response code: 200
+2025-12-08 07:55:04.793 10413-10462 MdmCommandReceiver      com.cdccreditsmart.app               I  🔍 HTTP isSuccessful: true
+2025-12-08 07:55:04.793 10413-10462 MdmCommandReceiver      com.cdccreditsmart.app               I  🔍 Response body deviceId: device_1765148771462_4teww42p114
+2025-12-08 07:55:04.793 10413-10462 MdmCommandReceiver      com.cdccreditsmart.app               I  🔍 Response body serialNumber: XV8W5766
+2025-12-08 07:55:04.793 10413-10462 MdmCommandReceiver      com.cdccreditsmart.app               I  🔍 Total de comandos: 0
+2025-12-08 07:55:04.793 10413-10462 MdmCommandReceiver      com.cdccreditsmart.app               D  ✅ Nenhum comando pendente no servidor
+2025-12-08 07:55:04.793 10413-10462 MdmCommandReceiver      com.cdccreditsmart.app               D  📊 Fetch duration: 493ms
+2025-12-08 07:55:25.826 10413-10462 MdmCommandReceiver      com.cdccreditsmart.app               D  💓 Ping JSON enviado (timestamp: 1765191325825)
+2025-12-08 07:55:26.031 10413-10468 MdmCommandReceiver      com.cdccreditsmart.app               D  📥 Mensagem MDM recebida: {"type":"pong","timestamp":"2025-12-08T10:55:26.284Z"}
+2025-12-08 07:55:26.046 10413-10462 MdmCommandReceiver      com.cdccreditsmart.app               D  📥 JSON recebido: {"type":"pong","timestamp":"2025-12-08T10:55:26.284Z"}
+2025-12-08 07:55:26.046 10413-10462 MdmCommandReceiver      com.cdccreditsmart.app               D  📨 Tipo de mensagem: pong
+2025-12-08 07:55:26.047 10413-10462 MdmCommandReceiver      com.cdccreditsmart.app               D  💓 Pong recebido (latency: N/A)
