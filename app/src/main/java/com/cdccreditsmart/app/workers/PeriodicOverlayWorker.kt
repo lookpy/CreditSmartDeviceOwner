@@ -36,13 +36,18 @@ class PeriodicOverlayWorker(
         const val WORK_NAME = "PeriodicOverlayWork"
         const val NOTIFICATION_WORK_NAME = "OverlayNotificationWork"
         
-        // Configuração de INTERVALO PROGRESSIVO baseado em dias de atraso
-        private const val INTERVAL_DAYS_1_4 = 10L      // 1-4 dias: a cada 10 minutos
-        private const val INTERVAL_DAYS_5_14 = 5L      // 5-14 dias: a cada 5 minutos
-        private const val INTERVAL_DAYS_15_PLUS = 3L   // 15+ dias: a cada 3 minutos
+        // CRÍTICO: WorkManager exige intervalo MÍNIMO de 15 minutos para PeriodicWorkRequest
+        // Intervalos menores causam IllegalArgumentException e crash do app
+        private const val WORKMANAGER_MIN_INTERVAL = 15L
+        
+        // Configuração de COOLDOWN PROGRESSIVO baseado em dias de atraso (em minutos)
+        // Estes valores são usados internamente pelo worker para controlar frequência de exibição
+        private const val COOLDOWN_DAYS_1_4 = 10L      // 1-4 dias: cooldown de 10 minutos
+        private const val COOLDOWN_DAYS_5_14 = 5L      // 5-14 dias: cooldown de 5 minutos
+        private const val COOLDOWN_DAYS_15_PLUS = 3L   // 15+ dias: cooldown de 3 minutos
         
         // Intervalo padrão quando não há informação de dias
-        private const val DEFAULT_INTERVAL_MINUTES = 10L
+        private const val DEFAULT_COOLDOWN_MINUTES = 10L
         
         // SharedPreferences keys
         private const val PREFS_NAME = "periodic_overlay"
@@ -51,67 +56,77 @@ class PeriodicOverlayWorker(
         private const val KEY_LAST_NOTIFICATION = "last_notification_timestamp"
         
         // Cooldown mínimo entre overlays (evita spam se WorkManager executar muito rápido)
-        private const val MINIMUM_COOLDOWN_MS = 2 * 60 * 1000L // 2 minutos (reduzido para intervalos progressivos)
+        private const val MINIMUM_COOLDOWN_MS = 2 * 60 * 1000L // 2 minutos
         
         /**
-         * Calcula intervalo baseado em dias de atraso (PROGRESSIVO)
+         * Calcula cooldown baseado em dias de atraso (PROGRESSIVO)
+         * Este é o intervalo real entre exibições de overlay
          */
-        private fun calculateIntervalMinutes(daysOverdue: Int): Long {
+        private fun calculateCooldownMinutes(daysOverdue: Int): Long {
             return when {
                 daysOverdue >= 15 -> {
-                    Log.i(TAG, "📊 INTERVALO AGRESSIVO: $INTERVAL_DAYS_15_PLUS min (≥15 dias de atraso)")
-                    INTERVAL_DAYS_15_PLUS
+                    Log.i(TAG, "📊 COOLDOWN AGRESSIVO: $COOLDOWN_DAYS_15_PLUS min (≥15 dias de atraso)")
+                    COOLDOWN_DAYS_15_PLUS
                 }
                 daysOverdue >= 5 -> {
-                    Log.i(TAG, "📊 INTERVALO MODERADO: $INTERVAL_DAYS_5_14 min (5-14 dias de atraso)")
-                    INTERVAL_DAYS_5_14
+                    Log.i(TAG, "📊 COOLDOWN MODERADO: $COOLDOWN_DAYS_5_14 min (5-14 dias de atraso)")
+                    COOLDOWN_DAYS_5_14
                 }
                 daysOverdue >= 1 -> {
-                    Log.i(TAG, "📊 INTERVALO PADRÃO: $INTERVAL_DAYS_1_4 min (1-4 dias de atraso)")
-                    INTERVAL_DAYS_1_4
+                    Log.i(TAG, "📊 COOLDOWN PADRÃO: $COOLDOWN_DAYS_1_4 min (1-4 dias de atraso)")
+                    COOLDOWN_DAYS_1_4
                 }
                 else -> {
-                    Log.i(TAG, "📊 INTERVALO DEFAULT: $DEFAULT_INTERVAL_MINUTES min (bloqueio manual)")
-                    DEFAULT_INTERVAL_MINUTES
+                    Log.i(TAG, "📊 COOLDOWN DEFAULT: $DEFAULT_COOLDOWN_MINUTES min (bloqueio manual)")
+                    DEFAULT_COOLDOWN_MINUTES
                 }
             }
         }
         
+        /**
+         * Agenda o worker de overlay periódico.
+         * 
+         * IMPORTANTE: WorkManager exige intervalo mínimo de 15 minutos para PeriodicWorkRequest.
+         * O controle de frequência real é feito internamente pelo worker através de cooldowns.
+         */
         fun schedule(context: Context) {
-            Log.i(TAG, "📅 Agendando overlay automático com INTERVALO PROGRESSIVO")
-            Log.i(TAG, "   1-4 dias de atraso: a cada $INTERVAL_DAYS_1_4 minutos")
-            Log.i(TAG, "   5-14 dias de atraso: a cada $INTERVAL_DAYS_5_14 minutos")
-            Log.i(TAG, "   15+ dias de atraso: a cada $INTERVAL_DAYS_15_PLUS minutos")
-            
-            val constraints = Constraints.Builder()
-                .setRequiredNetworkType(NetworkType.NOT_REQUIRED) // Não precisa de internet
-                .setRequiresBatteryNotLow(false) // Funciona mesmo com bateria baixa
-                .build()
-            
-            // Usar o intervalo mais agressivo (3 min) para garantir execução frequente
-            // O próprio worker calcula o intervalo real baseado em dias de atraso
-            val workRequest = PeriodicWorkRequestBuilder<PeriodicOverlayWorker>(
-                INTERVAL_DAYS_15_PLUS, // 3 minutos (mais agressivo)
-                TimeUnit.MINUTES,
-                // Flex interval: 1 minuto de flexibilidade
-                1,
-                TimeUnit.MINUTES
-            )
-                .setConstraints(constraints)
-                .setBackoffCriteria(
-                    BackoffPolicy.LINEAR,
-                    WorkRequest.MIN_BACKOFF_MILLIS,
-                    TimeUnit.MILLISECONDS
+            try {
+                Log.i(TAG, "📅 Agendando overlay automático")
+                Log.i(TAG, "   WorkManager interval: $WORKMANAGER_MIN_INTERVAL minutos (mínimo obrigatório)")
+                Log.i(TAG, "   Cooldowns progressivos controlados internamente pelo worker")
+                
+                val constraints = Constraints.Builder()
+                    .setRequiredNetworkType(NetworkType.NOT_REQUIRED)
+                    .setRequiresBatteryNotLow(false)
+                    .build()
+                
+                // CRÍTICO: Usar 15 minutos (mínimo do WorkManager)
+                // O worker controla o cooldown real internamente
+                val workRequest = PeriodicWorkRequestBuilder<PeriodicOverlayWorker>(
+                    WORKMANAGER_MIN_INTERVAL,
+                    TimeUnit.MINUTES,
+                    5L, // Flex interval de 5 minutos
+                    TimeUnit.MINUTES
                 )
-                .build()
-            
-            WorkManager.getInstance(context).enqueueUniquePeriodicWork(
-                WORK_NAME,
-                ExistingPeriodicWorkPolicy.REPLACE, // Substituir para aplicar novas configurações
-                workRequest
-            )
-            
-            Log.i(TAG, "✅ Overlay automático agendado com sucesso")
+                    .setConstraints(constraints)
+                    .setBackoffCriteria(
+                        BackoffPolicy.LINEAR,
+                        WorkRequest.MIN_BACKOFF_MILLIS,
+                        TimeUnit.MILLISECONDS
+                    )
+                    .build()
+                
+                WorkManager.getInstance(context).enqueueUniquePeriodicWork(
+                    WORK_NAME,
+                    ExistingPeriodicWorkPolicy.REPLACE,
+                    workRequest
+                )
+                
+                Log.i(TAG, "✅ Overlay automático agendado com sucesso")
+                
+            } catch (e: Exception) {
+                Log.e(TAG, "❌ Erro ao agendar overlay worker: ${e.message}", e)
+            }
         }
         
         fun cancel(context: Context) {
@@ -154,9 +169,9 @@ class PeriodicOverlayWorker(
                 return Result.success()
             }
             
-            // Calcular intervalo progressivo baseado em dias de atraso
-            val requiredIntervalMinutes = calculateIntervalMinutes(blockingInfo.daysOverdue)
-            val requiredIntervalMs = requiredIntervalMinutes * 60 * 1000L
+            // Calcular cooldown progressivo baseado em dias de atraso
+            val requiredCooldownMinutes = calculateCooldownMinutes(blockingInfo.daysOverdue)
+            val requiredCooldownMs = requiredCooldownMinutes * 60 * 1000L
             
             // Verificar se já passou tempo suficiente desde o último overlay
             val prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
@@ -164,13 +179,13 @@ class PeriodicOverlayWorker(
             val now = System.currentTimeMillis()
             val timeSinceLastShown = now - lastShown
             
-            // Usar o maior entre cooldown mínimo e intervalo progressivo
-            val effectiveCooldown = maxOf(MINIMUM_COOLDOWN_MS, requiredIntervalMs)
+            // Usar o maior entre cooldown mínimo e cooldown progressivo
+            val effectiveCooldown = maxOf(MINIMUM_COOLDOWN_MS, requiredCooldownMs)
             
             if (timeSinceLastShown < effectiveCooldown) {
                 val remainingMinutes = (effectiveCooldown - timeSinceLastShown) / 60000
-                Log.d(TAG, "⏱️ Aguardando intervalo progressivo: $remainingMinutes min restantes")
-                Log.d(TAG, "   Intervalo requerido: $requiredIntervalMinutes min (${blockingInfo.daysOverdue} dias atraso)")
+                Log.d(TAG, "⏱️ Aguardando cooldown progressivo: $remainingMinutes min restantes")
+                Log.d(TAG, "   Cooldown requerido: $requiredCooldownMinutes min (${blockingInfo.daysOverdue} dias atraso)")
                 Log.d(TAG, "   Último overlay: ${timeSinceLastShown / 60000} min atrás")
                 return Result.success()
             }
@@ -199,7 +214,7 @@ class PeriodicOverlayWorker(
             Log.i(TAG, "🚨 BLOQUEIO ATIVO - Mostrando overlay de cobrança!")
             Log.i(TAG, "   Nível: ${blockingInfo.currentLevel}")
             Log.i(TAG, "   Dias de atraso: ${blockingInfo.daysOverdue}")
-            Log.i(TAG, "   Intervalo atual: $requiredIntervalMinutes minutos")
+            Log.i(TAG, "   Cooldown atual: $requiredCooldownMinutes minutos")
             
             showOverlay(blockingInfo, hasManualBlock)
             
@@ -212,7 +227,7 @@ class PeriodicOverlayWorker(
             }
             
             Log.i(TAG, "✅ Overlay mostrado com sucesso (#$showCount)")
-            Log.i(TAG, "⏰ Próximo overlay em aproximadamente $requiredIntervalMinutes minutos")
+            Log.i(TAG, "⏰ Próximo overlay em aproximadamente $requiredCooldownMinutes minutos")
             Log.i(TAG, "")
             
             Result.success()
