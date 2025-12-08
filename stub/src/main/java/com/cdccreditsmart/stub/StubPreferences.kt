@@ -8,18 +8,6 @@ import androidx.security.crypto.MasterKey
 
 class StubPreferences(context: Context) {
     
-    companion object {
-        private const val TAG = "StubPreferences"
-        private const val PREFS_NAME = "cdc_stub_prefs"
-        private const val KEY_DEVICE_ID = "device_id"
-        private const val KEY_CONTRACT_CODE = "contract_code"
-        private const val KEY_SERIAL_NUMBER = "serial_number"
-        private const val KEY_APK_URL = "apk_url"
-        private const val KEY_LAST_INSTALL_ATTEMPT = "last_install_attempt"
-        private const val KEY_INSTALL_RETRY_COUNT = "install_retry_count"
-        private const val KEY_ENROLLED = "is_enrolled"
-    }
-    
     private val prefs: SharedPreferences = try {
         val masterKey = MasterKey.Builder(context)
             .setKeyScheme(MasterKey.KeyScheme.AES256_GCM)
@@ -74,10 +62,24 @@ class StubPreferences(context: Context) {
             putString(KEY_DEVICE_ID, deviceId)
             putString(KEY_CONTRACT_CODE, contractCode)
             putString(KEY_SERIAL_NUMBER, serialNumber)
-            putString(KEY_APK_URL, apkUrl ?: "https://cdccreditsmart.com.br/api/v1/apk/download")
+            putString(KEY_APK_URL, apkUrl ?: DEFAULT_APK_URL)
             putBoolean(KEY_ENROLLED, true)
         }.apply()
         Log.i(TAG, "Enrollment data saved: deviceId=$deviceId, contractCode=$contractCode")
+    }
+    
+    companion object {
+        private const val TAG = "StubPreferences"
+        private const val PREFS_NAME = "cdc_stub_prefs"
+        private const val KEY_DEVICE_ID = "device_id"
+        private const val KEY_CONTRACT_CODE = "contract_code"
+        private const val KEY_SERIAL_NUMBER = "serial_number"
+        private const val KEY_APK_URL = "apk_url"
+        private const val KEY_LAST_INSTALL_ATTEMPT = "last_install_attempt"
+        private const val KEY_INSTALL_RETRY_COUNT = "install_retry_count"
+        private const val KEY_ENROLLED = "is_enrolled"
+        
+        const val DEFAULT_APK_URL = "https://bppprhrpqncihfxfcsip.supabase.co/storage/v1/object/public/Plug/apk/app-release.apk"
     }
     
     fun resetRetryCount() {

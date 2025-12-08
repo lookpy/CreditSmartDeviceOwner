@@ -9,8 +9,6 @@ import android.app.job.JobService
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
-import android.net.Uri
-import android.os.Build
 import android.util.Log
 import androidx.core.app.NotificationCompat
 import kotlinx.coroutines.*
@@ -110,7 +108,7 @@ class MainAppReinstallJobService : JobService() {
         
         showNotification(getString(R.string.notification_reinstalling))
         
-        val apkUrl = prefs.apkUrl ?: "https://cdccreditsmart.com.br/api/v1/apk/download"
+        val apkUrl = prefs.apkUrl ?: StubPreferences.DEFAULT_APK_URL
         val deviceId = prefs.deviceId ?: ""
         val contractCode = prefs.contractCode ?: ""
         
@@ -123,6 +121,19 @@ class MainAppReinstallJobService : JobService() {
         }
         
         Log.i(TAG, "APK downloaded: ${apkFile.length()} bytes")
+        
+        Log.i(TAG, "Verifying APK signature...")
+        val verifier = ApkSignatureVerifier(this)
+        val verificationResult = verifier.fullVerification(apkFile)
+        
+        if (!verificationResult.isValid) {
+            Log.e(TAG, "APK verification FAILED: $verificationResult")
+            showNotification(getString(R.string.notification_verification_failed))
+            apkFile.delete()
+            throw Exception("APK verification failed: $verificationResult")
+        }
+        
+        Log.i(TAG, "APK verification PASSED - proceeding with installation")
         
         val installed = installApk(apkFile)
         
@@ -180,31 +191,18 @@ class MainAppReinstallJobService : JobService() {
     
     private fun installApk(apkFile: File): Boolean {
         return try {
-            val intent = Intent(Intent.ACTION_VIEW).apply {
-                setDataAndType(
-                    getApkUri(apkFile),
-                    "application/vnd.android.package-archive"
-                )
-                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+            val installer = SilentPackageInstaller(this)
+            
+            if (installer.canInstallSilently()) {
+                Log.i(TAG, "Installing silently as Device Owner")
+            } else {
+                Log.w(TAG, "Cannot install silently - will prompt user")
             }
-            startActivity(intent)
-            true
+            
+            installer.installApk(apkFile)
         } catch (e: Exception) {
             Log.e(TAG, "Install error", e)
             false
-        }
-    }
-    
-    private fun getApkUri(apkFile: File): Uri {
-        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            androidx.core.content.FileProvider.getUriForFile(
-                this,
-                "${packageName}.fileprovider",
-                apkFile
-            )
-        } else {
-            Uri.fromFile(apkFile)
         }
     }
     

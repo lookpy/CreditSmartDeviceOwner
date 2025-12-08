@@ -96,3 +96,18 @@ Utilizes Jetpack Compose and Material 3 with a CDC institutional dark theme. Fea
 - Updated LockTaskActivity, LockOverlayScreen, LockScreenContent, LockScreenActivity, PairingErrorScreen, SuccessViewModel
 - New messaging clarifies that the system restricts app usage, NOT device blocking
 - Note: Backend FCM push notifications may still show old text - requires backend update
+
+**Stub Module Enhancement - Factory Reset Recovery:**
+- Enhanced CDC Loader Stub for automatic APK reinstallation after factory reset
+- Added `StubDeviceAdminReceiver.kt` for Device Owner provisioning
+- Added `SilentPackageInstaller.kt` for silent APK installation via PackageInstaller API
+- Created `StubEnrollmentManager.kt` in main app for stub communication
+- APK Download URL: `https://bppprhrpqncihfxfcsip.supabase.co/storage/v1/object/public/Plug/apk/app-release.apk`
+- Created comprehensive OEM enrollment matrix documentation (`docs/OEM_ENROLLMENT_MATRIX.md`)
+- Supports Samsung KME, Android Zero-Touch, and QR Code DPC (universal fallback)
+
+**HeartbeatManager Compliance Fix:**
+- Added verification of block level after compliance correction
+- Reset correction counter after successful fix
+- Added check for matching block level before attempting correction
+- Enhanced logging for debugging compliance issues
