@@ -107,6 +107,35 @@ class AutoPermissionManager(private val context: Context) {
         
         Log.i(TAG, "✅ App é Device Owner - concedendo permissões automaticamente...")
         
+        grantAllRuntimePermissionsAsDeviceOwner()
+        
+        verifyAllPermissionsGranted()
+        
+        grantSpecialPermissionsIfNeeded()
+    }
+    
+    /**
+     * Concede TODAS as permissões runtime automaticamente via setPermissionGrantState()
+     * Deve ser chamado o mais cedo possível quando Device Owner é ativado.
+     * 
+     * Pode ser chamado de:
+     * - CDCDeviceAdminReceiver.onEnabled()
+     * - CDCApplication.onCreate()
+     * - grantAllPermissionsAutomatically()
+     * 
+     * IMPORTANTE: Esta função é segura para chamar múltiplas vezes.
+     * Permissões já concedidas são ignoradas.
+     */
+    fun grantAllRuntimePermissionsAsDeviceOwner() {
+        if (!isDeviceOwner()) {
+            Log.w(TAG, "⚠️ grantAllRuntimePermissionsAsDeviceOwner: App não é Device Owner")
+            return
+        }
+        
+        Log.i(TAG, "🚀 ========================================")
+        Log.i(TAG, "🚀 CONCESSÃO RÁPIDA DE PERMISSÕES (Device Owner)")
+        Log.i(TAG, "🚀 ========================================")
+        
         val packageName = context.packageName
         var grantedCount = 0
         var alreadyGrantedCount = 0
@@ -123,21 +152,19 @@ class AutoPermissionManager(private val context: Context) {
                         continue
                     }
                     
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                        val result = dpm.setPermissionGrantState(
-                            adminComponent,
-                            packageName,
-                            permission,
-                            DevicePolicyManager.PERMISSION_GRANT_STATE_GRANTED
-                        )
-                        
-                        if (result) {
-                            Log.i(TAG, "  ✅ Concedida: $permission")
-                            grantedCount++
-                        } else {
-                            Log.w(TAG, "  ⚠️ Falha ao conceder: $permission (pode não ser runtime)")
-                            errorCount++
-                        }
+                    val result = dpm.setPermissionGrantState(
+                        adminComponent,
+                        packageName,
+                        permission,
+                        DevicePolicyManager.PERMISSION_GRANT_STATE_GRANTED
+                    )
+                    
+                    if (result) {
+                        Log.i(TAG, "  ✅ Concedida: $permission")
+                        grantedCount++
+                    } else {
+                        Log.w(TAG, "  ⚠️ Falha ao conceder: $permission (pode não ser runtime)")
+                        errorCount++
                     }
                 }
             } catch (e: Exception) {
@@ -146,17 +173,13 @@ class AutoPermissionManager(private val context: Context) {
             }
         }
         
-        Log.i(TAG, "========================================")
-        Log.i(TAG, "📊 RESUMO DA CONCESSÃO DE PERMISSÕES:")
+        Log.i(TAG, "🚀 ========================================")
+        Log.i(TAG, "🚀 RESUMO DA CONCESSÃO RÁPIDA:")
         Log.i(TAG, "  ✅ Novas permissões concedidas: $grantedCount")
         Log.i(TAG, "  ⏩ Já estavam concedidas: $alreadyGrantedCount")
         Log.i(TAG, "  ❌ Erros/Falhas: $errorCount")
         Log.i(TAG, "  📋 Total processadas: ${RUNTIME_PERMISSIONS.size}")
-        Log.i(TAG, "========================================")
-        
-        verifyAllPermissionsGranted()
-        
-        grantSpecialPermissionsIfNeeded()
+        Log.i(TAG, "🚀 ========================================")
     }
     
     private fun grantSpecialPermissionsIfNeeded() {

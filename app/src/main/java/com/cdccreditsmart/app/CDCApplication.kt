@@ -62,6 +62,11 @@ class CDCApplication : Application() {
         
         grantPermissionsIfDeviceOwner()
         applyMaximumProtectionIfDeviceOwner()
+        
+        // CRÍTICO: Iniciar SettingsGuard IMEDIATAMENTE quando Device Owner
+        // Não esperar por outras verificações - proteger o dispositivo o mais rápido possível
+        startSettingsGuardIfDeviceOwner()
+        
         ensureManagedSecondaryUserExists()
         checkTamperDetection()
         checkSimSwapStatus()
@@ -284,6 +289,52 @@ class CDCApplication : Application() {
             
         } catch (e: Exception) {
             Log.e(TAG, "❌ Erro ao aplicar proteções: ${e.message}", e)
+        }
+    }
+    
+    /**
+     * Inicia SettingsGuardService IMEDIATAMENTE quando Device Owner
+     * 
+     * CRÍTICO: O SettingsGuard deve iniciar o mais rápido possível para
+     * proteger o dispositivo contra acesso às configurações.
+     * 
+     * Não esperar por:
+     * - Verificação de tokens
+     * - Pairing completo
+     * - Outras inicializações
+     * 
+     * A proteção do dispositivo é prioridade máxima quando Device Owner.
+     */
+    private fun startSettingsGuardIfDeviceOwner() {
+        try {
+            val dpm = getSystemService(Context.DEVICE_POLICY_SERVICE) as android.app.admin.DevicePolicyManager
+            val isDeviceOwner = dpm.isDeviceOwnerApp(packageName)
+            
+            if (!isDeviceOwner) {
+                Log.d(TAG, "⏸️ App não é Device Owner - SettingsGuard será iniciado normalmente")
+                return
+            }
+            
+            Log.i(TAG, "🛡️ ========================================")
+            Log.i(TAG, "🛡️ INICIANDO SETTINGSGUARD IMEDIATAMENTE")
+            Log.i(TAG, "🛡️ ========================================")
+            Log.i(TAG, "🛡️ Device Owner detectado - proteção máxima iniciando...")
+            
+            // Iniciar SettingsGuardService imediatamente
+            val started = SettingsGuardService.startService(applicationContext)
+            
+            if (started) {
+                Log.i(TAG, "🛡️ ✅ SettingsGuardService iniciado com sucesso!")
+                Log.i(TAG, "🛡️    Dispositivo protegido contra acesso a Settings")
+            } else {
+                Log.w(TAG, "🛡️ ⚠️ SettingsGuardService não pôde ser iniciado agora")
+                Log.w(TAG, "🛡️    Será tentado novamente quando app estiver em foreground")
+            }
+            
+            Log.i(TAG, "🛡️ ========================================")
+            
+        } catch (e: Exception) {
+            Log.e(TAG, "❌ Erro ao iniciar SettingsGuard: ${e.message}", e)
         }
     }
     

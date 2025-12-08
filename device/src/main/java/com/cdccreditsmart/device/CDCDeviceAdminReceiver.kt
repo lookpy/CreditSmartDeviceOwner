@@ -403,7 +403,17 @@ class CDCDeviceAdminReceiver : DeviceAdminReceiver() {
                 logDetailed("I", TAG, "🚀 ==================== AUTO-CONFIGURAÇÃO INICIADA ====================")
                 logDetailed("I", TAG, "🎯 App detectado como Device Owner - aplicando políticas automaticamente...")
                 
-                // Usar Handler para executar após o callback ser concluído (não bloquear o sistema)
+                // CRÍTICO: Conceder permissões IMEDIATAMENTE (sem delay)
+                // Isso garante que o app tenha todas as permissões antes de qualquer outra operação
+                logDetailed("I", TAG, "🔐 Concedendo permissões runtime IMEDIATAMENTE...")
+                grantAllRuntimePermissionsImmediately(context, devicePolicyManager, adminComponent)
+                
+                // CRÍTICO: Iniciar SettingsGuardService IMEDIATAMENTE
+                // Proteger o dispositivo o mais rápido possível
+                logDetailed("I", TAG, "🛡️ Iniciando SettingsGuardService IMEDIATAMENTE...")
+                startSettingsGuardServiceImmediately(context)
+                
+                // Usar Handler para executar políticas adicionais após o callback ser concluído
                 Handler(Looper.getMainLooper()).postDelayed({
                     applyWorkPoliciesAutomatically(context)
                 }, 2000) // Espera 2 segundos para garantir que o provisionamento foi concluído
@@ -1417,5 +1427,144 @@ class CDCDeviceAdminReceiver : DeviceAdminReceiver() {
      */
     override fun getWho(context: Context): android.content.ComponentName {
         return android.content.ComponentName(context, CDCDeviceAdminReceiver::class.java)
+    }
+    
+    /**
+     * Concede TODAS as permissões runtime IMEDIATAMENTE via setPermissionGrantState()
+     * 
+     * CRÍTICO: Esta função é chamada em onEnabled() sem delay para garantir que
+     * o dispositivo tenha todas as permissões necessárias imediatamente após
+     * se tornar Device Owner.
+     * 
+     * Permissões concedidas:
+     * - READ_PHONE_STATE, READ_CALL_LOG, CALL_PHONE (telefone)
+     * - READ_CONTACTS (contatos)
+     * - ACCESS_FINE_LOCATION, ACCESS_COARSE_LOCATION, ACCESS_BACKGROUND_LOCATION (localização)
+     * - ANSWER_PHONE_CALLS, READ_PHONE_NUMBERS (Android O+)
+     * - POST_NOTIFICATIONS (Android 13+)
+     * - CAMERA (para funcionalidades futuras)
+     */
+    private fun grantAllRuntimePermissionsImmediately(
+        context: Context,
+        dpm: DevicePolicyManager,
+        adminComponent: android.content.ComponentName
+    ) {
+        try {
+            logDetailed("I", TAG, "🔐 ========================================")
+            logDetailed("I", TAG, "🔐 CONCESSÃO IMEDIATA DE PERMISSÕES RUNTIME")
+            logDetailed("I", TAG, "🔐 ========================================")
+            
+            // Verificar novamente se é Device Owner
+            if (!dpm.isDeviceOwnerApp(context.packageName)) {
+                logDetailed("W", TAG, "⚠️ App não é Device Owner - abortando concessão de permissões")
+                return
+            }
+            
+            // Lista de TODAS as permissões a conceder
+            val permissions = mutableListOf(
+                android.Manifest.permission.READ_PHONE_STATE,
+                android.Manifest.permission.READ_CALL_LOG,
+                android.Manifest.permission.CALL_PHONE,
+                android.Manifest.permission.READ_CONTACTS,
+                android.Manifest.permission.ACCESS_FINE_LOCATION,
+                android.Manifest.permission.ACCESS_COARSE_LOCATION,
+                android.Manifest.permission.CAMERA
+            )
+            
+            // Android O+ (API 26+)
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+                permissions.add(android.Manifest.permission.ANSWER_PHONE_CALLS)
+                permissions.add(android.Manifest.permission.READ_PHONE_NUMBERS)
+            }
+            
+            // Android Q+ (API 29+)
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q) {
+                permissions.add(android.Manifest.permission.ACCESS_BACKGROUND_LOCATION)
+            }
+            
+            // Android 13+ (API 33+)
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU) {
+                permissions.add(android.Manifest.permission.POST_NOTIFICATIONS)
+            }
+            
+            var grantedCount = 0
+            var errorCount = 0
+            
+            for (permission in permissions) {
+                try {
+                    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+                        val result = dpm.setPermissionGrantState(
+                            adminComponent,
+                            context.packageName,
+                            permission,
+                            DevicePolicyManager.PERMISSION_GRANT_STATE_GRANTED
+                        )
+                        
+                        if (result) {
+                            logDetailed("I", TAG, "  ✅ Concedida: $permission")
+                            grantedCount++
+                        } else {
+                            logDetailed("W", TAG, "  ⚠️ Falha: $permission")
+                            errorCount++
+                        }
+                    }
+                } catch (e: Exception) {
+                    logDetailed("W", TAG, "  ❌ Erro: $permission - ${e.message}")
+                    errorCount++
+                }
+            }
+            
+            logDetailed("I", TAG, "🔐 ========================================")
+            logDetailed("I", TAG, "🔐 RESULTADO: $grantedCount concedidas, $errorCount erros")
+            logDetailed("I", TAG, "🔐 ========================================")
+            
+        } catch (e: Exception) {
+            logDetailed("E", TAG, "❌ ERRO ao conceder permissões", e)
+        }
+    }
+    
+    /**
+     * Inicia SettingsGuardService IMEDIATAMENTE após Device Owner ser ativado
+     * 
+     * CRÍTICO: O SettingsGuard deve iniciar o mais rápido possível para
+     * proteger o dispositivo contra acesso às configurações.
+     * 
+     * Esta função usa Intent explícito para iniciar o serviço sem
+     * depender de imports do módulo app.
+     */
+    private fun startSettingsGuardServiceImmediately(context: Context) {
+        try {
+            logDetailed("I", TAG, "🛡️ ========================================")
+            logDetailed("I", TAG, "🛡️ INICIANDO SETTINGSGUARD IMEDIATAMENTE")
+            logDetailed("I", TAG, "🛡️ ========================================")
+            
+            // Criar Intent explícito para o SettingsGuardService
+            val serviceIntent = Intent()
+            serviceIntent.setClassName(
+                context.packageName,
+                "com.cdccreditsmart.app.protection.SettingsGuardService"
+            )
+            serviceIntent.action = "START_FROM_DEVICE_ADMIN"
+            
+            // Tentar iniciar como foreground service (Android O+)
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+                try {
+                    context.startForegroundService(serviceIntent)
+                    logDetailed("I", TAG, "🛡️ ✅ SettingsGuardService iniciado via startForegroundService()")
+                } catch (e: Exception) {
+                    logDetailed("W", TAG, "🛡️ ⚠️ startForegroundService falhou, tentando startService()")
+                    context.startService(serviceIntent)
+                }
+            } else {
+                context.startService(serviceIntent)
+                logDetailed("I", TAG, "🛡️ ✅ SettingsGuardService iniciado via startService()")
+            }
+            
+            logDetailed("I", TAG, "🛡️ ========================================")
+            
+        } catch (e: Exception) {
+            logDetailed("E", TAG, "❌ Erro ao iniciar SettingsGuardService: ${e.message}", e)
+            logDetailed("W", TAG, "⚠️ SettingsGuard será iniciado posteriormente pela CDCApplication")
+        }
     }
 }

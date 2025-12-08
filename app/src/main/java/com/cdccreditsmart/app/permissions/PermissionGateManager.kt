@@ -102,6 +102,53 @@ class PermissionGateManager(private val context: Context) {
     
     fun getGateStatus(): GateStatus {
         val level = getPrivilegeLevel()
+        
+        // CRÍTICO: Quando Device Owner, considerar TODAS as permissões como concedidas
+        // e pular direto para a próxima tela (sem exibir tela de permissões)
+        if (level == PrivilegeLevel.DEVICE_OWNER) {
+            Log.i(TAG, "🚀 Device Owner detectado - pulando verificação de permissões")
+            Log.i(TAG, "   → Todas as permissões são concedidas automaticamente via DPM")
+            
+            // Retorna status com todas permissões "concedidas" para pular a tela
+            val allGrantedPermissions = listOf(
+                PermissionStatus(
+                    type = PermissionType.RUNTIME,
+                    isGranted = true,
+                    isObtainableAtCurrentLevel = false,
+                    displayName = "Permissões Básicas",
+                    description = "Concedidas automaticamente como Device Owner"
+                ),
+                PermissionStatus(
+                    type = PermissionType.USAGE_STATS,
+                    isGranted = true,
+                    isObtainableAtCurrentLevel = false,
+                    displayName = "Monitoramento de Apps",
+                    description = "Concedida automaticamente como Device Owner"
+                ),
+                PermissionStatus(
+                    type = PermissionType.OVERLAY,
+                    isGranted = true,
+                    isObtainableAtCurrentLevel = false,
+                    displayName = "Mostrar Alertas",
+                    description = "Concedida automaticamente como Device Owner"
+                ),
+                PermissionStatus(
+                    type = PermissionType.BATTERY_OPTIMIZATION,
+                    isGranted = true,
+                    isObtainableAtCurrentLevel = false,
+                    displayName = "Execução em Segundo Plano",
+                    description = "Concedida automaticamente como Device Owner"
+                )
+            )
+            
+            return GateStatus(
+                privilegeLevel = level,
+                allRequiredPermissionsGranted = true,
+                missingPermissions = emptyList(),
+                grantedPermissions = allGrantedPermissions
+            )
+        }
+        
         val allPermissions = getAllPermissionStatuses(level)
         
         val missing = allPermissions.filter { !it.isGranted && it.isObtainableAtCurrentLevel }
