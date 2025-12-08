@@ -124,13 +124,13 @@ class AppBlockingManager(private val context: Context) {
                 // 2. Resolver blockAllFlags via BlockAllFlagsResolver
                 // CRÍTICO: Sempre chamar o resolver se blockAllFlags existir
                 // O resolver internamente verifica hasAnyBlockEnabled()
-                if (parameters.blockAllFlags != null) {
-                    val flags = parameters.blockAllFlags
-                    val activeFlags = flags.getActiveFlags()
+                val blockAllFlags = parameters.blockAllFlags
+                if (blockAllFlags != null) {
+                    val activeFlags = blockAllFlags.getActiveFlags()
                     Log.i(TAG, "🎯 v2.5: blockAllFlags presente com ${activeFlags.size} flags ativas: $activeFlags")
                     
                     val resolver = BlockAllFlagsResolver(context)
-                    val resolvedPackages = resolver.resolvePackagesForFlags(flags)
+                    val resolvedPackages = resolver.resolvePackagesForFlags(blockAllFlags)
                     packagesToBlock.addAll(resolvedPackages)
                     packagesFromBlockAllFlags = resolvedPackages.size
                     Log.i(TAG, "📦 v2.5: ${packagesFromBlockAllFlags} packages de blockAllFlags (via BlockAllFlagsResolver)")
@@ -180,13 +180,14 @@ class AppBlockingManager(private val context: Context) {
                 }
                 
                 // Determinar finalCategories para persistência
+                // Usar blockAllFlags local (já armazenado acima) para evitar smart cast issue
                 finalCategories = when {
                     parameters.blockCategories.isNotEmpty() -> {
                         Log.d(TAG, "   📋 v2.5: finalCategories = blockCategories do backend")
                         parameters.blockCategories
                     }
-                    parameters.blockAllFlags?.hasAnyBlockEnabled() == true -> {
-                        val activeFlagsAsCategories = parameters.blockAllFlags.getActiveFlags()
+                    blockAllFlags?.hasAnyBlockEnabled() == true -> {
+                        val activeFlagsAsCategories = blockAllFlags.getActiveFlags()
                         Log.d(TAG, "   📋 v2.5: finalCategories derivadas de blockAllFlags: $activeFlagsAsCategories")
                         activeFlagsAsCategories
                     }

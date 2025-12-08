@@ -299,6 +299,26 @@ class CategoryMapper(private val context: Context) {
                packageName.contains("mail", ignoreCase = true)
     }
     
+    private fun isYouTubeTikTokApp(packageName: String): Boolean {
+        val youtubeApps = listOf(
+            "com.google.android.youtube",
+            "com.google.android.youtube.tv",
+            "com.google.android.youtube.tvkids",
+            "com.google.android.apps.youtube.music",
+            "com.google.android.apps.youtube.kids",
+            "com.google.android.apps.youtube.creator"
+        )
+        val tiktokApps = listOf(
+            "com.zhiliaoapp.musically",
+            "com.ss.android.ugc.trill",
+            "com.tiktok.bruno"
+        )
+        return packageName in youtubeApps || 
+               packageName in tiktokApps ||
+               packageName.contains("youtube", ignoreCase = true) ||
+               packageName.contains("tiktok", ignoreCase = true)
+    }
+    
     private fun isPhotosGalleryApp(app: ApplicationInfo, packageName: String): Boolean {
         val photoApps = listOf(
             // Google
