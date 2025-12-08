@@ -1,0 +1,108 @@
+.class public final Lb3/e$b;
+.super Lkotlin/jvm/internal/w;
+.source "r8-map-id-0094b210524a8e64fd72f71440f94ab47b2428b651926fd2b6160aa7f8008656"
+
+# interfaces
+.implements LBb/l;
+
+
+# annotations
+.annotation system Ldalvik/annotation/EnclosingMethod;
+    value = Lb3/e;->a(Landroid/view/View;)Lb3/d;
+.end annotation
+
+.annotation system Ldalvik/annotation/InnerClass;
+    accessFlags = 0x19
+    name = null
+.end annotation
+
+
+# static fields
+.field public static final p:Lb3/e$b;
+
+
+# direct methods
+.method static constructor <clinit>()V
+    .registers 1
+
+    .line 1
+    new-instance v0, Lb3/e$b;
+
+    .line 3
+    invoke-direct {v0}, Lb3/e$b;-><init>()V
+
+    .line 6
+    sput-object v0, Lb3/e$b;->p:Lb3/e$b;
+
+    .line 8
+    return-void
+.end method
+
+.method public constructor <init>()V
+    .registers 2
+
+    .line 1
+    const/4 v0, 0x1
+
+    .line 2
+    invoke-direct {p0, v0}, Lkotlin/jvm/internal/w;-><init>(I)V
+
+    .line 5
+    return-void
+.end method
+
+
+# virtual methods
+.method public final c(Landroid/view/View;)Lb3/d;
+    .registers 2
+
+    .line 1
+    const-string p0, "view"
+
+    .line 3
+    invoke-static {p1, p0}, Lkotlin/jvm/internal/u;->g(Ljava/lang/Object;Ljava/lang/String;)V
+
+    .line 6
+    sget p0, Lb3/a;->a:I
+
+    .line 8
+    invoke-virtual {p1, p0}, Landroid/view/View;->getTag(I)Ljava/lang/Object;
+
+    .line 11
+    move-result-object p0
+
+    .line 12
+    instance-of p1, p0, Lb3/d;
+
+    .line 14
+    if-eqz p1, :cond_12
+
+    .line 16
+    check-cast p0, Lb3/d;
+
+    .line 18
+    return-object p0
+
+    .line 19
+    :cond_12
+    const/4 p0, 0x0
+
+    .line 20
+    return-object p0
+.end method
+
+.method public bridge synthetic invoke(Ljava/lang/Object;)Ljava/lang/Object;
+    .registers 2
+
+    .line 1
+    check-cast p1, Landroid/view/View;
+
+    .line 3
+    invoke-virtual {p0, p1}, Lb3/e$b;->c(Landroid/view/View;)Lb3/d;
+
+    .line 6
+    move-result-object p0
+
+    .line 7
+    return-object p0
+.end method

@@ -1,0 +1,32 @@
+.class public Landroidx/camera/video/internal/encoder/InvalidConfigException;
+.super Ljava/lang/Exception;
+.source "r8-map-id-0094b210524a8e64fd72f71440f94ab47b2428b651926fd2b6160aa7f8008656"
+
+
+# direct methods
+.method public constructor <init>(Ljava/lang/String;)V
+    .registers 2
+
+    .line 1
+    invoke-direct {p0, p1}, Ljava/lang/Exception;-><init>(Ljava/lang/String;)V
+
+    return-void
+.end method
+
+.method public constructor <init>(Ljava/lang/String;Ljava/lang/Throwable;)V
+    .registers 3
+
+    .line 2
+    invoke-direct {p0, p1, p2}, Ljava/lang/Exception;-><init>(Ljava/lang/String;Ljava/lang/Throwable;)V
+
+    return-void
+.end method
+
+.method public constructor <init>(Ljava/lang/Throwable;)V
+    .registers 2
+
+    .line 3
+    invoke-direct {p0, p1}, Ljava/lang/Exception;-><init>(Ljava/lang/Throwable;)V
+
+    return-void
+.end method

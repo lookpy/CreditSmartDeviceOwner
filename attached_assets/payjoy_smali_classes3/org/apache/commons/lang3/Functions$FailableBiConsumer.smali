@@ -1,0 +1,40 @@
+.class public interface abstract Lorg/apache/commons/lang3/Functions$FailableBiConsumer;
+.super Ljava/lang/Object;
+.source "r8-map-id-0094b210524a8e64fd72f71440f94ab47b2428b651926fd2b6160aa7f8008656"
+
+
+# annotations
+.annotation system Ldalvik/annotation/EnclosingClass;
+    value = Lorg/apache/commons/lang3/Functions;
+.end annotation
+
+.annotation system Ldalvik/annotation/InnerClass;
+    accessFlags = 0x609
+    name = "FailableBiConsumer"
+.end annotation
+
+.annotation system Ldalvik/annotation/Signature;
+    value = {
+        "<O1:",
+        "Ljava/lang/Object;",
+        "O2:",
+        "Ljava/lang/Object;",
+        "T:",
+        "Ljava/lang/Throwable;",
+        ">",
+        "Ljava/lang/Object;"
+    }
+.end annotation
+
+.annotation runtime Ljava/lang/FunctionalInterface;
+.end annotation
+
+
+# virtual methods
+.method public abstract accept(Ljava/lang/Object;Ljava/lang/Object;)V
+    .annotation system Ldalvik/annotation/Signature;
+        value = {
+            "(TO1;TO2;)V^TT;"
+        }
+    .end annotation
+.end method

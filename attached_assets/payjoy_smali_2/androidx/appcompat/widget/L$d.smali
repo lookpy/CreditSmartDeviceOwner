@@ -1,0 +1,36 @@
+.class public abstract Landroidx/appcompat/widget/L$d;
+.super Ljava/lang/Object;
+.source "r8-map-id-0094b210524a8e64fd72f71440f94ab47b2428b651926fd2b6160aa7f8008656"
+
+
+# annotations
+.annotation system Ldalvik/annotation/EnclosingClass;
+    value = Landroidx/appcompat/widget/L;
+.end annotation
+
+.annotation system Ldalvik/annotation/InnerClass;
+    accessFlags = 0x9
+    name = "d"
+.end annotation
+
+
+# direct methods
+.method public static a(Landroid/widget/PopupWindow;Landroid/graphics/Rect;)V
+    .registers 2
+
+    .line 1
+    invoke-virtual {p0, p1}, Landroid/widget/PopupWindow;->setEpicenterBounds(Landroid/graphics/Rect;)V
+
+    .line 4
+    return-void
+.end method
+
+.method public static b(Landroid/widget/PopupWindow;Z)V
+    .registers 2
+
+    .line 1
+    invoke-virtual {p0, p1}, Landroid/widget/PopupWindow;->setIsClippedToScreen(Z)V
+
+    .line 4
+    return-void
+.end method

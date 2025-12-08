@@ -1,0 +1,151 @@
+.class public final LVc/r0$a;
+.super Lub/m;
+.source "r8-map-id-0094b210524a8e64fd72f71440f94ab47b2428b651926fd2b6160aa7f8008656"
+
+# interfaces
+.implements LBb/p;
+
+
+# annotations
+.annotation system Ldalvik/annotation/EnclosingMethod;
+    value = LVc/r0;->b(Lsb/i;LBb/a;Lsb/e;)Ljava/lang/Object;
+.end annotation
+
+.annotation system Ldalvik/annotation/InnerClass;
+    accessFlags = 0x19
+    name = null
+.end annotation
+
+
+# instance fields
+.field public p:I
+
+.field public synthetic q:Ljava/lang/Object;
+
+.field public final synthetic r:LBb/a;
+
+
+# direct methods
+.method public constructor <init>(LBb/a;Lsb/e;)V
+    .registers 3
+
+    .line 1
+    iput-object p1, p0, LVc/r0$a;->r:LBb/a;
+
+    .line 3
+    const/4 p1, 0x2
+
+    .line 4
+    invoke-direct {p0, p1, p2}, Lub/m;-><init>(ILsb/e;)V
+
+    .line 7
+    return-void
+.end method
+
+
+# virtual methods
+.method public final create(Ljava/lang/Object;Lsb/e;)Lsb/e;
+    .registers 4
+
+    .line 1
+    new-instance v0, LVc/r0$a;
+
+    .line 3
+    iget-object p0, p0, LVc/r0$a;->r:LBb/a;
+
+    .line 5
+    invoke-direct {v0, p0, p2}, LVc/r0$a;-><init>(LBb/a;Lsb/e;)V
+
+    .line 8
+    iput-object p1, v0, LVc/r0$a;->q:Ljava/lang/Object;
+
+    .line 10
+    return-object v0
+.end method
+
+.method public final invoke(LVc/J;Lsb/e;)Ljava/lang/Object;
+    .registers 3
+
+    .line 1
+    invoke-virtual {p0, p1, p2}, LVc/r0$a;->create(Ljava/lang/Object;Lsb/e;)Lsb/e;
+
+    move-result-object p0
+
+    check-cast p0, LVc/r0$a;
+
+    sget-object p1, Lnb/E;->a:Lnb/E;
+
+    invoke-virtual {p0, p1}, LVc/r0$a;->invokeSuspend(Ljava/lang/Object;)Ljava/lang/Object;
+
+    move-result-object p0
+
+    return-object p0
+.end method
+
+.method public bridge synthetic invoke(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
+    .registers 3
+
+    .line 2
+    check-cast p1, LVc/J;
+
+    check-cast p2, Lsb/e;
+
+    invoke-virtual {p0, p1, p2}, LVc/r0$a;->invoke(LVc/J;Lsb/e;)Ljava/lang/Object;
+
+    move-result-object p0
+
+    return-object p0
+.end method
+
+.method public final invokeSuspend(Ljava/lang/Object;)Ljava/lang/Object;
+    .registers 3
+
+    .line 1
+    invoke-static {}, Ltb/c;->e()Ljava/lang/Object;
+
+    .line 4
+    iget v0, p0, LVc/r0$a;->p:I
+
+    .line 6
+    if-nez v0, :cond_19
+
+    .line 8
+    invoke-static {p1}, Lnb/q;->b(Ljava/lang/Object;)V
+
+    .line 11
+    iget-object p1, p0, LVc/r0$a;->q:Ljava/lang/Object;
+
+    .line 13
+    check-cast p1, LVc/J;
+
+    .line 15
+    invoke-interface {p1}, LVc/J;->getCoroutineContext()Lsb/i;
+
+    .line 18
+    move-result-object p1
+
+    .line 19
+    iget-object p0, p0, LVc/r0$a;->r:LBb/a;
+
+    .line 21
+    invoke-static {p1, p0}, LVc/r0;->a(Lsb/i;LBb/a;)Ljava/lang/Object;
+
+    .line 24
+    move-result-object p0
+
+    .line 25
+    return-object p0
+
+    .line 26
+    :cond_19
+    new-instance p0, Ljava/lang/IllegalStateException;
+
+    .line 28
+    const-string p1, "call to \'resume\' before \'invoke\' with coroutine"
+
+    .line 30
+    invoke-direct {p0, p1}, Ljava/lang/IllegalStateException;-><init>(Ljava/lang/String;)V
+
+    .line 33
+    throw p0
+.end method

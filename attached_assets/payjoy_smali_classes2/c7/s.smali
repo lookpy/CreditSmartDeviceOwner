@@ -1,0 +1,37 @@
+.class public final Lc7/s;
+.super Lc7/d0;
+.source "r8-map-id-0094b210524a8e64fd72f71440f94ab47b2428b651926fd2b6160aa7f8008656"
+
+
+# instance fields
+.field public final synthetic a:Lv7/h;
+
+
+# direct methods
+.method public constructor <init>(Lv7/h;)V
+    .registers 2
+
+    .line 1
+    iput-object p1, p0, Lc7/s;->a:Lv7/h;
+
+    .line 3
+    invoke-direct {p0}, Lc7/d0;-><init>()V
+
+    .line 6
+    return-void
+.end method
+
+
+# virtual methods
+.method public final q(Lcom/google/android/gms/common/api/Status;Landroid/location/Location;)V
+    .registers 3
+
+    .line 1
+    iget-object p0, p0, Lc7/s;->a:Lv7/h;
+
+    .line 3
+    invoke-static {p1, p2, p0}, LG6/t;->a(Lcom/google/android/gms/common/api/Status;Ljava/lang/Object;Lv7/h;)V
+
+    .line 6
+    return-void
+.end method

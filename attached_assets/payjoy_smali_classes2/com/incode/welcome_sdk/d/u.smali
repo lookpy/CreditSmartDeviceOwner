@@ -1,0 +1,19 @@
+.class public final Lcom/incode/welcome_sdk/d/u;
+.super Ljava/lang/Object;
+.source "r8-map-id-0094b210524a8e64fd72f71440f94ab47b2428b651926fd2b6160aa7f8008656"
+
+
+# instance fields
+.field private final a:Landroidx/constraintlayout/widget/ConstraintLayout;
+
+
+# virtual methods
+.method public final bridge synthetic getRoot()Landroid/view/View;
+    .registers 1
+
+    .line 1
+    iget-object p0, p0, Lcom/incode/welcome_sdk/d/u;->a:Landroidx/constraintlayout/widget/ConstraintLayout;
+
+    .line 3
+    return-object p0
+.end method

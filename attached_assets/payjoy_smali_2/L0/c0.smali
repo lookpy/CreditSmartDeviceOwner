@@ -1,0 +1,80 @@
+.class public final LL0/c0;
+.super Lkotlin/jvm/internal/w;
+.source "r8-map-id-0094b210524a8e64fd72f71440f94ab47b2428b651926fd2b6160aa7f8008656"
+
+# interfaces
+.implements LBb/l;
+
+
+# instance fields
+.field public final synthetic p:LBb/l;
+
+
+# direct methods
+.method public constructor <init>(LBb/l;)V
+    .registers 2
+
+    .line 1
+    iput-object p1, p0, LL0/c0;->p:LBb/l;
+
+    .line 3
+    const/4 p1, 0x1
+
+    .line 4
+    invoke-direct {p0, p1}, Lkotlin/jvm/internal/w;-><init>(I)V
+
+    .line 7
+    return-void
+.end method
+
+
+# virtual methods
+.method public final a(J)Ljava/lang/Object;
+    .registers 5
+
+    .line 1
+    iget-object p0, p0, LL0/c0;->p:LBb/l;
+
+    .line 3
+    const-wide/32 v0, 0xf4240
+
+    .line 6
+    div-long/2addr p1, v0
+
+    .line 7
+    invoke-static {p1, p2}, Ljava/lang/Long;->valueOf(J)Ljava/lang/Long;
+
+    .line 10
+    move-result-object p1
+
+    .line 11
+    invoke-interface {p0, p1}, LBb/l;->invoke(Ljava/lang/Object;)Ljava/lang/Object;
+
+    .line 14
+    move-result-object p0
+
+    .line 15
+    return-object p0
+.end method
+
+.method public bridge synthetic invoke(Ljava/lang/Object;)Ljava/lang/Object;
+    .registers 4
+
+    .line 1
+    check-cast p1, Ljava/lang/Number;
+
+    .line 3
+    invoke-virtual {p1}, Ljava/lang/Number;->longValue()J
+
+    .line 6
+    move-result-wide v0
+
+    .line 7
+    invoke-virtual {p0, v0, v1}, LL0/c0;->a(J)Ljava/lang/Object;
+
+    .line 10
+    move-result-object p0
+
+    .line 11
+    return-object p0
+.end method

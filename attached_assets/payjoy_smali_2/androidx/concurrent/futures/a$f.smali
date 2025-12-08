@@ -1,0 +1,132 @@
+.class public final Landroidx/concurrent/futures/a$f;
+.super Landroidx/concurrent/futures/a$b;
+.source "r8-map-id-0094b210524a8e64fd72f71440f94ab47b2428b651926fd2b6160aa7f8008656"
+
+
+# annotations
+.annotation system Ldalvik/annotation/EnclosingClass;
+    value = Landroidx/concurrent/futures/a;
+.end annotation
+
+.annotation system Ldalvik/annotation/InnerClass;
+    accessFlags = 0x19
+    name = "f"
+.end annotation
+
+
+# instance fields
+.field public final a:Ljava/util/concurrent/atomic/AtomicReferenceFieldUpdater;
+
+.field public final b:Ljava/util/concurrent/atomic/AtomicReferenceFieldUpdater;
+
+.field public final c:Ljava/util/concurrent/atomic/AtomicReferenceFieldUpdater;
+
+.field public final d:Ljava/util/concurrent/atomic/AtomicReferenceFieldUpdater;
+
+.field public final e:Ljava/util/concurrent/atomic/AtomicReferenceFieldUpdater;
+
+
+# direct methods
+.method public constructor <init>(Ljava/util/concurrent/atomic/AtomicReferenceFieldUpdater;Ljava/util/concurrent/atomic/AtomicReferenceFieldUpdater;Ljava/util/concurrent/atomic/AtomicReferenceFieldUpdater;Ljava/util/concurrent/atomic/AtomicReferenceFieldUpdater;Ljava/util/concurrent/atomic/AtomicReferenceFieldUpdater;)V
+    .registers 7
+
+    .line 1
+    const/4 v0, 0x0
+
+    .line 2
+    invoke-direct {p0, v0}, Landroidx/concurrent/futures/a$b;-><init>(Landroidx/concurrent/futures/a$a;)V
+
+    .line 5
+    iput-object p1, p0, Landroidx/concurrent/futures/a$f;->a:Ljava/util/concurrent/atomic/AtomicReferenceFieldUpdater;
+
+    .line 7
+    iput-object p2, p0, Landroidx/concurrent/futures/a$f;->b:Ljava/util/concurrent/atomic/AtomicReferenceFieldUpdater;
+
+    .line 9
+    iput-object p3, p0, Landroidx/concurrent/futures/a$f;->c:Ljava/util/concurrent/atomic/AtomicReferenceFieldUpdater;
+
+    .line 11
+    iput-object p4, p0, Landroidx/concurrent/futures/a$f;->d:Ljava/util/concurrent/atomic/AtomicReferenceFieldUpdater;
+
+    .line 13
+    iput-object p5, p0, Landroidx/concurrent/futures/a$f;->e:Ljava/util/concurrent/atomic/AtomicReferenceFieldUpdater;
+
+    .line 15
+    return-void
+.end method
+
+
+# virtual methods
+.method public a(Landroidx/concurrent/futures/a;Landroidx/concurrent/futures/a$e;Landroidx/concurrent/futures/a$e;)Z
+    .registers 4
+
+    .line 1
+    iget-object p0, p0, Landroidx/concurrent/futures/a$f;->d:Ljava/util/concurrent/atomic/AtomicReferenceFieldUpdater;
+
+    .line 3
+    invoke-static {p0, p1, p2, p3}, Landroidx/concurrent/futures/b;->a(Ljava/util/concurrent/atomic/AtomicReferenceFieldUpdater;Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;)Z
+
+    .line 6
+    move-result p0
+
+    .line 7
+    return p0
+.end method
+
+.method public b(Landroidx/concurrent/futures/a;Ljava/lang/Object;Ljava/lang/Object;)Z
+    .registers 4
+
+    .line 1
+    iget-object p0, p0, Landroidx/concurrent/futures/a$f;->e:Ljava/util/concurrent/atomic/AtomicReferenceFieldUpdater;
+
+    .line 3
+    invoke-static {p0, p1, p2, p3}, Landroidx/concurrent/futures/b;->a(Ljava/util/concurrent/atomic/AtomicReferenceFieldUpdater;Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;)Z
+
+    .line 6
+    move-result p0
+
+    .line 7
+    return p0
+.end method
+
+.method public c(Landroidx/concurrent/futures/a;Landroidx/concurrent/futures/a$i;Landroidx/concurrent/futures/a$i;)Z
+    .registers 4
+
+    .line 1
+    iget-object p0, p0, Landroidx/concurrent/futures/a$f;->c:Ljava/util/concurrent/atomic/AtomicReferenceFieldUpdater;
+
+    .line 3
+    invoke-static {p0, p1, p2, p3}, Landroidx/concurrent/futures/b;->a(Ljava/util/concurrent/atomic/AtomicReferenceFieldUpdater;Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;)Z
+
+    .line 6
+    move-result p0
+
+    .line 7
+    return p0
+.end method
+
+.method public d(Landroidx/concurrent/futures/a$i;Landroidx/concurrent/futures/a$i;)V
+    .registers 3
+
+    .line 1
+    iget-object p0, p0, Landroidx/concurrent/futures/a$f;->b:Ljava/util/concurrent/atomic/AtomicReferenceFieldUpdater;
+
+    .line 3
+    invoke-virtual {p0, p1, p2}, Ljava/util/concurrent/atomic/AtomicReferenceFieldUpdater;->lazySet(Ljava/lang/Object;Ljava/lang/Object;)V
+
+    .line 6
+    return-void
+.end method
+
+.method public e(Landroidx/concurrent/futures/a$i;Ljava/lang/Thread;)V
+    .registers 3
+
+    .line 1
+    iget-object p0, p0, Landroidx/concurrent/futures/a$f;->a:Ljava/util/concurrent/atomic/AtomicReferenceFieldUpdater;
+
+    .line 3
+    invoke-virtual {p0, p1, p2}, Ljava/util/concurrent/atomic/AtomicReferenceFieldUpdater;->lazySet(Ljava/lang/Object;Ljava/lang/Object;)V
+
+    .line 6
+    return-void
+.end method
