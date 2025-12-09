@@ -139,16 +139,9 @@ fun PermissionGateScreen(
         }
     }
     
-    if (gateStatus.privilegeLevel == PermissionGateManager.PrivilegeLevel.DEVICE_OWNER) {
-        LaunchedEffect(Unit) {
-            isLoading = true
-            delay(1500)
-            onAllPermissionsGranted()
-        }
-        
-        LoadingScreen()
-        return
-    }
+    // REMOVIDO: Antes, quando Device Owner, pulava sem verificar permissões.
+    // Agora verificamos TODAS as permissões mesmo como Device Owner porque
+    // algumas (USAGE_STATS, OVERLAY, bateria) podem precisar de aprovação manual.
     
     
     Column(

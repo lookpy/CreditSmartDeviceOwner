@@ -168,24 +168,32 @@ O enforcement offline reaplicava packages do cache diretamente via setApplicatio
 - SettingsGuard tem USAGE_STATS disponível imediatamente
 - Serviços críticos iniciam em menos de 1 segundo
 
-### 2025-12-09: Permissão de Bateria na Tela de Permissões
+### 2025-12-09: Tela de Permissões no Modo Device Owner
 
 **Problema Identificado:**
-O app pedia permissão de segundo plano aleatoriamente depois de algum tempo, mas deveria pedir na tela de permissões necessárias. Device Owner NÃO pode conceder automaticamente a isenção de otimização de bateria (limitação do Android).
+1. O app pedia permissão de bateria aleatoriamente depois de algum tempo
+2. Device Owner NÃO pode conceder automaticamente algumas permissões:
+   - USAGE_STATS (em alguns dispositivos como Motorola)
+   - OVERLAY (em alguns dispositivos)
+   - Isenção de otimização de bateria (NUNCA pode ser auto-concedida)
+3. A tela de permissões era PULADA quando Device Owner, assumindo que tudo foi concedido
 
 **Correção Implementada:**
 
-**1. SpecialPermissionRequester.kt:**
-- Adicionada função `hasBatteryOptimizationExemption()` para verificar status
-- Adicionada função `requestBatteryOptimizationExemption()` para solicitar
-- Adicionado enum `BATTERY_OPTIMIZATION` com texto explicativo
+**1. PermissionGateScreen.kt:**
+- REMOVIDO o bypass que pulava a tela quando Device Owner
+- Agora mostra a tela de permissões MESMO como Device Owner se alguma estiver faltando
+- Tela mostra quais permissões foram concedidas (✅) e quais faltam (❌)
 
-**2. SpecialPermissionsScreen.kt:**
-- Adicionado card para permissão de bateria na tela de permissões
-- Verificação inclui bateria para permitir continuar
+**2. PermissionGateManager.kt:**
+- Verifica CADA permissão especial individualmente mesmo como Device Owner
+- Se USAGE_STATS, OVERLAY ou bateria não concedida → mostra na lista de pendentes
 
-**3. PermissionGateManager.kt:**
-- Corrigido para verificar REALMENTE cada permissão especial mesmo como Device Owner
-- Se Device Owner mas USAGE_STATS, OVERLAY ou bateria não concedida → mostra tela de permissões
-- Alguns dispositivos (como Motorola) não permitem concessão automática de USAGE_STATS via AppOps
-- Explicação clara de quais permissões faltam e por quê
+**3. CDCApplication.kt:**
+- Concessão de permissões movida para PRIORIDADE 0 (imediato, não em background)
+
+**Fluxo Corrigido:**
+1. App inicia → tenta conceder permissões automaticamente
+2. PermissionGateScreen verifica quais realmente foram concedidas
+3. Se alguma faltar → mostra tela para técnico conceder manualmente
+4. Técnico concede → app prossegue normalmente
