@@ -284,12 +284,12 @@ class AutoPermissionManager(private val context: Context) {
      * Solicita isenção de otimização de bateria para execução em segundo plano.
      * 
      * CRÍTICO: Esta função deve ser chamada logo no início da inicialização do app
-     * para garantir que a solicitação apareça junto com as outras permissões.
+     * para garantir que o app possa executar em background sem ser morto pelo sistema.
      * 
-     * Estratégia:
-     * 1. Se já isento → não faz nada
-     * 2. Device Owner → Usa ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS
-     * 3. Fallback → Mostra diálogo padrão do Android
+     * Estratégia para Device Owner:
+     * 1. Tenta adicionar à whitelist via comando shell (dumpsys deviceidle)
+     * 2. Tenta via Settings.Global (requer permissão WRITE_SETTINGS)
+     * 3. Fallback: Mostra diálogo para usuário (ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS)
      */
     @SuppressLint("BatteryLife")
     fun requestBatteryOptimizationExemption() {
@@ -312,9 +312,19 @@ class AutoPermissionManager(private val context: Context) {
                 return
             }
             
-            Log.i(TAG, "🔋 ⚠️ App NÃO está isento - solicitando isenção...")
+            Log.i(TAG, "🔋 ⚠️ App NÃO está isento - tentando forçar isenção...")
             
-            // Solicitar isenção diretamente via Intent
+            // ESTRATÉGIA 1: Tentar via comando shell (Device Owner pode ter acesso)
+            if (isDeviceOwner()) {
+                val success = forceAddToDozeWhitelistViaShell()
+                if (success) {
+                    Log.i(TAG, "🔋 ✅ Adicionado à whitelist via shell!")
+                    Log.i(TAG, "🔋 ========================================")
+                    return
+                }
+            }
+            
+            // ESTRATÉGIA 2: Solicitar isenção diretamente via Intent (requer interação)
             val intent = Intent(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS).apply {
                 data = Uri.parse("package:${context.packageName}")
                 addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
@@ -325,7 +335,6 @@ class AutoPermissionManager(private val context: Context) {
                 Log.i(TAG, "🔋 ✅ Diálogo de isenção de bateria exibido")
             } catch (e: Exception) {
                 Log.w(TAG, "🔋 ⚠️ Falha ao abrir diálogo direto: ${e.message}")
-                // Fallback: Abrir configurações de bateria
                 openBatteryOptimizationSettings()
             }
             
@@ -334,6 +343,53 @@ class AutoPermissionManager(private val context: Context) {
         } catch (e: Exception) {
             Log.e(TAG, "🔋 ❌ Erro ao solicitar isenção de bateria: ${e.message}", e)
         }
+    }
+    
+    /**
+     * Tenta adicionar o app à whitelist de Doze via comando shell.
+     * Como Device Owner, o app pode ter permissões elevadas para executar comandos.
+     * 
+     * Comandos tentados:
+     * 1. dumpsys deviceidle whitelist +<package>
+     * 2. cmd deviceidle whitelist +<package>
+     * 
+     * @return true se conseguiu adicionar à whitelist
+     */
+    private fun forceAddToDozeWhitelistViaShell(): Boolean {
+        val packageName = context.packageName
+        
+        Log.i(TAG, "🔋 Tentando adicionar à whitelist via shell...")
+        
+        // Tentar múltiplos comandos
+        val commands = listOf(
+            "dumpsys deviceidle whitelist +$packageName",
+            "cmd deviceidle whitelist +$packageName"
+        )
+        
+        for (command in commands) {
+            try {
+                Log.d(TAG, "🔋 Executando: $command")
+                val process = Runtime.getRuntime().exec(command)
+                val exitCode = process.waitFor()
+                
+                if (exitCode == 0) {
+                    Log.i(TAG, "🔋 ✅ Comando executado com sucesso: $command")
+                    
+                    // Verificar se realmente funcionou
+                    val powerManager = context.getSystemService(Context.POWER_SERVICE) as PowerManager
+                    if (powerManager.isIgnoringBatteryOptimizations(packageName)) {
+                        return true
+                    }
+                } else {
+                    Log.w(TAG, "🔋 ⚠️ Comando retornou código $exitCode: $command")
+                }
+            } catch (e: Exception) {
+                Log.w(TAG, "🔋 ⚠️ Falha ao executar comando: ${e.message}")
+            }
+        }
+        
+        Log.w(TAG, "🔋 ⚠️ Não foi possível adicionar via shell")
+        return false
     }
     
     /**
