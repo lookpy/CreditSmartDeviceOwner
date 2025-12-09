@@ -106,10 +106,6 @@ class CDCApplication : Application() {
         applicationScope.launch {
             Log.i(TAG, "🔄 PRIORIDADE 2: Iniciando operações pesadas em BACKGROUND...")
             
-            // 2.0 CRÍTICO: Reaplicar bloqueio DPM IMEDIATAMENTE ao iniciar o app
-            // Garante que apps bloqueados permaneçam bloqueados mesmo se o processo morrer
-            reapplyDpmBlockingImmediately()
-            
             // 2.1 Aplicação de proteções máximas (pesado - múltiplas chamadas DPM)
             // NOTA: Permissões já foram concedidas na PRIORIDADE 0
             applyMaximumProtectionIfDeviceOwner()
@@ -395,54 +391,6 @@ class CDCApplication : Application() {
             } catch (e: Exception) {
                 Log.e(TAG, "❌ Erro ao verificar SIM swap: ${e.message}", e)
             }
-        }
-    }
-    
-    /**
-     * Reaplicar bloqueio DPM IMEDIATAMENTE ao iniciar o app.
-     * 
-     * CRÍTICO: Esta função garante que apps salvos como bloqueados permaneçam
-     * bloqueados via DevicePolicyManager.setApplicationHidden().
-     * 
-     * Motivos para reaplicação:
-     * 1. Processo do app foi morto e reiniciado pelo sistema
-     * 2. Device reiniciou (BootReceiver também chama, mas CDCApplication é backup)
-     * 3. Usuário removeu permissões do app (USAGE_STATS) e bloqueio de interceptação não funciona
-     * 
-     * O bloqueio via DPM (setApplicationHidden) é ROBUSTO e não depende de permissões
-     * especiais como USAGE_STATS - funciona enquanto o app for Device Owner.
-     */
-    private fun reapplyDpmBlockingImmediately() {
-        try {
-            val provisioningState = com.cdccreditsmart.data.storage.ProvisioningStateManager(applicationContext)
-            
-            if (!provisioningState.isPairingCompleted()) {
-                Log.d(TAG, "🔒 Pairing não concluído - pulando bloqueio DPM")
-                return
-            }
-            
-            val blockingManager = AppBlockingManager(applicationContext)
-            
-            if (!blockingManager.isDeviceOwner()) {
-                Log.d(TAG, "🔒 Não é Device Owner - pulando reaplicação de bloqueio DPM")
-                return
-            }
-            
-            val currentLevel = blockingManager.getCurrentBlockLevel()
-            if (currentLevel > 0) {
-                Log.i(TAG, "🔒 ========================================")
-                Log.i(TAG, "🔒 REAPLICANDO BLOQUEIO DPM IMEDIATAMENTE")
-                Log.i(TAG, "🔒 Nível atual: $currentLevel")
-                Log.i(TAG, "🔒 ========================================")
-                
-                blockingManager.ensureBlockingApplied()
-                
-                Log.i(TAG, "🔒 ✅ Bloqueio DPM reaplicado imediatamente!")
-            } else {
-                Log.d(TAG, "🔒 Nível de bloqueio é 0 - nenhum app a bloquear")
-            }
-        } catch (e: Exception) {
-            Log.e(TAG, "❌ Erro ao reaplicar bloqueio DPM: ${e.message}", e)
         }
     }
     

@@ -32,7 +32,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.cdccreditsmart.app.permissions.PermissionGateManager
 import com.cdccreditsmart.app.protection.SettingsGuardService
-import com.cdccreditsmart.data.storage.ProvisioningStateManager
 import com.cdccreditsmart.device.CDCDeviceAdminReceiver
 import kotlinx.coroutines.delay
 
@@ -45,19 +44,6 @@ fun PermissionGateScreen(
     val context = LocalContext.current
     val activity = context as? Activity
     val gateManager = remember { PermissionGateManager(context) }
-    val provisioningState = remember { ProvisioningStateManager(context) }
-    
-    val isPairingCompleted = remember { provisioningState.isPairingCompleted() }
-    
-    if (!isPairingCompleted) {
-        LaunchedEffect(Unit) {
-            Log.i(TAG, "📱 PAIRING NÃO CONCLUÍDO - pulando tela de permissões")
-            Log.i(TAG, "   Permissões serão verificadas após pairing concluído")
-            onAllPermissionsGranted()
-        }
-        LoadingScreen()
-        return
-    }
     
     val initialStatus = remember { gateManager.getGateStatus() }
     var gateStatus by remember { mutableStateOf(initialStatus) }

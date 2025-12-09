@@ -15,7 +15,6 @@ import com.cdccreditsmart.app.permissions.AutoPermissionManager
 import com.cdccreditsmart.app.security.FingerprintCalculator
 import com.cdccreditsmart.app.security.SecureTokenStorage
 import com.cdccreditsmart.app.service.CdcForegroundService
-import com.cdccreditsmart.data.storage.ProvisioningStateManager
 import com.cdccreditsmart.app.websocket.WebSocketManager
 import com.cdccreditsmart.app.workers.AutoBlockingWorker
 import com.cdccreditsmart.app.workers.PeriodicOverlayWorker
@@ -54,7 +53,6 @@ class PairingViewModel(private val context: Context) : ViewModel() {
     val state: State<PairingState> = _state
 
     private val deviceInfoManager by lazy { DeviceInfoManager(context) }
-    private val provisioningState by lazy { ProvisioningStateManager(context) }
     
     // CRÍTICO: Usar lazy para evitar crash durante inicialização
     private val tokenStorage: SecureTokenStorage by lazy { SecureTokenStorage(context) }
@@ -379,9 +377,6 @@ class PairingViewModel(private val context: Context) : ViewModel() {
                         )
                         tokenStorage.saveSerialNumber(contractId)  // Usar contractId como serialNumber
                         
-                        provisioningState.markPairingCompleted()
-                        Log.i(TAG, "✅ Estado de provisionamento marcado como concluído")
-                        
                         if (imeiInfo.hasValidImei()) {
                             // CORREÇÃO: Salvar IMEI principal em KEY_IMEI para getMdmIdentifier()
                             val primaryImei = imeiInfo.primaryImei
@@ -579,9 +574,6 @@ class PairingViewModel(private val context: Context) : ViewModel() {
                                     contractCode = contractCode,
                                     deviceId = deviceId
                                 )
-                                
-                                provisioningState.markPairingCompleted()
-                                Log.i(TAG, "✅ Estado de provisionamento marcado como concluído (via polling)")
                                 
                                 // CORREÇÃO CRÍTICA: Salvar serialNumber ANTES de iniciar CdcForegroundService
                                 // Isso permite que getMdmIdentifier() encontre o identificador para polling MDM
