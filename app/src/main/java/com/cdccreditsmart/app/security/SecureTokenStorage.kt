@@ -31,8 +31,6 @@ class SecureTokenStorage(private val context: Context) {
         private const val KEY_CUSTOMER_NAME = "customer_name"
         private const val KEY_DEVICE_MODEL = "device_model"
         private const val KEY_UNINSTALL_CONFIRMATION_HASH = "uninstall_confirmation_hash"
-        private const val KEY_WORKING_IDENTIFIER = "working_mdm_identifier"
-        private const val KEY_FAILED_IDENTIFIERS = "failed_mdm_identifiers"
         
         @Volatile
         private var encryptionAvailable: Boolean? = null
@@ -180,6 +178,11 @@ class SecureTokenStorage(private val context: Context) {
      * Quando uma requisição falha com 404, o MdmCommandReceiver chama
      * markIdentifierAsFailed() e tenta o próximo automaticamente.
      */
+    
+    companion object {
+        private const val KEY_WORKING_IDENTIFIER = "working_mdm_identifier"
+        private const val KEY_FAILED_IDENTIFIERS = "failed_mdm_identifiers"
+    }
     
     /**
      * Verifica se o app está rodando em um usuário secundário gerenciado

@@ -38,11 +38,17 @@ class CertificatePinningManager /* @Inject */ constructor() {
             return CertificatePinner.Builder().build() // Empty pinner = no pinning
         }
         
-        // Certificate pinning está habilitado para domínios configurados
-        // Pins reais foram configurados em 2025-12-09 para:
-        // - picard.replit.dev (backend principal)
-        // - cdccreditsmart.com (domínio customizado)
-        // - *.replit.dev e *.replit.app (wildcard backup)
+        // Special handling for CDC Credit Smart domains
+        // IMPORTANT: Certificate pins are PLACEHOLDER values, not real pins!
+        // Until real pins are extracted, we must disable pinning in ALL modes
+        // to allow the app to connect to the backend.
+        if (isCdcCreditSmartDomain(baseUrl)) {
+            Log.w(TAG, "CDC Credit Smart domain detected: $baseUrl")
+            Log.w(TAG, "Certificate pins are PLACEHOLDER values - disabling pinning")
+            Log.w(TAG, "TODO: Extract real certificate pins before production release")
+            // Disable certificate pinning for CDC domains until real pins are configured
+            return CertificatePinner.Builder().build()
+        }
         
         val builder = CertificatePinner.Builder()
         
