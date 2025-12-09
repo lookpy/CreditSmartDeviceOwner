@@ -1,7 +1,7 @@
-# Credit Smart Android App
+# Credit Smart Android App - Compressed
 
 ## Overview
-The Credit Smart Android App is a secure Device Owner application for mobile financial transactions, primarily for Credit Smart clients. It offers advanced security features, robust device pairing, real-time communication, and supports PIX and Boleto payments. The app aims to provide a highly secure and reliable financial management tool, enhancing market reach through strong device control and user-friendly financial services, including progressive blocking, anti-tampering, post-factory-reset enrollment, and offline functionality.
+The Credit Smart Android App is a secure Device Owner application for mobile financial transactions, primarily for Credit Smart clients. It offers advanced security features, robust device pairing, real-time communication, and supports PIX and Boleto payments. The app aims to provide a highly secure and reliable financial management tool, enhancing market reach through strong device control and user-friendly financial services, including progressive blocking, anti-tampering, post-factory-reset enrollment, and offline functionality. The project also focuses on market potential, leveraging strong device control to facilitate financial inclusion and providing a reliable platform for various payment methods.
 
 ## User Preferences
 - Linguagem simples e clara em português
@@ -14,7 +14,7 @@ The Credit Smart Android App is a secure Device Owner application for mobile fin
 - NUNCA usar dados mockados - apenas dados reais do backend
 - NUNCA usar a palavra "PayJoy" - sempre "Credit Smart"
 - Documentação organizada em `docs/` (setup, backend, features, qr-code, troubleshooting, analysis)
-- **ADB mantido ativo em builds DEBUG** para desenvolvimento/testes (bloqueado apenas em produção)
+- ADB mantido ativo em builds DEBUG para desenvolvimento/testes (bloqueado apenas em produção)
 
 ## System Architecture
 The application adheres to Clean Architecture, MVVM, and Jetpack Compose for UI, organized into modules such as `app`, `data`, `network`, `domain`, `device`, `payments`, and `biometry`.
@@ -23,214 +23,29 @@ The application adheres to Clean Architecture, MVVM, and Jetpack Compose for UI,
 The UI leverages Jetpack Compose and Material 3, incorporating a CDC institutional dark theme. It features a streamlined navigation system and a `ModernHomeScreen` that displays critical customer and device information, contract codes, and access to terms, with a focus on installment history and PIX payment options.
 
 **Technical Implementations:**
-- **Device Management:** Device Owner provisioning, auto-configuration, policy enforcement, automatic runtime permission requests, and a multi-layered Keep Alive System.
-- **Security & Persistence:** Time synchronization for tamper detection, Persistent State Manager for factory reset survival, `SelfDestructManager` for remote uninstall, and a timeout-based recovery system. `WorkPolicyManager` enforces enterprise security policies, progressive blocking, and Lock Task Mode. Includes `EncryptedSharedPreferences` for sensitive data and JWT authentication.
-- **Offline Capabilities:** Local storage supports overdue calculations, block application, and authentication persistence. Progressive blocking via `DebtAgingCalculator` and `OfflineEnforcementWorker` with robust clock manipulation protection.
+- **Device Management:** Device Owner provisioning, auto-configuration, policy enforcement, automatic runtime permission requests, and a multi-layered Keep Alive System. Includes post-factory-reset enrollment via Samsung Knox Mobile Enrollment (KME) and Android Zero-Touch Enrollment.
+- **Security & Persistence:** Time synchronization for tamper detection, Persistent State Manager for factory reset survival, `SelfDestructManager` for remote uninstall, timeout-based recovery, `WorkPolicyManager` for enterprise security policies, and `EncryptedSharedPreferences` for sensitive data. JWT authentication is used. Anti-removal and lock-down mechanisms prevent uninstallation, force stops, and data clearing, including Full Device Lock (Kiosk mode) and blocking dangerous installations.
+- **Offline Capabilities:** Local storage supports overdue calculations, block application, and authentication persistence. Progressive blocking is managed via `DebtAgingCalculator` and `OfflineEnforcementWorker` with robust clock manipulation protection.
 - **Device Identification & Pairing:** Offline SIM Swap Detection, secure 3-step device pairing with IMEI auto-discovery, and multi-slot device identifier collection.
 - **Real-time Communication:** `HeartbeatManager` (HTTP POST) for status updates and `MdmCommandReceiver` (WebSocket) for real-time MDM commands (BLOCK, UNBLOCK, REMOTE_UNINSTALL, LOCATE_DEVICE). WebSocket authentication is sent immediately upon connection.
-- **Financial Features:** Progressive blocking of non-essential applications based on payment status (supporting v2.5 backend with 6 levels of limitation, `BlockAllFlags`, and semantic exceptions for banking/email apps), a universal dismissible overlay for overdue reminders, and an integrated PIX payment system. Use of `setApplicationHidden()` for blocking.
-- **Enrollment & Reactivation:** Automatic creation of a managed secondary user, post-factory-reset enrollment via Samsung Knox Mobile Enrollment (KME) and Android Zero-Touch Enrollment, including an embedded stub architecture.
-- **Anti-Removal & Lock Down:** Multi-layered defenses against uninstallation, force stops, data clearing, and factory resets. Includes Full Device Lock (Kiosk mode) with app whitelisting and blocking dangerous installations.
-- **Enhanced Protections:** Blocking parental control apps, popular apps, system updates, and restriction of power-saving modes.
-- **System Monitoring:** `SettingsGuard System` monitors and prevents access to dangerous Android Settings screens across various OEMs (e.g., MIUI), forces GPS active, and applies `DISALLOW_CONFIG_LOCATION`.
+- **Financial Features:** Progressive blocking of non-essential applications based on payment status (supporting v2.5 backend with 6 levels of limitation, `BlockAllFlags`, and semantic exceptions for banking/email apps) using `setApplicationHidden()`. Includes a universal dismissible overlay for overdue reminders and an integrated PIX payment system.
+- **Enhanced Protections:** Blocking parental control apps, popular apps, system updates, and restriction of power-saving modes. The `SettingsGuard System` monitors and prevents access to dangerous Android Settings screens, forces GPS active, and applies `DISALLOW_CONFIG_LOCATION`.
 - **Networking:** Retrofit and OkHttp with retry logic and Certificate Pinning. Permanent device blocking on security violations.
 - **Crash Prevention:** A global `CrashHandler` for logging and auto-restarts.
+- **App Blocking Logic:** Includes a `CRITICAL_NEVER_BLOCK_PACKAGES` list to prevent blocking essential system packages and a `safeSetApplicationHidden()` wrapper. `SettingsGuardService` now intercepts blocked apps using `UsageStats` and `BlockedAppExplanationActivity` with throttling. The system also detects and closes blocked apps in split screen mode via UsageStats and ActivityManager, with `setApplicationHidden` as the primary method.
+- **Initialization Optimization:** Critical services are initialized with priority; permissions are granted immediately at Priority 0, essential services at Priority 1, and background tasks at Priority 2.
+- **Permission Handling:** The PermissionGateScreen no longer bypasses for Device Owner mode, explicitly showing missing permissions (USAGE_STATS, OVERLAY, battery optimization) for manual granting.
 
 ## External Dependencies
-- **CDC Credit Smart Backend API:** Handles authentication, device status, installments, PIX processing, heartbeat, MDM commands, time synchronization, and contract terms.
+- **CDC Credit Smart Backend API:** For authentication, device status, installments, PIX processing, heartbeat, MDM commands, time synchronization, and contract terms.
 - **Meio de Pagamento API:** External payment gateway for PIX transactions.
-- **WebSocket Server:** Used for real-time pairing status and MDM command push.
+- **WebSocket Server:** For real-time pairing status and MDM command push.
 - **Firebase Cloud Messaging (FCM):** For push notifications.
-- **Samsung Knox Enterprise SDK:** Provides advanced device management functionalities on Samsung devices.
-- **Samsung Knox Mobile Enrollment (KME):** Facilitates Samsung device enrollment and app reinstallation.
-- **Android Zero-Touch Enrollment:** Supports non-Samsung device enrollment and app reinstallation.
-- **Google Play Integrity API:** Used for device integrity verification.
+- **Samsung Knox Enterprise SDK:** For advanced device management on Samsung devices.
+- **Samsung Knox Mobile Enrollment (KME):** For Samsung device enrollment and app reinstallation.
+- **Android Zero-Touch Enrollment:** For non-Samsung device enrollment and app reinstallation.
+- **Google Play Integrity API:** For device integrity verification.
 - **Jetpack Compose, Material 3, Compose Navigation:** Core UI framework components.
 - **Retrofit, OkHttp:** HTTP client libraries.
-- **WorkManager:** Manages background tasks.
+- **WorkManager:** For background tasks.
 - **Kotlin Coroutines:** For asynchronous programming.
-
-## Recent Changes
-
-### 2025-12-08: Correção de Tela Preta (Bloqueio de Packages Críticos)
-
-**Problema Identificado:**
-O enforcement offline reaplicava packages do cache diretamente via setApplicationHidden() sem verificar se eram packages críticos do sistema. Se o cache incluísse launcher ou SystemUI, causava tela preta e travamento total do dispositivo.
-
-**Correção Implementada:**
-
-**1. Lista CRITICAL_NEVER_BLOCK_PACKAGES (32 packages):**
-- Packages do sistema: `android`, `com.android.systemui`, `com.android.settings`
-- Google Play Services: `com.google.android.gms`, `com.google.android.gsf`
-- Nosso app: `com.cdccreditsmart.app`
-- Launchers de todas as marcas: Samsung, Xiaomi, Huawei, Oppo, OnePlus, Vivo, Sony, LG, etc.
-
-**2. Função isCriticalSystemPackage():**
-- Verifica lista de packages críticos
-- Detecta launchers genéricos via pattern matching (`contains("launcher")`)
-- Detecta SystemUI genérico via pattern matching (`contains("systemui")`)
-
-**3. Função safeSetApplicationHidden():**
-- Wrapper de segurança para setApplicationHidden()
-- Se tentativa de bloqueio + package crítico → recusa e loga warning
-- Aplicada em TODOS os 4 pontos de bloqueio do AppBlockingManager
-
-**Garantias:**
-- NUNCA bloqueia launcher, SystemUI, Settings
-- Log de warning quando tentativa é recusada
-- Aplicativo não causa mais tela preta
-
-### 2025-12-08: Proteção contra Manipulação de Relógio v2.9
-
-**DebtAgingCalculator** usa contador monotônico para prevenir bypass via manipulação de relógio:
-- Rollback para antes do vencimento: Mantém maxRecorded quando já há dias registrados
-- elapsedRealtime() como base monotônica (imune a manipulação)
-- AND lógico: AMBAS referências (elapsed E wall-clock) devem concordar ≥20h
-- Reset apenas pelo servidor via `resetDaysOverdueFromServer()`
-
-### 2025-12-08: Correção CDCApplication e CDCDeviceAdminReceiver
-
-**Problema Identificado:**
-- CDCApplication chamava `SettingsGuardService.startService()` que não existia
-- CDCDeviceAdminReceiver tentava iniciar SettingsGuardService como Android Service, mas é uma classe normal
-
-**Correção Implementada:**
-
-**1. CDCApplication.kt:**
-- Instancia `SettingsGuardService(applicationContext)` diretamente
-- Chama `startGuard()` para iniciar monitoramento
-
-**2. CDCDeviceAdminReceiver.kt:**
-- Função `startSettingsGuardServiceImmediately()` agora usa `sendBroadcast()` 
-- Envia action `com.cdccreditsmart.START_SETTINGS_GUARD`
-- CDCApplication recebe e inicia o guard via onCreate() quando Device Owner
-
-**Garantias:**
-- SettingsGuard inicia corretamente no boot quando Device Owner
-- Não há mais tentativa de startService em classe que não é Service
-
-### 2025-12-09: Certificate Pinning e ADB/USB Debugging
-
-**Problema Identificado:**
-1. Certificate pins eram PLACEHOLDERS (valores fictícios) - conexão falhava silenciosamente em release
-2. ADB/USB bloqueados em release impossibilitava debugging como Device Owner
-
-**Correções Implementadas:**
-
-**1. CertificatePinningManager.kt:**
-- Desabilitado certificate pinning para domínios CDC em TODAS as builds (pins são placeholders)
-- Corrigido verificação de domínio de `.com.br` para `.com`
-
-**2. WorkPolicyManager.kt e AppProtectionManager.kt:**
-- TEMPORARIAMENTE desabilitado bloqueio de:
-  - `DISALLOW_DEBUGGING_FEATURES` (ADB)
-  - `DISALLOW_USB_FILE_TRANSFER`
-  - `DISALLOW_FACTORY_RESET`
-- Permite debugging em Device Owner release
-
-**3. KnoxEnhancedProtections.kt:**
-- TEMPORARIAMENTE desabilitado em dispositivos Samsung:
-  - `allowDeveloperMode(false)` (prevenia OEM unlock)
-  - `allowUsbDebugging(false)` (prevenia ADB access)
-- Permite debugging em Device Owner release em Samsungs
-
-**TODO antes do release final para produção:**
-- Extrair certificate pins reais do servidor
-- Reativar bloqueios de ADB/USB/Factory Reset
-- Reativar Knox allowDeveloperMode(false) e allowUsbDebugging(false)
-
-### 2025-12-09: Otimização de Inicialização dos Serviços v2
-
-**Problema Identificado:**
-1. Serviços críticos demoravam para iniciar porque operações pesadas eram executadas antes deles
-2. Permissões especiais (USAGE_STATS, OVERLAY) não eram concedidas a tempo
-
-**Correção Implementada:**
-
-**CDCApplication.onCreate() refatorado:**
-
-**PRIORIDADE 0 - CRÍTICO (< 500ms):**
-- grantPermissionsIfDeviceOwner() - concessão de permissões IMEDIATA
-
-**PRIORIDADE 1 - Imediato (< 1 segundo):**
-1. SettingsGuard - proteção de Settings
-2. KeepAlive System - mantém app ativo
-3. CdcForegroundService - heartbeat e comandos MDM
-
-**PRIORIDADE 2 - Background (coroutine):**
-1. applyMaximumProtectionIfDeviceOwner() - proteções + Knox + diagnóstico
-2. ensureManagedSecondaryUserExists() - usuário secundário
-3. checkTamperDetection() - verificação de tamper
-4. checkSimSwapStatus() - verificação de SIM swap
-
-**Resultado:**
-- Permissões concedidas ANTES de iniciar serviços
-- SettingsGuard tem USAGE_STATS disponível imediatamente
-- Serviços críticos iniciam em menos de 1 segundo
-
-### 2025-12-09: Tela de Permissões no Modo Device Owner
-
-**Problema Identificado:**
-1. O app pedia permissão de bateria aleatoriamente depois de algum tempo
-2. Device Owner NÃO pode conceder automaticamente algumas permissões:
-   - USAGE_STATS (em alguns dispositivos como Motorola)
-   - OVERLAY (em alguns dispositivos)
-   - Isenção de otimização de bateria (NUNCA pode ser auto-concedida)
-3. A tela de permissões era PULADA quando Device Owner, assumindo que tudo foi concedido
-
-**Correção Implementada:**
-
-**1. PermissionGateScreen.kt:**
-- REMOVIDO o bypass que pulava a tela quando Device Owner
-- Agora mostra a tela de permissões MESMO como Device Owner se alguma estiver faltando
-- Tela mostra quais permissões foram concedidas (✅) e quais faltam (❌)
-
-**2. PermissionGateManager.kt:**
-- Verifica CADA permissão especial individualmente mesmo como Device Owner
-- Se USAGE_STATS, OVERLAY ou bateria não concedida → mostra na lista de pendentes
-
-**3. CDCApplication.kt:**
-- Concessão de permissões movida para PRIORIDADE 0 (imediato, não em background)
-
-**Fluxo Corrigido:**
-1. App inicia → tenta conceder permissões automaticamente
-2. PermissionGateScreen verifica quais realmente foram concedidas
-3. Se alguma faltar → mostra tela para técnico conceder manualmente
-4. Técnico concede → app prossegue normalmente
-
-### 2025-12-09: Interceptação de Apps Bloqueados via UsageStats
-
-**Problema Identificado:**
-1. Chrome, YouTube, TikTok, Shopee NÃO estavam sendo interceptados apesar de bloqueados
-2. Nível 6 do backend retornava lista vazia (máximo era 5)
-3. A lógica de exclusão ignorava TODOS os pacotes `com.google.android.*` e `com.android.*`
-
-**Correção Implementada:**
-
-**1. AppBlockingManager.kt - getDefaultCategoriesForLevel():**
-- Agora usa `when { level <= 0 -> ... level == 5 -> ... else -> MAX }` 
-- Nível 6+ é tratado como nível 5 (bloqueio máximo)
-
-**2. EnhancedProtectionsManager.kt - getPopularAppsForBlocking():**
-- Adicionado `effectiveLevel = level.coerceIn(0, 5)`
-- Nível 5+ retorna `PopularAppsDefinitions.POPULAR_APPS` (todos)
-
-**3. SettingsGuardService.kt - Interceptação via UsageStats:**
-- Implementado `checkAndInterceptBlockedApp(packageName)` no loop principal
-- Lista `CRITICAL_SYSTEM_PACKAGES_FOR_INTERCEPTION` com 30+ pacotes críticos
-- NÃO inclui Chrome, YouTube, etc. - eles DEVEM ser bloqueáveis
-- Lança `BlockedAppExplanationActivity` quando app bloqueado é detectado
-- Throttle de 2s para evitar spam de interceptação
-
-**Apps que agora são interceptados:**
-- `com.android.chrome` (Chrome)
-- `com.google.android.youtube` (YouTube)
-- `com.zhiliaoapp.musically` (TikTok)
-- `com.shopee.*` (Shopee)
-- Todos os outros apps bloqueados
-
-**Fluxo de Interceptação:**
-1. SettingsGuardService monitora foreground app a cada 400-600ms via UsageStats
-2. Quando detecta app bloqueado → verifica se não é pacote crítico do sistema
-3. Se passou throttle (2s) → lança BlockedAppExplanationActivity
-4. Usuário vê tela de bloqueio com informações de pagamento PIX
