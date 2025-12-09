@@ -37,8 +37,8 @@ class SettingsGuardService(private val context: Context) {
     
     companion object {
         private const val TAG = "SettingsGuardService"
-        private const val CHECK_INTERVAL_MS = 5000L
-        private const val AGGRESSIVE_CHECK_INTERVAL_MS = 2000L
+        private const val CHECK_INTERVAL_MS = 3000L
+        private const val AGGRESSIVE_CHECK_INTERVAL_MS = 1000L
         
         // Flag para permitir Developer Options (apenas para debug)
         private const val TEMPORARY_ALLOW_DEVELOPER_OPTIONS = false
@@ -217,7 +217,7 @@ class SettingsGuardService(private val context: Context) {
     // ═══════════════════════════════════════════════════════════════════════════════
     @Volatile
     private var lastMultiWindowCheckTime = 0L
-    private val MULTI_WINDOW_CHECK_INTERVAL_MS = if (BuildConfig.DEBUG) 30_000L else 15_000L
+    private val MULTI_WINDOW_CHECK_INTERVAL_MS = if (BuildConfig.DEBUG) 60_000L else 30_000L
     
     @Volatile
     private var lastScreenUnlockCheckTime = 0L
@@ -404,16 +404,12 @@ class SettingsGuardService(private val context: Context) {
             usageStatsNotificationShown = false
         }
         
-        if (!hasOverlay) {
-            Log.w(TAG, "⚠️ Sem permissão SYSTEM_ALERT_WINDOW")
-            Log.w(TAG, "   Overlays de bloqueio não funcionarão")
-        } else {
-            Log.i(TAG, "✅ OVERLAY concedida - overlays funcionarão")
+        if (BuildConfig.DEBUG) {
+            if (!hasOverlay) {
+                Log.w(TAG, "⚠️ Sem permissão OVERLAY")
+            }
+            Log.i(TAG, "🔍 Intervalo: ${CHECK_INTERVAL_MS}ms / ${AGGRESSIVE_CHECK_INTERVAL_MS}ms")
         }
-        
-        Log.i(TAG, "🔍 Intervalo normal: ${CHECK_INTERVAL_MS}ms")
-        Log.i(TAG, "🔍 Intervalo agressivo: ${AGGRESSIVE_CHECK_INTERVAL_MS}ms")
-        Log.i(TAG, "🔍 ========================================")
         
         guardScope.launch {
             var iterationCount = 0L
@@ -421,13 +417,13 @@ class SettingsGuardService(private val context: Context) {
                 try {
                     iterationCount++
                     
-                    // Log periódico a cada 100 iterações (~1 minuto) para confirmar que está rodando
-                    if (iterationCount % 100 == 0L) {
-                        Log.d(TAG, "🔍 Guard loop ativo - iteração #$iterationCount (modo: ${if (isInAggressiveMode) "AGRESSIVO" else "normal"})")
+                    // Log periódico apenas em DEBUG, a cada 500 iterações para reduzir overhead
+                    if (BuildConfig.DEBUG && iterationCount % 500 == 0L) {
+                        Log.d(TAG, "🔍 Guard loop ativo - iteração #$iterationCount")
                     }
                     
                     if (usageStatsNotificationShown && hasUsageStatsPermission()) {
-                        Log.i(TAG, "✅ Permissão USAGE_STATS concedida - cancelando notificação")
+                        if (BuildConfig.DEBUG) Log.i(TAG, "✅ USAGE_STATS concedida")
                         cancelUsageStatsNotification()
                         usageStatsNotificationShown = false
                     }
@@ -582,10 +578,9 @@ class SettingsGuardService(private val context: Context) {
                 settingsOpenCount++
                 isInAggressiveMode = true
                 
-                Log.w(TAG, "🚨 ÁREA PERIGOSA DETECTADA!")
-                Log.w(TAG, "   Pacote: $foregroundPackage")
-                Log.w(TAG, "   Atividade: $foregroundActivity")
-                Log.w(TAG, "   Mostrando tela de bloqueio LEVE (sem sync)...")
+                if (BuildConfig.DEBUG) {
+                    Log.w(TAG, "🚨 ÁREA PERIGOSA: $foregroundActivity")
+                }
                 
                 withContext(Dispatchers.Main) {
                     showSettingsBlockedScreen("dangerous_settings_area")
@@ -714,14 +709,9 @@ class SettingsGuardService(private val context: Context) {
             
             recentlyInterceptedBlockedApps[packageName] = now
             
-            Log.i(TAG, "")
-            Log.i(TAG, "╔════════════════════════════════════════════════════════════════╗")
-            Log.i(TAG, "║  🚫 APP BLOQUEADO INTERCEPTADO VIA USAGESTATS                  ║")
-            Log.i(TAG, "╠════════════════════════════════════════════════════════════════╣")
-            Log.i(TAG, "║  Package: $packageName")
-            Log.i(TAG, "║  Ação: Lançando BlockedAppExplanationActivity")
-            Log.i(TAG, "╚════════════════════════════════════════════════════════════════╝")
-            Log.i(TAG, "")
+            if (BuildConfig.DEBUG) {
+                Log.i(TAG, "🚫 APP BLOQUEADO: $packageName")
+            }
             
             withContext(Dispatchers.Main) {
                 launchBlockedAppExplanation(packageName)
@@ -754,8 +744,9 @@ class SettingsGuardService(private val context: Context) {
             
             context.startActivity(intent)
             
-            Log.i(TAG, "✅ BlockedAppExplanationActivity lançada para: $blockedPackage")
-            Log.i(TAG, "   Nível: ${blockingInfo.currentLevel}, Dias atraso: ${blockingInfo.daysOverdue}")
+            if (BuildConfig.DEBUG) {
+                Log.i(TAG, "✅ Overlay lançada: $blockedPackage")
+            }
             
         } catch (e: Exception) {
             Log.e(TAG, "❌ Erro ao lançar BlockedAppExplanationActivity", e)
@@ -1234,9 +1225,7 @@ class SettingsGuardService(private val context: Context) {
         }
         
         if (isAllowedSecurityActivity) {
-            Log.i(TAG, "✅ Tela de Senha/Segurança PERMITIDA: $activitySimpleName")
-            Log.d(TAG, "   Activity completa: $activityName")
-            Log.d(TAG, "   Usuário pode alterar senha/biometria do dispositivo")
+            if (BuildConfig.DEBUG) Log.i(TAG, "✅ Segurança PERMITIDA: $activitySimpleName")
             return SettingsCheckResult.SAFE
         }
         
@@ -2992,12 +2981,25 @@ class SettingsGuardService(private val context: Context) {
         }
     }
     
+    // Cache para evitar queries repetidas ao UsageStats
+    @Volatile private var cachedForegroundPackage: String? = null
+    @Volatile private var cachedForegroundActivity: String? = null
+    @Volatile private var lastForegroundQueryTime = 0L
+    private val FOREGROUND_CACHE_MS = 500L // Cache por 500ms
+    
     private fun getForegroundPackageAndActivityViaUsageStats(): Pair<String, String?>? {
+        val now = System.currentTimeMillis()
+        
+        // Usar cache se ainda válido
+        if (now - lastForegroundQueryTime < FOREGROUND_CACHE_MS && cachedForegroundPackage != null) {
+            return Pair(cachedForegroundPackage!!, cachedForegroundActivity)
+        }
+        
         val usageStatsManager = context.getSystemService(Context.USAGE_STATS_SERVICE) as? UsageStatsManager
             ?: return null
             
-        val endTime = System.currentTimeMillis()
-        val beginTime = endTime - 2000
+        val endTime = now
+        val beginTime = endTime - 1000 // Reduzido de 2s para 1s
         
         val usageEvents = usageStatsManager.queryEvents(beginTime, endTime)
         var lastPackage: String? = null
@@ -3011,6 +3013,13 @@ class SettingsGuardService(private val context: Context) {
                 lastPackage = event.packageName
                 lastActivity = event.className
             }
+        }
+        
+        // Atualizar cache
+        if (lastPackage != null) {
+            cachedForegroundPackage = lastPackage
+            cachedForegroundActivity = lastActivity
+            lastForegroundQueryTime = now
         }
         
         return lastPackage?.let { Pair(it, lastActivity) }
@@ -3028,8 +3037,20 @@ class SettingsGuardService(private val context: Context) {
         }
     }
     
+    // Cache para permissão UsageStats (evita verificações repetidas)
+    @Volatile private var cachedUsageStatsPermission: Boolean? = null
+    @Volatile private var lastUsageStatsCheckTime = 0L
+    private val USAGE_STATS_CACHE_MS = 5000L // Cache por 5 segundos
+    
     private fun hasUsageStatsPermission(): Boolean {
-        return try {
+        val now = System.currentTimeMillis()
+        
+        // Usar cache se ainda válido
+        if (now - lastUsageStatsCheckTime < USAGE_STATS_CACHE_MS && cachedUsageStatsPermission != null) {
+            return cachedUsageStatsPermission!!
+        }
+        
+        val result = try {
             val appOps = context.getSystemService(Context.APP_OPS_SERVICE) as AppOpsManager
             val mode = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
                 appOps.unsafeCheckOpNoThrow(
@@ -3049,6 +3070,12 @@ class SettingsGuardService(private val context: Context) {
         } catch (e: Exception) {
             false
         }
+        
+        // Atualizar cache
+        cachedUsageStatsPermission = result
+        lastUsageStatsCheckTime = now
+        
+        return result
     }
     
     private fun showUsageStatsRequiredNotification() {

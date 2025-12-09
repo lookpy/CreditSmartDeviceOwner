@@ -93,3 +93,13 @@ The UI leverages Jetpack Compose and Material 3, incorporating a CDC institution
 - Overlay click handler also uses lightweight screen instead of MainActivity
 - **CRASH FIX**: LocalInstallmentStorage.parseDateSafely() now handles ISO 8601 timestamps (2025-12-22T23:10:29.071Z)
 - Date parsing supports: ISO_LOCAL_DATE (yyyy-MM-dd), ISO_INSTANT (full timestamp), and substring fallback
+
+### Performance Optimization (2025-12-09)
+- CHECK_INTERVAL_MS: 3000ms (fast but light)
+- AGGRESSIVE_CHECK_INTERVAL_MS: 1000ms (when Settings detected)
+- MULTI_WINDOW_CHECK_INTERVAL_MS: 60s debug / 30s production
+- Logs reduced: Most logs now only appear in DEBUG builds (BuildConfig.DEBUG)
+- **NEW**: Foreground package cache (500ms) - avoids repeated UsageStats queries
+- **NEW**: UsageStats permission cache (5s) - avoids repeated AppOps checks
+- **NEW**: UsageStats query window reduced from 2s to 1s
+- Guard loop logging reduced from every 100 to every 500 iterations
