@@ -541,7 +541,7 @@ class SettingsGuardService(private val context: Context) {
                 settingsOpenCount++
                 isInAggressiveMode = true
                 withContext(Dispatchers.Main) {
-                    bringAppToForeground()
+                    showSettingsBlockedScreen("settings_during_permission_flow")
                 }
             }
             SettingsCheckResult.SAFE -> {
@@ -585,10 +585,10 @@ class SettingsGuardService(private val context: Context) {
                 Log.w(TAG, "🚨 ÁREA PERIGOSA DETECTADA!")
                 Log.w(TAG, "   Pacote: $foregroundPackage")
                 Log.w(TAG, "   Atividade: $foregroundActivity")
-                Log.w(TAG, "   Chamando app para foreground...")
+                Log.w(TAG, "   Mostrando tela de bloqueio LEVE (sem sync)...")
                 
                 withContext(Dispatchers.Main) {
-                    bringAppToForeground()
+                    showSettingsBlockedScreen("dangerous_settings_area")
                 }
             }
             SettingsCheckResult.SAFE -> {
@@ -759,6 +759,60 @@ class SettingsGuardService(private val context: Context) {
             
         } catch (e: Exception) {
             Log.e(TAG, "❌ Erro ao lançar BlockedAppExplanationActivity", e)
+        }
+    }
+    
+    /**
+     * Mostra tela de bloqueio LEVE para Settings perigoso
+     * 
+     * DIFERENÇA do bringAppToForeground():
+     * - bringAppToForeground() abre MainActivity que faz sincronização pesada
+     * - showSettingsBlockedScreen() abre BlockedAppExplanationActivity que é leve
+     * 
+     * Isso evita travamentos causados por sync enquanto bloqueia Settings.
+     */
+    private fun showSettingsBlockedScreen(reason: String) {
+        try {
+            // Primeiro, fechar o Settings se possível (Device Owner)
+            forceCloseSettings()
+            
+            // Ir para Home (garante que Settings seja minimizado)
+            mainHandler.postDelayed({
+                goToHomeFirst()
+            }, 100)
+            
+            // Abrir BlockedAppExplanationActivity com mensagem específica para Settings
+            mainHandler.postDelayed({
+                try {
+                    val intent = Intent(context, BlockedAppExplanationActivity::class.java).apply {
+                        addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                        addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                        addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY)
+                        putExtra("blocked_package", "com.android.settings")
+                        putExtra("is_settings_blocked", true)
+                        putExtra("block_reason", reason)
+                        putExtra("blocking_level", 0)
+                        putExtra("days_overdue", 0)
+                    }
+                    context.startActivity(intent)
+                    Log.i(TAG, "✅ Tela de bloqueio LEVE exibida (Settings bloqueado)")
+                } catch (e: Exception) {
+                    Log.e(TAG, "❌ Erro ao mostrar tela de bloqueio de Settings", e)
+                    // Fallback: abrir MainActivity se a tela leve falhar
+                    try {
+                        val fallbackIntent = Intent(context, MainActivity::class.java).apply {
+                            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                            addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                        }
+                        context.startActivity(fallbackIntent)
+                    } catch (e2: Exception) {
+                        Log.e(TAG, "❌ Fallback também falhou", e2)
+                    }
+                }
+            }, 300)
+            
+        } catch (e: Exception) {
+            Log.e(TAG, "❌ Erro ao bloquear Settings", e)
         }
     }
     

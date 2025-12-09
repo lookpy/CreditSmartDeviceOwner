@@ -37,6 +37,7 @@ class BlockedAppExplanationActivity : ComponentActivity() {
         val daysOverdue = intent.getIntExtra("days_overdue", 0)
         val isManualBlock = intent.getBooleanExtra("is_manual_block", false)
         val isOffline = intent.getBooleanExtra("is_offline", false)
+        val isSettingsBlocked = intent.getBooleanExtra("is_settings_blocked", false)
         
         setContent {
             CDCCreditSmartTheme {
@@ -47,6 +48,7 @@ class BlockedAppExplanationActivity : ComponentActivity() {
                     isManualBlock = isManualBlock,
                     manualBlockReason = intent.getStringExtra("manual_block_reason"),
                     isOffline = isOffline,
+                    isSettingsBlocked = isSettingsBlocked,
                     onClose = { finish() }
                 )
             }
@@ -66,6 +68,7 @@ fun ModernBlockedAppScreen(
     isManualBlock: Boolean,
     manualBlockReason: String? = null,
     isOffline: Boolean = false,
+    isSettingsBlocked: Boolean = false,
     onClose: () -> Unit
 ) {
     val context = androidx.compose.ui.platform.LocalContext.current
@@ -141,7 +144,11 @@ fun ModernBlockedAppScreen(
             
             // Título Principal
             Text(
-                text = if (isOffline) "App Temporariamente Bloqueado (Dados offline)" else "App Temporariamente Bloqueado",
+                text = when {
+                    isSettingsBlocked -> "Acesso Restrito"
+                    isOffline -> "App Temporariamente Bloqueado (Dados offline)"
+                    else -> "App Temporariamente Bloqueado"
+                },
                 style = MaterialTheme.typography.headlineSmall,
                 fontWeight = FontWeight.Bold,
                 textAlign = TextAlign.Center,
@@ -151,12 +158,11 @@ fun ModernBlockedAppScreen(
             Spacer(modifier = Modifier.height(8.dp))
             
             Text(
-                text = if (isManualBlock && !manualBlockReason.isNullOrBlank()) {
-                    "Bloqueio administrativo ativo"
-                } else if (isOffline) {
-                    "Pagamento em atraso. Regularize para liberar seu dispositivo."
-                } else {
-                    "Regularize suas parcelas para desbloquear"
+                text = when {
+                    isSettingsBlocked -> "Por razões de segurança, o acesso às configurações do sistema está restrito."
+                    isManualBlock && !manualBlockReason.isNullOrBlank() -> "Bloqueio administrativo ativo"
+                    isOffline -> "Pagamento em atraso. Regularize para liberar seu dispositivo."
+                    else -> "Regularize suas parcelas para desbloquear"
                 },
                 style = MaterialTheme.typography.bodyLarge,
                 textAlign = TextAlign.Center,

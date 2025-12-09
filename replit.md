@@ -85,4 +85,7 @@ The UI leverages Jetpack Compose and Material 3, incorporating a CDC institution
 - CHECK_INTERVAL_MS increased from 2000ms to 5000ms
 - AGGRESSIVE_CHECK_INTERVAL_MS increased from 1000ms to 2000ms
 - MULTI_WINDOW_CHECK disabled in guard loop (only on screen unlock now)
-- These changes prevent "Settings isn't responding" system crash
+- **CRITICAL FIX**: Settings block now uses lightweight BlockedAppExplanationActivity instead of MainActivity
+- bringAppToForeground() replaced with showSettingsBlockedScreen() to avoid heavy sync operations
+- BlockedAppExplanationActivity now shows "Acesso Restrito" when Settings is blocked
+- These changes prevent "Settings isn't responding" system crash caused by sync during block
