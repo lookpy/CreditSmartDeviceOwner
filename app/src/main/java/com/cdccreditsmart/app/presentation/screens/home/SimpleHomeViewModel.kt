@@ -170,8 +170,8 @@ class SimpleHomeViewModel(
                 Log.d(TAG, "📡 Fetching device installments from /api/apk/device/installments...")
                 val response = deviceApiService.getDeviceInstallments()
 
-                if (response.isSuccessful && response.body() != null) {
-                    val data = response.body()!!
+                val data = response.body()
+                if (response.isSuccessful && data != null) {
                     
                     Log.d(TAG, "✅ Successfully fetched installments data")
                     Log.d(TAG, "📊 Device: ${data.device?.name ?: "N/A"}")

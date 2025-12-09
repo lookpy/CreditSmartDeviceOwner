@@ -2990,9 +2990,10 @@ class SettingsGuardService(private val context: Context) {
     private fun getForegroundPackageAndActivityViaUsageStats(): Pair<String, String?>? {
         val now = System.currentTimeMillis()
         
-        // Usar cache se ainda válido
-        if (now - lastForegroundQueryTime < FOREGROUND_CACHE_MS && cachedForegroundPackage != null) {
-            return Pair(cachedForegroundPackage!!, cachedForegroundActivity)
+        // Usar cache se ainda válido (capturar em variável local para evitar race condition)
+        val cachedPkg = cachedForegroundPackage
+        if (now - lastForegroundQueryTime < FOREGROUND_CACHE_MS && cachedPkg != null) {
+            return Pair(cachedPkg, cachedForegroundActivity)
         }
         
         val usageStatsManager = context.getSystemService(Context.USAGE_STATS_SERVICE) as? UsageStatsManager
@@ -3045,9 +3046,10 @@ class SettingsGuardService(private val context: Context) {
     private fun hasUsageStatsPermission(): Boolean {
         val now = System.currentTimeMillis()
         
-        // Usar cache se ainda válido
-        if (now - lastUsageStatsCheckTime < USAGE_STATS_CACHE_MS && cachedUsageStatsPermission != null) {
-            return cachedUsageStatsPermission!!
+        // Usar cache se ainda válido (capturar em variável local para evitar race condition)
+        val cachedPerm = cachedUsageStatsPermission
+        if (now - lastUsageStatsCheckTime < USAGE_STATS_CACHE_MS && cachedPerm != null) {
+            return cachedPerm
         }
         
         val result = try {
