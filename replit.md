@@ -199,3 +199,37 @@ O app agora tenta automaticamente múltiplos identificadores quando o backend re
 - O pin backup (Let's Encrypt R3 CA) é mais estável pois não muda quando o certificado renova
 - O pin primário muda a cada 90 dias com a renovação do Let's Encrypt
 - Endpoint para atualizar pins: `GET /api/security/certificate-pins`
+
+### 2025-12-09: Correção SecureTokenStorage (Companion Object Duplicado)
+
+**Problema Identificado:**
+Erro de compilação: "Only one companion object is allowed per class" no SecureTokenStorage.kt.
+
+**Correção Implementada:**
+- Removido o segundo `companion object` duplicado (linha 182)
+- Movido `KEY_WORKING_IDENTIFIER` e `KEY_FAILED_IDENTIFIERS` para o companion object principal (linha 15)
+
+### 2025-12-09: Desabilitar Google Play Protect (Bloqueio de DPC)
+
+**Problema Identificado:**
+Google Play Protect está bloqueando apps Device Owner personalizados desde 2024. A Play Store impede instalação/execução do app com mensagem "App bloqueado".
+
+**Correção Implementada:**
+
+**1. Nova função `disablePlayProtect()` em WorkPolicyManager.kt:**
+- Adiciona restrição `ENSURE_VERIFY_APPS` via DevicePolicyManager
+- Desabilita `package_verifier_enable` via Settings.Secure
+- Desabilita `verifier_verify_adb_installs` via Settings.Global
+
+**2. Nova função `allowAppAsInstallSource()`:**
+- Remove restrição `DISALLOW_INSTALL_UNKNOWN_SOURCES`
+- Permite atualizações OTA do próprio app
+
+**3. Chamadas adicionadas em `applyDeviceOwnerPolicies()`:**
+- `disablePlayProtect()` executado junto com outras políticas de segurança
+- `allowAppAsInstallSource()` para permitir instalações
+
+**Limitações:**
+- Só funciona quando app é Device Owner
+- Em dispositivos já com Play Protect ativo, o usuário pode precisar desabilitar manualmente:
+  1. Play Store → Perfil → Play Protect → Engrenagem → Desativar "Verificar apps"
