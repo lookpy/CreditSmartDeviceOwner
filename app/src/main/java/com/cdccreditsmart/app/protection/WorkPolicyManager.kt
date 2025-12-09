@@ -120,7 +120,7 @@ class WorkPolicyManager(private val context: Context) {
         val details = mutableListOf<String>()
         val warnings = mutableListOf<String>()
         var appliedPolicies = 0
-        val totalPolicies = 22
+        val totalPolicies = 20
         
         Log.i(TAG, "")
         Log.i(TAG, "🛡️ [1/5] PROTEÇÃO DO APLICATIVO")
@@ -176,20 +176,6 @@ class WorkPolicyManager(private val context: Context) {
         
         if (blockUsbTransfer()) {
             details.add("✅ USB File Transfer bloqueado")
-            appliedPolicies++
-        }
-        
-        // CRÍTICO: Desabilitar Play Protect para evitar bloqueio do app DPC
-        if (disablePlayProtect()) {
-            details.add("✅ Google Play Protect desabilitado")
-            appliedPolicies++
-        } else {
-            warnings.add("⚠️ Play Protect não foi desabilitado - pode bloquear o app")
-        }
-        
-        // Permitir instalações de fontes desconhecidas (atualização OTA)
-        if (allowAppAsInstallSource()) {
-            details.add("✅ App permitido como fonte de instalação")
             appliedPolicies++
         }
         
@@ -753,81 +739,6 @@ class WorkPolicyManager(private val context: Context) {
             // TODO: Reativar antes do release final para produção real
             Log.w(TAG, "   ⚠️ USB transfer permitido (debugging Device Owner)")
             false
-        } catch (e: Exception) {
-            Log.e(TAG, "   ❌ Erro: ${e.message}")
-            false
-        }
-    }
-    
-    /**
-     * Desabilita Google Play Protect para evitar bloqueio do app DPC.
-     * 
-     * O Play Protect bloqueia apps Device Owner personalizados desde 2024.
-     * Esta restrição permite que o app funcione sem interferência do Play Protect.
-     * 
-     * Usa ENSURE_VERIFY_APPS que controla a verificação de apps pelo Play Protect.
-     */
-    fun disablePlayProtect(): Boolean {
-        if (!isDeviceOwner()) {
-            Log.w(TAG, "   ⚠️ Play Protect: Requer Device Owner para desabilitar")
-            return false
-        }
-        
-        return try {
-            // ENSURE_VERIFY_APPS controla o Play Protect scanning
-            dpm.addUserRestriction(adminComponent, UserManager.ENSURE_VERIFY_APPS)
-            Log.i(TAG, "   ✅ ENSURE_VERIFY_APPS - Play Protect scanning desabilitado")
-            
-            // Tentar também via Settings (nem sempre funciona em todos os dispositivos)
-            try {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    Settings.Secure.putInt(
-                        context.contentResolver,
-                        "package_verifier_enable",
-                        0
-                    )
-                    Log.i(TAG, "   ✅ package_verifier_enable = 0")
-                }
-            } catch (e: Exception) {
-                Log.w(TAG, "   ⚠️ Settings.Secure falhou (esperado em alguns devices): ${e.message}")
-            }
-            
-            // Tentar desabilitar verificação de apps instalados via ADB/sideload
-            try {
-                Settings.Global.putInt(
-                    context.contentResolver,
-                    "verifier_verify_adb_installs",
-                    0
-                )
-                Log.i(TAG, "   ✅ verifier_verify_adb_installs = 0")
-            } catch (e: Exception) {
-                Log.w(TAG, "   ⚠️ Global setting falhou: ${e.message}")
-            }
-            
-            true
-        } catch (e: Exception) {
-            Log.e(TAG, "   ❌ Erro ao desabilitar Play Protect: ${e.message}")
-            false
-        }
-    }
-    
-    /**
-     * Permite nosso app como fonte confiável para instalações.
-     * Útil para atualização OTA do próprio app.
-     */
-    fun allowAppAsInstallSource(): Boolean {
-        if (!isDeviceOwner()) {
-            return false
-        }
-        
-        return try {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                // Permitir instalações de fontes desconhecidas para nosso app
-                dpm.clearUserRestriction(adminComponent, UserManager.DISALLOW_INSTALL_UNKNOWN_SOURCES)
-                dpm.clearUserRestriction(adminComponent, UserManager.DISALLOW_INSTALL_UNKNOWN_SOURCES_GLOBALLY)
-                Log.i(TAG, "   ✅ App permitido como fonte de instalação")
-            }
-            true
         } catch (e: Exception) {
             Log.e(TAG, "   ❌ Erro: ${e.message}")
             false
