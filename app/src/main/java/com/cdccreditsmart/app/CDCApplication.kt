@@ -58,6 +58,9 @@ class CDCApplication : Application() {
         // RECUPERAÇÃO DE DESINSTALAÇÃO CANCELADA
         recoverFromCancelledUninstall()
         
+        // VERIFICAR POLÍTICAS PENDENTES DO PROVISIONAMENTO
+        applyPendingProvisioningPolicies()
+        
         // ═══════════════════════════════════════════════════════════════════════
         // PRIORIDADE 0: CONCESSÃO DE PERMISSÕES (IMEDIATO - antes de tudo!)
         // ═══════════════════════════════════════════════════════════════════════
@@ -150,6 +153,61 @@ class CDCApplication : Application() {
             // Resetar o flag
             SettingsGuardService.resumeAfterVoluntaryUninstall()
             Log.i(TAG, "🔄 ✅ Flag resetado - proteções podem ser reaplicadas")
+        }
+    }
+    
+    /**
+     * Aplica políticas pendentes do provisionamento
+     * 
+     * Durante o provisionamento via QR code, o CDCDeviceAdminReceiver não pode
+     * executar operações pesadas porque o usuário ainda está bloqueado (locked).
+     * Ele salva flags em Device Protected Storage indicando que precisamos aplicar
+     * as políticas quando o usuário desbloquear.
+     * 
+     * Este método verifica esses flags e aplica as políticas pendentes.
+     */
+    private fun applyPendingProvisioningPolicies() {
+        try {
+            // Ler estado de Device Protected Storage
+            val deviceProtectedContext = createDeviceProtectedStorageContext()
+            val prefs = deviceProtectedContext.getSharedPreferences("cdc_provisioning_state", Context.MODE_PRIVATE)
+            
+            val needsPolicyApplication = prefs.getBoolean("needs_policy_application", false)
+            val needsBasicSetup = prefs.getBoolean("needs_basic_setup", false)
+            val provisioningTime = prefs.getLong("provisioning_time", 0)
+            
+            if (!needsPolicyApplication && !needsBasicSetup) {
+                // Nada pendente
+                return
+            }
+            
+            Log.i(TAG, "🔧 ========================================")
+            Log.i(TAG, "🔧 POLÍTICAS PENDENTES DO PROVISIONAMENTO")
+            Log.i(TAG, "🔧 ========================================")
+            Log.i(TAG, "   needs_policy_application: $needsPolicyApplication")
+            Log.i(TAG, "   needs_basic_setup: $needsBasicSetup")
+            Log.i(TAG, "   provisioning_time: $provisioningTime")
+            
+            // Limpar flags antes de aplicar (evitar loop infinito se algo falhar)
+            prefs.edit()
+                .putBoolean("needs_policy_application", false)
+                .putBoolean("needs_basic_setup", false)
+                .putBoolean("needs_app_launch", false)
+                .apply()
+            Log.i(TAG, "   ✅ Flags limpos do Device Protected Storage")
+            
+            // Verificar se somos Device Owner
+            val dpm = getSystemService(Context.DEVICE_POLICY_SERVICE) as android.app.admin.DevicePolicyManager
+            if (!dpm.isDeviceOwnerApp(packageName)) {
+                Log.w(TAG, "   ⚠️ Não é Device Owner - não aplicando políticas")
+                return
+            }
+            
+            Log.i(TAG, "   ✅ Device Owner confirmado - políticas serão aplicadas via PRIORIDADE 0/1/2")
+            Log.i(TAG, "🔧 ========================================")
+            
+        } catch (e: Exception) {
+            Log.e(TAG, "❌ Erro ao verificar políticas pendentes: ${e.message}", e)
         }
     }
     

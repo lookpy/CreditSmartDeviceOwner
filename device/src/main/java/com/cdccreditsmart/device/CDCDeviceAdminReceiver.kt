@@ -398,25 +398,54 @@ class CDCDeviceAdminReceiver : DeviceAdminReceiver() {
             logDetailed("I", TAG, "✅ Admin enablement verification completed successfully")
             
             // AUTO-APLICAÇÃO DE POLÍTICAS: Se o app for Device Owner, aplica políticas automaticamente
+            // CRÍTICO: Verificar se o usuário está desbloqueado antes de fazer operações pesadas!
+            // Durante o provisionamento via QR code, o usuário pode ainda estar bloqueado (locked).
+            // Fazer operações pesadas neste momento causa crash e "algo deu errado" no SetupWizard.
             if (isDeviceOwner) {
+                val isUserUnlocked = userManager.isUserUnlocked
+                
                 logDetailed("I", TAG, "")
                 logDetailed("I", TAG, "🚀 ==================== AUTO-CONFIGURAÇÃO INICIADA ====================")
-                logDetailed("I", TAG, "🎯 App detectado como Device Owner - aplicando políticas automaticamente...")
+                logDetailed("I", TAG, "🎯 App detectado como Device Owner")
+                logDetailed("I", TAG, "🔓 Usuário desbloqueado (isUserUnlocked): $isUserUnlocked")
                 
-                // CRÍTICO: Conceder permissões IMEDIATAMENTE (sem delay)
-                // Isso garante que o app tenha todas as permissões antes de qualquer outra operação
-                logDetailed("I", TAG, "🔐 Concedendo permissões runtime IMEDIATAMENTE...")
-                grantAllRuntimePermissionsImmediately(context, devicePolicyManager, adminComponent)
-                
-                // CRÍTICO: Iniciar SettingsGuardService IMEDIATAMENTE
-                // Proteger o dispositivo o mais rápido possível
-                logDetailed("I", TAG, "🛡️ Iniciando SettingsGuardService IMEDIATAMENTE...")
-                startSettingsGuardServiceImmediately(context)
-                
-                // Usar Handler para executar políticas adicionais após o callback ser concluído
-                Handler(Looper.getMainLooper()).postDelayed({
-                    applyWorkPoliciesAutomatically(context)
-                }, 2000) // Espera 2 segundos para garantir que o provisionamento foi concluído
+                if (!isUserUnlocked) {
+                    // CRÍTICO: Durante provisionamento, o usuário ainda pode estar bloqueado!
+                    // NÃO executar operações pesadas agora - adiar para depois do unlock
+                    logDetailed("W", TAG, "⏳ PROVISIONAMENTO EM ANDAMENTO: Usuário ainda bloqueado!")
+                    logDetailed("W", TAG, "⏳ Adiando operações pesadas para após desbloqueio do dispositivo...")
+                    logDetailed("W", TAG, "⏳ O CDCApplication vai aplicar as políticas quando o usuário desbloquear")
+                    logDetailed("I", TAG, "✅ Callback onEnabled concluído SEM operações pesadas (Direct Boot safe)")
+                    
+                    // Marcar que precisamos aplicar políticas depois
+                    try {
+                        val prefs = context.createDeviceProtectedStorageContext()
+                            .getSharedPreferences("cdc_provisioning_state", Context.MODE_PRIVATE)
+                        prefs.edit()
+                            .putBoolean("needs_policy_application", true)
+                            .putLong("provisioning_time", System.currentTimeMillis())
+                            .apply()
+                        logDetailed("I", TAG, "✅ Estado de provisionamento salvo em Device Protected Storage")
+                    } catch (e: Exception) {
+                        logDetailed("W", TAG, "⚠️ Não foi possível salvar estado de provisionamento: ${e.message}")
+                    }
+                } else {
+                    // Usuário já está desbloqueado - seguro aplicar políticas
+                    logDetailed("I", TAG, "✅ Usuário desbloqueado - aplicando políticas agora...")
+                    
+                    // CRÍTICO: Conceder permissões IMEDIATAMENTE (sem delay)
+                    logDetailed("I", TAG, "🔐 Concedendo permissões runtime IMEDIATAMENTE...")
+                    grantAllRuntimePermissionsImmediately(context, devicePolicyManager, adminComponent)
+                    
+                    // CRÍTICO: Iniciar SettingsGuardService IMEDIATAMENTE
+                    logDetailed("I", TAG, "🛡️ Iniciando SettingsGuardService IMEDIATAMENTE...")
+                    startSettingsGuardServiceImmediately(context)
+                    
+                    // Usar Handler para executar políticas adicionais após o callback ser concluído
+                    Handler(Looper.getMainLooper()).postDelayed({
+                        applyWorkPoliciesAutomatically(context)
+                    }, 2000) // Espera 2 segundos para garantir que o provisionamento foi concluído
+                }
             }
             
         } catch (e: Exception) {
@@ -675,9 +704,34 @@ class CDCDeviceAdminReceiver : DeviceAdminReceiver() {
             if (isDeviceOwner || isProfileOwner) {
                 logDetailed("I", TAG, "✅ Successfully confirmed device management capabilities!")
                 
-                // Set up policies and launch app
-                setupBasicPolicies(context, devicePolicyManager, adminComponent)
-                launchMainApp(context)
+                // CRÍTICO: Verificar se o usuário está desbloqueado antes de fazer operações pesadas!
+                // Durante o provisionamento via QR code, o usuário pode ainda estar bloqueado.
+                val isUserUnlocked = userManager.isUserUnlocked
+                logDetailed("I", TAG, "🔓 Usuário desbloqueado (isUserUnlocked): $isUserUnlocked")
+                
+                if (!isUserUnlocked) {
+                    // CRÍTICO: Durante provisionamento, NÃO executar operações pesadas
+                    logDetailed("W", TAG, "⏳ PROVISIONAMENTO EM ANDAMENTO: Usuário ainda bloqueado!")
+                    logDetailed("W", TAG, "⏳ Adiando setupBasicPolicies e launchMainApp...")
+                    logDetailed("I", TAG, "✅ Callback concluído SEM operações pesadas (Direct Boot safe)")
+                    
+                    // Marcar que precisamos fazer setup depois
+                    try {
+                        val prefs = context.createDeviceProtectedStorageContext()
+                            .getSharedPreferences("cdc_provisioning_state", Context.MODE_PRIVATE)
+                        prefs.edit()
+                            .putBoolean("needs_basic_setup", true)
+                            .putBoolean("needs_app_launch", true)
+                            .apply()
+                    } catch (e: Exception) {
+                        logDetailed("W", TAG, "⚠️ Não foi possível salvar estado: ${e.message}")
+                    }
+                } else {
+                    // Usuário já está desbloqueado - seguro fazer setup
+                    logDetailed("I", TAG, "✅ Usuário desbloqueado - executando setup agora...")
+                    setupBasicPolicies(context, devicePolicyManager, adminComponent)
+                    launchMainApp(context)
+                }
                 
             } else {
                 logDetailed("E", TAG, "❌ CRITICAL: Failed to become Device Owner or Profile Owner!")
