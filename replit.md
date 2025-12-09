@@ -74,3 +74,15 @@ The UI leverages Jetpack Compose and Material 3, incorporating a CDC institution
 - Expanded CRITICAL_SYSTEM_PACKAGES_FOR_INTERCEPTION with 20+ new packages
 - Added FLAG_SYSTEM check to skip all pre-installed system apps
 - Protected Transsion/Infinix/Tecno system apps from being killed
+
+### Location High Accuracy (2025-12-09)
+- LocationProvider now waits for accuracy <= 50m (per backend spec)
+- Uses up to 5 location updates to find best accuracy
+- PRIORITY_HIGH_ACCURACY + setWaitForAccurateLocation(true)
+- Falls back to best available if max updates reached
+
+### System Crash Prevention (2025-12-09)
+- CHECK_INTERVAL_MS increased from 2000ms to 5000ms
+- AGGRESSIVE_CHECK_INTERVAL_MS increased from 1000ms to 2000ms
+- MULTI_WINDOW_CHECK disabled in guard loop (only on screen unlock now)
+- These changes prevent "Settings isn't responding" system crash

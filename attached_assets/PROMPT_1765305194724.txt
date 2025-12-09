@@ -1,0 +1,346 @@
+# Especificação Técnica: Comando LOCATE_DEVICE
+
+**Documento para:** Time de Desenvolvimento APK  
+**Versão:** 1.0  
+**Data:** 09/12/2024
+
+---
+
+## 1. Visão Geral
+
+O comando `LOCATE_DEVICE` permite que o backend solicite a localização GPS atual do dispositivo. O APK deve capturar a localização e reportar de volta ao backend.
+
+---
+
+## 2. Fluxo de Comunicação
+
+```
+┌─────────────┐     1. Comando MDM        ┌─────────────┐
+│   Backend   │ ──────────────────────────►│     APK     │
+│             │                            │             │
+│             │◄────────────────────────── │             │
+└─────────────┘     2. Resposta com        └─────────────┘
+                       localização
+```
+
+### 2.1 Recebendo o Comando
+
+O APK recebe comandos MDM de duas formas:
+
+**Via WebSocket (tempo real):**
+```json
+{
+  "type": "NEW_COMMAND",
+  "payload": {
+    "commandId": "cmd_abc123",
+    "data": {
+      "commandType": "LOCATE_DEVICE",
+      "priority": "high",
+      "parameters": {
+        "requestedAccuracy": "high"
+      }
+    }
+  }
+}
+```
+
+**Via Polling (fallback):**
+```
+GET /api/apk/mdm/commands/pending
+Authorization: Bearer {deviceToken}
+```
+
+---
+
+## 3. Processamento no APK
+
+### 3.1 Obter Localização GPS
+
+```kotlin
+// Kotlin - Implementação recomendada usando FusedLocationProviderClient
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
+import com.google.android.gms.location.Priority
+
+class LocationHandler(private val context: Context) {
+    
+    private val fusedLocationClient: FusedLocationProviderClient =
+        LocationServices.getFusedLocationProviderClient(context)
+    
+    suspend fun getCurrentLocation(): LocationData? {
+        return suspendCancellableCoroutine { continuation ->
+            val cancellationToken = CancellationTokenSource()
+            
+            fusedLocationClient.getCurrentLocation(
+                Priority.PRIORITY_HIGH_ACCURACY,
+                cancellationToken.token
+            ).addOnSuccessListener { location ->
+                if (location != null) {
+                    continuation.resume(LocationData(
+                        latitude = location.latitude,
+                        longitude = location.longitude,
+                        accuracy = location.accuracy,
+                        altitude = location.altitude,
+                        speed = location.speed,
+                        bearing = location.bearing,
+                        provider = "fused",
+                        timestamp = Instant.ofEpochMilli(location.time).toString()
+                    ))
+                } else {
+                    continuation.resume(null)
+                }
+            }.addOnFailureListener { e ->
+                Log.e("LocationHandler", "Failed to get location", e)
+                continuation.resume(null)
+            }
+            
+            continuation.invokeOnCancellation {
+                cancellationToken.cancel()
+            }
+        }
+    }
+}
+
+data class LocationData(
+    val latitude: Double,
+    val longitude: Double,
+    val accuracy: Float?,
+    val altitude: Double?,
+    val speed: Float?,
+    val bearing: Float?,
+    val provider: String,
+    val timestamp: String
+)
+```
+
+### 3.2 Permissões Necessárias
+
+```xml
+<!-- AndroidManifest.xml -->
+<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+<uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
+```
+
+---
+
+## 4. Reportando a Localização ao Backend
+
+### 4.1 Endpoint de Resposta
+
+```
+POST /api/apk/mdm/commands/{commandId}/status
+Authorization: Bearer {deviceToken}
+Content-Type: application/json
+```
+
+### 4.2 Payload - Sucesso
+
+```json
+{
+  "status": "completed",
+  "response": {
+    "location": {
+      "latitude": -23.550520,
+      "longitude": -46.633308,
+      "accuracy": 15.5,
+      "altitude": 760.0,
+      "speed": 0.0,
+      "bearing": 0.0,
+      "provider": "fused",
+      "timestamp": "2024-12-09T14:30:00.000Z"
+    }
+  }
+}
+```
+
+### 4.3 Payload - Falha
+
+```json
+{
+  "status": "failed",
+  "response": {
+    "error": "LOCATION_PERMISSION_DENIED",
+    "message": "Usuário negou permissão de localização"
+  }
+}
+```
+
+### 4.4 Códigos de Erro
+
+| Código | Descrição |
+|--------|-----------|
+| `LOCATION_PERMISSION_DENIED` | Usuário negou permissão |
+| `LOCATION_DISABLED` | GPS desativado no dispositivo |
+| `LOCATION_TIMEOUT` | Timeout ao obter localização (30s) |
+| `LOCATION_UNAVAILABLE` | Localização não disponível |
+
+---
+
+## 5. Campos da Localização
+
+| Campo | Tipo | Obrigatório | Descrição |
+|-------|------|-------------|-----------|
+| `latitude` | Double | ✅ | Latitude em graus decimais (-90 a 90) |
+| `longitude` | Double | ✅ | Longitude em graus decimais (-180 a 180) |
+| `accuracy` | Float | ❌ | Precisão em metros |
+| `altitude` | Double | ❌ | Altitude em metros acima do nível do mar |
+| `speed` | Float | ❌ | Velocidade em metros/segundo |
+| `bearing` | Float | ❌ | Direção em graus (0-360) |
+| `provider` | String | ❌ | Provedor: "gps", "network", "fused" |
+| `timestamp` | String | ✅ | ISO 8601 timestamp (quando a localização foi capturada) |
+
+---
+
+## 6. Envio Automático via Heartbeat (Opcional)
+
+O APK também pode enviar a localização periodicamente no heartbeat:
+
+```json
+{
+  "serialNumber": "ABC123",
+  "deviceToken": "token_xyz",
+  "timestamp": "2024-12-09T14:30:00.000Z",
+  "location": {
+    "latitude": -23.550520,
+    "longitude": -46.633308,
+    "accuracy": 15.5,
+    "provider": "fused",
+    "timestamp": "2024-12-09T14:30:00.000Z"
+  }
+}
+```
+
+**Recomendação:** Enviar localização no heartbeat a cada 15-30 minutos para manter o mapa atualizado sem consumir muita bateria.
+
+---
+
+## 7. Exemplo Completo de Implementação
+
+```kotlin
+class MdmCommandHandler(
+    private val context: Context,
+    private val apiService: ApiService,
+    private val locationHandler: LocationHandler
+) {
+    
+    suspend fun handleCommand(command: MdmCommand) {
+        when (command.commandType) {
+            "LOCATE_DEVICE" -> handleLocateDevice(command)
+            // ... outros comandos
+        }
+    }
+    
+    private suspend fun handleLocateDevice(command: MdmCommand) {
+        Log.d("MDM", "Recebido comando LOCATE_DEVICE: ${command.id}")
+        
+        try {
+            // Tentar obter localização com timeout de 30 segundos
+            val location = withTimeoutOrNull(30_000) {
+                locationHandler.getCurrentLocation()
+            }
+            
+            if (location != null) {
+                // Reportar sucesso
+                apiService.reportCommandStatus(
+                    commandId = command.id,
+                    status = "completed",
+                    response = CommandResponse(
+                        location = location
+                    )
+                )
+                Log.d("MDM", "Localização reportada: ${location.latitude}, ${location.longitude}")
+            } else {
+                // Reportar falha - timeout
+                apiService.reportCommandStatus(
+                    commandId = command.id,
+                    status = "failed",
+                    response = CommandResponse(
+                        error = "LOCATION_TIMEOUT",
+                        message = "Não foi possível obter localização em 30 segundos"
+                    )
+                )
+            }
+        } catch (e: SecurityException) {
+            // Sem permissão
+            apiService.reportCommandStatus(
+                commandId = command.id,
+                status = "failed",
+                response = CommandResponse(
+                    error = "LOCATION_PERMISSION_DENIED",
+                    message = "Permissão de localização não concedida"
+                )
+            )
+        } catch (e: Exception) {
+            // Erro genérico
+            apiService.reportCommandStatus(
+                commandId = command.id,
+                status = "failed",
+                response = CommandResponse(
+                    error = "LOCATION_ERROR",
+                    message = e.message ?: "Erro desconhecido"
+                )
+            )
+        }
+    }
+}
+```
+
+---
+
+## 8. Verificação no Backend
+
+O backend salva a localização automaticamente quando recebe o status "completed" com dados válidos:
+
+```typescript
+// server/routes.ts - Trecho relevante
+if (command.commandType === 'LOCATE_DEVICE' && status === 'completed' && response?.location) {
+    await storage.updateDevice(device.id, {
+        lastLocation: {
+            latitude: response.location.latitude,
+            longitude: response.location.longitude,
+            accuracy: response.location.accuracy,
+            altitude: response.location.altitude,
+            speed: response.location.speed,
+            bearing: response.location.bearing,
+            provider: response.location.provider,
+            timestamp: response.location.timestamp
+        },
+        lastLocationUpdatedAt: new Date()
+    });
+}
+```
+
+---
+
+## 9. Checklist de Implementação
+
+- [ ] Solicitar permissões de localização (FINE_LOCATION, BACKGROUND_LOCATION)
+- [ ] Implementar handler para comando LOCATE_DEVICE
+- [ ] Usar FusedLocationProviderClient para precisão
+- [ ] Implementar timeout de 30 segundos
+- [ ] Reportar status "completed" com objeto `location`
+- [ ] Reportar status "failed" com código de erro apropriado
+- [ ] (Opcional) Enviar localização no heartbeat periodicamente
+
+---
+
+## 10. Testando
+
+### 10.1 Simular Comando via Admin
+
+O administrador pode solicitar localização pelo painel em:
+- Dispositivos → Selecionar dispositivo → Botão "Localização"
+
+### 10.2 Verificar no Banco de Dados
+
+```sql
+SELECT id, name, last_location, last_location_updated_at 
+FROM devices 
+WHERE id = 'device_xxx';
+```
+
+---
+
+**Documentação mantida por:** Time Backend CDC Credit Smart  
+**Contato:** Replit Agent

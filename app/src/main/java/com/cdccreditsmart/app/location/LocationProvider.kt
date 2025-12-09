@@ -55,6 +55,10 @@ class LocationProvider(private val context: Context) {
         private const val TAG = "LocationProvider"
         private const val LOCATION_TIMEOUT_MS = 30_000L
         private const val FAST_LOCATION_TIMEOUT_MS = 5_000L
+        
+        // Precisão mínima aceitável (metros) - conforme especificação backend
+        private const val MIN_ACCEPTABLE_ACCURACY = 50f
+        private const val MAX_LOCATION_UPDATES = 5
     }
     
     private val fusedLocationClient: FusedLocationProviderClient by lazy {
@@ -294,35 +298,77 @@ class LocationProvider(private val context: Context) {
     @SuppressLint("MissingPermission")
     private suspend fun getLocationFromFused(): LocationResultData {
         return suspendCancellableCoroutine { continuation ->
+            var hasResumed = false
+            var updateCount = 0
+            var bestLocation: Location? = null
+            
+            // Configuração para MÁXIMA PRECISÃO conforme especificação backend
             val locationRequest = LocationRequest.Builder(Priority.PRIORITY_HIGH_ACCURACY, 1000L)
                 .setWaitForAccurateLocation(true)
                 .setMinUpdateIntervalMillis(500L)
-                .setMaxUpdates(1)
+                .setMaxUpdates(MAX_LOCATION_UPDATES)
+                .setMaxUpdateDelayMillis(2000L)
                 .build()
             
             val locationCallback = object : LocationCallback() {
                 override fun onLocationResult(result: LocationResult) {
-                    fusedLocationClient.removeLocationUpdates(this)
+                    if (hasResumed) return
                     
                     val location = result.lastLocation
                     if (location != null) {
-                        Log.i(TAG, "✅ Localização obtida via FusedLocation")
-                        Log.i(TAG, "   Lat: ${location.latitude}, Lon: ${location.longitude}")
-                        Log.i(TAG, "   Accuracy: ${location.accuracy}m, Provider: ${location.provider}")
+                        updateCount++
+                        Log.d(TAG, "📍 Atualização $updateCount/$MAX_LOCATION_UPDATES - Accuracy: ${location.accuracy}m")
                         
-                        if (continuation.isActive) {
-                            continuation.resume(locationToResult(location, "fused"))
+                        // Guardar a melhor localização (menor accuracy)
+                        if (bestLocation == null || location.accuracy < (bestLocation?.accuracy ?: Float.MAX_VALUE)) {
+                            bestLocation = location
+                            Log.d(TAG, "📍 Nova melhor localização: ${location.accuracy}m")
                         }
-                    } else {
-                        Log.w(TAG, "⚠️ FusedLocation retornou null")
-                        if (continuation.isActive) {
-                            continuation.resumeWithException(Exception("FusedLocation returned null"))
+                        
+                        // Aceitar se precisão <= 50m (conforme especificação)
+                        if (location.accuracy <= MIN_ACCEPTABLE_ACCURACY) {
+                            hasResumed = true
+                            fusedLocationClient.removeLocationUpdates(this)
+                            
+                            Log.i(TAG, "✅ Localização de ALTA PRECISÃO obtida via FusedLocation")
+                            Log.i(TAG, "   Lat: ${location.latitude}, Lon: ${location.longitude}")
+                            Log.i(TAG, "   Accuracy: ${location.accuracy}m (aceita: <= ${MIN_ACCEPTABLE_ACCURACY}m)")
+                            Log.i(TAG, "   Provider: ${location.provider}")
+                            
+                            if (continuation.isActive) {
+                                continuation.resume(locationToResult(location, "fused_high_accuracy"))
+                            }
+                        } else {
+                            Log.d(TAG, "📍 Precisão insuficiente: ${location.accuracy}m > ${MIN_ACCEPTABLE_ACCURACY}m, aguardando...")
+                        }
+                        
+                        // Se atingiu máximo de updates, usar a melhor disponível
+                        if (updateCount >= MAX_LOCATION_UPDATES && !hasResumed) {
+                            hasResumed = true
+                            fusedLocationClient.removeLocationUpdates(this)
+                            
+                            val best = bestLocation
+                            if (best != null) {
+                                Log.i(TAG, "⚠️ Máximo de updates atingido - usando melhor disponível")
+                                Log.i(TAG, "   Lat: ${best.latitude}, Lon: ${best.longitude}")
+                                Log.i(TAG, "   Accuracy: ${best.accuracy}m")
+                                
+                                if (continuation.isActive) {
+                                    continuation.resume(locationToResult(best, "fused"))
+                                }
+                            } else {
+                                if (continuation.isActive) {
+                                    continuation.resumeWithException(Exception("No accurate location after $MAX_LOCATION_UPDATES attempts"))
+                                }
+                            }
                         }
                     }
                 }
             }
             
             try {
+                Log.i(TAG, "📍 Solicitando localização HIGH_ACCURACY (max $MAX_LOCATION_UPDATES updates, precisão alvo: ${MIN_ACCEPTABLE_ACCURACY}m)")
+                
                 fusedLocationClient.requestLocationUpdates(
                     locationRequest,
                     locationCallback,
@@ -330,6 +376,7 @@ class LocationProvider(private val context: Context) {
                 )
                 
                 continuation.invokeOnCancellation {
+                    hasResumed = true
                     fusedLocationClient.removeLocationUpdates(locationCallback)
                 }
             } catch (e: Exception) {

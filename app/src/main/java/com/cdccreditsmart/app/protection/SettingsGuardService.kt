@@ -37,8 +37,8 @@ class SettingsGuardService(private val context: Context) {
     
     companion object {
         private const val TAG = "SettingsGuardService"
-        private const val CHECK_INTERVAL_MS = 2000L
-        private const val AGGRESSIVE_CHECK_INTERVAL_MS = 1000L
+        private const val CHECK_INTERVAL_MS = 5000L
+        private const val AGGRESSIVE_CHECK_INTERVAL_MS = 2000L
         
         // Flag para permitir Developer Options (apenas para debug)
         private const val TEMPORARY_ALLOW_DEVELOPER_OPTIONS = false
@@ -217,7 +217,7 @@ class SettingsGuardService(private val context: Context) {
     // ═══════════════════════════════════════════════════════════════════════════════
     @Volatile
     private var lastMultiWindowCheckTime = 0L
-    private val MULTI_WINDOW_CHECK_INTERVAL_MS = if (BuildConfig.DEBUG) 10_000L else 5_000L
+    private val MULTI_WINDOW_CHECK_INTERVAL_MS = if (BuildConfig.DEBUG) 30_000L else 15_000L
     
     @Volatile
     private var lastScreenUnlockCheckTime = 0L
@@ -566,15 +566,16 @@ class SettingsGuardService(private val context: Context) {
         }
         
         // ═══════════════════════════════════════════════════════════════════════════════
-        // PRIORIDADE 0.5: VERIFICAR APPS BLOQUEADOS EM MULTI-WINDOW / SPLIT SCREEN
-        // Verifica periodicamente (a cada 3 segundos) se há apps bloqueados em execução
-        // que não são o foreground principal (ex: split screen)
+        // MULTI-WINDOW CHECK DESABILITADO NO LOOP PRINCIPAL
+        // Motivo: Estava causando "Settings isn't responding" por sobrecarregar o sistema
+        // Verificação agora ocorre APENAS no screen unlock (onScreenUnlocked)
         // ═══════════════════════════════════════════════════════════════════════════════
-        val now = System.currentTimeMillis()
-        if (now - lastMultiWindowCheckTime >= MULTI_WINDOW_CHECK_INTERVAL_MS) {
-            lastMultiWindowCheckTime = now
-            checkAndCloseBlockedAppsInMultiWindow("GUARD_LOOP")
-        }
+        // DESABILITADO:
+        // val now = System.currentTimeMillis()
+        // if (now - lastMultiWindowCheckTime >= MULTI_WINDOW_CHECK_INTERVAL_MS) {
+        //     lastMultiWindowCheckTime = now
+        //     checkAndCloseBlockedAppsInMultiWindow("GUARD_LOOP")
+        // }
         
         when (checkSettingsActivity(foregroundPackage, foregroundActivity)) {
             SettingsCheckResult.DANGEROUS_IMMEDIATE -> {
