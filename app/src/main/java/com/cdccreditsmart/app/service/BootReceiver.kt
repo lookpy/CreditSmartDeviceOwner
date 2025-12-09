@@ -4,9 +4,13 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.util.Log
+import com.cdccreditsmart.app.blocking.AppBlockingManager
 import com.cdccreditsmart.app.offline.OfflineEnforcementWorker
 import com.cdccreditsmart.app.stub.FactoryResetRecoveryOrchestrator
 import com.cdccreditsmart.app.workers.PeriodicOverlayWorker
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class BootReceiver : BroadcastReceiver() {
     
@@ -25,6 +29,8 @@ class BootReceiver : BroadcastReceiver() {
                 
                 CdcForegroundService.startService(context)
                 
+                reapplyDpmBlockingImmediately(context.applicationContext)
+                
                 OfflineEnforcementWorker.schedule(context)
                 Log.i(TAG, "✅ OfflineEnforcementWorker agendado após boot")
                 
@@ -40,6 +46,8 @@ class BootReceiver : BroadcastReceiver() {
                 
                 CdcForegroundService.startService(context)
                 
+                reapplyDpmBlockingImmediately(context.applicationContext)
+                
                 OfflineEnforcementWorker.schedule(context)
                 Log.i(TAG, "✅ OfflineEnforcementWorker agendado após atualização")
                 
@@ -47,6 +55,33 @@ class BootReceiver : BroadcastReceiver() {
                 Log.i(TAG, "✅ PeriodicOverlayWorker agendado após atualização")
                 
                 Log.i(TAG, "✅ Serviços reiniciados após atualização")
+            }
+        }
+    }
+    
+    private fun reapplyDpmBlockingImmediately(context: Context) {
+        CoroutineScope(Dispatchers.IO).launch {
+            try {
+                val blockingManager = AppBlockingManager(context)
+                
+                if (!blockingManager.isDeviceOwner()) {
+                    Log.w(TAG, "⚠️ Não é Device Owner - não pode reaplicar bloqueio DPM")
+                    return@launch
+                }
+                
+                val currentLevel = blockingManager.getCurrentBlockLevel()
+                if (currentLevel > 0) {
+                    Log.i(TAG, "🔒 REAPLICANDO BLOQUEIO DPM IMEDIATAMENTE após boot/update")
+                    Log.i(TAG, "   → Nível atual: $currentLevel")
+                    
+                    blockingManager.ensureBlockingApplied()
+                    
+                    Log.i(TAG, "✅ Bloqueio DPM reaplicado imediatamente!")
+                } else {
+                    Log.i(TAG, "ℹ️ Nível de bloqueio é 0 - nenhum app a bloquear")
+                }
+            } catch (e: Exception) {
+                Log.e(TAG, "❌ Erro ao reaplicar bloqueio DPM: ${e.message}", e)
             }
         }
     }

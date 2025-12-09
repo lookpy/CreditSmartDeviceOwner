@@ -197,3 +197,44 @@ O enforcement offline reaplicava packages do cache diretamente via setApplicatio
 2. PermissionGateScreen verifica quais realmente foram concedidas
 3. Se alguma faltar → mostra tela para técnico conceder manualmente
 4. Técnico concede → app prossegue normalmente
+
+### 2025-12-09: Bloqueio DPM Robusto (Reaplicação Imediata)
+
+**Problema Identificado:**
+1. O bloqueio de apps só funcionava interceptando o lançamento via UsageStats
+2. Se o usuário removesse a permissão USAGE_STATS, o bloqueio parava de funcionar
+3. Ao reiniciar o dispositivo, havia uma janela de até 15 minutos sem bloqueio (esperando OfflineEnforcementWorker)
+
+**Correção Implementada:**
+
+**1. BootReceiver.kt:**
+- Adicionada função `reapplyDpmBlockingImmediately()` que:
+  - Verifica se é Device Owner
+  - Chama `blockingManager.ensureBlockingApplied()` IMEDIATAMENTE após boot
+  - Garante apps salvos como bloqueados permaneçam bloqueados via DPM
+
+**2. CDCApplication.kt:**
+- Adicionada chamada `reapplyDpmBlockingImmediately()` na PRIORIDADE 2
+- Backup para casos onde BootReceiver não é chamado (ex: processo morto e reiniciado)
+- Reaplicação acontece em cada início do app
+
+**3. AppBlockingManager.kt (já existente):**
+- `ensureBlockingApplied()` usa `safeSetApplicationHidden()` (linha 1273)
+- Lê packages salvos do cache e garante que estão bloqueados via DPM
+- Não depende de USAGE_STATS para funcionar
+
+**Arquitetura de Bloqueio (2 camadas):**
+1. **Camada PRIMÁRIA (DPM):** `setApplicationHidden()` - ROBUSTO
+   - Funciona enquanto Device Owner
+   - Não depende de permissões especiais
+   - Apps ficam ocultos do launcher
+2. **Camada SECUNDÁRIA (Interceptação):** UsageStats + Overlay
+   - Fallback para quando DPM falha
+   - Depende de USAGE_STATS e OVERLAY
+   - Mostra tela de bloqueio quando app é aberto
+
+**Garantias:**
+- Bloqueio reaplicado imediatamente no boot
+- Bloqueio reaplicado a cada início do app
+- Bloqueio DPM não depende de permissões especiais
+- Apps bloqueados permanecem ocultos mesmo se processo morrer
