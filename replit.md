@@ -49,3 +49,20 @@ The UI leverages Jetpack Compose and Material 3, incorporating a CDC institution
 - **Retrofit, OkHttp:** HTTP client libraries.
 - **WorkManager:** For background tasks.
 - **Kotlin Coroutines:** For asynchronous programming.
+
+## Recent Changes (2025-12-09)
+
+### Blocked Apps Interception via UsageStats
+- Chrome, YouTube, TikTok, Shopee now properly intercepted when blocked
+- UsageStats-based detection replaces AccessibilityService (Play Protect compatible)
+- Targeted system package allowlist instead of broad exclusions
+
+### Split Screen Detection and Closing
+- `getAllRunningPackages()` uses UsageStats + ActivityManager for full coverage
+- `forceStopBlockedApp()` uses setApplicationHidden toggle (reliable, documented API)
+- Periodic check every 3 seconds + immediate check on screen unlock
+
+### Crash Prevention Fixes
+- `Thread.sleep(100)` → `delay(100)` to avoid blocking coroutine threads
+- `cleanupBlockedAppsThrottleMap()` now always cleans entries >60s old
+- `guardScope` properly cancelled in `stopGuard()` to prevent orphaned coroutines
