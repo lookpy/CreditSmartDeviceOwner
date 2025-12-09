@@ -197,3 +197,40 @@ O enforcement offline reaplicava packages do cache diretamente via setApplicatio
 2. PermissionGateScreen verifica quais realmente foram concedidas
 3. Se alguma faltar → mostra tela para técnico conceder manualmente
 4. Técnico concede → app prossegue normalmente
+
+### 2025-12-09: Interceptação de Apps Bloqueados via UsageStats
+
+**Problema Identificado:**
+1. Chrome, YouTube, TikTok, Shopee NÃO estavam sendo interceptados apesar de bloqueados
+2. Nível 6 do backend retornava lista vazia (máximo era 5)
+3. A lógica de exclusão ignorava TODOS os pacotes `com.google.android.*` e `com.android.*`
+
+**Correção Implementada:**
+
+**1. AppBlockingManager.kt - getDefaultCategoriesForLevel():**
+- Agora usa `when { level <= 0 -> ... level == 5 -> ... else -> MAX }` 
+- Nível 6+ é tratado como nível 5 (bloqueio máximo)
+
+**2. EnhancedProtectionsManager.kt - getPopularAppsForBlocking():**
+- Adicionado `effectiveLevel = level.coerceIn(0, 5)`
+- Nível 5+ retorna `PopularAppsDefinitions.POPULAR_APPS` (todos)
+
+**3. SettingsGuardService.kt - Interceptação via UsageStats:**
+- Implementado `checkAndInterceptBlockedApp(packageName)` no loop principal
+- Lista `CRITICAL_SYSTEM_PACKAGES_FOR_INTERCEPTION` com 30+ pacotes críticos
+- NÃO inclui Chrome, YouTube, etc. - eles DEVEM ser bloqueáveis
+- Lança `BlockedAppExplanationActivity` quando app bloqueado é detectado
+- Throttle de 2s para evitar spam de interceptação
+
+**Apps que agora são interceptados:**
+- `com.android.chrome` (Chrome)
+- `com.google.android.youtube` (YouTube)
+- `com.zhiliaoapp.musically` (TikTok)
+- `com.shopee.*` (Shopee)
+- Todos os outros apps bloqueados
+
+**Fluxo de Interceptação:**
+1. SettingsGuardService monitora foreground app a cada 400-600ms via UsageStats
+2. Quando detecta app bloqueado → verifica se não é pacote crítico do sistema
+3. Se passou throttle (2s) → lança BlockedAppExplanationActivity
+4. Usuário vê tela de bloqueio com informações de pagamento PIX
