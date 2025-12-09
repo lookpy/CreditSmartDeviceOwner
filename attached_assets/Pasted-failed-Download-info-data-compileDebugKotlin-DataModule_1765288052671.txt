@@ -1,0 +1,41 @@
+failed
+Download info
+:data:compileDebugKotlin
+DataModule.kt
+'class MasterKeys : Any' is deprecated. Deprecated in Java.
+'fun fallbackToDestructiveMigration(): RoomDatabase.Builder<CDCDatabase>' is deprecated. Replace by overloaded version with parameter to indicate if all tables should be dropped or not.
+'class MasterKeys : Any' is deprecated. Deprecated in Java.
+'class MasterKeys : Any' is deprecated. Deprecated in Java.
+'class MasterKeys : Any' is deprecated. Deprecated in Java.
+'fun fallbackToDestructiveMigration(): RoomDatabase.Builder<CDCDatabase>' is deprecated. Replace by overloaded version with parameter to indicate if all tables should be dropped or not.
+'class MasterKeys : Any' is deprecated. Deprecated in Java.
+'class MasterKeys : Any' is deprecated. Deprecated in Java.
+'static fun create(p0: String, p1: String, p2: Context, p3: EncryptedSharedPreferences.PrefKeyEncryptionScheme, p4: EncryptedSharedPreferences.PrefValueEncryptionScheme): SharedPreferences' is deprecated. Deprecated in Java.
+'static fun create(p0: String, p1: String, p2: Context, p3: EncryptedSharedPreferences.PrefKeyEncryptionScheme, p4: EncryptedSharedPreferences.PrefValueEncryptionScheme): SharedPreferences' is deprecated. Deprecated in Java.
+:app:compileDebugKotlin
+SecureTokenStorage.kt
+Conflicting declarations:
+object Companion : Any
+Conflicting declarations:
+companion companion object Companion : Any
+Only one companion object is allowed per class.
+Only one companion object is allowed per class.
+Conflicting declarations:
+companion companion object Companion : Any
+Unresolved reference 'KEY_WORKING_IDENTIFIER'.
+Unresolved reference 'KEY_WORKING_IDENTIFIER'.
+Conflicting declarations:
+object Companion : Any
+Unresolved reference 'KEY_FAILED_IDENTIFIERS'.
+Unresolved reference 'KEY_WORKING_IDENTIFIER'.
+Unresolved reference 'KEY_WORKING_IDENTIFIER'.
+Unresolved reference 'KEY_FAILED_IDENTIFIERS'.
+Unresolved reference 'KEY_WORKING_IDENTIFIER'.
+Unresolved reference 'KEY_FAILED_IDENTIFIERS'.
+Unresolved reference 'KEY_FAILED_IDENTIFIERS'.
+Unresolved reference 'KEY_WORKING_IDENTIFIER'.
+Unresolved reference 'KEY_FAILED_IDENTIFIERS'.
+Unresolved reference 'KEY_FAILED_IDENTIFIERS'.
+Unresolved reference 'KEY_FAILED_IDENTIFIERS'.
+Unresolved reference 'KEY_FAILED_IDENTIFIERS'.
+:app:compileReleaseKotlin
