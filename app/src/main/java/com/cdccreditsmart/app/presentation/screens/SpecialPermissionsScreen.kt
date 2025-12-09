@@ -35,14 +35,16 @@ fun SpecialPermissionsScreen(
     
     var hasUsageStats by remember { mutableStateOf(permissionRequester.hasUsageStatsPermission()) }
     var hasOverlay by remember { mutableStateOf(permissionRequester.hasOverlayPermission()) }
+    var hasBatteryExemption by remember { mutableStateOf(permissionRequester.hasBatteryOptimizationExemption()) }
     
     LaunchedEffect(Unit) {
         while (true) {
             kotlinx.coroutines.delay(1000)
             hasUsageStats = permissionRequester.hasUsageStatsPermission()
             hasOverlay = permissionRequester.hasOverlayPermission()
+            hasBatteryExemption = permissionRequester.hasBatteryOptimizationExemption()
             
-            if (hasUsageStats && hasOverlay) {
+            if (hasUsageStats && hasOverlay && hasBatteryExemption) {
                 onAllPermissionsGranted()
                 break
             }
@@ -106,9 +108,20 @@ fun SpecialPermissionsScreen(
             }
         )
         
+        Spacer(modifier = Modifier.height(16.dp))
+        
+        PermissionCard(
+            title = "Execução em Segundo Plano",
+            description = "Permite que o app funcione continuamente para manter a proteção ativa. Esta é a única permissão que requer aprovação manual.",
+            isGranted = hasBatteryExemption,
+            onRequestPermission = {
+                permissionRequester.requestBatteryOptimizationExemption(activity)
+            }
+        )
+        
         Spacer(modifier = Modifier.height(32.dp))
         
-        if (!hasUsageStats || !hasOverlay) {
+        if (!hasUsageStats || !hasOverlay || !hasBatteryExemption) {
             Card(
                 modifier = Modifier.fillMaxWidth(),
                 colors = CardDefaults.cardColors(
@@ -169,7 +182,7 @@ fun SpecialPermissionsScreen(
         
         Spacer(modifier = Modifier.weight(1f))
         
-        if (onSkip != null && (!hasUsageStats || !hasOverlay)) {
+        if (onSkip != null && (!hasUsageStats || !hasOverlay || !hasBatteryExemption)) {
             TextButton(
                 onClick = onSkip,
                 modifier = Modifier.padding(bottom = 16.dp)

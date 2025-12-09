@@ -164,3 +164,24 @@ Serviços críticos (SettingsGuard, KeepAlive, ForegroundService) demoravam muit
 - Serviços críticos iniciam em menos de 1 segundo
 - Operações pesadas executam em background sem bloquear UI
 - Usuário vê permissão de segundo plano imediatamente
+
+### 2025-12-09: Permissão de Bateria na Tela de Permissões
+
+**Problema Identificado:**
+O app pedia permissão de segundo plano aleatoriamente depois de algum tempo, mas deveria pedir na tela de permissões necessárias. Device Owner NÃO pode conceder automaticamente a isenção de otimização de bateria (limitação do Android).
+
+**Correção Implementada:**
+
+**1. SpecialPermissionRequester.kt:**
+- Adicionada função `hasBatteryOptimizationExemption()` para verificar status
+- Adicionada função `requestBatteryOptimizationExemption()` para solicitar
+- Adicionado enum `BATTERY_OPTIMIZATION` com texto explicativo
+
+**2. SpecialPermissionsScreen.kt:**
+- Adicionado card para permissão de bateria na tela de permissões
+- Verificação inclui bateria para permitir continuar
+
+**3. PermissionGateManager.kt:**
+- Corrigido para verificar REALMENTE se bateria está isenta (não mais mentir)
+- Se Device Owner mas bateria não isenta → mostra tela de permissões
+- Explicação clara que é a única permissão que Android não permite auto-conceder

@@ -6,6 +6,7 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Build
+import android.os.PowerManager
 import android.os.Process
 import android.provider.Settings
 import android.util.Log
@@ -50,8 +51,24 @@ class SpecialPermissionRequester(private val context: Context) {
         }
     }
     
+    /**
+     * Verifica se o app está isento de otimização de bateria (Doze mode)
+     * 
+     * IMPORTANTE: Esta permissão NÃO pode ser concedida automaticamente,
+     * mesmo como Device Owner. O Android força a aprovação manual do usuário.
+     */
+    fun hasBatteryOptimizationExemption(): Boolean {
+        return try {
+            val powerManager = context.getSystemService(Context.POWER_SERVICE) as PowerManager
+            powerManager.isIgnoringBatteryOptimizations(context.packageName)
+        } catch (e: Exception) {
+            Log.e(TAG, "Erro ao verificar Battery Optimization: ${e.message}")
+            false
+        }
+    }
+    
     fun hasAllSpecialPermissions(): Boolean {
-        return hasUsageStatsPermission() && hasOverlayPermission()
+        return hasUsageStatsPermission() && hasOverlayPermission() && hasBatteryOptimizationExemption()
     }
     
     fun getMissingPermissions(): List<SpecialPermission> {
@@ -63,6 +80,10 @@ class SpecialPermissionRequester(private val context: Context) {
         
         if (!hasOverlayPermission()) {
             missing.add(SpecialPermission.OVERLAY)
+        }
+        
+        if (!hasBatteryOptimizationExemption()) {
+            missing.add(SpecialPermission.BATTERY_OPTIMIZATION)
         }
         
         return missing
@@ -113,6 +134,36 @@ class SpecialPermissionRequester(private val context: Context) {
         }
     }
     
+    /**
+     * Solicita isenção de otimização de bateria
+     * 
+     * NOTA: Esta é a ÚNICA permissão que NÃO pode ser auto-concedida,
+     * mesmo como Device Owner. O Android obriga o usuário a aprovar manualmente.
+     */
+    @android.annotation.SuppressLint("BatteryLife")
+    fun requestBatteryOptimizationExemption(activity: Activity? = null) {
+        try {
+            // Não precisamos pausar o guard aqui porque vai para uma tela diferente
+            SettingsGuardService.pauseForPermissionGrant()
+            
+            val intent = Intent(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS).apply {
+                data = Uri.parse("package:${context.packageName}")
+                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            }
+            
+            if (activity != null) {
+                activity.startActivity(intent)
+            } else {
+                context.startActivity(intent)
+            }
+            
+            Log.i(TAG, "📱 Abrindo tela de Battery Optimization (guard pausado)")
+        } catch (e: Exception) {
+            Log.e(TAG, "❌ Erro ao abrir Battery Optimization: ${e.message}")
+            SettingsGuardService.resumeAfterPermissionGrant()
+        }
+    }
+    
     fun requestNextMissingPermission(activity: Activity? = null): SpecialPermission? {
         val missing = getMissingPermissions()
         
@@ -122,6 +173,7 @@ class SpecialPermissionRequester(private val context: Context) {
             when (next) {
                 SpecialPermission.USAGE_STATS -> requestUsageStatsPermission(activity)
                 SpecialPermission.OVERLAY -> requestOverlayPermission(activity)
+                SpecialPermission.BATTERY_OPTIMIZATION -> requestBatteryOptimizationExemption(activity)
             }
             
             next
@@ -136,6 +188,7 @@ class SpecialPermissionRequester(private val context: Context) {
         Log.i(TAG, "========================================")
         Log.i(TAG, "  USAGE_STATS: ${if (hasUsageStatsPermission()) "✅ CONCEDIDA" else "❌ NÃO CONCEDIDA"}")
         Log.i(TAG, "  OVERLAY: ${if (hasOverlayPermission()) "✅ CONCEDIDA" else "❌ NÃO CONCEDIDA"}")
+        Log.i(TAG, "  BATTERY_OPT: ${if (hasBatteryOptimizationExemption()) "✅ ISENTO" else "❌ NÃO ISENTO"}")
         
         if (!hasAllSpecialPermissions()) {
             Log.w(TAG, "")
@@ -159,6 +212,10 @@ class SpecialPermissionRequester(private val context: Context) {
         OVERLAY(
             "Exibir sobre outros apps",
             "Permite mostrar avisos de proteção sobre outros aplicativos"
+        ),
+        BATTERY_OPTIMIZATION(
+            "Execução em Segundo Plano",
+            "Permite que o app funcione continuamente para manter a proteção ativa. Esta é a única permissão que o Android não permite conceder automaticamente."
         )
     }
 }
