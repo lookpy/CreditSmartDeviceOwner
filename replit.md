@@ -66,3 +66,8 @@ The UI leverages Jetpack Compose and Material 3, incorporating a CDC institution
 - `Thread.sleep(100)` → `delay(100)` to avoid blocking coroutine threads
 - `cleanupBlockedAppsThrottleMap()` now always cleans entries >60s old
 - `guardScope` properly cancelled in `stopGuard()` to prevent orphaned coroutines
+- CHECK_INTERVAL_MS increased from 600ms to 2000ms (was overloading system)
+- AGGRESSIVE_CHECK_INTERVAL_MS increased from 400ms to 1000ms
+- MULTI_WINDOW_CHECK_INTERVAL_MS increased to 5000ms (production) / 10000ms (debug)
+- setApplicationHidden toggle delay increased from 100ms to 300ms
+- Added forceStopBlockedApp throttle (10s per app) to prevent repeated calls

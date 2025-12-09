@@ -37,8 +37,8 @@ class SettingsGuardService(private val context: Context) {
     
     companion object {
         private const val TAG = "SettingsGuardService"
-        private const val CHECK_INTERVAL_MS = 600L
-        private const val AGGRESSIVE_CHECK_INTERVAL_MS = 400L
+        private const val CHECK_INTERVAL_MS = 2000L
+        private const val AGGRESSIVE_CHECK_INTERVAL_MS = 1000L
         
         // Flag para permitir Developer Options (apenas para debug)
         private const val TEMPORARY_ALLOW_DEVELOPER_OPTIONS = false
@@ -209,12 +209,15 @@ class SettingsGuardService(private val context: Context) {
     private val recentlyInterceptedBlockedApps = mutableMapOf<String, Long>()
     private val BLOCKED_APP_THROTTLE_MS = if (BuildConfig.DEBUG) 10_000L else 2_000L
     
+    private val recentlyForcedStoppedApps = mutableMapOf<String, Long>()
+    private val FORCE_STOP_THROTTLE_MS = 10_000L
+    
     // ═══════════════════════════════════════════════════════════════════════════════
     // MULTI-WINDOW / SPLIT SCREEN DETECTION: Detectar apps bloqueados em multi-window
     // ═══════════════════════════════════════════════════════════════════════════════
     @Volatile
     private var lastMultiWindowCheckTime = 0L
-    private val MULTI_WINDOW_CHECK_INTERVAL_MS = if (BuildConfig.DEBUG) 5_000L else 3_000L
+    private val MULTI_WINDOW_CHECK_INTERVAL_MS = if (BuildConfig.DEBUG) 10_000L else 5_000L
     
     @Volatile
     private var lastScreenUnlockCheckTime = 0L
@@ -322,6 +325,7 @@ class SettingsGuardService(private val context: Context) {
         guardScope.cancel()
         hideOverlay()
         recentlyInterceptedBlockedApps.clear()
+        recentlyForcedStoppedApps.clear()
         Log.i(TAG, "✅ SettingsGuard parado e guardScope cancelado")
     }
     
@@ -853,13 +857,25 @@ class SettingsGuardService(private val context: Context) {
             return false
         }
         
+        // Throttle para evitar chamadas repetidas ao mesmo app
+        val now = System.currentTimeMillis()
+        val lastForceStop = recentlyForcedStoppedApps[packageName]
+        if (lastForceStop != null && (now - lastForceStop) < FORCE_STOP_THROTTLE_MS) {
+            Log.d(TAG, "⏳ Throttle ativo para forceStop: $packageName (aguarde ${FORCE_STOP_THROTTLE_MS - (now - lastForceStop)}ms)")
+            return false
+        }
+        recentlyForcedStoppedApps[packageName] = now
+        
+        // Limpar entries antigas do throttle (>30s)
+        recentlyForcedStoppedApps.entries.removeIf { now - it.value > 30_000L }
+        
         // ═══════════════════════════════════════════════════════════════════════════════
         // MÉTODO 1: setApplicationHidden toggle (API documentada, sempre funciona)
         // Ocultar e mostrar rapidamente força o app a fechar
         // ═══════════════════════════════════════════════════════════════════════════════
         try {
             if (dpm.setApplicationHidden(adminComponent, packageName, true)) {
-                delay(100)
+                delay(300)
                 dpm.setApplicationHidden(adminComponent, packageName, false)
                 Log.i(TAG, "✅ App bloqueado FECHADO via setApplicationHidden toggle: $packageName")
                 return true
