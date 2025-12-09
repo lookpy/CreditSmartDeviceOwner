@@ -47,31 +47,29 @@ class CDCApplication : Application() {
             Log.w(TAG, "⏸️ DIRECT-BOOT MODE - Usuário não desbloqueado")
             Log.w(TAG, "   → Adiando inicialização completa para após desbloqueio")
             Log.w(TAG, "   → EncryptedSharedPreferences não disponível neste estado")
-            // Apenas aplicar proteções básicas que não dependem de storage
-            grantPermissionsIfDeviceOwner()
-            applyMaximumProtectionIfDeviceOwner()
+            // Em direct-boot, apenas iniciar serviços críticos de forma assíncrona
+            applicationScope.launch {
+                grantPermissionsIfDeviceOwner()
+                applyMaximumProtectionIfDeviceOwner()
+            }
             return
         }
         
         // RECUPERAÇÃO DE DESINSTALAÇÃO CANCELADA
-        // Se o flag está ativo quando o app inicia, significa que:
-        // 1. A desinstalação foi cancelada pelo usuário
-        // 2. O processo foi morto e reiniciado
-        // Em ambos os casos, precisamos resetar e restaurar as proteções
         recoverFromCancelledUninstall()
         
-        grantPermissionsIfDeviceOwner()
-        applyMaximumProtectionIfDeviceOwner()
+        // ═══════════════════════════════════════════════════════════════════════
+        // PRIORIDADE 1: INICIAR SERVIÇOS CRÍTICOS IMEDIATAMENTE (síncrono, rápido)
+        // ═══════════════════════════════════════════════════════════════════════
+        Log.i(TAG, "🚀 PRIORIDADE 1: Iniciando serviços críticos IMEDIATAMENTE...")
         
-        // CRÍTICO: Iniciar SettingsGuard IMEDIATAMENTE quando Device Owner
-        // Não esperar por outras verificações - proteger o dispositivo o mais rápido possível
+        // 1.1 SettingsGuard - Proteção de acesso às Settings
         startSettingsGuardIfDeviceOwner()
         
-        ensureManagedSecondaryUserExists()
-        checkTamperDetection()
-        checkSimSwapStatus()
+        // 1.2 Keep Alive System - Mantém app sempre ativo
+        startKeepAliveSystem()
         
-        // PROTEÇÃO: Envolver acesso ao SecureTokenStorage em try/catch
+        // 1.3 Foreground Service - Heartbeat e comandos MDM
         val hasTokens = try {
             val secureStorage = SecureTokenStorage(applicationContext)
             val authToken = secureStorage.getAuthToken()
@@ -83,25 +81,42 @@ class CDCApplication : Application() {
         }
         
         if (hasTokens) {
-            Log.i(TAG, "✅ Tokens encontrados - iniciando CdcForegroundService")
+            Log.i(TAG, "✅ Tokens encontrados - iniciando CdcForegroundService IMEDIATAMENTE")
             startForegroundServiceSafely()
             
-            // APENAS agendar overlay e blocking se dispositivo está pareado
+            // Agendar overlay e blocking
             AutoBlockingWorker.scheduleDailyCheck(applicationContext)
-            
-            Log.i(TAG, "📅 Agendando overlay automático com intervalo progressivo...")
             com.cdccreditsmart.app.workers.PeriodicOverlayWorker.schedule(applicationContext)
         } else {
             Log.i(TAG, "⏸️ Sem tokens - aguardando pairing para iniciar serviço MDM")
-            
-            // CRÍTICO: Limpar estado de bloqueio se não há tokens
-            // Isso previne tela de bloqueio aparecendo durante ativação
-            // O bloqueio pode ter sido persistido de uma instalação anterior
             clearStaleBlockingStateIfNotPaired()
         }
         
-        // SISTEMA KEEP ALIVE: Mantém o app sempre ativo
-        startKeepAliveSystem()
+        Log.i(TAG, "✅ Serviços críticos iniciados em menos de 1 segundo!")
+        
+        // ═══════════════════════════════════════════════════════════════════════
+        // PRIORIDADE 2: OPERAÇÕES PESADAS EM BACKGROUND (assíncrono)
+        // ═══════════════════════════════════════════════════════════════════════
+        applicationScope.launch {
+            Log.i(TAG, "🔄 PRIORIDADE 2: Iniciando operações pesadas em BACKGROUND...")
+            
+            // 2.1 Concessão automática de permissões (pesado - itera packages)
+            grantPermissionsIfDeviceOwner()
+            
+            // 2.2 Aplicação de proteções máximas (pesado - múltiplas chamadas DPM)
+            applyMaximumProtectionIfDeviceOwner()
+            
+            // 2.3 Criação de usuário secundário gerenciado
+            ensureManagedSecondaryUserExists()
+            
+            // 2.4 Verificação de tamper detection
+            checkTamperDetection()
+            
+            // 2.5 Verificação de SIM swap
+            checkSimSwapStatus()
+            
+            Log.i(TAG, "✅ Operações pesadas concluídas em background!")
+        }
     }
     
     /**

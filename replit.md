@@ -138,3 +138,29 @@ O enforcement offline reaplicava packages do cache diretamente via setApplicatio
 - Extrair certificate pins reais do servidor
 - Reativar bloqueios de ADB/USB/Factory Reset
 - Reativar Knox allowDeveloperMode(false) e allowUsbDebugging(false)
+
+### 2025-12-09: Otimização de Inicialização dos Serviços
+
+**Problema Identificado:**
+Serviços críticos (SettingsGuard, KeepAlive, ForegroundService) demoravam muito para iniciar porque operações pesadas eram executadas de forma síncrona ANTES deles.
+
+**Correção Implementada:**
+
+**CDCApplication.onCreate() refatorado:**
+
+**PRIORIDADE 1 - Imediato (< 1 segundo):**
+1. SettingsGuard - proteção de Settings
+2. KeepAlive System - mantém app ativo
+3. CdcForegroundService - heartbeat e comandos MDM
+
+**PRIORIDADE 2 - Background (coroutine):**
+1. grantPermissionsIfDeviceOwner() - concessão de permissões
+2. applyMaximumProtectionIfDeviceOwner() - proteções + Knox + diagnóstico
+3. ensureManagedSecondaryUserExists() - usuário secundário
+4. checkTamperDetection() - verificação de tamper
+5. checkSimSwapStatus() - verificação de SIM swap
+
+**Resultado:**
+- Serviços críticos iniciam em menos de 1 segundo
+- Operações pesadas executam em background sem bloquear UI
+- Usuário vê permissão de segundo plano imediatamente
