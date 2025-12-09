@@ -1,0 +1,1460 @@
+# Especificação Técnica Completa - Sistema de Bloqueio Progressivo APK
+## CDC Credit Smart - Mobile Device Management
+
+**Versão:** 2.0  
+**Data:** 08/12/2024  
+**Destino:** Time de IA/Desenvolvimento do APK Android
+
+---
+
+## SUMÁRIO
+
+1. [Visão Geral do Sistema](#1-visão-geral-do-sistema)
+2. [Conformidade Legal TJMG](#2-conformidade-legal-tjmg)
+3. [Níveis de Bloqueio - Modelo Cumulativo](#3-níveis-de-bloqueio---modelo-cumulativo)
+4. [Categorias e Package Names](#4-categorias-e-package-names)
+5. [Protocolo de Comunicação APK-Backend](#5-protocolo-de-comunicação-apk-backend)
+6. [Payload de Bloqueio Progressivo](#6-payload-de-bloqueio-progressivo)
+7. [Implementação no APK](#7-implementação-no-apk)
+8. [Bugs Críticos Atuais e Correções](#8-bugs-críticos-atuais-e-correções)
+9. [Fluxo de Execução Esperado](#9-fluxo-de-execução-esperado)
+10. [Logs e Telemetria](#10-logs-e-telemetria)
+11. [Testes e Validação](#11-testes-e-validação)
+
+---
+
+## 1. VISÃO GERAL DO SISTEMA
+
+### 1.1 Objetivo
+O sistema de bloqueio progressivo restringe gradualmente o acesso a aplicativos não-essenciais em dispositivos com pagamentos em atraso, incentivando a regularização sem bloquear completamente o dispositivo.
+
+### 1.2 Princípios Fundamentais
+- **NUNCA bloquear o dispositivo completamente** (precedente TJMG)
+- **Apps essenciais SEMPRE acessíveis** (WhatsApp, telefone, bancos, governo, trabalho)
+- **Bloqueios são CUMULATIVOS** (nível 3 = níveis 1+2+3)
+- **Bloqueio progressivo por categoria** (não por dias absolutos)
+
+### 1.3 Terminologia Obrigatória
+| Termo Correto | Termo PROIBIDO |
+|---------------|----------------|
+| Limitação | Bloqueio |
+| Limitado | Bloqueado |
+| Limitar | Bloquear |
+| Liberação | Desbloqueio |
+| Liberado | Desbloqueado |
+| Liberar | Desbloquear |
+
+---
+
+## 2. CONFORMIDADE LEGAL TJMG
+
+### 2.1 Precedente Jurídico
+O Tribunal de Justiça de Minas Gerais (TJMG) estabeleceu que dispositivos financiados NÃO podem ter funcionalidades essenciais bloqueadas.
+
+### 2.2 Apps que NUNCA podem ser limitados
+
+```kotlin
+val ESSENTIAL_APPS_ALWAYS_ALLOWED = listOf(
+    // Chamadas e SMS
+    "com.android.dialer",
+    "com.android.phone",
+    "com.android.contacts",
+    "com.android.messaging",
+    "com.google.android.apps.messaging",
+    "com.samsung.android.dialer",
+    "com.samsung.android.contacts",
+    "com.samsung.android.messaging",
+    
+    // WhatsApp (comunicação essencial)
+    "com.whatsapp",
+    "com.whatsapp.w4b",
+    
+    // Gig Economy (geração de renda)
+    "com.ubercab",
+    "com.ubercab.driver",
+    "br.com.uberetudo",
+    "com.tappsi",
+    "com.rappibr",
+    "br.com.loggi",
+    "br.com.ifood",
+    "br.com.zdasapp",
+    "com.ninety.nine",
+    "br.com.99app.driver",
+    "com.cabify.driver",
+    "com.cabify.rider",
+    
+    // Apps Governamentais
+    "br.gov.datasus.cnsdigital",
+    "br.gov.governoeletronico.meugovbr",
+    "br.gov.previc.meuinss",
+    "br.gov.economia.caixatrabalhador",
+    "br.gov.dpf.carteiradetrabalho",
+    "br.gov.fazenda.receita.cpf",
+    "br.gov.tse.eleitoral.e_titulo",
+    "br.com.poupatempo",
+    "br.gov.serpro.cnh",
+    "br.gov.caixa.tem",
+    "br.gov.serpro.cnhe",
+    "br.gov.datasus.conectesus",
+    "br.gov.datasus.sisrede",
+    
+    // Bancos Tradicionais
+    "com.itau",
+    "com.bradesco",
+    "com.santander.app",
+    "br.com.bb.android",
+    "br.com.gabba.Caixa",
+    "com.itaucard",
+    "br.com.santander.way",
+    
+    // Bancos Digitais
+    "com.nu.production",
+    "br.com.intermedium",
+    "com.c6bank.app",
+    "br.com.xp.carteira",
+    "com.picpay",
+    "br.com.mercadopago.wallet",
+    "com.pagbank.app",
+    "br.com.recargapay",
+    "br.com.original.bank",
+    "br.com.bancointer",
+    "com.btgpactual.app",
+    "br.com.neon",
+    "com.modalmais",
+    "com.pagseguro.app",
+    
+    // App CDC (sempre permitido)
+    "com.cdccreditsmart.app"
+)
+```
+
+---
+
+## 3. NÍVEIS DE BLOQUEIO - MODELO CUMULATIVO
+
+### 3.1 Tabela de Níveis
+
+| Nível | Dias de Atraso | Novas Categorias | Total Acumulado |
+|-------|----------------|------------------|-----------------|
+| 0 | 0-2 | Nenhuma | 0 categorias |
+| 1 | 3-5 | camera, gallery_photos, file_manager, video_players | 4 categorias |
+| 2 | 6-8 | browsers, youtube_tiktok | 6 categorias |
+| 3 | 9-11 | social_media, shopping | 8 categorias |
+| 4 | 12-14 | games, music | 10 categorias |
+| 5 | 15-17 | play_store, other_app_stores | 12 categorias |
+| 6 | 18+ | non_essential_apps | 13 categorias |
+
+### 3.2 MODELO CUMULATIVO - CRÍTICO!
+
+```
+Nível 1 = [camera, gallery_photos, file_manager, video_players]
+Nível 2 = Nível 1 + [browsers, youtube_tiktok]
+Nível 3 = Nível 2 + [social_media, shopping]
+Nível 4 = Nível 3 + [games, music]
+Nível 5 = Nível 4 + [play_store, other_app_stores]
+Nível 6 = Nível 5 + [non_essential_apps]
+```
+
+### 3.3 Categorias Acumuladas por Nível
+
+**Nível 6 (Máximo) - 13 categorias:**
+```json
+[
+  "camera",
+  "gallery_photos",
+  "file_manager",
+  "video_players",
+  "browsers",
+  "youtube_tiktok",
+  "social_media",
+  "shopping",
+  "games",
+  "music",
+  "play_store",
+  "other_app_stores",
+  "non_essential_apps"
+]
+```
+
+---
+
+## 4. CATEGORIAS E PACKAGE NAMES
+
+### 4.1 camera
+```kotlin
+val CAMERA_PACKAGES = listOf(
+    "com.android.camera",
+    "com.android.camera2",
+    "com.google.android.GoogleCamera",
+    "com.samsung.android.camera",
+    "com.huawei.camera",
+    "com.motorola.camera",
+    "com.motorola.camera2",
+    "com.oppo.camera",
+    "com.oneplus.camera",
+    "com.xiaomi.camera",
+    "com.lge.camera",
+    "com.asus.camera",
+    "com.sec.android.app.camera",
+    "com.sonyericsson.android.camera",
+    "org.codeaurora.snapcam"
+)
+```
+
+### 4.2 gallery_photos
+```kotlin
+val GALLERY_PHOTOS_PACKAGES = listOf(
+    "com.android.gallery3d",
+    "com.google.android.apps.photos",
+    "com.samsung.android.gallery",
+    "com.huawei.photos",
+    "com.miui.gallery",
+    "com.oppo.gallery3d",
+    "com.oneplus.gallery",
+    "com.sec.android.gallery3d",
+    "com.lge.gallery",
+    "com.asus.gallery",
+    "com.sonyericsson.album",
+    "com.google.android.apps.photosgo"
+)
+```
+
+### 4.3 file_manager
+```kotlin
+val FILE_MANAGER_PACKAGES = listOf(
+    "com.android.documentsui",
+    "com.google.android.apps.nbu.files",
+    "com.samsung.android.myfiles",
+    "com.huawei.filemanager",
+    "com.mi.android.globalFileexplorer",
+    "com.miui.fileexplorer",
+    "com.oppo.filemanager",
+    "com.oneplus.filemanager",
+    "com.asus.filemanager",
+    "com.lge.filemanager",
+    "com.sec.android.app.myfiles",
+    "com.estrongs.android.pop",
+    "com.explorer.files.cleanmaster.cleaner",
+    "com.file.explorer.filemanager",
+    "pl.solidexplorer2"
+)
+```
+
+### 4.4 video_players
+```kotlin
+val VIDEO_PLAYER_PACKAGES = listOf(
+    "com.mxtech.videoplayer.ad",
+    "com.mxtech.videoplayer.pro",
+    "org.videolan.vlc",
+    "com.bsplayer.bspandroid.free",
+    "com.samsung.android.video",
+    "com.samsung.android.videoplayer",
+    "com.huawei.himovie",
+    "com.miui.videoplayer",
+    "com.oppo.video",
+    "video.player.videoplayer",
+    "com.wondershare.player"
+)
+```
+
+### 4.5 browsers
+```kotlin
+val BROWSER_PACKAGES = listOf(
+    "com.android.chrome",
+    "com.chrome.beta",
+    "com.chrome.dev",
+    "com.chrome.canary",
+    "org.mozilla.firefox",
+    "org.mozilla.firefox_beta",
+    "org.mozilla.focus",
+    "com.opera.browser",
+    "com.opera.browser.beta",
+    "com.opera.mini.native",
+    "com.opera.gx",
+    "com.microsoft.emmx",
+    "com.brave.browser",
+    "com.brave.browser_beta",
+    "com.duckduckgo.mobile.android",
+    "com.sec.android.app.sbrowser",
+    "com.sec.android.app.sbrowser.beta",
+    "com.huawei.browser",
+    "com.mi.globalbrowser",
+    "com.mi.browser",
+    "com.coloros.browser",
+    "com.vivaldi.browser",
+    "com.kiwibrowser.browser",
+    "com.phlox.tvwebbrowser",
+    "com.uc.browser.en",
+    "com.UCMobile",
+    "com.cloudmosa.puffinFree",
+    "org.torproject.torbrowser"
+)
+```
+
+### 4.6 youtube_tiktok
+```kotlin
+val YOUTUBE_TIKTOK_PACKAGES = listOf(
+    "com.google.android.youtube",
+    "com.google.android.apps.youtube.creator",
+    "com.google.android.youtube.tv",
+    "com.google.android.youtube.tvkids",
+    "com.google.android.apps.youtube.kids",
+    "com.google.android.apps.youtube.music",
+    "com.zhiliaoapp.musically",
+    "com.ss.android.ugc.trill",
+    "com.ss.android.ugc.aweme",
+    "com.tiktok.lite",
+    "com.ss.android.ugc.boom",
+    "tv.twitch.android.app",
+    "com.vimeo.android.videoapp",
+    "com.dailymotion.dailymotion"
+)
+```
+
+### 4.7 social_media
+```kotlin
+val SOCIAL_MEDIA_PACKAGES = listOf(
+    "com.instagram.android",
+    "com.instagram.lite",
+    "com.facebook.katana",
+    "com.facebook.lite",
+    "com.facebook.orca",
+    "com.facebook.mlite",
+    "com.twitter.android",
+    "com.twitter.android.lite",
+    "com.snapchat.android",
+    "com.linkedin.android",
+    "com.linkedin.android.lite",
+    "com.pinterest",
+    "com.reddit.frontpage",
+    "com.tumblr",
+    "org.telegram.messenger",
+    "org.telegram.messenger.web",
+    "org.thunderdog.challegram",
+    "com.discord",
+    "com.viber.voip",
+    "com.imo.android.imoim",
+    "kik.android",
+    "com.skype.raider",
+    "com.microsoft.teams",
+    "us.zoom.videomeetings",
+    "com.google.android.apps.tachyon",
+    "com.kwai.video",
+    "com.likee.video",
+    "video.like",
+    "com.vkontakte.android",
+    "com.sina.weibo",
+    "com.tencent.mm",
+    "jp.naver.line.android",
+    "com.bigo.live"
+)
+```
+
+### 4.8 shopping
+```kotlin
+val SHOPPING_PACKAGES = listOf(
+    "com.shopee.br",
+    "com.shopee.id",
+    "com.mercadolibre",
+    "com.mercadolibre.brasil",
+    "com.amazon.mShop.android.shopping",
+    "com.amazon.windowshop",
+    "com.alibaba.aliexpresshd",
+    "com.alibaba.intl.android.apps.poseidon",
+    "com.wish.android",
+    "br.com.magazineluiza",
+    "com.americanas",
+    "br.com.submarino.shoppingapp",
+    "br.com.carefour",
+    "br.com.casasbahia",
+    "br.com.pontofrio",
+    "br.com.netshoes.app",
+    "br.com.natura.naturapedido",
+    "br.com.boticario",
+    "com.oboticario.ecommerce",
+    "br.com.fastshop",
+    "com.rfranco.centauro",
+    "com.shein.international",
+    "com.joom",
+    "com.alibaba.ae",
+    "com.lazada.android",
+    "com.dhgate.android",
+    "com.banggood.client"
+)
+```
+
+### 4.9 games (~250 jogos)
+```kotlin
+val GAMES_PACKAGES = listOf(
+    // Battle Royale & FPS
+    "com.tencent.ig",
+    "com.pubg.krmobile",
+    "com.pubg.imobile",
+    "com.pubg.newstate",
+    "com.activision.callofduty.shooter",
+    "com.activision.callofduty.warzone",
+    "com.garena.game.ffc",
+    "com.garena.game.codm",
+    "com.dts.freefiremax",
+    "com.dts.freefireth",
+    "com.epicgames.fortnite",
+    "com.netease.hyxd",
+    "com.netease.rwpd",
+    
+    // MOBA
+    "com.mobile.legends",
+    "com.riotgames.league.wildrift",
+    "com.vng.mlbbvn",
+    "com.tencent.lolm",
+    "com.levelinfinite.hotta.gp",
+    
+    // Minecraft & Sandbox
+    "com.mojang.minecraftpe",
+    "com.mojang.minecraftedu",
+    "com.roblox.client",
+    "com.trionworlds.trove",
+    "com.innersloth.spacemafia",
+    
+    // King Games
+    "com.king.candycrushsaga",
+    "com.king.candycrushsodasaga",
+    "com.king.candycrushjellysaga",
+    "com.king.candycrushfriends",
+    "com.king.farmheroessaga",
+    "com.king.farmheroessuper",
+    "com.king.bubblewitchsaga3",
+    "com.king.petrescuesaga",
+    "com.king.alphabettysaga",
+    
+    // Supercell Games
+    "com.supercell.clashofclans",
+    "com.supercell.clashroyale",
+    "com.supercell.brawlstars",
+    "com.supercell.hayday",
+    "com.supercell.boombeach",
+    "com.supercell.scroll",
+    "com.supercell.squadbusters",
+    
+    // Rovio (Angry Birds)
+    "com.rovio.angrybirds",
+    "com.rovio.angrybirds2",
+    "com.rovio.dream",
+    "com.rovio.angrybirdsfriends",
+    "com.rovio.angrybirdsgo",
+    "com.rovio.angrybirdsstar",
+    "com.rovio.popcorn",
+    
+    // Gameloft Games
+    "com.gameloft.android.ANMP.GloftA9HM",
+    "com.gameloft.android.ANMP.GloftA8HM",
+    "com.gameloft.android.ANMP.GloftA7HM",
+    "com.gameloft.android.ANMP.GloftGTHM",
+    "com.gameloft.android.ANMP.GloftDMHM",
+    "com.gameloft.android.ANMP.GloftDCHM",
+    "com.gameloft.android.ANMP.GloftMCHM",
+    "com.gameloft.android.ANMP.GloftM6HM",
+    "com.gameloft.android.ANMP.GloftSIHM",
+    "com.gameloft.android.ANMP.GloftIAHM",
+    
+    // EA Games
+    "com.ea.game.pvzfree_row",
+    "com.ea.game.pvz2_row",
+    "com.ea.gp.fifaultimate",
+    "com.ea.gp.fifamobile",
+    "com.ea.game.starwarscapital_row",
+    "com.ea.game.nfs14_row",
+    "com.ea.games.r3_row",
+    "com.ea.game.simcitymobile_row",
+    "com.ea.game.simsfreeplay_row",
+    "com.ea.game.fifa14_row",
+    "com.ea.game.nba.row",
+    
+    // Zynga Games
+    "com.zynga.words3",
+    "com.zynga.poker",
+    "com.zynga.livepoker",
+    "com.zynga.crosswords",
+    "com.zynga.FarmVille2CountryEscape",
+    "com.zynga.farmville.countryescape",
+    "com.zynga.slotsblackdiamond",
+    "com.zynga.matching.merge",
+    
+    // Playrix Games
+    "com.playrix.gardenscapes",
+    "com.playrix.homescapes",
+    "com.playrix.township",
+    "com.playrix.fishdom",
+    "com.playrix.wildscapes",
+    "com.playrix.manor",
+    
+    // Casual & Arcade
+    "com.kiloo.subwaysurf",
+    "com.kiloo.subwaysurfers",
+    "com.imangi.templerun",
+    "com.imangi.templerun2",
+    "com.fingersoft.hillclimb",
+    "com.fingersoft.hcr2",
+    "com.halfbrick.fruitninja",
+    "com.halfbrick.fruitninjaclassic",
+    "com.halfbrick.jetpackjoyride",
+    "com.doodle.doodlejump",
+    "com.outfit7.talkingtom",
+    "com.outfit7.talkingtom2",
+    "com.outfit7.mytalkingtomfriends",
+    "com.outfit7.mytalkingtom2",
+    "com.outfit7.talkingginger",
+    "com.outfit7.talkingginger2",
+    "com.outfit7.talkingangela",
+    "com.outfit7.talkingben",
+    "com.outfit7.talkinghank",
+    "com.outfit7.talkingtomgoldrun",
+    
+    // Miniclip Games
+    "com.miniclip.eightballpool",
+    "com.miniclip.agar.io",
+    "com.miniclip.golfbattle",
+    "com.miniclip.plagueinc",
+    "com.miniclip.carrom",
+    "com.miniclip.bowmasters",
+    "com.miniclip.basketballstars",
+    "com.miniclip.cricketstars",
+    
+    // Voodoo Games
+    "io.voodoo.crowdcity",
+    "io.voodoo.paper2",
+    "io.voodoo.aquapark",
+    "io.voodoo.helix",
+    "io.voodoo.rollinghit",
+    "com.Voodoo.hole",
+    "com.Voodoo.sniper3d",
+    
+    // Puzzle Games
+    "com.trailmix.playrix",
+    "com.bigfishgames.cookingcrazegame",
+    "com.gemioli.cuttheropetimetravel",
+    "com.zeptolab.ctr.ads",
+    "com.zeptolab.ctr2.f2p.google",
+    "com.zeptolab.thieves",
+    "com.zeptolab.bullet",
+    "com.boombit.ballsort",
+    
+    // Strategy Games
+    "com.lilithgames.rok.gp",
+    "com.igg.castleclash",
+    "com.igg.android.lordsmobile",
+    "com.plarium.raidlegends",
+    "com.plarium.vikings",
+    "com.topwar.gp",
+    "com.hcg.ctw.gp",
+    "com.funplus.kingofavalon",
+    "com.yottagames.gameofmafia",
+    
+    // Racing Games
+    "com.hutchgames.tophits",
+    "com.naturalmotion.customstreetracer2",
+    "com.naturalmotion.csrclassics",
+    "com.codemagic.carxstreet",
+    "com.creativemobile.dragracingclub",
+    "com.creativemobile.dragracing",
+    "com.carxtech.sr",
+    "com.carxtech.carxdr",
+    "com.carxtech.carxdr2",
+    "com.glu.gladiator",
+    "com.glu.ma2",
+    
+    // Sports Games
+    "com.nianticlabs.pokemongo",
+    "com.firsttouchgames.dls3",
+    "com.firsttouchgames.dls7",
+    "com.firsttouchgames.smp",
+    "com.gamebasics.osm",
+    "com.footballmanager.mobile",
+    "com.konami.pesam",
+    "com.konami.epes",
+    "com.miniclip.soccerstars",
+    "com.headup.badland2",
+    
+    // Card & Casino Games
+    "com.unocardgame.uno",
+    "com.scopely.monopolygo",
+    "com.scopely.yahtzee",
+    "com.huuuge.casino.slots",
+    "com.huuuge.stars",
+    "com.playtika.slotomania",
+    "com.playtika.wsop",
+    "com.me2zen.solitaire",
+    "com.mobilityware.solitaire",
+    "me.pou.app",
+    
+    // RPG & Adventure
+    "com.miHoYo.GenshinImpact",
+    "com.miHoYo.hkrpg",
+    "com.HoYoverse.Nap",
+    "com.nway.powerrangerslegacy",
+    "com.kabam.marvelbattle",
+    "com.netmarble.marvelfuturerevolution",
+    "com.netmarble.nanaglobal",
+    "com.netmarble.lineage2m",
+    "com.nexon.maplem.global",
+    "com.com2us.chronicles",
+    "com.lilithgame.hgame.gp",
+    
+    // Hypercasual
+    "com.azurgames.stackball",
+    "com.say.games.helix",
+    "com.saygames.helix",
+    "io.supersonic.numbermaster",
+    "com.azurgames.skincare",
+    "com.dontap.sausagerun",
+    "io.supercent.burgertycoon",
+    "com.gameguru.bottleflipchallenge",
+    
+    // Other Popular Games
+    "com.frogmind.badland",
+    "com.frogmind.badland2",
+    "com.cloudrain.rain",
+    "com.vanillabreeze.rain",
+    "com.WeGottaPlay.MergeMansion",
+    "com.bigfishgames.gloverg",
+    "com.etermax.preguntados",
+    "com.etermax.preguntados2",
+    "com.etermax.trivia.crack",
+    "com.orangenose.tablero",
+    "air.au.com.metro.DumbWaysToDie",
+    "air.au.com.metro.DumbWaysToDie2",
+    "air.com.jelly.jumponline2020",
+    "com.lunime.gachaclub",
+    "com.lunime.gachalife",
+    "jp.konami.duellinks",
+    "com.riotgames.runeterra",
+    "com.blizzard.hearthstone",
+    "com.blizzard.diablo.immortal",
+    "com.blizzard.wow.companion",
+    "com.squareenix.android_googleplay.FFBEWotV",
+    "com.square_enix.android_googleplay.FFVIIEC",
+    "com.bandainamcoent.dblegends_ww",
+    "com.bandainamcoent.dblgps",
+    "com.YoStarEN.Arknights",
+    "com.YoStarEN.AzurLane"
+)
+```
+
+### 4.10 music
+```kotlin
+val MUSIC_PACKAGES = listOf(
+    "com.spotify.music",
+    "com.spotify.lite",
+    "deezer.android.app",
+    "com.google.android.apps.youtube.music",
+    "com.apple.android.music",
+    "com.amazon.mp3",
+    "com.aspiro.tidal",
+    "com.pandora.android",
+    "com.soundcloud.android",
+    "tunein.player",
+    "radiotime.player",
+    "com.shazam.android",
+    "com.smule.singandroid",
+    "com.anghami",
+    "com.yy.musicfm",
+    "com.music.player.mp3player.offline",
+    "com.gaana",
+    "com.bsbportal.music",
+    "com.audiomack"
+)
+```
+
+### 4.11 play_store
+```kotlin
+val PLAY_STORE_PACKAGES = listOf(
+    "com.android.vending"
+)
+```
+
+### 4.12 other_app_stores
+```kotlin
+val OTHER_APP_STORES_PACKAGES = listOf(
+    "com.sec.android.app.samsungapps",
+    "com.samsung.android.themestore",
+    "com.huawei.appmarket",
+    "com.oppo.market",
+    "com.heytap.market",
+    "com.xiaomi.market",
+    "com.miui.msa.global",
+    "com.amazon.venezia",
+    "com.apkpure.aegon",
+    "org.fdroid.fdroid",
+    "com.aptoide.pt",
+    "com.mobile.indiapp",
+    "com.getapps.purchase",
+    "com.oneplus.store"
+)
+```
+
+### 4.13 non_essential_apps
+Esta categoria é especial - quando ativa, o APK deve limitar TODOS os apps que NÃO estão na lista `alwaysAllowedPackages`.
+
+---
+
+## 5. PROTOCOLO DE COMUNICAÇÃO APK-BACKEND
+
+### 5.1 Heartbeat (APK → Backend)
+
+**Endpoint:** `POST /api/apk/device/heartbeat`
+
+**Request:**
+```json
+{
+  "deviceToken": "eyJhbGciOiJIUzI1NiIs...",
+  "currentBlockLevel": 0,
+  "batteryLevel": 85,
+  "isCharging": true,
+  "timestamp": 1733691614722
+}
+```
+
+**Response (NON_COMPLIANT):**
+```json
+{
+  "success": true,
+  "requiresBackendRevalidation": false,
+  "phoneNumbersProcessed": false,
+  "complianceStatus": "NON_COMPLIANT",
+  "expectedBlockLevel": 6,
+  "message": "Expected level 6, reported 0",
+  "complianceConfig": {
+    "maxComplianceCorrections": 3,
+    "correctionWindowMinutes": 30,
+    "autoBlockOnLimitReached": true,
+    "enableDetailedTelemetry": true,
+    "telemetryIntervalMinutes": 5
+  }
+}
+```
+
+**Response (COMPLIANT):**
+```json
+{
+  "success": true,
+  "complianceStatus": "COMPLIANT",
+  "expectedBlockLevel": 6
+}
+```
+
+### 5.2 WebSocket MDM Commands
+
+**Comando PROGRESSIVE_BLOCK:**
+```json
+{
+  "type": "PROGRESSIVE_BLOCK",
+  "payload": {
+    "level": 6,
+    "reason": "payment_overdue",
+    "daysOverdue": 25,
+    "blockCategories": ["camera", "gallery_photos", ...],
+    "blockedPackages": ["com.android.chrome", ...],
+    "blockAllFlags": {
+      "blockAllCamera": true,
+      "blockAllBrowsers": true,
+      ...
+    },
+    "alwaysAllowedPackages": ["com.whatsapp", ...],
+    "message": "Atraso de 25 dias.",
+    "timestamp": "2024-12-08T21:00:00.000Z"
+  }
+}
+```
+
+---
+
+## 6. PAYLOAD DE BLOQUEIO PROGRESSIVO
+
+### 6.1 Estrutura Completa do Payload
+
+```kotlin
+data class ProgressiveBlockPayload(
+    val level: Int,                           // 0-6
+    val reason: String,                       // "payment_overdue"
+    val daysOverdue: Int,                     // Dias de atraso
+    val blockCategories: List<String>,        // Categorias a bloquear
+    val blockedPackages: List<String>,        // Packages específicos (lista exata)
+    val blockAllFlags: BlockAllFlags,         // Flags para bloquear TODA a categoria
+    val alwaysAllowedPackages: List<String>,  // Apps que NUNCA podem ser bloqueados
+    val message: String,                      // Mensagem para o usuário
+    val timestamp: String                     // ISO timestamp
+)
+
+data class BlockAllFlags(
+    val blockAllCamera: Boolean,
+    val blockAllGalleryPhotos: Boolean,
+    val blockAllFileManager: Boolean,
+    val blockAllVideoPlayers: Boolean,
+    val blockAllBrowsers: Boolean,
+    val blockAllYoutubeTiktok: Boolean,
+    val blockAllSocialMedia: Boolean,
+    val blockAllShopping: Boolean,
+    val blockAllGames: Boolean,
+    val blockAllMusic: Boolean,
+    val blockAllPlayStore: Boolean,
+    val blockAllOtherAppStores: Boolean,
+    val blockAllNonEssentialApps: Boolean
+)
+```
+
+### 6.2 Exemplo de Payload Nível 6
+
+```json
+{
+  "type": "PROGRESSIVE_BLOCK",
+  "payload": {
+    "level": 6,
+    "reason": "payment_overdue",
+    "daysOverdue": 25,
+    "blockCategories": [
+      "camera",
+      "gallery_photos",
+      "file_manager",
+      "video_players",
+      "browsers",
+      "youtube_tiktok",
+      "social_media",
+      "shopping",
+      "games",
+      "music",
+      "play_store",
+      "other_app_stores",
+      "non_essential_apps"
+    ],
+    "blockedPackages": [
+      "com.android.chrome",
+      "org.mozilla.firefox",
+      "com.opera.browser",
+      "com.microsoft.emmx",
+      "com.brave.browser",
+      "com.duckduckgo.mobile.android",
+      "com.sec.android.app.sbrowser",
+      "com.huawei.browser",
+      "com.mi.globalbrowser",
+      "com.vivaldi.browser",
+      "com.kiwibrowser.browser",
+      "com.instagram.android",
+      "com.facebook.katana",
+      "com.twitter.android",
+      "com.snapchat.android",
+      "com.google.android.youtube",
+      "com.zhiliaoapp.musically",
+      "com.shopee.br",
+      "com.mercadolibre",
+      "com.amazon.mShop.android.shopping",
+      "com.tencent.ig",
+      "com.garena.game.ffc",
+      "com.king.candycrushsaga",
+      "com.supercell.clashofclans",
+      "com.spotify.music",
+      "deezer.android.app",
+      "com.android.vending",
+      "com.sec.android.app.samsungapps"
+    ],
+    "blockAllFlags": {
+      "blockAllCamera": true,
+      "blockAllGalleryPhotos": true,
+      "blockAllFileManager": true,
+      "blockAllVideoPlayers": true,
+      "blockAllBrowsers": true,
+      "blockAllYoutubeTiktok": true,
+      "blockAllSocialMedia": true,
+      "blockAllShopping": true,
+      "blockAllGames": true,
+      "blockAllMusic": true,
+      "blockAllPlayStore": true,
+      "blockAllOtherAppStores": true,
+      "blockAllNonEssentialApps": true
+    },
+    "alwaysAllowedPackages": [
+      "com.whatsapp",
+      "com.whatsapp.w4b",
+      "com.android.dialer",
+      "com.android.phone",
+      "com.android.contacts",
+      "com.android.messaging",
+      "com.google.android.apps.messaging",
+      "com.samsung.android.dialer",
+      "com.samsung.android.contacts",
+      "com.samsung.android.messaging",
+      "com.ubercab",
+      "com.ubercab.driver",
+      "br.com.ifood",
+      "com.ninety.nine",
+      "br.com.99app.driver",
+      "com.nu.production",
+      "com.itau",
+      "com.bradesco",
+      "br.com.bb.android",
+      "br.gov.meugovbr",
+      "br.gov.caixa.tem",
+      "com.cdccreditsmart.app"
+    ],
+    "message": "Atraso de 25 dias. Todos os aplicativos não-essenciais estão temporariamente limitados. Regularize o pagamento para restaurar o acesso.",
+    "timestamp": "2024-12-08T21:00:00.000Z"
+  }
+}
+```
+
+---
+
+## 7. IMPLEMENTAÇÃO NO APK
+
+### 7.1 Pseudocódigo de Aplicação do Bloqueio
+
+```kotlin
+fun applyProgressiveBlock(payload: ProgressiveBlockPayload) {
+    val dpm = getDevicePolicyManager()
+    val adminComponent = getAdminComponent()
+    
+    // 1. Obter lista de todos os apps instalados
+    val allInstalledPackages = packageManager.getInstalledApplications(0)
+        .map { it.packageName }
+    
+    // 2. Criar lista de apps a bloquear
+    val packagesToBlock = mutableSetOf<String>()
+    
+    // 2.1 Adicionar packages explícitos do backend
+    packagesToBlock.addAll(payload.blockedPackages)
+    
+    // 2.2 Para cada flag blockAll ativa, detectar e adicionar apps da categoria
+    if (payload.blockAllFlags.blockAllBrowsers) {
+        packagesToBlock.addAll(detectBrowserApps(allInstalledPackages))
+    }
+    if (payload.blockAllFlags.blockAllGames) {
+        packagesToBlock.addAll(detectGameApps(allInstalledPackages))
+    }
+    if (payload.blockAllFlags.blockAllCamera) {
+        packagesToBlock.addAll(detectCameraApps(allInstalledPackages))
+    }
+    // ... (repetir para todas as flags)
+    
+    // 2.3 Para non_essential_apps, bloquear TUDO exceto essenciais
+    if (payload.blockAllFlags.blockAllNonEssentialApps) {
+        packagesToBlock.addAll(allInstalledPackages)
+    }
+    
+    // 3. REMOVER apps essenciais (NUNCA bloquear)
+    val finalBlockList = packagesToBlock.filter { packageName ->
+        !payload.alwaysAllowedPackages.contains(packageName) &&
+        !isSystemCriticalApp(packageName)
+    }
+    
+    // 4. Aplicar bloqueio
+    for (packageName in finalBlockList) {
+        try {
+            // Usar setPackagesSuspended (Android 7+) ou setApplicationHidden
+            val success = dpm.setPackagesSuspended(
+                adminComponent,
+                arrayOf(packageName),
+                true  // suspended = true
+            )
+            Log.d(TAG, "Bloqueando $packageName: $success")
+        } catch (e: Exception) {
+            Log.e(TAG, "Erro ao bloquear $packageName: ${e.message}")
+        }
+    }
+    
+    // 5. Salvar nível atual
+    saveCurrentBlockLevel(payload.level)
+    
+    // 6. Logar resultado
+    Log.i(TAG, "✅ ${finalBlockList.size} apps bloqueados para nível ${payload.level}")
+}
+```
+
+### 7.2 Detecção de Apps por Categoria
+
+```kotlin
+fun detectBrowserApps(installedPackages: List<String>): List<String> {
+    val browserPatterns = listOf(
+        "browser",
+        "chrome",
+        "firefox",
+        "opera",
+        "edge",
+        "brave",
+        "duckduckgo",
+        "safari",
+        "webview"
+    )
+    
+    return installedPackages.filter { pkg ->
+        // Verificar se tem intent para abrir URLs
+        val intent = Intent(Intent.ACTION_VIEW, Uri.parse("http://example.com"))
+        val resolveInfos = packageManager.queryIntentActivities(intent, 0)
+        val canOpenUrls = resolveInfos.any { it.activityInfo.packageName == pkg }
+        
+        // Ou verificar pelo nome do package
+        val matchesPattern = browserPatterns.any { pattern ->
+            pkg.lowercase().contains(pattern)
+        }
+        
+        canOpenUrls || matchesPattern
+    }
+}
+
+fun detectGameApps(installedPackages: List<String>): List<String> {
+    return installedPackages.filter { pkg ->
+        try {
+            val appInfo = packageManager.getApplicationInfo(pkg, 0)
+            // Verificar categoria do app (Android 8+)
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                appInfo.category == ApplicationInfo.CATEGORY_GAME
+            } else {
+                // Fallback: verificar por padrões de nome
+                val gamePatterns = listOf("game", "play", "arcade", "puzzle", "rpg")
+                gamePatterns.any { pkg.lowercase().contains(it) }
+            }
+        } catch (e: Exception) {
+            false
+        }
+    }
+}
+
+fun detectCameraApps(installedPackages: List<String>): List<String> {
+    return installedPackages.filter { pkg ->
+        val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+        val resolveInfos = packageManager.queryIntentActivities(intent, 0)
+        resolveInfos.any { it.activityInfo.packageName == pkg }
+    }
+}
+```
+
+### 7.3 Verificação de Apps Críticos do Sistema
+
+```kotlin
+fun isSystemCriticalApp(packageName: String): Boolean {
+    // Apps críticos do sistema que NUNCA devem ser bloqueados
+    val systemCritical = listOf(
+        "com.android.systemui",
+        "com.android.settings",
+        "com.android.launcher",
+        "com.android.launcher3",
+        "com.android.inputmethod",
+        "com.google.android.inputmethod",
+        "com.android.providers",
+        "com.android.shell",
+        "com.android.packageinstaller",
+        "com.google.android.permissioncontroller"
+    )
+    
+    return systemCritical.any { packageName.startsWith(it) } ||
+           packageName == "com.cdccreditsmart.app"  // Nosso próprio app
+}
+```
+
+---
+
+## 8. BUGS CRÍTICOS ATUAIS E CORREÇÕES
+
+### 8.1 Bug #1: Zero Apps Sendo Bloqueados
+
+**Evidência nos Logs:**
+```
+✅ Todos os 0 apps bloqueados!
+Apps bloqueados: 0
+```
+
+**Causa:** O comando `setPackagesSuspended()` nunca está sendo chamado.
+
+**Correção:**
+```kotlin
+// ERRADO - O loop está vazio
+for (pkg in packagesToBlock) {
+    // Código nunca executa
+}
+
+// CORRETO - Garantir que o loop execute
+val packagesToBlock = payload.blockedPackages.toMutableList()
+Log.d(TAG, "Packages para bloquear: ${packagesToBlock.size}")
+
+for (pkg in packagesToBlock) {
+    val success = dpm.setPackagesSuspended(admin, arrayOf(pkg), true)
+    Log.d(TAG, "setPackagesSuspended($pkg) = $success")
+}
+```
+
+### 8.2 Bug #2: Filtro Limitando a Nível 3
+
+**Evidência nos Logs:**
+```
+📂 Categorias extraídas: 7, filtradas para nível: 3
+Categorias: [SOCIAL_MEDIA, SHOPPING, BROWSERS]
+```
+
+**Causa:** Existe um `cap` ou limite no código que limita categorias.
+
+**Correção:**
+```kotlin
+// ERRADO - Limitando categorias
+fun filterCategoriesForLevel(categories: List<String>, level: Int): List<String> {
+    val maxLevel = min(level, 3)  // ❌ BUG: Limitando a 3
+    return categories.filter { getCategoryLevel(it) <= maxLevel }
+}
+
+// CORRETO - Aceitar todas as categorias do payload
+fun getCategoriesToBlock(payload: ProgressiveBlockPayload): List<String> {
+    // Usar diretamente o que o backend enviou
+    return payload.blockCategories
+}
+```
+
+### 8.3 Bug #3: Modo Legacy Ativo
+
+**Evidência nos Logs:**
+```
+📋 Formato detectado: Legacy (rules/categories)
+📦 MODO LEGACY: Usando extractCategoriesFromRules...
+```
+
+**Correção:**
+```kotlin
+// ERRADO - Usando modo legacy
+fun processBlockCommand(command: JsonObject) {
+    if (command.has("rules")) {
+        processLegacyRules(command)  // ❌ Modo antigo
+    }
+}
+
+// CORRETO - Usar novo formato
+fun processBlockCommand(command: JsonObject) {
+    val payload = command.getAsJsonObject("payload")
+    
+    // Verificar se tem o novo formato
+    if (payload.has("blockedPackages") || payload.has("blockAllFlags")) {
+        processNewFormat(payload)  // ✅ Novo formato
+    } else {
+        // Fallback legacy apenas se necessário
+        processLegacyFormat(command)
+    }
+}
+
+fun processNewFormat(payload: JsonObject) {
+    val blockedPackages = payload.getAsJsonArray("blockedPackages")
+        .map { it.asString }
+    
+    val blockAllFlags = payload.getAsJsonObject("blockAllFlags")
+    val alwaysAllowed = payload.getAsJsonArray("alwaysAllowedPackages")
+        .map { it.asString }
+    
+    // Aplicar bloqueio diretamente
+    applyBlockingWithNewFormat(blockedPackages, blockAllFlags, alwaysAllowed)
+}
+```
+
+### 8.4 Bug #4: LegalWhitelist com False Positives
+
+**Evidência nos Logs:**
+```
+⚖️ App financeiro protegido: com.android.internal.display.cutout.emulation.corner
+⚖️ App financeiro protegido: com.android.systemui.emulation.pixel_3_xl
+```
+
+**Causa:** Regex muito ampla matchando "pixel" ou "emulation" como apps financeiros.
+
+**Correção:**
+```kotlin
+// ERRADO - Heurísticas que causam false positives
+fun isFinancialApp(packageName: String): Boolean {
+    val patterns = listOf("bank", "pay", "financial", "wallet", "pix")
+    return patterns.any { packageName.contains(it) }  // ❌ Muito amplo
+}
+
+// CORRETO - Usar lista explícita do backend
+fun isProtectedApp(packageName: String, alwaysAllowed: List<String>): Boolean {
+    return alwaysAllowed.contains(packageName)  // ✅ Lista exata
+}
+```
+
+### 8.5 Bug #5: Mapeamento de Categorias Incorreto
+
+**Problema:** APK usa nomes diferentes das categorias do backend.
+
+| APK (Incorreto) | Backend (Correto) |
+|-----------------|-------------------|
+| GAMING | games |
+| ENTERTAINMENT | youtube_tiktok |
+| CAMERAS | camera |
+| PRODUCTIVITY | file_manager |
+
+**Correção:**
+```kotlin
+// ERRADO - Enums internos diferentes
+enum class BlockCategory {
+    GAMING,           // ❌ Backend usa "games"
+    ENTERTAINMENT,    // ❌ Backend usa "youtube_tiktok"
+    CAMERAS,          // ❌ Backend usa "camera"
+    PRODUCTIVITY      // ❌ Backend usa "file_manager"
+}
+
+// CORRETO - Usar strings exatas do backend
+val BACKEND_CATEGORIES = listOf(
+    "camera",
+    "gallery_photos",
+    "file_manager",
+    "video_players",
+    "browsers",
+    "youtube_tiktok",
+    "social_media",
+    "shopping",
+    "games",
+    "music",
+    "play_store",
+    "other_app_stores",
+    "non_essential_apps"
+)
+```
+
+---
+
+## 9. FLUXO DE EXECUÇÃO ESPERADO
+
+### 9.1 Fluxo Correto de Bloqueio
+
+```
+1. Backend envia comando PROGRESSIVE_BLOCK via WebSocket
+   ↓
+2. APK recebe payload com level=6
+   ↓
+3. APK extrai blockedPackages do payload (lista de ~200 packages)
+   ↓
+4. APK extrai alwaysAllowedPackages do payload
+   ↓
+5. Para cada flag blockAllX=true:
+   - Detectar apps adicionais dessa categoria no dispositivo
+   - Adicionar à lista de packages a bloquear
+   ↓
+6. Filtrar: remover alwaysAllowedPackages da lista
+   ↓
+7. Para CADA package na lista final:
+   - Chamar dpm.setPackagesSuspended(admin, [package], true)
+   - Logar resultado
+   ↓
+8. Salvar currentBlockLevel = 6 no SharedPreferences
+   ↓
+9. No próximo heartbeat, reportar currentBlockLevel = 6
+   ↓
+10. Backend responde com complianceStatus = "COMPLIANT"
+```
+
+### 9.2 Diagrama de Sequência
+
+```
+┌─────────┐          ┌─────────┐          ┌─────────────────┐
+│ Backend │          │   APK   │          │ Android System  │
+└────┬────┘          └────┬────┘          └────────┬────────┘
+     │                    │                        │
+     │ PROGRESSIVE_BLOCK  │                        │
+     │ level=6            │                        │
+     │───────────────────>│                        │
+     │                    │                        │
+     │                    │ setPackagesSuspended() │
+     │                    │───────────────────────>│
+     │                    │                        │
+     │                    │      success=true      │
+     │                    │<───────────────────────│
+     │                    │                        │
+     │                    │ (repeat for each pkg)  │
+     │                    │───────────────────────>│
+     │                    │                        │
+     │    Heartbeat       │                        │
+     │  currentLevel=6    │                        │
+     │<───────────────────│                        │
+     │                    │                        │
+     │   COMPLIANT        │                        │
+     │───────────────────>│                        │
+     │                    │                        │
+```
+
+---
+
+## 10. LOGS E TELEMETRIA
+
+### 10.1 Logs Obrigatórios
+
+O APK DEVE logar as seguintes informações:
+
+```kotlin
+// Ao receber comando
+Log.i(TAG, "📥 PROGRESSIVE_BLOCK recebido: level=${payload.level}")
+Log.d(TAG, "   blockedPackages: ${payload.blockedPackages.size}")
+Log.d(TAG, "   alwaysAllowedPackages: ${payload.alwaysAllowedPackages.size}")
+Log.d(TAG, "   blockAllFlags: ${payload.blockAllFlags}")
+
+// Durante processamento
+Log.d(TAG, "📋 Packages instalados: $installedCount")
+Log.d(TAG, "📋 Packages para bloquear: ${packagesToBlock.size}")
+Log.d(TAG, "📋 Packages protegidos (não bloqueados): ${protectedCount}")
+
+// Para cada bloqueio
+Log.d(TAG, "🔒 setPackagesSuspended($packageName) = $success")
+
+// Resultado final
+Log.i(TAG, "✅ Bloqueio aplicado: ${blockedCount}/${totalAttempted} apps bloqueados")
+Log.i(TAG, "   Nível atual: $currentLevel")
+
+// Erro
+Log.e(TAG, "❌ Erro ao bloquear $packageName: ${exception.message}")
+```
+
+### 10.2 Telemetria para Compliance
+
+```kotlin
+data class ComplianceTelemetry(
+    val deviceId: String,
+    val timestamp: Long,
+    val expectedLevel: Int,
+    val currentLevel: Int,
+    val blockedPackagesCount: Int,
+    val failedBlocksCount: Int,
+    val protectedPackagesCount: Int,
+    val correctionAttempt: Int
+)
+```
+
+---
+
+## 11. TESTES E VALIDAÇÃO
+
+### 11.1 Checklist de Validação
+
+- [ ] **Chrome bloqueado no nível 2+**
+  - `adb shell pm list packages -d | grep chrome` deve mostrar chrome
+  
+- [ ] **WhatsApp NUNCA bloqueado**
+  - `adb shell pm list packages -e | grep whatsapp` deve mostrar whatsapp
+  
+- [ ] **Heartbeat reporta nível correto**
+  - Após bloquear, heartbeat deve reportar `currentBlockLevel: 6`
+  
+- [ ] **Jogos bloqueados no nível 4+**
+  - Free Fire, PUBG, Candy Crush devem estar bloqueados
+  
+- [ ] **Play Store bloqueada no nível 5+**
+  - `com.android.vending` deve estar bloqueado
+
+### 11.2 Comandos ADB para Teste
+
+```bash
+# Verificar apps bloqueados (suspended)
+adb shell pm list packages -d
+
+# Verificar apps habilitados
+adb shell pm list packages -e
+
+# Verificar estado específico do Chrome
+adb shell pm dump com.android.chrome | grep -i suspend
+
+# Verificar se é Device Owner
+adb shell dpm list-owners
+
+# Forçar teste de bloqueio
+adb shell am broadcast -a com.cdccreditsmart.app.TEST_BLOCK --ei level 6
+```
+
+### 11.3 Teste Manual
+
+1. Acessar dispositivo com pagamento atrasado (18+ dias)
+2. Verificar que Chrome não abre (deve mostrar overlay de explicação)
+3. Verificar que WhatsApp abre normalmente
+4. Verificar que apps bancários abrem normalmente
+5. Verificar que Uber/iFood abrem normalmente
+6. Verificar logs do APK mostram "X apps bloqueados" com X > 50
+
+---
+
+## RESUMO DAS CORREÇÕES PRIORITÁRIAS
+
+### PRIORIDADE 1 (CRÍTICO):
+1. ✅ Usar `blockedPackages` diretamente do payload
+2. ✅ Remover filtro que limita a nível 3
+3. ✅ Garantir execução de `setPackagesSuspended()`
+
+### PRIORIDADE 2 (ALTO):
+4. ✅ Usar `alwaysAllowedPackages` do backend (não heurísticas)
+5. ✅ Implementar todas as flags `blockAllX`
+6. ✅ Sair do modo legacy
+
+### PRIORIDADE 3 (MÉDIO):
+7. ✅ Mapear categorias corretamente (lowercase com underscore)
+8. ✅ Reportar `currentBlockLevel` correto no heartbeat
+9. ✅ Logar cada operação de bloqueio
+
+---
+
+---
+
+## APÊNDICE A: CERTIFICATE PINNING
+
+### A.1 Endpoint para Obter Pins
+```
+GET /api/security/certificate-pins?domain=picard.replit.dev
+```
+
+### A.2 Certificate Pins Atuais
+
+| Pin Type | Domain | SHA-256 Hash | Uso |
+|----------|--------|--------------|-----|
+| **Public Key** | picard.replit.dev | `sha256/uXg7/pNSCW9ERQ62M3wEjVtPMiEvUC2b+mn6eFuTqiM=` | Pin primário do servidor |
+| **Issuer (Backup)** | *.replit.dev | `sha256/jQJTbIh0grw0/1TkHSumWb+Fs0Ggogr621gT3PvPKG0=` | Let's Encrypt R3 CA |
+| **Issuer (Backup)** | *.replit.app | `sha256/jQJTbIh0grw0/1TkHSumWb+Fs0Ggogr621gT3PvPKG0=` | Let's Encrypt R3 CA |
+
+### A.3 Implementação no APK (OkHttp)
+
+```kotlin
+val certificatePinner = CertificatePinner.Builder()
+    // Pin primário - Public Key do servidor
+    .add("picard.replit.dev", "sha256/uXg7/pNSCW9ERQ62M3wEjVtPMiEvUC2b+mn6eFuTqiM=")
+    // Backup - Let's Encrypt R3 Intermediate CA
+    .add("picard.replit.dev", "sha256/jQJTbIh0grw0/1TkHSumWb+Fs0Ggogr621gT3PvPKG0=")
+    .build()
+
+val okHttpClient = OkHttpClient.Builder()
+    .certificatePinner(certificatePinner)
+    .build()
+```
+
+### A.4 Importante sobre Renovação
+
+Os certificados Let's Encrypt renovam **a cada 90 dias**. O APK deve:
+
+1. **Usar AMBOS os pins** (primário + backup CA) para evitar problemas na renovação
+2. **Fazer pinning do Issuer CA** como backup, pois ele é mais estável
+3. **Ter mecanismo de atualização** de pins via endpoint `/api/security/certificate-pins`
+
+### A.5 Exemplo de Resposta do Endpoint
+
+```json
+{
+  "pins": [
+    {
+      "domain": "picard.replit.dev",
+      "pinType": "public_key",
+      "pinValue": "sha256/uXg7/pNSCW9ERQ62M3wEjVtPMiEvUC2b+mn6eFuTqiM=",
+      "algorithm": "SHA-256",
+      "isBackup": false,
+      "validUntil": "2026-01-29T00:00:00Z"
+    },
+    {
+      "domain": "*.replit.dev",
+      "pinType": "issuer",
+      "pinValue": "sha256/jQJTbIh0grw0/1TkHSumWb+Fs0Ggogr621gT3PvPKG0=",
+      "algorithm": "SHA-256",
+      "isBackup": true,
+      "validUntil": "2030-09-01T00:00:00Z"
+    }
+  ],
+  "totalPins": 2
+}
+```
+
+---
+
+**Documentação mantida por:** Time Backend CDC Credit Smart  
+**Última atualização:** 09/12/2024  
+**Versão:** 2.1
