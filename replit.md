@@ -89,3 +89,5 @@ The UI leverages Jetpack Compose and Material 3, incorporating a CDC institution
 - bringAppToForeground() replaced with showSettingsBlockedScreen() to avoid heavy sync operations
 - BlockedAppExplanationActivity now shows "Acesso Restrito" when Settings is blocked
 - These changes prevent "Settings isn't responding" system crash caused by sync during block
+- All intercept functions (triggerInterceptFromExternal, forceInterceptCritical) now use lightweight overlay
+- Overlay click handler also uses lightweight screen instead of MainActivity

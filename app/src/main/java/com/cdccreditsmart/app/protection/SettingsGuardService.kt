@@ -2733,7 +2733,7 @@ class SettingsGuardService(private val context: Context) {
         Log.w(TAG, "🚨 INTERCEPT TRIGGERED: $reason")
         
         mainHandler.post {
-            bringAppToForeground()
+            showSettingsBlockedScreen(reason)
         }
     }
     
@@ -2756,7 +2756,7 @@ class SettingsGuardService(private val context: Context) {
         Log.e(TAG, "🚨🚨 Ignorando flag de permissões - esta ação é crítica!")
         
         mainHandler.post {
-            bringAppToForeground()
+            showSettingsBlockedScreen(reason)
         }
     }
     
@@ -2956,7 +2956,7 @@ class SettingsGuardService(private val context: Context) {
         
         layout.setOnClickListener {
             hideOverlay()
-            bringAppToForeground()
+            showSettingsBlockedScreen("overlay_click")
         }
         
         return layout
