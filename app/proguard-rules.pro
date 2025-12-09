@@ -222,6 +222,14 @@
     <init>(...);
 }
 
+# ===== OFFLINE PACKAGE - LocalAccountState, DebtAgingCalculator, etc =====
+-keep class com.cdccreditsmart.app.offline.** { *; }
+-keepclassmembers class com.cdccreditsmart.app.offline.** {
+    public *;
+    private *;
+    <init>(...);
+}
+
 # ===== PERSISTENCE PACKAGE =====
 -keep class com.cdccreditsmart.app.persistence.** { *; }
 -keepclassmembers class com.cdccreditsmart.app.persistence.** {

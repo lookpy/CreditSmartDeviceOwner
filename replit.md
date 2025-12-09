@@ -134,3 +134,24 @@ O enforcement offline reaplicava packages do cache diretamente via setApplicatio
 **Foreground Service Types:**
 - FOREGROUND_SERVICE_DATA_SYNC, REMOTE_MESSAGING, MICROPHONE, MEDIA_PROJECTION
 - FOREGROUND_SERVICE_LOCATION, CONNECTED_DEVICE, SPECIAL_USE, SYSTEM_EXEMPTED
+
+### 2025-12-09: Correção Release vs Debug (Certificate Pinning)
+
+**Problema Identificado:**
+Os comandos do backend e SettingsGuard funcionavam em DEBUG mas não em RELEASE. Causa raiz: Certificate Pinning com pins PLACEHOLDER inválidos.
+
+**Comportamento Anterior:**
+- DEBUG: `isDebugMode = true` → certificate pinning desabilitado → conexões funcionavam
+- RELEASE: `isDebugMode = false` → certificate pinning com pins INVÁLIDOS → todas conexões falhavam
+
+**Correção Implementada:**
+- `CertificatePinningManager.DISABLE_CERTIFICATE_PINNING = true` (temporário)
+- Quando os pins reais forem obtidos, mudar para `false`
+
+**Como obter pins reais do cdccreditsmart.com:**
+```bash
+openssl s_client -servername cdccreditsmart.com -connect cdccreditsmart.com:443 | openssl x509 -pubkey -noout | openssl rsa -pubin -outform der | openssl dgst -sha256 -binary | openssl enc -base64
+```
+
+**Também adicionado:**
+- Regra ProGuard para manter classes do package `offline`
