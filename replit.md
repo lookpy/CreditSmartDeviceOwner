@@ -104,3 +104,11 @@ The UI leverages Jetpack Compose and Material 3, incorporating a CDC institution
 - **NEW**: UsageStats query window reduced from 2s to 1s
 - Guard loop logging reduced from every 100 to every 500 iterations
 - Dashboard cache: 15 minutes validity to prevent excessive synchronization
+
+### Crash Fixes (2025-12-09)
+- **CRITICAL FIX**: Removed SystemUI from suspension - was causing black screen crash
+- showSettingsBlockedScreen() now opens overlay IMMEDIATELY without forceCloseSettings()
+- Fixed race conditions in cache access using local variables instead of !!
+- SimpleHomeViewModel response.body() now uses safe null check
+- BlockedAppExplanationActivity has try-catch fallback for calculateOverdueStatus()
+- **PROTECTION**: Permission screens now blocked to prevent breaking app functionality

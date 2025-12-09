@@ -756,54 +756,36 @@ class SettingsGuardService(private val context: Context) {
     /**
      * Mostra tela de bloqueio LEVE para Settings perigoso
      * 
-     * DIFERENÇA do bringAppToForeground():
-     * - bringAppToForeground() abre MainActivity que faz sincronização pesada
-     * - showSettingsBlockedScreen() abre BlockedAppExplanationActivity que é leve
-     * 
-     * Isso evita travamentos causados por sync enquanto bloqueia Settings.
+     * IMPORTANTE: Não usa forceCloseSettings() pois pode causar tela preta
+     * ao suspender SystemUI. Apenas abre a tela de bloqueio por cima.
      */
     private fun showSettingsBlockedScreen(reason: String) {
         try {
-            // Primeiro, fechar o Settings se possível (Device Owner)
-            forceCloseSettings()
+            // Abrir BlockedAppExplanationActivity IMEDIATAMENTE por cima do Settings
+            // NÃO usar forceCloseSettings() - causa tela preta ao suspender SystemUI
+            val intent = Intent(context, BlockedAppExplanationActivity::class.java).apply {
+                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY)
+                putExtra("blocked_package", "com.android.settings")
+                putExtra("is_settings_blocked", true)
+                putExtra("block_reason", reason)
+                putExtra("blocking_level", 0)
+                putExtra("days_overdue", 0)
+            }
+            context.startActivity(intent)
             
-            // Ir para Home (garante que Settings seja minimizado)
-            mainHandler.postDelayed({
-                goToHomeFirst()
-            }, 100)
-            
-            // Abrir BlockedAppExplanationActivity com mensagem específica para Settings
-            mainHandler.postDelayed({
-                try {
-                    val intent = Intent(context, BlockedAppExplanationActivity::class.java).apply {
-                        addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                        addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-                        addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY)
-                        putExtra("blocked_package", "com.android.settings")
-                        putExtra("is_settings_blocked", true)
-                        putExtra("block_reason", reason)
-                        putExtra("blocking_level", 0)
-                        putExtra("days_overdue", 0)
-                    }
-                    context.startActivity(intent)
-                    Log.i(TAG, "✅ Tela de bloqueio LEVE exibida (Settings bloqueado)")
-                } catch (e: Exception) {
-                    Log.e(TAG, "❌ Erro ao mostrar tela de bloqueio de Settings", e)
-                    // Fallback: abrir MainActivity se a tela leve falhar
-                    try {
-                        val fallbackIntent = Intent(context, MainActivity::class.java).apply {
-                            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                            addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-                        }
-                        context.startActivity(fallbackIntent)
-                    } catch (e2: Exception) {
-                        Log.e(TAG, "❌ Fallback também falhou", e2)
-                    }
-                }
-            }, 300)
-            
+            if (BuildConfig.DEBUG) {
+                Log.i(TAG, "✅ Tela de bloqueio exibida (Settings)")
+            }
         } catch (e: Exception) {
-            Log.e(TAG, "❌ Erro ao bloquear Settings", e)
+            Log.e(TAG, "❌ Erro ao mostrar tela de bloqueio de Settings", e)
+            // Fallback: ir para Home
+            try {
+                goToHomeFirst()
+            } catch (e2: Exception) {
+                Log.e(TAG, "❌ Fallback também falhou", e2)
+            }
         }
     }
     
@@ -2392,6 +2374,35 @@ class SettingsGuardService(private val context: Context) {
         }
         
         // ═══════════════════════════════════════════════════════════════════════════════
+        // PROTEÇÃO CRÍTICA: Bloquear acesso às PERMISSÕES DO NOSSO APP
+        // Se o usuário remover qualquer permissão do Credit Smart, o app quebra!
+        // Detectamos quando estão na tela de permissões com nosso pacote como alvo.
+        // ═══════════════════════════════════════════════════════════════════════════════
+        if (activityName != null) {
+            val permissionActivities = listOf(
+                "AppPermissionsFragment",
+                "AppPermissionsActivity", 
+                "ManagePermissionsActivity",
+                "AllAppPermissionsActivity",
+                "PermissionAppsActivity",
+                "AppPermissionFragment",
+                "AppPermissionActivity",
+                "PermissionUsageFragment",
+                "PermissionUsageActivity"
+            )
+            val isPermissionScreen = permissionActivities.any { perm ->
+                activityName.contains(perm, ignoreCase = true)
+            }
+            
+            if (isPermissionScreen) {
+                Log.w(TAG, "🚨 BLOQUEIO CRÍTICO: Tela de permissões detectada!")
+                Log.w(TAG, "   Activity: $activityName")
+                Log.w(TAG, "   Removendo permissões quebra o sistema - BLOQUEANDO!")
+                return SettingsCheckResult.DANGEROUS_IMMEDIATE
+            }
+        }
+        
+        // ═══════════════════════════════════════════════════════════════════════════════
         // EXCEÇÃO: Google Safety Center (Android 13+) - Central de Segurança do Google
         // O pacote com.google.android.permissioncontroller é normalmente perigoso,
         // MAS SafetyCenterActivity é a tela de Segurança/Privacidade que o cliente
@@ -2782,50 +2793,39 @@ class SettingsGuardService(private val context: Context) {
     
     /**
      * Força o fechamento do app de Settings usando suspensão temporária (Device Owner)
-     * Isso fecha todas as Activities do Settings imediatamente
+     * 
+     * ATENÇÃO: Esta função NÃO deve suspender SystemUI pois causa tela preta!
+     * Apenas Settings pode ser suspenso temporariamente.
      */
     private fun forceCloseSettings() {
         try {
             val dpm = context.getSystemService(Context.DEVICE_POLICY_SERVICE) as? DevicePolicyManager
             val adminComponent = ComponentName(context, CDCDeviceAdminReceiver::class.java)
             
-            // Verifica se é Device Owner
             if (dpm?.isDeviceOwnerApp(context.packageName) == true) {
-                Log.d(TAG, "🔒 Device Owner: Forçando fechamento do Settings...")
+                // IMPORTANTE: NÃO suspender SystemUI - causa tela preta!
+                val settingsPackages = arrayOf("com.android.settings")
                 
-                val settingsPackages = arrayOf(
-                    "com.android.settings",
-                    "com.android.systemui"  // Pode ser necessário em alguns casos
-                )
-                
-                // Suspende temporariamente o Settings (força fechamento de todas Activities)
                 try {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                         dpm.setPackagesSuspended(adminComponent, settingsPackages, true)
-                        Log.d(TAG, "⏸️ Settings suspenso temporariamente")
                         
-                        // Resume imediatamente após um pequeno delay (apenas para forçar fechamento)
                         mainHandler.postDelayed({
                             try {
                                 dpm.setPackagesSuspended(adminComponent, settingsPackages, false)
-                                Log.d(TAG, "▶️ Settings restaurado")
                             } catch (e: Exception) {
-                                Log.e(TAG, "❌ Erro ao restaurar Settings: ${e.message}")
+                                Log.e(TAG, "Erro ao restaurar Settings: ${e.message}")
                             }
-                        }, 50)
+                        }, 100)
                     }
                 } catch (e: SecurityException) {
-                    Log.w(TAG, "⚠️ Não é possível suspender Settings: ${e.message}")
-                    // Fallback: tenta matar processo em background
                     killSettingsProcess()
                 }
             } else {
-                Log.d(TAG, "📱 Não é Device Owner - usando método alternativo")
-                // Fallback para não-Device Owner: tenta matar processo
                 killSettingsProcess()
             }
         } catch (e: Exception) {
-            Log.e(TAG, "❌ Erro ao forçar fechamento do Settings: ${e.message}")
+            Log.e(TAG, "Erro ao forçar fechamento do Settings: ${e.message}")
         }
     }
     
