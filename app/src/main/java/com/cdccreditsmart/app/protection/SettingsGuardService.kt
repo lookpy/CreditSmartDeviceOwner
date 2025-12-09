@@ -317,6 +317,8 @@ class SettingsGuardService(private val context: Context) {
     fun stopGuard() {
         Log.i(TAG, "🛑 Parando SettingsGuard...")
         isGuardActive = false
+        isInAggressiveMode = false
+        settingsOpenCount = 0
         guardScope.cancel()
         hideOverlay()
         recentlyInterceptedBlockedApps.clear()
@@ -2598,15 +2600,6 @@ class SettingsGuardService(private val context: Context) {
         
         return settingsPackages.any { packageName.equals(it, ignoreCase = true) } ||
                settingsKeywords.any { packageName.contains(it, ignoreCase = true) }
-    }
-    
-    fun stopGuard() {
-        isGuardActive = false
-        isInAggressiveMode = false
-        settingsOpenCount = 0
-        guardScope.cancel()
-        hideOverlay()
-        Log.i(TAG, "🛑 SettingsGuard PARADO")
     }
     
     fun triggerInterceptFromExternal(reason: String) {
