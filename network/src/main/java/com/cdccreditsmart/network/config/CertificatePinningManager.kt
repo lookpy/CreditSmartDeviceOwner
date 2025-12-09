@@ -21,9 +21,7 @@ class CertificatePinningManager /* @Inject */ constructor() {
         
         // Debug flag to disable certificate pinning for testing
         // Set to true to temporarily disable certificate pinning
-        // IMPORTANTE: Desabilitado temporariamente porque os pins em NetworkConfig são PLACEHOLDERS
-        // Quando os pins reais forem configurados, mudar para false
-        var DISABLE_CERTIFICATE_PINNING = true
+        var DISABLE_CERTIFICATE_PINNING = false
     }
     
     /**

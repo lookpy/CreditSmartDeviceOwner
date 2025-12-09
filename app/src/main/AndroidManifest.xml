@@ -57,25 +57,36 @@
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE_REMOTE_MESSAGING" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE_MICROPHONE" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE_MEDIA_PROJECTION" />
-    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_LOCATION" />
-    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_CONNECTED_DEVICE" />
-    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_SPECIAL_USE" />
 
     <!-- Biometry permissions -->
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     
-    <!-- WiFi and network permissions (essential for MDM) -->
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
-    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
+    <!-- Phone & SMS permissions -->
+    <uses-permission android:name="android.permission.READ_CALL_LOG" />
+    <uses-permission android:name="android.permission.CALL_PHONE" />
+    <!-- REMOVIDO: RECEIVE_SMS e READ_SMS (substituído por SMS Retriever API - sem permissão!)
+         Google Play Protect bloqueia apps com essas permissões quando distribuídos fora da Play Store.
+         Solução: SMS Retriever API (SmsRetrieverHelper.kt) - requer apenas 1 tap do usuário.
+    <uses-permission android:name="android.permission.RECEIVE_SMS" />
+    <uses-permission android:name="android.permission.READ_SMS" />
+    -->
+    <uses-permission android:name="android.permission.ANSWER_PHONE_CALLS" />
+    <uses-permission android:name="android.permission.READ_PHONE_NUMBERS" />
+    
+    <!-- Contacts permission -->
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
+    
+    <!-- Storage permissions (for older Android versions) -->
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"
+        android:maxSdkVersion="32" />
     
     <!-- Vibration -->
     <uses-permission android:name="android.permission.VIBRATE" />
     
-    <!-- Camera hardware features (optional - not required for core MDM) -->
-    <uses-feature android:name="android.hardware.camera" android:required="false" />
-    <uses-feature android:name="android.hardware.camera.front" android:required="false" />
+    <!-- Camera hardware features -->
+    <uses-feature android:name="android.hardware.camera" android:required="true" />
+    <uses-feature android:name="android.hardware.camera.front" android:required="true" />
 
     <!-- Firebase Messaging -->
     <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
@@ -105,11 +116,30 @@
         tools:ignore="ProtectedPermissions" />
     -->
     
-    <!-- Android 14/15: Device Policy Management Permissions (apenas as essenciais) -->
+    <!-- Android 14/15: Device Policy Management Permissions (CRITICAL for provisioning) -->
+    <uses-permission android:name="android.permission.MANAGE_DEVICE_POLICY_CERTIFICATES"/>
+    <uses-permission android:name="android.permission.MANAGE_DEVICE_POLICY_SYSTEM_UPDATE_INFO"/>
+    <uses-permission android:name="android.permission.MANAGE_DEVICE_POLICY_ACCOUNT_MANAGEMENT"/>
     <uses-permission android:name="android.permission.MANAGE_DEVICE_POLICY_APPS_CONTROL"/>
-    <uses-permission android:name="android.permission.MANAGE_DEVICE_POLICY_LOCATION"/>
-    <uses-permission android:name="android.permission.MANAGE_DEVICE_POLICY_PACKAGE_STATE"/>
+    <uses-permission android:name="android.permission.MANAGE_DEVICE_POLICY_DISPLAY"/>
     <uses-permission android:name="android.permission.MANAGE_DEVICE_POLICY_INSTALL_UNKNOWN_SOURCES"/>
+    <uses-permission android:name="android.permission.MANAGE_DEVICE_POLICY_AUTOFILL"/>
+    <uses-permission android:name="android.permission.MANAGE_DEVICE_POLICY_LOCALE"/>
+    <uses-permission android:name="android.permission.MANAGE_DEVICE_POLICY_LOCATION"/>
+    <uses-permission android:name="android.permission.MANAGE_DEVICE_POLICY_LOCK_CREDENTIALS"/>
+    <uses-permission android:name="android.permission.MANAGE_DEVICE_POLICY_MOBILE_NETWORK"/>
+    <uses-permission android:name="android.permission.MANAGE_DEVICE_POLICY_MODIFY_USERS"/>
+    <uses-permission android:name="android.permission.MANAGE_DEVICE_POLICY_PACKAGE_STATE"/>
+    <uses-permission android:name="android.permission.MANAGE_DEVICE_POLICY_RESTRICT_PRIVATE_DNS"/>
+    <uses-permission android:name="android.permission.MANAGE_DEVICE_POLICY_CAMERA_TOGGLE"/>
+    <uses-permission android:name="android.permission.MANAGE_DEVICE_POLICY_SAFE_BOOT"/>
+    <uses-permission android:name="android.permission.MANAGE_DEVICE_POLICY_QUERY_SYSTEM_UPDATES"/>
+    <uses-permission android:name="android.permission.MANAGE_DEVICE_POLICY_SMS"/>
+    <uses-permission android:name="android.permission.MANAGE_DEVICE_POLICY_TIME"/>
+    <uses-permission android:name="android.permission.MANAGE_DEVICE_POLICY_VPN"/>
+    <uses-permission android:name="android.permission.MANAGE_DEVICE_POLICY_WALLPAPER"/>
+    <uses-permission android:name="android.permission.MANAGE_DEVICE_POLICY_WIFI"/>
+    <uses-permission android:name="android.permission.UPDATE_DEVICE_MANAGEMENT_RESOURCES"/>
     
     <!-- Android 14/15: Additional critical permissions -->
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE_SYSTEM_EXEMPTED"/>

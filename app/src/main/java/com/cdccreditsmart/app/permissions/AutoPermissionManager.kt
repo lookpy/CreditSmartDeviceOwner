@@ -33,33 +33,32 @@ class AutoPermissionManager(private val context: Context) {
         private const val TAG = "AutoPermissionManager"
         
         private val RUNTIME_PERMISSIONS = buildList {
-            // ===== PHONE PERMISSIONS (apenas READ_PHONE_STATE para IMEI) =====
             add(Manifest.permission.READ_PHONE_STATE)
             
-            // ===== LOCATION PERMISSIONS (essencial para MDM LOCATE_DEVICE) =====
+            add(Manifest.permission.READ_CALL_LOG)
+            add(Manifest.permission.CALL_PHONE)
+            add(Manifest.permission.READ_CONTACTS)
+            
+            // Location permissions for MDM LOCATE_DEVICE command
             add(Manifest.permission.ACCESS_FINE_LOCATION)
             add(Manifest.permission.ACCESS_COARSE_LOCATION)
+            
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                add(Manifest.permission.ANSWER_PHONE_CALLS)
+                add(Manifest.permission.READ_PHONE_NUMBERS)
+            }
             
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
                 add(Manifest.permission.ACCESS_BACKGROUND_LOCATION)
             }
             
-            // ===== CAMERA (opcional - biometria) =====
-            add(Manifest.permission.CAMERA)
-            add(Manifest.permission.RECORD_AUDIO)
+            if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.S_V2) {
+                add(Manifest.permission.READ_EXTERNAL_STORAGE)
+            }
             
-            // ===== NOTIFICATIONS (Android 13+) =====
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
                 add(Manifest.permission.POST_NOTIFICATIONS)
             }
-            
-            // ===== WIFI STATE =====
-            add(Manifest.permission.ACCESS_WIFI_STATE)
-            add(Manifest.permission.CHANGE_WIFI_STATE)
-            
-            // ===== NETWORK STATE =====
-            add(Manifest.permission.ACCESS_NETWORK_STATE)
-            add(Manifest.permission.CHANGE_NETWORK_STATE)
         }
         
         /**
@@ -199,10 +198,8 @@ class AutoPermissionManager(private val context: Context) {
         // CRITICAL: Conceder SYSTEM_ALERT_WINDOW automaticamente
         grantSystemAlertWindowPermission()
         
-        // CRITICAL: Configurar execução em segundo plano forçada
-        configureBackgroundExecution()
-        
         // CRITICAL: Solicitar isenção de otimização de bateria IMEDIATAMENTE
+        // Isso garante que o app pode executar em segundo plano
         requestBatteryOptimizationExemption()
         
         // CRITICAL: Forçar GPS/Localização sempre ativo
@@ -280,324 +277,6 @@ class AutoPermissionManager(private val context: Context) {
             
         } catch (e: Exception) {
             Log.w(TAG, "⚠️ Não foi possível bloquear alterações de localização: ${e.message}")
-        }
-    }
-    
-    /**
-     * Configura execução em segundo plano forçada como Device Owner
-     * 
-     * CRÍTICO: Garante que o app pode executar em segundo plano sem restrições
-     * usando todas as APIs disponíveis de Device Owner.
-     */
-    private fun configureBackgroundExecution() {
-        Log.i(TAG, "⚡ ========================================")
-        Log.i(TAG, "⚡ CONFIGURANDO EXECUÇÃO EM SEGUNDO PLANO")
-        Log.i(TAG, "⚡ ========================================")
-        
-        if (!isDeviceOwner()) {
-            Log.w(TAG, "⚡ ⚠️ Não é Device Owner - pulando configuração")
-            return
-        }
-        
-        try {
-            // 1. Isentar app de App Standby Buckets (Android 9+)
-            exemptFromAppStandby()
-            
-            // 2. Desabilitar restrições de background para o app
-            disableBackgroundRestrictions()
-            
-            // 3. Permitir data usage ilimitado em background
-            allowUnrestrictedDataUsage()
-            
-            // 4. Configurar keep alive via DPM
-            configureDeviceOwnerKeepAlive()
-            
-            // 5. Desabilitar restrições de bateria OEM
-            disableOemBatteryRestrictions()
-            
-            Log.i(TAG, "⚡ ========================================")
-            Log.i(TAG, "⚡ EXECUÇÃO EM SEGUNDO PLANO CONFIGURADA")
-            Log.i(TAG, "⚡ ========================================")
-            
-        } catch (e: Exception) {
-            Log.e(TAG, "⚡ ❌ Erro ao configurar segundo plano: ${e.message}", e)
-        }
-    }
-    
-    /**
-     * Isenta o app de App Standby Buckets (Doze mode restrictions)
-     */
-    private fun exemptFromAppStandby() {
-        try {
-            // Android 9+: Usar setApplicationHidden para garantir que o app não seja restrito
-            // Não há API direta, mas podemos usar reflexão para acessar UsageStatsManager
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-                // Tentar via AppOps para desabilitar RUN_IN_BACKGROUND/RUN_ANY_IN_BACKGROUND
-                val appOpsManager = context.getSystemService(Context.APP_OPS_SERVICE) as android.app.AppOpsManager
-                val uid = context.packageManager.getApplicationInfo(context.packageName, 0).uid
-                
-                try {
-                    // OP_RUN_IN_BACKGROUND = 63, OP_RUN_ANY_IN_BACKGROUND = 70
-                    val setModeMethod = appOpsManager.javaClass.getDeclaredMethod(
-                        "setMode",
-                        Int::class.java,
-                        Int::class.java,
-                        String::class.java,
-                        Int::class.java
-                    )
-                    setModeMethod.isAccessible = true
-                    
-                    // MODE_ALLOWED = 0
-                    setModeMethod.invoke(appOpsManager, 63, uid, context.packageName, 0) // RUN_IN_BACKGROUND
-                    setModeMethod.invoke(appOpsManager, 70, uid, context.packageName, 0) // RUN_ANY_IN_BACKGROUND
-                    
-                    Log.i(TAG, "⚡ ✅ RUN_IN_BACKGROUND/RUN_ANY_IN_BACKGROUND permitidos")
-                } catch (e: Exception) {
-                    Log.d(TAG, "⚡ AppOps para background não disponível: ${e.javaClass.simpleName}")
-                }
-            }
-        } catch (e: Exception) {
-            Log.w(TAG, "⚡ ⚠️ Não foi possível isentar de App Standby: ${e.message}")
-        }
-    }
-    
-    /**
-     * Desabilita restrições de background para este app
-     */
-    private fun disableBackgroundRestrictions() {
-        try {
-            // Android 9+: Usar setAppStandbyBucket se disponível
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-                try {
-                    val usageStatsManager = context.getSystemService(Context.USAGE_STATS_SERVICE) as android.app.usage.UsageStatsManager
-                    
-                    // Verificar bucket atual
-                    val bucket = usageStatsManager.appStandbyBucket
-                    Log.i(TAG, "⚡ App Standby Bucket atual: $bucket")
-                    
-                    // STANDBY_BUCKET_ACTIVE = 10 (sem restrições)
-                    // Como Device Owner, podemos tentar forçar via reflexão
-                    try {
-                        val setAppStandbyBucketMethod = usageStatsManager.javaClass.getDeclaredMethod(
-                            "setAppStandbyBucket",
-                            String::class.java,
-                            Int::class.java
-                        )
-                        setAppStandbyBucketMethod.isAccessible = true
-                        setAppStandbyBucketMethod.invoke(usageStatsManager, context.packageName, 10) // ACTIVE
-                        Log.i(TAG, "⚡ ✅ App movido para STANDBY_BUCKET_ACTIVE")
-                    } catch (e: Exception) {
-                        Log.d(TAG, "⚡ setAppStandbyBucket não disponível")
-                    }
-                } catch (e: Exception) {
-                    Log.d(TAG, "⚡ UsageStatsManager não acessível: ${e.javaClass.simpleName}")
-                }
-            }
-        } catch (e: Exception) {
-            Log.w(TAG, "⚡ ⚠️ Não foi possível desabilitar restrições de background: ${e.message}")
-        }
-    }
-    
-    /**
-     * Permite uso de dados ilimitado em background
-     */
-    private fun allowUnrestrictedDataUsage() {
-        try {
-            // Android 7+: ConnectivityManager.setRestrictBackgroundWhitelist (requer permissão do sistema)
-            // Como Device Owner, tentamos via reflexão
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                try {
-                    val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as android.net.ConnectivityManager
-                    val uid = context.packageManager.getApplicationInfo(context.packageName, 0).uid
-                    
-                    val addToWhitelistMethod = connectivityManager.javaClass.getDeclaredMethod(
-                        "addUidToMeteredNetworkAllowList",
-                        Int::class.java
-                    )
-                    addToWhitelistMethod.isAccessible = true
-                    addToWhitelistMethod.invoke(connectivityManager, uid)
-                    
-                    Log.i(TAG, "⚡ ✅ App adicionado à whitelist de dados em background")
-                } catch (e: Exception) {
-                    Log.d(TAG, "⚡ addUidToMeteredNetworkAllowList não disponível")
-                }
-            }
-        } catch (e: Exception) {
-            Log.w(TAG, "⚡ ⚠️ Não foi possível configurar dados ilimitados: ${e.message}")
-        }
-    }
-    
-    /**
-     * Configura keep alive via Device Policy Manager
-     */
-    private fun configureDeviceOwnerKeepAlive() {
-        try {
-            // Garantir que o app não seja removido/restrito via políticas de Device Owner
-            
-            // 1. Marcar como app protegido (não pode ser desinstalado)
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                dpm.setUninstallBlocked(adminComponent, context.packageName, true)
-                Log.i(TAG, "⚡ ✅ Desinstalação bloqueada")
-            }
-            
-            // 2. Android 11+: Marcar como app essencial protegido
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-                try {
-                    val setProtectedPackagesMethod = dpm.javaClass.getDeclaredMethod(
-                        "setProtectedPackages",
-                        ComponentName::class.java,
-                        List::class.java
-                    )
-                    setProtectedPackagesMethod.isAccessible = true
-                    setProtectedPackagesMethod.invoke(dpm, adminComponent, listOf(context.packageName))
-                    Log.i(TAG, "⚡ ✅ App marcado como protected package")
-                } catch (e: Exception) {
-                    Log.d(TAG, "⚡ setProtectedPackages não disponível")
-                }
-            }
-            
-            // 3. Configurar app como sempre ativo (keep alive packages) - Android 11+
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-                try {
-                    val setKeepUninstalledPackagesMethod = dpm.javaClass.getDeclaredMethod(
-                        "setKeepUninstalledPackages",
-                        ComponentName::class.java,
-                        List::class.java
-                    )
-                    setKeepUninstalledPackagesMethod.isAccessible = true
-                    setKeepUninstalledPackagesMethod.invoke(dpm, adminComponent, listOf(context.packageName))
-                    Log.i(TAG, "⚡ ✅ App configurado para keep-alive")
-                } catch (e: Exception) {
-                    Log.d(TAG, "⚡ setKeepUninstalledPackages não disponível")
-                }
-            }
-            
-        } catch (e: Exception) {
-            Log.w(TAG, "⚡ ⚠️ Não foi possível configurar keep-alive: ${e.message}")
-        }
-    }
-    
-    /**
-     * Desabilita restrições de bateria específicas de OEMs (Samsung, Xiaomi, Huawei, etc.)
-     */
-    private fun disableOemBatteryRestrictions() {
-        try {
-            Log.i(TAG, "⚡ Tentando desabilitar restrições OEM de bateria...")
-            
-            // Samsung: Auto-start e Sleep mode
-            disableSamsungBatteryRestrictions()
-            
-            // Xiaomi/MIUI: AutoStart e Battery Saver
-            disableXiaomiBatteryRestrictions()
-            
-            // Huawei/EMUI: App Launch restrictions
-            disableHuaweiBatteryRestrictions()
-            
-            // Oppo/ColorOS: Battery optimization
-            disableOppoBatteryRestrictions()
-            
-            // OnePlus/OxygenOS: Battery optimization
-            disableOnePlusBatteryRestrictions()
-            
-            Log.i(TAG, "⚡ ✅ Tentativas de desabilitar restrições OEM concluídas")
-            
-        } catch (e: Exception) {
-            Log.w(TAG, "⚡ ⚠️ Erro ao desabilitar restrições OEM: ${e.message}")
-        }
-    }
-    
-    private fun disableSamsungBatteryRestrictions() {
-        try {
-            // Samsung Device Care - colocar app na lista de "Never sleeping"
-            val intent = Intent().apply {
-                component = android.content.ComponentName(
-                    "com.samsung.android.lool",
-                    "com.samsung.android.sm.battery.ui.BatteryActivity"
-                )
-                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-            }
-            
-            if (context.packageManager.resolveActivity(intent, 0) != null) {
-                Log.d(TAG, "⚡ Samsung Device Care detectado")
-            }
-        } catch (e: Exception) {
-            Log.d(TAG, "⚡ Samsung: ${e.javaClass.simpleName}")
-        }
-    }
-    
-    private fun disableXiaomiBatteryRestrictions() {
-        try {
-            // MIUI AutoStart
-            val intent = Intent().apply {
-                component = android.content.ComponentName(
-                    "com.miui.securitycenter",
-                    "com.miui.permcenter.autostart.AutoStartManagementActivity"
-                )
-                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-            }
-            
-            if (context.packageManager.resolveActivity(intent, 0) != null) {
-                Log.d(TAG, "⚡ MIUI AutoStart Manager detectado")
-            }
-        } catch (e: Exception) {
-            Log.d(TAG, "⚡ Xiaomi: ${e.javaClass.simpleName}")
-        }
-    }
-    
-    private fun disableHuaweiBatteryRestrictions() {
-        try {
-            // Huawei App Launch
-            val intent = Intent().apply {
-                component = android.content.ComponentName(
-                    "com.huawei.systemmanager",
-                    "com.huawei.systemmanager.startupmgr.ui.StartupNormalAppListActivity"
-                )
-                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-            }
-            
-            if (context.packageManager.resolveActivity(intent, 0) != null) {
-                Log.d(TAG, "⚡ Huawei Startup Manager detectado")
-            }
-        } catch (e: Exception) {
-            Log.d(TAG, "⚡ Huawei: ${e.javaClass.simpleName}")
-        }
-    }
-    
-    private fun disableOppoBatteryRestrictions() {
-        try {
-            // Oppo/ColorOS
-            val intent = Intent().apply {
-                component = android.content.ComponentName(
-                    "com.coloros.safecenter",
-                    "com.coloros.safecenter.permission.startup.StartupAppListActivity"
-                )
-                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-            }
-            
-            if (context.packageManager.resolveActivity(intent, 0) != null) {
-                Log.d(TAG, "⚡ Oppo/ColorOS Startup Manager detectado")
-            }
-        } catch (e: Exception) {
-            Log.d(TAG, "⚡ Oppo: ${e.javaClass.simpleName}")
-        }
-    }
-    
-    private fun disableOnePlusBatteryRestrictions() {
-        try {
-            // OnePlus/OxygenOS
-            val intent = Intent().apply {
-                component = android.content.ComponentName(
-                    "com.oneplus.security",
-                    "com.oneplus.security.chainlaunch.view.ChainLaunchAppListActivity"
-                )
-                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-            }
-            
-            if (context.packageManager.resolveActivity(intent, 0) != null) {
-                Log.d(TAG, "⚡ OnePlus Startup Manager detectado")
-            }
-        } catch (e: Exception) {
-            Log.d(TAG, "⚡ OnePlus: ${e.javaClass.simpleName}")
         }
     }
     
