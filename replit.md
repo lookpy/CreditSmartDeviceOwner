@@ -71,3 +71,6 @@ The UI leverages Jetpack Compose and Material 3, incorporating a CDC institution
 - MULTI_WINDOW_CHECK_INTERVAL_MS increased to 5000ms (production) / 10000ms (debug)
 - setApplicationHidden toggle delay increased from 100ms to 300ms
 - Added forceStopBlockedApp throttle (10s per app) to prevent repeated calls
+- Expanded CRITICAL_SYSTEM_PACKAGES_FOR_INTERCEPTION with 20+ new packages
+- Added FLAG_SYSTEM check to skip all pre-installed system apps
+- Protected Transsion/Infinix/Tecno system apps from being killed

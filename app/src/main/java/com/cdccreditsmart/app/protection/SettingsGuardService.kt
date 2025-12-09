@@ -638,13 +638,28 @@ class SettingsGuardService(private val context: Context) {
         "com.android.launcher",
         "com.android.launcher2",
         "com.android.launcher3",
+        "com.android.providers.settings",
+        "com.android.providers.contacts",
+        "com.android.providers.media",
+        "com.android.providers.downloads",
+        "com.android.providers.calendar",
+        "com.android.keychain",
+        "com.android.server.telecom",
+        "com.android.networkstack",
+        "com.android.captiveportallogin",
         
-        // Google Play Services (crítico para funcionamento do sistema)
+        // Google Play Services e componentes críticos
         "com.google.android.gms",
         "com.google.android.gsf",
         "com.google.android.gsf.login",
         "com.google.android.packageinstaller",
         "com.google.android.permissioncontroller",
+        "com.google.android.providers.media.module",
+        "com.google.android.healthconnect.controller",
+        "com.google.android.networkstack",
+        "com.google.android.ext.services",
+        "com.google.android.documentsui",
+        "com.google.android.webview",
         
         // Input methods (teclados)
         "com.google.android.inputmethod.latin",
@@ -658,6 +673,13 @@ class SettingsGuardService(private val context: Context) {
         "com.oneplus.launcher",
         "com.vivo.launcher",
         "com.transsion.launcher",
+        
+        // Transsion/Infinix/Tecno apps do sistema
+        "com.transsion.livewallpaper.page",
+        "com.transsion.systemui",
+        "com.transsion.phonemaster",
+        "com.transsion.faceunlock",
+        "com.transsion.lockscreen",
         
         // Nosso app
         "com.cdccreditsmart.app"
@@ -855,6 +877,21 @@ class SettingsGuardService(private val context: Context) {
             !packageName.contains("game", ignoreCase = true)) {
             Log.d(TAG, "🛡️ Ignorando launcher: $packageName")
             return false
+        }
+        
+        // Ignorar apps do sistema (FLAG_SYSTEM) e apps de fabricantes (transsion, samsung, etc.)
+        try {
+            val appInfo = context.packageManager.getApplicationInfo(packageName, 0)
+            val isSystemApp = (appInfo.flags and android.content.pm.ApplicationInfo.FLAG_SYSTEM) != 0
+            val isUpdatedSystemApp = (appInfo.flags and android.content.pm.ApplicationInfo.FLAG_UPDATED_SYSTEM_APP) != 0
+            
+            if (isSystemApp || isUpdatedSystemApp) {
+                // Permitir apenas apps que o usuário instalou (não pré-instalados do fabricante)
+                Log.d(TAG, "🛡️ Ignorando app do sistema: $packageName (system=$isSystemApp, updated=$isUpdatedSystemApp)")
+                return false
+            }
+        } catch (e: Exception) {
+            Log.w(TAG, "⚠️ Não foi possível verificar flags de $packageName: ${e.message}")
         }
         
         // Throttle para evitar chamadas repetidas ao mesmo app

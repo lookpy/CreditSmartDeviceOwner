@@ -1,0 +1,109 @@
+2025-12-09 15:25:56.056   934-939   android.ha...l@2.0-impl pid-934                              I  Sending notification:  Type: SKIN Name: SKIN CurrentValue: 46.733 ThrottlingStatus: NONE
+2025-12-09 15:25:56.056   934-939   android.ha...l@2.0-impl pid-934                              I  sendThermalChangedCallback
+2025-12-09 15:25:56.156  1556-2951  TranWifiSm...Controller pid-1556                             I  start current network monitor 
+2025-12-09 15:25:56.156  1556-2951  TranWifiSm...Controller pid-1556                             I  userIgnored :false isScoredCurrentNetwork :true
+2025-12-09 15:25:56.156  1556-2951  TranWifiSm...Controller pid-1556                             I  mCurrentNetwork :100 SSID :"Orion B_5G"
+2025-12-09 15:25:56.159  1556-2951  WifiNetworkQuality      pid-1556                             I  current rssi is sufficient
+2025-12-09 15:25:56.159  1556-2951  TranWifiSm...Controller pid-1556                             I  mNoCandidateCount : -1
+2025-12-09 15:25:56.159  1556-2951  TranWifiSm...Controller pid-1556                             I  ====>>rssi :-61
+2025-12-09 15:25:56.159  1556-2951  WifiNetworkQuality      pid-1556                             I  tput greater than NO_INTERNET_TRAFFIC
+2025-12-09 15:25:56.247  1556-1830  tranpm/BehaviorManager  pid-1556                             D  onMemPressureChange : level 0
+2025-12-09 15:25:56.277  1556-1873  TranCpuPow...ponentImpl pid-1556                             W  cpu_h_app(541860000034) is disable.
+2025-12-09 15:25:56.277  1556-1873  BatteryService          pid-1556                             D  widetemperaturebatteryburn check uevent: {SUBSYSTEM=misc, MAJOR=10, SEQNUM=7193, ACTION=change, DEVNAME=tran_cpu_metrics, SYS_TASK_LOADING={"n":"android.vending", "p":"17666", "u":"1010111", "a":"905", "l":"108", "th":"90", "th_l":"60"}, MINOR=99, DEVPATH=/devices/virtual/misc/tran_cpu_metrics}
+2025-12-09 15:25:56.277  1556-1873  BatteryService          pid-1556                             D  widetemperaturebatteryburn PORT_STATE no availd
+2025-12-09 15:25:56.277  1556-1873  tranpm/Cpu...torManager pid-1556                             D  observer-uEvent SYS_TASK_LOADING={"pid":"17666", "uid":"1010111", "adj":"905", "cpu_usage":"108"}
+2025-12-09 15:25:56.277  1556-1873  tranpm/Cpu...torManager pid-1556                             D  handleUEvent sysTaskLoading={pid=17666,uid=1010111,adj=905,usage=108}
+2025-12-09 15:25:56.278  1556-1873  BatteryService          pid-1556                             D  widetemperaturebatteryburn check uevent: {SUBSYSTEM=misc, MAJOR=10, SEQNUM=7194, ACTION=change, DEVNAME=tran_cpu_monitor, SYS_TASK_LOADING={"pid":"17666", "uid":"1010111", "adj":"905", "cpu_usage":"108"}, MINOR=100, DEVPATH=/devices/virtual/misc/tran_cpu_monitor}
+2025-12-09 15:25:56.278  1556-1873  BatteryService          pid-1556                             D  widetemperaturebatteryburn PORT_STATE no availd
+2025-12-09 15:25:56.282  1556-3145  Hiber/userImpl          pid-1556                             W  getUnfreezeReason uid=1010111
+2025-12-09 15:25:56.282  1556-3145  tranpm/Cpu...Controller pid-1556                             D  checkAppIfRestricted uid=1010111,reason=run-white
+2025-12-09 15:25:56.282  1556-3145  tranpm/Cpu...Controller pid-1556                             D  requestFreeze new uid=1010111 reason=task_loading
+2025-12-09 15:25:56.617 10187-589   HeterodyneSyncScheduler pid-10187                            I  (REDACTED) Scheduling adaptive one off task with window [%d, %d] in seconds
+2025-12-09 15:25:56.619  1556-1656  ApplicationHelper       pid-1556                             E  Fail to get PackageManager
+2025-12-09 15:25:56.620  1556-1656  ApplicationHelper       pid-1556                             E  Fail to get PackageManager
+2025-12-09 15:25:56.623  1556-1656  ApplicationHelper       pid-1556                             E  Fail to get PackageManager
+2025-12-09 15:25:56.623  1556-1656  ApplicationHelper       pid-1556                             E  Fail to get PackageManager
+2025-12-09 15:25:56.632   393-393   ecovery_process         pid-393                              I  System.exit called, status: 0
+2025-12-09 15:25:56.632   393-393   AndroidRuntime          pid-393                              I  VM exiting with result code 0, cleanup skipped.
+2025-12-09 15:25:56.643 10187-1459  NetworkScheduler.Stats  pid-10187                            I  (REDACTED) Task %s/%s finished executing. cause:%s result: %s elapsed_millis: %s uptime_millis: %s exec_start_elapsed_seconds: %s
+2025-12-09 15:25:56.708 28353-28353 adbd                    pid-28353                            I  Remote process closed the socket (on MSG_PEEK)
+2025-12-09 15:25:56.709   904-904   Zygote                  pid-904                              I  Process 393 exited cleanly (0)
+2025-12-09 15:25:56.709  1556-3311  ActivityManager         pid-1556                             V  Death received in com.android.server.am.ActivityManagerService$AppDeathRecipient@e1f793a for thread android.os.BinderProxy@73279eb
+2025-12-09 15:25:56.710  1556-3311  ActivityManager         pid-1556                             I  Process com.google.android.apps.maps:server_recovery_process (pid 393) has died: fg  RCVR
+2025-12-09 15:25:56.710  1556-3311  ActivityManager         pid-1556                             I  need getLruProcesses
+2025-12-09 15:25:56.712  1556-3311  os.Activit...erviceLice pid-1556                             D  make process inactive com.google.android.apps.maps:server_recovery_process(393)
+2025-12-09 15:25:56.712  1556-1826  libprocessgroup         pid-1556                             I  Removed cgroup /sys/fs/cgroup/uid_10131/pid_393
+2025-12-09 15:25:56.716  1556-3311  mtkpower_client         pid-1556                             I  [PowerHal_Wrap_notifyAppState] com.google.android.apps.maps/com.google.android.apps.maps pid=393 activityId:393 state:3
+2025-12-09 15:25:56.717  1556-3311  mtkpower_client         pid-1556                             I  [Legacy][PowerHal_Wrap_notifyAppState] com.google.android.apps.maps/com.google.android.apps.maps pid=393 state:393
+2025-12-09 15:25:56.717   955-1039  libPowerHal             pid-955                              I  [perfNotifyAppState] pack:com.google.android.apps.maps, act:com.google.android.apps.maps, state:3, pid:393, uid:10131, fps:-1
+2025-12-09 15:25:56.718   955-1039  libPowerHal             pid-955                              I  [perfNotifyAppState] pack:com.google.android.apps.maps, pid:393, STATE_DEAD
+2025-12-09 15:25:56.718   955-1039  RilUtility              pid-955                              D  notify_rild_crash_pid_set certPid:-1, crash:393, scn:0x0
+2025-12-09 15:25:56.742 12965-1847  DownloadManager         pid-12965                            D  [9] Finished with status SUCCESS
+2025-12-09 15:25:56.787  1556-1830  tranpm/BehaviorManager  pid-1556                             D  onMemPressureChange : level 1
+2025-12-09 15:25:56.795   523-523   lowmemorykiller         pid-523                              I  TranMemoryInfo: vmstat time slice: 1100
+2025-12-09 15:25:56.796   523-523   lowmemorykiller         pid-523                              I  TranMemoryInfo: PSI stat: 12, 13.86, 8.69, 7.11, 3.70
+2025-12-09 15:25:56.796   523-523   lowmemorykiller         pid-523                              I  TranMemoryInfo: vmstat: 30739, 0, 47407, 1, 15022
+2025-12-09 15:25:56.796   523-523   lowmemorykiller         pid-523                              D  TranMemoryInfo: kswapd pgscan_kswapd 14153150 to 14211338, pgsteal_kswapd 9181295 to 9228702, stime 14966 to 15022
+2025-12-09 15:25:56.796   523-523   lowmemorykiller         pid-523                              I  TranMemoryInfo: kswapd has been run.
+2025-12-09 15:25:56.796   523-523   lowmemorykiller         pid-523                              I  TranMemoryInfo: kswapd reclaim amount : 47407 pages
+2025-12-09 15:25:56.796   523-523   lowmemorykiller         pid-523                              I  TranMemoryInfo: kswapd reclaim efficiency : 338 KB/ms
+2025-12-09 15:25:56.799  1556-1656  ApplicationHelper       pid-1556                             E  Fail to get PackageManager
+2025-12-09 15:25:56.799  1556-1656  ApplicationHelper       pid-1556                             E  Fail to get PackageManager
+2025-12-09 15:25:56.813  1556-1656  ApplicationHelper       pid-1556                             E  Fail to get PackageManager
+2025-12-09 15:25:56.823  1556-1656  ApplicationHelper       pid-1556                             E  Fail to get PackageManager
+2025-12-09 15:25:56.895  1556-1830  tranpm/BehaviorManager  pid-1556                             D  onMemPressureChange : level 2
+2025-12-09 15:25:56.956 16593-22527 ConfigUpdater           pid-16593                            I  Update downloaded, starting installation
+2025-12-09 15:25:56.958  1556-1656  ApplicationHelper       pid-1556                             E  Fail to get PackageManager
+2025-12-09 15:25:56.977   955-1022  libPerfCtl              pid-955                              I  xgfGetFPS pid:3568 fps:-1
+2025-12-09 15:25:56.977   955-1022  AppThermalMode          pid-955                              I  [perfNotifyThermalState] hdl:0
+2025-12-09 15:25:56.977   955-1022  AppThermalMode          pid-955                              I  [findAppThermalIdx] Fail: appThermalModeEnable: 0,currentFPS: -1,fg->pid:3568
+2025-12-09 15:25:56.977   955-1022  AppThermalMode          pid-955                              I  [perfNotifyThermalState] appThermalIdx -1:
+2025-12-09 15:25:56.989 27009-31185 MdmCommandReceiver      pid-27009                            E  ❌ ========================================
+2025-12-09 15:25:56.989 27009-31185 MdmCommandReceiver      pid-27009                            E  ❌ WEBSOCKET MDM FALHOU!
+2025-12-09 15:25:56.989 27009-31185 MdmCommandReceiver      pid-27009                            E  ❌ ========================================
+2025-12-09 15:25:56.989 27009-31185 MdmCommandReceiver      pid-27009                            E  ❌ Reconexões anteriores: 0
+2025-12-09 15:25:56.990 27009-31185 MdmCommandReceiver      pid-27009                            E  ❌ Tipo de erro: SocketTimeoutException
+2025-12-09 15:25:56.990 27009-31185 MdmCommandReceiver      pid-27009                            E  ❌ Mensagem: sent ping but didn't receive pong within 25000ms (after 2 successful ping/pongs)
+2025-12-09 15:25:56.990 27009-31185 MdmCommandReceiver      pid-27009                            E  ❌ Response code: null
+2025-12-09 15:25:56.990 27009-31185 MdmCommandReceiver      pid-27009                            E  ❌ Response message: null
+2025-12-09 15:25:56.997 27009-31185 NetworkConnectivity     pid-27009                            D  ✅ Conectado via WiFi com internet
+2025-12-09 15:25:56.997 27009-31185 MdmCommandReceiver      pid-27009                            W  ⚠️ Erro de rede (com conexão): sent ping but didn't receive pong within 25000ms (after 2 successful ping/pongs)
+2025-12-09 15:25:56.998 27009-31185 MdmCommandReceiver      pid-27009                            E  ❌ ========================================
+2025-12-09 15:25:56.999 27009-31185 MdmCommandReceiver      pid-27009                            D  ⏳ Polling já está ativo - ignorando chamada duplicada
+2025-12-09 15:25:57.000 27009-27227 MdmCommandReceiver      pid-27009                            I  🔄 ========================================
+2025-12-09 15:25:57.000 27009-27227 MdmCommandReceiver      pid-27009                            I  🔄 AGENDANDO RECONEXÃO WEBSOCKET MDM
+2025-12-09 15:25:57.000 27009-27227 MdmCommandReceiver      pid-27009                            I  🔄 ========================================
+2025-12-09 15:25:57.000 27009-27227 MdmCommandReceiver      pid-27009                            I  🔄 Tentativa #1
+2025-12-09 15:25:57.001 27009-27227 MdmCommandReceiver      pid-27009                            I  🔄 Delay: 2s (backoff exponencial)
+2025-12-09 15:25:57.002 27009-27227 MdmCommandReceiver      pid-27009                            I  🔄 Máximo delay: 120s
+2025-12-09 15:25:57.002 27009-27227 MdmCommandReceiver      pid-27009                            I  🔄 ========================================
+2025-12-09 15:25:57.057   934-939   android.ha...ervice.mtk pid-934                              W  parseMsg: Get from client TYPE=thermal_hal_notify NAME=SKIN
+2025-12-09 15:25:57.057   934-939   android.ha...ervice.mtk pid-934                              W  parseMsg:name.c_str():SKIN
+2025-12-09 15:25:57.057   934-939   android.ha...ervice.mtk pid-934                              W  parseMsg:tz notify:SKIN
+2025-12-09 15:25:57.057   934-939   android.ha...ervice.mtk pid-934                              I  Wait to accept a connection
+2025-12-09 15:25:57.059   934-939   android.ha...l@2.0-impl pid-934                              I  Sending notification:  Type: SKIN Name: SKIN CurrentValue: 46.733 ThrottlingStatus: NONE
+2025-12-09 15:25:57.060   934-939   android.ha...l@2.0-impl pid-934                              I  sendThermalChangedCallback
+2025-12-09 15:25:57.063 16593-22527 ConfigUpdater           pid-16593                            I  doneInstall
+2025-12-09 15:25:57.099 12965-1872  DownloadManager         pid-12965                            V  Deleting /data/user/10/com.android.providers.downloads/cache/en.fb.metadata via provider delete
+2025-12-09 15:25:57.103  1556-1879  ConfigUpda...llReceiver pid-1556                             I  Found new update, installing...
+2025-12-09 15:25:57.105  1556-1656  ApplicationHelper       pid-1556                             E  Fail to get PackageManager
+2025-12-09 15:25:57.112 12603-12627 ModernMediaScanner      pid-12603                            W  Failed to visit /data/user/10/com.android.providers.downloads/cache/en.fb.metadata: java.nio.file.NoSuchFileException: /data/user/10/com.android.providers.downloads/cache/en.fb.metadata
+2025-12-09 15:25:57.115  1556-1879  ConfigUpda...llReceiver pid-1556                             E  Could not update content! (Ask Gemini)
+                                                                                                    java.io.FileNotFoundException: open failed: ENOENT (No such file or directory)
+                                                                                                    	at android.database.DatabaseUtils.readExceptionWithFileNotFoundExceptionFromParcel(DatabaseUtils.java:164)
+                                                                                                    	at android.content.ContentProviderProxy.openTypedAssetFile(ContentProviderNative.java:814)
+                                                                                                    	at android.content.ContentResolver.openTypedAssetFileDescriptor(ContentResolver.java:2088)
+                                                                                                    	at android.content.ContentResolver.openAssetFileDescriptor(ContentResolver.java:1903)
+                                                                                                    	at android.content.ContentResolver.openInputStream(ContentResolver.java:1573)
+                                                                                                    	at com.android.server.updates.ConfigUpdateInstallReceiver.getAltContent(ConfigUpdateInstallReceiver.java:140)
+                                                                                                    	at com.android.server.updates.ConfigUpdateInstallReceiver.-$$Nest$mgetAltContent(ConfigUpdateInstallReceiver.java:0)
+                                                                                                    	at com.android.server.updates.ConfigUpdateInstallReceiver$1.run(ConfigUpdateInstallReceiver.java:83)
+2025-12-09 15:25:57.116 12603-12627 MediaProvider           pid-12603                            I  Scanned internal due to REASON_DEMAND, found 0 items in 6ms, 0 inserts 0 updates 0 deletes
+2025-12-09 15:25:57.162 12965-1872  DownloadManager         pid-12965                            V  Deleting /data/user/10/com.android.providers.downloads/cache/en.fb via provider delete
+2025-12-09 15:25:57.183 12603-12627 ModernMediaScanner      pid-12603                            W  Failed to visit /data/user/10/com.android.providers.downloads/cache/en.fb: java.nio.file.NoSuchFileException: /data/user/10/com.android.providers.downloads/cache/en.fb
+2025-12-09 15:25:57.185 12603-12627 MediaProvider           pid-12603                            I  Scanned internal due to REASON_DEMAND, found 0 items in 5ms, 0 inserts 0 updates 0 deletes
+2025-12-09 15:25:57.258  1556-1656  ApplicationHelper       pid-1556                             E  Fail to get PackageManager
+2025-12-09 15:25:57.258  1556-1656  ApplicationHelper       pid-1556                             E  Fail to get PackageManager
+2025-12-09 15:25:57.259  1556-1656  ApplicationHelper       pid-1556                             E  Fail to get PackageManager
+2025-12-09 15:25:57.327  1556-1830  tranpm/BehaviorManager  pid-1556                             D  onMemPressureChange : level 0
+2025-12-09 15:25:57.327   523-523   lowmemorykiller         pid-523                              I  file cached 2816904 KB, tran_filecached_threshold: 819200
