@@ -80,3 +80,14 @@ Criado `ProvisioningStateManager` com flag explícito de estado de pairing.
 2. PermissionGateScreen detecta → pula para PairingScreen
 3. Pairing concluído → markPairingCompleted()
 4. Próxima inicialização → verifica permissões e aplica bloqueios
+
+**ProvisioningStateManager (device-protected storage):**
+- Usa `createDeviceProtectedStorageContext()` para funcionar durante direct boot
+- Migra dados automaticamente do credential-protected para device-protected
+- Verifica `isUserUnlocked()` antes de tentar migrar
+- Fallback para direct boot: se migração pendente e usuário bloqueado, assume pairing = true
+
+**Cenários Cobertos:**
+1. Novo dispositivo: funciona normalmente
+2. Upgrade em direct boot: assume pairing = true, aplica bloqueio
+3. Upgrade após desbloquear: migra dados e funciona normalmente
