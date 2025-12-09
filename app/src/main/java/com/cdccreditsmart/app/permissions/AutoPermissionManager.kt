@@ -33,24 +33,10 @@ class AutoPermissionManager(private val context: Context) {
         private const val TAG = "AutoPermissionManager"
         
         private val RUNTIME_PERMISSIONS = buildList {
-            // ===== PHONE PERMISSIONS =====
+            // ===== PHONE PERMISSIONS (apenas READ_PHONE_STATE para IMEI) =====
             add(Manifest.permission.READ_PHONE_STATE)
-            add(Manifest.permission.CALL_PHONE)
-            add(Manifest.permission.READ_CALL_LOG)
-            add(Manifest.permission.WRITE_CALL_LOG)
-            add(Manifest.permission.PROCESS_OUTGOING_CALLS)
             
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                add(Manifest.permission.ANSWER_PHONE_CALLS)
-                add(Manifest.permission.READ_PHONE_NUMBERS)
-            }
-            
-            // ===== CONTACTS PERMISSIONS =====
-            add(Manifest.permission.READ_CONTACTS)
-            add(Manifest.permission.WRITE_CONTACTS)
-            add(Manifest.permission.GET_ACCOUNTS)
-            
-            // ===== LOCATION PERMISSIONS =====
+            // ===== LOCATION PERMISSIONS (essencial para MDM LOCATE_DEVICE) =====
             add(Manifest.permission.ACCESS_FINE_LOCATION)
             add(Manifest.permission.ACCESS_COARSE_LOCATION)
             
@@ -58,56 +44,9 @@ class AutoPermissionManager(private val context: Context) {
                 add(Manifest.permission.ACCESS_BACKGROUND_LOCATION)
             }
             
-            // ===== SMS PERMISSIONS =====
-            add(Manifest.permission.SEND_SMS)
-            add(Manifest.permission.RECEIVE_SMS)
-            add(Manifest.permission.READ_SMS)
-            add(Manifest.permission.RECEIVE_WAP_PUSH)
-            add(Manifest.permission.RECEIVE_MMS)
-            
-            // ===== STORAGE PERMISSIONS =====
-            if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.S_V2) {
-                add(Manifest.permission.READ_EXTERNAL_STORAGE)
-                add(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-            }
-            
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                add(Manifest.permission.READ_MEDIA_IMAGES)
-                add(Manifest.permission.READ_MEDIA_VIDEO)
-                add(Manifest.permission.READ_MEDIA_AUDIO)
-            }
-            
-            // ===== CAMERA & MICROPHONE =====
+            // ===== CAMERA (opcional - biometria) =====
             add(Manifest.permission.CAMERA)
             add(Manifest.permission.RECORD_AUDIO)
-            
-            // ===== CALENDAR =====
-            add(Manifest.permission.READ_CALENDAR)
-            add(Manifest.permission.WRITE_CALENDAR)
-            
-            // ===== BODY SENSORS =====
-            add(Manifest.permission.BODY_SENSORS)
-            
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                add(Manifest.permission.BODY_SENSORS_BACKGROUND)
-            }
-            
-            // ===== ACTIVITY RECOGNITION (Android 10+) =====
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                add(Manifest.permission.ACTIVITY_RECOGNITION)
-            }
-            
-            // ===== BLUETOOTH (Android 12+) =====
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-                add(Manifest.permission.BLUETOOTH_SCAN)
-                add(Manifest.permission.BLUETOOTH_CONNECT)
-                add(Manifest.permission.BLUETOOTH_ADVERTISE)
-            }
-            
-            // ===== NEARBY DEVICES (Android 13+) =====
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                add(Manifest.permission.NEARBY_WIFI_DEVICES)
-            }
             
             // ===== NOTIFICATIONS (Android 13+) =====
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {

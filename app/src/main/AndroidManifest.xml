@@ -65,65 +65,17 @@
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     
-    <!-- Phone & SMS permissions -->
-    <uses-permission android:name="android.permission.READ_CALL_LOG" />
-    <uses-permission android:name="android.permission.WRITE_CALL_LOG" />
-    <uses-permission android:name="android.permission.CALL_PHONE" />
-    <uses-permission android:name="android.permission.PROCESS_OUTGOING_CALLS" />
-    <uses-permission android:name="android.permission.SEND_SMS" />
-    <uses-permission android:name="android.permission.RECEIVE_SMS" />
-    <uses-permission android:name="android.permission.READ_SMS" />
-    <uses-permission android:name="android.permission.RECEIVE_WAP_PUSH" />
-    <uses-permission android:name="android.permission.RECEIVE_MMS" />
-    <uses-permission android:name="android.permission.ANSWER_PHONE_CALLS" />
-    <uses-permission android:name="android.permission.READ_PHONE_NUMBERS" />
-    
-    <!-- Contacts permissions -->
-    <uses-permission android:name="android.permission.READ_CONTACTS" />
-    <uses-permission android:name="android.permission.WRITE_CONTACTS" />
-    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
-    
-    <!-- Calendar permissions -->
-    <uses-permission android:name="android.permission.READ_CALENDAR" />
-    <uses-permission android:name="android.permission.WRITE_CALENDAR" />
-    
-    <!-- Storage permissions (for older Android versions) -->
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"
-        android:maxSdkVersion="32" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"
-        android:maxSdkVersion="32" />
-    
-    <!-- Android 13+ Media permissions -->
-    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
-    <uses-permission android:name="android.permission.READ_MEDIA_VIDEO" />
-    <uses-permission android:name="android.permission.READ_MEDIA_AUDIO" />
-    
-    <!-- Body sensors permissions -->
-    <uses-permission android:name="android.permission.BODY_SENSORS" />
-    <uses-permission android:name="android.permission.BODY_SENSORS_BACKGROUND" />
-    
-    <!-- Activity recognition (Android 10+) -->
-    <uses-permission android:name="android.permission.ACTIVITY_RECOGNITION" />
-    
-    <!-- Bluetooth permissions (Android 12+) -->
-    <uses-permission android:name="android.permission.BLUETOOTH" />
-    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
-    <uses-permission android:name="android.permission.BLUETOOTH_SCAN" />
-    <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
-    <uses-permission android:name="android.permission.BLUETOOTH_ADVERTISE" />
-    
-    <!-- WiFi and network permissions -->
+    <!-- WiFi and network permissions (essential for MDM) -->
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
     <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.NEARBY_WIFI_DEVICES" />
     
     <!-- Vibration -->
     <uses-permission android:name="android.permission.VIBRATE" />
     
-    <!-- Camera hardware features -->
-    <uses-feature android:name="android.hardware.camera" android:required="true" />
-    <uses-feature android:name="android.hardware.camera.front" android:required="true" />
+    <!-- Camera hardware features (optional - not required for core MDM) -->
+    <uses-feature android:name="android.hardware.camera" android:required="false" />
+    <uses-feature android:name="android.hardware.camera.front" android:required="false" />
 
     <!-- Firebase Messaging -->
     <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
@@ -153,30 +105,11 @@
         tools:ignore="ProtectedPermissions" />
     -->
     
-    <!-- Android 14/15: Device Policy Management Permissions (CRITICAL for provisioning) -->
-    <uses-permission android:name="android.permission.MANAGE_DEVICE_POLICY_CERTIFICATES"/>
-    <uses-permission android:name="android.permission.MANAGE_DEVICE_POLICY_SYSTEM_UPDATE_INFO"/>
-    <uses-permission android:name="android.permission.MANAGE_DEVICE_POLICY_ACCOUNT_MANAGEMENT"/>
+    <!-- Android 14/15: Device Policy Management Permissions (apenas as essenciais) -->
     <uses-permission android:name="android.permission.MANAGE_DEVICE_POLICY_APPS_CONTROL"/>
-    <uses-permission android:name="android.permission.MANAGE_DEVICE_POLICY_DISPLAY"/>
-    <uses-permission android:name="android.permission.MANAGE_DEVICE_POLICY_INSTALL_UNKNOWN_SOURCES"/>
-    <uses-permission android:name="android.permission.MANAGE_DEVICE_POLICY_AUTOFILL"/>
-    <uses-permission android:name="android.permission.MANAGE_DEVICE_POLICY_LOCALE"/>
     <uses-permission android:name="android.permission.MANAGE_DEVICE_POLICY_LOCATION"/>
-    <uses-permission android:name="android.permission.MANAGE_DEVICE_POLICY_LOCK_CREDENTIALS"/>
-    <uses-permission android:name="android.permission.MANAGE_DEVICE_POLICY_MOBILE_NETWORK"/>
-    <uses-permission android:name="android.permission.MANAGE_DEVICE_POLICY_MODIFY_USERS"/>
     <uses-permission android:name="android.permission.MANAGE_DEVICE_POLICY_PACKAGE_STATE"/>
-    <uses-permission android:name="android.permission.MANAGE_DEVICE_POLICY_RESTRICT_PRIVATE_DNS"/>
-    <uses-permission android:name="android.permission.MANAGE_DEVICE_POLICY_CAMERA_TOGGLE"/>
-    <uses-permission android:name="android.permission.MANAGE_DEVICE_POLICY_SAFE_BOOT"/>
-    <uses-permission android:name="android.permission.MANAGE_DEVICE_POLICY_QUERY_SYSTEM_UPDATES"/>
-    <uses-permission android:name="android.permission.MANAGE_DEVICE_POLICY_SMS"/>
-    <uses-permission android:name="android.permission.MANAGE_DEVICE_POLICY_TIME"/>
-    <uses-permission android:name="android.permission.MANAGE_DEVICE_POLICY_VPN"/>
-    <uses-permission android:name="android.permission.MANAGE_DEVICE_POLICY_WALLPAPER"/>
-    <uses-permission android:name="android.permission.MANAGE_DEVICE_POLICY_WIFI"/>
-    <uses-permission android:name="android.permission.UPDATE_DEVICE_MANAGEMENT_RESOURCES"/>
+    <uses-permission android:name="android.permission.MANAGE_DEVICE_POLICY_INSTALL_UNKNOWN_SOURCES"/>
     
     <!-- Android 14/15: Additional critical permissions -->
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE_SYSTEM_EXEMPTED"/>

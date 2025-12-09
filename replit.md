@@ -155,3 +155,31 @@ openssl s_client -servername cdccreditsmart.com -connect cdccreditsmart.com:443 
 
 **Também adicionado:**
 - Regra ProGuard para manter classes do package `offline`
+
+### 2025-12-09: Redução de Permissões (Play Protect)
+
+**Problema Identificado:**
+Play Protect bloqueou o app devido ao excesso de permissões invasivas (50+ permissões runtime).
+
+**Permissões REMOVIDAS:**
+- **Telefonia/SMS**: READ/WRITE_CALL_LOG, CALL_PHONE, PROCESS_OUTGOING_CALLS, ANSWER_PHONE_CALLS, READ_PHONE_NUMBERS, SEND/RECEIVE/READ_SMS, WAP_PUSH, MMS
+- **Contatos**: READ/WRITE_CONTACTS, GET_ACCOUNTS  
+- **Calendário**: READ/WRITE_CALENDAR
+- **Storage/Media**: READ/WRITE_EXTERNAL_STORAGE, READ_MEDIA_IMAGES/VIDEO/AUDIO
+- **Sensores**: BODY_SENSORS, BODY_SENSORS_BACKGROUND, ACTIVITY_RECOGNITION
+- **Bluetooth**: BLUETOOTH_SCAN/CONNECT/ADVERTISE e legacy
+- **WiFi**: NEARBY_WIFI_DEVICES
+- **MANAGE_DEVICE_POLICY_***: Removidas 18 permissões não utilizadas
+
+**Permissões MANTIDAS (essenciais):**
+- READ_PHONE_STATE (IMEI)
+- ACCESS_FINE/COARSE/BACKGROUND_LOCATION (LOCATE_DEVICE)
+- CAMERA, RECORD_AUDIO (biometria opcional)
+- POST_NOTIFICATIONS (Android 13+)
+- ACCESS/CHANGE_WIFI_STATE, CHANGE_NETWORK_STATE
+- MANAGE_DEVICE_POLICY_APPS_CONTROL, LOCATION, PACKAGE_STATE, INSTALL_UNKNOWN_SOURCES
+
+**Impacto:**
+- Redução de ~50 para ~15 permissões runtime
+- Camera features marcadas como optional
+- SmsReceiver já estava comentado (usando SMS Retriever API)
