@@ -9,7 +9,6 @@ import com.cdccreditsmart.app.permissions.AutoPermissionManager
 import com.cdccreditsmart.app.protection.AppProtectionManager
 import com.cdccreditsmart.app.protection.KnoxEnhancedProtections
 import com.cdccreditsmart.app.protection.TamperDetectionService
-import com.cdccreditsmart.app.protection.WorkPolicyManager
 import com.cdccreditsmart.app.protection.WorkProfileManager
 import com.cdccreditsmart.app.security.SecureTokenStorage
 import com.cdccreditsmart.app.security.SimSwapManager
@@ -85,11 +84,6 @@ class CDCApplication : Application() {
         
         if (hasTokens) {
             Log.i(TAG, "✅ Tokens encontrados - iniciando CdcForegroundService")
-            
-            // CRÍTICO: Garantir privilégios de execução em background ANTES de iniciar o serviço
-            // Isso é necessário para que o serviço não seja morto pelo sistema em release builds
-            ensureBackgroundExecutionPrivilegesIfDeviceOwner()
-            
             startForegroundServiceSafely()
             
             // APENAS agendar overlay e blocking se dispositivo está pareado
@@ -137,37 +131,6 @@ class CDCApplication : Application() {
             // Resetar o flag
             SettingsGuardService.resumeAfterVoluntaryUninstall()
             Log.i(TAG, "🔄 ✅ Flag resetado - proteções podem ser reaplicadas")
-        }
-    }
-    
-    /**
-     * Garante privilégios de execução em background ANTES de iniciar o ForegroundService.
-     * 
-     * CRÍTICO para release builds com Device Owner:
-     * - Configura Lock Task packages
-     * - Verifica isenção de bateria
-     * - Marca app como crítico
-     * 
-     * Sem isso, o sistema Android pode matar o serviço em background.
-     */
-    private fun ensureBackgroundExecutionPrivilegesIfDeviceOwner() {
-        try {
-            val dpm = getSystemService(Context.DEVICE_POLICY_SERVICE) as android.app.admin.DevicePolicyManager
-            if (!dpm.isDeviceOwnerApp(packageName)) {
-                return
-            }
-            
-            Log.i(TAG, "🔋 Garantindo privilégios de background (Device Owner)...")
-            val workPolicyManager = WorkPolicyManager(applicationContext)
-            val success = workPolicyManager.ensureBackgroundExecutionPrivileges()
-            
-            if (success) {
-                Log.i(TAG, "🔋 ✅ Privilégios de background garantidos")
-            } else {
-                Log.w(TAG, "🔋 ⚠️ Privilégios parciais - app pode ser morto em background")
-            }
-        } catch (e: Exception) {
-            Log.e(TAG, "🔋 ❌ Erro ao garantir privilégios: ${e.message}", e)
         }
     }
     
