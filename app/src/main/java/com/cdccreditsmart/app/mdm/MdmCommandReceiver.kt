@@ -1114,6 +1114,7 @@ class MdmCommandReceiver(private val context: Context) {
     
     private suspend fun fetchPendingCommands() {
         try {
+            // Sistema inteligente de fallback: tenta múltiplos identificadores
             val identifier = getDeviceIdentifier()
             
             if (identifier == null) {
@@ -1122,77 +1123,30 @@ class MdmCommandReceiver(private val context: Context) {
                 return
             }
             
-            Log.i(TAG, "🔍 ========================================")
-            Log.i(TAG, "🔍 BUSCANDO COMANDOS PENDENTES")
-            Log.i(TAG, "🔍 ========================================")
-            Log.i(TAG, "🔍 Identifier: $identifier")
-            Log.i(TAG, "🔍 Endpoint: GET /api/apk/device/$identifier/commands")
-            val fetchStartTime = System.currentTimeMillis()
+            // Tentar com o identificador atual
+            val success = tryFetchWithIdentifier(identifier)
             
-            val retrofit = RetrofitProvider.createAuthenticatedRetrofit(context)
-            val api = retrofit.create(MdmApiService::class.java)
-            
-            Log.d(TAG, "🔍 Executando requisição HTTP (timeout: ${HTTP_TIMEOUT_MS/1000}s)...")
-            
-            // ANTI-TRAVAMENTO: Timeout na chamada HTTP
-            val response = withTimeout(HTTP_TIMEOUT_MS) {
-                api.getPendingCommands(identifier)
-            }
-            
-            Log.i(TAG, "🔍 HTTP Response code: ${response.code()}")
-            Log.i(TAG, "🔍 HTTP isSuccessful: ${response.isSuccessful}")
-            
-            if (response.isSuccessful) {
-                val body = response.body()
-                val commands = body?.commands ?: emptyList()
+            // Se falhou com 404, tentar fallback automático
+            if (!success) {
+                var nextIdentifier = tokenStorage.getNextIdentifierToTry(identifier)
+                var attempts = 0
+                val maxAttempts = 3 // Máximo de fallbacks
                 
-                Log.i(TAG, "🔍 Response body deviceId: ${body?.deviceId}")
-                Log.i(TAG, "🔍 Response body serialNumber: ${body?.serialNumber}")
-                Log.i(TAG, "🔍 Total de comandos: ${commands.size}")
-                
-                if (commands.isNotEmpty()) {
-                    Log.i(TAG, "📋 ========================================")
-                    Log.i(TAG, "📋 ${commands.size} COMANDOS PENDENTES ENCONTRADOS!")
-                    Log.i(TAG, "📋 ========================================")
-                    commands.forEachIndexed { index, command ->
-                        Log.i(TAG, "📋 [$index] ID: ${command.id}")
-                        Log.i(TAG, "📋 [$index] Tipo: ${command.commandType}")
-                        Log.i(TAG, "📋 [$index] Status: ${command.status}")
-                        Log.i(TAG, "📋 [$index] Prioridade: ${command.priority}")
-                        Log.i(TAG, "📋 [$index] Parameters class: ${command.parameters::class.simpleName}")
-                        Log.i(TAG, "📋 Processando comando (timeout: ${COMMAND_PROCESSING_TIMEOUT_MS/1000}s)...")
-                        
-                        // ANTI-TRAVAMENTO: Timeout no processamento de comando
-                        try {
-                            withTimeout(COMMAND_PROCESSING_TIMEOUT_MS) {
-                                processMdmCommand(command.id, command.commandType, command.parameters)
-                            }
-                        } catch (e: TimeoutCancellationException) {
-                            Log.e(TAG, "⏰ TIMEOUT ao processar comando ${command.id} - continuando com próximo")
-                        }
+                while (nextIdentifier != null && attempts < maxAttempts) {
+                    attempts++
+                    Log.i(TAG, "🔄 ========================================")
+                    Log.i(TAG, "🔄 FALLBACK AUTOMÁTICO #$attempts")
+                    Log.i(TAG, "🔄 ========================================")
+                    
+                    val fallbackSuccess = tryFetchWithIdentifier(nextIdentifier)
+                    
+                    if (fallbackSuccess) {
+                        // Encontramos um identificador que funciona!
+                        tokenStorage.markIdentifierAsWorking(nextIdentifier)
+                        break
                     }
-                    Log.i(TAG, "📋 ========================================")
-                } else {
-                    Log.d(TAG, "✅ Nenhum comando pendente no servidor")
-                }
-                
-                val fetchDuration = System.currentTimeMillis() - fetchStartTime
-                Log.d(TAG, "📊 Fetch duration: ${fetchDuration}ms")
-            } else {
-                Log.e(TAG, "❌ ========================================")
-                Log.e(TAG, "❌ ERRO AO BUSCAR COMANDOS PENDENTES")
-                Log.e(TAG, "❌ ========================================")
-                Log.e(TAG, "❌ HTTP Status: ${response.code()}")
-                Log.e(TAG, "❌ HTTP Message: ${response.message()}")
-                val errorBody = response.errorBody()?.string()
-                Log.e(TAG, "❌ Error body: $errorBody")
-                Log.e(TAG, "❌ ========================================")
-                
-                if (response.code() == 401) {
-                    Log.e(TAG, "❌ Token JWT expirado ou inválido!")
-                } else if (response.code() == 404) {
-                    Log.e(TAG, "❌ Device não encontrado no backend!")
-                    Log.e(TAG, "❌ Identifier usado: $identifier")
+                    
+                    nextIdentifier = tokenStorage.getNextIdentifierToTry(nextIdentifier)
                 }
             }
             
@@ -1202,7 +1156,6 @@ class MdmCommandReceiver(private val context: Context) {
             Log.w(TAG, "⏰ ========================================")
             Log.w(TAG, "⏰ Continuando normalmente - próxima tentativa em 30s")
         } catch (e: CancellationException) {
-            // Coroutine cancelada - propagar
             throw e
         } catch (e: Exception) {
             Log.e(TAG, "❌ ========================================")
@@ -1212,6 +1165,92 @@ class MdmCommandReceiver(private val context: Context) {
             Log.e(TAG, "❌ Mensagem: ${e.message}")
             Log.e(TAG, "❌ Continuando normalmente - próxima tentativa em 30s")
             Log.e(TAG, "❌ ========================================")
+        }
+    }
+    
+    /**
+     * Tenta buscar comandos com um identificador específico.
+     * Retorna true se a requisição foi bem-sucedida (200), false se falhou (404 ou outro erro).
+     */
+    private suspend fun tryFetchWithIdentifier(identifier: String): Boolean {
+        Log.i(TAG, "🔍 ========================================")
+        Log.i(TAG, "🔍 BUSCANDO COMANDOS PENDENTES")
+        Log.i(TAG, "🔍 ========================================")
+        Log.i(TAG, "🔍 Identifier: $identifier")
+        Log.i(TAG, "🔍 Endpoint: GET /api/apk/device/$identifier/commands")
+        val fetchStartTime = System.currentTimeMillis()
+        
+        val retrofit = RetrofitProvider.createAuthenticatedRetrofit(context)
+        val api = retrofit.create(MdmApiService::class.java)
+        
+        Log.d(TAG, "🔍 Executando requisição HTTP (timeout: ${HTTP_TIMEOUT_MS/1000}s)...")
+        
+        val response = withTimeout(HTTP_TIMEOUT_MS) {
+            api.getPendingCommands(identifier)
+        }
+        
+        Log.i(TAG, "🔍 HTTP Response code: ${response.code()}")
+        Log.i(TAG, "🔍 HTTP isSuccessful: ${response.isSuccessful}")
+        
+        if (response.isSuccessful) {
+            // SUCESSO! Marcar este identificador como funcionando
+            tokenStorage.markIdentifierAsWorking(identifier)
+            
+            val body = response.body()
+            val commands = body?.commands ?: emptyList()
+            
+            Log.i(TAG, "🔍 Response body deviceId: ${body?.deviceId}")
+            Log.i(TAG, "🔍 Response body serialNumber: ${body?.serialNumber}")
+            Log.i(TAG, "🔍 Total de comandos: ${commands.size}")
+            
+            if (commands.isNotEmpty()) {
+                Log.i(TAG, "📋 ========================================")
+                Log.i(TAG, "📋 ${commands.size} COMANDOS PENDENTES ENCONTRADOS!")
+                Log.i(TAG, "📋 ========================================")
+                commands.forEachIndexed { index, command ->
+                    Log.i(TAG, "📋 [$index] ID: ${command.id}")
+                    Log.i(TAG, "📋 [$index] Tipo: ${command.commandType}")
+                    Log.i(TAG, "📋 [$index] Status: ${command.status}")
+                    Log.i(TAG, "📋 [$index] Prioridade: ${command.priority}")
+                    Log.i(TAG, "📋 [$index] Parameters class: ${command.parameters::class.simpleName}")
+                    Log.i(TAG, "📋 Processando comando (timeout: ${COMMAND_PROCESSING_TIMEOUT_MS/1000}s)...")
+                    
+                    try {
+                        withTimeout(COMMAND_PROCESSING_TIMEOUT_MS) {
+                            processMdmCommand(command.id, command.commandType, command.parameters)
+                        }
+                    } catch (e: TimeoutCancellationException) {
+                        Log.e(TAG, "⏰ TIMEOUT ao processar comando ${command.id} - continuando com próximo")
+                    }
+                }
+                Log.i(TAG, "📋 ========================================")
+            } else {
+                Log.d(TAG, "✅ Nenhum comando pendente no servidor")
+            }
+            
+            val fetchDuration = System.currentTimeMillis() - fetchStartTime
+            Log.d(TAG, "📊 Fetch duration: ${fetchDuration}ms")
+            return true
+            
+        } else {
+            Log.e(TAG, "❌ ========================================")
+            Log.e(TAG, "❌ ERRO AO BUSCAR COMANDOS PENDENTES")
+            Log.e(TAG, "❌ ========================================")
+            Log.e(TAG, "❌ HTTP Status: ${response.code()}")
+            Log.e(TAG, "❌ HTTP Message: ${response.message()}")
+            val errorBody = response.errorBody()?.string()
+            Log.e(TAG, "❌ Error body: $errorBody")
+            Log.e(TAG, "❌ ========================================")
+            
+            if (response.code() == 401) {
+                Log.e(TAG, "❌ Token JWT expirado ou inválido!")
+            } else if (response.code() == 404) {
+                Log.e(TAG, "❌ Device não encontrado no backend!")
+                Log.e(TAG, "❌ Identifier usado: $identifier")
+                Log.i(TAG, "🔄 Tentando fallback automático para próximo identificador...")
+            }
+            
+            return false
         }
     }
     

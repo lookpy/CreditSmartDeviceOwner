@@ -131,3 +131,52 @@ O enforcement offline reaplicava packages do cache diretamente via setApplicatio
 **TODO antes do release final para produção:**
 - Extrair certificate pins reais do servidor
 - Reativar bloqueios de ADB/USB/Factory Reset
+
+### 2025-12-09: Correção MDM Identifier (Device ID vs IMEI)
+
+**Problema Identificado:**
+MdmCommandReceiver e WebSocket retornavam erro 404 "Dispositivo não encontrado" porque usavam IMEI, mas o backend v2.5 registra dispositivos com Device ID.
+
+**Correção Implementada:**
+
+**SecureTokenStorage.getMdmIdentifier():**
+- Mudou prioridade de identificador MDM
+- Antes: IMEI → Serial Number → Device ID
+- Depois: Device ID → IMEI → Serial Number
+
+**Motivo:**
+O backend registra dispositivos com Device ID (`device_xxx_xxx`), não com IMEI. O app agora usa o Device ID para buscar comandos MDM e autenticar no WebSocket.
+
+### 2025-12-09: Sistema Inteligente de Fallback para Identificadores MDM
+
+**Funcionalidade Implementada:**
+O app agora tenta automaticamente múltiplos identificadores quando o backend retorna 404 "Dispositivo não encontrado".
+
+**Como Funciona:**
+
+1. **Prioridade de identificadores:**
+   - Device ID (identificador primário do backend v2.5)
+   - Serial Number (código do contrato)
+   - IMEI
+
+2. **Cache de identificador funcionando:**
+   - Quando um identificador funciona (HTTP 200), é salvo em cache
+   - Próximas requisições usam esse identificador diretamente
+   - Evita tentativas desnecessárias
+
+3. **Fallback automático:**
+   - Se Device ID falhar com 404 → tenta Serial Number (contrato)
+   - Se Serial Number falhar → tenta IMEI
+   - Máximo de 3 tentativas de fallback
+
+**Novas funções em SecureTokenStorage:**
+- `getAllMdmIdentifiers()` - Lista todos os identificadores disponíveis
+- `markIdentifierAsWorking()` - Salva identificador que funcionou
+- `getNextIdentifierToTry()` - Retorna próximo identificador para fallback
+- `clearWorkingIdentifier()` - Limpa cache para forçar nova descoberta
+- `clearFailedIdentifiers()` - Reinicia lista de identificadores que falharam
+
+**Benefícios:**
+- App se adapta automaticamente a diferentes configurações do backend
+- Não precisa saber qual identificador o backend registrou
+- Log detalhado mostra qual identificador funcionou
