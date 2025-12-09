@@ -128,6 +128,13 @@ O enforcement offline reaplicava packages do cache diretamente via setApplicatio
   - `DISALLOW_FACTORY_RESET`
 - Permite debugging em Device Owner release
 
+**3. KnoxEnhancedProtections.kt:**
+- TEMPORARIAMENTE desabilitado em dispositivos Samsung:
+  - `allowDeveloperMode(false)` (prevenia OEM unlock)
+  - `allowUsbDebugging(false)` (prevenia ADB access)
+- Permite debugging em Device Owner release em Samsungs
+
 **TODO antes do release final para produção:**
 - Extrair certificate pins reais do servidor
 - Reativar bloqueios de ADB/USB/Factory Reset
+- Reativar Knox allowDeveloperMode(false) e allowUsbDebugging(false)

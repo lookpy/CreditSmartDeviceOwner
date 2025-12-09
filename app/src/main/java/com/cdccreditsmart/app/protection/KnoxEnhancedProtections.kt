@@ -416,31 +416,11 @@ class KnoxEnhancedProtections(private val context: Context) {
                 Log.w(TAG, "   ⚠️ Block firmware recovery não disponível: ${e.message}")
             }
             
-            try {
-                val allowDevModeMethod = restrictionClass.getMethod("allowDeveloperMode", Boolean::class.javaPrimitiveType)
-                val result = allowDevModeMethod.invoke(restrictionPolicy, false) as? Boolean
-                if (result == true) {
-                    count++
-                    Log.i(TAG, "   ✅ Developer Mode BLOQUEADO (previne OEM unlock)")
-                } else {
-                    Log.w(TAG, "   ⚠️ Block developer mode falhou")
-                }
-            } catch (e: Exception) {
-                Log.w(TAG, "   ⚠️ Block developer mode não disponível: ${e.message}")
-            }
-            
-            try {
-                val allowUsbDebugMethod = restrictionClass.getMethod("allowUsbDebugging", Boolean::class.javaPrimitiveType)
-                val result = allowUsbDebugMethod.invoke(restrictionPolicy, false) as? Boolean
-                if (result == true) {
-                    count++
-                    Log.i(TAG, "   ✅ USB Debugging BLOQUEADO (previne ADB access)")
-                } else {
-                    Log.w(TAG, "   ⚠️ Block USB debugging falhou")
-                }
-            } catch (e: Exception) {
-                Log.w(TAG, "   ⚠️ Block USB debugging não disponível: ${e.message}")
-            }
+            // TEMPORARIAMENTE DESABILITADO para debugging Device Owner em release
+            // TODO: Reativar antes do release final para produção real
+            Log.w(TAG, "   ⚠️ Developer Mode mantido ATIVO (debugging Device Owner)")
+            Log.w(TAG, "   ⚠️ USB Debugging mantido ATIVO (debugging Device Owner)")
+            Log.w(TAG, "   → TODO: Reativar allowDeveloperMode(false) e allowUsbDebugging(false) antes do release")
             
             Log.i(TAG, "   → Enhanced RestrictionPolicy: $count/4 proteções aplicadas")
             count > 0
