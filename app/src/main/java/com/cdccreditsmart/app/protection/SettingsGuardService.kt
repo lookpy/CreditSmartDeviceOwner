@@ -174,7 +174,7 @@ class SettingsGuardService(private val context: Context) {
         }
     }
     
-    private val guardScope = CoroutineScope(Dispatchers.Default + SupervisorJob())
+    private var guardScope = CoroutineScope(Dispatchers.Default + SupervisorJob())
     private val mainHandler = Handler(Looper.getMainLooper())
     
     private val dpm: DevicePolicyManager by lazy {
@@ -310,6 +310,19 @@ class SettingsGuardService(private val context: Context) {
         }
     }
     
+    /**
+     * Para o SettingsGuard e cancela o guardScope.
+     * CORREÇÃO: Evita coroutines órfãs quando o serviço reinicia.
+     */
+    fun stopGuard() {
+        Log.i(TAG, "🛑 Parando SettingsGuard...")
+        isGuardActive = false
+        guardScope.cancel()
+        hideOverlay()
+        recentlyInterceptedBlockedApps.clear()
+        Log.i(TAG, "✅ SettingsGuard parado e guardScope cancelado")
+    }
+    
     fun startGuard() {
         Log.i(TAG, "")
         Log.i(TAG, "╔════════════════════════════════════════════════════════╗")
@@ -320,6 +333,12 @@ class SettingsGuardService(private val context: Context) {
             Log.i(TAG, "║   ℹ️ Guard já está ativo - ignorando chamada         ║")
             Log.i(TAG, "╚════════════════════════════════════════════════════════╝")
             return
+        }
+        
+        // CORREÇÃO: Se guardScope foi cancelado, criar um novo
+        if (guardScope.coroutineContext[Job]?.isCancelled == true) {
+            Log.i(TAG, "║   🔄 Recriando guardScope (anterior foi cancelado)   ║")
+            guardScope = CoroutineScope(Dispatchers.Default + SupervisorJob())
         }
         
         val mode = getCurrentProtectionMode()
@@ -716,19 +735,18 @@ class SettingsGuardService(private val context: Context) {
     
     /**
      * Limpa entradas antigas do mapa de throttle de apps bloqueados
+     * CORREÇÃO: Sempre limpa entradas com mais de 60s, independente do tamanho do mapa
      */
     private fun cleanupBlockedAppsThrottleMap() {
-        if (recentlyInterceptedBlockedApps.size < 20) return
-        
         val now = System.currentTimeMillis()
         val toRemove = recentlyInterceptedBlockedApps.filter { (_, timestamp) ->
             now - timestamp > 60_000L
-        }.keys
+        }.keys.toList()
         
         toRemove.forEach { recentlyInterceptedBlockedApps.remove(it) }
         
         if (toRemove.isNotEmpty()) {
-            Log.d(TAG, "🧹 Limpeza do throttle map: ${toRemove.size} entradas removidas")
+            Log.d(TAG, "🧹 Limpeza do throttle map: ${toRemove.size} entradas removidas (restantes: ${recentlyInterceptedBlockedApps.size})")
         }
     }
     
@@ -808,10 +826,13 @@ class SettingsGuardService(private val context: Context) {
      * 1. setApplicationHidden toggle (API documentada, mais confiável)
      * 2. forceStopPackage via reflection (pode falhar com HiddenApiException)
      * 
+     * CORREÇÃO: Função agora é suspend e usa delay() ao invés de Thread.sleep()
+     * para não bloquear a thread do Dispatchers.Default
+     * 
      * @param packageName O pacote do app a ser fechado
      * @return true se o app foi fechado com sucesso, false caso contrário
      */
-    private fun forceStopBlockedApp(packageName: String): Boolean {
+    private suspend fun forceStopBlockedApp(packageName: String): Boolean {
         if (!isDeviceOwner()) {
             Log.w(TAG, "⚠️ Não é Device Owner - não pode fechar apps bloqueados")
             return false
@@ -836,7 +857,7 @@ class SettingsGuardService(private val context: Context) {
         // ═══════════════════════════════════════════════════════════════════════════════
         try {
             if (dpm.setApplicationHidden(adminComponent, packageName, true)) {
-                Thread.sleep(100)
+                delay(100)
                 dpm.setApplicationHidden(adminComponent, packageName, false)
                 Log.i(TAG, "✅ App bloqueado FECHADO via setApplicationHidden toggle: $packageName")
                 return true
