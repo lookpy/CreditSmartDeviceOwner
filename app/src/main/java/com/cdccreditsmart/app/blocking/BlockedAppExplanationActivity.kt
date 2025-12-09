@@ -24,6 +24,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.cdccreditsmart.app.storage.LocalInstallmentStorage
+import com.cdccreditsmart.app.storage.OverdueCalculation
 import com.cdccreditsmart.app.ui.theme.CDCCreditSmartTheme
 import java.math.BigDecimal
 
@@ -73,7 +74,20 @@ fun ModernBlockedAppScreen(
 ) {
     val context = androidx.compose.ui.platform.LocalContext.current
     val localStorage = remember { LocalInstallmentStorage(context) }
-    val overdueStatus = remember { localStorage.calculateOverdueStatus() }
+    
+    val overdueStatus = remember { 
+        try {
+            localStorage.calculateOverdueStatus()
+        } catch (e: Exception) {
+            android.util.Log.e("BlockedAppExplanation", "Erro ao calcular status de atraso", e)
+            OverdueCalculation(
+                hasOverdueInstallments = false,
+                maxDaysOverdue = daysOverdue,
+                overdueInstallments = emptyList(),
+                totalOverdueAmount = java.math.BigDecimal.ZERO
+            )
+        }
+    }
     
     var showInstallmentDetails by remember { mutableStateOf(false) }
     
