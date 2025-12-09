@@ -38,19 +38,16 @@ class CertificatePinningManager /* @Inject */ constructor() {
             return CertificatePinner.Builder().build() // Empty pinner = no pinning
         }
         
-        // Special handling for CDC Credit Smart domains that are not accessible
+        // Special handling for CDC Credit Smart domains
+        // IMPORTANT: Certificate pins are PLACEHOLDER values, not real pins!
+        // Until real pins are extracted, we must disable pinning in ALL modes
+        // to allow the app to connect to the backend.
         if (isCdcCreditSmartDomain(baseUrl)) {
             Log.w(TAG, "CDC Credit Smart domain detected: $baseUrl")
-            Log.w(TAG, "These domains are currently NOT accessible - DNS resolution fails")
-            
-            if (isDebugMode) {
-                Log.w(TAG, "Debug mode: Disabling certificate pinning for CDC domains due to accessibility issues")
-                return CertificatePinner.Builder().build() // No pinning for inaccessible domains
-            } else {
-                Log.e(TAG, "Production mode: CDC domains are not accessible! This will cause connection failures.")
-                Log.e(TAG, "Recommendation: Contact CDC Credit Smart team to verify domain status")
-                // Continue with configuration but expect failures
-            }
+            Log.w(TAG, "Certificate pins are PLACEHOLDER values - disabling pinning")
+            Log.w(TAG, "TODO: Extract real certificate pins before production release")
+            // Disable certificate pinning for CDC domains until real pins are configured
+            return CertificatePinner.Builder().build()
         }
         
         val builder = CertificatePinner.Builder()
@@ -201,7 +198,8 @@ class CertificatePinningManager /* @Inject */ constructor() {
     private fun isCdcCreditSmartDomain(url: String): Boolean {
         return try {
             val hostname = java.net.URL(url).host.lowercase()
-            hostname.contains("cdccreditsmart.com.br")
+            // Check both .com and .com.br variants
+            hostname.contains("cdccreditsmart.com")
         } catch (e: Exception) {
             Log.e(TAG, "Error parsing URL: $url", e)
             false
