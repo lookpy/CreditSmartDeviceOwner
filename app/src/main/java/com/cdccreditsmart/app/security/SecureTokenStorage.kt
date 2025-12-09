@@ -167,25 +167,17 @@ class SecureTokenStorage(private val context: Context) {
     }
     
     /**
-     * Sistema inteligente de identificadores MDM com fallback automático.
+     * Retorna o melhor identificador disponível para comandos MDM
+     * Prioridade conforme documentação oficial:
+     * 1. IMEI (preferencial)
+     * 2. Serial Number (fallback)
+     * 3. Device ID (último fallback)
      * 
-     * Prioridade (baseada no backend v2.5):
-     * 1. Identificador que funcionou anteriormente (cache)
-     * 2. Device ID (identificador primário do backend)
-     * 3. Serial Number (código do contrato)
-     * 4. IMEI
-     * 
-     * Quando uma requisição falha com 404, o MdmCommandReceiver chama
-     * markIdentifierAsFailed() e tenta o próximo automaticamente.
+     * Retorna null se nenhum identificador disponível
      */
-    
-    companion object {
-        private const val KEY_WORKING_IDENTIFIER = "working_mdm_identifier"
-        private const val KEY_FAILED_IDENTIFIERS = "failed_mdm_identifiers"
-    }
-    
     /**
      * Verifica se o app está rodando em um usuário secundário gerenciado
+     * Usuários secundários não possuem dados de enrollment (existem apenas no usuário primário)
      */
     private fun isSecondaryManagedUser(): Boolean {
         return try {
@@ -201,83 +193,32 @@ class SecureTokenStorage(private val context: Context) {
         }
     }
     
-    /**
-     * Retorna TODOS os identificadores disponíveis em ordem de prioridade.
-     * Usado pelo sistema de fallback inteligente.
-     */
-    fun getAllMdmIdentifiers(): List<Pair<String, String>> {
-        val identifiers = mutableListOf<Pair<String, String>>()
-        
-        try {
-            // 1. Device ID (identificador primário do backend v2.5)
-            val deviceId = encryptedPrefs.getString(KEY_DEVICE_ID, null)
-            if (!deviceId.isNullOrBlank()) {
-                identifiers.add(Pair("DEVICE_ID", deviceId))
-            }
-            
-            // 2. Serial Number (código do contrato)
-            val serialNumber = encryptedPrefs.getString(KEY_SERIAL_NUMBER, null)
-            if (!serialNumber.isNullOrBlank()) {
-                identifiers.add(Pair("CONTRACT_CODE", serialNumber))
-            }
-            
-            // 3. IMEI
-            val imei = encryptedPrefs.getString(KEY_IMEI, null)
-            if (!imei.isNullOrBlank()) {
-                identifiers.add(Pair("IMEI", imei))
-            }
-            
-            Log.d(TAG, "📋 Identificadores MDM disponíveis: ${identifiers.size}")
-            identifiers.forEachIndexed { index, (type, value) ->
-                val masked = when (type) {
-                    "IMEI" -> "${value.take(4)}***${value.takeLast(3)}"
-                    else -> "${value.take(10)}..."
-                }
-                Log.d(TAG, "   ${index + 1}. $type: $masked")
-            }
-        } catch (e: Exception) {
-            Log.e(TAG, "Erro ao obter identificadores MDM", e)
-        }
-        
-        return identifiers
-    }
-    
-    /**
-     * Retorna o melhor identificador MDM disponível.
-     * Prioriza identificador que já funcionou anteriormente.
-     */
     fun getMdmIdentifier(): String? {
         return try {
-            // 1ª prioridade: Identificador que já funcionou
-            val workingIdentifier = encryptedPrefs.getString(KEY_WORKING_IDENTIFIER, null)
-            if (!workingIdentifier.isNullOrBlank()) {
-                Log.d(TAG, "✅ Usando identificador MDM que funcionou: ${workingIdentifier.take(15)}...")
-                return workingIdentifier
-            }
-            
-            // 2ª prioridade: Device ID (identificador primário do backend v2.5)
-            val deviceId = encryptedPrefs.getString(KEY_DEVICE_ID, null)
-            if (!deviceId.isNullOrBlank()) {
-                Log.d(TAG, "🔍 Tentando Device ID para MDM: ${deviceId.take(20)}...")
-                return deviceId
-            }
-            
-            // 3ª prioridade: Serial Number (código do contrato)
-            val serialNumber = encryptedPrefs.getString(KEY_SERIAL_NUMBER, null)
-            if (!serialNumber.isNullOrBlank()) {
-                Log.d(TAG, "🔍 Tentando Serial Number (contrato) para MDM: ${serialNumber.take(6)}...")
-                return serialNumber
-            }
-            
-            // 4ª prioridade: IMEI
+            // 1ª prioridade: IMEI
             val imei = encryptedPrefs.getString(KEY_IMEI, null)
             if (!imei.isNullOrBlank()) {
-                Log.d(TAG, "🔍 Tentando IMEI para MDM: ${imei.take(4)}***${imei.takeLast(3)}")
+                Log.d(TAG, "✅ Usando IMEI para MDM: ${imei.take(4)}***${imei.takeLast(3)}")
                 return imei
             }
             
+            // 2ª prioridade: Serial Number
+            val serialNumber = encryptedPrefs.getString(KEY_SERIAL_NUMBER, null)
+            if (!serialNumber.isNullOrBlank()) {
+                Log.d(TAG, "⚠️ Usando Serial Number para MDM (IMEI indisponível): ${serialNumber.take(6)}...")
+                return serialNumber
+            }
+            
+            // 3ª prioridade: Device ID
+            val deviceId = encryptedPrefs.getString(KEY_DEVICE_ID, null)
+            if (!deviceId.isNullOrBlank()) {
+                Log.w(TAG, "⚠️ Usando Device ID para MDM (IMEI e SerialNumber indisponíveis): ${deviceId.take(15)}...")
+                return deviceId
+            }
+            
+            // Em usuário secundário, é esperado não ter identificadores (dados estão no usuário primário)
             if (isSecondaryManagedUser()) {
-                Log.d(TAG, "📱 Usuário secundário gerenciado - identificadores no usuário primário")
+                Log.d(TAG, "📱 Usuário secundário gerenciado - identificadores MDM no usuário primário")
             } else {
                 Log.e(TAG, "❌ Nenhum identificador MDM disponível!")
             }
@@ -285,79 +226,6 @@ class SecureTokenStorage(private val context: Context) {
         } catch (e: Exception) {
             Log.e(TAG, "Error getting MDM identifier", e)
             null
-        }
-    }
-    
-    /**
-     * Marca um identificador como funcionando (backend aceitou).
-     * Esse identificador será usado prioritariamente nas próximas requisições.
-     */
-    fun markIdentifierAsWorking(identifier: String) {
-        try {
-            encryptedPrefs.edit().putString(KEY_WORKING_IDENTIFIER, identifier).apply()
-            // Limpar lista de falhos quando encontramos um que funciona
-            encryptedPrefs.edit().remove(KEY_FAILED_IDENTIFIERS).apply()
-            Log.i(TAG, "✅ Identificador MDM funcionando salvo: ${identifier.take(15)}...")
-        } catch (e: Exception) {
-            Log.e(TAG, "Erro ao salvar identificador funcionando", e)
-        }
-    }
-    
-    /**
-     * Limpa o identificador que funcionava (para forçar nova descoberta).
-     * Chamado quando o identificador atual começa a falhar.
-     */
-    fun clearWorkingIdentifier() {
-        try {
-            encryptedPrefs.edit().remove(KEY_WORKING_IDENTIFIER).apply()
-            Log.w(TAG, "⚠️ Identificador MDM funcionando limpo - forçando nova descoberta")
-        } catch (e: Exception) {
-            Log.e(TAG, "Erro ao limpar identificador funcionando", e)
-        }
-    }
-    
-    /**
-     * Retorna o próximo identificador a tentar após uma falha 404.
-     * Exclui identificadores que já falharam nesta sessão.
-     */
-    fun getNextIdentifierToTry(failedIdentifier: String): String? {
-        try {
-            // Adicionar à lista de falhos
-            val failedSet = encryptedPrefs.getStringSet(KEY_FAILED_IDENTIFIERS, mutableSetOf())?.toMutableSet() 
-                ?: mutableSetOf()
-            failedSet.add(failedIdentifier)
-            encryptedPrefs.edit().putStringSet(KEY_FAILED_IDENTIFIERS, failedSet).apply()
-            
-            Log.w(TAG, "⚠️ Identificador falhou (404): ${failedIdentifier.take(15)}...")
-            Log.w(TAG, "   Identificadores já tentados: ${failedSet.size}")
-            
-            // Buscar próximo identificador que ainda não falhou
-            val allIdentifiers = getAllMdmIdentifiers()
-            for ((type, identifier) in allIdentifiers) {
-                if (identifier !in failedSet) {
-                    Log.i(TAG, "🔄 Próximo identificador a tentar: $type = ${identifier.take(15)}...")
-                    return identifier
-                }
-            }
-            
-            Log.e(TAG, "❌ Todos os identificadores falharam - nenhum restante para tentar")
-            return null
-        } catch (e: Exception) {
-            Log.e(TAG, "Erro ao obter próximo identificador", e)
-            return null
-        }
-    }
-    
-    /**
-     * Limpa lista de identificadores que falharam.
-     * Chamado quando uma nova sessão inicia ou quando queremos re-testar.
-     */
-    fun clearFailedIdentifiers() {
-        try {
-            encryptedPrefs.edit().remove(KEY_FAILED_IDENTIFIERS).apply()
-            Log.d(TAG, "🔄 Lista de identificadores falhos limpa")
-        } catch (e: Exception) {
-            Log.e(TAG, "Erro ao limpar identificadores falhos", e)
         }
     }
 
