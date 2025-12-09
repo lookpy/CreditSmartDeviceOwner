@@ -182,6 +182,7 @@ O app pedia permissão de segundo plano aleatoriamente depois de algum tempo, ma
 - Verificação inclui bateria para permitir continuar
 
 **3. PermissionGateManager.kt:**
-- Corrigido para verificar REALMENTE se bateria está isenta (não mais mentir)
-- Se Device Owner mas bateria não isenta → mostra tela de permissões
-- Explicação clara que é a única permissão que Android não permite auto-conceder
+- Corrigido para verificar REALMENTE cada permissão especial mesmo como Device Owner
+- Se Device Owner mas USAGE_STATS, OVERLAY ou bateria não concedida → mostra tela de permissões
+- Alguns dispositivos (como Motorola) não permitem concessão automática de USAGE_STATS via AppOps
+- Explicação clara de quais permissões faltam e por quê

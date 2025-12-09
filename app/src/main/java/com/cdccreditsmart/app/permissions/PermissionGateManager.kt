@@ -119,99 +119,117 @@ class PermissionGateManager(private val context: Context) {
     fun getGateStatus(): GateStatus {
         val level = getPrivilegeLevel()
         
-        // CRÍTICO: Quando Device Owner, a maioria das permissões são concedidas automaticamente
-        // MAS a isenção de otimização de bateria NÃO pode ser auto-concedida (limitação do Android)
+        // CRÍTICO: Quando Device Owner, verificar CADA permissão especial individualmente
+        // Algumas permissões NÃO podem ser concedidas automaticamente em alguns dispositivos
         if (level == PrivilegeLevel.DEVICE_OWNER) {
-            Log.i(TAG, "🚀 Device Owner detectado - verificando permissões especiais")
+            Log.i(TAG, "🚀 Device Owner detectado - verificando permissões especiais REAIS")
             
-            // Verificar se a isenção de bateria foi concedida
+            // Verificar CADA permissão individualmente
+            val hasUsageStats = hasUsageStatsPermission()
+            val hasOverlay = hasOverlayPermission()
             val hasBatteryExemption = isBatteryOptimizationExempted()
             
-            if (hasBatteryExemption) {
-                Log.i(TAG, "   → Todas as permissões estão concedidas (incluindo bateria)")
-                
-                val allGrantedPermissions = listOf(
-                    PermissionStatus(
-                        type = PermissionType.RUNTIME,
-                        isGranted = true,
-                        isObtainableAtCurrentLevel = false,
-                        displayName = "Permissões Básicas",
-                        description = "Concedidas automaticamente como Device Owner"
-                    ),
+            Log.i(TAG, "   → USAGE_STATS: ${if (hasUsageStats) "✅" else "❌"}")
+            Log.i(TAG, "   → OVERLAY: ${if (hasOverlay) "✅" else "❌"}")
+            Log.i(TAG, "   → BATTERY: ${if (hasBatteryExemption) "✅" else "❌"}")
+            
+            val grantedPermissions = mutableListOf<PermissionStatus>()
+            val missingPermissions = mutableListOf<PermissionStatus>()
+            
+            // Runtime permissions são sempre auto-concedidas como Device Owner
+            grantedPermissions.add(
+                PermissionStatus(
+                    type = PermissionType.RUNTIME,
+                    isGranted = true,
+                    isObtainableAtCurrentLevel = false,
+                    displayName = "Permissões Básicas",
+                    description = "Concedidas automaticamente como Device Owner"
+                )
+            )
+            
+            // USAGE_STATS - verificar se realmente foi concedida
+            if (hasUsageStats) {
+                grantedPermissions.add(
                     PermissionStatus(
                         type = PermissionType.USAGE_STATS,
                         isGranted = true,
                         isObtainableAtCurrentLevel = false,
                         displayName = "Monitoramento de Apps",
-                        description = "Concedida automaticamente como Device Owner"
-                    ),
+                        description = "Concedida"
+                    )
+                )
+            } else {
+                missingPermissions.add(
+                    PermissionStatus(
+                        type = PermissionType.USAGE_STATS,
+                        isGranted = false,
+                        isObtainableAtCurrentLevel = true,
+                        displayName = "Acesso ao Uso de Apps",
+                        description = "Necessária para proteção do dispositivo. Alguns dispositivos não permitem concessão automática."
+                    )
+                )
+            }
+            
+            // OVERLAY - verificar se realmente foi concedida
+            if (hasOverlay) {
+                grantedPermissions.add(
                     PermissionStatus(
                         type = PermissionType.OVERLAY,
                         isGranted = true,
                         isObtainableAtCurrentLevel = false,
                         displayName = "Mostrar Alertas",
-                        description = "Concedida automaticamente como Device Owner"
-                    ),
+                        description = "Concedida"
+                    )
+                )
+            } else {
+                missingPermissions.add(
+                    PermissionStatus(
+                        type = PermissionType.OVERLAY,
+                        isGranted = false,
+                        isObtainableAtCurrentLevel = true,
+                        displayName = "Exibir sobre outros apps",
+                        description = "Necessária para mostrar avisos de proteção."
+                    )
+                )
+            }
+            
+            // Battery optimization - NUNCA pode ser auto-concedida
+            if (hasBatteryExemption) {
+                grantedPermissions.add(
                     PermissionStatus(
                         type = PermissionType.BATTERY_OPTIMIZATION,
                         isGranted = true,
                         isObtainableAtCurrentLevel = false,
                         displayName = "Execução em Segundo Plano",
-                        description = "Concedida manualmente pelo técnico"
+                        description = "Concedida"
                     )
-                )
-                
-                return GateStatus(
-                    privilegeLevel = level,
-                    allRequiredPermissionsGranted = true,
-                    missingPermissions = emptyList(),
-                    grantedPermissions = allGrantedPermissions
                 )
             } else {
-                Log.w(TAG, "   → Isenção de bateria PENDENTE (requer aprovação manual)")
-                
-                // Mostrar tela de permissões para solicitar isenção de bateria
-                val grantedPermissions = listOf(
-                    PermissionStatus(
-                        type = PermissionType.RUNTIME,
-                        isGranted = true,
-                        isObtainableAtCurrentLevel = false,
-                        displayName = "Permissões Básicas",
-                        description = "Concedidas automaticamente como Device Owner"
-                    ),
-                    PermissionStatus(
-                        type = PermissionType.USAGE_STATS,
-                        isGranted = true,
-                        isObtainableAtCurrentLevel = false,
-                        displayName = "Monitoramento de Apps",
-                        description = "Concedida automaticamente como Device Owner"
-                    ),
-                    PermissionStatus(
-                        type = PermissionType.OVERLAY,
-                        isGranted = true,
-                        isObtainableAtCurrentLevel = false,
-                        displayName = "Mostrar Alertas",
-                        description = "Concedida automaticamente como Device Owner"
-                    )
-                )
-                
-                val missingPermissions = listOf(
+                missingPermissions.add(
                     PermissionStatus(
                         type = PermissionType.BATTERY_OPTIMIZATION,
                         isGranted = false,
                         isObtainableAtCurrentLevel = true,
                         displayName = "Execução em Segundo Plano",
-                        description = "Esta é a única permissão que o Android não permite conceder automaticamente. Precisa de aprovação manual."
+                        description = "O Android não permite conceder automaticamente. Requer aprovação manual."
                     )
                 )
-                
-                return GateStatus(
-                    privilegeLevel = level,
-                    allRequiredPermissionsGranted = false,
-                    missingPermissions = missingPermissions,
-                    grantedPermissions = grantedPermissions
-                )
             }
+            
+            val allGranted = missingPermissions.isEmpty()
+            
+            if (allGranted) {
+                Log.i(TAG, "   → Todas as permissões especiais estão concedidas!")
+            } else {
+                Log.w(TAG, "   → ${missingPermissions.size} permissão(ões) pendente(s)")
+            }
+            
+            return GateStatus(
+                privilegeLevel = level,
+                allRequiredPermissionsGranted = allGranted,
+                missingPermissions = missingPermissions,
+                grantedPermissions = grantedPermissions
+            )
         }
         
         val allPermissions = getAllPermissionStatuses(level)
