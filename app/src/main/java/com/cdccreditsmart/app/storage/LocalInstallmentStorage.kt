@@ -10,8 +10,11 @@ import com.squareup.moshi.ToJson
 import com.squareup.moshi.Types
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import java.math.BigDecimal
+import java.time.Instant
 import java.time.LocalDate
+import java.time.ZoneId
 import java.time.format.DateTimeFormatter
+import java.time.format.DateTimeParseException
 
 /**
  * Moshi adapter para serializar/desserializar BigDecimal
@@ -134,7 +137,10 @@ class LocalInstallmentStorage(private val context: Context) {
         
         installments.forEach { installment ->
             if (installment.status == "PENDING" || installment.status == "OVERDUE") {
-                val dueDate = LocalDate.parse(installment.dueDate, dateFormatter)
+                val dueDate = parseDateSafely(installment.dueDate) ?: run {
+                    Log.w(TAG, "⚠️ Não foi possível parsear data: ${installment.dueDate}")
+                    return@forEach
+                }
                 
                 if (today.isAfter(dueDate)) {
                     val daysOverdue = java.time.temporal.ChronoUnit.DAYS.between(dueDate, today).toInt()
@@ -178,6 +184,40 @@ class LocalInstallmentStorage(private val context: Context) {
     
     fun getContractNumber(): String? = encryptedPrefs.getString(KEY_CONTRACT_NUMBER, null)
     fun getLastSyncTimestamp(): Long = encryptedPrefs.getLong(KEY_LAST_SYNC, 0L)
+    
+    /**
+     * Faz parsing seguro de data em múltiplos formatos:
+     * - ISO_LOCAL_DATE: "2025-12-22"
+     * - ISO_INSTANT: "2025-12-22T23:10:29.071Z"
+     * - Fallback: extrai primeiros 10 caracteres
+     */
+    private fun parseDateSafely(dateString: String?): LocalDate? {
+        if (dateString.isNullOrBlank()) return null
+        
+        return try {
+            // Formato 1: yyyy-MM-dd (ISO_LOCAL_DATE)
+            LocalDate.parse(dateString, dateFormatter)
+        } catch (e: DateTimeParseException) {
+            try {
+                // Formato 2: ISO 8601 completo com timezone (2025-12-22T23:10:29.071Z)
+                val instant = Instant.parse(dateString)
+                instant.atZone(ZoneId.systemDefault()).toLocalDate()
+            } catch (e2: DateTimeParseException) {
+                try {
+                    // Formato 3: Fallback - extrai apenas os primeiros 10 caracteres (yyyy-MM-dd)
+                    if (dateString.length >= 10) {
+                        LocalDate.parse(dateString.substring(0, 10), dateFormatter)
+                    } else {
+                        Log.e(TAG, "❌ Data muito curta para parsing: $dateString")
+                        null
+                    }
+                } catch (e3: Exception) {
+                    Log.e(TAG, "❌ Falha em todos os métodos de parsing para: $dateString", e3)
+                    null
+                }
+            }
+        }
+    }
 }
 
 /**

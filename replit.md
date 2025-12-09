@@ -91,3 +91,5 @@ The UI leverages Jetpack Compose and Material 3, incorporating a CDC institution
 - These changes prevent "Settings isn't responding" system crash caused by sync during block
 - All intercept functions (triggerInterceptFromExternal, forceInterceptCritical) now use lightweight overlay
 - Overlay click handler also uses lightweight screen instead of MainActivity
+- **CRASH FIX**: LocalInstallmentStorage.parseDateSafely() now handles ISO 8601 timestamps (2025-12-22T23:10:29.071Z)
+- Date parsing supports: ISO_LOCAL_DATE (yyyy-MM-dd), ISO_INSTANT (full timestamp), and substring fallback
