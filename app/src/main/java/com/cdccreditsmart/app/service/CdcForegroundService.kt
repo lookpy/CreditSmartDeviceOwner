@@ -403,10 +403,11 @@ class CdcForegroundService : Service(), ScreenStateListener {
         val filter = IntentFilter().apply {
             addAction(Intent.ACTION_SCREEN_ON)
             addAction(Intent.ACTION_SCREEN_OFF)
+            addAction(Intent.ACTION_USER_PRESENT)
         }
         registerReceiver(screenStateReceiver, filter)
         ScreenStateReceiver.addListener(this)
-        Log.i(TAG, "✅ ScreenStateReceiver registrado")
+        Log.i(TAG, "✅ ScreenStateReceiver registrado (inclui ACTION_USER_PRESENT para detectar screen unlock)")
     }
     
     override fun onScreenStateChanged(isScreenOn: Boolean) {

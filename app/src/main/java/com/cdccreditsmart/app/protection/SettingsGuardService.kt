@@ -210,6 +210,17 @@ class SettingsGuardService(private val context: Context) {
     private val BLOCKED_APP_THROTTLE_MS = if (BuildConfig.DEBUG) 10_000L else 2_000L
     
     // ═══════════════════════════════════════════════════════════════════════════════
+    // MULTI-WINDOW / SPLIT SCREEN DETECTION: Detectar apps bloqueados em multi-window
+    // ═══════════════════════════════════════════════════════════════════════════════
+    @Volatile
+    private var lastMultiWindowCheckTime = 0L
+    private val MULTI_WINDOW_CHECK_INTERVAL_MS = if (BuildConfig.DEBUG) 5_000L else 3_000L
+    
+    @Volatile
+    private var lastScreenUnlockCheckTime = 0L
+    private val SCREEN_UNLOCK_CHECK_DEBOUNCE_MS = 1_000L
+    
+    // ═══════════════════════════════════════════════════════════════════════════════
     // TRACKING DE ESTADO: Lembrar última activity que pode levar a telas perigosas
     // Usado para bloquear SubSettings quando vier de SystemDashboardActivity, etc.
     // ═══════════════════════════════════════════════════════════════════════════════
@@ -529,6 +540,17 @@ class SettingsGuardService(private val context: Context) {
             return
         }
         
+        // ═══════════════════════════════════════════════════════════════════════════════
+        // PRIORIDADE 0.5: VERIFICAR APPS BLOQUEADOS EM MULTI-WINDOW / SPLIT SCREEN
+        // Verifica periodicamente (a cada 3 segundos) se há apps bloqueados em execução
+        // que não são o foreground principal (ex: split screen)
+        // ═══════════════════════════════════════════════════════════════════════════════
+        val now = System.currentTimeMillis()
+        if (now - lastMultiWindowCheckTime >= MULTI_WINDOW_CHECK_INTERVAL_MS) {
+            lastMultiWindowCheckTime = now
+            checkAndCloseBlockedAppsInMultiWindow("GUARD_LOOP")
+        }
+        
         when (checkSettingsActivity(foregroundPackage, foregroundActivity)) {
             SettingsCheckResult.DANGEROUS_IMMEDIATE -> {
                 settingsOpenCount++
@@ -707,6 +729,234 @@ class SettingsGuardService(private val context: Context) {
         
         if (toRemove.isNotEmpty()) {
             Log.d(TAG, "🧹 Limpeza do throttle map: ${toRemove.size} entradas removidas")
+        }
+    }
+    
+    // ═══════════════════════════════════════════════════════════════════════════════
+    // MULTI-WINDOW / SPLIT SCREEN BLOCKED APPS DETECTION AND CLOSING
+    // ═══════════════════════════════════════════════════════════════════════════════
+    
+    /**
+     * Retorna todos os packages de apps em execução visíveis/foreground.
+     * Combina dois métodos para melhor detecção de split screen:
+     * 1. UsageStats - detecta ACTIVITY_RESUMED dos últimos 5 segundos
+     * 2. ActivityManager - processos com importance até PERCEPTIBLE
+     */
+    private fun getAllRunningPackages(): List<String> {
+        val packages = mutableSetOf<String>()
+        
+        // ═══════════════════════════════════════════════════════════════════════════════
+        // MÉTODO 1: UsageStats - pega todos os ACTIVITY_RESUMED recentes (últimos 5 segundos)
+        // Mais preciso para split screen pois detecta eventos de activity
+        // ═══════════════════════════════════════════════════════════════════════════════
+        try {
+            val usageStatsManager = context.getSystemService(Context.USAGE_STATS_SERVICE) as? UsageStatsManager
+            if (usageStatsManager != null) {
+                val endTime = System.currentTimeMillis()
+                val beginTime = endTime - 5000 // últimos 5 segundos
+                val usageEvents = usageStatsManager.queryEvents(beginTime, endTime)
+                val event = UsageEvents.Event()
+                while (usageEvents.hasNextEvent()) {
+                    usageEvents.getNextEvent(event)
+                    if (event.eventType == UsageEvents.Event.ACTIVITY_RESUMED ||
+                        event.eventType == UsageEvents.Event.MOVE_TO_FOREGROUND) {
+                        packages.add(event.packageName)
+                    }
+                }
+            }
+        } catch (e: Exception) {
+            Log.e(TAG, "Erro ao obter UsageStats: ${e.message}")
+        }
+        
+        // ═══════════════════════════════════════════════════════════════════════════════
+        // MÉTODO 2: ActivityManager - processos até IMPORTANCE_PERCEPTIBLE
+        // Em split screen, apps podem ter PERCEPTIBLE ou VISIBLE, não só FOREGROUND
+        // ═══════════════════════════════════════════════════════════════════════════════
+        try {
+            val am = context.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
+            val runningProcesses = am.runningAppProcesses ?: emptyList()
+            
+            for (processInfo in runningProcesses) {
+                // Incluir processos até PERCEPTIBLE (cobre split screen)
+                if (processInfo.importance <= ActivityManager.RunningAppProcessInfo.IMPORTANCE_PERCEPTIBLE) {
+                    // Extrair nome base do processo (remove :service, :remote, etc.)
+                    val basePackage = processInfo.processName.split(":").first()
+                    if (basePackage.isNotEmpty()) {
+                        packages.add(basePackage)
+                    }
+                    
+                    // Adicionar todos os packages associados a este processo
+                    processInfo.pkgList?.forEach { pkg ->
+                        if (!pkg.isNullOrEmpty()) {
+                            packages.add(pkg)
+                        }
+                    }
+                }
+            }
+        } catch (e: Exception) {
+            Log.e(TAG, "Erro ao obter processos: ${e.message}")
+        }
+        
+        return packages.toList()
+    }
+    
+    /**
+     * Força o fechamento de um app bloqueado.
+     * Requer Device Owner para funcionar.
+     * 
+     * Ordem de tentativa:
+     * 1. setApplicationHidden toggle (API documentada, mais confiável)
+     * 2. forceStopPackage via reflection (pode falhar com HiddenApiException)
+     * 
+     * @param packageName O pacote do app a ser fechado
+     * @return true se o app foi fechado com sucesso, false caso contrário
+     */
+    private fun forceStopBlockedApp(packageName: String): Boolean {
+        if (!isDeviceOwner()) {
+            Log.w(TAG, "⚠️ Não é Device Owner - não pode fechar apps bloqueados")
+            return false
+        }
+        
+        // Não fechar pacotes críticos do sistema
+        if (packageName in CRITICAL_SYSTEM_PACKAGES_FOR_INTERCEPTION) {
+            Log.d(TAG, "🛡️ Ignorando package crítico do sistema: $packageName")
+            return false
+        }
+        
+        // Ignorar launchers
+        if (packageName.contains("launcher", ignoreCase = true) && 
+            !packageName.contains("game", ignoreCase = true)) {
+            Log.d(TAG, "🛡️ Ignorando launcher: $packageName")
+            return false
+        }
+        
+        // ═══════════════════════════════════════════════════════════════════════════════
+        // MÉTODO 1: setApplicationHidden toggle (API documentada, sempre funciona)
+        // Ocultar e mostrar rapidamente força o app a fechar
+        // ═══════════════════════════════════════════════════════════════════════════════
+        try {
+            if (dpm.setApplicationHidden(adminComponent, packageName, true)) {
+                Thread.sleep(100)
+                dpm.setApplicationHidden(adminComponent, packageName, false)
+                Log.i(TAG, "✅ App bloqueado FECHADO via setApplicationHidden toggle: $packageName")
+                return true
+            }
+        } catch (e: Exception) {
+            Log.e(TAG, "Erro no setApplicationHidden toggle: $packageName", e)
+        }
+        
+        // ═══════════════════════════════════════════════════════════════════════════════
+        // MÉTODO 2: forceStopPackage via reflection (fallback)
+        // Pode falhar com HiddenApiException ou SecurityException em Android moderno
+        // ═══════════════════════════════════════════════════════════════════════════════
+        try {
+            val am = context.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
+            val method = am.javaClass.getDeclaredMethod("forceStopPackage", String::class.java)
+            method.invoke(am, packageName)
+            Log.i(TAG, "✅ App bloqueado FECHADO via forceStopPackage: $packageName")
+            return true
+        } catch (e: Exception) {
+            Log.e(TAG, "❌ forceStopPackage não disponível: $packageName", e)
+        }
+        
+        return false
+    }
+    
+    /**
+     * Verifica todos os apps em execução (incluindo split screen) e fecha os que estão bloqueados.
+     * Esta função é chamada periodicamente pelo guard loop e após screen unlock.
+     * 
+     * @param triggeredBy String descrevendo o que disparou a verificação (para logs)
+     * @return Lista de packages que foram fechados
+     */
+    private suspend fun checkAndCloseBlockedAppsInMultiWindow(triggeredBy: String): List<String> {
+        val closedApps = mutableListOf<String>()
+        
+        try {
+            val runningPackages = getAllRunningPackages()
+            
+            if (runningPackages.isEmpty()) {
+                return emptyList()
+            }
+            
+            Log.d(TAG, "🔍 [$triggeredBy] Verificando ${runningPackages.size} apps em execução: $runningPackages")
+            
+            for (packageName in runningPackages) {
+                // Ignorar nosso próprio app
+                if (packageName == context.packageName) continue
+                
+                // Ignorar pacotes críticos
+                if (packageName in CRITICAL_SYSTEM_PACKAGES_FOR_INTERCEPTION) continue
+                
+                // Ignorar launchers
+                if (packageName.contains("launcher", ignoreCase = true) && 
+                    !packageName.contains("game", ignoreCase = true)) continue
+                
+                // Ignorar SystemUI
+                if (packageName.contains("systemui", ignoreCase = true)) continue
+                
+                // Verificar se o app está bloqueado
+                if (appBlockingManager.isAppBlocked(packageName)) {
+                    Log.w(TAG, "🚫 [$triggeredBy] APP BLOQUEADO EM EXECUÇÃO DETECTADO: $packageName")
+                    
+                    // Tentar fechar o app
+                    val wasClosed = forceStopBlockedApp(packageName)
+                    if (wasClosed) {
+                        closedApps.add(packageName)
+                    }
+                }
+            }
+            
+            // Se fechamos algum app, mostrar explicação ao usuário
+            if (closedApps.isNotEmpty()) {
+                Log.i(TAG, "")
+                Log.i(TAG, "╔════════════════════════════════════════════════════════════════╗")
+                Log.i(TAG, "║  🚫 APPS BLOQUEADOS FECHADOS EM MULTI-WINDOW                   ║")
+                Log.i(TAG, "╠════════════════════════════════════════════════════════════════╣")
+                Log.i(TAG, "║  Trigger: $triggeredBy")
+                Log.i(TAG, "║  Apps fechados: ${closedApps.size}")
+                closedApps.forEach { pkg ->
+                    Log.i(TAG, "║  - $pkg")
+                }
+                Log.i(TAG, "╚════════════════════════════════════════════════════════════════╝")
+                Log.i(TAG, "")
+                
+                // Lançar tela de explicação para o primeiro app fechado
+                withContext(Dispatchers.Main) {
+                    launchBlockedAppExplanation(closedApps.first())
+                }
+            }
+            
+        } catch (e: Exception) {
+            Log.e(TAG, "❌ Erro ao verificar apps em multi-window: ${e.message}", e)
+        }
+        
+        return closedApps
+    }
+    
+    /**
+     * Chamado quando a tela é desbloqueada (ACTION_USER_PRESENT).
+     * Verifica imediatamente se há apps bloqueados em execução.
+     */
+    fun onScreenUnlocked() {
+        val now = System.currentTimeMillis()
+        
+        // Debounce para evitar múltiplas verificações em sequência
+        if (now - lastScreenUnlockCheckTime < SCREEN_UNLOCK_CHECK_DEBOUNCE_MS) {
+            Log.d(TAG, "🔓 Screen unlock debounced - ignorando")
+            return
+        }
+        
+        lastScreenUnlockCheckTime = now
+        
+        Log.i(TAG, "🔓 SCREEN UNLOCKED - Verificando apps bloqueados em execução...")
+        
+        guardScope.launch {
+            try {
+                checkAndCloseBlockedAppsInMultiWindow("SCREEN_UNLOCK")
+            } catch (e: Exception) {
+                Log.e(TAG, "❌ Erro ao verificar apps após screen unlock: ${e.message}", e)
+            }
         }
     }
     
