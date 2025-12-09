@@ -1135,13 +1135,14 @@ class AppBlockingManager(private val context: Context) {
      * Usado para correção de conformidade
      */
     private fun getDefaultCategoriesForLevel(level: Int): List<String> {
-        return when (level) {
-            1 -> listOf("gallery_photos", "video_players", "browsers")
-            2 -> listOf("gallery_photos", "video_players", "browsers", "youtube_tiktok", "music", "play_store", "games")
-            3 -> listOf("gallery_photos", "video_players", "browsers", "youtube_tiktok", "music", "play_store", "games", "social_media")
-            4 -> listOf("gallery_photos", "video_players", "browsers", "youtube_tiktok", "music", "play_store", "games", "social_media", "non_essential_apps")
-            5 -> listOf("gallery_photos", "video_players", "browsers", "youtube_tiktok", "music", "play_store", "games", "social_media", "non_essential_apps", "all_apps")
-            else -> emptyList()
+        return when {
+            level <= 0 -> emptyList()
+            level == 1 -> listOf("gallery_photos", "video_players", "browsers")
+            level == 2 -> listOf("gallery_photos", "video_players", "browsers", "youtube_tiktok", "music", "play_store", "games")
+            level == 3 -> listOf("gallery_photos", "video_players", "browsers", "youtube_tiktok", "music", "play_store", "games", "social_media")
+            level == 4 -> listOf("gallery_photos", "video_players", "browsers", "youtube_tiktok", "music", "play_store", "games", "social_media", "non_essential_apps")
+            // Nível 5+ = bloqueio máximo (inclui nível 6 do backend)
+            else -> listOf("gallery_photos", "video_players", "browsers", "youtube_tiktok", "music", "play_store", "games", "social_media", "non_essential_apps", "all_apps")
         }
     }
     

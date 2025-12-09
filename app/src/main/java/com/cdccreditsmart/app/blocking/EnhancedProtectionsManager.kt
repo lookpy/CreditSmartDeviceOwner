@@ -260,7 +260,11 @@ class EnhancedProtectionsManager(private val context: Context) {
     }
     
     fun getPopularAppsForBlocking(level: Int): List<String> {
-        return when (level) {
+        val effectiveLevel = level.coerceIn(0, 5)
+        Log.d(TAG, "getPopularAppsForBlocking: level=$level, effectiveLevel=$effectiveLevel")
+        
+        return when (effectiveLevel) {
+            0 -> emptyList()
             1 -> {
                 PopularAppsDefinitions.getAppsByCategory()["Entertainment"] ?: emptyList()
             }
@@ -281,10 +285,9 @@ class EnhancedProtectionsManager(private val context: Context) {
                     category !in listOf("Finance", "Productivity", "Transport", "Food Delivery")
                 }
             }
-            5 -> {
+            else -> {
                 PopularAppsDefinitions.POPULAR_APPS
             }
-            else -> emptyList()
         }
     }
     

@@ -27,6 +27,8 @@ import android.widget.TextView
 import androidx.core.app.NotificationCompat
 import com.cdccreditsmart.app.BuildConfig
 import com.cdccreditsmart.app.R
+import com.cdccreditsmart.app.blocking.AppBlockingManager
+import com.cdccreditsmart.app.blocking.BlockedAppExplanationActivity
 import com.cdccreditsmart.app.presentation.MainActivity
 import com.cdccreditsmart.device.CDCDeviceAdminReceiver
 import kotlinx.coroutines.*
@@ -197,6 +199,15 @@ class SettingsGuardService(private val context: Context) {
     
     @Volatile
     private var usageStatsNotificationShown = false
+    
+    // ═══════════════════════════════════════════════════════════════════════════════
+    // BLOCKED APPS INTERCEPTION: Monitorar e interceptar apps bloqueados via UsageStats
+    // Substitui o AccessibilityService que foi desabilitado por causa do Play Protect
+    // ═══════════════════════════════════════════════════════════════════════════════
+    private val appBlockingManager by lazy { AppBlockingManager(context) }
+    
+    private val recentlyInterceptedBlockedApps = mutableMapOf<String, Long>()
+    private val BLOCKED_APP_THROTTLE_MS = if (BuildConfig.DEBUG) 10_000L else 2_000L
     
     // ═══════════════════════════════════════════════════════════════════════════════
     // TRACKING DE ESTADO: Lembrar última activity que pode levar a telas perigosas
@@ -507,9 +518,17 @@ class SettingsGuardService(private val context: Context) {
     
     /**
      * Trata verificações no modo normal de proteção
-     * Bloqueia telas perigosas, ignora o resto
+     * Bloqueia telas perigosas e intercepta apps bloqueados
      */
     private suspend fun handleNormalProtectionCheck(foregroundPackage: String, foregroundActivity: String?) {
+        // ═══════════════════════════════════════════════════════════════════════════════
+        // PRIORIDADE 0: INTERCEPTAR APPS BLOQUEADOS via UsageStats
+        // Substitui o AccessibilityService desabilitado por causa do Play Protect
+        // ═══════════════════════════════════════════════════════════════════════════════
+        if (checkAndInterceptBlockedApp(foregroundPackage)) {
+            return
+        }
+        
         when (checkSettingsActivity(foregroundPackage, foregroundActivity)) {
             SettingsCheckResult.DANGEROUS_IMMEDIATE -> {
                 settingsOpenCount++
@@ -531,15 +550,163 @@ class SettingsGuardService(private val context: Context) {
                     }
                     settingsOpenCount = 0
                     isInAggressiveMode = false
-                    // CRÍTICO: Resetar throttle quando app CDC está em foreground
-                    // Isso permite re-interceptar imediatamente se usuário voltar para tela perigosa
                     lastInterceptTime = 0L
                     hideOverlay()
+                    cleanupBlockedAppsThrottleMap()
                 } else {
                     settingsOpenCount = 0
                     isInAggressiveMode = false
                 }
             }
+        }
+    }
+    
+    /**
+     * ═══════════════════════════════════════════════════════════════════════════════
+     * BLOCKED APP INTERCEPTION via UsageStats
+     * ═══════════════════════════════════════════════════════════════════════════════
+     * 
+     * Detecta quando um app bloqueado está em foreground e intercepta mostrando
+     * a tela de bloqueio (BlockedAppExplanationActivity).
+     * 
+     * Esta funcionalidade substitui o AccessibilityService que foi desabilitado
+     * por causar bloqueio do Google Play Protect durante QR Code provisioning.
+     * 
+     * @return true se o app foi interceptado (e a execução deve parar), false caso contrário
+     */
+    /**
+     * Lista de pacotes CRÍTICOS do sistema que NUNCA devem ser interceptados.
+     * IMPORTANTE: NÃO incluir Chrome, YouTube, etc. aqui - eles DEVEM ser bloqueáveis!
+     */
+    private val CRITICAL_SYSTEM_PACKAGES_FOR_INTERCEPTION = setOf(
+        // Sistema base Android
+        "android",
+        "com.android.systemui",
+        "com.android.settings",
+        "com.android.phone",
+        "com.android.dialer",
+        "com.android.contacts",
+        "com.android.mms",
+        "com.android.messaging",
+        "com.android.launcher",
+        "com.android.launcher2",
+        "com.android.launcher3",
+        
+        // Google Play Services (crítico para funcionamento do sistema)
+        "com.google.android.gms",
+        "com.google.android.gsf",
+        "com.google.android.gsf.login",
+        "com.google.android.packageinstaller",
+        "com.google.android.permissioncontroller",
+        
+        // Input methods (teclados)
+        "com.google.android.inputmethod.latin",
+        "com.android.inputmethod.latin",
+        
+        // Launchers de fabricantes
+        "com.sec.android.app.launcher",
+        "com.miui.home",
+        "com.huawei.android.launcher",
+        "com.oppo.launcher",
+        "com.oneplus.launcher",
+        "com.vivo.launcher",
+        "com.transsion.launcher",
+        
+        // Nosso app
+        "com.cdccreditsmart.app"
+    )
+    
+    private suspend fun checkAndInterceptBlockedApp(packageName: String): Boolean {
+        // Ignorar nosso próprio app
+        if (packageName == context.packageName) return false
+        
+        // Ignorar apenas pacotes CRÍTICOS do sistema (não Chrome, YouTube, etc.)
+        if (packageName in CRITICAL_SYSTEM_PACKAGES_FOR_INTERCEPTION) return false
+        
+        // Ignorar pacotes de launcher (detectar por nome)
+        if (packageName.contains("launcher", ignoreCase = true) && 
+            !packageName.contains("game", ignoreCase = true)) return false
+        
+        // Ignorar SystemUI
+        if (packageName.contains("systemui", ignoreCase = true)) return false
+        
+        try {
+            if (!appBlockingManager.isAppBlocked(packageName)) {
+                return false
+            }
+            
+            val now = System.currentTimeMillis()
+            val lastIntercept = recentlyInterceptedBlockedApps[packageName] ?: 0L
+            
+            if (now - lastIntercept < BLOCKED_APP_THROTTLE_MS) {
+                return false
+            }
+            
+            recentlyInterceptedBlockedApps[packageName] = now
+            
+            Log.i(TAG, "")
+            Log.i(TAG, "╔════════════════════════════════════════════════════════════════╗")
+            Log.i(TAG, "║  🚫 APP BLOQUEADO INTERCEPTADO VIA USAGESTATS                  ║")
+            Log.i(TAG, "╠════════════════════════════════════════════════════════════════╣")
+            Log.i(TAG, "║  Package: $packageName")
+            Log.i(TAG, "║  Ação: Lançando BlockedAppExplanationActivity")
+            Log.i(TAG, "╚════════════════════════════════════════════════════════════════╝")
+            Log.i(TAG, "")
+            
+            withContext(Dispatchers.Main) {
+                launchBlockedAppExplanation(packageName)
+            }
+            
+            return true
+            
+        } catch (e: Exception) {
+            Log.e(TAG, "❌ Erro ao verificar/interceptar app bloqueado: $packageName", e)
+            return false
+        }
+    }
+    
+    /**
+     * Lança a tela de explicação de bloqueio
+     */
+    private fun launchBlockedAppExplanation(blockedPackage: String) {
+        try {
+            val blockingInfo = appBlockingManager.getBlockingInfo()
+            
+            val intent = Intent(context, BlockedAppExplanationActivity::class.java).apply {
+                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY)
+                putExtra("blocked_package", blockedPackage)
+                putExtra("blocking_level", blockingInfo.currentLevel)
+                putExtra("days_overdue", blockingInfo.daysOverdue)
+                putExtra("blocked_apps_count", blockingInfo.blockedAppsCount)
+            }
+            
+            context.startActivity(intent)
+            
+            Log.i(TAG, "✅ BlockedAppExplanationActivity lançada para: $blockedPackage")
+            Log.i(TAG, "   Nível: ${blockingInfo.currentLevel}, Dias atraso: ${blockingInfo.daysOverdue}")
+            
+        } catch (e: Exception) {
+            Log.e(TAG, "❌ Erro ao lançar BlockedAppExplanationActivity", e)
+        }
+    }
+    
+    /**
+     * Limpa entradas antigas do mapa de throttle de apps bloqueados
+     */
+    private fun cleanupBlockedAppsThrottleMap() {
+        if (recentlyInterceptedBlockedApps.size < 20) return
+        
+        val now = System.currentTimeMillis()
+        val toRemove = recentlyInterceptedBlockedApps.filter { (_, timestamp) ->
+            now - timestamp > 60_000L
+        }.keys
+        
+        toRemove.forEach { recentlyInterceptedBlockedApps.remove(it) }
+        
+        if (toRemove.isNotEmpty()) {
+            Log.d(TAG, "🧹 Limpeza do throttle map: ${toRemove.size} entradas removidas")
         }
     }
     
