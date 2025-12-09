@@ -108,3 +108,29 @@ O enforcement offline reaplicava packages do cache diretamente via setApplicatio
 **Garantias:**
 - SettingsGuard inicia corretamente no boot quando Device Owner
 - Não há mais tentativa de startService em classe que não é Service
+
+### 2025-12-09: Permissões Completas para Device Owner
+
+**Expansão de Permissões Runtime:**
+- Phone: READ/WRITE_CALL_LOG, CALL_PHONE, PROCESS_OUTGOING_CALLS, ANSWER_PHONE_CALLS, READ_PHONE_NUMBERS
+- SMS: SEND_SMS, RECEIVE_SMS, READ_SMS, RECEIVE_WAP_PUSH, RECEIVE_MMS
+- Contacts: READ/WRITE_CONTACTS, GET_ACCOUNTS
+- Location: ACCESS_FINE/COARSE/BACKGROUND_LOCATION
+- Storage: READ/WRITE_EXTERNAL_STORAGE, READ_MEDIA_IMAGES/VIDEO/AUDIO
+- Camera: CAMERA, RECORD_AUDIO
+- Calendar: READ/WRITE_CALENDAR
+- Sensors: BODY_SENSORS, BODY_SENSORS_BACKGROUND, ACTIVITY_RECOGNITION
+- Bluetooth: BLUETOOTH_SCAN/CONNECT/ADVERTISE
+- Network: ACCESS/CHANGE_WIFI_STATE, CHANGE_NETWORK_STATE, NEARBY_WIFI_DEVICES
+
+**Configuração de Execução em Segundo Plano:**
+- `configureBackgroundExecution()`: Configura app para execução irrestrita em background
+- `exemptFromAppStandby()`: Isenta app de App Standby Buckets via AppOps
+- `disableBackgroundRestrictions()`: Move app para STANDBY_BUCKET_ACTIVE
+- `allowUnrestrictedDataUsage()`: Adiciona app à whitelist de dados em background
+- `configureDeviceOwnerKeepAlive()`: Bloqueia desinstalação e marca como protected package
+- `disableOemBatteryRestrictions()`: Detecta restrições OEM (Samsung, Xiaomi, Huawei, Oppo, OnePlus)
+
+**Foreground Service Types:**
+- FOREGROUND_SERVICE_DATA_SYNC, REMOTE_MESSAGING, MICROPHONE, MEDIA_PROJECTION
+- FOREGROUND_SERVICE_LOCATION, CONNECTED_DEVICE, SPECIAL_USE, SYSTEM_EXEMPTED
