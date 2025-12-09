@@ -6,13 +6,13 @@ package com.cdccreditsmart.network.config
 object NetworkConfig {
     
     // Base URLs - CDC Credit Smart backend
-    // Production and Debug URLs using cdccreditsmart.com domain
-    const val BASE_URL = "https://cdccreditsmart.com/"
-    const val BASE_URL_DEBUG = "https://cdccreditsmart.com/"
+    // Backend hospedado em picard.replit.dev (Replit deployment)
+    const val BASE_URL = "https://picard.replit.dev/"
+    const val BASE_URL_DEBUG = "https://picard.replit.dev/"
     
     // WebSocket URLs for real-time communication
-    const val WS_BASE_URL = "wss://cdccreditsmart.com/ws"
-    const val WS_BASE_URL_DEBUG = "wss://cdccreditsmart.com/ws"
+    const val WS_BASE_URL = "wss://picard.replit.dev/ws"
+    const val WS_BASE_URL_DEBUG = "wss://picard.replit.dev/ws"
     
     // Timeout configurations (in milliseconds)
     const val CONNECT_TIMEOUT = 30_000L
@@ -45,25 +45,34 @@ object NetworkConfig {
     
     // Certificate Pinning Configuration
     // ================================================
-    // IMPORTANT: The certificate pins below are PLACEHOLDER VALUES!
+    // Certificate pins extraídos do servidor real em 2025-12-09
     // 
-    // The CDC Credit Smart domain (cdccreditsmart.com) is accessible and responding,
-    // but these pins are not real certificate pins and need to be updated.
-    // 
-    // Before deploying to production:
-    // 1. Extract real certificate pins using: 
-    //    openssl s_client -servername cdccreditsmart.com -connect cdccreditsmart.com:443 | openssl x509 -pubkey -noout | openssl rsa -pubin -outform der | openssl dgst -sha256 -binary | openssl enc -base64
-    // 2. Replace these placeholder values with the actual pins
-    // 3. Include backup pins (intermediate CA, root CA) for pin rotation
-    // 4. Test thoroughly in staging environment before production deployment
+    // Primário: Pin do certificado atual do servidor
+    // Backup: Pin do CA (Let's Encrypt R3) - mais estável, não muda a cada 90 dias
     //
-    // For debugging, certificate pinning can be disabled using:
-    // CertificatePinningManager.setDisableCertificatePinning(true)
+    // Para atualizar os pins:
+    // 1. GET /api/security/certificate-pins no backend
+    // 2. Ou usar: openssl s_client -servername picard.replit.dev -connect picard.replit.dev:443 | openssl x509 -pubkey -noout | openssl rsa -pubin -outform der | openssl dgst -sha256 -binary | openssl enc -base64
+    //
+    // IMPORTANTE: O pin backup (CA) é mais estável pois não muda quando o certificado renova.
+    // O pin primário muda a cada 90 dias com a renovação do Let's Encrypt.
     val CERTIFICATE_PINS = mapOf(
+        // Pins para o backend principal (picard.replit.dev)
+        "picard.replit.dev" to listOf(
+            "sha256/uXg7/pNSCW9ERQ62M3wEjVtPMiEvUC2b+mn6eFuTqiM=", // Primário: Certificado do servidor
+            "sha256/jQJTbIh0grw0/1TkHSumWb+Fs0Ggogr621gT3PvPKG0="  // Backup: Let's Encrypt R3 CA (estável)
+        ),
+        // Pins para *.replit.dev e *.replit.app (wildcard)
+        "*.replit.dev" to listOf(
+            "sha256/jQJTbIh0grw0/1TkHSumWb+Fs0Ggogr621gT3PvPKG0="  // Backup CA
+        ),
+        "*.replit.app" to listOf(
+            "sha256/jQJTbIh0grw0/1TkHSumWb+Fs0Ggogr621gT3PvPKG0="  // Backup CA
+        ),
+        // Manter cdccreditsmart.com caso seja usado (com mesmos pins do Replit)
         "cdccreditsmart.com" to listOf(
-            "sha256/YLh1dUR9y6Kja30RrAn7JKnbQG/uEtLMkBgFF2Fuihg=", // PLACEHOLDER: Production certificate pin
-            "sha256/Vjs8r4z+80wjNcr1YKepWQboSIRi63WsWXhIMN+eWys=", // PLACEHOLDER: Backup certificate pin
-            "sha256/C5+lpZ7tcVwmwQIMcRtPbsQtWLABXhIMN+eWys="  // PLACEHOLDER: Root CA pin
+            "sha256/uXg7/pNSCW9ERQ62M3wEjVtPMiEvUC2b+mn6eFuTqiM=", // Primário
+            "sha256/jQJTbIh0grw0/1TkHSumWb+Fs0Ggogr621gT3PvPKG0="  // Backup CA
         )
     )
     
