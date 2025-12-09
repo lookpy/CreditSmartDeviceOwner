@@ -103,3 +103,4 @@ The UI leverages Jetpack Compose and Material 3, incorporating a CDC institution
 - **NEW**: UsageStats permission cache (5s) - avoids repeated AppOps checks
 - **NEW**: UsageStats query window reduced from 2s to 1s
 - Guard loop logging reduced from every 100 to every 500 iterations
+- Dashboard cache: 15 minutes validity to prevent excessive synchronization

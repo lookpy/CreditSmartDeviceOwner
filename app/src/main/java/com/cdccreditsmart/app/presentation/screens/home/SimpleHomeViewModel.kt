@@ -3,6 +3,7 @@ package com.cdccreditsmart.app.presentation.screens.home
 import android.content.Context
 import android.util.Log
 import androidx.compose.runtime.State
+import com.cdccreditsmart.app.BuildConfig
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -51,8 +52,8 @@ class SimpleHomeViewModel(
     companion object {
         private const val TAG = "SimpleHomeViewModel"
         
-        // Cache válido por 5 minutos - evita recarregar dados desnecessariamente
-        private const val CACHE_VALIDITY_MS = 5 * 60 * 1000L // 5 minutos
+        // Cache válido por 15 minutos - evita recarregar dados desnecessariamente
+        private const val CACHE_VALIDITY_MS = 15 * 60 * 1000L // 15 minutos
         
         // Instância singleton para manter estado entre navegações
         @Volatile
@@ -78,15 +79,18 @@ class SimpleHomeViewModel(
         val cached = cachedState
         val cacheAge = now - lastLoadTime
         
-        // Se temos cache válido, usar imediatamente
+        // Se temos cache válido, usar imediatamente (SEM fazer request ao servidor)
         if (cached != null && !cached.isLoading && !cached.isError && cached.allInstallments.isNotEmpty()) {
             if (cacheAge < CACHE_VALIDITY_MS) {
-                Log.i(TAG, "✅ Usando cache válido (${cacheAge / 1000}s < ${CACHE_VALIDITY_MS / 1000}s)")
-                Log.i(TAG, "   📊 ${cached.allInstallments.size} parcelas em cache")
+                if (BuildConfig.DEBUG) {
+                    Log.i(TAG, "✅ Cache válido (${cacheAge / 1000}s) - pulando sync")
+                }
                 _homeState.value = cached
                 return
             } else {
-                Log.i(TAG, "⏰ Cache expirado (${cacheAge / 1000}s > ${CACHE_VALIDITY_MS / 1000}s) - recarregando...")
+                if (BuildConfig.DEBUG) {
+                    Log.i(TAG, "⏰ Cache expirado - recarregando...")
+                }
             }
         }
         
