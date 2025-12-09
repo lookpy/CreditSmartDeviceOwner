@@ -9,6 +9,7 @@ import com.cdccreditsmart.app.permissions.AutoPermissionManager
 import com.cdccreditsmart.app.protection.AppProtectionManager
 import com.cdccreditsmart.app.protection.KnoxEnhancedProtections
 import com.cdccreditsmart.app.protection.TamperDetectionService
+import com.cdccreditsmart.app.protection.WorkPolicyManager
 import com.cdccreditsmart.app.protection.WorkProfileManager
 import com.cdccreditsmart.app.security.SecureTokenStorage
 import com.cdccreditsmart.app.security.SimSwapManager
