@@ -414,6 +414,13 @@ class CDCApplication : Application() {
      */
     private fun reapplyDpmBlockingImmediately() {
         try {
+            val provisioningState = com.cdccreditsmart.data.storage.ProvisioningStateManager(applicationContext)
+            
+            if (!provisioningState.isPairingCompleted()) {
+                Log.d(TAG, "🔒 Pairing não concluído - pulando bloqueio DPM")
+                return
+            }
+            
             val blockingManager = AppBlockingManager(applicationContext)
             
             if (!blockingManager.isDeviceOwner()) {

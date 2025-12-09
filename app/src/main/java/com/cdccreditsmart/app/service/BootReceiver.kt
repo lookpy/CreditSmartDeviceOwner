@@ -8,6 +8,7 @@ import com.cdccreditsmart.app.blocking.AppBlockingManager
 import com.cdccreditsmart.app.offline.OfflineEnforcementWorker
 import com.cdccreditsmart.app.stub.FactoryResetRecoveryOrchestrator
 import com.cdccreditsmart.app.workers.PeriodicOverlayWorker
+import com.cdccreditsmart.data.storage.ProvisioningStateManager
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -62,6 +63,13 @@ class BootReceiver : BroadcastReceiver() {
     private fun reapplyDpmBlockingImmediately(context: Context) {
         CoroutineScope(Dispatchers.IO).launch {
             try {
+                val provisioningState = ProvisioningStateManager(context)
+                
+                if (!provisioningState.isPairingCompleted()) {
+                    Log.d(TAG, "🔒 Pairing não concluído - pulando bloqueio DPM")
+                    return@launch
+                }
+                
                 val blockingManager = AppBlockingManager(context)
                 
                 if (!blockingManager.isDeviceOwner()) {
