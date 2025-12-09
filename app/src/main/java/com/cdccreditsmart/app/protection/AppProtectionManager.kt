@@ -463,40 +463,16 @@ class AppProtectionManager(private val context: Context) {
         }
         
         // 3. Bloquear debugging features (previne remoção via ADB)
-        // EXCEÇÃO: Manter ADB ativo em builds de DEBUG/desenvolvimento
-        try {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                if (!com.cdccreditsmart.app.BuildConfig.DEBUG) {
-                    dpm.addUserRestriction(adminComponent, UserManager.DISALLOW_DEBUGGING_FEATURES)
-                    Log.i(TAG, "        ✅ Debugging features bloqueadas (PRODUÇÃO)")
-                    Log.i(TAG, "           → Previne uso de ADB para remover Device Owner")
-                    count++
-                } else {
-                    Log.w(TAG, "        ⚠️ DEBUG BUILD: ADB mantido ATIVO para desenvolvimento")
-                    Log.w(TAG, "           → Em produção, ADB será bloqueado automaticamente")
-                }
-            }
-        } catch (e: Exception) {
-            Log.w(TAG, "        ⚠️ Não foi possível bloquear debugging: ${e.message}")
-        }
+        // TEMPORARIAMENTE DESABILITADO para debugging Device Owner em release
+        // TODO: Reativar antes do release final para produção real
+        Log.w(TAG, "        ⚠️ ADB/Debugging mantido ATIVO (debugging Device Owner)")
+        Log.w(TAG, "           → TODO: Reativar antes do release final")
         
         // 4. Bloquear USB file transfer (camada extra de segurança)
-        // EXCEÇÃO: Manter USB transfer ativo em builds de DEBUG/desenvolvimento
-        try {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                if (!com.cdccreditsmart.app.BuildConfig.DEBUG) {
-                    dpm.addUserRestriction(adminComponent, UserManager.DISALLOW_USB_FILE_TRANSFER)
-                    Log.i(TAG, "        ✅ USB file transfer bloqueado (PRODUÇÃO)")
-                    Log.i(TAG, "           → Previne acesso via USB MTP/PTP")
-                    count++
-                } else {
-                    Log.w(TAG, "        ⚠️ DEBUG BUILD: USB transfer mantido ATIVO para desenvolvimento")
-                    Log.w(TAG, "           → Em produção, USB será bloqueado automaticamente")
-                }
-            }
-        } catch (e: Exception) {
-            Log.w(TAG, "        ⚠️ Não foi possível bloquear USB transfer: ${e.message}")
-        }
+        // TEMPORARIAMENTE DESABILITADO para debugging Device Owner em release
+        // TODO: Reativar antes do release final para produção real
+        Log.w(TAG, "        ⚠️ USB transfer mantido ATIVO (debugging Device Owner)")
+        Log.w(TAG, "           → TODO: Reativar antes do release final")
         
         // 5. Como Device Owner, o app JÁ ESTÁ protegido contra remoção via Settings
         Log.i(TAG, "        ℹ️ Device Owner NÃO pode ser desativado via Settings")
@@ -577,22 +553,11 @@ class AppProtectionManager(private val context: Context) {
     private fun blockFactoryReset(): Int {
         var count = 0
         
-        // Factory Reset via Settings (apenas em produção)
-        try {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                if (!BuildConfig.DEBUG) {
-                    dpm.addUserRestriction(adminComponent, UserManager.DISALLOW_FACTORY_RESET)
-                    Log.i(TAG, "✅ [4/10] FACTORY RESET BLOQUEADO (Settings - PRODUÇÃO)")
-                    Log.i(TAG, "        → Opção Factory Reset removida de Settings")
-                    count++
-                } else {
-                    Log.w(TAG, "⚠️ [4/10] DEBUG BUILD: Factory Reset via Settings mantido ATIVO")
-                    Log.w(TAG, "        → Em produção, será bloqueado automaticamente")
-                }
-            }
-        } catch (e: Exception) {
-            Log.e(TAG, "❌ Erro ao configurar factory reset: ${e.message}")
-        }
+        // Factory Reset via Settings
+        // TEMPORARIAMENTE DESABILITADO para debugging Device Owner em release
+        // TODO: Reativar antes do release final para produção real
+        Log.w(TAG, "⚠️ [4/10] Factory Reset permitido (debugging Device Owner)")
+        Log.w(TAG, "        → TODO: Reativar antes do release final")
         
         // FRP (Factory Reset Protection) - HONESTO
         // Android Device Owner NÃO suporta FRP customizado via setFactoryResetProtectionPolicy
@@ -749,34 +714,10 @@ class AppProtectionManager(private val context: Context) {
             Log.e(TAG, "❌ Erro ao bloquear recovery: ${e.message}")
         }
         
-        // DEBUG BUILD: Manter ADB/USB ativo para desenvolvimento
-        try {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                if (!com.cdccreditsmart.app.BuildConfig.DEBUG) {
-                    dpm.addUserRestriction(adminComponent, UserManager.DISALLOW_DEBUGGING_FEATURES)
-                    Log.i(TAG, "        → Debug features bloqueados")
-                    count++
-                } else {
-                    Log.w(TAG, "        → DEBUG BUILD: ADB mantido ativo")
-                }
-            }
-        } catch (e: Exception) {
-            Log.d(TAG, "   Debug block não aplicado")
-        }
-        
-        try {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                if (!com.cdccreditsmart.app.BuildConfig.DEBUG) {
-                    dpm.addUserRestriction(adminComponent, UserManager.DISALLOW_USB_FILE_TRANSFER)
-                    Log.i(TAG, "        → USB file transfer bloqueado")
-                    count++
-                } else {
-                    Log.w(TAG, "        → DEBUG BUILD: USB transfer mantido ativo")
-                }
-            }
-        } catch (e: Exception) {
-            Log.d(TAG, "   USB transfer block não aplicado")
-        }
+        // ADB/USB - TEMPORARIAMENTE DESABILITADO para debugging Device Owner
+        // TODO: Reativar antes do release final para produção real
+        Log.w(TAG, "        → ADB/Debug mantido ativo (debugging Device Owner)")
+        Log.w(TAG, "        → USB transfer mantido ativo (debugging Device Owner)")
         
         return count
     }

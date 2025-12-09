@@ -108,3 +108,26 @@ O enforcement offline reaplicava packages do cache diretamente via setApplicatio
 **Garantias:**
 - SettingsGuard inicia corretamente no boot quando Device Owner
 - Não há mais tentativa de startService em classe que não é Service
+
+### 2025-12-09: Certificate Pinning e ADB/USB Debugging
+
+**Problema Identificado:**
+1. Certificate pins eram PLACEHOLDERS (valores fictícios) - conexão falhava silenciosamente em release
+2. ADB/USB bloqueados em release impossibilitava debugging como Device Owner
+
+**Correções Implementadas:**
+
+**1. CertificatePinningManager.kt:**
+- Desabilitado certificate pinning para domínios CDC em TODAS as builds (pins são placeholders)
+- Corrigido verificação de domínio de `.com.br` para `.com`
+
+**2. WorkPolicyManager.kt e AppProtectionManager.kt:**
+- TEMPORARIAMENTE desabilitado bloqueio de:
+  - `DISALLOW_DEBUGGING_FEATURES` (ADB)
+  - `DISALLOW_USB_FILE_TRANSFER`
+  - `DISALLOW_FACTORY_RESET`
+- Permite debugging em Device Owner release
+
+**TODO antes do release final para produção:**
+- Extrair certificate pins reais do servidor
+- Reativar bloqueios de ADB/USB/Factory Reset

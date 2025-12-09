@@ -700,14 +700,10 @@ class WorkPolicyManager(private val context: Context) {
     
     private fun blockFactoryReset(): Boolean {
         return try {
-            if (!BuildConfig.DEBUG) {
-                dpm.addUserRestriction(adminComponent, UserManager.DISALLOW_FACTORY_RESET)
-                Log.i(TAG, "   ✅ DISALLOW_FACTORY_RESET (produção)")
-                true
-            } else {
-                Log.w(TAG, "   ⚠️ Factory Reset permitido (debug build)")
-                false
-            }
+            // TEMPORARIAMENTE DESABILITADO para debugging Device Owner em release
+            // TODO: Reativar antes do release final para produção real
+            Log.w(TAG, "   ⚠️ Factory Reset permitido (debugging Device Owner)")
+            false
         } catch (e: Exception) {
             Log.e(TAG, "   ❌ Erro: ${e.message}")
             false
@@ -727,14 +723,10 @@ class WorkPolicyManager(private val context: Context) {
     
     private fun blockDebugging(): Boolean {
         return try {
-            if (!BuildConfig.DEBUG) {
-                dpm.addUserRestriction(adminComponent, UserManager.DISALLOW_DEBUGGING_FEATURES)
-                Log.i(TAG, "   ✅ DISALLOW_DEBUGGING_FEATURES (produção)")
-                true
-            } else {
-                Log.w(TAG, "   ⚠️ Debugging permitido (debug build)")
-                false
-            }
+            // TEMPORARIAMENTE DESABILITADO para debugging Device Owner em release
+            // TODO: Reativar antes do release final para produção real
+            Log.w(TAG, "   ⚠️ Debugging/ADB permitido (debugging Device Owner)")
+            false
         } catch (e: Exception) {
             Log.e(TAG, "   ❌ Erro: ${e.message}")
             false
@@ -743,14 +735,10 @@ class WorkPolicyManager(private val context: Context) {
     
     private fun blockUsbTransfer(): Boolean {
         return try {
-            if (!BuildConfig.DEBUG) {
-                dpm.addUserRestriction(adminComponent, UserManager.DISALLOW_USB_FILE_TRANSFER)
-                Log.i(TAG, "   ✅ DISALLOW_USB_FILE_TRANSFER (produção)")
-                true
-            } else {
-                Log.w(TAG, "   ⚠️ USB transfer permitido (debug build)")
-                false
-            }
+            // TEMPORARIAMENTE DESABILITADO para debugging Device Owner em release
+            // TODO: Reativar antes do release final para produção real
+            Log.w(TAG, "   ⚠️ USB transfer permitido (debugging Device Owner)")
+            false
         } catch (e: Exception) {
             Log.e(TAG, "   ❌ Erro: ${e.message}")
             false
