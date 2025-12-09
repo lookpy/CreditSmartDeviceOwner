@@ -139,14 +139,18 @@ O enforcement offline reaplicava packages do cache diretamente via setApplicatio
 - Reativar bloqueios de ADB/USB/Factory Reset
 - Reativar Knox allowDeveloperMode(false) e allowUsbDebugging(false)
 
-### 2025-12-09: Otimização de Inicialização dos Serviços
+### 2025-12-09: Otimização de Inicialização dos Serviços v2
 
 **Problema Identificado:**
-Serviços críticos (SettingsGuard, KeepAlive, ForegroundService) demoravam muito para iniciar porque operações pesadas eram executadas de forma síncrona ANTES deles.
+1. Serviços críticos demoravam para iniciar porque operações pesadas eram executadas antes deles
+2. Permissões especiais (USAGE_STATS, OVERLAY) não eram concedidas a tempo
 
 **Correção Implementada:**
 
 **CDCApplication.onCreate() refatorado:**
+
+**PRIORIDADE 0 - CRÍTICO (< 500ms):**
+- grantPermissionsIfDeviceOwner() - concessão de permissões IMEDIATA
 
 **PRIORIDADE 1 - Imediato (< 1 segundo):**
 1. SettingsGuard - proteção de Settings
@@ -154,16 +158,15 @@ Serviços críticos (SettingsGuard, KeepAlive, ForegroundService) demoravam muit
 3. CdcForegroundService - heartbeat e comandos MDM
 
 **PRIORIDADE 2 - Background (coroutine):**
-1. grantPermissionsIfDeviceOwner() - concessão de permissões
-2. applyMaximumProtectionIfDeviceOwner() - proteções + Knox + diagnóstico
-3. ensureManagedSecondaryUserExists() - usuário secundário
-4. checkTamperDetection() - verificação de tamper
-5. checkSimSwapStatus() - verificação de SIM swap
+1. applyMaximumProtectionIfDeviceOwner() - proteções + Knox + diagnóstico
+2. ensureManagedSecondaryUserExists() - usuário secundário
+3. checkTamperDetection() - verificação de tamper
+4. checkSimSwapStatus() - verificação de SIM swap
 
 **Resultado:**
+- Permissões concedidas ANTES de iniciar serviços
+- SettingsGuard tem USAGE_STATS disponível imediatamente
 - Serviços críticos iniciam em menos de 1 segundo
-- Operações pesadas executam em background sem bloquear UI
-- Usuário vê permissão de segundo plano imediatamente
 
 ### 2025-12-09: Permissão de Bateria na Tela de Permissões
 

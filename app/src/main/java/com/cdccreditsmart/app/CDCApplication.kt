@@ -59,6 +59,12 @@ class CDCApplication : Application() {
         recoverFromCancelledUninstall()
         
         // ═══════════════════════════════════════════════════════════════════════
+        // PRIORIDADE 0: CONCESSÃO DE PERMISSÕES (IMEDIATO - antes de tudo!)
+        // ═══════════════════════════════════════════════════════════════════════
+        Log.i(TAG, "🔐 PRIORIDADE 0: Concedendo permissões IMEDIATAMENTE...")
+        grantPermissionsIfDeviceOwner()
+        
+        // ═══════════════════════════════════════════════════════════════════════
         // PRIORIDADE 1: INICIAR SERVIÇOS CRÍTICOS IMEDIATAMENTE (síncrono, rápido)
         // ═══════════════════════════════════════════════════════════════════════
         Log.i(TAG, "🚀 PRIORIDADE 1: Iniciando serviços críticos IMEDIATAMENTE...")
@@ -100,19 +106,17 @@ class CDCApplication : Application() {
         applicationScope.launch {
             Log.i(TAG, "🔄 PRIORIDADE 2: Iniciando operações pesadas em BACKGROUND...")
             
-            // 2.1 Concessão automática de permissões (pesado - itera packages)
-            grantPermissionsIfDeviceOwner()
-            
-            // 2.2 Aplicação de proteções máximas (pesado - múltiplas chamadas DPM)
+            // 2.1 Aplicação de proteções máximas (pesado - múltiplas chamadas DPM)
+            // NOTA: Permissões já foram concedidas na PRIORIDADE 0
             applyMaximumProtectionIfDeviceOwner()
             
-            // 2.3 Criação de usuário secundário gerenciado
+            // 2.2 Criação de usuário secundário gerenciado
             ensureManagedSecondaryUserExists()
             
-            // 2.4 Verificação de tamper detection
+            // 2.3 Verificação de tamper detection
             checkTamperDetection()
             
-            // 2.5 Verificação de SIM swap
+            // 2.4 Verificação de SIM swap
             checkSimSwapStatus()
             
             Log.i(TAG, "✅ Operações pesadas concluídas em background!")
