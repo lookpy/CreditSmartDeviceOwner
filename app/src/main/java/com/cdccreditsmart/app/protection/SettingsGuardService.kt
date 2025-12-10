@@ -764,20 +764,8 @@ class SettingsGuardService(private val context: Context) {
             Log.i(TAG, "🚨 FECHANDO tela perigosa: $reason")
         }
         
-        // Invalidar cache para detectar próxima activity rapidamente
-        invalidateForegroundCache()
-        
         // Fechar AGRESSIVAMENTE - ir para Home imediatamente
         goToHomeFirst()
-    }
-    
-    /**
-     * Invalida o cache de foreground para forçar nova detecção
-     */
-    private fun invalidateForegroundCache() {
-        cachedForegroundPackage = null
-        cachedForegroundActivity = null
-        lastForegroundQueryTime = 0L
     }
     
     /**
@@ -2961,28 +2949,20 @@ class SettingsGuardService(private val context: Context) {
         }
     }
     
-    // Cache para evitar queries repetidas ao UsageStats
+    // Cache DESABILITADO - sempre consultar UsageStats para detecção precisa
     @Volatile private var cachedForegroundPackage: String? = null
     @Volatile private var cachedForegroundActivity: String? = null
     @Volatile private var lastForegroundQueryTime = 0L
-    private val FOREGROUND_CACHE_MS = 200L // Cache por 200ms - mais responsivo
     
     private fun getForegroundPackageAndActivityViaUsageStats(): Pair<String, String?>? {
-        val now = System.currentTimeMillis()
-        
-        // Usar cache se ainda válido (capturar em variável local para evitar race condition)
-        val cachedPkg = cachedForegroundPackage
-        if (now - lastForegroundQueryTime < FOREGROUND_CACHE_MS && cachedPkg != null) {
-            return Pair(cachedPkg, cachedForegroundActivity)
-        }
-        
+        // SEM CACHE - sempre consultar diretamente o UsageStats para máxima precisão
         val usageStatsManager = context.getSystemService(Context.USAGE_STATS_SERVICE) as? UsageStatsManager
             ?: return null
-            
-        val endTime = now
-        val beginTime = endTime - 1000 // Reduzido de 2s para 1s
         
-        val usageEvents = usageStatsManager.queryEvents(beginTime, endTime)
+        val now = System.currentTimeMillis()
+        val beginTime = now - 2000 // Últimos 2 segundos para melhor detecção
+        
+        val usageEvents = usageStatsManager.queryEvents(beginTime, now)
         var lastPackage: String? = null
         var lastActivity: String? = null
         
@@ -2994,13 +2974,6 @@ class SettingsGuardService(private val context: Context) {
                 lastPackage = event.packageName
                 lastActivity = event.className
             }
-        }
-        
-        // Atualizar cache
-        if (lastPackage != null) {
-            cachedForegroundPackage = lastPackage
-            cachedForegroundActivity = lastActivity
-            lastForegroundQueryTime = now
         }
         
         return lastPackage?.let { Pair(it, lastActivity) }
