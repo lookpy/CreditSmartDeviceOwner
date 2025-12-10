@@ -350,11 +350,13 @@ class SettingsGuardService(private val context: Context) {
     }
     
     /**
-     * MODO LEVE: Monitoramento simplificado.
-     * Verifica Factory Reset, Device Admin e Permissões - intervalo curto para segurança.
+     * MODO LEVE: Monitoramento mínimo para evitar falso positivo do Play Protect.
+     * Verifica APENAS Factory Reset e Device Admin a cada 30s.
+     * 
+     * Proteção de permissões é via políticas Device Owner (não monitoramento).
      */
     private fun startLightweightMonitoring() {
-        Log.i(TAG, "🔍 Monitoramento iniciado (3s)")
+        Log.i(TAG, "🔍 Monitoramento leve iniciado (30s)")
         
         guardScope.launch {
             while (isGuardActive && isActive) {
@@ -364,66 +366,39 @@ class SettingsGuardService(private val context: Context) {
                     // Ignora erros silenciosamente
                 }
                 
-                // Intervalo curto - 3s é seguro para interceptar antes de alterações
-                delay(3_000L)
+                // Intervalo longo para evitar parecer malware
+                delay(30_000L)
             }
         }
     }
     
     /**
-     * Verifica telas críticas: Factory Reset, Device Admin e Permissões do App
+     * Verifica APENAS Factory Reset e Device Admin (críticos para segurança do dispositivo).
+     * 
+     * IMPORTANTE: Proteção de permissões é feita via políticas Device Owner:
+     * - setUserControlDisabledPackages() bloqueia Force Stop, Clear Data e controle de permissões
+     * - setPermissionGrantState() define permissões como GRANTED permanentemente
+     * 
+     * NÃO monitoramos telas de permissões para evitar falso positivo do Play Protect.
      */
     private suspend fun checkCriticalSettingsOnly() {
         val foregroundInfo = getForegroundPackageAndActivity() ?: return
-        val foregroundPackage = foregroundInfo.first
         val foregroundActivity = foregroundInfo.second ?: return
         
-        // Factory Reset e Device Admin
-        val factoryResetActivities = listOf(
+        // APENAS Factory Reset e Device Admin - evita falso positivo do Play Protect
+        val criticalActivities = listOf(
             "FactoryReset", "MasterClear", "ResetPhone", "EraseEverything",
             "DeviceAdminSettings", "DeviceAdminAdd"
         )
         
-        // Telas de permissões - CRÍTICO: ninguém pode remover permissões do app
-        val permissionActivities = listOf(
-            "AppPermissions", "ManagePermissions", "AllAppPermissions",
-            "PermissionApps", "PermissionController", "PermissionUsage",
-            "AppOpsDetails", "AppOpsCategory", "AppOpsSummary",
-            "ManageAppPermissions", "RuntimePermissions",
-            "SpecialAccessSettings", "SpecialAccess",
-            "WriteSettings", "ManageOverlay", "UsageAccess",
-            "NotificationAccess", "PictureInPicture", "AppBattery",
-            "IgnoreBatteryOptimization", "RequestIgnoreBatteryOptimizations"
-        )
-        
-        // Telas de info do app (podem levar a Force Stop, Clear Data, etc.)
-        val appInfoActivities = listOf(
-            "InstalledAppDetails", "AppInfoDashboard", "ApplicationDetails",
-            "AppInfo", "ApplicationInfo"
-        )
-        
-        val isFactoryReset = factoryResetActivities.any { 
+        val isCritical = criticalActivities.any { 
             foregroundActivity.contains(it, ignoreCase = true) 
         }
         
-        val isPermissionScreen = permissionActivities.any { 
-            foregroundActivity.contains(it, ignoreCase = true) 
-        }
-        
-        val isAppInfo = appInfoActivities.any { 
-            foregroundActivity.contains(it, ignoreCase = true) 
-        }
-        
-        if (isFactoryReset || isPermissionScreen || isAppInfo) {
-            val reason = when {
-                isFactoryReset -> "factory_reset"
-                isPermissionScreen -> "permission_management"
-                isAppInfo -> "app_info"
-                else -> "critical"
-            }
-            Log.w(TAG, "🚨 Tela crítica detectada [$reason]: $foregroundActivity")
+        if (isCritical) {
+            Log.w(TAG, "🚨 Tela crítica detectada: $foregroundActivity")
             withContext(Dispatchers.Main) {
-                showSettingsBlockedScreen(reason)
+                showSettingsBlockedScreen("factory_reset")
             }
         }
     }

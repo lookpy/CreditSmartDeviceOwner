@@ -118,8 +118,8 @@ The UI leverages Jetpack Compose and Material 3, incorporating a CDC institution
 - **REMOVED**: Heavy verification logic (isSystemApp, canHidePackage, unhideAllSystemApps)
 - **MINIMAL PROTECTION**: Only blocks `android`, `com.android.systemui`, `com.cdccreditsmart.app`
 - **TRUST BACKEND**: Backend sends blockedPackages list - we trust it won't include system apps
-- **LIGHTWEIGHT GUARD**: SettingsGuardService now only monitors Factory Reset and Device Admin
-- **INTERVAL**: 3s monitoring for security (intercepts permission screens)
-- **REMOVED**: Heavy overlay system, forceStop logic, multi-window detection
-- **PERMISSION PROTECTION**: Blocks all permission management screens (AppPermissions, ManagePermissions, SpecialAccess, UsageAccess, etc.)
-- **APP INFO PROTECTION**: Blocks InstalledAppDetails, AppInfoDashboard, ApplicationInfo screens
+- **LIGHTWEIGHT GUARD**: SettingsGuardService monitors ONLY Factory Reset and Device Admin (avoids Play Protect false positive)
+- **INTERVAL**: 30s monitoring (non-aggressive to avoid malware detection)
+- **REMOVED**: Permission screen monitoring, app info monitoring, heavy overlay system
+- **PERMISSION PROTECTION**: Via Device Owner policies only (setUserControlDisabledPackages, setPermissionGrantState)
+- **PLAY PROTECT FIX**: Removed aggressive monitoring that triggered false positives
