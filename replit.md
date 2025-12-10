@@ -142,3 +142,4 @@ The UI leverages Jetpack Compose and Material 3, incorporating a CDC institution
 - CRÍTICO: Guard COMPLETAMENTE DESATIVADO até ser Device Owner (Play Protect safe) - DECISÃO PERMANENTE
 - startGuard() retorna imediatamente se não for DO - zero comportamento suspeito
 - Esta abordagem previne falsos positivos do Play Protect durante provisioning
+- CDCDeviceAdminReceiver envia broadcast após provisioning → CDCApplication recebe e inicia guard

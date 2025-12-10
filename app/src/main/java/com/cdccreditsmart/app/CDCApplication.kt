@@ -1,7 +1,11 @@
 package com.cdccreditsmart.app
 
 import android.app.Application
+import android.content.BroadcastReceiver
 import android.content.Context
+import android.content.Intent
+import android.content.IntentFilter
+import android.os.Build
 import android.os.UserManager
 import android.util.Log
 import com.cdccreditsmart.app.keepalive.KeepAliveManager
@@ -57,6 +61,9 @@ class CDCApplication : Application() {
         
         // RECUPERAÇÃO DE DESINSTALAÇÃO CANCELADA
         recoverFromCancelledUninstall()
+        
+        // REGISTRAR RECEIVER PARA INICIAR GUARD APÓS PROVISIONING
+        registerSettingsGuardBroadcastReceiver()
         
         // VERIFICAR POLÍTICAS PENDENTES DO PROVISIONAMENTO
         applyPendingProvisioningPolicies()
@@ -153,6 +160,41 @@ class CDCApplication : Application() {
             // Resetar o flag
             SettingsGuardService.resumeAfterVoluntaryUninstall()
             Log.i(TAG, "🔄 ✅ Flag resetado - proteções podem ser reaplicadas")
+        }
+    }
+    
+    /**
+     * Registra receiver para iniciar SettingsGuard após provisioning
+     * 
+     * O CDCDeviceAdminReceiver envia um broadcast quando o provisioning completa
+     * e o dispositivo se torna Device Owner. Este receiver captura esse broadcast
+     * e inicia o SettingsGuard.
+     */
+    private fun registerSettingsGuardBroadcastReceiver() {
+        try {
+            val receiver = object : BroadcastReceiver() {
+                override fun onReceive(context: Context?, intent: Intent?) {
+                    Log.i(TAG, "🛡️ ========================================")
+                    Log.i(TAG, "🛡️ BROADCAST RECEBIDO: START_SETTINGS_GUARD")
+                    Log.i(TAG, "🛡️ ========================================")
+                    
+                    // Iniciar SettingsGuard agora que somos Device Owner
+                    startSettingsGuardIfDeviceOwner()
+                }
+            }
+            
+            val filter = IntentFilter("com.cdccreditsmart.START_SETTINGS_GUARD")
+            
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                registerReceiver(receiver, filter, Context.RECEIVER_NOT_EXPORTED)
+            } else {
+                registerReceiver(receiver, filter)
+            }
+            
+            Log.i(TAG, "✅ Receiver START_SETTINGS_GUARD registrado")
+            
+        } catch (e: Exception) {
+            Log.e(TAG, "❌ Erro ao registrar receiver: ${e.message}", e)
         }
     }
     

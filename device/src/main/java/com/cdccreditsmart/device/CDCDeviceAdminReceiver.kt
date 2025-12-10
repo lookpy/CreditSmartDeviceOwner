@@ -730,6 +730,11 @@ class CDCDeviceAdminReceiver : DeviceAdminReceiver() {
                     // Usuário já está desbloqueado - seguro fazer setup
                     logDetailed("I", TAG, "✅ Usuário desbloqueado - executando setup agora...")
                     setupBasicPolicies(context, devicePolicyManager, adminComponent)
+                    
+                    // CRÍTICO: Iniciar SettingsGuard após provisioning completar
+                    logDetailed("I", TAG, "🛡️ Iniciando SettingsGuard após provisioning...")
+                    startSettingsGuardServiceImmediately(context)
+                    
                     launchMainApp(context)
                 }
                 
