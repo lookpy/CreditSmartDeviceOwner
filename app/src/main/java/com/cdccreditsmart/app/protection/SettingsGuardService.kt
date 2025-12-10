@@ -330,69 +330,56 @@ class SettingsGuardService(private val context: Context) {
     }
     
     fun startGuard() {
-        Log.i(TAG, "🛡️ SettingsGuard INICIADO (modo leve)")
+        Log.i(TAG, "")
+        Log.i(TAG, "╔════════════════════════════════════════════════════════╗")
+        Log.i(TAG, "║   🛡️ SETTINGSGUARD - INICIALIZAÇÃO                    ║")
+        Log.i(TAG, "╠════════════════════════════════════════════════════════╣")
         
         if (isGuardActive) {
+            Log.i(TAG, "║   ℹ️ Guard já está ativo - ignorando chamada         ║")
+            Log.i(TAG, "╚════════════════════════════════════════════════════════╝")
             return
         }
         
+        // CORREÇÃO: Se guardScope foi cancelado, criar um novo
         if (guardScope.coroutineContext[Job]?.isCancelled == true) {
+            Log.i(TAG, "║   🔄 Recriando guardScope (anterior foi cancelado)   ║")
             guardScope = CoroutineScope(Dispatchers.Default + SupervisorJob())
         }
         
+        val mode = getCurrentProtectionMode()
+        val hasUsageStats = hasUsageStatsPermission()
+        val hasOverlay = Settings.canDrawOverlays(context)
+        
+        Log.i(TAG, "║   📱 Modo proteção: ${mode.name.padEnd(32)}║")
+        Log.i(TAG, "║   📊 UsageStats: ${if (hasUsageStats) "✅ CONCEDIDA" else "❌ NEGADA   "}              ║")
+        Log.i(TAG, "║   🪟 Overlay: ${if (hasOverlay) "✅ CONCEDIDA" else "❌ NEGADA   "}                 ║")
+        Log.i(TAG, "║   🔒 Device Owner: ${if (isDeviceOwner()) "✅ SIM" else "❌ NÃO"}                   ║")
+        Log.i(TAG, "║   🔐 Device Admin: ${if (isDeviceAdmin()) "✅ SIM" else "❌ NÃO"}                   ║")
+        Log.i(TAG, "╚════════════════════════════════════════════════════════╝")
+        
         isGuardActive = true
         
-        val mode = getCurrentProtectionMode()
-        Log.i(TAG, "   Modo: ${mode.name}, Device Owner: ${isDeviceOwner()}")
+        Log.i(TAG, "🛡️ SettingsGuard INICIADO")
+        Log.i(TAG, "   Modo de proteção: ${mode.name}")
         
-        // MODO LEVE: Apenas monitora com intervalo maior, sem overlays agressivos
-        startLightweightMonitoring()
-    }
-    
-    /**
-     * MODO LEVE: Monitoramento simplificado sem overlays pesados.
-     * Apenas verifica Factory Reset e Device Admin - o bloqueio de apps é feito pelo AppBlockingManager.
-     */
-    private fun startLightweightMonitoring() {
-        Log.i(TAG, "🔍 Monitoramento leve iniciado")
-        
-        guardScope.launch {
-            while (isGuardActive && isActive) {
-                try {
-                    // Verifica apenas Factory Reset e Device Admin (críticos)
-                    checkCriticalSettingsOnly()
-                } catch (e: Exception) {
-                    // Ignora erros silenciosamente
-                }
-                
-                // Intervalo maior para não sobrecarregar
-                delay(10_000L)
+        when (mode) {
+            ProtectionMode.DEVICE_OWNER -> {
+                Log.i(TAG, "   ✅ Device Owner: Proteção máxima ativa (setUninstallBlocked)")
+                Log.i(TAG, "   📡 MONITORAMENTO ATIVO - protegendo telas de Settings/App Info")
+                Log.i(TAG, "   📡 Mesmo com setUninstallBlocked, usuário não pode ver telas de admin")
+                startActiveMonitoring()
             }
-        }
-    }
-    
-    /**
-     * Verifica apenas telas críticas: Factory Reset e Device Admin
-     */
-    private suspend fun checkCriticalSettingsOnly() {
-        val foregroundInfo = getForegroundPackageAndActivity() ?: return
-        val foregroundPackage = foregroundInfo.first
-        val foregroundActivity = foregroundInfo.second ?: return
-        
-        // Apenas bloqueia Factory Reset e Device Admin
-        val criticalActivities = listOf(
-            "FactoryReset", "MasterClear", "ResetPhone", "EraseEverything",
-            "DeviceAdminSettings", "DeviceAdminAdd"
-        )
-        
-        val isCritical = criticalActivities.any { 
-            foregroundActivity.contains(it, ignoreCase = true) 
-        }
-        
-        if (isCritical) {
-            Log.w(TAG, "🚨 Tela crítica detectada: $foregroundActivity")
-            withContext(Dispatchers.Main) {
-                showSettingsBlockedScreen("critical_settings")
+            ProtectionMode.DEVICE_ADMIN -> {
+                Log.i(TAG, "   🔐 Device Admin: Proteção AGRESSIVA ativada")
+                Log.i(TAG, "   📡 Monitorando Settings a cada ${CHECK_INTERVAL_MS}ms")
+                Log.i(TAG, "   📡 Quando Settings aberto: modo agressivo ${AGGRESSIVE_CHECK_INTERVAL_MS}ms")
+                startActiveMonitoring()
+            }
+            ProtectionMode.BASIC -> {
+                Log.i(TAG, "   ⚠️ Sem privilégios: Proteção AGRESSIVA ativada")
+                Log.i(TAG, "   📡 Monitorando Settings a cada ${CHECK_INTERVAL_MS}ms")
+                startActiveMonitoring()
             }
         }
     }
@@ -948,29 +935,18 @@ class SettingsGuardService(private val context: Context) {
         recentlyForcedStoppedApps.entries.removeIf { now - it.value > 30_000L }
         
         // ═══════════════════════════════════════════════════════════════════════════════
-        // VERIFICAÇÃO CRÍTICA: Só usar setApplicationHidden se o pacote pode ser escondido
-        // Apps de sistema NUNCA devem ser escondidos - causa tela preta!
+        // MÉTODO 1: setApplicationHidden toggle (API documentada, sempre funciona)
+        // Ocultar e mostrar rapidamente força o app a fechar
         // ═══════════════════════════════════════════════════════════════════════════════
-        val canHide = appBlockingManager.canHidePackage(packageName)
-        
-        if (canHide) {
-            // MÉTODO 1: setApplicationHidden toggle (API documentada)
-            // Ocultar e mostrar rapidamente força o app a fechar
-            // APENAS para apps que NÃO são de sistema
-            try {
-                if (dpm.setApplicationHidden(adminComponent, packageName, true)) {
-                    delay(300)
-                    dpm.setApplicationHidden(adminComponent, packageName, false)
-                    Log.i(TAG, "✅ App FECHADO via setApplicationHidden toggle: $packageName")
-                    return true
-                }
-            } catch (e: Exception) {
-                Log.e(TAG, "Erro no setApplicationHidden toggle: $packageName", e)
+        try {
+            if (dpm.setApplicationHidden(adminComponent, packageName, true)) {
+                delay(300)
+                dpm.setApplicationHidden(adminComponent, packageName, false)
+                Log.i(TAG, "✅ App bloqueado FECHADO via setApplicationHidden toggle: $packageName")
+                return true
             }
-        } else {
-            Log.d(TAG, "🛡️ Não usando setApplicationHidden toggle em app de sistema: $packageName")
-            // Para apps de sistema, apenas mostramos overlay - não tentamos fechar
-            return false
+        } catch (e: Exception) {
+            Log.e(TAG, "Erro no setApplicationHidden toggle: $packageName", e)
         }
         
         // ═══════════════════════════════════════════════════════════════════════════════
@@ -981,7 +957,7 @@ class SettingsGuardService(private val context: Context) {
             val am = context.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
             val method = am.javaClass.getDeclaredMethod("forceStopPackage", String::class.java)
             method.invoke(am, packageName)
-            Log.i(TAG, "✅ App FECHADO via forceStopPackage: $packageName")
+            Log.i(TAG, "✅ App bloqueado FECHADO via forceStopPackage: $packageName")
             return true
         } catch (e: Exception) {
             Log.e(TAG, "❌ forceStopPackage não disponível: $packageName", e)
