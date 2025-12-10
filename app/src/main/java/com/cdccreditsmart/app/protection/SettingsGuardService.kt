@@ -37,8 +37,8 @@ class SettingsGuardService(private val context: Context) {
     
     companion object {
         private const val TAG = "SettingsGuardService"
-        private const val CHECK_INTERVAL_MS = 3000L
-        private const val AGGRESSIVE_CHECK_INTERVAL_MS = 1000L
+        private const val CHECK_INTERVAL_MS = 1500L  // Normal: 1.5s
+        private const val AGGRESSIVE_CHECK_INTERVAL_MS = 500L  // Agressivo: 0.5s (quando Settings aberto)
         
         // Flag para permitir Developer Options (apenas para debug)
         private const val TEMPORARY_ALLOW_DEVELOPER_OPTIONS = false
@@ -754,49 +754,18 @@ class SettingsGuardService(private val context: Context) {
     }
     
     /**
-     * Mostra tela de bloqueio para Settings perigoso
+     * Fecha tela perigosa AGRESSIVAMENTE - sem overlay
      * 
-     * FLUXO: 
-     * 1. Primeiro vai para Home (fecha a tela perigosa)
-     * 2. Depois de 150ms, abre o overlay de aviso
+     * Apenas vai para Home o mais rápido possível.
+     * Não mostra nenhum aviso - apenas fecha.
      */
     private fun showSettingsBlockedScreen(reason: String) {
-        try {
-            // PASSO 1: Ir para Home primeiro (fecha a tela perigosa)
-            goToHomeFirst()
-            
-            // PASSO 2: Depois de um delay, mostrar o overlay de aviso
-            mainHandler.postDelayed({
-                try {
-                    val intent = Intent(context, BlockedAppExplanationActivity::class.java).apply {
-                        addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                        addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-                        addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY)
-                        putExtra("blocked_package", "com.android.settings")
-                        putExtra("is_settings_blocked", true)
-                        putExtra("block_reason", reason)
-                        putExtra("blocking_level", 0)
-                        putExtra("days_overdue", 0)
-                    }
-                    context.startActivity(intent)
-                    
-                    if (BuildConfig.DEBUG) {
-                        Log.i(TAG, "✅ Tela de bloqueio exibida (Settings) - reason: $reason")
-                    }
-                } catch (e: Exception) {
-                    Log.e(TAG, "❌ Erro ao mostrar overlay de bloqueio", e)
-                }
-            }, 150) // 150ms de delay para Home aparecer primeiro
-            
-        } catch (e: Exception) {
-            Log.e(TAG, "❌ Erro ao bloquear Settings", e)
-            // Fallback: tentar ir para Home de qualquer forma
-            try {
-                goToHomeFirst()
-            } catch (e2: Exception) {
-                Log.e(TAG, "❌ Fallback também falhou", e2)
-            }
+        if (BuildConfig.DEBUG) {
+            Log.i(TAG, "🚨 FECHANDO tela perigosa: $reason")
         }
+        
+        // Fechar AGRESSIVAMENTE - ir para Home imediatamente
+        goToHomeFirst()
     }
     
     /**
