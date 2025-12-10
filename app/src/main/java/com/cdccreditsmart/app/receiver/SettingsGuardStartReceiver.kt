@@ -7,7 +7,6 @@ import android.content.Intent
 import android.os.UserManager
 import android.util.Log
 import com.cdccreditsmart.app.protection.SettingsGuardService
-import com.cdccreditsmart.app.blocking.AppBlockingManager
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -61,41 +60,13 @@ class SettingsGuardStartReceiver : BroadcastReceiver() {
         CoroutineScope(Dispatchers.Default).launch {
             try {
                 // Iniciar SettingsGuard
-                val guard = SettingsGuardService.Companion.getInstance(context)
+                val guard = SettingsGuardService.getInstance(context)
                 guard.startGuard()
                 Log.i(TAG, "✅ SettingsGuard iniciado com sucesso!")
-                
-                // Aplicar restrições de apps se necessário
-                applyAppRestrictionsIfNeeded(context)
                 
             } catch (e: Exception) {
                 Log.e(TAG, "❌ Erro ao iniciar SettingsGuard: ${e.message}", e)
             }
-        }
-    }
-    
-    private fun applyAppRestrictionsIfNeeded(context: Context) {
-        try {
-            Log.i(TAG, "🔒 Verificando restrições de apps...")
-            
-            val appBlockingManager = AppBlockingManager(context)
-            
-            // Verificar se há bloqueios pendentes
-            val blockingInfo = appBlockingManager.getCurrentBlockingInfo()
-            
-            if (blockingInfo.currentLevel > 0) {
-                Log.i(TAG, "🔒 Nível de bloqueio: ${blockingInfo.currentLevel}")
-                Log.i(TAG, "🔒 Aplicando restrições de apps...")
-                
-                appBlockingManager.applyProgressiveBlocking(blockingInfo.currentLevel)
-                
-                Log.i(TAG, "✅ Restrições de apps aplicadas!")
-            } else {
-                Log.i(TAG, "✅ Nenhum bloqueio ativo")
-            }
-            
-        } catch (e: Exception) {
-            Log.e(TAG, "❌ Erro ao aplicar restrições: ${e.message}", e)
         }
     }
 }
