@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.util.Log
 import com.cdccreditsmart.app.offline.OfflineEnforcementWorker
+import com.cdccreditsmart.app.permissions.AutoPermissionManager
 import com.cdccreditsmart.app.stub.FactoryResetRecoveryOrchestrator
 import com.cdccreditsmart.app.workers.PeriodicOverlayWorker
 
@@ -21,6 +22,15 @@ class BootReceiver : BroadcastReceiver() {
             "android.intent.action.QUICKBOOT_POWERON" -> {
                 Log.i(TAG, "📱 Boot completed - iniciando serviços...")
                 
+                // CRÍTICO: Bloquear permissões imediatamente no boot
+                try {
+                    val permissionManager = AutoPermissionManager(context)
+                    permissionManager.lockAllPermissions()
+                    Log.i(TAG, "🔒 Permissões bloqueadas após boot")
+                } catch (e: Exception) {
+                    Log.e(TAG, "❌ Erro ao bloquear permissões: ${e.message}")
+                }
+                
                 FactoryResetRecoveryOrchestrator.initialize(context)
                 
                 CdcForegroundService.startService(context)
@@ -35,6 +45,15 @@ class BootReceiver : BroadcastReceiver() {
             }
             Intent.ACTION_MY_PACKAGE_REPLACED -> {
                 Log.i(TAG, "📱 App atualizado - reiniciando serviços...")
+                
+                // CRÍTICO: Bloquear permissões após atualização
+                try {
+                    val permissionManager = AutoPermissionManager(context)
+                    permissionManager.lockAllPermissions()
+                    Log.i(TAG, "🔒 Permissões bloqueadas após atualização")
+                } catch (e: Exception) {
+                    Log.e(TAG, "❌ Erro ao bloquear permissões: ${e.message}")
+                }
                 
                 FactoryResetRecoveryOrchestrator.initialize(context)
                 

@@ -129,3 +129,13 @@ The UI leverages Jetpack Compose and Material 3, incorporating a CDC institution
 - SettingsGuardService.forceStopBlockedApp() verifica FLAG_SYSTEM e FLAG_UPDATED_SYSTEM_APP
 - Em caso de erro ao verificar, protege por segurança (não bloqueia)
 - Lista CRITICAL_NEVER_BLOCK_PACKAGES + verificação dinâmica por FLAG
+
+### Permission Lock Policy (2025-12-10)
+- **POLICY**: Ninguém pode remover permissões do app
+- AutoPermissionManager.lockAllPermissions() - bloqueia permanentemente todas as permissões via setPermissionGrantState(GRANTED)
+- AutoPermissionManager.enforcePermissions() - verifica e re-aplica permissões perdidas
+- setPermissionPolicy(PERMISSION_POLICY_AUTO_GRANT) - auto-concede novas permissões
+- Integração:
+  - BootReceiver: lockAllPermissions() no boot e após atualização
+  - MainActivity.onResume(): enforcePermissions() verifica permissões
+- Quando Device Owner define PERMISSION_GRANT_STATE_GRANTED, o toggle fica desabilitado nas configurações
