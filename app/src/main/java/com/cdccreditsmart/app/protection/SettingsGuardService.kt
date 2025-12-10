@@ -37,15 +37,15 @@ class SettingsGuardService(private val context: Context) {
     
     companion object {
         private const val TAG = "SettingsGuardService"
-        private const val CHECK_INTERVAL_MS = 1500L  // Normal: 1.5s
-        private const val AGGRESSIVE_CHECK_INTERVAL_MS = 500L  // Agressivo: 0.5s (quando Settings aberto)
+        private const val CHECK_INTERVAL_MS = 300L  // Normal: 300ms - muito rápido
+        private const val AGGRESSIVE_CHECK_INTERVAL_MS = 100L  // Agressivo: 100ms - ultra rápido
         
         // Flag para permitir Developer Options (apenas para debug)
         private const val TEMPORARY_ALLOW_DEVELOPER_OPTIONS = false
         
         // DEBUG: Throttle muito maior para não atrapalhar desenvolvimento
-        private val INTERCEPT_THROTTLE_MS = 1_000L  // 1s - mesmo em DEBUG
-        private val CRITICAL_THROTTLE_MS = 500L    // 0.5s - mesmo em DEBUG
+        private val INTERCEPT_THROTTLE_MS = 100L  // 100ms - permite bloqueios repetidos rápidos
+        private val CRITICAL_THROTTLE_MS = 50L    // 50ms - ultra rápido para críticos
         
         @Volatile
         private var instance: SettingsGuardService? = null
@@ -2965,7 +2965,7 @@ class SettingsGuardService(private val context: Context) {
     @Volatile private var cachedForegroundPackage: String? = null
     @Volatile private var cachedForegroundActivity: String? = null
     @Volatile private var lastForegroundQueryTime = 0L
-    private val FOREGROUND_CACHE_MS = 200L // Cache por 200ms - mais responsivo
+    private val FOREGROUND_CACHE_MS = 50L // Cache por 50ms - ultra rápido
     
     private fun getForegroundPackageAndActivityViaUsageStats(): Pair<String, String?>? {
         val now = System.currentTimeMillis()
