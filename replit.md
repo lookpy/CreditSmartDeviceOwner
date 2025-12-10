@@ -131,11 +131,11 @@ The UI leverages Jetpack Compose and Material 3, incorporating a CDC institution
 - Lista CRITICAL_NEVER_BLOCK_PACKAGES + verificação dinâmica por FLAG
 
 ### Permission Lock Policy (2025-12-10)
-- **POLICY**: Ninguém pode remover permissões do app
-- AutoPermissionManager.lockAllPermissions() - bloqueia permanentemente todas as permissões via setPermissionGrantState(GRANTED)
-- AutoPermissionManager.enforcePermissions() - verifica e re-aplica permissões perdidas
+- **POLICY**: Permissões concedidas apenas no provisionamento inicial
 - setPermissionPolicy(PERMISSION_POLICY_AUTO_GRANT) - auto-concede novas permissões
-- Integração:
-  - BootReceiver: lockAllPermissions() no boot e após atualização
-  - MainActivity.onResume(): enforcePermissions() verifica permissões
-- Quando Device Owner define PERMISSION_GRANT_STATE_GRANTED, o toggle fica desabilitado nas configurações
+- setPermissionGrantState(GRANTED) chamado apenas no provisionamento (CDCDeviceAdminReceiver.onEnabled)
+- **IMPORTANTE**: NÃO usar lockAllPermissions()/enforcePermissions() no boot/onResume
+  - Causa falso positivo no Play Protect (padrão de malware "Device_Admin")
+  - Re-aplicação perpétua de permissões é comportamento de PHA
+- Funções lockAllPermissions()/enforcePermissions() existem mas NÃO são chamadas automaticamente
+- Para proteger permissões, confiar no provisionamento inicial + políticas DPM

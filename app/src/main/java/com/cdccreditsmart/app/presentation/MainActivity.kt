@@ -284,14 +284,6 @@ class MainActivity : ComponentActivity() {
     override fun onResume() {
         super.onResume()
         
-        // CRÍTICO: Verificar e re-aplicar permissões se necessário
-        try {
-            val permissionManager = com.cdccreditsmart.app.permissions.AutoPermissionManager(this)
-            permissionManager.enforcePermissions()
-        } catch (e: Exception) {
-            Log.e(TAG, "❌ Erro ao verificar permissões: ${e.message}")
-        }
-        
         // RECUPERAÇÃO DE DESINSTALAÇÃO CANCELADA
         // Se o flag de desinstalação está ativo e o app voltou ao foreground,
         // significa que o usuário cancelou a desinstalação

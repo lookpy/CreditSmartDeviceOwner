@@ -113,8 +113,8 @@ class AutoPermissionManager(private val context: Context) {
         
         grantSpecialPermissionsIfNeeded()
         
-        // CRÍTICO: Bloquear remoção de permissões
-        lockAllPermissions()
+        // NOTA: Não chamamos lockAllPermissions() aqui pois causa falso positivo no Play Protect
+        // A proteção é feita via PERMISSION_POLICY_AUTO_GRANT no provisionamento
     }
     
     /**
