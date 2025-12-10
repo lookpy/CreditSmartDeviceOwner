@@ -704,6 +704,19 @@ class SettingsGuardService(private val context: Context) {
         // Ignorar nosso próprio app
         if (packageName == context.packageName) return false
         
+        // ═══════════════════════════════════════════════════════════════════════════════
+        // CRÍTICO: Se nível de bloqueio é 0 e não há bloqueio manual, NÃO interceptar!
+        // Isso garante que ao desbloquear (nível 0), os apps voltem a funcionar
+        // ═══════════════════════════════════════════════════════════════════════════════
+        try {
+            val blockingInfo = appBlockingManager.getBlockingInfo()
+            if (blockingInfo.currentLevel == 0 && !blockingInfo.isManualBlock) {
+                return false
+            }
+        } catch (e: Exception) {
+            Log.w(TAG, "⚠️ Erro ao verificar nível de bloqueio: ${e.message}")
+        }
+        
         // Ignorar apenas pacotes CRÍTICOS do sistema (não Chrome, YouTube, etc.)
         if (packageName in CRITICAL_SYSTEM_PACKAGES_FOR_INTERCEPTION) return false
         
@@ -1113,6 +1126,14 @@ class SettingsGuardService(private val context: Context) {
         val closedApps = mutableListOf<String>()
         
         try {
+            // ═══════════════════════════════════════════════════════════════════════════════
+            // CRÍTICO: Se nível de bloqueio é 0 e não há bloqueio manual, NÃO fechar nada!
+            // ═══════════════════════════════════════════════════════════════════════════════
+            val blockingInfo = appBlockingManager.getBlockingInfo()
+            if (blockingInfo.currentLevel == 0 && !blockingInfo.isManualBlock) {
+                return emptyList()
+            }
+            
             val runningPackages = getAllRunningPackages()
             
             if (runningPackages.isEmpty()) {
