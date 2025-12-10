@@ -122,4 +122,8 @@ The UI leverages Jetpack Compose and Material 3, incorporating a CDC institution
 - **INTERVAL**: 30s monitoring (non-aggressive to avoid malware detection)
 - **REMOVED**: Permission screen monitoring, app info monitoring, heavy overlay system
 - **PERMISSION PROTECTION**: Via Device Owner policies only (setUserControlDisabledPackages, setPermissionGrantState)
-- **PLAY PROTECT FIX**: Removed aggressive monitoring that triggered false positives
+- **PLAY PROTECT FIX**: Removed all AppOps/reflection code that triggered false positives:
+  - Removed grantPackageUsageStatsPermission() via AppOps
+  - Removed grantSystemAlertWindowPermission() via AppOps  
+  - Removed forceGrantUsageStatsPermission() in BlockedAppInterceptor
+  - Runtime permissions still granted via documented Device Owner API (setPermissionGrantState)

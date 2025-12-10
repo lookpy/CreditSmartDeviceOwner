@@ -336,41 +336,15 @@ class BlockedAppInterceptor(private val context: Context) {
     }
     
     private fun checkAndGrantUsageStatsPermission() {
-        Log.i(TAG, "")
-        Log.i(TAG, "╔════════════════════════════════════════════════════════╗")
-        Log.i(TAG, "║  🔐 VERIFICANDO PERMISSÃO PACKAGE_USAGE_STATS         ║")
-        Log.i(TAG, "╚════════════════════════════════════════════════════════╝")
-        
+        // NOTA: Não usamos mais forceGrantUsageStatsPermission() via AppOps
+        // porque isso causa falso positivo do Play Protect.
+        // A proteção é feita via políticas Device Owner.
         val helper = com.cdccreditsmart.app.permissions.UsageStatsPermissionHelper
         
-        // 1. Verificar se já está concedida
         if (helper.isUsageStatsPermissionGranted(context)) {
-            Log.i(TAG, "✅ Permissão JÁ concedida - overlay funcionará normalmente")
-            Log.i(TAG, "")
-            return
-        }
-        
-        Log.w(TAG, "⚠️ Permissão NÃO concedida - tentando forçar concessão...")
-        
-        // 2. Tentar forçar concessão via AppOps
-        val granted = helper.forceGrantUsageStatsPermission(context)
-        
-        if (granted) {
-            Log.i(TAG, "🎉 SUCESSO! Permissão concedida automaticamente")
-            Log.i(TAG, "   Overlay funcionará normalmente")
-            Log.i(TAG, "")
+            Log.i(TAG, "✅ PACKAGE_USAGE_STATS concedida")
         } else {
-            Log.e(TAG, "")
-            Log.e(TAG, "╔════════════════════════════════════════════════════════╗")
-            Log.e(TAG, "║  ❌ CRITICAL: OVERLAY NÃO FUNCIONARÁ!                 ║")
-            Log.e(TAG, "╠════════════════════════════════════════════════════════╣")
-            Log.e(TAG, "║  Concessão automática FALHOU                           ║")
-            Log.e(TAG, "║  Usuário DEVE conceder permissão manualmente           ║")
-            Log.e(TAG, "║                                                        ║")
-            Log.e(TAG, "║  Settings → Apps → Special access →                    ║")
-            Log.e(TAG, "║  Usage access → CDC Credit Smart → ENABLE              ║")
-            Log.e(TAG, "╚════════════════════════════════════════════════════════╝")
-            Log.e(TAG, "")
+            Log.w(TAG, "⚠️ PACKAGE_USAGE_STATS não concedida - monitoramento limitado")
         }
     }
     
