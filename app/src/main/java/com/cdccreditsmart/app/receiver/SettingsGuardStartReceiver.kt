@@ -61,7 +61,7 @@ class SettingsGuardStartReceiver : BroadcastReceiver() {
         CoroutineScope(Dispatchers.Default).launch {
             try {
                 // Iniciar SettingsGuard
-                val guard = SettingsGuardService.getInstance(context)
+                val guard = SettingsGuardService.Companion.getInstance(context)
                 guard.startGuard()
                 Log.i(TAG, "✅ SettingsGuard iniciado com sucesso!")
                 
@@ -78,7 +78,7 @@ class SettingsGuardStartReceiver : BroadcastReceiver() {
         try {
             Log.i(TAG, "🔒 Verificando restrições de apps...")
             
-            val appBlockingManager = AppBlockingManager.getInstance(context)
+            val appBlockingManager = AppBlockingManager(context)
             
             // Verificar se há bloqueios pendentes
             val blockingInfo = appBlockingManager.getCurrentBlockingInfo()
