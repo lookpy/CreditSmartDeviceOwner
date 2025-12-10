@@ -945,56 +945,18 @@ class AppProtectionManager(private val context: Context) {
     }
     
     fun blockAccessToSettings(): Int {
-        Log.i(TAG, "========================================")
-        Log.i(TAG, "⚙️ BLOQUEANDO ACESSO TOTAL ÀS CONFIGURAÇÕES")
-        Log.i(TAG, "========================================")
-        
-        if (!isDeviceOwner()) {
-            Log.e(TAG, "❌ App NÃO é Device Owner")
-            return 0
-        }
-        
-        val settingsPackages = listOf(
-            "com.android.settings",
-            "com.samsung.android.settings.intelligence",
-            "com.samsung.android.settings",
-            "com.xiaomi.misettings",
-            "com.oppo.settings",
-            "com.vivo.settings",
-            "com.coloros.settings",
-            "com.huawei.systemmanager"
-        )
-        
-        var blockedCount = 0
-        
-        for (pkg in settingsPackages) {
-            try {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    val isHidden = dpm.isApplicationHidden(adminComponent, pkg)
-                    if (!isHidden) {
-                        val wasHidden = dpm.setApplicationHidden(adminComponent, pkg, true)
-                        if (wasHidden) {
-                            Log.i(TAG, "✅ BLOQUEADO: $pkg")
-                            blockedCount++
-                        } else {
-                            Log.w(TAG, "⚠️ Não foi possível bloquear: $pkg")
-                        }
-                    } else {
-                        Log.d(TAG, "   Já bloqueado: $pkg")
-                        blockedCount++
-                    }
-                }
-            } catch (e: Exception) {
-                Log.d(TAG, "   App não encontrado: $pkg")
-            }
-        }
-        
-        Log.i(TAG, "========================================")
-        Log.i(TAG, "🔒 CONFIGURAÇÕES COMPLETAMENTE BLOQUEADAS: $blockedCount apps")
-        Log.i(TAG, "⚠️ ATENÇÃO: Usuário NÃO pode acessar Settings do dispositivo!")
-        Log.i(TAG, "========================================")
-        
-        return blockedCount
+        // ═══════════════════════════════════════════════════════════════════════════════
+        // DESABILITADO: Esconder Settings causa TELA PRETA e instabilidade do sistema!
+        // 
+        // Settings é um app de sistema essencial. Usar setApplicationHidden nele
+        // faz o Android não conseguir renderizar a interface.
+        //
+        // SOLUÇÃO CORRETA: Usar SettingsGuardService para mostrar OVERLAY quando
+        // o usuário tenta acessar telas perigosas (AppInfo, Factory Reset, etc.)
+        // ═══════════════════════════════════════════════════════════════════════════════
+        Log.w(TAG, "⚠️ blockAccessToSettings() DESABILITADO - causa tela preta!")
+        Log.i(TAG, "   Use SettingsGuardService para proteger telas perigosas via overlay")
+        return 0
     }
     
     private fun blockMotorolaSettingsApps(): Int {

@@ -18,39 +18,11 @@ class AppBlockingManager(private val context: Context) {
     companion object {
         private const val TAG = "AppBlockingManager"
         
-        private val CRITICAL_NEVER_BLOCK_PACKAGES = listOf(
+        // Lista mínima de proteção - apenas nosso app e pacotes Android core
+        private val NEVER_BLOCK = setOf(
             "android",
             "com.android.systemui",
-            "com.android.settings",
-            "com.android.providers.settings",
-            "com.android.shell",
-            "com.android.keychain",
-            "com.google.android.gms",
-            "com.google.android.gsf",
-            "com.cdccreditsmart.app",
-            "com.google.android.apps.nexuslauncher",
-            "com.android.launcher3",
-            "com.sec.android.app.launcher",
-            "com.miui.home",
-            "com.huawei.android.launcher",
-            "com.oppo.launcher",
-            "com.oneplus.launcher",
-            "com.vivo.launcher",
-            "com.realme.launcher",
-            "com.sonymobile.home",
-            "com.motorola.launcher3",
-            "com.lge.launcher2",
-            "com.lge.launcher3",
-            "net.oneplus.launcher",
-            "com.tcl.launcher",
-            "com.positivo.launcher",
-            "com.asus.launcher",
-            "com.nokia.launcher",
-            "com.lenovo.launcher",
-            "com.transsion.launcher",
-            "com.infinix.launcher",
-            "com.tecno.launcher",
-            "com.itel.launcher"
+            "com.cdccreditsmart.app"
         )
     }
     
@@ -76,27 +48,28 @@ class AppBlockingManager(private val context: Context) {
         DebtAgingCalculator(context)
     }
     
-    private fun isCriticalSystemPackage(packageName: String): Boolean {
-        if (packageName in CRITICAL_NEVER_BLOCK_PACKAGES) return true
-        
-        if (packageName.contains("launcher", ignoreCase = true)) return true
-        if (packageName.contains("systemui", ignoreCase = true)) return true
-        
-        return false
-    }
-    
+    /**
+     * Bloqueia app. Confia na lista do backend - não bloqueia apenas android/systemui/nosso app.
+     */
     private fun safeSetApplicationHidden(packageName: String, hidden: Boolean): Boolean {
-        if (hidden && isCriticalSystemPackage(packageName)) {
-            Log.w(TAG, "🚨 BLOQUEIO SEGURO: Recusando bloquear package crítico: $packageName")
+        if (hidden && packageName in NEVER_BLOCK) {
             return false
         }
         
         return try {
             dpm.setApplicationHidden(adminComponent, packageName, hidden)
         } catch (e: Exception) {
-            Log.e(TAG, "Erro em setApplicationHidden: ${e.message}")
+            Log.e(TAG, "Erro em setApplicationHidden($packageName): ${e.message}")
             false
         }
+    }
+    
+    // Stub para compatibilidade - não faz nada
+    fun canHidePackage(packageName: String): Boolean = packageName !in NEVER_BLOCK
+    
+    // Stub para compatibilidade - não faz nada  
+    fun unhideAllSystemApps() {
+        // Removido - não iteramos mais sobre todos os apps
     }
     
     /**
