@@ -754,10 +754,10 @@ class SettingsGuardService(private val context: Context) {
     }
     
     /**
-     * Fecha tela perigosa AGRESSIVAMENTE - sem overlay
+     * Fecha tela perigosa (Settings/AppInfo) - SEM banner
      * 
-     * Apenas vai para Home o mais rápido possível.
-     * Não mostra nenhum aviso - apenas fecha.
+     * Apenas vai para Home. Não mostra nenhum aviso.
+     * Banner é reservado apenas para apps restringidos (Chrome, YouTube, etc).
      */
     private fun showSettingsBlockedScreen(reason: String) {
         if (BuildConfig.DEBUG) {
@@ -767,7 +767,7 @@ class SettingsGuardService(private val context: Context) {
         // Invalidar cache para detectar próxima activity rapidamente
         invalidateForegroundCache()
         
-        // Fechar AGRESSIVAMENTE - ir para Home imediatamente
+        // Apenas fechar - ir para Home, sem banner
         goToHomeFirst()
     }
     

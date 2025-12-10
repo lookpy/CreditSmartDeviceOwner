@@ -136,3 +136,5 @@ The UI leverages Jetpack Compose and Material 3, incorporating a CDC institution
 - CHECK_INTERVAL_MS: 1500ms (normal), AGGRESSIVE_CHECK_INTERVAL_MS: 500ms (quando Settings aberto)
 - Throttles reduzidos: INTERCEPT=1s, CRITICAL=0.5s, BLOCKED_APP=2s, FORCE_STOP=3s
 - Cache foreground reduzido para 200ms + invalidateForegroundCache() após cada bloqueio
+- Telas perigosas (Settings/AppInfo): Apenas fecha, SEM banner
+- Apps restringidos (Chrome, YouTube, etc): Fecha E mostra banner
