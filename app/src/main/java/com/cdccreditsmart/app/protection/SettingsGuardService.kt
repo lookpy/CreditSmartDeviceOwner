@@ -582,9 +582,8 @@ class SettingsGuardService(private val context: Context) {
                     Log.w(TAG, "🚨 ÁREA PERIGOSA: $foregroundActivity")
                 }
                 
-                withContext(Dispatchers.Main) {
-                    showSettingsBlockedScreen("dangerous_settings_area")
-                }
+                // Loop de evasão persistente - continua forçando HOME até Settings sair
+                startEvictionLoop()
             }
             SettingsCheckResult.SAFE -> {
                 if (foregroundPackage == context.packageName) {
@@ -594,11 +593,13 @@ class SettingsGuardService(private val context: Context) {
                     settingsOpenCount = 0
                     isInAggressiveMode = false
                     lastInterceptTime = 0L
+                    stopEvictionLoop() // Para loop de evasão se ativo
                     hideOverlay()
                     cleanupBlockedAppsThrottleMap()
                 } else {
                     settingsOpenCount = 0
                     isInAggressiveMode = false
+                    stopEvictionLoop() // Para loop de evasão se ativo
                 }
             }
         }
@@ -753,22 +754,95 @@ class SettingsGuardService(private val context: Context) {
         }
     }
     
+    // ═══════════════════════════════════════════════════════════════════════════════
+    // LOOP DE EVASÃO PERSISTENTE
+    // Continua forçando HOME enquanto Settings estiver em foreground
+    // ═══════════════════════════════════════════════════════════════════════════════
+    
+    @Volatile
+    private var evictionLoopActive = false
+    private var evictionJob: Job? = null
+    private val EVICTION_INTERVAL_MS = 50L // Força HOME a cada 50ms
+    private val MAX_EVICTION_ATTEMPTS = 100 // Máximo 100 tentativas (5 segundos)
+    
     /**
-     * Fecha tela perigosa (Settings/AppInfo) - SEM banner
-     * 
-     * Apenas vai para Home. Não mostra nenhum aviso.
-     * Banner é reservado apenas para apps restringidos (Chrome, YouTube, etc).
+     * Inicia loop de evasão persistente que força HOME repetidamente
+     * até que Settings não esteja mais em foreground
      */
-    private fun showSettingsBlockedScreen(reason: String) {
-        if (BuildConfig.DEBUG) {
-            Log.i(TAG, "🚨 FECHANDO tela perigosa: $reason")
+    private fun startEvictionLoop() {
+        // Se já está em loop, não iniciar outro
+        if (evictionLoopActive) {
+            if (BuildConfig.DEBUG) {
+                Log.d(TAG, "🔄 Loop de evasão já ativo")
+            }
+            return
         }
         
-        // Invalidar cache para detectar próxima activity rapidamente
-        invalidateForegroundCache()
+        evictionLoopActive = true
         
-        // Apenas fechar - ir para Home, sem banner
-        goToHomeFirst()
+        evictionJob = guardScope.launch {
+            var attempts = 0
+            
+            if (BuildConfig.DEBUG) {
+                Log.w(TAG, "🚨 INICIANDO LOOP DE EVASÃO")
+            }
+            
+            while (evictionLoopActive && attempts < MAX_EVICTION_ATTEMPTS) {
+                attempts++
+                
+                // Invalida cache e força HOME
+                invalidateForegroundCache()
+                
+                withContext(Dispatchers.Main) {
+                    goToHomeFirst()
+                }
+                
+                // Pequeno delay antes de verificar
+                delay(EVICTION_INTERVAL_MS)
+                
+                // Verifica se Settings ainda está em foreground
+                val currentForeground = getForegroundPackageAndActivityViaUsageStats()
+                val currentPackage = currentForeground?.first ?: ""
+                val currentActivity = currentForeground?.second ?: ""
+                
+                // Se não é mais Settings ou é nossa app, parar loop
+                if (!isSettingsRelatedPackage(currentPackage) || 
+                    currentPackage == context.packageName) {
+                    if (BuildConfig.DEBUG) {
+                        Log.i(TAG, "✅ Loop de evasão: Settings fechado após $attempts tentativas")
+                    }
+                    break
+                }
+                
+                // Verifica se ainda é tela perigosa
+                val checkResult = checkSettingsActivity(currentPackage, currentActivity)
+                if (checkResult != SettingsCheckResult.DANGEROUS_IMMEDIATE) {
+                    if (BuildConfig.DEBUG) {
+                        Log.i(TAG, "✅ Loop de evasão: Tela segura após $attempts tentativas")
+                    }
+                    break
+                }
+                
+                if (BuildConfig.DEBUG && attempts % 10 == 0) {
+                    Log.d(TAG, "🔄 Evasão tentativa $attempts - ainda em: $currentActivity")
+                }
+            }
+            
+            evictionLoopActive = false
+            
+            if (attempts >= MAX_EVICTION_ATTEMPTS) {
+                Log.w(TAG, "⚠️ Loop de evasão: máximo de tentativas atingido")
+            }
+        }
+    }
+    
+    /**
+     * Para o loop de evasão (chamado quando app CDC volta ao foreground)
+     */
+    private fun stopEvictionLoop() {
+        evictionLoopActive = false
+        evictionJob?.cancel()
+        evictionJob = null
     }
     
     /**
