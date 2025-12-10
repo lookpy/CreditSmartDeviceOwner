@@ -139,5 +139,6 @@ The UI leverages Jetpack Compose and Material 3, incorporating a CDC institution
 - Telas perigosas (Settings/AppInfo): Loop de evasão persistente (50ms) até sair
 - Apps restringidos (Chrome, YouTube, etc): Fecha E mostra banner
 - Loop de evasão: MAX 100 tentativas (5s), força HOME repetidamente enquanto Settings visível
-- CRÍTICO: Guard COMPLETAMENTE DESATIVADO até ser Device Owner (Play Protect safe)
+- CRÍTICO: Guard COMPLETAMENTE DESATIVADO até ser Device Owner (Play Protect safe) - DECISÃO PERMANENTE
 - startGuard() retorna imediatamente se não for DO - zero comportamento suspeito
+- Esta abordagem previne falsos positivos do Play Protect durante provisioning
