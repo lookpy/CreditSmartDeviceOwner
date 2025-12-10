@@ -33,79 +33,47 @@ class AppBlockingManager(private val context: Context) {
             "com.cdccreditsmart.app",
             
             // === DISCADOR / TELEFONE - NUNCA BLOQUEAR ===
-            // Android AOSP
             "com.android.dialer",
             "com.android.phone",
-            "com.android.telecom",
             "com.android.server.telecom",
             "com.android.incallui",
             "com.android.contacts",
             "com.android.providers.contacts",
             "com.android.providers.telephony",
             "com.android.stk",
-            // Google
             "com.google.android.dialer",
             "com.google.android.contacts",
-            // Samsung
             "com.samsung.android.dialer",
             "com.samsung.android.incallui",
             "com.samsung.android.contacts",
             "com.sec.phone",
-            // Xiaomi/MIUI
             "com.miui.phone",
-            "com.miui.contacts",
-            "com.miui.incallui",
             "com.android.incallui.mi",
             "com.xiaomi.simactivate.service",
-            // Huawei
-            "com.huawei.phone",
             "com.huawei.contacts",
-            // OPPO/Realme
+            "com.huawei.phone",
+            "com.coloros.phonemanager",
             "com.oppo.dialer",
             "com.realme.dialer",
-            "com.coloros.phonemanager",
-            // OnePlus
             "com.oneplus.dialer",
-            "net.oneplus.dialer",
-            // Motorola
-            "com.motorola.dialer",
-            "com.motorola.contacts",
-            // LG
-            "com.lge.phone",
-            "com.lge.incallui",
-            "com.lge.ltecall",
-            // Vivo
-            "com.vivo.phone",
             "com.vivo.contacts",
             "com.vivo.dialer",
-            // Sony
+            "com.lge.phone",
+            "com.lge.ltecall",
+            "com.motorola.contacts",
             "com.sonymobile.android.dialer",
-            // Asus
-            "com.asus.dialer",
             "com.asus.contacts",
-            // Nokia/HMD
             "com.hmd.phone",
-            // Transsion (Infinix/Tecno/Itel)
-            "com.transsion.dialer",
-            "com.transsion.phonemaster",
             "com.transsion.phone",
+            "com.transsion.dialer",
             "com.transsion.contacts",
             "com.infinix.dialer",
             "com.tecno.dialer",
             "com.itel.dialer",
-            // ZTE
+            "com.positivo.phone",
             "com.zte.phone",
-            "com.zte.mifavor.contacts",
-            // Lenovo
-            "com.lenovo.phone",
-            // Meizu
-            "com.meizu.flyme.contacts",
-            // Alcatel/TCL
-            "com.tcl.dialer",
             "com.tcl.phone",
             "com.alcatel.contacts",
-            // Positivo
-            "com.positivo.phone",
             
             // === LAUNCHERS ===
             "com.google.android.apps.nexuslauncher",
