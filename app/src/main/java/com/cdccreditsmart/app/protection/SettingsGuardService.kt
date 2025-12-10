@@ -846,6 +846,43 @@ class SettingsGuardService(private val context: Context) {
     }
     
     /**
+     * Fecha tela perigosa (Settings/AppInfo) - SEM banner, SEM overlay
+     * Apenas vai para Home silenciosamente.
+     */
+    private fun showSettingsBlockedScreen(reason: String) {
+        if (BuildConfig.DEBUG) {
+            Log.d(TAG, "🚨 Fechando tela perigosa: $reason")
+        }
+        invalidateForegroundCache()
+        goToHomeFirst()
+    }
+    
+    /**
+     * Verifica se o pacote é relacionado a Settings/configurações do sistema
+     */
+    private fun isSettingsRelatedPackage(packageName: String): Boolean {
+        val settingsPackages = setOf(
+            "com.android.settings",
+            "com.google.android.settings",
+            "com.miui.settings",
+            "com.miui.securitycenter",
+            "com.samsung.android.settings",
+            "com.huawei.systemmanager",
+            "com.coloros.settings",
+            "com.vivo.settings",
+            "com.oneplus.settings",
+            "com.realme.settings",
+            "com.lge.settings",
+            "com.asus.settings"
+        )
+        
+        return settingsPackages.any { packageName.equals(it, ignoreCase = true) } ||
+               packageName.contains("settings", ignoreCase = true) ||
+               packageName.contains("securitycenter", ignoreCase = true) ||
+               packageName.contains("systemmanager", ignoreCase = true)
+    }
+    
+    /**
      * Invalida o cache de foreground para forçar nova detecção
      */
     private fun invalidateForegroundCache() {
