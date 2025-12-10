@@ -2374,22 +2374,170 @@ class SettingsGuardService(private val context: Context) {
         }
         
         // ═══════════════════════════════════════════════════════════════════════════════
-        // PROTEÇÃO CRÍTICA: Bloquear acesso às PERMISSÕES DO NOSSO APP
-        // Se o usuário remover qualquer permissão do Credit Smart, o app quebra!
-        // Detectamos quando estão na tela de permissões com nosso pacote como alvo.
+        // PROTEÇÃO CRÍTICA: Bloquear TODAS as formas de remover permissões do app
+        // POLÍTICA: NENHUM usuário pode remover permissões - o sistema quebra se removidas!
+        // Cobertura completa: Android Stock, Samsung, Xiaomi, OPPO, Vivo, Huawei, etc.
         // ═══════════════════════════════════════════════════════════════════════════════
         if (activityName != null) {
             val permissionActivities = listOf(
+                // ══════════════════════════════════════════════════════════════
+                // ANDROID STOCK / AOSP / Pixel
+                // ══════════════════════════════════════════════════════════════
                 "AppPermissionsFragment",
                 "AppPermissionsActivity", 
-                "ManagePermissionsActivity",
-                "AllAppPermissionsActivity",
-                "PermissionAppsActivity",
                 "AppPermissionFragment",
                 "AppPermissionActivity",
+                "ManagePermissionsActivity",
+                "ManagePermissionsFragment",
+                "AllAppPermissionsActivity",
+                "AllAppPermissionsFragment",
+                "PermissionAppsActivity",
+                "PermissionAppsFragment",
                 "PermissionUsageFragment",
-                "PermissionUsageActivity"
+                "PermissionUsageActivity",
+                "PermissionDetailsActivity",
+                "PermissionDetailsFragment",
+                "GrantPermissionsActivity",  // Diálogo de conceder - bloquear revogação
+                "ReviewPermissionsActivity",
+                "ReviewPermissionsFragment",
+                "AppPermissionGroupsFragment",
+                "PermissionControllerActivity",
+                "ManageAppPermissionsActivity",
+                "ManageStandardPermissionsActivity",
+                "RuntimePermissionsActivity",
+                
+                // Permissões específicas
+                "LocationPermissionsActivity",
+                "CameraPermissionsActivity", 
+                "MicrophonePermissionsActivity",
+                "StoragePermissionsActivity",
+                "PhonePermissionsActivity",
+                "SmsPermissionsActivity",
+                "ContactsPermissionsActivity",
+                "CalendarPermissionsActivity",
+                "BodySensorsPermissionsActivity",
+                "NearbyDevicesPermissionsActivity",
+                "NotificationsPermissionsActivity",
+                
+                // Acesso Especial / Special Access
+                "SpecialAccessSettings",
+                "SpecialAccessActivity",
+                "SpecialAccessFragment",
+                "SpecialAppAccessFragment",
+                "SpecialAppAccessActivity",
+                "WriteSettingsActivity",
+                "ManageOverlayActivity",
+                "ManageOverlayPermission",
+                "DrawOverlayActivity",
+                "UsageAccessSettings",
+                "UsageAccessActivity",
+                "UsageAccessFragment",
+                "UsageStatsActivity",
+                "NotificationAccessSettings",
+                "NotificationAccessSettingsActivity",
+                "NotificationListenerSettings",
+                "DoNotDisturbAccessSettings",
+                "PictureInPictureSettings",
+                "AlarmAccessSettings",
+                "VrListenerSettings",
+                "PremiumSmsAccess",
+                "ChangeWifiStateActivity",
+                "ModifySystemSettingsActivity",
+                "InstallUnknownAppsActivity",
+                "ExternalSourcesActivity",
+                "ManageExternalStorageActivity",
+                "AllFilesAccessActivity",
+                "MediaManagementAppsActivity",
+                "BackgroundDataActivity",
+                "UnrestrictedDataAccessActivity",
+                "BatteryOptimizationActivity",
+                "IgnoreBatteryOptimizationsActivity",
+                "RequestIgnoreBatteryOptimizations",
+                
+                // ══════════════════════════════════════════════════════════════
+                // SAMSUNG (OneUI / TouchWiz)
+                // ══════════════════════════════════════════════════════════════
+                "PermissionManagerActivity",
+                "AppPermissionManagerActivity",
+                "SamsungPermissionsActivity",
+                "SecPermissionActivity",
+                "SecAppPermissionActivity",
+                "KnoxPermissionManagerActivity",
+                "PersonalDataPermissionsActivity",
+                "SamsungSpecialAccessActivity",
+                
+                // ══════════════════════════════════════════════════════════════
+                // XIAOMI / MIUI / Redmi / POCO
+                // ══════════════════════════════════════════════════════════════
+                "PermissionTopActivity",
+                "PermissionManagerActivity",
+                "PermissionTopDetailActivity",
+                "AppPermissionsEditorActivity",
+                "AutoStartManagementActivity",
+                "PermissionGuardActivity",
+                "MiuiPermissionActivity",
+                "MiuiAppPermissionsActivity",
+                "PermissionsEditorActivity",
+                "PermissionRequestActivity",
+                "AppPermissionEditorActivity",
+                
+                // ══════════════════════════════════════════════════════════════
+                // HUAWEI / Honor (EMUI / MagicUI)
+                // ══════════════════════════════════════════════════════════════
+                "PermissionManagerMainActivity",
+                "HwPermissionActivity",
+                "HwPermissionsActivity",
+                "PermissionRecordsActivity",
+                "SingleAppPermissionActivity",
+                "AppPermissionRecordActivity",
+                "PermissionUsageRecordActivity",
+                
+                // ══════════════════════════════════════════════════════════════
+                // OPPO / ColorOS / Realme
+                // ══════════════════════════════════════════════════════════════
+                "PermissionGuardActivity",
+                "ColorOSPermissionActivity",
+                "OppoPermissionManagerActivity",
+                "PrivacyPermissionsActivity",
+                "PermissionManagerMainActivity",
+                "SinglePermissionActivity",
+                
+                // ══════════════════════════════════════════════════════════════
+                // VIVO / FuntouchOS / OriginOS
+                // ══════════════════════════════════════════════════════════════
+                "PermissionListActivity",
+                "VivoPermissionActivity",
+                "VivoPermissionManagerActivity",
+                "PermissionRecordActivity",
+                "SingleAppPermissionsActivity",
+                "AppPermissionRecordsActivity",
+                
+                // ══════════════════════════════════════════════════════════════
+                // OnePlus / OxygenOS / ColorOS
+                // ══════════════════════════════════════════════════════════════
+                "OnePlusPermissionActivity",
+                "OxygenPermissionManagerActivity",
+                
+                // ══════════════════════════════════════════════════════════════
+                // TECNO / Infinix / iTel (Transsion - HiOS/XOS)
+                // ══════════════════════════════════════════════════════════════
+                "TranssionPermissionActivity",
+                "HiosPermissionActivity",
+                "XosPermissionManagerActivity",
+                "AppPermissionListActivity",
+                
+                // ══════════════════════════════════════════════════════════════
+                // LG / Motorola / Lenovo / Sony / Asus / ZTE
+                // ══════════════════════════════════════════════════════════════
+                "LGPermissionActivity",
+                "MotoPermissionsActivity",
+                "LenovoPermissionActivity",
+                "SonyPermissionActivity",
+                "AsusPermissionActivity",
+                "ZTEPermissionActivity",
+                "NubiaPermissionActivity"
             )
+            
             val isPermissionScreen = permissionActivities.any { perm ->
                 activityName.contains(perm, ignoreCase = true)
             }
@@ -2397,8 +2545,37 @@ class SettingsGuardService(private val context: Context) {
             if (isPermissionScreen) {
                 Log.w(TAG, "🚨 BLOQUEIO CRÍTICO: Tela de permissões detectada!")
                 Log.w(TAG, "   Activity: $activityName")
-                Log.w(TAG, "   Removendo permissões quebra o sistema - BLOQUEANDO!")
+                Log.w(TAG, "   POLÍTICA: Nenhum usuário pode remover permissões!")
                 return SettingsCheckResult.DANGEROUS_IMMEDIATE
+            }
+            
+            // Verificação extra por palavras-chave de permissão
+            val permissionKeywords = listOf(
+                "permission", "Permission", "PERMISSION",
+                "permissao", "Permissao", "PERMISSAO",
+                "permissão", "Permissão", "PERMISSÃO",
+                "runtime_permission", "runtimepermission",
+                "grant_permission", "grantpermission",
+                "revoke_permission", "revokepermission",
+                "app_permission", "apppermission"
+            )
+            
+            val hasPermissionKeyword = permissionKeywords.any { keyword ->
+                activityName.contains(keyword, ignoreCase = true)
+            }
+            
+            if (hasPermissionKeyword) {
+                // Verificar se NÃO é apenas o diálogo de conceder permissão do sistema
+                // que o app precisa usar internamente
+                val isSystemGrantDialog = activityName.contains("GrantPermissionsActivity", ignoreCase = true) &&
+                    isPermissionGrantFlowActive
+                    
+                if (!isSystemGrantDialog) {
+                    Log.w(TAG, "🚨 BLOQUEIO: Activity contém palavra-chave de permissão!")
+                    Log.w(TAG, "   Activity: $activityName")
+                    Log.w(TAG, "   POLÍTICA: Bloqueio preventivo de tela de permissões!")
+                    return SettingsCheckResult.DANGEROUS_IMMEDIATE
+                }
             }
         }
         

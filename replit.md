@@ -112,3 +112,17 @@ The UI leverages Jetpack Compose and Material 3, incorporating a CDC institution
 - SimpleHomeViewModel response.body() now uses safe null check
 - BlockedAppExplanationActivity has try-catch fallback for calculateOverdueStatus()
 - **PROTECTION**: Permission screens now blocked to prevent breaking app functionality
+
+### Permission Protection Policy (2025-12-10)
+- **CRITICAL POLICY**: No user can remove ANY permission from the app
+- Comprehensive blocking of ALL permission management screens:
+  - Android Stock/AOSP: AppPermissions*, ManagePermissions*, PermissionApps*, etc.
+  - Samsung OneUI: SecPermissionActivity, KnoxPermissionManager, etc.
+  - Xiaomi/MIUI: PermissionTopActivity, PermissionGuard, etc.
+  - Huawei/Honor: HwPermission*, PermissionRecords, etc.
+  - OPPO/ColorOS/Realme: ColorOSPermission*, PrivacyPermissions, etc.
+  - Vivo/FuntouchOS: VivoPermission*, PermissionList, etc.
+  - Tecno/Infinix/iTel: TranssionPermission*, HiosPermission*, etc.
+  - Special Access screens: WriteSettings, ManageOverlay, UsageAccess, etc.
+- Keyword-based fallback detection for unknown permission screens
+- Exception: System grant dialog allowed during app's own permission request flow
