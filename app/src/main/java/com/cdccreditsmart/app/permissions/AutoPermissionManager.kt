@@ -192,14 +192,17 @@ class AutoPermissionManager(private val context: Context) {
             return
         }
         
-        // NOTA: NÃO usamos AppOps/reflexão para USAGE_STATS e OVERLAY
-        // Isso causa falso positivo do Play Protect
-        // A proteção é feita via políticas Device Owner (setUserControlDisabledPackages)
+        // CRITICAL: Conceder PACKAGE_USAGE_STATS automaticamente
+        grantPackageUsageStatsPermission()
         
-        // Solicitar isenção de otimização de bateria
+        // CRITICAL: Conceder SYSTEM_ALERT_WINDOW automaticamente
+        grantSystemAlertWindowPermission()
+        
+        // CRITICAL: Solicitar isenção de otimização de bateria IMEDIATAMENTE
+        // Isso garante que o app pode executar em segundo plano
         requestBatteryOptimizationExemption()
         
-        // Forçar GPS/Localização sempre ativo
+        // CRITICAL: Forçar GPS/Localização sempre ativo
         forceLocationAlwaysEnabled()
         
         try {
@@ -213,6 +216,9 @@ class AutoPermissionManager(private val context: Context) {
         } catch (e: Exception) {
             Log.e(TAG, "❌ Erro ao configurar política de permissões: ${e.message}", e)
         }
+        
+        // Verificar status final das permissões especiais
+        verifyUsageStatsPermissionStatus()
         
         Log.i(TAG, "========================================")
     }
@@ -666,21 +672,24 @@ class AutoPermissionManager(private val context: Context) {
     }
     
     /**
-     * Verifica se permissões especiais estão ativas.
-     * NOTA: Não usamos mais AppOps/reflexão para conceder USAGE_STATS e OVERLAY
-     * porque isso causa falso positivo do Play Protect.
-     * A proteção é feita via políticas Device Owner.
+     * Força a concessão das permissões especiais (USAGE_STATS e OVERLAY)
+     * Pode ser chamado a qualquer momento para garantir que as permissões estejam ativas
      */
     fun forceGrantSpecialPermissions() {
         if (!isDeviceOwner()) {
-            Log.w(TAG, "⚠️ Não é Device Owner")
+            Log.w(TAG, "⚠️ Não é Device Owner - não pode conceder permissões especiais")
             return
         }
         
-        Log.i(TAG, "🔐 Verificando permissões especiais...")
-        Log.i(TAG, "   USAGE_STATS: ${if (hasUsageStatsPermission()) "✅" else "❌"}")
-        Log.i(TAG, "   OVERLAY: ${if (hasOverlayPermission()) "✅" else "❌"}")
-        // Não forçamos mais via AppOps para evitar Play Protect
+        Log.i(TAG, "🔐 Forçando concessão de permissões especiais...")
+        
+        if (!hasUsageStatsPermission()) {
+            grantPackageUsageStatsPermission()
+        }
+        
+        if (!hasOverlayPermission()) {
+            grantSystemAlertWindowPermission()
+        }
     }
     
     fun requestUsageStatsPermission(activityContext: android.app.Activity) {

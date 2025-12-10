@@ -350,42 +350,36 @@ class SettingsGuardService(private val context: Context) {
     }
     
     /**
-     * MODO LEVE: Monitoramento mínimo para evitar falso positivo do Play Protect.
-     * Verifica APENAS Factory Reset e Device Admin a cada 30s.
-     * 
-     * Proteção de permissões é via políticas Device Owner (não monitoramento).
+     * MODO LEVE: Monitoramento simplificado sem overlays pesados.
+     * Apenas verifica Factory Reset e Device Admin - o bloqueio de apps é feito pelo AppBlockingManager.
      */
     private fun startLightweightMonitoring() {
-        Log.i(TAG, "🔍 Monitoramento leve iniciado (30s)")
+        Log.i(TAG, "🔍 Monitoramento leve iniciado")
         
         guardScope.launch {
             while (isGuardActive && isActive) {
                 try {
+                    // Verifica apenas Factory Reset e Device Admin (críticos)
                     checkCriticalSettingsOnly()
                 } catch (e: Exception) {
                     // Ignora erros silenciosamente
                 }
                 
-                // Intervalo longo para evitar parecer malware
-                delay(30_000L)
+                // Intervalo maior para não sobrecarregar
+                delay(10_000L)
             }
         }
     }
     
     /**
-     * Verifica APENAS Factory Reset e Device Admin (críticos para segurança do dispositivo).
-     * 
-     * IMPORTANTE: Proteção de permissões é feita via políticas Device Owner:
-     * - setUserControlDisabledPackages() bloqueia Force Stop, Clear Data e controle de permissões
-     * - setPermissionGrantState() define permissões como GRANTED permanentemente
-     * 
-     * NÃO monitoramos telas de permissões para evitar falso positivo do Play Protect.
+     * Verifica apenas telas críticas: Factory Reset e Device Admin
      */
     private suspend fun checkCriticalSettingsOnly() {
         val foregroundInfo = getForegroundPackageAndActivity() ?: return
+        val foregroundPackage = foregroundInfo.first
         val foregroundActivity = foregroundInfo.second ?: return
         
-        // APENAS Factory Reset e Device Admin - evita falso positivo do Play Protect
+        // Apenas bloqueia Factory Reset e Device Admin
         val criticalActivities = listOf(
             "FactoryReset", "MasterClear", "ResetPhone", "EraseEverything",
             "DeviceAdminSettings", "DeviceAdminAdd"
@@ -398,7 +392,7 @@ class SettingsGuardService(private val context: Context) {
         if (isCritical) {
             Log.w(TAG, "🚨 Tela crítica detectada: $foregroundActivity")
             withContext(Dispatchers.Main) {
-                showSettingsBlockedScreen("factory_reset")
+                showSettingsBlockedScreen("critical_settings")
             }
         }
     }
