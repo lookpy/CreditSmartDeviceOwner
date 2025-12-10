@@ -134,3 +134,5 @@ The UI leverages Jetpack Compose and Material 3, incorporating a CDC institution
 - showSettingsBlockedScreen() agora: APENAS fecha (vai para Home) - SEM overlay
 - Comportamento AGRESSIVO: fecha tela perigosa imediatamente, sem aviso
 - CHECK_INTERVAL_MS: 1500ms (normal), AGGRESSIVE_CHECK_INTERVAL_MS: 500ms (quando Settings aberto)
+- Throttles reduzidos: INTERCEPT=1s, CRITICAL=0.5s, BLOCKED_APP=2s, FORCE_STOP=3s
+- Cache foreground reduzido para 200ms + invalidateForegroundCache() após cada bloqueio

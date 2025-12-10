@@ -44,8 +44,8 @@ class SettingsGuardService(private val context: Context) {
         private const val TEMPORARY_ALLOW_DEVELOPER_OPTIONS = false
         
         // DEBUG: Throttle muito maior para não atrapalhar desenvolvimento
-        private val INTERCEPT_THROTTLE_MS = if (BuildConfig.DEBUG) 30_000L else 1_000L
-        private val CRITICAL_THROTTLE_MS = if (BuildConfig.DEBUG) 15_000L else 500L
+        private val INTERCEPT_THROTTLE_MS = 1_000L  // 1s - mesmo em DEBUG
+        private val CRITICAL_THROTTLE_MS = 500L    // 0.5s - mesmo em DEBUG
         
         @Volatile
         private var instance: SettingsGuardService? = null
@@ -207,10 +207,10 @@ class SettingsGuardService(private val context: Context) {
     private val appBlockingManager by lazy { AppBlockingManager(context) }
     
     private val recentlyInterceptedBlockedApps = mutableMapOf<String, Long>()
-    private val BLOCKED_APP_THROTTLE_MS = if (BuildConfig.DEBUG) 10_000L else 2_000L
+    private val BLOCKED_APP_THROTTLE_MS = 2_000L  // 2s - mesmo em DEBUG
     
     private val recentlyForcedStoppedApps = mutableMapOf<String, Long>()
-    private val FORCE_STOP_THROTTLE_MS = 10_000L
+    private val FORCE_STOP_THROTTLE_MS = 3_000L  // 3s - reduzido para ser mais agressivo
     
     // ═══════════════════════════════════════════════════════════════════════════════
     // MULTI-WINDOW / SPLIT SCREEN DETECTION: Detectar apps bloqueados em multi-window
@@ -764,8 +764,20 @@ class SettingsGuardService(private val context: Context) {
             Log.i(TAG, "🚨 FECHANDO tela perigosa: $reason")
         }
         
+        // Invalidar cache para detectar próxima activity rapidamente
+        invalidateForegroundCache()
+        
         // Fechar AGRESSIVAMENTE - ir para Home imediatamente
         goToHomeFirst()
+    }
+    
+    /**
+     * Invalida o cache de foreground para forçar nova detecção
+     */
+    private fun invalidateForegroundCache() {
+        cachedForegroundPackage = null
+        cachedForegroundActivity = null
+        lastForegroundQueryTime = 0L
     }
     
     /**
@@ -2953,7 +2965,7 @@ class SettingsGuardService(private val context: Context) {
     @Volatile private var cachedForegroundPackage: String? = null
     @Volatile private var cachedForegroundActivity: String? = null
     @Volatile private var lastForegroundQueryTime = 0L
-    private val FOREGROUND_CACHE_MS = 500L // Cache por 500ms
+    private val FOREGROUND_CACHE_MS = 200L // Cache por 200ms - mais responsivo
     
     private fun getForegroundPackageAndActivityViaUsageStats(): Pair<String, String?>? {
         val now = System.currentTimeMillis()
