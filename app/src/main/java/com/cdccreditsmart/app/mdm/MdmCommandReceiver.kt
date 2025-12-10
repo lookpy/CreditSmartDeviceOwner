@@ -509,6 +509,10 @@ class MdmCommandReceiver(private val context: Context) {
                     
                     if (parameters.targetLevel == 0) {
                         Log.i(TAG, "🔓 NÍVEL 0 DETECTADO - Desbloqueando TODOS os apps...")
+                        
+                        localAccountState.markServerUnlocked()
+                        Log.i(TAG, "🔓 Flag serverUnlocked marcado - bloqueio offline SUSPENSO")
+                        
                         val result = blockingManager.unblockAllApps()
                         Log.i(TAG, "✅ Desbloqueio completo - Success: ${result.success}, Apps: ${result.unblockedCount}")
                         
@@ -519,6 +523,10 @@ class MdmCommandReceiver(private val context: Context) {
                         )
                     } else {
                         Log.i(TAG, "🔒 Aplicando bloqueio progressivo...")
+                        
+                        localAccountState.clearServerUnlock()
+                        Log.i(TAG, "🔒 Flag serverUnlocked limpo - bloqueio offline ATIVO")
+                        
                         // isOfflineEnforcement = false porque este é comando do servidor
                         val result = blockingManager.applyProgressiveBlock(parameters, isOfflineEnforcement = false)
                         Log.i(TAG, "✅ Bloqueio aplicado - Success: ${result.success}, Apps: ${result.blockedAppsCount}")

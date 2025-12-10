@@ -3,6 +3,7 @@ package com.cdccreditsmart.app.blocking
 import android.content.Context
 import android.util.Log
 import com.cdccreditsmart.app.storage.LocalInstallmentStorage
+import com.cdccreditsmart.data.storage.LocalAccountState
 import com.cdccreditsmart.network.dto.mdm.CommandParameters
 
 /**
@@ -18,6 +19,10 @@ class OfflineBlockingEngine(
     
     private val notificationManager by lazy {
         BlockingNotificationManager(context)
+    }
+    
+    private val localAccountState by lazy {
+        LocalAccountState(context)
     }
     
     companion object {
@@ -47,6 +52,22 @@ class OfflineBlockingEngine(
                     appliedLevel = appBlockingManager.getBlockingInfo().currentLevel,
                     daysOverdue = 0,
                     reason = "Bloqueio manual ativo (backend)",
+                    blockingResult = null
+                )
+            }
+            
+            // CRITICAL: Verificar se o servidor desbloqueou recentemente
+            // Se o servidor enviou UNBLOCK, NÃO reaplicar bloqueio automático
+            if (localAccountState.isServerUnlocked()) {
+                Log.i(TAG, "🔓 SERVIDOR DESBLOQUEOU - ignorando bloqueio automático offline")
+                Log.i(TAG, "   O backend é a fonte de verdade para estado de bloqueio")
+                Log.i(TAG, "   Bloqueio offline suspenso até novo comando BLOCK do servidor")
+                
+                return AutoBlockingResult(
+                    blockingApplied = false,
+                    appliedLevel = 0,
+                    daysOverdue = 0,
+                    reason = "Servidor desbloqueou - aguardando sincronização",
                     blockingResult = null
                 )
             }
