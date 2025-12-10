@@ -131,5 +131,8 @@ The UI leverages Jetpack Compose and Material 3, incorporating a CDC institution
 - Lista CRITICAL_NEVER_BLOCK_PACKAGES + verificação dinâmica por FLAG
 
 ### Settings Guard Flow (2025-12-10)
-- showSettingsBlockedScreen() agora: 1) Vai para Home 2) Após 150ms mostra overlay
-- Fluxo correto: fecha tela perigosa PRIMEIRO, depois exibe aviso
+- showSettingsBlockedScreen() agora: APENAS fecha (vai para Home) - SEM overlay
+- Comportamento AGRESSIVO: fecha tela perigosa imediatamente, sem aviso
+- CHECK_INTERVAL_MS: 1500ms (normal), AGGRESSIVE_CHECK_INTERVAL_MS: 500ms (quando Settings aberto)
+- Throttles reduzidos: INTERCEPT=1s, CRITICAL=0.5s, BLOCKED_APP=2s, FORCE_STOP=3s
+- Cache foreground reduzido para 200ms + invalidateForegroundCache() após cada bloqueio
