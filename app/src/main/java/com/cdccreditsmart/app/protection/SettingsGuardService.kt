@@ -37,15 +37,15 @@ class SettingsGuardService(private val context: Context) {
     
     companion object {
         private const val TAG = "SettingsGuardService"
-        private const val CHECK_INTERVAL_MS = 1500L  // Normal: 1.5s
-        private const val AGGRESSIVE_CHECK_INTERVAL_MS = 500L  // Agressivo: 0.5s (quando Settings aberto)
+        private const val CHECK_INTERVAL_MS = 3000L
+        private const val AGGRESSIVE_CHECK_INTERVAL_MS = 1000L
         
         // Flag para permitir Developer Options (apenas para debug)
         private const val TEMPORARY_ALLOW_DEVELOPER_OPTIONS = false
         
         // DEBUG: Throttle muito maior para não atrapalhar desenvolvimento
-        private val INTERCEPT_THROTTLE_MS = 1_000L  // 1s - mesmo em DEBUG
-        private val CRITICAL_THROTTLE_MS = 500L    // 0.5s - mesmo em DEBUG
+        private val INTERCEPT_THROTTLE_MS = if (BuildConfig.DEBUG) 30_000L else 1_000L
+        private val CRITICAL_THROTTLE_MS = if (BuildConfig.DEBUG) 15_000L else 500L
         
         @Volatile
         private var instance: SettingsGuardService? = null
@@ -207,10 +207,10 @@ class SettingsGuardService(private val context: Context) {
     private val appBlockingManager by lazy { AppBlockingManager(context) }
     
     private val recentlyInterceptedBlockedApps = mutableMapOf<String, Long>()
-    private val BLOCKED_APP_THROTTLE_MS = 2_000L  // 2s - mesmo em DEBUG
+    private val BLOCKED_APP_THROTTLE_MS = if (BuildConfig.DEBUG) 10_000L else 2_000L
     
     private val recentlyForcedStoppedApps = mutableMapOf<String, Long>()
-    private val FORCE_STOP_THROTTLE_MS = 3_000L  // 3s - reduzido para ser mais agressivo
+    private val FORCE_STOP_THROTTLE_MS = 10_000L
     
     // ═══════════════════════════════════════════════════════════════════════════════
     // MULTI-WINDOW / SPLIT SCREEN DETECTION: Detectar apps bloqueados em multi-window
@@ -754,30 +754,49 @@ class SettingsGuardService(private val context: Context) {
     }
     
     /**
-     * Fecha tela perigosa AGRESSIVAMENTE - sem overlay
+     * Mostra tela de bloqueio para Settings perigoso
      * 
-     * Apenas vai para Home o mais rápido possível.
-     * Não mostra nenhum aviso - apenas fecha.
+     * FLUXO: 
+     * 1. Primeiro vai para Home (fecha a tela perigosa)
+     * 2. Depois de 150ms, abre o overlay de aviso
      */
     private fun showSettingsBlockedScreen(reason: String) {
-        if (BuildConfig.DEBUG) {
-            Log.i(TAG, "🚨 FECHANDO tela perigosa: $reason")
+        try {
+            // PASSO 1: Ir para Home primeiro (fecha a tela perigosa)
+            goToHomeFirst()
+            
+            // PASSO 2: Depois de um delay, mostrar o overlay de aviso
+            mainHandler.postDelayed({
+                try {
+                    val intent = Intent(context, BlockedAppExplanationActivity::class.java).apply {
+                        addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                        addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                        addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY)
+                        putExtra("blocked_package", "com.android.settings")
+                        putExtra("is_settings_blocked", true)
+                        putExtra("block_reason", reason)
+                        putExtra("blocking_level", 0)
+                        putExtra("days_overdue", 0)
+                    }
+                    context.startActivity(intent)
+                    
+                    if (BuildConfig.DEBUG) {
+                        Log.i(TAG, "✅ Tela de bloqueio exibida (Settings) - reason: $reason")
+                    }
+                } catch (e: Exception) {
+                    Log.e(TAG, "❌ Erro ao mostrar overlay de bloqueio", e)
+                }
+            }, 150) // 150ms de delay para Home aparecer primeiro
+            
+        } catch (e: Exception) {
+            Log.e(TAG, "❌ Erro ao bloquear Settings", e)
+            // Fallback: tentar ir para Home de qualquer forma
+            try {
+                goToHomeFirst()
+            } catch (e2: Exception) {
+                Log.e(TAG, "❌ Fallback também falhou", e2)
+            }
         }
-        
-        // Invalidar cache para detectar próxima activity rapidamente
-        invalidateForegroundCache()
-        
-        // Fechar AGRESSIVAMENTE - ir para Home imediatamente
-        goToHomeFirst()
-    }
-    
-    /**
-     * Invalida o cache de foreground para forçar nova detecção
-     */
-    private fun invalidateForegroundCache() {
-        cachedForegroundPackage = null
-        cachedForegroundActivity = null
-        lastForegroundQueryTime = 0L
     }
     
     /**
@@ -2965,7 +2984,7 @@ class SettingsGuardService(private val context: Context) {
     @Volatile private var cachedForegroundPackage: String? = null
     @Volatile private var cachedForegroundActivity: String? = null
     @Volatile private var lastForegroundQueryTime = 0L
-    private val FOREGROUND_CACHE_MS = 200L // Cache por 200ms - mais responsivo
+    private val FOREGROUND_CACHE_MS = 500L // Cache por 500ms
     
     private fun getForegroundPackageAndActivityViaUsageStats(): Pair<String, String?>? {
         val now = System.currentTimeMillis()
