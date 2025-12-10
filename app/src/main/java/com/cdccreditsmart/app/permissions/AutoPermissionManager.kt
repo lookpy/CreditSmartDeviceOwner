@@ -107,14 +107,25 @@ class AutoPermissionManager(private val context: Context) {
         
         Log.i(TAG, "✅ App é Device Owner - concedendo permissões automaticamente...")
         
+        // CRÍTICO: Configurar política AUTO_GRANT PRIMEIRO (antes de conceder permissões)
+        // Isso garante que futuras permissões sejam auto-concedidas
+        try {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                dpm.setPermissionPolicy(
+                    adminComponent,
+                    DevicePolicyManager.PERMISSION_POLICY_AUTO_GRANT
+                )
+                Log.i(TAG, "✅ Política AUTO_GRANT configurada no provisionamento")
+            }
+        } catch (e: Exception) {
+            Log.e(TAG, "❌ Erro ao configurar AUTO_GRANT: ${e.message}")
+        }
+        
         grantAllRuntimePermissionsAsDeviceOwner()
         
         verifyAllPermissionsGranted()
         
         grantSpecialPermissionsIfNeeded()
-        
-        // NOTA: Não chamamos lockAllPermissions() aqui pois causa falso positivo no Play Protect
-        // A proteção é feita via PERMISSION_POLICY_AUTO_GRANT no provisionamento
     }
     
     /**

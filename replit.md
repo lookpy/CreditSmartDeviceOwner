@@ -132,10 +132,11 @@ The UI leverages Jetpack Compose and Material 3, incorporating a CDC institution
 
 ### Permission Lock Policy (2025-12-10)
 - **POLICY**: Permissões concedidas apenas no provisionamento inicial
-- setPermissionPolicy(PERMISSION_POLICY_AUTO_GRANT) - auto-concede novas permissões
-- setPermissionGrantState(GRANTED) chamado apenas no provisionamento (CDCDeviceAdminReceiver.onEnabled)
+- PERMISSION_POLICY_AUTO_GRANT configurado em grantAllPermissionsAutomatically() durante provisionamento
+- setPermissionGrantState(GRANTED) chamado apenas no provisionamento
 - **IMPORTANTE**: NÃO usar lockAllPermissions()/enforcePermissions() no boot/onResume
   - Causa falso positivo no Play Protect (padrão de malware "Device_Admin")
   - Re-aplicação perpétua de permissões é comportamento de PHA
-- Funções lockAllPermissions()/enforcePermissions() existem mas NÃO são chamadas automaticamente
+- Funções lockAllPermissions()/enforcePermissions() existem para uso manual (admin remediation)
 - Para proteger permissões, confiar no provisionamento inicial + políticas DPM
+- **PADRÃO PAYJOY**: Guard leve baseado em eventos (boot/resume/WorkManager), não polling agressivo
