@@ -350,23 +350,22 @@ class SettingsGuardService(private val context: Context) {
     }
     
     /**
-     * MODO LEVE: Monitoramento simplificado sem overlays pesados.
-     * Apenas verifica Factory Reset e Device Admin - o bloqueio de apps é feito pelo AppBlockingManager.
+     * MODO LEVE: Monitoramento simplificado.
+     * Verifica Factory Reset, Device Admin e Permissões - intervalo curto para segurança.
      */
     private fun startLightweightMonitoring() {
-        Log.i(TAG, "🔍 Monitoramento leve iniciado")
+        Log.i(TAG, "🔍 Monitoramento iniciado (3s)")
         
         guardScope.launch {
             while (isGuardActive && isActive) {
                 try {
-                    // Verifica apenas Factory Reset e Device Admin (críticos)
                     checkCriticalSettingsOnly()
                 } catch (e: Exception) {
                     // Ignora erros silenciosamente
                 }
                 
-                // Intervalo maior para não sobrecarregar
-                delay(10_000L)
+                // Intervalo curto - 3s é seguro para interceptar antes de alterações
+                delay(3_000L)
             }
         }
     }
