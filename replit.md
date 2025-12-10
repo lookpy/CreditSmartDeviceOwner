@@ -121,3 +121,5 @@ The UI leverages Jetpack Compose and Material 3, incorporating a CDC institution
 - **LIGHTWEIGHT GUARD**: SettingsGuardService now only monitors Factory Reset and Device Admin
 - **INTERVAL**: Changed from 3s aggressive to 10s lightweight monitoring
 - **REMOVED**: Heavy overlay system, forceStop logic, multi-window detection
+- **PERMISSION PROTECTION**: Blocks all permission management screens (AppPermissions, ManagePermissions, SpecialAccess, UsageAccess, etc.)
+- **APP INFO PROTECTION**: Blocks InstalledAppDetails, AppInfoDashboard, ApplicationInfo screens

@@ -372,27 +372,59 @@ class SettingsGuardService(private val context: Context) {
     }
     
     /**
-     * Verifica apenas telas críticas: Factory Reset e Device Admin
+     * Verifica telas críticas: Factory Reset, Device Admin e Permissões do App
      */
     private suspend fun checkCriticalSettingsOnly() {
         val foregroundInfo = getForegroundPackageAndActivity() ?: return
         val foregroundPackage = foregroundInfo.first
         val foregroundActivity = foregroundInfo.second ?: return
         
-        // Apenas bloqueia Factory Reset e Device Admin
-        val criticalActivities = listOf(
+        // Factory Reset e Device Admin
+        val factoryResetActivities = listOf(
             "FactoryReset", "MasterClear", "ResetPhone", "EraseEverything",
             "DeviceAdminSettings", "DeviceAdminAdd"
         )
         
-        val isCritical = criticalActivities.any { 
+        // Telas de permissões - CRÍTICO: ninguém pode remover permissões do app
+        val permissionActivities = listOf(
+            "AppPermissions", "ManagePermissions", "AllAppPermissions",
+            "PermissionApps", "PermissionController", "PermissionUsage",
+            "AppOpsDetails", "AppOpsCategory", "AppOpsSummary",
+            "ManageAppPermissions", "RuntimePermissions",
+            "SpecialAccessSettings", "SpecialAccess",
+            "WriteSettings", "ManageOverlay", "UsageAccess",
+            "NotificationAccess", "PictureInPicture", "AppBattery",
+            "IgnoreBatteryOptimization", "RequestIgnoreBatteryOptimizations"
+        )
+        
+        // Telas de info do app (podem levar a Force Stop, Clear Data, etc.)
+        val appInfoActivities = listOf(
+            "InstalledAppDetails", "AppInfoDashboard", "ApplicationDetails",
+            "AppInfo", "ApplicationInfo"
+        )
+        
+        val isFactoryReset = factoryResetActivities.any { 
             foregroundActivity.contains(it, ignoreCase = true) 
         }
         
-        if (isCritical) {
-            Log.w(TAG, "🚨 Tela crítica detectada: $foregroundActivity")
+        val isPermissionScreen = permissionActivities.any { 
+            foregroundActivity.contains(it, ignoreCase = true) 
+        }
+        
+        val isAppInfo = appInfoActivities.any { 
+            foregroundActivity.contains(it, ignoreCase = true) 
+        }
+        
+        if (isFactoryReset || isPermissionScreen || isAppInfo) {
+            val reason = when {
+                isFactoryReset -> "factory_reset"
+                isPermissionScreen -> "permission_management"
+                isAppInfo -> "app_info"
+                else -> "critical"
+            }
+            Log.w(TAG, "🚨 Tela crítica detectada [$reason]: $foregroundActivity")
             withContext(Dispatchers.Main) {
-                showSettingsBlockedScreen("critical_settings")
+                showSettingsBlockedScreen(reason)
             }
         }
     }
