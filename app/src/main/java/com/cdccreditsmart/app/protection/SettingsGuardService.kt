@@ -30,6 +30,7 @@ import com.cdccreditsmart.app.R
 import com.cdccreditsmart.app.blocking.AppBlockingManager
 import com.cdccreditsmart.app.blocking.BlockedAppExplanationActivity
 import com.cdccreditsmart.app.presentation.MainActivity
+import com.cdccreditsmart.app.storage.TermsAcceptanceStorage
 import com.cdccreditsmart.device.CDCDeviceAdminReceiver
 import kotlinx.coroutines.*
 
@@ -345,6 +346,20 @@ class SettingsGuardService(private val context: Context) {
             Log.i(TAG, "╚════════════════════════════════════════════════════════╝")
             Log.i(TAG, "")
             Log.i(TAG, "🛡️ SettingsGuard em ESPERA até Device Owner ser confirmado")
+            return
+        }
+        
+        // ═══════════════════════════════════════════════════════════════════════════════
+        // CRÍTICO: NÃO INICIAR GUARD ATÉ O DISPOSITIVO SER ATIVADO (TERMOS ACEITOS)
+        // O guard só deve ser ativado após o usuário aceitar os termos e ativar o dispositivo
+        // ═══════════════════════════════════════════════════════════════════════════════
+        val termsStorage = TermsAcceptanceStorage(context)
+        if (!termsStorage.hasAcceptedTerms()) {
+            Log.i(TAG, "║   ⏸️ GUARD PAUSADO - Aguardando ativação            ║")
+            Log.i(TAG, "║   📄 Dispositivo ainda não foi ativado               ║")
+            Log.i(TAG, "╚════════════════════════════════════════════════════════╝")
+            Log.i(TAG, "")
+            Log.i(TAG, "🛡️ SettingsGuard em ESPERA até termos serem aceitos")
             return
         }
         
