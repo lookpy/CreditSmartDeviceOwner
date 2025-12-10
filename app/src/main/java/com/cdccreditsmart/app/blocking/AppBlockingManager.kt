@@ -3,6 +3,8 @@ package com.cdccreditsmart.app.blocking
 import android.app.admin.DevicePolicyManager
 import android.content.ComponentName
 import android.content.Context
+import android.content.pm.ApplicationInfo
+import android.content.pm.PackageManager
 import android.os.Build
 import android.os.PersistableBundle
 import android.util.Log
@@ -77,10 +79,32 @@ class AppBlockingManager(private val context: Context) {
     }
     
     private fun isCriticalSystemPackage(packageName: String): Boolean {
+        // 1. Lista explícita de packages que NUNCA devem ser bloqueados
         if (packageName in CRITICAL_NEVER_BLOCK_PACKAGES) return true
         
+        // 2. Padrões de nome que indicam apps críticos
         if (packageName.contains("launcher", ignoreCase = true)) return true
         if (packageName.contains("systemui", ignoreCase = true)) return true
+        
+        // 3. CRÍTICO: Verificar FLAG_SYSTEM - NUNCA bloquear apps de sistema!
+        // Apps de sistema são pré-instalados e essenciais para o Android funcionar
+        try {
+            val appInfo = context.packageManager.getApplicationInfo(packageName, 0)
+            val isSystemApp = (appInfo.flags and ApplicationInfo.FLAG_SYSTEM) != 0
+            val isUpdatedSystemApp = (appInfo.flags and ApplicationInfo.FLAG_UPDATED_SYSTEM_APP) != 0
+            
+            if (isSystemApp || isUpdatedSystemApp) {
+                Log.d(TAG, "🛡️ PROTEÇÃO: $packageName é app de sistema (FLAG_SYSTEM) - NÃO será bloqueado")
+                return true
+            }
+        } catch (e: PackageManager.NameNotFoundException) {
+            // Package não existe - não podemos bloquear de qualquer forma
+            return true
+        } catch (e: Exception) {
+            // Em caso de erro, proteger por segurança
+            Log.w(TAG, "⚠️ Erro ao verificar se $packageName é sistema: ${e.message}")
+            return true
+        }
         
         return false
     }

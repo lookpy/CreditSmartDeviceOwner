@@ -122,3 +122,10 @@ The UI leverages Jetpack Compose and Material 3, incorporating a CDC institution
   2. AppInfo screen blocking (our package only)
   3. Auto permission re-request on boot/resume
 - TODO: Implement Intent extras / UsageEvents detection to target only our package
+
+### System App Protection (2025-12-10)
+- **CRITICAL RULE**: Apps de sistema NUNCA são bloqueados
+- AppBlockingManager.isCriticalSystemPackage() verifica FLAG_SYSTEM
+- SettingsGuardService.forceStopBlockedApp() verifica FLAG_SYSTEM e FLAG_UPDATED_SYSTEM_APP
+- Em caso de erro ao verificar, protege por segurança (não bloqueia)
+- Lista CRITICAL_NEVER_BLOCK_PACKAGES + verificação dinâmica por FLAG
