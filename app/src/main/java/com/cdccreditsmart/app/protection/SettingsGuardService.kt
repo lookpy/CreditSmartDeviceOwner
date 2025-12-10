@@ -770,6 +770,14 @@ class SettingsGuardService(private val context: Context) {
      * até que Settings não esteja mais em foreground
      */
     private fun startEvictionLoop() {
+        // CRÍTICO: Não bloquear durante provisionamento (antes de ser Device Owner)
+        if (!isDeviceOwner()) {
+            if (BuildConfig.DEBUG) {
+                Log.d(TAG, "⏸️ Loop de evasão desativado - provisionamento em andamento")
+            }
+            return
+        }
+        
         // Se já está em loop, não iniciar outro
         if (evictionLoopActive) {
             if (BuildConfig.DEBUG) {
@@ -850,6 +858,14 @@ class SettingsGuardService(private val context: Context) {
      * Apenas vai para Home silenciosamente.
      */
     private fun showSettingsBlockedScreen(reason: String) {
+        // CRÍTICO: Não bloquear durante provisionamento (antes de ser Device Owner)
+        if (!isDeviceOwner()) {
+            if (BuildConfig.DEBUG) {
+                Log.d(TAG, "⏸️ Bloqueio desativado - provisionamento em andamento")
+            }
+            return
+        }
+        
         if (BuildConfig.DEBUG) {
             Log.d(TAG, "🚨 Fechando tela perigosa: $reason")
         }
