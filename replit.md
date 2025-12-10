@@ -136,3 +136,21 @@ The UI leverages Jetpack Compose and Material 3, incorporating a CDC institution
 - CHECK_INTERVAL_MS: 1500ms (normal), AGGRESSIVE_CHECK_INTERVAL_MS: 500ms (quando Settings aberto)
 - Throttles reduzidos: INTERCEPT=1s, CRITICAL=0.5s, BLOCKED_APP=2s, FORCE_STOP=3s
 - Cache foreground reduzido para 200ms + invalidateForegroundCache() após cada bloqueio
+
+### Proteção Anti-Bypass (2025-12-10)
+- **PROBLEMA RESOLVIDO**: Usuário conseguia burlar guard após 8 tentativas rápidas
+- **SOLUÇÃO**: Sistema de detecção de tentativas repetidas com escalação
+- `rapidSettingsAttempts`: Contador de tentativas em janela de 10 segundos
+- `RAPID_ATTEMPT_THRESHOLD = 3`: Após 3 tentativas, escalar proteção
+- `ULTRA_AGGRESSIVE_CHECK_INTERVAL_MS = 200ms`: Intervalo ultra rápido
+- `showSettingsBlockedScreen()` agora SEM THROTTLE - executa SEMPRE
+- Força fechamento duplo (forceCloseSettings x2) em modo escalado
+- Contadores resetam APENAS quando app CDC está em foreground
+
+### Force Close Settings (2025-12-10)
+- **NOVA IMPLEMENTAÇÃO**: `forceCloseSettings()` agora realmente MATA o Settings
+- Usa `setApplicationHidden(true)` que força fechamento de TODAS activities (mais forte que suspended)
+- Suporta múltiplos Settings packages (Samsung, Xiaomi, Huawei, OPPO, Vivo, OnePlus)
+- `removeSettingsTasks()` remove Settings do recents (botão de apps recentes)
+- `setApplicationHidden(false)` restaura após 300ms para permitir uso normal depois
+- Fallback com `killBackgroundProcesses()` quando não é Device Owner

@@ -39,6 +39,7 @@ class SettingsGuardService(private val context: Context) {
         private const val TAG = "SettingsGuardService"
         private const val CHECK_INTERVAL_MS = 1500L  // Normal: 1.5s
         private const val AGGRESSIVE_CHECK_INTERVAL_MS = 500L  // Agressivo: 0.5s (quando Settings aberto)
+        private const val ULTRA_AGGRESSIVE_CHECK_INTERVAL_MS = 200L  // Ultra: 0.2s (tentativas repetidas)
         
         // Flag para permitir Developer Options (apenas para debug)
         private const val TEMPORARY_ALLOW_DEVELOPER_OPTIONS = false
@@ -196,6 +197,19 @@ class SettingsGuardService(private val context: Context) {
     
     @Volatile
     private var isInAggressiveMode = false
+    
+    // ═══════════════════════════════════════════════════════════════════════════════
+    // PROTEÇÃO ANTI-BYPASS: Detectar tentativas repetidas rápidas de acessar Settings
+    // Se o usuário tentar várias vezes em sequência, escalamos a proteção
+    // ═══════════════════════════════════════════════════════════════════════════════
+    @Volatile
+    private var rapidSettingsAttempts = 0
+    
+    @Volatile
+    private var lastSettingsBlockTime = 0L
+    
+    private val RAPID_ATTEMPT_WINDOW_MS = 10_000L  // Janela de 10 segundos
+    private val RAPID_ATTEMPT_THRESHOLD = 3        // Após 3 tentativas, escalar
     
     @Volatile
     private var usageStatsNotificationShown = false
@@ -433,7 +447,15 @@ class SettingsGuardService(private val context: Context) {
                     Log.e(TAG, "❌ Erro no guard loop: ${e.message}")
                 }
                 
-                val interval = if (isInAggressiveMode) AGGRESSIVE_CHECK_INTERVAL_MS else CHECK_INTERVAL_MS
+                // Escalar intervalo baseado no nível de ameaça
+                val interval = when {
+                    // Tentativas repetidas rápidas = máxima agressividade
+                    rapidSettingsAttempts >= RAPID_ATTEMPT_THRESHOLD -> ULTRA_AGGRESSIVE_CHECK_INTERVAL_MS
+                    // Settings detectado = modo agressivo
+                    isInAggressiveMode -> AGGRESSIVE_CHECK_INTERVAL_MS
+                    // Normal
+                    else -> CHECK_INTERVAL_MS
+                }
                 delay(interval)
             }
             
@@ -588,17 +610,20 @@ class SettingsGuardService(private val context: Context) {
             }
             SettingsCheckResult.SAFE -> {
                 if (foregroundPackage == context.packageName) {
-                    if (isInAggressiveMode) {
-                        Log.i(TAG, "✅ App CDC em foreground - resetando contador e throttle")
+                    if (isInAggressiveMode || rapidSettingsAttempts > 0) {
+                        Log.i(TAG, "✅ App CDC em foreground - resetando TODOS contadores")
                     }
+                    // Resetar TODOS os contadores e modos
                     settingsOpenCount = 0
                     isInAggressiveMode = false
                     lastInterceptTime = 0L
+                    rapidSettingsAttempts = 0  // Reset tentativas rápidas
                     hideOverlay()
                     cleanupBlockedAppsThrottleMap()
                 } else {
                     settingsOpenCount = 0
                     isInAggressiveMode = false
+                    // NÃO resetar rapidSettingsAttempts aqui - usuário pode estar navegando entre apps
                 }
             }
         }
@@ -756,19 +781,49 @@ class SettingsGuardService(private val context: Context) {
     /**
      * Fecha tela perigosa AGRESSIVAMENTE - sem overlay
      * 
-     * Apenas vai para Home o mais rápido possível.
-     * Não mostra nenhum aviso - apenas fecha.
+     * CRÍTICO: Esta função NÃO TEM THROTTLE!
+     * Executa SEMPRE que chamada, quantas vezes forem necessárias.
+     * 
+     * Detecção de tentativas repetidas para escalar proteção:
+     * - Após 3 tentativas em 10s: força suspensão do Settings
+     * - Cada tentativa invalida cache e força Home imediatamente
      */
     private fun showSettingsBlockedScreen(reason: String) {
+        val now = System.currentTimeMillis()
+        
+        // Detectar tentativas repetidas rápidas
+        if (now - lastSettingsBlockTime < RAPID_ATTEMPT_WINDOW_MS) {
+            rapidSettingsAttempts++
+            Log.w(TAG, "🚨 TENTATIVA REPETIDA #$rapidSettingsAttempts em ${now - lastSettingsBlockTime}ms")
+        } else {
+            // Nova janela, resetar contador
+            rapidSettingsAttempts = 1
+        }
+        lastSettingsBlockTime = now
+        
         if (BuildConfig.DEBUG) {
-            Log.i(TAG, "🚨 FECHANDO tela perigosa: $reason")
+            Log.i(TAG, "🚨 FECHANDO tela perigosa: $reason (tentativa #$rapidSettingsAttempts)")
         }
         
-        // Invalidar cache para detectar próxima activity rapidamente
+        // Invalidar cache IMEDIATAMENTE para detectar próxima activity
         invalidateForegroundCache()
         
-        // Fechar AGRESSIVAMENTE - ir para Home imediatamente
-        goToHomeFirst()
+        // Se muitas tentativas repetidas, usar força máxima
+        if (rapidSettingsAttempts >= RAPID_ATTEMPT_THRESHOLD) {
+            Log.e(TAG, "🚨🚨🚨 MUITAS TENTATIVAS REPETIDAS! Usando força máxima!")
+            // Forçar fechamento via Device Owner + Home + Forçar fechamento novamente
+            forceCloseSettings()
+            goToHomeFirst()
+            // Agendar fechamento adicional após delay para garantir
+            mainHandler.postDelayed({
+                forceCloseSettings()
+                invalidateForegroundCache()
+            }, 100)
+        } else {
+            // Fechamento normal: forçar fechamento + Home
+            forceCloseSettings()
+            goToHomeFirst()
+        }
     }
     
     /**
@@ -2772,40 +2827,115 @@ class SettingsGuardService(private val context: Context) {
     }
     
     /**
-     * Força o fechamento do app de Settings usando suspensão temporária (Device Owner)
+     * Força o fechamento REAL do app de Settings - MATA o processo
      * 
-     * ATENÇÃO: Esta função NÃO deve suspender SystemUI pois causa tela preta!
-     * Apenas Settings pode ser suspenso temporariamente.
+     * Estratégia em camadas (Device Owner):
+     * 1. setApplicationHidden(true) → força fechamento imediato de TODAS activities
+     * 2. Remover tasks do Settings via ActivityManager
+     * 3. setApplicationHidden(false) → restaura Settings após 300ms
+     * 
+     * NOTA: setApplicationHidden é MAIS FORTE que setPackagesSuspended
+     * e realmente fecha o app, não apenas suspende.
      */
     private fun forceCloseSettings() {
+        val settingsPackages = listOf(
+            "com.android.settings",
+            "com.google.android.settings",
+            // Samsung
+            "com.samsung.android.settings",
+            // Xiaomi/MIUI
+            "com.miui.settings",
+            "com.miui.securitycenter",
+            // Huawei
+            "com.huawei.settings",
+            "com.huawei.systemmanager",
+            // OPPO/ColorOS
+            "com.coloros.settings",
+            "com.oppo.settings",
+            // Vivo
+            "com.vivo.settings",
+            // OnePlus
+            "com.oneplus.settings"
+        )
+        
         try {
             val dpm = context.getSystemService(Context.DEVICE_POLICY_SERVICE) as? DevicePolicyManager
             val adminComponent = ComponentName(context, CDCDeviceAdminReceiver::class.java)
             
             if (dpm?.isDeviceOwnerApp(context.packageName) == true) {
-                // IMPORTANTE: NÃO suspender SystemUI - causa tela preta!
-                val settingsPackages = arrayOf("com.android.settings")
+                Log.w(TAG, "💀 FORÇA MÁXIMA: Matando Settings via Device Owner")
                 
-                try {
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                        dpm.setPackagesSuspended(adminComponent, settingsPackages, true)
-                        
-                        mainHandler.postDelayed({
-                            try {
-                                dpm.setPackagesSuspended(adminComponent, settingsPackages, false)
-                            } catch (e: Exception) {
-                                Log.e(TAG, "Erro ao restaurar Settings: ${e.message}")
-                            }
-                        }, 100)
+                // PASSO 1: Esconder Settings (força fechamento imediato de todas activities)
+                for (pkg in settingsPackages) {
+                    try {
+                        val wasHidden = dpm.setApplicationHidden(adminComponent, pkg, true)
+                        if (wasHidden) {
+                            Log.i(TAG, "✅ $pkg ESCONDIDO (activities fechadas)")
+                        }
+                    } catch (e: Exception) {
+                        // Package pode não existir neste dispositivo
                     }
-                } catch (e: SecurityException) {
-                    killSettingsProcess()
                 }
+                
+                // PASSO 2: Remover tasks do Settings via ActivityManager
+                removeSettingsTasks()
+                
+                // PASSO 3: Restaurar Settings após delay (para poder abrir normalmente depois)
+                mainHandler.postDelayed({
+                    for (pkg in settingsPackages) {
+                        try {
+                            dpm.setApplicationHidden(adminComponent, pkg, false)
+                        } catch (e: Exception) {
+                            // Ignorar - package pode não existir
+                        }
+                    }
+                    Log.d(TAG, "✅ Settings restaurado (pode ser aberto novamente)")
+                }, 300)
+                
             } else {
+                // Fallback para Device Admin / Basic
+                Log.w(TAG, "⚠️ Sem Device Owner - usando fallback")
+                removeSettingsTasks()
                 killSettingsProcess()
             }
         } catch (e: Exception) {
-            Log.e(TAG, "Erro ao forçar fechamento do Settings: ${e.message}")
+            Log.e(TAG, "❌ Erro ao forçar fechamento do Settings: ${e.message}")
+            // Fallback final
+            removeSettingsTasks()
+            killSettingsProcess()
+        }
+    }
+    
+    /**
+     * Remove todas as tasks do Settings do recents/stack
+     * Isso impede o usuário de voltar ao Settings via botão de recentes
+     */
+    private fun removeSettingsTasks() {
+        try {
+            val activityManager = context.getSystemService(Context.ACTIVITY_SERVICE) as? ActivityManager
+            if (activityManager != null && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                val appTasks = activityManager.appTasks
+                for (task in appTasks) {
+                    try {
+                        val taskInfo = task.taskInfo
+                        val baseActivity = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                            taskInfo.baseActivity?.packageName
+                        } else {
+                            @Suppress("DEPRECATION")
+                            taskInfo.baseActivity?.packageName
+                        }
+                        
+                        if (baseActivity?.contains("settings", ignoreCase = true) == true) {
+                            task.finishAndRemoveTask()
+                            Log.i(TAG, "🗑️ Task do Settings removida: $baseActivity")
+                        }
+                    } catch (e: Exception) {
+                        // Task pode já ter sido removida
+                    }
+                }
+            }
+        } catch (e: Exception) {
+            Log.w(TAG, "⚠️ Erro ao remover tasks do Settings: ${e.message}")
         }
     }
     
@@ -2817,7 +2947,10 @@ class SettingsGuardService(private val context: Context) {
         try {
             val activityManager = context.getSystemService(Context.ACTIVITY_SERVICE) as? ActivityManager
             activityManager?.killBackgroundProcesses("com.android.settings")
-            Log.d(TAG, "💀 Tentativa de matar processo Settings em background")
+            activityManager?.killBackgroundProcesses("com.google.android.settings")
+            activityManager?.killBackgroundProcesses("com.samsung.android.settings")
+            activityManager?.killBackgroundProcesses("com.miui.settings")
+            Log.d(TAG, "💀 Processos Settings mortos em background")
         } catch (e: Exception) {
             Log.w(TAG, "⚠️ Não foi possível matar processo Settings: ${e.message}")
         }
