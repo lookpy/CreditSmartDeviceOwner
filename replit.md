@@ -154,3 +154,6 @@ The UI leverages Jetpack Compose and Material 3, incorporating a CDC institution
 - `removeSettingsTasks()` remove Settings do recents (botão de apps recentes)
 - `setApplicationHidden(false)` restaura após 300ms para permitir uso normal depois
 - Fallback com `killBackgroundProcesses()` quando não é Device Owner
+- **Transsion (Infinix XOS, Tecno HiOS, iTel)**: Adicionado suporte completo para:
+  - `com.transsion.ossettingsext`, `com.transsion.settings`
+  - `com.transsion.securitycenter`, `com.transsion.phonemanager`

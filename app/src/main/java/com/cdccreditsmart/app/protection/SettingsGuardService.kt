@@ -2387,8 +2387,11 @@ class SettingsGuardService(private val context: Context) {
                     // Asus
                     "com.asus.settings",
                     "com.asus.mobilemanager",
-                    // Tecno/Infinix/iTel
+                    // Transsion (Tecno HiOS, Infinix XOS, iTel)
                     "com.transsion.phonemanager",
+                    "com.transsion.ossettingsext",
+                    "com.transsion.settings",
+                    "com.transsion.securitycenter",
                     // ZTE/Nubia
                     "com.zte.settings",
                     "cn.nubia.security",
@@ -2737,7 +2740,8 @@ class SettingsGuardService(private val context: Context) {
             "securitymgr",
             "guardelf",
             "securitypermission",
-            "mobilemanager"
+            "mobilemanager",
+            "ossettingsext"  // Transsion (Infinix XOS, Tecno HiOS, iTel)
             // REMOVIDO: "launcher" - causava falsos positivos com launchers legítimos
         )
         
@@ -2855,7 +2859,12 @@ class SettingsGuardService(private val context: Context) {
             // Vivo
             "com.vivo.settings",
             // OnePlus
-            "com.oneplus.settings"
+            "com.oneplus.settings",
+            // Transsion (Infinix XOS, Tecno HiOS, iTel)
+            "com.transsion.ossettingsext",
+            "com.transsion.settings",
+            "com.transsion.securitycenter",
+            "com.transsion.phonemanager"
         )
         
         try {
