@@ -135,12 +135,4 @@ The UI leverages Jetpack Compose and Material 3, incorporating a CDC institution
 - Comportamento AGRESSIVO: fecha tela perigosa imediatamente, sem aviso
 - CHECK_INTERVAL_MS: 1500ms (normal), AGGRESSIVE_CHECK_INTERVAL_MS: 500ms (quando Settings aberto)
 - Throttles reduzidos: INTERCEPT=1s, CRITICAL=0.5s, BLOCKED_APP=2s, FORCE_STOP=3s
-- Cache foreground DESABILITADO - sempre consulta UsageStats para máxima precisão
-
-### Provisioning Pause System (2025-12-10)
-- Guard PAUSADO COMPLETAMENTE durante provisionamento Device Owner
-- CDCDeviceAdminReceiver.signalProvisioningStart() chamado em onEnabled()
-- CDCDeviceAdminReceiver.signalProvisioningComplete() chamado em onProfileProvisioningComplete()
-- SharedPreferences "cdc_guard_pause" para persistir estado entre restarts
-- Auto-timeout de 10 minutos para evitar guard pausado indefinidamente
-- isProvisioningActiveViaPrefs() verifica SharedPreferences + flag estática
+- Cache foreground reduzido para 200ms + invalidateForegroundCache() após cada bloqueio
