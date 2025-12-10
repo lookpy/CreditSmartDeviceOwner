@@ -114,15 +114,11 @@ The UI leverages Jetpack Compose and Material 3, incorporating a CDC institution
 - **PROTECTION**: Permission screens now blocked to prevent breaking app functionality
 
 ### Permission Protection Policy (2025-12-10)
-- **CRITICAL POLICY**: No user can remove ANY permission from the app
-- Comprehensive blocking of ALL permission management screens:
-  - Android Stock/AOSP: AppPermissions*, ManagePermissions*, PermissionApps*, etc.
-  - Samsung OneUI: SecPermissionActivity, KnoxPermissionManager, etc.
-  - Xiaomi/MIUI: PermissionTopActivity, PermissionGuard, etc.
-  - Huawei/Honor: HwPermission*, PermissionRecords, etc.
-  - OPPO/ColorOS/Realme: ColorOSPermission*, PrivacyPermissions, etc.
-  - Vivo/FuntouchOS: VivoPermission*, PermissionList, etc.
-  - Tecno/Infinix/iTel: TranssionPermission*, HiosPermission*, etc.
-  - Special Access screens: WriteSettings, ManageOverlay, UsageAccess, etc.
-- Keyword-based fallback detection for unknown permission screens
-- Exception: System grant dialog allowed during app's own permission request flow
+- **ROLLBACK**: Removed broad permission screen blocking - was causing Android crash
+- Problem: Could not detect if permission screen was targeting OUR app vs other apps
+- Activities like GrantPermissionsActivity are used by system for ALL apps
+- **ALTERNATIVE PROTECTION** implemented via:
+  1. Device Owner DPM policies
+  2. AppInfo screen blocking (our package only)
+  3. Auto permission re-request on boot/resume
+- TODO: Implement Intent extras / UsageEvents detection to target only our package
