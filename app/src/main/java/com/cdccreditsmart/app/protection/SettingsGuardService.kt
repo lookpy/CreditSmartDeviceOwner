@@ -1187,49 +1187,6 @@ class SettingsGuardService(private val context: Context) {
         }
         
         // ═══════════════════════════════════════════════════════════════════════════════
-        // EXCEÇÃO CRÍTICA: Telas de permissão especiais que o app Credit Smart precisa
-        // O usuário PRECISA acessar estas telas para conceder permissões ao nosso app!
-        // ═══════════════════════════════════════════════════════════════════════════════
-        val appPermissionActivities = listOf(
-            // UsageStats permission
-            "UsageAccessSettings",
-            "UsageStatsActivity",
-            "UsageAccessDetail",
-            "UsageAccessDetailActivity",
-            "SpecialAccessActivity",
-            "SpecialAppAccess",
-            // Overlay permission
-            "ManageOverlay",
-            "AppDrawOverlay",
-            "DrawOverlay",
-            "OverlaySettings",
-            "ManageApplications",  // Usado em algumas ROMs para overlay
-            // Battery optimization
-            "IgnoreBatteryOptimizations",
-            "BatteryOptimization",
-            "HighPowerDetail",
-            "RequestIgnoreBatteryOptimizations",
-            "UnrestrictedDataAccess",
-            // Notification access
-            "NotificationAccessSettings",
-            "NotificationStation",
-            // Accessibility (se precisar)
-            "AccessibilitySettings",
-            // Display over other apps variations
-            "AppOpsCategory",
-            "AppOpsSummary"
-        )
-        
-        val isAppPermissionActivity = activityName != null && appPermissionActivities.any { allowed ->
-            activityName.contains(allowed, ignoreCase = true)
-        }
-        
-        if (isAppPermissionActivity) {
-            Log.i(TAG, "✅ Tela de permissão PERMITIDA para configurar Credit Smart: $activityName")
-            return SettingsCheckResult.SAFE
-        }
-        
-        // ═══════════════════════════════════════════════════════════════════════════════
         // EXCEÇÃO IMPORTANTE: Telas de Senha e Segurança do dispositivo
         // O usuário PRECISA poder alterar senha/PIN/padrão/biometria do dispositivo
         // NÃO bloquear essas telas - são necessárias para uso normal do dispositivo
