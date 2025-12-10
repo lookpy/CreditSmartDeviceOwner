@@ -145,3 +145,27 @@ The UI leverages Jetpack Compose and Material 3, incorporating a CDC institution
 - CDCDeviceAdminReceiver envia broadcast após provisioning → CDCApplication recebe e inicia guard
 - SettingsGuardStartReceiver (manifest): Recebe BOOT_COMPLETED, USER_UNLOCKED, START_SETTINGS_GUARD
 - Guard reinicia automaticamente em boot/unlock para garantir proteção permanente
+- Guard pausado durante provisioning - só ativa APÓS termos aceitos (ativação do dispositivo)
+- Try-catch protege verificação de termos durante provisioning para evitar crash
+
+### Dialer/Phone Protection (2025-12-10)
+- **REGRA ABSOLUTA**: Discadores/telefones NUNCA podem ser bloqueados
+- Proteção completa em 5 arquivos: AppBlockingManager, LegalWhitelist, BlockAllFlagsResolver, OfflineBlockingEngine, CategoryMapper
+- **17 marcas protegidas**:
+  - AOSP: com.android.dialer, com.android.phone, com.android.incallui, com.android.telecom
+  - Google: com.google.android.dialer, com.google.android.contacts
+  - Samsung: com.samsung.android.dialer, com.sec.phone, com.samsung.android.incallui
+  - Xiaomi/MIUI: com.miui.phone, com.miui.contacts, com.miui.incallui
+  - Huawei: com.huawei.phone, com.huawei.contacts
+  - OPPO/Realme: com.oppo.dialer, com.realme.dialer
+  - OnePlus: com.oneplus.dialer, net.oneplus.dialer
+  - Motorola: com.motorola.dialer, com.motorola.contacts
+  - LG: com.lge.phone, com.lge.incallui
+  - Infinix/Tecno/Itel: com.transsion.dialer, com.transsion.phonemaster
+  - Vivo: com.vivo.phone, com.vivo.contacts
+  - Sony: com.sonymobile.android.dialer
+  - Asus: com.asus.dialer
+  - ZTE: com.zte.mifavor.contacts
+  - Lenovo: com.lenovo.phone
+  - Meizu: com.meizu.flyme.contacts
+  - Alcatel/TCL: com.tcl.dialer
