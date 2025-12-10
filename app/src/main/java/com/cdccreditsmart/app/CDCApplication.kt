@@ -392,10 +392,27 @@ class CDCApplication : Application() {
                 return
             }
             
+            // ═══════════════════════════════════════════════════════════════════════════════
+            // CRÍTICO: NÃO iniciar guard se provisionamento não foi concluído!
+            // Durante QR Code provisioning, o guard bloquearia telas necessárias do setup.
+            // O guard só deve iniciar APÓS o dispositivo estar pareado (tem contrato).
+            // ═══════════════════════════════════════════════════════════════════════════════
+            val contractStorage = com.cdccreditsmart.app.storage.ContractCodeStorage(applicationContext)
+            if (!contractStorage.hasContractCode()) {
+                Log.w(TAG, "🛡️ ========================================")
+                Log.w(TAG, "🛡️ SETTINGSGUARD NÃO INICIADO")
+                Log.w(TAG, "🛡️ ========================================")
+                Log.w(TAG, "🛡️ Motivo: Provisionamento pendente (sem contrato)")
+                Log.w(TAG, "🛡️ O guard será iniciado após pairing completo")
+                Log.w(TAG, "🛡️ ========================================")
+                return
+            }
+            
             Log.i(TAG, "🛡️ ========================================")
             Log.i(TAG, "🛡️ INICIANDO SETTINGSGUARD IMEDIATAMENTE")
             Log.i(TAG, "🛡️ ========================================")
-            Log.i(TAG, "🛡️ Device Owner detectado - proteção máxima iniciando...")
+            Log.i(TAG, "🛡️ Device Owner detectado + Contrato presente")
+            Log.i(TAG, "🛡️ Proteção máxima iniciando...")
             
             // Iniciar SettingsGuardService imediatamente
             // SettingsGuardService não é um Android Service, é uma classe normal

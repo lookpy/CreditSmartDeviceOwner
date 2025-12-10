@@ -499,6 +499,21 @@ class CdcForegroundService : Service(), ScreenStateListener {
                 return
             }
             
+            // ═══════════════════════════════════════════════════════════════════════════════
+            // CRÍTICO: NÃO iniciar guard se provisionamento não foi concluído!
+            // Durante QR Code provisioning, o guard bloquearia telas necessárias do setup.
+            // O guard só deve iniciar APÓS o dispositivo estar pareado (tem contrato).
+            // ═══════════════════════════════════════════════════════════════════════════════
+            val contractStorage = com.cdccreditsmart.app.storage.ContractCodeStorage(applicationContext)
+            if (!contractStorage.hasContractCode()) {
+                Log.w(TAG, "🛡️ ========================================")
+                Log.w(TAG, "🛡️ GUARD NÃO INICIADO - PROVISIONAMENTO PENDENTE")
+                Log.w(TAG, "🛡️ Sem contrato = dispositivo em setup inicial")
+                Log.w(TAG, "🛡️ O guard será iniciado após pairing completo")
+                Log.w(TAG, "🛡️ ========================================")
+                return
+            }
+            
             Log.i(TAG, "🛡️ ========================================")
             Log.i(TAG, "🛡️ INICIANDO SETTINGS GUARD (PROTEÇÃO AGRESSIVA)")
             Log.i(TAG, "🛡️ ========================================")

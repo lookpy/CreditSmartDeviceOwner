@@ -157,3 +157,10 @@ The UI leverages Jetpack Compose and Material 3, incorporating a CDC institution
 - **Transsion (Infinix XOS, Tecno HiOS, iTel)**: Adicionado suporte completo para:
   - `com.transsion.ossettingsext`, `com.transsion.settings`
   - `com.transsion.securitycenter`, `com.transsion.phonemanager`
+
+### Guard Provisioning Check (2025-12-10)
+- **CRÍTICO**: Guard NÃO inicia durante provisionamento QR Code
+- Verificação via `ContractCodeStorage.hasContractCode()` antes de iniciar
+- Se não há contrato = dispositivo em setup inicial = guard desabilitado
+- Guard só inicia APÓS pairing completo (contrato salvo)
+- Modificado em: `CDCApplication.kt` e `CdcForegroundService.kt`
