@@ -754,33 +754,43 @@ class SettingsGuardService(private val context: Context) {
     }
     
     /**
-     * Mostra tela de bloqueio LEVE para Settings perigoso
+     * Mostra tela de bloqueio para Settings perigoso
      * 
-     * IMPORTANTE: Não usa forceCloseSettings() pois pode causar tela preta
-     * ao suspender SystemUI. Apenas abre a tela de bloqueio por cima.
+     * FLUXO: 
+     * 1. Primeiro vai para Home (fecha a tela perigosa)
+     * 2. Depois de 150ms, abre o overlay de aviso
      */
     private fun showSettingsBlockedScreen(reason: String) {
         try {
-            // Abrir BlockedAppExplanationActivity IMEDIATAMENTE por cima do Settings
-            // NÃO usar forceCloseSettings() - causa tela preta ao suspender SystemUI
-            val intent = Intent(context, BlockedAppExplanationActivity::class.java).apply {
-                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-                addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY)
-                putExtra("blocked_package", "com.android.settings")
-                putExtra("is_settings_blocked", true)
-                putExtra("block_reason", reason)
-                putExtra("blocking_level", 0)
-                putExtra("days_overdue", 0)
-            }
-            context.startActivity(intent)
+            // PASSO 1: Ir para Home primeiro (fecha a tela perigosa)
+            goToHomeFirst()
             
-            if (BuildConfig.DEBUG) {
-                Log.i(TAG, "✅ Tela de bloqueio exibida (Settings)")
-            }
+            // PASSO 2: Depois de um delay, mostrar o overlay de aviso
+            mainHandler.postDelayed({
+                try {
+                    val intent = Intent(context, BlockedAppExplanationActivity::class.java).apply {
+                        addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                        addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                        addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY)
+                        putExtra("blocked_package", "com.android.settings")
+                        putExtra("is_settings_blocked", true)
+                        putExtra("block_reason", reason)
+                        putExtra("blocking_level", 0)
+                        putExtra("days_overdue", 0)
+                    }
+                    context.startActivity(intent)
+                    
+                    if (BuildConfig.DEBUG) {
+                        Log.i(TAG, "✅ Tela de bloqueio exibida (Settings) - reason: $reason")
+                    }
+                } catch (e: Exception) {
+                    Log.e(TAG, "❌ Erro ao mostrar overlay de bloqueio", e)
+                }
+            }, 150) // 150ms de delay para Home aparecer primeiro
+            
         } catch (e: Exception) {
-            Log.e(TAG, "❌ Erro ao mostrar tela de bloqueio de Settings", e)
-            // Fallback: ir para Home
+            Log.e(TAG, "❌ Erro ao bloquear Settings", e)
+            // Fallback: tentar ir para Home de qualquer forma
             try {
                 goToHomeFirst()
             } catch (e2: Exception) {

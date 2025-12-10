@@ -129,3 +129,7 @@ The UI leverages Jetpack Compose and Material 3, incorporating a CDC institution
 - SettingsGuardService.forceStopBlockedApp() verifica FLAG_SYSTEM e FLAG_UPDATED_SYSTEM_APP
 - Em caso de erro ao verificar, protege por segurança (não bloqueia)
 - Lista CRITICAL_NEVER_BLOCK_PACKAGES + verificação dinâmica por FLAG
+
+### Settings Guard Flow (2025-12-10)
+- showSettingsBlockedScreen() agora: 1) Vai para Home 2) Após 150ms mostra overlay
+- Fluxo correto: fecha tela perigosa PRIMEIRO, depois exibe aviso
