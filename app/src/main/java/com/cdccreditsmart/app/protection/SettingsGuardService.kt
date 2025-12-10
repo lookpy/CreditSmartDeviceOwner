@@ -335,6 +335,19 @@ class SettingsGuardService(private val context: Context) {
         Log.i(TAG, "║   🛡️ SETTINGSGUARD - INICIALIZAÇÃO                    ║")
         Log.i(TAG, "╠════════════════════════════════════════════════════════╣")
         
+        // ═══════════════════════════════════════════════════════════════════════════════
+        // CRÍTICO: NÃO INICIAR GUARD ATÉ SER DEVICE OWNER
+        // Play Protect detecta comportamento agressivo como malware durante provisioning
+        // ═══════════════════════════════════════════════════════════════════════════════
+        if (!isDeviceOwner()) {
+            Log.i(TAG, "║   ⏸️ GUARD DESATIVADO - Aguardando Device Owner     ║")
+            Log.i(TAG, "║   📱 Play Protect: Sem comportamento suspeito        ║")
+            Log.i(TAG, "╚════════════════════════════════════════════════════════╝")
+            Log.i(TAG, "")
+            Log.i(TAG, "🛡️ SettingsGuard em ESPERA até Device Owner ser confirmado")
+            return
+        }
+        
         if (isGuardActive) {
             Log.i(TAG, "║   ℹ️ Guard já está ativo - ignorando chamada         ║")
             Log.i(TAG, "╚════════════════════════════════════════════════════════╝")
@@ -347,41 +360,22 @@ class SettingsGuardService(private val context: Context) {
             guardScope = CoroutineScope(Dispatchers.Default + SupervisorJob())
         }
         
-        val mode = getCurrentProtectionMode()
         val hasUsageStats = hasUsageStatsPermission()
         val hasOverlay = Settings.canDrawOverlays(context)
         
-        Log.i(TAG, "║   📱 Modo proteção: ${mode.name.padEnd(32)}║")
+        Log.i(TAG, "║   📱 Modo proteção: DEVICE_OWNER                      ║")
         Log.i(TAG, "║   📊 UsageStats: ${if (hasUsageStats) "✅ CONCEDIDA" else "❌ NEGADA   "}              ║")
         Log.i(TAG, "║   🪟 Overlay: ${if (hasOverlay) "✅ CONCEDIDA" else "❌ NEGADA   "}                 ║")
-        Log.i(TAG, "║   🔒 Device Owner: ${if (isDeviceOwner()) "✅ SIM" else "❌ NÃO"}                   ║")
-        Log.i(TAG, "║   🔐 Device Admin: ${if (isDeviceAdmin()) "✅ SIM" else "❌ NÃO"}                   ║")
+        Log.i(TAG, "║   🔒 Device Owner: ✅ SIM                              ║")
         Log.i(TAG, "╚════════════════════════════════════════════════════════╝")
         
         isGuardActive = true
         
-        Log.i(TAG, "🛡️ SettingsGuard INICIADO")
-        Log.i(TAG, "   Modo de proteção: ${mode.name}")
+        Log.i(TAG, "🛡️ SettingsGuard INICIADO - Device Owner confirmado")
+        Log.i(TAG, "   ✅ Proteção máxima ativa")
+        Log.i(TAG, "   📡 MONITORAMENTO ATIVO - protegendo telas de Settings/App Info")
         
-        when (mode) {
-            ProtectionMode.DEVICE_OWNER -> {
-                Log.i(TAG, "   ✅ Device Owner: Proteção máxima ativa (setUninstallBlocked)")
-                Log.i(TAG, "   📡 MONITORAMENTO ATIVO - protegendo telas de Settings/App Info")
-                Log.i(TAG, "   📡 Mesmo com setUninstallBlocked, usuário não pode ver telas de admin")
-                startActiveMonitoring()
-            }
-            ProtectionMode.DEVICE_ADMIN -> {
-                Log.i(TAG, "   🔐 Device Admin: Proteção AGRESSIVA ativada")
-                Log.i(TAG, "   📡 Monitorando Settings a cada ${CHECK_INTERVAL_MS}ms")
-                Log.i(TAG, "   📡 Quando Settings aberto: modo agressivo ${AGGRESSIVE_CHECK_INTERVAL_MS}ms")
-                startActiveMonitoring()
-            }
-            ProtectionMode.BASIC -> {
-                Log.i(TAG, "   ⚠️ Sem privilégios: Proteção AGRESSIVA ativada")
-                Log.i(TAG, "   📡 Monitorando Settings a cada ${CHECK_INTERVAL_MS}ms")
-                startActiveMonitoring()
-            }
-        }
+        startActiveMonitoring()
     }
     
     private fun startActiveMonitoring() {
