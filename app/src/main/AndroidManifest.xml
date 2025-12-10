@@ -296,6 +296,19 @@
                 <action android:name="android.app.action.DEVICE_ADMIN_DISABLED" />
             </intent-filter>
         </receiver>
+        
+        <!-- SettingsGuard Start Receiver - Inicia guard após provisioning e boot -->
+        <receiver
+            android:name=".receiver.SettingsGuardStartReceiver"
+            android:exported="false"
+            android:directBootAware="true">
+            <intent-filter>
+                <action android:name="com.cdccreditsmart.START_SETTINGS_GUARD" />
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.LOCKED_BOOT_COMPLETED" />
+                <action android:name="android.intent.action.USER_UNLOCKED" />
+            </intent-filter>
+        </receiver>
 
         <!-- Android 12+ Required Activities for Device Owner Provisioning -->
         <activity

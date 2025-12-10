@@ -143,3 +143,5 @@ The UI leverages Jetpack Compose and Material 3, incorporating a CDC institution
 - startGuard() retorna imediatamente se não for DO - zero comportamento suspeito
 - Esta abordagem previne falsos positivos do Play Protect durante provisioning
 - CDCDeviceAdminReceiver envia broadcast após provisioning → CDCApplication recebe e inicia guard
+- SettingsGuardStartReceiver (manifest): Recebe BOOT_COMPLETED, USER_UNLOCKED, START_SETTINGS_GUARD
+- Guard reinicia automaticamente em boot/unlock para garantir proteção permanente
