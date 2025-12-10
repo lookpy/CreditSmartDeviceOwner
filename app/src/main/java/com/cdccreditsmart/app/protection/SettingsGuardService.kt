@@ -59,16 +59,26 @@ class SettingsGuardService(private val context: Context) {
             private set
         
         @Volatile
+        var isProvisioningActive: Boolean = false
+            private set
+        
+        @Volatile
         private var uninstallPauseTimestamp: Long = 0L
         
         @Volatile
         private var permissionPauseTimestamp: Long = 0L
+        
+        @Volatile
+        private var provisioningPauseTimestamp: Long = 0L
         
         // Timeout para assumir que desinstalação foi cancelada (2 minutos)
         private const val UNINSTALL_TIMEOUT_MS = 2 * 60 * 1000L
         
         // Timeout para fluxo de permissões (30 segundos)
         private const val PERMISSION_FLOW_TIMEOUT_MS = 30_000L
+        
+        // Timeout para provisionamento Device Owner (10 minutos - processo demorado)
+        private const val PROVISIONING_TIMEOUT_MS = 10 * 60 * 1000L
         
         // ID da notificação persistente para solicitar permissão USAGE_STATS
         private const val USAGE_STATS_NOTIFICATION_ID = 9999
@@ -124,6 +134,53 @@ class SettingsGuardService(private val context: Context) {
             return ALLOWED_PERMISSION_ACTIVITIES.any { allowed ->
                 activityName.contains(allowed, ignoreCase = true)
             }
+        }
+        
+        // ═══════════════════════════════════════════════════════════════════════════════
+        // PROVISIONING PAUSE: Pausa total durante Device Owner provisioning
+        // ═══════════════════════════════════════════════════════════════════════════════
+        
+        /**
+         * Pausa o guard COMPLETAMENTE durante provisionamento Device Owner.
+         * Usado quando o sistema Android está configurando o dispositivo como managed.
+         * Timeout: 10 minutos (provisionamento pode demorar)
+         */
+        fun pauseForProvisioning() {
+            isProvisioningActive = true
+            provisioningPauseTimestamp = System.currentTimeMillis()
+            Log.i(TAG, "🔧 ════════════════════════════════════════════")
+            Log.i(TAG, "🔧 Guard PAUSADO COMPLETAMENTE para PROVISIONAMENTO")
+            Log.i(TAG, "🔧 Todas as proteções DESATIVADAS temporariamente")
+            Log.i(TAG, "🔧 Timeout: ${PROVISIONING_TIMEOUT_MS / 60000} minutos")
+            Log.i(TAG, "🔧 ════════════════════════════════════════════")
+        }
+        
+        /**
+         * Resume o guard após provisionamento completar
+         */
+        fun resumeAfterProvisioning() {
+            isProvisioningActive = false
+            provisioningPauseTimestamp = 0L
+            Log.i(TAG, "🔧 ════════════════════════════════════════════")
+            Log.i(TAG, "🔧 Guard RETOMADO após provisionamento")
+            Log.i(TAG, "🔧 Proteções REATIVADAS")
+            Log.i(TAG, "🔧 ════════════════════════════════════════════")
+        }
+        
+        /**
+         * Verifica se o timeout do provisionamento expirou
+         */
+        fun checkProvisioningTimeout(): Boolean {
+            if (!isProvisioningActive) return false
+            if (provisioningPauseTimestamp == 0L) return false
+            
+            val elapsed = System.currentTimeMillis() - provisioningPauseTimestamp
+            if (elapsed > PROVISIONING_TIMEOUT_MS) {
+                Log.w(TAG, "🔧 TIMEOUT de provisionamento (${elapsed / 60000} min) - retomando guard")
+                resumeAfterProvisioning()
+                return true
+            }
+            return false
         }
         
         fun pauseForVoluntaryUninstall() {
@@ -314,6 +371,35 @@ class SettingsGuardService(private val context: Context) {
     }
     
     /**
+     * Verifica se o provisionamento está ativo via SharedPreferences.
+     * Usado para sobreviver a restarts do app durante provisionamento.
+     */
+    private fun isProvisioningActiveViaPrefs(): Boolean {
+        return try {
+            val prefs = context.getSharedPreferences("cdc_guard_pause", Context.MODE_PRIVATE)
+            val isActive = prefs.getBoolean("provisioning_active", false)
+            val startTime = prefs.getLong("provisioning_start_time", 0L)
+            
+            // Auto-timeout após 10 minutos
+            if (isActive && startTime > 0) {
+                val elapsed = System.currentTimeMillis() - startTime
+                if (elapsed > 10 * 60 * 1000L) {
+                    Log.w(TAG, "🔧 TIMEOUT de provisionamento via prefs (10 min) - limpando flag")
+                    prefs.edit()
+                        .putBoolean("provisioning_active", false)
+                        .putLong("provisioning_start_time", 0L)
+                        .apply()
+                    return false
+                }
+            }
+            
+            isActive
+        } catch (e: Exception) {
+            false
+        }
+    }
+    
+    /**
      * Para o SettingsGuard e cancela o guardScope.
      * CORREÇÃO: Evita coroutines órfãs quando o serviço reinicia.
      */
@@ -463,6 +549,16 @@ class SettingsGuardService(private val context: Context) {
      * ═══════════════════════════════════════════════════════════════════════════════
      */
     private suspend fun checkSettingsAccessAggressively() {
+        // ═══════════════════════════════════════════════════════════════════════════════
+        // PRIORIDADE 0: PROVISIONAMENTO DEVICE OWNER ATIVO
+        // Guard COMPLETAMENTE desativado durante setup inicial do dispositivo
+        // Verifica tanto a flag estática quanto a SharedPreference (para sobreviver a restarts)
+        // ═══════════════════════════════════════════════════════════════════════════════
+        if (isProvisioningActive || isProvisioningActiveViaPrefs()) {
+            checkProvisioningTimeout()  // Verifica se expirou o timeout de 10 minutos
+            return  // NÃO faz NADA durante provisionamento
+        }
+        
         val foregroundInfo = getForegroundPackageAndActivity() ?: return
         val foregroundPackage = foregroundInfo.first
         val foregroundActivity = foregroundInfo.second

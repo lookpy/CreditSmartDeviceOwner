@@ -51,6 +51,79 @@ class CDCDeviceAdminReceiver : DeviceAdminReceiver() {
         private const val KEY_START_TIME = "start_time"
         private const val KEY_SUCCESS_DETECTED = "success_detected"
         
+        // SharedPreferences keys for SettingsGuard pause during provisioning
+        private const val GUARD_PREFS_NAME = "cdc_guard_pause"
+        private const val KEY_PROVISIONING_ACTIVE = "provisioning_active"
+        private const val KEY_PROVISIONING_START_TIME = "provisioning_start_time"
+        
+        /**
+         * CRITICAL: Signal to SettingsGuardService to pause during provisioning
+         * This prevents the guard from closing Settings screens needed for Device Owner setup
+         */
+        fun signalProvisioningStart(context: Context) {
+            try {
+                logDetailed("I", DEBUG_TAG, "🔧 ════════════════════════════════════════════")
+                logDetailed("I", DEBUG_TAG, "🔧 SINALIZANDO INÍCIO DO PROVISIONAMENTO")
+                logDetailed("I", DEBUG_TAG, "🔧 SettingsGuard será PAUSADO")
+                logDetailed("I", DEBUG_TAG, "🔧 ════════════════════════════════════════════")
+                
+                context.getSharedPreferences(GUARD_PREFS_NAME, Context.MODE_PRIVATE)
+                    .edit()
+                    .putBoolean(KEY_PROVISIONING_ACTIVE, true)
+                    .putLong(KEY_PROVISIONING_START_TIME, System.currentTimeMillis())
+                    .apply()
+                    
+            } catch (e: Exception) {
+                logDetailed("E", DEBUG_TAG, "❌ Erro ao sinalizar início do provisionamento", e)
+            }
+        }
+        
+        /**
+         * Signal to SettingsGuardService that provisioning is complete
+         */
+        fun signalProvisioningComplete(context: Context) {
+            try {
+                logDetailed("I", DEBUG_TAG, "🔧 ════════════════════════════════════════════")
+                logDetailed("I", DEBUG_TAG, "🔧 SINALIZANDO FIM DO PROVISIONAMENTO")
+                logDetailed("I", DEBUG_TAG, "🔧 SettingsGuard será RETOMADO")
+                logDetailed("I", DEBUG_TAG, "🔧 ════════════════════════════════════════════")
+                
+                context.getSharedPreferences(GUARD_PREFS_NAME, Context.MODE_PRIVATE)
+                    .edit()
+                    .putBoolean(KEY_PROVISIONING_ACTIVE, false)
+                    .putLong(KEY_PROVISIONING_START_TIME, 0L)
+                    .apply()
+                    
+            } catch (e: Exception) {
+                logDetailed("E", DEBUG_TAG, "❌ Erro ao sinalizar fim do provisionamento", e)
+            }
+        }
+        
+        /**
+         * Check if provisioning is currently active (for SettingsGuardService)
+         */
+        fun isProvisioningActive(context: Context): Boolean {
+            return try {
+                val prefs = context.getSharedPreferences(GUARD_PREFS_NAME, Context.MODE_PRIVATE)
+                val isActive = prefs.getBoolean(KEY_PROVISIONING_ACTIVE, false)
+                val startTime = prefs.getLong(KEY_PROVISIONING_START_TIME, 0L)
+                
+                // Auto-timeout after 10 minutes
+                if (isActive && startTime > 0) {
+                    val elapsed = System.currentTimeMillis() - startTime
+                    if (elapsed > 10 * 60 * 1000L) {  // 10 minutes
+                        logDetailed("W", DEBUG_TAG, "🔧 TIMEOUT de provisionamento (10 min) - auto-resumindo guard")
+                        signalProvisioningComplete(context)
+                        return false
+                    }
+                }
+                
+                isActive
+            } catch (e: Exception) {
+                false
+            }
+        }
+        
         /**
          * CRITICAL: Signal success to active timeout monitoring system
          * This stops the active monitoring when DeviceAdminReceiver callbacks succeed
@@ -309,6 +382,9 @@ class CDCDeviceAdminReceiver : DeviceAdminReceiver() {
     override fun onEnabled(context: Context, intent: Intent) {
         super.onEnabled(context, intent)
         addToCallbackSequence("onEnabled")
+        
+        // CRITICAL: Pause SettingsGuard during provisioning to prevent interference
+        signalProvisioningStart(context)
         
         logDetailed("I", TAG, "🔑 ==================== DEVICE ADMIN ENABLED ====================")
         logDetailed("I", TAG, "✅ Device Admin enabled successfully - CRITICAL CALLBACK FOR WORK PROFILE PREPARATION")
@@ -612,6 +688,9 @@ class CDCDeviceAdminReceiver : DeviceAdminReceiver() {
     override fun onProfileProvisioningComplete(context: Context, intent: Intent) {
         super.onProfileProvisioningComplete(context, intent)
         addToCallbackSequence("onProfileProvisioningComplete")
+        
+        // CRITICAL: Resume SettingsGuard after provisioning is complete
+        signalProvisioningComplete(context)
         
         logDetailed("I", TAG, "🎉 ==================== DEVICE OWNER PROVISIONING COMPLETED ====================")
         logDetailed("I", TAG, "✅ CRITICAL: Device Owner provisioning completed - Work profile should be ready!")
