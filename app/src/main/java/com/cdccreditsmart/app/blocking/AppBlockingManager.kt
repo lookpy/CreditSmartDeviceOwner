@@ -779,6 +779,15 @@ class AppBlockingManager(private val context: Context) {
     
     fun isAppBlocked(packageName: String): Boolean {
         return try {
+            // CRÍTICO: Se nível é 0 e não há bloqueio manual, nenhum app está bloqueado
+            val currentLevel = getCurrentBlockingLevel()
+            val hasManual = hasManualBlock()
+            
+            if (currentLevel == 0 && !hasManual) {
+                // Nível 0 sem bloqueio manual = TODOS os apps estão LIVRES
+                return false
+            }
+            
             val blockedPackages = getBlockedPackages()
             packageName in blockedPackages
         } catch (e: Exception) {
