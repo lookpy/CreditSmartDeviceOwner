@@ -49,3 +49,29 @@ The UI leverages Jetpack Compose and Material 3, incorporating a CDC institution
 - **Retrofit, OkHttp:** HTTP client libraries.
 - **WorkManager:** For background tasks.
 - **Kotlin Coroutines:** For asynchronous programming.
+
+## Recent Changes (2025-12-15)
+
+### Provisioning Safety - "Getting ready for work" Fix
+O app estava causando erros durante a tela "Getting ready for work" do provisionamento Device Owner. Correções aplicadas:
+
+**CDCApplication.kt:**
+- Nova verificação `isDeviceProvisioningInProgress()` detecta se provisionamento está ativo
+- Verifica `DEVICE_PROVISIONED` e `user_setup_complete` flags do sistema
+- Durante provisionamento, apenas concessão de permissões é executada
+- Todas as operações pesadas são adiadas (SettingsGuard, KeepAlive, ForegroundService, Workers)
+- Direct-boot mode agora retorna imediatamente sem fazer operações
+
+**BootReceiver.kt:**
+- Verifica `isUserUnlocked` antes de inicializar serviços
+- LOCKED_BOOT_COMPLETED tratado de forma segura - retorna se usuário bloqueado
+- FactoryResetRecoveryOrchestrator só é chamado quando seguro
+
+**FactoryResetRecoveryReceiver.kt:**
+- Verifica `isUserUnlocked` antes de acessar SecureTokenStorage
+- Evita crash ao tentar acessar EncryptedSharedPreferences em direct-boot mode
+
+**SettingsGuardService.kt:**
+- `startGuard()` verifica isUserUnlocked, isDeviceOwner, e termos aceitos
+- `checkAndInterceptBlockedApp()` e `checkAndCloseBlockedAppsInMultiWindow()` protegidos
+- Acesso a TermsAcceptanceStorage encapsulado em try-catch

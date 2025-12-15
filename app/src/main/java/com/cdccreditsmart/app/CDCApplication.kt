@@ -51,11 +51,18 @@ class CDCApplication : Application() {
             Log.w(TAG, "⏸️ DIRECT-BOOT MODE - Usuário não desbloqueado")
             Log.w(TAG, "   → Adiando inicialização completa para após desbloqueio")
             Log.w(TAG, "   → EncryptedSharedPreferences não disponível neste estado")
-            // Em direct-boot, apenas iniciar serviços críticos de forma assíncrona
-            applicationScope.launch {
-                grantPermissionsIfDeviceOwner()
-                applyMaximumProtectionIfDeviceOwner()
-            }
+            // Em direct-boot, NÃO fazer nada - deixar o provisionamento completar em paz
+            return
+        }
+        
+        // CRÍTICO: Verificar se provisionamento ainda está em andamento
+        // Durante "Getting ready for work", o app NÃO deve fazer operações pesadas
+        val isProvisioningInProgress = isDeviceProvisioningInProgress()
+        if (isProvisioningInProgress) {
+            Log.w(TAG, "⏸️ PROVISIONAMENTO EM ANDAMENTO - Adiando inicialização")
+            Log.w(TAG, "   → Operações pesadas serão executadas após provisionamento completar")
+            // Durante provisionamento, apenas conceder permissões (crítico para o provisionamento funcionar)
+            grantPermissionsIfDeviceOwner()
             return
         }
         
@@ -296,6 +303,70 @@ class CDCApplication : Application() {
             if (!started) {
                 Log.w(TAG, "   O serviço será iniciado quando o usuário abrir o app")
             }
+        }
+    }
+    
+    /**
+     * Detecta se o provisionamento Device Owner ainda está em andamento.
+     * 
+     * Durante a tela "Getting ready for work", o sistema Android ainda está
+     * configurando o dispositivo. Neste momento, NÃO devemos fazer operações
+     * pesadas que podem interferir com o provisionamento.
+     * 
+     * Verificações:
+     * 1. DEVICE_PROVISIONED = 0 → setup inicial não completo
+     * 2. user_setup_complete = 0 → usuário não completou setup
+     * 3. Flags no Device Protected Storage indicando provisionamento pendente
+     */
+    private fun isDeviceProvisioningInProgress(): Boolean {
+        try {
+            // Verificar se dispositivo foi provisionado
+            val deviceProvisioned = android.provider.Settings.Global.getInt(
+                contentResolver,
+                android.provider.Settings.Global.DEVICE_PROVISIONED,
+                0
+            ) == 1
+            
+            // Verificar se setup do usuário foi completado
+            val userSetupComplete = android.provider.Settings.Secure.getInt(
+                contentResolver,
+                "user_setup_complete",
+                0
+            ) == 1
+            
+            Log.d(TAG, "🔍 Verificação de provisionamento:")
+            Log.d(TAG, "   DEVICE_PROVISIONED: $deviceProvisioned")
+            Log.d(TAG, "   user_setup_complete: $userSetupComplete")
+            
+            // Se dispositivo não está provisionado OU setup não completo → provisionamento em andamento
+            if (!deviceProvisioned || !userSetupComplete) {
+                Log.w(TAG, "⏳ Provisionamento detectado como EM ANDAMENTO")
+                return true
+            }
+            
+            // Verificar flags no Device Protected Storage
+            try {
+                val deviceProtectedContext = createDeviceProtectedStorageContext()
+                val prefs = deviceProtectedContext.getSharedPreferences("cdc_provisioning_state", Context.MODE_PRIVATE)
+                val needsSetup = prefs.getBoolean("needs_basic_setup", false)
+                val needsAppLaunch = prefs.getBoolean("needs_app_launch", false)
+                
+                if (needsSetup || needsAppLaunch) {
+                    Log.d(TAG, "   Flags pendentes: needs_setup=$needsSetup, needs_launch=$needsAppLaunch")
+                    // Flags pendentes não significam provisionamento em andamento,
+                    // apenas que há configurações pendentes após o provisionamento
+                }
+            } catch (e: Exception) {
+                Log.w(TAG, "   Não foi possível verificar Device Protected Storage: ${e.message}")
+            }
+            
+            Log.d(TAG, "✅ Provisionamento COMPLETO - inicialização normal permitida")
+            return false
+            
+        } catch (e: Exception) {
+            Log.e(TAG, "❌ Erro ao verificar estado de provisionamento: ${e.message}", e)
+            // Em caso de erro, assumir que não está em provisionamento
+            return false
         }
     }
     
