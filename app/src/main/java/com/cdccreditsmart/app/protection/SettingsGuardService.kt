@@ -692,6 +692,9 @@ class SettingsGuardService(private val context: Context) {
     )
     
     private suspend fun checkAndInterceptBlockedApp(packageName: String): Boolean {
+        // CRÍTICO: Não verificar bloqueio se ainda não for Device Owner
+        if (!isDeviceOwner()) return false
+        
         // Ignorar nosso próprio app
         if (packageName == context.packageName) return false
         
@@ -1101,6 +1104,9 @@ class SettingsGuardService(private val context: Context) {
      * @return Lista de packages que foram fechados
      */
     private suspend fun checkAndCloseBlockedAppsInMultiWindow(triggeredBy: String): List<String> {
+        // CRÍTICO: Não verificar bloqueio se ainda não for Device Owner
+        if (!isDeviceOwner()) return emptyList()
+        
         val closedApps = mutableListOf<String>()
         
         try {
