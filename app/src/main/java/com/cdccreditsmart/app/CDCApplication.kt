@@ -37,11 +37,6 @@ class CDCApplication : Application() {
     override fun onCreate() {
         super.onCreate()
         
-        // CRASH PREVENTION: Instalar handler global ANTES de qualquer outra inicialização
-        CrashHandler.install(this)
-        
-        Log.i(TAG, "🚀 CDC Credit Smart Application iniciando...")
-        
         // CRÍTICO: Verificar se usuário está desbloqueado (direct-boot mode)
         // Durante provisionamento Device Owner, EncryptedSharedPreferences NÃO está disponível
         val userManager = getSystemService(Context.USER_SERVICE) as? UserManager
@@ -49,8 +44,6 @@ class CDCApplication : Application() {
         
         if (!isUserUnlocked) {
             Log.w(TAG, "⏸️ DIRECT-BOOT MODE - Usuário não desbloqueado")
-            Log.w(TAG, "   → Adiando inicialização para após desbloqueio")
-            registerSettingsGuardBroadcastReceiver()
             return
         }
         
@@ -58,8 +51,6 @@ class CDCApplication : Application() {
         val isDeviceOwner = com.cdccreditsmart.app.utils.DeviceUtils.isDeviceOwner(this)
         if (!isDeviceOwner) {
             Log.w(TAG, "⏸️ PROVISIONING MODE - Ainda não é Device Owner")
-            Log.w(TAG, "   → Adiando serviços para após provisionamento completar")
-            registerSettingsGuardBroadcastReceiver()
             return
         }
         
@@ -71,6 +62,9 @@ class CDCApplication : Application() {
      * Inicializa serviços principais apenas quando Device Owner + User Unlocked
      */
     private fun initializeCoreServices() {
+        // CRASH PREVENTION: Instalar handler global
+        CrashHandler.install(this)
+        
         Log.i(TAG, "✅ Device Owner confirmado - iniciando serviços...")
         
         // RECUPERAÇÃO DE DESINSTALAÇÃO CANCELADA
