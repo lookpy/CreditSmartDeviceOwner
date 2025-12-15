@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<device-admin xmlns:android="http://schemas.android.com/apk/res/android">
+    <uses-policies>
+        <!-- CORE Device Admin Policies -->
+        <limit-password />
+        <watch-login />
+        <reset-password />
+        <force-lock />
+        <wipe-data />
+        <expire-password />
+        <encrypted-storage />
+        
+        <!-- Device Owner Extended Policies -->
+        <disable-camera />
+        <disable-keyguard-features />
+        <set-global-proxy />
+    </uses-policies>
+</device-admin>

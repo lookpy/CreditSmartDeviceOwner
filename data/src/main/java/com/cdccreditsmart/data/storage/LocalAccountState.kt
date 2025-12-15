@@ -33,7 +33,6 @@ class LocalAccountState(private val context: Context) {
         private const val KEY_LAST_OVERLAY_MESSAGE = "last_overlay_message"
         private const val KEY_PIX_CODE = "pix_code"
         private const val KEY_BOLETO_CODE = "boleto_code"
-        private const val KEY_SERVER_UNLOCKED_TIMESTAMP = "server_unlocked_timestamp"
     }
     
     private val moshi = Moshi.Builder()
@@ -183,31 +182,6 @@ class LocalAccountState(private val context: Context) {
     var boletoCode: String
         get() = prefs.getString(KEY_BOLETO_CODE, "") ?: ""
         set(value) = prefs.edit().putString(KEY_BOLETO_CODE, value).apply()
-    
-    var serverUnlockedTimestamp: Long
-        get() = prefs.getLong(KEY_SERVER_UNLOCKED_TIMESTAMP, 0L)
-        set(value) = prefs.edit().putLong(KEY_SERVER_UNLOCKED_TIMESTAMP, value).apply()
-    
-    fun isServerUnlocked(): Boolean {
-        val timestamp = serverUnlockedTimestamp
-        if (timestamp == 0L) return false
-        val elapsed = System.currentTimeMillis() - timestamp
-        val isValid = elapsed < 24 * 60 * 60 * 1000L
-        if (isValid) {
-            Log.d(TAG, "🔓 Servidor desbloqueou há ${elapsed / 1000 / 60} minutos - bloqueio offline SUSPENSO")
-        }
-        return isValid
-    }
-    
-    fun markServerUnlocked() {
-        serverUnlockedTimestamp = System.currentTimeMillis()
-        Log.i(TAG, "🔓 Servidor enviou UNBLOCK - bloqueio offline SUSPENSO por 24h")
-    }
-    
-    fun clearServerUnlock() {
-        serverUnlockedTimestamp = 0L
-        Log.i(TAG, "🔒 Servidor enviou BLOCK - liberando bloqueio offline")
-    }
     
     fun saveContractInfo(
         contractCode: String,

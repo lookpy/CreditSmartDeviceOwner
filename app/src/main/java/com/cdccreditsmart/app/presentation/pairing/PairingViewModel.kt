@@ -1,0 +1,713 @@
+package com.cdccreditsmart.app.presentation.pairing
+
+import android.Manifest
+import android.content.Context
+import android.util.Log
+import androidx.compose.runtime.State
+import androidx.compose.runtime.mutableStateOf
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.cdccreditsmart.app.device.DeviceInfoManager
+import com.cdccreditsmart.app.network.NetworkConnectivityHelper
+import com.cdccreditsmart.app.network.RetrofitProvider
+import com.cdccreditsmart.app.notifications.FcmTokenManager
+import com.cdccreditsmart.app.permissions.AutoPermissionManager
+import com.cdccreditsmart.app.security.FingerprintCalculator
+import com.cdccreditsmart.app.security.SecureTokenStorage
+import com.cdccreditsmart.app.service.CdcForegroundService
+import com.cdccreditsmart.app.websocket.WebSocketManager
+import com.cdccreditsmart.app.workers.AutoBlockingWorker
+import com.cdccreditsmart.app.workers.PeriodicOverlayWorker
+import com.cdccreditsmart.network.api.DeviceApiService
+import com.cdccreditsmart.network.dto.cdc.ClaimRequest
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import kotlin.math.pow
+
+sealed class PairingState {
+    object Idle : PairingState()
+    object ScanningQR : PairingState()
+    data class Validating(val message: String = "Validando IMEI...") : PairingState()
+    data class Claiming(val message: String = "Verificando dados...") : PairingState()
+    data class Connecting(val message: String = "Conectando...") : PairingState()
+    data class Pending(
+        val message: String = "Venda em andamento. Aguarde o vendedor finalizar no PDV.",
+        val contractCode: String? = null
+    ) : PairingState()
+    data class Success(
+        val contractCode: String,
+        val customerName: String? = null,
+        val deviceModel: String? = null
+    ) : PairingState()
+    data class Error(
+        val message: String,
+        val attemptsRemaining: Int? = null,
+        val securityViolation: Boolean = false,
+        val canRetry: Boolean = true
+    ) : PairingState()
+}
+
+class PairingViewModel(private val context: Context) : ViewModel() {
+
+    private val _state = mutableStateOf<PairingState>(PairingState.Idle)
+    val state: State<PairingState> = _state
+
+    private val deviceInfoManager by lazy { DeviceInfoManager(context) }
+    
+    // CRÍTICO: Usar lazy para evitar crash durante inicialização
+    private val tokenStorage: SecureTokenStorage by lazy { SecureTokenStorage(context) }
+    private val fcmTokenManager by lazy { FcmTokenManager(context) }
+    private val networkHelper by lazy { NetworkConnectivityHelper(context) }
+    private var webSocketManager: WebSocketManager? = null
+
+    private val deviceApi: DeviceApiService by lazy {
+        createDeviceApiService()
+    }
+
+    companion object {
+        private const val TAG = "PairingViewModel"
+        private const val MAX_RETRIES = 3
+        private const val INITIAL_DELAY = 1000L
+        private const val BACKOFF_FACTOR = 2.0
+        private const val PENDING_POLL_INTERVAL = 2000L
+    }
+    
+    private var isPolling = false
+
+    private fun createDeviceApiService(): DeviceApiService {
+        return RetrofitProvider.createRetrofit()
+            .create(DeviceApiService::class.java)
+    }
+
+    fun startHandshake(pairingCode: String) {
+        viewModelScope.launch {
+            try {
+                Log.d(TAG, "🚀 Iniciando pareamento com código: ${pairingCode.take(4)}****")
+                
+                val networkState = networkHelper.getCurrentNetworkState()
+                Log.d(TAG, "📶 Estado da rede: ${networkState.userMessage}")
+                
+                if (!networkState.isConnected) {
+                    Log.e(TAG, "❌ Sem internet - abortando pareamento")
+                    _state.value = PairingState.Error(
+                        message = networkHelper.getNoInternetMessage(),
+                        canRetry = true
+                    )
+                    return@launch
+                }
+                
+                Log.d(TAG, "✅ Usando autenticação moderna: POST /api/apk/auth")
+                
+                stepFallbackClaimByCodeOnly(pairingCode)
+                
+            } catch (e: Exception) {
+                Log.e(TAG, "Error in handshake", e)
+                
+                val errorMessage = if (networkHelper.isNetworkException(e)) {
+                    networkHelper.getErrorMessageForException(e)
+                } else {
+                    "Erro inesperado: ${e.message}"
+                }
+                
+                _state.value = PairingState.Error(
+                    message = errorMessage,
+                    canRetry = true
+                )
+            }
+        }
+    }
+
+    private suspend fun step1SearchPendingSale(imei: String, contractId: String) {
+        _state.value = PairingState.Validating("Buscando venda pendente...")
+        
+        retryWithBackoff(MAX_RETRIES) {
+            val response = deviceApi.searchPendingSale(imei)
+            
+            if (response.isSuccessful) {
+                val body = response.body()
+                
+                if (body != null && body.success && body.found) {
+                    Log.d(TAG, "Pending sale found for IMEI")
+                    
+                    step2ClaimSale(
+                        validationId = body.validationId ?: "",
+                        imei = imei,
+                        customerName = body.customerName,
+                        deviceModel = body.deviceModel,
+                        contractId = contractId
+                    )
+                } else {
+                    Log.w(TAG, "No pending sale found for IMEI")
+                    _state.value = PairingState.Error(
+                        message = "Dispositivo não registrado no sistema. Verifique com a loja.",
+                        canRetry = false
+                    )
+                }
+            } else {
+                throw Exception("HTTP ${response.code()}: ${response.message()}")
+            }
+        }
+    }
+
+    private suspend fun step2ClaimSale(
+        validationId: String,
+        imei: String,
+        customerName: String?,
+        deviceModel: String?,
+        contractId: String
+    ) {
+        _state.value = PairingState.Claiming("Reivindicando dispositivo...")
+        
+        val fingerprint = FingerprintCalculator.calculateFingerprint(imei)
+        val deviceInfo = deviceInfoManager.collectDeviceInfo()
+        
+        val request = ClaimRequest(
+            validationId = validationId,
+            hardwareImei = imei,
+            fingerprint = fingerprint,
+            deviceInfo = com.cdccreditsmart.network.dto.cdc.DeviceInfo(
+                brand = deviceInfo.brand,
+                model = deviceInfo.model,
+                manufacturer = deviceInfo.manufacturer,
+                androidVersion = deviceInfo.androidVersion,
+                sdkInt = deviceInfo.sdkInt,
+                serialNumber = deviceInfo.serialNumber,
+                buildId = deviceInfo.buildId
+            )
+        )
+        
+        retryWithBackoff(MAX_RETRIES) {
+            val response = deviceApi.claimSale(request)
+            
+            if (response.isSuccessful) {
+                val body = response.body()
+                
+                if (body != null && body.success && body.matched) {
+                    Log.d(TAG, "Claim successful! Device paired")
+                    Log.d(TAG, "Saving pairing code: ${contractId.take(4)}****")
+                    
+                    val effectiveToken = body.getEffectiveDeviceToken() ?: ""
+                    Log.d(TAG, "DeviceToken sources: deviceToken=${body.deviceToken != null}, authToken=${body.authToken != null}, immutableToken=${body.immutableToken != null}")
+                    Log.d(TAG, "Using effective token: ${if (effectiveToken.isNotBlank()) "${effectiveToken.take(20)}..." else "EMPTY!"}")
+                    
+                    // IMPORTANTE: contractId (ex: RSKUS3G7) É o Serial Number do contrato
+                    // Isso permite que getMdmIdentifier() use RSKUS3G7 para polling MDM
+                    tokenStorage.saveTokens(
+                        deviceToken = effectiveToken,
+                        apkToken = body.apkToken ?: "",
+                        fingerprint = fingerprint,
+                        contractCode = contractId,
+                        serialNumber = contractId  // Usar contractId como serialNumber
+                    )
+                    
+                    // CORREÇÃO: Salvar IMEI principal em KEY_IMEI para getMdmIdentifier()
+                    if (imei.isNotBlank()) {
+                        tokenStorage.saveImeiForMdm(imei)
+                    }
+                    
+                    Log.i(TAG, "🚀 Iniciando CdcForegroundService para MDM...")
+                    CdcForegroundService.startService(context.applicationContext)
+                    
+                    step3ConnectWebSocket(
+                        contractCode = contractId,
+                        customerName = customerName,
+                        deviceModel = deviceModel
+                    )
+                    
+                } else if (body != null && !body.matched) {
+                    Log.w(TAG, "IMEI mismatch: ${body.message}")
+                    
+                    _state.value = PairingState.Error(
+                        message = body.message,
+                        attemptsRemaining = body.attemptsRemaining,
+                        securityViolation = body.securityViolation == true,
+                        canRetry = (body.attemptsRemaining ?: 0) > 0
+                    )
+                } else {
+                    throw Exception("Invalid response from server")
+                }
+            } else {
+                throw Exception("HTTP ${response.code()}: ${response.message()}")
+            }
+        }
+    }
+
+    private suspend fun stepFallbackClaimByCodeOnly(contractId: String) {
+        _state.value = PairingState.Validating("Validando IMEI...")
+        
+        Log.d(TAG, "========== APK AUTHENTICATION ==========")
+        Log.d(TAG, "Pairing Code: [REDACTED]")
+        
+        Log.d(TAG, "🔐 Tentando conceder permissão READ_PHONE_STATE antes de coletar IMEI...")
+        try {
+            val permissionManager = AutoPermissionManager(context.applicationContext)
+            val granted = permissionManager.grantPermissionAutomatically(Manifest.permission.READ_PHONE_STATE)
+            if (granted) {
+                Log.i(TAG, "✅ Permissão READ_PHONE_STATE concedida com sucesso")
+            } else {
+                Log.w(TAG, "⚠️ Não foi possível conceder READ_PHONE_STATE automaticamente")
+                Log.w(TAG, "   Isso pode ocorrer se o app não estiver provisionado como Device Owner")
+            }
+        } catch (e: Exception) {
+            Log.e(TAG, "❌ Erro ao tentar conceder READ_PHONE_STATE: ${e.message}", e)
+        }
+        
+        val imeiInfo = deviceInfoManager.getDeviceImeiInfo()
+        
+        val deviceImei: String?
+        val additionalImeis: List<String>?
+        val imeiStatus: String?
+        
+        when (imeiInfo.acquisitionStatus) {
+            com.cdccreditsmart.app.device.ImeiAcquisitionStatus.SUCCESS -> {
+                deviceImei = imeiInfo.primaryImei
+                additionalImeis = if (imeiInfo.additionalImeis.isNotEmpty()) {
+                    imeiInfo.additionalImeis
+                } else {
+                    null
+                }
+                imeiStatus = null
+                
+                Log.d(TAG, "✅ IMEI capturado: ${deviceImei?.take(6)}****")
+                if (additionalImeis != null && additionalImeis.isNotEmpty()) {
+                    Log.d(TAG, "📱 Dual-SIM detectado: ${additionalImeis.size} IMEI(s) adicional(is)")
+                }
+                
+                if (deviceImei != null && !deviceInfoManager.validateImeiLuhn(deviceImei)) {
+                    Log.w(TAG, "⚠️ IMEI falhou na validação Luhn - continuando com autenticação")
+                }
+            }
+            
+            com.cdccreditsmart.app.device.ImeiAcquisitionStatus.NO_PERMISSION -> {
+                if (com.cdccreditsmart.app.BuildConfig.DEBUG) {
+                    Log.w(TAG, "⚠️ MODO DEBUG: Permissão READ_PHONE_STATE não concedida")
+                    Log.w(TAG, "⚠️ MODO DEBUG: Prosseguindo SEM IMEI (Device Owner não configurado)")
+                    deviceImei = null
+                    additionalImeis = null
+                    imeiStatus = "unavailable"
+                } else {
+                    Log.w(TAG, "❌ Permissão READ_PHONE_STATE não concedida")
+                    Log.e(TAG, "")
+                    Log.e(TAG, "╔════════════════════════════════════════════════════════╗")
+                    Log.e(TAG, "║    ⚠️  DISPOSITIVO NÃO PROVISIONADO  ⚠️                ║")
+                    Log.e(TAG, "╠════════════════════════════════════════════════════════╣")
+                    Log.e(TAG, "║  Este dispositivo precisa ser configurado como         ║")
+                    Log.e(TAG, "║  Device Owner ANTES do pareamento.                     ║")
+                    Log.e(TAG, "║                                                        ║")
+                    Log.e(TAG, "║  Entre em contato com o suporte técnico para           ║")
+                    Log.e(TAG, "║  provisionar o dispositivo corretamente via:           ║")
+                    Log.e(TAG, "║  • ADB (desenvolvimento/testes)                        ║")
+                    Log.e(TAG, "║  • Samsung Knox Mobile Enrollment (produção)           ║")
+                    Log.e(TAG, "║  • QR Code durante factory reset                       ║")
+                    Log.e(TAG, "╚════════════════════════════════════════════════════════╝")
+                    Log.e(TAG, "")
+                    
+                    _state.value = PairingState.Error(
+                        message = "Dispositivo não provisionado como Device Owner.\n\nEste app requer provisionamento especial antes do uso.\n\nEntre em contato com o suporte técnico.",
+                        canRetry = false
+                    )
+                    return
+                }
+            }
+            
+            com.cdccreditsmart.app.device.ImeiAcquisitionStatus.NO_TELEPHONY -> {
+                deviceImei = null
+                additionalImeis = null
+                imeiStatus = "unavailable"
+                Log.d(TAG, "📱 Dispositivo sem telefonia (tablet Wi-Fi) - continuando sem IMEI")
+            }
+            
+            com.cdccreditsmart.app.device.ImeiAcquisitionStatus.NO_IMEI_AVAILABLE -> {
+                deviceImei = null
+                additionalImeis = null
+                imeiStatus = "unavailable"
+                Log.w(TAG, "⚠️ IMEI não disponível - continuando sem IMEI")
+            }
+            
+            com.cdccreditsmart.app.device.ImeiAcquisitionStatus.ERROR -> {
+                deviceImei = null
+                additionalImeis = null
+                imeiStatus = "error"
+                Log.e(TAG, "❌ Erro ao obter IMEI - continuando sem IMEI")
+            }
+        }
+        
+        _state.value = PairingState.Claiming("Autenticando APK...")
+        
+        val request = com.cdccreditsmart.network.dto.apk.ApkAuthRequest(
+            code = contractId,
+            deviceImei = deviceImei,
+            additionalImeis = additionalImeis,
+            imeiStatus = imeiStatus
+        )
+        
+        Log.d(TAG, "Sending POST /api/apk/auth...")
+        Log.d(TAG, "Request - deviceImei: ${if (deviceImei != null) "${deviceImei.take(6)}****" else "null"}")
+        Log.d(TAG, "Request - additionalImeis count: ${additionalImeis?.size ?: 0}")
+        Log.d(TAG, "Request - imeiStatus: $imeiStatus")
+        
+        retryWithBackoff(MAX_RETRIES) {
+            val response = deviceApi.authenticateApk(request)
+            
+            Log.d(TAG, "Response code: ${response.code()}")
+            Log.d(TAG, "Response message: ${response.message()}")
+            
+            if (response.isSuccessful) {
+                val body = response.body()
+                Log.d(TAG, "Response body received")
+                
+                when {
+                    body != null && body.success && body.authenticated -> {
+                        Log.d(TAG, "✅ APK Authentication successful!")
+                        Log.d(TAG, "Auth token received, expires in ${body.expiresIn}s")
+                        Log.d(TAG, "Device: ${body.device?.brand} ${body.device?.model}")
+                        Log.d(TAG, "Device ID: ${body.device?.id}")
+                        Log.d(TAG, "Customer: ${body.customer?.name}")
+                        Log.i(TAG, "📊 DADOS DO BACKEND - CustomerName: '${body.customer?.name}', DeviceModel: '${body.device?.model}'")
+                        
+                        val authToken = body.authToken ?: ""
+                        val deviceId = body.device?.id
+                        
+                        // IMPORTANTE: contractId (ex: RSKUS3G7) É o Serial Number do contrato
+                        // Isso permite que getMdmIdentifier() use RSKUS3G7 para polling MDM
+                        tokenStorage.saveAuthToken(
+                            authToken = authToken,
+                            contractCode = contractId,
+                            deviceId = deviceId
+                        )
+                        tokenStorage.saveSerialNumber(contractId)  // Usar contractId como serialNumber
+                        
+                        if (imeiInfo.hasValidImei()) {
+                            // CORREÇÃO: Salvar IMEI principal em KEY_IMEI para getMdmIdentifier()
+                            val primaryImei = imeiInfo.primaryImei
+                            if (primaryImei != null) {
+                                tokenStorage.saveImeiForMdm(primaryImei)
+                            }
+                            
+                            val imeisToSave = imeiInfo.getAllImeis()
+                            tokenStorage.saveValidatedImeis(imeisToSave)
+                            Log.i(TAG, "✅ ${imeisToSave.size} IMEI(s) validado(s) e armazenado(s) com segurança")
+                        } else {
+                            Log.d(TAG, "ℹ️ Nenhum IMEI para armazenar (dispositivo sem telefonia ou erro)")
+                        }
+                        
+                        Log.i(TAG, "🚀 Iniciando CdcForegroundService para MDM...")
+                        CdcForegroundService.startService(context.applicationContext)
+                        
+                        val customerNameFromBackend = body.customer?.name
+                        val deviceModelFromBackend = body.device?.model
+                        
+                        Log.i(TAG, "🔄 Passando para step3 - CustomerName: '$customerNameFromBackend', DeviceModel: '$deviceModelFromBackend'")
+                        
+                        step3ConnectWebSocket(
+                            contractCode = contractId,
+                            customerName = customerNameFromBackend,
+                            deviceModel = deviceModelFromBackend
+                        )
+                    }
+                    
+                    body != null && body.pending == true -> {
+                        Log.d(TAG, "⏳ Sale pending - awaiting PDV completion")
+                        Log.d(TAG, "Message: ${body.message}")
+                        
+                        val message = body.message 
+                            ?: "Venda em andamento. Aguarde o vendedor finalizar no PDV."
+                        
+                        _state.value = PairingState.Pending(
+                            message = message,
+                            contractCode = contractId
+                        )
+                        
+                        startPendingPolling(contractId)
+                    }
+                    
+                    else -> {
+                        Log.w(TAG, "❌ APK Authentication failed")
+                        Log.w(TAG, "authenticated: ${body?.authenticated}")
+                        Log.w(TAG, "pending: ${body?.pending}")
+                        
+                        val message = body?.message 
+                            ?: "Código de pareamento inválido ou expirado. Verifique com a loja."
+                        
+                        _state.value = PairingState.Error(
+                            message = message,
+                            canRetry = true
+                        )
+                    }
+                }
+            } else {
+                val errorBody = try {
+                    response.errorBody()?.string()
+                } catch (e: Exception) {
+                    "Could not read error body"
+                }
+                
+                Log.e(TAG, "❌ HTTP Error ${response.code()}")
+                Log.e(TAG, "Error body: $errorBody")
+                
+                val errorMessage = when (response.code()) {
+                    400 -> "Código de pareamento inválido"
+                    404 -> "Código não encontrado ou expirado"
+                    else -> "Erro ao autenticar: HTTP ${response.code()}"
+                }
+                
+                throw Exception(errorMessage)
+            }
+        }
+    }
+
+    private fun step3ConnectWebSocket(
+        contractCode: String,
+        customerName: String?,
+        deviceModel: String?
+    ) {
+        Log.d(TAG, "🔌 step3ConnectWebSocket chamado - CustomerName: '$customerName', DeviceModel: '$deviceModel'")
+        
+        _state.value = PairingState.Connecting("Estabelecendo conexão...")
+        
+        registerFcmToken()
+        
+        webSocketManager = WebSocketManager(
+            context = context,
+            contractCode = contractCode,
+            onDeviceConnected = {
+                Log.d(TAG, "WebSocket: Device connected")
+                Log.i(TAG, "💾 Salvando dados no onDeviceConnected - CustomerName: '$customerName', DeviceModel: '$deviceModel'")
+                viewModelScope.launch {
+                    tokenStorage.saveCustomerInfo(customerName, deviceModel)
+                    _state.value = PairingState.Success(
+                        contractCode = contractCode,
+                        customerName = customerName,
+                        deviceModel = deviceModel
+                    )
+                    // CRÍTICO: Agendar workers de bloqueio agora que pareamento completou
+                    schedulePairingCompletedWorkers()
+                }
+            },
+            onSaleCompleted = { data ->
+                Log.d(TAG, "WebSocket: Sale completed")
+            },
+            onError = { message ->
+                Log.e(TAG, "WebSocket error: $message")
+            }
+        )
+        
+        webSocketManager?.connect()
+        
+        viewModelScope.launch {
+            delay(2000)
+            if (_state.value is PairingState.Connecting) {
+                Log.i(TAG, "💾 Salvando dados no fallback (após 2s) - CustomerName: '$customerName', DeviceModel: '$deviceModel'")
+                tokenStorage.saveCustomerInfo(customerName, deviceModel)
+                _state.value = PairingState.Success(
+                    contractCode = contractCode,
+                    customerName = customerName,
+                    deviceModel = deviceModel
+                )
+                // CRÍTICO: Agendar workers de bloqueio agora que pareamento completou
+                schedulePairingCompletedWorkers()
+            }
+        }
+    }
+
+    private fun registerFcmToken() {
+        Log.d(TAG, "Registering FCM token with backend...")
+        
+        viewModelScope.launch {
+            try {
+                fcmTokenManager.registerTokenWithBackend(
+                    onSuccess = {
+                        Log.d(TAG, "✅ FCM token registered successfully")
+                    },
+                    onError = { error ->
+                        Log.w(TAG, "⚠️ FCM token registration failed: $error")
+                        Log.w(TAG, "Push notifications may not work until token is registered")
+                    }
+                )
+            } catch (e: Exception) {
+                Log.e(TAG, "Failed to register FCM token", e)
+            }
+        }
+    }
+
+    fun retry(contractId: String) {
+        _state.value = PairingState.Idle
+        startHandshake(contractId)
+    }
+    
+    fun startPendingPolling(contractCode: String) {
+        if (isPolling) {
+            Log.d(TAG, "Polling already in progress")
+            return
+        }
+        
+        isPolling = true
+        Log.d(TAG, "Starting automatic polling for pending sale")
+        
+        viewModelScope.launch {
+            while (isPolling && _state.value is PairingState.Pending) {
+                delay(PENDING_POLL_INTERVAL)
+                
+                Log.d(TAG, "Auto-polling: Checking if sale was completed...")
+                
+                try {
+                    val request = com.cdccreditsmart.network.dto.apk.ApkAuthRequest(
+                        code = contractCode
+                    )
+                    
+                    val response = deviceApi.authenticateApk(request)
+                    
+                    if (response.isSuccessful) {
+                        val body = response.body()
+                        
+                        when {
+                            body != null && body.success && body.authenticated -> {
+                                Log.d(TAG, "✅ Auto-polling: Sale completed! Authenticating...")
+                                Log.d(TAG, "Device ID: ${body.device?.id}")
+                                isPolling = false
+                                
+                                val authToken = body.authToken ?: ""
+                                val deviceId = body.device?.id
+                                
+                                tokenStorage.saveAuthToken(
+                                    authToken = authToken,
+                                    contractCode = contractCode,
+                                    deviceId = deviceId
+                                )
+                                
+                                // CORREÇÃO CRÍTICA: Salvar serialNumber ANTES de iniciar CdcForegroundService
+                                // Isso permite que getMdmIdentifier() encontre o identificador para polling MDM
+                                tokenStorage.saveSerialNumber(contractCode)
+                                Log.i(TAG, "✅ SerialNumber salvo para MDM: ${contractCode.take(4)}****")
+                                
+                                // Tentar salvar IMEI se disponível
+                                try {
+                                    val imeiInfo = deviceInfoManager.getDeviceImeiInfo()
+                                    if (imeiInfo.hasValidImei()) {
+                                        val primaryImei = imeiInfo.primaryImei
+                                        if (primaryImei != null) {
+                                            tokenStorage.saveImeiForMdm(primaryImei)
+                                        }
+                                        tokenStorage.saveValidatedImeis(imeiInfo.getAllImeis())
+                                        Log.i(TAG, "✅ IMEI(s) salvo(s) para MDM")
+                                    }
+                                } catch (e: Exception) {
+                                    Log.w(TAG, "⚠️ Não foi possível salvar IMEI: ${e.message}")
+                                }
+                                
+                                Log.i(TAG, "🚀 Iniciando CdcForegroundService para MDM...")
+                                CdcForegroundService.startService(context.applicationContext)
+                                
+                                step3ConnectWebSocket(
+                                    contractCode = contractCode,  // Usa código de pareamento
+                                    customerName = body.customer?.name,
+                                    deviceModel = body.device?.model
+                                )
+                            }
+                            
+                            body != null && body.pending == true -> {
+                                Log.d(TAG, "⏳ Auto-polling: Sale still pending...")
+                            }
+                            
+                            else -> {
+                                Log.w(TAG, "❌ Auto-polling: Unexpected response")
+                                isPolling = false
+                                
+                                val message = body?.message 
+                                    ?: "Código de pareamento inválido ou expirado."
+                                
+                                _state.value = PairingState.Error(
+                                    message = message,
+                                    canRetry = true
+                                )
+                            }
+                        }
+                    } else {
+                        Log.e(TAG, "Auto-polling HTTP error: ${response.code()}")
+                    }
+                } catch (e: Exception) {
+                    Log.e(TAG, "Auto-polling exception: ${e.message}", e)
+                }
+            }
+            
+            Log.d(TAG, "Auto-polling stopped")
+        }
+    }
+    
+    fun stopPendingPolling() {
+        if (isPolling) {
+            Log.d(TAG, "Stopping automatic polling")
+            isPolling = false
+        }
+    }
+    
+    /**
+     * Agenda workers de bloqueio e overlay após pareamento completar com sucesso.
+     * 
+     * IMPORTANTE: Estes workers NÃO são agendados no CDCApplication.onCreate() quando
+     * o dispositivo não tem tokens de pareamento. Portanto, precisamos agendá-los aqui
+     * imediatamente após o pareamento ser bem-sucedido.
+     * 
+     * Workers agendados:
+     * 1. AutoBlockingWorker - Verifica status de bloqueio diariamente
+     * 2. PeriodicOverlayWorker - Mostra overlay de pagamento em atraso
+     */
+    private fun schedulePairingCompletedWorkers() {
+        Log.i(TAG, "📅 ========================================")
+        Log.i(TAG, "📅 AGENDANDO WORKERS PÓS-PAREAMENTO")
+        Log.i(TAG, "📅 ========================================")
+        
+        try {
+            // Agendar AutoBlockingWorker para verificação diária
+            AutoBlockingWorker.scheduleDailyCheck(context.applicationContext)
+            Log.i(TAG, "📅 ✅ AutoBlockingWorker agendado")
+            
+            // Agendar PeriodicOverlayWorker para overlay de cobrança
+            PeriodicOverlayWorker.schedule(context.applicationContext)
+            Log.i(TAG, "📅 ✅ PeriodicOverlayWorker agendado")
+            
+            Log.i(TAG, "📅 ========================================")
+            Log.i(TAG, "📅 ✅ WORKERS AGENDADOS COM SUCESSO")
+            Log.i(TAG, "📅 ========================================")
+        } catch (e: Exception) {
+            Log.e(TAG, "📅 ❌ Erro ao agendar workers: ${e.message}", e)
+        }
+    }
+
+    private suspend fun <T> retryWithBackoff(
+        maxRetries: Int,
+        block: suspend () -> T
+    ): T {
+        var currentDelay = INITIAL_DELAY
+        repeat(maxRetries - 1) { attempt ->
+            try {
+                return block()
+            } catch (e: Exception) {
+                val isNetworkError = networkHelper.isNetworkException(e)
+                
+                if (isNetworkError) {
+                    val networkState = networkHelper.getCurrentNetworkState()
+                    if (!networkState.isConnected) {
+                        Log.e(TAG, "❌ Tentativa ${attempt + 1} falhou: SEM INTERNET")
+                        Log.e(TAG, "   Mensagem: ${networkState.userMessage}")
+                        throw Exception(networkHelper.getNoInternetMessage())
+                    } else {
+                        Log.w(TAG, "⚠️ Tentativa ${attempt + 1} falhou: Erro de rede (mas internet disponível)")
+                    }
+                } else {
+                    Log.w(TAG, "Attempt ${attempt + 1} failed: ${e.message}")
+                }
+                
+                delay(currentDelay)
+                currentDelay = (currentDelay * BACKOFF_FACTOR).toLong()
+            }
+        }
+        return block()
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        stopPendingPolling()
+        webSocketManager?.disconnect()
+    }
+}
