@@ -4,7 +4,6 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.os.Build
-import android.os.UserManager
 import android.util.Log
 import com.cdccreditsmart.app.persistence.ApkPreloadManager
 import com.cdccreditsmart.app.persistence.EnrollmentManifestData
@@ -31,10 +30,6 @@ import kotlinx.coroutines.launch
  * - Funciona em TODOS os fabricantes que suportam preload
  * - Usa IMEI como identificador primário
  * - Fallback para Android ID se IMEI não disponível
- * 
- * CRÍTICO: Este receiver é directBootAware, então pode receber LOCKED_BOOT_COMPLETED
- * antes do usuário desbloquear o dispositivo. Neste caso, NÃO podemos acessar
- * EncryptedSharedPreferences (SecureTokenStorage).
  */
 class FactoryResetRecoveryReceiver : BroadcastReceiver() {
     
@@ -56,22 +51,9 @@ class FactoryResetRecoveryReceiver : BroadcastReceiver() {
             return
         }
         
-        // CRÍTICO: Verificar se usuário está desbloqueado antes de acessar storage criptografado
-        // Durante provisionamento Device Owner, recebemos LOCKED_BOOT_COMPLETED mas
-        // EncryptedSharedPreferences NÃO está disponível até USER_UNLOCKED
-        val userManager = context.getSystemService(Context.USER_SERVICE) as? UserManager
-        val isUserUnlocked = userManager?.isUserUnlocked ?: false
-        
         Log.i(TAG, "========================================")
         Log.i(TAG, "🔄 BOOT DETECTADO (${intent.action}) - Verificando recuperação")
-        Log.i(TAG, "   isUserUnlocked: $isUserUnlocked")
         Log.i(TAG, "========================================")
-        
-        if (!isUserUnlocked) {
-            Log.w(TAG, "⏸️ Usuário bloqueado - adiando verificação de recuperação")
-            Log.w(TAG, "   → Recuperação será verificada em BOOT_COMPLETED ou USER_UNLOCKED")
-            return
-        }
         
         scope.launch {
             try {
