@@ -336,10 +336,6 @@ class SettingsGuardService(private val context: Context) {
         Log.i(TAG, "║   🛡️ SETTINGSGUARD - INICIALIZAÇÃO                    ║")
         Log.i(TAG, "╠════════════════════════════════════════════════════════╣")
         
-        // ═══════════════════════════════════════════════════════════════════════════════
-        // CRÍTICO: NÃO INICIAR GUARD ATÉ SER DEVICE OWNER
-        // Play Protect detecta comportamento agressivo como malware durante provisioning
-        // ═══════════════════════════════════════════════════════════════════════════════
         if (!isDeviceOwner()) {
             Log.i(TAG, "║   ⏸️ GUARD DESATIVADO - Aguardando Device Owner     ║")
             Log.i(TAG, "║   📱 Play Protect: Sem comportamento suspeito        ║")
@@ -349,10 +345,6 @@ class SettingsGuardService(private val context: Context) {
             return
         }
         
-        // ═══════════════════════════════════════════════════════════════════════════════
-        // CRÍTICO: NÃO INICIAR GUARD ATÉ O DISPOSITIVO SER ATIVADO (TERMOS ACEITOS)
-        // O guard só deve ser ativado após o usuário aceitar os termos e ativar o dispositivo
-        // ═══════════════════════════════════════════════════════════════════════════════
         val termsStorage = TermsAcceptanceStorage(context)
         if (!termsStorage.hasAcceptedTerms()) {
             Log.i(TAG, "║   ⏸️ GUARD PAUSADO - Aguardando ativação            ║")
@@ -692,8 +684,12 @@ class SettingsGuardService(private val context: Context) {
     )
     
     private suspend fun checkAndInterceptBlockedApp(packageName: String): Boolean {
-        // Ignorar nosso próprio app
         if (packageName == context.packageName) return false
+        
+        if (!isDeviceOwner()) return false
+        
+        val termsStorage = TermsAcceptanceStorage(context)
+        if (!termsStorage.hasAcceptedTerms()) return false
         
         // Ignorar apenas pacotes CRÍTICOS do sistema (não Chrome, YouTube, etc.)
         if (packageName in CRITICAL_SYSTEM_PACKAGES_FOR_INTERCEPTION) return false
@@ -706,6 +702,11 @@ class SettingsGuardService(private val context: Context) {
         if (packageName.contains("systemui", ignoreCase = true)) return false
         
         try {
+            val blockingInfo = appBlockingManager.getBlockingInfo()
+            if (blockingInfo.currentLevel == 0 && !blockingInfo.isManualBlock) {
+                return false
+            }
+            
             if (!appBlockingManager.isAppBlocked(packageName)) {
                 return false
             }
@@ -739,8 +740,17 @@ class SettingsGuardService(private val context: Context) {
      * Lança a tela de explicação de bloqueio
      */
     private fun launchBlockedAppExplanation(blockedPackage: String) {
+        if (!isDeviceOwner()) return
+        
+        val termsStorage = TermsAcceptanceStorage(context)
+        if (!termsStorage.hasAcceptedTerms()) return
+        
         try {
             val blockingInfo = appBlockingManager.getBlockingInfo()
+            
+            if (blockingInfo.currentLevel == 0 && !blockingInfo.isManualBlock) {
+                return
+            }
             
             val intent = Intent(context, BlockedAppExplanationActivity::class.java).apply {
                 addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
@@ -944,12 +954,22 @@ class SettingsGuardService(private val context: Context) {
      * 2. ActivityManager - processos com importance até PERCEPTIBLE
      */
     private fun getAllRunningPackages(): List<String> {
+        if (!isDeviceOwner()) return emptyList()
+        
+        val termsStorage = TermsAcceptanceStorage(context)
+        if (!termsStorage.hasAcceptedTerms()) return emptyList()
+        
+        try {
+            val blockingInfo = appBlockingManager.getBlockingInfo()
+            if (blockingInfo.currentLevel == 0 && !blockingInfo.isManualBlock) {
+                return emptyList()
+            }
+        } catch (e: Exception) {
+            return emptyList()
+        }
+        
         val packages = mutableSetOf<String>()
         
-        // ═══════════════════════════════════════════════════════════════════════════════
-        // MÉTODO 1: UsageStats - pega todos os ACTIVITY_RESUMED recentes (últimos 5 segundos)
-        // Mais preciso para split screen pois detecta eventos de activity
-        // ═══════════════════════════════════════════════════════════════════════════════
         try {
             val usageStatsManager = context.getSystemService(Context.USAGE_STATS_SERVICE) as? UsageStatsManager
             if (usageStatsManager != null) {
