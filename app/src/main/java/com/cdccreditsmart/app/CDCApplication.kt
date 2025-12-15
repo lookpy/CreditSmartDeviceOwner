@@ -49,15 +49,29 @@ class CDCApplication : Application() {
         
         if (!isUserUnlocked) {
             Log.w(TAG, "⏸️ DIRECT-BOOT MODE - Usuário não desbloqueado")
-            Log.w(TAG, "   → Adiando inicialização completa para após desbloqueio")
-            Log.w(TAG, "   → EncryptedSharedPreferences não disponível neste estado")
-            // Em direct-boot, apenas iniciar serviços críticos de forma assíncrona
-            applicationScope.launch {
-                grantPermissionsIfDeviceOwner()
-                applyMaximumProtectionIfDeviceOwner()
-            }
+            Log.w(TAG, "   → Adiando inicialização para após desbloqueio")
+            registerSettingsGuardBroadcastReceiver()
             return
         }
+        
+        // CRÍTICO: Verificar Device Owner ANTES de iniciar qualquer serviço
+        val isDeviceOwner = com.cdccreditsmart.app.utils.DeviceUtils.isDeviceOwner(this)
+        if (!isDeviceOwner) {
+            Log.w(TAG, "⏸️ PROVISIONING MODE - Ainda não é Device Owner")
+            Log.w(TAG, "   → Adiando serviços para após provisionamento completar")
+            registerSettingsGuardBroadcastReceiver()
+            return
+        }
+        
+        // A partir daqui: Device Owner + User Unlocked = seguro para inicializar
+        initializeCoreServices()
+    }
+    
+    /**
+     * Inicializa serviços principais apenas quando Device Owner + User Unlocked
+     */
+    private fun initializeCoreServices() {
+        Log.i(TAG, "✅ Device Owner confirmado - iniciando serviços...")
         
         // RECUPERAÇÃO DE DESINSTALAÇÃO CANCELADA
         recoverFromCancelledUninstall()
