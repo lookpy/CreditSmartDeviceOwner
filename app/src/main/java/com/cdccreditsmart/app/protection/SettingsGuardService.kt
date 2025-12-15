@@ -337,6 +337,22 @@ class SettingsGuardService(private val context: Context) {
         Log.i(TAG, "╠════════════════════════════════════════════════════════╣")
         
         // ═══════════════════════════════════════════════════════════════════════════════
+        // CRÍTICO: NÃO INICIAR GUARD SE USUÁRIO NÃO ESTÁ DESBLOQUEADO
+        // Durante provisionamento, EncryptedSharedPreferences pode não estar disponível
+        // ═══════════════════════════════════════════════════════════════════════════════
+        val userManager = context.getSystemService(Context.USER_SERVICE) as? android.os.UserManager
+        val isUserUnlocked = userManager?.isUserUnlocked ?: false
+        
+        if (!isUserUnlocked) {
+            Log.i(TAG, "║   ⏸️ GUARD ADIADO - Usuário ainda bloqueado         ║")
+            Log.i(TAG, "║   🔒 Provisionamento em andamento                    ║")
+            Log.i(TAG, "╚════════════════════════════════════════════════════════╝")
+            Log.i(TAG, "")
+            Log.i(TAG, "🛡️ SettingsGuard em ESPERA até usuário desbloquear")
+            return
+        }
+        
+        // ═══════════════════════════════════════════════════════════════════════════════
         // CRÍTICO: NÃO INICIAR GUARD ATÉ SER DEVICE OWNER
         // Play Protect detecta comportamento agressivo como malware durante provisioning
         // ═══════════════════════════════════════════════════════════════════════════════
@@ -353,8 +369,15 @@ class SettingsGuardService(private val context: Context) {
         // CRÍTICO: NÃO INICIAR GUARD ATÉ O DISPOSITIVO SER ATIVADO (TERMOS ACEITOS)
         // O guard só deve ser ativado após o usuário aceitar os termos e ativar o dispositivo
         // ═══════════════════════════════════════════════════════════════════════════════
-        val termsStorage = TermsAcceptanceStorage(context)
-        if (!termsStorage.hasAcceptedTerms()) {
+        val termsAccepted = try {
+            val termsStorage = TermsAcceptanceStorage(context)
+            termsStorage.hasAcceptedTerms()
+        } catch (e: Exception) {
+            Log.w(TAG, "⚠️ Erro ao verificar termos (provisionamento?): ${e.message}")
+            false
+        }
+        
+        if (!termsAccepted) {
             Log.i(TAG, "║   ⏸️ GUARD PAUSADO - Aguardando ativação            ║")
             Log.i(TAG, "║   📄 Dispositivo ainda não foi ativado               ║")
             Log.i(TAG, "╚════════════════════════════════════════════════════════╝")
@@ -694,6 +717,10 @@ class SettingsGuardService(private val context: Context) {
     private suspend fun checkAndInterceptBlockedApp(packageName: String): Boolean {
         // CRÍTICO: Não verificar bloqueio se ainda não for Device Owner
         if (!isDeviceOwner()) return false
+        
+        // CRÍTICO: Verificar se usuário está desbloqueado antes de acessar storage
+        val userManager = context.getSystemService(Context.USER_SERVICE) as? android.os.UserManager
+        if (userManager?.isUserUnlocked != true) return false
         
         // Ignorar nosso próprio app
         if (packageName == context.packageName) return false
@@ -1106,6 +1133,10 @@ class SettingsGuardService(private val context: Context) {
     private suspend fun checkAndCloseBlockedAppsInMultiWindow(triggeredBy: String): List<String> {
         // CRÍTICO: Não verificar bloqueio se ainda não for Device Owner
         if (!isDeviceOwner()) return emptyList()
+        
+        // CRÍTICO: Verificar se usuário está desbloqueado antes de acessar storage
+        val userManager = context.getSystemService(Context.USER_SERVICE) as? android.os.UserManager
+        if (userManager?.isUserUnlocked != true) return emptyList()
         
         val closedApps = mutableListOf<String>()
         

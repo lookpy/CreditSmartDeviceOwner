@@ -157,3 +157,12 @@ The UI leverages Jetpack Compose and Material 3, incorporating a CDC institution
 - Força reload do servidor em vez de usar cache em memória stale
 - Invalida cachedState e lastLoadTime ao detectar reinstalação
 - Garante que dados atualizados sejam carregados após reinstalação
+
+### Provisioning Safety Improvements (2025-12-15)
+- SettingsGuardService.startGuard() agora verifica isUserUnlocked ANTES de qualquer operação
+- Evita acesso a EncryptedSharedPreferences durante direct-boot mode
+- Acesso ao TermsAcceptanceStorage encapsulado em try-catch para evitar crash durante provisionamento
+- Guard aguarda 3 condições: (1) usuário desbloqueado, (2) Device Owner, (3) termos aceitos
+- checkAndInterceptBlockedApp() verifica isUserUnlocked antes de acessar appBlockingManager
+- checkAndCloseBlockedAppsInMultiWindow() verifica isUserUnlocked antes de acessar appBlockingManager
+- Essas verificações evitam crash ao tentar acessar storage criptografado durante provisionamento
