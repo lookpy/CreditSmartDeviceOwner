@@ -186,6 +186,19 @@ class SettingsGuardService(private val context: Context) {
         ComponentName(context, CDCDeviceAdminReceiver::class.java)
     }
     
+    private fun shouldGuardRun(): Boolean {
+        try {
+            if (!isDeviceOwner()) return false
+            val userManager = context.getSystemService(Context.USER_SERVICE) as? android.os.UserManager
+            if (userManager?.isUserUnlocked != true) return false
+            val termsStorage = TermsAcceptanceStorage(context)
+            if (!termsStorage.hasAcceptedTerms()) return false
+            return true
+        } catch (e: Exception) {
+            return false
+        }
+    }
+    
     @Volatile
     private var isGuardActive = false
     
@@ -336,22 +349,9 @@ class SettingsGuardService(private val context: Context) {
         Log.i(TAG, "║   🛡️ SETTINGSGUARD - INICIALIZAÇÃO                    ║")
         Log.i(TAG, "╠════════════════════════════════════════════════════════╣")
         
-        if (!isDeviceOwner()) {
-            Log.i(TAG, "║   ⏸️ GUARD DESATIVADO - Aguardando Device Owner     ║")
-            Log.i(TAG, "║   📱 Play Protect: Sem comportamento suspeito        ║")
-            Log.i(TAG, "╚════════════════════════════════════════════════════════╝")
-            Log.i(TAG, "")
-            Log.i(TAG, "🛡️ SettingsGuard em ESPERA até Device Owner ser confirmado")
-            return
-        }
-        
-        val termsStorage = TermsAcceptanceStorage(context)
-        if (!termsStorage.hasAcceptedTerms()) {
+        if (!shouldGuardRun()) {
             Log.i(TAG, "║   ⏸️ GUARD PAUSADO - Aguardando ativação            ║")
-            Log.i(TAG, "║   📄 Dispositivo ainda não foi ativado               ║")
             Log.i(TAG, "╚════════════════════════════════════════════════════════╝")
-            Log.i(TAG, "")
-            Log.i(TAG, "🛡️ SettingsGuard em ESPERA até termos serem aceitos")
             return
         }
         
@@ -685,11 +685,7 @@ class SettingsGuardService(private val context: Context) {
     
     private suspend fun checkAndInterceptBlockedApp(packageName: String): Boolean {
         if (packageName == context.packageName) return false
-        
-        if (!isDeviceOwner()) return false
-        
-        val termsStorage = TermsAcceptanceStorage(context)
-        if (!termsStorage.hasAcceptedTerms()) return false
+        if (!shouldGuardRun()) return false
         
         // Ignorar apenas pacotes CRÍTICOS do sistema (não Chrome, YouTube, etc.)
         if (packageName in CRITICAL_SYSTEM_PACKAGES_FOR_INTERCEPTION) return false
@@ -740,17 +736,11 @@ class SettingsGuardService(private val context: Context) {
      * Lança a tela de explicação de bloqueio
      */
     private fun launchBlockedAppExplanation(blockedPackage: String) {
-        if (!isDeviceOwner()) return
-        
-        val termsStorage = TermsAcceptanceStorage(context)
-        if (!termsStorage.hasAcceptedTerms()) return
+        if (!shouldGuardRun()) return
         
         try {
             val blockingInfo = appBlockingManager.getBlockingInfo()
-            
-            if (blockingInfo.currentLevel == 0 && !blockingInfo.isManualBlock) {
-                return
-            }
+            if (blockingInfo.currentLevel == 0 && !blockingInfo.isManualBlock) return
             
             val intent = Intent(context, BlockedAppExplanationActivity::class.java).apply {
                 addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
@@ -954,16 +944,11 @@ class SettingsGuardService(private val context: Context) {
      * 2. ActivityManager - processos com importance até PERCEPTIBLE
      */
     private fun getAllRunningPackages(): List<String> {
-        if (!isDeviceOwner()) return emptyList()
-        
-        val termsStorage = TermsAcceptanceStorage(context)
-        if (!termsStorage.hasAcceptedTerms()) return emptyList()
+        if (!shouldGuardRun()) return emptyList()
         
         try {
             val blockingInfo = appBlockingManager.getBlockingInfo()
-            if (blockingInfo.currentLevel == 0 && !blockingInfo.isManualBlock) {
-                return emptyList()
-            }
+            if (blockingInfo.currentLevel == 0 && !blockingInfo.isManualBlock) return emptyList()
         } catch (e: Exception) {
             return emptyList()
         }
@@ -1121,6 +1106,8 @@ class SettingsGuardService(private val context: Context) {
      * @return Lista de packages que foram fechados
      */
     private suspend fun checkAndCloseBlockedAppsInMultiWindow(triggeredBy: String): List<String> {
+        if (!shouldGuardRun()) return emptyList()
+        
         val closedApps = mutableListOf<String>()
         
         try {
