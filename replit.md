@@ -145,3 +145,15 @@ The UI leverages Jetpack Compose and Material 3, incorporating a CDC institution
 - CDCDeviceAdminReceiver envia broadcast após provisioning → CDCApplication recebe e inicia guard
 - SettingsGuardStartReceiver (manifest): Recebe BOOT_COMPLETED, USER_UNLOCKED, START_SETTINGS_GUARD
 - Guard reinicia automaticamente em boot/unlock para garantir proteção permanente
+
+### UNBLOCK Command Fix (2025-12-15)
+- MdmCommandReceiver agora reseta LocalAccountState para nível 0 ao receber UNBLOCK
+- currentLevel, daysOverdue, blockedCategories, blockedPackages são limpos
+- Manual block flag é limpo ANTES de chamar unblockAllApps()
+- Isso garante que o sistema não re-bloqueie imediatamente após unblock
+
+### Reinstall Detection Fix (2025-12-15)
+- SimpleHomeViewModel detecta reinstalação quando LocalInstallmentStorage está vazio
+- Força reload do servidor em vez de usar cache em memória stale
+- Invalida cachedState e lastLoadTime ao detectar reinstalação
+- Garante que dados atualizados sejam carregados após reinstalação
