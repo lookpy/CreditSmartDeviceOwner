@@ -195,7 +195,7 @@ class SimpleHomeViewModel(
                     Log.d(TAG, "📊 All installments count: ${data.allInstallments?.size ?: 0}")
                     
                     data.allInstallments?.forEach { item ->
-                        Log.d(TAG, "📋 Parcela #${item.number}: status=${item.status}, isPaid=${item.isPaid}, dueDate=${item.dueDate}")
+                        Log.d(TAG, "📋 Parcela #${item.number}: status=${item.status}, isPaid=${item.isPaid}, effectiveIsPaid=${item.effectiveIsPaid()}, dueDate=${item.dueDate}")
                     }
                     
                     val deviceModel = data.device?.name
@@ -282,10 +282,10 @@ class SimpleHomeViewModel(
                     )
                 }
                 
-                // Calcular valores monetários
-                val paidItems = installmentItems.filter { it.isPaid }
-                val pendingItems = installmentItems.filter { !it.isPaid && !it.isOverdue }
-                val overdueItems = installmentItems.filter { it.isOverdue }
+                // Calcular valores monetários - usar effectiveIsPaid/effectiveIsOverdue que derivam do status
+                val paidItems = installmentItems.filter { it.effectiveIsPaid() }
+                val pendingItems = installmentItems.filter { !it.effectiveIsPaid() && !it.effectiveIsOverdue() }
+                val overdueItems = installmentItems.filter { it.effectiveIsOverdue() }
                 
                 val totalAmount = installmentItems.sumOf { it.value }
                 val paidAmount = paidItems.sumOf { it.value }
@@ -309,12 +309,12 @@ class SimpleHomeViewModel(
                 
                 // Encontrar próxima parcela a vencer
                 val nextInstallment = installmentItems
-                    .filter { !it.isPaid }
+                    .filter { !it.effectiveIsPaid() }
                     .minByOrNull { it.dueDate }
                 
                 // Encontrar parcela mais atrasada
                 val mostOverdue = installmentItems
-                    .filter { it.isOverdue }
+                    .filter { it.effectiveIsOverdue() }
                     .minByOrNull { it.dueDate }
                 
                 // Recuperar info do cliente do storage
@@ -375,14 +375,15 @@ class SimpleHomeViewModel(
             val localStorage = com.cdccreditsmart.app.storage.LocalInstallmentStorage(context)
             
             // Converter InstallmentItem (DTO) para LocalInstallment (Storage)
+            // CRÍTICO: Usar effectiveIsPaid() que deriva do 'status' quando 'isPaid' não foi enviado
             val localInstallments = installments.map { item ->
                 com.cdccreditsmart.app.storage.LocalInstallment(
                     number = item.number,
                     dueDate = item.dueDate, // Já está no formato "YYYY-MM-DD"
                     amount = java.math.BigDecimal.valueOf(item.value), // Double → BigDecimal
                     status = when {
-                        item.isPaid || item.status == "paid" -> "PAID"
-                        item.isOverdue || item.status == "overdue" -> "OVERDUE"
+                        item.effectiveIsPaid() -> "PAID"
+                        item.effectiveIsOverdue() -> "OVERDUE"
                         else -> "PENDING"
                     }
                 )

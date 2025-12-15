@@ -157,3 +157,10 @@ The UI leverages Jetpack Compose and Material 3, incorporating a CDC institution
 - Força reload do servidor em vez de usar cache em memória stale
 - Invalida cachedState e lastLoadTime ao detectar reinstalação
 - Garante que dados atualizados sejam carregados após reinstalação
+
+### InstallmentItem Status Fix (2025-12-15)
+- Adicionados métodos `effectiveIsPaid()` e `effectiveIsOverdue()` no InstallmentItem DTO
+- Esses métodos derivam o status do campo `status` quando `isPaid`/`isOverdue` não são enviados pelo backend
+- Backend pode enviar apenas `status: "paid"` sem `isPaid: true` - agora o app trata corretamente
+- Todas as verificações de parcelas pagas/em atraso agora usam os métodos effective
+- Log detalhado mostra tanto o valor raw quanto o valor effective para debug

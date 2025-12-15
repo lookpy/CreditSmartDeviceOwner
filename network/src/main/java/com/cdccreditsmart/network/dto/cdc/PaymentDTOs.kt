@@ -77,6 +77,8 @@ data class TimingInfo(
 
 /**
  * Individual installment item
+ * IMPORTANTE: Use effectiveIsPaid() e effectiveIsOverdue() para verificar status
+ * pois o backend pode enviar apenas o campo 'status' sem 'isPaid'/'isOverdue'
  */
 //@JsonClass(generateAdapter = true)
 data class InstallmentItem(
@@ -87,10 +89,20 @@ data class InstallmentItem(
     val paidDate: String? = null,
     val status: String = "pending", // "paid", "pending", "overdue"
     val paymentMethod: String? = null, // "pix", "boleto", null
-    val isPaid: Boolean = false, // Optional - backend may not send this field
-    val isOverdue: Boolean = false, // Optional - can be derived from status
+    val isPaid: Boolean = false, // Backend pode não enviar - usar effectiveIsPaid()
+    val isOverdue: Boolean = false, // Backend pode não enviar - usar effectiveIsOverdue()
     val daysSinceDue: Int = 0 // Optional - can be calculated from dueDate
-)
+) {
+    /**
+     * Retorna true se a parcela está paga, derivando do 'status' se 'isPaid' não foi enviado
+     */
+    fun effectiveIsPaid(): Boolean = isPaid || status.equals("paid", ignoreCase = true)
+    
+    /**
+     * Retorna true se a parcela está em atraso, derivando do 'status' se 'isOverdue' não foi enviado
+     */
+    fun effectiveIsOverdue(): Boolean = isOverdue || status.equals("overdue", ignoreCase = true)
+}
 
 // ============================================================================
 // LEGACY DTOs - Kept for backward compatibility with other endpoints
