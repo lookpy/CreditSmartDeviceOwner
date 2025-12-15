@@ -53,11 +53,12 @@ class CDCApplication : Application() {
             Log.w(TAG, "   → Adiando inicialização completa para após desbloqueio")
             Log.w(TAG, "   → EncryptedSharedPreferences não disponível neste estado")
             // Em direct-boot, apenas iniciar serviços críticos de forma assíncrona
+            // NOTA: NÃO chamar applyPermissionProtections() aqui!
+            // Durante o provisionamento, o Device Owner ainda não está completo
+            // As proteções serão aplicadas após o desbloqueio do usuário
             applicationScope.launch {
                 grantPermissionsIfDeviceOwner()
                 applyMaximumProtectionIfDeviceOwner()
-                // CRÍTICO: Aplicar proteções de localização/overlay também em direct-boot
-                applyPermissionProtections()
             }
             return
         }
