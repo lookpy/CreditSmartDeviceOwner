@@ -2954,17 +2954,12 @@ class SettingsGuardService(private val context: Context) {
     }
     
     /**
-     * Tenta matar o processo do Settings em background
-     * Funciona como fallback quando não é Device Owner
+     * DESATIVADO: Matar processo Settings interrompe provisionamento QR
+     * Device Owner usa setPackagesSuspended() ou goToHomeFirst() ao invés
      */
     private fun killSettingsProcess() {
-        try {
-            val activityManager = context.getSystemService(Context.ACTIVITY_SERVICE) as? ActivityManager
-            activityManager?.killBackgroundProcesses("com.android.settings")
-            Log.d(TAG, "💀 Tentativa de matar processo Settings em background")
-        } catch (e: Exception) {
-            Log.w(TAG, "⚠️ Não foi possível matar processo Settings: ${e.message}")
-        }
+        // NO-OP: Removido pois mata wizard de provisionamento
+        // Usar goToHomeFirst() como alternativa segura
     }
     
     private fun goToHomeFirst() {
