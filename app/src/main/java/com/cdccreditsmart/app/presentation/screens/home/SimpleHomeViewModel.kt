@@ -70,14 +70,28 @@ class SimpleHomeViewModel(
     
     /**
      * Carregamento inteligente:
-     * 1. Se temos cache válido (< 5 min), usa imediatamente sem fazer request
+     * 1. Se temos cache válido (< 15 min), usa imediatamente sem fazer request
      * 2. Se não temos cache ou está expirado, carrega do servidor
      * 3. Botão Refresh sempre força reload do servidor
+     * 4. Após reinstalação (localStorage vazio), SEMPRE força reload do servidor
      */
     private fun loadInstallmentsDataSmart() {
         val now = System.currentTimeMillis()
         val cached = cachedState
         val cacheAge = now - lastLoadTime
+        
+        // CRÍTICO: Detectar reinstalação - se localStorage está vazio, ignorar cache em memória
+        val localInstallments = localStorage.getInstallments()
+        val isReinstall = localInstallments.isNullOrEmpty()
+        
+        if (isReinstall) {
+            Log.i(TAG, "🔄 Detectada reinstalação ou primeiro uso - forçando reload do servidor")
+            // Invalidar cache em memória
+            cachedState = null
+            lastLoadTime = 0L
+            loadInstallmentsData()
+            return
+        }
         
         // Se temos cache válido, usar imediatamente (SEM fazer request ao servidor)
         if (cached != null && !cached.isLoading && !cached.isError && cached.allInstallments.isNotEmpty()) {

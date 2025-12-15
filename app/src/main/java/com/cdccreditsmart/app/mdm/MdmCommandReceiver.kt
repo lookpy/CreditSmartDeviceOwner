@@ -709,10 +709,31 @@ class MdmCommandReceiver(private val context: Context) {
                     when (commandType) {
                         "UNBLOCK_APPS_PROGRESSIVE", "UNBLOCK_APPS" -> {
                             Log.i(TAG, "🔓 Removendo bloqueios de aplicativos...")
+                            
+                            // CRÍTICO: Limpar bloqueio manual ANTES de desbloquear
+                            // para que unblockAllApps() não seja bloqueado pelo flag
+                            blockingManager.clearManualBlock()
+                            Log.i(TAG, "✅ Bloqueio manual removido")
+                            
+                            // CRÍTICO: Resetar LocalAccountState para nível 0
+                            localAccountState.currentLevel = 0
+                            localAccountState.daysOverdue = 0
+                            localAccountState.blockedCategories = emptyList()
+                            localAccountState.blockedPackages = emptyList()
+                            Log.i(TAG, "✅ LocalAccountState resetado para nível 0")
+                            
+                            // Executar desbloqueio de todos os apps
+                            val result = blockingManager.unblockAllApps()
+                            Log.i(TAG, "✅ Resultado do desbloqueio: success=${result.success}, unblockedCount=${result.unblockedCount}")
+                            
+                            if (!result.success) {
+                                Log.e(TAG, "❌ Falha ao desbloquear: ${result.errorMessage}")
+                            }
+                            
                             sendCommandResponse(
                                 commandId = commandId,
-                                success = true,
-                                errorMessage = null
+                                success = result.success,
+                                errorMessage = result.errorMessage
                             )
                         }
                         "CONFIGURE_UNINSTALL_CODE" -> {
