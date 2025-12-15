@@ -442,8 +442,8 @@ class CDCApplication : Application() {
             // Iniciar SettingsGuardService imediatamente
             // SettingsGuardService não é um Android Service, é uma classe normal
             // que monitora acesso às Settings via UsageStatsManager
-            // NOTA: startGuard() verifica internamente se termos foram aceitos
-            SettingsGuardService.getInstance(applicationContext).startGuard()
+            val settingsGuard = SettingsGuardService(applicationContext)
+            settingsGuard.startGuard()
             
             Log.i(TAG, "🛡️ ✅ SettingsGuardService iniciado com sucesso!")
             Log.i(TAG, "🛡️    Dispositivo protegido contra acesso a Settings")

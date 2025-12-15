@@ -353,22 +353,13 @@ class SettingsGuardService(private val context: Context) {
         // CRÍTICO: NÃO INICIAR GUARD ATÉ O DISPOSITIVO SER ATIVADO (TERMOS ACEITOS)
         // O guard só deve ser ativado após o usuário aceitar os termos e ativar o dispositivo
         // ═══════════════════════════════════════════════════════════════════════════════
-        try {
-            val termsStorage = TermsAcceptanceStorage(context)
-            if (!termsStorage.hasAcceptedTerms()) {
-                Log.i(TAG, "║   ⏸️ GUARD PAUSADO - Aguardando ativação            ║")
-                Log.i(TAG, "║   📄 Dispositivo ainda não foi ativado               ║")
-                Log.i(TAG, "╚════════════════════════════════════════════════════════╝")
-                Log.i(TAG, "")
-                Log.i(TAG, "🛡️ SettingsGuard em ESPERA até termos serem aceitos")
-                return
-            }
-        } catch (e: Exception) {
-            // Durante provisioning, EncryptedSharedPreferences pode falhar
-            // Nesse caso, assumir que termos não foram aceitos ainda
-            Log.w(TAG, "║   ⚠️ Erro ao verificar termos: ${e.message}          ║")
+        val termsStorage = TermsAcceptanceStorage(context)
+        if (!termsStorage.hasAcceptedTerms()) {
             Log.i(TAG, "║   ⏸️ GUARD PAUSADO - Aguardando ativação            ║")
+            Log.i(TAG, "║   📄 Dispositivo ainda não foi ativado               ║")
             Log.i(TAG, "╚════════════════════════════════════════════════════════╝")
+            Log.i(TAG, "")
+            Log.i(TAG, "🛡️ SettingsGuard em ESPERA até termos serem aceitos")
             return
         }
         
