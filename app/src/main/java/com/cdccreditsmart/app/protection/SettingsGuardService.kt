@@ -29,6 +29,7 @@ import com.cdccreditsmart.app.BuildConfig
 import com.cdccreditsmart.app.R
 import com.cdccreditsmart.app.blocking.AppBlockingManager
 import com.cdccreditsmart.app.blocking.BlockedAppExplanationActivity
+import com.cdccreditsmart.app.blocking.BlockingInfo
 import com.cdccreditsmart.app.presentation.MainActivity
 import com.cdccreditsmart.app.storage.TermsAcceptanceStorage
 import com.cdccreditsmart.device.CDCDeviceAdminReceiver
@@ -199,7 +200,7 @@ class SettingsGuardService(private val context: Context) {
         }
     }
     
-    private fun getBlockingInfoOrNull(): AppBlockingManager.BlockingInfo? {
+    private fun getBlockingInfoOrNull(): BlockingInfo? {
         if (!shouldGuardRun()) return null
         return try {
             appBlockingManager.getBlockingInfo()
