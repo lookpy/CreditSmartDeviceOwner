@@ -46,9 +46,6 @@
     <!-- Battery optimization exemption (Keep-Alive) -->
     <uses-permission android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS" />
     
-    <!-- Kill background processes (SettingsGuard) -->
-    <uses-permission android:name="android.permission.KILL_BACKGROUND_PROCESSES" />
-    
     <!-- Shortcut creation for icon protection -->
     <uses-permission android:name="com.android.launcher.permission.INSTALL_SHORTCUT" />
     
