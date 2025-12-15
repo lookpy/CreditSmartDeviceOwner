@@ -2130,7 +2130,116 @@ class SettingsGuardService(private val context: Context) {
                     "DevelopmentSetting",
                     "OemUnlock",
                     "UsbDebug",
-                    "AdbSetting"
+                    "AdbSetting",
+                    
+                    // ═══════════════════════════════════════════════════════════════════════════════
+                    // CRÍTICO: LOCATION SETTINGS - Impedir desativação de localização
+                    // ═══════════════════════════════════════════════════════════════════════════════
+                    
+                    // AOSP / Stock Android - Fully Qualified Names
+                    "Settings\$LocationSettingsActivity",       // com.android.settings.Settings$LocationSettingsActivity
+                    "Settings\$LocationProviderSettingsActivity",
+                    "Settings\$LocationServicesSettingsActivity",
+                    "Settings\$ScanningSettingsActivity",
+                    
+                    // Generic patterns
+                    "LocationSettings",
+                    "LocationSettingsActivity",
+                    "LocationMode",
+                    "LocationModeActivity",
+                    "LocationSource",
+                    "LocationSourceSettings",
+                    "LocationAccuracy",
+                    "LocationAccuracySettings",
+                    "LocationProvidersActivity",
+                    "LocationProviderSettings",
+                    "GpsSettings",
+                    "GpsSettingsActivity",
+                    "ScanningSettings",           // Wifi/Bluetooth scanning for location
+                    "LocationServicesSettings",
+                    "LocationPrivacy",
+                    "LocationPermission",
+                    "AppLocationPermission",
+                    "ManageLocationAccess",
+                    "LocationAccessSettings",
+                    "LocationDashboard",
+                    "LocationSettingsDashboard",
+                    "RecentLocationAccess",
+                    "RecentLocationApps",
+                    "SensorPrivacy",              // Android 12+ sensor privacy
+                    "ToggleLocation",
+                    
+                    // Samsung Location
+                    "LocationSettingsTab",
+                    "LocationAndSecurity",
+                    
+                    // Xiaomi/MIUI Location
+                    "MiuiLocationSettings",
+                    "MiuiGpsSettings",
+                    
+                    // Huawei Location
+                    "HwLocationSettings",
+                    "HwLocationSourceSettings",
+                    
+                    // ═══════════════════════════════════════════════════════════════════════════════
+                    // CRÍTICO: OVERLAY / DISPLAY OVER OTHER APPS - Impedir remoção de permissão
+                    // ═══════════════════════════════════════════════════════════════════════════════
+                    
+                    // AOSP / Stock Android - Fully Qualified Names
+                    "Settings\$AppDrawOverlaySettingsActivity",      // com.android.settings.Settings$AppDrawOverlaySettingsActivity
+                    "Settings\$ManageOverlayPermissionActivity",
+                    "Settings\$SystemAlertWindowSettingsActivity",
+                    "ManageAppOverlayPermissionActivity",            // Android Permission Controller
+                    
+                    // MIUI specific
+                    "PermissionControlActivity",                     // MIUI permission control
+                    "MiuiPermissionControlActivity",
+                    
+                    // Generic patterns
+                    "ManageOverlayPermission",
+                    "ManageOverlayPermissionActivity",
+                    "DrawOverlayDetails",
+                    "DrawOverlayPermission",
+                    "DisplayOverOtherApps",
+                    "DisplayOverOtherAppsSettings",
+                    "AppDrawOverlay",
+                    "AppDrawOverlaySettings",
+                    "OverlaySettings",
+                    "OverlaySettingsActivity",
+                    "SystemAlertWindow",
+                    "SystemAlertWindowSettings",
+                    "FloatingWindow",
+                    "FloatingWindowSettings",
+                    "FloatingWindowPermission",
+                    "AppearOnTop",
+                    "AppearOnTopSettings",
+                    "ShowOnTop",
+                    "ShowOnTopSettings",
+                    "DisplayOverApps",
+                    "CanDrawOverlays",
+                    "OverlayPermissionActivity",
+                    
+                    // Samsung Overlay
+                    "AppOverlay",
+                    "AppFloating",
+                    
+                    // Xiaomi/MIUI Overlay
+                    "MiuiFloatingWindow",
+                    "MiuiOverlayPermission",
+                    "FloatingWindowPermission",
+                    "PopupPermission",
+                    
+                    // Huawei Overlay
+                    "HwOverlayPermission",
+                    "HwFloatingWindow",
+                    
+                    // OPPO/ColorOS Overlay
+                    "ColorOsOverlay",
+                    "ColorOsFloating",
+                    
+                    // Vivo Overlay
+                    "VivoOverlay",
+                    "VivoFloating"
                 )
                 
                 val matchedPattern = dangerousPatterns.find { pattern ->

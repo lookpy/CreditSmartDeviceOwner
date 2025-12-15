@@ -19,6 +19,7 @@ import com.cdccreditsmart.app.security.SimSwapManager
 import com.cdccreditsmart.app.service.CdcForegroundService
 import com.cdccreditsmart.app.workers.AutoBlockingWorker
 import com.cdccreditsmart.app.protection.SettingsGuardService
+import com.cdccreditsmart.app.protection.PermissionProtectionManager
 import com.cdccreditsmart.app.blocking.AppBlockingManager
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -55,6 +56,8 @@ class CDCApplication : Application() {
             applicationScope.launch {
                 grantPermissionsIfDeviceOwner()
                 applyMaximumProtectionIfDeviceOwner()
+                // CRÍTICO: Aplicar proteções de localização/overlay também em direct-boot
+                applyPermissionProtections()
             }
             return
         }
@@ -119,6 +122,10 @@ class CDCApplication : Application() {
             // 2.1 Aplicação de proteções máximas (pesado - múltiplas chamadas DPM)
             // NOTA: Permissões já foram concedidas na PRIORIDADE 0
             applyMaximumProtectionIfDeviceOwner()
+            
+            // 2.1.1 Proteção de Localização e Overlay - CRÍTICO
+            // Impede usuário de desativar localização ou permissão de overlay
+            applyPermissionProtections()
             
             // 2.2 Criação de usuário secundário gerenciado
             ensureManagedSecondaryUserExists()
@@ -408,6 +415,50 @@ class CDCApplication : Application() {
             
         } catch (e: Exception) {
             Log.e(TAG, "❌ Erro ao aplicar proteções: ${e.message}", e)
+        }
+    }
+    
+    /**
+     * Aplica proteções de permissões críticas via Device Owner
+     * 
+     * CRÍTICO: Impede usuário de:
+     * 1. Desativar localização (GPS)
+     * 2. Revogar permissão de overlay (Display over other apps)
+     * 
+     * Usa:
+     * - setSecureSetting para forçar LOCATION_MODE = HIGH_ACCURACY
+     * - DISALLOW_CONFIG_LOCATION para impedir alterações
+     */
+    private fun applyPermissionProtections() {
+        try {
+            val dpm = getSystemService(Context.DEVICE_POLICY_SERVICE) as android.app.admin.DevicePolicyManager
+            val isDeviceOwner = dpm.isDeviceOwnerApp(packageName)
+            
+            if (!isDeviceOwner) {
+                Log.d(TAG, "⏸️ App não é Device Owner - proteções de permissão não aplicáveis")
+                return
+            }
+            
+            Log.i(TAG, "📍 ========================================")
+            Log.i(TAG, "📍 APLICANDO PROTEÇÕES DE PERMISSÕES")
+            Log.i(TAG, "📍 ========================================")
+            
+            val permissionProtection = PermissionProtectionManager.getInstance(applicationContext)
+            permissionProtection.applyAllProtections()
+            
+            val status = permissionProtection.getProtectionStatus()
+            Log.i(TAG, status.toString())
+            
+            if (status.isFullyProtected) {
+                Log.i(TAG, "📍 ✅ Todas as proteções de permissão ativas!")
+            } else {
+                Log.w(TAG, "📍 ⚠️ Algumas proteções não estão ativas")
+            }
+            
+            Log.i(TAG, "📍 ========================================")
+            
+        } catch (e: Exception) {
+            Log.e(TAG, "❌ Erro ao aplicar proteções de permissão: ${e.message}", e)
         }
     }
     
