@@ -55,27 +55,9 @@
     <!-- Android 12+ (API 31+) Foreground Service Type Permissions -->
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE_DATA_SYNC" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE_REMOTE_MESSAGING" />
-    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_MICROPHONE" />
-    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_MEDIA_PROJECTION" />
-
-    <!-- Biometry permissions -->
-    <uses-permission android:name="android.permission.CAMERA" />
-    <uses-permission android:name="android.permission.RECORD_AUDIO" />
     
-    <!-- Phone & SMS permissions -->
-    <uses-permission android:name="android.permission.READ_CALL_LOG" />
-    <uses-permission android:name="android.permission.CALL_PHONE" />
-    <!-- REMOVIDO: RECEIVE_SMS e READ_SMS (substituído por SMS Retriever API - sem permissão!)
-         Google Play Protect bloqueia apps com essas permissões quando distribuídos fora da Play Store.
-         Solução: SMS Retriever API (SmsRetrieverHelper.kt) - requer apenas 1 tap do usuário.
-    <uses-permission android:name="android.permission.RECEIVE_SMS" />
-    <uses-permission android:name="android.permission.READ_SMS" />
-    -->
-    <uses-permission android:name="android.permission.ANSWER_PHONE_CALLS" />
+    <!-- Phone permissions - apenas READ_PHONE_NUMBERS para SIM info -->
     <uses-permission android:name="android.permission.READ_PHONE_NUMBERS" />
-    
-    <!-- Contacts permission -->
-    <uses-permission android:name="android.permission.READ_CONTACTS" />
     
     <!-- Storage permissions (for older Android versions) -->
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"
@@ -83,10 +65,6 @@
     
     <!-- Vibration -->
     <uses-permission android:name="android.permission.VIBRATE" />
-    
-    <!-- Camera hardware features -->
-    <uses-feature android:name="android.hardware.camera" android:required="true" />
-    <uses-feature android:name="android.hardware.camera.front" android:required="true" />
 
     <!-- Firebase Messaging -->
     <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
