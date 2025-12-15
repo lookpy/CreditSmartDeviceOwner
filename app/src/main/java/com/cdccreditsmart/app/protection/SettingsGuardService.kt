@@ -199,6 +199,29 @@ class SettingsGuardService(private val context: Context) {
         }
     }
     
+    private fun getBlockingInfoOrNull(): AppBlockingManager.BlockingInfo? {
+        if (!shouldGuardRun()) return null
+        return try {
+            appBlockingManager.getBlockingInfo()
+        } catch (e: Exception) {
+            null
+        }
+    }
+    
+    private fun isAppBlockedSafe(packageName: String): Boolean {
+        if (!shouldGuardRun()) return false
+        return try {
+            appBlockingManager.isAppBlocked(packageName)
+        } catch (e: Exception) {
+            false
+        }
+    }
+    
+    private fun isBlockingActive(): Boolean {
+        val info = getBlockingInfoOrNull() ?: return false
+        return info.currentLevel > 0 || info.isManualBlock
+    }
+    
     @Volatile
     private var isGuardActive = false
     
@@ -698,14 +721,8 @@ class SettingsGuardService(private val context: Context) {
         if (packageName.contains("systemui", ignoreCase = true)) return false
         
         try {
-            val blockingInfo = appBlockingManager.getBlockingInfo()
-            if (blockingInfo.currentLevel == 0 && !blockingInfo.isManualBlock) {
-                return false
-            }
-            
-            if (!appBlockingManager.isAppBlocked(packageName)) {
-                return false
-            }
+            if (!isBlockingActive()) return false
+            if (!isAppBlockedSafe(packageName)) return false
             
             val now = System.currentTimeMillis()
             val lastIntercept = recentlyInterceptedBlockedApps[packageName] ?: 0L
@@ -736,12 +753,10 @@ class SettingsGuardService(private val context: Context) {
      * Lança a tela de explicação de bloqueio
      */
     private fun launchBlockedAppExplanation(blockedPackage: String) {
-        if (!shouldGuardRun()) return
+        val blockingInfo = getBlockingInfoOrNull() ?: return
+        if (blockingInfo.currentLevel == 0 && !blockingInfo.isManualBlock) return
         
         try {
-            val blockingInfo = appBlockingManager.getBlockingInfo()
-            if (blockingInfo.currentLevel == 0 && !blockingInfo.isManualBlock) return
-            
             val intent = Intent(context, BlockedAppExplanationActivity::class.java).apply {
                 addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                 addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
@@ -944,14 +959,7 @@ class SettingsGuardService(private val context: Context) {
      * 2. ActivityManager - processos com importance até PERCEPTIBLE
      */
     private fun getAllRunningPackages(): List<String> {
-        if (!shouldGuardRun()) return emptyList()
-        
-        try {
-            val blockingInfo = appBlockingManager.getBlockingInfo()
-            if (blockingInfo.currentLevel == 0 && !blockingInfo.isManualBlock) return emptyList()
-        } catch (e: Exception) {
-            return emptyList()
-        }
+        if (!isBlockingActive()) return emptyList()
         
         val packages = mutableSetOf<String>()
         
@@ -1134,7 +1142,7 @@ class SettingsGuardService(private val context: Context) {
                 if (packageName.contains("systemui", ignoreCase = true)) continue
                 
                 // Verificar se o app está bloqueado
-                if (appBlockingManager.isAppBlocked(packageName)) {
+                if (isAppBlockedSafe(packageName)) {
                     Log.w(TAG, "🚫 [$triggeredBy] APP BLOQUEADO EM EXECUÇÃO DETECTADO: $packageName")
                     
                     // Tentar fechar o app
