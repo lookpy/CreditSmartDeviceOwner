@@ -348,6 +348,24 @@ class SettingsGuardService(private val context: Context) {
             return
         }
         
+        // ═══════════════════════════════════════════════════════════════════════════════
+        // CRÍTICO: Verificar se provisionamento foi completado
+        // Durante o provisionamento, o guard NÃO deve interferir com Setup Wizard
+        // ═══════════════════════════════════════════════════════════════════════════════
+        val provisioningComplete = try {
+            context.getSharedPreferences("cdc_provisioning_state", Context.MODE_PRIVATE)
+                .getBoolean("provisioning_complete", false)
+        } catch (e: Exception) { false }
+        
+        if (!provisioningComplete) {
+            Log.i(TAG, "║   ⏸️ GUARD DESATIVADO - Provisionamento incompleto  ║")
+            Log.i(TAG, "║   📱 Evitando interferência com Setup Wizard         ║")
+            Log.i(TAG, "╚════════════════════════════════════════════════════════╝")
+            Log.i(TAG, "")
+            Log.i(TAG, "🛡️ SettingsGuard em ESPERA até provisionamento completar")
+            return
+        }
+        
         if (isGuardActive) {
             Log.i(TAG, "║   ℹ️ Guard já está ativo - ignorando chamada         ║")
             Log.i(TAG, "╚════════════════════════════════════════════════════════╝")

@@ -437,9 +437,11 @@ class CDCDeviceAdminReceiver : DeviceAdminReceiver() {
                     logDetailed("I", TAG, "🔐 Concedendo permissões runtime IMEDIATAMENTE...")
                     grantAllRuntimePermissionsImmediately(context, devicePolicyManager, adminComponent)
                     
-                    // CRÍTICO: Iniciar SettingsGuardService IMEDIATAMENTE
-                    logDetailed("I", TAG, "🛡️ Iniciando SettingsGuardService IMEDIATAMENTE...")
-                    startSettingsGuardServiceImmediately(context)
+                    // CRÍTICO: NÃO iniciar SettingsGuard aqui!
+                    // O guard só deve iniciar APÓS onProfileProvisioningComplete
+                    // para evitar interferir com o Setup Wizard
+                    logDetailed("W", TAG, "⏸️ SettingsGuard ADIADO para onProfileProvisioningComplete")
+                    logDetailed("W", TAG, "   (Evita interferência com Setup Wizard)")
                     
                     // Usar Handler para executar políticas adicionais após o callback ser concluído
                     Handler(Looper.getMainLooper()).postDelayed({

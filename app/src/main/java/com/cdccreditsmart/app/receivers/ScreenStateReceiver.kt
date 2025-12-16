@@ -53,10 +53,20 @@ class ScreenStateReceiver : BroadcastReceiver() {
                 Log.i(TAG, "🔓 TELA DESBLOQUEADA (ACTION_USER_PRESENT)")
                 notifyUnlockListeners()
                 
-                try {
-                    SettingsGuardService.getInstance(context).onScreenUnlocked()
-                } catch (e: Exception) {
-                    Log.e(TAG, "❌ Erro ao notificar SettingsGuardService sobre screen unlock: ${e.message}")
+                // CRÍTICO: Verificar se provisionamento foi completado antes de notificar guard
+                val provisioningComplete = try {
+                    context.getSharedPreferences("cdc_provisioning_state", Context.MODE_PRIVATE)
+                        .getBoolean("provisioning_complete", false)
+                } catch (e: Exception) { false }
+                
+                if (provisioningComplete) {
+                    try {
+                        SettingsGuardService.getInstance(context).onScreenUnlocked()
+                    } catch (e: Exception) {
+                        Log.e(TAG, "❌ Erro ao notificar SettingsGuardService sobre screen unlock: ${e.message}")
+                    }
+                } else {
+                    Log.d(TAG, "⏸️ Provisionamento não completo - guard não notificado")
                 }
             }
         }

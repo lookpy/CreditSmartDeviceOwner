@@ -115,11 +115,14 @@ The UI leverages Jetpack Compose and Material 3, incorporating a CDC institution
 
 ### Provisioning-Safe Guard Initialization (2025-12-16)
 - **CRITICAL FIX**: SettingsGuard now waits for provisioningComplete flag before starting
-- CDCApplication.startSettingsGuardIfDeviceOwner() checks isProvisioningComplete() before starting guard
-- CDCDeviceAdminReceiver.startSettingsGuardServiceImmediately() marks flag BEFORE sending broadcast
-- SettingsGuardStartReceiver also checks provisioningComplete flag (except for START_SETTINGS_GUARD broadcast)
+- **ALL entry points protected**: CDCApplication, CdcForegroundService, ScreenStateReceiver, SettingsGuardService.startGuard()
+- CDCDeviceAdminReceiver.onEnabled() NO LONGER starts guard (was causing Setup Wizard interference)
+- Guard only starts from onProfileProvisioningComplete callback via startSettingsGuardServiceImmediately()
+- CDCDeviceAdminReceiver marks `provisioning_complete=true` flag BEFORE sending START_SETTINGS_GUARD broadcast
 - SharedPreferences key: `cdc_provisioning_state` / `provisioning_complete`
-- This prevents guard from killing Setup Wizard activities during provisioning
+- SettingsGuardService.startGuard() has internal check - returns early if provisioningComplete=false
+- CdcForegroundService.startSettingsGuard() checks flag before starting
+- ScreenStateReceiver only notifies guard if provisioningComplete=true
 - Guard will ONLY start when: (1) Device Owner AND (2) provisioningComplete flag is true
 
 ### Permission Protection Policy (2025-12-10)
