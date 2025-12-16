@@ -23,6 +23,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
 import androidx.navigation.compose.rememberNavController
 import com.cdccreditsmart.app.navigation.CDCNavigation
@@ -100,6 +101,13 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         
+        // CRÍTICO: Se provisionamento não está completo, mostrar tela de espera
+        if (!isProvisioningComplete()) {
+            Log.w(TAG, "⏸️ PROVISIONAMENTO NÃO CONCLUÍDO - Mostrando tela de espera")
+            showProvisioningWaitScreen()
+            return
+        }
+        
         registerLocationPermissionReceiver()
         
         checkFactoryReset()
@@ -114,6 +122,56 @@ class MainActivity : ComponentActivity() {
                 )
             }
         }
+    }
+    
+    /**
+     * Verifica se o provisionamento Device Owner está completo
+     */
+    private fun isProvisioningComplete(): Boolean {
+        return try {
+            // Verificar flag de provisionamento
+            val prefs = getSharedPreferences("cdc_provisioning_state", Context.MODE_PRIVATE)
+            val isComplete = prefs.getBoolean("provisioning_complete", false)
+            
+            // Se flag não existe, verificar se somos Device Owner (já provisionado antes)
+            if (!isComplete) {
+                val dpm = getSystemService(Context.DEVICE_POLICY_SERVICE) as DevicePolicyManager
+                val isDeviceOwner = dpm.isDeviceOwnerApp(packageName)
+                if (isDeviceOwner) {
+                    // Somos DO mas flag não existe - marcar como completo
+                    prefs.edit().putBoolean("provisioning_complete", true).apply()
+                    return true
+                }
+            }
+            
+            isComplete
+        } catch (e: Exception) {
+            Log.e(TAG, "Erro ao verificar provisionamento: ${e.message}")
+            // Na dúvida, deixar prosseguir
+            true
+        }
+    }
+    
+    /**
+     * Mostra tela de espera durante provisionamento
+     */
+    private fun showProvisioningWaitScreen() {
+        setContent {
+            CDCCreditSmartTheme {
+                ProvisioningWaitScreen()
+            }
+        }
+        
+        // Verificar periodicamente se provisionamento completou
+        android.os.Handler(android.os.Looper.getMainLooper()).postDelayed({
+            if (isProvisioningComplete()) {
+                Log.i(TAG, "✅ Provisionamento detectado como completo - reiniciando activity")
+                recreate()
+            } else {
+                // Continuar verificando
+                showProvisioningWaitScreen()
+            }
+        }, 2000) // Verificar a cada 2 segundos
     }
     
     /**
@@ -378,6 +436,33 @@ class MainActivity : ComponentActivity() {
         Log.d(TAG, "==========================================")
         
         return route
+    }
+}
+
+@Composable
+fun ProvisioningWaitScreen() {
+    androidx.compose.foundation.layout.Box(
+        modifier = Modifier.fillMaxSize(),
+        contentAlignment = androidx.compose.ui.Alignment.Center
+    ) {
+        androidx.compose.foundation.layout.Column(
+            horizontalAlignment = androidx.compose.ui.Alignment.CenterHorizontally,
+            verticalArrangement = androidx.compose.foundation.layout.Arrangement.spacedBy(16.dp)
+        ) {
+            androidx.compose.material3.CircularProgressIndicator(
+                color = androidx.compose.material3.MaterialTheme.colorScheme.primary
+            )
+            androidx.compose.material3.Text(
+                text = "Configurando dispositivo...",
+                style = androidx.compose.material3.MaterialTheme.typography.titleMedium,
+                color = androidx.compose.material3.MaterialTheme.colorScheme.onBackground
+            )
+            androidx.compose.material3.Text(
+                text = "Por favor, aguarde",
+                style = androidx.compose.material3.MaterialTheme.typography.bodyMedium,
+                color = androidx.compose.material3.MaterialTheme.colorScheme.onBackground.copy(alpha = 0.7f)
+            )
+        }
     }
 }
 
