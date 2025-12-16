@@ -5,7 +5,6 @@ import android.content.Context
 import android.content.Intent
 import android.util.Log
 import com.cdccreditsmart.app.offline.OfflineEnforcementWorker
-import com.cdccreditsmart.app.stub.FactoryResetRecoveryOrchestrator
 import com.cdccreditsmart.app.workers.PeriodicOverlayWorker
 
 class BootReceiver : BroadcastReceiver() {
@@ -21,8 +20,6 @@ class BootReceiver : BroadcastReceiver() {
             "android.intent.action.QUICKBOOT_POWERON" -> {
                 Log.i(TAG, "📱 Boot completed - iniciando serviços...")
                 
-                FactoryResetRecoveryOrchestrator.initialize(context)
-                
                 CdcForegroundService.startService(context)
                 
                 OfflineEnforcementWorker.schedule(context)
@@ -35,8 +32,6 @@ class BootReceiver : BroadcastReceiver() {
             }
             Intent.ACTION_MY_PACKAGE_REPLACED -> {
                 Log.i(TAG, "📱 App atualizado - reiniciando serviços...")
-                
-                FactoryResetRecoveryOrchestrator.initialize(context)
                 
                 CdcForegroundService.startService(context)
                 
