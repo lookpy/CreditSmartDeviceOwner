@@ -68,8 +68,8 @@ class SettingsGuardService(private val context: Context) {
         // Timeout para assumir que desinstalação foi cancelada (2 minutos)
         private const val UNINSTALL_TIMEOUT_MS = 2 * 60 * 1000L
 
-        // Timeout para fluxo de permissões (30 segundos)
-        private const val PERMISSION_FLOW_TIMEOUT_MS = 30_000L
+        // Timeout para fluxo de permissões (60 segundos - aumentado para usuários lentos)
+        private const val PERMISSION_FLOW_TIMEOUT_MS = 60_000L
 
         // ID da notificação persistente para solicitar permissão USAGE_STATS
         private const val USAGE_STATS_NOTIFICATION_ID = 9999
@@ -79,20 +79,43 @@ class SettingsGuardService(private val context: Context) {
             "DeviceAdminAdd",
             "AddDeviceAdmin",
             "GrantPermissionsActivity",
+            // Usage Stats / App Usage Access - várias variantes por fabricante
             "UsageAccessSettings",
             "UsageStatsAccess",
+            "UsageAccessActivity",
+            "UsageStatsActivity",
+            "AppUsageAccess",
             "AppOpsSettings",
+            "AppOpsSummary",
+            "AppOpsCategory",
+            "SpecialAccessSettings",
+            "SpecialAppAccessActivity",
+            // Overlay / Draw over apps
             "ManageOverlayPermission",
             "DrawOverlayDetails",
+            "OverlaySettings",
+            // Battery optimization
             "HighPowerApplicationsActivity",
             "RequestIgnoreBatteryOptimizations",
+            "IgnoreBatteryOptimizationSettings",
+            "BatteryOptimizationSettings",
             // Android 14+ Motorola/AOSP: SpaActivity é usada para telas de permissão
-            // NOTA: Esta activity é genérica, mas o fluxo de permissões só é ativado
-            // quando o app chama pauseForPermissionGrant(), então é seguro permitir
-            // durante esse fluxo controlado (timeout 30s)
             "SpaActivity",
             "SettingsSpaActivity",
-            "AppListActivity"
+            "AppListActivity",
+            // Infinix/Transsion/XOS - variantes específicas
+            "XosUsageAccessActivity",
+            "XosAppOpsActivity",
+            "TranssionUsageAccess",
+            "TranssionAppOps",
+            // Samsung
+            "AppOpsDetails",
+            "UsageMonitoringActivity",
+            // Xiaomi/MIUI
+            "MiuiAppOpsActivity",
+            "MiuiUsageStats",
+            // SubSettings - tela genérica de sub-configurações
+            "SubSettings"
         )
 
         fun pauseForPermissionGrant() {
