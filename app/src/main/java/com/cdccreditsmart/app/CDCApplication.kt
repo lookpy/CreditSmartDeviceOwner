@@ -30,6 +30,39 @@ class CDCApplication : Application() {
 
     companion object {
         private const val TAG = "CDCApplication"
+        private const val PREFS_PROVISIONING = "cdc_provisioning_state"
+        private const val KEY_PROVISIONING_COMPLETE = "provisioning_complete"
+        
+        /**
+         * Marca o provisionamento como completo.
+         * Chamado pelo CDCDeviceAdminReceiver após onProfileProvisioningComplete.
+         */
+        @JvmStatic
+        fun markProvisioningComplete(context: Context) {
+            try {
+                context.getSharedPreferences(PREFS_PROVISIONING, Context.MODE_PRIVATE)
+                    .edit()
+                    .putBoolean(KEY_PROVISIONING_COMPLETE, true)
+                    .putLong("provisioning_complete_time", System.currentTimeMillis())
+                    .apply()
+                Log.i(TAG, "✅ Provisionamento marcado como COMPLETO")
+            } catch (e: Exception) {
+                Log.e(TAG, "Erro ao marcar provisionamento: ${e.message}")
+            }
+        }
+        
+        /**
+         * Verifica se o provisionamento foi completado.
+         */
+        @JvmStatic
+        fun isProvisioningComplete(context: Context): Boolean {
+            return try {
+                context.getSharedPreferences(PREFS_PROVISIONING, Context.MODE_PRIVATE)
+                    .getBoolean(KEY_PROVISIONING_COMPLETE, false)
+            } catch (e: Exception) {
+                false
+            }
+        }
     }
     
     private val applicationScope = CoroutineScope(SupervisorJob() + Dispatchers.Default)
@@ -408,42 +441,6 @@ class CDCApplication : Application() {
             
         } catch (e: Exception) {
             Log.e(TAG, "❌ Erro ao aplicar proteções: ${e.message}", e)
-        }
-    }
-    
-    companion object {
-        private const val PREFS_PROVISIONING = "cdc_provisioning_state"
-        private const val KEY_PROVISIONING_COMPLETE = "provisioning_complete"
-        
-        /**
-         * Marca o provisionamento como completo.
-         * Chamado pelo CDCDeviceAdminReceiver após onProfileProvisioningComplete.
-         */
-        @JvmStatic
-        fun markProvisioningComplete(context: Context) {
-            try {
-                context.getSharedPreferences(PREFS_PROVISIONING, Context.MODE_PRIVATE)
-                    .edit()
-                    .putBoolean(KEY_PROVISIONING_COMPLETE, true)
-                    .putLong("provisioning_complete_time", System.currentTimeMillis())
-                    .apply()
-                Log.i("CDCApplication", "✅ Provisionamento marcado como COMPLETO")
-            } catch (e: Exception) {
-                Log.e("CDCApplication", "Erro ao marcar provisionamento: ${e.message}")
-            }
-        }
-        
-        /**
-         * Verifica se o provisionamento foi completado.
-         */
-        @JvmStatic
-        fun isProvisioningComplete(context: Context): Boolean {
-            return try {
-                context.getSharedPreferences(PREFS_PROVISIONING, Context.MODE_PRIVATE)
-                    .getBoolean(KEY_PROVISIONING_COMPLETE, false)
-            } catch (e: Exception) {
-                false
-            }
         }
     }
     
