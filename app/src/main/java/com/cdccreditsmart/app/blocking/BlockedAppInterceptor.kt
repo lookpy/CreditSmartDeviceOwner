@@ -1,6 +1,5 @@
 package com.cdccreditsmart.app.blocking
 
-import android.app.ActivityManager
 import android.app.usage.UsageEvents
 import android.app.usage.UsageStatsManager
 import android.content.Context

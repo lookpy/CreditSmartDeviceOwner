@@ -116,3 +116,14 @@ The UI leverages Jetpack Compose and Material 3, incorporating a CDC institution
 - **REMOVED**: AccessibilityService completely removed (accessibility/, config XML, all commented code)
 - **REMOVED**: SMS permissions comments removed from AndroidManifest.xml
 - **PLAY PROTECT**: All problematic patterns that trigger false positives have been removed
+
+### Play Protect Compliance (2025-12-16)
+- **device_admin_policies.xml**: Minimizado para apenas `disable-keyguard-features` e `set-user-restrictions`
+- **REMOVED**: `<reset-password />` (PESO 9 - padrão ransomware)
+- **REMOVED**: `<wipe-data />` (PESO 10 - indicador malware)
+- **REMOVED**: `<force-lock />` (PESO 7 - padrão locker)
+- **REMOVED**: SmsReceiver.kt completamente deletado
+- **REMOVED**: forceStopPackage() via reflexão em SettingsGuardService.kt
+- **REMOVED**: killBackgroundProcesses() em BlockedAppInterceptor.kt e SettingsGuardService.kt
+- **MANTIDO**: ReflectionKnoxClient.kt (SDK Samsung legítimo para MDM)
+- **MANTIDO**: setApplicationHidden toggle como método principal de fechamento de apps
