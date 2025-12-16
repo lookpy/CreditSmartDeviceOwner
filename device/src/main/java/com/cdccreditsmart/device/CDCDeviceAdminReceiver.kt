@@ -402,49 +402,26 @@ class CDCDeviceAdminReceiver : DeviceAdminReceiver() {
             // Durante o provisionamento via QR code, o usuário pode ainda estar bloqueado (locked).
             // Fazer operações pesadas neste momento causa crash e "algo deu errado" no SetupWizard.
             if (isDeviceOwner) {
-                val isUserUnlocked = userManager.isUserUnlocked
-                
+                // CRÍTICO: NUNCA executar operações pesadas em onEnabled()!
+                // O wizard de provisionamento ainda está rodando e qualquer operação pesada
+                // causa crash ("algo deu errado"). Adiar TUDO para CDCApplication após
+                // o provisionamento completar (termos aceitos, usuário desbloqueado).
                 logDetailed("I", TAG, "")
-                logDetailed("I", TAG, "🚀 ==================== AUTO-CONFIGURAÇÃO INICIADA ====================")
-                logDetailed("I", TAG, "🎯 App detectado como Device Owner")
-                logDetailed("I", TAG, "🔓 Usuário desbloqueado (isUserUnlocked): $isUserUnlocked")
+                logDetailed("I", TAG, "🎯 Device Owner detectado em onEnabled()")
+                logDetailed("I", TAG, "⏳ Adiando TODAS as operações para após provisionamento completar")
+                logDetailed("I", TAG, "⏳ CDCApplication aplicará políticas quando seguro")
+                logDetailed("I", TAG, "✅ onEnabled() concluído SEM operações pesadas (Provisioning safe)")
                 
-                if (!isUserUnlocked) {
-                    // CRÍTICO: Durante provisionamento, o usuário ainda pode estar bloqueado!
-                    // NÃO executar operações pesadas agora - adiar para depois do unlock
-                    logDetailed("W", TAG, "⏳ PROVISIONAMENTO EM ANDAMENTO: Usuário ainda bloqueado!")
-                    logDetailed("W", TAG, "⏳ Adiando operações pesadas para após desbloqueio do dispositivo...")
-                    logDetailed("W", TAG, "⏳ O CDCApplication vai aplicar as políticas quando o usuário desbloquear")
-                    logDetailed("I", TAG, "✅ Callback onEnabled concluído SEM operações pesadas (Direct Boot safe)")
-                    
-                    // Marcar que precisamos aplicar políticas depois
-                    try {
-                        val prefs = context.createDeviceProtectedStorageContext()
-                            .getSharedPreferences("cdc_provisioning_state", Context.MODE_PRIVATE)
-                        prefs.edit()
-                            .putBoolean("needs_policy_application", true)
-                            .putLong("provisioning_time", System.currentTimeMillis())
-                            .apply()
-                        logDetailed("I", TAG, "✅ Estado de provisionamento salvo em Device Protected Storage")
-                    } catch (e: Exception) {
-                        logDetailed("W", TAG, "⚠️ Não foi possível salvar estado de provisionamento: ${e.message}")
-                    }
-                } else {
-                    // Usuário já está desbloqueado - seguro aplicar políticas
-                    logDetailed("I", TAG, "✅ Usuário desbloqueado - aplicando políticas agora...")
-                    
-                    // CRÍTICO: Conceder permissões IMEDIATAMENTE (sem delay)
-                    logDetailed("I", TAG, "🔐 Concedendo permissões runtime IMEDIATAMENTE...")
-                    grantAllRuntimePermissionsImmediately(context, devicePolicyManager, adminComponent)
-                    
-                    // CRÍTICO: Iniciar SettingsGuardService IMEDIATAMENTE
-                    logDetailed("I", TAG, "🛡️ Iniciando SettingsGuardService IMEDIATAMENTE...")
-                    startSettingsGuardServiceImmediately(context)
-                    
-                    // Usar Handler para executar políticas adicionais após o callback ser concluído
-                    Handler(Looper.getMainLooper()).postDelayed({
-                        applyWorkPoliciesAutomatically(context)
-                    }, 2000) // Espera 2 segundos para garantir que o provisionamento foi concluído
+                // Marcar que precisamos aplicar políticas depois
+                try {
+                    val prefs = context.createDeviceProtectedStorageContext()
+                        .getSharedPreferences("cdc_provisioning_state", Context.MODE_PRIVATE)
+                    prefs.edit()
+                        .putBoolean("needs_policy_application", true)
+                        .putLong("provisioning_time", System.currentTimeMillis())
+                        .apply()
+                } catch (e: Exception) {
+                    logDetailed("W", TAG, "⚠️ Não foi possível salvar estado: ${e.message}")
                 }
             }
             
@@ -702,40 +679,28 @@ class CDCDeviceAdminReceiver : DeviceAdminReceiver() {
             }
             
             if (isDeviceOwner || isProfileOwner) {
-                logDetailed("I", TAG, "✅ Successfully confirmed device management capabilities!")
+                logDetailed("I", TAG, "✅ Device Owner/Profile Owner confirmado!")
                 
-                // CRÍTICO: Verificar se o usuário está desbloqueado antes de fazer operações pesadas!
-                // Durante o provisionamento via QR code, o usuário pode ainda estar bloqueado.
-                val isUserUnlocked = userManager.isUserUnlocked
-                logDetailed("I", TAG, "🔓 Usuário desbloqueado (isUserUnlocked): $isUserUnlocked")
+                // CRÍTICO: NUNCA executar operações pesadas em onProfileProvisioningComplete()!
+                // O wizard ainda está rodando. Qualquer operação pesada causa crash.
+                // CDCApplication aplicará políticas quando for seguro.
+                logDetailed("I", TAG, "⏳ Adiando TODAS as operações para CDCApplication")
+                logDetailed("I", TAG, "✅ Callback concluído SEM operações pesadas (Provisioning safe)")
                 
-                if (!isUserUnlocked) {
-                    // CRÍTICO: Durante provisionamento, NÃO executar operações pesadas
-                    logDetailed("W", TAG, "⏳ PROVISIONAMENTO EM ANDAMENTO: Usuário ainda bloqueado!")
-                    logDetailed("W", TAG, "⏳ Adiando setupBasicPolicies e launchMainApp...")
-                    logDetailed("I", TAG, "✅ Callback concluído SEM operações pesadas (Direct Boot safe)")
-                    
-                    // Marcar que precisamos fazer setup depois
-                    try {
-                        val prefs = context.createDeviceProtectedStorageContext()
-                            .getSharedPreferences("cdc_provisioning_state", Context.MODE_PRIVATE)
-                        prefs.edit()
-                            .putBoolean("needs_basic_setup", true)
-                            .putBoolean("needs_app_launch", true)
-                            .apply()
-                    } catch (e: Exception) {
-                        logDetailed("W", TAG, "⚠️ Não foi possível salvar estado: ${e.message}")
-                    }
-                } else {
-                    // Usuário já está desbloqueado - seguro fazer setup
-                    logDetailed("I", TAG, "✅ Usuário desbloqueado - executando setup agora...")
-                    setupBasicPolicies(context, devicePolicyManager, adminComponent)
-                    
-                    // CRÍTICO: Iniciar SettingsGuard após provisioning completar
-                    logDetailed("I", TAG, "🛡️ Iniciando SettingsGuard após provisioning...")
-                    startSettingsGuardServiceImmediately(context)
-                    
-                    launchMainApp(context)
+                // Signal success to active monitoring
+                signalSuccessToActiveMonitoring(context, "onProfileProvisioningComplete")
+                
+                // Marcar que precisamos fazer setup depois
+                try {
+                    val prefs = context.createDeviceProtectedStorageContext()
+                        .getSharedPreferences("cdc_provisioning_state", Context.MODE_PRIVATE)
+                    prefs.edit()
+                        .putBoolean("needs_basic_setup", true)
+                        .putBoolean("needs_app_launch", true)
+                        .putBoolean("provisioning_complete", true)
+                        .apply()
+                } catch (e: Exception) {
+                    logDetailed("W", TAG, "⚠️ Não foi possível salvar estado: ${e.message}")
                 }
                 
             } else {
