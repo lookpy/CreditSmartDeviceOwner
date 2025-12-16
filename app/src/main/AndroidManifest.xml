@@ -2,160 +2,88 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <!-- Essential network permissions -->
+    <!-- ═══════════════════════════════════════════════════════════════════════════════
+         PERMISSÕES ESSENCIAIS - Apenas o mínimo necessário para funcionalidade
+         Play Protect bloqueia apps com permissões excessivas ou privilegiadas
+         ═══════════════════════════════════════════════════════════════════════════════ -->
+
+    <!-- Network (ESSENCIAL) -->
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     
-    <!-- Location permissions for MDM LOCATE_DEVICE command -->
+    <!-- Location for MDM LOCATE_DEVICE (ESSENCIAL) -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
     
-    <!-- Read IMEI/Serial for device pairing and enrollment (API < 29) -->
+    <!-- Phone State for IMEI/device identification (ESSENCIAL para pairing) -->
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     
-    <!-- Read IMEI/Serial for device pairing and enrollment (API >= 29) -->
-    <uses-permission android:name="android.permission.READ_PRIVILEGED_PHONE_STATE"
-        tools:ignore="ProtectedPermissions" />
-
-    <!-- Essential Device Owner permissions -->
+    <!-- Device Admin (ESSENCIAL - concedido automaticamente como Device Owner) -->
     <uses-permission android:name="android.permission.BIND_DEVICE_ADMIN" />
-    <uses-permission android:name="android.permission.WAKE_LOCK" />
-    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
-    <uses-permission android:name="android.permission.REQUEST_DELETE_PACKAGES" />
-    <uses-permission android:name="android.permission.INSTALL_PACKAGES"
-        tools:ignore="ProtectedPermissions" />
-    <uses-permission android:name="android.permission.DELETE_PACKAGES"
-        tools:ignore="ProtectedPermissions" />
     
-    <!-- Critical Device Policy Controller (DPC) permissions -->
-    <uses-permission android:name="android.permission.MANAGE_DEVICE_ADMINS"
-        tools:ignore="ProtectedPermissions" />
-    <uses-permission android:name="android.permission.MANAGE_PROFILE_AND_DEVICE_OWNERS"
-        tools:ignore="ProtectedPermissions" />
-    <uses-permission android:name="android.permission.DISABLE_KEYGUARD" />
-    <uses-permission android:name="android.permission.EXPAND_STATUS_BAR"
-        tools:ignore="ProtectedPermissions" />
-    <uses-permission android:name="android.permission.BIND_DEVICE_SERVICE"
-        tools:ignore="ProtectedPermissions" />
-
-    <!-- Background processing -->
+    <!-- Background processing (ESSENCIAL) -->
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     
-    <!-- Battery optimization exemption (Keep-Alive) -->
+    <!-- Battery optimization exemption (ESSENCIAL para Keep-Alive) -->
     <uses-permission android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS" />
     
-    <!-- Shortcut creation for icon protection -->
-    <uses-permission android:name="com.android.launcher.permission.INSTALL_SHORTCUT" />
-    
-    <!-- Boot Interceptor Permissions -->
-    <uses-permission android:name="android.permission.REBOOT" />
-    
-    <!-- Android 12+ (API 31+) Foreground Service Type Permissions -->
+    <!-- Android 12+ Foreground Service Types (ESSENCIAL) -->
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE_DATA_SYNC" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE_REMOTE_MESSAGING" />
-    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_MICROPHONE" />
-    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_MEDIA_PROJECTION" />
 
-    <!-- Biometry permissions -->
-    <uses-permission android:name="android.permission.CAMERA" />
-    <uses-permission android:name="android.permission.RECORD_AUDIO" />
-    
-    <!-- Phone & SMS permissions -->
-    <uses-permission android:name="android.permission.READ_CALL_LOG" />
-    <uses-permission android:name="android.permission.CALL_PHONE" />
-    <!-- REMOVIDO: RECEIVE_SMS e READ_SMS (substituído por SMS Retriever API - sem permissão!)
-         Google Play Protect bloqueia apps com essas permissões quando distribuídos fora da Play Store.
-         Solução: SMS Retriever API (SmsRetrieverHelper.kt) - requer apenas 1 tap do usuário.
-    <uses-permission android:name="android.permission.RECEIVE_SMS" />
-    <uses-permission android:name="android.permission.READ_SMS" />
-    -->
-    <uses-permission android:name="android.permission.ANSWER_PHONE_CALLS" />
-    <uses-permission android:name="android.permission.READ_PHONE_NUMBERS" />
-    
-    <!-- Contacts permission -->
-    <uses-permission android:name="android.permission.READ_CONTACTS" />
-    
-    <!-- Storage permissions (for older Android versions) -->
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"
-        android:maxSdkVersion="32" />
-    
-    <!-- Vibration -->
-    <uses-permission android:name="android.permission.VIBRATE" />
-    
-    <!-- Camera hardware features -->
-    <uses-feature android:name="android.hardware.camera" android:required="true" />
-    <uses-feature android:name="android.hardware.camera.front" android:required="true" />
-
-    <!-- Firebase Messaging -->
-    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
-    
-    <!-- Android 15: Enhanced security permissions -->
+    <!-- Notifications (ESSENCIAL para Android 13+) -->
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
-    <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
-    <uses-permission android:name="android.permission.USE_EXACT_ALARM" />
     
-    <!-- Android 15: Enhanced Device Owner permissions for private space compatibility -->
-    <uses-permission android:name="android.permission.MANAGE_USERS" />
-    <uses-permission android:name="android.permission.CREATE_USERS" />
-    <uses-permission android:name="android.permission.QUERY_ALL_PACKAGES" 
-        tools:ignore="QueryAllPackagesPermission" />
-    
-    <!-- Android 15: Edge-to-edge display support -->
+    <!-- Overlay for blocking screens (ESSENCIAL para progressive blocking) -->
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
-    <uses-permission android:name="android.permission.ACCESS_NOTIFICATION_POLICY" />
     
-    <!-- Package Usage Stats - Required for BlockedAppInterceptor -->
+    <!-- Usage Stats for SettingsGuard and app blocking (ESSENCIAL) -->
     <uses-permission android:name="android.permission.PACKAGE_USAGE_STATS"
         tools:ignore="ProtectedPermissions" />
     
-    <!-- Accessibility Service - REMOVIDO (causava bloqueio Play Protect)
-         Substituído por PeriodicOverlayWorker com timers progressivos
-    <uses-permission android:name="android.permission.BIND_ACCESSIBILITY_SERVICE"
-        tools:ignore="ProtectedPermissions" />
-    -->
+    <!-- Query packages for app blocking (ESSENCIAL) -->
+    <uses-permission android:name="android.permission.QUERY_ALL_PACKAGES" 
+        tools:ignore="QueryAllPackagesPermission" />
     
-    <!-- Android 14/15: Device Policy Management Permissions (CRITICAL for provisioning) -->
-    <uses-permission android:name="android.permission.MANAGE_DEVICE_POLICY_CERTIFICATES"/>
-    <uses-permission android:name="android.permission.MANAGE_DEVICE_POLICY_SYSTEM_UPDATE_INFO"/>
-    <uses-permission android:name="android.permission.MANAGE_DEVICE_POLICY_ACCOUNT_MANAGEMENT"/>
-    <uses-permission android:name="android.permission.MANAGE_DEVICE_POLICY_APPS_CONTROL"/>
-    <uses-permission android:name="android.permission.MANAGE_DEVICE_POLICY_DISPLAY"/>
-    <uses-permission android:name="android.permission.MANAGE_DEVICE_POLICY_INSTALL_UNKNOWN_SOURCES"/>
-    <uses-permission android:name="android.permission.MANAGE_DEVICE_POLICY_AUTOFILL"/>
-    <uses-permission android:name="android.permission.MANAGE_DEVICE_POLICY_LOCALE"/>
-    <uses-permission android:name="android.permission.MANAGE_DEVICE_POLICY_LOCATION"/>
-    <uses-permission android:name="android.permission.MANAGE_DEVICE_POLICY_LOCK_CREDENTIALS"/>
-    <uses-permission android:name="android.permission.MANAGE_DEVICE_POLICY_MOBILE_NETWORK"/>
-    <uses-permission android:name="android.permission.MANAGE_DEVICE_POLICY_MODIFY_USERS"/>
-    <uses-permission android:name="android.permission.MANAGE_DEVICE_POLICY_PACKAGE_STATE"/>
-    <uses-permission android:name="android.permission.MANAGE_DEVICE_POLICY_RESTRICT_PRIVATE_DNS"/>
-    <uses-permission android:name="android.permission.MANAGE_DEVICE_POLICY_CAMERA_TOGGLE"/>
-    <uses-permission android:name="android.permission.MANAGE_DEVICE_POLICY_SAFE_BOOT"/>
-    <uses-permission android:name="android.permission.MANAGE_DEVICE_POLICY_QUERY_SYSTEM_UPDATES"/>
-    <uses-permission android:name="android.permission.MANAGE_DEVICE_POLICY_SMS"/>
-    <uses-permission android:name="android.permission.MANAGE_DEVICE_POLICY_TIME"/>
-    <uses-permission android:name="android.permission.MANAGE_DEVICE_POLICY_VPN"/>
-    <uses-permission android:name="android.permission.MANAGE_DEVICE_POLICY_WALLPAPER"/>
-    <uses-permission android:name="android.permission.MANAGE_DEVICE_POLICY_WIFI"/>
-    <uses-permission android:name="android.permission.UPDATE_DEVICE_MANAGEMENT_RESOURCES"/>
+    <!-- Alarms for WorkManager precision (ESSENCIAL) -->
+    <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
+    <uses-permission android:name="android.permission.USE_EXACT_ALARM" />
     
-    <!-- Android 14/15: Additional critical permissions -->
-    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_SYSTEM_EXEMPTED"/>
-    <uses-permission android:name="android.permission.REQUEST_PASSWORD_COMPLEXITY"/>
+    <!-- Vibration feedback -->
+    <uses-permission android:name="android.permission.VIBRATE" />
     
-    <!-- Samsung Knox Permissions - DESABILITADO TEMPORARIAMENTE (aguardando aprovação licença Knox)
-         ATENÇÃO: Ao descomentar, GERAR NOVO APK e NOVO QR CODE (checksum mudará!)
-    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_HW_CONTROL" />
-    <uses-permission android:name="com.samsung.android.knox.permission.CUSTOM_SETTING" />
-    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_APP_MGMT" />
-    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_RESTRICTION_MGMT" />
-    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_ENTERPRISE_DEVICE_ADMIN" />
-    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_PHONE_RESTRICTION" />
-    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_SECURITY" />
-    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_KIOSK_MODE" />
-    -->
+    <!-- Firebase Cloud Messaging -->
+    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
+    
+    <!-- Storage for older Android (limitado a API 32) -->
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"
+        android:maxSdkVersion="32" />
+
+    <!-- ═══════════════════════════════════════════════════════════════════════════════
+         PERMISSÕES REMOVIDAS (causavam bloqueio Play Protect):
+         
+         - READ_PRIVILEGED_PHONE_STATE: signature/privileged, impossível obter
+         - INSTALL_PACKAGES/DELETE_PACKAGES: signature, Device Owner já tem via DPM
+         - MANAGE_DEVICE_ADMINS/MANAGE_PROFILE_AND_DEVICE_OWNERS: signature
+         - EXPAND_STATUS_BAR/BIND_DEVICE_SERVICE: protegidas, desnecessárias
+         - REBOOT: signature/privileged
+         - MANAGE_USERS/CREATE_USERS: signature, Device Owner já tem via DPM
+         - REQUEST_INSTALL_PACKAGES/REQUEST_DELETE_PACKAGES: Device Owner não precisa
+         - FOREGROUND_SERVICE_MICROPHONE/MEDIA_PROJECTION: não usamos
+         - READ_CALL_LOG/CALL_PHONE/ANSWER_PHONE_CALLS: não usamos
+         - READ_PHONE_NUMBERS/READ_CONTACTS: não usamos
+         - CAMERA/RECORD_AUDIO: removidos (biometria não implementada)
+         - DISABLE_KEYGUARD: Device Owner já tem via DPM
+         - INSTALL_SHORTCUT: desnecessário
+         - ACCESS_NOTIFICATION_POLICY: desnecessário
+         - Todas MANAGE_DEVICE_POLICY_*: Android 14+ DPC, Device Owner já tem
+         - FOREGROUND_SERVICE_SYSTEM_EXEMPTED: protegida
+         - REQUEST_PASSWORD_COMPLEXITY: Device Owner já tem via DPM
+         - UPDATE_DEVICE_MANAGEMENT_RESOURCES: protegida
+         ═══════════════════════════════════════════════════════════════════════════════ -->
     
     <!-- Android 11+ Package Visibility -->
     <queries>
@@ -248,7 +176,7 @@
             android:excludeFromRecents="false"
             android:directBootAware="true" />
         
-        <!-- Lock Task Activity - Kiosk Mode for Severe Blocking (PayJoy-style) -->
+        <!-- Lock Task Activity - Kiosk Mode for Severe Blocking -->
         <activity
             android:name=".ui.lock.LockTaskActivity"
             android:exported="false"
@@ -392,22 +320,6 @@
                 <action android:name="android.app.action.DEVICE_ADMIN_SERVICE" />
             </intent-filter>
         </service>
-        
-        <!-- Accessibility Service - DESABILITADO (causava bloqueio Play Protect)
-             Substituído por PeriodicOverlayWorker com timers progressivos (3-10 min)
-             Ver: app/src/main/java/com/cdccreditsmart/app/workers/PeriodicOverlayWorker.kt
-        <service
-            android:name=".accessibility.BlockedAppAccessibilityService"
-            android:exported="true"
-            android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE">
-            <intent-filter>
-                <action android:name="android.accessibilityservice.AccessibilityService" />
-            </intent-filter>
-            <meta-data
-                android:name="android.accessibilityservice"
-                android:resource="@xml/accessibility_service_config" />
-        </service>
-        -->
 
         <!-- Boot Receiver - Auto-start service -->
         <receiver
@@ -442,25 +354,6 @@
             </intent-filter>
         </receiver>
 
-        <!-- Boot Interceptor para detectar tentativas de reboot suspeito -->
-        <receiver
-            android:name=".protection.BootInterceptor"
-            android:enabled="true"
-            android:exported="true"
-            android:permission="android.permission.RECEIVE_BOOT_COMPLETED">
-            <intent-filter android:priority="999">
-                <!-- Boot completed -->
-                <action android:name="android.intent.action.BOOT_COMPLETED" />
-                <action android:name="android.intent.action.QUICKBOOT_POWERON" />
-                
-                <!-- Reboot (LIMITADO - broadcast protegido) -->
-                <action android:name="android.intent.action.REBOOT" />
-                
-                <!-- Shutdown -->
-                <action android:name="android.intent.action.ACTION_SHUTDOWN" />
-            </intent-filter>
-        </receiver>
-
         <!-- Monitora instalação de apps e bloqueia apps perigosos -->
         <receiver
             android:name=".receivers.PackageInstallReceiver"
@@ -468,141 +361,35 @@
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.PACKAGE_ADDED" />
+                <action android:name="android.intent.action.PACKAGE_REPLACED" />
                 <action android:name="android.intent.action.PACKAGE_REMOVED" />
                 <data android:scheme="package" />
             </intent-filter>
         </receiver>
 
-        <!-- Auto-provisioning receiver - Aplica proteções completas automaticamente -->
-        <receiver
-            android:name=".receivers.AutoProvisioningReceiver"
-            android:enabled="true"
-            android:exported="false">
-            <intent-filter>
-                <action android:name="com.cdccreditsmart.AUTO_PROVISIONING_COMPLETED" />
-            </intent-filter>
-        </receiver>
-
-        <!-- Auto-restart receiver - Reinicia app após crash -->
-        <receiver
-            android:name=".restart.RestartReceiver"
-            android:enabled="true"
-            android:exported="false" />
-        
-        <!-- Keep Alive Receiver - Mantém app sempre ativo -->
-        <receiver
-            android:name=".keepalive.KeepAliveReceiver"
-            android:enabled="true"
-            android:exported="false">
-            <intent-filter>
-                <action android:name="com.cdccreditsmart.app.ACTION_KEEP_ALIVE" />
-            </intent-filter>
-        </receiver>
-        
-        <!-- Factory Reset Recovery Receiver - Auto-reativação baseada em IMEI -->
-        <receiver
-            android:name=".recovery.FactoryResetRecoveryReceiver"
-            android:enabled="true"
-            android:exported="true"
-            android:directBootAware="true"
-            android:permission="android.permission.RECEIVE_BOOT_COMPLETED">
-            <intent-filter android:priority="1000">
-                <action android:name="android.intent.action.BOOT_COMPLETED" />
-                <action android:name="android.intent.action.LOCKED_BOOT_COMPLETED" />
-                <action android:name="android.intent.action.QUICKBOOT_POWERON" />
-            </intent-filter>
-        </receiver>
-
-        <!-- Samsung Knox License Receiver - DESABILITADO TEMPORARIAMENTE (aguardando aprovação licença Knox)
-             ATENÇÃO: Ao descomentar, GERAR NOVO APK e NOVO QR CODE (checksum mudará!)
-        <receiver
-            android:name=".samsung.KnoxLicenseReceiver"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="com.samsung.android.knox.intent.action.KNOX_LICENSE_STATUS" />
-            </intent-filter>
-            <intent-filter>
-                <action android:name="com.samsung.android.knox.intent.action.LICENSE_STATUS" />
-            </intent-filter>
-        </receiver>
-        -->
-
-        <!-- SMS Receiver - DESABILITADO (substituído por SMS Retriever API)
-             
-             ⚠️ IMPORTANTE: Este receiver foi DESABILITADO porque:
-             1. Google Play Protect BLOQUEIA apps com RECEIVE_SMS/READ_SMS fora da Play Store
-             2. SMS Retriever API é a solução moderna recomendada pelo Google
-             3. SMS Retriever NÃO requer permissões SMS (apenas 1 tap do usuário)
-             
-             SOLUÇÃO ATUAL: SmsRetrieverHelper.kt
-             - Usa Google Play Services SMS Retriever API
-             - Requer apenas 1 consentimento do usuário por SMS
-             - NÃO é bloqueado pelo Play Protect
-             - Mais seguro e compatível com políticas Google
-             
-             Se este app precisar de autenticação SMS OTP no futuro, use SmsRetrieverHelper
-             ao invés de reativar este receiver.
-             
-        <receiver
-            android:name=".receivers.SmsReceiver"
-            android:permission="android.permission.BROADCAST_SMS"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.provider.Telephony.SMS_RECEIVED" />
-            </intent-filter>
-        </receiver>
-        -->
-
-        <!-- Carrier Config Changed Receiver - Detecta troca de SIM -->
-        <receiver
-            android:name=".receivers.CarrierConfigChangedReceiver"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.telephony.action.CARRIER_CONFIG_CHANGED" />
-            </intent-filter>
-        </receiver>
-
-        <!-- SIM State Changed Receiver - Detecção de Troca de SIM (SIM Swap) -->
-        <receiver
-            android:name=".security.SimChangeBroadcastReceiver"
-            android:exported="true"
-            android:enabled="true">
-            <intent-filter>
-                <action android:name="android.intent.action.SIM_STATE_CHANGED" />
-            </intent-filter>
-        </receiver>
-
-        <!-- =====================================================
-             FACTORY RESET RECOVERY SYSTEM
-             Baseado em análise do PayJoy Access
-             AGUARDANDO: Aprovação Knox EMM / Zero-Touch
-             ===================================================== -->
-        
-        <!-- MainAppReinstallJobService - Reinstala app principal após factory reset -->
-        <service
-            android:name=".stub.MainAppReinstallJobService"
-            android:exported="true"
-            android:permission="android.permission.BIND_JOB_SERVICE" />
-        
-        <!-- InstallResultReceiver - Recebe resultado da instalação silenciosa -->
-        <receiver
-            android:name=".stub.InstallResultReceiver"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="com.cdccreditsmart.app.ACTION_INSTALL_RESULT" />
-            </intent-filter>
-        </receiver>
-
-        <!-- File provider for sharing documents -->
+        <!-- WorkManager Initializer -->
         <provider
-            android:name="androidx.core.content.FileProvider"
-            android:authorities="${applicationId}.fileprovider"
+            android:name="androidx.startup.InitializationProvider"
+            android:authorities="${applicationId}.androidx-startup"
             android:exported="false"
-            android:grantUriPermissions="true">
+            tools:node="merge">
             <meta-data
-                android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/file_paths" />
+                android:name="androidx.work.WorkManagerInitializer"
+                android:value="androidx.startup" />
         </provider>
+        
+        <!-- Default Firebase Notification Channel -->
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_channel_id"
+            android:value="cdc_default_channel" />
+            
+        <!-- Firebase Analytics Disabled -->
+        <meta-data
+            android:name="firebase_analytics_collection_deactivated"
+            android:value="true" />
+        <meta-data
+            android:name="google_analytics_adid_collection_enabled"
+            android:value="false" />
 
     </application>
 
