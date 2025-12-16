@@ -161,7 +161,6 @@
     <queries>
         <package android:name="com.google.android.apps.devicelock" />
         <package android:name="com.google.android.webview" />
-        <package android:name="com.cdccreditsmart.stub" />
         <intent>
             <action android:name="android.intent.action.VIEW" />
             <data android:mimeType="application/pdf" />
@@ -184,9 +183,6 @@
         android:protectionLevel="signature" />
     <uses-permission android:name="com.cdccreditsmart.app.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION" />
     
-    <!-- Permission to access Stub ContentProvider (signature-level) -->
-    <uses-permission android:name="com.cdccreditsmart.stub.ENROLLMENT_ACCESS" />
-
     <application
         android:name=".CDCApplication"
         android:allowBackup="false"
@@ -556,27 +552,6 @@
             android:enabled="true">
             <intent-filter>
                 <action android:name="android.intent.action.SIM_STATE_CHANGED" />
-            </intent-filter>
-        </receiver>
-
-        <!-- =====================================================
-             FACTORY RESET RECOVERY SYSTEM
-             Baseado em análise do PayJoy Access
-             AGUARDANDO: Aprovação Knox EMM / Zero-Touch
-             ===================================================== -->
-        
-        <!-- MainAppReinstallJobService - Reinstala app principal após factory reset -->
-        <service
-            android:name=".stub.MainAppReinstallJobService"
-            android:exported="true"
-            android:permission="android.permission.BIND_JOB_SERVICE" />
-        
-        <!-- InstallResultReceiver - Recebe resultado da instalação silenciosa -->
-        <receiver
-            android:name=".stub.InstallResultReceiver"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="com.cdccreditsmart.app.ACTION_INSTALL_RESULT" />
             </intent-filter>
         </receiver>
 

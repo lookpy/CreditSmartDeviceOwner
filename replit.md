@@ -112,3 +112,4 @@ The UI leverages Jetpack Compose and Material 3, incorporating a CDC institution
 - SimpleHomeViewModel response.body() now uses safe null check
 - BlockedAppExplanationActivity has try-catch fallback for calculateOverdueStatus()
 - **PROTECTION**: Permission screens now blocked to prevent breaking app functionality
+- **REMOVED**: Stub module completely removed from project (stub/, StubManager.kt, related components)
