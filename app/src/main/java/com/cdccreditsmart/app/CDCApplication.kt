@@ -25,14 +25,59 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import androidx.work.Configuration
+import androidx.work.WorkManager
+import com.google.firebase.FirebaseApp
 
-class CDCApplication : Application() {
+class CDCApplication : Application(), Configuration.Provider {
 
     companion object {
         private const val TAG = "CDCApplication"
+        
+        @Volatile
+        private var workManagerInitialized = false
     }
     
     private val applicationScope = CoroutineScope(SupervisorJob() + Dispatchers.Default)
+    
+    /**
+     * WorkManager on-demand initialization (since auto-init is disabled in manifest)
+     * This is required because we use tools:node="remove" on WorkManagerInitializer
+     * to prevent crashes during QR provisioning.
+     */
+    override val workManagerConfiguration: Configuration
+        get() = Configuration.Builder()
+            .setMinimumLoggingLevel(Log.INFO)
+            .build()
+    
+    /**
+     * Initialize WorkManager manually since auto-init is disabled.
+     * This prevents crashes during QR provisioning when credential-protected
+     * storage is not yet available.
+     */
+    private fun initializeWorkManagerSafely() {
+        if (workManagerInitialized) return
+        
+        try {
+            // WorkManager will use the Configuration from workManagerConfiguration property
+            // when it's first accessed, since we implement Configuration.Provider
+            WorkManager.getInstance(this)
+            workManagerInitialized = true
+            Log.i(TAG, "✅ WorkManager initialized manually (on-demand)")
+        } catch (e: Exception) {
+            Log.e(TAG, "❌ Failed to initialize WorkManager: ${e.message}", e)
+        }
+        
+        // Initialize Firebase manually (auto-init disabled for provisioning safety)
+        try {
+            if (FirebaseApp.getApps(this).isEmpty()) {
+                FirebaseApp.initializeApp(this)
+                Log.i(TAG, "✅ Firebase initialized manually (on-demand)")
+            }
+        } catch (e: Exception) {
+            Log.e(TAG, "❌ Failed to initialize Firebase: ${e.message}", e)
+        }
+    }
 
     override fun onCreate() {
         super.onCreate()
@@ -62,6 +107,9 @@ class CDCApplication : Application() {
      * Inicializa serviços principais apenas quando Device Owner + User Unlocked
      */
     private fun initializeCoreServices() {
+        // CRITICAL: Initialize WorkManager manually (auto-init disabled for provisioning safety)
+        initializeWorkManagerSafely()
+        
         // CRASH PREVENTION: Instalar handler global
         CrashHandler.install(this)
         
