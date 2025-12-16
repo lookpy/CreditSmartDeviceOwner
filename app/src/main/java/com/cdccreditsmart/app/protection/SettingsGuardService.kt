@@ -878,9 +878,7 @@ class SettingsGuardService(private val context: Context) {
      * Força o fechamento de um app bloqueado.
      * Requer Device Owner para funcionar.
      * 
-     * Ordem de tentativa:
-     * 1. setApplicationHidden toggle (API documentada, mais confiável)
-     * 2. forceStopPackage via reflection (pode falhar com HiddenApiException)
+     * Método: setApplicationHidden toggle (API documentada Device Owner)
      * 
      * CORREÇÃO: Função agora é suspend e usa delay() ao invés de Thread.sleep()
      * para não bloquear a thread do Dispatchers.Default
@@ -947,20 +945,6 @@ class SettingsGuardService(private val context: Context) {
             }
         } catch (e: Exception) {
             Log.e(TAG, "Erro no setApplicationHidden toggle: $packageName", e)
-        }
-        
-        // ═══════════════════════════════════════════════════════════════════════════════
-        // MÉTODO 2: forceStopPackage via reflection (fallback)
-        // Pode falhar com HiddenApiException ou SecurityException em Android moderno
-        // ═══════════════════════════════════════════════════════════════════════════════
-        try {
-            val am = context.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
-            val method = am.javaClass.getDeclaredMethod("forceStopPackage", String::class.java)
-            method.invoke(am, packageName)
-            Log.i(TAG, "✅ App bloqueado FECHADO via forceStopPackage: $packageName")
-            return true
-        } catch (e: Exception) {
-            Log.e(TAG, "❌ forceStopPackage não disponível: $packageName", e)
         }
         
         return false
