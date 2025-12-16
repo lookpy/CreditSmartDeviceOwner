@@ -102,6 +102,18 @@ class BootInterceptor : BroadcastReceiver() {
         Log.i(TAG, "✅ BOOT COMPLETO DETECTADO")
         Log.i(TAG, "   Sistema Android iniciado com sucesso")
         
+        // CRÍTICO: Verificar Device Owner + User Unlocked antes de acessar storage protegido
+        val userManager = context.getSystemService(android.content.Context.USER_SERVICE) as? android.os.UserManager
+        val isUserUnlocked = userManager?.isUserUnlocked ?: false
+        val dpm = context.getSystemService(android.content.Context.DEVICE_POLICY_SERVICE) as? android.app.admin.DevicePolicyManager
+        val isDeviceOwner = dpm?.isDeviceOwnerApp(context.packageName) ?: false
+        
+        if (!isUserUnlocked || !isDeviceOwner) {
+            Log.w(TAG, "⏸️ Boot recebido mas não é seguro verificar integridade")
+            Log.w(TAG, "   → User Unlocked: $isUserUnlocked, Device Owner: $isDeviceOwner")
+            return
+        }
+        
         try {
             val tamperDetection = TamperDetectionService(context.applicationContext)
             val deviceFingerprint = tamperDetection.getOrCreateDeviceFingerprint()
