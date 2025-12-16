@@ -1231,7 +1231,6 @@ class CDCDeviceAdminReceiver : DeviceAdminReceiver() {
      * - ACCESS_FINE_LOCATION, ACCESS_COARSE_LOCATION, ACCESS_BACKGROUND_LOCATION (localização)
      * - ANSWER_PHONE_CALLS, READ_PHONE_NUMBERS (Android O+)
      * - POST_NOTIFICATIONS (Android 13+)
-     * - CAMERA (para funcionalidades futuras)
      */
     private fun grantAllRuntimePermissionsImmediately(
         context: Context,
@@ -1256,8 +1255,7 @@ class CDCDeviceAdminReceiver : DeviceAdminReceiver() {
                 android.Manifest.permission.CALL_PHONE,
                 android.Manifest.permission.READ_CONTACTS,
                 android.Manifest.permission.ACCESS_FINE_LOCATION,
-                android.Manifest.permission.ACCESS_COARSE_LOCATION,
-                android.Manifest.permission.CAMERA
+                android.Manifest.permission.ACCESS_COARSE_LOCATION
             )
             
             // Android O+ (API 26+)
