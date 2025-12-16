@@ -29,7 +29,6 @@ import com.cdccreditsmart.app.BuildConfig
 import com.cdccreditsmart.app.R
 import com.cdccreditsmart.app.blocking.AppBlockingManager
 import com.cdccreditsmart.app.blocking.BlockedAppExplanationActivity
-import com.cdccreditsmart.app.blocking.BlockingInfo
 import com.cdccreditsmart.app.presentation.MainActivity
 import com.cdccreditsmart.app.storage.TermsAcceptanceStorage
 import com.cdccreditsmart.device.CDCDeviceAdminReceiver
@@ -187,42 +186,6 @@ class SettingsGuardService(private val context: Context) {
         ComponentName(context, CDCDeviceAdminReceiver::class.java)
     }
     
-    private fun shouldGuardRun(): Boolean {
-        try {
-            if (!isDeviceOwner()) return false
-            val userManager = context.getSystemService(Context.USER_SERVICE) as? android.os.UserManager
-            if (userManager?.isUserUnlocked != true) return false
-            val termsStorage = TermsAcceptanceStorage(context)
-            if (!termsStorage.hasAcceptedTerms()) return false
-            return true
-        } catch (e: Exception) {
-            return false
-        }
-    }
-    
-    private fun getBlockingInfoOrNull(): BlockingInfo? {
-        if (!shouldGuardRun()) return null
-        return try {
-            appBlockingManager.getBlockingInfo()
-        } catch (e: Exception) {
-            null
-        }
-    }
-    
-    private fun isAppBlockedSafe(packageName: String): Boolean {
-        if (!shouldGuardRun()) return false
-        return try {
-            appBlockingManager.isAppBlocked(packageName)
-        } catch (e: Exception) {
-            false
-        }
-    }
-    
-    private fun isBlockingActive(): Boolean {
-        val info = getBlockingInfoOrNull() ?: return false
-        return info.currentLevel > 0 || info.isManualBlock
-    }
-    
     @Volatile
     private var isGuardActive = false
     
@@ -373,9 +336,30 @@ class SettingsGuardService(private val context: Context) {
         Log.i(TAG, "║   🛡️ SETTINGSGUARD - INICIALIZAÇÃO                    ║")
         Log.i(TAG, "╠════════════════════════════════════════════════════════╣")
         
-        if (!shouldGuardRun()) {
-            Log.i(TAG, "║   ⏸️ GUARD PAUSADO - Aguardando ativação            ║")
+        // ═══════════════════════════════════════════════════════════════════════════════
+        // CRÍTICO: NÃO INICIAR GUARD ATÉ SER DEVICE OWNER
+        // Play Protect detecta comportamento agressivo como malware durante provisioning
+        // ═══════════════════════════════════════════════════════════════════════════════
+        if (!isDeviceOwner()) {
+            Log.i(TAG, "║   ⏸️ GUARD DESATIVADO - Aguardando Device Owner     ║")
+            Log.i(TAG, "║   📱 Play Protect: Sem comportamento suspeito        ║")
             Log.i(TAG, "╚════════════════════════════════════════════════════════╝")
+            Log.i(TAG, "")
+            Log.i(TAG, "🛡️ SettingsGuard em ESPERA até Device Owner ser confirmado")
+            return
+        }
+        
+        // ═══════════════════════════════════════════════════════════════════════════════
+        // CRÍTICO: NÃO INICIAR GUARD ATÉ O DISPOSITIVO SER ATIVADO (TERMOS ACEITOS)
+        // O guard só deve ser ativado após o usuário aceitar os termos e ativar o dispositivo
+        // ═══════════════════════════════════════════════════════════════════════════════
+        val termsStorage = TermsAcceptanceStorage(context)
+        if (!termsStorage.hasAcceptedTerms()) {
+            Log.i(TAG, "║   ⏸️ GUARD PAUSADO - Aguardando ativação            ║")
+            Log.i(TAG, "║   📄 Dispositivo ainda não foi ativado               ║")
+            Log.i(TAG, "╚════════════════════════════════════════════════════════╝")
+            Log.i(TAG, "")
+            Log.i(TAG, "🛡️ SettingsGuard em ESPERA até termos serem aceitos")
             return
         }
         
@@ -708,8 +692,8 @@ class SettingsGuardService(private val context: Context) {
     )
     
     private suspend fun checkAndInterceptBlockedApp(packageName: String): Boolean {
+        // Ignorar nosso próprio app
         if (packageName == context.packageName) return false
-        if (!shouldGuardRun()) return false
         
         // Ignorar apenas pacotes CRÍTICOS do sistema (não Chrome, YouTube, etc.)
         if (packageName in CRITICAL_SYSTEM_PACKAGES_FOR_INTERCEPTION) return false
@@ -722,8 +706,9 @@ class SettingsGuardService(private val context: Context) {
         if (packageName.contains("systemui", ignoreCase = true)) return false
         
         try {
-            if (!isBlockingActive()) return false
-            if (!isAppBlockedSafe(packageName)) return false
+            if (!appBlockingManager.isAppBlocked(packageName)) {
+                return false
+            }
             
             val now = System.currentTimeMillis()
             val lastIntercept = recentlyInterceptedBlockedApps[packageName] ?: 0L
@@ -754,10 +739,9 @@ class SettingsGuardService(private val context: Context) {
      * Lança a tela de explicação de bloqueio
      */
     private fun launchBlockedAppExplanation(blockedPackage: String) {
-        val blockingInfo = getBlockingInfoOrNull() ?: return
-        if (blockingInfo.currentLevel == 0 && !blockingInfo.isManualBlock) return
-        
         try {
+            val blockingInfo = appBlockingManager.getBlockingInfo()
+            
             val intent = Intent(context, BlockedAppExplanationActivity::class.java).apply {
                 addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                 addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
@@ -960,10 +944,12 @@ class SettingsGuardService(private val context: Context) {
      * 2. ActivityManager - processos com importance até PERCEPTIBLE
      */
     private fun getAllRunningPackages(): List<String> {
-        if (!isBlockingActive()) return emptyList()
-        
         val packages = mutableSetOf<String>()
         
+        // ═══════════════════════════════════════════════════════════════════════════════
+        // MÉTODO 1: UsageStats - pega todos os ACTIVITY_RESUMED recentes (últimos 5 segundos)
+        // Mais preciso para split screen pois detecta eventos de activity
+        // ═══════════════════════════════════════════════════════════════════════════════
         try {
             val usageStatsManager = context.getSystemService(Context.USAGE_STATS_SERVICE) as? UsageStatsManager
             if (usageStatsManager != null) {
@@ -1109,8 +1095,6 @@ class SettingsGuardService(private val context: Context) {
      * @return Lista de packages que foram fechados
      */
     private suspend fun checkAndCloseBlockedAppsInMultiWindow(triggeredBy: String): List<String> {
-        if (!shouldGuardRun()) return emptyList()
-        
         val closedApps = mutableListOf<String>()
         
         try {
@@ -1137,7 +1121,7 @@ class SettingsGuardService(private val context: Context) {
                 if (packageName.contains("systemui", ignoreCase = true)) continue
                 
                 // Verificar se o app está bloqueado
-                if (isAppBlockedSafe(packageName)) {
+                if (appBlockingManager.isAppBlocked(packageName)) {
                     Log.w(TAG, "🚫 [$triggeredBy] APP BLOQUEADO EM EXECUÇÃO DETECTADO: $packageName")
                     
                     // Tentar fechar o app
@@ -2954,12 +2938,17 @@ class SettingsGuardService(private val context: Context) {
     }
     
     /**
-     * DESATIVADO: Matar processo Settings interrompe provisionamento QR
-     * Device Owner usa setPackagesSuspended() ou goToHomeFirst() ao invés
+     * Tenta matar o processo do Settings em background
+     * Funciona como fallback quando não é Device Owner
      */
     private fun killSettingsProcess() {
-        // NO-OP: Removido pois mata wizard de provisionamento
-        // Usar goToHomeFirst() como alternativa segura
+        try {
+            val activityManager = context.getSystemService(Context.ACTIVITY_SERVICE) as? ActivityManager
+            activityManager?.killBackgroundProcesses("com.android.settings")
+            Log.d(TAG, "💀 Tentativa de matar processo Settings em background")
+        } catch (e: Exception) {
+            Log.w(TAG, "⚠️ Não foi possível matar processo Settings: ${e.message}")
+        }
     }
     
     private fun goToHomeFirst() {

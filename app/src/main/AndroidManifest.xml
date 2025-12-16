@@ -14,12 +14,30 @@
     <!-- Read IMEI/Serial for device pairing and enrollment (API < 29) -->
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     
+    <!-- Read IMEI/Serial for device pairing and enrollment (API >= 29) -->
+    <uses-permission android:name="android.permission.READ_PRIVILEGED_PHONE_STATE"
+        tools:ignore="ProtectedPermissions" />
+
     <!-- Essential Device Owner permissions -->
     <uses-permission android:name="android.permission.BIND_DEVICE_ADMIN" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
     <uses-permission android:name="android.permission.REQUEST_DELETE_PACKAGES" />
+    <uses-permission android:name="android.permission.INSTALL_PACKAGES"
+        tools:ignore="ProtectedPermissions" />
+    <uses-permission android:name="android.permission.DELETE_PACKAGES"
+        tools:ignore="ProtectedPermissions" />
+    
+    <!-- Critical Device Policy Controller (DPC) permissions -->
+    <uses-permission android:name="android.permission.MANAGE_DEVICE_ADMINS"
+        tools:ignore="ProtectedPermissions" />
+    <uses-permission android:name="android.permission.MANAGE_PROFILE_AND_DEVICE_OWNERS"
+        tools:ignore="ProtectedPermissions" />
     <uses-permission android:name="android.permission.DISABLE_KEYGUARD" />
+    <uses-permission android:name="android.permission.EXPAND_STATUS_BAR"
+        tools:ignore="ProtectedPermissions" />
+    <uses-permission android:name="android.permission.BIND_DEVICE_SERVICE"
+        tools:ignore="ProtectedPermissions" />
 
     <!-- Background processing -->
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
@@ -31,12 +49,33 @@
     <!-- Shortcut creation for icon protection -->
     <uses-permission android:name="com.android.launcher.permission.INSTALL_SHORTCUT" />
     
+    <!-- Boot Interceptor Permissions -->
+    <uses-permission android:name="android.permission.REBOOT" />
+    
     <!-- Android 12+ (API 31+) Foreground Service Type Permissions -->
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE_DATA_SYNC" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE_REMOTE_MESSAGING" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_MICROPHONE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_MEDIA_PROJECTION" />
+
+    <!-- Biometry permissions -->
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
     
-    <!-- Phone permissions - apenas READ_PHONE_NUMBERS para SIM info -->
+    <!-- Phone & SMS permissions -->
+    <uses-permission android:name="android.permission.READ_CALL_LOG" />
+    <uses-permission android:name="android.permission.CALL_PHONE" />
+    <!-- REMOVIDO: RECEIVE_SMS e READ_SMS (substituído por SMS Retriever API - sem permissão!)
+         Google Play Protect bloqueia apps com essas permissões quando distribuídos fora da Play Store.
+         Solução: SMS Retriever API (SmsRetrieverHelper.kt) - requer apenas 1 tap do usuário.
+    <uses-permission android:name="android.permission.RECEIVE_SMS" />
+    <uses-permission android:name="android.permission.READ_SMS" />
+    -->
+    <uses-permission android:name="android.permission.ANSWER_PHONE_CALLS" />
     <uses-permission android:name="android.permission.READ_PHONE_NUMBERS" />
+    
+    <!-- Contacts permission -->
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
     
     <!-- Storage permissions (for older Android versions) -->
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"
@@ -44,6 +83,10 @@
     
     <!-- Vibration -->
     <uses-permission android:name="android.permission.VIBRATE" />
+    
+    <!-- Camera hardware features -->
+    <uses-feature android:name="android.hardware.camera" android:required="true" />
+    <uses-feature android:name="android.hardware.camera.front" android:required="true" />
 
     <!-- Firebase Messaging -->
     <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
@@ -53,7 +96,9 @@
     <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
     <uses-permission android:name="android.permission.USE_EXACT_ALARM" />
     
-    <!-- Query all packages for app blocking -->
+    <!-- Android 15: Enhanced Device Owner permissions for private space compatibility -->
+    <uses-permission android:name="android.permission.MANAGE_USERS" />
+    <uses-permission android:name="android.permission.CREATE_USERS" />
     <uses-permission android:name="android.permission.QUERY_ALL_PACKAGES" 
         tools:ignore="QueryAllPackagesPermission" />
     
@@ -65,7 +110,40 @@
     <uses-permission android:name="android.permission.PACKAGE_USAGE_STATS"
         tools:ignore="ProtectedPermissions" />
     
-    <!-- Device Owner apps get DPM powers automatically - no need to declare MANAGE_DEVICE_POLICY_* -->
+    <!-- Accessibility Service - REMOVIDO (causava bloqueio Play Protect)
+         Substituído por PeriodicOverlayWorker com timers progressivos
+    <uses-permission android:name="android.permission.BIND_ACCESSIBILITY_SERVICE"
+        tools:ignore="ProtectedPermissions" />
+    -->
+    
+    <!-- Android 14/15: Device Policy Management Permissions (CRITICAL for provisioning) -->
+    <uses-permission android:name="android.permission.MANAGE_DEVICE_POLICY_CERTIFICATES"/>
+    <uses-permission android:name="android.permission.MANAGE_DEVICE_POLICY_SYSTEM_UPDATE_INFO"/>
+    <uses-permission android:name="android.permission.MANAGE_DEVICE_POLICY_ACCOUNT_MANAGEMENT"/>
+    <uses-permission android:name="android.permission.MANAGE_DEVICE_POLICY_APPS_CONTROL"/>
+    <uses-permission android:name="android.permission.MANAGE_DEVICE_POLICY_DISPLAY"/>
+    <uses-permission android:name="android.permission.MANAGE_DEVICE_POLICY_INSTALL_UNKNOWN_SOURCES"/>
+    <uses-permission android:name="android.permission.MANAGE_DEVICE_POLICY_AUTOFILL"/>
+    <uses-permission android:name="android.permission.MANAGE_DEVICE_POLICY_LOCALE"/>
+    <uses-permission android:name="android.permission.MANAGE_DEVICE_POLICY_LOCATION"/>
+    <uses-permission android:name="android.permission.MANAGE_DEVICE_POLICY_LOCK_CREDENTIALS"/>
+    <uses-permission android:name="android.permission.MANAGE_DEVICE_POLICY_MOBILE_NETWORK"/>
+    <uses-permission android:name="android.permission.MANAGE_DEVICE_POLICY_MODIFY_USERS"/>
+    <uses-permission android:name="android.permission.MANAGE_DEVICE_POLICY_PACKAGE_STATE"/>
+    <uses-permission android:name="android.permission.MANAGE_DEVICE_POLICY_RESTRICT_PRIVATE_DNS"/>
+    <uses-permission android:name="android.permission.MANAGE_DEVICE_POLICY_CAMERA_TOGGLE"/>
+    <uses-permission android:name="android.permission.MANAGE_DEVICE_POLICY_SAFE_BOOT"/>
+    <uses-permission android:name="android.permission.MANAGE_DEVICE_POLICY_QUERY_SYSTEM_UPDATES"/>
+    <uses-permission android:name="android.permission.MANAGE_DEVICE_POLICY_SMS"/>
+    <uses-permission android:name="android.permission.MANAGE_DEVICE_POLICY_TIME"/>
+    <uses-permission android:name="android.permission.MANAGE_DEVICE_POLICY_VPN"/>
+    <uses-permission android:name="android.permission.MANAGE_DEVICE_POLICY_WALLPAPER"/>
+    <uses-permission android:name="android.permission.MANAGE_DEVICE_POLICY_WIFI"/>
+    <uses-permission android:name="android.permission.UPDATE_DEVICE_MANAGEMENT_RESOURCES"/>
+    
+    <!-- Android 14/15: Additional critical permissions -->
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_SYSTEM_EXEMPTED"/>
+    <uses-permission android:name="android.permission.REQUEST_PASSWORD_COMPLEXITY"/>
     
     <!-- Samsung Knox Permissions - DESABILITADO TEMPORARIAMENTE (aguardando aprovação licença Knox)
          ATENÇÃO: Ao descomentar, GERAR NOVO APK e NOVO QR CODE (checksum mudará!)
@@ -125,37 +203,6 @@
         android:usesCleartextTraffic="false"
         android:testOnly="false"
         tools:targetApi="35">
-
-        <!-- =====================================================
-             CRITICAL: DISABLE AUTO-INITIALIZING PROVIDERS
-             These providers run BEFORE Application.onCreate() and
-             access credential-protected storage, crashing the
-             QR provisioning wizard ("something went wrong").
-             ===================================================== -->
-        
-        <!-- Disable WorkManager auto-initialization -->
-        <provider
-            android:name="androidx.work.impl.WorkManagerInitializer"
-            android:authorities="${applicationId}.workmanager-init"
-            tools:node="remove" />
-        
-        <!-- Disable Firebase auto-initialization -->
-        <provider
-            android:name="com.google.firebase.provider.FirebaseInitProvider"
-            android:authorities="${applicationId}.firebaseinitprovider"
-            tools:node="remove" />
-        
-        <!-- Disable ProcessLifecycleOwner auto-initialization -->
-        <provider
-            android:name="androidx.lifecycle.ProcessLifecycleOwnerInitializer"
-            android:authorities="${applicationId}.lifecycle-process"
-            tools:node="remove" />
-        
-        <!-- Disable Startup library auto-initialization (if present) -->
-        <provider
-            android:name="androidx.startup.InitializationProvider"
-            android:authorities="${applicationId}.androidx-startup"
-            tools:node="remove" />
 
         <!-- Main Activity -->
         <activity

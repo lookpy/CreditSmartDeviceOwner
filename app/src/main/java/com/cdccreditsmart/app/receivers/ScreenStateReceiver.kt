@@ -3,10 +3,8 @@ package com.cdccreditsmart.app.receivers
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
-import android.os.UserManager
 import android.util.Log
 import com.cdccreditsmart.app.protection.SettingsGuardService
-import com.cdccreditsmart.app.utils.DeviceUtils
 
 interface ScreenStateListener {
     fun onScreenStateChanged(isScreenOn: Boolean)
@@ -41,30 +39,24 @@ class ScreenStateReceiver : BroadcastReceiver() {
         }
     }
     
-    private fun shouldProcess(context: Context): Boolean {
-        val userManager = context.getSystemService(Context.USER_SERVICE) as? UserManager
-        return (userManager?.isUserUnlocked ?: false) && DeviceUtils.isDeviceOwner(context)
-    }
-    
     override fun onReceive(context: Context, intent: Intent) {
         when (intent.action) {
             Intent.ACTION_SCREEN_ON -> {
-                Log.i(TAG, "📱 Tela LIGADA")
+                Log.i(TAG, "📱 Tela LIGADA - Aumentando frequência de monitoramento")
                 notifyListeners(true)
             }
             Intent.ACTION_SCREEN_OFF -> {
-                Log.i(TAG, "🌙 Tela DESLIGADA")
+                Log.i(TAG, "🌙 Tela DESLIGADA - Reduzindo frequência para economizar bateria")
                 notifyListeners(false)
             }
             Intent.ACTION_USER_PRESENT -> {
-                if (!shouldProcess(context)) return
-                Log.i(TAG, "🔓 TELA DESBLOQUEADA")
+                Log.i(TAG, "🔓 TELA DESBLOQUEADA (ACTION_USER_PRESENT)")
                 notifyUnlockListeners()
                 
                 try {
                     SettingsGuardService.getInstance(context).onScreenUnlocked()
                 } catch (e: Exception) {
-                    Log.e(TAG, "❌ Erro ao notificar SettingsGuard: ${e.message}")
+                    Log.e(TAG, "❌ Erro ao notificar SettingsGuardService sobre screen unlock: ${e.message}")
                 }
             }
         }
