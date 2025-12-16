@@ -1,18 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+    Device Admin Policies - MINIMIZADO para Play Protect e Work Profile
+    
+    REMOVIDO (triggers de malware/bloqueio de provisioning):
+    - reset-password: PESO 9 - padrão de ransomware
+    - wipe-data: PESO 10 - indicador de malware
+    - force-lock: PESO 7 - padrão de locker
+    - limit-password, watch-login, expire-password: não usados
+    - disable-camera, set-global-proxy, encrypted-storage: não usados
+    
+    MANTIDO (necessário para Device Owner):
+    - disable-keyguard-features: usado para kiosk mode
+-->
 <device-admin xmlns:android="http://schemas.android.com/apk/res/android">
     <uses-policies>
-        <!-- CORE Device Admin Policies -->
-        <limit-password />
-        <watch-login />
-        <reset-password />
-        <force-lock />
-        <wipe-data />
-        <expire-password />
-        <encrypted-storage />
-        
-        <!-- Device Owner Extended Policies -->
-        <disable-camera />
         <disable-keyguard-features />
-        <set-global-proxy />
     </uses-policies>
 </device-admin>
