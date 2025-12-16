@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1002498413771",
+    "project_id": "gen-lang-client-0650271525",
+    "storage_bucket": "gen-lang-client-0650271525.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1002498413771:android:60044e27119ceb3c13374e",
+        "android_client_info": {
+          "package_name": "com.cdccreditsmart.app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCUDm0rV-O-MPuA7KN6Qk7TvenD8KpSdO8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
