@@ -106,12 +106,6 @@
         </intent>
     </queries>
     
-    <!-- Custom Permission for Internal Security -->
-    <permission
-        android:name="com.cdccreditsmart.app.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION"
-        android:protectionLevel="signature" />
-    <uses-permission android:name="com.cdccreditsmart.app.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION" />
-    
     <application
         android:name=".CDCApplication"
         android:allowBackup="false"
@@ -208,17 +202,6 @@
                 <action android:name="android.app.action.DEVICE_OWNER_CHANGED" />
                 <action android:name="android.app.action.PROFILE_PROVISIONING_COMPLETE" />
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
-            </intent-filter>
-        </receiver>
-
-        <!-- DEBUG: Provisioning Debug Receiver (remove in production) -->
-        <receiver
-            android:name="com.cdccreditsmart.device.ProvisioningDebugReceiver"
-            android:exported="true"
-            android:enabled="true">
-            <intent-filter android:priority="1000">
-                <action android:name="android.app.action.DEVICE_ADMIN_ENABLED" />
-                <action android:name="android.app.action.DEVICE_ADMIN_DISABLED" />
             </intent-filter>
         </receiver>
 
