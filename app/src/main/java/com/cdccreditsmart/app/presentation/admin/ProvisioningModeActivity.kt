@@ -6,6 +6,7 @@ import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
+import androidx.annotation.RequiresApi
 
 /**
  * Activity required for Android 12+ Device Owner/Work Profile provisioning.
@@ -19,13 +20,19 @@ class ProvisioningModeActivity : Activity() {
 
     companion object {
         private const val TAG = "ProvisioningModeActivity"
+        
+        private const val EXTRA_PROVISIONING_MODE = "android.app.extra.PROVISIONING_MODE"
+        private const val EXTRA_ALLOWED_MODES = "android.app.extra.PROVISIONING_ALLOWED_PROVISIONING_MODES"
+        
+        private const val MODE_FULLY_MANAGED = 1
+        private const val MODE_MANAGED_PROFILE = 2
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         Log.i(TAG, "ProvisioningModeActivity onCreate - Intent: ${intent?.action}")
         
-        if (intent?.action != DevicePolicyManager.ACTION_GET_PROVISIONING_MODE) {
+        if (intent?.action != "android.app.action.GET_PROVISIONING_MODE") {
             Log.w(TAG, "Unexpected intent action: ${intent?.action}")
             setResult(RESULT_CANCELED)
             finish()
@@ -36,11 +43,11 @@ class ProvisioningModeActivity : Activity() {
             val provisioningMode = determineProvisioningMode()
             
             val result = Intent()
-            result.putExtra(DevicePolicyManager.EXTRA_PROVISIONING_MODE, provisioningMode)
+            result.putExtra(EXTRA_PROVISIONING_MODE, provisioningMode)
             
             val modeName = when (provisioningMode) {
-                DevicePolicyManager.PROVISIONING_MODE_FULLY_MANAGED_DEVICE -> "FULLY_MANAGED_DEVICE"
-                DevicePolicyManager.PROVISIONING_MODE_MANAGED_PROFILE -> "MANAGED_PROFILE (Work Profile)"
+                MODE_FULLY_MANAGED -> "FULLY_MANAGED_DEVICE"
+                MODE_MANAGED_PROFILE -> "MANAGED_PROFILE (Work Profile)"
                 else -> "UNKNOWN ($provisioningMode)"
             }
             
@@ -55,24 +62,21 @@ class ProvisioningModeActivity : Activity() {
         }
     }
     
-    @Suppress("DEPRECATION")
     private fun determineProvisioningMode(): Int {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-            val allowedModes = intent.getIntegerArrayListExtra(
-                DevicePolicyManager.EXTRA_PROVISIONING_ALLOWED_PROVISIONING_MODES
-            )
+            val allowedModes = intent.getIntegerArrayListExtra(EXTRA_ALLOWED_MODES)
             
             Log.i(TAG, "Allowed provisioning modes from system: $allowedModes")
             
             if (allowedModes != null) {
-                if (allowedModes.contains(DevicePolicyManager.PROVISIONING_MODE_MANAGED_PROFILE)) {
+                if (allowedModes.contains(MODE_MANAGED_PROFILE)) {
                     Log.i(TAG, "Work Profile mode requested - returning MANAGED_PROFILE")
-                    return DevicePolicyManager.PROVISIONING_MODE_MANAGED_PROFILE
+                    return MODE_MANAGED_PROFILE
                 }
                 
-                if (allowedModes.contains(DevicePolicyManager.PROVISIONING_MODE_FULLY_MANAGED_DEVICE)) {
+                if (allowedModes.contains(MODE_FULLY_MANAGED)) {
                     Log.i(TAG, "Device Owner mode requested - returning FULLY_MANAGED_DEVICE")
-                    return DevicePolicyManager.PROVISIONING_MODE_FULLY_MANAGED_DEVICE
+                    return MODE_FULLY_MANAGED
                 }
             }
         }
@@ -83,10 +87,10 @@ class ProvisioningModeActivity : Activity() {
         
         if (isWorkProfileIntent) {
             Log.i(TAG, "Work Profile indicators detected - returning MANAGED_PROFILE")
-            return DevicePolicyManager.PROVISIONING_MODE_MANAGED_PROFILE
+            return MODE_MANAGED_PROFILE
         }
         
         Log.i(TAG, "No specific mode detected - defaulting to FULLY_MANAGED_DEVICE")
-        return DevicePolicyManager.PROVISIONING_MODE_FULLY_MANAGED_DEVICE
+        return MODE_FULLY_MANAGED
     }
 }
