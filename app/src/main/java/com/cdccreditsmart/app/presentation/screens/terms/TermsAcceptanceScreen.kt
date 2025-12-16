@@ -19,7 +19,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.cdccreditsmart.app.protection.SettingsGuardService
 import com.cdccreditsmart.app.storage.TermsAcceptanceStorage
 import com.cdccreditsmart.app.support.ContractTermsData
 import com.cdccreditsmart.app.support.SupportRepository
@@ -294,8 +293,6 @@ fun TermsAcceptanceScreen(
                                         version = terms!!.version,
                                         contractCode = contractCode
                                     )
-                                    // Iniciar SettingsGuard após ativação do dispositivo
-                                    SettingsGuardService.getInstance(context).startGuard()
                                     onTermsAccepted()
                                 },
                                 modifier = Modifier

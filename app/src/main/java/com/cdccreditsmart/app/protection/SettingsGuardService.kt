@@ -30,7 +30,6 @@ import com.cdccreditsmart.app.R
 import com.cdccreditsmart.app.blocking.AppBlockingManager
 import com.cdccreditsmart.app.blocking.BlockedAppExplanationActivity
 import com.cdccreditsmart.app.presentation.MainActivity
-import com.cdccreditsmart.app.storage.TermsAcceptanceStorage
 import com.cdccreditsmart.device.CDCDeviceAdminReceiver
 import kotlinx.coroutines.*
 
@@ -346,29 +345,6 @@ class SettingsGuardService(private val context: Context) {
             Log.i(TAG, "╚════════════════════════════════════════════════════════╝")
             Log.i(TAG, "")
             Log.i(TAG, "🛡️ SettingsGuard em ESPERA até Device Owner ser confirmado")
-            return
-        }
-        
-        // ═══════════════════════════════════════════════════════════════════════════════
-        // CRÍTICO: NÃO INICIAR GUARD ATÉ O DISPOSITIVO SER ATIVADO (TERMOS ACEITOS)
-        // O guard só deve ser ativado após o usuário aceitar os termos e ativar o dispositivo
-        // ═══════════════════════════════════════════════════════════════════════════════
-        try {
-            val termsStorage = TermsAcceptanceStorage(context)
-            if (!termsStorage.hasAcceptedTerms()) {
-                Log.i(TAG, "║   ⏸️ GUARD PAUSADO - Aguardando ativação            ║")
-                Log.i(TAG, "║   📄 Dispositivo ainda não foi ativado               ║")
-                Log.i(TAG, "╚════════════════════════════════════════════════════════╝")
-                Log.i(TAG, "")
-                Log.i(TAG, "🛡️ SettingsGuard em ESPERA até termos serem aceitos")
-                return
-            }
-        } catch (e: Exception) {
-            // Durante provisioning, EncryptedSharedPreferences pode falhar
-            // Nesse caso, assumir que termos não foram aceitos ainda
-            Log.w(TAG, "║   ⚠️ Erro ao verificar termos: ${e.message}          ║")
-            Log.i(TAG, "║   ⏸️ GUARD PAUSADO - Aguardando ativação            ║")
-            Log.i(TAG, "╚════════════════════════════════════════════════════════╝")
             return
         }
         
@@ -979,6 +955,8 @@ class SettingsGuardService(private val context: Context) {
         }
         
         // ═══════════════════════════════════════════════════════════════════════════════
+        // MÉTODO 2: ActivityManager - processos até IMPORTANCE_PERCEPTIBLE
+        // Em split screen, apps podem ter PERCEPTIBLE ou VISIBLE, não só FOREGROUND
         // ═══════════════════════════════════════════════════════════════════════════════
         try {
             val am = context.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
@@ -1069,6 +1047,8 @@ class SettingsGuardService(private val context: Context) {
         recentlyForcedStoppedApps.entries.removeIf { now - it.value > 30_000L }
         
         // ═══════════════════════════════════════════════════════════════════════════════
+        // MÉTODO 1: setApplicationHidden toggle (API documentada, sempre funciona)
+        // Ocultar e mostrar rapidamente força o app a fechar
         // ═══════════════════════════════════════════════════════════════════════════════
         try {
             if (dpm.setApplicationHidden(adminComponent, packageName, true)) {
@@ -1082,6 +1062,8 @@ class SettingsGuardService(private val context: Context) {
         }
         
         // ═══════════════════════════════════════════════════════════════════════════════
+        // MÉTODO 2: forceStopPackage via reflection (fallback)
+        // Pode falhar com HiddenApiException ou SecurityException em Android moderno
         // ═══════════════════════════════════════════════════════════════════════════════
         try {
             val am = context.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
@@ -2516,7 +2498,9 @@ class SettingsGuardService(private val context: Context) {
         // 1. Device Owner - com DPM podemos impedir remoção de permissões via policy
         // 2. Bloqueio do AppInfo do nosso app (já implementado)
         // 3. Re-solicitação automática de permissões no boot/resume
-        //
+        // 
+        // TODO FUTURO: Implementar detecção via Intent extras ou UsageEvents para
+        // verificar se a tela de permissões está mirando especificamente nosso pacote.
         // ═══════════════════════════════════════════════════════════════════════════════
         
         // ═══════════════════════════════════════════════════════════════════════════════
