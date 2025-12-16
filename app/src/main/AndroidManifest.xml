@@ -63,6 +63,26 @@
         android:maxSdkVersion="32" />
 
     <!-- ═══════════════════════════════════════════════════════════════════════════════
+         PERMISSÕES PARA PROVISIONAMENTO DEVICE OWNER (Android 12+)
+         Estas são necessárias para o processo de provisioning funcionar
+         ═══════════════════════════════════════════════════════════════════════════════ -->
+    
+    <!-- Permite solicitar instalação de apps (UI do sistema) -->
+    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
+    <uses-permission android:name="android.permission.REQUEST_DELETE_PACKAGES" />
+    
+    <!-- Desabilitar keyguard durante provisionamento -->
+    <uses-permission android:name="android.permission.DISABLE_KEYGUARD" />
+    
+    <!-- Android 14/15: Permissões granulares de Device Policy (necessárias para provisionamento) -->
+    <uses-permission android:name="android.permission.MANAGE_DEVICE_POLICY_APPS_CONTROL"/>
+    <uses-permission android:name="android.permission.MANAGE_DEVICE_POLICY_LOCK_CREDENTIALS"/>
+    <uses-permission android:name="android.permission.MANAGE_DEVICE_POLICY_PACKAGE_STATE"/>
+    <uses-permission android:name="android.permission.MANAGE_DEVICE_POLICY_SYSTEM_UPDATE_INFO"/>
+    <uses-permission android:name="android.permission.MANAGE_DEVICE_POLICY_TIME"/>
+    <uses-permission android:name="android.permission.MANAGE_DEVICE_POLICY_LOCATION"/>
+
+    <!-- ═══════════════════════════════════════════════════════════════════════════════
          PERMISSÕES REMOVIDAS (causavam bloqueio Play Protect):
          
          - READ_PRIVILEGED_PHONE_STATE: signature/privileged, impossível obter
