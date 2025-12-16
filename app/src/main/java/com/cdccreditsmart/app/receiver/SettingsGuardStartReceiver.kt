@@ -27,6 +27,17 @@ class SettingsGuardStartReceiver : BroadcastReceiver() {
     
     companion object {
         private const val TAG = "SettingsGuardStartRcv"
+        private const val PREFS_PROVISIONING = "cdc_provisioning_state"
+        private const val KEY_PROVISIONING_COMPLETE = "provisioning_complete"
+    }
+    
+    private fun isProvisioningComplete(context: Context): Boolean {
+        return try {
+            context.getSharedPreferences(PREFS_PROVISIONING, Context.MODE_PRIVATE)
+                .getBoolean(KEY_PROVISIONING_COMPLETE, false)
+        } catch (e: Exception) {
+            false
+        }
     }
     
     override fun onReceive(context: Context, intent: Intent?) {
@@ -54,7 +65,18 @@ class SettingsGuardStartReceiver : BroadcastReceiver() {
             return
         }
         
-        Log.i(TAG, "✅ Device Owner confirmado - iniciando SettingsGuard...")
+        // CRÍTICO: Verificar se provisionamento foi completado
+        // Para broadcasts de BOOT/UNLOCK, verificar a flag
+        // Para broadcast START_SETTINGS_GUARD, a flag já foi marcada pelo DeviceAdminReceiver
+        val isStartGuardBroadcast = action == "com.cdccreditsmart.START_SETTINGS_GUARD"
+        val provisioningComplete = isProvisioningComplete(context)
+        
+        if (!isStartGuardBroadcast && !provisioningComplete) {
+            Log.w(TAG, "⏸️ Provisionamento não completo - guard adiado")
+            return
+        }
+        
+        Log.i(TAG, "✅ Device Owner: ✅  Provisionamento: ✅")
         
         // Iniciar guard em coroutine para não bloquear
         CoroutineScope(Dispatchers.Default).launch {

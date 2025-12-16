@@ -411,18 +411,51 @@ class CDCApplication : Application() {
         }
     }
     
+    companion object {
+        private const val PREFS_PROVISIONING = "cdc_provisioning_state"
+        private const val KEY_PROVISIONING_COMPLETE = "provisioning_complete"
+        
+        /**
+         * Marca o provisionamento como completo.
+         * Chamado pelo CDCDeviceAdminReceiver após onProfileProvisioningComplete.
+         */
+        @JvmStatic
+        fun markProvisioningComplete(context: Context) {
+            try {
+                context.getSharedPreferences(PREFS_PROVISIONING, Context.MODE_PRIVATE)
+                    .edit()
+                    .putBoolean(KEY_PROVISIONING_COMPLETE, true)
+                    .putLong("provisioning_complete_time", System.currentTimeMillis())
+                    .apply()
+                Log.i("CDCApplication", "✅ Provisionamento marcado como COMPLETO")
+            } catch (e: Exception) {
+                Log.e("CDCApplication", "Erro ao marcar provisionamento: ${e.message}")
+            }
+        }
+        
+        /**
+         * Verifica se o provisionamento foi completado.
+         */
+        @JvmStatic
+        fun isProvisioningComplete(context: Context): Boolean {
+            return try {
+                context.getSharedPreferences(PREFS_PROVISIONING, Context.MODE_PRIVATE)
+                    .getBoolean(KEY_PROVISIONING_COMPLETE, false)
+            } catch (e: Exception) {
+                false
+            }
+        }
+    }
+    
     /**
-     * Inicia SettingsGuardService IMEDIATAMENTE quando Device Owner
+     * Inicia SettingsGuardService APENAS após provisionamento completo.
      * 
-     * CRÍTICO: O SettingsGuard deve iniciar o mais rápido possível para
-     * proteger o dispositivo contra acesso às configurações.
+     * CRÍTICO: O guard NÃO deve iniciar durante o provisionamento para evitar
+     * interferência com o Setup Wizard e Play Protect.
      * 
-     * Não esperar por:
-     * - Verificação de tokens
-     * - Pairing completo
-     * - Outras inicializações
-     * 
-     * A proteção do dispositivo é prioridade máxima quando Device Owner.
+     * O guard será iniciado:
+     * 1. Quando provisionamento completo (flag=true) E Device Owner
+     * 2. OU quando receber broadcast START_SETTINGS_GUARD do DeviceAdminReceiver
      */
     private fun startSettingsGuardIfDeviceOwner() {
         try {
@@ -430,24 +463,32 @@ class CDCApplication : Application() {
             val isDeviceOwner = dpm.isDeviceOwnerApp(packageName)
             
             if (!isDeviceOwner) {
-                Log.d(TAG, "⏸️ App não é Device Owner - SettingsGuard será iniciado normalmente")
+                Log.d(TAG, "⏸️ App não é Device Owner - SettingsGuard não será iniciado")
+                return
+            }
+            
+            // CRÍTICO: Verificar se provisionamento foi completado
+            val provisioningComplete = isProvisioningComplete(applicationContext)
+            
+            if (!provisioningComplete) {
+                Log.w(TAG, "⏸️ ========================================")
+                Log.w(TAG, "⏸️ PROVISIONAMENTO NÃO COMPLETO")
+                Log.w(TAG, "⏸️ ========================================")
+                Log.w(TAG, "⏸️ SettingsGuard ADIADO para evitar interferência")
+                Log.w(TAG, "⏸️ Guard será iniciado pelo broadcast após provisionamento")
                 return
             }
             
             Log.i(TAG, "🛡️ ========================================")
-            Log.i(TAG, "🛡️ INICIANDO SETTINGSGUARD IMEDIATAMENTE")
+            Log.i(TAG, "🛡️ INICIANDO SETTINGSGUARD")
             Log.i(TAG, "🛡️ ========================================")
-            Log.i(TAG, "🛡️ Device Owner detectado - proteção máxima iniciando...")
+            Log.i(TAG, "🛡️ Device Owner: ✅  Provisionamento: ✅")
             
-            // Iniciar SettingsGuardService imediatamente
-            // SettingsGuardService não é um Android Service, é uma classe normal
-            // que monitora acesso às Settings via UsageStatsManager
-            val settingsGuard = SettingsGuardService(applicationContext)
+            // Iniciar SettingsGuardService
+            val settingsGuard = SettingsGuardService.getInstance(applicationContext)
             settingsGuard.startGuard()
             
             Log.i(TAG, "🛡️ ✅ SettingsGuardService iniciado com sucesso!")
-            Log.i(TAG, "🛡️    Dispositivo protegido contra acesso a Settings")
-            
             Log.i(TAG, "🛡️ ========================================")
             
         } catch (e: Exception) {

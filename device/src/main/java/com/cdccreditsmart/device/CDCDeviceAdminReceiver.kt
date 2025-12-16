@@ -1598,6 +1598,11 @@ class CDCDeviceAdminReceiver : DeviceAdminReceiver() {
             logDetailed("I", TAG, "🛡️ NOTIFICANDO APP PARA INICIAR SETTINGSGUARD")
             logDetailed("I", TAG, "🛡️ ========================================")
             
+            // CRÍTICO: Marcar provisionamento como completo ANTES de enviar broadcast
+            // Isso permite que CDCApplication e SettingsGuardStartReceiver saibam
+            // que é seguro iniciar o guard
+            markProvisioningComplete(context)
+            
             // Enviar broadcast para o app iniciar o SettingsGuard
             val broadcastIntent = Intent("com.cdccreditsmart.START_SETTINGS_GUARD")
             broadcastIntent.setPackage(context.packageName)
@@ -1610,6 +1615,33 @@ class CDCDeviceAdminReceiver : DeviceAdminReceiver() {
         } catch (e: Exception) {
             logDetailed("E", TAG, "❌ Erro ao enviar broadcast: ${e.message}", e)
             logDetailed("W", TAG, "⚠️ SettingsGuard será iniciado pela CDCApplication no onCreate()")
+        }
+    }
+    
+    /**
+     * Marca o provisionamento como completo.
+     * 
+     * CRÍTICO: Esta flag é verificada pela CDCApplication e SettingsGuardStartReceiver
+     * para determinar se é seguro iniciar o SettingsGuard.
+     * 
+     * O guard NÃO deve iniciar durante o provisionamento para evitar:
+     * - Interferência com Setup Wizard
+     * - Detecção do Play Protect
+     * - Interrupção do fluxo de provisionamento
+     */
+    private fun markProvisioningComplete(context: Context) {
+        try {
+            val prefs = context.getSharedPreferences("cdc_provisioning_state", Context.MODE_PRIVATE)
+            prefs.edit()
+                .putBoolean("provisioning_complete", true)
+                .putLong("provisioning_complete_time", System.currentTimeMillis())
+                .apply()
+            
+            logDetailed("I", TAG, "✅ FLAG: Provisionamento marcado como COMPLETO")
+            logDetailed("I", TAG, "   SettingsGuard agora está autorizado a iniciar")
+            
+        } catch (e: Exception) {
+            logDetailed("E", TAG, "❌ Erro ao marcar provisionamento: ${e.message}", e)
         }
     }
 }

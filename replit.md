@@ -113,6 +113,15 @@ The UI leverages Jetpack Compose and Material 3, incorporating a CDC institution
 - BlockedAppExplanationActivity has try-catch fallback for calculateOverdueStatus()
 - **PROTECTION**: Permission screens now blocked to prevent breaking app functionality
 
+### Provisioning-Safe Guard Initialization (2025-12-16)
+- **CRITICAL FIX**: SettingsGuard now waits for provisioningComplete flag before starting
+- CDCApplication.startSettingsGuardIfDeviceOwner() checks isProvisioningComplete() before starting guard
+- CDCDeviceAdminReceiver.startSettingsGuardServiceImmediately() marks flag BEFORE sending broadcast
+- SettingsGuardStartReceiver also checks provisioningComplete flag (except for START_SETTINGS_GUARD broadcast)
+- SharedPreferences key: `cdc_provisioning_state` / `provisioning_complete`
+- This prevents guard from killing Setup Wizard activities during provisioning
+- Guard will ONLY start when: (1) Device Owner AND (2) provisioningComplete flag is true
+
 ### Permission Protection Policy (2025-12-10)
 - **ROLLBACK**: Removed broad permission screen blocking - was causing Android crash
 - Problem: Could not detect if permission screen was targeting OUR app vs other apps
