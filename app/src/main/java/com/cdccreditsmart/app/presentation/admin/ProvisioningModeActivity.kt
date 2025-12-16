@@ -55,40 +55,35 @@ class ProvisioningModeActivity : Activity() {
         }
     }
     
+    @Suppress("DEPRECATION")
     private fun determineProvisioningMode(): Int {
-        val allowedModes = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-            intent.getIntegerArrayListExtra(DevicePolicyManager.EXTRA_PROVISIONING_ALLOWED_PROVISIONING_MODES)
-        } else {
-            null
-        }
-        
-        Log.i(TAG, "Allowed provisioning modes from system: $allowedModes")
-        
-        if (allowedModes != null) {
-            if (allowedModes.contains(DevicePolicyManager.PROVISIONING_MODE_MANAGED_PROFILE)) {
-                Log.i(TAG, "Work Profile mode requested - returning MANAGED_PROFILE")
-                return DevicePolicyManager.PROVISIONING_MODE_MANAGED_PROFILE
-            }
-            
-            if (allowedModes.contains(DevicePolicyManager.PROVISIONING_MODE_FULLY_MANAGED_DEVICE)) {
-                Log.i(TAG, "Device Owner mode requested - returning FULLY_MANAGED_DEVICE")
-                return DevicePolicyManager.PROVISIONING_MODE_FULLY_MANAGED_DEVICE
-            }
-        }
-        
-        val trigger = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-            intent.getIntExtra(DevicePolicyManager.EXTRA_PROVISIONING_TRIGGER, -1)
-        } else {
-            -1
-        }
-        
-        Log.i(TAG, "Provisioning trigger: $trigger")
-        
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-            if (trigger == DevicePolicyManager.PROVISIONING_TRIGGER_MANAGED_ACCOUNT) {
-                Log.i(TAG, "Managed account trigger - defaulting to MANAGED_PROFILE")
-                return DevicePolicyManager.PROVISIONING_MODE_MANAGED_PROFILE
+            val allowedModes = intent.getIntegerArrayListExtra(
+                DevicePolicyManager.EXTRA_PROVISIONING_ALLOWED_PROVISIONING_MODES
+            )
+            
+            Log.i(TAG, "Allowed provisioning modes from system: $allowedModes")
+            
+            if (allowedModes != null) {
+                if (allowedModes.contains(DevicePolicyManager.PROVISIONING_MODE_MANAGED_PROFILE)) {
+                    Log.i(TAG, "Work Profile mode requested - returning MANAGED_PROFILE")
+                    return DevicePolicyManager.PROVISIONING_MODE_MANAGED_PROFILE
+                }
+                
+                if (allowedModes.contains(DevicePolicyManager.PROVISIONING_MODE_FULLY_MANAGED_DEVICE)) {
+                    Log.i(TAG, "Device Owner mode requested - returning FULLY_MANAGED_DEVICE")
+                    return DevicePolicyManager.PROVISIONING_MODE_FULLY_MANAGED_DEVICE
+                }
             }
+        }
+        
+        val isWorkProfileIntent = intent.getBooleanExtra(
+            "android.app.extra.PROVISIONING_SKIP_EDUCATION_SCREENS", false
+        ) || intent.hasExtra("android.app.extra.PROVISIONING_ACCOUNT_TO_MIGRATE")
+        
+        if (isWorkProfileIntent) {
+            Log.i(TAG, "Work Profile indicators detected - returning MANAGED_PROFILE")
+            return DevicePolicyManager.PROVISIONING_MODE_MANAGED_PROFILE
         }
         
         Log.i(TAG, "No specific mode detected - defaulting to FULLY_MANAGED_DEVICE")
