@@ -126,6 +126,37 @@
         android:testOnly="false"
         tools:targetApi="35">
 
+        <!-- =====================================================
+             CRITICAL: DISABLE AUTO-INITIALIZING PROVIDERS
+             These providers run BEFORE Application.onCreate() and
+             access credential-protected storage, crashing the
+             QR provisioning wizard ("something went wrong").
+             ===================================================== -->
+        
+        <!-- Disable WorkManager auto-initialization -->
+        <provider
+            android:name="androidx.work.impl.WorkManagerInitializer"
+            android:authorities="${applicationId}.workmanager-init"
+            tools:node="remove" />
+        
+        <!-- Disable Firebase auto-initialization -->
+        <provider
+            android:name="com.google.firebase.provider.FirebaseInitProvider"
+            android:authorities="${applicationId}.firebaseinitprovider"
+            tools:node="remove" />
+        
+        <!-- Disable ProcessLifecycleOwner auto-initialization -->
+        <provider
+            android:name="androidx.lifecycle.ProcessLifecycleOwnerInitializer"
+            android:authorities="${applicationId}.lifecycle-process"
+            tools:node="remove" />
+        
+        <!-- Disable Startup library auto-initialization (if present) -->
+        <provider
+            android:name="androidx.startup.InitializationProvider"
+            android:authorities="${applicationId}.androidx-startup"
+            tools:node="remove" />
+
         <!-- Main Activity -->
         <activity
             android:name=".presentation.MainActivity"
