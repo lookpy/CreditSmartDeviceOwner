@@ -514,10 +514,11 @@ class CDCDeviceAdminReceiver : DeviceAdminReceiver() {
                 // NÃO fazer mais nada pesado aqui!
                 saveProvisioningCompleteFlag(context)
                 
-                // Agendar trabalho pesado para DEPOIS do callback terminar
+                // Agendar trabalho pesado para MUITO DEPOIS do callback terminar
+                // 10 segundos garante que Setup Wizard terminou completamente
                 Handler(Looper.getMainLooper()).postDelayed({
                     performDelayedSetup(context)
-                }, 3000) // 3 segundos após callback terminar
+                }, 10000) // 10 segundos após callback terminar
                 
                 Log.i(TAG, "   ✅ Flag marcado, setup agendado para 3s")
             }
@@ -589,106 +590,20 @@ class CDCDeviceAdminReceiver : DeviceAdminReceiver() {
 
     /**
      * Called when device becomes ready after provisioning
+     * CRÍTICO: Callback ultra-leve para evitar problemas em Infinix/XOS
      */
     override fun onReadyForUserInitialization(context: Context, intent: Intent) {
         super.onReadyForUserInitialization(context, intent)
         addToCallbackSequence("onReadyForUserInitialization")
         
-        logDetailed("I", TAG, "📦 ==================== READY FOR USER INITIALIZATION ====================")
-        logDetailed("I", TAG, "✅ CRITICAL: Device ready for user initialization - Work profile preparation SHOULD be complete!")
-        logDetailed("I", TAG, "⏰ Raw timestamp: ${System.currentTimeMillis()}")
-        logDetailed("I", TAG, "💬 Intent action: ${intent.action}")
+        // ULTRA-LEVE: Apenas log mínimo e sinalização
+        Log.i(TAG, "📦 onReadyForUserInitialization - Device pronto")
         
+        // Sinalizar sucesso ao sistema de monitoramento (se ativo)
         try {
-            // CRITICAL: This callback should indicate work profile is ready
-            val devicePolicyManager = context.getSystemService(Context.DEVICE_POLICY_SERVICE) as DevicePolicyManager
-            val userManager = context.getSystemService(Context.USER_SERVICE) as UserManager
-            
-            // Verify work profile is actually ready
-            logDetailed("I", TAG, "🔍 Verifying work profile readiness...")
-            
-            val isSystemUser = userManager.isSystemUser
-            val isUserUnlocked = userManager.isUserUnlocked
-            val isManagedProfile = if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.R) {
-                userManager.isManagedProfile
-            } else {
-                false // API 30+ only
-            }
-            
-            logDetailed("I", TAG, "🏢 Work profile readiness check:")
-            logDetailed("I", TAG, "   🔧 System user: $isSystemUser")
-            logDetailed("I", TAG, "   🔓 User unlocked: $isUserUnlocked")
-            logDetailed("I", TAG, "   🏢 Managed profile: $isManagedProfile")
-            
-            // Check if this resolves the "Preparing for work profile configuration" hang
-            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
-                try {
-                    val userSetupComplete = android.provider.Settings.Secure.getInt(
-                        context.contentResolver,
-                        "user_setup_complete",
-                        0
-                    ) == 1
-                    
-                    logDetailed("I", TAG, "   👤 User setup complete: $userSetupComplete")
-                    
-                    if (userSetupComplete) {
-                        logDetailed("I", TAG, "✅ BREAKTHROUGH: User setup completed - work profile preparation phase finished!")
-                        logDetailed("I", TAG, "✅ The hang in 'Preparing for work profile configuration' should be resolved")
-                    } else {
-                        logDetailed("W", TAG, "⚠️ CONCERN: User setup not complete despite onReadyForUserInitialization")
-                        logDetailed("W", TAG, "⚠️ Work profile might still be in preparation phase")
-                    }
-                } catch (e: Exception) {
-                    logDetailed("E", TAG, "❌ Could not verify user setup completion", e)
-                }
-            }
-            
-            // Log detailed device state for troubleshooting
-            val adminComponent = getWho(context)
-            val isAdminActive = devicePolicyManager.isAdminActive(adminComponent)
-            val isDeviceOwner = devicePolicyManager.isDeviceOwnerApp(context.packageName)
-            val isProfileOwner = devicePolicyManager.isProfileOwnerApp(context.packageName)
-            
-            logDetailed("I", TAG, "🔒 Final device state verification:")
-            logDetailed("I", TAG, "   🔑 Admin active: $isAdminActive")
-            logDetailed("I", TAG, "   🏭 Device owner: $isDeviceOwner")
-            logDetailed("I", TAG, "   📋 Profile owner: $isProfileOwner")
-            
-            // If we reach this point, work profile should be ready
-            if (isAdminActive && (isDeviceOwner || isProfileOwner)) {
-                logDetailed("I", TAG, "🎆 SUCCESS: All conditions met - work profile ready for main app!")
-                
-                // Signal that we're ready to proceed
-                try {
-                    // Optionally trigger app launch if not done already
-                    context.sendBroadcast(Intent("com.cdccreditsmart.WORK_PROFILE_READY"))
-                    logDetailed("I", TAG, "✅ Sent work profile ready broadcast")
-                } catch (e: Exception) {
-                    logDetailed("W", TAG, "⚠️ Could not send ready broadcast (non-critical)", e)
-                }
-            } else {
-                logDetailed("E", TAG, "❌ PROBLEM: Device not properly configured despite user initialization ready")
-            }
-            
-            // Log full callback sequence for analysis
-            logCallbackSequence()
-            
-            // Final verification - no hang detection needed here as this is completion
-            if (isProvisioningInProgress) {
-                logDetailed("I", DEBUG_TAG, "✅ FINAL SUCCESS: Work profile preparation completed without hanging!")
-                isProvisioningInProgress = false
-            }
-            
-        } catch (e: Exception) {
-            logDetailed("E", TAG, "❌ Error during user initialization readiness check", e)
-        } finally {
-            // CRITICAL: Signal success to active timeout monitoring system
-            // This stops the active timeout monitoring that was started by ProvisioningActivity
             signalSuccessToActiveMonitoring(context, "onReadyForUserInitialization")
-            
-            logDetailed("I", TAG, "🏁 onReadyForUserInitialization completed")
-            logDetailed("I", TAG, "👤 If work profile was hanging, it should now proceed to main app")
-            logDetailed("I", TAG, "📦 =========================================================================")
+        } catch (e: Exception) {
+            Log.w(TAG, "Erro ao sinalizar: ${e.message}")
         }
     }
 
