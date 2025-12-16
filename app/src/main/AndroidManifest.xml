@@ -35,14 +35,6 @@
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE_REMOTE_MESSAGING" />
 
     
-    <!-- Phone & SMS permissions -->
-    <uses-permission android:name="android.permission.READ_CALL_LOG" />
-    <uses-permission android:name="android.permission.CALL_PHONE" />
-    <uses-permission android:name="android.permission.ANSWER_PHONE_CALLS" />
-    <uses-permission android:name="android.permission.READ_PHONE_NUMBERS" />
-    
-    <!-- Contacts permission -->
-    <uses-permission android:name="android.permission.READ_CONTACTS" />
     
     <!-- Storage permissions (for older Android versions) -->
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"
