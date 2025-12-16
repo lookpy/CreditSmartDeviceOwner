@@ -51,6 +51,16 @@ class FactoryResetRecoveryReceiver : BroadcastReceiver() {
             return
         }
         
+        // CRÍTICO: Verificar se usuário está desbloqueado antes de acessar storage protegido
+        // SecureTokenStorage usa EncryptedSharedPreferences que requer credential-protected storage
+        val userManager = context.getSystemService(android.content.Context.USER_SERVICE) as? android.os.UserManager
+        val isUserUnlocked = userManager?.isUserUnlocked ?: false
+        
+        if (!isUserUnlocked) {
+            Log.w(TAG, "⏸️ Boot recebido mas usuário ainda bloqueado - adiando recuperação")
+            return
+        }
+        
         Log.i(TAG, "========================================")
         Log.i(TAG, "🔄 BOOT DETECTADO (${intent.action}) - Verificando recuperação")
         Log.i(TAG, "========================================")
