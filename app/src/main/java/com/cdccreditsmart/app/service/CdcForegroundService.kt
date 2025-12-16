@@ -25,8 +25,6 @@ import com.cdccreditsmart.app.workers.HeartbeatWorker
 import com.cdccreditsmart.app.workers.IconProtectionWorker
 import com.cdccreditsmart.app.workers.PeriodicOverlayWorker
 import com.cdccreditsmart.app.offline.OfflineEnforcementWorker
-import com.cdccreditsmart.app.persistence.StubManager
-import com.cdccreditsmart.app.persistence.StubInstallResult
 import com.cdccreditsmart.app.persistence.ApkPreloadManager
 import com.cdccreditsmart.app.persistence.PreloadResult
 import com.cdccreditsmart.app.persistence.EnrollmentManifestData
@@ -717,8 +715,6 @@ class CdcForegroundService : Service(), ScreenStateListener {
                 com.cdccreditsmart.app.blocking.BlockingNotificationWorker.schedule(applicationContext)
                 Log.i(TAG, "📱 Worker de notificações de bloqueio agendado")
                 
-                ensureStubAppInstalled()
-                
                 ensureApkPreloaded()
                 
                 // ═══════════════════════════════════════════════════════════════════════════════
@@ -742,54 +738,6 @@ class CdcForegroundService : Service(), ScreenStateListener {
                     }
                 }
             }
-        }
-    }
-    
-    private suspend fun ensureStubAppInstalled() {
-        try {
-            Log.i(TAG, "🔒 ========================================")
-            Log.i(TAG, "🔒 VERIFICANDO STUB PARA PERSISTÊNCIA")
-            Log.i(TAG, "🔒 ========================================")
-            
-            val stubManager = StubManager.getInstance(applicationContext)
-            val status = stubManager.getStubStatus()
-            
-            Log.i(TAG, "🔒 Stub instalado: ${status.isInstalled}")
-            Log.i(TAG, "🔒 Enrollment completo: ${status.isEnrollmentComplete}")
-            Log.i(TAG, "🔒 APK em assets: ${status.hasApkInAssets}")
-            Log.i(TAG, "🔒 Device Owner: ${status.isDeviceOwner}")
-            Log.i(TAG, "🔒 Pode instalar: ${status.canInstallStub}")
-            
-            val result = stubManager.ensureStubInstalled()
-            
-            when (result) {
-                is StubInstallResult.AlreadyInstalled -> {
-                    Log.i(TAG, "🔒 ✅ Stub já instalado - dados sincronizados")
-                }
-                is StubInstallResult.InstallationStarted -> {
-                    Log.i(TAG, "🔒 📦 Instalação do stub iniciada")
-                }
-                is StubInstallResult.SkippedNotEnrolled -> {
-                    Log.i(TAG, "🔒 ⏳ Stub não instalado - aguardando enrollment")
-                }
-                is StubInstallResult.ApkNotFound -> {
-                    Log.w(TAG, "🔒 ⚠️ Stub APK não encontrado em assets/")
-                }
-                is StubInstallResult.ExtractionFailed -> {
-                    Log.e(TAG, "🔒 ❌ Falha ao extrair stub APK")
-                }
-                is StubInstallResult.InstallationFailed -> {
-                    Log.e(TAG, "🔒 ❌ Falha na instalação do stub")
-                }
-                is StubInstallResult.Error -> {
-                    Log.e(TAG, "🔒 ❌ Erro no stub: ${result.message}")
-                }
-            }
-            
-            Log.i(TAG, "🔒 ========================================")
-            
-        } catch (e: Exception) {
-            Log.e(TAG, "🔒 ❌ Erro ao verificar/instalar stub: ${e.message}", e)
         }
     }
     
