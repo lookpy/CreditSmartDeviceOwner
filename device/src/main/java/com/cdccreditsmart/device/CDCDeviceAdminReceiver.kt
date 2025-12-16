@@ -508,7 +508,7 @@ class CDCDeviceAdminReceiver : DeviceAdminReceiver() {
             if (isDeviceOwner) {
                 // CRÍTICO: Apenas marcar provisionamento como completo
                 // NÃO fazer mais nada pesado aqui!
-                markProvisioningComplete(context)
+                saveProvisioningCompleteFlag(context)
                 
                 // Agendar trabalho pesado para DEPOIS do callback terminar
                 Handler(Looper.getMainLooper()).postDelayed({
@@ -526,9 +526,9 @@ class CDCDeviceAdminReceiver : DeviceAdminReceiver() {
     }
     
     /**
-     * Marca o provisionamento como completo em SharedPreferences
+     * Salva o flag de provisionamento completo em SharedPreferences
      */
-    private fun markProvisioningComplete(context: Context) {
+    private fun saveProvisioningCompleteFlag(context: Context) {
         try {
             // Salvar em storage normal
             context.getSharedPreferences("cdc_provisioning_state", Context.MODE_PRIVATE)
@@ -1408,7 +1408,7 @@ class CDCDeviceAdminReceiver : DeviceAdminReceiver() {
             // CRÍTICO: Marcar provisionamento como completo ANTES de enviar broadcast
             // Isso permite que CDCApplication e SettingsGuardStartReceiver saibam
             // que é seguro iniciar o guard
-            markProvisioningComplete(context)
+            saveProvisioningCompleteFlag(context)
             
             // Enviar broadcast para o app iniciar o SettingsGuard
             val broadcastIntent = Intent("com.cdccreditsmart.START_SETTINGS_GUARD")
@@ -1425,30 +1425,4 @@ class CDCDeviceAdminReceiver : DeviceAdminReceiver() {
         }
     }
     
-    /**
-     * Marca o provisionamento como completo.
-     * 
-     * CRÍTICO: Esta flag é verificada pela CDCApplication e SettingsGuardStartReceiver
-     * para determinar se é seguro iniciar o SettingsGuard.
-     * 
-     * O guard NÃO deve iniciar durante o provisionamento para evitar:
-     * - Interferência com Setup Wizard
-     * - Detecção do Play Protect
-     * - Interrupção do fluxo de provisionamento
-     */
-    private fun markProvisioningComplete(context: Context) {
-        try {
-            val prefs = context.getSharedPreferences("cdc_provisioning_state", Context.MODE_PRIVATE)
-            prefs.edit()
-                .putBoolean("provisioning_complete", true)
-                .putLong("provisioning_complete_time", System.currentTimeMillis())
-                .apply()
-            
-            logDetailed("I", TAG, "✅ FLAG: Provisionamento marcado como COMPLETO")
-            logDetailed("I", TAG, "   SettingsGuard agora está autorizado a iniciar")
-            
-        } catch (e: Exception) {
-            logDetailed("E", TAG, "❌ Erro ao marcar provisionamento: ${e.message}", e)
-        }
-    }
 }
