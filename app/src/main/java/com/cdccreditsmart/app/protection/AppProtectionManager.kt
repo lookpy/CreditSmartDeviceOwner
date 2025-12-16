@@ -326,20 +326,6 @@ class AppProtectionManager(private val context: Context) {
             }
         }
         
-        // AccessibilityService REMOVIDO (21/11/2025)
-        // MOTIVO: BIND_ACCESSIBILITY_SERVICE causa bloqueio do Play Protect
-        // SUBSTITUÍDO POR: PeriodicOverlayWorker (timers progressivos 3-10 min)
-        // Ver: app/src/main/java/com/cdccreditsmart/app/workers/PeriodicOverlayWorker.kt
-        /*
-        if (enableAccessibilityService()) {
-            Log.i(TAG, "✅ [15/10] AccessibilityService habilitado")
-            Log.i(TAG, "        → Detecta tentativas de abrir apps bloqueados")
-            protectionsApplied++
-        } else {
-            Log.w(TAG, "⚠️ [15/10] AccessibilityService não habilitado")
-        }
-        */
-        
         Log.i(TAG, "========================================")
         Log.i(TAG, "📊 RESUMO DA PROTEÇÃO ANTI-REMOÇÃO:")
         Log.i(TAG, "  ✅ Proteções aplicadas: $protectionsApplied")
@@ -1152,61 +1138,6 @@ class AppProtectionManager(private val context: Context) {
         
         return protections
     }
-    
-    /**
-     * DEPRECATED - AccessibilityService removido (21/11/2025)
-     * MOTIVO: BIND_ACCESSIBILITY_SERVICE causa bloqueio do Play Protect
-     * SUBSTITUÍDO POR: PeriodicOverlayWorker (timers progressivos)
-     */
-    /*
-    private fun enableAccessibilityService(): Boolean {
-        return try {
-            Log.i(TAG, "🔧 Configurando permissões para BlockedAppAccessibilityService...")
-            
-            val packageName = context.packageName
-            
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                val permittedServices = listOf(packageName)
-                
-                dpm.setPermittedAccessibilityServices(
-                    adminComponent,
-                    permittedServices
-                )
-                
-                Log.i(TAG, "✅ AccessibilityService adicionado à lista de serviços permitidos")
-                Log.i(TAG, "   Package: $packageName")
-                Log.w(TAG, "")
-                Log.w(TAG, "⚠️ ════════════════════════════════════════════════════════════")
-                Log.w(TAG, "⚠️ ATENÇÃO: AccessibilityService NÃO é habilitado automaticamente!")
-                Log.w(TAG, "⚠️ ════════════════════════════════════════════════════════════")
-                Log.w(TAG, "⚠️ ")
-                Log.w(TAG, "⚠️ setPermittedAccessibilityServices() APENAS permite o serviço,")
-                Log.w(TAG, "⚠️ mas NÃO o habilita automaticamente.")
-                Log.w(TAG, "⚠️ ")
-                Log.w(TAG, "⚠️ Para habilitar:")
-                Log.w(TAG, "⚠️   1. MANUAL: Settings > Accessibility > CDC Credit Smart")
-                Log.w(TAG, "⚠️   2. QR CODE: Incluir PERMITTED_ACCESSIBILITY_SERVICES no provisioning")
-                Log.w(TAG, "⚠️ ")
-                Log.w(TAG, "⚠️ SISTEMA FUNCIONA SEM ACCESSIBILITYSERVICE:")
-                Log.w(TAG, "⚠️   → BlockedAppInterceptor está ativo como método principal")
-                Log.w(TAG, "⚠️   → Mensagens customizadas SEMPRE aparecem (latência 5-30s)")
-                Log.w(TAG, "⚠️   → AccessibilityService é OPCIONAL (melhora UX para instantâneo)")
-                Log.w(TAG, "⚠️ ════════════════════════════════════════════════════════════")
-                
-                return true
-            } else {
-                Log.w(TAG, "⚠️ API Level muito baixa - setPermittedAccessibilityServices requer API 21+")
-                return false
-            }
-        } catch (e: SecurityException) {
-            Log.e(TAG, "❌ Sem permissão para configurar AccessibilityService", e)
-            return false
-        } catch (e: Exception) {
-            Log.e(TAG, "❌ Erro ao configurar AccessibilityService: ${e.message}", e)
-            return false
-        }
-    }
-    */
     
     fun disableAllProtections(): DisableProtectionsResult {
         Log.i(TAG, "")

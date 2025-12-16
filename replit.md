@@ -113,3 +113,6 @@ The UI leverages Jetpack Compose and Material 3, incorporating a CDC institution
 - BlockedAppExplanationActivity has try-catch fallback for calculateOverdueStatus()
 - **PROTECTION**: Permission screens now blocked to prevent breaking app functionality
 - **REMOVED**: Stub module completely removed from project (stub/, StubManager.kt, related components)
+- **REMOVED**: AccessibilityService completely removed (accessibility/, config XML, all commented code)
+- **REMOVED**: SMS permissions comments removed from AndroidManifest.xml
+- **PLAY PROTECT**: All problematic patterns that trigger false positives have been removed
