@@ -126,29 +126,56 @@ class MainActivity : ComponentActivity() {
     
     /**
      * Verifica se o provisionamento Device Owner está completo
+     * CRÍTICO: Deve ser Device Owner OU não estar em processo de provisionamento
      */
     private fun isProvisioningComplete(): Boolean {
         return try {
-            // Verificar flag de provisionamento
-            val prefs = getSharedPreferences("cdc_provisioning_state", Context.MODE_PRIVATE)
-            val isComplete = prefs.getBoolean("provisioning_complete", false)
+            val dpm = getSystemService(Context.DEVICE_POLICY_SERVICE) as DevicePolicyManager
+            val isDeviceOwner = dpm.isDeviceOwnerApp(packageName)
             
-            // Se flag não existe, verificar se somos Device Owner (já provisionado antes)
-            if (!isComplete) {
-                val dpm = getSystemService(Context.DEVICE_POLICY_SERVICE) as DevicePolicyManager
-                val isDeviceOwner = dpm.isDeviceOwnerApp(packageName)
-                if (isDeviceOwner) {
-                    // Somos DO mas flag não existe - marcar como completo
-                    prefs.edit().putBoolean("provisioning_complete", true).apply()
-                    return true
-                }
+            // Se somos Device Owner, provisionamento está definitivamente completo
+            if (isDeviceOwner) {
+                Log.i(TAG, "✅ Somos Device Owner - provisionamento completo")
+                return true
             }
             
-            isComplete
+            // Verificar flag de provisionamento
+            val prefs = getSharedPreferences("cdc_provisioning_state", Context.MODE_PRIVATE)
+            val flagComplete = prefs.getBoolean("provisioning_complete", false)
+            
+            // Se o flag diz que está completo mas NÃO somos DO, algo está errado
+            // O sistema ainda não nos promoveu a Device Owner - aguardar
+            if (flagComplete) {
+                Log.w(TAG, "⚠️ Flag indica completo mas NÃO somos Device Owner - aguardando...")
+                return false
+            }
+            
+            // Verificar se há processo de provisionamento em andamento
+            // Se o app foi iniciado recentemente (< 2 min) e não somos DO, assumir provisionamento
+            val installTime = try {
+                packageManager.getPackageInfo(packageName, 0).firstInstallTime
+                val timeSinceInstall = System.currentTimeMillis() - packageManager.getPackageInfo(packageName, 0).firstInstallTime
+                timeSinceInstall < 120000 // 2 minutos
+            } catch (e: Exception) { false }
+            
+            if (installTime) {
+                Log.w(TAG, "⚠️ App instalado recentemente e não somos DO - possível provisionamento em andamento")
+                return false
+            }
+            
+            // App não é DO, flag não existe, e foi instalado há mais de 2 min
+            // Provavelmente instalação manual (não via QR Code) - deixar prosseguir
+            Log.i(TAG, "ℹ️ Não é Device Owner, sem provisionamento pendente - modo normal")
+            true
         } catch (e: Exception) {
             Log.e(TAG, "Erro ao verificar provisionamento: ${e.message}")
-            // Na dúvida, deixar prosseguir
-            true
+            // Em caso de erro, verificar se somos DO como fallback
+            try {
+                val dpm = getSystemService(Context.DEVICE_POLICY_SERVICE) as DevicePolicyManager
+                dpm.isDeviceOwnerApp(packageName)
+            } catch (e2: Exception) {
+                true // Último recurso
+            }
         }
     }
     
