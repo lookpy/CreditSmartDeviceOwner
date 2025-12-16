@@ -18,7 +18,6 @@
     <uses-permission android:name="android.permission.BIND_DEVICE_ADMIN" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
-    <uses-permission android:name="android.permission.REQUEST_DELETE_PACKAGES" />
     <uses-permission android:name="android.permission.DISABLE_KEYGUARD" />
 
     <!-- Background processing -->
@@ -65,9 +64,8 @@
     <uses-permission android:name="android.permission.QUERY_ALL_PACKAGES" 
         tools:ignore="QueryAllPackagesPermission" />
     
-    <!-- Android 15: Edge-to-edge display support -->
+    <!-- Overlay windows for blocking screens -->
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
-    <uses-permission android:name="android.permission.ACCESS_NOTIFICATION_POLICY" />
     
     <!-- Package Usage Stats - Required for BlockedAppInterceptor -->
     <uses-permission android:name="android.permission.PACKAGE_USAGE_STATS"

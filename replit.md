@@ -151,3 +151,5 @@ The UI leverages Jetpack Compose and Material 3, incorporating a CDC institution
   - QUERY_ALL_PACKAGES, POST_NOTIFICATIONS, SCHEDULE_EXACT_ALARM
 - **Device Owner vs Work Profile**: DO provisioning ignora compatibilidade de permissões; WP valida estritamente
 - **REMOVED (2025-12-16)**: CAMERA permission e uses-feature removidos (não utilizados)
+- **REMOVED (2025-12-16)**: REQUEST_DELETE_PACKAGES (signature-level, bloqueava Work Profile)
+- **REMOVED (2025-12-16)**: ACCESS_NOTIFICATION_POLICY (signature-protected, bloqueava Work Profile)
