@@ -102,6 +102,27 @@ class CDCApplication : Application() {
         applyPendingProvisioningPolicies()
         
         // ═══════════════════════════════════════════════════════════════════════
+        // CRÍTICO: VERIFICAR SE PROVISIONAMENTO FOI CONCLUÍDO
+        // Guards e verificações SÓ devem iniciar APÓS provisionamento completo
+        // ═══════════════════════════════════════════════════════════════════════
+        val provisioningComplete = isProvisioningComplete(this)
+        
+        if (!provisioningComplete) {
+            Log.w(TAG, "⏸️ PROVISIONAMENTO NÃO CONCLUÍDO - Adiando guards e verificações")
+            Log.w(TAG, "   → SettingsGuard: ADIADO")
+            Log.w(TAG, "   → KeepAlive: ADIADO")
+            Log.w(TAG, "   → AutoBlocking: ADIADO")
+            Log.w(TAG, "   → Proteções pesadas: ADIADAS")
+            Log.w(TAG, "   → Aguardando onProfileProvisioningComplete...")
+            
+            // Durante provisionamento: apenas conceder permissões (leve e necessário)
+            grantPermissionsIfDeviceOwner()
+            return
+        }
+        
+        Log.i(TAG, "✅ Provisionamento completo - iniciando serviços normalmente")
+        
+        // ═══════════════════════════════════════════════════════════════════════
         // PRIORIDADE 0: CONCESSÃO DE PERMISSÕES (IMEDIATO - antes de tudo!)
         // ═══════════════════════════════════════════════════════════════════════
         Log.i(TAG, "🔐 PRIORIDADE 0: Concedendo permissões IMEDIATAMENTE...")
