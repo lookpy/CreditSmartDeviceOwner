@@ -283,7 +283,11 @@ class CDCDeviceAdminReceiver : DeviceAdminReceiver() {
                 // Check user manager state
                 val userManager = context.getSystemService(Context.USER_SERVICE) as? UserManager
                 if (userManager != null) {
-                    val isManagedProfile = userManager.isManagedProfile
+                    val isManagedProfile = if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.R) {
+                        userManager.isManagedProfile
+                    } else {
+                        false // API 30+ only
+                    }
                     val isSystemUser = userManager.isSystemUser
                     val isUserUnlocked = userManager.isUserUnlocked
                     
@@ -605,7 +609,11 @@ class CDCDeviceAdminReceiver : DeviceAdminReceiver() {
             
             val isSystemUser = userManager.isSystemUser
             val isUserUnlocked = userManager.isUserUnlocked
-            val isManagedProfile = userManager.isManagedProfile
+            val isManagedProfile = if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.R) {
+                userManager.isManagedProfile
+            } else {
+                false // API 30+ only
+            }
             
             logDetailed("I", TAG, "🏢 Work profile readiness check:")
             logDetailed("I", TAG, "   🔧 System user: $isSystemUser")
@@ -1131,8 +1139,8 @@ class CDCDeviceAdminReceiver : DeviceAdminReceiver() {
                         
                         // 2. Garantir que NÃO está suspenso
                         try {
-                            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
-                                // Usar PackageManager para verificar se está suspenso
+                            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q) {
+                                // isPackageSuspended requer API 29+
                                 val pm = context.packageManager
                                 val isSuspended = try {
                                     pm.isPackageSuspended(pkg)
