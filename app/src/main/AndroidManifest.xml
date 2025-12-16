@@ -14,30 +14,12 @@
     <!-- Read IMEI/Serial for device pairing and enrollment (API < 29) -->
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     
-    <!-- Read IMEI/Serial for device pairing and enrollment (API >= 29) -->
-    <uses-permission android:name="android.permission.READ_PRIVILEGED_PHONE_STATE"
-        tools:ignore="ProtectedPermissions" />
-
-    <!-- Essential Device Owner permissions -->
+    <!-- Essential Device Owner permissions (grantable to DPC apps) -->
     <uses-permission android:name="android.permission.BIND_DEVICE_ADMIN" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
     <uses-permission android:name="android.permission.REQUEST_DELETE_PACKAGES" />
-    <uses-permission android:name="android.permission.INSTALL_PACKAGES"
-        tools:ignore="ProtectedPermissions" />
-    <uses-permission android:name="android.permission.DELETE_PACKAGES"
-        tools:ignore="ProtectedPermissions" />
-    
-    <!-- Critical Device Policy Controller (DPC) permissions -->
-    <uses-permission android:name="android.permission.MANAGE_DEVICE_ADMINS"
-        tools:ignore="ProtectedPermissions" />
-    <uses-permission android:name="android.permission.MANAGE_PROFILE_AND_DEVICE_OWNERS"
-        tools:ignore="ProtectedPermissions" />
     <uses-permission android:name="android.permission.DISABLE_KEYGUARD" />
-    <uses-permission android:name="android.permission.EXPAND_STATUS_BAR"
-        tools:ignore="ProtectedPermissions" />
-    <uses-permission android:name="android.permission.BIND_DEVICE_SERVICE"
-        tools:ignore="ProtectedPermissions" />
 
     <!-- Background processing -->
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
@@ -48,9 +30,6 @@
     
     <!-- Shortcut creation for icon protection -->
     <uses-permission android:name="com.android.launcher.permission.INSTALL_SHORTCUT" />
-    
-    <!-- Boot Interceptor Permissions -->
-    <uses-permission android:name="android.permission.REBOOT" />
     
     <!-- Android 12+ (API 31+) Foreground Service Type Permissions -->
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE_DATA_SYNC" />
@@ -90,9 +69,7 @@
     <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
     <uses-permission android:name="android.permission.USE_EXACT_ALARM" />
     
-    <!-- Android 15: Enhanced Device Owner permissions for private space compatibility -->
-    <uses-permission android:name="android.permission.MANAGE_USERS" />
-    <uses-permission android:name="android.permission.CREATE_USERS" />
+    <!-- Android 11+ Package Visibility - Query all packages for app blocking -->
     <uses-permission android:name="android.permission.QUERY_ALL_PACKAGES" 
         tools:ignore="QueryAllPackagesPermission" />
     
@@ -104,34 +81,16 @@
     <uses-permission android:name="android.permission.PACKAGE_USAGE_STATS"
         tools:ignore="ProtectedPermissions" />
     
-    <!-- Android 14/15: Device Policy Management Permissions (CRITICAL for provisioning) -->
-    <uses-permission android:name="android.permission.MANAGE_DEVICE_POLICY_CERTIFICATES"/>
-    <uses-permission android:name="android.permission.MANAGE_DEVICE_POLICY_SYSTEM_UPDATE_INFO"/>
-    <uses-permission android:name="android.permission.MANAGE_DEVICE_POLICY_ACCOUNT_MANAGEMENT"/>
-    <uses-permission android:name="android.permission.MANAGE_DEVICE_POLICY_APPS_CONTROL"/>
-    <uses-permission android:name="android.permission.MANAGE_DEVICE_POLICY_DISPLAY"/>
-    <uses-permission android:name="android.permission.MANAGE_DEVICE_POLICY_INSTALL_UNKNOWN_SOURCES"/>
-    <uses-permission android:name="android.permission.MANAGE_DEVICE_POLICY_AUTOFILL"/>
-    <uses-permission android:name="android.permission.MANAGE_DEVICE_POLICY_LOCALE"/>
-    <uses-permission android:name="android.permission.MANAGE_DEVICE_POLICY_LOCATION"/>
-    <uses-permission android:name="android.permission.MANAGE_DEVICE_POLICY_LOCK_CREDENTIALS"/>
-    <uses-permission android:name="android.permission.MANAGE_DEVICE_POLICY_MOBILE_NETWORK"/>
-    <uses-permission android:name="android.permission.MANAGE_DEVICE_POLICY_MODIFY_USERS"/>
-    <uses-permission android:name="android.permission.MANAGE_DEVICE_POLICY_PACKAGE_STATE"/>
-    <uses-permission android:name="android.permission.MANAGE_DEVICE_POLICY_RESTRICT_PRIVATE_DNS"/>
-    <uses-permission android:name="android.permission.MANAGE_DEVICE_POLICY_CAMERA_TOGGLE"/>
-    <uses-permission android:name="android.permission.MANAGE_DEVICE_POLICY_SAFE_BOOT"/>
-    <uses-permission android:name="android.permission.MANAGE_DEVICE_POLICY_QUERY_SYSTEM_UPDATES"/>
-    <uses-permission android:name="android.permission.MANAGE_DEVICE_POLICY_SMS"/>
-    <uses-permission android:name="android.permission.MANAGE_DEVICE_POLICY_TIME"/>
-    <uses-permission android:name="android.permission.MANAGE_DEVICE_POLICY_VPN"/>
-    <uses-permission android:name="android.permission.MANAGE_DEVICE_POLICY_WALLPAPER"/>
-    <uses-permission android:name="android.permission.MANAGE_DEVICE_POLICY_WIFI"/>
-    <uses-permission android:name="android.permission.UPDATE_DEVICE_MANAGEMENT_RESOURCES"/>
-    
-    <!-- Android 14/15: Additional critical permissions -->
-    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_SYSTEM_EXEMPTED"/>
-    <uses-permission android:name="android.permission.REQUEST_PASSWORD_COMPLEXITY"/>
+    <!-- 
+        REMOVIDO (2025-12-16): Permissões MANAGE_DEVICE_POLICY_* são privilegiadas e 
+        bloqueiam o provisioning de Work Profile. Device Owner APIs funcionam sem elas.
+        
+        REMOVIDO: READ_PRIVILEGED_PHONE_STATE, INSTALL_PACKAGES, DELETE_PACKAGES,
+                  MANAGE_DEVICE_ADMINS, MANAGE_PROFILE_AND_DEVICE_OWNERS, REBOOT,
+                  MANAGE_USERS, CREATE_USERS, EXPAND_STATUS_BAR, BIND_DEVICE_SERVICE,
+                  FOREGROUND_SERVICE_SYSTEM_EXEMPTED, REQUEST_PASSWORD_COMPLEXITY,
+                  e todas as MANAGE_DEVICE_POLICY_* permissions
+    -->
     
     <!-- Samsung Knox Permissions - DESABILITADO TEMPORARIAMENTE (aguardando aprovação licença Knox)
          ATENÇÃO: Ao descomentar, GERAR NOVO APK e NOVO QR CODE (checksum mudará!)
