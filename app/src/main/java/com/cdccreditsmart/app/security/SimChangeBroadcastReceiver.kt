@@ -33,24 +33,15 @@ class SimChangeBroadcastReceiver : BroadcastReceiver() {
     
     private val scope = CoroutineScope(SupervisorJob() + Dispatchers.Default)
     
-    private fun shouldProcess(context: Context): Boolean {
-        val userManager = context.getSystemService(Context.USER_SERVICE) as? android.os.UserManager
-        val isUserUnlocked = userManager?.isUserUnlocked ?: false
-        val isDeviceOwner = try {
-            val dpm = context.getSystemService(Context.DEVICE_POLICY_SERVICE) as? android.app.admin.DevicePolicyManager
-            dpm?.isDeviceOwnerApp(context.packageName) ?: false
-        } catch (e: Exception) { false }
-        return isUserUnlocked && isDeviceOwner
-    }
-    
     override fun onReceive(context: Context, intent: Intent) {
         val action = intent.action
         
-        if (!shouldProcess(context)) return
+        Log.d(TAG, "🔒 SIM SWAP: BroadcastReceiver acionado com action: $action")
         
-        Log.d(TAG, "🔒 SIM SWAP: BroadcastReceiver acionado")
-        
-        if (action != ACTION_SIM_STATE_CHANGED) return
+        if (action != ACTION_SIM_STATE_CHANGED) {
+            Log.d(TAG, "🔒 SIM SWAP: Action não é SIM_STATE_CHANGED, ignorando")
+            return
+        }
         
         val simState = intent.getStringExtra(EXTRA_SIM_STATE)
         Log.d(TAG, "🔒 SIM SWAP: Estado do SIM: $simState")

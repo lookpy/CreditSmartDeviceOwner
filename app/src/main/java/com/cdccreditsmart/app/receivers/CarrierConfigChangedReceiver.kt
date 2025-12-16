@@ -40,19 +40,8 @@ class CarrierConfigChangedReceiver : BroadcastReceiver() {
     
     private val scope = CoroutineScope(Dispatchers.IO + SupervisorJob())
 
-    private fun shouldProcess(context: Context): Boolean {
-        val userManager = context.getSystemService(Context.USER_SERVICE) as? android.os.UserManager
-        val isUserUnlocked = userManager?.isUserUnlocked ?: false
-        val isDeviceOwner = try {
-            val dpm = context.getSystemService(Context.DEVICE_POLICY_SERVICE) as? android.app.admin.DevicePolicyManager
-            dpm?.isDeviceOwnerApp(context.packageName) ?: false
-        } catch (e: Exception) { false }
-        return isUserUnlocked && isDeviceOwner
-    }
-    
     override fun onReceive(context: Context?, intent: Intent?) {
         if (context == null || intent == null) return
-        if (!shouldProcess(context)) return
 
         if (intent.action == "android.telephony.action.CARRIER_CONFIG_CHANGED") {
             handleCarrierConfigChanged(context, intent)
