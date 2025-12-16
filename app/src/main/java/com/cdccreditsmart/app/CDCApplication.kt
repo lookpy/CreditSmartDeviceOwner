@@ -82,13 +82,10 @@ class CDCApplication : Application() {
         
         if (!isUserUnlocked) {
             Log.w(TAG, "⏸️ DIRECT-BOOT MODE - Usuário não desbloqueado")
-            Log.w(TAG, "   → Adiando inicialização completa para após desbloqueio")
-            Log.w(TAG, "   → EncryptedSharedPreferences não disponível neste estado")
-            // Em direct-boot, apenas iniciar serviços críticos de forma assíncrona
-            applicationScope.launch {
-                grantPermissionsIfDeviceOwner()
-                applyMaximumProtectionIfDeviceOwner()
-            }
+            Log.w(TAG, "   → Adiando TODA inicialização para após desbloqueio")
+            Log.w(TAG, "   → NENHUMA operação pesada será executada agora")
+            // CRÍTICO: Durante direct-boot/provisioning, NÃO fazer NADA
+            // Operações pesadas causam "something went wrong" em Infinix/XOS
             return
         }
         
@@ -108,15 +105,11 @@ class CDCApplication : Application() {
         val provisioningComplete = isProvisioningComplete(this)
         
         if (!provisioningComplete) {
-            Log.w(TAG, "⏸️ PROVISIONAMENTO NÃO CONCLUÍDO - Adiando guards e verificações")
-            Log.w(TAG, "   → SettingsGuard: ADIADO")
-            Log.w(TAG, "   → KeepAlive: ADIADO")
-            Log.w(TAG, "   → AutoBlocking: ADIADO")
-            Log.w(TAG, "   → Proteções pesadas: ADIADAS")
+            Log.w(TAG, "⏸️ PROVISIONAMENTO NÃO CONCLUÍDO - Adiando TUDO")
+            Log.w(TAG, "   → NENHUMA operação será executada")
             Log.w(TAG, "   → Aguardando onProfileProvisioningComplete...")
-            
-            // Durante provisionamento: apenas conceder permissões (leve e necessário)
-            grantPermissionsIfDeviceOwner()
+            // CRÍTICO: Durante provisionamento, NÃO fazer NADA
+            // Qualquer operação DevicePolicyManager causa "something went wrong" em Infinix/XOS
             return
         }
         
