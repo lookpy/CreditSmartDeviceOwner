@@ -499,19 +499,6 @@ class CdcForegroundService : Service(), ScreenStateListener {
                 return
             }
             
-            // CRÍTICO: Verificar se provisionamento foi completado
-            val provisioningComplete = applicationContext.getSharedPreferences(
-                "cdc_provisioning_state", Context.MODE_PRIVATE
-            ).getBoolean("provisioning_complete", false)
-            
-            if (!provisioningComplete) {
-                Log.w(TAG, "🛡️ ========================================")
-                Log.w(TAG, "🛡️ GUARD NÃO INICIADO - PROVISIONAMENTO NÃO COMPLETO")
-                Log.w(TAG, "🛡️ Guard será iniciado após provisionamento")
-                Log.w(TAG, "🛡️ ========================================")
-                return
-            }
-            
             Log.i(TAG, "🛡️ ========================================")
             Log.i(TAG, "🛡️ INICIANDO SETTINGS GUARD (PROTEÇÃO AGRESSIVA)")
             Log.i(TAG, "🛡️ ========================================")

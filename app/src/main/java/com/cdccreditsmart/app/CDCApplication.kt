@@ -1,11 +1,7 @@
 package com.cdccreditsmart.app
 
 import android.app.Application
-import android.content.BroadcastReceiver
 import android.content.Context
-import android.content.Intent
-import android.content.IntentFilter
-import android.os.Build
 import android.os.UserManager
 import android.util.Log
 import com.cdccreditsmart.app.keepalive.KeepAliveManager
@@ -30,39 +26,6 @@ class CDCApplication : Application() {
 
     companion object {
         private const val TAG = "CDCApplication"
-        private const val PREFS_PROVISIONING = "cdc_provisioning_state"
-        private const val KEY_PROVISIONING_COMPLETE = "provisioning_complete"
-        
-        /**
-         * Marca o provisionamento como completo.
-         * Chamado pelo CDCDeviceAdminReceiver após onProfileProvisioningComplete.
-         */
-        @JvmStatic
-        fun markProvisioningComplete(context: Context) {
-            try {
-                context.getSharedPreferences(PREFS_PROVISIONING, Context.MODE_PRIVATE)
-                    .edit()
-                    .putBoolean(KEY_PROVISIONING_COMPLETE, true)
-                    .putLong("provisioning_complete_time", System.currentTimeMillis())
-                    .apply()
-                Log.i(TAG, "✅ Provisionamento marcado como COMPLETO")
-            } catch (e: Exception) {
-                Log.e(TAG, "Erro ao marcar provisionamento: ${e.message}")
-            }
-        }
-        
-        /**
-         * Verifica se o provisionamento foi completado.
-         */
-        @JvmStatic
-        fun isProvisioningComplete(context: Context): Boolean {
-            return try {
-                context.getSharedPreferences(PREFS_PROVISIONING, Context.MODE_PRIVATE)
-                    .getBoolean(KEY_PROVISIONING_COMPLETE, false)
-            } catch (e: Exception) {
-                false
-            }
-        }
     }
     
     private val applicationScope = CoroutineScope(SupervisorJob() + Dispatchers.Default)
@@ -82,38 +45,21 @@ class CDCApplication : Application() {
         
         if (!isUserUnlocked) {
             Log.w(TAG, "⏸️ DIRECT-BOOT MODE - Usuário não desbloqueado")
-            Log.w(TAG, "   → Adiando TODA inicialização para após desbloqueio")
-            Log.w(TAG, "   → NENHUMA operação pesada será executada agora")
-            // CRÍTICO: Durante direct-boot/provisioning, NÃO fazer NADA
-            // Operações pesadas causam "something went wrong" em Infinix/XOS
+            Log.w(TAG, "   → Adiando inicialização completa para após desbloqueio")
+            Log.w(TAG, "   → EncryptedSharedPreferences não disponível neste estado")
+            // Em direct-boot, apenas iniciar serviços críticos de forma assíncrona
+            applicationScope.launch {
+                grantPermissionsIfDeviceOwner()
+                applyMaximumProtectionIfDeviceOwner()
+            }
             return
         }
         
         // RECUPERAÇÃO DE DESINSTALAÇÃO CANCELADA
         recoverFromCancelledUninstall()
         
-        // REGISTRAR RECEIVER PARA INICIAR GUARD APÓS PROVISIONING
-        registerSettingsGuardBroadcastReceiver()
-        
         // VERIFICAR POLÍTICAS PENDENTES DO PROVISIONAMENTO
         applyPendingProvisioningPolicies()
-        
-        // ═══════════════════════════════════════════════════════════════════════
-        // CRÍTICO: VERIFICAR SE PROVISIONAMENTO FOI CONCLUÍDO
-        // Guards e verificações SÓ devem iniciar APÓS provisionamento completo
-        // ═══════════════════════════════════════════════════════════════════════
-        val provisioningComplete = isProvisioningComplete(this)
-        
-        if (!provisioningComplete) {
-            Log.w(TAG, "⏸️ PROVISIONAMENTO NÃO CONCLUÍDO - Adiando TUDO")
-            Log.w(TAG, "   → NENHUMA operação será executada")
-            Log.w(TAG, "   → Aguardando onProfileProvisioningComplete...")
-            // CRÍTICO: Durante provisionamento, NÃO fazer NADA
-            // Qualquer operação DevicePolicyManager causa "something went wrong" em Infinix/XOS
-            return
-        }
-        
-        Log.i(TAG, "✅ Provisionamento completo - iniciando serviços normalmente")
         
         // ═══════════════════════════════════════════════════════════════════════
         // PRIORIDADE 0: CONCESSÃO DE PERMISSÕES (IMEDIATO - antes de tudo!)
@@ -207,41 +153,6 @@ class CDCApplication : Application() {
             // Resetar o flag
             SettingsGuardService.resumeAfterVoluntaryUninstall()
             Log.i(TAG, "🔄 ✅ Flag resetado - proteções podem ser reaplicadas")
-        }
-    }
-    
-    /**
-     * Registra receiver para iniciar SettingsGuard após provisioning
-     * 
-     * O CDCDeviceAdminReceiver envia um broadcast quando o provisioning completa
-     * e o dispositivo se torna Device Owner. Este receiver captura esse broadcast
-     * e inicia o SettingsGuard.
-     */
-    private fun registerSettingsGuardBroadcastReceiver() {
-        try {
-            val receiver = object : BroadcastReceiver() {
-                override fun onReceive(context: Context?, intent: Intent?) {
-                    Log.i(TAG, "🛡️ ========================================")
-                    Log.i(TAG, "🛡️ BROADCAST RECEBIDO: START_SETTINGS_GUARD")
-                    Log.i(TAG, "🛡️ ========================================")
-                    
-                    // Iniciar SettingsGuard agora que somos Device Owner
-                    startSettingsGuardIfDeviceOwner()
-                }
-            }
-            
-            val filter = IntentFilter("com.cdccreditsmart.START_SETTINGS_GUARD")
-            
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                registerReceiver(receiver, filter, Context.RECEIVER_NOT_EXPORTED)
-            } else {
-                registerReceiver(receiver, filter)
-            }
-            
-            Log.i(TAG, "✅ Receiver START_SETTINGS_GUARD registrado")
-            
-        } catch (e: Exception) {
-            Log.e(TAG, "❌ Erro ao registrar receiver: ${e.message}", e)
         }
     }
     
@@ -459,14 +370,17 @@ class CDCApplication : Application() {
     }
     
     /**
-     * Inicia SettingsGuardService APENAS após provisionamento completo.
+     * Inicia SettingsGuardService IMEDIATAMENTE quando Device Owner
      * 
-     * CRÍTICO: O guard NÃO deve iniciar durante o provisionamento para evitar
-     * interferência com o Setup Wizard e Play Protect.
+     * CRÍTICO: O SettingsGuard deve iniciar o mais rápido possível para
+     * proteger o dispositivo contra acesso às configurações.
      * 
-     * O guard será iniciado:
-     * 1. Quando provisionamento completo (flag=true) E Device Owner
-     * 2. OU quando receber broadcast START_SETTINGS_GUARD do DeviceAdminReceiver
+     * Não esperar por:
+     * - Verificação de tokens
+     * - Pairing completo
+     * - Outras inicializações
+     * 
+     * A proteção do dispositivo é prioridade máxima quando Device Owner.
      */
     private fun startSettingsGuardIfDeviceOwner() {
         try {
@@ -474,32 +388,24 @@ class CDCApplication : Application() {
             val isDeviceOwner = dpm.isDeviceOwnerApp(packageName)
             
             if (!isDeviceOwner) {
-                Log.d(TAG, "⏸️ App não é Device Owner - SettingsGuard não será iniciado")
-                return
-            }
-            
-            // CRÍTICO: Verificar se provisionamento foi completado
-            val provisioningComplete = isProvisioningComplete(applicationContext)
-            
-            if (!provisioningComplete) {
-                Log.w(TAG, "⏸️ ========================================")
-                Log.w(TAG, "⏸️ PROVISIONAMENTO NÃO COMPLETO")
-                Log.w(TAG, "⏸️ ========================================")
-                Log.w(TAG, "⏸️ SettingsGuard ADIADO para evitar interferência")
-                Log.w(TAG, "⏸️ Guard será iniciado pelo broadcast após provisionamento")
+                Log.d(TAG, "⏸️ App não é Device Owner - SettingsGuard será iniciado normalmente")
                 return
             }
             
             Log.i(TAG, "🛡️ ========================================")
-            Log.i(TAG, "🛡️ INICIANDO SETTINGSGUARD")
+            Log.i(TAG, "🛡️ INICIANDO SETTINGSGUARD IMEDIATAMENTE")
             Log.i(TAG, "🛡️ ========================================")
-            Log.i(TAG, "🛡️ Device Owner: ✅  Provisionamento: ✅")
+            Log.i(TAG, "🛡️ Device Owner detectado - proteção máxima iniciando...")
             
-            // Iniciar SettingsGuardService
-            val settingsGuard = SettingsGuardService.getInstance(applicationContext)
+            // Iniciar SettingsGuardService imediatamente
+            // SettingsGuardService não é um Android Service, é uma classe normal
+            // que monitora acesso às Settings via UsageStatsManager
+            val settingsGuard = SettingsGuardService(applicationContext)
             settingsGuard.startGuard()
             
             Log.i(TAG, "🛡️ ✅ SettingsGuardService iniciado com sucesso!")
+            Log.i(TAG, "🛡️    Dispositivo protegido contra acesso a Settings")
+            
             Log.i(TAG, "🛡️ ========================================")
             
         } catch (e: Exception) {
