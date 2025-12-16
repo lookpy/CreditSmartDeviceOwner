@@ -1,0 +1,110 @@
+---------------------------- PROCESS STARTED (17615) for package com.cdccreditsmart.app ----------------------------
+2025-12-16 13:10:56.344 17615-17615 nativeloader            com.cdccreditsmart.app               D  Load libframework-connectivity-tiramisu-jni.so using APEX ns com_android_tethering for caller /apex/com.android.tethering/javalib/framework-connectivity-t.jar: ok
+2025-12-16 13:10:56.363 17615-17615 nativeloader            com.cdccreditsmart.app               D  Load libstats_jni.so using APEX ns com_android_os_statsd for caller /apex/com.android.os.statsd/javalib/framework-statsd.jar: ok
+2025-12-16 13:10:56.551 17615-17615 nativeloader            com.cdccreditsmart.app               D  Configuring clns-9 for other apk /data/app/~~5bY3D8Z583C_e8x8DQDtuA==/com.cdccreditsmart.app-a3sKCd5aiVFHm4Shocf4TQ==/base.apk. target_sdk_version=35, uses_libraries=, library_path=/data/app/~~5bY3D8Z583C_e8x8DQDtuA==/com.cdccreditsmart.app-a3sKCd5aiVFHm4Shocf4TQ==/lib/x86_64:/data/app/~~5bY3D8Z583C_e8x8DQDtuA==/com.cdccreditsmart.app-a3sKCd5aiVFHm4Shocf4TQ==/base.apk!/lib/x86_64, permitted_path=/data:/mnt/expand:/data/user/0/com.cdccreditsmart.app
+2025-12-16 13:10:56.555 17615-17615 CompatChangeReporter    com.cdccreditsmart.app               D  Compat change id reported: 202956589; UID 10220; state: ENABLED
+2025-12-16 13:10:56.555 17615-17615 creditsmart.app         com.cdccreditsmart.app               I  AssetManager2(0x7e29bfe53618) locale list changing from [] to [en-US]
+2025-12-16 13:10:56.564 17615-17615 GraphicsEnvironment     com.cdccreditsmart.app               V  Currently set values for:
+2025-12-16 13:10:56.564 17615-17615 GraphicsEnvironment     com.cdccreditsmart.app               V    angle_gl_driver_selection_pkgs=[]
+2025-12-16 13:10:56.564 17615-17615 GraphicsEnvironment     com.cdccreditsmart.app               V    angle_gl_driver_selection_values=[]
+2025-12-16 13:10:56.564 17615-17615 GraphicsEnvironment     com.cdccreditsmart.app               V  com.cdccreditsmart.app is not listed in per-application setting
+2025-12-16 13:10:56.564 17615-17615 GraphicsEnvironment     com.cdccreditsmart.app               V  ANGLE allowlist from config: com.dreamgames.royalmatch com.dts.freefiremax com.dxx.firenow com.gramgames.mergedragons com.ludo.king com.mojang.minecraftpe com.my.defense com.nintendo.zaka com.os.airforce com.playrix.fishdomdd.gplay io.teslatech.callbreak jp.konami.prospia net.peakgames.toonblast
+2025-12-16 13:10:56.564 17615-17615 GraphicsEnvironment     com.cdccreditsmart.app               V  com.cdccreditsmart.app is not listed in ANGLE allowlist or settings, returning default
+2025-12-16 13:10:56.564 17615-17615 GraphicsEnvironment     com.cdccreditsmart.app               V  Neither updatable production driver nor prerelease driver is supported.
+2025-12-16 13:10:56.607 17615-17615 FirebaseApp             com.cdccreditsmart.app               I  Device unlocked: initializing all Firebase APIs for app [DEFAULT]
+2025-12-16 13:10:56.632 17615-17615 FirebaseInitProvider    com.cdccreditsmart.app               I  FirebaseApp initialization successful
+2025-12-16 13:10:56.647 17615-17615 CompatChangeReporter    com.cdccreditsmart.app               D  Compat change id reported: 279646685; UID 10220; state: ENABLED
+2025-12-16 13:10:56.651 17615-17615 WM-WrkMgrInitializer    com.cdccreditsmart.app               D  Initializing WorkManager with default configuration.
+2025-12-16 13:10:56.667 17615-17632 creditsmart.app         com.cdccreditsmart.app               W  ClassLoaderContext classpath size mismatch. expected=1, found=0 (DLC[];PCL[base.apk*630649996]{PCL[/system/framework/org.apache.http.legacy.jar*4247870504]#PCL[/system/framework/com.android.media.remotedisplay.jar*487574312]#PCL[/system/framework/com.android.location.provider.jar*1570284764]#PCL[/system_ext/framework/androidx.window.extensions.jar*1030441313]#PCL[/system_ext/framework/androidx.window.sidecar.jar*3860983653]} | DLC[];PCL[])
+2025-12-16 13:10:56.679 17615-17632 DynamiteModule          com.cdccreditsmart.app               I  Considering local module com.google.android.gms.measurement.dynamite:127 and remote module com.google.android.gms.measurement.dynamite:170
+2025-12-16 13:10:56.679 17615-17632 DynamiteModule          com.cdccreditsmart.app               I  Selected remote version of com.google.android.gms.measurement.dynamite, version >= 170
+2025-12-16 13:10:56.679 17615-17632 DynamiteModule          com.cdccreditsmart.app               V  Dynamite loader version >= 2, using loadModule2NoCrashUtils
+2025-12-16 13:10:56.697 17615-17632 System                  com.cdccreditsmart.app               W  ClassLoader referenced unknown path: 
+2025-12-16 13:10:56.698 17615-17632 nativeloader            com.cdccreditsmart.app               D  Configuring clns-10 for other apk . target_sdk_version=36, uses_libraries=, library_path=/data/app/~~cUU0_OMPoIfTB-DU-c-VnQ==/com.google.android.gms-bKt--P2aYmlCjodGHjL_-Q==/lib/x86_64:/data/app/~~cUU0_OMPoIfTB-DU-c-VnQ==/com.google.android.gms-bKt--P2aYmlCjodGHjL_-Q==/base.apk!/lib/x86_64, permitted_path=/data:/mnt/expand:/data/user/0/com.google.android.gms
+2025-12-16 13:10:56.704 17615-17632 creditsmart.app         com.cdccreditsmart.app               I  AssetManager2(0x7e29bfe5acd8) locale list changing from [] to [en-US]
+2025-12-16 13:10:56.703 17615-17615 WM-PackageManagerHelper com.cdccreditsmart.app               D  Skipping component enablement for androidx.work.impl.background.systemjob.SystemJobService
+2025-12-16 13:10:56.703 17615-17615 WM-Schedulers           com.cdccreditsmart.app               D  Created SystemJobScheduler and enabled SystemJobService
+2025-12-16 13:10:56.711 17615-17615 CrashHandler            com.cdccreditsmart.app               I  ✅ Global crash handler instalado
+2025-12-16 13:10:56.711 17615-17615 CDCApplication          com.cdccreditsmart.app               I  🚀 CDC Credit Smart Application iniciando...
+2025-12-16 13:10:56.719 17615-17632 creditsmart.app         com.cdccreditsmart.app               W  ClassLoaderContext classpath element checksum mismatch. expected=630649996, found=1438810387 (DLC[];PCL[base.apk*630649996]{PCL[/system/framework/org.apache.http.legacy.jar*4247870504]#PCL[/system/framework/com.android.media.remotedisplay.jar*487574312]#PCL[/system/framework/com.android.location.provider.jar*1570284764]#PCL[/system_ext/framework/androidx.window.extensions.jar*1030441313]#PCL[/system_ext/framework/androidx.window.sidecar.jar*3860983653]} | DLC[];PCL[/data/app/~~5bY3D8Z583C_e8x8DQDtuA==/com.cdccreditsmart.app-a3sKCd5aiVFHm4Shocf4TQ==/base.apk*1438810387])
+2025-12-16 13:10:56.723 17615-17637 ashmem                  com.cdccreditsmart.app               E  Pinning is deprecated since Android Q. Please use trim or other methods.
+2025-12-16 13:10:56.724 17615-17615 CDCApplication          com.cdccreditsmart.app               I  ✅ Receiver START_SETTINGS_GUARD registrado
+2025-12-16 13:10:56.727 17615-17615 CDCApplication          com.cdccreditsmart.app               W  ⏸️ PROVISIONAMENTO NÃO CONCLUÍDO - Adiando TUDO
+2025-12-16 13:10:56.727 17615-17615 CDCApplication          com.cdccreditsmart.app               W     → NENHUMA operação será executada
+2025-12-16 13:10:56.727 17615-17615 CDCApplication          com.cdccreditsmart.app               W     → Aguardando onProfileProvisioningComplete...
+2025-12-16 13:10:56.747 17615-17632 creditsmart.app         com.cdccreditsmart.app               I  AssetManager2(0x7e29bfe5cc18) locale list changing from [] to [en-US]
+2025-12-16 13:10:56.751 17615-17632 creditsmart.app         com.cdccreditsmart.app               I  AssetManager2(0x7e29bfe5eb58) locale list changing from [] to [en-US]
+2025-12-16 13:10:56.756 17615-17639 DisplayManager          com.cdccreditsmart.app               I  Choreographer implicitly registered for the refresh rate.
+2025-12-16 13:10:56.759 17615-17615 creditsmart.app         com.cdccreditsmart.app               I  AssetManager2(0x7e29bfe5d578) locale list changing from [] to [en-US]
+2025-12-16 13:10:56.803 17615-17615 CompatChangeReporter    com.cdccreditsmart.app               D  Compat change id reported: 309578419; UID 10220; state: ENABLED
+2025-12-16 13:10:56.803 17615-17615 DesktopModeFlags        com.cdccreditsmart.app               D  Toggle override initialized to: OVERRIDE_UNSET
+2025-12-16 13:10:56.808 17615-17644 creditsmart.app         com.cdccreditsmart.app               I  hiddenapi: Accessing hidden method Ldalvik/system/VMStack;->getStackClass2()Ljava/lang/Class; (runtime_flags=0, domain=core-platform, api=unsupported) from Lm7/aox; (domain=app) using reflection: allowed
+2025-12-16 13:10:56.821 17615-17639 EGL_emulation           com.cdccreditsmart.app               I  Opening libGLESv1_CM_emulation.so
+2025-12-16 13:10:56.821 17615-17639 EGL_emulation           com.cdccreditsmart.app               I  Opening libGLESv2_emulation.so
+2025-12-16 13:10:56.819 17615-17615 MainActivity            com.cdccreditsmart.app               D  📍 BroadcastReceiver de localização registrado
+2025-12-16 13:10:56.837 17615-17644 PhClient                com.cdccreditsmart.app               I  Unable to retrieve flag snapshot for com.google.android.gms.measurement#com.cdccreditsmart.app, using defaults.
+2025-12-16 13:10:56.842 17615-17643 creditsmart.app         com.cdccreditsmart.app               E  No package ID 6a found for resource ID 0x6a0b0013.
+2025-12-16 13:10:56.840 17615-17615 CompatChangeReporter    com.cdccreditsmart.app               D  Compat change id reported: 307233716; UID 10220; state: ENABLED
+2025-12-16 13:10:56.840 17615-17615 MainActivity            com.cdccreditsmart.app               I  ========================================
+2025-12-16 13:10:56.840 17615-17615 MainActivity            com.cdccreditsmart.app               I  📱 SOLICITANDO PERMISSÕES (NÃO DEVICE OWNER)
+2025-12-16 13:10:56.840 17615-17615 MainActivity            com.cdccreditsmart.app               I  ========================================
+2025-12-16 13:10:56.848 17615-17643 FA                      com.cdccreditsmart.app               I  App measurement initialized, version: 146007
+2025-12-16 13:10:56.847 17615-17646 PersistentStateManager  com.cdccreditsmart.app               D  Nenhum estado local encontrado
+2025-12-16 13:10:56.847 17615-17646 PersistentStateManager  com.cdccreditsmart.app               D  🆕 Sem estado local - device novo ou pós factory reset
+2025-12-16 13:10:56.847 17615-17646 MainActivity            com.cdccreditsmart.app               I  🆕 Device nunca foi provisionado
+2025-12-16 13:10:56.849 17615-17643 FA                      com.cdccreditsmart.app               I  To enable debug logging run: adb shell setprop log.tag.FA VERBOSE
+2025-12-16 13:10:56.851 17615-17643 FA                      com.cdccreditsmart.app               I  To enable faster debug mode event logging run:
+                                                                                                      adb shell setprop debug.firebase.analytics.app com.cdccreditsmart.app
+2025-12-16 13:10:56.851 17615-17639 HWUI                    com.cdccreditsmart.app               W  Failed to choose config with EGL_SWAP_BEHAVIOR_PRESERVED, retrying without...
+2025-12-16 13:10:56.852 17615-17639 HWUI                    com.cdccreditsmart.app               W  Failed to initialize 101010-2 format, error = EGL_SUCCESS
+2025-12-16 13:10:56.855 17615-17615 MainActivity            com.cdccreditsmart.app               I  ✅ Todas as runtime permissions já foram concedidas!
+2025-12-16 13:10:56.855 17615-17615 SpecialPermissionReq    com.cdccreditsmart.app               I  ========================================
+2025-12-16 13:10:56.855 17615-17615 SpecialPermissionReq    com.cdccreditsmart.app               I  📊 STATUS DAS PERMISSÕES ESPECIAIS
+2025-12-16 13:10:56.855 17615-17615 SpecialPermissionReq    com.cdccreditsmart.app               I  ========================================
+2025-12-16 13:10:56.856 17615-17615 SpecialPermissionReq    com.cdccreditsmart.app               I    USAGE_STATS: ❌ NÃO CONCEDIDA
+2025-12-16 13:10:56.856 17615-17615 SpecialPermissionReq    com.cdccreditsmart.app               I    OVERLAY: ✅ CONCEDIDA
+2025-12-16 13:10:56.859 17615-17615 SpecialPermissionReq    com.cdccreditsmart.app               I    BATTERY_OPT: ✅ ISENTO
+2025-12-16 13:10:56.859 17615-17615 SpecialPermissionReq    com.cdccreditsmart.app               W  
+2025-12-16 13:10:56.859 17615-17615 SpecialPermissionReq    com.cdccreditsmart.app               W  ⚠️ PROTEÇÃO ANTI-DESINSTALAÇÃO COMPROMETIDA!
+2025-12-16 13:10:56.859 17615-17615 SpecialPermissionReq    com.cdccreditsmart.app               W     Sem essas permissões, a proteção via overlay não funciona.
+2025-12-16 13:10:56.859 17615-17615 SpecialPermissionReq    com.cdccreditsmart.app               W     O usuário conseguirá acessar App Info e desinstalar.
+2025-12-16 13:10:56.859 17615-17615 SpecialPermissionReq    com.cdccreditsmart.app               I  ========================================
+2025-12-16 13:10:56.859 17615-17615 MainActivity            com.cdccreditsmart.app               W  ========================================
+2025-12-16 13:10:56.860 17615-17615 MainActivity            com.cdccreditsmart.app               W  ⚠️ PERMISSÕES ESPECIAIS NECESSÁRIAS
+2025-12-16 13:10:56.860 17615-17615 MainActivity            com.cdccreditsmart.app               W  ========================================
+2025-12-16 13:10:56.860 17615-17615 MainActivity            com.cdccreditsmart.app               W  Para proteção anti-desinstalação funcionar:
+2025-12-16 13:10:56.860 17615-17615 MainActivity            com.cdccreditsmart.app               W    ❌ Acesso ao Uso de Apps
+2025-12-16 13:10:56.860 17615-17615 MainActivity            com.cdccreditsmart.app               W       Permite detectar quando você abre as Configurações para aplicar proteção
+2025-12-16 13:10:56.860 17615-17615 MainActivity            com.cdccreditsmart.app               W  ========================================
+2025-12-16 13:10:56.860 17615-17615 MainActivity            com.cdccreditsmart.app               W  O app solicitará essas permissões na próxima interação
+2025-12-16 13:10:56.860 17615-17615 MainActivity            com.cdccreditsmart.app               W  ========================================
+2025-12-16 13:10:56.875 17615-17615 CompatChangeReporter    com.cdccreditsmart.app               D  Compat change id reported: 352594277; UID 10220; state: ENABLED
+2025-12-16 13:10:56.879 17615-17615 CompatChangeReporter    com.cdccreditsmart.app               D  Compat change id reported: 349153669; UID 10220; state: ENABLED
+2025-12-16 13:10:56.883 17615-17615 HWUI                    com.cdccreditsmart.app               W  Unknown dataspace 0
+2025-12-16 13:10:56.899 17615-17615 InsetsController        com.cdccreditsmart.app               D  Setting requestedVisibleTypes to -14 (was -9)
+2025-12-16 13:10:56.939 17615-17643 FA                      com.cdccreditsmart.app               I  Tag Manager is not found and thus will not be used
+2025-12-16 13:10:57.023 17615-17615 creditsmart.app         com.cdccreditsmart.app               W  Verification of void androidx.compose.runtime.CompositionImpl.recordWriteOf(java.lang.Object) took 18446744073.706s (0.00 bytecodes/s) (0B arena alloc)
+2025-12-16 13:10:57.331 17615-17615 PermissionGateScreen    com.cdccreditsmart.app               I  🔍 VERIFICAÇÃO INICIAL DE PERMISSÕES:
+2025-12-16 13:10:57.331 17615-17615 PermissionGateScreen    com.cdccreditsmart.app               I     Nível: DEVICE_ADMIN
+2025-12-16 13:10:57.331 17615-17615 PermissionGateScreen    com.cdccreditsmart.app               I     Todas concedidas: false
+2025-12-16 13:10:57.331 17615-17615 PermissionGateScreen    com.cdccreditsmart.app               I     Bateria isenta: true
+2025-12-16 13:10:57.331 17615-17615 PermissionGateScreen    com.cdccreditsmart.app               W     ❌ FALTA: Monitoramento de Apps
+2025-12-16 13:10:57.331 17615-17615 PermissionGateScreen    com.cdccreditsmart.app               I     ✅ OK: Administrador do Dispositivo
+2025-12-16 13:10:57.331 17615-17615 PermissionGateScreen    com.cdccreditsmart.app               I     ✅ OK: Permissões Básicas
+2025-12-16 13:10:57.331 17615-17615 PermissionGateScreen    com.cdccreditsmart.app               I     ✅ OK: Mostrar Alertas
+2025-12-16 13:10:57.331 17615-17615 PermissionGateScreen    com.cdccreditsmart.app               I     ✅ OK: Execução em Segundo Plano
+2025-12-16 13:10:57.331 17615-17615 PermissionGateScreen    com.cdccreditsmart.app               I  ========================================
+2025-12-16 13:10:57.331 17615-17615 PermissionGateScreen    com.cdccreditsmart.app               I  🚪 PERMISSION GATE SCREEN INICIADO
+2025-12-16 13:10:57.331 17615-17615 PermissionGateScreen    com.cdccreditsmart.app               I  ========================================
+2025-12-16 13:10:57.331 17615-17615 PermissionGateScreen    com.cdccreditsmart.app               I  Nível de privilégio: DEVICE_ADMIN
+2025-12-16 13:10:57.331 17615-17615 PermissionGateScreen    com.cdccreditsmart.app               I  Permissões concedidas: 4
+2025-12-16 13:10:57.331 17615-17615 PermissionGateScreen    com.cdccreditsmart.app               I  Permissões faltando: 1
+2025-12-16 13:10:57.331 17615-17615 PermissionGateScreen    com.cdccreditsmart.app               W    ❌ Monitoramento de Apps
+2025-12-16 13:10:57.331 17615-17615 PermissionGateScreen    com.cdccreditsmart.app               I    ✅ Administrador do Dispositivo
+2025-12-16 13:10:57.331 17615-17615 PermissionGateScreen    com.cdccreditsmart.app               I    ✅ Permissões Básicas
+2025-12-16 13:10:57.331 17615-17615 PermissionGateScreen    com.cdccreditsmart.app               I    ✅ Mostrar Alertas
+2025-12-16 13:10:57.331 17615-17615 PermissionGateScreen    com.cdccreditsmart.app               I    ✅ Execução em Segundo Plano
+2025-12-16 13:10:57.331 17615-17615 PermissionGateScreen    com.cdccreditsmart.app               I  ========================================
+2025-12-16 13:10:57.331 17615-17615 PermissionGateScreen    com.cdccreditsmart.app               D  ⏰ Iniciando verificação periódica de permissões...
+2025-12-16 13:10:57.563 17615-17620 creditsmart.app         com.cdccreditsmart.app               I  Compiler allocated 5042KB to compile void android.view.ViewRootImpl.performTraversals()
+2025-12-16 13:11:01.815 17615-17663 ProfileInstaller        com.cdccreditsmart.app               D  Installing profile for com.cdccreditsmart.app
