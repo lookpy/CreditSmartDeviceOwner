@@ -49,3 +49,19 @@ The UI utilizes Jetpack Compose and Material 3 with a CDC institutional dark the
 - **Retrofit, OkHttp:** HTTP client libraries.
 - **WorkManager:** For background tasks.
 - **Kotlin Coroutines:** For asynchronous programming.
+
+## Recent Changes (2025-12-16)
+
+### Ultra-Light onEnabled Callback
+- **CRITICAL FIX**: Reduced onEnabled from 150+ to ~40 lines to prevent "Preparing work profile" hang
+- Infinix/XOS devices are especially sensitive to heavy callbacks during provisioning
+- All heavy work moved to onProfileProvisioningComplete
+
+### Infinix/XOS/Transsion Support
+- Added comprehensive protection for XOS system packages (30+ packages)
+- All com.transsion.*, com.infinix.*, com.tecno.*, com.itel.*, com.xos.* packages protected
+- AppBlockingManager refuses to block ANY package during provisioning (flag=false)
+
+### Provisioning-Safe Guard Initialization
+- SettingsGuard only starts after provisioningComplete flag is true
+- Multiple verification points: CDCApplication, CdcForegroundService, ScreenStateReceiver, SettingsGuardService
