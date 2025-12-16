@@ -21,7 +21,6 @@ class AppBlockingManager(private val context: Context) {
         private const val TAG = "AppBlockingManager"
         
         private val CRITICAL_NEVER_BLOCK_PACKAGES = listOf(
-            // === SISTEMA ANDROID CORE ===
             "android",
             "com.android.systemui",
             "com.android.settings",
@@ -31,51 +30,6 @@ class AppBlockingManager(private val context: Context) {
             "com.google.android.gms",
             "com.google.android.gsf",
             "com.cdccreditsmart.app",
-            
-            // === DISCADOR / TELEFONE - NUNCA BLOQUEAR ===
-            "com.android.dialer",
-            "com.android.phone",
-            "com.android.server.telecom",
-            "com.android.incallui",
-            "com.android.contacts",
-            "com.android.providers.contacts",
-            "com.android.providers.telephony",
-            "com.android.stk",
-            "com.google.android.dialer",
-            "com.google.android.contacts",
-            "com.samsung.android.dialer",
-            "com.samsung.android.incallui",
-            "com.samsung.android.contacts",
-            "com.sec.phone",
-            "com.miui.phone",
-            "com.android.incallui.mi",
-            "com.xiaomi.simactivate.service",
-            "com.huawei.contacts",
-            "com.huawei.phone",
-            "com.coloros.phonemanager",
-            "com.oppo.dialer",
-            "com.realme.dialer",
-            "com.oneplus.dialer",
-            "com.vivo.contacts",
-            "com.vivo.dialer",
-            "com.lge.phone",
-            "com.lge.ltecall",
-            "com.motorola.contacts",
-            "com.sonymobile.android.dialer",
-            "com.asus.contacts",
-            "com.hmd.phone",
-            "com.transsion.phone",
-            "com.transsion.dialer",
-            "com.transsion.contacts",
-            "com.infinix.dialer",
-            "com.tecno.dialer",
-            "com.itel.dialer",
-            "com.positivo.phone",
-            "com.zte.phone",
-            "com.tcl.phone",
-            "com.alcatel.contacts",
-            
-            // === LAUNCHERS ===
             "com.google.android.apps.nexuslauncher",
             "com.android.launcher3",
             "com.sec.android.app.launcher",
@@ -132,14 +86,7 @@ class AppBlockingManager(private val context: Context) {
         if (packageName.contains("launcher", ignoreCase = true)) return true
         if (packageName.contains("systemui", ignoreCase = true)) return true
         
-        // 3. CRÍTICO: Discador/Telefone - NUNCA bloquear em nenhuma marca/modelo
-        if (packageName.contains("dialer", ignoreCase = true)) return true
-        if (packageName.contains("incallui", ignoreCase = true)) return true
-        if (packageName.contains("telecom", ignoreCase = true)) return true
-        if (packageName.endsWith(".phone", ignoreCase = true)) return true
-        if (packageName.contains(".phone.", ignoreCase = true)) return true
-        
-        // 4. CRÍTICO: Verificar FLAG_SYSTEM - NUNCA bloquear apps de sistema!
+        // 3. CRÍTICO: Verificar FLAG_SYSTEM - NUNCA bloquear apps de sistema!
         // Apps de sistema são pré-instalados e essenciais para o Android funcionar
         try {
             val appInfo = context.packageManager.getApplicationInfo(packageName, 0)
