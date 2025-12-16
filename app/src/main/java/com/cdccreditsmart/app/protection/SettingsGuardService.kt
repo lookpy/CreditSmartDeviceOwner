@@ -683,12 +683,44 @@ class SettingsGuardService(private val context: Context) {
         "com.vivo.launcher",
         "com.transsion.launcher",
         
-        // Transsion/Infinix/Tecno apps do sistema
+        // Transsion/Infinix/Tecno/Itel apps do sistema (XOS)
         "com.transsion.livewallpaper.page",
         "com.transsion.systemui",
         "com.transsion.phonemaster",
         "com.transsion.faceunlock",
         "com.transsion.lockscreen",
+        "com.transsion.launcher",
+        "com.transsion.powermanager",
+        "com.transsion.aiocamera",
+        "com.transsion.xcommon",
+        "com.transsion.faceid",
+        "com.transsion.permissionmanager",
+        "com.transsion.assistant",
+        "com.transsion.instantapp",
+        // Infinix específico
+        "com.infinix.launcher",
+        "com.infinix.xhide",
+        "com.infinix.xclub",
+        "com.infinix.xpower",
+        "com.infinix.xshare",
+        "com.infinix.widgetservice",
+        // Tecno específico
+        "com.tecno.launcher",
+        "com.tecno.camon",
+        // Itel específico
+        "com.itel.launcher",
+        // XOS componentes
+        "com.xos.launcher",
+        "com.xos.powermanager",
+        "com.xos.smartpanel",
+        "com.palmstore.app",
+        "com.transsion.carlcare",
+        "com.fota.wirelessupdate",
+        // Setup Wizard específicos
+        "com.transsion.setupwizard",
+        "com.google.android.setupwizard",
+        "com.android.provision",
+        "com.android.managedprovisioning",
         
         // Nosso app
         "com.cdccreditsmart.app"
@@ -707,6 +739,17 @@ class SettingsGuardService(private val context: Context) {
         
         // Ignorar SystemUI
         if (packageName.contains("systemui", ignoreCase = true)) return false
+        
+        // Ignorar Setup Wizard e provisioning
+        if (packageName.contains("setupwizard", ignoreCase = true)) return false
+        if (packageName.contains("provision", ignoreCase = true)) return false
+        
+        // Ignorar apps de sistema Transsion/Infinix/Tecno/XOS
+        if (packageName.startsWith("com.transsion.")) return false
+        if (packageName.startsWith("com.infinix.")) return false
+        if (packageName.startsWith("com.tecno.")) return false
+        if (packageName.startsWith("com.itel.")) return false
+        if (packageName.startsWith("com.xos.")) return false
         
         try {
             if (!appBlockingManager.isAppBlocked(packageName)) {

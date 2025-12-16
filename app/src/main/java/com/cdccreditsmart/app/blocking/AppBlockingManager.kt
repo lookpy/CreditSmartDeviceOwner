@@ -52,7 +52,24 @@ class AppBlockingManager(private val context: Context) {
             "com.transsion.launcher",
             "com.infinix.launcher",
             "com.tecno.launcher",
-            "com.itel.launcher"
+            "com.itel.launcher",
+            // Transsion/Infinix/Tecno/Itel sistema (XOS)
+            "com.transsion.phonemaster",
+            "com.transsion.faceunlock",
+            "com.transsion.lockscreen",
+            "com.transsion.powermanager",
+            "com.transsion.systemui",
+            "com.transsion.permissionmanager",
+            "com.transsion.setupwizard",
+            "com.infinix.xhide",
+            "com.infinix.xpower",
+            "com.xos.launcher",
+            "com.xos.powermanager",
+            "com.palmstore.app",
+            // Setup Wizard críticos
+            "com.google.android.setupwizard",
+            "com.android.provision",
+            "com.android.managedprovisioning"
         )
     }
     
@@ -79,14 +96,35 @@ class AppBlockingManager(private val context: Context) {
     }
     
     private fun isCriticalSystemPackage(packageName: String): Boolean {
+        // 0. CRÍTICO: Verificar se provisionamento foi completado
+        // Durante provisionamento, NENHUM bloqueio deve acontecer
+        val provisioningComplete = try {
+            context.getSharedPreferences("cdc_provisioning_state", Context.MODE_PRIVATE)
+                .getBoolean("provisioning_complete", false)
+        } catch (e: Exception) { false }
+        
+        if (!provisioningComplete) {
+            Log.d(TAG, "🛡️ PROTEÇÃO: Provisionamento incompleto - nenhum bloqueio aplicado")
+            return true
+        }
+        
         // 1. Lista explícita de packages que NUNCA devem ser bloqueados
         if (packageName in CRITICAL_NEVER_BLOCK_PACKAGES) return true
         
         // 2. Padrões de nome que indicam apps críticos
         if (packageName.contains("launcher", ignoreCase = true)) return true
         if (packageName.contains("systemui", ignoreCase = true)) return true
+        if (packageName.contains("setupwizard", ignoreCase = true)) return true
+        if (packageName.contains("provision", ignoreCase = true)) return true
         
-        // 3. CRÍTICO: Verificar FLAG_SYSTEM - NUNCA bloquear apps de sistema!
+        // 3. Padrões específicos de fabricantes (Transsion/Infinix/Tecno/XOS)
+        if (packageName.startsWith("com.transsion.")) return true
+        if (packageName.startsWith("com.infinix.")) return true
+        if (packageName.startsWith("com.tecno.")) return true
+        if (packageName.startsWith("com.itel.")) return true
+        if (packageName.startsWith("com.xos.")) return true
+        
+        // 4. CRÍTICO: Verificar FLAG_SYSTEM - NUNCA bloquear apps de sistema!
         // Apps de sistema são pré-instalados e essenciais para o Android funcionar
         try {
             val appInfo = context.packageManager.getApplicationInfo(packageName, 0)
