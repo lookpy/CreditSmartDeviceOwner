@@ -302,16 +302,6 @@ class BlockedAppInterceptor(private val context: Context) {
     
     private fun showBlockedAppExplanation(packageName: String) {
         try {
-            // IMPORTANTE: Força o fechamento do app bloqueado ANTES de mostrar a tela
-            // Isso previne que o usuário veja o app funcionando por alguns segundos
-            val activityManager = context.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
-            try {
-                activityManager.killBackgroundProcesses(packageName)
-                Log.i(TAG, "🚫 Processo do app bloqueado finalizado: $packageName")
-            } catch (e: Exception) {
-                Log.w(TAG, "⚠️ Não foi possível finalizar processo (requer Device Owner): ${e.message}")
-            }
-            
             val blockingInfo = appBlockingManager.getBlockingInfo()
             
             val intent = Intent(context, BlockedAppExplanationActivity::class.java).apply {

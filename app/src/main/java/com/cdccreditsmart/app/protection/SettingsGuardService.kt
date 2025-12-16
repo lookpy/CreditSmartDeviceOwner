@@ -2803,27 +2803,13 @@ class SettingsGuardService(private val context: Context) {
                         }, 100)
                     }
                 } catch (e: SecurityException) {
-                    killSettingsProcess()
+                    Log.w(TAG, "⚠️ Sem permissão para suspender Settings")
                 }
             } else {
-                killSettingsProcess()
+                Log.w(TAG, "⚠️ Não é Device Owner - Settings não pode ser forçado a fechar")
             }
         } catch (e: Exception) {
             Log.e(TAG, "Erro ao forçar fechamento do Settings: ${e.message}")
-        }
-    }
-    
-    /**
-     * Tenta matar o processo do Settings em background
-     * Funciona como fallback quando não é Device Owner
-     */
-    private fun killSettingsProcess() {
-        try {
-            val activityManager = context.getSystemService(Context.ACTIVITY_SERVICE) as? ActivityManager
-            activityManager?.killBackgroundProcesses("com.android.settings")
-            Log.d(TAG, "💀 Tentativa de matar processo Settings em background")
-        } catch (e: Exception) {
-            Log.w(TAG, "⚠️ Não foi possível matar processo Settings: ${e.message}")
         }
     }
     
