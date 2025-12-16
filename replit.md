@@ -127,3 +127,26 @@ The UI leverages Jetpack Compose and Material 3, incorporating a CDC institution
 - **REMOVED**: killBackgroundProcesses() em BlockedAppInterceptor.kt e SettingsGuardService.kt
 - **MANTIDO**: ReflectionKnoxClient.kt (SDK Samsung legítimo para MDM)
 - **MANTIDO**: setApplicationHidden toggle como método principal de fechamento de apps
+
+### Work Profile Provisioning Fix (2025-12-16)
+- **ROOT CAUSE**: Manifest declarava ~25 permissões privilegiadas/signature que bloqueiam ManagedProvisioning
+- **REMOVED do Manifest**:
+  - READ_PRIVILEGED_PHONE_STATE (signature)
+  - INSTALL_PACKAGES, DELETE_PACKAGES (signature)
+  - MANAGE_DEVICE_ADMINS, MANAGE_PROFILE_AND_DEVICE_OWNERS (signature)
+  - REBOOT (signature)
+  - MANAGE_USERS, CREATE_USERS (signature)
+  - EXPAND_STATUS_BAR, BIND_DEVICE_SERVICE (signature)
+  - FOREGROUND_SERVICE_SYSTEM_EXEMPTED, REQUEST_PASSWORD_COMPLEXITY
+  - FOREGROUND_SERVICE_MICROPHONE, FOREGROUND_SERVICE_MEDIA_PROJECTION
+  - RECORD_AUDIO (não usado)
+  - Todas as 22 permissões MANAGE_DEVICE_POLICY_* (Android 14/15 privileged)
+  - UPDATE_DEVICE_MANAGEMENT_RESOURCES
+- **MANTIDAS** (grantable para DPC apps):
+  - READ_PHONE_STATE, BIND_DEVICE_ADMIN, WAKE_LOCK
+  - REQUEST_INSTALL_PACKAGES, REQUEST_DELETE_PACKAGES
+  - DISABLE_KEYGUARD, FOREGROUND_SERVICE, RECEIVE_BOOT_COMPLETED
+  - Location (FINE, COARSE, BACKGROUND), CAMERA
+  - SYSTEM_ALERT_WINDOW, PACKAGE_USAGE_STATS (com tools:ignore)
+  - QUERY_ALL_PACKAGES, POST_NOTIFICATIONS, SCHEDULE_EXACT_ALARM
+- **Device Owner vs Work Profile**: DO provisioning ignora compatibilidade de permissões; WP valida estritamente

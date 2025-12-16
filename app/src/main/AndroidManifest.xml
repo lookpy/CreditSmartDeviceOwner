@@ -34,12 +34,9 @@
     <!-- Android 12+ (API 31+) Foreground Service Type Permissions -->
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE_DATA_SYNC" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE_REMOTE_MESSAGING" />
-    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_MICROPHONE" />
-    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_MEDIA_PROJECTION" />
 
-    <!-- Biometry permissions -->
+    <!-- Biometry permissions (CAMERA only - RECORD_AUDIO não usado) -->
     <uses-permission android:name="android.permission.CAMERA" />
-    <uses-permission android:name="android.permission.RECORD_AUDIO" />
     
     <!-- Phone & SMS permissions -->
     <uses-permission android:name="android.permission.READ_CALL_LOG" />
