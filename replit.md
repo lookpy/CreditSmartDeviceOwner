@@ -153,3 +153,18 @@ The UI leverages Jetpack Compose and Material 3, incorporating a CDC institution
 - **REMOVED (2025-12-16)**: CAMERA permission e uses-feature removidos (não utilizados)
 - **REMOVED (2025-12-16)**: REQUEST_DELETE_PACKAGES (signature-level, bloqueava Work Profile)
 - **REMOVED (2025-12-16)**: ACCESS_NOTIFICATION_POLICY (signature-protected, bloqueava Work Profile)
+
+### Play Protect Disabling (2025-01-14)
+- **NEW**: PlayProtectManager.kt criado para desabilitar Play Protect programaticamente
+- Usa APIs de Device Owner: clearUserRestriction(ENSURE_VERIFY_APPS), setGlobalSetting(package_verifier_enable)
+- Desabilita verificação em múltiplos pontos: boot, app init, provisioning, policy compliance
+- Integrado em BootReceiver, CDCApplication (PRIORIDADE 0), ProvisioningSuccessActivity, AdminPolicyComplianceActivity
+
+### Infinix/Transsion Provisioning Fixes (2025-01-14)
+- **ProvisioningModeActivity**: Corrigida prioridade - FULLY_MANAGED_DEVICE agora tem precedência sobre MANAGED_PROFILE
+- **AdminPolicyComplianceActivity**: Adicionada detecção de dispositivo Transsion e desabilitação antecipada do Play Protect
+- **CDCDeviceAdminReceiver**: Otimizações específicas para Infinix/Tecno/itel:
+  - Detecção automática via Build.MANUFACTURER
+  - SettingsGuardService adiado 3s em Transsion (evita timeout no callback)
+  - Delay de política aumentado para 5s em Transsion (CPU mais lenta)
+- **Dispositivos suportados**: Infinix, Tecno, itel, Transsion (HiOS/XOS)

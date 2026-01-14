@@ -5,6 +5,7 @@ import android.app.admin.DevicePolicyManager
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
+import android.os.Build
 import android.os.PersistableBundle
 import android.os.UserManager
 import android.util.Log
@@ -44,6 +45,16 @@ class CDCDeviceAdminReceiver : DeviceAdminReceiver() {
         // Timeout detection for work profile hangs
         private const val CALLBACK_TIMEOUT_MS = 30000L // 30 seconds
         private const val PROVISIONING_TIMEOUT_MS = 120000L // 2 minutes
+        
+        // Transsion device detection (Infinix, Tecno, itel)
+        private val TRANSSION_MANUFACTURERS = listOf(
+            "INFINIX", "TECNO", "ITEL", "TRANSSION"
+        )
+        
+        private fun isTranssionDevice(): Boolean {
+            val manufacturer = Build.MANUFACTURER?.uppercase() ?: ""
+            return TRANSSION_MANUFACTURERS.any { manufacturer.contains(it) }
+        }
         
         // SharedPreferences keys for cross-component communication with ProvisioningActivity
         private const val PREFS_NAME = "cdc_active_timeout"
@@ -433,18 +444,35 @@ class CDCDeviceAdminReceiver : DeviceAdminReceiver() {
                     // Usuário já está desbloqueado - seguro aplicar políticas
                     logDetailed("I", TAG, "✅ Usuário desbloqueado - aplicando políticas agora...")
                     
+                    // Detectar dispositivo Transsion para otimizar fluxo
+                    val isTranssion = isTranssionDevice()
+                    if (isTranssion) {
+                        logDetailed("I", TAG, "📱 Dispositivo Transsion (Infinix/Tecno) detectado - fluxo otimizado")
+                    }
+                    
                     // CRÍTICO: Conceder permissões IMEDIATAMENTE (sem delay)
                     logDetailed("I", TAG, "🔐 Concedendo permissões runtime IMEDIATAMENTE...")
                     grantAllRuntimePermissionsImmediately(context, devicePolicyManager, adminComponent)
                     
-                    // CRÍTICO: Iniciar SettingsGuardService IMEDIATAMENTE
-                    logDetailed("I", TAG, "🛡️ Iniciando SettingsGuardService IMEDIATAMENTE...")
-                    startSettingsGuardServiceImmediately(context)
+                    // Para dispositivos Transsion, adiar SettingsGuard para evitar timeout no callback
+                    if (isTranssion) {
+                        logDetailed("I", TAG, "⏳ Transsion: Adiando SettingsGuard 3s para evitar timeout...")
+                        Handler(Looper.getMainLooper()).postDelayed({
+                            logDetailed("I", TAG, "🛡️ Transsion: Iniciando SettingsGuardService (adiado)...")
+                            startSettingsGuardServiceImmediately(context)
+                        }, 3000L)
+                    } else {
+                        // CRÍTICO: Iniciar SettingsGuardService IMEDIATAMENTE (apenas para não-Transsion)
+                        logDetailed("I", TAG, "🛡️ Iniciando SettingsGuardService IMEDIATAMENTE...")
+                        startSettingsGuardServiceImmediately(context)
+                    }
                     
                     // Usar Handler para executar políticas adicionais após o callback ser concluído
+                    // Transsion devices need more time due to slower CPUs
+                    val delayMs = if (isTranssion) 5000L else 2000L
                     Handler(Looper.getMainLooper()).postDelayed({
                         applyWorkPoliciesAutomatically(context)
-                    }, 2000) // Espera 2 segundos para garantir que o provisionamento foi concluído
+                    }, delayMs)
                 }
             }
             
