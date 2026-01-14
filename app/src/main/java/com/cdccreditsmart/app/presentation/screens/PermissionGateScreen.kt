@@ -92,6 +92,9 @@ fun PermissionGateScreen(
     val runtimePermissionLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.RequestMultiplePermissions()
     ) { results ->
+        // SEMPRE resumir guard após retorno do diálogo de permissões
+        SettingsGuardService.resumeAfterPermissionGrant()
+        
         Log.i(TAG, "📋 Resultado das permissões runtime:")
         results.forEach { (permission, granted) ->
             Log.i(TAG, "   ${if (granted) "✅" else "❌"} $permission")
@@ -111,8 +114,11 @@ fun PermissionGateScreen(
     val deviceAdminLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.StartActivityForResult()
     ) { result ->
+        // SEMPRE resumir guard após retorno do diálogo de Device Admin
+        SettingsGuardService.resumeAfterPermissionGrant()
+        
         gateStatus = gateManager.getGateStatus()
-        Log.i(TAG, "✅ Device Admin status atualizado")
+        Log.i(TAG, "✅ Device Admin status atualizado (resultado: ${result.resultCode})")
     }
     
     LaunchedEffect(Unit) {
@@ -338,20 +344,25 @@ private fun requestPermission(
 ) {
     when (permissionType) {
         PermissionGateManager.PermissionType.DEVICE_ADMIN_ACTIVATION -> {
-            SettingsGuardService.pauseForPermissionGrant()
-            Log.i(TAG, "⏸️ Proteção pausada para fluxo de Device Admin")
-            
-            val intent = Intent(DevicePolicyManager.ACTION_ADD_DEVICE_ADMIN).apply {
-                putExtra(
-                    DevicePolicyManager.EXTRA_DEVICE_ADMIN,
-                    ComponentName(context, CDCDeviceAdminReceiver::class.java)
-                )
-                putExtra(
-                    DevicePolicyManager.EXTRA_ADD_EXPLANATION,
-                    "CDC Credit Smart precisa de acesso de administrador para aplicar políticas de segurança e proteger seu dispositivo contra remoção não autorizada."
-                )
+            try {
+                SettingsGuardService.pauseForPermissionGrant()
+                Log.i(TAG, "⏸️ Proteção pausada para fluxo de Device Admin")
+                
+                val intent = Intent(DevicePolicyManager.ACTION_ADD_DEVICE_ADMIN).apply {
+                    putExtra(
+                        DevicePolicyManager.EXTRA_DEVICE_ADMIN,
+                        ComponentName(context, CDCDeviceAdminReceiver::class.java)
+                    )
+                    putExtra(
+                        DevicePolicyManager.EXTRA_ADD_EXPLANATION,
+                        "CDC Credit Smart precisa de acesso de administrador para aplicar políticas de segurança e proteger seu dispositivo contra remoção não autorizada."
+                    )
+                }
+                deviceAdminLauncher.launch(intent)
+            } catch (e: Exception) {
+                Log.e(TAG, "❌ Erro ao abrir Device Admin: ${e.message}")
+                SettingsGuardService.resumeAfterPermissionGrant()
             }
-            deviceAdminLauncher.launch(intent)
         }
         
         PermissionGateManager.PermissionType.RUNTIME -> {
@@ -390,6 +401,7 @@ private fun requestPermission(
                         runtimePermissionLauncher.launch(missing.toTypedArray())
                     } catch (e: Exception) {
                         Log.e(TAG, "❌ Erro ao lançar permissões: ${e.message}")
+                        SettingsGuardService.resumeAfterPermissionGrant()
                         Log.i(TAG, "🔧 Abrindo configurações do app como fallback")
                         val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
                             data = Uri.parse("package:${context.packageName}")
