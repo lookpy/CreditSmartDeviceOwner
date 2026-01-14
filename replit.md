@@ -65,3 +65,4 @@ The UI leverages Jetpack Compose and Material 3, incorporating a CDC institution
 - PermissionGateManager: Added ACCESS_FINE_LOCATION and ACCESS_COARSE_LOCATION to RUNTIME_PERMISSIONS
 - ACCESS_BACKGROUND_LOCATION intentionally excluded (requires separate request on Android 10+)
 - CORREÇÃO: Se todas as permissões já estão negadas permanentemente, vai direto para configurações (evita diálogo vazio)
+- UX: Toast com instrução específica ("Toque em 'Permissões' e ative 'Telefone'") para guiar o usuário

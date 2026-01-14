@@ -1,13 +1,16 @@
 package com.cdccreditsmart.app.presentation.screens
 
+import android.Manifest
 import android.app.Activity
 import android.app.admin.DevicePolicyManager
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
+import android.os.Build
 import android.provider.Settings
 import android.util.Log
+import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.*
@@ -402,12 +405,8 @@ private fun requestPermission(
                 // Se todas foram negadas permanentemente, ir direto para configurações
                 // Caso contrário, tentar o diálogo se nunca perguntou ou se pode perguntar
                 if (allPermanentlyDenied) {
-                    Log.i(TAG, "🔧 Todas as permissões já negadas permanentemente - abrindo configurações")
-                    val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
-                        data = Uri.parse("package:${context.packageName}")
-                        addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                    }
-                    context.startActivity(intent)
+                    Log.i(TAG, "🔧 Todas as permissões já negadas permanentemente - abrindo tela de permissões")
+                    openAppPermissionsScreen(context, missing.firstOrNull())
                 } else if (neverAskedBefore || canAskViaDialog) {
                     Log.i(TAG, "📱 Lançando diálogo de permissões runtime")
                     try {
@@ -423,12 +422,8 @@ private fun requestPermission(
                         context.startActivity(intent)
                     }
                 } else {
-                    Log.i(TAG, "🔧 Permissões faltantes negadas permanentemente - abrindo configurações")
-                    val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
-                        data = Uri.parse("package:${context.packageName}")
-                        addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                    }
-                    context.startActivity(intent)
+                    Log.i(TAG, "🔧 Permissões faltantes negadas permanentemente - abrindo tela de permissões")
+                    openAppPermissionsScreen(context, missing.firstOrNull())
                 }
             } else {
                 Log.i(TAG, "✅ Todas as permissões runtime já concedidas")
@@ -462,6 +457,88 @@ private fun requestPermission(
             }
             context.startActivity(intent)
         }
+    }
+}
+
+/**
+ * Abre a tela de permissões do app diretamente, ou a tela específica da permissão quando possível.
+ * Mostra um Toast com instrução para o usuário.
+ */
+private fun openAppPermissionsScreen(context: Context, permission: String?) {
+    try {
+        // Determinar qual permissão abrir e qual mensagem mostrar
+        val (permissionName, toastMessage) = getPermissionInfo(permission)
+        
+        // Mostrar Toast com instrução
+        Toast.makeText(
+            context,
+            toastMessage,
+            Toast.LENGTH_LONG
+        ).show()
+        
+        // Android 11+ (API 30): Tentar abrir tela de permissões do app diretamente
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            try {
+                val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
+                    data = Uri.parse("package:${context.packageName}")
+                    addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                }
+                context.startActivity(intent)
+                Log.i(TAG, "🔧 Abrindo configurações do app (Android 11+)")
+                return
+            } catch (e: Exception) {
+                Log.w(TAG, "Falha ao abrir configurações específicas: ${e.message}")
+            }
+        }
+        
+        // Fallback: Abrir configurações gerais do app
+        val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
+            data = Uri.parse("package:${context.packageName}")
+            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        }
+        context.startActivity(intent)
+        Log.i(TAG, "🔧 Abrindo configurações do app (fallback)")
+        
+    } catch (e: Exception) {
+        Log.e(TAG, "❌ Erro ao abrir configurações: ${e.message}")
+        // Último fallback: configurações gerais
+        try {
+            val intent = Intent(Settings.ACTION_SETTINGS).apply {
+                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            }
+            context.startActivity(intent)
+        } catch (e2: Exception) {
+            Log.e(TAG, "❌ Erro fatal ao abrir configurações: ${e2.message}")
+        }
+    }
+}
+
+/**
+ * Retorna informações sobre a permissão para exibir ao usuário
+ */
+private fun getPermissionInfo(permission: String?): Pair<String, String> {
+    return when (permission) {
+        Manifest.permission.READ_CALL_LOG, 
+        Manifest.permission.CALL_PHONE -> 
+            "Telefone" to "Toque em 'Permissões' e ative 'Telefone'"
+            
+        Manifest.permission.READ_CONTACTS -> 
+            "Contatos" to "Toque em 'Permissões' e ative 'Contatos'"
+            
+        Manifest.permission.ACCESS_FINE_LOCATION,
+        Manifest.permission.ACCESS_COARSE_LOCATION -> 
+            "Localização" to "Toque em 'Permissões' e ative 'Localização'"
+            
+        Manifest.permission.POST_NOTIFICATIONS -> 
+            "Notificações" to "Toque em 'Notificações' e ative"
+            
+        Manifest.permission.READ_PHONE_STATE,
+        Manifest.permission.READ_PHONE_NUMBERS,
+        Manifest.permission.ANSWER_PHONE_CALLS -> 
+            "Telefone" to "Toque em 'Permissões' e ative 'Telefone'"
+            
+        else -> 
+            "Permissões" to "Toque em 'Permissões' e ative todas as opções"
     }
 }
 
