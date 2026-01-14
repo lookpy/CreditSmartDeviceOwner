@@ -389,13 +389,26 @@ private fun requestPermission(
                     } ?: true
                 }
                 
+                // CORREÇÃO: Se TODAS as permissões estão negadas permanentemente,
+                // ir direto para configurações mesmo na primeira vez
+                val allPermanentlyDenied = permanentlyDenied.size == missing.size && missing.isNotEmpty()
                 val neverAskedBefore = !runtimeAlreadyAsked
                 
                 Log.i(TAG, "   runtimeAlreadyAsked: $runtimeAlreadyAsked")
                 Log.i(TAG, "   canAskViaDialog: $canAskViaDialog")
                 Log.i(TAG, "   neverAskedBefore: $neverAskedBefore")
+                Log.i(TAG, "   allPermanentlyDenied: $allPermanentlyDenied")
                 
-                if (neverAskedBefore || canAskViaDialog) {
+                // Se todas foram negadas permanentemente, ir direto para configurações
+                // Caso contrário, tentar o diálogo se nunca perguntou ou se pode perguntar
+                if (allPermanentlyDenied) {
+                    Log.i(TAG, "🔧 Todas as permissões já negadas permanentemente - abrindo configurações")
+                    val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
+                        data = Uri.parse("package:${context.packageName}")
+                        addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                    }
+                    context.startActivity(intent)
+                } else if (neverAskedBefore || canAskViaDialog) {
                     Log.i(TAG, "📱 Lançando diálogo de permissões runtime")
                     try {
                         runtimePermissionLauncher.launch(missing.toTypedArray())
@@ -410,7 +423,7 @@ private fun requestPermission(
                         context.startActivity(intent)
                     }
                 } else {
-                    Log.i(TAG, "🔧 Todas as permissões faltantes foram negadas permanentemente - abrindo configurações")
+                    Log.i(TAG, "🔧 Permissões faltantes negadas permanentemente - abrindo configurações")
                     val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
                         data = Uri.parse("package:${context.packageName}")
                         addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)

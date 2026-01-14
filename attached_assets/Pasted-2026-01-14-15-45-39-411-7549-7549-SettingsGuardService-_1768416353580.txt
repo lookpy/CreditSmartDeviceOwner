@@ -1,0 +1,51 @@
+2026-01-14 15:45:39.411  7549-7549  SettingsGuardService    com.cdccreditsmart.app               I  ⏸️ Guard PAUSADO para fluxo de permissões (timeout: 30s)
+2026-01-14 15:45:39.411  7549-7549  PermissionGateScreen    com.cdccreditsmart.app               I  ⏸️ Proteção pausada para fluxo de permissões runtime
+2026-01-14 15:45:39.414  7549-7549  PermissionGateScreen    com.cdccreditsmart.app               I     Negadas permanentemente: 5
+2026-01-14 15:45:39.414  7549-7549  PermissionGateScreen    com.cdccreditsmart.app               W     ⛔ android.permission.READ_CALL_LOG
+2026-01-14 15:45:39.414  7549-7549  PermissionGateScreen    com.cdccreditsmart.app               W     ⛔ android.permission.CALL_PHONE
+2026-01-14 15:45:39.414  7549-7549  PermissionGateScreen    com.cdccreditsmart.app               W     ⛔ android.permission.READ_CONTACTS
+2026-01-14 15:45:39.414  7549-7549  PermissionGateScreen    com.cdccreditsmart.app               W     ⛔ android.permission.ANSWER_PHONE_CALLS
+2026-01-14 15:45:39.414  7549-7549  PermissionGateScreen    com.cdccreditsmart.app               W     ⛔ android.permission.READ_PHONE_NUMBERS
+2026-01-14 15:45:39.415  7549-7549  PermissionGateScreen    com.cdccreditsmart.app               I     runtimeAlreadyAsked: false
+2026-01-14 15:45:39.415  7549-7549  PermissionGateScreen    com.cdccreditsmart.app               I     canAskViaDialog: false
+2026-01-14 15:45:39.415  7549-7549  PermissionGateScreen    com.cdccreditsmart.app               I     neverAskedBefore: true
+2026-01-14 15:45:39.415  7549-7549  PermissionGateScreen    com.cdccreditsmart.app               I  📱 Lançando diálogo de permissões runtime
+2026-01-14 15:45:39.564  7549-7549  SettingsGuardService    com.cdccreditsmart.app               I  ▶️ Guard RETOMADO após fluxo de permissões
+2026-01-14 15:45:39.564  7549-7549  PermissionGateScreen    com.cdccreditsmart.app               I  📋 Resultado das permissões runtime:
+2026-01-14 15:45:39.564  7549-7549  PermissionGateScreen    com.cdccreditsmart.app               I     ❌ android.permission.READ_CALL_LOG
+2026-01-14 15:45:39.564  7549-7549  PermissionGateScreen    com.cdccreditsmart.app               I     ❌ android.permission.CALL_PHONE
+2026-01-14 15:45:39.564  7549-7549  PermissionGateScreen    com.cdccreditsmart.app               I     ❌ android.permission.READ_CONTACTS
+2026-01-14 15:45:39.564  7549-7549  PermissionGateScreen    com.cdccreditsmart.app               I     ❌ android.permission.ANSWER_PHONE_CALLS
+2026-01-14 15:45:39.564  7549-7549  PermissionGateScreen    com.cdccreditsmart.app               I     ❌ android.permission.READ_PHONE_NUMBERS
+2026-01-14 15:45:39.564  7549-7549  PermissionGateScreen    com.cdccreditsmart.app               I  📋 Permissões runtime ainda faltando: 5
+2026-01-14 15:45:39.564  7549-7549  PermissionGateScreen    com.cdccreditsmart.app               W     ❌ Ainda falta: android.permission.READ_CALL_LOG
+2026-01-14 15:45:39.564  7549-7549  PermissionGateScreen    com.cdccreditsmart.app               W     ❌ Ainda falta: android.permission.CALL_PHONE
+2026-01-14 15:45:39.564  7549-7549  PermissionGateScreen    com.cdccreditsmart.app               W     ❌ Ainda falta: android.permission.READ_CONTACTS
+2026-01-14 15:45:39.564  7549-7549  PermissionGateScreen    com.cdccreditsmart.app               W     ❌ Ainda falta: android.permission.ANSWER_PHONE_CALLS
+2026-01-14 15:45:39.564  7549-7549  PermissionGateScreen    com.cdccreditsmart.app               W     ❌ Ainda falta: android.permission.READ_PHONE_NUMBERS
+2026-01-14 15:45:39.564  7549-7549  PermissionGateScreen    com.cdccreditsmart.app               I     runtimePermissionAskedOnce = true
+2026-01-14 15:45:39.565  7549-7549  PermissionGateScreen    com.cdccreditsmart.app               I  ✅ Runtime permissions atualizadas - faltam total: 1
+2026-01-14 15:45:39.597  7549-7549  InsetsController        com.cdccreditsmart.app               D  hide(ime(), fromIme=false)
+2026-01-14 15:45:39.597  7549-7549  ImeTracker              com.cdccreditsmart.app               I  com.cdccreditsmart.app:bac011f0: onCancelled at PHASE_CLIENT_ALREADY_HIDDEN
+2026-01-14 15:45:41.745  7549-7549  PermissionGateScreen    com.cdccreditsmart.app               I  📋 Permissões runtime faltando: 5
+2026-01-14 15:45:41.745  7549-7549  PermissionGateScreen    com.cdccreditsmart.app               I     - android.permission.READ_CALL_LOG
+2026-01-14 15:45:41.745  7549-7549  PermissionGateScreen    com.cdccreditsmart.app               I     - android.permission.CALL_PHONE
+2026-01-14 15:45:41.745  7549-7549  PermissionGateScreen    com.cdccreditsmart.app               I     - android.permission.READ_CONTACTS
+2026-01-14 15:45:41.745  7549-7549  PermissionGateScreen    com.cdccreditsmart.app               I     - android.permission.ANSWER_PHONE_CALLS
+2026-01-14 15:45:41.745  7549-7549  PermissionGateScreen    com.cdccreditsmart.app               I     - android.permission.READ_PHONE_NUMBERS
+2026-01-14 15:45:41.745  7549-7549  SettingsGuardService    com.cdccreditsmart.app               I  ⏸️ Guard PAUSADO para fluxo de permissões (timeout: 30s)
+2026-01-14 15:45:41.745  7549-7549  PermissionGateScreen    com.cdccreditsmart.app               I  ⏸️ Proteção pausada para fluxo de permissões runtime
+2026-01-14 15:45:41.747  7549-7549  PermissionGateScreen    com.cdccreditsmart.app               I     Negadas permanentemente: 5
+2026-01-14 15:45:41.747  7549-7549  PermissionGateScreen    com.cdccreditsmart.app               W     ⛔ android.permission.READ_CALL_LOG
+2026-01-14 15:45:41.747  7549-7549  PermissionGateScreen    com.cdccreditsmart.app               W     ⛔ android.permission.CALL_PHONE
+2026-01-14 15:45:41.747  7549-7549  PermissionGateScreen    com.cdccreditsmart.app               W     ⛔ android.permission.READ_CONTACTS
+2026-01-14 15:45:41.747  7549-7549  PermissionGateScreen    com.cdccreditsmart.app               W     ⛔ android.permission.ANSWER_PHONE_CALLS
+2026-01-14 15:45:41.747  7549-7549  PermissionGateScreen    com.cdccreditsmart.app               W     ⛔ android.permission.READ_PHONE_NUMBERS
+2026-01-14 15:45:41.748  7549-7549  PermissionGateScreen    com.cdccreditsmart.app               I     runtimeAlreadyAsked: true
+2026-01-14 15:45:41.748  7549-7549  PermissionGateScreen    com.cdccreditsmart.app               I     canAskViaDialog: false
+2026-01-14 15:45:41.748  7549-7549  PermissionGateScreen    com.cdccreditsmart.app               I     neverAskedBefore: false
+2026-01-14 15:45:41.748  7549-7549  PermissionGateScreen    com.cdccreditsmart.app               I  🔧 Todas as permissões faltantes foram negadas permanentemente - abrindo configurações
+2026-01-14 15:45:42.189  7549-7616  SettingsGuardService    com.cdccreditsmart.app               D  ✅ Atividade permitida durante fluxo de permissões: com.android.settings.spa.SpaActivity
+2026-01-14 15:45:42.462  7549-7549  VRI[MainActivity]       com.cdccreditsmart.app               D  visibilityChanged oldVisibility=true newVisibility=false
+2026-01-14 15:45:42.492  7549-7613  HWUI                    com.cdccreditsmart.app               D  endAllActiveAnimators on 0x70830e27a550 (UnprojectedRipple) with handle 0x70825e26dcd0
+2026-01-14 15:45:43.827  7549-7695  FA                      com.cdccreditsmart.app               I  Application backgrounded at: timestamp_millis: 1768416341825

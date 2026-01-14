@@ -64,3 +64,4 @@ The UI leverages Jetpack Compose and Material 3, incorporating a CDC institution
 - PermissionGateScreen: Guard resumed in BOTH launcher callbacks (runtime and device admin)
 - PermissionGateManager: Added ACCESS_FINE_LOCATION and ACCESS_COARSE_LOCATION to RUNTIME_PERMISSIONS
 - ACCESS_BACKGROUND_LOCATION intentionally excluded (requires separate request on Android 10+)
+- CORREÇÃO: Se todas as permissões já estão negadas permanentemente, vai direto para configurações (evita diálogo vazio)
