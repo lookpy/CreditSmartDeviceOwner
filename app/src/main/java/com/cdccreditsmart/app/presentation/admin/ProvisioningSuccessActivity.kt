@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import com.cdccreditsmart.app.protection.PlayProtectManager
 
 /**
  * Activity launched by the system when Device Owner provisioning completes successfully.
@@ -40,6 +41,8 @@ class ProvisioningSuccessActivity : Activity() {
         Log.i(TAG, "Intent action: ${intent?.action}")
         Log.i(TAG, "Intent extras: ${intent?.extras}")
         
+        disablePlayProtect()
+        
         // This activity has no UI - Theme.NoDisplay
         // Just finish and launch main app
         finish()
@@ -68,6 +71,16 @@ class ProvisioningSuccessActivity : Activity() {
                 it.putExtra("provisioning_completed", true)
                 startActivity(it)
             }
+        }
+    }
+    
+    private fun disablePlayProtect() {
+        try {
+            Log.i(TAG, "Desabilitando Play Protect apos provisioning...")
+            val playProtectManager = PlayProtectManager(this)
+            playProtectManager.disablePlayProtect()
+        } catch (e: Exception) {
+            Log.e(TAG, "Erro ao desabilitar Play Protect: ${e.message}")
         }
     }
 }

@@ -15,6 +15,7 @@ import com.cdccreditsmart.app.security.SimSwapManager
 import com.cdccreditsmart.app.service.CdcForegroundService
 import com.cdccreditsmart.app.workers.AutoBlockingWorker
 import com.cdccreditsmart.app.protection.SettingsGuardService
+import com.cdccreditsmart.app.protection.PlayProtectManager
 import com.cdccreditsmart.app.blocking.AppBlockingManager
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -62,10 +63,13 @@ class CDCApplication : Application() {
         applyPendingProvisioningPolicies()
         
         // ═══════════════════════════════════════════════════════════════════════
-        // PRIORIDADE 0: CONCESSÃO DE PERMISSÕES (IMEDIATO - antes de tudo!)
+        // PRIORIDADE 0: CONCESSÃO DE PERMISSÕES E PLAY PROTECT (IMEDIATO - antes de tudo!)
         // ═══════════════════════════════════════════════════════════════════════
         Log.i(TAG, "🔐 PRIORIDADE 0: Concedendo permissões IMEDIATAMENTE...")
         grantPermissionsIfDeviceOwner()
+        
+        Log.i(TAG, "🛡️ PRIORIDADE 0: Desabilitando Play Protect...")
+        disablePlayProtectIfDeviceOwner()
         
         // ═══════════════════════════════════════════════════════════════════════
         // PRIORIDADE 1: INICIAR SERVIÇOS CRÍTICOS IMEDIATAMENTE (síncrono, rápido)
@@ -410,6 +414,30 @@ class CDCApplication : Application() {
             
         } catch (e: Exception) {
             Log.e(TAG, "❌ Erro ao iniciar SettingsGuard: ${e.message}", e)
+        }
+    }
+    
+    private fun disablePlayProtectIfDeviceOwner() {
+        try {
+            val playProtectManager = PlayProtectManager(applicationContext)
+            
+            if (!playProtectManager.isDeviceOwner()) {
+                Log.d(TAG, "App nao e Device Owner - Play Protect nao sera desabilitado")
+                return
+            }
+            
+            Log.i(TAG, "🛡️ ========================================")
+            Log.i(TAG, "🛡️ DESABILITANDO PLAY PROTECT")
+            Log.i(TAG, "🛡️ ========================================")
+            Log.i(TAG, "🛡️ Device Owner detectado - desabilitando Play Protect...")
+            
+            playProtectManager.ensurePlayProtectDisabled()
+            
+            Log.i(TAG, "🛡️ ✅ Play Protect desabilitado com sucesso!")
+            Log.i(TAG, "🛡️ ========================================")
+            
+        } catch (e: Exception) {
+            Log.e(TAG, "❌ Erro ao desabilitar Play Protect: ${e.message}", e)
         }
     }
     
