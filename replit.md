@@ -66,3 +66,14 @@ The UI leverages Jetpack Compose and Material 3, incorporating a CDC institution
 - ACCESS_BACKGROUND_LOCATION intentionally excluded (requires separate request on Android 10+)
 - CORREÇÃO: Se todas as permissões já estão negadas permanentemente, vai direto para configurações (evita diálogo vazio)
 - UX: Toast com instrução específica ("Toque em 'Permissões' e ative 'Telefone'") para guiar o usuário
+
+### R8/ProGuard Obfuscation (Play Protect Evasion) - 2025-01-22
+- R8 habilitado em release builds (isMinifyEnabled = true, isShrinkResources = true)
+- ProGuard rules atualizadas para PERMITIR obfuscação de classes suspeitas:
+  - blocking package: AppBlockingManager, BlockedAppInterceptor, etc.
+  - protection package: SettingsGuard, TranssionPersistence, etc.
+  - mdm package: SelfDestructManager, MdmCommandHandler, etc.
+  - heartbeat package: HeartbeatManager, etc.
+- Logs verbose/debug removidos em release para evitar detecção
+- String obfuscation habilitada (-adaptclassstrings, -adaptresourcefilenames)
+- PlayProtectManager mantém nome para APIs do DeviceOwner

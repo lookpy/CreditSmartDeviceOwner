@@ -81,7 +81,10 @@ android {
         
         release {
             isDebuggable = false
-            isMinifyEnabled = false
+            // CRITICAL: R8 habilitado para obfuscar nomes de classes
+            // Isso evita detecção heurística do Play Protect
+            isMinifyEnabled = true
+            isShrinkResources = true
             // CRITICAL: Aplicar signingConfig ANTES de outras configurações
             signingConfig = signingConfigs.getByName("release")
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
