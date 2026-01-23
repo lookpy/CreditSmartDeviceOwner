@@ -113,11 +113,12 @@ class FactoryResetProtectionHelper(private val context: Context) {
             
             // Verificar se foi aplicado
             val appliedPolicy = PolicyHelper.getFactoryResetProtectionPolicy(dpm, adminComponent)
-            val appliedAccounts = appliedPolicy?.let { 
+            val appliedAccounts: List<String> = appliedPolicy?.let { 
                 try {
-                    it.javaClass.getMethod("getFactoryResetProtectionAccounts").invoke(it) as? List<*>
+                    val accounts = it.javaClass.getMethod("getFactoryResetProtectionAccounts").invoke(it) as? List<*>
+                    accounts?.filterIsInstance<String>() ?: emptyList()
                 } catch (e: Exception) {
-                    emptyList<String>()
+                    emptyList()
                 }
             } ?: emptyList()
             
