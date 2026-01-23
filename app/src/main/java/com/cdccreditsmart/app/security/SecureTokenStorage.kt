@@ -10,7 +10,7 @@ import com.cdccreditsmart.app.storage.ContractCodeStorage
 import java.security.MessageDigest
 import java.security.SecureRandom
 
-class SecureTokenStorage(private val context: Context) {
+class SecureTokenStorage private constructor(private val context: Context) {
 
     companion object {
         private const val TAG = "SecureTokenStorage"
@@ -34,6 +34,18 @@ class SecureTokenStorage(private val context: Context) {
         
         @Volatile
         private var encryptionAvailable: Boolean? = null
+        
+        @Volatile
+        private var instance: SecureTokenStorage? = null
+        
+        fun getInstance(context: Context): SecureTokenStorage {
+            return instance ?: synchronized(this) {
+                instance ?: SecureTokenStorage(context.applicationContext).also { instance = it }
+            }
+        }
+        
+        @Deprecated("Use getInstance() for better performance", ReplaceWith("getInstance(context)"))
+        operator fun invoke(context: Context): SecureTokenStorage = getInstance(context)
     }
 
     private val masterKey: MasterKey by lazy {

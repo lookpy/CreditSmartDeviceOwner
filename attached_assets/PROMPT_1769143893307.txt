@@ -1,0 +1,138 @@
+2026-01-23 01:50:40.212 15093-15106 creditsmart.app         com.cdccreditsmart.app               I  Wrote stack traces to tombstoned
+2026-01-23 01:50:41.438 15093-15093 Choreographer           com.cdccreditsmart.app               I  Skipped 720 frames!  The application may be doing too much work on its main thread.
+2026-01-23 01:50:41.565 15093-18993 OpenGLRenderer          com.cdccreditsmart.app               I  Davey! duration=12425ms; Flags=0, FrameTimelineVsyncId=791044, IntendedVsync=3882051046147, Vsync=3882300854077, InputEventId=0, HandleInputStart=3882318503837, AnimationStart=3882318514799, PerformTraversalsStart=3886867743373, DrawStart=3886871882450, FrameDeadline=3882084370932, FrameInterval=3882317484645, FrameStartTime=16653862, SyncQueued=3894387745906, SyncStart=3894387892060, IssueDrawCommandsStart=3894390185137, SwapBuffers=3894468847906, FrameCompleted=3894476423483, DequeueBufferDuration=86231, QueueBufferDuration=561500, GpuCompleted=3894476423483, SwapBuffersCompleted=3894473372406, DisplayPresentTime=3878252902302, CommandSubmissionCompleted=3894468847906, 
+2026-01-23 01:50:41.604 15093-18993 OpenGLRenderer          com.cdccreditsmart.app               I  Davey! duration=12157ms; Flags=0, FrameTimelineVsyncId=791059, IntendedVsync=3882417435250, Vsync=3894408285730, InputEventId=0, HandleInputStart=3894420916752, AnimationStart=3894420923752, PerformTraversalsStart=3894542139290, DrawStart=3894544872406, FrameDeadline=3894508147728, FrameInterval=3894415311136, FrameStartTime=16653959, SyncQueued=3894545345059, SyncStart=3894545490059, IssueDrawCommandsStart=3894548897483, SwapBuffers=3894560461059, FrameCompleted=3894575485213, DequeueBufferDuration=24885, QueueBufferDuration=895769, GpuCompleted=3894575485213, SwapBuffersCompleted=3894572836675, DisplayPresentTime=3878269747494, CommandSubmissionCompleted=3894560461059, 
+2026-01-23 01:50:41.626 15093-15110 creditsmart.app         com.cdccreditsmart.app               I  Compiler allocated 6028KB to compile void com.cdccreditsmart.app.presentation.screens.terms.TermsAcceptanceScreenKt.TermsAcceptanceScreen(java.lang.String, kotlin.jvm.functions.Function0, androidx.compose.runtime.Composer, int)
+2026-01-23 01:50:42.546 15093-15093 TermsAcceptanceStorage  com.cdccreditsmart.app               I  Salvando aceitação de termos vv2.1 para contrato QJ3H4MKG
+2026-01-23 01:50:43.287 15093-15093 SecureTokenStorage      com.cdccreditsmart.app               D  EncryptedSharedPreferences initialized successfully
+2026-01-23 01:50:43.307 15093-15093 SecureTokenStorage      com.cdccreditsmart.app               D  ✅ Usando IMEI para MDM: 8608***718
+2026-01-23 01:50:43.311 15093-15093 NetworkConnectivity     com.cdccreditsmart.app               D  ✅ Conectado via WiFi com internet
+2026-01-23 01:50:43.311 15093-15093 SimpleHomeViewModel     com.cdccreditsmart.app               D  📡 Fetching device installments from /api/apk/device/installments...
+2026-01-23 01:50:44.237 15093-21017 SimpleHomeViewModel     com.cdccreditsmart.app               D  ✅ Added Authorization header with token
+2026-01-23 01:50:44.262 15093-21017 SecureTokenStorage      com.cdccreditsmart.app               D  ✅ Usando IMEI para MDM: 8608***718
+2026-01-23 01:50:44.314 15093-15111 creditsmart.app         com.cdccreditsmart.app               W  Suspending all threads took: 51.231ms
+2026-01-23 01:50:44.324 15093-15093 creditsmart.app         com.cdccreditsmart.app               W  Verification of androidx.compose.material3.TopAppBarScrollBehavior androidx.compose.material3.TopAppBarDefaults.enterAlwaysScrollBehavior(androidx.compose.material3.TopAppBarState, kotlin.jvm.functions.Function0, androidx.compose.animation.core.AnimationSpec, androidx.compose.animation.core.DecayAnimationSpec, androidx.compose.runtime.Composer, int, int) took 110.486ms (850.79 bytecodes/s) (3704B approximate peak alloc)
+2026-01-23 01:50:44.411 15093-21017 creditsmart.app         com.cdccreditsmart.app               W  Weak pointer dereference blocked for 87 milliseconds.
+2026-01-23 01:50:44.470 15093-21017 SimpleHomeViewModel     com.cdccreditsmart.app               D  📱 Added X-Device-IMEI header
+2026-01-23 01:50:44.470 15093-21017 SimpleHomeViewModel     com.cdccreditsmart.app               D  📱 Added X-Device-SerialNumber header
+2026-01-23 01:50:44.471 15093-21017 SimpleHomeViewModel     com.cdccreditsmart.app               D  📱 Added X-Device-ID header
+2026-01-23 01:50:44.472 15093-21017 SimpleHomeViewModel     com.cdccreditsmart.app               D  📤 Request URL: https://cdccreditsmart.com/api/apk/device/installments
+2026-01-23 01:50:44.685 15093-21017 TrafficStats            com.cdccreditsmart.app               D  tagSocket(167) with statsTag=0xffffffff, statsUid=-1
+2026-01-23 01:50:44.709 15093-15093 Choreographer           com.cdccreditsmart.app               I  Skipped 102 frames!  The application may be doing too much work on its main thread.
+2026-01-23 01:50:44.754 15093-18993 OpenGLRenderer          com.cdccreditsmart.app               I  Davey! duration=1917ms; Flags=0, FrameTimelineVsyncId=792656, IntendedVsync=3895791940280, Vsync=3895941839249, InputEventId=0, HandleInputStart=3895952084289, AnimationStart=3895952096558, PerformTraversalsStart=3897178904058, DrawStart=3897179186673, FrameDeadline=3897707120538, FrameInterval=3895950383251, FrameStartTime=16654397, SyncQueued=3897658009096, SyncStart=3897674428403, IssueDrawCommandsStart=3897675715980, SwapBuffers=3897690277980, FrameCompleted=3897725744519, DequeueBufferDuration=21577, QueueBufferDuration=492538, GpuCompleted=3897725744519, SwapBuffersCompleted=3897721637634, DisplayPresentTime=3880501210570, CommandSubmissionCompleted=3897690277980, 
+2026-01-23 01:50:44.780 15093-15111 creditsmart.app         com.cdccreditsmart.app               I  Background concurrent mark compact GC freed 287327(13MB) AllocSpace objects, 106(4628KB) LOS objects, 51% free, 23MB/47MB, paused 58.505ms,41.076ms total 1.045s
+2026-01-23 01:50:45.918 15093-21017 SimpleHomeViewModel     com.cdccreditsmart.app               D  📥 Response Code: 200
+2026-01-23 01:50:46.162 15093-15093 SimpleHomeViewModel     com.cdccreditsmart.app               D  ✅ Successfully fetched installments data
+2026-01-23 01:50:46.162 15093-15093 SimpleHomeViewModel     com.cdccreditsmart.app               D  📊 Device: REALME Note 60x
+2026-01-23 01:50:46.162 15093-15093 SimpleHomeViewModel     com.cdccreditsmart.app               D  📊 Total installments: 4
+2026-01-23 01:50:46.162 15093-15093 SimpleHomeViewModel     com.cdccreditsmart.app               D  📊 Paid: 0
+2026-01-23 01:50:46.162 15093-15093 SimpleHomeViewModel     com.cdccreditsmart.app               D  📊 Overdue: 0
+2026-01-23 01:50:46.162 15093-15093 SimpleHomeViewModel     com.cdccreditsmart.app               D  📊 All installments count: 4
+2026-01-23 01:50:46.162 15093-15093 SimpleHomeViewModel     com.cdccreditsmart.app               D  📋 Parcela #1: status=pending, isPaid=false, dueDate=2026-02-07T03:01:36.146Z
+2026-01-23 01:50:46.162 15093-15093 SimpleHomeViewModel     com.cdccreditsmart.app               D  📋 Parcela #2: status=pending, isPaid=false, dueDate=2026-02-22T03:01:36.146Z
+2026-01-23 01:50:46.162 15093-15093 SimpleHomeViewModel     com.cdccreditsmart.app               D  📋 Parcela #3: status=pending, isPaid=false, dueDate=2026-03-09T03:01:36.146Z
+2026-01-23 01:50:46.162 15093-15093 SimpleHomeViewModel     com.cdccreditsmart.app               D  📋 Parcela #4: status=pending, isPaid=false, dueDate=2026-03-24T03:01:36.146Z
+2026-01-23 01:50:46.168 15093-15093 SimpleHomeViewModel     com.cdccreditsmart.app               I  💾 Salvando dados do cliente no storage - CustomerName: 'null', DeviceModel: 'REALME Note 60x'
+2026-01-23 01:50:46.170 15093-15093 SecureTokenStorage      com.cdccreditsmart.app               D  💾 Salvando customer info - Name: null, Device: REALME Note 60x
+2026-01-23 01:50:46.170 15093-15093 SecureTokenStorage      com.cdccreditsmart.app               W  ⚠️ CustomerName vazio/null - não salvando
+2026-01-23 01:50:46.184 15093-15093 SecureTokenStorage      com.cdccreditsmart.app               D  ✅ DeviceModel salvo: REALME Note 60x
+2026-01-23 01:50:46.185 15093-15093 SecureTokenStorage      com.cdccreditsmart.app               I  ✅ Customer info saved successfully!
+2026-01-23 01:50:46.231 15093-15093 ContractCodeStorage     com.cdccreditsmart.app               D  Retrieving contract code from storage
+2026-01-23 01:50:47.120 15093-15093 ContractCodeStorage     com.cdccreditsmart.app               D  Storage verification: 7 valid, 0 tampered, 0 missing
+2026-01-23 01:50:47.125 15093-15093 ContractCodeStorage     com.cdccreditsmart.app               D  Contract code retrieved successfully
+2026-01-23 01:50:47.672 15093-15093 LocalInstallmentStorage com.cdccreditsmart.app               I  ✅ 4 parcelas salvas localmente (contrato: QJ3H4MKG)
+2026-01-23 01:50:47.675 15093-15093 SimpleHomeViewModel     com.cdccreditsmart.app               I  ✅ 4 parcelas salvas localmente
+2026-01-23 01:50:47.675 15093-15093 SimpleHomeViewModel     com.cdccreditsmart.app               I     → 0 pagas
+2026-01-23 01:50:47.675 15093-15093 SimpleHomeViewModel     com.cdccreditsmart.app               I     → 4 pendentes
+2026-01-23 01:50:47.675 15093-15093 SimpleHomeViewModel     com.cdccreditsmart.app               I     → 0 em atraso
+2026-01-23 01:50:47.675 15093-15093 SimpleHomeViewModel     com.cdccreditsmart.app               I     → Dados disponíveis para overlay e offline blocking
+2026-01-23 01:50:47.681 15093-15093 SimpleHomeViewModel     com.cdccreditsmart.app               I  💾 Cache atualizado - próximo acesso usará cache por 900s
+2026-01-23 01:50:47.682 15093-15093 Choreographer           com.cdccreditsmart.app               I  Skipped 91 frames!  The application may be doing too much work on its main thread.
+2026-01-23 01:50:48.055 15093-15093 SecureTokenStorage      com.cdccreditsmart.app               D  EncryptedSharedPreferences initialized successfully
+2026-01-23 01:50:48.064 15093-15093 SecureTokenStorage      com.cdccreditsmart.app               D  📖 Lendo customerName: Marcos Antunes
+2026-01-23 01:50:48.071 15093-15093 SecureTokenStorage      com.cdccreditsmart.app               D  📖 Lendo deviceModel: REALME Note 60x
+2026-01-23 01:50:48.071 15093-15093 ContractCodeStorage     com.cdccreditsmart.app               D  Retrieving contract code from storage
+2026-01-23 01:50:48.933 15093-15093 ContractCodeStorage     com.cdccreditsmart.app               D  Storage verification: 7 valid, 0 tampered, 0 missing
+2026-01-23 01:50:48.934 15093-15093 ContractCodeStorage     com.cdccreditsmart.app               D  Contract code retrieved successfully
+2026-01-23 01:50:49.849 15093-15093 Choreographer           com.cdccreditsmart.app               I  Skipped 129 frames!  The application may be doing too much work on its main thread.
+2026-01-23 01:50:50.831 15093-15093 Choreographer           com.cdccreditsmart.app               I  Skipped 58 frames!  The application may be doing too much work on its main thread.
+2026-01-23 01:50:50.831 15093-15124 OpenGLRenderer          com.cdccreditsmart.app               I  Davey! duration=4656ms; Flags=0, FrameTimelineVsyncId=793740, IntendedVsync=3899139348261, Vsync=3900654852615, InputEventId=0, HandleInputStart=3900660495094, AnimationStart=3900660505824, PerformTraversalsStart=3900855336670, DrawStart=3900855693093, FrameDeadline=3899172654759, FrameInterval=3900659415978, FrameStartTime=16653894, SyncQueued=3902820935554, SyncStart=3902821799092, IssueDrawCommandsStart=3902822230630, SwapBuffers=3903787068784, FrameCompleted=3903797167091, DequeueBufferDuration=136154, QueueBufferDuration=680923, GpuCompleted=3903797167091, SwapBuffersCompleted=3903793014553, DisplayPresentTime=3881833552184, CommandSubmissionCompleted=3903787068784, 
+2026-01-23 01:50:52.072 15093-15377 MdmCommandReceiver      com.cdccreditsmart.app               D  💓 WebSocket desconectado, parando ping
+2026-01-23 01:50:52.072 15093-15377 MdmCommandReceiver      com.cdccreditsmart.app               D  💓 Ping job encerrado
+2026-01-23 01:50:56.767 15093-15093 Choreographer           com.cdccreditsmart.app               I  Skipped 32 frames!  The application may be doing too much work on its main thread.
+2026-01-23 01:50:56.801 15093-15093 WebSocketManager        com.cdccreditsmart.app               D  Heartbeat ping sent
+2026-01-23 01:50:57.048 15093-19825 WebSocketManager        com.cdccreditsmart.app               D  Message received: {"type":"pong","timestamp":"2026-01-23T04:50:56.999Z"}...
+2026-01-23 01:50:57.049 15093-19825 WebSocketManager        com.cdccreditsmart.app               D  Received message type: pong
+2026-01-23 01:50:57.049 15093-19825 WebSocketManager        com.cdccreditsmart.app               D  Pong received
+2026-01-23 01:50:57.923 15093-15093 Compatibil...geReporter com.cdccreditsmart.app               D  Compat change id reported: 171228096; UID 10261; state: ENABLED
+2026-01-23 01:50:59.741 15093-15093 SecureTokenStorage      com.cdccreditsmart.app               D  EncryptedSharedPreferences initialized successfully
+2026-01-23 01:50:59.755 15093-15093 SecureTokenStorage      com.cdccreditsmart.app               D  📖 Lendo customerName: Marcos Antunes
+2026-01-23 01:50:59.759 15093-15093 SecureTokenStorage      com.cdccreditsmart.app               D  📖 Lendo deviceModel: REALME Note 60x
+2026-01-23 01:50:59.761 15093-15093 ContractCodeStorage     com.cdccreditsmart.app               D  Retrieving contract code from storage
+2026-01-23 01:50:59.872 15093-15377 MdmCommandReceiver      com.cdccreditsmart.app               I  🔍 [Polling #2] Verificando comandos pendentes...
+2026-01-23 01:50:59.887 15093-15377 SecureTokenStorage      com.cdccreditsmart.app               D  ✅ Usando IMEI para MDM: 8608***718
+2026-01-23 01:50:59.887 15093-15377 MdmCommandReceiver      com.cdccreditsmart.app               I  🔍 ========================================
+2026-01-23 01:50:59.887 15093-15377 MdmCommandReceiver      com.cdccreditsmart.app               I  🔍 BUSCANDO COMANDOS PENDENTES
+2026-01-23 01:50:59.887 15093-15377 MdmCommandReceiver      com.cdccreditsmart.app               I  🔍 ========================================
+2026-01-23 01:50:59.887 15093-15377 MdmCommandReceiver      com.cdccreditsmart.app               I  🔍 Identifier: 860875074339718
+2026-01-23 01:50:59.887 15093-15377 MdmCommandReceiver      com.cdccreditsmart.app               I  🔍 Endpoint: GET /api/apk/device/860875074339718/commands
+2026-01-23 01:50:59.930 15093-15377 MdmCommandReceiver      com.cdccreditsmart.app               D  🔍 Executando requisição HTTP (timeout: 15s)...
+2026-01-23 01:51:00.021 15093-20243 okhttp.OkHttpClient     com.cdccreditsmart.app               I  --> GET https://cdccreditsmart.com/api/apk/device/860875074339718/commands
+2026-01-23 01:51:00.021 15093-20243 okhttp.OkHttpClient     com.cdccreditsmart.app               I  --> END GET
+2026-01-23 01:51:00.350 15093-20243 SecureTokenStorage      com.cdccreditsmart.app               D  EncryptedSharedPreferences initialized successfully
+2026-01-23 01:51:00.455 15093-15093 ContractCodeStorage     com.cdccreditsmart.app               D  Storage verification: 7 valid, 0 tampered, 0 missing
+2026-01-23 01:51:00.456 15093-15093 ContractCodeStorage     com.cdccreditsmart.app               D  Contract code retrieved successfully
+2026-01-23 01:51:00.574 15093-18993 OpenGLRenderer          com.cdccreditsmart.app               I  Davey! duration=1196ms; Flags=0, FrameTimelineVsyncId=795375, IntendedVsync=3912346102123, Vsync=3912379410141, InputEventId=495364076, HandleInputStart=3912392800316, AnimationStart=3912392882585, PerformTraversalsStart=3913493209469, DrawStart=3913493478469, FrameDeadline=3912412723362, FrameInterval=3912392737239, FrameStartTime=16654009, SyncQueued=3913526052315, SyncStart=3913526278354, IssueDrawCommandsStart=3913526710046, SwapBuffers=3913533922815, FrameCompleted=3913542462277, DequeueBufferDuration=31000, QueueBufferDuration=682693, GpuCompleted=3913542462277, SwapBuffersCompleted=3913537075431, DisplayPresentTime=3897789382096, CommandSubmissionCompleted=3913533922815, 
+2026-01-23 01:51:01.093 15093-20243 okhttp.OkHttpClient     com.cdccreditsmart.app               I  <-- 200 https://cdccreditsmart.com/api/apk/device/860875074339718/commands (1071ms)
+2026-01-23 01:51:01.094 15093-20243 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-credentials: true
+2026-01-23 01:51:01.094 15093-20243 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-headers: Origin, X-Requested-With, Content-Type, Accept, Authorization, x-client-key, x-client-token, x-client-secret, cache-control
+2026-01-23 01:51:01.094 15093-20243 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-methods: GET, POST, PUT, PATCH, DELETE, OPTIONS
+2026-01-23 01:51:01.094 15093-20243 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-origin: *
+2026-01-23 01:51:01.094 15093-20243 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-max-age: 86400
+2026-01-23 01:51:01.095 15093-20243 okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-length: 104
+2026-01-23 01:51:01.095 15093-20243 okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-security-policy: default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://replit.com; style-src 'self' 'unsafe-inline' https://replit.com; img-src 'self' data: https:; font-src 'self' data: https://replit.com; connect-src 'self';
+2026-01-23 01:51:01.095 15093-20243 okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-type: application/json; charset=utf-8
+2026-01-23 01:51:01.095 15093-20243 okhttp.OkHttpClient     com.cdccreditsmart.app               I  date: Fri, 23 Jan 2026 04:51:01 GMT
+2026-01-23 01:51:01.095 15093-20243 okhttp.OkHttpClient     com.cdccreditsmart.app               I  etag: W/"68-1BzkVNqHEsu0XlMenwYbbDRd04w"
+2026-01-23 01:51:01.095 15093-20243 okhttp.OkHttpClient     com.cdccreditsmart.app               I  permissions-policy: geolocation=(), microphone=(), camera=()
+2026-01-23 01:51:01.096 15093-20243 okhttp.OkHttpClient     com.cdccreditsmart.app               I  referrer-policy: strict-origin-when-cross-origin
+2026-01-23 01:51:01.096 15093-20243 okhttp.OkHttpClient     com.cdccreditsmart.app               I  strict-transport-security: max-age=63072000; includeSubDomains
+2026-01-23 01:51:01.096 15093-20243 okhttp.OkHttpClient     com.cdccreditsmart.app               I  strict-transport-security: max-age=31536000; includeSubDomains
+2026-01-23 01:51:01.096 15093-20243 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-anti-fraud-protection: active
+2026-01-23 01:51:01.096 15093-20243 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-certificate-pinning-enabled: false
+2026-01-23 01:51:01.096 15093-20243 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-certificate-pinning-status: disabled-for-stability
+2026-01-23 01:51:01.096 15093-20243 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-content-type-options: nosniff
+2026-01-23 01:51:01.096 15093-20243 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-financial-data-protection: enabled
+2026-01-23 01:51:01.096 15093-20243 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-frame-options: DENY
+2026-01-23 01:51:01.096 15093-20243 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-transaction-security-level: maximum
+2026-01-23 01:51:01.096 15093-20243 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-xss-protection: 1; mode=block
+2026-01-23 01:51:01.097 15093-20243 okhttp.OkHttpClient     com.cdccreditsmart.app               I  via: 1.1 google
+2026-01-23 01:51:01.097 15093-20243 okhttp.OkHttpClient     com.cdccreditsmart.app               I  alt-svc: h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
+2026-01-23 01:51:01.098 15093-20243 okhttp.OkHttpClient     com.cdccreditsmart.app               I  {"deviceId":"device_1769137280282_l7srjesg25","serialNumber":"QJ3H4MKG","commandsCount":0,"commands":[]}
+2026-01-23 01:51:01.098 15093-20243 okhttp.OkHttpClient     com.cdccreditsmart.app               I  <-- END HTTP (104-byte body)
+2026-01-23 01:51:01.116 15093-15377 MdmCommandReceiver      com.cdccreditsmart.app               I  🔍 HTTP Response code: 200
+2026-01-23 01:51:01.116 15093-15377 MdmCommandReceiver      com.cdccreditsmart.app               I  🔍 HTTP isSuccessful: true
+2026-01-23 01:51:01.116 15093-15377 MdmCommandReceiver      com.cdccreditsmart.app               I  🔍 Response body deviceId: device_1769137280282_l7srjesg25
+2026-01-23 01:51:01.116 15093-15377 MdmCommandReceiver      com.cdccreditsmart.app               I  🔍 Response body serialNumber: QJ3H4MKG
+2026-01-23 01:51:01.116 15093-15377 MdmCommandReceiver      com.cdccreditsmart.app               I  🔍 Total de comandos: 0
+2026-01-23 01:51:01.116 15093-15377 MdmCommandReceiver      com.cdccreditsmart.app               D  ✅ Nenhum comando pendente no servidor
+2026-01-23 01:51:01.116 15093-15377 MdmCommandReceiver      com.cdccreditsmart.app               D  📊 Fetch duration: 1229ms
+2026-01-23 01:51:06.629 15093-15093 SecureTokenStorage      com.cdccreditsmart.app               D  EncryptedSharedPreferences initialized successfully
+2026-01-23 01:51:06.633 15093-15093 SecureTokenStorage      com.cdccreditsmart.app               D  📖 Lendo customerName: Marcos Antunes
+2026-01-23 01:51:06.637 15093-15093 SecureTokenStorage      com.cdccreditsmart.app               D  📖 Lendo deviceModel: REALME Note 60x
+2026-01-23 01:51:06.637 15093-15093 ContractCodeStorage     com.cdccreditsmart.app               D  Retrieving contract code from storage
+2026-01-23 01:51:07.136 15093-15093 ContractCodeStorage     com.cdccreditsmart.app               D  Storage verification: 7 valid, 0 tampered, 0 missing
+2026-01-23 01:51:07.136 15093-15093 ContractCodeStorage     com.cdccreditsmart.app               D  Contract code retrieved successfully
+2026-01-23 01:51:07.216 15093-15124 OpenGLRenderer          com.cdccreditsmart.app               I  Davey! duration=724ms; Flags=0, FrameTimelineVsyncId=797008, IntendedVsync=3919457442996, Vsync=3919457442996, InputEventId=445703047, HandleInputStart=3919470555388, AnimationStart=3919476388772, PerformTraversalsStart=3920152687695, DrawStart=3920152990580, FrameDeadline=3919507425001, FrameInterval=3919470530042, FrameStartTime=16654254, SyncQueued=3920172699618, SyncStart=3920172817733, IssueDrawCommandsStart=3920173027926, SwapBuffers=3920175855541, FrameCompleted=3920182389964, DequeueBufferDuration=24808, QueueBufferDuration=414038, GpuCompleted=3920182389964, SwapBuffersCompleted=3920178601964, DisplayPresentTime=3909896959895, CommandSubmissionCompleted=3920175855541, 
+2026-01-23 01:51:07.217 15093-15093 Choreographer           com.cdccreditsmart.app               I  Skipped 42 frames!  The application may be doing too much work on its main thread.
+2026-01-23 01:51:07.266 15093-15124 OpenGLRenderer          com.cdccreditsmart.app               I  Davey! duration=747ms; Flags=0, FrameTimelineVsyncId=797016, IntendedVsync=3919490749616, Vsync=3920190225218, InputEventId=407883457, HandleInputStart=3920194653003, AnimationStart=3920200510464, PerformTraversalsStart=3920222554272, DrawStart=3920222835541, FrameDeadline=3920206896839, FrameInterval=3920194205426, FrameStartTime=16654181, SyncQueued=3920224182964, SyncStart=3920224298349, IssueDrawCommandsStart=3920224490964, SwapBuffers=3920228525656, FrameCompleted=3920238056964, DequeueBufferDuration=22500, QueueBufferDuration=457346, GpuCompleted=3920238056964, SwapBuffersCompleted=3920233204656, DisplayPresentTime=3909913613702, CommandSubmissionCompleted=3920228525656, 
+2026-01-23 01:51:09.322 15093-15093 SecureTokenStorage      com.cdccreditsmart.app               D  EncryptedSharedPreferences initialized successfully
+2026-01-23 01:51:09.326 15093-15093 SecureTokenStorage      com.cdccreditsmart.app               D  📖 Lendo customerName: Marcos Antunes
+2026-01-23 01:51:09.330 15093-15093 SecureTokenStorage      com.cdccreditsmart.app               D  📖 Lendo deviceModel: REALME Note 60x
+2026-01-23 01:51:09.330 15093-15093 ContractCodeStorage     com.cdccreditsmart.app               D  Retrieving contract code from storage
+2026-01-23 01:51:10.042 15093-15093 ContractCodeStorage     com.cdccreditsmart.app               D  Storage verification: 7 valid, 0 tampered, 0 missing
+2026-01-23 01:51:10.044 15093-15093 ContractCodeStorage     com.cdccreditsmart.app               D  Contract code retrieved successfully
+2026-01-23 01:51:10.232 15093-15130 OpenGLRenderer          com.cdccreditsmart.app               I  Davey! duration=1020ms; Flags=0, FrameTimelineVsyncId=797587, IntendedVsync=3922172069675, Vsync=3922188724233, InputEventId=868556131, HandleInputStart=3922189482463, AnimationStart=3922194709463, PerformTraversalsStart=3923115347962, DrawStart=3923115797731, FrameDeadline=3922205390507, FrameInterval=3922189422309, FrameStartTime=16654558, SyncQueued=3923156447924, SyncStart=3923156645501, IssueDrawCommandsStart=3923156901001, SwapBuffers=3923181038501, FrameCompleted=3923192465616, DequeueBufferDuration=23577, QueueBufferDuration=640538, GpuCompleted=3923192465616, SwapBuffersCompleted=3923188342077, DisplayPresentTime=3911878816201, CommandSubmissionCompleted=3923181038501, 
+2026-01-23 01:51:10.237 15093-15111 creditsmart.app         com.cdccreditsmart.app               I  Background concurrent mark compact GC freed 444634(19MB) AllocSpace objects, 321(11MB) LOS objects, 58% free, 17MB/41MB, paused 2.711ms,10.475ms total 761.421ms
+2026-01-23 01:51:10.243 15093-15093 Choreographer           com.cdccreditsmart.app               I  Skipped 60 frames!  The application may be doing too much work on its main thread.
+2026-01-23 01:51:10.333 15093-15124 OpenGLRenderer          com.cdccreditsmart.app               I  Davey! duration=1096ms; Flags=0, FrameTimelineVsyncId=797595, IntendedVsync=3922205383662, Vsync=3923204648082, InputEventId=1011934204, HandleInputStart=3923220941654, AnimationStart=3923221042770, PerformTraversalsStart=3923273582462, DrawStart=3923273857847, FrameDeadline=3923221318938, FrameInterval=3923219376693, FrameStartTime=16654407, SyncQueued=3923276135539, SyncStart=3923276341039, IssueDrawCommandsStart=3923276849500, SwapBuffers=3923287747731, FrameCompleted=3923301887462, DequeueBufferDuration=32807, QueueBufferDuration=888308, GpuCompleted=3923301887462, SwapBuffersCompleted=3923299523347, DisplayPresentTime=3911895467586, CommandSubmissionCompleted=3923287747731, 

@@ -54,6 +54,14 @@ class ContractCodeStorage(private val context: Context) {
         private const val HMAC_KEY_ALIAS = "cdc_contract_hmac_key"
         
         private const val MAC_ALGORITHM = "HmacSHA256"
+        
+        private const val CACHE_VALIDITY_MS = 60 * 1000L // Cache válido por 1 minuto
+        
+        @Volatile
+        private var cachedCode: String? = null
+        
+        @Volatile
+        private var cacheTime: Long = 0L
     }
     
     private val masterKey: MasterKey by lazy {
@@ -119,6 +127,10 @@ class ContractCodeStorage(private val context: Context) {
         
         Log.d(TAG, "Saving contract code to redundant storage")
         
+        // Atualizar cache imediatamente
+        cachedCode = code
+        cacheTime = System.currentTimeMillis()
+        
         val mac = calculateMAC(code)
         
         saveToEncryptedPrefs(code, mac)
@@ -135,9 +147,17 @@ class ContractCodeStorage(private val context: Context) {
     }
     
     /**
-     * Recupera o código de pareamento com validação cruzada e auto-restauração
+     * Recupera o código de pareamento com validação cruzada e auto-restauração.
+     * Usa cache em memória para evitar verificações repetidas.
      */
     fun getContractCode(): String? {
+        val now = System.currentTimeMillis()
+        
+        // Usar cache se válido
+        if (cachedCode != null && (now - cacheTime) < CACHE_VALIDITY_MS) {
+            return cachedCode
+        }
+        
         Log.d(TAG, "Retrieving contract code from storage")
         
         val locations = mutableMapOf<String, Pair<String?, Boolean>>()
@@ -184,6 +204,10 @@ class ContractCodeStorage(private val context: Context) {
         
         Log.d(TAG, "Contract code retrieved successfully")
         
+        // Atualizar cache
+        cachedCode = primaryCode
+        cacheTime = now
+        
         val missingOrInvalidCount = locations.values.count { it.first.isNullOrBlank() || !it.second }
         if (missingOrInvalidCount > 0) {
             Log.w(TAG, "Auto-restoring $missingOrInvalidCount missing/invalid locations")
@@ -206,6 +230,10 @@ class ContractCodeStorage(private val context: Context) {
      */
     fun clearContractCode() {
         Log.w(TAG, "Clearing contract code from ALL storage locations")
+        
+        // Invalidar cache
+        cachedCode = null
+        cacheTime = 0L
         
         encryptedPrefs.edit().clear().apply()
         protectedPrefs.edit().clear().apply()
