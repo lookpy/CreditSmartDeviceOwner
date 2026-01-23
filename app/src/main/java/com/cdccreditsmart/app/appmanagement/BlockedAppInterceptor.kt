@@ -18,8 +18,9 @@ class BlockedAppInterceptor(private val context: Context) {
         private const val MEMORY_CLEANUP_AGE_MS = 300000L // 5 minutos
         
         // COOLDOWN GLOBAL: Previne overlay aparecer sem parar ao trocar de apps
-        private const val GLOBAL_COOLDOWN_MS = 60000L // 60 segundos (1 minuto) entre exibições
-        private const val PER_APP_COOLDOWN_MS = 5000L // 5 segundos para o mesmo app
+        // AJUSTADO: Reduzido para 10 segundos para garantir que overlay apareça consistentemente
+        private const val GLOBAL_COOLDOWN_MS = 10000L // 10 segundos entre exibições (era 60s)
+        private const val PER_APP_COOLDOWN_MS = 3000L // 3 segundos para o mesmo app (era 5s)
     }
     
     // OTIMIZAÇÃO: Dispatchers.IO para operações I/O-bound (UsageStatsManager)
