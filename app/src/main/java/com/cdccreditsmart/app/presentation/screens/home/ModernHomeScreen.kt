@@ -33,7 +33,8 @@ import java.util.*
 fun ModernHomeScreen(
     onNavigateToInstallments: () -> Unit = {},
     onNavigateToPixPayment: (String) -> Unit = {},
-    onNavigateToTerms: () -> Unit = {}
+    onNavigateToTerms: () -> Unit = {},
+    onNeedsReauth: () -> Unit = {}
 ) {
     val context = LocalContext.current
     val viewModel = remember { SimpleHomeViewModel(context) }
@@ -42,6 +43,13 @@ fun ModernHomeScreen(
     var showPaymentSheet by remember { mutableStateOf(false) }
     var selectedInstallment by remember { mutableStateOf<InstallmentItem?>(null) }
     var showUninstallDialog by remember { mutableStateOf(false) }
+    
+    // Redirect to pairing when token is invalid
+    LaunchedEffect(state.needsReauth) {
+        if (state.needsReauth) {
+            onNeedsReauth()
+        }
+    }
     
     Scaffold(
         topBar = {

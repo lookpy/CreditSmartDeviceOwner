@@ -30,7 +30,8 @@ data class HomeState(
     val allInstallments: List<InstallmentItem> = emptyList(),
     val isOfflineMode: Boolean = false,
     val lastSyncTime: Long = 0L,
-    val customerName: String? = null
+    val customerName: String? = null,
+    val needsReauth: Boolean = false
 )
 
 class SimpleHomeViewModel(
@@ -149,11 +150,12 @@ class SimpleHomeViewModel(
                 val token = tokenStorage.getAuthToken()
                 
                 if (token == null) {
-                    Log.e(TAG, "❌ No valid token available")
+                    Log.e(TAG, "❌ No valid token available - redirecting to pairing")
                     _homeState.value = _homeState.value.copy(
                         isLoading = false,
                         isError = true,
-                        errorMessage = "Sessão expirada. Por favor, faça login novamente."
+                        errorMessage = "Sessão expirada. Redirecionando para pareamento...",
+                        needsReauth = true
                     )
                     return@launch
                 }

@@ -482,6 +482,12 @@ fun CDCNavigation(
                 },
                 onNavigateToTerms = {
                     navController.navigate(Routes.TERMS)
+                },
+                onNeedsReauth = {
+                    // Clear backstack and navigate to pairing
+                    navController.navigate(Routes.ROUTER) {
+                        popUpTo(0) { inclusive = true }
+                    }
                 }
             )
         }
