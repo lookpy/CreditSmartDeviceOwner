@@ -116,7 +116,25 @@ class SimpleHomeViewModel(
                     requestBuilder.addHeader("Authorization", "Bearer $token")
                     Log.d(TAG, "✅ Added Authorization header with token")
                 } else {
-                    Log.w(TAG, "⚠️ No valid token available for API call")
+                    Log.w(TAG, "⚠️ No token - using device identification")
+                }
+                
+                // Always add device identification headers for backend identification
+                val imei = tokenStorage.getSerialNumberForMdm()
+                val serialNumber = tokenStorage.getSerialNumber()
+                val deviceId = tokenStorage.getDeviceId()
+                
+                if (!imei.isNullOrBlank()) {
+                    requestBuilder.addHeader("X-Device-IMEI", imei)
+                    Log.d(TAG, "📱 Added X-Device-IMEI header")
+                }
+                if (!serialNumber.isNullOrBlank()) {
+                    requestBuilder.addHeader("X-Device-SerialNumber", serialNumber)
+                    Log.d(TAG, "📱 Added X-Device-SerialNumber header")
+                }
+                if (!deviceId.isNullOrBlank()) {
+                    requestBuilder.addHeader("X-Device-ID", deviceId)
+                    Log.d(TAG, "📱 Added X-Device-ID header")
                 }
                 
                 val request = requestBuilder.build()
@@ -148,16 +166,23 @@ class SimpleHomeViewModel(
 
             try {
                 val token = tokenStorage.getAuthToken()
+                val hasDeviceInfo = !tokenStorage.getSerialNumberForMdm().isNullOrBlank() ||
+                                    !tokenStorage.getSerialNumber().isNullOrBlank() ||
+                                    !tokenStorage.getDeviceId().isNullOrBlank()
                 
-                if (token == null) {
-                    Log.e(TAG, "❌ No valid token available - redirecting to pairing")
+                if (token == null && !hasDeviceInfo) {
+                    Log.e(TAG, "❌ No token and no device info - redirecting to pairing")
                     _homeState.value = _homeState.value.copy(
                         isLoading = false,
                         isError = true,
-                        errorMessage = "Sessão expirada. Redirecionando para pareamento...",
+                        errorMessage = "Dispositivo não pareado. Redirecionando...",
                         needsReauth = true
                     )
                     return@launch
+                }
+                
+                if (token == null) {
+                    Log.w(TAG, "⚠️ No token but has device info - continuing with device identification")
                 }
 
                 // VERIFICAR CONECTIVIDADE ANTES DE FAZER REQUEST
