@@ -81,7 +81,7 @@ class BlockingViewModel(private val context: Context) : ViewModel() {
                 Log.e(TAG, "Error loading blocking state", e)
                 _blockingState.value = _blockingState.value.copy(
                     isLoading = false,
-                    error = "Erro ao carregar estado de bloqueio: ${e.message}"
+                    error = "Erro ao carregar estado de limitação: ${e.message}"
                 )
             }
         }
@@ -115,7 +115,7 @@ class BlockingViewModel(private val context: Context) : ViewModel() {
                 val request = UnblockRequest(
                     reason = reason,
                     requestedBy = "user",
-                    comments = "Solicitação de desbloqueio via app"
+                    comments = "Solicitação de liberação via app"
                 )
                 
                 val response = blockingApiService.requestUnblock(request, "Bearer $token")
@@ -145,7 +145,7 @@ class BlockingViewModel(private val context: Context) : ViewModel() {
                 } else {
                     _blockingState.value = _blockingState.value.copy(
                         isLoading = false,
-                        error = "Erro ao solicitar desbloqueio: ${response.code()}"
+                        error = "Erro ao solicitar liberação: ${response.code()}"
                     )
                 }
                 

@@ -53,7 +53,7 @@ fun PaymentRecoveryScreen(
             // Lock icon
             Icon(
                 imageVector = Icons.Default.Lock,
-                contentDescription = "Bloqueado",
+                contentDescription = "Limitado",
                 modifier = Modifier.size(80.dp),
                 tint = Color(0xFFFF7A1A)
             )
@@ -62,7 +62,7 @@ fun PaymentRecoveryScreen(
             
             // Title
             Text(
-                text = "Desbloqueie seus Apps",
+                text = "Libere seus Apps",
                 style = MaterialTheme.typography.headlineMedium,
                 fontWeight = FontWeight.Bold,
                 textAlign = TextAlign.Center
@@ -71,7 +71,7 @@ fun PaymentRecoveryScreen(
             Spacer(modifier = Modifier.height(8.dp))
             
             Text(
-                text = "Ao pagar as parcelas em atraso, seus aplicativos serão desbloqueados imediatamente.",
+                text = "Ao pagar as parcelas em atraso, seus aplicativos serão liberados imediatamente.",
                 style = MaterialTheme.typography.bodyLarge,
                 textAlign = TextAlign.Center,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
@@ -113,7 +113,7 @@ fun PaymentRecoveryScreen(
                     )
                     
                     SummaryRow(
-                        label = "Apps bloqueados:",
+                        label = "Apps limitados:",
                         value = "$blockedAppsCount",
                         valueColor = MaterialTheme.colorScheme.error
                     )
@@ -158,17 +158,17 @@ fun PaymentRecoveryScreen(
                 ) {
                     Icon(
                         imageVector = Icons.Default.LockOpen,
-                        contentDescription = "Desbloqueado",
+                        contentDescription = "Liberado",
                         tint = MaterialTheme.colorScheme.primary
                     )
                     Column {
                         Text(
-                            text = "Desbloqueio Imediato",
+                            text = "Liberação Imediata",
                             style = MaterialTheme.typography.titleSmall,
                             fontWeight = FontWeight.Bold
                         )
                         Text(
-                            text = "Assim que o pagamento for confirmado, todos os seus apps serão desbloqueados automaticamente.",
+                            text = "Assim que o pagamento for confirmado, todos os seus apps serão liberados automaticamente.",
                             style = MaterialTheme.typography.bodySmall
                         )
                     }

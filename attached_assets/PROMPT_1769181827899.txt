@@ -1,0 +1,315 @@
+2026-01-23 12:23:03.241 30307-2348  WebSocketManager        com.cdccreditsmart.app               D  Message received: {"type":"pong","timestamp":"2026-01-23T15:23:03.019Z"}...
+2026-01-23 12:23:03.241 30307-2348  WebSocketManager        com.cdccreditsmart.app               D  Received message type: pong
+2026-01-23 12:23:03.241 30307-2348  WebSocketManager        com.cdccreditsmart.app               D  Pong received
+2026-01-23 12:23:05.204 30307-2310  MdmCommandReceiver      com.cdccreditsmart.app               I  🔍 [Polling #4] Verificando comandos pendentes...
+2026-01-23 12:23:05.248 30307-2310  SecureTokenStorage      com.cdccreditsmart.app               D  ✅ Usando IMEI para MDM: 8608***718
+2026-01-23 12:23:05.248 30307-2310  MdmCommandReceiver      com.cdccreditsmart.app               I  🔍 ========================================
+2026-01-23 12:23:05.248 30307-2310  MdmCommandReceiver      com.cdccreditsmart.app               I  🔍 BUSCANDO COMANDOS PENDENTES
+2026-01-23 12:23:05.248 30307-2310  MdmCommandReceiver      com.cdccreditsmart.app               I  🔍 ========================================
+2026-01-23 12:23:05.248 30307-2310  MdmCommandReceiver      com.cdccreditsmart.app               I  🔍 Identifier: 860875074339718
+2026-01-23 12:23:05.248 30307-2310  MdmCommandReceiver      com.cdccreditsmart.app               I  🔍 Endpoint: GET /api/apk/device/860875074339718/commands
+2026-01-23 12:23:05.284 30307-2310  MdmCommandReceiver      com.cdccreditsmart.app               D  🔍 Executando requisição HTTP (timeout: 15s)...
+2026-01-23 12:23:05.324 30307-32485 okhttp.OkHttpClient     com.cdccreditsmart.app               I  --> GET https://cdccreditsmart.com/api/apk/device/860875074339718/commands
+2026-01-23 12:23:05.324 30307-32485 okhttp.OkHttpClient     com.cdccreditsmart.app               I  --> END GET
+2026-01-23 12:23:06.153 30307-32485 okhttp.OkHttpClient     com.cdccreditsmart.app               I  <-- 200 https://cdccreditsmart.com/api/apk/device/860875074339718/commands (828ms)
+2026-01-23 12:23:06.154 30307-32485 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-credentials: true
+2026-01-23 12:23:06.154 30307-32485 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-headers: Origin, X-Requested-With, Content-Type, Accept, Authorization, x-client-key, x-client-token, x-client-secret, cache-control
+2026-01-23 12:23:06.154 30307-32485 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-methods: GET, POST, PUT, PATCH, DELETE, OPTIONS
+2026-01-23 12:23:06.154 30307-32485 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-origin: *
+2026-01-23 12:23:06.154 30307-32485 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-max-age: 86400
+2026-01-23 12:23:06.155 30307-32485 okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-length: 104
+2026-01-23 12:23:06.155 30307-32485 okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-security-policy: default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://replit.com; style-src 'self' 'unsafe-inline' https://replit.com; img-src 'self' data: https:; font-src 'self' data: https://replit.com; connect-src 'self';
+2026-01-23 12:23:06.155 30307-32485 okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-type: application/json; charset=utf-8
+2026-01-23 12:23:06.155 30307-32485 okhttp.OkHttpClient     com.cdccreditsmart.app               I  date: Fri, 23 Jan 2026 15:23:05 GMT
+2026-01-23 12:23:06.156 30307-32485 okhttp.OkHttpClient     com.cdccreditsmart.app               I  etag: W/"68-1BzkVNqHEsu0XlMenwYbbDRd04w"
+2026-01-23 12:23:06.156 30307-32485 okhttp.OkHttpClient     com.cdccreditsmart.app               I  permissions-policy: geolocation=(), microphone=(), camera=()
+2026-01-23 12:23:06.156 30307-32485 okhttp.OkHttpClient     com.cdccreditsmart.app               I  referrer-policy: strict-origin-when-cross-origin
+2026-01-23 12:23:06.156 30307-32485 okhttp.OkHttpClient     com.cdccreditsmart.app               I  strict-transport-security: max-age=63072000; includeSubDomains
+2026-01-23 12:23:06.156 30307-32485 okhttp.OkHttpClient     com.cdccreditsmart.app               I  strict-transport-security: max-age=31536000; includeSubDomains
+2026-01-23 12:23:06.157 30307-32485 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-anti-fraud-protection: active
+2026-01-23 12:23:06.157 30307-32485 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-certificate-pinning-enabled: false
+2026-01-23 12:23:06.157 30307-32485 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-certificate-pinning-status: disabled-for-stability
+2026-01-23 12:23:06.157 30307-32485 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-content-type-options: nosniff
+2026-01-23 12:23:06.157 30307-32485 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-financial-data-protection: enabled
+2026-01-23 12:23:06.157 30307-32485 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-frame-options: DENY
+2026-01-23 12:23:06.158 30307-32485 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-transaction-security-level: maximum
+2026-01-23 12:23:06.158 30307-32485 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-xss-protection: 1; mode=block
+2026-01-23 12:23:06.158 30307-32485 okhttp.OkHttpClient     com.cdccreditsmart.app               I  via: 1.1 google
+2026-01-23 12:23:06.159 30307-32485 okhttp.OkHttpClient     com.cdccreditsmart.app               I  alt-svc: h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
+2026-01-23 12:23:06.162 30307-32485 okhttp.OkHttpClient     com.cdccreditsmart.app               I  {"deviceId":"device_1769137280282_l7srjesg25","serialNumber":"QJ3H4MKG","commandsCount":0,"commands":[]}
+2026-01-23 12:23:06.162 30307-32485 okhttp.OkHttpClient     com.cdccreditsmart.app               I  <-- END HTTP (104-byte body)
+2026-01-23 12:23:06.167 30307-2310  MdmCommandReceiver      com.cdccreditsmart.app               I  🔍 HTTP Response code: 200
+2026-01-23 12:23:06.167 30307-2310  MdmCommandReceiver      com.cdccreditsmart.app               I  🔍 HTTP isSuccessful: true
+2026-01-23 12:23:06.167 30307-2310  MdmCommandReceiver      com.cdccreditsmart.app               I  🔍 Response body deviceId: device_1769137280282_l7srjesg25
+2026-01-23 12:23:06.167 30307-2310  MdmCommandReceiver      com.cdccreditsmart.app               I  🔍 Response body serialNumber: QJ3H4MKG
+2026-01-23 12:23:06.167 30307-2310  MdmCommandReceiver      com.cdccreditsmart.app               I  🔍 Total de comandos: 0
+2026-01-23 12:23:06.167 30307-2310  MdmCommandReceiver      com.cdccreditsmart.app               D  ✅ Nenhum comando pendente no servidor
+2026-01-23 12:23:06.167 30307-2310  MdmCommandReceiver      com.cdccreditsmart.app               D  📊 Fetch duration: 919ms
+2026-01-23 12:23:08.892 30307-2310  SettingsGuardService    com.cdccreditsmart.app               D  📋 Activity check - Full: com.android.settings.enterprise.ActionDisabledByAdminDialog, Simple: ActionDisabledByAdminDialog
+2026-01-23 12:23:08.917 30307-2310  SettingsGuardService    com.cdccreditsmart.app               W  🎯 PADRÃO PERIGOSO DETECTADO!
+2026-01-23 12:23:08.918 30307-2310  SettingsGuardService    com.cdccreditsmart.app               W     Pacote: com.android.settings
+2026-01-23 12:23:08.918 30307-2310  SettingsGuardService    com.cdccreditsmart.app               W     Activity completa: com.android.settings.enterprise.ActionDisabledByAdminDialog
+2026-01-23 12:23:08.918 30307-2310  SettingsGuardService    com.cdccreditsmart.app               W     Activity simplificada: ActionDisabledByAdminDialog
+2026-01-23 12:23:08.918 30307-2310  SettingsGuardService    com.cdccreditsmart.app               W     Padrão match: Enterprise
+2026-01-23 12:23:08.918 30307-2310  SettingsGuardService    com.cdccreditsmart.app               W  🚨 ÁREA PERIGOSA: com.android.settings.enterprise.ActionDisabledByAdminDialog
+2026-01-23 12:23:08.991 30307-30307 SettingsGuardService    com.cdccreditsmart.app               I  ✅ Tela de bloqueio exibida (Settings)
+2026-01-23 12:23:09.904 30307-30338 creditsmart.app         com.cdccreditsmart.app               W  Cleared Reference was only reachable from finalizer (only reported once)
+2026-01-23 12:23:10.000 30307-2310  SettingsGuardService    com.cdccreditsmart.app               D  📋 Activity check - Full: com.cdccreditsmart.app.appmanagement.BlockedAppExplanationActivity, Simple: BlockedAppExplanationActivity
+2026-01-23 12:23:10.003 30307-2310  SettingsGuardService    com.cdccreditsmart.app               I  ✅ App CDC em foreground - resetando contador e throttle
+2026-01-23 12:23:10.010 30307-30338 creditsmart.app         com.cdccreditsmart.app               I  Background concurrent mark compact GC freed 420072(18MB) AllocSpace objects, 171(6820KB) LOS objects, 60% free, 15MB/39MB, paused 965us,4.507ms total 241.387ms
+2026-01-23 12:23:10.128 30307-30307 ServerTimeManager       com.cdccreditsmart.app               W  ⚠️ NUNCA SINCRONIZOU - retornando tempo INDISPONÍVEL
+2026-01-23 12:23:10.128 30307-30307 ServerTimeManager       com.cdccreditsmart.app               W  ⚠️ Tempo não confiável - não é possível calcular LocalDate
+2026-01-23 12:23:10.128 30307-30307 LocalInstallmentStorage com.cdccreditsmart.app               W  ⚠️ Tempo autoritativo indisponível - usando data local do dispositivo
+2026-01-23 12:23:10.132 30307-30307 LocalInstallmentStorage com.cdccreditsmart.app               I  📅 Usando tempo autoritativo para cálculo: 2026-01-23
+2026-01-23 12:23:10.136 30307-30307 LocalInstallmentStorage com.cdccreditsmart.app               I  📊 Cálculo de atraso: 0 parcelas vencidas, maior atraso: 0 dias
+2026-01-23 12:23:10.394 30307-30632 OpenGLRenderer          com.cdccreditsmart.app               E  Unable to match the desired swap behavior.
+2026-01-23 12:23:10.397 30307-7859  mali_gralloc            com.cdccreditsmart.app               D  register: id=2240000047a, handle=0xb40000770aa39510, importpid=-1, gRegisteredHandles=0
+2026-01-23 12:23:10.399 30307-7859  mali_gralloc            com.cdccreditsmart.app               D  register: id=2240000047b, handle=0xb40000770aa1fcb0, importpid=-1, gRegisteredHandles=1
+2026-01-23 12:23:10.401 30307-7859  mali_gralloc            com.cdccreditsmart.app               D  register: id=2240000047c, handle=0xb40000770aa1fef0, importpid=-1, gRegisteredHandles=2
+2026-01-23 12:23:10.411 30307-7859  mali_gralloc            com.cdccreditsmart.app               D  register: id=2240000047d, handle=0xb40000770aa64230, importpid=-1, gRegisteredHandles=3
+2026-01-23 12:23:10.508 30307-30307 Choreographer           com.cdccreditsmart.app               I  Skipped 98 frames!  The application may be doing too much work on its main thread.
+2026-01-23 12:23:10.522 30307-30355 OpenGLRenderer          com.cdccreditsmart.app               I  Davey! duration=1259ms; Flags=1, FrameTimelineVsyncId=343016, IntendedVsync=2071222164025, Vsync=2071355462413, InputEventId=0, HandleInputStart=2071363506940, AnimationStart=2071363514825, PerformTraversalsStart=2071363519479, DrawStart=2072391055478, FrameDeadline=2071234275136, FrameInterval=2071362937132, FrameStartTime=11108199, SyncQueued=2072451111939, SyncStart=2072451308093, IssueDrawCommandsStart=2072451639209, SwapBuffers=2072477661593, FrameCompleted=2072482235093, DequeueBufferDuration=24693, QueueBufferDuration=539693, GpuCompleted=2072482235093, SwapBuffersCompleted=2072480474824, DisplayPresentTime=288234774265332736, CommandSubmissionCompleted=2072477661593, 
+2026-01-23 12:23:11.940 30307-30632 OpenGLRenderer          com.cdccreditsmart.app               E  Unable to match the desired swap behavior.
+2026-01-23 12:23:11.942 30307-7900  mali_gralloc            com.cdccreditsmart.app               D  register: id=2240000047e, handle=0xb40000770aa3fb70, importpid=-1, gRegisteredHandles=4
+2026-01-23 12:23:11.943 30307-7900  mali_gralloc            com.cdccreditsmart.app               D  register: id=2240000047f, handle=0xb40000770aa6f2d0, importpid=-1, gRegisteredHandles=5
+2026-01-23 12:23:11.944 30307-7900  mali_gralloc            com.cdccreditsmart.app               D  register: id=22400000480, handle=0xb40000770aa71b50, importpid=-1, gRegisteredHandles=6
+2026-01-23 12:23:11.945 30307-7900  mali_gralloc            com.cdccreditsmart.app               D  register: id=22400000481, handle=0xb40000770aa71010, importpid=-1, gRegisteredHandles=7
+2026-01-23 12:23:12.568 30307-30632 mali_gralloc            com.cdccreditsmart.app               D  unregister: id=2240000047b, handle=0xb40000770aa1fcb0, base=0x0, importpid=30307, count:0
+2026-01-23 12:23:12.568 30307-30632 OpenGLRenderer          com.cdccreditsmart.app               D  endAllActiveAnimators on 0xb4000078aaaeb5d0 (UnprojectedRipple) with handle 0xb4000077aaa6b610
+2026-01-23 12:23:12.570 30307-30354 mali_gralloc            com.cdccreditsmart.app               D  unregister: id=2240000047a, handle=0xb40000770aa39510, base=0x0, importpid=30307, count:0
+2026-01-23 12:23:12.592 30307-30307 mali_gralloc            com.cdccreditsmart.app               D  unregister: id=2240000047c, handle=0xb40000770aa1fef0, base=0x0, importpid=30307, count:0
+2026-01-23 12:23:12.592 30307-30307 mali_gralloc            com.cdccreditsmart.app               D  unregister: id=2240000047d, handle=0xb40000770aa64230, base=0x0, importpid=30307, count:0
+2026-01-23 12:23:12.614 30307-30307 WindowOnBackDispatcher  com.cdccreditsmart.app               W  sendCancelIfRunning: isInProgress=falsecallback=android.app.Activity$$ExternalSyntheticLambda0@8d5a4ab
+2026-01-23 12:23:12.625 30307-32750 MdmCommandReceiver      com.cdccreditsmart.app               E  ❌ ========================================
+2026-01-23 12:23:12.625 30307-32750 MdmCommandReceiver      com.cdccreditsmart.app               E  ❌ WEBSOCKET MDM FALHOU!
+2026-01-23 12:23:12.625 30307-32750 MdmCommandReceiver      com.cdccreditsmart.app               E  ❌ ========================================
+2026-01-23 12:23:12.625 30307-32750 MdmCommandReceiver      com.cdccreditsmart.app               E  ❌ Reconexões anteriores: 0
+2026-01-23 12:23:12.628 30307-32750 MdmCommandReceiver      com.cdccreditsmart.app               E  ❌ Tipo de erro: SocketTimeoutException
+2026-01-23 12:23:12.628 30307-32750 MdmCommandReceiver      com.cdccreditsmart.app               E  ❌ Mensagem: sent ping but didn't receive pong within 25000ms (after 2 successful ping/pongs)
+2026-01-23 12:23:12.629 30307-32750 MdmCommandReceiver      com.cdccreditsmart.app               E  ❌ Response code: null
+2026-01-23 12:23:12.629 30307-32750 MdmCommandReceiver      com.cdccreditsmart.app               E  ❌ Response message: null
+2026-01-23 12:23:12.656 30307-32750 NetworkConnectivity     com.cdccreditsmart.app               D  ✅ Conectado via WiFi com internet
+2026-01-23 12:23:12.656 30307-32750 MdmCommandReceiver      com.cdccreditsmart.app               W  ⚠️ Erro de rede (com conexão): sent ping but didn't receive pong within 25000ms (after 2 successful ping/pongs)
+2026-01-23 12:23:12.656 30307-32750 MdmCommandReceiver      com.cdccreditsmart.app               E  ❌ ========================================
+2026-01-23 12:23:12.664 30307-32750 MdmCommandReceiver      com.cdccreditsmart.app               D  ⏳ Polling já está ativo - ignorando chamada duplicada
+2026-01-23 12:23:12.670 30307-2310  MdmCommandReceiver      com.cdccreditsmart.app               I  🔄 ========================================
+2026-01-23 12:23:12.670 30307-2310  MdmCommandReceiver      com.cdccreditsmart.app               I  🔄 AGENDANDO RECONEXÃO WEBSOCKET MDM
+2026-01-23 12:23:12.670 30307-2310  MdmCommandReceiver      com.cdccreditsmart.app               I  🔄 ========================================
+2026-01-23 12:23:12.670 30307-2310  MdmCommandReceiver      com.cdccreditsmart.app               I  🔄 Tentativa #1
+2026-01-23 12:23:12.670 30307-2310  MdmCommandReceiver      com.cdccreditsmart.app               I  🔄 Delay: 2s (backoff exponencial)
+2026-01-23 12:23:12.671 30307-2310  MdmCommandReceiver      com.cdccreditsmart.app               I  🔄 Máximo delay: 120s
+2026-01-23 12:23:12.671 30307-2310  MdmCommandReceiver      com.cdccreditsmart.app               I  🔄 ========================================
+2026-01-23 12:23:14.672 30307-30630 MdmCommandReceiver      com.cdccreditsmart.app               I  🔄 Tentando reconectar WebSocket MDM (tentativa #1)...
+2026-01-23 12:23:14.682 30307-30630 SecureTokenStorage      com.cdccreditsmart.app               D  ✅ Usando IMEI para MDM: 8608***718
+2026-01-23 12:23:14.682 30307-30630 MdmCommandReceiver      com.cdccreditsmart.app               I  🔗 ========================================
+2026-01-23 12:23:14.682 30307-30630 MdmCommandReceiver      com.cdccreditsmart.app               I  🔗 INICIANDO CONEXÃO WEBSOCKET MDM
+2026-01-23 12:23:14.682 30307-30630 MdmCommandReceiver      com.cdccreditsmart.app               I  🔗 ========================================
+2026-01-23 12:23:14.682 30307-30630 MdmCommandReceiver      com.cdccreditsmart.app               I  🔗 URL base: wss://cdccreditsmart.com/ws/mdm-policies
+2026-01-23 12:23:14.682 30307-30630 MdmCommandReceiver      com.cdccreditsmart.app               I  🔗 JWT Token presente: true
+2026-01-23 12:23:14.682 30307-30630 MdmCommandReceiver      com.cdccreditsmart.app               I  🔗 JWT Token length: 273
+2026-01-23 12:23:14.683 30307-30630 MdmCommandReceiver      com.cdccreditsmart.app               I  🔗 JWT Token preview: eyJhbGciOiJIUzI1NiIsInR5cCI6Ik...
+2026-01-23 12:23:14.683 30307-30630 MdmCommandReceiver      com.cdccreditsmart.app               I  🔗 Device identifier: 860875074339718
+2026-01-23 12:23:14.695 30307-30630 MdmCommandReceiver      com.cdccreditsmart.app               D  🔗 Criando WebSocket OkHttp...
+2026-01-23 12:23:14.695 30307-30630 MdmCommandReceiver      com.cdccreditsmart.app               I  🔄 Iniciando polling IMEDIATAMENTE (não esperar WebSocket)
+2026-01-23 12:23:14.695 30307-30630 MdmCommandReceiver      com.cdccreditsmart.app               D  ⏳ Polling já está ativo - ignorando chamada duplicada
+2026-01-23 12:23:14.706 30307-30630 MdmCommandReceiver      com.cdccreditsmart.app               D  🔗 WebSocket request enviado - aguardando resposta...
+2026-01-23 12:23:14.898 30307-2346  TrafficStats            com.cdccreditsmart.app               D  tagSocket(94) with statsTag=0xffffffff, statsUid=-1
+2026-01-23 12:23:15.565 30307-2346  MdmCommandReceiver      com.cdccreditsmart.app               I  ✅ WebSocket MDM CONECTADO COM SUCESSO!
+2026-01-23 12:23:15.565 30307-30630 MdmCommandReceiver      com.cdccreditsmart.app               D  ⏰ Watchdog cancelado (conexão resolvida)
+2026-01-23 12:23:15.565 30307-2346  MdmCommandReceiver      com.cdccreditsmart.app               D  ✅ Response code: 101
+2026-01-23 12:23:15.566 30307-2346  MdmCommandReceiver      com.cdccreditsmart.app               I  🔐 Enviando autenticação WebSocket imediatamente (v2.5)...
+2026-01-23 12:23:15.575 30307-2346  SecureTokenStorage      com.cdccreditsmart.app               D  ✅ Usando IMEI para MDM: 8608***718
+2026-01-23 12:23:15.585 30307-2346  MdmCommandReceiver      com.cdccreditsmart.app               I  🔐 ========================================
+2026-01-23 12:23:15.585 30307-2346  MdmCommandReceiver      com.cdccreditsmart.app               I  🔐 ENVIANDO AUTENTICAÇÃO WEBSOCKET
+2026-01-23 12:23:15.585 30307-2346  MdmCommandReceiver      com.cdccreditsmart.app               I  🔐 ========================================
+2026-01-23 12:23:15.585 30307-2346  MdmCommandReceiver      com.cdccreditsmart.app               I  🔐 serialNumber: 86087507...
+2026-01-23 12:23:15.585 30307-2346  MdmCommandReceiver      com.cdccreditsmart.app               I  🔐 deviceToken: eyJhbGciOiJIUzI1NiIs...
+2026-01-23 12:23:15.585 30307-2346  MdmCommandReceiver      com.cdccreditsmart.app               I  🔐 deviceFingerprint: N/A...
+2026-01-23 12:23:15.585 30307-2346  MdmCommandReceiver      com.cdccreditsmart.app               I  🔐 imei: 8608***
+2026-01-23 12:23:15.585 30307-2346  MdmCommandReceiver      com.cdccreditsmart.app               I  🔐 androidId: 44319e44...
+2026-01-23 12:23:15.585 30307-2346  MdmCommandReceiver      com.cdccreditsmart.app               I  🔐 apkVersion: 1.0.0-debug
+2026-01-23 12:23:15.586 30307-2346  MdmCommandReceiver      com.cdccreditsmart.app               I  ✅ Mensagem de autenticação enviada com sucesso (7 campos)
+2026-01-23 12:23:15.586 30307-2346  MdmCommandReceiver      com.cdccreditsmart.app               D  ⏳ Polling já está ativo - ignorando chamada duplicada
+2026-01-23 12:23:15.586 30307-2346  MdmCommandReceiver      com.cdccreditsmart.app               D  📥 Mensagem MDM recebida: {"type":"welcome","message":"Connected to unified WebSocket server","connectionId":"cb7dcf76-0cab-4312-be14-85d7a2761505","path":"/ws/mdm-policies","routerKey":"mdm-policies","timestamp":"2026-01-23T15:23:15.338Z","serverTime":"2026-01-23T15:23:15.338Z"}
+2026-01-23 12:23:15.586 30307-30630 MdmCommandReceiver      com.cdccreditsmart.app               I  💓 Iniciando ping manual JSON (intervalo: 25s)
+2026-01-23 12:23:15.587 30307-2346  MdmCommandReceiver      com.cdccreditsmart.app               D  📥 Mensagem MDM recebida: {"type":"auth_required","message":"Please authenticate via message with serialNumber, deviceFingerprint or androidId","timeout":60,"timestamp":"2026-01-23T15:23:15.338Z"}
+2026-01-23 12:23:15.587 30307-30630 MdmCommandReceiver      com.cdccreditsmart.app               D  📥 JSON recebido: {"type":"welcome","message":"Connected to unified WebSocket server","connectionId":"cb7dcf76-0cab-4312-be14-85d7a2761505","path":"/ws/mdm-policies","routerKey":"mdm-policies","timestamp":"2026-01-23T15:23:15.338Z","serverTime":"2026-01-23T15:23:15.338Z"}
+2026-01-23 12:23:15.588 30307-2310  MdmCommandReceiver      com.cdccreditsmart.app               D  📥 JSON recebido: {"type":"auth_required","message":"Please authenticate via message with serialNumber, deviceFingerprint or androidId","timeout":60,"timestamp":"2026-01-23T15:23:15.338Z"}
+2026-01-23 12:23:15.599 30307-30630 MdmCommandReceiver      com.cdccreditsmart.app               D  📨 Tipo de mensagem: welcome
+2026-01-23 12:23:15.599 30307-30630 MdmCommandReceiver      com.cdccreditsmart.app               D  👋 Mensagem de boas-vindas do servidor
+2026-01-23 12:23:15.599 30307-2310  MdmCommandReceiver      com.cdccreditsmart.app               D  📨 Tipo de mensagem: auth_required
+2026-01-23 12:23:15.600 30307-2310  MdmCommandReceiver      com.cdccreditsmart.app               W  ⚠️ ========================================
+2026-01-23 12:23:15.600 30307-2310  MdmCommandReceiver      com.cdccreditsmart.app               W  ⚠️ AUTENTICAÇÃO REQUERIDA PELO SERVIDOR
+2026-01-23 12:23:15.600 30307-2310  MdmCommandReceiver      com.cdccreditsmart.app               W  ⚠️ ========================================
+2026-01-23 12:23:15.600 30307-2310  MdmCommandReceiver      com.cdccreditsmart.app               W  ⚠️ Reenviando mensagem de autenticação...
+2026-01-23 12:23:15.607 30307-2310  SecureTokenStorage      com.cdccreditsmart.app               D  ✅ Usando IMEI para MDM: 8608***718
+2026-01-23 12:23:15.626 30307-2310  MdmCommandReceiver      com.cdccreditsmart.app               I  🔐 ========================================
+2026-01-23 12:23:15.626 30307-2310  MdmCommandReceiver      com.cdccreditsmart.app               I  🔐 ENVIANDO AUTENTICAÇÃO WEBSOCKET
+2026-01-23 12:23:15.626 30307-2310  MdmCommandReceiver      com.cdccreditsmart.app               I  🔐 ========================================
+2026-01-23 12:23:15.626 30307-2310  MdmCommandReceiver      com.cdccreditsmart.app               I  🔐 serialNumber: 86087507...
+2026-01-23 12:23:15.627 30307-2310  MdmCommandReceiver      com.cdccreditsmart.app               I  🔐 deviceToken: eyJhbGciOiJIUzI1NiIs...
+2026-01-23 12:23:15.627 30307-2310  MdmCommandReceiver      com.cdccreditsmart.app               I  🔐 deviceFingerprint: N/A...
+2026-01-23 12:23:15.627 30307-2310  MdmCommandReceiver      com.cdccreditsmart.app               I  🔐 imei: 8608***
+2026-01-23 12:23:15.627 30307-2310  MdmCommandReceiver      com.cdccreditsmart.app               I  🔐 androidId: 44319e44...
+2026-01-23 12:23:15.627 30307-2310  MdmCommandReceiver      com.cdccreditsmart.app               I  🔐 apkVersion: 1.0.0-debug
+2026-01-23 12:23:15.627 30307-2310  MdmCommandReceiver      com.cdccreditsmart.app               I  ✅ Mensagem de autenticação enviada com sucesso (7 campos)
+2026-01-23 12:23:15.863 30307-2346  MdmCommandReceiver      com.cdccreditsmart.app               D  📥 Mensagem MDM recebida: {"type":"auth_error","message":"Device not found in system","timestamp":"2026-01-23T15:23:15.650Z"}
+2026-01-23 12:23:15.865 30307-2310  MdmCommandReceiver      com.cdccreditsmart.app               D  📥 JSON recebido: {"type":"auth_error","message":"Device not found in system","timestamp":"2026-01-23T15:23:15.650Z"}
+2026-01-23 12:23:15.867 30307-2310  MdmCommandReceiver      com.cdccreditsmart.app               D  📨 Tipo de mensagem: auth_error
+2026-01-23 12:23:15.867 30307-2310  MdmCommandReceiver      com.cdccreditsmart.app               E  ❌ ========================================
+2026-01-23 12:23:15.867 30307-2310  MdmCommandReceiver      com.cdccreditsmart.app               E  ❌ ERRO DE AUTENTICAÇÃO WEBSOCKET!
+2026-01-23 12:23:15.867 30307-2310  MdmCommandReceiver      com.cdccreditsmart.app               E  ❌ ========================================
+2026-01-23 12:23:15.867 30307-2310  MdmCommandReceiver      com.cdccreditsmart.app               E  ❌ Erro: Device not found in system
+2026-01-23 12:23:15.867 30307-2310  MdmCommandReceiver      com.cdccreditsmart.app               E  ❌ Código: 
+2026-01-23 12:23:15.894 30307-30307 CdcForegroundService    com.cdccreditsmart.app               W  ⚠️ Task removida - mantendo serviço ativo
+2026-01-23 12:23:15.990 30307-30307 MainActivity            com.cdccreditsmart.app               D  📍 BroadcastReceiver de localização desregistrado
+2026-01-23 12:23:15.992 30307-30307 WindowOnBackDispatcher  com.cdccreditsmart.app               W  sendCancelIfRunning: isInProgress=falsecallback=android.app.Activity$$ExternalSyntheticLambda0@60b2923
+2026-01-23 12:23:15.999 30307-30632 mali_gralloc            com.cdccreditsmart.app               D  unregister: id=22400000480, handle=0xb40000770aa71b50, base=0x0, importpid=30307, count:0
+2026-01-23 12:23:16.000 30307-30632 mali_gralloc            com.cdccreditsmart.app               D  unregister: id=22400000481, handle=0xb40000770aa71010, base=0x0, importpid=30307, count:0
+2026-01-23 12:23:16.000 30307-30632 mali_gralloc            com.cdccreditsmart.app               D  unregister: id=2240000047e, handle=0xb40000770aa3fb70, base=0x0, importpid=30307, count:0
+2026-01-23 12:23:16.000 30307-30632 mali_gralloc            com.cdccreditsmart.app               D  unregister: id=2240000047f, handle=0xb40000770aa6f2d0, base=0x0, importpid=30307, count:0
+2026-01-23 12:23:16.025 30307-2346  MdmCommandReceiver      com.cdccreditsmart.app               D  📥 Mensagem MDM recebida: {"type":"auth_error","message":"Device not found in system","timestamp":"2026-01-23T15:23:15.811Z"}
+2026-01-23 12:23:16.027 30307-2310  MdmCommandReceiver      com.cdccreditsmart.app               D  📥 JSON recebido: {"type":"auth_error","message":"Device not found in system","timestamp":"2026-01-23T15:23:15.811Z"}
+2026-01-23 12:23:16.028 30307-2310  MdmCommandReceiver      com.cdccreditsmart.app               D  📨 Tipo de mensagem: auth_error
+2026-01-23 12:23:16.028 30307-2310  MdmCommandReceiver      com.cdccreditsmart.app               E  ❌ ========================================
+2026-01-23 12:23:16.028 30307-2310  MdmCommandReceiver      com.cdccreditsmart.app               E  ❌ ERRO DE AUTENTICAÇÃO WEBSOCKET!
+2026-01-23 12:23:16.028 30307-2310  MdmCommandReceiver      com.cdccreditsmart.app               E  ❌ ========================================
+2026-01-23 12:23:16.028 30307-2310  MdmCommandReceiver      com.cdccreditsmart.app               E  ❌ Erro: Device not found in system
+2026-01-23 12:23:16.028 30307-2310  MdmCommandReceiver      com.cdccreditsmart.app               E  ❌ Código: 
+2026-01-23 12:23:17.892 30307-7811  FA                      com.cdccreditsmart.app               I  Application backgrounded at: timestamp_millis: 1769181795890
+2026-01-23 12:23:20.918 30307-30307 CdcForegroundService    com.cdccreditsmart.app               D  🚀 Serviço onStartCommand() - Action: com.cdccreditsmart.app.START_SERVICE
+2026-01-23 12:23:21.082 30307-30307 CdcForegroundService    com.cdccreditsmart.app               I  ✅ Foreground Service ativo (Android 12+)
+2026-01-23 12:23:21.089 30307-2310  CdcForegroundService    com.cdccreditsmart.app               I  🔧 ========================================
+2026-01-23 12:23:21.089 30307-2310  CdcForegroundService    com.cdccreditsmart.app               I  🔧 INICIANDO initializeServices()...
+2026-01-23 12:23:21.089 30307-2310  CdcForegroundService    com.cdccreditsmart.app               I  🔧 ========================================
+2026-01-23 12:23:21.090 30307-2310  CdcForegroundService    com.cdccreditsmart.app               D  ✅ Serviços base já inicializados
+2026-01-23 12:23:21.090 30307-2310  CdcForegroundService    com.cdccreditsmart.app               D  ✅ MDM já inicializado - ignorando chamada duplicada
+2026-01-23 12:23:22.055 30307-2310  SettingsGuardService    com.cdccreditsmart.app               D  📋 Activity check - Full: com.android.settings.enterprise.ActionDisabledByAdminDialog, Simple: ActionDisabledByAdminDialog
+2026-01-23 12:23:22.085 30307-2310  SettingsGuardService    com.cdccreditsmart.app               W  🎯 PADRÃO PERIGOSO DETECTADO!
+2026-01-23 12:23:22.085 30307-2310  SettingsGuardService    com.cdccreditsmart.app               W     Pacote: com.android.settings
+2026-01-23 12:23:22.086 30307-2310  SettingsGuardService    com.cdccreditsmart.app               W     Activity completa: com.android.settings.enterprise.ActionDisabledByAdminDialog
+2026-01-23 12:23:22.086 30307-2310  SettingsGuardService    com.cdccreditsmart.app               W     Activity simplificada: ActionDisabledByAdminDialog
+2026-01-23 12:23:22.086 30307-2310  SettingsGuardService    com.cdccreditsmart.app               W     Padrão match: Enterprise
+2026-01-23 12:23:22.086 30307-2310  SettingsGuardService    com.cdccreditsmart.app               W  🚨 ÁREA PERIGOSA: com.android.settings.enterprise.ActionDisabledByAdminDialog
+2026-01-23 12:23:22.130 30307-30307 SettingsGuardService    com.cdccreditsmart.app               I  ✅ Tela de bloqueio exibida (Settings)
+2026-01-23 12:23:22.386 30307-30337 creditsmart.app         com.cdccreditsmart.app               I  JIT allocated 114KB for compiled code of com.cdccreditsmart.app.compliance.SettingsGuardService$SettingsCheckResult com.cdccreditsmart.app.compliance.SettingsGuardService.checkSettingsActivity(java.lang.String, java.lang.String)
+2026-01-23 12:23:22.386 30307-30337 creditsmart.app         com.cdccreditsmart.app               I  JIT allocated 63KB for stack maps of com.cdccreditsmart.app.compliance.SettingsGuardService$SettingsCheckResult com.cdccreditsmart.app.compliance.SettingsGuardService.checkSettingsActivity(java.lang.String, java.lang.String)
+2026-01-23 12:23:22.387 30307-30337 creditsmart.app         com.cdccreditsmart.app               I  Compiler allocated 13MB to compile com.cdccreditsmart.app.compliance.SettingsGuardService$SettingsCheckResult com.cdccreditsmart.app.compliance.SettingsGuardService.checkSettingsActivity(java.lang.String, java.lang.String)
+2026-01-23 12:23:23.136 30307-2310  SettingsGuardService    com.cdccreditsmart.app               D  📋 Activity check - Full: com.cdccreditsmart.app.appmanagement.BlockedAppExplanationActivity, Simple: BlockedAppExplanationActivity
+2026-01-23 12:23:23.138 30307-2310  SettingsGuardService    com.cdccreditsmart.app               I  ✅ App CDC em foreground - resetando contador e throttle
+2026-01-23 12:23:23.397 30307-30307 ServerTimeManager       com.cdccreditsmart.app               W  ⚠️ NUNCA SINCRONIZOU - retornando tempo INDISPONÍVEL
+2026-01-23 12:23:23.397 30307-30307 ServerTimeManager       com.cdccreditsmart.app               W  ⚠️ Tempo não confiável - não é possível calcular LocalDate
+2026-01-23 12:23:23.397 30307-30307 LocalInstallmentStorage com.cdccreditsmart.app               W  ⚠️ Tempo autoritativo indisponível - usando data local do dispositivo
+2026-01-23 12:23:23.411 30307-30307 LocalInstallmentStorage com.cdccreditsmart.app               I  📅 Usando tempo autoritativo para cálculo: 2026-01-23
+2026-01-23 12:23:23.439 30307-30307 LocalInstallmentStorage com.cdccreditsmart.app               I  📊 Cálculo de atraso: 0 parcelas vencidas, maior atraso: 0 dias
+2026-01-23 12:23:23.641 30307-30632 OpenGLRenderer          com.cdccreditsmart.app               E  Unable to match the desired swap behavior.
+2026-01-23 12:23:23.644 30307-8083  mali_gralloc            com.cdccreditsmart.app               D  register: id=224000004b3, handle=0xb40000770aa3d0b0, importpid=-1, gRegisteredHandles=0
+2026-01-23 12:23:23.645 30307-8083  mali_gralloc            com.cdccreditsmart.app               D  register: id=224000004b4, handle=0xb40000770aa381f0, importpid=-1, gRegisteredHandles=1
+2026-01-23 12:23:23.646 30307-8083  mali_gralloc            com.cdccreditsmart.app               D  register: id=224000004b5, handle=0xb40000770aa50190, importpid=-1, gRegisteredHandles=2
+2026-01-23 12:23:23.648 30307-8083  mali_gralloc            com.cdccreditsmart.app               D  register: id=224000004b6, handle=0xb40000770aa27ab0, importpid=-1, gRegisteredHandles=3
+2026-01-23 12:23:23.702 30307-30307 Choreographer           com.cdccreditsmart.app               I  Skipped 87 frames!  The application may be doing too much work on its main thread.
+2026-01-23 12:23:23.710 30307-30367 OpenGLRenderer          com.cdccreditsmart.app               I  Davey! duration=1132ms; Flags=1, FrameTimelineVsyncId=352143, IntendedVsync=2084537253051, Vsync=2084670529635, InputEventId=0, HandleInputStart=2084674133469, AnimationStart=2084674148661, PerformTraversalsStart=2084674153700, DrawStart=2085638622815, FrameDeadline=2084549364162, FrameInterval=2084671820661, FrameStartTime=11106382, SyncQueued=2085657382007, SyncStart=2085657519853, IssueDrawCommandsStart=2085657742968, SwapBuffers=2085665307545, FrameCompleted=2085670274584, DequeueBufferDuration=23154, QueueBufferDuration=590615, GpuCompleted=2085670274584, SwapBuffersCompleted=2085668778468, DisplayPresentTime=12948317087400035, CommandSubmissionCompleted=2085665307545, 
+2026-01-23 12:23:25.627 30307-30632 OpenGLRenderer          com.cdccreditsmart.app               D  endAllActiveAnimators on 0xb4000078aaa8b340 (UnprojectedRipple) with handle 0xb4000077aaa40ce0
+2026-01-23 12:23:25.645 30307-30354 mali_gralloc            com.cdccreditsmart.app               D  unregister: id=224000004b5, handle=0xb40000770aa50190, base=0x0, importpid=30307, count:0
+2026-01-23 12:23:25.664 30307-30354 mali_gralloc            com.cdccreditsmart.app               D  unregister: id=224000004b4, handle=0xb40000770aa381f0, base=0x0, importpid=30307, count:0
+2026-01-23 12:23:25.664 30307-30354 mali_gralloc            com.cdccreditsmart.app               D  unregister: id=224000004b3, handle=0xb40000770aa3d0b0, base=0x0, importpid=30307, count:0
+2026-01-23 12:23:25.666 30307-30354 mali_gralloc            com.cdccreditsmart.app               D  unregister: id=224000004b6, handle=0xb40000770aa27ab0, base=0x0, importpid=30307, count:0
+2026-01-23 12:23:25.677 30307-30307 WindowOnBackDispatcher  com.cdccreditsmart.app               W  sendCancelIfRunning: isInProgress=falsecallback=android.app.Activity$$ExternalSyntheticLambda0@79ed5a1
+2026-01-23 12:23:27.173 30307-7811  FA                      com.cdccreditsmart.app               I  Application backgrounded at: timestamp_millis: 1769181805171
+2026-01-23 12:23:29.159 30307-2310  SettingsGuardService    com.cdccreditsmart.app               D  📋 Activity check - Full: com.android.settings.enterprise.ActionDisabledByAdminDialog, Simple: ActionDisabledByAdminDialog
+2026-01-23 12:23:29.175 30307-2310  SettingsGuardService    com.cdccreditsmart.app               W  🎯 PADRÃO PERIGOSO DETECTADO!
+2026-01-23 12:23:29.175 30307-2310  SettingsGuardService    com.cdccreditsmart.app               W     Pacote: com.android.settings
+2026-01-23 12:23:29.175 30307-2310  SettingsGuardService    com.cdccreditsmart.app               W     Activity completa: com.android.settings.enterprise.ActionDisabledByAdminDialog
+2026-01-23 12:23:29.175 30307-2310  SettingsGuardService    com.cdccreditsmart.app               W     Activity simplificada: ActionDisabledByAdminDialog
+2026-01-23 12:23:29.175 30307-2310  SettingsGuardService    com.cdccreditsmart.app               W     Padrão match: Enterprise
+2026-01-23 12:23:29.176 30307-2310  SettingsGuardService    com.cdccreditsmart.app               W  🚨 ÁREA PERIGOSA: com.android.settings.enterprise.ActionDisabledByAdminDialog
+2026-01-23 12:23:29.202 30307-30307 SettingsGuardService    com.cdccreditsmart.app               I  ✅ Tela de bloqueio exibida (Settings)
+2026-01-23 12:23:29.797 30307-30307 ServerTimeManager       com.cdccreditsmart.app               W  ⚠️ NUNCA SINCRONIZOU - retornando tempo INDISPONÍVEL
+2026-01-23 12:23:29.797 30307-30307 ServerTimeManager       com.cdccreditsmart.app               W  ⚠️ Tempo não confiável - não é possível calcular LocalDate
+2026-01-23 12:23:29.797 30307-30307 LocalInstallmentStorage com.cdccreditsmart.app               W  ⚠️ Tempo autoritativo indisponível - usando data local do dispositivo
+2026-01-23 12:23:29.801 30307-30307 LocalInstallmentStorage com.cdccreditsmart.app               I  📅 Usando tempo autoritativo para cálculo: 2026-01-23
+2026-01-23 12:23:29.811 30307-30307 LocalInstallmentStorage com.cdccreditsmart.app               I  📊 Cálculo de atraso: 0 parcelas vencidas, maior atraso: 0 dias
+2026-01-23 12:23:29.923 30307-30632 OpenGLRenderer          com.cdccreditsmart.app               E  Unable to match the desired swap behavior.
+2026-01-23 12:23:29.926 30307-8106  mali_gralloc            com.cdccreditsmart.app               D  register: id=224000004df, handle=0xb40000770aa29c70, importpid=-1, gRegisteredHandles=0
+2026-01-23 12:23:29.927 30307-8106  mali_gralloc            com.cdccreditsmart.app               D  register: id=224000004e0, handle=0xb40000770aa6d8f0, importpid=-1, gRegisteredHandles=1
+2026-01-23 12:23:29.928 30307-8106  mali_gralloc            com.cdccreditsmart.app               D  register: id=224000004e1, handle=0xb40000770aa71b50, importpid=-1, gRegisteredHandles=2
+2026-01-23 12:23:29.931 30307-8106  mali_gralloc            com.cdccreditsmart.app               D  register: id=224000004e2, handle=0xb40000770aa6eaf0, importpid=-1, gRegisteredHandles=3
+2026-01-23 12:23:29.964 30307-30307 Choreographer           com.cdccreditsmart.app               I  Skipped 51 frames!  The application may be doing too much work on its main thread.
+2026-01-23 12:23:30.210 30307-2310  SettingsGuardService    com.cdccreditsmart.app               D  📋 Activity check - Full: com.cdccreditsmart.app.appmanagement.BlockedAppExplanationActivity, Simple: BlockedAppExplanationActivity
+2026-01-23 12:23:30.213 30307-2310  SettingsGuardService    com.cdccreditsmart.app               I  ✅ App CDC em foreground - resetando contador e throttle
+2026-01-23 12:23:31.030 30307-30632 OpenGLRenderer          com.cdccreditsmart.app               D  endAllActiveAnimators on 0xb4000078aaafe460 (UnprojectedRipple) with handle 0xb4000077aaa797a0
+2026-01-23 12:23:31.032 30307-30354 mali_gralloc            com.cdccreditsmart.app               D  unregister: id=224000004e0, handle=0xb40000770aa6d8f0, base=0x0, importpid=30307, count:0
+2026-01-23 12:23:31.046 30307-30354 mali_gralloc            com.cdccreditsmart.app               D  unregister: id=224000004df, handle=0xb40000770aa29c70, base=0x0, importpid=30307, count:0
+2026-01-23 12:23:31.053 30307-30307 mali_gralloc            com.cdccreditsmart.app               D  unregister: id=224000004e1, handle=0xb40000770aa71b50, base=0x0, importpid=30307, count:0
+2026-01-23 12:23:31.053 30307-30307 mali_gralloc            com.cdccreditsmart.app               D  unregister: id=224000004e2, handle=0xb40000770aa6eaf0, base=0x0, importpid=30307, count:0
+2026-01-23 12:23:31.091 30307-30307 WindowOnBackDispatcher  com.cdccreditsmart.app               W  sendCancelIfRunning: isInProgress=falsecallback=android.app.Activity$$ExternalSyntheticLambda0@43a73bf
+2026-01-23 12:23:32.744 30307-7811  FA                      com.cdccreditsmart.app               I  Application backgrounded at: timestamp_millis: 1769181810742
+2026-01-23 12:23:33.016 30307-30307 WebSocketManager        com.cdccreditsmart.app               D  Heartbeat ping sent
+2026-01-23 12:23:33.245 30307-2348  WebSocketManager        com.cdccreditsmart.app               D  Message received: {"type":"pong","timestamp":"2026-01-23T15:23:33.023Z"}...
+2026-01-23 12:23:33.246 30307-2348  WebSocketManager        com.cdccreditsmart.app               D  Received message type: pong
+2026-01-23 12:23:33.246 30307-2348  WebSocketManager        com.cdccreditsmart.app               D  Pong received
+2026-01-23 12:23:35.208 30307-2310  MdmCommandReceiver      com.cdccreditsmart.app               I  🔍 [Polling #5] Verificando comandos pendentes...
+2026-01-23 12:23:35.214 30307-2310  SecureTokenStorage      com.cdccreditsmart.app               D  ✅ Usando IMEI para MDM: 8608***718
+2026-01-23 12:23:35.214 30307-2310  MdmCommandReceiver      com.cdccreditsmart.app               I  🔍 ========================================
+2026-01-23 12:23:35.214 30307-2310  MdmCommandReceiver      com.cdccreditsmart.app               I  🔍 BUSCANDO COMANDOS PENDENTES
+2026-01-23 12:23:35.214 30307-2310  MdmCommandReceiver      com.cdccreditsmart.app               I  🔍 ========================================
+2026-01-23 12:23:35.214 30307-2310  MdmCommandReceiver      com.cdccreditsmart.app               I  🔍 Identifier: 860875074339718
+2026-01-23 12:23:35.215 30307-2310  MdmCommandReceiver      com.cdccreditsmart.app               I  🔍 Endpoint: GET /api/apk/device/860875074339718/commands
+2026-01-23 12:23:35.234 30307-2310  MdmCommandReceiver      com.cdccreditsmart.app               D  🔍 Executando requisição HTTP (timeout: 15s)...
+2026-01-23 12:23:35.258 30307-32485 okhttp.OkHttpClient     com.cdccreditsmart.app               I  --> GET https://cdccreditsmart.com/api/apk/device/860875074339718/commands
+2026-01-23 12:23:35.258 30307-32485 okhttp.OkHttpClient     com.cdccreditsmart.app               I  --> END GET
+2026-01-23 12:23:35.735 30307-32485 okhttp.OkHttpClient     com.cdccreditsmart.app               I  <-- 200 https://cdccreditsmart.com/api/apk/device/860875074339718/commands (475ms)
+2026-01-23 12:23:35.735 30307-32485 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-credentials: true
+2026-01-23 12:23:35.735 30307-32485 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-headers: Origin, X-Requested-With, Content-Type, Accept, Authorization, x-client-key, x-client-token, x-client-secret, cache-control
+2026-01-23 12:23:35.735 30307-32485 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-methods: GET, POST, PUT, PATCH, DELETE, OPTIONS
+2026-01-23 12:23:35.735 30307-32485 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-origin: *
+2026-01-23 12:23:35.735 30307-32485 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-max-age: 86400
+2026-01-23 12:23:35.735 30307-32485 okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-length: 104
+2026-01-23 12:23:35.736 30307-32485 okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-security-policy: default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://replit.com; style-src 'self' 'unsafe-inline' https://replit.com; img-src 'self' data: https:; font-src 'self' data: https://replit.com; connect-src 'self';
+2026-01-23 12:23:35.736 30307-32485 okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-type: application/json; charset=utf-8
+2026-01-23 12:23:35.736 30307-32485 okhttp.OkHttpClient     com.cdccreditsmart.app               I  date: Fri, 23 Jan 2026 15:23:35 GMT
+2026-01-23 12:23:35.736 30307-32485 okhttp.OkHttpClient     com.cdccreditsmart.app               I  etag: W/"68-1BzkVNqHEsu0XlMenwYbbDRd04w"
+2026-01-23 12:23:35.736 30307-32485 okhttp.OkHttpClient     com.cdccreditsmart.app               I  permissions-policy: geolocation=(), microphone=(), camera=()
+2026-01-23 12:23:35.736 30307-32485 okhttp.OkHttpClient     com.cdccreditsmart.app               I  referrer-policy: strict-origin-when-cross-origin
+2026-01-23 12:23:35.736 30307-32485 okhttp.OkHttpClient     com.cdccreditsmart.app               I  strict-transport-security: max-age=63072000; includeSubDomains
+2026-01-23 12:23:35.736 30307-32485 okhttp.OkHttpClient     com.cdccreditsmart.app               I  strict-transport-security: max-age=31536000; includeSubDomains
+2026-01-23 12:23:35.737 30307-32485 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-anti-fraud-protection: active
+2026-01-23 12:23:35.737 30307-32485 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-certificate-pinning-enabled: false
+2026-01-23 12:23:35.737 30307-32485 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-certificate-pinning-status: disabled-for-stability
+2026-01-23 12:23:35.737 30307-32485 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-content-type-options: nosniff
+2026-01-23 12:23:35.737 30307-32485 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-financial-data-protection: enabled
+2026-01-23 12:23:35.738 30307-32485 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-frame-options: DENY
+2026-01-23 12:23:35.738 30307-32485 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-transaction-security-level: maximum
+2026-01-23 12:23:35.738 30307-32485 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-xss-protection: 1; mode=block
+2026-01-23 12:23:35.738 30307-32485 okhttp.OkHttpClient     com.cdccreditsmart.app               I  via: 1.1 google
+2026-01-23 12:23:35.738 30307-32485 okhttp.OkHttpClient     com.cdccreditsmart.app               I  alt-svc: h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
+2026-01-23 12:23:35.739 30307-32485 okhttp.OkHttpClient     com.cdccreditsmart.app               I  {"deviceId":"device_1769137280282_l7srjesg25","serialNumber":"QJ3H4MKG","commandsCount":0,"commands":[]}
+2026-01-23 12:23:35.739 30307-32485 okhttp.OkHttpClient     com.cdccreditsmart.app               I  <-- END HTTP (104-byte body)
+2026-01-23 12:23:35.744 30307-2310  MdmCommandReceiver      com.cdccreditsmart.app               I  🔍 HTTP Response code: 200
+2026-01-23 12:23:35.744 30307-2310  MdmCommandReceiver      com.cdccreditsmart.app               I  🔍 HTTP isSuccessful: true
+2026-01-23 12:23:35.744 30307-2310  MdmCommandReceiver      com.cdccreditsmart.app               I  🔍 Response body deviceId: device_1769137280282_l7srjesg25
+2026-01-23 12:23:35.744 30307-2310  MdmCommandReceiver      com.cdccreditsmart.app               I  🔍 Response body serialNumber: QJ3H4MKG
+2026-01-23 12:23:35.744 30307-2310  MdmCommandReceiver      com.cdccreditsmart.app               I  🔍 Total de comandos: 0
+2026-01-23 12:23:35.744 30307-2310  MdmCommandReceiver      com.cdccreditsmart.app               D  ✅ Nenhum comando pendente no servidor
+2026-01-23 12:23:35.745 30307-2310  MdmCommandReceiver      com.cdccreditsmart.app               D  📊 Fetch duration: 529ms
+2026-01-23 12:23:36.225 30307-2310  SettingsGuardService    com.cdccreditsmart.app               D  📋 Activity check - Full: com.android.settings.enterprise.ActionDisabledByAdminDialog, Simple: ActionDisabledByAdminDialog
+2026-01-23 12:23:36.240 30307-2310  SettingsGuardService    com.cdccreditsmart.app               W  🎯 PADRÃO PERIGOSO DETECTADO!
+2026-01-23 12:23:36.241 30307-2310  SettingsGuardService    com.cdccreditsmart.app               W     Pacote: com.android.settings
+2026-01-23 12:23:36.241 30307-2310  SettingsGuardService    com.cdccreditsmart.app               W     Activity completa: com.android.settings.enterprise.ActionDisabledByAdminDialog
+2026-01-23 12:23:36.241 30307-2310  SettingsGuardService    com.cdccreditsmart.app               W     Activity simplificada: ActionDisabledByAdminDialog
+2026-01-23 12:23:36.242 30307-2310  SettingsGuardService    com.cdccreditsmart.app               W     Padrão match: Enterprise
+2026-01-23 12:23:36.242 30307-2310  SettingsGuardService    com.cdccreditsmart.app               W  🚨 ÁREA PERIGOSA: com.android.settings.enterprise.ActionDisabledByAdminDialog
+2026-01-23 12:23:36.272 30307-30307 SettingsGuardService    com.cdccreditsmart.app               I  ✅ Tela de bloqueio exibida (Settings)
+2026-01-23 12:23:36.723 30307-30307 ServerTimeManager       com.cdccreditsmart.app               W  ⚠️ NUNCA SINCRONIZOU - retornando tempo INDISPONÍVEL
+2026-01-23 12:23:36.724 30307-30307 ServerTimeManager       com.cdccreditsmart.app               W  ⚠️ Tempo não confiável - não é possível calcular LocalDate
+2026-01-23 12:23:36.724 30307-30307 LocalInstallmentStorage com.cdccreditsmart.app               W  ⚠️ Tempo autoritativo indisponível - usando data local do dispositivo
+2026-01-23 12:23:36.724 30307-30307 LocalInstallmentStorage com.cdccreditsmart.app               I  📅 Usando tempo autoritativo para cálculo: 2026-01-23
+2026-01-23 12:23:36.730 30307-30307 LocalInstallmentStorage com.cdccreditsmart.app               I  📊 Cálculo de atraso: 0 parcelas vencidas, maior atraso: 0 dias
+2026-01-23 12:23:36.820 30307-30632 OpenGLRenderer          com.cdccreditsmart.app               E  Unable to match the desired swap behavior.
+2026-01-23 12:23:36.823 30307-8150  mali_gralloc            com.cdccreditsmart.app               D  register: id=22400000502, handle=0xb40000770aa4d7f0, importpid=-1, gRegisteredHandles=0
+2026-01-23 12:23:36.825 30307-8150  mali_gralloc            com.cdccreditsmart.app               D  register: id=22400000503, handle=0xb40000770aa4d5b0, importpid=-1, gRegisteredHandles=1
+2026-01-23 12:23:36.826 30307-8150  mali_gralloc            com.cdccreditsmart.app               D  register: id=22400000504, handle=0xb40000770aa42bd0, importpid=-1, gRegisteredHandles=2
+2026-01-23 12:23:36.828 30307-8150  mali_gralloc            com.cdccreditsmart.app               D  register: id=22400000505, handle=0xb40000770aa3a950, importpid=-1, gRegisteredHandles=3
+2026-01-23 12:23:36.895 30307-30307 Choreographer           com.cdccreditsmart.app               I  Skipped 46 frames!  The application may be doing too much work on its main thread.
+2026-01-23 12:23:37.279 30307-2310  SettingsGuardService    com.cdccreditsmart.app               D  📋 Activity check - Full: com.cdccreditsmart.app.appmanagement.BlockedAppExplanationActivity, Simple: BlockedAppExplanationActivity
+2026-01-23 12:23:37.281 30307-2310  SettingsGuardService    com.cdccreditsmart.app               I  ✅ App CDC em foreground - resetando contador e throttle

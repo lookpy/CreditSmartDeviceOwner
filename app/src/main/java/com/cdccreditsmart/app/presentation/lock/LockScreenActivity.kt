@@ -247,7 +247,7 @@ class LockScreenActivity : ComponentActivity() {
                 Log.d(TAG, "🚫 Tentativa de sair da tela de bloqueio bloqueada")
                 Toast.makeText(
                     this@LockScreenActivity,
-                    "⚠️ Regularize seu pagamento para desbloquear o dispositivo",
+                    "⚠️ Regularize seu pagamento para liberar o dispositivo",
                     Toast.LENGTH_SHORT
                 ).show()
             }

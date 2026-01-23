@@ -147,7 +147,7 @@ fun ModernBlockedAppScreen(
                 ) {
                     Icon(
                         imageVector = Icons.Default.Lock,
-                        contentDescription = "Bloqueado",
+                        contentDescription = "Limitado",
                         tint = Color(0xFFFF7A1A),
                         modifier = Modifier.size(40.dp)
                     )
@@ -160,8 +160,8 @@ fun ModernBlockedAppScreen(
             Text(
                 text = when {
                     isSettingsBlocked -> "Acesso Restrito"
-                    isOffline -> "App Temporariamente Bloqueado (Dados offline)"
-                    else -> "App Temporariamente Bloqueado"
+                    isOffline -> "App Temporariamente Limitado (Dados offline)"
+                    else -> "App Temporariamente Limitado"
                 },
                 style = MaterialTheme.typography.headlineSmall,
                 fontWeight = FontWeight.Bold,
@@ -175,7 +175,7 @@ fun ModernBlockedAppScreen(
                 text = when {
                     isSettingsBlocked -> "Por razões de segurança, o acesso às configurações do sistema está restrito."
                     isOffline -> "Pagamento em atraso. Regularize para liberar seu dispositivo."
-                    else -> "Regularize suas parcelas para desbloquear"
+                    else -> "Regularize suas parcelas para liberar"
                 },
                 style = MaterialTheme.typography.bodyLarge,
                 textAlign = TextAlign.Center,

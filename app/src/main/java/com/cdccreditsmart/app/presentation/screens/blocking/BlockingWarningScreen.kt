@@ -119,7 +119,7 @@ fun BlockingWarningScreen(
                             fontWeight = FontWeight.Bold
                         )
                         Text(
-                            text = "mais aplicativos serão bloqueados",
+                            text = "mais aplicativos serão limitados",
                             style = MaterialTheme.typography.bodyMedium,
                             textAlign = TextAlign.Center
                         )

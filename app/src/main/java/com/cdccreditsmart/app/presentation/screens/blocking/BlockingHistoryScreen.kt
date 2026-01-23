@@ -32,7 +32,7 @@ fun BlockingHistoryScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Histórico de Bloqueios") },
+                title = { Text("Histórico de Limitações") },
                 colors = TopAppBarDefaults.topAppBarColors(
                     containerColor = Color(0xFFFF7A1A)
                 )
@@ -53,12 +53,12 @@ fun BlockingHistoryScreen(
                 ) {
                     Icon(
                         imageVector = Icons.Default.LockOpen,
-                        contentDescription = "Sem bloqueios",
+                        contentDescription = "Sem limitações",
                         modifier = Modifier.size(64.dp),
                         tint = MaterialTheme.colorScheme.outline
                     )
                     Text(
-                        text = "Nenhum histórico de bloqueio",
+                        text = "Nenhum histórico de limitação",
                         style = MaterialTheme.typography.bodyLarge,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
@@ -201,9 +201,9 @@ private fun getEventColor(action: String): Color {
 
 private fun getEventActionText(action: String): String {
     return when (action) {
-        "block" -> "Bloqueio Aplicado"
-        "unblock" -> "Desbloqueio Realizado"
-        "attempt_open" -> "Tentativa de Abertura Bloqueada"
+        "block" -> "Limitação Aplicada"
+        "unblock" -> "Liberação Realizada"
+        "attempt_open" -> "Tentativa de Abertura Limitada"
         "contest" -> "Contestação Registrada"
         else -> action.capitalize(Locale.ROOT)
     }

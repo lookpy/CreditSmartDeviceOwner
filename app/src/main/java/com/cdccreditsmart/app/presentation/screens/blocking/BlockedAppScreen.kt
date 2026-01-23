@@ -50,7 +50,7 @@ fun BlockedAppScreen(
                 ) {
                     Icon(
                         imageVector = Icons.Default.Block,
-                        contentDescription = "Bloqueado",
+                        contentDescription = "Limitado",
                         modifier = Modifier.size(60.dp),
                         tint = Color(0xFFFF7A1A)
                     )
@@ -61,7 +61,7 @@ fun BlockedAppScreen(
             
             // Title
             Text(
-                text = "Aplicativo Bloqueado",
+                text = "Aplicativo com Limitação",
                 style = MaterialTheme.typography.headlineSmall,
                 fontWeight = FontWeight.Bold,
                 textAlign = TextAlign.Center
@@ -92,7 +92,7 @@ fun BlockedAppScreen(
                         .padding(16.dp)
                 ) {
                     Text(
-                        text = "Motivo do bloqueio:",
+                        text = "Motivo da limitação:",
                         style = MaterialTheme.typography.titleSmall,
                         fontWeight = FontWeight.Bold
                     )
@@ -145,7 +145,7 @@ fun BlockedAppScreen(
             
             // Info text
             Text(
-                text = "Para desbloquear este aplicativo, você precisa regularizar o pagamento das parcelas em atraso.",
+                text = "Para liberar este aplicativo, você precisa regularizar o pagamento das parcelas em atraso.",
                 style = MaterialTheme.typography.bodyMedium,
                 textAlign = TextAlign.Center,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
@@ -177,7 +177,7 @@ fun BlockedAppScreen(
                 onClick = onContest,
                 modifier = Modifier.fillMaxWidth()
             ) {
-                Text("Contestar Bloqueio")
+                Text("Contestar Limitação")
             }
             
             Spacer(modifier = Modifier.height(12.dp))
