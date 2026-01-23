@@ -1,0 +1,457 @@
+2026-01-23 01:03:15.308 26657-27061 ContractCodeStorage     com.cdccreditsmart.app               D  Contract code saved to ALL storage locations
+2026-01-23 01:03:15.329 26657-26669 creditsmart.app         com.cdccreditsmart.app               W  Cleared Reference was only reachable from finalizer (only reported once)
+2026-01-23 01:03:15.349 26657-27187 SecureTokenStorage      com.cdccreditsmart.app               D  EncryptedSharedPreferences initialized successfully
+2026-01-23 01:03:15.353 26657-27187 AppProtectionManager    com.cdccreditsmart.app               W          → DISALLOW_MODIFY_ACCOUNTS adiado (pareamento pendente ou direct-boot)
+2026-01-23 01:03:15.368 26657-27187 AppProtectionManager    com.cdccreditsmart.app               I          → Network reset bloqueado (proteção extra)
+2026-01-23 01:03:15.375 26657-26669 creditsmart.app         com.cdccreditsmart.app               I  Background concurrent mark compact GC freed 262476(10MB) AllocSpace objects, 380(13MB) LOS objects, 75% free, 7947KB/31MB, paused 721us,2.971ms total 102.742ms
+2026-01-23 01:03:15.384 26657-27187 AppProtectionManager    com.cdccreditsmart.app               I          → Outgoing beam bloqueado (proteção extra)
+2026-01-23 01:03:15.384 26657-27187 AppProtectionManager    com.cdccreditsmart.app               D     OEM unlock: Bloqueado via Knox Enhanced Protections
+2026-01-23 01:03:15.384 26657-27187 AppProtectionManager    com.cdccreditsmart.app               W  
+2026-01-23 01:03:15.384 26657-27187 AppProtectionManager    com.cdccreditsmart.app               W  📋 IMPORTANTE - LIMITAÇÕES DO ANDROID:
+2026-01-23 01:03:15.384 26657-27187 AppProtectionManager    com.cdccreditsmart.app               W     ✅ Factory reset VIA SETTINGS: BLOQUEADO
+2026-01-23 01:03:15.384 26657-27187 AppProtectionManager    com.cdccreditsmart.app               W     ❌ Factory reset VIA RECOVERY MODE (Volume+Power): NÃO BLOQUEÁVEL
+2026-01-23 01:03:15.384 26657-27187 AppProtectionManager    com.cdccreditsmart.app               W     ❌ Fastboot/Bootloader: Operam ABAIXO do Android - NÃO BLOQUEÁVEL
+2026-01-23 01:03:15.384 26657-27187 AppProtectionManager    com.cdccreditsmart.app               W  
+2026-01-23 01:03:15.384 26657-27187 AppProtectionManager    com.cdccreditsmart.app               W     Dispositivos Motorola podem ter Settings customizados.
+2026-01-23 01:03:15.384 26657-27187 AppProtectionManager    com.cdccreditsmart.app               W     Apps Settings da Motorola foram bloqueados como proteção extra.
+2026-01-23 01:03:15.392 26657-27187 AppProtectionManager    com.cdccreditsmart.app               I  ✅ [5/10] HARD RESET BLOQUEADO (Botões)
+2026-01-23 01:03:15.392 26657-27187 AppProtectionManager    com.cdccreditsmart.app               I          → Safe mode bloqueado
+2026-01-23 01:03:15.400 26657-27187 AppProtectionManager    com.cdccreditsmart.app               I          → System updates adiados (proteção reset)
+2026-01-23 01:03:15.411 26657-27187 AppProtectionManager    com.cdccreditsmart.app               I          → VPN config bloqueado
+2026-01-23 01:03:15.430 26657-27187 AppProtectionManager    com.cdccreditsmart.app               I          → Data/hora config bloqueado
+2026-01-23 01:03:15.430 26657-27187 AppProtectionManager    com.cdccreditsmart.app               W  
+2026-01-23 01:03:15.430 26657-27187 AppProtectionManager    com.cdccreditsmart.app               W  ⚠️ LIMITAÇÃO: Hard reset via recovery mode pode não ser bloqueado
+2026-01-23 01:03:15.430 26657-27187 AppProtectionManager    com.cdccreditsmart.app               W     Dispositivos Samsung com Knox têm proteção adicional
+2026-01-23 01:03:15.437 26657-27187 AppProtectionManager    com.cdccreditsmart.app               I  ✅ [6/10] RECOVERY MODE BLOQUEADO
+2026-01-23 01:03:15.437 26657-27187 AppProtectionManager    com.cdccreditsmart.app               I          → Configurações de rede bloqueadas
+2026-01-23 01:03:15.437 26657-27187 AppProtectionManager    com.cdccreditsmart.app               W          → ADB/Debug mantido ativo (debugging Device Owner)
+2026-01-23 01:03:15.437 26657-27187 AppProtectionManager    com.cdccreditsmart.app               W          → USB transfer mantido ativo (debugging Device Owner)
+2026-01-23 01:03:15.437 26657-27187 AppProtectionManager    com.cdccreditsmart.app               I  ✅ [7/10] SETTINGS TOTALMENTE ACESSÍVEL (Android 13+)
+2026-01-23 01:03:15.437 26657-27187 AppProtectionManager    com.cdccreditsmart.app               I          → Usuário PODE acessar Settings > Apps normalmente
+2026-01-23 01:03:15.437 26657-27187 AppProtectionManager    com.cdccreditsmart.app               I          → Botões Desinstalar/Force Stop/Clear Data desabilitados para CDC
+2026-01-23 01:03:15.443 26657-27187 AppProtectionManager    com.cdccreditsmart.app               I  ✅ [8/10] CONTROLE DE USUÁRIO BLOQUEADO
+2026-01-23 01:03:15.443 26657-27187 AppProtectionManager    com.cdccreditsmart.app               I          → Criação de usuários bloqueada
+2026-01-23 01:03:15.448 26657-27187 AppProtectionManager    com.cdccreditsmart.app               I          → Remoção de usuários bloqueada
+2026-01-23 01:03:15.462 26657-27187 AppProtectionManager    com.cdccreditsmart.app               I          → Troca de usuários bloqueada
+2026-01-23 01:03:15.476 26657-27187 AppProtectionManager    com.cdccreditsmart.app               I  ✅ [9/10] TASK KILLING PREVENIDO
+2026-01-23 01:03:15.476 26657-27187 AppProtectionManager    com.cdccreditsmart.app               I          → Lock Task Mode configurado
+2026-01-23 01:03:15.489 26657-27187 AppProtectionManager    com.cdccreditsmart.app               I          → Lock Task features configuradas
+2026-01-23 01:03:15.500 26657-27187 AppProtectionManager    com.cdccreditsmart.app               I  ✅ [10/10] WIPE DO SISTEMA BLOQUEADO
+2026-01-23 01:03:15.500 26657-27187 AppProtectionManager    com.cdccreditsmart.app               I          → Profile removal bloqueado
+2026-01-23 01:03:15.506 26657-27187 AppProtectionManager    com.cdccreditsmart.app               I          → Config credentials bloqueado
+2026-01-23 01:03:15.511 26657-27187 AppProtectionManager    com.cdccreditsmart.app               I          → Keyguard protegido
+2026-01-23 01:03:15.511 26657-27187 AppProtectionManager    com.cdccreditsmart.app               I  [11/10] RECOVERY BOOT - Dispositivo não-Samsung
+2026-01-23 01:03:15.511 26657-27187 AppProtectionManager    com.cdccreditsmart.app               W          ⚠️ Recovery mode pode não ser totalmente bloqueado
+2026-01-23 01:03:15.511 26657-27187 AppProtectionManager    com.cdccreditsmart.app               W          → Proteção limitada às restrições padrão do Android
+2026-01-23 01:03:15.511 26657-27187 AppProtectionManager    com.cdccreditsmart.app               D  [12/10] MOTOROLA SETTINGS - Dispositivo não é Motorola
+2026-01-23 01:03:15.518 26657-27136 SecureTokenStorage      com.cdccreditsmart.app               D  EncryptedSharedPreferences initialized successfully
+2026-01-23 01:03:15.521 26657-27136 ContractCodeStorage     com.cdccreditsmart.app               D  Retrieving contract code from storage
+2026-01-23 01:03:15.529 26657-27187 InstallationBlocker     com.cdccreditsmart.app               I  ✅ Instalação de fontes desconhecidas BLOQUEADA
+2026-01-23 01:03:15.530 26657-27187 InstallationBlocker     com.cdccreditsmart.app               I     → Apps só podem ser instalados via Play Store
+2026-01-23 01:03:15.530 26657-27187 AppProtectionManager    com.cdccreditsmart.app               I  ✅ [13/10] Instalação de fontes desconhecidas bloqueada
+2026-01-23 01:03:15.654 26657-27187 AppProtectionManager    com.cdccreditsmart.app               I  ✅ [14/10] Scan de apps perigosos: Nenhum app perigoso detectado
+2026-01-23 01:03:15.657 26657-27187 FRPHelper               com.cdccreditsmart.app               W  ⚠️ Device NÃO tem conta Google - FRP não está ativo
+2026-01-23 01:03:15.657 26657-27187 AppProtectionManager    com.cdccreditsmart.app               W  ⚠️ [EXTRA] Google FRP não disponível - device sem conta Google
+2026-01-23 01:03:15.657 26657-27187 AppProtectionManager    com.cdccreditsmart.app               I          → Cliente pode adicionar conta Google manualmente em Settings
+2026-01-23 01:03:15.657 26657-27187 AppProtectionManager    com.cdccreditsmart.app               I  ========================================
+2026-01-23 01:03:15.657 26657-27187 AppProtectionManager    com.cdccreditsmart.app               I  📊 RESUMO DA PROTEÇÃO ANTI-REMOÇÃO:
+2026-01-23 01:03:15.657 26657-27187 AppProtectionManager    com.cdccreditsmart.app               I    ✅ Proteções aplicadas: 22
+2026-01-23 01:03:15.657 26657-27187 AppProtectionManager    com.cdccreditsmart.app               I  
+2026-01-23 01:03:15.657 26657-27187 AppProtectionManager    com.cdccreditsmart.app               W  ⚠️ Tamper Detection:
+2026-01-23 01:03:15.657 26657-27187 AppProtectionManager    com.cdccreditsmart.app               W     • Device fingerprint SERÁ coletado e reportado ao backend em cada boot
+2026-01-23 01:03:15.657 26657-27187 AppProtectionManager    com.cdccreditsmart.app               W     • Backend detection: Requer implementação POST /api/security/device-boot (TODO)
+2026-01-23 01:03:15.657 26657-27187 AppProtectionManager    com.cdccreditsmart.app               W     • Local detection: Limitada (ambos token e fingerprint apagados em factory reset)
+2026-01-23 01:03:15.657 26657-27187 AppProtectionManager    com.cdccreditsmart.app               W     • BootInterceptor: Detecta BOOT_COMPLETED e SHUTDOWN apenas
+2026-01-23 01:03:15.657 26657-27187 AppProtectionManager    com.cdccreditsmart.app               W     • ACTION_REBOOT NÃO funciona (broadcast protegido do sistema)
+2026-01-23 01:03:15.657 26657-27187 AppProtectionManager    com.cdccreditsmart.app               I    ✅ Android 13+: Usuário PODE acessar Settings normalmente!
+2026-01-23 01:03:15.657 26657-27187 AppProtectionManager    com.cdccreditsmart.app               I  ========================================
+2026-01-23 01:03:15.657 26657-27187 AppProtectionManager    com.cdccreditsmart.app               I  
+2026-01-23 01:03:15.657 26657-27187 AppProtectionManager    com.cdccreditsmart.app               I  
+2026-01-23 01:03:15.657 26657-27187 AppProtectionManager    com.cdccreditsmart.app               I  ╔════════════════════════════════════════════════════════════════╗
+2026-01-23 01:03:15.657 26657-27187 AppProtectionManager    com.cdccreditsmart.app               I  ║                                                                ║
+2026-01-23 01:03:15.657 26657-27187 AppProtectionManager    com.cdccreditsmart.app               I  ║        📋 AÇÕES BLOQUEADAS PELAS POLÍTICAS DE TRABALHO         ║
+2026-01-23 01:03:15.657 26657-27187 AppProtectionManager    com.cdccreditsmart.app               I  ║                                                                ║
+2026-01-23 01:03:15.657 26657-27187 AppProtectionManager    com.cdccreditsmart.app               I  ╚════════════════════════════════════════════════════════════════╝
+2026-01-23 01:03:15.657 26657-27187 AppProtectionManager    com.cdccreditsmart.app               I  
+2026-01-23 01:03:15.657 26657-27187 AppProtectionManager    com.cdccreditsmart.app               I  🚫 RESTAURAÇÃO E RESET (GARANTIDAS)
+2026-01-23 01:03:15.657 26657-27187 AppProtectionManager    com.cdccreditsmart.app               I  ════════════════════════════════════════════════════════════════
+2026-01-23 01:03:15.657 26657-27187 AppProtectionManager    com.cdccreditsmart.app               I    ✅ Factory Reset via Settings (DISALLOW_FACTORY_RESET - crítica)
+2026-01-23 01:03:15.657 26657-27187 AppProtectionManager    com.cdccreditsmart.app               I    ❌ Factory Reset via Recovery Mode (botões Volume+Power) - NÃO BLOQUEÁVEL
+2026-01-23 01:03:15.657 26657-27187 AppProtectionManager    com.cdccreditsmart.app               I    ❌ Factory Reset via Fastboot/Bootloader - NÃO BLOQUEÁVEL
+2026-01-23 01:03:15.657 26657-27187 AppProtectionManager    com.cdccreditsmart.app               I  
+2026-01-23 01:03:15.657 26657-27187 AppProtectionManager    com.cdccreditsmart.app               I  🛡️ PROTEÇÃO DO APP (GARANTIDAS)
+2026-01-23 01:03:15.657 26657-27187 AppProtectionManager    com.cdccreditsmart.app               I  ════════════════════════════════════════════════════════════════
+2026-01-23 01:03:15.657 26657-27187 AppProtectionManager    com.cdccreditsmart.app               I    ✅ Desinstalação do app (setUninstallBlocked)
+2026-01-23 01:03:15.657 26657-27187 AppProtectionManager    com.cdccreditsmart.app               I    ✅ Force Stop (setUserControlDisabledPackages ou DISALLOW_APPS_CONTROL)
+2026-01-23 01:03:15.657 26657-27187 AppProtectionManager    com.cdccreditsmart.app               I    ✅ Clear Data (setUserControlDisabledPackages ou DISALLOW_APPS_CONTROL)
+2026-01-23 01:03:15.657 26657-27187 AppProtectionManager    com.cdccreditsmart.app               I    ✅ Remoção do Device Admin (Device Owner não pode ser removido via Settings)
+2026-01-23 01:03:15.657 26657-27187 AppProtectionManager    com.cdccreditsmart.app               I  
+2026-01-23 01:03:15.657 26657-27187 AppProtectionManager    com.cdccreditsmart.app               I  🔐 SEGURANÇA E ACESSO (GARANTIDAS)
+2026-01-23 01:03:15.658 26657-27187 AppProtectionManager    com.cdccreditsmart.app               I  ════════════════════════════════════════════════════════════════
+2026-01-23 01:03:15.658 26657-27187 AppProtectionManager    com.cdccreditsmart.app               I    ✅ Modificação de contas (DISALLOW_MODIFY_ACCOUNTS)
+2026-01-23 01:03:15.658 26657-27187 AppProtectionManager    com.cdccreditsmart.app               I    ✅ Adição de usuários (DISALLOW_ADD_USER)
+2026-01-23 01:03:15.658 26657-27187 AppProtectionManager    com.cdccreditsmart.app               I    ✅ Remoção de usuários (DISALLOW_REMOVE_USER)
+2026-01-23 01:03:15.658 26657-27187 AppProtectionManager    com.cdccreditsmart.app               I    ✅ Debug Features e USB Debugging (DISALLOW_DEBUGGING_FEATURES)
+2026-01-23 01:03:15.658 26657-27187 AppProtectionManager    com.cdccreditsmart.app               I    ✅ USB File Transfer MTP/PTP (DISALLOW_USB_FILE_TRANSFER)
+2026-01-23 01:03:15.658 26657-27187 AppProtectionManager    com.cdccreditsmart.app               I    ✅ Safe Boot Mode (DISALLOW_SAFE_BOOT)
+2026-01-23 01:03:15.658 26657-27187 AppProtectionManager    com.cdccreditsmart.app               I  
+2026-01-23 01:03:15.658 26657-27187 AppProtectionManager    com.cdccreditsmart.app               I  🌐 REDE E SISTEMA (TENTADAS - podem falhar)
+2026-01-23 01:03:15.658 26657-27187 AppProtectionManager    com.cdccreditsmart.app               I  ════════════════════════════════════════════════════════════════
+2026-01-23 01:03:15.658 26657-27187 AppProtectionManager    com.cdccreditsmart.app               I    ⚠️ Configuração de VPN (DISALLOW_CONFIG_VPN - pode falhar)
+2026-01-23 01:03:15.658 26657-27187 AppProtectionManager    com.cdccreditsmart.app               I    ⚠️ Configuração de redes móveis (DISALLOW_CONFIG_MOBILE_NETWORKS - pode falhar)
+2026-01-23 01:03:15.658 26657-27187 AppProtectionManager    com.cdccreditsmart.app               I    ⚠️ Configuração de data/hora (DISALLOW_CONFIG_DATE_TIME - pode falhar)
+2026-01-23 01:03:15.658 26657-27187 AppProtectionManager    com.cdccreditsmart.app               I    ⚠️ Network Reset (DISALLOW_NETWORK_RESET - pode falhar)
+2026-01-23 01:03:15.658 26657-27187 AppProtectionManager    com.cdccreditsmart.app               I    ⚠️ Montagem de mídia externa (DISALLOW_MOUNT_PHYSICAL_MEDIA - pode falhar)
+2026-01-23 01:03:15.658 26657-27187 AppProtectionManager    com.cdccreditsmart.app               I    ⚠️ Outgoing Beam/NFC (DISALLOW_OUTGOING_BEAM - pode falhar)
+2026-01-23 01:03:15.658 26657-27187 AppProtectionManager    com.cdccreditsmart.app               I  
+2026-01-23 01:03:15.658 26657-27187 AppProtectionManager    com.cdccreditsmart.app               I  📱 INSTALAÇÃO E APPS (TENTADAS)
+2026-01-23 01:03:15.658 26657-27187 AppProtectionManager    com.cdccreditsmart.app               I  ════════════════════════════════════════════════════════════════
+2026-01-23 01:03:15.658 26657-27187 AppProtectionManager    com.cdccreditsmart.app               I    ⚠️ Fontes desconhecidas (InstallationBlocker, falha em Android moderno)
+2026-01-23 01:03:15.658 26657-27187 AppProtectionManager    com.cdccreditsmart.app               I    ⚠️ Apps perigosos (escaneados, remoção requer confirmação do usuário)
+2026-01-23 01:03:15.658 26657-27187 AppProtectionManager    com.cdccreditsmart.app               I    ⚠️ Apps Settings Motorola (disabled for Play Protect compliance)
+2026-01-23 01:03:15.658 26657-27187 AppProtectionManager    com.cdccreditsmart.app               I  
+2026-01-23 01:03:15.658 26657-27187 AppProtectionManager    com.cdccreditsmart.app               I  ⚙️ SAMSUNG KNOX (se disponível)
+2026-01-23 01:03:15.658 26657-27187 AppProtectionManager    com.cdccreditsmart.app               I  ════════════════════════════════════════════════════════════════
+2026-01-23 01:03:15.658 26657-27187 AppProtectionManager    com.cdccreditsmart.app               I    ⚠️ Knox Factory Reset Protection (requer Knox SDK)
+2026-01-23 01:03:15.658 26657-27187 AppProtectionManager    com.cdccreditsmart.app               I    ⚠️ Knox OEM Unlock bloqueado (requer Knox SDK)
+2026-01-23 01:03:15.658 26657-27187 AppProtectionManager    com.cdccreditsmart.app               I    ⚠️ Knox Recovery Mode bloqueado (requer Knox SDK)
+2026-01-23 01:03:15.658 26657-27187 AppProtectionManager    com.cdccreditsmart.app               I  
+2026-01-23 01:03:15.658 26657-27187 AppProtectionManager    com.cdccreditsmart.app               I  ℹ️ OBSERVAÇÕES IMPORTANTES
+2026-01-23 01:03:15.658 26657-27187 AppProtectionManager    com.cdccreditsmart.app               I  ════════════════════════════════════════════════════════════════
+2026-01-23 01:03:15.658 26657-27187 AppProtectionManager    com.cdccreditsmart.app               I    • Proteções ✅ são GARANTIDAS pelo Device Owner
+2026-01-23 01:03:15.658 26657-27187 AppProtectionManager    com.cdccreditsmart.app               I    • Proteções ⚠️ são TENTADAS, mas podem falhar silenciosamente
+2026-01-23 01:03:15.658 26657-27187 AppProtectionManager    com.cdccreditsmart.app               I    • Proteções ❌ são impossíveis de bloquear (limitação do Android)
+2026-01-23 01:03:15.658 26657-27187 AppProtectionManager    com.cdccreditsmart.app               I    • WiFi, Bluetooth, Tethering NÃO são bloqueados (usuário precisa)
+2026-01-23 01:03:15.658 26657-27187 AppProtectionManager    com.cdccreditsmart.app               I    • Recovery Mode e Fastboot operam ANTES do Android iniciar
+2026-01-23 01:03:15.658 26657-27187 AppProtectionManager    com.cdccreditsmart.app               I  
+2026-01-23 01:03:15.658 26657-27187 AppProtectionManager    com.cdccreditsmart.app               I  ╔════════════════════════════════════════════════════════════════╗
+2026-01-23 01:03:15.658 26657-27187 AppProtectionManager    com.cdccreditsmart.app               I  ║  🔒 PROTEÇÃO MÁXIMA APLICADA - CDC CREDIT SMART PROTEGIDO      ║
+2026-01-23 01:03:15.658 26657-27187 AppProtectionManager    com.cdccreditsmart.app               I  ╚════════════════════════════════════════════════════════════════╝
+2026-01-23 01:03:15.658 26657-27187 AppProtectionManager    com.cdccreditsmart.app               I  
+2026-01-23 01:03:15.658 26657-27187 AutoProvis...ngReceiver com.cdccreditsmart.app               I  
+2026-01-23 01:03:15.658 26657-27187 AutoProvis...ngReceiver com.cdccreditsmart.app               I  ╔════════════════════════════════════════════════════════════════════╗
+2026-01-23 01:03:15.659 26657-27187 AutoProvis...ngReceiver com.cdccreditsmart.app               I  ║          CRIANDO USUÁRIO SECUNDÁRIO GERENCIADO (WORK PROFILE)      ║
+2026-01-23 01:03:15.659 26657-27187 AutoProvis...ngReceiver com.cdccreditsmart.app               I  ╚════════════════════════════════════════════════════════════════════╝
+2026-01-23 01:03:15.659 26657-27187 AutoProvis...ngReceiver com.cdccreditsmart.app               I  📋 [2/7] Iniciando criação de Work Profile...
+2026-01-23 01:03:15.659 26657-27187 AutoProvis...ngReceiver com.cdccreditsmart.app               I  ℹ️  Tipo: Usuário Secundário Gerenciado (não work profile tradicional)
+2026-01-23 01:03:15.659 26657-27187 AutoProvis...ngReceiver com.cdccreditsmart.app               I  ℹ️  Isolamento: Total (apps e dados separados)
+2026-01-23 01:03:15.659 26657-27187 AutoProvis...ngReceiver com.cdccreditsmart.app               I  ℹ️  Controle: Device Owner tem controle completo
+2026-01-23 01:03:15.668 26657-27187 WorkProfileManager      com.cdccreditsmart.app               W  ⚠️ Erro ao usar getUserHandles, tentando método alternativo: null
+2026-01-23 01:03:15.668 26657-27187 WorkProfileManager      com.cdccreditsmart.app               E  ❌ Erro ao acessar lista de usuários via reflection: null
+2026-01-23 01:03:15.668 26657-27187 WorkProfileManager      com.cdccreditsmart.app               W  ⚠️ Usuário com ID 12 não encontrado no sistema
+2026-01-23 01:03:15.669 26657-27187 WorkProfileManager      com.cdccreditsmart.app               W  ⚠️ Usuário secundário salvo (ID: 12) não existe mais no sistema
+2026-01-23 01:03:15.669 26657-27187 AutoProvis...ngReceiver com.cdccreditsmart.app               I  🔧 Usuário secundário não existe - criando agora...
+2026-01-23 01:03:15.669 26657-27187 WorkProfileManager      com.cdccreditsmart.app               I  
+2026-01-23 01:03:15.669 26657-27187 WorkProfileManager      com.cdccreditsmart.app               I  👤 ==================== CRIANDO USUÁRIO SECUNDÁRIO GERENCIADO ====================
+2026-01-23 01:03:15.670 26657-27187 WorkProfileManager      com.cdccreditsmart.app               I  📋 [1/5] Affiliation ID: cdc-756ebf39-b4ca-419f-b3c7-b7f8c67ae98d
+2026-01-23 01:03:15.670 26657-27187 WorkProfileManager      com.cdccreditsmart.app               I  📋 [2/5] Extras preparados
+2026-01-23 01:03:15.670 26657-27187 WorkProfileManager      com.cdccreditsmart.app               I  🔧 [3/5] Criando usuário secundário gerenciado...
+2026-01-23 01:03:15.732 26657-27061 ContractCodeStorage     com.cdccreditsmart.app               D  Verification complete: 7/7 locations valid
+2026-01-23 01:03:15.968 26657-27061 SecureTokenStorage      com.cdccreditsmart.app               D  EncryptedSharedPreferences initialized successfully
+2026-01-23 01:03:15.989 26657-27061 ContractCodeStorage     com.cdccreditsmart.app               D  Saving contract code to redundant storage
+2026-01-23 01:03:16.214 26657-27061 ContractCodeStorage     com.cdccreditsmart.app               D  Saved to EncryptedPrefs
+2026-01-23 01:03:16.228 26657-27136 ContractCodeStorage     com.cdccreditsmart.app               D  Storage verification: 7 valid, 0 tampered, 0 missing
+2026-01-23 01:03:16.229 26657-27136 ContractCodeStorage     com.cdccreditsmart.app               D  Contract code retrieved successfully
+2026-01-23 01:03:16.235 26657-27136 SecureTokenStorage      com.cdccreditsmart.app               D  ✅ Usando IMEI para MDM: 8608***718
+2026-01-23 01:03:16.235 26657-27136 CdcForegroundService    com.cdccreditsmart.app               I  🔐 AuthToken presente: false
+2026-01-23 01:03:16.235 26657-27136 CdcForegroundService    com.cdccreditsmart.app               I  🔐 AuthToken length: 0
+2026-01-23 01:03:16.235 26657-27136 CdcForegroundService    com.cdccreditsmart.app               I  🔐 ContractCode presente: true
+2026-01-23 01:03:16.235 26657-27136 CdcForegroundService    com.cdccreditsmart.app               I  🔐 ContractCode value: QJ3H****
+2026-01-23 01:03:16.235 26657-27136 CdcForegroundService    com.cdccreditsmart.app               I  🔐 MDM SerialNumber presente: true
+2026-01-23 01:03:16.235 26657-27136 CdcForegroundService    com.cdccreditsmart.app               I  🔐 MDM SerialNumber value: 86087507...
+2026-01-23 01:03:16.236 26657-27136 CdcForegroundService    com.cdccreditsmart.app               I  📱 ========================================
+2026-01-23 01:03:16.236 26657-27136 CdcForegroundService    com.cdccreditsmart.app               I  📱 AGUARDANDO PAIRING - MDM EM STANDBY
+2026-01-23 01:03:16.236 26657-27136 CdcForegroundService    com.cdccreditsmart.app               I  📱 O usuário ainda não fez o pareamento inicial
+2026-01-23 01:03:16.236 26657-27136 CdcForegroundService    com.cdccreditsmart.app               I  📱 Serviços MDM serão ativados após inserir código do contrato
+2026-01-23 01:03:16.236 26657-27136 CdcForegroundService    com.cdccreditsmart.app               I  📱 NOTA: isMdmInitialized permanece FALSE para permitir reinicialização
+2026-01-23 01:03:16.236 26657-27136 CdcForegroundService    com.cdccreditsmart.app               I  📱 ========================================
+2026-01-23 01:03:16.320 26657-27061 ContractCodeStorage     com.cdccreditsmart.app               D  Deleted existing file: .cdc_protected_code.enc
+2026-01-23 01:03:16.361 26657-27061 ContractCodeStorage     com.cdccreditsmart.app               D  Successfully saved to file: .cdc_protected_code.enc
+2026-01-23 01:03:16.361 26657-27061 ContractCodeStorage     com.cdccreditsmart.app               D  Saved to Protected Storage
+2026-01-23 01:03:16.362 26657-27061 ContractCodeStorage     com.cdccreditsmart.app               D  Deleted existing file: .cdc_contract_b1.enc
+2026-01-23 01:03:16.405 26657-27061 ContractCodeStorage     com.cdccreditsmart.app               D  Successfully saved to file: .cdc_contract_b1.enc
+2026-01-23 01:03:16.405 26657-27061 ContractCodeStorage     com.cdccreditsmart.app               D  Deleted existing file: .sys_device_cfg.enc
+2026-01-23 01:03:16.456 26657-27061 ContractCodeStorage     com.cdccreditsmart.app               D  Successfully saved to file: .sys_device_cfg.enc
+2026-01-23 01:03:16.456 26657-27061 ContractCodeStorage     com.cdccreditsmart.app               D  Deleted existing file: .android_secure.enc
+2026-01-23 01:03:16.501 26657-27061 ContractCodeStorage     com.cdccreditsmart.app               D  Successfully saved to file: .android_secure.enc
+2026-01-23 01:03:16.542 26657-27061 ContractCodeStorage     com.cdccreditsmart.app               D  Contract code saved to ALL storage locations
+2026-01-23 01:03:16.797 26657-27061 ContractCodeStorage     com.cdccreditsmart.app               D  Verification complete: 7/7 locations valid
+2026-01-23 01:03:16.797 26657-27061 SecureTokenStorage      com.cdccreditsmart.app               D  Device info saved successfully from auto-discovery
+2026-01-23 01:03:16.798 26657-27061 SecureTokenStorage      com.cdccreditsmart.app               D    - DeviceId: device_17691372...
+2026-01-23 01:03:16.798 26657-27061 SecureTokenStorage      com.cdccreditsmart.app               D    - SerialNumber: QJ3H4MKG
+2026-01-23 01:03:16.798 26657-27061 SecureTokenStorage      com.cdccreditsmart.app               D    - IMEI: 8608***
+2026-01-23 01:03:16.798 26657-27061 SecureTokenStorage      com.cdccreditsmart.app               D    - ContractCode: QJ3H4MKG
+2026-01-23 01:03:16.798 26657-27061 AuthOrchestrator        com.cdccreditsmart.app               D  💾 Dados salvos:
+2026-01-23 01:03:16.798 26657-27061 AuthOrchestrator        com.cdccreditsmart.app               D     - ContractCode: QJ3H4MKG
+2026-01-23 01:03:16.798 26657-27061 AuthOrchestrator        com.cdccreditsmart.app               D     - DeviceId: device_17691372...
+2026-01-23 01:03:16.798 26657-27061 AuthOrchestrator        com.cdccreditsmart.app               D     - IMEI: 8608***718
+2026-01-23 01:03:16.798 26657-27061 AuthOrchestrator        com.cdccreditsmart.app               D  🎉 ========== AUTO-DISCOVERY CONCLUÍDO ==========
+2026-01-23 01:03:16.798 26657-27061 AuthOrchestrator        com.cdccreditsmart.app               D  ✅ Auto-conexão bem-sucedida - autenticação OK!
+2026-01-23 01:03:16.798 26657-27061 AuthOrchestrator        com.cdccreditsmart.app               I  🔧 Garantindo que CdcForegroundService está rodando...
+2026-01-23 01:03:16.798 26657-27136 AuthOrchestrator        com.cdccreditsmart.app               D  🔔 Registrando FCM token após auto-discovery...
+2026-01-23 01:03:16.800 26657-27136 FcmTokenManager         com.cdccreditsmart.app               D  ========== REGISTERING FCM TOKEN WITH BACKEND ==========
+2026-01-23 01:03:16.813 26657-27136 FcmTokenManager         com.cdccreditsmart.app               D  Current FCM token retrieved: d1eGRxLYSaOx1DuXpOp4...
+2026-01-23 01:03:16.970 26657-27061 CdcForegroundService    com.cdccreditsmart.app               I  ✅ Serviço iniciado via startService()
+2026-01-23 01:03:16.970 26657-27061 AuthOrchestrator        com.cdccreditsmart.app               I  ✅ CdcForegroundService iniciado após autenticação
+2026-01-23 01:03:16.972 26657-26657 RouterViewModel         com.cdccreditsmart.app               D  ✅ Autenticado com sucesso
+2026-01-23 01:03:17.114 26657-27136 SecureTokenStorage      com.cdccreditsmart.app               D  EncryptedSharedPreferences initialized successfully
+2026-01-23 01:03:17.117 26657-27136 FcmTokenManager         com.cdccreditsmart.app               E  Cannot register: Auth token not available
+2026-01-23 01:03:17.117 26657-27136 AuthOrchestrator        com.cdccreditsmart.app               W  ⚠️ Erro ao registrar FCM token: User not authenticated
+2026-01-23 01:03:17.160 26657-26657 TermsAcceptanceStorage  com.cdccreditsmart.app               D  hasAcceptedTermsForContract(QJ3H4MKG): true (saved: QJ3H4MKG)
+2026-01-23 01:03:17.161 26657-26657 RouterViewModel         com.cdccreditsmart.app               D  ✅ Termos já aceitos - Ir para HOME
+2026-01-23 01:03:17.162 26657-26657 CdcForegroundService    com.cdccreditsmart.app               D  🚀 Serviço onStartCommand() - Action: com.cdccreditsmart.app.START_SERVICE
+2026-01-23 01:03:17.171 26657-26657 CdcForegroundService    com.cdccreditsmart.app               I  ✅ Foreground Service ativo (Android 12+)
+2026-01-23 01:03:17.173 26657-27136 CdcForegroundService    com.cdccreditsmart.app               I  🔧 ========================================
+2026-01-23 01:03:17.173 26657-27136 CdcForegroundService    com.cdccreditsmart.app               I  🔧 INICIANDO initializeServices()...
+2026-01-23 01:03:17.173 26657-27136 CdcForegroundService    com.cdccreditsmart.app               I  🔧 ========================================
+2026-01-23 01:03:17.173 26657-27136 CdcForegroundService    com.cdccreditsmart.app               D  ✅ Serviços base já inicializados
+2026-01-23 01:03:17.350 26657-26657 SecureTokenStorage      com.cdccreditsmart.app               D  EncryptedSharedPreferences initialized successfully
+2026-01-23 01:03:17.353 26657-26657 SimpleHomeViewModel     com.cdccreditsmart.app               E  ❌ No valid token available
+2026-01-23 01:03:17.805 26657-27136 SecureTokenStorage      com.cdccreditsmart.app               D  EncryptedSharedPreferences initialized successfully
+2026-01-23 01:03:17.811 26657-27136 ContractCodeStorage     com.cdccreditsmart.app               D  Retrieving contract code from storage
+2026-01-23 01:03:18.181 26657-27187 WorkProfileManager      com.cdccreditsmart.app               I  ✅ [3/5] Usuário secundário criado com sucesso!
+2026-01-23 01:03:18.182 26657-27187 WorkProfileManager      com.cdccreditsmart.app               I     UserHandle: UserHandle{13}
+2026-01-23 01:03:18.182 26657-27187 WorkProfileManager      com.cdccreditsmart.app               I     Tipo: Usuário secundário gerenciado (não work profile tradicional)
+2026-01-23 01:03:18.182 26657-27187 WorkProfileManager      com.cdccreditsmart.app               I     User ID: 13 (extraído via UserHandle.getIdentifier())
+2026-01-23 01:03:18.182 26657-27187 WorkProfileManager      com.cdccreditsmart.app               I  💾 [4/5] Informações salvas (userId: 13)
+2026-01-23 01:03:18.533 26657-27136 ContractCodeStorage     com.cdccreditsmart.app               D  Storage verification: 7 valid, 0 tampered, 0 missing
+2026-01-23 01:03:18.534 26657-27136 ContractCodeStorage     com.cdccreditsmart.app               D  Contract code retrieved successfully
+2026-01-23 01:03:18.545 26657-27136 SecureTokenStorage      com.cdccreditsmart.app               D  ✅ Usando IMEI para MDM: 8608***718
+2026-01-23 01:03:18.545 26657-27136 CdcForegroundService    com.cdccreditsmart.app               I  🔐 AuthToken presente: false
+2026-01-23 01:03:18.545 26657-27136 CdcForegroundService    com.cdccreditsmart.app               I  🔐 AuthToken length: 0
+2026-01-23 01:03:18.545 26657-27136 CdcForegroundService    com.cdccreditsmart.app               I  🔐 ContractCode presente: true
+2026-01-23 01:03:18.546 26657-27136 CdcForegroundService    com.cdccreditsmart.app               I  🔐 ContractCode value: QJ3H****
+2026-01-23 01:03:18.546 26657-27136 CdcForegroundService    com.cdccreditsmart.app               I  🔐 MDM SerialNumber presente: true
+2026-01-23 01:03:18.546 26657-27136 CdcForegroundService    com.cdccreditsmart.app               I  🔐 MDM SerialNumber value: 86087507...
+2026-01-23 01:03:18.546 26657-27136 CdcForegroundService    com.cdccreditsmart.app               I  📱 ========================================
+2026-01-23 01:03:18.546 26657-27136 CdcForegroundService    com.cdccreditsmart.app               I  📱 AGUARDANDO PAIRING - MDM EM STANDBY
+2026-01-23 01:03:18.546 26657-27136 CdcForegroundService    com.cdccreditsmart.app               I  📱 O usuário ainda não fez o pareamento inicial
+2026-01-23 01:03:18.546 26657-27136 CdcForegroundService    com.cdccreditsmart.app               I  📱 Serviços MDM serão ativados após inserir código do contrato
+2026-01-23 01:03:18.546 26657-27136 CdcForegroundService    com.cdccreditsmart.app               I  📱 NOTA: isMdmInitialized permanece FALSE para permitir reinicialização
+2026-01-23 01:03:18.546 26657-27136 CdcForegroundService    com.cdccreditsmart.app               I  📱 ========================================
+2026-01-23 01:03:18.594 26657-27187 WorkProfileManager      com.cdccreditsmart.app               I  ✅ [5/5] Usuário secundário iniciado em background
+2026-01-23 01:03:18.594 26657-27187 WorkProfileManager      com.cdccreditsmart.app               I  
+2026-01-23 01:03:18.594 26657-27187 WorkProfileManager      com.cdccreditsmart.app               I  🎉 ==================== USUÁRIO SECUNDÁRIO CRIADO ====================
+2026-01-23 01:03:18.594 26657-27187 WorkProfileManager      com.cdccreditsmart.app               I  ✅ Usuário secundário gerenciado 'CDC Managed User' criado!
+2026-01-23 01:03:18.594 26657-27187 WorkProfileManager      com.cdccreditsmart.app               I  ✅ Profile Owner: com.cdccreditsmart.app/com.cdccreditsmart.device.CDCDeviceAdminReceiver
+2026-01-23 01:03:18.594 26657-27187 WorkProfileManager      com.cdccreditsmart.app               I  ✅ Affiliation ID: cdc-756ebf39-b4ca-419f-b3c7-b7f8c67ae98d
+2026-01-23 01:03:18.594 26657-27187 WorkProfileManager      com.cdccreditsmart.app               I  ✅ Tipo: Usuário secundário completo (não work profile tradicional)
+2026-01-23 01:03:18.594 26657-27187 WorkProfileManager      com.cdccreditsmart.app               I  ℹ️ O usuário está rodando em background
+2026-01-23 01:03:18.594 26657-27187 WorkProfileManager      com.cdccreditsmart.app               I  ℹ️ Use o seletor de usuário do Android para alternar
+2026-01-23 01:03:18.594 26657-27187 WorkProfileManager      com.cdccreditsmart.app               I  =======================================================================
+2026-01-23 01:03:18.594 26657-27187 WorkProfileManager      com.cdccreditsmart.app               I  
+2026-01-23 01:03:18.594 26657-27187 AutoProvis...ngReceiver com.cdccreditsmart.app               I  
+2026-01-23 01:03:18.594 26657-27187 AutoProvis...ngReceiver com.cdccreditsmart.app               I  ╔═══════════════════════════════════════════════════════════════════╗
+2026-01-23 01:03:18.594 26657-27187 AutoProvis...ngReceiver com.cdccreditsmart.app               I  ║  ✅ WORK PROFILE CRIADO COM SUCESSO!                              ║
+2026-01-23 01:03:18.594 26657-27187 AutoProvis...ngReceiver com.cdccreditsmart.app               I  ╠═══════════════════════════════════════════════════════════════════╣
+2026-01-23 01:03:18.594 26657-27187 AutoProvis...ngReceiver com.cdccreditsmart.app               I  ║  O dispositivo agora tem um usuário secundário gerenciado         ║
+2026-01-23 01:03:18.594 26657-27187 AutoProvis...ngReceiver com.cdccreditsmart.app               I  ║  separado para isolamento de apps e dados corporativos.          ║
+2026-01-23 01:03:18.594 26657-27187 AutoProvis...ngReceiver com.cdccreditsmart.app               I  ║                                                                   ║
+2026-01-23 01:03:18.594 26657-27187 AutoProvis...ngReceiver com.cdccreditsmart.app               I  ║  IMPORTANTE: Este NÃO é um work profile tradicional com badging! ║
+2026-01-23 01:03:18.594 26657-27187 AutoProvis...ngReceiver com.cdccreditsmart.app               I  ║  É um usuário secundário completo (como contas do Windows).      ║
+2026-01-23 01:03:18.594 26657-27187 AutoProvis...ngReceiver com.cdccreditsmart.app               I  ║                                                                   ║
+2026-01-23 01:03:18.594 26657-27187 AutoProvis...ngReceiver com.cdccreditsmart.app               I  ║  Para verificar:                                                  ║
+2026-01-23 01:03:18.594 26657-27187 AutoProvis...ngReceiver com.cdccreditsmart.app               I  ║  adb shell pm list users                                          ║
+2026-01-23 01:03:18.594 26657-27187 AutoProvis...ngReceiver com.cdccreditsmart.app               I  ╚═══════════════════════════════════════════════════════════════════╝
+2026-01-23 01:03:18.594 26657-27187 AutoProvis...ngReceiver com.cdccreditsmart.app               I  
+2026-01-23 01:03:18.596 26657-27187 WorkProfileManager      com.cdccreditsmart.app               W  ⚠️ Erro ao usar getUserHandles, tentando método alternativo: null
+2026-01-23 01:03:18.599 26657-27187 WorkProfileManager      com.cdccreditsmart.app               E  ❌ Erro ao acessar lista de usuários via reflection: null
+2026-01-23 01:03:18.599 26657-27187 WorkProfileManager      com.cdccreditsmart.app               W  ⚠️ Usuário com ID 13 não encontrado no sistema
+2026-01-23 01:03:18.603 26657-27187 AutoProvis...ngReceiver com.cdccreditsmart.app               I  ⚠️ Usuário Secundário Gerenciado (INCONSISTENTE):
+                                                                                                    - User ID Salvo: 13
+                                                                                                    - Status: NÃO existe mais no sistema
+                                                                                                    - Possível causa: Removido manualmente via Settings
+                                                                                                    - Ação: Execute removeWorkProfile() para limpar referências
+2026-01-23 01:03:18.603 26657-27187 AutoProvis...ngReceiver com.cdccreditsmart.app               I  
+2026-01-23 01:03:18.603 26657-27187 AutoProvis...ngReceiver com.cdccreditsmart.app               I  📋 [3/5] Tornando o app persistente...
+2026-01-23 01:03:18.603 26657-27187 AppProtectionManager    com.cdccreditsmart.app               I  ========================================
+2026-01-23 01:03:18.603 26657-27187 AppProtectionManager    com.cdccreditsmart.app               I  🔒 TORNANDO APP PERSISTENTE
+2026-01-23 01:03:18.603 26657-27187 AppProtectionManager    com.cdccreditsmart.app               I  ========================================
+2026-01-23 01:03:18.604 26657-27187 AppProtectionManager    com.cdccreditsmart.app               I  ⚠️ Feature disabled: isApplicationHidden/setApplicationHidden - Play Protect compliance
+2026-01-23 01:03:18.604 26657-27187 AppProtectionManager    com.cdccreditsmart.app               I  ✅ App persistence check skipped
+2026-01-23 01:03:18.623 26657-27187 AppProtectionManager    com.cdccreditsmart.app               I  ✅ Atualizações de sistema adiadas (proteção contra reset)
+2026-01-23 01:03:18.625 26657-27187 AppProtectionManager    com.cdccreditsmart.app               I  ✅ Tela permanece ligada quando conectado
+2026-01-23 01:03:18.625 26657-27187 AppProtectionManager    com.cdccreditsmart.app               I  ========================================
+2026-01-23 01:03:18.625 26657-27187 AppProtectionManager    com.cdccreditsmart.app               I  🎯 PERSISTÊNCIA APLICADA (3/3)
+2026-01-23 01:03:18.625 26657-27187 AppProtectionManager    com.cdccreditsmart.app               I  ========================================
+2026-01-23 01:03:18.626 26657-27187 AutoProvis...ngReceiver com.cdccreditsmart.app               I  📋 [4/5] Verificando proteções...
+2026-01-23 01:03:18.626 26657-27187 AppProtectionManager    com.cdccreditsmart.app               I  ========================================
+2026-01-23 01:03:18.626 26657-27187 AppProtectionManager    com.cdccreditsmart.app               I  🔍 VERIFICANDO PROTEÇÕES APLICADAS
+2026-01-23 01:03:18.626 26657-27187 AppProtectionManager    com.cdccreditsmart.app               I  ========================================
+2026-01-23 01:03:18.629 26657-27187 AppProtectionManager    com.cdccreditsmart.app               I    ✅ Desinstalação bloqueada: true
+2026-01-23 01:03:18.633 26657-27187 AppProtectionManager    com.cdccreditsmart.app               I    ❌ Force Stop bloqueado: false
+2026-01-23 01:03:18.633 26657-27187 AppProtectionManager    com.cdccreditsmart.app               I    ❌ Factory Reset bloqueado: false
+2026-01-23 01:03:18.640 26657-27187 AppProtectionManager    com.cdccreditsmart.app               I    ✅ Device Owner: true
+2026-01-23 01:03:18.640 26657-27187 AppProtectionManager    com.cdccreditsmart.app               I  ========================================
+2026-01-23 01:03:18.640 26657-27187 AutoProvis...ngReceiver com.cdccreditsmart.app               I  ✅ Proteções verificadas: {uninstall_blocked=true, force_stop_blocked=false, factory_reset_blocked=false, is_device_owner=true}
+2026-01-23 01:03:18.640 26657-27187 AutoProvis...ngReceiver com.cdccreditsmart.app               I  
+2026-01-23 01:03:18.640 26657-27187 AutoProvis...ngReceiver com.cdccreditsmart.app               I  📋 [5/5] Executando diagnóstico completo de proteções...
+2026-01-23 01:03:18.640 26657-27187 ProtectionDiagnostics   com.cdccreditsmart.app               W  
+2026-01-23 01:03:18.640 26657-27187 ProtectionDiagnostics   com.cdccreditsmart.app               W  ╔════════════════════════════════════════════════════════════╗
+2026-01-23 01:03:18.640 26657-27187 ProtectionDiagnostics   com.cdccreditsmart.app               W  ║         DIAGNÓSTICO COMPLETO DE PROTEÇÕES                 ║
+2026-01-23 01:03:18.640 26657-27187 ProtectionDiagnostics   com.cdccreditsmart.app               W  ╚════════════════════════════════════════════════════════════╝
+2026-01-23 01:03:18.640 26657-27187 ProtectionDiagnostics   com.cdccreditsmart.app               W  
+2026-01-23 01:03:18.642 26657-27187 ProtectionDiagnostics   com.cdccreditsmart.app               W  ═══════════════════════════════════════════════════════════
+2026-01-23 01:03:18.642 26657-27187 ProtectionDiagnostics   com.cdccreditsmart.app               W  1. STATUS DEVICE OWNER
+2026-01-23 01:03:18.642 26657-27187 ProtectionDiagnostics   com.cdccreditsmart.app               W  ═══════════════════════════════════════════════════════════
+2026-01-23 01:03:18.642 26657-27187 ProtectionDiagnostics   com.cdccreditsmart.app               W  ✅ É DEVICE OWNER
+2026-01-23 01:03:18.642 26657-27187 ProtectionDiagnostics   com.cdccreditsmart.app               W  Package Name: com.cdccreditsmart.app
+2026-01-23 01:03:18.642 26657-27187 ProtectionDiagnostics   com.cdccreditsmart.app               W  Admin Component: com.cdccreditsmart.app.device.CdcDeviceAdminReceiver
+2026-01-23 01:03:18.642 26657-27187 ProtectionDiagnostics   com.cdccreditsmart.app               W  
+2026-01-23 01:03:18.646 26657-27187 ProtectionDiagnostics   com.cdccreditsmart.app               W  ═══════════════════════════════════════════════════════════
+2026-01-23 01:03:18.646 26657-27187 ProtectionDiagnostics   com.cdccreditsmart.app               W  2. ADMIN STATUS
+2026-01-23 01:03:18.646 26657-27187 ProtectionDiagnostics   com.cdccreditsmart.app               W  ═══════════════════════════════════════════════════════════
+2026-01-23 01:03:18.646 26657-27187 ProtectionDiagnostics   com.cdccreditsmart.app               W  ❌ Admin INATIVO
+2026-01-23 01:03:18.646 26657-27187 ProtectionDiagnostics   com.cdccreditsmart.app               W  
+2026-01-23 01:03:18.649 26657-27187 PolicyHelper            com.cdccreditsmart.app               W  getUserRestrictions failed: null
+2026-01-23 01:03:18.649 26657-27187 ProtectionDiagnostics   com.cdccreditsmart.app               W  ═══════════════════════════════════════════════════════════
+2026-01-23 01:03:18.649 26657-27187 ProtectionDiagnostics   com.cdccreditsmart.app               W  3. FACTORY RESET STATUS
+2026-01-23 01:03:18.649 26657-27187 ProtectionDiagnostics   com.cdccreditsmart.app               W  ═══════════════════════════════════════════════════════════
+2026-01-23 01:03:18.649 26657-27187 ProtectionDiagnostics   com.cdccreditsmart.app               W  ❌ FACTORY RESET NÃO BLOQUEADO
+2026-01-23 01:03:18.649 26657-27187 ProtectionDiagnostics   com.cdccreditsmart.app               E  
+2026-01-23 01:03:18.649 26657-27187 ProtectionDiagnostics   com.cdccreditsmart.app               E  ⚠️  CRÍTICO: DISALLOW_FACTORY_RESET NÃO FOI APLICADO!
+2026-01-23 01:03:18.649 26657-27187 ProtectionDiagnostics   com.cdccreditsmart.app               E     Usuário PODE resetar via Settings
+2026-01-23 01:03:18.649 26657-27187 ProtectionDiagnostics   com.cdccreditsmart.app               E  
+2026-01-23 01:03:18.649 26657-27187 ProtectionDiagnostics   com.cdccreditsmart.app               W  
+2026-01-23 01:03:18.649 26657-27187 ProtectionDiagnostics   com.cdccreditsmart.app               W  ═══════════════════════════════════════════════════════════
+2026-01-23 01:03:18.649 26657-27187 ProtectionDiagnostics   com.cdccreditsmart.app               W  4. OUTRAS PROTEÇÕES
+2026-01-23 01:03:18.649 26657-27187 ProtectionDiagnostics   com.cdccreditsmart.app               W  ═══════════════════════════════════════════════════════════
+2026-01-23 01:03:18.651 26657-27187 PolicyHelper            com.cdccreditsmart.app               W  getUserRestrictions failed: null
+2026-01-23 01:03:18.651 26657-27187 ProtectionDiagnostics   com.cdccreditsmart.app               W  
+2026-01-23 01:03:18.651 26657-27187 ProtectionDiagnostics   com.cdccreditsmart.app               W  ═══════════════════════════════════════════════════════════
+2026-01-23 01:03:18.651 26657-27187 ProtectionDiagnostics   com.cdccreditsmart.app               W  5. RESUMO
+2026-01-23 01:03:18.651 26657-27187 ProtectionDiagnostics   com.cdccreditsmart.app               W  ═══════════════════════════════════════════════════════════
+2026-01-23 01:03:18.651 26657-27187 ProtectionDiagnostics   com.cdccreditsmart.app               W  Device Owner: ✅ SIM
+2026-01-23 01:03:18.651 26657-27187 ProtectionDiagnostics   com.cdccreditsmart.app               W  Admin Ativo: ❌ NÃO
+2026-01-23 01:03:18.651 26657-27187 ProtectionDiagnostics   com.cdccreditsmart.app               W  Factory Reset Bloqueado: ❌ NÃO
+2026-01-23 01:03:18.651 26657-27187 ProtectionDiagnostics   com.cdccreditsmart.app               W  Proteções Ativas: 0/0
+2026-01-23 01:03:18.651 26657-27187 ProtectionDiagnostics   com.cdccreditsmart.app               W  
+2026-01-23 01:03:18.651 26657-27187 ProtectionDiagnostics   com.cdccreditsmart.app               E  ╔════════════════════════════════════════════════════════════╗
+2026-01-23 01:03:18.651 26657-27187 ProtectionDiagnostics   com.cdccreditsmart.app               E  ║  ⚠️  ATENÇÃO: PROTEÇÕES NÃO APLICADAS!                    ║
+2026-01-23 01:03:18.651 26657-27187 ProtectionDiagnostics   com.cdccreditsmart.app               E  ║                                                            ║
+2026-01-23 01:03:18.651 26657-27187 ProtectionDiagnostics   com.cdccreditsmart.app               E  ║  App É Device Owner mas proteções NÃO foram aplicadas.     ║
+2026-01-23 01:03:18.651 26657-27187 ProtectionDiagnostics   com.cdccreditsmart.app               E  ║  AppProtectionManager.applyMaximumProtection() NÃO rodou! ║
+2026-01-23 01:03:18.651 26657-27187 ProtectionDiagnostics   com.cdccreditsmart.app               E  ║                                                            ║
+2026-01-23 01:03:18.651 26657-27187 ProtectionDiagnostics   com.cdccreditsmart.app               E  ║  VERIFIQUE:                                                ║
+2026-01-23 01:03:18.651 26657-27187 ProtectionDiagnostics   com.cdccreditsmart.app               E  ║  - CDCApplication.onCreate() rodou?                        ║
+2026-01-23 01:03:18.651 26657-27187 ProtectionDiagnostics   com.cdccreditsmart.app               E  ║  - Houve algum erro durante aplicação?                    ║
+2026-01-23 01:03:18.651 26657-27187 ProtectionDiagnostics   com.cdccreditsmart.app               E  ║  - Reinicie o app para reaplica as proteções              ║
+2026-01-23 01:03:18.651 26657-27187 ProtectionDiagnostics   com.cdccreditsmart.app               E  ╚════════════════════════════════════════════════════════════╝
+2026-01-23 01:03:18.651 26657-27187 ProtectionDiagnostics   com.cdccreditsmart.app               W  
+2026-01-23 01:03:18.651 26657-27187 ProtectionDiagnostics   com.cdccreditsmart.app               W  ╔════════════════════════════════════════════════════════════╗
+2026-01-23 01:03:18.651 26657-27187 ProtectionDiagnostics   com.cdccreditsmart.app               W  ║         FIM DO DIAGNÓSTICO                                 ║
+2026-01-23 01:03:18.651 26657-27187 ProtectionDiagnostics   com.cdccreditsmart.app               W  ╚════════════════════════════════════════════════════════════╝
+2026-01-23 01:03:18.651 26657-27187 ProtectionDiagnostics   com.cdccreditsmart.app               W  
+2026-01-23 01:03:18.651 26657-27187 AutoProvis...ngReceiver com.cdccreditsmart.app               E  ⚠️ ISSUES CRÍTICOS ENCONTRADOS:
+2026-01-23 01:03:18.651 26657-27187 AutoProvis...ngReceiver com.cdccreditsmart.app               E     - PROTEÇÕES NÃO APLICADAS
+2026-01-23 01:03:18.651 26657-27187 AutoProvis...ngReceiver com.cdccreditsmart.app               I  
+2026-01-23 01:03:18.651 26657-27187 AutoProvis...ngReceiver com.cdccreditsmart.app               I  🔐 Aplicando proteções Samsung Knox...
+2026-01-23 01:03:18.651 26657-27187 KnoxEnhancedProtections com.cdccreditsmart.app               I  
+2026-01-23 01:03:18.651 26657-27187 KnoxEnhancedProtections com.cdccreditsmart.app               I  ╔═══════════════════════════════════════════════════════════╗
+2026-01-23 01:03:18.651 26657-27187 KnoxEnhancedProtections com.cdccreditsmart.app               I  ║   🛡️ KNOX ENHANCED PROTECTIONS - INICIANDO             ║
+2026-01-23 01:03:18.651 26657-27187 KnoxEnhancedProtections com.cdccreditsmart.app               I  ╚═══════════════════════════════════════════════════════════╝
+2026-01-23 01:03:18.651 26657-27187 KnoxEnhancedProtections com.cdccreditsmart.app               W  ❌ Dispositivo NÃO é Samsung Knox
+2026-01-23 01:03:18.651 26657-27187 KnoxEnhancedProtections com.cdccreditsmart.app               W     Proteções Knox Enhanced NÃO disponíveis
+2026-01-23 01:03:18.651 26657-27187 KnoxEnhancedProtections com.cdccreditsmart.app               W     Usando apenas proteções Android Device Owner padrão
+2026-01-23 01:03:18.651 26657-27187 AutoProvis...ngReceiver com.cdccreditsmart.app               I  ✅ Proteções Knox aplicadas
+2026-01-23 01:03:18.653 26657-27187 TranssionPersistence    com.cdccreditsmart.app               D  📱 Verificando dispositivo Transsion:
+2026-01-23 01:03:18.654 26657-27187 TranssionPersistence    com.cdccreditsmart.app               D     Manufacturer: REALME
+2026-01-23 01:03:18.654 26657-27187 TranssionPersistence    com.cdccreditsmart.app               D     Brand: REALME
+2026-01-23 01:03:18.654 26657-27187 TranssionPersistence    com.cdccreditsmart.app               D     É Transsion: false
+2026-01-23 01:03:18.654 26657-27187 AutoProvis...ngReceiver com.cdccreditsmart.app               D  📱 Dispositivo não é Transsion - persistência alternativa não aplicável
+2026-01-23 01:03:18.654 26657-27187 AutoProvis...ngReceiver com.cdccreditsmart.app               I  
+2026-01-23 01:03:18.654 26657-27187 AutoProvis...ngReceiver com.cdccreditsmart.app               I  🚀 Verificando serviço de foreground...
+2026-01-23 01:03:18.658 26657-27187 CdcForegroundService    com.cdccreditsmart.app               I  ✅ Serviço iniciado via startService()
+2026-01-23 01:03:18.658 26657-27187 AutoProvis...ngReceiver com.cdccreditsmart.app               I  ✅ CdcForegroundService verificado
+2026-01-23 01:03:18.659 26657-27187 AutoProvis...ngReceiver com.cdccreditsmart.app               I  
+2026-01-23 01:03:18.659 26657-27187 AutoProvis...ngReceiver com.cdccreditsmart.app               I  🎊 ==================== PROTEÇÕES COMPLETAS APLICADAS ====================
+2026-01-23 01:03:18.659 26657-27187 AutoProvis...ngReceiver com.cdccreditsmart.app               I  ✅ Dispositivo totalmente protegido e configurado!
+2026-01-23 01:03:18.659 26657-27187 AutoProvis...ngReceiver com.cdccreditsmart.app               I  🎉 Auto-provisionamento concluído com sucesso!
+2026-01-23 01:03:18.659 26657-27187 AutoProvis...ngReceiver com.cdccreditsmart.app               I  ==================== FIM DO AUTO-PROVISIONAMENTO ====================
+2026-01-23 01:03:18.659 26657-27187 AutoProvis...ngReceiver com.cdccreditsmart.app               I  
+2026-01-23 01:03:18.685 26657-27187 AutoProvis...ngReceiver com.cdccreditsmart.app               I  ✅ Notificação de sucesso mostrada
+2026-01-23 01:03:18.685 26657-27187 AutoProvis...ngReceiver com.cdccreditsmart.app               I  ✅ PendingResult finalizado com sucesso
+2026-01-23 01:03:18.687 26657-26657 CdcForegroundService    com.cdccreditsmart.app               D  🚀 Serviço onStartCommand() - Action: com.cdccreditsmart.app.START_SERVICE
+2026-01-23 01:03:18.698 26657-26657 CdcForegroundService    com.cdccreditsmart.app               I  ✅ Foreground Service ativo (Android 12+)
+2026-01-23 01:03:18.699 26657-27187 CdcForegroundService    com.cdccreditsmart.app               I  🔧 ========================================
+2026-01-23 01:03:18.699 26657-27187 CdcForegroundService    com.cdccreditsmart.app               I  🔧 INICIANDO initializeServices()...
+2026-01-23 01:03:18.699 26657-27187 CdcForegroundService    com.cdccreditsmart.app               I  🔧 ========================================
+2026-01-23 01:03:18.699 26657-27187 CdcForegroundService    com.cdccreditsmart.app               D  ✅ Serviços base já inicializados
+2026-01-23 01:03:19.345 26657-27187 SecureTokenStorage      com.cdccreditsmart.app               D  EncryptedSharedPreferences initialized successfully
+2026-01-23 01:03:19.351 26657-27187 ContractCodeStorage     com.cdccreditsmart.app               D  Retrieving contract code from storage
+2026-01-23 01:03:19.867 26657-27187 ContractCodeStorage     com.cdccreditsmart.app               D  Storage verification: 7 valid, 0 tampered, 0 missing
+2026-01-23 01:03:19.867 26657-27187 ContractCodeStorage     com.cdccreditsmart.app               D  Contract code retrieved successfully
+2026-01-23 01:03:19.872 26657-27187 SecureTokenStorage      com.cdccreditsmart.app               D  ✅ Usando IMEI para MDM: 8608***718
+2026-01-23 01:03:19.872 26657-27187 CdcForegroundService    com.cdccreditsmart.app               I  🔐 AuthToken presente: false
+2026-01-23 01:03:19.872 26657-27187 CdcForegroundService    com.cdccreditsmart.app               I  🔐 AuthToken length: 0
+2026-01-23 01:03:19.872 26657-27187 CdcForegroundService    com.cdccreditsmart.app               I  🔐 ContractCode presente: true
+2026-01-23 01:03:19.872 26657-27187 CdcForegroundService    com.cdccreditsmart.app               I  🔐 ContractCode value: QJ3H****
+2026-01-23 01:03:19.872 26657-27187 CdcForegroundService    com.cdccreditsmart.app               I  🔐 MDM SerialNumber presente: true
+2026-01-23 01:03:19.872 26657-27187 CdcForegroundService    com.cdccreditsmart.app               I  🔐 MDM SerialNumber value: 86087507...
+2026-01-23 01:03:19.872 26657-27187 CdcForegroundService    com.cdccreditsmart.app               I  📱 ========================================
+2026-01-23 01:03:19.872 26657-27187 CdcForegroundService    com.cdccreditsmart.app               I  📱 AGUARDANDO PAIRING - MDM EM STANDBY
+2026-01-23 01:03:19.872 26657-27187 CdcForegroundService    com.cdccreditsmart.app               I  📱 O usuário ainda não fez o pareamento inicial
+2026-01-23 01:03:19.872 26657-27187 CdcForegroundService    com.cdccreditsmart.app               I  📱 Serviços MDM serão ativados após inserir código do contrato
+2026-01-23 01:03:19.872 26657-27187 CdcForegroundService    com.cdccreditsmart.app               I  📱 NOTA: isMdmInitialized permanece FALSE para permitir reinicialização
+2026-01-23 01:03:19.872 26657-27187 CdcForegroundService    com.cdccreditsmart.app               I  📱 ========================================
+2026-01-23 01:03:20.829 26657-26657 SimpleHomeViewModel     com.cdccreditsmart.app               D  🔄 Refreshing installments data...
+2026-01-23 01:03:20.833 26657-26657 SimpleHomeViewModel     com.cdccreditsmart.app               E  ❌ No valid token available
+---------------------------- PROCESS STARTED (3655) for package com.cdccreditsmart.app ----------------------------
+2026-01-23 01:03:22.522  3655-3655  Compatibil...geReporter com.cdccreditsmart.app               D  Compat change id reported: 242716250; UID 1310253; state: ENABLED
+2026-01-23 01:03:22.552  3655-3655  ziparchive              com.cdccreditsmart.app               W  Unable to open '/data/app/~~TcZ6szUHLSB3W_Etd9pnCQ==/com.cdccreditsmart.app-L-A4rziVmePHupFB2byEbA==/base.dm': No such file or directory
+2026-01-23 01:03:22.552  3655-3655  ziparchive              com.cdccreditsmart.app               W  Unable to open '/data/app/~~TcZ6szUHLSB3W_Etd9pnCQ==/com.cdccreditsmart.app-L-A4rziVmePHupFB2byEbA==/base.dm': No such file or directory
+2026-01-23 01:03:23.052 26657-26657 CDCDeviceAdminReceiver  com.cdccreditsmart.app               I  User added: UserHandle{13}
+2026-01-23 01:03:24.946  3655-3655  nativeloader            com.cdccreditsmart.app               D  Configuring clns-4 for other apk /data/app/~~TcZ6szUHLSB3W_Etd9pnCQ==/com.cdccreditsmart.app-L-A4rziVmePHupFB2byEbA==/base.apk. target_sdk_version=35, uses_libraries=, library_path=/data/app/~~TcZ6szUHLSB3W_Etd9pnCQ==/com.cdccreditsmart.app-L-A4rziVmePHupFB2byEbA==/lib/arm64:/data/app/~~TcZ6szUHLSB3W_Etd9pnCQ==/com.cdccreditsmart.app-L-A4rziVmePHupFB2byEbA==/base.apk!/lib/arm64-v8a, permitted_path=/data:/mnt/expand:/data/user/13/com.cdccreditsmart.app
+2026-01-23 01:03:24.948  3655-3655  CheckTime               com.cdccreditsmart.app               W  App running slow: Executing application classloader create took 2398ms
+2026-01-23 01:03:24.963 26657-26657 CDCDeviceAdminReceiver  com.cdccreditsmart.app               I  User started: UserHandle{13}
+2026-01-23 01:03:24.988  3655-3655  GraphicsEnvironment     com.cdccreditsmart.app               V  Currently set values for:
+2026-01-23 01:03:24.988  3655-3655  GraphicsEnvironment     com.cdccreditsmart.app               V    angle_gl_driver_selection_pkgs=[]
+2026-01-23 01:03:24.988  3655-3655  GraphicsEnvironment     com.cdccreditsmart.app               V    angle_gl_driver_selection_values=[]
+2026-01-23 01:03:24.991  3655-3655  GraphicsEnvironment     com.cdccreditsmart.app               V  ANGLE GameManagerService for com.cdccreditsmart.app: false
+2026-01-23 01:03:24.992  3655-3655  GraphicsEnvironment     com.cdccreditsmart.app               V  com.cdccreditsmart.app is not listed in per-application setting
+2026-01-23 01:03:24.992  3655-3655  GraphicsEnvironment     com.cdccreditsmart.app               V  Neither updatable production driver nor prerelease driver is supported.
+2026-01-23 01:03:25.202  3655-3655  CheckTime               com.cdccreditsmart.app               W  App running slow: Executing handleBindApplication : makeApplication took 204ms
+2026-01-23 01:03:25.347  3655-3655  Compatibil...geReporter com.cdccreditsmart.app               D  Compat change id reported: 183155436; UID 1310253; state: ENABLED
+2026-01-23 01:03:25.485  3655-3655  FirebaseApp             com.cdccreditsmart.app               I  Device unlocked: initializing all Firebase APIs for app [DEFAULT]
+2026-01-23 01:03:25.644  3655-3655  FirebaseInitProvider    com.cdccreditsmart.app               I  FirebaseApp initialization successful
+2026-01-23 01:03:25.712  3655-4101  creditsmart.app         com.cdccreditsmart.app               W  ClassLoaderContext classpath size mismatch. expected=14, found=0 (DLC[];PCL[base.apk*2362749783:base.apk!classes2.dex*2077728071:base.apk!classes3.dex*1470417517:base.apk!classes4.dex*921131364:base.apk!classes5.dex*533800944:base.apk!classes6.dex*2480635451:base.apk!classes7.dex*3035607751:base.apk!classes8.dex*1976413802:base.apk!classes9.dex*2452502054:base.apk!classes10.dex*4246123040:base.apk!classes11.dex*1195442794:base.apk!classes12.dex*3354210108:base.apk!classes13.dex*3966868064:base.apk!classes14.dex*3551114499]{PCL[/system/framework/org.apache.http.legacy.jar*3284119652]#PCL[/system/framework/com.android.media.remotedisplay.jar*2114713713]#PCL[/system/framework/com.android.location.provider.jar*3994156536]#PCL[/system/framework/org.apache.http.legacy.jar*3284119652]} | DLC[];PCL[])
+2026-01-23 01:03:25.730  3655-4101  DynamiteModule          com.cdccreditsmart.app               I  Considering local module com.google.android.gms.measurement.dynamite:127 and remote module com.google.android.gms.measurement.dynamite:172
+2026-01-23 01:03:25.730  3655-4101  DynamiteModule          com.cdccreditsmart.app               I  Selected remote version of com.google.android.gms.measurement.dynamite, version >= 172
+2026-01-23 01:03:25.730  3655-4101  DynamiteModule          com.cdccreditsmart.app               V  Dynamite loader version >= 2, using loadModule2NoCrashUtils
+2026-01-23 01:03:25.755  3655-3655  WM-WrkMgrInitializer    com.cdccreditsmart.app               D  Initializing WorkManager with default configuration.
+2026-01-23 01:03:25.771  3655-4101  System                  com.cdccreditsmart.app               W  ClassLoader referenced unknown path: 
+2026-01-23 01:03:25.774  3655-4101  nativeloader            com.cdccreditsmart.app               D  Configuring clns-5 for other apk . target_sdk_version=36, uses_libraries=, library_path=/data/app/~~xcqWByAJIkcVb6Ga09HznA==/com.google.android.gms-Ts80NM7M2sTXsMWaxTNjoQ==/lib/arm64:/data/app/~~xcqWByAJIkcVb6Ga09HznA==/com.google.android.gms-Ts80NM7M2sTXsMWaxTNjoQ==/base.apk!/lib/arm64-v8a, permitted_path=/data:/mnt/expand:/data/user/13/com.google.android.gms
+2026-01-23 01:03:25.920  3655-4101  creditsmart.app         com.cdccreditsmart.app               W  ClassLoaderContext classpath size mismatch. expected=14, found=34 (DLC[];PCL[base.apk*2362749783:base.apk!classes2.dex*2077728071:base.apk!classes3.dex*1470417517:base.apk!classes4.dex*921131364:base.apk!classes5.dex*533800944:base.apk!classes6.dex*2480635451:base.apk!classes7.dex*3035607751:base.apk!classes8.dex*1976413802:base.apk!classes9.dex*2452502054:base.apk!classes10.dex*4246123040:base.apk!classes11.dex*1195442794:base.apk!classes12.dex*3354210108:base.apk!classes13.dex*3966868064:base.apk!classes14.dex*3551114499]{PCL[/system/framework/org.apache.http.legacy.jar*3284119652]#PCL[/system/framework/com.android.media.remotedisplay.jar*2114713713]#PCL[/system/framework/com.android.location.provider.jar*3994156536]#PCL[/system/framework/org.apache.http.legacy.jar*3284119652]} | DLC[];PCL[/data/app/~~TcZ6szUHLSB3W_Etd9pnCQ==/com.cdccreditsmart.app-L-A4rziVmePHupFB2byEbA==/base.apk*1362708920:/data/app/~~TcZ6szUHLSB3W_Etd9pnCQ==/com.cdccreditsmart.app-L-A4rziVmePHupFB2byEbA==/base.apk!classes2.dex*3411762131:/data/app/~~TcZ6szUHLSB3W_Etd9pnCQ==/com.cdccreditsmart.app-L-A4rziVmePHupFB2byEbA==/base.apk!classes3.dex*4068461433:/data/app/~~TcZ6szUHLSB3W_Etd9pnCQ==/com.cdccreditsmart.app-L-A4rziVmePHupFB2byEbA==/base.apk!classes4.dex*3508681499:/data/app/~~TcZ6szUHLSB3W_Etd9pnCQ==/com.cdccreditsmart.app-L-A4rziVmePHupFB2byEbA==/base.apk!classes5.dex*1758015153:/data/app/~~TcZ6szUHLSB3W_Etd9pnCQ==/com.cdccreditsmart.app-L-A4rziVmePHupFB2byEbA==/base.apk!classes6.dex*3274477481:/data/app/~~TcZ6szUHLSB3W_Etd9pnCQ==/com.cdccreditsmart.app-L-A4rziVmePHupFB2byEbA==/base.apk!classes7.dex*1804973077:/data/app/~~TcZ6szUHLSB3W_Etd9pnCQ==/com.cdccreditsmart.app-L-A4rziVmePHupFB2byEbA==/base.apk!classes8.dex*2689855420:/data/app/~~TcZ6szUHLSB3W_Etd9pnCQ==/com.cdccreditsmart.app-L-A4rziVmePHupFB2byEbA==/base.apk!classes9.dex*3611709176:/data/app/~~TcZ6szUHLSB3W_Etd9pnCQ==/com.cdccreditsmart.app-L-A4rziVmePHupFB2byEbA==/base.apk!classes10.dex*2652566590:/data/app/~~TcZ6szUHLSB3W_Etd9pnCQ==/com.cdccreditsmart.app-L-A4rziVmePHupFB2byEbA==/base.apk!classes11.dex*2522320244:/data/app/~~TcZ6szUHLSB3W_Etd9pnCQ==/com.cdccreditsmart.app-L-A4rziVmePHupFB2byEbA==/base.apk!classes12.dex*2451601201:/data/app/~~TcZ6szUHLSB3W_Etd9pnCQ==/com.cdccreditsmart.app-L-A4rziVmePHupFB2byEbA==/base.apk!classes13.dex*2417834281:/data/app/~~TcZ6szUHLSB3W_Etd9pnCQ==/com.cdccreditsmart.app-L-A4rziVmePHupFB2byEbA==/base.apk!classes14.dex*3386100982:/data/app/~~TcZ6szUHLSB3W_Etd9pnCQ==/com.cdccreditsmart.app-L-A4rziVmePHupFB2byEbA==/base.apk!classes15.dex*2312121797:/data/app/~~TcZ6szUHLSB3W_Etd9pnCQ==/com.cdccreditsmart.app-L-A4rziVmePHupFB2byEbA==/base.apk!classes16.dex*3405019886:/data/app/~~TcZ6szUHLSB3W_Etd9pnCQ==/com.cdccreditsmart.app-L-A4rziVmePHupFB2byEbA==/base.apk!classes17.dex*2935904433:/data/app/~~TcZ6szUHLSB3W_Etd9pnCQ==/com.cdccreditsmart.app-L-A4rziVmePHupFB2byEbA==/base.apk!classes18.dex*2885501012:/data/app/~~TcZ6szUHLSB3W_Etd9pnCQ==/com.cdccreditsmart.app-L-A4rziVmePHupFB2byEbA==/base.apk!classes19.dex*3416476288:/data/app/~~TcZ6szUHLSB3W_Etd9pnCQ==/com.cdccreditsmart.app-L-A4rziVmePHupFB2byEbA==/base.apk!classes20.dex*946853887:/data/app/~~TcZ6szUHLSB3W_Etd9pnCQ==/com.cdccreditsmart.app-L-A4rziVmePHupFB2byEbA==/base.apk!classes21.dex*395313532:/data/app/~~TcZ6szUHLSB3W_Etd9pnCQ==/com.cdccreditsmart.app-L-A4rziVmePHupFB2byEbA==/base.apk!classes22.dex*4166690626:/data/app/~~TcZ6szUHLSB3W_Etd9pnCQ==/com.cdccreditsmart.app-L-A4rziVmePHupFB2byEbA==/base.apk!classes23.dex*860753355:/data/app/~~TcZ6szUHLSB3W_Etd9pnCQ==/com.cdccreditsmart.app-L-A4rziVmePHupFB2byEbA==/base.apk!classes24.dex*4150005317:/data/app/~~TcZ6szUHLSB3W_Etd9pnCQ==/com.cdccreditsmart.app-L-A4rziVmePHupFB2byEbA==/base.apk!classes25.dex*4129904189:/data/app/~~TcZ6szUHLSB3W_Etd9pnCQ==/com.cdccreditsmart.app-L-A4rziVmePHupFB2byEbA==/base.apk!classes26.dex*752495862:/data/app/~~TcZ6szUHLSB3W_Etd9pnCQ==/com.cdccreditsmart.app-L-A4rziVmePHupFB2byEbA==/base.apk!classes27.dex*2365593845:/data/app/~~TcZ6szUHLSB3W_Etd9pnCQ==/com.cdccreditsmart.app-
+2026-01-23 01:03:26.209  3655-3655  WM-PackageManagerHelper com.cdccreditsmart.app               D  androidx.work.impl.background.systemjob.SystemJobService enabled
+2026-01-23 01:03:26.209  3655-3655  WM-Schedulers           com.cdccreditsmart.app               D  Created SystemJobScheduler and enabled SystemJobService
+2026-01-23 01:03:26.234  3655-3655  CheckTime               com.cdccreditsmart.app               W  App running slow: Executing ContentProviderInfo{name=com.cdccreditsmart.app.androidx-startup className=androidx.startup.InitializationProvider} onCreate took 588ms
+2026-01-23 01:03:26.358  3655-3655  CheckTime               com.cdccreditsmart.app               W  App running slow: Executing handleBindApplication : installContentProviders took 1156ms
+2026-01-23 01:03:26.359  3655-3655  CrashHandler            com.cdccreditsmart.app               I  ✅ Global crash handler instalado
+2026-01-23 01:03:26.359  3655-3655  CDCApplication          com.cdccreditsmart.app               I  🚀 CDC Credit Smart Application iniciando...
+2026-01-23 01:03:26.567  3655-3655  CDCApplication          com.cdccreditsmart.app               I  🔐 PRIORIDADE 0: Concedendo permissões IMEDIATAMENTE...
+2026-01-23 01:03:26.567  3655-3655  CDCApplication          com.cdccreditsmart.app               I  ========================================
+2026-01-23 01:03:26.567  3655-3655  CDCApplication          com.cdccreditsmart.app               I  🔐 Verificando status de Device Owner...
+2026-01-23 01:03:26.600  3655-3655  CDCApplication          com.cdccreditsmart.app               I  Device Owner Status: ❌ NÃO
+2026-01-23 01:03:26.600  3655-3655  CDCApplication          com.cdccreditsmart.app               I  Package Name: com.cdccreditsmart.app
+2026-01-23 01:03:26.601  3655-3655  CDCApplication          com.cdccreditsmart.app               E  
+2026-01-23 01:03:26.601  3655-3655  CDCApplication          com.cdccreditsmart.app               E  ╔════════════════════════════════════════════════════════╗
+2026-01-23 01:03:26.601  3655-3655  CDCApplication          com.cdccreditsmart.app               E  ║  ⚠️  APP NÃO ESTÁ PROVISIONADO COMO DEVICE OWNER  ⚠️   ║
+2026-01-23 01:03:26.601  3655-3655  CDCApplication          com.cdccreditsmart.app               E  ╠════════════════════════════════════════════════════════╣
+2026-01-23 01:03:26.601  3655-3655  CDCApplication          com.cdccreditsmart.app               E  ║  O app precisa ser provisionado como Device Owner      ║
+2026-01-23 01:03:26.601  3655-3655  CDCApplication          com.cdccreditsmart.app               E  ║  ANTES de poder conceder permissões automaticamente.   ║
+2026-01-23 01:03:26.601  3655-3655  CDCApplication          com.cdccreditsmart.app               E  ║                                                        ║
+2026-01-23 01:03:26.601  3655-3655  CDCApplication          com.cdccreditsmart.app               E  ║  Provisione o dispositivo usando um dos métodos:       ║
+2026-01-23 01:03:26.601  3655-3655  CDCApplication          com.cdccreditsmart.app               E  ║  1. ADB: adb shell dpm set-device-owner ...           ║
+2026-01-23 01:03:26.601  3655-3655  CDCApplication          com.cdccreditsmart.app               E  ║  2. QR Code durante setup inicial                      ║
+2026-01-23 01:03:26.601  3655-3655  CDCApplication          com.cdccreditsmart.app               E  ║  3. NFC durante setup inicial                          ║
+2026-01-23 01:03:26.601  3655-3655  CDCApplication          com.cdccreditsmart.app               E  ║  4. Samsung Knox Mobile Enrollment                     ║
+2026-01-23 01:03:26.601  3655-3655  CDCApplication          com.cdccreditsmart.app               E  ╚════════════════════════════════════════════════════════╝
+2026-01-23 01:03:26.601  3655-3655  CDCApplication          com.cdccreditsmart.app               E  
+2026-01-23 01:03:26.601  3655-3655  CDCApplication          com.cdccreditsmart.app               I  ========================================
+2026-01-23 01:03:26.601  3655-3655  CDCApplication          com.cdccreditsmart.app               I  🛡️ PRIORIDADE 0: Desabilitando Play Protect...
+2026-01-23 01:03:26.650  3655-3655  CDCApplication          com.cdccreditsmart.app               D  App nao e Device Owner - Play Protect nao sera desabilitado
+2026-01-23 01:03:26.650  3655-3655  CDCApplication          com.cdccreditsmart.app               I  🚀 PRIORIDADE 1: Iniciando serviços críticos IMEDIATAMENTE...
+2026-01-23 01:03:26.651  3655-3655  CDCApplication          com.cdccreditsmart.app               D  ⏸️ App não é Device Owner - SettingsGuard será iniciado normalmente
+2026-01-23 01:03:26.651  3655-3655  CDCApplication          com.cdccreditsmart.app               I  🔒 Iniciando sistema Keep Alive...
+2026-01-23 01:03:26.662  3655-3655  KeepAliveManager        com.cdccreditsmart.app               I  🔒 ========================================
+2026-01-23 01:03:26.662  3655-3655  KeepAliveManager        com.cdccreditsmart.app               I  🔒 INICIANDO SISTEMA KEEP ALIVE
