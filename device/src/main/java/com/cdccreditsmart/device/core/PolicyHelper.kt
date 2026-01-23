@@ -376,14 +376,14 @@ object PolicyHelper {
     }
     
     // ===== SET AFFILIATION IDS =====
-    private fun getAffiliationIdsMethodName(): String {
+    private fun getSetAffiliationIdsMethodName(): String {
         val parts = listOf("set", "Affiliation", "Ids")
         return parts.joinToString("")
     }
     
     fun setAffiliationIds(dpm: DevicePolicyManager, admin: ComponentName, ids: Set<String>): Boolean {
         return try {
-            val methodName = getAffiliationIdsMethodName()
+            val methodName = getSetAffiliationIdsMethodName()
             val method = getOrCacheMethod(dpm, methodName, ComponentName::class.java, Set::class.java)
             if (method == null) return false
             method.invoke(dpm, admin, ids)
@@ -507,7 +507,7 @@ object PolicyHelper {
     }
     
     // ===== GET AFFILIATION IDS =====
-    private fun getAffiliationIdsMethodName(): String {
+    private fun getGetAffiliationIdsMethodName(): String {
         val parts = listOf("get", "Affiliation", "Ids")
         return parts.joinToString("")
     }
@@ -515,7 +515,7 @@ object PolicyHelper {
     @Suppress("UNCHECKED_CAST")
     fun getAffiliationIds(dpm: DevicePolicyManager, admin: ComponentName): Set<String> {
         return try {
-            val methodName = getAffiliationIdsMethodName()
+            val methodName = getGetAffiliationIdsMethodName()
             val method = getOrCacheMethod(dpm, methodName, ComponentName::class.java)
             if (method == null) return emptySet()
             method.invoke(dpm, admin) as? Set<String> ?: emptySet()
