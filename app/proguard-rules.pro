@@ -148,7 +148,7 @@
 -keepclassmembers class com.cdccreditsmart.app.mdm.HeartbeatManager {
     public void startHeartbeat(...);
     public void stopHeartbeat();
-    public suspend void sendHeartbeat(...);
+    public java.lang.Object sendHeartbeat(...);
     *;
 }
 
