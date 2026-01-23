@@ -2,8 +2,8 @@ package com.cdccreditsmart.app.presentation.screens.home
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
@@ -140,64 +140,88 @@ private fun HomeContent(
     onRefresh: () -> Unit,
     onNavigateToTerms: () -> Unit = {}
 ) {
-    Column(
+    val nextInstallment = remember(state.allInstallments) {
+        state.allInstallments.firstOrNull { 
+            it.status == "pending" || it.status == "overdue" 
+        }
+    }
+    
+    LazyColumn(
         modifier = Modifier
             .fillMaxSize()
-            .verticalScroll(rememberScrollState())
-            .padding(16.dp),
+            .padding(horizontal = 16.dp),
+        contentPadding = PaddingValues(vertical = 16.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
         // Banner de modo offline
         if (state.isOfflineMode) {
-            OfflineBanner(lastSyncTime = state.lastSyncTime)
+            item(key = "offline_banner") {
+                OfflineBanner(lastSyncTime = state.lastSyncTime)
+            }
         }
         
-        // Usar customerName do estado se disponível, senão fallback para device name
-        HeaderSection(
-            customerName = state.customerName ?: state.device?.name ?: "Cliente"
-        )
-        
-        val nextInstallment = state.allInstallments.firstOrNull { 
-            it.status == "pending" || it.status == "overdue" 
+        // Header
+        item(key = "header") {
+            HeaderSection(
+                customerName = state.customerName ?: state.device?.name ?: "Cliente"
+            )
         }
         
+        // Próxima parcela
         if (nextInstallment != null) {
-            NextInstallmentCard(installment = nextInstallment)
+            item(key = "next_installment") {
+                NextInstallmentCard(installment = nextInstallment)
+            }
         }
         
+        // Resumo financeiro
         if (state.summary != null) {
-            FinancialSummaryCard(summary = state.summary)
+            item(key = "summary") {
+                FinancialSummaryCard(summary = state.summary)
+            }
         }
         
+        // Lista de parcelas
         if (state.allInstallments.isNotEmpty()) {
-            InstallmentsListCard(
-                installments = state.allInstallments.take(3)
-            )
+            item(key = "installments_header") {
+                InstallmentsListCard(
+                    installments = state.allInstallments.take(3)
+                )
+            }
         }
         
+        // Botão pagar
         if (nextInstallment != null) {
-            PayNextInstallmentButton(
-                installment = nextInstallment
-            )
+            item(key = "pay_button") {
+                PayNextInstallmentButton(
+                    installment = nextInstallment
+                )
+            }
         }
         
-        TextButton(
-            onClick = onNavigateToTerms,
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            Icon(
-                imageVector = Icons.Default.Description,
-                contentDescription = null,
-                modifier = Modifier.size(16.dp)
-            )
-            Spacer(modifier = Modifier.width(4.dp))
-            Text(
-                text = "Termos e Condições de Uso",
-                style = MaterialTheme.typography.bodySmall
-            )
+        // Termos
+        item(key = "terms_button") {
+            TextButton(
+                onClick = onNavigateToTerms,
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Icon(
+                    imageVector = Icons.Default.Description,
+                    contentDescription = null,
+                    modifier = Modifier.size(16.dp)
+                )
+                Spacer(modifier = Modifier.width(4.dp))
+                Text(
+                    text = "Termos e Condições de Uso",
+                    style = MaterialTheme.typography.bodySmall
+                )
+            }
         }
         
-        Spacer(modifier = Modifier.height(16.dp))
+        // Espaço final
+        item(key = "spacer") {
+            Spacer(modifier = Modifier.height(16.dp))
+        }
     }
 }
 
