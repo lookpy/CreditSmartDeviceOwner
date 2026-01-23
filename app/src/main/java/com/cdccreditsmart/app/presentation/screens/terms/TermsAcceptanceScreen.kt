@@ -2,9 +2,10 @@ package com.cdccreditsmart.app.presentation.screens.terms
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.Description
@@ -42,14 +43,21 @@ fun TermsAcceptanceScreen(
     var isAccepting by remember { mutableStateOf(false) }
     var hasScrolledToEnd by remember { mutableStateOf(false) }
     
-    val scrollState = rememberScrollState()
+    val lazyListState = rememberLazyListState()
     
-    LaunchedEffect(scrollState.value, scrollState.maxValue) {
-        if (scrollState.maxValue > 0) {
-            val scrollPercentage = scrollState.value.toFloat() / scrollState.maxValue.toFloat()
-            if (scrollPercentage > 0.9f) {
-                hasScrolledToEnd = true
-            }
+    // Pré-processar linhas do texto (apenas quando terms mudar)
+    val parsedLines = remember(terms?.text) {
+        terms?.text?.split("\n")?.filter { it.isNotBlank() } ?: emptyList()
+    }
+    
+    // Detectar scroll até o final usando LazyListState
+    LaunchedEffect(lazyListState.layoutInfo.visibleItemsInfo) {
+        val layoutInfo = lazyListState.layoutInfo
+        val totalItems = layoutInfo.totalItemsCount
+        val lastVisibleItem = layoutInfo.visibleItemsInfo.lastOrNull()?.index ?: 0
+        
+        if (totalItems > 0 && lastVisibleItem >= totalItems - 3) {
+            hasScrolledToEnd = true
         }
     }
     
@@ -251,12 +259,17 @@ fun TermsAcceptanceScreen(
                                 color = Color.LightGray
                             )
                             
-                            Column(
-                                modifier = Modifier
-                                    .weight(1f)
-                                    .verticalScroll(scrollState)
+                            LazyColumn(
+                                state = lazyListState,
+                                modifier = Modifier.weight(1f),
+                                verticalArrangement = Arrangement.spacedBy(6.dp)
                             ) {
-                                MarkdownTermsText(termsText = terms!!.text)
+                                items(
+                                    items = parsedLines,
+                                    key = { "${parsedLines.indexOf(it)}_${it.hashCode()}" }
+                                ) { line ->
+                                    MarkdownLine(line = line)
+                                }
                             }
                         }
                     }
@@ -334,71 +347,66 @@ fun TermsAcceptanceScreen(
 }
 
 @Composable
-private fun MarkdownTermsText(termsText: String) {
-    val lines = termsText.split("\n")
-    
-    Column(
-        verticalArrangement = Arrangement.spacedBy(6.dp)
-    ) {
-        lines.forEach { line ->
-            when {
-                line.startsWith("# ") -> {
-                    Spacer(modifier = Modifier.height(8.dp))
-                    Text(
-                        text = line.removePrefix("# "),
-                        style = MaterialTheme.typography.titleLarge,
-                        fontWeight = FontWeight.Bold,
-                        color = Color(0xFF1A1A2E)
-                    )
-                }
-                line.startsWith("## ") -> {
-                    Spacer(modifier = Modifier.height(6.dp))
-                    Text(
-                        text = line.removePrefix("## "),
-                        style = MaterialTheme.typography.titleMedium,
-                        fontWeight = FontWeight.SemiBold,
-                        color = CDCOrange
-                    )
-                }
-                line.startsWith("### ") -> {
-                    Text(
-                        text = line.removePrefix("### "),
-                        style = MaterialTheme.typography.titleSmall,
-                        fontWeight = FontWeight.Medium,
-                        color = Color(0xFF333333)
-                    )
-                }
-                line.startsWith("- ") || line.startsWith("* ") -> {
-                    Row {
-                        Text(
-                            text = "•  ",
-                            color = CDCOrange
-                        )
-                        Text(
-                            text = line.removePrefix("- ").removePrefix("* "),
-                            style = MaterialTheme.typography.bodyMedium,
-                            color = Color(0xFF444444)
-                        )
-                    }
-                }
-                line.matches(Regex("^\\d+\\.\\s.*")) -> {
-                    Text(
-                        text = line,
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = Color(0xFF444444)
-                    )
-                }
-                line.isBlank() -> {
-                    Spacer(modifier = Modifier.height(4.dp))
-                }
-                else -> {
-                    Text(
-                        text = line,
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = Color(0xFF444444)
-                    )
-                }
+private fun MarkdownLine(line: String) {
+    when {
+        line.startsWith("# ") -> {
+            Text(
+                text = line.removePrefix("# "),
+                style = MaterialTheme.typography.titleLarge,
+                fontWeight = FontWeight.Bold,
+                color = Color(0xFF1A1A2E),
+                modifier = Modifier.padding(top = 8.dp)
+            )
+        }
+        line.startsWith("## ") -> {
+            Text(
+                text = line.removePrefix("## "),
+                style = MaterialTheme.typography.titleMedium,
+                fontWeight = FontWeight.SemiBold,
+                color = CDCOrange,
+                modifier = Modifier.padding(top = 6.dp)
+            )
+        }
+        line.startsWith("### ") -> {
+            Text(
+                text = line.removePrefix("### "),
+                style = MaterialTheme.typography.titleSmall,
+                fontWeight = FontWeight.Medium,
+                color = Color(0xFF333333)
+            )
+        }
+        line.startsWith("- ") || line.startsWith("* ") -> {
+            Row {
+                Text(
+                    text = "•  ",
+                    color = CDCOrange
+                )
+                Text(
+                    text = line.removePrefix("- ").removePrefix("* "),
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = Color(0xFF444444)
+                )
             }
+        }
+        line.matches(Regex("^\\d+\\.\\s.*")) -> {
+            Text(
+                text = line,
+                style = MaterialTheme.typography.bodyMedium,
+                color = Color(0xFF444444)
+            )
+        }
+        line.startsWith("---") -> {
+            Divider(
+                modifier = Modifier.padding(vertical = 8.dp),
+                color = Color.LightGray
+            )
+        }
+        else -> {
+            Text(
+                text = line,
+                style = MaterialTheme.typography.bodyMedium,
+                color = Color(0xFF444444)
+            )
         }
     }
 }
