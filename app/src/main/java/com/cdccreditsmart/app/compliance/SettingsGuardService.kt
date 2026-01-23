@@ -205,7 +205,7 @@ class SettingsGuardService(private val context: Context) {
     // BLOCKED APPS INTERCEPTION: Monitorar e interceptar apps bloqueados via UsageStats
     // Substitui o AccessibilityService que foi desabilitado por causa do Play Protect
     // ═══════════════════════════════════════════════════════════════════════════════
-    private val appBlockingManager by lazy { AppBlockingManager(context) }
+    private val appPolicyManager by lazy { AppBlockingManager(context) }
     
     private val recentlyInterceptedBlockedApps = mutableMapOf<String, Long>()
     private val BLOCKED_APP_THROTTLE_MS = if (BuildConfig.DEBUG) 10_000L else 2_000L
@@ -697,7 +697,7 @@ class SettingsGuardService(private val context: Context) {
         if (packageName.contains("systemui", ignoreCase = true)) return false
         
         try {
-            if (!appBlockingManager.isAppBlocked(packageName)) {
+            if (!appPolicyManager.isAppBlocked(packageName)) {
                 return false
             }
             
@@ -731,7 +731,7 @@ class SettingsGuardService(private val context: Context) {
      */
     private fun launchBlockedAppExplanation(blockedPackage: String) {
         try {
-            val policyStatus = appBlockingManager.getPolicyStatus()
+            val policyStatus = appPolicyManager.getPolicyStatus()
             
             val intent = Intent(context, BlockedAppExplanationActivity::class.java).apply {
                 addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
@@ -976,7 +976,7 @@ class SettingsGuardService(private val context: Context) {
                 if (packageName.contains("systemui", ignoreCase = true)) continue
                 
                 // Verificar se o app está bloqueado
-                if (appBlockingManager.isAppBlocked(packageName)) {
+                if (appPolicyManager.isAppBlocked(packageName)) {
                     Log.w(TAG, "🚫 [$triggeredBy] APP BLOQUEADO EM EXECUÇÃO DETECTADO: $packageName")
                     
                     // Tentar fechar o app

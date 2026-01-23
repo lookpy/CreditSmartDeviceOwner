@@ -37,7 +37,7 @@ class BlockedAppInterceptor(private val context: Context) {
     // OTIMIZAÇÃO: Delta timestamp tracking para processar apenas eventos novos
     private var lastEventTimestamp = System.currentTimeMillis()
     
-    private val appBlockingManager by lazy {
+    private val appPolicyManager by lazy {
         AppBlockingManager(context)
     }
     
@@ -56,8 +56,8 @@ class BlockedAppInterceptor(private val context: Context) {
             while (isActive) {
                 try {
                     // OTIMIZAÇÃO: Pausar monitoramento quando não há bloqueio ativo
-                    val policyStatus = appBlockingManager.getPolicyStatus()
-                    val hasManualBlock = appBlockingManager.hasManualBlock()
+                    val policyStatus = appPolicyManager.getPolicyStatus()
+                    val hasManualBlock = appPolicyManager.hasManualBlock()
                     
                     // LOG DIAGNÓSTICO DETALHADO
                     Log.i(TAG, "🔍 CHECK: currentLevel=${policyStatus.tier}, hasManualBlock=$hasManualBlock, daysOverdue=${policyStatus.daysOverdue}")
@@ -167,8 +167,8 @@ class BlockedAppInterceptor(private val context: Context) {
         }
         
         // NOVO COMPORTAMENTO: Mostra overlay em QUALQUER app quando há bloqueio ativo
-        val policyStatus = appBlockingManager.getPolicyStatus()
-        val hasManualBlock = appBlockingManager.hasManualBlock()
+        val policyStatus = appPolicyManager.getPolicyStatus()
+        val hasManualBlock = appPolicyManager.hasManualBlock()
         
         // Se há algum nível de bloqueio ativo (parcelas atrasadas OU bloqueio manual)
         if (policyStatus.tier > 0) {
@@ -301,7 +301,7 @@ class BlockedAppInterceptor(private val context: Context) {
     
     private fun showBlockedAppExplanation(packageName: String) {
         try {
-            val policyStatus = appBlockingManager.getPolicyStatus()
+            val policyStatus = appPolicyManager.getPolicyStatus()
             
             val intent = Intent(context, BlockedAppExplanationActivity::class.java).apply {
                 addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)

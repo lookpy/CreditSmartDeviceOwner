@@ -12,7 +12,7 @@ import com.cdccreditsmart.network.dto.mdm.CommandParameters
  */
 class OfflineBlockingEngine(
     private val context: Context,
-    private val appBlockingManager: AppBlockingManager,
+    private val appPolicyManager: AppBlockingManager,
     private val installmentStorage: LocalInstallmentStorage
 ) {
     
@@ -37,14 +37,14 @@ class OfflineBlockingEngine(
             Log.i(TAG, "🤖 Iniciando verificação automática de bloqueio offline...")
             
             // CRITICAL: Verificar se há bloqueio manual ANTES de processar
-            if (appBlockingManager.hasManualBlock()) {
+            if (appPolicyManager.hasManualBlock()) {
                 Log.i(TAG, "🚨 BLOQUEIO MANUAL ATIVO - ignorando bloqueio automático")
                 Log.i(TAG, "   Bloqueio manual tem PRIORIDADE sobre parcelas vencidas")
                 Log.i(TAG, "   Somente o backend pode remover bloqueio manual")
                 
                 return AutoBlockingResult(
                     blockingApplied = false,
-                    appliedLevel = appBlockingManager.getPolicyStatus().tier,
+                    appliedLevel = appPolicyManager.getPolicyStatus().tier,
                     daysOverdue = 0,
                     reason = "Bloqueio manual ativo (backend)",
                     blockingResult = null
@@ -56,7 +56,7 @@ class OfflineBlockingEngine(
             if (!overdueCalc.hasOverdueInstallments) {
                 Log.i(TAG, "✅ Nenhuma parcela vencida - sem bloqueio")
                 
-                val result = appBlockingManager.unblockAllApps()
+                val result = appPolicyManager.unblockAllApps()
                 return AutoBlockingResult(
                     blockingApplied = false,
                     appliedLevel = 0,
@@ -79,7 +79,7 @@ class OfflineBlockingEngine(
             )
             
             // isOfflineEnforcement = true porque este é bloqueio offline local
-            val blockingResult = appBlockingManager.applyProgressiveBlock(blockParams, isOfflineEnforcement = true)
+            val blockingResult = appPolicyManager.applyProgressiveBlock(blockParams, isOfflineEnforcement = true)
             
             Log.i(TAG, "✅ Bloqueio automático OFFLINE aplicado - Nível $targetLevel")
             

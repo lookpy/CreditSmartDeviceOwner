@@ -884,14 +884,14 @@ class CdcForegroundService : Service(), ScreenStateListener {
         Log.i(TAG, "🔄 ========================================")
         
         try {
-            val appBlockingManager = AppBlockingManager(applicationContext)
+            val appPolicyManager = AppBlockingManager(applicationContext)
             
-            if (!appBlockingManager.isDeviceOwner()) {
+            if (!appPolicyManager.isDeviceOwner()) {
                 Log.w(TAG, "🔄 ⚠️ Não é Device Owner - sincronização ignorada")
                 return
             }
             
-            val currentLocalLevel = appBlockingManager.getCurrentBlockingLevel()
+            val currentLocalLevel = appPolicyManager.getCurrentBlockingLevel()
             Log.i(TAG, "🔄 Nível de bloqueio LOCAL atual: $currentLocalLevel")
             
             // Buscar status do backend via heartbeat
@@ -899,7 +899,7 @@ class CdcForegroundService : Service(), ScreenStateListener {
             val deviceApiService = retrofit.create(DeviceApiService::class.java)
             
             // Preparar dados para heartbeat de sincronização
-            val policyStatus = appBlockingManager.getPolicyStatus()
+            val policyStatus = appPolicyManager.getPolicyStatus()
             
             val heartbeatRequest = com.cdccreditsmart.network.dto.cdc.CdcHeartbeatRequest(
                 timestamp = System.currentTimeMillis(),
@@ -946,7 +946,7 @@ class CdcForegroundService : Service(), ScreenStateListener {
                             categories = categories
                         )
                         
-                        val result = appBlockingManager.applyProgressiveBlock(blockParams)
+                        val result = appPolicyManager.applyProgressiveBlock(blockParams)
                         
                         if (result.success) {
                             Log.i(TAG, "🔄 ✅ Bloqueio aplicado com sucesso!")

@@ -100,7 +100,7 @@ class BlockingCheckWorker(
     private val tokenStorage: SecureTokenStorage by lazy { SecureTokenStorage(applicationContext) }
     private val blockingStateRepository by lazy { BlockingStateRepository(applicationContext) }
     private val packageMapper by lazy { PackageCategoryMapper(applicationContext) }
-    private val appBlockingManager by lazy { AppBlockingManager(applicationContext) }
+    private val appPolicyManager by lazy { AppBlockingManager(applicationContext) }
     
     private val deviceApiService: DeviceApiService by lazy {
         createApiService()
@@ -115,7 +115,7 @@ class BlockingCheckWorker(
         
         try {
             // Check if Device Owner
-            if (!appBlockingManager.isDeviceOwner()) {
+            if (!appPolicyManager.isDeviceOwner()) {
                 Log.w(TAG, "⚠️ Not Device Owner - skipping blocking check")
                 return@withContext Result.success()
             }
@@ -187,7 +187,7 @@ class BlockingCheckWorker(
                 // Block new packages
                 if (toBlock.isNotEmpty()) {
                     Log.d(TAG, "🔒 Blocking ${toBlock.size} new packages")
-                    val blockResult = appBlockingManager.blockApps(toBlock.toList())
+                    val blockResult = appPolicyManager.blockApps(toBlock.toList())
                     
                     eventLogger.logBlockingApplied(
                         ruleApplied = decision.currentLevel ?: 0,
@@ -201,7 +201,7 @@ class BlockingCheckWorker(
                 // Unblock packages that should no longer be blocked
                 if (toUnblock.isNotEmpty()) {
                     Log.d(TAG, "🔓 Unblocking ${toUnblock.size} packages")
-                    val unblockResult = appBlockingManager.unblockApps(toUnblock.toList())
+                    val unblockResult = appPolicyManager.unblockApps(toUnblock.toList())
                     
                     eventLogger.logUnblockingApplied(
                         packagesAffected = unblockResult.blockedPackages,
@@ -243,7 +243,7 @@ class BlockingCheckWorker(
                 // No blocking needed - unblock everything if there are blocks
                 if (currentBlocked.isNotEmpty()) {
                     Log.d(TAG, "🔓 No blocking needed - unblocking all ${currentBlocked.size} packages")
-                    appBlockingManager.unblockAll(currentBlocked.toList())
+                    appPolicyManager.unblockAll(currentBlocked.toList())
                     blockingStateRepository.clearState()
                 }
             }

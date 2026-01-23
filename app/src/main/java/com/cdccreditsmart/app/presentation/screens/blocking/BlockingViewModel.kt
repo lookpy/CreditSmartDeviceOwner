@@ -38,7 +38,7 @@ class BlockingViewModel(private val context: Context) : ViewModel() {
     private val tokenStorage: SecureTokenStorage by lazy { SecureTokenStorage(context) }
     private val blockingStateRepository by lazy { BlockingStateRepository(context) }
     private val packageMapper by lazy { PackageCategoryMapper(context) }
-    private val appBlockingManager by lazy { AppBlockingManager(context) }
+    private val appPolicyManager by lazy { AppBlockingManager(context) }
     
     private val deviceApiService: DeviceApiService by lazy {
         createDeviceApiService()
@@ -67,13 +67,13 @@ class BlockingViewModel(private val context: Context) : ViewModel() {
                     _blockingState.value = _blockingState.value.copy(
                         isLoading = false,
                         currentState = localState,
-                        isDeviceOwner = appBlockingManager.isDeviceOwner(),
+                        isDeviceOwner = appPolicyManager.isDeviceOwner(),
                         daysUntilNextBlock = calculateDaysToNextBlock(localState.daysOverdue)
                     )
                 } else {
                     _blockingState.value = _blockingState.value.copy(
                         isLoading = false,
-                        isDeviceOwner = appBlockingManager.isDeviceOwner()
+                        isDeviceOwner = appPolicyManager.isDeviceOwner()
                     )
                 }
                 
@@ -126,7 +126,7 @@ class BlockingViewModel(private val context: Context) : ViewModel() {
                     if (result.approved) {
                         // Unblock was approved - unblock all apps
                         val currentBlocked = blockingStateRepository.getBlockedPackages()
-                        appBlockingManager.unblockAll(currentBlocked)
+                        appPolicyManager.unblockAll(currentBlocked)
                         blockingStateRepository.clearState()
                         
                         _blockingState.value = _blockingState.value.copy(

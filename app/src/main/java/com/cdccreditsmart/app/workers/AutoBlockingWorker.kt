@@ -78,10 +78,10 @@ class AutoBlockingWorker(
             Log.i(TAG, "🕛 AutoBlockingWorker executando às 00:00...")
             
             val installmentStorage = LocalInstallmentStorage(applicationContext)
-            val appBlockingManager = AppBlockingManager(applicationContext)
+            val appPolicyManager = AppBlockingManager(applicationContext)
             val blockingEngine = OfflineBlockingEngine(
                 applicationContext,
-                appBlockingManager,
+                appPolicyManager,
                 installmentStorage
             )
             
