@@ -1,0 +1,83 @@
+2026-01-23 01:23:14.383  2861-2861  TermsAcceptanceStorage  com.cdccreditsmart.app               I  Salvando aceitação de termos vv2.1 para contrato QJ3H4MKG
+2026-01-23 01:23:14.985  2861-2861  SecureTokenStorage      com.cdccreditsmart.app               D  EncryptedSharedPreferences initialized successfully
+2026-01-23 01:23:14.996  2861-2861  SecureTokenStorage      com.cdccreditsmart.app               D  ✅ Usando IMEI para MDM: 8608***718
+2026-01-23 01:23:14.996  2861-2861  SimpleHomeViewModel     com.cdccreditsmart.app               W  ⚠️ No token but has device info - continuing with device identification
+2026-01-23 01:23:15.005  2861-2861  NetworkConnectivity     com.cdccreditsmart.app               D  ✅ Conectado via WiFi com internet
+2026-01-23 01:23:15.005  2861-2861  SimpleHomeViewModel     com.cdccreditsmart.app               D  📡 Fetching device installments from /api/apk/device/installments...
+2026-01-23 01:23:15.755  2861-9472  SimpleHomeViewModel     com.cdccreditsmart.app               W  ⚠️ No token - using device identification
+2026-01-23 01:23:15.763  2861-9472  SecureTokenStorage      com.cdccreditsmart.app               D  ✅ Usando IMEI para MDM: 8608***718
+2026-01-23 01:23:15.772  2861-9472  SimpleHomeViewModel     com.cdccreditsmart.app               D  📱 Added X-Device-IMEI header
+2026-01-23 01:23:15.772  2861-9472  SimpleHomeViewModel     com.cdccreditsmart.app               D  📱 Added X-Device-SerialNumber header
+2026-01-23 01:23:15.772  2861-9472  SimpleHomeViewModel     com.cdccreditsmart.app               D  📱 Added X-Device-ID header
+2026-01-23 01:23:15.772  2861-9472  SimpleHomeViewModel     com.cdccreditsmart.app               D  📤 Request URL: https://cdccreditsmart.com/api/apk/device/installments
+2026-01-23 01:23:15.790  2861-9472  TrafficStats            com.cdccreditsmart.app               D  tagSocket(160) with statsTag=0xffffffff, statsUid=-1
+2026-01-23 01:23:15.924  2861-2861  Choreographer           com.cdccreditsmart.app               I  Skipped 75 frames!  The application may be doing too much work on its main thread.
+2026-01-23 01:23:19.325  2861-9472  SimpleHomeViewModel     com.cdccreditsmart.app               D  📥 Response Code: 401
+2026-01-23 01:23:19.336  2861-2861  SimpleHomeViewModel     com.cdccreditsmart.app               E  ❌ API error: 401
+2026-01-23 01:23:19.336  2861-2861  SimpleHomeViewModel     com.cdccreditsmart.app               E  ❌ Error body: {"error":"Token de autorização obrigatório"}
+2026-01-23 01:23:19.571  2861-2861  LocalInstallmentStorage com.cdccreditsmart.app               W  ⚠️ Nenhuma parcela armazenada localmente
+2026-01-23 01:23:19.574  2861-2861  SimpleHomeViewModel     com.cdccreditsmart.app               W  ⚠️ Sem dados em cache disponíveis
+2026-01-23 01:23:21.276  2861-2861  SimpleHomeViewModel     com.cdccreditsmart.app               D  🔄 Refreshing installments data...
+2026-01-23 01:23:21.287  2861-2861  SecureTokenStorage      com.cdccreditsmart.app               D  ✅ Usando IMEI para MDM: 8608***718
+2026-01-23 01:23:21.287  2861-2861  SimpleHomeViewModel     com.cdccreditsmart.app               W  ⚠️ No token but has device info - continuing with device identification
+2026-01-23 01:23:21.293  2861-2861  NetworkConnectivity     com.cdccreditsmart.app               D  ✅ Conectado via WiFi com internet
+2026-01-23 01:23:21.293  2861-2861  SimpleHomeViewModel     com.cdccreditsmart.app               D  📡 Fetching device installments from /api/apk/device/installments...
+2026-01-23 01:23:21.304  2861-9472  SimpleHomeViewModel     com.cdccreditsmart.app               W  ⚠️ No token - using device identification
+2026-01-23 01:23:21.308  2861-9472  SecureTokenStorage      com.cdccreditsmart.app               D  ✅ Usando IMEI para MDM: 8608***718
+2026-01-23 01:23:21.322  2861-9472  SimpleHomeViewModel     com.cdccreditsmart.app               D  📱 Added X-Device-IMEI header
+2026-01-23 01:23:21.322  2861-9472  SimpleHomeViewModel     com.cdccreditsmart.app               D  📱 Added X-Device-SerialNumber header
+2026-01-23 01:23:21.322  2861-9472  SimpleHomeViewModel     com.cdccreditsmart.app               D  📱 Added X-Device-ID header
+2026-01-23 01:23:21.323  2861-9472  SimpleHomeViewModel     com.cdccreditsmart.app               D  📤 Request URL: https://cdccreditsmart.com/api/apk/device/installments
+2026-01-23 01:23:22.586  2861-9472  SimpleHomeViewModel     com.cdccreditsmart.app               D  📥 Response Code: 401
+2026-01-23 01:23:22.706  2861-2861  SimpleHomeViewModel     com.cdccreditsmart.app               E  ❌ API error: 401
+2026-01-23 01:23:22.706  2861-2861  SimpleHomeViewModel     com.cdccreditsmart.app               E  ❌ Error body: {"error":"Token de autorização obrigatório"}
+2026-01-23 01:23:22.718  2861-2861  LocalInstallmentStorage com.cdccreditsmart.app               W  ⚠️ Nenhuma parcela armazenada localmente
+2026-01-23 01:23:22.732  2861-2861  SimpleHomeViewModel     com.cdccreditsmart.app               W  ⚠️ Sem dados em cache disponíveis
+2026-01-23 01:23:23.752  2861-2861  SimpleHomeViewModel     com.cdccreditsmart.app               D  🔄 Refreshing installments data...
+2026-01-23 01:23:23.762  2861-2861  SecureTokenStorage      com.cdccreditsmart.app               D  ✅ Usando IMEI para MDM: 8608***718
+2026-01-23 01:23:23.762  2861-2861  SimpleHomeViewModel     com.cdccreditsmart.app               W  ⚠️ No token but has device info - continuing with device identification
+2026-01-23 01:23:23.765  2861-2861  NetworkConnectivity     com.cdccreditsmart.app               D  ✅ Conectado via WiFi com internet
+2026-01-23 01:23:23.765  2861-2861  SimpleHomeViewModel     com.cdccreditsmart.app               D  📡 Fetching device installments from /api/apk/device/installments...
+2026-01-23 01:23:23.800  2861-9472  SimpleHomeViewModel     com.cdccreditsmart.app               W  ⚠️ No token - using device identification
+2026-01-23 01:23:23.805  2861-9472  SecureTokenStorage      com.cdccreditsmart.app               D  ✅ Usando IMEI para MDM: 8608***718
+2026-01-23 01:23:23.813  2861-9472  SimpleHomeViewModel     com.cdccreditsmart.app               D  📱 Added X-Device-IMEI header
+2026-01-23 01:23:23.813  2861-9472  SimpleHomeViewModel     com.cdccreditsmart.app               D  📱 Added X-Device-SerialNumber header
+2026-01-23 01:23:23.813  2861-9472  SimpleHomeViewModel     com.cdccreditsmart.app               D  📱 Added X-Device-ID header
+2026-01-23 01:23:23.813  2861-9472  SimpleHomeViewModel     com.cdccreditsmart.app               D  📤 Request URL: https://cdccreditsmart.com/api/apk/device/installments
+2026-01-23 01:23:24.157  2861-9472  SimpleHomeViewModel     com.cdccreditsmart.app               D  📥 Response Code: 401
+2026-01-23 01:23:24.175  2861-2861  SimpleHomeViewModel     com.cdccreditsmart.app               E  ❌ API error: 401
+2026-01-23 01:23:24.175  2861-2861  SimpleHomeViewModel     com.cdccreditsmart.app               E  ❌ Error body: {"error":"Token de autorização obrigatório"}
+2026-01-23 01:23:24.193  2861-2861  LocalInstallmentStorage com.cdccreditsmart.app               W  ⚠️ Nenhuma parcela armazenada localmente
+2026-01-23 01:23:24.205  2861-2861  SimpleHomeViewModel     com.cdccreditsmart.app               W  ⚠️ Sem dados em cache disponíveis
+2026-01-23 01:23:25.102  2861-2861  SimpleHomeViewModel     com.cdccreditsmart.app               D  🔄 Refreshing installments data...
+2026-01-23 01:23:25.109  2861-2861  SecureTokenStorage      com.cdccreditsmart.app               D  ✅ Usando IMEI para MDM: 8608***718
+2026-01-23 01:23:25.109  2861-2861  SimpleHomeViewModel     com.cdccreditsmart.app               W  ⚠️ No token but has device info - continuing with device identification
+2026-01-23 01:23:25.112  2861-2861  NetworkConnectivity     com.cdccreditsmart.app               D  ✅ Conectado via WiFi com internet
+2026-01-23 01:23:25.112  2861-2861  SimpleHomeViewModel     com.cdccreditsmart.app               D  📡 Fetching device installments from /api/apk/device/installments...
+2026-01-23 01:23:25.119  2861-9472  SimpleHomeViewModel     com.cdccreditsmart.app               W  ⚠️ No token - using device identification
+2026-01-23 01:23:25.127  2861-9472  SecureTokenStorage      com.cdccreditsmart.app               D  ✅ Usando IMEI para MDM: 8608***718
+2026-01-23 01:23:25.141  2861-9472  SimpleHomeViewModel     com.cdccreditsmart.app               D  📱 Added X-Device-IMEI header
+2026-01-23 01:23:25.141  2861-9472  SimpleHomeViewModel     com.cdccreditsmart.app               D  📱 Added X-Device-SerialNumber header
+2026-01-23 01:23:25.141  2861-9472  SimpleHomeViewModel     com.cdccreditsmart.app               D  📱 Added X-Device-ID header
+2026-01-23 01:23:25.141  2861-9472  SimpleHomeViewModel     com.cdccreditsmart.app               D  📤 Request URL: https://cdccreditsmart.com/api/apk/device/installments
+2026-01-23 01:23:25.612  2861-9472  SimpleHomeViewModel     com.cdccreditsmart.app               D  📥 Response Code: 401
+2026-01-23 01:23:25.627  2861-2861  SimpleHomeViewModel     com.cdccreditsmart.app               E  ❌ API error: 401
+2026-01-23 01:23:25.628  2861-2861  SimpleHomeViewModel     com.cdccreditsmart.app               E  ❌ Error body: {"error":"Token de autorização obrigatório"}
+2026-01-23 01:23:25.636  2861-2861  LocalInstallmentStorage com.cdccreditsmart.app               W  ⚠️ Nenhuma parcela armazenada localmente
+2026-01-23 01:23:25.644  2861-2861  SimpleHomeViewModel     com.cdccreditsmart.app               W  ⚠️ Sem dados em cache disponíveis
+2026-01-23 01:23:26.218  2861-2861  SimpleHomeViewModel     com.cdccreditsmart.app               D  🔄 Refreshing installments data...
+2026-01-23 01:23:26.225  2861-2861  SecureTokenStorage      com.cdccreditsmart.app               D  ✅ Usando IMEI para MDM: 8608***718
+2026-01-23 01:23:26.225  2861-2861  SimpleHomeViewModel     com.cdccreditsmart.app               W  ⚠️ No token but has device info - continuing with device identification
+2026-01-23 01:23:26.228  2861-2861  NetworkConnectivity     com.cdccreditsmart.app               D  ✅ Conectado via WiFi com internet
+2026-01-23 01:23:26.228  2861-2861  SimpleHomeViewModel     com.cdccreditsmart.app               D  📡 Fetching device installments from /api/apk/device/installments...
+2026-01-23 01:23:26.268  2861-9472  SimpleHomeViewModel     com.cdccreditsmart.app               W  ⚠️ No token - using device identification
+2026-01-23 01:23:26.276  2861-9472  SecureTokenStorage      com.cdccreditsmart.app               D  ✅ Usando IMEI para MDM: 8608***718
+2026-01-23 01:23:26.284  2861-9472  SimpleHomeViewModel     com.cdccreditsmart.app               D  📱 Added X-Device-IMEI header
+2026-01-23 01:23:26.284  2861-9472  SimpleHomeViewModel     com.cdccreditsmart.app               D  📱 Added X-Device-SerialNumber header
+2026-01-23 01:23:26.284  2861-9472  SimpleHomeViewModel     com.cdccreditsmart.app               D  📱 Added X-Device-ID header
+2026-01-23 01:23:26.285  2861-9472  SimpleHomeViewModel     com.cdccreditsmart.app               D  📤 Request URL: https://cdccreditsmart.com/api/apk/device/installments
+2026-01-23 01:23:27.050  2861-9472  SimpleHomeViewModel     com.cdccreditsmart.app               D  📥 Response Code: 401
+2026-01-23 01:23:27.063  2861-2861  SimpleHomeViewModel     com.cdccreditsmart.app               E  ❌ API error: 401
+2026-01-23 01:23:27.063  2861-2861  SimpleHomeViewModel     com.cdccreditsmart.app               E  ❌ Error body: {"error":"Token de autorização obrigatório"}
+2026-01-23 01:23:27.071  2861-2861  LocalInstallmentStorage com.cdccreditsmart.app               W  ⚠️ Nenhuma parcela armazenada localmente
+2026-01-23 01:23:27.079  2861-2861  SimpleHomeViewModel     com.cdccreditsmart.app               W  ⚠️ Sem dados em cache disponíveis
