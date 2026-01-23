@@ -56,12 +56,18 @@ class SimpleHomeViewModel(
         // Cache válido por 15 minutos - evita recarregar dados desnecessariamente
         private const val CACHE_VALIDITY_MS = 15 * 60 * 1000L // 15 minutos
         
+        // Throttling para evitar loops em caso de erro
+        private const val ERROR_THROTTLE_MS = 30 * 1000L // 30 segundos entre tentativas após erro
+        
         // Instância singleton para manter estado entre navegações
         @Volatile
         private var cachedState: HomeState? = null
         
         @Volatile
         private var lastLoadTime: Long = 0L
+        
+        @Volatile
+        private var lastErrorTime: Long = 0L
     }
 
     init {
@@ -74,11 +80,23 @@ class SimpleHomeViewModel(
      * 1. Se temos cache válido (< 5 min), usa imediatamente sem fazer request
      * 2. Se não temos cache ou está expirado, carrega do servidor
      * 3. Botão Refresh sempre força reload do servidor
+     * 4. Throttling: aguarda 30s após erro antes de tentar novamente
      */
     private fun loadInstallmentsDataSmart() {
         val now = System.currentTimeMillis()
         val cached = cachedState
         val cacheAge = now - lastLoadTime
+        val errorAge = now - lastErrorTime
+        
+        // Throttling: se houve erro recente, não tentar novamente
+        if (lastErrorTime > 0 && errorAge < ERROR_THROTTLE_MS) {
+            Log.w(TAG, "⏳ Throttling ativo - aguarde ${(ERROR_THROTTLE_MS - errorAge) / 1000}s antes de tentar novamente")
+            // Mostrar estado de erro anterior se existir
+            if (cached != null) {
+                _homeState.value = cached
+            }
+            return
+        }
         
         // Se temos cache válido, usar imediatamente (SEM fazer request ao servidor)
         if (cached != null && !cached.isLoading && !cached.isError && cached.allInstallments.isNotEmpty()) {
@@ -253,11 +271,29 @@ class SimpleHomeViewModel(
                     Log.e(TAG, "❌ API error: ${response.code()}")
                     Log.e(TAG, "❌ Error body: $errorBody")
                     
+                    // Marcar tempo do erro para throttling
+                    lastErrorTime = System.currentTimeMillis()
+                    
+                    // Se 401, significa que precisa re-autenticar
+                    if (response.code() == 401) {
+                        Log.e(TAG, "🔐 Erro 401 - Token inválido ou expirado, redirecionando para re-autenticação...")
+                        _homeState.value = _homeState.value.copy(
+                            isLoading = false,
+                            isError = true,
+                            errorMessage = "Sessão expirada. Redirecionando para autenticação...",
+                            needsReauth = true
+                        )
+                        return@launch
+                    }
+                    
                     // Tentar carregar do cache em caso de erro da API
                     loadFromLocalCache(isOffline = false, fallbackError = "Erro ao carregar dados: ${response.code()}")
                 }
             } catch (e: Exception) {
                 Log.e(TAG, "❌ Exception loading installments", e)
+                
+                // Marcar tempo do erro para throttling
+                lastErrorTime = System.currentTimeMillis()
                 
                 // Se for erro de rede, tentar carregar do cache
                 if (networkHelper.isNetworkException(e)) {
