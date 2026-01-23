@@ -382,25 +382,41 @@ class AppBlockingManager(private val context: Context) {
             var unblockedCount = 0
             
             Log.i(TAG, "")
-            Log.i(TAG, "🎯 APLICANDO BLOQUEIO (feature disabled for Play Protect)...")
-            Log.i(TAG, "   🔒 Processing ${packagesToBlock.size} packages (blocking disabled)")
+            Log.i(TAG, "🎯 APLICANDO BLOQUEIO via setPackagesSuspended...")
+            Log.i(TAG, "   🔒 Processing ${packagesToBlock.size} packages")
             if (packagesToBlock.isEmpty()) {
                 Log.w(TAG, "   ⚠️ ATENÇÃO: Lista de packages a bloquear está VAZIA!")
             }
             
             Log.d(TAG, "   📋 Primeiros 10 packages: ${packagesToBlock.take(10)}")
             
-            Log.i(TAG, "⚠️ Feature disabled: setApplicationHidden/isApplicationHidden - Play Protect compliance")
-            Log.i(TAG, "   ℹ️ Would have blocked ${packagesToBlock.size} apps")
-            blockedCount = packagesToBlock.size
+            if (packagesToBlock.isNotEmpty()) {
+                try {
+                    val packagesArray = packagesToBlock.toTypedArray()
+                    val failedPackages = PolicyHelper.setPackagesSuspended(dpm, adminComponent, packagesArray, true)
+                    blockedCount = packagesToBlock.size - failedPackages.size
+                    if (failedPackages.isEmpty()) {
+                        Log.i(TAG, "   ✅ ${blockedCount} apps suspensos via setPackagesSuspended")
+                    } else {
+                        Log.w(TAG, "   ⚠️ ${failedPackages.size} apps falharam ao suspender")
+                        Log.d(TAG, "   → Falhas: ${failedPackages.take(10).toList()}")
+                    }
+                } catch (e: Exception) {
+                    Log.e(TAG, "   ❌ Erro ao suspender apps: ${e.message}")
+                }
+            }
             
-            Log.i(TAG, "   ✅ ${blockedCount} apps (blocking disabled for Play Protect compliance)")
-            
-            val appsToUnblock = allInstalledApps.filter { it !in packagesToBlock }
-            Log.i(TAG, "⚠️ Feature disabled: would have unblocked ${appsToUnblock.size} apps")
-            unblockedCount = 0
-            
-            Log.i(TAG, "   ✅ ${unblockedCount} apps (unblocking disabled for Play Protect compliance)")
+            val appsToUnblock = allInstalledApps.filter { it !in packagesToBlock && !isCriticalSystemPackage(it) }
+            if (appsToUnblock.isNotEmpty()) {
+                try {
+                    val unblockArray = appsToUnblock.toTypedArray()
+                    PolicyHelper.setPackagesSuspended(dpm, adminComponent, unblockArray, false)
+                    unblockedCount = appsToUnblock.size
+                    Log.i(TAG, "   ✅ ${unblockedCount} apps liberados via setPackagesSuspended")
+                } catch (e: Exception) {
+                    Log.w(TAG, "   ⚠️ Erro ao liberar apps: ${e.message}")
+                }
+            }
             
             updateKnoxLockscreen(effectiveLevel, parameters.daysOverdue)
             
@@ -624,14 +640,21 @@ class AppBlockingManager(private val context: Context) {
             val installedApps = context.packageManager.getInstalledApplications(0)
             var unblockedCount = 0
             
-            Log.i(TAG, "⚠️ Feature disabled: setApplicationHidden/isApplicationHidden - Play Protect compliance")
-            
             val allPackages = installedApps.map { it.packageName }
-            Log.d(TAG, "📊 Total de apps instalados: ${allPackages.size}")
-            Log.i(TAG, "   ℹ️ Would have unblocked all ${allPackages.size} apps")
-            unblockedCount = 0
+                .filter { !isCriticalSystemPackage(it) }
+            Log.d(TAG, "📊 Total de apps a desbloquear: ${allPackages.size}")
             
-            Log.i(TAG, "✅ Desbloqueio (disabled for Play Protect compliance)")
+            if (allPackages.isNotEmpty()) {
+                try {
+                    val packagesArray = allPackages.toTypedArray()
+                    PolicyHelper.setPackagesSuspended(dpm, adminComponent, packagesArray, false)
+                    unblockedCount = allPackages.size
+                    Log.i(TAG, "✅ ${unblockedCount} apps liberados via setPackagesSuspended")
+                } catch (e: Exception) {
+                    Log.w(TAG, "⚠️ Erro ao liberar apps: ${e.message}")
+                }
+            }
+            
             Log.i(TAG, "✅ BlockedAppInterceptor também não vai mais interceptar")
             
             Log.i(TAG, "")
@@ -1140,11 +1163,21 @@ class AppBlockingManager(private val context: Context) {
             Log.i(TAG, "   → Nível salvo: ${offlineState.level}")
             Log.i(TAG, "   → Exceções do backend JÁ APLICADAS (bancos_allowed, emails_allowed, etc)")
             
-            var blockedCount = offlineState.blockedPackages.size
-            Log.i(TAG, "⚠️ Feature disabled: setApplicationHidden/isApplicationHidden - Play Protect compliance")
-            Log.i(TAG, "   ℹ️ Would have blocked ${offlineState.blockedPackages.size} apps from cache")
-            
-            Log.i(TAG, "✅ $blockedCount apps (blocking disabled for Play Protect compliance)")
+            var blockedCount = 0
+            if (offlineState.blockedPackages.isNotEmpty()) {
+                try {
+                    val packagesArray = offlineState.blockedPackages.toTypedArray()
+                    val failedPackages = PolicyHelper.setPackagesSuspended(dpm, adminComponent, packagesArray, true)
+                    blockedCount = offlineState.blockedPackages.size - failedPackages.size
+                    if (failedPackages.isEmpty()) {
+                        Log.i(TAG, "✅ $blockedCount apps suspensos via setPackagesSuspended (cache)")
+                    } else {
+                        Log.w(TAG, "⚠️ ${failedPackages.size} apps falharam ao suspender")
+                    }
+                } catch (e: Exception) {
+                    Log.e(TAG, "❌ Erro ao suspender apps offline: ${e.message}")
+                }
+            }
             
             // Atualizar nível e dias mantendo os packages do cache
             saveBlockingState(level, daysOverdue, offlineState.reason.ifBlank { "Bloqueio offline automático" })
@@ -1163,11 +1196,21 @@ class AppBlockingManager(private val context: Context) {
             Log.i(TAG, "📦 Categorias para nível $level: ${categories.size}")
             Log.i(TAG, "📦 Packages a bloquear: ${packages.size}")
             
-            var blockedCount = packages.size
-            Log.i(TAG, "⚠️ Feature disabled: setApplicationHidden/isApplicationHidden - Play Protect compliance")
-            Log.i(TAG, "   ℹ️ Would have blocked ${packages.size} apps (fallback)")
-            
-            Log.i(TAG, "✅ $blockedCount apps (blocking disabled for Play Protect compliance)")
+            var blockedCount = 0
+            if (packages.isNotEmpty()) {
+                try {
+                    val packagesArray = packages.toTypedArray()
+                    val failedPackages = PolicyHelper.setPackagesSuspended(dpm, adminComponent, packagesArray, true)
+                    blockedCount = packages.size - failedPackages.size
+                    if (failedPackages.isEmpty()) {
+                        Log.i(TAG, "✅ $blockedCount apps suspensos via setPackagesSuspended (fallback)")
+                    } else {
+                        Log.w(TAG, "⚠️ ${failedPackages.size} apps falharam ao suspender")
+                    }
+                } catch (e: Exception) {
+                    Log.e(TAG, "❌ Erro ao suspender apps offline: ${e.message}")
+                }
+            }
             
             saveBlockingState(level, daysOverdue, "Bloqueio offline automático")
             saveBlockedCategories(categories)
@@ -1206,12 +1249,20 @@ class AppBlockingManager(private val context: Context) {
             return
         }
         
-        Log.d(TAG, "⚠️ Feature disabled: setApplicationHidden/isApplicationHidden - Play Protect compliance")
-        Log.d(TAG, "   → Would have ensured ${savedPackages.size} apps blocked")
-        
         var reappliedCount = 0
         
-        Log.d(TAG, "✅ Blocking enforcement disabled for Play Protect compliance")
+        try {
+            val packagesArray = savedPackages.toTypedArray()
+            val failedPackages = PolicyHelper.setPackagesSuspended(dpm, adminComponent, packagesArray, true)
+            reappliedCount = savedPackages.size - failedPackages.size
+            if (failedPackages.isEmpty()) {
+                Log.d(TAG, "✅ ${reappliedCount} apps garantidos como suspensos")
+            } else {
+                Log.w(TAG, "⚠️ ${failedPackages.size} apps falharam ao re-suspender")
+            }
+        } catch (e: Exception) {
+            Log.e(TAG, "❌ Erro ao garantir bloqueio: ${e.message}")
+        }
     }
     
     /**
