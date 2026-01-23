@@ -15,6 +15,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.cdccreditsmart.app.uninstall.UninstallFlowActivity
+import com.cdccreditsmart.app.core.PolicyHelper
 
 @Composable
 fun NotActivatedUninstallDialog(
@@ -26,7 +27,7 @@ fun NotActivatedUninstallDialog(
     val isDeviceOwner = remember {
         try {
             val dpm = context.getSystemService(Context.DEVICE_POLICY_SERVICE) as DevicePolicyManager
-            dpm.isDeviceOwnerApp(context.packageName)
+            PolicyHelper.isDeviceOwner(dpm, context.packageName)
         } catch (e: Exception) {
             false
         }

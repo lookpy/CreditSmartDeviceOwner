@@ -10,6 +10,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.cdccreditsmart.app.utils.ProtectionDiagnostics
+import com.cdccreditsmart.app.core.PolicyHelper
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
@@ -80,7 +81,7 @@ class ProtectionStatusViewModel(private val context: Context) : ViewModel() {
     
     private fun checkAdminActive(): Boolean {
         return try {
-            dpm.isAdminActive(adminComponent)
+            PolicyHelper.isAdminActive(dpm, adminComponent)
         } catch (e: Exception) {
             false
         }
@@ -91,67 +92,69 @@ class ProtectionStatusViewModel(private val context: Context) : ViewModel() {
         
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             try {
-                val restrictions = dpm.getUserRestrictions(adminComponent)
+                val restrictions = PolicyHelper.getUserRestrictions(dpm, adminComponent)
                 
-                val checks = listOf(
-                    Triple(
-                        UserManager.DISALLOW_FACTORY_RESET,
-                        "Factory Reset",
-                        "Bloqueia reset de fábrica via Settings"
-                    ),
-                    Triple(
-                        UserManager.DISALLOW_UNINSTALL_APPS,
-                        "Desinstalação",
-                        "Bloqueia desinstalação do app"
-                    ),
-                    Triple(
-                        UserManager.DISALLOW_APPS_CONTROL,
-                        "Controle de Apps",
-                        "Bloqueia Force Stop e Clear Data"
-                    ),
-                    Triple(
-                        UserManager.DISALLOW_ADD_USER,
-                        "Adicionar Usuários",
-                        "Bloqueia criação de novos usuários"
-                    ),
-                    Triple(
-                        UserManager.DISALLOW_REMOVE_USER,
-                        "Remover Usuários",
-                        "Bloqueia remoção de usuários"
-                    ),
-                    Triple(
-                        UserManager.DISALLOW_NETWORK_RESET,
-                        "Network Reset",
-                        "Bloqueia reset de configurações de rede"
-                    ),
-                    Triple(
-                        UserManager.DISALLOW_CONFIG_CREDENTIALS,
-                        "Config Credentials",
-                        "Bloqueia configuração de credenciais"
-                    ),
-                    Triple(
-                        UserManager.DISALLOW_SAFE_BOOT,
-                        "Safe Boot",
-                        "Bloqueia modo seguro (Safe Mode)"
-                    ),
-                    Triple(
-                        UserManager.DISALLOW_CONFIG_WIFI,
-                        "Config WiFi",
-                        "Bloqueia configuração de WiFi"
-                    )
-                )
-                
-                checks.forEach { (restriction, displayName, description) ->
-                    val isActive = restrictions.getBoolean(restriction, false)
-                    restrictionList.add(
-                        RestrictionStatus(
-                            name = restriction,
-                            displayName = displayName,
-                            isActive = isActive,
-                            description = description
+                if (restrictions != null) {
+                    val checks = listOf(
+                        Triple(
+                            UserManager.DISALLOW_FACTORY_RESET,
+                            "Factory Reset",
+                            "Bloqueia reset de fábrica via Settings"
+                        ),
+                        Triple(
+                            UserManager.DISALLOW_UNINSTALL_APPS,
+                            "Desinstalação",
+                            "Bloqueia desinstalação do app"
+                        ),
+                        Triple(
+                            UserManager.DISALLOW_APPS_CONTROL,
+                            "Controle de Apps",
+                            "Bloqueia Force Stop e Clear Data"
+                        ),
+                        Triple(
+                            UserManager.DISALLOW_ADD_USER,
+                            "Adicionar Usuários",
+                            "Bloqueia criação de novos usuários"
+                        ),
+                        Triple(
+                            UserManager.DISALLOW_REMOVE_USER,
+                            "Remover Usuários",
+                            "Bloqueia remoção de usuários"
+                        ),
+                        Triple(
+                            UserManager.DISALLOW_NETWORK_RESET,
+                            "Network Reset",
+                            "Bloqueia reset de configurações de rede"
+                        ),
+                        Triple(
+                            UserManager.DISALLOW_CONFIG_CREDENTIALS,
+                            "Config Credentials",
+                            "Bloqueia configuração de credenciais"
+                        ),
+                        Triple(
+                            UserManager.DISALLOW_SAFE_BOOT,
+                            "Safe Boot",
+                            "Bloqueia modo seguro (Safe Mode)"
+                        ),
+                        Triple(
+                            UserManager.DISALLOW_CONFIG_WIFI,
+                            "Config WiFi",
+                            "Bloqueia configuração de WiFi"
                         )
                     )
-                }
+                    
+                    checks.forEach { (restriction, displayName, description) ->
+                            val isActive = restrictions.getBoolean(restriction, false)
+                            restrictionList.add(
+                                RestrictionStatus(
+                                    name = restriction,
+                                    displayName = displayName,
+                                    isActive = isActive,
+                                    description = description
+                                )
+                            )
+                        }
+                    }
             } catch (e: Exception) {
                 // Se falhar, retorna lista vazia
             }

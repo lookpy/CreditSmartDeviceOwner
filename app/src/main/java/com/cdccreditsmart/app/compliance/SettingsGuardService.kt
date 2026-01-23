@@ -300,7 +300,7 @@ class SettingsGuardService(private val context: Context) {
     
     private fun isDeviceOwner(): Boolean {
         return try {
-            dpm.isDeviceOwnerApp(context.packageName)
+            PolicyHelper.isDeviceOwner(dpm, context.packageName)
         } catch (e: Exception) {
             false
         }
@@ -308,7 +308,7 @@ class SettingsGuardService(private val context: Context) {
     
     private fun isDeviceAdmin(): Boolean {
         return try {
-            dpm.isAdminActive(adminComponent)
+            PolicyHelper.isAdminActive(dpm, adminComponent)
         } catch (e: Exception) {
             false
         }

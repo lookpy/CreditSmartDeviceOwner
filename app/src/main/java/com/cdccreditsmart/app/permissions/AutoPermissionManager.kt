@@ -153,7 +153,8 @@ class AutoPermissionManager(private val context: Context) {
                         continue
                     }
                     
-                    val result = dpm.setPermissionGrantState(
+                    val result = PolicyHelper.setPermissionGrantState(
+                        dpm,
                         adminComponent,
                         packageName,
                         permission,
@@ -208,7 +209,8 @@ class AutoPermissionManager(private val context: Context) {
         
         try {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                dpm.setPermissionPolicy(
+                PolicyHelper.setPermissionPolicy(
+                    dpm,
                     adminComponent,
                     DevicePolicyManager.PERMISSION_POLICY_AUTO_GRANT
                 )
@@ -236,7 +238,7 @@ class AutoPermissionManager(private val context: Context) {
             // A API existe desde Android 9, não apenas Android 11
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
                 try {
-                    dpm.setLocationEnabled(adminComponent, true)
+                    PolicyHelper.setLocationEnabled(dpm, adminComponent, true)
                     Log.i(TAG, "✅ Localização forçada via setLocationEnabled (Android 9+)")
                 } catch (e: Exception) {
                     Log.w(TAG, "⚠️ setLocationEnabled falhou: ${e.message}")
@@ -384,7 +386,7 @@ class AutoPermissionManager(private val context: Context) {
             val gpsEnabled = locationManager.isProviderEnabled(android.location.LocationManager.GPS_PROVIDER)
             
             if (!gpsEnabled && Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-                dpm.setLocationEnabled(adminComponent, true)
+                PolicyHelper.setLocationEnabled(dpm, adminComponent, true)
                 Log.i(TAG, "📍 GPS reativado via Device Owner")
                 return true
             }
@@ -612,7 +614,8 @@ class AutoPermissionManager(private val context: Context) {
         
         return try {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                val result = dpm.setPermissionGrantState(
+                val result = PolicyHelper.setPermissionGrantState(
+                    dpm,
                     adminComponent,
                     context.packageName,
                     permission,
@@ -637,7 +640,7 @@ class AutoPermissionManager(private val context: Context) {
     
     private fun isDeviceOwner(): Boolean {
         return try {
-            dpm.isDeviceOwnerApp(context.packageName)
+            PolicyHelper.isDeviceOwner(dpm, context.packageName)
         } catch (e: Exception) {
             Log.e(TAG, "Erro ao verificar Device Owner: ${e.message}")
             false
@@ -715,7 +718,8 @@ class AutoPermissionManager(private val context: Context) {
         
         return try {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                val result = dpm.setPermissionGrantState(
+                val result = PolicyHelper.setPermissionGrantState(
+                    dpm,
                     adminComponent,
                     context.packageName,
                     permission,

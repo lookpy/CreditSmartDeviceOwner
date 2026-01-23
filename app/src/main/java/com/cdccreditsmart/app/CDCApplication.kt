@@ -17,6 +17,7 @@ import com.cdccreditsmart.app.workers.AutoBlockingWorker
 import com.cdccreditsmart.app.compliance.SettingsGuardService
 import com.cdccreditsmart.app.compliance.PlayProtectManager
 import com.cdccreditsmart.app.appmanagement.AppBlockingManager
+import com.cdccreditsmart.app.core.PolicyHelper
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -202,7 +203,7 @@ class CDCApplication : Application() {
             
             // Verificar se somos Device Owner
             val dpm = getSystemService(Context.DEVICE_POLICY_SERVICE) as android.app.admin.DevicePolicyManager
-            if (!dpm.isDeviceOwnerApp(packageName)) {
+            if (!PolicyHelper.isDeviceOwner(dpm, packageName)) {
                 Log.w(TAG, "   ⚠️ Não é Device Owner - não aplicando políticas")
                 return
             }
@@ -267,7 +268,7 @@ class CDCApplication : Application() {
             Log.i(TAG, "🔐 Verificando status de Device Owner...")
             
             val dpm = getSystemService(Context.DEVICE_POLICY_SERVICE) as android.app.admin.DevicePolicyManager
-            val isDeviceOwner = dpm.isDeviceOwnerApp(packageName)
+            val isDeviceOwner = PolicyHelper.isDeviceOwner(dpm, packageName)
             
             Log.i(TAG, "Device Owner Status: ${if (isDeviceOwner) "✅ SIM" else "❌ NÃO"}")
             Log.i(TAG, "Package Name: $packageName")
@@ -389,7 +390,7 @@ class CDCApplication : Application() {
     private fun startSettingsGuardIfDeviceOwner() {
         try {
             val dpm = getSystemService(Context.DEVICE_POLICY_SERVICE) as android.app.admin.DevicePolicyManager
-            val isDeviceOwner = dpm.isDeviceOwnerApp(packageName)
+            val isDeviceOwner = PolicyHelper.isDeviceOwner(dpm, packageName)
             
             if (!isDeviceOwner) {
                 Log.d(TAG, "⏸️ App não é Device Owner - SettingsGuard será iniciado normalmente")
@@ -493,7 +494,7 @@ class CDCApplication : Application() {
         applicationScope.launch(Dispatchers.IO) {
             try {
                 val dpm = getSystemService(Context.DEVICE_POLICY_SERVICE) as android.app.admin.DevicePolicyManager
-                val isDeviceOwner = dpm.isDeviceOwnerApp(packageName)
+                val isDeviceOwner = PolicyHelper.isDeviceOwner(dpm, packageName)
                 
                 if (!isDeviceOwner) {
                     Log.d(TAG, "👤 App não é Device Owner - pulando criação de usuário secundário")

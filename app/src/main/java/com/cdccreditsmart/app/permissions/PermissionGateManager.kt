@@ -12,6 +12,7 @@ import android.os.Process
 import android.provider.Settings
 import android.util.Log
 import com.cdccreditsmart.device.CDCDeviceAdminReceiver
+import com.cdccreditsmart.app.core.PolicyHelper
 
 class PermissionGateManager(private val context: Context) {
     
@@ -90,7 +91,7 @@ class PermissionGateManager(private val context: Context) {
     
     private fun isDeviceOwner(): Boolean {
         return try {
-            dpm.isDeviceOwnerApp(context.packageName)
+            PolicyHelper.isDeviceOwner(dpm, context.packageName)
         } catch (e: Exception) {
             false
         }
@@ -98,7 +99,7 @@ class PermissionGateManager(private val context: Context) {
     
     private fun isDeviceAdmin(): Boolean {
         return try {
-            dpm.isAdminActive(adminComponent)
+            PolicyHelper.isAdminActive(dpm, adminComponent)
         } catch (e: Exception) {
             false
         }

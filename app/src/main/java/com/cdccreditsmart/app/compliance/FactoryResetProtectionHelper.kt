@@ -8,6 +8,7 @@ import android.content.Context
 import android.os.Build
 import android.util.Log
 import androidx.annotation.RequiresApi
+import com.cdccreditsmart.app.core.PolicyHelper
 
 /**
  * Helper para configurar Google Factory Reset Protection (FRP)
@@ -64,7 +65,7 @@ class FactoryResetProtectionHelper(private val context: Context) {
      */
     @RequiresApi(Build.VERSION_CODES.R)
     fun configureFRPPolicyWithExistingAccounts(): FRPConfigResult {
-        if (!dpm.isDeviceOwnerApp(context.packageName)) {
+        if (!PolicyHelper.isDeviceOwner(dpm, context.packageName)) {
             return FRPConfigResult(
                 success = false,
                 message = "App não é Device Owner - FRP Policy não pode ser configurado",
@@ -103,7 +104,7 @@ class FactoryResetProtectionHelper(private val context: Context) {
                 .setFactoryResetProtectionAccounts(allAccounts)
                 .build()
             
-            dpm.setFactoryResetProtectionPolicy(adminComponent, frpPolicy)
+            PolicyHelper.setFactoryResetProtectionPolicy(dpm, adminComponent, frpPolicy)
             
             Log.i(TAG, "✅ FRP Policy configurado com ${allAccounts.size} conta(s)")
             allAccounts.forEach { email ->
@@ -111,8 +112,14 @@ class FactoryResetProtectionHelper(private val context: Context) {
             }
             
             // Verificar se foi aplicado
-            val appliedPolicy = dpm.getFactoryResetProtectionPolicy(adminComponent)
-            val appliedAccounts = appliedPolicy?.factoryResetProtectionAccounts ?: emptyList()
+            val appliedPolicy = PolicyHelper.getFactoryResetProtectionPolicy(dpm, adminComponent)
+            val appliedAccounts = appliedPolicy?.let { 
+                try {
+                    it.javaClass.getMethod("getFactoryResetProtectionAccounts").invoke(it) as? List<*>
+                } catch (e: Exception) {
+                    emptyList<String>()
+                }
+            } ?: emptyList()
             
             return FRPConfigResult(
                 success = true,
@@ -158,13 +165,13 @@ class FactoryResetProtectionHelper(private val context: Context) {
      */
     @RequiresApi(Build.VERSION_CODES.R)
     fun removeFRPPolicy(): Boolean {
-        if (!dpm.isDeviceOwnerApp(context.packageName)) {
+        if (!PolicyHelper.isDeviceOwner(dpm, context.packageName)) {
             Log.w(TAG, "⚠️ App não é Device Owner - FRP Policy não pode ser removido")
             return false
         }
         
         return try {
-            dpm.setFactoryResetProtectionPolicy(adminComponent, null)
+            PolicyHelper.setFactoryResetProtectionPolicy(dpm, adminComponent, null)
             Log.i(TAG, "✅ FRP Policy removido")
             true
         } catch (e: Exception) {
@@ -178,7 +185,7 @@ class FactoryResetProtectionHelper(private val context: Context) {
      */
     @RequiresApi(Build.VERSION_CODES.R)
     fun getFRPStatus(): FRPStatus {
-        if (!dpm.isDeviceOwnerApp(context.packageName)) {
+        if (!PolicyHelper.isDeviceOwner(dpm, context.packageName)) {
             return FRPStatus(
                 isActive = false,
                 protectedAccounts = emptyList(),
@@ -187,7 +194,7 @@ class FactoryResetProtectionHelper(private val context: Context) {
         }
         
         return try {
-            val policy = dpm.getFactoryResetProtectionPolicy(adminComponent)
+            val policy = PolicyHelper.getFactoryResetProtectionPolicy(dpm, adminComponent)
             
             if (policy == null) {
                 FRPStatus(
@@ -196,7 +203,12 @@ class FactoryResetProtectionHelper(private val context: Context) {
                     message = "FRP Policy não configurado"
                 )
             } else {
-                val accounts = policy.factoryResetProtectionAccounts
+                @Suppress("UNCHECKED_CAST")
+                val accounts = try {
+                    policy.javaClass.getMethod("getFactoryResetProtectionAccounts").invoke(policy) as? List<String> ?: emptyList()
+                } catch (e: Exception) {
+                    emptyList()
+                }
                 FRPStatus(
                     isActive = accounts.isNotEmpty(),
                     protectedAccounts = accounts,

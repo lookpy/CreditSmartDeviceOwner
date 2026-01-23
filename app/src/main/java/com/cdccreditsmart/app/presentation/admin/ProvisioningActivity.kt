@@ -10,6 +10,7 @@ import android.os.Handler
 import android.os.Looper
 import android.util.Log
 import com.cdccreditsmart.device.CDCDeviceAdminReceiver
+import com.cdccreditsmart.app.core.PolicyHelper
 
 /**
  * Activity crítica para provisionamento de Device Owner.
@@ -94,9 +95,9 @@ class ProvisioningActivity : Activity() {
         val dpm = getSystemService(Context.DEVICE_POLICY_SERVICE) as DevicePolicyManager
         val componentName = ComponentName(this, CDCDeviceAdminReceiver::class.java)
         
-        if (dpm.isDeviceOwnerApp(packageName)) {
+        if (PolicyHelper.isDeviceOwner(dpm, packageName)) {
             Log.i(TAG, "✅ Confirmed as Device Owner")
-        } else if (dpm.isProfileOwnerApp(packageName)) {
+        } else if (PolicyHelper.isProfileOwner(dpm, packageName)) {
             Log.i(TAG, "✅ Confirmed as Profile Owner")
         } else {
             Log.w(TAG, "⚠️ Not confirmed as owner")

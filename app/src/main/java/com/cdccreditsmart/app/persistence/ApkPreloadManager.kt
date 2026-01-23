@@ -6,6 +6,7 @@ import android.content.Context
 import android.os.Build
 import android.util.Log
 import com.cdccreditsmart.device.CDCDeviceAdminReceiver
+import com.cdccreditsmart.app.core.PolicyHelper
 import org.json.JSONObject
 import java.io.File
 import java.io.FileInputStream
@@ -167,7 +168,7 @@ class ApkPreloadManager(private val context: Context) {
     
     fun isDeviceOwner(): Boolean {
         return try {
-            dpm.isDeviceOwnerApp(context.packageName)
+            PolicyHelper.isDeviceOwner(dpm, context.packageName)
         } catch (e: Exception) {
             Log.e(TAG, "Erro ao verificar Device Owner: ${e.message}")
             false

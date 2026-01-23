@@ -8,6 +8,7 @@ import android.util.Log
 import com.cdccreditsmart.app.persistence.ApkPreloadManager
 import com.cdccreditsmart.app.persistence.EnrollmentManifestData
 import com.cdccreditsmart.app.security.SecureTokenStorage
+import com.cdccreditsmart.app.core.PolicyHelper
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -222,9 +223,10 @@ class FactoryResetRecoveryReceiver : BroadcastReceiver() {
                 "com.cdccreditsmart.device.CDCDeviceAdminReceiver"
             )
             
-            if (dpm?.isDeviceOwnerApp(context.packageName) == true) {
+            if (dpm != null && PolicyHelper.isDeviceOwner(dpm, context.packageName)) {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    dpm.setPermissionGrantState(
+                    PolicyHelper.setPermissionGrantState(
+                        dpm,
                         adminComponent,
                         context.packageName,
                         android.Manifest.permission.READ_PHONE_STATE,

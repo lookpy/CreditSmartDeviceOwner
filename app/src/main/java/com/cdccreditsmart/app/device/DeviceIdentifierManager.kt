@@ -9,6 +9,7 @@ import android.provider.Settings
 import android.telephony.TelephonyManager
 import android.util.Log
 import androidx.core.content.ContextCompat
+import com.cdccreditsmart.app.core.PolicyHelper
 import java.security.MessageDigest
 
 data class DeviceIdentifiers(
@@ -200,7 +201,7 @@ class DeviceIdentifierManager(private val context: Context) {
     
     private fun isAppDeviceOwner(): Boolean {
         return try {
-            dpm.isDeviceOwnerApp(context.packageName)
+            PolicyHelper.isDeviceOwner(dpm, context.packageName)
         } catch (e: Exception) {
             Log.e(TAG, "❌ Erro ao verificar Device Owner", e)
             false

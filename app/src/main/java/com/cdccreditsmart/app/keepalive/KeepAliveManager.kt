@@ -17,6 +17,7 @@ import androidx.work.Constraints
 import androidx.work.ExistingPeriodicWorkPolicy
 import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
+import com.cdccreditsmart.app.core.PolicyHelper
 import com.cdccreditsmart.app.service.CdcForegroundService
 import com.cdccreditsmart.device.CDCDeviceAdminReceiver
 import java.util.concurrent.TimeUnit
@@ -223,7 +224,7 @@ class KeepAliveManager(private val context: Context) {
     private fun isDeviceOwner(): Boolean {
         return try {
             val dpm = context.getSystemService(Context.DEVICE_POLICY_SERVICE) as DevicePolicyManager
-            dpm.isDeviceOwnerApp(context.packageName)
+            PolicyHelper.isDeviceOwner(dpm, context.packageName)
         } catch (e: Exception) {
             false
         }
@@ -235,7 +236,8 @@ class KeepAliveManager(private val context: Context) {
             val adminComponent = ComponentName(context, CDCDeviceAdminReceiver::class.java)
             
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                dpm.setSystemSetting(
+                PolicyHelper.setSystemSetting(
+                    dpm,
                     adminComponent,
                     Settings.Global.DEVICE_PROVISIONED,
                     "1"

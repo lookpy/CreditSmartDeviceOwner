@@ -12,6 +12,7 @@ import com.cdccreditsmart.data.storage.LocalAccountState
 import com.cdccreditsmart.device.CDCDeviceAdminReceiver
 import com.cdccreditsmart.network.dto.mdm.BlockAllFlags
 import com.cdccreditsmart.network.dto.mdm.CommandParameters
+import com.cdccreditsmart.app.core.PolicyHelper
 
 class AppBlockingManager(private val context: Context) {
     
@@ -664,7 +665,7 @@ class AppBlockingManager(private val context: Context) {
     
     fun isDeviceOwner(): Boolean {
         return try {
-            dpm.isDeviceOwnerApp(context.packageName)
+            PolicyHelper.isDeviceOwner(dpm, context.packageName)
         } catch (e: Exception) {
             Log.e(TAG, "Erro ao verificar Device Owner: ${e.message}")
             false

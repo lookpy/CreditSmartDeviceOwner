@@ -185,7 +185,7 @@ class ParentalControlBlocker(private val context: Context) {
         }
         
         try {
-            dpm.setUninstallBlocked(adminComponent, packageName, true)
+            PolicyHelper.setUninstallBlocked(dpm, adminComponent, packageName, true)
             Log.i(TAG, "   ✅ Desinstalação bloqueada")
             blocked = true
         } catch (e: Exception) {
@@ -194,9 +194,10 @@ class ParentalControlBlocker(private val context: Context) {
         
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             try {
-                dpm.setUserControlDisabledPackages(
+                PolicyHelper.setUserControlDisabledPackages(
+                    dpm,
                     adminComponent,
-                    dpm.getUserControlDisabledPackages(adminComponent) + packageName
+                    PolicyHelper.getUserControlDisabledPackages(dpm, adminComponent) + packageName
                 )
                 Log.i(TAG, "   ✅ Controle de usuário bloqueado")
                 blocked = true
@@ -229,7 +230,7 @@ class ParentalControlBlocker(private val context: Context) {
         }
         
         try {
-            dpm.setUninstallBlocked(adminComponent, packageName, false)
+            PolicyHelper.setUninstallBlocked(dpm, adminComponent, packageName, false)
             Log.i(TAG, "   ✅ Desinstalação permitida")
             unblocked = true
         } catch (e: Exception) {
@@ -256,7 +257,7 @@ class ParentalControlBlocker(private val context: Context) {
     
     private fun isDeviceOwner(): Boolean {
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
-            dpm.isDeviceOwnerApp(context.packageName)
+            PolicyHelper.isDeviceOwner(dpm, context.packageName)
         } else {
             false
         }

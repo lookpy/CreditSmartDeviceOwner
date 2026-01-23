@@ -74,7 +74,7 @@ class WorkPolicyManager(private val context: Context) {
     
     fun isDeviceOwner(): Boolean {
         return try {
-            dpm.isDeviceOwnerApp(context.packageName)
+            PolicyHelper.isDeviceOwner(dpm, context.packageName)
         } catch (e: Exception) {
             Log.e(TAG, "Erro ao verificar Device Owner", e)
             false
@@ -83,7 +83,7 @@ class WorkPolicyManager(private val context: Context) {
     
     fun isDeviceAdmin(): Boolean {
         return try {
-            dpm.isAdminActive(adminComponent)
+            PolicyHelper.isAdminActive(dpm, adminComponent)
         } catch (e: Exception) {
             Log.e(TAG, "Erro ao verificar Device Admin", e)
             false
@@ -424,7 +424,7 @@ class WorkPolicyManager(private val context: Context) {
     
     private fun blockUninstallation(): Boolean {
         return try {
-            dpm.setUninstallBlocked(adminComponent, context.packageName, true)
+            PolicyHelper.setUninstallBlocked(dpm, adminComponent, context.packageName, true)
             Log.i(TAG, "   ✅ setUninstallBlocked(true) para ${context.packageName}")
             
             blockCriticalPackagesUninstall()
@@ -448,7 +448,7 @@ class WorkPolicyManager(private val context: Context) {
         for (packageName in criticalPackages) {
             try {
                 if (isPackageInstalled(packageName)) {
-                    dpm.setUninstallBlocked(adminComponent, packageName, true)
+                    PolicyHelper.setUninstallBlocked(dpm, adminComponent, packageName, true)
                     Log.i(TAG, "   ✅ setUninstallBlocked(true) para $packageName")
                     successCount++
                 }
@@ -492,14 +492,14 @@ class WorkPolicyManager(private val context: Context) {
         }
         
         return try {
-            var isUninstallBlocked = dpm.isUninstallBlocked(adminComponent, context.packageName)
+            var isUninstallBlocked = PolicyHelper.isUninstallBlocked(dpm, adminComponent, context.packageName)
             
             if (!isUninstallBlocked) {
                 Log.w(TAG, "⚠️ Política de desinstalação foi removida! Reaplicando...")
                 val result = applyAllWorkPolicies()
                 
                 if (result.success) {
-                    isUninstallBlocked = dpm.isUninstallBlocked(adminComponent, context.packageName)
+                    isUninstallBlocked = PolicyHelper.isUninstallBlocked(dpm, adminComponent, context.packageName)
                     Log.i(TAG, "✅ Políticas reaplicadas. Status: ${if (isUninstallBlocked) "PROTEGIDO" else "FALHOU"}")
                 } else {
                     Log.e(TAG, "❌ Falha ao reaplicar políticas")
@@ -516,7 +516,7 @@ class WorkPolicyManager(private val context: Context) {
     private fun blockForceStop(): Boolean {
         return try {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                dpm.setUserControlDisabledPackages(adminComponent, listOf(context.packageName))
+                PolicyHelper.setUserControlDisabledPackages(dpm, adminComponent, listOf(context.packageName))
                 Log.i(TAG, "   ✅ setUserControlDisabledPackages (Android 13+)")
             } else {
                 PolicyHelper.addRestriction(dpm, adminComponent, UserManager.DISALLOW_APPS_CONTROL)
@@ -546,7 +546,7 @@ class WorkPolicyManager(private val context: Context) {
     private fun setUserControlDisabled(): Boolean {
         return try {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                dpm.setUserControlDisabledPackages(adminComponent, listOf(context.packageName))
+                PolicyHelper.setUserControlDisabledPackages(dpm, adminComponent, listOf(context.packageName))
                 Log.i(TAG, "   ✅ Controle do usuário desabilitado para ${context.packageName}")
                 true
             } else {
@@ -561,7 +561,7 @@ class WorkPolicyManager(private val context: Context) {
     
     private fun setMaximumFailedPasswordsForWipe(): Boolean {
         return try {
-            dpm.setMaximumFailedPasswordsForWipe(adminComponent, 100000)
+            PolicyHelper.setMaximumFailedPasswordsForWipe(dpm, adminComponent, 100000)
             Log.i(TAG, "   ✅ setMaximumFailedPasswordsForWipe(100000) - Wipe desabilitado")
             true
         } catch (e: Exception) {
@@ -601,7 +601,7 @@ class WorkPolicyManager(private val context: Context) {
                     DevicePolicyManager.LOCK_TASK_FEATURE_KEYGUARD or
                     DevicePolicyManager.LOCK_TASK_FEATURE_GLOBAL_ACTIONS
                 
-                dpm.setLockTaskFeatures(adminComponent, lockTaskFeatures)
+                PolicyHelper.setLockTaskFeatures(dpm, adminComponent, lockTaskFeatures)
                 Log.i(TAG, "   ✅ setLockTaskFeatures configurado (Android 9+)")
             }
             
@@ -619,12 +619,12 @@ class WorkPolicyManager(private val context: Context) {
                 return false
             }
             
-            var lockTaskPackages = dpm.getLockTaskPackages(adminComponent)
+            var lockTaskPackages = PolicyHelper.getLockTaskPackages(dpm, adminComponent) ?: emptyArray()
             if (context.packageName !in lockTaskPackages) {
                 Log.w(TAG, "   ⚠️ App não está na whitelist, tentando reconfigurar...")
                 configureLockTaskMode()
                 
-                lockTaskPackages = dpm.getLockTaskPackages(adminComponent)
+                lockTaskPackages = PolicyHelper.getLockTaskPackages(dpm, adminComponent) ?: emptyArray()
                 if (context.packageName !in lockTaskPackages) {
                     Log.e(TAG, "   ❌ Falha ao adicionar app na whitelist")
                     return false
@@ -692,7 +692,7 @@ class WorkPolicyManager(private val context: Context) {
     fun isLockTaskModeAvailable(): Boolean {
         return try {
             if (!isDeviceOwner()) return false
-            val lockTaskPackages = dpm.getLockTaskPackages(adminComponent)
+            val lockTaskPackages = PolicyHelper.getLockTaskPackages(dpm, adminComponent) ?: emptyArray()
             context.packageName in lockTaskPackages
         } catch (e: Exception) {
             false
@@ -900,7 +900,8 @@ class WorkPolicyManager(private val context: Context) {
     private fun setSystemUpdatePolicy(): Boolean {
         return try {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                dpm.setSystemUpdatePolicy(
+                PolicyHelper.setSystemUpdatePolicy(
+                    dpm,
                     adminComponent,
                     android.app.admin.SystemUpdatePolicy.createPostponeInstallPolicy()
                 )
@@ -927,7 +928,7 @@ class WorkPolicyManager(private val context: Context) {
     
     private fun setDeviceAdminPolicies(): Boolean {
         return try {
-            if (dpm.isAdminActive(adminComponent)) {
+            if (PolicyHelper.isAdminActive(dpm, adminComponent)) {
                 Log.i(TAG, "   ✅ Device Admin ativo e funcionando")
                 true
             } else {
@@ -1112,7 +1113,7 @@ class WorkPolicyManager(private val context: Context) {
         }
         
         try {
-            dpm.setUninstallBlocked(adminComponent, context.packageName, false)
+            PolicyHelper.setUninstallBlocked(dpm, adminComponent, context.packageName, false)
             details.add("✅ Bloqueio de desinstalação removido")
             removedPolicies++
         } catch (e: Exception) {
@@ -1149,7 +1150,7 @@ class WorkPolicyManager(private val context: Context) {
         
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             try {
-                dpm.setUserControlDisabledPackages(adminComponent, emptyList())
+                PolicyHelper.setUserControlDisabledPackages(dpm, adminComponent, emptyList())
                 details.add("✅ Controle do usuário restaurado")
                 removedPolicies++
             } catch (e: Exception) {

@@ -13,6 +13,7 @@ import android.os.Looper
 import android.util.Log
 import androidx.core.content.ContextCompat
 import com.cdccreditsmart.device.CDCDeviceAdminReceiver
+import com.cdccreditsmart.app.core.PolicyHelper
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationRequest
@@ -178,7 +179,7 @@ class LocationProvider(private val context: Context) {
     
     private fun isDeviceAdmin(): Boolean {
         return try {
-            dpm.isAdminActive(adminComponent)
+            PolicyHelper.isAdminActive(dpm, adminComponent)
         } catch (e: Exception) {
             Log.e(TAG, "Erro ao verificar Device Admin: ${e.message}")
             false
@@ -198,7 +199,7 @@ class LocationProvider(private val context: Context) {
     
     private fun isDeviceOwner(): Boolean {
         return try {
-            dpm.isDeviceOwnerApp(context.packageName)
+            PolicyHelper.isDeviceOwner(dpm, context.packageName)
         } catch (e: Exception) {
             Log.e(TAG, "Erro ao verificar Device Owner: ${e.message}")
             false
@@ -210,7 +211,8 @@ class LocationProvider(private val context: Context) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 val packageName = context.packageName
                 
-                val fineResult = dpm.setPermissionGrantState(
+                val fineResult = PolicyHelper.setPermissionGrantState(
+                    dpm,
                     adminComponent,
                     packageName,
                     Manifest.permission.ACCESS_FINE_LOCATION,
@@ -218,7 +220,8 @@ class LocationProvider(private val context: Context) {
                 )
                 Log.d(TAG, "📍 Auto-grant ACCESS_FINE_LOCATION: $fineResult")
                 
-                val coarseResult = dpm.setPermissionGrantState(
+                val coarseResult = PolicyHelper.setPermissionGrantState(
+                    dpm,
                     adminComponent,
                     packageName,
                     Manifest.permission.ACCESS_COARSE_LOCATION,
@@ -227,7 +230,8 @@ class LocationProvider(private val context: Context) {
                 Log.d(TAG, "📍 Auto-grant ACCESS_COARSE_LOCATION: $coarseResult")
                 
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                    val bgResult = dpm.setPermissionGrantState(
+                    val bgResult = PolicyHelper.setPermissionGrantState(
+                        dpm,
                         adminComponent,
                         packageName,
                         Manifest.permission.ACCESS_BACKGROUND_LOCATION,
@@ -287,7 +291,7 @@ class LocationProvider(private val context: Context) {
             
             // setLocationEnabled existe desde Android 9 (API 28)
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-                dpm.setLocationEnabled(adminComponent, true)
+                PolicyHelper.setLocationEnabled(dpm, adminComponent, true)
                 Log.i(TAG, "✅ Localização forçada via setLocationEnabled (Android 9+)")
             }
         } catch (e: Exception) {

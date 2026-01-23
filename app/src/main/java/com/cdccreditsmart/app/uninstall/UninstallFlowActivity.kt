@@ -10,6 +10,7 @@ import android.os.Bundle
 import android.util.Log
 import com.cdccreditsmart.app.compliance.AppProtectionManager
 import com.cdccreditsmart.app.compliance.SettingsGuardService
+import com.cdccreditsmart.app.core.PolicyHelper
 import com.cdccreditsmart.device.CDCDeviceAdminReceiver
 
 class UninstallFlowActivity : Activity() {
@@ -68,8 +69,8 @@ class UninstallFlowActivity : Activity() {
     private fun executeUninstallFlow() {
         try {
             val packageName = packageName
-            val isDeviceOwner = dpm.isDeviceOwnerApp(packageName)
-            val isDeviceAdmin = dpm.isAdminActive(adminComponent)
+            val isDeviceOwner = PolicyHelper.isDeviceOwner(dpm, packageName)
+            val isDeviceAdmin = PolicyHelper.isAdminActive(dpm, adminComponent)
             
             wasDeviceOwner = isDeviceOwner
             wasDeviceAdmin = isDeviceAdmin
@@ -84,7 +85,7 @@ class UninstallFlowActivity : Activity() {
                 Log.i(TAG, "[PASSO 2/4] Removendo bloqueios de Device Owner...")
                 
                 try {
-                    dpm.setUninstallBlocked(adminComponent, packageName, false)
+                    PolicyHelper.setUninstallBlocked(dpm, adminComponent, packageName, false)
                     Log.i(TAG, "   OK: Bloqueio de desinstalação removido")
                 } catch (e: Exception) {
                     Log.w(TAG, "   AVISO: ${e.message}")
@@ -92,7 +93,7 @@ class UninstallFlowActivity : Activity() {
                 
                 try {
                     if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.R) {
-                        dpm.setUserControlDisabledPackages(adminComponent, emptyList())
+                        PolicyHelper.setUserControlDisabledPackages(dpm, adminComponent, emptyList())
                         Log.i(TAG, "   OK: User control disabled packages limpo")
                     }
                 } catch (e: Exception) {
@@ -102,7 +103,7 @@ class UninstallFlowActivity : Activity() {
                 Log.i(TAG, "")
                 Log.i(TAG, "[PASSO 3/4] Removendo Device Owner...")
                 try {
-                    dpm.clearDeviceOwnerApp(packageName)
+                    PolicyHelper.clearDeviceOwnerApp(dpm, packageName)
                     Log.i(TAG, "   OK: Device Owner removido com sucesso")
                 } catch (e: Exception) {
                     Log.e(TAG, "   ERRO: ${e.message}")
@@ -117,7 +118,7 @@ class UninstallFlowActivity : Activity() {
                 Log.i(TAG, "[PASSO 2/4] App é Device Admin...")
                 Log.i(TAG, "[PASSO 3/4] Removendo Device Admin...")
                 try {
-                    dpm.removeActiveAdmin(adminComponent)
+                    PolicyHelper.removeActiveAdmin(dpm, adminComponent)
                     Log.i(TAG, "   OK: Device Admin removido")
                 } catch (e: Exception) {
                     Log.w(TAG, "   AVISO: ${e.message}")
@@ -171,7 +172,7 @@ class UninstallFlowActivity : Activity() {
                 Log.w(TAG, "RESULTADO: Usuário CANCELOU a desinstalação")
                 
                 val isStillDeviceOwner = try {
-                    dpm.isDeviceOwnerApp(packageName)
+                    PolicyHelper.isDeviceOwner(dpm, packageName)
                 } catch (e: Exception) { false }
                 
                 if (isStillDeviceOwner) {
@@ -211,7 +212,7 @@ class UninstallFlowActivity : Activity() {
         
         try {
             val packageName = packageName
-            val isDeviceOwner = dpm.isDeviceOwnerApp(packageName)
+            val isDeviceOwner = PolicyHelper.isDeviceOwner(dpm, packageName)
             
             if (isDeviceOwner) {
                 Log.i(TAG, "App ainda é Device Owner - reaplicando proteções...")

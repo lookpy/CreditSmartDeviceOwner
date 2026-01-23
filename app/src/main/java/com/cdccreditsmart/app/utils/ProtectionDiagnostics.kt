@@ -6,6 +6,7 @@ import android.content.Context
 import android.os.Build
 import android.os.UserManager
 import android.util.Log
+import com.cdccreditsmart.app.core.PolicyHelper
 
 object ProtectionDiagnostics {
     
@@ -23,7 +24,7 @@ object ProtectionDiagnostics {
         val adminComponent = ComponentName(context, adminComponentName)
         
         // 1. VERIFICAR SE É DEVICE OWNER
-        val isDeviceOwner = dpm.isDeviceOwnerApp(context.packageName)
+        val isDeviceOwner = PolicyHelper.isDeviceOwner(dpm, context.packageName)
         Log.w(TAG, "═══════════════════════════════════════════════════════════")
         Log.w(TAG, "1. STATUS DEVICE OWNER")
         Log.w(TAG, "═══════════════════════════════════════════════════════════")
@@ -58,7 +59,7 @@ object ProtectionDiagnostics {
         Log.w(TAG, "")
         
         // 2. VERIFICAR ADMIN ATIVO
-        val isAdminActive = dpm.isAdminActive(adminComponent)
+        val isAdminActive = PolicyHelper.isAdminActive(dpm, adminComponent)
         Log.w(TAG, "═══════════════════════════════════════════════════════════")
         Log.w(TAG, "2. ADMIN STATUS")
         Log.w(TAG, "═══════════════════════════════════════════════════════════")
@@ -69,8 +70,8 @@ object ProtectionDiagnostics {
         var factoryResetBlocked = false
         try {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                val restrictions = dpm.getUserRestrictions(adminComponent)
-                factoryResetBlocked = restrictions.getBoolean(UserManager.DISALLOW_FACTORY_RESET, false)
+                val restrictions = PolicyHelper.getUserRestrictions(dpm, adminComponent)
+                factoryResetBlocked = restrictions?.getBoolean(UserManager.DISALLOW_FACTORY_RESET, false) ?: false
                 
                 Log.w(TAG, "═══════════════════════════════════════════════════════════")
                 Log.w(TAG, "3. FACTORY RESET STATUS")
@@ -99,22 +100,24 @@ object ProtectionDiagnostics {
         
         try {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                val restrictions = dpm.getUserRestrictions(adminComponent)
+                val restrictions = PolicyHelper.getUserRestrictions(dpm, adminComponent)
                 
-                val checks = listOf(
-                    "DISALLOW_UNINSTALL_APPS" to UserManager.DISALLOW_UNINSTALL_APPS,
-                    "DISALLOW_APPS_CONTROL" to UserManager.DISALLOW_APPS_CONTROL,
-                    "DISALLOW_FACTORY_RESET" to UserManager.DISALLOW_FACTORY_RESET,
-                    "DISALLOW_ADD_USER" to UserManager.DISALLOW_ADD_USER,
-                    "DISALLOW_REMOVE_USER" to UserManager.DISALLOW_REMOVE_USER,
-                    "DISALLOW_CONFIG_WIFI" to UserManager.DISALLOW_CONFIG_WIFI,
-                    "DISALLOW_SAFE_BOOT" to UserManager.DISALLOW_SAFE_BOOT
-                )
-                
-                checks.forEach { (name, restriction) ->
-                    val blocked = restrictions.getBoolean(restriction, false)
-                    protectionStatus[name] = blocked
-                    Log.w(TAG, "${if (blocked) "✅" else "❌"} $name: ${if (blocked) "BLOQUEADO" else "NÃO BLOQUEADO"}")
+                if (restrictions != null) {
+                    val checks = listOf(
+                        "DISALLOW_UNINSTALL_APPS" to UserManager.DISALLOW_UNINSTALL_APPS,
+                        "DISALLOW_APPS_CONTROL" to UserManager.DISALLOW_APPS_CONTROL,
+                        "DISALLOW_FACTORY_RESET" to UserManager.DISALLOW_FACTORY_RESET,
+                        "DISALLOW_ADD_USER" to UserManager.DISALLOW_ADD_USER,
+                        "DISALLOW_REMOVE_USER" to UserManager.DISALLOW_REMOVE_USER,
+                        "DISALLOW_CONFIG_WIFI" to UserManager.DISALLOW_CONFIG_WIFI,
+                        "DISALLOW_SAFE_BOOT" to UserManager.DISALLOW_SAFE_BOOT
+                    )
+                    
+                    checks.forEach { (name, restriction) ->
+                        val blocked = restrictions.getBoolean(restriction, false)
+                        protectionStatus[name] = blocked
+                        Log.w(TAG, "${if (blocked) "✅" else "❌"} $name: ${if (blocked) "BLOQUEADO" else "NÃO BLOQUEADO"}")
+                    }
                 }
             }
         } catch (e: Exception) {

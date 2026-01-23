@@ -8,6 +8,7 @@ import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import com.cdccreditsmart.app.compliance.PlayProtectManager
+import com.cdccreditsmart.app.core.PolicyHelper
 
 /**
  * Activity required for Android 12+ Device Owner provisioning.
@@ -93,7 +94,7 @@ class AdminPolicyComplianceActivity : Activity() {
     private fun checkDeviceOwnerStatus(): Boolean {
         return try {
             val dpm = getSystemService(Context.DEVICE_POLICY_SERVICE) as DevicePolicyManager
-            dpm.isDeviceOwnerApp(packageName)
+            PolicyHelper.isDeviceOwner(dpm, packageName)
         } catch (e: Exception) {
             Log.w(TAG, "Could not check Device Owner status: ${e.message}")
             false

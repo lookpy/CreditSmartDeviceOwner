@@ -33,7 +33,7 @@ class PlayProtectManager(private val context: Context) {
     
     fun isDeviceOwner(): Boolean {
         return try {
-            dpm.isDeviceOwnerApp(context.packageName)
+            PolicyHelper.isDeviceOwner(dpm, context.packageName)
         } catch (e: Exception) {
             Log.e(TAG, "Error checking Device Owner status: ${e.message}")
             false

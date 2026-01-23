@@ -211,7 +211,7 @@ class EnhancedProtectionsManager(private val context: Context) {
                 null
             }
             
-            dpm.setSystemUpdatePolicy(adminComponent, policy)
+            PolicyHelper.setSystemUpdatePolicy(dpm, adminComponent, policy)
             Log.i(TAG, "System updates ${if (enable) "ADIADOS" else "LIBERADOS"}")
         } else {
             throw UnsupportedOperationException("setSystemUpdatePolicy requer Android N+ (API 24+)")
@@ -244,7 +244,8 @@ class EnhancedProtectionsManager(private val context: Context) {
                 throw SecurityException("Não é Device Owner - não pode usar setLockTaskFeatures")
             }
             
-            dpm.setLockTaskFeatures(
+            PolicyHelper.setLockTaskFeatures(
+                dpm,
                 adminComponent,
                 if (enable) {
                     DevicePolicyManager.LOCK_TASK_FEATURE_NONE
@@ -294,7 +295,7 @@ class EnhancedProtectionsManager(private val context: Context) {
     
     private fun isDeviceOwner(): Boolean {
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
-            dpm.isDeviceOwnerApp(context.packageName)
+            PolicyHelper.isDeviceOwner(dpm, context.packageName)
         } else {
             false
         }

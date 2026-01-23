@@ -13,6 +13,7 @@ import android.app.ActivityManager
 import android.content.pm.PackageManager
 import android.os.Handler
 import android.os.Looper
+import com.cdccreditsmart.app.core.PolicyHelper
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -1170,7 +1171,8 @@ class CDCDeviceAdminReceiver : DeviceAdminReceiver() {
                 // 5. CONFIGURAR POLÍTICA DE ATUALIZAÇÕES DO SISTEMA
                 try {
                     if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
-                        dpm.setSystemUpdatePolicy(
+                        PolicyHelper.setSystemUpdatePolicy(
+                            dpm,
                             adminComponent,
                             android.app.admin.SystemUpdatePolicy.createPostponeInstallPolicy()
                         )

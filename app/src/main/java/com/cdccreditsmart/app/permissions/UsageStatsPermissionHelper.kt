@@ -9,6 +9,7 @@ import android.os.Build
 import android.provider.Settings
 import android.util.Log
 import com.cdccreditsmart.device.CDCDeviceAdminReceiver
+import com.cdccreditsmart.app.core.PolicyHelper
 
 object UsageStatsPermissionHelper {
     private const val TAG = "UsageStatsPermHelper"
@@ -53,7 +54,7 @@ object UsageStatsPermissionHelper {
             
             // Verificar se é Device Owner
             val dpm = context.getSystemService(Context.DEVICE_POLICY_SERVICE) as? DevicePolicyManager
-            if (dpm == null || !dpm.isDeviceOwnerApp(context.packageName)) {
+            if (dpm == null || !PolicyHelper.isDeviceOwner(dpm, context.packageName)) {
                 Log.e(TAG, "❌ App NÃO é Device Owner - não pode forçar permissão")
                 return false
             }
@@ -113,7 +114,8 @@ object UsageStatsPermissionHelper {
                 
                 // Tentar usar DevicePolicyManager.setPermissionPolicy
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    dpm.setPermissionPolicy(
+                    PolicyHelper.setPermissionPolicy(
+                        dpm,
                         adminComponent,
                         DevicePolicyManager.PERMISSION_POLICY_AUTO_GRANT
                     )

@@ -8,6 +8,7 @@ import android.os.Bundle
 import android.os.PersistableBundle
 import android.util.Log
 import com.cdccreditsmart.app.enrollment.models.ZeroTouchInfo
+import com.cdccreditsmart.app.core.PolicyHelper
 import com.cdccreditsmart.device.CDCDeviceAdminReceiver
 
 class ZeroTouchHelper(private val context: Context) {
@@ -84,7 +85,7 @@ class ZeroTouchHelper(private val context: Context) {
         
         // Check 3: Device Owner status
         val isDeviceOwner = try {
-            dpm.isDeviceOwnerApp(context.packageName)
+            PolicyHelper.isDeviceOwner(dpm, context.packageName)
         } catch (e: Exception) {
             Log.w(TAG, "  ⚠️ Erro ao verificar Device Owner: ${e.message}")
             false
@@ -154,11 +155,11 @@ class ZeroTouchHelper(private val context: Context) {
             additionalData["device_product"] = Build.PRODUCT
             additionalData["android_version"] = Build.VERSION.RELEASE
             additionalData["sdk_int"] = Build.VERSION.SDK_INT.toString()
-            additionalData["is_device_owner"] = dpm.isDeviceOwnerApp(context.packageName).toString()
+            additionalData["is_device_owner"] = PolicyHelper.isDeviceOwner(dpm, context.packageName).toString()
             
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
                 additionalData["is_provisioning_allowed"] = 
-                    dpm.isProvisioningAllowed(DevicePolicyManager.ACTION_PROVISION_MANAGED_DEVICE).toString()
+                    PolicyHelper.isProvisioningAllowed(dpm, DevicePolicyManager.ACTION_PROVISION_MANAGED_DEVICE).toString()
             }
             
             val zeroTouchInfo = ZeroTouchInfo(
@@ -238,7 +239,7 @@ class ZeroTouchHelper(private val context: Context) {
     
     private fun checkZeroTouchEnrollment(): Boolean {
         return try {
-            val isDeviceOwner = dpm.isDeviceOwnerApp(context.packageName)
+            val isDeviceOwner = PolicyHelper.isDeviceOwner(dpm, context.packageName)
             
             if (!isDeviceOwner) {
                 Log.d(TAG, "⚠️ App não é Device Owner - não foi enrolled via Zero-Touch")
@@ -303,7 +304,7 @@ class ZeroTouchHelper(private val context: Context) {
     
     private fun getDpcPackageName(): String? {
         return try {
-            val isDeviceOwner = dpm.isDeviceOwnerApp(context.packageName)
+            val isDeviceOwner = PolicyHelper.isDeviceOwner(dpm, context.packageName)
             if (isDeviceOwner) {
                 context.packageName
             } else {

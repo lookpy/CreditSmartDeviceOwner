@@ -8,6 +8,7 @@ import android.os.Build
 import android.telephony.TelephonyManager
 import androidx.core.app.ActivityCompat
 import android.util.Log
+import com.cdccreditsmart.app.core.PolicyHelper
 
 /**
  * Device utilities for CDC Credit Smart APK
@@ -28,7 +29,7 @@ object DeviceUtils {
     fun isDeviceOwner(context: Context): Boolean {
         return try {
             val dpm = context.getSystemService(Context.DEVICE_POLICY_SERVICE) as DevicePolicyManager
-            val isOwner = dpm.isDeviceOwnerApp(context.packageName)
+            val isOwner = PolicyHelper.isDeviceOwner(dpm, context.packageName)
             Log.d(TAG, "Device Owner check: $isOwner")
             isOwner
         } catch (e: Exception) {

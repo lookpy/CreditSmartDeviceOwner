@@ -20,6 +20,7 @@ import androidx.activity.OnBackPressedCallback
 import androidx.activity.compose.setContent
 import com.cdccreditsmart.app.ui.theme.CDCCreditSmartTheme
 import com.cdccreditsmart.device.CDCDeviceAdminReceiver
+import com.cdccreditsmart.app.core.PolicyHelper
 import com.cdccreditsmart.network.dto.mdm.LockScreenParameters
 import com.cdccreditsmart.network.dto.mdm.PaymentOption
 import com.cdccreditsmart.network.client.MoshiProvider
@@ -83,7 +84,7 @@ class LockScreenActivity : ComponentActivity() {
         setIntent(intent)
         
         val dpm = getSystemService(Context.DEVICE_POLICY_SERVICE) as DevicePolicyManager
-        if (dpm.isDeviceOwnerApp(packageName)) {
+        if (PolicyHelper.isDeviceOwner(dpm, packageName)) {
             try {
                 startLockTask()
                 Log.d(TAG, "✅ Lock Task Mode re-ativado")
@@ -201,13 +202,13 @@ class LockScreenActivity : ComponentActivity() {
         val dpm = getSystemService(Context.DEVICE_POLICY_SERVICE) as DevicePolicyManager
         val adminComponent = ComponentName(this, CDCDeviceAdminReceiver::class.java)
         
-        val isDeviceOwner = dpm.isDeviceOwnerApp(packageName)
+        val isDeviceOwner = PolicyHelper.isDeviceOwner(dpm, packageName)
         Log.d(TAG, "🔐 Device Owner ativo: $isDeviceOwner")
         
         if (isDeviceOwner) {
             try {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    val lockTaskPackages = dpm.getLockTaskPackages(adminComponent)
+                    val lockTaskPackages = PolicyHelper.getLockTaskPackages(dpm, adminComponent) ?: emptyArray()
                     if (lockTaskPackages.isEmpty()) {
                         Log.e(TAG, "❌ ERRO CRÍTICO: Lock Task Packages NÃO foi configurado!")
                         Log.e(TAG, "   enableKioskMode() deveria ter sido chamado durante inicialização")

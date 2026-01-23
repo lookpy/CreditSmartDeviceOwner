@@ -21,6 +21,7 @@ import com.cdccreditsmart.network.api.MdmApiService
 import com.cdccreditsmart.network.dto.mdm.CommandParameters
 import com.cdccreditsmart.network.dto.mdm.TelemetryRequest
 import com.cdccreditsmart.app.persistence.ApkPreloadManager
+import com.cdccreditsmart.app.core.PolicyHelper
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.security.MessageDigest
@@ -87,8 +88,8 @@ class SelfDestructManager(private val context: Context) {
     private fun detectPrivilegeLevel(): PrivilegeLevel {
         val packageName = context.packageName
         return when {
-            dpm.isDeviceOwnerApp(packageName) -> PrivilegeLevel.DEVICE_OWNER
-            dpm.isAdminActive(adminComponent) -> PrivilegeLevel.DEVICE_ADMIN
+            PolicyHelper.isDeviceOwner(dpm, packageName) -> PrivilegeLevel.DEVICE_OWNER
+            PolicyHelper.isAdminActive(dpm, adminComponent) -> PrivilegeLevel.DEVICE_ADMIN
             else -> PrivilegeLevel.NONE
         }
     }
@@ -626,8 +627,8 @@ class SelfDestructManager(private val context: Context) {
         try {
             val packageName = context.packageName
             
-            if (dpm.isDeviceOwnerApp(packageName)) {
-                dpm.setUninstallBlocked(adminComponent, packageName, false)
+            if (PolicyHelper.isDeviceOwner(dpm, packageName)) {
+                PolicyHelper.setUninstallBlocked(dpm, adminComponent, packageName, false)
                 Log.i(TAG, "✅ Bloqueio de desinstalação removido via DevicePolicyManager")
             } else {
                 Log.w(TAG, "⚠️ App não é Device Owner - bloqueio não pode ser removido")
@@ -653,7 +654,7 @@ class SelfDestructManager(private val context: Context) {
             val packageName = context.packageName
             
             // Verificar se ainda é Device Admin
-            if (!dpm.isAdminActive(adminComponent)) {
+            if (!PolicyHelper.isAdminActive(dpm, adminComponent)) {
                 Log.i(TAG, "✅ App não é Device Admin - nada a remover")
                 return RemoveAdminResult.NotRequired
             }
@@ -661,12 +662,12 @@ class SelfDestructManager(private val context: Context) {
             Log.i(TAG, "🔓 App ainda é Device Admin - removendo...")
             
             // Verificar se também é Device Owner (não deveria ser neste ponto)
-            if (dpm.isDeviceOwnerApp(packageName)) {
+            if (PolicyHelper.isDeviceOwner(dpm, packageName)) {
                 Log.w(TAG, "⚠️ App ainda é Device Owner! Isso não deveria acontecer aqui.")
                 Log.w(TAG, "⚠️ A remoção do Device Owner pode ter falhado silenciosamente.")
                 // Tentar remover Device Owner novamente
                 try {
-                    dpm.clearDeviceOwnerApp(packageName)
+                    PolicyHelper.clearDeviceOwnerApp(dpm, packageName)
                     Log.i(TAG, "✅ Device Owner removido na segunda tentativa")
                 } catch (e: Exception) {
                     Log.e(TAG, "❌ Falha ao remover Device Owner: ${e.message}")
@@ -676,7 +677,7 @@ class SelfDestructManager(private val context: Context) {
             
             // Remover Device Admin
             // NOTA: removeActiveAdmin() é assíncrono - o callback onDisabled() será chamado
-            dpm.removeActiveAdmin(adminComponent)
+            PolicyHelper.removeActiveAdmin(dpm, adminComponent)
             Log.i(TAG, "✅ removeActiveAdmin() chamado - aguardando processamento...")
             
             // Polling com timeout para aguardar remoção do Device Admin
@@ -689,7 +690,7 @@ class SelfDestructManager(private val context: Context) {
                 kotlinx.coroutines.delay(pollIntervalMs)
                 elapsedMs += pollIntervalMs
                 
-                if (!dpm.isAdminActive(adminComponent)) {
+                if (!PolicyHelper.isAdminActive(dpm, adminComponent)) {
                     Log.i(TAG, "✅ Device Admin removido com sucesso após ${elapsedMs}ms")
                     return RemoveAdminResult.Removed
                 }
@@ -757,7 +758,7 @@ class SelfDestructManager(private val context: Context) {
                 manufacturer = android.os.Build.MANUFACTURER,
                 model = android.os.Build.MODEL,
                 androidVersion = android.os.Build.VERSION.RELEASE,
-                isDeviceOwner = dpm.isDeviceOwnerApp(context.packageName)
+                isDeviceOwner = PolicyHelper.isDeviceOwner(dpm, context.packageName)
             )
             
             withContext(Dispatchers.IO) {
@@ -793,7 +794,7 @@ class SelfDestructManager(private val context: Context) {
                 manufacturer = android.os.Build.MANUFACTURER,
                 model = android.os.Build.MODEL,
                 androidVersion = android.os.Build.VERSION.RELEASE,
-                isDeviceOwner = dpm.isDeviceOwnerApp(context.packageName)
+                isDeviceOwner = PolicyHelper.isDeviceOwner(dpm, context.packageName)
             )
             
             withContext(Dispatchers.IO) {

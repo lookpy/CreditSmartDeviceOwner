@@ -133,7 +133,7 @@ class InstallationBlocker(private val context: Context) {
      * TWRP e recovery apps não estão na Play Store
      */
     fun blockUnknownSources(): Boolean {
-        if (!dpm.isDeviceOwnerApp(context.packageName)) {
+        if (!PolicyHelper.isDeviceOwner(dpm, context.packageName)) {
             Log.w(TAG, "⚠️ App não é Device Owner - não pode bloquear fontes desconhecidas")
             return false
         }
@@ -174,7 +174,7 @@ class InstallationBlocker(private val context: Context) {
      * ✅ Solução: BLOQUEIA apps (inacessíveis ao usuário)
      */
     fun scanAndRemoveDangerousApps(): RemovalResult {
-        if (!dpm.isDeviceOwnerApp(context.packageName)) {
+        if (!PolicyHelper.isDeviceOwner(dpm, context.packageName)) {
             return RemovalResult(
                 success = false,
                 appsBlocked = emptyList(),
@@ -238,7 +238,7 @@ class InstallationBlocker(private val context: Context) {
             return false
         }
         
-        if (!dpm.isDeviceOwnerApp(context.packageName)) {
+        if (!PolicyHelper.isDeviceOwner(dpm, context.packageName)) {
             Log.w(TAG, "⚠️ App não é Device Owner - não pode bloquear $packageName")
             return false
         }
@@ -293,11 +293,11 @@ class InstallationBlocker(private val context: Context) {
      * Verifica se instalação de fontes desconhecidas está bloqueada
      */
     private fun isUnknownSourcesBlocked(): Boolean {
-        if (!dpm.isDeviceOwnerApp(context.packageName)) return false
+        if (!PolicyHelper.isDeviceOwner(dpm, context.packageName)) return false
         
         return try {
-            val restrictions = dpm.getUserRestrictions(adminComponent)
-            restrictions.getBoolean(UserManager.DISALLOW_INSTALL_UNKNOWN_SOURCES, false)
+            val restrictions = PolicyHelper.getUserRestrictions(dpm, adminComponent)
+            restrictions?.getBoolean(UserManager.DISALLOW_INSTALL_UNKNOWN_SOURCES, false) ?: false
         } catch (e: Exception) {
             false
         }

@@ -28,6 +28,7 @@ import androidx.navigation.compose.rememberNavController
 import com.cdccreditsmart.app.navigation.CDCNavigation
 import com.cdccreditsmart.app.navigation.Routes
 import com.cdccreditsmart.app.permissions.AutoPermissionManager
+import com.cdccreditsmart.app.core.PolicyHelper
 import com.cdccreditsmart.app.permissions.SpecialPermissionRequester
 import com.cdccreditsmart.app.compliance.FactoryResetDetectionResult
 import com.cdccreditsmart.app.compliance.PersistentStateManager
@@ -177,7 +178,7 @@ class MainActivity : ComponentActivity() {
             }
             
             val dpm = getSystemService(Context.DEVICE_POLICY_SERVICE) as DevicePolicyManager
-            val isDeviceOwner = dpm.isDeviceOwnerApp(packageName)
+            val isDeviceOwner = PolicyHelper.isDeviceOwner(dpm, packageName)
             
             if (isDeviceOwner) {
                 Log.i(TAG, "✅ App é Device Owner - permissões serão concedidas automaticamente")

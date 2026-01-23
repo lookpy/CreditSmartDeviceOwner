@@ -149,7 +149,7 @@ class AppProtectionManager(private val context: Context) {
     
     fun isDeviceAdmin(): Boolean {
         return try {
-            dpm.isAdminActive(adminComponent)
+            PolicyHelper.isAdminActive(dpm, adminComponent)
         } catch (e: Exception) {
             Log.e(TAG, "Erro ao verificar Device Admin: ${e.message}")
             false
@@ -352,7 +352,7 @@ class AppProtectionManager(private val context: Context) {
     private fun blockUninstallation(): Int {
         return try {
             val packageName = context.packageName
-            dpm.setUninstallBlocked(adminComponent, packageName, true)
+            PolicyHelper.setUninstallBlocked(dpm, adminComponent, packageName, true)
             Log.i(TAG, "✅ [1/10] DESINSTALAÇÃO BLOQUEADA")
             Log.i(TAG, "        → Usuário NÃO pode desinstalar o app")
             1
@@ -482,7 +482,7 @@ class AppProtectionManager(private val context: Context) {
         try {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
                 val packageName = context.packageName
-                dpm.setUserControlDisabledPackages(adminComponent, listOf(packageName))
+                PolicyHelper.setUserControlDisabledPackages(dpm, adminComponent, listOf(packageName))
                 Log.i(TAG, "✅ [2/10] FORCE STOP BLOQUEADO (Android 13+)")
                 Log.i(TAG, "        → Botão Force Stop DESABILITADO para app CDC")
                 Log.i(TAG, "        → Usuário PODE acessar Settings normalmente")
@@ -520,7 +520,7 @@ class AppProtectionManager(private val context: Context) {
         try {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
                 val packageName = context.packageName
-                dpm.setUserControlDisabledPackages(adminComponent, listOf(packageName))
+                PolicyHelper.setUserControlDisabledPackages(dpm, adminComponent, listOf(packageName))
                 Log.i(TAG, "✅ [3/10] CLEAR DATA BLOQUEADO (Android 13+)")
                 Log.i(TAG, "        → Botão Clear Data DESABILITADO para app CDC")
                 count++
@@ -649,7 +649,8 @@ class AppProtectionManager(private val context: Context) {
         
         try {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                dpm.setSystemUpdatePolicy(
+                PolicyHelper.setSystemUpdatePolicy(
+                    dpm,
                     adminComponent,
                     android.app.admin.SystemUpdatePolicy.createPostponeInstallPolicy()
                 )
@@ -825,7 +826,7 @@ class AppProtectionManager(private val context: Context) {
         
         try {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                dpm.setKeyguardDisabled(adminComponent, false)
+                PolicyHelper.setKeyguardDisabled(dpm, adminComponent, false)
                 Log.i(TAG, "        → Keyguard protegido")
                 count++
             }
@@ -853,7 +854,8 @@ class AppProtectionManager(private val context: Context) {
         
         try {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-                dpm.setLockTaskFeatures(
+                PolicyHelper.setLockTaskFeatures(
+                    dpm,
                     adminComponent,
                     DevicePolicyManager.LOCK_TASK_FEATURE_NONE
                 )
@@ -893,7 +895,8 @@ class AppProtectionManager(private val context: Context) {
         
         try {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
-                dpm.setSystemUpdatePolicy(
+                PolicyHelper.setSystemUpdatePolicy(
+                    dpm,
                     adminComponent,
                     android.app.admin.SystemUpdatePolicy.createPostponeInstallPolicy()
                 )
@@ -1061,7 +1064,8 @@ class AppProtectionManager(private val context: Context) {
             }
             
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-                dpm.setLockTaskFeatures(
+                PolicyHelper.setLockTaskFeatures(
+                    dpm,
                     adminComponent,
                     DevicePolicyManager.LOCK_TASK_FEATURE_HOME or
                     DevicePolicyManager.LOCK_TASK_FEATURE_OVERVIEW or
@@ -1091,7 +1095,7 @@ class AppProtectionManager(private val context: Context) {
         
         try {
             val packageName = context.packageName
-            val isUninstallBlocked = dpm.isUninstallBlocked(adminComponent, packageName)
+            val isUninstallBlocked = PolicyHelper.isUninstallBlocked(dpm, adminComponent, packageName)
             protections["uninstall_blocked"] = isUninstallBlocked
             Log.i(TAG, "  ${if (isUninstallBlocked) "✅" else "❌"} Desinstalação bloqueada: $isUninstallBlocked")
         } catch (e: Exception) {
@@ -1101,14 +1105,16 @@ class AppProtectionManager(private val context: Context) {
         
         try {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                val restrictions = dpm.getUserRestrictions(adminComponent)
-                val appsControlBlocked = restrictions.getBoolean(UserManager.DISALLOW_APPS_CONTROL, false)
-                protections["force_stop_blocked"] = appsControlBlocked
-                Log.i(TAG, "  ${if (appsControlBlocked) "✅" else "❌"} Force Stop bloqueado: $appsControlBlocked")
-                
-                val factoryResetBlocked = restrictions.getBoolean(UserManager.DISALLOW_FACTORY_RESET, false)
-                protections["factory_reset_blocked"] = factoryResetBlocked
-                Log.i(TAG, "  ${if (factoryResetBlocked) "✅" else "❌"} Factory Reset bloqueado: $factoryResetBlocked")
+                val restrictions = PolicyHelper.getUserRestrictions(dpm, adminComponent)
+                if (restrictions != null) {
+                    val appsControlBlocked = restrictions.getBoolean(UserManager.DISALLOW_APPS_CONTROL, false)
+                    protections["force_stop_blocked"] = appsControlBlocked
+                    Log.i(TAG, "  ${if (appsControlBlocked) "✅" else "❌"} Force Stop bloqueado: $appsControlBlocked")
+                    
+                    val factoryResetBlocked = restrictions.getBoolean(UserManager.DISALLOW_FACTORY_RESET, false)
+                    protections["factory_reset_blocked"] = factoryResetBlocked
+                    Log.i(TAG, "  ${if (factoryResetBlocked) "✅" else "❌"} Factory Reset bloqueado: $factoryResetBlocked")
+                }
             }
         } catch (e: Exception) {
             Log.e(TAG, "❌ Erro ao verificar restrictions: ${e.message}")
@@ -1138,14 +1144,14 @@ class AppProtectionManager(private val context: Context) {
         try {
             val packageName = context.packageName
             
-            if (!dpm.isDeviceOwnerApp(packageName)) {
+            if (!PolicyHelper.isDeviceOwner(dpm, packageName)) {
                 Log.w(TAG, "⚠️ App não é Device Owner - proteções não podem ser removidas")
                 return DisableProtectionsResult.NotDeviceOwner
             }
             
             Log.i(TAG, "🔓 [1/10] Removendo bloqueio de desinstalação...")
             try {
-                dpm.setUninstallBlocked(adminComponent, packageName, false)
+                PolicyHelper.setUninstallBlocked(dpm, adminComponent, packageName, false)
                 results.add("✅ setUninstallBlocked removido")
                 successCount++
                 Log.i(TAG, "   ✅ setUninstallBlocked removido")
@@ -1159,7 +1165,7 @@ class AppProtectionManager(private val context: Context) {
             Log.i(TAG, "🔓 [2/10] Removendo setUserControlDisabledPackages...")
             try {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-                    dpm.setUserControlDisabledPackages(adminComponent, emptyList())
+                    PolicyHelper.setUserControlDisabledPackages(dpm, adminComponent, emptyList())
                     results.add("✅ setUserControlDisabledPackages removido")
                     successCount++
                     Log.i(TAG, "   ✅ setUserControlDisabledPackages removido")
@@ -1234,7 +1240,7 @@ class AppProtectionManager(private val context: Context) {
             Log.i(TAG, "🔓 [4/10] Removendo SystemUpdatePolicy...")
             try {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                    dpm.setSystemUpdatePolicy(adminComponent, null)
+                    PolicyHelper.setSystemUpdatePolicy(dpm, adminComponent, null)
                     results.add("✅ SystemUpdatePolicy removido")
                     successCount++
                     Log.i(TAG, "   ✅ SystemUpdatePolicy removido")
@@ -1264,7 +1270,7 @@ class AppProtectionManager(private val context: Context) {
             Log.i(TAG, "🔓 [6/10] Removendo setLockTaskFeatures...")
             try {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-                    dpm.setLockTaskFeatures(adminComponent, DevicePolicyManager.LOCK_TASK_FEATURE_NONE)
+                    PolicyHelper.setLockTaskFeatures(dpm, adminComponent, DevicePolicyManager.LOCK_TASK_FEATURE_NONE)
                     results.add("✅ setLockTaskFeatures removido")
                     successCount++
                     Log.i(TAG, "   ✅ setLockTaskFeatures removido")
@@ -1279,7 +1285,7 @@ class AppProtectionManager(private val context: Context) {
             Log.i(TAG, "🔓 [7/10] Reabilitando Keyguard...")
             try {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    dpm.setKeyguardDisabled(adminComponent, false)
+                    PolicyHelper.setKeyguardDisabled(dpm, adminComponent, false)
                     results.add("✅ Keyguard reabilitado")
                     successCount++
                     Log.i(TAG, "   ✅ Keyguard reabilitado")
@@ -1394,7 +1400,7 @@ class AppProtectionManager(private val context: Context) {
             
             try {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-                    dpm.setFactoryResetProtectionPolicy(adminComponent, null)
+                    PolicyHelper.setFactoryResetProtectionPolicy(dpm, adminComponent, null)
                     results.add("✅ FRP Policy removido")
                     successCount++
                     Log.i(TAG, "   ✅ FRP Policy removido")
@@ -1406,7 +1412,7 @@ class AppProtectionManager(private val context: Context) {
             
             try {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    dpm.setPermittedAccessibilityServices(adminComponent, null)
+                    PolicyHelper.setPermittedAccessibilityServices(dpm, adminComponent, null)
                     results.add("✅ Permitted Accessibility Services removido")
                     successCount++
                     Log.i(TAG, "   ✅ Permitted Accessibility Services removido")
@@ -1441,7 +1447,7 @@ class AppProtectionManager(private val context: Context) {
     
     private fun isDeviceOwner(): Boolean {
         return try {
-            dpm.isDeviceOwnerApp(context.packageName)
+            PolicyHelper.isDeviceOwner(dpm, context.packageName)
         } catch (e: Exception) {
             Log.e(TAG, "Erro ao verificar Device Owner: ${e.message}")
             false
