@@ -504,6 +504,7 @@ class CDCApplication : Application() {
                 Log.i(TAG, "👤 Verificando Managed Secondary User...")
                 val workProfileManager = WorkProfileManager(applicationContext)
                 
+                // hasWorkProfile() agora detecta usuários existentes mesmo se SharedPreferences foi limpo
                 if (workProfileManager.hasWorkProfile()) {
                     Log.i(TAG, "✅ Managed Secondary User já existe")
                     Log.d(TAG, workProfileManager.getWorkProfileInfo())

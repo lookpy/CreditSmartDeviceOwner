@@ -211,27 +211,104 @@ class WorkProfileManager(private val context: Context) {
     /**
      * Verifica se já existe um usuário secundário gerenciado
      * 
-     * IMPORTANTE: Além de verificar SharedPreferences, também verifica se o usuário
-     * realmente existe no sistema. Isso garante que após um reboot ou remoção
-     * manual do usuário, o estado seja correto.
+     * IMPORTANTE: 
+     * 1. Verifica primeiro o ID salvo em SharedPreferences
+     * 2. Se não encontrar, verifica TODOS os usuários secundários no sistema
+     * 3. Se encontrar um usuário secundário existente, adota ele (evita criar duplicados)
      * 
      * @return true se existe um usuário secundário gerenciado válido, false caso contrário
      */
     fun hasWorkProfile(): Boolean {
         val savedProfileId = prefs.getInt(KEY_MANAGED_USER_ID, -1)
         
-        if (savedProfileId == -1) {
-            return false
-        }
-        
-        val exists = isUserExists(savedProfileId)
-        
-        if (!exists) {
+        // Primeiro, verifica o ID salvo
+        if (savedProfileId != -1) {
+            val exists = isUserExists(savedProfileId)
+            if (exists) {
+                return true
+            }
             Log.w(TAG, "⚠️ Usuário secundário salvo (ID: $savedProfileId) não existe mais no sistema")
             prefs.edit().remove(KEY_MANAGED_USER_ID).apply()
         }
         
-        return exists
+        // Se não há ID salvo ou o ID salvo é inválido, procura por usuários secundários existentes
+        val existingSecondaryUser = findExistingSecondaryUser()
+        if (existingSecondaryUser != -1) {
+            Log.i(TAG, "✅ Encontrado usuário secundário existente (ID: $existingSecondaryUser) - ADOTANDO")
+            prefs.edit().putInt(KEY_MANAGED_USER_ID, existingSecondaryUser).apply()
+            return true
+        }
+        
+        return false
+    }
+    
+    /**
+     * Procura por usuários secundários já existentes no sistema.
+     * Isso evita criar duplicados quando SharedPreferences é limpo.
+     * 
+     * @return ID do usuário secundário encontrado, ou -1 se não encontrar
+     */
+    private fun findExistingSecondaryUser(): Int {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
+            return -1
+        }
+        
+        try {
+            // Obter usuário atual (owner = 0)
+            val currentUserId = android.os.Process.myUserHandle().hashCode()
+            
+            // Tentar getUserHandles (API 30+)
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                try {
+                    val getUserHandlesMethod = UserManager::class.java.getMethod("getUserHandles", Boolean::class.javaPrimitiveType)
+                    @Suppress("UNCHECKED_CAST")
+                    val userHandles = getUserHandlesMethod.invoke(userManager, true) as? List<UserHandle>
+                    
+                    if (userHandles != null) {
+                        for (handle in userHandles) {
+                            val id = UserHandle::class.java.getDeclaredMethod("getIdentifier").invoke(handle) as Int
+                            // Ignorar usuário owner (0) e usuário atual
+                            if (id != 0 && id != currentUserId) {
+                                Log.i(TAG, "📋 Encontrado usuário secundário existente: ID=$id")
+                                return id
+                            }
+                        }
+                    }
+                } catch (e: Exception) {
+                    Log.w(TAG, "⚠️ Erro ao usar getUserHandles: ${e.message}")
+                }
+            }
+            
+            // Fallback: usar getUsers via reflection (API 24-29)
+            try {
+                val getUsersMethod = UserManager::class.java.getMethod("getUsers")
+                @Suppress("UNCHECKED_CAST")
+                val userInfoList = getUsersMethod.invoke(userManager) as? List<*>
+                
+                if (userInfoList != null) {
+                    for (userInfoObj in userInfoList) {
+                        if (userInfoObj != null) {
+                            val userInfoClass = Class.forName("android.content.pm.UserInfo")
+                            val idField = userInfoClass.getField("id")
+                            val id = idField.getInt(userInfoObj)
+                            
+                            // Ignorar usuário owner (0) e usuário atual
+                            if (id != 0 && id != currentUserId) {
+                                Log.i(TAG, "📋 Encontrado usuário secundário existente: ID=$id")
+                                return id
+                            }
+                        }
+                    }
+                }
+            } catch (e: Exception) {
+                Log.w(TAG, "⚠️ Erro ao usar getUsers: ${e.message}")
+            }
+            
+        } catch (e: Exception) {
+            Log.e(TAG, "❌ Erro ao procurar usuários secundários: ${e.message}")
+        }
+        
+        return -1
     }
     
     /**
@@ -552,5 +629,109 @@ class WorkProfileManager(private val context: Context) {
             - Ação: Execute removeWorkProfile() para limpar referências
             """.trimIndent()
         }
+    }
+    
+    /**
+     * Remove TODOS os usuários secundários do sistema.
+     * Use esta função para limpar usuários duplicados que foram criados acidentalmente.
+     * 
+     * @return Número de usuários removidos
+     */
+    fun cleanupAllSecondaryUsers(): Int {
+        Log.i(TAG, "")
+        Log.i(TAG, "🧹 ==================== LIMPANDO USUÁRIOS DUPLICADOS ====================")
+        
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
+            Log.w(TAG, "⚠️ Limpeza requer Android 7.0+ (API 24+)")
+            return 0
+        }
+        
+        if (!isDeviceOwner()) {
+            Log.w(TAG, "⚠️ App não é Device Owner - não pode remover usuários")
+            return 0
+        }
+        
+        var removedCount = 0
+        val usersToRemove = mutableListOf<Int>()
+        
+        try {
+            val currentUserId = android.os.Process.myUserHandle().hashCode()
+            
+            // Encontrar TODOS os usuários secundários
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                try {
+                    val getUserHandlesMethod = UserManager::class.java.getMethod("getUserHandles", Boolean::class.javaPrimitiveType)
+                    @Suppress("UNCHECKED_CAST")
+                    val userHandles = getUserHandlesMethod.invoke(userManager, true) as? List<UserHandle>
+                    
+                    if (userHandles != null) {
+                        for (handle in userHandles) {
+                            val id = UserHandle::class.java.getDeclaredMethod("getIdentifier").invoke(handle) as Int
+                            if (id != 0 && id != currentUserId) {
+                                usersToRemove.add(id)
+                            }
+                        }
+                    }
+                } catch (e: Exception) {
+                    Log.w(TAG, "⚠️ Erro ao listar usuários: ${e.message}")
+                }
+            }
+            
+            // Fallback para API 24-29
+            if (usersToRemove.isEmpty()) {
+                try {
+                    val getUsersMethod = UserManager::class.java.getMethod("getUsers")
+                    @Suppress("UNCHECKED_CAST")
+                    val userInfoList = getUsersMethod.invoke(userManager) as? List<*>
+                    
+                    if (userInfoList != null) {
+                        for (userInfoObj in userInfoList) {
+                            if (userInfoObj != null) {
+                                val userInfoClass = Class.forName("android.content.pm.UserInfo")
+                                val idField = userInfoClass.getField("id")
+                                val id = idField.getInt(userInfoObj)
+                                
+                                if (id != 0 && id != currentUserId) {
+                                    usersToRemove.add(id)
+                                }
+                            }
+                        }
+                    }
+                } catch (e: Exception) {
+                    Log.w(TAG, "⚠️ Erro ao listar usuários (fallback): ${e.message}")
+                }
+            }
+            
+            Log.i(TAG, "📋 Encontrados ${usersToRemove.size} usuários secundários para remover")
+            
+            // Remover cada usuário
+            for (userId in usersToRemove) {
+                try {
+                    val userHandle = getUserHandleForUser(userId)
+                    if (userHandle != null) {
+                        val removed = dpm.removeUser(adminComponent, userHandle)
+                        if (removed) {
+                            Log.i(TAG, "✅ Usuário ID=$userId removido com sucesso")
+                            removedCount++
+                        } else {
+                            Log.w(TAG, "⚠️ Não foi possível remover usuário ID=$userId")
+                        }
+                    }
+                } catch (e: Exception) {
+                    Log.e(TAG, "❌ Erro ao remover usuário ID=$userId: ${e.message}")
+                }
+            }
+            
+            // Limpar preferências
+            prefs.edit().remove(KEY_MANAGED_USER_ID).apply()
+            
+            Log.i(TAG, "🧹 Limpeza concluída: $removedCount de ${usersToRemove.size} usuários removidos")
+            Log.i(TAG, "=======================================================================")
+            
+        } catch (e: Exception) {
+            Log.e(TAG, "❌ Erro durante limpeza: ${e.message}")
+        }
+        
+        return removedCount
     }
 }

@@ -127,7 +127,8 @@ class AutoProvisioningReceiver : BroadcastReceiver() {
             
             val workProfileManager = WorkProfileManager(context)
             
-            // Verificar se já existe
+            // hasWorkProfile() agora detecta usuários existentes mesmo se SharedPreferences foi limpo
+            // Isso evita criar duplicados
             if (workProfileManager.hasWorkProfile()) {
                 Log.i(TAG, "✅ Usuário secundário JÁ EXISTE - pulando criação")
                 Log.i(TAG, workProfileManager.getWorkProfileInfo())
