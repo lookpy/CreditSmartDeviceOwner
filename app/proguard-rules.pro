@@ -54,6 +54,21 @@
     private static <fields>;
 }
 
+# ===== CRITICAL: Keep network config classes =====
+# CertificatePinningManager is referenced from EnrollmentManager
+-keep class com.cdccreditsmart.network.config.** { *; }
+-keep class com.cdccreditsmart.network.config.CertificatePinningManager { *; }
+-keep class com.cdccreditsmart.network.config.NetworkConfig { *; }
+
+# Keep network debug classes
+-keep class com.cdccreditsmart.network.debug.** { *; }
+
+# Keep network DI module
+-keep class com.cdccreditsmart.network.di.** { *; }
+
+# Keep network error classes
+-keep class com.cdccreditsmart.network.error.** { *; }
+
 # Keep Moshi adapters for JSON serialization
 -keep class com.cdccreditsmart.network.dto.** { *; }
 -keep class com.cdccreditsmart.network.api.** { *; }
