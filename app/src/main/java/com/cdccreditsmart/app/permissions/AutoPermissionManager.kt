@@ -268,18 +268,31 @@ class AutoPermissionManager(private val context: Context) {
     
     /**
      * Bloqueia o usuário de alterar configurações de localização
-     * Impede desativação do GPS - aplicado SEMPRE como Device Owner
+     * 
+     * NOTA: Esta restrição agora é aplicada APENAS quando há bloqueio ativo (dívida).
+     * O AppBlockingManager controla quando aplicar/remover DISALLOW_CONFIG_LOCATION.
+     * 
+     * Aqui apenas verificamos se há bloqueio ativo antes de aplicar.
      */
     private fun blockLocationSettingsChange() {
         try {
-            // DISALLOW_CONFIG_LOCATION impede usuário de mudar configurações de localização
-            // Aplicar SEMPRE, não apenas quando GPS está desativado
-            PolicyHelper.addRestriction(dpm, adminComponent, android.os.UserManager.DISALLOW_CONFIG_LOCATION)
-            Log.i(TAG, "✅ Restrição DISALLOW_CONFIG_LOCATION aplicada")
-            Log.i(TAG, "   Usuário não pode desativar GPS/Localização")
+            // Verificar se há bloqueio ativo
+            val blockingPrefs = context.getSharedPreferences("blocking_state", Context.MODE_PRIVATE)
+            val currentLevel = blockingPrefs.getInt("current_level", 0)
+            
+            if (currentLevel > 0) {
+                // Há bloqueio ativo - aplicar restrição
+                PolicyHelper.addRestriction(dpm, adminComponent, android.os.UserManager.DISALLOW_CONFIG_LOCATION)
+                Log.i(TAG, "✅ Restrição DISALLOW_CONFIG_LOCATION aplicada (bloqueio nível $currentLevel)")
+                Log.i(TAG, "   Usuário não pode desativar GPS/Localização enquanto há dívida")
+            } else {
+                // Sem bloqueio - garantir que restrição está removida
+                PolicyHelper.clearRestriction(dpm, adminComponent, android.os.UserManager.DISALLOW_CONFIG_LOCATION)
+                Log.i(TAG, "📍 Sem bloqueio ativo - usuário pode controlar GPS normalmente")
+            }
             
         } catch (e: Exception) {
-            Log.w(TAG, "⚠️ Não foi possível bloquear alterações de localização: ${e.message}")
+            Log.w(TAG, "⚠️ Erro ao gerenciar restrição de localização: ${e.message}")
         }
     }
     

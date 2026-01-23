@@ -5,6 +5,7 @@ import android.content.ComponentName
 import android.content.Context
 import android.os.Build
 import android.os.PersistableBundle
+import android.os.UserManager
 import android.util.Log
 import com.cdccreditsmart.app.knox.KnoxLockscreenManager
 import com.cdccreditsmart.app.offline.DebtAgingCalculator
@@ -428,6 +429,16 @@ class AppBlockingManager(private val context: Context) {
                 showImmediateOverlay(effectiveLevel, parameters.daysOverdue, blockedCount, parameters.reason)
             }
             
+            // Bloquear configuração de localização quando há bloqueio ativo
+            if (effectiveLevel > 0) {
+                try {
+                    PolicyHelper.addRestriction(dpm, adminComponent, UserManager.DISALLOW_CONFIG_LOCATION)
+                    Log.i(TAG, "📍 DISALLOW_CONFIG_LOCATION aplicado - usuário não pode desligar GPS")
+                } catch (e: Exception) {
+                    Log.w(TAG, "⚠️ Erro ao bloquear config de localização: ${e.message}")
+                }
+            }
+            
             Log.i(TAG, "")
             Log.i(TAG, "╔════════════════════════════════════════════════════════════════╗")
             Log.i(TAG, "║  ✅ BLOQUEIO PROGRESSIVO CONCLUÍDO                             ║")
@@ -625,6 +636,14 @@ class AppBlockingManager(private val context: Context) {
         }
         
         clearBlockingState()
+        
+        // Liberar configuração de localização ao desbloquear
+        try {
+            PolicyHelper.clearRestriction(dpm, adminComponent, UserManager.DISALLOW_CONFIG_LOCATION)
+            Log.i(TAG, "📍 DISALLOW_CONFIG_LOCATION removido - usuário pode controlar GPS")
+        } catch (e: Exception) {
+            Log.w(TAG, "⚠️ Erro ao liberar config de localização: ${e.message}")
+        }
         
         if (!isDeviceOwner()) {
             val error = "App não é Device Owner"
