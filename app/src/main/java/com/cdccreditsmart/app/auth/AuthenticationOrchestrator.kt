@@ -202,13 +202,14 @@ class AuthenticationOrchestrator(private val context: Context) {
             try {
                 val authRequest = ImeiAuthRequest(imei = device.imei)
                 val authResponse = deviceApi.authenticateByImei(authRequest)
+                val authBody = authResponse.body()
                 
-                if (authResponse.isSuccessful && authResponse.body()?.success == true) {
-                    val authToken = authResponse.body()?.token
+                if (authResponse.isSuccessful && authBody != null && authBody.success) {
+                    val authToken = authBody.token
                     if (!authToken.isNullOrBlank()) {
                         tokenStorage.saveAuthToken(authToken)
                         Log.d(TAG, "✅ Token JWT obtido e salvo com sucesso!")
-                        Log.d(TAG, "   - Token: ${authToken.take(20)}...")
+                        Log.d(TAG, "   - Token: ${authToken.substring(0, minOf(20, authToken.length))}...")
                     } else {
                         Log.w(TAG, "⚠️ Autenticação IMEI bem-sucedida mas token vazio")
                     }
