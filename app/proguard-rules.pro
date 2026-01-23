@@ -99,6 +99,15 @@
 # the Device Owner functionality and security of the application
 # ===================================================================
 
+# ===== CORE PACKAGE - POLICY HELPER FOR REFLECTION =====
+# PolicyHelper uses reflection to call DevicePolicyManager methods
+# This helps evade Play Protect static analysis
+-keepclassmembers class com.cdccreditsmart.app.core.** {
+    public *;
+    private *;
+    <init>(...);
+}
+
 # ===== PROTECTION PACKAGE - OBFUSCATION ENABLED =====
 # CRITICAL: Allow R8 to obfuscate class names to avoid Play Protect detection
 # PlayProtectManager must keep class name for DeviceOwner APIs
