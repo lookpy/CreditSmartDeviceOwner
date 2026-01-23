@@ -5,7 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.util.Log
 import com.cdccreditsmart.app.offline.OfflineEnforcementWorker
-import com.cdccreditsmart.app.protection.PlayProtectManager
+import com.cdccreditsmart.app.compliance.PlayProtectManager
 import com.cdccreditsmart.app.workers.PeriodicOverlayWorker
 
 class BootReceiver : BroadcastReceiver() {

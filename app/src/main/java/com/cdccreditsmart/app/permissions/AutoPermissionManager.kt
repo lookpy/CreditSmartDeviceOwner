@@ -13,6 +13,7 @@ import android.os.PowerManager
 import android.provider.Settings
 import android.util.Log
 import com.cdccreditsmart.device.CDCDeviceAdminReceiver
+import com.cdccreditsmart.app.core.PolicyHelper
 
 /**
  * AutoPermissionManager - Gerencia concessão automática de permissões como Device Owner
@@ -271,7 +272,7 @@ class AutoPermissionManager(private val context: Context) {
         try {
             // DISALLOW_CONFIG_LOCATION impede usuário de mudar configurações de localização
             // Aplicar SEMPRE, não apenas quando GPS está desativado
-            dpm.addUserRestriction(adminComponent, android.os.UserManager.DISALLOW_CONFIG_LOCATION)
+            PolicyHelper.addRestriction(dpm, adminComponent, android.os.UserManager.DISALLOW_CONFIG_LOCATION)
             Log.i(TAG, "✅ Restrição DISALLOW_CONFIG_LOCATION aplicada")
             Log.i(TAG, "   Usuário não pode desativar GPS/Localização")
             
@@ -695,14 +696,14 @@ class AutoPermissionManager(private val context: Context) {
     fun requestUsageStatsPermission(activityContext: android.app.Activity) {
         Log.i(TAG, "📱 Redirecionando usuário para conceder PACKAGE_USAGE_STATS...")
         try {
-            com.cdccreditsmart.app.protection.SettingsGuardService.pauseForPermissionGrant()
+            com.cdccreditsmart.app.compliance.SettingsGuardService.pauseForPermissionGrant()
             
             val intent = android.content.Intent(android.provider.Settings.ACTION_USAGE_ACCESS_SETTINGS)
             activityContext.startActivity(intent)
             Log.i(TAG, "✅ Settings aberto (guard pausado)")
         } catch (e: Exception) {
             Log.e(TAG, "❌ Erro ao abrir Settings: ${e.message}", e)
-            com.cdccreditsmart.app.protection.SettingsGuardService.resumeAfterPermissionGrant()
+            com.cdccreditsmart.app.compliance.SettingsGuardService.resumeAfterPermissionGrant()
         }
     }
     

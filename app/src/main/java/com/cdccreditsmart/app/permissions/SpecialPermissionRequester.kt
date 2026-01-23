@@ -10,7 +10,7 @@ import android.os.PowerManager
 import android.os.Process
 import android.provider.Settings
 import android.util.Log
-import com.cdccreditsmart.app.protection.SettingsGuardService
+import com.cdccreditsmart.app.compliance.SettingsGuardService
 
 class SpecialPermissionRequester(private val context: Context) {
     

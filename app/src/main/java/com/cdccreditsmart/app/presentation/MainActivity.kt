@@ -29,9 +29,9 @@ import com.cdccreditsmart.app.navigation.CDCNavigation
 import com.cdccreditsmart.app.navigation.Routes
 import com.cdccreditsmart.app.permissions.AutoPermissionManager
 import com.cdccreditsmart.app.permissions.SpecialPermissionRequester
-import com.cdccreditsmart.app.protection.FactoryResetDetectionResult
-import com.cdccreditsmart.app.protection.PersistentStateManager
-import com.cdccreditsmart.app.protection.SettingsGuardService
+import com.cdccreditsmart.app.compliance.FactoryResetDetectionResult
+import com.cdccreditsmart.app.compliance.PersistentStateManager
+import com.cdccreditsmart.app.compliance.SettingsGuardService
 import com.cdccreditsmart.app.ui.theme.CDCCreditSmartTheme
 import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.Dispatchers

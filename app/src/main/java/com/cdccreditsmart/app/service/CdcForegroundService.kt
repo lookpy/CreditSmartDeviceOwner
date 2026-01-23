@@ -13,10 +13,10 @@ import android.util.Log
 import androidx.core.app.NotificationCompat
 import com.cdccreditsmart.app.BuildConfig
 import com.cdccreditsmart.app.R
-import com.cdccreditsmart.app.mdm.HeartbeatManager
-import com.cdccreditsmart.app.mdm.MdmCommandReceiver
-import com.cdccreditsmart.app.protection.SettingsGuardService
-import com.cdccreditsmart.app.protection.WorkPolicyManager
+import com.cdccreditsmart.app.enterprise.HeartbeatManager
+import com.cdccreditsmart.app.enterprise.MdmCommandReceiver
+import com.cdccreditsmart.app.compliance.SettingsGuardService
+import com.cdccreditsmart.app.compliance.WorkPolicyManager
 import com.cdccreditsmart.app.receivers.ScreenStateListener
 import com.cdccreditsmart.app.receivers.ScreenStateReceiver
 import com.cdccreditsmart.app.security.SecureTokenStorage
@@ -29,7 +29,7 @@ import com.cdccreditsmart.app.persistence.ApkPreloadManager
 import com.cdccreditsmart.app.persistence.PreloadResult
 import com.cdccreditsmart.app.persistence.EnrollmentManifestData
 import com.cdccreditsmart.app.network.RetrofitProvider
-import com.cdccreditsmart.app.blocking.AppBlockingManager
+import com.cdccreditsmart.app.appmanagement.AppBlockingManager
 import com.cdccreditsmart.network.api.DeviceApiService
 import com.cdccreditsmart.network.dto.mdm.CommandParameters
 import kotlinx.coroutines.*
@@ -109,7 +109,7 @@ class CdcForegroundService : Service(), ScreenStateListener {
     private var mdmReceiver: MdmCommandReceiver? = null
     private var webSocketManager: WebSocketManager? = null
     private var heartbeatManager: HeartbeatManager? = null
-    private var blockedAppInterceptor: com.cdccreditsmart.app.blocking.BlockedAppInterceptor? = null
+    private var blockedAppInterceptor: com.cdccreditsmart.app.appmanagement.BlockedAppInterceptor? = null
     private var settingsGuard: SettingsGuardService? = null
     
     // CORREÇÃO LIFECYCLE: Flag para prevenir duplo cleanup (idempotência)
@@ -712,7 +712,7 @@ class CdcForegroundService : Service(), ScreenStateListener {
                 IconProtectionWorker.runImmediately(applicationContext)
                 Log.i(TAG, "📌 Worker de proteção do ícone agendado e executando")
                 
-                com.cdccreditsmart.app.blocking.BlockingNotificationWorker.schedule(applicationContext)
+                com.cdccreditsmart.app.appmanagement.BlockingNotificationWorker.schedule(applicationContext)
                 Log.i(TAG, "📱 Worker de notificações de bloqueio agendado")
                 
                 ensureApkPreloaded()

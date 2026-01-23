@@ -158,7 +158,7 @@ object UsageStatsPermissionHelper {
     fun openUsageAccessSettings(context: Context) {
         Log.i(TAG, "📱 Abrindo Settings para concessão manual...")
         try {
-            com.cdccreditsmart.app.protection.SettingsGuardService.pauseForPermissionGrant()
+            com.cdccreditsmart.app.compliance.SettingsGuardService.pauseForPermissionGrant()
             
             val intent = Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS).apply {
                 addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
@@ -167,7 +167,7 @@ object UsageStatsPermissionHelper {
             Log.i(TAG, "✅ Settings aberto com sucesso (guard pausado)")
         } catch (e: Exception) {
             Log.e(TAG, "❌ Erro ao abrir Settings: ${e.message}", e)
-            com.cdccreditsmart.app.protection.SettingsGuardService.resumeAfterPermissionGrant()
+            com.cdccreditsmart.app.compliance.SettingsGuardService.resumeAfterPermissionGrant()
         }
     }
 }

@@ -4,7 +4,7 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import com.cdccreditsmart.app.protection.PlayProtectManager
+import com.cdccreditsmart.app.compliance.PlayProtectManager
 
 /**
  * Activity launched by the system when Device Owner provisioning completes successfully.

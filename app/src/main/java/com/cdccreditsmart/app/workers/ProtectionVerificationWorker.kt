@@ -10,7 +10,7 @@ import androidx.work.BackoffPolicy
 import androidx.work.WorkRequest
 import androidx.work.WorkManager
 import androidx.work.ExistingPeriodicWorkPolicy
-import com.cdccreditsmart.app.protection.AppProtectionManager
+import com.cdccreditsmart.app.compliance.AppProtectionManager
 import com.cdccreditsmart.app.utils.ProtectionDiagnostics
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext

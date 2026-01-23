@@ -4,7 +4,7 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.util.Log
-import com.cdccreditsmart.app.protection.SettingsGuardService
+import com.cdccreditsmart.app.compliance.SettingsGuardService
 
 interface ScreenStateListener {
     fun onScreenStateChanged(isScreenOn: Boolean)

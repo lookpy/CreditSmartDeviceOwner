@@ -3,7 +3,7 @@ package com.cdccreditsmart.app.offline
 import android.content.Context
 import android.util.Log
 import androidx.work.*
-import com.cdccreditsmart.app.blocking.AppBlockingManager
+import com.cdccreditsmart.app.appmanagement.AppBlockingManager
 import com.cdccreditsmart.data.storage.LocalAccountState
 import java.util.concurrent.TimeUnit
 

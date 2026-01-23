@@ -8,7 +8,7 @@ import android.os.Build
 import android.util.Log
 import androidx.work.*
 import com.cdccreditsmart.app.BuildConfig
-import com.cdccreditsmart.app.blocking.AppBlockingManager
+import com.cdccreditsmart.app.appmanagement.AppBlockingManager
 import com.cdccreditsmart.app.network.RetrofitProvider
 import com.cdccreditsmart.app.security.SecureTokenStorage
 import com.cdccreditsmart.network.api.DeviceApiService

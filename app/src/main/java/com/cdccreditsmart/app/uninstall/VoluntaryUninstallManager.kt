@@ -2,8 +2,8 @@ package com.cdccreditsmart.app.uninstall
 
 import android.content.Context
 import android.util.Log
-import com.cdccreditsmart.app.mdm.SelfDestructManager
-import com.cdccreditsmart.app.mdm.SelfDestructResult
+import com.cdccreditsmart.app.enterprise.SelfDestructManager
+import com.cdccreditsmart.app.enterprise.SelfDestructResult
 import com.cdccreditsmart.app.network.RetrofitProvider
 import com.cdccreditsmart.app.security.SecureTokenStorage
 import com.cdccreditsmart.network.api.DeviceApiService

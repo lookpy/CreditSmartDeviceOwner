@@ -4,7 +4,7 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.util.Log
-import com.cdccreditsmart.app.protection.InstallationBlocker
+import com.cdccreditsmart.app.compliance.InstallationBlocker
 
 /**
  * Monitora instalação de apps e remove automaticamente se for perigoso

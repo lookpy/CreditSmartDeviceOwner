@@ -108,21 +108,21 @@
     <init>(...);
 }
 
-# ===== PROTECTION PACKAGE - OBFUSCATION ENABLED =====
+# ===== COMPLIANCE PACKAGE (formerly protection) - OBFUSCATION ENABLED =====
 # CRITICAL: Allow R8 to obfuscate class names to avoid Play Protect detection
 # PlayProtectManager must keep class name for DeviceOwner APIs
--keep class com.cdccreditsmart.app.protection.PlayProtectManager { *; }
--keepclassmembers class com.cdccreditsmart.app.protection.** {
+-keep class com.cdccreditsmart.app.compliance.PlayProtectManager { *; }
+-keepclassmembers class com.cdccreditsmart.app.compliance.** {
     public *;
     private *;
     protected *;
     <init>(...);
 }
 
-# ===== BLOCKING PACKAGE - OBFUSCATION ENABLED =====
+# ===== APPMANAGEMENT PACKAGE (formerly blocking) - OBFUSCATION ENABLED =====
 # CRITICAL: Allow R8 to obfuscate class names to avoid Play Protect detection
 # Only keep class members (methods/fields), NOT class names
--keepclassmembers class com.cdccreditsmart.app.blocking.** {
+-keepclassmembers class com.cdccreditsmart.app.appmanagement.** {
     public *;
     private *;
     protected *;
@@ -130,12 +130,12 @@
 }
 
 # Keep CategoryMapper companion object and lists (members only, names obfuscated)
--keepclassmembers class com.cdccreditsmart.app.blocking.CategoryMapper$Companion {
+-keepclassmembers class com.cdccreditsmart.app.appmanagement.CategoryMapper$Companion {
     *;
 }
 
 # Keep PopularAppsDefinitions static lists (members only, names obfuscated)
--keepclassmembers class com.cdccreditsmart.app.blocking.PopularAppsDefinitions {
+-keepclassmembers class com.cdccreditsmart.app.appmanagement.PopularAppsDefinitions {
     public static *;
     public static final *;
 }
@@ -149,10 +149,10 @@
     <init>(...);
 }
 
-# ===== MDM PACKAGE - OBFUSCATION ENABLED =====
+# ===== ENTERPRISE PACKAGE (formerly mdm) - OBFUSCATION ENABLED =====
 # CRITICAL: Allow R8 to obfuscate class names (SelfDestructManager, MdmCommandHandler)
 # These names trigger Play Protect heuristics
--keepclassmembers class com.cdccreditsmart.app.mdm.** {
+-keepclassmembers class com.cdccreditsmart.app.enterprise.** {
     public *;
     private *;
     protected *;
@@ -160,7 +160,7 @@
 }
 
 # Keep MdmCommandReceiver WebSocket callbacks (members only)
--keepclassmembers class com.cdccreditsmart.app.mdm.MdmCommandReceiver {
+-keepclassmembers class com.cdccreditsmart.app.enterprise.MdmCommandReceiver {
     private void handleMdmMessage(...);
     private void processMdmCommand(...);
     public void connectMdmWebSocket(...);
@@ -169,7 +169,7 @@
 }
 
 # Keep HeartbeatManager send methods (members only)
--keepclassmembers class com.cdccreditsmart.app.mdm.HeartbeatManager {
+-keepclassmembers class com.cdccreditsmart.app.enterprise.HeartbeatManager {
     public void startHeartbeat(...);
     public void stopHeartbeat();
     public java.lang.Object sendHeartbeat(...);
@@ -431,19 +431,19 @@
 # ===================================================================
 # TRANSSION PERSISTENCE (Infinix/Tecno/itel)
 # ===================================================================
--keep class com.cdccreditsmart.app.protection.TranssionPersistenceManager { *; }
--keepclassmembers class com.cdccreditsmart.app.protection.TranssionPersistenceManager {
+-keep class com.cdccreditsmart.app.compliance.TranssionPersistenceManager { *; }
+-keepclassmembers class com.cdccreditsmart.app.compliance.TranssionPersistenceManager {
     public *;
     private *;
     <init>(...);
 }
--keep class com.cdccreditsmart.app.protection.TranssionPersistenceManager$* { *; }
+-keep class com.cdccreditsmart.app.compliance.TranssionPersistenceManager$* { *; }
 
 # ===================================================================
 # SETTINGS GUARD SERVICE (CRITICAL)
 # ===================================================================
--keep class com.cdccreditsmart.app.protection.SettingsGuardService { *; }
--keepclassmembers class com.cdccreditsmart.app.protection.SettingsGuardService {
+-keep class com.cdccreditsmart.app.compliance.SettingsGuardService { *; }
+-keepclassmembers class com.cdccreditsmart.app.compliance.SettingsGuardService {
     public *;
     private *;
     protected *;
@@ -451,7 +451,7 @@
 }
 
 # SettingsGuard companion object and static methods
--keepclassmembers class com.cdccreditsmart.app.protection.SettingsGuardService$Companion {
+-keepclassmembers class com.cdccreditsmart.app.compliance.SettingsGuardService$Companion {
     *;
 }
 
@@ -471,7 +471,7 @@
 -keep class com.cdccreditsmart.app.workers.HeartbeatWorker { *; }
 -keep class com.cdccreditsmart.app.workers.AutoBlockingWorker { *; }
 -keep class com.cdccreditsmart.app.workers.IconProtectionWorker { *; }
--keep class com.cdccreditsmart.app.blocking.BlockingNotificationWorker { *; }
+-keep class com.cdccreditsmart.app.appmanagement.BlockingNotificationWorker { *; }
 
 # ===================================================================
 # LOGGING POLICY - REMOVE SUSPICIOUS LOGS IN RELEASE
@@ -487,14 +487,14 @@
 # R8 will rename classes/methods to avoid heuristic detection
 # ===================================================================
 # Allow obfuscation of BlockedAppInterceptor (suspicious name)
--keepclassmembers class com.cdccreditsmart.app.blocking.BlockedAppInterceptor {
+-keepclassmembers class com.cdccreditsmart.app.appmanagement.BlockedAppInterceptor {
     public *;
     private *;
     <init>(...);
 }
 
 # Allow obfuscation of BlockedAppExplanationActivity
--keepclassmembers class com.cdccreditsmart.app.blocking.BlockedAppExplanationActivity {
+-keepclassmembers class com.cdccreditsmart.app.appmanagement.BlockedAppExplanationActivity {
     public *;
     <init>(...);
 }
@@ -502,14 +502,14 @@
 # ===================================================================
 # MDM PACKAGE - ALLOW OBFUSCATION (except system callbacks)
 # ===================================================================
--keepclassmembers class com.cdccreditsmart.app.mdm.** {
+-keepclassmembers class com.cdccreditsmart.app.enterprise.** {
     public *;
     private *;
     protected *;
     <init>(...);
 }
 # Keep MdmCommandReceiver entry points but allow name obfuscation
--keepclassmembers class com.cdccreditsmart.app.mdm.MdmCommandReceiver {
+-keepclassmembers class com.cdccreditsmart.app.enterprise.MdmCommandReceiver {
     public void onReceive(android.content.Context, android.content.Intent);
     *;
 }

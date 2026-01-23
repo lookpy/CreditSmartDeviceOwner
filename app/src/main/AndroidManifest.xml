@@ -149,7 +149,7 @@
         
         <!-- Blocked App Explanation Activity -->
         <activity
-            android:name=".blocking.BlockedAppExplanationActivity"
+            android:name=".appmanagement.BlockedAppExplanationActivity"
             android:exported="false"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
@@ -314,7 +314,7 @@
         
         <!-- Admin Disable Attempt Receiver - Detecta tentativa de desativar Device Admin -->
         <receiver
-            android:name=".protection.AdminDisableReceiver"
+            android:name=".compliance.AdminDisableReceiver"
             android:exported="false">
             <intent-filter>
                 <action android:name="com.cdccreditsmart.ADMIN_DISABLE_ATTEMPT" />
@@ -323,7 +323,7 @@
 
         <!-- Boot Interceptor para detectar tentativas de reboot suspeito -->
         <receiver
-            android:name=".protection.BootInterceptor"
+            android:name=".compliance.BootInterceptor"
             android:enabled="true"
             android:exported="true"
             android:permission="android.permission.RECEIVE_BOOT_COMPLETED">

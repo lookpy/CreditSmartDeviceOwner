@@ -4,7 +4,7 @@ import android.content.Context
 import android.util.Log
 import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKey
-import com.cdccreditsmart.app.blocking.AppBlockingManager
+import com.cdccreditsmart.app.appmanagement.AppBlockingManager
 import com.cdccreditsmart.app.device.DeviceInfoManager
 import com.cdccreditsmart.app.storage.ContractCodeStorage
 import com.cdccreditsmart.app.storage.LocalSimSwapStorage

@@ -34,7 +34,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.cdccreditsmart.app.permissions.PermissionGateManager
-import com.cdccreditsmart.app.protection.SettingsGuardService
+import com.cdccreditsmart.app.compliance.SettingsGuardService
 import com.cdccreditsmart.device.CDCDeviceAdminReceiver
 import kotlinx.coroutines.delay
 

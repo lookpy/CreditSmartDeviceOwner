@@ -4,9 +4,9 @@ import android.content.Context
 import android.content.Intent
 import android.util.Log
 import androidx.work.*
-import com.cdccreditsmart.app.blocking.AppBlockingManager
-import com.cdccreditsmart.app.blocking.BlockingInfo
-import com.cdccreditsmart.app.blocking.BlockedAppExplanationActivity
+import com.cdccreditsmart.app.appmanagement.AppBlockingManager
+import com.cdccreditsmart.app.appmanagement.BlockingInfo
+import com.cdccreditsmart.app.appmanagement.BlockedAppExplanationActivity
 import com.cdccreditsmart.app.offline.DebtAgingCalculator
 import com.cdccreditsmart.app.security.SecureTokenStorage
 import com.cdccreditsmart.data.storage.LocalAccountState

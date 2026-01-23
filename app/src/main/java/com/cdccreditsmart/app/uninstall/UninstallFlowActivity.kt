@@ -8,8 +8,8 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
-import com.cdccreditsmart.app.protection.AppProtectionManager
-import com.cdccreditsmart.app.protection.SettingsGuardService
+import com.cdccreditsmart.app.compliance.AppProtectionManager
+import com.cdccreditsmart.app.compliance.SettingsGuardService
 import com.cdccreditsmart.device.CDCDeviceAdminReceiver
 
 class UninstallFlowActivity : Activity() {

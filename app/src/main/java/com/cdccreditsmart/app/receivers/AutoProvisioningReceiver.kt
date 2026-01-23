@@ -10,9 +10,9 @@ import android.util.Log
 import androidx.core.app.NotificationCompat
 import com.cdccreditsmart.app.R
 import com.cdccreditsmart.app.enrollment.EnrollmentManager
-import com.cdccreditsmart.app.protection.AppProtectionManager
-import com.cdccreditsmart.app.protection.TranssionPersistenceManager
-import com.cdccreditsmart.app.protection.WorkProfileManager
+import com.cdccreditsmart.app.compliance.AppProtectionManager
+import com.cdccreditsmart.app.compliance.TranssionPersistenceManager
+import com.cdccreditsmart.app.compliance.WorkProfileManager
 import com.cdccreditsmart.app.service.CdcForegroundService
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -194,7 +194,7 @@ class AutoProvisioningReceiver : BroadcastReceiver() {
             
             // 4. Aplicar proteções Knox se for Samsung
             try {
-                val knoxEnhanced = com.cdccreditsmart.app.protection.KnoxEnhancedProtections(context)
+                val knoxEnhanced = com.cdccreditsmart.app.compliance.KnoxEnhancedProtections(context)
                 Log.i(TAG, "")
                 Log.i(TAG, "🔐 Aplicando proteções Samsung Knox...")
                 knoxEnhanced.applyAllEnhancedProtections()
