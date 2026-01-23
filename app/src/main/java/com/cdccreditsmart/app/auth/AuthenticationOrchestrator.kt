@@ -197,7 +197,31 @@ class AuthenticationOrchestrator(private val context: Context) {
             Log.d(TAG, "   - DeviceId: ${device.id.take(15)}...")
             Log.d(TAG, "   - IMEI: ${device.imei.take(4)}***${device.imei.takeLast(3)}")
             
-            // 6. Registrar FCM token
+            // 6. Autenticar por IMEI para obter JWT token
+            Log.d(TAG, "🔐 [6/7] Autenticando por IMEI para obter token JWT...")
+            try {
+                val authRequest = ImeiAuthRequest(imei = device.imei)
+                val authResponse = deviceApi.authenticateByImei(authRequest)
+                
+                if (authResponse.isSuccessful && authResponse.body()?.success == true) {
+                    val authToken = authResponse.body()?.token
+                    if (!authToken.isNullOrBlank()) {
+                        tokenStorage.saveAuthToken(authToken)
+                        Log.d(TAG, "✅ Token JWT obtido e salvo com sucesso!")
+                        Log.d(TAG, "   - Token: ${authToken.take(20)}...")
+                    } else {
+                        Log.w(TAG, "⚠️ Autenticação IMEI bem-sucedida mas token vazio")
+                    }
+                } else {
+                    Log.w(TAG, "⚠️ Falha na autenticação por IMEI: HTTP ${authResponse.code()}")
+                    Log.w(TAG, "   - Continuando sem token (funcionará em modo limitado)")
+                }
+            } catch (authError: Exception) {
+                Log.w(TAG, "⚠️ Erro ao autenticar por IMEI: ${authError.message}")
+                Log.w(TAG, "   - Continuando sem token (funcionará em modo limitado)")
+            }
+            
+            // 7. Registrar FCM token
             CoroutineScope(Dispatchers.IO).launch {
                 Log.d(TAG, "🔔 Registrando FCM token após auto-discovery...")
                 fcmTokenManager.registerTokenWithBackend(
