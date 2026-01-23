@@ -1,0 +1,97 @@
+2026-01-23 11:15:13.748 17114-17645 OpenGLRenderer          com.cdccreditsmart.app               E  Unable to match the desired swap behavior.
+2026-01-23 11:15:13.751 17114-9941  mali_gralloc            com.cdccreditsmart.app               D  register: id=22b0000119a, handle=0xb400006ee56710d0, importpid=-1, gRegisteredHandles=4
+2026-01-23 11:15:13.752 17114-9941  mali_gralloc            com.cdccreditsmart.app               D  register: id=22b0000119b, handle=0xb400006ee5646cb0, importpid=-1, gRegisteredHandles=5
+2026-01-23 11:15:13.753 17114-9941  mali_gralloc            com.cdccreditsmart.app               D  register: id=22b0000119c, handle=0xb400006ee563e130, importpid=-1, gRegisteredHandles=6
+2026-01-23 11:15:13.754 17114-9941  mali_gralloc            com.cdccreditsmart.app               D  register: id=22b0000119d, handle=0xb400006ee56182d0, importpid=-1, gRegisteredHandles=7
+2026-01-23 11:15:14.295 17114-17645 OpenGLRenderer          com.cdccreditsmart.app               D  endAllActiveAnimators on 0xb4000070557be9c0 (UnprojectedRipple) with handle 0xb4000070756ac930
+2026-01-23 11:15:14.296 17114-17152 mali_gralloc            com.cdccreditsmart.app               D  unregister: id=22b0000118b, handle=0xb400006ee56693f0, base=0x0, importpid=17114, count:0
+2026-01-23 11:15:14.311 17114-17153 mali_gralloc            com.cdccreditsmart.app               D  unregister: id=22b0000118a, handle=0xb400006ee566c8d0, base=0x0, importpid=17114, count:0
+2026-01-23 11:15:14.311 17114-17153 mali_gralloc            com.cdccreditsmart.app               D  unregister: id=22b0000118c, handle=0xb400006ee564bff0, base=0x0, importpid=17114, count:0
+2026-01-23 11:15:14.312 17114-17153 mali_gralloc            com.cdccreditsmart.app               D  unregister: id=22b00001189, handle=0xb400006ee5670350, base=0x0, importpid=17114, count:0
+2026-01-23 11:15:14.322 17114-17114 WindowOnBackDispatcher  com.cdccreditsmart.app               W  sendCancelIfRunning: isInProgress=falsecallback=android.app.Activity$$ExternalSyntheticLambda0@eef99f1
+2026-01-23 11:15:14.835 17114-17114 WebSocketManager        com.cdccreditsmart.app               D  Heartbeat ping sent
+2026-01-23 11:15:15.053 17114-13951 WebSocketManager        com.cdccreditsmart.app               D  Message received: {"type":"pong","timestamp":"2026-01-23T14:15:15.031Z"}...
+2026-01-23 11:15:15.054 17114-13951 WebSocketManager        com.cdccreditsmart.app               D  Received message type: pong
+2026-01-23 11:15:15.055 17114-13951 WebSocketManager        com.cdccreditsmart.app               D  Pong received
+2026-01-23 11:15:19.557 17114-17645 mali_gralloc            com.cdccreditsmart.app               D  unregister: id=22b0000119a, handle=0xb400006ee56710d0, base=0x0, importpid=17114, count:0
+2026-01-23 11:15:19.557 17114-17645 mali_gralloc            com.cdccreditsmart.app               D  unregister: id=22b0000119d, handle=0xb400006ee56182d0, base=0x0, importpid=17114, count:0
+2026-01-23 11:15:19.569 17114-17114 mali_gralloc            com.cdccreditsmart.app               D  unregister: id=22b0000119b, handle=0xb400006ee5646cb0, base=0x0, importpid=17114, count:0
+2026-01-23 11:15:19.570 17114-17114 mali_gralloc            com.cdccreditsmart.app               D  unregister: id=22b0000119c, handle=0xb400006ee563e130, base=0x0, importpid=17114, count:0
+2026-01-23 11:15:21.030 17114-17645 OpenGLRenderer          com.cdccreditsmart.app               E  Unable to match the desired swap behavior.
+2026-01-23 11:15:21.032 17114-9958  mali_gralloc            com.cdccreditsmart.app               D  register: id=22b000011ab, handle=0xb400006ee564bff0, importpid=-1, gRegisteredHandles=0
+2026-01-23 11:15:21.033 17114-9958  mali_gralloc            com.cdccreditsmart.app               D  register: id=22b000011ac, handle=0xb400006ee566bc70, importpid=-1, gRegisteredHandles=1
+2026-01-23 11:15:21.034 17114-9958  mali_gralloc            com.cdccreditsmart.app               D  register: id=22b000011ad, handle=0xb400006ee563a230, importpid=-1, gRegisteredHandles=2
+2026-01-23 11:15:21.035 17114-9958  mali_gralloc            com.cdccreditsmart.app               D  register: id=22b000011ae, handle=0xb400006ee5627db0, importpid=-1, gRegisteredHandles=3
+2026-01-23 11:15:21.489 17114-17136 creditsmart.app         com.cdccreditsmart.app               I  Background concurrent mark compact GC freed 412730(16MB) AllocSpace objects, 159(6236KB) LOS objects, 59% free, 16MB/40MB, paused 932us,8.539ms total 164.417ms
+2026-01-23 11:15:21.621 17114-21048 SettingsGuardService    com.cdccreditsmart.app               D  📋 Activity check - Full: com.cdccreditsmart.app.presentation.MainActivity, Simple: MainActivity
+2026-01-23 11:15:26.357 17114-17645 mali_gralloc            com.cdccreditsmart.app               D  unregister: id=22b000011ac, handle=0xb400006ee566bc70, base=0x0, importpid=17114, count:0
+2026-01-23 11:15:26.358 17114-17645 mali_gralloc            com.cdccreditsmart.app               D  unregister: id=22b000011ad, handle=0xb400006ee563a230, base=0x0, importpid=17114, count:0
+2026-01-23 11:15:26.370 17114-17114 mali_gralloc            com.cdccreditsmart.app               D  unregister: id=22b000011ae, handle=0xb400006ee5627db0, base=0x0, importpid=17114, count:0
+2026-01-23 11:15:26.371 17114-17114 mali_gralloc            com.cdccreditsmart.app               D  unregister: id=22b000011ab, handle=0xb400006ee564bff0, base=0x0, importpid=17114, count:0
+2026-01-23 11:15:27.515 17114-17645 OpenGLRenderer          com.cdccreditsmart.app               E  Unable to match the desired swap behavior.
+2026-01-23 11:15:27.517 17114-9986  mali_gralloc            com.cdccreditsmart.app               D  register: id=22b000011b8, handle=0xb400006ee5660090, importpid=-1, gRegisteredHandles=0
+2026-01-23 11:15:27.519 17114-9986  mali_gralloc            com.cdccreditsmart.app               D  register: id=22b000011b9, handle=0xb400006ee55ff490, importpid=-1, gRegisteredHandles=1
+2026-01-23 11:15:27.520 17114-9986  mali_gralloc            com.cdccreditsmart.app               D  register: id=22b000011ba, handle=0xb400006ee5640410, importpid=-1, gRegisteredHandles=2
+2026-01-23 11:15:27.521 17114-9986  mali_gralloc            com.cdccreditsmart.app               D  register: id=22b000011bb, handle=0xb400006ee564bdb0, importpid=-1, gRegisteredHandles=3
+2026-01-23 11:15:27.638 17114-21048 SettingsGuardService    com.cdccreditsmart.app               D  📋 Activity check - Full: com.cdccreditsmart.app.presentation.MainActivity, Simple: MainActivity
+2026-01-23 11:15:27.903 17114-17114 Choreographer           com.cdccreditsmart.app               W  Frame time is 0.040418 ms in the future!  Check that graphics HAL is generating vsync timestamps using the correct timebase.
+2026-01-23 11:15:30.404 17114-17645 mali_gralloc            com.cdccreditsmart.app               D  unregister: id=22b000011b9, handle=0xb400006ee55ff490, base=0x0, importpid=17114, count:0
+2026-01-23 11:15:30.404 17114-17645 mali_gralloc            com.cdccreditsmart.app               D  unregister: id=22b000011ba, handle=0xb400006ee5640410, base=0x0, importpid=17114, count:0
+2026-01-23 11:15:30.418 17114-17114 mali_gralloc            com.cdccreditsmart.app               D  unregister: id=22b000011bb, handle=0xb400006ee564bdb0, base=0x0, importpid=17114, count:0
+2026-01-23 11:15:30.418 17114-17114 mali_gralloc            com.cdccreditsmart.app               D  unregister: id=22b000011b8, handle=0xb400006ee5660090, base=0x0, importpid=17114, count:0
+2026-01-23 11:15:30.650 17114-21048 SettingsGuardService    com.cdccreditsmart.app               D  📋 Activity check - Full: com.android.searchlauncher.SearchLauncher, Simple: SearchLauncher
+2026-01-23 11:15:31.555 17114-17645 OpenGLRenderer          com.cdccreditsmart.app               E  Unable to match the desired swap behavior.
+2026-01-23 11:15:31.558 17114-10000 mali_gralloc            com.cdccreditsmart.app               D  register: id=22b000011c5, handle=0xb400006ee563a230, importpid=-1, gRegisteredHandles=0
+2026-01-23 11:15:31.559 17114-10000 mali_gralloc            com.cdccreditsmart.app               D  register: id=22b000011c6, handle=0xb400006ee5627db0, importpid=-1, gRegisteredHandles=1
+2026-01-23 11:15:31.561 17114-10000 mali_gralloc            com.cdccreditsmart.app               D  register: id=22b000011c7, handle=0xb400006ee5645f30, importpid=-1, gRegisteredHandles=2
+2026-01-23 11:15:31.562 17114-10000 mali_gralloc            com.cdccreditsmart.app               D  register: id=22b000011c8, handle=0xb400006ee5670350, importpid=-1, gRegisteredHandles=3
+2026-01-23 11:15:31.568 17114-21048 MdmCommandReceiver      com.cdccreditsmart.app               I  🔍 [Polling #234] Verificando comandos pendentes...
+2026-01-23 11:15:31.574 17114-21048 SecureTokenStorage      com.cdccreditsmart.app               D  ✅ Usando IMEI para MDM: 8608***718
+2026-01-23 11:15:31.574 17114-21048 MdmCommandReceiver      com.cdccreditsmart.app               I  🔍 ========================================
+2026-01-23 11:15:31.574 17114-21048 MdmCommandReceiver      com.cdccreditsmart.app               I  🔍 BUSCANDO COMANDOS PENDENTES
+2026-01-23 11:15:31.574 17114-21048 MdmCommandReceiver      com.cdccreditsmart.app               I  🔍 ========================================
+2026-01-23 11:15:31.574 17114-21048 MdmCommandReceiver      com.cdccreditsmart.app               I  🔍 Identifier: 860875074339718
+2026-01-23 11:15:31.575 17114-21048 MdmCommandReceiver      com.cdccreditsmart.app               I  🔍 Endpoint: GET /api/apk/device/860875074339718/commands
+2026-01-23 11:15:31.576 17114-21048 MdmCommandReceiver      com.cdccreditsmart.app               D  🔍 Executando requisição HTTP (timeout: 15s)...
+2026-01-23 11:15:31.583 17114-2035  okhttp.OkHttpClient     com.cdccreditsmart.app               I  --> GET https://cdccreditsmart.com/api/apk/device/860875074339718/commands
+2026-01-23 11:15:31.584 17114-2035  okhttp.OkHttpClient     com.cdccreditsmart.app               I  --> END GET
+2026-01-23 11:15:32.875 17114-2035  okhttp.OkHttpClient     com.cdccreditsmart.app               I  <-- 200 https://cdccreditsmart.com/api/apk/device/860875074339718/commands (1290ms)
+2026-01-23 11:15:32.875 17114-2035  okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-credentials: true
+2026-01-23 11:15:32.875 17114-2035  okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-headers: Origin, X-Requested-With, Content-Type, Accept, Authorization, x-client-key, x-client-token, x-client-secret, cache-control
+2026-01-23 11:15:32.875 17114-2035  okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-methods: GET, POST, PUT, PATCH, DELETE, OPTIONS
+2026-01-23 11:15:32.875 17114-2035  okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-origin: *
+2026-01-23 11:15:32.875 17114-2035  okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-max-age: 86400
+2026-01-23 11:15:32.875 17114-2035  okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-length: 104
+2026-01-23 11:15:32.876 17114-2035  okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-security-policy: default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://replit.com; style-src 'self' 'unsafe-inline' https://replit.com; img-src 'self' data: https:; font-src 'self' data: https://replit.com; connect-src 'self';
+2026-01-23 11:15:32.876 17114-2035  okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-type: application/json; charset=utf-8
+2026-01-23 11:15:32.876 17114-2035  okhttp.OkHttpClient     com.cdccreditsmart.app               I  date: Fri, 23 Jan 2026 14:15:32 GMT
+2026-01-23 11:15:32.876 17114-2035  okhttp.OkHttpClient     com.cdccreditsmart.app               I  etag: W/"68-1BzkVNqHEsu0XlMenwYbbDRd04w"
+2026-01-23 11:15:32.876 17114-2035  okhttp.OkHttpClient     com.cdccreditsmart.app               I  permissions-policy: geolocation=(), microphone=(), camera=()
+2026-01-23 11:15:32.876 17114-2035  okhttp.OkHttpClient     com.cdccreditsmart.app               I  referrer-policy: strict-origin-when-cross-origin
+2026-01-23 11:15:32.876 17114-2035  okhttp.OkHttpClient     com.cdccreditsmart.app               I  strict-transport-security: max-age=63072000; includeSubDomains
+2026-01-23 11:15:32.877 17114-2035  okhttp.OkHttpClient     com.cdccreditsmart.app               I  strict-transport-security: max-age=31536000; includeSubDomains
+2026-01-23 11:15:32.877 17114-2035  okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-anti-fraud-protection: active
+2026-01-23 11:15:32.877 17114-2035  okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-certificate-pinning-enabled: false
+2026-01-23 11:15:32.877 17114-2035  okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-certificate-pinning-status: disabled-for-stability
+2026-01-23 11:15:32.877 17114-2035  okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-content-type-options: nosniff
+2026-01-23 11:15:32.877 17114-2035  okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-financial-data-protection: enabled
+2026-01-23 11:15:32.877 17114-2035  okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-frame-options: DENY
+2026-01-23 11:15:32.878 17114-2035  okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-transaction-security-level: maximum
+2026-01-23 11:15:32.878 17114-2035  okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-xss-protection: 1; mode=block
+2026-01-23 11:15:32.878 17114-2035  okhttp.OkHttpClient     com.cdccreditsmart.app               I  via: 1.1 google
+2026-01-23 11:15:32.878 17114-2035  okhttp.OkHttpClient     com.cdccreditsmart.app               I  alt-svc: h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
+2026-01-23 11:15:32.879 17114-2035  okhttp.OkHttpClient     com.cdccreditsmart.app               I  {"deviceId":"device_1769137280282_l7srjesg25","serialNumber":"QJ3H4MKG","commandsCount":0,"commands":[]}
+2026-01-23 11:15:32.879 17114-2035  okhttp.OkHttpClient     com.cdccreditsmart.app               I  <-- END HTTP (104-byte body)
+2026-01-23 11:15:32.881 17114-21048 MdmCommandReceiver      com.cdccreditsmart.app               I  🔍 HTTP Response code: 200
+2026-01-23 11:15:32.882 17114-21048 MdmCommandReceiver      com.cdccreditsmart.app               I  🔍 HTTP isSuccessful: true
+2026-01-23 11:15:32.882 17114-21048 MdmCommandReceiver      com.cdccreditsmart.app               I  🔍 Response body deviceId: device_1769137280282_l7srjesg25
+2026-01-23 11:15:32.882 17114-21048 MdmCommandReceiver      com.cdccreditsmart.app               I  🔍 Response body serialNumber: QJ3H4MKG
+2026-01-23 11:15:32.882 17114-21048 MdmCommandReceiver      com.cdccreditsmart.app               I  🔍 Total de comandos: 0
+2026-01-23 11:15:32.882 17114-21048 MdmCommandReceiver      com.cdccreditsmart.app               D  ✅ Nenhum comando pendente no servidor
+2026-01-23 11:15:32.882 17114-21048 MdmCommandReceiver      com.cdccreditsmart.app               D  📊 Fetch duration: 1307ms
+2026-01-23 11:15:32.908 17114-17645 mali_gralloc            com.cdccreditsmart.app               D  unregister: id=22b000011c5, handle=0xb400006ee563a230, base=0x0, importpid=17114, count:0
+2026-01-23 11:15:32.908 17114-17645 mali_gralloc            com.cdccreditsmart.app               D  unregister: id=22b000011c7, handle=0xb400006ee5645f30, base=0x0, importpid=17114, count:0
+2026-01-23 11:15:32.926 17114-17114 mali_gralloc            com.cdccreditsmart.app               D  unregister: id=22b000011c8, handle=0xb400006ee5670350, base=0x0, importpid=17114, count:0
+2026-01-23 11:15:32.927 17114-17114 mali_gralloc            com.cdccreditsmart.app               D  unregister: id=22b000011c6, handle=0xb400006ee5627db0, base=0x0, importpid=17114, count:0
+2026-01-23 11:15:33.662 17114-21048 SettingsGuardService    com.cdccreditsmart.app               D  📋 Activity check - Full: com.android.searchlauncher.SearchLauncher, Simple: SearchLauncher
+2026-01-23 11:15:34.718 17114-8631  FA                      com.cdccreditsmart.app               I  Application backgrounded at: timestamp_millis: 1769177732715
