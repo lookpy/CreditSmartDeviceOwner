@@ -199,46 +199,15 @@ class AuthenticationOrchestrator(private val context: Context) {
             Log.d(TAG, "   - DeviceId: ${device.id.take(15)}...")
             Log.d(TAG, "   - IMEI: ${device.imei.take(4)}***${device.imei.takeLast(3)}")
             
-            // 6. Autenticar por IMEI para obter JWT token
-            Log.d(TAG, "🔐 [6/7] Autenticando por IMEI para obter token JWT...")
-            try {
-                val authRequest = ImeiAuthRequest(imei = device.imei)
-                val authResponse = deviceApi.authenticateByImei(authRequest)
-                
-                if (authResponse.isSuccessful) {
-                    val authBody = authResponse.body()
-                    if (authBody != null) {
-                        // Try to get token - different AuthResponse types have different field names
-                        val authToken: String? = try {
-                            // network.dto.cdc.AuthResponse uses 'token'
-                            (authBody as? CdcAuthResponse)?.token
-                        } catch (e: Exception) {
-                            null
-                        } ?: try {
-                            // network.api.AuthResponse uses 'accessToken'
-                            (authBody as? ApiAuthResponse)?.accessToken
-                        } catch (e: Exception) {
-                            null
-                        }
-                        
-                        if (authToken != null && authToken.isNotBlank()) {
-                            tokenStorage.saveAuthToken(authToken)
-                            val tokenPreview = if (authToken.length > 20) authToken.take(20) else authToken
-                            Log.d(TAG, "✅ Token JWT obtido e salvo com sucesso!")
-                            Log.d(TAG, "   - Token: $tokenPreview...")
-                        } else {
-                            Log.w(TAG, "⚠️ Autenticação IMEI bem-sucedida mas token vazio")
-                        }
-                    } else {
-                        Log.w(TAG, "⚠️ Autenticação IMEI: resposta vazia")
-                    }
-                } else {
-                    Log.w(TAG, "⚠️ Falha na autenticação por IMEI: HTTP ${authResponse.code()}")
-                    Log.w(TAG, "   - Continuando sem token (funcionará em modo limitado)")
-                }
-            } catch (authError: Exception) {
-                Log.w(TAG, "⚠️ Erro ao autenticar por IMEI: ${authError.message}")
-                Log.w(TAG, "   - Continuando sem token (funcionará em modo limitado)")
+            // 6. Extrair e salvar token JWT do discovery response (novo campo do backend)
+            val discoveryToken = discoveryData.token
+            if (!discoveryToken.isNullOrBlank()) {
+                tokenStorage.saveAuthToken(discoveryToken)
+                val tokenPreview = if (discoveryToken.length > 20) discoveryToken.take(20) else discoveryToken
+                Log.d(TAG, "✅ [6/7] Token JWT obtido do discovery e salvo!")
+                Log.d(TAG, "   - Token: $tokenPreview...")
+            } else {
+                Log.w(TAG, "⚠️ [6/7] Discovery não retornou token - headers IMEI serão usados como fallback")
             }
             
             // 7. Registrar FCM token

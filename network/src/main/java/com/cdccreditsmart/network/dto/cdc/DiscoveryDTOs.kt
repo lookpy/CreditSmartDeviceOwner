@@ -12,7 +12,8 @@ data class DiscoveryResponse(
     val success: Boolean,
     val device: DiscoveryDeviceInfo,
     val customer: DiscoveryCustomerInfo?,
-    val connection: ConnectionInfo
+    val connection: ConnectionInfo,
+    val token: String? = null  // JWT token válido por 90 dias (novo campo do backend)
 )
 
 /**

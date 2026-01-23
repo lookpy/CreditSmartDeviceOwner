@@ -1,0 +1,54 @@
+📱 Feedback Backend - Autenticação APK Implementada
+Data: 23/01/2026
+Status: ✅ Implementado e Testado
+
+Problema Reportado
+O APK fazia auto-discovery com sucesso mas não conseguia obter um token JWT para chamadas autenticadas como GET /api/apk/device/installments.
+
+Solução Implementada
+Foram implementadas duas opções de autenticação que podem ser usadas conforme a necessidade:
+
+Opção 1: Token JWT via Auto-Discovery (Recomendado)
+O endpoint de discovery agora retorna um token JWT válido por 90 dias:
+
+GET /api/apk/discover/{imei}
+Response:
+{
+  "success": true,
+  "device": { ... },
+  "customer": { ... },
+  "connection": { ... },
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."  // NOVO CAMPO
+}
+Uso em chamadas subsequentes:
+
+GET /api/apk/device/installments
+Authorization: Bearer {token}
+Opção 2: Autenticação por Headers IMEI (Fallback)
+Se o token não estiver disponível, o backend aceita autenticação via headers:
+
+GET /api/apk/device/installments
+X-Device-IMEI: 860875074339718
+X-Device-SerialNumber: QJ3H4MKG  (opcional)
+X-Device-ID: device_xxx  (opcional)
+Fluxo Recomendado para o APK
+Na inicialização/reinstalação: Chamar GET /api/apk/discover/{imei}
+Guardar o token retornado em storage persistente
+Usar o token em todas as chamadas autenticadas via Authorization: Bearer {token}
+Se o token expirar ou não existir: Usar headers IMEI como fallback
+Endpoints Afetados
+Todos os endpoints que usam o middleware authenticateApkToken agora aceitam ambas as formas:
+
+GET /api/apk/device/installments
+Outros endpoints protegidos por APK
+Testes Realizados
+Cenário	Resultado
+Discover retorna token	✅ OK
+Installments com Bearer token	✅ OK
+Installments com header IMEI	✅ OK
+IMEI inexistente	✅ 401 "Dispositivo não encontrado"
+Ações Necessárias no APK
+Atualizar o parsing do response de /api/apk/discover/{imei} para capturar o campo token
+Implementar storage persistente para o token
+Adicionar o token no header Authorization: Bearer {token} nas chamadas
+(Opcional) Manter headers IMEI como fallback
