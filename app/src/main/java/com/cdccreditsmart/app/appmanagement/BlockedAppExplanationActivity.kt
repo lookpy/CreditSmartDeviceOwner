@@ -174,7 +174,6 @@ fun ModernBlockedAppScreen(
             Text(
                 text = when {
                     isSettingsBlocked -> "Por razões de segurança, o acesso às configurações do sistema está restrito."
-                    isManualBlock && !manualBlockReason.isNullOrBlank() -> "Bloqueio administrativo ativo"
                     isOffline -> "Pagamento em atraso. Regularize para liberar seu dispositivo."
                     else -> "Regularize suas parcelas para desbloquear"
                 },
@@ -185,49 +184,6 @@ fun ModernBlockedAppScreen(
             )
             
             Spacer(modifier = Modifier.height(32.dp))
-            
-            // Card de Bloqueio Manual (se aplicável)
-            if (isManualBlock && !manualBlockReason.isNullOrBlank()) {
-                Card(
-                    modifier = Modifier.fillMaxWidth(),
-                    colors = CardDefaults.cardColors(
-                        containerColor = Color(0xFFFFF3E0)
-                    ),
-                    shape = RoundedCornerShape(16.dp)
-                ) {
-                    Column(
-                        modifier = Modifier.padding(20.dp)
-                    ) {
-                        Row(
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            Icon(
-                                imageVector = Icons.Default.Warning,
-                                contentDescription = null,
-                                tint = Color(0xFFE65100),
-                                modifier = Modifier.size(24.dp)
-                            )
-                            Spacer(modifier = Modifier.width(12.dp))
-                            Text(
-                                text = "Bloqueio Administrativo",
-                                style = MaterialTheme.typography.titleMedium,
-                                fontWeight = FontWeight.Bold,
-                                color = Color(0xFFE65100)
-                            )
-                        }
-                        
-                        Spacer(modifier = Modifier.height(12.dp))
-                        
-                        Text(
-                            text = manualBlockReason,
-                            style = MaterialTheme.typography.bodyMedium,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant
-                        )
-                    }
-                }
-                
-                Spacer(modifier = Modifier.height(24.dp))
-            }
             
             // Summary Card - Total Atrasado
             if (overdueStatus.overdueInstallments.isNotEmpty()) {
