@@ -5,7 +5,7 @@ import android.content.Intent
 import android.util.Log
 import androidx.work.*
 import com.cdccreditsmart.app.appmanagement.AppBlockingManager
-import com.cdccreditsmart.app.appmanagement.BlockingInfo
+import com.cdccreditsmart.app.appmanagement.PolicyStatus
 import com.cdccreditsmart.app.appmanagement.BlockedAppExplanationActivity
 import com.cdccreditsmart.app.offline.DebtAgingCalculator
 import com.cdccreditsmart.app.security.SecureTokenStorage
@@ -155,20 +155,20 @@ class PeriodicOverlayWorker(
             }
             
             val blockingManager = AppBlockingManager(context)
-            val blockingInfo = blockingManager.getBlockingInfo()
+            val policyStatus = blockingManager.getPolicyStatus()
             val hasManualBlock = blockingManager.hasManualBlock()
             
             Log.i(TAG, "📊 Status de bloqueio:")
-            Log.i(TAG, "   Current Level: ${blockingInfo.currentLevel}")
-            Log.i(TAG, "   Days Overdue: ${blockingInfo.daysOverdue}")
+            Log.i(TAG, "   Current Level: ${policyStatus.tier}")
+            Log.i(TAG, "   Days Overdue: ${policyStatus.daysOverdue}")
             Log.i(TAG, "   Manual Block: $hasManualBlock")
-            Log.i(TAG, "   Blocked Apps: ${blockingInfo.blockedAppsCount}")
+            Log.i(TAG, "   Blocked Apps: ${policyStatus.blockedAppsCount}")
             
             // Verificar se há bloqueio ativo OU se temos dados offline válidos
             var isOfflineMode = false
-            var effectiveBlockingInfo = blockingInfo
+            var effectivePolicyStatus = policyStatus
             
-            if (blockingInfo.currentLevel == 0 && !hasManualBlock) {
+            if (policyStatus.tier == 0 && !hasManualBlock) {
                 // Tentar fallback offline
                 val localState = LocalAccountState(context)
                 
@@ -189,17 +189,17 @@ class PeriodicOverlayWorker(
                             debtCalculator.calculateBlockLevel(calculatedDaysOverdue)
                         }
                         
-                        effectiveBlockingInfo = BlockingInfo(
-                            currentLevel = offlineLevel,
+                        effectivePolicyStatus = PolicyStatus(
+                            tier = offlineLevel,
                             daysOverdue = maxOf(calculatedDaysOverdue, localState.daysOverdue),
                             blockedAppsCount = localState.blockedPackages.size,
                             blockedPackages = localState.blockedPackages,
-                            manualBlockReason = null
+                            overrideReason = null
                         )
                         
                         Log.i(TAG, "📱 Usando dados OFFLINE para overlay:")
-                        Log.i(TAG, "   Offline Level: ${effectiveBlockingInfo.currentLevel}")
-                        Log.i(TAG, "   Offline Days: ${effectiveBlockingInfo.daysOverdue}")
+                        Log.i(TAG, "   Offline Level: ${effectivePolicyStatus.tier}")
+                        Log.i(TAG, "   Offline Days: ${effectivePolicyStatus.daysOverdue}")
                         Log.i(TAG, "   Cached message: ${localState.lastOverlayMessage.take(50)}...")
                     } else {
                         Log.i(TAG, "✅ Sem bloqueio ativo (online ou offline) - overlay não será mostrado")
@@ -214,7 +214,7 @@ class PeriodicOverlayWorker(
             }
             
             // Calcular cooldown progressivo baseado em dias de atraso
-            val requiredCooldownMinutes = calculateCooldownMinutes(effectiveBlockingInfo.daysOverdue)
+            val requiredCooldownMinutes = calculateCooldownMinutes(effectivePolicyStatus.daysOverdue)
             val requiredCooldownMs = requiredCooldownMinutes * 60 * 1000L
             
             // Verificar se já passou tempo suficiente desde o último overlay
@@ -229,7 +229,7 @@ class PeriodicOverlayWorker(
             if (timeSinceLastShown < effectiveCooldown) {
                 val remainingMinutes = (effectiveCooldown - timeSinceLastShown) / 60000
                 Log.d(TAG, "⏱️ Aguardando cooldown progressivo: $remainingMinutes min restantes")
-                Log.d(TAG, "   Cooldown requerido: $requiredCooldownMinutes min (${blockingInfo.daysOverdue} dias atraso)")
+                Log.d(TAG, "   Cooldown requerido: $requiredCooldownMinutes min (${policyStatus.daysOverdue} dias atraso)")
                 Log.d(TAG, "   Último overlay: ${timeSinceLastShown / 60000} min atrás")
                 return Result.success()
             }
@@ -241,13 +241,13 @@ class PeriodicOverlayWorker(
             
             if (timeSinceLastNotification >= notificationCooldown) {
                 Log.i(TAG, "📢 Mostrando notificação prévia (1 minuto antes do overlay)")
-                showPreOverlayNotification(context, effectiveBlockingInfo, isOfflineMode)
+                showPreOverlayNotification(context, effectivePolicyStatus, isOfflineMode)
                 
                 // Atualizar timestamp da notificação
                 prefs.edit().putLong(KEY_LAST_NOTIFICATION, now).apply()
                 
                 // Agendar overlay para 1 minuto depois
-                scheduleOverlayIn1Minute(context, effectiveBlockingInfo, hasManualBlock, isOfflineMode)
+                scheduleOverlayIn1Minute(context, effectivePolicyStatus, hasManualBlock, isOfflineMode)
                 
                 Log.i(TAG, "⏰ Overlay será mostrado em 1 minuto")
                 Log.i(TAG, "")
@@ -256,12 +256,12 @@ class PeriodicOverlayWorker(
             
             // Se já passou 1 minuto desde a notificação, mostrar overlay
             Log.i(TAG, "🚨 BLOQUEIO ATIVO - Mostrando overlay de cobrança!")
-            Log.i(TAG, "   Nível: ${effectiveBlockingInfo.currentLevel}")
-            Log.i(TAG, "   Dias de atraso: ${effectiveBlockingInfo.daysOverdue}")
+            Log.i(TAG, "   Nível: ${effectivePolicyStatus.tier}")
+            Log.i(TAG, "   Dias de atraso: ${effectivePolicyStatus.daysOverdue}")
             Log.i(TAG, "   Cooldown atual: $requiredCooldownMinutes minutos")
             Log.i(TAG, "   Modo Offline: $isOfflineMode")
             
-            showOverlay(effectiveBlockingInfo, hasManualBlock, isOfflineMode)
+            showOverlay(effectivePolicyStatus, hasManualBlock, isOfflineMode)
             
             // Atualizar timestamp e contador
             val showCount = prefs.getInt(KEY_SHOW_COUNT, 0) + 1
@@ -285,7 +285,7 @@ class PeriodicOverlayWorker(
         }
     }
     
-    private fun showPreOverlayNotification(context: Context, blockingInfo: BlockingInfo, isOffline: Boolean = false) {
+    private fun showPreOverlayNotification(context: Context, policyStatus: PolicyStatus, isOffline: Boolean = false) {
         try {
             val notificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) 
                 as? android.app.NotificationManager ?: return
@@ -311,7 +311,7 @@ class PeriodicOverlayWorker(
                 .setContentTitle("⚠️ Lembrete de Pagamento$offlineText")
                 .setContentText("Você tem parcelas vencidas. Regularize sua situação.")
                 .setStyle(androidx.core.app.NotificationCompat.BigTextStyle()
-                    .bigText("Você tem ${blockingInfo.daysOverdue} dia(s) de atraso. " +
+                    .bigText("Você tem ${policyStatus.daysOverdue} dia(s) de atraso. " +
                             "Por favor, regularize sua situação para continuar usando o dispositivo normalmente." +
                             if (isOffline) "\n\n📱 Dados offline - última atualização pode estar desatualizada." else ""))
                 .setPriority(androidx.core.app.NotificationCompat.PRIORITY_HIGH)
@@ -331,17 +331,17 @@ class PeriodicOverlayWorker(
     
     private fun scheduleOverlayIn1Minute(
         context: Context, 
-        blockingInfo: BlockingInfo,
+        policyStatus: PolicyStatus,
         hasManualBlock: Boolean,
         isOffline: Boolean = false
     ) {
         try {
             val data = androidx.work.workDataOf(
-                "blocking_level" to blockingInfo.currentLevel,
-                "days_overdue" to blockingInfo.daysOverdue,
-                "blocked_apps_count" to blockingInfo.blockedAppsCount,
+                "blocking_level" to policyStatus.tier,
+                "days_overdue" to policyStatus.daysOverdue,
+                "blocked_apps_count" to policyStatus.blockedAppsCount,
                 "is_manual_block" to hasManualBlock,
-                "manual_block_reason" to (blockingInfo.manualBlockReason ?: ""),
+                "manual_block_reason" to (policyStatus.overrideReason ?: ""),
                 "is_offline" to isOffline
             )
             
@@ -363,7 +363,7 @@ class PeriodicOverlayWorker(
         }
     }
     
-    private fun showOverlay(blockingInfo: BlockingInfo, hasManualBlock: Boolean, isOffline: Boolean = false) {
+    private fun showOverlay(policyStatus: PolicyStatus, hasManualBlock: Boolean, isOffline: Boolean = false) {
         try {
             val intent = Intent(context, BlockedAppExplanationActivity::class.java).apply {
                 addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
@@ -373,11 +373,11 @@ class PeriodicOverlayWorker(
                 
                 // Passar dados do bloqueio
                 putExtra("blocked_package", "periodic_overlay") // Identificador especial
-                putExtra("blocking_level", blockingInfo.currentLevel)
-                putExtra("days_overdue", blockingInfo.daysOverdue)
-                putExtra("blocked_apps_count", blockingInfo.blockedAppsCount)
+                putExtra("blocking_level", policyStatus.tier)
+                putExtra("days_overdue", policyStatus.daysOverdue)
+                putExtra("blocked_apps_count", policyStatus.blockedAppsCount)
                 putExtra("is_manual_block", hasManualBlock)
-                putExtra("manual_block_reason", blockingInfo.manualBlockReason)
+                putExtra("manual_block_reason", policyStatus.overrideReason)
                 putExtra("is_periodic", true) // Flag para indicar que é overlay periódico
                 putExtra("is_offline", isOffline) // Flag para indicar modo offline
             }

@@ -724,7 +724,7 @@ class AppBlockingManager(private val context: Context) {
         }
     }
     
-    fun getBlockingInfo(): BlockingInfo {
+    fun getPolicyStatus(): PolicyStatus {
         return try {
             val prefs = context.getSharedPreferences("blocking_state", Context.MODE_PRIVATE)
             val isManual = prefs.getBoolean("is_manual_block", false)
@@ -739,34 +739,34 @@ class AppBlockingManager(private val context: Context) {
                 val manualLevel = prefs.getInt("manual_block_level", 0)
                 val manualReason = prefs.getString("manual_block_reason", null)
                 
-                BlockingInfo(
-                    currentLevel = manualLevel,
+                PolicyStatus(
+                    tier = manualLevel,
                     daysOverdue = 0, // Bloqueio manual não tem parcelas vencidas
                     blockedAppsCount = blockedPackages.size,
                     blockedPackages = blockedPackages,
-                    isManualBlock = true,
-                    manualBlockReason = manualReason
+                    isOverridden = true,
+                    overrideReason = manualReason
                 )
             } else {
                 // Bloqueio automático por parcelas vencidas
-                BlockingInfo(
-                    currentLevel = getCurrentBlockingLevel(),
+                PolicyStatus(
+                    tier = getCurrentBlockingLevel(),
                     daysOverdue = getCurrentDaysOverdue(),
                     blockedAppsCount = blockedPackages.size,
                     blockedPackages = blockedPackages,
-                    isManualBlock = false,
-                    manualBlockReason = null
+                    isOverridden = false,
+                    overrideReason = null
                 )
             }
         } catch (e: Exception) {
             Log.e(TAG, "Erro ao obter informações de bloqueio", e)
-            BlockingInfo(
-                currentLevel = 0,
+            PolicyStatus(
+                tier = 0,
                 daysOverdue = 0,
                 blockedAppsCount = 0,
                 blockedPackages = emptyList(),
-                isManualBlock = false,
-                manualBlockReason = null
+                isOverridden = false,
+                overrideReason = null
             )
         }
     }
@@ -1267,11 +1267,11 @@ data class UnblockResult(
     val errorMessage: String? = null
 )
 
-data class BlockingInfo(
-    val currentLevel: Int,
+data class PolicyStatus(
+    val tier: Int,
     val daysOverdue: Int,
     val blockedAppsCount: Int,
     val blockedPackages: List<String>,
-    val isManualBlock: Boolean = false,
-    val manualBlockReason: String? = null
+    val isOverridden: Boolean = false,
+    val overrideReason: String? = null
 )

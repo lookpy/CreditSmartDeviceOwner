@@ -731,16 +731,16 @@ class SettingsGuardService(private val context: Context) {
      */
     private fun launchBlockedAppExplanation(blockedPackage: String) {
         try {
-            val blockingInfo = appBlockingManager.getBlockingInfo()
+            val policyStatus = appBlockingManager.getPolicyStatus()
             
             val intent = Intent(context, BlockedAppExplanationActivity::class.java).apply {
                 addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                 addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
                 addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY)
                 putExtra("blocked_package", blockedPackage)
-                putExtra("blocking_level", blockingInfo.currentLevel)
-                putExtra("days_overdue", blockingInfo.daysOverdue)
-                putExtra("blocked_apps_count", blockingInfo.blockedAppsCount)
+                putExtra("blocking_level", policyStatus.tier)
+                putExtra("days_overdue", policyStatus.daysOverdue)
+                putExtra("blocked_apps_count", policyStatus.blockedAppsCount)
             }
             
             context.startActivity(intent)

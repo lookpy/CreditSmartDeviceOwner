@@ -44,7 +44,7 @@ class OfflineBlockingEngine(
                 
                 return AutoBlockingResult(
                     blockingApplied = false,
-                    appliedLevel = appBlockingManager.getBlockingInfo().currentLevel,
+                    appliedLevel = appBlockingManager.getPolicyStatus().tier,
                     daysOverdue = 0,
                     reason = "Bloqueio manual ativo (backend)",
                     blockingResult = null

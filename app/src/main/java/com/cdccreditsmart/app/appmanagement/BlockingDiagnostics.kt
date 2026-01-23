@@ -27,19 +27,19 @@ object BlockingDiagnostics {
         
         // 2. Verificar blocking info
         Log.i(TAG, "2️⃣ INFORMAÇÕES DE BLOQUEIO")
-        val blockingInfo = blockingManager.getBlockingInfo()
-        Log.i(TAG, "   Current Level: ${blockingInfo.currentLevel}")
-        Log.i(TAG, "   Days Overdue: ${blockingInfo.daysOverdue}")
-        Log.i(TAG, "   Blocked Apps Count: ${blockingInfo.blockedAppsCount}")
-        Log.i(TAG, "   Is Manual Block: ${blockingInfo.isManualBlock}")
-        Log.i(TAG, "   Manual Block Reason: ${blockingInfo.manualBlockReason ?: "N/A"}")
+        val policyStatus = blockingManager.getPolicyStatus()
+        Log.i(TAG, "   Current Level: ${policyStatus.tier}")
+        Log.i(TAG, "   Days Overdue: ${policyStatus.daysOverdue}")
+        Log.i(TAG, "   Blocked Apps Count: ${policyStatus.blockedAppsCount}")
+        Log.i(TAG, "   Is Manual Block: ${policyStatus.isOverridden}")
+        Log.i(TAG, "   Manual Block Reason: ${policyStatus.overrideReason ?: "N/A"}")
         Log.i(TAG, "")
         
         // 3. Verificar estado do bloqueio
         Log.i(TAG, "3️⃣ ESTADO DO SISTEMA")
         val hasManualBlock = blockingManager.hasManualBlock()
         Log.i(TAG, "   Has Manual Block: $hasManualBlock")
-        Log.i(TAG, "   Should Show Overlay: ${blockingInfo.currentLevel > 0}")
+        Log.i(TAG, "   Should Show Overlay: ${policyStatus.tier > 0}")
         Log.i(TAG, "")
         
         // 4. Verificar SharedPreferences
@@ -58,12 +58,12 @@ object BlockingDiagnostics {
         // 5. Diagnóstico final
         Log.i(TAG, "5️⃣ DIAGNÓSTICO FINAL")
         when {
-            blockingInfo.currentLevel == 0 && !hasManualBlock -> {
+            policyStatus.tier == 0 && !hasManualBlock -> {
                 Log.e(TAG, "   ❌ PROBLEMA: Nível de bloqueio = 0 e sem bloqueio manual")
                 Log.e(TAG, "   📝 SOLUÇÃO: Aplicar comando de bloqueio via MDM ou ter parcelas vencidas")
                 Log.e(TAG, "   💡 TESTE: Enviar comando BLOCK com targetLevel > 0 do backend")
             }
-            blockingInfo.currentLevel > 0 -> {
+            policyStatus.tier > 0 -> {
                 Log.i(TAG, "   ✅ BLOQUEIO ATIVO - Overlay DEVE aparecer")
                 Log.i(TAG, "   📱 Abra qualquer app (Chrome, YouTube, etc) e aguarde 2 segundos")
                 Log.i(TAG, "   ⏱️ Se não aparecer, pode estar em cooldown (60s global)")

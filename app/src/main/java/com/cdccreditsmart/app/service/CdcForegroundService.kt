@@ -899,15 +899,15 @@ class CdcForegroundService : Service(), ScreenStateListener {
             val deviceApiService = retrofit.create(DeviceApiService::class.java)
             
             // Preparar dados para heartbeat de sincronização
-            val blockingInfo = appBlockingManager.getBlockingInfo()
+            val policyStatus = appBlockingManager.getPolicyStatus()
             
             val heartbeatRequest = com.cdccreditsmart.network.dto.cdc.CdcHeartbeatRequest(
                 timestamp = System.currentTimeMillis(),
                 status = "active",
                 batteryLevel = getBatteryLevel(),
                 currentBlockLevel = currentLocalLevel,
-                blockedAppsCount = blockingInfo.blockedAppsCount,
-                isManualBlock = blockingInfo.isManualBlock,
+                blockedAppsCount = policyStatus.blockedAppsCount,
+                isManualBlock = policyStatus.isOverridden,
                 progressiveBlockActive = currentLocalLevel > 0
             )
             

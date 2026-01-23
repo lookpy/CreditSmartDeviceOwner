@@ -56,13 +56,13 @@ class BlockedAppInterceptor(private val context: Context) {
             while (isActive) {
                 try {
                     // OTIMIZAÇÃO: Pausar monitoramento quando não há bloqueio ativo
-                    val blockingInfo = appBlockingManager.getBlockingInfo()
+                    val policyStatus = appBlockingManager.getPolicyStatus()
                     val hasManualBlock = appBlockingManager.hasManualBlock()
                     
                     // LOG DIAGNÓSTICO DETALHADO
-                    Log.i(TAG, "🔍 CHECK: currentLevel=${blockingInfo.currentLevel}, hasManualBlock=$hasManualBlock, daysOverdue=${blockingInfo.daysOverdue}")
+                    Log.i(TAG, "🔍 CHECK: currentLevel=${policyStatus.tier}, hasManualBlock=$hasManualBlock, daysOverdue=${policyStatus.daysOverdue}")
                     
-                    if (blockingInfo.currentLevel == 0 && !hasManualBlock) {
+                    if (policyStatus.tier == 0 && !hasManualBlock) {
                         Log.w(TAG, "⚠️ SEM BLOQUEIO ATIVO - Overlay NÃO vai aparecer")
                         Log.w(TAG, "   📝 Para ativar overlay: aplicar comando BLOCK com targetLevel > 0")
                         Log.w(TAG, "   ⏸️ Pausando monitoramento por 60s para economizar bateria...")
@@ -75,7 +75,7 @@ class BlockedAppInterceptor(private val context: Context) {
                         continue
                     }
                     
-                    Log.i(TAG, "✅ BLOQUEIO ATIVO (nível ${blockingInfo.currentLevel}) - Overlay DEVE aparecer")
+                    Log.i(TAG, "✅ BLOQUEIO ATIVO (nível ${policyStatus.tier}) - Overlay DEVE aparecer")
                     
                     val hadBlockedApp = checkForegroundApp()
                     
@@ -167,11 +167,11 @@ class BlockedAppInterceptor(private val context: Context) {
         }
         
         // NOVO COMPORTAMENTO: Mostra overlay em QUALQUER app quando há bloqueio ativo
-        val blockingInfo = appBlockingManager.getBlockingInfo()
+        val policyStatus = appBlockingManager.getPolicyStatus()
         val hasManualBlock = appBlockingManager.hasManualBlock()
         
         // Se há algum nível de bloqueio ativo (parcelas atrasadas OU bloqueio manual)
-        if (blockingInfo.currentLevel > 0) {
+        if (policyStatus.tier > 0) {
             val now = System.currentTimeMillis()
             
             // COOLDOWN GLOBAL: Previne spam ao trocar de apps
@@ -195,11 +195,11 @@ class BlockedAppInterceptor(private val context: Context) {
             }
             
             if (hasManualBlock) {
-                Log.i(TAG, "🚨 BLOQUEIO MANUAL ATIVO (backend forçou nível ${blockingInfo.currentLevel})")
+                Log.i(TAG, "🚨 BLOQUEIO MANUAL ATIVO (backend forçou nível ${policyStatus.tier})")
                 Log.i(TAG, "📱 App detectado em foreground: $foregroundPackage")
                 Log.i(TAG, "🔔 Mostrando overlay (cliente vê como parcelas atrasadas)...")
             } else {
-                Log.i(TAG, "⚠️ Cliente com ${blockingInfo.daysOverdue} dia(s) de atraso")
+                Log.i(TAG, "⚠️ Cliente com ${policyStatus.daysOverdue} dia(s) de atraso")
                 Log.i(TAG, "📱 App detectado em foreground: $foregroundPackage")
                 Log.i(TAG, "🔔 Mostrando overlay com informações de parcelas atrasadas...")
             }
@@ -215,9 +215,9 @@ class BlockedAppInterceptor(private val context: Context) {
             if (BuildConfig.DEBUG) {
                 Log.i(TAG, "🚀 Iniciando BlockedAppExplanationActivity (overlay)...")
                 Log.i(TAG, "   Package: $foregroundPackage")
-                Log.i(TAG, "   Blocking Level: ${blockingInfo.currentLevel}")
-                Log.i(TAG, "   Days Overdue: ${blockingInfo.daysOverdue}")
-                Log.i(TAG, "   Blocked Apps Count: ${blockingInfo.blockedAppsCount}")
+                Log.i(TAG, "   Blocking Level: ${policyStatus.tier}")
+                Log.i(TAG, "   Days Overdue: ${policyStatus.daysOverdue}")
+                Log.i(TAG, "   Blocked Apps Count: ${policyStatus.blockedAppsCount}")
                 Log.i(TAG, "   Manual Block: $hasManualBlock")
             }
             
@@ -301,18 +301,18 @@ class BlockedAppInterceptor(private val context: Context) {
     
     private fun showBlockedAppExplanation(packageName: String) {
         try {
-            val blockingInfo = appBlockingManager.getBlockingInfo()
+            val policyStatus = appBlockingManager.getPolicyStatus()
             
             val intent = Intent(context, BlockedAppExplanationActivity::class.java).apply {
                 addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                 addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
                 addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY) // Não manter no histórico
                 putExtra("blocked_package", packageName)
-                putExtra("blocking_level", blockingInfo.currentLevel)
-                putExtra("days_overdue", blockingInfo.daysOverdue)
-                putExtra("blocked_apps_count", blockingInfo.blockedAppsCount)
-                putExtra("is_manual_block", blockingInfo.isManualBlock)
-                putExtra("manual_block_reason", blockingInfo.manualBlockReason)
+                putExtra("blocking_level", policyStatus.tier)
+                putExtra("days_overdue", policyStatus.daysOverdue)
+                putExtra("blocked_apps_count", policyStatus.blockedAppsCount)
+                putExtra("is_manual_block", policyStatus.isOverridden)
+                putExtra("manual_block_reason", policyStatus.overrideReason)
             }
             
             context.startActivity(intent)
