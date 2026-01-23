@@ -10,7 +10,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.cdccreditsmart.app.utils.ProtectionDiagnostics
-import com.cdccreditsmart.app.core.PolicyHelper
+import com.cdccreditsmart.device.core.PolicyHelper
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat

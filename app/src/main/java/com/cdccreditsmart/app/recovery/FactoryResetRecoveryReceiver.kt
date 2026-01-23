@@ -8,7 +8,7 @@ import android.util.Log
 import com.cdccreditsmart.app.persistence.ApkPreloadManager
 import com.cdccreditsmart.app.persistence.EnrollmentManifestData
 import com.cdccreditsmart.app.security.SecureTokenStorage
-import com.cdccreditsmart.app.core.PolicyHelper
+import com.cdccreditsmart.device.core.PolicyHelper
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob

@@ -10,7 +10,7 @@ import android.os.Bundle
 import android.util.Log
 import com.cdccreditsmart.app.compliance.AppProtectionManager
 import com.cdccreditsmart.app.compliance.SettingsGuardService
-import com.cdccreditsmart.app.core.PolicyHelper
+import com.cdccreditsmart.device.core.PolicyHelper
 import com.cdccreditsmart.device.CDCDeviceAdminReceiver
 
 class UninstallFlowActivity : Activity() {

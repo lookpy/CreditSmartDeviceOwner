@@ -28,7 +28,7 @@ import androidx.core.app.NotificationCompat
 import com.cdccreditsmart.app.BuildConfig
 import com.cdccreditsmart.app.R
 import com.cdccreditsmart.app.appmanagement.AppBlockingManager
-import com.cdccreditsmart.app.core.PolicyHelper
+import com.cdccreditsmart.device.core.PolicyHelper
 import com.cdccreditsmart.app.appmanagement.BlockedAppExplanationActivity
 import com.cdccreditsmart.app.presentation.MainActivity
 import com.cdccreditsmart.device.CDCDeviceAdminReceiver

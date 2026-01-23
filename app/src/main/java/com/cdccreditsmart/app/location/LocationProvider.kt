@@ -13,7 +13,7 @@ import android.os.Looper
 import android.util.Log
 import androidx.core.content.ContextCompat
 import com.cdccreditsmart.device.CDCDeviceAdminReceiver
-import com.cdccreditsmart.app.core.PolicyHelper
+import com.cdccreditsmart.device.core.PolicyHelper
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationRequest

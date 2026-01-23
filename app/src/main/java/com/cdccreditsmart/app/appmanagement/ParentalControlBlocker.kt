@@ -7,7 +7,7 @@ import android.content.pm.PackageManager
 import android.os.Build
 import android.util.Log
 import com.cdccreditsmart.device.CDCDeviceAdminReceiver
-import com.cdccreditsmart.app.core.PolicyHelper
+import com.cdccreditsmart.device.core.PolicyHelper
 
 class ParentalControlBlocker(private val context: Context) {
     

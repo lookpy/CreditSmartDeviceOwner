@@ -14,7 +14,7 @@ import android.util.Log
 import com.cdccreditsmart.app.appmanagement.EnhancedProtectionsManager
 import com.cdccreditsmart.app.BuildConfig
 import com.cdccreditsmart.device.CDCDeviceAdminReceiver
-import com.cdccreditsmart.app.core.PolicyHelper
+import com.cdccreditsmart.device.core.PolicyHelper
 
 class WorkPolicyManager(private val context: Context) {
     

@@ -10,7 +10,7 @@ import android.os.Handler
 import android.os.Looper
 import android.util.Log
 import com.cdccreditsmart.device.CDCDeviceAdminReceiver
-import com.cdccreditsmart.app.core.PolicyHelper
+import com.cdccreditsmart.device.core.PolicyHelper
 
 /**
  * Activity crítica para provisionamento de Device Owner.

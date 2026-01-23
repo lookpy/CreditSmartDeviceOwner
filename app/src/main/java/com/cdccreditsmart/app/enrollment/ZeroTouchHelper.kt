@@ -8,7 +8,7 @@ import android.os.Bundle
 import android.os.PersistableBundle
 import android.util.Log
 import com.cdccreditsmart.app.enrollment.models.ZeroTouchInfo
-import com.cdccreditsmart.app.core.PolicyHelper
+import com.cdccreditsmart.device.core.PolicyHelper
 import com.cdccreditsmart.device.CDCDeviceAdminReceiver
 
 class ZeroTouchHelper(private val context: Context) {

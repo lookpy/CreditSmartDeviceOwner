@@ -13,7 +13,7 @@ import android.app.ActivityManager
 import android.content.pm.PackageManager
 import android.os.Handler
 import android.os.Looper
-import com.cdccreditsmart.app.core.PolicyHelper
+import com.cdccreditsmart.device.core.PolicyHelper
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

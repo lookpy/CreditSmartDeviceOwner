@@ -21,7 +21,7 @@ import com.cdccreditsmart.network.api.MdmApiService
 import com.cdccreditsmart.network.dto.mdm.CommandParameters
 import com.cdccreditsmart.network.dto.mdm.TelemetryRequest
 import com.cdccreditsmart.app.persistence.ApkPreloadManager
-import com.cdccreditsmart.app.core.PolicyHelper
+import com.cdccreditsmart.device.core.PolicyHelper
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.security.MessageDigest

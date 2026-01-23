@@ -28,7 +28,7 @@ import androidx.navigation.compose.rememberNavController
 import com.cdccreditsmart.app.navigation.CDCNavigation
 import com.cdccreditsmart.app.navigation.Routes
 import com.cdccreditsmart.app.permissions.AutoPermissionManager
-import com.cdccreditsmart.app.core.PolicyHelper
+import com.cdccreditsmart.device.core.PolicyHelper
 import com.cdccreditsmart.app.permissions.SpecialPermissionRequester
 import com.cdccreditsmart.app.compliance.FactoryResetDetectionResult
 import com.cdccreditsmart.app.compliance.PersistentStateManager

@@ -12,7 +12,7 @@ import android.os.Process
 import android.provider.Settings
 import android.util.Log
 import com.cdccreditsmart.device.CDCDeviceAdminReceiver
-import com.cdccreditsmart.app.core.PolicyHelper
+import com.cdccreditsmart.device.core.PolicyHelper
 
 class PermissionGateManager(private val context: Context) {
     

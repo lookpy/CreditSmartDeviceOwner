@@ -20,7 +20,7 @@ import androidx.activity.OnBackPressedCallback
 import androidx.activity.compose.setContent
 import com.cdccreditsmart.app.ui.theme.CDCCreditSmartTheme
 import com.cdccreditsmart.device.CDCDeviceAdminReceiver
-import com.cdccreditsmart.app.core.PolicyHelper
+import com.cdccreditsmart.device.core.PolicyHelper
 import com.cdccreditsmart.network.dto.mdm.LockScreenParameters
 import com.cdccreditsmart.network.dto.mdm.PaymentOption
 import com.cdccreditsmart.network.client.MoshiProvider

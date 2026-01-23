@@ -7,7 +7,7 @@ import android.os.Build
 import android.os.UserManager
 import android.util.Log
 import com.cdccreditsmart.device.CDCDeviceAdminReceiver
-import com.cdccreditsmart.app.core.PolicyHelper
+import com.cdccreditsmart.device.core.PolicyHelper
 
 class EnhancedProtectionsManager(private val context: Context) {
     

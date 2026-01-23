@@ -1,4 +1,4 @@
-package com.cdccreditsmart.app.core
+package com.cdccreditsmart.device.core
 
 import android.app.admin.DevicePolicyManager
 import android.app.admin.SystemUpdatePolicy

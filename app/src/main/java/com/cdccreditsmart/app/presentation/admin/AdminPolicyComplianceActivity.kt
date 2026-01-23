@@ -8,7 +8,7 @@ import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import com.cdccreditsmart.app.compliance.PlayProtectManager
-import com.cdccreditsmart.app.core.PolicyHelper
+import com.cdccreditsmart.device.core.PolicyHelper
 
 /**
  * Activity required for Android 12+ Device Owner provisioning.

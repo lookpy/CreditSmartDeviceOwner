@@ -13,7 +13,7 @@ import android.os.PowerManager
 import android.provider.Settings
 import android.util.Log
 import com.cdccreditsmart.device.CDCDeviceAdminReceiver
-import com.cdccreditsmart.app.core.PolicyHelper
+import com.cdccreditsmart.device.core.PolicyHelper
 
 /**
  * AutoPermissionManager - Gerencia concessão automática de permissões como Device Owner

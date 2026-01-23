@@ -17,7 +17,7 @@ import androidx.work.Constraints
 import androidx.work.ExistingPeriodicWorkPolicy
 import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
-import com.cdccreditsmart.app.core.PolicyHelper
+import com.cdccreditsmart.device.core.PolicyHelper
 import com.cdccreditsmart.app.service.CdcForegroundService
 import com.cdccreditsmart.device.CDCDeviceAdminReceiver
 import java.util.concurrent.TimeUnit

@@ -8,7 +8,7 @@ import android.os.Build
 import android.telephony.TelephonyManager
 import androidx.core.app.ActivityCompat
 import android.util.Log
-import com.cdccreditsmart.app.core.PolicyHelper
+import com.cdccreditsmart.device.core.PolicyHelper
 
 /**
  * Device utilities for CDC Credit Smart APK

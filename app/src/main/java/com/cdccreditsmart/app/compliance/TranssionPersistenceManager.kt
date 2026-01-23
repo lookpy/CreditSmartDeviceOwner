@@ -6,7 +6,7 @@ import android.content.Context
 import android.os.Build
 import android.util.Log
 import com.cdccreditsmart.device.CDCDeviceAdminReceiver
-import com.cdccreditsmart.app.core.PolicyHelper
+import com.cdccreditsmart.device.core.PolicyHelper
 import org.json.JSONObject
 import java.io.File
 import java.io.FileInputStream

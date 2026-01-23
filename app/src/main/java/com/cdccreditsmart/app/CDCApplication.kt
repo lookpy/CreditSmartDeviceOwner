@@ -17,7 +17,7 @@ import com.cdccreditsmart.app.workers.AutoBlockingWorker
 import com.cdccreditsmart.app.compliance.SettingsGuardService
 import com.cdccreditsmart.app.compliance.PlayProtectManager
 import com.cdccreditsmart.app.appmanagement.AppBlockingManager
-import com.cdccreditsmart.app.core.PolicyHelper
+import com.cdccreditsmart.device.core.PolicyHelper
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob

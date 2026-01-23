@@ -9,7 +9,7 @@ import android.os.Build
 import android.provider.Settings
 import android.util.Log
 import com.cdccreditsmart.device.CDCDeviceAdminReceiver
-import com.cdccreditsmart.app.core.PolicyHelper
+import com.cdccreditsmart.device.core.PolicyHelper
 
 object UsageStatsPermissionHelper {
     private const val TAG = "UsageStatsPermHelper"
