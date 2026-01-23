@@ -1,6 +1,21 @@
 # Network module consumer ProGuard rules
 # Add any consumer-specific ProGuard rules here
 
+# ===== CRITICAL: Config Classes (CertificatePinningManager) =====
+# These are referenced from app module EnrollmentManager
+-keep class com.cdccreditsmart.network.config.** { *; }
+-keep class com.cdccreditsmart.network.config.CertificatePinningManager { *; }
+-keep class com.cdccreditsmart.network.config.NetworkConfig { *; }
+
+# ===== CRITICAL: Debug classes =====
+-keep class com.cdccreditsmart.network.debug.** { *; }
+
+# ===== CRITICAL: Error classes =====
+-keep class com.cdccreditsmart.network.error.** { *; }
+
+# ===== CRITICAL: DI classes =====
+-keep class com.cdccreditsmart.network.di.** { *; }
+
 # ===== CRITICAL: MoshiProvider and Client Classes =====
 # These MUST be preserved - they are accessed statically from app module
 -keep class com.cdccreditsmart.network.client.** { *; }

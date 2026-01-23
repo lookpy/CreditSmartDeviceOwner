@@ -1,6 +1,12 @@
 # Network Module ProGuard Rules
 # Critical: Keep WebSocket classes for dependent modules
 
+# ===== CRITICAL: Config Classes (CertificatePinningManager) =====
+# These are referenced from app module EnrollmentManager
+-keep class com.cdccreditsmart.network.config.** { *; }
+-keep class com.cdccreditsmart.network.config.CertificatePinningManager { *; }
+-keep class com.cdccreditsmart.network.config.NetworkConfig { *; }
+
 # ===== CRITICAL: MoshiProvider and Client Classes =====
 # These MUST be preserved - they are used by app module via static reference
 -keep class com.cdccreditsmart.network.client.** { *; }
