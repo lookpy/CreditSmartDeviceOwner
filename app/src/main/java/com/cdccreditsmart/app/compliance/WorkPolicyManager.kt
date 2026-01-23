@@ -865,14 +865,12 @@ class WorkPolicyManager(private val context: Context) {
     }
     
     private fun blockMobileNetworkConfig(): Boolean {
-        return try {
-            PolicyHelper.addRestriction(dpm, adminComponent, UserManager.DISALLOW_CONFIG_MOBILE_NETWORKS)
-            Log.i(TAG, "   ✅ DISALLOW_CONFIG_MOBILE_NETWORKS")
-            true
-        } catch (e: Exception) {
-            Log.e(TAG, "   ❌ Erro: ${e.message}")
-            false
-        }
+        // NOTA: DISALLOW_CONFIG_MOBILE_NETWORKS foi REMOVIDO porque:
+        // 1. Usuários precisam controlar dados móveis
+        // 2. Bloquear isso causa problemas de usabilidade
+        // 3. Não há benefício de segurança significativo
+        Log.i(TAG, "   ℹ️ Configuração de redes móveis LIBERADA (usuário pode controlar)")
+        return true
     }
     
     private fun blockDateTimeConfig(): Boolean {

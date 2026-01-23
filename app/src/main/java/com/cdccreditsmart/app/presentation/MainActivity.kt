@@ -10,7 +10,9 @@ import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.provider.Settings
 import android.util.Log
+import android.view.WindowManager
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -104,6 +106,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         
+        setMaxBrightness()
         registerLocationPermissionReceiver()
         
         checkFactoryReset()
@@ -382,6 +385,23 @@ class MainActivity : ComponentActivity() {
         Log.d(TAG, "==========================================")
         
         return route
+    }
+    
+    /**
+     * Define o brilho da tela para máximo ao abrir o app.
+     * Isso garante que o usuário sempre veja a tela com brilho total.
+     */
+    private fun setMaxBrightness() {
+        try {
+            // Define brilho máximo na window atual
+            val layoutParams = window.attributes
+            layoutParams.screenBrightness = WindowManager.LayoutParams.BRIGHTNESS_OVERRIDE_FULL
+            window.attributes = layoutParams
+            
+            Log.i(TAG, "✅ Brilho da tela definido para MÁXIMO")
+        } catch (e: Exception) {
+            Log.e(TAG, "❌ Erro ao definir brilho máximo: ${e.message}")
+        }
     }
 }
 

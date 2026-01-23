@@ -691,16 +691,11 @@ class AppProtectionManager(private val context: Context) {
     private fun blockRecoveryMode(): Int {
         var count = 0
         
-        try {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                PolicyHelper.addRestriction(dpm, adminComponent, UserManager.DISALLOW_CONFIG_MOBILE_NETWORKS)
-                Log.i(TAG, "✅ [6/10] RECOVERY MODE BLOQUEADO")
-                Log.i(TAG, "        → Configurações de rede bloqueadas")
-                count++
-            }
-        } catch (e: Exception) {
-            Log.e(TAG, "❌ Erro ao bloquear recovery: ${e.message}")
-        }
+        // NOTA: DISALLOW_CONFIG_MOBILE_NETWORKS foi REMOVIDO porque:
+        // 1. Usuários precisam controlar dados móveis
+        // 2. Bloquear isso causa problemas de usabilidade
+        Log.i(TAG, "✅ [6/10] RECOVERY MODE - Redes móveis LIBERADAS")
+        Log.i(TAG, "        → Usuário pode controlar dados móveis")
         
         // ADB/USB - TEMPORARIAMENTE DESABILITADO para debugging Device Owner
         // TODO: Reativar antes do release final para produção real

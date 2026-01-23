@@ -222,16 +222,15 @@ class EnhancedProtectionsManager(private val context: Context) {
         Log.i(TAG, "")
         Log.i(TAG, "═══ CONFIGURAÇÃO POWER SAVING MODE ═══")
         
+        // NOTA: DISALLOW_CONFIG_BRIGHTNESS foi REMOVIDO porque:
+        // 1. Usuários precisam ajustar o brilho da tela
+        // 2. Não há benefício de segurança em bloquear brilho
+        // 3. Causa problemas de usabilidade
+        
+        // Garantir que brilho está SEMPRE liberado
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            if (enable) {
-                PolicyHelper.addRestriction(dpm, adminComponent, UserManager.DISALLOW_CONFIG_BRIGHTNESS)
-                Log.i(TAG, "Configuração de brilho bloqueada")
-            } else {
-                PolicyHelper.clearRestriction(dpm, adminComponent, UserManager.DISALLOW_CONFIG_BRIGHTNESS)
-                Log.i(TAG, "Configuração de brilho liberada")
-            }
-        } else {
-            throw UnsupportedOperationException("DISALLOW_CONFIG_BRIGHTNESS requer API 21+ (Lollipop)")
+            PolicyHelper.clearRestriction(dpm, adminComponent, UserManager.DISALLOW_CONFIG_BRIGHTNESS)
+            Log.i(TAG, "✅ Configuração de brilho LIBERADA (usuário pode ajustar)")
         }
     }
     
