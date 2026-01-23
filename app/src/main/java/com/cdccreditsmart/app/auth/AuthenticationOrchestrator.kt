@@ -14,6 +14,7 @@ import com.cdccreditsmart.app.utils.DeviceUtils
 import com.cdccreditsmart.network.api.DeviceApiService
 import com.cdccreditsmart.network.dto.apk.ApkAuthRequest
 import com.cdccreditsmart.network.dto.cdc.ImeiAuthRequest
+import com.cdccreditsmart.network.dto.cdc.AuthResponse as CdcAuthResponse
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -202,16 +203,21 @@ class AuthenticationOrchestrator(private val context: Context) {
             try {
                 val authRequest = ImeiAuthRequest(imei = device.imei)
                 val authResponse = deviceApi.authenticateByImei(authRequest)
-                val authBody = authResponse.body()
                 
-                if (authResponse.isSuccessful && authBody != null && authBody.success) {
-                    val authToken = authBody.token
-                    if (!authToken.isNullOrBlank()) {
-                        tokenStorage.saveAuthToken(authToken)
-                        Log.d(TAG, "✅ Token JWT obtido e salvo com sucesso!")
-                        Log.d(TAG, "   - Token: ${authToken.substring(0, minOf(20, authToken.length))}...")
+                if (authResponse.isSuccessful) {
+                    val authBody: CdcAuthResponse? = authResponse.body()
+                    if (authBody != null && authBody.success) {
+                        val authToken: String? = authBody.token
+                        if (authToken != null && authToken.isNotBlank()) {
+                            tokenStorage.saveAuthToken(authToken)
+                            val tokenPreview = if (authToken.length > 20) authToken.take(20) else authToken
+                            Log.d(TAG, "✅ Token JWT obtido e salvo com sucesso!")
+                            Log.d(TAG, "   - Token: $tokenPreview...")
+                        } else {
+                            Log.w(TAG, "⚠️ Autenticação IMEI bem-sucedida mas token vazio")
+                        }
                     } else {
-                        Log.w(TAG, "⚠️ Autenticação IMEI bem-sucedida mas token vazio")
+                        Log.w(TAG, "⚠️ Autenticação IMEI: resposta inválida")
                     }
                 } else {
                     Log.w(TAG, "⚠️ Falha na autenticação por IMEI: HTTP ${authResponse.code()}")
