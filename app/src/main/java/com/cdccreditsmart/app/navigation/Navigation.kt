@@ -39,6 +39,7 @@ import com.cdccreditsmart.app.presentation.screens.pix.PixQRCodeScreen
 import com.cdccreditsmart.app.presentation.pix.PixPaymentViewModel
 import com.cdccreditsmart.app.presentation.screens.terms.TermsAndConditionsScreen
 import com.cdccreditsmart.app.presentation.screens.terms.TermsAcceptanceScreen
+import com.cdccreditsmart.app.presentation.screens.privacy.PrivacyPolicyScreen
 import com.cdccreditsmart.app.presentation.screens.PermissionGateScreen
 
 object Routes {
@@ -59,6 +60,7 @@ object Routes {
     const val INSTALLMENTS = "pix/installments"
     const val PIX_QR_CODE = "pix/qr_code/{installmentId}"
     const val TERMS = "terms"
+    const val PRIVACY_POLICY = "privacy_policy"
     
     fun createTermsAcceptanceRoute(contractCode: String) = "terms/acceptance/${Uri.encode(contractCode)}"
     
@@ -483,6 +485,9 @@ fun CDCNavigation(
                 onNavigateToTerms = {
                     navController.navigate(Routes.TERMS)
                 },
+                onNavigateToPrivacyPolicy = {
+                    navController.navigate(Routes.PRIVACY_POLICY)
+                },
                 onNeedsReauth = {
                     // Clear backstack and navigate to pairing
                     navController.navigate(Routes.ROUTER) {
@@ -540,6 +545,14 @@ fun CDCNavigation(
         
         composable(Routes.TERMS) {
             TermsAndConditionsScreen(
+                onNavigateBack = {
+                    navController.popBackStack()
+                }
+            )
+        }
+        
+        composable(Routes.PRIVACY_POLICY) {
+            PrivacyPolicyScreen(
                 onNavigateBack = {
                     navController.popBackStack()
                 }

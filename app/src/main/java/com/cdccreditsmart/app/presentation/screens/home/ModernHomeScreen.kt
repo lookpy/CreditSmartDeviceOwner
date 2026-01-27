@@ -39,6 +39,7 @@ fun ModernHomeScreen(
     onNavigateToInstallments: () -> Unit = {},
     onNavigateToPixPayment: (String) -> Unit = {},
     onNavigateToTerms: () -> Unit = {},
+    onNavigateToPrivacyPolicy: () -> Unit = {},
     onNeedsReauth: () -> Unit = {}
 ) {
     val context = LocalContext.current
@@ -77,6 +78,7 @@ fun ModernHomeScreen(
                 },
                 onNavigateToInstallments = onNavigateToInstallments,
                 onNavigateToTerms = onNavigateToTerms,
+                onNavigateToPrivacyPolicy = onNavigateToPrivacyPolicy,
                 onUninstallClick = { showUninstallDialog = true }
             )
         }
@@ -179,6 +181,7 @@ private fun HomeContent(
     onPayInstallment: (InstallmentItem) -> Unit,
     onNavigateToInstallments: () -> Unit,
     onNavigateToTerms: () -> Unit,
+    onNavigateToPrivacyPolicy: () -> Unit,
     onUninstallClick: () -> Unit
 ) {
     val context = LocalContext.current
@@ -214,6 +217,7 @@ private fun HomeContent(
                 contractCode = contractCode ?: "",
                 contactData = contactData,
                 onNavigateToTerms = onNavigateToTerms,
+                onNavigateToPrivacyPolicy = onNavigateToPrivacyPolicy,
                 onWhatsAppClick = {
                     contactData?.whatsapp?.let { whatsappNumber ->
                         if (whatsappNumber.isNotEmpty()) {
@@ -284,6 +288,11 @@ private fun HomeContent(
             }
         }
         
+        // Card de Direitos do Consumidor (CDC)
+        item {
+            ConsumerRightsCard()
+        }
+        
         item {
             Spacer(Modifier.height(16.dp))
         }
@@ -297,6 +306,7 @@ private fun HeroHeaderCard(
     contractCode: String,
     contactData: SupportContactData?,
     onNavigateToTerms: () -> Unit,
+    onNavigateToPrivacyPolicy: () -> Unit,
     onWhatsAppClick: () -> Unit,
     onPhoneClick: () -> Unit
 ) {
@@ -418,25 +428,52 @@ private fun HeroHeaderCard(
                     }
                 }
                 
-                OutlinedButton(
-                    onClick = onNavigateToTerms,
+                // Botões de Termos e Política de Privacidade (CDC Art. 46)
+                Row(
                     modifier = Modifier.fillMaxWidth(),
-                    colors = ButtonDefaults.outlinedButtonColors(
-                        contentColor = Color.White
-                    ),
-                    border = BorderStroke(1.dp, Color.White.copy(alpha = 0.5f))
+                    horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
-                    Icon(
-                        imageVector = Icons.Default.Description,
-                        contentDescription = null,
-                        modifier = Modifier.size(18.dp)
-                    )
-                    Spacer(modifier = Modifier.width(8.dp))
-                    Text(
-                        text = "Termos e Condições de Uso",
-                        style = MaterialTheme.typography.bodyMedium,
-                        fontWeight = FontWeight.Medium
-                    )
+                    OutlinedButton(
+                        onClick = onNavigateToTerms,
+                        modifier = Modifier.weight(1f),
+                        colors = ButtonDefaults.outlinedButtonColors(
+                            contentColor = Color.White
+                        ),
+                        border = BorderStroke(1.dp, Color.White.copy(alpha = 0.5f))
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.Description,
+                            contentDescription = null,
+                            modifier = Modifier.size(16.dp)
+                        )
+                        Spacer(modifier = Modifier.width(4.dp))
+                        Text(
+                            text = "Termos de Uso",
+                            style = MaterialTheme.typography.bodySmall,
+                            fontWeight = FontWeight.Medium
+                        )
+                    }
+                    
+                    OutlinedButton(
+                        onClick = onNavigateToPrivacyPolicy,
+                        modifier = Modifier.weight(1f),
+                        colors = ButtonDefaults.outlinedButtonColors(
+                            contentColor = Color.White
+                        ),
+                        border = BorderStroke(1.dp, Color.White.copy(alpha = 0.5f))
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.Security,
+                            contentDescription = null,
+                            modifier = Modifier.size(16.dp)
+                        )
+                        Spacer(modifier = Modifier.width(4.dp))
+                        Text(
+                            text = "Privacidade",
+                            style = MaterialTheme.typography.bodySmall,
+                            fontWeight = FontWeight.Medium
+                        )
+                    }
                 }
                 
                 // Botões de Suporte (WhatsApp e SAC)
@@ -934,6 +971,109 @@ private fun PaymentOption(
                 imageVector = Icons.Default.ArrowForward,
                 contentDescription = null,
                 tint = CDCOrange
+            )
+        }
+    }
+}
+
+/**
+ * Card de Direitos do Consumidor (CDC)
+ * Art. 6º, 46, 49 e 52 do Código de Defesa do Consumidor
+ */
+@Composable
+private fun ConsumerRightsCard() {
+    Card(
+        modifier = Modifier.fillMaxWidth(),
+        shape = RoundedCornerShape(16.dp),
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.secondaryContainer.copy(alpha = 0.5f)
+        )
+    ) {
+        Column(
+            modifier = Modifier.padding(16.dp),
+            verticalArrangement = Arrangement.spacedBy(12.dp)
+        ) {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                Icon(
+                    imageVector = Icons.Default.Gavel,
+                    contentDescription = null,
+                    tint = MaterialTheme.colorScheme.primary,
+                    modifier = Modifier.size(24.dp)
+                )
+                Text(
+                    text = "Seus Direitos (CDC)",
+                    style = MaterialTheme.typography.titleMedium,
+                    fontWeight = FontWeight.Bold,
+                    color = MaterialTheme.colorScheme.onSecondaryContainer
+                )
+            }
+            
+            Divider(color = MaterialTheme.colorScheme.outline.copy(alpha = 0.3f))
+            
+            ConsumerRightItem(
+                icon = Icons.Default.Undo,
+                title = "Direito de Arrependimento",
+                description = "Você pode cancelar contratos em até 7 dias (Art. 49 CDC)"
+            )
+            
+            ConsumerRightItem(
+                icon = Icons.Default.Visibility,
+                title = "Transparência",
+                description = "Acesso a todas as informações do contrato (Art. 46 CDC)"
+            )
+            
+            ConsumerRightItem(
+                icon = Icons.Default.Support,
+                title = "Atendimento",
+                description = "SAC disponível para dúvidas e reclamações"
+            )
+            
+            ConsumerRightItem(
+                icon = Icons.Default.Security,
+                title = "Proteção de Dados",
+                description = "Seus dados estão protegidos pela LGPD"
+            )
+        }
+    }
+}
+
+@Composable
+private fun ConsumerRightItem(
+    icon: ImageVector,
+    title: String,
+    description: String
+) {
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.spacedBy(12.dp),
+        verticalAlignment = Alignment.Top
+    ) {
+        Surface(
+            shape = RoundedCornerShape(8.dp),
+            color = MaterialTheme.colorScheme.primary.copy(alpha = 0.1f)
+        ) {
+            Icon(
+                imageVector = icon,
+                contentDescription = null,
+                tint = MaterialTheme.colorScheme.primary,
+                modifier = Modifier.padding(8.dp).size(18.dp)
+            )
+        }
+        
+        Column {
+            Text(
+                text = title,
+                style = MaterialTheme.typography.bodyMedium,
+                fontWeight = FontWeight.SemiBold,
+                color = MaterialTheme.colorScheme.onSecondaryContainer
+            )
+            Text(
+                text = description,
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSecondaryContainer.copy(alpha = 0.8f)
             )
         }
     }
