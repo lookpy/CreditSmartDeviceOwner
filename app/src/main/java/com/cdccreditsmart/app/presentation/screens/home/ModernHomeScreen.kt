@@ -22,8 +22,13 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import android.content.ClipData
+import android.content.ClipboardManager
+import android.content.Context
 import android.content.Intent
 import android.net.Uri
+import android.widget.Toast
+import androidx.compose.foundation.clickable
 import com.cdccreditsmart.app.support.SupportContactData
 import com.cdccreditsmart.app.support.SupportRepository
 import com.cdccreditsmart.app.ui.theme.CDCOrange
@@ -310,6 +315,8 @@ private fun HeroHeaderCard(
     onWhatsAppClick: () -> Unit,
     onPhoneClick: () -> Unit
 ) {
+    val context = LocalContext.current
+    
     Card(
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(24.dp),
@@ -406,7 +413,13 @@ private fun HeroHeaderCard(
                 
                 Surface(
                     shape = MaterialTheme.shapes.medium,
-                    color = Color.White.copy(alpha = 0.15f)
+                    color = Color.White.copy(alpha = 0.15f),
+                    modifier = Modifier.clickable {
+                        val clipboard = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+                        val clip = ClipData.newPlainText("Código do Contrato", contractCode)
+                        clipboard.setPrimaryClip(clip)
+                        Toast.makeText(context, "Código copiado!", Toast.LENGTH_SHORT).show()
+                    }
                 ) {
                     Row(
                         modifier = Modifier.padding(horizontal = 16.dp, vertical = 12.dp),
@@ -424,6 +437,12 @@ private fun HeroHeaderCard(
                             style = MaterialTheme.typography.bodyMedium,
                             fontWeight = FontWeight.Medium,
                             color = Color.White
+                        )
+                        Icon(
+                            imageVector = Icons.Default.ContentCopy,
+                            contentDescription = "Copiar código",
+                            tint = Color.White.copy(alpha = 0.7f),
+                            modifier = Modifier.size(16.dp)
                         )
                     }
                 }
