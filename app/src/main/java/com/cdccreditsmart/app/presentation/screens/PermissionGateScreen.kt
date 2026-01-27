@@ -36,7 +36,10 @@ import androidx.compose.ui.unit.sp
 import com.cdccreditsmart.app.permissions.PermissionGateManager
 import com.cdccreditsmart.app.compliance.SettingsGuardService
 import com.cdccreditsmart.device.CDCDeviceAdminReceiver
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 private const val TAG = "PermissionGateScreen"
 
@@ -47,6 +50,7 @@ fun PermissionGateScreen(
     val context = LocalContext.current
     val activity = context as? Activity
     val gateManager = remember { PermissionGateManager(context) }
+    val scope = rememberCoroutineScope()
     
     val initialStatus = remember { gateManager.getGateStatus() }
     var gateStatus by remember { mutableStateOf(initialStatus) }
@@ -95,7 +99,6 @@ fun PermissionGateScreen(
     val runtimePermissionLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.RequestMultiplePermissions()
     ) { results ->
-        // SEMPRE resumir guard após retorno do diálogo de permissões
         SettingsGuardService.resumeAfterPermissionGrant()
         
         Log.i(TAG, "📋 Resultado das permissões runtime:")
@@ -103,33 +106,42 @@ fun PermissionGateScreen(
             Log.i(TAG, "   ${if (granted) "✅" else "❌"} $permission")
         }
         
-        val stillMissing = gateManager.getMissingRuntimePermissions()
-        Log.i(TAG, "📋 Permissões runtime ainda faltando: ${stillMissing.size}")
-        stillMissing.forEach { Log.w(TAG, "   ❌ Ainda falta: $it") }
-        
-        runtimePermissionAskedOnce = stillMissing.isNotEmpty()
-        Log.i(TAG, "   runtimePermissionAskedOnce = $runtimePermissionAskedOnce")
-        
-        gateStatus = gateManager.getGateStatus()
-        Log.i(TAG, "✅ Runtime permissions atualizadas - faltam total: ${gateStatus.missingPermissions.size}")
+        scope.launch {
+            val stillMissing = withContext(Dispatchers.Default) { 
+                gateManager.getMissingRuntimePermissions() 
+            }
+            Log.i(TAG, "📋 Permissões runtime ainda faltando: ${stillMissing.size}")
+            stillMissing.forEach { Log.w(TAG, "   ❌ Ainda falta: $it") }
+            
+            runtimePermissionAskedOnce = stillMissing.isNotEmpty()
+            Log.i(TAG, "   runtimePermissionAskedOnce = $runtimePermissionAskedOnce")
+            
+            val newStatus = withContext(Dispatchers.Default) { gateManager.getGateStatus() }
+            gateStatus = newStatus
+            Log.i(TAG, "✅ Runtime permissions atualizadas - faltam total: ${newStatus.missingPermissions.size}")
+        }
     }
     
     val deviceAdminLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.StartActivityForResult()
     ) { result ->
-        // SEMPRE resumir guard após retorno do diálogo de Device Admin
         SettingsGuardService.resumeAfterPermissionGrant()
         
-        gateStatus = gateManager.getGateStatus()
-        Log.i(TAG, "✅ Device Admin status atualizado (resultado: ${result.resultCode})")
+        scope.launch {
+            val newStatus = withContext(Dispatchers.Default) { gateManager.getGateStatus() }
+            gateStatus = newStatus
+            Log.i(TAG, "✅ Device Admin status atualizado (resultado: ${result.resultCode})")
+        }
     }
     
     LaunchedEffect(Unit) {
         Log.d(TAG, "⏰ Iniciando verificação periódica de permissões (a cada 3s)...")
         
         while (true) {
-            delay(3000) // Aumentado de 1s para 3s para evitar lentidão do app
-            val newStatus = gateManager.getGateStatus()
+            delay(3000)
+            val newStatus = withContext(Dispatchers.Default) {
+                gateManager.getGateStatus()
+            }
             gateStatus = newStatus
             
             if (newStatus.allRequiredPermissionsGranted) {

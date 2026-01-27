@@ -158,3 +158,9 @@ The UI leverages Jetpack Compose and Material 3, incorporating a CDC institution
 - Corrige "Device not found in system" - backend espera contractCode como serialNumber
 - IMEI enviado no campo `imei` separadamente
 - Fallback para mdmIdentifier se contractCode não disponível
+
+**Permission Gate Performance Fix (2025-01-27):**
+- PermissionGateScreen: Verificação de permissões movida para Dispatchers.Default
+- getGateStatus() e getMissingRuntimePermissions() agora executam em background
+- Launcher callbacks usam scope.launch com withContext para não bloquear UI
+- Resolve frame drops de 50-90 frames durante fluxo de permissões
