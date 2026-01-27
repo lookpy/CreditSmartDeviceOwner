@@ -22,8 +22,13 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import android.content.Intent
+import android.net.Uri
+import com.cdccreditsmart.app.support.SupportContactData
+import com.cdccreditsmart.app.support.SupportRepository
 import com.cdccreditsmart.app.ui.theme.CDCOrange
 import com.cdccreditsmart.network.dto.cdc.*
+import kotlinx.coroutines.launch
 import java.text.NumberFormat
 import java.text.SimpleDateFormat
 import java.util.*
@@ -191,11 +196,41 @@ private fun HomeContent(
             val deviceModel = remember { storage.getDeviceModel() }
             val contractCode = remember { storage.getContractCode() }
             
+            val supportRepository = remember { SupportRepository(context) }
+            var contactData by remember { mutableStateOf<SupportContactData?>(null) }
+            val scope = rememberCoroutineScope()
+            
+            LaunchedEffect(Unit) {
+                scope.launch {
+                    supportRepository.getSupportContact().onSuccess { data ->
+                        contactData = data
+                    }
+                }
+            }
+            
             HeroHeaderCard(
                 customerName = customerName ?: "Cliente",
                 deviceModel = deviceModel ?: "Dispositivo",
                 contractCode = contractCode ?: "",
-                onNavigateToTerms = onNavigateToTerms
+                contactData = contactData,
+                onNavigateToTerms = onNavigateToTerms,
+                onWhatsAppClick = {
+                    contactData?.whatsapp?.let { whatsappNumber ->
+                        if (whatsappNumber.isNotEmpty()) {
+                            val cleanNumber = whatsappNumber.replace(Regex("[^0-9]"), "")
+                            val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://wa.me/$cleanNumber"))
+                            context.startActivity(intent)
+                        }
+                    }
+                },
+                onPhoneClick = {
+                    contactData?.phone?.let { phoneNumber ->
+                        if (phoneNumber.isNotEmpty()) {
+                            val intent = Intent(Intent.ACTION_DIAL, Uri.parse("tel:$phoneNumber"))
+                            context.startActivity(intent)
+                        }
+                    }
+                }
             )
         }
         
@@ -260,7 +295,10 @@ private fun HeroHeaderCard(
     customerName: String,
     deviceModel: String,
     contractCode: String,
-    onNavigateToTerms: () -> Unit
+    contactData: SupportContactData?,
+    onNavigateToTerms: () -> Unit,
+    onWhatsAppClick: () -> Unit,
+    onPhoneClick: () -> Unit
 ) {
     Card(
         modifier = Modifier.fillMaxWidth(),
@@ -399,6 +437,76 @@ private fun HeroHeaderCard(
                         style = MaterialTheme.typography.bodyMedium,
                         fontWeight = FontWeight.Medium
                     )
+                }
+                
+                // Botões de Suporte (WhatsApp e SAC)
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    // Botão WhatsApp Suporte
+                    OutlinedButton(
+                        onClick = onWhatsAppClick,
+                        modifier = Modifier.weight(1f),
+                        enabled = contactData?.whatsapp?.isNotEmpty() == true,
+                        colors = ButtonDefaults.outlinedButtonColors(
+                            contentColor = Color.White,
+                            disabledContentColor = Color.White.copy(alpha = 0.5f)
+                        ),
+                        border = BorderStroke(
+                            1.dp, 
+                            if (contactData?.whatsapp?.isNotEmpty() == true) 
+                                Color(0xFF25D366) 
+                            else 
+                                Color.White.copy(alpha = 0.3f)
+                        )
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.Chat,
+                            contentDescription = null,
+                            modifier = Modifier.size(18.dp),
+                            tint = if (contactData?.whatsapp?.isNotEmpty() == true) 
+                                Color(0xFF25D366) 
+                            else 
+                                Color.White.copy(alpha = 0.5f)
+                        )
+                        Spacer(modifier = Modifier.width(6.dp))
+                        Text(
+                            text = "Suporte WhatsApp",
+                            style = MaterialTheme.typography.bodySmall,
+                            fontWeight = FontWeight.Medium
+                        )
+                    }
+                    
+                    // Botão SAC do Consumidor
+                    OutlinedButton(
+                        onClick = onPhoneClick,
+                        modifier = Modifier.weight(1f),
+                        enabled = contactData?.phone?.isNotEmpty() == true,
+                        colors = ButtonDefaults.outlinedButtonColors(
+                            contentColor = Color.White,
+                            disabledContentColor = Color.White.copy(alpha = 0.5f)
+                        ),
+                        border = BorderStroke(
+                            1.dp, 
+                            if (contactData?.phone?.isNotEmpty() == true) 
+                                Color.White.copy(alpha = 0.5f) 
+                            else 
+                                Color.White.copy(alpha = 0.3f)
+                        )
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.Phone,
+                            contentDescription = null,
+                            modifier = Modifier.size(18.dp)
+                        )
+                        Spacer(modifier = Modifier.width(6.dp))
+                        Text(
+                            text = "SAC",
+                            style = MaterialTheme.typography.bodySmall,
+                            fontWeight = FontWeight.Medium
+                        )
+                    }
                 }
             }
         }
