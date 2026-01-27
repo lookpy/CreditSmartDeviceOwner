@@ -164,3 +164,9 @@ The UI leverages Jetpack Compose and Material 3, incorporating a CDC institution
 - getGateStatus() e getMissingRuntimePermissions() agora executam em background
 - Launcher callbacks usam scope.launch com withContext para não bloquear UI
 - Resolve frame drops de 50-90 frames durante fluxo de permissões
+
+**WhatsApp Support Button Fix (2025-01-27):**
+- ModernHomeScreen: Verifica se WhatsApp está bloqueado antes de mostrar botão
+- Quando bloqueado por atraso, exibe apenas botão de telefone com número visível
+- Verifica blockedPackages e blockedCategories do LocalAccountState
+- Previne cliente clicar em suporte WhatsApp quando app está suspenso

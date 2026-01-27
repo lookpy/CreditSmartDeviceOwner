@@ -32,6 +32,7 @@ import androidx.compose.foundation.clickable
 import com.cdccreditsmart.app.support.SupportContactData
 import com.cdccreditsmart.app.support.SupportRepository
 import com.cdccreditsmart.app.ui.theme.CDCOrange
+import com.cdccreditsmart.data.storage.LocalAccountState
 import com.cdccreditsmart.network.dto.cdc.*
 import kotlinx.coroutines.launch
 import java.text.NumberFormat
@@ -199,6 +200,16 @@ private fun HomeContent(
     val supportRepository = remember { SupportRepository(context) }
     var contactData by remember { mutableStateOf<SupportContactData?>(null) }
     
+    val localAccountState = remember { LocalAccountState(context) }
+    val isWhatsAppBlocked = remember {
+        val blockedPackages = localAccountState.blockedPackages
+        val blockedCategories = localAccountState.blockedCategories
+        blockedPackages.contains("com.whatsapp") || 
+        blockedPackages.contains("com.whatsapp.w4b") ||
+        blockedCategories.contains("social_media") ||
+        blockedCategories.contains("all_apps")
+    }
+    
     LaunchedEffect(Unit) {
         supportRepository.getSupportContact().onSuccess { data ->
             contactData = data
@@ -218,6 +229,7 @@ private fun HomeContent(
                 deviceModel = deviceModel ?: "Dispositivo",
                 contractCode = contractCode ?: "",
                 contactData = contactData,
+                isWhatsAppBlocked = isWhatsAppBlocked,
                 onNavigateToTerms = onNavigateToTerms,
                 onNavigateToPrivacyPolicy = onNavigateToPrivacyPolicy,
                 onWhatsAppClick = {
@@ -307,6 +319,7 @@ private fun HeroHeaderCard(
     deviceModel: String,
     contractCode: String,
     contactData: SupportContactData?,
+    isWhatsAppBlocked: Boolean = false,
     onNavigateToTerms: () -> Unit,
     onNavigateToPrivacyPolicy: () -> Unit,
     onWhatsAppClick: () -> Unit,
@@ -493,72 +506,107 @@ private fun HeroHeaderCard(
                 }
                 
                 // Botões de Suporte (WhatsApp e SAC)
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.spacedBy(8.dp)
-                ) {
-                    // Botão WhatsApp Suporte
-                    OutlinedButton(
-                        onClick = onWhatsAppClick,
-                        modifier = Modifier.weight(1f),
-                        enabled = contactData?.whatsapp?.isNotEmpty() == true,
-                        colors = ButtonDefaults.outlinedButtonColors(
-                            contentColor = Color.White,
-                            disabledContentColor = Color.White.copy(alpha = 0.5f)
-                        ),
-                        border = BorderStroke(
-                            1.dp, 
-                            if (contactData?.whatsapp?.isNotEmpty() == true) 
-                                Color(0xFF25D366) 
-                            else 
-                                Color.White.copy(alpha = 0.3f)
-                        )
-                    ) {
-                        Icon(
-                            imageVector = Icons.Default.Chat,
-                            contentDescription = null,
-                            modifier = Modifier.size(18.dp),
-                            tint = if (contactData?.whatsapp?.isNotEmpty() == true) 
-                                Color(0xFF25D366) 
-                            else 
-                                Color.White.copy(alpha = 0.5f)
-                        )
-                        Spacer(modifier = Modifier.width(6.dp))
-                        Text(
-                            text = "Suporte WhatsApp",
-                            style = MaterialTheme.typography.bodySmall,
-                            fontWeight = FontWeight.Medium
-                        )
-                    }
-                    
-                    // Botão SAC do Consumidor
+                // Quando WhatsApp está bloqueado por atraso, mostrar apenas telefone
+                if (isWhatsAppBlocked) {
+                    // WhatsApp bloqueado - mostrar apenas número de telefone
                     OutlinedButton(
                         onClick = onPhoneClick,
-                        modifier = Modifier.weight(1f),
+                        modifier = Modifier.fillMaxWidth(),
                         enabled = contactData?.phone?.isNotEmpty() == true,
                         colors = ButtonDefaults.outlinedButtonColors(
                             contentColor = Color.White,
                             disabledContentColor = Color.White.copy(alpha = 0.5f)
                         ),
-                        border = BorderStroke(
-                            1.dp, 
-                            if (contactData?.phone?.isNotEmpty() == true) 
-                                Color.White.copy(alpha = 0.5f) 
-                            else 
-                                Color.White.copy(alpha = 0.3f)
-                        )
+                        border = BorderStroke(1.dp, Color.White.copy(alpha = 0.5f))
                     ) {
                         Icon(
                             imageVector = Icons.Default.Phone,
                             contentDescription = null,
                             modifier = Modifier.size(18.dp)
                         )
-                        Spacer(modifier = Modifier.width(6.dp))
-                        Text(
-                            text = "SAC",
-                            style = MaterialTheme.typography.bodySmall,
-                            fontWeight = FontWeight.Medium
-                        )
+                        Spacer(modifier = Modifier.width(8.dp))
+                        Column(horizontalAlignment = Alignment.Start) {
+                            Text(
+                                text = "Suporte",
+                                style = MaterialTheme.typography.bodySmall,
+                                fontWeight = FontWeight.Medium
+                            )
+                            Text(
+                                text = contactData?.phone ?: "Indisponível",
+                                style = MaterialTheme.typography.bodyMedium,
+                                fontWeight = FontWeight.Bold
+                            )
+                        }
+                    }
+                } else {
+                    // WhatsApp disponível - mostrar ambos botões
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.spacedBy(8.dp)
+                    ) {
+                        // Botão WhatsApp Suporte
+                        OutlinedButton(
+                            onClick = onWhatsAppClick,
+                            modifier = Modifier.weight(1f),
+                            enabled = contactData?.whatsapp?.isNotEmpty() == true,
+                            colors = ButtonDefaults.outlinedButtonColors(
+                                contentColor = Color.White,
+                                disabledContentColor = Color.White.copy(alpha = 0.5f)
+                            ),
+                            border = BorderStroke(
+                                1.dp, 
+                                if (contactData?.whatsapp?.isNotEmpty() == true) 
+                                    Color(0xFF25D366) 
+                                else 
+                                    Color.White.copy(alpha = 0.3f)
+                            )
+                        ) {
+                            Icon(
+                                imageVector = Icons.Default.Chat,
+                                contentDescription = null,
+                                modifier = Modifier.size(18.dp),
+                                tint = if (contactData?.whatsapp?.isNotEmpty() == true) 
+                                    Color(0xFF25D366) 
+                                else 
+                                    Color.White.copy(alpha = 0.5f)
+                            )
+                            Spacer(modifier = Modifier.width(6.dp))
+                            Text(
+                                text = "Suporte WhatsApp",
+                                style = MaterialTheme.typography.bodySmall,
+                                fontWeight = FontWeight.Medium
+                            )
+                        }
+                        
+                        // Botão SAC do Consumidor
+                        OutlinedButton(
+                            onClick = onPhoneClick,
+                            modifier = Modifier.weight(1f),
+                            enabled = contactData?.phone?.isNotEmpty() == true,
+                            colors = ButtonDefaults.outlinedButtonColors(
+                                contentColor = Color.White,
+                                disabledContentColor = Color.White.copy(alpha = 0.5f)
+                            ),
+                            border = BorderStroke(
+                                1.dp, 
+                                if (contactData?.phone?.isNotEmpty() == true) 
+                                    Color.White.copy(alpha = 0.5f) 
+                                else 
+                                    Color.White.copy(alpha = 0.3f)
+                            )
+                        ) {
+                            Icon(
+                                imageVector = Icons.Default.Phone,
+                                contentDescription = null,
+                                modifier = Modifier.size(18.dp)
+                            )
+                            Spacer(modifier = Modifier.width(6.dp))
+                            Text(
+                                text = "SAC",
+                                style = MaterialTheme.typography.bodySmall,
+                                fontWeight = FontWeight.Medium
+                            )
+                        }
                     }
                 }
             }
