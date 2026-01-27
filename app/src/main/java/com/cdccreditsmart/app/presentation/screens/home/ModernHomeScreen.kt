@@ -923,7 +923,7 @@ private fun PaymentBottomSheet(
             PaymentOption(
                 icon = Icons.Default.QrCode,
                 title = "PIX",
-                subtitle = "Pagamento instantâneo",
+                subtitle = "Liberação instantânea",
                 onClick = onPayWithPix
             )
             
