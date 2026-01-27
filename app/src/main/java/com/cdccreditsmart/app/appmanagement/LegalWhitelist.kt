@@ -208,7 +208,6 @@ object LegalWhitelist {
         "com.nu.production",
         "com.nu.production.card",
         "com.mercadopago.wallet",
-        "com.mercadolibre",
         "com.picpay",
         "com.picpay.seller",
         "com.itau",
