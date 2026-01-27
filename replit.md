@@ -177,3 +177,12 @@ The UI leverages Jetpack Compose and Material 3, incorporating a CDC institution
 - Após concessão, re-verifica status e navega automaticamente se todas OK
 - CDCDeviceAdminReceiver.onEnabled(): Concede permissões via grantAllRuntimePermissionsImmediately()
 - AutoPermissionManager: Usa setPermissionGrantState() para runtime e AppOpsManager para especiais
+
+**Profile Owner Support for Permissions (2025-01-27):**
+- AutoPermissionManager: Agora suporta PROFILE OWNER além de Device Owner
+- grantAllRuntimePermissionsAsOwner(): Funciona tanto para Device Owner quanto Profile Owner
+- isProfileOwner(): Nova função para detectar Profile Owner via PolicyHelper
+- canGrantPermissions(): Verifica se app pode conceder permissões (DO ou PO)
+- PermissionGateManager: Profile Owner tratado como DEVICE_OWNER para permissões
+- Work Profile (usuário secundário) agora recebe permissões automaticamente
+- Corrige cenário onde app é Device Owner no usuário 0 mas Profile Owner no usuário 19

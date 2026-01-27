@@ -84,6 +84,7 @@ class PermissionGateManager(private val context: Context) {
     fun getPrivilegeLevel(): PrivilegeLevel {
         return when {
             isDeviceOwner() -> PrivilegeLevel.DEVICE_OWNER
+            isProfileOwner() -> PrivilegeLevel.DEVICE_OWNER  // Profile Owner tem mesmos poderes para permissões
             isDeviceAdmin() -> PrivilegeLevel.DEVICE_ADMIN
             else -> PrivilegeLevel.BASIC
         }
@@ -92,6 +93,14 @@ class PermissionGateManager(private val context: Context) {
     private fun isDeviceOwner(): Boolean {
         return try {
             PolicyHelper.isDeviceOwner(dpm, context.packageName)
+        } catch (e: Exception) {
+            false
+        }
+    }
+    
+    private fun isProfileOwner(): Boolean {
+        return try {
+            PolicyHelper.isProfileOwner(dpm, context.packageName)
         } catch (e: Exception) {
             false
         }

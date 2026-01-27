@@ -101,14 +101,23 @@ class AutoPermissionManager(private val context: Context) {
         Log.i(TAG, "🔐 INICIANDO CONCESSÃO AUTOMÁTICA DE PERMISSÕES")
         Log.i(TAG, "========================================")
         
-        if (!isDeviceOwner()) {
-            Log.e(TAG, "❌ App NÃO é Device Owner - não pode conceder permissões automaticamente")
+        val isOwner = isDeviceOwner()
+        val isProfile = isProfileOwner()
+        
+        Log.i(TAG, "📋 Status: Device Owner=$isOwner, Profile Owner=$isProfile")
+        
+        if (!isOwner && !isProfile) {
+            Log.e(TAG, "❌ App NÃO é Device Owner NEM Profile Owner - não pode conceder permissões automaticamente")
             return
         }
         
-        Log.i(TAG, "✅ App é Device Owner - concedendo permissões automaticamente...")
+        if (isOwner) {
+            Log.i(TAG, "✅ App é Device Owner - concedendo permissões automaticamente...")
+        } else {
+            Log.i(TAG, "✅ App é Profile Owner - concedendo permissões no work profile...")
+        }
         
-        grantAllRuntimePermissionsAsDeviceOwner()
+        grantAllRuntimePermissionsAsOwner()
         
         verifyAllPermissionsGranted()
         
@@ -117,7 +126,7 @@ class AutoPermissionManager(private val context: Context) {
     
     /**
      * Concede TODAS as permissões runtime automaticamente via setPermissionGrantState()
-     * Deve ser chamado o mais cedo possível quando Device Owner é ativado.
+     * Deve ser chamado o mais cedo possível quando Device Owner ou Profile Owner é ativado.
      * 
      * Pode ser chamado de:
      * - CDCDeviceAdminReceiver.onEnabled()
@@ -126,15 +135,29 @@ class AutoPermissionManager(private val context: Context) {
      * 
      * IMPORTANTE: Esta função é segura para chamar múltiplas vezes.
      * Permissões já concedidas são ignoradas.
+     * 
+     * NOTA: Funciona tanto para Device Owner quanto Profile Owner!
+     * Profile Owner pode conceder permissões ao seu próprio pacote no work profile.
      */
     fun grantAllRuntimePermissionsAsDeviceOwner() {
-        if (!isDeviceOwner()) {
-            Log.w(TAG, "⚠️ grantAllRuntimePermissionsAsDeviceOwner: App não é Device Owner")
+        grantAllRuntimePermissionsAsOwner()
+    }
+    
+    /**
+     * Versão unificada que funciona para Device Owner E Profile Owner
+     */
+    fun grantAllRuntimePermissionsAsOwner() {
+        val isOwner = isDeviceOwner()
+        val isProfile = isProfileOwner()
+        
+        if (!isOwner && !isProfile) {
+            Log.w(TAG, "⚠️ grantAllRuntimePermissionsAsOwner: App não é Device Owner nem Profile Owner")
             return
         }
         
+        val ownerType = if (isOwner) "Device Owner" else "Profile Owner"
         Log.i(TAG, "🚀 ========================================")
-        Log.i(TAG, "🚀 CONCESSÃO RÁPIDA DE PERMISSÕES (Device Owner)")
+        Log.i(TAG, "🚀 CONCESSÃO RÁPIDA DE PERMISSÕES ($ownerType)")
         Log.i(TAG, "🚀 ========================================")
         
         val packageName = context.packageName
@@ -658,6 +681,22 @@ class AutoPermissionManager(private val context: Context) {
             Log.e(TAG, "Erro ao verificar Device Owner: ${e.message}")
             false
         }
+    }
+    
+    private fun isProfileOwner(): Boolean {
+        return try {
+            PolicyHelper.isProfileOwner(dpm, context.packageName)
+        } catch (e: Exception) {
+            Log.e(TAG, "Erro ao verificar Profile Owner: ${e.message}")
+            false
+        }
+    }
+    
+    /**
+     * Verifica se o app pode conceder permissões (Device Owner OU Profile Owner)
+     */
+    fun canGrantPermissions(): Boolean {
+        return isDeviceOwner() || isProfileOwner()
     }
     
     fun hasUsageStatsPermission(): Boolean {
