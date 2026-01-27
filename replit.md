@@ -117,3 +117,26 @@ The UI leverages Jetpack Compose and Material 3, incorporating a CDC institution
 - WorkProfileManager: createAndManageUser, startUserInBackground, switchUser, removeUser
   - Motivo: APIs especializadas multi-user com parâmetros complexos (UserHandle)
   - Baixo risco de detecção Play Protect (não envolvem "blocking" ou "hiding")
+
+### Performance Optimizations (2025-01-27)
+
+**WebSocket Timeout Improvements:**
+- MdmCommandReceiver: pingInterval aumentado de 25s para 40s
+- MdmCommandReceiver: readTimeout aumentado de 30s para 45s
+- WebSocketManager: pingInterval aumentado de 30s para 40s
+- WebSocketManager: readTimeout aumentado de 30s para 45s
+
+**Device Sync Recovery:**
+- MdmCommandReceiver: Quando auth_error "Device not found" ocorre, aguarda 30s para heartbeat sincronizar e tenta reconexão automática
+
+**UI/UX Improvements:**
+- ModernHomeScreen: Código do contrato clicável para copiar
+- ModernHomeScreen: "Liberação instantânea" ao invés de "Pagamento instantâneo" para PIX
+- ModernHomeScreen: Card "Seus Direitos Garantidos" com ícone de check
+- PrivacyPolicyScreen: Nova tela de Política de Privacidade com conformidade LGPD
+- ConsumerRightsCard: Mostra direitos do consumidor (arrependimento, transparência, SAC, LGPD)
+
+**Background Initialization:**
+- CDCApplication: Operações pesadas em applicationScope.launch (Dispatchers.Default)
+- CdcForegroundService: initializeServices() executa em serviceScope (Dispatchers.IO)
+- Lazy loading para componentes não-críticos (blockingManager, networkHelper, localAccountState)

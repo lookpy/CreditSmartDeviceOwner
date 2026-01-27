@@ -42,8 +42,8 @@ class MdmCommandReceiver(private val context: Context) {
         private const val POLLING_INTERVAL_MS = 30_000L           // 30 segundos
         private const val COMMAND_PROCESSING_TIMEOUT_MS = 60_000L // 60 segundos
         
-        // PING MANUAL JSON
-        private const val PING_INTERVAL_MS = 25_000L  // Enviar ping a cada 25 segundos
+        // PING MANUAL JSON - Aumentado para 40s para evitar timeouts em conexões lentas
+        private const val PING_INTERVAL_MS = 40_000L  // Enviar ping a cada 40 segundos
     }
     
     private var currentJwtToken: String? = null
@@ -86,9 +86,9 @@ class MdmCommandReceiver(private val context: Context) {
     
     private val okHttpClient = OkHttpClient.Builder()
         .connectTimeout(30, TimeUnit.SECONDS)
-        .readTimeout(30, TimeUnit.SECONDS)
+        .readTimeout(45, TimeUnit.SECONDS)  // Aumentado para 45s para conexões lentas
         .writeTimeout(30, TimeUnit.SECONDS)
-        .pingInterval(25, TimeUnit.SECONDS)  // Reduzido de 30s para 25s para manter conexão viva
+        .pingInterval(40, TimeUnit.SECONDS)  // Aumentado de 25s para 40s para evitar timeouts
         .build()
     
     fun connectMdmWebSocket(jwtToken: String) {
@@ -357,6 +357,27 @@ class MdmCommandReceiver(private val context: Context) {
                         Log.e(TAG, "❌ Código: $code")
                         webSocketConnected = false
                         isAuthenticated = false
+                        
+                        // MELHORIA: Se "Device not found", o dispositivo pode não estar sincronizado
+                        // Aguardar heartbeat sincronizar e tentar reconectar
+                        if (error.contains("not found", ignoreCase = true)) {
+                            Log.w(TAG, "⚠️ Dispositivo não encontrado no backend - aguardando sincronização...")
+                            Log.w(TAG, "⚠️ O heartbeat irá registrar o dispositivo. Tentando reconexão em 30s...")
+                            
+                            // Usar token atual para reconexão
+                            val token = currentJwtToken
+                            if (token != null) {
+                                // Cancelar qualquer reconexão pendente antes de agendar nova
+                                reconnectJob?.cancel()
+                                scope.launch {
+                                    delay(30_000L)  // Aguardar heartbeat sincronizar
+                                    Log.i(TAG, "🔄 Tentando reconexão após sincronização...")
+                                    scheduleReconnect(token)
+                                }
+                            } else {
+                                Log.e(TAG, "❌ Sem token JWT para reconexão")
+                            }
+                        }
                     }
                     
                     "auth_timeout" -> {

@@ -38,10 +38,10 @@ class WebSocketManager(
     private var shouldReconnect = true
 
     private val client = OkHttpClient.Builder()
-        .pingInterval(30, TimeUnit.SECONDS)
-        .connectTimeout(15, TimeUnit.SECONDS)
-        .readTimeout(30, TimeUnit.SECONDS)
-        .writeTimeout(15, TimeUnit.SECONDS)
+        .pingInterval(40, TimeUnit.SECONDS)  // Aumentado de 30s para 40s para evitar timeouts
+        .connectTimeout(20, TimeUnit.SECONDS)
+        .readTimeout(45, TimeUnit.SECONDS)   // Aumentado de 30s para 45s para conexões lentas
+        .writeTimeout(20, TimeUnit.SECONDS)
         .build()
 
     fun connect() {
