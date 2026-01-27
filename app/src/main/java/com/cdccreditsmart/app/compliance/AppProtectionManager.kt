@@ -540,11 +540,14 @@ class AppProtectionManager(private val context: Context) {
     private fun blockFactoryReset(): Int {
         var count = 0
         
-        // Factory Reset via Settings
-        // TEMPORARIAMENTE DESABILITADO para debugging Device Owner em release
-        // TODO: Reativar antes do release final para produção real
-        Log.w(TAG, "⚠️ [4/10] Factory Reset permitido (debugging Device Owner)")
-        Log.w(TAG, "        → TODO: Reativar antes do release final")
+        // CRÍTICO: Bloquear Factory Reset via Settings usando Device Policy
+        try {
+            PolicyHelper.addRestriction(dpm, adminComponent, UserManager.DISALLOW_FACTORY_RESET)
+            Log.i(TAG, "✅ [4/10] DISALLOW_FACTORY_RESET aplicado")
+            count++
+        } catch (e: Exception) {
+            Log.e(TAG, "❌ [4/10] Erro ao aplicar DISALLOW_FACTORY_RESET: ${e.message}")
+        }
         
         // FRP (Factory Reset Protection) - HONESTO
         // Android Device Owner NÃO suporta FRP customizado via setFactoryResetProtectionPolicy

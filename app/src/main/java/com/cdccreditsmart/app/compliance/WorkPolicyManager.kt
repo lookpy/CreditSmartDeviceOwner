@@ -701,12 +701,12 @@ class WorkPolicyManager(private val context: Context) {
     
     private fun blockFactoryReset(): Boolean {
         return try {
-            // TEMPORARIAMENTE DESABILITADO para debugging Device Owner em release
-            // TODO: Reativar antes do release final para produção real
-            Log.w(TAG, "   ⚠️ Factory Reset permitido (debugging Device Owner)")
-            false
+            // CRÍTICO: Bloquear Factory Reset - proteção essencial
+            PolicyHelper.addRestriction(dpm, adminComponent, UserManager.DISALLOW_FACTORY_RESET)
+            Log.i(TAG, "   ✅ DISALLOW_FACTORY_RESET aplicado")
+            true
         } catch (e: Exception) {
-            Log.e(TAG, "   ❌ Erro: ${e.message}")
+            Log.e(TAG, "   ❌ Erro ao bloquear Factory Reset: ${e.message}")
             false
         }
     }

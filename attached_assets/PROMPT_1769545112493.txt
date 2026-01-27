@@ -1,0 +1,139 @@
+2026-01-27 17:17:39.398 27181-27568 SettingsGuardService    com.cdccreditsmart.app               D  📋 Activity check - Full: com.android.searchlauncher.SearchLauncher, Simple: SearchLauncher
+2026-01-27 17:17:39.940 27181-27532 mali_gralloc            com.cdccreditsmart.app               D  unregister: id=227000009fd, handle=0xb40000789b7fdb30, base=0x0, importpid=27181, count:0
+2026-01-27 17:17:39.941 27181-27532 mali_gralloc            com.cdccreditsmart.app               D  unregister: id=22700000a00, handle=0xb40000789b7e2110, base=0x0, importpid=27181, count:0
+2026-01-27 17:17:39.963 27181-27181 mali_gralloc            com.cdccreditsmart.app               D  unregister: id=227000009fe, handle=0xb40000789b8068f0, base=0x0, importpid=27181, count:0
+2026-01-27 17:17:39.963 27181-27181 mali_gralloc            com.cdccreditsmart.app               D  unregister: id=227000009ff, handle=0xb40000789b810d30, base=0x0, importpid=27181, count:0
+2026-01-27 17:17:41.235 27181-4387  FA                      com.cdccreditsmart.app               I  Application backgrounded at: timestamp_millis: 1769545059232
+2026-01-27 17:17:48.647 27181-27181 WebSocketManager        com.cdccreditsmart.app               D  Heartbeat ping sent
+2026-01-27 17:17:49.608 27181-32764 WebSocketManager        com.cdccreditsmart.app               D  Message received: {"type":"pong","timestamp":"2026-01-27T20:17:48.887Z"}...
+2026-01-27 17:17:49.609 27181-32764 WebSocketManager        com.cdccreditsmart.app               D  Received message type: pong
+2026-01-27 17:17:49.609 27181-32764 WebSocketManager        com.cdccreditsmart.app               D  Pong received
+2026-01-27 17:17:50.504 27181-27568 MdmCommandReceiver      com.cdccreditsmart.app               I  🔍 [Polling #6] Verificando comandos pendentes...
+2026-01-27 17:17:50.512 27181-27568 SecureTokenStorage      com.cdccreditsmart.app               D  ✅ Usando IMEI para MDM: 8608***718
+2026-01-27 17:17:50.512 27181-27568 MdmCommandReceiver      com.cdccreditsmart.app               I  🔍 ========================================
+2026-01-27 17:17:50.512 27181-27568 MdmCommandReceiver      com.cdccreditsmart.app               I  🔍 BUSCANDO COMANDOS PENDENTES
+2026-01-27 17:17:50.512 27181-27568 MdmCommandReceiver      com.cdccreditsmart.app               I  🔍 ========================================
+2026-01-27 17:17:50.512 27181-27568 MdmCommandReceiver      com.cdccreditsmart.app               I  🔍 Identifier: 860875074339718
+2026-01-27 17:17:50.512 27181-27568 MdmCommandReceiver      com.cdccreditsmart.app               I  🔍 Endpoint: GET /api/apk/device/860875074339718/commands
+2026-01-27 17:17:50.514 27181-27568 MdmCommandReceiver      com.cdccreditsmart.app               D  🔍 Executando requisição HTTP (timeout: 15s)...
+2026-01-27 17:17:50.525 27181-741   okhttp.OkHttpClient     com.cdccreditsmart.app               I  --> GET https://cdccreditsmart.com/api/apk/device/860875074339718/commands
+2026-01-27 17:17:50.525 27181-741   okhttp.OkHttpClient     com.cdccreditsmart.app               I  --> END GET
+2026-01-27 17:17:51.187 27181-741   okhttp.OkHttpClient     com.cdccreditsmart.app               I  <-- 200 https://cdccreditsmart.com/api/apk/device/860875074339718/commands (661ms)
+2026-01-27 17:17:51.187 27181-741   okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-credentials: true
+2026-01-27 17:17:51.187 27181-741   okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-headers: Origin, X-Requested-With, Content-Type, Accept, Authorization, x-client-key, x-client-token, x-client-secret, cache-control
+2026-01-27 17:17:51.187 27181-741   okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-methods: GET, POST, PUT, PATCH, DELETE, OPTIONS
+2026-01-27 17:17:51.187 27181-741   okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-origin: *
+2026-01-27 17:17:51.187 27181-741   okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-max-age: 86400
+2026-01-27 17:17:51.188 27181-741   okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-length: 104
+2026-01-27 17:17:51.188 27181-741   okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-security-policy: default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://replit.com; style-src 'self' 'unsafe-inline' https://replit.com; img-src 'self' data: https:; font-src 'self' data: https://replit.com; connect-src 'self';
+2026-01-27 17:17:51.188 27181-741   okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-type: application/json; charset=utf-8
+2026-01-27 17:17:51.188 27181-741   okhttp.OkHttpClient     com.cdccreditsmart.app               I  date: Tue, 27 Jan 2026 20:17:50 GMT
+2026-01-27 17:17:51.188 27181-741   okhttp.OkHttpClient     com.cdccreditsmart.app               I  etag: W/"68-1BzkVNqHEsu0XlMenwYbbDRd04w"
+2026-01-27 17:17:51.188 27181-741   okhttp.OkHttpClient     com.cdccreditsmart.app               I  permissions-policy: geolocation=(), microphone=(), camera=()
+2026-01-27 17:17:51.188 27181-741   okhttp.OkHttpClient     com.cdccreditsmart.app               I  referrer-policy: strict-origin-when-cross-origin
+2026-01-27 17:17:51.188 27181-741   okhttp.OkHttpClient     com.cdccreditsmart.app               I  strict-transport-security: max-age=63072000; includeSubDomains
+2026-01-27 17:17:51.189 27181-741   okhttp.OkHttpClient     com.cdccreditsmart.app               I  strict-transport-security: max-age=31536000; includeSubDomains
+2026-01-27 17:17:51.189 27181-741   okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-anti-fraud-protection: active
+2026-01-27 17:17:51.189 27181-741   okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-certificate-pinning-enabled: false
+2026-01-27 17:17:51.189 27181-741   okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-certificate-pinning-status: disabled-for-stability
+2026-01-27 17:17:51.189 27181-741   okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-content-type-options: nosniff
+2026-01-27 17:17:51.189 27181-741   okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-financial-data-protection: enabled
+2026-01-27 17:17:51.189 27181-741   okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-frame-options: DENY
+2026-01-27 17:17:51.189 27181-741   okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-transaction-security-level: maximum
+2026-01-27 17:17:51.190 27181-741   okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-xss-protection: 1; mode=block
+2026-01-27 17:17:51.190 27181-741   okhttp.OkHttpClient     com.cdccreditsmart.app               I  via: 1.1 google
+2026-01-27 17:17:51.190 27181-741   okhttp.OkHttpClient     com.cdccreditsmart.app               I  alt-svc: h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
+2026-01-27 17:17:51.191 27181-741   okhttp.OkHttpClient     com.cdccreditsmart.app               I  {"deviceId":"device_1769137280282_l7srjesg25","serialNumber":"QJ3H4MKG","commandsCount":0,"commands":[]}
+2026-01-27 17:17:51.192 27181-741   okhttp.OkHttpClient     com.cdccreditsmart.app               I  <-- END HTTP (104-byte body)
+2026-01-27 17:17:51.194 27181-27568 MdmCommandReceiver      com.cdccreditsmart.app               I  🔍 HTTP Response code: 200
+2026-01-27 17:17:51.194 27181-27568 MdmCommandReceiver      com.cdccreditsmart.app               I  🔍 HTTP isSuccessful: true
+2026-01-27 17:17:51.194 27181-27568 MdmCommandReceiver      com.cdccreditsmart.app               I  🔍 Response body deviceId: device_1769137280282_l7srjesg25
+2026-01-27 17:17:51.195 27181-27568 MdmCommandReceiver      com.cdccreditsmart.app               I  🔍 Response body serialNumber: QJ3H4MKG
+2026-01-27 17:17:51.195 27181-27568 MdmCommandReceiver      com.cdccreditsmart.app               I  🔍 Total de comandos: 0
+2026-01-27 17:17:51.195 27181-27568 MdmCommandReceiver      com.cdccreditsmart.app               D  ✅ Nenhum comando pendente no servidor
+2026-01-27 17:17:51.195 27181-27568 MdmCommandReceiver      com.cdccreditsmart.app               D  📊 Fetch duration: 683ms
+2026-01-27 17:18:01.647 27181-27181 CheckTime               com.cdccreditsmart.app               W  App running slow: Executing instantiate receiver took 383ms
+2026-01-27 17:18:01.648 27181-27181 SimChangeBroadcastRcvr  com.cdccreditsmart.app               D  🔒 SIM SWAP: BroadcastReceiver acionado com action: android.intent.action.SIM_STATE_CHANGED
+2026-01-27 17:18:01.648 27181-27181 SimChangeBroadcastRcvr  com.cdccreditsmart.app               D  🔒 SIM SWAP: Estado do SIM: UNKNOWN
+2026-01-27 17:18:01.648 27181-27181 SimChangeBroadcastRcvr  com.cdccreditsmart.app               D  🔒 SIM SWAP: Estado desconhecido do SIM: UNKNOWN
+2026-01-27 17:18:01.649 27181-27181 CheckTime               com.cdccreditsmart.app               W  App running slow: Executing com.cdccreditsmart.app.security.SimChangeBroadcastReceiver scheduleReceive took 410ms
+2026-01-27 17:18:01.704 28425-28425 SimChangeBroadcastRcvr  com.cdccreditsmart.app               D  🔒 SIM SWAP: BroadcastReceiver acionado com action: android.intent.action.SIM_STATE_CHANGED
+2026-01-27 17:18:01.705 28425-28425 SimChangeBroadcastRcvr  com.cdccreditsmart.app               D  🔒 SIM SWAP: Estado do SIM: UNKNOWN
+2026-01-27 17:18:01.712 28425-28425 SimChangeBroadcastRcvr  com.cdccreditsmart.app               D  🔒 SIM SWAP: Estado desconhecido do SIM: UNKNOWN
+2026-01-27 17:18:01.771 27181-32763 MdmCommandReceiver      com.cdccreditsmart.app               D  📥 Mensagem MDM recebida: {"type":"auth_timeout","message":"Authentication timeout - connection closing","timestamp":"2026-01-27T20:18:01.047Z"}
+2026-01-27 17:18:01.772 27181-32763 MdmCommandReceiver      com.cdccreditsmart.app               W  ⚠️ WebSocket MDM fechando (code=4002)
+2026-01-27 17:18:01.772 27181-27568 MdmCommandReceiver      com.cdccreditsmart.app               D  📥 JSON recebido: {"type":"auth_timeout","message":"Authentication timeout - connection closing","timestamp":"2026-01-27T20:18:01.047Z"}
+2026-01-27 17:18:01.785 27181-27568 MdmCommandReceiver      com.cdccreditsmart.app               D  📨 Tipo de mensagem: auth_timeout
+2026-01-27 17:18:01.786 27181-27568 MdmCommandReceiver      com.cdccreditsmart.app               E  ⏰ ========================================
+2026-01-27 17:18:01.787 27181-27568 MdmCommandReceiver      com.cdccreditsmart.app               E  ⏰ TIMEOUT DE AUTENTICAÇÃO WEBSOCKET!
+2026-01-27 17:18:01.787 27181-27568 MdmCommandReceiver      com.cdccreditsmart.app               E  ⏰ ========================================
+2026-01-27 17:18:01.793 27181-27568 MdmCommandReceiver      com.cdccreditsmart.app               E  ⏰ Mensagem: Authentication timeout - connection closing
+2026-01-27 17:18:01.810 27181-27568 MdmCommandReceiver      com.cdccreditsmart.app               E  ⏰ Conexão será fechada pelo servidor (código 4002)
+2026-01-27 17:18:02.056 27181-27181 SimChangeBroadcastRcvr  com.cdccreditsmart.app               D  🔒 SIM SWAP: BroadcastReceiver acionado com action: android.intent.action.SIM_STATE_CHANGED
+2026-01-27 17:18:02.056 27181-27181 SimChangeBroadcastRcvr  com.cdccreditsmart.app               D  🔒 SIM SWAP: Estado do SIM: UNKNOWN
+2026-01-27 17:18:02.056 27181-27181 SimChangeBroadcastRcvr  com.cdccreditsmart.app               D  🔒 SIM SWAP: Estado desconhecido do SIM: UNKNOWN
+2026-01-27 17:18:02.159 28425-28425 SimChangeBroadcastRcvr  com.cdccreditsmart.app               D  🔒 SIM SWAP: BroadcastReceiver acionado com action: android.intent.action.SIM_STATE_CHANGED
+2026-01-27 17:18:02.159 28425-28425 SimChangeBroadcastRcvr  com.cdccreditsmart.app               D  🔒 SIM SWAP: Estado do SIM: UNKNOWN
+2026-01-27 17:18:02.159 28425-28425 SimChangeBroadcastRcvr  com.cdccreditsmart.app               D  🔒 SIM SWAP: Estado desconhecido do SIM: UNKNOWN
+2026-01-27 17:18:04.333 28425-28425 CarrierConfigChanged    com.cdccreditsmart.app               I  ════════════════════════════════════════════════════════
+2026-01-27 17:18:04.334 28425-28425 CarrierConfigChanged    com.cdccreditsmart.app               I  Carrier Config Changed Detected
+2026-01-27 17:18:04.334 28425-28425 CarrierConfigChanged    com.cdccreditsmart.app               I  ════════════════════════════════════════════════════════
+2026-01-27 17:18:04.336 27181-27181 CarrierConfigChanged    com.cdccreditsmart.app               I  ════════════════════════════════════════════════════════
+2026-01-27 17:18:04.336 27181-27181 CarrierConfigChanged    com.cdccreditsmart.app               I  Carrier Config Changed Detected
+2026-01-27 17:18:04.336 27181-27181 CarrierConfigChanged    com.cdccreditsmart.app               I  ════════════════════════════════════════════════════════
+2026-01-27 17:18:04.400 27181-27181 CarrierConfigChanged    com.cdccreditsmart.app               I  Current Carrier: 
+2026-01-27 17:18:04.400 27181-27181 CarrierConfigChanged    com.cdccreditsmart.app               I  SIM Serial: null****
+2026-01-27 17:18:04.418 28425-28425 CarrierConfigChanged    com.cdccreditsmart.app               E  Permission denied to read SIM info (Ask Gemini)
+                                                                                                    java.lang.SecurityException: getIccSerialNumber: The uid 1110269 does not meet the requirements to access device identifiers.
+                                                                                                    	at android.os.Parcel.createExceptionOrNull(Parcel.java:3079)
+                                                                                                    	at android.os.Parcel.createException(Parcel.java:3063)
+                                                                                                    	at android.os.Parcel.readException(Parcel.java:3046)
+                                                                                                    	at android.os.Parcel.readException(Parcel.java:2988)
+                                                                                                    	at com.android.internal.telephony.IPhoneSubInfo$Stub$Proxy.getIccSerialNumberForSubscriber(IPhoneSubInfo.java:1257)
+                                                                                                    	at android.telephony.TelephonyManager.getSimSerialNumber(TelephonyManager.java:4090)
+                                                                                                    	at android.telephony.TelephonyManager.getSimSerialNumber(TelephonyManager.java:4047)
+                                                                                                    	at com.cdccreditsmart.app.receivers.CarrierConfigChangedReceiver.handleCarrierConfigChanged(CarrierConfigChangedReceiver.kt:65)
+                                                                                                    	at com.cdccreditsmart.app.receivers.CarrierConfigChangedReceiver.onReceive(CarrierConfigChangedReceiver.kt:47)
+                                                                                                    	at android.app.ActivityThread.handleReceiver(ActivityThread.java:4558)
+                                                                                                    	at android.app.ActivityThread.-$$Nest$mhandleReceiver(Unknown Source:0)
+                                                                                                    	at android.app.ActivityThread$H.handleMessage(ActivityThread.java:2348)
+                                                                                                    	at android.os.Handler.dispatchMessage(Handler.java:106)
+                                                                                                    	at android.os.Looper.loopOnce(Looper.java:205)
+                                                                                                    	at android.os.Looper.loop(Looper.java:294)
+                                                                                                    	at android.app.ActivityThread.main(ActivityThread.java:8391)
+                                                                                                    	at java.lang.reflect.Method.invoke(Native Method)
+                                                                                                    	at com.android.internal.os.RuntimeInit$MethodAndArgsCaller.run(RuntimeInit.java:640)
+                                                                                                    	at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:995)
+2026-01-27 17:18:04.436 28425-28425 CarrierConfigChanged    com.cdccreditsmart.app               I  ════════════════════════════════════════════════════════
+2026-01-27 17:18:04.436 28425-28425 CarrierConfigChanged    com.cdccreditsmart.app               I  Carrier Config Changed Detected
+2026-01-27 17:18:04.436 28425-28425 CarrierConfigChanged    com.cdccreditsmart.app               I  ════════════════════════════════════════════════════════
+2026-01-27 17:18:04.459 28425-28425 CarrierConfigChanged    com.cdccreditsmart.app               E  Permission denied to read SIM info (Ask Gemini)
+                                                                                                    java.lang.SecurityException: getIccSerialNumber: The uid 1110269 does not meet the requirements to access device identifiers.
+                                                                                                    	at android.os.Parcel.createExceptionOrNull(Parcel.java:3079)
+                                                                                                    	at android.os.Parcel.createException(Parcel.java:3063)
+                                                                                                    	at android.os.Parcel.readException(Parcel.java:3046)
+                                                                                                    	at android.os.Parcel.readException(Parcel.java:2988)
+                                                                                                    	at com.android.internal.telephony.IPhoneSubInfo$Stub$Proxy.getIccSerialNumberForSubscriber(IPhoneSubInfo.java:1257)
+                                                                                                    	at android.telephony.TelephonyManager.getSimSerialNumber(TelephonyManager.java:4090)
+                                                                                                    	at android.telephony.TelephonyManager.getSimSerialNumber(TelephonyManager.java:4047)
+                                                                                                    	at com.cdccreditsmart.app.receivers.CarrierConfigChangedReceiver.handleCarrierConfigChanged(CarrierConfigChangedReceiver.kt:65)
+                                                                                                    	at com.cdccreditsmart.app.receivers.CarrierConfigChangedReceiver.onReceive(CarrierConfigChangedReceiver.kt:47)
+                                                                                                    	at android.app.ActivityThread.handleReceiver(ActivityThread.java:4558)
+                                                                                                    	at android.app.ActivityThread.-$$Nest$mhandleReceiver(Unknown Source:0)
+                                                                                                    	at android.app.ActivityThread$H.handleMessage(ActivityThread.java:2348)
+                                                                                                    	at android.os.Handler.dispatchMessage(Handler.java:106)
+                                                                                                    	at android.os.Looper.loopOnce(Looper.java:205)
+                                                                                                    	at android.os.Looper.loop(Looper.java:294)
+                                                                                                    	at android.app.ActivityThread.main(ActivityThread.java:8391)
+                                                                                                    	at java.lang.reflect.Method.invoke(Native Method)
+                                                                                                    	at com.android.internal.os.RuntimeInit$MethodAndArgsCaller.run(RuntimeInit.java:640)
+                                                                                                    	at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:995)
+2026-01-27 17:18:04.459 27181-27181 CarrierConfigChanged    com.cdccreditsmart.app               D  Carrier config changed but no SIM swap detected
+2026-01-27 17:18:04.499 27181-27181 CarrierConfigChanged    com.cdccreditsmart.app               I  ════════════════════════════════════════════════════════
+2026-01-27 17:18:04.499 27181-27181 CarrierConfigChanged    com.cdccreditsmart.app               I  Carrier Config Changed Detected
+2026-01-27 17:18:04.499 27181-27181 CarrierConfigChanged    com.cdccreditsmart.app               I  ════════════════════════════════════════════════════════
+2026-01-27 17:18:04.503 27181-27181 CarrierConfigChanged    com.cdccreditsmart.app               I  Current Carrier: 
+2026-01-27 17:18:04.503 27181-27181 CarrierConfigChanged    com.cdccreditsmart.app               I  SIM Serial: null****
+2026-01-27 17:18:04.503 27181-27181 CarrierConfigChanged    com.cdccreditsmart.app               D  Carrier config changed but no SIM swap detected
+---------------------------- PROCESS ENDED (28425) for package com.cdccreditsmart.app ----------------------------
+---------------------------- PROCESS ENDED (27181) for package com.cdccreditsmart.app ----------------------------
