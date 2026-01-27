@@ -1,0 +1,54 @@
+2026-01-27 19:06:44.863 21232-21232 Choreographer           com.cdccreditsmart.app               I  Skipped 51 frames!  The application may be doing too much work on its main thread.
+2026-01-27 19:06:44.902 21232-21426 OpenGLRenderer          com.cdccreditsmart.app               I  Davey! duration=918ms; Flags=0, FrameTimelineVsyncId=1283675, IntendedVsync=6487929379932, Vsync=6487929379932, InputEventId=601036318, HandleInputStart=6487930407282, AnimationStart=6488005529513, PerformTraversalsStart=6488754045627, DrawStart=6488760715127, FrameDeadline=6487946046599, FrameInterval=6487930280320, FrameStartTime=16653400, SyncQueued=6488827908435, SyncStart=6488828091704, IssueDrawCommandsStart=6488828325435, SwapBuffers=6488840072358, FrameCompleted=6488848256204, DequeueBufferDuration=29462, QueueBufferDuration=523616, GpuCompleted=6488848256204, SwapBuffersCompleted=6488845494550, DisplayPresentTime=6464163008453, CommandSubmissionCompleted=6488840072358, 
+2026-01-27 19:06:45.239 21232-21426 OpenGLRenderer          com.cdccreditsmart.app               I  Davey! duration=1211ms; Flags=0, FrameTimelineVsyncId=1283682, IntendedVsync=6487979340132, Vsync=6488828663532, InputEventId=534822029, HandleInputStart=6488842245974, AnimationStart=6488851782358, PerformTraversalsStart=6489088467666, DrawStart=6489088822743, FrameDeadline=6488878636999, FrameInterval=6488840904012, FrameStartTime=16653400, SyncQueued=6489168870435, SyncStart=6489171011473, IssueDrawCommandsStart=6489171224819, SwapBuffers=6489184702819, FrameCompleted=6489192584550, DequeueBufferDuration=21231, QueueBufferDuration=589538, GpuCompleted=6489192584550, SwapBuffersCompleted=6489188443396, DisplayPresentTime=6464179677607, CommandSubmissionCompleted=6489184702819, 
+2026-01-27 19:06:45.557 21232-21232 SecureTokenStorage      com.cdccreditsmart.app               D  📖 Lendo customerName: Marcos Antunes
+2026-01-27 19:06:45.573 21232-21232 SecureTokenStorage      com.cdccreditsmart.app               D  📖 Lendo deviceModel: REALME Note 60x
+2026-01-27 19:06:45.877 21232-21311 SupportRepository       com.cdccreditsmart.app               D  ✅ Retornando contato do cache local
+2026-01-27 19:06:45.998 21232-21232 Choreographer           com.cdccreditsmart.app               I  Skipped 36 frames!  The application may be doing too much work on its main thread.
+2026-01-27 19:06:46.251 21232-21247 OpenGLRenderer          com.cdccreditsmart.app               I  Davey! duration=835ms; Flags=0, FrameTimelineVsyncId=1283759, IntendedVsync=6489361757791, Vsync=6489961320007, InputEventId=1066076622, HandleInputStart=6489980916511, AnimationStart=6490093264934, PerformTraversalsStart=6490124771357, DrawStart=6490125231780, FrameDeadline=6490011299766, FrameInterval=6489976167896, FrameStartTime=16654506, SyncQueued=6490131735626, SyncStart=6490131934434, IssueDrawCommandsStart=6490132433857, SwapBuffers=6490137235511, FrameCompleted=6490197051626, DequeueBufferDuration=31039, QueueBufferDuration=443462, GpuCompleted=6490145600742, SwapBuffersCompleted=6490197051626, DisplayPresentTime=6464362873299, CommandSubmissionCompleted=6490137235511, 
+2026-01-27 19:06:49.584 21232-21232 SecureTokenStorage      com.cdccreditsmart.app               D  📖 Lendo customerName: Marcos Antunes
+2026-01-27 19:06:49.591 21232-21232 SecureTokenStorage      com.cdccreditsmart.app               D  📖 Lendo deviceModel: REALME Note 60x
+2026-01-27 19:06:49.784 21232-21292 SupportRepository       com.cdccreditsmart.app               D  ✅ Retornando contato do cache local
+2026-01-27 19:06:50.351 21232-21426 OpenGLRenderer          com.cdccreditsmart.app               I  Davey! duration=800ms; Flags=0, FrameTimelineVsyncId=1284373, IntendedVsync=6493525288901, Vsync=6493891679915, InputEventId=33149131, HandleInputStart=6493944519085, AnimationStart=6493944646816, PerformTraversalsStart=6494294372162, DrawStart=6494294715508, FrameDeadline=6493925010206, FrameInterval=6493899851739, FrameStartTime=16654137, SyncQueued=6494305942816, SyncStart=6494306120739, IssueDrawCommandsStart=6494306532700, SwapBuffers=6494312836854, FrameCompleted=6494325615277, DequeueBufferDuration=30500, QueueBufferDuration=656500, GpuCompleted=6494325615277, SwapBuffersCompleted=6494321247739, DisplayPresentTime=6473172924177, CommandSubmissionCompleted=6494312836854, 
+2026-01-27 19:06:52.009 21232-21311 ServiceWatchdogWorker   com.cdccreditsmart.app               I  🔍 ========================================
+2026-01-27 19:06:52.009 21232-21311 ServiceWatchdogWorker   com.cdccreditsmart.app               I  🔍 WATCHDOG: Verificando CdcForegroundService
+2026-01-27 19:06:52.009 21232-21311 ServiceWatchdogWorker   com.cdccreditsmart.app               I  🔍 ========================================
+2026-01-27 19:06:52.011 21232-21311 KeepAliveManager        com.cdccreditsmart.app               D  ✅ CdcForegroundService está ativo
+2026-01-27 19:06:52.023 21232-21311 ServiceWatchdogWorker   com.cdccreditsmart.app               I  📊 Estatísticas Keep Alive:
+2026-01-27 19:06:52.023 21232-21311 ServiceWatchdogWorker   com.cdccreditsmart.app               I     - Serviço ativo: true
+2026-01-27 19:06:52.023 21232-21311 ServiceWatchdogWorker   com.cdccreditsmart.app               I     - Restarts: 0
+2026-01-27 19:06:52.023 21232-21311 ServiceWatchdogWorker   com.cdccreditsmart.app               I     - Otimização bateria: NÃO (bom)
+2026-01-27 19:06:52.023 21232-21311 ServiceWatchdogWorker   com.cdccreditsmart.app               I  🔍 ========================================
+2026-01-27 19:06:52.023 21232-21311 ServiceWatchdogWorker   com.cdccreditsmart.app               I  ✅ WATCHDOG: Serviço verificado/reiniciado com sucesso
+2026-01-27 19:06:52.044 21232-21278 WM-WorkerWrapper        com.cdccreditsmart.app               I  Worker result SUCCESS for Work [ id=b684cddf-d63c-437c-a7be-c7efe9249bd7, tags={ com.cdccreditsmart.app.keepalive.ServiceWatchdogWorker } ]
+2026-01-27 19:06:53.138 21232-21307 OfflineEnf...mentWorker com.cdccreditsmart.app               I  🔄 ========================================
+2026-01-27 19:06:53.138 21232-21307 OfflineEnf...mentWorker com.cdccreditsmart.app               I  🔄 OFFLINE ENFORCEMENT - EXECUTANDO
+2026-01-27 19:06:53.138 21232-21307 OfflineEnf...mentWorker com.cdccreditsmart.app               I  🔄 ========================================
+2026-01-27 19:06:53.271 21232-21232 SecureTokenStorage      com.cdccreditsmart.app               D  📖 Lendo customerName: Marcos Antunes
+2026-01-27 19:06:53.283 21232-21232 SecureTokenStorage      com.cdccreditsmart.app               D  📖 Lendo deviceModel: REALME Note 60x
+2026-01-27 19:06:53.290 21232-21307 creditsmart.app         com.cdccreditsmart.app               W  Verification of void com.cdccreditsmart.app.offline.DebtAgingCalculator.<clinit>() took 142.903ms (90.97 bytecodes/s) (1616B approximate peak alloc)
+2026-01-27 19:06:53.431 21232-21311 SupportRepository       com.cdccreditsmart.app               D  ✅ Retornando contato do cache local
+2026-01-27 19:06:53.482 21232-21307 creditsmart.app         com.cdccreditsmart.app               W  Verification of android.content.SharedPreferences com.cdccreditsmart.data.storage.LocalAccountState.prefs_delegate$lambda$0(com.cdccreditsmart.data.storage.LocalAccountState) took 182.489ms (323.31 bytecodes/s) (2600B approximate peak alloc)
+2026-01-27 19:06:54.691 21232-21307 OfflineEnf...mentWorker com.cdccreditsmart.app               I  ℹ️ Sem dados offline - nada a fazer
+2026-01-27 19:06:54.709 21232-21291 WM-WorkerWrapper        com.cdccreditsmart.app               I  Worker result SUCCESS for Work [ id=4f93d8a4-5cad-4df7-9df9-772bf5e16811, tags={ com.cdccreditsmart.app.offline.OfflineEnforcementWorker } ]
+2026-01-27 19:06:56.384 21232-21232 SecureTokenStorage      com.cdccreditsmart.app               D  📖 Lendo customerName: Marcos Antunes
+2026-01-27 19:06:56.392 21232-21232 SecureTokenStorage      com.cdccreditsmart.app               D  📖 Lendo deviceModel: REALME Note 60x
+2026-01-27 19:06:56.533 21232-21307 SupportRepository       com.cdccreditsmart.app               D  ✅ Retornando contato do cache local
+2026-01-27 19:07:02.285 21232-21311 MdmCommandReceiver      com.cdccreditsmart.app               D  💓 Ping JSON enviado (timestamp: 1769551622283)
+2026-01-27 19:07:02.285 21232-21232 WebSocketManager        com.cdccreditsmart.app               D  Heartbeat ping sent
+2026-01-27 19:07:02.625 21232-21311 MdmCommandReceiver      com.cdccreditsmart.app               I  🔍 [Polling #17] Verificando comandos pendentes...
+2026-01-27 19:07:02.650 21232-21311 SecureTokenStorage      com.cdccreditsmart.app               D  ✅ Usando IMEI para MDM: 8608***718
+2026-01-27 19:07:02.650 21232-21311 MdmCommandReceiver      com.cdccreditsmart.app               I  🔍 ========================================
+2026-01-27 19:07:02.650 21232-21311 MdmCommandReceiver      com.cdccreditsmart.app               I  🔍 BUSCANDO COMANDOS PENDENTES
+2026-01-27 19:07:02.650 21232-21311 MdmCommandReceiver      com.cdccreditsmart.app               I  🔍 ========================================
+2026-01-27 19:07:02.650 21232-21311 MdmCommandReceiver      com.cdccreditsmart.app               I  🔍 Identifier: 860875074339718
+2026-01-27 19:07:02.650 21232-21311 MdmCommandReceiver      com.cdccreditsmart.app               I  🔍 Endpoint: GET /api/apk/device/860875074339718/commands
+2026-01-27 19:07:02.702 21232-21311 MdmCommandReceiver      com.cdccreditsmart.app               D  🔍 Executando requisição HTTP (timeout: 15s)...
+2026-01-27 19:07:02.764 21232-21438 okhttp.OkHttpClient     com.cdccreditsmart.app               I  --> GET https://cdccreditsmart.com/api/apk/device/860875074339718/commands
+2026-01-27 19:07:02.764 21232-21438 okhttp.OkHttpClient     com.cdccreditsmart.app               I  --> END GET
+2026-01-27 19:07:03.384 21232-21337 MdmCommandReceiver      com.cdccreditsmart.app               D  📥 Mensagem MDM recebida: {"type":"pong","timestamp":"2026-01-27T22:07:02.110Z"}
+2026-01-27 19:07:03.386 21232-21311 MdmCommandReceiver      com.cdccreditsmart.app               D  📥 JSON recebido: {"type":"pong","timestamp":"2026-01-27T22:07:02.110Z"}
+2026-01-27 19:07:03.414 21232-21311 MdmCommandReceiver      com.cdccreditsmart.app               D  📨 Tipo de mensagem: pong
+2026-01-27 19:07:03.416 21232-21311 MdmCommandReceiver      com.cdccreditsmart.app               D  💓 Pong recebido (latency: N/A)
+2026-01-27 19:07:03.432 21232-21338 WebSocketManager        com.cdccreditsmart.app               D  Message received: {"type":"pong","timestamp":"2026-01-27T22:07:02.254Z"}...
+2026-01-27 19:07:03.432 21232-21338 WebSocketManager        com.cdccreditsmart.app               D  Received message type: pong

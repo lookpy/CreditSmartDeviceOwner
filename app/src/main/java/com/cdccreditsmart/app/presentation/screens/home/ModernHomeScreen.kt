@@ -191,6 +191,20 @@ private fun HomeContent(
 ) {
     val context = LocalContext.current
     
+    val storage = remember { com.cdccreditsmart.app.security.SecureTokenStorage(context) }
+    val customerName = remember { storage.getCustomerName() }
+    val deviceModel = remember { storage.getDeviceModel() }
+    val contractCode = remember { storage.getContractCode() }
+    
+    val supportRepository = remember { SupportRepository(context) }
+    var contactData by remember { mutableStateOf<SupportContactData?>(null) }
+    
+    LaunchedEffect(Unit) {
+        supportRepository.getSupportContact().onSuccess { data ->
+            contactData = data
+        }
+    }
+    
     LazyColumn(
         modifier = modifier
             .fillMaxSize()
@@ -199,23 +213,6 @@ private fun HomeContent(
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
         item {
-            val storage = remember { com.cdccreditsmart.app.security.SecureTokenStorage(context) }
-            val customerName = remember { storage.getCustomerName() }
-            val deviceModel = remember { storage.getDeviceModel() }
-            val contractCode = remember { storage.getContractCode() }
-            
-            val supportRepository = remember { SupportRepository(context) }
-            var contactData by remember { mutableStateOf<SupportContactData?>(null) }
-            val scope = rememberCoroutineScope()
-            
-            LaunchedEffect(Unit) {
-                scope.launch {
-                    supportRepository.getSupportContact().onSuccess { data ->
-                        contactData = data
-                    }
-                }
-            }
-            
             HeroHeaderCard(
                 customerName = customerName ?: "Cliente",
                 deviceModel = deviceModel ?: "Dispositivo",

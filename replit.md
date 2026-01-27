@@ -146,3 +146,15 @@ The UI leverages Jetpack Compose and Material 3, incorporating a CDC institution
 - Markdown parsing movido para remember block (evita re-parsing em recomposições)
 - Classe selada ParsedMarkdownLine para representação type-safe de linhas
 - Resolve frame drops de 100+ frames ao abrir termos grandes
+
+**Home Screen Scroll Optimization (2025-01-27):**
+- ModernHomeScreen: State hoisting de storage reads (customerName, deviceModel, contractCode)
+- Valores movidos para fora do LazyColumn para evitar releitura durante scroll
+- supportRepository e contactData também hoisted para nível de HomeContent
+- Resolve frame drops de 50+ frames durante scroll na tela principal
+
+**WebSocket Authentication Fix (2025-01-27):**
+- MdmCommandReceiver: serialNumber agora usa contractCode ao invés de IMEI
+- Corrige "Device not found in system" - backend espera contractCode como serialNumber
+- IMEI enviado no campo `imei` separadamente
+- Fallback para mdmIdentifier se contractCode não disponível
