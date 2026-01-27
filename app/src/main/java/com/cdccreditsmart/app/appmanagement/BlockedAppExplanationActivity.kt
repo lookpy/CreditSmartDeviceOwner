@@ -361,7 +361,7 @@ fun ModernBlockedAppScreen(
                 )
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(
-                    text = if (contactData?.whatsapp?.isNotEmpty() == true) "WhatsApp CDC" else "Falar com a CDC",
+                    text = if (contactData?.whatsapp?.isNotEmpty() == true) "Suporte WhatsApp" else "Falar com a Credit Smart",
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.Medium
                 )
