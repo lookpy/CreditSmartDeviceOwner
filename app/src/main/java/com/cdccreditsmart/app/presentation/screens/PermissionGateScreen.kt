@@ -125,10 +125,10 @@ fun PermissionGateScreen(
     }
     
     LaunchedEffect(Unit) {
-        Log.d(TAG, "⏰ Iniciando verificação periódica de permissões...")
+        Log.d(TAG, "⏰ Iniciando verificação periódica de permissões (a cada 3s)...")
         
         while (true) {
-            delay(1000)
+            delay(3000) // Aumentado de 1s para 3s para evitar lentidão do app
             val newStatus = gateManager.getGateStatus()
             gateStatus = newStatus
             

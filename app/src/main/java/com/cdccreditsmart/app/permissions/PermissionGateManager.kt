@@ -121,22 +121,19 @@ class PermissionGateManager(private val context: Context) {
         }
     }
     
+    // Cache para evitar logs repetitivos
+    private var lastLoggedMissingCount: Int = -1
+    
     fun getGateStatus(): GateStatus {
         val level = getPrivilegeLevel()
         
         // CRÍTICO: Quando Device Owner, verificar CADA permissão especial individualmente
         // Algumas permissões NÃO podem ser concedidas automaticamente em alguns dispositivos
         if (level == PrivilegeLevel.DEVICE_OWNER) {
-            Log.i(TAG, "🚀 Device Owner detectado - verificando permissões especiais REAIS")
-            
-            // Verificar CADA permissão individualmente
+            // Verificar CADA permissão individualmente (sem logs repetitivos)
             val hasUsageStats = hasUsageStatsPermission()
             val hasOverlay = hasOverlayPermission()
             val hasBatteryExemption = isBatteryOptimizationExempted()
-            
-            Log.i(TAG, "   → USAGE_STATS: ${if (hasUsageStats) "✅" else "❌"}")
-            Log.i(TAG, "   → OVERLAY: ${if (hasOverlay) "✅" else "❌"}")
-            Log.i(TAG, "   → BATTERY: ${if (hasBatteryExemption) "✅" else "❌"}")
             
             val grantedPermissions = mutableListOf<PermissionStatus>()
             val missingPermissions = mutableListOf<PermissionStatus>()
@@ -223,10 +220,15 @@ class PermissionGateManager(private val context: Context) {
             
             val allGranted = missingPermissions.isEmpty()
             
-            if (allGranted) {
-                Log.i(TAG, "   → Todas as permissões especiais estão concedidas!")
-            } else {
-                Log.w(TAG, "   → ${missingPermissions.size} permissão(ões) pendente(s)")
+            // Só logar quando houver mudança para evitar spam
+            if (missingPermissions.size != lastLoggedMissingCount) {
+                lastLoggedMissingCount = missingPermissions.size
+                if (allGranted) {
+                    Log.i(TAG, "✅ Device Owner: Todas as permissões especiais concedidas!")
+                } else {
+                    Log.w(TAG, "⚠️ Device Owner: ${missingPermissions.size} permissão(ões) pendente(s)")
+                    missingPermissions.forEach { Log.w(TAG, "   → Falta: ${it.displayName}") }
+                }
             }
             
             return GateStatus(
