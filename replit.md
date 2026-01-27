@@ -170,3 +170,10 @@ The UI leverages Jetpack Compose and Material 3, incorporating a CDC institution
 - Quando bloqueado por atraso, exibe apenas botão de telefone com número visível
 - Verifica blockedPackages e blockedCategories do LocalAccountState
 - Previne cliente clicar em suporte WhatsApp quando app está suspenso
+
+**Automatic Permission Acquisition as Device Owner (2025-01-27):**
+- PermissionGateScreen: Quando Device Owner, concede permissões automaticamente ANTES de verificar status
+- Chama AutoPermissionManager.grantAllRuntimePermissionsAsDeviceOwner() imediatamente
+- Após concessão, re-verifica status e navega automaticamente se todas OK
+- CDCDeviceAdminReceiver.onEnabled(): Concede permissões via grantAllRuntimePermissionsImmediately()
+- AutoPermissionManager: Usa setPermissionGrantState() para runtime e AppOpsManager para especiais

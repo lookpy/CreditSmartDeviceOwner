@@ -34,6 +34,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.cdccreditsmart.app.permissions.PermissionGateManager
+import com.cdccreditsmart.app.permissions.AutoPermissionManager
 import com.cdccreditsmart.app.compliance.SettingsGuardService
 import com.cdccreditsmart.device.CDCDeviceAdminReceiver
 import kotlinx.coroutines.Dispatchers
@@ -50,9 +51,25 @@ fun PermissionGateScreen(
     val context = LocalContext.current
     val activity = context as? Activity
     val gateManager = remember { PermissionGateManager(context) }
+    val autoPermissionManager = remember { AutoPermissionManager(context) }
     val scope = rememberCoroutineScope()
     
-    val initialStatus = remember { gateManager.getGateStatus() }
+    // CRÍTICO: Se Device Owner, tentar conceder TODAS as permissões automaticamente PRIMEIRO
+    // Isso garante que quando a tela é aberta, já tentamos conceder tudo
+    val initialStatus = remember { 
+        val level = gateManager.getPrivilegeLevel()
+        if (level == PermissionGateManager.PrivilegeLevel.DEVICE_OWNER) {
+            Log.i(TAG, "🔐 DEVICE OWNER DETECTADO - tentando concessão automática IMEDIATA")
+            try {
+                // Conceder runtime permissions
+                autoPermissionManager.grantAllRuntimePermissionsAsDeviceOwner()
+                Log.i(TAG, "✅ Runtime permissions concedidas automaticamente")
+            } catch (e: Exception) {
+                Log.e(TAG, "❌ Erro ao conceder permissões: ${e.message}")
+            }
+        }
+        gateManager.getGateStatus() 
+    }
     var gateStatus by remember { mutableStateOf(initialStatus) }
     var isLoading by remember { mutableStateOf(false) }
     var runtimePermissionAskedOnce by remember { mutableStateOf(false) }
@@ -67,6 +84,27 @@ fun PermissionGateScreen(
         }
         initialStatus.grantedPermissions.forEach {
             Log.i(TAG, "   ✅ OK: ${it.displayName}")
+        }
+        
+        // Se Device Owner, conceder permissões especiais também (async)
+        if (initialStatus.privilegeLevel == PermissionGateManager.PrivilegeLevel.DEVICE_OWNER) {
+            withContext(Dispatchers.Default) {
+                try {
+                    autoPermissionManager.grantAllPermissionsAutomatically()
+                } catch (e: Exception) {
+                    Log.e(TAG, "❌ Erro em grantAllPermissionsAutomatically: ${e.message}")
+                }
+            }
+            // Re-verificar status após concessão automática
+            delay(500)
+            val updatedStatus = withContext(Dispatchers.Default) { gateManager.getGateStatus() }
+            if (updatedStatus.allRequiredPermissionsGranted) {
+                Log.i(TAG, "✅ DEVICE OWNER: Todas permissões concedidas automaticamente!")
+                SettingsGuardService.resumeAfterPermissionGrant()
+                onAllPermissionsGranted()
+                return@LaunchedEffect
+            }
+            gateStatus = updatedStatus
         }
     }
     
