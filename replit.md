@@ -140,3 +140,9 @@ The UI leverages Jetpack Compose and Material 3, incorporating a CDC institution
 - CDCApplication: Operações pesadas em applicationScope.launch (Dispatchers.Default)
 - CdcForegroundService: initializeServices() executa em serviceScope (Dispatchers.IO)
 - Lazy loading para componentes não-críticos (blockingManager, networkHelper, localAccountState)
+
+**Terms Screen Optimization (2025-01-27):**
+- TermsAndConditionsScreen: Convertido de Column+forEach para LazyColumn+items
+- Markdown parsing movido para remember block (evita re-parsing em recomposições)
+- Classe selada ParsedMarkdownLine para representação type-safe de linhas
+- Resolve frame drops de 100+ frames ao abrir termos grandes

@@ -1,6 +1,8 @@
 package com.cdccreditsmart.app.presentation.screens.terms
 
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
@@ -11,6 +13,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
@@ -124,56 +127,69 @@ fun TermsAndConditionsScreen(
             
             uiState.terms != null -> {
                 val terms = uiState.terms!!
+                val parsedLines = remember(terms.text) { 
+                    parseMarkdownLines(terms.text) 
+                }
                 
-                Column(
+                LazyColumn(
                     modifier = Modifier
                         .fillMaxSize()
                         .padding(paddingValues)
-                        .verticalScroll(rememberScrollState())
-                        .padding(16.dp),
-                    verticalArrangement = Arrangement.spacedBy(16.dp)
+                        .padding(horizontal = 16.dp),
+                    verticalArrangement = Arrangement.spacedBy(8.dp),
+                    contentPadding = PaddingValues(vertical = 16.dp)
                 ) {
-                    Card(
-                        modifier = Modifier.fillMaxWidth(),
-                        colors = CardDefaults.cardColors(
-                            containerColor = MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.5f)
-                        )
-                    ) {
-                        Row(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(12.dp),
-                            horizontalArrangement = Arrangement.SpaceBetween,
-                            verticalAlignment = Alignment.CenterVertically
+                    item {
+                        Card(
+                            modifier = Modifier.fillMaxWidth(),
+                            colors = CardDefaults.cardColors(
+                                containerColor = MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.5f)
+                            )
                         ) {
-                            Text(
-                                text = "Versão ${terms.version}",
-                                style = MaterialTheme.typography.labelLarge,
-                                color = MaterialTheme.colorScheme.primary,
-                                fontWeight = FontWeight.Bold
-                            )
-                            Text(
-                                text = formatCreatedAt(terms.createdAt),
-                                style = MaterialTheme.typography.labelMedium,
-                                color = MaterialTheme.colorScheme.onSurfaceVariant
-                            )
+                            Row(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(12.dp),
+                                horizontalArrangement = Arrangement.SpaceBetween,
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                Text(
+                                    text = "Versão ${terms.version}",
+                                    style = MaterialTheme.typography.labelLarge,
+                                    color = MaterialTheme.colorScheme.primary,
+                                    fontWeight = FontWeight.Bold
+                                )
+                                Text(
+                                    text = formatCreatedAt(terms.createdAt),
+                                    style = MaterialTheme.typography.labelMedium,
+                                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                                )
+                            }
                         }
                     }
                     
-                    MarkdownText(termsText = terms.text)
+                    items(parsedLines) { parsedLine ->
+                        MarkdownLine(parsedLine = parsedLine)
+                    }
                     
-                    Divider(
-                        modifier = Modifier.padding(vertical = 8.dp),
-                        color = MaterialTheme.colorScheme.outline.copy(alpha = 0.3f)
-                    )
+                    item {
+                        HorizontalDivider(
+                            modifier = Modifier.padding(vertical = 8.dp),
+                            color = MaterialTheme.colorScheme.outline.copy(alpha = 0.3f)
+                        )
+                    }
                     
-                    Text(
-                        text = "Credit Smart - Todos os direitos reservados",
-                        style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
-                    )
+                    item {
+                        Text(
+                            text = "Credit Smart - Todos os direitos reservados",
+                            style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
+                    }
                     
-                    Spacer(modifier = Modifier.height(16.dp))
+                    item {
+                        Spacer(modifier = Modifier.height(16.dp))
+                    }
                 }
             }
             
@@ -184,68 +200,84 @@ fun TermsAndConditionsScreen(
     }
 }
 
-@Composable
-private fun MarkdownText(termsText: String) {
-    val lines = termsText.split("\n")
-    
-    Column(
-        verticalArrangement = Arrangement.spacedBy(8.dp)
-    ) {
-        lines.forEach { line ->
-            when {
-                line.startsWith("# ") -> {
-                    Text(
-                        text = line.removePrefix("# "),
-                        style = MaterialTheme.typography.headlineMedium,
-                        fontWeight = FontWeight.Bold,
-                        color = MaterialTheme.colorScheme.primary
-                    )
-                }
-                line.startsWith("## ") -> {
-                    Text(
-                        text = line.removePrefix("## "),
-                        style = MaterialTheme.typography.titleLarge,
-                        fontWeight = FontWeight.Bold,
-                        color = MaterialTheme.colorScheme.primary
-                    )
-                }
-                line.startsWith("### ") -> {
-                    Text(
-                        text = line.removePrefix("### "),
-                        style = MaterialTheme.typography.titleMedium,
-                        fontWeight = FontWeight.Bold,
-                        color = MaterialTheme.colorScheme.primary
-                    )
-                }
-                line.startsWith("- ") || line.startsWith("* ") -> {
-                    Row {
-                        Text(
-                            text = "•  ",
-                            style = MaterialTheme.typography.bodyMedium
-                        )
-                        Text(
-                            text = line.removePrefix("- ").removePrefix("* "),
-                            style = MaterialTheme.typography.bodyMedium
-                        )
-                    }
-                }
-                line.isBlank() -> {
-                    Spacer(modifier = Modifier.height(8.dp))
-                }
-                else -> {
-                    val cleanedLine = line
-                        .replace(Regex("\\*\\*(.+?)\\*\\*"), "$1")
-                        .replace(Regex("\\*(.+?)\\*"), "$1")
-                        .replace(Regex("__(.+?)__"), "$1")
-                        .replace(Regex("_(.+?)_"), "$1")
-                    
-                    Text(
-                        text = cleanedLine,
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.onSurface
-                    )
-                }
+private sealed class ParsedMarkdownLine {
+    data class Heading1(val text: String) : ParsedMarkdownLine()
+    data class Heading2(val text: String) : ParsedMarkdownLine()
+    data class Heading3(val text: String) : ParsedMarkdownLine()
+    data class BulletPoint(val text: String) : ParsedMarkdownLine()
+    data class Paragraph(val text: String) : ParsedMarkdownLine()
+    object BlankLine : ParsedMarkdownLine()
+}
+
+private fun parseMarkdownLines(termsText: String): List<ParsedMarkdownLine> {
+    return termsText.split("\n").map { line ->
+        when {
+            line.startsWith("# ") -> ParsedMarkdownLine.Heading1(line.removePrefix("# "))
+            line.startsWith("## ") -> ParsedMarkdownLine.Heading2(line.removePrefix("## "))
+            line.startsWith("### ") -> ParsedMarkdownLine.Heading3(line.removePrefix("### "))
+            line.startsWith("- ") || line.startsWith("* ") -> 
+                ParsedMarkdownLine.BulletPoint(line.removePrefix("- ").removePrefix("* "))
+            line.isBlank() -> ParsedMarkdownLine.BlankLine
+            else -> {
+                val cleanedLine = line
+                    .replace(Regex("\\*\\*(.+?)\\*\\*"), "$1")
+                    .replace(Regex("\\*(.+?)\\*"), "$1")
+                    .replace(Regex("__(.+?)__"), "$1")
+                    .replace(Regex("_(.+?)_"), "$1")
+                ParsedMarkdownLine.Paragraph(cleanedLine)
             }
+        }
+    }
+}
+
+@Composable
+private fun MarkdownLine(parsedLine: ParsedMarkdownLine) {
+    when (parsedLine) {
+        is ParsedMarkdownLine.Heading1 -> {
+            Text(
+                text = parsedLine.text,
+                style = MaterialTheme.typography.headlineMedium,
+                fontWeight = FontWeight.Bold,
+                color = MaterialTheme.colorScheme.primary
+            )
+        }
+        is ParsedMarkdownLine.Heading2 -> {
+            Text(
+                text = parsedLine.text,
+                style = MaterialTheme.typography.titleLarge,
+                fontWeight = FontWeight.Bold,
+                color = MaterialTheme.colorScheme.primary
+            )
+        }
+        is ParsedMarkdownLine.Heading3 -> {
+            Text(
+                text = parsedLine.text,
+                style = MaterialTheme.typography.titleMedium,
+                fontWeight = FontWeight.Bold,
+                color = MaterialTheme.colorScheme.primary
+            )
+        }
+        is ParsedMarkdownLine.BulletPoint -> {
+            Row {
+                Text(
+                    text = "•  ",
+                    style = MaterialTheme.typography.bodyMedium
+                )
+                Text(
+                    text = parsedLine.text,
+                    style = MaterialTheme.typography.bodyMedium
+                )
+            }
+        }
+        is ParsedMarkdownLine.Paragraph -> {
+            Text(
+                text = parsedLine.text,
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.onSurface
+            )
+        }
+        ParsedMarkdownLine.BlankLine -> {
+            Spacer(modifier = Modifier.height(4.dp))
         }
     }
 }

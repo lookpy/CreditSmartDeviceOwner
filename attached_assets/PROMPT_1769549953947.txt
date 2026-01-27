@@ -1,0 +1,187 @@
+Parsing date without millis failed for [2018]
+2026-01-27 18:38:35.441 26748-26748 creditsmart.app         com.cdccreditsmart.app               W  Verification of void com.cdccreditsmart.app.presentation.screens.terms.TermsAndConditionsScreenKt.FallbackTermsContent(androidx.compose.foundation.layout.PaddingValues, androidx.compose.runtime.Composer, int) took 145.416ms (4930.65 bytecodes/s) (15720B approximate peak alloc)
+2026-01-27 18:38:35.631 26748-27010 NetworkConnectivity     com.cdccreditsmart.app               D  ✅ Conectado via WiFi com internet
+2026-01-27 18:38:35.643 26748-27010 SupportRepository       com.cdccreditsmart.app               D  ✅ Retornando termos do cache local (vv2.1)
+2026-01-27 18:38:35.702 26748-27010 MdmCommandReceiver      com.cdccreditsmart.app               I  🔄 Tentando reconectar WebSocket MDM (tentativa #2)...
+2026-01-27 18:38:35.762 26748-27010 SecureTokenStorage      com.cdccreditsmart.app               D  ✅ Usando IMEI para MDM: 8608***718
+2026-01-27 18:38:35.762 26748-27010 MdmCommandReceiver      com.cdccreditsmart.app               I  🔗 ========================================
+2026-01-27 18:38:35.762 26748-27010 MdmCommandReceiver      com.cdccreditsmart.app               I  🔗 INICIANDO CONEXÃO WEBSOCKET MDM
+2026-01-27 18:38:35.762 26748-27010 MdmCommandReceiver      com.cdccreditsmart.app               I  🔗 ========================================
+2026-01-27 18:38:35.762 26748-27010 MdmCommandReceiver      com.cdccreditsmart.app               I  🔗 URL base: wss://cdccreditsmart.com/ws/mdm-policies
+2026-01-27 18:38:35.762 26748-27010 MdmCommandReceiver      com.cdccreditsmart.app               I  🔗 JWT Token presente: true
+2026-01-27 18:38:35.762 26748-27010 MdmCommandReceiver      com.cdccreditsmart.app               I  🔗 JWT Token length: 273
+2026-01-27 18:38:35.762 26748-27010 MdmCommandReceiver      com.cdccreditsmart.app               I  🔗 JWT Token preview: eyJhbGciOiJIUzI1NiIsInR5cCI6Ik...
+2026-01-27 18:38:35.762 26748-27010 MdmCommandReceiver      com.cdccreditsmart.app               I  🔗 Device identifier: 860875074339718
+2026-01-27 18:38:35.806 29165-29505 ModernMediaScanner      com.cdccreditsmart.app               D  Parsing date with millis failed for [2018]. We will retry without millis
+2026-01-27 18:38:35.807 29165-29505 ModernMediaScanner      com.cdccreditsmart.app               D  Parsing date without millis failed for [2018]
+2026-01-27 18:38:35.829 26748-27010 MdmCommandReceiver      com.cdccreditsmart.app               D  🔗 Criando WebSocket OkHttp...
+2026-01-27 18:38:35.829 26748-27010 MdmCommandReceiver      com.cdccreditsmart.app               I  🔄 Iniciando polling IMEDIATAMENTE (não esperar WebSocket)
+2026-01-27 18:38:35.829 26748-27010 MdmCommandReceiver      com.cdccreditsmart.app               D  ⏳ Polling já está ativo - ignorando chamada duplicada
+2026-01-27 18:38:35.835 26748-27010 MdmCommandReceiver      com.cdccreditsmart.app               D  🔗 WebSocket request enviado - aguardando resposta...
+2026-01-27 18:38:35.955 29165-29505 ModernMediaScanner      com.cdccreditsmart.app               D  Parsing date with millis failed for [2018]. We will retry without millis
+2026-01-27 18:38:35.956 29165-29505 ModernMediaScanner      com.cdccreditsmart.app               D  Parsing date without millis failed for [2018]
+2026-01-27 18:38:36.073 26748-1218  TrafficStats            com.cdccreditsmart.app               D  tagSocket(171) with statsTag=0xffffffff, statsUid=-1
+2026-01-27 18:38:36.229 26748-30111 MdmCommandReceiver      com.cdccreditsmart.app               E  ❌ ========================================
+2026-01-27 18:38:36.229 26748-30111 MdmCommandReceiver      com.cdccreditsmart.app               E  ❌ WEBSOCKET MDM FALHOU!
+2026-01-27 18:38:36.229 26748-30111 MdmCommandReceiver      com.cdccreditsmart.app               E  ❌ ========================================
+2026-01-27 18:38:36.229 26748-27010 MdmCommandReceiver      com.cdccreditsmart.app               D  ⏰ Watchdog cancelado (conexão resolvida)
+2026-01-27 18:38:36.229 26748-30111 MdmCommandReceiver      com.cdccreditsmart.app               E  ❌ Reconexões anteriores: 2
+2026-01-27 18:38:36.230 26748-30111 MdmCommandReceiver      com.cdccreditsmart.app               E  ❌ Tipo de erro: EOFException
+2026-01-27 18:38:36.231 26748-30111 MdmCommandReceiver      com.cdccreditsmart.app               E  ❌ Mensagem: null
+2026-01-27 18:38:36.231 26748-30111 MdmCommandReceiver      com.cdccreditsmart.app               E  ❌ Response code: null
+2026-01-27 18:38:36.231 26748-30111 MdmCommandReceiver      com.cdccreditsmart.app               E  ❌ Response message: null
+2026-01-27 18:38:36.231 26748-30111 MdmCommandReceiver      com.cdccreditsmart.app               E  ❌ ========================================
+2026-01-27 18:38:36.232 26748-30111 MdmCommandReceiver      com.cdccreditsmart.app               D  ⏳ Polling já está ativo - ignorando chamada duplicada
+2026-01-27 18:38:36.232 26748-27010 MdmCommandReceiver      com.cdccreditsmart.app               I  🔄 ========================================
+2026-01-27 18:38:36.232 26748-27010 MdmCommandReceiver      com.cdccreditsmart.app               I  🔄 AGENDANDO RECONEXÃO WEBSOCKET MDM
+2026-01-27 18:38:36.232 26748-27010 MdmCommandReceiver      com.cdccreditsmart.app               I  🔄 ========================================
+2026-01-27 18:38:36.233 26748-27010 MdmCommandReceiver      com.cdccreditsmart.app               I  🔄 Tentativa #3
+2026-01-27 18:38:36.234 26748-27010 MdmCommandReceiver      com.cdccreditsmart.app               I  🔄 Delay: 8s (backoff exponencial)
+2026-01-27 18:38:36.234 26748-27010 MdmCommandReceiver      com.cdccreditsmart.app               I  🔄 Máximo delay: 120s
+2026-01-27 18:38:36.234 26748-27010 MdmCommandReceiver      com.cdccreditsmart.app               I  🔄 ========================================
+2026-01-27 18:38:36.485 26748-26748 Choreographer           com.cdccreditsmart.app               I  Skipped 74 frames!  The application may be doing too much work on its main thread.
+2026-01-27 18:38:36.498 26748-26748 TermsViewModel          com.cdccreditsmart.app               I  ✅ Termos carregados: vv2.1
+2026-01-27 18:38:36.537 26748-26748 Compatibil...geReporter com.cdccreditsmart.app               D  Compat change id reported: 247079863; UID 10267; state: ENABLED
+2026-01-27 18:38:37.544 26748-1218  MdmCommandReceiver      com.cdccreditsmart.app               I  ✅ WebSocket MDM CONECTADO COM SUCESSO!
+2026-01-27 18:38:37.544 26748-1218  MdmCommandReceiver      com.cdccreditsmart.app               D  ✅ Response code: 101
+2026-01-27 18:38:37.545 26748-1218  MdmCommandReceiver      com.cdccreditsmart.app               I  🔐 Enviando autenticação WebSocket imediatamente (v2.5)...
+2026-01-27 18:38:37.562 26748-1218  SecureTokenStorage      com.cdccreditsmart.app               D  ✅ Usando IMEI para MDM: 8608***718
+2026-01-27 18:38:37.591 26748-1218  MdmCommandReceiver      com.cdccreditsmart.app               I  🔐 ========================================
+2026-01-27 18:38:37.591 26748-1218  MdmCommandReceiver      com.cdccreditsmart.app               I  🔐 ENVIANDO AUTENTICAÇÃO WEBSOCKET
+2026-01-27 18:38:37.591 26748-1218  MdmCommandReceiver      com.cdccreditsmart.app               I  🔐 ========================================
+2026-01-27 18:38:37.591 26748-1218  MdmCommandReceiver      com.cdccreditsmart.app               I  🔐 serialNumber: 86087507...
+2026-01-27 18:38:37.591 26748-1218  MdmCommandReceiver      com.cdccreditsmart.app               I  🔐 deviceToken: eyJhbGciOiJIUzI1NiIs...
+2026-01-27 18:38:37.591 26748-1218  MdmCommandReceiver      com.cdccreditsmart.app               I  🔐 deviceFingerprint: N/A...
+2026-01-27 18:38:37.592 26748-1218  MdmCommandReceiver      com.cdccreditsmart.app               I  🔐 imei: 8608***
+2026-01-27 18:38:37.592 26748-1218  MdmCommandReceiver      com.cdccreditsmart.app               I  🔐 androidId: 54194507...
+2026-01-27 18:38:37.592 26748-1218  MdmCommandReceiver      com.cdccreditsmart.app               I  🔐 apkVersion: 1.0.0-debug
+2026-01-27 18:38:37.592 26748-1218  MdmCommandReceiver      com.cdccreditsmart.app               I  ✅ Mensagem de autenticação enviada com sucesso (7 campos)
+2026-01-27 18:38:37.592 26748-1218  MdmCommandReceiver      com.cdccreditsmart.app               D  ⏳ Polling já está ativo - ignorando chamada duplicada
+2026-01-27 18:38:37.593 26748-1218  MdmCommandReceiver      com.cdccreditsmart.app               D  📥 Mensagem MDM recebida: {"type":"welcome","message":"Connected to unified WebSocket server","connectionId":"80c9279e-6b64-46b9-8147-af6fb5aa7ca4","path":"/ws/mdm-policies","routerKey":"mdm-policies","timestamp":"2026-01-27T21:38:36.300Z","serverTime":"2026-01-27T21:38:36.300Z"}
+2026-01-27 18:38:37.593 26748-27010 MdmCommandReceiver      com.cdccreditsmart.app               I  💓 Iniciando ping manual JSON (intervalo: 40s)
+2026-01-27 18:38:37.593 26748-1218  MdmCommandReceiver      com.cdccreditsmart.app               D  📥 Mensagem MDM recebida: {"type":"auth_required","message":"Please authenticate via message with serialNumber, deviceFingerprint or androidId","timeout":60,"timestamp":"2026-01-27T21:38:36.301Z"}
+2026-01-27 18:38:37.616 26748-30103 MdmCommandReceiver      com.cdccreditsmart.app               D  📥 JSON recebido: {"type":"auth_required","message":"Please authenticate via message with serialNumber, deviceFingerprint or androidId","timeout":60,"timestamp":"2026-01-27T21:38:36.301Z"}
+2026-01-27 18:38:37.616 26748-27011 MdmCommandReceiver      com.cdccreditsmart.app               D  📥 JSON recebido: {"type":"welcome","message":"Connected to unified WebSocket server","connectionId":"80c9279e-6b64-46b9-8147-af6fb5aa7ca4","path":"/ws/mdm-policies","routerKey":"mdm-policies","timestamp":"2026-01-27T21:38:36.300Z","serverTime":"2026-01-27T21:38:36.300Z"}
+2026-01-27 18:38:37.680 26748-30103 MdmCommandReceiver      com.cdccreditsmart.app               D  📨 Tipo de mensagem: auth_required
+2026-01-27 18:38:37.680 26748-30103 MdmCommandReceiver      com.cdccreditsmart.app               W  ⚠️ ========================================
+2026-01-27 18:38:37.680 26748-30103 MdmCommandReceiver      com.cdccreditsmart.app               W  ⚠️ AUTENTICAÇÃO REQUERIDA PELO SERVIDOR
+2026-01-27 18:38:37.680 26748-30103 MdmCommandReceiver      com.cdccreditsmart.app               W  ⚠️ ========================================
+2026-01-27 18:38:37.680 26748-30103 MdmCommandReceiver      com.cdccreditsmart.app               W  ⚠️ Reenviando mensagem de autenticação...
+2026-01-27 18:38:37.680 26748-27011 MdmCommandReceiver      com.cdccreditsmart.app               D  📨 Tipo de mensagem: welcome
+2026-01-27 18:38:37.680 26748-27011 MdmCommandReceiver      com.cdccreditsmart.app               D  👋 Mensagem de boas-vindas do servidor
+2026-01-27 18:38:37.686 26748-30103 SecureTokenStorage      com.cdccreditsmart.app               D  ✅ Usando IMEI para MDM: 8608***718
+2026-01-27 18:38:37.719 26748-30103 MdmCommandReceiver      com.cdccreditsmart.app               I  🔐 ========================================
+2026-01-27 18:38:37.719 26748-30103 MdmCommandReceiver      com.cdccreditsmart.app               I  🔐 ENVIANDO AUTENTICAÇÃO WEBSOCKET
+2026-01-27 18:38:37.719 26748-30103 MdmCommandReceiver      com.cdccreditsmart.app               I  🔐 ========================================
+2026-01-27 18:38:37.719 26748-30103 MdmCommandReceiver      com.cdccreditsmart.app               I  🔐 serialNumber: 86087507...
+2026-01-27 18:38:37.719 26748-30103 MdmCommandReceiver      com.cdccreditsmart.app               I  🔐 deviceToken: eyJhbGciOiJIUzI1NiIs...
+2026-01-27 18:38:37.719 26748-30103 MdmCommandReceiver      com.cdccreditsmart.app               I  🔐 deviceFingerprint: N/A...
+2026-01-27 18:38:37.719 26748-30103 MdmCommandReceiver      com.cdccreditsmart.app               I  🔐 imei: 8608***
+2026-01-27 18:38:37.719 26748-30103 MdmCommandReceiver      com.cdccreditsmart.app               I  🔐 androidId: 54194507...
+2026-01-27 18:38:37.719 26748-30103 MdmCommandReceiver      com.cdccreditsmart.app               I  🔐 apkVersion: 1.0.0-debug
+2026-01-27 18:38:37.719 26748-30103 MdmCommandReceiver      com.cdccreditsmart.app               I  ✅ Mensagem de autenticação enviada com sucesso (7 campos)
+2026-01-27 18:38:37.937 26748-1218  MdmCommandReceiver      com.cdccreditsmart.app               D  📥 Mensagem MDM recebida: {"type":"auth_error","message":"Device not found in system","timestamp":"2026-01-27T21:38:37.217Z"}
+2026-01-27 18:38:37.958 26748-30103 MdmCommandReceiver      com.cdccreditsmart.app               D  📥 JSON recebido: {"type":"auth_error","message":"Device not found in system","timestamp":"2026-01-27T21:38:37.217Z"}
+2026-01-27 18:38:37.962 26748-30103 MdmCommandReceiver      com.cdccreditsmart.app               D  📨 Tipo de mensagem: auth_error
+2026-01-27 18:38:37.963 26748-30103 MdmCommandReceiver      com.cdccreditsmart.app               E  ❌ ========================================
+2026-01-27 18:38:37.963 26748-30103 MdmCommandReceiver      com.cdccreditsmart.app               E  ❌ ERRO DE AUTENTICAÇÃO WEBSOCKET!
+2026-01-27 18:38:37.963 26748-30103 MdmCommandReceiver      com.cdccreditsmart.app               E  ❌ ========================================
+2026-01-27 18:38:37.963 26748-30103 MdmCommandReceiver      com.cdccreditsmart.app               E  ❌ Erro: Device not found in system
+2026-01-27 18:38:37.963 26748-30103 MdmCommandReceiver      com.cdccreditsmart.app               E  ❌ Código: 
+2026-01-27 18:38:37.963 26748-30103 MdmCommandReceiver      com.cdccreditsmart.app               W  ⚠️ Dispositivo não encontrado no backend - aguardando sincronização...
+2026-01-27 18:38:37.963 26748-30103 MdmCommandReceiver      com.cdccreditsmart.app               W  ⚠️ O heartbeat irá registrar o dispositivo. Tentando reconexão em 30s...
+2026-01-27 18:38:38.373 26748-1218  MdmCommandReceiver      com.cdccreditsmart.app               D  📥 Mensagem MDM recebida: {"type":"auth_error","message":"Device not found in system","timestamp":"2026-01-27T21:38:37.440Z"}
+2026-01-27 18:38:38.382 26748-27011 MdmCommandReceiver      com.cdccreditsmart.app               D  📥 JSON recebido: {"type":"auth_error","message":"Device not found in system","timestamp":"2026-01-27T21:38:37.440Z"}
+2026-01-27 18:38:38.383 26748-27011 MdmCommandReceiver      com.cdccreditsmart.app               D  📨 Tipo de mensagem: auth_error
+2026-01-27 18:38:38.384 26748-27011 MdmCommandReceiver      com.cdccreditsmart.app               E  ❌ ========================================
+2026-01-27 18:38:38.384 26748-27011 MdmCommandReceiver      com.cdccreditsmart.app               E  ❌ ERRO DE AUTENTICAÇÃO WEBSOCKET!
+2026-01-27 18:38:38.384 26748-27011 MdmCommandReceiver      com.cdccreditsmart.app               E  ❌ ========================================
+2026-01-27 18:38:38.384 26748-27011 MdmCommandReceiver      com.cdccreditsmart.app               E  ❌ Erro: Device not found in system
+2026-01-27 18:38:38.384 26748-27011 MdmCommandReceiver      com.cdccreditsmart.app               E  ❌ Código: 
+2026-01-27 18:38:38.384 26748-27011 MdmCommandReceiver      com.cdccreditsmart.app               W  ⚠️ Dispositivo não encontrado no backend - aguardando sincronização...
+2026-01-27 18:38:38.385 26748-27011 MdmCommandReceiver      com.cdccreditsmart.app               W  ⚠️ O heartbeat irá registrar o dispositivo. Tentando reconexão em 30s...
+2026-01-27 18:38:44.036 29165-29505 ModernMediaScanner      com.cdccreditsmart.app               D  Parsing date with millis failed for [2011]. We will retry without millis
+2026-01-27 18:38:44.089 29165-29505 ModernMediaScanner      com.cdccreditsmart.app               D  Parsing date without millis failed for [2011]
+2026-01-27 18:38:47.760 26748-26748 Choreographer           com.cdccreditsmart.app               I  Skipped 675 frames!  The application may be doing too much work on its main thread.
+2026-01-27 18:38:47.992 26748-26765 OpenGLRenderer          com.cdccreditsmart.app               I  Davey! duration=11436ms; Flags=0, FrameTimelineVsyncId=855699, IntendedVsync=4800484336003, Vsync=4811725902103, InputEventId=0, HandleInputStart=4811744677788, AnimationStart=4811744689673, PerformTraversalsStart=4811843586635, DrawStart=4811850474173, FrameDeadline=4800534301710, FrameInterval=4811737660788, FrameStartTime=16653928, SyncQueued=4811871175635, SyncStart=4811871325365, IssueDrawCommandsStart=4811875112135, SwapBuffers=4811907712596, FrameCompleted=4811920783327, DequeueBufferDuration=30616, QueueBufferDuration=566077, GpuCompleted=4811920783327, SwapBuffersCompleted=4811917816288, DisplayPresentTime=4791989752649, CommandSubmissionCompleted=4811907712596, 
+2026-01-27 18:38:48.059 26748-26758 creditsmart.app         com.cdccreditsmart.app               I  Background concurrent mark compact GC freed 285583(13MB) AllocSpace objects, 38(1944KB) LOS objects, 51% free, 23MB/47MB, paused 13.037ms,5.240ms total 4.288s
+2026-01-27 18:38:49.203 26748-1822  IconProtectionWorker    com.cdccreditsmart.app               D  🔍 Verificando proteção do ícone...
+2026-01-27 18:38:49.211 26748-1822  LauncherIconProtector   com.cdccreditsmart.app               D  ✅ Atalho já existe na home screen
+2026-01-27 18:38:49.211 26748-1822  IconProtectionWorker    com.cdccreditsmart.app               I  📊 Estatísticas: ícone restaurado 1 vezes
+2026-01-27 18:38:49.212 26748-1822  IconProtectionWorker    com.cdccreditsmart.app               D  ✅ Verificação de ícone concluída
+2026-01-27 18:38:49.217 26748-26852 WM-WorkerWrapper        com.cdccreditsmart.app               I  Worker result SUCCESS for Work [ id=506921b4-aff0-4421-85f5-0a53422a6004, tags={ com.cdccreditsmart.app.workers.IconProtectionWorker } ]
+2026-01-27 18:38:50.140 26748-26748 WebSocketManager        com.cdccreditsmart.app               D  Heartbeat ping sent
+2026-01-27 18:38:50.369 26748-30112 WebSocketManager        com.cdccreditsmart.app               D  Message received: {"type":"pong","timestamp":"2026-01-27T21:38:49.673Z"}...
+2026-01-27 18:38:50.369 26748-30112 WebSocketManager        com.cdccreditsmart.app               D  Received message type: pong
+2026-01-27 18:38:50.369 26748-30112 WebSocketManager        com.cdccreditsmart.app               D  Pong received
+2026-01-27 18:38:53.376 29165-29505 MediaProvider           com.cdccreditsmart.app               I  Scanned internal due to REASON_MOUNTED, found 140 items in 72487ms, 140 inserts 0 updates 0 deletes
+2026-01-27 18:38:53.588 29165-29505 RingtoneManager         com.cdccreditsmart.app               D  defaultRingtoneProp is : ringtone_000.ogg,ringtone_000.ogg,defaultNotificationProp is : notification_000.ogg
+2026-01-27 18:38:54.128 29165-1990  PSyncWorker             com.cdccreditsmart.app               I  Starting proactive picker sync from sync source: 1
+2026-01-27 18:38:54.211 29165-29505 MediaProvider           com.cdccreditsmart.app               W  Didn't find any volume for getVolume(/product/media/audio/ringtones/ringtone_000.ogg)
+2026-01-27 18:38:54.232 29165-29505 MediaProvider           com.cdccreditsmart.app               I  Open with lower FS for /product/media/audio/ringtones/ringtone_000.ogg. Uid: 1510212
+2026-01-27 18:38:54.384 29165-29505 RingtoneManager         com.cdccreditsmart.app               D  defaultRingtoneProp is : ringtone_000.ogg,ringtone_000.ogg,defaultNotificationProp is : notification_000.ogg
+2026-01-27 18:38:54.506 29165-29505 MediaProvider           com.cdccreditsmart.app               W  Didn't find any volume for getVolume(/product/media/audio/ringtones/ringtone_000.ogg)
+2026-01-27 18:38:54.516 29165-29505 MediaProvider           com.cdccreditsmart.app               I  Open with lower FS for /product/media/audio/ringtones/ringtone_000.ogg. Uid: 1510212
+2026-01-27 18:38:54.527 29165-29505 RingtoneManager         com.cdccreditsmart.app               D  defaultRingtoneProp is : ringtone_000.ogg,ringtone_000.ogg,defaultNotificationProp is : notification_000.ogg
+2026-01-27 18:38:54.614 29165-29505 MediaProvider           com.cdccreditsmart.app               W  Didn't find any volume for getVolume(/product/media/audio/notifications/notification_000.ogg)
+2026-01-27 18:38:54.617 29165-29505 MediaProvider           com.cdccreditsmart.app               I  Open with lower FS for /product/media/audio/notifications/notification_000.ogg. Uid: 1510212
+2026-01-27 18:38:54.627 29165-1990  PickerSyncTracker       com.cdccreditsmart.app               I  Created new sync future java.util.concurrent.CompletableFuture@da8f935[Not completed, 1 dependents]. Future map: {3fca3bcb-2922-4506-8076-6da1209fee60=java.util.concurrent.CompletableFuture@da8f935[Not completed, 1 dependents]}
+2026-01-27 18:38:54.630 29165-1990  PickerSyncController    com.cdccreditsmart.app               D  syncAllMediaFromProvider() LOCAL, auth=com.android.providers.media.photopicker, retry=true
+2026-01-27 18:38:54.630 29165-1990  PickerSyncController    com.cdccreditsmart.app               D  getSyncRequestParams() LOCAL, auth=com.android.providers.media.photopicker
+2026-01-27 18:38:54.644 29165-29505 RingtoneManager         com.cdccreditsmart.app               D  defaultRingtoneProp is : ringtone_000.ogg,ringtone_000.ogg,defaultNotificationProp is : notification_000.ogg
+2026-01-27 18:38:54.723 29165-1990  PickerSyncController    com.cdccreditsmart.app               D     Latest ID/Gen=1407:c7942791-8381-4d55-b71d-4f4fcd598978:external_primary/0
+2026-01-27 18:38:54.723 29165-1990  PickerSyncController    com.cdccreditsmart.app               D     Cached ID/Gen=null/-1
+2026-01-27 18:38:54.724 29165-1990  PickerSyncController    com.cdccreditsmart.app               D     RESULT=SyncRequestParams{type=MEDIA_FULL_WITH_RESET, gen=0, latest=Bundle[{last_media_sync_generation=0, media_collection_id=1407:c7942791-8381-4d55-b71d-4f4fcd598978:external_primary}], pageSize=1000}
+2026-01-27 18:38:54.724 29165-1990  PickerSyncController    com.cdccreditsmart.app               I  Executing SyncReset. isLocal: true. authority: com.android.providers.media.photopicker
+2026-01-27 18:38:54.729 29165-29505 MediaProvider           com.cdccreditsmart.app               W  Didn't find any volume for getVolume(/product/media/audio/alarms/delight.ogg)
+2026-01-27 18:38:54.733 29165-29505 MediaProvider           com.cdccreditsmart.app               I  Open with lower FS for /product/media/audio/alarms/delight.ogg. Uid: 1510212
+2026-01-27 18:38:54.746 29165-1990  PickerSyncController    com.cdccreditsmart.app               I  SyncReset. isLocal:true. authority: com.android.providers.media.photopicker. result count: 0
+2026-01-27 18:38:54.756 29165-1990  PickerSyncController    com.cdccreditsmart.app               I  Executing SyncAdd. isLocal: true. authority: com.android.providers.media.photopicker
+2026-01-27 18:38:54.757 29165-1990  PickerSyncLockManager   com.cdccreditsmart.app               D  Trying to acquire lock com.android.providers.media.photopicker.sync.CloseableReentrantLock@204303b[Unlocked]. Lock Name = CLOUD_PROVIDER_LOCK. Threads that may be waiting to acquire this lock = [] with timeout.
+2026-01-27 18:38:54.758 29165-1990  CloseableReentrantLock  com.cdccreditsmart.app               D  Successfully acquired lock com.android.providers.media.photopicker.sync.CloseableReentrantLock@204303b[Locked by thread pool-2-thread-1]. Lock Name = CLOUD_PROVIDER_LOCK. Threads that may be waiting to acquire this lock = []
+2026-01-27 18:38:54.758 29165-1990  CloseableReentrantLock  com.cdccreditsmart.app               D  Successfully released lock com.android.providers.media.photopicker.sync.CloseableReentrantLock@204303b[Unlocked]. Lock Name = CLOUD_PROVIDER_LOCK. Threads that may be waiting to acquire this lock = []
+2026-01-27 18:38:54.758 29165-1990  ExternalDbFacade        com.cdccreditsmart.app               D  Token received for queryMedia = null
+2026-01-27 18:38:54.769 29165-29505 MediaProvider           com.cdccreditsmart.app               V  attachVolume() called for external_primary with state:null
+2026-01-27 18:38:54.780 29165-1990  PickerSyncLockManager   com.cdccreditsmart.app               D  Trying to acquire lock com.android.providers.media.photopicker.sync.CloseableReentrantLock@204303b[Unlocked]. Lock Name = CLOUD_PROVIDER_LOCK. Threads that may be waiting to acquire this lock = [] with timeout.
+2026-01-27 18:38:54.780 29165-1990  CloseableReentrantLock  com.cdccreditsmart.app               D  Successfully acquired lock com.android.providers.media.photopicker.sync.CloseableReentrantLock@204303b[Locked by thread pool-2-thread-1]. Lock Name = CLOUD_PROVIDER_LOCK. Threads that may be waiting to acquire this lock = []
+2026-01-27 18:38:54.780 29165-1990  PickerSyncController    com.cdccreditsmart.app               D  Clearing next page token for key: local_provider:media_add:resume
+2026-01-27 18:38:54.780 29165-1990  CloseableReentrantLock  com.cdccreditsmart.app               D  Successfully released lock com.android.providers.media.photopicker.sync.CloseableReentrantLock@204303b[Unlocked]. Lock Name = CLOUD_PROVIDER_LOCK. Threads that may be waiting to acquire this lock = []
+2026-01-27 18:38:54.780 29165-1990  PickerSyncController    com.cdccreditsmart.app               I  Paged sync successful. QueryArgs: Bundle[{android.provider.extra.PAGE_SIZE=1000}] Total Rows: 0
+2026-01-27 18:38:54.780 29165-1990  PickerSyncTracker       com.cdccreditsmart.app               I  Marked sync future complete for work id: 3fca3bcb-2922-4506-8076-6da1209fee60. Future map: {}
+2026-01-27 18:38:54.780 29165-1990  PSyncWorker             com.cdccreditsmart.app               I  Completed picker proactive sync complete from local provider.
+2026-01-27 18:38:54.783 29165-29295 WM-WorkerWrapper        com.cdccreditsmart.app               I  Worker result SUCCESS for Work [ id=3fca3bcb-2922-4506-8076-6da1209fee60, tags={ com.android.providers.media.photopicker.sync.ProactiveSyncWorker } ]
+2026-01-27 18:38:54.959 29165-29505 MediaProvider           com.cdccreditsmart.app               W  isAppCloneUserPair for user 15: false
+2026-01-27 18:38:55.011 29165-29505 MediaProvider           com.cdccreditsmart.app               W  isAppCloneUserPair for user 15: false
+2026-01-27 18:38:55.103 29165-29235 StorageManager          com.cdccreditsmart.app               E  Failed to set extended attributes for /storage/emulated/15/Android to set project id.: Operation not permitted
+2026-01-27 18:38:55.132 29165-29235 MediaProvider           com.cdccreditsmart.app               W  Failed to update quota type for /storage/emulated/15/Android (Ask Gemini)
+                                                                                                    java.io.IOException: Failed to update quota type for /storage/emulated/15/Android
+                                                                                                    	at android.os.storage.StorageManager.updateExternalStorageFileQuotaType(StorageManager.java:2564)
+                                                                                                    	at com.android.providers.media.MediaProvider.updateQuotaTypeForFileInternal(MediaProvider.java:943)
+                                                                                                    	at com.android.providers.media.MediaProvider.updateQuotaTypeForUri(MediaProvider.java:918)
+                                                                                                    	at com.android.providers.media.MediaProvider$5.lambda$onInsert$0(MediaProvider.java:977)
+                                                                                                    	at com.android.providers.media.MediaProvider$5.$r8$lambda$fpXVCCb4tNgN0rBFXazZWCUznbc(MediaProvider.java:0)
+                                                                                                    	at com.android.providers.media.MediaProvider$5$$ExternalSyntheticLambda1.run(R8$$SyntheticClass:0)
+                                                                                                    	at android.os.Handler.handleCallback(Handler.java:958)
+                                                                                                    	at android.os.Handler.dispatchMessage(Handler.java:99)
+                                                                                                    	at android.os.Looper.loopOnce(Looper.java:205)
+                                                                                                    	at android.os.Looper.loop(Looper.java:294)
+                                                                                                    	at android.os.HandlerThread.run(HandlerThread.java:67)
+2026-01-27 18:38:55.347 29165-29235 StorageManager          com.cdccreditsmart.app               E  Failed to set extended attributes for /storage/emulated/15/Android/media to set project id.: Operation not permitted
+2026-01-27 18:38:55.348 29165-29235 MediaProvider           com.cdccreditsmart.app               W  Failed to update quota type for /storage/emulated/15/Android/media (Ask Gemini)
+                                                                                                    java.io.IOException: Failed to update quota type for /storage/emulated/15/Android/media
+                                                                                                    	at android.os.storage.StorageManager.updateExternalStorageFileQuotaType(StorageManager.java:2564)
+                                                                                                    	at com.android.providers.media.MediaProvider.updateQuotaTypeForFileInternal(MediaProvider.java:943)
+                                                                                                    	at com.android.providers.media.MediaProvider.updateQuotaTypeForUri(MediaProvider.java:918)
+                                                                                                    	at com.android.providers.media.MediaProvider$5.lambda$onInsert$0(MediaProvider.java:977)
+                                                                                                    	at com.android.providers.media.MediaProvider$5.$r8$lambda$fpXVCCb4tNgN0rBFXazZWCUznbc(MediaProvider.java:0)
+                                                                                                    	at com.android.providers.media.MediaProvider$5$$ExternalSyntheticLambda1.run(R8$$SyntheticClass:0)
+                                                                                                    	at android.os.Handler.handleCallback(Handler.java:958)
+                                                                                                    	at android.os.Handler.dispatchMessage(Handler.java:99)
+                                                                                                    	at android.os.Looper.loopOnce(Looper.java:205)
+                                                                                                    	at android.os.Looper.loop(Looper.java:294)
+                                                                                                    	at android.os.HandlerThread.run(HandlerThread.java:67)
+2026-01-27 18:38:55.942 29165-29505 MediaProvider           com.cdccreditsmart.app               I  Scanned external_primary due to REASON_MOUNTED, found 17 items in 1152ms, 2 inserts 1 updates 0 deletes
+2026-01-27 18:38:55.960 29165-29505 MediaProvider           com.cdccreditsmart.app               I  End Intent { act=com.android.providers.media.action.SCAN_VOLUME (has extras) }
+2026-01-27 18:38:55.964 29165-29505 MediaProvider           com.cdccreditsmart.app               I  Begin Intent { act=android.intent.action.MEDIA_MOUNTED dat=file:///... flg=0x5000010 cmp=com.google.android.providers.media.module/com.android.providers.media.MediaService (has extras) }
+2026-01-27 18:38:55.964 29165-29505 MediaProvider           com.cdccreditsmart.app               I  Volume MediaVolume name: [external_primary] id: [emulated;15] user: [UserHandle{15}] path: [/storage/emulated/15] externallyManaged: [false] mPublicVolume: [false] already attached
+2026-01-27 18:38:55.964 29165-29505 MediaProvider           com.cdccreditsmart.app               I  End Intent { act=android.intent.action.MEDIA_MOUNTED dat=file:///... flg=0x5000010 cmp=com.google.android.providers.media.module/com.android.providers.media.MediaService (has extras) }
