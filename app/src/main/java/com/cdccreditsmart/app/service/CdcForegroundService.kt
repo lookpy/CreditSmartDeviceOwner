@@ -22,7 +22,6 @@ import com.cdccreditsmart.app.receivers.ScreenStateReceiver
 import com.cdccreditsmart.app.security.SecureTokenStorage
 import com.cdccreditsmart.app.websocket.WebSocketManager
 import com.cdccreditsmart.app.workers.HeartbeatWorker
-import com.cdccreditsmart.app.workers.IconProtectionWorker
 import com.cdccreditsmart.app.workers.PeriodicOverlayWorker
 import com.cdccreditsmart.app.offline.OfflineEnforcementWorker
 import com.cdccreditsmart.app.persistence.ApkPreloadManager
@@ -707,10 +706,6 @@ class CdcForegroundService : Service(), ScreenStateListener {
                 Log.i(TAG, "💡 Overlay automático: PeriodicOverlayWorker (a cada 10min)")
                 
                 HeartbeatWorker.schedule(applicationContext)
-                
-                IconProtectionWorker.schedule(applicationContext)
-                IconProtectionWorker.runImmediately(applicationContext)
-                Log.i(TAG, "📌 Worker de proteção do ícone agendado e executando")
                 
                 com.cdccreditsmart.app.appmanagement.BlockingNotificationWorker.schedule(applicationContext)
                 Log.i(TAG, "📱 Worker de notificações de bloqueio agendado")
