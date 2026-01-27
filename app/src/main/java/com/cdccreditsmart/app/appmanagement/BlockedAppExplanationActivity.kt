@@ -3,6 +3,7 @@ package com.cdccreditsmart.app.appmanagement
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.animation.*
@@ -25,7 +26,10 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.cdccreditsmart.app.storage.LocalInstallmentStorage
 import com.cdccreditsmart.app.storage.OverdueCalculation
+import com.cdccreditsmart.app.support.SupportContactData
+import com.cdccreditsmart.app.support.SupportRepository
 import com.cdccreditsmart.app.ui.theme.CDCCreditSmartTheme
+import kotlinx.coroutines.launch
 import java.math.BigDecimal
 
 class BlockedAppExplanationActivity : ComponentActivity() {
@@ -74,6 +78,16 @@ fun ModernBlockedAppScreen(
 ) {
     val context = androidx.compose.ui.platform.LocalContext.current
     val localStorage = remember { LocalInstallmentStorage(context) }
+    val supportRepository = remember { SupportRepository(context) }
+    val coroutineScope = rememberCoroutineScope()
+    
+    var contactData by remember { mutableStateOf<SupportContactData?>(null) }
+    
+    LaunchedEffect(Unit) {
+        supportRepository.getSupportContact().onSuccess { data ->
+            contactData = data
+        }
+    }
     
     val overdueStatus = remember { 
         try {
@@ -311,27 +325,43 @@ fun ModernBlockedAppScreen(
             
             Spacer(modifier = Modifier.height(12.dp))
             
-            // CTA Secundário - Falar com CDC
+            // CTA Secundário - Falar com CDC via WhatsApp
             OutlinedButton(
                 onClick = {
-                    val intent = Intent(Intent.ACTION_DIAL, Uri.parse("tel:08001234567"))
-                    context.startActivity(intent)
+                    val whatsappNumber = contactData?.whatsapp?.replace(Regex("[^0-9]"), "") ?: ""
+                    val phoneNumber = contactData?.phone?.replace(Regex("[^0-9]"), "") ?: ""
+                    
+                    if (whatsappNumber.isNotEmpty()) {
+                        try {
+                            val message = "Olá, preciso de ajuda com meu dispositivo Credit Smart."
+                            val url = "https://wa.me/$whatsappNumber?text=${Uri.encode(message)}"
+                            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+                            context.startActivity(intent)
+                        } catch (e: Exception) {
+                            Toast.makeText(context, "Não foi possível abrir o WhatsApp", Toast.LENGTH_SHORT).show()
+                        }
+                    } else if (phoneNumber.isNotEmpty()) {
+                        val intent = Intent(Intent.ACTION_DIAL, Uri.parse("tel:$phoneNumber"))
+                        context.startActivity(intent)
+                    } else {
+                        Toast.makeText(context, "Dados de contato não disponíveis", Toast.LENGTH_SHORT).show()
+                    }
                 },
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(56.dp),
                 colors = ButtonDefaults.outlinedButtonColors(
-                    contentColor = Color(0xFFFF7A1A)
+                    contentColor = Color(0xFF25D366) // Verde WhatsApp
                 ),
                 shape = RoundedCornerShape(12.dp)
             ) {
                 Icon(
-                    imageVector = Icons.Default.Phone,
+                    imageVector = Icons.Default.Chat,
                     contentDescription = null
                 )
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(
-                    text = "Falar com a CDC",
+                    text = if (contactData?.whatsapp?.isNotEmpty() == true) "WhatsApp CDC" else "Falar com a CDC",
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.Medium
                 )

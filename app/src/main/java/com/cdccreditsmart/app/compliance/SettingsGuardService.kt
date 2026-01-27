@@ -755,33 +755,55 @@ class SettingsGuardService(private val context: Context) {
     }
     
     /**
-     * Mostra tela de bloqueio LEVE para Settings perigoso
+     * Mostra tela de bloqueio para Settings perigoso
      * 
-     * IMPORTANTE: Não usa forceCloseSettings() pois pode causar tela preta
-     * ao suspender SystemUI. Apenas abre a tela de bloqueio por cima.
+     * CORREÇÃO: Primeiro FECHA o Settings indo para Home, depois mostra tela de bloqueio
+     * Isso impede que a pessoa minimize o overlay e continue acessando a área perigosa
      */
     private fun showSettingsBlockedScreen(reason: String) {
         try {
-            // Abrir BlockedAppExplanationActivity IMEDIATAMENTE por cima do Settings
-            // NÃO usar forceCloseSettings() - causa tela preta ao suspender SystemUI
-            val intent = Intent(context, BlockedAppExplanationActivity::class.java).apply {
+            // PASSO 1: Ir para Home PRIMEIRO - isso FECHA o Settings
+            // O usuário não consegue mais acessar a área perigosa
+            val homeIntent = Intent(Intent.ACTION_MAIN).apply {
+                addCategory(Intent.CATEGORY_HOME)
                 addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                 addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-                addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY)
-                putExtra("blocked_package", "com.android.settings")
-                putExtra("is_settings_blocked", true)
-                putExtra("block_reason", reason)
-                putExtra("blocking_level", 0)
-                putExtra("days_overdue", 0)
+                addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
             }
-            context.startActivity(intent)
+            context.startActivity(homeIntent)
             
             if (BuildConfig.DEBUG) {
-                Log.i(TAG, "✅ Tela de bloqueio exibida (Settings)")
+                Log.i(TAG, "🏠 Settings FECHADO - enviado para Home")
             }
+            
+            // PASSO 2: Pequeno delay para garantir que Settings foi fechado
+            // antes de mostrar a tela de bloqueio
+            mainHandler.postDelayed({
+                try {
+                    // PASSO 3: Mostrar tela de bloqueio explicando que a área é restrita
+                    val intent = Intent(context, BlockedAppExplanationActivity::class.java).apply {
+                        addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                        addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                        addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY)
+                        putExtra("blocked_package", "com.android.settings")
+                        putExtra("is_settings_blocked", true)
+                        putExtra("block_reason", reason)
+                        putExtra("blocking_level", 0)
+                        putExtra("days_overdue", 0)
+                    }
+                    context.startActivity(intent)
+                    
+                    if (BuildConfig.DEBUG) {
+                        Log.i(TAG, "✅ Tela de bloqueio exibida (Settings fechado)")
+                    }
+                } catch (e: Exception) {
+                    Log.e(TAG, "❌ Erro ao mostrar tela de bloqueio após fechar Settings", e)
+                }
+            }, 150) // 150ms delay para Settings fechar completamente
+            
         } catch (e: Exception) {
-            Log.e(TAG, "❌ Erro ao mostrar tela de bloqueio de Settings", e)
-            // Fallback: ir para Home
+            Log.e(TAG, "❌ Erro ao fechar Settings e mostrar bloqueio", e)
+            // Fallback: tentar apenas ir para Home
             try {
                 goToHomeFirst()
             } catch (e2: Exception) {
