@@ -243,11 +243,19 @@ class MdmCommandReceiver(private val context: Context) {
     
     private fun sendAuthenticationMessage(webSocket: WebSocket) {
         try {
-            val serialNumber = tokenStorage.getMdmIdentifier()
+            // CORREÇÃO: serialNumber deve ser o código do contrato, não o IMEI
+            // O backend registra dispositivos com serialNumber = contractCode
+            val contractCode = tokenStorage.getContractCode()
+            val imei = tokenStorage.getImei()
+            val mdmIdentifier = tokenStorage.getMdmIdentifier()
             val deviceToken = tokenStorage.getDeviceToken() ?: currentJwtToken
             
+            // Usar código do contrato como serialNumber (prioridade)
+            // Fallback para IMEI/mdmIdentifier se contrato não disponível
+            val serialNumber = contractCode ?: mdmIdentifier
+            
             if (serialNumber.isNullOrBlank()) {
-                Log.e(TAG, "❌ Não é possível enviar autenticação - serialNumber vazio")
+                Log.e(TAG, "❌ Não é possível enviar autenticação - serialNumber vazio (sem contrato ou IMEI)")
                 return
             }
             
@@ -257,7 +265,6 @@ class MdmCommandReceiver(private val context: Context) {
             }
             
             val deviceFingerprint = tokenStorage.getFingerprint()
-            val imei = tokenStorage.getImei()
             val androidId = try {
                 Settings.Secure.getString(context.contentResolver, Settings.Secure.ANDROID_ID)
             } catch (e: Exception) {
@@ -272,7 +279,7 @@ class MdmCommandReceiver(private val context: Context) {
                 put("serialNumber", serialNumber)
                 put("deviceToken", deviceToken)
                 put("deviceFingerprint", deviceFingerprint ?: "")
-                put("imei", imei ?: "")
+                put("imei", imei ?: mdmIdentifier ?: "")
                 put("androidId", androidId ?: "")
                 put("apkVersion", apkVersion)
             }.toString()
@@ -280,10 +287,10 @@ class MdmCommandReceiver(private val context: Context) {
             Log.i(TAG, "🔐 ========================================")
             Log.i(TAG, "🔐 ENVIANDO AUTENTICAÇÃO WEBSOCKET")
             Log.i(TAG, "🔐 ========================================")
-            Log.i(TAG, "🔐 serialNumber: ${serialNumber.take(8)}...")
+            Log.i(TAG, "🔐 serialNumber (contractCode): $serialNumber")
             Log.i(TAG, "🔐 deviceToken: ${deviceToken.take(20)}...")
             Log.i(TAG, "🔐 deviceFingerprint: ${deviceFingerprint?.take(10) ?: "N/A"}...")
-            Log.i(TAG, "🔐 imei: ${imei?.take(4) ?: "N/A"}***")
+            Log.i(TAG, "🔐 imei: ${imei?.take(4) ?: mdmIdentifier?.take(4) ?: "N/A"}***")
             Log.i(TAG, "🔐 androidId: ${androidId?.take(8) ?: "N/A"}...")
             Log.i(TAG, "🔐 apkVersion: $apkVersion")
             
