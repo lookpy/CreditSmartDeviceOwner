@@ -52,15 +52,21 @@ class FactoryResetRecoveryReceiver : BroadcastReceiver() {
             return
         }
         
-        Log.i(TAG, "========================================")
-        Log.i(TAG, "🔄 BOOT DETECTADO (${intent.action}) - Verificando recuperação")
-        Log.i(TAG, "========================================")
+        val userManager = context.getSystemService(Context.USER_SERVICE) as? android.os.UserManager
+        val isUserUnlocked = userManager?.isUserUnlocked ?: false
+        
+        if (!isUserUnlocked) {
+            Log.i(TAG, "User locked - skipping recovery check")
+            return
+        }
+        
+        Log.i(TAG, "Boot detected - checking recovery")
         
         scope.launch {
             try {
                 checkAndRecoverFromFactoryReset(context)
             } catch (e: Exception) {
-                Log.e(TAG, "❌ Erro na recuperação: ${e.message}", e)
+                Log.e(TAG, "Error in recovery: ${e.message}")
             }
         }
     }

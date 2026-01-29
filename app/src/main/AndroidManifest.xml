@@ -214,7 +214,6 @@
                 <action android:name="android.app.action.DEVICE_ADMIN_DISABLE_REQUESTED" />
                 <action android:name="android.app.action.DEVICE_OWNER_CHANGED" />
                 <action android:name="android.app.action.PROFILE_PROVISIONING_COMPLETE" />
-                <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
         </receiver>
 
@@ -251,7 +250,9 @@
             </intent-filter>
         </activity>
 
-        <!-- Critical ProvisioningActivity for Device Owner QR code provisioning -->
+        <!-- ProvisioningActivity REMOVIDA - interferindo com fluxo normal do Android
+             O sistema ManagedProvisioning do Android cuida desses intents automaticamente.
+             Não é necessário interceptá-los com uma Activity personalizada.
         <activity
             android:name=".presentation.admin.ProvisioningActivity"
             android:exported="true"
@@ -263,6 +264,7 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
+        -->
 
         <!-- Uninstall Flow Activity - Secure uninstall with protection reapplication -->
         <activity

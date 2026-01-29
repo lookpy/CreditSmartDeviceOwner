@@ -58,10 +58,12 @@ The UI utilizes Jetpack Compose and Material 3 with a CDC institutional dark the
 - CDCDeviceAdminReceiver: SIMPLIFICADO DRASTICAMENTE - removido todo sistema de callback tracking/debug
 - AutoProvisioningReceiver: SIMPLIFICADO - adia proteções para 5s após provisionamento
 - AdminPolicyComplianceActivity: Responde imediatamente sem operações pesadas
-- ProvisioningActivity: Removido delay de 1000ms
+- ProvisioningActivity: REMOVIDA DO MANIFEST - estava interferindo com fluxo normal do Android
 - ProvisioningSuccessActivity: Otimizada para resposta rápida
 - CDCApplication: Detecta provisionamento recente e adia operações pesadas 3 segundos
 - BootReceiver: Verifica isUserUnlocked antes de operações
 - BootInterceptor: Operações de integridade movidas para background
+- FactoryResetRecoveryReceiver: Adicionada verificação isUserUnlocked
 - PlayProtectManager: REMOVIDO completamente
+- AndroidManifest: Removido BOOT_COMPLETED do CDCDeviceAdminReceiver
 - SetupWizard do Android tem timeout curto - todos os callbacks devem ser rápidos (< 10ms)
