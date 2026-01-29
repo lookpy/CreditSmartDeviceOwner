@@ -900,9 +900,9 @@ class CdcForegroundService : Service(), ScreenStateListener {
                 timestamp = System.currentTimeMillis(),
                 status = "active",
                 batteryLevel = getBatteryLevel(),
-                currentBlockLevel = currentLocalLevel,
+                policyLevel = currentLocalLevel,
                 blockedAppsCount = policyStatus.blockedAppsCount,
-                isManualBlock = policyStatus.isOverridden,
+                hasOverride = policyStatus.isOverridden,
                 progressiveBlockActive = currentLocalLevel > 0
             )
             

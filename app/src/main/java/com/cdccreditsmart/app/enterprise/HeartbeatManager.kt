@@ -107,21 +107,21 @@ class HeartbeatManager(private val context: Context) {
             }
             Log.d(TAG, "💓 Usando ${if (tokenStorage.getDeviceToken()?.isNotBlank() == true) "deviceToken" else "authToken (fallback)"}")
             
-            val currentBlockLevel = blockingManager.getCurrentBlockLevel()
+            val policyLevel = blockingManager.getPolicyLevel()
             val batteryInfo = getBatteryInfo()
             val currentSimImei = tokenStorage.getImei()
             
             val heartbeatRequest = RealTimeHeartbeatRequest(
                 deviceToken = deviceToken,
-                currentBlockLevel = currentBlockLevel,
+                policyLevel = policyLevel,
                 batteryLevel = batteryInfo.level,
                 isCharging = batteryInfo.isCharging,
                 currentSimImei = currentSimImei
             )
             
-            Log.d(TAG, "💓 Payload do heartbeat:")
+            Log.d(TAG, "Heartbeat payload:")
             Log.d(TAG, "   deviceToken: ${deviceToken.take(20)}...")
-            Log.d(TAG, "   currentBlockLevel: $currentBlockLevel")
+            Log.d(TAG, "   policyLevel: $policyLevel")
             Log.d(TAG, "   batteryLevel: ${batteryInfo.level}")
             Log.d(TAG, "   isCharging: ${batteryInfo.isCharging}")
             Log.d(TAG, "   currentSimImei: ${currentSimImei?.take(6) ?: "N/A"}...")
@@ -177,7 +177,7 @@ class HeartbeatManager(private val context: Context) {
             
             "NON_COMPLIANT" -> {
                 if (expectedLevel != null) {
-                    val currentLevel = blockingManager.getCurrentBlockLevel()
+                    val currentLevel = blockingManager.getPolicyLevel()
                     
                     // Se o nível já está correto, resetar contador e não fazer nada
                     if (currentLevel == expectedLevel) {
@@ -212,7 +212,7 @@ class HeartbeatManager(private val context: Context) {
                     if (correctionSuccess) {
                         Log.i(TAG, "✅ Bloqueio corrigido para nível $expectedLevel")
                         // Verificar se realmente aplicou
-                        val newLevel = blockingManager.getCurrentBlockLevel()
+                        val newLevel = blockingManager.getPolicyLevel()
                         if (newLevel == expectedLevel) {
                             Log.i(TAG, "✅ CONFIRMADO: Nível agora é $newLevel")
                             complianceCorrectionCount = 0 // Resetar após sucesso

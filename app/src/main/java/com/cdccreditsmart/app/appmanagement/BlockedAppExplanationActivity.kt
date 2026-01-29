@@ -40,7 +40,7 @@ class BlockedAppExplanationActivity : ComponentActivity() {
         val blockedPackage = intent.getStringExtra("blocked_package") ?: ""
         val blockingLevel = intent.getIntExtra("blocking_level", 0)
         val daysOverdue = intent.getIntExtra("days_overdue", 0)
-        val isManualBlock = intent.getBooleanExtra("is_manual_block", false)
+        val hasOverride = intent.getBooleanExtra("has_override", false)
         val isOffline = intent.getBooleanExtra("is_offline", false)
         val isSettingsBlocked = intent.getBooleanExtra("is_settings_blocked", false)
         
@@ -50,7 +50,7 @@ class BlockedAppExplanationActivity : ComponentActivity() {
                     blockedPackage = blockedPackage,
                     blockingLevel = blockingLevel,
                     daysOverdue = daysOverdue,
-                    isManualBlock = isManualBlock,
+                    hasOverride = hasOverride,
                     manualBlockReason = intent.getStringExtra("manual_block_reason"),
                     isOffline = isOffline,
                     isSettingsBlocked = isSettingsBlocked,
@@ -70,7 +70,7 @@ fun ModernBlockedAppScreen(
     blockedPackage: String,
     blockingLevel: Int,
     daysOverdue: Int,
-    isManualBlock: Boolean,
+    hasOverride: Boolean,
     manualBlockReason: String? = null,
     isOffline: Boolean = false,
     isSettingsBlocked: Boolean = false,

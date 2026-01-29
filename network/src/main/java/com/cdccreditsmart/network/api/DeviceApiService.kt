@@ -150,7 +150,7 @@ interface DeviceApiService {
      * POST /api/apk/device/heartbeat
      * 
      * Usa RealTimeHeartbeatRequest com campos da documentação oficial:
-     * deviceToken, currentBlockLevel, batteryLevel, isCharging, currentSimImei
+     * deviceToken, policyLevel, batteryLevel, isCharging, currentSimImei
      */
     @POST("api/apk/device/heartbeat")
     suspend fun sendRealTimeHeartbeat(

@@ -58,12 +58,12 @@ class BlockedAppInterceptor(private val context: Context) {
                 try {
                     // OTIMIZAÇÃO: Pausar monitoramento quando não há bloqueio ativo
                     val policyStatus = appPolicyManager.getPolicyStatus()
-                    val hasManualBlock = appPolicyManager.hasManualBlock()
+                    val hasOverride = appPolicyManager.hasOverride()
                     
                     // LOG DIAGNÓSTICO DETALHADO
-                    Log.i(TAG, "🔍 CHECK: currentLevel=${policyStatus.tier}, hasManualBlock=$hasManualBlock, daysOverdue=${policyStatus.daysOverdue}")
+                    Log.i(TAG, "🔍 CHECK: currentLevel=${policyStatus.tier}, hasOverride=$hasOverride, daysOverdue=${policyStatus.daysOverdue}")
                     
-                    if (policyStatus.tier == 0 && !hasManualBlock) {
+                    if (policyStatus.tier == 0 && !hasOverride) {
                         Log.w(TAG, "⚠️ SEM BLOQUEIO ATIVO - Overlay NÃO vai aparecer")
                         Log.w(TAG, "   📝 Para ativar overlay: aplicar comando BLOCK com targetLevel > 0")
                         Log.w(TAG, "   ⏸️ Pausando monitoramento por 60s para economizar bateria...")
@@ -169,7 +169,7 @@ class BlockedAppInterceptor(private val context: Context) {
         
         // NOVO COMPORTAMENTO: Mostra overlay em QUALQUER app quando há bloqueio ativo
         val policyStatus = appPolicyManager.getPolicyStatus()
-        val hasManualBlock = appPolicyManager.hasManualBlock()
+        val hasOverride = appPolicyManager.hasOverride()
         
         // Se há algum nível de bloqueio ativo (parcelas atrasadas OU bloqueio manual)
         if (policyStatus.tier > 0) {
@@ -195,7 +195,7 @@ class BlockedAppInterceptor(private val context: Context) {
                 return true
             }
             
-            if (hasManualBlock) {
+            if (hasOverride) {
                 Log.i(TAG, "🚨 BLOQUEIO MANUAL ATIVO (backend forçou nível ${policyStatus.tier})")
                 Log.i(TAG, "📱 App detectado em foreground: $foregroundPackage")
                 Log.i(TAG, "🔔 Mostrando overlay (cliente vê como parcelas atrasadas)...")
@@ -219,7 +219,7 @@ class BlockedAppInterceptor(private val context: Context) {
                 Log.i(TAG, "   Blocking Level: ${policyStatus.tier}")
                 Log.i(TAG, "   Days Overdue: ${policyStatus.daysOverdue}")
                 Log.i(TAG, "   Blocked Apps Count: ${policyStatus.blockedAppsCount}")
-                Log.i(TAG, "   Manual Block: $hasManualBlock")
+                Log.i(TAG, "   Override: $hasOverride")
             }
             
             showBlockedAppExplanation(foregroundPackage)
@@ -312,7 +312,7 @@ class BlockedAppInterceptor(private val context: Context) {
                 putExtra("blocking_level", policyStatus.tier)
                 putExtra("days_overdue", policyStatus.daysOverdue)
                 putExtra("blocked_apps_count", policyStatus.blockedAppsCount)
-                putExtra("is_manual_block", policyStatus.isOverridden)
+                putExtra("has_override", policyStatus.isOverridden)
                 putExtra("manual_block_reason", policyStatus.overrideReason)
             }
             

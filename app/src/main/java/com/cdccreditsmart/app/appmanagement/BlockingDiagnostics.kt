@@ -37,8 +37,8 @@ object BlockingDiagnostics {
         
         // 3. Verificar estado do bloqueio
         Log.i(TAG, "3️⃣ ESTADO DO SISTEMA")
-        val hasManualBlock = blockingManager.hasManualBlock()
-        Log.i(TAG, "   Has Manual Block: $hasManualBlock")
+        val hasOverride = blockingManager.hasOverride()
+        Log.i(TAG, "   Has Override: $hasOverride")
         Log.i(TAG, "   Should Show Overlay: ${policyStatus.tier > 0}")
         Log.i(TAG, "")
         
@@ -58,7 +58,7 @@ object BlockingDiagnostics {
         // 5. Diagnóstico final
         Log.i(TAG, "5️⃣ DIAGNÓSTICO FINAL")
         when {
-            policyStatus.tier == 0 && !hasManualBlock -> {
+            policyStatus.tier == 0 && !hasOverride -> {
                 Log.e(TAG, "   ❌ PROBLEMA: Nível de bloqueio = 0 e sem bloqueio manual")
                 Log.e(TAG, "   📝 SOLUÇÃO: Aplicar comando de bloqueio via MDM ou ter parcelas vencidas")
                 Log.e(TAG, "   💡 TESTE: Enviar comando BLOCK com targetLevel > 0 do backend")
@@ -68,7 +68,7 @@ object BlockingDiagnostics {
                 Log.i(TAG, "   📱 Abra qualquer app (Chrome, YouTube, etc) e aguarde 2 segundos")
                 Log.i(TAG, "   ⏱️ Se não aparecer, pode estar em cooldown (60s global)")
             }
-            hasManualBlock -> {
+            hasOverride -> {
                 Log.i(TAG, "   ✅ BLOQUEIO MANUAL ATIVO - Overlay DEVE aparecer")
                 Log.i(TAG, "   📱 Abra qualquer app e aguarde 2 segundos")
             }

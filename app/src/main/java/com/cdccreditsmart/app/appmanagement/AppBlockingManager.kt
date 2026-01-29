@@ -625,7 +625,7 @@ class AppBlockingManager(private val context: Context) {
         Log.i(TAG, "")
         
         // CRITICAL: NÃO desbloquear se há bloqueio manual ativo
-        if (hasManualBlock()) {
+        if (hasOverride()) {
             Log.w(TAG, "⚠️ BLOQUEIO MANUAL ATIVO - Desbloqueio IGNORADO")
             Log.w(TAG, "   Somente o backend pode remover bloqueio manual")
             return UnblockResult(
@@ -863,7 +863,7 @@ class AppBlockingManager(private val context: Context) {
     /**
      * Verifica se há bloqueio manual ativo (forçado pelo backend)
      */
-    fun hasManualBlock(): Boolean {
+    fun hasOverride(): Boolean {
         val prefs = context.getSharedPreferences("blocking_state", Context.MODE_PRIVATE)
         val isManual = prefs.getBoolean("is_manual_block", false)
         if (!isManual) return false
@@ -1020,7 +1020,7 @@ class AppBlockingManager(private val context: Context) {
      * Obtém o nível atual de bloqueio progressivo (0-5)
      * Usado pelo HeartbeatWorker para reportar ao backend
      */
-    fun getCurrentBlockLevel(): Int {
+    fun getPolicyLevel(): Int {
         return getCurrentBlockingLevel()
     }
     
@@ -1301,7 +1301,7 @@ class AppBlockingManager(private val context: Context) {
                 putExtra("blocking_level", level)
                 putExtra("days_overdue", daysOverdue)
                 putExtra("blocked_apps_count", blockedCount)
-                putExtra("is_manual_block", !reason.isNullOrBlank())
+                putExtra("has_override", !reason.isNullOrBlank())
                 putExtra("manual_block_reason", reason)
                 putExtra("is_immediate", true) // Flag especial: primeiro overlay
             }

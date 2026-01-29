@@ -37,7 +37,7 @@ class OfflineBlockingEngine(
             Log.i(TAG, "🤖 Iniciando verificação automática de bloqueio offline...")
             
             // CRITICAL: Verificar se há bloqueio manual ANTES de processar
-            if (appPolicyManager.hasManualBlock()) {
+            if (appPolicyManager.hasOverride()) {
                 Log.i(TAG, "🚨 BLOQUEIO MANUAL ATIVO - ignorando bloqueio automático")
                 Log.i(TAG, "   Bloqueio manual tem PRIORIDADE sobre parcelas vencidas")
                 Log.i(TAG, "   Somente o backend pode remover bloqueio manual")

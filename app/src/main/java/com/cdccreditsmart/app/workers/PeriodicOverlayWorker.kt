@@ -156,19 +156,19 @@ class PeriodicOverlayWorker(
             
             val blockingManager = AppBlockingManager(context)
             val policyStatus = blockingManager.getPolicyStatus()
-            val hasManualBlock = blockingManager.hasManualBlock()
+            val hasOverride = blockingManager.hasOverride()
             
             Log.i(TAG, "📊 Status de bloqueio:")
             Log.i(TAG, "   Current Level: ${policyStatus.tier}")
             Log.i(TAG, "   Days Overdue: ${policyStatus.daysOverdue}")
-            Log.i(TAG, "   Manual Block: $hasManualBlock")
+            Log.i(TAG, "   Override: $hasOverride")
             Log.i(TAG, "   Blocked Apps: ${policyStatus.blockedAppsCount}")
             
             // Verificar se há bloqueio ativo OU se temos dados offline válidos
             var isOfflineMode = false
             var effectivePolicyStatus = policyStatus
             
-            if (policyStatus.tier == 0 && !hasManualBlock) {
+            if (policyStatus.tier == 0 && !hasOverride) {
                 // Tentar fallback offline
                 val localState = LocalAccountState(context)
                 
@@ -247,7 +247,7 @@ class PeriodicOverlayWorker(
                 prefs.edit().putLong(KEY_LAST_NOTIFICATION, now).apply()
                 
                 // Agendar overlay para 1 minuto depois
-                scheduleOverlayIn1Minute(context, effectivePolicyStatus, hasManualBlock, isOfflineMode)
+                scheduleOverlayIn1Minute(context, effectivePolicyStatus, hasOverride, isOfflineMode)
                 
                 Log.i(TAG, "⏰ Overlay será mostrado em 1 minuto")
                 Log.i(TAG, "")
@@ -261,7 +261,7 @@ class PeriodicOverlayWorker(
             Log.i(TAG, "   Cooldown atual: $requiredCooldownMinutes minutos")
             Log.i(TAG, "   Modo Offline: $isOfflineMode")
             
-            showOverlay(effectivePolicyStatus, hasManualBlock, isOfflineMode)
+            showOverlay(effectivePolicyStatus, hasOverride, isOfflineMode)
             
             // Atualizar timestamp e contador
             val showCount = prefs.getInt(KEY_SHOW_COUNT, 0) + 1
@@ -332,7 +332,7 @@ class PeriodicOverlayWorker(
     private fun scheduleOverlayIn1Minute(
         context: Context, 
         policyStatus: PolicyStatus,
-        hasManualBlock: Boolean,
+        hasOverride: Boolean,
         isOffline: Boolean = false
     ) {
         try {
@@ -340,7 +340,7 @@ class PeriodicOverlayWorker(
                 "blocking_level" to policyStatus.tier,
                 "days_overdue" to policyStatus.daysOverdue,
                 "blocked_apps_count" to policyStatus.blockedAppsCount,
-                "is_manual_block" to hasManualBlock,
+                "has_override" to hasOverride,
                 "manual_block_reason" to (policyStatus.overrideReason ?: ""),
                 "is_offline" to isOffline
             )
@@ -363,7 +363,7 @@ class PeriodicOverlayWorker(
         }
     }
     
-    private fun showOverlay(policyStatus: PolicyStatus, hasManualBlock: Boolean, isOffline: Boolean = false) {
+    private fun showOverlay(policyStatus: PolicyStatus, hasOverride: Boolean, isOffline: Boolean = false) {
         try {
             val intent = Intent(context, BlockedAppExplanationActivity::class.java).apply {
                 addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
@@ -376,7 +376,7 @@ class PeriodicOverlayWorker(
                 putExtra("blocking_level", policyStatus.tier)
                 putExtra("days_overdue", policyStatus.daysOverdue)
                 putExtra("blocked_apps_count", policyStatus.blockedAppsCount)
-                putExtra("is_manual_block", hasManualBlock)
+                putExtra("has_override", hasOverride)
                 putExtra("manual_block_reason", policyStatus.overrideReason)
                 putExtra("is_periodic", true) // Flag para indicar que é overlay periódico
                 putExtra("is_offline", isOffline) // Flag para indicar modo offline
@@ -442,7 +442,7 @@ class DelayedOverlayWorker(
             val blockingLevel = inputData.getInt("blocking_level", 0)
             val daysOverdue = inputData.getInt("days_overdue", 0)
             val blockedAppsCount = inputData.getInt("blocked_apps_count", 0)
-            val isManualBlock = inputData.getBoolean("is_manual_block", false)
+            val hasOverride = inputData.getBoolean("has_override", false)
             val manualBlockReason = inputData.getString("manual_block_reason")
             val isOffline = inputData.getBoolean("is_offline", false)
             
@@ -456,7 +456,7 @@ class DelayedOverlayWorker(
                 putExtra("blocking_level", blockingLevel)
                 putExtra("days_overdue", daysOverdue)
                 putExtra("blocked_apps_count", blockedAppsCount)
-                putExtra("is_manual_block", isManualBlock)
+                putExtra("has_override", hasOverride)
                 putExtra("manual_block_reason", manualBlockReason)
                 putExtra("is_periodic", true)
                 putExtra("is_offline", isOffline)

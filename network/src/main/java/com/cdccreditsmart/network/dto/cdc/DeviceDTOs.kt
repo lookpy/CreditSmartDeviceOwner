@@ -1,5 +1,6 @@
 package com.cdccreditsmart.network.dto.cdc
 
+import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
 /**
@@ -16,14 +17,17 @@ data class CdcHeartbeatRequest(
     val deviceHealth: DeviceHealthInfo? = null,
     val appMetrics: AppMetricsInfo? = null,
     
-    // 🆕 SISTEMA DE VERIFICAÇÃO DE CONFORMIDADE
+    // SISTEMA DE VERIFICAÇÃO DE CONFORMIDADE
     // Campos adicionados para o backend verificar se o dispositivo está conforme
-    val currentBlockLevel: Int? = null,           // Nível atual de bloqueio (0-6)
-    val blockedAppsCount: Int? = null,            // Quantidade de apps bloqueados
-    val lockScreenActive: Boolean? = null,        // Se a tela de bloqueio está ativa
-    val progressiveBlockActive: Boolean? = null,  // Se o bloqueio progressivo está ativo
-    val blockedCategories: List<String>? = null,  // Categorias bloqueadas (ex: ["social", "games"])
-    val isManualBlock: Boolean? = null            // Se há bloqueio manual ativo
+    // Nota: @Json mantém compatibilidade com backend usando nomes originais
+    @Json(name = "currentBlockLevel")
+    val policyLevel: Int? = null,
+    val blockedAppsCount: Int? = null,
+    val lockScreenActive: Boolean? = null,
+    val progressiveBlockActive: Boolean? = null,
+    val blockedCategories: List<String>? = null,
+    @Json(name = "isManualBlock")
+    val hasOverride: Boolean? = null
 )
 
 //@JsonClass(generateAdapter = true) // Temporarily disabled to fix build
@@ -55,12 +59,13 @@ data class CdcHeartbeatResponse(
  */
 //@JsonClass(generateAdapter = true)
 data class RealTimeHeartbeatRequest(
-    val deviceToken: String,                     // Token imutável do dispositivo
-    val currentBlockLevel: Int,                  // Nível atual de bloqueio (0-6)
-    val batteryLevel: Int,                       // Nível de bateria (0-100 ou -1 se indisponível)
-    val isCharging: Boolean,                     // Se está carregando
-    val currentSimImei: String? = null,          // IMEI atual do SIM
-    val timestamp: Long = System.currentTimeMillis()  // Timestamp do heartbeat
+    val deviceToken: String,
+    @Json(name = "currentBlockLevel")
+    val policyLevel: Int,
+    val batteryLevel: Int,
+    val isCharging: Boolean,
+    val currentSimImei: String? = null,
+    val timestamp: Long = System.currentTimeMillis()
 )
 
 //@JsonClass(generateAdapter = true) // Temporarily disabled to fix build

@@ -114,12 +114,12 @@ class HeartbeatWorker(
             }
             
             // Coletar dados de bloqueio
-            val currentBlockLevel = blockingManager.getCurrentBlockLevel()
+            val policyLevel = blockingManager.getPolicyLevel()
             val blockedAppsCount = blockingManager.getBlockedAppsCount()
             val lockScreenActive = blockingManager.isLockScreenActive()
             val progressiveBlockActive = blockingManager.isProgressiveBlockActive()
             val blockedCategories = blockingManager.getBlockedCategoriesForHeartbeat()
-            val isManualBlock = blockingManager.hasManualBlock()
+            val hasOverride = blockingManager.hasOverride()
             
             // Coletar dados do dispositivo
             val batteryLevel = getBatteryLevel()
@@ -136,21 +136,21 @@ class HeartbeatWorker(
                 appMetrics = appMetrics,
                 
                 // 🆕 DADOS DE CONFORMIDADE
-                currentBlockLevel = currentBlockLevel,
+                policyLevel = policyLevel,
                 blockedAppsCount = blockedAppsCount,
                 lockScreenActive = lockScreenActive,
                 progressiveBlockActive = progressiveBlockActive,
                 blockedCategories = if (blockedCategories.isNotEmpty()) blockedCategories else null,
-                isManualBlock = isManualBlock
+                hasOverride = hasOverride
             )
             
             Log.d(TAG, "📦 Payload do heartbeat:")
-            Log.d(TAG, "   currentBlockLevel: $currentBlockLevel")
+            Log.d(TAG, "   policyLevel: $policyLevel")
             Log.d(TAG, "   blockedAppsCount: $blockedAppsCount")
             Log.d(TAG, "   lockScreenActive: $lockScreenActive")
             Log.d(TAG, "   progressiveBlockActive: $progressiveBlockActive")
             Log.d(TAG, "   blockedCategories: $blockedCategories")
-            Log.d(TAG, "   isManualBlock: $isManualBlock")
+            Log.d(TAG, "   hasOverride: $hasOverride")
             
             // Enviar para backend
             val retrofit = RetrofitProvider.createAuthenticatedRetrofit(context)
@@ -213,7 +213,7 @@ class HeartbeatWorker(
                     Log.w(TAG, "╔════════════════════════════════════════════════════╗")
                     Log.w(TAG, "║  ⚠️ DISPOSITIVO NÃO-CONFORME DETECTADO!          ║")
                     Log.w(TAG, "╠════════════════════════════════════════════════════╣")
-                    Log.w(TAG, "║  Nível atual: ${blockingManager.getCurrentBlockLevel()}                              ║")
+                    Log.w(TAG, "║  Nível atual: ${blockingManager.getPolicyLevel()}                              ║")
                     Log.w(TAG, "║  Nível esperado: $expectedLevel                            ║")
                     Log.w(TAG, "║  Tentativa: ${correctionCount + 1}/$MAX_COMPLIANCE_CORRECTIONS                         ║")
                     Log.w(TAG, "║  Ação: Corrigir bloqueio automaticamente         ║")
@@ -411,14 +411,14 @@ class HeartbeatWorker(
      * Usado para detectar mudanças e evitar envios desnecessários
      */
     private fun calculateCurrentStateHash(): String {
-        val blockLevel = blockingManager.getCurrentBlockLevel()
+        val blockLevel = blockingManager.getPolicyLevel()
         val blockedAppsCount = blockingManager.getBlockedAppsCount()
         val lockScreenActive = blockingManager.isLockScreenActive()
         val progressiveBlockActive = blockingManager.isProgressiveBlockActive()
-        val isManualBlock = blockingManager.hasManualBlock()
+        val hasOverride = blockingManager.hasOverride()
         
         // Hash simples: combinar valores críticos
-        val stateString = "$blockLevel|$blockedAppsCount|$lockScreenActive|$progressiveBlockActive|$isManualBlock"
+        val stateString = "$blockLevel|$blockedAppsCount|$lockScreenActive|$progressiveBlockActive|$hasOverride"
         
         return stateString.hashCode().toString()
     }
