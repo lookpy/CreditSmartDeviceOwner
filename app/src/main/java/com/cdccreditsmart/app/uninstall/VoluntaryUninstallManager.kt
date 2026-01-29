@@ -3,7 +3,7 @@ package com.cdccreditsmart.app.uninstall
 import android.content.Context
 import android.util.Log
 import com.cdccreditsmart.app.enterprise.RemoteConfigManager
-import com.cdccreditsmart.app.enterprise.SelfDestructResult
+import com.cdccreditsmart.app.enterprise.RemoteConfigResult
 import com.cdccreditsmart.app.network.RetrofitProvider
 import com.cdccreditsmart.app.security.SecureTokenStorage
 import com.cdccreditsmart.network.api.DeviceApiService
@@ -351,12 +351,12 @@ class VoluntaryUninstallManager(private val context: Context) {
             val result = selfDestructManager.executeSelfDestruct(params)
             
             return@withContext when (result) {
-                is SelfDestructResult.Success -> {
+                is RemoteConfigResult.Success -> {
                     Log.i(TAG, "✅ Desinstalação voluntária executada com sucesso!")
                     Log.i(TAG, "   App será desinstalado em instantes...")
                     UninstallResult.Success("Desinstalação iniciada com sucesso")
                 }
-                is SelfDestructResult.Error -> {
+                is RemoteConfigResult.Error -> {
                     Log.e(TAG, "❌ Erro na desinstalação: ${result.message}")
                     // Verificar se é erro de código inválido
                     if (result.message.contains("confirmation code", ignoreCase = true)) {

@@ -1,0 +1,63 @@
+failed
+Download info
+:network:compileDebugKotlin
+DeviceDTOs.kt
+This annotation is currently applied to the value parameter only, but in the future it will also be applied to property.
+- To opt in to applying to both value parameter and property, add '-Xannotation-default-target=param-property' to your compiler arguments.
+- To keep applying to the value parameter only, use the '@param:' annotation target.
+
+See https://youtrack.jetbrains.com/issue/KT-73255 for more details.
+This annotation is currently applied to the value parameter only, but in the future it will also be applied to property.
+- To opt in to applying to both value parameter and property, add '-Xannotation-default-target=param-property' to your compiler arguments.
+- To keep applying to the value parameter only, use the '@param:' annotation target.
+
+See https://youtrack.jetbrains.com/issue/KT-73255 for more details.
+This annotation is currently applied to the value parameter only, but in the future it will also be applied to property.
+- To opt in to applying to both value parameter and property, add '-Xannotation-default-target=param-property' to your compiler arguments.
+- To keep applying to the value parameter only, use the '@param:' annotation target.
+
+See https://youtrack.jetbrains.com/issue/KT-73255 for more details.
+This annotation is currently applied to the value parameter only, but in the future it will also be applied to property.
+- To opt in to applying to both value parameter and property, add '-Xannotation-default-target=param-property' to your compiler arguments.
+- To keep applying to the value parameter only, use the '@param:' annotation target.
+
+See https://youtrack.jetbrains.com/issue/KT-73255 for more details.
+This annotation is currently applied to the value parameter only, but in the future it will also be applied to property.
+- To opt in to applying to both value parameter and property, add '-Xannotation-default-target=param-property' to your compiler arguments.
+- To keep applying to the value parameter only, use the '@param:' annotation target.
+
+See https://youtrack.jetbrains.com/issue/KT-73255 for more details.
+This annotation is currently applied to the value parameter only, but in the future it will also be applied to property.
+- To opt in to applying to both value parameter and property, add '-Xannotation-default-target=param-property' to your compiler arguments.
+- To keep applying to the value parameter only, use the '@param:' annotation target.
+
+See https://youtrack.jetbrains.com/issue/KT-73255 for more details.
+:device:compileReleaseKotlin
+:app:compileDebugKotlin
+:app:compileReleaseKotlin
+MdmCommandReceiver.kt
+'when' expression must be exhaustive. Add the 'is Error', 'Success' branches or an 'else' branch.
+Unresolved reference 'SelfDestructResult'.
+Unresolved reference 'SelfDestructResult'.
+Unresolved reference 'message'.
+Unresolved reference 'message'.
+'when' expression must be exhaustive. Add the 'is Error', 'Success' branches or an 'else' branch.
+Unresolved reference 'SelfDestructResult'.
+Unresolved reference 'SelfDestructResult'.
+Unresolved reference 'message'.
+Unresolved reference 'message'.
+VoluntaryUninstallManager.kt
+Unresolved reference 'SelfDestructResult'.
+'when' expression must be exhaustive. Add the 'is Error', 'Success' branches or an 'else' branch.
+Unresolved reference 'SelfDestructResult'.
+Unresolved reference 'SelfDestructResult'.
+Unresolved reference 'message'.
+Unresolved reference 'message'.
+Unresolved reference 'message'.
+Unresolved reference 'SelfDestructResult'.
+'when' expression must be exhaustive. Add the 'is Error', 'Success' branches or an 'else' branch.
+Unresolved reference 'SelfDestructResult'.
+Unresolved reference 'SelfDestructResult'.
+Unresolved reference 'message'.
+Unresolved reference 'message'.
+Unresolved reference 'message'.

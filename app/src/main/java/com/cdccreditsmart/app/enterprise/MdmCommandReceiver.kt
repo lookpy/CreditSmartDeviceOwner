@@ -625,7 +625,7 @@ class MdmCommandReceiver(private val context: Context) {
                     val result = selfDestructManager.executeSelfDestruct(parameters)
                     
                     when (result) {
-                        is SelfDestructResult.Success -> {
+                        is RemoteConfigResult.Success -> {
                             Log.i(TAG, "✅ Auto-destruição executada com sucesso")
                             sendCommandResponse(
                                 commandId = commandId,
@@ -633,7 +633,7 @@ class MdmCommandReceiver(private val context: Context) {
                                 errorMessage = null
                             )
                         }
-                        is SelfDestructResult.Error -> {
+                        is RemoteConfigResult.Error -> {
                             Log.e(TAG, "❌ Erro na auto-destruição: ${result.message}")
                             sendCommandResponse(
                                 commandId = commandId,
