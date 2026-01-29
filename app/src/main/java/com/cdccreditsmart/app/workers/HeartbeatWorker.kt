@@ -8,7 +8,7 @@ import android.os.Build
 import android.util.Log
 import androidx.work.*
 import com.cdccreditsmart.app.BuildConfig
-import com.cdccreditsmart.app.appmanagement.AppBlockingManager
+import com.cdccreditsmart.app.appmanagement.AppPolicyManager
 import com.cdccreditsmart.app.network.RetrofitProvider
 import com.cdccreditsmart.app.security.SecureTokenStorage
 import com.cdccreditsmart.network.api.DeviceApiService
@@ -71,7 +71,7 @@ class HeartbeatWorker(
     }
     
     private val tokenStorage by lazy { SecureTokenStorage(context) }
-    private val blockingManager by lazy { AppBlockingManager(context) }
+    private val blockingManager by lazy { AppPolicyManager(context) }
     
     override suspend fun doWork(): Result {
         return try {

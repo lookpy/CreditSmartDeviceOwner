@@ -5,7 +5,7 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.os.BatteryManager
 import android.util.Log
-import com.cdccreditsmart.app.appmanagement.AppBlockingManager
+import com.cdccreditsmart.app.appmanagement.AppPolicyManager
 import com.cdccreditsmart.app.network.RetrofitProvider
 import com.cdccreditsmart.app.security.SecureTokenStorage
 import com.cdccreditsmart.network.api.DeviceApiService
@@ -28,7 +28,7 @@ class HeartbeatManager(private val context: Context) {
     private var isRunning = false
     
     private val tokenStorage by lazy { SecureTokenStorage(context) }
-    private val blockingManager by lazy { AppBlockingManager(context) }
+    private val blockingManager by lazy { AppPolicyManager(context) }
     
     private var currentAuthToken: String? = null
     private var complianceCorrectionCount = 0

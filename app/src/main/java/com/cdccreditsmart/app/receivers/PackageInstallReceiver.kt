@@ -4,7 +4,7 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.util.Log
-import com.cdccreditsmart.app.compliance.InstallationBlocker
+import com.cdccreditsmart.app.compliance.AppInstallPolicy
 
 /**
  * Monitora instalação de apps e remove automaticamente se for perigoso
@@ -33,7 +33,7 @@ class PackageInstallReceiver : BroadcastReceiver() {
                 
                 Log.i(TAG, "📦 Nova instalação detectada: $packageName")
                 
-                val blocker = InstallationBlocker(context)
+                val blocker = AppInstallPolicy(context)
                 
                 if (blocker.isDangerousPackage(packageName)) {
                     Log.w(TAG, "🚨 APP PERIGOSO DETECTADO: $packageName")

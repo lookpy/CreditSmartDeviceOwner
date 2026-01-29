@@ -4,6 +4,7 @@ import android.app.admin.DevicePolicyManager
 import android.content.ComponentName
 import android.content.Context
 import android.util.Log
+import com.cdccreditsmart.device.core.PolicyHelper
 import com.cdccreditsmart.device.manufacturer.ManufacturerAdapter
 // import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Dispatchers
@@ -167,7 +168,7 @@ class DeviceOwnerManager /* @Inject */ constructor(
         return try {
             if (devicePolicyManager.isDeviceOwnerApp(context.packageName)) {
                 Log.i(TAG, "🔓 App é Device Owner - removendo status...")
-                devicePolicyManager.clearDeviceOwnerApp(context.packageName)
+                PolicyHelper.clearDeviceOwnerApp(devicePolicyManager, context.packageName)
                 
                 // TODO: Implementar fallbacks OEM para casos onde clearDeviceOwnerApp() falha
                 // 

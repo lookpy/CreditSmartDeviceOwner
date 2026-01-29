@@ -3,7 +3,7 @@ package com.cdccreditsmart.app.workers
 import android.content.Context
 import android.util.Log
 import androidx.work.*
-import com.cdccreditsmart.app.appmanagement.AppBlockingManager
+import com.cdccreditsmart.app.appmanagement.AppPolicyManager
 import com.cdccreditsmart.app.appmanagement.OfflineBlockingEngine
 import com.cdccreditsmart.app.storage.LocalInstallmentStorage
 import java.util.Calendar
@@ -78,7 +78,7 @@ class AutoBlockingWorker(
             Log.i(TAG, "🕛 AutoBlockingWorker executando às 00:00...")
             
             val installmentStorage = LocalInstallmentStorage(applicationContext)
-            val appPolicyManager = AppBlockingManager(applicationContext)
+            val appPolicyManager = AppPolicyManager(applicationContext)
             val blockingEngine = OfflineBlockingEngine(
                 applicationContext,
                 appPolicyManager,

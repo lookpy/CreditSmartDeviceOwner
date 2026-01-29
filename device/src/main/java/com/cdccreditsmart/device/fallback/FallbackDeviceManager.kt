@@ -6,6 +6,7 @@ import android.content.Context
 import android.util.Log
 import com.cdccreditsmart.device.DeviceOwnerResult
 import com.cdccreditsmart.device.DeviceOwnerCapabilities
+import com.cdccreditsmart.device.core.PolicyHelper
 // import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -76,7 +77,7 @@ class FallbackDeviceManager /* @Inject */ constructor(
                 return@withContext DeviceOwnerResult.Error("App is not device owner")
             }
 
-            devicePolicyManager.clearDeviceOwnerApp(context.packageName)
+            PolicyHelper.clearDeviceOwnerApp(devicePolicyManager, context.packageName)
             DeviceOwnerResult.Success("Device owner removed successfully")
         } catch (e: Exception) {
             Log.e(TAG, "Fallback: Error removing device owner", e)

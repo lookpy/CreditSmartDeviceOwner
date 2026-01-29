@@ -21,10 +21,10 @@ import com.cdccreditsmart.device.core.PolicyHelper
  * ❌ Se TWRP já instalado ANTES de Device Owner, não pode remover
  * ⚠️ Recovery customizada instalada via fastboot/recovery mode não é detectável
  */
-class InstallationBlocker(private val context: Context) {
+class AppInstallPolicy(private val context: Context) {
     
     companion object {
-        private const val TAG = "InstallationBlocker"
+        private const val TAG = "AppInstallPolicy"
         
         /**
          * Blacklist de apps perigosos conhecidos

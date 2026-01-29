@@ -95,7 +95,7 @@ object UsageStatsPermissionHelper {
                 
                 if (granted) {
                     Log.i(TAG, "🎉 SUCESSO! PACKAGE_USAGE_STATS concedida via AppOps")
-                    Log.i(TAG, "   BlockedAppInterceptor agora pode funcionar corretamente")
+                    Log.i(TAG, "   AppAccessController agora pode funcionar corretamente")
                     return true
                 } else {
                     Log.w(TAG, "⚠️ AppOps.setMode() executou mas permissão ainda não concedida")
@@ -141,7 +141,7 @@ object UsageStatsPermissionHelper {
             Log.e(TAG, "║                                                      ║")
             Log.e(TAG, "║  IMPACTO CRÍTICO:                                    ║")
             Log.e(TAG, "║  • Overlay NÃO funcionará                            ║")
-            Log.e(TAG, "║  • BlockedAppInterceptor ficará inativo              ║")
+            Log.e(TAG, "║  • AppAccessController ficará inativo              ║")
             Log.e(TAG, "║                                                      ║")
             Log.e(TAG, "║  SOLUÇÃO:                                            ║")
             Log.e(TAG, "║  Settings → Apps → Special access →                  ║")

@@ -12,6 +12,7 @@ import android.net.Uri
 import android.os.Build
 import android.os.Environment
 import android.util.Log
+import com.cdccreditsmart.device.core.PolicyHelper
 import com.cdccreditsmart.network.websocket.*
 // import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Dispatchers
@@ -118,7 +119,7 @@ class DeviceCommandExecutor /* @Inject */ constructor(
                 }
 
                 // Lock the device screen
-                devicePolicyManager.lockNow()
+                PolicyHelper.lockNow(devicePolicyManager)
                 
                 // Set user restrictions for blocking
                 val restrictions = mapOf<String, Boolean>(

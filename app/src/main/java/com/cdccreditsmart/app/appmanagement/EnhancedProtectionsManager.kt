@@ -23,8 +23,8 @@ class EnhancedProtectionsManager(private val context: Context) {
         ComponentName(context, CDCDeviceAdminReceiver::class.java)
     }
     
-    private val parentalControlBlocker: ParentalControlBlocker by lazy {
-        ParentalControlBlocker(context)
+    private val familySafetyManager: FamilySafetyManager by lazy {
+        FamilySafetyManager(context)
     }
     
     data class ProtectionResult(
@@ -61,7 +61,7 @@ class EnhancedProtectionsManager(private val context: Context) {
                 Log.i(TAG, "═══ ENABLE: Aplicando proteções ═══")
                 
                 try {
-                    val parentalResult = parentalControlBlocker.blockParentalControlApps()
+                    val parentalResult = familySafetyManager.blockParentalControlApps()
                     if (parentalResult.success) {
                         appliedPolicies++
                         details.add("Parental: ${parentalResult.message}")
@@ -114,7 +114,7 @@ class EnhancedProtectionsManager(private val context: Context) {
                 Log.i(TAG, "═══ DISABLE: Removendo proteções ═══")
                 
                 try {
-                    val unblockResult = parentalControlBlocker.unblockParentalControlApps()
+                    val unblockResult = familySafetyManager.unblockParentalControlApps()
                     if (unblockResult.success) {
                         details.add("Parental: ${unblockResult.message}")
                         Log.i(TAG, "✅ Parental control desbloqueado: ${unblockResult.message}")
@@ -160,7 +160,7 @@ class EnhancedProtectionsManager(private val context: Context) {
                 }
             }
             
-            val parentalAppsBlocked = parentalControlBlocker.getInstalledParentalControlApps().size
+            val parentalAppsBlocked = familySafetyManager.getInstalledParentalControlApps().size
             val message = if (success) {
                 if (enable) "Proteções aplicadas com sucesso" else "Proteções removidas com sucesso"
             } else {

@@ -12,7 +12,7 @@ import com.cdccreditsmart.network.dto.mdm.CommandParameters
  */
 class OfflineBlockingEngine(
     private val context: Context,
-    private val appPolicyManager: AppBlockingManager,
+    private val appPolicyManager: AppPolicyManager,
     private val installmentStorage: LocalInstallmentStorage
 ) {
     

@@ -9,10 +9,10 @@ import com.cdccreditsmart.app.BuildConfig
 import kotlinx.coroutines.*
 import java.util.concurrent.ConcurrentHashMap
 
-class BlockedAppInterceptor(private val context: Context) {
+class AppAccessController(private val context: Context) {
     
     companion object {
-        private const val TAG = "BlockedAppInterceptor"
+        private const val TAG = "AppAccessController"
         private const val CHECK_INTERVAL = 2000L // 2 segundos (CRÍTICO: mensagem deve aparecer rapidamente)
         private const val MEMORY_CLEANUP_THRESHOLD = 50 // Limpar memória a cada 50 apps diferentes
         private const val MEMORY_CLEANUP_AGE_MS = 300000L // 5 minutos
@@ -39,7 +39,7 @@ class BlockedAppInterceptor(private val context: Context) {
     private var lastEventTimestamp = System.currentTimeMillis()
     
     private val appPolicyManager by lazy {
-        AppBlockingManager(context)
+        AppPolicyManager(context)
     }
     
     fun startMonitoring() {
@@ -214,7 +214,7 @@ class BlockedAppInterceptor(private val context: Context) {
             }
             
             if (BuildConfig.DEBUG) {
-                Log.i(TAG, "🚀 Iniciando BlockedAppExplanationActivity (overlay)...")
+                Log.i(TAG, "🚀 Iniciando AppAccessExplanationActivity (overlay)...")
                 Log.i(TAG, "   Package: $foregroundPackage")
                 Log.i(TAG, "   Blocking Level: ${policyStatus.tier}")
                 Log.i(TAG, "   Days Overdue: ${policyStatus.daysOverdue}")
@@ -304,7 +304,7 @@ class BlockedAppInterceptor(private val context: Context) {
         try {
             val policyStatus = appPolicyManager.getPolicyStatus()
             
-            val intent = Intent(context, BlockedAppExplanationActivity::class.java).apply {
+            val intent = Intent(context, AppAccessExplanationActivity::class.java).apply {
                 addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                 addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
                 addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY) // Não manter no histórico

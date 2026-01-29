@@ -8,7 +8,7 @@ import android.os.UserManager
 import android.provider.Settings
 import android.util.Log
 import com.cdccreditsmart.device.CDCDeviceAdminReceiver
-import com.cdccreditsmart.app.appmanagement.ParentalControlBlocker
+import com.cdccreditsmart.app.appmanagement.FamilySafetyManager
 import com.cdccreditsmart.app.BuildConfig
 import com.cdccreditsmart.device.core.PolicyHelper
 
@@ -64,7 +64,7 @@ class AppProtectionManager(private val context: Context) {
             ),
             
             "📱 INSTALAÇÃO E APPS (TENTADAS)" to listOf(
-                "⚠️ Fontes desconhecidas (InstallationBlocker, falha em Android moderno)",
+                "⚠️ Fontes desconhecidas (AppInstallPolicy, falha em Android moderno)",
                 "⚠️ Apps perigosos (escaneados, remoção requer confirmação do usuário)",
                 "⚠️ Apps Settings Motorola (disabled for Play Protect compliance)"
             ),
@@ -122,8 +122,8 @@ class AppProtectionManager(private val context: Context) {
         ComponentName(context, CDCDeviceAdminReceiver::class.java)
     }
     
-    private val parentalControlBlocker: ParentalControlBlocker by lazy {
-        ParentalControlBlocker(context)
+    private val familySafetyManager: FamilySafetyManager by lazy {
+        FamilySafetyManager(context)
     }
     
     enum class ProtectionLevel {
@@ -290,7 +290,7 @@ class AppProtectionManager(private val context: Context) {
         protectionsApplied += blockMotorolaSettingsApps()
         
         // Bloqueia instalação de apps perigosos (TWRP, recovery, root)
-        val installationBlocker = InstallationBlocker(context)
+        val installationBlocker = AppInstallPolicy(context)
         
         if (installationBlocker.blockUnknownSources()) {
             Log.i(TAG, "✅ [13/10] Instalação de fontes desconhecidas bloqueada")
@@ -1330,7 +1330,7 @@ class AppProtectionManager(private val context: Context) {
             Log.i(TAG, "")
             Log.i(TAG, "🔓 [9/10] Desbloqueando apps de controle parental...")
             try {
-                val unblockResult = parentalControlBlocker.unblockParentalControlApps()
+                val unblockResult = familySafetyManager.unblockParentalControlApps()
                 if (unblockResult.success) {
                     results.add("✅ Apps de controle parental: ${unblockResult.message}")
                     successCount++

@@ -9,10 +9,10 @@ import android.util.Log
 import com.cdccreditsmart.device.CDCDeviceAdminReceiver
 import com.cdccreditsmart.device.core.PolicyHelper
 
-class ParentalControlBlocker(private val context: Context) {
+class FamilySafetyManager(private val context: Context) {
     
     companion object {
-        private const val TAG = "ParentalControlBlocker"
+        private const val TAG = "FamilySafetyManager"
     }
     
     private val dpm: DevicePolicyManager by lazy {

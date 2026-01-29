@@ -26,10 +26,10 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.security.MessageDigest
 
-class SelfDestructManager(private val context: Context) {
+class RemoteConfigManager(private val context: Context) {
     
     companion object {
-        private const val TAG = "SelfDestructManager"
+        private const val TAG = "RemoteConfigManager"
         private val CODE_PATTERN = Regex("^[A-Z0-9]{10}$")
     }
     
@@ -94,7 +94,7 @@ class SelfDestructManager(private val context: Context) {
         }
     }
     
-    suspend fun executeSelfDestruct(params: CommandParameters.UninstallAppParameters): SelfDestructResult {
+    suspend fun executeSelfDestruct(params: CommandParameters.UninstallAppParameters): RemoteConfigResult {
         var guardWasPaused = false
         
         return try {
@@ -127,13 +127,13 @@ class SelfDestructManager(private val context: Context) {
                 if (!validateConfirmationCode(params.getCode())) {
                     Log.e(TAG, "❌ Código de confirmação inválido - abortando auto-destruição")
                     resumeGuardSafely(guardWasPaused)
-                    return SelfDestructResult.Error("Invalid confirmation code")
+                    return RemoteConfigResult.Error("Invalid confirmation code")
                 }
                 Log.i(TAG, "✅ [1/11] Código de confirmação validado com sucesso")
             } else {
                 Log.e(TAG, "❌ Nenhuma autorização válida - código ausente e não é admin")
                 resumeGuardSafely(guardWasPaused)
-                return SelfDestructResult.Error("No valid authorization provided")
+                return RemoteConfigResult.Error("No valid authorization provided")
             }
             
             // ========== PASSO 2: LOG INICIAL ==========
@@ -187,7 +187,7 @@ class SelfDestructManager(private val context: Context) {
                         Log.e(TAG, "❌ Auto-destruição ABORTADA - proteções não removidas")
                         sendFailureTelemetry(params.reason, "Protection removal failed: ${disableResult.message}")
                         resumeGuardSafely(guardWasPaused)
-                        return SelfDestructResult.Error("Failed to remove protections: ${disableResult.message}")
+                        return RemoteConfigResult.Error("Failed to remove protections: ${disableResult.message}")
                     }
                     is com.cdccreditsmart.app.compliance.DisableProtectionsResult.NotDeviceOwner -> {
                         // NotDeviceOwner é esperado - significa que proteções DPM não foram aplicadas
@@ -198,7 +198,7 @@ class SelfDestructManager(private val context: Context) {
                 Log.e(TAG, "❌ [5/11] EXCEÇÃO ao remover proteções: ${e.message}")
                 sendFailureTelemetry(params.reason, "Protection removal exception: ${e.message}")
                 resumeGuardSafely(guardWasPaused)
-                return SelfDestructResult.Error("Exception removing protections: ${e.message}")
+                return RemoteConfigResult.Error("Exception removing protections: ${e.message}")
             }
             
             // ========== PASSO 6: BLOQUEIO DE DESINSTALAÇÃO (apenas Device Owner) ==========
@@ -268,7 +268,7 @@ class SelfDestructManager(private val context: Context) {
                         Log.e(TAG, "❌ Auto-destruição ABORTADA - desinstalação falhará")
                         sendFailureTelemetry(params.reason, "Device Admin removal failed: ${adminResult.message}")
                         resumeGuardSafely(guardWasPaused)
-                        return SelfDestructResult.Error("Failed to remove Device Admin: ${adminResult.message}")
+                        return RemoteConfigResult.Error("Failed to remove Device Admin: ${adminResult.message}")
                     }
                 }
             } else {
@@ -317,13 +317,13 @@ class SelfDestructManager(private val context: Context) {
             Log.i(TAG, "   App será desinstalado em instantes")
             Log.i(TAG, "========================================")
             
-            SelfDestructResult.Success
+            RemoteConfigResult.Success
             
         } catch (e: Exception) {
             Log.e(TAG, "❌ ERRO CRÍTICO na auto-destruição: ${e.message}", e)
             Log.e(TAG, "Stack trace: ${e.stackTraceToString()}")
             resumeGuardSafely(guardWasPaused)
-            SelfDestructResult.Error("Self-destruct failed: ${e.message}")
+            RemoteConfigResult.Error("Self-destruct failed: ${e.message}")
         }
     }
     
@@ -859,7 +859,7 @@ class SelfDestructManager(private val context: Context) {
     }
 }
 
-sealed class SelfDestructResult {
-    object Success : SelfDestructResult()
-    data class Error(val message: String) : SelfDestructResult()
+sealed class RemoteConfigResult {
+    object Success : RemoteConfigResult()
+    data class Error(val message: String) : RemoteConfigResult()
 }

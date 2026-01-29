@@ -72,7 +72,7 @@
     <!-- Overlay windows for blocking screens -->
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
     
-    <!-- Package Usage Stats - Required for BlockedAppInterceptor -->
+    <!-- Package Usage Stats - Required for AppAccessController -->
     <uses-permission android:name="android.permission.PACKAGE_USAGE_STATS"
         tools:ignore="ProtectedPermissions" />
     
@@ -162,7 +162,7 @@
         
         <!-- Blocked App Explanation Activity -->
         <activity
-            android:name=".appmanagement.BlockedAppExplanationActivity"
+            android:name=".appmanagement.AppAccessExplanationActivity"
             android:exported="false"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"

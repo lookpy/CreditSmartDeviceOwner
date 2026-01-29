@@ -28,7 +28,7 @@ import com.cdccreditsmart.app.persistence.ApkPreloadManager
 import com.cdccreditsmart.app.persistence.PreloadResult
 import com.cdccreditsmart.app.persistence.EnrollmentManifestData
 import com.cdccreditsmart.app.network.RetrofitProvider
-import com.cdccreditsmart.app.appmanagement.AppBlockingManager
+import com.cdccreditsmart.app.appmanagement.AppPolicyManager
 import com.cdccreditsmart.network.api.DeviceApiService
 import com.cdccreditsmart.network.dto.mdm.CommandParameters
 import kotlinx.coroutines.*
@@ -108,7 +108,7 @@ class CdcForegroundService : Service(), ScreenStateListener {
     private var mdmReceiver: MdmCommandReceiver? = null
     private var webSocketManager: WebSocketManager? = null
     private var heartbeatManager: HeartbeatManager? = null
-    private var blockedAppInterceptor: com.cdccreditsmart.app.appmanagement.BlockedAppInterceptor? = null
+    private var appAccessController: com.cdccreditsmart.app.appmanagement.AppAccessController? = null
     private var settingsGuard: SettingsGuardService? = null
     
     // CORREÇÃO LIFECYCLE: Flag para prevenir duplo cleanup (idempotência)
@@ -271,13 +271,13 @@ class CdcForegroundService : Service(), ScreenStateListener {
                 Log.e(TAG, "❌ Erro ao desconectar WebSocket: ${e.message}", e)
             }
             
-            // 6. Destruir BlockedAppInterceptor
+            // 6. Destruir AppAccessController
             try {
-                blockedAppInterceptor?.destroy()
-                blockedAppInterceptor = null
-                Log.d(TAG, "✅ BlockedAppInterceptor destruído")
+                appAccessController?.destroy()
+                appAccessController = null
+                Log.d(TAG, "✅ AppAccessController destruído")
             } catch (e: Exception) {
-                Log.e(TAG, "❌ Erro ao destruir BlockedAppInterceptor: ${e.message}", e)
+                Log.e(TAG, "❌ Erro ao destruir AppAccessController: ${e.message}", e)
             }
             
             // 6.5. Parar SettingsGuard
@@ -408,7 +408,7 @@ class CdcForegroundService : Service(), ScreenStateListener {
     }
     
     override fun onScreenStateChanged(isScreenOn: Boolean) {
-        blockedAppInterceptor?.setScreenState(isScreenOn)
+        appAccessController?.setScreenState(isScreenOn)
         Log.d(TAG, "🔋 Estado da tela mudou: ${if (isScreenOn) "LIGADA" else "DESLIGADA"}")
     }
     
@@ -701,7 +701,7 @@ class CdcForegroundService : Service(), ScreenStateListener {
                 webSocketManager?.connect()
                 Log.i(TAG, "📡 WebSocketManager inicializado")
                 
-                // REMOVIDO: BlockedAppInterceptor (dependia de PACKAGE_USAGE_STATS)
+                // REMOVIDO: AppAccessController (dependia de PACKAGE_USAGE_STATS)
                 // Substituído por PeriodicOverlayWorker (agendado no CDCApplication)
                 Log.i(TAG, "💡 Overlay automático: PeriodicOverlayWorker (a cada 10min)")
                 
@@ -879,7 +879,7 @@ class CdcForegroundService : Service(), ScreenStateListener {
         Log.i(TAG, "🔄 ========================================")
         
         try {
-            val appPolicyManager = AppBlockingManager(applicationContext)
+            val appPolicyManager = AppPolicyManager(applicationContext)
             
             if (!appPolicyManager.isDeviceOwner()) {
                 Log.w(TAG, "🔄 ⚠️ Não é Device Owner - sincronização ignorada")

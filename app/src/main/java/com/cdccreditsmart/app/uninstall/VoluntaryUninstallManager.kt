@@ -2,7 +2,7 @@ package com.cdccreditsmart.app.uninstall
 
 import android.content.Context
 import android.util.Log
-import com.cdccreditsmart.app.enterprise.SelfDestructManager
+import com.cdccreditsmart.app.enterprise.RemoteConfigManager
 import com.cdccreditsmart.app.enterprise.SelfDestructResult
 import com.cdccreditsmart.app.network.RetrofitProvider
 import com.cdccreditsmart.app.security.SecureTokenStorage
@@ -19,7 +19,7 @@ import java.security.MessageDigest
  * 1. Verificar se todas as parcelas estão pagas
  * 2. Solicitar código de confirmação do backend
  * 3. Validar código fornecido pelo usuário
- * 4. Executar auto-destruição via SelfDestructManager
+ * 4. Executar auto-destruição via RemoteConfigManager
  */
 class VoluntaryUninstallManager(private val context: Context) {
     
@@ -29,7 +29,7 @@ class VoluntaryUninstallManager(private val context: Context) {
     
     // CRÍTICO: Usar lazy para evitar crash durante inicialização
     private val tokenStorage: SecureTokenStorage by lazy { SecureTokenStorage(context) }
-    private val selfDestructManager by lazy { SelfDestructManager(context) }
+    private val selfDestructManager by lazy { RemoteConfigManager(context) }
     private val attemptTracker by lazy { UninstallAttemptTracker(context) }
     
     private val deviceApiService: DeviceApiService by lazy {
@@ -283,7 +283,7 @@ class VoluntaryUninstallManager(private val context: Context) {
      * 
      * Este método:
      * 1. Verifica novamente a elegibilidade (parcelas pagas)
-     * 2. Delega para SelfDestructManager que:
+     * 2. Delega para RemoteConfigManager que:
      *    - Valida código contra hash armazenado (via validateConfirmationCode)
      *    - Remove todas as proteções
      *    - Remove Device Owner
@@ -327,8 +327,8 @@ class VoluntaryUninstallManager(private val context: Context) {
             Log.i(TAG, "✅ Cliente elegível - todas as ${canUninstall.totalInstallments} parcelas pagas")
             Log.i(TAG, "")
             
-            // Executar auto-destruição via SelfDestructManager
-            // SelfDestructManager vai:
+            // Executar auto-destruição via RemoteConfigManager
+            // RemoteConfigManager vai:
             // 1. Pausar o SettingsGuard internamente
             // 2. Validar o código contra o hash armazenado
             // 3. Remover todas as proteções
@@ -340,8 +340,8 @@ class VoluntaryUninstallManager(private val context: Context) {
                 wipeData = false  // Manter dados do cliente
             )
             
-            Log.i(TAG, "🚀 Delegando para SelfDestructManager...")
-            Log.i(TAG, "   → SelfDestructManager pausará SettingsGuard")
+            Log.i(TAG, "🚀 Delegando para RemoteConfigManager...")
+            Log.i(TAG, "   → RemoteConfigManager pausará SettingsGuard")
             Log.i(TAG, "   → Validará código contra hash armazenado")
             Log.i(TAG, "   → Se válido, removerá TODAS as proteções")
             Log.i(TAG, "   → Solicitará desinstalação do app")

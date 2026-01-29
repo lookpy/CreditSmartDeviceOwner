@@ -3,7 +3,7 @@ package com.cdccreditsmart.app.offline
 import android.content.Context
 import android.util.Log
 import androidx.work.*
-import com.cdccreditsmart.app.appmanagement.AppBlockingManager
+import com.cdccreditsmart.app.appmanagement.AppPolicyManager
 import com.cdccreditsmart.data.storage.LocalAccountState
 import java.util.concurrent.TimeUnit
 
@@ -53,7 +53,7 @@ class OfflineEnforcementWorker(
         
         try {
             val debtCalculator = DebtAgingCalculator(applicationContext)
-            val blockingManager = AppBlockingManager(applicationContext)
+            val blockingManager = AppPolicyManager(applicationContext)
             
             val localState = LocalAccountState(applicationContext)
             if (!localState.hasOfflineData()) {

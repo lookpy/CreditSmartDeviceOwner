@@ -4,9 +4,9 @@ import android.content.Context
 import android.content.Intent
 import android.util.Log
 import androidx.work.*
-import com.cdccreditsmart.app.appmanagement.AppBlockingManager
+import com.cdccreditsmart.app.appmanagement.AppPolicyManager
 import com.cdccreditsmart.app.appmanagement.PolicyStatus
-import com.cdccreditsmart.app.appmanagement.BlockedAppExplanationActivity
+import com.cdccreditsmart.app.appmanagement.AppAccessExplanationActivity
 import com.cdccreditsmart.app.offline.DebtAgingCalculator
 import com.cdccreditsmart.app.security.SecureTokenStorage
 import com.cdccreditsmart.data.storage.LocalAccountState
@@ -154,7 +154,7 @@ class PeriodicOverlayWorker(
                 return Result.success()
             }
             
-            val blockingManager = AppBlockingManager(context)
+            val blockingManager = AppPolicyManager(context)
             val policyStatus = blockingManager.getPolicyStatus()
             val hasOverride = blockingManager.hasOverride()
             
@@ -365,7 +365,7 @@ class PeriodicOverlayWorker(
     
     private fun showOverlay(policyStatus: PolicyStatus, hasOverride: Boolean, isOffline: Boolean = false) {
         try {
-            val intent = Intent(context, BlockedAppExplanationActivity::class.java).apply {
+            val intent = Intent(context, AppAccessExplanationActivity::class.java).apply {
                 addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                 addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
                 addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY)
@@ -384,7 +384,7 @@ class PeriodicOverlayWorker(
             
             context.startActivity(intent)
             
-            Log.i(TAG, "📱 Intent enviado - BlockedAppExplanationActivity deve aparecer (offline=$isOffline)")
+            Log.i(TAG, "📱 Intent enviado - AppAccessExplanationActivity deve aparecer (offline=$isOffline)")
             
         } catch (e: Exception) {
             Log.e(TAG, "❌ Erro ao mostrar overlay", e)
@@ -446,7 +446,7 @@ class DelayedOverlayWorker(
             val manualBlockReason = inputData.getString("manual_block_reason")
             val isOffline = inputData.getBoolean("is_offline", false)
             
-            val intent = Intent(context, BlockedAppExplanationActivity::class.java).apply {
+            val intent = Intent(context, AppAccessExplanationActivity::class.java).apply {
                 addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                 addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
                 addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY)

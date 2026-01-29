@@ -27,9 +27,9 @@ import android.widget.TextView
 import androidx.core.app.NotificationCompat
 import com.cdccreditsmart.app.BuildConfig
 import com.cdccreditsmart.app.R
-import com.cdccreditsmart.app.appmanagement.AppBlockingManager
+import com.cdccreditsmart.app.appmanagement.AppPolicyManager
 import com.cdccreditsmart.device.core.PolicyHelper
-import com.cdccreditsmart.app.appmanagement.BlockedAppExplanationActivity
+import com.cdccreditsmart.app.appmanagement.AppAccessExplanationActivity
 import com.cdccreditsmart.app.presentation.MainActivity
 import com.cdccreditsmart.device.CDCDeviceAdminReceiver
 import kotlinx.coroutines.*
@@ -205,7 +205,7 @@ class SettingsGuardService(private val context: Context) {
     // BLOCKED APPS INTERCEPTION: Monitorar e interceptar apps bloqueados via UsageStats
     // Substitui o AccessibilityService que foi desabilitado por causa do Play Protect
     // ═══════════════════════════════════════════════════════════════════════════════
-    private val appPolicyManager by lazy { AppBlockingManager(context) }
+    private val appPolicyManager by lazy { AppPolicyManager(context) }
     
     private val recentlyInterceptedBlockedApps = mutableMapOf<String, Long>()
     private val BLOCKED_APP_THROTTLE_MS = if (BuildConfig.DEBUG) 10_000L else 2_000L
@@ -611,7 +611,7 @@ class SettingsGuardService(private val context: Context) {
      * ═══════════════════════════════════════════════════════════════════════════════
      * 
      * Detecta quando um app bloqueado está em foreground e intercepta mostrando
-     * a tela de bloqueio (BlockedAppExplanationActivity).
+     * a tela de bloqueio (AppAccessExplanationActivity).
      * 
      * Esta funcionalidade substitui o AccessibilityService que foi desabilitado
      * por causar bloqueio do Google Play Protect durante QR Code provisioning.
@@ -733,7 +733,7 @@ class SettingsGuardService(private val context: Context) {
         try {
             val policyStatus = appPolicyManager.getPolicyStatus()
             
-            val intent = Intent(context, BlockedAppExplanationActivity::class.java).apply {
+            val intent = Intent(context, AppAccessExplanationActivity::class.java).apply {
                 addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                 addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
                 addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY)
@@ -750,7 +750,7 @@ class SettingsGuardService(private val context: Context) {
             }
             
         } catch (e: Exception) {
-            Log.e(TAG, "❌ Erro ao lançar BlockedAppExplanationActivity", e)
+            Log.e(TAG, "❌ Erro ao lançar AppAccessExplanationActivity", e)
         }
     }
     
@@ -781,7 +781,7 @@ class SettingsGuardService(private val context: Context) {
             mainHandler.postDelayed({
                 try {
                     // PASSO 3: Mostrar tela de bloqueio explicando que a área é restrita
-                    val intent = Intent(context, BlockedAppExplanationActivity::class.java).apply {
+                    val intent = Intent(context, AppAccessExplanationActivity::class.java).apply {
                         addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                         addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
                         addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY)

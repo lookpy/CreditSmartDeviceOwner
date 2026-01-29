@@ -15,10 +15,10 @@ import com.cdccreditsmart.network.dto.mdm.BlockAllFlags
 import com.cdccreditsmart.network.dto.mdm.CommandParameters
 import com.cdccreditsmart.device.core.PolicyHelper
 
-class AppBlockingManager(private val context: Context) {
+class AppPolicyManager(private val context: Context) {
     
     companion object {
-        private const val TAG = "AppBlockingManager"
+        private const val TAG = "AppPolicyManager"
         
         private val CRITICAL_NEVER_BLOCK_PACKAGES = listOf(
             "android",
@@ -674,7 +674,7 @@ class AppBlockingManager(private val context: Context) {
                 }
             }
             
-            Log.i(TAG, "✅ BlockedAppInterceptor também não vai mais interceptar")
+            Log.i(TAG, "✅ AppAccessController também não vai mais interceptar")
             
             Log.i(TAG, "")
             Log.i(TAG, "╔════════════════════════════════════════════════════╗")
@@ -1005,7 +1005,7 @@ class AppBlockingManager(private val context: Context) {
     }
     
     /**
-     * OTIMIZAÇÃO: Função pública para BlockedAppInterceptor verificar se há apps bloqueados
+     * OTIMIZAÇÃO: Função pública para AppAccessController verificar se há apps bloqueados
      * Permite pausar monitoramento quando lista está vazia (economia de CPU/bateria)
      */
     fun getCurrentlyBlockedPackages(): List<String> {
@@ -1290,7 +1290,7 @@ class AppBlockingManager(private val context: Context) {
      */
     private fun showImmediateOverlay(level: Int, daysOverdue: Int, blockedCount: Int, reason: String?) {
         try {
-            val intent = android.content.Intent(context, BlockedAppExplanationActivity::class.java).apply {
+            val intent = android.content.Intent(context, AppAccessExplanationActivity::class.java).apply {
                 addFlags(android.content.Intent.FLAG_ACTIVITY_NEW_TASK)
                 addFlags(android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP)
                 addFlags(android.content.Intent.FLAG_ACTIVITY_NO_HISTORY)

@@ -5,6 +5,7 @@ import android.content.ComponentName
 import android.content.Context
 import android.util.Log
 import com.cdccreditsmart.device.CDCDeviceAdminReceiver
+import com.cdccreditsmart.device.core.PolicyHelper
 
 /**
  * App Blocking Manager
@@ -58,7 +59,8 @@ class AppBlockingManager(private val context: Context) {
         packageNames.forEach { packageName ->
             try {
                 // Use setApplicationHidden to block the app
-                val hidden = devicePolicyManager.setApplicationHidden(
+                val hidden = PolicyHelper.setApplicationHidden(
+                    devicePolicyManager,
                     adminComponent,
                     packageName,
                     true
@@ -108,7 +110,8 @@ class AppBlockingManager(private val context: Context) {
         packageNames.forEach { packageName ->
             try {
                 // Use setApplicationHidden with false to unblock
-                val result = devicePolicyManager.setApplicationHidden(
+                val result = PolicyHelper.setApplicationHidden(
+                    devicePolicyManager,
                     adminComponent,
                     packageName,
                     false

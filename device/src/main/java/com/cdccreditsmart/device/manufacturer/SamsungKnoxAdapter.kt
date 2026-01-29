@@ -10,6 +10,7 @@ import androidx.annotation.RequiresApi
 import com.cdccreditsmart.device.BuildConfig
 import com.cdccreditsmart.device.DeviceOwnerResult
 import com.cdccreditsmart.device.DeviceOwnerCapabilities
+import com.cdccreditsmart.device.core.PolicyHelper
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import kotlinx.coroutines.delay
@@ -199,7 +200,7 @@ class SamsungKnoxAdapter(private val context: Context) : ManufacturerAdapter {
                 }
                 
                 // Step 5: Remove standard Device Owner (must be last)
-                devicePolicyManager.clearDeviceOwnerApp(context.packageName)
+                PolicyHelper.clearDeviceOwnerApp(devicePolicyManager, context.packageName)
                 results.add("Standard Device Owner removed")
                 
                 // Reset internal state

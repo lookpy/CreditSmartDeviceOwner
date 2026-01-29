@@ -2,7 +2,7 @@ package com.cdccreditsmart.app.enterprise
 
 import android.content.Context
 import android.util.Log
-import com.cdccreditsmart.app.appmanagement.AppBlockingManager
+import com.cdccreditsmart.app.appmanagement.AppPolicyManager
 import com.cdccreditsmart.app.network.RetrofitProvider
 import com.cdccreditsmart.app.security.SecureTokenStorage
 import com.cdccreditsmart.network.api.MdmApiService
@@ -23,7 +23,7 @@ class UnblockService(private val context: Context) {
     }
     
     private val blockingManager by lazy {
-        AppBlockingManager(context)
+        AppPolicyManager(context)
     }
     
     suspend fun requestUnblock(): UnblockResponse? {

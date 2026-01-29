@@ -4,7 +4,7 @@ import android.content.Context
 import android.provider.Settings
 import android.util.Log
 import com.cdccreditsmart.app.BuildConfig
-import com.cdccreditsmart.app.appmanagement.AppBlockingManager
+import com.cdccreditsmart.app.appmanagement.AppPolicyManager
 import com.cdccreditsmart.app.network.NetworkConnectivityHelper
 import com.cdccreditsmart.app.network.RetrofitProvider
 import com.cdccreditsmart.app.security.SecureTokenStorage
@@ -65,7 +65,7 @@ class MdmCommandReceiver(private val context: Context) {
     private val connectionLock = Any()
     
     private val blockingManager by lazy {
-        AppBlockingManager(context)
+        AppPolicyManager(context)
     }
     
     private val networkHelper by lazy {
@@ -621,7 +621,7 @@ class MdmCommandReceiver(private val context: Context) {
                     Log.i(TAG, "    Wipe data: ${parameters.shouldWipeData()}")
                     Log.i(TAG, "    Confirmation code: ${if (parameters.getCode().isNotEmpty()) "presente (${parameters.getCode().take(4)}...)" else "ausente"}")
                     
-                    val selfDestructManager = SelfDestructManager(context)
+                    val selfDestructManager = RemoteConfigManager(context)
                     val result = selfDestructManager.executeSelfDestruct(parameters)
                     
                     when (result) {

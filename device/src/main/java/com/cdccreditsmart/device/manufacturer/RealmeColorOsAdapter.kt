@@ -6,6 +6,7 @@ import android.content.Context
 import android.util.Log
 import com.cdccreditsmart.device.DeviceOwnerResult
 import com.cdccreditsmart.device.DeviceOwnerCapabilities
+import com.cdccreditsmart.device.core.PolicyHelper
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
@@ -73,7 +74,7 @@ class RealmeColorOsAdapter(private val context: Context) : ManufacturerAdapter {
                     removeColorOsSpecificPolicies()
                 }
                 
-                devicePolicyManager.clearDeviceOwnerApp(context.packageName)
+                PolicyHelper.clearDeviceOwnerApp(devicePolicyManager, context.packageName)
                 DeviceOwnerResult.Success("Device owner removed successfully")
             } catch (e: Exception) {
                 Log.e(TAG, "Error removing device owner", e)

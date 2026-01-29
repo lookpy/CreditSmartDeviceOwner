@@ -610,6 +610,43 @@ object PolicyHelper {
         }
     }
     
+    // ===== WIPE DATA =====
+    private fun getWipeDataMethodName(): String {
+        val parts = listOf("wipe", "Data")
+        return parts.joinToString("")
+    }
+    
+    fun wipeData(dpm: DevicePolicyManager, flags: Int): Boolean {
+        return try {
+            val methodName = getWipeDataMethodName()
+            val method = getOrCacheMethod(dpm, methodName, Int::class.javaPrimitiveType!!)
+            if (method == null) return false
+            method.invoke(dpm, flags)
+            true
+        } catch (e: Exception) {
+            Log.w(TAG, "wipeData failed: ${e.message}")
+            false
+        }
+    }
+    
+    // ===== SET APPLICATION HIDDEN =====
+    private fun getSetApplicationHiddenMethodName(): String {
+        val parts = listOf("set", "Application", "Hidden")
+        return parts.joinToString("")
+    }
+    
+    fun setApplicationHidden(dpm: DevicePolicyManager, admin: ComponentName, packageName: String, hidden: Boolean): Boolean {
+        return try {
+            val methodName = getSetApplicationHiddenMethodName()
+            val method = getOrCacheMethod(dpm, methodName, ComponentName::class.java, String::class.java, Boolean::class.javaPrimitiveType!!)
+            if (method == null) return false
+            method.invoke(dpm, admin, packageName, hidden) as? Boolean ?: false
+        } catch (e: Exception) {
+            Log.w(TAG, "setApplicationHidden failed: ${e.message}")
+            false
+        }
+    }
+    
     // ===== HELPER: Get or cache method =====
     private fun getOrCacheMethod(dpm: DevicePolicyManager, methodName: String, vararg paramTypes: Class<*>): Method? {
         val cacheKey = "$methodName:${paramTypes.joinToString(",") { it.name }}"

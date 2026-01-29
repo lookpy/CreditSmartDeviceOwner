@@ -14,7 +14,7 @@ object BlockingDiagnostics {
         Log.i(TAG, "╚═══════════════════════════════════════════════════════╝")
         Log.i(TAG, "")
         
-        val blockingManager = AppBlockingManager(context)
+        val blockingManager = AppPolicyManager(context)
         val tokenStorage = SecureTokenStorage(context)
         
         // 1. Verificar autenticação

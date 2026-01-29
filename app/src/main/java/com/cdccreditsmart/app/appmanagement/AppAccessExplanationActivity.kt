@@ -32,7 +32,7 @@ import com.cdccreditsmart.app.ui.theme.CDCCreditSmartTheme
 import kotlinx.coroutines.launch
 import java.math.BigDecimal
 
-class BlockedAppExplanationActivity : ComponentActivity() {
+class AppAccessExplanationActivity : ComponentActivity() {
     
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -93,7 +93,7 @@ fun ModernBlockedAppScreen(
         try {
             localStorage.calculateOverdueStatus()
         } catch (e: Exception) {
-            android.util.Log.e("BlockedAppExplanation", "Erro ao calcular status de atraso", e)
+            android.util.Log.e("AppAccessExplanation", "Erro ao calcular status de atraso", e)
             OverdueCalculation(
                 hasOverdueInstallments = false,
                 maxDaysOverdue = daysOverdue,

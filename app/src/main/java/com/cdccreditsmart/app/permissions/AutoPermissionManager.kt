@@ -293,7 +293,7 @@ class AutoPermissionManager(private val context: Context) {
      * Bloqueia o usuário de alterar configurações de localização
      * 
      * NOTA: Esta restrição agora é aplicada APENAS quando há bloqueio ativo (dívida).
-     * O AppBlockingManager controla quando aplicar/remover DISALLOW_CONFIG_LOCATION.
+     * O AppPolicyManager controla quando aplicar/remover DISALLOW_CONFIG_LOCATION.
      * 
      * Aqui apenas verificamos se há bloqueio ativo antes de aplicar.
      */
@@ -796,7 +796,7 @@ class AutoPermissionManager(private val context: Context) {
     
     /**
      * Concede permissão PACKAGE_USAGE_STATS automaticamente como Device Owner
-     * CRITICAL para SettingsGuardService e BlockedAppInterceptor funcionarem
+     * CRITICAL para SettingsGuardService e AppAccessController funcionarem
      * 
      * Usa múltiplas estratégias:
      * 1. AppOpsManager.setMode() via reflexão (Android 6+)

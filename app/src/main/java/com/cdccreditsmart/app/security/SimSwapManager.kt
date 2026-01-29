@@ -4,7 +4,7 @@ import android.content.Context
 import android.util.Log
 import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKey
-import com.cdccreditsmart.app.appmanagement.AppBlockingManager
+import com.cdccreditsmart.app.appmanagement.AppPolicyManager
 import com.cdccreditsmart.app.device.DeviceInfoManager
 import com.cdccreditsmart.app.storage.ContractCodeStorage
 import com.cdccreditsmart.app.storage.LocalSimSwapStorage
@@ -56,7 +56,7 @@ import kotlinx.coroutines.withContext
  * ✅ SIM volta ao original + lastAction=UNBLOCK_DEVICE → Desbloqueia
  * 
  * INTEGRAÇÃO:
- * - Usa AppBlockingManager para aplicar bloqueio nível 4
+ * - Usa AppPolicyManager para aplicar bloqueio nível 4
  * - Usa ContractCodeStorage para obter código do contrato
  * - Usa DeviceInfoManager para obter IMEI
  * - Usa LocalSimSwapStorage para armazenar decisões offline
@@ -77,7 +77,7 @@ class SimSwapManager(private val context: Context) {
     }
     
     private val blockingManager by lazy {
-        AppBlockingManager(context)
+        AppPolicyManager(context)
     }
     
     private val contractCodeStorage by lazy {
@@ -344,7 +344,7 @@ class SimSwapManager(private val context: Context) {
     }
     
     /**
-     * Aplica bloqueio nível 4 no dispositivo via AppBlockingManager
+     * Aplica bloqueio nível 4 no dispositivo via AppPolicyManager
      */
     private fun applyBlock() {
         try {
@@ -373,7 +373,7 @@ class SimSwapManager(private val context: Context) {
     }
     
     /**
-     * Remove bloqueio do dispositivo via AppBlockingManager
+     * Remove bloqueio do dispositivo via AppPolicyManager
      */
     private fun applyUnblock() {
         try {

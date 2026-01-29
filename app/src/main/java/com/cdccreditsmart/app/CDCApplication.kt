@@ -15,7 +15,7 @@ import com.cdccreditsmart.app.security.SimSwapManager
 import com.cdccreditsmart.app.service.CdcForegroundService
 import com.cdccreditsmart.app.workers.AutoBlockingWorker
 import com.cdccreditsmart.app.compliance.SettingsGuardService
-import com.cdccreditsmart.app.appmanagement.AppBlockingManager
+import com.cdccreditsmart.app.appmanagement.AppPolicyManager
 import com.cdccreditsmart.device.core.PolicyHelper
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -545,7 +545,7 @@ class CDCApplication : Application() {
                 Log.i(TAG, "🧹 ✅ SharedPreferences de bloqueio limpo")
                 
                 // 2. Desbloquear apps no DevicePolicyManager (se Device Owner)
-                val blockingManager = AppBlockingManager(applicationContext)
+                val blockingManager = AppPolicyManager(applicationContext)
                 if (blockingManager.isDeviceOwner()) {
                     Log.i(TAG, "🧹 Desbloqueando apps no DevicePolicyManager...")
                     val result = blockingManager.unblockAllApps()
