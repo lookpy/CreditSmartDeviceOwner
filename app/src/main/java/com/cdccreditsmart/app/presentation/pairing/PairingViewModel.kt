@@ -445,10 +445,33 @@ class PairingViewModel(private val context: Context) : ViewModel() {
                 Log.e(TAG, "❌ HTTP Error ${response.code()}")
                 Log.e(TAG, "Error body: $errorBody")
                 
+                // Tentar extrair mensagem do backend
+                val backendMessage = try {
+                    val json = org.json.JSONObject(errorBody ?: "{}")
+                    json.optString("message", null) ?: json.optString("error", null)
+                } catch (e: Exception) {
+                    null
+                }
+                
                 val errorMessage = when (response.code()) {
-                    400 -> "Código de pareamento inválido"
-                    404 -> "Código não encontrado ou expirado"
-                    else -> "Erro ao autenticar: HTTP ${response.code()}"
+                    400 -> backendMessage ?: "Código de pareamento inválido"
+                    403 -> {
+                        // IMEI_MISMATCH ou contrato já vinculado a outro dispositivo
+                        backendMessage ?: "Este código de contrato já está vinculado a outro dispositivo.\n\nCada contrato só pode ser ativado em um único aparelho."
+                    }
+                    404 -> backendMessage ?: "Código não encontrado ou expirado"
+                    409 -> backendMessage ?: "Este contrato já está ativo em outro dispositivo"
+                    else -> backendMessage ?: "Erro ao autenticar: HTTP ${response.code()}"
+                }
+                
+                // Para 403, mostrar erro de segurança
+                if (response.code() == 403) {
+                    _state.value = PairingState.Error(
+                        message = errorMessage,
+                        securityViolation = true,
+                        canRetry = false
+                    )
+                    return@retryWithBackoff
                 }
                 
                 throw Exception(errorMessage)
