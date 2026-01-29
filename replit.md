@@ -55,12 +55,13 @@ The UI utilizes Jetpack Compose and Material 3 with a CDC institutional dark the
 
 **QR Provisioning Hang Fix (2025-01-29):**
 - CRITICAL FIX: Provisionamento via QR code travando em "Preparando para configuração de trabalho"
+- CDCDeviceAdminReceiver: SIMPLIFICADO DRASTICAMENTE - removido todo sistema de callback tracking/debug
+- AutoProvisioningReceiver: SIMPLIFICADO - adia proteções para 5s após provisionamento
 - AdminPolicyComplianceActivity: Responde imediatamente sem operações pesadas
-- CDCDeviceAdminReceiver: Fast path para callbacks quando usuário bloqueado (< 10ms)
 - ProvisioningActivity: Removido delay de 1000ms
 - ProvisioningSuccessActivity: Otimizada para resposta rápida
 - CDCApplication: Detecta provisionamento recente e adia operações pesadas 3 segundos
 - BootReceiver: Verifica isUserUnlocked antes de operações
 - BootInterceptor: Operações de integridade movidas para background
-- PlayProtectManager: REMOVIDO completamente (não é mais necessário)
-- SetupWizard do Android tem timeout curto - todos os callbacks devem ser rápidos
+- PlayProtectManager: REMOVIDO completamente
+- SetupWizard do Android tem timeout curto - todos os callbacks devem ser rápidos (< 10ms)
