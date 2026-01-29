@@ -757,13 +757,30 @@ class SettingsGuardService(private val context: Context) {
     /**
      * Mostra tela de bloqueio para Settings perigoso
      * 
-     * CORREÇÃO: Primeiro FECHA o Settings indo para Home, depois mostra tela de bloqueio
+     * CORREÇÃO: Força fechamento COMPLETO do Settings de múltiplas formas:
+     * 1. Force-stop Settings (se Device Owner)
+     * 2. Ir para Home
+     * 3. Mostrar tela de bloqueio
      * Isso impede que a pessoa minimize o overlay e continue acessando a área perigosa
      */
     private fun showSettingsBlockedScreen(reason: String) {
         try {
-            // PASSO 1: Ir para Home PRIMEIRO - isso FECHA o Settings
-            // O usuário não consegue mais acessar a área perigosa
+            // PASSO 1: Se Device Owner, forçar fechamento do Settings
+            if (isDeviceOwner()) {
+                try {
+                    val activityManager = context.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
+                    // Force stop Settings para garantir que não continue em background
+                    activityManager.killBackgroundProcesses("com.android.settings")
+                    
+                    if (BuildConfig.DEBUG) {
+                        Log.i(TAG, "🛑 Settings force-stopped (Device Owner)")
+                    }
+                } catch (e: Exception) {
+                    Log.w(TAG, "⚠️ Não foi possível fazer force-stop do Settings: ${e.message}")
+                }
+            }
+            
+            // PASSO 2: Ir para Home PRIMEIRO - isso FECHA o Settings visualmente
             val homeIntent = Intent(Intent.ACTION_MAIN).apply {
                 addCategory(Intent.CATEGORY_HOME)
                 addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
@@ -776,15 +793,24 @@ class SettingsGuardService(private val context: Context) {
                 Log.i(TAG, "🏠 Settings FECHADO - enviado para Home")
             }
             
-            // PASSO 2: Pequeno delay para garantir que Settings foi fechado
-            // antes de mostrar a tela de bloqueio
+            // PASSO 3: Delay curto e depois ir para Home DE NOVO
+            // Isso garante que mesmo se o usuário apertar "voltar" rápido, vai para Home
             mainHandler.postDelayed({
                 try {
-                    // PASSO 3: Mostrar tela de bloqueio explicando que a área é restrita
+                    context.startActivity(homeIntent)
+                } catch (e: Exception) {
+                    // Ignorar
+                }
+            }, 50)
+            
+            // PASSO 4: Mostrar tela de bloqueio após Settings fechar
+            mainHandler.postDelayed({
+                try {
                     val intent = Intent(context, AppAccessExplanationActivity::class.java).apply {
                         addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                         addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
                         addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY)
+                        addFlags(Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS)
                         putExtra("blocked_package", "com.android.settings")
                         putExtra("is_settings_blocked", true)
                         putExtra("block_reason", reason)
@@ -799,16 +825,60 @@ class SettingsGuardService(private val context: Context) {
                 } catch (e: Exception) {
                     Log.e(TAG, "❌ Erro ao mostrar tela de bloqueio após fechar Settings", e)
                 }
-            }, 150) // 150ms delay para Settings fechar completamente
+            }, 150)
+            
+            // PASSO 5: Após mais um delay, verificar se Settings ainda está aberto e forçar novamente
+            mainHandler.postDelayed({
+                try {
+                    val foregroundInfo = getForegroundPackageAndActivitySync()
+                    if (foregroundInfo?.first?.contains("settings", ignoreCase = true) == true) {
+                        Log.w(TAG, "⚠️ Settings ainda visível após bloqueio - forçando Home novamente")
+                        context.startActivity(homeIntent)
+                    }
+                } catch (e: Exception) {
+                    // Ignorar
+                }
+            }, 500)
             
         } catch (e: Exception) {
             Log.e(TAG, "❌ Erro ao fechar Settings e mostrar bloqueio", e)
-            // Fallback: tentar apenas ir para Home
             try {
                 goToHomeFirst()
             } catch (e2: Exception) {
                 Log.e(TAG, "❌ Fallback também falhou", e2)
             }
+        }
+    }
+    
+    /**
+     * Versão síncrona de getForegroundPackageAndActivity para uso em verificações rápidas
+     */
+    private fun getForegroundPackageAndActivitySync(): Pair<String, String?>? {
+        return try {
+            if (!hasUsageStatsPermission()) return null
+            
+            val usageStatsManager = context.getSystemService(Context.USAGE_STATS_SERVICE) as? UsageStatsManager
+                ?: return null
+            
+            val endTime = System.currentTimeMillis()
+            val startTime = endTime - 5000
+            
+            val usageEvents = usageStatsManager.queryEvents(startTime, endTime)
+            var lastPackage: String? = null
+            var lastActivity: String? = null
+            
+            val event = UsageEvents.Event()
+            while (usageEvents.hasNextEvent()) {
+                usageEvents.getNextEvent(event)
+                if (event.eventType == UsageEvents.Event.ACTIVITY_RESUMED) {
+                    lastPackage = event.packageName
+                    lastActivity = event.className
+                }
+            }
+            
+            if (lastPackage != null) Pair(lastPackage, lastActivity) else null
+        } catch (e: Exception) {
+            null
         }
     }
     
