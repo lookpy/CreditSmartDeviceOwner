@@ -12,9 +12,8 @@ class BootInterceptor : BroadcastReceiver() {
     }
     
     override fun onReceive(context: Context, intent: Intent) {
-        Log.i(TAG, "========================================")
-        Log.i(TAG, "🔄 BOOT EVENT DETECTADO")
-        Log.i(TAG, "========================================")
+        // FAST PATH: Log mínimo durante provisionamento
+        Log.i(TAG, "Boot event: ${intent.action}")
         
         when (intent.action) {
             Intent.ACTION_REBOOT -> {
@@ -34,11 +33,9 @@ class BootInterceptor : BroadcastReceiver() {
             }
             
             else -> {
-                Log.d(TAG, "Evento de boot não tratado: ${intent.action}")
+                // Silently ignore unhandled events
             }
         }
-        
-        Log.i(TAG, "========================================")
     }
     
     private fun handleRebootAttempt(context: Context, intent: Intent) {
@@ -99,19 +96,27 @@ class BootInterceptor : BroadcastReceiver() {
     }
     
     private fun handleBootCompleted(context: Context, intent: Intent) {
-        Log.i(TAG, "✅ BOOT COMPLETO DETECTADO")
-        Log.i(TAG, "   Sistema Android iniciado com sucesso")
+        // CRITICAL: Verificar se estamos em provisionamento - não fazer operações pesadas
+        val userManager = context.getSystemService(Context.USER_SERVICE) as? android.os.UserManager
+        val isUserUnlocked = userManager?.isUserUnlocked ?: false
         
-        try {
-            val tamperDetection = TamperDetectionService(context.applicationContext)
-            val deviceFingerprint = tamperDetection.getOrCreateDeviceFingerprint()
-            
-            Log.i(TAG, "   Device Fingerprint: ${deviceFingerprint.take(12)}****")
-            
-            tamperDetection.reportDeviceBootToBackend(deviceFingerprint)
-            
-        } catch (e: Exception) {
-            Log.e(TAG, "❌ Erro ao verificar integridade pós-boot: ${e.message}")
+        if (!isUserUnlocked) {
+            Log.i(TAG, "Boot completed but user locked - skipping heavy operations")
+            return
+        }
+        
+        Log.i(TAG, "Boot completed - verifying integrity")
+        
+        // Mover verificação para background
+        kotlinx.coroutines.GlobalScope.launch(kotlinx.coroutines.Dispatchers.IO) {
+            kotlinx.coroutines.delay(3000) // Esperar sistema estabilizar
+            try {
+                val tamperDetection = TamperDetectionService(context.applicationContext)
+                val deviceFingerprint = tamperDetection.getOrCreateDeviceFingerprint()
+                tamperDetection.reportDeviceBootToBackend(deviceFingerprint)
+            } catch (e: Exception) {
+                Log.e(TAG, "Error verifying integrity: ${e.message}")
+            }
         }
     }
     

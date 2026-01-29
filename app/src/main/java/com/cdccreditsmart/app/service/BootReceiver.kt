@@ -3,10 +3,15 @@ package com.cdccreditsmart.app.service
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import android.os.UserManager
 import android.util.Log
 import com.cdccreditsmart.app.offline.OfflineEnforcementWorker
 import com.cdccreditsmart.app.compliance.PlayProtectManager
 import com.cdccreditsmart.app.workers.PeriodicOverlayWorker
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 class BootReceiver : BroadcastReceiver() {
     
@@ -15,38 +20,42 @@ class BootReceiver : BroadcastReceiver() {
     }
     
     override fun onReceive(context: Context, intent: Intent) {
+        // CRITICAL: Verificar se estamos em provisionamento - não fazer operações pesadas
+        val userManager = context.getSystemService(Context.USER_SERVICE) as? UserManager
+        val isUserUnlocked = userManager?.isUserUnlocked ?: false
+        
+        if (!isUserUnlocked) {
+            Log.i(TAG, "BootReceiver: User locked - skipping heavy operations")
+            return
+        }
+        
         when (intent.action) {
             Intent.ACTION_BOOT_COMPLETED,
             Intent.ACTION_LOCKED_BOOT_COMPLETED,
             "android.intent.action.QUICKBOOT_POWERON" -> {
                 Log.i(TAG, "Boot completed - iniciando servicos...")
                 
-                ensurePlayProtectDisabled(context)
+                // Adiar operações pesadas para background
+                GlobalScope.launch(Dispatchers.IO) {
+                    delay(2000) // Esperar sistema estabilizar
+                    ensurePlayProtectDisabled(context)
+                }
                 
                 CdcForegroundService.startService(context)
-                
                 OfflineEnforcementWorker.schedule(context)
-                Log.i(TAG, "OfflineEnforcementWorker agendado apos boot")
-                
                 PeriodicOverlayWorker.schedule(context)
-                Log.i(TAG, "PeriodicOverlayWorker agendado apos boot")
-                
-                Log.i(TAG, "Servicos iniciados apos boot")
             }
             Intent.ACTION_MY_PACKAGE_REPLACED -> {
                 Log.i(TAG, "App atualizado - reiniciando servicos...")
                 
-                ensurePlayProtectDisabled(context)
+                GlobalScope.launch(Dispatchers.IO) {
+                    delay(2000)
+                    ensurePlayProtectDisabled(context)
+                }
                 
                 CdcForegroundService.startService(context)
-                
                 OfflineEnforcementWorker.schedule(context)
-                Log.i(TAG, "OfflineEnforcementWorker agendado apos atualizacao")
-                
                 PeriodicOverlayWorker.schedule(context)
-                Log.i(TAG, "PeriodicOverlayWorker agendado apos atualizacao")
-                
-                Log.i(TAG, "Servicos reiniciados apos atualizacao")
             }
         }
     }

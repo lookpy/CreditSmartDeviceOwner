@@ -38,24 +38,54 @@ class CDCApplication : Application() {
         // CRASH PREVENTION: Instalar handler global ANTES de qualquer outra inicialização
         CrashHandler.install(this)
         
-        Log.i(TAG, "🚀 CDC Credit Smart Application iniciando...")
+        Log.i(TAG, "CDC Application iniciando...")
         
         // CRÍTICO: Verificar se usuário está desbloqueado (direct-boot mode)
-        // Durante provisionamento Device Owner, EncryptedSharedPreferences NÃO está disponível
         val userManager = getSystemService(Context.USER_SERVICE) as? UserManager
         val isUserUnlocked = userManager?.isUserUnlocked ?: false
         
         if (!isUserUnlocked) {
-            Log.w(TAG, "⏸️ DIRECT-BOOT MODE - Usuário não desbloqueado")
-            Log.w(TAG, "   → Adiando inicialização completa para após desbloqueio")
-            Log.w(TAG, "   → EncryptedSharedPreferences não disponível neste estado")
-            // Em direct-boot, apenas iniciar serviços críticos de forma assíncrona
+            Log.w(TAG, "DIRECT-BOOT MODE - Adiando inicializacao")
+            return
+        }
+        
+        // CRÍTICO: Verificar se estamos logo após provisionamento
+        // Se sim, adiar TODAS as operações pesadas para não travar o SetupWizard
+        val isRecentProvisioning = isRecentlyProvisioned()
+        
+        if (isRecentProvisioning) {
+            Log.i(TAG, "PROVISIONING MODE - Adiando operacoes pesadas")
+            // Agendar inicialização completa para depois
             applicationScope.launch {
-                grantPermissionsIfDeviceOwner()
-                applyMaximumProtectionIfDeviceOwner()
+                delay(3000) // Esperar SetupWizard terminar
+                performFullInitialization()
             }
             return
         }
+        
+        // Inicialização normal (não é provisionamento recente)
+        performFullInitialization()
+    }
+    
+    private fun isRecentlyProvisioned(): Boolean {
+        return try {
+            val deviceProtectedContext = createDeviceProtectedStorageContext()
+            val prefs = deviceProtectedContext.getSharedPreferences("cdc_provisioning_state", Context.MODE_PRIVATE)
+            val provisioningComplete = prefs.getBoolean("provisioning_complete", false)
+            val needsBasicSetup = prefs.getBoolean("needs_basic_setup", false)
+            val provisioningTime = prefs.getLong("provisioning_time", 0)
+            
+            // Considerar "recente" se provisionamento foi há menos de 30 segundos
+            val isRecent = (System.currentTimeMillis() - provisioningTime) < 30_000
+            
+            (provisioningComplete || needsBasicSetup) && isRecent
+        } catch (e: Exception) {
+            false
+        }
+    }
+    
+    private fun performFullInitialization() {
+        Log.i(TAG, "Executando inicializacao completa...")
         
         // RECUPERAÇÃO DE DESINSTALAÇÃO CANCELADA
         recoverFromCancelledUninstall()
@@ -63,72 +93,42 @@ class CDCApplication : Application() {
         // VERIFICAR POLÍTICAS PENDENTES DO PROVISIONAMENTO
         applyPendingProvisioningPolicies()
         
-        // ═══════════════════════════════════════════════════════════════════════
-        // PRIORIDADE 0: CONCESSÃO DE PERMISSÕES E PLAY PROTECT (IMEDIATO - antes de tudo!)
-        // ═══════════════════════════════════════════════════════════════════════
-        Log.i(TAG, "🔐 PRIORIDADE 0: Concedendo permissões IMEDIATAMENTE...")
+        // PRIORIDADE 0: Operações síncronas rápidas
         grantPermissionsIfDeviceOwner()
         
-        Log.i(TAG, "🛡️ PRIORIDADE 0: Desabilitando Play Protect...")
-        disablePlayProtectIfDeviceOwner()
-        
-        // ═══════════════════════════════════════════════════════════════════════
-        // PRIORIDADE 1: INICIAR SERVIÇOS CRÍTICOS IMEDIATAMENTE (síncrono, rápido)
-        // ═══════════════════════════════════════════════════════════════════════
-        Log.i(TAG, "🚀 PRIORIDADE 1: Iniciando serviços críticos IMEDIATAMENTE...")
-        
-        // 1.1 SettingsGuard - Proteção de acesso às Settings
+        // PRIORIDADE 1: Serviços críticos
         startSettingsGuardIfDeviceOwner()
-        
-        // 1.2 Keep Alive System - Mantém app sempre ativo
         startKeepAliveSystem()
         
-        // 1.3 Foreground Service - Heartbeat e comandos MDM
         val hasTokens = try {
             val secureStorage = SecureTokenStorage(applicationContext)
             val authToken = secureStorage.getAuthToken()
             val contractCode = secureStorage.getContractCode()
             !authToken.isNullOrBlank() && !contractCode.isNullOrBlank()
         } catch (e: Exception) {
-            Log.e(TAG, "⚠️ Erro ao acessar SecureTokenStorage: ${e.message}")
+            Log.e(TAG, "Erro ao acessar SecureTokenStorage: ${e.message}")
             false
         }
         
         if (hasTokens) {
-            Log.i(TAG, "✅ Tokens encontrados - iniciando CdcForegroundService IMEDIATAMENTE")
             startForegroundServiceSafely()
-            
-            // Agendar overlay e blocking
             AutoBlockingWorker.scheduleDailyCheck(applicationContext)
             com.cdccreditsmart.app.workers.PeriodicOverlayWorker.schedule(applicationContext)
         } else {
-            Log.i(TAG, "⏸️ Sem tokens - aguardando pairing para iniciar serviço MDM")
             clearStaleBlockingStateIfNotPaired()
         }
         
-        Log.i(TAG, "✅ Serviços críticos iniciados em menos de 1 segundo!")
-        
-        // ═══════════════════════════════════════════════════════════════════════
-        // PRIORIDADE 2: OPERAÇÕES PESADAS EM BACKGROUND (assíncrono)
-        // ═══════════════════════════════════════════════════════════════════════
+        // PRIORIDADE 2: OPERAÇÕES PESADAS EM BACKGROUND
         applicationScope.launch {
-            Log.i(TAG, "🔄 PRIORIDADE 2: Iniciando operações pesadas em BACKGROUND...")
-            
-            // 2.1 Aplicação de proteções máximas (pesado - múltiplas chamadas DPM)
-            // NOTA: Permissões já foram concedidas na PRIORIDADE 0
+            // Operações pesadas adiadas
+            disablePlayProtectIfDeviceOwner()
             applyMaximumProtectionIfDeviceOwner()
-            
-            // 2.2 Criação de usuário secundário gerenciado
             ensureManagedSecondaryUserExists()
-            
-            // 2.3 Verificação de tamper detection
             checkTamperDetection()
-            
-            // 2.4 Verificação de SIM swap
             checkSimSwapStatus()
-            
-            Log.i(TAG, "✅ Operações pesadas concluídas em background!")
         }
+        
+        Log.i(TAG, "Inicializacao completa finalizada")
     }
     
     /**

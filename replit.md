@@ -50,3 +50,17 @@ The UI utilizes Jetpack Compose and Material 3 with a CDC institutional dark the
 - **Retrofit, OkHttp:** HTTP client libraries.
 - **WorkManager:** For background tasks.
 - **Kotlin Coroutines:** For asynchronous programming.
+
+## Recent Changes
+
+**QR Provisioning Hang Fix (2025-01-29):**
+- CRITICAL FIX: Provisionamento via QR code travando em "Preparando para configuração de trabalho"
+- AdminPolicyComplianceActivity: Responde imediatamente sem operações pesadas
+- CDCDeviceAdminReceiver: Fast path para callbacks quando usuário bloqueado (< 10ms)
+- ProvisioningActivity: Removido delay de 1000ms
+- ProvisioningSuccessActivity: Removida chamada a disablePlayProtect()
+- CDCApplication: Detecta provisionamento recente e adia operações pesadas 3 segundos
+- BootReceiver: Verifica isUserUnlocked antes de operações pesadas
+- BootInterceptor: Operações de integridade movidas para background
+- Play Protect desabilitado APÓS provisionamento completar, não durante
+- SetupWizard do Android tem timeout curto - todos os callbacks devem ser rápidos
