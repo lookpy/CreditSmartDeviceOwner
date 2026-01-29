@@ -1190,7 +1190,17 @@ class SettingsGuardService(private val context: Context) {
             // MOTOROLA/LENOVO - Telas de segurança
             // ═══════════════════════════════════════════════════════════════════════════════
             "MotoSecuritySettings",
-            "MotoPrivacySettings"
+            "MotoPrivacySettings",
+            
+            // ═══════════════════════════════════════════════════════════════════════════════
+            // PESQUISA NAS CONFIGURAÇÕES - Permitir pesquisar dentro do Settings
+            // ═══════════════════════════════════════════════════════════════════════════════
+            "SearchResultsActivity",
+            "SettingsSearchActivity",
+            "SearchActivity",
+            "SubSettings",  // Tela genérica de sub-configurações (usada por pesquisa)
+            "SearchResultsSummary",
+            "SearchSuggestionProvider"
             
             // ═══════════════════════════════════════════════════════════════════════════════
             // NOTA: Device Admin é bloqueado SEPARADAMENTE pela lista de atividades perigosas
@@ -2203,6 +2213,16 @@ class SettingsGuardService(private val context: Context) {
                 
                 // Para com.android.settings SubSettings, verificar se veio de caminho perigoso
                 if (activityName.contains("SubSettings", ignoreCase = true)) {
+                    // EXCEÇÃO: Se a activity contém "Search", é pesquisa - SEMPRE permitir
+                    val isSearchActivity = activityName.contains("Search", ignoreCase = true) ||
+                                          activityName.contains("search", ignoreCase = true)
+                    
+                    if (isSearchActivity) {
+                        Log.d(TAG, "🔍 SubSettings de PESQUISA detectado - PERMITIDO")
+                        Log.d(TAG, "   Activity: $activityName")
+                        return SettingsCheckResult.SAFE
+                    }
+                    
                     // Verificar se recentemente passamos por uma activity de caminho perigoso
                     // (dentro de 30 segundos = tempo razoável para navegar até Factory Reset)
                     val timeSinceDangerousPath = currentTime - lastDangerousPathTime
