@@ -57,6 +57,8 @@ class ContractCodeStorage(private val context: Context) {
         
         private const val CACHE_VALIDITY_MS = 60 * 1000L // Cache válido por 1 minuto
         
+        private val saveLock = Any()
+        
         @Volatile
         private var cachedCode: String? = null
         
@@ -117,7 +119,8 @@ class ContractCodeStorage(private val context: Context) {
     }
     
     /**
-     * Salva o código de pareamento em TODOS os 5 locais de armazenamento
+     * Salva o código de pareamento em TODOS os 5 locais de armazenamento.
+     * Thread-safe: usa synchronized para evitar race conditions em escritas simultâneas.
      */
     fun saveContractCode(code: String) {
         if (code.isBlank()) {
@@ -125,25 +128,26 @@ class ContractCodeStorage(private val context: Context) {
             return
         }
         
-        Log.d(TAG, "Saving contract code to redundant storage")
-        
-        // Atualizar cache imediatamente
-        cachedCode = code
-        cacheTime = System.currentTimeMillis()
-        
-        val mac = calculateMAC(code)
-        
-        saveToEncryptedPrefs(code, mac)
-        saveToProtectedStorage(code, mac)
-        saveToBackupFile1(code, mac)
-        saveToBackupFile2(code, mac)
-        saveToBackupFile3(code, mac)
-        saveToKeystore(code)
-        saveToKeystoreBackup(code)
-        
-        Log.d(TAG, "Contract code saved to ALL storage locations")
-        
-        verifyAllLocations(code)
+        synchronized(saveLock) {
+            Log.d(TAG, "Saving contract code to redundant storage")
+            
+            cachedCode = code
+            cacheTime = System.currentTimeMillis()
+            
+            val mac = calculateMAC(code)
+            
+            saveToEncryptedPrefs(code, mac)
+            saveToProtectedStorage(code, mac)
+            saveToBackupFile1(code, mac)
+            saveToBackupFile2(code, mac)
+            saveToBackupFile3(code, mac)
+            saveToKeystore(code)
+            saveToKeystoreBackup(code)
+            
+            Log.d(TAG, "Contract code saved to ALL storage locations")
+            
+            verifyAllLocations(code)
+        }
     }
     
     /**

@@ -1,0 +1,438 @@
+2026-01-29 15:37:00.262 25880-25880 DeviceUtils             com.cdccreditsmart.app               D  Device Owner check: true
+2026-01-29 15:37:00.262 25880-25880 DeviceUtils             com.cdccreditsmart.app               D  Samsung device: false (Manufacturer: realme)
+2026-01-29 15:37:00.262 25880-25880 DeviceOwnerCheckVM      com.cdccreditsmart.app               I  ✅ Dispositivo é Device Owner - permitindo acesso ao app
+2026-01-29 15:37:00.262 25880-25880 DeviceOwnerCheckVM      com.cdccreditsmart.app               I  ========================================
+2026-01-29 15:37:00.300 25880-25880 RouterViewModel         com.cdccreditsmart.app               D  🚀 Iniciando verificação de autenticação...
+2026-01-29 15:37:00.302 25880-26025 AuthOrchestrator        com.cdccreditsmart.app               D  🔐 Verificando autenticação...
+2026-01-29 15:37:00.306 25880-26025 AuthOrchestrator        com.cdccreditsmart.app               D  🌐 Conectividade: ONLINE
+2026-01-29 15:37:00.306 25880-26025 AuthOrchestrator        com.cdccreditsmart.app               D  🔄 ========== AUTO-DISCOVERY INICIADO ==========
+2026-01-29 15:37:00.322 25880-26025 DeviceUtils             com.cdccreditsmart.app               D  IMEI retrieved successfully: 8608***
+2026-01-29 15:37:00.322 25880-26025 AuthOrchestrator        com.cdccreditsmart.app               D  📱 IMEI obtido: 8608***718
+2026-01-29 15:37:00.323 25880-26025 AuthOrchestrator        com.cdccreditsmart.app               D  🔍 Tentando auto-discovery...
+2026-01-29 15:37:00.323 25880-26025 AuthOrchestrator        com.cdccreditsmart.app               D     Endpoint: GET /api/apk/discover/860875074339718
+2026-01-29 15:37:00.345 25880-29517 okhttp.OkHttpClient     com.cdccreditsmart.app               I  --> GET https://cdccreditsmart.com/api/apk/discover/860875074339718
+2026-01-29 15:37:00.345 25880-29517 okhttp.OkHttpClient     com.cdccreditsmart.app               I  --> END GET
+2026-01-29 15:37:01.942 25880-29517 okhttp.OkHttpClient     com.cdccreditsmart.app               I  <-- 200 https://cdccreditsmart.com/api/apk/discover/860875074339718 (1595ms)
+2026-01-29 15:37:01.942 25880-29517 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-credentials: true
+2026-01-29 15:37:01.942 25880-29517 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-headers: Origin, X-Requested-With, Content-Type, Accept, Authorization, x-client-key, x-client-token, x-client-secret, cache-control
+2026-01-29 15:37:01.942 25880-29517 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-methods: GET, POST, PUT, PATCH, DELETE, OPTIONS
+2026-01-29 15:37:01.942 25880-29517 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-origin: *
+2026-01-29 15:37:01.942 25880-29517 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-max-age: 86400
+2026-01-29 15:37:01.942 25880-29517 okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-length: 577
+2026-01-29 15:37:01.943 25880-29517 okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-security-policy: default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://replit.com; style-src 'self' 'unsafe-inline' https://replit.com; img-src 'self' data: https:; font-src 'self' data: https://replit.com; connect-src 'self';
+2026-01-29 15:37:01.943 25880-29517 okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-type: application/json; charset=utf-8
+2026-01-29 15:37:01.943 25880-29517 okhttp.OkHttpClient     com.cdccreditsmart.app               I  date: Thu, 29 Jan 2026 18:36:59 GMT
+2026-01-29 15:37:01.943 25880-29517 okhttp.OkHttpClient     com.cdccreditsmart.app               I  etag: W/"241-zscYL9TAS6Nc8gLmxqzHKgV8Bqk"
+2026-01-29 15:37:01.943 25880-29517 okhttp.OkHttpClient     com.cdccreditsmart.app               I  permissions-policy: geolocation=(), microphone=(), camera=()
+2026-01-29 15:37:01.943 25880-29517 okhttp.OkHttpClient     com.cdccreditsmart.app               I  referrer-policy: strict-origin-when-cross-origin
+2026-01-29 15:37:01.943 25880-29517 okhttp.OkHttpClient     com.cdccreditsmart.app               I  strict-transport-security: max-age=63072000; includeSubDomains
+2026-01-29 15:37:01.944 25880-29517 okhttp.OkHttpClient     com.cdccreditsmart.app               I  strict-transport-security: max-age=31536000; includeSubDomains
+2026-01-29 15:37:01.944 25880-29517 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-anti-fraud-protection: active
+2026-01-29 15:37:01.944 25880-29517 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-certificate-pinning-enabled: false
+2026-01-29 15:37:01.944 25880-29517 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-certificate-pinning-status: disabled-for-stability
+2026-01-29 15:37:01.944 25880-29517 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-content-type-options: nosniff
+2026-01-29 15:37:01.944 25880-29517 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-financial-data-protection: enabled
+2026-01-29 15:37:01.944 25880-29517 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-frame-options: DENY
+2026-01-29 15:37:01.944 25880-29517 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-transaction-security-level: maximum
+2026-01-29 15:37:01.945 25880-29517 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-xss-protection: 1; mode=block
+2026-01-29 15:37:01.945 25880-29517 okhttp.OkHttpClient     com.cdccreditsmart.app               I  via: 1.1 google
+2026-01-29 15:37:01.945 25880-29517 okhttp.OkHttpClient     com.cdccreditsmart.app               I  alt-svc: h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
+2026-01-29 15:37:01.947 25880-29517 okhttp.OkHttpClient     com.cdccreditsmart.app               I  {"success":true,"device":{"id":"device_1769137280282_l7srjesg25","name":"REALME Note 60x","serialNumber":"QJ3H4MKG","imei":"860875074339718","imeiList":["860875074339718"],"meid":null,"meidList":null,"simSlotCount":1,"model":"Note 60x","brand":"REALME","status":"active","isBlocked":false,"blockReason":null},"customer":{"id":"f854a5cf-8b7e-4a66-a55f-a9f41948eb34","name":"Marcos Antunes","cpf":"06452784323","phone":"85981888810"},"connection":{"matchType":"imei_exact","useImei":"860875074339718","useSerialNumber":"QJ3H4MKG","useDeviceId":"device_1769137280282_l7srjesg25"}}
+2026-01-29 15:37:01.947 25880-29517 okhttp.OkHttpClient     com.cdccreditsmart.app               I  <-- END HTTP (577-byte body)
+2026-01-29 15:37:01.950 25880-26025 AuthOrchestrator        com.cdccreditsmart.app               D  ✅ ========== AUTO-DISCOVERY BEM-SUCEDIDO ==========
+2026-01-29 15:37:01.950 25880-26025 AuthOrchestrator        com.cdccreditsmart.app               D  ✅ Dispositivo encontrado:
+2026-01-29 15:37:01.951 25880-26025 AuthOrchestrator        com.cdccreditsmart.app               D     - Nome: REALME Note 60x
+2026-01-29 15:37:01.951 25880-26025 AuthOrchestrator        com.cdccreditsmart.app               D     - DeviceId: device_17691372...
+2026-01-29 15:37:01.951 25880-26025 AuthOrchestrator        com.cdccreditsmart.app               D     - SerialNumber: QJ3H4MKG
+2026-01-29 15:37:01.951 25880-26025 AuthOrchestrator        com.cdccreditsmart.app               D     - IMEI: 8608***718
+2026-01-29 15:37:01.951 25880-26025 AuthOrchestrator        com.cdccreditsmart.app               D     - Status: active
+2026-01-29 15:37:01.951 25880-26025 AuthOrchestrator        com.cdccreditsmart.app               D     - Bloqueado: false
+2026-01-29 15:37:01.951 25880-26025 AuthOrchestrator        com.cdccreditsmart.app               D  ✅ Cliente:
+2026-01-29 15:37:01.951 25880-26025 AuthOrchestrator        com.cdccreditsmart.app               D     - Nome: Marcos Antunes
+2026-01-29 15:37:01.951 25880-26025 AuthOrchestrator        com.cdccreditsmart.app               D     - CPF: 064***
+2026-01-29 15:37:01.951 25880-26025 AuthOrchestrator        com.cdccreditsmart.app               D  ✅ Conexão:
+2026-01-29 15:37:01.951 25880-26025 AuthOrchestrator        com.cdccreditsmart.app               D     - Usar IMEI: 860875074339718
+2026-01-29 15:37:01.951 25880-26025 AuthOrchestrator        com.cdccreditsmart.app               D     - Usar SerialNumber: QJ3H4MKG
+2026-01-29 15:37:01.951 25880-26025 AuthOrchestrator        com.cdccreditsmart.app               D     - Usar DeviceId: device_1769137280282_l7srjesg25
+2026-01-29 15:37:01.951 25880-26025 ContractCodeStorage     com.cdccreditsmart.app               D  Saving contract code to redundant storage
+2026-01-29 15:37:02.095 25880-26025 ContractCodeStorage     com.cdccreditsmart.app               D  Saved to EncryptedPrefs
+2026-01-29 15:37:02.211 25880-25898 creditsmart.app         com.cdccreditsmart.app               I  Background concurrent mark compact GC freed 352120(15MB) AllocSpace objects, 78(3084KB) LOS objects, 64% free, 13MB/37MB, paused 968us,3.669ms total 103.505ms
+2026-01-29 15:37:02.228 25880-26025 ContractCodeStorage     com.cdccreditsmart.app               D  Deleted existing file: .cdc_protected_code.enc
+2026-01-29 15:37:02.282 25880-26025 ContractCodeStorage     com.cdccreditsmart.app               D  Successfully saved to file: .cdc_protected_code.enc
+2026-01-29 15:37:02.282 25880-26025 ContractCodeStorage     com.cdccreditsmart.app               D  Saved to Protected Storage
+2026-01-29 15:37:02.282 25880-26025 ContractCodeStorage     com.cdccreditsmart.app               D  Deleted existing file: .cdc_contract_b1.enc
+2026-01-29 15:37:02.331 25880-26025 ContractCodeStorage     com.cdccreditsmart.app               D  Successfully saved to file: .cdc_contract_b1.enc
+2026-01-29 15:37:02.332 25880-26025 ContractCodeStorage     com.cdccreditsmart.app               D  Deleted existing file: .sys_device_cfg.enc
+2026-01-29 15:37:02.381 25880-26025 ContractCodeStorage     com.cdccreditsmart.app               D  Successfully saved to file: .sys_device_cfg.enc
+2026-01-29 15:37:02.382 25880-26025 ContractCodeStorage     com.cdccreditsmart.app               D  Deleted existing file: .android_secure.enc
+2026-01-29 15:37:02.434 25880-26025 ContractCodeStorage     com.cdccreditsmart.app               D  Successfully saved to file: .android_secure.enc
+2026-01-29 15:37:02.481 25880-26025 ContractCodeStorage     com.cdccreditsmart.app               D  Contract code saved to ALL storage locations
+2026-01-29 15:37:02.800 25880-26025 ContractCodeStorage     com.cdccreditsmart.app               D  Verification complete: 7/7 locations valid
+2026-01-29 15:37:02.822 25880-26025 ContractCodeStorage     com.cdccreditsmart.app               D  Saving contract code to redundant storage
+2026-01-29 15:37:02.842 25880-26025 ContractCodeStorage     com.cdccreditsmart.app               D  Saved to EncryptedPrefs
+2026-01-29 15:37:02.849 25880-26025 ContractCodeStorage     com.cdccreditsmart.app               D  Deleted existing file: .cdc_protected_code.enc
+2026-01-29 15:37:02.898 25880-26025 ContractCodeStorage     com.cdccreditsmart.app               D  Successfully saved to file: .cdc_protected_code.enc
+2026-01-29 15:37:02.898 25880-26025 ContractCodeStorage     com.cdccreditsmart.app               D  Saved to Protected Storage
+2026-01-29 15:37:02.899 25880-26025 ContractCodeStorage     com.cdccreditsmart.app               D  Deleted existing file: .cdc_contract_b1.enc
+2026-01-29 15:37:02.949 25880-26025 ContractCodeStorage     com.cdccreditsmart.app               D  Successfully saved to file: .cdc_contract_b1.enc
+2026-01-29 15:37:02.949 25880-26025 ContractCodeStorage     com.cdccreditsmart.app               D  Deleted existing file: .sys_device_cfg.enc
+2026-01-29 15:37:03.000 25880-26025 ContractCodeStorage     com.cdccreditsmart.app               D  Successfully saved to file: .sys_device_cfg.enc
+2026-01-29 15:37:03.000 25880-26025 ContractCodeStorage     com.cdccreditsmart.app               D  Deleted existing file: .android_secure.enc
+2026-01-29 15:37:03.056 25880-26025 ContractCodeStorage     com.cdccreditsmart.app               D  Successfully saved to file: .android_secure.enc
+2026-01-29 15:37:03.104 25880-26025 ContractCodeStorage     com.cdccreditsmart.app               D  Contract code saved to ALL storage locations
+2026-01-29 15:37:03.420 25880-26025 ContractCodeStorage     com.cdccreditsmart.app               D  Verification complete: 7/7 locations valid
+2026-01-29 15:37:03.420 25880-26025 SecureTokenStorage      com.cdccreditsmart.app               D  Device info saved successfully from auto-discovery
+2026-01-29 15:37:03.420 25880-26025 SecureTokenStorage      com.cdccreditsmart.app               D    - DeviceId: device_17691372...
+2026-01-29 15:37:03.420 25880-26025 SecureTokenStorage      com.cdccreditsmart.app               D    - SerialNumber: QJ3H4MKG
+2026-01-29 15:37:03.420 25880-26025 SecureTokenStorage      com.cdccreditsmart.app               D    - IMEI: 8608***
+2026-01-29 15:37:03.420 25880-26025 SecureTokenStorage      com.cdccreditsmart.app               D    - ContractCode: QJ3H4MKG
+2026-01-29 15:37:03.420 25880-26025 AuthOrchestrator        com.cdccreditsmart.app               D  💾 Dados salvos:
+2026-01-29 15:37:03.420 25880-26025 AuthOrchestrator        com.cdccreditsmart.app               D     - ContractCode: QJ3H4MKG
+2026-01-29 15:37:03.420 25880-26025 AuthOrchestrator        com.cdccreditsmart.app               D     - DeviceId: device_17691372...
+2026-01-29 15:37:03.420 25880-26025 AuthOrchestrator        com.cdccreditsmart.app               D     - IMEI: 8608***718
+2026-01-29 15:37:03.420 25880-26025 AuthOrchestrator        com.cdccreditsmart.app               W  ⚠️ [6/7] Discovery não retornou token - headers IMEI serão usados como fallback
+2026-01-29 15:37:03.421 25880-26025 AuthOrchestrator        com.cdccreditsmart.app               D  🎉 ========== AUTO-DISCOVERY CONCLUÍDO ==========
+2026-01-29 15:37:03.421 25880-26025 AuthOrchestrator        com.cdccreditsmart.app               D  ✅ Auto-conexão bem-sucedida - autenticação OK!
+2026-01-29 15:37:03.421 25880-26025 AuthOrchestrator        com.cdccreditsmart.app               I  🔧 Garantindo que CdcForegroundService está rodando...
+2026-01-29 15:37:03.421 25880-25985 AuthOrchestrator        com.cdccreditsmart.app               D  🔔 Registrando FCM token após auto-discovery...
+2026-01-29 15:37:03.428 25880-26025 CdcForegroundService    com.cdccreditsmart.app               I  ✅ Serviço iniciado via startService()
+2026-01-29 15:37:03.428 25880-26025 AuthOrchestrator        com.cdccreditsmart.app               I  ✅ CdcForegroundService iniciado após autenticação
+2026-01-29 15:37:03.429 25880-25880 RouterViewModel         com.cdccreditsmart.app               D  ✅ Autenticado com sucesso
+2026-01-29 15:37:03.435 25880-25985 FcmTokenManager         com.cdccreditsmart.app               D  ========== REGISTERING FCM TOKEN WITH BACKEND ==========
+2026-01-29 15:37:03.440 25880-25985 FcmTokenManager         com.cdccreditsmart.app               D  Current FCM token retrieved: eaOkixBvT8ueACb96xv9...
+2026-01-29 15:37:03.648 25880-25880 TermsAcceptanceStorage  com.cdccreditsmart.app               D  hasAcceptedTermsForContract(QJ3H4MKG): true (saved: QJ3H4MKG)
+2026-01-29 15:37:03.648 25880-25880 RouterViewModel         com.cdccreditsmart.app               D  ✅ Termos já aceitos - Ir para HOME
+2026-01-29 15:37:03.649 25880-25880 CdcForegroundService    com.cdccreditsmart.app               D  🚀 Serviço onStartCommand() - Action: com.cdccreditsmart.app.START_SERVICE
+2026-01-29 15:37:03.660 25880-25880 CdcForegroundService    com.cdccreditsmart.app               I  ✅ Foreground Service ativo (Android 12+)
+2026-01-29 15:37:03.661 25880-26025 CdcForegroundService    com.cdccreditsmart.app               I  🔧 ========================================
+2026-01-29 15:37:03.661 25880-26025 CdcForegroundService    com.cdccreditsmart.app               I  🔧 INICIANDO initializeServices()...
+2026-01-29 15:37:03.661 25880-26025 CdcForegroundService    com.cdccreditsmart.app               I  🔧 ========================================
+2026-01-29 15:37:03.661 25880-26025 CdcForegroundService    com.cdccreditsmart.app               D  ✅ Serviços base já inicializados
+2026-01-29 15:37:03.695 25880-25985 FcmTokenManager         com.cdccreditsmart.app               E  Cannot register: Auth token not available
+2026-01-29 15:37:03.696 25880-25985 AuthOrchestrator        com.cdccreditsmart.app               W  ⚠️ Erro ao registrar FCM token: User not authenticated
+2026-01-29 15:37:03.707 25880-25880 SimpleHomeViewModel     com.cdccreditsmart.app               W  ⏳ Throttling ativo - aguarde 25s antes de tentar novamente
+2026-01-29 15:37:03.729 25880-25880 SecureTokenStorage      com.cdccreditsmart.app               D  📖 Lendo customerName: Marcos Antunes
+2026-01-29 15:37:03.733 25880-25880 SecureTokenStorage      com.cdccreditsmart.app               D  📖 Lendo deviceModel: Note 60x
+2026-01-29 15:37:04.113 25880-25985 SupportRepository       com.cdccreditsmart.app               I  📡 Buscando dados de contato do servidor...
+2026-01-29 15:37:04.153 25880-29517 okhttp.OkHttpClient     com.cdccreditsmart.app               I  --> GET https://cdccreditsmart.com/v1/support/contact
+2026-01-29 15:37:04.153 25880-29517 okhttp.OkHttpClient     com.cdccreditsmart.app               I  --> END GET
+2026-01-29 15:37:04.169 25880-25985 SecureTokenStorage      com.cdccreditsmart.app               D  ✅ Usando IMEI para MDM: 8608***718
+2026-01-29 15:37:04.170 25880-25985 CdcForegroundService    com.cdccreditsmart.app               I  🔐 AuthToken presente: false
+2026-01-29 15:37:04.170 25880-25985 CdcForegroundService    com.cdccreditsmart.app               I  🔐 AuthToken length: 0
+2026-01-29 15:37:04.170 25880-25985 CdcForegroundService    com.cdccreditsmart.app               I  🔐 ContractCode presente: true
+2026-01-29 15:37:04.170 25880-25985 CdcForegroundService    com.cdccreditsmart.app               I  🔐 ContractCode value: QJ3H****
+2026-01-29 15:37:04.170 25880-25985 CdcForegroundService    com.cdccreditsmart.app               I  🔐 MDM SerialNumber presente: true
+2026-01-29 15:37:04.170 25880-25985 CdcForegroundService    com.cdccreditsmart.app               I  🔐 MDM SerialNumber value: 86087507...
+2026-01-29 15:37:04.170 25880-25985 CdcForegroundService    com.cdccreditsmart.app               I  📱 ========================================
+2026-01-29 15:37:04.170 25880-25985 CdcForegroundService    com.cdccreditsmart.app               I  📱 AGUARDANDO PAIRING - MDM EM STANDBY
+2026-01-29 15:37:04.170 25880-25985 CdcForegroundService    com.cdccreditsmart.app               I  📱 O usuário ainda não fez o pareamento inicial
+2026-01-29 15:37:04.170 25880-25985 CdcForegroundService    com.cdccreditsmart.app               I  📱 Serviços MDM serão ativados após inserir código do contrato
+2026-01-29 15:37:04.170 25880-25985 CdcForegroundService    com.cdccreditsmart.app               I  📱 NOTA: isMdmInitialized permanece FALSE para permitir reinicialização
+2026-01-29 15:37:04.170 25880-25985 CdcForegroundService    com.cdccreditsmart.app               I  📱 ========================================
+2026-01-29 15:37:05.051 25880-29517 okhttp.OkHttpClient     com.cdccreditsmart.app               I  <-- 200 https://cdccreditsmart.com/v1/support/contact (896ms)
+2026-01-29 15:37:05.051 25880-29517 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-credentials: true
+2026-01-29 15:37:05.051 25880-29517 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-headers: Origin, X-Requested-With, Content-Type, Accept, Authorization, x-client-key, x-client-token, x-client-secret, cache-control
+2026-01-29 15:37:05.051 25880-29517 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-methods: GET, POST, PUT, PATCH, DELETE, OPTIONS
+2026-01-29 15:37:05.051 25880-29517 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-origin: *
+2026-01-29 15:37:05.051 25880-29517 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-max-age: 86400
+2026-01-29 15:37:05.052 25880-29517 okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-length: 111
+2026-01-29 15:37:05.052 25880-29517 okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-security-policy: default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://replit.com; style-src 'self' 'unsafe-inline' https://replit.com; img-src 'self' data: https:; font-src 'self' data: https://replit.com; connect-src 'self';
+2026-01-29 15:37:05.052 25880-29517 okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-type: application/json; charset=utf-8
+2026-01-29 15:37:05.052 25880-29517 okhttp.OkHttpClient     com.cdccreditsmart.app               I  date: Thu, 29 Jan 2026 18:37:03 GMT
+2026-01-29 15:37:05.052 25880-29517 okhttp.OkHttpClient     com.cdccreditsmart.app               I  etag: W/"6f-ar1ZGdhbShZ7SAODOF+BTA5O768"
+2026-01-29 15:37:05.052 25880-29517 okhttp.OkHttpClient     com.cdccreditsmart.app               I  permissions-policy: geolocation=(), microphone=(), camera=()
+2026-01-29 15:37:05.052 25880-29517 okhttp.OkHttpClient     com.cdccreditsmart.app               I  referrer-policy: strict-origin-when-cross-origin
+2026-01-29 15:37:05.052 25880-29517 okhttp.OkHttpClient     com.cdccreditsmart.app               I  strict-transport-security: max-age=63072000; includeSubDomains
+2026-01-29 15:37:05.053 25880-29517 okhttp.OkHttpClient     com.cdccreditsmart.app               I  strict-transport-security: max-age=31536000; includeSubDomains
+2026-01-29 15:37:05.053 25880-29517 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-anti-fraud-protection: active
+2026-01-29 15:37:05.053 25880-29517 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-certificate-pinning-enabled: false
+2026-01-29 15:37:05.053 25880-29517 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-certificate-pinning-status: disabled-for-stability
+2026-01-29 15:37:05.053 25880-29517 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-content-type-options: nosniff
+2026-01-29 15:37:05.053 25880-29517 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-financial-data-protection: enabled
+2026-01-29 15:37:05.053 25880-29517 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-frame-options: DENY
+2026-01-29 15:37:05.053 25880-29517 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-transaction-security-level: maximum
+2026-01-29 15:37:05.053 25880-29517 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-xss-protection: 1; mode=block
+2026-01-29 15:37:05.054 25880-29517 okhttp.OkHttpClient     com.cdccreditsmart.app               I  via: 1.1 google
+2026-01-29 15:37:05.054 25880-29517 okhttp.OkHttpClient     com.cdccreditsmart.app               I  alt-svc: h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
+2026-01-29 15:37:05.055 25880-29517 okhttp.OkHttpClient     com.cdccreditsmart.app               I  {"phone":"(85) 98188-8810","whatsapp":"(85) 98188-8810","contactLink":"https://www.cdccreditsmart.com/contato"}
+2026-01-29 15:37:05.055 25880-29517 okhttp.OkHttpClient     com.cdccreditsmart.app               I  <-- END HTTP (111-byte body)
+2026-01-29 15:37:05.058 25880-25985 SupportRepository       com.cdccreditsmart.app               I  ✅ Dados de contato atualizados: phone=true, whatsapp=true, link=true
+2026-01-29 15:37:10.697 25880-25987 mali_gralloc            com.cdccreditsmart.app               D  unregister: id=33700000244, handle=0xb400007756027290, base=0x0, importpid=25880, count:0
+2026-01-29 15:37:10.700 25880-25987 mali_gralloc            com.cdccreditsmart.app               D  unregister: id=33700000245, handle=0xb40000775601fb50, base=0x0, importpid=25880, count:0
+2026-01-29 15:37:10.714 25880-25880 mali_gralloc            com.cdccreditsmart.app               D  unregister: id=33700000246, handle=0xb400007755ff6390, base=0x0, importpid=25880, count:0
+2026-01-29 15:37:10.714 25880-25880 mali_gralloc            com.cdccreditsmart.app               D  unregister: id=33700000247, handle=0xb400007756021890, base=0x0, importpid=25880, count:0
+2026-01-29 15:37:12.044 25880-25987 OpenGLRenderer          com.cdccreditsmart.app               E  Unable to match the desired swap behavior.
+2026-01-29 15:37:12.046 25880-29554 mali_gralloc            com.cdccreditsmart.app               D  register: id=3370000025a, handle=0xb400007756026990, importpid=-1, gRegisteredHandles=0
+2026-01-29 15:37:12.047 25880-29554 mali_gralloc            com.cdccreditsmart.app               D  register: id=3370000025b, handle=0xb400007756011390, importpid=-1, gRegisteredHandles=1
+2026-01-29 15:37:12.051 25880-29554 mali_gralloc            com.cdccreditsmart.app               D  register: id=3370000025c, handle=0xb400007755ff8c10, importpid=-1, gRegisteredHandles=2
+2026-01-29 15:37:12.054 25880-29554 mali_gralloc            com.cdccreditsmart.app               D  register: id=3370000025d, handle=0xb40000775600b090, importpid=-1, gRegisteredHandles=3
+2026-01-29 15:37:13.998 25880-25880 CdcForegroundService    com.cdccreditsmart.app               W  ⚠️ Task removida - mantendo serviço ativo
+2026-01-29 15:37:14.057 25880-25880 MainActivity            com.cdccreditsmart.app               D  📍 BroadcastReceiver de localização desregistrado
+2026-01-29 15:37:14.058 25880-25880 WindowOnBackDispatcher  com.cdccreditsmart.app               W  sendCancelIfRunning: isInProgress=falsecallback=android.app.Activity$$ExternalSyntheticLambda0@9cc4528
+2026-01-29 15:37:14.066 25880-25987 mali_gralloc            com.cdccreditsmart.app               D  unregister: id=3370000025a, handle=0xb400007756026990, base=0x0, importpid=25880, count:0
+2026-01-29 15:37:14.066 25880-25987 mali_gralloc            com.cdccreditsmart.app               D  unregister: id=3370000025b, handle=0xb400007756011390, base=0x0, importpid=25880, count:0
+2026-01-29 15:37:14.067 25880-25987 mali_gralloc            com.cdccreditsmart.app               D  unregister: id=3370000025c, handle=0xb400007755ff8c10, base=0x0, importpid=25880, count:0
+2026-01-29 15:37:14.067 25880-25987 mali_gralloc            com.cdccreditsmart.app               D  unregister: id=3370000025d, handle=0xb40000775600b090, base=0x0, importpid=25880, count:0
+2026-01-29 15:37:16.001 25880-29293 FA                      com.cdccreditsmart.app               I  Application backgrounded at: timestamp_millis: 1769711833998
+2026-01-29 15:37:16.695 25880-25880 MainActivity            com.cdccreditsmart.app               I  ✅ Brilho da tela definido para MÁXIMO
+2026-01-29 15:37:16.697 25880-25880 MainActivity            com.cdccreditsmart.app               D  📍 BroadcastReceiver de localização registrado
+2026-01-29 15:37:16.700 25880-25985 PersistentStateManager  com.cdccreditsmart.app               D  Nenhum estado local encontrado
+2026-01-29 15:37:16.700 25880-25985 PersistentStateManager  com.cdccreditsmart.app               D  🆕 Sem estado local - device novo ou pós factory reset
+2026-01-29 15:37:16.700 25880-25985 MainActivity            com.cdccreditsmart.app               I  🆕 Device nunca foi provisionado
+2026-01-29 15:37:16.702 25880-25880 MainActivity            com.cdccreditsmart.app               I  ✅ App é Device Owner - permissões serão concedidas automaticamente
+2026-01-29 15:37:16.819 25880-25880 PermissionGateScreen    com.cdccreditsmart.app               I  🔐 DEVICE OWNER DETECTADO - tentando concessão automática IMEDIATA
+2026-01-29 15:37:16.820 25880-25880 AutoPermissionManager   com.cdccreditsmart.app               I  🚀 ========================================
+2026-01-29 15:37:16.820 25880-25880 AutoPermissionManager   com.cdccreditsmart.app               I  🚀 CONCESSÃO RÁPIDA DE PERMISSÕES (Device Owner)
+2026-01-29 15:37:16.820 25880-25880 AutoPermissionManager   com.cdccreditsmart.app               I  🚀 ========================================
+2026-01-29 15:37:16.821 25880-25880 AutoPermissionManager   com.cdccreditsmart.app               D    ⏩ Já concedida: android.permission.READ_PHONE_STATE
+2026-01-29 15:37:16.891 25880-25880 AutoPermissionManager   com.cdccreditsmart.app               I    ✅ Concedida: android.permission.READ_CALL_LOG
+2026-01-29 15:37:16.935 25880-25880 AutoPermissionManager   com.cdccreditsmart.app               I    ✅ Concedida: android.permission.CALL_PHONE
+2026-01-29 15:37:16.977 25880-25880 AutoPermissionManager   com.cdccreditsmart.app               I    ✅ Concedida: android.permission.READ_CONTACTS
+2026-01-29 15:37:16.978 25880-25880 AutoPermissionManager   com.cdccreditsmart.app               D    ⏩ Já concedida: android.permission.ACCESS_FINE_LOCATION
+2026-01-29 15:37:16.978 25880-25880 AutoPermissionManager   com.cdccreditsmart.app               D    ⏩ Já concedida: android.permission.ACCESS_COARSE_LOCATION
+2026-01-29 15:37:17.038 25880-25880 AutoPermissionManager   com.cdccreditsmart.app               I    ✅ Concedida: android.permission.ANSWER_PHONE_CALLS
+2026-01-29 15:37:17.087 25880-25880 AutoPermissionManager   com.cdccreditsmart.app               I    ✅ Concedida: android.permission.READ_PHONE_NUMBERS
+2026-01-29 15:37:17.088 25880-25880 AutoPermissionManager   com.cdccreditsmart.app               D    ⏩ Já concedida: android.permission.ACCESS_BACKGROUND_LOCATION
+2026-01-29 15:37:17.089 25880-25880 AutoPermissionManager   com.cdccreditsmart.app               D    ⏩ Já concedida: android.permission.POST_NOTIFICATIONS
+2026-01-29 15:37:17.089 25880-25880 AutoPermissionManager   com.cdccreditsmart.app               I  🚀 ========================================
+2026-01-29 15:37:17.089 25880-25880 AutoPermissionManager   com.cdccreditsmart.app               I  🚀 RESUMO DA CONCESSÃO RÁPIDA:
+2026-01-29 15:37:17.089 25880-25880 AutoPermissionManager   com.cdccreditsmart.app               I    ✅ Novas permissões concedidas: 5
+2026-01-29 15:37:17.089 25880-25880 AutoPermissionManager   com.cdccreditsmart.app               I    ⏩ Já estavam concedidas: 5
+2026-01-29 15:37:17.089 25880-25880 AutoPermissionManager   com.cdccreditsmart.app               I    ❌ Erros/Falhas: 0
+2026-01-29 15:37:17.089 25880-25880 AutoPermissionManager   com.cdccreditsmart.app               I    📋 Total processadas: 10
+2026-01-29 15:37:17.089 25880-25880 AutoPermissionManager   com.cdccreditsmart.app               I  🚀 ========================================
+2026-01-29 15:37:17.089 25880-25880 PermissionGateScreen    com.cdccreditsmart.app               I  ✅ Runtime permissions concedidas automaticamente
+2026-01-29 15:37:17.097 25880-25880 PermissionGateManager   com.cdccreditsmart.app               I  ✅ Device Owner: Todas as permissões especiais concedidas!
+2026-01-29 15:37:17.141 25880-25987 OpenGLRenderer          com.cdccreditsmart.app               E  Unable to match the desired swap behavior.
+2026-01-29 15:37:17.143 25880-29569 mali_gralloc            com.cdccreditsmart.app               D  register: id=3370000026c, handle=0xb400007756021ad0, importpid=-1, gRegisteredHandles=0
+2026-01-29 15:37:17.144 25880-29569 mali_gralloc            com.cdccreditsmart.app               D  register: id=3370000026d, handle=0xb4000077560236f0, importpid=-1, gRegisteredHandles=1
+2026-01-29 15:37:17.145 25880-29569 mali_gralloc            com.cdccreditsmart.app               D  register: id=3370000026e, handle=0xb400007756022070, importpid=-1, gRegisteredHandles=2
+2026-01-29 15:37:17.147 25880-29569 mali_gralloc            com.cdccreditsmart.app               D  register: id=3370000026f, handle=0xb40000775600af70, importpid=-1, gRegisteredHandles=3
+2026-01-29 15:37:17.166 25880-25880 PermissionGateScreen    com.cdccreditsmart.app               I  🔍 VERIFICAÇÃO INICIAL DE PERMISSÕES:
+2026-01-29 15:37:17.166 25880-25880 PermissionGateScreen    com.cdccreditsmart.app               I     Nível: DEVICE_OWNER
+2026-01-29 15:37:17.166 25880-25880 PermissionGateScreen    com.cdccreditsmart.app               I     Todas concedidas: true
+2026-01-29 15:37:17.167 25880-25880 PermissionGateScreen    com.cdccreditsmart.app               I     Bateria isenta: true
+2026-01-29 15:37:17.167 25880-25880 PermissionGateScreen    com.cdccreditsmart.app               I     ✅ OK: Permissões Básicas
+2026-01-29 15:37:17.167 25880-25880 PermissionGateScreen    com.cdccreditsmart.app               I     ✅ OK: Monitoramento de Apps
+2026-01-29 15:37:17.167 25880-25880 PermissionGateScreen    com.cdccreditsmart.app               I     ✅ OK: Mostrar Alertas
+2026-01-29 15:37:17.167 25880-25880 PermissionGateScreen    com.cdccreditsmart.app               I     ✅ OK: Execução em Segundo Plano
+2026-01-29 15:37:17.168 25880-25880 PermissionGateScreen    com.cdccreditsmart.app               I  ✅ TODAS AS PERMISSÕES JÁ CONCEDIDAS - navegando imediatamente
+2026-01-29 15:37:17.168 25880-25880 SettingsGuardService    com.cdccreditsmart.app               I  ▶️ Guard RETOMADO após fluxo de permissões
+2026-01-29 15:37:17.168 25880-25985 AutoPermissionManager   com.cdccreditsmart.app               I  ========================================
+2026-01-29 15:37:17.169 25880-25985 AutoPermissionManager   com.cdccreditsmart.app               I  🔐 INICIANDO CONCESSÃO AUTOMÁTICA DE PERMISSÕES
+2026-01-29 15:37:17.169 25880-25985 AutoPermissionManager   com.cdccreditsmart.app               I  ========================================
+2026-01-29 15:37:17.172 25880-25985 AutoPermissionManager   com.cdccreditsmart.app               I  📋 Status: Device Owner=true, Profile Owner=false
+2026-01-29 15:37:17.172 25880-25985 AutoPermissionManager   com.cdccreditsmart.app               I  ✅ App é Device Owner - concedendo permissões automaticamente...
+2026-01-29 15:37:17.175 25880-25985 AutoPermissionManager   com.cdccreditsmart.app               I  🚀 ========================================
+2026-01-29 15:37:17.175 25880-25985 AutoPermissionManager   com.cdccreditsmart.app               I  🚀 CONCESSÃO RÁPIDA DE PERMISSÕES (Device Owner)
+2026-01-29 15:37:17.175 25880-25985 AutoPermissionManager   com.cdccreditsmart.app               I  🚀 ========================================
+2026-01-29 15:37:17.176 25880-25985 AutoPermissionManager   com.cdccreditsmart.app               D    ⏩ Já concedida: android.permission.READ_PHONE_STATE
+2026-01-29 15:37:17.202 25880-25880 Choreographer           com.cdccreditsmart.app               I  Skipped 42 frames!  The application may be doing too much work on its main thread.
+2026-01-29 15:37:17.259 25880-25880 DeviceOwnerCheckVM      com.cdccreditsmart.app               I  ========================================
+2026-01-29 15:37:17.259 25880-25880 DeviceOwnerCheckVM      com.cdccreditsmart.app               I  🔐 Verificando status de Device Owner...
+2026-01-29 15:37:17.264 25880-25985 AutoPermissionManager   com.cdccreditsmart.app               I    ✅ Concedida: android.permission.READ_CALL_LOG
+2026-01-29 15:37:17.328 25880-25985 AutoPermissionManager   com.cdccreditsmart.app               I    ✅ Concedida: android.permission.CALL_PHONE
+2026-01-29 15:37:17.396 25880-25985 AutoPermissionManager   com.cdccreditsmart.app               I    ✅ Concedida: android.permission.READ_CONTACTS
+2026-01-29 15:37:17.397 25880-25985 AutoPermissionManager   com.cdccreditsmart.app               D    ⏩ Já concedida: android.permission.ACCESS_FINE_LOCATION
+2026-01-29 15:37:17.398 25880-25985 AutoPermissionManager   com.cdccreditsmart.app               D    ⏩ Já concedida: android.permission.ACCESS_COARSE_LOCATION
+2026-01-29 15:37:17.458 25880-25985 AutoPermissionManager   com.cdccreditsmart.app               I    ✅ Concedida: android.permission.ANSWER_PHONE_CALLS
+2026-01-29 15:37:17.514 25880-25985 AutoPermissionManager   com.cdccreditsmart.app               I    ✅ Concedida: android.permission.READ_PHONE_NUMBERS
+2026-01-29 15:37:17.515 25880-25985 AutoPermissionManager   com.cdccreditsmart.app               D    ⏩ Já concedida: android.permission.ACCESS_BACKGROUND_LOCATION
+2026-01-29 15:37:17.516 25880-25985 AutoPermissionManager   com.cdccreditsmart.app               D    ⏩ Já concedida: android.permission.POST_NOTIFICATIONS
+2026-01-29 15:37:17.517 25880-25985 AutoPermissionManager   com.cdccreditsmart.app               I  🚀 ========================================
+2026-01-29 15:37:17.517 25880-25985 AutoPermissionManager   com.cdccreditsmart.app               I  🚀 RESUMO DA CONCESSÃO RÁPIDA:
+2026-01-29 15:37:17.517 25880-25985 AutoPermissionManager   com.cdccreditsmart.app               I    ✅ Novas permissões concedidas: 5
+2026-01-29 15:37:17.517 25880-25985 AutoPermissionManager   com.cdccreditsmart.app               I    ⏩ Já estavam concedidas: 5
+2026-01-29 15:37:17.518 25880-25985 AutoPermissionManager   com.cdccreditsmart.app               I    ❌ Erros/Falhas: 0
+2026-01-29 15:37:17.518 25880-25985 AutoPermissionManager   com.cdccreditsmart.app               I    📋 Total processadas: 10
+2026-01-29 15:37:17.518 25880-25985 AutoPermissionManager   com.cdccreditsmart.app               I  🚀 ========================================
+2026-01-29 15:37:17.518 25880-25985 AutoPermissionManager   com.cdccreditsmart.app               I  🔍 Verificando status final de todas as permissões...
+2026-01-29 15:37:17.519 25880-25985 AutoPermissionManager   com.cdccreditsmart.app               D    ✅ CONCEDIDA - android.permission.READ_PHONE_STATE
+2026-01-29 15:37:17.521 25880-25985 AutoPermissionManager   com.cdccreditsmart.app               D    ❌ NEGADA - android.permission.READ_CALL_LOG
+2026-01-29 15:37:17.523 25880-25985 AutoPermissionManager   com.cdccreditsmart.app               D    ❌ NEGADA - android.permission.CALL_PHONE
+2026-01-29 15:37:17.524 25880-25985 AutoPermissionManager   com.cdccreditsmart.app               D    ❌ NEGADA - android.permission.READ_CONTACTS
+2026-01-29 15:37:17.525 25880-25985 AutoPermissionManager   com.cdccreditsmart.app               D    ✅ CONCEDIDA - android.permission.ACCESS_FINE_LOCATION
+2026-01-29 15:37:17.526 25880-25985 AutoPermissionManager   com.cdccreditsmart.app               D    ✅ CONCEDIDA - android.permission.ACCESS_COARSE_LOCATION
+2026-01-29 15:37:17.527 25880-25985 AutoPermissionManager   com.cdccreditsmart.app               D    ❌ NEGADA - android.permission.ANSWER_PHONE_CALLS
+2026-01-29 15:37:17.529 25880-25985 AutoPermissionManager   com.cdccreditsmart.app               D    ❌ NEGADA - android.permission.READ_PHONE_NUMBERS
+2026-01-29 15:37:17.530 25880-25985 AutoPermissionManager   com.cdccreditsmart.app               D    ✅ CONCEDIDA - android.permission.ACCESS_BACKGROUND_LOCATION
+2026-01-29 15:37:17.531 25880-25985 AutoPermissionManager   com.cdccreditsmart.app               D    ✅ CONCEDIDA - android.permission.POST_NOTIFICATIONS
+2026-01-29 15:37:17.531 25880-25985 AutoPermissionManager   com.cdccreditsmart.app               W  ⚠️ Algumas permissões ainda não foram concedidas
+2026-01-29 15:37:17.531 25880-25985 AutoPermissionManager   com.cdccreditsmart.app               I  ========================================
+2026-01-29 15:37:17.531 25880-25985 AutoPermissionManager   com.cdccreditsmart.app               I  🔐 CONFIGURANDO PERMISSÕES ESPECIAIS (Device Owner)
+2026-01-29 15:37:17.531 25880-25985 AutoPermissionManager   com.cdccreditsmart.app               I  ========================================
+2026-01-29 15:37:17.532 25880-25985 AutoPermissionManager   com.cdccreditsmart.app               I  📊 ========================================
+2026-01-29 15:37:17.533 25880-25985 AutoPermissionManager   com.cdccreditsmart.app               I  📊 CONCEDENDO PACKAGE_USAGE_STATS (Usage Access)
+2026-01-29 15:37:17.533 25880-25985 AutoPermissionManager   com.cdccreditsmart.app               I  📊 ========================================
+2026-01-29 15:37:17.535 25880-25985 AutoPermissionManager   com.cdccreditsmart.app               I  📊 ✅ PACKAGE_USAGE_STATS já está concedida!
+2026-01-29 15:37:17.535 25880-25985 AutoPermissionManager   com.cdccreditsmart.app               I  🪟 ========================================
+2026-01-29 15:37:17.535 25880-25985 AutoPermissionManager   com.cdccreditsmart.app               I  🪟 CONCEDENDO SYSTEM_ALERT_WINDOW (Overlay)
+2026-01-29 15:37:17.535 25880-25985 AutoPermissionManager   com.cdccreditsmart.app               I  🪟 ========================================
+2026-01-29 15:37:17.538 25880-25985 AutoPermissionManager   com.cdccreditsmart.app               I  🪟 ✅ SYSTEM_ALERT_WINDOW já está concedida!
+2026-01-29 15:37:17.538 25880-25985 AutoPermissionManager   com.cdccreditsmart.app               I  🔋 ========================================
+2026-01-29 15:37:17.538 25880-25985 AutoPermissionManager   com.cdccreditsmart.app               I  🔋 VERIFICANDO ISENÇÃO DE OTIMIZAÇÃO DE BATERIA
+2026-01-29 15:37:17.538 25880-25985 AutoPermissionManager   com.cdccreditsmart.app               I  🔋 ========================================
+2026-01-29 15:37:17.539 25880-25985 AutoPermissionManager   com.cdccreditsmart.app               I  🔋 ✅ App JÁ está isento de otimização de bateria
+2026-01-29 15:37:17.539 25880-25985 AutoPermissionManager   com.cdccreditsmart.app               I  🔋 ========================================
+2026-01-29 15:37:17.539 25880-25985 AutoPermissionManager   com.cdccreditsmart.app               I  📍 Forçando GPS/Localização sempre ativo...
+2026-01-29 15:37:17.543 25880-25985 AutoPermissionManager   com.cdccreditsmart.app               I  ✅ Localização forçada via setLocationEnabled (Android 9+)
+2026-01-29 15:37:17.549 25880-25985 AutoPermissionManager   com.cdccreditsmart.app               I  📍 Sem bloqueio ativo - usuário pode controlar GPS normalmente
+2026-01-29 15:37:17.553 25880-25985 AutoPermissionManager   com.cdccreditsmart.app               I  📍 Status atual - GPS: true, Network: true
+2026-01-29 15:37:17.553 25880-25985 AutoPermissionManager   com.cdccreditsmart.app               I  📍 Configuração de localização concluída
+2026-01-29 15:37:17.555 25880-25985 AutoPermissionManager   com.cdccreditsmart.app               I  ✅ Política de permissões configurada para AUTO_GRANT
+2026-01-29 15:37:17.555 25880-25985 AutoPermissionManager   com.cdccreditsmart.app               I  📊 ========================================
+2026-01-29 15:37:17.555 25880-25985 AutoPermissionManager   com.cdccreditsmart.app               I  📊 VERIFICAÇÃO FINAL: PACKAGE_USAGE_STATS
+2026-01-29 15:37:17.555 25880-25985 AutoPermissionManager   com.cdccreditsmart.app               I  📊 ========================================
+2026-01-29 15:37:17.556 25880-25985 AutoPermissionManager   com.cdccreditsmart.app               I  📊 ✅ PACKAGE_USAGE_STATS está ATIVA!
+2026-01-29 15:37:17.556 25880-25985 AutoPermissionManager   com.cdccreditsmart.app               I  📊    SettingsGuard pode monitorar activities precisamente
+2026-01-29 15:37:17.556 25880-25985 AutoPermissionManager   com.cdccreditsmart.app               I  📊 ========================================
+2026-01-29 15:37:17.556 25880-25985 AutoPermissionManager   com.cdccreditsmart.app               I  ========================================
+2026-01-29 15:37:17.760 25880-25880 DeviceUtils             com.cdccreditsmart.app               D  Device Owner check: true
+2026-01-29 15:37:17.760 25880-25880 DeviceUtils             com.cdccreditsmart.app               D  Samsung device: false (Manufacturer: realme)
+2026-01-29 15:37:17.760 25880-25880 DeviceOwnerCheckVM      com.cdccreditsmart.app               I  ✅ Dispositivo é Device Owner - permitindo acesso ao app
+2026-01-29 15:37:17.761 25880-25880 DeviceOwnerCheckVM      com.cdccreditsmart.app               I  ========================================
+2026-01-29 15:37:17.800 25880-25880 RouterViewModel         com.cdccreditsmart.app               D  🚀 Iniciando verificação de autenticação...
+2026-01-29 15:37:17.801 25880-25985 AuthOrchestrator        com.cdccreditsmart.app               D  🔐 Verificando autenticação...
+2026-01-29 15:37:17.804 25880-25985 AuthOrchestrator        com.cdccreditsmart.app               D  🌐 Conectividade: ONLINE
+2026-01-29 15:37:17.804 25880-25985 AuthOrchestrator        com.cdccreditsmart.app               D  🔄 ========== AUTO-DISCOVERY INICIADO ==========
+2026-01-29 15:37:17.824 25880-25985 DeviceUtils             com.cdccreditsmart.app               D  IMEI retrieved successfully: 8608***
+2026-01-29 15:37:17.824 25880-25985 AuthOrchestrator        com.cdccreditsmart.app               D  📱 IMEI obtido: 8608***718
+2026-01-29 15:37:17.824 25880-25985 AuthOrchestrator        com.cdccreditsmart.app               D  🔍 Tentando auto-discovery...
+2026-01-29 15:37:17.824 25880-25985 AuthOrchestrator        com.cdccreditsmart.app               D     Endpoint: GET /api/apk/discover/860875074339718
+2026-01-29 15:37:17.836 25880-29517 okhttp.OkHttpClient     com.cdccreditsmart.app               I  --> GET https://cdccreditsmart.com/api/apk/discover/860875074339718
+2026-01-29 15:37:17.836 25880-29517 okhttp.OkHttpClient     com.cdccreditsmart.app               I  --> END GET
+2026-01-29 15:37:18.404 25880-29517 okhttp.OkHttpClient     com.cdccreditsmart.app               I  <-- 200 https://cdccreditsmart.com/api/apk/discover/860875074339718 (567ms)
+2026-01-29 15:37:18.404 25880-29517 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-credentials: true
+2026-01-29 15:37:18.404 25880-29517 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-headers: Origin, X-Requested-With, Content-Type, Accept, Authorization, x-client-key, x-client-token, x-client-secret, cache-control
+2026-01-29 15:37:18.404 25880-29517 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-methods: GET, POST, PUT, PATCH, DELETE, OPTIONS
+2026-01-29 15:37:18.404 25880-29517 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-origin: *
+2026-01-29 15:37:18.404 25880-29517 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-max-age: 86400
+2026-01-29 15:37:18.404 25880-29517 okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-length: 577
+2026-01-29 15:37:18.405 25880-29517 okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-security-policy: default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://replit.com; style-src 'self' 'unsafe-inline' https://replit.com; img-src 'self' data: https:; font-src 'self' data: https://replit.com; connect-src 'self';
+2026-01-29 15:37:18.405 25880-29517 okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-type: application/json; charset=utf-8
+2026-01-29 15:37:18.405 25880-29517 okhttp.OkHttpClient     com.cdccreditsmart.app               I  date: Thu, 29 Jan 2026 18:37:16 GMT
+2026-01-29 15:37:18.405 25880-29517 okhttp.OkHttpClient     com.cdccreditsmart.app               I  etag: W/"241-zscYL9TAS6Nc8gLmxqzHKgV8Bqk"
+2026-01-29 15:37:18.405 25880-29517 okhttp.OkHttpClient     com.cdccreditsmart.app               I  permissions-policy: geolocation=(), microphone=(), camera=()
+2026-01-29 15:37:18.405 25880-29517 okhttp.OkHttpClient     com.cdccreditsmart.app               I  referrer-policy: strict-origin-when-cross-origin
+2026-01-29 15:37:18.405 25880-29517 okhttp.OkHttpClient     com.cdccreditsmart.app               I  strict-transport-security: max-age=63072000; includeSubDomains
+2026-01-29 15:37:18.405 25880-29517 okhttp.OkHttpClient     com.cdccreditsmart.app               I  strict-transport-security: max-age=31536000; includeSubDomains
+2026-01-29 15:37:18.405 25880-29517 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-anti-fraud-protection: active
+2026-01-29 15:37:18.405 25880-29517 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-certificate-pinning-enabled: false
+2026-01-29 15:37:18.406 25880-29517 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-certificate-pinning-status: disabled-for-stability
+2026-01-29 15:37:18.406 25880-29517 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-content-type-options: nosniff
+2026-01-29 15:37:18.406 25880-29517 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-financial-data-protection: enabled
+2026-01-29 15:37:18.406 25880-29517 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-frame-options: DENY
+2026-01-29 15:37:18.406 25880-29517 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-transaction-security-level: maximum
+2026-01-29 15:37:18.406 25880-29517 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-xss-protection: 1; mode=block
+2026-01-29 15:37:18.406 25880-29517 okhttp.OkHttpClient     com.cdccreditsmart.app               I  via: 1.1 google
+2026-01-29 15:37:18.406 25880-29517 okhttp.OkHttpClient     com.cdccreditsmart.app               I  alt-svc: h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
+2026-01-29 15:37:18.408 25880-29517 okhttp.OkHttpClient     com.cdccreditsmart.app               I  {"success":true,"device":{"id":"device_1769137280282_l7srjesg25","name":"REALME Note 60x","serialNumber":"QJ3H4MKG","imei":"860875074339718","imeiList":["860875074339718"],"meid":null,"meidList":null,"simSlotCount":1,"model":"Note 60x","brand":"REALME","status":"active","isBlocked":false,"blockReason":null},"customer":{"id":"f854a5cf-8b7e-4a66-a55f-a9f41948eb34","name":"Marcos Antunes","cpf":"06452784323","phone":"85981888810"},"connection":{"matchType":"imei_exact","useImei":"860875074339718","useSerialNumber":"QJ3H4MKG","useDeviceId":"device_1769137280282_l7srjesg25"}}
+2026-01-29 15:37:18.408 25880-29517 okhttp.OkHttpClient     com.cdccreditsmart.app               I  <-- END HTTP (577-byte body)
+2026-01-29 15:37:18.411 25880-25985 AuthOrchestrator        com.cdccreditsmart.app               D  ✅ ========== AUTO-DISCOVERY BEM-SUCEDIDO ==========
+2026-01-29 15:37:18.411 25880-25985 AuthOrchestrator        com.cdccreditsmart.app               D  ✅ Dispositivo encontrado:
+2026-01-29 15:37:18.411 25880-25985 AuthOrchestrator        com.cdccreditsmart.app               D     - Nome: REALME Note 60x
+2026-01-29 15:37:18.411 25880-25985 AuthOrchestrator        com.cdccreditsmart.app               D     - DeviceId: device_17691372...
+2026-01-29 15:37:18.411 25880-25985 AuthOrchestrator        com.cdccreditsmart.app               D     - SerialNumber: QJ3H4MKG
+2026-01-29 15:37:18.411 25880-25985 AuthOrchestrator        com.cdccreditsmart.app               D     - IMEI: 8608***718
+2026-01-29 15:37:18.411 25880-25985 AuthOrchestrator        com.cdccreditsmart.app               D     - Status: active
+2026-01-29 15:37:18.411 25880-25985 AuthOrchestrator        com.cdccreditsmart.app               D     - Bloqueado: false
+2026-01-29 15:37:18.411 25880-25985 AuthOrchestrator        com.cdccreditsmart.app               D  ✅ Cliente:
+2026-01-29 15:37:18.411 25880-25985 AuthOrchestrator        com.cdccreditsmart.app               D     - Nome: Marcos Antunes
+2026-01-29 15:37:18.411 25880-25985 AuthOrchestrator        com.cdccreditsmart.app               D     - CPF: 064***
+2026-01-29 15:37:18.411 25880-25985 AuthOrchestrator        com.cdccreditsmart.app               D  ✅ Conexão:
+2026-01-29 15:37:18.411 25880-25985 AuthOrchestrator        com.cdccreditsmart.app               D     - Usar IMEI: 860875074339718
+2026-01-29 15:37:18.411 25880-25985 AuthOrchestrator        com.cdccreditsmart.app               D     - Usar SerialNumber: QJ3H4MKG
+2026-01-29 15:37:18.411 25880-25985 AuthOrchestrator        com.cdccreditsmart.app               D     - Usar DeviceId: device_1769137280282_l7srjesg25
+2026-01-29 15:37:18.411 25880-25985 ContractCodeStorage     com.cdccreditsmart.app               D  Saving contract code to redundant storage
+2026-01-29 15:37:18.535 25880-25985 ContractCodeStorage     com.cdccreditsmart.app               D  Saved to EncryptedPrefs
+2026-01-29 15:37:18.631 25880-25985 ContractCodeStorage     com.cdccreditsmart.app               D  Deleted existing file: .cdc_protected_code.enc
+2026-01-29 15:37:18.668 25880-25985 ContractCodeStorage     com.cdccreditsmart.app               D  Successfully saved to file: .cdc_protected_code.enc
+2026-01-29 15:37:18.668 25880-25985 ContractCodeStorage     com.cdccreditsmart.app               D  Saved to Protected Storage
+2026-01-29 15:37:18.669 25880-25985 ContractCodeStorage     com.cdccreditsmart.app               D  Deleted existing file: .cdc_contract_b1.enc
+2026-01-29 15:37:18.704 25880-25985 ContractCodeStorage     com.cdccreditsmart.app               D  Successfully saved to file: .cdc_contract_b1.enc
+2026-01-29 15:37:18.704 25880-25985 ContractCodeStorage     com.cdccreditsmart.app               D  Deleted existing file: .sys_device_cfg.enc
+2026-01-29 15:37:18.742 25880-25985 ContractCodeStorage     com.cdccreditsmart.app               D  Successfully saved to file: .sys_device_cfg.enc
+2026-01-29 15:37:18.742 25880-25985 ContractCodeStorage     com.cdccreditsmart.app               D  Deleted existing file: .android_secure.enc
+2026-01-29 15:37:18.778 25880-25985 ContractCodeStorage     com.cdccreditsmart.app               D  Successfully saved to file: .android_secure.enc
+2026-01-29 15:37:18.811 25880-25985 ContractCodeStorage     com.cdccreditsmart.app               D  Contract code saved to ALL storage locations
+2026-01-29 15:37:19.007 25880-25880 CdcForegroundService    com.cdccreditsmart.app               D  🚀 Serviço onStartCommand() - Action: com.cdccreditsmart.app.START_SERVICE
+2026-01-29 15:37:19.015 25880-25880 CdcForegroundService    com.cdccreditsmart.app               I  ✅ Foreground Service ativo (Android 12+)
+2026-01-29 15:37:19.016 25880-26025 CdcForegroundService    com.cdccreditsmart.app               I  🔧 ========================================
+2026-01-29 15:37:19.016 25880-26025 CdcForegroundService    com.cdccreditsmart.app               I  🔧 INICIANDO initializeServices()...
+2026-01-29 15:37:19.016 25880-26025 CdcForegroundService    com.cdccreditsmart.app               I  🔧 ========================================
+2026-01-29 15:37:19.016 25880-26025 CdcForegroundService    com.cdccreditsmart.app               D  ✅ Serviços base já inicializados
+2026-01-29 15:37:19.045 25880-25985 ContractCodeStorage     com.cdccreditsmart.app               D  Verification complete: 7/7 locations valid
+2026-01-29 15:37:19.062 25880-25985 ContractCodeStorage     com.cdccreditsmart.app               D  Saving contract code to redundant storage
+2026-01-29 15:37:19.081 25880-25985 ContractCodeStorage     com.cdccreditsmart.app               D  Saved to EncryptedPrefs
+2026-01-29 15:37:19.089 25880-25985 ContractCodeStorage     com.cdccreditsmart.app               D  Deleted existing file: .cdc_protected_code.enc
+2026-01-29 15:37:19.126 25880-25985 ContractCodeStorage     com.cdccreditsmart.app               D  Successfully saved to file: .cdc_protected_code.enc
+2026-01-29 15:37:19.126 25880-25985 ContractCodeStorage     com.cdccreditsmart.app               D  Saved to Protected Storage
+2026-01-29 15:37:19.127 25880-25985 ContractCodeStorage     com.cdccreditsmart.app               D  Deleted existing file: .cdc_contract_b1.enc
+2026-01-29 15:37:19.160 25880-25985 ContractCodeStorage     com.cdccreditsmart.app               D  Successfully saved to file: .cdc_contract_b1.enc
+2026-01-29 15:37:19.160 25880-25985 ContractCodeStorage     com.cdccreditsmart.app               D  Deleted existing file: .sys_device_cfg.enc
+2026-01-29 15:37:19.198 25880-25985 ContractCodeStorage     com.cdccreditsmart.app               D  Successfully saved to file: .sys_device_cfg.enc
+2026-01-29 15:37:19.198 25880-25985 ContractCodeStorage     com.cdccreditsmart.app               D  Deleted existing file: .android_secure.enc
+2026-01-29 15:37:19.235 25880-25985 ContractCodeStorage     com.cdccreditsmart.app               D  Successfully saved to file: .android_secure.enc
+2026-01-29 15:37:19.271 25880-25985 ContractCodeStorage     com.cdccreditsmart.app               D  Contract code saved to ALL storage locations
+2026-01-29 15:37:19.471 25880-25985 ContractCodeStorage     com.cdccreditsmart.app               D  Verification complete: 7/7 locations valid
+2026-01-29 15:37:19.471 25880-25985 SecureTokenStorage      com.cdccreditsmart.app               D  Device info saved successfully from auto-discovery
+2026-01-29 15:37:19.471 25880-25985 SecureTokenStorage      com.cdccreditsmart.app               D    - DeviceId: device_17691372...
+2026-01-29 15:37:19.471 25880-25985 SecureTokenStorage      com.cdccreditsmart.app               D    - SerialNumber: QJ3H4MKG
+2026-01-29 15:37:19.472 25880-25985 SecureTokenStorage      com.cdccreditsmart.app               D    - IMEI: 8608***
+2026-01-29 15:37:19.472 25880-25985 SecureTokenStorage      com.cdccreditsmart.app               D    - ContractCode: QJ3H4MKG
+2026-01-29 15:37:19.472 25880-25985 AuthOrchestrator        com.cdccreditsmart.app               D  💾 Dados salvos:
+2026-01-29 15:37:19.472 25880-25985 AuthOrchestrator        com.cdccreditsmart.app               D     - ContractCode: QJ3H4MKG
+2026-01-29 15:37:19.472 25880-25985 AuthOrchestrator        com.cdccreditsmart.app               D     - DeviceId: device_17691372...
+2026-01-29 15:37:19.472 25880-25985 AuthOrchestrator        com.cdccreditsmart.app               D     - IMEI: 8608***718
+2026-01-29 15:37:19.472 25880-25985 AuthOrchestrator        com.cdccreditsmart.app               W  ⚠️ [6/7] Discovery não retornou token - headers IMEI serão usados como fallback
+2026-01-29 15:37:19.472 25880-25985 AuthOrchestrator        com.cdccreditsmart.app               D  🎉 ========== AUTO-DISCOVERY CONCLUÍDO ==========
+2026-01-29 15:37:19.472 25880-25985 AuthOrchestrator        com.cdccreditsmart.app               D  ✅ Auto-conexão bem-sucedida - autenticação OK!
+2026-01-29 15:37:19.472 25880-25985 AuthOrchestrator        com.cdccreditsmart.app               I  🔧 Garantindo que CdcForegroundService está rodando...
+2026-01-29 15:37:19.473 25880-26025 AuthOrchestrator        com.cdccreditsmart.app               D  🔔 Registrando FCM token após auto-discovery...
+2026-01-29 15:37:19.475 25880-26025 FcmTokenManager         com.cdccreditsmart.app               D  ========== REGISTERING FCM TOKEN WITH BACKEND ==========
+2026-01-29 15:37:19.476 25880-25985 CdcForegroundService    com.cdccreditsmart.app               I  ✅ Serviço iniciado via startService()
+2026-01-29 15:37:19.476 25880-25985 AuthOrchestrator        com.cdccreditsmart.app               I  ✅ CdcForegroundService iniciado após autenticação
+2026-01-29 15:37:19.476 25880-25880 CdcForegroundService    com.cdccreditsmart.app               D  🚀 Serviço onStartCommand() - Action: com.cdccreditsmart.app.START_SERVICE
+2026-01-29 15:37:19.478 25880-26025 FcmTokenManager         com.cdccreditsmart.app               D  Current FCM token retrieved: eaOkixBvT8ueACb96xv9...
+2026-01-29 15:37:19.484 25880-25880 CdcForegroundService    com.cdccreditsmart.app               I  ✅ Foreground Service ativo (Android 12+)
+2026-01-29 15:37:19.486 25880-25985 CdcForegroundService    com.cdccreditsmart.app               I  🔧 ========================================
+2026-01-29 15:37:19.486 25880-25985 CdcForegroundService    com.cdccreditsmart.app               I  🔧 INICIANDO initializeServices()...
+2026-01-29 15:37:19.486 25880-25985 CdcForegroundService    com.cdccreditsmart.app               I  🔧 ========================================
+2026-01-29 15:37:19.486 25880-25985 CdcForegroundService    com.cdccreditsmart.app               D  ✅ Serviços base já inicializados
+2026-01-29 15:37:19.486 25880-25880 RouterViewModel         com.cdccreditsmart.app               D  ✅ Autenticado com sucesso
+2026-01-29 15:37:19.533 25880-25983 SecureTokenStorage      com.cdccreditsmart.app               D  ✅ Usando IMEI para MDM: 8608***718
+2026-01-29 15:37:19.533 25880-25983 CdcForegroundService    com.cdccreditsmart.app               I  🔐 AuthToken presente: false
+2026-01-29 15:37:19.533 25880-25983 CdcForegroundService    com.cdccreditsmart.app               I  🔐 AuthToken length: 0
+2026-01-29 15:37:19.533 25880-25983 CdcForegroundService    com.cdccreditsmart.app               I  🔐 ContractCode presente: true
+2026-01-29 15:37:19.533 25880-25983 CdcForegroundService    com.cdccreditsmart.app               I  🔐 ContractCode value: QJ3H****
+2026-01-29 15:37:19.533 25880-25983 CdcForegroundService    com.cdccreditsmart.app               I  🔐 MDM SerialNumber presente: true
+2026-01-29 15:37:19.533 25880-25983 CdcForegroundService    com.cdccreditsmart.app               I  🔐 MDM SerialNumber value: 86087507...
+2026-01-29 15:37:19.533 25880-25983 CdcForegroundService    com.cdccreditsmart.app               I  📱 ========================================
+2026-01-29 15:37:19.533 25880-25983 CdcForegroundService    com.cdccreditsmart.app               I  📱 AGUARDANDO PAIRING - MDM EM STANDBY
+2026-01-29 15:37:19.533 25880-25983 CdcForegroundService    com.cdccreditsmart.app               I  📱 O usuário ainda não fez o pareamento inicial
+2026-01-29 15:37:19.533 25880-25983 CdcForegroundService    com.cdccreditsmart.app               I  📱 Serviços MDM serão ativados após inserir código do contrato
+2026-01-29 15:37:19.533 25880-25983 CdcForegroundService    com.cdccreditsmart.app               I  📱 NOTA: isMdmInitialized permanece FALSE para permitir reinicialização
+2026-01-29 15:37:19.533 25880-25983 CdcForegroundService    com.cdccreditsmart.app               I  📱 ========================================
+2026-01-29 15:37:19.627 25880-26025 FcmTokenManager         com.cdccreditsmart.app               E  Cannot register: Auth token not available
+2026-01-29 15:37:19.627 25880-26025 AuthOrchestrator        com.cdccreditsmart.app               W  ⚠️ Erro ao registrar FCM token: User not authenticated
+2026-01-29 15:37:19.657 25880-25880 TermsAcceptanceStorage  com.cdccreditsmart.app               D  hasAcceptedTermsForContract(QJ3H4MKG): true (saved: QJ3H4MKG)
+2026-01-29 15:37:19.657 25880-25880 RouterViewModel         com.cdccreditsmart.app               D  ✅ Termos já aceitos - Ir para HOME
+2026-01-29 15:37:19.693 25880-25880 SimpleHomeViewModel     com.cdccreditsmart.app               W  ⏳ Throttling ativo - aguarde 9s antes de tentar novamente
+2026-01-29 15:37:19.803 25880-25880 SecureTokenStorage      com.cdccreditsmart.app               D  📖 Lendo customerName: Marcos Antunes
+2026-01-29 15:37:19.806 25880-25880 SecureTokenStorage      com.cdccreditsmart.app               D  📖 Lendo deviceModel: Note 60x
+2026-01-29 15:37:19.825 25880-25898 creditsmart.app         com.cdccreditsmart.app               I  Background concurrent mark compact GC freed 249218(10MB) AllocSpace objects, 361(13MB) LOS objects, 64% free, 13MB/37MB, paused 843us,3.628ms total 125.175ms
+2026-01-29 15:37:19.964 25880-25897 creditsmart.app         com.cdccreditsmart.app               I  Compiler allocated 4998KB to compile kotlin.Unit com.cdccreditsmart.app.presentation.screens.home.ModernHomeScreenKt.HeroHeaderCard$lambda$0(android.content.Context, java.lang.String, boolean, kotlin.jvm.functions.Function0, com.cdccreditsmart.app.support.SupportContactData, java.lang.String, java.lang.String, kotlin.jvm.functions.Function0, kotlin.jvm.functions.Function0, kotlin.jvm.functions.Function0, androidx.compose.foundation.layout.ColumnScope, androidx.compose.runtime.Composer, int)
+2026-01-29 15:37:19.994 25880-26025 SecureTokenStorage      com.cdccreditsmart.app               D  ✅ Usando IMEI para MDM: 8608***718
+2026-01-29 15:37:19.994 25880-26025 CdcForegroundService    com.cdccreditsmart.app               I  🔐 AuthToken presente: false
+2026-01-29 15:37:19.994 25880-26025 CdcForegroundService    com.cdccreditsmart.app               I  🔐 AuthToken length: 0
+2026-01-29 15:37:19.994 25880-26025 CdcForegroundService    com.cdccreditsmart.app               I  🔐 ContractCode presente: true
+2026-01-29 15:37:19.994 25880-26025 CdcForegroundService    com.cdccreditsmart.app               I  🔐 ContractCode value: QJ3H****
+2026-01-29 15:37:19.995 25880-26025 CdcForegroundService    com.cdccreditsmart.app               I  🔐 MDM SerialNumber presente: true
+2026-01-29 15:37:19.995 25880-26025 CdcForegroundService    com.cdccreditsmart.app               I  🔐 MDM SerialNumber value: 86087507...
+2026-01-29 15:37:19.995 25880-26025 CdcForegroundService    com.cdccreditsmart.app               I  📱 ========================================
+2026-01-29 15:37:19.995 25880-26025 CdcForegroundService    com.cdccreditsmart.app               I  📱 AGUARDANDO PAIRING - MDM EM STANDBY
+2026-01-29 15:37:19.995 25880-26025 CdcForegroundService    com.cdccreditsmart.app               I  📱 O usuário ainda não fez o pareamento inicial
+2026-01-29 15:37:19.995 25880-26025 CdcForegroundService    com.cdccreditsmart.app               I  📱 Serviços MDM serão ativados após inserir código do contrato
+2026-01-29 15:37:19.995 25880-26025 CdcForegroundService    com.cdccreditsmart.app               I  📱 NOTA: isMdmInitialized permanece FALSE para permitir reinicialização
+2026-01-29 15:37:19.995 25880-26025 CdcForegroundService    com.cdccreditsmart.app               I  📱 ========================================
+2026-01-29 15:37:20.104 25880-26025 SupportRepository       com.cdccreditsmart.app               D  ✅ Retornando contato do cache local

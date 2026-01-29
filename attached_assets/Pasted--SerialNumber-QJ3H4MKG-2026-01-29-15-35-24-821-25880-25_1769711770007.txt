@@ -1,0 +1,218 @@
+ - SerialNumber: QJ3H4MKG
+2026-01-29 15:35:24.821 25880-25983 AuthOrchestrator        com.cdccreditsmart.app               D     - IMEI: 8608***718
+2026-01-29 15:35:24.821 25880-25983 AuthOrchestrator        com.cdccreditsmart.app               D     - Status: active
+2026-01-29 15:35:24.821 25880-25983 AuthOrchestrator        com.cdccreditsmart.app               D     - Bloqueado: false
+2026-01-29 15:35:24.821 25880-25983 AuthOrchestrator        com.cdccreditsmart.app               D  ✅ Cliente:
+2026-01-29 15:35:24.821 25880-25983 AuthOrchestrator        com.cdccreditsmart.app               D     - Nome: Marcos Antunes
+2026-01-29 15:35:24.821 25880-25983 AuthOrchestrator        com.cdccreditsmart.app               D     - CPF: 064***
+2026-01-29 15:35:24.821 25880-25983 AuthOrchestrator        com.cdccreditsmart.app               D  ✅ Conexão:
+2026-01-29 15:35:24.821 25880-25983 AuthOrchestrator        com.cdccreditsmart.app               D     - Usar IMEI: 860875074339718
+2026-01-29 15:35:24.821 25880-25983 AuthOrchestrator        com.cdccreditsmart.app               D     - Usar SerialNumber: QJ3H4MKG
+2026-01-29 15:35:24.821 25880-25983 AuthOrchestrator        com.cdccreditsmart.app               D     - Usar DeviceId: device_1769137280282_l7srjesg25
+2026-01-29 15:35:24.823 25880-25984 AuthOrchestrator        com.cdccreditsmart.app               D     - DeviceId: device_17691372...
+2026-01-29 15:35:24.823 25880-25984 AuthOrchestrator        com.cdccreditsmart.app               D     - SerialNumber: QJ3H4MKG
+2026-01-29 15:35:24.823 25880-25984 AuthOrchestrator        com.cdccreditsmart.app               D     - IMEI: 8608***718
+2026-01-29 15:35:24.823 25880-25984 AuthOrchestrator        com.cdccreditsmart.app               D     - Status: active
+2026-01-29 15:35:24.823 25880-25984 AuthOrchestrator        com.cdccreditsmart.app               D     - Bloqueado: false
+2026-01-29 15:35:24.823 25880-25984 AuthOrchestrator        com.cdccreditsmart.app               D  ✅ Cliente:
+2026-01-29 15:35:24.823 25880-25984 AuthOrchestrator        com.cdccreditsmart.app               D     - Nome: Marcos Antunes
+2026-01-29 15:35:24.823 25880-25984 AuthOrchestrator        com.cdccreditsmart.app               D     - CPF: 064***
+2026-01-29 15:35:24.823 25880-25984 AuthOrchestrator        com.cdccreditsmart.app               D  ✅ Conexão:
+2026-01-29 15:35:24.823 25880-25984 AuthOrchestrator        com.cdccreditsmart.app               D     - Usar IMEI: 860875074339718
+2026-01-29 15:35:24.823 25880-25984 AuthOrchestrator        com.cdccreditsmart.app               D     - Usar SerialNumber: QJ3H4MKG
+2026-01-29 15:35:24.823 25880-25984 AuthOrchestrator        com.cdccreditsmart.app               D     - Usar DeviceId: device_1769137280282_l7srjesg25
+2026-01-29 15:35:24.825 25880-25984 ContractCodeStorage     com.cdccreditsmart.app               D  Saving contract code to redundant storage
+2026-01-29 15:35:24.832 25880-25983 ContractCodeStorage     com.cdccreditsmart.app               D  Saving contract code to redundant storage
+2026-01-29 15:35:25.480 25880-25984 ContractCodeStorage     com.cdccreditsmart.app               D  Saved to EncryptedPrefs
+2026-01-29 15:35:25.584 25880-25983 ContractCodeStorage     com.cdccreditsmart.app               D  Saved to EncryptedPrefs
+2026-01-29 15:35:26.260 25880-25983 ContractCodeStorage     com.cdccreditsmart.app               D  Successfully saved to file: .cdc_protected_code.enc
+2026-01-29 15:35:26.260 25880-25983 ContractCodeStorage     com.cdccreditsmart.app               D  Saved to Protected Storage
+2026-01-29 15:35:26.351 25880-25984 ContractCodeStorage     com.cdccreditsmart.app               E  Failed to save to file: .cdc_protected_code.enc (Ask Gemini)
+                                                                                                    java.io.IOException: output file already exists, please use a new file: .cdc_protected_code.enc
+                                                                                                    	at androidx.security.crypto.EncryptedFile.openFileOutput(EncryptedFile.java:260)
+                                                                                                    	at com.cdccreditsmart.app.storage.ContractCodeStorage.saveToEncryptedFileWithMAC(ContractCodeStorage.kt:387)
+                                                                                                    	at com.cdccreditsmart.app.storage.ContractCodeStorage.saveToProtectedStorage(ContractCodeStorage.kt:299)
+                                                                                                    	at com.cdccreditsmart.app.storage.ContractCodeStorage.saveContractCode(ContractCodeStorage.kt:137)
+                                                                                                    	at com.cdccreditsmart.app.auth.AuthenticationOrchestrator.attemptAutoConnection(AuthenticationOrchestrator.kt:187)
+                                                                                                    	at com.cdccreditsmart.app.auth.AuthenticationOrchestrator.access$attemptAutoConnection(AuthenticationOrchestrator.kt:31)
+                                                                                                    	at com.cdccreditsmart.app.auth.AuthenticationOrchestrator$attemptAutoConnection$1.invokeSuspend(Unknown Source:14)
+                                                                                                    	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:34)
+                                                                                                    	at kotlinx.coroutines.DispatchedTask.run(DispatchedTask.kt:108)
+                                                                                                    	at kotlinx.coroutines.internal.LimitedDispatcher$Worker.run(LimitedDispatcher.kt:115)
+                                                                                                    	at kotlinx.coroutines.scheduling.TaskImpl.run(Tasks.kt:103)
+                                                                                                    	at kotlinx.coroutines.scheduling.CoroutineScheduler.runSafely(CoroutineScheduler.kt:584)
+                                                                                                    	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.executeTask(CoroutineScheduler.kt:793)
+                                                                                                    	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.runWorker(CoroutineScheduler.kt:697)
+                                                                                                    	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.run(CoroutineScheduler.kt:684)
+2026-01-29 15:35:26.351 25880-25984 ContractCodeStorage     com.cdccreditsmart.app               D  Saved to Protected Storage
+2026-01-29 15:35:26.397 25880-25983 ContractCodeStorage     com.cdccreditsmart.app               D  Successfully saved to file: .cdc_contract_b1.enc
+2026-01-29 15:35:26.456 25880-25984 ContractCodeStorage     com.cdccreditsmart.app               E  Failed to save to file: .cdc_contract_b1.enc (Ask Gemini)
+                                                                                                    java.io.IOException: output file already exists, please use a new file: .cdc_contract_b1.enc
+                                                                                                    	at androidx.security.crypto.EncryptedFile.openFileOutput(EncryptedFile.java:260)
+                                                                                                    	at com.cdccreditsmart.app.storage.ContractCodeStorage.saveToEncryptedFileWithMAC(ContractCodeStorage.kt:387)
+                                                                                                    	at com.cdccreditsmart.app.storage.ContractCodeStorage.saveToBackupFile1(ContractCodeStorage.kt:332)
+                                                                                                    	at com.cdccreditsmart.app.storage.ContractCodeStorage.saveContractCode(ContractCodeStorage.kt:138)
+                                                                                                    	at com.cdccreditsmart.app.auth.AuthenticationOrchestrator.attemptAutoConnection(AuthenticationOrchestrator.kt:187)
+                                                                                                    	at com.cdccreditsmart.app.auth.AuthenticationOrchestrator.access$attemptAutoConnection(AuthenticationOrchestrator.kt:31)
+                                                                                                    	at com.cdccreditsmart.app.auth.AuthenticationOrchestrator$attemptAutoConnection$1.invokeSuspend(Unknown Source:14)
+                                                                                                    	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:34)
+                                                                                                    	at kotlinx.coroutines.DispatchedTask.run(DispatchedTask.kt:108)
+                                                                                                    	at kotlinx.coroutines.internal.LimitedDispatcher$Worker.run(LimitedDispatcher.kt:115)
+                                                                                                    	at kotlinx.coroutines.scheduling.TaskImpl.run(Tasks.kt:103)
+                                                                                                    	at kotlinx.coroutines.scheduling.CoroutineScheduler.runSafely(CoroutineScheduler.kt:584)
+                                                                                                    	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.executeTask(CoroutineScheduler.kt:793)
+                                                                                                    	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.runWorker(CoroutineScheduler.kt:697)
+                                                                                                    	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.run(CoroutineScheduler.kt:684)
+2026-01-29 15:35:26.521 25880-25983 ContractCodeStorage     com.cdccreditsmart.app               D  Successfully saved to file: .sys_device_cfg.enc
+2026-01-29 15:35:26.612 25880-25984 ContractCodeStorage     com.cdccreditsmart.app               E  Failed to save to file: .sys_device_cfg.enc (Ask Gemini)
+                                                                                                    java.io.IOException: output file already exists, please use a new file: .sys_device_cfg.enc
+                                                                                                    	at androidx.security.crypto.EncryptedFile.openFileOutput(EncryptedFile.java:260)
+                                                                                                    	at com.cdccreditsmart.app.storage.ContractCodeStorage.saveToEncryptedFileWithMAC(ContractCodeStorage.kt:387)
+                                                                                                    	at com.cdccreditsmart.app.storage.ContractCodeStorage.saveToBackupFile2(ContractCodeStorage.kt:340)
+                                                                                                    	at com.cdccreditsmart.app.storage.ContractCodeStorage.saveContractCode(ContractCodeStorage.kt:139)
+                                                                                                    	at com.cdccreditsmart.app.auth.AuthenticationOrchestrator.attemptAutoConnection(AuthenticationOrchestrator.kt:187)
+                                                                                                    	at com.cdccreditsmart.app.auth.AuthenticationOrchestrator.access$attemptAutoConnection(AuthenticationOrchestrator.kt:31)
+                                                                                                    	at com.cdccreditsmart.app.auth.AuthenticationOrchestrator$attemptAutoConnection$1.invokeSuspend(Unknown Source:14)
+                                                                                                    	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:34)
+                                                                                                    	at kotlinx.coroutines.DispatchedTask.run(DispatchedTask.kt:108)
+                                                                                                    	at kotlinx.coroutines.internal.LimitedDispatcher$Worker.run(LimitedDispatcher.kt:115)
+                                                                                                    	at kotlinx.coroutines.scheduling.TaskImpl.run(Tasks.kt:103)
+                                                                                                    	at kotlinx.coroutines.scheduling.CoroutineScheduler.runSafely(CoroutineScheduler.kt:584)
+                                                                                                    	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.executeTask(CoroutineScheduler.kt:793)
+                                                                                                    	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.runWorker(CoroutineScheduler.kt:697)
+                                                                                                    	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.run(CoroutineScheduler.kt:684)
+2026-01-29 15:35:26.675 25880-25983 ContractCodeStorage     com.cdccreditsmart.app               D  Successfully saved to file: .android_secure.enc
+2026-01-29 15:35:26.734 25880-25984 ContractCodeStorage     com.cdccreditsmart.app               E  Failed to save to file: .android_secure.enc (Ask Gemini)
+                                                                                                    java.io.IOException: output file already exists, please use a new file: .android_secure.enc
+                                                                                                    	at androidx.security.crypto.EncryptedFile.openFileOutput(EncryptedFile.java:260)
+                                                                                                    	at com.cdccreditsmart.app.storage.ContractCodeStorage.saveToEncryptedFileWithMAC(ContractCodeStorage.kt:387)
+                                                                                                    	at com.cdccreditsmart.app.storage.ContractCodeStorage.saveToBackupFile3(ContractCodeStorage.kt:348)
+                                                                                                    	at com.cdccreditsmart.app.storage.ContractCodeStorage.saveContractCode(ContractCodeStorage.kt:140)
+                                                                                                    	at com.cdccreditsmart.app.auth.AuthenticationOrchestrator.attemptAutoConnection(AuthenticationOrchestrator.kt:187)
+                                                                                                    	at com.cdccreditsmart.app.auth.AuthenticationOrchestrator.access$attemptAutoConnection(AuthenticationOrchestrator.kt:31)
+                                                                                                    	at com.cdccreditsmart.app.auth.AuthenticationOrchestrator$attemptAutoConnection$1.invokeSuspend(Unknown Source:14)
+                                                                                                    	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:34)
+                                                                                                    	at kotlinx.coroutines.DispatchedTask.run(DispatchedTask.kt:108)
+                                                                                                    	at kotlinx.coroutines.internal.LimitedDispatcher$Worker.run(LimitedDispatcher.kt:115)
+                                                                                                    	at kotlinx.coroutines.scheduling.TaskImpl.run(Tasks.kt:103)
+                                                                                                    	at kotlinx.coroutines.scheduling.CoroutineScheduler.runSafely(CoroutineScheduler.kt:584)
+                                                                                                    	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.executeTask(CoroutineScheduler.kt:793)
+                                                                                                    	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.runWorker(CoroutineScheduler.kt:697)
+                                                                                                    	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.run(CoroutineScheduler.kt:684)
+2026-01-29 15:35:26.782 25880-25983 ContractCodeStorage     com.cdccreditsmart.app               D  Contract code saved to ALL storage locations
+2026-01-29 15:35:26.849 25880-25984 ContractCodeStorage     com.cdccreditsmart.app               D  Contract code saved to ALL storage locations
+2026-01-29 15:35:27.490 25880-25983 ContractCodeStorage     com.cdccreditsmart.app               D  Verification complete: 2/7 locations valid
+2026-01-29 15:35:27.575 25880-25984 ContractCodeStorage     com.cdccreditsmart.app               D  Verification complete: 2/7 locations valid
+2026-01-29 15:35:27.581 25880-25983 ContractCodeStorage     com.cdccreditsmart.app               D  Saving contract code to redundant storage
+2026-01-29 15:35:27.671 25880-25983 ContractCodeStorage     com.cdccreditsmart.app               D  Saved to EncryptedPrefs
+2026-01-29 15:35:27.681 25880-25984 ContractCodeStorage     com.cdccreditsmart.app               D  Saving contract code to redundant storage
+2026-01-29 15:35:27.691 25880-25983 ContractCodeStorage     com.cdccreditsmart.app               D  Deleted existing file: .cdc_protected_code.enc
+2026-01-29 15:35:27.716 25880-25984 ContractCodeStorage     com.cdccreditsmart.app               D  Saved to EncryptedPrefs
+2026-01-29 15:35:27.751 25880-25983 ContractCodeStorage     com.cdccreditsmart.app               D  Successfully saved to file: .cdc_protected_code.enc
+2026-01-29 15:35:27.751 25880-25983 ContractCodeStorage     com.cdccreditsmart.app               D  Saved to Protected Storage
+2026-01-29 15:35:27.752 25880-25983 ContractCodeStorage     com.cdccreditsmart.app               D  Deleted existing file: .cdc_contract_b1.enc
+2026-01-29 15:35:27.786 25880-25984 ContractCodeStorage     com.cdccreditsmart.app               E  Failed to save to file: .cdc_protected_code.enc (Ask Gemini)
+                                                                                                    java.io.IOException: output file already exists, please use a new file: .cdc_protected_code.enc
+                                                                                                    	at androidx.security.crypto.EncryptedFile.openFileOutput(EncryptedFile.java:260)
+                                                                                                    	at com.cdccreditsmart.app.storage.ContractCodeStorage.saveToEncryptedFileWithMAC(ContractCodeStorage.kt:387)
+                                                                                                    	at com.cdccreditsmart.app.storage.ContractCodeStorage.saveToProtectedStorage(ContractCodeStorage.kt:299)
+                                                                                                    	at com.cdccreditsmart.app.storage.ContractCodeStorage.saveContractCode(ContractCodeStorage.kt:137)
+                                                                                                    	at com.cdccreditsmart.app.security.SecureTokenStorage.saveDeviceInfo(SecureTokenStorage.kt:156)
+                                                                                                    	at com.cdccreditsmart.app.auth.AuthenticationOrchestrator.attemptAutoConnection(AuthenticationOrchestrator.kt:188)
+                                                                                                    	at com.cdccreditsmart.app.auth.AuthenticationOrchestrator.access$attemptAutoConnection(AuthenticationOrchestrator.kt:31)
+                                                                                                    	at com.cdccreditsmart.app.auth.AuthenticationOrchestrator$attemptAutoConnection$1.invokeSuspend(Unknown Source:14)
+                                                                                                    	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:34)
+                                                                                                    	at kotlinx.coroutines.DispatchedTask.run(DispatchedTask.kt:108)
+                                                                                                    	at kotlinx.coroutines.internal.LimitedDispatcher$Worker.run(LimitedDispatcher.kt:115)
+                                                                                                    	at kotlinx.coroutines.scheduling.TaskImpl.run(Tasks.kt:103)
+                                                                                                    	at kotlinx.coroutines.scheduling.CoroutineScheduler.runSafely(CoroutineScheduler.kt:584)
+                                                                                                    	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.executeTask(CoroutineScheduler.kt:793)
+                                                                                                    	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.runWorker(CoroutineScheduler.kt:697)
+                                                                                                    	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.run(CoroutineScheduler.kt:684)
+2026-01-29 15:35:27.786 25880-25984 ContractCodeStorage     com.cdccreditsmart.app               D  Saved to Protected Storage
+2026-01-29 15:35:27.828 25880-25983 ContractCodeStorage     com.cdccreditsmart.app               D  Successfully saved to file: .cdc_contract_b1.enc
+2026-01-29 15:35:27.829 25880-25983 ContractCodeStorage     com.cdccreditsmart.app               D  Deleted existing file: .sys_device_cfg.enc
+2026-01-29 15:35:27.879 25880-25984 ContractCodeStorage     com.cdccreditsmart.app               E  Failed to save to file: .cdc_contract_b1.enc (Ask Gemini)
+                                                                                                    java.io.IOException: output file already exists, please use a new file: .cdc_contract_b1.enc
+                                                                                                    	at androidx.security.crypto.EncryptedFile.openFileOutput(EncryptedFile.java:260)
+                                                                                                    	at com.cdccreditsmart.app.storage.ContractCodeStorage.saveToEncryptedFileWithMAC(ContractCodeStorage.kt:387)
+                                                                                                    	at com.cdccreditsmart.app.storage.ContractCodeStorage.saveToBackupFile1(ContractCodeStorage.kt:332)
+                                                                                                    	at com.cdccreditsmart.app.storage.ContractCodeStorage.saveContractCode(ContractCodeStorage.kt:138)
+                                                                                                    	at com.cdccreditsmart.app.security.SecureTokenStorage.saveDeviceInfo(SecureTokenStorage.kt:156)
+                                                                                                    	at com.cdccreditsmart.app.auth.AuthenticationOrchestrator.attemptAutoConnection(AuthenticationOrchestrator.kt:188)
+                                                                                                    	at com.cdccreditsmart.app.auth.AuthenticationOrchestrator.access$attemptAutoConnection(AuthenticationOrchestrator.kt:31)
+                                                                                                    	at com.cdccreditsmart.app.auth.AuthenticationOrchestrator$attemptAutoConnection$1.invokeSuspend(Unknown Source:14)
+                                                                                                    	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:34)
+                                                                                                    	at kotlinx.coroutines.DispatchedTask.run(DispatchedTask.kt:108)
+                                                                                                    	at kotlinx.coroutines.internal.LimitedDispatcher$Worker.run(LimitedDispatcher.kt:115)
+                                                                                                    	at kotlinx.coroutines.scheduling.TaskImpl.run(Tasks.kt:103)
+                                                                                                    	at kotlinx.coroutines.scheduling.CoroutineScheduler.runSafely(CoroutineScheduler.kt:584)
+                                                                                                    	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.executeTask(CoroutineScheduler.kt:793)
+                                                                                                    	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.runWorker(CoroutineScheduler.kt:697)
+                                                                                                    	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.run(CoroutineScheduler.kt:684)
+2026-01-29 15:35:27.933 25880-25983 ContractCodeStorage     com.cdccreditsmart.app               D  Successfully saved to file: .sys_device_cfg.enc
+2026-01-29 15:35:27.934 25880-25983 ContractCodeStorage     com.cdccreditsmart.app               D  Deleted existing file: .android_secure.enc
+2026-01-29 15:35:28.009 25880-25984 ContractCodeStorage     com.cdccreditsmart.app               E  Failed to save to file: .sys_device_cfg.enc (Ask Gemini)
+                                                                                                    java.io.IOException: output file already exists, please use a new file: .sys_device_cfg.enc
+                                                                                                    	at androidx.security.crypto.EncryptedFile.openFileOutput(EncryptedFile.java:260)
+                                                                                                    	at com.cdccreditsmart.app.storage.ContractCodeStorage.saveToEncryptedFileWithMAC(ContractCodeStorage.kt:387)
+                                                                                                    	at com.cdccreditsmart.app.storage.ContractCodeStorage.saveToBackupFile2(ContractCodeStorage.kt:340)
+                                                                                                    	at com.cdccreditsmart.app.storage.ContractCodeStorage.saveContractCode(ContractCodeStorage.kt:139)
+                                                                                                    	at com.cdccreditsmart.app.security.SecureTokenStorage.saveDeviceInfo(SecureTokenStorage.kt:156)
+                                                                                                    	at com.cdccreditsmart.app.auth.AuthenticationOrchestrator.attemptAutoConnection(AuthenticationOrchestrator.kt:188)
+                                                                                                    	at com.cdccreditsmart.app.auth.AuthenticationOrchestrator.access$attemptAutoConnection(AuthenticationOrchestrator.kt:31)
+                                                                                                    	at com.cdccreditsmart.app.auth.AuthenticationOrchestrator$attemptAutoConnection$1.invokeSuspend(Unknown Source:14)
+                                                                                                    	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:34)
+                                                                                                    	at kotlinx.coroutines.DispatchedTask.run(DispatchedTask.kt:108)
+                                                                                                    	at kotlinx.coroutines.internal.LimitedDispatcher$Worker.run(LimitedDispatcher.kt:115)
+                                                                                                    	at kotlinx.coroutines.scheduling.TaskImpl.run(Tasks.kt:103)
+                                                                                                    	at kotlinx.coroutines.scheduling.CoroutineScheduler.runSafely(CoroutineScheduler.kt:584)
+                                                                                                    	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.executeTask(CoroutineScheduler.kt:793)
+                                                                                                    	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.runWorker(CoroutineScheduler.kt:697)
+                                                                                                    	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.run(CoroutineScheduler.kt:684)
+2026-01-29 15:35:28.071 25880-25983 ContractCodeStorage     com.cdccreditsmart.app               D  Successfully saved to file: .android_secure.enc
+2026-01-29 15:35:28.163 25880-25984 ContractCodeStorage     com.cdccreditsmart.app               E  Failed to save to file: .android_secure.enc (Ask Gemini)
+                                                                                                    java.io.IOException: output file already exists, please use a new file: .android_secure.enc
+                                                                                                    	at androidx.security.crypto.EncryptedFile.openFileOutput(EncryptedFile.java:260)
+                                                                                                    	at com.cdccreditsmart.app.storage.ContractCodeStorage.saveToEncryptedFileWithMAC(ContractCodeStorage.kt:387)
+                                                                                                    	at com.cdccreditsmart.app.storage.ContractCodeStorage.saveToBackupFile3(ContractCodeStorage.kt:348)
+                                                                                                    	at com.cdccreditsmart.app.storage.ContractCodeStorage.saveContractCode(ContractCodeStorage.kt:140)
+                                                                                                    	at com.cdccreditsmart.app.security.SecureTokenStorage.saveDeviceInfo(SecureTokenStorage.kt:156)
+                                                                                                    	at com.cdccreditsmart.app.auth.AuthenticationOrchestrator.attemptAutoConnection(AuthenticationOrchestrator.kt:188)
+                                                                                                    	at com.cdccreditsmart.app.auth.AuthenticationOrchestrator.access$attemptAutoConnection(AuthenticationOrchestrator.kt:31)
+                                                                                                    	at com.cdccreditsmart.app.auth.AuthenticationOrchestrator$attemptAutoConnection$1.invokeSuspend(Unknown Source:14)
+                                                                                                    	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:34)
+                                                                                                    	at kotlinx.coroutines.DispatchedTask.run(DispatchedTask.kt:108)
+                                                                                                    	at kotlinx.coroutines.internal.LimitedDispatcher$Worker.run(LimitedDispatcher.kt:115)
+                                                                                                    	at kotlinx.coroutines.scheduling.TaskImpl.run(Tasks.kt:103)
+                                                                                                    	at kotlinx.coroutines.scheduling.CoroutineScheduler.runSafely(CoroutineScheduler.kt:584)
+                                                                                                    	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.executeTask(CoroutineScheduler.kt:793)
+                                                                                                    	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.runWorker(CoroutineScheduler.kt:697)
+                                                                                                    	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.run(CoroutineScheduler.kt:684)
+2026-01-29 15:35:28.201 25880-25983 ContractCodeStorage     com.cdccreditsmart.app               D  Contract code saved to ALL storage locations
+2026-01-29 15:35:28.257 25880-25984 ContractCodeStorage     com.cdccreditsmart.app               D  Contract code saved to ALL storage locations
+2026-01-29 15:35:28.920 25880-25983 ContractCodeStorage     com.cdccreditsmart.app               D  Verification complete: 7/7 locations valid
+2026-01-29 15:35:28.920 25880-25983 SecureTokenStorage      com.cdccreditsmart.app               D  Device info saved successfully from auto-discovery
+2026-01-29 15:35:28.920 25880-25983 SecureTokenStorage      com.cdccreditsmart.app               D    - DeviceId: device_17691372...
+2026-01-29 15:35:28.920 25880-25983 SecureTokenStorage      com.cdccreditsmart.app               D    - SerialNumber: QJ3H4MKG
+2026-01-29 15:35:28.920 25880-25983 SecureTokenStorage      com.cdccreditsmart.app               D    - IMEI: 8608***
+2026-01-29 15:35:28.920 25880-25983 SecureTokenStorage      com.cdccreditsmart.app               D    - ContractCode: QJ3H4MKG
+2026-01-29 15:35:28.920 25880-25983 AuthOrchestrator        com.cdccreditsmart.app               D  💾 Dados salvos:
+2026-01-29 15:35:28.921 25880-25983 AuthOrchestrator        com.cdccreditsmart.app               D     - ContractCode: QJ3H4MKG
+2026-01-29 15:35:28.921 25880-25983 AuthOrchestrator        com.cdccreditsmart.app               D     - DeviceId: device_17691372...
+2026-01-29 15:35:28.921 25880-25983 AuthOrchestrator        com.cdccreditsmart.app               D     - IMEI: 8608***718
+2026-01-29 15:35:28.921 25880-25983 AuthOrchestrator        com.cdccreditsmart.app               W  ⚠️ [6/7] Discovery não retornou token - headers IMEI serão usados como fallback
+2026-01-29 15:35:28.922 25880-25983 AuthOrchestrator        com.cdccreditsmart.app               D  🎉 ========== AUTO-DISCOVERY CONCLUÍDO ==========
+2026-01-29 15:35:28.923 25880-25983 AuthOrchestrator        com.cdccreditsmart.app               D  ✅ Auto-conexão bem-sucedida - autenticação OK!
+2026-01-29 15:35:28.923 25880-25983 AuthOrchestrator        com.cdccreditsmart.app               I  🔧 Garantindo que CdcForegroundService está rodando...
+2026-01-29 15:35:28.923 25880-26025 AuthOrchestrator        com.cdccreditsmart.app               D  🔔 Registrando FCM token após auto-discovery...
+2026-01-29 15:35:28.937 25880-25983 CdcForegroundService    com.cdccreditsmart.app               I  ✅ Serviço iniciado via startService()
+2026-01-29 15:35:28.937 25880-25983 AuthOrchestrator        com.cdccreditsmart.app               I  ✅ CdcForegroundService iniciado após autenticação
+2026-01-29 15:35:28.941 25880-26025 FcmTokenManager         com.cdccreditsmart.app               D  ========== REGISTERING FCM TOKEN WITH BACKEND ==========
+2026-01-29 15:35:28.945 25880-25880 CdcForegroundService    com.cdccreditsmart.app               D  🚀 Serviço onStartCommand() - Action: com.cdccreditsmart.app.START_SERVICE
+2026-01-29 15:35:28.960 25880-26025 FcmTokenManager         com.cdccreditsmart.app               D  Current FCM token retrieved: eaOkixBvT8ueACb96xv9...
+2026-01-29 15:35:28.974 25880-25880 CdcForegroundService    com.cdccreditsmart.app               I  ✅ Foreground Service ativo (Android 12+)
+2026-01-29 15:35:28.976 25880-25880 RouterViewModel         com.cdccreditsmart.app               D  ✅ Autenticado com sucesso
+2026-01-29 15:35:28.984 25880-25983 CdcForegroundService    com.cdccreditsmart.app               I  🔧 ========================================
+2026-01-29 15:35:28.984 25880-25983 CdcForegroundService    com.cdccreditsmart.app               I  🔧 INICIANDO initializeServices()...
+2026-01-29 15:35:28.984 25880-25983 CdcForegroundService    com.cdccreditsmart.app               I  🔧 ========================================
