@@ -30,8 +30,7 @@
     <!-- Essential Device Owner permissions (grantable to DPC apps) -->
     <uses-permission android:name="android.permission.BIND_DEVICE_ADMIN" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
-    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
-    <uses-permission android:name="android.permission.DISABLE_KEYGUARD" />
+    <!-- REMOVED: REQUEST_INSTALL_PACKAGES, DISABLE_KEYGUARD - not used, triggers Play Protect -->
 
     <!-- Background processing -->
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
@@ -60,10 +59,10 @@
     <!-- Firebase Messaging -->
     <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
     
-    <!-- Android 15: Enhanced security permissions -->
+    <!-- Android 13+: Notification and alarm permissions -->
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
-    <uses-permission android:name="android.permission.USE_EXACT_ALARM" />
+    <!-- REMOVED: USE_EXACT_ALARM - not used in code, SCHEDULE_EXACT_ALARM is sufficient -->
     
     <!-- Android 11+ Package Visibility - Query all packages for app blocking -->
     <uses-permission android:name="android.permission.QUERY_ALL_PACKAGES" 
