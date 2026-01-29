@@ -104,3 +104,26 @@ The UI utilizes Jetpack Compose and Material 3 with a CDC institutional dark the
 - Chamado automaticamente em setupBasicPolicies() após provisionamento Device Owner
 - Nomes de settings ofuscados para evitar análise estática
 - Requer Device Owner - não funciona com apenas Device Admin
+
+**Backend Security Fixes (2025-01-29):**
+
+*Correções críticas de segurança implementadas no backend:*
+
+| Endpoint | Vulnerabilidade | Correção |
+|----------|-----------------|----------|
+| `POST /v1/device/bind` | Múltiplos dispositivos no mesmo contrato | Valida se contrato já está vinculado |
+| `POST /api/apk/auth` | Aceitava qualquer dispositivo com token válido | Valida IMEI do dispositivo físico |
+| `GET /api/apk/discover/{imei}` | Não retornava token JWT | Agora retorna token para autenticação |
+
+*Validação de IMEI no /api/apk/auth:*
+- Extrai `deviceImei` e `additionalImeis` do body da requisição
+- Verifica se `deviceImei` = IMEI registrado no contrato
+- Verifica se `deviceImei` está na lista de IMEIs (imeiList) do dispositivo dual-SIM
+- Verifica se algum dos `additionalImeis` corresponde ao IMEI registrado
+- Se IMEIs não corresponderem: HTTP 403 com erro `IMEI_MISMATCH`
+- Cria log de violação de segurança do tipo `imei_mismatch_auth` com severidade crítica
+
+*Fluxo de segurança:*
+1. App envia IMEI físico do dispositivo
+2. Backend compara com IMEI registrado no contrato durante a venda
+3. Se não corresponder → Rejeita autenticação + Log de auditoria
