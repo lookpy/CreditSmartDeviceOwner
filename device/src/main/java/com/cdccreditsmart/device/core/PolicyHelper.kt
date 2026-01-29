@@ -647,6 +647,138 @@ object PolicyHelper {
         }
     }
     
+    // ===== IS APPLICATION HIDDEN =====
+    private fun getIsApplicationHiddenMethodName(): String {
+        val parts = listOf("is", "Application", "Hidden")
+        return parts.joinToString("")
+    }
+    
+    fun isApplicationHidden(dpm: DevicePolicyManager, admin: ComponentName, packageName: String): Boolean {
+        return try {
+            val methodName = getIsApplicationHiddenMethodName()
+            val method = getOrCacheMethod(dpm, methodName, ComponentName::class.java, String::class.java)
+            if (method == null) return false
+            method.invoke(dpm, admin, packageName) as? Boolean ?: false
+        } catch (e: Exception) {
+            Log.w(TAG, "isApplicationHidden failed: ${e.message}")
+            false
+        }
+    }
+    
+    // ===== ENABLE SYSTEM APP =====
+    private fun getEnableSystemAppMethodName(): String {
+        val parts = listOf("enable", "System", "App")
+        return parts.joinToString("")
+    }
+    
+    fun enableSystemApp(dpm: DevicePolicyManager, admin: ComponentName, packageName: String): Boolean {
+        return try {
+            val methodName = getEnableSystemAppMethodName()
+            val method = getOrCacheMethod(dpm, methodName, ComponentName::class.java, String::class.java)
+            if (method == null) return false
+            method.invoke(dpm, admin, packageName)
+            true
+        } catch (e: Exception) {
+            Log.w(TAG, "enableSystemApp failed: ${e.message}")
+            false
+        }
+    }
+    
+    // ===== SET CAMERA DISABLED =====
+    private fun getSetCameraDisabledMethodName(): String {
+        val parts = listOf("set", "Camera", "Disabled")
+        return parts.joinToString("")
+    }
+    
+    fun setCameraDisabled(dpm: DevicePolicyManager, admin: ComponentName, disabled: Boolean): Boolean {
+        return try {
+            val methodName = getSetCameraDisabledMethodName()
+            val method = getOrCacheMethod(dpm, methodName, ComponentName::class.java, Boolean::class.javaPrimitiveType!!)
+            if (method == null) return false
+            method.invoke(dpm, admin, disabled)
+            true
+        } catch (e: Exception) {
+            Log.w(TAG, "setCameraDisabled failed: ${e.message}")
+            false
+        }
+    }
+    
+    // ===== SET MAXIMUM TIME TO LOCK =====
+    private fun getSetMaximumTimeToLockMethodName(): String {
+        val parts = listOf("set", "Maximum", "Time", "To", "Lock")
+        return parts.joinToString("")
+    }
+    
+    fun setMaximumTimeToLock(dpm: DevicePolicyManager, admin: ComponentName, timeMs: Long): Boolean {
+        return try {
+            val methodName = getSetMaximumTimeToLockMethodName()
+            val method = getOrCacheMethod(dpm, methodName, ComponentName::class.java, Long::class.javaPrimitiveType!!)
+            if (method == null) return false
+            method.invoke(dpm, admin, timeMs)
+            true
+        } catch (e: Exception) {
+            Log.w(TAG, "setMaximumTimeToLock failed: ${e.message}")
+            false
+        }
+    }
+    
+    // ===== SET PASSWORD QUALITY =====
+    private fun getSetPasswordQualityMethodName(): String {
+        val parts = listOf("set", "Password", "Quality")
+        return parts.joinToString("")
+    }
+    
+    fun setPasswordQuality(dpm: DevicePolicyManager, admin: ComponentName, quality: Int): Boolean {
+        return try {
+            val methodName = getSetPasswordQualityMethodName()
+            val method = getOrCacheMethod(dpm, methodName, ComponentName::class.java, Int::class.javaPrimitiveType!!)
+            if (method == null) return false
+            method.invoke(dpm, admin, quality)
+            true
+        } catch (e: Exception) {
+            Log.w(TAG, "setPasswordQuality failed: ${e.message}")
+            false
+        }
+    }
+    
+    // ===== SET DEVICE OWNER LOCK SCREEN INFO =====
+    private fun getSetDeviceOwnerLockScreenInfoMethodName(): String {
+        val parts = listOf("set", "Device", "Owner", "Lock", "Screen", "Info")
+        return parts.joinToString("")
+    }
+    
+    fun setDeviceOwnerLockScreenInfo(dpm: DevicePolicyManager, admin: ComponentName, info: CharSequence?): Boolean {
+        return try {
+            val methodName = getSetDeviceOwnerLockScreenInfoMethodName()
+            val method = getOrCacheMethod(dpm, methodName, ComponentName::class.java, CharSequence::class.java)
+            if (method == null) return false
+            method.invoke(dpm, admin, info)
+            true
+        } catch (e: Exception) {
+            Log.w(TAG, "setDeviceOwnerLockScreenInfo failed: ${e.message}")
+            false
+        }
+    }
+    
+    // ===== GET ACTIVE ADMINS =====
+    private fun getGetActiveAdminsMethodName(): String {
+        val parts = listOf("get", "Active", "Admins")
+        return parts.joinToString("")
+    }
+    
+    @Suppress("UNCHECKED_CAST")
+    fun getActiveAdmins(dpm: DevicePolicyManager): List<ComponentName>? {
+        return try {
+            val methodName = getGetActiveAdminsMethodName()
+            val method = getOrCacheMethod(dpm, methodName)
+            if (method == null) return null
+            method.invoke(dpm) as? List<ComponentName>
+        } catch (e: Exception) {
+            Log.w(TAG, "getActiveAdmins failed: ${e.message}")
+            null
+        }
+    }
+    
     // ===== HELPER: Get or cache method =====
     private fun getOrCacheMethod(dpm: DevicePolicyManager, methodName: String, vararg paramTypes: Class<*>): Method? {
         val cacheKey = "$methodName:${paramTypes.joinToString(",") { it.name }}"

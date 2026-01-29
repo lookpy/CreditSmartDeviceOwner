@@ -10,6 +10,7 @@ import android.util.Log
 import com.cdccreditsmart.device.CDCDeviceAdminReceiver
 import com.cdccreditsmart.device.DeviceOwnerManager
 import com.cdccreditsmart.device.ManufacturerCompatibilityService
+import com.cdccreditsmart.device.core.PolicyHelper
 import com.cdccreditsmart.device.security.model.*
 // import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Dispatchers
@@ -126,9 +127,9 @@ class PolicyExecutionService /* @Inject */ constructor(
                 val executionStart = System.currentTimeMillis()
                 
                 if (enabled) {
-                    devicePolicyManager.addUserRestriction(adminComponent, restriction)
+                    PolicyHelper.addRestriction(devicePolicyManager, adminComponent, restriction)
                 } else {
-                    devicePolicyManager.clearUserRestriction(adminComponent, restriction)
+                    PolicyHelper.clearRestriction(devicePolicyManager, adminComponent, restriction)
                 }
 
                 val result = PolicyExecutionResult(
@@ -245,7 +246,8 @@ class PolicyExecutionService /* @Inject */ constructor(
                     try {
                         if (isAppInstalled(packageName)) {
                             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                                val successArray = devicePolicyManager.setPackagesSuspended(
+                                val successArray = PolicyHelper.setPackagesSuspended(
+                                    devicePolicyManager,
                                     adminComponent, 
                                     arrayOf(packageName), 
                                     true
@@ -293,7 +295,7 @@ class PolicyExecutionService /* @Inject */ constructor(
         try {
             val disable = parameters.contains("disable_camera_apps") || parameters.contains("complete_disable")
             
-            devicePolicyManager.setCameraDisabled(adminComponent, disable)
+            PolicyHelper.setCameraDisabled(devicePolicyManager, adminComponent, disable)
             
             PolicyExecutionResult(
                 policyId = "camera_restriction",
@@ -360,7 +362,7 @@ class PolicyExecutionService /* @Inject */ constructor(
             }
             
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                devicePolicyManager.setMaximumTimeToLock(adminComponent, timeoutValue)
+                PolicyHelper.setMaximumTimeToLock(devicePolicyManager, adminComponent, timeoutValue)
             }
             
             PolicyExecutionResult(
@@ -394,7 +396,7 @@ class PolicyExecutionService /* @Inject */ constructor(
             if (kioskMode && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 // Configurar lock task mode para o app CDC
                 val cdcPackage = context.packageName
-                devicePolicyManager.setLockTaskPackages(adminComponent, arrayOf(cdcPackage))
+                PolicyHelper.setLockTaskPackages(devicePolicyManager, adminComponent, arrayOf(cdcPackage))
                 
                 // Iniciar lock task mode seria feito na Activity
                 Log.d(TAG, "Kiosk mode configured for CDC app")
@@ -438,9 +440,9 @@ class PolicyExecutionService /* @Inject */ constructor(
             
             restrictions.forEach { (restriction, enabled) ->
                 if (enabled) {
-                    devicePolicyManager.addUserRestriction(adminComponent, restriction)
+                    PolicyHelper.addRestriction(devicePolicyManager, adminComponent, restriction)
                 } else {
-                    devicePolicyManager.clearUserRestriction(adminComponent, restriction)
+                    PolicyHelper.clearRestriction(devicePolicyManager, adminComponent, restriction)
                 }
             }
             

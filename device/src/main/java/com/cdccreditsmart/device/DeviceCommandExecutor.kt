@@ -132,7 +132,8 @@ class DeviceCommandExecutor /* @Inject */ constructor(
                 
                 // Set a lock message if supported
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                    devicePolicyManager.setDeviceOwnerLockScreenInfo(
+                    PolicyHelper.setDeviceOwnerLockScreenInfo(
+                        devicePolicyManager,
                         adminComponent, 
                         command.data.message ?: "Dispositivo bloqueado por inadimplência"
                     )
@@ -191,7 +192,7 @@ class DeviceCommandExecutor /* @Inject */ constructor(
                 
                 // Clear lock message if supported
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                    devicePolicyManager.setDeviceOwnerLockScreenInfo(adminComponent, null)
+                    PolicyHelper.setDeviceOwnerLockScreenInfo(devicePolicyManager, adminComponent, null)
                 }
                 
                 // Re-enable apps if they were disabled

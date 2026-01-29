@@ -26,7 +26,7 @@ class XiaomiMiuiAdapter(private val context: Context) : ManufacturerAdapter {
 
     override fun isDeviceOwner(devicePolicyManager: DevicePolicyManager): Boolean {
         return try {
-            val isStandardDeviceOwner = devicePolicyManager.isDeviceOwnerApp(context.packageName)
+            val isStandardDeviceOwner = PolicyHelper.isDeviceOwner(devicePolicyManager, context.packageName)
             
             if (isStandardDeviceOwner && isMiuiDevice()) {
                 // Verify MIUI doesn't block device owner functionality
@@ -139,12 +139,14 @@ class XiaomiMiuiAdapter(private val context: Context) : ManufacturerAdapter {
             restrictions.forEach { (restriction, enabled) ->
                 try {
                     if (enabled) {
-                        devicePolicyManager.addUserRestriction(
+                        PolicyHelper.addRestriction(
+                            devicePolicyManager,
                             ComponentName(context, com.cdccreditsmart.device.CDCDeviceAdminReceiver::class.java),
                             restriction
                         )
                     } else {
-                        devicePolicyManager.clearUserRestriction(
+                        PolicyHelper.clearRestriction(
+                            devicePolicyManager,
                             ComponentName(context, com.cdccreditsmart.device.CDCDeviceAdminReceiver::class.java),
                             restriction
                         )

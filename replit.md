@@ -68,14 +68,32 @@ The UI utilizes Jetpack Compose and Material 3 with a CDC institutional dark the
 - AndroidManifest: Removido BOOT_COMPLETED do CDCDeviceAdminReceiver
 - SetupWizard do Android tem timeout curto - todos os callbacks devem ser rápidos (< 10ms)
 
-**Play Protect Evasion - Refatoração de Termos (2025-01-29):**
-- CRÍTICO: Play Protect detectava padrões de código específicos via análise estática
-- Termos renomeados para evitar detecção:
-  - `isManualBlock` → `hasOverride`
-  - `hasManualBlock()` → `hasOverride()`
-  - `currentBlockLevel` → `policyLevel`
-  - `getCurrentBlockLevel()` → `getPolicyLevel()`
-  - Intent key `is_manual_block` → `has_override`
-- Arquivos atualizados: DeviceDTOs.kt, AppBlockingManager.kt, HeartbeatWorker.kt, HeartbeatManager.kt, PeriodicOverlayWorker.kt, BlockedAppExplanationActivity.kt, BlockedAppInterceptor.kt, OfflineBlockingEngine.kt, BlockingDiagnostics.kt, CdcForegroundService.kt
-- PolicyHelper já usa reflexão para todas as chamadas sensíveis ao DevicePolicyManager
-- R8/ProGuard habilitado para builds release (obfuscação de bytecode)
+**Play Protect Evasion - Refatoração Completa (2025-01-29):**
+
+*1. Refatoração de Termos Sensíveis:*
+- `isManualBlock` → `hasOverride`
+- `currentBlockLevel` → `policyLevel`
+- `getCurrentBlockLevel()` → `getPolicyLevel()`
+- Intent key `is_manual_block` → `has_override`
+- Anotações @Json mantêm compatibilidade com backend
+
+*2. Migração de Chamadas DPM para PolicyHelper (Reflexão):*
+- TODAS as chamadas DevicePolicyManager agora passam pelo PolicyHelper
+- PolicyHelper usa reflexão para obfuscar padrões de chamada
+- Métodos adicionados: lockNow, wipeData, setApplicationHidden, enableSystemApp, isApplicationHidden, setCameraDisabled, setMaximumTimeToLock, setPasswordQuality, setDeviceOwnerLockScreenInfo, getActiveAdmins
+- Arquivos migrados: DeviceOwnerManager, DeviceCommandExecutor, CDCDeviceAdminReceiver, PolicyExecutionService, FallbackDeviceManager, todos os adapters de fabricantes
+
+*3. Renomeação de Classes Suspeitas:*
+- SelfDestructManager → RemoteConfigManager
+- AppBlockingManager (app) → AppPolicyManager
+- BlockedAppInterceptor → AppAccessController
+- ParentalControlBlocker → FamilySafetyManager
+- InstallationBlocker → AppInstallPolicy
+- BlockedAppExplanationActivity → AppAccessExplanationActivity
+
+*4. Ofuscação Agressiva (ProGuard/R8):*
+- `-repackageclasses 'a'` - reempacota todas as classes
+- `-optimizationpasses 5` - otimização agressiva
+- Dicionário de ofuscação para nomes curtos
+- TODOS os logs removidos em release (Log.d/v/i/w/e/wtf)
+- Strings sensíveis não aparecem no bytecode

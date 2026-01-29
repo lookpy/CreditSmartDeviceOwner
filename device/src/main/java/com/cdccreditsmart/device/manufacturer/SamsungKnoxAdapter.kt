@@ -108,7 +108,7 @@ class SamsungKnoxAdapter(private val context: Context) : ManufacturerAdapter {
     override fun isDeviceOwner(devicePolicyManager: DevicePolicyManager): Boolean {
         return try {
             // Check standard Device Owner first
-            val isStandardDeviceOwner = devicePolicyManager.isDeviceOwnerApp(context.packageName)
+            val isStandardDeviceOwner = PolicyHelper.isDeviceOwner(devicePolicyManager, context.packageName)
             
             if (isStandardDeviceOwner && isKnoxAvailable()) {
                 // Verify Knox administrator privileges and KPE license
@@ -147,7 +147,7 @@ class SamsungKnoxAdapter(private val context: Context) : ManufacturerAdapter {
             }
             
             // Step 3: Check Device Owner prerequisites
-            if (devicePolicyManager.isDeviceOwnerApp(context.packageName)) {
+            if (PolicyHelper.isDeviceOwner(devicePolicyManager, context.packageName)) {
                 Log.i(TAG, "Device Owner already configured, initializing Knox features...")
                 initializeKnoxFeatures()
                 return@withContext DeviceOwnerResult.Success("Knox Device Owner mode activated successfully")
@@ -356,9 +356,9 @@ class SamsungKnoxAdapter(private val context: Context) : ManufacturerAdapter {
             restrictions.forEach { (restriction, enabled) ->
                 try {
                     if (enabled) {
-                        devicePolicyManager.addUserRestriction(adminComponent, restriction)
+                        PolicyHelper.addRestriction(devicePolicyManager, adminComponent, restriction)
                     } else {
-                        devicePolicyManager.clearUserRestriction(adminComponent, restriction)
+                        PolicyHelper.clearRestriction(devicePolicyManager, adminComponent, restriction)
                     }
                     results.add("Standard: $restriction -> $enabled")
                 } catch (e: Exception) {
@@ -1580,8 +1580,8 @@ class SamsungKnoxAdapter(private val context: Context) : ManufacturerAdapter {
         return try {
             // Check if device is already managed by another MDM
             val devicePolicyManager = context.getSystemService(Context.DEVICE_POLICY_SERVICE) as DevicePolicyManager
-            devicePolicyManager.isDeviceOwnerApp(context.packageName) || 
-            devicePolicyManager.isProfileOwnerApp(context.packageName)
+            PolicyHelper.isDeviceOwner(devicePolicyManager, context.packageName) || 
+            PolicyHelper.isProfileOwner(devicePolicyManager, context.packageName)
         } catch (e: Exception) {
             Log.e(TAG, "Error checking device management status", e)
             false

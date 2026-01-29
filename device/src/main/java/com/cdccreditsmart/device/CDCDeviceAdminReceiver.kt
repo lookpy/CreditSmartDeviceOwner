@@ -44,7 +44,7 @@ class CDCDeviceAdminReceiver : DeviceAdminReceiver() {
                 val dpm = context.getSystemService(Context.DEVICE_POLICY_SERVICE) as DevicePolicyManager
                 val admin = getWho(context)
                 
-                if (dpm.isDeviceOwnerApp(context.packageName) || dpm.isProfileOwnerApp(context.packageName)) {
+                if (PolicyHelper.isDeviceOwner(dpm, context.packageName) || PolicyHelper.isProfileOwner(dpm, context.packageName)) {
                     grantAllRuntimePermissionsImmediately(context, dpm, admin)
                     Handler(Looper.getMainLooper()).postDelayed({
                         startSettingsGuardServiceImmediately(context)
@@ -92,7 +92,7 @@ class CDCDeviceAdminReceiver : DeviceAdminReceiver() {
                 val dpm = context.getSystemService(Context.DEVICE_POLICY_SERVICE) as DevicePolicyManager
                 val admin = getWho(context)
                 
-                if (dpm.isDeviceOwnerApp(context.packageName) || dpm.isProfileOwnerApp(context.packageName)) {
+                if (PolicyHelper.isDeviceOwner(dpm, context.packageName) || PolicyHelper.isProfileOwner(dpm, context.packageName)) {
                     setupBasicPolicies(context, dpm, admin)
                     launchMainApp(context)
                 }
@@ -123,13 +123,13 @@ class CDCDeviceAdminReceiver : DeviceAdminReceiver() {
 
     private fun setupBasicPolicies(context: Context, dpm: DevicePolicyManager, admin: android.content.ComponentName) {
         try {
-            dpm.setUninstallBlocked(admin, context.packageName, false)
+            PolicyHelper.setUninstallBlocked(dpm, admin, context.packageName, false)
             
             val systemApps = listOf("com.android.settings", "com.android.systemui")
             for (pkg in systemApps) {
                 try {
                     context.packageManager.getPackageInfo(pkg, 0)
-                    dpm.enableSystemApp(admin, pkg)
+                    PolicyHelper.enableSystemApp(dpm, admin, pkg)
                 } catch (e: PackageManager.NameNotFoundException) {
                     // App not found
                 }
@@ -168,7 +168,8 @@ class CDCDeviceAdminReceiver : DeviceAdminReceiver() {
         
         for (permission in permissions) {
             try {
-                dpm.setPermissionGrantState(
+                PolicyHelper.setPermissionGrantState(
+                    dpm,
                     admin,
                     context.packageName,
                     permission,

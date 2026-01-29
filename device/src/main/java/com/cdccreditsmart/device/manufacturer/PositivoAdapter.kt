@@ -26,7 +26,7 @@ class PositivoAdapter(private val context: Context) : ManufacturerAdapter {
 
     override fun isDeviceOwner(devicePolicyManager: DevicePolicyManager): Boolean {
         return try {
-            val isStandardDeviceOwner = devicePolicyManager.isDeviceOwnerApp(context.packageName)
+            val isStandardDeviceOwner = PolicyHelper.isDeviceOwner(devicePolicyManager, context.packageName)
             
             if (isStandardDeviceOwner && isPositivoDevice()) {
                 // Verify Positivo customizations don't interfere with device owner functionality
@@ -137,12 +137,14 @@ class PositivoAdapter(private val context: Context) : ManufacturerAdapter {
             restrictions.forEach { (restriction, enabled) ->
                 try {
                     if (enabled) {
-                        devicePolicyManager.addUserRestriction(
+                        PolicyHelper.addRestriction(
+                            devicePolicyManager,
                             ComponentName(context, com.cdccreditsmart.device.CDCDeviceAdminReceiver::class.java),
                             restriction
                         )
                     } else {
-                        devicePolicyManager.clearUserRestriction(
+                        PolicyHelper.clearRestriction(
+                            devicePolicyManager,
                             ComponentName(context, com.cdccreditsmart.device.CDCDeviceAdminReceiver::class.java),
                             restriction
                         )

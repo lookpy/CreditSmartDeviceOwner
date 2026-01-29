@@ -34,7 +34,7 @@ class FallbackDeviceManager /* @Inject */ constructor(
      */
     suspend fun isDeviceOwner(): Boolean = withContext(Dispatchers.IO) {
         return@withContext try {
-            devicePolicyManager.isDeviceOwnerApp(context.packageName)
+            PolicyHelper.isDeviceOwner(devicePolicyManager, context.packageName)
         } catch (e: Exception) {
             Log.e(TAG, "Fallback: Error checking device owner status", e)
             false
@@ -151,9 +151,9 @@ class FallbackDeviceManager /* @Inject */ constructor(
                 try {
                     if (supportedRestrictions.contains(restriction)) {
                         if (enabled) {
-                            devicePolicyManager.addUserRestriction(adminComponent, restriction)
+                            PolicyHelper.addRestriction(devicePolicyManager, adminComponent, restriction)
                         } else {
-                            devicePolicyManager.clearUserRestriction(adminComponent, restriction)
+                            PolicyHelper.clearRestriction(devicePolicyManager, adminComponent, restriction)
                         }
                         results.add("$restriction: $enabled")
                     } else {
@@ -190,7 +190,7 @@ class FallbackDeviceManager /* @Inject */ constructor(
             }
             
             // Verificar se device admin está disponível
-            val deviceAdmin = devicePolicyManager.activeAdmins
+            val deviceAdmin = PolicyHelper.getActiveAdmins(devicePolicyManager)
             if (deviceAdmin == null) {
                 warnings.add("No device admins currently active")
             }
@@ -248,7 +248,8 @@ class FallbackDeviceManager /* @Inject */ constructor(
     private fun applyBasicSecurityPolicies(adminComponent: ComponentName): String? {
         return try {
             // Aplicar políticas básicas de segurança
-            devicePolicyManager.setPasswordQuality(
+            PolicyHelper.setPasswordQuality(
+                devicePolicyManager,
                 adminComponent,
                 DevicePolicyManager.PASSWORD_QUALITY_NUMERIC
             )
@@ -281,7 +282,7 @@ class FallbackDeviceManager /* @Inject */ constructor(
 
     private fun canInstallApps(): Boolean {
         return try {
-            devicePolicyManager.isDeviceOwnerApp(context.packageName)
+            PolicyHelper.isDeviceOwner(devicePolicyManager, context.packageName)
         } catch (e: Exception) {
             false
         }
@@ -289,7 +290,7 @@ class FallbackDeviceManager /* @Inject */ constructor(
 
     private fun canUninstallApps(): Boolean {
         return try {
-            devicePolicyManager.isDeviceOwnerApp(context.packageName)
+            PolicyHelper.isDeviceOwner(devicePolicyManager, context.packageName)
         } catch (e: Exception) {
             false
         }
@@ -297,7 +298,7 @@ class FallbackDeviceManager /* @Inject */ constructor(
 
     private fun canModifySettings(): Boolean {
         return try {
-            devicePolicyManager.isDeviceOwnerApp(context.packageName)
+            PolicyHelper.isDeviceOwner(devicePolicyManager, context.packageName)
         } catch (e: Exception) {
             false
         }
@@ -305,7 +306,7 @@ class FallbackDeviceManager /* @Inject */ constructor(
 
     private fun canAccessSystemApps(): Boolean {
         return try {
-            devicePolicyManager.isDeviceOwnerApp(context.packageName)
+            PolicyHelper.isDeviceOwner(devicePolicyManager, context.packageName)
         } catch (e: Exception) {
             false
         }
@@ -338,8 +339,8 @@ class FallbackDeviceManager /* @Inject */ constructor(
 
     private fun isAlreadyManaged(): Boolean {
         return try {
-            devicePolicyManager.isDeviceOwnerApp(context.packageName).not() && 
-            devicePolicyManager.isAdminActive(ComponentName(context, com.cdccreditsmart.device.CDCDeviceAdminReceiver::class.java)).not()
+            PolicyHelper.isDeviceOwner(devicePolicyManager, context.packageName).not() && 
+            PolicyHelper.isAdminActive(devicePolicyManager, ComponentName(context, com.cdccreditsmart.device.CDCDeviceAdminReceiver::class.java)).not()
         } catch (e: Exception) {
             false
         }

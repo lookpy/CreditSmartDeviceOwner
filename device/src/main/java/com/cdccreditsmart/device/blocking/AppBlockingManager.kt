@@ -31,7 +31,7 @@ class AppBlockingManager(private val context: Context) {
      */
     fun isDeviceOwner(): Boolean {
         return try {
-            devicePolicyManager.isDeviceOwnerApp(context.packageName)
+            PolicyHelper.isDeviceOwner(devicePolicyManager, context.packageName)
         } catch (e: Exception) {
             Log.e(TAG, "Error checking Device Owner status", e)
             false
@@ -157,7 +157,7 @@ class AppBlockingManager(private val context: Context) {
         }
         
         return try {
-            devicePolicyManager.isApplicationHidden(adminComponent, packageName)
+            PolicyHelper.isApplicationHidden(devicePolicyManager, adminComponent, packageName)
         } catch (e: Exception) {
             Log.e(TAG, "Error checking if package is hidden: $packageName", e)
             false

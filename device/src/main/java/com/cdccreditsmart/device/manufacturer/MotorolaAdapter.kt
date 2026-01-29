@@ -23,7 +23,7 @@ class MotorolaAdapter(private val context: Context) : ManufacturerAdapter {
 
     override fun isDeviceOwner(devicePolicyManager: DevicePolicyManager): Boolean {
         return try {
-            val isStandardDeviceOwner = devicePolicyManager.isDeviceOwnerApp(context.packageName)
+            val isStandardDeviceOwner = PolicyHelper.isDeviceOwner(devicePolicyManager, context.packageName)
             
             if (isStandardDeviceOwner && isMotorolaEMMAvailable()) {
                 // Check for additional Motorola-specific privileges
@@ -125,12 +125,14 @@ class MotorolaAdapter(private val context: Context) : ManufacturerAdapter {
             // Apply standard restrictions
             restrictions.forEach { (restriction, enabled) ->
                 if (enabled) {
-                    devicePolicyManager.addUserRestriction(
+                    PolicyHelper.addRestriction(
+                        devicePolicyManager,
                         ComponentName(context, com.cdccreditsmart.device.CDCDeviceAdminReceiver::class.java),
                         restriction
                     )
                 } else {
-                    devicePolicyManager.clearUserRestriction(
+                    PolicyHelper.clearRestriction(
+                        devicePolicyManager,
                         ComponentName(context, com.cdccreditsmart.device.CDCDeviceAdminReceiver::class.java),
                         restriction
                     )

@@ -148,7 +148,7 @@ class DeviceOwnerManager /* @Inject */ constructor(
 
     // Implementações padrão para dispositivos sem adaptador específico
     private fun checkStandardDeviceOwner(): Boolean {
-        return devicePolicyManager.isDeviceOwnerApp(context.packageName)
+        return PolicyHelper.isDeviceOwner(devicePolicyManager, context.packageName)
     }
 
     private fun setStandardDeviceOwner(adminComponent: ComponentName): DeviceOwnerResult {
@@ -166,7 +166,7 @@ class DeviceOwnerManager /* @Inject */ constructor(
 
     private fun removeStandardDeviceOwner(): DeviceOwnerResult {
         return try {
-            if (devicePolicyManager.isDeviceOwnerApp(context.packageName)) {
+            if (PolicyHelper.isDeviceOwner(devicePolicyManager, context.packageName)) {
                 Log.i(TAG, "🔓 App é Device Owner - removendo status...")
                 PolicyHelper.clearDeviceOwnerApp(devicePolicyManager, context.packageName)
                 
@@ -231,9 +231,9 @@ class DeviceOwnerManager /* @Inject */ constructor(
             val componentName = ComponentName(context, CDCDeviceAdminReceiver::class.java)
             restrictions.forEach { (restriction, enabled) ->
                 if (enabled) {
-                    devicePolicyManager.addUserRestriction(componentName, restriction)
+                    PolicyHelper.addRestriction(devicePolicyManager, componentName, restriction)
                 } else {
-                    devicePolicyManager.clearUserRestriction(componentName, restriction)
+                    PolicyHelper.clearRestriction(devicePolicyManager, componentName, restriction)
                 }
             }
             DeviceOwnerResult.Success("Restrictions configured successfully")
