@@ -15,12 +15,6 @@ import kotlinx.coroutines.*
 
 class HeartbeatManager(private val context: Context) {
     
-    companion object {
-        private const val TAG = "HeartbeatManager"
-        private const val HEARTBEAT_INTERVAL_MS = 60_000L
-        private const val MAX_COMPLIANCE_CORRECTIONS = 3
-    }
-    
     private val scope = CoroutineScope(Dispatchers.IO + SupervisorJob())
     private var heartbeatJob: Job? = null
     
@@ -173,6 +167,17 @@ class HeartbeatManager(private val context: Context) {
             "OK" -> {
                 Log.i(TAG, "✅ Dispositivo CONFORME - Nível $expectedLevel")
                 complianceCorrectionCount = 0
+                
+                // CRÍTICO: Se backend diz OK com nível 0, DESBLOQUEAR e salvar timestamp
+                if (expectedLevel != null && expectedLevel == 0) {
+                    val currentLevel = blockingManager.getPolicyLevel()
+                    if (currentLevel > 0) {
+                        Log.i(TAG, "🔓 Backend confirmou DESBLOQUEADO - desbloqueando app (era nível $currentLevel)")
+                        blockingManager.unblockAllApps()
+                    }
+                    // Salvar que backend confirmou desbloqueio (para sistema offline respeitar)
+                    saveBackendUnblockConfirmation()
+                }
             }
             
             "NON_COMPLIANT" -> {
@@ -264,4 +269,61 @@ class HeartbeatManager(private val context: Context) {
         val level: Int,
         val isCharging: Boolean
     )
+    
+    /**
+     * Salva timestamp de quando o backend confirmou que o dispositivo está desbloqueado
+     * O sistema offline deve respeitar isso por um período (24h)
+     */
+    private fun saveBackendUnblockConfirmation() {
+        try {
+            val prefs = context.getSharedPreferences("heartbeat_state", Context.MODE_PRIVATE)
+            prefs.edit()
+                .putLong("backend_unblock_confirmed_at", System.currentTimeMillis())
+                .apply()
+            Log.i(TAG, "💾 Backend confirmou desbloqueio - timestamp salvo")
+        } catch (e: Exception) {
+            Log.e(TAG, "Erro ao salvar confirmação de desbloqueio", e)
+        }
+    }
+    
+    companion object {
+        private const val TAG = "HeartbeatManager"
+        private const val HEARTBEAT_INTERVAL_MS = 60_000L
+        private const val MAX_COMPLIANCE_CORRECTIONS = 3
+        
+        /**
+         * Verifica se o backend confirmou desbloqueio recentemente (< 24h)
+         */
+        fun isBackendUnblockConfirmedRecently(context: Context): Boolean {
+            return try {
+                val prefs = context.getSharedPreferences("heartbeat_state", Context.MODE_PRIVATE)
+                val confirmedAt = prefs.getLong("backend_unblock_confirmed_at", 0L)
+                if (confirmedAt == 0L) return false
+                
+                val hoursSinceConfirmation = (System.currentTimeMillis() - confirmedAt) / (1000 * 60 * 60)
+                val isRecent = hoursSinceConfirmation < 24
+                
+                if (isRecent) {
+                    Log.d(TAG, "✅ Backend confirmou desbloqueio há ${hoursSinceConfirmation}h - respeitando")
+                }
+                isRecent
+            } catch (e: Exception) {
+                Log.e(TAG, "Erro ao verificar confirmação de desbloqueio", e)
+                false
+            }
+        }
+        
+        /**
+         * Limpa a confirmação de desbloqueio (ex: quando backend manda bloquear)
+         */
+        fun clearBackendUnblockConfirmation(context: Context) {
+            try {
+                val prefs = context.getSharedPreferences("heartbeat_state", Context.MODE_PRIVATE)
+                prefs.edit().remove("backend_unblock_confirmed_at").apply()
+                Log.i(TAG, "🗑️ Confirmação de desbloqueio limpa")
+            } catch (e: Exception) {
+                Log.e(TAG, "Erro ao limpar confirmação de desbloqueio", e)
+            }
+        }
+    }
 }

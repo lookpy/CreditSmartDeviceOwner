@@ -4,6 +4,7 @@ import android.content.Context
 import android.util.Log
 import androidx.work.*
 import com.cdccreditsmart.app.appmanagement.AppPolicyManager
+import com.cdccreditsmart.app.enterprise.HeartbeatManager
 import com.cdccreditsmart.data.storage.LocalAccountState
 import java.util.concurrent.TimeUnit
 
@@ -52,6 +53,15 @@ class OfflineEnforcementWorker(
         Log.i(TAG, "🔄 ========================================")
         
         try {
+            // CRITICAL: Verificar se backend confirmou desbloqueio recentemente (< 24h)
+            // Se sim, NÃO aplicar bloqueio offline - confiar no backend
+            if (HeartbeatManager.isBackendUnblockConfirmedRecently(applicationContext)) {
+                Log.i(TAG, "✅ Backend confirmou DESBLOQUEADO recentemente (<24h)")
+                Log.i(TAG, "   Sistema offline NÃO vai bloquear - confiando no backend")
+                Log.i(TAG, "🔄 ========================================")
+                return Result.success()
+            }
+            
             val debtCalculator = DebtAgingCalculator(applicationContext)
             val blockingManager = AppPolicyManager(applicationContext)
             

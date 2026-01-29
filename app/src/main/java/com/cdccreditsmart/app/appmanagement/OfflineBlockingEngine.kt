@@ -2,6 +2,7 @@ package com.cdccreditsmart.app.appmanagement
 
 import android.content.Context
 import android.util.Log
+import com.cdccreditsmart.app.enterprise.HeartbeatManager
 import com.cdccreditsmart.app.storage.LocalInstallmentStorage
 import com.cdccreditsmart.network.dto.mdm.CommandParameters
 
@@ -35,6 +36,22 @@ class OfflineBlockingEngine(
     fun checkAndApplyAutoBlocking(): AutoBlockingResult {
         try {
             Log.i(TAG, "🤖 Iniciando verificação automática de bloqueio offline...")
+            
+            // CRITICAL: Verificar se backend confirmou desbloqueio recentemente (< 24h)
+            // Se sim, NÃO aplicar bloqueio offline - confiar no backend
+            if (HeartbeatManager.isBackendUnblockConfirmedRecently(context)) {
+                Log.i(TAG, "✅ Backend confirmou DESBLOQUEADO recentemente (<24h)")
+                Log.i(TAG, "   Sistema offline NÃO vai bloquear - confiando no backend")
+                Log.i(TAG, "   Próxima verificação online vai atualizar estado")
+                
+                return AutoBlockingResult(
+                    blockingApplied = false,
+                    appliedLevel = 0,
+                    daysOverdue = 0,
+                    reason = "Backend confirmou desbloqueio recentemente",
+                    blockingResult = null
+                )
+            }
             
             // CRITICAL: Verificar se há bloqueio manual ANTES de processar
             if (appPolicyManager.hasOverride()) {
