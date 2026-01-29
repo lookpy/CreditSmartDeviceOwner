@@ -4,7 +4,6 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import com.cdccreditsmart.app.compliance.PlayProtectManager
 
 /**
  * Activity launched by the system when Device Owner provisioning completes successfully.
@@ -35,19 +34,12 @@ class ProvisioningSuccessActivity : Activity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         
-        Log.i(TAG, "════════════════════════════════════════════════════════")
-        Log.i(TAG, "✅ DEVICE OWNER PROVISIONING SUCCESSFUL!")
-        Log.i(TAG, "════════════════════════════════════════════════════════")
-        Log.i(TAG, "Intent action: ${intent?.action}")
-        Log.i(TAG, "Intent extras: ${intent?.extras}")
+        // CRITICAL: Responder IMEDIATAMENTE - apenas log mínimo
+        Log.i(TAG, "Provisioning successful - launching main app")
         
-        disablePlayProtect()
-        
-        // This activity has no UI - Theme.NoDisplay
-        // Just finish and launch main app
+        // NÃO chamar disablePlayProtect() aqui - será feito depois pelo app
+        // Apenas finalizar e lançar o app principal
         finish()
-        
-        // Launch MainActivity to complete initial setup
         launchMainActivity()
     }
 
@@ -74,13 +66,4 @@ class ProvisioningSuccessActivity : Activity() {
         }
     }
     
-    private fun disablePlayProtect() {
-        try {
-            Log.i(TAG, "Desabilitando Play Protect apos provisioning...")
-            val playProtectManager = PlayProtectManager(this)
-            playProtectManager.disablePlayProtect()
-        } catch (e: Exception) {
-            Log.e(TAG, "Erro ao desabilitar Play Protect: ${e.message}")
-        }
-    }
 }

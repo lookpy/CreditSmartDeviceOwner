@@ -2,15 +2,8 @@ package com.cdccreditsmart.app.presentation.admin
 
 import android.app.Activity
 import android.app.admin.DevicePolicyManager
-import android.content.ComponentName
-import android.content.Context
-import android.content.Intent
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.util.Log
-import com.cdccreditsmart.device.CDCDeviceAdminReceiver
-import com.cdccreditsmart.device.core.PolicyHelper
 
 /**
  * Activity crítica para provisionamento de Device Owner.
@@ -54,55 +47,22 @@ class ProvisioningActivity : Activity() {
     }
 
     private fun handleDeviceOwnerProvisioning() {
-        try {
-            Log.i(TAG, "✅ Device Owner provisioning initiated")
-            
-            // O sistema Android cuida do resto do processo
-            // Apenas finalizamos esta activity
-            Handler(Looper.getMainLooper()).postDelayed({
-                Log.i(TAG, "✅ Provisioning activity completed")
-                setResult(RESULT_OK)
-                finish()
-            }, 1000)
-            
-        } catch (e: Exception) {
-            Log.e(TAG, "❌ Error in Device Owner provisioning", e)
-            setResult(RESULT_CANCELED)
-            finish()
-        }
+        // CRITICAL: Responder IMEDIATAMENTE - SetupWizard tem timeout curto!
+        Log.i(TAG, "Device Owner provisioning - responding immediately")
+        setResult(RESULT_OK)
+        finish()
     }
 
     private fun handleProfileOwnerProvisioning() {
-        try {
-            Log.i(TAG, "✅ Profile Owner provisioning initiated")
-            
-            Handler(Looper.getMainLooper()).postDelayed({
-                Log.i(TAG, "✅ Provisioning activity completed")
-                setResult(RESULT_OK)
-                finish()
-            }, 1000)
-            
-        } catch (e: Exception) {
-            Log.e(TAG, "❌ Error in Profile Owner provisioning", e)
-            setResult(RESULT_CANCELED)
-            finish()
-        }
+        // CRITICAL: Responder IMEDIATAMENTE - SetupWizard tem timeout curto!
+        Log.i(TAG, "Profile Owner provisioning - responding immediately")
+        setResult(RESULT_OK)
+        finish()
     }
 
     private fun handleProvisioningStateChanged() {
-        Log.i(TAG, "Provisioning state changed - checking status")
-        
-        val dpm = getSystemService(Context.DEVICE_POLICY_SERVICE) as DevicePolicyManager
-        val componentName = ComponentName(this, CDCDeviceAdminReceiver::class.java)
-        
-        if (PolicyHelper.isDeviceOwner(dpm, packageName)) {
-            Log.i(TAG, "✅ Confirmed as Device Owner")
-        } else if (PolicyHelper.isProfileOwner(dpm, packageName)) {
-            Log.i(TAG, "✅ Confirmed as Profile Owner")
-        } else {
-            Log.w(TAG, "⚠️ Not confirmed as owner")
-        }
-        
+        // CRITICAL: Responder rápido - apenas verificação mínima
+        Log.i(TAG, "Provisioning state changed")
         setResult(RESULT_OK)
         finish()
     }
