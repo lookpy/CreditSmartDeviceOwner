@@ -58,9 +58,9 @@ The UI utilizes Jetpack Compose and Material 3 with a CDC institutional dark the
 - AdminPolicyComplianceActivity: Responde imediatamente sem operações pesadas
 - CDCDeviceAdminReceiver: Fast path para callbacks quando usuário bloqueado (< 10ms)
 - ProvisioningActivity: Removido delay de 1000ms
-- ProvisioningSuccessActivity: Removida chamada a disablePlayProtect()
+- ProvisioningSuccessActivity: Otimizada para resposta rápida
 - CDCApplication: Detecta provisionamento recente e adia operações pesadas 3 segundos
-- BootReceiver: Verifica isUserUnlocked antes de operações pesadas
+- BootReceiver: Verifica isUserUnlocked antes de operações
 - BootInterceptor: Operações de integridade movidas para background
-- Play Protect desabilitado APÓS provisionamento completar, não durante
+- PlayProtectManager: REMOVIDO completamente (não é mais necessário)
 - SetupWizard do Android tem timeout curto - todos os callbacks devem ser rápidos

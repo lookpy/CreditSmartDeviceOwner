@@ -34,11 +34,7 @@ class ProvisioningSuccessActivity : Activity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         
-        // CRITICAL: Responder IMEDIATAMENTE - apenas log mínimo
         Log.i(TAG, "Provisioning successful - launching main app")
-        
-        // NÃO chamar disablePlayProtect() aqui - será feito depois pelo app
-        // Apenas finalizar e lançar o app principal
         finish()
         launchMainActivity()
     }

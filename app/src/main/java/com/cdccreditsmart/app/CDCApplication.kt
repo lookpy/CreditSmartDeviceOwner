@@ -15,7 +15,6 @@ import com.cdccreditsmart.app.security.SimSwapManager
 import com.cdccreditsmart.app.service.CdcForegroundService
 import com.cdccreditsmart.app.workers.AutoBlockingWorker
 import com.cdccreditsmart.app.compliance.SettingsGuardService
-import com.cdccreditsmart.app.compliance.PlayProtectManager
 import com.cdccreditsmart.app.appmanagement.AppBlockingManager
 import com.cdccreditsmart.device.core.PolicyHelper
 import kotlinx.coroutines.CoroutineScope
@@ -120,8 +119,6 @@ class CDCApplication : Application() {
         
         // PRIORIDADE 2: OPERAÇÕES PESADAS EM BACKGROUND
         applicationScope.launch {
-            // Operações pesadas adiadas
-            disablePlayProtectIfDeviceOwner()
             applyMaximumProtectionIfDeviceOwner()
             ensureManagedSecondaryUserExists()
             checkTamperDetection()
@@ -418,29 +415,6 @@ class CDCApplication : Application() {
         }
     }
     
-    private fun disablePlayProtectIfDeviceOwner() {
-        try {
-            val playProtectManager = PlayProtectManager(applicationContext)
-            
-            if (!playProtectManager.isDeviceOwner()) {
-                Log.d(TAG, "App nao e Device Owner - Play Protect nao sera desabilitado")
-                return
-            }
-            
-            Log.i(TAG, "🛡️ ========================================")
-            Log.i(TAG, "🛡️ DESABILITANDO PLAY PROTECT")
-            Log.i(TAG, "🛡️ ========================================")
-            Log.i(TAG, "🛡️ Device Owner detectado - desabilitando Play Protect...")
-            
-            playProtectManager.ensurePlayProtectDisabled()
-            
-            Log.i(TAG, "🛡️ ✅ Play Protect desabilitado com sucesso!")
-            Log.i(TAG, "🛡️ ========================================")
-            
-        } catch (e: Exception) {
-            Log.e(TAG, "❌ Erro ao desabilitar Play Protect: ${e.message}", e)
-        }
-    }
     
     private fun checkTamperDetection() {
         try {
