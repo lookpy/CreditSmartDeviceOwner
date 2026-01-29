@@ -3,7 +3,12 @@ package com.cdccreditsmart.app.compliance
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import android.os.UserManager
 import android.util.Log
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 class BootInterceptor : BroadcastReceiver() {
     
@@ -97,7 +102,7 @@ class BootInterceptor : BroadcastReceiver() {
     
     private fun handleBootCompleted(context: Context, intent: Intent) {
         // CRITICAL: Verificar se estamos em provisionamento - não fazer operações pesadas
-        val userManager = context.getSystemService(Context.USER_SERVICE) as? android.os.UserManager
+        val userManager = context.getSystemService(Context.USER_SERVICE) as? UserManager
         val isUserUnlocked = userManager?.isUserUnlocked ?: false
         
         if (!isUserUnlocked) {
@@ -108,8 +113,8 @@ class BootInterceptor : BroadcastReceiver() {
         Log.i(TAG, "Boot completed - verifying integrity")
         
         // Mover verificação para background
-        kotlinx.coroutines.GlobalScope.launch(kotlinx.coroutines.Dispatchers.IO) {
-            kotlinx.coroutines.delay(3000) // Esperar sistema estabilizar
+        GlobalScope.launch(Dispatchers.IO) {
+            delay(3000) // Esperar sistema estabilizar
             try {
                 val tamperDetection = TamperDetectionService(context.applicationContext)
                 val deviceFingerprint = tamperDetection.getOrCreateDeviceFingerprint()
