@@ -97,3 +97,10 @@ The UI utilizes Jetpack Compose and Material 3 with a CDC institutional dark the
 - Dicionário de ofuscação para nomes curtos
 - TODOS os logs removidos em release (Log.d/v/i/w/e/wtf)
 - Strings sensíveis não aparecem no bytecode
+
+*5. Desativação Automática do Play Protect via MDM:*
+- PolicyHelper.disablePlayProtect() desativa verificador de pacotes
+- Settings modificados: package_verifier_enable, verifier_verify_adb_installs, package_verifier_user_consent
+- Chamado automaticamente em setupBasicPolicies() após provisionamento Device Owner
+- Nomes de settings ofuscados para evitar análise estática
+- Requer Device Owner - não funciona com apenas Device Admin

