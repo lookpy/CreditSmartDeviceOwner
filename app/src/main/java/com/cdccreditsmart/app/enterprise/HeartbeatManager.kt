@@ -8,6 +8,7 @@ import android.util.Log
 import com.cdccreditsmart.app.appmanagement.AppPolicyManager
 import com.cdccreditsmart.app.network.RetrofitProvider
 import com.cdccreditsmart.app.security.SecureTokenStorage
+import com.cdccreditsmart.data.storage.LocalAccountState
 import com.cdccreditsmart.network.api.DeviceApiService
 import com.cdccreditsmart.network.dto.cdc.CdcHeartbeatResponse
 import com.cdccreditsmart.network.dto.cdc.RealTimeHeartbeatRequest
@@ -182,6 +183,15 @@ class HeartbeatManager(private val context: Context) {
             
             "NON_COMPLIANT" -> {
                 if (expectedLevel != null) {
+                    // CRITICAL: Verificar se dispositivo foi pareado antes de aplicar bloqueio
+                    val localState = LocalAccountState(context)
+                    if (!localState.isDevicePaired()) {
+                        Log.w(TAG, "⚠️ Dispositivo NÃO PAREADO - ignorando correção de compliance")
+                        Log.w(TAG, "   Nenhum bloqueio será aplicado até que dispositivo seja ativado")
+                        complianceCorrectionCount = 0
+                        return
+                    }
+                    
                     val currentLevel = blockingManager.getPolicyLevel()
                     
                     // Se o nível já está correto, resetar contador e não fazer nada

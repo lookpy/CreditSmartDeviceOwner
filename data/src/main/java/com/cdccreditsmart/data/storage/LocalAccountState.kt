@@ -264,6 +264,21 @@ class LocalAccountState(private val context: Context) {
         return currentLevel > 0 || blockedPackages.isNotEmpty()
     }
     
+    /**
+     * Verifica se o dispositivo foi pareado/ativado com um contrato.
+     * 
+     * IMPORTANTE: Se o dispositivo NÃO foi pareado, NENHUM bloqueio deve ser aplicado.
+     * Apenas dispositivos vinculados a contratos podem ter apps bloqueados.
+     * 
+     * @return true se o dispositivo tem um contractCode válido, false caso contrário
+     */
+    fun isDevicePaired(): Boolean {
+        val code = contractCode
+        val isPaired = code.isNotBlank() && code.length >= 4 // Código mínimo de 4 caracteres
+        Log.d(TAG, "isDevicePaired: $isPaired (contractCode=${if (code.isNotBlank()) "${code.take(4)}..." else "vazio"})")
+        return isPaired
+    }
+    
     fun getBlockingStateSummary(): BlockingStateSummary {
         return BlockingStateSummary(
             currentLevel = currentLevel,

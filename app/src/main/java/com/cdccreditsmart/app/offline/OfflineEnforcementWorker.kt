@@ -53,6 +53,15 @@ class OfflineEnforcementWorker(
         Log.i(TAG, "🔄 ========================================")
         
         try {
+            val localState = LocalAccountState(applicationContext)
+            
+            // CRITICAL: Verificar se dispositivo foi pareado antes de qualquer bloqueio
+            if (!localState.isDevicePaired()) {
+                Log.i(TAG, "⚠️ Dispositivo NÃO PAREADO - nenhum bloqueio será aplicado")
+                Log.i(TAG, "🔄 ========================================")
+                return Result.success()
+            }
+            
             // CRITICAL: Verificar se backend confirmou desbloqueio recentemente (< 24h)
             // Se sim, NÃO aplicar bloqueio offline - confiar no backend
             if (HeartbeatManager.isBackendUnblockConfirmedRecently(applicationContext)) {
@@ -65,7 +74,6 @@ class OfflineEnforcementWorker(
             val debtCalculator = DebtAgingCalculator(applicationContext)
             val blockingManager = AppPolicyManager(applicationContext)
             
-            val localState = LocalAccountState(applicationContext)
             if (!localState.hasOfflineData()) {
                 Log.i(TAG, "ℹ️ Sem dados offline - nada a fazer")
                 return Result.success()

@@ -103,6 +103,24 @@ class AppPolicyManager(private val context: Context) {
         parameters: CommandParameters.BlockParameters,
         isOfflineEnforcement: Boolean = false
     ): BlockingResult {
+        // CRITICAL: Verificar se dispositivo foi pareado/ativado antes de aplicar qualquer bloqueio
+        if (!localAccountState.isDevicePaired()) {
+            Log.w(TAG, "")
+            Log.w(TAG, "╔════════════════════════════════════════════════════════════════╗")
+            Log.w(TAG, "║  ⚠️ BLOQUEIO IGNORADO - DISPOSITIVO NÃO PAREADO               ║")
+            Log.w(TAG, "╠════════════════════════════════════════════════════════════════╣")
+            Log.w(TAG, "║  Dispositivo ainda não foi ativado com código de contrato.    ║")
+            Log.w(TAG, "║  Nenhum bloqueio será aplicado até que seja pareado.          ║")
+            Log.w(TAG, "╚════════════════════════════════════════════════════════════════╝")
+            return BlockingResult(
+                success = true,
+                blockedAppsCount = 0,
+                unblockedAppsCount = 0,
+                appliedLevel = 0,
+                errorMessage = "Dispositivo não pareado - bloqueio ignorado"
+            )
+        }
+        
         val effectiveLevel = parameters.getEffectiveLevel()
         val previousLevel = getCurrentBlockingLevel()
         
@@ -1157,6 +1175,18 @@ class AppPolicyManager(private val context: Context) {
      * Isso garante que exceções (bancos_allowed, emails_allowed) sejam respeitadas.
      */
     fun applyOfflineBlock(level: Int, daysOverdue: Int) {
+        // CRITICAL: Verificar se dispositivo foi pareado/ativado antes de aplicar qualquer bloqueio
+        if (!localAccountState.isDevicePaired()) {
+            Log.w(TAG, "")
+            Log.w(TAG, "╔════════════════════════════════════════════════════════════════╗")
+            Log.w(TAG, "║  ⚠️ BLOQUEIO OFFLINE IGNORADO - DISPOSITIVO NÃO PAREADO       ║")
+            Log.w(TAG, "╠════════════════════════════════════════════════════════════════╣")
+            Log.w(TAG, "║  Dispositivo ainda não foi ativado com código de contrato.    ║")
+            Log.w(TAG, "║  Nenhum bloqueio será aplicado até que seja pareado.          ║")
+            Log.w(TAG, "╚════════════════════════════════════════════════════════════════╝")
+            return
+        }
+        
         Log.i(TAG, "")
         Log.i(TAG, "╔════════════════════════════════════════════════════════════════╗")
         Log.i(TAG, "║  🔒 APLICANDO BLOQUEIO OFFLINE                                 ║")
