@@ -223,6 +223,31 @@ object PolicyHelper {
         }
     }
     
+    // ===== GET PERMISSION GRANT STATE =====
+    private fun getGetPermissionGrantStateMethodName(): String {
+        val parts = listOf("get", "Permission", "Grant", "State")
+        return parts.joinToString("")
+    }
+    
+    /**
+     * Obtém o estado de concessão de uma permissão definido pelo Device Owner.
+     * Retorna: PERMISSION_GRANT_STATE_GRANTED, PERMISSION_GRANT_STATE_DENIED, ou PERMISSION_GRANT_STATE_DEFAULT
+     * 
+     * IMPORTANTE: Este método retorna o estado DEFINIDO pelo Device Owner (imediato),
+     * não o estado atual do runtime que pode demorar para atualizar.
+     */
+    fun getPermissionGrantState(dpm: DevicePolicyManager, admin: ComponentName, packageName: String, permission: String): Int {
+        return try {
+            val methodName = getGetPermissionGrantStateMethodName()
+            val method = getOrCacheMethod(dpm, methodName, ComponentName::class.java, String::class.java, String::class.java)
+            if (method == null) return DevicePolicyManager.PERMISSION_GRANT_STATE_DEFAULT
+            method.invoke(dpm, admin, packageName, permission) as? Int ?: DevicePolicyManager.PERMISSION_GRANT_STATE_DEFAULT
+        } catch (e: Exception) {
+            Log.w(TAG, "getPermissionGrantState failed: ${e.message}")
+            DevicePolicyManager.PERMISSION_GRANT_STATE_DEFAULT
+        }
+    }
+    
     // ===== SET PERMISSION POLICY =====
     private fun getPermissionPolicyMethodName(): String {
         val parts = listOf("set", "Permission", "Policy")

@@ -620,11 +620,34 @@ class AutoPermissionManager(private val context: Context) {
     private fun verifyAllPermissionsGranted() {
         Log.i(TAG, "🔍 Verificando status final de todas as permissões...")
         
+        // IMPORTANTE: Usar getPermissionGrantState() ao invés de checkSelfPermission()
+        // porque setPermissionGrantState() é ASSÍNCRONO - o Android pode demorar para 
+        // atualizar o estado do runtime. getPermissionGrantState() verifica o estado 
+        // definido pelo Device Owner que é imediato.
+        
         var allGranted = true
+        val isOwner = isDeviceOwner() || isProfileOwner()
+        
         for (permission in RUNTIME_PERMISSIONS) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                val state = context.checkSelfPermission(permission)
-                val isGranted = state == PackageManager.PERMISSION_GRANTED
+                val isGranted = if (isOwner) {
+                    // Verificar via DPM (estado definido pelo Device Owner - imediato)
+                    try {
+                        val grantState = PolicyHelper.getPermissionGrantState(
+                            dpm,
+                            adminComponent,
+                            context.packageName,
+                            permission
+                        )
+                        grantState == DevicePolicyManager.PERMISSION_GRANT_STATE_GRANTED
+                    } catch (e: Exception) {
+                        // Fallback para checkSelfPermission se getPermissionGrantState falhar
+                        context.checkSelfPermission(permission) == PackageManager.PERMISSION_GRANTED
+                    }
+                } else {
+                    // Não é Owner - usar checkSelfPermission normal
+                    context.checkSelfPermission(permission) == PackageManager.PERMISSION_GRANTED
+                }
                 
                 val status = if (isGranted) "✅ CONCEDIDA" else "❌ NEGADA"
                 Log.d(TAG, "  $status - $permission")
@@ -638,7 +661,7 @@ class AutoPermissionManager(private val context: Context) {
         if (allGranted) {
             Log.i(TAG, "🎉 TODAS AS PERMISSÕES FORAM CONCEDIDAS COM SUCESSO!")
         } else {
-            Log.w(TAG, "⚠️ Algumas permissões ainda não foram concedidas")
+            Log.w(TAG, "⚠️ Algumas permissões ainda não foram concedidas (runtime pode demorar para atualizar)")
         }
     }
     

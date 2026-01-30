@@ -1,0 +1,176 @@
+2026-01-30 11:20:24.459  6076-6076  MainActivity            com.cdccreditsmart.app               I  ✅ Brilho da tela definido para MÁXIMO
+2026-01-30 11:20:24.909  6076-6076  MainActivity            com.cdccreditsmart.app               D  📍 BroadcastReceiver de localização registrado
+2026-01-30 11:20:24.937  6076-6076  MainActivity            com.cdccreditsmart.app               I  ✅ App é Device Owner - permissões serão concedidas automaticamente
+2026-01-30 11:20:24.958  6076-6391  PersistentStateManager  com.cdccreditsmart.app               D  Nenhum estado local encontrado
+2026-01-30 11:20:24.958  6076-6391  PersistentStateManager  com.cdccreditsmart.app               D  🆕 Sem estado local - device novo ou pós factory reset
+2026-01-30 11:20:24.958  6076-6391  MainActivity            com.cdccreditsmart.app               I  🆕 Device nunca foi provisionado
+2026-01-30 11:20:24.982  6076-6076  Activity                com.cdccreditsmart.app               D  onResume setDolbyGameProfilePackage lastPkg =  currentPkg = com.cdccreditsmart.app
+2026-01-30 11:20:25.001  6076-6076  VRI[MainActivity]       com.cdccreditsmart.app               D  hardware acceleration = true, forceHwAccelerated = false
+2026-01-30 11:20:25.014  6076-6076  InputEventReceiver      com.cdccreditsmart.app               D  Input log is disabled in InputEventReceiver.
+2026-01-30 11:20:25.327  6076-6076  PermissionGateScreen    com.cdccreditsmart.app               I  🔐 DEVICE OWNER DETECTADO - tentando concessão automática IMEDIATA
+2026-01-30 11:20:25.328  6076-6076  AutoPermissionManager   com.cdccreditsmart.app               I  🚀 ========================================
+2026-01-30 11:20:25.328  6076-6076  AutoPermissionManager   com.cdccreditsmart.app               I  🚀 CONCESSÃO RÁPIDA DE PERMISSÕES (Device Owner)
+2026-01-30 11:20:25.328  6076-6076  AutoPermissionManager   com.cdccreditsmart.app               I  🚀 ========================================
+2026-01-30 11:20:25.329  6076-6076  AutoPermissionManager   com.cdccreditsmart.app               D    ⏩ Já concedida: android.permission.READ_PHONE_STATE
+2026-01-30 11:20:25.412  6076-6391  SettingsGuardService    com.cdccreditsmart.app               D  📋 Activity check - Full: com.cdccreditsmart.app.presentation.MainActivity, Simple: MainActivity
+2026-01-30 11:20:25.423  6076-6501  SettingsGuardService    com.cdccreditsmart.app               D  📋 Activity check - Full: com.cdccreditsmart.app.presentation.MainActivity, Simple: MainActivity
+2026-01-30 11:20:28.144  6076-6076  AutoPermissionManager   com.cdccreditsmart.app               I    ✅ Concedida: android.permission.READ_CALL_LOG
+2026-01-30 11:20:28.984  6076-6076  AutoPermissionManager   com.cdccreditsmart.app               I    ✅ Concedida: android.permission.CALL_PHONE
+2026-01-30 11:20:29.787  6076-6076  AutoPermissionManager   com.cdccreditsmart.app               I    ✅ Concedida: android.permission.READ_CONTACTS
+2026-01-30 11:20:29.788  6076-6076  AutoPermissionManager   com.cdccreditsmart.app               D    ⏩ Já concedida: android.permission.ACCESS_FINE_LOCATION
+2026-01-30 11:20:29.789  6076-6076  AutoPermissionManager   com.cdccreditsmart.app               D    ⏩ Já concedida: android.permission.ACCESS_COARSE_LOCATION
+2026-01-30 11:20:30.901  6076-6076  AutoPermissionManager   com.cdccreditsmart.app               I    ✅ Concedida: android.permission.ANSWER_PHONE_CALLS
+2026-01-30 11:20:31.273  6076-6076  AutoPermissionManager   com.cdccreditsmart.app               I    ✅ Concedida: android.permission.READ_PHONE_NUMBERS
+2026-01-30 11:20:31.273  6076-6076  AutoPermissionManager   com.cdccreditsmart.app               D    ⏩ Já concedida: android.permission.ACCESS_BACKGROUND_LOCATION
+2026-01-30 11:20:31.275  6076-6076  AutoPermissionManager   com.cdccreditsmart.app               D    ⏩ Já concedida: android.permission.POST_NOTIFICATIONS
+2026-01-30 11:20:31.275  6076-6076  AutoPermissionManager   com.cdccreditsmart.app               I  🚀 ========================================
+2026-01-30 11:20:31.275  6076-6076  AutoPermissionManager   com.cdccreditsmart.app               I  🚀 RESUMO DA CONCESSÃO RÁPIDA:
+2026-01-30 11:20:31.275  6076-6076  AutoPermissionManager   com.cdccreditsmart.app               I    ✅ Novas permissões concedidas: 5
+2026-01-30 11:20:31.275  6076-6076  AutoPermissionManager   com.cdccreditsmart.app               I    ⏩ Já estavam concedidas: 5
+2026-01-30 11:20:31.275  6076-6076  AutoPermissionManager   com.cdccreditsmart.app               I    ❌ Erros/Falhas: 0
+2026-01-30 11:20:31.275  6076-6076  AutoPermissionManager   com.cdccreditsmart.app               I    📋 Total processadas: 10
+2026-01-30 11:20:31.275  6076-6076  AutoPermissionManager   com.cdccreditsmart.app               I  🚀 ========================================
+2026-01-30 11:20:31.276  6076-6076  PermissionGateScreen    com.cdccreditsmart.app               I  ✅ Runtime permissions concedidas automaticamente
+2026-01-30 11:20:31.362  6076-6076  PermissionGateManager   com.cdccreditsmart.app               I  ✅ Device Owner: Todas as permissões especiais concedidas!
+2026-01-30 11:20:31.447  6076-6076  View                    com.cdccreditsmart.app               D  [ANR Warning]onMeasure time too long, this =androidx.compose.ui.platform.AndroidComposeView{e853ea2 VFED..... ......I. 0,0-0,0}time =6219 ms
+2026-01-30 11:20:31.449  6076-6076  View                    com.cdccreditsmart.app               D  [ANR Warning]onMeasure time too long, this =androidx.compose.ui.platform.ComposeView{eb57694 V.E...... ......I. 0,0-0,0}time =6220 ms
+2026-01-30 11:20:31.451  6076-6076  View                    com.cdccreditsmart.app               D  [ANR Warning]onMeasure time too long, this =android.widget.FrameLayout{7dcc53d V.E...... ......I. 0,0-0,0 #1020002 android:id/content}time =6221 ms
+2026-01-30 11:20:31.452  6076-6076  View                    com.cdccreditsmart.app               D  [ANR Warning]onMeasure time too long, this =android.widget.LinearLayout{746c132 V.E...... ......I. 0,0-0,0}time =6225 ms
+2026-01-30 11:20:31.452  6076-6076  View                    com.cdccreditsmart.app               D  [ANR Warning]onMeasure time too long, this =DecorView@6a9ae83[MainActivity]time =6227 ms
+2026-01-30 11:20:31.484  6076-6076  BufferQueueConsumer     com.cdccreditsmart.app               D  [](id:17bc00000001,api:0,p:-1,c:6076) connect: controlledByApp=false
+2026-01-30 11:20:31.486  6076-6076  BLASTBufferQueue        com.cdccreditsmart.app               D  [VRI[MainActivity]#1](f:0,a:0) constructor()
+2026-01-30 11:20:31.486  6076-6076  BLASTBufferQueue        com.cdccreditsmart.app               D  [VRI[MainActivity]#1](f:0,a:0) update width=1080 height=2400 format=-3 mTransformHint=0
+2026-01-30 11:20:31.590  6076-6449  BLASTBufferQueue        com.cdccreditsmart.app               D  [VRI[MainActivity]#1](f:0,a:1) acquireNextBufferLocked size=1080x2400 mFrameNumber=1 applyTransaction=true mTimestamp=191796283703(auto) mPendingTransactions.size=0 graphicBufferId=26096221290503 transform=0
+2026-01-30 11:20:31.616  6076-6076  PermissionGateScreen    com.cdccreditsmart.app               I  🔍 VERIFICAÇÃO INICIAL DE PERMISSÕES:
+2026-01-30 11:20:31.617  6076-6076  PermissionGateScreen    com.cdccreditsmart.app               I     Nível: DEVICE_OWNER
+2026-01-30 11:20:31.617  6076-6076  PermissionGateScreen    com.cdccreditsmart.app               I     Todas concedidas: true
+2026-01-30 11:20:31.618  6076-6076  PermissionGateScreen    com.cdccreditsmart.app               I     Bateria isenta: true
+2026-01-30 11:20:31.618  6076-6076  PermissionGateScreen    com.cdccreditsmart.app               I     ✅ OK: Permissões Básicas
+2026-01-30 11:20:31.618  6076-6076  PermissionGateScreen    com.cdccreditsmart.app               I     ✅ OK: Monitoramento de Apps
+2026-01-30 11:20:31.618  6076-6076  PermissionGateScreen    com.cdccreditsmart.app               I     ✅ OK: Mostrar Alertas
+2026-01-30 11:20:31.618  6076-6076  PermissionGateScreen    com.cdccreditsmart.app               I     ✅ OK: Execução em Segundo Plano
+2026-01-30 11:20:31.620  6076-6501  AutoPermissionManager   com.cdccreditsmart.app               I  ========================================
+2026-01-30 11:20:31.620  6076-6501  AutoPermissionManager   com.cdccreditsmart.app               I  🔐 INICIANDO CONCESSÃO AUTOMÁTICA DE PERMISSÕES
+2026-01-30 11:20:31.620  6076-6501  AutoPermissionManager   com.cdccreditsmart.app               I  ========================================
+2026-01-30 11:20:31.621  6076-6076  PermissionGateScreen    com.cdccreditsmart.app               I  ✅ TODAS AS PERMISSÕES JÁ CONCEDIDAS - navegando imediatamente
+2026-01-30 11:20:31.623  6076-6076  SettingsGuardService    com.cdccreditsmart.app               I  ▶️ Guard RETOMADO após fluxo de permissões
+2026-01-30 11:20:31.626  6076-6111  HWUI                    com.cdccreditsmart.app               I  Davey! duration=6631ms; Flags=1, FrameTimelineVsyncId=41595, IntendedVsync=185167300518, Vsync=185217189306, InputEventId=0, HandleInputStart=185227816626, AnimationStart=185227820318, PerformTraversalsStart=185227821241, DrawStart=191766215780, FrameDeadline=185187300518, FrameInterval=185227791164, FrameStartTime=16629596, SyncQueued=191779219088, SyncStart=191779375472, IssueDrawCommandsStart=191779621626, SwapBuffers=191796229011, FrameCompleted=191798883088, DequeueBufferDuration=32076, QueueBufferDuration=1535154, GpuCompleted=191798883088, SwapBuffersCompleted=191798235165, DisplayPresentTime=0, CommandSubmissionCompleted=191796229011, 
+2026-01-30 11:20:31.630  6076-6501  AutoPermissionManager   com.cdccreditsmart.app               I  📋 Status: Device Owner=true, Profile Owner=false
+2026-01-30 11:20:31.630  6076-6501  AutoPermissionManager   com.cdccreditsmart.app               I  ✅ App é Device Owner - concedendo permissões automaticamente...
+2026-01-30 11:20:31.635  6076-6501  AutoPermissionManager   com.cdccreditsmart.app               I  🚀 ========================================
+2026-01-30 11:20:31.635  6076-6501  AutoPermissionManager   com.cdccreditsmart.app               I  🚀 CONCESSÃO RÁPIDA DE PERMISSÕES (Device Owner)
+2026-01-30 11:20:31.635  6076-6501  AutoPermissionManager   com.cdccreditsmart.app               I  🚀 ========================================
+2026-01-30 11:20:31.637  6076-6501  AutoPermissionManager   com.cdccreditsmart.app               D    ⏩ Já concedida: android.permission.READ_PHONE_STATE
+2026-01-30 11:20:31.666  6076-6076  Choreographer           com.cdccreditsmart.app               I  Skipped 398 frames!  The application may be doing too much work on its main thread.
+2026-01-30 11:20:31.788  6076-8111  HWUI                    com.cdccreditsmart.app               I  Davey! duration=6728ms; Flags=0, FrameTimelineVsyncId=41663, IntendedVsync=185250441789, Vsync=191868912741, InputEventId=0, HandleInputStart=191874883165, AnimationStart=191874890780, PerformTraversalsStart=191937608934, DrawStart=191938103703, FrameDeadline=191822509322, FrameInterval=191873969934, FrameStartTime=16629324, SyncQueued=191954336396, SyncStart=191955924396, IssueDrawCommandsStart=191958762472, SwapBuffers=191977562549, FrameCompleted=191980174780, DequeueBufferDuration=38462, QueueBufferDuration=1042847, GpuCompleted=191980174780, SwapBuffersCompleted=191979454165, DisplayPresentTime=0, CommandSubmissionCompleted=191977562549, 
+2026-01-30 11:20:31.845  6076-6076  DeviceOwnerCheckVM      com.cdccreditsmart.app               I  ========================================
+2026-01-30 11:20:31.845  6076-6076  DeviceOwnerCheckVM      com.cdccreditsmart.app               I  🔐 Verificando status de Device Owner...
+2026-01-30 11:20:32.382  6076-6076  DeviceUtils             com.cdccreditsmart.app               D  Device Owner check: true
+2026-01-30 11:20:32.383  6076-6076  DeviceUtils             com.cdccreditsmart.app               D  Samsung device: false (Manufacturer: motorola)
+2026-01-30 11:20:32.383  6076-6076  DeviceOwnerCheckVM      com.cdccreditsmart.app               I  ✅ Dispositivo é Device Owner - permitindo acesso ao app
+2026-01-30 11:20:32.383  6076-6076  DeviceOwnerCheckVM      com.cdccreditsmart.app               I  ========================================
+2026-01-30 11:20:32.451  6076-6076  RouterViewModel         com.cdccreditsmart.app               D  🚀 Iniciando verificação de autenticação...
+2026-01-30 11:20:32.472  6076-6391  AuthOrchestrator        com.cdccreditsmart.app               D  🔐 Verificando autenticação...
+2026-01-30 11:20:32.527  6076-6391  AuthOrchestrator        com.cdccreditsmart.app               D  🌐 Conectividade: ONLINE
+2026-01-30 11:20:32.529  6076-6391  AuthOrchestrator        com.cdccreditsmart.app               D  🔄 ========== AUTO-DISCOVERY INICIADO ==========
+2026-01-30 11:20:32.568  6076-6391  DeviceUtils             com.cdccreditsmart.app               D  IMEI retrieved successfully: 3531***
+2026-01-30 11:20:32.568  6076-6391  AuthOrchestrator        com.cdccreditsmart.app               D  📱 IMEI obtido: 3531***198
+2026-01-30 11:20:32.568  6076-6391  AuthOrchestrator        com.cdccreditsmart.app               D  🔍 Tentando auto-discovery...
+2026-01-30 11:20:32.568  6076-6391  AuthOrchestrator        com.cdccreditsmart.app               D     Endpoint: GET /api/apk/discover/353104906953198
+2026-01-30 11:20:32.658  6076-6501  AutoPermissionManager   com.cdccreditsmart.app               I    ✅ Concedida: android.permission.READ_CALL_LOG
+2026-01-30 11:20:32.706  6076-8147  okhttp.OkHttpClient     com.cdccreditsmart.app               I  --> GET https://cdccreditsmart.com/api/apk/discover/353104906953198
+2026-01-30 11:20:32.707  6076-8147  okhttp.OkHttpClient     com.cdccreditsmart.app               I  --> END GET
+2026-01-30 11:20:33.117  6076-6501  AutoPermissionManager   com.cdccreditsmart.app               I    ✅ Concedida: android.permission.CALL_PHONE
+2026-01-30 11:20:33.348  6076-6100  creditsmart.app         com.cdccreditsmart.app               W  Cleared Reference was only reachable from finalizer (only reported once)
+2026-01-30 11:20:33.611  6076-8147  okhttp.OkHttpClient     com.cdccreditsmart.app               I  <-- 404 https://cdccreditsmart.com/api/apk/discover/353104906953198 (902ms)
+2026-01-30 11:20:33.612  6076-8147  okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-credentials: true
+2026-01-30 11:20:33.612  6076-8147  okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-headers: Origin, X-Requested-With, Content-Type, Accept, Authorization, x-client-key, x-client-token, x-client-secret, cache-control
+2026-01-30 11:20:33.612  6076-8147  okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-methods: GET, POST, PUT, PATCH, DELETE, OPTIONS
+2026-01-30 11:20:33.612  6076-8147  okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-origin: *
+2026-01-30 11:20:33.612  6076-8147  okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-max-age: 86400
+2026-01-30 11:20:33.612  6076-8147  okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-length: 135
+2026-01-30 11:20:33.612  6076-8147  okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-security-policy: default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://replit.com; style-src 'self' 'unsafe-inline' https://replit.com; img-src 'self' data: https:; font-src 'self' data: https://replit.com; connect-src 'self';
+2026-01-30 11:20:33.613  6076-8147  okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-type: application/json; charset=utf-8
+2026-01-30 11:20:33.613  6076-8147  okhttp.OkHttpClient     com.cdccreditsmart.app               I  date: Fri, 30 Jan 2026 14:20:34 GMT
+2026-01-30 11:20:33.613  6076-8147  okhttp.OkHttpClient     com.cdccreditsmart.app               I  etag: W/"87-WMi3emPyx8sd4D1rSTdlqG1WZek"
+2026-01-30 11:20:33.613  6076-8147  okhttp.OkHttpClient     com.cdccreditsmart.app               I  permissions-policy: geolocation=(), microphone=(), camera=()
+2026-01-30 11:20:33.613  6076-8147  okhttp.OkHttpClient     com.cdccreditsmart.app               I  referrer-policy: strict-origin-when-cross-origin
+2026-01-30 11:20:33.613  6076-8147  okhttp.OkHttpClient     com.cdccreditsmart.app               I  strict-transport-security: max-age=63072000; includeSubDomains
+2026-01-30 11:20:33.613  6076-8147  okhttp.OkHttpClient     com.cdccreditsmart.app               I  strict-transport-security: max-age=31536000; includeSubDomains
+2026-01-30 11:20:33.614  6076-8147  okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-anti-fraud-protection: active
+2026-01-30 11:20:33.614  6076-8147  okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-certificate-pinning-enabled: false
+2026-01-30 11:20:33.614  6076-8147  okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-certificate-pinning-status: disabled-for-stability
+2026-01-30 11:20:33.614  6076-8147  okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-content-type-options: nosniff
+2026-01-30 11:20:33.614  6076-8147  okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-financial-data-protection: enabled
+2026-01-30 11:20:33.614  6076-8147  okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-frame-options: DENY
+2026-01-30 11:20:33.615  6076-8147  okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-transaction-security-level: maximum
+2026-01-30 11:20:33.615  6076-8147  okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-xss-protection: 1; mode=block
+2026-01-30 11:20:33.615  6076-8147  okhttp.OkHttpClient     com.cdccreditsmart.app               I  via: 1.1 google
+2026-01-30 11:20:33.615  6076-8147  okhttp.OkHttpClient     com.cdccreditsmart.app               I  alt-svc: h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
+2026-01-30 11:20:33.619  6076-8147  okhttp.OkHttpClient     com.cdccreditsmart.app               I  {"error":"Dispositivo não cadastrado","hint":"Este aparelho não está cadastrado no sistema. Cadastre-o primeiro na plataforma web."}
+2026-01-30 11:20:33.619  6076-8147  okhttp.OkHttpClient     com.cdccreditsmart.app               I  <-- END HTTP (135-byte body)
+2026-01-30 11:20:33.642  6076-6391  AuthOrchestrator        com.cdccreditsmart.app               W  ❌ Dispositivo não cadastrado (404)
+2026-01-30 11:20:33.642  6076-6391  AuthOrchestrator        com.cdccreditsmart.app               D     → Backend não encontrou este IMEI
+2026-01-30 11:20:33.642  6076-6391  AuthOrchestrator        com.cdccreditsmart.app               D     → Será necessário pareamento manual
+2026-01-30 11:20:33.642  6076-6391  ContractCodeStorage     com.cdccreditsmart.app               D  Retrieving contract code from storage
+2026-01-30 11:20:33.995  6076-6100  creditsmart.app         com.cdccreditsmart.app               I  Background concurrent mark compact GC freed 6344KB AllocSpace bytes, 47(1712KB) LOS objects, 66% free, 8232KB/24MB, paused 7.544ms,39.048ms total 1.147s
+2026-01-30 11:20:34.260  6076-6391  ContractCodeStorage     com.cdccreditsmart.app               D  Storage verification: 0 valid, 0 tampered, 7 missing
+2026-01-30 11:20:34.260  6076-6391  ContractCodeStorage     com.cdccreditsmart.app               W  No valid contract code found in any location
+2026-01-30 11:20:34.260  6076-6391  AuthOrchestrator        com.cdccreditsmart.app               D  ❌ Código de pareamento não encontrado - precisa de novo código
+2026-01-30 11:20:34.268  6076-6076  RouterViewModel         com.cdccreditsmart.app               D  ❌ Código de pareamento necessário - Ir para QR Scanner
+2026-01-30 11:20:34.361  6076-6501  AutoPermissionManager   com.cdccreditsmart.app               I    ✅ Concedida: android.permission.READ_CONTACTS
+2026-01-30 11:20:34.369  6076-6501  AutoPermissionManager   com.cdccreditsmart.app               D    ⏩ Já concedida: android.permission.ACCESS_FINE_LOCATION
+2026-01-30 11:20:34.372  6076-6501  AutoPermissionManager   com.cdccreditsmart.app               D    ⏩ Já concedida: android.permission.ACCESS_COARSE_LOCATION
+2026-01-30 11:20:34.975  6076-6076  Choreographer           com.cdccreditsmart.app               I  Skipped 34 frames!  The application may be doing too much work on its main thread.
+2026-01-30 11:20:35.536  6076-6501  AutoPermissionManager   com.cdccreditsmart.app               I    ✅ Concedida: android.permission.ANSWER_PHONE_CALLS
+2026-01-30 11:20:35.881  6076-6501  AutoPermissionManager   com.cdccreditsmart.app               I    ✅ Concedida: android.permission.READ_PHONE_NUMBERS
+2026-01-30 11:20:35.892  6076-6501  AutoPermissionManager   com.cdccreditsmart.app               D    ⏩ Já concedida: android.permission.ACCESS_BACKGROUND_LOCATION
+2026-01-30 11:20:35.893  6076-6501  AutoPermissionManager   com.cdccreditsmart.app               D    ⏩ Já concedida: android.permission.POST_NOTIFICATIONS
+2026-01-30 11:20:35.893  6076-6501  AutoPermissionManager   com.cdccreditsmart.app               I  🚀 ========================================
+2026-01-30 11:20:35.893  6076-6501  AutoPermissionManager   com.cdccreditsmart.app               I  🚀 RESUMO DA CONCESSÃO RÁPIDA:
+2026-01-30 11:20:35.893  6076-6501  AutoPermissionManager   com.cdccreditsmart.app               I    ✅ Novas permissões concedidas: 5
+2026-01-30 11:20:35.893  6076-6501  AutoPermissionManager   com.cdccreditsmart.app               I    ⏩ Já estavam concedidas: 5
+2026-01-30 11:20:35.893  6076-6501  AutoPermissionManager   com.cdccreditsmart.app               I    ❌ Erros/Falhas: 0
+2026-01-30 11:20:35.893  6076-6501  AutoPermissionManager   com.cdccreditsmart.app               I    📋 Total processadas: 10
+2026-01-30 11:20:35.893  6076-6501  AutoPermissionManager   com.cdccreditsmart.app               I  🚀 ========================================
+2026-01-30 11:20:35.893  6076-6501  AutoPermissionManager   com.cdccreditsmart.app               I  🔍 Verificando status final de todas as permissões...
+2026-01-30 11:20:35.894  6076-6501  AutoPermissionManager   com.cdccreditsmart.app               D    ✅ CONCEDIDA - android.permission.READ_PHONE_STATE
+2026-01-30 11:20:35.906  6076-6501  AutoPermissionManager   com.cdccreditsmart.app               D    ❌ NEGADA - android.permission.READ_CALL_LOG
+2026-01-30 11:20:35.907  6076-6501  AutoPermissionManager   com.cdccreditsmart.app               D    ❌ NEGADA - android.permission.CALL_PHONE
+2026-01-30 11:20:35.908  6076-6501  AutoPermissionManager   com.cdccreditsmart.app               D    ❌ NEGADA - android.permission.READ_CONTACTS
+2026-01-30 11:20:35.909  6076-6501  AutoPermissionManager   com.cdccreditsmart.app               D    ✅ CONCEDIDA - android.permission.ACCESS_FINE_LOCATION
+2026-01-30 11:20:35.910  6076-6501  AutoPermissionManager   com.cdccreditsmart.app               D    ✅ CONCEDIDA - android.permission.ACCESS_COARSE_LOCATION
+2026-01-30 11:20:35.912  6076-6501  AutoPermissionManager   com.cdccreditsmart.app               D    ❌ NEGADA - android.permission.ANSWER_PHONE_CALLS
+2026-01-30 11:20:35.916  6076-6501  AutoPermissionManager   com.cdccreditsmart.app               D    ❌ NEGADA - android.permission.READ_PHONE_NUMBERS
+2026-01-30 11:20:35.916  6076-6501  AutoPermissionManager   com.cdccreditsmart.app               D    ✅ CONCEDIDA - android.permission.ACCESS_BACKGROUND_LOCATION
+2026-01-30 11:20:35.916  6076-6501  AutoPermissionManager   com.cdccreditsmart.app               D    ✅ CONCEDIDA - android.permission.POST_NOTIFICATIONS
+2026-01-30 11:20:35.916  6076-6501  AutoPermissionManager   com.cdccreditsmart.app               W  ⚠️ Algumas permissões ainda não foram concedidas
+2026-01-30 11:20:35.916  6076-6501  AutoPermissionManager   com.cdccreditsmart.app               I  ========================================
+2026-01-30 11:20:35.916  6076-6501  AutoPermissionManager   com.cdccreditsmart.app               I  🔐 CONFIGURANDO PERMISSÕES ESPECIAIS (Device Owner)
+2026-01-30 11:20:35.916  6076-6501  AutoPermissionManager   com.cdccreditsmart.app               I  ========================================
+2026-01-30 11:20:35.917  6076-6501  AutoPermissionManager   com.cdccreditsmart.app               I  📊 ========================================
+2026-01-30 11:20:35.917  6076-6501  AutoPermissionManager   com.cdccreditsmart.app               I  📊 CONCEDENDO PACKAGE_USAGE_STATS (Usage Access)
+2026-01-30 11:20:35.917  6076-6501  AutoPermissionManager   com.cdccreditsmart.app               I  📊 ========================================
+2026-01-30 11:20:35.929  6076-6501  AutoPermissionManager   com.cdccreditsmart.app               I  📊 ✅ PACKAGE_USAGE_STATS já está concedida!
+2026-01-30 11:20:35.929  6076-6501  AutoPermissionManager   com.cdccreditsmart.app               I  🪟 ========================================
+2026-01-30 11:20:35.929  6076-6501  AutoPermissionManager   com.cdccreditsmart.app               I  🪟 CONCEDENDO SYSTEM_ALERT_WINDOW (Overlay)
+2026-01-30 11:20:35.929  6076-6501  AutoPermissionManager   com.cdccreditsmart.app               I  🪟 ========================================
+2026-01-30 11:20:35.929  6076-6501  AutoPermissionManager   com.cdccreditsmart.app               I  🪟 ✅ SYSTEM_ALERT_WINDOW já está concedida!
+2026-01-30 11:20:35.929  6076-6501  AutoPermissionManager   com.cdccreditsmart.app               I  🔋 ========================================
+2026-01-30 11:20:35.929  6076-6501  AutoPermissionManager   com.cdccreditsmart.app               I  🔋 VERIFICANDO ISENÇÃO DE OTIMIZAÇÃO DE BATERIA
+2026-01-30 11:20:35.929  6076-6501  AutoPermissionManager   com.cdccreditsmart.app               I  🔋 ========================================
+2026-01-30 11:20:35.955  6076-6501  AutoPermissionManager   com.cdccreditsmart.app               I  🔋 ✅ App JÁ está isento de otimização de bateria
+2026-01-30 11:20:35.955  6076-6501  AutoPermissionManager   com.cdccreditsmart.app               I  🔋 ========================================
+2026-01-30 11:20:35.955  6076-6501  AutoPermissionManager   com.cdccreditsmart.app               I  📍 Forçando GPS/Localização sempre ativo...
+2026-01-30 11:20:35.960  6076-6501  AutoPermissionManager   com.cdccreditsmart.app               I  ✅ Localização forçada via setLocationEnabled (Android 9+)
+2026-01-30 11:20:35.978  6076-6501  AutoPermissionManager   com.cdccreditsmart.app               I  📍 Sem bloqueio ativo - usuário pode controlar GPS normalmente
+2026-01-30 11:20:35.989  6076-6501  AutoPermissionManager   com.cdccreditsmart.app               I  📍 Status atual - GPS: true, Network: true
+2026-01-30 11:20:35.989  6076-6501  AutoPermissionManager   com.cdccreditsmart.app               I  📍 Configuração de localização concluída
+2026-01-30 11:20:35.991  6076-6501  AutoPermissionManager   com.cdccreditsmart.app               I  ✅ Política de permissões configurada para AUTO_GRANT
+2026-01-30 11:20:35.991  6076-6501  AutoPermissionManager   com.cdccreditsmart.app               I  📊 ========================================
+2026-01-30 11:20:35.991  6076-6501  AutoPermissionManager   com.cdccreditsmart.app               I  📊 VERIFICAÇÃO FINAL: PACKAGE_USAGE_STATS
+2026-01-30 11:20:35.991  6076-6501  AutoPermissionManager   com.cdccreditsmart.app               I  📊 ========================================
+2026-01-30 11:20:35.999  6076-6501  AutoPermissionManager   com.cdccreditsmart.app               I  📊 ✅ PACKAGE_USAGE_STATS está ATIVA!
+2026-01-30 11:20:35.999  6076-6501  AutoPermissionManager   com.cdccreditsmart.app               I  📊    SettingsGuard pode monitorar activities precisamente
+2026-01-30 11:20:35.999  6076-6501  AutoPermissionManager   com.cdccreditsmart.app               I  📊 ========================================
+2026-01-30 11:20:35.999  6076-6501  AutoPermissionManager   com.cdccreditsmart.app               I  ========================================
