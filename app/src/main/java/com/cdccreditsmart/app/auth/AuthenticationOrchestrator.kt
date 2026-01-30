@@ -11,6 +11,7 @@ import com.cdccreditsmart.app.security.SecureTokenStorage
 import com.cdccreditsmart.app.service.CdcForegroundService
 import com.cdccreditsmart.app.storage.ContractCodeStorage
 import com.cdccreditsmart.app.utils.DeviceUtils
+import com.cdccreditsmart.data.storage.LocalAccountState
 import com.cdccreditsmart.network.api.DeviceApiService
 import com.cdccreditsmart.network.dto.apk.ApkAuthRequest
 import com.cdccreditsmart.network.dto.cdc.ImeiAuthRequest
@@ -193,6 +194,12 @@ class AuthenticationOrchestrator(private val context: Context) {
                 customerName = customer?.name,
                 deviceModel = device.model ?: device.name
             )
+            
+            // CRITICAL: Salvar IMEI registrado para validação de bloqueio
+            // Isso impede que alguém use código de contrato de outro dispositivo
+            val localState = LocalAccountState(context)
+            localState.saveRegisteredImei(device.imei, device.imeiList)
+            localState.contractCode = contractCode
             
             Log.d(TAG, "💾 Dados salvos:")
             Log.d(TAG, "   - ContractCode: ${contractCode}")

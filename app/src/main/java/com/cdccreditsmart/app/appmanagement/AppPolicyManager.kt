@@ -9,6 +9,7 @@ import android.os.UserManager
 import android.util.Log
 import com.cdccreditsmart.app.knox.KnoxLockscreenManager
 import com.cdccreditsmart.app.offline.DebtAgingCalculator
+import com.cdccreditsmart.app.utils.DeviceUtils
 import com.cdccreditsmart.data.storage.LocalAccountState
 import com.cdccreditsmart.device.CDCDeviceAdminReceiver
 import com.cdccreditsmart.network.dto.mdm.BlockAllFlags
@@ -103,21 +104,27 @@ class AppPolicyManager(private val context: Context) {
         parameters: CommandParameters.BlockParameters,
         isOfflineEnforcement: Boolean = false
     ): BlockingResult {
-        // CRITICAL: Verificar se dispositivo foi pareado/ativado antes de aplicar qualquer bloqueio
-        if (!localAccountState.isDevicePaired()) {
+        // CRITICAL: Verificar se dispositivo foi pareado/ativado E IMEI corresponde ao contrato
+        val currentImei = DeviceUtils.getDeviceImei(context)
+        if (!localAccountState.isDeviceValidlyPaired(currentImei)) {
+            val reason = if (!localAccountState.isDevicePaired()) {
+                "Dispositivo ainda não foi ativado com código de contrato."
+            } else {
+                "IMEI do dispositivo não corresponde ao registrado no contrato."
+            }
             Log.w(TAG, "")
             Log.w(TAG, "╔════════════════════════════════════════════════════════════════╗")
-            Log.w(TAG, "║  ⚠️ BLOQUEIO IGNORADO - DISPOSITIVO NÃO PAREADO               ║")
+            Log.w(TAG, "║  ⚠️ BLOQUEIO IGNORADO - VALIDAÇÃO FALHOU                       ║")
             Log.w(TAG, "╠════════════════════════════════════════════════════════════════╣")
-            Log.w(TAG, "║  Dispositivo ainda não foi ativado com código de contrato.    ║")
-            Log.w(TAG, "║  Nenhum bloqueio será aplicado até que seja pareado.          ║")
+            Log.w(TAG, "║  $reason")
+            Log.w(TAG, "║  Nenhum bloqueio será aplicado.                                ║")
             Log.w(TAG, "╚════════════════════════════════════════════════════════════════╝")
             return BlockingResult(
                 success = true,
                 blockedAppsCount = 0,
                 unblockedAppsCount = 0,
                 appliedLevel = 0,
-                errorMessage = "Dispositivo não pareado - bloqueio ignorado"
+                errorMessage = reason
             )
         }
         
@@ -1175,14 +1182,20 @@ class AppPolicyManager(private val context: Context) {
      * Isso garante que exceções (bancos_allowed, emails_allowed) sejam respeitadas.
      */
     fun applyOfflineBlock(level: Int, daysOverdue: Int) {
-        // CRITICAL: Verificar se dispositivo foi pareado/ativado antes de aplicar qualquer bloqueio
-        if (!localAccountState.isDevicePaired()) {
+        // CRITICAL: Verificar se dispositivo foi pareado/ativado E IMEI corresponde ao contrato
+        val currentImei = DeviceUtils.getDeviceImei(context)
+        if (!localAccountState.isDeviceValidlyPaired(currentImei)) {
+            val reason = if (!localAccountState.isDevicePaired()) {
+                "Dispositivo ainda não foi ativado com código de contrato."
+            } else {
+                "IMEI do dispositivo não corresponde ao registrado no contrato."
+            }
             Log.w(TAG, "")
             Log.w(TAG, "╔════════════════════════════════════════════════════════════════╗")
-            Log.w(TAG, "║  ⚠️ BLOQUEIO OFFLINE IGNORADO - DISPOSITIVO NÃO PAREADO       ║")
+            Log.w(TAG, "║  ⚠️ BLOQUEIO OFFLINE IGNORADO - VALIDAÇÃO FALHOU              ║")
             Log.w(TAG, "╠════════════════════════════════════════════════════════════════╣")
-            Log.w(TAG, "║  Dispositivo ainda não foi ativado com código de contrato.    ║")
-            Log.w(TAG, "║  Nenhum bloqueio será aplicado até que seja pareado.          ║")
+            Log.w(TAG, "║  $reason")
+            Log.w(TAG, "║  Nenhum bloqueio será aplicado.                                ║")
             Log.w(TAG, "╚════════════════════════════════════════════════════════════════╝")
             return
         }

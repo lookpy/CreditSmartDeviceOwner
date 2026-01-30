@@ -15,6 +15,7 @@ import com.cdccreditsmart.app.permissions.AutoPermissionManager
 import com.cdccreditsmart.app.security.FingerprintCalculator
 import com.cdccreditsmart.app.security.SecureTokenStorage
 import com.cdccreditsmart.app.service.CdcForegroundService
+import com.cdccreditsmart.data.storage.LocalAccountState
 import com.cdccreditsmart.app.websocket.WebSocketManager
 import com.cdccreditsmart.app.workers.AutoBlockingWorker
 import com.cdccreditsmart.app.workers.PeriodicOverlayWorker
@@ -610,6 +611,13 @@ class PairingViewModel(private val context: Context) : ViewModel() {
                                         val primaryImei = imeiInfo.primaryImei
                                         if (primaryImei != null) {
                                             tokenStorage.saveImeiForMdm(primaryImei)
+                                            
+                                            // CRITICAL: Salvar IMEI registrado para validação de bloqueio
+                                            // Isso impede que alguém use código de contrato de outro dispositivo
+                                            val localState = LocalAccountState(context)
+                                            localState.saveRegisteredImei(primaryImei, imeiInfo.getAllImeis())
+                                            localState.contractCode = contractCode
+                                            Log.i(TAG, "✅ IMEI registrado salvo para validação de bloqueio")
                                         }
                                         tokenStorage.saveValidatedImeis(imeiInfo.getAllImeis())
                                         Log.i(TAG, "✅ IMEI(s) salvo(s) para MDM")

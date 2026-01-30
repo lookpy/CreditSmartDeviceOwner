@@ -8,6 +8,7 @@ import android.util.Log
 import com.cdccreditsmart.app.appmanagement.AppPolicyManager
 import com.cdccreditsmart.app.network.RetrofitProvider
 import com.cdccreditsmart.app.security.SecureTokenStorage
+import com.cdccreditsmart.app.utils.DeviceUtils
 import com.cdccreditsmart.data.storage.LocalAccountState
 import com.cdccreditsmart.network.api.DeviceApiService
 import com.cdccreditsmart.network.dto.cdc.CdcHeartbeatResponse
@@ -183,11 +184,17 @@ class HeartbeatManager(private val context: Context) {
             
             "NON_COMPLIANT" -> {
                 if (expectedLevel != null) {
-                    // CRITICAL: Verificar se dispositivo foi pareado antes de aplicar bloqueio
+                    // CRITICAL: Verificar se dispositivo foi pareado E IMEI corresponde ao contrato
                     val localState = LocalAccountState(context)
-                    if (!localState.isDevicePaired()) {
-                        Log.w(TAG, "⚠️ Dispositivo NÃO PAREADO - ignorando correção de compliance")
-                        Log.w(TAG, "   Nenhum bloqueio será aplicado até que dispositivo seja ativado")
+                    val currentImei = DeviceUtils.getDeviceImei(context)
+                    if (!localState.isDeviceValidlyPaired(currentImei)) {
+                        val reason = if (!localState.isDevicePaired()) {
+                            "Dispositivo NÃO PAREADO"
+                        } else {
+                            "IMEI não corresponde ao contrato"
+                        }
+                        Log.w(TAG, "⚠️ $reason - ignorando correção de compliance")
+                        Log.w(TAG, "   Nenhum bloqueio será aplicado")
                         complianceCorrectionCount = 0
                         return
                     }

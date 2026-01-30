@@ -33,6 +33,9 @@ class LocalAccountState(private val context: Context) {
         private const val KEY_LAST_OVERLAY_MESSAGE = "last_overlay_message"
         private const val KEY_PIX_CODE = "pix_code"
         private const val KEY_BOLETO_CODE = "boleto_code"
+        
+        private const val KEY_REGISTERED_IMEI = "registered_imei"
+        private const val KEY_REGISTERED_IMEI_LIST = "registered_imei_list"
     }
     
     private val moshi = Moshi.Builder()
@@ -183,6 +186,48 @@ class LocalAccountState(private val context: Context) {
         get() = prefs.getString(KEY_BOLETO_CODE, "") ?: ""
         set(value) = prefs.edit().putString(KEY_BOLETO_CODE, value).apply()
     
+    /**
+     * IMEI registrado do contrato (recebido do backend durante pareamento/discovery)
+     * Usado para validar que o IMEI físico do dispositivo corresponde ao contrato
+     */
+    var registeredImei: String
+        get() = prefs.getString(KEY_REGISTERED_IMEI, "") ?: ""
+        set(value) = prefs.edit().putString(KEY_REGISTERED_IMEI, value).apply()
+    
+    /**
+     * Lista de IMEIs registrados (para dispositivos dual-SIM)
+     */
+    var registeredImeiList: List<String>
+        get() {
+            val json = prefs.getString(KEY_REGISTERED_IMEI_LIST, "[]") ?: "[]"
+            return try {
+                stringListAdapter.fromJson(json) ?: emptyList()
+            } catch (e: Exception) {
+                Log.e(TAG, "Error parsing registeredImeiList", e)
+                emptyList()
+            }
+        }
+        set(value) {
+            try {
+                val json = stringListAdapter.toJson(value)
+                prefs.edit().putString(KEY_REGISTERED_IMEI_LIST, json).apply()
+            } catch (e: Exception) {
+                Log.e(TAG, "Error serializing registeredImeiList", e)
+            }
+        }
+    
+    /**
+     * Salva o IMEI registrado do contrato (recebido do backend)
+     */
+    fun saveRegisteredImei(imei: String, imeiList: List<String>? = null) {
+        Log.i(TAG, "💾 Salvando IMEI registrado: ${imei.take(6)}...")
+        registeredImei = imei
+        if (!imeiList.isNullOrEmpty()) {
+            registeredImeiList = imeiList
+            Log.i(TAG, "   → Lista de IMEIs: ${imeiList.size} registrados")
+        }
+    }
+    
     fun saveContractInfo(
         contractCode: String,
         customerName: String,
@@ -277,6 +322,67 @@ class LocalAccountState(private val context: Context) {
         val isPaired = code.isNotBlank() && code.length >= 4 // Código mínimo de 4 caracteres
         Log.d(TAG, "isDevicePaired: $isPaired (contractCode=${if (code.isNotBlank()) "${code.take(4)}..." else "vazio"})")
         return isPaired
+    }
+    
+    /**
+     * Verifica se o dispositivo foi validamente pareado E o IMEI corresponde ao contrato.
+     * 
+     * CRÍTICO: Mesmo que alguém insira um código de contrato de outro dispositivo,
+     * o bloqueio NÃO será aplicado se o IMEI físico não corresponder ao registrado.
+     * 
+     * @param currentDeviceImei IMEI atual do dispositivo físico
+     * @param additionalImeis IMEIs adicionais (dual-SIM)
+     * @return true se pareado E IMEI válido, false caso contrário
+     */
+    fun isDeviceValidlyPaired(currentDeviceImei: String?, additionalImeis: List<String>? = null): Boolean {
+        // Primeiro verifica se tem contrato
+        if (!isDevicePaired()) {
+            Log.d(TAG, "isDeviceValidlyPaired: false (não pareado)")
+            return false
+        }
+        
+        // Se não há IMEI registrado salvo, considera válido (retrocompatibilidade)
+        val savedImei = registeredImei
+        if (savedImei.isBlank()) {
+            Log.w(TAG, "isDeviceValidlyPaired: true (sem IMEI registrado salvo - retrocompatibilidade)")
+            return true
+        }
+        
+        // Verifica se IMEI atual corresponde ao registrado
+        if (currentDeviceImei.isNullOrBlank()) {
+            Log.w(TAG, "isDeviceValidlyPaired: false (IMEI atual não disponível)")
+            return false
+        }
+        
+        // Verificar correspondência direta
+        if (currentDeviceImei == savedImei) {
+            Log.d(TAG, "isDeviceValidlyPaired: true (IMEI corresponde: ${savedImei.take(6)}...)")
+            return true
+        }
+        
+        // Verificar na lista de IMEIs registrados (dual-SIM)
+        val savedImeiList = registeredImeiList
+        if (savedImeiList.isNotEmpty() && currentDeviceImei in savedImeiList) {
+            Log.d(TAG, "isDeviceValidlyPaired: true (IMEI está na lista registrada)")
+            return true
+        }
+        
+        // Verificar se algum dos IMEIs adicionais corresponde
+        if (!additionalImeis.isNullOrEmpty()) {
+            for (additionalImei in additionalImeis) {
+                if (additionalImei == savedImei || additionalImei in savedImeiList) {
+                    Log.d(TAG, "isDeviceValidlyPaired: true (IMEI adicional corresponde)")
+                    return true
+                }
+            }
+        }
+        
+        // IMEI não corresponde - possível tentativa de usar contrato de outro dispositivo
+        Log.w(TAG, "⚠️ isDeviceValidlyPaired: FALSE!")
+        Log.w(TAG, "   IMEI atual: ${currentDeviceImei.take(6)}...")
+        Log.w(TAG, "   IMEI registrado: ${savedImei.take(6)}...")
+        Log.w(TAG, "   Possível tentativa de usar contrato de outro dispositivo!")
+        return false
     }
     
     fun getBlockingStateSummary(): BlockingStateSummary {
