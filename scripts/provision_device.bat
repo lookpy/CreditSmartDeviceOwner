@@ -10,7 +10,7 @@ set APK_PATH=%1
 if "%APK_PATH%"=="" set APK_PATH=C:\CreditSmartDeviceOwner\app\release\app-release.apk
 
 set PACKAGE_NAME=com.cdccreditsmart.app
-set COMPONENT_NAME=%PACKAGE_NAME%/.device.CDCDeviceAdminReceiver
+set COMPONENT_NAME=%PACKAGE_NAME%/com.cdccreditsmart.device.CDCDeviceAdminReceiver
 
 echo Verificando ADB...
 
@@ -263,7 +263,7 @@ echo Desabilitando otimizacao de bateria...
 
 echo.
 echo Iniciando Credit Smart...
-"%ADB%" shell am start -n %PACKAGE_NAME%/.MainActivity
+"%ADB%" shell am start -n %PACKAGE_NAME%/.presentation.MainActivity
 
 echo.
 echo ==============================================
