@@ -70,17 +70,20 @@ echo ADB encontrado: %ADB%
 echo.
 
 echo Verificando dispositivo conectado...
-for /f "tokens=*" %%a in ('"%ADB%" devices ^| find /c "device"') do set DEVICE_COUNT=%%a
-set /a DEVICE_COUNT=%DEVICE_COUNT%-1
 
-if %DEVICE_COUNT% equ 0 (
+REM Verifica se ha dispositivo conectado
+"%ADB%" devices > "%TEMP%\adb_devices.txt" 2>&1
+findstr /r "device$" "%TEMP%\adb_devices.txt" >nul
+if %ERRORLEVEL% neq 0 (
     echo ERRO: Nenhum dispositivo conectado
     echo 1. Conecte o dispositivo via USB
     echo 2. Ative 'USB Debugging' nas Opcoes de Desenvolvedor
     echo 3. Aceite o prompt de autorizacao no dispositivo
+    del "%TEMP%\adb_devices.txt" 2>nul
     pause
     exit /b 1
 )
+del "%TEMP%\adb_devices.txt" 2>nul
 
 for /f "tokens=*" %%a in ('"%ADB%" shell getprop ro.product.model') do set DEVICE_MODEL=%%a
 for /f "tokens=*" %%a in ('"%ADB%" shell getprop ro.product.manufacturer') do set MANUFACTURER=%%a
@@ -170,10 +173,12 @@ echo Verificando usuarios secundarios...
 
 echo.
 echo Removendo usuarios secundarios (se houver)...
-for /f "tokens=2 delims={:" %%u in ('"%ADB%" shell pm list users ^| findstr /r "UserInfo{[1-9]"') do (
+"%ADB%" shell pm list users > "%TEMP%\adb_users.txt" 2>&1
+for /f "tokens=2 delims={:" %%u in ('findstr /r "UserInfo{[1-9]" "%TEMP%\adb_users.txt"') do (
     echo   Removendo usuario %%u...
     "%ADB%" shell pm remove-user %%u
 )
+del "%TEMP%\adb_users.txt" 2>nul
 
 echo.
 echo Desinstalando app antigo...
