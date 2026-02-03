@@ -382,6 +382,49 @@ object PolicyHelper {
         }
     }
     
+    /**
+     * Configura FRP com conta Google da Credit Smart.
+     * Após factory reset, o dispositivo exigirá login com esta conta.
+     * Requer Android 11+ (API 30+)
+     * 
+     * @param frpAccountEmail Email da conta Google para FRP (ex: "dispositivos@creditsmart.com.br")
+     * @return true se configurado com sucesso
+     */
+    fun configureFrpWithAccount(dpm: DevicePolicyManager, admin: ComponentName, frpAccountEmail: String): Boolean {
+        return try {
+            if (android.os.Build.VERSION.SDK_INT < 30) {
+                Log.w(TAG, "FRP Policy requires Android 11+")
+                return false
+            }
+            
+            val policyClass = Class.forName("android.app.admin.FactoryResetProtectionPolicy")
+            val builderClass = Class.forName("android.app.admin.FactoryResetProtectionPolicy\$Builder")
+            
+            val builder = builderClass.getDeclaredConstructor().newInstance()
+            
+            val setAccountsMethod = builderClass.getMethod("setFactoryResetProtectionAccounts", List::class.java)
+            setAccountsMethod.invoke(builder, listOf(frpAccountEmail))
+            
+            val setEnabledMethod = builderClass.getMethod("setFactoryResetProtectionEnabled", Boolean::class.javaPrimitiveType)
+            setEnabledMethod.invoke(builder, true)
+            
+            val buildMethod = builderClass.getMethod("build")
+            val policy = buildMethod.invoke(builder)
+            
+            setFactoryResetProtectionPolicy(dpm, admin, policy)
+        } catch (e: Exception) {
+            Log.w(TAG, "configureFrpWithAccount failed: ${e.message}")
+            false
+        }
+    }
+    
+    /**
+     * Remove a política de FRP (permite qualquer conta após reset)
+     */
+    fun clearFrpPolicy(dpm: DevicePolicyManager, admin: ComponentName): Boolean {
+        return setFactoryResetProtectionPolicy(dpm, admin, null)
+    }
+    
     // ===== SET PERMITTED ACCESSIBILITY SERVICES =====
     private fun getAccessibilityServicesMethodName(): String {
         val parts = listOf("set", "Permitted", "Accessibility", "Services")

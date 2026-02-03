@@ -23,6 +23,10 @@ class CDCDeviceAdminReceiver : DeviceAdminReceiver() {
 
     companion object {
         private const val TAG = "CDCDeviceAdminReceiver"
+        
+        // Conta Google da Credit Smart para FRP (Factory Reset Protection)
+        // Após factory reset, o dispositivo exigirá login com esta conta
+        private const val FRP_ACCOUNT_EMAIL = "horionnote@gmail.com"
     }
 
     override fun onEnabled(context: Context, intent: Intent) {
@@ -141,6 +145,19 @@ class CDCDeviceAdminReceiver : DeviceAdminReceiver() {
                     "A localização é usada apenas para fins de segurança e recuperação do dispositivo. " +
                     "Em caso de dúvidas, entre em contato com a Credit Smart."
                 )
+                
+                // Configura FRP (Factory Reset Protection) com conta da Credit Smart
+                // Após factory reset, o dispositivo exigirá login com esta conta
+                val frpConfigured = PolicyHelper.configureFrpWithAccount(
+                    dpm, 
+                    admin, 
+                    FRP_ACCOUNT_EMAIL
+                )
+                if (frpConfigured) {
+                    Log.i(TAG, "FRP configured with Credit Smart account")
+                } else {
+                    Log.w(TAG, "FRP configuration failed - may require Android 11+")
+                }
             }
             
             val systemApps = listOf("com.android.settings", "com.android.systemui")
