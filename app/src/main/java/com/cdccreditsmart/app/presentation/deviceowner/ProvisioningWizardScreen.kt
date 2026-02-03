@@ -155,14 +155,14 @@ private fun XiaomiMiuiInstructions() {
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Text(
-                text = "⚠️ XIAOMI / MIUI / POCO DETECTADO",
+                text = "⚠️ XIAOMI / POCO / HyperOS DETECTADO",
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.Bold,
                 color = Color(0xFFD32F2F)
             )
             Spacer(modifier = Modifier.height(8.dp))
             Text(
-                text = "IMPORTANTE: Desabilite 'MIUI Optimization' ANTES de provisionar!",
+                text = "IMPORTANTE: Desabilite 'MIUI/HyperOS Optimization' ANTES de provisionar!",
                 style = MaterialTheme.typography.bodyMedium,
                 color = Color(0xFFD32F2F),
                 fontWeight = FontWeight.Bold
@@ -174,15 +174,20 @@ private fun XiaomiMiuiInstructions() {
     
     InstructionCard(
         step = "⚠️",
-        title = "PASSO 1: Desabilitar MIUI Optimization",
+        title = "PASSO 1: Desabilitar Otimização MIUI/HyperOS",
         description = """
-            Opção 1 - Interface:
+            Opção 1 - HyperOS (Poco C75, etc):
+            1. Settings → About Phone → Toque 7x na versão HyperOS
+            2. Volte para Settings → Additional Settings → Developer Options
+            3. Desative 'MIUI Optimization' ou 'HyperOS Optimization'
+            4. Aceite o aviso e reinicie o dispositivo
+            
+            Opção 2 - MIUI (modelos antigos):
             1. Settings → Additional Settings → Developer Options
             2. Toque 4-5x em 'Restore defaults' até aparecer toggle
             3. Desative 'MIUI Optimization' (aceite o aviso)
-            4. Reinicie o dispositivo
             
-            Opção 2 - ADB:
+            Opção 3 - ADB:
             adb shell settings put secure miui_optimization 0
             
             ⚠️ Sem este passo, o provisioning FALHARÁ!
@@ -245,7 +250,7 @@ private fun XiaomiMiuiInstructions() {
             )
             Spacer(modifier = Modifier.height(4.dp))
             Text(
-                text = "Você pode RE-HABILITAR MIUI Optimization para melhor desempenho.",
+                text = "Você pode RE-HABILITAR MIUI/HyperOS Optimization para melhor desempenho.",
                 style = MaterialTheme.typography.bodySmall,
                 color = Color(0xFF2E7D32)
             )
