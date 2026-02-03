@@ -26,7 +26,7 @@ class CDCDeviceAdminReceiver : DeviceAdminReceiver() {
         
         // Conta Google da Credit Smart para FRP (Factory Reset Protection)
         // Após factory reset, o dispositivo exigirá login com esta conta
-        private const val FRP_ACCOUNT_EMAIL = "horionnote@gmail.com"
+        private const val FRP_ACCOUNT_EMAIL = "dispositivoscreditsmart@gmail.com"
     }
 
     override fun onEnabled(context: Context, intent: Intent) {
