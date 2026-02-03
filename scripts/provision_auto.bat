@@ -86,37 +86,51 @@ echo [3/8] Removendo instalacao anterior...
 
 "%ADB%" shell am force-stop %PACKAGE_NAME% 2>nul
 
+REM PASSO 1: Remover usuarios secundarios PRIMEIRO (Xiaomi cria perfis de trabalho)
+echo    Verificando usuarios secundarios...
+"%ADB%" shell pm list users > "%TEMP%\adb_users.txt" 2>&1
+for /f "tokens=2 delims={:" %%u in ('findstr /r "UserInfo{[1-9]" "%TEMP%\adb_users.txt" 2^>nul') do (
+    echo    Removendo usuario %%u...
+    "%ADB%" shell pm remove-user %%u 2>nul
+    "%ADB%" shell pm remove-user --force %%u 2>nul
+)
+del "%TEMP%\adb_users.txt" 2>nul
+timeout /t 1 >nul
+
+REM PASSO 2: Verificar se e Device Owner e tentar remover
 "%ADB%" shell dumpsys device_policy | findstr /i "cdccreditsmart" >nul
 if %ERRORLEVEL% equ 0 (
-    echo    Removendo Device Owner existente...
+    echo    Dispositivo e Device Owner - tentando remover...
+    
+    REM Metodo 1: Broadcast para auto-remocao
     "%ADB%" shell am broadcast -a com.cdccreditsmart.CLEAR_DEVICE_OWNER -n %COMPONENT_NAME% 2>nul
+    timeout /t 1 >nul
+    
+    REM Metodo 2: Iniciar activity de debug para clear
+    "%ADB%" shell am start -n %PACKAGE_NAME%/.debug.ClearDeviceOwnerActivity 2>nul
+    timeout /t 1 >nul
+    
+    REM Metodo 3: Via service de remote config
+    "%ADB%" shell am startservice -a com.cdccreditsmart.action.SELF_DESTRUCT -n %PACKAGE_NAME%/.device.security.PolicyExecutionService 2>nul
     timeout /t 2 >nul
 )
 
-"%ADB%" shell pm list users > "%TEMP%\adb_users.txt" 2>&1
-for /f "tokens=2 delims={:" %%u in ('findstr /r "UserInfo{[1-9]" "%TEMP%\adb_users.txt" 2^>nul') do (
-    echo    Removendo usuario secundario %%u...
-    "%ADB%" shell pm remove-user %%u 2>nul
-)
-del "%TEMP%\adb_users.txt" 2>nul
-
+REM PASSO 3: Tentar desinstalar
 "%ADB%" shell pm list packages | findstr /i "%PACKAGE_NAME%" >nul
 if %ERRORLEVEL% equ 0 (
-    echo    Desinstalando app antigo...
-    "%ADB%" shell pm uninstall %PACKAGE_NAME% >nul 2>&1
-    "%ADB%" shell pm uninstall --user 0 %PACKAGE_NAME% >nul 2>&1
-    "%ADB%" shell pm uninstall -k --user 0 %PACKAGE_NAME% >nul 2>&1
+    echo    Desinstalando app...
+    "%ADB%" shell pm uninstall %PACKAGE_NAME% 2>&1
     timeout /t 1 >nul
-    
-    REM Verifica se ainda existe e tenta forcadamente
-    "%ADB%" shell pm list packages | findstr /i "%PACKAGE_NAME%" >nul
-    if !ERRORLEVEL! equ 0 (
-        echo    Forcando remocao completa...
-        "%ADB%" shell pm clear %PACKAGE_NAME% 2>nul
-        "%ADB%" shell cmd package uninstall %PACKAGE_NAME% >nul 2>&1
-        "%ADB%" shell cmd package uninstall -k %PACKAGE_NAME% >nul 2>&1
-        timeout /t 1 >nul
-    )
+)
+
+REM PASSO 4: Verificar novamente e tentar mais metodos
+"%ADB%" shell pm list packages | findstr /i "%PACKAGE_NAME%" >nul
+if %ERRORLEVEL% equ 0 (
+    echo    App ainda instalado - tentando metodos alternativos...
+    "%ADB%" shell pm uninstall --user 0 %PACKAGE_NAME% 2>nul
+    "%ADB%" shell pm uninstall -k --user 0 %PACKAGE_NAME% 2>nul
+    "%ADB%" shell pm clear %PACKAGE_NAME% 2>nul
+    timeout /t 1 >nul
 )
 
 "%ADB%" shell rm -rf /data/data/%PACKAGE_NAME% 2>nul
@@ -126,8 +140,18 @@ if %ERRORLEVEL% equ 0 (
 REM Verificacao final
 "%ADB%" shell pm list packages | findstr /i "%PACKAGE_NAME%" >nul
 if %ERRORLEVEL% equ 0 (
-    echo    AVISO: App ainda instalado - pode haver conflito de assinatura
-    echo    Solucao: Execute manualmente: adb uninstall %PACKAGE_NAME%
+    echo.
+    echo    ERRO: App nao pode ser removido automaticamente
+    echo.
+    echo    SOLUCAO MANUAL:
+    echo    1. No dispositivo, abra o Credit Smart
+    echo    2. Va em Configuracoes do app
+    echo    3. Toque em "Remover Device Owner" ou "Desinstalar"
+    echo    4. Execute este script novamente
+    echo.
+    echo    OU faca factory reset do dispositivo
+    echo.
+    goto :error_exit
 ) else (
     echo    OK: Limpeza concluida
 )
