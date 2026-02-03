@@ -7,7 +7,7 @@ echo ==============================================
 echo.
 
 set APK_PATH=%1
-if "%APK_PATH%"=="" set APK_PATH=app\build\outputs\apk\release\app-release.apk
+if "%APK_PATH%"=="" set APK_PATH=C:\CreditSmartDeviceOwner\app\release\app-release.apk
 
 set PACKAGE_NAME=com.cdccreditsmart.app
 set COMPONENT_NAME=%PACKAGE_NAME%/.device.CDCDeviceAdminReceiver
