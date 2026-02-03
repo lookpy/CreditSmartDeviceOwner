@@ -90,7 +90,7 @@ echo [3/8] Removendo instalacao anterior...
 if %ERRORLEVEL% equ 0 (
     echo    Removendo Device Owner existente...
     "%ADB%" shell am broadcast -a com.cdccreditsmart.CLEAR_DEVICE_OWNER -n %COMPONENT_NAME% 2>nul
-    timeout /t 1 >nul
+    timeout /t 2 >nul
 )
 
 "%ADB%" shell pm list users > "%TEMP%\adb_users.txt" 2>&1
@@ -105,12 +105,32 @@ if %ERRORLEVEL% equ 0 (
     echo    Desinstalando app antigo...
     "%ADB%" shell pm uninstall %PACKAGE_NAME% >nul 2>&1
     "%ADB%" shell pm uninstall --user 0 %PACKAGE_NAME% >nul 2>&1
+    "%ADB%" shell pm uninstall -k --user 0 %PACKAGE_NAME% >nul 2>&1
+    timeout /t 1 >nul
+    
+    REM Verifica se ainda existe e tenta forcadamente
+    "%ADB%" shell pm list packages | findstr /i "%PACKAGE_NAME%" >nul
+    if !ERRORLEVEL! equ 0 (
+        echo    Forcando remocao completa...
+        "%ADB%" shell pm clear %PACKAGE_NAME% 2>nul
+        "%ADB%" shell cmd package uninstall %PACKAGE_NAME% >nul 2>&1
+        "%ADB%" shell cmd package uninstall -k %PACKAGE_NAME% >nul 2>&1
+        timeout /t 1 >nul
+    )
 )
 
 "%ADB%" shell rm -rf /data/data/%PACKAGE_NAME% 2>nul
+"%ADB%" shell rm -rf /data/app/*%PACKAGE_NAME%* 2>nul
 "%ADB%" shell rm -rf /sdcard/Android/data/%PACKAGE_NAME% 2>nul
 
-echo    OK: Limpeza concluida
+REM Verificacao final
+"%ADB%" shell pm list packages | findstr /i "%PACKAGE_NAME%" >nul
+if %ERRORLEVEL% equ 0 (
+    echo    AVISO: App ainda instalado - pode haver conflito de assinatura
+    echo    Solucao: Execute manualmente: adb uninstall %PACKAGE_NAME%
+) else (
+    echo    OK: Limpeza concluida
+)
 
 echo.
 echo [4/8] Verificando APK...
