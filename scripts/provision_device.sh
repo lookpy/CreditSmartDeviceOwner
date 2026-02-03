@@ -6,11 +6,13 @@ echo "=============================================="
 echo ""
 
 APK_PATH="${1:-app/build/outputs/apk/release/app-release.apk}"
-COMPONENT_NAME="com.cdccreditsmart.app/.device.CDCDeviceAdminReceiver"
+PACKAGE_NAME="com.cdccreditsmart.app"
+COMPONENT_NAME="$PACKAGE_NAME/.device.CDCDeviceAdminReceiver"
 
 RED='\033[0;31m'
 GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
+CYAN='\033[0;36m'
 NC='\033[0m'
 
 check_adb() {
@@ -56,38 +58,188 @@ check_xiaomi() {
     if [[ "$MANUFACTURER" == "xiaomi" ]] || [[ "$MANUFACTURER" == "redmi" ]] || [[ "$MANUFACTURER" == "poco" ]]; then
         echo -e "${YELLOW}⚠️  DISPOSITIVO XIAOMI/POCO DETECTADO${NC}"
         echo ""
-        echo "IMPORTANTE: Desabilite 'MIUI/HyperOS Optimization' antes de continuar!"
-        echo ""
-        echo "Tentando desabilitar automaticamente via ADB..."
+        echo "Tentando desabilitar MIUI/HyperOS Optimization via ADB..."
         adb shell settings put secure miui_optimization 0 2>/dev/null
         
         MIUI_OPT=$(adb shell settings get secure miui_optimization 2>/dev/null | tr -d '\r')
         if [ "$MIUI_OPT" == "0" ]; then
             echo -e "${GREEN}✓ MIUI Optimization desabilitada${NC}"
         else
-            echo -e "${YELLOW}⚠️  Não foi possível desabilitar automaticamente${NC}"
-            echo "   Desabilite manualmente em: Settings → Developer Options → MIUI Optimization"
+            echo -e "${YELLOW}⚠️  Desabilite manualmente: Settings → Developer Options → MIUI Optimization${NC}"
         fi
         echo ""
     fi
 }
 
+check_existing_installation() {
+    echo -e "${CYAN}=== VERIFICANDO INSTALAÇÃO EXISTENTE ===${NC}"
+    echo ""
+    
+    INSTALLED=$(adb shell pm list packages 2>/dev/null | grep -c "$PACKAGE_NAME")
+    
+    if [ "$INSTALLED" -eq 0 ]; then
+        echo -e "${GREEN}✓ App não instalado anteriormente${NC}"
+        echo ""
+        return 0
+    fi
+    
+    echo -e "${YELLOW}⚠️  Credit Smart já está instalado${NC}"
+    echo ""
+    
+    CURRENT_OWNER=$(adb shell dumpsys device_policy 2>/dev/null | grep "Device Owner:" | head -1)
+    IS_DEVICE_OWNER=0
+    
+    if echo "$CURRENT_OWNER" | grep -q "cdccreditsmart"; then
+        IS_DEVICE_OWNER=1
+        echo -e "${YELLOW}⚠️  Credit Smart é Device Owner${NC}"
+    fi
+    
+    echo ""
+    echo "O script irá:"
+    echo "  1. Parar o app"
+    if [ "$IS_DEVICE_OWNER" -eq 1 ]; then
+        echo "  2. Remover Device Owner"
+        echo "  3. Remover usuários secundários (CDC Credit Smart)"
+    fi
+    echo "  4. Desinstalar app antigo"
+    echo "  5. Instalar nova versão"
+    echo "  6. Configurar como Device Owner"
+    echo ""
+    
+    read -p "Continuar? (S/n): " CONTINUE
+    if [[ "$CONTINUE" =~ ^[Nn]$ ]]; then
+        echo "Operação cancelada."
+        exit 0
+    fi
+    
+    echo ""
+    cleanup_existing_installation "$IS_DEVICE_OWNER"
+}
+
+cleanup_existing_installation() {
+    local IS_DO=$1
+    
+    echo -e "${CYAN}=== LIMPANDO INSTALAÇÃO ANTERIOR ===${NC}"
+    echo ""
+    
+    echo "Parando o app..."
+    adb shell am force-stop "$PACKAGE_NAME" 2>/dev/null
+    echo -e "${GREEN}✓ App parado${NC}"
+    
+    if [ "$IS_DO" -eq 1 ]; then
+        echo ""
+        echo "Removendo Device Owner..."
+        
+        echo "  Método 1: Via broadcast de auto-remoção..."
+        adb shell am broadcast -a com.cdccreditsmart.CLEAR_DEVICE_OWNER -n "$PACKAGE_NAME/.device.CDCDeviceAdminReceiver" 2>/dev/null
+        sleep 1
+        
+        STILL_OWNER=$(adb shell dumpsys device_policy 2>/dev/null | grep "Device Owner:" | grep -c "cdccreditsmart")
+        
+        if [ "$STILL_OWNER" -gt 0 ]; then
+            echo "  Método 2: Via dpm remove-active-admin..."
+            adb shell dpm remove-active-admin "$COMPONENT_NAME" 2>/dev/null
+            sleep 1
+        fi
+        
+        STILL_OWNER=$(adb shell dumpsys device_policy 2>/dev/null | grep "Device Owner:" | grep -c "cdccreditsmart")
+        
+        if [ "$STILL_OWNER" -gt 0 ]; then
+            echo "  Método 3: Forçando clearDeviceOwnerApp via Activity..."
+            adb shell am start -n "$PACKAGE_NAME/.debug.ClearDeviceOwnerActivity" 2>/dev/null
+            sleep 2
+        fi
+        
+        STILL_OWNER=$(adb shell dumpsys device_policy 2>/dev/null | grep "Device Owner:" | grep -c "cdccreditsmart")
+        
+        if [ "$STILL_OWNER" -eq 0 ]; then
+            echo -e "${GREEN}✓ Device Owner removido${NC}"
+        else
+            echo -e "${YELLOW}⚠️  Não foi possível remover Device Owner automaticamente${NC}"
+            echo ""
+            echo "Opções:"
+            echo "  1. No app: Settings → Remover Device Owner (se disponível)"
+            echo "  2. Factory reset do dispositivo"
+            echo ""
+            read -p "Continuar mesmo assim? (s/N): " FORCE_CONTINUE
+            if [[ ! "$FORCE_CONTINUE" =~ ^[Ss]$ ]]; then
+                exit 1
+            fi
+        fi
+    fi
+    
+    echo ""
+    echo "Verificando usuários secundários..."
+    
+    USERS=$(adb shell pm list users 2>/dev/null)
+    echo "$USERS"
+    
+    SECONDARY_USERS=$(echo "$USERS" | grep -E "UserInfo\{[1-9]" | grep -oE "\{[0-9]+" | tr -d '{')
+    
+    if [ -n "$SECONDARY_USERS" ]; then
+        echo ""
+        echo "Usuários secundários encontrados. Removendo..."
+        
+        for USER_ID in $SECONDARY_USERS; do
+            echo "  Removendo usuário $USER_ID..."
+            adb shell pm remove-user "$USER_ID" 2>/dev/null
+            
+            if [ $? -eq 0 ]; then
+                echo -e "  ${GREEN}✓ Usuário $USER_ID removido${NC}"
+            else
+                echo -e "  ${YELLOW}⚠ Não foi possível remover usuário $USER_ID${NC}"
+            fi
+        done
+    else
+        echo -e "${GREEN}✓ Nenhum usuário secundário encontrado${NC}"
+    fi
+    
+    echo ""
+    echo "Desinstalando app antigo..."
+    
+    adb shell pm uninstall "$PACKAGE_NAME" 2>/dev/null
+    
+    STILL_INSTALLED=$(adb shell pm list packages 2>/dev/null | grep -c "$PACKAGE_NAME")
+    
+    if [ "$STILL_INSTALLED" -eq 0 ]; then
+        echo -e "${GREEN}✓ App desinstalado com sucesso${NC}"
+    else
+        echo -e "${YELLOW}⚠️  Tentando desinstalar para todos os usuários...${NC}"
+        adb shell pm uninstall --user 0 "$PACKAGE_NAME" 2>/dev/null
+        adb shell pm uninstall -k "$PACKAGE_NAME" 2>/dev/null
+        
+        STILL_INSTALLED=$(adb shell pm list packages 2>/dev/null | grep -c "$PACKAGE_NAME")
+        if [ "$STILL_INSTALLED" -eq 0 ]; then
+            echo -e "${GREEN}✓ App desinstalado${NC}"
+        else
+            echo -e "${RED}ERRO: Não foi possível desinstalar o app${NC}"
+            echo "Tente fazer factory reset no dispositivo."
+            exit 1
+        fi
+    fi
+    
+    echo ""
+    echo "Limpando dados residuais..."
+    adb shell rm -rf /data/data/"$PACKAGE_NAME" 2>/dev/null
+    adb shell rm -rf /sdcard/Android/data/"$PACKAGE_NAME" 2>/dev/null
+    echo -e "${GREEN}✓ Dados limpos${NC}"
+    
+    echo ""
+    echo -e "${GREEN}=== LIMPEZA CONCLUÍDA ===${NC}"
+    echo ""
+    
+    sleep 1
+}
+
 check_accounts() {
     echo "Verificando contas Google no dispositivo..."
-    ACCOUNTS=$(adb shell pm list users 2>/dev/null | grep -c "UserInfo")
     
-    GOOGLE_ACCOUNT=$(adb shell dumpsys account 2>/dev/null | grep -c "Account {name=.*type=com.google")
+    GOOGLE_ACCOUNT=$(adb shell dumpsys account 2>/dev/null | grep -c "type=com.google")
     
     if [ "$GOOGLE_ACCOUNT" -gt 0 ]; then
-        echo -e "${RED}ERRO: Dispositivo possui conta Google configurada${NC}"
+        echo -e "${YELLOW}⚠️  Dispositivo possui conta Google configurada${NC}"
         echo ""
-        echo "Device Owner só pode ser definido em dispositivos:"
-        echo "  - Novos (sem contas)"
-        echo "  - Após factory reset"
-        echo ""
-        echo "Opções:"
-        echo "  1. Remova todas as contas Google manualmente"
-        echo "  2. Faça factory reset no dispositivo"
+        echo "Isso pode impedir a configuração de Device Owner."
         echo ""
         read -p "Continuar mesmo assim? (s/N): " CONTINUE
         if [[ ! "$CONTINUE" =~ ^[Ss]$ ]]; then
@@ -99,31 +251,21 @@ check_accounts() {
     echo ""
 }
 
-check_existing_owner() {
-    echo "Verificando Device Owner existente..."
+check_other_device_owner() {
+    echo "Verificando outros Device Owners..."
     CURRENT_OWNER=$(adb shell dumpsys device_policy 2>/dev/null | grep "Device Owner:" | head -1)
     
     if [ -n "$CURRENT_OWNER" ]; then
-        echo -e "${YELLOW}⚠️  Device Owner já definido:${NC}"
-        echo "   $CURRENT_OWNER"
-        echo ""
-        
-        if echo "$CURRENT_OWNER" | grep -q "cdccreditsmart"; then
-            echo -e "${GREEN}✓ Credit Smart já é Device Owner${NC}"
+        if ! echo "$CURRENT_OWNER" | grep -q "cdccreditsmart"; then
+            echo -e "${RED}ERRO: Outro app é Device Owner:${NC}"
+            echo "   $CURRENT_OWNER"
             echo ""
-            read -p "Reinstalar o APK mesmo assim? (s/N): " REINSTALL
-            if [[ ! "$REINSTALL" =~ ^[Ss]$ ]]; then
-                echo "Operação cancelada."
-                exit 0
-            fi
-        else
-            echo -e "${RED}ERRO: Outro app é Device Owner${NC}"
-            echo "É necessário fazer factory reset para remover."
+            echo "Factory reset necessário para remover."
             exit 1
         fi
-    else
-        echo -e "${GREEN}✓ Nenhum Device Owner definido${NC}"
     fi
+    
+    echo -e "${GREEN}✓ Nenhum outro Device Owner${NC}"
     echo ""
 }
 
@@ -132,12 +274,13 @@ install_apk() {
         echo -e "${RED}ERRO: APK não encontrado: $APK_PATH${NC}"
         echo ""
         echo "Opções:"
-        echo "  1. Compile o projeto: ./gradlew assembleDebug"
+        echo "  1. Compile o projeto: ./gradlew assembleRelease"
         echo "  2. Especifique o caminho: $0 /caminho/para/app.apk"
         exit 1
     fi
     
-    echo "Instalando APK: $APK_PATH"
+    echo -e "${CYAN}=== INSTALANDO APK ===${NC}"
+    echo "Arquivo: $APK_PATH"
     echo ""
     
     adb install -r -g "$APK_PATH"
@@ -152,7 +295,7 @@ install_apk() {
 }
 
 set_device_owner() {
-    echo "Definindo Credit Smart como Device Owner..."
+    echo -e "${CYAN}=== CONFIGURANDO DEVICE OWNER ===${NC}"
     echo "Comando: adb shell dpm set-device-owner $COMPONENT_NAME"
     echo ""
     
@@ -204,7 +347,7 @@ grant_permissions() {
     )
     
     for PERM in "${PERMISSIONS[@]}"; do
-        adb shell pm grant com.cdccreditsmart.app "$PERM" 2>/dev/null
+        adb shell pm grant "$PACKAGE_NAME" "$PERM" 2>/dev/null
         if [ $? -eq 0 ]; then
             echo -e "  ${GREEN}✓${NC} $PERM"
         else
@@ -217,14 +360,14 @@ grant_permissions() {
 
 disable_battery_optimization() {
     echo "Desabilitando otimização de bateria..."
-    adb shell dumpsys deviceidle whitelist +com.cdccreditsmart.app 2>/dev/null
+    adb shell dumpsys deviceidle whitelist +"$PACKAGE_NAME" 2>/dev/null
     echo -e "${GREEN}✓ App adicionado à whitelist de bateria${NC}"
     echo ""
 }
 
 start_app() {
     echo "Iniciando Credit Smart..."
-    adb shell am start -n com.cdccreditsmart.app/.MainActivity 2>/dev/null
+    adb shell am start -n "$PACKAGE_NAME/.MainActivity" 2>/dev/null
     echo -e "${GREEN}✓ App iniciado${NC}"
     echo ""
 }
@@ -242,9 +385,9 @@ show_summary() {
     echo "  3. Aguarde a sincronização com o backend"
     echo ""
     echo "Comandos úteis:"
-    echo "  Ver logs:    adb logcat -s CDCDeviceAdminReceiver"
+    echo "  Ver logs:    adb logcat -s CDCDeviceAdminReceiver AppPolicyManager"
     echo "  Ver status:  adb shell dumpsys device_policy"
-    echo "  Remover DO:  Factory reset necessário"
+    echo "  Reinstalar:  $0"
     echo ""
 }
 
@@ -252,8 +395,9 @@ main() {
     check_adb
     check_device
     check_xiaomi
+    check_existing_installation
     check_accounts
-    check_existing_owner
+    check_other_device_owner
     install_apk
     
     if set_device_owner; then

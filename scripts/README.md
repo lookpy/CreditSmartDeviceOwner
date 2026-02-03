@@ -38,15 +38,27 @@ scripts\provision_device.bat app\build\outputs\apk\debug\app-debug.apk
 
 ## O que o script faz
 
+### Instalação limpa (app não instalado):
 1. Verifica conexão ADB
 2. Detecta dispositivo e exibe informações
-3. Para Xiaomi/POCO: desabilita MIUI Optimization automaticamente
-4. Verifica se há contas Google (impede Device Owner)
-5. Verifica se já existe Device Owner
-6. Instala o APK com `adb install -r -g`
-7. Define o app como Device Owner via `dpm set-device-owner`
-8. Concede permissões automaticamente
-9. Adiciona app à whitelist de bateria
+3. Para Xiaomi/POCO: desabilita MIUI/HyperOS Optimization
+4. Verifica contas Google
+5. Instala o APK release
+6. Define como Device Owner
+7. Concede permissões automaticamente
+8. Adiciona à whitelist de bateria
+9. Inicia o app
+
+### Reinstalação (app já instalado):
+1. Detecta instalação existente
+2. Para o app
+3. **Remove Device Owner automaticamente** (3 métodos)
+4. **Remove usuários secundários** (CDC Credit Smart)
+5. **Desinstala app antigo completamente**
+6. Limpa dados residuais
+7. Instala nova versão
+8. Reconfigura como Device Owner
+9. Concede permissões
 10. Inicia o app
 
 ## Solução de Problemas
