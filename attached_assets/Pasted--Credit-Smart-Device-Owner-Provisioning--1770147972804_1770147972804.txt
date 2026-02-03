@@ -1,0 +1,76 @@
+==============================================
+  Credit Smart - Device Owner Provisioning
+==============================================
+
+Verificando ADB...
+ADB encontrado: C:\Users\sabre\AppData\Local\Android\Sdk\platform-tools\adb.exe
+
+Verificando dispositivo conectado...
+A sintaxe do nome do arquivo, do nome do diretório ou do rótulo do volume está incorreta.
+Dispositivo encontrado:
+  Fabricante: motorola
+  Modelo: moto g15
+  Android: 15
+
+=== VERIFICANDO INSTALACAO EXISTENTE ===
+
+Credit Smart ja esta instalado
+
+Credit Smart e Device Owner
+
+O script ira:
+  1. Parar o app
+  2. Remover Device Owner
+  3. Remover usuarios secundarios
+  4. Desinstalar app antigo
+  5. Instalar nova versao
+  6. Configurar como Device Owner
+
+Continuar? (S/n): 4
+
+=== LIMPANDO INSTALACAO ANTERIOR ===
+
+Parando o app...
+App parado
+
+Removendo Device Owner...
+  Metodo 1: Via broadcast de auto-remocao...
+Broadcasting: Intent { act=com.cdccreditsmart.CLEAR_DEVICE_OWNER flg=0x400000 cmp=com.cdccreditsmart.app/.device.CDCDeviceAdminReceiver }
+Broadcast completed: result=0
+  Metodo 2: Via dpm remove-active-admin...
+
+Exception occurred while executing 'remove-active-admin':
+java.lang.SecurityException: Attempt to remove non-test admin ComponentInfo{com.cdccreditsmart.app/com.cdccreditsmart.app.device.CDCDeviceAdminReceiver} 0
+        at com.android.server.devicepolicy.DevicePolicyManagerService.lambda$forceRemoveActiveAdmin$14(DevicePolicyManagerService.java:4119)
+        at com.android.server.devicepolicy.DevicePolicyManagerService.$r8$lambda$fdnUFKQIuUgjUufgHXZjxCOEmU4(DevicePolicyManagerService.java:0)
+        at com.android.server.devicepolicy.DevicePolicyManagerService$$ExternalSyntheticLambda179.runOrThrow(R8$$SyntheticClass:0)
+        at android.os.Binder.withCleanCallingIdentity(Binder.java:550)
+        at com.android.server.devicepolicy.DevicePolicyManagerService$Injector.binderWithCleanCallingIdentity(DevicePolicyManagerService.java:1917)
+        at com.android.server.devicepolicy.DevicePolicyManagerService.forceRemoveActiveAdmin(DevicePolicyManagerService.java:4115)
+        at com.android.server.devicepolicy.DevicePolicyManagerServiceShellCommand.runRemoveActiveAdmin(DevicePolicyManagerServiceShellCommand.java:287)
+        at com.android.server.devicepolicy.DevicePolicyManagerServiceShellCommand.onCommand(DevicePolicyManagerServiceShellCommand.java:91)
+        at com.android.modules.utils.BasicShellCommandHandler.exec(BasicShellCommandHandler.java:97)
+        at android.os.ShellCommand.exec(ShellCommand.java:38)
+        at com.android.server.devicepolicy.DevicePolicyManagerService.onShellCommand(DevicePolicyManagerService.java:11557)
+        at android.os.Binder.shellCommand(Binder.java:1230)
+        at android.os.Binder.onTransact(Binder.java:1043)
+        at android.app.admin.IDevicePolicyManager$Stub.onTransact(IDevicePolicyManager.java:6516)
+        at android.os.Binder.execTransactInternal(Binder.java:1505)
+        at android.os.Binder.execTransact(Binder.java:1444)
+  Metodo 3: Via Activity de debug...
+Starting: Intent { cmp=com.cdccreditsmart.app/.debug.ClearDeviceOwnerActivity }
+Error type 3
+Error: Activity class {com.cdccreditsmart.app/com.cdccreditsmart.app.debug.ClearDeviceOwnerActivity} does not exist.
+
+Verificando usuarios secundarios...
+Users:
+        UserInfo{0:Proprietário(a):4c13} running
+
+Removendo usuarios secundarios (se houver)...
+A sintaxe do nome do arquivo, do nome do diretório ou do rótulo do volume está incorreta.
+
+Desinstalando app antigo...
+Success
+
+Limpando dados residuais...
+Dados limpos
