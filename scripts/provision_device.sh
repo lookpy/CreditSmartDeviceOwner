@@ -5,7 +5,7 @@ echo "  Credit Smart - Device Owner Provisioning"
 echo "=============================================="
 echo ""
 
-APK_PATH="${1:-app/build/outputs/apk/debug/app-debug.apk}"
+APK_PATH="${1:-app/build/outputs/apk/release/app-release.apk}"
 COMPONENT_NAME="com.cdccreditsmart.app/.device.CDCDeviceAdminReceiver"
 
 RED='\033[0;31m'

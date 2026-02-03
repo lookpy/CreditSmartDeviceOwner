@@ -13,21 +13,27 @@ Scripts para instalação e provisionamento do app via ADB.
 ### Linux/Mac
 
 ```bash
-# Usar APK padrão (app/build/outputs/apk/debug/app-debug.apk)
+# Usar APK release padrão (app/build/outputs/apk/release/app-release.apk)
 ./scripts/provision_device.sh
 
-# Especificar APK
+# Especificar APK manualmente
 ./scripts/provision_device.sh /caminho/para/app.apk
+
+# Usar APK debug
+./scripts/provision_device.sh app/build/outputs/apk/debug/app-debug.apk
 ```
 
 ### Windows
 
 ```cmd
-# Usar APK padrão
+# Usar APK release padrão
 scripts\provision_device.bat
 
-# Especificar APK
+# Especificar APK manualmente
 scripts\provision_device.bat C:\caminho\para\app.apk
+
+# Usar APK debug
+scripts\provision_device.bat app\build\outputs\apk\debug\app-debug.apk
 ```
 
 ## O que o script faz
