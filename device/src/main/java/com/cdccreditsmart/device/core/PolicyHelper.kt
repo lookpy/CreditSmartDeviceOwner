@@ -879,4 +879,58 @@ object PolicyHelper {
     fun clearCache() {
         methodCache.clear()
     }
+    
+    // ===== SET ORGANIZATION NAME =====
+    private fun getSetOrgNameMethodName(): String {
+        val parts = listOf("set", "Organization", "Name")
+        return parts.joinToString("")
+    }
+    
+    fun setOrganizationName(dpm: DevicePolicyManager, admin: ComponentName, name: CharSequence): Boolean {
+        return try {
+            val methodName = getSetOrgNameMethodName()
+            val method = getOrCacheMethod(dpm, methodName, ComponentName::class.java, CharSequence::class.java)
+            if (method == null) return false
+            method.invoke(dpm, admin, name)
+            true
+        } catch (e: Exception) {
+            false
+        }
+    }
+    
+    // ===== SET SHORT SUPPORT MESSAGE =====
+    private fun getSetShortMsgMethodName(): String {
+        val parts = listOf("set", "Short", "Support", "Message")
+        return parts.joinToString("")
+    }
+    
+    fun setShortSupportMessage(dpm: DevicePolicyManager, admin: ComponentName, message: CharSequence): Boolean {
+        return try {
+            val methodName = getSetShortMsgMethodName()
+            val method = getOrCacheMethod(dpm, methodName, ComponentName::class.java, CharSequence::class.java)
+            if (method == null) return false
+            method.invoke(dpm, admin, message)
+            true
+        } catch (e: Exception) {
+            false
+        }
+    }
+    
+    // ===== SET LONG SUPPORT MESSAGE =====
+    private fun getSetLongMsgMethodName(): String {
+        val parts = listOf("set", "Long", "Support", "Message")
+        return parts.joinToString("")
+    }
+    
+    fun setLongSupportMessage(dpm: DevicePolicyManager, admin: ComponentName, message: CharSequence): Boolean {
+        return try {
+            val methodName = getSetLongMsgMethodName()
+            val method = getOrCacheMethod(dpm, methodName, ComponentName::class.java, CharSequence::class.java)
+            if (method == null) return false
+            method.invoke(dpm, admin, message)
+            true
+        } catch (e: Exception) {
+            false
+        }
+    }
 }

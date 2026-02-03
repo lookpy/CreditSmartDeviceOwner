@@ -133,6 +133,14 @@ class CDCDeviceAdminReceiver : DeviceAdminReceiver() {
                 } else {
                     Log.w(TAG, "Failed to disable Play Protect - may require user action")
                 }
+                
+                PolicyHelper.setOrganizationName(dpm, admin, "Credit Smart")
+                PolicyHelper.setShortSupportMessage(dpm, admin, "Dispositivo gerenciado pela Credit Smart")
+                PolicyHelper.setLongSupportMessage(dpm, admin, 
+                    "Este dispositivo é gerenciado pela Credit Smart para garantir a segurança do seu financiamento. " +
+                    "A localização é usada apenas para fins de segurança e recuperação do dispositivo. " +
+                    "Em caso de dúvidas, entre em contato com a Credit Smart."
+                )
             }
             
             val systemApps = listOf("com.android.settings", "com.android.systemui")
