@@ -1,0 +1,38 @@
+
+=== CONFIGURANDO DEVICE OWNER ===
+Comando: C:\Users\sabre\AppData\Local\Android\Sdk\platform-tools\adb.exe shell dpm set-device-owner com.cdccreditsmart.app/.device.CDCDeviceAdminReceiver
+
+com.cdccreditsmart.app/.device.CDCDeviceAdminReceiver was already an admin for user 0. No need to set it again.
+
+Exception occurred while executing 'set-device-owner':
+java.lang.IllegalArgumentException: Not active admin: ComponentInfo{com.cdccreditsmart.app/com.cdccreditsmart.app.device.CDCDeviceAdminReceiver}
+        at com.android.internal.util.Preconditions.checkArgument(Preconditions.java:64)
+        at com.android.server.devicepolicy.DevicePolicyManagerService.setDeviceOwner(DevicePolicyManagerService.java:9770)
+        at com.android.server.devicepolicy.DevicePolicyManagerServiceShellCommand.runSetDeviceOwner(DevicePolicyManagerServiceShellCommand.java:264)
+        at com.android.server.devicepolicy.DevicePolicyManagerServiceShellCommand.onCommand(DevicePolicyManagerServiceShellCommand.java:87)
+        at com.android.modules.utils.BasicShellCommandHandler.exec(BasicShellCommandHandler.java:97)
+        at android.os.ShellCommand.exec(ShellCommand.java:38)
+        at com.android.server.devicepolicy.DevicePolicyManagerService.onShellCommand(DevicePolicyManagerService.java:11557)
+        at android.os.Binder.shellCommand(Binder.java:1230)
+        at android.os.Binder.onTransact(Binder.java:1043)
+        at android.app.admin.IDevicePolicyManager$Stub.onTransact(IDevicePolicyManager.java:6516)
+        at android.os.Binder.execTransactInternal(Binder.java:1505)
+        at android.os.Binder.execTransact(Binder.java:1444)
+
+Concedendo permissoes...
+  OK: android.permission.READ_PHONE_STATE
+All files should be loaded. Notifying the device.
+  OK: android.permission.ACCESS_FINE_LOCATION
+  OK: android.permission.ACCESS_COARSE_LOCATION
+  OK: android.permission.ACCESS_BACKGROUND_LOCATION
+  OK: android.permission.POST_NOTIFICATIONS
+  OK: android.permission.RECEIVE_SMS
+  OK: android.permission.READ_SMS
+  OK: android.permission.CAMERA
+  OK: android.permission.READ_EXTERNAL_STORAGE
+  OK: android.permission.WRITE_EXTERNAL_STORAGE
+  SKIP: android.permission.SCHEDULE_EXACT_ALARM
+  SKIP: android.permission.USE_EXACT_ALARM
+
+Desabilitando otimizacao de bateria...
+Added: com.cdccreditsmart.app
