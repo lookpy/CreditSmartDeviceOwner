@@ -281,4 +281,6 @@ echo   Ver status:  %ADB% shell dumpsys device_policy
 echo   Reinstalar:  %0
 echo.
 
-pause
+echo.
+echo Pressione qualquer tecla para fechar...
+pause >nul
