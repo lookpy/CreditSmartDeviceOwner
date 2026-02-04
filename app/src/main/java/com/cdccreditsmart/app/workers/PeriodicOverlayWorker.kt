@@ -144,6 +144,23 @@ class PeriodicOverlayWorker(
             Log.i(TAG, "║  🔔 VERIFICAÇÃO PERIÓDICA DE OVERLAY                  ║")
             Log.i(TAG, "╚════════════════════════════════════════════════════════╝")
             
+            // ═══════════════════════════════════════════════════════════════════════════════
+            // CRÍTICO: Verificar e re-forçar permissão de OVERLAY (Sobrepor outros apps)
+            // Se o usuário desativou, tentamos re-habilitar automaticamente
+            // ═══════════════════════════════════════════════════════════════════════════════
+            try {
+                val settingsGuard = com.cdccreditsmart.app.compliance.SettingsGuardService.getInstance(context)
+                val hasOverlay = settingsGuard.checkAndEnforceOverlay()
+                if (hasOverlay) {
+                    Log.i(TAG, "🪟 Permissão de overlay: ✅ ATIVA")
+                } else {
+                    Log.w(TAG, "🪟 ⚠️ Permissão de overlay desativada - tentativa de re-forçar pode ter falhado")
+                    Log.w(TAG, "🪟    Overlay de bloqueio pode não funcionar corretamente!")
+                }
+            } catch (e: Exception) {
+                Log.e(TAG, "🪟 Erro ao verificar overlay: ${e.message}")
+            }
+            
             // CRÍTICO: Verificar se dispositivo está pareado antes de mostrar overlay
             // Evita mostrar tela de bloqueio durante ativação inicial
             val isPaired = isDevicePaired()

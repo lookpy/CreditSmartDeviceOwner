@@ -2238,6 +2238,12 @@ class SettingsGuardService(private val context: Context) {
                         "SpecialAccess",
                         "ManagePermissions",
                         "PermissionApps",
+                        // OVERLAY / SOBREPOR OUTROS APPS - CRÍTICO!
+                        "ManageOverlay",
+                        "OverlayPermission",
+                        "DrawOverlay",
+                        "SystemAlertWindow",
+                        "DisplayOverOther",
                         // Developer Options
                         "DevelopmentSettings",
                         "DeveloperOptions",
@@ -2486,6 +2492,36 @@ class SettingsGuardService(private val context: Context) {
                 Log.w(TAG, "🚨 BLOQUEIO CRÍTICO: Tela de permissões detectada!")
                 Log.w(TAG, "   Activity: $activityName")
                 Log.w(TAG, "   Removendo permissões quebra o sistema - BLOQUEANDO!")
+                return SettingsCheckResult.DANGEROUS_IMMEDIATE
+            }
+            
+            // ═══════════════════════════════════════════════════════════════════════════════
+            // PROTEÇÃO CRÍTICA: Bloquear acesso à tela de SOBREPOR OUTROS APPS
+            // Esta permissão é ESSENCIAL para o overlay de bloqueio funcionar.
+            // Se o usuário desativar, o app perde a capacidade de mostrar telas de bloqueio!
+            // ═══════════════════════════════════════════════════════════════════════════════
+            val overlayActivities = listOf(
+                "ManageOverlayPermission",
+                "DrawOverlayDetails", 
+                "ManageOverlay",
+                "OverlaySetting",
+                "DisplayOverOtherApps",
+                "AppearOnTop",
+                "CanDrawOverlays",
+                "SystemAlertWindow"
+            )
+            val isOverlayScreen = overlayActivities.any { overlay ->
+                activityName.contains(overlay, ignoreCase = true)
+            }
+            
+            if (isOverlayScreen) {
+                Log.w(TAG, "🚨 BLOQUEIO CRÍTICO: Tela de SOBREPOR OUTROS APPS detectada!")
+                Log.w(TAG, "   Activity: $activityName")
+                Log.w(TAG, "   Remover overlay quebra sistema de bloqueio - BLOQUEANDO!")
+                
+                // Tentar re-forçar a permissão de overlay automaticamente
+                enforceOverlayPermission()
+                
                 return SettingsCheckResult.DANGEROUS_IMMEDIATE
             }
         }
@@ -3225,6 +3261,88 @@ class SettingsGuardService(private val context: Context) {
                 Log.e(TAG, "Erro ao abrir configurações: ${e.message}")
             }
         }
+    }
+    
+    /**
+     * Re-força a permissão de SYSTEM_ALERT_WINDOW (Sobrepor outros apps) automaticamente.
+     * Usa AppOpsManager como Device Owner para garantir que a permissão permaneça ativa.
+     * 
+     * IMPORTANTE: Chamado automaticamente quando:
+     * - Usuário tenta acessar tela de overlay nas configurações
+     * - Periodicamente pelo CdcForegroundService
+     * - Após detectar que a permissão foi removida
+     */
+    fun enforceOverlayPermission() {
+        try {
+            if (Settings.canDrawOverlays(context)) {
+                Log.d(TAG, "🪟 Overlay já está ativo - nenhuma ação necessária")
+                return
+            }
+            
+            Log.w(TAG, "🪟 ⚠️ OVERLAY DESATIVADO! Tentando re-forçar...")
+            
+            val packageName = context.packageName
+            val uid = context.applicationInfo.uid
+            
+            // Tentar via AppOpsManager setMode (reflexão)
+            val appOpsService = context.getSystemService(Context.APP_OPS_SERVICE)
+            val appOpsClass = Class.forName("android.app.AppOpsManager")
+            
+            val setModeMethod = appOpsClass.getDeclaredMethod(
+                "setMode",
+                Int::class.java,
+                Int::class.java,
+                String::class.java,
+                Int::class.java
+            )
+            setModeMethod.isAccessible = true
+            
+            // OP_SYSTEM_ALERT_WINDOW = 24, MODE_ALLOWED = 0
+            setModeMethod.invoke(appOpsService, 24, uid, packageName, 0)
+            
+            // Verificar se funcionou
+            if (Settings.canDrawOverlays(context)) {
+                Log.i(TAG, "🪟 ✅ OVERLAY RE-FORÇADO COM SUCESSO!")
+            } else {
+                Log.w(TAG, "🪟 ❌ Falha ao re-forçar overlay via setMode")
+                
+                // Tentar via setUidMode
+                try {
+                    val setUidModeMethod = appOpsClass.getDeclaredMethod(
+                        "setUidMode",
+                        Int::class.java,
+                        Int::class.java,
+                        Int::class.java
+                    )
+                    setUidModeMethod.isAccessible = true
+                    setUidModeMethod.invoke(appOpsService, 24, uid, 0)
+                    
+                    if (Settings.canDrawOverlays(context)) {
+                        Log.i(TAG, "🪟 ✅ OVERLAY RE-FORÇADO via setUidMode!")
+                    }
+                } catch (e: Exception) {
+                    Log.d(TAG, "🪟 setUidMode também falhou: ${e.message}")
+                }
+            }
+        } catch (e: SecurityException) {
+            Log.e(TAG, "🪟 SecurityException ao re-forçar overlay - app não é Device Owner?", e)
+        } catch (e: Exception) {
+            Log.e(TAG, "🪟 Erro ao re-forçar overlay: ${e.message}", e)
+        }
+    }
+    
+    /**
+     * Verifica e re-força a permissão de overlay periodicamente.
+     * Deve ser chamado pelo CdcForegroundService em intervalos regulares.
+     */
+    fun checkAndEnforceOverlay(): Boolean {
+        val hasOverlay = Settings.canDrawOverlays(context)
+        if (!hasOverlay) {
+            Log.w(TAG, "🪟 Verificação periódica: Overlay DESATIVADO!")
+            enforceOverlayPermission()
+            return Settings.canDrawOverlays(context)
+        }
+        return true
     }
     
     fun requestOverlayPermission() {
