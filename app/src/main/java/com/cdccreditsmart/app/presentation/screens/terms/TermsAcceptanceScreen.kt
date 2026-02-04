@@ -515,6 +515,22 @@ fun TermsAcceptanceScreen(
                                                         android.util.Log.i("TermsScreen", "   ✅ IMEI salvo para MDM (mínimo): ${imei.take(8)}...")
                                                     }
                                                     
+                                                    // ════════════════════════════════════════════════════════════════════
+                                                    // CRÍTICO: SEMPRE salvar token se vier na resposta (independente de deviceReady)
+                                                    // Sem o token, a HomeScreen receberá 401 e mostrará erro
+                                                    // ════════════════════════════════════════════════════════════════════
+                                                    val tokenValue = responseBody.token
+                                                    if (!tokenValue.isNullOrBlank()) {
+                                                        tokenStorage.saveAuthToken(
+                                                            authToken = tokenValue,
+                                                            contractCode = contractCode,
+                                                            deviceId = responseBody.deviceId ?: responseBody.device?.id ?: contractCode
+                                                        )
+                                                        android.util.Log.i("TermsScreen", "   ✅ Token JWT salvo IMEDIATAMENTE")
+                                                    } else {
+                                                        android.util.Log.w("TermsScreen", "   ⚠️ Backend NÃO retornou token na resposta!")
+                                                    }
+                                                    
                                                     // Se backend retornou dados completos (deviceReady = true)
                                                     val device = responseBody.device
                                                     if (responseBody.deviceReady == true && device != null) {
