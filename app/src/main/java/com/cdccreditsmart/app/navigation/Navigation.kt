@@ -26,6 +26,7 @@ import com.cdccreditsmart.app.presentation.pairing.PairingState
 import com.cdccreditsmart.app.presentation.pairing.PairingSuccessScreen
 import com.cdccreditsmart.app.presentation.pairing.PairingViewModel
 import com.cdccreditsmart.app.presentation.router.RouterScreen
+import com.cdccreditsmart.app.support.SupportRepository
 import com.cdccreditsmart.app.presentation.scanner.QRCodeScannerScreen
 import com.cdccreditsmart.app.presentation.screens.blocking.BlockingWarningScreen
 import com.cdccreditsmart.app.presentation.screens.blocking.BlockedAppScreen
@@ -375,15 +376,38 @@ fun CDCNavigation(
                     }
                 },
                 onContactSupport = {
-                    val supportPhone = "5511999999999" // Número de suporte Credit Smart
+                    val supportRepo = SupportRepository(context)
+                    val contactData = supportRepo.getCachedContactSync()
+                    
+                    val whatsappNumber = contactData?.whatsapp?.replace(Regex("[^0-9]"), "") ?: ""
+                    val phoneNumber = contactData?.phone?.replace(Regex("[^0-9]"), "") ?: ""
                     val message = "Olá, preciso de ajuda com o pareamento do meu dispositivo Credit Smart."
-                    try {
-                        val whatsappUri = Uri.parse("https://wa.me/$supportPhone?text=${Uri.encode(message)}")
-                        val intent = Intent(Intent.ACTION_VIEW, whatsappUri)
-                        context.startActivity(intent)
-                    } catch (e: Exception) {
-                        val dialIntent = Intent(Intent.ACTION_DIAL, Uri.parse("tel:$supportPhone"))
-                        context.startActivity(dialIntent)
+                    
+                    when {
+                        whatsappNumber.isNotEmpty() -> {
+                            try {
+                                val whatsappUri = Uri.parse("https://wa.me/$whatsappNumber?text=${Uri.encode(message)}")
+                                val intent = Intent(Intent.ACTION_VIEW, whatsappUri)
+                                context.startActivity(intent)
+                            } catch (e: Exception) {
+                                if (phoneNumber.isNotEmpty()) {
+                                    val dialIntent = Intent(Intent.ACTION_DIAL, Uri.parse("tel:$phoneNumber"))
+                                    context.startActivity(dialIntent)
+                                }
+                            }
+                        }
+                        phoneNumber.isNotEmpty() -> {
+                            val dialIntent = Intent(Intent.ACTION_DIAL, Uri.parse("tel:$phoneNumber"))
+                            context.startActivity(dialIntent)
+                        }
+                        contactData?.contactLink?.isNotEmpty() == true -> {
+                            try {
+                                val intent = Intent(Intent.ACTION_VIEW, Uri.parse(contactData.contactLink))
+                                context.startActivity(intent)
+                            } catch (e: Exception) {
+                                // Fallback silencioso se não conseguir abrir o link
+                            }
+                        }
                     }
                 }
             )

@@ -215,6 +215,13 @@ class SupportRepository(private val context: Context) {
         )
     }
     
+    /**
+     * Obtém o contato de suporte do cache de forma síncrona.
+     * Retorna null se não houver dados em cache.
+     * Para obter dados atualizados do servidor, use getSupportContact().
+     */
+    fun getCachedContactSync(): SupportContactData? = getCachedContact()
+    
     private fun cacheContact(contact: SupportContactData) {
         prefs.edit()
             .putString(KEY_CONTACT_PHONE, contact.phone)
