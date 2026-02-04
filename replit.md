@@ -51,6 +51,34 @@ The UI is built with Jetpack Compose and Material 3, featuring a CDC institution
 
 ## Recent Changes
 
+**Correção Sinal de Conexão WebSocket para Vendedor (2026-02-04):**
+
+*Problema:* App mostrava "Aguardando Vendedor" corretamente, mas não enviava sinal de conexão para o servidor. O vendedor não conseguia ver que o dispositivo estava conectado e não podia clicar "Concluir Venda".
+
+*Soluções implementadas:*
+
+1. **WebSocketManager.authenticate():**
+   - Agora envia mensagem `type: "authenticate"` com o `contractCode` quando conecta
+   - Envia mensagem `type: "device_ready"` com `status: "waiting_for_sale_completion"`
+   - Servidor é notificado e pode avisar o PDV que dispositivo está online
+
+2. **PairingViewModel - Nova função `connectWebSocketForPending()`:**
+   - Conecta ao WebSocket DURANTE o estado "Aguardando Vendedor" (não apenas após sucesso)
+   - Chamada automaticamente quando `startPendingPolling()` inicia
+   - Escuta `sale_completed` do WebSocket para processar conclusão da venda
+
+3. **Fluxo corrigido:**
+   - Cliente digita código → HTTP 404 (venda não concluída)
+   - App mostra "Aguardando Vendedor" e conecta ao WebSocket
+   - WebSocket envia `authenticate` + `device_ready` para o servidor
+   - Servidor notifica PDV que dispositivo está conectado
+   - Vendedor vê "Dispositivo conectado" e clica "Concluir Venda"
+   - Servidor envia `sale_completed` via WebSocket ou polling HTTP detecta sucesso
+
+*Arquivos modificados:*
+- `app/src/main/java/com/cdccreditsmart/app/websocket/WebSocketManager.kt`
+- `app/src/main/java/com/cdccreditsmart/app/presentation/pairing/PairingViewModel.kt`
+
 **Correção Persistência Pós-Termos + Exibição Juros/Multas (2026-02-04):**
 
 *Problema:* Após aceitar termos, app mostrava "Ops algo deu errado" e redirecionava para tela de código. Precisava abrir/fechar 2x para funcionar.

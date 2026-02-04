@@ -867,6 +867,46 @@ class PairingViewModel(private val context: Context) : ViewModel() {
         startHandshake(contractId)
     }
     
+    /**
+     * Conecta ao WebSocket durante o estado "Aguardando Vendedor" para notificar
+     * o servidor que o dispositivo está online e aguardando a conclusão da venda.
+     * Isso permite que o vendedor veja o dispositivo conectado no PDV.
+     */
+    private fun connectWebSocketForPending(contractCode: String) {
+        Log.i(TAG, "🔌 Conectando WebSocket para notificar servidor (Aguardando Vendedor)...")
+        
+        // Desconectar WebSocket anterior se existir
+        webSocketManager?.disconnect()
+        
+        webSocketManager = WebSocketManager(
+            context = context,
+            contractCode = contractCode.replace("-", ""), // Remover hífen
+            onDeviceConnected = {
+                Log.i(TAG, "✅ WebSocket: Servidor confirmou dispositivo conectado")
+                // Não mudar estado - continuar aguardando sale_completed ou polling
+            },
+            onSaleCompleted = { data ->
+                Log.i(TAG, "✅ WebSocket: Venda concluída pelo vendedor!")
+                Log.d(TAG, "Sale data: contractCode=${data.contractCode}, totalValue=${data.totalValue}")
+                
+                // Parar polling e processar conclusão da venda
+                isPolling = false
+                
+                viewModelScope.launch {
+                    // Re-autenticar para obter token e dados do cliente
+                    step2AuthenticateApk(contractCode)
+                }
+            },
+            onError = { message ->
+                Log.w(TAG, "⚠️ WebSocket error (pending): $message")
+                // Não mostrar erro - o polling HTTP continua como fallback
+            }
+        )
+        
+        webSocketManager?.connect()
+        Log.i(TAG, "📤 WebSocket conectado - Servidor será notificado que dispositivo está aguardando")
+    }
+    
     fun startPendingPolling(contractCode: String) {
         if (isPolling) {
             Log.d(TAG, "Polling already in progress")
@@ -875,6 +915,10 @@ class PairingViewModel(private val context: Context) : ViewModel() {
         
         isPolling = true
         Log.d(TAG, "Starting automatic polling for pending sale")
+        
+        // CORREÇÃO CRÍTICA: Conectar ao WebSocket para notificar o servidor
+        // que o dispositivo está online e aguardando a conclusão da venda
+        connectWebSocketForPending(contractCode)
         
         viewModelScope.launch {
             // CORREÇÃO: Coletar informações do dispositivo UMA VEZ antes do loop
