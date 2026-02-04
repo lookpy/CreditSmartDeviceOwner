@@ -149,16 +149,23 @@ data class CodeAuthRequest(
 /**
  * Authentication Response
  * Common response for both IMEI and Code authentication
+ * Suporta 'token', 'authToken' e 'accessToken' para compatibilidade com backend
  */
 //@JsonClass(generateAdapter = true) // Temporarily disabled to fix build
 data class AuthResponse(
     val success: Boolean,
+    val authenticated: Boolean? = null,
     val token: String? = null,
-    val deviceId: String,
+    val authToken: String? = null,
+    val accessToken: String? = null,
+    val deviceId: String? = null,
     val saleData: SaleData? = null,
     val message: String? = null,
     val serverTimestamp: Long? = null
-)
+) {
+    /** Retorna o token disponível (prioriza authToken > accessToken > token) */
+    fun getEffectiveToken(): String? = authToken ?: accessToken ?: token
+}
 
 /**
  * Sale Data

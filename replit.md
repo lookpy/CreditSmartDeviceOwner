@@ -60,6 +60,7 @@ The UI is built with Jetpack Compose and Material 3, featuring a CDC institution
 1. **TermsAcceptanceScreen:**
    - Dados mínimos (contractCode, IMEI) salvos SEMPRE antes de qualquer condição
    - Token JWT salvo IMEDIATAMENTE se vier na resposta (independente de deviceReady)
+   - **NOVO:** Se backend não retornar token, chama automaticamente POST /api/apk/device/auth/imei para obter token
    - Verificação final pós-save antes de navegar para HOME
    - Fallback que salva deviceInfo mínimo mesmo sem deviceReady do backend
 

@@ -601,15 +601,63 @@ fun TermsAcceptanceScreen(
                                                     
                                                     // Verificar estado final
                                                     val finalContractCode = contractCodeStorage.getContractCode()
-                                                    val finalToken = tokenStorage.getAuthToken()
+                                                    var finalToken = tokenStorage.getAuthToken()
                                                     val finalDeviceId = tokenStorage.getDeviceId()
                                                     val finalImei = tokenStorage.getSerialNumberForMdm()
                                                     
-                                                    android.util.Log.i("TermsScreen", "📊 Estado final:")
+                                                    android.util.Log.i("TermsScreen", "📊 Estado após aceite:")
                                                     android.util.Log.i("TermsScreen", "   ContractCode: ${if (!finalContractCode.isNullOrBlank()) "✅ $finalContractCode" else "❌"}")
-                                                    android.util.Log.i("TermsScreen", "   Token: ${if (!finalToken.isNullOrBlank()) "✅" else "❌ (será obtido na próxima sync)"}")
+                                                    android.util.Log.i("TermsScreen", "   Token: ${if (!finalToken.isNullOrBlank()) "✅" else "❌"}")
                                                     android.util.Log.i("TermsScreen", "   DeviceId: ${if (!finalDeviceId.isNullOrBlank()) "✅" else "❌"}")
                                                     android.util.Log.i("TermsScreen", "   IMEI: ${if (!finalImei.isNullOrBlank()) "✅" else "❌"}")
+                                                    
+                                                    // ════════════════════════════════════════════════════════════════════
+                                                    // CORREÇÃO CRÍTICA: Se backend não retornou token, autenticar por IMEI
+                                                    // ════════════════════════════════════════════════════════════════════
+                                                    if (finalToken.isNullOrBlank() && !imei.isNullOrBlank()) {
+                                                        android.util.Log.w("TermsScreen", "🔐 Token não recebido - tentando autenticação por IMEI...")
+                                                        try {
+                                                            val deviceApiService = com.cdccreditsmart.app.network.RetrofitProvider.createRetrofit()
+                                                                .create(com.cdccreditsmart.network.api.DeviceApiService::class.java)
+                                                            
+                                                            val authRequest = com.cdccreditsmart.network.dto.cdc.ImeiAuthRequest(imei = imei)
+                                                            val authResponse = deviceApiService.authenticateByImei(authRequest)
+                                                            
+                                                            if (authResponse.isSuccessful && authResponse.body()?.success == true) {
+                                                                val authToken = authResponse.body()?.getEffectiveToken()
+                                                                val authDeviceId = authResponse.body()?.deviceId
+                                                                
+                                                                if (!authToken.isNullOrBlank()) {
+                                                                    tokenStorage.saveAuthToken(
+                                                                        authToken = authToken,
+                                                                        contractCode = finalContractCode ?: contractCode,
+                                                                        deviceId = authDeviceId ?: finalDeviceId ?: contractCode
+                                                                    )
+                                                                    finalToken = authToken
+                                                                    android.util.Log.i("TermsScreen", "   ✅ Token obtido via autenticação IMEI!")
+                                                                    
+                                                                    // Salvar dados adicionais se disponíveis
+                                                                    val saleData = authResponse.body()?.saleData
+                                                                    if (saleData != null) {
+                                                                        tokenStorage.saveCustomerInfo(
+                                                                            customerName = saleData.customerName,
+                                                                            deviceModel = saleData.deviceModel
+                                                                        )
+                                                                        android.util.Log.i("TermsScreen", "   ✅ Dados de venda salvos")
+                                                                    }
+                                                                } else {
+                                                                    android.util.Log.w("TermsScreen", "   ⚠️ Autenticação bem-sucedida mas sem token")
+                                                                }
+                                                            } else {
+                                                                android.util.Log.w("TermsScreen", "   ⚠️ Autenticação IMEI falhou: ${authResponse.code()} - ${authResponse.message()}")
+                                                            }
+                                                        } catch (authEx: Exception) {
+                                                            android.util.Log.e("TermsScreen", "   ❌ Erro ao autenticar por IMEI: ${authEx.message}")
+                                                        }
+                                                    }
+                                                    
+                                                    android.util.Log.i("TermsScreen", "📊 Estado FINAL:")
+                                                    android.util.Log.i("TermsScreen", "   Token: ${if (!finalToken.isNullOrBlank()) "✅ PRESENTE" else "❌ AUSENTE"}")
                                                     
                                                     // Iniciar serviço de foreground
                                                     android.util.Log.i("TermsScreen", "🚀 Iniciando serviço de foreground...")
