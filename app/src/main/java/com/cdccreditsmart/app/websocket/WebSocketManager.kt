@@ -76,25 +76,29 @@ class WebSocketManager(
     private fun authenticate() {
         Log.d(TAG, "WebSocket connected, sending authentication for contract: $contractCode")
         
-        // CORREÇÃO: Enviar mensagem de autenticação com o contractCode para o servidor
-        // Isso notifica o backend que o dispositivo está conectado e aguardando
+        // CORREÇÃO: Enviar mensagem de autenticação com contractId E contractCode
+        // Backend espera "contractId" como campo principal
         val authMessage = JSONObject().apply {
             put("type", "authenticate")
+            put("contractId", contractCode) // Campo principal esperado pelo backend
             put("contractCode", contractCode)
             put("pairingCode", contractCode)
         }
         send(authMessage.toString())
-        Log.i(TAG, "📤 Authentication message sent: type=authenticate, contractCode=$contractCode")
+        Log.i(TAG, "📤 Authentication message sent: type=authenticate, contractId=$contractCode")
         
-        // Também enviar sinal de "device_ready" para garantir que o PDV seja notificado
-        val deviceReadyMessage = JSONObject().apply {
-            put("type", "device_ready")
+        // Enviar sinal de "subscribe" para se inscrever nas atualizações do fluxo
+        // O tipo "device_ready" não é reconhecido, usar "subscribe" em vez disso
+        val subscribeMessage = JSONObject().apply {
+            put("type", "subscribe")
+            put("contractId", contractCode)
             put("contractCode", contractCode)
             put("pairingCode", contractCode)
+            put("deviceType", "apk")
             put("status", "waiting_for_sale_completion")
         }
-        send(deviceReadyMessage.toString())
-        Log.i(TAG, "📤 Device ready signal sent to server")
+        send(subscribeMessage.toString())
+        Log.i(TAG, "📤 Subscribe message sent to server")
         
         isConnected = true
         startHeartbeat()

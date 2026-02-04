@@ -88,23 +88,33 @@ fun QRCodeScannerScreen(
                             value = contractId,
                             onValueChange = { newValue ->
                                 // Formatação automática:
-                                // 1. Remove espaços e caracteres especiais
+                                // 1. Remove espaços e caracteres especiais (exceto hífen)
                                 // 2. Converte para MAIÚSCULAS
-                                // 3. Aceita apenas A-Z e 0-9
-                                // 4. Limita a 8 caracteres
-                                val formatted = newValue
-                                    .replace(Regex("[^A-Za-z0-9]"), "") // Remove tudo exceto letras e números
-                                    .uppercase() // Converte para maiúsculas
-                                    .take(8) // Limita a 8 caracteres
+                                // 3. Aceita apenas A-Z, 0-9 e hífen
+                                // 4. Formata automaticamente como XXXX-XXXX
+                                val cleanValue = newValue
+                                    .replace(Regex("[^A-Za-z0-9-]"), "") // Remove tudo exceto letras, números e hífen
+                                    .uppercase()
+                                
+                                // Remove hífens para contar caracteres reais
+                                val withoutHyphens = cleanValue.replace("-", "").take(8)
+                                
+                                // Adiciona hífen automaticamente após 4 caracteres
+                                val formatted = if (withoutHyphens.length > 4) {
+                                    "${withoutHyphens.take(4)}-${withoutHyphens.drop(4)}"
+                                } else {
+                                    withoutHyphens
+                                }
                                 
                                 contractId = formatted
                             },
                             label = { Text("Código do Contrato") },
-                            placeholder = { Text("ABC123XY") },
+                            placeholder = { Text("ABCD-1234") },
                             supportingText = {
+                                val charCount = contractId.replace("-", "").length
                                 Text(
-                                    text = "${contractId.length}/8 caracteres",
-                                    color = if (contractId.length == 8) CDCOrange else MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
+                                    text = "$charCount/8 caracteres",
+                                    color = if (charCount == 8) CDCOrange else MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
                                 )
                             },
                             modifier = Modifier.fillMaxWidth(),
@@ -119,11 +129,13 @@ fun QRCodeScannerScreen(
                         
                         Button(
                             onClick = {
-                                if (contractId.length == 8) {
+                                val charCount = contractId.replace("-", "").length
+                                if (charCount == 8) {
+                                    // Envia o código COM hífen (formato XXXX-XXXX)
                                     onQRCodeScanned(contractId)
                                 }
                             },
-                            enabled = contractId.length == 8,
+                            enabled = contractId.replace("-", "").length == 8,
                             modifier = Modifier.fillMaxWidth(),
                             colors = ButtonDefaults.buttonColors(
                                 containerColor = CDCOrange,
