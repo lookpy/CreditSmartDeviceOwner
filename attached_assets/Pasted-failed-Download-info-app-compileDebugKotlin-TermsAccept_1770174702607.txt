@@ -1,0 +1,203 @@
+failed
+Download info
+:app:compileDebugKotlin
+TermsAcceptanceScreen.kt
+Syntax error: Expecting a top level declaration.
+Syntax error: Expecting a top level declaration.
+Syntax error: Expecting a top level declaration.
+Syntax error: Expecting a top level declaration.
+Syntax error: Expecting a top level declaration.
+Syntax error: Expecting a top level declaration.
+Syntax error: Expecting a top level declaration.
+Syntax error: Expecting a top level declaration.
+Syntax error: Expecting a top level declaration.
+Syntax error: Expecting a top level declaration.
+Syntax error: Expecting a top level declaration.
+Syntax error: Expecting a top level declaration.
+Syntax error: Expecting a top level declaration.
+Syntax error: Expecting a top level declaration.
+Syntax error: Expecting a top level declaration.
+Syntax error: Expecting a top level declaration.
+Syntax error: Expecting a top level declaration.
+Syntax error: Expecting a top level declaration.
+Syntax error: Expecting a top level declaration.
+Syntax error: Expecting a top level declaration.
+Syntax error: Expecting a top level declaration.
+Syntax error: Expecting a top level declaration.
+Syntax error: Expecting a top level declaration.
+Syntax error: Expecting a top level declaration.
+Syntax error: Expecting a top level declaration.
+Syntax error: Expecting a top level declaration.
+Syntax error: Expecting a top level declaration.
+Syntax error: Expecting a top level declaration.
+Syntax error: Expecting a top level declaration.
+Syntax error: Expecting a top level declaration.
+Syntax error: Expecting a top level declaration.
+Syntax error: Expecting a top level declaration.
+Syntax error: Expecting a top level declaration.
+Syntax error: Expecting a top level declaration.
+Functions which invoke @Composable functions must be marked with the @Composable annotation
+Function declaration must have a name.
+@Composable invocations can only happen from the context of a @Composable function
+Unresolved reference 'isLoading'.
+Function invocation 'error(...)' expected.
+Unresolved reference 'terms'.
+Function invocation 'error(...)' expected.
+Unresolved reference 'scope'.
+Unresolved reference 'isLoading'.
+Unresolved reference 'repository'.
+Cannot infer type for type parameter 'T'. Specify it explicitly.
+Cannot infer type for type parameter 'T'. Specify it explicitly.
+Unresolved reference 'terms'.
+Function invocation 'error(...)' expected.
+Variable expected.
+Null cannot be a value of a non-null type 'Nothing'.
+Function invocation 'error(...)' expected.
+Variable expected.
+Assignment type mismatch: actual type is 'String?', but 'Nothing' was expected.
+Unresolved reference 'isLoading'.
+Unresolved reference 'terms'.
+Function invocation 'error(...)' expected.
+Variable expected.
+Null cannot be a value of a non-null type 'Nothing'.
+Unresolved reference 'onBack'.
+Unresolved reference 'onBack'.
+Unresolved reference 'terms'.
+Unresolved reference 'terms'.
+Unresolved reference 'version'.
+Unresolved reference 'hasScrolledToEnd'.
+Unresolved reference 'lazyListState'.
+Unresolved reference 'parsedLines'.
+Unresolved reference 'parsedLines'.
+Unresolved reference 'it'.
+Unresolved reference 'it'.
+Cannot infer type for value parameter 'line'. Specify it explicitly.
+@Composable invocations can only happen from the context of a @Composable function
+Unresolved reference 'acceptError'.
+Unresolved reference 'acceptError'.
+Unresolved reference 'scope'.
+Unresolved reference 'isAccepting'.
+Unresolved reference 'acceptError'.
+Function invocation 'context(...)' expected.
+Unresolved reference 'acceptError'.
+Unresolved reference 'isAccepting'.
+Only safe (?.) or non-null asserted (!!.) calls are allowed on a nullable receiver of type 'String?'.
+Unresolved reference 'terms'.
+Unresolved reference 'terms'.
+Argument type mismatch: actual type is 'String?', but 'String' was expected.
+Unresolved reference 'terms'.
+Unresolved reference 'terms'.
+Function invocation 'context(...)' expected.
+Unresolved reference 'terms'.
+Unresolved reference 'version'.
+Unresolved reference 'contractCode'.
+Unresolved reference 'onTermsAccepted'.
+Unresolved reference 'acceptError'.
+Unresolved reference 'isAccepting'.
+Unresolved reference 'acceptError'.
+Unresolved reference 'isAccepting'.
+Unresolved reference 'acceptError'.
+Unresolved reference 'isAccepting'.
+Unresolved reference 'isAccepting'.
+Unresolved reference 'isAccepting'.
+Syntax error: Expecting a top level declaration.
+Syntax error: Expecting a top level declaration.
+Syntax error: Expecting a top level declaration.
+Syntax error: Expecting a top level declaration.
+Syntax error: Expecting a top level declaration.
+Syntax error: Expecting a top level declaration.
+Syntax error: Expecting a top level declaration.
+Syntax error: Expecting a top level declaration.
+Syntax error: Expecting a top level declaration.
+Syntax error: Expecting a top level declaration.
+Syntax error: Expecting a top level declaration.
+Syntax error: Expecting a top level declaration.
+Syntax error: Expecting a top level declaration.
+Syntax error: Expecting a top level declaration.
+Syntax error: Expecting a top level declaration.
+Syntax error: Expecting a top level declaration.
+Syntax error: Expecting a top level declaration.
+Syntax error: Expecting a top level declaration.
+Syntax error: Expecting a top level declaration.
+Syntax error: Expecting a top level declaration.
+Syntax error: Expecting a top level declaration.
+Syntax error: Expecting a top level declaration.
+Syntax error: Expecting a top level declaration.
+Syntax error: Expecting a top level declaration.
+Syntax error: Expecting a top level declaration.
+Syntax error: Expecting a top level declaration.
+Syntax error: Expecting a top level declaration.
+Syntax error: Expecting a top level declaration.
+Syntax error: Expecting a top level declaration.
+Syntax error: Expecting a top level declaration.
+Syntax error: Expecting a top level declaration.
+Syntax error: Expecting a top level declaration.
+Syntax error: Expecting a top level declaration.
+Syntax error: Expecting a top level declaration.
+Syntax error: Expecting a top level declaration.
+Functions which invoke @Composable functions must be marked with the @Composable annotation
+Function declaration must have a name.
+@Composable invocations can only happen from the context of a @Composable function
+Unresolved reference 'isLoading'.
+Function invocation 'error(...)' expected.
+Unresolved reference 'terms'.
+Function invocation 'error(...)' expected.
+Unresolved reference 'scope'.
+Unresolved reference 'isLoading'.
+Unresolved reference 'repository'.
+Cannot infer type for type parameter 'T'. Specify it explicitly.
+Cannot infer type for type parameter 'T'. Specify it explicitly.
+Unresolved reference 'terms'.
+Function invocation 'error(...)' expected.
+Variable expected.
+Null cannot be a value of a non-null type 'Nothing'.
+Function invocation 'error(...)' expected.
+Variable expected.
+Assignment type mismatch: actual type is 'String?', but 'Nothing' was expected.
+Unresolved reference 'isLoading'.
+Unresolved reference 'terms'.
+Function invocation 'error(...)' expected.
+Variable expected.
+Null cannot be a value of a non-null type 'Nothing'.
+Unresolved reference 'onBack'.
+Unresolved reference 'onBack'.
+Unresolved reference 'terms'.
+Unresolved reference 'terms'.
+Unresolved reference 'version'.
+Unresolved reference 'hasScrolledToEnd'.
+Unresolved reference 'lazyListState'.
+Unresolved reference 'parsedLines'.
+Unresolved reference 'parsedLines'.
+Unresolved reference 'it'.
+Unresolved reference 'it'.
+Cannot infer type for value parameter 'line'. Specify it explicitly.
+@Composable invocations can only happen from the context of a @Composable function
+Unresolved reference 'acceptError'.
+Unresolved reference 'acceptError'.
+Unresolved reference 'scope'.
+Unresolved reference 'isAccepting'.
+Unresolved reference 'acceptError'.
+Function invocation 'context(...)' expected.
+Unresolved reference 'acceptError'.
+Unresolved reference 'isAccepting'.
+Only safe (?.) or non-null asserted (!!.) calls are allowed on a nullable receiver of type 'String?'.
+Unresolved reference 'terms'.
+Unresolved reference 'terms'.
+Argument type mismatch: actual type is 'String?', but 'String' was expected.
+Unresolved reference 'terms'.
+Unresolved reference 'terms'.
+Function invocation 'context(...)' expected.
+Unresolved reference 'terms'.
+Unresolved reference 'version'.
+Unresolved reference 'contractCode'.
+Unresolved reference 'onTermsAccepted'.
+Unresolved reference 'acceptError'.
+Unresolved reference 'isAccepting'.
+Unresolved reference 'acceptError'.
+Unresolved reference 'isAccepting'.
+Unresolved reference 'acceptError'.
+Unresolved reference 'isAccepting'.
+Unresolved reference 'isAccepting'.
+Unresolved reference 'isAccepting'.
+Syntax error: Expecting a top level declaration.
+:app:compileReleaseKotlin

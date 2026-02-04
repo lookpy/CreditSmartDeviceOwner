@@ -157,30 +157,29 @@ fun TermsAcceptanceScreen(
                 }
             )
         } catch (e: TimeoutCancellationException) {
-                android.util.Log.e("TermsScreen", "⏰ Timeout ao carregar termos")
-                terms = ContractTermsData(
-                    id = "default",
-                    version = "1.0",
-                    text = getDefaultTermsText(),
-                    hash = "",
-                    isActive = true,
-                    createdAt = ""
-                )
-                error = null
-            } catch (e: Exception) {
-                android.util.Log.e("TermsScreen", "💥 Crash ao carregar termos: ${e.message}", e)
-                terms = ContractTermsData(
-                    id = "default",
-                    version = "1.0",
-                    text = getDefaultTermsText(),
-                    hash = "",
-                    isActive = true,
-                    createdAt = ""
-                )
-                error = null
-            } finally {
-                isLoading = false
-            }
+            android.util.Log.e("TermsScreen", "⏰ Timeout ao carregar termos")
+            terms = ContractTermsData(
+                id = "default",
+                version = "1.0",
+                text = getDefaultTermsText(),
+                hash = "",
+                isActive = true,
+                createdAt = ""
+            )
+            error = null
+        } catch (e: Exception) {
+            android.util.Log.e("TermsScreen", "💥 Crash ao carregar termos: ${e.message}", e)
+            terms = ContractTermsData(
+                id = "default",
+                version = "1.0",
+                text = getDefaultTermsText(),
+                hash = "",
+                isActive = true,
+                createdAt = ""
+            )
+            error = null
+        } finally {
+            isLoading = false
         }
     }
     
