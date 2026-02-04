@@ -51,6 +51,36 @@ The UI is built with Jetpack Compose and Material 3, featuring a CDC institution
 
 ## Recent Changes
 
+**Correção Persistência Pós-Termos + Exibição Juros/Multas (2026-02-04):**
+
+*Problema:* Após aceitar termos, app mostrava "Ops algo deu errado" e redirecionava para tela de código. Precisava abrir/fechar 2x para funcionar.
+
+*Soluções implementadas:*
+
+1. **TermsAcceptanceScreen:**
+   - Dados mínimos (contractCode, IMEI) salvos SEMPRE antes de qualquer condição
+   - Verificação final pós-save antes de navegar para HOME
+   - Fallback que salva deviceInfo mínimo mesmo sem deviceReady do backend
+
+2. **SimpleHomeViewModel:**
+   - Erro 401 com contractCode salvo não redireciona para re-auth
+   - Mensagem amigável "Sincronizando dados..." quando cache vazio
+   - Prevenção de loop de redirecionamento
+
+3. **Exibição de Juros e Multas:**
+   - InstallmentItem com novos campos: lateFee, lateFeePercent, interestAmount, dailyInterestPercent, totalWithFees, originalValue
+   - InstallmentsSummary com: totalLateFees, totalInterest, totalOverdueWithFees
+   - ModernHomeScreen exibe card "Encargos por atraso" no resumo
+   - InstallmentCard exibe breakdown de multas/juros por parcela em atraso
+   - Cálculo local de totalWithFees se backend não fornecer
+
+*Arquivos modificados:*
+- `app/src/main/java/com/cdccreditsmart/app/presentation/screens/terms/TermsAcceptanceScreen.kt`
+- `app/src/main/java/com/cdccreditsmart/app/presentation/screens/home/SimpleHomeViewModel.kt`
+- `app/src/main/java/com/cdccreditsmart/app/presentation/screens/home/ModernHomeScreen.kt`
+- `network/src/main/java/com/cdccreditsmart/network/dto/cdc/PaymentDTOs.kt`
+- `network/src/main/java/com/cdccreditsmart/network/api/ContractApiService.kt`
+
 **Suporte a Dispositivos Já Pareados (2025-02-04):**
 
 *Problema:* APK voltava para tela de código do contrato após claim bem-sucedido porque o backend retornava erro ao tentar buscar venda pendente novamente.

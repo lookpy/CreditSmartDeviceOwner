@@ -289,9 +289,38 @@ class SimpleHomeViewModel(
                     // Marcar tempo do erro para throttling
                     lastErrorTime = System.currentTimeMillis()
                     
-                    // Se 401, significa que precisa re-autenticar
+                    // Se 401, verificar se temos dados locais antes de redirecionar
                     if (response.code() == 401) {
-                        Log.e(TAG, "🔐 Erro 401 - Token inválido ou expirado, redirecionando para re-autenticação...")
+                        Log.e(TAG, "🔐 Erro 401 - Token inválido ou expirado")
+                        
+                        // CRÍTICO: Se temos contractCode, não redirecionar imediatamente
+                        // O dispositivo pode ter acabado de ser pareado e o backend ainda não sincronizou
+                        val contractCodeStorage = com.cdccreditsmart.app.storage.ContractCodeStorage(context)
+                        val savedContractCode = contractCodeStorage.getContractCode()
+                        
+                        if (!savedContractCode.isNullOrBlank()) {
+                            Log.w(TAG, "⚠️ Tem contractCode ($savedContractCode) mas recebeu 401")
+                            
+                            // Verificar se temos cache local
+                            val cachedInstallments = localStorage.getInstallments()
+                            if (cachedInstallments != null && cachedInstallments.isNotEmpty()) {
+                                Log.w(TAG, "📦 Usando cache local (${cachedInstallments.size} parcelas)")
+                                loadFromLocalCache(isOffline = false, fallbackError = null)
+                            } else {
+                                // Sem cache, mas tem contractCode - mostrar mensagem amigável, NÃO redirecionar
+                                Log.w(TAG, "⏳ Sem cache disponível - dispositivo ainda sincronizando")
+                                _homeState.value = _homeState.value.copy(
+                                    isLoading = false,
+                                    isError = true,
+                                    errorMessage = "Sincronizando dados com o servidor...\n\nAguarde alguns segundos e toque em 'Tentar Novamente'.",
+                                    needsReauth = false // NÃO redirecionar
+                                )
+                            }
+                            return@launch
+                        }
+                        
+                        // Sem contractCode - realmente precisa re-autenticar
+                        Log.e(TAG, "❌ Sem contractCode - redirecionando para re-autenticação...")
                         _homeState.value = _homeState.value.copy(
                             isLoading = false,
                             isError = true,

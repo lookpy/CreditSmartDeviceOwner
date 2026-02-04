@@ -61,7 +61,11 @@ data class InstallmentsSummary(
     val paidAmount: Double = 0.0,
     val pendingAmount: Double = 0.0,
     val overdueAmount: Double = 0.0,
-    val completionPercentage: Int = 0
+    val completionPercentage: Int = 0,
+    // Novos campos para multas e juros (parcelas em atraso)
+    val totalLateFees: Double = 0.0,       // Total de multas (2%)
+    val totalInterest: Double = 0.0,        // Total de juros (0.033%/dia)
+    val totalOverdueWithFees: Double = 0.0  // Total em atraso + multas + juros
 )
 
 /**
@@ -83,13 +87,20 @@ data class InstallmentItem(
     val id: String = "",
     val number: Int = 0,
     val value: Double = 0.0,
+    val originalValue: Double = 0.0, // Valor original sem multas/juros
     val dueDate: String = "",
     val paidDate: String? = null,
     val status: String = "pending", // "paid", "pending", "overdue"
     val paymentMethod: String? = null, // "pix", "boleto", null
     val isPaid: Boolean = false, // Optional - backend may not send this field
     val isOverdue: Boolean = false, // Optional - can be derived from status
-    val daysSinceDue: Int = 0 // Optional - can be calculated from dueDate
+    val daysSinceDue: Int = 0, // Optional - can be calculated from dueDate
+    // Campos para multas e juros (parcelas em atraso)
+    val lateFee: Double = 0.0,            // Multa (2% do valor)
+    val lateFeePercent: Double = 2.0,     // Percentual da multa
+    val interestAmount: Double = 0.0,     // Juros calculados
+    val dailyInterestPercent: Double = 0.033, // Percentual de juros diário
+    val totalWithFees: Double = 0.0       // Valor total a pagar (valor + multa + juros)
 )
 
 // ============================================================================

@@ -502,6 +502,19 @@ fun TermsAcceptanceScreen(
                                                     val tokenStorage = com.cdccreditsmart.app.security.SecureTokenStorage(context)
                                                     val contractCodeStorage = com.cdccreditsmart.app.storage.ContractCodeStorage(context)
                                                     
+                                                    // ════════════════════════════════════════════════════════════════════
+                                                    // SEMPRE salvar dados mínimos primeiro (antes de qualquer condição)
+                                                    // Isso garante que mesmo se algo falhar, teremos o essencial
+                                                    // ════════════════════════════════════════════════════════════════════
+                                                    contractCodeStorage.saveContractCode(contractCode)
+                                                    android.util.Log.i("TermsScreen", "   ✅ ContractCode salvo (mínimo): $contractCode")
+                                                    
+                                                    // Salvar IMEI para MDM (essencial para identificação)
+                                                    if (imei.isNotBlank()) {
+                                                        tokenStorage.saveImeiForMdm(imei)
+                                                        android.util.Log.i("TermsScreen", "   ✅ IMEI salvo para MDM (mínimo): ${imei.take(8)}...")
+                                                    }
+                                                    
                                                     // Se backend retornou dados completos (deviceReady = true)
                                                     val device = responseBody.device
                                                     if (responseBody.deviceReady == true && device != null) {
@@ -510,10 +523,9 @@ fun TermsAcceptanceScreen(
                                                         val customer = responseBody.customer
                                                         val tokenValue = responseBody.token
                                                         
-                                                        // Salvar contractCode = serialNumber
+                                                        // Salvar contractCode do device se disponível
                                                         val effectiveContractCode = device.serialNumber ?: contractCode
                                                         contractCodeStorage.saveContractCode(effectiveContractCode)
-                                                        android.util.Log.i("TermsScreen", "   ✅ ContractCode salvo: $effectiveContractCode")
                                                         
                                                         // Salvar token de autenticação
                                                         if (!tokenValue.isNullOrBlank()) {
@@ -536,11 +548,10 @@ fun TermsAcceptanceScreen(
                                                         )
                                                         android.util.Log.i("TermsScreen", "   ✅ DeviceInfo salvo")
                                                         
-                                                        // Salvar IMEI para MDM
-                                                        val effectiveImei = device.imei ?: imei
-                                                        if (effectiveImei.isNotBlank()) {
-                                                            tokenStorage.saveImeiForMdm(effectiveImei)
-                                                            android.util.Log.i("TermsScreen", "   ✅ IMEI salvo para MDM")
+                                                        // Salvar IMEI do device se diferente
+                                                        val deviceImei = device.imei
+                                                        if (!deviceImei.isNullOrBlank()) {
+                                                            tokenStorage.saveImeiForMdm(deviceImei)
                                                         }
                                                         
                                                         // Salvar informações do cliente
@@ -555,25 +566,34 @@ fun TermsAcceptanceScreen(
                                                         android.util.Log.i("TermsScreen", "🎉 Todos os dados salvos com sucesso!")
                                                         
                                                     } else {
-                                                        // Fallback: backend não retornou dados completos (versão antiga)
+                                                        // Fallback: backend não retornou dados completos
+                                                        // Dados mínimos já salvos acima (contractCode e IMEI)
                                                         android.util.Log.w("TermsScreen", "⚠️ Backend não retornou dados completos (deviceReady=${responseBody.deviceReady})")
+                                                        android.util.Log.w("TermsScreen", "   Usando dados mínimos já salvos")
                                                         
-                                                        val savedContractCode = contractCodeStorage.getContractCode()
-                                                        if (savedContractCode.isNullOrBlank()) {
-                                                            contractCodeStorage.saveContractCode(contractCode)
-                                                            android.util.Log.w("TermsScreen", "   ContractCode salvo via fallback")
-                                                        }
+                                                        // Tentar salvar serialNumber como deviceId se disponível
+                                                        tokenStorage.saveDeviceInfo(
+                                                            deviceId = contractCode, // usar contractCode como ID temporário
+                                                            serialNumber = contractCode,
+                                                            imei = imei,
+                                                            contractCode = contractCode,
+                                                            customerName = null,
+                                                            deviceModel = null
+                                                        )
+                                                        android.util.Log.w("TermsScreen", "   ✅ DeviceInfo mínimo salvo via fallback")
                                                     }
                                                     
                                                     // Verificar estado final
                                                     val finalContractCode = contractCodeStorage.getContractCode()
                                                     val finalToken = tokenStorage.getAuthToken()
                                                     val finalDeviceId = tokenStorage.getDeviceId()
+                                                    val finalImei = tokenStorage.getSerialNumberForMdm()
                                                     
                                                     android.util.Log.i("TermsScreen", "📊 Estado final:")
-                                                    android.util.Log.i("TermsScreen", "   ContractCode: ${if (!finalContractCode.isNullOrBlank()) "✅" else "❌"}")
-                                                    android.util.Log.i("TermsScreen", "   Token: ${if (!finalToken.isNullOrBlank()) "✅" else "❌"}")
+                                                    android.util.Log.i("TermsScreen", "   ContractCode: ${if (!finalContractCode.isNullOrBlank()) "✅ $finalContractCode" else "❌"}")
+                                                    android.util.Log.i("TermsScreen", "   Token: ${if (!finalToken.isNullOrBlank()) "✅" else "❌ (será obtido na próxima sync)"}")
                                                     android.util.Log.i("TermsScreen", "   DeviceId: ${if (!finalDeviceId.isNullOrBlank()) "✅" else "❌"}")
+                                                    android.util.Log.i("TermsScreen", "   IMEI: ${if (!finalImei.isNullOrBlank()) "✅" else "❌"}")
                                                     
                                                     // Iniciar serviço de foreground
                                                     android.util.Log.i("TermsScreen", "🚀 Iniciando serviço de foreground...")
@@ -581,8 +601,35 @@ fun TermsAcceptanceScreen(
                                                     
                                                 } catch (e: Exception) {
                                                     android.util.Log.e("TermsScreen", "❌ Erro ao processar dados: ${e.message}", e)
+                                                    // Mesmo com erro, tentar salvar o mínimo
+                                                    try {
+                                                        val contractCodeStorage = com.cdccreditsmart.app.storage.ContractCodeStorage(context)
+                                                        contractCodeStorage.saveContractCode(contractCode)
+                                                        android.util.Log.w("TermsScreen", "   ContractCode salvo via recovery")
+                                                    } catch (e2: Exception) {
+                                                        android.util.Log.e("TermsScreen", "❌❌ Falha total ao salvar dados: ${e2.message}")
+                                                    }
                                                 }
                                                 
+                                                // ════════════════════════════════════════════════════════════════════
+                                                // VERIFICAÇÃO FINAL: Garantir que dados mínimos foram persistidos
+                                                // antes de navegar para HOME
+                                                // ════════════════════════════════════════════════════════════════════
+                                                val postSaveContractCode = com.cdccreditsmart.app.storage.ContractCodeStorage(context).getContractCode()
+                                                if (postSaveContractCode.isNullOrBlank()) {
+                                                    android.util.Log.e("TermsScreen", "❌ CRÍTICO: ContractCode não foi persistido! Tentando novamente...")
+                                                    com.cdccreditsmart.app.storage.ContractCodeStorage(context).saveContractCode(contractCode)
+                                                    // Verificar novamente
+                                                    val retryCode = com.cdccreditsmart.app.storage.ContractCodeStorage(context).getContractCode()
+                                                    if (retryCode.isNullOrBlank()) {
+                                                        android.util.Log.e("TermsScreen", "❌❌ Falha persistente ao salvar - mostrando erro")
+                                                        acceptError = "Erro ao salvar dados. Tente novamente."
+                                                        isAccepting = false
+                                                        return@launch
+                                                    }
+                                                }
+                                                
+                                                android.util.Log.i("TermsScreen", "✅ Verificação final OK - ContractCode persistido: $postSaveContractCode")
                                                 onTermsAccepted()
                                             } else {
                                                 val errorMsg = response.body()?.error 
