@@ -4,6 +4,7 @@ import androidx.compose.animation.core.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Cancel
 import androidx.compose.material.icons.filled.HourglassEmpty
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material3.*
@@ -22,6 +23,7 @@ fun PairingPendingScreen(
     message: String,
     contractCode: String?,
     onRetry: () -> Unit,
+    onCancel: () -> Unit = {},
     viewModel: PairingViewModel? = null
 ) {
     // Estado para animação de verificação
@@ -164,6 +166,37 @@ fun PairingPendingScreen(
                     style = MaterialTheme.typography.titleMedium
                 )
             }
+            
+            Spacer(modifier = Modifier.height(16.dp))
+            
+            // Botão para cancelar e digitar novo código
+            TextButton(
+                onClick = onCancel,
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Icon(
+                    imageVector = Icons.Default.Cancel,
+                    contentDescription = "Cancelar",
+                    modifier = Modifier.size(18.dp),
+                    tint = MaterialTheme.colorScheme.error.copy(alpha = 0.7f)
+                )
+                Spacer(modifier = Modifier.width(8.dp))
+                Text(
+                    "Cancelar e Digitar Novo Código",
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.error.copy(alpha = 0.7f)
+                )
+            }
+            
+            Spacer(modifier = Modifier.height(8.dp))
+            
+            // Texto explicativo
+            Text(
+                text = "Use esta opção se a venda foi cancelada ou se digitou o código errado.",
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.5f),
+                textAlign = TextAlign.Center
+            )
         }
     }
 }

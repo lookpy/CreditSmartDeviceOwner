@@ -30,7 +30,8 @@ import kotlinx.coroutines.launch
 @Composable
 fun TermsAcceptanceScreen(
     contractCode: String,
-    onTermsAccepted: () -> Unit
+    onTermsAccepted: () -> Unit,
+    onBack: (() -> Unit)? = null
 ) {
     val context = LocalContext.current
     val repository = remember { SupportRepository(context) }
@@ -214,6 +215,19 @@ fun TermsAcceptanceScreen(
                                     "Usar termos padrão",
                                     color = Color.White.copy(alpha = 0.7f)
                                 )
+                            }
+                            
+                            if (onBack != null) {
+                                Spacer(modifier = Modifier.height(8.dp))
+                                
+                                TextButton(
+                                    onClick = onBack
+                                ) {
+                                    Text(
+                                        "Voltar e digitar novo código",
+                                        color = MaterialTheme.colorScheme.error.copy(alpha = 0.7f)
+                                    )
+                                }
                             }
                         }
                     }

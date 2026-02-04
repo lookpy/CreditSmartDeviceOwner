@@ -127,3 +127,33 @@ The UI utilizes Jetpack Compose and Material 3 with a CDC institutional dark the
 1. App envia IMEI físico do dispositivo
 2. Backend compara com IMEI registrado no contrato durante a venda
 3. Se não corresponder → Rejeita autenticação + Log de auditoria
+
+**FRP (Factory Reset Protection) Automático (2025-02-03):**
+
+- Implementado FRP automático com conta Google da Credit Smart
+- Após factory reset, dispositivo exige login com: `dispositivoscreditsmart@gmail.com`
+- Configurado automaticamente em `CDCDeviceAdminReceiver.setupBasicPolicies()`
+- Usa `PolicyHelper.configureFrpWithAccount()` via reflexão para evitar análise estática
+- Requer Android 11+ (API 30+)
+- Conta pode ser alterada em `CDCDeviceAdminReceiver.FRP_ACCOUNT_EMAIL`
+
+**Correção: Cancelamento de Pareamento (2025-02-03):**
+
+*Problema:* App ficava travado quando vendedor cancelava venda durante pareamento
+- Usuário digitava código, app esperava backend
+- Vendedor cancelava venda e iniciava outra
+- App ficava preso tentando carregar termos do contrato antigo
+
+*Solução implementada:*
+- `PairingViewModel.cancelPairing()`: Limpa todos dados parciais e reseta estado
+- `PairingViewModel.resetToIdle()`: Volta estado para tela inicial
+- `PairingPendingScreen`: Botão "Cancelar e Digitar Novo Código" adicionado
+- `TermsAcceptanceScreen`: Botão "Voltar e digitar novo código" na tela de erro
+- Limpa `SecureTokenStorage`, `ContractCodeStorage` e `LocalAccountState`
+
+**Documentação Play Store (2025-02-03):**
+
+Criados documentos para submissão na Play Store:
+- `docs/play_store_submission/DECLARACAO_PLAY_STORE.md` - Declaração principal
+- `docs/play_store_submission/DEVICE_ADMIN_DECLARATION.md` - Formulário Device Admin
+- `docs/play_store_submission/POLITICA_PRIVACIDADE.md` - Política de Privacidade modelo

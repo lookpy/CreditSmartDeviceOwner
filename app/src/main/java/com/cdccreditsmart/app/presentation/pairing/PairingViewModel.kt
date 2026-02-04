@@ -75,6 +75,43 @@ class PairingViewModel(private val context: Context) : ViewModel() {
     
     private var isPolling = false
 
+    /**
+     * Cancela o pareamento atual e limpa todos os dados parciais.
+     * Usado quando o vendedor cancela a venda e inicia outra.
+     */
+    fun cancelPairing() {
+        Log.d(TAG, "🚫 Cancelando pareamento - limpando dados...")
+        
+        isPolling = false
+        webSocketManager?.disconnect()
+        webSocketManager = null
+        
+        try {
+            tokenStorage.clearTokens()
+            
+            val contractCodeStorage = com.cdccreditsmart.app.storage.ContractCodeStorage(context)
+            contractCodeStorage.clearContractCode()
+            
+            val localAccountState = com.cdccreditsmart.data.storage.LocalAccountState(context)
+            localAccountState.clear()
+            
+            Log.i(TAG, "✅ Dados de pareamento limpos - pronto para novo código")
+        } catch (e: Exception) {
+            Log.e(TAG, "Erro ao limpar dados: ${e.message}")
+        }
+        
+        _state.value = PairingState.Idle
+    }
+
+    /**
+     * Reseta o estado para Idle (tela inicial de digitar código)
+     */
+    fun resetToIdle() {
+        Log.d(TAG, "🔄 Resetando estado para Idle")
+        isPolling = false
+        _state.value = PairingState.Idle
+    }
+
     private fun createDeviceApiService(): DeviceApiService {
         return RetrofitProvider.createRetrofit()
             .create(DeviceApiService::class.java)
