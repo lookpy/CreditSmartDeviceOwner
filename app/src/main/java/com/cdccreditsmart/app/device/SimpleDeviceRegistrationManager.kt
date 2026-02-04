@@ -526,14 +526,46 @@ data class PdvImeiResponse(
 
 /**
  * Response from searching for pending sale by IMEI
+ * Now also handles already paired devices with status "already_paired"
  */
 data class ClaimSaleQueryResponse(
-    val found: Boolean,
+    val success: Boolean = false,
+    val found: Boolean = false,
+    val status: String? = null, // "pending", "already_paired", etc.
+    val alreadyPaired: Boolean = false,
     val saleId: String? = null,
     val validationId: String? = null,
+    val deviceId: String? = null,
+    val token: String? = null, // immutable token for already paired devices
     val customerName: String? = null,
     val deviceModel: String? = null,
-    val expiresIn: Long? = null // seconds remaining
+    val expiresIn: Long? = null, // seconds remaining
+    val device: ClaimSaleDeviceInfo? = null,
+    val customer: ClaimSaleCustomerInfo? = null
+)
+
+/**
+ * Device info from claim-sale response (already paired devices)
+ */
+data class ClaimSaleDeviceInfo(
+    val id: String? = null,
+    val name: String? = null,
+    val serialNumber: String? = null,
+    val imei: String? = null,
+    val model: String? = null,
+    val brand: String? = null,
+    val status: String? = null,
+    val isBlocked: Boolean = false
+)
+
+/**
+ * Customer info from claim-sale response (already paired devices)
+ */
+data class ClaimSaleCustomerInfo(
+    val id: String? = null,
+    val name: String? = null,
+    val cpf: String? = null,
+    val phone: String? = null
 )
 
 /**

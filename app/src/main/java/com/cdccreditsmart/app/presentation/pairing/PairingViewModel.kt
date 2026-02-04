@@ -166,15 +166,29 @@ class PairingViewModel(private val context: Context) : ViewModel() {
                 val body = response.body()
                 
                 if (body != null && body.success && body.found) {
-                    Log.d(TAG, "Pending sale found for IMEI")
                     
-                    step2ClaimSale(
-                        validationId = body.validationId ?: "",
-                        imei = imei,
-                        customerName = body.customerName,
-                        deviceModel = body.deviceModel,
-                        contractId = contractId
-                    )
+                    if (body.alreadyPaired || body.status == "already_paired") {
+                        Log.d(TAG, "✅ Dispositivo já pareado - pulando claim")
+                        Log.d(TAG, "   DeviceId: ${body.deviceId}")
+                        Log.d(TAG, "   Customer: ${body.customerName}")
+                        Log.d(TAG, "   Token presente: ${!body.token.isNullOrEmpty()}")
+                        
+                        handleAlreadyPairedDevice(
+                            body = body,
+                            imei = imei,
+                            contractId = contractId
+                        )
+                    } else {
+                        Log.d(TAG, "Pending sale found for IMEI - iniciando claim")
+                        
+                        step2ClaimSale(
+                            validationId = body.validationId ?: "",
+                            imei = imei,
+                            customerName = body.customerName,
+                            deviceModel = body.deviceModel,
+                            contractId = contractId
+                        )
+                    }
                 } else {
                     Log.w(TAG, "No pending sale found for IMEI")
                     _state.value = PairingState.Error(
@@ -185,6 +199,55 @@ class PairingViewModel(private val context: Context) : ViewModel() {
             } else {
                 throw Exception("HTTP ${response.code()}: ${response.message()}")
             }
+        }
+    }
+    
+    private suspend fun handleAlreadyPairedDevice(
+        body: com.cdccreditsmart.network.dto.cdc.PendingSaleResponse,
+        imei: String,
+        contractId: String
+    ) {
+        _state.value = PairingState.Connecting("Restaurando conexão...")
+        
+        try {
+            val deviceId = body.deviceId ?: body.device?.id ?: ""
+            val serialNumber = body.device?.serialNumber ?: contractId
+            val customerName = body.customerName ?: body.customer?.name
+            val deviceModel = body.deviceModel ?: body.device?.model ?: body.device?.name
+            val token = body.token
+            
+            tokenStorage.saveDeviceInfo(
+                deviceId = deviceId,
+                serialNumber = serialNumber,
+                imei = imei,
+                contractCode = serialNumber,
+                customerName = customerName,
+                deviceModel = deviceModel
+            )
+            
+            if (!token.isNullOrEmpty()) {
+                tokenStorage.saveImmutableToken(token)
+                Log.d(TAG, "✅ Token salvo do already_paired")
+            }
+            
+            val localState = LocalAccountState(context)
+            localState.saveRegisteredImei(imei)
+            
+            scheduleBackgroundWorkers()
+            
+            Log.d(TAG, "✅ Dispositivo já pareado reconectado com sucesso!")
+            _state.value = PairingState.Success(
+                contractCode = serialNumber,
+                customerName = customerName,
+                deviceModel = deviceModel
+            )
+            
+        } catch (e: Exception) {
+            Log.e(TAG, "❌ Erro ao restaurar dispositivo já pareado", e)
+            _state.value = PairingState.Error(
+                message = "Erro ao restaurar conexão: ${e.message}",
+                canRetry = true
+            )
         }
     }
 

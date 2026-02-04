@@ -1,17 +1,41 @@
 package com.cdccreditsmart.network.dto.cdc
 
 data class PendingSaleResponse(
-    val success: Boolean,
-    val found: Boolean,
+    val success: Boolean = false,
+    val found: Boolean = false,
+    val status: String? = null,
+    val alreadyPaired: Boolean = false,
     val validationId: String? = null,
     val saleId: String? = null,
+    val deviceId: String? = null,
+    val token: String? = null,
     val customerName: String? = null,
     val deviceModel: String? = null,
     val biometrySessionId: String? = null,
     val storeId: String? = null,
     val customerCpf: String? = null,
     val expiresIn: Int? = null,
-    val message: String? = null
+    val message: String? = null,
+    val device: PendingSaleDeviceInfo? = null,
+    val customer: PendingSaleCustomerInfo? = null
+)
+
+data class PendingSaleDeviceInfo(
+    val id: String? = null,
+    val name: String? = null,
+    val serialNumber: String? = null,
+    val imei: String? = null,
+    val model: String? = null,
+    val brand: String? = null,
+    val status: String? = null,
+    val isBlocked: Boolean = false
+)
+
+data class PendingSaleCustomerInfo(
+    val id: String? = null,
+    val name: String? = null,
+    val cpf: String? = null,
+    val phone: String? = null
 )
 
 data class ClaimRequest(

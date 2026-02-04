@@ -48,3 +48,32 @@ The UI is built with Jetpack Compose and Material 3, featuring a CDC institution
 - **Retrofit, OkHttp:** HTTP client libraries for networking.
 - **WorkManager:** For background task management.
 - **Kotlin Coroutines:** For asynchronous programming.
+
+## Recent Changes
+
+**Suporte a Dispositivos Já Pareados (2025-02-04):**
+
+*Problema:* APK voltava para tela de código do contrato após claim bem-sucedido porque o backend retornava erro ao tentar buscar venda pendente novamente.
+
+*Solução Backend:*
+- Endpoint `GET /api/device/claim-sale` agora retorna `status: "already_paired"` para dispositivos já vendidos
+
+*Atualização no APK:*
+- `PendingSaleResponse` atualizado com novos campos: `status`, `alreadyPaired`, `deviceId`, `token`, `device`, `customer`
+- `PairingViewModel.step1SearchPendingSale()` agora detecta `alreadyPaired` ou `status === "already_paired"`
+- Nova função `handleAlreadyPairedDevice()` restaura dados do dispositivo e pula para tela principal
+
+*Arquivos modificados:*
+- `network/src/main/java/com/cdccreditsmart/network/dto/cdc/PairingDTOs.kt`
+- `app/src/main/java/com/cdccreditsmart/app/presentation/pairing/PairingViewModel.kt`
+- `app/src/main/java/com/cdccreditsmart/app/device/SimpleDeviceRegistrationManager.kt`
+
+**WhatsApp Incluído no Bloqueio (2025-02-04):**
+
+*Mudança de política:* WhatsApp agora é bloqueado junto com outros apps quando há dívida.
+
+*Níveis de bloqueio atualizados:*
+- Nível 3 (30 dias): "Todas as redes sociais e WhatsApp estão bloqueados"
+- Nível 4 (45 dias): Bloqueia todos os apps
+- Nível 5 (60 dias): Apenas chamadas, SMS, bancos e e-mails
+
