@@ -52,13 +52,14 @@ interface ContractApiService {
 
 // Request/Response Data Classes
 data class ContractTermsResponse(
-    val success: Boolean,
-    val version: String,
-    val text: String,
-    val hash: String,
+    val success: Boolean = false,
+    val version: String = "1.0",
+    val text: String = "",
+    val hash: String = "",
     val id: String? = null,
     val isActive: Boolean? = null,
-    val createdAt: String? = null
+    val createdAt: String? = null,
+    val effectiveDate: String? = null
 )
 
 //@JsonClass(generateAdapter = true) // Temporarily disabled to fix build
