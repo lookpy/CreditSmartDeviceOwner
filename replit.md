@@ -100,6 +100,33 @@ The UI is built with Jetpack Compose and Material 3, featuring a CDC institution
 - `app/src/main/java/com/cdccreditsmart/app/presentation/pairing/PairingViewModel.kt`
 - `app/src/main/java/com/cdccreditsmart/app/device/SimpleDeviceRegistrationManager.kt`
 
+**Tela de Aguardando Vendedor (2026-02-04):**
+
+*Problema:* Quando código de pareamento é inserido antes do vendedor clicar em "Concluir Venda", app mostrava erro genérico.
+
+*Solução implementada:*
+
+1. **Detecção de Venda Pendente:**
+   - PairingViewModel detecta status "pending", "waiting" ou "in_progress" do backend
+   - Define estado PairingState.Pending e inicia polling automático a cada 2 segundos
+
+2. **PairingProgressScreen atualizada:**
+   - Mostra ícone de loja (Storefront) para estado Pending
+   - Título "Aguardando Vendedor" 
+   - Mensagem explicando que vendedor deve clicar em "Concluir Venda"
+   - Card indicando polling automático em progresso
+   - Texto informando que tela atualiza automaticamente
+
+3. **PairingPendingScreen:**
+   - Tela dedicada com animação pulsante
+   - Contador visual de verificações
+   - Polling automático por até 6 minutos
+
+*Arquivos modificados:*
+- `app/src/main/java/com/cdccreditsmart/app/presentation/pairing/PairingProgressScreen.kt`
+- `app/src/main/java/com/cdccreditsmart/app/presentation/pairing/PairingViewModel.kt`
+- `app/src/main/java/com/cdccreditsmart/app/presentation/pairing/PairingPendingScreen.kt`
+
 **WhatsApp Incluído no Bloqueio (2025-02-04):**
 
 *Mudança de política:* WhatsApp agora é bloqueado junto com outros apps quando há dívida.

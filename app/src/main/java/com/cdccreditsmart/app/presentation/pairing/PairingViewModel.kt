@@ -178,6 +178,19 @@ class PairingViewModel(private val context: Context) : ViewModel() {
                             imei = imei,
                             contractId = contractId
                         )
+                    } else if (body.status == "pending" || body.status == "waiting" || body.status == "in_progress") {
+                        // Venda encontrada mas vendedor ainda não clicou em "Concluir Venda"
+                        Log.d(TAG, "📋 Venda pendente encontrada - aguardando vendedor concluir")
+                        Log.d(TAG, "   Status: ${body.status}")
+                        Log.d(TAG, "   ValidationId: ${body.validationId}")
+                        
+                        startPendingSalePolling(
+                            imei = imei,
+                            contractId = contractId,
+                            validationId = body.validationId,
+                            customerName = body.customerName,
+                            deviceModel = body.deviceModel
+                        )
                     } else {
                         Log.d(TAG, "Pending sale found for IMEI - iniciando claim")
                         
@@ -199,6 +212,98 @@ class PairingViewModel(private val context: Context) : ViewModel() {
             } else {
                 throw Exception("HTTP ${response.code()}: ${response.message()}")
             }
+        }
+    }
+    
+    /**
+     * Inicia polling para aguardar vendedor concluir a venda no PDV
+     */
+    private suspend fun startPendingSalePolling(
+        imei: String,
+        contractId: String,
+        validationId: String?,
+        customerName: String?,
+        deviceModel: String?
+    ) {
+        isPolling = true
+        _state.value = PairingState.Pending(
+            message = "Venda em andamento.\n\nAguarde o vendedor finalizar no PDV.",
+            contractCode = contractId
+        )
+        
+        var pollAttempts = 0
+        val maxPollAttempts = 180 // 6 minutos (180 * 2 segundos)
+        
+        while (isPolling && pollAttempts < maxPollAttempts) {
+            delay(PENDING_POLL_INTERVAL)
+            pollAttempts++
+            
+            try {
+                Log.d(TAG, "🔄 Polling venda pendente... (tentativa $pollAttempts)")
+                val response = deviceApi.searchPendingSale(imei)
+                
+                if (response.isSuccessful) {
+                    val body = response.body()
+                    
+                    if (body != null && body.success && body.found) {
+                        // Verificar se venda foi concluída
+                        if (body.alreadyPaired || body.status == "already_paired" || body.status == "completed" || body.status == "ready") {
+                            Log.d(TAG, "✅ Venda concluída pelo vendedor! Status: ${body.status}")
+                            isPolling = false
+                            
+                            if (body.alreadyPaired || body.status == "already_paired") {
+                                handleAlreadyPairedDevice(body = body, imei = imei, contractId = contractId)
+                            } else {
+                                step2ClaimSale(
+                                    validationId = body.validationId ?: validationId ?: "",
+                                    imei = imei,
+                                    customerName = body.customerName ?: customerName,
+                                    deviceModel = body.deviceModel ?: deviceModel,
+                                    contractId = contractId
+                                )
+                            }
+                            return
+                        } else if (body.status != "pending" && body.status != "waiting" && body.status != "in_progress" && body.status != null) {
+                            // Status mudou para algo diferente de pending
+                            Log.d(TAG, "📋 Status mudou para: ${body.status} - tentando claim")
+                            isPolling = false
+                            
+                            step2ClaimSale(
+                                validationId = body.validationId ?: validationId ?: "",
+                                imei = imei,
+                                customerName = body.customerName ?: customerName,
+                                deviceModel = body.deviceModel ?: deviceModel,
+                                contractId = contractId
+                            )
+                            return
+                        }
+                        // Ainda pendente, continua polling
+                        Log.d(TAG, "   Status ainda: ${body.status} - aguardando...")
+                    } else if (body != null && !body.found) {
+                        // Venda cancelada
+                        Log.w(TAG, "⚠️ Venda não encontrada mais - pode ter sido cancelada")
+                        isPolling = false
+                        _state.value = PairingState.Error(
+                            message = "A venda foi cancelada. Peça ao vendedor para iniciar uma nova.",
+                            canRetry = true
+                        )
+                        return
+                    }
+                }
+            } catch (e: Exception) {
+                Log.e(TAG, "Erro no polling: ${e.message}")
+                // Continua polling mesmo com erro
+            }
+        }
+        
+        // Timeout do polling
+        if (isPolling) {
+            isPolling = false
+            Log.w(TAG, "⏰ Timeout aguardando vendedor concluir venda")
+            _state.value = PairingState.Error(
+                message = "Tempo esgotado. Peça ao vendedor para concluir a venda e tente novamente.",
+                canRetry = true
+            )
         }
     }
     
