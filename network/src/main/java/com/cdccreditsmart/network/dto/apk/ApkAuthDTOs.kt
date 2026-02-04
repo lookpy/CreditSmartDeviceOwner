@@ -1,24 +1,107 @@
 package com.cdccreditsmart.network.dto.apk
 
 data class ApkAuthRequest(
-    val code: String,
+    val pairingCode: String,
+    val code: String? = null,  // Backward compat - some backends may expect "code"
+    val imei: String? = null,
     val deviceImei: String? = null,
     val additionalImeis: List<String>? = null,
-    val imeiStatus: String? = null
-)
+    val imeiStatus: String? = null,
+    val deviceModel: String? = null,
+    val deviceBrand: String? = null,
+    val androidVersion: String? = null,
+    val deviceFingerprint: String? = null,
+    val androidId: String? = null
+) {
+    companion object {
+        fun create(
+            pairingCode: String,
+            imei: String? = null,
+            deviceImei: String? = null,
+            deviceModel: String? = null,
+            deviceBrand: String? = null,
+            androidVersion: String? = null,
+            deviceFingerprint: String? = null,
+            androidId: String? = null
+        ) = ApkAuthRequest(
+            pairingCode = pairingCode,
+            code = pairingCode,  // Send both for compatibility
+            imei = imei,
+            deviceImei = deviceImei,
+            deviceModel = deviceModel,
+            deviceBrand = deviceBrand,
+            androidVersion = androidVersion,
+            deviceFingerprint = deviceFingerprint,
+            androidId = androidId
+        )
+    }
+}
 
 data class ApkAuthResponse(
     val success: Boolean,
-    val authenticated: Boolean,
-    val pending: Boolean?,
-    val message: String?,
-    val authToken: String?,
-    val expiresIn: Int?,
-    val expiresAt: String?,
-    val device: DeviceData?,
-    val customer: CustomerData?,
-    val store: StoreData?,
-    val paymentSummary: PaymentSummaryData?
+    val authenticated: Boolean? = null,
+    val pending: Boolean? = null,
+    val message: String? = null,
+    val authToken: String? = null,
+    val token: String? = null,
+    val deviceToken: String? = null,
+    val expiresIn: Int? = null,
+    val expiresAt: String? = null,
+    val device: DeviceData? = null,
+    val customer: CustomerData? = null,
+    val store: StoreData? = null,
+    val paymentSummary: PaymentSummaryData? = null,
+    val saleId: String? = null,
+    val apkToken: String? = null,
+    val customerId: String? = null,
+    val storeId: String? = null,
+    val imei: String? = null,
+    val stage: String? = null,
+    val deviceData: DeviceDataSimple? = null
+) {
+    fun getEffectiveToken(): String? = authToken ?: token ?: deviceToken
+    
+    /**
+     * Verifica se o pareamento foi bem-sucedido.
+     * Critérios estritos:
+     * 1. success=true E authenticated=true (pareamento completo)
+     * 2. OU success=true E token presente E stage não é pending
+     * 
+     * NÃO considera pareado se:
+     * - stage=pending_contract_code (aguardando código no app)
+     * - pending=true (aguardando vendedor)
+     */
+    fun isSuccessfulPairing(): Boolean {
+        if (!success) return false
+        
+        // Se explicitamente authenticated, é sucesso
+        if (authenticated == true) return true
+        
+        // Se tem token e não está em estágio pendente, considera pareado
+        if (getEffectiveToken()?.isNotEmpty() == true) {
+            if (stage == "pending_contract_code" || stage == "pending" || pending == true) {
+                return false
+            }
+            return true
+        }
+        
+        return false
+    }
+    
+    /**
+     * Verifica se a venda está pendente (aguardando vendedor ou biometria)
+     */
+    fun isPending(): Boolean {
+        return pending == true || stage == "pending_contract_code" || stage == "pending"
+    }
+}
+
+data class DeviceDataSimple(
+    val name: String? = null,
+    val totalValue: String? = null,
+    val downPayment: String? = null,
+    val installmentValue: String? = null,
+    val installmentCount: Int? = null
 )
 
 data class DeviceData(

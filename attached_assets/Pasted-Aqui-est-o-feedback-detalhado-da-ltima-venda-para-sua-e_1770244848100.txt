@@ -1,0 +1,114 @@
+Aqui está o feedback detalhado da última venda para sua equipe de APK:
+
+📋 LOGS DA ÚLTIMA VENDA - 04/02/2026 às 22:37
+🔑 INFORMAÇÕES DA VENDA
+Campo	Valor
+Sale ID	sale_1770244659934_7jdia0h92om
+Contract Code	CTR_1770244659934_953198
+Código de Pareamento (APK Token)	WD5JPHGZ
+IMEI	353104906953198
+Cliente	e57f223e-c75f-47c3-a080-f5f4e301dc2c
+Loja	4d9e95cc-79b7-42fd-a56d-676713cc7687
+Dispositivo	MOTOROLA Moto G15 Power 128GB
+Valor Total	R$ 20,00
+Entrada	R$ 6,00
+Parcelas	24x de R$ 1,78
+Sessão KYC	76b49019-571e-48c1-8fe8-211d74868eec
+📊 FLUXO CRONOLÓGICO COMPLETO
+1️⃣ ANÁLISE DE CRÉDITO (22:36:31)
+📌 Using FIXED rate for CPF 064.527.843-23: score=711, interestRate=23.77%
+APPROVED - Score: 711, Options: 2, Max Limit: R$ 1400
+✅ Cliente aprovado com score 711 e taxa de 23.77%
+
+2️⃣ VALIDAÇÃO IMEI (22:37:05)
+🔍 [BACKEND DEBUG] Chamando API IMEI.info v5
+🔍 [BACKEND DEBUG] Resposta HTTP recebida: status: 200, statusText: 'OK'
+🔍 [BACKEND DEBUG] Verificação RIGOROSA de compatibilidade v5:
+   - brandMatch: true
+   - modelMatch: true
+   - fullNameMatch: true
+   - finalDecision: true
+✅ IMEI válido - Marca e modelo confirmados (MOTOROLA Moto G15 Power)
+
+3️⃣ CRIAÇÃO SESSÃO KYC DIDIT (22:37:09)
+📤 KYC: CHAMADA API DIDIT
+📥 KYC: RESPOSTA API DIDIT - Status HTTP: 201 Created
+✅ KYC: Sessão Didit criada com sucesso
+💾 KYC: KYC SESSION CRIADA - sessionId: 76b49019-571e-48c1-8fe8-211d74868eec
+✅ Sessão biométrica criada com sucesso
+
+4️⃣ VERIFICAÇÃO CPF - BLOQUEIO GLOBAL (22:37:39)
+🔍 Verificando CPF para financiamento ativo: 064***
+✅ CPF liberado para nova compra - Nenhum financiamento ativo encontrado
+✅ CPF liberado - Sem financiamentos ativos em outras lojas
+
+5️⃣ STAGE 1 COMPLETE - VENDA VALIDADA (22:37:40)
+✅ STAGE 1 COMPLETE: Sale validated and prepared (device NOT created yet)
+📋 Sale ID: sale_1770244659934_7jdia0h92om
+📄 Contract Code: CTR_1770244659934_953198
+🔐 APK Token: WD5JPHGZ
+📱 PDV IMEI: 353104906953198
+⏰ Expires at: 05/02/2026, 22:37:39 (24h window)
+⚠️ IMPORTANTE PARA EQUIPE APK:
+
+O dispositivo NÃO foi criado ainda neste momento
+Foi criado um registro em imei_validations com status pending_contract_code
+O código de pareamento WD5JPHGZ foi salvo no campo immutableToken
+Janela de pareamento: 24 horas
+6️⃣ QR CODE DEVICE OWNER GERADO (22:37:42)
+📱 Generating Device Owner provisioning QR Code
+✅ Usando Configuração Salva pelo Admin
+✅ QR CODE GERADO A PARTIR DA CONFIGURAÇÃO SALVA (618 caracteres)
+7️⃣ HEARTBEATS E POLLING CONTÍNUO (22:37:42+)
+💓 [PDV Heartbeat] Updated IMEI 353104906953198: stage=app, status=active
+GET /api/sales/check-apk-auth/sale_1770244659934_7jdia0h92om 200
+GET /api/pdv/flow-status/IMEI_353104906953198 304
+PDV está fazendo polling contínuo para verificar se o APK se autenticou.
+
+⚠️ PROBLEMAS IDENTIFICADOS NOS LOGS
+1. WebSocket Flow Status com erro
+❌ Flow WebSocket error: {"isTrusted":true}
+O WebSocket de flow-status está apresentando erro. Isso não impede o funcionamento, pois há fallback via HTTP polling.
+
+2. Vite WebSocket URL inválido
+Failed to construct 'WebSocket': The URL 'wss://localhost:undefined/?token=...' is invalid
+Isso é um problema do ambiente de desenvolvimento do Vite, não afeta o APK.
+
+🔄 O QUE O APK DEVE FAZER AGORA
+Cliente digita o código WD5JPHGZ no APK
+
+APK chama POST /api/apk/auth com:
+
+{
+  "pairingCode": "WD5JPHGZ"
+}
+Se resposta 200 → Avançar para biometria
+
+Se resposta 404 → Mostrar "Aguardando Vendedor" e fazer polling a cada 2 segundos
+
+📝 CAMPOS DA RESPOSTA ESPERADA (POST /api/apk/auth)
+Quando o APK chamar com o código WD5JPHGZ, deve receber:
+
+{
+  "success": true,
+  "saleId": "sale_1770244659934_7jdia0h92om",
+  "apkToken": "WD5JPHGZ",
+  "customerId": "e57f223e-c75f-47c3-a080-f5f4e301dc2c",
+  "storeId": "4d9e95cc-79b7-42fd-a56d-676713cc7687",
+  "imei": "353104906953198",
+  "stage": "pending_contract_code",
+  "deviceData": {
+    "name": "MOTOROLA Moto G15 Power 128GB Grafite 4G 4GB RAM",
+    "totalValue": "20.00",
+    "downPayment": "6.00",
+    "installmentValue": "1.78",
+    "installmentCount": 24
+  }
+}
+✅ STATUS ATUAL
+Componente	Status
+Venda (Stage 1)	✅ Completa
+Registro imei_validations	✅ Criado
+Sessão KYC	✅ Criada
+Código de pareamento	✅ WD5JPHGZ
+Aguardando	⏳ APK autenticar com código

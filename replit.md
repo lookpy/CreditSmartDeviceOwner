@@ -100,34 +100,37 @@ The UI is built with Jetpack Compose and Material 3, featuring a CDC institution
 - `app/src/main/java/com/cdccreditsmart/app/presentation/pairing/PairingViewModel.kt`
 - `app/src/main/java/com/cdccreditsmart/app/device/SimpleDeviceRegistrationManager.kt`
 
-**Tela de Aguardando Vendedor (2026-02-04):**
+**CORREÇÃO CRÍTICA: Endpoint de Pareamento (2026-02-04):**
 
-*Problema:* Quando código de pareamento é inserido antes do vendedor clicar em "Concluir Venda", app mostrava erro "Ops! Algo deu errado" porque o backend retorna `found: false` ou 404 até a venda ser concluída.
+*Problema:* App usava endpoint errado (`/api/apk/device/pair`) enquanto o backend espera `POST /api/apk/auth` com campo `pairingCode`. Isso causava a tela de erro "Ops! Algo deu errado" quando o cliente inseria o código de pareamento.
 
-*Solução implementada:*
+*Soluções implementadas:*
 
-1. **Detecção Inteligente de Venda Não Concluída:**
-   - Quando backend retorna `found: false` ou erro 404/400, app NÃO mostra erro
-   - Em vez disso, inicia polling automático para aguardar vendedor concluir
-   - Também detecta status "pending", "waiting" ou "in_progress" se backend retornar
+1. **Endpoint Correto:**
+   - Mudado de `/api/apk/device/pair` para `/api/apk/auth` conforme documentação do backend
+   - Request agora envia `{"pairingCode": "CODIGO", "code": "CODIGO", ...}` para compatibilidade
 
-2. **PairingProgressScreen atualizada:**
-   - Mostra ícone de loja (Storefront) para estado Pending
-   - Título "Aguardando Vendedor" 
-   - Mensagem explicando que vendedor deve clicar em "Concluir Venda"
-   - Card indicando polling automático em progresso
-   - Texto informando que tela atualiza automaticamente
+2. **DTOs Atualizados:**
+   - `ApkAuthRequest`: Campo `pairingCode` adicionado + `code` para backward compat
+   - `ApkAuthResponse`: Novos campos `saleId`, `apkToken`, `stage`, `deviceData`
+   - Métodos `isSuccessfulPairing()` e `isPending()` com lógica estrita
 
-3. **Polling Inteligente:**
-   - Verifica a cada 2 segundos se venda foi concluída
-   - Quando `found: false`, continua aguardando (não mostra erro)
-   - Quando `found: true`, avança para claim automaticamente
-   - Timeout de 6 minutos antes de mostrar erro
+3. **Detecção de Venda Pendente:**
+   - HTTP 404 → Inicia polling e mostra "Aguardando Vendedor"
+   - HTTP 400 com "not found" → Mesmo comportamento
+   - HTTP 400 com código inválido → Mostra erro
+   - Resposta com `stage: pending_contract_code` → Aguarda vendedor
+
+4. **Polling Inteligente:**
+   - Usa `/api/apk/auth` para verificar a cada 2s
+   - Continua polling em 404/400 "not found"
+   - Para e mostra erro em 400 "código inválido"
+   - Avança quando `authenticated: true` ou token presente
 
 *Arquivos modificados:*
-- `app/src/main/java/com/cdccreditsmart/app/presentation/pairing/PairingProgressScreen.kt`
+- `network/src/main/java/com/cdccreditsmart/network/dto/apk/ApkAuthDTOs.kt`
 - `app/src/main/java/com/cdccreditsmart/app/presentation/pairing/PairingViewModel.kt`
-- `app/src/main/java/com/cdccreditsmart/app/presentation/pairing/PairingPendingScreen.kt`
+- `app/src/main/java/com/cdccreditsmart/app/presentation/pairing/PairingProgressScreen.kt`
 
 **WhatsApp Incluído no Bloqueio (2025-02-04):**
 

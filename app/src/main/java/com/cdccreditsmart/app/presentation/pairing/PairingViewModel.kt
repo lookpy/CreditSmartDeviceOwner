@@ -134,7 +134,7 @@ class PairingViewModel(private val context: Context) : ViewModel() {
                     return@launch
                 }
                 
-                Log.i(TAG, "✅ Usando novo endpoint: POST /api/apk/device/pair")
+                Log.i(TAG, "✅ Usando endpoint: POST /api/apk/auth")
                 Log.i(TAG, "📤 Enviando requisição de pareamento para o backend...")
                 
                 stepFallbackClaimByCodeOnly(pairingCode)
@@ -603,21 +603,22 @@ class PairingViewModel(private val context: Context) : ViewModel() {
         // Remover hífen do código de pareamento (DYUX-8U23 -> DYUX8U23)
         val cleanPairingCode = contractId.replace("-", "")
         
-        val pairRequest = com.cdccreditsmart.network.dto.apk.DevicePairRequest(
-            imei = deviceImei ?: "",
-            hardwareImei = deviceImei ?: "",
-            deviceFingerprint = fingerprint,
-            androidId = androidId,
+        // CORRIGIDO: Usar /api/apk/auth conforme documentação do backend
+        val authRequest = com.cdccreditsmart.network.dto.apk.ApkAuthRequest.create(
+            pairingCode = cleanPairingCode,
+            imei = deviceImei,
+            deviceImei = deviceImei,
             deviceModel = deviceInfo.model,
             deviceBrand = deviceInfo.brand,
             androidVersion = deviceInfo.androidVersion,
-            pairingCode = cleanPairingCode
+            deviceFingerprint = fingerprint,
+            androidId = androidId
         )
         
         Log.i(TAG, "╔════════════════════════════════════════════════════════╗")
-        Log.i(TAG, "║   📤 SENDING REQUEST TO /api/apk/device/pair           ║")
+        Log.i(TAG, "║   📤 SENDING REQUEST TO /api/apk/auth                  ║")
         Log.i(TAG, "╚════════════════════════════════════════════════════════╝")
-        Log.i(TAG, "Request URL: https://cdccreditsmart.com/api/apk/device/pair")
+        Log.i(TAG, "Request URL: https://cdccreditsmart.com/api/apk/auth")
         Log.i(TAG, "Request - imei: ${if (deviceImei != null) "${deviceImei.take(6)}****" else "empty"}")
         Log.i(TAG, "Request - deviceModel: ${deviceInfo.model}")
         Log.i(TAG, "Request - deviceBrand: ${deviceInfo.brand}")
@@ -625,8 +626,8 @@ class PairingViewModel(private val context: Context) : ViewModel() {
         Log.i(TAG, "Request - pairingCode: $cleanPairingCode")
         
         retryWithBackoff(MAX_RETRIES) {
-            Log.i(TAG, "📡 Executando chamada HTTP POST /api/apk/device/pair...")
-            val response = deviceApi.pairDevice(pairRequest)
+            Log.i(TAG, "📡 Executando chamada HTTP POST /api/apk/auth...")
+            val response = deviceApi.authenticateApk(authRequest)
             Log.i(TAG, "📨 Resposta recebida: HTTP ${response.code()}")
             
             Log.d(TAG, "Response code: ${response.code()}")
@@ -686,9 +687,9 @@ class PairingViewModel(private val context: Context) : ViewModel() {
                         )
                     }
                     
-                    body != null && body.pending == true -> {
+                    body != null && body.isPending() -> {
                         Log.d(TAG, "⏳ Sale pending - awaiting PDV completion")
-                        Log.d(TAG, "Message: ${body.message}")
+                        Log.d(TAG, "Message: ${body.message}, Stage: ${body.stage}, Pending: ${body.pending}")
                         
                         val message = body.message 
                             ?: "Venda em andamento. Aguarde o vendedor finalizar no PDV."
@@ -902,22 +903,22 @@ class PairingViewModel(private val context: Context) : ViewModel() {
             while (isPolling && _state.value is PairingState.Pending) {
                 delay(PENDING_POLL_INTERVAL)
                 
-                Log.d(TAG, "Auto-polling: Checking if sale was completed (using /api/apk/device/pair)...")
+                Log.d(TAG, "Auto-polling: Checking if sale was completed (using /api/apk/auth)...")
                 
                 try {
-                    // USANDO NOVO ENDPOINT /api/apk/device/pair
-                    val pairRequest = com.cdccreditsmart.network.dto.apk.DevicePairRequest(
+                    // CORRIGIDO: Usar /api/apk/auth conforme documentação do backend
+                    val authRequest = com.cdccreditsmart.network.dto.apk.ApkAuthRequest.create(
+                        pairingCode = cleanPairingCode,
                         imei = deviceImei,
-                        hardwareImei = deviceImei,
-                        deviceFingerprint = fingerprint,
-                        androidId = androidId,
+                        deviceImei = deviceImei,
                         deviceModel = deviceInfo.model,
                         deviceBrand = deviceInfo.brand,
                         androidVersion = deviceInfo.androidVersion,
-                        pairingCode = cleanPairingCode
+                        deviceFingerprint = fingerprint,
+                        androidId = androidId
                     )
                     
-                    val response = deviceApi.pairDevice(pairRequest)
+                    val response = deviceApi.authenticateApk(authRequest)
                     
                     if (response.isSuccessful) {
                         val body = response.body()
@@ -974,8 +975,8 @@ class PairingViewModel(private val context: Context) : ViewModel() {
                                 )
                             }
                             
-                            body != null && body.pending == true -> {
-                                Log.d(TAG, "⏳ Auto-polling: Sale still pending...")
+                            body != null && body.isPending() -> {
+                                Log.d(TAG, "⏳ Auto-polling: Sale still pending (stage: ${body.stage}, pending: ${body.pending})...")
                             }
                             
                             else -> {
@@ -992,7 +993,35 @@ class PairingViewModel(private val context: Context) : ViewModel() {
                             }
                         }
                     } else {
-                        Log.e(TAG, "Auto-polling HTTP error: ${response.code()}")
+                        val errorBody = try { response.errorBody()?.string() } catch (e: Exception) { null }
+                        val errorMessage = try {
+                            val json = org.json.JSONObject(errorBody ?: "{}")
+                            json.optString("message", null) ?: json.optString("error", null)
+                        } catch (e: Exception) { null }
+                        
+                        // 404 significa que a venda ainda não foi concluída pelo vendedor
+                        if (response.code() == 404) {
+                            Log.d(TAG, "⏳ Auto-polling: Venda ainda não concluída (HTTP 404), continuando polling...")
+                        } else if (response.code() == 400) {
+                            // 400 pode ser "not found" (continuar polling) ou código inválido (mostrar erro)
+                            val isNotFound = errorMessage?.lowercase()?.let {
+                                it.contains("not found") || it.contains("não encontrad") || it.contains("pending")
+                            } ?: false
+                            
+                            if (isNotFound) {
+                                Log.d(TAG, "⏳ Auto-polling: Venda ainda não concluída (HTTP 400 not found), continuando polling...")
+                            } else {
+                                // Código inválido ou expirado - parar polling e mostrar erro
+                                Log.e(TAG, "❌ Auto-polling: Código inválido (HTTP 400): $errorMessage")
+                                isPolling = false
+                                _state.value = PairingState.Error(
+                                    message = errorMessage ?: "Código de pareamento inválido ou expirado",
+                                    canRetry = true
+                                )
+                            }
+                        } else {
+                            Log.e(TAG, "Auto-polling HTTP error: ${response.code()}")
+                        }
                     }
                 } catch (e: Exception) {
                     Log.e(TAG, "Auto-polling exception: ${e.message}", e)
