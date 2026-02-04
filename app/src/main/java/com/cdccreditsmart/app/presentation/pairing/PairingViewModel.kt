@@ -226,14 +226,14 @@ class PairingViewModel(private val context: Context) : ViewModel() {
             )
             
             if (!token.isNullOrEmpty()) {
-                tokenStorage.saveImmutableToken(token)
+                tokenStorage.saveAuthToken(authToken = token, contractCode = serialNumber, deviceId = deviceId)
                 Log.d(TAG, "✅ Token salvo do already_paired")
             }
             
             val localState = LocalAccountState(context)
             localState.saveRegisteredImei(imei)
             
-            scheduleBackgroundWorkers()
+            schedulePairingCompletedWorkers()
             
             Log.d(TAG, "✅ Dispositivo já pareado reconectado com sucesso!")
             _state.value = PairingState.Success(
