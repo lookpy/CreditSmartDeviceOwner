@@ -20,11 +20,17 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import com.cdccreditsmart.app.network.RetrofitProvider
+import com.cdccreditsmart.app.security.SecureTokenStorage
 import com.cdccreditsmart.app.storage.TermsAcceptanceStorage
 import com.cdccreditsmart.app.support.ContractTermsData
 import com.cdccreditsmart.app.support.SupportRepository
 import com.cdccreditsmart.app.ui.theme.CDCOrange
+import com.cdccreditsmart.network.api.AcceptTermsRequest
+import com.cdccreditsmart.network.api.ContractApiService
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import kotlinx.coroutines.withTimeout
 import kotlinx.coroutines.TimeoutCancellationException
 
@@ -38,12 +44,17 @@ fun TermsAcceptanceScreen(
     val context = LocalContext.current
     val repository = remember { SupportRepository(context) }
     val termsStorage = remember { TermsAcceptanceStorage(context) }
+    val tokenStorage = remember { SecureTokenStorage(context) }
+    val contractApi = remember { 
+        RetrofitProvider.createRetrofit().create(ContractApiService::class.java) 
+    }
     val scope = rememberCoroutineScope()
     
     var isLoading by remember { mutableStateOf(true) }
     var terms by remember { mutableStateOf<ContractTermsData?>(null) }
     var error by remember { mutableStateOf<String?>(null) }
     var isAccepting by remember { mutableStateOf(false) }
+    var acceptError by remember { mutableStateOf<String?>(null) }
     var hasScrolledToEnd by remember { mutableStateOf(false) }
     
     val lazyListState = rememberLazyListState()
@@ -344,16 +355,78 @@ fun TermsAcceptanceScreen(
                                 textAlign = TextAlign.Center
                             )
                             
+                            if (acceptError != null) {
+                                Spacer(modifier = Modifier.height(8.dp))
+                                Text(
+                                    text = acceptError!!,
+                                    style = MaterialTheme.typography.bodySmall,
+                                    color = MaterialTheme.colorScheme.error,
+                                    textAlign = TextAlign.Center
+                                )
+                            }
+                            
                             Spacer(modifier = Modifier.height(16.dp))
                             
                             Button(
                                 onClick = {
-                                    isAccepting = true
-                                    termsStorage.saveTermsAcceptance(
-                                        version = terms!!.version,
-                                        contractCode = contractCode
-                                    )
-                                    onTermsAccepted()
+                                    scope.launch {
+                                        isAccepting = true
+                                        acceptError = null
+                                        
+                                        try {
+                                            val imei = tokenStorage.getImei()
+                                            
+                                            if (imei.isNullOrEmpty()) {
+                                                android.util.Log.e("TermsScreen", "❌ IMEI não encontrado")
+                                                acceptError = "IMEI não encontrado. Reinicie o pareamento."
+                                                isAccepting = false
+                                                return@launch
+                                            }
+                                            
+                                            android.util.Log.i("TermsScreen", "📤 Enviando aceitação de termos para o backend...")
+                                            android.util.Log.i("TermsScreen", "   IMEI: ${imei.take(6)}****")
+                                            android.util.Log.i("TermsScreen", "   Version: ${terms?.version}")
+                                            android.util.Log.i("TermsScreen", "   Hash: ${terms?.hash?.take(20)}...")
+                                            
+                                            val request = AcceptTermsRequest(
+                                                imei = imei,
+                                                termsVersion = terms?.version,
+                                                termsHash = terms?.hash
+                                            )
+                                            
+                                            val response = withContext(Dispatchers.IO) {
+                                                withTimeout(15000L) {
+                                                    contractApi.acceptContractTerms(request)
+                                                }
+                                            }
+                                            
+                                            if (response.isSuccessful && response.body()?.success == true) {
+                                                android.util.Log.i("TermsScreen", "✅ Termos aceitos com sucesso!")
+                                                android.util.Log.i("TermsScreen", "   Accepted at: ${response.body()?.termsAcceptedAt}")
+                                                
+                                                termsStorage.saveTermsAcceptance(
+                                                    version = terms!!.version,
+                                                    contractCode = contractCode
+                                                )
+                                                onTermsAccepted()
+                                            } else {
+                                                val errorMsg = response.body()?.error 
+                                                    ?: response.body()?.message 
+                                                    ?: "Erro ao aceitar termos"
+                                                android.util.Log.e("TermsScreen", "❌ Erro: $errorMsg")
+                                                acceptError = errorMsg
+                                                isAccepting = false
+                                            }
+                                        } catch (e: TimeoutCancellationException) {
+                                            android.util.Log.e("TermsScreen", "⏰ Timeout ao aceitar termos")
+                                            acceptError = "Timeout ao enviar aceitação. Tente novamente."
+                                            isAccepting = false
+                                        } catch (e: Exception) {
+                                            android.util.Log.e("TermsScreen", "💥 Erro: ${e.message}", e)
+                                            acceptError = "Erro de conexão: ${e.message}"
+                                            isAccepting = false
+                                        }
+                                    }
                                 },
                                 modifier = Modifier
                                     .fillMaxWidth()

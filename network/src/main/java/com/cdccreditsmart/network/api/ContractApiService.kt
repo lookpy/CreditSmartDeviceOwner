@@ -18,6 +18,15 @@ interface ContractApiService {
     ): Response<ContractTermsResponse>
     
     /**
+     * Notifies the backend that the customer has accepted the contract terms
+     * This is required before the PDV can finalize the sale
+     */
+    @POST("v1/contract/accept")
+    suspend fun acceptContractTerms(
+        @Body request: AcceptTermsRequest
+    ): Response<AcceptTermsResponse>
+    
+    /**
      * Signs a contract with digital signature
      */
     @POST("v1/contract/sign")
@@ -60,6 +69,22 @@ data class ContractTermsResponse(
     val isActive: Boolean? = null,
     val createdAt: String? = null,
     val effectiveDate: String? = null
+)
+
+data class AcceptTermsRequest(
+    val imei: String,
+    val termsVersion: String? = "v2.1",
+    val termsHash: String? = null
+)
+
+data class AcceptTermsResponse(
+    val success: Boolean = false,
+    val message: String? = null,
+    val termsAcceptedAt: String? = null,
+    val termsVersion: String? = null,
+    val alreadyAccepted: Boolean? = null,
+    val error: String? = null,
+    val code: String? = null
 )
 
 //@JsonClass(generateAdapter = true) // Temporarily disabled to fix build

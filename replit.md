@@ -177,3 +177,46 @@ Criados documentos para submissão na Play Store:
 3. Backend busca validação pendente pelo IMEI que coincide com PDV
 4. Backend confirma pareamento → retorna token JWT
 5. PDV detecta conexão via polling em `/api/sales/check-apk-auth/:saleId`
+
+**Implementação de Aceitação de Termos (2025-02-04):**
+
+*Novo fluxo obrigatório:* O PDV agora exige que o cliente aceite os termos antes de finalizar a venda.
+
+*Endpoints implementados:*
+- `GET /v1/contract/terms` - Carrega termos do contrato (campo `text`, ~42.000 caracteres)
+- `POST /v1/contract/accept` - Notifica backend que cliente aceitou os termos
+
+*Request POST /v1/contract/accept:*
+```json
+{
+  "imei": "353104906953198",
+  "termsVersion": "v2.1",
+  "termsHash": "sha256:abc123..."
+}
+```
+
+*Response de sucesso:*
+```json
+{
+  "success": true,
+  "message": "Terms accepted successfully",
+  "termsAcceptedAt": "2026-02-04T02:43:47.323Z",
+  "termsVersion": "v2.1"
+}
+```
+
+*Implementação no APK:*
+- `ContractApiService.acceptContractTerms()` - Novo endpoint
+- `AcceptTermsRequest` e `AcceptTermsResponse` - DTOs adicionados
+- `TermsAcceptanceScreen` - Chama o endpoint quando cliente clica em "Aceitar"
+- Timeout de 15s para carregamento e aceitação
+- Fallback para termos padrão se backend falhar
+- Exibe erro se aceitação falhar, permite retry
+
+*Fluxo completo:*
+1. Vendedor cria venda no PDV
+2. APK pareia dispositivo (`POST /api/apk/device/pair`)
+3. APK carrega termos (`GET /v1/contract/terms`)
+4. Cliente lê e aceita termos
+5. APK notifica aceitação (`POST /v1/contract/accept`)
+6. PDV detecta aceitação e libera finalização

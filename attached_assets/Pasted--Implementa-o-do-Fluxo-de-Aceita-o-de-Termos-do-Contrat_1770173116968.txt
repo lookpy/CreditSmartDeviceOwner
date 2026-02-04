@@ -1,0 +1,104 @@
+📱 Implementação do Fluxo de Aceitação de Termos do Contrato
+Visão Geral
+O PDV agora exige que o cliente aceite os termos do contrato no APK antes de permitir a finalização da venda. Apenas o pareamento do dispositivo não é mais suficiente.
+
+Fluxo Completo
+1. Vendedor cria venda no PDV (IMEI registrado)
+2. APK pareia o dispositivo (POST /api/device/claim-sale)
+3. APK carrega os termos (GET /v1/contract/terms)
+4. APK exibe termos para o cliente ler
+5. Cliente aceita os termos
+6. APK notifica aceitação (POST /v1/contract/accept) ← NOVO
+7. PDV detecta aceitação e libera finalização
+Endpoints Relevantes
+1. Carregar Termos do Contrato
+GET /v1/contract/terms
+Resposta:
+
+{
+  "success": true,
+  "text": "CONTRATO DE ARRENDAMENTO...", // ~42.000 caracteres
+  "version": "v2.1",
+  "hash": "sha256:abc123..."
+}
+⚠️ Atenção: O campo é text, não termsText.
+
+2. Notificar Aceitação dos Termos (NOVO)
+POST /v1/contract/accept
+Content-Type: application/json
+{
+  "imei": "353104906953198",
+  "termsVersion": "v2.1",        // opcional, default "v2.1"
+  "termsHash": "sha256:abc123"   // opcional, hash para auditoria
+}
+Resposta de Sucesso:
+
+{
+  "success": true,
+  "message": "Terms accepted successfully",
+  "termsAcceptedAt": "2026-02-04T02:43:47.323Z",
+  "termsVersion": "v2.1"
+}
+Resposta se Já Aceito:
+
+{
+  "success": true,
+  "message": "Terms already accepted",
+  "alreadyAccepted": true,
+  "termsAcceptedAt": "2026-02-04T02:43:47.323Z"
+}
+Erros Possíveis:
+
+// IMEI não encontrado
+{
+  "success": false,
+  "error": "No active validation found for this IMEI",
+  "code": "VALIDATION_NOT_FOUND"
+}
+// IMEI ausente
+{
+  "success": false,
+  "error": "IMEI is required",
+  "code": "MISSING_IMEI"
+}
+Implementação Sugerida no APK
+// Após pareamento bem-sucedido, exibir tela de termos
+fun showContractTerms() {
+    // 1. Carregar termos
+    api.getContractTerms().enqueue { response ->
+        val terms = response.body()
+        
+        // 2. Exibir termos em ScrollView com checkbox "Li e aceito"
+        showTermsDialog(
+            text = terms.text,
+            version = terms.version,
+            hash = terms.hash
+        )
+    }
+}
+// Quando cliente clica em "Aceitar"
+fun onTermsAccepted(imei: String, version: String, hash: String) {
+    api.acceptContractTerms(
+        AcceptTermsRequest(
+            imei = imei,
+            termsVersion = version,
+            termsHash = hash
+        )
+    ).enqueue { response ->
+        if (response.body()?.success == true) {
+            // Sucesso - PDV será notificado automaticamente
+            showSuccessScreen("Contrato aceito! Aguarde o vendedor finalizar.")
+        }
+    }
+}
+Regras de Negócio Importantes
+Obrigatório: O cliente DEVE rolar até o final dos termos antes do botão "Aceitar" ficar habilitado
+Timeout: Manter o timeout de 15 segundos para carregamento dos termos
+Fallback: Se falhar ao carregar termos, exibir mensagem de erro e permitir retry
+Idempotência: Chamar /v1/contract/accept múltiplas vezes é seguro (retorna alreadyAccepted: true)
+Auditoria: Enviar termsHash para garantir integridade dos termos aceitos
+Status no PDV
+O PDV agora mostra feedback em tempo real:
+
+📱 "Dispositivo pareado! Aguardando o cliente ler e aceitar os termos..."
+✅ "Termos aceitos pelo cliente! Você já pode finalizar a venda."
