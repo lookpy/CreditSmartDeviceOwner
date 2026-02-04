@@ -84,7 +84,40 @@ data class AcceptTermsResponse(
     val termsVersion: String? = null,
     val alreadyAccepted: Boolean? = null,
     val error: String? = null,
-    val code: String? = null
+    val code: String? = null,
+    // NOVOS CAMPOS - Dados completos retornados após aceite
+    val deviceReady: Boolean? = null,
+    val deviceId: String? = null,
+    val saleId: String? = null,
+    val token: String? = null,
+    val customerName: String? = null,
+    val deviceModel: String? = null,
+    val device: AcceptTermsDevice? = null,
+    val customer: AcceptTermsCustomer? = null
+)
+
+/**
+ * Dados do dispositivo retornados após aceitar termos
+ */
+data class AcceptTermsDevice(
+    val id: String? = null,
+    val name: String? = null,
+    val serialNumber: String? = null,
+    val imei: String? = null,
+    val model: String? = null,
+    val brand: String? = null,
+    val status: String? = null,
+    val isBlocked: Boolean? = null
+)
+
+/**
+ * Dados do cliente retornados após aceitar termos
+ */
+data class AcceptTermsCustomer(
+    val id: String? = null,
+    val name: String? = null,
+    val cpf: String? = null,
+    val phone: String? = null
 )
 
 //@JsonClass(generateAdapter = true) // Temporarily disabled to fix build

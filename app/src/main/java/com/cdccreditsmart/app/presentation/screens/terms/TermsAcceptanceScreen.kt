@@ -477,8 +477,10 @@ fun TermsAcceptanceScreen(
                                             }
                                             
                                             if (response.isSuccessful && response.body()?.success == true) {
+                                                val responseBody = response.body()!!
                                                 android.util.Log.i("TermsScreen", "✅ Termos aceitos com sucesso!")
-                                                android.util.Log.i("TermsScreen", "   Accepted at: ${response.body()?.termsAcceptedAt}")
+                                                android.util.Log.i("TermsScreen", "   Accepted at: ${responseBody.termsAcceptedAt}")
+                                                android.util.Log.i("TermsScreen", "   DeviceReady: ${responseBody.deviceReady}")
                                                 
                                                 try {
                                                     val termsStorage = TermsAcceptanceStorage(context)
@@ -490,35 +492,94 @@ fun TermsAcceptanceScreen(
                                                     android.util.Log.w("TermsScreen", "⚠️ Erro ao salvar aceitação local: ${e.message}")
                                                 }
                                                 
-                                                // CRÍTICO: Garantir que todos os dados estão salvos ANTES de navegar para HOME
+                                                // ═══════════════════════════════════════════════════════════════════════════════
+                                                // CRÍTICO: Processar dados completos retornados pelo backend (novo fluxo)
+                                                // O backend agora retorna device, customer, token em uma única resposta
+                                                // ═══════════════════════════════════════════════════════════════════════════════
                                                 try {
-                                                    android.util.Log.i("TermsScreen", "🔧 Verificando dados do dispositivo...")
+                                                    android.util.Log.i("TermsScreen", "🔧 Processando dados do dispositivo...")
                                                     
                                                     val tokenStorage = com.cdccreditsmart.app.security.SecureTokenStorage(context)
                                                     val contractCodeStorage = com.cdccreditsmart.app.storage.ContractCodeStorage(context)
                                                     
-                                                    // Verificar se contractCode está salvo
-                                                    val savedContractCode = contractCodeStorage.getContractCode()
-                                                    if (savedContractCode.isNullOrBlank()) {
-                                                        android.util.Log.w("TermsScreen", "⚠️ ContractCode não salvo! Salvando agora...")
-                                                        contractCodeStorage.saveContractCode(contractCode)
+                                                    // Se backend retornou dados completos (deviceReady = true)
+                                                    if (responseBody.deviceReady == true && responseBody.device != null) {
+                                                        android.util.Log.i("TermsScreen", "📦 Backend retornou dados completos!")
+                                                        
+                                                        val device = responseBody.device
+                                                        val customer = responseBody.customer
+                                                        
+                                                        // Salvar contractCode = serialNumber
+                                                        val effectiveContractCode = device.serialNumber ?: contractCode
+                                                        contractCodeStorage.saveContractCode(effectiveContractCode)
+                                                        android.util.Log.i("TermsScreen", "   ✅ ContractCode salvo: $effectiveContractCode")
+                                                        
+                                                        // Salvar token de autenticação
+                                                        if (!responseBody.token.isNullOrBlank()) {
+                                                            tokenStorage.saveAuthToken(
+                                                                authToken = responseBody.token,
+                                                                contractCode = effectiveContractCode,
+                                                                deviceId = device.id
+                                                            )
+                                                            android.util.Log.i("TermsScreen", "   ✅ Token salvo")
+                                                        }
+                                                        
+                                                        // Salvar device info completo
+                                                        tokenStorage.saveDeviceInfo(
+                                                            deviceId = device.id ?: responseBody.deviceId ?: "",
+                                                            serialNumber = device.serialNumber ?: effectiveContractCode,
+                                                            imei = device.imei ?: imei,
+                                                            contractCode = effectiveContractCode,
+                                                            customerName = customer?.name ?: responseBody.customerName,
+                                                            deviceModel = device.model ?: device.name ?: responseBody.deviceModel
+                                                        )
+                                                        android.util.Log.i("TermsScreen", "   ✅ DeviceInfo salvo")
+                                                        
+                                                        // Salvar IMEI para MDM
+                                                        val effectiveImei = device.imei ?: imei
+                                                        if (effectiveImei.isNotBlank()) {
+                                                            tokenStorage.saveImeiForMdm(effectiveImei)
+                                                            android.util.Log.i("TermsScreen", "   ✅ IMEI salvo para MDM")
+                                                        }
+                                                        
+                                                        // Salvar informações do cliente
+                                                        if (customer != null || responseBody.customerName != null) {
+                                                            tokenStorage.saveCustomerInfo(
+                                                                customerName = customer?.name ?: responseBody.customerName,
+                                                                deviceModel = device.model ?: device.name ?: responseBody.deviceModel
+                                                            )
+                                                            android.util.Log.i("TermsScreen", "   ✅ CustomerInfo salvo")
+                                                        }
+                                                        
+                                                        android.util.Log.i("TermsScreen", "🎉 Todos os dados salvos com sucesso!")
+                                                        
+                                                    } else {
+                                                        // Fallback: backend não retornou dados completos (versão antiga)
+                                                        android.util.Log.w("TermsScreen", "⚠️ Backend não retornou dados completos (deviceReady=${responseBody.deviceReady})")
+                                                        
+                                                        val savedContractCode = contractCodeStorage.getContractCode()
+                                                        if (savedContractCode.isNullOrBlank()) {
+                                                            contractCodeStorage.saveContractCode(contractCode)
+                                                            android.util.Log.w("TermsScreen", "   ContractCode salvo via fallback")
+                                                        }
                                                     }
                                                     
-                                                    // Verificar se há device info salvo
-                                                    val hasDeviceInfo = !tokenStorage.getSerialNumber().isNullOrBlank() || 
-                                                                        !tokenStorage.getDeviceId().isNullOrBlank()
+                                                    // Verificar estado final
+                                                    val finalContractCode = contractCodeStorage.getContractCode()
+                                                    val finalToken = tokenStorage.getAuthToken()
+                                                    val finalDeviceId = tokenStorage.getDeviceId()
                                                     
-                                                    android.util.Log.i("TermsScreen", "📦 Estado do dispositivo:")
-                                                    android.util.Log.i("TermsScreen", "   ContractCode: ${if (!savedContractCode.isNullOrBlank()) "✅" else "❌"}")
-                                                    android.util.Log.i("TermsScreen", "   Token: ${if (!tokenStorage.getAuthToken().isNullOrBlank()) "✅" else "❌"}")
-                                                    android.util.Log.i("TermsScreen", "   DeviceInfo: ${if (hasDeviceInfo) "✅" else "❌"}")
+                                                    android.util.Log.i("TermsScreen", "📊 Estado final:")
+                                                    android.util.Log.i("TermsScreen", "   ContractCode: ${if (!finalContractCode.isNullOrBlank()) "✅" else "❌"}")
+                                                    android.util.Log.i("TermsScreen", "   Token: ${if (!finalToken.isNullOrBlank()) "✅" else "❌"}")
+                                                    android.util.Log.i("TermsScreen", "   DeviceId: ${if (!finalDeviceId.isNullOrBlank()) "✅" else "❌"}")
                                                     
-                                                    // Iniciar serviço de foreground se não estiver rodando
+                                                    // Iniciar serviço de foreground
                                                     android.util.Log.i("TermsScreen", "🚀 Iniciando serviço de foreground...")
                                                     com.cdccreditsmart.app.service.CdcForegroundService.startService(context)
                                                     
                                                 } catch (e: Exception) {
-                                                    android.util.Log.e("TermsScreen", "❌ Erro ao verificar dados: ${e.message}", e)
+                                                    android.util.Log.e("TermsScreen", "❌ Erro ao processar dados: ${e.message}", e)
                                                 }
                                                 
                                                 onTermsAccepted()
