@@ -1,0 +1,208 @@
+2026-02-04 20:32:26.068  8509-8535  Finsky                  pid-8509                             I  [20863] Current account updated in PVS
+2026-02-04 20:32:26.137  1511-1533  ThreeFinge...ntListener pid-1511                             I  onPointDown... pointIndex = 0, pointId = 0 currentX = 534.626, currentY = 1402.3545 mTouchRegion:Rect(64, 144 - 1015, 2256)
+2026-02-04 20:32:26.138   868-1302  SurfaceFlinger          pid-868                              D  calculateTimeoutTime, triggerInterval = 3 sec + 999999384 nsec
+2026-02-04 20:32:26.138   825-921   libPowerHal             pid-825                              I  [perfLockAcq] idx:0 hdl:9812 hint:25 pid:825 tid:825 duration:10000 lock_user:vendor.mediatek => ret_hdl:9812
+2026-02-04 20:32:26.139   825-921   libPowerHal             pid-825                              I  [PE] MTKPOWER_HINT_APP_TOUCH update cmd:410000, param:1, pr:3
+2026-02-04 20:32:26.139   825-921   libPowerHal             pid-825                              I  [PE] MTKPOWER_HINT_APP_TOUCH update cmd:400000 param:3000000 pr:3
+2026-02-04 20:32:26.139   825-921   libPowerHal             pid-825                              I  [PE] MTKPOWER_HINT_APP_TOUCH update cmd:400100 param:3000000 pr:3
+2026-02-04 20:32:26.139   825-921   libPowerHal             pid-825                              I  value: 1
+2026-02-04 20:32:26.139   825-921   libPowerHal             pid-825                              I  [PE] MTKPOWER_HINT_APP_TOUCH update cmd:410000 param:1 pr:3
+2026-02-04 20:32:26.140   825-921   libPowerHal             pid-825                              I  [setDvfsrcDevFreqOpp] opp:0, freq:3600000000
+2026-02-04 20:32:26.140   825-921   libPowerHal             pid-825                              I  [PE] MTKPOWER_HINT_APP_TOUCH update cmd:1000000 param:0 pr:3
+2026-02-04 20:32:26.140   825-921   libPowerHal             pid-825                              I  [recordCPUFreqInfo] set cluster[0] min(MTKPOWER_HINT_APP_TOUCH): 1700000 max(-1): -1 cluster[1] min(MTKPOWER_HINT_APP_TOUCH): 2000000 max(-1): -1
+2026-02-04 20:32:26.140   825-921   libPowerHal             pid-825                              I  [perfLockAcq] Done for hdl : 9812
+2026-02-04 20:32:26.148  4559-8500  HeterodyneSyncer        pid-4559                             I  (REDACTED) Sync completed. fetchReason: %s, fetchPackageName: %s, syncErrorType: %s, individual sync errors: %s.
+2026-02-04 20:32:26.152  1511-1533  ApplicationHelper       pid-1511                             E  Fail to get PackageManager
+2026-02-04 20:32:26.152  1511-1533  ApplicationHelper       pid-1511                             E  Fail to get PackageManager
+2026-02-04 20:32:26.154  1511-1533  ApplicationHelper       pid-1511                             E  Fail to get PackageManager
+2026-02-04 20:32:26.155  4559-8500  IPCThreadState          pid-4559                             E  Binder transaction failure. id: 25122860, BR_*: 29189, error: -22 (Invalid argument)
+2026-02-04 20:32:26.155  1511-3156  ActivityManager         pid-1511                             W  pid 4559 com.google.android.gms.persistent sent binder code 2 with flags 1 to frozen apps and got error -32
+2026-02-04 20:32:26.155  4559-8500  FlagUpdateListenerRegis pid-4559                             W  Unable to invoke IFlagUpdateListener.onFlagUpdate. App: com.google.android.gms. Process: com.google.android.gms.unstable|250716497. Error: android.os.DeadObjectException. [CONTEXT service_id=51 ]
+2026-02-04 20:32:26.156  4559-8500  HeterodyneSyncer        pid-4559                             I  (REDACTED) Finished notifying packages after sync. syncLatency: %d
+2026-02-04 20:32:26.158  4559-8500  HeterodyneSyncScheduler pid-4559                             I  (REDACTED) Scheduling adaptive one off task with window [%d, %d] in seconds
+2026-02-04 20:32:26.161  1511-1533  ApplicationHelper       pid-1511                             E  Fail to get PackageManager
+2026-02-04 20:32:26.161  1511-1533  ApplicationHelper       pid-1511                             E  Fail to get PackageManager
+2026-02-04 20:32:26.163  1511-1533  ApplicationHelper       pid-1511                             E  Fail to get PackageManager
+2026-02-04 20:32:26.166  1511-1533  ApplicationHelper       pid-1511                             E  Fail to get PackageManager
+2026-02-04 20:32:26.168  1511-1533  ApplicationHelper       pid-1511                             E  Fail to get PackageManager
+2026-02-04 20:32:26.169  4512-8519  43-ServiceEntitlementIn pid-4512                             I  (REDACTED) [%s] onCreate
+2026-02-04 20:32:26.171  4512-8931  43-ServiceEntitlementIn pid-4512                             I  (REDACTED) [Ts.43-IntentOperation] Action : %s
+2026-02-04 20:32:26.171  4512-8931  43-ServiceEntitlementIn pid-4512                             I  (REDACTED) [%s] Action : %s
+2026-02-04 20:32:26.171  4512-8931  43-ServiceEntitlementIn pid-4512                             I  (REDACTED) [%s] onDestroy
+2026-02-04 20:32:26.177  4559-4559  BoundBrokerSvc          pid-4559                             D  onRebind: Intent { act=com.google.android.gms.auth.aang.events.services.START dat=chimera-action:/... cmp=com.google.android.gms/.chimera.PersistentApiService }
+2026-02-04 20:32:26.183 19075-3534  NetworkScheduler.Stats  pid-19075                            I  (REDACTED) Task %s/%s finished executing. cause:%s result: %s elapsed_millis: %s uptime_millis: %s exec_start_elapsed_seconds: %s
+2026-02-04 20:32:26.184  1511-1533  ApplicationHelper       pid-1511                             E  Fail to get PackageManager
+2026-02-04 20:32:26.187  1511-1511  ThreeFinge...ntListener pid-1511                             D  HANDLER_IS_THREE_TIME_OUT
+2026-02-04 20:32:26.205   825-921   libPowerHal             pid-825                              I  [perfLockRel] hdl:9812, idx:0
+2026-02-04 20:32:26.206   825-921   libPowerHal             pid-825                              I  [PD] MTKPOWER_HINT_APP_TOUCH update cmd:410000 param:0, pr:6
+2026-02-04 20:32:26.206   825-921   libPowerHal             pid-825                              I  [PD] MTKPOWER_HINT_APP_TOUCH update cmd:400000 param:-1 pr:6
+2026-02-04 20:32:26.207   825-921   libPowerHal             pid-825                              I  [PD] MTKPOWER_HINT_APP_TOUCH update cmd:400100 param:-1 pr:6
+2026-02-04 20:32:26.207   825-921   libPowerHal             pid-825                              I  value: 0
+2026-02-04 20:32:26.207   825-921   libPowerHal             pid-825                              I  [PD] MTKPOWER_HINT_APP_TOUCH update cmd:410000 param:0 pr:6
+2026-02-04 20:32:26.208   825-921   libPowerHal             pid-825                              I  [PD] MTKPOWER_HINT_APP_TOUCH update cmd:1000000 param:-1 pr:6
+2026-02-04 20:32:26.208   825-921   libPowerHal             pid-825                              I  [recordCPUFreqInfo] set cluster[0] min(-1): -1 max(-1): -1 cluster[1] min(-1): -1 max(-1): -1
+2026-02-04 20:32:26.208   825-921   libPowerHal             pid-825                              I  [perfLockRel] Done for hdl : 9812
+2026-02-04 20:32:26.211  1511-1533  ApplicationHelper       pid-1511                             E  Fail to get PackageManager
+2026-02-04 20:32:26.211  1511-1533  ApplicationHelper       pid-1511                             E  Fail to get PackageManager
+2026-02-04 20:32:26.221  1511-1533  ApplicationHelper       pid-1511                             E  Fail to get PackageManager
+2026-02-04 20:32:26.221  1511-1533  ApplicationHelper       pid-1511                             E  Fail to get PackageManager
+2026-02-04 20:32:26.227  1511-1533  ApplicationHelper       pid-1511                             E  Fail to get PackageManager
+2026-02-04 20:32:26.228  1511-1533  ApplicationHelper       pid-1511                             E  Fail to get PackageManager
+2026-02-04 20:32:26.231  1511-1533  ApplicationHelper       pid-1511                             E  Fail to get PackageManager
+2026-02-04 20:32:26.236 19075-6588  NetworkScheduler.Stats  pid-19075                            I  (REDACTED) Task %s/%s started execution. cause:%s exec_start_elapsed_seconds: %s
+2026-02-04 20:32:26.237  1511-1533  ApplicationHelper       pid-1511                             E  Fail to get PackageManager
+2026-02-04 20:32:26.237  1511-1533  ApplicationHelper       pid-1511                             E  Fail to get PackageManager
+2026-02-04 20:32:26.244  1511-1533  ApplicationHelper       pid-1511                             E  Fail to get PackageManager
+2026-02-04 20:32:26.244  1511-1533  ApplicationHelper       pid-1511                             E  Fail to get PackageManager
+2026-02-04 20:32:26.249  1511-1533  ApplicationHelper       pid-1511                             E  Fail to get PackageManager
+2026-02-04 20:32:26.249 19075-3534  NetworkScheduler.Stats  pid-19075                            I  (REDACTED) Task %s/%s finished executing. cause:%s result: %s elapsed_millis: %s uptime_millis: %s exec_start_elapsed_seconds: %s
+2026-02-04 20:32:26.251  1511-1533  ApplicationHelper       pid-1511                             E  Fail to get PackageManager
+2026-02-04 20:32:26.256  1511-3100  SystemUpda...gerService pid-1511                             I  No existing info file /data/system/system-update-info.xml
+2026-02-04 20:32:26.278   825-921   libPowerHal             pid-825                              I  [perfLockAcq] idx:0 hdl:9813 hint:25 pid:825 tid:825 duration:10000 lock_user:vendor.mediatek => ret_hdl:9813
+2026-02-04 20:32:26.279   825-921   libPowerHal             pid-825                              I  [PE] MTKPOWER_HINT_APP_TOUCH update cmd:410000, param:1, pr:3
+2026-02-04 20:32:26.279   825-921   libPowerHal             pid-825                              I  [PE] MTKPOWER_HINT_APP_TOUCH update cmd:400000 param:3000000 pr:3
+2026-02-04 20:32:26.279  1511-1533  ThreeFinge...ntListener pid-1511                             I  onPointDown... pointIndex = 0, pointId = 0 currentX = 540.125, currentY = 1404.1035 mTouchRegion:Rect(64, 144 - 1015, 2256)
+2026-02-04 20:32:26.279   825-921   libPowerHal             pid-825                              I  [PE] MTKPOWER_HINT_APP_TOUCH update cmd:400100 param:3000000 pr:3
+2026-02-04 20:32:26.279   825-921   libPowerHal             pid-825                              I  value: 1
+2026-02-04 20:32:26.279   825-921   libPowerHal             pid-825                              I  [PE] MTKPOWER_HINT_APP_TOUCH update cmd:410000 param:1 pr:3
+2026-02-04 20:32:26.279   825-921   libPowerHal             pid-825                              I  [setDvfsrcDevFreqOpp] opp:0, freq:3600000000
+2026-02-04 20:32:26.279   825-921   libPowerHal             pid-825                              I  [PE] MTKPOWER_HINT_APP_TOUCH update cmd:1000000 param:0 pr:3
+2026-02-04 20:32:26.279   825-921   libPowerHal             pid-825                              I  [recordCPUFreqInfo] set cluster[0] min(MTKPOWER_HINT_APP_TOUCH): 1700000 max(-1): -1 cluster[1] min(MTKPOWER_HINT_APP_TOUCH): 2000000 max(-1): -1
+2026-02-04 20:32:26.280   825-921   libPowerHal             pid-825                              I  [perfLockAcq] Done for hdl : 9813
+2026-02-04 20:32:26.318  8509-8528  Finsky                  pid-8509                             I  [20856] Writing flags config, size 1.
+2026-02-04 20:32:26.319  8509-8528  Finsky                  pid-8509                             I  [20856] Started writing experiment flags into file [8uKij9Tp4PZyjSvh8NyLyFvuCv94NONrKvkkdzEKIoQ].
+2026-02-04 20:32:26.323  8728-8760  Finsky:background       pid-8728                             I  [20852] Current account updated in PVS
+2026-02-04 20:32:26.325  8728-8764  Finsky:background       pid-8728                             I  [20856] Current account updated in PVS
+2026-02-04 20:32:26.329  1511-1511  ThreeFinge...ntListener pid-1511                             D  HANDLER_IS_THREE_TIME_OUT
+2026-02-04 20:32:26.330  8509-8528  Finsky                  pid-8509                             I  [20856] Finished writing experiment flags into file [8uKij9Tp4PZyjSvh8NyLyFvuCv94NONrKvkkdzEKIoQ], numFlags=2227.
+2026-02-04 20:32:26.336  8509-8528  Finsky                  pid-8509                             I  [20856] Successfully applied new configurations for package com.google.android.finsky.stable.
+2026-02-04 20:32:26.337  8509-8528  Finsky                  pid-8509                             I  [20856] [EExp] Exporting experiments for package com.google.android.finsky.stable.
+2026-02-04 20:32:26.337  8509-8528  Finsky                  pid-8509                             I  [20856] [EExp] Exporting experiments for namespace com.google.android.finsky.stable.
+2026-02-04 20:32:26.341  8509-8534  Finsky                  pid-8509                             I  [20862] Current account updated in PVS
+2026-02-04 20:32:26.341  8509-8530  Finsky                  pid-8509                             I  [20858] Current account updated in PVS
+2026-02-04 20:32:26.346  1511-1511  MBrainLocalService      pid-1511                             D  isVendorFreezeConditionPass is false
+2026-02-04 20:32:26.346  8509-8528  Finsky                  pid-8509                             I  [20856] [EExp] Successfully exported experiments for package com.google.android.finsky.stable.
+2026-02-04 20:32:26.346  1511-1511  MBrainLocalService      pid-1511                             D  notifyNetworkChange failed
+2026-02-04 20:32:26.348  8509-8534  Finsky                  pid-8509                             I  [20862] Current account updated in PVS
+2026-02-04 20:32:26.350  1511-1511  WiFiBlocklistController pid-1511                             D  Wifi onCapabilitiesChanged
+2026-02-04 20:32:26.350  1511-1511  WiFiBlocklistController pid-1511                             D  Default net onCapabilitiesChanged
+2026-02-04 20:32:26.350  1511-1511  WiFiBlocklistController pid-1511                             D  updateDefaultNet:104
+2026-02-04 20:32:26.350  1511-1511  WiFiBlocklistController pid-1511                             D  mayUpdateNotification: shouldShow=false,UidsBlocked=false, net info=net:104,ifName=wlan0,securityType=2,isDefault=true,ssid="Victoria - 2.4G",notificationId=0
+2026-02-04 20:32:26.352  2843-4317  ModemStats              pid-2843                             I  [DataStallDetectService] onCapabilitiesChanged networkCapabilities=[ Transports: WIFI Capabilities: NOT_METERED&INTERNET&NOT_RESTRICTED&TRUSTED&NOT_VPN&VALIDATED&NOT_ROAMING&FOREGROUND&NOT_CONGESTED&NOT_SUSPENDED&NOT_VCN_MANAGED&NOT_BANDWIDTH_CONSTRAINED LinkUpBandwidth>=10000Kbps LinkDnBandwidth>=10000Kbps TransportInfo: <SSID: <unknown ssid>, BSSID: 02:00:00:00:00:00, MAC: 02:00:00:00:00:00, IP: /192.168.18.102, Security type: 2, Supplicant state: COMPLETED, Wi-Fi standard: legacy, RSSI: -67, Link speed: 48Mbps, Tx Link speed: 48Mbps, Max Supported Tx Link speed: 54Mbps, Rx Link speed: 54Mbps, Max Supported Rx Link speed: 54Mbps, Frequency: 2412MHz, Net ID: -1, Metered hint: false, score: 60, isUsable: true, CarrierMerged: false, SubscriptionId: -1, IsPrimary: -1, Trusted: true, Restricted: false, Ephemeral: false, OEM paid: false, OEM private: false, OSU AP: false, FQDN: <none>, Provider friendly name: <none>, Requesting package name: <none><none>MLO Information: , Is TID-To-Link negotiation supported by the AP: false, AP MLD Address: <none>, AP MLO Link Id: <none>, AP MLO Affiliated links: <none>, Vendor Data: <none>> SignalStrength: -67 UnderlyingNetworks: Null]
+2026-02-04 20:32:26.352  2843-4317  ModemStats              pid-2843                             I  [DataStallDetectService] onCapabilitiesChanged NET_CAPABILITY_VALIDATED=true
+2026-02-04 20:32:26.352  2843-4317  ModemStats              pid-2843                             I  [DataStallDetectService] onCapabilitiesChanged mDataStallManager.mDataStallInstance=null
+2026-02-04 20:32:26.352  2843-4317  ModemStats              pid-2843                             I  [DataStallDetectService] onCapabilitiesChanged mDataStallSmart5gManager.mDataStallInstance=null
+2026-02-04 20:32:26.354   825-921   libPowerHal             pid-825                              I  [perfLockRel] hdl:9813, idx:0
+2026-02-04 20:32:26.354   825-921   libPowerHal             pid-825                              I  [PD] MTKPOWER_HINT_APP_TOUCH update cmd:410000 param:0, pr:6
+2026-02-04 20:32:26.354   825-921   libPowerHal             pid-825                              I  [PD] MTKPOWER_HINT_APP_TOUCH update cmd:400000 param:-1 pr:6
+2026-02-04 20:32:26.354   825-921   libPowerHal             pid-825                              I  [PD] MTKPOWER_HINT_APP_TOUCH update cmd:400100 param:-1 pr:6
+2026-02-04 20:32:26.354   825-921   libPowerHal             pid-825                              I  value: 0
+2026-02-04 20:32:26.355   825-921   libPowerHal             pid-825                              I  [PD] MTKPOWER_HINT_APP_TOUCH update cmd:410000 param:0 pr:6
+2026-02-04 20:32:26.355   825-921   libPowerHal             pid-825                              I  [PD] MTKPOWER_HINT_APP_TOUCH update cmd:1000000 param:-1 pr:6
+2026-02-04 20:32:26.355   825-921   libPowerHal             pid-825                              I  [recordCPUFreqInfo] set cluster[0] min(-1): -1 max(-1): -1 cluster[1] min(-1): -1 max(-1): -1
+2026-02-04 20:32:26.356   825-921   libPowerHal             pid-825                              I  [perfLockRel] Done for hdl : 9813
+2026-02-04 20:32:26.357  8509-8533  Finsky                  pid-8509                             I  [20861] Current account updated in PVS
+2026-02-04 20:32:26.359  8509-8528  Finsky                  pid-8509                             I  [20856] Triggered update for experiment package com.google.android.finsky.regular.
+2026-02-04 20:32:26.359  1756-1871  WifiSignalController    pid-1756                             D  isWifi6: false,wifiVisible: true frequencyLabel:2,4 GHz
+2026-02-04 20:32:26.360  1756-1871  WifiSignalController    pid-1756                             D  isWifi6: false,wifiVisible: true
+2026-02-04 20:32:26.360  1756-1871  WifiSignalController    pid-1756                             D  iconId: 17302987
+2026-02-04 20:32:26.363 19075-20260 NullBinder              pid-19075                            I  NullBinder for android.net.action.RECOMMEND_NETWORKS triggering remote TransactionTooLargeException due to Service without Chimera impl, calling uid: 1000, calling pid: 0
+2026-02-04 20:32:26.363 19075-20260 .gms.persistent         pid-19075                            W  Large reply transaction of 1056768 bytes, interface descriptor , code 1
+2026-02-04 20:32:26.365  8509-8533  Finsky                  pid-8509                             I  [20861] Current account updated in PVS
+2026-02-04 20:32:26.366 30762-30960 BugleRcsEngine          pid-30762                            I  handleMessage processing message:[NOTIFY_UPTIME_IGNORE_STATE_CHANGED] with [non-null]:RcsEngineImpl reference [CONTEXT log_prefix="RcsEngineImpl[DUAL_REG]:[db634c57-edf8]>Handler" thread_id=17263 ]
+2026-02-04 20:32:26.366 30762-30900 BugleRcsEngine          pid-30762                            I  Connected state: [1], networkType: [WIFI] [CONTEXT thread_id=17257 ]
+2026-02-04 20:32:26.366  8509-8533  Finsky                  pid-8509                             I  [20861] Current account updated in PVS
+2026-02-04 20:32:26.367  1973-2660  PhoneInterfaceManager   pid-1973                             E  getCarrierPrivilegeStatusForUid: Invalid subId
+2026-02-04 20:32:26.368 30762-30960 BugleRcsEngine          pid-30762                            I  No RCS Configuration was found in Bugle for simID: redacted-pii:sim_id[chars:0,last3:] [CONTEXT log_prefix="ProvisioningEngineDataRetriever" thread_id=17263 ]
+2026-02-04 20:32:26.384  8509-8530  Finsky                  pid-8509                             I  [20858] Current account updated in PVS
+2026-02-04 20:32:26.386  8509-8535  Finsky                  pid-8509                             I  [20863] Current account updated in PVS
+2026-02-04 20:32:26.388   868-868   BufferQueueProducer     pid-868                              I  [StatusBar#81](this:0xb400006fd2b10860,id:-1,api:0,p:-1,c:868) queueBuffer: fps=0.33 dur=3009.77 max=3009.77 min=3009.77
+2026-02-04 20:32:26.400  8509-8529  Finsky                  pid-8509                             I  [20857] Sending Heterodyne sync request for package com.google.android.finsky.regular
+2026-02-04 20:32:26.403  8509-8530  Finsky                  pid-8509                             I  [20858] Current account updated in PVS
+2026-02-04 20:32:26.405  8509-8529  RequestAddCookies       pid-8509                             I  Cookie store not available in HTTP context
+2026-02-04 20:32:26.428   825-921   libPowerHal             pid-825                              I  [perfLockAcq] idx:0 hdl:9814 hint:25 pid:825 tid:825 duration:10000 lock_user:vendor.mediatek => ret_hdl:9814
+2026-02-04 20:32:26.428   825-921   libPowerHal             pid-825                              I  [PE] MTKPOWER_HINT_APP_TOUCH update cmd:410000, param:1, pr:3
+2026-02-04 20:32:26.429   825-921   libPowerHal             pid-825                              I  [PE] MTKPOWER_HINT_APP_TOUCH update cmd:400000 param:3000000 pr:3
+2026-02-04 20:32:26.429   825-921   libPowerHal             pid-825                              I  [PE] MTKPOWER_HINT_APP_TOUCH update cmd:400100 param:3000000 pr:3
+2026-02-04 20:32:26.429  1511-1533  ThreeFinge...ntListener pid-1511                             I  onPointDown... pointIndex = 0, pointId = 0 currentX = 556.6211, currentY = 1392.3555 mTouchRegion:Rect(64, 144 - 1015, 2256)
+2026-02-04 20:32:26.429   825-921   libPowerHal             pid-825                              I  value: 1
+2026-02-04 20:32:26.429   825-921   libPowerHal             pid-825                              I  [PE] MTKPOWER_HINT_APP_TOUCH update cmd:410000 param:1 pr:3
+2026-02-04 20:32:26.429   825-921   libPowerHal             pid-825                              I  [setDvfsrcDevFreqOpp] opp:0, freq:3600000000
+2026-02-04 20:32:26.429   825-921   libPowerHal             pid-825                              I  [PE] MTKPOWER_HINT_APP_TOUCH update cmd:1000000 param:0 pr:3
+2026-02-04 20:32:26.429   825-921   libPowerHal             pid-825                              I  [recordCPUFreqInfo] set cluster[0] min(MTKPOWER_HINT_APP_TOUCH): 1700000 max(-1): -1 cluster[1] min(MTKPOWER_HINT_APP_TOUCH): 2000000 max(-1): -1
+2026-02-04 20:32:26.429   825-921   libPowerHal             pid-825                              I  [perfLockAcq] Done for hdl : 9814
+2026-02-04 20:32:26.445  8592-8650  Finsky                  pid-8592                             I  [20862] Current account updated in PVS
+2026-02-04 20:32:26.457  8592-8649  Finsky                  pid-8592                             I  [20861] Current account updated in PVS
+2026-02-04 20:32:26.459  8592-8646  Finsky                  pid-8592                             I  [20858] Current account updated in PVS
+2026-02-04 20:32:26.463  8592-8592  Finsky                  pid-8592                             I  [2] setup::RES: shouldRecoverRestoredPackages: versionCodeSystem 84502130
+2026-02-04 20:32:26.465  8592-8592  Finsky                  pid-8592                             I  [2] Detected restoreservicev2://recovery not needed, will not run
+2026-02-04 20:32:26.466  8592-8649  Finsky                  pid-8592                             I  [20861] Current account updated in PVS
+2026-02-04 20:32:26.467  8592-8650  Finsky                  pid-8592                             I  [20862] Current account updated in PVS
+2026-02-04 20:32:26.477   825-921   libPowerHal             pid-825                              I  [perfLockRel] hdl:9814, idx:0
+2026-02-04 20:32:26.477   825-921   libPowerHal             pid-825                              I  [PD] MTKPOWER_HINT_APP_TOUCH update cmd:410000 param:0, pr:6
+2026-02-04 20:32:26.477   825-921   libPowerHal             pid-825                              I  [PD] MTKPOWER_HINT_APP_TOUCH update cmd:400000 param:-1 pr:6
+2026-02-04 20:32:26.477   825-921   libPowerHal             pid-825                              I  [PD] MTKPOWER_HINT_APP_TOUCH update cmd:400100 param:-1 pr:6
+2026-02-04 20:32:26.477   825-921   libPowerHal             pid-825                              I  value: 0
+2026-02-04 20:32:26.477   825-921   libPowerHal             pid-825                              I  [PD] MTKPOWER_HINT_APP_TOUCH update cmd:410000 param:0 pr:6
+2026-02-04 20:32:26.477  1511-1533  ThreeFinge...ntListener pid-1511                             I  onPointUp
+2026-02-04 20:32:26.477   825-921   libPowerHal             pid-825                              I  [PD] MTKPOWER_HINT_APP_TOUCH update cmd:1000000 param:-1 pr:6
+2026-02-04 20:32:26.477   825-921   libPowerHal             pid-825                              I  [recordCPUFreqInfo] set cluster[0] min(-1): -1 max(-1): -1 cluster[1] min(-1): -1 max(-1): -1
+2026-02-04 20:32:26.477   825-921   libPowerHal             pid-825                              I  [perfLockRel] Done for hdl : 9814
+2026-02-04 20:32:26.478  1511-1511  ThreeFinge...ntListener pid-1511                             D  HANDLER_IS_THREE_TIME_OUT
+2026-02-04 20:32:26.506   798-814   hwcomposer              pid-798                              I  [HWCDisplay] (0 updateFps():3644), (type:1, mode:2) fps:60.132008,dur:1014.43,max:17.23,min:15.90  
+2026-02-04 20:32:26.527  8592-8940  Finsky                  pid-8592                             I  [20907] registerListener
+2026-02-04 20:32:26.528  8592-8940  Finsky                  pid-8592                             I  [20907] DSC: reviveDownloads()
+2026-02-04 20:32:26.530  8592-8940  Finsky                  pid-8592                             I  [20907] Initialized AssetModuleDownloader.
+2026-02-04 20:32:26.530  8592-8652  Finsky                  pid-8592                             I  [20863] Current account updated in PVS
+2026-02-04 20:32:26.535  8728-8769  Finsky:background       pid-8728                             I  [20861] DS: reviveDownloads()
+2026-02-04 20:32:26.537  8728-8762  Finsky:background       pid-8728                             I  [20854] Current account updated in PVS
+2026-02-04 20:32:26.540  8728-8760  Finsky:background       pid-8728                             I  [20852] Current account updated in PVS
+2026-02-04 20:32:26.541  3826-3826  PairingViewModel        pid-3826                             D  ⏳ Auto-polling: Sale still pending (stage: awaiting-device, pending: true)...
+2026-02-04 20:32:26.544  8728-8764  Finsky:background       pid-8728                             I  [20856] Current account updated in PVS
+2026-02-04 20:32:26.546  8728-8760  Finsky:background       pid-8728                             I  [20852] Current account updated in PVS
+2026-02-04 20:32:26.560  1511-2175  ConnectivityService     pid-1511                             D  requestNetwork for uid/pid:10151/8728 activeRequest: null callbackRequest: 9401 [NetworkRequest [ REQUEST id=9402, [ Capabilities: INTERNET&NOT_RESTRICTED&TRUSTED&NOT_VCN_MANAGED&NOT_BANDWIDTH_CONSTRAINED Uid: 10151 RequestorUid: 10151 RequestorPkg: com.android.vending UnderlyingNetworks: Null] ]] callback flags: 0 order: 2147483647 isUidTracked: false declaredMethods: ALL
+2026-02-04 20:32:26.561  8728-8764  Finsky:background       pid-8728                             I  [20856] Current account updated in PVS
+2026-02-04 20:32:26.562  1511-1673  WifiNetworkFactory      pid-1511                             D  got request NetworkRequest [ REQUEST id=9402, [ Capabilities: INTERNET&NOT_RESTRICTED&TRUSTED&NOT_VCN_MANAGED&NOT_BANDWIDTH_CONSTRAINED Uid: 10151 RequestorUid: 10151 RequestorPkg: com.android.vending UnderlyingNetworks: Null] ]
+2026-02-04 20:32:26.562  1511-1673  UntrustedW...orkFactory pid-1511                             D  got request NetworkRequest [ REQUEST id=9402, [ Capabilities: INTERNET&NOT_RESTRICTED&TRUSTED&NOT_VCN_MANAGED&NOT_BANDWIDTH_CONSTRAINED Uid: 10151 RequestorUid: 10151 RequestorPkg: com.android.vending UnderlyingNetworks: Null] ]
+2026-02-04 20:32:26.562  1511-1673  OemPaidWif...orkFactory pid-1511                             D  got request NetworkRequest [ REQUEST id=9402, [ Capabilities: INTERNET&NOT_RESTRICTED&TRUSTED&NOT_VCN_MANAGED&NOT_BANDWIDTH_CONSTRAINED Uid: 10151 RequestorUid: 10151 RequestorPkg: com.android.vending UnderlyingNetworks: Null] ]
+2026-02-04 20:32:26.562  1511-1673  MultiInter...orkFactory pid-1511                             D  got request NetworkRequest [ REQUEST id=9402, [ Capabilities: INTERNET&NOT_RESTRICTED&TRUSTED&NOT_VCN_MANAGED&NOT_BANDWIDTH_CONSTRAINED Uid: 10151 RequestorUid: 10151 RequestorPkg: com.android.vending UnderlyingNetworks: Null] ]
+2026-02-04 20:32:26.562  1511-1681  ConnectivityService     pid-1511                             D  NetReassign [9402 : null → 104] [c 1] [a 0] [i 1]
+2026-02-04 20:32:26.565  8728-8781  Finsky:background       pid-8728                             I  [20873] DS: Network is available [NetworkState{connected=true, wifi=true, metered=false, roaming=false}].
+2026-02-04 20:32:26.565  8728-8781  Finsky:background       pid-8728                             I  [20873] DS: Updating downloads for network change
+2026-02-04 20:32:26.633  8509-8529  ResponseProcessCookies  pid-8509                             I  Cookie store not available in HTTP context
+2026-02-04 20:32:26.726  3826-3826  PairingViewModel        pid-3826                             D  ⏳ Auto-polling: Sale still pending (stage: awaiting-device, pending: true)...
+2026-02-04 20:32:26.728   821-887   libPerfCtl              pid-821                              I  xgfGetFPS pid:1756 fps:-1
+2026-02-04 20:32:26.729   821-887   libPerfCtl              pid-821                              I  xgfGetFPS pid:3826 fps:-1
+2026-02-04 20:32:26.886  1511-1533  ApplicationHelper       pid-1511                             E  Fail to get PackageManager
+2026-02-04 20:32:26.886  1511-1533  ApplicationHelper       pid-1511                             E  Fail to get PackageManager
+2026-02-04 20:32:26.909  3826-3826  PairingViewModel        pid-3826                             D  ⏳ Auto-polling: Sale still pending (stage: awaiting-device, pending: true)...
+2026-02-04 20:32:26.987   868-868   BufferQueueProducer     pid-868                              I  [com.cdccreditsmart.app/com.cdccreditsmart.app.presentation.MainActivity#14152](this:0xb400006fd2bd5030,id:-1,api:0,p:-1,c:868) queueBuffer: fps=60.14 dur=1014.36 max=17.16 min=16.38
+2026-02-04 20:32:26.995  3826-3826  PairingViewModel        pid-3826                             D  ⏳ Auto-polling: Sale still pending (stage: awaiting-device, pending: true)...
+2026-02-04 20:32:26.995  8509-8529  Finsky                  pid-8509                             I  [20857] Received Heterodyne sync response. StatusCode=200
+2026-02-04 20:32:27.000  8509-8535  Finsky                  pid-8509                             I  [20863] Current account updated in PVS
+2026-02-04 20:32:27.100  3826-3826  PairingViewModel        pid-3826                             D  ⏳ Auto-polling: Sale still pending (stage: awaiting-device, pending: true)...
+2026-02-04 20:32:27.174  8509-8528  Finsky                  pid-8509                             I  [20856] Regular flags synced
+2026-02-04 20:32:27.175  8509-8528  Finsky                  pid-8509                             I  [20856] Writing flags config, size 1.
+2026-02-04 20:32:27.175  8509-8528  Finsky                  pid-8509                             I  [20856] Started writing experiment flags into file [4dEVOh7DlClE42ly_19Hs7FqnnFOj9O0dm-zzWqGxeo].
+2026-02-04 20:32:27.184  8509-8528  Finsky                  pid-8509                             I  [20856] Finished writing experiment flags into file [4dEVOh7DlClE42ly_19Hs7FqnnFOj9O0dm-zzWqGxeo], numFlags=2125.
+2026-02-04 20:32:27.187  8509-8528  Finsky                  pid-8509                             I  [20856] Successfully applied new configurations for package com.google.android.finsky.regular.
+2026-02-04 20:32:27.187  8509-8528  Finsky                  pid-8509                             I  [20856] [EExp] Exporting experiments for package com.google.android.finsky.regular.
+2026-02-04 20:32:27.187  8509-8528  Finsky                  pid-8509                             I  [20856] [EExp] Exporting experiments for namespace com.google.android.finsky.regular.
+2026-02-04 20:32:27.191  8509-8530  Finsky                  pid-8509                             I  [20858] Current account updated in PVS
+2026-02-04 20:32:27.191  8509-8528  Finsky                  pid-8509                             I  [20856] [EExp] Successfully exported experiments for package com.google.android.finsky.regular.
+2026-02-04 20:32:27.192  8509-8530  Finsky                  pid-8509                             I  [20858] Current account updated in PVS
+2026-02-04 20:32:27.194  8509-8530  Finsky                  pid-8509                             I  [20858] Current account updated in PVS
+2026-02-04 20:32:27.195  8509-8530  Finsky                  pid-8509                             I  [20858] Current account updated in PVS
+2026-02-04 20:32:27.197  8509-8530  Finsky                  pid-8509                             I  [20858] Current account updated in PVS
+2026-02-04 20:32:27.199  8509-8533  Finsky                  pid-8509                             I  [20861] Current account updated in PVS
+2026-02-04 20:32:27.200  8509-8530  Finsky                  pid-8509                             I  [20858] Current account updated in PVS
+2026-02-04 20:32:27.203  8509-8530  Finsky                  pid-8509                             I  [20858] Current account updated in PVS
+2026-02-04 20:32:27.204  8509-8533  Finsky                  pid-8509                             I  [20861] Current account updated in PVS
+2026-02-04 20:32:27.242  3826-3826  PairingViewModel        pid-3826                             D  ⏳ Auto-polling: Sale still pending (stage: awaiting-device, pending: true)...
+2026-02-04 20:32:27.294   806-806   ApFusion                pid-806                              I  enable, handle:10, en:0
+2026-02-04 20:32:27.296   806-806   ApFusion                pid-806                              I  enable, handle:9, en:0
+2026-02-04 20:32:27.296   806-806   Gyroscope               pid-806                              I  enable: handle:3, en:0
+2026-02-04 20:32:27.299   806-806   Accelerometer           pid-806                              I  batch: handle:0, flag:0,samplingPeriodNs:80000000 maxBatchReportLatencyNs:2000000000
+2026-02-04 20:32:27.302   806-806   Magnetic                pid-806                              I  enable: handle:1, en:0 
+2026-02-04 20:32:27.346  3826-3826  PairingViewModel        pid-3826                             D  ⏳ Auto-polling: Sale still pending (stage: awaiting-device, pending: true)...
+2026-02-04 20:32:27.399   783-789   statsd                  pid-783                              E  Predicate 8117705144368774982 dropping data for dimension key (27)0x10000->4510063[I] 
