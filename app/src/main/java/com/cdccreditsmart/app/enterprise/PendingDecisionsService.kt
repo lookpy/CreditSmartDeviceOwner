@@ -81,7 +81,7 @@ class PendingDecisionsService(private val context: Context) {
                     val exceptions = listOf(
                         "bancos_allowed",
                         "emails_allowed",
-                        "com.whatsapp",
+                        // WhatsApp removido das exceções - será bloqueado em caso de dívida
                         "com.android.dialer",
                         "com.android.messaging"
                     )
@@ -156,7 +156,7 @@ class PendingDecisionsService(private val context: Context) {
             3 -> listOf("photos", "gallery", "video_players", "web_browsers",
                        "youtube", "music_players", "play_store", "games",
                        "social_media")
-            4 -> listOf("all_apps_except_whatsapp")
+            4 -> listOf("all_apps")
             5 -> listOf("all_apps_except_banks_calls_sms_emails")
             else -> emptyList()
         }

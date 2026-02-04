@@ -181,9 +181,10 @@ class CategoryMapper(private val context: Context) {
             return true
         }
         
-        if ("com.whatsapp" in exceptions && packageName == "com.whatsapp") {
-            return true
-        }
+        // WhatsApp NÃO é mais protegido - será bloqueado junto com outros apps em caso de dívida
+        // if ("com.whatsapp" in exceptions && packageName == "com.whatsapp") {
+        //     return true
+        // }
         
         return packageName in exceptions
     }
@@ -247,9 +248,9 @@ class CategoryMapper(private val context: Context) {
                 "social_media" -> {
                     isSocialMediaApp(packageName)
                 }
-                "non_essential_apps", "all_apps_except_whatsapp" -> {
-                    packageName != "com.whatsapp" && 
-                        !isBankingApp(packageName) && 
+                "non_essential_apps", "all_apps_except_whatsapp", "all_apps" -> {
+                    // WhatsApp agora é bloqueado junto com os demais apps não-essenciais
+                    !isBankingApp(packageName) && 
                         !isEmailApp(packageName) &&
                         packageName !in PROTECTED_APPS
                 }

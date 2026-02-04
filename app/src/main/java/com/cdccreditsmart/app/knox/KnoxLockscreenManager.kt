@@ -19,11 +19,11 @@ YouTube, música, jogos e Play Store foram bloqueados.
 Regularize seu pagamento para restaurar o acesso."""
         
         private const val MSG_LEVEL_3 = """Atraso de 30 dias.
-Todas as redes sociais estão bloqueadas, exceto o WhatsApp.
+Todas as redes sociais e WhatsApp estão bloqueados.
 Regularize o pagamento para liberar o uso completo."""
         
         private const val MSG_LEVEL_4 = """Atraso de 45 dias.
-A maioria dos aplicativos foi bloqueada, apenas WhatsApp e comunicações essenciais permanecem ativas."""
+A maioria dos aplicativos foi bloqueada, apenas comunicações essenciais permanecem ativas."""
         
         private const val MSG_LEVEL_5 = """Atraso de 60 dias.
 Acesso restrito apenas a chamadas, SMS, bancos e e-mails.

@@ -1,7 +1,7 @@
 # Credit Smart Android App
 
 ## Overview
-The Credit Smart Android App is a secure Device Owner application designed for mobile financial transactions for Credit Smart clients. It offers advanced security features, robust device pairing, real-time communication, and supports PIX and Boleto payments. The app aims to provide a highly secure and reliable financial management tool, facilitating financial inclusion and offering a reliable platform for various payment methods. Key capabilities include progressive blocking, anti-tampering, post-factory-reset enrollment, and offline functionality.
+The Credit Smart Android App is a secure Device Owner application for mobile financial transactions, providing advanced security features, robust device pairing, real-time communication, and support for PIX and Boleto payments. Its primary purpose is to offer a highly secure and reliable financial management tool, promoting financial inclusion through various payment methods. Key capabilities include progressive blocking, anti-tampering measures, post-factory-reset enrollment, and offline functionality. The project aims to deliver a resilient and user-friendly platform for Credit Smart clients.
 
 ## User Preferences
 - Linguagem simples e clara em português
@@ -17,28 +17,26 @@ The Credit Smart Android App is a secure Device Owner application designed for m
 - ADB mantido ativo em builds DEBUG para desenvolvimento/testes (bloqueado apenas em produção)
 
 ## System Architecture
-The application employs Clean Architecture, MVVM, and Jetpack Compose for the UI, structured into modules like `app`, `data`, `network`, `domain`, `device`, `payments`, and `biometry`.
+The application adheres to Clean Architecture, MVVM, and leverages Jetpack Compose for the UI. It is modularized into components such as `app`, `data`, `network`, `domain`, `device`, `payments`, and `biometry`.
 
 **UI/UX Decisions:**
-The UI utilizes Jetpack Compose and Material 3 with a CDC institutional dark theme. It features a streamlined navigation and a `ModernHomeScreen` displaying customer/device info, contract codes, and installment/PIX options.
+The UI is built with Jetpack Compose and Material 3, featuring a CDC institutional dark theme. It provides a streamlined navigation flow, centered around a `ModernHomeScreen` that displays critical customer and device information, contract codes, and options for installment payments or PIX.
 
 **Technical Implementations:**
-- **Device Management:** Includes Device Owner provisioning, policy enforcement, runtime permission requests, and a multi-layered Keep Alive System. Supports post-factory-reset enrollment via Samsung Knox Mobile Enrollment (KME) and Android Zero-Touch Enrollment.
-- **Security & Persistence:** Features time synchronization for tamper detection, Persistent State Manager, `SelfDestructManager` for remote uninstallation, `WorkPolicyManager` for enterprise security, and `EncryptedSharedPreferences`. JWT authentication is used, alongside anti-removal and lock-down mechanisms. Play Protect is programmatically disabled.
-- **Offline Capabilities:** Local storage for overdue calculations and authentication. Progressive app management is handled via `DebtAgingCalculator` and `OfflineEnforcementWorker` with clock manipulation protection.
-- **Device Identification & Pairing:** Offline SIM Swap Detection and a secure 3-step device pairing process with IMEI auto-discovery.
-- **Real-time Communication:** `HeartbeatManager` for status updates and `MdmCommandReceiver` (WebSocket) for real-time MDM commands (BLOCK, UNBLOCK, REMOTE_UNINSTALL, LOCATE_DEVICE).
-- **Financial Features:** Progressive app management based on payment status (`setPackagesSuspended()`) with 6 limitation levels. Includes a universal dismissible overdue overlay and an integrated PIX payment system.
-- **Enhanced Protections:** Blocking of parental control apps, popular apps, system updates, and restriction of power-saving modes. The `SettingsGuard System` prevents access to dangerous Android settings, forces GPS active, and handles split-screen detection.
-- **Networking:** Retrofit and OkHttp with retry logic and Certificate Pinning. Permanent device blocking on security violations.
-- **Crash Prevention:** A global `CrashHandler` for logging and auto-restarts.
-- **Initialization & Permissions:** Prioritized service initialization, explicit permission granting via `PermissionGateScreen`, and consistent permission handling across managers.
-- **Play Protect Evasion:** Uses R8/ProGuard obfuscation, dynamic method calls for DevicePolicyManager APIs via `PolicyHelper.kt` to avoid static analysis, and renames packages to neutral terms. Removed `setApplicationHidden()` functionality.
-- **Performance Optimizations:** Improved WebSocket timeouts, enhanced device sync recovery, UI rendering optimizations (e.g., `LazyColumn`, state hoisting), and background processing for heavy initialization and permission checks.
-- **Permission Management:** Automatic permission granting for Device Owner and Profile Owner devices, using `setPermissionGrantState()` and `AppOpsManager`.
+- **Device Management:** Incorporates Device Owner provisioning, policy enforcement, runtime permission handling, and a multi-layered Keep Alive System. It supports post-factory-reset enrollment via Samsung Knox Mobile Enrollment (KME) and Android Zero-Touch Enrollment. Automatic Factory Reset Protection (FRP) with a Google account is also implemented.
+- **Security & Persistence:** Features time synchronization for tamper detection, a Persistent State Manager, `SelfDestructManager` for remote uninstallation, `WorkPolicyManager` for enterprise security, and `EncryptedSharedPreferences`. JWT authentication is used, complemented by anti-removal and lock-down mechanisms. Play Protect is programmatically disabled and evaded through obfuscation and dynamic method calls. Permanent device blocking occurs on security violations.
+- **Offline Capabilities:** Provides local storage for overdue calculations and authentication. Progressive app management is handled via `DebtAgingCalculator` and `OfflineEnforcementWorker`, with protection against clock manipulation.
+- **Device Identification & Pairing:** Includes Offline SIM Swap Detection and a secure 3-step device pairing process with IMEI auto-discovery.
+- **Real-time Communication:** Utilizes a `HeartbeatManager` for status updates and an `MdmCommandReceiver` (WebSocket) for real-time MDM commands (BLOCK, UNBLOCK, REMOTE_UNINSTALL, LOCATE_DEVICE).
+- **Financial Features:** Implements progressive app management based on payment status, offering 6 limitation levels. It includes a universal, dismissible overdue overlay and an integrated PIX payment system. Contract terms acceptance is a mandatory step, involving fetching and posting user acceptance to the backend.
+- **Enhanced Protections:** Blocks parental control apps, popular applications, system updates, and restricts power-saving modes. The `SettingsGuard System` prevents access to dangerous Android settings, forces GPS active, and detects split-screen usage. WhatsApp is included in app blocking policies when debt is overdue.
+- **Networking:** Employs Retrofit and OkHttp with retry logic and Certificate Pinning.
+- **Crash Prevention:** A global `CrashHandler` is in place for logging and automatic restarts.
+- **Initialization & Permissions:** Features prioritized service initialization, explicit permission granting via `PermissionGateScreen`, and consistent permission handling. Automatic permission granting is implemented for Device Owner and Profile Owner devices.
+- **Performance Optimizations:** Includes improved WebSocket timeouts, enhanced device sync recovery, UI rendering optimizations (e.g., `LazyColumn`, state hoisting), and background processing for heavy initialization and permission checks.
 
 ## External Dependencies
-- **CDC Credit Smart Backend API:** For authentication, device status, installments, PIX processing, heartbeat, MDM commands, time synchronization, and contract terms.
+- **CDC Credit Smart Backend API:** For authentication, device status, installments, PIX processing, heartbeat, MDM commands, time synchronization, contract terms, and device pairing.
 - **Meio de Pagamento API:** External payment gateway for PIX transactions.
 - **WebSocket Server:** For real-time pairing status and MDM command push.
 - **Firebase Cloud Messaging (FCM):** For push notifications.
@@ -47,176 +45,6 @@ The UI utilizes Jetpack Compose and Material 3 with a CDC institutional dark the
 - **Android Zero-Touch Enrollment:** For non-Samsung device enrollment.
 - **Google Play Integrity API:** For device integrity verification.
 - **Jetpack Compose, Material 3, Compose Navigation:** Core UI framework components.
-- **Retrofit, OkHttp:** HTTP client libraries.
-- **WorkManager:** For background tasks.
+- **Retrofit, OkHttp:** HTTP client libraries for networking.
+- **WorkManager:** For background task management.
 - **Kotlin Coroutines:** For asynchronous programming.
-
-## Recent Changes
-
-**QR Provisioning Hang Fix (2025-01-29):**
-- CRITICAL FIX: Provisionamento via QR code travando em "Preparando para configuração de trabalho"
-- CDCDeviceAdminReceiver: SIMPLIFICADO DRASTICAMENTE - removido todo sistema de callback tracking/debug
-- AutoProvisioningReceiver: SIMPLIFICADO - adia proteções para 5s após provisionamento
-- AdminPolicyComplianceActivity: Responde imediatamente sem operações pesadas
-- ProvisioningActivity: REMOVIDA DO MANIFEST - estava interferindo com fluxo normal do Android
-- ProvisioningSuccessActivity: Otimizada para resposta rápida
-- CDCApplication: Detecta provisionamento recente e adia operações pesadas 3 segundos
-- BootReceiver: Verifica isUserUnlocked antes de operações
-- BootInterceptor: Operações de integridade movidas para background
-- FactoryResetRecoveryReceiver: Adicionada verificação isUserUnlocked
-- PlayProtectManager: REMOVIDO completamente
-- AndroidManifest: Removido BOOT_COMPLETED do CDCDeviceAdminReceiver
-- SetupWizard do Android tem timeout curto - todos os callbacks devem ser rápidos (< 10ms)
-
-**Play Protect Evasion - Refatoração Completa (2025-01-29):**
-
-*1. Refatoração de Termos Sensíveis:*
-- `isManualBlock` → `hasOverride`
-- `currentBlockLevel` → `policyLevel`
-- `getCurrentBlockLevel()` → `getPolicyLevel()`
-- Intent key `is_manual_block` → `has_override`
-- Anotações @Json mantêm compatibilidade com backend
-
-*2. Migração de Chamadas DPM para PolicyHelper (Reflexão):*
-- TODAS as chamadas DevicePolicyManager agora passam pelo PolicyHelper
-- PolicyHelper usa reflexão para obfuscar padrões de chamada
-- Métodos adicionados: lockNow, wipeData, setApplicationHidden, enableSystemApp, isApplicationHidden, setCameraDisabled, setMaximumTimeToLock, setPasswordQuality, setDeviceOwnerLockScreenInfo, getActiveAdmins
-- Arquivos migrados: DeviceOwnerManager, DeviceCommandExecutor, CDCDeviceAdminReceiver, PolicyExecutionService, FallbackDeviceManager, todos os adapters de fabricantes
-
-*3. Renomeação de Classes Suspeitas:*
-- SelfDestructManager → RemoteConfigManager
-- AppBlockingManager (app) → AppPolicyManager
-- BlockedAppInterceptor → AppAccessController
-- ParentalControlBlocker → FamilySafetyManager
-- InstallationBlocker → AppInstallPolicy
-- BlockedAppExplanationActivity → AppAccessExplanationActivity
-
-*4. Ofuscação Agressiva (ProGuard/R8):*
-- `-repackageclasses 'a'` - reempacota todas as classes
-- `-optimizationpasses 5` - otimização agressiva
-- Dicionário de ofuscação para nomes curtos
-- TODOS os logs removidos em release (Log.d/v/i/w/e/wtf)
-- Strings sensíveis não aparecem no bytecode
-
-*5. Desativação Automática do Play Protect via MDM:*
-- PolicyHelper.disablePlayProtect() desativa verificador de pacotes
-- Settings modificados: package_verifier_enable, verifier_verify_adb_installs, package_verifier_user_consent
-- Chamado automaticamente em setupBasicPolicies() após provisionamento Device Owner
-- Nomes de settings ofuscados para evitar análise estática
-- Requer Device Owner - não funciona com apenas Device Admin
-
-**Backend Security Fixes (2025-01-29):**
-
-*Correções críticas de segurança implementadas no backend:*
-
-| Endpoint | Vulnerabilidade | Correção |
-|----------|-----------------|----------|
-| `POST /v1/device/bind` | Múltiplos dispositivos no mesmo contrato | Valida se contrato já está vinculado |
-| `POST /api/apk/auth` | Aceitava qualquer dispositivo com token válido | Valida IMEI do dispositivo físico |
-| `GET /api/apk/discover/{imei}` | Não retornava token JWT | Agora retorna token para autenticação |
-
-*Validação de IMEI no /api/apk/auth:*
-- Extrai `deviceImei` e `additionalImeis` do body da requisição
-- Verifica se `deviceImei` = IMEI registrado no contrato
-- Verifica se `deviceImei` está na lista de IMEIs (imeiList) do dispositivo dual-SIM
-- Verifica se algum dos `additionalImeis` corresponde ao IMEI registrado
-- Se IMEIs não corresponderem: HTTP 403 com erro `IMEI_MISMATCH`
-- Cria log de violação de segurança do tipo `imei_mismatch_auth` com severidade crítica
-
-*Fluxo de segurança:*
-1. App envia IMEI físico do dispositivo
-2. Backend compara com IMEI registrado no contrato durante a venda
-3. Se não corresponder → Rejeita autenticação + Log de auditoria
-
-**FRP (Factory Reset Protection) Automático (2025-02-03):**
-
-- Implementado FRP automático com conta Google da Credit Smart
-- Após factory reset, dispositivo exige login com: `dispositivoscreditsmart@gmail.com`
-- Configurado automaticamente em `CDCDeviceAdminReceiver.setupBasicPolicies()`
-- Usa `PolicyHelper.configureFrpWithAccount()` via reflexão para evitar análise estática
-- Requer Android 11+ (API 30+)
-- Conta pode ser alterada em `CDCDeviceAdminReceiver.FRP_ACCOUNT_EMAIL`
-
-**Correção: Cancelamento de Pareamento (2025-02-03):**
-
-*Problema:* App ficava travado quando vendedor cancelava venda durante pareamento
-- Usuário digitava código, app esperava backend
-- Vendedor cancelava venda e iniciava outra
-- App ficava preso tentando carregar termos do contrato antigo
-
-*Solução implementada:*
-- `PairingViewModel.cancelPairing()`: Limpa todos dados parciais e reseta estado
-- `PairingViewModel.resetToIdle()`: Volta estado para tela inicial
-- `PairingPendingScreen`: Botão "Cancelar e Digitar Novo Código" adicionado
-- `TermsAcceptanceScreen`: Botão "Voltar e digitar novo código" na tela de erro
-- Limpa `SecureTokenStorage`, `ContractCodeStorage` e `LocalAccountState`
-
-**Documentação Play Store (2025-02-03):**
-
-Criados documentos para submissão na Play Store:
-- `docs/play_store_submission/DECLARACAO_PLAY_STORE.md` - Declaração principal
-- `docs/play_store_submission/DEVICE_ADMIN_DECLARATION.md` - Formulário Device Admin
-- `docs/play_store_submission/POLITICA_PRIVACIDADE.md` - Política de Privacidade modelo
-
-**Migração para Novo Endpoint de Pareamento (2025-02-04):**
-
-*Problema:* App usava endpoint `/api/apk/auth` mas backend espera `/api/apk/device/pair`
-
-*Solução implementada:*
-- Criado `DevicePairRequest` com campos completos: imei, hardwareImei, deviceFingerprint, androidId, deviceModel, deviceBrand, androidVersion, pairingCode
-- Criado `DevicePairResponse` com métodos helper: `isSuccessfulPairing()`, `getEffectiveToken()`
-- Adicionado endpoint `pairDevice()` em DeviceApiService
-- `PairingViewModel.stepFallbackClaimByCodeOnly()` agora usa novo endpoint
-- `PairingViewModel.startPendingPolling()` também usa novo endpoint para polling automático
-- Código de pareamento é limpo (remove hífens): `DYUX-8U23` → `DYUX8U23`
-- Endpoint adicionado à lista de endpoints sem autenticação em XClientAuthInterceptor
-
-*Fluxo de pareamento atualizado:*
-1. Cliente digita código (ex: DYUX-8U23)
-2. App envia `POST /api/apk/device/pair` com IMEI + info do dispositivo
-3. Backend busca validação pendente pelo IMEI que coincide com PDV
-4. Backend confirma pareamento → retorna token JWT
-5. PDV detecta conexão via polling em `/api/sales/check-apk-auth/:saleId`
-
-**Implementação de Aceitação de Termos (2025-02-04):**
-
-*Novo fluxo obrigatório:* O PDV agora exige que o cliente aceite os termos antes de finalizar a venda.
-
-*Endpoints implementados:*
-- `GET /v1/contract/terms` - Carrega termos do contrato (campo `text`, ~42.000 caracteres)
-- `POST /v1/contract/accept` - Notifica backend que cliente aceitou os termos
-
-*Request POST /v1/contract/accept:*
-```json
-{
-  "imei": "353104906953198",
-  "termsVersion": "v2.1",
-  "termsHash": "sha256:abc123..."
-}
-```
-
-*Response de sucesso:*
-```json
-{
-  "success": true,
-  "message": "Terms accepted successfully",
-  "termsAcceptedAt": "2026-02-04T02:43:47.323Z",
-  "termsVersion": "v2.1"
-}
-```
-
-*Implementação no APK:*
-- `ContractApiService.acceptContractTerms()` - Novo endpoint
-- `AcceptTermsRequest` e `AcceptTermsResponse` - DTOs adicionados
-- `TermsAcceptanceScreen` - Chama o endpoint quando cliente clica em "Aceitar"
-- Timeout de 15s para carregamento e aceitação
-- Fallback para termos padrão se backend falhar
-- Exibe erro se aceitação falhar, permite retry
-
-*Fluxo completo:*
-1. Vendedor cria venda no PDV
-2. APK pareia dispositivo (`POST /api/apk/device/pair`)
-3. APK carrega termos (`GET /v1/contract/terms`)
-4. Cliente lê e aceita termos
-5. APK notifica aceitação (`POST /v1/contract/accept`)
-6. PDV detecta aceitação e libera finalização

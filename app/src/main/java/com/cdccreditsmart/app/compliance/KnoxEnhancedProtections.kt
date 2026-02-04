@@ -39,7 +39,7 @@ class KnoxEnhancedProtections(private val context: Context) {
             "com.android.phone",
             "com.android.contacts",
             "com.android.mms",
-            "com.whatsapp",
+            // WhatsApp removido - será bloqueado em caso de dívida
             "com.android.emergency",
             
             "com.android.chrome",

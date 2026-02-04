@@ -168,7 +168,7 @@ class OfflineBlockingEngine(
             "com.santander.app",
             "com.mercadopago.wallet",
             "com.picpay",
-            "com.whatsapp",
+            // WhatsApp removido da lista de essenciais - será bloqueado em caso de dívida
             "com.android.settings"
         )
     }
