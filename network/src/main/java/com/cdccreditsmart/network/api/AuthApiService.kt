@@ -247,6 +247,6 @@ data class AutoSyncResponse(
 
 // Type aliases to match task requirements
 typealias AuthLoginRequest = LoginRequest
-typealias AuthLoginResponse = AuthResponse
-typealias AuthRefreshResponse = AuthResponse
+typealias AuthLoginResponse = OAuthTokenResponse
+typealias AuthRefreshResponse = OAuthTokenResponse
 typealias AuthScopeResponse = AuthScopesResponse
