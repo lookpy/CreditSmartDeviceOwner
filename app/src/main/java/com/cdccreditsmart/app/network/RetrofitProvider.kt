@@ -16,7 +16,7 @@ import java.util.concurrent.TimeUnit
 object RetrofitProvider {
     
     private const val TAG = "RetrofitProvider"
-    private const val BASE_URL = "https://cdccreditsmart.com/"
+    const val BASE_URL = "https://cdccreditsmart.com/"
     
     private val moshi = MoshiProvider.getMoshi()
     

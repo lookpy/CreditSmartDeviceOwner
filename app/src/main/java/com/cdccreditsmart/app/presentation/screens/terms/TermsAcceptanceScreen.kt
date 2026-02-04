@@ -29,6 +29,8 @@ import com.cdccreditsmart.app.support.SupportRepository
 import com.cdccreditsmart.app.ui.theme.CDCOrange
 import com.cdccreditsmart.network.api.AcceptTermsRequest
 import com.cdccreditsmart.network.api.ContractApiService
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.RequestBody.Companion.toRequestBody
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -629,10 +631,8 @@ fun TermsAcceptanceScreen(
                                                                 .readTimeout(30, java.util.concurrent.TimeUnit.SECONDS)
                                                                 .build()
                                                             
-                                                            val requestBody = okhttp3.RequestBody.create(
-                                                                okhttp3.MediaType.parse("application/json"),
-                                                                jsonBody.toString()
-                                                            )
+                                                            val mediaType = "application/json".toMediaTypeOrNull()
+                                                            val requestBody = jsonBody.toString().toRequestBody(mediaType)
                                                             
                                                             val request = okhttp3.Request.Builder()
                                                                 .url(url)
@@ -642,7 +642,7 @@ fun TermsAcceptanceScreen(
                                                             val response = client.newCall(request).execute()
                                                             
                                                             if (response.isSuccessful) {
-                                                                val responseBody = response.body()?.string()
+                                                                val responseBody = response.body?.string()
                                                                 if (!responseBody.isNullOrBlank()) {
                                                                     val json = org.json.JSONObject(responseBody)
                                                                     val success = json.optBoolean("success", false)
@@ -682,7 +682,7 @@ fun TermsAcceptanceScreen(
                                                                     }
                                                                 }
                                                             } else {
-                                                                android.util.Log.w("TermsScreen", "   ⚠️ Autenticação IMEI falhou: ${response.code()} - ${response.message()}")
+                                                                android.util.Log.w("TermsScreen", "   ⚠️ Autenticação IMEI falhou: ${response.code} - ${response.message}")
                                                             }
                                                         } catch (authEx: Exception) {
                                                             android.util.Log.e("TermsScreen", "   ❌ Erro ao autenticar por IMEI: ${authEx.message}")
