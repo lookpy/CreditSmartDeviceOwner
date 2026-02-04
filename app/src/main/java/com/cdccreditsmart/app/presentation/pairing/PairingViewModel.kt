@@ -606,14 +606,39 @@ class PairingViewModel(private val context: Context) : ViewModel() {
         Log.d(TAG, "Starting automatic polling for pending sale")
         
         viewModelScope.launch {
+            // CORREÇÃO: Coletar IMEI UMA VEZ antes do loop para usar em todas as verificações
+            val imeiInfo = try {
+                deviceInfoManager.getDeviceImeiInfo()
+            } catch (e: Exception) {
+                Log.w(TAG, "⚠️ Erro ao obter IMEI para polling: ${e.message}")
+                null
+            }
+            
+            val deviceImei = imeiInfo?.primaryImei
+            val additionalImeis = if (imeiInfo?.additionalImeis?.isNotEmpty() == true) {
+                imeiInfo.additionalImeis
+            } else {
+                null
+            }
+            val imeiStatus = when (imeiInfo?.acquisitionStatus) {
+                com.cdccreditsmart.app.device.ImeiAcquisitionStatus.SUCCESS -> null
+                else -> "unavailable"
+            }
+            
+            Log.d(TAG, "Auto-polling com IMEI: ${deviceImei?.take(6) ?: "null"}****")
+            
             while (isPolling && _state.value is PairingState.Pending) {
                 delay(PENDING_POLL_INTERVAL)
                 
                 Log.d(TAG, "Auto-polling: Checking if sale was completed...")
                 
                 try {
+                    // CORREÇÃO: Incluir IMEI na requisição de polling (igual à autenticação inicial)
                     val request = com.cdccreditsmart.network.dto.apk.ApkAuthRequest(
-                        code = contractCode
+                        code = contractCode,
+                        deviceImei = deviceImei,
+                        additionalImeis = additionalImeis,
+                        imeiStatus = imeiStatus
                     )
                     
                     val response = deviceApi.authenticateApk(request)
