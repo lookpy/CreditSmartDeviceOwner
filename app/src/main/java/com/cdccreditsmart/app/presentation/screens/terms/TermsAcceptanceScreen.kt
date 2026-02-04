@@ -29,8 +29,6 @@ import com.cdccreditsmart.app.support.SupportRepository
 import com.cdccreditsmart.app.ui.theme.CDCOrange
 import com.cdccreditsmart.network.api.AcceptTermsRequest
 import com.cdccreditsmart.network.api.ContractApiService
-import com.cdccreditsmart.network.api.DeviceApiService
-import com.cdccreditsmart.network.dto.cdc.ImeiAuthRequest
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -619,40 +617,72 @@ fun TermsAcceptanceScreen(
                                                     if (finalToken.isNullOrBlank() && !imei.isNullOrBlank()) {
                                                         android.util.Log.w("TermsScreen", "🔐 Token não recebido - tentando autenticação por IMEI...")
                                                         try {
-                                                            val deviceApiService: DeviceApiService = com.cdccreditsmart.app.network.RetrofitProvider.createRetrofit()
-                                                                .create(DeviceApiService::class.java)
+                                                            // Usar chamada HTTP direta para evitar problemas de tipo
+                                                            val baseUrl = com.cdccreditsmart.app.network.RetrofitProvider.BASE_URL
+                                                            val url = "${baseUrl}api/apk/device/auth/imei"
+                                                            val jsonBody = org.json.JSONObject().apply {
+                                                                put("imei", imei)
+                                                            }
                                                             
-                                                            val authRequest = ImeiAuthRequest(imei = imei)
-                                                            val authResponse = deviceApiService.authenticateByImei(authRequest)
-                                                            val authBody = authResponse.body()
+                                                            val client = okhttp3.OkHttpClient.Builder()
+                                                                .connectTimeout(30, java.util.concurrent.TimeUnit.SECONDS)
+                                                                .readTimeout(30, java.util.concurrent.TimeUnit.SECONDS)
+                                                                .build()
                                                             
-                                                            if (authResponse.isSuccessful && authBody?.success == true) {
-                                                                val authToken = authBody.getEffectiveToken()
-                                                                val authDeviceId = authBody.deviceId
-                                                                
-                                                                if (!authToken.isNullOrBlank()) {
-                                                                    tokenStorage.saveAuthToken(
-                                                                        authToken = authToken,
-                                                                        contractCode = finalContractCode ?: contractCode,
-                                                                        deviceId = authDeviceId ?: finalDeviceId ?: contractCode
-                                                                    )
-                                                                    finalToken = authToken
-                                                                    android.util.Log.i("TermsScreen", "   ✅ Token obtido via autenticação IMEI!")
+                                                            val requestBody = okhttp3.RequestBody.create(
+                                                                okhttp3.MediaType.parse("application/json"),
+                                                                jsonBody.toString()
+                                                            )
+                                                            
+                                                            val request = okhttp3.Request.Builder()
+                                                                .url(url)
+                                                                .post(requestBody)
+                                                                .build()
+                                                            
+                                                            val response = client.newCall(request).execute()
+                                                            
+                                                            if (response.isSuccessful) {
+                                                                val responseBody = response.body()?.string()
+                                                                if (!responseBody.isNullOrBlank()) {
+                                                                    val json = org.json.JSONObject(responseBody)
+                                                                    val success = json.optBoolean("success", false)
                                                                     
-                                                                    // Salvar dados adicionais se disponíveis
-                                                                    val saleData = authBody.saleData
-                                                                    if (saleData != null) {
-                                                                        tokenStorage.saveCustomerInfo(
-                                                                            customerName = saleData.customerName,
-                                                                            deviceModel = saleData.deviceModel
-                                                                        )
-                                                                        android.util.Log.i("TermsScreen", "   ✅ Dados de venda salvos")
+                                                                    if (success) {
+                                                                        // Suporta múltiplos nomes de campo para token
+                                                                        val authToken = json.optString("authToken", null)
+                                                                            ?: json.optString("accessToken", null)
+                                                                            ?: json.optString("token", null)
+                                                                        val authDeviceId = json.optString("deviceId", null)
+                                                                        
+                                                                        if (!authToken.isNullOrBlank()) {
+                                                                            tokenStorage.saveAuthToken(
+                                                                                authToken = authToken,
+                                                                                contractCode = finalContractCode ?: contractCode,
+                                                                                deviceId = authDeviceId ?: finalDeviceId ?: contractCode
+                                                                            )
+                                                                            finalToken = authToken
+                                                                            android.util.Log.i("TermsScreen", "   ✅ Token obtido via autenticação IMEI!")
+                                                                            
+                                                                            // Salvar dados adicionais se disponíveis
+                                                                            if (json.has("saleData")) {
+                                                                                val saleData = json.optJSONObject("saleData")
+                                                                                if (saleData != null) {
+                                                                                    tokenStorage.saveCustomerInfo(
+                                                                                        customerName = saleData.optString("customerName", null),
+                                                                                        deviceModel = saleData.optString("deviceModel", null)
+                                                                                    )
+                                                                                    android.util.Log.i("TermsScreen", "   ✅ Dados de venda salvos")
+                                                                                }
+                                                                            }
+                                                                        } else {
+                                                                            android.util.Log.w("TermsScreen", "   ⚠️ Autenticação bem-sucedida mas sem token")
+                                                                        }
+                                                                    } else {
+                                                                        android.util.Log.w("TermsScreen", "   ⚠️ Autenticação retornou success=false")
                                                                     }
-                                                                } else {
-                                                                    android.util.Log.w("TermsScreen", "   ⚠️ Autenticação bem-sucedida mas sem token")
                                                                 }
                                                             } else {
-                                                                android.util.Log.w("TermsScreen", "   ⚠️ Autenticação IMEI falhou: ${authResponse.code()} - ${authResponse.message()}")
+                                                                android.util.Log.w("TermsScreen", "   ⚠️ Autenticação IMEI falhou: ${response.code()} - ${response.message()}")
                                                             }
                                                         } catch (authEx: Exception) {
                                                             android.util.Log.e("TermsScreen", "   ❌ Erro ao autenticar por IMEI: ${authEx.message}")
