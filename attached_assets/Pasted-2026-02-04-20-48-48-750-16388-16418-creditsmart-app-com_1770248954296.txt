@@ -1,0 +1,49 @@
+2026-02-04 20:48:48.750 16388-16418 creditsmart.app         com.cdccreditsmart.app               I  Background concurrent mark compact GC freed 10MB AllocSpace bytes, 36(1380KB) LOS objects, 66% free, 11MB/33MB, paused 3.944ms,11.225ms total 489.221ms
+--------- beginning of crash
+2026-02-04 20:48:48.984 16388-16622 ContractCodeStorage     com.cdccreditsmart.app               D  Storage verification: 0 valid, 0 tampered, 7 missing
+2026-02-04 20:48:48.984 16388-16622 ContractCodeStorage     com.cdccreditsmart.app               W  No valid contract code found in any location
+2026-02-04 20:48:48.984 16388-16622 AuthOrchestrator        com.cdccreditsmart.app               D  ❌ Código de pareamento não encontrado - precisa de novo código
+2026-02-04 20:48:49.013 16388-16388 RouterViewModel         com.cdccreditsmart.app               D  ❌ Código de pareamento necessário - Ir para QR Scanner
+2026-02-04 20:48:49.035 16388-16547 ContractCodeStorage     com.cdccreditsmart.app               D  Storage verification: 0 valid, 0 tampered, 7 missing
+2026-02-04 20:48:49.035 16388-16547 ContractCodeStorage     com.cdccreditsmart.app               W  No valid contract code found in any location
+2026-02-04 20:48:49.035 16388-16547 AuthOrchestrator        com.cdccreditsmart.app               D  ❌ Código de pareamento não encontrado - precisa de novo código
+2026-02-04 20:48:49.067 16388-16388 RouterViewModel         com.cdccreditsmart.app               D  ❌ Código de pareamento necessário - Ir para QR Scanner
+2026-02-04 20:48:50.301 16388-16388 Choreographer           com.cdccreditsmart.app               I  Skipped 67 frames!  The application may be doing too much work on its main thread.
+2026-02-04 20:48:50.312 16388-16426 HWUI                    com.cdccreditsmart.app               I  Davey! duration=1160ms; Flags=0, FrameTimelineVsyncId=10445952, IntendedVsync=60178827219791, Vsync=60178860478459, InputEventId=0, HandleInputStart=60178865141355, AnimationStart=60178865146893, PerformTraversalsStart=60179749054893, DrawStart=60179749191432, FrameDeadline=60178880485545, FrameInterval=60178865104124, FrameStartTime=16629210, SyncQueued=60179979799201, SyncStart=60179979879509, IssueDrawCommandsStart=60179980075740, SwapBuffers=60179985196432, FrameCompleted=60179988230893, DequeueBufferDuration=115000, QueueBufferDuration=613154, GpuCompleted=60179985654201, SwapBuffersCompleted=60179988230893, DisplayPresentTime=60175964691432, CommandSubmissionCompleted=60179985196432, 
+2026-02-04 20:48:50.387 16388-16426 HWUI                    com.cdccreditsmart.app               I  Davey! duration=1191ms; Flags=0, FrameTimelineVsyncId=10445981, IntendedVsync=60178877107793, Vsync=60179991264863, InputEventId=0, HandleInputStart=60179997384663, AnimationStart=60179997389278, PerformTraversalsStart=60180022986278, DrawStart=60180023107124, FrameDeadline=60180011264739, FrameInterval=60179996350816, FrameStartTime=16628945, SyncQueued=60180033527124, SyncStart=60180033692124, IssueDrawCommandsStart=60180033816047, SwapBuffers=60180064987432, FrameCompleted=60180068824432, DequeueBufferDuration=61462, QueueBufferDuration=1251461, GpuCompleted=60180068824432, SwapBuffersCompleted=60180066858816, DisplayPresentTime=60175997949662, CommandSubmissionCompleted=60180064987432, 
+2026-02-04 20:48:52.480 16388-16388 ScrollIdentify          com.cdccreditsmart.app               I  on fling
+2026-02-04 20:48:53.723 16388-16388 InsetsController        com.cdccreditsmart.app               D  show(ime(), fromIme=false)
+2026-02-04 20:48:53.731 16388-16388 ImeTracker              com.cdccreditsmart.app               I  com.cdccreditsmart.app:948cdebc: onRequestShow at ORIGIN_CLIENT reason SHOW_SOFT_INPUT_BY_INSETS_API fromUser false
+2026-02-04 20:48:53.736 16388-16388 InputMethodManager      com.cdccreditsmart.app               D  showSoftInput() view=androidx.compose.ui.platform.AndroidComposeView{a6e37e9 VFED..... .F....ID 0,0-1080,2400 aid=1073741824} flags=0 reason=SHOW_SOFT_INPUT_BY_INSETS_API
+2026-02-04 20:48:53.879 16388-16388 ImeTracker              com.cdccreditsmart.app               I  com.cdccreditsmart.app:652d3eac: onRequestShow at ORIGIN_CLIENT reason SHOW_SOFT_INPUT fromUser false
+2026-02-04 20:48:53.888 16388-16388 InputMethodManager      com.cdccreditsmart.app               D  showSoftInput() view=androidx.compose.ui.platform.AndroidComposeView{a6e37e9 VFED..... .F...... 0,0-1080,2400 aid=1073741824} flags=0 reason=SHOW_SOFT_INPUT
+2026-02-04 20:48:54.283 16388-16388 InsetsController        com.cdccreditsmart.app               D  show(ime(), fromIme=false)
+2026-02-04 20:48:54.286 16388-16388 ImeTracker              com.cdccreditsmart.app               I  com.cdccreditsmart.app:f512b2a8: onRequestShow at ORIGIN_CLIENT reason SHOW_SOFT_INPUT_BY_INSETS_API fromUser false
+2026-02-04 20:48:54.287 16388-16388 InputMethodManager      com.cdccreditsmart.app               D  showSoftInput() view=androidx.compose.ui.platform.AndroidComposeView{a6e37e9 VFED..... .F....ID 0,0-1080,2400 aid=1073741824} flags=0 reason=SHOW_SOFT_INPUT_BY_INSETS_API
+2026-02-04 20:48:54.354 16388-16388 ImeTracker              com.cdccreditsmart.app               I  com.cdccreditsmart.app:1722c3a9: onRequestShow at ORIGIN_CLIENT reason SHOW_SOFT_INPUT fromUser false
+2026-02-04 20:48:54.354 16388-16388 InputMethodManager      com.cdccreditsmart.app               D  showSoftInput() view=androidx.compose.ui.platform.AndroidComposeView{a6e37e9 VFED..... .F...... 0,0-1080,2400 aid=1073741824} flags=0 reason=SHOW_SOFT_INPUT
+2026-02-04 20:48:55.309 16388-16388 InsetsController        com.cdccreditsmart.app               D  show(ime(), fromIme=false)
+2026-02-04 20:48:55.310 16388-16388 ImeTracker              com.cdccreditsmart.app               I  com.cdccreditsmart.app:a5458c41: onRequestShow at ORIGIN_CLIENT reason SHOW_SOFT_INPUT_BY_INSETS_API fromUser false
+2026-02-04 20:48:55.314 16388-16388 InputMethodManager      com.cdccreditsmart.app               D  showSoftInput() view=androidx.compose.ui.platform.AndroidComposeView{a6e37e9 VFED..... .F....ID 0,0-1080,2400 aid=1073741824} flags=0 reason=SHOW_SOFT_INPUT_BY_INSETS_API
+2026-02-04 20:48:55.371 16388-16388 ImeTracker              com.cdccreditsmart.app               I  com.cdccreditsmart.app:1af988cb: onRequestShow at ORIGIN_CLIENT reason SHOW_SOFT_INPUT fromUser false
+2026-02-04 20:48:55.372 16388-16388 InputMethodManager      com.cdccreditsmart.app               D  showSoftInput() view=androidx.compose.ui.platform.AndroidComposeView{a6e37e9 VFED..... .F....ID 0,0-1080,2400 aid=1073741824} flags=0 reason=SHOW_SOFT_INPUT
+2026-02-04 20:48:55.562 16388-16388 InsetsController        com.cdccreditsmart.app               D  show(ime(), fromIme=true)
+2026-02-04 20:48:55.632 16388-16388 InsetsController        com.cdccreditsmart.app               D  show(ime(), fromIme=true)
+2026-02-04 20:48:55.634 16388-16388 ImeTracker              com.cdccreditsmart.app               I  com.cdccreditsmart.app:a5458c41: onCancelled at PHASE_CLIENT_APPLY_ANIMATION
+2026-02-04 20:48:55.671 16388-16388 InsetsController        com.cdccreditsmart.app               D  show(ime(), fromIme=true)
+2026-02-04 20:48:55.673 16388-16388 ImeTracker              com.cdccreditsmart.app               I  com.cdccreditsmart.app:1af988cb: onCancelled at PHASE_CLIENT_APPLY_ANIMATION
+2026-02-04 20:48:55.918 16388-16388 ImeTracker              com.cdccreditsmart.app               I  com.cdccreditsmart.app:1722c3a9: onShown
+2026-02-04 20:48:57.033 16388-16388 InsetsController        com.cdccreditsmart.app               D  show(ime(), fromIme=true)
+2026-02-04 20:48:57.034 16388-16388 ImeTracker              com.cdccreditsmart.app               I  com.cdccreditsmart.app:b065bcd5: onCancelled at PHASE_CLIENT_APPLY_ANIMATION
+2026-02-04 20:48:57.517 16388-16388 InsetsController        com.cdccreditsmart.app               D  show(ime(), fromIme=true)
+2026-02-04 20:48:57.518 16388-16388 ImeTracker              com.cdccreditsmart.app               I  com.cdccreditsmart.app:c36eca62: onCancelled at PHASE_CLIENT_APPLY_ANIMATION
+2026-02-04 20:48:58.194 16388-16388 InsetsController        com.cdccreditsmart.app               D  show(ime(), fromIme=true)
+2026-02-04 20:48:58.195 16388-16388 ImeTracker              com.cdccreditsmart.app               I  com.cdccreditsmart.app:bc75243e: onCancelled at PHASE_CLIENT_APPLY_ANIMATION
+2026-02-04 20:48:58.354 16388-16388 InsetsController        com.cdccreditsmart.app               D  show(ime(), fromIme=true)
+2026-02-04 20:48:58.355 16388-16388 ImeTracker              com.cdccreditsmart.app               I  com.cdccreditsmart.app:3bd9b89d: onCancelled at PHASE_CLIENT_APPLY_ANIMATION
+2026-02-04 20:48:59.886 16388-16388 InsetsController        com.cdccreditsmart.app               D  show(ime(), fromIme=true)
+2026-02-04 20:48:59.888 16388-16388 ImeTracker              com.cdccreditsmart.app               I  com.cdccreditsmart.app:9e09f5a5: onCancelled at PHASE_CLIENT_APPLY_ANIMATION
+2026-02-04 20:49:00.990 16388-16388 InsetsController        com.cdccreditsmart.app               D  show(ime(), fromIme=true)
+2026-02-04 20:49:00.990 16388-16388 ImeTracker              com.cdccreditsmart.app               I  com.cdccreditsmart.app:4404bf48: onCancelled at PHASE_CLIENT_APPLY_ANIMATION
+2026-02-04 20:49:01.338 16388-16388 InsetsController        com.cdccreditsmart.app               D  show(ime(), fromIme=true)
+2026-02-04 20:49:01.338 16388-16388 ImeTracker              com.cdccreditsmart.app               I  com.cdccreditsmart.app:e585dedd: onCancelled at PHASE_CLIENT_APPLY_ANIMATION
