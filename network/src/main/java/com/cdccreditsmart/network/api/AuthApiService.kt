@@ -59,7 +59,7 @@ interface AuthApiService {
     @POST("v1/auth/login")
     suspend fun login(
         @Body request: LoginRequest
-    ): Response<AuthResponse>
+    ): Response<OAuthTokenResponse>
     
     /**
      * Refreshes authentication tokens
@@ -67,7 +67,7 @@ interface AuthApiService {
     @POST("v1/auth/refresh")
     suspend fun refreshToken(
         @Body request: RefreshTokenRequest
-    ): Response<AuthResponse>
+    ): Response<OAuthTokenResponse>
     
     /**
      * Logs out and invalidates tokens
@@ -129,7 +129,7 @@ data class LogoutRequest(
 )
 
 //@JsonClass(generateAdapter = true) // Temporarily disabled to fix build
-data class AuthResponse(
+data class OAuthTokenResponse(
     val accessToken: String,
     val refreshToken: String,
     val tokenType: String = "Bearer",

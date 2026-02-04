@@ -16,7 +16,7 @@ import com.cdccreditsmart.network.api.DeviceApiService
 import com.cdccreditsmart.network.dto.apk.ApkAuthRequest
 import com.cdccreditsmart.network.dto.cdc.ImeiAuthRequest
 import com.cdccreditsmart.network.dto.cdc.AuthResponse as CdcAuthResponse
-import com.cdccreditsmart.network.api.AuthResponse as ApiAuthResponse
+import com.cdccreditsmart.network.api.OAuthTokenResponse as ApiAuthResponse
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
