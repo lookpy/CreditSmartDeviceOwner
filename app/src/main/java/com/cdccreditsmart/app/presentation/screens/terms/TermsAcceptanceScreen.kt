@@ -12,6 +12,7 @@ import androidx.compose.material.icons.filled.Description
 import androidx.compose.material.icons.filled.ErrorOutline
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
@@ -42,14 +43,9 @@ fun TermsAcceptanceScreen(
     onBack: (() -> Unit)? = null
 ) {
     val context = LocalContext.current
-    val repository = remember { SupportRepository(context) }
-    val termsStorage = remember { TermsAcceptanceStorage(context) }
-    val tokenStorage = remember { SecureTokenStorage(context) }
-    val contractApi = remember { 
-        RetrofitProvider.createRetrofit().create(ContractApiService::class.java) 
-    }
     val scope = rememberCoroutineScope()
     
+    // Estado simples - sem inicializações complexas durante composição
     var isLoading by remember { mutableStateOf(true) }
     var terms by remember { mutableStateOf<ContractTermsData?>(null) }
     var error by remember { mutableStateOf<String?>(null) }
@@ -61,25 +57,60 @@ fun TermsAcceptanceScreen(
     
     // Pré-processar linhas do texto (apenas quando terms mudar)
     val parsedLines = remember(terms?.text) {
-        terms?.text?.split("\n")?.filter { it.isNotBlank() } ?: emptyList()
+        try {
+            terms?.text?.split("\n")?.filter { it.isNotBlank() } ?: emptyList()
+        } catch (e: Exception) {
+            emptyList()
+        }
     }
     
-    // Detectar scroll até o final usando LazyListState
-    LaunchedEffect(lazyListState.layoutInfo.visibleItemsInfo) {
-        val layoutInfo = lazyListState.layoutInfo
-        val totalItems = layoutInfo.totalItemsCount
-        val lastVisibleItem = layoutInfo.visibleItemsInfo.lastOrNull()?.index ?: 0
-        
-        if (totalItems > 0 && lastVisibleItem >= totalItems - 3) {
+    // Detectar scroll até o final - verificação simplificada
+    val isAtEnd = remember {
+        derivedStateOf {
+            try {
+                val layoutInfo = lazyListState.layoutInfo
+                val totalItems = layoutInfo.totalItemsCount
+                if (totalItems == 0) return@derivedStateOf false
+                val lastVisibleItem = layoutInfo.visibleItemsInfo.lastOrNull()?.index ?: 0
+                lastVisibleItem >= totalItems - 3
+            } catch (e: Exception) {
+                false
+            }
+        }
+    }
+    
+    LaunchedEffect(isAtEnd.value) {
+        if (isAtEnd.value) {
             hasScrolledToEnd = true
         }
     }
     
+    // Carregar termos em background thread
     LaunchedEffect(Unit) {
-        scope.launch {
+        withContext(Dispatchers.IO) {
             try {
-                isLoading = true
                 android.util.Log.i("TermsScreen", "📄 Carregando termos do contrato...")
+                
+                val repository = try { 
+                    SupportRepository(context) 
+                } catch (e: Exception) { 
+                    android.util.Log.e("TermsScreen", "❌ Erro ao criar repository: ${e.message}")
+                    null 
+                }
+                
+                if (repository == null) {
+                    android.util.Log.w("TermsScreen", "⚠️ Repository não inicializado, usando termos padrão")
+                    terms = ContractTermsData(
+                        id = "default",
+                        version = "1.0",
+                        text = getDefaultTermsText(),
+                        hash = "",
+                        isActive = true,
+                        createdAt = ""
+                    )
+                    isLoading = false
+                    return@withContext
+                }
                 
                 val result = withTimeout(15000L) {
                     repository.getContractTerms("latest", forceRefresh = false)
@@ -92,7 +123,15 @@ fun TermsAcceptanceScreen(
                     },
                     onFailure = { e ->
                         android.util.Log.e("TermsScreen", "❌ Erro ao carregar termos: ${e.message}", e)
-                        error = e.message ?: "Erro ao carregar termos"
+                        terms = ContractTermsData(
+                            id = "default",
+                            version = "1.0",
+                            text = getDefaultTermsText(),
+                            hash = "",
+                            isActive = true,
+                            createdAt = ""
+                        )
+                        error = null
                     }
                 )
             } catch (e: TimeoutCancellationException) {
@@ -374,6 +413,9 @@ fun TermsAcceptanceScreen(
                                         acceptError = null
                                         
                                         try {
+                                            val tokenStorage = withContext(Dispatchers.IO) {
+                                                SecureTokenStorage.getInstance(context)
+                                            }
                                             val imei = tokenStorage.getImei()
                                             
                                             if (imei.isNullOrEmpty()) {
@@ -394,6 +436,9 @@ fun TermsAcceptanceScreen(
                                                 termsHash = terms?.hash
                                             )
                                             
+                                            val contractApi = RetrofitProvider.createRetrofit()
+                                                .create(ContractApiService::class.java)
+                                            
                                             val response = withContext(Dispatchers.IO) {
                                                 withTimeout(15000L) {
                                                     contractApi.acceptContractTerms(request)
@@ -404,10 +449,15 @@ fun TermsAcceptanceScreen(
                                                 android.util.Log.i("TermsScreen", "✅ Termos aceitos com sucesso!")
                                                 android.util.Log.i("TermsScreen", "   Accepted at: ${response.body()?.termsAcceptedAt}")
                                                 
-                                                termsStorage.saveTermsAcceptance(
-                                                    version = terms!!.version,
-                                                    contractCode = contractCode
-                                                )
+                                                try {
+                                                    val termsStorage = TermsAcceptanceStorage(context)
+                                                    termsStorage.saveTermsAcceptance(
+                                                        version = terms!!.version,
+                                                        contractCode = contractCode
+                                                    )
+                                                } catch (e: Exception) {
+                                                    android.util.Log.w("TermsScreen", "⚠️ Erro ao salvar aceitação local: ${e.message}")
+                                                }
                                                 onTermsAccepted()
                                             } else {
                                                 val errorMsg = response.body()?.error 
