@@ -280,17 +280,27 @@ fun TermsAcceptanceScreen(
                                 onClick = {
                                     scope.launch {
                                         isLoading = true
-                                        val result = repository.getContractTerms("latest", forceRefresh = true)
-                                        result.fold(
-                                            onSuccess = { data ->
-                                                terms = data
-                                                error = null
-                                            },
-                                            onFailure = { e ->
-                                                error = e.message
+                                        try {
+                                            val repo = withContext(Dispatchers.IO) {
+                                                SupportRepository(context)
                                             }
-                                        )
-                                        isLoading = false
+                                            val result = withContext(Dispatchers.IO) {
+                                                repo.getContractTerms("latest", forceRefresh = true)
+                                            }
+                                            result.fold(
+                                                onSuccess = { data ->
+                                                    terms = data
+                                                    error = null
+                                                },
+                                                onFailure = { e ->
+                                                    error = e.message
+                                                }
+                                            )
+                                        } catch (e: Exception) {
+                                            error = "Erro ao carregar: ${e.message}"
+                                        } finally {
+                                            isLoading = false
+                                        }
                                     }
                                 },
                                 colors = ButtonDefaults.outlinedButtonColors(
