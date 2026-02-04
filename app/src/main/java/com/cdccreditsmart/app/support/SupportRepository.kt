@@ -95,9 +95,18 @@ class SupportRepository(private val context: Context) {
     
     suspend fun getContractTerms(version: String = "latest", forceRefresh: Boolean = false): Result<ContractTermsData> = withContext(Dispatchers.IO) {
         try {
-            val cached = getCachedTerms()
-            val networkHelper = com.cdccreditsmart.app.network.NetworkConnectivityHelper(context)
-            val isOnline = networkHelper.isConnectedToInternet()
+            val cached = try { getCachedTerms() } catch (e: Exception) { 
+                Log.e(TAG, "❌ Erro ao ler cache: ${e.message}")
+                null 
+            }
+            
+            val isOnline = try {
+                val networkHelper = com.cdccreditsmart.app.network.NetworkConnectivityHelper(context)
+                networkHelper.isConnectedToInternet()
+            } catch (e: Exception) {
+                Log.e(TAG, "❌ Erro ao verificar rede: ${e.message}")
+                false
+            }
             
             // OFFLINE: Sempre usar cache, independente de expiração
             if (!isOnline && cached != null) {
@@ -117,7 +126,23 @@ class SupportRepository(private val context: Context) {
             
             Log.i(TAG, "📡 Buscando termos do servidor (version=$version)...")
             
-            val response = contractApi.getContractTerms(version)
+            val response = try {
+                kotlinx.coroutines.withTimeout(20000L) {
+                    contractApi.getContractTerms(version)
+                }
+            } catch (e: kotlinx.coroutines.TimeoutCancellationException) {
+                Log.e(TAG, "⏰ Timeout ao buscar termos do servidor")
+                if (cached != null) {
+                    return@withContext Result.success(cached)
+                }
+                return@withContext Result.failure(Exception("Timeout ao carregar termos"))
+            } catch (e: Exception) {
+                Log.e(TAG, "❌ Erro na requisição: ${e.javaClass.simpleName} - ${e.message}")
+                if (cached != null) {
+                    return@withContext Result.success(cached)
+                }
+                return@withContext Result.failure(e)
+            }
             
             if (response.isSuccessful && response.body() != null) {
                 val termsResponse = response.body()!!
@@ -167,13 +192,14 @@ class SupportRepository(private val context: Context) {
                 }
             }
         } catch (e: Exception) {
-            Log.e(TAG, "❌ Erro de rede ao buscar termos: ${e.message}", e)
+            Log.e(TAG, "❌ Erro geral ao buscar termos: ${e.javaClass.simpleName} - ${e.message}", e)
             
-            val cached = getCachedTerms()
-            if (cached != null) {
-                Log.i(TAG, "📦 Usando termos do cache local como fallback (offline)")
-                Result.success(cached)
+            val cachedFallback = try { getCachedTerms() } catch (ex: Exception) { null }
+            if (cachedFallback != null) {
+                Log.i(TAG, "📦 Usando termos do cache local como fallback (erro)")
+                Result.success(cachedFallback)
             } else {
+                Log.e(TAG, "❌ Sem cache disponível, retornando erro")
                 Result.failure(e)
             }
         }
