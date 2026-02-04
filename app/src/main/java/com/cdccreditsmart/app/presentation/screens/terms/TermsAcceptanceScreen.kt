@@ -503,11 +503,12 @@ fun TermsAcceptanceScreen(
                                                     val contractCodeStorage = com.cdccreditsmart.app.storage.ContractCodeStorage(context)
                                                     
                                                     // Se backend retornou dados completos (deviceReady = true)
-                                                    if (responseBody.deviceReady == true && responseBody.device != null) {
+                                                    val device = responseBody.device
+                                                    if (responseBody.deviceReady == true && device != null) {
                                                         android.util.Log.i("TermsScreen", "📦 Backend retornou dados completos!")
                                                         
-                                                        val device = responseBody.device
                                                         val customer = responseBody.customer
+                                                        val tokenValue = responseBody.token
                                                         
                                                         // Salvar contractCode = serialNumber
                                                         val effectiveContractCode = device.serialNumber ?: contractCode
@@ -515,9 +516,9 @@ fun TermsAcceptanceScreen(
                                                         android.util.Log.i("TermsScreen", "   ✅ ContractCode salvo: $effectiveContractCode")
                                                         
                                                         // Salvar token de autenticação
-                                                        if (!responseBody.token.isNullOrBlank()) {
+                                                        if (!tokenValue.isNullOrBlank()) {
                                                             tokenStorage.saveAuthToken(
-                                                                authToken = responseBody.token,
+                                                                authToken = tokenValue,
                                                                 contractCode = effectiveContractCode,
                                                                 deviceId = device.id
                                                             )

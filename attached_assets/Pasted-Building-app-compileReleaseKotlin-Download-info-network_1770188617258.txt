@@ -1,0 +1,27 @@
+Building: ':app:compileReleaseKotlin'
+Download info
+:network:minifyReleaseWithR8
+:app:compileReleaseKotlin
+TermsAcceptanceScreen.kt
+Only safe (?.) or non-null asserted (!!.) calls are allowed on a nullable receiver of type 'AcceptTermsDevice?'.
+Smart cast to 'String' is impossible, because 'token' is a public API property declared in different module.
+Only safe (?.) or non-null asserted (!!.) calls are allowed on a nullable receiver of type 'AcceptTermsDevice?'.
+Only safe (?.) or non-null asserted (!!.) calls are allowed on a nullable receiver of type 'AcceptTermsDevice?'.
+Only safe (?.) or non-null asserted (!!.) calls are allowed on a nullable receiver of type 'AcceptTermsDevice?'.
+Only safe (?.) or non-null asserted (!!.) calls are allowed on a nullable receiver of type 'AcceptTermsDevice?'.
+Only safe (?.) or non-null asserted (!!.) calls are allowed on a nullable receiver of type 'AcceptTermsDevice?'.
+Only safe (?.) or non-null asserted (!!.) calls are allowed on a nullable receiver of type 'AcceptTermsDevice?'.
+Only safe (?.) or non-null asserted (!!.) calls are allowed on a nullable receiver of type 'AcceptTermsDevice?'.
+Only safe (?.) or non-null asserted (!!.) calls are allowed on a nullable receiver of type 'AcceptTermsDevice?'.
+Only safe (?.) or non-null asserted (!!.) calls are allowed on a nullable receiver of type 'AcceptTermsDevice?'.
+Only safe (?.) or non-null asserted (!!.) calls are allowed on a nullable receiver of type 'AcceptTermsDevice?'.
+Smart cast to 'String' is impossible, because 'token' is a public API property declared in different module.
+Only safe (?.) or non-null asserted (!!.) calls are allowed on a nullable receiver of type 'AcceptTermsDevice?'.
+Only safe (?.) or non-null asserted (!!.) calls are allowed on a nullable receiver of type 'AcceptTermsDevice?'.
+Only safe (?.) or non-null asserted (!!.) calls are allowed on a nullable receiver of type 'AcceptTermsDevice?'.
+Only safe (?.) or non-null asserted (!!.) calls are allowed on a nullable receiver of type 'AcceptTermsDevice?'.
+Only safe (?.) or non-null asserted (!!.) calls are allowed on a nullable receiver of type 'AcceptTermsDevice?'.
+Only safe (?.) or non-null asserted (!!.) calls are allowed on a nullable receiver of type 'AcceptTermsDevice?'.
+Only safe (?.) or non-null asserted (!!.) calls are allowed on a nullable receiver of type 'AcceptTermsDevice?'.
+Only safe (?.) or non-null asserted (!!.) calls are allowed on a nullable receiver of type 'AcceptTermsDevice?'.
+:app:compileDebugKotlin
