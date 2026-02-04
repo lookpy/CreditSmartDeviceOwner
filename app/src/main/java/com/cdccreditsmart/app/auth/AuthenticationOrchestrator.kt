@@ -389,8 +389,8 @@ class AuthenticationOrchestrator(private val context: Context) {
         return try {
             Log.d(TAG, "🔐 Autenticando silenciosamente com código salvo...")
             
-            val request = ApkAuthRequest(
-                code = contractCode
+            val request = ApkAuthRequest.create(
+                pairingCode = contractCode
             )
             
             val response = deviceApi.authenticateApk(request)
