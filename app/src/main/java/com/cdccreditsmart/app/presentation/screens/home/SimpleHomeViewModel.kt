@@ -188,8 +188,18 @@ class SimpleHomeViewModel(
                                     !tokenStorage.getSerialNumber().isNullOrBlank() ||
                                     !tokenStorage.getDeviceId().isNullOrBlank()
                 
-                if (token == null && !hasDeviceInfo) {
-                    Log.e(TAG, "❌ No token and no device info - redirecting to pairing")
+                // CRÍTICO: Também verificar se há contractCode salvo
+                val contractCodeStorage = com.cdccreditsmart.app.storage.ContractCodeStorage(context)
+                val hasContractCode = !contractCodeStorage.getContractCode().isNullOrBlank()
+                
+                Log.d(TAG, "📦 Verificação de autenticação:")
+                Log.d(TAG, "   Token: ${if (token != null) "presente" else "ausente"}")
+                Log.d(TAG, "   DeviceInfo: ${if (hasDeviceInfo) "presente" else "ausente"}")
+                Log.d(TAG, "   ContractCode: ${if (hasContractCode) "presente" else "ausente"}")
+                
+                // Se não tem NADA (nem token, nem device info, nem contractCode), redireciona
+                if (token == null && !hasDeviceInfo && !hasContractCode) {
+                    Log.e(TAG, "❌ No token, no device info, no contractCode - redirecting to pairing")
                     _homeState.value = _homeState.value.copy(
                         isLoading = false,
                         isError = true,
@@ -199,8 +209,13 @@ class SimpleHomeViewModel(
                     return@launch
                 }
                 
+                // Se tem contractCode mas não tem token/deviceInfo, ainda pode funcionar
+                if (token == null && !hasDeviceInfo && hasContractCode) {
+                    Log.w(TAG, "⚠️ Has contractCode but missing token/deviceInfo - trying to fetch anyway")
+                }
+                
                 if (token == null) {
-                    Log.w(TAG, "⚠️ No token but has device info - continuing with device identification")
+                    Log.w(TAG, "⚠️ No token but has device info or contractCode - continuing with device identification")
                 }
 
                 // VERIFICAR CONECTIVIDADE ANTES DE FAZER REQUEST

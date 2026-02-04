@@ -489,6 +489,38 @@ fun TermsAcceptanceScreen(
                                                 } catch (e: Exception) {
                                                     android.util.Log.w("TermsScreen", "⚠️ Erro ao salvar aceitação local: ${e.message}")
                                                 }
+                                                
+                                                // CRÍTICO: Garantir que todos os dados estão salvos ANTES de navegar para HOME
+                                                try {
+                                                    android.util.Log.i("TermsScreen", "🔧 Verificando dados do dispositivo...")
+                                                    
+                                                    val tokenStorage = com.cdccreditsmart.app.security.SecureTokenStorage(context)
+                                                    val contractCodeStorage = com.cdccreditsmart.app.storage.ContractCodeStorage(context)
+                                                    
+                                                    // Verificar se contractCode está salvo
+                                                    val savedContractCode = contractCodeStorage.getContractCode()
+                                                    if (savedContractCode.isNullOrBlank()) {
+                                                        android.util.Log.w("TermsScreen", "⚠️ ContractCode não salvo! Salvando agora...")
+                                                        contractCodeStorage.saveContractCode(contractCode)
+                                                    }
+                                                    
+                                                    // Verificar se há device info salvo
+                                                    val hasDeviceInfo = !tokenStorage.getSerialNumber().isNullOrBlank() || 
+                                                                        !tokenStorage.getDeviceId().isNullOrBlank()
+                                                    
+                                                    android.util.Log.i("TermsScreen", "📦 Estado do dispositivo:")
+                                                    android.util.Log.i("TermsScreen", "   ContractCode: ${if (!savedContractCode.isNullOrBlank()) "✅" else "❌"}")
+                                                    android.util.Log.i("TermsScreen", "   Token: ${if (!tokenStorage.getAuthToken().isNullOrBlank()) "✅" else "❌"}")
+                                                    android.util.Log.i("TermsScreen", "   DeviceInfo: ${if (hasDeviceInfo) "✅" else "❌"}")
+                                                    
+                                                    // Iniciar serviço de foreground se não estiver rodando
+                                                    android.util.Log.i("TermsScreen", "🚀 Iniciando serviço de foreground...")
+                                                    com.cdccreditsmart.app.service.CdcForegroundService.startService(context)
+                                                    
+                                                } catch (e: Exception) {
+                                                    android.util.Log.e("TermsScreen", "❌ Erro ao verificar dados: ${e.message}", e)
+                                                }
+                                                
                                                 onTermsAccepted()
                                             } else {
                                                 val errorMsg = response.body()?.error 
