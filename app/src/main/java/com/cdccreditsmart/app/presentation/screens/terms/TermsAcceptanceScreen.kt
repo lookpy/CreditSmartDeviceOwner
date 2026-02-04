@@ -29,6 +29,8 @@ import com.cdccreditsmart.app.support.SupportRepository
 import com.cdccreditsmart.app.ui.theme.CDCOrange
 import com.cdccreditsmart.network.api.AcceptTermsRequest
 import com.cdccreditsmart.network.api.ContractApiService
+import com.cdccreditsmart.network.api.DeviceApiService
+import com.cdccreditsmart.network.dto.cdc.ImeiAuthRequest
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -617,15 +619,16 @@ fun TermsAcceptanceScreen(
                                                     if (finalToken.isNullOrBlank() && !imei.isNullOrBlank()) {
                                                         android.util.Log.w("TermsScreen", "🔐 Token não recebido - tentando autenticação por IMEI...")
                                                         try {
-                                                            val deviceApiService = com.cdccreditsmart.app.network.RetrofitProvider.createRetrofit()
-                                                                .create(com.cdccreditsmart.network.api.DeviceApiService::class.java)
+                                                            val deviceApiService: DeviceApiService = com.cdccreditsmart.app.network.RetrofitProvider.createRetrofit()
+                                                                .create(DeviceApiService::class.java)
                                                             
-                                                            val authRequest = com.cdccreditsmart.network.dto.cdc.ImeiAuthRequest(imei = imei)
+                                                            val authRequest = ImeiAuthRequest(imei = imei)
                                                             val authResponse = deviceApiService.authenticateByImei(authRequest)
+                                                            val authBody = authResponse.body()
                                                             
-                                                            if (authResponse.isSuccessful && authResponse.body()?.success == true) {
-                                                                val authToken = authResponse.body()?.getEffectiveToken()
-                                                                val authDeviceId = authResponse.body()?.deviceId
+                                                            if (authResponse.isSuccessful && authBody?.success == true) {
+                                                                val authToken = authBody.getEffectiveToken()
+                                                                val authDeviceId = authBody.deviceId
                                                                 
                                                                 if (!authToken.isNullOrBlank()) {
                                                                     tokenStorage.saveAuthToken(
@@ -637,7 +640,7 @@ fun TermsAcceptanceScreen(
                                                                     android.util.Log.i("TermsScreen", "   ✅ Token obtido via autenticação IMEI!")
                                                                     
                                                                     // Salvar dados adicionais se disponíveis
-                                                                    val saleData = authResponse.body()?.saleData
+                                                                    val saleData = authBody.saleData
                                                                     if (saleData != null) {
                                                                         tokenStorage.saveCustomerInfo(
                                                                             customerName = saleData.customerName,
