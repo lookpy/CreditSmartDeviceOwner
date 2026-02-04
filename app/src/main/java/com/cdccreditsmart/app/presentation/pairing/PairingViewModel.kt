@@ -216,6 +216,19 @@ class PairingViewModel(private val context: Context) : ViewModel() {
             val deviceModel = body.deviceModel ?: body.device?.model ?: body.device?.name
             val token = body.token
             
+            Log.d(TAG, "📦 Restaurando dados do dispositivo já pareado:")
+            Log.d(TAG, "   DeviceId: $deviceId")
+            Log.d(TAG, "   SerialNumber: $serialNumber")
+            Log.d(TAG, "   IMEI: ${imei.take(6)}***")
+            Log.d(TAG, "   CustomerName: $customerName")
+            Log.d(TAG, "   Token presente: ${!token.isNullOrEmpty()}")
+            
+            // CRÍTICO: Salvar contractCode primeiro via ContractCodeStorage
+            val contractCodeStorage = com.cdccreditsmart.app.storage.ContractCodeStorage(context)
+            contractCodeStorage.saveContractCode(serialNumber)
+            Log.d(TAG, "✅ ContractCode salvo: $serialNumber")
+            
+            // Salvar device info
             tokenStorage.saveDeviceInfo(
                 deviceId = deviceId,
                 serialNumber = serialNumber,
@@ -224,15 +237,30 @@ class PairingViewModel(private val context: Context) : ViewModel() {
                 customerName = customerName,
                 deviceModel = deviceModel
             )
+            Log.d(TAG, "✅ DeviceInfo salvo")
             
+            // Salvar IMEI para MDM
+            tokenStorage.saveImeiForMdm(imei)
+            Log.d(TAG, "✅ IMEI salvo para MDM")
+            
+            // Salvar token se presente
             if (!token.isNullOrEmpty()) {
                 tokenStorage.saveAuthToken(authToken = token, contractCode = serialNumber, deviceId = deviceId)
-                Log.d(TAG, "✅ Token salvo do already_paired")
+                Log.d(TAG, "✅ AuthToken salvo")
+            } else {
+                Log.w(TAG, "⚠️ Token não presente na resposta already_paired")
             }
             
+            // Salvar IMEI registrado
             val localState = LocalAccountState(context)
             localState.saveRegisteredImei(imei)
+            Log.d(TAG, "✅ IMEI registrado localmente")
             
+            // Iniciar serviço de foreground
+            Log.i(TAG, "🚀 Iniciando CdcForegroundService para MDM...")
+            CdcForegroundService.startService(context.applicationContext)
+            
+            // Agendar workers
             schedulePairingCompletedWorkers()
             
             Log.d(TAG, "✅ Dispositivo já pareado reconectado com sucesso!")
