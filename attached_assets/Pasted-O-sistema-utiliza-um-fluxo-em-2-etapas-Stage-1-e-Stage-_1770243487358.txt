@@ -1,0 +1,121 @@
+O sistema utiliza um fluxo em 2 etapas (Stage 1 e Stage 2) onde o dispositivo só é criado no banco de dados após a validação biométrica do cliente.
+
+🔄 FLUXO COMPLETO DE VENDA
+ETAPA 1 (Stage 1): Validação e Preparação
+Executado no PDV pelo vendedor
+
+Vendedor inicia venda → POST /api/sales
+Sistema valida:
+Cliente (CPF, dados cadastrais)
+Dispositivo no catálogo
+IMEI via API externa (imei.info)
+Verificação global de CPF - bloqueia se cliente já tem financiamento ativo em qualquer loja
+Sistema gera:
+saleId - ID único da venda
+contractCode - Código do contrato (ex: CTR_1707084804000_953198)
+pairingCode - Código de pareamento curto (ex: 7HBT-BXBH) ← Este é o código que o cliente digita no APK
+apkToken - Token de autenticação para o APK
+Cria registro em imei_validations com status pending_contract_code
+Retorna resposta com contractCode e pairingCode para o vendedor
+⚠️ IMPORTANTE: O dispositivo NÃO é criado ainda nesta etapa.
+
+ETAPA INTERMEDIÁRIA: Cliente insere código no APK
+Cliente abre o APK Credit Smart no dispositivo
+Cliente digita o código de pareamento (ex: 7HBT-BXBH)
+APK chama POST /api/apk/auth com o código
+Cenários possíveis:
+
+Resposta do Backend	Status HTTP	Ação do APK
+{"success": true, ...}	200	Avançar para biometria
+{"message": "not found"}	404	Mostrar tela "Aguardando Vendedor" e fazer polling a cada 2 segundos
+Timeout (6 minutos)	-	Mostrar erro e pedir para tentar novamente
+Campos importantes na resposta de sucesso:
+
+{
+  "success": true,
+  "saleId": "uuid",
+  "apkToken": "token-longo",
+  "customerId": "uuid",
+  "storeId": "uuid",
+  "imei": "353104906953198",
+  "stage": "pending_contract_code",
+  "deviceData": {
+    "name": "MOTOROLA Moto G15 Power",
+    "totalValue": "1400",
+    "installmentValue": "58.33",
+    "installmentCount": 24
+  }
+}
+ETAPA BIOMÉTRICA: Verificação KYC
+APK inicia sessão KYC com Didit (já criada no backend)
+Cliente faz verificação facial
+APK monitora status via GET /api/kyc/session/{sessionId}
+Quando status = Approved, APK avança para finalização
+ETAPA 2 (Stage 2): Finalização da Venda
+Executado após biometria aprovada
+
+PDV/Backend chama POST /api/sales/complete com:
+
+saleId
+kycSessionId
+Dados biométricos verificados
+Sistema:
+
+Cria o dispositivo no banco de dados
+Vincula ao cliente
+Cria parcelas (installments)
+Gera contrato
+Cria comissões
+Atualiza imei_validations para status completed
+
+📡 ENDPOINTS PRINCIPAIS PARA O APK
+Endpoint	Método	Descrição
+/api/apk/auth	POST	Autenticar com código de pareamento
+/api/apk/device/pair	POST	Alias para pareamento de dispositivo
+/api/apk/heartbeat	POST	Heartbeat (status, bateria, localização)
+/api/kyc/session/{id}	GET	Verificar status da sessão KYC
+/api/apk/device/{id}/commands	GET	Buscar comandos MDM pendentes
+/api/apk/device/discover/{identifier}	GET	Descobrir dispositivo por IMEI/MEID/AndroidId
+🔐 AUTENTICAÇÃO DO APK
+Campos aceitos no POST /api/apk/auth:
+
+{
+  "token": "7HBT-BXBH",      // ou
+  "code": "7HBT-BXBH",       // ou
+  "pairingCode": "7HBT-BXBH", // ou
+  "apkToken": "token-longo", // ou
+  "serialNumber": "serial"
+}
+O backend busca na seguinte ordem:
+
+saleId (se for UUID)
+biometrySessionId
+immutableToken
+pairingCode ← Código curto que o cliente digita
+⏱️ TIMEOUTS E LIMITES
+Parâmetro	Valor
+Janela de pareamento	24 horas
+Polling do APK (aguardando vendedor)	2 segundos
+Timeout máximo do APK	6 minutos
+Rate limit para pareamento	Configurado por endpoint
+🚨 CÓDIGOS DE ERRO IMPORTANTES
+Código	Significado
+DUPLICATE_ACTIVE_VALIDATION	IMEI já tem venda pendente
+CPF_HAS_ACTIVE_FINANCING	CPF já tem financiamento ativo não quitado
+VALIDATION_CREATION_FAILED	Erro ao criar validação de segurança
+Sale pairing window expired	Janela de 24h expirou
+✅ CORREÇÕES RECENTES (Fevereiro 2026)
+Fluxo de polling corrigido: Quando o backend retorna "não encontrado" (porque a venda ainda não foi concluída), o APK agora mostra a tela "Aguardando Vendedor" e faz polling automático a cada 2 segundos.
+
+Verificação global de CPF implementada: Sistema agora impede novos financiamentos para CPFs com dispositivos não quitados em qualquer loja da rede.
+
+Query SQL corrigida: Função hasActiveFinancedDevice agora usa o nome de coluna correto (value em vez de amount).
+
+📋 CHECKLIST PARA TESTES
+ Código de pareamento é exibido corretamente no PDV
+ APK aceita código com formato XXXX-XXXX
+ Tela "Aguardando Vendedor" aparece quando backend retorna 404
+ Polling funciona a cada 2 segundos
+ Timeout de 6 minutos funciona corretamente
+ Biometria inicia após pareamento bem-sucedido
+ Dispositivo é criado apenas após biometria aprovada

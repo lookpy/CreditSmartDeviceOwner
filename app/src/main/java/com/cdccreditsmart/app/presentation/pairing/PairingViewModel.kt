@@ -733,13 +733,41 @@ class PairingViewModel(private val context: Context) : ViewModel() {
                     null
                 }
                 
+                // Para 404: venda ainda não concluída pelo vendedor - iniciar polling
+                if (response.code() == 404) {
+                    Log.d(TAG, "📋 HTTP 404 - Venda ainda não concluída, iniciando polling...")
+                    Log.d(TAG, "   Mensagem do backend: $backendMessage")
+                    
+                    // Mostrar tela de aguardando vendedor e iniciar polling
+                    _state.value = PairingState.Pending(
+                        message = "Aguardando vendedor concluir a venda...",
+                        contractCode = contractId
+                    )
+                    
+                    startPendingPolling(contractId)
+                    return@retryWithBackoff
+                }
+                
                 val errorMessage = when (response.code()) {
-                    400 -> backendMessage ?: "Código de pareamento inválido"
+                    400 -> {
+                        // 400 pode significar código inválido OU venda não concluída
+                        // Se a mensagem indicar "not found", iniciar polling
+                        if (backendMessage?.lowercase()?.contains("not found") == true ||
+                            backendMessage?.lowercase()?.contains("não encontrad") == true) {
+                            Log.d(TAG, "📋 HTTP 400 com 'not found' - iniciando polling...")
+                            _state.value = PairingState.Pending(
+                                message = "Aguardando vendedor concluir a venda...",
+                                contractCode = contractId
+                            )
+                            startPendingPolling(contractId)
+                            return@retryWithBackoff
+                        }
+                        backendMessage ?: "Código de pareamento inválido"
+                    }
                     403 -> {
                         // IMEI_MISMATCH ou contrato já vinculado a outro dispositivo
                         backendMessage ?: "Este código de contrato já está vinculado a outro dispositivo.\n\nCada contrato só pode ser ativado em um único aparelho."
                     }
-                    404 -> backendMessage ?: "Código não encontrado ou expirado"
                     409 -> backendMessage ?: "Este contrato já está ativo em outro dispositivo"
                     else -> backendMessage ?: "Erro ao autenticar: HTTP ${response.code()}"
                 }
