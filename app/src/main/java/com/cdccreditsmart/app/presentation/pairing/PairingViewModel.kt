@@ -134,7 +134,8 @@ class PairingViewModel(private val context: Context) : ViewModel() {
                     return@launch
                 }
                 
-                Log.d(TAG, "✅ Usando autenticação moderna: POST /api/apk/auth")
+                Log.i(TAG, "✅ Usando novo endpoint: POST /api/apk/device/pair")
+                Log.i(TAG, "📤 Enviando requisição de pareamento para o backend...")
                 
                 stepFallbackClaimByCodeOnly(pairingCode)
                 
@@ -399,15 +400,20 @@ class PairingViewModel(private val context: Context) : ViewModel() {
             pairingCode = cleanPairingCode
         )
         
-        Log.d(TAG, "========== USING NEW ENDPOINT /api/apk/device/pair ==========")
-        Log.d(TAG, "Request - imei: ${if (deviceImei != null) "${deviceImei.take(6)}****" else "empty"}")
-        Log.d(TAG, "Request - deviceModel: ${deviceInfo.model}")
-        Log.d(TAG, "Request - deviceBrand: ${deviceInfo.brand}")
-        Log.d(TAG, "Request - androidVersion: ${deviceInfo.androidVersion}")
-        Log.d(TAG, "Request - pairingCode: $cleanPairingCode")
+        Log.i(TAG, "╔════════════════════════════════════════════════════════╗")
+        Log.i(TAG, "║   📤 SENDING REQUEST TO /api/apk/device/pair           ║")
+        Log.i(TAG, "╚════════════════════════════════════════════════════════╝")
+        Log.i(TAG, "Request URL: https://cdccreditsmart.com/api/apk/device/pair")
+        Log.i(TAG, "Request - imei: ${if (deviceImei != null) "${deviceImei.take(6)}****" else "empty"}")
+        Log.i(TAG, "Request - deviceModel: ${deviceInfo.model}")
+        Log.i(TAG, "Request - deviceBrand: ${deviceInfo.brand}")
+        Log.i(TAG, "Request - androidVersion: ${deviceInfo.androidVersion}")
+        Log.i(TAG, "Request - pairingCode: $cleanPairingCode")
         
         retryWithBackoff(MAX_RETRIES) {
+            Log.i(TAG, "📡 Executando chamada HTTP POST /api/apk/device/pair...")
             val response = deviceApi.pairDevice(pairRequest)
+            Log.i(TAG, "📨 Resposta recebida: HTTP ${response.code()}")
             
             Log.d(TAG, "Response code: ${response.code()}")
             Log.d(TAG, "Response message: ${response.message()}")
