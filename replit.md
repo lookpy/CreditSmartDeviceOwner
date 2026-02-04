@@ -102,13 +102,14 @@ The UI is built with Jetpack Compose and Material 3, featuring a CDC institution
 
 **Tela de Aguardando Vendedor (2026-02-04):**
 
-*Problema:* Quando código de pareamento é inserido antes do vendedor clicar em "Concluir Venda", app mostrava erro genérico.
+*Problema:* Quando código de pareamento é inserido antes do vendedor clicar em "Concluir Venda", app mostrava erro "Ops! Algo deu errado" porque o backend retorna `found: false` ou 404 até a venda ser concluída.
 
 *Solução implementada:*
 
-1. **Detecção de Venda Pendente:**
-   - PairingViewModel detecta status "pending", "waiting" ou "in_progress" do backend
-   - Define estado PairingState.Pending e inicia polling automático a cada 2 segundos
+1. **Detecção Inteligente de Venda Não Concluída:**
+   - Quando backend retorna `found: false` ou erro 404/400, app NÃO mostra erro
+   - Em vez disso, inicia polling automático para aguardar vendedor concluir
+   - Também detecta status "pending", "waiting" ou "in_progress" se backend retornar
 
 2. **PairingProgressScreen atualizada:**
    - Mostra ícone de loja (Storefront) para estado Pending
@@ -117,10 +118,11 @@ The UI is built with Jetpack Compose and Material 3, featuring a CDC institution
    - Card indicando polling automático em progresso
    - Texto informando que tela atualiza automaticamente
 
-3. **PairingPendingScreen:**
-   - Tela dedicada com animação pulsante
-   - Contador visual de verificações
-   - Polling automático por até 6 minutos
+3. **Polling Inteligente:**
+   - Verifica a cada 2 segundos se venda foi concluída
+   - Quando `found: false`, continua aguardando (não mostra erro)
+   - Quando `found: true`, avança para claim automaticamente
+   - Timeout de 6 minutos antes de mostrar erro
 
 *Arquivos modificados:*
 - `app/src/main/java/com/cdccreditsmart/app/presentation/pairing/PairingProgressScreen.kt`

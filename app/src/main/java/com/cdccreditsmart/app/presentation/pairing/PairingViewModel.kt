@@ -203,14 +203,37 @@ class PairingViewModel(private val context: Context) : ViewModel() {
                         )
                     }
                 } else {
-                    Log.w(TAG, "No pending sale found for IMEI")
-                    _state.value = PairingState.Error(
-                        message = "Dispositivo não registrado no sistema. Verifique com a loja.",
-                        canRetry = false
+                    // Venda não encontrada - pode significar que vendedor ainda não concluiu
+                    // Iniciar polling para aguardar vendedor clicar em "Concluir Venda"
+                    Log.d(TAG, "📋 Venda não encontrada ainda - aguardando vendedor concluir")
+                    Log.d(TAG, "   IMEI: $imei")
+                    Log.d(TAG, "   ContractId: $contractId")
+                    
+                    startPendingSalePolling(
+                        imei = imei,
+                        contractId = contractId,
+                        validationId = null,
+                        customerName = null,
+                        deviceModel = null
                     )
                 }
             } else {
-                throw Exception("HTTP ${response.code()}: ${response.message()}")
+                // Erro HTTP - também pode significar que venda ainda não existe
+                val errorCode = response.code()
+                if (errorCode == 404 || errorCode == 400) {
+                    // Venda não encontrada - iniciar polling
+                    Log.d(TAG, "📋 HTTP $errorCode - venda ainda não concluída, iniciando polling")
+                    
+                    startPendingSalePolling(
+                        imei = imei,
+                        contractId = contractId,
+                        validationId = null,
+                        customerName = null,
+                        deviceModel = null
+                    )
+                } else {
+                    throw Exception("HTTP ${response.code()}: ${response.message()}")
+                }
             }
         }
     }
@@ -280,14 +303,9 @@ class PairingViewModel(private val context: Context) : ViewModel() {
                         // Ainda pendente, continua polling
                         Log.d(TAG, "   Status ainda: ${body.status} - aguardando...")
                     } else if (body != null && !body.found) {
-                        // Venda cancelada
-                        Log.w(TAG, "⚠️ Venda não encontrada mais - pode ter sido cancelada")
-                        isPolling = false
-                        _state.value = PairingState.Error(
-                            message = "A venda foi cancelada. Peça ao vendedor para iniciar uma nova.",
-                            canRetry = true
-                        )
-                        return
+                        // Venda ainda não concluída pelo vendedor - continua polling
+                        Log.d(TAG, "   Venda ainda não disponível - aguardando vendedor concluir...")
+                        // Não mostra erro, apenas continua o polling
                     }
                 }
             } catch (e: Exception) {
