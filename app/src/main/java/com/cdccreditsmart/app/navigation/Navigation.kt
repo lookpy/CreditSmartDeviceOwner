@@ -1,6 +1,7 @@
 package com.cdccreditsmart.app.navigation
 
 import android.content.Context
+import android.content.Intent
 import android.net.Uri
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Text
@@ -374,7 +375,16 @@ fun CDCNavigation(
                     }
                 },
                 onContactSupport = {
-                    // TODO: Implement support contact functionality
+                    val supportPhone = "5511999999999" // Número de suporte Credit Smart
+                    val message = "Olá, preciso de ajuda com o pareamento do meu dispositivo Credit Smart."
+                    try {
+                        val whatsappUri = Uri.parse("https://wa.me/$supportPhone?text=${Uri.encode(message)}")
+                        val intent = Intent(Intent.ACTION_VIEW, whatsappUri)
+                        context.startActivity(intent)
+                    } catch (e: Exception) {
+                        val dialIntent = Intent(Intent.ACTION_DIAL, Uri.parse("tel:$supportPhone"))
+                        context.startActivity(dialIntent)
+                    }
                 }
             )
         }

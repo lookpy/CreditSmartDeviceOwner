@@ -101,5 +101,32 @@ data class DevicePairResponse(
 ) {
     fun getEffectiveToken(): String? = authToken ?: token ?: deviceToken
     
-    fun isSuccessfulPairing(): Boolean = success && (paired == true || authenticated == true)
+    /**
+     * Verifica se o pareamento foi bem-sucedido.
+     * O backend pode responder de várias formas:
+     * 1. success=true + paired=true
+     * 2. success=true + authenticated=true
+     * 3. success=true + message contendo "successfully paired"
+     * 4. success=true sem campos explícitos (assume sucesso)
+     */
+    fun isSuccessfulPairing(): Boolean {
+        // Se success=false, não é sucesso
+        if (!success) return false
+        
+        // Se explicitamente marcado como paired ou authenticated
+        if (paired == true || authenticated == true) return true
+        
+        // Se a mensagem indica sucesso
+        val msg = message?.lowercase() ?: ""
+        if (msg.contains("successfully paired") || 
+            msg.contains("pareado com sucesso") ||
+            msg.contains("paired successfully")) {
+            return true
+        }
+        
+        // Se success=true e não está pending, assume sucesso
+        if (pending != true) return true
+        
+        return false
+    }
 }
