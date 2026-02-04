@@ -42,8 +42,14 @@ fun TermsAcceptanceScreen(
     onTermsAccepted: () -> Unit,
     onBack: (() -> Unit)? = null
 ) {
+    // LOG DE DIAGNÓSTICO: Entrada na função
+    android.util.Log.i("TermsScreen", "🚀 TermsAcceptanceScreen INICIANDO - contractCode=$contractCode")
+    
     val context = LocalContext.current
+    android.util.Log.i("TermsScreen", "✅ Context obtido")
+    
     val scope = rememberCoroutineScope()
+    android.util.Log.i("TermsScreen", "✅ Scope criado")
     
     // Estado simples - sem inicializações complexas durante composição
     var isLoading by remember { mutableStateOf(true) }
@@ -85,21 +91,60 @@ fun TermsAcceptanceScreen(
         }
     }
     
+    // LOG: Antes do LaunchedEffect
+    android.util.Log.i("TermsScreen", "✅ Estados inicializados, preparando LaunchedEffect")
+    
     // Carregar termos em background thread
     LaunchedEffect(Unit) {
-        withContext(Dispatchers.IO) {
-            try {
-                android.util.Log.i("TermsScreen", "📄 Carregando termos do contrato...")
-                
-                val repository = try { 
-                    SupportRepository(context) 
+        android.util.Log.i("TermsScreen", "🔄 LaunchedEffect INICIANDO")
+        
+        try {
+            android.util.Log.i("TermsScreen", "📄 Iniciando carregamento de termos...")
+            
+            val repository = withContext(Dispatchers.IO) {
+                try { 
+                    android.util.Log.i("TermsScreen", "🔧 Criando SupportRepository...")
+                    val repo = SupportRepository(context)
+                    android.util.Log.i("TermsScreen", "✅ SupportRepository criado")
+                    repo
                 } catch (e: Exception) { 
-                    android.util.Log.e("TermsScreen", "❌ Erro ao criar repository: ${e.message}")
+                    android.util.Log.e("TermsScreen", "❌ Erro ao criar repository: ${e.message}", e)
                     null 
                 }
-                
-                if (repository == null) {
-                    android.util.Log.w("TermsScreen", "⚠️ Repository não inicializado, usando termos padrão")
+            }
+            
+            if (repository == null) {
+                android.util.Log.w("TermsScreen", "⚠️ Repository não inicializado, usando termos padrão")
+                terms = ContractTermsData(
+                    id = "default",
+                    version = "1.0",
+                    text = getDefaultTermsText(),
+                    hash = "",
+                    isActive = true,
+                    createdAt = ""
+                )
+                isLoading = false
+                return@LaunchedEffect
+            }
+            
+            android.util.Log.i("TermsScreen", "📡 Chamando getContractTerms...")
+            
+            val result = withContext(Dispatchers.IO) {
+                withTimeout(15000L) {
+                    repository.getContractTerms("latest", forceRefresh = false)
+                }
+            }
+            
+            android.util.Log.i("TermsScreen", "📥 Resposta recebida do getContractTerms")
+            
+            result.fold(
+                onSuccess = { data ->
+                    android.util.Log.i("TermsScreen", "✅ Termos carregados: v${data.version}")
+                    terms = data
+                    error = null
+                },
+                onFailure = { e ->
+                    android.util.Log.e("TermsScreen", "❌ Erro ao carregar termos: ${e.message}", e)
                     terms = ContractTermsData(
                         id = "default",
                         version = "1.0",
@@ -108,33 +153,10 @@ fun TermsAcceptanceScreen(
                         isActive = true,
                         createdAt = ""
                     )
-                    isLoading = false
-                    return@withContext
+                    error = null
                 }
-                
-                val result = withTimeout(15000L) {
-                    repository.getContractTerms("latest", forceRefresh = false)
-                }
-                result.fold(
-                    onSuccess = { data ->
-                        android.util.Log.i("TermsScreen", "✅ Termos carregados: v${data.version}")
-                        terms = data
-                        error = null
-                    },
-                    onFailure = { e ->
-                        android.util.Log.e("TermsScreen", "❌ Erro ao carregar termos: ${e.message}", e)
-                        terms = ContractTermsData(
-                            id = "default",
-                            version = "1.0",
-                            text = getDefaultTermsText(),
-                            hash = "",
-                            isActive = true,
-                            createdAt = ""
-                        )
-                        error = null
-                    }
-                )
-            } catch (e: TimeoutCancellationException) {
+            )
+        } catch (e: TimeoutCancellationException) {
                 android.util.Log.e("TermsScreen", "⏰ Timeout ao carregar termos")
                 terms = ContractTermsData(
                     id = "default",
