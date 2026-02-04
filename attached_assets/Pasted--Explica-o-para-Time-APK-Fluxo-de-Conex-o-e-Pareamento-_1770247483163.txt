@@ -1,0 +1,115 @@
+ Explicação para Time APK: Fluxo de Conexão e Pareamento
+🖥️ O QUE ESTÁ APARECENDO NO PDV
+┌─────────────────────────────────────────┐
+│  📷 Escanear com app Credit Smart       │
+│     e digitar código                    │
+│                                         │
+│     Código: ZB7E-RZVX                   │
+│                                         │
+│     ⏳ Aguardando Conexão...            │
+│                                         │
+│     Contrato: CTR_1770246531734_953198  │
+│     Aguardando...                       │
+└─────────────────────────────────────────┘
+🔄 O QUE O APK DEVE FAZER
+PASSO 1: Cliente digita o código no APK
+O cliente digita ZB7E-RZVX na tela do APK.
+
+PASSO 2: APK envia requisição de autenticação
+POST /api/apk/auth
+Content-Type: application/json
+{
+  "pairingCode": "ZB7E-RZVX"
+}
+Campos alternativos aceitos:
+
+token
+code
+pairingCode
+apkToken
+📡 RESPOSTAS POSSÍVEIS
+✅ SUCESSO (200 OK)
+{
+  "success": true,
+  "saleId": "sale_1770246531734_xxxxx",
+  "apkToken": "ZB7E-RZVX",
+  "customerId": "uuid-do-cliente",
+  "storeId": "uuid-da-loja",
+  "imei": "353104906953198",
+  "stage": "pending_contract_code",
+  "deviceData": {
+    "name": "MOTOROLA Moto G15 Power",
+    "totalValue": "1400.00",
+    "installmentValue": "58.33",
+    "installmentCount": 24
+  }
+}
+Ação do APK: Avançar para tela de biometria KYC
+
+⏳ NÃO ENCONTRADO (404 Not Found)
+{
+  "success": false,
+  "message": "not found"
+}
+Ação do APK:
+
+Mostrar tela "Aguardando Vendedor"
+Fazer polling a cada 2 segundos
+Timeout máximo: 6 minutos
+📊 DIAGRAMA DO FLUXO
+┌──────────────────┐          ┌──────────────────┐          ┌──────────────────┐
+│      PDV         │          │     BACKEND      │          │       APK        │
+└────────┬─────────┘          └────────┬─────────┘          └────────┬─────────┘
+         │                             │                             │
+         │  POST /api/sales            │                             │
+         │──────────────────────────>  │                             │
+         │                             │                             │
+         │  {pairingCode: ZB7E-RZVX}   │                             │
+         │ <────────────────────────── │                             │
+         │                             │                             │
+         │  Mostra código na tela      │                             │
+         │                             │                             │
+         │                             │    Cliente digita código    │
+         │                             │ <───────────────────────────│
+         │                             │                             │
+         │                             │    POST /api/apk/auth       │
+         │                             │    {pairingCode: ZB7E-RZVX} │
+         │                             │ <───────────────────────────│
+         │                             │                             │
+         │                             │    200 OK + dados da venda  │
+         │                             │ ────────────────────────────>│
+         │                             │                             │
+         │    WebSocket: APK_CONNECTED │                             │
+         │ <────────────────────────── │                             │
+         │                             │                             │
+         │  Atualiza: "APK Conectado!" │                             │
+         │                             │                             │
+         │                             │    APK inicia biometria     │
+         │                             │ <───────────────────────────│
+🔔 COMO O PDV SABE QUE O APK CONECTOU
+O PDV faz polling contínuo em:
+
+GET /api/sales/check-apk-auth/{saleId}
+Quando o APK chama /api/apk/auth com sucesso, o backend:
+
+Atualiza o registro em imei_validations
+Muda o stage para apk_connected
+O próximo polling do PDV detecta a mudança
+PDV atualiza a tela para "APK Conectado!"
+⚠️ PONTOS IMPORTANTES PARA O APK
+Item	Detalhes
+Formato do código	XXXX-XXXX (8 caracteres com hífen)
+Endpoint de autenticação	POST /api/apk/auth
+Campo do código	pairingCode, token, code ou apkToken
+Polling se 404	A cada 2 segundos
+Timeout máximo	6 minutos
+Janela de pareamento	24 horas após criação da venda
+🔐 FLUXO COMPLETO ESPERADO DO APK
+1. [APK] Recebe código do cliente: "ZB7E-RZVX"
+2. [APK] Chama POST /api/apk/auth com o código
+3. [APK] Se 404 → Mostra "Aguardando Vendedor" + polling 2s
+4. [APK] Se 200 → Salva dados da venda (saleId, customerId, deviceData)
+5. [APK] Inicia verificação biométrica KYC
+6. [APK] Monitora status KYC via GET /api/kyc/session/{sessionId}
+7. [APK] Quando KYC = Approved → Notifica backend
+8. [BACKEND] Cria dispositivo e finaliza venda (Stage 2)

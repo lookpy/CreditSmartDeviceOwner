@@ -45,14 +45,23 @@ class WebSocketManager(
         .build()
 
     fun connect() {
-        Log.d(TAG, "Connecting to WebSocket: $WS_URL")
+        Log.i(TAG, "╔════════════════════════════════════════════════════════╗")
+        Log.i(TAG, "║   🔌 CONNECTING TO WEBSOCKET                          ║")
+        Log.i(TAG, "╚════════════════════════════════════════════════════════╝")
+        Log.i(TAG, "📡 URL: $WS_URL")
+        Log.i(TAG, "📋 Contract Code: $contractCode")
         shouldReconnect = true
         
         val request = Request.Builder()
             .url(WS_URL)
             .build()
 
-        webSocket = client.newWebSocket(request, WebSocketListenerImpl())
+        try {
+            webSocket = client.newWebSocket(request, WebSocketListenerImpl())
+            Log.i(TAG, "✅ WebSocket request initiated successfully")
+        } catch (e: Exception) {
+            Log.e(TAG, "❌ Failed to create WebSocket: ${e.message}", e)
+        }
     }
 
     fun disconnect() {

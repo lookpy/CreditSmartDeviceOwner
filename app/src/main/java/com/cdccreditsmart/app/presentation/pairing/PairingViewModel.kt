@@ -600,12 +600,13 @@ class PairingViewModel(private val context: Context) : ViewModel() {
             ""
         }
         
-        // Remover hífen do código de pareamento (DYUX-8U23 -> DYUX8U23)
-        val cleanPairingCode = contractId.replace("-", "")
+        // CORREÇÃO: Manter hífen no código conforme documentação do backend
+        // O backend espera o código no formato "XXXX-XXXX"
+        val pairingCodeForRequest = contractId // Manter formato original COM hífen
         
         // CORRIGIDO: Usar /api/apk/auth conforme documentação do backend
         val authRequest = com.cdccreditsmart.network.dto.apk.ApkAuthRequest.create(
-            pairingCode = cleanPairingCode,
+            pairingCode = pairingCodeForRequest,
             imei = deviceImei,
             deviceImei = deviceImei,
             deviceModel = deviceInfo.model,
@@ -623,7 +624,7 @@ class PairingViewModel(private val context: Context) : ViewModel() {
         Log.i(TAG, "Request - deviceModel: ${deviceInfo.model}")
         Log.i(TAG, "Request - deviceBrand: ${deviceInfo.brand}")
         Log.i(TAG, "Request - androidVersion: ${deviceInfo.androidVersion}")
-        Log.i(TAG, "Request - pairingCode: $cleanPairingCode")
+        Log.i(TAG, "Request - pairingCode: $pairingCodeForRequest")
         
         retryWithBackoff(MAX_RETRIES) {
             Log.i(TAG, "📡 Executando chamada HTTP POST /api/apk/auth...")
@@ -874,13 +875,15 @@ class PairingViewModel(private val context: Context) : ViewModel() {
      */
     private fun connectWebSocketForPending(contractCode: String) {
         Log.i(TAG, "🔌 Conectando WebSocket para notificar servidor (Aguardando Vendedor)...")
+        Log.i(TAG, "📤 contractCode para WebSocket: $contractCode")
         
         // Desconectar WebSocket anterior se existir
         webSocketManager?.disconnect()
         
+        // IMPORTANTE: Manter o hífen no código conforme documentação do backend
         webSocketManager = WebSocketManager(
             context = context,
-            contractCode = contractCode.replace("-", ""), // Remover hífen
+            contractCode = contractCode, // Manter formato original COM hífen
             onDeviceConnected = {
                 Log.i(TAG, "✅ WebSocket: Servidor confirmou dispositivo conectado")
                 // Não mudar estado - continuar aguardando sale_completed ou polling
@@ -937,10 +940,12 @@ class PairingViewModel(private val context: Context) : ViewModel() {
                 ) ?: ""
             } catch (e: Exception) { "" }
             
-            // Remover hífen do código de pareamento
-            val cleanPairingCode = contractCode.replace("-", "")
+            // CORREÇÃO: Manter o hífen no código conforme documentação do backend
+            // O backend espera o código no formato "XXXX-XXXX"
+            val pairingCodeForRequest = contractCode // Manter formato original
             
             Log.d(TAG, "Auto-polling com IMEI: ${if (deviceImei.isNotEmpty()) "${deviceImei.take(6)}****" else "empty"}")
+            Log.d(TAG, "Auto-polling com pairingCode: $pairingCodeForRequest")
             
             while (isPolling && _state.value is PairingState.Pending) {
                 delay(PENDING_POLL_INTERVAL)
@@ -949,8 +954,9 @@ class PairingViewModel(private val context: Context) : ViewModel() {
                 
                 try {
                     // CORRIGIDO: Usar /api/apk/auth conforme documentação do backend
+                    // Manter o hífen no código conforme especificação
                     val authRequest = com.cdccreditsmart.network.dto.apk.ApkAuthRequest.create(
-                        pairingCode = cleanPairingCode,
+                        pairingCode = pairingCodeForRequest,
                         imei = deviceImei,
                         deviceImei = deviceImei,
                         deviceModel = deviceInfo.model,
