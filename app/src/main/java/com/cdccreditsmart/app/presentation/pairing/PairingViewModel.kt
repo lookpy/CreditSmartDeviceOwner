@@ -892,10 +892,8 @@ class PairingViewModel(private val context: Context) : ViewModel() {
                 // Parar polling e processar conclusão da venda
                 isPolling = false
                 
-                viewModelScope.launch {
-                    // Re-autenticar para obter token e dados do cliente
-                    step2AuthenticateApk(contractCode)
-                }
+                // Re-autenticar para obter token e dados do cliente
+                startHandshake(contractCode)
             },
             onError = { message ->
                 Log.w(TAG, "⚠️ WebSocket error (pending): $message")
