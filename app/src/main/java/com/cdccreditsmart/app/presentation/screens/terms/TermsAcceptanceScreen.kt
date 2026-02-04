@@ -25,6 +25,8 @@ import com.cdccreditsmart.app.support.ContractTermsData
 import com.cdccreditsmart.app.support.SupportRepository
 import com.cdccreditsmart.app.ui.theme.CDCOrange
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withTimeout
+import kotlinx.coroutines.TimeoutCancellationException
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -64,18 +66,49 @@ fun TermsAcceptanceScreen(
     
     LaunchedEffect(Unit) {
         scope.launch {
-            isLoading = true
-            val result = repository.getContractTerms("latest", forceRefresh = false)
-            result.fold(
-                onSuccess = { data ->
-                    terms = data
-                    error = null
-                },
-                onFailure = { e ->
-                    error = e.message ?: "Erro ao carregar termos"
+            try {
+                isLoading = true
+                android.util.Log.i("TermsScreen", "📄 Carregando termos do contrato...")
+                
+                val result = withTimeout(15000L) {
+                    repository.getContractTerms("latest", forceRefresh = false)
                 }
-            )
-            isLoading = false
+                result.fold(
+                    onSuccess = { data ->
+                        android.util.Log.i("TermsScreen", "✅ Termos carregados: v${data.version}")
+                        terms = data
+                        error = null
+                    },
+                    onFailure = { e ->
+                        android.util.Log.e("TermsScreen", "❌ Erro ao carregar termos: ${e.message}", e)
+                        error = e.message ?: "Erro ao carregar termos"
+                    }
+                )
+            } catch (e: TimeoutCancellationException) {
+                android.util.Log.e("TermsScreen", "⏰ Timeout ao carregar termos")
+                terms = ContractTermsData(
+                    id = "default",
+                    version = "1.0",
+                    text = getDefaultTermsText(),
+                    hash = "",
+                    isActive = true,
+                    createdAt = ""
+                )
+                error = null
+            } catch (e: Exception) {
+                android.util.Log.e("TermsScreen", "💥 Crash ao carregar termos: ${e.message}", e)
+                terms = ContractTermsData(
+                    id = "default",
+                    version = "1.0",
+                    text = getDefaultTermsText(),
+                    hash = "",
+                    isActive = true,
+                    createdAt = ""
+                )
+                error = null
+            } finally {
+                isLoading = false
+            }
         }
     }
     
