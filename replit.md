@@ -157,3 +157,23 @@ Criados documentos para submissão na Play Store:
 - `docs/play_store_submission/DECLARACAO_PLAY_STORE.md` - Declaração principal
 - `docs/play_store_submission/DEVICE_ADMIN_DECLARATION.md` - Formulário Device Admin
 - `docs/play_store_submission/POLITICA_PRIVACIDADE.md` - Política de Privacidade modelo
+
+**Migração para Novo Endpoint de Pareamento (2025-02-04):**
+
+*Problema:* App usava endpoint `/api/apk/auth` mas backend espera `/api/apk/device/pair`
+
+*Solução implementada:*
+- Criado `DevicePairRequest` com campos completos: imei, hardwareImei, deviceFingerprint, androidId, deviceModel, deviceBrand, androidVersion, pairingCode
+- Criado `DevicePairResponse` com métodos helper: `isSuccessfulPairing()`, `getEffectiveToken()`
+- Adicionado endpoint `pairDevice()` em DeviceApiService
+- `PairingViewModel.stepFallbackClaimByCodeOnly()` agora usa novo endpoint
+- `PairingViewModel.startPendingPolling()` também usa novo endpoint para polling automático
+- Código de pareamento é limpo (remove hífens): `DYUX-8U23` → `DYUX8U23`
+- Endpoint adicionado à lista de endpoints sem autenticação em XClientAuthInterceptor
+
+*Fluxo de pareamento atualizado:*
+1. Cliente digita código (ex: DYUX-8U23)
+2. App envia `POST /api/apk/device/pair` com IMEI + info do dispositivo
+3. Backend busca validação pendente pelo IMEI que coincide com PDV
+4. Backend confirma pareamento → retorna token JWT
+5. PDV detecta conexão via polling em `/api/sales/check-apk-auth/:saleId`

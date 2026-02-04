@@ -37,6 +37,8 @@ class XClientAuthInterceptor /* @Inject */ constructor(
         // Endpoints that don't require X-Client authentication
         private val UNAUTHENTICATED_ENDPOINTS = setOf(
             "/api/apk/auth",
+            "/api/apk/device/pair",
+            "/api/device/claim-sale",
             "/api/validate-imei",
             "/v1/auth/login",
             "/v1/auth/refresh",

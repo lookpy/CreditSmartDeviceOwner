@@ -370,22 +370,44 @@ class PairingViewModel(private val context: Context) : ViewModel() {
             }
         }
         
-        _state.value = PairingState.Claiming("Autenticando APK...")
+        _state.value = PairingState.Claiming("Pareando dispositivo...")
         
-        val request = com.cdccreditsmart.network.dto.apk.ApkAuthRequest(
-            code = contractId,
-            deviceImei = deviceImei,
-            additionalImeis = additionalImeis,
-            imeiStatus = imeiStatus
+        // Coletar informações completas do dispositivo para o novo endpoint
+        val deviceInfo = deviceInfoManager.collectDeviceInfo()
+        val fingerprint = com.cdccreditsmart.app.security.FingerprintCalculator.calculateFingerprint(deviceImei ?: "")
+        val androidId = try {
+            android.provider.Settings.Secure.getString(
+                context.contentResolver,
+                android.provider.Settings.Secure.ANDROID_ID
+            ) ?: ""
+        } catch (e: Exception) {
+            Log.w(TAG, "Erro ao obter Android ID: ${e.message}")
+            ""
+        }
+        
+        // Remover hífen do código de pareamento (DYUX-8U23 -> DYUX8U23)
+        val cleanPairingCode = contractId.replace("-", "")
+        
+        val pairRequest = com.cdccreditsmart.network.dto.apk.DevicePairRequest(
+            imei = deviceImei ?: "",
+            hardwareImei = deviceImei ?: "",
+            deviceFingerprint = fingerprint,
+            androidId = androidId,
+            deviceModel = deviceInfo.model,
+            deviceBrand = deviceInfo.brand,
+            androidVersion = deviceInfo.androidVersion,
+            pairingCode = cleanPairingCode
         )
         
-        Log.d(TAG, "Sending POST /api/apk/auth...")
-        Log.d(TAG, "Request - deviceImei: ${if (deviceImei != null) "${deviceImei.take(6)}****" else "null"}")
-        Log.d(TAG, "Request - additionalImeis count: ${additionalImeis?.size ?: 0}")
-        Log.d(TAG, "Request - imeiStatus: $imeiStatus")
+        Log.d(TAG, "========== USING NEW ENDPOINT /api/apk/device/pair ==========")
+        Log.d(TAG, "Request - imei: ${if (deviceImei != null) "${deviceImei.take(6)}****" else "empty"}")
+        Log.d(TAG, "Request - deviceModel: ${deviceInfo.model}")
+        Log.d(TAG, "Request - deviceBrand: ${deviceInfo.brand}")
+        Log.d(TAG, "Request - androidVersion: ${deviceInfo.androidVersion}")
+        Log.d(TAG, "Request - pairingCode: $cleanPairingCode")
         
         retryWithBackoff(MAX_RETRIES) {
-            val response = deviceApi.authenticateApk(request)
+            val response = deviceApi.pairDevice(pairRequest)
             
             Log.d(TAG, "Response code: ${response.code()}")
             Log.d(TAG, "Response message: ${response.message()}")
@@ -395,15 +417,15 @@ class PairingViewModel(private val context: Context) : ViewModel() {
                 Log.d(TAG, "Response body received")
                 
                 when {
-                    body != null && body.success && body.authenticated -> {
-                        Log.d(TAG, "✅ APK Authentication successful!")
+                    body != null && body.isSuccessfulPairing() -> {
+                        Log.d(TAG, "✅ Device Pairing successful!")
                         Log.d(TAG, "Auth token received, expires in ${body.expiresIn}s")
                         Log.d(TAG, "Device: ${body.device?.brand} ${body.device?.model}")
                         Log.d(TAG, "Device ID: ${body.device?.id}")
                         Log.d(TAG, "Customer: ${body.customer?.name}")
                         Log.i(TAG, "📊 DADOS DO BACKEND - CustomerName: '${body.customer?.name}', DeviceModel: '${body.device?.model}'")
                         
-                        val authToken = body.authToken ?: ""
+                        val authToken = body.getEffectiveToken() ?: ""
                         val deviceId = body.device?.id
                         
                         // IMPORTANTE: contractId (ex: RSKUS3G7) É o Serial Number do contrato
@@ -606,7 +628,7 @@ class PairingViewModel(private val context: Context) : ViewModel() {
         Log.d(TAG, "Starting automatic polling for pending sale")
         
         viewModelScope.launch {
-            // CORREÇÃO: Coletar IMEI UMA VEZ antes do loop para usar em todas as verificações
+            // CORREÇÃO: Coletar informações do dispositivo UMA VEZ antes do loop
             val imeiInfo = try {
                 deviceInfoManager.getDeviceImeiInfo()
             } catch (e: Exception) {
@@ -614,45 +636,51 @@ class PairingViewModel(private val context: Context) : ViewModel() {
                 null
             }
             
-            val deviceImei = imeiInfo?.primaryImei
-            val additionalImeis = if (imeiInfo?.additionalImeis?.isNotEmpty() == true) {
-                imeiInfo.additionalImeis
-            } else {
-                null
-            }
-            val imeiStatus = when (imeiInfo?.acquisitionStatus) {
-                com.cdccreditsmart.app.device.ImeiAcquisitionStatus.SUCCESS -> null
-                else -> "unavailable"
-            }
+            val deviceImei = imeiInfo?.primaryImei ?: ""
+            val deviceInfo = deviceInfoManager.collectDeviceInfo()
+            val fingerprint = com.cdccreditsmart.app.security.FingerprintCalculator.calculateFingerprint(deviceImei)
+            val androidId = try {
+                android.provider.Settings.Secure.getString(
+                    context.contentResolver,
+                    android.provider.Settings.Secure.ANDROID_ID
+                ) ?: ""
+            } catch (e: Exception) { "" }
             
-            Log.d(TAG, "Auto-polling com IMEI: ${deviceImei?.take(6) ?: "null"}****")
+            // Remover hífen do código de pareamento
+            val cleanPairingCode = contractCode.replace("-", "")
+            
+            Log.d(TAG, "Auto-polling com IMEI: ${if (deviceImei.isNotEmpty()) "${deviceImei.take(6)}****" else "empty"}")
             
             while (isPolling && _state.value is PairingState.Pending) {
                 delay(PENDING_POLL_INTERVAL)
                 
-                Log.d(TAG, "Auto-polling: Checking if sale was completed...")
+                Log.d(TAG, "Auto-polling: Checking if sale was completed (using /api/apk/device/pair)...")
                 
                 try {
-                    // CORREÇÃO: Incluir IMEI na requisição de polling (igual à autenticação inicial)
-                    val request = com.cdccreditsmart.network.dto.apk.ApkAuthRequest(
-                        code = contractCode,
-                        deviceImei = deviceImei,
-                        additionalImeis = additionalImeis,
-                        imeiStatus = imeiStatus
+                    // USANDO NOVO ENDPOINT /api/apk/device/pair
+                    val pairRequest = com.cdccreditsmart.network.dto.apk.DevicePairRequest(
+                        imei = deviceImei,
+                        hardwareImei = deviceImei,
+                        deviceFingerprint = fingerprint,
+                        androidId = androidId,
+                        deviceModel = deviceInfo.model,
+                        deviceBrand = deviceInfo.brand,
+                        androidVersion = deviceInfo.androidVersion,
+                        pairingCode = cleanPairingCode
                     )
                     
-                    val response = deviceApi.authenticateApk(request)
+                    val response = deviceApi.pairDevice(pairRequest)
                     
                     if (response.isSuccessful) {
                         val body = response.body()
                         
                         when {
-                            body != null && body.success && body.authenticated -> {
-                                Log.d(TAG, "✅ Auto-polling: Sale completed! Authenticating...")
+                            body != null && body.isSuccessfulPairing() -> {
+                                Log.d(TAG, "✅ Auto-polling: Sale completed! Device paired!")
                                 Log.d(TAG, "Device ID: ${body.device?.id}")
                                 isPolling = false
                                 
-                                val authToken = body.authToken ?: ""
+                                val authToken = body.getEffectiveToken() ?: ""
                                 val deviceId = body.device?.id
                                 
                                 tokenStorage.saveAuthToken(
@@ -668,20 +696,20 @@ class PairingViewModel(private val context: Context) : ViewModel() {
                                 
                                 // Tentar salvar IMEI se disponível
                                 try {
-                                    val imeiInfo = deviceInfoManager.getDeviceImeiInfo()
-                                    if (imeiInfo.hasValidImei()) {
-                                        val primaryImei = imeiInfo.primaryImei
+                                    val latestImeiInfo = deviceInfoManager.getDeviceImeiInfo()
+                                    if (latestImeiInfo.hasValidImei()) {
+                                        val primaryImei = latestImeiInfo.primaryImei
                                         if (primaryImei != null) {
                                             tokenStorage.saveImeiForMdm(primaryImei)
                                             
                                             // CRITICAL: Salvar IMEI registrado para validação de bloqueio
                                             // Isso impede que alguém use código de contrato de outro dispositivo
                                             val localState = LocalAccountState(context)
-                                            localState.saveRegisteredImei(primaryImei, imeiInfo.getAllImeis())
+                                            localState.saveRegisteredImei(primaryImei, latestImeiInfo.getAllImeis())
                                             localState.contractCode = contractCode
                                             Log.i(TAG, "✅ IMEI registrado salvo para validação de bloqueio")
                                         }
-                                        tokenStorage.saveValidatedImeis(imeiInfo.getAllImeis())
+                                        tokenStorage.saveValidatedImeis(latestImeiInfo.getAllImeis())
                                         Log.i(TAG, "✅ IMEI(s) salvo(s) para MDM")
                                     }
                                 } catch (e: Exception) {
@@ -692,7 +720,7 @@ class PairingViewModel(private val context: Context) : ViewModel() {
                                 CdcForegroundService.startService(context.applicationContext)
                                 
                                 step3ConnectWebSocket(
-                                    contractCode = contractCode,  // Usa código de pareamento
+                                    contractCode = contractCode,
                                     customerName = body.customer?.name,
                                     deviceModel = body.device?.model
                                 )

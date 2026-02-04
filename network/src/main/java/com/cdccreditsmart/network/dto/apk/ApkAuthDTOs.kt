@@ -64,3 +64,42 @@ data class ServerTimeResponse(
     val timezone: String,
     val serverDate: String
 )
+
+/**
+ * Request para o endpoint principal de pareamento /api/apk/device/pair
+ * Conforme documentação do backend
+ */
+data class DevicePairRequest(
+    val imei: String,
+    val hardwareImei: String,
+    val deviceFingerprint: String,
+    val androidId: String,
+    val deviceModel: String,
+    val deviceBrand: String,
+    val androidVersion: String,
+    val pairingCode: String
+)
+
+/**
+ * Response do endpoint /api/apk/device/pair
+ */
+data class DevicePairResponse(
+    val success: Boolean,
+    val paired: Boolean? = null,
+    val authenticated: Boolean? = null,
+    val pending: Boolean? = null,
+    val message: String? = null,
+    val authToken: String? = null,
+    val token: String? = null,
+    val deviceToken: String? = null,
+    val expiresIn: Int? = null,
+    val expiresAt: String? = null,
+    val device: DeviceData? = null,
+    val customer: CustomerData? = null,
+    val store: StoreData? = null,
+    val paymentSummary: PaymentSummaryData? = null
+) {
+    fun getEffectiveToken(): String? = authToken ?: token ?: deviceToken
+    
+    fun isSuccessfulPairing(): Boolean = success && (paired == true || authenticated == true)
+}

@@ -13,9 +13,21 @@ interface DeviceApiService {
     // CDC Credit Smart specific device endpoints
     
     /**
-     * APK Authentication endpoint - CDC Credit Smart specific
+     * Device Pairing endpoint - PRINCIPAL (Recomendado pelo backend)
+     * POST /api/apk/device/pair
+     * Endpoint principal para pareamento de dispositivo
+     * 
+     * O servidor busca validação pendente pelo IMEI que deve coincidir com o PDV
+     */
+    @POST("api/apk/device/pair")
+    suspend fun pairDevice(
+        @Body request: com.cdccreditsmart.network.dto.apk.DevicePairRequest
+    ): Response<com.cdccreditsmart.network.dto.apk.DevicePairResponse>
+    
+    /**
+     * APK Authentication endpoint - CDC Credit Smart specific (Legacy)
      * POST /api/apk/auth
-     * Main authentication endpoint for APK using pairing code
+     * Endpoint alternativo para autenticação
      */
     @POST("api/apk/auth")
     suspend fun authenticateApk(
