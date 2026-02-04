@@ -14,10 +14,42 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.OffsetMapping
+import androidx.compose.ui.text.input.TransformedText
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.cdccreditsmart.app.ui.theme.CDCOrange
+
+class ContractCodeVisualTransformation : VisualTransformation {
+    override fun filter(text: AnnotatedString): TransformedText {
+        val originalText = text.text
+        
+        val transformedText = if (originalText.length > 4) {
+            "${originalText.take(4)}-${originalText.drop(4)}"
+        } else {
+            originalText
+        }
+        
+        val offsetMapping = object : OffsetMapping {
+            override fun originalToTransformed(offset: Int): Int {
+                return if (offset <= 4) offset else offset + 1
+            }
+            
+            override fun transformedToOriginal(offset: Int): Int {
+                return when {
+                    offset <= 4 -> offset
+                    offset == 5 -> 4
+                    else -> offset - 1
+                }
+            }
+        }
+        
+        return TransformedText(AnnotatedString(transformedText), offsetMapping)
+    }
+}
 
 @Composable
 fun QRCodeScannerScreen(
@@ -87,34 +119,21 @@ fun QRCodeScannerScreen(
                         OutlinedTextField(
                             value = contractId,
                             onValueChange = { newValue ->
-                                // Formatação automática:
-                                // 1. Remove espaços e caracteres especiais (exceto hífen)
-                                // 2. Converte para MAIÚSCULAS
-                                // 3. Aceita apenas A-Z, 0-9 e hífen
-                                // 4. Formata automaticamente como XXXX-XXXX
-                                val cleanValue = newValue
-                                    .replace(Regex("[^A-Za-z0-9-]"), "") // Remove tudo exceto letras, números e hífen
+                                // Formatação: apenas letras e números, maiúsculas, máximo 8
+                                val formatted = newValue
+                                    .replace(Regex("[^A-Za-z0-9]"), "") // Remove TUDO exceto letras e números
                                     .uppercase()
-                                
-                                // Remove hífens para contar caracteres reais
-                                val withoutHyphens = cleanValue.replace("-", "").take(8)
-                                
-                                // Adiciona hífen automaticamente após 4 caracteres
-                                val formatted = if (withoutHyphens.length > 4) {
-                                    "${withoutHyphens.take(4)}-${withoutHyphens.drop(4)}"
-                                } else {
-                                    withoutHyphens
-                                }
+                                    .take(8)
                                 
                                 contractId = formatted
                             },
                             label = { Text("Código do Contrato") },
                             placeholder = { Text("ABCD-1234") },
+                            visualTransformation = ContractCodeVisualTransformation(),
                             supportingText = {
-                                val charCount = contractId.replace("-", "").length
                                 Text(
-                                    text = "$charCount/8 caracteres",
-                                    color = if (charCount == 8) CDCOrange else MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
+                                    text = "${contractId.length}/8 caracteres",
+                                    color = if (contractId.length == 8) CDCOrange else MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
                                 )
                             },
                             modifier = Modifier.fillMaxWidth(),
@@ -129,13 +148,13 @@ fun QRCodeScannerScreen(
                         
                         Button(
                             onClick = {
-                                val charCount = contractId.replace("-", "").length
-                                if (charCount == 8) {
+                                if (contractId.length == 8) {
                                     // Envia o código COM hífen (formato XXXX-XXXX)
-                                    onQRCodeScanned(contractId)
+                                    val codeWithHyphen = "${contractId.take(4)}-${contractId.drop(4)}"
+                                    onQRCodeScanned(codeWithHyphen)
                                 }
                             },
-                            enabled = contractId.replace("-", "").length == 8,
+                            enabled = contractId.length == 8,
                             modifier = Modifier.fillMaxWidth(),
                             colors = ButtonDefaults.buttonColors(
                                 containerColor = CDCOrange,

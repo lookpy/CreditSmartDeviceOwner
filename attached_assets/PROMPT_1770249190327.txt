@@ -1,0 +1,35 @@
+2026-02-04 20:51:47.876 20415-20441 creditsmart.app         com.cdccreditsmart.app               W  Cleared Reference was only reachable from finalizer (only reported once)
+2026-02-04 20:51:48.446 20415-20441 creditsmart.app         com.cdccreditsmart.app               I  Background concurrent mark compact GC freed 8793KB AllocSpace bytes, 24(864KB) LOS objects, 66% free, 7408KB/21MB, paused 1.036ms,12.692ms total 1.203s
+2026-02-04 20:51:54.966 20415-20415 InsetsController        com.cdccreditsmart.app               D  show(ime(), fromIme=true)
+2026-02-04 20:51:54.970 20415-20415 ImeTracker              com.cdccreditsmart.app               I  com.cdccreditsmart.app:48b44eba: onCancelled at PHASE_CLIENT_APPLY_ANIMATION
+2026-02-04 20:51:55.210 20415-20415 InsetsController        com.cdccreditsmart.app               D  show(ime(), fromIme=true)
+2026-02-04 20:51:55.211 20415-20415 ImeTracker              com.cdccreditsmart.app               I  com.cdccreditsmart.app:d339500c: onCancelled at PHASE_CLIENT_APPLY_ANIMATION
+2026-02-04 20:51:56.518 20415-20415 InsetsController        com.cdccreditsmart.app               D  show(ime(), fromIme=true)
+2026-02-04 20:51:56.520 20415-20415 ImeTracker              com.cdccreditsmart.app               I  com.cdccreditsmart.app:46ea0868: onCancelled at PHASE_CLIENT_APPLY_ANIMATION
+2026-02-04 20:51:56.787 20415-20415 InsetsController        com.cdccreditsmart.app               D  show(ime(), fromIme=true)
+2026-02-04 20:51:56.788 20415-20415 ImeTracker              com.cdccreditsmart.app               I  com.cdccreditsmart.app:1e3b056c: onCancelled at PHASE_CLIENT_APPLY_ANIMATION
+2026-02-04 20:51:58.376 20415-20415 InsetsController        com.cdccreditsmart.app               D  show(ime(), fromIme=true)
+2026-02-04 20:51:58.381 20415-20415 ImeTracker              com.cdccreditsmart.app               I  com.cdccreditsmart.app:9b6485bb: onCancelled at PHASE_CLIENT_APPLY_ANIMATION
+2026-02-04 20:51:59.545 20415-20415 VRI[Janela pop-up]      com.cdccreditsmart.app               D  hardware acceleration = true, forceHwAccelerated = false
+2026-02-04 20:51:59.664 20415-20415 InputEventReceiver      com.cdccreditsmart.app               D  Input log is disabled in InputEventReceiver.
+2026-02-04 20:51:59.672 20415-20415 InsetsController        com.cdccreditsmart.app               D  show(ime(), fromIme=false)
+2026-02-04 20:51:59.674 20415-20415 ImeTracker              com.cdccreditsmart.app               I  com.cdccreditsmart.app:be92fb8c: onRequestShow at ORIGIN_CLIENT reason SHOW_SOFT_INPUT_BY_INSETS_API fromUser false
+2026-02-04 20:51:59.674 20415-20415 ImeTracker              com.cdccreditsmart.app               I  com.cdccreditsmart.app:be92fb8c: onCancelled at PHASE_CLIENT_APPLY_ANIMATION
+2026-02-04 20:51:59.807 20415-20415 BufferQueueConsumer     com.cdccreditsmart.app               D  [](id:4fbf00000003,api:0,p:-1,c:20415) connect: controlledByApp=false
+2026-02-04 20:51:59.809 20415-20415 BLASTBufferQueue        com.cdccreditsmart.app               D  [VRI[Janela pop-up]#3](f:0,a:0) constructor()
+2026-02-04 20:51:59.810 20415-20415 BLASTBufferQueue        com.cdccreditsmart.app               D  [VRI[Janela pop-up]#3](f:0,a:0) update width=132 height=143 format=-3 mTransformHint=0
+2026-02-04 20:51:59.879 20415-20746 BLASTBufferQueue        com.cdccreditsmart.app               D  [VRI[Janela pop-up]#3](f:0,a:1) acquireNextBufferLocked size=132x143 mFrameNumber=1 applyTransaction=true mTimestamp=60369573373366(auto) mPendingTransactions.size=0 graphicBufferId=87681757347852 transform=0
+2026-02-04 20:51:59.941 20415-20415 ImeTracker              com.cdccreditsmart.app               I  com.cdccreditsmart.app:f7a01775: onRequestShow at ORIGIN_CLIENT reason SHOW_SOFT_INPUT fromUser false
+2026-02-04 20:51:59.942 20415-20415 InputMethodManager      com.cdccreditsmart.app               D  showSoftInput() view=androidx.compose.ui.platform.AndroidComposeView{91163c VFED..... .F...... 0,0-1080,2400 aid=1073741824} flags=0 reason=SHOW_SOFT_INPUT
+2026-02-04 20:51:59.969 20415-20415 InsetsController        com.cdccreditsmart.app               D  show(ime(), fromIme=true)
+2026-02-04 20:51:59.970 20415-20415 ImeTracker              com.cdccreditsmart.app               I  com.cdccreditsmart.app:f7a01775: onCancelled at PHASE_CLIENT_APPLY_ANIMATION
+2026-02-04 20:52:00.657 20415-20415 WindowOnBackDispatcher  com.cdccreditsmart.app               W  sendCancelIfRunning: isInProgress=false callback=androidx.compose.ui.window.Api33Impl$$ExternalSyntheticLambda0@4f7fdbb
+2026-02-04 20:52:00.668 20415-20415 View                    com.cdccreditsmart.app               D  [Warning] assignParent to null: this = androidx.compose.ui.window.PopupLayout{2db3fd9 V.E...... ......ID 0,0-52,63 #1020002 android:id/content}
+2026-02-04 20:52:00.668 20415-20415 BLASTBufferQueue        com.cdccreditsmart.app               D  [VRI[Janela pop-up]#3](f:0,a:1) destructor()
+2026-02-04 20:52:00.668 20415-20415 BufferQueueConsumer     com.cdccreditsmart.app               D  [VRI[Janela pop-up]#3(BLAST Consumer)3](id:4fbf00000003,api:0,p:-1,c:20415) disconnect
+2026-02-04 20:52:00.901 20415-20415 InsetsController        com.cdccreditsmart.app               D  show(ime(), fromIme=true)
+2026-02-04 20:52:00.904 20415-20415 ImeTracker              com.cdccreditsmart.app               I  com.cdccreditsmart.app:1da9f46b: onCancelled at PHASE_CLIENT_APPLY_ANIMATION
+2026-02-04 20:52:02.630 20415-20415 InsetsController        com.cdccreditsmart.app               D  show(ime(), fromIme=true)
+2026-02-04 20:52:02.631 20415-20415 ImeTracker              com.cdccreditsmart.app               I  com.cdccreditsmart.app:af4dc1b1: onCancelled at PHASE_CLIENT_APPLY_ANIMATION
+2026-02-04 20:52:03.500 20415-20415 InsetsController        com.cdccreditsmart.app               D  show(ime(), fromIme=true)
+2026-02-04 20:52:03.501 20415-20415 ImeTracker              com.cdccreditsmart.app               I  com.cdccreditsmart.app:f7c88b4: onCancelled at PHASE_CLIENT_APPLY_ANIMATION
