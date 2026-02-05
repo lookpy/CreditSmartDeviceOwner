@@ -604,31 +604,49 @@ class PairingViewModel(private val context: Context) : ViewModel() {
         // O backend espera o código no formato "XXXX-XXXX"
         val pairingCodeForRequest = contractId // Manter formato original COM hífen
         
-        // CORRIGIDO: Usar /api/apk/auth conforme documentação do backend
-        val authRequest = com.cdccreditsmart.network.dto.apk.ApkAuthRequest.create(
-            pairingCode = pairingCodeForRequest,
-            imei = deviceImei,
-            deviceImei = deviceImei,
-            deviceModel = deviceInfo.model,
-            deviceBrand = deviceInfo.brand,
-            androidVersion = deviceInfo.androidVersion,
-            deviceFingerprint = fingerprint,
-            androidId = androidId
+        // VALIDAÇÃO: Backend requer hardwareImei - usar Android ID como fallback se IMEI indisponível
+        val effectiveHardwareId = when {
+            !deviceImei.isNullOrBlank() -> deviceImei
+            androidId.isNotBlank() -> "ANDROID_$androidId"
+            else -> {
+                Log.e(TAG, "❌ Nenhum identificador de hardware disponível (IMEI ou Android ID)")
+                _state.value = PairingState.Error(
+                    message = "Não foi possível identificar o dispositivo. Por favor, verifique as permissões.",
+                    canRetry = true
+                )
+                return@retryWithBackoff
+            }
+        }
+        
+        // CORRIGIDO: Usar /api/device/claim-sale conforme documentação do backend
+        // O backend espera { token: "XUNB-PBYR", hardwareImei: "353104906953198" }
+        val claimRequest = com.cdccreditsmart.network.dto.cdc.ClaimSaleByTokenRequest(
+            token = pairingCodeForRequest,
+            hardwareImei = effectiveHardwareId,
+            fingerprint = fingerprint,
+            deviceInfo = com.cdccreditsmart.network.dto.cdc.DeviceInfo(
+                brand = deviceInfo.brand,
+                model = deviceInfo.model,
+                manufacturer = deviceInfo.manufacturer,
+                androidVersion = deviceInfo.androidVersion,
+                sdkInt = android.os.Build.VERSION.SDK_INT,
+                serialNumber = android.os.Build.getSerial() ?: "",
+                buildId = android.os.Build.ID ?: ""
+            )
         )
         
         Log.i(TAG, "╔════════════════════════════════════════════════════════╗")
-        Log.i(TAG, "║   📤 SENDING REQUEST TO /api/apk/auth                  ║")
+        Log.i(TAG, "║   📤 SENDING REQUEST TO /api/device/claim-sale         ║")
         Log.i(TAG, "╚════════════════════════════════════════════════════════╝")
-        Log.i(TAG, "Request URL: https://cdccreditsmart.com/api/apk/auth")
-        Log.i(TAG, "Request - imei: ${if (deviceImei != null) "${deviceImei.take(6)}****" else "empty"}")
+        Log.i(TAG, "Request URL: https://cdccreditsmart.com/api/device/claim-sale")
+        Log.i(TAG, "Request - token: $pairingCodeForRequest")
+        Log.i(TAG, "Request - hardwareImei: ${if (deviceImei != null) "${deviceImei.take(6)}****" else "empty"}")
         Log.i(TAG, "Request - deviceModel: ${deviceInfo.model}")
         Log.i(TAG, "Request - deviceBrand: ${deviceInfo.brand}")
-        Log.i(TAG, "Request - androidVersion: ${deviceInfo.androidVersion}")
-        Log.i(TAG, "Request - pairingCode: $pairingCodeForRequest")
         
         retryWithBackoff(MAX_RETRIES) {
-            Log.i(TAG, "📡 Executando chamada HTTP POST /api/apk/auth...")
-            val response = deviceApi.authenticateApk(authRequest)
+            Log.i(TAG, "📡 Executando chamada HTTP POST /api/device/claim-sale...")
+            val response = deviceApi.claimSaleByToken(claimRequest)
             Log.i(TAG, "📨 Resposta recebida: HTTP ${response.code()}")
             
             Log.d(TAG, "Response code: ${response.code()}")
@@ -639,28 +657,23 @@ class PairingViewModel(private val context: Context) : ViewModel() {
                 Log.d(TAG, "Response body received")
                 
                 when {
-                    body != null && body.isSuccessfulPairing() -> {
-                        Log.d(TAG, "✅ Device Pairing successful!")
-                        Log.d(TAG, "Auth token received, expires in ${body.expiresIn}s")
-                        Log.d(TAG, "Device: ${body.device?.brand} ${body.device?.model}")
-                        Log.d(TAG, "Device ID: ${body.device?.id}")
-                        Log.d(TAG, "Customer: ${body.customer?.name}")
-                        Log.i(TAG, "📊 DADOS DO BACKEND - CustomerName: '${body.customer?.name}', DeviceModel: '${body.device?.model}'")
+                    body != null && body.success && body.matched -> {
+                        Log.d(TAG, "✅ Device Claim successful!")
+                        Log.d(TAG, "Device ID: ${body.deviceId}")
+                        Log.d(TAG, "Contract Code: ${body.contractCode}")
+                        Log.i(TAG, "📊 DADOS DO BACKEND - DeviceId: '${body.deviceId}', ContractCode: '${body.contractCode}'")
                         
-                        val authToken = body.getEffectiveToken() ?: ""
-                        val deviceId = body.device?.id
+                        val authToken = body.getEffectiveDeviceToken() ?: ""
+                        val deviceId = body.deviceId
                         
-                        // IMPORTANTE: contractId (ex: RSKUS3G7) É o Serial Number do contrato
-                        // Isso permite que getMdmIdentifier() use RSKUS3G7 para polling MDM
                         tokenStorage.saveAuthToken(
                             authToken = authToken,
-                            contractCode = contractId,
+                            contractCode = body.contractCode ?: contractId,
                             deviceId = deviceId
                         )
-                        tokenStorage.saveSerialNumber(contractId)  // Usar contractId como serialNumber
+                        tokenStorage.saveSerialNumber(body.contractCode ?: contractId)
                         
                         if (imeiInfo.hasValidImei()) {
-                            // CORREÇÃO: Salvar IMEI principal em KEY_IMEI para getMdmIdentifier()
                             val primaryImei = imeiInfo.primaryImei
                             if (primaryImei != null) {
                                 tokenStorage.saveImeiForMdm(primaryImei)
@@ -676,23 +689,20 @@ class PairingViewModel(private val context: Context) : ViewModel() {
                         Log.i(TAG, "🚀 Iniciando CdcForegroundService para MDM...")
                         CdcForegroundService.startService(context.applicationContext)
                         
-                        val customerNameFromBackend = body.customer?.name
-                        val deviceModelFromBackend = body.device?.model
-                        
-                        Log.i(TAG, "🔄 Passando para step3 - CustomerName: '$customerNameFromBackend', DeviceModel: '$deviceModelFromBackend'")
+                        Log.i(TAG, "🔄 Passando para step3 - ContractCode: '${body.contractCode}'")
                         
                         step3ConnectWebSocket(
-                            contractCode = contractId,
-                            customerName = customerNameFromBackend,
-                            deviceModel = deviceModelFromBackend
+                            contractCode = body.contractCode ?: contractId,
+                            customerName = null,
+                            deviceModel = deviceInfo.model
                         )
                     }
                     
-                    body != null && body.isPending() -> {
+                    body != null && body.success && !body.matched -> {
                         Log.d(TAG, "⏳ Sale pending - awaiting PDV completion")
-                        Log.d(TAG, "Message: ${body.message}, Stage: ${body.stage}, Pending: ${body.pending}")
+                        Log.d(TAG, "Message: ${body.message}")
                         
-                        val message = body.message 
+                        val message = body.message.takeIf { it.isNotBlank() } 
                             ?: "Venda em andamento. Aguarde o vendedor finalizar no PDV."
                         
                         _state.value = PairingState.Pending(
@@ -704,11 +714,10 @@ class PairingViewModel(private val context: Context) : ViewModel() {
                     }
                     
                     else -> {
-                        Log.w(TAG, "❌ APK Authentication failed")
-                        Log.w(TAG, "authenticated: ${body?.authenticated}")
-                        Log.w(TAG, "pending: ${body?.pending}")
+                        Log.w(TAG, "❌ Device Claim failed")
+                        Log.w(TAG, "success: ${body?.success}, matched: ${body?.matched}")
                         
-                        val message = body?.message 
+                        val message = body?.message?.takeIf { it.isNotBlank() }
                             ?: "Código de pareamento inválido ou expirado. Verifique com a loja."
                         
                         _state.value = PairingState.Error(
@@ -944,54 +953,62 @@ class PairingViewModel(private val context: Context) : ViewModel() {
             // O backend espera o código no formato "XXXX-XXXX"
             val pairingCodeForRequest = contractCode // Manter formato original
             
-            Log.d(TAG, "Auto-polling com IMEI: ${if (deviceImei.isNotEmpty()) "${deviceImei.take(6)}****" else "empty"}")
+            // VALIDAÇÃO: Backend requer hardwareImei - usar Android ID como fallback
+            val effectiveHardwareId = when {
+                deviceImei.isNotBlank() -> deviceImei
+                androidId.isNotBlank() -> "ANDROID_$androidId"
+                else -> "UNKNOWN_${System.currentTimeMillis()}"
+            }
+            
+            Log.d(TAG, "Auto-polling com hardwareId: ${if (effectiveHardwareId.length > 6) "${effectiveHardwareId.take(6)}****" else effectiveHardwareId}")
             Log.d(TAG, "Auto-polling com pairingCode: $pairingCodeForRequest")
             
             while (isPolling && _state.value is PairingState.Pending) {
                 delay(PENDING_POLL_INTERVAL)
                 
-                Log.d(TAG, "Auto-polling: Checking if sale was completed (using /api/apk/auth)...")
+                Log.d(TAG, "Auto-polling: Checking if sale was completed (using /api/device/claim-sale)...")
                 
                 try {
-                    // CORRIGIDO: Usar /api/apk/auth conforme documentação do backend
-                    // Manter o hífen no código conforme especificação
-                    val authRequest = com.cdccreditsmart.network.dto.apk.ApkAuthRequest.create(
-                        pairingCode = pairingCodeForRequest,
-                        imei = deviceImei,
-                        deviceImei = deviceImei,
-                        deviceModel = deviceInfo.model,
-                        deviceBrand = deviceInfo.brand,
-                        androidVersion = deviceInfo.androidVersion,
-                        deviceFingerprint = fingerprint,
-                        androidId = androidId
+                    // CORRIGIDO: Usar /api/device/claim-sale conforme documentação do backend
+                    val claimRequest = com.cdccreditsmart.network.dto.cdc.ClaimSaleByTokenRequest(
+                        token = pairingCodeForRequest,
+                        hardwareImei = effectiveHardwareId,
+                        fingerprint = fingerprint,
+                        deviceInfo = com.cdccreditsmart.network.dto.cdc.DeviceInfo(
+                            brand = deviceInfo.brand,
+                            model = deviceInfo.model,
+                            manufacturer = deviceInfo.manufacturer,
+                            androidVersion = deviceInfo.androidVersion,
+                            sdkInt = android.os.Build.VERSION.SDK_INT,
+                            serialNumber = android.os.Build.getSerial() ?: "",
+                            buildId = android.os.Build.ID ?: ""
+                        )
                     )
                     
-                    val response = deviceApi.authenticateApk(authRequest)
+                    val response = deviceApi.claimSaleByToken(claimRequest)
                     
                     if (response.isSuccessful) {
                         val body = response.body()
                         
                         when {
-                            body != null && body.isSuccessfulPairing() -> {
+                            body != null && body.success && body.matched -> {
                                 Log.d(TAG, "✅ Auto-polling: Sale completed! Device paired!")
-                                Log.d(TAG, "Device ID: ${body.device?.id}")
+                                Log.d(TAG, "Device ID: ${body.deviceId}")
                                 isPolling = false
                                 
-                                val authToken = body.getEffectiveToken() ?: ""
-                                val deviceId = body.device?.id
+                                val authToken = body.getEffectiveDeviceToken() ?: ""
+                                val effectiveDeviceId = body.deviceId
+                                val effectiveContractCode = body.contractCode ?: contractCode
                                 
                                 tokenStorage.saveAuthToken(
                                     authToken = authToken,
-                                    contractCode = contractCode,
-                                    deviceId = deviceId
+                                    contractCode = effectiveContractCode,
+                                    deviceId = effectiveDeviceId
                                 )
                                 
-                                // CORREÇÃO CRÍTICA: Salvar serialNumber ANTES de iniciar CdcForegroundService
-                                // Isso permite que getMdmIdentifier() encontre o identificador para polling MDM
-                                tokenStorage.saveSerialNumber(contractCode)
-                                Log.i(TAG, "✅ SerialNumber salvo para MDM: ${contractCode.take(4)}****")
+                                tokenStorage.saveSerialNumber(effectiveContractCode)
+                                Log.i(TAG, "✅ SerialNumber salvo para MDM: ${effectiveContractCode.take(4)}****")
                                 
-                                // Tentar salvar IMEI se disponível
                                 try {
                                     val latestImeiInfo = deviceInfoManager.getDeviceImeiInfo()
                                     if (latestImeiInfo.hasValidImei()) {
@@ -999,11 +1016,9 @@ class PairingViewModel(private val context: Context) : ViewModel() {
                                         if (primaryImei != null) {
                                             tokenStorage.saveImeiForMdm(primaryImei)
                                             
-                                            // CRITICAL: Salvar IMEI registrado para validação de bloqueio
-                                            // Isso impede que alguém use código de contrato de outro dispositivo
                                             val localState = LocalAccountState(context)
                                             localState.saveRegisteredImei(primaryImei, latestImeiInfo.getAllImeis())
-                                            localState.contractCode = contractCode
+                                            localState.contractCode = effectiveContractCode
                                             Log.i(TAG, "✅ IMEI registrado salvo para validação de bloqueio")
                                         }
                                         tokenStorage.saveValidatedImeis(latestImeiInfo.getAllImeis())
@@ -1017,21 +1032,21 @@ class PairingViewModel(private val context: Context) : ViewModel() {
                                 CdcForegroundService.startService(context.applicationContext)
                                 
                                 step3ConnectWebSocket(
-                                    contractCode = contractCode,
-                                    customerName = body.customer?.name,
-                                    deviceModel = body.device?.model
+                                    contractCode = effectiveContractCode,
+                                    customerName = null,
+                                    deviceModel = deviceInfo.model
                                 )
                             }
                             
-                            body != null && body.isPending() -> {
-                                Log.d(TAG, "⏳ Auto-polling: Sale still pending (stage: ${body.stage}, pending: ${body.pending})...")
+                            body != null && body.success && !body.matched -> {
+                                Log.d(TAG, "⏳ Auto-polling: Sale still pending...")
                             }
                             
                             else -> {
                                 Log.w(TAG, "❌ Auto-polling: Unexpected response")
                                 isPolling = false
                                 
-                                val message = body?.message 
+                                val message = body?.message?.takeIf { it.isNotBlank() }
                                     ?: "Código de pareamento inválido ou expirado."
                                 
                                 _state.value = PairingState.Error(

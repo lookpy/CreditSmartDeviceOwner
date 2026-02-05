@@ -51,6 +51,34 @@ The UI is built with Jetpack Compose and Material 3, featuring a CDC institution
 
 ## Recent Changes
 
+**CORREÇÃO CRÍTICA: Endpoint de Pareamento /api/device/claim-sale (2026-02-04):**
+
+*Problema:* App usava endpoint errado (`/api/apk/auth`) enquanto o backend espera `POST /api/device/claim-sale` com campos `{ token: "XUNB-PBYR", hardwareImei: "353104906953198" }`. Isso causava falha no pareamento.
+
+*Soluções implementadas:*
+
+1. **Novo DTO ClaimSaleByTokenRequest:**
+   - Criado em `PairingDTOs.kt` com campos `token`, `hardwareImei`, `deviceInfo`, `fingerprint`
+   - Formato exato esperado pelo backend
+
+2. **DeviceApiService.claimSaleByToken():**
+   - Novo endpoint `POST /api/device/claim-sale` que usa `ClaimSaleByTokenRequest`
+   - Retorna `ClaimResponse` com campos `success`, `matched`, `deviceId`, `deviceToken`, etc.
+
+3. **PairingViewModel.stepFallbackClaimByCodeOnly():**
+   - Agora usa `claimSaleByToken()` em vez de `authenticateApk()`
+   - Request: `{ token: "XXXX-XXXX", hardwareImei: "353104906953198", ... }`
+   - Tratamento: `success && matched` = pareado, `success && !matched` = pendente
+
+4. **Polling atualizado:**
+   - `startPendingPolling()` agora usa `/api/device/claim-sale`
+   - Mesmo tratamento de resposta do `ClaimResponse`
+
+*Arquivos modificados:*
+- `network/src/main/java/com/cdccreditsmart/network/dto/cdc/PairingDTOs.kt`
+- `network/src/main/java/com/cdccreditsmart/network/api/DeviceApiService.kt`
+- `app/src/main/java/com/cdccreditsmart/app/presentation/pairing/PairingViewModel.kt`
+
 **Correção Sinal de Conexão WebSocket para Vendedor (2026-02-04):**
 
 *Problema:* App mostrava "Aguardando Vendedor" corretamente, mas não enviava sinal de conexão para o servidor. O vendedor não conseguia ver que o dispositivo estava conectado e não podia clicar "Concluir Venda".

@@ -45,6 +45,13 @@ data class ClaimRequest(
     val deviceInfo: DeviceInfo
 )
 
+data class ClaimSaleByTokenRequest(
+    val token: String,
+    val hardwareImei: String,
+    val deviceInfo: DeviceInfo? = null,
+    val fingerprint: String? = null
+)
+
 data class ClaimResponse(
     val success: Boolean,
     val matched: Boolean,

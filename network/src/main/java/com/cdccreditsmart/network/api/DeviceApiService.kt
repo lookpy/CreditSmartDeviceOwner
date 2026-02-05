@@ -129,6 +129,16 @@ interface DeviceApiService {
     ): Response<ClaimResponse>
     
     /**
+     * Claim Sale by Token - Primary method for APK pairing
+     * POST /api/device/claim-sale
+     * Claims a sale using the pairing code (token) from PDV
+     */
+    @POST("api/device/claim-sale")
+    suspend fun claimSaleByToken(
+        @Body request: ClaimSaleByTokenRequest
+    ): Response<ClaimResponse>
+    
+    /**
      * Authenticated device status endpoint - CDC Credit Smart specific
      * GET /api/apk/device/status
      */
