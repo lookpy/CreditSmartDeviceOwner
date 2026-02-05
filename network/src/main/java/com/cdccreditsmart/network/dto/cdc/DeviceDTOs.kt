@@ -65,20 +65,7 @@ data class RealTimeHeartbeatRequest(
     val batteryLevel: Int,
     val isCharging: Boolean,
     val currentSimImei: String? = null,
-    val location: HeartbeatLocation? = null,
     val timestamp: Long = System.currentTimeMillis()
-)
-
-/**
- * Location data for heartbeat - format expected by backend
- */
-//@JsonClass(generateAdapter = true)
-data class HeartbeatLocation(
-    val latitude: Double,
-    val longitude: Double,
-    val accuracy: Float? = null,
-    val altitude: Double? = null,
-    val speed: Float? = null
 )
 
 //@JsonClass(generateAdapter = true) // Temporarily disabled to fix build
