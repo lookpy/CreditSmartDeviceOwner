@@ -1,0 +1,51 @@
+2026-02-04 22:04:23.362  6908-6908  Activity                com.cdccreditsmart.app               D  onResume setDolbyGameProfilePackage lastPkg =  currentPkg = com.cdccreditsmart.app
+2026-02-04 22:04:23.387  6908-6908  BufferQueueConsumer     com.cdccreditsmart.app               D  [](id:1afc00000005,api:0,p:-1,c:6908) connect: controlledByApp=false
+2026-02-04 22:04:23.389  6908-6908  BLASTBufferQueue        com.cdccreditsmart.app               D  [VRI[MainActivity]#5](f:0,a:0) constructor()
+2026-02-04 22:04:23.389  6908-6908  BLASTBufferQueue        com.cdccreditsmart.app               D  [VRI[MainActivity]#5](f:0,a:0) update width=1080 height=2400 format=-3 mTransformHint=0
+2026-02-04 22:04:23.433  6908-7035  BLASTBufferQueue        com.cdccreditsmart.app               D  [VRI[MainActivity]#5](f:0,a:1) acquireNextBufferLocked size=1080x2400 mFrameNumber=1 applyTransaction=true mTimestamp=64713127173625(auto) mPendingTransactions.size=0 graphicBufferId=29669634080791 transform=0
+2026-02-04 22:04:23.451  6908-7732  SettingsGuardService    com.cdccreditsmart.app               D  📋 Activity check - Full: com.cdccreditsmart.app.presentation.MainActivity, Simple: MainActivity
+2026-02-04 22:04:23.543  6908-6908  ScreenStateReceiver     com.cdccreditsmart.app               I  🔓 TELA DESBLOQUEADA (ACTION_USER_PRESENT)
+2026-02-04 22:04:23.543  6908-6908  SettingsGuardService    com.cdccreditsmart.app               I  🔓 SCREEN UNLOCKED - Verificando apps bloqueados em execução...
+2026-02-04 22:04:23.573  6908-7732  SettingsGuardService    com.cdccreditsmart.app               D  🔍 [SCREEN_UNLOCK] Verificando 1 apps em execução: [com.cdccreditsmart.app]
+2026-02-04 22:04:24.560  6908-6908  SimpleHomeViewModel     com.cdccreditsmart.app               D  🔄 Refreshing installments data...
+2026-02-04 22:04:24.567  6908-6908  SecureTokenStorage      com.cdccreditsmart.app               D  ✅ Usando IMEI para MDM: 3531***198
+2026-02-04 22:04:24.567  6908-6908  SimpleHomeViewModel     com.cdccreditsmart.app               D  📦 Verificação de autenticação:
+2026-02-04 22:04:24.567  6908-6908  SimpleHomeViewModel     com.cdccreditsmart.app               D     Token: presente
+2026-02-04 22:04:24.567  6908-6908  SimpleHomeViewModel     com.cdccreditsmart.app               D     DeviceInfo: presente
+2026-02-04 22:04:24.567  6908-6908  SimpleHomeViewModel     com.cdccreditsmart.app               D     ContractCode: presente
+2026-02-04 22:04:24.569  6908-6908  NetworkConnectivity     com.cdccreditsmart.app               D  ✅ Conectado via WiFi com internet
+2026-02-04 22:04:24.569  6908-6908  SimpleHomeViewModel     com.cdccreditsmart.app               D  📡 Fetching device installments from /api/apk/device/installments...
+2026-02-04 22:04:24.580  6908-7871  SimpleHomeViewModel     com.cdccreditsmart.app               D  ✅ Added Authorization header with token
+2026-02-04 22:04:24.582  6908-7871  SecureTokenStorage      com.cdccreditsmart.app               D  ✅ Usando IMEI para MDM: 3531***198
+2026-02-04 22:04:24.585  6908-7871  SimpleHomeViewModel     com.cdccreditsmart.app               D  📱 Added X-Device-IMEI header
+2026-02-04 22:04:24.585  6908-7871  SimpleHomeViewModel     com.cdccreditsmart.app               D  📱 Added X-Device-SerialNumber header
+2026-02-04 22:04:24.585  6908-7871  SimpleHomeViewModel     com.cdccreditsmart.app               D  📱 Added X-Device-ID header
+2026-02-04 22:04:24.585  6908-7871  SimpleHomeViewModel     com.cdccreditsmart.app               D  📤 Request URL: https://cdccreditsmart.com/api/apk/device/installments
+2026-02-04 22:04:24.978  6908-7871  SimpleHomeViewModel     com.cdccreditsmart.app               D  📥 Response Code: 401
+2026-02-04 22:04:24.980  6908-6908  SimpleHomeViewModel     com.cdccreditsmart.app               E  ❌ API error: 401
+2026-02-04 22:04:24.981  6908-6908  SimpleHomeViewModel     com.cdccreditsmart.app               E  ❌ Error body: {"error":"Token inválido ou expirado"}
+2026-02-04 22:04:24.981  6908-6908  SimpleHomeViewModel     com.cdccreditsmart.app               E  🔐 Erro 401 - Token inválido ou expirado
+2026-02-04 22:04:24.981  6908-6908  SimpleHomeViewModel     com.cdccreditsmart.app               W  ⚠️ Tem contractCode (TUV3TAPS) mas recebeu 401
+2026-02-04 22:04:24.984  6908-6908  LocalInstallmentStorage com.cdccreditsmart.app               W  ⚠️ Nenhuma parcela armazenada localmente
+2026-02-04 22:04:24.984  6908-6908  SimpleHomeViewModel     com.cdccreditsmart.app               W  ⏳ Sem cache disponível - dispositivo ainda sincronizando
+2026-02-04 22:04:26.956  6908-6908  SimpleHomeViewModel     com.cdccreditsmart.app               D  🔄 Refreshing installments data...
+2026-02-04 22:04:26.964  6908-6908  SecureTokenStorage      com.cdccreditsmart.app               D  ✅ Usando IMEI para MDM: 3531***198
+2026-02-04 22:04:26.965  6908-6908  SimpleHomeViewModel     com.cdccreditsmart.app               D  📦 Verificação de autenticação:
+2026-02-04 22:04:26.965  6908-6908  SimpleHomeViewModel     com.cdccreditsmart.app               D     Token: presente
+2026-02-04 22:04:26.965  6908-6908  SimpleHomeViewModel     com.cdccreditsmart.app               D     DeviceInfo: presente
+2026-02-04 22:04:26.965  6908-6908  SimpleHomeViewModel     com.cdccreditsmart.app               D     ContractCode: presente
+2026-02-04 22:04:26.971  6908-6908  NetworkConnectivity     com.cdccreditsmart.app               D  ✅ Conectado via WiFi com internet
+2026-02-04 22:04:26.971  6908-6908  SimpleHomeViewModel     com.cdccreditsmart.app               D  📡 Fetching device installments from /api/apk/device/installments...
+2026-02-04 22:04:26.977  6908-7871  SimpleHomeViewModel     com.cdccreditsmart.app               D  ✅ Added Authorization header with token
+2026-02-04 22:04:26.979  6908-7871  SecureTokenStorage      com.cdccreditsmart.app               D  ✅ Usando IMEI para MDM: 3531***198
+2026-02-04 22:04:26.982  6908-7871  SimpleHomeViewModel     com.cdccreditsmart.app               D  📱 Added X-Device-IMEI header
+2026-02-04 22:04:26.982  6908-7871  SimpleHomeViewModel     com.cdccreditsmart.app               D  📱 Added X-Device-SerialNumber header
+2026-02-04 22:04:26.982  6908-7871  SimpleHomeViewModel     com.cdccreditsmart.app               D  📱 Added X-Device-ID header
+2026-02-04 22:04:26.982  6908-7871  SimpleHomeViewModel     com.cdccreditsmart.app               D  📤 Request URL: https://cdccreditsmart.com/api/apk/device/installments
+2026-02-04 22:04:27.430  6908-7871  SimpleHomeViewModel     com.cdccreditsmart.app               D  📥 Response Code: 401
+2026-02-04 22:04:27.436  6908-6908  SimpleHomeViewModel     com.cdccreditsmart.app               E  ❌ API error: 401
+2026-02-04 22:04:27.436  6908-6908  SimpleHomeViewModel     com.cdccreditsmart.app               E  ❌ Error body: {"error":"Token inválido ou expirado"}
+2026-02-04 22:04:27.436  6908-6908  SimpleHomeViewModel     com.cdccreditsmart.app               E  🔐 Erro 401 - Token inválido ou expirado
+2026-02-04 22:04:27.436  6908-6908  SimpleHomeViewModel     com.cdccreditsmart.app               W  ⚠️ Tem contractCode (TUV3TAPS) mas recebeu 401
+2026-02-04 22:04:27.438  6908-6908  LocalInstallmentStorage com.cdccreditsmart.app               W  ⚠️ Nenhuma parcela armazenada localmente
+2026-02-04 22:04:27.438  6908-6908  SimpleHomeViewModel     com.cdccreditsmart.app               W  ⏳ Sem cache disponível - dispositivo ainda sincronizando
