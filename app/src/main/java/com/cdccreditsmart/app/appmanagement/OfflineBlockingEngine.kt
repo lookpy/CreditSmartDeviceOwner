@@ -24,10 +24,14 @@ class OfflineBlockingEngine(
     companion object {
         private const val TAG = "OfflineBlockingEngine"
         
-        const val DAYS_LEVEL_0 = 0
-        const val DAYS_LEVEL_1 = 7
-        const val DAYS_LEVEL_2 = 15
-        const val DAYS_LEVEL_3 = 30
+        // Escala progressiva de bloqueio por dias de atraso
+        const val DAYS_LEVEL_0 = 0   // Sem Restrição
+        const val DAYS_LEVEL_1 = 3   // Fotos, vídeos e navegadores restritos
+        const val DAYS_LEVEL_2 = 6   // + YouTube, música, Play Store e jogos
+        const val DAYS_LEVEL_3 = 9   // + Redes sociais (exceto WhatsApp)
+        const val DAYS_LEVEL_4 = 12  // Quase tudo restrito (bloqueia até WhatsApp)
+        const val DAYS_LEVEL_5 = 15  // Restrição máxima (apenas bancos e emergência)
+        const val DAYS_LEVEL_6 = 18  // RESTRIÇÃO MÁXIMA com tela de cobrança
     }
     
     /**
@@ -133,13 +137,24 @@ class OfflineBlockingEngine(
     
     /**
      * Calcula nível de bloqueio baseado em dias de atraso
+     * Escala progressiva:
+     * - 0-2 dias: Nível 0 - Sem Restrição
+     * - 3-5 dias: Nível 1 - Fotos, vídeos e navegadores
+     * - 6-8 dias: Nível 2 - + YouTube, música, Play Store e jogos
+     * - 9-11 dias: Nível 3 - + Redes sociais (exceto WhatsApp)
+     * - 12-14 dias: Nível 4 - Quase tudo (bloqueia até WhatsApp)
+     * - 15-17 dias: Nível 5 - Restrição máxima (apenas bancos e emergência)
+     * - 18+ dias: Nível 6 - RESTRIÇÃO MÁXIMA com tela de cobrança
      */
     private fun calculateBlockingLevel(daysOverdue: Int): Int {
         return when {
             daysOverdue < DAYS_LEVEL_1 -> 0
             daysOverdue < DAYS_LEVEL_2 -> 1
             daysOverdue < DAYS_LEVEL_3 -> 2
-            else -> 3
+            daysOverdue < DAYS_LEVEL_4 -> 3
+            daysOverdue < DAYS_LEVEL_5 -> 4
+            daysOverdue < DAYS_LEVEL_6 -> 5
+            else -> 6
         }
     }
     
@@ -148,9 +163,11 @@ class OfflineBlockingEngine(
      */
     private fun getCategoriesForLevel(level: Int): List<String> {
         return when (level) {
-            1 -> listOf("SOCIAL_MEDIA", "GAMING")
-            2 -> listOf("SOCIAL_MEDIA", "GAMING", "ENTERTAINMENT", "SHOPPING")
-            3 -> listOf("SOCIAL_MEDIA", "GAMING", "ENTERTAINMENT", "SHOPPING", "PRODUCTIVITY")
+            1 -> listOf("GALLERY_PHOTOS", "VIDEO_PLAYERS", "BROWSERS")
+            2 -> listOf("GALLERY_PHOTOS", "VIDEO_PLAYERS", "BROWSERS", "YOUTUBE_TIKTOK", "MUSIC", "PLAY_STORE", "GAMES")
+            3 -> listOf("GALLERY_PHOTOS", "VIDEO_PLAYERS", "BROWSERS", "YOUTUBE_TIKTOK", "MUSIC", "PLAY_STORE", "GAMES", "SOCIAL_MEDIA")
+            4 -> listOf("GALLERY_PHOTOS", "VIDEO_PLAYERS", "BROWSERS", "YOUTUBE_TIKTOK", "MUSIC", "PLAY_STORE", "GAMES", "SOCIAL_MEDIA", "WHATSAPP", "NON_ESSENTIAL_APPS")
+            5, 6 -> listOf("ALL_APPS")
             else -> emptyList()
         }
     }

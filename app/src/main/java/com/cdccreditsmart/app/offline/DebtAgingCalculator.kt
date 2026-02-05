@@ -171,22 +171,24 @@ class DebtAgingCalculator(private val context: Context) {
     
     /**
      * Determina o nível de bloqueio baseado nos dias de atraso
-     * Segue a escala do backend v2.5:
-     * - 0-6 dias: Nível 0
-     * - 7-14 dias: Nível 1
-     * - 15-29 dias: Nível 2
-     * - 30-44 dias: Nível 3
-     * - 45-59 dias: Nível 4
-     * - 60+ dias: Nível 5
+     * Escala progressiva de bloqueio:
+     * - 0-2 dias: Nível 0 - Sem Restrição
+     * - 3-5 dias: Nível 1 - Fotos, vídeos e navegadores restritos
+     * - 6-8 dias: Nível 2 - + YouTube, música, Play Store e jogos
+     * - 9-11 dias: Nível 3 - + Redes sociais (exceto WhatsApp)
+     * - 12-14 dias: Nível 4 - Quase tudo restrito (bloqueia até WhatsApp)
+     * - 15-17 dias: Nível 5 - Restrição máxima (apenas bancos e emergência)
+     * - 18+ dias: Nível 6 - RESTRIÇÃO MÁXIMA com tela de cobrança
      */
     fun calculateBlockLevel(daysOverdue: Int): Int {
         return when {
-            daysOverdue < 7 -> 0
-            daysOverdue < 15 -> 1
-            daysOverdue < 30 -> 2
-            daysOverdue < 45 -> 3
-            daysOverdue < 60 -> 4
-            else -> 5
+            daysOverdue < 3 -> 0
+            daysOverdue < 6 -> 1
+            daysOverdue < 9 -> 2
+            daysOverdue < 12 -> 3
+            daysOverdue < 15 -> 4
+            daysOverdue < 18 -> 5
+            else -> 6
         }
     }
     

@@ -587,6 +587,15 @@ class AppPolicyManager(private val context: Context) {
         return Pair(accumulatedCategories.toList(), accumulatedExceptions.toList())
     }
     
+    /**
+     * Define categorias a bloquear por nível progressivo:
+     * Nível 1: Fotos, vídeos e navegadores
+     * Nível 2: + YouTube, música, Play Store e jogos
+     * Nível 3: + Redes sociais (exceto WhatsApp)
+     * Nível 4: + WhatsApp e apps não essenciais
+     * Nível 5: Restrição máxima (apenas bancos e emergência)
+     * Nível 6: RESTRIÇÃO MÁXIMA com tela de cobrança
+     */
     private fun getCategoriesForLevel(level: Int): Set<String> {
         val categories = mutableSetOf<String>()
         
@@ -600,11 +609,12 @@ class AppPolicyManager(private val context: Context) {
             categories.add("social_media")
         }
         if (level >= 4) {
-            categories.add("non_essential_apps")
+            categories.addAll(listOf("whatsapp", "non_essential_apps"))
         }
         if (level >= 5) {
             categories.add("all_apps")
         }
+        // Nível 6 usa mesmas categorias do 5, mas com tela de cobrança ativa
         
         return categories
     }

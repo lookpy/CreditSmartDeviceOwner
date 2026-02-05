@@ -89,9 +89,12 @@ class BlockingViewModel(private val context: Context) : ViewModel() {
     
     /**
      * Calculate days until next blocking level
+     * Nova escala progressiva:
+     * 3 dias: Nível 1, 6 dias: Nível 2, 9 dias: Nível 3
+     * 12 dias: Nível 4, 15 dias: Nível 5, 18 dias: Nível 6
      */
     fun calculateDaysToNextBlock(currentDays: Int): Int? {
-        val levels = listOf(7, 15, 30, 45, 60)
+        val levels = listOf(3, 6, 9, 12, 15, 18)
         return levels.firstOrNull { it > currentDays }?.let { it - currentDays }
     }
     
