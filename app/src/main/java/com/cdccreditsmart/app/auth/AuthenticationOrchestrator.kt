@@ -389,10 +389,18 @@ class AuthenticationOrchestrator(private val context: Context) {
         return try {
             Log.d(TAG, "🔐 Autenticando silenciosamente com código salvo...")
             
+            val imei = DeviceUtils.getDeviceImei(context)
             val request = ApkAuthRequest.create(
-                pairingCode = contractCode
+                pairingCode = contractCode,
+                imei = imei,
+                deviceImei = imei,
+                deviceModel = Build.MODEL,
+                deviceBrand = Build.MANUFACTURER,
+                androidVersion = Build.VERSION.RELEASE,
+                deviceFingerprint = Build.FINGERPRINT
             )
             
+            Log.d(TAG, "📱 Enviando IMEI para verificação de segurança: ${imei?.take(6)}...")
             val response = deviceApi.authenticateApk(request)
             
             if (!response.isSuccessful) {
