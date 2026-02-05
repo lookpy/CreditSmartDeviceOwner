@@ -68,6 +68,17 @@ class SimpleHomeViewModel(
         
         @Volatile
         private var lastErrorTime: Long = 0L
+        
+        /**
+         * Invalida o cache para forçar recarregamento dos dados do servidor.
+         * Chamar após pagamento PIX confirmado ou outra ação que altera dados.
+         */
+        fun invalidateCache() {
+            Log.i(TAG, "🔄 Cache invalidado - próximo acesso forçará sync com servidor")
+            cachedState = null
+            lastLoadTime = 0L
+            lastErrorTime = 0L
+        }
     }
 
     init {

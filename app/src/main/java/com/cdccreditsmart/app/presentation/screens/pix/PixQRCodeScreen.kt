@@ -22,6 +22,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.cdccreditsmart.app.presentation.pix.PixPaymentViewModel
+import com.cdccreditsmart.app.presentation.screens.home.SimpleHomeViewModel
 import com.cdccreditsmart.app.ui.theme.CDCError
 import com.cdccreditsmart.app.ui.theme.CDCOrange
 import kotlinx.coroutines.delay
@@ -58,6 +59,11 @@ fun PixQRCodeScreen(
     LaunchedEffect(uiState.paymentConfirmed) {
         if (uiState.paymentConfirmed) {
             Toast.makeText(context, "Pagamento confirmado!", Toast.LENGTH_LONG).show()
+            
+            // CRÍTICO: Invalidar cache para forçar atualização das parcelas
+            SimpleHomeViewModel.invalidateCache()
+            android.util.Log.i("PixQRCodeScreen", "✅ Pagamento confirmado - cache invalidado para atualizar parcelas")
+            
             delay(2000)
             viewModel.resetPaymentFlow()
             onNavigateBack()
