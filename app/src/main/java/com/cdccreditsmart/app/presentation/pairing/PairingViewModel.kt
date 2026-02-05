@@ -605,17 +605,17 @@ class PairingViewModel(private val context: Context) : ViewModel() {
         val pairingCodeForRequest = contractId.replace("-", "") // Remover hífen se existir
         
         // VALIDAÇÃO: Backend requer hardwareImei - usar Android ID como fallback se IMEI indisponível
-        val effectiveHardwareId = when {
-            !deviceImei.isNullOrBlank() -> deviceImei
-            androidId.isNotBlank() -> "ANDROID_$androidId"
-            else -> {
-                Log.e(TAG, "❌ Nenhum identificador de hardware disponível (IMEI ou Android ID)")
-                _state.value = PairingState.Error(
-                    message = "Não foi possível identificar o dispositivo. Por favor, verifique as permissões.",
-                    canRetry = true
-                )
-                return@retryWithBackoff
-            }
+        val effectiveHardwareId: String = if (!deviceImei.isNullOrBlank()) {
+            deviceImei
+        } else if (androidId.isNotBlank()) {
+            "ANDROID_$androidId"
+        } else {
+            Log.e(TAG, "❌ Nenhum identificador de hardware disponível (IMEI ou Android ID)")
+            _state.value = PairingState.Error(
+                message = "Não foi possível identificar o dispositivo. Por favor, verifique as permissões.",
+                canRetry = true
+            )
+            return
         }
         
         // CORRIGIDO: Usar /api/device/claim-sale conforme documentação do backend
@@ -644,7 +644,7 @@ class PairingViewModel(private val context: Context) : ViewModel() {
         Log.i(TAG, "Request - deviceModel: ${deviceInfo.model}")
         Log.i(TAG, "Request - deviceBrand: ${deviceInfo.brand}")
         
-        retryWithBackoff(MAX_RETRIES) {
+        retryWithBackoff(MAX_RETRIES) claimBlock@{
             Log.i(TAG, "📡 Executando chamada HTTP POST /api/device/claim-sale...")
             val response = deviceApi.claimSaleByToken(claimRequest)
             Log.i(TAG, "📨 Resposta recebida: HTTP ${response.code()}")
@@ -756,7 +756,7 @@ class PairingViewModel(private val context: Context) : ViewModel() {
                     )
                     
                     startPendingPolling(contractId)
-                    return@retryWithBackoff
+                    return@claimBlock
                 }
                 
                 val errorMessage = when (response.code()) {
@@ -771,7 +771,7 @@ class PairingViewModel(private val context: Context) : ViewModel() {
                                 contractCode = contractId
                             )
                             startPendingPolling(contractId)
-                            return@retryWithBackoff
+                            return@claimBlock
                         }
                         backendMessage ?: "Código de pareamento inválido"
                     }
@@ -790,7 +790,7 @@ class PairingViewModel(private val context: Context) : ViewModel() {
                         securityViolation = true,
                         canRetry = false
                     )
-                    return@retryWithBackoff
+                    return@claimBlock
                 }
                 
                 throw Exception(errorMessage)
