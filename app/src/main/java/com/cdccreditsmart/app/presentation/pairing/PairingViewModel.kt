@@ -21,7 +21,9 @@ import com.cdccreditsmart.app.workers.AutoBlockingWorker
 import com.cdccreditsmart.app.workers.PeriodicOverlayWorker
 import com.cdccreditsmart.network.api.DeviceApiService
 import com.cdccreditsmart.network.dto.cdc.ClaimRequest
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import kotlin.math.pow
 
@@ -60,6 +62,7 @@ class PairingViewModel(private val context: Context) : ViewModel() {
     private val fcmTokenManager by lazy { FcmTokenManager(context) }
     private val networkHelper by lazy { NetworkConnectivityHelper(context) }
     private var webSocketManager: WebSocketManager? = null
+    private var pollingJob: Job? = null
 
     private val deviceApi: DeviceApiService by lazy {
         createDeviceApiService()
@@ -807,7 +810,7 @@ class PairingViewModel(private val context: Context) : ViewModel() {
             connectWebSocketForPending(contractCode)
             
             while (isActive) {
-                delay(POLLING_INTERVAL)
+                delay(PENDING_POLL_INTERVAL)
                 
                 try {
                     val response = deviceApi.searchPendingSaleByToken(
