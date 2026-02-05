@@ -134,7 +134,7 @@ class PairingViewModel(private val context: Context) : ViewModel() {
                     return@launch
                 }
                 
-                Log.i(TAG, "✅ Usando endpoint: POST /api/apk/auth")
+                Log.i(TAG, "✅ Usando endpoint: POST /api/device/claim-sale")
                 Log.i(TAG, "📤 Enviando requisição de pareamento para o backend...")
                 
                 stepFallbackClaimByCodeOnly(pairingCode)
@@ -600,9 +600,9 @@ class PairingViewModel(private val context: Context) : ViewModel() {
             ""
         }
         
-        // CORREÇÃO: Manter hífen no código conforme documentação do backend
-        // O backend espera o código no formato "XXXX-XXXX"
-        val pairingCodeForRequest = contractId // Manter formato original COM hífen
+        // CORREÇÃO: Código SEM hífen conforme banco de dados do backend
+        // O backend espera o código no formato "ABCD1234" (sem hífen)
+        val pairingCodeForRequest = contractId.replace("-", "") // Remover hífen se existir
         
         // VALIDAÇÃO: Backend requer hardwareImei - usar Android ID como fallback se IMEI indisponível
         val effectiveHardwareId = when {
@@ -619,7 +619,7 @@ class PairingViewModel(private val context: Context) : ViewModel() {
         }
         
         // CORRIGIDO: Usar /api/device/claim-sale conforme documentação do backend
-        // O backend espera { token: "XUNB-PBYR", hardwareImei: "353104906953198" }
+        // O backend espera { token: "NWSJE9DZ", hardwareImei: "353104906953198" } (sem hífen)
         val claimRequest = com.cdccreditsmart.network.dto.cdc.ClaimSaleByTokenRequest(
             token = pairingCodeForRequest,
             hardwareImei = effectiveHardwareId,
@@ -949,9 +949,9 @@ class PairingViewModel(private val context: Context) : ViewModel() {
                 ) ?: ""
             } catch (e: Exception) { "" }
             
-            // CORREÇÃO: Manter o hífen no código conforme documentação do backend
-            // O backend espera o código no formato "XXXX-XXXX"
-            val pairingCodeForRequest = contractCode // Manter formato original
+            // CORREÇÃO: Código SEM hífen conforme banco de dados do backend
+            // O backend espera o código no formato "ABCD1234" (sem hífen)
+            val pairingCodeForRequest = contractCode.replace("-", "") // Remover hífen se existir
             
             // VALIDAÇÃO: Backend requer hardwareImei - usar Android ID como fallback
             val effectiveHardwareId = when {
