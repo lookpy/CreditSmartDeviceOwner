@@ -53,8 +53,8 @@ data class ClaimSaleByTokenRequest(
 )
 
 data class ClaimResponse(
-    val success: Boolean,
-    val matched: Boolean,
+    val success: Boolean = false,
+    val matched: Boolean = false,
     val deviceId: String? = null,
     val deviceToken: String? = null,
     val authToken: String? = null,
@@ -62,15 +62,20 @@ data class ClaimResponse(
     val apkToken: String? = null,
     val contractCode: String? = null,
     val customerCpf: String? = null,
-    val message: String,
+    val message: String? = null,
     val securityViolation: Boolean? = null,
     val attemptsRemaining: Int? = null,
-    val reason: String? = null
+    val reason: String? = null,
+    val saleId: String? = null,
+    val biometrySessionId: String? = null,
+    val storeId: String? = null
 ) {
     fun getEffectiveDeviceToken(): String? = 
         deviceToken?.takeIf { it.isNotBlank() } 
             ?: authToken?.takeIf { it.isNotBlank() } 
             ?: immutableToken?.takeIf { it.isNotBlank() }
+    
+    fun isPairedSuccessfully(): Boolean = success && getEffectiveDeviceToken() != null
 }
 
 data class DeviceInfo(

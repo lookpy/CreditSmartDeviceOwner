@@ -438,7 +438,7 @@ class PairingViewModel(private val context: Context) : ViewModel() {
             if (response.isSuccessful) {
                 val body = response.body()
                 
-                if (body != null && body.success && body.matched) {
+                if (body != null && body.isPairedSuccessfully()) {
                     Log.d(TAG, "Claim successful! Device paired")
                     Log.d(TAG, "Saving pairing code: ${contractId.take(4)}****")
                     
@@ -446,17 +446,14 @@ class PairingViewModel(private val context: Context) : ViewModel() {
                     Log.d(TAG, "DeviceToken sources: deviceToken=${body.deviceToken != null}, authToken=${body.authToken != null}, immutableToken=${body.immutableToken != null}")
                     Log.d(TAG, "Using effective token: ${if (effectiveToken.isNotBlank()) "${effectiveToken.take(20)}..." else "EMPTY!"}")
                     
-                    // IMPORTANTE: contractId (ex: RSKUS3G7) É o Serial Number do contrato
-                    // Isso permite que getMdmIdentifier() use RSKUS3G7 para polling MDM
                     tokenStorage.saveTokens(
                         deviceToken = effectiveToken,
                         apkToken = body.apkToken ?: "",
                         fingerprint = fingerprint,
                         contractCode = contractId,
-                        serialNumber = contractId  // Usar contractId como serialNumber
+                        serialNumber = contractId
                     )
                     
-                    // CORREÇÃO: Salvar IMEI principal em KEY_IMEI para getMdmIdentifier()
                     if (imei.isNotBlank()) {
                         tokenStorage.saveImeiForMdm(imei)
                     }
@@ -470,13 +467,13 @@ class PairingViewModel(private val context: Context) : ViewModel() {
                         deviceModel = deviceModel
                     )
                     
-                } else if (body != null && !body.matched) {
-                    Log.w(TAG, "IMEI mismatch: ${body.message}")
+                } else if (body != null && body.securityViolation == true) {
+                    Log.w(TAG, "Security violation: ${body.message}")
                     
                     _state.value = PairingState.Error(
-                        message = body.message,
+                        message = body.message ?: "Erro de segurança",
                         attemptsRemaining = body.attemptsRemaining,
-                        securityViolation = body.securityViolation == true,
+                        securityViolation = true,
                         canRetry = (body.attemptsRemaining ?: 0) > 0
                     )
                 } else {
@@ -693,8 +690,10 @@ class PairingViewModel(private val context: Context) : ViewModel() {
                     if (claimResponse.isSuccessful) {
                         val claimBody = claimResponse.body()
                         
-                        if (claimBody != null && claimBody.success && claimBody.matched) {
+                        if (claimBody != null && claimBody.isPairedSuccessfully()) {
                             Log.d(TAG, "✅ Device Claim successful!")
+                            Log.d(TAG, "   DeviceId: ${claimBody.deviceId}")
+                            Log.d(TAG, "   Token presente: ${claimBody.getEffectiveDeviceToken() != null}")
                             
                             val authToken = claimBody.getEffectiveDeviceToken() ?: ""
                             
@@ -720,10 +719,10 @@ class PairingViewModel(private val context: Context) : ViewModel() {
                                 customerName = searchBody.customerName,
                                 deviceModel = deviceInfo.model
                             )
-                        } else if (claimBody != null && !claimBody.matched) {
+                        } else if (claimBody != null && claimBody.securityViolation == true) {
                             _state.value = PairingState.Error(
-                                message = claimBody.message,
-                                securityViolation = claimBody.securityViolation == true,
+                                message = claimBody.message ?: "Erro de segurança",
+                                securityViolation = true,
                                 canRetry = (claimBody.attemptsRemaining ?: 0) > 0
                             )
                         } else {
@@ -1038,7 +1037,7 @@ class PairingViewModel(private val context: Context) : ViewModel() {
                         val body = response.body()
                         
                         when {
-                            body != null && body.success && body.matched -> {
+                            body != null && body.isPairedSuccessfully() -> {
                                 Log.d(TAG, "✅ Auto-polling: Sale completed! Device paired!")
                                 Log.d(TAG, "Device ID: ${body.deviceId}")
                                 isPolling = false
@@ -1085,7 +1084,7 @@ class PairingViewModel(private val context: Context) : ViewModel() {
                                 )
                             }
                             
-                            body != null && body.success && !body.matched -> {
+                            body != null && body.success && !body.isPairedSuccessfully() -> {
                                 Log.d(TAG, "⏳ Auto-polling: Sale still pending...")
                             }
                             

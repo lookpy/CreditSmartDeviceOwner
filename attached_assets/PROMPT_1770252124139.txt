@@ -1,0 +1,136 @@
+2026-02-04 21:41:19.425  4940-4940  InsetsController        com.cdccreditsmart.app               D  show(ime(), fromIme=false)
+2026-02-04 21:41:19.429  4940-4940  ImeTracker              com.cdccreditsmart.app               I  com.cdccreditsmart.app:8ba6b589: onRequestShow at ORIGIN_CLIENT reason SHOW_SOFT_INPUT_BY_INSETS_API fromUser false
+2026-02-04 21:41:19.432  4940-4940  InputMethodManager      com.cdccreditsmart.app               D  showSoftInput() view=androidx.compose.ui.platform.AndroidComposeView{90eb3b4 VFED..... .F....ID 0,0-1080,2400 aid=1073741824} flags=0 reason=SHOW_SOFT_INPUT_BY_INSETS_API
+2026-02-04 21:41:19.479  4940-4940  ImeTracker              com.cdccreditsmart.app               I  com.cdccreditsmart.app:629b6396: onRequestShow at ORIGIN_CLIENT reason SHOW_SOFT_INPUT fromUser false
+2026-02-04 21:41:19.480  4940-4940  InputMethodManager      com.cdccreditsmart.app               D  showSoftInput() view=androidx.compose.ui.platform.AndroidComposeView{90eb3b4 VFED..... .F...... 0,0-1080,2400 aid=1073741824} flags=0 reason=SHOW_SOFT_INPUT
+2026-02-04 21:41:19.896  4940-4940  InsetsController        com.cdccreditsmart.app               D  show(ime(), fromIme=true)
+2026-02-04 21:41:20.223  4940-4940  ImeTracker              com.cdccreditsmart.app               I  com.cdccreditsmart.app:629b6396: onShown
+2026-02-04 21:41:21.150  4940-4940  InsetsController        com.cdccreditsmart.app               D  show(ime(), fromIme=true)
+2026-02-04 21:41:21.152  4940-4940  ImeTracker              com.cdccreditsmart.app               I  com.cdccreditsmart.app:4aeeb286: onCancelled at PHASE_CLIENT_APPLY_ANIMATION
+2026-02-04 21:41:23.357  4940-4940  InsetsController        com.cdccreditsmart.app               D  show(ime(), fromIme=true)
+2026-02-04 21:41:23.357  4940-4940  ImeTracker              com.cdccreditsmart.app               I  com.cdccreditsmart.app:4fc25d88: onCancelled at PHASE_CLIENT_APPLY_ANIMATION
+2026-02-04 21:41:26.038  4940-4940  InsetsController        com.cdccreditsmart.app               D  show(ime(), fromIme=true)
+2026-02-04 21:41:26.038  4940-4940  ImeTracker              com.cdccreditsmart.app               I  com.cdccreditsmart.app:d0f8349: onCancelled at PHASE_CLIENT_APPLY_ANIMATION
+2026-02-04 21:41:26.263  4940-4940  InsetsController        com.cdccreditsmart.app               D  show(ime(), fromIme=true)
+2026-02-04 21:41:26.264  4940-4940  ImeTracker              com.cdccreditsmart.app               I  com.cdccreditsmart.app:69793318: onCancelled at PHASE_CLIENT_APPLY_ANIMATION
+2026-02-04 21:41:28.265  4940-4940  InsetsController        com.cdccreditsmart.app               D  show(ime(), fromIme=true)
+2026-02-04 21:41:28.266  4940-4940  ImeTracker              com.cdccreditsmart.app               I  com.cdccreditsmart.app:aeece90f: onCancelled at PHASE_CLIENT_APPLY_ANIMATION
+2026-02-04 21:41:29.106  4940-4940  PairingViewModel        com.cdccreditsmart.app               D  🚀 Iniciando pareamento com código: Z4P6****
+2026-02-04 21:41:29.108  4940-4940  NetworkConnectivity     com.cdccreditsmart.app               D  ✅ Conectado via WiFi com internet
+2026-02-04 21:41:29.109  4940-4940  PairingViewModel        com.cdccreditsmart.app               D  📶 Estado da rede: Conectado via WiFi
+2026-02-04 21:41:29.109  4940-4940  PairingViewModel        com.cdccreditsmart.app               I  ✅ Usando endpoint: POST /api/device/claim-sale
+2026-02-04 21:41:29.109  4940-4940  PairingViewModel        com.cdccreditsmart.app               I  📤 Enviando requisição de pareamento para o backend...
+2026-02-04 21:41:29.110  4940-4940  PairingViewModel        com.cdccreditsmart.app               D  ========== APK AUTHENTICATION ==========
+2026-02-04 21:41:29.110  4940-4940  PairingViewModel        com.cdccreditsmart.app               D  Pairing Code: [REDACTED]
+2026-02-04 21:41:29.110  4940-4940  PairingViewModel        com.cdccreditsmart.app               D  🔐 Tentando conceder permissão READ_PHONE_STATE antes de coletar IMEI...
+2026-02-04 21:41:29.171  4940-4940  AutoPermissionManager   com.cdccreditsmart.app               I  ✅ Permissão concedida automaticamente: android.permission.READ_PHONE_STATE
+2026-02-04 21:41:29.171  4940-4940  PairingViewModel        com.cdccreditsmart.app               I  ✅ Permissão READ_PHONE_STATE concedida com sucesso
+2026-02-04 21:41:29.173  4940-4940  DeviceInfoManager       com.cdccreditsmart.app               I  ========================================
+2026-02-04 21:41:29.173  4940-4940  DeviceInfoManager       com.cdccreditsmart.app               I  📱 Coletando informações de IMEI do dispositivo
+2026-02-04 21:41:29.173  4940-4940  DeviceInfoManager       com.cdccreditsmart.app               I  ========================================
+2026-02-04 21:41:29.179  4940-4940  DeviceInfoManager       com.cdccreditsmart.app               D  Número de SIMs detectados: 2
+2026-02-04 21:41:29.183  4940-4940  DeviceInfoManager       com.cdccreditsmart.app               D  ✅ IMEI válido encontrado no slot 0
+2026-02-04 21:41:29.189  4940-4940  DeviceInfoManager       com.cdccreditsmart.app               D  ✅ IMEI válido encontrado no slot 1
+2026-02-04 21:41:29.189  4940-4940  DeviceInfoManager       com.cdccreditsmart.app               I  ✅ 2 IMEI(s) válido(s) coletado(s)
+2026-02-04 21:41:29.190  4940-4940  DeviceInfoManager       com.cdccreditsmart.app               I  ========================================
+2026-02-04 21:41:29.191  4940-4940  PairingViewModel        com.cdccreditsmart.app               D  ✅ IMEI capturado: 353104****
+2026-02-04 21:41:29.191  4940-4940  PairingViewModel        com.cdccreditsmart.app               D  📱 Dual-SIM detectado: 1 IMEI(s) adicional(is)
+2026-02-04 21:41:29.197  4940-4940  PairingViewModel        com.cdccreditsmart.app               I  ╔════════════════════════════════════════════════════════╗
+2026-02-04 21:41:29.197  4940-4940  PairingViewModel        com.cdccreditsmart.app               I  ║   📤 STEP 1: GET /api/device/claim-sale                ║
+2026-02-04 21:41:29.197  4940-4940  PairingViewModel        com.cdccreditsmart.app               I  ╚════════════════════════════════════════════════════════╝
+2026-02-04 21:41:29.197  4940-4940  PairingViewModel        com.cdccreditsmart.app               I  Request - token: Z4P6CXH2
+2026-02-04 21:41:29.197  4940-4940  PairingViewModel        com.cdccreditsmart.app               I  Request - imei: 353104****
+2026-02-04 21:41:29.536  4940-4952  creditsmart.app         com.cdccreditsmart.app               W  Cleared Reference was only reachable from finalizer (only reported once)
+2026-02-04 21:41:29.587  4940-4952  creditsmart.app         com.cdccreditsmart.app               I  Background concurrent mark compact GC freed 9788KB AllocSpace bytes, 65(2520KB) LOS objects, 66% free, 9635KB/28MB, paused 1.197ms,7.165ms total 94.734ms
+2026-02-04 21:41:30.345  4940-5533  okhttp.OkHttpClient     com.cdccreditsmart.app               I  --> GET https://cdccreditsmart.com/api/device/claim-sale?token=Z4P6CXH2&imei=353104906953198
+2026-02-04 21:41:30.345  4940-5533  okhttp.OkHttpClient     com.cdccreditsmart.app               I  --> END GET
+2026-02-04 21:41:30.346  4940-4940  Choreographer           com.cdccreditsmart.app               I  Skipped 79 frames!  The application may be doing too much work on its main thread.
+2026-02-04 21:41:30.402  4940-4961  HWUI                    com.cdccreditsmart.app               I  Davey! duration=1362ms; Flags=0, FrameTimelineVsyncId=11127386, IntendedVsync=63338725250208, Vsync=63340038908344, InputEventId=0, HandleInputStart=63340042480236, AnimationStart=63340042483389, PerformTraversalsStart=63340057007697, DrawStart=63340057105774, FrameDeadline=63338828377480, FrameInterval=63340041847928, FrameStartTime=16630846, SyncQueued=63340076540620, SyncStart=63340076788543, IssueDrawCommandsStart=63340077165236, SwapBuffers=63340085469543, FrameCompleted=63340088079389, DequeueBufferDuration=91000, QueueBufferDuration=1287615, GpuCompleted=63340088079389, SwapBuffersCompleted=63340087485851, DisplayPresentTime=63329892971389, CommandSubmissionCompleted=63340085469543, 
+2026-02-04 21:41:30.449  4940-4940  InsetsController        com.cdccreditsmart.app               D  hide(ime(), fromIme=false)
+2026-02-04 21:41:30.451  4940-4940  ImeTracker              com.cdccreditsmart.app               I  com.cdccreditsmart.app:c81eecfa: onRequestHide at ORIGIN_CLIENT reason HIDE_SOFT_INPUT_BY_INSETS_API fromUser false
+2026-02-04 21:41:30.454  4940-4940  ImeTracker              com.cdccreditsmart.app               I  com.cdccreditsmart.app:3c92482: onRequestHide at ORIGIN_CLIENT reason HIDE_SOFT_INPUT_REQUEST_HIDE_WITH_CONTROL fromUser false
+2026-02-04 21:41:30.479  4940-4940  RemoteInpu...ectionImpl com.cdccreditsmart.app               W  requestCursorUpdates on inactive InputConnection
+2026-02-04 21:41:30.481  4940-4940  InsetsController        com.cdccreditsmart.app               D  hide(ime(), fromIme=true)
+2026-02-04 21:41:30.482  4940-4940  ImeTracker              com.cdccreditsmart.app               I  com.cdccreditsmart.app:3c92482: onCancelled at PHASE_CLIENT_APPLY_ANIMATION
+2026-02-04 21:41:30.490  4940-4940  WindowOnBackDispatcher  com.cdccreditsmart.app               W  sendCancelIfRunning: isInProgress=false callback=ImeCallback=ImeOnBackInvokedCallback@112373827 Callback=android.window.IOnBackInvokedCallback$Stub$Proxy@26ae287
+2026-02-04 21:41:30.766  4940-4940  ImeTracker              com.cdccreditsmart.app               I  com.cdccreditsmart.app:7537d4b7: onRequestHide at ORIGIN_CLIENT reason HIDE_SOFT_INPUT_ON_ANIMATION_STATE_CHANGED fromUser false
+2026-02-04 21:41:30.769  4940-4940  ImeTracker              com.cdccreditsmart.app               I  com.cdccreditsmart.app:c81eecfa: onHidden
+2026-02-04 21:41:31.072  4940-5533  okhttp.OkHttpClient     com.cdccreditsmart.app               I  <-- 200 https://cdccreditsmart.com/api/device/claim-sale?token=Z4P6CXH2&imei=353104906953198 (726ms)
+2026-02-04 21:41:31.072  4940-5533  okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-credentials: true
+2026-02-04 21:41:31.072  4940-5533  okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-headers: Origin, X-Requested-With, Content-Type, Accept, Authorization, x-client-key, x-client-token, x-client-secret, cache-control
+2026-02-04 21:41:31.072  4940-5533  okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-methods: GET, POST, PUT, PATCH, DELETE, OPTIONS
+2026-02-04 21:41:31.072  4940-5533  okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-origin: *
+2026-02-04 21:41:31.073  4940-5533  okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-max-age: 86400
+2026-02-04 21:41:31.073  4940-5533  okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-length: 338
+2026-02-04 21:41:31.073  4940-5533  okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-security-policy: default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://replit.com; style-src 'self' 'unsafe-inline' https://replit.com; img-src 'self' data: https:; font-src 'self' data: https://replit.com; connect-src 'self';
+2026-02-04 21:41:31.073  4940-5533  okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-type: application/json; charset=utf-8
+2026-02-04 21:41:31.074  4940-5533  okhttp.OkHttpClient     com.cdccreditsmart.app               I  date: Thu, 05 Feb 2026 00:41:30 GMT
+2026-02-04 21:41:31.074  4940-5533  okhttp.OkHttpClient     com.cdccreditsmart.app               I  etag: W/"152-yiv+MP1rWqMlfkuevo31Z79SLzI"
+2026-02-04 21:41:31.074  4940-5533  okhttp.OkHttpClient     com.cdccreditsmart.app               I  permissions-policy: geolocation=(), microphone=(), camera=()
+2026-02-04 21:41:31.074  4940-5533  okhttp.OkHttpClient     com.cdccreditsmart.app               I  referrer-policy: strict-origin-when-cross-origin
+2026-02-04 21:41:31.075  4940-5533  okhttp.OkHttpClient     com.cdccreditsmart.app               I  strict-transport-security: max-age=63072000; includeSubDomains
+2026-02-04 21:41:31.075  4940-5533  okhttp.OkHttpClient     com.cdccreditsmart.app               I  strict-transport-security: max-age=31536000; includeSubDomains
+2026-02-04 21:41:31.075  4940-5533  okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-anti-fraud-protection: active
+2026-02-04 21:41:31.075  4940-5533  okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-certificate-pinning-enabled: false
+2026-02-04 21:41:31.076  4940-5533  okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-certificate-pinning-status: disabled-for-stability
+2026-02-04 21:41:31.076  4940-5533  okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-content-type-options: nosniff
+2026-02-04 21:41:31.076  4940-5533  okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-financial-data-protection: enabled
+2026-02-04 21:41:31.076  4940-5533  okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-frame-options: DENY
+2026-02-04 21:41:31.077  4940-5533  okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-transaction-security-level: maximum
+2026-02-04 21:41:31.077  4940-5533  okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-xss-protection: 1; mode=block
+2026-02-04 21:41:31.077  4940-5533  okhttp.OkHttpClient     com.cdccreditsmart.app               I  via: 1.1 google
+2026-02-04 21:41:31.078  4940-5533  okhttp.OkHttpClient     com.cdccreditsmart.app               I  alt-svc: h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
+2026-02-04 21:41:31.080  4940-5533  okhttp.OkHttpClient     com.cdccreditsmart.app               I  {"success":true,"found":true,"saleId":"sale_1770252031736_pwqk2zzvgum","validationId":"ef84575e-eea0-46b9-bf03-cc8a501e8a40","customerName":"Marcos Antunes","deviceModel":"Dispositivo","biometrySessionId":"bio_ses_1770252031736_wvzcbigp8g","storeId":"4d9e95cc-79b7-42fd-a56d-676713cc7687","customerCpf":"064.527.843-23","expiresIn":86340}
+2026-02-04 21:41:31.080  4940-5533  okhttp.OkHttpClient     com.cdccreditsmart.app               I  <-- END HTTP (338-byte body)
+2026-02-04 21:41:31.102  4940-4940  PairingViewModel        com.cdccreditsmart.app               I  📨 GET Response: HTTP 200
+2026-02-04 21:41:31.102  4940-4940  PairingViewModel        com.cdccreditsmart.app               I  ╔════════════════════════════════════════════════════════╗
+2026-02-04 21:41:31.102  4940-4940  PairingViewModel        com.cdccreditsmart.app               I  ║   📤 STEP 2: POST /api/device/claim-sale               ║
+2026-02-04 21:41:31.102  4940-4940  PairingViewModel        com.cdccreditsmart.app               I  ╚════════════════════════════════════════════════════════╝
+2026-02-04 21:41:31.102  4940-4940  PairingViewModel        com.cdccreditsmart.app               I  Request - validationId: ef84575e-eea0-46b9-bf03-cc8a501e8a40
+2026-02-04 21:41:31.107  4940-4940  FingerprintCalculator   com.cdccreditsmart.app               D  Calculating fingerprint from: ID=ZF525GRCP8..., BRAND=motorola, MODEL=moto g15, IMEI=3531
+2026-02-04 21:41:31.110  4940-4940  FingerprintCalculator   com.cdccreditsmart.app               D  ✅ Fingerprint calculated: 18bd6adb2c67dac7... (length: 64)
+2026-02-04 21:41:31.266  4940-5533  okhttp.OkHttpClient     com.cdccreditsmart.app               I  --> POST https://cdccreditsmart.com/api/device/claim-sale
+2026-02-04 21:41:31.266  4940-5533  okhttp.OkHttpClient     com.cdccreditsmart.app               I  Content-Type: application/json; charset=UTF-8
+2026-02-04 21:41:31.267  4940-5533  okhttp.OkHttpClient     com.cdccreditsmart.app               I  Content-Length: 336
+2026-02-04 21:41:31.267  4940-5533  okhttp.OkHttpClient     com.cdccreditsmart.app               I  {"validationId":"ef84575e-eea0-46b9-bf03-cc8a501e8a40","hardwareImei":"353104906953198","fingerprint":"18bd6adb2c67dac75644ae48939795018b985a2ea307d3b47680c0f4c135b310","deviceInfo":{"brand":"motorola","model":"moto g15","manufacturer":"motorola","androidVersion":"15","sdkInt":35,"serialNumber":"ZF525GRCP8","buildId":"VVTA35.51-124"}}
+2026-02-04 21:41:31.267  4940-5533  okhttp.OkHttpClient     com.cdccreditsmart.app               I  --> END POST (336-byte body)
+2026-02-04 21:41:31.889  4940-5533  okhttp.OkHttpClient     com.cdccreditsmart.app               I  <-- 200 https://cdccreditsmart.com/api/device/claim-sale (621ms)
+2026-02-04 21:41:31.889  4940-5533  okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-credentials: true
+2026-02-04 21:41:31.889  4940-5533  okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-headers: Origin, X-Requested-With, Content-Type, Accept, Authorization, x-client-key, x-client-token, x-client-secret, cache-control
+2026-02-04 21:41:31.889  4940-5533  okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-methods: GET, POST, PUT, PATCH, DELETE, OPTIONS
+2026-02-04 21:41:31.889  4940-5533  okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-origin: *
+2026-02-04 21:41:31.890  4940-5533  okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-max-age: 86400
+2026-02-04 21:41:31.890  4940-5533  okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-length: 1623
+2026-02-04 21:41:31.890  4940-5533  okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-security-policy: default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://replit.com; style-src 'self' 'unsafe-inline' https://replit.com; img-src 'self' data: https:; font-src 'self' data: https://replit.com; connect-src 'self';
+2026-02-04 21:41:31.890  4940-5533  okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-type: application/json; charset=utf-8
+2026-02-04 21:41:31.890  4940-5533  okhttp.OkHttpClient     com.cdccreditsmart.app               I  date: Thu, 05 Feb 2026 00:41:31 GMT
+2026-02-04 21:41:31.890  4940-5533  okhttp.OkHttpClient     com.cdccreditsmart.app               I  etag: W/"657-GdRa7P3GySSwFihFUDT+3QkyRUM"
+2026-02-04 21:41:31.890  4940-5533  okhttp.OkHttpClient     com.cdccreditsmart.app               I  permissions-policy: geolocation=(), microphone=(), camera=()
+2026-02-04 21:41:31.890  4940-5533  okhttp.OkHttpClient     com.cdccreditsmart.app               I  referrer-policy: strict-origin-when-cross-origin
+2026-02-04 21:41:31.890  4940-5533  okhttp.OkHttpClient     com.cdccreditsmart.app               I  strict-transport-security: max-age=63072000; includeSubDomains
+2026-02-04 21:41:31.890  4940-5533  okhttp.OkHttpClient     com.cdccreditsmart.app               I  strict-transport-security: max-age=31536000; includeSubDomains
+2026-02-04 21:41:31.890  4940-5533  okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-anti-fraud-protection: active
+2026-02-04 21:41:31.890  4940-5533  okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-certificate-pinning-enabled: false
+2026-02-04 21:41:31.890  4940-5533  okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-certificate-pinning-status: disabled-for-stability
+2026-02-04 21:41:31.890  4940-5533  okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-content-type-options: nosniff
+2026-02-04 21:41:31.890  4940-5533  okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-financial-data-protection: enabled
+2026-02-04 21:41:31.890  4940-5533  okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-frame-options: DENY
+2026-02-04 21:41:31.890  4940-5533  okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-transaction-security-level: maximum
+2026-02-04 21:41:31.890  4940-5533  okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-xss-protection: 1; mode=block
+2026-02-04 21:41:31.890  4940-5533  okhttp.OkHttpClient     com.cdccreditsmart.app               I  via: 1.1 google
+2026-02-04 21:41:31.891  4940-5533  okhttp.OkHttpClient     com.cdccreditsmart.app               I  alt-svc: h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
+2026-02-04 21:41:31.892  4940-5533  okhttp.OkHttpClient     com.cdccreditsmart.app               I  {"success":true,"deviceToken":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkZXZpY2VJZCI6IjM1MzEwNDkwNjk1MzE5OCIsInNlcmlhbE51bWJlciI6IlpGNTI1R1JDUDgiLCJmaW5nZXJwcmludCI6IjE4YmQ2YWRiMmM2N2RhYzc1NjQ0YWU0ODkzOTc5NTAxOGI5ODVhMmVhMzA3ZDNiNDc2ODBjMGY0YzEzNWIzMTAiLCJ0eXBlIjoiYXBrIiwic2NvcGVzIjpbImRldmljZTpyZWFkIiwiZGV2aWNlOnN5bmMiXSwiaWF0IjoxNzcwMjUyMDkxLCJleHAiOjE4MDE3ODgwOTF9.3ut-_Asa8cSQhl21GtLsT2U2gvdeLw7kT3v8DmazyUE","authToken":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkZXZpY2VJZCI6IjM1MzEwNDkwNjk1MzE5OCIsInNlcmlhbE51bWJlciI6IlpGNTI1R1JDUDgiLCJmaW5nZXJwcmludCI6IjE4YmQ2YWRiMmM2N2RhYzc1NjQ0YWU0ODkzOTc5NTAxOGI5ODVhMmVhMzA3ZDNiNDc2ODBjMGY0YzEzNWIzMTAiLCJ0eXBlIjoiYXBrIiwic2NvcGVzIjpbImRldmljZTpyZWFkIiwiZGV2aWNlOnN5bmMiXSwiaWF0IjoxNzcwMjUyMDkxLCJleHAiOjE4MDE3ODgwOTF9.3ut-_Asa8cSQhl21GtLsT2U2gvdeLw7kT3v8DmazyUE","immutableToken":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkZXZpY2VJZCI6IjM1MzEwNDkwNjk1MzE5OCIsInNlcmlhbE51bWJlciI6IlpGNTI1R1JDUDgiLCJmaW5nZXJwcmludCI6IjE4YmQ2YWRiMmM2N2RhYzc1NjQ0YWU0ODkzOTc5NTAxOGI5ODVhMmVhMzA3ZDNiNDc2ODBjMGY0YzEzNWIzMTAiLCJ0eXBlIjoiYXBrIiwic2NvcGVzIjpbImRldmljZTpyZWFkIiwiZGV2aWNlOnN5bmMiXSwiaWF0IjoxNzcwMjUyMDkxLCJleHAiOjE4MDE3ODgwOTF9.3ut-_Asa8cSQhl21GtLsT2U2gvdeLw7kT3v8DmazyUE","deviceId":"353104906953198","saleId":"sale_1770252031736_pwqk2zzvgum","biometrySessionId":"bio_ses_1770252031736_wvzcbigp8g","storeId":"4d9e95cc-79b7-42fd-a56d-676713cc7687","customerCpf":"064.527.843-23","imei":null,"imeiList":[],"meidList":[],"androidId":null,"deviceFingerprint":null,"requiresBackendRevalidation":true,"message":"Device successfully paired to sale","__version":"v2.4-HYBRID-IMEI-VALIDATION"}
+2026-02-04 21:41:31.892  4940-5533  okhttp.OkHttpClient     com.cdccreditsmart.app               I  <-- END HTTP (1623-byte body)
+2026-02-04 21:41:31.901  4940-4940  PairingViewModel        com.cdccreditsmart.app               E  ❌ Exception: Required value 'matched' missing at $ (Ask Gemini)
+                                                                                                    com.squareup.moshi.JsonDataException: Required value 'matched' missing at $
+                                                                                                    	at com.squareup.moshi.internal.Util.missingProperty(Util.java:660)
+                                                                                                    	at com.squareup.moshi.kotlin.reflect.KotlinJsonAdapter.fromJson(KotlinJsonAdapter.kt:105)
+                                                                                                    	at com.squareup.moshi.internal.NullSafeJsonAdapter.fromJson(NullSafeJsonAdapter.java:41)
+                                                                                                    	at retrofit2.converter.moshi.MoshiResponseBodyConverter.convert(MoshiResponseBodyConverter.java:46)
+                                                                                                    	at retrofit2.converter.moshi.MoshiResponseBodyConverter.convert(MoshiResponseBodyConverter.java:27)
+                                                                                                    	at retrofit2.OkHttpCall.parseResponse(OkHttpCall.java:246)
+                                                                                                    	at retrofit2.OkHttpCall$1.onResponse(OkHttpCall.java:156)
+                                                                                                    	at okhttp3.internal.connection.RealCall$AsyncCall.run(RealCall.kt:519)
+                                                                                                    	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1145)
+                                                                                                    	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:644)
+                                                                                                    	at java.lang.Thread.run(Thread.java:1012)
