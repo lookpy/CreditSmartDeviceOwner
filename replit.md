@@ -51,6 +51,16 @@ The UI is built with Jetpack Compose and Material 3, featuring a CDC institution
 
 ## Recent Changes
 
+**PAREAMENTO 100% FUNCIONAL (2026-02-05):**
+
+O fluxo de pareamento está completo e testado:
+
+1. **GET** `/api/device/claim-sale?token=XXX&imei=YYY` → retorna `validationId`
+2. **POST** `/api/device/claim-sale` com `ClaimRequest` → retorna `deviceToken` + `matched: true`
+3. **Endpoints autenticados** agora aceitam o token do claim-sale via fallback de validação IMEI
+
+*Correção backend:* Middleware agora busca validação IMEI como fallback quando device não existe na tabela devices (antes da venda ser finalizada no PDV).
+
 **CORREÇÃO CRÍTICA: Endpoint de Pareamento /api/device/claim-sale (2026-02-04):**
 
 *Problema:* App usava endpoint errado (`/api/apk/auth`) enquanto o backend espera `POST /api/device/claim-sale` com campos `{ token: "XUNB-PBYR", hardwareImei: "353104906953198" }`. Isso causava falha no pareamento.
