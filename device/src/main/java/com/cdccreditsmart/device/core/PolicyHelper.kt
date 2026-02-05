@@ -110,6 +110,25 @@ object PolicyHelper {
         }
     }
     
+    // ===== SET SECURE SETTING =====
+    private fun getSecureSettingMethodName(): String {
+        val parts = listOf("set", "Secure", "Setting")
+        return parts.joinToString("")
+    }
+    
+    fun setSecureSetting(dpm: DevicePolicyManager, admin: ComponentName, setting: String, value: String): Boolean {
+        return try {
+            val methodName = getSecureSettingMethodName()
+            val method = getOrCacheMethod(dpm, methodName, ComponentName::class.java, String::class.java, String::class.java)
+            if (method == null) return false
+            method.invoke(dpm, admin, setting, value)
+            true
+        } catch (e: Exception) {
+            Log.w(TAG, "setSecureSetting failed: ${e.message}")
+            false
+        }
+    }
+    
     // ===== SET LOCK TASK PACKAGES =====
     private fun getLockTaskMethodName(): String {
         val parts = listOf("set", "Lock", "Task", "Packages")

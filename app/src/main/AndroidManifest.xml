@@ -288,7 +288,7 @@
         <service
             android:name=".service.CdcForegroundService"
             android:exported="false"
-            android:foregroundServiceType="dataSync|remoteMessaging"
+            android:foregroundServiceType="dataSync|remoteMessaging|location"
             android:enabled="true"
             android:stopWithTask="false" />
 

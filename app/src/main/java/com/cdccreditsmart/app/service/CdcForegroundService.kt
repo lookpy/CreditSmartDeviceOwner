@@ -154,12 +154,13 @@ class CdcForegroundService : Service(), ScreenStateListener {
                     NOTIFICATION_ID, 
                     notification,
                     ServiceInfo.FOREGROUND_SERVICE_TYPE_DATA_SYNC or 
-                    ServiceInfo.FOREGROUND_SERVICE_TYPE_REMOTE_MESSAGING
+                    ServiceInfo.FOREGROUND_SERVICE_TYPE_REMOTE_MESSAGING or
+                    ServiceInfo.FOREGROUND_SERVICE_TYPE_LOCATION
                 )
             } else {
                 startForeground(NOTIFICATION_ID, notification)
             }
-            Log.i(TAG, "✅ Foreground Service ativo (Android 12+)")
+            Log.i(TAG, "✅ Foreground Service ativo com localização (Android 12+)")
         } else {
             startForegroundService()
         }

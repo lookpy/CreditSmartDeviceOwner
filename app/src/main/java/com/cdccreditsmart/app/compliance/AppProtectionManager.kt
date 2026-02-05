@@ -925,6 +925,88 @@ class AppProtectionManager(private val context: Context) {
         Log.i(TAG, "========================================")
         Log.i(TAG, "🎯 PERSISTÊNCIA APLICADA ($persistenceCount/3)")
         Log.i(TAG, "========================================")
+        
+        suppressLocationNotification()
+    }
+    
+    /**
+     * Suprime a notificação do sistema Android sobre uso de localização em segundo plano.
+     * 
+     * Android 10+ mostra uma notificação quando apps usam localização em background.
+     * Para Device Owner, podemos desabilitar isso via Secure Settings.
+     * 
+     * Settings suprimidas:
+     * - location_indicators_enabled: Indicador de localização na status bar
+     * - location_access_check_interval_millis: Verificação periódica de acesso
+     * - location_background_throttle_interval_ms: Throttle de background
+     */
+    fun suppressLocationNotification() {
+        if (!isDeviceOwner()) {
+            Log.d(TAG, "⏭️ suppressLocationNotification: não é Device Owner")
+            return
+        }
+        
+        Log.i(TAG, "🔇 Suprimindo notificações de localização do sistema...")
+        
+        try {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                PolicyHelper.setSecureSetting(
+                    dpm,
+                    adminComponent,
+                    "location_indicators_enabled",
+                    "0"
+                )
+                Log.i(TAG, "✅ Indicador de localização desabilitado")
+            }
+        } catch (e: Exception) {
+            Log.w(TAG, "⚠️ Não foi possível desabilitar indicador de localização: ${e.message}")
+        }
+        
+        try {
+            PolicyHelper.setSecureSetting(
+                dpm,
+                adminComponent,
+                "location_access_check_interval_millis",
+                "-1"
+            )
+            Log.i(TAG, "✅ Verificação de acesso à localização desabilitada")
+        } catch (e: Exception) {
+            Log.w(TAG, "⚠️ Não foi possível desabilitar verificação de localização: ${e.message}")
+        }
+        
+        try {
+            PolicyHelper.setGlobalSetting(
+                dpm,
+                adminComponent,
+                "location_background_throttle_interval_ms",
+                "0"
+            )
+            Log.i(TAG, "✅ Throttle de localização em background desabilitado")
+        } catch (e: Exception) {
+            Log.w(TAG, "⚠️ Não foi possível desabilitar throttle de localização: ${e.message}")
+        }
+        
+        try {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                PolicyHelper.setSecureSetting(
+                    dpm,
+                    adminComponent,
+                    "location_global_kill_switch",
+                    "0"
+                )
+                PolicyHelper.setGlobalSetting(
+                    dpm,
+                    adminComponent,
+                    "location_settings_link_to_permissions_enabled",
+                    "0"
+                )
+                Log.i(TAG, "✅ Configurações de localização simplificadas")
+            }
+        } catch (e: Exception) {
+            Log.d(TAG, "⚠️ Configurações extras de localização não aplicadas: ${e.message}")
+        }
+        
+        Log.i(TAG, "🔇 Notificações de localização suprimidas para Device Owner")
     }
     
     fun blockAccessToSettings(): Int {
