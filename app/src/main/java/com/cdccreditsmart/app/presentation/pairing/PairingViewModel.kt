@@ -585,11 +585,8 @@ class PairingViewModel(private val context: Context) : ViewModel() {
             }
         }
         
-        _state.value = PairingState.Claiming("Pareando dispositivo...")
-        
-        // Coletar informações completas do dispositivo para o novo endpoint
+        // Coletar informações do dispositivo
         val deviceInfo = deviceInfoManager.collectDeviceInfo()
-        val fingerprint = com.cdccreditsmart.app.security.FingerprintCalculator.calculateFingerprint(deviceImei ?: "")
         val androidId = try {
             android.provider.Settings.Secure.getString(
                 context.contentResolver,
@@ -600,11 +597,10 @@ class PairingViewModel(private val context: Context) : ViewModel() {
             ""
         }
         
-        // CORREÇÃO: Código SEM hífen conforme banco de dados do backend
-        // O backend espera o código no formato "ABCD1234" (sem hífen)
-        val pairingCodeForRequest = contractId.replace("-", "") // Remover hífen se existir
+        // Código SEM hífen conforme banco de dados do backend
+        val pairingCodeForRequest = contractId.replace("-", "")
         
-        // VALIDAÇÃO: Backend requer hardwareImei - usar Android ID como fallback se IMEI indisponível
+        // Backend requer hardwareImei - usar Android ID como fallback se IMEI indisponível
         val effectiveHardwareId: String = if (!deviceImei.isNullOrBlank()) {
             deviceImei
         } else if (androidId.isNotBlank()) {
@@ -618,182 +614,230 @@ class PairingViewModel(private val context: Context) : ViewModel() {
             return
         }
         
-        // CORRIGIDO: Usar /api/device/claim-sale conforme documentação do backend
-        // O backend espera { token: "NWSJE9DZ", hardwareImei: "353104906953198" } (sem hífen)
-        val claimRequest = com.cdccreditsmart.network.dto.cdc.ClaimSaleByTokenRequest(
-            token = pairingCodeForRequest,
-            hardwareImei = effectiveHardwareId,
-            fingerprint = fingerprint,
-            deviceInfo = com.cdccreditsmart.network.dto.cdc.DeviceInfo(
-                brand = deviceInfo.brand,
-                model = deviceInfo.model,
-                manufacturer = deviceInfo.manufacturer,
-                androidVersion = deviceInfo.androidVersion,
-                sdkInt = android.os.Build.VERSION.SDK_INT,
-                serialNumber = android.os.Build.getSerial() ?: "",
-                buildId = android.os.Build.ID ?: ""
-            )
-        )
+        // STEP 1: Buscar venda pendente via GET para obter validationId
+        _state.value = PairingState.Claiming("Buscando venda...")
         
         Log.i(TAG, "╔════════════════════════════════════════════════════════╗")
-        Log.i(TAG, "║   📤 SENDING REQUEST TO /api/device/claim-sale         ║")
+        Log.i(TAG, "║   📤 STEP 1: GET /api/device/claim-sale                ║")
         Log.i(TAG, "╚════════════════════════════════════════════════════════╝")
-        Log.i(TAG, "Request URL: https://cdccreditsmart.com/api/device/claim-sale")
         Log.i(TAG, "Request - token: $pairingCodeForRequest")
-        Log.i(TAG, "Request - hardwareImei: ${if (deviceImei != null) "${deviceImei.take(6)}****" else "empty"}")
-        Log.i(TAG, "Request - deviceModel: ${deviceInfo.model}")
-        Log.i(TAG, "Request - deviceBrand: ${deviceInfo.brand}")
+        Log.i(TAG, "Request - imei: ${effectiveHardwareId.take(6)}****")
         
-        retryWithBackoff(MAX_RETRIES) claimBlock@{
-            Log.i(TAG, "📡 Executando chamada HTTP POST /api/device/claim-sale...")
-            val response = deviceApi.claimSaleByToken(claimRequest)
-            Log.i(TAG, "📨 Resposta recebida: HTTP ${response.code()}")
+        try {
+            val searchResponse = deviceApi.searchPendingSaleByToken(
+                token = pairingCodeForRequest,
+                imei = effectiveHardwareId
+            )
             
-            Log.d(TAG, "Response code: ${response.code()}")
-            Log.d(TAG, "Response message: ${response.message()}")
+            Log.i(TAG, "📨 GET Response: HTTP ${searchResponse.code()}")
             
-            if (response.isSuccessful) {
-                val body = response.body()
-                Log.d(TAG, "Response body received")
+            if (searchResponse.isSuccessful) {
+                val searchBody = searchResponse.body()
                 
-                when {
-                    body != null && body.success && body.matched -> {
-                        Log.d(TAG, "✅ Device Claim successful!")
-                        Log.d(TAG, "Device ID: ${body.deviceId}")
-                        Log.d(TAG, "Contract Code: ${body.contractCode}")
-                        Log.i(TAG, "📊 DADOS DO BACKEND - DeviceId: '${body.deviceId}', ContractCode: '${body.contractCode}'")
-                        
-                        val authToken = body.getEffectiveDeviceToken() ?: ""
-                        val deviceId = body.deviceId
-                        
-                        tokenStorage.saveAuthToken(
-                            authToken = authToken,
-                            contractCode = body.contractCode ?: contractId,
-                            deviceId = deviceId
+                if (searchBody != null && searchBody.success && searchBody.found) {
+                    // Verificar se já está pareado
+                    if (searchBody.alreadyPaired || searchBody.status == "already_paired") {
+                        Log.d(TAG, "✅ Dispositivo já pareado - restaurando dados")
+                        handleAlreadyPairedDevice(
+                            body = searchBody,
+                            imei = effectiveHardwareId,
+                            contractId = contractId
                         )
-                        tokenStorage.saveSerialNumber(body.contractCode ?: contractId)
-                        
-                        if (imeiInfo.hasValidImei()) {
-                            val primaryImei = imeiInfo.primaryImei
-                            if (primaryImei != null) {
-                                tokenStorage.saveImeiForMdm(primaryImei)
-                            }
-                            
-                            val imeisToSave = imeiInfo.getAllImeis()
-                            tokenStorage.saveValidatedImeis(imeisToSave)
-                            Log.i(TAG, "✅ ${imeisToSave.size} IMEI(s) validado(s) e armazenado(s) com segurança")
-                        } else {
-                            Log.d(TAG, "ℹ️ Nenhum IMEI para armazenar (dispositivo sem telefonia ou erro)")
-                        }
-                        
-                        Log.i(TAG, "🚀 Iniciando CdcForegroundService para MDM...")
-                        CdcForegroundService.startService(context.applicationContext)
-                        
-                        Log.i(TAG, "🔄 Passando para step3 - ContractCode: '${body.contractCode}'")
-                        
-                        step3ConnectWebSocket(
-                            contractCode = body.contractCode ?: contractId,
-                            customerName = null,
-                            deviceModel = deviceInfo.model
-                        )
+                        return
                     }
                     
-                    body != null && body.success && !body.matched -> {
-                        Log.d(TAG, "⏳ Sale pending - awaiting PDV completion")
-                        Log.d(TAG, "Message: ${body.message}")
-                        
-                        val message = body.message.takeIf { it.isNotBlank() } 
-                            ?: "Venda em andamento. Aguarde o vendedor finalizar no PDV."
-                        
+                    // Obter validationId para o POST
+                    val validationId = searchBody.validationId
+                    
+                    if (validationId.isNullOrBlank()) {
+                        Log.w(TAG, "⏳ Venda encontrada mas sem validationId - aguardando vendedor")
                         _state.value = PairingState.Pending(
-                            message = message,
+                            message = "Aguardando vendedor concluir a venda...",
                             contractCode = contractId
                         )
-                        
-                        startPendingPolling(contractId)
+                        startPendingPollingWithToken(contractId, effectiveHardwareId)
+                        return
                     }
                     
-                    else -> {
-                        Log.w(TAG, "❌ Device Claim failed")
-                        Log.w(TAG, "success: ${body?.success}, matched: ${body?.matched}")
+                    // STEP 2: POST com ClaimRequest incluindo validationId
+                    Log.i(TAG, "╔════════════════════════════════════════════════════════╗")
+                    Log.i(TAG, "║   📤 STEP 2: POST /api/device/claim-sale               ║")
+                    Log.i(TAG, "╚════════════════════════════════════════════════════════╝")
+                    Log.i(TAG, "Request - validationId: $validationId")
+                    
+                    _state.value = PairingState.Claiming("Pareando dispositivo...")
+                    
+                    val fingerprint = com.cdccreditsmart.app.security.FingerprintCalculator.calculateFingerprint(effectiveHardwareId)
+                    
+                    val claimRequest = com.cdccreditsmart.network.dto.cdc.ClaimRequest(
+                        validationId = validationId,
+                        hardwareImei = effectiveHardwareId,
+                        fingerprint = fingerprint,
+                        deviceInfo = com.cdccreditsmart.network.dto.cdc.DeviceInfo(
+                            brand = deviceInfo.brand,
+                            model = deviceInfo.model,
+                            manufacturer = deviceInfo.manufacturer,
+                            androidVersion = deviceInfo.androidVersion,
+                            sdkInt = android.os.Build.VERSION.SDK_INT,
+                            serialNumber = android.os.Build.getSerial() ?: "",
+                            buildId = android.os.Build.ID ?: ""
+                        )
+                    )
+                    
+                    val claimResponse = deviceApi.claimSale(claimRequest)
+                    Log.i(TAG, "📨 POST Response: HTTP ${claimResponse.code()}")
+                    
+                    if (claimResponse.isSuccessful) {
+                        val claimBody = claimResponse.body()
                         
-                        val message = body?.message?.takeIf { it.isNotBlank() }
-                            ?: "Código de pareamento inválido ou expirado. Verifique com a loja."
+                        if (claimBody != null && claimBody.success && claimBody.matched) {
+                            Log.d(TAG, "✅ Device Claim successful!")
+                            
+                            val authToken = claimBody.getEffectiveDeviceToken() ?: ""
+                            
+                            tokenStorage.saveAuthToken(
+                                authToken = authToken,
+                                contractCode = claimBody.contractCode ?: contractId,
+                                deviceId = claimBody.deviceId
+                            )
+                            tokenStorage.saveSerialNumber(claimBody.contractCode ?: contractId)
+                            
+                            if (imeiInfo.hasValidImei()) {
+                                val primaryImei = imeiInfo.primaryImei
+                                if (primaryImei != null) {
+                                    tokenStorage.saveImeiForMdm(primaryImei)
+                                }
+                                tokenStorage.saveValidatedImeis(imeiInfo.getAllImeis())
+                            }
+                            
+                            CdcForegroundService.startService(context.applicationContext)
+                            
+                            step3ConnectWebSocket(
+                                contractCode = claimBody.contractCode ?: contractId,
+                                customerName = searchBody.customerName,
+                                deviceModel = deviceInfo.model
+                            )
+                        } else if (claimBody != null && !claimBody.matched) {
+                            _state.value = PairingState.Error(
+                                message = claimBody.message,
+                                securityViolation = claimBody.securityViolation == true,
+                                canRetry = (claimBody.attemptsRemaining ?: 0) > 0
+                            )
+                        } else {
+                            throw Exception("Resposta inválida do servidor")
+                        }
+                    } else {
+                        val errorBody = claimResponse.errorBody()?.string()
+                        Log.e(TAG, "❌ POST Error: $errorBody")
+                        throw Exception("Erro ao parear: HTTP ${claimResponse.code()}")
+                    }
+                    
+                } else {
+                    // Venda não encontrada - aguardar vendedor
+                    Log.d(TAG, "📋 Venda não encontrada - aguardando vendedor")
+                    _state.value = PairingState.Pending(
+                        message = "Aguardando vendedor iniciar a venda...",
+                        contractCode = contractId
+                    )
+                    startPendingPollingWithToken(contractId, effectiveHardwareId)
+                }
+                
+            } else {
+                // Tratar erros HTTP do GET
+                val errorBody = searchResponse.errorBody()?.string()
+                Log.e(TAG, "❌ GET Error ${searchResponse.code()}: $errorBody")
+                
+                when (searchResponse.code()) {
+                    404 -> {
+                        Log.d(TAG, "📋 HTTP 404 - Venda não encontrada, aguardando vendedor")
+                        _state.value = PairingState.Pending(
+                            message = "Aguardando vendedor iniciar a venda...",
+                            contractCode = contractId
+                        )
+                        startPendingPollingWithToken(contractId, effectiveHardwareId)
+                    }
+                    400 -> {
+                        val backendMessage = try {
+                            val json = org.json.JSONObject(errorBody ?: "{}")
+                            json.optString("message", null) ?: json.optString("error", null)
+                        } catch (e: Exception) { null }
                         
+                        if (backendMessage?.lowercase()?.contains("not found") == true) {
+                            _state.value = PairingState.Pending(
+                                message = "Aguardando vendedor iniciar a venda...",
+                                contractCode = contractId
+                            )
+                            startPendingPollingWithToken(contractId, effectiveHardwareId)
+                        } else {
+                            _state.value = PairingState.Error(
+                                message = backendMessage ?: "Código de pareamento inválido",
+                                canRetry = true
+                            )
+                        }
+                    }
+                    403 -> {
                         _state.value = PairingState.Error(
-                            message = message,
+                            message = "Este código já está vinculado a outro dispositivo.",
+                            securityViolation = true,
+                            canRetry = false
+                        )
+                    }
+                    else -> {
+                        _state.value = PairingState.Error(
+                            message = "Erro ao buscar venda: HTTP ${searchResponse.code()}",
                             canRetry = true
                         )
                     }
                 }
-            } else {
-                val errorBody = try {
-                    response.errorBody()?.string()
-                } catch (e: Exception) {
-                    "Could not read error body"
-                }
+            }
+        } catch (e: Exception) {
+            Log.e(TAG, "❌ Exception: ${e.message}", e)
+            _state.value = PairingState.Error(
+                message = "Erro de conexão: ${e.message}",
+                canRetry = true
+            )
+        }
+    }
+    
+    private fun startPendingPollingWithToken(contractCode: String, imei: String) {
+        pollingJob?.cancel()
+        pollingJob = viewModelScope.launch {
+            Log.d(TAG, "🔄 Iniciando polling com token para: $contractCode")
+            
+            connectWebSocketForPending(contractCode)
+            
+            while (isActive) {
+                delay(POLLING_INTERVAL)
                 
-                Log.e(TAG, "❌ HTTP Error ${response.code()}")
-                Log.e(TAG, "Error body: $errorBody")
-                
-                // Tentar extrair mensagem do backend
-                val backendMessage = try {
-                    val json = org.json.JSONObject(errorBody ?: "{}")
-                    json.optString("message", null) ?: json.optString("error", null)
-                } catch (e: Exception) {
-                    null
-                }
-                
-                // Para 404: venda ainda não concluída pelo vendedor - iniciar polling
-                if (response.code() == 404) {
-                    Log.d(TAG, "📋 HTTP 404 - Venda ainda não concluída, iniciando polling...")
-                    Log.d(TAG, "   Mensagem do backend: $backendMessage")
-                    
-                    // Mostrar tela de aguardando vendedor e iniciar polling
-                    _state.value = PairingState.Pending(
-                        message = "Aguardando vendedor concluir a venda...",
-                        contractCode = contractId
+                try {
+                    val response = deviceApi.searchPendingSaleByToken(
+                        token = contractCode.replace("-", ""),
+                        imei = imei
                     )
                     
-                    startPendingPolling(contractId)
-                    return@claimBlock
-                }
-                
-                val errorMessage = when (response.code()) {
-                    400 -> {
-                        // 400 pode significar código inválido OU venda não concluída
-                        // Se a mensagem indicar "not found", iniciar polling
-                        if (backendMessage?.lowercase()?.contains("not found") == true ||
-                            backendMessage?.lowercase()?.contains("não encontrad") == true) {
-                            Log.d(TAG, "📋 HTTP 400 com 'not found' - iniciando polling...")
-                            _state.value = PairingState.Pending(
-                                message = "Aguardando vendedor concluir a venda...",
-                                contractCode = contractId
-                            )
-                            startPendingPolling(contractId)
-                            return@claimBlock
+                    if (response.isSuccessful) {
+                        val body = response.body()
+                        
+                        if (body != null && body.success && body.found) {
+                            if (body.alreadyPaired || body.status == "already_paired") {
+                                handleAlreadyPairedDevice(body, imei, contractCode)
+                                return@launch
+                            }
+                            
+                            val validationId = body.validationId
+                            if (!validationId.isNullOrBlank()) {
+                                Log.d(TAG, "✅ ValidationId obtido: $validationId - iniciando claim")
+                                pollingJob?.cancel()
+                                stepFallbackClaimByCodeOnly(contractCode)
+                                return@launch
+                            }
                         }
-                        backendMessage ?: "Código de pareamento inválido"
                     }
-                    403 -> {
-                        // IMEI_MISMATCH ou contrato já vinculado a outro dispositivo
-                        backendMessage ?: "Este código de contrato já está vinculado a outro dispositivo.\n\nCada contrato só pode ser ativado em um único aparelho."
-                    }
-                    409 -> backendMessage ?: "Este contrato já está ativo em outro dispositivo"
-                    else -> backendMessage ?: "Erro ao autenticar: HTTP ${response.code()}"
+                    
+                    Log.d(TAG, "🔄 Polling... aguardando vendedor")
+                } catch (e: Exception) {
+                    Log.w(TAG, "Polling error: ${e.message}")
                 }
-                
-                // Para 403, mostrar erro de segurança
-                if (response.code() == 403) {
-                    _state.value = PairingState.Error(
-                        message = errorMessage,
-                        securityViolation = true,
-                        canRetry = false
-                    )
-                    return@claimBlock
-                }
-                
-                throw Exception(errorMessage)
             }
         }
     }

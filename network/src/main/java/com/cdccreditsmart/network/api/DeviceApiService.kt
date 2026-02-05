@@ -119,6 +119,17 @@ interface DeviceApiService {
     ): Response<PendingSaleResponse>
     
     /**
+     * Search Pending Sale by Token (Alternative to IMEI search)
+     * GET /api/device/claim-sale?token={TOKEN}&imei={IMEI}
+     * Searches for a pending sale using the pairing code (token) from PDV
+     */
+    @GET("api/device/claim-sale")
+    suspend fun searchPendingSaleByToken(
+        @Query("token") token: String,
+        @Query("imei") imei: String
+    ): Response<PendingSaleResponse>
+    
+    /**
      * Claim Sale (Handshake Step 2) - CDC Credit Smart specific
      * POST /api/device/claim-sale
      * Claims a sale by validating IMEI and device information
