@@ -1,0 +1,933 @@
+2026-02-04 22:22:17.549 10189-10189 NavController           com.cdccreditsmart.app               I  Ignoring popBackStack to route pairing/qr_scanner as it was not found on the current back stack
+2026-02-04 22:22:17.597 10189-10189 TermsScreen             com.cdccreditsmart.app               I  🚀 TermsAcceptanceScreen INICIANDO - contractCode=PFB3PRMZ
+2026-02-04 22:22:17.598 10189-10189 TermsScreen             com.cdccreditsmart.app               I  ✅ Context obtido
+2026-02-04 22:22:17.598 10189-10189 TermsScreen             com.cdccreditsmart.app               I  ✅ Scope criado
+2026-02-04 22:22:17.626 10189-10189 TermsScreen             com.cdccreditsmart.app               I  ✅ Estados inicializados, preparando LaunchedEffect
+2026-02-04 22:22:17.702 10189-10189 TermsScreen             com.cdccreditsmart.app               I  🔄 LaunchedEffect INICIANDO
+2026-02-04 22:22:17.702 10189-10189 TermsScreen             com.cdccreditsmart.app               I  📄 Iniciando carregamento de termos...
+2026-02-04 22:22:17.704 10189-10329 TermsScreen             com.cdccreditsmart.app               I  🔧 Criando SupportRepository...
+2026-02-04 22:22:17.705 10189-10329 TermsScreen             com.cdccreditsmart.app               I  ✅ SupportRepository criado
+2026-02-04 22:22:17.706 10189-10189 TermsScreen             com.cdccreditsmart.app               I  📡 Chamando getContractTerms...
+2026-02-04 22:22:17.721 10189-10329 NetworkConnectivity     com.cdccreditsmart.app               D  ✅ Conectado via WiFi com internet
+2026-02-04 22:22:17.721 10189-10329 SupportRepository       com.cdccreditsmart.app               I  📡 Buscando termos do servidor (version=latest)...
+2026-02-04 22:22:17.822 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  --> GET https://cdccreditsmart.com/v1/contract/terms?version=latest
+2026-02-04 22:22:17.823 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  --> END GET
+2026-02-04 22:22:18.245 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  <-- 200 https://cdccreditsmart.com/v1/contract/terms?version=latest (421ms)
+2026-02-04 22:22:18.245 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-credentials: true
+2026-02-04 22:22:18.245 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-headers: Origin, X-Requested-With, Content-Type, Accept, Authorization, x-client-key, x-client-token, x-client-secret, cache-control
+2026-02-04 22:22:18.245 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-methods: GET, POST, PUT, PATCH, DELETE, OPTIONS
+2026-02-04 22:22:18.245 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-origin: *
+2026-02-04 22:22:18.245 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-max-age: 86400
+2026-02-04 22:22:18.245 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-length: 6438
+2026-02-04 22:22:18.246 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-security-policy: default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://replit.com; style-src 'self' 'unsafe-inline' https://replit.com; img-src 'self' data: https:; font-src 'self' data: https://replit.com; connect-src 'self';
+2026-02-04 22:22:18.246 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-type: application/json; charset=utf-8
+2026-02-04 22:22:18.246 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  date: Thu, 05 Feb 2026 01:22:18 GMT
+2026-02-04 22:22:18.246 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  etag: W/"1926-n/zQQzqVGQMCmWBdldsM5HoDANo"
+2026-02-04 22:22:18.246 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  permissions-policy: geolocation=(), microphone=(), camera=()
+2026-02-04 22:22:18.246 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  referrer-policy: strict-origin-when-cross-origin
+2026-02-04 22:22:18.246 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  strict-transport-security: max-age=63072000; includeSubDomains
+2026-02-04 22:22:18.247 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  strict-transport-security: max-age=31536000; includeSubDomains
+2026-02-04 22:22:18.247 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-anti-fraud-protection: active
+2026-02-04 22:22:18.247 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-certificate-pinning-enabled: false
+2026-02-04 22:22:18.247 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-certificate-pinning-status: disabled-for-stability
+2026-02-04 22:22:18.247 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-content-type-options: nosniff
+2026-02-04 22:22:18.247 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-financial-data-protection: enabled
+2026-02-04 22:22:18.247 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-frame-options: DENY
+2026-02-04 22:22:18.247 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-transaction-security-level: maximum
+2026-02-04 22:22:18.247 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-xss-protection: 1; mode=block
+2026-02-04 22:22:18.247 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  via: 1.1 google
+2026-02-04 22:22:18.248 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  alt-svc: h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
+2026-02-04 22:22:18.261 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  {"id":"6068397f-11c5-4640-817f-e86e5ddcee8d","success":true,"version":"v5.0","hash":"eecbb739c2ee7d044be83c16b9c788d828c2908f20c23f5e0c6e59e7eb1773b2","text":"CONTRATO DE VENDA A PRAZO (CREDIÁRIO)\n\nDE DISPOSITIVO MÓVEL COM ALIENAÇÃO FIDUCIÁRIA\n\nCREDIT SMART – SISTEMA DE CRÉDITO INTELIGENTE\n\nData de vigência: 03/02/2026\nVersão: v5.0 – Crediário com Limitação Técnica Progressiva\n\nPARTES CONTRATANTES\n\nVENDEDORA (CREDORA FIDUCIÁRIA):\nCredit Smart LTDA, pessoa jurídica de direito privado, inscrita no CNPJ nº [informar], com sede em [endereço completo], doravante denominada CREDIT SMART.\n\nCLIENTE (DEVEDOR FIDUCIANTE):\nPessoa física identificada por documentação oficial e biometria facial, doravante denominada CLIENTE.\n\nCLÁUSULA PRIMEIRA – NATUREZA DA OPERAÇÃO\n\n1.1. A CREDIT SMART NÃO é instituição financeira.\n\n1.2. O presente contrato refere-se exclusivamente à VENDA DIRETA A PRAZO (CREDIÁRIO) de dispositivo móvel, não constituindo financiamento, operação bancária, concessão profissional de crédito ou intermediação financeira.\n\n1.3. O parcelamento é condição comercial de venda do próprio produto.\n\nCLÁUSULA SEGUNDA – OBJETO\n\n2.1. Venda de dispositivo móvel (smartphone ou tablet), conforme pedido do CLIENTE.\n\n2.2. O pagamento será realizado de forma parcelada, nos termos deste contrato.\n\n2.3. O bem é dado em ALIENAÇÃO FIDUCIÁRIA, permanecendo a propriedade com a CREDIT SMART até a quitação integral.\n\n2.4. O CLIENTE recebe a posse direta desde a entrega.\n\nCLÁUSULA TERCEIRA – PROPRIEDADE FIDUCIÁRIA\n\n3.1. A propriedade fiduciária é resolúvel e se consolida automaticamente no CLIENTE após a quitação total.\n\n3.2. Até a quitação, é vedada a venda, cessão, doação ou transferência do dispositivo.\n\nCLÁUSULA QUARTA – PREÇO E PAGAMENTO\n\nPreço à vista: [valor]\n\nPreço a prazo (crediário): [valor]\n\nEntrada: [valor]\n\nValor parcelado: [valor]\n\nParcelas: [quantidade]\n\nPeriodicidade: quinzenal (a cada 15 dias)\n\nMeios de pagamento: PIX, boleto ou outros autorizados\n\n4.1. Encargos\n\nO preço a prazo poderá incluir encargos pelo parcelamento, devidamente informados, conforme o Código de Defesa do Consumidor.\n\n4.2. Atraso\n\nJuros de mora: 1% ao mês\n\nMulta: 2%\n\nNegativação após 10 dias\n\n4.3. Quitação antecipada\n\nPermitida a qualquer tempo, com redução proporcional dos encargos futuros.\n\nCLÁUSULA QUINTA – LIMITAÇÃO TÉCNICA DE APLICAÇÕES\n5.1. Princípio Técnico\n\nA CREDIT SMART NÃO BLOQUEIA O DISPOSITIVO.\nEm caso de inadimplemento, poderá aplicar LIMITAÇÃO TÉCNICA, REMOTA, PROGRESSIVA E REVERSÍVEL DE APLICAÇÕES, como mecanismo de garantia do crediário.\n\nA limitação ocorre no nível de aplicativo, sem inutilizar o aparelho.\n\n5.2. Funcionalidades Sempre Acessíveis\n\nJamais serão limitados:\n\nChamadas telefônicas\n\nSMS\n\nServiços de emergência\n\nAcesso básico ao sistema operacional\n\nDocumentos digitais oficiais, incluindo aplicativos governamentais de identificação civil, previdenciária, saúde, trânsito ou equivalentes reconhecidos pelo sistema operacional\n\n5.3. Aplicações Sujeitas à Limitação\n\nPoderão ser total ou parcialmente limitadas:\n\nAplicações de comunicação\n\nAplicações de redes sociais\n\nAplicações de trabalho, produtividade ou geração de renda\n\nAplicações de entretenimento e streaming\n\nAplicações financeiras e bancárias\n\nQualquer outro aplicativo instalado no dispositivo\n\nA classificação é técnica e sistêmica, não individualizada por nome de aplicativo.\n\n5.4. Progressividade\n\nA limitação poderá evoluir conforme dias de atraso, podendo chegar à restrição da maioria dos aplicativos, mantendo apenas as funcionalidades essenciais descritas na cláusula 5.2.\n\n5.5. Notificação e Restabelecimento\n\nO CLIENTE será previamente notificado\n\nApós o pagamento, o acesso é restabelecido automaticamente\n\nNão há cobrança de taxa de desbloqu
+2026-02-04 22:22:18.262 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  ções de aplicativos\n\nProteger a garantia fiduciária\n\nVerificar integridade do sistema\n\nLocalizar o dispositivo em casos excepcionais\n\n6.2. O aplicativo NÃO acessa:\n\nConteúdo de mensagens\n\nArquivos pessoais\n\nFotos, vídeos ou histórico de navegação\n\nSenhas ou credenciais bancárias\n\n6.3. Após a quitação integral:\n\nO aplicativo é removido\n\nO monitoramento é encerrado\n\nDados técnicos são excluídos\n\nCLÁUSULA SÉTIMA – PROTEÇÃO DE DADOS PESSOAIS\n\nTratamento de dados em conformidade com a Lei Geral de Proteção de Dados Pessoais, incluindo:\n\nDados cadastrais\n\nDados contratuais\n\nBiometria facial (prevenção à fraude)\n\nDados técnicos do dispositivo\n\nCanal do encarregado: dpo@creditsmart.com.br\n\nCLÁUSULA OITAVA – INADIMPLÊNCIA\n\nO inadimplemento poderá resultar em:\n\nLimitação técnica de aplicações\n\nNegativação\n\nCobrança extrajudicial\n\nApós 60 dias: vencimento antecipado e busca e apreensão, conforme Decreto-Lei nº 911/1969\n\nCLÁUSULA NONA – FURTO, ROUBO OU PERDA\n\n9.1. Comunicação obrigatória em até 24 horas, com Boletim de Ocorrência.\n\n9.2. O evento não extingue a obrigação de pagamento, salvo seguro contratado.\n\nCLÁUSULA DÉCIMA – DIREITO DE ARREPENDIMENTO\n\nO CLIENTE poderá desistir no prazo de 7 dias, conforme o Código de Defesa do Consumidor, mediante devolução do dispositivo em perfeito estado.\n\nCLÁUSULA DÉCIMA PRIMEIRA – ASSINATURA ELETRÔNICA\n\nContrato firmado por biometria facial, IP, data, hora e hash criptográfico, com plena validade jurídica.\n\nCLÁUSULA DÉCIMA SEGUNDA – FORO\n\nFica eleito o foro da comarca de residência do CLIENTE, nos termos do Código de Defesa do Consumidor.\n\nDECLARAÇÃO FINAL DO CLIENTE\n\nO CLIENTE declara que:\n\nCompreendeu que se trata de VENDA A PRAZO (CREDIÁRIO)\n\nEstá ciente da limitação técnica de aplicações em caso de atraso\n\nReconhece que o dispositivo não é bloqueado integralmente\n\nAutoriza o uso do aplicativo de controle\n\nRecebeu cópia do contrato\n\nCredit Smart LTDA\nSistema de Crédito Inteligente\n\nContrato assinado eletronicamente\nHash criptográfico: [automático]\nData/Hora: [timestamp]","effectiveDate":"2026-02-04T00:00:00.000Z"}
+2026-02-04 22:22:18.262 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  <-- END HTTP (6438-byte body)
+2026-02-04 22:22:18.294 10189-10329 SupportRepository       com.cdccreditsmart.app               I  ✅ Hash dos termos validado com sucesso
+2026-02-04 22:22:18.295 10189-10329 SupportRepository       com.cdccreditsmart.app               I  ✅ Termos atualizados: vv5.0 (id=6068397f-11c5-4640-817f-e86e5ddcee8d)
+2026-02-04 22:22:18.296 10189-10189 TermsScreen             com.cdccreditsmart.app               I  📥 Resposta recebida do getContractTerms
+2026-02-04 22:22:18.296 10189-10189 TermsScreen             com.cdccreditsmart.app               I  ✅ Termos carregados: vv5.0
+2026-02-04 22:22:18.314 10189-10189 TermsScreen             com.cdccreditsmart.app               I  🚀 TermsAcceptanceScreen INICIANDO - contractCode=PFB3PRMZ
+2026-02-04 22:22:18.314 10189-10189 TermsScreen             com.cdccreditsmart.app               I  ✅ Context obtido
+2026-02-04 22:22:18.315 10189-10189 TermsScreen             com.cdccreditsmart.app               I  ✅ Scope criado
+2026-02-04 22:22:18.318 10189-10189 TermsScreen             com.cdccreditsmart.app               I  ✅ Estados inicializados, preparando LaunchedEffect
+2026-02-04 22:22:18.696 10189-10189 TermsScreen             com.cdccreditsmart.app               I  🚀 TermsAcceptanceScreen INICIANDO - contractCode=PFB3PRMZ
+2026-02-04 22:22:18.696 10189-10189 TermsScreen             com.cdccreditsmart.app               I  ✅ Context obtido
+2026-02-04 22:22:18.696 10189-10189 TermsScreen             com.cdccreditsmart.app               I  ✅ Scope criado
+2026-02-04 22:22:18.697 10189-10189 TermsScreen             com.cdccreditsmart.app               I  ✅ Estados inicializados, preparando LaunchedEffect
+2026-02-04 22:22:19.617 10189-10189 TermsScreen             com.cdccreditsmart.app               I  📤 Enviando aceitação de termos para o backend...
+2026-02-04 22:22:19.617 10189-10189 TermsScreen             com.cdccreditsmart.app               I     IMEI: 353104****
+2026-02-04 22:22:19.617 10189-10189 TermsScreen             com.cdccreditsmart.app               I     Version: v5.0
+2026-02-04 22:22:19.617 10189-10189 TermsScreen             com.cdccreditsmart.app               I     Hash: eecbb739c2ee7d044be8...
+2026-02-04 22:22:19.906 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  --> POST https://cdccreditsmart.com/v1/contract/accept
+2026-02-04 22:22:19.906 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  Content-Type: application/json; charset=UTF-8
+2026-02-04 22:22:19.906 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  Content-Length: 127
+2026-02-04 22:22:19.907 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  {"imei":"353104906953198","termsVersion":"v5.0","termsHash":"eecbb739c2ee7d044be83c16b9c788d828c2908f20c23f5e0c6e59e7eb1773b2"}
+2026-02-04 22:22:19.907 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  --> END POST (127-byte body)
+2026-02-04 22:22:20.274 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  <-- 200 https://cdccreditsmart.com/v1/contract/accept (366ms)
+2026-02-04 22:22:20.274 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-credentials: true
+2026-02-04 22:22:20.275 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-headers: Origin, X-Requested-With, Content-Type, Accept, Authorization, x-client-key, x-client-token, x-client-secret, cache-control
+2026-02-04 22:22:20.275 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-methods: GET, POST, PUT, PATCH, DELETE, OPTIONS
+2026-02-04 22:22:20.275 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-origin: *
+2026-02-04 22:22:20.275 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-max-age: 86400
+2026-02-04 22:22:20.275 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-length: 776
+2026-02-04 22:22:20.275 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-security-policy: default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://replit.com; style-src 'self' 'unsafe-inline' https://replit.com; img-src 'self' data: https:; font-src 'self' data: https://replit.com; connect-src 'self';
+2026-02-04 22:22:20.275 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-type: application/json; charset=utf-8
+2026-02-04 22:22:20.275 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  date: Thu, 05 Feb 2026 01:22:20 GMT
+2026-02-04 22:22:20.276 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  etag: W/"308-bWnh9cY3PSWCViqmvSbJvQIgPe8"
+2026-02-04 22:22:20.276 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  permissions-policy: geolocation=(), microphone=(), camera=()
+2026-02-04 22:22:20.276 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  referrer-policy: strict-origin-when-cross-origin
+2026-02-04 22:22:20.276 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  strict-transport-security: max-age=63072000; includeSubDomains
+2026-02-04 22:22:20.276 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  strict-transport-security: max-age=31536000; includeSubDomains
+2026-02-04 22:22:20.276 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-anti-fraud-protection: active
+2026-02-04 22:22:20.276 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-certificate-pinning-enabled: false
+2026-02-04 22:22:20.276 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-certificate-pinning-status: disabled-for-stability
+2026-02-04 22:22:20.276 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-content-type-options: nosniff
+2026-02-04 22:22:20.276 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-financial-data-protection: enabled
+2026-02-04 22:22:20.277 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-frame-options: DENY
+2026-02-04 22:22:20.277 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-transaction-security-level: maximum
+2026-02-04 22:22:20.277 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-xss-protection: 1; mode=block
+2026-02-04 22:22:20.277 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  via: 1.1 google
+2026-02-04 22:22:20.277 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  alt-svc: h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
+2026-02-04 22:22:20.281 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  {"success":true,"message":"Terms accepted successfully","termsAcceptedAt":"2026-02-05T01:22:20.201Z","termsVersion":"v5.0","deviceReady":true,"saleId":"sale_1770254468961_jxqio1pc13h","token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkZXZpY2VJZCI6IjM1MzEwNDkwNjk1MzE5OCIsInNlcmlhbE51bWJlciI6IlpGNTI1R1JDUDgiLCJmaW5nZXJwcmludCI6IjE4YmQ2YWRiMmM2N2RhYzc1NjQ0YWU0ODkzOTc5NTAxOGI5ODVhMmVhMzA3ZDNiNDc2ODBjMGY0YzEzNWIzMTAiLCJ0eXBlIjoiYXBrIiwic2NvcGVzIjpbImRldmljZTpyZWFkIiwiZGV2aWNlOnN5bmMiXSwiaWF0IjoxNzcwMjU0NTIyLCJleHAiOjE4MDE3OTA1MjJ9.dypVQVgkpfe0Hg3HEzT1FF3Av_bGbZvUPfVfwMdbcn4","customerName":"Marcos Antunes","deviceModel":"Dispositivo","device":null,"customer":{"id":"e57f223e-c75f-47c3-a080-f5f4e301dc2c","name":"Marcos Antunes","cpf":"064.527.843-23","phone":"85981888810"}}
+2026-02-04 22:22:20.281 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  <-- END HTTP (776-byte body)
+2026-02-04 22:22:20.294 10189-10189 TermsScreen             com.cdccreditsmart.app               I  ✅ Termos aceitos com sucesso!
+2026-02-04 22:22:20.295 10189-10189 TermsScreen             com.cdccreditsmart.app               I     Accepted at: 2026-02-05T01:22:20.201Z
+2026-02-04 22:22:20.295 10189-10189 TermsScreen             com.cdccreditsmart.app               I     DeviceReady: true
+2026-02-04 22:22:20.298 10189-10189 TermsAcceptanceStorage  com.cdccreditsmart.app               I  Salvando aceitação de termos vv5.0 para contrato PFB3PRMZ
+2026-02-04 22:22:20.431 10189-10189 TermsScreen             com.cdccreditsmart.app               I  🔧 Processando dados do dispositivo...
+2026-02-04 22:22:20.431 10189-10189 ContractCodeStorage     com.cdccreditsmart.app               D  Saving contract code to redundant storage
+2026-02-04 22:22:20.521 10189-10189 ContractCodeStorage     com.cdccreditsmart.app               D  Saved to EncryptedPrefs
+2026-02-04 22:22:20.587 10189-10189 ContractCodeStorage     com.cdccreditsmart.app               D  Deleted existing file: .cdc_protected_code.enc
+2026-02-04 22:22:20.617 10189-10189 ContractCodeStorage     com.cdccreditsmart.app               D  Successfully saved to file: .cdc_protected_code.enc
+2026-02-04 22:22:20.617 10189-10189 ContractCodeStorage     com.cdccreditsmart.app               D  Saved to Protected Storage
+2026-02-04 22:22:20.618 10189-10189 ContractCodeStorage     com.cdccreditsmart.app               D  Deleted existing file: .cdc_contract_b1.enc
+2026-02-04 22:22:20.651 10189-10189 ContractCodeStorage     com.cdccreditsmart.app               D  Successfully saved to file: .cdc_contract_b1.enc
+2026-02-04 22:22:20.651 10189-10189 ContractCodeStorage     com.cdccreditsmart.app               D  Deleted existing file: .sys_device_cfg.enc
+2026-02-04 22:22:20.682 10189-10189 ContractCodeStorage     com.cdccreditsmart.app               D  Successfully saved to file: .sys_device_cfg.enc
+2026-02-04 22:22:20.682 10189-10189 ContractCodeStorage     com.cdccreditsmart.app               D  Deleted existing file: .android_secure.enc
+2026-02-04 22:22:20.714 10189-10189 ContractCodeStorage     com.cdccreditsmart.app               D  Successfully saved to file: .android_secure.enc
+2026-02-04 22:22:20.738 10189-10189 ContractCodeStorage     com.cdccreditsmart.app               D  Contract code saved to ALL storage locations
+2026-02-04 22:22:20.901 10189-10189 ContractCodeStorage     com.cdccreditsmart.app               D  Verification complete: 7/7 locations valid
+2026-02-04 22:22:20.901 10189-10189 TermsScreen             com.cdccreditsmart.app               I     ✅ ContractCode salvo (mínimo): PFB3PRMZ
+2026-02-04 22:22:20.903 10189-10189 SecureTokenStorage      com.cdccreditsmart.app               I  ✅ IMEI salvo para MDM: 3531***198
+2026-02-04 22:22:20.903 10189-10189 TermsScreen             com.cdccreditsmart.app               I     ✅ IMEI salvo para MDM (mínimo): 35310490...
+2026-02-04 22:22:20.907 10189-10189 ContractCodeStorage     com.cdccreditsmart.app               D  Saving contract code to redundant storage
+2026-02-04 22:22:20.920 10189-10189 ContractCodeStorage     com.cdccreditsmart.app               D  Saved to EncryptedPrefs
+2026-02-04 22:22:20.924 10189-10189 ContractCodeStorage     com.cdccreditsmart.app               D  Deleted existing file: .cdc_protected_code.enc
+2026-02-04 22:22:20.958 10189-10189 ContractCodeStorage     com.cdccreditsmart.app               D  Successfully saved to file: .cdc_protected_code.enc
+2026-02-04 22:22:20.958 10189-10189 ContractCodeStorage     com.cdccreditsmart.app               D  Saved to Protected Storage
+2026-02-04 22:22:20.959 10189-10189 ContractCodeStorage     com.cdccreditsmart.app               D  Deleted existing file: .cdc_contract_b1.enc
+2026-02-04 22:22:20.989 10189-10189 ContractCodeStorage     com.cdccreditsmart.app               D  Successfully saved to file: .cdc_contract_b1.enc
+2026-02-04 22:22:20.990 10189-10189 ContractCodeStorage     com.cdccreditsmart.app               D  Deleted existing file: .sys_device_cfg.enc
+2026-02-04 22:22:21.020 10189-10189 ContractCodeStorage     com.cdccreditsmart.app               D  Successfully saved to file: .sys_device_cfg.enc
+2026-02-04 22:22:21.020 10189-10189 ContractCodeStorage     com.cdccreditsmart.app               D  Deleted existing file: .android_secure.enc
+2026-02-04 22:22:21.051 10189-10189 ContractCodeStorage     com.cdccreditsmart.app               D  Successfully saved to file: .android_secure.enc
+2026-02-04 22:22:21.073 10189-10189 ContractCodeStorage     com.cdccreditsmart.app               D  Contract code saved to ALL storage locations
+2026-02-04 22:22:21.244 10189-10189 ContractCodeStorage     com.cdccreditsmart.app               D  Verification complete: 7/7 locations valid
+2026-02-04 22:22:21.244 10189-10189 SecureTokenStorage      com.cdccreditsmart.app               D  Auth token saved successfully (contract code via ContractCodeStorage, deviceId: PFB3PRMZ...)
+2026-02-04 22:22:21.244 10189-10189 TermsScreen             com.cdccreditsmart.app               I     ✅ Token JWT salvo IMEDIATAMENTE
+2026-02-04 22:22:21.244 10189-10189 TermsScreen             com.cdccreditsmart.app               W  ⚠️ Backend não retornou dados completos (deviceReady=true)
+2026-02-04 22:22:21.244 10189-10189 TermsScreen             com.cdccreditsmart.app               W     Usando dados mínimos já salvos
+2026-02-04 22:22:21.250 10189-10189 ContractCodeStorage     com.cdccreditsmart.app               D  Saving contract code to redundant storage
+2026-02-04 22:22:21.261 10189-10189 ContractCodeStorage     com.cdccreditsmart.app               D  Saved to EncryptedPrefs
+2026-02-04 22:22:21.265 10189-10189 ContractCodeStorage     com.cdccreditsmart.app               D  Deleted existing file: .cdc_protected_code.enc
+2026-02-04 22:22:21.298 10189-10189 ContractCodeStorage     com.cdccreditsmart.app               D  Successfully saved to file: .cdc_protected_code.enc
+2026-02-04 22:22:21.298 10189-10189 ContractCodeStorage     com.cdccreditsmart.app               D  Saved to Protected Storage
+2026-02-04 22:22:21.299 10189-10189 ContractCodeStorage     com.cdccreditsmart.app               D  Deleted existing file: .cdc_contract_b1.enc
+2026-02-04 22:22:21.332 10189-10189 ContractCodeStorage     com.cdccreditsmart.app               D  Successfully saved to file: .cdc_contract_b1.enc
+2026-02-04 22:22:21.332 10189-10189 ContractCodeStorage     com.cdccreditsmart.app               D  Deleted existing file: .sys_device_cfg.enc
+2026-02-04 22:22:21.363 10189-10189 ContractCodeStorage     com.cdccreditsmart.app               D  Successfully saved to file: .sys_device_cfg.enc
+2026-02-04 22:22:21.364 10189-10189 ContractCodeStorage     com.cdccreditsmart.app               D  Deleted existing file: .android_secure.enc
+2026-02-04 22:22:21.396 10189-10189 ContractCodeStorage     com.cdccreditsmart.app               D  Successfully saved to file: .android_secure.enc
+2026-02-04 22:22:21.418 10189-10189 ContractCodeStorage     com.cdccreditsmart.app               D  Contract code saved to ALL storage locations
+2026-02-04 22:22:21.581 10189-10189 ContractCodeStorage     com.cdccreditsmart.app               D  Verification complete: 7/7 locations valid
+2026-02-04 22:22:21.581 10189-10189 SecureTokenStorage      com.cdccreditsmart.app               D  Device info saved successfully from auto-discovery
+2026-02-04 22:22:21.581 10189-10189 SecureTokenStorage      com.cdccreditsmart.app               D    - DeviceId: PFB3PRMZ...
+2026-02-04 22:22:21.581 10189-10189 SecureTokenStorage      com.cdccreditsmart.app               D    - SerialNumber: PFB3PRMZ
+2026-02-04 22:22:21.581 10189-10189 SecureTokenStorage      com.cdccreditsmart.app               D    - IMEI: 3531***
+2026-02-04 22:22:21.581 10189-10189 SecureTokenStorage      com.cdccreditsmart.app               D    - ContractCode: PFB3PRMZ
+2026-02-04 22:22:21.581 10189-10189 TermsScreen             com.cdccreditsmart.app               W     ✅ DeviceInfo mínimo salvo via fallback
+2026-02-04 22:22:21.587 10189-10189 SecureTokenStorage      com.cdccreditsmart.app               D  ✅ Usando IMEI para MDM: 3531***198
+2026-02-04 22:22:21.587 10189-10189 TermsScreen             com.cdccreditsmart.app               I  📊 Estado após aceite:
+2026-02-04 22:22:21.587 10189-10189 TermsScreen             com.cdccreditsmart.app               I     ContractCode: ✅ PFB3PRMZ
+2026-02-04 22:22:21.587 10189-10189 TermsScreen             com.cdccreditsmart.app               I     Token: ✅
+2026-02-04 22:22:21.587 10189-10189 TermsScreen             com.cdccreditsmart.app               I     DeviceId: ✅
+2026-02-04 22:22:21.587 10189-10189 TermsScreen             com.cdccreditsmart.app               I     IMEI: ✅
+2026-02-04 22:22:21.587 10189-10189 TermsScreen             com.cdccreditsmart.app               I  📊 Estado FINAL:
+2026-02-04 22:22:21.587 10189-10189 TermsScreen             com.cdccreditsmart.app               I     Token: ✅ PRESENTE
+2026-02-04 22:22:21.588 10189-10189 TermsScreen             com.cdccreditsmart.app               I  🚀 Iniciando serviço de foreground...
+2026-02-04 22:22:21.590 10189-10189 CdcForegroundService    com.cdccreditsmart.app               I  ✅ Serviço iniciado via startService()
+2026-02-04 22:22:21.590 10189-10189 TermsScreen             com.cdccreditsmart.app               I  ✅ Verificação final OK - ContractCode persistido: PFB3PRMZ
+2026-02-04 22:22:21.597 10189-10189 Choreographer           com.cdccreditsmart.app               I  Skipped 78 frames!  The application may be doing too much work on its main thread.
+2026-02-04 22:22:21.608 10189-10189 CdcForegroundService    com.cdccreditsmart.app               D  🚀 Serviço onStartCommand() - Action: com.cdccreditsmart.app.START_SERVICE
+2026-02-04 22:22:21.613 10189-10189 CdcForegroundService    com.cdccreditsmart.app               I  ✅ Foreground Service ativo (Android 12+)
+2026-02-04 22:22:21.614 10189-10330 CdcForegroundService    com.cdccreditsmart.app               I  🔧 ========================================
+2026-02-04 22:22:21.614 10189-10330 CdcForegroundService    com.cdccreditsmart.app               I  🔧 INICIANDO initializeServices()...
+2026-02-04 22:22:21.614 10189-10330 CdcForegroundService    com.cdccreditsmart.app               I  🔧 ========================================
+2026-02-04 22:22:21.614 10189-10330 CdcForegroundService    com.cdccreditsmart.app               D  ✅ Serviços base já inicializados
+2026-02-04 22:22:21.615 10189-10330 CdcForegroundService    com.cdccreditsmart.app               D  ✅ MDM já inicializado - ignorando chamada duplicada
+2026-02-04 22:22:21.669 10189-10189 SecureTokenStorage      com.cdccreditsmart.app               D  ✅ Usando IMEI para MDM: 3531***198
+2026-02-04 22:22:21.669 10189-10189 SimpleHomeViewModel     com.cdccreditsmart.app               D  📦 Verificação de autenticação:
+2026-02-04 22:22:21.669 10189-10189 SimpleHomeViewModel     com.cdccreditsmart.app               D     Token: presente
+2026-02-04 22:22:21.669 10189-10189 SimpleHomeViewModel     com.cdccreditsmart.app               D     DeviceInfo: presente
+2026-02-04 22:22:21.669 10189-10189 SimpleHomeViewModel     com.cdccreditsmart.app               D     ContractCode: presente
+2026-02-04 22:22:21.672 10189-10189 NetworkConnectivity     com.cdccreditsmart.app               D  ✅ Conectado via WiFi com internet
+2026-02-04 22:22:21.672 10189-10189 SimpleHomeViewModel     com.cdccreditsmart.app               D  📡 Fetching device installments from /api/apk/device/installments...
+2026-02-04 22:22:22.073 10189-10839 SimpleHomeViewModel     com.cdccreditsmart.app               D  ✅ Added Authorization header with token
+2026-02-04 22:22:22.076 10189-10839 SecureTokenStorage      com.cdccreditsmart.app               D  ✅ Usando IMEI para MDM: 3531***198
+2026-02-04 22:22:22.080 10189-10839 SimpleHomeViewModel     com.cdccreditsmart.app               D  📱 Added X-Device-IMEI header
+2026-02-04 22:22:22.080 10189-10839 SimpleHomeViewModel     com.cdccreditsmart.app               D  📱 Added X-Device-SerialNumber header
+2026-02-04 22:22:22.081 10189-10839 SimpleHomeViewModel     com.cdccreditsmart.app               D  📱 Added X-Device-ID header
+2026-02-04 22:22:22.081 10189-10839 SimpleHomeViewModel     com.cdccreditsmart.app               D  📤 Request URL: https://cdccreditsmart.com/api/apk/device/installments
+2026-02-04 22:22:22.136 10189-10189 Choreographer           com.cdccreditsmart.app               I  Skipped 30 frames!  The application may be doing too much work on its main thread.
+2026-02-04 22:22:22.812 10189-10839 SimpleHomeViewModel     com.cdccreditsmart.app               D  📥 Response Code: 200
+2026-02-04 22:22:22.835 10189-10189 SimpleHomeViewModel     com.cdccreditsmart.app               D  ✅ Successfully fetched installments data
+2026-02-04 22:22:22.835 10189-10189 SimpleHomeViewModel     com.cdccreditsmart.app               D  📊 Device: 
+2026-02-04 22:22:22.835 10189-10189 SimpleHomeViewModel     com.cdccreditsmart.app               D  📊 Total installments: 0
+2026-02-04 22:22:22.836 10189-10189 SimpleHomeViewModel     com.cdccreditsmart.app               D  📊 Paid: 0
+2026-02-04 22:22:22.836 10189-10189 SimpleHomeViewModel     com.cdccreditsmart.app               D  📊 Overdue: 0
+2026-02-04 22:22:22.836 10189-10189 SimpleHomeViewModel     com.cdccreditsmart.app               D  📊 All installments count: 0
+2026-02-04 22:22:22.836 10189-10189 SimpleHomeViewModel     com.cdccreditsmart.app               I  💾 Salvando dados do cliente no storage - CustomerName: 'null', DeviceModel: ''
+2026-02-04 22:22:22.836 10189-10189 SimpleHomeViewModel     com.cdccreditsmart.app               W  ⚠️ WARNING: Backend returned ZERO installments!
+2026-02-04 22:22:22.836 10189-10189 SimpleHomeViewModel     com.cdccreditsmart.app               W  ⚠️ This is likely a backend issue - check /api/apk/device/installments endpoint
+2026-02-04 22:22:22.973 10189-10189 LocalInstallmentStorage com.cdccreditsmart.app               I  ✅ 0 parcelas salvas localmente (contrato: PFB3PRMZ)
+2026-02-04 22:22:22.973 10189-10189 SimpleHomeViewModel     com.cdccreditsmart.app               I  ✅ 0 parcelas salvas localmente
+2026-02-04 22:22:22.973 10189-10189 SimpleHomeViewModel     com.cdccreditsmart.app               I     → 0 pagas
+2026-02-04 22:22:22.973 10189-10189 SimpleHomeViewModel     com.cdccreditsmart.app               I     → 0 pendentes
+2026-02-04 22:22:22.973 10189-10189 SimpleHomeViewModel     com.cdccreditsmart.app               I     → 0 em atraso
+2026-02-04 22:22:22.973 10189-10189 SimpleHomeViewModel     com.cdccreditsmart.app               I     → Dados disponíveis para overlay e offline blocking
+2026-02-04 22:22:22.973 10189-10189 SimpleHomeViewModel     com.cdccreditsmart.app               I  💾 Cache atualizado - próximo acesso usará cache por 900s
+2026-02-04 22:22:22.982 10189-10189 SecureTokenStorage      com.cdccreditsmart.app               D  📖 Lendo customerName: Marcos Antunes
+2026-02-04 22:22:22.985 10189-10189 SecureTokenStorage      com.cdccreditsmart.app               D  📖 Lendo deviceModel: moto g15
+2026-02-04 22:22:23.151 10189-10208 creditsmart.app         com.cdccreditsmart.app               I  Background concurrent mark compact GC freed 13MB AllocSpace bytes, 257(9664KB) LOS objects, 59% free, 16MB/40MB, paused 1.280ms,40.767ms total 204.526ms
+2026-02-04 22:22:23.489 10189-10189 Choreographer           com.cdccreditsmart.app               I  Skipped 30 frames!  The application may be doing too much work on its main thread.
+2026-02-04 22:22:23.490 10189-10330 SupportRepository       com.cdccreditsmart.app               I  📡 Buscando dados de contato do servidor...
+2026-02-04 22:22:23.501 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  --> GET https://cdccreditsmart.com/v1/support/contact
+2026-02-04 22:22:23.501 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  --> END GET
+2026-02-04 22:22:23.566 10189-10789 HWUI                    com.cdccreditsmart.app               I  Davey! duration=718ms; Flags=0, FrameTimelineVsyncId=11320785, IntendedVsync=65792536217526, Vsync=65792669213270, InputEventId=0, HandleInputStart=65792670009305, AnimationStart=65792670012997, PerformTraversalsStart=65792896334613, DrawStart=65792896476382, FrameDeadline=65792572786036, FrameInterval=65792669390228, FrameStartTime=16624468, SyncQueued=65793180786613, SyncStart=65793180981382, IssueDrawCommandsStart=65793181734920, SwapBuffers=65793246078228, FrameCompleted=65793255168689, DequeueBufferDuration=151385, QueueBufferDuration=358077, GpuCompleted=65793255168689, SwapBuffersCompleted=65793246720766, DisplayPresentTime=65790521788997, CommandSubmissionCompleted=65793246078228, 
+2026-02-04 22:22:23.878 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  <-- 200 https://cdccreditsmart.com/v1/support/contact (376ms)
+2026-02-04 22:22:23.878 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-credentials: true
+2026-02-04 22:22:23.878 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-headers: Origin, X-Requested-With, Content-Type, Accept, Authorization, x-client-key, x-client-token, x-client-secret, cache-control
+2026-02-04 22:22:23.878 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-methods: GET, POST, PUT, PATCH, DELETE, OPTIONS
+2026-02-04 22:22:23.879 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-origin: *
+2026-02-04 22:22:23.879 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-max-age: 86400
+2026-02-04 22:22:23.879 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-length: 111
+2026-02-04 22:22:23.879 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-security-policy: default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://replit.com; style-src 'self' 'unsafe-inline' https://replit.com; img-src 'self' data: https:; font-src 'self' data: https://replit.com; connect-src 'self';
+2026-02-04 22:22:23.879 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-type: application/json; charset=utf-8
+2026-02-04 22:22:23.879 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  date: Thu, 05 Feb 2026 01:22:23 GMT
+2026-02-04 22:22:23.879 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  etag: W/"6f-ar1ZGdhbShZ7SAODOF+BTA5O768"
+2026-02-04 22:22:23.879 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  permissions-policy: geolocation=(), microphone=(), camera=()
+2026-02-04 22:22:23.879 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  referrer-policy: strict-origin-when-cross-origin
+2026-02-04 22:22:23.880 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  strict-transport-security: max-age=63072000; includeSubDomains
+2026-02-04 22:22:23.880 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  strict-transport-security: max-age=31536000; includeSubDomains
+2026-02-04 22:22:23.880 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-anti-fraud-protection: active
+2026-02-04 22:22:23.880 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-certificate-pinning-enabled: false
+2026-02-04 22:22:23.880 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-certificate-pinning-status: disabled-for-stability
+2026-02-04 22:22:23.880 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-content-type-options: nosniff
+2026-02-04 22:22:23.880 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-financial-data-protection: enabled
+2026-02-04 22:22:23.880 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-frame-options: DENY
+2026-02-04 22:22:23.880 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-transaction-security-level: maximum
+2026-02-04 22:22:23.881 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-xss-protection: 1; mode=block
+2026-02-04 22:22:23.881 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  via: 1.1 google
+2026-02-04 22:22:23.881 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  alt-svc: h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
+2026-02-04 22:22:23.883 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  {"phone":"(85) 98188-8810","whatsapp":"(85) 98188-8810","contactLink":"https://www.cdccreditsmart.com/contato"}
+2026-02-04 22:22:23.884 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  <-- END HTTP (111-byte body)
+2026-02-04 22:22:23.890 10189-10330 SupportRepository       com.cdccreditsmart.app               I  ✅ Dados de contato atualizados: phone=true, whatsapp=true, link=true
+2026-02-04 22:22:25.139 10189-10189 ScrollIdentify          com.cdccreditsmart.app               I  on fling
+2026-02-04 22:22:26.909 10189-10189 ScrollIdentify          com.cdccreditsmart.app               I  on fling
+2026-02-04 22:22:28.046 10189-10189 ScrollIdentify          com.cdccreditsmart.app               I  on fling
+2026-02-04 22:22:29.320 10189-10189 ScrollIdentify          com.cdccreditsmart.app               I  on fling
+2026-02-04 22:22:29.717 10189-10189 ScrollIdentify          com.cdccreditsmart.app               I  on fling
+2026-02-04 22:22:30.042 10189-10189 ScrollIdentify          com.cdccreditsmart.app               I  on fling
+2026-02-04 22:22:30.508 10189-10189 ScrollIdentify          com.cdccreditsmart.app               I  on fling
+2026-02-04 22:22:30.848 10189-10189 ScrollIdentify          com.cdccreditsmart.app               I  on fling
+2026-02-04 22:22:31.138 10189-10189 ScrollIdentify          com.cdccreditsmart.app               I  on fling
+2026-02-04 22:22:31.447 10189-10189 ScrollIdentify          com.cdccreditsmart.app               I  on fling
+2026-02-04 22:22:31.712 10189-10189 ScrollIdentify          com.cdccreditsmart.app               I  on fling
+2026-02-04 22:22:31.995 10189-10189 ScrollIdentify          com.cdccreditsmart.app               I  on fling
+2026-02-04 22:22:32.293 10189-10189 ScrollIdentify          com.cdccreditsmart.app               I  on fling
+2026-02-04 22:22:32.864 10189-10189 ScrollIdentify          com.cdccreditsmart.app               I  on fling
+2026-02-04 22:22:33.158 10189-10189 ScrollIdentify          com.cdccreditsmart.app               I  on fling
+2026-02-04 22:22:33.499 10189-10189 ScrollIdentify          com.cdccreditsmart.app               I  on fling
+2026-02-04 22:22:33.890 10189-10189 ScrollIdentify          com.cdccreditsmart.app               I  on fling
+2026-02-04 22:22:33.962 10189-10189 WebSocketManager        com.cdccreditsmart.app               D  Heartbeat ping sent
+2026-02-04 22:22:34.159 10189-10814 WebSocketManager        com.cdccreditsmart.app               D  Message received: {"type":"pong","timestamp":"2026-02-05T01:22:34.094Z"}...
+2026-02-04 22:22:34.159 10189-10814 WebSocketManager        com.cdccreditsmart.app               D  Received message type: pong
+2026-02-04 22:22:34.159 10189-10814 WebSocketManager        com.cdccreditsmart.app               D  Pong received
+2026-02-04 22:22:34.161 10189-10189 WebSocketManager        com.cdccreditsmart.app               D  Heartbeat ping sent
+2026-02-04 22:22:34.222 10189-10189 ScrollIdentify          com.cdccreditsmart.app               I  on fling
+2026-02-04 22:22:34.355 10189-10814 WebSocketManager        com.cdccreditsmart.app               D  Message received: {"type":"pong","timestamp":"2026-02-05T01:22:34.290Z"}...
+2026-02-04 22:22:34.355 10189-10814 WebSocketManager        com.cdccreditsmart.app               D  Received message type: pong
+2026-02-04 22:22:34.355 10189-10814 WebSocketManager        com.cdccreditsmart.app               D  Pong received
+2026-02-04 22:22:34.576 10189-10189 ScrollIdentify          com.cdccreditsmart.app               I  on fling
+2026-02-04 22:22:34.584 10189-10189 WebSocketManager        com.cdccreditsmart.app               D  Heartbeat ping sent
+2026-02-04 22:22:34.772 10189-10189 WebSocketManager        com.cdccreditsmart.app               D  Heartbeat ping sent
+2026-02-04 22:22:34.778 10189-10828 WebSocketManager        com.cdccreditsmart.app               D  Message received: {"type":"pong","timestamp":"2026-02-05T01:22:34.714Z"}...
+2026-02-04 22:22:34.778 10189-10828 WebSocketManager        com.cdccreditsmart.app               D  Received message type: pong
+2026-02-04 22:22:34.778 10189-10828 WebSocketManager        com.cdccreditsmart.app               D  Pong received
+2026-02-04 22:22:34.843 10189-10330 MdmCommandReceiver      com.cdccreditsmart.app               I  🔍 [Polling #2] Verificando comandos pendentes...
+2026-02-04 22:22:34.847 10189-10330 SecureTokenStorage      com.cdccreditsmart.app               D  ✅ Usando IMEI para MDM: 3531***198
+2026-02-04 22:22:34.847 10189-10330 MdmCommandReceiver      com.cdccreditsmart.app               I  🔍 ========================================
+2026-02-04 22:22:34.847 10189-10330 MdmCommandReceiver      com.cdccreditsmart.app               I  🔍 BUSCANDO COMANDOS PENDENTES
+2026-02-04 22:22:34.847 10189-10330 MdmCommandReceiver      com.cdccreditsmart.app               I  🔍 ========================================
+2026-02-04 22:22:34.847 10189-10330 MdmCommandReceiver      com.cdccreditsmart.app               I  🔍 Identifier: 353104906953198
+2026-02-04 22:22:34.847 10189-10330 MdmCommandReceiver      com.cdccreditsmart.app               I  🔍 Endpoint: GET /api/apk/device/353104906953198/commands
+2026-02-04 22:22:34.849 10189-10330 MdmCommandReceiver      com.cdccreditsmart.app               D  🔍 Executando requisição HTTP (timeout: 15s)...
+2026-02-04 22:22:34.857 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  --> GET https://cdccreditsmart.com/api/apk/device/353104906953198/commands
+2026-02-04 22:22:34.857 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  --> END GET
+2026-02-04 22:22:34.969 10189-10828 WebSocketManager        com.cdccreditsmart.app               D  Message received: {"type":"pong","timestamp":"2026-02-05T01:22:34.903Z"}...
+2026-02-04 22:22:34.969 10189-10828 WebSocketManager        com.cdccreditsmart.app               D  Received message type: pong
+2026-02-04 22:22:34.969 10189-10828 WebSocketManager        com.cdccreditsmart.app               D  Pong received
+2026-02-04 22:22:35.443 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  <-- 200 https://cdccreditsmart.com/api/apk/device/353104906953198/commands (585ms)
+2026-02-04 22:22:35.443 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-credentials: true
+2026-02-04 22:22:35.443 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-headers: Origin, X-Requested-With, Content-Type, Accept, Authorization, x-client-key, x-client-token, x-client-secret, cache-control
+2026-02-04 22:22:35.444 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-methods: GET, POST, PUT, PATCH, DELETE, OPTIONS
+2026-02-04 22:22:35.444 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-origin: *
+2026-02-04 22:22:35.444 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-max-age: 86400
+2026-02-04 22:22:35.444 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-length: 499
+2026-02-04 22:22:35.444 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-security-policy: default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://replit.com; style-src 'self' 'unsafe-inline' https://replit.com; img-src 'self' data: https:; font-src 'self' data: https://replit.com; connect-src 'self';
+2026-02-04 22:22:35.444 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-type: application/json; charset=utf-8
+2026-02-04 22:22:35.444 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  date: Thu, 05 Feb 2026 01:22:35 GMT
+2026-02-04 22:22:35.444 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  etag: W/"1f3-MX/LGiCBjiEn9BYNzT1GXnIMxqU"
+2026-02-04 22:22:35.444 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  permissions-policy: geolocation=(), microphone=(), camera=()
+2026-02-04 22:22:35.445 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  referrer-policy: strict-origin-when-cross-origin
+2026-02-04 22:22:35.445 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  strict-transport-security: max-age=63072000; includeSubDomains
+2026-02-04 22:22:35.445 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  strict-transport-security: max-age=31536000; includeSubDomains
+2026-02-04 22:22:35.445 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-anti-fraud-protection: active
+2026-02-04 22:22:35.445 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-certificate-pinning-enabled: false
+2026-02-04 22:22:35.445 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-certificate-pinning-status: disabled-for-stability
+2026-02-04 22:22:35.445 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-content-type-options: nosniff
+2026-02-04 22:22:35.445 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-financial-data-protection: enabled
+2026-02-04 22:22:35.446 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-frame-options: DENY
+2026-02-04 22:22:35.446 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-transaction-security-level: maximum
+2026-02-04 22:22:35.446 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-xss-protection: 1; mode=block
+2026-02-04 22:22:35.446 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  via: 1.1 google
+2026-02-04 22:22:35.446 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  alt-svc: h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
+2026-02-04 22:22:35.447 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  {"deviceId":"device_1770254468961_ntmzx6jd09","serialNumber":"PFB3PRMZ","commandsCount":2,"commands":[{"id":"dfa0cf00-9168-4d3e-85e0-08d53b54411d","commandType":"CONFIGURE_UNINSTALL_CODE","parameters":null,"priority":"high","status":"pending","createdAt":"2026-02-05T01:22:29.174Z","expiresAt":null},{"id":"5decda77-e8e9-4304-a088-2462dd787ffd","commandType":"CONFIGURE_UNINSTALL_CODE","parameters":null,"priority":"high","status":"pending","createdAt":"2026-02-05T01:22:29.102Z","expiresAt":null}]}
+2026-02-04 22:22:35.448 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  <-- END HTTP (499-byte body)
+2026-02-04 22:22:35.455 10189-10330 MdmCommandReceiver      com.cdccreditsmart.app               I  🔍 HTTP Response code: 200
+2026-02-04 22:22:35.455 10189-10330 MdmCommandReceiver      com.cdccreditsmart.app               I  🔍 HTTP isSuccessful: true
+2026-02-04 22:22:35.455 10189-10330 MdmCommandReceiver      com.cdccreditsmart.app               I  🔍 Response body deviceId: device_1770254468961_ntmzx6jd09
+2026-02-04 22:22:35.456 10189-10330 MdmCommandReceiver      com.cdccreditsmart.app               I  🔍 Response body serialNumber: PFB3PRMZ
+2026-02-04 22:22:35.456 10189-10330 MdmCommandReceiver      com.cdccreditsmart.app               I  🔍 Total de comandos: 2
+2026-02-04 22:22:35.456 10189-10330 MdmCommandReceiver      com.cdccreditsmart.app               I  📋 ========================================
+2026-02-04 22:22:35.456 10189-10330 MdmCommandReceiver      com.cdccreditsmart.app               I  📋 2 COMANDOS PENDENTES ENCONTRADOS!
+2026-02-04 22:22:35.456 10189-10330 MdmCommandReceiver      com.cdccreditsmart.app               I  📋 ========================================
+2026-02-04 22:22:35.456 10189-10330 MdmCommandReceiver      com.cdccreditsmart.app               I  📋 [0] ID: dfa0cf00-9168-4d3e-85e0-08d53b54411d
+2026-02-04 22:22:35.456 10189-10330 MdmCommandReceiver      com.cdccreditsmart.app               I  📋 [0] Tipo: CONFIGURE_UNINSTALL_CODE
+2026-02-04 22:22:35.456 10189-10330 MdmCommandReceiver      com.cdccreditsmart.app               I  📋 [0] Status: pending
+2026-02-04 22:22:35.456 10189-10330 MdmCommandReceiver      com.cdccreditsmart.app               I  📋 [0] Prioridade: high
+2026-02-04 22:22:35.457 10189-10330 MdmCommandReceiver      com.cdccreditsmart.app               I  📋 [0] Parameters class: EmptyParameters
+2026-02-04 22:22:35.457 10189-10330 MdmCommandReceiver      com.cdccreditsmart.app               I  📋 Processando comando (timeout: 60s)...
+2026-02-04 22:22:35.458 10189-10330 MdmCommandReceiver      com.cdccreditsmart.app               I  ⚙️ Processando comando dfa0cf00-9168-4d3e-85e0-08d53b54411d (tipo: CONFIGURE_UNINSTALL_CODE)
+2026-02-04 22:22:35.465 10189-10330 CdcForegroundService    com.cdccreditsmart.app               D  🔋 WakeLock adquirido para comando (30s timeout)
+2026-02-04 22:22:35.465 10189-10330 MdmCommandReceiver      com.cdccreditsmart.app               D  🔋 WakeLock adquirido para comando MDM dfa0cf00-9168-4d3e-85e0-08d53b54411d
+2026-02-04 22:22:35.467 10189-10330 MdmCommandReceiver      com.cdccreditsmart.app               D  📡 Enviando ACK: POST /api/apk/device/commands/dfa0cf00-9168-4d3e-85e0-08d53b54411d/status
+2026-02-04 22:22:35.483 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  --> POST https://cdccreditsmart.com/api/apk/device/commands/dfa0cf00-9168-4d3e-85e0-08d53b54411d/status
+2026-02-04 22:22:35.483 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  Content-Type: application/json; charset=UTF-8
+2026-02-04 22:22:35.483 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  Content-Length: 25
+2026-02-04 22:22:35.484 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  {"status":"acknowledged"}
+2026-02-04 22:22:35.484 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  --> END POST (25-byte body)
+2026-02-04 22:22:35.702 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  <-- 404 https://cdccreditsmart.com/api/apk/device/commands/dfa0cf00-9168-4d3e-85e0-08d53b54411d/status (218ms)
+2026-02-04 22:22:35.703 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-credentials: true
+2026-02-04 22:22:35.703 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-headers: Origin, X-Requested-With, Content-Type, Accept, Authorization, x-client-key, x-client-token, x-client-secret, cache-control
+2026-02-04 22:22:35.703 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-methods: GET, POST, PUT, PATCH, DELETE, OPTIONS
+2026-02-04 22:22:35.703 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-origin: *
+2026-02-04 22:22:35.703 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-max-age: 86400
+2026-02-04 22:22:35.703 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-length: 497
+2026-02-04 22:22:35.703 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-security-policy: default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://replit.com; style-src 'self' 'unsafe-inline' https://replit.com; img-src 'self' data: https:; font-src 'self' data: https://replit.com; connect-src 'self';
+2026-02-04 22:22:35.703 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-type: application/json; charset=utf-8
+2026-02-04 22:22:35.703 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  date: Thu, 05 Feb 2026 01:22:35 GMT
+2026-02-04 22:22:35.703 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  etag: W/"1f1-Xqt1D7huFEOoq9tDxfNGd3K7vH4"
+2026-02-04 22:22:35.704 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  permissions-policy: geolocation=(), microphone=(), camera=()
+2026-02-04 22:22:35.704 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  referrer-policy: strict-origin-when-cross-origin
+2026-02-04 22:22:35.704 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  strict-transport-security: max-age=63072000; includeSubDomains
+2026-02-04 22:22:35.704 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  strict-transport-security: max-age=31536000; includeSubDomains
+2026-02-04 22:22:35.704 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-anti-fraud-protection: active
+2026-02-04 22:22:35.704 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-certificate-pinning-enabled: false
+2026-02-04 22:22:35.704 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-certificate-pinning-status: disabled-for-stability
+2026-02-04 22:22:35.704 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-content-type-options: nosniff
+2026-02-04 22:22:35.704 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-financial-data-protection: enabled
+2026-02-04 22:22:35.705 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-frame-options: DENY
+2026-02-04 22:22:35.705 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-transaction-security-level: maximum
+2026-02-04 22:22:35.705 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-xss-protection: 1; mode=block
+2026-02-04 22:22:35.705 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  via: 1.1 google
+2026-02-04 22:22:35.705 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  alt-svc: h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
+2026-02-04 22:22:35.706 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  {"error":"API endpoint not found","message":"Rota APK não encontrada","path":"/","method":"POST","timestamp":"2026-02-05T01:22:35.627Z","available_endpoints":["GET /api/apk/device/{serial}/status","POST /api/apk/device/{fingerprint}/sync","POST /api/apk/device/{fingerprint}/register-info","POST /api/apk/auth","GET /api/apk/device/{identifier}/commands","POST /api/apk/device/commands/{commandId}/status","POST /api/apk/device/{identifier}/command-response","GET /api/apk/device/commands/test"]}
+2026-02-04 22:22:35.706 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  <-- END HTTP (497-byte body)
+2026-02-04 22:22:35.708 10189-10330 MdmCommandReceiver      com.cdccreditsmart.app               W  ⚠️ Endpoint status falhou (HTTP 404), tentando fallback...
+2026-02-04 22:22:35.711 10189-10330 SecureTokenStorage      com.cdccreditsmart.app               D  ✅ Usando IMEI para MDM: 3531***198
+2026-02-04 22:22:35.711 10189-10330 MdmCommandReceiver      com.cdccreditsmart.app               D  📡 Fallback: POST /api/apk/device/353104906953198/command-response
+2026-02-04 22:22:35.723 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  --> POST https://cdccreditsmart.com/api/apk/device/353104906953198/command-response
+2026-02-04 22:22:35.723 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  Content-Type: application/json; charset=UTF-8
+2026-02-04 22:22:35.723 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  Content-Length: 76
+2026-02-04 22:22:35.724 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  {"commandId":"dfa0cf00-9168-4d3e-85e0-08d53b54411d","status":"acknowledged"}
+2026-02-04 22:22:35.724 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  --> END POST (76-byte body)
+2026-02-04 22:22:35.976 10189-10189 ScrollIdentify          com.cdccreditsmart.app               I  on fling
+2026-02-04 22:22:36.258 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  <-- 200 https://cdccreditsmart.com/api/apk/device/353104906953198/command-response (534ms)
+2026-02-04 22:22:36.259 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-credentials: true
+2026-02-04 22:22:36.259 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-headers: Origin, X-Requested-With, Content-Type, Accept, Authorization, x-client-key, x-client-token, x-client-secret, cache-control
+2026-02-04 22:22:36.259 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-methods: GET, POST, PUT, PATCH, DELETE, OPTIONS
+2026-02-04 22:22:36.259 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-origin: *
+2026-02-04 22:22:36.259 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-max-age: 86400
+2026-02-04 22:22:36.259 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-length: 59
+2026-02-04 22:22:36.259 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-security-policy: default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://replit.com; style-src 'self' 'unsafe-inline' https://replit.com; img-src 'self' data: https:; font-src 'self' data: https://replit.com; connect-src 'self';
+2026-02-04 22:22:36.259 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-type: application/json; charset=utf-8
+2026-02-04 22:22:36.259 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  date: Thu, 05 Feb 2026 01:22:36 GMT
+2026-02-04 22:22:36.259 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  etag: W/"3b-9gCHwmPb8p6jYm5WExczQnIIdAU"
+2026-02-04 22:22:36.259 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  permissions-policy: geolocation=(), microphone=(), camera=()
+2026-02-04 22:22:36.259 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  referrer-policy: strict-origin-when-cross-origin
+2026-02-04 22:22:36.259 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  strict-transport-security: max-age=63072000; includeSubDomains
+2026-02-04 22:22:36.260 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  strict-transport-security: max-age=31536000; includeSubDomains
+2026-02-04 22:22:36.260 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-anti-fraud-protection: active
+2026-02-04 22:22:36.260 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-certificate-pinning-enabled: false
+2026-02-04 22:22:36.260 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-certificate-pinning-status: disabled-for-stability
+2026-02-04 22:22:36.260 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-content-type-options: nosniff
+2026-02-04 22:22:36.260 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-financial-data-protection: enabled
+2026-02-04 22:22:36.260 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-frame-options: DENY
+2026-02-04 22:22:36.260 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-transaction-security-level: maximum
+2026-02-04 22:22:36.260 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-xss-protection: 1; mode=block
+2026-02-04 22:22:36.260 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  via: 1.1 google
+2026-02-04 22:22:36.260 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  alt-svc: h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
+2026-02-04 22:22:36.261 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  {"success":true,"message":"Resposta do comando registrada"}
+2026-02-04 22:22:36.261 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  <-- END HTTP (59-byte body)
+2026-02-04 22:22:36.262 10189-10330 MdmCommandReceiver      com.cdccreditsmart.app               I  ✅ ACK enviado via fallback para comando dfa0cf00-9168-4d3e-85e0-08d53b54411d
+2026-02-04 22:22:36.263 10189-10330 MdmCommandReceiver      com.cdccreditsmart.app               I  ⚙️ Processando comando sem parâmetros: CONFIGURE_UNINSTALL_CODE
+2026-02-04 22:22:36.263 10189-10330 MdmCommandReceiver      com.cdccreditsmart.app               W  ⚠️ CONFIGURE_UNINSTALL_CODE recebido sem código - ignorando
+2026-02-04 22:22:36.264 10189-10330 MdmCommandReceiver      com.cdccreditsmart.app               D  📡 Enviando response para comando: dfa0cf00-9168-4d3e-85e0-08d53b54411d
+2026-02-04 22:22:36.264 10189-10330 MdmCommandReceiver      com.cdccreditsmart.app               D  📡 Status: completed
+2026-02-04 22:22:36.264 10189-10330 MdmCommandReceiver      com.cdccreditsmart.app               D  📡 Enviando: POST /api/apk/device/commands/dfa0cf00-9168-4d3e-85e0-08d53b54411d/status
+2026-02-04 22:22:36.270 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  --> POST https://cdccreditsmart.com/api/apk/device/commands/dfa0cf00-9168-4d3e-85e0-08d53b54411d/status
+2026-02-04 22:22:36.270 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  Content-Type: application/json; charset=UTF-8
+2026-02-04 22:22:36.271 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  Content-Length: 74
+2026-02-04 22:22:36.271 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  {"status":"completed","result":{"success":true,"timestamp":1770254556264}}
+2026-02-04 22:22:36.271 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  --> END POST (74-byte body)
+2026-02-04 22:22:36.409 10189-10189 ScrollIdentify          com.cdccreditsmart.app               I  on fling
+2026-02-04 22:22:36.604 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  <-- 404 https://cdccreditsmart.com/api/apk/device/commands/dfa0cf00-9168-4d3e-85e0-08d53b54411d/status (332ms)
+2026-02-04 22:22:36.604 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-credentials: true
+2026-02-04 22:22:36.604 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-headers: Origin, X-Requested-With, Content-Type, Accept, Authorization, x-client-key, x-client-token, x-client-secret, cache-control
+2026-02-04 22:22:36.604 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-methods: GET, POST, PUT, PATCH, DELETE, OPTIONS
+2026-02-04 22:22:36.605 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-origin: *
+2026-02-04 22:22:36.605 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-max-age: 86400
+2026-02-04 22:22:36.605 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-length: 497
+2026-02-04 22:22:36.605 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-security-policy: default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://replit.com; style-src 'self' 'unsafe-inline' https://replit.com; img-src 'self' data: https:; font-src 'self' data: https://replit.com; connect-src 'self';
+2026-02-04 22:22:36.605 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-type: application/json; charset=utf-8
+2026-02-04 22:22:36.605 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  date: Thu, 05 Feb 2026 01:22:36 GMT
+2026-02-04 22:22:36.605 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  etag: W/"1f1-4VpBsAVOWE0AVJCjVrPivs8TI0U"
+2026-02-04 22:22:36.605 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  permissions-policy: geolocation=(), microphone=(), camera=()
+2026-02-04 22:22:36.605 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  referrer-policy: strict-origin-when-cross-origin
+2026-02-04 22:22:36.605 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  strict-transport-security: max-age=63072000; includeSubDomains
+2026-02-04 22:22:36.605 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  strict-transport-security: max-age=31536000; includeSubDomains
+2026-02-04 22:22:36.605 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-anti-fraud-protection: active
+2026-02-04 22:22:36.606 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-certificate-pinning-enabled: false
+2026-02-04 22:22:36.606 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-certificate-pinning-status: disabled-for-stability
+2026-02-04 22:22:36.606 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-content-type-options: nosniff
+2026-02-04 22:22:36.606 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-financial-data-protection: enabled
+2026-02-04 22:22:36.606 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-frame-options: DENY
+2026-02-04 22:22:36.606 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-transaction-security-level: maximum
+2026-02-04 22:22:36.606 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-xss-protection: 1; mode=block
+2026-02-04 22:22:36.606 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  via: 1.1 google
+2026-02-04 22:22:36.606 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  alt-svc: h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
+2026-02-04 22:22:36.608 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  {"error":"API endpoint not found","message":"Rota APK não encontrada","path":"/","method":"POST","timestamp":"2026-02-05T01:22:36.528Z","available_endpoints":["GET /api/apk/device/{serial}/status","POST /api/apk/device/{fingerprint}/sync","POST /api/apk/device/{fingerprint}/register-info","POST /api/apk/auth","GET /api/apk/device/{identifier}/commands","POST /api/apk/device/commands/{commandId}/status","POST /api/apk/device/{identifier}/command-response","GET /api/apk/device/commands/test"]}
+2026-02-04 22:22:36.608 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  <-- END HTTP (497-byte body)
+2026-02-04 22:22:36.610 10189-10330 MdmCommandReceiver      com.cdccreditsmart.app               W  ⚠️ Endpoint status falhou (HTTP 404), tentando fallback...
+2026-02-04 22:22:36.613 10189-10330 SecureTokenStorage      com.cdccreditsmart.app               D  ✅ Usando IMEI para MDM: 3531***198
+2026-02-04 22:22:36.614 10189-10330 MdmCommandReceiver      com.cdccreditsmart.app               D  📡 Fallback: Usando endpoint legado: POST /api/apk/device/353104906953198/command-response
+2026-02-04 22:22:36.622 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  --> POST https://cdccreditsmart.com/api/apk/device/353104906953198/command-response
+2026-02-04 22:22:36.622 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  Content-Type: application/json; charset=UTF-8
+2026-02-04 22:22:36.623 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  Content-Length: 127
+2026-02-04 22:22:36.623 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  {"commandId":"dfa0cf00-9168-4d3e-85e0-08d53b54411d","status":"completed","response":{"success":true,"timestamp":1770254556614}}
+2026-02-04 22:22:36.623 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  --> END POST (127-byte body)
+2026-02-04 22:22:37.185 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  <-- 200 https://cdccreditsmart.com/api/apk/device/353104906953198/command-response (561ms)
+2026-02-04 22:22:37.186 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-credentials: true
+2026-02-04 22:22:37.186 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-headers: Origin, X-Requested-With, Content-Type, Accept, Authorization, x-client-key, x-client-token, x-client-secret, cache-control
+2026-02-04 22:22:37.186 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-methods: GET, POST, PUT, PATCH, DELETE, OPTIONS
+2026-02-04 22:22:37.186 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-origin: *
+2026-02-04 22:22:37.186 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-max-age: 86400
+2026-02-04 22:22:37.186 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-length: 59
+2026-02-04 22:22:37.186 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-security-policy: default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://replit.com; style-src 'self' 'unsafe-inline' https://replit.com; img-src 'self' data: https:; font-src 'self' data: https://replit.com; connect-src 'self';
+2026-02-04 22:22:37.186 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-type: application/json; charset=utf-8
+2026-02-04 22:22:37.186 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  date: Thu, 05 Feb 2026 01:22:36 GMT
+2026-02-04 22:22:37.186 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  etag: W/"3b-9gCHwmPb8p6jYm5WExczQnIIdAU"
+2026-02-04 22:22:37.186 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  permissions-policy: geolocation=(), microphone=(), camera=()
+2026-02-04 22:22:37.187 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  referrer-policy: strict-origin-when-cross-origin
+2026-02-04 22:22:37.187 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  strict-transport-security: max-age=63072000; includeSubDomains
+2026-02-04 22:22:37.187 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  strict-transport-security: max-age=31536000; includeSubDomains
+2026-02-04 22:22:37.187 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-anti-fraud-protection: active
+2026-02-04 22:22:37.187 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-certificate-pinning-enabled: false
+2026-02-04 22:22:37.187 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-certificate-pinning-status: disabled-for-stability
+2026-02-04 22:22:37.187 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-content-type-options: nosniff
+2026-02-04 22:22:37.187 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-financial-data-protection: enabled
+2026-02-04 22:22:37.187 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-frame-options: DENY
+2026-02-04 22:22:37.187 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-transaction-security-level: maximum
+2026-02-04 22:22:37.188 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-xss-protection: 1; mode=block
+2026-02-04 22:22:37.188 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  via: 1.1 google
+2026-02-04 22:22:37.188 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  alt-svc: h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
+2026-02-04 22:22:37.189 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  {"success":true,"message":"Resposta do comando registrada"}
+2026-02-04 22:22:37.190 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  <-- END HTTP (59-byte body)
+2026-02-04 22:22:37.191 10189-10330 MdmCommandReceiver      com.cdccreditsmart.app               I  ✅ Response enviado via fallback para comando dfa0cf00-9168-4d3e-85e0-08d53b54411d: completed
+2026-02-04 22:22:37.192 10189-10330 MdmCommandReceiver      com.cdccreditsmart.app               I  📋 [1] ID: 5decda77-e8e9-4304-a088-2462dd787ffd
+2026-02-04 22:22:37.192 10189-10330 MdmCommandReceiver      com.cdccreditsmart.app               I  📋 [1] Tipo: CONFIGURE_UNINSTALL_CODE
+2026-02-04 22:22:37.192 10189-10330 MdmCommandReceiver      com.cdccreditsmart.app               I  📋 [1] Status: pending
+2026-02-04 22:22:37.192 10189-10330 MdmCommandReceiver      com.cdccreditsmart.app               I  📋 [1] Prioridade: high
+2026-02-04 22:22:37.192 10189-10330 MdmCommandReceiver      com.cdccreditsmart.app               I  📋 [1] Parameters class: EmptyParameters
+2026-02-04 22:22:37.192 10189-10330 MdmCommandReceiver      com.cdccreditsmart.app               I  📋 Processando comando (timeout: 60s)...
+2026-02-04 22:22:37.193 10189-10330 MdmCommandReceiver      com.cdccreditsmart.app               I  ⚙️ Processando comando 5decda77-e8e9-4304-a088-2462dd787ffd (tipo: CONFIGURE_UNINSTALL_CODE)
+2026-02-04 22:22:37.193 10189-10330 CdcForegroundService    com.cdccreditsmart.app               D  🔋 WakeLock já está held - ignorando acquire
+2026-02-04 22:22:37.193 10189-10330 MdmCommandReceiver      com.cdccreditsmart.app               D  🔋 WakeLock adquirido para comando MDM 5decda77-e8e9-4304-a088-2462dd787ffd
+2026-02-04 22:22:37.195 10189-10330 MdmCommandReceiver      com.cdccreditsmart.app               D  📡 Enviando ACK: POST /api/apk/device/commands/5decda77-e8e9-4304-a088-2462dd787ffd/status
+2026-02-04 22:22:37.204 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  --> POST https://cdccreditsmart.com/api/apk/device/commands/5decda77-e8e9-4304-a088-2462dd787ffd/status
+2026-02-04 22:22:37.205 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  Content-Type: application/json; charset=UTF-8
+2026-02-04 22:22:37.205 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  Content-Length: 25
+2026-02-04 22:22:37.205 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  {"status":"acknowledged"}
+2026-02-04 22:22:37.206 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  --> END POST (25-byte body)
+2026-02-04 22:22:37.443 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  <-- 404 https://cdccreditsmart.com/api/apk/device/commands/5decda77-e8e9-4304-a088-2462dd787ffd/status (237ms)
+2026-02-04 22:22:37.444 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-credentials: true
+2026-02-04 22:22:37.444 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-headers: Origin, X-Requested-With, Content-Type, Accept, Authorization, x-client-key, x-client-token, x-client-secret, cache-control
+2026-02-04 22:22:37.444 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-methods: GET, POST, PUT, PATCH, DELETE, OPTIONS
+2026-02-04 22:22:37.444 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-origin: *
+2026-02-04 22:22:37.444 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-max-age: 86400
+2026-02-04 22:22:37.444 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-length: 497
+2026-02-04 22:22:37.444 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-security-policy: default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://replit.com; style-src 'self' 'unsafe-inline' https://replit.com; img-src 'self' data: https:; font-src 'self' data: https://replit.com; connect-src 'self';
+2026-02-04 22:22:37.444 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-type: application/json; charset=utf-8
+2026-02-04 22:22:37.444 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  date: Thu, 05 Feb 2026 01:22:37 GMT
+2026-02-04 22:22:37.445 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  etag: W/"1f1-MVW803QMeL1IwprlqSjt/W7Bb+I"
+2026-02-04 22:22:37.445 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  permissions-policy: geolocation=(), microphone=(), camera=()
+2026-02-04 22:22:37.445 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  referrer-policy: strict-origin-when-cross-origin
+2026-02-04 22:22:37.445 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  strict-transport-security: max-age=63072000; includeSubDomains
+2026-02-04 22:22:37.445 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  strict-transport-security: max-age=31536000; includeSubDomains
+2026-02-04 22:22:37.445 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-anti-fraud-protection: active
+2026-02-04 22:22:37.445 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-certificate-pinning-enabled: false
+2026-02-04 22:22:37.445 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-certificate-pinning-status: disabled-for-stability
+2026-02-04 22:22:37.445 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-content-type-options: nosniff
+2026-02-04 22:22:37.446 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-financial-data-protection: enabled
+2026-02-04 22:22:37.446 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-frame-options: DENY
+2026-02-04 22:22:37.446 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-transaction-security-level: maximum
+2026-02-04 22:22:37.446 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-xss-protection: 1; mode=block
+2026-02-04 22:22:37.446 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  via: 1.1 google
+2026-02-04 22:22:37.446 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  alt-svc: h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
+2026-02-04 22:22:37.447 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  {"error":"API endpoint not found","message":"Rota APK não encontrada","path":"/","method":"POST","timestamp":"2026-02-05T01:22:37.367Z","available_endpoints":["GET /api/apk/device/{serial}/status","POST /api/apk/device/{fingerprint}/sync","POST /api/apk/device/{fingerprint}/register-info","POST /api/apk/auth","GET /api/apk/device/{identifier}/commands","POST /api/apk/device/commands/{commandId}/status","POST /api/apk/device/{identifier}/command-response","GET /api/apk/device/commands/test"]}
+2026-02-04 22:22:37.448 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  <-- END HTTP (497-byte body)
+2026-02-04 22:22:37.449 10189-10330 MdmCommandReceiver      com.cdccreditsmart.app               W  ⚠️ Endpoint status falhou (HTTP 404), tentando fallback...
+2026-02-04 22:22:37.452 10189-10330 SecureTokenStorage      com.cdccreditsmart.app               D  ✅ Usando IMEI para MDM: 3531***198
+2026-02-04 22:22:37.452 10189-10330 MdmCommandReceiver      com.cdccreditsmart.app               D  📡 Fallback: POST /api/apk/device/353104906953198/command-response
+2026-02-04 22:22:37.460 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  --> POST https://cdccreditsmart.com/api/apk/device/353104906953198/command-response
+2026-02-04 22:22:37.461 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  Content-Type: application/json; charset=UTF-8
+2026-02-04 22:22:37.461 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  Content-Length: 76
+2026-02-04 22:22:37.461 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  {"commandId":"5decda77-e8e9-4304-a088-2462dd787ffd","status":"acknowledged"}
+2026-02-04 22:22:37.461 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  --> END POST (76-byte body)
+2026-02-04 22:22:37.913 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  <-- 200 https://cdccreditsmart.com/api/apk/device/353104906953198/command-response (451ms)
+2026-02-04 22:22:37.913 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-credentials: true
+2026-02-04 22:22:37.913 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-headers: Origin, X-Requested-With, Content-Type, Accept, Authorization, x-client-key, x-client-token, x-client-secret, cache-control
+2026-02-04 22:22:37.913 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-methods: GET, POST, PUT, PATCH, DELETE, OPTIONS
+2026-02-04 22:22:37.913 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-origin: *
+2026-02-04 22:22:37.913 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-max-age: 86400
+2026-02-04 22:22:37.914 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-length: 59
+2026-02-04 22:22:37.914 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-security-policy: default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://replit.com; style-src 'self' 'unsafe-inline' https://replit.com; img-src 'self' data: https:; font-src 'self' data: https://replit.com; connect-src 'self';
+2026-02-04 22:22:37.914 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-type: application/json; charset=utf-8
+2026-02-04 22:22:37.914 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  date: Thu, 05 Feb 2026 01:22:37 GMT
+2026-02-04 22:22:37.914 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  etag: W/"3b-9gCHwmPb8p6jYm5WExczQnIIdAU"
+2026-02-04 22:22:37.914 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  permissions-policy: geolocation=(), microphone=(), camera=()
+2026-02-04 22:22:37.914 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  referrer-policy: strict-origin-when-cross-origin
+2026-02-04 22:22:37.914 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  strict-transport-security: max-age=63072000; includeSubDomains
+2026-02-04 22:22:37.914 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  strict-transport-security: max-age=31536000; includeSubDomains
+2026-02-04 22:22:37.914 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-anti-fraud-protection: active
+2026-02-04 22:22:37.915 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-certificate-pinning-enabled: false
+2026-02-04 22:22:37.915 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-certificate-pinning-status: disabled-for-stability
+2026-02-04 22:22:37.915 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-content-type-options: nosniff
+2026-02-04 22:22:37.915 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-financial-data-protection: enabled
+2026-02-04 22:22:37.915 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-frame-options: DENY
+2026-02-04 22:22:37.915 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-transaction-security-level: maximum
+2026-02-04 22:22:37.915 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-xss-protection: 1; mode=block
+2026-02-04 22:22:37.915 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  via: 1.1 google
+2026-02-04 22:22:37.915 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  alt-svc: h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
+2026-02-04 22:22:37.917 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  {"success":true,"message":"Resposta do comando registrada"}
+2026-02-04 22:22:37.917 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  <-- END HTTP (59-byte body)
+2026-02-04 22:22:37.919 10189-10330 MdmCommandReceiver      com.cdccreditsmart.app               I  ✅ ACK enviado via fallback para comando 5decda77-e8e9-4304-a088-2462dd787ffd
+2026-02-04 22:22:37.919 10189-10330 MdmCommandReceiver      com.cdccreditsmart.app               I  ⚙️ Processando comando sem parâmetros: CONFIGURE_UNINSTALL_CODE
+2026-02-04 22:22:37.919 10189-10330 MdmCommandReceiver      com.cdccreditsmart.app               W  ⚠️ CONFIGURE_UNINSTALL_CODE recebido sem código - ignorando
+2026-02-04 22:22:37.921 10189-10330 MdmCommandReceiver      com.cdccreditsmart.app               D  📡 Enviando response para comando: 5decda77-e8e9-4304-a088-2462dd787ffd
+2026-02-04 22:22:37.921 10189-10330 MdmCommandReceiver      com.cdccreditsmart.app               D  📡 Status: completed
+2026-02-04 22:22:37.921 10189-10330 MdmCommandReceiver      com.cdccreditsmart.app               D  📡 Enviando: POST /api/apk/device/commands/5decda77-e8e9-4304-a088-2462dd787ffd/status
+2026-02-04 22:22:37.930 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  --> POST https://cdccreditsmart.com/api/apk/device/commands/5decda77-e8e9-4304-a088-2462dd787ffd/status
+2026-02-04 22:22:37.930 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  Content-Type: application/json; charset=UTF-8
+2026-02-04 22:22:37.930 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  Content-Length: 74
+2026-02-04 22:22:37.931 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  {"status":"completed","result":{"success":true,"timestamp":1770254557921}}
+2026-02-04 22:22:37.931 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  --> END POST (74-byte body)
+2026-02-04 22:22:38.265 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  <-- 404 https://cdccreditsmart.com/api/apk/device/commands/5decda77-e8e9-4304-a088-2462dd787ffd/status (334ms)
+2026-02-04 22:22:38.266 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-credentials: true
+2026-02-04 22:22:38.266 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-headers: Origin, X-Requested-With, Content-Type, Accept, Authorization, x-client-key, x-client-token, x-client-secret, cache-control
+2026-02-04 22:22:38.266 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-methods: GET, POST, PUT, PATCH, DELETE, OPTIONS
+2026-02-04 22:22:38.266 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-origin: *
+2026-02-04 22:22:38.266 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-max-age: 86400
+2026-02-04 22:22:38.266 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-length: 497
+2026-02-04 22:22:38.266 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-security-policy: default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://replit.com; style-src 'self' 'unsafe-inline' https://replit.com; img-src 'self' data: https:; font-src 'self' data: https://replit.com; connect-src 'self';
+2026-02-04 22:22:38.266 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-type: application/json; charset=utf-8
+2026-02-04 22:22:38.266 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  date: Thu, 05 Feb 2026 01:22:38 GMT
+2026-02-04 22:22:38.267 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  etag: W/"1f1-EQOHv2vlW9PA6Os8T8sXUx6z090"
+2026-02-04 22:22:38.267 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  permissions-policy: geolocation=(), microphone=(), camera=()
+2026-02-04 22:22:38.267 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  referrer-policy: strict-origin-when-cross-origin
+2026-02-04 22:22:38.267 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  strict-transport-security: max-age=63072000; includeSubDomains
+2026-02-04 22:22:38.267 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  strict-transport-security: max-age=31536000; includeSubDomains
+2026-02-04 22:22:38.267 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-anti-fraud-protection: active
+2026-02-04 22:22:38.267 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-certificate-pinning-enabled: false
+2026-02-04 22:22:38.267 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-certificate-pinning-status: disabled-for-stability
+2026-02-04 22:22:38.267 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-content-type-options: nosniff
+2026-02-04 22:22:38.267 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-financial-data-protection: enabled
+2026-02-04 22:22:38.267 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-frame-options: DENY
+2026-02-04 22:22:38.268 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-transaction-security-level: maximum
+2026-02-04 22:22:38.268 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-xss-protection: 1; mode=block
+2026-02-04 22:22:38.268 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  via: 1.1 google
+2026-02-04 22:22:38.268 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  alt-svc: h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
+2026-02-04 22:22:38.269 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  {"error":"API endpoint not found","message":"Rota APK não encontrada","path":"/","method":"POST","timestamp":"2026-02-05T01:22:38.189Z","available_endpoints":["GET /api/apk/device/{serial}/status","POST /api/apk/device/{fingerprint}/sync","POST /api/apk/device/{fingerprint}/register-info","POST /api/apk/auth","GET /api/apk/device/{identifier}/commands","POST /api/apk/device/commands/{commandId}/status","POST /api/apk/device/{identifier}/command-response","GET /api/apk/device/commands/test"]}
+2026-02-04 22:22:38.270 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  <-- END HTTP (497-byte body)
+2026-02-04 22:22:38.271 10189-10330 MdmCommandReceiver      com.cdccreditsmart.app               W  ⚠️ Endpoint status falhou (HTTP 404), tentando fallback...
+2026-02-04 22:22:38.274 10189-10330 SecureTokenStorage      com.cdccreditsmart.app               D  ✅ Usando IMEI para MDM: 3531***198
+2026-02-04 22:22:38.274 10189-10330 MdmCommandReceiver      com.cdccreditsmart.app               D  📡 Fallback: Usando endpoint legado: POST /api/apk/device/353104906953198/command-response
+2026-02-04 22:22:38.283 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  --> POST https://cdccreditsmart.com/api/apk/device/353104906953198/command-response
+2026-02-04 22:22:38.283 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  Content-Type: application/json; charset=UTF-8
+2026-02-04 22:22:38.283 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  Content-Length: 127
+2026-02-04 22:22:38.283 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  {"commandId":"5decda77-e8e9-4304-a088-2462dd787ffd","status":"completed","response":{"success":true,"timestamp":1770254558274}}
+2026-02-04 22:22:38.284 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  --> END POST (127-byte body)
+2026-02-04 22:22:38.732 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  <-- 200 https://cdccreditsmart.com/api/apk/device/353104906953198/command-response (447ms)
+2026-02-04 22:22:38.732 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-credentials: true
+2026-02-04 22:22:38.732 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-headers: Origin, X-Requested-With, Content-Type, Accept, Authorization, x-client-key, x-client-token, x-client-secret, cache-control
+2026-02-04 22:22:38.732 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-methods: GET, POST, PUT, PATCH, DELETE, OPTIONS
+2026-02-04 22:22:38.732 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-origin: *
+2026-02-04 22:22:38.732 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-max-age: 86400
+2026-02-04 22:22:38.732 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-length: 59
+2026-02-04 22:22:38.732 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-security-policy: default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://replit.com; style-src 'self' 'unsafe-inline' https://replit.com; img-src 'self' data: https:; font-src 'self' data: https://replit.com; connect-src 'self';
+2026-02-04 22:22:38.733 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-type: application/json; charset=utf-8
+2026-02-04 22:22:38.733 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  date: Thu, 05 Feb 2026 01:22:38 GMT
+2026-02-04 22:22:38.733 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  etag: W/"3b-9gCHwmPb8p6jYm5WExczQnIIdAU"
+2026-02-04 22:22:38.733 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  permissions-policy: geolocation=(), microphone=(), camera=()
+2026-02-04 22:22:38.733 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  referrer-policy: strict-origin-when-cross-origin
+2026-02-04 22:22:38.733 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  strict-transport-security: max-age=63072000; includeSubDomains
+2026-02-04 22:22:38.733 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  strict-transport-security: max-age=31536000; includeSubDomains
+2026-02-04 22:22:38.733 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-anti-fraud-protection: active
+2026-02-04 22:22:38.733 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-certificate-pinning-enabled: false
+2026-02-04 22:22:38.734 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-certificate-pinning-status: disabled-for-stability
+2026-02-04 22:22:38.734 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-content-type-options: nosniff
+2026-02-04 22:22:38.734 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-financial-data-protection: enabled
+2026-02-04 22:22:38.734 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-frame-options: DENY
+2026-02-04 22:22:38.734 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-transaction-security-level: maximum
+2026-02-04 22:22:38.734 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-xss-protection: 1; mode=block
+2026-02-04 22:22:38.734 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  via: 1.1 google
+2026-02-04 22:22:38.734 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  alt-svc: h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
+2026-02-04 22:22:38.735 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  {"success":true,"message":"Resposta do comando registrada"}
+2026-02-04 22:22:38.735 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  <-- END HTTP (59-byte body)
+2026-02-04 22:22:38.737 10189-10330 MdmCommandReceiver      com.cdccreditsmart.app               I  ✅ Response enviado via fallback para comando 5decda77-e8e9-4304-a088-2462dd787ffd: completed
+2026-02-04 22:22:38.737 10189-10330 MdmCommandReceiver      com.cdccreditsmart.app               I  📋 ========================================
+2026-02-04 22:22:38.737 10189-10330 MdmCommandReceiver      com.cdccreditsmart.app               D  📊 Fetch duration: 3890ms
+2026-02-04 22:22:39.343 10189-10189 NavController           com.cdccreditsmart.app               I  Ignoring popBackStack to route pairing/qr_scanner as it was not found on the current back stack
+2026-02-04 22:22:39.376 10189-10189 TermsScreen             com.cdccreditsmart.app               I  🚀 TermsAcceptanceScreen INICIANDO - contractCode=PFB3PRMZ
+2026-02-04 22:22:39.376 10189-10189 TermsScreen             com.cdccreditsmart.app               I  ✅ Context obtido
+2026-02-04 22:22:39.376 10189-10189 TermsScreen             com.cdccreditsmart.app               I  ✅ Scope criado
+2026-02-04 22:22:39.378 10189-10189 TermsScreen             com.cdccreditsmart.app               I  ✅ Estados inicializados, preparando LaunchedEffect
+2026-02-04 22:22:39.431 10189-10189 TermsScreen             com.cdccreditsmart.app               I  🔄 LaunchedEffect INICIANDO
+2026-02-04 22:22:39.431 10189-10189 TermsScreen             com.cdccreditsmart.app               I  📄 Iniciando carregamento de termos...
+2026-02-04 22:22:39.432 10189-10329 TermsScreen             com.cdccreditsmart.app               I  🔧 Criando SupportRepository...
+2026-02-04 22:22:39.433 10189-10329 TermsScreen             com.cdccreditsmart.app               I  ✅ SupportRepository criado
+2026-02-04 22:22:39.434 10189-10189 TermsScreen             com.cdccreditsmart.app               I  📡 Chamando getContractTerms...
+2026-02-04 22:22:39.442 10189-10329 NetworkConnectivity     com.cdccreditsmart.app               D  ✅ Conectado via WiFi com internet
+2026-02-04 22:22:39.443 10189-10329 SupportRepository       com.cdccreditsmart.app               D  ✅ Retornando termos do cache local (vv5.0)
+2026-02-04 22:22:39.448 10189-10189 TermsScreen             com.cdccreditsmart.app               I  📥 Resposta recebida do getContractTerms
+2026-02-04 22:22:39.448 10189-10189 TermsScreen             com.cdccreditsmart.app               I  ✅ Termos carregados: vv5.0
+2026-02-04 22:22:39.452 10189-10189 TermsScreen             com.cdccreditsmart.app               I  🚀 TermsAcceptanceScreen INICIANDO - contractCode=PFB3PRMZ
+2026-02-04 22:22:39.452 10189-10189 TermsScreen             com.cdccreditsmart.app               I  ✅ Context obtido
+2026-02-04 22:22:39.452 10189-10189 TermsScreen             com.cdccreditsmart.app               I  ✅ Scope criado
+2026-02-04 22:22:39.456 10189-10189 TermsScreen             com.cdccreditsmart.app               I  ✅ Estados inicializados, preparando LaunchedEffect
+2026-02-04 22:22:40.640 10189-10189 TermsScreen             com.cdccreditsmart.app               I  📤 Enviando aceitação de termos para o backend...
+2026-02-04 22:22:40.640 10189-10189 TermsScreen             com.cdccreditsmart.app               I     IMEI: 353104****
+2026-02-04 22:22:40.640 10189-10189 TermsScreen             com.cdccreditsmart.app               I     Version: v5.0
+2026-02-04 22:22:40.640 10189-10189 TermsScreen             com.cdccreditsmart.app               I     Hash: eecbb739c2ee7d044be8...
+2026-02-04 22:22:40.652 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  --> POST https://cdccreditsmart.com/v1/contract/accept
+2026-02-04 22:22:40.652 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  Content-Type: application/json; charset=UTF-8
+2026-02-04 22:22:40.652 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  Content-Length: 127
+2026-02-04 22:22:40.653 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  {"imei":"353104906953198","termsVersion":"v5.0","termsHash":"eecbb739c2ee7d044be83c16b9c788d828c2908f20c23f5e0c6e59e7eb1773b2"}
+2026-02-04 22:22:40.653 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  --> END POST (127-byte body)
+2026-02-04 22:22:41.081 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  <-- 200 https://cdccreditsmart.com/v1/contract/accept (427ms)
+2026-02-04 22:22:41.081 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-credentials: true
+2026-02-04 22:22:41.082 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-headers: Origin, X-Requested-With, Content-Type, Accept, Authorization, x-client-key, x-client-token, x-client-secret, cache-control
+2026-02-04 22:22:41.082 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-methods: GET, POST, PUT, PATCH, DELETE, OPTIONS
+2026-02-04 22:22:41.082 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-origin: *
+2026-02-04 22:22:41.082 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-max-age: 86400
+2026-02-04 22:22:41.082 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-length: 794
+2026-02-04 22:22:41.082 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-security-policy: default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://replit.com; style-src 'self' 'unsafe-inline' https://replit.com; img-src 'self' data: https:; font-src 'self' data: https://replit.com; connect-src 'self';
+2026-02-04 22:22:41.082 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-type: application/json; charset=utf-8
+2026-02-04 22:22:41.082 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  date: Thu, 05 Feb 2026 01:22:40 GMT
+2026-02-04 22:22:41.083 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  etag: W/"31a-LyGQcFl3ser51cbOX8+7n0XBeOs"
+2026-02-04 22:22:41.083 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  permissions-policy: geolocation=(), microphone=(), camera=()
+2026-02-04 22:22:41.083 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  referrer-policy: strict-origin-when-cross-origin
+2026-02-04 22:22:41.083 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  strict-transport-security: max-age=63072000; includeSubDomains
+2026-02-04 22:22:41.083 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  strict-transport-security: max-age=31536000; includeSubDomains
+2026-02-04 22:22:41.083 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-anti-fraud-protection: active
+2026-02-04 22:22:41.083 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-certificate-pinning-enabled: false
+2026-02-04 22:22:41.083 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-certificate-pinning-status: disabled-for-stability
+2026-02-04 22:22:41.084 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-content-type-options: nosniff
+2026-02-04 22:22:41.084 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-financial-data-protection: enabled
+2026-02-04 22:22:41.084 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-frame-options: DENY
+2026-02-04 22:22:41.084 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-transaction-security-level: maximum
+2026-02-04 22:22:41.084 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-xss-protection: 1; mode=block
+2026-02-04 22:22:41.084 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  via: 1.1 google
+2026-02-04 22:22:41.084 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  alt-svc: h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
+2026-02-04 22:22:41.086 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  {"success":true,"message":"Terms already accepted","alreadyAccepted":true,"termsAcceptedAt":"2026-02-05T01:22:20.092Z","termsVersion":"v5.0","deviceReady":true,"saleId":"sale_1770254468961_jxqio1pc13h","token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkZXZpY2VJZCI6IjM1MzEwNDkwNjk1MzE5OCIsInNlcmlhbE51bWJlciI6IlpGNTI1R1JDUDgiLCJmaW5nZXJwcmludCI6IjE4YmQ2YWRiMmM2N2RhYzc1NjQ0YWU0ODkzOTc5NTAxOGI5ODVhMmVhMzA3ZDNiNDc2ODBjMGY0YzEzNWIzMTAiLCJ0eXBlIjoiYXBrIiwic2NvcGVzIjpbImRldmljZTpyZWFkIiwiZGV2aWNlOnN5bmMiXSwiaWF0IjoxNzcwMjU0NTIyLCJleHAiOjE4MDE3OTA1MjJ9.dypVQVgkpfe0Hg3HEzT1FF3Av_bGbZvUPfVfwMdbcn4","customerName":"Marcos Antunes","deviceModel":"Dispositivo","device":null,"customer":{"id":"e57f223e-c75f-47c3-a080-f5f4e301dc2c","name":"Marcos Antunes","cpf":"064.527.843-23","phone":"85981888810"}}
+2026-02-04 22:22:41.087 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  <-- END HTTP (794-byte body)
+2026-02-04 22:22:41.096 10189-10189 TermsScreen             com.cdccreditsmart.app               I  ✅ Termos aceitos com sucesso!
+2026-02-04 22:22:41.096 10189-10189 TermsScreen             com.cdccreditsmart.app               I     Accepted at: 2026-02-05T01:22:20.092Z
+2026-02-04 22:22:41.096 10189-10189 TermsScreen             com.cdccreditsmart.app               I     DeviceReady: true
+2026-02-04 22:22:41.096 10189-10189 TermsAcceptanceStorage  com.cdccreditsmart.app               I  Salvando aceitação de termos vv5.0 para contrato PFB3PRMZ
+2026-02-04 22:22:41.191 10189-10189 TermsScreen             com.cdccreditsmart.app               I  🔧 Processando dados do dispositivo...
+2026-02-04 22:22:41.191 10189-10189 ContractCodeStorage     com.cdccreditsmart.app               D  Saving contract code to redundant storage
+2026-02-04 22:22:41.276 10189-10189 ContractCodeStorage     com.cdccreditsmart.app               D  Saved to EncryptedPrefs
+2026-02-04 22:22:41.346 10189-10189 ContractCodeStorage     com.cdccreditsmart.app               D  Deleted existing file: .cdc_protected_code.enc
+2026-02-04 22:22:41.381 10189-10189 ContractCodeStorage     com.cdccreditsmart.app               D  Successfully saved to file: .cdc_protected_code.enc
+2026-02-04 22:22:41.381 10189-10189 ContractCodeStorage     com.cdccreditsmart.app               D  Saved to Protected Storage
+2026-02-04 22:22:41.382 10189-10189 ContractCodeStorage     com.cdccreditsmart.app               D  Deleted existing file: .cdc_contract_b1.enc
+2026-02-04 22:22:41.414 10189-10189 ContractCodeStorage     com.cdccreditsmart.app               D  Successfully saved to file: .cdc_contract_b1.enc
+2026-02-04 22:22:41.414 10189-10189 ContractCodeStorage     com.cdccreditsmart.app               D  Deleted existing file: .sys_device_cfg.enc
+2026-02-04 22:22:41.445 10189-10189 ContractCodeStorage     com.cdccreditsmart.app               D  Successfully saved to file: .sys_device_cfg.enc
+2026-02-04 22:22:41.445 10189-10189 ContractCodeStorage     com.cdccreditsmart.app               D  Deleted existing file: .android_secure.enc
+2026-02-04 22:22:41.477 10189-10189 ContractCodeStorage     com.cdccreditsmart.app               D  Successfully saved to file: .android_secure.enc
+2026-02-04 22:22:41.500 10189-10189 ContractCodeStorage     com.cdccreditsmart.app               D  Contract code saved to ALL storage locations
+2026-02-04 22:22:41.687 10189-10189 ContractCodeStorage     com.cdccreditsmart.app               D  Verification complete: 7/7 locations valid
+2026-02-04 22:22:41.688 10189-10189 TermsScreen             com.cdccreditsmart.app               I     ✅ ContractCode salvo (mínimo): PFB3PRMZ
+2026-02-04 22:22:41.690 10189-10189 SecureTokenStorage      com.cdccreditsmart.app               I  ✅ IMEI salvo para MDM: 3531***198
+2026-02-04 22:22:41.690 10189-10189 TermsScreen             com.cdccreditsmart.app               I     ✅ IMEI salvo para MDM (mínimo): 35310490...
+2026-02-04 22:22:41.694 10189-10189 ContractCodeStorage     com.cdccreditsmart.app               D  Saving contract code to redundant storage
+2026-02-04 22:22:41.707 10189-10189 ContractCodeStorage     com.cdccreditsmart.app               D  Saved to EncryptedPrefs
+2026-02-04 22:22:41.711 10189-10189 ContractCodeStorage     com.cdccreditsmart.app               D  Deleted existing file: .cdc_protected_code.enc
+2026-02-04 22:22:41.741 10189-10189 ContractCodeStorage     com.cdccreditsmart.app               D  Successfully saved to file: .cdc_protected_code.enc
+2026-02-04 22:22:41.741 10189-10189 ContractCodeStorage     com.cdccreditsmart.app               D  Saved to Protected Storage
+2026-02-04 22:22:41.741 10189-10189 ContractCodeStorage     com.cdccreditsmart.app               D  Deleted existing file: .cdc_contract_b1.enc
+2026-02-04 22:22:41.771 10189-10189 ContractCodeStorage     com.cdccreditsmart.app               D  Successfully saved to file: .cdc_contract_b1.enc
+2026-02-04 22:22:41.771 10189-10189 ContractCodeStorage     com.cdccreditsmart.app               D  Deleted existing file: .sys_device_cfg.enc
+2026-02-04 22:22:41.804 10189-10189 ContractCodeStorage     com.cdccreditsmart.app               D  Successfully saved to file: .sys_device_cfg.enc
+2026-02-04 22:22:41.805 10189-10189 ContractCodeStorage     com.cdccreditsmart.app               D  Deleted existing file: .android_secure.enc
+2026-02-04 22:22:41.833 10189-10189 ContractCodeStorage     com.cdccreditsmart.app               D  Successfully saved to file: .android_secure.enc
+2026-02-04 22:22:41.856 10189-10189 ContractCodeStorage     com.cdccreditsmart.app               D  Contract code saved to ALL storage locations
+2026-02-04 22:22:42.017 10189-10189 ContractCodeStorage     com.cdccreditsmart.app               D  Verification complete: 7/7 locations valid
+2026-02-04 22:22:42.017 10189-10189 SecureTokenStorage      com.cdccreditsmart.app               D  Auth token saved successfully (contract code via ContractCodeStorage, deviceId: PFB3PRMZ...)
+2026-02-04 22:22:42.017 10189-10189 TermsScreen             com.cdccreditsmart.app               I     ✅ Token JWT salvo IMEDIATAMENTE
+2026-02-04 22:22:42.017 10189-10189 TermsScreen             com.cdccreditsmart.app               W  ⚠️ Backend não retornou dados completos (deviceReady=true)
+2026-02-04 22:22:42.017 10189-10189 TermsScreen             com.cdccreditsmart.app               W     Usando dados mínimos já salvos
+2026-02-04 22:22:42.022 10189-10189 ContractCodeStorage     com.cdccreditsmart.app               D  Saving contract code to redundant storage
+2026-02-04 22:22:42.034 10189-10189 ContractCodeStorage     com.cdccreditsmart.app               D  Saved to EncryptedPrefs
+2026-02-04 22:22:42.038 10189-10189 ContractCodeStorage     com.cdccreditsmart.app               D  Deleted existing file: .cdc_protected_code.enc
+2026-02-04 22:22:42.070 10189-10189 ContractCodeStorage     com.cdccreditsmart.app               D  Successfully saved to file: .cdc_protected_code.enc
+2026-02-04 22:22:42.070 10189-10189 ContractCodeStorage     com.cdccreditsmart.app               D  Saved to Protected Storage
+2026-02-04 22:22:42.070 10189-10189 ContractCodeStorage     com.cdccreditsmart.app               D  Deleted existing file: .cdc_contract_b1.enc
+2026-02-04 22:22:42.102 10189-10189 ContractCodeStorage     com.cdccreditsmart.app               D  Successfully saved to file: .cdc_contract_b1.enc
+2026-02-04 22:22:42.103 10189-10189 ContractCodeStorage     com.cdccreditsmart.app               D  Deleted existing file: .sys_device_cfg.enc
+2026-02-04 22:22:42.134 10189-10189 ContractCodeStorage     com.cdccreditsmart.app               D  Successfully saved to file: .sys_device_cfg.enc
+2026-02-04 22:22:42.134 10189-10189 ContractCodeStorage     com.cdccreditsmart.app               D  Deleted existing file: .android_secure.enc
+2026-02-04 22:22:42.162 10189-10189 ContractCodeStorage     com.cdccreditsmart.app               D  Successfully saved to file: .android_secure.enc
+2026-02-04 22:22:42.184 10189-10189 ContractCodeStorage     com.cdccreditsmart.app               D  Contract code saved to ALL storage locations
+2026-02-04 22:22:42.339 10189-10189 ContractCodeStorage     com.cdccreditsmart.app               D  Verification complete: 7/7 locations valid
+2026-02-04 22:22:42.339 10189-10189 SecureTokenStorage      com.cdccreditsmart.app               D  Device info saved successfully from auto-discovery
+2026-02-04 22:22:42.339 10189-10189 SecureTokenStorage      com.cdccreditsmart.app               D    - DeviceId: PFB3PRMZ...
+2026-02-04 22:22:42.339 10189-10189 SecureTokenStorage      com.cdccreditsmart.app               D    - SerialNumber: PFB3PRMZ
+2026-02-04 22:22:42.339 10189-10189 SecureTokenStorage      com.cdccreditsmart.app               D    - IMEI: 3531***
+2026-02-04 22:22:42.339 10189-10189 SecureTokenStorage      com.cdccreditsmart.app               D    - ContractCode: PFB3PRMZ
+2026-02-04 22:22:42.340 10189-10189 TermsScreen             com.cdccreditsmart.app               W     ✅ DeviceInfo mínimo salvo via fallback
+2026-02-04 22:22:42.345 10189-10189 SecureTokenStorage      com.cdccreditsmart.app               D  ✅ Usando IMEI para MDM: 3531***198
+2026-02-04 22:22:42.345 10189-10189 TermsScreen             com.cdccreditsmart.app               I  📊 Estado após aceite:
+2026-02-04 22:22:42.345 10189-10189 TermsScreen             com.cdccreditsmart.app               I     ContractCode: ✅ PFB3PRMZ
+2026-02-04 22:22:42.345 10189-10189 TermsScreen             com.cdccreditsmart.app               I     Token: ✅
+2026-02-04 22:22:42.345 10189-10189 TermsScreen             com.cdccreditsmart.app               I     DeviceId: ✅
+2026-02-04 22:22:42.345 10189-10189 TermsScreen             com.cdccreditsmart.app               I     IMEI: ✅
+2026-02-04 22:22:42.345 10189-10189 TermsScreen             com.cdccreditsmart.app               I  📊 Estado FINAL:
+2026-02-04 22:22:42.345 10189-10189 TermsScreen             com.cdccreditsmart.app               I     Token: ✅ PRESENTE
+2026-02-04 22:22:42.345 10189-10189 TermsScreen             com.cdccreditsmart.app               I  🚀 Iniciando serviço de foreground...
+2026-02-04 22:22:42.348 10189-10189 CdcForegroundService    com.cdccreditsmart.app               I  ✅ Serviço iniciado via startService()
+2026-02-04 22:22:42.348 10189-10189 TermsScreen             com.cdccreditsmart.app               I  ✅ Verificação final OK - ContractCode persistido: PFB3PRMZ
+2026-02-04 22:22:42.357 10189-10189 Choreographer           com.cdccreditsmart.app               I  Skipped 75 frames!  The application may be doing too much work on its main thread.
+2026-02-04 22:22:42.367 10189-10189 CdcForegroundService    com.cdccreditsmart.app               D  🚀 Serviço onStartCommand() - Action: com.cdccreditsmart.app.START_SERVICE
+2026-02-04 22:22:42.373 10189-10189 CdcForegroundService    com.cdccreditsmart.app               I  ✅ Foreground Service ativo (Android 12+)
+2026-02-04 22:22:42.374 10189-10329 CdcForegroundService    com.cdccreditsmart.app               I  🔧 ========================================
+2026-02-04 22:22:42.375 10189-10329 CdcForegroundService    com.cdccreditsmart.app               I  🔧 INICIANDO initializeServices()...
+2026-02-04 22:22:42.375 10189-10329 CdcForegroundService    com.cdccreditsmart.app               I  🔧 ========================================
+2026-02-04 22:22:42.375 10189-10329 CdcForegroundService    com.cdccreditsmart.app               D  ✅ Serviços base já inicializados
+2026-02-04 22:22:42.375 10189-10329 CdcForegroundService    com.cdccreditsmart.app               D  ✅ MDM já inicializado - ignorando chamada duplicada
+2026-02-04 22:22:42.395 10189-10189 SecureTokenStorage      com.cdccreditsmart.app               D  ✅ Usando IMEI para MDM: 3531***198
+2026-02-04 22:22:42.395 10189-10189 SimpleHomeViewModel     com.cdccreditsmart.app               D  📦 Verificação de autenticação:
+2026-02-04 22:22:42.395 10189-10189 SimpleHomeViewModel     com.cdccreditsmart.app               D     Token: presente
+2026-02-04 22:22:42.395 10189-10189 SimpleHomeViewModel     com.cdccreditsmart.app               D     DeviceInfo: presente
+2026-02-04 22:22:42.395 10189-10189 SimpleHomeViewModel     com.cdccreditsmart.app               D     ContractCode: presente
+2026-02-04 22:22:42.397 10189-10189 NetworkConnectivity     com.cdccreditsmart.app               D  ✅ Conectado via WiFi com internet
+2026-02-04 22:22:42.398 10189-10189 SimpleHomeViewModel     com.cdccreditsmart.app               D  📡 Fetching device installments from /api/apk/device/installments...
+2026-02-04 22:22:42.414 10189-10852 SimpleHomeViewModel     com.cdccreditsmart.app               D  ✅ Added Authorization header with token
+2026-02-04 22:22:42.416 10189-10852 SecureTokenStorage      com.cdccreditsmart.app               D  ✅ Usando IMEI para MDM: 3531***198
+2026-02-04 22:22:42.420 10189-10852 SimpleHomeViewModel     com.cdccreditsmart.app               D  📱 Added X-Device-IMEI header
+2026-02-04 22:22:42.421 10189-10852 SimpleHomeViewModel     com.cdccreditsmart.app               D  📱 Added X-Device-SerialNumber header
+2026-02-04 22:22:42.421 10189-10852 SimpleHomeViewModel     com.cdccreditsmart.app               D  📱 Added X-Device-ID header
+2026-02-04 22:22:42.421 10189-10852 SimpleHomeViewModel     com.cdccreditsmart.app               D  📤 Request URL: https://cdccreditsmart.com/api/apk/device/installments
+2026-02-04 22:22:43.059 10189-10852 SimpleHomeViewModel     com.cdccreditsmart.app               D  📥 Response Code: 200
+2026-02-04 22:22:43.179 10189-10189 SimpleHomeViewModel     com.cdccreditsmart.app               D  ✅ Successfully fetched installments data
+2026-02-04 22:22:43.179 10189-10189 SimpleHomeViewModel     com.cdccreditsmart.app               D  📊 Device: MOTOROLA Moto G15 Power 128GB Grafite 4G 4GB RAM
+2026-02-04 22:22:43.179 10189-10189 SimpleHomeViewModel     com.cdccreditsmart.app               D  📊 Total installments: 24
+2026-02-04 22:22:43.179 10189-10189 SimpleHomeViewModel     com.cdccreditsmart.app               D  📊 Paid: 0
+2026-02-04 22:22:43.179 10189-10189 SimpleHomeViewModel     com.cdccreditsmart.app               D  📊 Overdue: 0
+2026-02-04 22:22:43.179 10189-10189 SimpleHomeViewModel     com.cdccreditsmart.app               D  📊 All installments count: 24
+2026-02-04 22:22:43.179 10189-10189 SimpleHomeViewModel     com.cdccreditsmart.app               D  📋 Parcela #1: status=pending, isPaid=false, dueDate=2026-02-20T01:22:28.923Z
+2026-02-04 22:22:43.179 10189-10189 SimpleHomeViewModel     com.cdccreditsmart.app               D  📋 Parcela #2: status=pending, isPaid=false, dueDate=2026-03-07T01:22:28.923Z
+2026-02-04 22:22:43.179 10189-10189 SimpleHomeViewModel     com.cdccreditsmart.app               D  📋 Parcela #3: status=pending, isPaid=false, dueDate=2026-03-22T01:22:28.923Z
+2026-02-04 22:22:43.180 10189-10189 SimpleHomeViewModel     com.cdccreditsmart.app               D  📋 Parcela #4: status=pending, isPaid=false, dueDate=2026-04-06T01:22:28.923Z
+2026-02-04 22:22:43.180 10189-10189 SimpleHomeViewModel     com.cdccreditsmart.app               D  📋 Parcela #5: status=pending, isPaid=false, dueDate=2026-04-21T01:22:28.923Z
+2026-02-04 22:22:43.180 10189-10189 SimpleHomeViewModel     com.cdccreditsmart.app               D  📋 Parcela #6: status=pending, isPaid=false, dueDate=2026-05-06T01:22:28.923Z
+2026-02-04 22:22:43.180 10189-10189 SimpleHomeViewModel     com.cdccreditsmart.app               D  📋 Parcela #7: status=pending, isPaid=false, dueDate=2026-05-21T01:22:28.923Z
+2026-02-04 22:22:43.180 10189-10189 SimpleHomeViewModel     com.cdccreditsmart.app               D  📋 Parcela #8: status=pending, isPaid=false, dueDate=2026-06-05T01:22:28.923Z
+2026-02-04 22:22:43.180 10189-10189 SimpleHomeViewModel     com.cdccreditsmart.app               D  📋 Parcela #9: status=pending, isPaid=false, dueDate=2026-06-20T01:22:28.923Z
+2026-02-04 22:22:43.180 10189-10189 SimpleHomeViewModel     com.cdccreditsmart.app               D  📋 Parcela #10: status=pending, isPaid=false, dueDate=2026-07-05T01:22:28.923Z
+2026-02-04 22:22:43.180 10189-10189 SimpleHomeViewModel     com.cdccreditsmart.app               D  📋 Parcela #11: status=pending, isPaid=false, dueDate=2026-07-20T01:22:28.923Z
+2026-02-04 22:22:43.180 10189-10189 SimpleHomeViewModel     com.cdccreditsmart.app               D  📋 Parcela #12: status=pending, isPaid=false, dueDate=2026-08-04T01:22:28.923Z
+2026-02-04 22:22:43.180 10189-10189 SimpleHomeViewModel     com.cdccreditsmart.app               D  📋 Parcela #13: status=pending, isPaid=false, dueDate=2026-08-19T01:22:28.923Z
+2026-02-04 22:22:43.180 10189-10189 SimpleHomeViewModel     com.cdccreditsmart.app               D  📋 Parcela #14: status=pending, isPaid=false, dueDate=2026-09-03T01:22:28.923Z
+2026-02-04 22:22:43.180 10189-10189 SimpleHomeViewModel     com.cdccreditsmart.app               D  📋 Parcela #15: status=pending, isPaid=false, dueDate=2026-09-18T01:22:28.923Z
+2026-02-04 22:22:43.180 10189-10189 SimpleHomeViewModel     com.cdccreditsmart.app               D  📋 Parcela #16: status=pending, isPaid=false, dueDate=2026-10-03T01:22:28.923Z
+2026-02-04 22:22:43.180 10189-10189 SimpleHomeViewModel     com.cdccreditsmart.app               D  📋 Parcela #17: status=pending, isPaid=false, dueDate=2026-10-18T01:22:28.923Z
+2026-02-04 22:22:43.180 10189-10189 SimpleHomeViewModel     com.cdccreditsmart.app               D  📋 Parcela #18: status=pending, isPaid=false, dueDate=2026-11-02T01:22:28.923Z
+2026-02-04 22:22:43.180 10189-10189 SimpleHomeViewModel     com.cdccreditsmart.app               D  📋 Parcela #19: status=pending, isPaid=false, dueDate=2026-11-17T01:22:28.923Z
+2026-02-04 22:22:43.180 10189-10189 SimpleHomeViewModel     com.cdccreditsmart.app               D  📋 Parcela #20: status=pending, isPaid=false, dueDate=2026-12-02T01:22:28.923Z
+2026-02-04 22:22:43.180 10189-10189 SimpleHomeViewModel     com.cdccreditsmart.app               D  📋 Parcela #21: status=pending, isPaid=false, dueDate=2026-12-17T01:22:28.923Z
+2026-02-04 22:22:43.180 10189-10189 SimpleHomeViewModel     com.cdccreditsmart.app               D  📋 Parcela #22: status=pending, isPaid=false, dueDate=2027-01-01T01:22:28.923Z
+2026-02-04 22:22:43.180 10189-10189 SimpleHomeViewModel     com.cdccreditsmart.app               D  📋 Parcela #23: status=pending, isPaid=false, dueDate=2027-01-16T01:22:28.923Z
+2026-02-04 22:22:43.180 10189-10189 SimpleHomeViewModel     com.cdccreditsmart.app               D  📋 Parcela #24: status=pending, isPaid=false, dueDate=2027-01-31T01:22:28.923Z
+2026-02-04 22:22:43.180 10189-10189 SimpleHomeViewModel     com.cdccreditsmart.app               I  💾 Salvando dados do cliente no storage - CustomerName: 'null', DeviceModel: 'MOTOROLA Moto G15 Power 128GB Grafite 4G 4GB RAM'
+2026-02-04 22:22:43.180 10189-10189 SecureTokenStorage      com.cdccreditsmart.app               D  💾 Salvando customer info - Name: null, Device: MOTOROLA Moto G15 Power 128GB Grafite 4G 4GB RAM
+2026-02-04 22:22:43.181 10189-10189 SecureTokenStorage      com.cdccreditsmart.app               W  ⚠️ CustomerName vazio/null - não salvando
+2026-02-04 22:22:43.183 10189-10189 SecureTokenStorage      com.cdccreditsmart.app               D  ✅ DeviceModel salvo: MOTOROLA Moto G15 Power 128GB Grafite 4G 4GB RAM
+2026-02-04 22:22:43.183 10189-10189 SecureTokenStorage      com.cdccreditsmart.app               I  ✅ Customer info saved successfully!
+2026-02-04 22:22:43.275 10189-10189 LocalInstallmentStorage com.cdccreditsmart.app               I  ✅ 24 parcelas salvas localmente (contrato: PFB3PRMZ)
+2026-02-04 22:22:43.275 10189-10189 SimpleHomeViewModel     com.cdccreditsmart.app               I  ✅ 24 parcelas salvas localmente
+2026-02-04 22:22:43.275 10189-10189 SimpleHomeViewModel     com.cdccreditsmart.app               I     → 0 pagas
+2026-02-04 22:22:43.276 10189-10189 SimpleHomeViewModel     com.cdccreditsmart.app               I     → 24 pendentes
+2026-02-04 22:22:43.276 10189-10189 SimpleHomeViewModel     com.cdccreditsmart.app               I     → 0 em atraso
+2026-02-04 22:22:43.276 10189-10189 SimpleHomeViewModel     com.cdccreditsmart.app               I     → Dados disponíveis para overlay e offline blocking
+2026-02-04 22:22:43.276 10189-10189 SimpleHomeViewModel     com.cdccreditsmart.app               I  💾 Cache atualizado - próximo acesso usará cache por 900s
+2026-02-04 22:22:43.285 10189-10189 SecureTokenStorage      com.cdccreditsmart.app               D  📖 Lendo customerName: Marcos Antunes
+2026-02-04 22:22:43.287 10189-10189 SecureTokenStorage      com.cdccreditsmart.app               D  📖 Lendo deviceModel: MOTOROLA Moto G15 Power 128GB Grafite 4G 4GB RAM
+2026-02-04 22:22:43.819 10189-10329 SupportRepository       com.cdccreditsmart.app               D  ✅ Retornando contato do cache local
+2026-02-04 22:22:43.868 10189-10189 Choreographer           com.cdccreditsmart.app               I  Skipped 34 frames!  The application may be doing too much work on its main thread.
+2026-02-04 22:22:43.920 10189-10208 creditsmart.app         com.cdccreditsmart.app               I  Background concurrent mark compact GC freed 13MB AllocSpace bytes, 273(10MB) LOS objects, 59% free, 16MB/40MB, paused 1.808ms,41.396ms total 193.751ms
+2026-02-04 22:22:44.584 10189-10329 MdmCommandReceiver      com.cdccreditsmart.app               D  💓 WebSocket desconectado, parando ping
+2026-02-04 22:22:44.585 10189-10329 MdmCommandReceiver      com.cdccreditsmart.app               D  💓 Ping job encerrado
+2026-02-04 22:22:44.679 10189-10189 ScrollIdentify          com.cdccreditsmart.app               I  on fling
+2026-02-04 22:22:45.215 10189-10206 creditsmart.app         com.cdccreditsmart.app               I  Compiler allocated 5771KB to compile kotlin.Unit com.cdccreditsmart.app.presentation.screens.home.ModernHomeScreenKt.InstallmentCard$lambda$0(com.cdccreditsmart.network.dto.cdc.InstallmentItem, boolean, kotlin.jvm.functions.Function0, androidx.compose.foundation.layout.ColumnScope, androidx.compose.runtime.Composer, int)
+2026-02-04 22:22:45.533 10189-10189 ScrollIdentify          com.cdccreditsmart.app               I  on fling
+2026-02-04 22:22:46.148 10189-10189 ScrollIdentify          com.cdccreditsmart.app               I  on fling
+2026-02-04 22:22:46.785 10189-10189 ScrollIdentify          com.cdccreditsmart.app               I  on fling
+2026-02-04 22:22:47.742 10189-10189 ScrollIdentify          com.cdccreditsmart.app               I  on fling
+2026-02-04 22:22:48.475 10189-10189 ScrollIdentify          com.cdccreditsmart.app               I  on fling
+2026-02-04 22:22:48.861 10189-10189 ScrollIdentify          com.cdccreditsmart.app               I  on fling
+2026-02-04 22:22:49.240 10189-10189 ScrollIdentify          com.cdccreditsmart.app               I  on fling
+2026-02-04 22:22:49.557 10189-10189 ScrollIdentify          com.cdccreditsmart.app               I  on fling
+2026-02-04 22:22:49.973 10189-10189 ScrollIdentify          com.cdccreditsmart.app               I  on fling
+2026-02-04 22:22:50.866 10189-10189 ScrollIdentify          com.cdccreditsmart.app               I  on fling
+2026-02-04 22:23:03.976 10189-10189 WebSocketManager        com.cdccreditsmart.app               D  Heartbeat ping sent
+2026-02-04 22:23:04.163 10189-10189 WebSocketManager        com.cdccreditsmart.app               D  Heartbeat ping sent
+2026-02-04 22:23:04.180 10189-10814 WebSocketManager        com.cdccreditsmart.app               D  Message received: {"type":"pong","timestamp":"2026-02-05T01:23:04.109Z"}...
+2026-02-04 22:23:04.180 10189-10814 WebSocketManager        com.cdccreditsmart.app               D  Received message type: pong
+2026-02-04 22:23:04.180 10189-10814 WebSocketManager        com.cdccreditsmart.app               D  Pong received
+2026-02-04 22:23:04.362 10189-10814 WebSocketManager        com.cdccreditsmart.app               D  Message received: {"type":"pong","timestamp":"2026-02-05T01:23:04.292Z"}...
+2026-02-04 22:23:04.363 10189-10814 WebSocketManager        com.cdccreditsmart.app               D  Received message type: pong
+2026-02-04 22:23:04.363 10189-10814 WebSocketManager        com.cdccreditsmart.app               D  Pong received
+2026-02-04 22:23:04.586 10189-10189 WebSocketManager        com.cdccreditsmart.app               D  Heartbeat ping sent
+2026-02-04 22:23:04.775 10189-10189 WebSocketManager        com.cdccreditsmart.app               D  Heartbeat ping sent
+2026-02-04 22:23:04.788 10189-10828 WebSocketManager        com.cdccreditsmart.app               D  Message received: {"type":"pong","timestamp":"2026-02-05T01:23:04.721Z"}...
+2026-02-04 22:23:04.789 10189-10828 WebSocketManager        com.cdccreditsmart.app               D  Received message type: pong
+2026-02-04 22:23:04.789 10189-10828 WebSocketManager        com.cdccreditsmart.app               D  Pong received
+2026-02-04 22:23:04.846 10189-10329 MdmCommandReceiver      com.cdccreditsmart.app               I  🔍 [Polling #3] Verificando comandos pendentes...
+2026-02-04 22:23:04.859 10189-10329 SecureTokenStorage      com.cdccreditsmart.app               D  ✅ Usando IMEI para MDM: 3531***198
+2026-02-04 22:23:04.859 10189-10329 MdmCommandReceiver      com.cdccreditsmart.app               I  🔍 ========================================
+2026-02-04 22:23:04.859 10189-10329 MdmCommandReceiver      com.cdccreditsmart.app               I  🔍 BUSCANDO COMANDOS PENDENTES
+2026-02-04 22:23:04.859 10189-10329 MdmCommandReceiver      com.cdccreditsmart.app               I  🔍 ========================================
+2026-02-04 22:23:04.859 10189-10329 MdmCommandReceiver      com.cdccreditsmart.app               I  🔍 Identifier: 353104906953198
+2026-02-04 22:23:04.859 10189-10329 MdmCommandReceiver      com.cdccreditsmart.app               I  🔍 Endpoint: GET /api/apk/device/353104906953198/commands
+2026-02-04 22:23:04.864 10189-10329 MdmCommandReceiver      com.cdccreditsmart.app               D  🔍 Executando requisição HTTP (timeout: 15s)...
+2026-02-04 22:23:04.879 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  --> GET https://cdccreditsmart.com/api/apk/device/353104906953198/commands
+2026-02-04 22:23:04.879 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  --> END GET
+2026-02-04 22:23:04.971 10189-10828 WebSocketManager        com.cdccreditsmart.app               D  Message received: {"type":"pong","timestamp":"2026-02-05T01:23:04.904Z"}...
+2026-02-04 22:23:04.972 10189-10828 WebSocketManager        com.cdccreditsmart.app               D  Received message type: pong
+2026-02-04 22:23:04.972 10189-10828 WebSocketManager        com.cdccreditsmart.app               D  Pong received
+2026-02-04 22:23:05.428 10189-10329 HeartbeatManager        com.cdccreditsmart.app               D  💓 Usando authToken (fallback)
+2026-02-04 22:23:05.434 10189-10329 HeartbeatManager        com.cdccreditsmart.app               D  Heartbeat payload:
+2026-02-04 22:23:05.434 10189-10329 HeartbeatManager        com.cdccreditsmart.app               D     deviceToken: eyJhbGciOiJIUzI1NiIs...
+2026-02-04 22:23:05.434 10189-10329 HeartbeatManager        com.cdccreditsmart.app               D     policyLevel: 0
+2026-02-04 22:23:05.435 10189-10329 HeartbeatManager        com.cdccreditsmart.app               D     batteryLevel: 100
+2026-02-04 22:23:05.435 10189-10329 HeartbeatManager        com.cdccreditsmart.app               D     isCharging: true
+2026-02-04 22:23:05.435 10189-10329 HeartbeatManager        com.cdccreditsmart.app               D     currentSimImei: 353104...
+2026-02-04 22:23:05.454 10189-10860 okhttp.OkHttpClient     com.cdccreditsmart.app               I  --> POST https://cdccreditsmart.com/api/apk/device/heartbeat
+2026-02-04 22:23:05.455 10189-10860 okhttp.OkHttpClient     com.cdccreditsmart.app               I  Content-Type: application/json; charset=UTF-8
+2026-02-04 22:23:05.455 10189-10860 okhttp.OkHttpClient     com.cdccreditsmart.app               I  Content-Length: 519
+2026-02-04 22:23:05.455 10189-10860 okhttp.OkHttpClient     com.cdccreditsmart.app               I  Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkZXZpY2VJZCI6IjM1MzEwNDkwNjk1MzE5OCIsInNlcmlhbE51bWJlciI6IlpGNTI1R1JDUDgiLCJmaW5nZXJwcmludCI6IjE4YmQ2YWRiMmM2N2RhYzc1NjQ0YWU0ODkzOTc5NTAxOGI5ODVhMmVhMzA3ZDNiNDc2ODBjMGY0YzEzNWIzMTAiLCJ0eXBlIjoiYXBrIiwic2NvcGVzIjpbImRldmljZTpyZWFkIiwiZGV2aWNlOnN5bmMiXSwiaWF0IjoxNzcwMjU0NTIyLCJleHAiOjE4MDE3OTA1MjJ9.dypVQVgkpfe0Hg3HEzT1FF3Av_bGbZvUPfVfwMdbcn4
+2026-02-04 22:23:05.456 10189-10860 okhttp.OkHttpClient     com.cdccreditsmart.app               I  {"deviceToken":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkZXZpY2VJZCI6IjM1MzEwNDkwNjk1MzE5OCIsInNlcmlhbE51bWJlciI6IlpGNTI1R1JDUDgiLCJmaW5nZXJwcmludCI6IjE4YmQ2YWRiMmM2N2RhYzc1NjQ0YWU0ODkzOTc5NTAxOGI5ODVhMmVhMzA3ZDNiNDc2ODBjMGY0YzEzNWIzMTAiLCJ0eXBlIjoiYXBrIiwic2NvcGVzIjpbImRldmljZTpyZWFkIiwiZGV2aWNlOnN5bmMiXSwiaWF0IjoxNzcwMjU0NTIyLCJleHAiOjE4MDE3OTA1MjJ9.dypVQVgkpfe0Hg3HEzT1FF3Av_bGbZvUPfVfwMdbcn4","currentBlockLevel":0,"batteryLevel":100,"isCharging":true,"currentSimImei":"353104906953198","timestamp":1770254585434}
+2026-02-04 22:23:05.456 10189-10860 okhttp.OkHttpClient     com.cdccreditsmart.app               I  --> END POST (519-byte body)
+2026-02-04 22:23:05.516 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  <-- 200 https://cdccreditsmart.com/api/apk/device/353104906953198/commands (637ms)
+2026-02-04 22:23:05.517 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-credentials: true
+2026-02-04 22:23:05.517 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-headers: Origin, X-Requested-With, Content-Type, Accept, Authorization, x-client-key, x-client-token, x-client-secret, cache-control
+2026-02-04 22:23:05.517 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-methods: GET, POST, PUT, PATCH, DELETE, OPTIONS
+2026-02-04 22:23:05.517 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-origin: *
+2026-02-04 22:23:05.517 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-max-age: 86400
+2026-02-04 22:23:05.517 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-length: 104
+2026-02-04 22:23:05.517 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-security-policy: default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://replit.com; style-src 'self' 'unsafe-inline' https://replit.com; img-src 'self' data: https:; font-src 'self' data: https://replit.com; connect-src 'self';
+2026-02-04 22:23:05.518 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-type: application/json; charset=utf-8
+2026-02-04 22:23:05.518 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  date: Thu, 05 Feb 2026 01:23:05 GMT
+2026-02-04 22:23:05.518 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  etag: W/"68-KhomJky8DgkcGkFqwuiKclq6mvI"
+2026-02-04 22:23:05.518 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  permissions-policy: geolocation=(), microphone=(), camera=()
+2026-02-04 22:23:05.518 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  referrer-policy: strict-origin-when-cross-origin
+2026-02-04 22:23:05.518 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  strict-transport-security: max-age=63072000; includeSubDomains
+2026-02-04 22:23:05.518 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  strict-transport-security: max-age=31536000; includeSubDomains
+2026-02-04 22:23:05.518 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-anti-fraud-protection: active
+2026-02-04 22:23:05.519 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-certificate-pinning-enabled: false
+2026-02-04 22:23:05.519 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-certificate-pinning-status: disabled-for-stability
+2026-02-04 22:23:05.519 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-content-type-options: nosniff
+2026-02-04 22:23:05.519 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-financial-data-protection: enabled
+2026-02-04 22:23:05.519 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-frame-options: DENY
+2026-02-04 22:23:05.519 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-transaction-security-level: maximum
+2026-02-04 22:23:05.519 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-xss-protection: 1; mode=block
+2026-02-04 22:23:05.519 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  via: 1.1 google
+2026-02-04 22:23:05.519 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  alt-svc: h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
+2026-02-04 22:23:05.521 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  {"deviceId":"device_1770254468961_ntmzx6jd09","serialNumber":"PFB3PRMZ","commandsCount":0,"commands":[]}
+2026-02-04 22:23:05.521 10189-10829 okhttp.OkHttpClient     com.cdccreditsmart.app               I  <-- END HTTP (104-byte body)
+2026-02-04 22:23:05.525 10189-10329 MdmCommandReceiver      com.cdccreditsmart.app               I  🔍 HTTP Response code: 200
+2026-02-04 22:23:05.525 10189-10329 MdmCommandReceiver      com.cdccreditsmart.app               I  🔍 HTTP isSuccessful: true
+2026-02-04 22:23:05.525 10189-10329 MdmCommandReceiver      com.cdccreditsmart.app               I  🔍 Response body deviceId: device_1770254468961_ntmzx6jd09
+2026-02-04 22:23:05.525 10189-10329 MdmCommandReceiver      com.cdccreditsmart.app               I  🔍 Response body serialNumber: PFB3PRMZ
+2026-02-04 22:23:05.525 10189-10329 MdmCommandReceiver      com.cdccreditsmart.app               I  🔍 Total de comandos: 0
+2026-02-04 22:23:05.525 10189-10329 MdmCommandReceiver      com.cdccreditsmart.app               D  ✅ Nenhum comando pendente no servidor
+2026-02-04 22:23:05.525 10189-10329 MdmCommandReceiver      com.cdccreditsmart.app               D  📊 Fetch duration: 666ms
+2026-02-04 22:23:06.167 10189-10860 okhttp.OkHttpClient     com.cdccreditsmart.app               I  <-- 200 https://cdccreditsmart.com/api/apk/device/heartbeat (710ms)
+2026-02-04 22:23:06.167 10189-10860 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-credentials: true
+2026-02-04 22:23:06.168 10189-10860 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-headers: Origin, X-Requested-With, Content-Type, Accept, Authorization, x-client-key, x-client-token, x-client-secret, cache-control
+2026-02-04 22:23:06.168 10189-10860 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-methods: GET, POST, PUT, PATCH, DELETE, OPTIONS
+2026-02-04 22:23:06.168 10189-10860 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-origin: *
+2026-02-04 22:23:06.168 10189-10860 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-max-age: 86400
+2026-02-04 22:23:06.168 10189-10860 okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-length: 327
+2026-02-04 22:23:06.168 10189-10860 okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-security-policy: default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://replit.com; style-src 'self' 'unsafe-inline' https://replit.com; img-src 'self' data: https:; font-src 'self' data: https://replit.com; connect-src 'self';
+2026-02-04 22:23:06.168 10189-10860 okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-type: application/json; charset=utf-8
+2026-02-04 22:23:06.169 10189-10860 okhttp.OkHttpClient     com.cdccreditsmart.app               I  date: Thu, 05 Feb 2026 01:23:05 GMT
+2026-02-04 22:23:06.169 10189-10860 okhttp.OkHttpClient     com.cdccreditsmart.app               I  etag: W/"147-Qy6gwPnK5M+UrTvioMMVEoPSwjs"
+2026-02-04 22:23:06.169 10189-10860 okhttp.OkHttpClient     com.cdccreditsmart.app               I  permissions-policy: geolocation=(), microphone=(), camera=()
+2026-02-04 22:23:06.169 10189-10860 okhttp.OkHttpClient     com.cdccreditsmart.app               I  referrer-policy: strict-origin-when-cross-origin
+2026-02-04 22:23:06.169 10189-10860 okhttp.OkHttpClient     com.cdccreditsmart.app               I  strict-transport-security: max-age=63072000; includeSubDomains
+2026-02-04 22:23:06.169 10189-10860 okhttp.OkHttpClient     com.cdccreditsmart.app               I  strict-transport-security: max-age=31536000; includeSubDomains
+2026-02-04 22:23:06.170 10189-10860 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-anti-fraud-protection: active
+2026-02-04 22:23:06.170 10189-10860 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-certificate-pinning-enabled: false
+2026-02-04 22:23:06.170 10189-10860 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-certificate-pinning-status: disabled-for-stability
+2026-02-04 22:23:06.170 10189-10860 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-content-type-options: nosniff
+2026-02-04 22:23:06.170 10189-10860 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-financial-data-protection: enabled
+2026-02-04 22:23:06.170 10189-10860 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-frame-options: DENY
+2026-02-04 22:23:06.170 10189-10860 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-transaction-security-level: maximum
+2026-02-04 22:23:06.171 10189-10860 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-xss-protection: 1; mode=block
+2026-02-04 22:23:06.171 10189-10860 okhttp.OkHttpClient     com.cdccreditsmart.app               I  via: 1.1 google
+2026-02-04 22:23:06.171 10189-10860 okhttp.OkHttpClient     com.cdccreditsmart.app               I  alt-svc: h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
+2026-02-04 22:23:06.173 10189-10860 okhttp.OkHttpClient     com.cdccreditsmart.app               I  {"success":true,"requiresBackendRevalidation":true,"phoneNumbersProcessed":false,"complianceStatus":"OK","expectedBlockLevel":0,"message":"Device compliant","complianceConfig":{"maxComplianceCorrections":3,"correctionWindowMinutes":30,"autoBlockOnLimitReached":true,"enableDetailedTelemetry":true,"telemetryIntervalMinutes":5}}
+2026-02-04 22:23:06.174 10189-10860 okhttp.OkHttpClient     com.cdccreditsmart.app               I  <-- END HTTP (327-byte body)
+2026-02-04 22:23:06.182 10189-10329 HeartbeatManager        com.cdccreditsmart.app               I  ✅ Heartbeat aceito pelo backend (HTTP 200)
+2026-02-04 22:23:06.182 10189-10329 HeartbeatManager        com.cdccreditsmart.app               D  📊 Resposta do heartbeat:
+2026-02-04 22:23:06.182 10189-10329 HeartbeatManager        com.cdccreditsmart.app               D     success: true
+2026-02-04 22:23:06.182 10189-10329 HeartbeatManager        com.cdccreditsmart.app               D     complianceStatus: OK
+2026-02-04 22:23:06.182 10189-10329 HeartbeatManager        com.cdccreditsmart.app               D     expectedBlockLevel: 0
+2026-02-04 22:23:06.182 10189-10329 HeartbeatManager        com.cdccreditsmart.app               D     requiresBackendRevalidation: true
+2026-02-04 22:23:06.182 10189-10329 HeartbeatManager        com.cdccreditsmart.app               W  ⚠️ Backend exige revalidação de IMEI!
+2026-02-04 22:23:06.182 10189-10329 HeartbeatManager        com.cdccreditsmart.app               I  ✅ Dispositivo CONFORME - Nível 0
+2026-02-04 22:23:06.187 10189-10329 HeartbeatManager        com.cdccreditsmart.app               I  💾 Backend confirmou desbloqueio - timestamp salvo

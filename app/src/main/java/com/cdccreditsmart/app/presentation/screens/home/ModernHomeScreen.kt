@@ -38,6 +38,7 @@ import kotlinx.coroutines.launch
 import java.text.NumberFormat
 import java.text.SimpleDateFormat
 import java.util.*
+import androidx.activity.compose.BackHandler
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -48,6 +49,10 @@ fun ModernHomeScreen(
     onNavigateToPrivacyPolicy: () -> Unit = {},
     onNeedsReauth: () -> Unit = {}
 ) {
+    BackHandler(enabled = true) {
+        android.util.Log.d("ModernHomeScreen", "🚫 Botão voltar bloqueado na tela principal")
+    }
+    
     val context = LocalContext.current
     val viewModel = remember { SimpleHomeViewModel(context) }
     val state by viewModel.homeState

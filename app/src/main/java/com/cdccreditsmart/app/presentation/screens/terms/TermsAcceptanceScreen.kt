@@ -36,6 +36,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import kotlinx.coroutines.withTimeout
 import kotlinx.coroutines.TimeoutCancellationException
+import androidx.activity.compose.BackHandler
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -44,6 +45,10 @@ fun TermsAcceptanceScreen(
     onTermsAccepted: () -> Unit,
     onBack: (() -> Unit)? = null
 ) {
+    BackHandler(enabled = true) {
+        android.util.Log.d("TermsScreen", "🚫 Botão voltar bloqueado - usuário deve aceitar os termos")
+    }
+    
     // LOG DE DIAGNÓSTICO: Entrada na função
     android.util.Log.i("TermsScreen", "🚀 TermsAcceptanceScreen INICIANDO - contractCode=$contractCode")
     

@@ -331,21 +331,11 @@ fun CDCNavigation(
                 contractCode = contractCode,
                 onTermsAccepted = {
                     navController.navigate(Routes.HOME) {
-                        popUpTo(Routes.TERMS_ACCEPTANCE) { inclusive = true }
+                        popUpTo(0) { inclusive = true }
+                        launchSingleTop = true
                     }
                 },
-                onBack = {
-                    // Limpar dados e voltar para tela de código
-                    try {
-                        val authOrchestrator = com.cdccreditsmart.app.auth.AuthenticationOrchestrator(context)
-                        authOrchestrator.clearAll()
-                    } catch (e: Exception) {
-                        android.util.Log.e("Navigation", "Erro ao limpar dados: ${e.message}")
-                    }
-                    navController.navigate(Routes.QR_SCANNER) {
-                        popUpTo(0) { inclusive = true }
-                    }
-                }
+                onBack = null
             )
         }
         

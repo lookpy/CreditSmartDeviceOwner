@@ -14,6 +14,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.cdccreditsmart.app.ui.theme.CDCOrange
+import androidx.activity.compose.BackHandler
 
 @Composable
 fun PairingSuccessScreen(
@@ -22,6 +23,10 @@ fun PairingSuccessScreen(
     deviceModel: String?,
     onContinue: () -> Unit
 ) {
+    BackHandler(enabled = true) {
+        android.util.Log.d("PairingSuccessScreen", "🚫 Botão voltar bloqueado - pareamento em progresso")
+    }
+    
     Surface(
         modifier = Modifier.fillMaxSize(),
         color = MaterialTheme.colorScheme.background
