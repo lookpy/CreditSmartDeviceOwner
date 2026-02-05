@@ -1,0 +1,855 @@
+2026-02-04 21:05:24.682 20415-20415 PairingViewModel        com.cdccreditsmart.app               D  Auto-polling: Checking if sale was completed (using /api/apk/auth)...
+2026-02-04 21:05:24.684 20415-27920 okhttp.OkHttpClient     com.cdccreditsmart.app               I  --> POST https://cdccreditsmart.com/api/apk/auth
+2026-02-04 21:05:24.684 20415-27920 okhttp.OkHttpClient     com.cdccreditsmart.app               I  Content-Type: application/json; charset=UTF-8
+2026-02-04 21:05:24.684 20415-27920 okhttp.OkHttpClient     com.cdccreditsmart.app               I  Content-Length: 292
+2026-02-04 21:05:24.684 20415-27920 okhttp.OkHttpClient     com.cdccreditsmart.app               I  {"pairingCode":"XUNB-PBYR","code":"XUNB-PBYR","imei":"353104906953198","deviceImei":"353104906953198","deviceModel":"moto g15","deviceBrand":"motorola","androidVersion":"15","deviceFingerprint":"18bd6adb2c67dac75644ae48939795018b985a2ea307d3b47680c0f4c135b310","androidId":"46cfde82c912b2d8"}
+2026-02-04 21:05:24.684 20415-27920 okhttp.OkHttpClient     com.cdccreditsmart.app               I  --> END POST (292-byte body)
+2026-02-04 21:05:24.781 20415-28322 okhttp.OkHttpClient     com.cdccreditsmart.app               I  <-- 404 https://cdccreditsmart.com/api/apk/auth (310ms)
+2026-02-04 21:05:24.782 20415-28322 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-credentials: true
+2026-02-04 21:05:24.782 20415-28322 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-headers: Origin, X-Requested-With, Content-Type, Accept, Authorization, x-client-key, x-client-token, x-client-secret, cache-control
+2026-02-04 21:05:24.782 20415-28322 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-methods: GET, POST, PUT, PATCH, DELETE, OPTIONS
+2026-02-04 21:05:24.782 20415-28322 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-origin: *
+2026-02-04 21:05:24.782 20415-28322 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-max-age: 86400
+2026-02-04 21:05:24.782 20415-28322 okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-length: 137
+2026-02-04 21:05:24.783 20415-28322 okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-security-policy: default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://replit.com; style-src 'self' 'unsafe-inline' https://replit.com; img-src 'self' data: https:; font-src 'self' data: https://replit.com; connect-src 'self';
+2026-02-04 21:05:24.783 20415-28322 okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-type: application/json; charset=utf-8
+2026-02-04 21:05:24.783 20415-28322 okhttp.OkHttpClient     com.cdccreditsmart.app               I  date: Thu, 05 Feb 2026 00:05:24 GMT
+2026-02-04 21:05:24.783 20415-28322 okhttp.OkHttpClient     com.cdccreditsmart.app               I  etag: W/"89-y+bdn7O+U8772O41KAlg4H9kc8U"
+2026-02-04 21:05:24.783 20415-28322 okhttp.OkHttpClient     com.cdccreditsmart.app               I  permissions-policy: geolocation=(), microphone=(), camera=()
+2026-02-04 21:05:24.784 20415-28322 okhttp.OkHttpClient     com.cdccreditsmart.app               I  referrer-policy: strict-origin-when-cross-origin
+2026-02-04 21:05:24.784 20415-28322 okhttp.OkHttpClient     com.cdccreditsmart.app               I  strict-transport-security: max-age=63072000; includeSubDomains
+2026-02-04 21:05:24.784 20415-28322 okhttp.OkHttpClient     com.cdccreditsmart.app               I  strict-transport-security: max-age=31536000; includeSubDomains
+2026-02-04 21:05:24.784 20415-28322 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-anti-fraud-protection: active
+2026-02-04 21:05:24.784 20415-28322 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-certificate-pinning-enabled: false
+2026-02-04 21:05:24.784 20415-28322 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-certificate-pinning-status: disabled-for-stability
+2026-02-04 21:05:24.785 20415-28322 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-content-type-options: nosniff
+2026-02-04 21:05:24.785 20415-28322 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-financial-data-protection: enabled
+2026-02-04 21:05:24.785 20415-28322 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-frame-options: DENY
+2026-02-04 21:05:24.785 20415-28322 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-transaction-security-level: maximum
+2026-02-04 21:05:24.785 20415-28322 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-xss-protection: 1; mode=block
+2026-02-04 21:05:24.785 20415-28322 okhttp.OkHttpClient     com.cdccreditsmart.app               I  via: 1.1 google
+2026-02-04 21:05:24.785 20415-28322 okhttp.OkHttpClient     com.cdccreditsmart.app               I  alt-svc: h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
+2026-02-04 21:05:24.786 20415-28322 okhttp.OkHttpClient     com.cdccreditsmart.app               I  {"error":"Token inválido ou dispositivo não encontrado","tokenProvided":"XUNB****","hint":"Verifique se a venda foi finalizada no PDV"}
+2026-02-04 21:05:24.787 20415-28322 okhttp.OkHttpClient     com.cdccreditsmart.app               I  <-- END HTTP (137-byte body)
+2026-02-04 21:05:24.791 20415-20415 PairingViewModel        com.cdccreditsmart.app               D  ⏳ Auto-polling: Venda ainda não concluída (HTTP 404), continuando polling...
+2026-02-04 21:05:24.811 20415-20415 PairingViewModel        com.cdccreditsmart.app               D  Auto-polling: Checking if sale was completed (using /api/apk/auth)...
+2026-02-04 21:05:24.814 20415-28322 okhttp.OkHttpClient     com.cdccreditsmart.app               I  --> POST https://cdccreditsmart.com/api/apk/auth
+2026-02-04 21:05:24.814 20415-28322 okhttp.OkHttpClient     com.cdccreditsmart.app               I  Content-Type: application/json; charset=UTF-8
+2026-02-04 21:05:24.814 20415-28322 okhttp.OkHttpClient     com.cdccreditsmart.app               I  Content-Length: 292
+2026-02-04 21:05:24.814 20415-28322 okhttp.OkHttpClient     com.cdccreditsmart.app               I  {"pairingCode":"XUNB-PBYR","code":"XUNB-PBYR","imei":"353104906953198","deviceImei":"353104906953198","deviceModel":"moto g15","deviceBrand":"motorola","androidVersion":"15","deviceFingerprint":"18bd6adb2c67dac75644ae48939795018b985a2ea307d3b47680c0f4c135b310","androidId":"46cfde82c912b2d8"}
+2026-02-04 21:05:24.814 20415-28322 okhttp.OkHttpClient     com.cdccreditsmart.app               I  --> END POST (292-byte body)
+2026-02-04 21:05:24.829 20415-27077 okhttp.OkHttpClient     com.cdccreditsmart.app               I  <-- 200 https://cdccreditsmart.com/api/apk/auth (311ms)
+2026-02-04 21:05:24.829 20415-27077 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-credentials: true
+2026-02-04 21:05:24.830 20415-27077 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-headers: Origin, X-Requested-With, Content-Type, Accept, Authorization, x-client-key, x-client-token, x-client-secret, cache-control
+2026-02-04 21:05:24.830 20415-27077 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-methods: GET, POST, PUT, PATCH, DELETE, OPTIONS
+2026-02-04 21:05:24.830 20415-27077 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-origin: *
+2026-02-04 21:05:24.831 20415-27077 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-max-age: 86400
+2026-02-04 21:05:24.831 20415-27077 okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-length: 373
+2026-02-04 21:05:24.831 20415-27077 okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-security-policy: default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://replit.com; style-src 'self' 'unsafe-inline' https://replit.com; img-src 'self' data: https:; font-src 'self' data: https://replit.com; connect-src 'self';
+2026-02-04 21:05:24.832 20415-27077 okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-type: application/json; charset=utf-8
+2026-02-04 21:05:24.832 20415-27077 okhttp.OkHttpClient     com.cdccreditsmart.app               I  date: Thu, 05 Feb 2026 00:05:24 GMT
+2026-02-04 21:05:24.832 20415-27077 okhttp.OkHttpClient     com.cdccreditsmart.app               I  etag: W/"175-n/9xbxYAo3vsk2W+oL9G2Ws0FEk"
+2026-02-04 21:05:24.833 20415-27077 okhttp.OkHttpClient     com.cdccreditsmart.app               I  permissions-policy: geolocation=(), microphone=(), camera=()
+2026-02-04 21:05:24.833 20415-27077 okhttp.OkHttpClient     com.cdccreditsmart.app               I  referrer-policy: strict-origin-when-cross-origin
+2026-02-04 21:05:24.833 20415-27077 okhttp.OkHttpClient     com.cdccreditsmart.app               I  strict-transport-security: max-age=63072000; includeSubDomains
+2026-02-04 21:05:24.833 20415-27077 okhttp.OkHttpClient     com.cdccreditsmart.app               I  strict-transport-security: max-age=31536000; includeSubDomains
+2026-02-04 21:05:24.833 20415-27077 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-anti-fraud-protection: active
+2026-02-04 21:05:24.834 20415-27077 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-certificate-pinning-enabled: false
+2026-02-04 21:05:24.834 20415-27077 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-certificate-pinning-status: disabled-for-stability
+2026-02-04 21:05:24.834 20415-27077 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-content-type-options: nosniff
+2026-02-04 21:05:24.834 20415-27077 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-financial-data-protection: enabled
+2026-02-04 21:05:24.834 20415-27077 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-frame-options: DENY
+2026-02-04 21:05:24.835 20415-27077 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-transaction-security-level: maximum
+2026-02-04 21:05:24.835 20415-27077 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-xss-protection: 1; mode=block
+2026-02-04 21:05:24.835 20415-27077 okhttp.OkHttpClient     com.cdccreditsmart.app               I  via: 1.1 google
+2026-02-04 21:05:24.835 20415-27077 okhttp.OkHttpClient     com.cdccreditsmart.app               I  alt-svc: h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
+2026-02-04 21:05:24.836 20415-27077 okhttp.OkHttpClient     com.cdccreditsmart.app               I  {"success":true,"authenticated":false,"pending":true,"stage":"awaiting-device","message":"Venda em andamento. Aguardando finalização no PDV.","validationId":"78b9aebf-1b12-4844-9c1c-79d988699175","saleId":"sale_1770249872429_vod2n752prc","expiresAt":"2026-02-06T00:04:32.429Z","hint":"O vendedor precisa clicar em \"Dispositivo Atestado\" no PDV para finalizar a venda."}
+2026-02-04 21:05:24.836 20415-27077 okhttp.OkHttpClient     com.cdccreditsmart.app               I  <-- END HTTP (373-byte body)
+2026-02-04 21:05:24.842 20415-20415 PairingViewModel        com.cdccreditsmart.app               D  ⏳ Auto-polling: Sale still pending (stage: awaiting-device, pending: true)...
+2026-02-04 21:05:24.863 20415-20415 PairingViewModel        com.cdccreditsmart.app               D  Auto-polling: Checking if sale was completed (using /api/apk/auth)...
+2026-02-04 21:05:24.865 20415-27077 okhttp.OkHttpClient     com.cdccreditsmart.app               I  --> POST https://cdccreditsmart.com/api/apk/auth
+2026-02-04 21:05:24.865 20415-27077 okhttp.OkHttpClient     com.cdccreditsmart.app               I  Content-Type: application/json; charset=UTF-8
+2026-02-04 21:05:24.866 20415-27077 okhttp.OkHttpClient     com.cdccreditsmart.app               I  Content-Length: 292
+2026-02-04 21:05:24.866 20415-27077 okhttp.OkHttpClient     com.cdccreditsmart.app               I  {"pairingCode":"XUNB-PBYR","code":"XUNB-PBYR","imei":"353104906953198","deviceImei":"353104906953198","deviceModel":"moto g15","deviceBrand":"motorola","androidVersion":"15","deviceFingerprint":"18bd6adb2c67dac75644ae48939795018b985a2ea307d3b47680c0f4c135b310","androidId":"46cfde82c912b2d8"}
+2026-02-04 21:05:24.866 20415-27077 okhttp.OkHttpClient     com.cdccreditsmart.app               I  --> END POST (292-byte body)
+2026-02-04 21:05:25.005 20415-27920 okhttp.OkHttpClient     com.cdccreditsmart.app               I  <-- 404 https://cdccreditsmart.com/api/apk/auth (320ms)
+2026-02-04 21:05:25.005 20415-27920 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-credentials: true
+2026-02-04 21:05:25.006 20415-27920 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-headers: Origin, X-Requested-With, Content-Type, Accept, Authorization, x-client-key, x-client-token, x-client-secret, cache-control
+2026-02-04 21:05:25.006 20415-27920 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-methods: GET, POST, PUT, PATCH, DELETE, OPTIONS
+2026-02-04 21:05:25.006 20415-27920 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-origin: *
+2026-02-04 21:05:25.006 20415-27920 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-max-age: 86400
+2026-02-04 21:05:25.006 20415-27920 okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-length: 137
+2026-02-04 21:05:25.006 20415-27920 okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-security-policy: default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://replit.com; style-src 'self' 'unsafe-inline' https://replit.com; img-src 'self' data: https:; font-src 'self' data: https://replit.com; connect-src 'self';
+2026-02-04 21:05:25.006 20415-27920 okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-type: application/json; charset=utf-8
+2026-02-04 21:05:25.007 20415-27920 okhttp.OkHttpClient     com.cdccreditsmart.app               I  date: Thu, 05 Feb 2026 00:05:24 GMT
+2026-02-04 21:05:25.007 20415-27920 okhttp.OkHttpClient     com.cdccreditsmart.app               I  etag: W/"89-y+bdn7O+U8772O41KAlg4H9kc8U"
+2026-02-04 21:05:25.007 20415-27920 okhttp.OkHttpClient     com.cdccreditsmart.app               I  permissions-policy: geolocation=(), microphone=(), camera=()
+2026-02-04 21:05:25.007 20415-27920 okhttp.OkHttpClient     com.cdccreditsmart.app               I  referrer-policy: strict-origin-when-cross-origin
+2026-02-04 21:05:25.007 20415-27920 okhttp.OkHttpClient     com.cdccreditsmart.app               I  strict-transport-security: max-age=63072000; includeSubDomains
+2026-02-04 21:05:25.007 20415-27920 okhttp.OkHttpClient     com.cdccreditsmart.app               I  strict-transport-security: max-age=31536000; includeSubDomains
+2026-02-04 21:05:25.007 20415-27920 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-anti-fraud-protection: active
+2026-02-04 21:05:25.008 20415-27920 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-certificate-pinning-enabled: false
+2026-02-04 21:05:25.008 20415-27920 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-certificate-pinning-status: disabled-for-stability
+2026-02-04 21:05:25.008 20415-27920 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-content-type-options: nosniff
+2026-02-04 21:05:25.008 20415-27920 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-financial-data-protection: enabled
+2026-02-04 21:05:25.008 20415-27920 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-frame-options: DENY
+2026-02-04 21:05:25.008 20415-27920 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-transaction-security-level: maximum
+2026-02-04 21:05:25.008 20415-27920 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-xss-protection: 1; mode=block
+2026-02-04 21:05:25.008 20415-27920 okhttp.OkHttpClient     com.cdccreditsmart.app               I  via: 1.1 google
+2026-02-04 21:05:25.009 20415-27920 okhttp.OkHttpClient     com.cdccreditsmart.app               I  alt-svc: h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
+2026-02-04 21:05:25.010 20415-27920 okhttp.OkHttpClient     com.cdccreditsmart.app               I  {"error":"Token inválido ou dispositivo não encontrado","tokenProvided":"XUNB****","hint":"Verifique se a venda foi finalizada no PDV"}
+2026-02-04 21:05:25.010 20415-27920 okhttp.OkHttpClient     com.cdccreditsmart.app               I  <-- END HTTP (137-byte body)
+2026-02-04 21:05:25.012 20415-20415 PairingViewModel        com.cdccreditsmart.app               D  ⏳ Auto-polling: Venda ainda não concluída (HTTP 404), continuando polling...
+2026-02-04 21:05:25.115 20415-20415 PairingViewModel        com.cdccreditsmart.app               D  Auto-polling: Checking if sale was completed (using /api/apk/auth)...
+2026-02-04 21:05:25.118 20415-27920 okhttp.OkHttpClient     com.cdccreditsmart.app               I  --> POST https://cdccreditsmart.com/api/apk/auth
+2026-02-04 21:05:25.118 20415-27920 okhttp.OkHttpClient     com.cdccreditsmart.app               I  Content-Type: application/json; charset=UTF-8
+2026-02-04 21:05:25.118 20415-27920 okhttp.OkHttpClient     com.cdccreditsmart.app               I  Content-Length: 292
+2026-02-04 21:05:25.118 20415-27920 okhttp.OkHttpClient     com.cdccreditsmart.app               I  {"pairingCode":"XUNB-PBYR","code":"XUNB-PBYR","imei":"353104906953198","deviceImei":"353104906953198","deviceModel":"moto g15","deviceBrand":"motorola","androidVersion":"15","deviceFingerprint":"18bd6adb2c67dac75644ae48939795018b985a2ea307d3b47680c0f4c135b310","androidId":"46cfde82c912b2d8"}
+2026-02-04 21:05:25.119 20415-27920 okhttp.OkHttpClient     com.cdccreditsmart.app               I  --> END POST (292-byte body)
+2026-02-04 21:05:25.141 20415-28322 okhttp.OkHttpClient     com.cdccreditsmart.app               I  <-- 404 https://cdccreditsmart.com/api/apk/auth (326ms)
+2026-02-04 21:05:25.141 20415-28322 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-credentials: true
+2026-02-04 21:05:25.141 20415-28322 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-headers: Origin, X-Requested-With, Content-Type, Accept, Authorization, x-client-key, x-client-token, x-client-secret, cache-control
+2026-02-04 21:05:25.141 20415-28322 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-methods: GET, POST, PUT, PATCH, DELETE, OPTIONS
+2026-02-04 21:05:25.142 20415-28322 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-origin: *
+2026-02-04 21:05:25.142 20415-28322 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-max-age: 86400
+2026-02-04 21:05:25.142 20415-28322 okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-length: 137
+2026-02-04 21:05:25.142 20415-28322 okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-security-policy: default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://replit.com; style-src 'self' 'unsafe-inline' https://replit.com; img-src 'self' data: https:; font-src 'self' data: https://replit.com; connect-src 'self';
+2026-02-04 21:05:25.142 20415-28322 okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-type: application/json; charset=utf-8
+2026-02-04 21:05:25.142 20415-28322 okhttp.OkHttpClient     com.cdccreditsmart.app               I  date: Thu, 05 Feb 2026 00:05:25 GMT
+2026-02-04 21:05:25.142 20415-28322 okhttp.OkHttpClient     com.cdccreditsmart.app               I  etag: W/"89-y+bdn7O+U8772O41KAlg4H9kc8U"
+2026-02-04 21:05:25.142 20415-28322 okhttp.OkHttpClient     com.cdccreditsmart.app               I  permissions-policy: geolocation=(), microphone=(), camera=()
+2026-02-04 21:05:25.143 20415-28322 okhttp.OkHttpClient     com.cdccreditsmart.app               I  referrer-policy: strict-origin-when-cross-origin
+2026-02-04 21:05:25.143 20415-28322 okhttp.OkHttpClient     com.cdccreditsmart.app               I  strict-transport-security: max-age=63072000; includeSubDomains
+2026-02-04 21:05:25.143 20415-28322 okhttp.OkHttpClient     com.cdccreditsmart.app               I  strict-transport-security: max-age=31536000; includeSubDomains
+2026-02-04 21:05:25.143 20415-28322 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-anti-fraud-protection: active
+2026-02-04 21:05:25.143 20415-28322 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-certificate-pinning-enabled: false
+2026-02-04 21:05:25.143 20415-28322 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-certificate-pinning-status: disabled-for-stability
+2026-02-04 21:05:25.143 20415-28322 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-content-type-options: nosniff
+2026-02-04 21:05:25.143 20415-28322 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-financial-data-protection: enabled
+2026-02-04 21:05:25.144 20415-28322 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-frame-options: DENY
+2026-02-04 21:05:25.144 20415-28322 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-transaction-security-level: maximum
+2026-02-04 21:05:25.144 20415-28322 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-xss-protection: 1; mode=block
+2026-02-04 21:05:25.144 20415-28322 okhttp.OkHttpClient     com.cdccreditsmart.app               I  via: 1.1 google
+2026-02-04 21:05:25.144 20415-28322 okhttp.OkHttpClient     com.cdccreditsmart.app               I  alt-svc: h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
+2026-02-04 21:05:25.145 20415-28322 okhttp.OkHttpClient     com.cdccreditsmart.app               I  {"error":"Token inválido ou dispositivo não encontrado","tokenProvided":"XUNB****","hint":"Verifique se a venda foi finalizada no PDV"}
+2026-02-04 21:05:25.145 20415-28322 okhttp.OkHttpClient     com.cdccreditsmart.app               I  <-- END HTTP (137-byte body)
+2026-02-04 21:05:25.147 20415-20415 PairingViewModel        com.cdccreditsmart.app               D  ⏳ Auto-polling: Venda ainda não concluída (HTTP 404), continuando polling...
+2026-02-04 21:05:25.188 20415-27077 okhttp.OkHttpClient     com.cdccreditsmart.app               I  <-- 404 https://cdccreditsmart.com/api/apk/auth (321ms)
+2026-02-04 21:05:25.188 20415-27077 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-credentials: true
+2026-02-04 21:05:25.189 20415-27077 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-headers: Origin, X-Requested-With, Content-Type, Accept, Authorization, x-client-key, x-client-token, x-client-secret, cache-control
+2026-02-04 21:05:25.189 20415-27077 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-methods: GET, POST, PUT, PATCH, DELETE, OPTIONS
+2026-02-04 21:05:25.189 20415-27077 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-origin: *
+2026-02-04 21:05:25.189 20415-27077 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-max-age: 86400
+2026-02-04 21:05:25.189 20415-27077 okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-length: 137
+2026-02-04 21:05:25.189 20415-27077 okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-security-policy: default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://replit.com; style-src 'self' 'unsafe-inline' https://replit.com; img-src 'self' data: https:; font-src 'self' data: https://replit.com; connect-src 'self';
+2026-02-04 21:05:25.189 20415-27077 okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-type: application/json; charset=utf-8
+2026-02-04 21:05:25.190 20415-27077 okhttp.OkHttpClient     com.cdccreditsmart.app               I  date: Thu, 05 Feb 2026 00:05:25 GMT
+2026-02-04 21:05:25.190 20415-27077 okhttp.OkHttpClient     com.cdccreditsmart.app               I  etag: W/"89-y+bdn7O+U8772O41KAlg4H9kc8U"
+2026-02-04 21:05:25.190 20415-27077 okhttp.OkHttpClient     com.cdccreditsmart.app               I  permissions-policy: geolocation=(), microphone=(), camera=()
+2026-02-04 21:05:25.190 20415-27077 okhttp.OkHttpClient     com.cdccreditsmart.app               I  referrer-policy: strict-origin-when-cross-origin
+2026-02-04 21:05:25.191 20415-27077 okhttp.OkHttpClient     com.cdccreditsmart.app               I  strict-transport-security: max-age=63072000; includeSubDomains
+2026-02-04 21:05:25.191 20415-27077 okhttp.OkHttpClient     com.cdccreditsmart.app               I  strict-transport-security: max-age=31536000; includeSubDomains
+2026-02-04 21:05:25.191 20415-27077 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-anti-fraud-protection: active
+2026-02-04 21:05:25.191 20415-27077 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-certificate-pinning-enabled: false
+2026-02-04 21:05:25.191 20415-27077 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-certificate-pinning-status: disabled-for-stability
+2026-02-04 21:05:25.191 20415-27077 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-content-type-options: nosniff
+2026-02-04 21:05:25.192 20415-27077 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-financial-data-protection: enabled
+2026-02-04 21:05:25.192 20415-27077 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-frame-options: DENY
+2026-02-04 21:05:25.192 20415-27077 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-transaction-security-level: maximum
+2026-02-04 21:05:25.193 20415-27077 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-xss-protection: 1; mode=block
+2026-02-04 21:05:25.193 20415-27077 okhttp.OkHttpClient     com.cdccreditsmart.app               I  via: 1.1 google
+2026-02-04 21:05:25.193 20415-27077 okhttp.OkHttpClient     com.cdccreditsmart.app               I  alt-svc: h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
+2026-02-04 21:05:25.194 20415-27077 okhttp.OkHttpClient     com.cdccreditsmart.app               I  {"error":"Token inválido ou dispositivo não encontrado","tokenProvided":"XUNB****","hint":"Verifique se a venda foi finalizada no PDV"}
+2026-02-04 21:05:25.194 20415-27077 okhttp.OkHttpClient     com.cdccreditsmart.app               I  <-- END HTTP (137-byte body)
+2026-02-04 21:05:25.196 20415-20415 PairingViewModel        com.cdccreditsmart.app               D  ⏳ Auto-polling: Venda ainda não concluída (HTTP 404), continuando polling...
+2026-02-04 21:05:25.425 20415-27920 okhttp.OkHttpClient     com.cdccreditsmart.app               I  <-- 404 https://cdccreditsmart.com/api/apk/auth (305ms)
+2026-02-04 21:05:25.425 20415-27920 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-credentials: true
+2026-02-04 21:05:25.425 20415-27920 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-headers: Origin, X-Requested-With, Content-Type, Accept, Authorization, x-client-key, x-client-token, x-client-secret, cache-control
+2026-02-04 21:05:25.425 20415-27920 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-methods: GET, POST, PUT, PATCH, DELETE, OPTIONS
+2026-02-04 21:05:25.425 20415-27920 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-origin: *
+2026-02-04 21:05:25.426 20415-27920 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-max-age: 86400
+2026-02-04 21:05:25.426 20415-27920 okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-length: 137
+2026-02-04 21:05:25.426 20415-27920 okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-security-policy: default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://replit.com; style-src 'self' 'unsafe-inline' https://replit.com; img-src 'self' data: https:; font-src 'self' data: https://replit.com; connect-src 'self';
+2026-02-04 21:05:25.426 20415-27920 okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-type: application/json; charset=utf-8
+2026-02-04 21:05:25.426 20415-27920 okhttp.OkHttpClient     com.cdccreditsmart.app               I  date: Thu, 05 Feb 2026 00:05:25 GMT
+2026-02-04 21:05:25.427 20415-27920 okhttp.OkHttpClient     com.cdccreditsmart.app               I  etag: W/"89-y+bdn7O+U8772O41KAlg4H9kc8U"
+2026-02-04 21:05:25.427 20415-27920 okhttp.OkHttpClient     com.cdccreditsmart.app               I  permissions-policy: geolocation=(), microphone=(), camera=()
+2026-02-04 21:05:25.427 20415-27920 okhttp.OkHttpClient     com.cdccreditsmart.app               I  referrer-policy: strict-origin-when-cross-origin
+2026-02-04 21:05:25.427 20415-27920 okhttp.OkHttpClient     com.cdccreditsmart.app               I  strict-transport-security: max-age=63072000; includeSubDomains
+2026-02-04 21:05:25.427 20415-27920 okhttp.OkHttpClient     com.cdccreditsmart.app               I  strict-transport-security: max-age=31536000; includeSubDomains
+2026-02-04 21:05:25.427 20415-27920 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-anti-fraud-protection: active
+2026-02-04 21:05:25.428 20415-27920 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-certificate-pinning-enabled: false
+2026-02-04 21:05:25.428 20415-27920 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-certificate-pinning-status: disabled-for-stability
+2026-02-04 21:05:25.428 20415-27920 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-content-type-options: nosniff
+2026-02-04 21:05:25.428 20415-27920 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-financial-data-protection: enabled
+2026-02-04 21:05:25.428 20415-27920 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-frame-options: DENY
+2026-02-04 21:05:25.428 20415-27920 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-transaction-security-level: maximum
+2026-02-04 21:05:25.428 20415-27920 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-xss-protection: 1; mode=block
+2026-02-04 21:05:25.429 20415-27920 okhttp.OkHttpClient     com.cdccreditsmart.app               I  via: 1.1 google
+2026-02-04 21:05:25.429 20415-27920 okhttp.OkHttpClient     com.cdccreditsmart.app               I  alt-svc: h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
+2026-02-04 21:05:25.431 20415-27920 okhttp.OkHttpClient     com.cdccreditsmart.app               I  {"error":"Token inválido ou dispositivo não encontrado","tokenProvided":"XUNB****","hint":"Verifique se a venda foi finalizada no PDV"}
+2026-02-04 21:05:25.431 20415-27920 okhttp.OkHttpClient     com.cdccreditsmart.app               I  <-- END HTTP (137-byte body)
+2026-02-04 21:05:25.440 20415-20415 PairingViewModel        com.cdccreditsmart.app               D  ⏳ Auto-polling: Venda ainda não concluída (HTTP 404), continuando polling...
+2026-02-04 21:05:25.476 20415-20415 PairingViewModel        com.cdccreditsmart.app               D  Auto-polling: Checking if sale was completed (using /api/apk/auth)...
+2026-02-04 21:05:25.478 20415-27920 okhttp.OkHttpClient     com.cdccreditsmart.app               I  --> POST https://cdccreditsmart.com/api/apk/auth
+2026-02-04 21:05:25.479 20415-27920 okhttp.OkHttpClient     com.cdccreditsmart.app               I  Content-Type: application/json; charset=UTF-8
+2026-02-04 21:05:25.479 20415-27920 okhttp.OkHttpClient     com.cdccreditsmart.app               I  Content-Length: 292
+2026-02-04 21:05:25.479 20415-27920 okhttp.OkHttpClient     com.cdccreditsmart.app               I  {"pairingCode":"XUNB-PBYR","code":"XUNB-PBYR","imei":"353104906953198","deviceImei":"353104906953198","deviceModel":"moto g15","deviceBrand":"motorola","androidVersion":"15","deviceFingerprint":"18bd6adb2c67dac75644ae48939795018b985a2ea307d3b47680c0f4c135b310","androidId":"46cfde82c912b2d8"}
+2026-02-04 21:05:25.479 20415-27920 okhttp.OkHttpClient     com.cdccreditsmart.app               I  --> END POST (292-byte body)
+2026-02-04 21:05:25.554 20415-20415 PairingViewModel        com.cdccreditsmart.app               D  Auto-polling: Checking if sale was completed (using /api/apk/auth)...
+2026-02-04 21:05:25.556 20415-27077 okhttp.OkHttpClient     com.cdccreditsmart.app               I  --> POST https://cdccreditsmart.com/api/apk/auth
+2026-02-04 21:05:25.556 20415-27077 okhttp.OkHttpClient     com.cdccreditsmart.app               I  Content-Type: application/json; charset=UTF-8
+2026-02-04 21:05:25.556 20415-27077 okhttp.OkHttpClient     com.cdccreditsmart.app               I  Content-Length: 292
+2026-02-04 21:05:25.556 20415-27077 okhttp.OkHttpClient     com.cdccreditsmart.app               I  {"pairingCode":"XUNB-PBYR","code":"XUNB-PBYR","imei":"353104906953198","deviceImei":"353104906953198","deviceModel":"moto g15","deviceBrand":"motorola","androidVersion":"15","deviceFingerprint":"18bd6adb2c67dac75644ae48939795018b985a2ea307d3b47680c0f4c135b310","androidId":"46cfde82c912b2d8"}
+2026-02-04 21:05:25.557 20415-27077 okhttp.OkHttpClient     com.cdccreditsmart.app               I  --> END POST (292-byte body)
+2026-02-04 21:05:25.624 20415-20415 PairingViewModel        com.cdccreditsmart.app               D  🚀 Iniciando pareamento com código: NWSJ****
+2026-02-04 21:05:25.626 20415-20415 NetworkConnectivity     com.cdccreditsmart.app               D  ✅ Conectado via WiFi com internet
+2026-02-04 21:05:25.626 20415-20415 PairingViewModel        com.cdccreditsmart.app               D  📶 Estado da rede: Conectado via WiFi
+2026-02-04 21:05:25.626 20415-20415 PairingViewModel        com.cdccreditsmart.app               I  ✅ Usando endpoint: POST /api/apk/auth
+2026-02-04 21:05:25.626 20415-20415 PairingViewModel        com.cdccreditsmart.app               I  📤 Enviando requisição de pareamento para o backend...
+2026-02-04 21:05:25.626 20415-20415 PairingViewModel        com.cdccreditsmart.app               D  ========== APK AUTHENTICATION ==========
+2026-02-04 21:05:25.626 20415-20415 PairingViewModel        com.cdccreditsmart.app               D  Pairing Code: [REDACTED]
+2026-02-04 21:05:25.626 20415-20415 PairingViewModel        com.cdccreditsmart.app               D  🔐 Tentando conceder permissão READ_PHONE_STATE antes de coletar IMEI...
+2026-02-04 21:05:25.671 20415-20415 AutoPermissionManager   com.cdccreditsmart.app               I  ✅ Permissão concedida automaticamente: android.permission.READ_PHONE_STATE
+2026-02-04 21:05:25.671 20415-20415 PairingViewModel        com.cdccreditsmart.app               I  ✅ Permissão READ_PHONE_STATE concedida com sucesso
+2026-02-04 21:05:25.671 20415-20415 DeviceInfoManager       com.cdccreditsmart.app               I  ========================================
+2026-02-04 21:05:25.671 20415-20415 DeviceInfoManager       com.cdccreditsmart.app               I  📱 Coletando informações de IMEI do dispositivo
+2026-02-04 21:05:25.671 20415-20415 DeviceInfoManager       com.cdccreditsmart.app               I  ========================================
+2026-02-04 21:05:25.671 20415-20415 DeviceInfoManager       com.cdccreditsmart.app               D  Número de SIMs detectados: 2
+2026-02-04 21:05:25.674 20415-20415 DeviceInfoManager       com.cdccreditsmart.app               D  ✅ IMEI válido encontrado no slot 0
+2026-02-04 21:05:25.677 20415-20415 DeviceInfoManager       com.cdccreditsmart.app               D  ✅ IMEI válido encontrado no slot 1
+2026-02-04 21:05:25.677 20415-20415 DeviceInfoManager       com.cdccreditsmart.app               I  ✅ 2 IMEI(s) válido(s) coletado(s)
+2026-02-04 21:05:25.677 20415-20415 DeviceInfoManager       com.cdccreditsmart.app               I  ========================================
+2026-02-04 21:05:25.677 20415-20415 PairingViewModel        com.cdccreditsmart.app               D  ✅ IMEI capturado: 353104****
+2026-02-04 21:05:25.677 20415-20415 PairingViewModel        com.cdccreditsmart.app               D  📱 Dual-SIM detectado: 1 IMEI(s) adicional(is)
+2026-02-04 21:05:25.683 20415-20415 FingerprintCalculator   com.cdccreditsmart.app               D  Calculating fingerprint from: ID=ZF525GRCP8..., BRAND=motorola, MODEL=moto g15, IMEI=3531
+2026-02-04 21:05:25.684 20415-20415 FingerprintCalculator   com.cdccreditsmart.app               D  ✅ Fingerprint calculated: 18bd6adb2c67dac7... (length: 64)
+2026-02-04 21:05:25.684 20415-20415 PairingViewModel        com.cdccreditsmart.app               I  ╔════════════════════════════════════════════════════════╗
+2026-02-04 21:05:25.684 20415-20415 PairingViewModel        com.cdccreditsmart.app               I  ║   📤 SENDING REQUEST TO /api/apk/auth                  ║
+2026-02-04 21:05:25.684 20415-20415 PairingViewModel        com.cdccreditsmart.app               I  ╚════════════════════════════════════════════════════════╝
+2026-02-04 21:05:25.684 20415-20415 PairingViewModel        com.cdccreditsmart.app               I  Request URL: https://cdccreditsmart.com/api/apk/auth
+2026-02-04 21:05:25.684 20415-20415 PairingViewModel        com.cdccreditsmart.app               I  Request - imei: 353104****
+2026-02-04 21:05:25.684 20415-20415 PairingViewModel        com.cdccreditsmart.app               I  Request - deviceModel: moto g15
+2026-02-04 21:05:25.684 20415-20415 PairingViewModel        com.cdccreditsmart.app               I  Request - deviceBrand: motorola
+2026-02-04 21:05:25.684 20415-20415 PairingViewModel        com.cdccreditsmart.app               I  Request - androidVersion: 15
+2026-02-04 21:05:25.684 20415-20415 PairingViewModel        com.cdccreditsmart.app               I  Request - pairingCode: NWSJ-E9DZ
+2026-02-04 21:05:25.685 20415-20415 PairingViewModel        com.cdccreditsmart.app               I  📡 Executando chamada HTTP POST /api/apk/auth...
+2026-02-04 21:05:25.688 20415-28322 okhttp.OkHttpClient     com.cdccreditsmart.app               I  --> POST https://cdccreditsmart.com/api/apk/auth
+2026-02-04 21:05:25.688 20415-28322 okhttp.OkHttpClient     com.cdccreditsmart.app               I  Content-Type: application/json; charset=UTF-8
+2026-02-04 21:05:25.688 20415-28322 okhttp.OkHttpClient     com.cdccreditsmart.app               I  Content-Length: 292
+2026-02-04 21:05:25.688 20415-28322 okhttp.OkHttpClient     com.cdccreditsmart.app               I  {"pairingCode":"NWSJ-E9DZ","code":"NWSJ-E9DZ","imei":"353104906953198","deviceImei":"353104906953198","deviceModel":"moto g15","deviceBrand":"motorola","androidVersion":"15","deviceFingerprint":"18bd6adb2c67dac75644ae48939795018b985a2ea307d3b47680c0f4c135b310","androidId":"46cfde82c912b2d8"}
+2026-02-04 21:05:25.689 20415-28322 okhttp.OkHttpClient     com.cdccreditsmart.app               I  --> END POST (292-byte body)
+2026-02-04 21:05:25.783 20415-27920 okhttp.OkHttpClient     com.cdccreditsmart.app               I  <-- 404 https://cdccreditsmart.com/api/apk/auth (303ms)
+2026-02-04 21:05:25.783 20415-27920 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-credentials: true
+2026-02-04 21:05:25.783 20415-27920 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-headers: Origin, X-Requested-With, Content-Type, Accept, Authorization, x-client-key, x-client-token, x-client-secret, cache-control
+2026-02-04 21:05:25.783 20415-27920 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-methods: GET, POST, PUT, PATCH, DELETE, OPTIONS
+2026-02-04 21:05:25.783 20415-27920 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-origin: *
+2026-02-04 21:05:25.783 20415-27920 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-max-age: 86400
+2026-02-04 21:05:25.783 20415-27920 okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-length: 137
+2026-02-04 21:05:25.784 20415-27920 okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-security-policy: default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://replit.com; style-src 'self' 'unsafe-inline' https://replit.com; img-src 'self' data: https:; font-src 'self' data: https://replit.com; connect-src 'self';
+2026-02-04 21:05:25.784 20415-27920 okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-type: application/json; charset=utf-8
+2026-02-04 21:05:25.784 20415-27920 okhttp.OkHttpClient     com.cdccreditsmart.app               I  date: Thu, 05 Feb 2026 00:05:25 GMT
+2026-02-04 21:05:25.784 20415-27920 okhttp.OkHttpClient     com.cdccreditsmart.app               I  etag: W/"89-y+bdn7O+U8772O41KAlg4H9kc8U"
+2026-02-04 21:05:25.784 20415-27920 okhttp.OkHttpClient     com.cdccreditsmart.app               I  permissions-policy: geolocation=(), microphone=(), camera=()
+2026-02-04 21:05:25.784 20415-27920 okhttp.OkHttpClient     com.cdccreditsmart.app               I  referrer-policy: strict-origin-when-cross-origin
+2026-02-04 21:05:25.784 20415-27920 okhttp.OkHttpClient     com.cdccreditsmart.app               I  strict-transport-security: max-age=63072000; includeSubDomains
+2026-02-04 21:05:25.785 20415-27920 okhttp.OkHttpClient     com.cdccreditsmart.app               I  strict-transport-security: max-age=31536000; includeSubDomains
+2026-02-04 21:05:25.785 20415-27920 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-anti-fraud-protection: active
+2026-02-04 21:05:25.785 20415-27920 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-certificate-pinning-enabled: false
+2026-02-04 21:05:25.785 20415-27920 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-certificate-pinning-status: disabled-for-stability
+2026-02-04 21:05:25.785 20415-27920 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-content-type-options: nosniff
+2026-02-04 21:05:25.785 20415-27920 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-financial-data-protection: enabled
+2026-02-04 21:05:25.785 20415-27920 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-frame-options: DENY
+2026-02-04 21:05:25.785 20415-27920 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-transaction-security-level: maximum
+2026-02-04 21:05:25.785 20415-27920 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-xss-protection: 1; mode=block
+2026-02-04 21:05:25.786 20415-27920 okhttp.OkHttpClient     com.cdccreditsmart.app               I  via: 1.1 google
+2026-02-04 21:05:25.786 20415-27920 okhttp.OkHttpClient     com.cdccreditsmart.app               I  alt-svc: h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
+2026-02-04 21:05:25.787 20415-27920 okhttp.OkHttpClient     com.cdccreditsmart.app               I  {"error":"Token inválido ou dispositivo não encontrado","tokenProvided":"XUNB****","hint":"Verifique se a venda foi finalizada no PDV"}
+2026-02-04 21:05:25.787 20415-27920 okhttp.OkHttpClient     com.cdccreditsmart.app               I  <-- END HTTP (137-byte body)
+2026-02-04 21:05:25.792 20415-20415 PairingViewModel        com.cdccreditsmart.app               D  ⏳ Auto-polling: Venda ainda não concluída (HTTP 404), continuando polling...
+2026-02-04 21:05:25.871 20415-27077 okhttp.OkHttpClient     com.cdccreditsmart.app               I  <-- 404 https://cdccreditsmart.com/api/apk/auth (314ms)
+2026-02-04 21:05:25.872 20415-27077 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-credentials: true
+2026-02-04 21:05:25.872 20415-27077 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-headers: Origin, X-Requested-With, Content-Type, Accept, Authorization, x-client-key, x-client-token, x-client-secret, cache-control
+2026-02-04 21:05:25.872 20415-27077 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-methods: GET, POST, PUT, PATCH, DELETE, OPTIONS
+2026-02-04 21:05:25.872 20415-27077 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-origin: *
+2026-02-04 21:05:25.872 20415-27077 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-max-age: 86400
+2026-02-04 21:05:25.872 20415-27077 okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-length: 137
+2026-02-04 21:05:25.872 20415-27077 okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-security-policy: default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://replit.com; style-src 'self' 'unsafe-inline' https://replit.com; img-src 'self' data: https:; font-src 'self' data: https://replit.com; connect-src 'self';
+2026-02-04 21:05:25.872 20415-27077 okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-type: application/json; charset=utf-8
+2026-02-04 21:05:25.872 20415-27077 okhttp.OkHttpClient     com.cdccreditsmart.app               I  date: Thu, 05 Feb 2026 00:05:25 GMT
+2026-02-04 21:05:25.873 20415-27077 okhttp.OkHttpClient     com.cdccreditsmart.app               I  etag: W/"89-y+bdn7O+U8772O41KAlg4H9kc8U"
+2026-02-04 21:05:25.873 20415-27077 okhttp.OkHttpClient     com.cdccreditsmart.app               I  permissions-policy: geolocation=(), microphone=(), camera=()
+2026-02-04 21:05:25.873 20415-27077 okhttp.OkHttpClient     com.cdccreditsmart.app               I  referrer-policy: strict-origin-when-cross-origin
+2026-02-04 21:05:25.874 20415-27077 okhttp.OkHttpClient     com.cdccreditsmart.app               I  strict-transport-security: max-age=63072000; includeSubDomains
+2026-02-04 21:05:25.874 20415-27077 okhttp.OkHttpClient     com.cdccreditsmart.app               I  strict-transport-security: max-age=31536000; includeSubDomains
+2026-02-04 21:05:25.874 20415-27077 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-anti-fraud-protection: active
+2026-02-04 21:05:25.874 20415-27077 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-certificate-pinning-enabled: false
+2026-02-04 21:05:25.874 20415-27077 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-certificate-pinning-status: disabled-for-stability
+2026-02-04 21:05:25.874 20415-27077 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-content-type-options: nosniff
+2026-02-04 21:05:25.874 20415-27077 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-financial-data-protection: enabled
+2026-02-04 21:05:25.874 20415-27077 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-frame-options: DENY
+2026-02-04 21:05:25.875 20415-27077 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-transaction-security-level: maximum
+2026-02-04 21:05:25.875 20415-27077 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-xss-protection: 1; mode=block
+2026-02-04 21:05:25.875 20415-27077 okhttp.OkHttpClient     com.cdccreditsmart.app               I  via: 1.1 google
+2026-02-04 21:05:25.875 20415-27077 okhttp.OkHttpClient     com.cdccreditsmart.app               I  alt-svc: h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
+2026-02-04 21:05:25.876 20415-27077 okhttp.OkHttpClient     com.cdccreditsmart.app               I  {"error":"Token inválido ou dispositivo não encontrado","tokenProvided":"XUNB****","hint":"Verifique se a venda foi finalizada no PDV"}
+2026-02-04 21:05:25.876 20415-27077 okhttp.OkHttpClient     com.cdccreditsmart.app               I  <-- END HTTP (137-byte body)
+2026-02-04 21:05:25.878 20415-20415 PairingViewModel        com.cdccreditsmart.app               D  ⏳ Auto-polling: Venda ainda não concluída (HTTP 404), continuando polling...
+2026-02-04 21:05:26.004 20415-28322 okhttp.OkHttpClient     com.cdccreditsmart.app               I  <-- 200 https://cdccreditsmart.com/api/apk/auth (315ms)
+2026-02-04 21:05:26.004 20415-28322 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-credentials: true
+2026-02-04 21:05:26.004 20415-28322 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-headers: Origin, X-Requested-With, Content-Type, Accept, Authorization, x-client-key, x-client-token, x-client-secret, cache-control
+2026-02-04 21:05:26.004 20415-28322 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-methods: GET, POST, PUT, PATCH, DELETE, OPTIONS
+2026-02-04 21:05:26.005 20415-28322 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-origin: *
+2026-02-04 21:05:26.005 20415-28322 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-max-age: 86400
+2026-02-04 21:05:26.005 20415-28322 okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-length: 373
+2026-02-04 21:05:26.005 20415-28322 okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-security-policy: default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://replit.com; style-src 'self' 'unsafe-inline' https://replit.com; img-src 'self' data: https:; font-src 'self' data: https://replit.com; connect-src 'self';
+2026-02-04 21:05:26.005 20415-28322 okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-type: application/json; charset=utf-8
+2026-02-04 21:05:26.005 20415-28322 okhttp.OkHttpClient     com.cdccreditsmart.app               I  date: Thu, 05 Feb 2026 00:05:25 GMT
+2026-02-04 21:05:26.005 20415-28322 okhttp.OkHttpClient     com.cdccreditsmart.app               I  etag: W/"175-n/9xbxYAo3vsk2W+oL9G2Ws0FEk"
+2026-02-04 21:05:26.006 20415-28322 okhttp.OkHttpClient     com.cdccreditsmart.app               I  permissions-policy: geolocation=(), microphone=(), camera=()
+2026-02-04 21:05:26.006 20415-28322 okhttp.OkHttpClient     com.cdccreditsmart.app               I  referrer-policy: strict-origin-when-cross-origin
+2026-02-04 21:05:26.006 20415-28322 okhttp.OkHttpClient     com.cdccreditsmart.app               I  strict-transport-security: max-age=63072000; includeSubDomains
+2026-02-04 21:05:26.006 20415-28322 okhttp.OkHttpClient     com.cdccreditsmart.app               I  strict-transport-security: max-age=31536000; includeSubDomains
+2026-02-04 21:05:26.006 20415-28322 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-anti-fraud-protection: active
+2026-02-04 21:05:26.007 20415-28322 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-certificate-pinning-enabled: false
+2026-02-04 21:05:26.007 20415-28322 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-certificate-pinning-status: disabled-for-stability
+2026-02-04 21:05:26.007 20415-28322 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-content-type-options: nosniff
+2026-02-04 21:05:26.007 20415-28322 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-financial-data-protection: enabled
+2026-02-04 21:05:26.007 20415-28322 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-frame-options: DENY
+2026-02-04 21:05:26.007 20415-28322 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-transaction-security-level: maximum
+2026-02-04 21:05:26.008 20415-28322 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-xss-protection: 1; mode=block
+2026-02-04 21:05:26.008 20415-28322 okhttp.OkHttpClient     com.cdccreditsmart.app               I  via: 1.1 google
+2026-02-04 21:05:26.008 20415-28322 okhttp.OkHttpClient     com.cdccreditsmart.app               I  alt-svc: h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
+2026-02-04 21:05:26.009 20415-28322 okhttp.OkHttpClient     com.cdccreditsmart.app               I  {"success":true,"authenticated":false,"pending":true,"stage":"awaiting-device","message":"Venda em andamento. Aguardando finalização no PDV.","validationId":"78b9aebf-1b12-4844-9c1c-79d988699175","saleId":"sale_1770249872429_vod2n752prc","expiresAt":"2026-02-06T00:04:32.429Z","hint":"O vendedor precisa clicar em \"Dispositivo Atestado\" no PDV para finalizar a venda."}
+2026-02-04 21:05:26.009 20415-28322 okhttp.OkHttpClient     com.cdccreditsmart.app               I  <-- END HTTP (373-byte body)
+2026-02-04 21:05:26.013 20415-20415 PairingViewModel        com.cdccreditsmart.app               I  📨 Resposta recebida: HTTP 200
+2026-02-04 21:05:26.013 20415-20415 PairingViewModel        com.cdccreditsmart.app               D  Response code: 200
+2026-02-04 21:05:26.013 20415-20415 PairingViewModel        com.cdccreditsmart.app               D  Response message: 
+2026-02-04 21:05:26.013 20415-20415 PairingViewModel        com.cdccreditsmart.app               D  Response body received
+2026-02-04 21:05:26.013 20415-20415 PairingViewModel        com.cdccreditsmart.app               D  ⏳ Sale pending - awaiting PDV completion
+2026-02-04 21:05:26.013 20415-20415 PairingViewModel        com.cdccreditsmart.app               D  Message: Venda em andamento. Aguardando finalização no PDV., Stage: awaiting-device, Pending: true
+2026-02-04 21:05:26.013 20415-20415 PairingViewModel        com.cdccreditsmart.app               D  Starting automatic polling for pending sale
+2026-02-04 21:05:26.014 20415-20415 PairingViewModel        com.cdccreditsmart.app               I  🔌 Conectando WebSocket para notificar servidor (Aguardando Vendedor)...
+2026-02-04 21:05:26.014 20415-20415 PairingViewModel        com.cdccreditsmart.app               I  📤 contractCode para WebSocket: NWSJ-E9DZ
+2026-02-04 21:05:26.015 20415-20415 WebSocketManager        com.cdccreditsmart.app               I  ╔════════════════════════════════════════════════════════╗
+2026-02-04 21:05:26.015 20415-20415 WebSocketManager        com.cdccreditsmart.app               I  ║   🔌 CONNECTING TO WEBSOCKET                          ║
+2026-02-04 21:05:26.015 20415-20415 WebSocketManager        com.cdccreditsmart.app               I  ╚════════════════════════════════════════════════════════╝
+2026-02-04 21:05:26.015 20415-20415 WebSocketManager        com.cdccreditsmart.app               I  📡 URL: wss://cdccreditsmart.com/ws/flow-status
+2026-02-04 21:05:26.015 20415-20415 WebSocketManager        com.cdccreditsmart.app               I  📋 Contract Code: NWSJ-E9DZ
+2026-02-04 21:05:26.017 20415-20415 WebSocketManager        com.cdccreditsmart.app               I  ✅ WebSocket request initiated successfully
+2026-02-04 21:05:26.018 20415-20415 PairingViewModel        com.cdccreditsmart.app               I  📤 WebSocket conectado - Servidor será notificado que dispositivo está aguardando
+2026-02-04 21:05:26.018 20415-20415 DeviceInfoManager       com.cdccreditsmart.app               I  ========================================
+2026-02-04 21:05:26.018 20415-20415 DeviceInfoManager       com.cdccreditsmart.app               I  📱 Coletando informações de IMEI do dispositivo
+2026-02-04 21:05:26.018 20415-20415 DeviceInfoManager       com.cdccreditsmart.app               I  ========================================
+2026-02-04 21:05:26.019 20415-20415 DeviceInfoManager       com.cdccreditsmart.app               D  Número de SIMs detectados: 2
+2026-02-04 21:05:26.023 20415-20415 DeviceInfoManager       com.cdccreditsmart.app               D  ✅ IMEI válido encontrado no slot 0
+2026-02-04 21:05:26.027 20415-20415 DeviceInfoManager       com.cdccreditsmart.app               D  ✅ IMEI válido encontrado no slot 1
+2026-02-04 21:05:26.027 20415-20415 DeviceInfoManager       com.cdccreditsmart.app               I  ✅ 2 IMEI(s) válido(s) coletado(s)
+2026-02-04 21:05:26.028 20415-20415 DeviceInfoManager       com.cdccreditsmart.app               I  ========================================
+2026-02-04 21:05:26.031 20415-20415 FingerprintCalculator   com.cdccreditsmart.app               D  Calculating fingerprint from: ID=ZF525GRCP8..., BRAND=motorola, MODEL=moto g15, IMEI=3531
+2026-02-04 21:05:26.032 20415-20415 FingerprintCalculator   com.cdccreditsmart.app               D  ✅ Fingerprint calculated: 18bd6adb2c67dac7... (length: 64)
+2026-02-04 21:05:26.033 20415-20415 PairingViewModel        com.cdccreditsmart.app               D  Auto-polling com IMEI: 353104****
+2026-02-04 21:05:26.033 20415-20415 PairingViewModel        com.cdccreditsmart.app               D  Auto-polling com pairingCode: NWSJ-E9DZ
+2026-02-04 21:05:26.143 20415-20415 PairingViewModel        com.cdccreditsmart.app               D  Starting automatic polling for pending sale
+2026-02-04 21:05:26.143 20415-20415 PairingViewModel        com.cdccreditsmart.app               I  🔌 Conectando WebSocket para notificar servidor (Aguardando Vendedor)...
+2026-02-04 21:05:26.143 20415-20415 PairingViewModel        com.cdccreditsmart.app               I  📤 contractCode para WebSocket: NWSJ-E9DZ
+2026-02-04 21:05:26.144 20415-20415 WebSocketManager        com.cdccreditsmart.app               I  ╔════════════════════════════════════════════════════════╗
+2026-02-04 21:05:26.144 20415-20415 WebSocketManager        com.cdccreditsmart.app               I  ║   🔌 CONNECTING TO WEBSOCKET                          ║
+2026-02-04 21:05:26.144 20415-20415 WebSocketManager        com.cdccreditsmart.app               I  ╚════════════════════════════════════════════════════════╝
+2026-02-04 21:05:26.144 20415-20415 WebSocketManager        com.cdccreditsmart.app               I  📡 URL: wss://cdccreditsmart.com/ws/flow-status
+2026-02-04 21:05:26.144 20415-20415 WebSocketManager        com.cdccreditsmart.app               I  📋 Contract Code: NWSJ-E9DZ
+2026-02-04 21:05:26.146 20415-20415 WebSocketManager        com.cdccreditsmart.app               I  ✅ WebSocket request initiated successfully
+2026-02-04 21:05:26.146 20415-20415 PairingViewModel        com.cdccreditsmart.app               I  📤 WebSocket conectado - Servidor será notificado que dispositivo está aguardando
+2026-02-04 21:05:26.147 20415-20415 DeviceInfoManager       com.cdccreditsmart.app               I  ========================================
+2026-02-04 21:05:26.147 20415-20415 DeviceInfoManager       com.cdccreditsmart.app               I  📱 Coletando informações de IMEI do dispositivo
+2026-02-04 21:05:26.147 20415-20415 DeviceInfoManager       com.cdccreditsmart.app               I  ========================================
+2026-02-04 21:05:26.147 20415-20415 DeviceInfoManager       com.cdccreditsmart.app               D  Número de SIMs detectados: 2
+2026-02-04 21:05:26.151 20415-20415 DeviceInfoManager       com.cdccreditsmart.app               D  ✅ IMEI válido encontrado no slot 0
+2026-02-04 21:05:26.155 20415-20415 DeviceInfoManager       com.cdccreditsmart.app               D  ✅ IMEI válido encontrado no slot 1
+2026-02-04 21:05:26.155 20415-20415 DeviceInfoManager       com.cdccreditsmart.app               I  ✅ 2 IMEI(s) válido(s) coletado(s)
+2026-02-04 21:05:26.155 20415-20415 DeviceInfoManager       com.cdccreditsmart.app               I  ========================================
+2026-02-04 21:05:26.162 20415-20415 FingerprintCalculator   com.cdccreditsmart.app               D  Calculating fingerprint from: ID=ZF525GRCP8..., BRAND=motorola, MODEL=moto g15, IMEI=3531
+2026-02-04 21:05:26.163 20415-20415 FingerprintCalculator   com.cdccreditsmart.app               D  ✅ Fingerprint calculated: 18bd6adb2c67dac7... (length: 64)
+2026-02-04 21:05:26.163 20415-20415 PairingViewModel        com.cdccreditsmart.app               D  Auto-polling com IMEI: 353104****
+2026-02-04 21:05:26.163 20415-20415 PairingViewModel        com.cdccreditsmart.app               D  Auto-polling com pairingCode: NWSJ-E9DZ
+2026-02-04 21:05:26.163 20415-20415 PairingViewModel        com.cdccreditsmart.app               D  Auto-polling stopped
+2026-02-04 21:05:26.405 20415-20415 PairingViewModel        com.cdccreditsmart.app               D  Auto-polling: Checking if sale was completed (using /api/apk/auth)...
+2026-02-04 21:05:26.408 20415-28322 okhttp.OkHttpClient     com.cdccreditsmart.app               I  --> POST https://cdccreditsmart.com/api/apk/auth
+2026-02-04 21:05:26.408 20415-28322 okhttp.OkHttpClient     com.cdccreditsmart.app               I  Content-Type: application/json; charset=UTF-8
+2026-02-04 21:05:26.408 20415-28322 okhttp.OkHttpClient     com.cdccreditsmart.app               I  Content-Length: 292
+2026-02-04 21:05:26.409 20415-28322 okhttp.OkHttpClient     com.cdccreditsmart.app               I  {"pairingCode":"XUNB-PBYR","code":"XUNB-PBYR","imei":"353104906953198","deviceImei":"353104906953198","deviceModel":"moto g15","deviceBrand":"motorola","androidVersion":"15","deviceFingerprint":"18bd6adb2c67dac75644ae48939795018b985a2ea307d3b47680c0f4c135b310","androidId":"46cfde82c912b2d8"}
+2026-02-04 21:05:26.409 20415-28322 okhttp.OkHttpClient     com.cdccreditsmart.app               I  --> END POST (292-byte body)
+2026-02-04 21:05:26.543 20415-28328 WebSocketManager        com.cdccreditsmart.app               D  WebSocket connection opened
+2026-02-04 21:05:26.543 20415-28328 WebSocketManager        com.cdccreditsmart.app               D  WebSocket connected, sending authentication for contract: NWSJ-E9DZ
+2026-02-04 21:05:26.544 20415-28328 WebSocketManager        com.cdccreditsmart.app               I  📤 Authentication message sent: type=authenticate, contractId=NWSJ-E9DZ
+2026-02-04 21:05:26.545 20415-28328 WebSocketManager        com.cdccreditsmart.app               I  📤 Subscribe message sent to server
+2026-02-04 21:05:26.545 20415-28328 WebSocketManager        com.cdccreditsmart.app               D  Starting heartbeat
+2026-02-04 21:05:26.651 20415-28331 WebSocketManager        com.cdccreditsmart.app               D  WebSocket connection opened
+2026-02-04 21:05:26.651 20415-28331 WebSocketManager        com.cdccreditsmart.app               D  WebSocket connected, sending authentication for contract: NWSJ-E9DZ
+2026-02-04 21:05:26.651 20415-28331 WebSocketManager        com.cdccreditsmart.app               I  📤 Authentication message sent: type=authenticate, contractId=NWSJ-E9DZ
+2026-02-04 21:05:26.651 20415-28331 WebSocketManager        com.cdccreditsmart.app               I  📤 Subscribe message sent to server
+2026-02-04 21:05:26.651 20415-28331 WebSocketManager        com.cdccreditsmart.app               D  Starting heartbeat
+2026-02-04 21:05:26.660 20415-20415 PairingViewModel        com.cdccreditsmart.app               D  Auto-polling: Checking if sale was completed (using /api/apk/auth)...
+2026-02-04 21:05:26.661 20415-27077 okhttp.OkHttpClient     com.cdccreditsmart.app               I  --> POST https://cdccreditsmart.com/api/apk/auth
+2026-02-04 21:05:26.662 20415-27077 okhttp.OkHttpClient     com.cdccreditsmart.app               I  Content-Type: application/json; charset=UTF-8
+2026-02-04 21:05:26.662 20415-27077 okhttp.OkHttpClient     com.cdccreditsmart.app               I  Content-Length: 292
+2026-02-04 21:05:26.662 20415-27077 okhttp.OkHttpClient     com.cdccreditsmart.app               I  {"pairingCode":"XUNB-PBYR","code":"XUNB-PBYR","imei":"353104906953198","deviceImei":"353104906953198","deviceModel":"moto g15","deviceBrand":"motorola","androidVersion":"15","deviceFingerprint":"18bd6adb2c67dac75644ae48939795018b985a2ea307d3b47680c0f4c135b310","androidId":"46cfde82c912b2d8"}
+2026-02-04 21:05:26.662 20415-27077 okhttp.OkHttpClient     com.cdccreditsmart.app               I  --> END POST (292-byte body)
+2026-02-04 21:05:26.732 20415-28322 okhttp.OkHttpClient     com.cdccreditsmart.app               I  <-- 404 https://cdccreditsmart.com/api/apk/auth (322ms)
+2026-02-04 21:05:26.732 20415-28322 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-credentials: true
+2026-02-04 21:05:26.732 20415-28322 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-headers: Origin, X-Requested-With, Content-Type, Accept, Authorization, x-client-key, x-client-token, x-client-secret, cache-control
+2026-02-04 21:05:26.732 20415-28322 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-methods: GET, POST, PUT, PATCH, DELETE, OPTIONS
+2026-02-04 21:05:26.733 20415-28322 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-origin: *
+2026-02-04 21:05:26.733 20415-28322 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-max-age: 86400
+2026-02-04 21:05:26.733 20415-28322 okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-length: 137
+2026-02-04 21:05:26.733 20415-28322 okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-security-policy: default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://replit.com; style-src 'self' 'unsafe-inline' https://replit.com; img-src 'self' data: https:; font-src 'self' data: https://replit.com; connect-src 'self';
+2026-02-04 21:05:26.733 20415-28322 okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-type: application/json; charset=utf-8
+2026-02-04 21:05:26.733 20415-28322 okhttp.OkHttpClient     com.cdccreditsmart.app               I  date: Thu, 05 Feb 2026 00:05:26 GMT
+2026-02-04 21:05:26.733 20415-28322 okhttp.OkHttpClient     com.cdccreditsmart.app               I  etag: W/"89-y+bdn7O+U8772O41KAlg4H9kc8U"
+2026-02-04 21:05:26.733 20415-28322 okhttp.OkHttpClient     com.cdccreditsmart.app               I  permissions-policy: geolocation=(), microphone=(), camera=()
+2026-02-04 21:05:26.733 20415-28322 okhttp.OkHttpClient     com.cdccreditsmart.app               I  referrer-policy: strict-origin-when-cross-origin
+2026-02-04 21:05:26.734 20415-28322 okhttp.OkHttpClient     com.cdccreditsmart.app               I  strict-transport-security: max-age=63072000; includeSubDomains
+2026-02-04 21:05:26.734 20415-28322 okhttp.OkHttpClient     com.cdccreditsmart.app               I  strict-transport-security: max-age=31536000; includeSubDomains
+2026-02-04 21:05:26.734 20415-28322 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-anti-fraud-protection: active
+2026-02-04 21:05:26.734 20415-28322 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-certificate-pinning-enabled: false
+2026-02-04 21:05:26.734 20415-28322 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-certificate-pinning-status: disabled-for-stability
+2026-02-04 21:05:26.734 20415-28322 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-content-type-options: nosniff
+2026-02-04 21:05:26.734 20415-28322 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-financial-data-protection: enabled
+2026-02-04 21:05:26.734 20415-28322 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-frame-options: DENY
+2026-02-04 21:05:26.734 20415-28322 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-transaction-security-level: maximum
+2026-02-04 21:05:26.734 20415-28322 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-xss-protection: 1; mode=block
+2026-02-04 21:05:26.734 20415-28322 okhttp.OkHttpClient     com.cdccreditsmart.app               I  via: 1.1 google
+2026-02-04 21:05:26.734 20415-28322 okhttp.OkHttpClient     com.cdccreditsmart.app               I  alt-svc: h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
+2026-02-04 21:05:26.735 20415-28322 okhttp.OkHttpClient     com.cdccreditsmart.app               I  {"error":"Token inválido ou dispositivo não encontrado","tokenProvided":"XUNB****","hint":"Verifique se a venda foi finalizada no PDV"}
+2026-02-04 21:05:26.735 20415-28322 okhttp.OkHttpClient     com.cdccreditsmart.app               I  <-- END HTTP (137-byte body)
+2026-02-04 21:05:26.742 20415-28328 WebSocketManager        com.cdccreditsmart.app               D  Message received: {"type":"authenticated","contractId":"NWSJ-E9DZ","success":true,"message":"Conectado ao sistema","ti...
+2026-02-04 21:05:26.743 20415-28328 WebSocketManager        com.cdccreditsmart.app               D  Received message type: authenticated
+2026-02-04 21:05:26.743 20415-28328 WebSocketManager        com.cdccreditsmart.app               D  Successfully authenticated
+2026-02-04 21:05:26.743 20415-28328 WebSocketManager        com.cdccreditsmart.app               D  Starting heartbeat
+2026-02-04 21:05:26.776 20415-20415 PairingViewModel        com.cdccreditsmart.app               D  🚀 Iniciando pareamento com código: NWSJ****
+2026-02-04 21:05:26.778 20415-20415 NetworkConnectivity     com.cdccreditsmart.app               D  ✅ Conectado via WiFi com internet
+2026-02-04 21:05:26.778 20415-20415 PairingViewModel        com.cdccreditsmart.app               D  📶 Estado da rede: Conectado via WiFi
+2026-02-04 21:05:26.778 20415-20415 PairingViewModel        com.cdccreditsmart.app               I  ✅ Usando endpoint: POST /api/apk/auth
+2026-02-04 21:05:26.778 20415-20415 PairingViewModel        com.cdccreditsmart.app               I  📤 Enviando requisição de pareamento para o backend...
+2026-02-04 21:05:26.778 20415-20415 PairingViewModel        com.cdccreditsmart.app               D  ========== APK AUTHENTICATION ==========
+2026-02-04 21:05:26.778 20415-20415 PairingViewModel        com.cdccreditsmart.app               D  Pairing Code: [REDACTED]
+2026-02-04 21:05:26.778 20415-20415 PairingViewModel        com.cdccreditsmart.app               D  🔐 Tentando conceder permissão READ_PHONE_STATE antes de coletar IMEI...
+2026-02-04 21:05:26.787 20415-28328 WebSocketManager        com.cdccreditsmart.app               D  Message received: {"type":"subscribed","contractId":"NWSJ-E9DZ","success":true,"message":"Subscribed to flow status","...
+2026-02-04 21:05:26.788 20415-28328 WebSocketManager        com.cdccreditsmart.app               D  Received message type: subscribed
+2026-02-04 21:05:26.788 20415-28328 WebSocketManager        com.cdccreditsmart.app               W  Unknown message type: subscribed
+2026-02-04 21:05:26.829 20415-20415 AutoPermissionManager   com.cdccreditsmart.app               I  ✅ Permissão concedida automaticamente: android.permission.READ_PHONE_STATE
+2026-02-04 21:05:26.829 20415-20415 PairingViewModel        com.cdccreditsmart.app               I  ✅ Permissão READ_PHONE_STATE concedida com sucesso
+2026-02-04 21:05:26.829 20415-20415 DeviceInfoManager       com.cdccreditsmart.app               I  ========================================
+2026-02-04 21:05:26.829 20415-20415 DeviceInfoManager       com.cdccreditsmart.app               I  📱 Coletando informações de IMEI do dispositivo
+2026-02-04 21:05:26.829 20415-20415 DeviceInfoManager       com.cdccreditsmart.app               I  ========================================
+2026-02-04 21:05:26.830 20415-20415 DeviceInfoManager       com.cdccreditsmart.app               D  Número de SIMs detectados: 2
+2026-02-04 21:05:26.833 20415-20415 DeviceInfoManager       com.cdccreditsmart.app               D  ✅ IMEI válido encontrado no slot 0
+2026-02-04 21:05:26.838 20415-20415 DeviceInfoManager       com.cdccreditsmart.app               D  ✅ IMEI válido encontrado no slot 1
+2026-02-04 21:05:26.838 20415-20415 DeviceInfoManager       com.cdccreditsmart.app               I  ✅ 2 IMEI(s) válido(s) coletado(s)
+2026-02-04 21:05:26.838 20415-20415 DeviceInfoManager       com.cdccreditsmart.app               I  ========================================
+2026-02-04 21:05:26.838 20415-20415 PairingViewModel        com.cdccreditsmart.app               D  ✅ IMEI capturado: 353104****
+2026-02-04 21:05:26.838 20415-20415 PairingViewModel        com.cdccreditsmart.app               D  📱 Dual-SIM detectado: 1 IMEI(s) adicional(is)
+2026-02-04 21:05:26.843 20415-20415 FingerprintCalculator   com.cdccreditsmart.app               D  Calculating fingerprint from: ID=ZF525GRCP8..., BRAND=motorola, MODEL=moto g15, IMEI=3531
+2026-02-04 21:05:26.845 20415-28331 WebSocketManager        com.cdccreditsmart.app               D  Message received: {"type":"authenticated","contractId":"NWSJ-E9DZ","success":true,"message":"Conectado ao sistema","ti...
+2026-02-04 21:05:26.845 20415-28331 WebSocketManager        com.cdccreditsmart.app               D  Received message type: authenticated
+2026-02-04 21:05:26.845 20415-28331 WebSocketManager        com.cdccreditsmart.app               D  Successfully authenticated
+2026-02-04 21:05:26.845 20415-28331 WebSocketManager        com.cdccreditsmart.app               D  Starting heartbeat
+2026-02-04 21:05:26.845 20415-20415 FingerprintCalculator   com.cdccreditsmart.app               D  ✅ Fingerprint calculated: 18bd6adb2c67dac7... (length: 64)
+2026-02-04 21:05:26.846 20415-20415 PairingViewModel        com.cdccreditsmart.app               I  ╔════════════════════════════════════════════════════════╗
+2026-02-04 21:05:26.846 20415-20415 PairingViewModel        com.cdccreditsmart.app               I  ║   📤 SENDING REQUEST TO /api/apk/auth                  ║
+2026-02-04 21:05:26.846 20415-20415 PairingViewModel        com.cdccreditsmart.app               I  ╚════════════════════════════════════════════════════════╝
+2026-02-04 21:05:26.846 20415-20415 PairingViewModel        com.cdccreditsmart.app               I  Request URL: https://cdccreditsmart.com/api/apk/auth
+2026-02-04 21:05:26.846 20415-20415 PairingViewModel        com.cdccreditsmart.app               I  Request - imei: 353104****
+2026-02-04 21:05:26.846 20415-20415 PairingViewModel        com.cdccreditsmart.app               I  Request - deviceModel: moto g15
+2026-02-04 21:05:26.846 20415-20415 PairingViewModel        com.cdccreditsmart.app               I  Request - deviceBrand: motorola
+2026-02-04 21:05:26.846 20415-20415 PairingViewModel        com.cdccreditsmart.app               I  Request - androidVersion: 15
+2026-02-04 21:05:26.846 20415-20415 PairingViewModel        com.cdccreditsmart.app               I  Request - pairingCode: NWSJ-E9DZ
+2026-02-04 21:05:26.846 20415-20415 PairingViewModel        com.cdccreditsmart.app               I  📡 Executando chamada HTTP POST /api/apk/auth...
+2026-02-04 21:05:26.850 20415-28322 okhttp.OkHttpClient     com.cdccreditsmart.app               I  --> POST https://cdccreditsmart.com/api/apk/auth
+2026-02-04 21:05:26.850 20415-28322 okhttp.OkHttpClient     com.cdccreditsmart.app               I  Content-Type: application/json; charset=UTF-8
+2026-02-04 21:05:26.850 20415-28322 okhttp.OkHttpClient     com.cdccreditsmart.app               I  Content-Length: 292
+2026-02-04 21:05:26.850 20415-28322 okhttp.OkHttpClient     com.cdccreditsmart.app               I  {"pairingCode":"NWSJ-E9DZ","code":"NWSJ-E9DZ","imei":"353104906953198","deviceImei":"353104906953198","deviceModel":"moto g15","deviceBrand":"motorola","androidVersion":"15","deviceFingerprint":"18bd6adb2c67dac75644ae48939795018b985a2ea307d3b47680c0f4c135b310","androidId":"46cfde82c912b2d8"}
+2026-02-04 21:05:26.851 20415-28322 okhttp.OkHttpClient     com.cdccreditsmart.app               I  --> END POST (292-byte body)
+2026-02-04 21:05:26.851 20415-20415 PairingViewModel        com.cdccreditsmart.app               D  ⏳ Auto-polling: Venda ainda não concluída (HTTP 404), continuando polling...
+2026-02-04 21:05:26.873 20415-20415 PairingViewModel        com.cdccreditsmart.app               D  Auto-polling: Checking if sale was completed (using /api/apk/auth)...
+2026-02-04 21:05:26.874 20415-20415 PairingViewModel        com.cdccreditsmart.app               D  Auto-polling: Checking if sale was completed (using /api/apk/auth)...
+2026-02-04 21:05:26.875 20415-27920 okhttp.OkHttpClient     com.cdccreditsmart.app               I  --> POST https://cdccreditsmart.com/api/apk/auth
+2026-02-04 21:05:26.875 20415-27920 okhttp.OkHttpClient     com.cdccreditsmart.app               I  Content-Type: application/json; charset=UTF-8
+2026-02-04 21:05:26.876 20415-27747 okhttp.OkHttpClient     com.cdccreditsmart.app               I  --> POST https://cdccreditsmart.com/api/apk/auth
+2026-02-04 21:05:26.876 20415-27747 okhttp.OkHttpClient     com.cdccreditsmart.app               I  Content-Type: application/json; charset=UTF-8
+2026-02-04 21:05:26.876 20415-27920 okhttp.OkHttpClient     com.cdccreditsmart.app               I  Content-Length: 292
+2026-02-04 21:05:26.876 20415-27747 okhttp.OkHttpClient     com.cdccreditsmart.app               I  Content-Length: 292
+2026-02-04 21:05:26.876 20415-27747 okhttp.OkHttpClient     com.cdccreditsmart.app               I  {"pairingCode":"NWSJ-E9DZ","code":"NWSJ-E9DZ","imei":"353104906953198","deviceImei":"353104906953198","deviceModel":"moto g15","deviceBrand":"motorola","androidVersion":"15","deviceFingerprint":"18bd6adb2c67dac75644ae48939795018b985a2ea307d3b47680c0f4c135b310","androidId":"46cfde82c912b2d8"}
+2026-02-04 21:05:26.876 20415-27747 okhttp.OkHttpClient     com.cdccreditsmart.app               I  --> END POST (292-byte body)
+2026-02-04 21:05:26.877 20415-27920 okhttp.OkHttpClient     com.cdccreditsmart.app               I  {"pairingCode":"XUNB-PBYR","code":"XUNB-PBYR","imei":"353104906953198","deviceImei":"353104906953198","deviceModel":"moto g15","deviceBrand":"motorola","androidVersion":"15","deviceFingerprint":"18bd6adb2c67dac75644ae48939795018b985a2ea307d3b47680c0f4c135b310","androidId":"46cfde82c912b2d8"}
+2026-02-04 21:05:26.877 20415-27920 okhttp.OkHttpClient     com.cdccreditsmart.app               I  --> END POST (292-byte body)
+2026-02-04 21:05:26.889 20415-28331 WebSocketManager        com.cdccreditsmart.app               D  Message received: {"type":"subscribed","contractId":"NWSJ-E9DZ","success":true,"message":"Subscribed to flow status","...
+2026-02-04 21:05:26.889 20415-28331 WebSocketManager        com.cdccreditsmart.app               D  Received message type: subscribed
+2026-02-04 21:05:26.889 20415-28331 WebSocketManager        com.cdccreditsmart.app               W  Unknown message type: subscribed
+2026-02-04 21:05:26.964 20415-27077 okhttp.OkHttpClient     com.cdccreditsmart.app               I  <-- 404 https://cdccreditsmart.com/api/apk/auth (301ms)
+2026-02-04 21:05:26.964 20415-27077 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-credentials: true
+2026-02-04 21:05:26.964 20415-27077 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-headers: Origin, X-Requested-With, Content-Type, Accept, Authorization, x-client-key, x-client-token, x-client-secret, cache-control
+2026-02-04 21:05:26.964 20415-27077 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-methods: GET, POST, PUT, PATCH, DELETE, OPTIONS
+2026-02-04 21:05:26.966 20415-27077 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-origin: *
+2026-02-04 21:05:26.966 20415-27077 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-max-age: 86400
+2026-02-04 21:05:26.966 20415-27077 okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-length: 137
+2026-02-04 21:05:26.967 20415-27077 okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-security-policy: default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://replit.com; style-src 'self' 'unsafe-inline' https://replit.com; img-src 'self' data: https:; font-src 'self' data: https://replit.com; connect-src 'self';
+2026-02-04 21:05:26.967 20415-27077 okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-type: application/json; charset=utf-8
+2026-02-04 21:05:26.968 20415-27077 okhttp.OkHttpClient     com.cdccreditsmart.app               I  date: Thu, 05 Feb 2026 00:05:26 GMT
+2026-02-04 21:05:26.968 20415-27077 okhttp.OkHttpClient     com.cdccreditsmart.app               I  etag: W/"89-y+bdn7O+U8772O41KAlg4H9kc8U"
+2026-02-04 21:05:26.968 20415-27077 okhttp.OkHttpClient     com.cdccreditsmart.app               I  permissions-policy: geolocation=(), microphone=(), camera=()
+2026-02-04 21:05:26.968 20415-27077 okhttp.OkHttpClient     com.cdccreditsmart.app               I  referrer-policy: strict-origin-when-cross-origin
+2026-02-04 21:05:26.968 20415-27077 okhttp.OkHttpClient     com.cdccreditsmart.app               I  strict-transport-security: max-age=63072000; includeSubDomains
+2026-02-04 21:05:26.969 20415-27077 okhttp.OkHttpClient     com.cdccreditsmart.app               I  strict-transport-security: max-age=31536000; includeSubDomains
+2026-02-04 21:05:26.969 20415-27077 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-anti-fraud-protection: active
+2026-02-04 21:05:26.969 20415-27077 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-certificate-pinning-enabled: false
+2026-02-04 21:05:26.970 20415-27077 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-certificate-pinning-status: disabled-for-stability
+2026-02-04 21:05:26.970 20415-27077 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-content-type-options: nosniff
+2026-02-04 21:05:26.970 20415-27077 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-financial-data-protection: enabled
+2026-02-04 21:05:26.970 20415-27077 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-frame-options: DENY
+2026-02-04 21:05:26.970 20415-27077 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-transaction-security-level: maximum
+2026-02-04 21:05:26.970 20415-27077 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-xss-protection: 1; mode=block
+2026-02-04 21:05:26.971 20415-27077 okhttp.OkHttpClient     com.cdccreditsmart.app               I  via: 1.1 google
+2026-02-04 21:05:26.971 20415-27077 okhttp.OkHttpClient     com.cdccreditsmart.app               I  alt-svc: h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
+2026-02-04 21:05:26.972 20415-27077 okhttp.OkHttpClient     com.cdccreditsmart.app               I  {"error":"Token inválido ou dispositivo não encontrado","tokenProvided":"XUNB****","hint":"Verifique se a venda foi finalizada no PDV"}
+2026-02-04 21:05:26.972 20415-27077 okhttp.OkHttpClient     com.cdccreditsmart.app               I  <-- END HTTP (137-byte body)
+2026-02-04 21:05:26.977 20415-20415 PairingViewModel        com.cdccreditsmart.app               D  ⏳ Auto-polling: Venda ainda não concluída (HTTP 404), continuando polling...
+2026-02-04 21:05:27.020 20415-20415 PairingViewModel        com.cdccreditsmart.app               D  Auto-polling: Checking if sale was completed (using /api/apk/auth)...
+2026-02-04 21:05:27.026 20415-27077 okhttp.OkHttpClient     com.cdccreditsmart.app               I  --> POST https://cdccreditsmart.com/api/apk/auth
+2026-02-04 21:05:27.026 20415-27077 okhttp.OkHttpClient     com.cdccreditsmart.app               I  Content-Type: application/json; charset=UTF-8
+2026-02-04 21:05:27.026 20415-27077 okhttp.OkHttpClient     com.cdccreditsmart.app               I  Content-Length: 292
+2026-02-04 21:05:27.027 20415-27077 okhttp.OkHttpClient     com.cdccreditsmart.app               I  {"pairingCode":"XUNB-PBYR","code":"XUNB-PBYR","imei":"353104906953198","deviceImei":"353104906953198","deviceModel":"moto g15","deviceBrand":"motorola","androidVersion":"15","deviceFingerprint":"18bd6adb2c67dac75644ae48939795018b985a2ea307d3b47680c0f4c135b310","androidId":"46cfde82c912b2d8"}
+2026-02-04 21:05:27.027 20415-27077 okhttp.OkHttpClient     com.cdccreditsmart.app               I  --> END POST (292-byte body)
+2026-02-04 21:05:27.149 20415-28322 okhttp.OkHttpClient     com.cdccreditsmart.app               I  <-- 200 https://cdccreditsmart.com/api/apk/auth (298ms)
+2026-02-04 21:05:27.150 20415-28322 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-credentials: true
+2026-02-04 21:05:27.150 20415-28322 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-headers: Origin, X-Requested-With, Content-Type, Accept, Authorization, x-client-key, x-client-token, x-client-secret, cache-control
+2026-02-04 21:05:27.151 20415-28322 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-methods: GET, POST, PUT, PATCH, DELETE, OPTIONS
+2026-02-04 21:05:27.151 20415-28322 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-origin: *
+2026-02-04 21:05:27.151 20415-28322 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-max-age: 86400
+2026-02-04 21:05:27.152 20415-28322 okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-length: 373
+2026-02-04 21:05:27.152 20415-28322 okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-security-policy: default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://replit.com; style-src 'self' 'unsafe-inline' https://replit.com; img-src 'self' data: https:; font-src 'self' data: https://replit.com; connect-src 'self';
+2026-02-04 21:05:27.153 20415-28322 okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-type: application/json; charset=utf-8
+2026-02-04 21:05:27.153 20415-28322 okhttp.OkHttpClient     com.cdccreditsmart.app               I  date: Thu, 05 Feb 2026 00:05:27 GMT
+2026-02-04 21:05:27.154 20415-28322 okhttp.OkHttpClient     com.cdccreditsmart.app               I  etag: W/"175-n/9xbxYAo3vsk2W+oL9G2Ws0FEk"
+2026-02-04 21:05:27.154 20415-28322 okhttp.OkHttpClient     com.cdccreditsmart.app               I  permissions-policy: geolocation=(), microphone=(), camera=()
+2026-02-04 21:05:27.154 20415-28322 okhttp.OkHttpClient     com.cdccreditsmart.app               I  referrer-policy: strict-origin-when-cross-origin
+2026-02-04 21:05:27.155 20415-28322 okhttp.OkHttpClient     com.cdccreditsmart.app               I  strict-transport-security: max-age=63072000; includeSubDomains
+2026-02-04 21:05:27.155 20415-28322 okhttp.OkHttpClient     com.cdccreditsmart.app               I  strict-transport-security: max-age=31536000; includeSubDomains
+2026-02-04 21:05:27.155 20415-28322 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-anti-fraud-protection: active
+2026-02-04 21:05:27.155 20415-28322 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-certificate-pinning-enabled: false
+2026-02-04 21:05:27.156 20415-28322 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-certificate-pinning-status: disabled-for-stability
+2026-02-04 21:05:27.157 20415-28322 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-content-type-options: nosniff
+2026-02-04 21:05:27.157 20415-28322 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-financial-data-protection: enabled
+2026-02-04 21:05:27.157 20415-28322 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-frame-options: DENY
+2026-02-04 21:05:27.157 20415-28322 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-transaction-security-level: maximum
+2026-02-04 21:05:27.157 20415-28322 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-xss-protection: 1; mode=block
+2026-02-04 21:05:27.158 20415-28322 okhttp.OkHttpClient     com.cdccreditsmart.app               I  via: 1.1 google
+2026-02-04 21:05:27.158 20415-28322 okhttp.OkHttpClient     com.cdccreditsmart.app               I  alt-svc: h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
+2026-02-04 21:05:27.160 20415-28322 okhttp.OkHttpClient     com.cdccreditsmart.app               I  {"success":true,"authenticated":false,"pending":true,"stage":"awaiting-device","message":"Venda em andamento. Aguardando finalização no PDV.","validationId":"78b9aebf-1b12-4844-9c1c-79d988699175","saleId":"sale_1770249872429_vod2n752prc","expiresAt":"2026-02-06T00:04:32.429Z","hint":"O vendedor precisa clicar em \"Dispositivo Atestado\" no PDV para finalizar a venda."}
+2026-02-04 21:05:27.160 20415-28322 okhttp.OkHttpClient     com.cdccreditsmart.app               I  <-- END HTTP (373-byte body)
+2026-02-04 21:05:27.163 20415-20415 PairingViewModel        com.cdccreditsmart.app               D  Auto-polling: Checking if sale was completed (using /api/apk/auth)...
+2026-02-04 21:05:27.165 20415-26170 okhttp.OkHttpClient     com.cdccreditsmart.app               I  --> POST https://cdccreditsmart.com/api/apk/auth
+2026-02-04 21:05:27.166 20415-26170 okhttp.OkHttpClient     com.cdccreditsmart.app               I  Content-Type: application/json; charset=UTF-8
+2026-02-04 21:05:27.166 20415-26170 okhttp.OkHttpClient     com.cdccreditsmart.app               I  Content-Length: 292
+2026-02-04 21:05:27.166 20415-26170 okhttp.OkHttpClient     com.cdccreditsmart.app               I  {"pairingCode":"XUNB-PBYR","code":"XUNB-PBYR","imei":"353104906953198","deviceImei":"353104906953198","deviceModel":"moto g15","deviceBrand":"motorola","androidVersion":"15","deviceFingerprint":"18bd6adb2c67dac75644ae48939795018b985a2ea307d3b47680c0f4c135b310","androidId":"46cfde82c912b2d8"}
+2026-02-04 21:05:27.166 20415-26170 okhttp.OkHttpClient     com.cdccreditsmart.app               I  --> END POST (292-byte body)
+2026-02-04 21:05:27.172 20415-20415 PairingViewModel        com.cdccreditsmart.app               I  📨 Resposta recebida: HTTP 200
+2026-02-04 21:05:27.172 20415-20415 PairingViewModel        com.cdccreditsmart.app               D  Response code: 200
+2026-02-04 21:05:27.172 20415-20415 PairingViewModel        com.cdccreditsmart.app               D  Response message: 
+2026-02-04 21:05:27.172 20415-20415 PairingViewModel        com.cdccreditsmart.app               D  Response body received
+2026-02-04 21:05:27.172 20415-20415 PairingViewModel        com.cdccreditsmart.app               D  ⏳ Sale pending - awaiting PDV completion
+2026-02-04 21:05:27.172 20415-20415 PairingViewModel        com.cdccreditsmart.app               D  Message: Venda em andamento. Aguardando finalização no PDV., Stage: awaiting-device, Pending: true
+2026-02-04 21:05:27.172 20415-20415 PairingViewModel        com.cdccreditsmart.app               D  Starting automatic polling for pending sale
+2026-02-04 21:05:27.172 20415-20415 PairingViewModel        com.cdccreditsmart.app               I  🔌 Conectando WebSocket para notificar servidor (Aguardando Vendedor)...
+2026-02-04 21:05:27.172 20415-20415 PairingViewModel        com.cdccreditsmart.app               I  📤 contractCode para WebSocket: NWSJ-E9DZ
+2026-02-04 21:05:27.174 20415-20415 WebSocketManager        com.cdccreditsmart.app               I  ╔════════════════════════════════════════════════════════╗
+2026-02-04 21:05:27.174 20415-20415 WebSocketManager        com.cdccreditsmart.app               I  ║   🔌 CONNECTING TO WEBSOCKET                          ║
+2026-02-04 21:05:27.174 20415-20415 WebSocketManager        com.cdccreditsmart.app               I  ╚════════════════════════════════════════════════════════╝
+2026-02-04 21:05:27.174 20415-20415 WebSocketManager        com.cdccreditsmart.app               I  📡 URL: wss://cdccreditsmart.com/ws/flow-status
+2026-02-04 21:05:27.174 20415-20415 WebSocketManager        com.cdccreditsmart.app               I  📋 Contract Code: NWSJ-E9DZ
+2026-02-04 21:05:27.176 20415-20415 WebSocketManager        com.cdccreditsmart.app               I  ✅ WebSocket request initiated successfully
+2026-02-04 21:05:27.176 20415-20415 PairingViewModel        com.cdccreditsmart.app               I  📤 WebSocket conectado - Servidor será notificado que dispositivo está aguardando
+2026-02-04 21:05:27.177 20415-20415 DeviceInfoManager       com.cdccreditsmart.app               I  ========================================
+2026-02-04 21:05:27.177 20415-20415 DeviceInfoManager       com.cdccreditsmart.app               I  📱 Coletando informações de IMEI do dispositivo
+2026-02-04 21:05:27.177 20415-20415 DeviceInfoManager       com.cdccreditsmart.app               I  ========================================
+2026-02-04 21:05:27.178 20415-20415 DeviceInfoManager       com.cdccreditsmart.app               D  Número de SIMs detectados: 2
+2026-02-04 21:05:27.182 20415-20415 DeviceInfoManager       com.cdccreditsmart.app               D  ✅ IMEI válido encontrado no slot 0
+2026-02-04 21:05:27.189 20415-20415 DeviceInfoManager       com.cdccreditsmart.app               D  ✅ IMEI válido encontrado no slot 1
+2026-02-04 21:05:27.189 20415-20415 DeviceInfoManager       com.cdccreditsmart.app               I  ✅ 2 IMEI(s) válido(s) coletado(s)
+2026-02-04 21:05:27.189 20415-20415 DeviceInfoManager       com.cdccreditsmart.app               I  ========================================
+2026-02-04 21:05:27.196 20415-20415 FingerprintCalculator   com.cdccreditsmart.app               D  Calculating fingerprint from: ID=ZF525GRCP8..., BRAND=motorola, MODEL=moto g15, IMEI=3531
+2026-02-04 21:05:27.197 20415-20415 FingerprintCalculator   com.cdccreditsmart.app               D  ✅ Fingerprint calculated: 18bd6adb2c67dac7... (length: 64)
+2026-02-04 21:05:27.198 20415-20415 PairingViewModel        com.cdccreditsmart.app               D  Auto-polling com IMEI: 353104****
+2026-02-04 21:05:27.198 20415-20415 PairingViewModel        com.cdccreditsmart.app               D  Auto-polling com pairingCode: NWSJ-E9DZ
+2026-02-04 21:05:27.209 20415-27920 okhttp.OkHttpClient     com.cdccreditsmart.app               I  <-- 404 https://cdccreditsmart.com/api/apk/auth (330ms)
+2026-02-04 21:05:27.209 20415-27920 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-credentials: true
+2026-02-04 21:05:27.209 20415-27920 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-headers: Origin, X-Requested-With, Content-Type, Accept, Authorization, x-client-key, x-client-token, x-client-secret, cache-control
+2026-02-04 21:05:27.209 20415-27920 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-methods: GET, POST, PUT, PATCH, DELETE, OPTIONS
+2026-02-04 21:05:27.209 20415-27920 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-origin: *
+2026-02-04 21:05:27.209 20415-27920 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-max-age: 86400
+2026-02-04 21:05:27.210 20415-27920 okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-length: 137
+2026-02-04 21:05:27.210 20415-27920 okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-security-policy: default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://replit.com; style-src 'self' 'unsafe-inline' https://replit.com; img-src 'self' data: https:; font-src 'self' data: https://replit.com; connect-src 'self';
+2026-02-04 21:05:27.210 20415-27920 okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-type: application/json; charset=utf-8
+2026-02-04 21:05:27.210 20415-27920 okhttp.OkHttpClient     com.cdccreditsmart.app               I  date: Thu, 05 Feb 2026 00:05:27 GMT
+2026-02-04 21:05:27.211 20415-27920 okhttp.OkHttpClient     com.cdccreditsmart.app               I  etag: W/"89-y+bdn7O+U8772O41KAlg4H9kc8U"
+2026-02-04 21:05:27.211 20415-27920 okhttp.OkHttpClient     com.cdccreditsmart.app               I  permissions-policy: geolocation=(), microphone=(), camera=()
+2026-02-04 21:05:27.211 20415-27920 okhttp.OkHttpClient     com.cdccreditsmart.app               I  referrer-policy: strict-origin-when-cross-origin
+2026-02-04 21:05:27.211 20415-27920 okhttp.OkHttpClient     com.cdccreditsmart.app               I  strict-transport-security: max-age=63072000; includeSubDomains
+2026-02-04 21:05:27.211 20415-27920 okhttp.OkHttpClient     com.cdccreditsmart.app               I  strict-transport-security: max-age=31536000; includeSubDomains
+2026-02-04 21:05:27.211 20415-27920 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-anti-fraud-protection: active
+2026-02-04 21:05:27.212 20415-20415 PairingViewModel        com.cdccreditsmart.app               D  Auto-polling: Checking if sale was completed (using /api/apk/auth)...
+2026-02-04 21:05:27.212 20415-27920 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-certificate-pinning-enabled: false
+2026-02-04 21:05:27.212 20415-27920 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-certificate-pinning-status: disabled-for-stability
+2026-02-04 21:05:27.212 20415-27920 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-content-type-options: nosniff
+2026-02-04 21:05:27.212 20415-27920 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-financial-data-protection: enabled
+2026-02-04 21:05:27.212 20415-27920 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-frame-options: DENY
+2026-02-04 21:05:27.212 20415-27920 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-transaction-security-level: maximum
+2026-02-04 21:05:27.213 20415-27920 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-xss-protection: 1; mode=block
+2026-02-04 21:05:27.213 20415-27920 okhttp.OkHttpClient     com.cdccreditsmart.app               I  via: 1.1 google
+2026-02-04 21:05:27.213 20415-27920 okhttp.OkHttpClient     com.cdccreditsmart.app               I  alt-svc: h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
+2026-02-04 21:05:27.214 20415-28322 okhttp.OkHttpClient     com.cdccreditsmart.app               I  --> POST https://cdccreditsmart.com/api/apk/auth
+2026-02-04 21:05:27.214 20415-28322 okhttp.OkHttpClient     com.cdccreditsmart.app               I  Content-Type: application/json; charset=UTF-8
+2026-02-04 21:05:27.214 20415-28322 okhttp.OkHttpClient     com.cdccreditsmart.app               I  Content-Length: 292
+2026-02-04 21:05:27.214 20415-28322 okhttp.OkHttpClient     com.cdccreditsmart.app               I  {"pairingCode":"XUNB-PBYR","code":"XUNB-PBYR","imei":"353104906953198","deviceImei":"353104906953198","deviceModel":"moto g15","deviceBrand":"motorola","androidVersion":"15","deviceFingerprint":"18bd6adb2c67dac75644ae48939795018b985a2ea307d3b47680c0f4c135b310","androidId":"46cfde82c912b2d8"}
+2026-02-04 21:05:27.214 20415-27920 okhttp.OkHttpClient     com.cdccreditsmart.app               I  {"error":"Token inválido ou dispositivo não encontrado","tokenProvided":"XUNB****","hint":"Verifique se a venda foi finalizada no PDV"}
+2026-02-04 21:05:27.214 20415-28322 okhttp.OkHttpClient     com.cdccreditsmart.app               I  --> END POST (292-byte body)
+2026-02-04 21:05:27.215 20415-27920 okhttp.OkHttpClient     com.cdccreditsmart.app               I  <-- END HTTP (137-byte body)
+2026-02-04 21:05:27.230 20415-20415 PairingViewModel        com.cdccreditsmart.app               D  ⏳ Auto-polling: Venda ainda não concluída (HTTP 404), continuando polling...
+2026-02-04 21:05:27.288 20415-27747 okhttp.OkHttpClient     com.cdccreditsmart.app               I  <-- 200 https://cdccreditsmart.com/api/apk/auth (410ms)
+2026-02-04 21:05:27.288 20415-27747 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-credentials: true
+2026-02-04 21:05:27.288 20415-27747 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-headers: Origin, X-Requested-With, Content-Type, Accept, Authorization, x-client-key, x-client-token, x-client-secret, cache-control
+2026-02-04 21:05:27.289 20415-27747 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-methods: GET, POST, PUT, PATCH, DELETE, OPTIONS
+2026-02-04 21:05:27.289 20415-27747 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-origin: *
+2026-02-04 21:05:27.289 20415-27747 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-max-age: 86400
+2026-02-04 21:05:27.290 20415-27747 okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-length: 373
+2026-02-04 21:05:27.290 20415-27747 okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-security-policy: default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://replit.com; style-src 'self' 'unsafe-inline' https://replit.com; img-src 'self' data: https:; font-src 'self' data: https://replit.com; connect-src 'self';
+2026-02-04 21:05:27.290 20415-27747 okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-type: application/json; charset=utf-8
+2026-02-04 21:05:27.290 20415-27747 okhttp.OkHttpClient     com.cdccreditsmart.app               I  date: Thu, 05 Feb 2026 00:05:27 GMT
+2026-02-04 21:05:27.290 20415-27747 okhttp.OkHttpClient     com.cdccreditsmart.app               I  etag: W/"175-n/9xbxYAo3vsk2W+oL9G2Ws0FEk"
+2026-02-04 21:05:27.291 20415-27747 okhttp.OkHttpClient     com.cdccreditsmart.app               I  permissions-policy: geolocation=(), microphone=(), camera=()
+2026-02-04 21:05:27.291 20415-27747 okhttp.OkHttpClient     com.cdccreditsmart.app               I  referrer-policy: strict-origin-when-cross-origin
+2026-02-04 21:05:27.293 20415-27747 okhttp.OkHttpClient     com.cdccreditsmart.app               I  strict-transport-security: max-age=63072000; includeSubDomains
+2026-02-04 21:05:27.293 20415-27747 okhttp.OkHttpClient     com.cdccreditsmart.app               I  strict-transport-security: max-age=31536000; includeSubDomains
+2026-02-04 21:05:27.293 20415-27747 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-anti-fraud-protection: active
+2026-02-04 21:05:27.294 20415-27747 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-certificate-pinning-enabled: false
+2026-02-04 21:05:27.294 20415-27747 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-certificate-pinning-status: disabled-for-stability
+2026-02-04 21:05:27.294 20415-27747 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-content-type-options: nosniff
+2026-02-04 21:05:27.294 20415-27747 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-financial-data-protection: enabled
+2026-02-04 21:05:27.295 20415-27747 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-frame-options: DENY
+2026-02-04 21:05:27.295 20415-27747 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-transaction-security-level: maximum
+2026-02-04 21:05:27.295 20415-27747 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-xss-protection: 1; mode=block
+2026-02-04 21:05:27.295 20415-27747 okhttp.OkHttpClient     com.cdccreditsmart.app               I  via: 1.1 google
+2026-02-04 21:05:27.295 20415-27747 okhttp.OkHttpClient     com.cdccreditsmart.app               I  alt-svc: h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
+2026-02-04 21:05:27.296 20415-27747 okhttp.OkHttpClient     com.cdccreditsmart.app               I  {"success":true,"authenticated":false,"pending":true,"stage":"awaiting-device","message":"Venda em andamento. Aguardando finalização no PDV.","validationId":"78b9aebf-1b12-4844-9c1c-79d988699175","saleId":"sale_1770249872429_vod2n752prc","expiresAt":"2026-02-06T00:04:32.429Z","hint":"O vendedor precisa clicar em \"Dispositivo Atestado\" no PDV para finalizar a venda."}
+2026-02-04 21:05:27.297 20415-27747 okhttp.OkHttpClient     com.cdccreditsmart.app               I  <-- END HTTP (373-byte body)
+2026-02-04 21:05:27.326 20415-20415 PairingViewModel        com.cdccreditsmart.app               D  Starting automatic polling for pending sale
+2026-02-04 21:05:27.326 20415-20415 PairingViewModel        com.cdccreditsmart.app               I  🔌 Conectando WebSocket para notificar servidor (Aguardando Vendedor)...
+2026-02-04 21:05:27.326 20415-20415 PairingViewModel        com.cdccreditsmart.app               I  📤 contractCode para WebSocket: NWSJ-E9DZ
+2026-02-04 21:05:27.327 20415-20415 WebSocketManager        com.cdccreditsmart.app               I  ╔════════════════════════════════════════════════════════╗
+2026-02-04 21:05:27.327 20415-20415 WebSocketManager        com.cdccreditsmart.app               I  ║   🔌 CONNECTING TO WEBSOCKET                          ║
+2026-02-04 21:05:27.327 20415-20415 WebSocketManager        com.cdccreditsmart.app               I  ╚════════════════════════════════════════════════════════╝
+2026-02-04 21:05:27.327 20415-20415 WebSocketManager        com.cdccreditsmart.app               I  📡 URL: wss://cdccreditsmart.com/ws/flow-status
+2026-02-04 21:05:27.327 20415-20415 WebSocketManager        com.cdccreditsmart.app               I  📋 Contract Code: NWSJ-E9DZ
+2026-02-04 21:05:27.329 20415-20415 WebSocketManager        com.cdccreditsmart.app               I  ✅ WebSocket request initiated successfully
+2026-02-04 21:05:27.329 20415-20415 PairingViewModel        com.cdccreditsmart.app               I  📤 WebSocket conectado - Servidor será notificado que dispositivo está aguardando
+2026-02-04 21:05:27.330 20415-20415 DeviceInfoManager       com.cdccreditsmart.app               I  ========================================
+2026-02-04 21:05:27.330 20415-20415 DeviceInfoManager       com.cdccreditsmart.app               I  📱 Coletando informações de IMEI do dispositivo
+2026-02-04 21:05:27.330 20415-20415 DeviceInfoManager       com.cdccreditsmart.app               I  ========================================
+2026-02-04 21:05:27.330 20415-20415 DeviceInfoManager       com.cdccreditsmart.app               D  Número de SIMs detectados: 2
+2026-02-04 21:05:27.336 20415-20415 DeviceInfoManager       com.cdccreditsmart.app               D  ✅ IMEI válido encontrado no slot 0
+2026-02-04 21:05:27.342 20415-20415 DeviceInfoManager       com.cdccreditsmart.app               D  ✅ IMEI válido encontrado no slot 1
+2026-02-04 21:05:27.342 20415-20415 DeviceInfoManager       com.cdccreditsmart.app               I  ✅ 2 IMEI(s) válido(s) coletado(s)
+2026-02-04 21:05:27.342 20415-20415 DeviceInfoManager       com.cdccreditsmart.app               I  ========================================
+2026-02-04 21:05:27.348 20415-20415 FingerprintCalculator   com.cdccreditsmart.app               D  Calculating fingerprint from: ID=ZF525GRCP8..., BRAND=motorola, MODEL=moto g15, IMEI=3531
+2026-02-04 21:05:27.350 20415-20415 FingerprintCalculator   com.cdccreditsmart.app               D  ✅ Fingerprint calculated: 18bd6adb2c67dac7... (length: 64)
+2026-02-04 21:05:27.350 20415-20415 PairingViewModel        com.cdccreditsmart.app               D  Auto-polling com IMEI: 353104****
+2026-02-04 21:05:27.350 20415-20415 PairingViewModel        com.cdccreditsmart.app               D  Auto-polling com pairingCode: NWSJ-E9DZ
+2026-02-04 21:05:27.350 20415-20415 PairingViewModel        com.cdccreditsmart.app               D  Auto-polling stopped
+2026-02-04 21:05:27.352 20415-27077 okhttp.OkHttpClient     com.cdccreditsmart.app               I  <-- 404 https://cdccreditsmart.com/api/apk/auth (325ms)
+2026-02-04 21:05:27.353 20415-27077 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-credentials: true
+2026-02-04 21:05:27.353 20415-27077 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-headers: Origin, X-Requested-With, Content-Type, Accept, Authorization, x-client-key, x-client-token, x-client-secret, cache-control
+2026-02-04 21:05:27.353 20415-27077 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-methods: GET, POST, PUT, PATCH, DELETE, OPTIONS
+2026-02-04 21:05:27.353 20415-27077 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-origin: *
+2026-02-04 21:05:27.353 20415-27077 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-max-age: 86400
+2026-02-04 21:05:27.353 20415-27077 okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-length: 137
+2026-02-04 21:05:27.353 20415-27077 okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-security-policy: default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://replit.com; style-src 'self' 'unsafe-inline' https://replit.com; img-src 'self' data: https:; font-src 'self' data: https://replit.com; connect-src 'self';
+2026-02-04 21:05:27.354 20415-27077 okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-type: application/json; charset=utf-8
+2026-02-04 21:05:27.354 20415-27077 okhttp.OkHttpClient     com.cdccreditsmart.app               I  date: Thu, 05 Feb 2026 00:05:27 GMT
+2026-02-04 21:05:27.354 20415-27077 okhttp.OkHttpClient     com.cdccreditsmart.app               I  etag: W/"89-y+bdn7O+U8772O41KAlg4H9kc8U"
+2026-02-04 21:05:27.354 20415-27077 okhttp.OkHttpClient     com.cdccreditsmart.app               I  permissions-policy: geolocation=(), microphone=(), camera=()
+2026-02-04 21:05:27.354 20415-27077 okhttp.OkHttpClient     com.cdccreditsmart.app               I  referrer-policy: strict-origin-when-cross-origin
+2026-02-04 21:05:27.354 20415-27077 okhttp.OkHttpClient     com.cdccreditsmart.app               I  strict-transport-security: max-age=63072000; includeSubDomains
+2026-02-04 21:05:27.354 20415-27077 okhttp.OkHttpClient     com.cdccreditsmart.app               I  strict-transport-security: max-age=31536000; includeSubDomains
+2026-02-04 21:05:27.354 20415-27077 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-anti-fraud-protection: active
+2026-02-04 21:05:27.354 20415-27077 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-certificate-pinning-enabled: false
+2026-02-04 21:05:27.354 20415-27077 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-certificate-pinning-status: disabled-for-stability
+2026-02-04 21:05:27.355 20415-27077 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-content-type-options: nosniff
+2026-02-04 21:05:27.355 20415-27077 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-financial-data-protection: enabled
+2026-02-04 21:05:27.355 20415-27077 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-frame-options: DENY
+2026-02-04 21:05:27.355 20415-27077 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-transaction-security-level: maximum
+2026-02-04 21:05:27.355 20415-27077 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-xss-protection: 1; mode=block
+2026-02-04 21:05:27.356 20415-27077 okhttp.OkHttpClient     com.cdccreditsmart.app               I  via: 1.1 google
+2026-02-04 21:05:27.356 20415-27077 okhttp.OkHttpClient     com.cdccreditsmart.app               I  alt-svc: h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
+2026-02-04 21:05:27.357 20415-27077 okhttp.OkHttpClient     com.cdccreditsmart.app               I  {"error":"Token inválido ou dispositivo não encontrado","tokenProvided":"XUNB****","hint":"Verifique se a venda foi finalizada no PDV"}
+2026-02-04 21:05:27.357 20415-27077 okhttp.OkHttpClient     com.cdccreditsmart.app               I  <-- END HTTP (137-byte body)
+2026-02-04 21:05:27.365 20415-20415 PairingViewModel        com.cdccreditsmart.app               D  ⏳ Auto-polling: Sale still pending (stage: awaiting-device, pending: true)...
+2026-02-04 21:05:27.366 20415-20415 PairingViewModel        com.cdccreditsmart.app               D  ⏳ Auto-polling: Venda ainda não concluída (HTTP 404), continuando polling...
+2026-02-04 21:05:27.441 20415-20415 PairingViewModel        com.cdccreditsmart.app               D  Auto-polling: Checking if sale was completed (using /api/apk/auth)...
+2026-02-04 21:05:27.444 20415-27077 okhttp.OkHttpClient     com.cdccreditsmart.app               I  --> POST https://cdccreditsmart.com/api/apk/auth
+2026-02-04 21:05:27.444 20415-27077 okhttp.OkHttpClient     com.cdccreditsmart.app               I  Content-Type: application/json; charset=UTF-8
+2026-02-04 21:05:27.444 20415-27077 okhttp.OkHttpClient     com.cdccreditsmart.app               I  Content-Length: 292
+2026-02-04 21:05:27.445 20415-27077 okhttp.OkHttpClient     com.cdccreditsmart.app               I  {"pairingCode":"XUNB-PBYR","code":"XUNB-PBYR","imei":"353104906953198","deviceImei":"353104906953198","deviceModel":"moto g15","deviceBrand":"motorola","androidVersion":"15","deviceFingerprint":"18bd6adb2c67dac75644ae48939795018b985a2ea307d3b47680c0f4c135b310","androidId":"46cfde82c912b2d8"}
+2026-02-04 21:05:27.445 20415-27077 okhttp.OkHttpClient     com.cdccreditsmart.app               I  --> END POST (292-byte body)
+2026-02-04 21:05:27.521 20415-26170 okhttp.OkHttpClient     com.cdccreditsmart.app               I  <-- 404 https://cdccreditsmart.com/api/apk/auth (354ms)
+2026-02-04 21:05:27.522 20415-26170 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-credentials: true
+2026-02-04 21:05:27.522 20415-26170 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-headers: Origin, X-Requested-With, Content-Type, Accept, Authorization, x-client-key, x-client-token, x-client-secret, cache-control
+2026-02-04 21:05:27.522 20415-26170 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-methods: GET, POST, PUT, PATCH, DELETE, OPTIONS
+2026-02-04 21:05:27.522 20415-26170 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-origin: *
+2026-02-04 21:05:27.522 20415-26170 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-max-age: 86400
+2026-02-04 21:05:27.522 20415-26170 okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-length: 137
+2026-02-04 21:05:27.522 20415-26170 okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-security-policy: default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://replit.com; style-src 'self' 'unsafe-inline' https://replit.com; img-src 'self' data: https:; font-src 'self' data: https://replit.com; connect-src 'self';
+2026-02-04 21:05:27.525 20415-26170 okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-type: application/json; charset=utf-8
+2026-02-04 21:05:27.525 20415-26170 okhttp.OkHttpClient     com.cdccreditsmart.app               I  date: Thu, 05 Feb 2026 00:05:27 GMT
+2026-02-04 21:05:27.525 20415-26170 okhttp.OkHttpClient     com.cdccreditsmart.app               I  etag: W/"89-y+bdn7O+U8772O41KAlg4H9kc8U"
+2026-02-04 21:05:27.525 20415-26170 okhttp.OkHttpClient     com.cdccreditsmart.app               I  permissions-policy: geolocation=(), microphone=(), camera=()
+2026-02-04 21:05:27.525 20415-26170 okhttp.OkHttpClient     com.cdccreditsmart.app               I  referrer-policy: strict-origin-when-cross-origin
+2026-02-04 21:05:27.525 20415-26170 okhttp.OkHttpClient     com.cdccreditsmart.app               I  strict-transport-security: max-age=63072000; includeSubDomains
+2026-02-04 21:05:27.525 20415-26170 okhttp.OkHttpClient     com.cdccreditsmart.app               I  strict-transport-security: max-age=31536000; includeSubDomains
+2026-02-04 21:05:27.525 20415-26170 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-anti-fraud-protection: active
+2026-02-04 21:05:27.525 20415-26170 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-certificate-pinning-enabled: false
+2026-02-04 21:05:27.525 20415-26170 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-certificate-pinning-status: disabled-for-stability
+2026-02-04 21:05:27.525 20415-26170 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-content-type-options: nosniff
+2026-02-04 21:05:27.526 20415-26170 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-financial-data-protection: enabled
+2026-02-04 21:05:27.526 20415-26170 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-frame-options: DENY
+2026-02-04 21:05:27.526 20415-26170 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-transaction-security-level: maximum
+2026-02-04 21:05:27.526 20415-26170 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-xss-protection: 1; mode=block
+2026-02-04 21:05:27.526 20415-26170 okhttp.OkHttpClient     com.cdccreditsmart.app               I  via: 1.1 google
+2026-02-04 21:05:27.526 20415-26170 okhttp.OkHttpClient     com.cdccreditsmart.app               I  alt-svc: h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
+2026-02-04 21:05:27.526 20415-26170 okhttp.OkHttpClient     com.cdccreditsmart.app               I  {"error":"Token inválido ou dispositivo não encontrado","tokenProvided":"XUNB****","hint":"Verifique se a venda foi finalizada no PDV"}
+2026-02-04 21:05:27.527 20415-26170 okhttp.OkHttpClient     com.cdccreditsmart.app               I  <-- END HTTP (137-byte body)
+2026-02-04 21:05:27.534 20415-20415 PairingViewModel        com.cdccreditsmart.app               D  ⏳ Auto-polling: Venda ainda não concluída (HTTP 404), continuando polling...
+2026-02-04 21:05:27.558 20415-28322 okhttp.OkHttpClient     com.cdccreditsmart.app               I  <-- 404 https://cdccreditsmart.com/api/apk/auth (343ms)
+2026-02-04 21:05:27.558 20415-28322 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-credentials: true
+2026-02-04 21:05:27.558 20415-28322 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-headers: Origin, X-Requested-With, Content-Type, Accept, Authorization, x-client-key, x-client-token, x-client-secret, cache-control
+2026-02-04 21:05:27.558 20415-28322 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-methods: GET, POST, PUT, PATCH, DELETE, OPTIONS
+2026-02-04 21:05:27.558 20415-28322 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-origin: *
+2026-02-04 21:05:27.559 20415-28322 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-max-age: 86400
+2026-02-04 21:05:27.559 20415-28322 okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-length: 137
+2026-02-04 21:05:27.559 20415-28322 okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-security-policy: default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://replit.com; style-src 'self' 'unsafe-inline' https://replit.com; img-src 'self' data: https:; font-src 'self' data: https://replit.com; connect-src 'self';
+2026-02-04 21:05:27.559 20415-28322 okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-type: application/json; charset=utf-8
+2026-02-04 21:05:27.559 20415-28322 okhttp.OkHttpClient     com.cdccreditsmart.app               I  date: Thu, 05 Feb 2026 00:05:27 GMT
+2026-02-04 21:05:27.560 20415-28322 okhttp.OkHttpClient     com.cdccreditsmart.app               I  etag: W/"89-y+bdn7O+U8772O41KAlg4H9kc8U"
+2026-02-04 21:05:27.560 20415-28322 okhttp.OkHttpClient     com.cdccreditsmart.app               I  permissions-policy: geolocation=(), microphone=(), camera=()
+2026-02-04 21:05:27.560 20415-28322 okhttp.OkHttpClient     com.cdccreditsmart.app               I  referrer-policy: strict-origin-when-cross-origin
+2026-02-04 21:05:27.560 20415-28322 okhttp.OkHttpClient     com.cdccreditsmart.app               I  strict-transport-security: max-age=63072000; includeSubDomains
+2026-02-04 21:05:27.560 20415-28322 okhttp.OkHttpClient     com.cdccreditsmart.app               I  strict-transport-security: max-age=31536000; includeSubDomains
+2026-02-04 21:05:27.560 20415-28322 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-anti-fraud-protection: active
+2026-02-04 21:05:27.560 20415-28322 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-certificate-pinning-enabled: false
+2026-02-04 21:05:27.560 20415-28322 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-certificate-pinning-status: disabled-for-stability
+2026-02-04 21:05:27.560 20415-28322 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-content-type-options: nosniff
+2026-02-04 21:05:27.560 20415-28322 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-financial-data-protection: enabled
+2026-02-04 21:05:27.560 20415-28322 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-frame-options: DENY
+2026-02-04 21:05:27.560 20415-28322 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-transaction-security-level: maximum
+2026-02-04 21:05:27.560 20415-28322 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-xss-protection: 1; mode=block
+2026-02-04 21:05:27.560 20415-28322 okhttp.OkHttpClient     com.cdccreditsmart.app               I  via: 1.1 google
+2026-02-04 21:05:27.560 20415-28322 okhttp.OkHttpClient     com.cdccreditsmart.app               I  alt-svc: h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
+2026-02-04 21:05:27.562 20415-28322 okhttp.OkHttpClient     com.cdccreditsmart.app               I  {"error":"Token inválido ou dispositivo não encontrado","tokenProvided":"XUNB****","hint":"Verifique se a venda foi finalizada no PDV"}
+2026-02-04 21:05:27.562 20415-28322 okhttp.OkHttpClient     com.cdccreditsmart.app               I  <-- END HTTP (137-byte body)
+2026-02-04 21:05:27.568 20415-20415 PairingViewModel        com.cdccreditsmart.app               D  ⏳ Auto-polling: Venda ainda não concluída (HTTP 404), continuando polling...
+2026-02-04 21:05:27.695 20415-28333 WebSocketManager        com.cdccreditsmart.app               D  WebSocket connection opened
+2026-02-04 21:05:27.695 20415-28333 WebSocketManager        com.cdccreditsmart.app               D  WebSocket connected, sending authentication for contract: NWSJ-E9DZ
+2026-02-04 21:05:27.695 20415-28333 WebSocketManager        com.cdccreditsmart.app               I  📤 Authentication message sent: type=authenticate, contractId=NWSJ-E9DZ
+2026-02-04 21:05:27.696 20415-28333 WebSocketManager        com.cdccreditsmart.app               I  📤 Subscribe message sent to server
+2026-02-04 21:05:27.696 20415-28333 WebSocketManager        com.cdccreditsmart.app               D  Starting heartbeat
+2026-02-04 21:05:27.769 20415-27077 okhttp.OkHttpClient     com.cdccreditsmart.app               I  <-- 404 https://cdccreditsmart.com/api/apk/auth (323ms)
+2026-02-04 21:05:27.770 20415-27077 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-credentials: true
+2026-02-04 21:05:27.770 20415-27077 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-headers: Origin, X-Requested-With, Content-Type, Accept, Authorization, x-client-key, x-client-token, x-client-secret, cache-control
+2026-02-04 21:05:27.770 20415-27077 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-methods: GET, POST, PUT, PATCH, DELETE, OPTIONS
+2026-02-04 21:05:27.770 20415-27077 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-origin: *
+2026-02-04 21:05:27.770 20415-27077 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-max-age: 86400
+2026-02-04 21:05:27.771 20415-27077 okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-length: 137
+2026-02-04 21:05:27.771 20415-27077 okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-security-policy: default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://replit.com; style-src 'self' 'unsafe-inline' https://replit.com; img-src 'self' data: https:; font-src 'self' data: https://replit.com; connect-src 'self';
+2026-02-04 21:05:27.771 20415-27077 okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-type: application/json; charset=utf-8
+2026-02-04 21:05:27.771 20415-27077 okhttp.OkHttpClient     com.cdccreditsmart.app               I  date: Thu, 05 Feb 2026 00:05:27 GMT
+2026-02-04 21:05:27.771 20415-27077 okhttp.OkHttpClient     com.cdccreditsmart.app               I  etag: W/"89-y+bdn7O+U8772O41KAlg4H9kc8U"
+2026-02-04 21:05:27.772 20415-27077 okhttp.OkHttpClient     com.cdccreditsmart.app               I  permissions-policy: geolocation=(), microphone=(), camera=()
+2026-02-04 21:05:27.772 20415-27077 okhttp.OkHttpClient     com.cdccreditsmart.app               I  referrer-policy: strict-origin-when-cross-origin
+2026-02-04 21:05:27.772 20415-27077 okhttp.OkHttpClient     com.cdccreditsmart.app               I  strict-transport-security: max-age=63072000; includeSubDomains
+2026-02-04 21:05:27.772 20415-27077 okhttp.OkHttpClient     com.cdccreditsmart.app               I  strict-transport-security: max-age=31536000; includeSubDomains
+2026-02-04 21:05:27.772 20415-27077 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-anti-fraud-protection: active
+2026-02-04 21:05:27.772 20415-27077 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-certificate-pinning-enabled: false
+2026-02-04 21:05:27.773 20415-27077 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-certificate-pinning-status: disabled-for-stability
+2026-02-04 21:05:27.773 20415-27077 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-content-type-options: nosniff
+2026-02-04 21:05:27.773 20415-27077 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-financial-data-protection: enabled
+2026-02-04 21:05:27.773 20415-27077 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-frame-options: DENY
+2026-02-04 21:05:27.773 20415-27077 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-transaction-security-level: maximum
+2026-02-04 21:05:27.773 20415-27077 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-xss-protection: 1; mode=block
+2026-02-04 21:05:27.773 20415-27077 okhttp.OkHttpClient     com.cdccreditsmart.app               I  via: 1.1 google
+2026-02-04 21:05:27.774 20415-27077 okhttp.OkHttpClient     com.cdccreditsmart.app               I  alt-svc: h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
+2026-02-04 21:05:27.774 20415-27077 okhttp.OkHttpClient     com.cdccreditsmart.app               I  {"error":"Token inválido ou dispositivo não encontrado","tokenProvided":"XUNB****","hint":"Verifique se a venda foi finalizada no PDV"}
+2026-02-04 21:05:27.775 20415-27077 okhttp.OkHttpClient     com.cdccreditsmart.app               I  <-- END HTTP (137-byte body)
+2026-02-04 21:05:27.777 20415-20415 PairingViewModel        com.cdccreditsmart.app               D  ⏳ Auto-polling: Venda ainda não concluída (HTTP 404), continuando polling...
+2026-02-04 21:05:27.792 20415-20415 PairingViewModel        com.cdccreditsmart.app               D  Auto-polling: Checking if sale was completed (using /api/apk/auth)...
+2026-02-04 21:05:27.794 20415-27077 okhttp.OkHttpClient     com.cdccreditsmart.app               I  --> POST https://cdccreditsmart.com/api/apk/auth
+2026-02-04 21:05:27.795 20415-27077 okhttp.OkHttpClient     com.cdccreditsmart.app               I  Content-Type: application/json; charset=UTF-8
+2026-02-04 21:05:27.795 20415-27077 okhttp.OkHttpClient     com.cdccreditsmart.app               I  Content-Length: 292
+2026-02-04 21:05:27.795 20415-27077 okhttp.OkHttpClient     com.cdccreditsmart.app               I  {"pairingCode":"XUNB-PBYR","code":"XUNB-PBYR","imei":"353104906953198","deviceImei":"353104906953198","deviceModel":"moto g15","deviceBrand":"motorola","androidVersion":"15","deviceFingerprint":"18bd6adb2c67dac75644ae48939795018b985a2ea307d3b47680c0f4c135b310","androidId":"46cfde82c912b2d8"}
+2026-02-04 21:05:27.795 20415-27077 okhttp.OkHttpClient     com.cdccreditsmart.app               I  --> END POST (292-byte body)
+2026-02-04 21:05:27.857 20415-28334 WebSocketManager        com.cdccreditsmart.app               D  WebSocket connection opened
+2026-02-04 21:05:27.857 20415-28334 WebSocketManager        com.cdccreditsmart.app               D  WebSocket connected, sending authentication for contract: NWSJ-E9DZ
+2026-02-04 21:05:27.858 20415-28334 WebSocketManager        com.cdccreditsmart.app               I  📤 Authentication message sent: type=authenticate, contractId=NWSJ-E9DZ
+2026-02-04 21:05:27.858 20415-28334 WebSocketManager        com.cdccreditsmart.app               I  📤 Subscribe message sent to server
+2026-02-04 21:05:27.858 20415-28334 WebSocketManager        com.cdccreditsmart.app               D  Starting heartbeat
+2026-02-04 21:05:27.886 20415-20415 PairingViewModel        com.cdccreditsmart.app               D  Auto-polling: Checking if sale was completed (using /api/apk/auth)...
+2026-02-04 21:05:27.888 20415-28322 okhttp.OkHttpClient     com.cdccreditsmart.app               I  --> POST https://cdccreditsmart.com/api/apk/auth
+2026-02-04 21:05:27.889 20415-28322 okhttp.OkHttpClient     com.cdccreditsmart.app               I  Content-Type: application/json; charset=UTF-8
+2026-02-04 21:05:27.889 20415-28322 okhttp.OkHttpClient     com.cdccreditsmart.app               I  Content-Length: 292
+2026-02-04 21:05:27.889 20415-28322 okhttp.OkHttpClient     com.cdccreditsmart.app               I  {"pairingCode":"XUNB-PBYR","code":"XUNB-PBYR","imei":"353104906953198","deviceImei":"353104906953198","deviceModel":"moto g15","deviceBrand":"motorola","androidVersion":"15","deviceFingerprint":"18bd6adb2c67dac75644ae48939795018b985a2ea307d3b47680c0f4c135b310","androidId":"46cfde82c912b2d8"}
+2026-02-04 21:05:27.889 20415-28322 okhttp.OkHttpClient     com.cdccreditsmart.app               I  --> END POST (292-byte body)
+2026-02-04 21:05:27.895 20415-28333 WebSocketManager        com.cdccreditsmart.app               D  Message received: {"type":"authenticated","contractId":"NWSJ-E9DZ","success":true,"message":"Conectado ao sistema","ti...
+2026-02-04 21:05:27.895 20415-28333 WebSocketManager        com.cdccreditsmart.app               D  Received message type: authenticated
+2026-02-04 21:05:27.895 20415-28333 WebSocketManager        com.cdccreditsmart.app               D  Successfully authenticated
+2026-02-04 21:05:27.895 20415-28333 WebSocketManager        com.cdccreditsmart.app               D  Starting heartbeat
+2026-02-04 21:05:27.981 20415-28333 WebSocketManager        com.cdccreditsmart.app               D  Message received: {"type":"subscribed","contractId":"NWSJ-E9DZ","success":true,"message":"Subscribed to flow status","...
+2026-02-04 21:05:27.982 20415-28333 WebSocketManager        com.cdccreditsmart.app               D  Received message type: subscribed
+2026-02-04 21:05:27.982 20415-28333 WebSocketManager        com.cdccreditsmart.app               W  Unknown message type: subscribed
+2026-02-04 21:05:28.036 20415-20415 PairingViewModel        com.cdccreditsmart.app               D  Auto-polling: Checking if sale was completed (using /api/apk/auth)...
+2026-02-04 21:05:28.038 20415-26170 okhttp.OkHttpClient     com.cdccreditsmart.app               I  --> POST https://cdccreditsmart.com/api/apk/auth
+2026-02-04 21:05:28.039 20415-26170 okhttp.OkHttpClient     com.cdccreditsmart.app               I  Content-Type: application/json; charset=UTF-8
+2026-02-04 21:05:28.039 20415-26170 okhttp.OkHttpClient     com.cdccreditsmart.app               I  Content-Length: 292
+2026-02-04 21:05:28.039 20415-26170 okhttp.OkHttpClient     com.cdccreditsmart.app               I  {"pairingCode":"NWSJ-E9DZ","code":"NWSJ-E9DZ","imei":"353104906953198","deviceImei":"353104906953198","deviceModel":"moto g15","deviceBrand":"motorola","androidVersion":"15","deviceFingerprint":"18bd6adb2c67dac75644ae48939795018b985a2ea307d3b47680c0f4c135b310","androidId":"46cfde82c912b2d8"}
+2026-02-04 21:05:28.039 20415-26170 okhttp.OkHttpClient     com.cdccreditsmart.app               I  --> END POST (292-byte body)
+2026-02-04 21:05:28.062 20415-28334 WebSocketManager        com.cdccreditsmart.app               D  Message received: {"type":"authenticated","contractId":"NWSJ-E9DZ","success":true,"message":"Conectado ao sistema","ti...
+2026-02-04 21:05:28.062 20415-28334 WebSocketManager        com.cdccreditsmart.app               D  Received message type: authenticated
+2026-02-04 21:05:28.062 20415-28334 WebSocketManager        com.cdccreditsmart.app               D  Successfully authenticated
+2026-02-04 21:05:28.062 20415-28334 WebSocketManager        com.cdccreditsmart.app               D  Starting heartbeat
+2026-02-04 21:05:28.091 20415-28334 WebSocketManager        com.cdccreditsmart.app               D  Message received: {"type":"subscribed","contractId":"NWSJ-E9DZ","success":true,"message":"Subscribed to flow status","...
+2026-02-04 21:05:28.091 20415-28334 WebSocketManager        com.cdccreditsmart.app               D  Received message type: subscribed
+2026-02-04 21:05:28.091 20415-28334 WebSocketManager        com.cdccreditsmart.app               W  Unknown message type: subscribed
+2026-02-04 21:05:28.139 20415-27077 okhttp.OkHttpClient     com.cdccreditsmart.app               I  <-- 404 https://cdccreditsmart.com/api/apk/auth (343ms)
+2026-02-04 21:05:28.140 20415-27077 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-credentials: true
+2026-02-04 21:05:28.140 20415-27077 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-headers: Origin, X-Requested-With, Content-Type, Accept, Authorization, x-client-key, x-client-token, x-client-secret, cache-control
+2026-02-04 21:05:28.140 20415-27077 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-methods: GET, POST, PUT, PATCH, DELETE, OPTIONS
+2026-02-04 21:05:28.140 20415-27077 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-origin: *
+2026-02-04 21:05:28.140 20415-27077 okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-max-age: 86400
+2026-02-04 21:05:28.140 20415-27077 okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-length: 137
+2026-02-04 21:05:28.141 20415-27077 okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-security-policy: default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://replit.com; style-src 'self' 'unsafe-inline' https://replit.com; img-src 'self' data: https:; font-src 'self' data: https://replit.com; connect-src 'self';
+2026-02-04 21:05:28.141 20415-27077 okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-type: application/json; charset=utf-8
+2026-02-04 21:05:28.141 20415-27077 okhttp.OkHttpClient     com.cdccreditsmart.app               I  date: Thu, 05 Feb 2026 00:05:28 GMT
+2026-02-04 21:05:28.141 20415-27077 okhttp.OkHttpClient     com.cdccreditsmart.app               I  etag: W/"89-y+bdn7O+U8772O41KAlg4H9kc8U"
+2026-02-04 21:05:28.141 20415-27077 okhttp.OkHttpClient     com.cdccreditsmart.app               I  permissions-policy: geolocation=(), microphone=(), camera=()
+2026-02-04 21:05:28.141 20415-27077 okhttp.OkHttpClient     com.cdccreditsmart.app               I  referrer-policy: strict-origin-when-cross-origin
+2026-02-04 21:05:28.142 20415-27077 okhttp.OkHttpClient     com.cdccreditsmart.app               I  strict-transport-security: max-age=63072000; includeSubDomains
+2026-02-04 21:05:28.142 20415-27077 okhttp.OkHttpClient     com.cdccreditsmart.app               I  strict-transport-security: max-age=31536000; includeSubDomains
+2026-02-04 21:05:28.142 20415-27077 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-anti-fraud-protection: active
+2026-02-04 21:05:28.142 20415-27077 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-certificate-pinning-enabled: false
+2026-02-04 21:05:28.143 20415-27077 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-certificate-pinning-status: disabled-for-stability
+2026-02-04 21:05:28.143 20415-27077 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-content-type-options: nosniff
+2026-02-04 21:05:28.143 20415-27077 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-financial-data-protection: enabled
+2026-02-04 21:05:28.143 20415-27077 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-frame-options: DENY
+2026-02-04 21:05:28.143 20415-27077 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-transaction-security-level: maximum
+2026-02-04 21:05:28.144 20415-27077 okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-xss-protection: 1; mode=block
+2026-02-04 21:05:28.144 20415-27077 okhttp.OkHttpClient     com.cdccreditsmart.app               I  via: 1.1 google
+2026-02-04 21:05:28.144 20415-27077 okhttp.OkHttpClient     com.cdccreditsmart.app               I  alt-svc: h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
+2026-02-04 21:05:28.145 20415-27077 okhttp.OkHttpClient     com.cdccreditsmart.app               I  {"error":"Token inválido ou dispositivo não encontrado","tokenProvided":"XUNB****","hint":"Verifique se a venda foi finalizada no PDV"}
+2026-02-04 21:05:28.145 20415-27077 okhttp.OkHttpClient     com.cdccreditsmart.app               I  <-- END HTTP (137-byte body)

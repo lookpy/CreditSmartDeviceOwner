@@ -25,29 +25,12 @@ import com.cdccreditsmart.app.ui.theme.CDCOrange
 
 class ContractCodeVisualTransformation : VisualTransformation {
     override fun filter(text: AnnotatedString): TransformedText {
-        val originalText = text.text
-        
-        val transformedText = if (originalText.length > 4) {
-            "${originalText.take(4)}-${originalText.drop(4)}"
-        } else {
-            originalText
-        }
-        
+        // Sem hífen - código exibido como digitado (ABCD1234)
         val offsetMapping = object : OffsetMapping {
-            override fun originalToTransformed(offset: Int): Int {
-                return if (offset <= 4) offset else offset + 1
-            }
-            
-            override fun transformedToOriginal(offset: Int): Int {
-                return when {
-                    offset <= 4 -> offset
-                    offset == 5 -> 4
-                    else -> offset - 1
-                }
-            }
+            override fun originalToTransformed(offset: Int): Int = offset
+            override fun transformedToOriginal(offset: Int): Int = offset
         }
-        
-        return TransformedText(AnnotatedString(transformedText), offsetMapping)
+        return TransformedText(text, offsetMapping)
     }
 }
 
@@ -128,7 +111,7 @@ fun QRCodeScannerScreen(
                                 contractId = formatted
                             },
                             label = { Text("Código do Contrato") },
-                            placeholder = { Text("ABCD-1234") },
+                            placeholder = { Text("ABCD1234") },
                             visualTransformation = ContractCodeVisualTransformation(),
                             supportingText = {
                                 Text(
@@ -149,9 +132,8 @@ fun QRCodeScannerScreen(
                         Button(
                             onClick = {
                                 if (contractId.length == 8) {
-                                    // Envia o código COM hífen (formato XXXX-XXXX)
-                                    val codeWithHyphen = "${contractId.take(4)}-${contractId.drop(4)}"
-                                    onQRCodeScanned(codeWithHyphen)
+                                    // Envia o código SEM hífen (formato ABCD1234)
+                                    onQRCodeScanned(contractId)
                                 }
                             },
                             enabled = contractId.length == 8,
