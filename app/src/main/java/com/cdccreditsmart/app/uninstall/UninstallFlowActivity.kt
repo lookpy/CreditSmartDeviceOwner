@@ -25,6 +25,9 @@ class UninstallFlowActivity : Activity() {
         const val TYPE_VOLUNTARY = "voluntary"
         const val TYPE_REMOTE = "remote"
         
+        private const val DELAY_AFTER_ADMIN_REMOVAL_MS = 2000L
+        private const val DELAY_NO_ADMIN_MS = 800L
+        
         fun createIntent(context: Context, uninstallType: String): Intent {
             return Intent(context, UninstallFlowActivity::class.java).apply {
                 putExtra(EXTRA_UNINSTALL_TYPE, uninstallType)
@@ -36,6 +39,7 @@ class UninstallFlowActivity : Activity() {
     private lateinit var protectionManager: AppProtectionManager
     private lateinit var dpm: DevicePolicyManager
     private lateinit var adminComponent: ComponentName
+    private val handler = Handler(Looper.getMainLooper())
     private var uninstallType: String = TYPE_NOT_ACTIVATED
     private var wasDeviceOwner = false
     private var wasDeviceAdmin = false
@@ -43,6 +47,7 @@ class UninstallFlowActivity : Activity() {
     private var uninstallDialogLaunched = false
     private var hasPausedAfterLaunch = false
     private var resultHandled = false
+    private var privilegesRemoved = false
     
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -58,6 +63,7 @@ class UninstallFlowActivity : Activity() {
         guardWasPaused = savedInstanceState?.getBoolean("guard_was_paused", false) ?: false
         hasPausedAfterLaunch = savedInstanceState?.getBoolean("has_paused", false) ?: false
         resultHandled = savedInstanceState?.getBoolean("result_handled", false) ?: false
+        privilegesRemoved = savedInstanceState?.getBoolean("privileges_removed", false) ?: false
         
         Log.i(TAG, "")
         Log.i(TAG, "╔════════════════════════════════════════════════════════════╗")
@@ -89,13 +95,14 @@ class UninstallFlowActivity : Activity() {
         outState.putBoolean("guard_was_paused", guardWasPaused)
         outState.putBoolean("has_paused", hasPausedAfterLaunch)
         outState.putBoolean("result_handled", resultHandled)
+        outState.putBoolean("privileges_removed", privilegesRemoved)
     }
     
     override fun onPause() {
         super.onPause()
         if (uninstallDialogLaunched) {
             hasPausedAfterLaunch = true
-            Log.d(TAG, "onPause: Activity pausada (diálogo de desinstalação apareceu)")
+            Log.d(TAG, "onPause: Diálogo de desinstalação tomou o foco")
         }
     }
     
@@ -110,11 +117,11 @@ class UninstallFlowActivity : Activity() {
             Log.i(TAG, "╚════════════════════════════════════════════════════════════╝")
             Log.i(TAG, "")
             
-            Handler(Looper.getMainLooper()).postDelayed({
+            handler.postDelayed({
                 handleUninstallResult()
             }, 500)
         } else if (uninstallDialogLaunched && !hasPausedAfterLaunch) {
-            Log.d(TAG, "onResume: Ignorando - diálogo ainda não apareceu (aguardando onPause)")
+            Log.d(TAG, "onResume: Aguardando diálogo de desinstalação aparecer...")
         }
     }
     
@@ -130,7 +137,7 @@ class UninstallFlowActivity : Activity() {
                 Log.i(TAG, "App ainda é Device Owner - reaplicando proteções...")
                 reapplyProtectionsIfPossible()
                 Log.i(TAG, "OK: Proteções restauradas")
-            } else {
+            } else if (privilegesRemoved) {
                 Log.w(TAG, "")
                 Log.w(TAG, "ATENÇÃO: Proteções foram removidas e NÃO podem ser reaplicadas!")
                 Log.w(TAG, "   O app não é mais Device Owner/Admin")
@@ -186,6 +193,7 @@ class UninstallFlowActivity : Activity() {
                 Log.i(TAG, "[PASSO 3/4] Removendo Device Owner...")
                 try {
                     PolicyHelper.clearDeviceOwnerApp(dpm, packageName)
+                    privilegesRemoved = true
                     Log.i(TAG, "   OK: Device Owner removido com sucesso")
                 } catch (e: Exception) {
                     Log.e(TAG, "   ERRO: ${e.message}")
@@ -195,36 +203,74 @@ class UninstallFlowActivity : Activity() {
                     finish()
                     return
                 }
+                
+                Log.i(TAG, "")
+                Log.i(TAG, "[PASSO 4/4] Aguardando sistema processar remoção de admin...")
+                Log.i(TAG, "   Lançando diálogo de desinstalação em ${DELAY_AFTER_ADMIN_REMOVAL_MS}ms...")
+                
+                handler.postDelayed({
+                    launchSystemUninstallDialog()
+                }, DELAY_AFTER_ADMIN_REMOVAL_MS)
+                
             } else if (isDeviceAdmin) {
                 Log.i(TAG, "")
                 Log.i(TAG, "[PASSO 2/4] App é Device Admin...")
                 Log.i(TAG, "[PASSO 3/4] Removendo Device Admin...")
                 try {
                     PolicyHelper.removeActiveAdmin(dpm, adminComponent)
+                    privilegesRemoved = true
                     Log.i(TAG, "   OK: Device Admin removido")
                 } catch (e: Exception) {
                     Log.w(TAG, "   AVISO: ${e.message}")
                 }
+                
+                Log.i(TAG, "")
+                Log.i(TAG, "[PASSO 4/4] Aguardando sistema processar...")
+                
+                handler.postDelayed({
+                    launchSystemUninstallDialog()
+                }, DELAY_AFTER_ADMIN_REMOVAL_MS)
+                
             } else {
                 Log.i(TAG, "")
                 Log.i(TAG, "[PASSO 2/4] App sem privilégios especiais")
                 Log.i(TAG, "[PASSO 3/4] Nenhuma proteção a remover")
+                Log.i(TAG, "")
+                Log.i(TAG, "[PASSO 4/4] Lançando diálogo de desinstalação...")
+                
+                handler.postDelayed({
+                    launchSystemUninstallDialog()
+                }, DELAY_NO_ADMIN_MS)
             }
             
-            Log.i(TAG, "")
-            Log.i(TAG, "[PASSO 4/4] Iniciando desinstalação do sistema...")
-            Log.i(TAG, "")
+        } catch (e: Exception) {
+            Log.e(TAG, "ERRO durante fluxo: ${e.message}", e)
+            reapplyProtectionsIfPossible()
+            resumeGuardSafely()
+            finish()
+        }
+    }
+    
+    private fun launchSystemUninstallDialog() {
+        if (isFinishing) {
+            Log.w(TAG, "Activity já finalizando - abortando lançamento do diálogo")
+            return
+        }
+        
+        try {
+            Log.i(TAG, "🚀 Lançando ACTION_DELETE para ${packageName}...")
             
             uninstallDialogLaunched = true
             
             val uninstallIntent = Intent(Intent.ACTION_DELETE).apply {
                 data = Uri.parse("package:$packageName")
+                addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY)
             }
             startActivity(uninstallIntent)
             
+            Log.i(TAG, "✅ Diálogo de desinstalação lançado com sucesso")
         } catch (e: Exception) {
-            Log.e(TAG, "ERRO durante fluxo: ${e.message}", e)
-            reapplyProtectionsIfPossible()
+            Log.e(TAG, "❌ ERRO ao lançar diálogo: ${e.message}", e)
             resumeGuardSafely()
             finish()
         }
@@ -242,6 +288,7 @@ class UninstallFlowActivity : Activity() {
     }
     
     override fun onDestroy() {
+        handler.removeCallbacksAndMessages(null)
         super.onDestroy()
         
         if (isPackageInstalled(packageName)) {
