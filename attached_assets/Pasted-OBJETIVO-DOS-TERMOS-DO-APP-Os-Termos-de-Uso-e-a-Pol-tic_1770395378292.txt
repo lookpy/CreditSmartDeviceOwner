@@ -1,0 +1,159 @@
+OBJETIVO DOS TERMOS DO APP
+
+Os Termos de Uso e a Política de Privacidade do app NÃO podem:
+
+Parecer instrumento de cobrança
+
+Parecer sanção por inadimplência
+
+Parecer “controle do consumidor”
+
+Eles DEVEM parecer:
+
+Ferramenta técnica de segurança
+
+Sistema antifurto / gestão de dispositivo
+
+Componente operacional do serviço contratado
+
+1️⃣ LINHA JURÍDICA CORRETA DO APP
+🔐 POSICIONAMENTO OFICIAL DO APLICATIVO
+
+O app deve ser descrito como:
+
+“Aplicativo de segurança, gestão de funcionalidades e proteção patrimonial do dispositivo móvel, integrado aos serviços contratados com a Credit Smart.”
+
+📌 Nunca usar nos termos:
+
+bloqueio por inadimplência
+
+punição
+
+sanção
+
+penalidade
+
+castigo
+
+coerção
+
+retenção de pagamento
+
+2️⃣ TERMINOLOGIA OBRIGATÓRIA (USE SEMPRE)
+
+Use somente estes termos (padronização):
+
+Errado ❌	Correto ✅
+Bloqueio	Gestão de funcionalidades
+Penalidade	Medida preventiva
+Cobrança via app	Comunicação operacional
+Desbloqueio após pagar	Liberação integral após quitação
+Controle do usuário	Gestão do dispositivo
+Remoção proibida por dívida	Aplicativo essencial ao funcionamento contratado
+3️⃣ COMO PROIBIR A REMOÇÃO DO APP (FORMA LEGAL)
+
+⚠️ Esse é o ponto mais sensível — e dá pra fazer legalmente.
+
+🔒 Base jurídica permitida:
+
+Execução do contrato (art. 7º, V da LGPD)
+
+Proteção do bem (alienação fiduciária / reserva de domínio)
+
+Segurança patrimonial
+
+Prevenção à fraude e furto
+
+📌 Redação JURIDICAMENTE CORRETA (MODELO)
+Termos de Uso — Cláusula Essencial
+
+O Aplicativo Credit Smart constitui componente essencial e indissociável do serviço contratado, sendo indispensável à gestão, segurança, rastreabilidade e proteção do dispositivo móvel.
+
+A desinstalação, desativação, adulteração ou tentativa de remoção do aplicativo, bem como a obstrução de suas funções técnicas, não é permitida enquanto vigorar o contrato de financiamento, consignação ou garantia do dispositivo.
+
+Tal vedação não possui caráter punitivo, constituindo medida técnica preventiva, voltada à preservação do bem, à segurança do sistema e à prevenção de fraudes.
+
+⚠️ Note:
+
+Não fala em dívida
+
+Não fala em atraso
+
+Não fala em punição
+
+Fala em técnica + contrato
+
+4️⃣ COMO JUSTIFICAR ISSO NA POLÍTICA DE PRIVACIDADE
+📋 Linha da LGPD correta
+
+Base legal principal:
+
+Art. 7º, V — Execução de contrato
+
+Art. 7º, IX — Legítimo interesse (segurança e prevenção de fraudes)
+
+Texto modelo (blindado):
+
+O aplicativo coleta e trata dados estritamente necessários para a execução do contrato, segurança do dispositivo, prevenção de fraudes, proteção patrimonial e gestão operacional dos serviços contratados, nos termos do art. 7º, incisos V e IX da Lei nº 13.709/2018 (LGPD).
+
+5️⃣ DADOS QUE PODEM SER COLETADOS (E COMO DESCREVER)
+Permitidos (bem descritos):
+
+Identificador do dispositivo (IMEI / ID)
+
+Status do aplicativo
+
+Localização apenas em situações de segurança
+
+Logs técnicos
+
+Comunicação de eventos operacionais
+
+Forma correta de descrever:
+
+“dados técnicos e operacionais mínimos”
+
+❌ Nunca diga:
+
+rastreio constante
+
+vigilância
+
+monitoramento permanente do usuário
+
+6️⃣ O QUE O APP NÃO PODE DIZER
+
+🚫 Mesmo que o sistema faça isso tecnicamente:
+
+“se atrasar vamos limitar”
+
+“sem pagar o app bloqueia”
+
+“libera quando pagar”
+
+“controle por inadimplência”
+
+📌 Isso não pode estar escrito, mesmo que o back-end exista.
+
+7️⃣ CHECKLIST DE OURO (SE PASSAR, ESTÁ SEGURO)
+
+✔️ App = ferramenta técnica
+✔️ App = antifurto / segurança
+✔️ App = execução contratual
+✔️ Remoção proibida por motivo técnico
+✔️ Nada vinculado à inadimplência
+✔️ Tudo vinculado ao contrato e à propriedade
+
+✅ VEREDITO FINAL
+
+Seguindo essa linha:
+
+✔️ Termos de Uso legais
+
+✔️ Política de Privacidade LGPD-safe
+
+✔️ Proibição de remoção defensável
+
+✔️ Nenhuma violação da Lei 19.547/2025
+
+✔️ Não caracteriza cobrança abusiva

@@ -865,29 +865,29 @@ Ao utilizar o aplicativo Credit Smart, você concorda com estes termos e condiç
 
 ## 2. Descrição do Serviço
 
-O Credit Smart é um aplicativo de gerenciamento de crédito que permite:
+O Credit Smart é um aplicativo de segurança, gestão de funcionalidades e proteção patrimonial do dispositivo móvel, integrado aos serviços contratados com a Credit Smart. Permite:
 
-- Acompanhar parcelas do seu financiamento
+- Gestão de funcionalidades do dispositivo
 - Realizar pagamentos via PIX
-- Receber notificações sobre vencimentos
-- Gerenciar seu dispositivo financiado
+- Receber comunicações operacionais sobre o serviço
+- Proteção patrimonial e prevenção contra fraudes e furtos
 
 ## 3. Obrigações do Usuário
 
 O usuário se compromete a:
 
 - Manter seus dados cadastrais atualizados
-- Realizar os pagamentos nas datas de vencimento
 - Não tentar burlar os sistemas de segurança do aplicativo
 - Utilizar o aplicativo de forma lícita e ética
+- Notificar imediatamente a Credit Smart em caso de perda ou roubo do dispositivo
 
-## 4. Bloqueio Progressivo
+## 4. Gestão de Funcionalidades do Dispositivo
 
-Em caso de inadimplência, o aplicativo poderá aplicar restrições progressivas ao dispositivo, conforme previsto em contrato. Estas restrições:
+O aplicativo realiza a gestão automatizada de funcionalidades do dispositivo como medida técnica preventiva, voltada à preservação do bem, à segurança do sistema e à prevenção de fraudes, nos termos do contrato celebrado.
 
-- Respeitam a legislação vigente
-- Não bloqueiam funcionalidades essenciais (ligações, SMS, apps bancários)
-- São removidas automaticamente após regularização do pagamento
+- Constituem medida técnica de proteção patrimonial
+- Preservam funcionalidades essenciais do dispositivo (ligações, SMS, apps bancários)
+- A liberação integral ocorre após a quitação contratual
 
 ## 5. Privacidade e Dados
 

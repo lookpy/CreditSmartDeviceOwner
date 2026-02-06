@@ -84,16 +84,14 @@ fun PrivacyPolicyScreen(
             PrivacySection(
                 title = "1. Coleta de Dados",
                 content = """
-                    A Credit Smart coleta os seguintes dados pessoais para prestação de seus serviços:
+                    A Credit Smart coleta dados técnicos e operacionais mínimos para prestação de seus serviços:
                     
                     • Dados de identificação (nome, CPF, RG)
                     • Dados de contato (telefone, e-mail, endereço)
                     • Dados do dispositivo (IMEI, modelo, sistema operacional)
-                    • Dados de localização (quando autorizado)
-                    • Dados biométricos (para autenticação)
-                    • Dados financeiros (informações de pagamento)
+                    • Dados de localização (em situações de segurança)
                     
-                    A coleta é realizada com base no consentimento do usuário e na execução do contrato.
+                    Base legal: Art. 7º, V (execução de contrato) e Art. 7º, IX (legítimo interesse) da LGPD (Lei 13.709/2018).
                 """.trimIndent()
             )
             
@@ -102,12 +100,13 @@ fun PrivacyPolicyScreen(
                 content = """
                     Os dados coletados são utilizados para:
                     
-                    • Execução do contrato de financiamento
-                    • Gestão de pagamentos e cobranças
-                    • Comunicação sobre status do contrato
-                    • Segurança e prevenção a fraudes
+                    • Execução do contrato de serviços
+                    • Gestão operacional dos serviços contratados
+                    • Comunicação operacional sobre o serviço
+                    • Proteção patrimonial do dispositivo
+                    • Prevenção à fraude e furto
+                    • Segurança e integridade do sistema
                     • Cumprimento de obrigações legais
-                    • Melhoria dos serviços prestados
                 """.trimIndent()
             )
             
@@ -117,7 +116,6 @@ fun PrivacyPolicyScreen(
                     Seus dados podem ser compartilhados com:
                     
                     • Instituições financeiras parceiras
-                    • Órgãos de proteção ao crédito (SPC/Serasa)
                     • Autoridades competentes (quando exigido por lei)
                     • Prestadores de serviços essenciais (pagamentos, SMS)
                     
@@ -132,7 +130,7 @@ fun PrivacyPolicyScreen(
                     
                     • Criptografia de dados em trânsito e em repouso
                     • Controle de acesso restrito
-                    • Monitoramento de segurança 24/7
+                    • Proteção contra acessos não autorizados
                     • Backups regulares
                     • Auditorias de segurança periódicas
                 """.trimIndent()
@@ -146,7 +144,7 @@ fun PrivacyPolicyScreen(
                     • Confirmar a existência de tratamento
                     • Acessar seus dados pessoais
                     • Corrigir dados incompletos ou desatualizados
-                    • Anonimização, bloqueio ou eliminação de dados
+                    • Anonimização, limitação ou eliminação de dados
                     • Portabilidade dos dados
                     • Revogação do consentimento
                     • Informação sobre compartilhamento
@@ -176,7 +174,16 @@ fun PrivacyPolicyScreen(
                     E-mail: privacidade@cdccreditsmart.com
                     SAC: Disponível no aplicativo
                     
-                    Atualização: Janeiro de 2026
+                    Atualização: Fevereiro de 2026
+                """.trimIndent()
+            )
+            
+            PrivacySection(
+                title = "8. Essencialidade do Aplicativo",
+                content = """
+                    O Aplicativo Credit Smart constitui componente essencial e indissociável do serviço contratado, sendo indispensável à gestão, segurança, rastreabilidade e proteção do dispositivo móvel.
+                    
+                    Aplicativo de segurança, gestão de funcionalidades e proteção patrimonial do dispositivo móvel, integrado aos serviços contratados com a Credit Smart.
                 """.trimIndent()
             )
             

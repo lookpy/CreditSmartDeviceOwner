@@ -179,13 +179,13 @@ class BlockingNotificationManager(private val context: Context) {
     private fun sendWarningNotification(daysUntil: Int, upcomingLevel: Int) {
         Log.i(TAG, "⚠️ Enviando notificação de AVISO - Nível $upcomingLevel em $daysUntil dias")
         
-        val title = "⚠️ Aviso: Restrições em $daysUntil dias"
+        val title = "⚠️ Aviso: Gestão de Funcionalidades em $daysUntil dias"
         val categories = getCategoriesDescription(upcomingLevel)
         val body = buildString {
-            append("Sua parcela está vencida há alguns dias. ")
-            append("Em $daysUntil dias, os seguintes apps serão restringidos:\n\n")
+            append("A gestão de funcionalidades do dispositivo será ajustada em $daysUntil dias como medida preventiva.\n\n")
+            append("Apps que serão gerenciados:\n\n")
             append(categories)
-            append("\n\nPague agora para evitar restrições!")
+            append("\n\nRegularize sua situação contratual.")
         }
         
         notificationHelper.showNotification(
@@ -204,13 +204,13 @@ class BlockingNotificationManager(private val context: Context) {
     private fun sendActiveBlockingNotification(daysOverdue: Int, currentLevel: Int) {
         Log.i(TAG, "🔒 Enviando notificação de BLOQUEIO ATIVO - Nível $currentLevel")
         
-        val title = "🔒 Restrições Ativas - Nível $currentLevel"
+        val title = "🔒 Gestão de Funcionalidades Ativa"
         val categories = getCategoriesDescription(currentLevel)
         val body = buildString {
-            append("Sua parcela está vencida há $daysOverdue dias.\n\n")
-            append("Apps restringidos:\n")
+            append("Gestão de funcionalidades em andamento como medida preventiva de proteção do dispositivo.\n\n")
+            append("Apps com acesso gerenciado:\n")
             append(categories)
-            append("\n\nPague sua parcela para desbloquear!")
+            append("\n\nRegularize sua situação contratual para liberação integral.")
         }
         
         notificationHelper.showBlockingNotification(
@@ -228,10 +228,9 @@ class BlockingNotificationManager(private val context: Context) {
         
         Log.i(TAG, "💳 Enviando lembrete de pagamento durante bloqueio")
         
-        val title = "💳 Pague e Desbloqueie Seus Apps"
+        val title = "💳 Regularize Sua Situação Contratual"
         val body = buildString {
-            append("Você está com $daysOverdue dias de atraso.\n")
-            append("Pague agora via PIX e desbloqueie seus apps instantaneamente!")
+            append("Realize o pagamento via PIX para liberação integral das funcionalidades do dispositivo.")
         }
         
         notificationHelper.showNotification(
@@ -311,9 +310,9 @@ class BlockingNotificationManager(private val context: Context) {
     
     private fun buildResultMessage(warningSent: Boolean, activeSent: Boolean): String {
         return when {
-            warningSent && activeSent -> "Notificações de aviso e bloqueio enviadas"
+            warningSent && activeSent -> "Notificações de aviso e gestão enviadas"
             warningSent -> "Notificação de aviso enviada"
-            activeSent -> "Notificação de bloqueio ativo enviada"
+            activeSent -> "Notificação de gestão ativa enviada"
             else -> "Nenhuma notificação necessária"
         }
     }

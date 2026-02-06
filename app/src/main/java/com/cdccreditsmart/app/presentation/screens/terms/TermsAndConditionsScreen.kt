@@ -294,22 +294,22 @@ private fun FallbackTermsContent(paddingValues: PaddingValues) {
     ) {
         TermsSection(
             title = "1. Aceitação dos Termos",
-            content = "Ao utilizar o aplicativo Credit Smart, você concorda com estes Termos e Condições de Uso. Caso não concorde com algum dos termos aqui apresentados, você não deve utilizar este aplicativo."
+            content = "Ao utilizar o aplicativo Credit Smart, você concorda com estes Termos e Condições de Uso. O aplicativo constitui ferramenta técnica de segurança, gestão de funcionalidades e proteção patrimonial do dispositivo móvel, integrado aos serviços contratados com a Credit Smart. Caso não concorde com algum dos termos aqui apresentados, você não deve utilizar este aplicativo."
         )
         
         TermsSection(
             title = "2. Uso do Aplicativo",
-            content = "Este aplicativo é destinado exclusivamente aos clientes da Credit Smart para gerenciamento de parcelas e pagamentos. O uso é pessoal e intransferível, sendo vedado o compartilhamento de credenciais de acesso."
+            content = "Este aplicativo é destinado exclusivamente aos clientes da Credit Smart para segurança, gestão de funcionalidades e proteção patrimonial do dispositivo móvel. O uso é pessoal e intransferível, sendo vedado o compartilhamento de credenciais de acesso."
         )
         
         TermsSection(
             title = "3. Dados e Privacidade",
-            content = "Seus dados pessoais e financeiros são tratados com total sigilo e segurança. Coletamos apenas as informações necessárias para a prestação dos serviços, conforme nossa Política de Privacidade. Seus dados não serão compartilhados com terceiros sem sua autorização expressa."
+            content = "Seus dados pessoais são tratados com total sigilo e segurança, em conformidade com a LGPD (Lei 13.709/2018). Coletamos apenas os dados técnicos e operacionais mínimos necessários para a prestação dos serviços, conforme nossa Política de Privacidade. Base legal: Art. 7º, V (execução de contrato) e Art. 7º, IX (legítimo interesse)."
         )
         
         TermsSection(
             title = "4. Segurança do Dispositivo",
-            content = "Este aplicativo utiliza recursos de Device Owner para garantir a segurança e integridade dos dados. Ao aceitar, você autoriza a aplicação de políticas de segurança no dispositivo, incluindo restrições de acesso e instalação de aplicativos."
+            content = "O Aplicativo Credit Smart constitui componente essencial e indissociável do serviço contratado, sendo indispensável à gestão, segurança, rastreabilidade e proteção do dispositivo móvel. Ao aceitar, você autoriza a aplicação de políticas de segurança e gestão de funcionalidades no dispositivo."
         )
         
         TermsSection(
@@ -319,12 +319,12 @@ private fun FallbackTermsContent(paddingValues: PaddingValues) {
         
         TermsSection(
             title = "6. Responsabilidades do Usuário",
-            content = "Você é responsável por manter seus dados de acesso em segurança, realizar os pagamentos nas datas de vencimento, e notificar imediatamente a Credit Smart em caso de perda ou roubo do dispositivo."
+            content = "Você é responsável por manter seus dados de acesso em segurança, não tentar burlar os sistemas de segurança do aplicativo, e notificar imediatamente a Credit Smart em caso de perda ou roubo do dispositivo."
         )
         
         TermsSection(
-            title = "7. Bloqueios e Restrições",
-            content = "O não pagamento de parcelas pode resultar em bloqueios progressivos do dispositivo, conforme estabelecido em seu contrato de financiamento. Os bloqueios são reversíveis mediante regularização dos pagamentos."
+            title = "7. Gestão de Funcionalidades",
+            content = "O aplicativo realiza a gestão automatizada de funcionalidades do dispositivo como medida técnica preventiva, voltada à preservação do bem, à segurança do sistema e à prevenção de fraudes. As funcionalidades essenciais do dispositivo (ligações, SMS e aplicativos bancários) são sempre preservadas. A liberação integral ocorre automaticamente após a quitação contratual."
         )
         
         TermsSection(

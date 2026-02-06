@@ -124,7 +124,7 @@ fun HomeScreen(
         if (viewModel.hasOverdueInstallments()) {
             CDCWarningCard(
                 title = "Atenção: Parcela em Atraso",
-                message = "Você possui ${viewModel.getOverdueCount()} parcela(s) em atraso. Regularize sua situação para evitar bloqueios.",
+                message = "Você possui ${viewModel.getOverdueCount()} parcela(s) pendente(s). Regularize sua situação contratual.",
                 actionText = "Pagar Agora",
                 onActionClick = { onNavigateToPayment("overdue") }
             )
