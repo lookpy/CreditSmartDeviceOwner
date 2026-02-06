@@ -133,8 +133,9 @@ class UninstallFlowActivity : Activity() {
             Log.i(TAG, "[PASSO 4/4] Iniciando desinstalação do sistema...")
             Log.i(TAG, "")
             
-            val uninstallIntent = Intent(Intent.ACTION_DELETE).apply {
+            val uninstallIntent = Intent(Intent.ACTION_UNINSTALL_PACKAGE).apply {
                 data = Uri.parse("package:$packageName")
+                putExtra(Intent.EXTRA_RETURN_RESULT, true)
             }
             
             startActivityForResult(uninstallIntent, REQUEST_UNINSTALL)

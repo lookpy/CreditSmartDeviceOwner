@@ -1,0 +1,197 @@
+2026-02-06 14:07:52.216  2467-2467  WindowOnBackDispatcher  com.cdccreditsmart.app               W  sendCancelIfRunning: isInProgress=false callback=androidx.activity.OnBackPressedDispatcher$Api34Impl$createOnBackAnimationCallback$1@a934481
+2026-02-06 14:07:52.225  2467-2553  HWUI                    com.cdccreditsmart.app               D  endAllActiveAnimators on 0xb4000073b5b60f00 (UnprojectedRipple) with handle 0xb400007265b193d0
+2026-02-06 14:07:52.226  2467-2467  View                    com.cdccreditsmart.app               D  [Warning] assignParent to null: this = DecorView@8861085[MainActivity]
+2026-02-06 14:07:52.234  2467-2483  BLASTBufferQueue        com.cdccreditsmart.app               D  [VRI[MainActivity]#6](f:0,a:1) destructor()
+2026-02-06 14:07:52.234  2467-2483  BufferQueueConsumer     com.cdccreditsmart.app               D  [VRI[MainActivity]#6(BLAST Consumer)6](id:9a300000006,api:0,p:-1,c:2467) disconnect
+2026-02-06 14:07:52.270  2467-2467  UninstallFlowActivity   com.cdccreditsmart.app               I  
+2026-02-06 14:07:52.270  2467-2467  UninstallFlowActivity   com.cdccreditsmart.app               I  ╔════════════════════════════════════════════════════════════╗
+2026-02-06 14:07:52.270  2467-2467  UninstallFlowActivity   com.cdccreditsmart.app               I  ║     FLUXO DE DESINSTALAÇÃO SEGURA - CREDIT SMART          ║
+2026-02-06 14:07:52.270  2467-2467  UninstallFlowActivity   com.cdccreditsmart.app               I  ╚════════════════════════════════════════════════════════════╝
+2026-02-06 14:07:52.270  2467-2467  UninstallFlowActivity   com.cdccreditsmart.app               I  
+2026-02-06 14:07:52.270  2467-2467  UninstallFlowActivity   com.cdccreditsmart.app               I  Tipo de desinstalação: not_activated
+2026-02-06 14:07:52.270  2467-2467  SettingsGuardService    com.cdccreditsmart.app               I  🗑️ Guard PAUSADO para desinstalação voluntária
+2026-02-06 14:07:52.270  2467-2467  SettingsGuardService    com.cdccreditsmart.app               I     Proteção desativada - usuário pode desinstalar
+2026-02-06 14:07:52.270  2467-2467  SettingsGuardService    com.cdccreditsmart.app               I     Timeout: 120s para auto-recuperação
+2026-02-06 14:07:52.271  2467-2467  UninstallFlowActivity   com.cdccreditsmart.app               I  ⏸️ SettingsGuard pausado para desinstalação
+2026-02-06 14:07:52.272  2467-2467  UninstallFlowActivity   com.cdccreditsmart.app               I  
+2026-02-06 14:07:52.272  2467-2467  UninstallFlowActivity   com.cdccreditsmart.app               I  [PASSO 1/4] Verificando privilégios...
+2026-02-06 14:07:52.272  2467-2467  UninstallFlowActivity   com.cdccreditsmart.app               I     Device Owner: NÃO
+2026-02-06 14:07:52.272  2467-2467  UninstallFlowActivity   com.cdccreditsmart.app               I     Device Admin: NÃO
+2026-02-06 14:07:52.272  2467-2467  UninstallFlowActivity   com.cdccreditsmart.app               I  
+2026-02-06 14:07:52.272  2467-2467  UninstallFlowActivity   com.cdccreditsmart.app               I  [PASSO 2/4] App sem privilégios especiais
+2026-02-06 14:07:52.272  2467-2467  UninstallFlowActivity   com.cdccreditsmart.app               I  [PASSO 3/4] Nenhuma proteção a remover
+2026-02-06 14:07:52.272  2467-2467  UninstallFlowActivity   com.cdccreditsmart.app               I  
+2026-02-06 14:07:52.272  2467-2467  UninstallFlowActivity   com.cdccreditsmart.app               I  [PASSO 4/4] Iniciando desinstalação do sistema...
+2026-02-06 14:07:52.272  2467-2467  UninstallFlowActivity   com.cdccreditsmart.app               I  
+2026-02-06 14:07:52.298  2467-2467  Activity                com.cdccreditsmart.app               D  onResume setDolbyGameProfilePackage lastPkg =  currentPkg = com.cdccreditsmart.app
+2026-02-06 14:07:52.302  2467-2467  VRI[Uninst...wActivity] com.cdccreditsmart.app               D  hardware acceleration = true, forceHwAccelerated = false
+2026-02-06 14:07:52.307  2467-2467  InputEventReceiver      com.cdccreditsmart.app               D  Input log is disabled in InputEventReceiver.
+2026-02-06 14:07:52.328  2467-2467  BufferQueueConsumer     com.cdccreditsmart.app               D  [](id:9a300000007,api:0,p:-1,c:2467) connect: controlledByApp=false
+2026-02-06 14:07:52.328  2467-2467  BLASTBufferQueue        com.cdccreditsmart.app               D  [VRI[UninstallFlowActivity]#7](f:0,a:0) constructor()
+2026-02-06 14:07:52.328  2467-2467  BLASTBufferQueue        com.cdccreditsmart.app               D  [VRI[UninstallFlowActivity]#7](f:0,a:0) update width=1080 height=2400 format=-2 mTransformHint=0
+2026-02-06 14:07:52.340  2467-2553  BLASTBufferQueue        com.cdccreditsmart.app               D  [VRI[UninstallFlowActivity]#7](f:0,a:1) acquireNextBufferLocked size=1080x2400 mFrameNumber=1 applyTransaction=true mTimestamp=4196255158557(auto) mPendingTransactions.size=0 graphicBufferId=10595684319260 transform=0
+2026-02-06 14:07:52.455  2467-2467  UninstallFlowActivity   com.cdccreditsmart.app               I  
+2026-02-06 14:07:52.455  2467-2467  UninstallFlowActivity   com.cdccreditsmart.app               I  ╔════════════════════════════════════════════════════════════╗
+2026-02-06 14:07:52.455  2467-2467  UninstallFlowActivity   com.cdccreditsmart.app               I  ║     RETORNO DO DIÁLOGO DE DESINSTALAÇÃO                   ║
+2026-02-06 14:07:52.455  2467-2467  UninstallFlowActivity   com.cdccreditsmart.app               I  ╚════════════════════════════════════════════════════════════╝
+2026-02-06 14:07:52.455  2467-2467  UninstallFlowActivity   com.cdccreditsmart.app               I  
+2026-02-06 14:07:52.455  2467-2467  UninstallFlowActivity   com.cdccreditsmart.app               W  RESULTADO: Usuário CANCELOU a desinstalação
+2026-02-06 14:07:52.457  2467-2467  UninstallFlowActivity   com.cdccreditsmart.app               W  
+2026-02-06 14:07:52.457  2467-2467  UninstallFlowActivity   com.cdccreditsmart.app               W  ATENÇÃO: Proteções foram removidas e NÃO podem ser reaplicadas!
+2026-02-06 14:07:52.457  2467-2467  UninstallFlowActivity   com.cdccreditsmart.app               W     O app não é mais Device Owner/Admin
+2026-02-06 14:07:52.457  2467-2467  UninstallFlowActivity   com.cdccreditsmart.app               W     Para restaurar proteções, reprovisionar via:
+2026-02-06 14:07:52.457  2467-2467  UninstallFlowActivity   com.cdccreditsmart.app               W       1. Factory reset + QR Code de provisionamento
+2026-02-06 14:07:52.457  2467-2467  UninstallFlowActivity   com.cdccreditsmart.app               W       2. ADB: dpm set-device-owner
+2026-02-06 14:07:52.457  2467-2467  SettingsGuardService    com.cdccreditsmart.app               I  ▶️ Guard RETOMADO após desinstalação cancelada
+2026-02-06 14:07:52.457  2467-2467  UninstallFlowActivity   com.cdccreditsmart.app               I  ▶️ SettingsGuard retomado
+2026-02-06 14:07:52.457  2467-2467  UninstallFlowActivity   com.cdccreditsmart.app               I  ▶️ SettingsGuard retomado após cancelamento
+2026-02-06 14:07:52.575  2467-2467  Activity                com.cdccreditsmart.app               D  onResume setDolbyGameProfilePackage lastPkg =  currentPkg = com.cdccreditsmart.app
+2026-02-06 14:07:52.587  2467-2467  VRI[Uninst...wActivity] com.cdccreditsmart.app               D  visibilityChanged oldVisibility=true newVisibility=false
+2026-02-06 14:07:52.598  2467-2467  WindowOnBackDispatcher  com.cdccreditsmart.app               W  sendCancelIfRunning: isInProgress=false callback=android.app.Activity$$ExternalSyntheticLambda0@af4beeb
+2026-02-06 14:07:52.598  2467-2467  UninstallFlowActivity   com.cdccreditsmart.app               I  onDestroy: App ainda instalado após tentativa de desinstalação
+2026-02-06 14:07:52.600  2467-2553  BLASTBufferQueue        com.cdccreditsmart.app               D  [VRI[UninstallFlowActivity]#7](f:0,a:1) destructor()
+2026-02-06 14:07:52.600  2467-2553  BufferQueueConsumer     com.cdccreditsmart.app               D  [VRI[UninstallFlowActivity]#7(BLAST Consumer)7](id:9a300000007,api:0,p:-1,c:2467) disconnect
+2026-02-06 14:07:52.601  2467-2467  View                    com.cdccreditsmart.app               D  [Warning] assignParent to null: this = DecorView@7e94abc[UninstallFlowActivity]
+2026-02-06 14:07:53.611  2467-2467  VRI[MainActivity]       com.cdccreditsmart.app               D  hardware acceleration = true, forceHwAccelerated = false
+2026-02-06 14:07:53.621  2467-2467  InputEventReceiver      com.cdccreditsmart.app               D  Input log is disabled in InputEventReceiver.
+2026-02-06 14:07:53.698  2467-2467  BufferQueueConsumer     com.cdccreditsmart.app               D  [](id:9a300000008,api:0,p:-1,c:2467) connect: controlledByApp=false
+2026-02-06 14:07:53.698  2467-2467  BLASTBufferQueue        com.cdccreditsmart.app               D  [VRI[MainActivity]#8](f:0,a:0) constructor()
+2026-02-06 14:07:53.698  2467-2467  BLASTBufferQueue        com.cdccreditsmart.app               D  [VRI[MainActivity]#8](f:0,a:0) update width=960 height=1302 format=-2 mTransformHint=0
+2026-02-06 14:07:53.726  2467-2553  BLASTBufferQueue        com.cdccreditsmart.app               D  [VRI[MainActivity]#8](f:0,a:1) acquireNextBufferLocked size=960x1302 mFrameNumber=1 applyTransaction=true mTimestamp=4197641765711(auto) mPendingTransactions.size=0 graphicBufferId=10595684319267 transform=0
+2026-02-06 14:07:54.552  2467-2467  WindowOnBackDispatcher  com.cdccreditsmart.app               W  sendCancelIfRunning: isInProgress=false callback=androidx.activity.OnBackPressedDispatcher$Api34Impl$createOnBackAnimationCallback$1@f064f25
+2026-02-06 14:07:54.563  2467-2553  HWUI                    com.cdccreditsmart.app               D  endAllActiveAnimators on 0xb4000073b5b6c340 (UnprojectedRipple) with handle 0xb400007265b42200
+2026-02-06 14:07:54.563  2467-2467  View                    com.cdccreditsmart.app               D  [Warning] assignParent to null: this = DecorView@6adc2a5[MainActivity]
+2026-02-06 14:07:54.578  2467-2485  BLASTBufferQueue        com.cdccreditsmart.app               D  [VRI[MainActivity]#8](f:0,a:1) destructor()
+2026-02-06 14:07:54.578  2467-2485  BufferQueueConsumer     com.cdccreditsmart.app               D  [VRI[MainActivity]#8(BLAST Consumer)8](id:9a300000008,api:0,p:-1,c:2467) disconnect
+2026-02-06 14:07:54.579  2467-2467  VRI[MainActivity]       com.cdccreditsmart.app               D  hardware acceleration = true, forceHwAccelerated = false
+2026-02-06 14:07:54.589  2467-2467  InputEventReceiver      com.cdccreditsmart.app               D  Input log is disabled in InputEventReceiver.
+2026-02-06 14:07:54.655  2467-2467  BufferQueueConsumer     com.cdccreditsmart.app               D  [](id:9a300000009,api:0,p:-1,c:2467) connect: controlledByApp=false
+2026-02-06 14:07:54.656  2467-2467  BLASTBufferQueue        com.cdccreditsmart.app               D  [VRI[MainActivity]#9](f:0,a:0) constructor()
+2026-02-06 14:07:54.656  2467-2467  BLASTBufferQueue        com.cdccreditsmart.app               D  [VRI[MainActivity]#9](f:0,a:0) update width=960 height=913 format=-2 mTransformHint=0
+2026-02-06 14:07:54.685  2467-2553  BLASTBufferQueue        com.cdccreditsmart.app               D  [VRI[MainActivity]#9](f:0,a:1) acquireNextBufferLocked size=960x913 mFrameNumber=1 applyTransaction=true mTimestamp=4198600997096(auto) mPendingTransactions.size=0 graphicBufferId=10595684319271 transform=0
+2026-02-06 14:07:55.324  2467-2467  WindowOnBackDispatcher  com.cdccreditsmart.app               W  sendCancelIfRunning: isInProgress=false callback=androidx.activity.OnBackPressedDispatcher$Api34Impl$createOnBackAnimationCallback$1@4b73ad2
+2026-02-06 14:07:55.332  2467-2553  HWUI                    com.cdccreditsmart.app               D  endAllActiveAnimators on 0xb4000073b5b75dc0 (UnprojectedRipple) with handle 0xb400007265b44150
+2026-02-06 14:07:55.333  2467-2467  View                    com.cdccreditsmart.app               D  [Warning] assignParent to null: this = DecorView@27ae5c6[MainActivity]
+2026-02-06 14:07:55.344  2467-2485  BLASTBufferQueue        com.cdccreditsmart.app               D  [VRI[MainActivity]#9](f:0,a:1) destructor()
+2026-02-06 14:07:55.344  2467-2485  BufferQueueConsumer     com.cdccreditsmart.app               D  [VRI[MainActivity]#9(BLAST Consumer)9](id:9a300000009,api:0,p:-1,c:2467) disconnect
+2026-02-06 14:07:55.374  2467-2467  UninstallFlowActivity   com.cdccreditsmart.app               I  
+2026-02-06 14:07:55.374  2467-2467  UninstallFlowActivity   com.cdccreditsmart.app               I  ╔════════════════════════════════════════════════════════════╗
+2026-02-06 14:07:55.374  2467-2467  UninstallFlowActivity   com.cdccreditsmart.app               I  ║     FLUXO DE DESINSTALAÇÃO SEGURA - CREDIT SMART          ║
+2026-02-06 14:07:55.374  2467-2467  UninstallFlowActivity   com.cdccreditsmart.app               I  ╚════════════════════════════════════════════════════════════╝
+2026-02-06 14:07:55.374  2467-2467  UninstallFlowActivity   com.cdccreditsmart.app               I  
+2026-02-06 14:07:55.374  2467-2467  UninstallFlowActivity   com.cdccreditsmart.app               I  Tipo de desinstalação: not_activated
+2026-02-06 14:07:55.375  2467-2467  SettingsGuardService    com.cdccreditsmart.app               I  🗑️ Guard PAUSADO para desinstalação voluntária
+2026-02-06 14:07:55.375  2467-2467  SettingsGuardService    com.cdccreditsmart.app               I     Proteção desativada - usuário pode desinstalar
+2026-02-06 14:07:55.375  2467-2467  SettingsGuardService    com.cdccreditsmart.app               I     Timeout: 120s para auto-recuperação
+2026-02-06 14:07:55.375  2467-2467  UninstallFlowActivity   com.cdccreditsmart.app               I  ⏸️ SettingsGuard pausado para desinstalação
+2026-02-06 14:07:55.379  2467-2467  UninstallFlowActivity   com.cdccreditsmart.app               I  
+2026-02-06 14:07:55.379  2467-2467  UninstallFlowActivity   com.cdccreditsmart.app               I  [PASSO 1/4] Verificando privilégios...
+2026-02-06 14:07:55.379  2467-2467  UninstallFlowActivity   com.cdccreditsmart.app               I     Device Owner: NÃO
+2026-02-06 14:07:55.379  2467-2467  UninstallFlowActivity   com.cdccreditsmart.app               I     Device Admin: NÃO
+2026-02-06 14:07:55.379  2467-2467  UninstallFlowActivity   com.cdccreditsmart.app               I  
+2026-02-06 14:07:55.379  2467-2467  UninstallFlowActivity   com.cdccreditsmart.app               I  [PASSO 2/4] App sem privilégios especiais
+2026-02-06 14:07:55.379  2467-2467  UninstallFlowActivity   com.cdccreditsmart.app               I  [PASSO 3/4] Nenhuma proteção a remover
+2026-02-06 14:07:55.379  2467-2467  UninstallFlowActivity   com.cdccreditsmart.app               I  
+2026-02-06 14:07:55.379  2467-2467  UninstallFlowActivity   com.cdccreditsmart.app               I  [PASSO 4/4] Iniciando desinstalação do sistema...
+2026-02-06 14:07:55.379  2467-2467  UninstallFlowActivity   com.cdccreditsmart.app               I  
+2026-02-06 14:07:55.403  2467-2467  Activity                com.cdccreditsmart.app               D  onResume setDolbyGameProfilePackage lastPkg =  currentPkg = com.cdccreditsmart.app
+2026-02-06 14:07:55.407  2467-2467  VRI[Uninst...wActivity] com.cdccreditsmart.app               D  hardware acceleration = true, forceHwAccelerated = false
+2026-02-06 14:07:55.413  2467-2467  InputEventReceiver      com.cdccreditsmart.app               D  Input log is disabled in InputEventReceiver.
+2026-02-06 14:07:55.429  2467-2467  BufferQueueConsumer     com.cdccreditsmart.app               D  [](id:9a30000000a,api:0,p:-1,c:2467) connect: controlledByApp=false
+2026-02-06 14:07:55.429  2467-2467  BLASTBufferQueue        com.cdccreditsmart.app               D  [VRI[UninstallFlowActivity]#10](f:0,a:0) constructor()
+2026-02-06 14:07:55.429  2467-2467  BLASTBufferQueue        com.cdccreditsmart.app               D  [VRI[UninstallFlowActivity]#10](f:0,a:0) update width=1080 height=2400 format=-2 mTransformHint=0
+2026-02-06 14:07:55.440  2467-2553  BLASTBufferQueue        com.cdccreditsmart.app               D  [VRI[UninstallFlowActivity]#10](f:0,a:1) acquireNextBufferLocked size=1080x2400 mFrameNumber=1 applyTransaction=true mTimestamp=4199356397634(auto) mPendingTransactions.size=0 graphicBufferId=10595684319272 transform=0
+2026-02-06 14:07:55.546  2467-2467  UninstallFlowActivity   com.cdccreditsmart.app               I  
+2026-02-06 14:07:55.547  2467-2467  UninstallFlowActivity   com.cdccreditsmart.app               I  ╔════════════════════════════════════════════════════════════╗
+2026-02-06 14:07:55.547  2467-2467  UninstallFlowActivity   com.cdccreditsmart.app               I  ║     RETORNO DO DIÁLOGO DE DESINSTALAÇÃO                   ║
+2026-02-06 14:07:55.547  2467-2467  UninstallFlowActivity   com.cdccreditsmart.app               I  ╚════════════════════════════════════════════════════════════╝
+2026-02-06 14:07:55.547  2467-2467  UninstallFlowActivity   com.cdccreditsmart.app               I  
+2026-02-06 14:07:55.547  2467-2467  UninstallFlowActivity   com.cdccreditsmart.app               W  RESULTADO: Usuário CANCELOU a desinstalação
+2026-02-06 14:07:55.548  2467-2467  UninstallFlowActivity   com.cdccreditsmart.app               W  
+2026-02-06 14:07:55.548  2467-2467  UninstallFlowActivity   com.cdccreditsmart.app               W  ATENÇÃO: Proteções foram removidas e NÃO podem ser reaplicadas!
+2026-02-06 14:07:55.548  2467-2467  UninstallFlowActivity   com.cdccreditsmart.app               W     O app não é mais Device Owner/Admin
+2026-02-06 14:07:55.548  2467-2467  UninstallFlowActivity   com.cdccreditsmart.app               W     Para restaurar proteções, reprovisionar via:
+2026-02-06 14:07:55.548  2467-2467  UninstallFlowActivity   com.cdccreditsmart.app               W       1. Factory reset + QR Code de provisionamento
+2026-02-06 14:07:55.548  2467-2467  UninstallFlowActivity   com.cdccreditsmart.app               W       2. ADB: dpm set-device-owner
+2026-02-06 14:07:55.548  2467-2467  SettingsGuardService    com.cdccreditsmart.app               I  ▶️ Guard RETOMADO após desinstalação cancelada
+2026-02-06 14:07:55.548  2467-2467  UninstallFlowActivity   com.cdccreditsmart.app               I  ▶️ SettingsGuard retomado
+2026-02-06 14:07:55.548  2467-2467  UninstallFlowActivity   com.cdccreditsmart.app               I  ▶️ SettingsGuard retomado após cancelamento
+2026-02-06 14:07:55.645  2467-2467  Activity                com.cdccreditsmart.app               D  onResume setDolbyGameProfilePackage lastPkg =  currentPkg = com.cdccreditsmart.app
+2026-02-06 14:07:55.674  2467-2467  VRI[Uninst...wActivity] com.cdccreditsmart.app               D  visibilityChanged oldVisibility=true newVisibility=false
+2026-02-06 14:07:55.679  2467-2467  WindowOnBackDispatcher  com.cdccreditsmart.app               W  sendCancelIfRunning: isInProgress=false callback=android.app.Activity$$ExternalSyntheticLambda0@bd35914
+2026-02-06 14:07:55.679  2467-2467  UninstallFlowActivity   com.cdccreditsmart.app               I  onDestroy: App ainda instalado após tentativa de desinstalação
+2026-02-06 14:07:55.683  2467-2467  View                    com.cdccreditsmart.app               D  [Warning] assignParent to null: this = DecorView@9dee712[UninstallFlowActivity]
+2026-02-06 14:07:55.693  2467-2483  BLASTBufferQueue        com.cdccreditsmart.app               D  [VRI[UninstallFlowActivity]#10](f:0,a:1) destructor()
+2026-02-06 14:07:55.693  2467-2483  BufferQueueConsumer     com.cdccreditsmart.app               D  [VRI[UninstallFlowActivity]#10(BLAST Consumer)10](id:9a30000000a,api:0,p:-1,c:2467) disconnect
+2026-02-06 14:08:02.576  2467-2467  VRI[MainActivity]       com.cdccreditsmart.app               D  hardware acceleration = true, forceHwAccelerated = false
+2026-02-06 14:08:02.586  2467-2467  InputEventReceiver      com.cdccreditsmart.app               D  Input log is disabled in InputEventReceiver.
+2026-02-06 14:08:02.675  2467-2467  BufferQueueConsumer     com.cdccreditsmart.app               D  [](id:9a30000000b,api:0,p:-1,c:2467) connect: controlledByApp=false
+2026-02-06 14:08:02.676  2467-2467  BLASTBufferQueue        com.cdccreditsmart.app               D  [VRI[MainActivity]#11](f:0,a:0) constructor()
+2026-02-06 14:08:02.676  2467-2467  BLASTBufferQueue        com.cdccreditsmart.app               D  [VRI[MainActivity]#11](f:0,a:0) update width=960 height=1302 format=-2 mTransformHint=0
+2026-02-06 14:08:02.716  2467-2553  BLASTBufferQueue        com.cdccreditsmart.app               D  [VRI[MainActivity]#11](f:0,a:1) acquireNextBufferLocked size=960x1302 mFrameNumber=1 applyTransaction=true mTimestamp=4206631708788(auto) mPendingTransactions.size=0 graphicBufferId=10595684319279 transform=0
+2026-02-06 14:08:03.778  2467-2467  WindowOnBackDispatcher  com.cdccreditsmart.app               W  sendCancelIfRunning: isInProgress=false callback=androidx.activity.OnBackPressedDispatcher$Api34Impl$createOnBackAnimationCallback$1@17d8841
+2026-02-06 14:08:03.789  2467-2553  HWUI                    com.cdccreditsmart.app               D  endAllActiveAnimators on 0xb4000073b5b7cb30 (UnprojectedRipple) with handle 0xb400007265b498e0
+2026-02-06 14:08:03.790  2467-2467  View                    com.cdccreditsmart.app               D  [Warning] assignParent to null: this = DecorView@daffca8[MainActivity]
+2026-02-06 14:08:03.790  2467-2863  BLASTBufferQueue        com.cdccreditsmart.app               D  [VRI[MainActivity]#11](f:0,a:1) destructor()
+2026-02-06 14:08:03.790  2467-2863  BufferQueueConsumer     com.cdccreditsmart.app               D  [VRI[MainActivity]#11(BLAST Consumer)11](id:9a30000000b,api:0,p:-1,c:2467) disconnect
+2026-02-06 14:08:03.804  2467-2467  VRI[MainActivity]       com.cdccreditsmart.app               D  hardware acceleration = true, forceHwAccelerated = false
+2026-02-06 14:08:03.816  2467-2467  InputEventReceiver      com.cdccreditsmart.app               D  Input log is disabled in InputEventReceiver.
+2026-02-06 14:08:03.882  2467-2467  BufferQueueConsumer     com.cdccreditsmart.app               D  [](id:9a30000000c,api:0,p:-1,c:2467) connect: controlledByApp=false
+2026-02-06 14:08:03.882  2467-2467  BLASTBufferQueue        com.cdccreditsmart.app               D  [VRI[MainActivity]#12](f:0,a:0) constructor()
+2026-02-06 14:08:03.882  2467-2467  BLASTBufferQueue        com.cdccreditsmart.app               D  [VRI[MainActivity]#12](f:0,a:0) update width=960 height=913 format=-2 mTransformHint=0
+2026-02-06 14:08:03.916  2467-2553  BLASTBufferQueue        com.cdccreditsmart.app               D  [VRI[MainActivity]#12](f:0,a:1) acquireNextBufferLocked size=960x913 mFrameNumber=1 applyTransaction=true mTimestamp=4207831346019(auto) mPendingTransactions.size=0 graphicBufferId=10595684319283 transform=0
+2026-02-06 14:08:06.264  2467-2467  WindowOnBackDispatcher  com.cdccreditsmart.app               W  sendCancelIfRunning: isInProgress=false callback=androidx.activity.OnBackPressedDispatcher$Api34Impl$createOnBackAnimationCallback$1@52859f9
+2026-02-06 14:08:06.272  2467-2553  HWUI                    com.cdccreditsmart.app               D  endAllActiveAnimators on 0xb4000073b5b8b2f0 (UnprojectedRipple) with handle 0xb400007265b4bbf0
+2026-02-06 14:08:06.272  2467-2467  View                    com.cdccreditsmart.app               D  [Warning] assignParent to null: this = DecorView@467ae7d[MainActivity]
+2026-02-06 14:08:06.286  2467-2483  BLASTBufferQueue        com.cdccreditsmart.app               D  [VRI[MainActivity]#12](f:0,a:1) destructor()
+2026-02-06 14:08:06.286  2467-2483  BufferQueueConsumer     com.cdccreditsmart.app               D  [VRI[MainActivity]#12(BLAST Consumer)12](id:9a30000000c,api:0,p:-1,c:2467) disconnect
+2026-02-06 14:08:06.312  2467-2467  UninstallFlowActivity   com.cdccreditsmart.app               I  
+2026-02-06 14:08:06.312  2467-2467  UninstallFlowActivity   com.cdccreditsmart.app               I  ╔════════════════════════════════════════════════════════════╗
+2026-02-06 14:08:06.312  2467-2467  UninstallFlowActivity   com.cdccreditsmart.app               I  ║     FLUXO DE DESINSTALAÇÃO SEGURA - CREDIT SMART          ║
+2026-02-06 14:08:06.312  2467-2467  UninstallFlowActivity   com.cdccreditsmart.app               I  ╚════════════════════════════════════════════════════════════╝
+2026-02-06 14:08:06.312  2467-2467  UninstallFlowActivity   com.cdccreditsmart.app               I  
+2026-02-06 14:08:06.312  2467-2467  UninstallFlowActivity   com.cdccreditsmart.app               I  Tipo de desinstalação: not_activated
+2026-02-06 14:08:06.312  2467-2467  SettingsGuardService    com.cdccreditsmart.app               I  🗑️ Guard PAUSADO para desinstalação voluntária
+2026-02-06 14:08:06.312  2467-2467  SettingsGuardService    com.cdccreditsmart.app               I     Proteção desativada - usuário pode desinstalar
+2026-02-06 14:08:06.312  2467-2467  SettingsGuardService    com.cdccreditsmart.app               I     Timeout: 120s para auto-recuperação
+2026-02-06 14:08:06.312  2467-2467  UninstallFlowActivity   com.cdccreditsmart.app               I  ⏸️ SettingsGuard pausado para desinstalação
+2026-02-06 14:08:06.314  2467-2467  UninstallFlowActivity   com.cdccreditsmart.app               I  
+2026-02-06 14:08:06.314  2467-2467  UninstallFlowActivity   com.cdccreditsmart.app               I  [PASSO 1/4] Verificando privilégios...
+2026-02-06 14:08:06.314  2467-2467  UninstallFlowActivity   com.cdccreditsmart.app               I     Device Owner: NÃO
+2026-02-06 14:08:06.314  2467-2467  UninstallFlowActivity   com.cdccreditsmart.app               I     Device Admin: NÃO
+2026-02-06 14:08:06.314  2467-2467  UninstallFlowActivity   com.cdccreditsmart.app               I  
+2026-02-06 14:08:06.314  2467-2467  UninstallFlowActivity   com.cdccreditsmart.app               I  [PASSO 2/4] App sem privilégios especiais
+2026-02-06 14:08:06.314  2467-2467  UninstallFlowActivity   com.cdccreditsmart.app               I  [PASSO 3/4] Nenhuma proteção a remover
+2026-02-06 14:08:06.314  2467-2467  UninstallFlowActivity   com.cdccreditsmart.app               I  
+2026-02-06 14:08:06.314  2467-2467  UninstallFlowActivity   com.cdccreditsmart.app               I  [PASSO 4/4] Iniciando desinstalação do sistema...
+2026-02-06 14:08:06.314  2467-2467  UninstallFlowActivity   com.cdccreditsmart.app               I  
+2026-02-06 14:08:06.343  2467-2467  Activity                com.cdccreditsmart.app               D  onResume setDolbyGameProfilePackage lastPkg =  currentPkg = com.cdccreditsmart.app
+2026-02-06 14:08:06.350  2467-2467  VRI[Uninst...wActivity] com.cdccreditsmart.app               D  hardware acceleration = true, forceHwAccelerated = false
+2026-02-06 14:08:06.354  2467-2467  InputEventReceiver      com.cdccreditsmart.app               D  Input log is disabled in InputEventReceiver.
+2026-02-06 14:08:06.366  2467-2467  BufferQueueConsumer     com.cdccreditsmart.app               D  [](id:9a30000000d,api:0,p:-1,c:2467) connect: controlledByApp=false
+2026-02-06 14:08:06.366  2467-2467  BLASTBufferQueue        com.cdccreditsmart.app               D  [VRI[UninstallFlowActivity]#13](f:0,a:0) constructor()
+2026-02-06 14:08:06.366  2467-2467  BLASTBufferQueue        com.cdccreditsmart.app               D  [VRI[UninstallFlowActivity]#13](f:0,a:0) update width=1080 height=2400 format=-2 mTransformHint=0
+2026-02-06 14:08:06.374  2467-2553  BLASTBufferQueue        com.cdccreditsmart.app               D  [VRI[UninstallFlowActivity]#13](f:0,a:1) acquireNextBufferLocked size=1080x2400 mFrameNumber=1 applyTransaction=true mTimestamp=4210290638019(auto) mPendingTransactions.size=0 graphicBufferId=10595684319284 transform=0
+2026-02-06 14:08:06.488  2467-2467  UninstallFlowActivity   com.cdccreditsmart.app               I  
+2026-02-06 14:08:06.488  2467-2467  UninstallFlowActivity   com.cdccreditsmart.app               I  ╔════════════════════════════════════════════════════════════╗
+2026-02-06 14:08:06.488  2467-2467  UninstallFlowActivity   com.cdccreditsmart.app               I  ║     RETORNO DO DIÁLOGO DE DESINSTALAÇÃO                   ║
+2026-02-06 14:08:06.488  2467-2467  UninstallFlowActivity   com.cdccreditsmart.app               I  ╚════════════════════════════════════════════════════════════╝
+2026-02-06 14:08:06.488  2467-2467  UninstallFlowActivity   com.cdccreditsmart.app               I  
+2026-02-06 14:08:06.489  2467-2467  UninstallFlowActivity   com.cdccreditsmart.app               W  RESULTADO: Usuário CANCELOU a desinstalação
+2026-02-06 14:08:06.490  2467-2467  UninstallFlowActivity   com.cdccreditsmart.app               W  
+2026-02-06 14:08:06.490  2467-2467  UninstallFlowActivity   com.cdccreditsmart.app               W  ATENÇÃO: Proteções foram removidas e NÃO podem ser reaplicadas!
+2026-02-06 14:08:06.490  2467-2467  UninstallFlowActivity   com.cdccreditsmart.app               W     O app não é mais Device Owner/Admin
+2026-02-06 14:08:06.490  2467-2467  UninstallFlowActivity   com.cdccreditsmart.app               W     Para restaurar proteções, reprovisionar via:
+2026-02-06 14:08:06.490  2467-2467  UninstallFlowActivity   com.cdccreditsmart.app               W       1. Factory reset + QR Code de provisionamento
+2026-02-06 14:08:06.490  2467-2467  UninstallFlowActivity   com.cdccreditsmart.app               W       2. ADB: dpm set-device-owner
+2026-02-06 14:08:06.490  2467-2467  SettingsGuardService    com.cdccreditsmart.app               I  ▶️ Guard RETOMADO após desinstalação cancelada
+2026-02-06 14:08:06.490  2467-2467  UninstallFlowActivity   com.cdccreditsmart.app               I  ▶️ SettingsGuard retomado
+2026-02-06 14:08:06.490  2467-2467  UninstallFlowActivity   com.cdccreditsmart.app               I  ▶️ SettingsGuard retomado após cancelamento
+2026-02-06 14:08:06.602  2467-2467  Activity                com.cdccreditsmart.app               D  onResume setDolbyGameProfilePackage lastPkg =  currentPkg = com.cdccreditsmart.app
+2026-02-06 14:08:06.628  2467-2467  VRI[Uninst...wActivity] com.cdccreditsmart.app               D  visibilityChanged oldVisibility=true newVisibility=false
+2026-02-06 14:08:06.634  2467-2467  WindowOnBackDispatcher  com.cdccreditsmart.app               W  sendCancelIfRunning: isInProgress=false callback=android.app.Activity$$ExternalSyntheticLambda0@f822f5d
+2026-02-06 14:08:06.634  2467-2467  UninstallFlowActivity   com.cdccreditsmart.app               I  onDestroy: App ainda instalado após tentativa de desinstalação
+2026-02-06 14:08:06.636  2467-2553  BLASTBufferQueue        com.cdccreditsmart.app               D  [VRI[UninstallFlowActivity]#13](f:0,a:1) destructor()
+2026-02-06 14:08:06.636  2467-2553  BufferQueueConsumer     com.cdccreditsmart.app               D  [VRI[UninstallFlowActivity]#13(BLAST Consumer)13](id:9a30000000d,api:0,p:-1,c:2467) disconnect
+2026-02-06 14:08:06.637  2467-2467  View                    com.cdccreditsmart.app               D  [Warning] assignParent to null: this = DecorView@46a0339[UninstallFlowActivity]
+2026-02-06 14:08:07.017  2467-2539  SettingsGuardService    com.cdccreditsmart.app               D  📋 Activity check - Full: com.cdccreditsmart.app.presentation.MainActivity, Simple: MainActivity
