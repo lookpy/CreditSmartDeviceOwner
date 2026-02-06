@@ -5,12 +5,14 @@ import android.content.Context
 import android.app.ForegroundServiceStartNotAllowedException
 import android.content.Intent
 import android.content.IntentFilter
+import android.content.pm.PackageManager
 import android.content.pm.ServiceInfo
 import android.os.Build
 import android.os.IBinder
 import android.os.PowerManager
 import android.util.Log
 import androidx.core.app.NotificationCompat
+import androidx.core.content.ContextCompat
 import com.cdccreditsmart.app.BuildConfig
 import com.cdccreditsmart.app.R
 import com.cdccreditsmart.app.enterprise.HeartbeatManager
@@ -149,18 +151,48 @@ class CdcForegroundService : Service(), ScreenStateListener {
         
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
             val notification = createNotification()
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
-                startForeground(
-                    NOTIFICATION_ID, 
-                    notification,
-                    ServiceInfo.FOREGROUND_SERVICE_TYPE_DATA_SYNC or 
-                    ServiceInfo.FOREGROUND_SERVICE_TYPE_REMOTE_MESSAGING or
-                    ServiceInfo.FOREGROUND_SERVICE_TYPE_LOCATION
-                )
-            } else {
+            try {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
+                    val hasLocationPermission = ContextCompat.checkSelfPermission(
+                        this, android.Manifest.permission.ACCESS_FINE_LOCATION
+                    ) == PackageManager.PERMISSION_GRANTED || ContextCompat.checkSelfPermission(
+                        this, android.Manifest.permission.ACCESS_COARSE_LOCATION
+                    ) == PackageManager.PERMISSION_GRANTED
+
+                    var serviceType = ServiceInfo.FOREGROUND_SERVICE_TYPE_DATA_SYNC or
+                        ServiceInfo.FOREGROUND_SERVICE_TYPE_REMOTE_MESSAGING
+
+                    if (hasLocationPermission) {
+                        serviceType = serviceType or ServiceInfo.FOREGROUND_SERVICE_TYPE_LOCATION
+                        Log.i(TAG, "✅ Foreground Service com localização habilitada")
+                    } else {
+                        Log.w(TAG, "⚠️ Permissão de localização não concedida - iniciando sem tipo location")
+                    }
+
+                    try {
+                        startForeground(NOTIFICATION_ID, notification, serviceType)
+                    } catch (e: SecurityException) {
+                        Log.w(TAG, "⚠️ Falha ao iniciar FGS com tipo combinado, tentando sem location: ${e.message}")
+                        startForeground(
+                            NOTIFICATION_ID,
+                            notification,
+                            ServiceInfo.FOREGROUND_SERVICE_TYPE_DATA_SYNC or
+                                ServiceInfo.FOREGROUND_SERVICE_TYPE_REMOTE_MESSAGING
+                        )
+                    }
+                } else {
+                    startForeground(NOTIFICATION_ID, notification)
+                }
+                Log.i(TAG, "✅ Foreground Service ativo (Android 12+)")
+            } catch (e: Exception) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S &&
+                    e is ForegroundServiceStartNotAllowedException) {
+                    Log.e(TAG, "❌ App não elegível para iniciar FGS em background: ${e.message}")
+                } else {
+                    Log.e(TAG, "❌ Erro ao iniciar foreground service: ${e.message}")
+                }
                 startForeground(NOTIFICATION_ID, notification)
             }
-            Log.i(TAG, "✅ Foreground Service ativo com localização (Android 12+)")
         } else {
             startForegroundService()
         }

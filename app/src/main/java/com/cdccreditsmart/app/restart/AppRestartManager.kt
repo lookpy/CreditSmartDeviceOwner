@@ -61,14 +61,37 @@ class AppRestartManager(private val context: Context) {
             }
         )
         
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            alarmManager.setExactAndAllowWhileIdle(
-                AlarmManager.RTC_WAKEUP,
-                System.currentTimeMillis() + RESTART_DELAY_MS,
-                pendingIntent
-            )
-        } else {
-            alarmManager.setExact(
+        try {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                if (alarmManager.canScheduleExactAlarms()) {
+                    alarmManager.setExactAndAllowWhileIdle(
+                        AlarmManager.RTC_WAKEUP,
+                        System.currentTimeMillis() + RESTART_DELAY_MS,
+                        pendingIntent
+                    )
+                } else {
+                    alarmManager.setAndAllowWhileIdle(
+                        AlarmManager.RTC_WAKEUP,
+                        System.currentTimeMillis() + RESTART_DELAY_MS,
+                        pendingIntent
+                    )
+                }
+            } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                alarmManager.setExactAndAllowWhileIdle(
+                    AlarmManager.RTC_WAKEUP,
+                    System.currentTimeMillis() + RESTART_DELAY_MS,
+                    pendingIntent
+                )
+            } else {
+                alarmManager.setExact(
+                    AlarmManager.RTC_WAKEUP,
+                    System.currentTimeMillis() + RESTART_DELAY_MS,
+                    pendingIntent
+                )
+            }
+        } catch (e: SecurityException) {
+            Log.e(TAG, "❌ Sem permissão para alarme exato, usando inexato: ${e.message}")
+            alarmManager.set(
                 AlarmManager.RTC_WAKEUP,
                 System.currentTimeMillis() + RESTART_DELAY_MS,
                 pendingIntent
