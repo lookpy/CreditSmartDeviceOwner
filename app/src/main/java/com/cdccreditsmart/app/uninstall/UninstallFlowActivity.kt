@@ -7,6 +7,8 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import com.cdccreditsmart.app.compliance.AppProtectionManager
 import com.cdccreditsmart.app.compliance.SettingsGuardService
@@ -17,7 +19,6 @@ class UninstallFlowActivity : Activity() {
     
     companion object {
         private const val TAG = "UninstallFlowActivity"
-        private const val REQUEST_UNINSTALL = 1001
         
         const val EXTRA_UNINSTALL_TYPE = "uninstall_type"
         const val TYPE_NOT_ACTIVATED = "not_activated"
@@ -39,6 +40,7 @@ class UninstallFlowActivity : Activity() {
     private var wasDeviceOwner = false
     private var wasDeviceAdmin = false
     private var guardWasPaused = false
+    private var uninstallDialogLaunched = false
     
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,22 +50,84 @@ class UninstallFlowActivity : Activity() {
         adminComponent = ComponentName(this, CDCDeviceAdminReceiver::class.java)
         uninstallType = intent.getStringExtra(EXTRA_UNINSTALL_TYPE) ?: TYPE_NOT_ACTIVATED
         
+        uninstallDialogLaunched = savedInstanceState?.getBoolean("uninstall_launched", false) ?: false
+        wasDeviceOwner = savedInstanceState?.getBoolean("was_device_owner", false) ?: false
+        wasDeviceAdmin = savedInstanceState?.getBoolean("was_device_admin", false) ?: false
+        guardWasPaused = savedInstanceState?.getBoolean("guard_was_paused", false) ?: false
+        
         Log.i(TAG, "")
         Log.i(TAG, "╔════════════════════════════════════════════════════════════╗")
         Log.i(TAG, "║     FLUXO DE DESINSTALAÇÃO SEGURA - CREDIT SMART          ║")
         Log.i(TAG, "╚════════════════════════════════════════════════════════════╝")
         Log.i(TAG, "")
         Log.i(TAG, "Tipo de desinstalação: $uninstallType")
+        Log.i(TAG, "Diálogo já lançado: $uninstallDialogLaunched")
         
-        try {
-            SettingsGuardService.pauseForVoluntaryUninstall()
-            guardWasPaused = true
-            Log.i(TAG, "⏸️ SettingsGuard pausado para desinstalação")
-        } catch (e: Exception) {
-            Log.w(TAG, "⚠️ Erro ao pausar SettingsGuard: ${e.message}")
+        if (!uninstallDialogLaunched) {
+            try {
+                SettingsGuardService.pauseForVoluntaryUninstall()
+                guardWasPaused = true
+                Log.i(TAG, "⏸️ SettingsGuard pausado para desinstalação")
+            } catch (e: Exception) {
+                Log.w(TAG, "⚠️ Erro ao pausar SettingsGuard: ${e.message}")
+            }
+            
+            executeUninstallFlow()
+        }
+    }
+    
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putBoolean("uninstall_launched", uninstallDialogLaunched)
+        outState.putBoolean("was_device_owner", wasDeviceOwner)
+        outState.putBoolean("was_device_admin", wasDeviceAdmin)
+        outState.putBoolean("guard_was_paused", guardWasPaused)
+    }
+    
+    override fun onResume() {
+        super.onResume()
+        
+        if (uninstallDialogLaunched) {
+            Log.i(TAG, "")
+            Log.i(TAG, "╔════════════════════════════════════════════════════════════╗")
+            Log.i(TAG, "║     RETORNO DO DIÁLOGO DE DESINSTALAÇÃO                   ║")
+            Log.i(TAG, "╚════════════════════════════════════════════════════════════╝")
+            Log.i(TAG, "")
+            
+            Handler(Looper.getMainLooper()).postDelayed({
+                handleUninstallResult()
+            }, 500)
+        }
+    }
+    
+    private fun handleUninstallResult() {
+        if (isPackageInstalled(packageName)) {
+            Log.w(TAG, "RESULTADO: Usuário CANCELOU a desinstalação")
+            
+            val isStillDeviceOwner = try {
+                PolicyHelper.isDeviceOwner(dpm, packageName)
+            } catch (e: Exception) { false }
+            
+            if (isStillDeviceOwner) {
+                Log.i(TAG, "App ainda é Device Owner - reaplicando proteções...")
+                reapplyProtectionsIfPossible()
+                Log.i(TAG, "OK: Proteções restauradas")
+            } else {
+                Log.w(TAG, "")
+                Log.w(TAG, "ATENÇÃO: Proteções foram removidas e NÃO podem ser reaplicadas!")
+                Log.w(TAG, "   O app não é mais Device Owner/Admin")
+                Log.w(TAG, "   Para restaurar proteções, reprovisionar via:")
+                Log.w(TAG, "     1. Factory reset + QR Code de provisionamento")
+                Log.w(TAG, "     2. ADB: dpm set-device-owner")
+            }
+            
+            resumeGuardSafely()
+            Log.i(TAG, "▶️ SettingsGuard retomado após cancelamento")
+        } else {
+            Log.i(TAG, "RESULTADO: App desinstalado com sucesso")
         }
         
-        executeUninstallFlow()
+        finish()
     }
     
     private fun executeUninstallFlow() {
@@ -133,12 +197,12 @@ class UninstallFlowActivity : Activity() {
             Log.i(TAG, "[PASSO 4/4] Iniciando desinstalação do sistema...")
             Log.i(TAG, "")
             
-            val uninstallIntent = Intent(Intent.ACTION_UNINSTALL_PACKAGE).apply {
-                data = Uri.parse("package:$packageName")
-                putExtra(Intent.EXTRA_RETURN_RESULT, true)
-            }
+            uninstallDialogLaunched = true
             
-            startActivityForResult(uninstallIntent, REQUEST_UNINSTALL)
+            val uninstallIntent = Intent(Intent.ACTION_DELETE).apply {
+                data = Uri.parse("package:$packageName")
+            }
+            startActivity(uninstallIntent)
             
         } catch (e: Exception) {
             Log.e(TAG, "ERRO durante fluxo: ${e.message}", e)
@@ -156,46 +220,6 @@ class UninstallFlowActivity : Activity() {
             } catch (e: Exception) {
                 Log.w(TAG, "⚠️ Erro ao retomar SettingsGuard: ${e.message}")
             }
-        }
-    }
-    
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        
-        if (requestCode == REQUEST_UNINSTALL) {
-            Log.i(TAG, "")
-            Log.i(TAG, "╔════════════════════════════════════════════════════════════╗")
-            Log.i(TAG, "║     RETORNO DO DIÁLOGO DE DESINSTALAÇÃO                   ║")
-            Log.i(TAG, "╚════════════════════════════════════════════════════════════╝")
-            Log.i(TAG, "")
-            
-            if (isPackageInstalled(packageName)) {
-                Log.w(TAG, "RESULTADO: Usuário CANCELOU a desinstalação")
-                
-                val isStillDeviceOwner = try {
-                    PolicyHelper.isDeviceOwner(dpm, packageName)
-                } catch (e: Exception) { false }
-                
-                if (isStillDeviceOwner) {
-                    Log.i(TAG, "App ainda é Device Owner - reaplicando proteções...")
-                    reapplyProtectionsIfPossible()
-                    Log.i(TAG, "OK: Proteções restauradas")
-                } else {
-                    Log.w(TAG, "")
-                    Log.w(TAG, "ATENÇÃO: Proteções foram removidas e NÃO podem ser reaplicadas!")
-                    Log.w(TAG, "   O app não é mais Device Owner/Admin")
-                    Log.w(TAG, "   Para restaurar proteções, reprovisionar via:")
-                    Log.w(TAG, "     1. Factory reset + QR Code de provisionamento")
-                    Log.w(TAG, "     2. ADB: dpm set-device-owner")
-                }
-                
-                resumeGuardSafely()
-                Log.i(TAG, "▶️ SettingsGuard retomado após cancelamento")
-            } else {
-                Log.i(TAG, "RESULTADO: App desinstalado com sucesso")
-            }
-            
-            finish()
         }
     }
     
