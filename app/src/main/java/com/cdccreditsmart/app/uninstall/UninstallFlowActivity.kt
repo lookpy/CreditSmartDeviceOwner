@@ -41,6 +41,8 @@ class UninstallFlowActivity : Activity() {
     private var wasDeviceAdmin = false
     private var guardWasPaused = false
     private var uninstallDialogLaunched = false
+    private var hasPausedAfterLaunch = false
+    private var resultHandled = false
     
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,6 +56,8 @@ class UninstallFlowActivity : Activity() {
         wasDeviceOwner = savedInstanceState?.getBoolean("was_device_owner", false) ?: false
         wasDeviceAdmin = savedInstanceState?.getBoolean("was_device_admin", false) ?: false
         guardWasPaused = savedInstanceState?.getBoolean("guard_was_paused", false) ?: false
+        hasPausedAfterLaunch = savedInstanceState?.getBoolean("has_paused", false) ?: false
+        resultHandled = savedInstanceState?.getBoolean("result_handled", false) ?: false
         
         Log.i(TAG, "")
         Log.i(TAG, "╔════════════════════════════════════════════════════════════╗")
@@ -62,6 +66,7 @@ class UninstallFlowActivity : Activity() {
         Log.i(TAG, "")
         Log.i(TAG, "Tipo de desinstalação: $uninstallType")
         Log.i(TAG, "Diálogo já lançado: $uninstallDialogLaunched")
+        Log.i(TAG, "Já foi pausado: $hasPausedAfterLaunch")
         
         if (!uninstallDialogLaunched) {
             try {
@@ -82,12 +87,23 @@ class UninstallFlowActivity : Activity() {
         outState.putBoolean("was_device_owner", wasDeviceOwner)
         outState.putBoolean("was_device_admin", wasDeviceAdmin)
         outState.putBoolean("guard_was_paused", guardWasPaused)
+        outState.putBoolean("has_paused", hasPausedAfterLaunch)
+        outState.putBoolean("result_handled", resultHandled)
+    }
+    
+    override fun onPause() {
+        super.onPause()
+        if (uninstallDialogLaunched) {
+            hasPausedAfterLaunch = true
+            Log.d(TAG, "onPause: Activity pausada (diálogo de desinstalação apareceu)")
+        }
     }
     
     override fun onResume() {
         super.onResume()
         
-        if (uninstallDialogLaunched) {
+        if (uninstallDialogLaunched && hasPausedAfterLaunch && !resultHandled) {
+            resultHandled = true
             Log.i(TAG, "")
             Log.i(TAG, "╔════════════════════════════════════════════════════════════╗")
             Log.i(TAG, "║     RETORNO DO DIÁLOGO DE DESINSTALAÇÃO                   ║")
@@ -97,6 +113,8 @@ class UninstallFlowActivity : Activity() {
             Handler(Looper.getMainLooper()).postDelayed({
                 handleUninstallResult()
             }, 500)
+        } else if (uninstallDialogLaunched && !hasPausedAfterLaunch) {
+            Log.d(TAG, "onResume: Ignorando - diálogo ainda não apareceu (aguardando onPause)")
         }
     }
     

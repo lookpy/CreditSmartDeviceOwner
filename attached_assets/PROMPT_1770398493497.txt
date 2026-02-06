@@ -1,0 +1,686 @@
+2026-02-06 14:20:39.603  6627-6762  SettingsGuardService    com.cdccreditsmart.app               D  📋 Activity check - Full: null, Simple: null
+2026-02-06 14:20:41.219  6627-6766  BLASTBufferQueue        com.cdccreditsmart.app               D  [VRI[MainActivity]#0](f:0,a:1) destructor()
+2026-02-06 14:20:41.219  6627-6766  BufferQueueConsumer     com.cdccreditsmart.app               D  [VRI[MainActivity]#0(BLAST Consumer)0](id:19e300000000,api:0,p:-1,c:6627) disconnect
+2026-02-06 14:20:41.350  6627-6627  SettingsGuardService    com.cdccreditsmart.app               I  ▶️ Guard RETOMADO após fluxo de permissões
+2026-02-06 14:20:41.367  6627-6627  MainActivity            com.cdccreditsmart.app               D  📍 BroadcastReceiver de localização desregistrado
+2026-02-06 14:20:41.369  6627-6627  WindowOnBackDispatcher  com.cdccreditsmart.app               W  sendCancelIfRunning: isInProgress=false callback=android.app.Activity$$ExternalSyntheticLambda0@8f7f476
+2026-02-06 14:20:41.383  6627-6627  View                    com.cdccreditsmart.app               D  [Warning] assignParent to null: this = DecorView@f7af3f1[MainActivity]
+2026-02-06 14:20:41.400  6627-6627  CdcForegroundService    com.cdccreditsmart.app               W  ⚠️ Task removida - mantendo serviço ativo
+2026-02-06 14:20:43.293  6627-6748  FA                      com.cdccreditsmart.app               I  Application backgrounded at: timestamp_millis: 1770398441291
+2026-02-06 14:20:43.483  6627-6627  MainActivity            com.cdccreditsmart.app               I  ✅ Brilho da tela definido para MÁXIMO
+2026-02-06 14:20:43.484  6627-6627  MainActivity            com.cdccreditsmart.app               D  📍 BroadcastReceiver de localização registrado
+2026-02-06 14:20:43.488  6627-6762  PersistentStateManager  com.cdccreditsmart.app               D  Nenhum estado local encontrado
+2026-02-06 14:20:43.488  6627-6762  PersistentStateManager  com.cdccreditsmart.app               D  🆕 Sem estado local - device novo ou pós factory reset
+2026-02-06 14:20:43.488  6627-6762  MainActivity            com.cdccreditsmart.app               I  🆕 Device nunca foi provisionado
+2026-02-06 14:20:43.491  6627-6627  MainActivity            com.cdccreditsmart.app               I  ✅ App é Device Owner - permissões serão concedidas automaticamente
+2026-02-06 14:20:43.503  6627-6627  Activity                com.cdccreditsmart.app               D  onResume setDolbyGameProfilePackage lastPkg =  currentPkg = com.cdccreditsmart.app
+2026-02-06 14:20:43.508  6627-6627  VRI[MainActivity]       com.cdccreditsmart.app               D  hardware acceleration = true, forceHwAccelerated = false
+2026-02-06 14:20:43.515  6627-6627  InputEventReceiver      com.cdccreditsmart.app               D  Input log is disabled in InputEventReceiver.
+2026-02-06 14:20:43.600  6627-6627  PermissionGateScreen    com.cdccreditsmart.app               I  🔐 DEVICE OWNER DETECTADO - tentando concessão automática IMEDIATA
+2026-02-06 14:20:43.601  6627-6627  AutoPermissionManager   com.cdccreditsmart.app               I  🚀 ========================================
+2026-02-06 14:20:43.601  6627-6627  AutoPermissionManager   com.cdccreditsmart.app               I  🚀 CONCESSÃO RÁPIDA DE PERMISSÕES (Device Owner)
+2026-02-06 14:20:43.601  6627-6627  AutoPermissionManager   com.cdccreditsmart.app               I  🚀 ========================================
+2026-02-06 14:20:43.601  6627-6627  AutoPermissionManager   com.cdccreditsmart.app               D    ⏩ Já concedida: android.permission.READ_PHONE_STATE
+2026-02-06 14:20:43.651  6627-6627  AutoPermissionManager   com.cdccreditsmart.app               I    ✅ Concedida: android.permission.READ_CALL_LOG
+2026-02-06 14:20:43.700  6627-6627  AutoPermissionManager   com.cdccreditsmart.app               I    ✅ Concedida: android.permission.CALL_PHONE
+2026-02-06 14:20:43.746  6627-6627  AutoPermissionManager   com.cdccreditsmart.app               I    ✅ Concedida: android.permission.READ_CONTACTS
+2026-02-06 14:20:43.747  6627-6627  AutoPermissionManager   com.cdccreditsmart.app               D    ⏩ Já concedida: android.permission.ACCESS_FINE_LOCATION
+2026-02-06 14:20:43.748  6627-6627  AutoPermissionManager   com.cdccreditsmart.app               D    ⏩ Já concedida: android.permission.ACCESS_COARSE_LOCATION
+2026-02-06 14:20:43.814  6627-6627  AutoPermissionManager   com.cdccreditsmart.app               I    ✅ Concedida: android.permission.ANSWER_PHONE_CALLS
+2026-02-06 14:20:43.863  6627-6627  AutoPermissionManager   com.cdccreditsmart.app               I    ✅ Concedida: android.permission.READ_PHONE_NUMBERS
+2026-02-06 14:20:43.943  6627-6627  AutoPermissionManager   com.cdccreditsmart.app               I    ✅ Concedida: android.permission.ACCESS_BACKGROUND_LOCATION
+2026-02-06 14:20:43.943  6627-6627  AutoPermissionManager   com.cdccreditsmart.app               D    ⏩ Já concedida: android.permission.POST_NOTIFICATIONS
+2026-02-06 14:20:43.943  6627-6627  AutoPermissionManager   com.cdccreditsmart.app               I  🚀 ========================================
+2026-02-06 14:20:43.944  6627-6627  AutoPermissionManager   com.cdccreditsmart.app               I  🚀 RESUMO DA CONCESSÃO RÁPIDA:
+2026-02-06 14:20:43.944  6627-6627  AutoPermissionManager   com.cdccreditsmart.app               I    ✅ Novas permissões concedidas: 6
+2026-02-06 14:20:43.944  6627-6627  AutoPermissionManager   com.cdccreditsmart.app               I    ⏩ Já estavam concedidas: 4
+2026-02-06 14:20:43.944  6627-6627  AutoPermissionManager   com.cdccreditsmart.app               I    ❌ Erros/Falhas: 0
+2026-02-06 14:20:43.944  6627-6627  AutoPermissionManager   com.cdccreditsmart.app               I    📋 Total processadas: 10
+2026-02-06 14:20:43.944  6627-6627  AutoPermissionManager   com.cdccreditsmart.app               I  🚀 ========================================
+2026-02-06 14:20:43.944  6627-6627  PermissionGateScreen    com.cdccreditsmart.app               I  ✅ Runtime permissions concedidas automaticamente
+2026-02-06 14:20:43.949  6627-6627  PermissionGateManager   com.cdccreditsmart.app               W  ⚠️ Device Owner: 3 permissão(ões) pendente(s)
+2026-02-06 14:20:43.949  6627-6627  PermissionGateManager   com.cdccreditsmart.app               W     → Falta: Acesso ao Uso de Apps
+2026-02-06 14:20:43.949  6627-6627  PermissionGateManager   com.cdccreditsmart.app               W     → Falta: Exibir sobre outros apps
+2026-02-06 14:20:43.949  6627-6627  PermissionGateManager   com.cdccreditsmart.app               W     → Falta: Execução em Segundo Plano
+2026-02-06 14:20:44.128  6627-6627  View                    com.cdccreditsmart.app               D  [ANR Warning]onMeasure time too long, this =androidx.compose.ui.platform.AndroidComposeView{f3ae62a VFED..... ......I. 0,0-0,0}time =577 ms
+2026-02-06 14:20:44.128  6627-6627  View                    com.cdccreditsmart.app               D  [ANR Warning]onMeasure time too long, this =androidx.compose.ui.platform.ComposeView{15aecc0 V.E...... ......I. 0,0-0,0}time =578 ms
+2026-02-06 14:20:44.129  6627-6627  View                    com.cdccreditsmart.app               D  [ANR Warning]onMeasure time too long, this =android.widget.FrameLayout{4597df9 V.E...... ......I. 0,0-0,0 #1020002 android:id/content}time =578 ms
+2026-02-06 14:20:44.129  6627-6627  View                    com.cdccreditsmart.app               D  [ANR Warning]onMeasure time too long, this =android.widget.LinearLayout{612b13e V.E...... ......I. 0,0-0,0}time =579 ms
+2026-02-06 14:20:44.129  6627-6627  View                    com.cdccreditsmart.app               D  [ANR Warning]onMeasure time too long, this =DecorView@bea8b9f[MainActivity]time =579 ms
+2026-02-06 14:20:44.142  6627-6627  BufferQueueConsumer     com.cdccreditsmart.app               D  [](id:19e300000001,api:0,p:-1,c:6627) connect: controlledByApp=false
+2026-02-06 14:20:44.142  6627-6627  BLASTBufferQueue        com.cdccreditsmart.app               D  [VRI[MainActivity]#1](f:0,a:0) constructor()
+2026-02-06 14:20:44.142  6627-6627  BLASTBufferQueue        com.cdccreditsmart.app               D  [VRI[MainActivity]#1](f:0,a:0) update width=1080 height=2400 format=-3 mTransformHint=0
+2026-02-06 14:20:44.233  6627-6766  BLASTBufferQueue        com.cdccreditsmart.app               D  [VRI[MainActivity]#1](f:0,a:1) acquireNextBufferLocked size=1080x2400 mFrameNumber=1 applyTransaction=true mTimestamp=4968148212834(auto) mPendingTransactions.size=0 graphicBufferId=28462748270599 transform=0
+2026-02-06 14:20:44.241  6627-6627  PermissionGateScreen    com.cdccreditsmart.app               I  🔍 VERIFICAÇÃO INICIAL DE PERMISSÕES:
+2026-02-06 14:20:44.242  6627-6627  PermissionGateScreen    com.cdccreditsmart.app               I     Nível: DEVICE_OWNER
+2026-02-06 14:20:44.242  6627-6627  PermissionGateScreen    com.cdccreditsmart.app               I     Todas concedidas: false
+2026-02-06 14:20:44.242  6627-6627  PermissionGateScreen    com.cdccreditsmart.app               I     Bateria isenta: false
+2026-02-06 14:20:44.242  6627-6627  PermissionGateScreen    com.cdccreditsmart.app               W     ❌ FALTA: Acesso ao Uso de Apps
+2026-02-06 14:20:44.242  6627-6627  PermissionGateScreen    com.cdccreditsmart.app               W     ❌ FALTA: Exibir sobre outros apps
+2026-02-06 14:20:44.242  6627-6627  PermissionGateScreen    com.cdccreditsmart.app               W     ❌ FALTA: Execução em Segundo Plano
+2026-02-06 14:20:44.242  6627-6627  PermissionGateScreen    com.cdccreditsmart.app               I     ✅ OK: Permissões Básicas
+2026-02-06 14:20:44.243  6627-6627  PermissionGateScreen    com.cdccreditsmart.app               I  ========================================
+2026-02-06 14:20:44.243  6627-6627  PermissionGateScreen    com.cdccreditsmart.app               I  🚪 PERMISSION GATE SCREEN INICIADO
+2026-02-06 14:20:44.243  6627-6627  PermissionGateScreen    com.cdccreditsmart.app               I  ========================================
+2026-02-06 14:20:44.243  6627-6627  PermissionGateScreen    com.cdccreditsmart.app               I  Nível de privilégio: DEVICE_OWNER
+2026-02-06 14:20:44.243  6627-6627  PermissionGateScreen    com.cdccreditsmart.app               I  Permissões concedidas: 1
+2026-02-06 14:20:44.243  6627-6627  PermissionGateScreen    com.cdccreditsmart.app               I  Permissões faltando: 3
+2026-02-06 14:20:44.244  6627-6627  PermissionGateScreen    com.cdccreditsmart.app               W    ❌ Acesso ao Uso de Apps
+2026-02-06 14:20:44.244  6627-6762  AutoPermissionManager   com.cdccreditsmart.app               I  ========================================
+2026-02-06 14:20:44.244  6627-6762  AutoPermissionManager   com.cdccreditsmart.app               I  🔐 INICIANDO CONCESSÃO AUTOMÁTICA DE PERMISSÕES
+2026-02-06 14:20:44.244  6627-6762  AutoPermissionManager   com.cdccreditsmart.app               I  ========================================
+2026-02-06 14:20:44.244  6627-6627  PermissionGateScreen    com.cdccreditsmart.app               W    ❌ Exibir sobre outros apps
+2026-02-06 14:20:44.244  6627-6627  PermissionGateScreen    com.cdccreditsmart.app               W    ❌ Execução em Segundo Plano
+2026-02-06 14:20:44.244  6627-6627  PermissionGateScreen    com.cdccreditsmart.app               I    ✅ Permissões Básicas
+2026-02-06 14:20:44.244  6627-6627  PermissionGateScreen    com.cdccreditsmart.app               I  ========================================
+2026-02-06 14:20:44.245  6627-6627  PermissionGateScreen    com.cdccreditsmart.app               D  ⏰ Iniciando verificação periódica de permissões (a cada 3s)...
+2026-02-06 14:20:44.249  6627-6762  AutoPermissionManager   com.cdccreditsmart.app               I  📋 Status: Device Owner=true, Profile Owner=false
+2026-02-06 14:20:44.249  6627-6762  AutoPermissionManager   com.cdccreditsmart.app               I  ✅ App é Device Owner - concedendo permissões automaticamente...
+2026-02-06 14:20:44.251  6627-6627  Choreographer           com.cdccreditsmart.app               I  Skipped 43 frames!  The application may be doing too much work on its main thread.
+2026-02-06 14:20:44.251  6627-6762  AutoPermissionManager   com.cdccreditsmart.app               I  🚀 ========================================
+2026-02-06 14:20:44.252  6627-6762  AutoPermissionManager   com.cdccreditsmart.app               I  🚀 CONCESSÃO RÁPIDA DE PERMISSÕES (Device Owner)
+2026-02-06 14:20:44.252  6627-6762  AutoPermissionManager   com.cdccreditsmart.app               I  🚀 ========================================
+2026-02-06 14:20:44.254  6627-6762  AutoPermissionManager   com.cdccreditsmart.app               D    ⏩ Já concedida: android.permission.READ_PHONE_STATE
+2026-02-06 14:20:44.266  6627-6654  HWUI                    com.cdccreditsmart.app               I  Davey! duration=732ms; Flags=1, FrameTimelineVsyncId=295506, IntendedVsync=4967419895945, Vsync=4967419895945, InputEventId=0, HandleInputStart=4967432990603, AnimationStart=4967432993372, PerformTraversalsStart=4967432994372, DrawStart=4968107836449, FrameDeadline=4967439895945, FrameInterval=4967432976449, FrameStartTime=16620430, SyncQueued=4968143094065, SyncStart=4968143143911, IssueDrawCommandsStart=4968143318988, SwapBuffers=4968148161065, FrameCompleted=4968152778065, DequeueBufferDuration=25462, QueueBufferDuration=1002692, GpuCompleted=4968152778065, SwapBuffersCompleted=4968149496142, DisplayPresentTime=-70876336314121471, CommandSubmissionCompleted=4968148161065, 
+2026-02-06 14:20:44.299  6627-6650  HWUI                    com.cdccreditsmart.app               I  Davey! duration=763ms; Flags=0, FrameTimelineVsyncId=295535, IntendedVsync=4967436497585, Vsync=4968151214990, InputEventId=0, HandleInputStart=4968167774295, AnimationStart=4968167777680, PerformTraversalsStart=4968178571218, DrawStart=4968178838603, FrameDeadline=4968187815295, FrameInterval=4968167199911, FrameStartTime=16621335, SyncQueued=4968191016834, SyncStart=4968191199526, IssueDrawCommandsStart=4968191330988, SwapBuffers=4968197794911, FrameCompleted=4968200632526, DequeueBufferDuration=19692, QueueBufferDuration=599770, GpuCompleted=4968200632526, SwapBuffersCompleted=4968198696526, DisplayPresentTime=-70277437484285068, CommandSubmissionCompleted=4968197794911, 
+2026-02-06 14:20:44.344  6627-6762  AutoPermissionManager   com.cdccreditsmart.app               I    ✅ Concedida: android.permission.READ_CALL_LOG
+2026-02-06 14:20:44.400  6627-6762  AutoPermissionManager   com.cdccreditsmart.app               I    ✅ Concedida: android.permission.CALL_PHONE
+2026-02-06 14:20:44.466  6627-6762  AutoPermissionManager   com.cdccreditsmart.app               I    ✅ Concedida: android.permission.READ_CONTACTS
+2026-02-06 14:20:44.466  6627-6762  AutoPermissionManager   com.cdccreditsmart.app               D    ⏩ Já concedida: android.permission.ACCESS_FINE_LOCATION
+2026-02-06 14:20:44.467  6627-6762  AutoPermissionManager   com.cdccreditsmart.app               D    ⏩ Já concedida: android.permission.ACCESS_COARSE_LOCATION
+2026-02-06 14:20:44.526  6627-6762  AutoPermissionManager   com.cdccreditsmart.app               I    ✅ Concedida: android.permission.ANSWER_PHONE_CALLS
+2026-02-06 14:20:44.589  6627-6762  AutoPermissionManager   com.cdccreditsmart.app               I    ✅ Concedida: android.permission.READ_PHONE_NUMBERS
+2026-02-06 14:20:44.590  6627-6762  AutoPermissionManager   com.cdccreditsmart.app               D    ⏩ Já concedida: android.permission.ACCESS_BACKGROUND_LOCATION
+2026-02-06 14:20:44.590  6627-6762  AutoPermissionManager   com.cdccreditsmart.app               D    ⏩ Já concedida: android.permission.POST_NOTIFICATIONS
+2026-02-06 14:20:44.590  6627-6762  AutoPermissionManager   com.cdccreditsmart.app               I  🚀 ========================================
+2026-02-06 14:20:44.590  6627-6762  AutoPermissionManager   com.cdccreditsmart.app               I  🚀 RESUMO DA CONCESSÃO RÁPIDA:
+2026-02-06 14:20:44.591  6627-6762  AutoPermissionManager   com.cdccreditsmart.app               I    ✅ Novas permissões concedidas: 5
+2026-02-06 14:20:44.591  6627-6762  AutoPermissionManager   com.cdccreditsmart.app               I    ⏩ Já estavam concedidas: 5
+2026-02-06 14:20:44.591  6627-6762  AutoPermissionManager   com.cdccreditsmart.app               I    ❌ Erros/Falhas: 0
+2026-02-06 14:20:44.591  6627-6762  AutoPermissionManager   com.cdccreditsmart.app               I    📋 Total processadas: 10
+2026-02-06 14:20:44.591  6627-6762  AutoPermissionManager   com.cdccreditsmart.app               I  🚀 ========================================
+2026-02-06 14:20:44.591  6627-6762  AutoPermissionManager   com.cdccreditsmart.app               I  🔍 Verificando status final de todas as permissões...
+2026-02-06 14:20:44.593  6627-6762  AutoPermissionManager   com.cdccreditsmart.app               D    ✅ CONCEDIDA - android.permission.READ_PHONE_STATE
+2026-02-06 14:20:44.595  6627-6762  AutoPermissionManager   com.cdccreditsmart.app               D    ❌ NEGADA - android.permission.READ_CALL_LOG
+2026-02-06 14:20:44.596  6627-6762  AutoPermissionManager   com.cdccreditsmart.app               D    ❌ NEGADA - android.permission.CALL_PHONE
+2026-02-06 14:20:44.599  6627-6762  AutoPermissionManager   com.cdccreditsmart.app               D    ❌ NEGADA - android.permission.READ_CONTACTS
+2026-02-06 14:20:44.601  6627-6762  AutoPermissionManager   com.cdccreditsmart.app               D    ✅ CONCEDIDA - android.permission.ACCESS_FINE_LOCATION
+2026-02-06 14:20:44.603  6627-6762  AutoPermissionManager   com.cdccreditsmart.app               D    ✅ CONCEDIDA - android.permission.ACCESS_COARSE_LOCATION
+2026-02-06 14:20:44.605  6627-6762  AutoPermissionManager   com.cdccreditsmart.app               D    ❌ NEGADA - android.permission.ANSWER_PHONE_CALLS
+2026-02-06 14:20:44.606  6627-6762  AutoPermissionManager   com.cdccreditsmart.app               D    ❌ NEGADA - android.permission.READ_PHONE_NUMBERS
+2026-02-06 14:20:44.607  6627-6762  AutoPermissionManager   com.cdccreditsmart.app               D    ✅ CONCEDIDA - android.permission.ACCESS_BACKGROUND_LOCATION
+2026-02-06 14:20:44.608  6627-6762  AutoPermissionManager   com.cdccreditsmart.app               D    ✅ CONCEDIDA - android.permission.POST_NOTIFICATIONS
+2026-02-06 14:20:44.608  6627-6762  AutoPermissionManager   com.cdccreditsmart.app               W  ⚠️ Algumas permissões ainda não foram concedidas (runtime pode demorar para atualizar)
+2026-02-06 14:20:44.608  6627-6762  AutoPermissionManager   com.cdccreditsmart.app               I  ========================================
+2026-02-06 14:20:44.608  6627-6762  AutoPermissionManager   com.cdccreditsmart.app               I  🔐 CONFIGURANDO PERMISSÕES ESPECIAIS (Device Owner)
+2026-02-06 14:20:44.608  6627-6762  AutoPermissionManager   com.cdccreditsmart.app               I  ========================================
+2026-02-06 14:20:44.610  6627-6762  AutoPermissionManager   com.cdccreditsmart.app               I  📊 ========================================
+2026-02-06 14:20:44.610  6627-6762  AutoPermissionManager   com.cdccreditsmart.app               I  📊 CONCEDENDO PACKAGE_USAGE_STATS (Usage Access)
+2026-02-06 14:20:44.610  6627-6762  AutoPermissionManager   com.cdccreditsmart.app               I  📊 ========================================
+2026-02-06 14:20:44.613  6627-6762  AutoPermissionManager   com.cdccreditsmart.app               I  📊 Estado atual: 3 (precisa MODE_ALLOWED=0)
+2026-02-06 14:20:44.613  6627-6762  AutoPermissionManager   com.cdccreditsmart.app               I  📊 Tentando conceder automaticamente...
+2026-02-06 14:20:44.613  6627-6762  AutoPermissionManager   com.cdccreditsmart.app               D  📊 Tentativa 1: AppOpsManager.setMode() via reflexão
+2026-02-06 14:20:44.613  6627-6762  creditsmart.app         com.cdccreditsmart.app               W  Accessing hidden method Landroid/app/AppOpsManager;->setMode(IILjava/lang/String;I)V (unsupported,test-api, reflection, allowed)
+2026-02-06 14:20:44.615  6627-6762  AutoPermissionManager   com.cdccreditsmart.app               I  📊    ✅ setMode() executado
+2026-02-06 14:20:44.616  6627-6762  AutoPermissionManager   com.cdccreditsmart.app               I  📊 ✅ PACKAGE_USAGE_STATS CONCEDIDA COM SUCESSO!
+2026-02-06 14:20:44.616  6627-6762  AutoPermissionManager   com.cdccreditsmart.app               I  📊    SettingsGuardService agora pode monitorar activities
+2026-02-06 14:20:44.616  6627-6762  AutoPermissionManager   com.cdccreditsmart.app               I  📊 ========================================
+2026-02-06 14:20:44.616  6627-6762  AutoPermissionManager   com.cdccreditsmart.app               I  🪟 ========================================
+2026-02-06 14:20:44.616  6627-6762  AutoPermissionManager   com.cdccreditsmart.app               I  🪟 CONCEDENDO SYSTEM_ALERT_WINDOW (Overlay)
+2026-02-06 14:20:44.616  6627-6762  AutoPermissionManager   com.cdccreditsmart.app               I  🪟 ========================================
+2026-02-06 14:20:44.618  6627-6762  AutoPermissionManager   com.cdccreditsmart.app               I  🪟 Tentando conceder automaticamente...
+2026-02-06 14:20:44.618  6627-6762  AutoPermissionManager   com.cdccreditsmart.app               D  🪟 Tentativa 1: AppOpsManager.setMode() via reflexão
+2026-02-06 14:20:44.620  6627-6762  AutoPermissionManager   com.cdccreditsmart.app               I  🪟    ✅ setMode() executado
+2026-02-06 14:20:44.621  6627-6762  AutoPermissionManager   com.cdccreditsmart.app               I  🪟 ✅ SYSTEM_ALERT_WINDOW CONCEDIDA COM SUCESSO!
+2026-02-06 14:20:44.621  6627-6762  AutoPermissionManager   com.cdccreditsmart.app               I  🪟    SettingsGuard overlay agora pode funcionar
+2026-02-06 14:20:44.621  6627-6762  AutoPermissionManager   com.cdccreditsmart.app               I  🪟 ========================================
+2026-02-06 14:20:44.621  6627-6762  AutoPermissionManager   com.cdccreditsmart.app               I  🔋 ========================================
+2026-02-06 14:20:44.621  6627-6762  AutoPermissionManager   com.cdccreditsmart.app               I  🔋 VERIFICANDO ISENÇÃO DE OTIMIZAÇÃO DE BATERIA
+2026-02-06 14:20:44.621  6627-6762  AutoPermissionManager   com.cdccreditsmart.app               I  🔋 ========================================
+2026-02-06 14:20:44.621  6627-6762  AutoPermissionManager   com.cdccreditsmart.app               I  🔋 ⚠️ App NÃO está isento - solicitando isenção...
+2026-02-06 14:20:44.650  6627-6762  AutoPermissionManager   com.cdccreditsmart.app               I  🔋 ✅ Diálogo de isenção de bateria exibido
+2026-02-06 14:20:44.650  6627-6762  AutoPermissionManager   com.cdccreditsmart.app               I  🔋 ========================================
+2026-02-06 14:20:44.650  6627-6762  AutoPermissionManager   com.cdccreditsmart.app               I  📍 Forçando GPS/Localização sempre ativo...
+2026-02-06 14:20:44.654  6627-6762  AutoPermissionManager   com.cdccreditsmart.app               I  ✅ Localização forçada via setLocationEnabled (Android 9+)
+2026-02-06 14:20:44.658  6627-6762  AutoPermissionManager   com.cdccreditsmart.app               I  📍 Sem bloqueio ativo - usuário pode controlar GPS normalmente
+2026-02-06 14:20:44.665  6627-6762  AutoPermissionManager   com.cdccreditsmart.app               I  📍 Status atual - GPS: true, Network: true
+2026-02-06 14:20:44.665  6627-6762  AutoPermissionManager   com.cdccreditsmart.app               I  📍 Configuração de localização concluída
+2026-02-06 14:20:44.677  6627-6762  AutoPermissionManager   com.cdccreditsmart.app               I  ✅ Política de permissões configurada para AUTO_GRANT
+2026-02-06 14:20:44.678  6627-6762  AutoPermissionManager   com.cdccreditsmart.app               I  📊 ========================================
+2026-02-06 14:20:44.678  6627-6762  AutoPermissionManager   com.cdccreditsmart.app               I  📊 VERIFICAÇÃO FINAL: PACKAGE_USAGE_STATS
+2026-02-06 14:20:44.678  6627-6762  AutoPermissionManager   com.cdccreditsmart.app               I  📊 ========================================
+2026-02-06 14:20:44.679  6627-6762  AutoPermissionManager   com.cdccreditsmart.app               I  📊 ✅ PACKAGE_USAGE_STATS está ATIVA!
+2026-02-06 14:20:44.680  6627-6762  AutoPermissionManager   com.cdccreditsmart.app               I  📊    SettingsGuard pode monitorar activities precisamente
+2026-02-06 14:20:44.680  6627-6762  AutoPermissionManager   com.cdccreditsmart.app               I  📊 ========================================
+2026-02-06 14:20:44.681  6627-6762  AutoPermissionManager   com.cdccreditsmart.app               I  ========================================
+2026-02-06 14:20:45.186  6627-6762  PermissionGateManager   com.cdccreditsmart.app               W  ⚠️ Device Owner: 1 permissão(ões) pendente(s)
+2026-02-06 14:20:45.186  6627-6762  PermissionGateManager   com.cdccreditsmart.app               W     → Falta: Execução em Segundo Plano
+2026-02-06 14:20:45.617  6627-6762  SettingsGuardService    com.cdccreditsmart.app               I  ✅ USAGE_STATS concedida
+2026-02-06 14:20:45.618  6627-6762  SettingsGuardService    com.cdccreditsmart.app               I  📢 Notificação de permissão USAGE_STATS cancelada
+2026-02-06 14:20:45.625  6627-6762  SettingsGuardService    com.cdccreditsmart.app               D  📋 Activity check - Full: com.android.settings.fuelgauge.RequestIgnoreBatteryOptimizations, Simple: RequestIgnoreBatteryOptimizations
+2026-02-06 14:20:45.660  6627-6762  SettingsGuardService    com.cdccreditsmart.app               W  🎯 ATIVIDADE PERIGOSA DETECTADA!
+2026-02-06 14:20:45.660  6627-6762  SettingsGuardService    com.cdccreditsmart.app               W     Pacote: com.android.settings
+2026-02-06 14:20:45.660  6627-6762  SettingsGuardService    com.cdccreditsmart.app               W     Activity completa: com.android.settings.fuelgauge.RequestIgnoreBatteryOptimizations
+2026-02-06 14:20:45.660  6627-6762  SettingsGuardService    com.cdccreditsmart.app               W     Activity simplificada: RequestIgnoreBatteryOptimizations
+2026-02-06 14:20:45.660  6627-6762  SettingsGuardService    com.cdccreditsmart.app               W     Match: BatteryOptimization
+2026-02-06 14:20:45.660  6627-6762  SettingsGuardService    com.cdccreditsmart.app               W  🚨 ÁREA PERIGOSA: com.android.settings.fuelgauge.RequestIgnoreBatteryOptimizations
+2026-02-06 14:20:45.664  6627-6627  SettingsGuardService    com.cdccreditsmart.app               W  ⚠️ Não foi possível fazer force-stop do Settings: Permission Denial: killBackgroundProcesses() from pid=6627, uid=10303 requires android.permission.KILL_BACKGROUND_PROCESSES
+2026-02-06 14:20:45.696  6627-6627  SettingsGuardService    com.cdccreditsmart.app               I  🏠 Settings FECHADO - enviado para Home
+2026-02-06 14:20:45.869  6627-6627  SettingsGuardService    com.cdccreditsmart.app               I  ✅ Tela de bloqueio exibida (Settings fechado)
+2026-02-06 14:20:46.159  6627-6627  Activity                com.cdccreditsmart.app               D  onResume setDolbyGameProfilePackage lastPkg =  currentPkg = com.cdccreditsmart.app
+2026-02-06 14:20:46.164  6627-6627  VRI[AppAcc...nActivity] com.cdccreditsmart.app               D  hardware acceleration = true, forceHwAccelerated = false
+2026-02-06 14:20:46.171  6627-6627  InputEventReceiver      com.cdccreditsmart.app               D  Input log is disabled in InputEventReceiver.
+2026-02-06 14:20:46.374  6627-6627  LocalInstallmentStorage com.cdccreditsmart.app               W  ⚠️ Nenhuma parcela armazenada localmente
+2026-02-06 14:20:46.532  6627-6627  BufferQueueConsumer     com.cdccreditsmart.app               D  [](id:19e300000002,api:0,p:-1,c:6627) connect: controlledByApp=false
+2026-02-06 14:20:46.532  6627-6627  BLASTBufferQueue        com.cdccreditsmart.app               D  [VRI[AppAccessExplanationActivity]#2](f:0,a:0) constructor()
+2026-02-06 14:20:46.532  6627-6627  BLASTBufferQueue        com.cdccreditsmart.app               D  [VRI[AppAccessExplanationActivity]#2](f:0,a:0) update width=1080 height=2400 format=-1 mTransformHint=0
+2026-02-06 14:20:46.656  6627-6766  BLASTBufferQueue        com.cdccreditsmart.app               D  [VRI[AppAccessExplanationActivity]#2](f:0,a:1) acquireNextBufferLocked size=1080x2400 mFrameNumber=1 applyTransaction=true mTimestamp=4970572381449(auto) mPendingTransactions.size=0 graphicBufferId=28462748270603 transform=0
+2026-02-06 14:20:46.662  6627-6762  SupportRepository       com.cdccreditsmart.app               I  📡 Buscando dados de contato do servidor...
+2026-02-06 14:20:46.664  6627-6627  CdcForegroundService    com.cdccreditsmart.app               D  🚀 Serviço onStartCommand() - Action: com.cdccreditsmart.app.START_SERVICE
+2026-02-06 14:20:46.670  6627-6627  CdcForegroundService    com.cdccreditsmart.app               I  ✅ Foreground Service com localização habilitada
+2026-02-06 14:20:46.675  6627-6627  CdcForegroundService    com.cdccreditsmart.app               W  ⚠️ Falha ao iniciar FGS com tipo combinado, tentando sem location: Starting FGS with type location callerApp=ProcessRecord{3500915 6627:com.cdccreditsmart.app/u0a303} targetSDK=35 requires permissions: all of the permissions allOf=true [android.permission.FOREGROUND_SERVICE_LOCATION] any of the permissions allOf=false [android.permission.ACCESS_COARSE_LOCATION, android.permission.ACCESS_FINE_LOCATION]  and the app must be in the eligible state/exemptions to access the foreground only permission
+2026-02-06 14:20:46.680  6627-6627  CdcForegroundService    com.cdccreditsmart.app               I  ✅ Foreground Service ativo (Android 12+)
+2026-02-06 14:20:46.682  6627-6761  CdcForegroundService    com.cdccreditsmart.app               I  🔧 ========================================
+2026-02-06 14:20:46.682  6627-6761  CdcForegroundService    com.cdccreditsmart.app               I  🔧 INICIANDO initializeServices()...
+2026-02-06 14:20:46.682  6627-6761  CdcForegroundService    com.cdccreditsmart.app               I  🔧 ========================================
+2026-02-06 14:20:46.683  6627-6761  CdcForegroundService    com.cdccreditsmart.app               D  ✅ Serviços base já inicializados
+2026-02-06 14:20:46.694  6627-6627  VRI[MainActivity]       com.cdccreditsmart.app               D  visibilityChanged oldVisibility=true newVisibility=false
+2026-02-06 14:20:46.701  6627-6761  SettingsGuardService    com.cdccreditsmart.app               D  📋 Activity check - Full: com.cdccreditsmart.app.appmanagement.AppAccessExplanationActivity, Simple: AppAccessExplanationActivity
+2026-02-06 14:20:46.712  6627-6627  BLASTBufferQueue        com.cdccreditsmart.app               D  [VRI[MainActivity]#1](f:0,a:1) destructor()
+2026-02-06 14:20:46.712  6627-6761  SettingsGuardService    com.cdccreditsmart.app               I  ✅ App CDC em foreground - resetando contador e throttle
+2026-02-06 14:20:46.712  6627-6627  BufferQueueConsumer     com.cdccreditsmart.app               D  [VRI[MainActivity]#1(BLAST Consumer)1](id:19e300000001,api:0,p:-1,c:6627) disconnect
+2026-02-06 14:20:47.185  6627-6761  ContractCodeStorage     com.cdccreditsmart.app               D  Retrieving contract code from storage
+2026-02-06 14:20:47.191  6627-6761  ContractCodeStorage     com.cdccreditsmart.app               D  Storage verification: 0 valid, 0 tampered, 7 missing
+2026-02-06 14:20:47.191  6627-6761  ContractCodeStorage     com.cdccreditsmart.app               W  No valid contract code found in any location
+2026-02-06 14:20:47.195  6627-6761  SecureTokenStorage      com.cdccreditsmart.app               E  ❌ Nenhum identificador MDM disponível!
+2026-02-06 14:20:47.195  6627-6761  CdcForegroundService    com.cdccreditsmart.app               I  🔐 AuthToken presente: false
+2026-02-06 14:20:47.195  6627-6761  CdcForegroundService    com.cdccreditsmart.app               I  🔐 AuthToken length: 0
+2026-02-06 14:20:47.195  6627-6761  CdcForegroundService    com.cdccreditsmart.app               I  🔐 ContractCode presente: false
+2026-02-06 14:20:47.195  6627-6761  CdcForegroundService    com.cdccreditsmart.app               I  🔐 ContractCode value: null****
+2026-02-06 14:20:47.195  6627-6761  CdcForegroundService    com.cdccreditsmart.app               I  🔐 MDM SerialNumber presente: false
+2026-02-06 14:20:47.195  6627-6761  CdcForegroundService    com.cdccreditsmart.app               I  🔐 MDM SerialNumber value: ......
+2026-02-06 14:20:47.195  6627-6761  CdcForegroundService    com.cdccreditsmart.app               I  📱 ========================================
+2026-02-06 14:20:47.195  6627-6761  CdcForegroundService    com.cdccreditsmart.app               I  📱 AGUARDANDO PAIRING - MDM EM STANDBY
+2026-02-06 14:20:47.195  6627-6761  CdcForegroundService    com.cdccreditsmart.app               I  📱 O usuário ainda não fez o pareamento inicial
+2026-02-06 14:20:47.195  6627-6761  CdcForegroundService    com.cdccreditsmart.app               I  📱 Serviços MDM serão ativados após inserir código do contrato
+2026-02-06 14:20:47.195  6627-6761  CdcForegroundService    com.cdccreditsmart.app               I  📱 NOTA: isMdmInitialized permanece FALSE para permitir reinicialização
+2026-02-06 14:20:47.195  6627-6761  CdcForegroundService    com.cdccreditsmart.app               I  📱 ========================================
+2026-02-06 14:20:47.536  6627-6642  creditsmart.app         com.cdccreditsmart.app               W  Cleared Reference was only reachable from finalizer (only reported once)
+2026-02-06 14:20:47.589  6627-7104  okhttp.OkHttpClient     com.cdccreditsmart.app               I  --> GET https://cdccreditsmart.com/v1/support/contact
+2026-02-06 14:20:47.589  6627-7104  okhttp.OkHttpClient     com.cdccreditsmart.app               I  --> END GET
+2026-02-06 14:20:47.947  6627-6627  Activity                com.cdccreditsmart.app               D  onResume setDolbyGameProfilePackage lastPkg =  currentPkg = com.cdccreditsmart.app
+2026-02-06 14:20:47.963  6627-6627  BufferQueueConsumer     com.cdccreditsmart.app               D  [](id:19e300000003,api:0,p:-1,c:6627) connect: controlledByApp=false
+2026-02-06 14:20:47.964  6627-6627  BLASTBufferQueue        com.cdccreditsmart.app               D  [VRI[MainActivity]#3](f:0,a:0) constructor()
+2026-02-06 14:20:47.964  6627-6627  BLASTBufferQueue        com.cdccreditsmart.app               D  [VRI[MainActivity]#3](f:0,a:0) update width=1080 height=2400 format=-3 mTransformHint=0
+2026-02-06 14:20:48.007  6627-6766  BLASTBufferQueue        com.cdccreditsmart.app               D  [VRI[MainActivity]#3](f:0,a:1) acquireNextBufferLocked size=1080x2400 mFrameNumber=1 applyTransaction=true mTimestamp=4971923450911(auto) mPendingTransactions.size=0 graphicBufferId=28462748270607 transform=0
+2026-02-06 14:20:48.473  6627-7104  okhttp.OkHttpClient     com.cdccreditsmart.app               I  <-- 200 https://cdccreditsmart.com/v1/support/contact (883ms)
+2026-02-06 14:20:48.474  6627-7104  okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-credentials: true
+2026-02-06 14:20:48.474  6627-7104  okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-headers: Origin, X-Requested-With, Content-Type, Accept, Authorization, x-client-key, x-client-token, x-client-secret, cache-control
+2026-02-06 14:20:48.474  6627-7104  okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-methods: GET, POST, PUT, PATCH, DELETE, OPTIONS
+2026-02-06 14:20:48.474  6627-7104  okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-origin: *
+2026-02-06 14:20:48.474  6627-7104  okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-max-age: 86400
+2026-02-06 14:20:48.474  6627-7104  okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-length: 111
+2026-02-06 14:20:48.474  6627-7104  okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-security-policy: default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://replit.com; style-src 'self' 'unsafe-inline' https://replit.com; img-src 'self' data: https:; font-src 'self' data: https://replit.com; connect-src 'self';
+2026-02-06 14:20:48.474  6627-7104  okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-type: application/json; charset=utf-8
+2026-02-06 14:20:48.474  6627-7104  okhttp.OkHttpClient     com.cdccreditsmart.app               I  date: Fri, 06 Feb 2026 17:20:48 GMT
+2026-02-06 14:20:48.474  6627-7104  okhttp.OkHttpClient     com.cdccreditsmart.app               I  etag: W/"6f-ar1ZGdhbShZ7SAODOF+BTA5O768"
+2026-02-06 14:20:48.474  6627-7104  okhttp.OkHttpClient     com.cdccreditsmart.app               I  permissions-policy: geolocation=(), microphone=(), camera=()
+2026-02-06 14:20:48.474  6627-7104  okhttp.OkHttpClient     com.cdccreditsmart.app               I  referrer-policy: strict-origin-when-cross-origin
+2026-02-06 14:20:48.474  6627-7104  okhttp.OkHttpClient     com.cdccreditsmart.app               I  strict-transport-security: max-age=63072000; includeSubDomains
+2026-02-06 14:20:48.475  6627-7104  okhttp.OkHttpClient     com.cdccreditsmart.app               I  strict-transport-security: max-age=31536000; includeSubDomains
+2026-02-06 14:20:48.475  6627-7104  okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-anti-fraud-protection: active
+2026-02-06 14:20:48.475  6627-7104  okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-certificate-pinning-enabled: false
+2026-02-06 14:20:48.475  6627-7104  okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-certificate-pinning-status: disabled-for-stability
+2026-02-06 14:20:48.475  6627-7104  okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-content-type-options: nosniff
+2026-02-06 14:20:48.475  6627-7104  okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-financial-data-protection: enabled
+2026-02-06 14:20:48.475  6627-7104  okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-frame-options: DENY
+2026-02-06 14:20:48.475  6627-7104  okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-transaction-security-level: maximum
+2026-02-06 14:20:48.475  6627-7104  okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-xss-protection: 1; mode=block
+2026-02-06 14:20:48.475  6627-7104  okhttp.OkHttpClient     com.cdccreditsmart.app               I  via: 1.1 google
+2026-02-06 14:20:48.475  6627-7104  okhttp.OkHttpClient     com.cdccreditsmart.app               I  alt-svc: h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
+2026-02-06 14:20:48.477  6627-7104  okhttp.OkHttpClient     com.cdccreditsmart.app               I  {"phone":"(85) 98188-8810","whatsapp":"(85) 98188-8810","contactLink":"https://www.cdccreditsmart.com/contato"}
+2026-02-06 14:20:48.477  6627-7104  okhttp.OkHttpClient     com.cdccreditsmart.app               I  <-- END HTTP (111-byte body)
+2026-02-06 14:20:48.485  6627-6762  SupportRepository       com.cdccreditsmart.app               I  ✅ Dados de contato atualizados: phone=true, whatsapp=true, link=true
+2026-02-06 14:20:48.533  6627-6627  VRI[AppAcc...nActivity] com.cdccreditsmart.app               D  visibilityChanged oldVisibility=true newVisibility=false
+2026-02-06 14:20:48.546  6627-6766  HWUI                    com.cdccreditsmart.app               D  endAllActiveAnimators on 0xb4000073b5b21c50 (UnprojectedRipple) with handle 0xb400007265b38150
+2026-02-06 14:20:48.568  6627-6648  BLASTBufferQueue        com.cdccreditsmart.app               D  [VRI[AppAccessExplanationActivity]#2](f:0,a:1) destructor()
+2026-02-06 14:20:48.568  6627-6648  BufferQueueConsumer     com.cdccreditsmart.app               D  [VRI[AppAccessExplanationActivity]#2(BLAST Consumer)2](id:19e300000002,api:0,p:-1,c:6627) disconnect
+2026-02-06 14:20:48.571  6627-6627  WindowOnBackDispatcher  com.cdccreditsmart.app               W  sendCancelIfRunning: isInProgress=false callback=android.app.Activity$$ExternalSyntheticLambda0@7c9ad06
+2026-02-06 14:20:48.574  6627-6627  View                    com.cdccreditsmart.app               D  [Warning] assignParent to null: this = DecorView@f36a1fe[AppAccessExplanationActivity]
+2026-02-06 14:20:51.239  6627-6627  ScrollIdentify          com.cdccreditsmart.app               I  on fling
+2026-02-06 14:20:51.817  6627-6627  ScrollIdentify          com.cdccreditsmart.app               I  on fling
+2026-02-06 14:20:57.028  6627-6627  SettingsGuardService    com.cdccreditsmart.app               I  ⏸️ Guard PAUSADO para fluxo de permissões (timeout: 30s)
+2026-02-06 14:20:57.937  6627-6627  Activity                com.cdccreditsmart.app               D  onResume setDolbyGameProfilePackage lastPkg =  currentPkg = com.cdccreditsmart.app
+2026-02-06 14:20:58.732  6627-6762  SettingsGuardService    com.cdccreditsmart.app               I  ▶️ App CDC em foreground - fluxo de permissão concluído
+2026-02-06 14:20:58.733  6627-6762  SettingsGuardService    com.cdccreditsmart.app               I  ▶️ Guard RETOMADO após fluxo de permissões
+2026-02-06 14:20:59.297  6627-6762  PermissionGateManager   com.cdccreditsmart.app               I  ✅ Device Owner: Todas as permissões especiais concedidas!
+2026-02-06 14:20:59.299  6627-6627  PermissionGateScreen    com.cdccreditsmart.app               I  ✅ TODAS AS PERMISSÕES CONCEDIDAS! Prosseguindo para o app...
+2026-02-06 14:20:59.300  6627-6627  SettingsGuardService    com.cdccreditsmart.app               I  ▶️ Guard RETOMADO após fluxo de permissões
+2026-02-06 14:20:59.873  6627-6627  DeviceOwnerCheckVM      com.cdccreditsmart.app               I  ========================================
+2026-02-06 14:20:59.873  6627-6627  DeviceOwnerCheckVM      com.cdccreditsmart.app               I  🔐 Verificando status de Device Owner...
+2026-02-06 14:21:00.379  6627-6627  DeviceUtils             com.cdccreditsmart.app               D  Device Owner check: true
+2026-02-06 14:21:00.380  6627-6627  DeviceUtils             com.cdccreditsmart.app               D  Samsung device: false (Manufacturer: motorola)
+2026-02-06 14:21:00.380  6627-6627  DeviceOwnerCheckVM      com.cdccreditsmart.app               I  ✅ Dispositivo é Device Owner - permitindo acesso ao app
+2026-02-06 14:21:00.380  6627-6627  DeviceOwnerCheckVM      com.cdccreditsmart.app               I  ========================================
+2026-02-06 14:21:00.430  6627-6627  RouterViewModel         com.cdccreditsmart.app               D  🚀 Iniciando verificação de autenticação...
+2026-02-06 14:21:00.436  6627-6762  AuthOrchestrator        com.cdccreditsmart.app               D  🔐 Verificando autenticação...
+2026-02-06 14:21:00.444  6627-6762  AuthOrchestrator        com.cdccreditsmart.app               D  🌐 Conectividade: ONLINE
+2026-02-06 14:21:00.445  6627-6762  AuthOrchestrator        com.cdccreditsmart.app               D  🔄 ========== AUTO-DISCOVERY INICIADO ==========
+2026-02-06 14:21:00.478  6627-6762  DeviceUtils             com.cdccreditsmart.app               D  IMEI retrieved successfully: 3531***
+2026-02-06 14:21:00.479  6627-6762  AuthOrchestrator        com.cdccreditsmart.app               D  📱 IMEI obtido: 3531***198
+2026-02-06 14:21:00.479  6627-6762  AuthOrchestrator        com.cdccreditsmart.app               D  🔍 Tentando auto-discovery...
+2026-02-06 14:21:00.479  6627-6762  AuthOrchestrator        com.cdccreditsmart.app               D     Endpoint: GET /api/apk/discover/353104906953198
+2026-02-06 14:21:00.512  6627-7104  okhttp.OkHttpClient     com.cdccreditsmart.app               I  --> GET https://cdccreditsmart.com/api/apk/discover/353104906953198
+2026-02-06 14:21:00.512  6627-7104  okhttp.OkHttpClient     com.cdccreditsmart.app               I  --> END GET
+2026-02-06 14:21:00.618  6627-6627  SettingsGuardService    com.cdccreditsmart.app               I  ▶️ Guard RETOMADO após fluxo de permissões
+2026-02-06 14:21:01.265  6627-7104  okhttp.OkHttpClient     com.cdccreditsmart.app               I  <-- 404 https://cdccreditsmart.com/api/apk/discover/353104906953198 (752ms)
+2026-02-06 14:21:01.265  6627-7104  okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-credentials: true
+2026-02-06 14:21:01.266  6627-7104  okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-headers: Origin, X-Requested-With, Content-Type, Accept, Authorization, x-client-key, x-client-token, x-client-secret, cache-control
+2026-02-06 14:21:01.266  6627-7104  okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-methods: GET, POST, PUT, PATCH, DELETE, OPTIONS
+2026-02-06 14:21:01.266  6627-7104  okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-allow-origin: *
+2026-02-06 14:21:01.266  6627-7104  okhttp.OkHttpClient     com.cdccreditsmart.app               I  access-control-max-age: 86400
+2026-02-06 14:21:01.266  6627-7104  okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-length: 135
+2026-02-06 14:21:01.266  6627-7104  okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-security-policy: default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://replit.com; style-src 'self' 'unsafe-inline' https://replit.com; img-src 'self' data: https:; font-src 'self' data: https://replit.com; connect-src 'self';
+2026-02-06 14:21:01.266  6627-7104  okhttp.OkHttpClient     com.cdccreditsmart.app               I  content-type: application/json; charset=utf-8
+2026-02-06 14:21:01.266  6627-7104  okhttp.OkHttpClient     com.cdccreditsmart.app               I  date: Fri, 06 Feb 2026 17:21:01 GMT
+2026-02-06 14:21:01.266  6627-7104  okhttp.OkHttpClient     com.cdccreditsmart.app               I  etag: W/"87-WMi3emPyx8sd4D1rSTdlqG1WZek"
+2026-02-06 14:21:01.266  6627-7104  okhttp.OkHttpClient     com.cdccreditsmart.app               I  permissions-policy: geolocation=(), microphone=(), camera=()
+2026-02-06 14:21:01.267  6627-7104  okhttp.OkHttpClient     com.cdccreditsmart.app               I  referrer-policy: strict-origin-when-cross-origin
+2026-02-06 14:21:01.267  6627-7104  okhttp.OkHttpClient     com.cdccreditsmart.app               I  strict-transport-security: max-age=63072000; includeSubDomains
+2026-02-06 14:21:01.267  6627-7104  okhttp.OkHttpClient     com.cdccreditsmart.app               I  strict-transport-security: max-age=31536000; includeSubDomains
+2026-02-06 14:21:01.267  6627-7104  okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-anti-fraud-protection: active
+2026-02-06 14:21:01.267  6627-7104  okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-certificate-pinning-enabled: false
+2026-02-06 14:21:01.267  6627-7104  okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-certificate-pinning-status: disabled-for-stability
+2026-02-06 14:21:01.267  6627-7104  okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-content-type-options: nosniff
+2026-02-06 14:21:01.267  6627-7104  okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-financial-data-protection: enabled
+2026-02-06 14:21:01.268  6627-7104  okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-frame-options: DENY
+2026-02-06 14:21:01.268  6627-7104  okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-transaction-security-level: maximum
+2026-02-06 14:21:01.268  6627-7104  okhttp.OkHttpClient     com.cdccreditsmart.app               I  x-xss-protection: 1; mode=block
+2026-02-06 14:21:01.268  6627-7104  okhttp.OkHttpClient     com.cdccreditsmart.app               I  via: 1.1 google
+2026-02-06 14:21:01.268  6627-7104  okhttp.OkHttpClient     com.cdccreditsmart.app               I  alt-svc: h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
+2026-02-06 14:21:01.270  6627-7104  okhttp.OkHttpClient     com.cdccreditsmart.app               I  {"error":"Dispositivo não cadastrado","hint":"Este aparelho não está cadastrado no sistema. Cadastre-o primeiro na plataforma web."}
+2026-02-06 14:21:01.270  6627-7104  okhttp.OkHttpClient     com.cdccreditsmart.app               I  <-- END HTTP (135-byte body)
+2026-02-06 14:21:01.273  6627-6762  AuthOrchestrator        com.cdccreditsmart.app               W  ❌ Dispositivo não cadastrado (404)
+2026-02-06 14:21:01.273  6627-6762  AuthOrchestrator        com.cdccreditsmart.app               D     → Backend não encontrou este IMEI
+2026-02-06 14:21:01.273  6627-6762  AuthOrchestrator        com.cdccreditsmart.app               D     → Será necessário pareamento manual
+2026-02-06 14:21:01.273  6627-6762  ContractCodeStorage     com.cdccreditsmart.app               D  Retrieving contract code from storage
+2026-02-06 14:21:01.415  6627-6762  ContractCodeStorage     com.cdccreditsmart.app               D  Storage verification: 0 valid, 0 tampered, 7 missing
+2026-02-06 14:21:01.415  6627-6762  ContractCodeStorage     com.cdccreditsmart.app               W  No valid contract code found in any location
+2026-02-06 14:21:01.415  6627-6762  AuthOrchestrator        com.cdccreditsmart.app               D  ❌ Código de pareamento não encontrado - precisa de novo código
+2026-02-06 14:21:01.419  6627-6627  RouterViewModel         com.cdccreditsmart.app               D  ❌ Código de pareamento necessário - Ir para QR Scanner
+2026-02-06 14:21:03.578  6627-6627  ScrollIdentify          com.cdccreditsmart.app               I  on fling
+2026-02-06 14:21:05.120  6627-6627  VRI[MainActivity]       com.cdccreditsmart.app               D  hardware acceleration = true, forceHwAccelerated = false
+2026-02-06 14:21:05.130  6627-6627  InputEventReceiver      com.cdccreditsmart.app               D  Input log is disabled in InputEventReceiver.
+2026-02-06 14:21:05.222  6627-6627  BufferQueueConsumer     com.cdccreditsmart.app               D  [](id:19e300000004,api:0,p:-1,c:6627) connect: controlledByApp=false
+2026-02-06 14:21:05.223  6627-6627  BLASTBufferQueue        com.cdccreditsmart.app               D  [VRI[MainActivity]#4](f:0,a:0) constructor()
+2026-02-06 14:21:05.223  6627-6627  BLASTBufferQueue        com.cdccreditsmart.app               D  [VRI[MainActivity]#4](f:0,a:0) update width=960 height=1302 format=-2 mTransformHint=0
+2026-02-06 14:21:05.285  6627-6766  BLASTBufferQueue        com.cdccreditsmart.app               D  [VRI[MainActivity]#4](f:0,a:1) acquireNextBufferLocked size=960x1302 mFrameNumber=1 applyTransaction=true mTimestamp=4989200781143(auto) mPendingTransactions.size=0 graphicBufferId=28462748270611 transform=0
+2026-02-06 14:21:05.922  6627-6627  WindowOnBackDispatcher  com.cdccreditsmart.app               W  sendCancelIfRunning: isInProgress=false callback=androidx.activity.OnBackPressedDispatcher$Api34Impl$createOnBackAnimationCallback$1@da630ed
+2026-02-06 14:21:05.934  6627-6766  HWUI                    com.cdccreditsmart.app               D  endAllActiveAnimators on 0xb4000073b5b61570 (UnprojectedRipple) with handle 0xb400007265b43a00
+2026-02-06 14:21:05.934  6627-6627  View                    com.cdccreditsmart.app               D  [Warning] assignParent to null: this = DecorView@aeca933[MainActivity]
+2026-02-06 14:21:05.946  6627-6648  BLASTBufferQueue        com.cdccreditsmart.app               D  [VRI[MainActivity]#4](f:0,a:1) destructor()
+2026-02-06 14:21:05.946  6627-6648  BufferQueueConsumer     com.cdccreditsmart.app               D  [VRI[MainActivity]#4(BLAST Consumer)4](id:19e300000004,api:0,p:-1,c:6627) disconnect
+2026-02-06 14:21:05.948  6627-6627  VRI[MainActivity]       com.cdccreditsmart.app               D  hardware acceleration = true, forceHwAccelerated = false
+2026-02-06 14:21:05.957  6627-6627  InputEventReceiver      com.cdccreditsmart.app               D  Input log is disabled in InputEventReceiver.
+2026-02-06 14:21:06.029  6627-6627  BufferQueueConsumer     com.cdccreditsmart.app               D  [](id:19e300000005,api:0,p:-1,c:6627) connect: controlledByApp=false
+2026-02-06 14:21:06.029  6627-6627  BLASTBufferQueue        com.cdccreditsmart.app               D  [VRI[MainActivity]#5](f:0,a:0) constructor()
+2026-02-06 14:21:06.029  6627-6627  BLASTBufferQueue        com.cdccreditsmart.app               D  [VRI[MainActivity]#5](f:0,a:0) update width=960 height=1053 format=-2 mTransformHint=0
+2026-02-06 14:21:06.064  6627-6766  BLASTBufferQueue        com.cdccreditsmart.app               D  [VRI[MainActivity]#5](f:0,a:1) acquireNextBufferLocked size=960x1053 mFrameNumber=1 applyTransaction=true mTimestamp=4989980167297(auto) mPendingTransactions.size=0 graphicBufferId=28462748270615 transform=0
+2026-02-06 14:21:06.768  6627-6627  WindowOnBackDispatcher  com.cdccreditsmart.app               W  sendCancelIfRunning: isInProgress=false callback=androidx.activity.OnBackPressedDispatcher$Api34Impl$createOnBackAnimationCallback$1@4174208
+2026-02-06 14:21:06.778  6627-6766  HWUI                    com.cdccreditsmart.app               D  endAllActiveAnimators on 0xb4000073b5b69630 (UnprojectedRipple) with handle 0xb400007265b41270
+2026-02-06 14:21:06.779  6627-6627  View                    com.cdccreditsmart.app               D  [Warning] assignParent to null: this = DecorView@90feb88[MainActivity]
+2026-02-06 14:21:06.792  6627-6648  BLASTBufferQueue        com.cdccreditsmart.app               D  [VRI[MainActivity]#5](f:0,a:1) destructor()
+2026-02-06 14:21:06.792  6627-6648  BufferQueueConsumer     com.cdccreditsmart.app               D  [VRI[MainActivity]#5(BLAST Consumer)5](id:19e300000005,api:0,p:-1,c:6627) disconnect
+2026-02-06 14:21:06.816  6627-6627  UninstallFlowActivity   com.cdccreditsmart.app               I  
+2026-02-06 14:21:06.817  6627-6627  UninstallFlowActivity   com.cdccreditsmart.app               I  ╔════════════════════════════════════════════════════════════╗
+2026-02-06 14:21:06.817  6627-6627  UninstallFlowActivity   com.cdccreditsmart.app               I  ║     FLUXO DE DESINSTALAÇÃO SEGURA - CREDIT SMART          ║
+2026-02-06 14:21:06.817  6627-6627  UninstallFlowActivity   com.cdccreditsmart.app               I  ╚════════════════════════════════════════════════════════════╝
+2026-02-06 14:21:06.817  6627-6627  UninstallFlowActivity   com.cdccreditsmart.app               I  
+2026-02-06 14:21:06.817  6627-6627  UninstallFlowActivity   com.cdccreditsmart.app               I  Tipo de desinstalação: not_activated
+2026-02-06 14:21:06.817  6627-6627  UninstallFlowActivity   com.cdccreditsmart.app               I  Diálogo já lançado: false
+2026-02-06 14:21:06.817  6627-6627  SettingsGuardService    com.cdccreditsmart.app               I  🗑️ Guard PAUSADO para desinstalação voluntária
+2026-02-06 14:21:06.817  6627-6627  SettingsGuardService    com.cdccreditsmart.app               I     Proteção desativada - usuário pode desinstalar
+2026-02-06 14:21:06.817  6627-6627  SettingsGuardService    com.cdccreditsmart.app               I     Timeout: 120s para auto-recuperação
+2026-02-06 14:21:06.817  6627-6627  UninstallFlowActivity   com.cdccreditsmart.app               I  ⏸️ SettingsGuard pausado para desinstalação
+2026-02-06 14:21:06.819  6627-6627  UninstallFlowActivity   com.cdccreditsmart.app               I  
+2026-02-06 14:21:06.819  6627-6627  UninstallFlowActivity   com.cdccreditsmart.app               I  [PASSO 1/4] Verificando privilégios...
+2026-02-06 14:21:06.819  6627-6627  UninstallFlowActivity   com.cdccreditsmart.app               I     Device Owner: SIM
+2026-02-06 14:21:06.819  6627-6627  UninstallFlowActivity   com.cdccreditsmart.app               I     Device Admin: SIM
+2026-02-06 14:21:06.819  6627-6627  UninstallFlowActivity   com.cdccreditsmart.app               I  
+2026-02-06 14:21:06.819  6627-6627  UninstallFlowActivity   com.cdccreditsmart.app               I  [PASSO 2/4] Removendo bloqueios de Device Owner...
+2026-02-06 14:21:06.828  6627-6627  UninstallFlowActivity   com.cdccreditsmart.app               I     OK: Bloqueio de desinstalação removido
+2026-02-06 14:21:06.833  6627-6627  UninstallFlowActivity   com.cdccreditsmart.app               I     OK: User control disabled packages limpo
+2026-02-06 14:21:06.833  6627-6627  UninstallFlowActivity   com.cdccreditsmart.app               I  
+2026-02-06 14:21:06.833  6627-6627  UninstallFlowActivity   com.cdccreditsmart.app               I  [PASSO 3/4] Removendo Device Owner...
+2026-02-06 14:21:06.921  6627-6627  UninstallFlowActivity   com.cdccreditsmart.app               I     OK: Device Owner removido com sucesso
+2026-02-06 14:21:06.921  6627-6627  UninstallFlowActivity   com.cdccreditsmart.app               I  
+2026-02-06 14:21:06.921  6627-6627  UninstallFlowActivity   com.cdccreditsmart.app               I  [PASSO 4/4] Iniciando desinstalação do sistema...
+2026-02-06 14:21:06.921  6627-6627  UninstallFlowActivity   com.cdccreditsmart.app               I  
+2026-02-06 14:21:06.950  6627-6627  Activity                com.cdccreditsmart.app               D  onResume setDolbyGameProfilePackage lastPkg =  currentPkg = com.cdccreditsmart.app
+2026-02-06 14:21:06.951  6627-6627  UninstallFlowActivity   com.cdccreditsmart.app               I  
+2026-02-06 14:21:06.951  6627-6627  UninstallFlowActivity   com.cdccreditsmart.app               I  ╔════════════════════════════════════════════════════════════╗
+2026-02-06 14:21:06.951  6627-6627  UninstallFlowActivity   com.cdccreditsmart.app               I  ║     RETORNO DO DIÁLOGO DE DESINSTALAÇÃO                   ║
+2026-02-06 14:21:06.951  6627-6627  UninstallFlowActivity   com.cdccreditsmart.app               I  ╚════════════════════════════════════════════════════════════╝
+2026-02-06 14:21:06.951  6627-6627  UninstallFlowActivity   com.cdccreditsmart.app               I  
+2026-02-06 14:21:06.961  6627-6627  VRI[Uninst...wActivity] com.cdccreditsmart.app               D  hardware acceleration = true, forceHwAccelerated = false
+2026-02-06 14:21:06.974  6627-6627  InputEventReceiver      com.cdccreditsmart.app               D  Input log is disabled in InputEventReceiver.
+2026-02-06 14:21:07.003  6627-6627  BufferQueueConsumer     com.cdccreditsmart.app               D  [](id:19e300000006,api:0,p:-1,c:6627) connect: controlledByApp=false
+2026-02-06 14:21:07.006  6627-6627  BLASTBufferQueue        com.cdccreditsmart.app               D  [VRI[UninstallFlowActivity]#6](f:0,a:0) constructor()
+2026-02-06 14:21:07.006  6627-6627  BLASTBufferQueue        com.cdccreditsmart.app               D  [VRI[UninstallFlowActivity]#6](f:0,a:0) update width=1080 height=2400 format=-2 mTransformHint=0
+2026-02-06 14:21:07.028  6627-6766  BLASTBufferQueue        com.cdccreditsmart.app               D  [VRI[UninstallFlowActivity]#6](f:0,a:1) acquireNextBufferLocked size=1080x2400 mFrameNumber=1 applyTransaction=true mTimestamp=4990940415835(auto) mPendingTransactions.size=0 graphicBufferId=28462748270617 transform=0
+2026-02-06 14:21:07.039  6627-6627  CDCDeviceAdminService   com.cdccreditsmart.app               I  Device Admin Service destroyed
+2026-02-06 14:21:07.043  6627-6627  CDCDeviceAdminReceiver  com.cdccreditsmart.app               W  Device Admin disabled
+2026-02-06 14:21:07.329  6627-6627  Activity                com.cdccreditsmart.app               D  onResume setDolbyGameProfilePackage lastPkg =  currentPkg = com.cdccreditsmart.app
+2026-02-06 14:21:07.329  6627-6627  UninstallFlowActivity   com.cdccreditsmart.app               I  
+2026-02-06 14:21:07.329  6627-6627  UninstallFlowActivity   com.cdccreditsmart.app               I  ╔════════════════════════════════════════════════════════════╗
+2026-02-06 14:21:07.329  6627-6627  UninstallFlowActivity   com.cdccreditsmart.app               I  ║     RETORNO DO DIÁLOGO DE DESINSTALAÇÃO                   ║
+2026-02-06 14:21:07.329  6627-6627  UninstallFlowActivity   com.cdccreditsmart.app               I  ╚════════════════════════════════════════════════════════════╝
+2026-02-06 14:21:07.329  6627-6627  UninstallFlowActivity   com.cdccreditsmart.app               I  
+2026-02-06 14:21:07.453  6627-6627  UninstallFlowActivity   com.cdccreditsmart.app               W  RESULTADO: Usuário CANCELOU a desinstalação
+2026-02-06 14:21:07.454  6627-6627  UninstallFlowActivity   com.cdccreditsmart.app               W  
+2026-02-06 14:21:07.454  6627-6627  UninstallFlowActivity   com.cdccreditsmart.app               W  ATENÇÃO: Proteções foram removidas e NÃO podem ser reaplicadas!
+2026-02-06 14:21:07.454  6627-6627  UninstallFlowActivity   com.cdccreditsmart.app               W     O app não é mais Device Owner/Admin
+2026-02-06 14:21:07.454  6627-6627  UninstallFlowActivity   com.cdccreditsmart.app               W     Para restaurar proteções, reprovisionar via:
+2026-02-06 14:21:07.454  6627-6627  UninstallFlowActivity   com.cdccreditsmart.app               W       1. Factory reset + QR Code de provisionamento
+2026-02-06 14:21:07.454  6627-6627  UninstallFlowActivity   com.cdccreditsmart.app               W       2. ADB: dpm set-device-owner
+2026-02-06 14:21:07.454  6627-6627  SettingsGuardService    com.cdccreditsmart.app               I  ▶️ Guard RETOMADO após desinstalação cancelada
+2026-02-06 14:21:07.454  6627-6627  UninstallFlowActivity   com.cdccreditsmart.app               I  ▶️ SettingsGuard retomado
+2026-02-06 14:21:07.454  6627-6627  UninstallFlowActivity   com.cdccreditsmart.app               I  ▶️ SettingsGuard retomado após cancelamento
+2026-02-06 14:21:07.497  6627-6627  Activity                com.cdccreditsmart.app               D  onResume setDolbyGameProfilePackage lastPkg =  currentPkg = com.cdccreditsmart.app
+2026-02-06 14:21:07.548  6627-6627  VRI[Uninst...wActivity] com.cdccreditsmart.app               D  visibilityChanged oldVisibility=true newVisibility=false
+2026-02-06 14:21:07.576  6627-6627  BLASTBufferQueue        com.cdccreditsmart.app               D  [VRI[UninstallFlowActivity]#6](f:0,a:1) destructor()
+2026-02-06 14:21:07.576  6627-6627  BufferQueueConsumer     com.cdccreditsmart.app               D  [VRI[UninstallFlowActivity]#6(BLAST Consumer)6](id:19e300000006,api:0,p:-1,c:6627) disconnect
+2026-02-06 14:21:07.590  6627-6627  WindowOnBackDispatcher  com.cdccreditsmart.app               W  sendCancelIfRunning: isInProgress=false callback=android.app.Activity$$ExternalSyntheticLambda0@6abac85
+2026-02-06 14:21:07.591  6627-6627  UninstallFlowActivity   com.cdccreditsmart.app               I  onDestroy: App ainda instalado após tentativa de desinstalação
+2026-02-06 14:21:07.592  6627-6627  View                    com.cdccreditsmart.app               D  [Warning] assignParent to null: this = DecorView@fbf38f4[UninstallFlowActivity]
+2026-02-06 14:21:07.744  6627-6762  SettingsGuardService    com.cdccreditsmart.app               D  📋 Activity check - Full: com.cdccreditsmart.app.presentation.MainActivity, Simple: MainActivity
+2026-02-06 14:21:07.843  6627-6627  UninstallFlowActivity   com.cdccreditsmart.app               W  RESULTADO: Usuário CANCELOU a desinstalação
+2026-02-06 14:21:07.844  6627-6627  UninstallFlowActivity   com.cdccreditsmart.app               W  
+2026-02-06 14:21:07.844  6627-6627  UninstallFlowActivity   com.cdccreditsmart.app               W  ATENÇÃO: Proteções foram removidas e NÃO podem ser reaplicadas!
+2026-02-06 14:21:07.844  6627-6627  UninstallFlowActivity   com.cdccreditsmart.app               W     O app não é mais Device Owner/Admin
+2026-02-06 14:21:07.844  6627-6627  UninstallFlowActivity   com.cdccreditsmart.app               W     Para restaurar proteções, reprovisionar via:
+2026-02-06 14:21:07.844  6627-6627  UninstallFlowActivity   com.cdccreditsmart.app               W       1. Factory reset + QR Code de provisionamento
+2026-02-06 14:21:07.844  6627-6627  UninstallFlowActivity   com.cdccreditsmart.app               W       2. ADB: dpm set-device-owner
+2026-02-06 14:21:07.844  6627-6627  SettingsGuardService    com.cdccreditsmart.app               I  ▶️ Guard RETOMADO após desinstalação cancelada
+2026-02-06 14:21:07.844  6627-6627  UninstallFlowActivity   com.cdccreditsmart.app               I  ▶️ SettingsGuard retomado
+2026-02-06 14:21:07.844  6627-6627  UninstallFlowActivity   com.cdccreditsmart.app               I  ▶️ SettingsGuard retomado após cancelamento
+2026-02-06 14:21:08.566  6627-6627  VRI[MainActivity]       com.cdccreditsmart.app               D  hardware acceleration = true, forceHwAccelerated = false
+2026-02-06 14:21:08.577  6627-6627  InputEventReceiver      com.cdccreditsmart.app               D  Input log is disabled in InputEventReceiver.
+2026-02-06 14:21:08.642  6627-6627  BufferQueueConsumer     com.cdccreditsmart.app               D  [](id:19e300000007,api:0,p:-1,c:6627) connect: controlledByApp=false
+2026-02-06 14:21:08.642  6627-6627  BLASTBufferQueue        com.cdccreditsmart.app               D  [VRI[MainActivity]#7](f:0,a:0) constructor()
+2026-02-06 14:21:08.643  6627-6627  BLASTBufferQueue        com.cdccreditsmart.app               D  [VRI[MainActivity]#7](f:0,a:0) update width=960 height=1302 format=-2 mTransformHint=0
+2026-02-06 14:21:08.667  6627-6766  BLASTBufferQueue        com.cdccreditsmart.app               D  [VRI[MainActivity]#7](f:0,a:1) acquireNextBufferLocked size=960x1302 mFrameNumber=1 applyTransaction=true mTimestamp=4992582836451(auto) mPendingTransactions.size=0 graphicBufferId=28462748270623 transform=0
+2026-02-06 14:21:09.243  6627-6627  WindowOnBackDispatcher  com.cdccreditsmart.app               W  sendCancelIfRunning: isInProgress=false callback=androidx.activity.OnBackPressedDispatcher$Api34Impl$createOnBackAnimationCallback$1@f50419a
+2026-02-06 14:21:09.257  6627-6766  HWUI                    com.cdccreditsmart.app               D  endAllActiveAnimators on 0xb4000073b5b7b170 (UnprojectedRipple) with handle 0xb400007265b4b8c0
+2026-02-06 14:21:09.258  6627-6627  View                    com.cdccreditsmart.app               D  [Warning] assignParent to null: this = DecorView@ca0af1a[MainActivity]
+2026-02-06 14:21:09.258  6627-6627  BLASTBufferQueue        com.cdccreditsmart.app               D  [VRI[MainActivity]#7](f:0,a:1) destructor()
+2026-02-06 14:21:09.258  6627-6627  BufferQueueConsumer     com.cdccreditsmart.app               D  [VRI[MainActivity]#7(BLAST Consumer)7](id:19e300000007,api:0,p:-1,c:6627) disconnect
+2026-02-06 14:21:09.272  6627-6627  VRI[MainActivity]       com.cdccreditsmart.app               D  hardware acceleration = true, forceHwAccelerated = false
+2026-02-06 14:21:09.279  6627-6627  InputEventReceiver      com.cdccreditsmart.app               D  Input log is disabled in InputEventReceiver.
+2026-02-06 14:21:09.335  6627-6627  BufferQueueConsumer     com.cdccreditsmart.app               D  [](id:19e300000008,api:0,p:-1,c:6627) connect: controlledByApp=false
+2026-02-06 14:21:09.336  6627-6627  BLASTBufferQueue        com.cdccreditsmart.app               D  [VRI[MainActivity]#8](f:0,a:0) constructor()
+2026-02-06 14:21:09.336  6627-6627  BLASTBufferQueue        com.cdccreditsmart.app               D  [VRI[MainActivity]#8](f:0,a:0) update width=960 height=913 format=-2 mTransformHint=0
+2026-02-06 14:21:09.361  6627-6766  BLASTBufferQueue        com.cdccreditsmart.app               D  [VRI[MainActivity]#8](f:0,a:1) acquireNextBufferLocked size=960x913 mFrameNumber=1 applyTransaction=true mTimestamp=4993277065758(auto) mPendingTransactions.size=0 graphicBufferId=28462748270627 transform=0
+2026-02-06 14:21:09.958  6627-6627  WindowOnBackDispatcher  com.cdccreditsmart.app               W  sendCancelIfRunning: isInProgress=false callback=androidx.activity.OnBackPressedDispatcher$Api34Impl$createOnBackAnimationCallback$1@32a17c3
+2026-02-06 14:21:09.967  6627-6766  HWUI                    com.cdccreditsmart.app               D  endAllActiveAnimators on 0xb4000073b5b7feb0 (UnprojectedRipple) with handle 0xb400007265b4cd60
+2026-02-06 14:21:09.967  6627-6627  View                    com.cdccreditsmart.app               D  [Warning] assignParent to null: this = DecorView@5cab7a7[MainActivity]
+2026-02-06 14:21:09.967  6627-6627  BLASTBufferQueue        com.cdccreditsmart.app               D  [VRI[MainActivity]#8](f:0,a:1) destructor()
+2026-02-06 14:21:09.967  6627-6627  BufferQueueConsumer     com.cdccreditsmart.app               D  [VRI[MainActivity]#8(BLAST Consumer)8](id:19e300000008,api:0,p:-1,c:6627) disconnect
+2026-02-06 14:21:10.011  6627-6627  UninstallFlowActivity   com.cdccreditsmart.app               I  
+2026-02-06 14:21:10.011  6627-6627  UninstallFlowActivity   com.cdccreditsmart.app               I  ╔════════════════════════════════════════════════════════════╗
+2026-02-06 14:21:10.011  6627-6627  UninstallFlowActivity   com.cdccreditsmart.app               I  ║     FLUXO DE DESINSTALAÇÃO SEGURA - CREDIT SMART          ║
+2026-02-06 14:21:10.011  6627-6627  UninstallFlowActivity   com.cdccreditsmart.app               I  ╚════════════════════════════════════════════════════════════╝
+2026-02-06 14:21:10.011  6627-6627  UninstallFlowActivity   com.cdccreditsmart.app               I  
+2026-02-06 14:21:10.012  6627-6627  UninstallFlowActivity   com.cdccreditsmart.app               I  Tipo de desinstalação: not_activated
+2026-02-06 14:21:10.012  6627-6627  UninstallFlowActivity   com.cdccreditsmart.app               I  Diálogo já lançado: false
+2026-02-06 14:21:10.012  6627-6627  SettingsGuardService    com.cdccreditsmart.app               I  🗑️ Guard PAUSADO para desinstalação voluntária
+2026-02-06 14:21:10.012  6627-6627  SettingsGuardService    com.cdccreditsmart.app               I     Proteção desativada - usuário pode desinstalar
+2026-02-06 14:21:10.012  6627-6627  SettingsGuardService    com.cdccreditsmart.app               I     Timeout: 120s para auto-recuperação
+2026-02-06 14:21:10.012  6627-6627  UninstallFlowActivity   com.cdccreditsmart.app               I  ⏸️ SettingsGuard pausado para desinstalação
+2026-02-06 14:21:10.013  6627-6627  UninstallFlowActivity   com.cdccreditsmart.app               I  
+2026-02-06 14:21:10.013  6627-6627  UninstallFlowActivity   com.cdccreditsmart.app               I  [PASSO 1/4] Verificando privilégios...
+2026-02-06 14:21:10.013  6627-6627  UninstallFlowActivity   com.cdccreditsmart.app               I     Device Owner: NÃO
+2026-02-06 14:21:10.013  6627-6627  UninstallFlowActivity   com.cdccreditsmart.app               I     Device Admin: NÃO
+2026-02-06 14:21:10.013  6627-6627  UninstallFlowActivity   com.cdccreditsmart.app               I  
+2026-02-06 14:21:10.013  6627-6627  UninstallFlowActivity   com.cdccreditsmart.app               I  [PASSO 2/4] App sem privilégios especiais
+2026-02-06 14:21:10.013  6627-6627  UninstallFlowActivity   com.cdccreditsmart.app               I  [PASSO 3/4] Nenhuma proteção a remover
+2026-02-06 14:21:10.013  6627-6627  UninstallFlowActivity   com.cdccreditsmart.app               I  
+2026-02-06 14:21:10.013  6627-6627  UninstallFlowActivity   com.cdccreditsmart.app               I  [PASSO 4/4] Iniciando desinstalação do sistema...
+2026-02-06 14:21:10.013  6627-6627  UninstallFlowActivity   com.cdccreditsmart.app               I  
+2026-02-06 14:21:10.040  6627-6627  Activity                com.cdccreditsmart.app               D  onResume setDolbyGameProfilePackage lastPkg =  currentPkg = com.cdccreditsmart.app
+2026-02-06 14:21:10.040  6627-6627  UninstallFlowActivity   com.cdccreditsmart.app               I  
+2026-02-06 14:21:10.041  6627-6627  UninstallFlowActivity   com.cdccreditsmart.app               I  ╔════════════════════════════════════════════════════════════╗
+2026-02-06 14:21:10.041  6627-6627  UninstallFlowActivity   com.cdccreditsmart.app               I  ║     RETORNO DO DIÁLOGO DE DESINSTALAÇÃO                   ║
+2026-02-06 14:21:10.041  6627-6627  UninstallFlowActivity   com.cdccreditsmart.app               I  ╚════════════════════════════════════════════════════════════╝
+2026-02-06 14:21:10.041  6627-6627  UninstallFlowActivity   com.cdccreditsmart.app               I  
+2026-02-06 14:21:10.044  6627-6627  VRI[Uninst...wActivity] com.cdccreditsmart.app               D  hardware acceleration = true, forceHwAccelerated = false
+2026-02-06 14:21:10.050  6627-6627  InputEventReceiver      com.cdccreditsmart.app               D  Input log is disabled in InputEventReceiver.
+2026-02-06 14:21:10.076  6627-6627  BufferQueueConsumer     com.cdccreditsmart.app               D  [](id:19e300000009,api:0,p:-1,c:6627) connect: controlledByApp=false
+2026-02-06 14:21:10.077  6627-6627  BLASTBufferQueue        com.cdccreditsmart.app               D  [VRI[UninstallFlowActivity]#9](f:0,a:0) constructor()
+2026-02-06 14:21:10.077  6627-6627  BLASTBufferQueue        com.cdccreditsmart.app               D  [VRI[UninstallFlowActivity]#9](f:0,a:0) update width=1080 height=2400 format=-2 mTransformHint=0
+2026-02-06 14:21:10.086  6627-6766  BLASTBufferQueue        com.cdccreditsmart.app               D  [VRI[UninstallFlowActivity]#9](f:0,a:1) acquireNextBufferLocked size=1080x2400 mFrameNumber=1 applyTransaction=true mTimestamp=4994001469374(auto) mPendingTransactions.size=0 graphicBufferId=28462748270628 transform=0
+2026-02-06 14:21:10.191  6627-6627  Activity                com.cdccreditsmart.app               D  onResume setDolbyGameProfilePackage lastPkg =  currentPkg = com.cdccreditsmart.app
+2026-02-06 14:21:10.191  6627-6627  UninstallFlowActivity   com.cdccreditsmart.app               I  
+2026-02-06 14:21:10.192  6627-6627  UninstallFlowActivity   com.cdccreditsmart.app               I  ╔════════════════════════════════════════════════════════════╗
+2026-02-06 14:21:10.192  6627-6627  UninstallFlowActivity   com.cdccreditsmart.app               I  ║     RETORNO DO DIÁLOGO DE DESINSTALAÇÃO                   ║
+2026-02-06 14:21:10.192  6627-6627  UninstallFlowActivity   com.cdccreditsmart.app               I  ╚════════════════════════════════════════════════════════════╝
+2026-02-06 14:21:10.192  6627-6627  UninstallFlowActivity   com.cdccreditsmart.app               I  
+2026-02-06 14:21:10.541  6627-6627  UninstallFlowActivity   com.cdccreditsmart.app               W  RESULTADO: Usuário CANCELOU a desinstalação
+2026-02-06 14:21:10.542  6627-6627  UninstallFlowActivity   com.cdccreditsmart.app               W  
+2026-02-06 14:21:10.542  6627-6627  UninstallFlowActivity   com.cdccreditsmart.app               W  ATENÇÃO: Proteções foram removidas e NÃO podem ser reaplicadas!
+2026-02-06 14:21:10.542  6627-6627  UninstallFlowActivity   com.cdccreditsmart.app               W     O app não é mais Device Owner/Admin
+2026-02-06 14:21:10.542  6627-6627  UninstallFlowActivity   com.cdccreditsmart.app               W     Para restaurar proteções, reprovisionar via:
+2026-02-06 14:21:10.542  6627-6627  UninstallFlowActivity   com.cdccreditsmart.app               W       1. Factory reset + QR Code de provisionamento
+2026-02-06 14:21:10.542  6627-6627  UninstallFlowActivity   com.cdccreditsmart.app               W       2. ADB: dpm set-device-owner
+2026-02-06 14:21:10.542  6627-6627  SettingsGuardService    com.cdccreditsmart.app               I  ▶️ Guard RETOMADO após desinstalação cancelada
+2026-02-06 14:21:10.542  6627-6627  UninstallFlowActivity   com.cdccreditsmart.app               I  ▶️ SettingsGuard retomado
+2026-02-06 14:21:10.542  6627-6627  UninstallFlowActivity   com.cdccreditsmart.app               I  ▶️ SettingsGuard retomado após cancelamento
+2026-02-06 14:21:10.573  6627-6627  Activity                com.cdccreditsmart.app               D  onResume setDolbyGameProfilePackage lastPkg =  currentPkg = com.cdccreditsmart.app
+2026-02-06 14:21:10.601  6627-6627  VRI[Uninst...wActivity] com.cdccreditsmart.app               D  visibilityChanged oldVisibility=true newVisibility=false
+2026-02-06 14:21:10.610  6627-6627  WindowOnBackDispatcher  com.cdccreditsmart.app               W  sendCancelIfRunning: isInProgress=false callback=android.app.Activity$$ExternalSyntheticLambda0@6e189ab
+2026-02-06 14:21:10.610  6627-6627  UninstallFlowActivity   com.cdccreditsmart.app               I  onDestroy: App ainda instalado após tentativa de desinstalação
+2026-02-06 14:21:10.614  6627-6766  BLASTBufferQueue        com.cdccreditsmart.app               D  [VRI[UninstallFlowActivity]#9](f:0,a:1) destructor()
+2026-02-06 14:21:10.614  6627-6766  BufferQueueConsumer     com.cdccreditsmart.app               D  [VRI[UninstallFlowActivity]#9(BLAST Consumer)9](id:19e300000009,api:0,p:-1,c:6627) disconnect
+2026-02-06 14:21:10.615  6627-6627  View                    com.cdccreditsmart.app               D  [Warning] assignParent to null: this = DecorView@940b56f[UninstallFlowActivity]
+2026-02-06 14:21:10.709  6627-6627  UninstallFlowActivity   com.cdccreditsmart.app               W  RESULTADO: Usuário CANCELOU a desinstalação
+2026-02-06 14:21:10.710  6627-6627  UninstallFlowActivity   com.cdccreditsmart.app               W  
+2026-02-06 14:21:10.710  6627-6627  UninstallFlowActivity   com.cdccreditsmart.app               W  ATENÇÃO: Proteções foram removidas e NÃO podem ser reaplicadas!
+2026-02-06 14:21:10.710  6627-6627  UninstallFlowActivity   com.cdccreditsmart.app               W     O app não é mais Device Owner/Admin
+2026-02-06 14:21:10.710  6627-6627  UninstallFlowActivity   com.cdccreditsmart.app               W     Para restaurar proteções, reprovisionar via:
+2026-02-06 14:21:10.710  6627-6627  UninstallFlowActivity   com.cdccreditsmart.app               W       1. Factory reset + QR Code de provisionamento
+2026-02-06 14:21:10.710  6627-6627  UninstallFlowActivity   com.cdccreditsmart.app               W       2. ADB: dpm set-device-owner
+2026-02-06 14:21:10.710  6627-6627  SettingsGuardService    com.cdccreditsmart.app               I  ▶️ Guard RETOMADO após desinstalação cancelada
+2026-02-06 14:21:10.710  6627-6627  UninstallFlowActivity   com.cdccreditsmart.app               I  ▶️ SettingsGuard retomado
+2026-02-06 14:21:10.710  6627-6627  UninstallFlowActivity   com.cdccreditsmart.app               I  ▶️ SettingsGuard retomado após cancelamento
+2026-02-06 14:21:10.752  6627-6762  SettingsGuardService    com.cdccreditsmart.app               D  📋 Activity check - Full: com.cdccreditsmart.app.presentation.MainActivity, Simple: MainActivity
+2026-02-06 14:21:11.182  6627-6627  VRI[MainActivity]       com.cdccreditsmart.app               D  hardware acceleration = true, forceHwAccelerated = false
+2026-02-06 14:21:11.189  6627-6627  InputEventReceiver      com.cdccreditsmart.app               D  Input log is disabled in InputEventReceiver.
+2026-02-06 14:21:11.254  6627-6627  BufferQueueConsumer     com.cdccreditsmart.app               D  [](id:19e30000000a,api:0,p:-1,c:6627) connect: controlledByApp=false
+2026-02-06 14:21:11.255  6627-6627  BLASTBufferQueue        com.cdccreditsmart.app               D  [VRI[MainActivity]#10](f:0,a:0) constructor()
+2026-02-06 14:21:11.255  6627-6627  BLASTBufferQueue        com.cdccreditsmart.app               D  [VRI[MainActivity]#10](f:0,a:0) update width=960 height=1302 format=-2 mTransformHint=0
+2026-02-06 14:21:11.277  6627-6766  BLASTBufferQueue        com.cdccreditsmart.app               D  [VRI[MainActivity]#10](f:0,a:1) acquireNextBufferLocked size=960x1302 mFrameNumber=1 applyTransaction=true mTimestamp=4995193192143(auto) mPendingTransactions.size=0 graphicBufferId=28462748270635 transform=0
+2026-02-06 14:21:11.853  6627-6627  WindowOnBackDispatcher  com.cdccreditsmart.app               W  sendCancelIfRunning: isInProgress=false callback=androidx.activity.OnBackPressedDispatcher$Api34Impl$createOnBackAnimationCallback$1@723c7b0
+2026-02-06 14:21:11.868  6627-6766  HWUI                    com.cdccreditsmart.app               D  endAllActiveAnimators on 0xb4000073b5b953e0 (UnprojectedRipple) with handle 0xb400007265b4efb0
+2026-02-06 14:21:11.869  6627-6627  View                    com.cdccreditsmart.app               D  [Warning] assignParent to null: this = DecorView@9e84130[MainActivity]
+2026-02-06 14:21:11.869  6627-6627  BLASTBufferQueue        com.cdccreditsmart.app               D  [VRI[MainActivity]#10](f:0,a:1) destructor()
+2026-02-06 14:21:11.869  6627-6627  BufferQueueConsumer     com.cdccreditsmart.app               D  [VRI[MainActivity]#10(BLAST Consumer)10](id:19e30000000a,api:0,p:-1,c:6627) disconnect
+2026-02-06 14:21:11.883  6627-6627  VRI[MainActivity]       com.cdccreditsmart.app               D  hardware acceleration = true, forceHwAccelerated = false
+2026-02-06 14:21:11.890  6627-6627  InputEventReceiver      com.cdccreditsmart.app               D  Input log is disabled in InputEventReceiver.
+2026-02-06 14:21:11.946  6627-6627  BufferQueueConsumer     com.cdccreditsmart.app               D  [](id:19e30000000b,api:0,p:-1,c:6627) connect: controlledByApp=false
+2026-02-06 14:21:11.946  6627-6627  BLASTBufferQueue        com.cdccreditsmart.app               D  [VRI[MainActivity]#11](f:0,a:0) constructor()
+2026-02-06 14:21:11.946  6627-6627  BLASTBufferQueue        com.cdccreditsmart.app               D  [VRI[MainActivity]#11](f:0,a:0) update width=960 height=913 format=-2 mTransformHint=0
+2026-02-06 14:21:11.969  6627-6766  BLASTBufferQueue        com.cdccreditsmart.app               D  [VRI[MainActivity]#11](f:0,a:1) acquireNextBufferLocked size=960x913 mFrameNumber=1 applyTransaction=true mTimestamp=4995884993682(auto) mPendingTransactions.size=0 graphicBufferId=28462748270639 transform=0
+2026-02-06 14:21:12.555  6627-6627  WindowOnBackDispatcher  com.cdccreditsmart.app               W  sendCancelIfRunning: isInProgress=false callback=androidx.activity.OnBackPressedDispatcher$Api34Impl$createOnBackAnimationCallback$1@4d7cce1
+2026-02-06 14:21:12.565  6627-6766  HWUI                    com.cdccreditsmart.app               D  endAllActiveAnimators on 0xb4000073b5b96730 (UnprojectedRipple) with handle 0xb400007265b4f160
+2026-02-06 14:21:12.565  6627-6627  View                    com.cdccreditsmart.app               D  [Warning] assignParent to null: this = DecorView@b4392e5[MainActivity]
+2026-02-06 14:21:12.578  6627-6654  BLASTBufferQueue        com.cdccreditsmart.app               D  [VRI[MainActivity]#11](f:0,a:1) destructor()
+2026-02-06 14:21:12.579  6627-6654  BufferQueueConsumer     com.cdccreditsmart.app               D  [VRI[MainActivity]#11(BLAST Consumer)11](id:19e30000000b,api:0,p:-1,c:6627) disconnect
+2026-02-06 14:21:12.600  6627-6627  UninstallFlowActivity   com.cdccreditsmart.app               I  
+2026-02-06 14:21:12.600  6627-6627  UninstallFlowActivity   com.cdccreditsmart.app               I  ╔════════════════════════════════════════════════════════════╗
+2026-02-06 14:21:12.600  6627-6627  UninstallFlowActivity   com.cdccreditsmart.app               I  ║     FLUXO DE DESINSTALAÇÃO SEGURA - CREDIT SMART          ║
+2026-02-06 14:21:12.600  6627-6627  UninstallFlowActivity   com.cdccreditsmart.app               I  ╚════════════════════════════════════════════════════════════╝
+2026-02-06 14:21:12.600  6627-6627  UninstallFlowActivity   com.cdccreditsmart.app               I  
+2026-02-06 14:21:12.600  6627-6627  UninstallFlowActivity   com.cdccreditsmart.app               I  Tipo de desinstalação: not_activated
+2026-02-06 14:21:12.600  6627-6627  UninstallFlowActivity   com.cdccreditsmart.app               I  Diálogo já lançado: false
+2026-02-06 14:21:12.601  6627-6627  SettingsGuardService    com.cdccreditsmart.app               I  🗑️ Guard PAUSADO para desinstalação voluntária
+2026-02-06 14:21:12.601  6627-6627  SettingsGuardService    com.cdccreditsmart.app               I     Proteção desativada - usuário pode desinstalar
+2026-02-06 14:21:12.601  6627-6627  SettingsGuardService    com.cdccreditsmart.app               I     Timeout: 120s para auto-recuperação
+2026-02-06 14:21:12.601  6627-6627  UninstallFlowActivity   com.cdccreditsmart.app               I  ⏸️ SettingsGuard pausado para desinstalação
+2026-02-06 14:21:12.603  6627-6627  UninstallFlowActivity   com.cdccreditsmart.app               I  
+2026-02-06 14:21:12.603  6627-6627  UninstallFlowActivity   com.cdccreditsmart.app               I  [PASSO 1/4] Verificando privilégios...
+2026-02-06 14:21:12.603  6627-6627  UninstallFlowActivity   com.cdccreditsmart.app               I     Device Owner: NÃO
+2026-02-06 14:21:12.603  6627-6627  UninstallFlowActivity   com.cdccreditsmart.app               I     Device Admin: NÃO
+2026-02-06 14:21:12.603  6627-6627  UninstallFlowActivity   com.cdccreditsmart.app               I  
+2026-02-06 14:21:12.603  6627-6627  UninstallFlowActivity   com.cdccreditsmart.app               I  [PASSO 2/4] App sem privilégios especiais
+2026-02-06 14:21:12.603  6627-6627  UninstallFlowActivity   com.cdccreditsmart.app               I  [PASSO 3/4] Nenhuma proteção a remover
+2026-02-06 14:21:12.603  6627-6627  UninstallFlowActivity   com.cdccreditsmart.app               I  
+2026-02-06 14:21:12.603  6627-6627  UninstallFlowActivity   com.cdccreditsmart.app               I  [PASSO 4/4] Iniciando desinstalação do sistema...
+2026-02-06 14:21:12.603  6627-6627  UninstallFlowActivity   com.cdccreditsmart.app               I  
+2026-02-06 14:21:12.624  6627-6627  Activity                com.cdccreditsmart.app               D  onResume setDolbyGameProfilePackage lastPkg =  currentPkg = com.cdccreditsmart.app
+2026-02-06 14:21:12.625  6627-6627  UninstallFlowActivity   com.cdccreditsmart.app               I  
+2026-02-06 14:21:12.626  6627-6627  UninstallFlowActivity   com.cdccreditsmart.app               I  ╔════════════════════════════════════════════════════════════╗
+2026-02-06 14:21:12.626  6627-6627  UninstallFlowActivity   com.cdccreditsmart.app               I  ║     RETORNO DO DIÁLOGO DE DESINSTALAÇÃO                   ║
+2026-02-06 14:21:12.626  6627-6627  UninstallFlowActivity   com.cdccreditsmart.app               I  ╚════════════════════════════════════════════════════════════╝
+2026-02-06 14:21:12.626  6627-6627  UninstallFlowActivity   com.cdccreditsmart.app               I  
+2026-02-06 14:21:12.631  6627-6627  VRI[Uninst...wActivity] com.cdccreditsmart.app               D  hardware acceleration = true, forceHwAccelerated = false
+2026-02-06 14:21:12.635  6627-6627  InputEventReceiver      com.cdccreditsmart.app               D  Input log is disabled in InputEventReceiver.
+2026-02-06 14:21:12.648  6627-6627  BufferQueueConsumer     com.cdccreditsmart.app               D  [](id:19e30000000c,api:0,p:-1,c:6627) connect: controlledByApp=false
+2026-02-06 14:21:12.649  6627-6627  BLASTBufferQueue        com.cdccreditsmart.app               D  [VRI[UninstallFlowActivity]#12](f:0,a:0) constructor()
+2026-02-06 14:21:12.649  6627-6627  BLASTBufferQueue        com.cdccreditsmart.app               D  [VRI[UninstallFlowActivity]#12](f:0,a:0) update width=1080 height=2400 format=-2 mTransformHint=0
+2026-02-06 14:21:12.656  6627-6766  BLASTBufferQueue        com.cdccreditsmart.app               D  [VRI[UninstallFlowActivity]#12](f:0,a:1) acquireNextBufferLocked size=1080x2400 mFrameNumber=1 applyTransaction=true mTimestamp=4996572361682(auto) mPendingTransactions.size=0 graphicBufferId=28462748270640 transform=0
+2026-02-06 14:21:12.752  6627-6627  Activity                com.cdccreditsmart.app               D  onResume setDolbyGameProfilePackage lastPkg =  currentPkg = com.cdccreditsmart.app
+2026-02-06 14:21:12.753  6627-6627  UninstallFlowActivity   com.cdccreditsmart.app               I  
+2026-02-06 14:21:12.753  6627-6627  UninstallFlowActivity   com.cdccreditsmart.app               I  ╔════════════════════════════════════════════════════════════╗
+2026-02-06 14:21:12.753  6627-6627  UninstallFlowActivity   com.cdccreditsmart.app               I  ║     RETORNO DO DIÁLOGO DE DESINSTALAÇÃO                   ║
+2026-02-06 14:21:12.753  6627-6627  UninstallFlowActivity   com.cdccreditsmart.app               I  ╚════════════════════════════════════════════════════════════╝
+2026-02-06 14:21:12.753  6627-6627  UninstallFlowActivity   com.cdccreditsmart.app               I  
+2026-02-06 14:21:13.126  6627-6627  UninstallFlowActivity   com.cdccreditsmart.app               W  RESULTADO: Usuário CANCELOU a desinstalação
+2026-02-06 14:21:13.127  6627-6627  UninstallFlowActivity   com.cdccreditsmart.app               W  
+2026-02-06 14:21:13.127  6627-6627  UninstallFlowActivity   com.cdccreditsmart.app               W  ATENÇÃO: Proteções foram removidas e NÃO podem ser reaplicadas!
+2026-02-06 14:21:13.127  6627-6627  UninstallFlowActivity   com.cdccreditsmart.app               W     O app não é mais Device Owner/Admin
+2026-02-06 14:21:13.127  6627-6627  UninstallFlowActivity   com.cdccreditsmart.app               W     Para restaurar proteções, reprovisionar via:
+2026-02-06 14:21:13.127  6627-6627  UninstallFlowActivity   com.cdccreditsmart.app               W       1. Factory reset + QR Code de provisionamento
+2026-02-06 14:21:13.127  6627-6627  UninstallFlowActivity   com.cdccreditsmart.app               W       2. ADB: dpm set-device-owner
+2026-02-06 14:21:13.127  6627-6627  SettingsGuardService    com.cdccreditsmart.app               I  ▶️ Guard RETOMADO após desinstalação cancelada
+2026-02-06 14:21:13.127  6627-6627  UninstallFlowActivity   com.cdccreditsmart.app               I  ▶️ SettingsGuard retomado
+2026-02-06 14:21:13.127  6627-6627  UninstallFlowActivity   com.cdccreditsmart.app               I  ▶️ SettingsGuard retomado após cancelamento
+2026-02-06 14:21:13.150  6627-6627  Activity                com.cdccreditsmart.app               D  onResume setDolbyGameProfilePackage lastPkg =  currentPkg = com.cdccreditsmart.app
+2026-02-06 14:21:13.175  6627-6627  VRI[Uninst...wActivity] com.cdccreditsmart.app               D  visibilityChanged oldVisibility=true newVisibility=false
+2026-02-06 14:21:13.182  6627-6627  WindowOnBackDispatcher  com.cdccreditsmart.app               W  sendCancelIfRunning: isInProgress=false callback=android.app.Activity$$ExternalSyntheticLambda0@8939409
+2026-02-06 14:21:13.182  6627-6627  UninstallFlowActivity   com.cdccreditsmart.app               I  onDestroy: App ainda instalado após tentativa de desinstalação
+2026-02-06 14:21:13.184  6627-6766  BLASTBufferQueue        com.cdccreditsmart.app               D  [VRI[UninstallFlowActivity]#12](f:0,a:1) destructor()
+2026-02-06 14:21:13.184  6627-6766  BufferQueueConsumer     com.cdccreditsmart.app               D  [VRI[UninstallFlowActivity]#12(BLAST Consumer)12](id:19e30000000c,api:0,p:-1,c:6627) disconnect
+2026-02-06 14:21:13.185  6627-6627  View                    com.cdccreditsmart.app               D  [Warning] assignParent to null: this = DecorView@7dd2722[UninstallFlowActivity]
+2026-02-06 14:21:13.262  6627-6627  UninstallFlowActivity   com.cdccreditsmart.app               W  RESULTADO: Usuário CANCELOU a desinstalação
+2026-02-06 14:21:13.263  6627-6627  UninstallFlowActivity   com.cdccreditsmart.app               W  
+2026-02-06 14:21:13.263  6627-6627  UninstallFlowActivity   com.cdccreditsmart.app               W  ATENÇÃO: Proteções foram removidas e NÃO podem ser reaplicadas!
+2026-02-06 14:21:13.263  6627-6627  UninstallFlowActivity   com.cdccreditsmart.app               W     O app não é mais Device Owner/Admin
+2026-02-06 14:21:13.263  6627-6627  UninstallFlowActivity   com.cdccreditsmart.app               W     Para restaurar proteções, reprovisionar via:
+2026-02-06 14:21:13.263  6627-6627  UninstallFlowActivity   com.cdccreditsmart.app               W       1. Factory reset + QR Code de provisionamento
+2026-02-06 14:21:13.263  6627-6627  UninstallFlowActivity   com.cdccreditsmart.app               W       2. ADB: dpm set-device-owner
+2026-02-06 14:21:13.263  6627-6627  SettingsGuardService    com.cdccreditsmart.app               I  ▶️ Guard RETOMADO após desinstalação cancelada
+2026-02-06 14:21:13.263  6627-6627  UninstallFlowActivity   com.cdccreditsmart.app               I  ▶️ SettingsGuard retomado
+2026-02-06 14:21:13.263  6627-6627  UninstallFlowActivity   com.cdccreditsmart.app               I  ▶️ SettingsGuard retomado após cancelamento
+2026-02-06 14:21:13.757  6627-6762  SettingsGuardService    com.cdccreditsmart.app               D  📋 Activity check - Full: com.cdccreditsmart.app.presentation.MainActivity, Simple: MainActivity
+2026-02-06 14:21:13.851  6627-6627  VRI[MainActivity]       com.cdccreditsmart.app               D  hardware acceleration = true, forceHwAccelerated = false
+2026-02-06 14:21:13.860  6627-6627  InputEventReceiver      com.cdccreditsmart.app               D  Input log is disabled in InputEventReceiver.
+2026-02-06 14:21:13.927  6627-6627  BufferQueueConsumer     com.cdccreditsmart.app               D  [](id:19e30000000d,api:0,p:-1,c:6627) connect: controlledByApp=false
+2026-02-06 14:21:13.928  6627-6627  BLASTBufferQueue        com.cdccreditsmart.app               D  [VRI[MainActivity]#13](f:0,a:0) constructor()
+2026-02-06 14:21:13.928  6627-6627  BLASTBufferQueue        com.cdccreditsmart.app               D  [VRI[MainActivity]#13](f:0,a:0) update width=960 height=1302 format=-2 mTransformHint=0
+2026-02-06 14:21:13.954  6627-6766  BLASTBufferQueue        com.cdccreditsmart.app               D  [VRI[MainActivity]#13](f:0,a:1) acquireNextBufferLocked size=960x1302 mFrameNumber=1 applyTransaction=true mTimestamp=4997869658989(auto) mPendingTransactions.size=0 graphicBufferId=28462748270647 transform=0
+2026-02-06 14:21:14.486  6627-6627  WindowOnBackDispatcher  com.cdccreditsmart.app               W  sendCancelIfRunning: isInProgress=false callback=androidx.activity.OnBackPressedDispatcher$Api34Impl$createOnBackAnimationCallback$1@3e4a191
+2026-02-06 14:21:14.499  6627-6766  HWUI                    com.cdccreditsmart.app               D  endAllActiveAnimators on 0xb4000073b5ba88e0 (UnprojectedRipple) with handle 0xb400007265b54710
+2026-02-06 14:21:14.500  6627-6627  View                    com.cdccreditsmart.app               D  [Warning] assignParent to null: this = DecorView@854ad11[MainActivity]
+2026-02-06 14:21:14.510  6627-6650  BLASTBufferQueue        com.cdccreditsmart.app               D  [VRI[MainActivity]#13](f:0,a:1) destructor()
+2026-02-06 14:21:14.510  6627-6650  BufferQueueConsumer     com.cdccreditsmart.app               D  [VRI[MainActivity]#13(BLAST Consumer)13](id:19e30000000d,api:0,p:-1,c:6627) disconnect
+2026-02-06 14:21:14.516  6627-6627  VRI[MainActivity]       com.cdccreditsmart.app               D  hardware acceleration = true, forceHwAccelerated = false
+2026-02-06 14:21:14.526  6627-6627  InputEventReceiver      com.cdccreditsmart.app               D  Input log is disabled in InputEventReceiver.
+2026-02-06 14:21:14.588  6627-6627  BufferQueueConsumer     com.cdccreditsmart.app               D  [](id:19e30000000e,api:0,p:-1,c:6627) connect: controlledByApp=false
+2026-02-06 14:21:14.589  6627-6627  BLASTBufferQueue        com.cdccreditsmart.app               D  [VRI[MainActivity]#14](f:0,a:0) constructor()
+2026-02-06 14:21:14.589  6627-6627  BLASTBufferQueue        com.cdccreditsmart.app               D  [VRI[MainActivity]#14](f:0,a:0) update width=960 height=913 format=-2 mTransformHint=0
+2026-02-06 14:21:14.615  6627-6766  BLASTBufferQueue        com.cdccreditsmart.app               D  [VRI[MainActivity]#14](f:0,a:1) acquireNextBufferLocked size=960x913 mFrameNumber=1 applyTransaction=true mTimestamp=4998530733451(auto) mPendingTransactions.size=0 graphicBufferId=28462748270651 transform=0
+2026-02-06 14:21:15.202  6627-6627  WindowOnBackDispatcher  com.cdccreditsmart.app               W  sendCancelIfRunning: isInProgress=false callback=androidx.activity.OnBackPressedDispatcher$Api34Impl$createOnBackAnimationCallback$1@365764e
+2026-02-06 14:21:15.211  6627-6766  HWUI                    com.cdccreditsmart.app               D  endAllActiveAnimators on 0xb4000073b5baaf80 (UnprojectedRipple) with handle 0xb400007265b3e5d0
+2026-02-06 14:21:15.211  6627-6627  View                    com.cdccreditsmart.app               D  [Warning] assignParent to null: this = DecorView@7975982[MainActivity]
+2026-02-06 14:21:15.224  6627-6648  BLASTBufferQueue        com.cdccreditsmart.app               D  [VRI[MainActivity]#14](f:0,a:1) destructor()
+2026-02-06 14:21:15.224  6627-6648  BufferQueueConsumer     com.cdccreditsmart.app               D  [VRI[MainActivity]#14(BLAST Consumer)14](id:19e30000000e,api:0,p:-1,c:6627) disconnect
+2026-02-06 14:21:15.251  6627-6627  UninstallFlowActivity   com.cdccreditsmart.app               I  
+2026-02-06 14:21:15.251  6627-6627  UninstallFlowActivity   com.cdccreditsmart.app               I  ╔════════════════════════════════════════════════════════════╗
+2026-02-06 14:21:15.251  6627-6627  UninstallFlowActivity   com.cdccreditsmart.app               I  ║     FLUXO DE DESINSTALAÇÃO SEGURA - CREDIT SMART          ║
+2026-02-06 14:21:15.251  6627-6627  UninstallFlowActivity   com.cdccreditsmart.app               I  ╚════════════════════════════════════════════════════════════╝
+2026-02-06 14:21:15.251  6627-6627  UninstallFlowActivity   com.cdccreditsmart.app               I  
+2026-02-06 14:21:15.251  6627-6627  UninstallFlowActivity   com.cdccreditsmart.app               I  Tipo de desinstalação: not_activated
+2026-02-06 14:21:15.251  6627-6627  UninstallFlowActivity   com.cdccreditsmart.app               I  Diálogo já lançado: false
+2026-02-06 14:21:15.251  6627-6627  SettingsGuardService    com.cdccreditsmart.app               I  🗑️ Guard PAUSADO para desinstalação voluntária
+2026-02-06 14:21:15.251  6627-6627  SettingsGuardService    com.cdccreditsmart.app               I     Proteção desativada - usuário pode desinstalar
+2026-02-06 14:21:15.251  6627-6627  SettingsGuardService    com.cdccreditsmart.app               I     Timeout: 120s para auto-recuperação
+2026-02-06 14:21:15.251  6627-6627  UninstallFlowActivity   com.cdccreditsmart.app               I  ⏸️ SettingsGuard pausado para desinstalação
+2026-02-06 14:21:15.253  6627-6627  UninstallFlowActivity   com.cdccreditsmart.app               I  
+2026-02-06 14:21:15.253  6627-6627  UninstallFlowActivity   com.cdccreditsmart.app               I  [PASSO 1/4] Verificando privilégios...
+2026-02-06 14:21:15.253  6627-6627  UninstallFlowActivity   com.cdccreditsmart.app               I     Device Owner: NÃO
+2026-02-06 14:21:15.253  6627-6627  UninstallFlowActivity   com.cdccreditsmart.app               I     Device Admin: NÃO
+2026-02-06 14:21:15.253  6627-6627  UninstallFlowActivity   com.cdccreditsmart.app               I  
+2026-02-06 14:21:15.254  6627-6627  UninstallFlowActivity   com.cdccreditsmart.app               I  [PASSO 2/4] App sem privilégios especiais
+2026-02-06 14:21:15.254  6627-6627  UninstallFlowActivity   com.cdccreditsmart.app               I  [PASSO 3/4] Nenhuma proteção a remover
+2026-02-06 14:21:15.254  6627-6627  UninstallFlowActivity   com.cdccreditsmart.app               I  
+2026-02-06 14:21:15.254  6627-6627  UninstallFlowActivity   com.cdccreditsmart.app               I  [PASSO 4/4] Iniciando desinstalação do sistema...
+2026-02-06 14:21:15.254  6627-6627  UninstallFlowActivity   com.cdccreditsmart.app               I  
+2026-02-06 14:21:15.281  6627-6627  Activity                com.cdccreditsmart.app               D  onResume setDolbyGameProfilePackage lastPkg =  currentPkg = com.cdccreditsmart.app
+2026-02-06 14:21:15.281  6627-6627  UninstallFlowActivity   com.cdccreditsmart.app               I  
+2026-02-06 14:21:15.281  6627-6627  UninstallFlowActivity   com.cdccreditsmart.app               I  ╔════════════════════════════════════════════════════════════╗
+2026-02-06 14:21:15.281  6627-6627  UninstallFlowActivity   com.cdccreditsmart.app               I  ║     RETORNO DO DIÁLOGO DE DESINSTALAÇÃO                   ║
+2026-02-06 14:21:15.281  6627-6627  UninstallFlowActivity   com.cdccreditsmart.app               I  ╚════════════════════════════════════════════════════════════╝
+2026-02-06 14:21:15.281  6627-6627  UninstallFlowActivity   com.cdccreditsmart.app               I  
+2026-02-06 14:21:15.285  6627-6627  VRI[Uninst...wActivity] com.cdccreditsmart.app               D  hardware acceleration = true, forceHwAccelerated = false
+2026-02-06 14:21:15.290  6627-6627  InputEventReceiver      com.cdccreditsmart.app               D  Input log is disabled in InputEventReceiver.
+2026-02-06 14:21:15.303  6627-6627  BufferQueueConsumer     com.cdccreditsmart.app               D  [](id:19e30000000f,api:0,p:-1,c:6627) connect: controlledByApp=false
+2026-02-06 14:21:15.304  6627-6627  BLASTBufferQueue        com.cdccreditsmart.app               D  [VRI[UninstallFlowActivity]#15](f:0,a:0) constructor()
+2026-02-06 14:21:15.304  6627-6627  BLASTBufferQueue        com.cdccreditsmart.app               D  [VRI[UninstallFlowActivity]#15](f:0,a:0) update width=1080 height=2400 format=-2 mTransformHint=0
+2026-02-06 14:21:15.312  6627-6766  BLASTBufferQueue        com.cdccreditsmart.app               D  [VRI[UninstallFlowActivity]#15](f:0,a:1) acquireNextBufferLocked size=1080x2400 mFrameNumber=1 applyTransaction=true mTimestamp=4999228235297(auto) mPendingTransactions.size=0 graphicBufferId=28462748270652 transform=0
+2026-02-06 14:21:15.403  6627-6627  Activity                com.cdccreditsmart.app               D  onResume setDolbyGameProfilePackage lastPkg =  currentPkg = com.cdccreditsmart.app
+2026-02-06 14:21:15.403  6627-6627  UninstallFlowActivity   com.cdccreditsmart.app               I  
+2026-02-06 14:21:15.403  6627-6627  UninstallFlowActivity   com.cdccreditsmart.app               I  ╔════════════════════════════════════════════════════════════╗
+2026-02-06 14:21:15.403  6627-6627  UninstallFlowActivity   com.cdccreditsmart.app               I  ║     RETORNO DO DIÁLOGO DE DESINSTALAÇÃO                   ║
+2026-02-06 14:21:15.403  6627-6627  UninstallFlowActivity   com.cdccreditsmart.app               I  ╚════════════════════════════════════════════════════════════╝
+2026-02-06 14:21:15.403  6627-6627  UninstallFlowActivity   com.cdccreditsmart.app               I  
+2026-02-06 14:21:15.781  6627-6627  UninstallFlowActivity   com.cdccreditsmart.app               W  RESULTADO: Usuário CANCELOU a desinstalação
+2026-02-06 14:21:15.782  6627-6627  UninstallFlowActivity   com.cdccreditsmart.app               W  
+2026-02-06 14:21:15.782  6627-6627  UninstallFlowActivity   com.cdccreditsmart.app               W  ATENÇÃO: Proteções foram removidas e NÃO podem ser reaplicadas!
+2026-02-06 14:21:15.782  6627-6627  UninstallFlowActivity   com.cdccreditsmart.app               W     O app não é mais Device Owner/Admin
+2026-02-06 14:21:15.782  6627-6627  UninstallFlowActivity   com.cdccreditsmart.app               W     Para restaurar proteções, reprovisionar via:
+2026-02-06 14:21:15.782  6627-6627  UninstallFlowActivity   com.cdccreditsmart.app               W       1. Factory reset + QR Code de provisionamento
+2026-02-06 14:21:15.782  6627-6627  UninstallFlowActivity   com.cdccreditsmart.app               W       2. ADB: dpm set-device-owner
+2026-02-06 14:21:15.782  6627-6627  SettingsGuardService    com.cdccreditsmart.app               I  ▶️ Guard RETOMADO após desinstalação cancelada
+2026-02-06 14:21:15.782  6627-6627  UninstallFlowActivity   com.cdccreditsmart.app               I  ▶️ SettingsGuard retomado
+2026-02-06 14:21:15.782  6627-6627  UninstallFlowActivity   com.cdccreditsmart.app               I  ▶️ SettingsGuard retomado após cancelamento
+2026-02-06 14:21:15.806  6627-6627  Activity                com.cdccreditsmart.app               D  onResume setDolbyGameProfilePackage lastPkg =  currentPkg = com.cdccreditsmart.app
+2026-02-06 14:21:15.815  6627-6627  VRI[Uninst...wActivity] com.cdccreditsmart.app               D  visibilityChanged oldVisibility=true newVisibility=false
+2026-02-06 14:21:15.842  6627-6627  BLASTBufferQueue        com.cdccreditsmart.app               D  [VRI[UninstallFlowActivity]#15](f:0,a:1) destructor()
+2026-02-06 14:21:15.842  6627-6627  BufferQueueConsumer     com.cdccreditsmart.app               D  [VRI[UninstallFlowActivity]#15(BLAST Consumer)15](id:19e30000000f,api:0,p:-1,c:6627) disconnect
+2026-02-06 14:21:15.851  6627-6627  WindowOnBackDispatcher  com.cdccreditsmart.app               W  sendCancelIfRunning: isInProgress=false callback=android.app.Activity$$ExternalSyntheticLambda0@450a556
+2026-02-06 14:21:15.851  6627-6627  UninstallFlowActivity   com.cdccreditsmart.app               I  onDestroy: App ainda instalado após tentativa de desinstalação
+2026-02-06 14:21:15.852  6627-6627  View                    com.cdccreditsmart.app               D  [Warning] assignParent to null: this = DecorView@bbb30db[UninstallFlowActivity]
+2026-02-06 14:21:15.903  6627-6627  UninstallFlowActivity   com.cdccreditsmart.app               W  RESULTADO: Usuário CANCELOU a desinstalação
+2026-02-06 14:21:15.904  6627-6627  UninstallFlowActivity   com.cdccreditsmart.app               W  
+2026-02-06 14:21:15.904  6627-6627  UninstallFlowActivity   com.cdccreditsmart.app               W  ATENÇÃO: Proteções foram removidas e NÃO podem ser reaplicadas!
+2026-02-06 14:21:15.904  6627-6627  UninstallFlowActivity   com.cdccreditsmart.app               W     O app não é mais Device Owner/Admin
+2026-02-06 14:21:15.904  6627-6627  UninstallFlowActivity   com.cdccreditsmart.app               W     Para restaurar proteções, reprovisionar via:
+2026-02-06 14:21:15.904  6627-6627  UninstallFlowActivity   com.cdccreditsmart.app               W       1. Factory reset + QR Code de provisionamento
+2026-02-06 14:21:15.904  6627-6627  UninstallFlowActivity   com.cdccreditsmart.app               W       2. ADB: dpm set-device-owner
+2026-02-06 14:21:15.904  6627-6627  SettingsGuardService    com.cdccreditsmart.app               I  ▶️ Guard RETOMADO após desinstalação cancelada
+2026-02-06 14:21:15.904  6627-6627  UninstallFlowActivity   com.cdccreditsmart.app               I  ▶️ SettingsGuard retomado
+2026-02-06 14:21:15.904  6627-6627  UninstallFlowActivity   com.cdccreditsmart.app               I  ▶️ SettingsGuard retomado após cancelamento
+2026-02-06 14:21:16.764  6627-6762  SettingsGuardService    com.cdccreditsmart.app               D  📋 Activity check - Full: com.android.launcher3.uioverrides.QuickstepLauncher, Simple: QuickstepLauncher
+2026-02-06 14:21:16.792  6627-6762  SettingsGuardService    com.cdccreditsmart.app               W  ⚠️ Activity em Settings passou por TODAS verificações:
+2026-02-06 14:21:16.792  6627-6762  SettingsGuardService    com.cdccreditsmart.app               W     Pacote: com.motorola.launcher3
+2026-02-06 14:21:16.792  6627-6762  SettingsGuardService    com.cdccreditsmart.app               W     Activity completa: com.android.launcher3.uioverrides.QuickstepLauncher
+2026-02-06 14:21:16.792  6627-6762  SettingsGuardService    com.cdccreditsmart.app               W     Activity simplificada: QuickstepLauncher
+2026-02-06 14:21:18.140  6627-6627  VRI[MainActivity]       com.cdccreditsmart.app               D  visibilityChanged oldVisibility=true newVisibility=false
+2026-02-06 14:21:18.200  6627-6627  BLASTBufferQueue        com.cdccreditsmart.app               D  [VRI[MainActivity]#3](f:0,a:1) destructor()
+2026-02-06 14:21:18.200  6627-6627  BufferQueueConsumer     com.cdccreditsmart.app               D  [VRI[MainActivity]#3(BLAST Consumer)3](id:19e300000003,api:0,p:-1,c:6627) disconnect
+2026-02-06 14:21:19.799  6627-6762  SettingsGuardService    com.cdccreditsmart.app               D  📋 Activity check - Full: com.android.settings.homepage.SettingsHomepageActivity, Simple: SettingsHomepageActivity
+2026-02-06 14:21:19.814  6627-6762  SettingsGuardService    com.cdccreditsmart.app               W  ⚠️ Activity em Settings passou por TODAS verificações:
+2026-02-06 14:21:19.814  6627-6762  SettingsGuardService    com.cdccreditsmart.app               W     Pacote: com.android.settings
+2026-02-06 14:21:19.814  6627-6762  SettingsGuardService    com.cdccreditsmart.app               W     Activity completa: com.android.settings.homepage.SettingsHomepageActivity
+2026-02-06 14:21:19.814  6627-6762  SettingsGuardService    com.cdccreditsmart.app               W     Activity simplificada: SettingsHomepageActivity
+2026-02-06 14:21:20.243  6627-6748  FA                      com.cdccreditsmart.app               I  Application backgrounded at: timestamp_millis: 1770398478237
